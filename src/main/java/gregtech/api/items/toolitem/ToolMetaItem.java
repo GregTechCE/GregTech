@@ -61,6 +61,7 @@ public class ToolMetaItem<T extends ToolMetaItem<?>.MetaToolValueItem> extends M
 
     public ToolMetaItem() {
         super((short) 0);
+        setCreativeTab(GregTechAPI.TAB_GREGTECH);
     }
 
     @Override
@@ -137,7 +138,7 @@ public class ToolMetaItem<T extends ToolMetaItem<?>.MetaToolValueItem> extends M
         T metaToolValueItem = getItem(stack);
         if(metaToolValueItem != null) {
             IToolStats toolStats = metaToolValueItem.getToolStats();
-            if(!doDamageToItem(stack, toolStats.getToolDamagePerContainerCraft(stack), true) && getElectricStats(stack).getMaxCharge() == 0) {
+            if(!doDamageToItem(stack, toolStats.getToolDamagePerContainerCraft(stack), true)) {
                 return null;
             }
         }
@@ -333,13 +334,6 @@ public class ToolMetaItem<T extends ToolMetaItem<?>.MetaToolValueItem> extends M
         return null;
     }
 
-    @Override
-    public CreativeTabs[] getCreativeTabs() {
-        return new CreativeTabs[] {
-            GregTechAPI.TAB_GREGTECH
-        };
-    }
-
     public class MetaToolValueItem extends MetaValueItem {
 
         protected IToolStats toolStats;
@@ -406,11 +400,11 @@ public class ToolMetaItem<T extends ToolMetaItem<?>.MetaToolValueItem> extends M
                 if (metaToolValueItem.toolStats != null) {
 
                     NBTTagCompound toolNBT = new NBTTagCompound();
-                    if (primaryMaterial != null && primaryMaterial instanceof SolidMaterial) {
+                    if (primaryMaterial instanceof SolidMaterial) {
                         toolNBT.setString("GT.ToolPrimaryMaterial", primaryMaterial.toString());
                         toolNBT.setLong("GT.MaxDamage", 100L * (long) ((((SolidMaterial) primaryMaterial).toolDurability) * metaToolValueItem.toolStats.getMaxDurabilityMultiplier(stack)));
                     }
-                    if (this.getToolStats().hasMaterialHandle() && handleMaterial != null && handleMaterial instanceof SolidMaterial)
+                    if (this.getToolStats().hasMaterialHandle() && handleMaterial instanceof SolidMaterial)
                         toolNBT.setString("GT.ToolHandleMaterial", handleMaterial.toString());
 
                     NBTTagCompound nbtTag = new NBTTagCompound();

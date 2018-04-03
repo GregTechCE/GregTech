@@ -1,6 +1,7 @@
 package gregtech.api.gui;
 
 import gregtech.api.net.NetworkHandler;
+import gregtech.api.net.PacketUIClientAction;
 import gregtech.api.net.PacketUIWidgetUpdate;
 import gregtech.api.util.GTLog;
 import io.netty.buffer.Unpooled;
@@ -126,8 +127,8 @@ public abstract class Widget<T extends IUIHolder> implements Comparable<Widget<T
         int widgetId = gui.guiWidgets.inverse().get(this);
         if(gui.entityPlayer instanceof EntityPlayerSP) {
             int currentWindowId = gui.entityPlayer.openContainer.windowId;
-            PacketUIWidgetUpdate widgetUpdate = new PacketUIWidgetUpdate(currentWindowId, widgetId, packetBuffer);
-            NetworkHandler.channel.sendTo(NetworkHandler.packet2proxy(widgetUpdate), (EntityPlayerMP) gui.entityPlayer);
+            PacketUIClientAction widgetUpdate = new PacketUIClientAction(currentWindowId, widgetId, packetBuffer);
+            NetworkHandler.channel.sendToServer(NetworkHandler.packet2proxy(widgetUpdate));
         }
     }
 

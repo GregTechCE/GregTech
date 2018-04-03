@@ -48,6 +48,7 @@ public class ImageWidget<T extends IUIHolder> extends Widget<T> {
 
     public ImageWidget<T> setPredicate(BooleanSupplier predicate) {
         this.predicate = predicate;
+        this.isVisible = false;
         return this;
     }
 
@@ -71,7 +72,7 @@ public class ImageWidget<T extends IUIHolder> extends Widget<T> {
     @Override
     @SideOnly(Side.CLIENT)
     public void drawInBackground(float partialTicks, int mouseX, int mouseY) {
-        if (!this.isVisible) return;
+        if (!this.isVisible || area == null) return;
         area.draw(xPosition, yPosition, width, height);
     }
 

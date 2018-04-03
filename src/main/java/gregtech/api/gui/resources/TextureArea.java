@@ -1,5 +1,6 @@
 package gregtech.api.gui.resources;
 
+import gregtech.api.GTValues;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.Tessellator;
@@ -32,7 +33,7 @@ public class TextureArea {
     }
 
     public static TextureArea fullImage(String imageLocation) {
-        return new TextureArea(new ResourceLocation(imageLocation), 0.0, 0.0, 1.0, 1.0);
+        return new TextureArea(new ResourceLocation(GTValues.MODID, imageLocation), 0.0, 0.0, 1.0, 1.0);
     }
 
     public static TextureArea areaOfImage(String imageLocation, int imageSizeX, int imageSizeY, int u, int v, int width, int height) {

@@ -1,10 +1,12 @@
 package gregtech.api.items.materialitem;
 
 import com.google.common.base.Preconditions;
+import gnu.trove.map.hash.TShortObjectHashMap;
 import gregtech.api.GregTechAPI;
 import gregtech.api.damagesources.DamageSources;
 import gregtech.api.items.metaitem.StandardMetaItem;
 import gregtech.api.unification.OreDictUnifier;
+import gregtech.api.unification.material.MaterialIconSet;
 import gregtech.api.unification.material.type.MarkerMaterial;
 import gregtech.api.unification.material.type.Material;
 import gregtech.api.unification.ore.OrePrefix;
@@ -21,6 +23,7 @@ import net.minecraft.init.MobEffects;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.NonNullList;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.relauncher.Side;
@@ -66,22 +69,20 @@ public class MaterialMetaItem extends StandardMetaItem {
     @Override
     @SideOnly(Side.CLIENT)
     public void registerModels() {
-        for(short metaItem : generatedItems) {
+        super.registerModels();
+        TShortObjectHashMap<ModelResourceLocation> alreadyRegistered = new TShortObjectHashMap<>();
+        for (short metaItem : generatedItems) {
             OrePrefix prefix = this.orePrefixes[metaItem / 1000];
-            Material material = Material.MATERIAL_REGISTRY.getObjectById(metaItem % 1000);
-            ModelBakery.registerItemVariants(this, prefix.materialIconType.getItemModelPath(material.materialIconSet));
-        }
-
-        int orePrefixAmount = (int) Arrays.stream(this.orePrefixes).filter(Objects::nonNull).count();
-
-        ModelLoader.setCustomMeshDefinition(this, stack -> {
-            if (stack.getMetadata() < orePrefixAmount * 1000) {
-                OrePrefix prefix = this.orePrefixes[stack.getMetadata() / 1000];
-                Material material = Material.MATERIAL_REGISTRY.getObjectById(stack.getMetadata() % 1000);
-                return new ModelResourceLocation(prefix.materialIconType.getItemModelPath(material.materialIconSet), "inventory");
+            MaterialIconSet materialIconSet = Material.MATERIAL_REGISTRY.getObjectById(metaItem % 1000).materialIconSet;
+            short registrationKey = (short) (metaItem / 1000 * 1000 + materialIconSet.ordinal());
+            if (!alreadyRegistered.containsKey(registrationKey)) {
+                ResourceLocation resourceLocation = prefix.materialIconType.getItemModelPath(materialIconSet);
+                ModelBakery.registerItemVariants(this, resourceLocation);
+                alreadyRegistered.put(registrationKey, new ModelResourceLocation(resourceLocation, "inventory"));
             }
-            return new ModelResourceLocation("builtin/missing", "missing");
-        });
+            ModelResourceLocation resourceLocation = alreadyRegistered.get(registrationKey);
+            metaItemsModels.put(metaItem, resourceLocation);
+        }
     }
 
     @Override
@@ -113,22 +114,12 @@ public class MaterialMetaItem extends StandardMetaItem {
     }
 
     @Override
-    public CreativeTabs[] getCreativeTabs() {
-        return new CreativeTabs[] {
-                GregTechAPI.TAB_GREGTECH,
-                GregTechAPI.TAB_GREGTECH_MATERIALS
-        };
-    }
-
-    @Override
     @SideOnly(Side.CLIENT)
     public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> subItems) {
-        if(this.isInCreativeTab(tab)) {
-            super.getSubItems(tab, subItems);
-            if(tab == GregTechAPI.TAB_GREGTECH_MATERIALS || tab == CreativeTabs.SEARCH) {
-                for(short metadata : generatedItems) {
-                    subItems.add(new ItemStack(this, 1, metadata));
-                }
+        super.getSubItems(tab, subItems);
+        if (tab == GregTechAPI.TAB_GREGTECH_MATERIALS || tab == CreativeTabs.SEARCH) {
+            for (short metadata : generatedItems) {
+                subItems.add(new ItemStack(this, 1, metadata));
             }
         }
     }
@@ -150,17 +141,18 @@ public class MaterialMetaItem extends StandardMetaItem {
         }
     }
 
-    //TODO DELETE ON RELEASE
     @Override
     public void addInformation(ItemStack itemStack, @Nullable World worldIn, List<String> lines, ITooltipFlag tooltipFlag) {
-        if (itemStack.getMetadata() >= 32000) return;
-        OrePrefix prefix = this.orePrefixes[itemStack.getMetadata() / 1000];
-        Material material = Material.MATERIAL_REGISTRY.getObjectById(itemStack.getMetadata() % 1000);
-        if (prefix != null) {
-            lines.add("IconType: " + prefix.materialIconType);
-        }
-        if (material != null) {
-            lines.add("IconSet: " + material.materialIconSet);
+        super.addInformation(itemStack, worldIn, lines, tooltipFlag);
+        if(tooltipFlag.isAdvanced() && itemStack.getMetadata() < metaItemOffset) {
+            OrePrefix prefix = this.orePrefixes[itemStack.getMetadata() / 1000];
+            Material material = Material.MATERIAL_REGISTRY.getObjectById(itemStack.getMetadata() % 1000);
+            if (prefix != null) {
+                lines.add("IconType: " + prefix.materialIconType);
+            }
+            if (material != null) {
+                lines.add("IconSet: " + material.materialIconSet);
+            }
         }
     }
 }

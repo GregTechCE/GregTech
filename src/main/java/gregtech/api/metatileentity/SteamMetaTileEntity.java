@@ -84,7 +84,7 @@ public abstract class  SteamMetaTileEntity extends MetaTileEntity {
     
     protected TextureArea getFullGuiTexture(String pathTemplate) {
         String type = isHighPressure ? "steel" : "bronze";
-        return TextureArea.fullImage(String.format("gregtech:textures/gui/steam/%s/%s.png",
+        return TextureArea.fullImage(String.format("textures/gui/steam/%s/%s.png",
             type, pathTemplate.replace("%s", type)));
     }
 

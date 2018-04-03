@@ -86,7 +86,7 @@ public final class ModularUI<H extends IUIHolder> {
         }
 
         public Builder<T> bindPlayerInventory(InventoryPlayer inventoryPlayer, int startWidgetId, TextureArea imageLocation) {
-            widget(startWidgetId, new LabelWidget<T>(8, 166 - 96 + 2, "container.inventory"));
+            //widget(startWidgetId, new LabelWidget<T>(8, 166 - 96 + 2, "container.inventory"));
             return bindPlayerInventory(inventoryPlayer, startWidgetId + 1, imageLocation, 8, 84);
         }
 

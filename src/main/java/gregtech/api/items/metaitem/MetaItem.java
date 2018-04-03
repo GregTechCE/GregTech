@@ -1,34 +1,23 @@
 package gregtech.api.items.metaitem;
 
-import gnu.trove.map.TObjectShortMap;
+import com.google.common.collect.ImmutableList;
 import gnu.trove.map.TShortObjectMap;
-import gnu.trove.map.custom_hash.TObjectShortCustomHashMap;
 import gnu.trove.map.hash.TShortObjectHashMap;
+import gregtech.api.GTValues;
 import gregtech.api.GregTechAPI;
+import gregtech.api.capability.IElectricItem;
 import gregtech.api.capability.impl.CombinedCapabilityProvider;
 import gregtech.api.capability.impl.ElectricItem;
 import gregtech.api.capability.impl.ThermalFluidHandlerItemStack;
 import gregtech.api.items.OreDictNames;
-import gregtech.api.items.metaitem.stats.IElectricStats;
-import gregtech.api.items.metaitem.stats.IFluidStats;
-import gregtech.api.items.metaitem.stats.IFoodStats;
-import gregtech.api.items.metaitem.stats.IItemBehaviour;
-import gregtech.api.items.metaitem.stats.IItemDurabilityManager;
-import gregtech.api.items.metaitem.stats.IItemUseManager;
-import gregtech.api.items.metaitem.stats.IMetaItemStats;
+import gregtech.api.items.metaitem.stats.*;
 import gregtech.api.unification.OreDictUnifier;
 import gregtech.api.unification.material.type.Material;
 import gregtech.api.unification.ore.OrePrefix;
 import gregtech.api.unification.stack.ItemMaterialInfo;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.annotation.Nullable;
-
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.block.model.ModelBakery;
+import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
@@ -39,22 +28,26 @@ import net.minecraft.item.EnumAction;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.EnumActionResult;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumHand;
-import net.minecraft.util.NonNullList;
+import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
+import net.minecraftforge.fluids.capability.IFluidHandlerItem;
+import net.minecraftforge.fluids.capability.IFluidTankProperties;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.oredict.OreDictionary;
-
 import org.apache.commons.lang3.Validate;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
-import com.google.common.collect.ImmutableList;
+import javax.annotation.Nullable;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * MetaItem is item that can have up to Short.MAX_VALUE items inside one id.
@@ -70,15 +63,18 @@ import com.google.common.collect.ImmutableList;
  */
 @SuppressWarnings("deprecation")
 public abstract class MetaItem<T extends MetaItem<?>.MetaValueItem> extends Item {
+
     protected TShortObjectMap<T> metaItems = new TShortObjectHashMap<>();
-    private Map<String, T> names = new HashMap<String, T>();
+    private Map<String, T> names = new HashMap<>();
+    protected TShortObjectMap<ModelResourceLocation> metaItemsModels = new TShortObjectHashMap<>();
+    private static final ModelResourceLocation MISSING_LOCATION = new ModelResourceLocation("builtin/missing", "inventory");
 
     protected final short metaItemOffset;
 
     public MetaItem(short metaItemOffset) {
         setUnlocalizedName("meta_item");
         setHasSubtypes(true);
-        setCreativeTab(GregTechAPI.TAB_GREGTECH);
+        setCreativeTab(GregTechAPI.TAB_GREGTECH_MATERIALS);
         this.metaItemOffset = metaItemOffset;
     }
 
@@ -88,7 +84,22 @@ public abstract class MetaItem<T extends MetaItem<?>.MetaValueItem> extends Item
     }
 
     @SideOnly(Side.CLIENT)
-    public void registerModels() {}
+    public void registerModels() {
+        TShortObjectHashMap<ModelResourceLocation> itemModels = new TShortObjectHashMap<>();
+        for(short itemMetaKey : metaItems.keys()) {
+            T metaValueItem = metaItems.get(itemMetaKey);
+            ResourceLocation resourceLocation = new ResourceLocation(GTValues.MODID, "metaitems/" + metaValueItem.unlocalizedName);
+            ModelBakery.registerItemVariants(this, resourceLocation);
+            metaItemsModels.put((short) (metaItemOffset + itemMetaKey), new ModelResourceLocation(resourceLocation, "inventory"));
+        }
+        ModelLoader.setCustomMeshDefinition(this, itemStack -> {
+            short itemDamage = (short) itemStack.getItemDamage();
+            if(metaItemsModels.containsKey(itemDamage)) {
+                return metaItemsModels.get(itemDamage);
+            }
+            return MISSING_LOCATION;
+        });
+    }
 
     @SideOnly(Side.CLIENT)
     protected int getColorForItemStack(ItemStack stack, int tintIndex) {
@@ -118,26 +129,6 @@ public abstract class MetaItem<T extends MetaItem<?>.MetaValueItem> extends Item
     }
 
     public void registerSubItems() {}
-
-    //////////////////////////////////////////////////////////////////
-    //                 ISpecialElectricItem Implementation          //
-    //////////////////////////////////////////////////////////////////
-
-    protected IElectricStats getElectricStats(ItemStack itemStack) {
-        T metaValueItem = getItem(itemStack);
-        if (metaValueItem == null) {
-            return ElectricStats.EMPTY;
-        }
-        IElectricStats electricStats = metaValueItem.getElectricStats();
-        if (electricStats == null) {
-            return ElectricStats.EMPTY;
-        }
-        return electricStats;
-    }
-
-    //////////////////////////////////////////////////////////////////
-    //                     FluidContainer Stuff                     //
-    //////////////////////////////////////////////////////////////////
 
     @Nullable
     @Override
@@ -370,8 +361,6 @@ public abstract class MetaItem<T extends MetaItem<?>.MetaValueItem> extends Item
     @Override
     @SideOnly(Side.CLIENT)
     public void addInformation(ItemStack itemStack, @Nullable World worldIn, List<String> lines, ITooltipFlag tooltipFlag) {
-        super.addInformation(itemStack, worldIn, lines, tooltipFlag);
-
         T item = getItem(itemStack);
         if (item != null) {
             String unlocalizedTooltip = "metaitem." + item.unlocalizedName + ".tooltip";
@@ -379,22 +368,26 @@ public abstract class MetaItem<T extends MetaItem<?>.MetaValueItem> extends Item
                 lines.add(I18n.format(unlocalizedTooltip));
             }
 
-/*            IElectricStats electricStats = getElectricStats(itemStack);
-            if (electricStats.getMaxCharge(itemStack) > 0) {
+            IElectricItem electricItem = itemStack.getCapability(IElectricItem.CAPABILITY_ELECTRIC_ITEM, null);
+            if (electricItem != null) {
                 lines.add(I18n.format("metaitem.generic.electric_item.tooltip",
-                    electricStats.getCharge(itemStack),
-                    electricStats.getMaxCharge(itemStack),
-                    GTValues.V[electricStats.getTier(itemStack)]));
-            }*/
-            /*if (getCapacity(itemStack) > 0) {
-                FluidStack fluid = getFluid(itemStack);
+                    electricItem.discharge(Long.MAX_VALUE, Integer.MAX_VALUE, true, false, true),
+                    electricItem.getMaxCharge(),
+                    electricItem.getTier()));
+            }
+
+            IFluidHandlerItem fluidHandler = itemStack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY, null);
+            if (fluidHandler != null) {
+                IFluidTankProperties fluidTankProperties = fluidHandler.getTankProperties()[0];
+                FluidStack fluid = fluidTankProperties.getContents();
                 if (fluid != null) {
                     lines.add(I18n.format("metaitem.generic.fluid_container.tooltip",
                         fluid.amount,
-                        getCapacity(itemStack),
+                        fluidTankProperties.getCapacity(),
                         fluid.getLocalizedName()));
                 } else lines.add(I18n.format("metaitem.generic.fluid_container.tooltip_empty"));
-            }*/
+            }
+
             for (IItemBehaviour behaviour : getBehaviours(itemStack)) {
                 behaviour.addInformation(itemStack, lines);
             }
@@ -404,30 +397,14 @@ public abstract class MetaItem<T extends MetaItem<?>.MetaValueItem> extends Item
     @Override
     @SideOnly(Side.CLIENT)
     public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> subItems) {
-        if (this.isInCreativeTab(tab)) {
-            for (T enabledItem : metaItems.valueCollection()) {
-                if (enabledItem.isVisible()) {
-                    ItemStack itemStack = enabledItem.getStackForm();
-                    /*if(getCapacity(itemStack) > 0) {
-                        for(Fluid fluid : FluidRegistry.getRegisteredFluids().values()) {
-                            if(electricStats.getMaxCharge(itemStack) > 0) {
-                                ItemStack chargedFilledStack = itemStack.copy();
-                                fill(chargedFilledStack, new FluidStack(fluid, Integer.MAX_VALUE), true);
-                                electricStats.charge(chargedFilledStack, Integer.MAX_VALUE, Integer.MAX_VALUE, true, false);
-                                subItems.add(chargedFilledStack);
-                            } else {
-                                ItemStack filledStack = itemStack.copy();
-                                fill(filledStack, new FluidStack(fluid, Integer.MAX_VALUE), true);
-                                subItems.add(filledStack);
-                            }
-                        }
-                    }*/
-/*                    IElectricStats electricStats = getElectricStats(itemStack);
-                    if (electricStats.getMaxCharge(itemStack) > 0) {
-                        ItemStack chargedStack = itemStack.copy();
-                        electricStats.charge(chargedStack, Integer.MAX_VALUE, Integer.MAX_VALUE, true, false);
-                        subItems.add(chargedStack);
-                    }*/
+        for (T enabledItem : metaItems.valueCollection()) {
+            if (enabledItem.isVisible()) {
+                ItemStack itemStack = enabledItem.getStackForm();
+                subItems.add(itemStack.copy());
+
+                IElectricItem electricItem = itemStack.getCapability(IElectricItem.CAPABILITY_ELECTRIC_ITEM, null);
+                if (electricItem != null) {
+                    electricItem.charge(Long.MAX_VALUE, Integer.MAX_VALUE, true, false);
                     subItems.add(itemStack);
                 }
             }

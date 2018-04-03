@@ -166,7 +166,7 @@ public class RecipeMap<R extends RecipeBuilder<R>> {
 	//this DOES NOT add machine control widgets or binds player inventory
 	public ModularUI.Builder<IUIHolder> createUITemplate(DoubleSupplier progressSupplier, IItemHandlerModifiable importItems, IItemHandlerModifiable exportItems, FluidTankHandler importFluids, FluidTankHandler exportFluids) {
         ModularUI.Builder<IUIHolder> builder = ModularUI.defaultBuilder();
-        builder.widget(300, new ProgressWidget<>(progressSupplier, 78, 25, 20, 15, progressBarTexture, moveType));
+        builder.widget(300, new ProgressWidget<>(progressSupplier, 77, 23, 20, 15, progressBarTexture, moveType));
         addInventorySlotGroup(builder, importItems, importFluids, false);
         addInventorySlotGroup(builder, exportItems, exportFluids, true);
         return builder;

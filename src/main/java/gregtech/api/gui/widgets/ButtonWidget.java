@@ -22,7 +22,7 @@ public class ButtonWidget extends Widget<IUIHolder> {
 
     public ButtonWidget(int xPosition, int yPosition, int width, int height, TextureArea buttonTexture,
                         BooleanSupplier isPressedCondition, BooleanConsumer setPressedExecutor) {
-        super(Widget.SLOT_DRAW_PRIORITY);
+        super(Widget.SLOT_DRAW_PRIORITY - 1);
         this.xPosition = xPosition;
         this.yPosition = yPosition;
         this.width = width;
@@ -34,11 +34,11 @@ public class ButtonWidget extends Widget<IUIHolder> {
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void drawInForeground(int mouseX, int mouseY) {
+    public void drawInBackground(float partialTicks, int mouseX, int mouseY) {
         if(!this.isPressed) {
             buttonTexture.drawSubArea(xPosition, yPosition, width, height, 0.0, 0.0, 1.0, 0.5);
         } else {
-            buttonTexture.drawSubArea(xPosition, yPosition, width, height, 0.0, 0.5, 1.0, 1.0);
+            buttonTexture.drawSubArea(xPosition, yPosition, width, height, 0.0, 0.5, 1.0, 0.5);
         }
     }
 

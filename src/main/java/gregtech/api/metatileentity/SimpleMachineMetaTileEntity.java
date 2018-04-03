@@ -237,7 +237,7 @@ public class SimpleMachineMetaTileEntity extends TieredMetaTileEntity {
                 GuiTextures.BUTTON_FLUID_OUTPUT, this::isAutoOutputFluids, this::setAutoOutputFluids))
             .widget(3, new DischargerSlotWidget<>(chargerInventory, 0, 79, 62)
                 .setBackgroundTexture(GuiTextures.SLOT, GuiTextures.CHARGER_OVERLAY))
-            .widget(4, new ImageWidget<>(79, 42, 18, 18)
+            .widget(4, new ImageWidget<>(79, 42, 18, 18, GuiTextures.INDICATOR_NO_ENERGY)
                 .setPredicate(workable::isHasNotEnoughEnergy))
             .bindPlayerInventory(player.inventory, 5);
     }
