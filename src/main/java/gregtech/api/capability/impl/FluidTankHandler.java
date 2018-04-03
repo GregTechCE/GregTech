@@ -1,8 +1,6 @@
 package gregtech.api.capability.impl;
 
-import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
-import com.google.common.collect.UnmodifiableIterator;
 import gregtech.api.capability.IMultipleTankHandler;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;

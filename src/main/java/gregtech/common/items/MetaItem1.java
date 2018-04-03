@@ -244,12 +244,6 @@ public class MetaItem1 extends MaterialMetaItem {
 
         FLUID_FILTER = addItem(635, "fluidfilter");
 
-        ROTOR_LV = addItem(620, "rotor.lv").setUnificationData(OrePrefix.rotor, Materials.Tin);
-        ROTOR_MV = addItem(621, "rotor.mv").setUnificationData(OrePrefix.rotor, Materials.Bronze);
-        ROTOR_HV = addItem(622, "rotor.hv").setUnificationData(OrePrefix.rotor, Materials.Steel);
-        ROTOR_EV = addItem(623, "rotor.ev").setUnificationData(OrePrefix.rotor, Materials.StainlessSteel);
-        ROTOR_IV = addItem(624, "rotor.iv").setUnificationData(OrePrefix.rotor, Materials.TungstenSteel);
-
         CONVEYOR_MODULE_LV = addItem(630, "conveyor.module.lv");
         CONVEYOR_MODULE_MV = addItem(631, "conveyor.module.mv");
         CONVEYOR_MODULE_HV = addItem(632, "conveyor.module.hv");
@@ -351,16 +345,16 @@ public class MetaItem1 extends MaterialMetaItem {
 
         COVER_SHUTTER = addItem(749, "cover.shutter");
 
-        COVER_SOLARPANEL = addItem(750, "cover.solarpanel");
-        COVER_SOLARPANEL_8V = addItem(751, "cover.solarpanel.8v");
-        COVER_SOLARPANEL_LV = addItem(752, "cover.solarpanel.lv");
-        COVER_SOLARPANEL_MV = addItem(753, "cover.solarpanel.mv");
-        COVER_SOLARPANEL_HV = addItem(754, "cover.solarpanel.hv");
-        COVER_SOLARPANEL_EV = addItem(755, "cover.solarpanel.ev");
-        COVER_SOLARPANEL_IV = addItem(756, "cover.solarpanel.iv");
-        COVER_SOLARPANEL_LUV = addItem(757, "cover.solarpanel.luv");
-        COVER_SOLARPANEL_ZPM = addItem(758, "cover.solarpanel.zpm");
-        COVER_SOLARPANEL_UV = addItem(759, "cover.solarpanel.uv");
+        COVER_SOLARPANEL = addItem(750, "cover.solar.panel");
+        COVER_SOLARPANEL_8V = addItem(751, "cover.solar.panel.ulv");
+        COVER_SOLARPANEL_LV = addItem(752, "cover.solar.panel.lv");
+        COVER_SOLARPANEL_MV = addItem(753, "cover.solar.panel.mv");
+        COVER_SOLARPANEL_HV = addItem(754, "cover.solar.panel.hv");
+        COVER_SOLARPANEL_EV = addItem(755, "cover.solar.panel.ev");
+        COVER_SOLARPANEL_IV = addItem(756, "cover.solar.panel.iv");
+        COVER_SOLARPANEL_LUV = addItem(757, "cover.solar.panel.luv");
+        COVER_SOLARPANEL_ZPM = addItem(758, "cover.solar.panel.zpm");
+        COVER_SOLARPANEL_UV = addItem(759, "cover.solar.panel.uv");
 
         TOOL_CHEAT = addItem(761, "tool.cheat").addStats(new ElectricStats(-2000000000, -1));
 

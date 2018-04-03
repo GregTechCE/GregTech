@@ -65,7 +65,7 @@ public class MetaItem2 extends MaterialMetaItem {
 
         DYE_INDIGO = addItem(410, "dye.indigo").addOreDict("dyeBlue");
         for (byte i = 0; i < 16; i = (byte) (i + 1)) {
-            DYE_ONLY_ITEMS[i] = addItem(414 + i, "dye." + EnumDyeColor.byMetadata(i).getUnlocalizedName()).addOreDict("dye" + CaseFormat.LOWER_UNDERSCORE.to(CaseFormat.UPPER_CAMEL, EnumDyeColor.byMetadata(i).getName()));
+            DYE_ONLY_ITEMS[i] = addItem(414 + i, "dye." + EnumDyeColor.byMetadata(i).getName()).addOreDict("dye" + CaseFormat.LOWER_UNDERSCORE.to(CaseFormat.UPPER_CAMEL, EnumDyeColor.byMetadata(i).getName()));
         }
 
         PLANK_OAK = addItem(470, "plank.oak").setBurnValue(75);

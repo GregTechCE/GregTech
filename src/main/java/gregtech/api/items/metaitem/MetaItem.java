@@ -145,7 +145,8 @@ public abstract class MetaItem<T extends MetaItem<?>.MetaValueItem> extends Item
                 fluidStats.getMinFluidTemperature(stack),
                 fluidStats.getMaxFluidTemperature(stack));
 
-            ElectricItem electricItem = new ElectricItem(electricStats.getMaxCharge(),
+            ElectricItem electricItem = new ElectricItem(stack,
+                electricStats.getMaxCharge(),
                 electricStats.getTier(),
                 electricStats.isChargeable(),
                 electricStats.isDischargeable());
@@ -161,7 +162,8 @@ public abstract class MetaItem<T extends MetaItem<?>.MetaValueItem> extends Item
         }
 
         if (electricStats != null) {
-            return new ElectricItem(electricStats.getMaxCharge(),
+            return new ElectricItem(stack,
+                electricStats.getMaxCharge(),
                 electricStats.getTier(),
                 electricStats.isChargeable(),
                 electricStats.isDischargeable());

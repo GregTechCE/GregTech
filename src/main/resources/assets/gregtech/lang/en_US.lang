@@ -338,12 +338,6 @@ metaitem.fluidregulator.iv.tooltip=Configuable up to 163840 L/sec (as Cover)
 metaitem.fluidfilter.name=Fluid Filter
 metaitem.fluidfilter.tooltip=Set with Fluid Container to only accept one Fluid Type
 
-metaitem.rotor.lv.name=Tin Rotor
-metaitem.rotor.mv.name=Bronze Rotor
-metaitem.rotor.hv.name=Steel Rotor
-metaitem.rotor.ev.name=Stainless Steel Rotor
-metaitem.rotor.iv.name=Tungstensteel Rotor
-
 #TODO replace numbers with placeholders
 metaitem.conveyor.module.lv.name=Conveyor Module (LV)
 metaitem.conveyor.module.lv.tooltip=1 Stack every 20 secs (as Cover)
@@ -494,8 +488,8 @@ metaitem.cover.shutter.tooltip=Blocks Inventory/Tank Side. Usage together with M
 
 metaitem.cover.solar.panel.name=Solar Panel
 metaitem.cover.solar.panel.tooltip=May the Sun be with you
-metaitem.cover.solar.panel.8v.name=Solar Panel (8V)
-metaitem.cover.solar.panel.8v.tooltip=8 Volt Solar Panel
+metaitem.cover.solar.panel.ulv.name=Solar Panel (8V)
+metaitem.cover.solar.panel.ulv.tooltip=8 Volt Solar Panel
 metaitem.cover.solar.panel.lv.name=Solar Panel (LV)
 metaitem.cover.solar.panel.lv.tooltip=Low Voltage Solar Panel
 metaitem.cover.solar.panel.mv.name=Solar Panel (MV)

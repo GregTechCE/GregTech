@@ -1,6 +1,5 @@
 package gregtech.api.capability.impl;
 
-import gregtech.api.GTValues;
 import gregtech.api.capability.IElectricItem;
 import gregtech.api.capability.IEnergyContainer;
 import gregtech.api.metatileentity.MTETrait;
