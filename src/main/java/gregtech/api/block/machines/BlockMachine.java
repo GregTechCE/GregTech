@@ -58,6 +58,15 @@ public class BlockMachine extends Block implements ITileEntityProvider, ICustomH
     }
 
     @Override
+    public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player) {
+        MetaTileEntity metaTileEntity = getMetaTileEntity(world, pos);
+        if(metaTileEntity == null)
+            return ItemStack.EMPTY;
+        return new ItemStack(Item.getItemFromBlock(this), 1,
+            GregTechAPI.META_TILE_ENTITY_REGISTRY.getIdByObjectName(metaTileEntity.metaTileEntityId));
+    }
+
+    @Override
     public void addCollisionBoxToList(IBlockState state, World worldIn, BlockPos pos, AxisAlignedBB entityBox, List<AxisAlignedBB> collidingBoxes, @Nullable Entity entityIn, boolean isActualState) {
         for(AxisAlignedBB axisAlignedBB : getBoundingBoxes(worldIn, pos)) {
             AxisAlignedBB offsetBox = axisAlignedBB.offset(pos);
@@ -186,8 +195,10 @@ public class BlockMachine extends Block implements ITileEntityProvider, ICustomH
                     return true;
                 } else return false;
             } else if(GregTechAPI.wrenchList.contains(simpleItemStack)) {
+                //System.out.println("We are here " + );
                 if(GTUtility.doDamageItem(itemInHand, DAMAGE_FOR_WRENCH_CLICK, true) &&
                     metaTileEntity.onWrenchClick(playerIn, hand, facing, hitX, hitY, hitZ)) {
+                    //System.out.println("And here we now");
                     GTUtility.doDamageItem(itemInHand, DAMAGE_FOR_WRENCH_CLICK, false);
                     return true;
                 } else return false;

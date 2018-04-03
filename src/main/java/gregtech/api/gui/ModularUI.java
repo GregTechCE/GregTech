@@ -82,7 +82,7 @@ public final class ModularUI<H extends IUIHolder> {
         }
 
         public Builder<T> bindPlayerInventory(InventoryPlayer inventoryPlayer, int startWidgetId) {
-            return bindPlayerInventory(inventoryPlayer, startWidgetId, GuiTextures.BACKGROUND);
+            return bindPlayerInventory(inventoryPlayer, startWidgetId, GuiTextures.SLOT);
         }
 
         public Builder<T> bindPlayerInventory(InventoryPlayer inventoryPlayer, int startWidgetId, TextureArea imageLocation) {

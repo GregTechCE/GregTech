@@ -44,6 +44,7 @@ public class SimpleMachineMetaTileEntity extends TieredMetaTileEntity {
         this.renderer = renderer;
         this.workable = addTrait(new EnergyRecipeMapWorkableHandler(energyContainer, recipeMap));
         this.chargerInventory = new ItemStackHandler(1);
+        initializeInventory();
     }
 
     @Override
@@ -82,16 +83,19 @@ public class SimpleMachineMetaTileEntity extends TieredMetaTileEntity {
 
     @Override
     protected IItemHandlerModifiable createImportItemHandler() {
+        if(workable == null) return new ItemStackHandler(0);
         return new ItemStackHandler(workable.recipeMap.getMaxInputs());
     }
 
     @Override
     protected IItemHandlerModifiable createExportItemHandler() {
+        if(workable == null) return new ItemStackHandler(0);
         return new ItemStackHandler(workable.recipeMap.getMaxOutputs());
     }
 
     @Override
     protected FluidTankHandler createImportFluidHandler() {
+        if(workable == null) return new FluidTankHandler();
         FilteredFluidHandler[] fluidImports = new FilteredFluidHandler[workable.recipeMap.getMaxFluidInputs()];
         for(int i = 0; i < fluidImports.length; i++) {
             FilteredFluidHandler filteredFluidHandler = new FilteredFluidHandler(getInputTankCapacity(i));
@@ -103,6 +107,7 @@ public class SimpleMachineMetaTileEntity extends TieredMetaTileEntity {
 
     @Override
     protected FluidTankHandler createExportFluidHandler() {
+        if(workable == null) return new FluidTankHandler();
         FluidTank[] fluidExports = new FluidTank[workable.recipeMap.getMaxFluidOutputs()];
         for(int i = 0; i < fluidExports.length; i++) {
             fluidExports[i] = new FluidTank(getOutputTankCapacity(i));
@@ -145,7 +150,7 @@ public class SimpleMachineMetaTileEntity extends TieredMetaTileEntity {
     @Override
     public void writeInitialSyncData(PacketBuffer buf) {
         super.writeInitialSyncData(buf);
-        buf.writeByte(outputFacing.getIndex());
+        buf.writeByte(getOutputFacing().getIndex());
         buf.writeBoolean(autoOutputItems);
         buf.writeBoolean(autoOutputFluids);
     }

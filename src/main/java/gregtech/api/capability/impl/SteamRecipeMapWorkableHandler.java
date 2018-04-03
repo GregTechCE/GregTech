@@ -14,6 +14,7 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.WorldServer;
 import net.minecraftforge.fluids.IFluidTank;
 
 public class SteamRecipeMapWorkableHandler extends RecipeMapWorkableHandler {
@@ -31,7 +32,6 @@ public class SteamRecipeMapWorkableHandler extends RecipeMapWorkableHandler {
         this.steamFluidTank = steamFluidTank;
         this.conversionRate = conversionRate;
         this.maxVoltage = maxVoltage;
-        this.ventingSide = EnumFacing.NORTH;
     }
 
     public boolean isVentingStuck() {
@@ -42,8 +42,15 @@ public class SteamRecipeMapWorkableHandler extends RecipeMapWorkableHandler {
         return needsVenting;
     }
 
+    @Override
+    public void onFrontFacingSet(EnumFacing newFrontFacing) {
+        if(ventingSide == null) {
+            setVentingSide(newFrontFacing.getOpposite());
+        }
+    }
+
     public EnumFacing getVentingSide() {
-        return ventingSide;
+        return ventingSide == null ? EnumFacing.SOUTH : ventingSide;
     }
 
     public void setVentingStuck(boolean ventingStuck) {
@@ -87,7 +94,7 @@ public class SteamRecipeMapWorkableHandler extends RecipeMapWorkableHandler {
     @Override
     public void writeInitialData(PacketBuffer buf) {
         super.writeInitialData(buf);
-        buf.writeByte(ventingSide.getIndex());
+        buf.writeByte(getVentingSide().getIndex());
         buf.writeBoolean(needsVenting);
         buf.writeBoolean(ventingStuck);
     }
@@ -102,22 +109,25 @@ public class SteamRecipeMapWorkableHandler extends RecipeMapWorkableHandler {
 
     protected void tryDoVenting() {
         BlockPos machinePos = metaTileEntity.getPos();
+        EnumFacing ventingSide = getVentingSide();
         BlockPos ventingBlockPos = machinePos.offset(ventingSide);
         IBlockState blockOnPos = metaTileEntity.getWorld().getBlockState(ventingBlockPos);
-        if(blockOnPos.getCollisionBoundingBox(metaTileEntity.getWorld(), ventingBlockPos) == Block.NULL_AABB) {
+        if (blockOnPos.getCollisionBoundingBox(metaTileEntity.getWorld(), ventingBlockPos) == Block.NULL_AABB) {
             metaTileEntity.getWorld()
                 .getEntitiesWithinAABB(EntityLivingBase.class, new AxisAlignedBB(ventingBlockPos), EntitySelectors.CAN_AI_TARGET)
                 .forEach(entity -> entity.attackEntityFrom(DamageSources.getHeatDamage(), 6.0f));
-            metaTileEntity.getWorld().spawnParticle(EnumParticleTypes.SMOKE_LARGE,
-                machinePos.getX() - 0.5f + (new XSTR()).nextFloat(),
-                machinePos.getY() - 0.5f + (new XSTR()).nextFloat(),
-                machinePos.getZ() - 0.5f + (new XSTR()).nextFloat(),
-                ventingSide.getFrontOffsetX() / 5.0,
-                ventingSide.getFrontOffsetY() / 5.0,
-                ventingSide.getFrontOffsetZ() / 5.0);
+            WorldServer world = (WorldServer) metaTileEntity.getWorld();
+            world.spawnParticle(EnumParticleTypes.SMOKE_LARGE,
+                machinePos.getX() + 0.5 + ventingSide.getFrontOffsetX() * 0.6,
+                machinePos.getY() + 0.5 + ventingSide.getFrontOffsetY() * 0.6,
+                machinePos.getZ() + 0.5 + ventingSide.getFrontOffsetZ() * 0.6,
+                7 + world.rand.nextInt(3),
+                ventingSide.getFrontOffsetX() / 2.0,
+                ventingSide.getFrontOffsetY() / 2.0,
+                ventingSide.getFrontOffsetZ() / 2.0, 0.1);
             //TODO some good sound for venting
             setNeedsVenting(false);
-        } else if(!ventingStuck) {
+        } else if (!ventingStuck) {
             setVentingStuck(true);
         }
     }
@@ -168,7 +178,7 @@ public class SteamRecipeMapWorkableHandler extends RecipeMapWorkableHandler {
     @Override
     public NBTTagCompound serializeNBT() {
         NBTTagCompound compound = super.serializeNBT();
-        compound.setInteger("VentingSide", ventingSide.getIndex());
+        compound.setInteger("VentingSide", getVentingSide().getIndex());
         compound.setBoolean("NeedsVenting", needsVenting);
         compound.setBoolean("VentingStuck", ventingStuck);
         return compound;

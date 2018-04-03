@@ -27,6 +27,11 @@ public class SteamAlloySmelter extends SteamMetaTileEntity {
     }
 
     @Override
+    protected boolean isBrickedCasing() {
+        return true;
+    }
+
+    @Override
     public IItemHandlerModifiable createImportItemHandler() {
         return new ItemStackHandler(2);
     }

@@ -20,6 +20,8 @@ public class Textures {
 
     public static SimpleSidedRenderer STEAM_CASING_BRONZE = new SimpleSidedRenderer("casings/steam/bronze");
     public static SimpleSidedRenderer STEAM_CASING_STEEL = new SimpleSidedRenderer("casings/steam/steel");
+    public static SimpleSidedRenderer STEAM_BRICKED_CASING_BRONZE = new SimpleSidedRenderer("casings/steam/bricked_bronze");
+    public static SimpleSidedRenderer STEAM_BRICKED_CASING_STEEL = new SimpleSidedRenderer("casings/steam/bricked_steel");
     public static SimpleSidedRenderer[] VOLTAGE_CASINGS = new SimpleSidedRenderer[GTValues.V.length];
 
     public static OrientedOverlayRenderer COAL_BOILER_OVERLAY = new OrientedOverlayRenderer("generators/boiler/coal", FRONT);

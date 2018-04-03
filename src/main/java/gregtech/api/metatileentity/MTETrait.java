@@ -3,6 +3,7 @@ package gregtech.api.metatileentity;
 import com.google.common.base.Preconditions;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.PacketBuffer;
+import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.capabilities.Capability;
 
 import javax.annotation.Nullable;
@@ -31,6 +32,9 @@ public abstract class MTETrait {
      * @return implemented capability
      */
     public abstract @Nullable Capability<?> getImplementingCapability();
+
+    public void onFrontFacingSet(EnumFacing newFrontFacing) {
+    }
 
     public void update() {
     }

@@ -76,6 +76,10 @@ public abstract class MetaTileEntity {
 
     public MetaTileEntity(String metaTileEntityId) {
         this.metaTileEntityId = metaTileEntityId;
+        initializeInventory();
+    }
+
+    protected void initializeInventory() {
         this.importItems = createImportItemHandler();
         this.exportItems = createExportItemHandler();
         this.itemInventory = new ItemHandlerProxy(importItems, exportItems);
@@ -262,12 +266,6 @@ public abstract class MetaTileEntity {
      * @param harvester harvester of this meta tile entity, or null
      */
     public void getDrops(NonNullList<ItemStack> dropsList, @Nullable EntityPlayer harvester) {
-        for(int i = 0; i < itemInventory.getSlots(); i++) {
-            ItemStack stackInSlot = itemInventory.getStackInSlot(i);
-            if(!stackInSlot.isEmpty()) {
-                dropsList.add(stackInSlot);
-            }
-        }
     }
 
     /**
@@ -474,6 +472,7 @@ public abstract class MetaTileEntity {
         if (!getWorld().isRemote) {
             markDirty();
             writeCustomData(-1, buf -> buf.writeByte(frontFacing.getIndex()));
+            mteTraits.forEach(trait -> trait.onFrontFacingSet(frontFacing));
         }
     }
 

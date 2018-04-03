@@ -2,6 +2,9 @@ package gregtech.common.metatileentities;
 
 import gregtech.api.GregTechAPI;
 import gregtech.api.metatileentity.MetaTileEntityHolder;
+import gregtech.api.metatileentity.SimpleMachineMetaTileEntity;
+import gregtech.api.recipes.RecipeMaps;
+import gregtech.api.render.Textures;
 import gregtech.api.util.GTLog;
 import gregtech.common.blocks.tileentity.TileEntityCableEmitter;
 import gregtech.common.metatileentities.steam.*;
@@ -44,5 +47,10 @@ public class MetaTileEntities {
 
         GregTechAPI.registerMetaTileEntity(17, new SteamAlloySmelter("steam_alloy_smelter_bronze", false));
         GregTechAPI.registerMetaTileEntity(18, new SteamAlloySmelter("steam_alloy_smelter_steel", true));
+
+        GregTechAPI.registerMetaTileEntity(19, new SimpleMachineMetaTileEntity("electric_furnace.lv", RecipeMaps.FURNACE_RECIPES, Textures.FURNACE_OVERLAY, 1));
+        GregTechAPI.registerMetaTileEntity(20, new SimpleMachineMetaTileEntity("electric_furnace.mv", RecipeMaps.FURNACE_RECIPES, Textures.FURNACE_OVERLAY, 2));
+        GregTechAPI.registerMetaTileEntity(21, new SimpleMachineMetaTileEntity("electric_furnace.hv", RecipeMaps.FURNACE_RECIPES, Textures.FURNACE_OVERLAY, 3));
+        GregTechAPI.registerMetaTileEntity(22, new SimpleMachineMetaTileEntity("electric_furnace.ev", RecipeMaps.FURNACE_RECIPES, Textures.FURNACE_OVERLAY, 4));
     }
 }

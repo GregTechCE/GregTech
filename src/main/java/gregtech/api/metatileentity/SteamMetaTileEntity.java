@@ -46,9 +46,24 @@ public abstract class  SteamMetaTileEntity extends MetaTileEntity {
     public void renderMetaTileEntity(CCRenderState renderState, IVertexOperation[] pipeline) {
         IVertexOperation[] colouredPipeline = ArrayUtils.add(pipeline, new ColourMultiplier(paintingColor));
         if(isHighPressure) {
-            Textures.STEAM_CASING_STEEL.render(renderState, colouredPipeline);
-        } else Textures.STEAM_CASING_BRONZE.render(renderState, colouredPipeline);
+            if(isBrickedCasing()) {
+                Textures.STEAM_BRICKED_CASING_STEEL.render(renderState, colouredPipeline);
+            } else {
+                Textures.STEAM_CASING_STEEL.render(renderState, colouredPipeline);
+            }
+        } else {
+            if(isBrickedCasing()) {
+                Textures.STEAM_BRICKED_CASING_BRONZE.render(renderState, colouredPipeline);
+            } else {
+                Textures.STEAM_CASING_BRONZE.render(renderState, colouredPipeline);
+            }
+        }
         renderer.render(renderState, pipeline, getFrontFacing(), workableHandler.isActive());
+        Textures.PIPE_OUT_OVERLAY.renderSided(workableHandler.getVentingSide(), renderState, pipeline);
+    }
+
+    protected boolean isBrickedCasing() {
+        return false;
     }
 
     @Override
@@ -76,7 +91,6 @@ public abstract class  SteamMetaTileEntity extends MetaTileEntity {
     public ModularUI.Builder<IUIHolder> createUITemplate(EntityPlayer player) {
         return ModularUI.builder(BRONZE_BACKGROUND_TEXTURE, 176, 166)
             .widget(0, new LabelWidget<>(6, 6, getMetaName()))
-
             .bindPlayerInventory(player.inventory, 2, BRONZE_SLOT_BACKGROUND_TEXTURE);
     }
 }

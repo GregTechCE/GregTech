@@ -70,13 +70,15 @@ public class RecipeMap<R extends RecipeBuilder<R>> {
         RECIPE_MAPS.add(this);
 	}
 
-	public void setProgressBar(TextureArea progressBar, MoveType moveType) {
-	    this.progressBarTexture = progressBar;
-	    this.moveType = moveType;
+	public RecipeMap<R> setProgressBar(TextureArea progressBar, MoveType moveType) {
+        this.progressBarTexture = progressBar;
+        this.moveType = moveType;
+        return this;
     }
 
-    public void setSlotOverlay(boolean isOutput, boolean isFluid, TextureArea slotOverlay) {
+    public RecipeMap<R> setSlotOverlay(boolean isOutput, boolean isFluid, TextureArea slotOverlay) {
 	    this.slotOverlays.put((byte) ((isOutput ? 2 : 0) + (isFluid ? 1 : 0)), slotOverlay);
+	    return this;
     }
 
     public Collection<Recipe> getRecipesForFluid(Fluid fluid) {

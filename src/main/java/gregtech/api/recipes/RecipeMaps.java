@@ -1,5 +1,7 @@
 package gregtech.api.recipes;
 
+import gregtech.api.gui.GuiTextures;
+import gregtech.api.gui.widgets.ProgressWidget.MoveType;
 import gregtech.api.recipes.builders.*;
 import gregtech.api.recipes.machines.RecipeMapFluidCanner;
 import gregtech.api.recipes.machines.RecipeMapFormingPress;
@@ -19,8 +21,13 @@ public class RecipeMaps {
     public static final RecipeMap<DefaultRecipeBuilder> ORE_WASHER_RECIPES = new RecipeMap<>("orewasher", 1, 1, 3, 3, 0, 1, 0, 0, 1, new DefaultRecipeBuilder().duration(400).EUt(16));
     public static final RecipeMap<DefaultRecipeBuilder> THERMAL_CENTRIFUGE_RECIPES = new RecipeMap<>("thermalcentrifuge", 1, 1, 1, 3, 0, 0, 0, 0, 2, new DefaultRecipeBuilder().duration(400).EUt(48));
 
-    public static final RecipeMap<DefaultRecipeBuilder> FURNACE_RECIPES = new RecipeMapFurnace("furnace", 1, 1, 1, 1, 0, 0, 0, 0, 1, new DefaultRecipeBuilder());
-    public static final RecipeMap<DefaultRecipeBuilder> MICROWAVE_RECIPES = new RecipeMapFurnace("microwave", 1, 1, 1, 1, 0, 0, 0, 0, 1, new DefaultRecipeBuilder());
+    public static final RecipeMap<DefaultRecipeBuilder> FURNACE_RECIPES = new RecipeMapFurnace("furnace", 1, 1, 1, 1, 0, 0, 0, 0, 1, new DefaultRecipeBuilder())
+        .setSlotOverlay(false, false, GuiTextures.FURNACE_OVERLAY)
+        .setProgressBar(GuiTextures.PROGRESS_BAR_ARROW, MoveType.HORIZONTAL);
+
+    public static final RecipeMap<DefaultRecipeBuilder> MICROWAVE_RECIPES = new RecipeMapFurnace("microwave", 1, 1, 1, 1, 0, 0, 0, 0, 1, new DefaultRecipeBuilder())
+        .setSlotOverlay(false, false, GuiTextures.FURNACE_OVERLAY)
+        .setProgressBar(GuiTextures.PROGRESS_BAR_ARROW, MoveType.HORIZONTAL);
 
     public static final RecipeMap<IntCircuitRecipeBuilder> ASSEMBLER_RECIPES = new RecipeMap<>("assembler", 1, 2, 1, 1, 0, 1, 0, 0, 1, new AssemblerRecipeBuilder());
 

@@ -22,7 +22,7 @@ public class RecipeMapFurnace extends RecipeMap<DefaultRecipeBuilder> {
     @Nullable
     public Recipe findRecipe(long voltage, NonNullList<ItemStack> inputs, List<FluidStack> fluidInputs) {
         Recipe normalRecipe = super.findRecipe(voltage, inputs, fluidInputs);
-        if (inputs == null || inputs.size() <= 0 || inputs.get(0).isEmpty())
+        if (normalRecipe != null || inputs.size() == 0 || inputs.get(0).isEmpty())
             return normalRecipe;
         ItemStack output = ModHandler.getSmeltingOutput(inputs.get(0));
         return output.isEmpty() ? normalRecipe : this.recipeBuilder()

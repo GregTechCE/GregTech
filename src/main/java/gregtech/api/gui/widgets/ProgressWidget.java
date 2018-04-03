@@ -57,11 +57,11 @@ public class ProgressWidget<T extends IUIHolder> extends Widget<T> {
             emptyBarArea.draw(x, y, width, height);
         }
         if(filledBarArea != null) {
+            //fuck this precision-dependent things, they are so fucking annoying
             if(moveType == MoveType.HORIZONTAL) {
-                filledBarArea.drawSubArea(x, y, (int) (width * lastProgressValue), height, 1.0, 1.0, lastProgressValue, 1.0);
+                filledBarArea.drawSubArea(x, y, (int) (width * lastProgressValue), height, 1.0, 1.0, ((int) (width * lastProgressValue)) / (width * 1.0), 1.0);
             } else if(moveType == MoveType.VERTICAL) {
-                filledBarArea.drawSubArea(x, y + (int) (height * (1.0 - lastProgressValue)), width,
-                    (int) (height * lastProgressValue), 1.0, lastProgressValue, 1.0, 1.0);
+                filledBarArea.drawSubArea(x, y + (int) (height * (1.0 - lastProgressValue)), width, (int) (height * lastProgressValue), 1.0, ((int) (height * lastProgressValue)) / (height * 1.0), 1.0, 1.0);
             }
         }
     }
@@ -70,7 +70,7 @@ public class ProgressWidget<T extends IUIHolder> extends Widget<T> {
     public void detectAndSendChanges() {
         double actualValue = progressSupplier.getAsDouble();
         //todo check if given epsilon is enough for long recipes
-        if(Math.abs(actualValue - lastProgressValue) > 0.00001) {
+        if(Math.abs(actualValue - lastProgressValue) > 0.005) {
             this.lastProgressValue = actualValue;
             writeUpdateInfo(0, buffer -> buffer.writeDouble(actualValue));
         }

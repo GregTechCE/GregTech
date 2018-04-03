@@ -6,6 +6,7 @@ import gregtech.api.gui.Widget;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.ClickType;
 import net.minecraft.inventory.Container;
+import net.minecraft.inventory.IContainerListener;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 
@@ -30,6 +31,12 @@ public class ModularUIContainer extends Container {
 
     public ModularUI<?> getModularUI() {
         return modularUI;
+    }
+
+    @Override
+    public void addListener(IContainerListener listener) {
+        super.addListener(listener);
+        modularUI.guiWidgets.values().forEach(Widget::detectAndSendChanges);
     }
 
     @Override

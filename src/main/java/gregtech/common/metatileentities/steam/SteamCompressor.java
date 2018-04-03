@@ -3,6 +3,7 @@ package gregtech.common.metatileentities.steam;
 import gregtech.api.gui.IUIHolder;
 import gregtech.api.gui.ModularUI;
 import gregtech.api.gui.widgets.ProgressWidget;
+import gregtech.api.gui.widgets.ProgressWidget.MoveType;
 import gregtech.api.gui.widgets.SlotWidget;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.MetaTileEntityHolder;
@@ -42,7 +43,7 @@ public class SteamCompressor extends SteamMetaTileEntity {
             .widget(102, new ProgressWidget<>(workableHandler::getProgressPercent, 78, 23, 20, 18)
                 .setProgressBar(getFullGuiTexture("progress_bar_%s_compressor"),
                     getFullGuiTexture("progress_bar_%s_compressor_filled"),
-                    ProgressWidget.MoveType.VERTICAL))
+                    MoveType.HORIZONTAL))
             .widget(103, new SlotWidget<>(this.exportItems, 0, 107, 25, true, false)
                 .setBackgroundTexture(BRONZE_SLOT_BACKGROUND_TEXTURE))
             .build(getHolder(), player);

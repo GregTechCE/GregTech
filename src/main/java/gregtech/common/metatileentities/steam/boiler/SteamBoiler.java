@@ -64,8 +64,8 @@ public abstract class SteamBoiler extends MetaTileEntity {
     public void renderMetaTileEntity(CCRenderState renderState, IVertexOperation[] pipeline) {
         IVertexOperation[] colouredPipeline = ArrayUtils.add(pipeline, new ColourMultiplier(paintingColor));
         if(isHighPressure) {
-            Textures.STEAM_CASING_STEEL.render(renderState, colouredPipeline);
-        } else Textures.STEAM_CASING_BRONZE.render(renderState, colouredPipeline);
+            Textures.STEAM_BRICKED_CASING_STEEL.render(renderState, colouredPipeline);
+        } else Textures.STEAM_BRICKED_CASING_BRONZE.render(renderState, colouredPipeline);
         renderer.render(renderState, pipeline, getFrontFacing(), fuelBurnTimeLeft > 0);
     }
 

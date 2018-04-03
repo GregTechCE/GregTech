@@ -21,6 +21,7 @@ public class SimpleOverlayRenderer {
 
     public SimpleOverlayRenderer(String basePath) {
         this.basePath = basePath;
+        Textures.iconRegisters.add(this::registerIcons);
     }
 
     @SideOnly(Side.CLIENT)
