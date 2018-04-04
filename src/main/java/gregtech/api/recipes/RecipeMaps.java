@@ -238,20 +238,6 @@ public class RecipeMaps {
     public static final RecipeMap<NotConsumableInputRecipeBuilder> FLUID_EXTRACTION_RECIPES = new RecipeMap<>("fluidextractor", 1, 1, 0, 1, 0, 0, 1, 1, 1, new NotConsumableInputRecipeBuilder());
 
     /**
-     * Input item and empty box, output full box
-     * Example:
-     * <pre>
-     *   	RecipeMap.BOXINATOR_RECIPES.recipeBuilder()
-     * 				.inputs(ItemList.Tool_Matches.get(16), OreDictUnifier.get(OrePrefix.plateDouble, Materials.Paper, 1L))
-     * 				.outputs(ItemList.Tool_MatchBox_Full.get(1))
-     * 				.duration(64)
-     * 				.EUt(16)
-     * 				.buildAndRegister();
-     * </pre>
-     */
-    public static final RecipeMap<DefaultRecipeBuilder> BOXINATOR_RECIPES = new RecipeMap<>("packager", 2, 2, 1, 1, 0, 0, 0, 0, 1, new DefaultRecipeBuilder());
-
-    /**
      * Example:
      * <pre>
      * 		RecipeMap.FUSION_RECIPES.recipeBuilder()
@@ -576,7 +562,7 @@ public class RecipeMaps {
      * 				.buildAndRegister();
      * </pre>
      */
-    public static final RecipeMap<DefaultRecipeBuilder> FORGE_HAMMER_RECIPES = new RecipeMap<>("hammer", 1, 1, 1, 1, 0, 0, 0, 0, 1, new DefaultRecipeBuilder());
+    public static final RecipeMap<DefaultRecipeBuilder> FORGE_HAMMER_RECIPES = new RecipeMap<>("forge_hammer", 1, 1, 1, 1, 0, 0, 0, 0, 1, new DefaultRecipeBuilder());
 
     public static final RecipeMap<DefaultRecipeBuilder> PACKER_RECIPES = new RecipeMap<>("packer", 2, 2, 1, 1, 0, 0, 0, 0, 1, new DefaultRecipeBuilder());
     public static final RecipeMap<DefaultRecipeBuilder> UNPACKER_RECIPES = new RecipeMap<>("unpacker", 1, 1, 2, 2, 0, 0, 0, 0, 1, new DefaultRecipeBuilder());

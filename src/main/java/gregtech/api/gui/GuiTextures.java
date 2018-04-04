@@ -1,8 +1,6 @@
 package gregtech.api.gui;
 
-import gregtech.api.GTValues;
 import gregtech.api.gui.resources.TextureArea;
-import net.minecraft.util.ResourceLocation;
 
 public class GuiTextures {
 
