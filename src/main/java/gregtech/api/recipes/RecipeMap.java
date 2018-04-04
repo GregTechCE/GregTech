@@ -52,7 +52,7 @@ public class RecipeMap<R extends RecipeBuilder<R>> {
 		this.recipeList = new HashSet<>();
 		this.amperage = amperage;
 		this.slotOverlays = new TByteObjectHashMap<>();
-		this.progressBarTexture = GuiTextures.SLOT;
+		this.progressBarTexture = GuiTextures.PROGRESS_BAR_ARROW;
 		this.moveType = MoveType.HORIZONTAL;
 
 		this.minInputs = minInputs;
@@ -166,7 +166,7 @@ public class RecipeMap<R extends RecipeBuilder<R>> {
 	//this DOES NOT add machine control widgets or binds player inventory
 	public ModularUI.Builder<IUIHolder> createUITemplate(DoubleSupplier progressSupplier, IItemHandlerModifiable importItems, IItemHandlerModifiable exportItems, FluidTankHandler importFluids, FluidTankHandler exportFluids) {
         ModularUI.Builder<IUIHolder> builder = ModularUI.defaultBuilder();
-        builder.widget(300, new ProgressWidget<>(progressSupplier, 77, 23, 20, 15, progressBarTexture, moveType));
+        builder.widget(new ProgressWidget<>(progressSupplier, 77, 23, 20, 15, progressBarTexture, moveType));
         addInventorySlotGroup(builder, importItems, importFluids, false);
         addInventorySlotGroup(builder, exportItems, exportFluids, true);
         return builder;
@@ -203,12 +203,11 @@ public class RecipeMap<R extends RecipeBuilder<R>> {
     }
 
     private void addSlot(ModularUI.Builder<IUIHolder> builder, int x, int y, int slotIndex, IItemHandlerModifiable itemHandler, FluidTankHandler fluidHandler, boolean isFluid, boolean isOutputs) {
-        int baseSlotOffset = isOutputs ? 200 : 100;
         if(!isFluid) {
-            builder.widget(slotIndex + baseSlotOffset, new SlotWidget<>(itemHandler, slotIndex, x, y)
+            builder.widget(new SlotWidget<>(itemHandler, slotIndex, x, y)
                 .setBackgroundTexture(getOverlaysForSlot(isOutputs, false,slotIndex == itemHandler.getSlots() - 1)));
         } else {
-            builder.widget(slotIndex + baseSlotOffset, new TankWidget<>(fluidHandler.getTankAt(slotIndex), x, y, 18, 18)
+            builder.widget(new TankWidget<>(fluidHandler.getTankAt(slotIndex), x, y, 18, 18)
                 .setBackgroundTexture(getOverlaysForSlot(isOutputs, true, slotIndex == fluidHandler.getTanks() - 1)));
         }
     }
@@ -281,5 +280,7 @@ public class RecipeMap<R extends RecipeBuilder<R>> {
 		return maxFluidOutputs;
 	}
 
-
+    public int getAmperage() {
+        return amperage;
+    }
 }

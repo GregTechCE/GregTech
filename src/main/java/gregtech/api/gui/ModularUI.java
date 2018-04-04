@@ -33,6 +33,7 @@ public final class ModularUI<H extends IUIHolder> {
      */
     public final H holder;
     public final EntityPlayer entityPlayer;
+    public boolean isJEIHandled;
 
     public ModularUI(ImmutableBiMap<Integer, Widget<H>> guiWidgets, TextureArea backgroundPath, int width, int height, H holder, EntityPlayer entityPlayer) {
         this.guiWidgets = guiWidgets;
@@ -67,12 +68,17 @@ public final class ModularUI<H extends IUIHolder> {
         private ImmutableBiMap.Builder<Integer, Widget<T>> widgets = ImmutableBiMap.builder();
         private TextureArea background;
         private int width, height;
+        private int nextFreeWidgetId = 1000;
 
         public Builder(TextureArea background, int width, int height) {
             Preconditions.checkNotNull(background);
             this.background = background;
             this.width = width;
             this.height = height;
+        }
+
+        public Builder<T> widget(Widget<T> widget) {
+            return widget(nextFreeWidgetId++, widget);
         }
 
         public Builder<T> widget(int id, Widget<T> widget) {

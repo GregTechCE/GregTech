@@ -189,8 +189,8 @@ public abstract class RecipeBuilder<R extends RecipeBuilder<R>> {
 			return getThis();
 		}
 
-		if (0 >= chance || chance > 10000){
-			GTLog.logger.error("Chance cannot be less or equal to 0 or more than 10000. Actual: {}.", chance);
+		if (0 >= chance || chance > Recipe.getMaxChancedValue()){
+			GTLog.logger.error("Chance cannot be less or equal to 0 or more than {}. Actual: {}.", Recipe.getMaxChancedValue(), chance);
             GTLog.logger.error("Stacktrace:", new IllegalArgumentException());
             recipeStatus = EnumValidationResult.INVALID;
 			return getThis();

@@ -1,20 +1,22 @@
 package gregtech.api.util;
 
+import net.minecraft.client.resources.I18n;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.*;
+import net.minecraft.util.text.TextFormatting;
 
 public class NbtHooks {
 
-    public static void setPunchCardData(ItemStack stack, String aPunchCardData) {
-        NBTTagCompound compound = stack.getTagCompound();
-        compound.setString("GT.PunchCardData", aPunchCardData);
-        stack.setTagCompound(compound);
-    }
-
-    public static String getPunchCardData(ItemStack stack) {
+    public static void setLore(ItemStack stack, String... description) {
         NBTTagCompound compound = GTUtility.getOrCreateNbtCompound(stack);
-        return compound.getString("GT.PunchCardData");
+        NBTTagCompound displayTag = compound.getCompoundTag("display");
+        NBTTagList loreList = new NBTTagList();
+        for(String descriptionLine : description) {
+            loreList.appendTag(new NBTTagString(TextFormatting.WHITE + descriptionLine));
+        }
+        displayTag.setTag("Lore", loreList);
+        compound.setTag("display", displayTag);
     }
 
     public static void setMapID(ItemStack stack, short aMapID) {

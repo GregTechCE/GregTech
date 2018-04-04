@@ -17,9 +17,14 @@ import gregtech.api.recipes.ModHandler;
 import gregtech.api.recipes.RecipeMap;
 import gregtech.api.gui.resources.TextureArea;
 import gregtech.api.render.OrientedOverlayRenderer;
+import gregtech.api.render.SimpleSidedRenderer;
+import gregtech.api.render.SimpleSidedRenderer.RenderSide;
 import gregtech.api.render.Textures;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.fluids.FluidTank;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import org.apache.commons.lang3.ArrayUtils;
 
 public abstract class  SteamMetaTileEntity extends MetaTileEntity {
@@ -42,22 +47,33 @@ public abstract class  SteamMetaTileEntity extends MetaTileEntity {
         BRONZE_SLOT_BACKGROUND_TEXTURE = getFullGuiTexture("slot_%s");
     }
 
-    @Override
-    public void renderMetaTileEntity(CCRenderState renderState, IVertexOperation[] pipeline) {
-        IVertexOperation[] colouredPipeline = ArrayUtils.add(pipeline, new ColourMultiplier(paintingColor));
+    @SideOnly(Side.CLIENT)
+    private SimpleSidedRenderer getBaseRenderer() {
         if(isHighPressure) {
             if(isBrickedCasing()) {
-                Textures.STEAM_BRICKED_CASING_STEEL.render(renderState, colouredPipeline);
+                return Textures.STEAM_BRICKED_CASING_STEEL;
             } else {
-                Textures.STEAM_CASING_STEEL.render(renderState, colouredPipeline);
+                return Textures.STEAM_CASING_STEEL;
             }
         } else {
             if(isBrickedCasing()) {
-                Textures.STEAM_BRICKED_CASING_BRONZE.render(renderState, colouredPipeline);
+                return Textures.STEAM_BRICKED_CASING_BRONZE;
             } else {
-                Textures.STEAM_CASING_BRONZE.render(renderState, colouredPipeline);
+                return Textures.STEAM_CASING_BRONZE;
             }
         }
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public TextureAtlasSprite getParticleTexture() {
+        return getBaseRenderer().getSpriteOnSide(RenderSide.TOP);
+    }
+
+    @Override
+    public void renderMetaTileEntity(CCRenderState renderState, IVertexOperation[] pipeline) {
+        IVertexOperation[] colouredPipeline = ArrayUtils.add(pipeline, new ColourMultiplier(paintingColor));
+        getBaseRenderer().render(renderState, colouredPipeline);
         renderer.render(renderState, pipeline, getFrontFacing(), workableHandler.isActive());
         Textures.PIPE_OUT_OVERLAY.renderSided(workableHandler.getVentingSide(), renderState, pipeline);
     }

@@ -13,7 +13,10 @@ import gregtech.api.gui.widgets.ProgressWidget.MoveType;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.recipes.ModHandler;
 import gregtech.api.render.OrientedOverlayRenderer;
+import gregtech.api.render.SimpleSidedRenderer;
+import gregtech.api.render.SimpleSidedRenderer.RenderSide;
 import gregtech.api.render.Textures;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -22,6 +25,8 @@ import net.minecraft.util.EnumFacing;
 import net.minecraftforge.event.ForgeEventFactory;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.IItemHandlerModifiable;
 import net.minecraftforge.items.ItemStackHandler;
 import org.apache.commons.lang3.ArrayUtils;
@@ -61,12 +66,25 @@ public abstract class SteamBoiler extends MetaTileEntity {
         SLOT_FURNACE_BACKGROUND = getGuiTexture("slot_%s_furnace_background");
     }
 
+    @SideOnly(Side.CLIENT)
+    private SimpleSidedRenderer getBaseRenderer() {
+        if(isHighPressure) {
+            return Textures.STEAM_BRICKED_CASING_STEEL;
+        } else {
+            return Textures.STEAM_BRICKED_CASING_BRONZE;
+        }
+    }
+
+    @SideOnly(Side.CLIENT)
+    @Override
+    public TextureAtlasSprite getParticleTexture() {
+        return getBaseRenderer().getSpriteOnSide(RenderSide.TOP);
+    }
+
     @Override
     public void renderMetaTileEntity(CCRenderState renderState, IVertexOperation[] pipeline) {
         IVertexOperation[] colouredPipeline = ArrayUtils.add(pipeline, new ColourMultiplier(paintingColor));
-        if(isHighPressure) {
-            Textures.STEAM_BRICKED_CASING_STEEL.render(renderState, colouredPipeline);
-        } else Textures.STEAM_BRICKED_CASING_BRONZE.render(renderState, colouredPipeline);
+        getBaseRenderer().render(renderState, colouredPipeline);
         renderer.render(renderState, pipeline, getFrontFacing(), fuelBurnTimeLeft > 0);
     }
 

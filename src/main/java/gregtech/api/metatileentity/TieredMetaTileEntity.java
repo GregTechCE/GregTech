@@ -5,7 +5,12 @@ import codechicken.lib.render.pipeline.ColourMultiplier;
 import codechicken.lib.render.pipeline.IVertexOperation;
 import gregtech.api.GTValues;
 import gregtech.api.capability.impl.EnergyContainerHandler;
+import gregtech.api.render.SimpleSidedRenderer;
+import gregtech.api.render.SimpleSidedRenderer.RenderSide;
 import gregtech.api.render.Textures;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import org.apache.commons.lang3.ArrayUtils;
 
 public abstract class TieredMetaTileEntity extends MetaTileEntity {
@@ -24,10 +29,21 @@ public abstract class TieredMetaTileEntity extends MetaTileEntity {
             tierVoltage * 16L, tierVoltage, getMaxInputOutputAmperage()));
     }
 
+    @SideOnly(Side.CLIENT)
+    private SimpleSidedRenderer getBaseRenderer() {
+        return Textures.VOLTAGE_CASINGS[tier];
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public TextureAtlasSprite getParticleTexture() {
+        return getBaseRenderer().getSpriteOnSide(RenderSide.TOP);
+    }
+
     @Override
     public void renderMetaTileEntity(CCRenderState renderState, IVertexOperation[] pipeline) {
         IVertexOperation[] colouredPipeline = ArrayUtils.add(pipeline, new ColourMultiplier(paintingColor));
-        Textures.VOLTAGE_CASINGS[tier].render(renderState, colouredPipeline);
+        getBaseRenderer().render(renderState, colouredPipeline);
     }
 
     /**

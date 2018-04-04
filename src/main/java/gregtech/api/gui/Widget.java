@@ -3,12 +3,10 @@ package gregtech.api.gui;
 import gregtech.api.net.NetworkHandler;
 import gregtech.api.net.PacketUIClientAction;
 import gregtech.api.net.PacketUIWidgetUpdate;
-import gregtech.api.util.GTLog;
 import io.netty.buffer.Unpooled;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.network.PacketBuffer;
-import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -108,6 +106,7 @@ public abstract class Widget<T extends IUIHolder> implements Comparable<Widget<T
      * Writes data to be sent to client's {@link #readUpdateInfo}
      */
     protected final void writeUpdateInfo(int id, Consumer<PacketBuffer> packetBufferWriter) {
+        if(gui.isJEIHandled) return; //do not send packets on jei guis
         PacketBuffer packetBuffer = new PacketBuffer(Unpooled.buffer());
         packetBuffer.writeInt(id);
         packetBufferWriter.accept(packetBuffer);
@@ -121,6 +120,7 @@ public abstract class Widget<T extends IUIHolder> implements Comparable<Widget<T
 
     @SideOnly(Side.CLIENT)
     protected final void writeClientAction(int id, Consumer<PacketBuffer> packetBufferWriter) {
+        if(gui.isJEIHandled) return; //do not send packets on jei guis
         PacketBuffer packetBuffer = new PacketBuffer(Unpooled.buffer());
         packetBuffer.writeInt(id);
         packetBufferWriter.accept(packetBuffer);

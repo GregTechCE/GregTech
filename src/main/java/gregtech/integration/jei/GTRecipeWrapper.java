@@ -1,0 +1,70 @@
+package gregtech.integration.jei;
+
+import gnu.trove.map.TObjectIntMap;
+import gregtech.api.recipes.CountableIngredient;
+import gregtech.api.recipes.Recipe;
+import gregtech.api.recipes.RecipeMap;
+import mezz.jei.api.ingredients.IIngredients;
+import mezz.jei.api.recipe.IRecipeWrapper;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.resources.I18n;
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.fluids.FluidStack;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
+
+public class GTRecipeWrapper implements IRecipeWrapper {
+
+    private final RecipeMap<?> recipeMap;
+    private final Recipe recipe;
+
+    public GTRecipeWrapper(RecipeMap<?> recipeMap, Recipe recipe) {
+        this.recipeMap = recipeMap;
+        this.recipe = recipe;
+    }
+
+    @Override
+    public void getIngredients(IIngredients ingredients) {
+        if(!recipe.getInputs().isEmpty()) {
+            List<CountableIngredient> recipeInputs = recipe.getInputs();
+            List<List<ItemStack>> matchingInputs = new ArrayList<>(recipeInputs.size());
+            for (CountableIngredient ingredient : recipeInputs) {
+                List<ItemStack> ingredientValues = Arrays.stream(ingredient.getIngredient().getMatchingStacks())
+                    .map(ItemStack::copy).collect(Collectors.toList());
+                ingredientValues.forEach(stack -> stack.setCount(ingredient.getCount()));
+                matchingInputs.add(ingredientValues);
+            }
+            ingredients.setInputLists(ItemStack.class, matchingInputs);
+        }
+        if(!recipe.getFluidInputs().isEmpty()) {
+            List<FluidStack> recipeInputs = recipe.getFluidInputs()
+                .stream().map(FluidStack::copy).collect(Collectors.toList());
+            ingredients.setInputs(FluidStack.class, recipeInputs);
+        }
+        if(!recipe.getOutputs().isEmpty()) {
+            List<ItemStack> recipeOutputs = recipe.getOutputs()
+                .stream().map(ItemStack::copy).collect(Collectors.toList());
+            TObjectIntMap<ItemStack> chancedOutputs = recipe.getChancedOutputs();
+            for(ItemStack chancedStack : chancedOutputs.keySet()) {
+                recipeOutputs.add(chancedStack.copy());
+            }
+            ingredients.setOutputs(ItemStack.class, recipeOutputs);
+        }
+        if(!recipe.getFluidOutputs().isEmpty()) {
+            List<FluidStack> recipeOutputs = recipe.getFluidOutputs()
+                .stream().map(FluidStack::copy).collect(Collectors.toList());
+            ingredients.setOutputs(FluidStack.class, recipeOutputs);
+        }
+    }
+
+    @Override
+    public void drawInfo(Minecraft minecraft, int recipeWidth, int recipeHeight, int mouseX, int mouseY) {
+
+        minecraft.fontRenderer.drawString(I18n.format("gregtech.recipe.eu", recipe.getEUt()), 10, 55, 0x111111);
+        minecraft.fontRenderer.drawString(I18n.format("gregtech.recipe.duration", recipe.getDuration() / 20), 10, 65, 0x111111);
+        minecraft.fontRenderer.drawString(I18n.format("gregtech.recipe.amperage", recipeMap.getAmperage()), 10, 75, 0x111111);
+    }
+}

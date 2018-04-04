@@ -1,10 +1,12 @@
 package gregtech.api.capability.impl;
 
+import gregtech.api.GTValues;
 import gregtech.api.capability.IWorkable;
 import gregtech.api.metatileentity.MTETrait;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.recipes.Recipe;
 import gregtech.api.recipes.RecipeMap;
+import gregtech.api.util.GTUtility;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -76,17 +78,36 @@ public abstract class RecipeMapWorkableHandler extends MTETrait implements IWork
     }
 
     protected boolean setupAndConsumeRecipeInputs(Recipe recipe) {
-        int totalEUt = recipe.getEUt() * recipe.getDuration();
+        int[] resultOverclock = calculateOverclock(recipe.getEUt(), getMaxVoltage(), recipeMap.getAmperage(), recipe.getDuration());
+        int totalEUt = resultOverclock[0] * resultOverclock[1];
         return (totalEUt >= 0 ? getEnergyStored() >= totalEUt : getEnergyStored() - totalEUt <= getEnergyCapacity()) &&
             MetaTileEntity.addItemsToItemHandler(metaTileEntity.getExportItems(), true, recipe.getOutputs()) &&
             MetaTileEntity.addFluidsToFluidHandler(metaTileEntity.getExportFluids(), true, recipe.getFluidOutputs()) &&
             recipe.matches(true, false, metaTileEntity.getImportItems(), metaTileEntity.getImportFluids());
     }
 
+    private static int[] calculateOverclock(int EUt, long voltage, long amperage, int duration) {
+        int tier = GTUtility.getTierByVoltage(voltage);
+        if (EUt <= 16) {
+            int resultEUt = EUt * (1 << (tier - 1)) * (1 << (tier - 1));
+            int resultDuration = duration / (1 << (tier - 1));
+            return new int[] {resultEUt, resultDuration};
+        } else {
+            int resultEUt = EUt;
+            int resultDuration = duration;
+            while (EUt <= GTValues.V[tier - 1] * amperage) {
+                resultEUt *= 4;
+                resultDuration /= 2;
+            }
+            return new int[] {resultEUt, resultDuration};
+        }
+    }
+
     protected void setupRecipe(Recipe recipe) {
+        int[] resultOverclock = calculateOverclock(recipe.getEUt(), getMaxVoltage(), recipeMap.getAmperage(), recipe.getDuration());
         this.progressTime = 1;
-        setMaxProgress(recipe.getDuration());
-        this.recipeEUt = recipe.getEUt();
+        setMaxProgress(resultOverclock[1]);
+        this.recipeEUt = resultOverclock[0];
         this.fluidOutputs = recipe.getFluidOutputs();
         this.itemOutputs = recipe.getOutputs();
         setActive(true);

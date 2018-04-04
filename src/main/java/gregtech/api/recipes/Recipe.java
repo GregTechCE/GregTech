@@ -33,6 +33,14 @@ import java.util.Map;
 //TODO CraftTweaker support
 public class Recipe {
 
+    public static int getMaxChancedValue() {
+        return 10000;
+    }
+
+    public static String formatChanceValue(int outputChance) {
+        return String.format("%.2f", outputChance / (getMaxChancedValue() * 1.0) * 100);
+    }
+
 	private final List<CountableIngredient> inputs;
 	private final NonNullList<ItemStack> outputs;
 

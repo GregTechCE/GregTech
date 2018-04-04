@@ -1,5 +1,8 @@
 package gregtech.api.block.machines;
 
+import codechicken.lib.render.particle.CustomParticleHandler;
+import codechicken.lib.vec.Cuboid6;
+import codechicken.lib.vec.Vector3;
 import gregtech.api.GregTechAPI;
 import gregtech.api.capability.ICustomHighlightBlock;
 import gregtech.api.metatileentity.MetaTileEntity;
@@ -13,6 +16,7 @@ import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.particle.ParticleManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -28,6 +32,9 @@ import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraft.world.WorldServer;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nullable;
 import java.util.*;
@@ -277,4 +284,26 @@ public class BlockMachine extends Block implements ITileEntityProvider, ICustomH
     public BlockRenderLayer getBlockLayer() {
         return BlockRenderLayer.CUTOUT;
     }
+
+    @Override
+    public boolean addLandingEffects(IBlockState state, WorldServer worldObj, BlockPos blockPosition, IBlockState iblockstate, EntityLivingBase entity, int numberOfParticles) {
+        return CustomParticleHandler.handleLandingEffects(worldObj, blockPosition, entity, numberOfParticles);
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public boolean addHitEffects(IBlockState state, World worldObj, RayTraceResult target, ParticleManager manager) {
+        return CustomParticleHandler.handleHitEffects(state, worldObj, target, manager);
+    }
+
+    @Override
+    public boolean addDestroyEffects(World world, BlockPos pos, ParticleManager manager) {
+        return CustomParticleHandler.handleDestroyEffects(world, pos, manager);
+    }
+
+    @Override
+    public boolean addRunningEffects(IBlockState state, World world, BlockPos pos, Entity entity) {
+        return true;
+    }
+
 }

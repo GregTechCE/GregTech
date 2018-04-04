@@ -12,6 +12,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import javax.annotation.Nullable;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -47,6 +48,11 @@ public class SimpleSidedRenderer {
             ResourceLocation resourceLocation = new ResourceLocation(GTValues.MODID, String.format("blocks/%s/%s", basePath, faceName));
             sprites.put(overlayFace, textureMap.registerSprite(resourceLocation));
         }
+    }
+
+    @SideOnly(Side.CLIENT)
+    public TextureAtlasSprite getSpriteOnSide(RenderSide renderSide) {
+        return sprites.get(renderSide);
     }
 
     public void render(CCRenderState renderState, IVertexOperation[] pipeline, Cuboid6 bounds) {

@@ -66,12 +66,24 @@ public class SimpleMachineMetaTileEntity extends TieredMetaTileEntity {
     public void update() {
         super.update();
         energyContainer.dischargeEnergyContainers(chargerInventory, 0);
+        if(getTimer() % 5 == 0) {
+            EnumFacing outputFacing = getOutputFacing();
+            if(autoOutputFluids) {
+                pushFluidsIntoNearbyHandlers(outputFacing);
+            }
+            if(autoOutputItems) {
+                pushItemsIntoNearbyHandlers(outputFacing);
+            }
+        }
     }
 
     @Override
     public NBTTagCompound writeToNBT(NBTTagCompound data) {
         super.writeToNBT(data);
         data.setTag("ChargerInventory", chargerInventory.serializeNBT());
+        data.setInteger("OutputFacing", getOutputFacing().getIndex());
+        data.setBoolean("AutoOutputItems", autoOutputItems);
+        data.setBoolean("AutoOutputFluids", autoOutputFluids);
         return data;
     }
 
@@ -79,6 +91,9 @@ public class SimpleMachineMetaTileEntity extends TieredMetaTileEntity {
     public void readFromNBT(NBTTagCompound data) {
         super.readFromNBT(data);
         this.chargerInventory.deserializeNBT(data.getCompoundTag("ChargerInventory"));
+        this.outputFacing = EnumFacing.VALUES[data.getInteger("OutputFacing")];
+        this.autoOutputItems = data.getBoolean("AutoOutputItems");
+        this.autoOutputFluids = data.getBoolean("AutoOutputFluids");
     }
 
     @Override
@@ -229,17 +244,25 @@ public class SimpleMachineMetaTileEntity extends TieredMetaTileEntity {
     }
 
     protected ModularUI.Builder<IUIHolder> createGuiTemplate(EntityPlayer player) {
-        return workable.recipeMap.createUITemplate(workable::getProgressPercent, importItems, exportItems, importFluids, exportFluids)
+        ModularUI.Builder<IUIHolder> builder = workable.recipeMap.createUITemplate(workable::getProgressPercent, importItems, exportItems, importFluids, exportFluids)
             .widget(0, new LabelWidget<>(6, 6, getMetaName()))
-            .widget(1, new ButtonWidget(7, 62, 18, 18,
-                GuiTextures.BUTTON_ITEM_OUTPUT, this::isAutoOutputItems, this::setAutoOutputItems))
-            .widget(2, new ButtonWidget(25, 62, 18, 18,
-                GuiTextures.BUTTON_FLUID_OUTPUT, this::isAutoOutputFluids, this::setAutoOutputFluids))
             .widget(3, new DischargerSlotWidget<>(chargerInventory, 0, 79, 62)
                 .setBackgroundTexture(GuiTextures.SLOT, GuiTextures.CHARGER_OVERLAY))
             .widget(4, new ImageWidget<>(79, 42, 18, 18, GuiTextures.INDICATOR_NO_ENERGY)
                 .setPredicate(workable::isHasNotEnoughEnergy))
             .bindPlayerInventory(player.inventory, 5);
+
+        int buttonStartX = 7;
+        if(exportItems.getSlots() > 0) {
+            builder.widget(1, new ButtonWidget(buttonStartX, 62, 18, 18,
+                GuiTextures.BUTTON_ITEM_OUTPUT, this::isAutoOutputItems, this::setAutoOutputItems));
+            buttonStartX += 18;
+        }
+        if(exportFluids.getTanks() > 0) {
+            builder.widget(2, new ButtonWidget(buttonStartX, 62, 18, 18,
+                GuiTextures.BUTTON_FLUID_OUTPUT, this::isAutoOutputFluids, this::setAutoOutputFluids));
+        }
+        return builder;
     }
 
     @Override

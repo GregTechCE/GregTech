@@ -4,9 +4,11 @@ import codechicken.lib.render.BlockRenderer.BlockFace;
 import codechicken.lib.render.CCRenderState;
 import codechicken.lib.render.pipeline.ColourMultiplier;
 import codechicken.lib.render.pipeline.IVertexOperation;
+import codechicken.lib.texture.TextureUtils;
 import codechicken.lib.vec.Cuboid6;
 import codechicken.lib.vec.uv.IconTransformation;
 import com.google.common.base.Preconditions;
+import gregtech.api.GregTechAPI;
 import gregtech.api.block.machines.BlockMachine;
 import gregtech.api.capability.ICustomDataTile;
 import gregtech.api.capability.impl.FluidHandlerProxy;
@@ -15,6 +17,7 @@ import gregtech.api.capability.impl.ItemHandlerProxy;
 import gregtech.api.gui.IUIHolder;
 import gregtech.api.gui.ModularUI;
 import gregtech.api.util.GTUtility;
+import gregtech.common.blocks.MetaBlocks;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.client.Minecraft;
@@ -122,6 +125,11 @@ public abstract class MetaTileEntity {
     public void addInformation(ItemStack stack, @Nullable World player, List<String> tooltip, boolean advanced) {
     }
 
+    @SideOnly(Side.CLIENT)
+    public TextureAtlasSprite getParticleTexture() {
+        return TextureUtils.getMissingSprite();
+    }
+
     /**
      * Renders this meta tile entity
      * Note that you shouldn't refer to world-related information in this method, because it
@@ -131,7 +139,7 @@ public abstract class MetaTileEntity {
      */
     @SideOnly(Side.CLIENT)
     public void renderMetaTileEntity(CCRenderState renderState, IVertexOperation[] pipeline) {
-        TextureAtlasSprite atlasSprite = Minecraft.getMinecraft().getTextureMapBlocks().getAtlasSprite("minecraft:blocks/stone");
+        TextureAtlasSprite atlasSprite = TextureUtils.getMissingSprite();
         IVertexOperation[] renderPipeline = ArrayUtils.add(pipeline, new ColourMultiplier(paintingColor));
         for(EnumFacing face : EnumFacing.VALUES) {
             renderFace(renderState, face, Cuboid6.full, atlasSprite, renderPipeline);
@@ -254,6 +262,11 @@ public abstract class MetaTileEntity {
         for(MTETrait mteTrait : this.mteTraits) {
             mteTrait.update();
         }
+    }
+
+    public final ItemStack getStackForm(int amount) {
+        int metaTileEntityIntId = GregTechAPI.META_TILE_ENTITY_REGISTRY.getIdByObjectName(metaTileEntityId);
+        return new ItemStack(MetaBlocks.MACHINE, amount, metaTileEntityIntId);
     }
 
     /**
@@ -423,6 +436,27 @@ public abstract class MetaTileEntity {
                 if(fluidStack != null && fluidHandler.fill(fluidStack, false) != 0) {
                     int filledAmount = fluidHandler.fill(fluidStack, true);
                     tank.drain(filledAmount, true);
+                }
+            }
+        }
+    }
+
+    public void pushItemsIntoNearbyHandlers(EnumFacing... allowedFaces) {
+        for(EnumFacing nearbyFacing : allowedFaces) {
+            TileEntity tileEntity = getWorld().getTileEntity(getPos().offset(nearbyFacing));
+            if(tileEntity == null) continue;
+            IItemHandler itemHandler = tileEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, nearbyFacing.getOpposite());
+            if(itemHandler == null) continue;
+            for(int slotIndex = 0; slotIndex < exportItems.getSlots(); slotIndex++) {
+                ItemStack stackInSlot = exportItems.getStackInSlot(slotIndex);
+                if(stackInSlot.isEmpty()) continue;
+                for(int hisSlotIndex = 0; hisSlotIndex < itemHandler.getSlots(); hisSlotIndex++) {
+                    ItemStack remainingStack = itemHandler.insertItem(hisSlotIndex, stackInSlot, false);
+                    if(remainingStack != stackInSlot) {
+                        stackInSlot = remainingStack;
+                        exportItems.setStackInSlot(slotIndex, remainingStack);
+                    }
+                    if(remainingStack.isEmpty()) break;
                 }
             }
         }

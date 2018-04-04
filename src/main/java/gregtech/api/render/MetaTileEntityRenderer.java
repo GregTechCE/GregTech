@@ -5,6 +5,7 @@ import codechicken.lib.render.CCRenderState;
 import codechicken.lib.render.block.BlockRenderingRegistry;
 import codechicken.lib.render.block.ICCBlockRenderer;
 import codechicken.lib.render.item.IItemRenderer;
+import codechicken.lib.render.particle.IModelParticleProvider;
 import codechicken.lib.render.pipeline.IVertexOperation;
 import codechicken.lib.texture.TextureUtils;
 import codechicken.lib.texture.TextureUtils.IIconRegister;
@@ -39,6 +40,7 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.client.event.ModelBakeEvent;
 import net.minecraftforge.client.model.pipeline.LightUtil;
@@ -49,16 +51,14 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import org.apache.commons.lang3.tuple.Pair;
 import org.lwjgl.opengl.GL11;
 
+import javax.annotation.Nonnull;
 import javax.vecmath.Matrix4f;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
-public class MetaTileEntityRenderer implements ICCBlockRenderer, IItemRenderer {
+public class MetaTileEntityRenderer implements ICCBlockRenderer, IItemRenderer, IModelParticleProvider {
 
     public static ModelResourceLocation MODEL_LOCATION = new ModelResourceLocation(new ResourceLocation(GTValues.MODID, "meta_tile_entity"), "normal");
     public static MetaTileEntityRenderer INSTANCE = new MetaTileEntityRenderer();
@@ -137,6 +137,11 @@ public class MetaTileEntityRenderer implements ICCBlockRenderer, IItemRenderer {
     }
 
     @Override
+    public boolean isBuiltInRenderer() {
+        return false;
+    }
+
+    @Override
     public void renderBrightness(IBlockState state, float brightness) {
         renderItem(new ItemStack(state.getBlock()), TransformType.NONE);
     }
@@ -164,6 +169,35 @@ public class MetaTileEntityRenderer implements ICCBlockRenderer, IItemRenderer {
                 renderState.render();
             }
         }
+    }
+
+    @Override
+    public Set<TextureAtlasSprite> getHitEffects(@Nonnull RayTraceResult traceResult, IBlockState state, IBlockAccess world, BlockPos pos) {
+        MetaTileEntity metaTileEntity = BlockMachine.getMetaTileEntity(world, pos);
+        TextureAtlasSprite textureAtlasSprite;
+        if(metaTileEntity == null) {
+            textureAtlasSprite = TextureUtils.getMissingSprite();
+        } else {
+            textureAtlasSprite = metaTileEntity.getParticleTexture();
+        }
+        return Collections.singleton(textureAtlasSprite);
+    }
+
+    @Override
+    public Set<TextureAtlasSprite> getDestroyEffects(IBlockState state, IBlockAccess world, BlockPos pos) {
+        MetaTileEntity metaTileEntity = BlockMachine.getMetaTileEntity(world, pos);
+        TextureAtlasSprite textureAtlasSprite;
+        if(metaTileEntity == null) {
+            textureAtlasSprite = TextureUtils.getMissingSprite();
+        } else {
+            textureAtlasSprite = metaTileEntity.getParticleTexture();
+        }
+        return Collections.singleton(textureAtlasSprite);
+    }
+
+    @Override
+    public TextureAtlasSprite getParticleTexture() {
+        return TextureUtils.getMissingSprite();
     }
 
     @Override

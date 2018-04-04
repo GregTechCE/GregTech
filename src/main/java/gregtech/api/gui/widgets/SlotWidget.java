@@ -19,11 +19,11 @@ public class SlotWidget<T extends IUIHolder> extends Widget<T> implements INativ
 
     protected Slot slotReference;
 
-    protected IItemHandlerModifiable itemHandler;
+    public final IItemHandlerModifiable itemHandler;
 
-    protected final int slotIndex;
-    protected final int xPosition;
-    protected final int yPosition;
+    public final int slotIndex;
+    public final int xPosition;
+    public final int yPosition;
 
     protected boolean canTakeItems;
     protected boolean canPutItems;

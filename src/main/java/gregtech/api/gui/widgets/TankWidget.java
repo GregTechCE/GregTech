@@ -18,7 +18,7 @@ public class TankWidget<T extends IUIHolder> extends Widget<T> {
 
     public final IFluidTank fluidTank;
 
-    private final int x, y, width, height;
+    public final int x, y, width, height;
 
     private TextureArea[] backgroundTexture;
     private TextureArea overlayTexture;
@@ -52,7 +52,8 @@ public class TankWidget<T extends IUIHolder> extends Widget<T> {
                 textureArea.draw(x, y, width, height);
             }
         }
-        if(lastFluidInTank != null) {
+        //do not draw fluids if they are handled by JEI - it draws them itself
+        if(lastFluidInTank != null && !gui.isJEIHandled) {
             GlStateManager.disableBlend();
             RenderUtil.drawFluidForGui(lastFluidInTank, fluidTank.getCapacity(), x + 1, y + 1, width - 1, height - 1);
             GlStateManager.enableBlend();

@@ -112,9 +112,6 @@ public enum OrePrefix {
 
     lens("Lenses", (M * 3) / 4, null, MaterialIconType.lens, ENABLE_UNIFICATION, mat -> mat instanceof GemMaterial && mat.hasFlag(GENERATE_LENSE)), // 3/4 of a Plate or Gem used to shape a Lense. Normally only used on Transparent Materials.
 
-    cellPlasma("Cells of Plasma", M, MarkerMaterials.Empty, MaterialIconType.cellPlasma, ENABLE_UNIFICATION | SELF_REFERENCING | FLUID_CONTAINER | DISALLOW_RECYCLING, mat -> mat instanceof FluidMaterial && ((FluidMaterial) mat).shouldGeneratePlasma()), // Hot Cell full of Plasma, which can be used in the Plasma Generator.
-    cell("Cells", M, MarkerMaterials.Empty, MaterialIconType.cell, ENABLE_UNIFICATION | SELF_REFERENCING | FLUID_CONTAINER, null), // Regular Gas/Fluid Cell. Introduced by Calclavia
-
     bucket("Buckets", M, MarkerMaterials.Empty, null, ENABLE_UNIFICATION | SELF_REFERENCING | FLUID_CONTAINER, null), // A vanilla Iron Bucket filled with the Material.
     bottle("Bottles", -1, MarkerMaterials.Empty, null, ENABLE_UNIFICATION | SELF_REFERENCING | FLUID_CONTAINER | DISALLOW_RECYCLING, null), // Glass Bottle containing a Fluid.
     capsule("Capsules", M, MarkerMaterials.Empty, null, SELF_REFERENCING | FLUID_CONTAINER | DISALLOW_RECYCLING, null),
@@ -260,8 +257,6 @@ public enum OrePrefix {
         bucket.containerItem = new ItemStack(Items.BUCKET);
 
         ingotHot.heatDamage = 3.0F;
-        cellPlasma.heatDamage = 6.0F;
-
         ingotHot.defaultStackSize = 16;
 
         gemFlawless.defaultStackSize = 32;
@@ -370,8 +365,6 @@ public enum OrePrefix {
         cableGt01.secondaryMaterial = new MaterialStack(Materials.Ash, dustSmall.materialAmount);
 
         bucket.secondaryMaterial = new MaterialStack(Materials.Iron, ingot.materialAmount * 3);
-        cell.secondaryMaterial = new MaterialStack(Materials.Tin, plate.materialAmount * 2);
-        cellPlasma.secondaryMaterial = new MaterialStack(Materials.Tin, plate.materialAmount * 2);
 
         oreRedgranite.secondaryMaterial = new MaterialStack(Materials.GraniteRed, dust.materialAmount);
         oreBlackgranite.secondaryMaterial = new MaterialStack(Materials.GraniteBlack, dust.materialAmount);
