@@ -17,7 +17,7 @@ import net.minecraftforge.items.ItemStackHandler;
 public class SteamHammer extends SteamMetaTileEntity {
 
     public SteamHammer(String metaTileEntityId, boolean isHighPressure) {
-        super(metaTileEntityId, RecipeMaps.HAMMER_RECIPES, Textures.HAMMER_OVERLAY, isHighPressure);
+        super(metaTileEntityId, RecipeMaps.FORGE_HAMMER_RECIPES, Textures.HAMMER_OVERLAY, isHighPressure);
     }
 
     @Override

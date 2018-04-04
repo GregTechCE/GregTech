@@ -340,7 +340,7 @@ public class OreProcessingHandler {
             .EUt(24).duration((int) (material.getMass() / 1.5))
             .buildAndRegister();
 
-        RecipeMaps.HAMMER_RECIPES.recipeBuilder()
+        RecipeMaps.FORGE_HAMMER_RECIPES.recipeBuilder()
             .inputs(GTUtility.copyAmount(2, ingotStack))
             .outputs(plateStack)
             .EUt(16).duration((int) (material.getMass() / 2L))
@@ -458,7 +458,7 @@ public class OreProcessingHandler {
                 impureDustStack = dustStack;
             }
 
-            RecipeMaps.HAMMER_RECIPES.recipeBuilder()
+            RecipeMaps.FORGE_HAMMER_RECIPES.recipeBuilder()
                 .inputs(oreStack)
                 .outputs(impureDustStack)
                 .duration(10)
@@ -512,7 +512,7 @@ public class OreProcessingHandler {
             ItemStack byproductStack = OreDictUnifier.get(OrePrefix.dust, GTUtility.selectItemInList(2,
                 solidMaterial, solidMaterial.oreByProducts, DustMaterial.class), 1);
 
-            RecipeMaps.HAMMER_RECIPES.recipeBuilder()
+            RecipeMaps.FORGE_HAMMER_RECIPES.recipeBuilder()
                 .inputs(stack)
                 .outputs(dustStack)
                 .duration(10)
@@ -593,7 +593,7 @@ public class OreProcessingHandler {
             ItemStack stack = OreDictUnifier.get(crystallizedPrefix, material);
             ItemStack dustStack = OreDictUnifier.get(OrePrefix.dust, ((SolidMaterial) material).macerateInto);
 
-            RecipeMaps.HAMMER_RECIPES.recipeBuilder()
+            RecipeMaps.FORGE_HAMMER_RECIPES.recipeBuilder()
                 .inputs(GTUtility.copyAmount(1, stack))
                 .outputs(dustStack)
                 .duration(10)
@@ -762,7 +762,7 @@ public class OreProcessingHandler {
                 if (prevPrefix != null) {
                     ItemStack prevStack = OreDictUnifier.get(prevPrefix, material, 2);
                     ModHandler.addShapelessRecipe("gem_t_gem_" + material, prevStack, "h", stack);
-                    RecipeMaps.HAMMER_RECIPES.recipeBuilder()
+                    RecipeMaps.FORGE_HAMMER_RECIPES.recipeBuilder()
                         .inputs(stack)
                         .outputs(prevStack)
                         .duration(20)
@@ -1110,7 +1110,7 @@ public class OreProcessingHandler {
                 pureDustStack = OreDictUnifier.get(OrePrefix.dust, material);
             }
 
-            RecipeMaps.HAMMER_RECIPES.recipeBuilder()
+            RecipeMaps.FORGE_HAMMER_RECIPES.recipeBuilder()
                 .inputs(stack)
                 .outputs(OreDictUnifier.get(OrePrefix.dustPure, material))
                 .duration(10)
@@ -1584,7 +1584,7 @@ public class OreProcessingHandler {
 
                 }
                 if (!material.hasFlag(DustMaterial.MatFlags.NO_SMASHING)) {
-                    RecipeMaps.HAMMER_RECIPES.recipeBuilder()
+                    RecipeMaps.FORGE_HAMMER_RECIPES.recipeBuilder()
                         .inputs(GTUtility.copyAmount(2, stack))
                         .outputs(OreDictUnifier.get(OrePrefix.stickLong, material))
                         .duration((int) Math.max(material.getMass(), 1L))

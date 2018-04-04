@@ -568,7 +568,7 @@ public class RecipeMaps {
     /**
      * Example:
      * <pre>
-     *      RecipeMap.HAMMER_RECIPES.recipeBuilder()
+     *      RecipeMap.FORGE_HAMMER_RECIPES.recipeBuilder()
      * 				.inputs(new ItemStack(Blocks.STONE, 1, 0))
      * 				.outputs(new ItemStack(Blocks.COBBLESTONE, 1, 0))
      * 				.duration(16)
@@ -576,7 +576,7 @@ public class RecipeMaps {
      * 				.buildAndRegister();
      * </pre>
      */
-    public static final RecipeMap<DefaultRecipeBuilder> HAMMER_RECIPES = new RecipeMap<>("hammer", 1, 1, 1, 1, 0, 0, 0, 0, 1, new DefaultRecipeBuilder());
+    public static final RecipeMap<DefaultRecipeBuilder> FORGE_HAMMER_RECIPES = new RecipeMap<>("hammer", 1, 1, 1, 1, 0, 0, 0, 0, 1, new DefaultRecipeBuilder());
 
     public static final RecipeMap<DefaultRecipeBuilder> PACKER_RECIPES = new RecipeMap<>("packer", 2, 2, 1, 1, 0, 0, 0, 0, 1, new DefaultRecipeBuilder());
     public static final RecipeMap<DefaultRecipeBuilder> UNPACKER_RECIPES = new RecipeMap<>("unpacker", 1, 1, 2, 2, 0, 0, 0, 0, 1, new DefaultRecipeBuilder());

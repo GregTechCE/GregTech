@@ -20,6 +20,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.event.ForgeEventFactory;
+import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.items.IItemHandlerModifiable;
 import net.minecraftforge.items.ItemStackHandler;
@@ -153,14 +154,17 @@ public abstract class SteamBoiler extends MetaTileEntity {
             if(currentTemperature >= 100 && getTimer() % (isHighPressure ? 10 : 25) == 0) {
                 float additionalTempBonus = (currentTemperature - 100) / (getMaxTemperate() - 100.0f);
                 int fillAmount = baseSteamOutput + (int) (baseSteamOutput * additionalTempBonus);
-                int filledSteam = steamFluidTank.fill(ModHandler.getSteam(fillAmount), true);
-                boolean canDrainWater = waterFluidTank.drain(1, true) != null;
-                if(this.hasNoWater && canDrainWater) {
+                boolean hasDrainedWater = waterFluidTank.drain(1, true) != null;
+                int filledSteam = 0;
+                if (hasDrainedWater) {
+                    filledSteam = steamFluidTank.fill(ModHandler.getSteam(fillAmount), true);
+                }
+                if(this.hasNoWater && hasDrainedWater) {
                     getWorld().createExplosion(null,
                         getPos().getX() + 0.5, getPos().getY() + 0.5, getPos().getZ() + 0.5,
                         1.0f + 1.5f * additionalTempBonus, true);
-                } else this.hasNoWater = !canDrainWater;
-                if(filledSteam == 0) {
+                } else this.hasNoWater = !hasDrainedWater;
+                if(filledSteam == 0 && hasDrainedWater) {
                     //todo sound of steam pressure
                     steamFluidTank.drain(4000, true);
                 }

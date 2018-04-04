@@ -60,10 +60,10 @@ public class ToolJackHammer extends ToolDrillLV {
 //    @Override
 //    public int convertBlockDrops(World world, BlockPos blockPos, IBlockState blockState, EntityPlayer harvester, List<ItemStack> drops) {
 //        int rConversions = 0;
-//        Recipe tRecipe = RecipeMap.HAMMER_RECIPES.findRecipe(null, true, 2147483647L, null, new ItemStack[]{getBlockStack(blockState)});
+//        Recipe tRecipe = RecipeMap.FORGE_HAMMER_RECIPES.findRecipe(null, true, 2147483647L, null, new ItemStack[]{getBlockStack(blockState)});
 //        if (tRecipe == null || blockState.getBlock().hasTileEntity(blockState)) {
 //            for (ItemStack tDrop : drops) {
-//                tRecipe = RecipeMap.HAMMER_RECIPES.findRecipe(null, true, 2147483647L, null, new ItemStack[]{GTUtility.copyAmount(1, tDrop)});
+//                tRecipe = RecipeMap.FORGE_HAMMER_RECIPES.findRecipe(null, true, 2147483647L, null, new ItemStack[]{GTUtility.copyAmount(1, tDrop)});
 //                if (tRecipe != null) {
 //                    ItemStack tHammeringOutput = tRecipe.getOutputs().get(0);
 //                    if (tHammeringOutput != null) {
