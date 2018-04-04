@@ -6,7 +6,8 @@ import java.io.File;
 import java.nio.file.Files;
 
 /**
- * Генерирует файлы моделей материалсетов из их текстур, короче. вот.
+ *
+ * Generates files of materialset models from their textures, in short.
  */
 public class MaterialSetModelGen {
 

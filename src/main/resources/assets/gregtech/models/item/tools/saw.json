@@ -1,8 +1,8 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "gregtech:items/tools/saw",
+    "layer0": "gregtech:items/tools/handle_saw",
 	"layer1": "gregtech:items/void",
-	"layer2": "gregtech:items/tools/handle_saw"
+	"layer2": "gregtech:items/tools/saw"
   }
 }
