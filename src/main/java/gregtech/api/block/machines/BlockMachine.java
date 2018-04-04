@@ -13,6 +13,7 @@ import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -276,5 +277,13 @@ public class BlockMachine extends Block implements ITileEntityProvider, ICustomH
     @Override
     public BlockRenderLayer getBlockLayer() {
         return BlockRenderLayer.CUTOUT;
+    }
+
+    @Override
+    public void getSubBlocks(CreativeTabs tab, NonNullList<ItemStack> items) {
+        for (String metaTileEntityId : GregTechAPI.META_TILE_ENTITY_REGISTRY.getKeys()) {
+            int metaId = GregTechAPI.META_TILE_ENTITY_REGISTRY.getIdByObjectName(metaTileEntityId);
+            items.add(new ItemStack(this, 1, metaId));
+        }
     }
 }

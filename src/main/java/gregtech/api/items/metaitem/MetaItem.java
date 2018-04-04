@@ -74,7 +74,6 @@ public abstract class MetaItem<T extends MetaItem<?>.MetaValueItem> extends Item
     public MetaItem(short metaItemOffset) {
         setUnlocalizedName("meta_item");
         setHasSubtypes(true);
-        setCreativeTab(GregTechAPI.TAB_GREGTECH_MATERIALS);
         this.metaItemOffset = metaItemOffset;
     }
 
@@ -399,15 +398,17 @@ public abstract class MetaItem<T extends MetaItem<?>.MetaValueItem> extends Item
     @Override
     @SideOnly(Side.CLIENT)
     public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> subItems) {
-        for (T enabledItem : metaItems.valueCollection()) {
-            if (enabledItem.isVisible()) {
-                ItemStack itemStack = enabledItem.getStackForm();
-                subItems.add(itemStack.copy());
+        if (tab == CreativeTabs.SEARCH || tab == GregTechAPI.TAB_GREGTECH) {
+            for (T enabledItem : metaItems.valueCollection()) {
+                if (enabledItem.isVisible()) {
+                    ItemStack itemStack = enabledItem.getStackForm();
+                    subItems.add(itemStack.copy());
 
-                IElectricItem electricItem = itemStack.getCapability(IElectricItem.CAPABILITY_ELECTRIC_ITEM, null);
-                if (electricItem != null) {
-                    electricItem.charge(Long.MAX_VALUE, Integer.MAX_VALUE, true, false);
-                    subItems.add(itemStack);
+                    IElectricItem electricItem = itemStack.getCapability(IElectricItem.CAPABILITY_ELECTRIC_ITEM, null);
+                    if (electricItem != null) {
+                        electricItem.charge(Long.MAX_VALUE, Integer.MAX_VALUE, true, false);
+                        subItems.add(itemStack);
+                    }
                 }
             }
         }

@@ -3,6 +3,7 @@ package gregtech.common.items;
 import com.google.common.base.CaseFormat;
 import gregtech.api.items.materialitem.MaterialMetaItem;
 import gregtech.api.items.metaitem.FoodStats;
+import gregtech.api.recipes.CountableIngredient;
 import gregtech.api.recipes.ModHandler;
 import gregtech.api.recipes.RecipeMaps;
 import gregtech.api.unification.OreDictUnifier;
@@ -264,7 +265,7 @@ public class MetaItem2 extends MaterialMetaItem {
             .buildAndRegister();
 
         RecipeMaps.MACERATOR_RECIPES.recipeBuilder()
-            .inputs(new ItemStack(Blocks.WOOL, 1, W))
+            .inputs(CountableIngredient.from("blockWool", 1))
             .outputs(new ItemStack(Items.STRING, 2))
             .chancedOutput(new ItemStack(Items.STRING, 1), 5000)
             .duration(400)

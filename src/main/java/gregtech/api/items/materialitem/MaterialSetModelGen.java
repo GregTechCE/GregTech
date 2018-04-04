@@ -1,9 +1,8 @@
 package gregtech.api.items.materialitem;
 
-import scala.actors.threadpool.Arrays;
-
 import java.io.File;
 import java.nio.file.Files;
+import java.util.Arrays;
 
 /**
  *
