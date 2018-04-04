@@ -3,6 +3,7 @@ package gregtech.common.items;
 import com.google.common.base.CaseFormat;
 import gregtech.api.items.materialitem.MaterialMetaItem;
 import gregtech.api.items.metaitem.FoodStats;
+import gregtech.api.recipes.CountableIngredient;
 import gregtech.api.recipes.ModHandler;
 import gregtech.api.recipes.RecipeMaps;
 import gregtech.api.unification.OreDictUnifier;
@@ -34,31 +35,10 @@ public class MetaItem2 extends MaterialMetaItem {
 
     @Override
     public void registerSubItems() {
-        boolean drinksAlwaysDrinkable = false;
-
-        THERMOS_CAN_DARK_COFFEE = addItem(0, "thermos_can.dark.coffee").addStats(new FoodStats(2, 0.2F, true, drinksAlwaysDrinkable, THERMOS_CAN_EMPTY.getStackForm(), new RandomPotionEffect(MobEffects.SPEED, 400, 1, 70), new RandomPotionEffect(MobEffects.HASTE, 400, 1, 70)));
-        THERMOS_CAN_DARK_CAFE_AU_LAIT = addItem(1, "thermos_can.dark.cafe.au.lait").setInvisible().addStats(new FoodStats(2, 0.2F, true, drinksAlwaysDrinkable, THERMOS_CAN_EMPTY.getStackForm(), new RandomPotionEffect(MobEffects.SPEED, 400, 2, 90), new RandomPotionEffect(MobEffects.HASTE, 400, 2, 90)));
-        THERMOS_CAN_COFFEE = addItem(2, "thermos_can.coffee").addStats(new FoodStats(3, 0.4F, true, drinksAlwaysDrinkable, THERMOS_CAN_EMPTY.getStackForm(), new RandomPotionEffect(MobEffects.SPEED, 400, 0, 50), new RandomPotionEffect(MobEffects.HASTE, 400, 0, 50)));
-        THERMOS_CAN_CAFE_AU_LAIT = addItem(3, "thermos_can.cafe.au.lait").addStats(new FoodStats(3, 0.4F, true, drinksAlwaysDrinkable, THERMOS_CAN_EMPTY.getStackForm(), new RandomPotionEffect(MobEffects.SPEED, 400, 1, 70), new RandomPotionEffect(MobEffects.HASTE, 400, 1, 70)));
-        THERMOS_CAN_LAIT_AU_CAFE = addItem(4, "thermos_can.lait.au.cafe").setInvisible().addStats(new FoodStats(3, 0.4F, true, drinksAlwaysDrinkable, THERMOS_CAN_EMPTY.getStackForm(), new RandomPotionEffect(MobEffects.SPEED, 400, 2, 90), new RandomPotionEffect(MobEffects.HASTE, 400, 2, 90)));
-        THERMOS_CAN_DARK_CHOCOLATE_MILK = addItem(5, "thermos_can.dark.chocolate.milk").addStats(new FoodStats(3, 0.4F, true, drinksAlwaysDrinkable, THERMOS_CAN_EMPTY.getStackForm(), new RandomPotionEffect(MobEffects.REGENERATION, 50, 1, 60)));
-        THERMOS_CAN_CHOCOLATE_MILK = addItem(6, "thermos_can.chocolate.milk").addStats(new FoodStats(3, 0.4F, true, drinksAlwaysDrinkable, THERMOS_CAN_EMPTY.getStackForm(), new RandomPotionEffect(MobEffects.REGENERATION, 50, 1, 90)));
-        THERMOS_CAN_TEA = addItem(7, "thermos_can.tea").addStats(new FoodStats(2, 0.2F, true, drinksAlwaysDrinkable, THERMOS_CAN_EMPTY.getStackForm(), new RandomPotionEffect(MobEffects.SLOWNESS, 300, 0, 50)));
-        THERMOS_CAN_SWEET_TEA = addItem(8, "thermos_can.sweet.tea").setInvisible().addStats(new FoodStats(2, 0.2F, true, drinksAlwaysDrinkable, THERMOS_CAN_EMPTY.getStackForm()));
-        THERMOS_CAN_ICE_TEA = addItem(9, "thermos_can.ice.tea").addStats(new FoodStats(2, 0.2F, true, drinksAlwaysDrinkable, THERMOS_CAN_EMPTY.getStackForm(), new RandomPotionEffect(MobEffects.SLOWNESS, 300, 0, 50)));
 
         GELLED_TOLUENE = addItem(10, "gelled_toluene");
 
-        ItemStack emptyBottle = new ItemStack(Items.GLASS_BOTTLE);
-
-        BOTTLE_GLEN_MCKENNER = addItem(117, "bottle.glen_mckenner").setInvisible().addStats(new FoodStats(2, 0.1F, true, drinksAlwaysDrinkable, emptyBottle)); //, new int[]{Potion.confusion.id, 400, 1, 90, Potion.resistance.id, 400, 2, 90, Potion.poison.id, 200, 2, 10, Potion.harm.id, 0, 2, 5}));
-        BOTTLE_PURPLE_DRINK = addItem(100, "bottle.purple.drink").addStats(new FoodStats(8, 0.2F, true, drinksAlwaysDrinkable, emptyBottle, new RandomPotionEffect(MobEffects.SLOWNESS, 400, 1, 90)));
-        BOTTLE_DIABOLO_SAUCE = addItem(122, "bottle.diabolo.sauce").setInvisible().addStats(new FoodStats(2, 0.1F, true, drinksAlwaysDrinkable, emptyBottle, new RandomPotionEffect(MobEffects.NAUSEA, 3000, 1, 50), new RandomPotionEffect(MobEffects.FIRE_RESISTANCE, 3000, 0, 80)));
-        BOTTLE_DIABLO_SAUCE = addItem(123, "bottle.diablo.sauce").setInvisible().addStats(new FoodStats(2, 0.1F, true, drinksAlwaysDrinkable, emptyBottle, new RandomPotionEffect(MobEffects.NAUSEA, 4000, 1, 70), new RandomPotionEffect(MobEffects.FIRE_RESISTANCE, 4000, 0, 90)));
-        BOTTLE_SNITCHES_GLITCH_SAUCE = addItem(124, "bottle.snitches.glitch.sauce").setInvisible().addStats(new FoodStats(2, 0.1F, true, drinksAlwaysDrinkable, emptyBottle, new RandomPotionEffect(MobEffects.NAUSEA, 9999, 2, 999), new RandomPotionEffect(MobEffects.FIRE_RESISTANCE, 9999, 9, 999)));
-        BOTTLE_NOTCHES_BREW = addItem(130, "bottle.notches.brew").setInvisible().addStats(new FoodStats(4, 0.2F, true, drinksAlwaysDrinkable, emptyBottle, new RandomPotionEffect(MobEffects.REGENERATION, 700, 4, 95), new RandomPotionEffect(MobEffects.ABSORPTION, 3000, 1, 95), new RandomPotionEffect(MobEffects.RESISTANCE, 7000, 1, 95), new RandomPotionEffect(MobEffects.FIRE_RESISTANCE, 7000, 0, 95), new RandomPotionEffect(MobEffects.INSTANT_DAMAGE, 0, 2, 20)));
-        BOTTLE_CAVE_JOHNSONS_GRENADE_JUICE = addItem(135, "bottle.cave.johnsons.grenade.juice").setInvisible().addStats(new FoodStats(0, 0.0F, true, drinksAlwaysDrinkable, emptyBottle));
-        BOTTLE_HOLY_WATER = addItem(137, "bottle.holy.water").setUnificationData(OrePrefix.bottle, Materials.DistilledWater).addStats(new FoodStats(0, 0.0F, true, drinksAlwaysDrinkable, emptyBottle, new RandomPotionEffect(MobEffects.POISON, 100, 1, 100)));
+        BOTTLE_PURPLE_DRINK = addItem(100, "bottle.purple.drink").addStats(new FoodStats(8, 0.2F, true, false, new ItemStack(Items.GLASS_BOTTLE), new RandomPotionEffect(MobEffects.SLOWNESS, 400, 1, 90)));
 
         FOOD_CHUM = addItem(210, "food.chum").addStats(new FoodStats(5, 0.2F, false, true, null, new RandomPotionEffect(MobEffects.HUNGER, 1000, 4, 100), new RandomPotionEffect(MobEffects.NAUSEA, 300, 1, 80)));
         FOOD_CHUM_ON_STICK = addItem(211, "food.chum.on.stick").addStats(new FoodStats(5, 0.2F, false, true, new ItemStack(Items.STICK, 1), new RandomPotionEffect(MobEffects.HUNGER, 1000, 4, 100), new RandomPotionEffect(MobEffects.NAUSEA, 300, 1, 80)));
@@ -285,7 +265,7 @@ public class MetaItem2 extends MaterialMetaItem {
             .buildAndRegister();
 
         RecipeMaps.MACERATOR_RECIPES.recipeBuilder()
-            .inputs(new ItemStack(Blocks.WOOL, 1, W))
+            .inputs(CountableIngredient.from("blockWool", 1))
             .outputs(new ItemStack(Items.STRING, 2))
             .chancedOutput(new ItemStack(Items.STRING, 1), 5000)
             .duration(400)
@@ -298,9 +278,6 @@ public class MetaItem2 extends MaterialMetaItem {
         int damage = stack.getItemDamage();
         if (damage < metaItemOffset) {
             return ItemStack.EMPTY;
-        }
-        if (damage < metaItemOffset + 100) {
-            return THERMOS_CAN_EMPTY.getStackForm();
         }
         if (damage < metaItemOffset + 200) {
             return new ItemStack(Items.GLASS_BOTTLE);

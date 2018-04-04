@@ -128,9 +128,6 @@ public class MetaItem1 extends MaterialMetaItem {
         SPRAY_EMPTY = addItem(402, "spray.empty")
             .setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.Tin, OrePrefix.plate.materialAmount * 2L), new MaterialStack(Materials.Redstone, OrePrefix.dust.materialAmount)));
 
-        THERMOS_CAN_EMPTY = addItem(404, "thermos_can.empty")
-            .setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.Aluminium, OrePrefix.plate.materialAmount + 2L * OrePrefix.ring.materialAmount)));
-
         LARGE_FLUID_CELL_STEEL = addItem(405, "large.fluid.cell.steel")
             .addStats(new FluidStats(16000, Integer.MAX_VALUE, Integer.MAX_VALUE))
             .setMaxStackSize(16)
@@ -375,13 +372,6 @@ public class MetaItem1 extends MaterialMetaItem {
 //            .buildAndRegister();
 
         RecipeMaps.ASSEMBLER_RECIPES.recipeBuilder()
-            .inputs(OreDictUnifier.get(OrePrefix.plate, Materials.Aluminium), OreDictUnifier.get(OrePrefix.ring, Materials.Aluminium, 2))
-            .outputs(THERMOS_CAN_EMPTY.getStackForm())
-            .duration(800)
-            .EUt(1)
-            .buildAndRegister();
-
-        RecipeMaps.ASSEMBLER_RECIPES.recipeBuilder()
             .inputs(OreDictUnifier.get(OrePrefix.plate, Materials.Steel), OreDictUnifier.get(OrePrefix.ring, Materials.Steel, 2))
             .outputs(LARGE_FLUID_CELL_STEEL.getStackForm())
             .duration(100)
@@ -424,7 +414,7 @@ public class MetaItem1 extends MaterialMetaItem {
             .EUt(16)
             .buildAndRegister();
 
-        RecipeMaps.BOXINATOR_RECIPES.recipeBuilder()
+        RecipeMaps.PACKER_RECIPES.recipeBuilder()
             .inputs(TOOL_MATCHES.getStackForm(16), OreDictUnifier.get(OrePrefix.plate, Materials.Paper))
             .outputs(TOOL_MATCHBOX_FULL.getStackForm())
             .duration(64)

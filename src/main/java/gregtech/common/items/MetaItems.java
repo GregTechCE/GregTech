@@ -86,8 +86,6 @@ public final class MetaItems {
 
     public static MetaItem<?>.MetaValueItem SPRAY_EMPTY;
 
-    public static MetaItem<?>.MetaValueItem THERMOS_CAN_EMPTY;
-
     public static MetaItem<?>.MetaValueItem LARGE_FLUID_CELL_STEEL;
     public static MetaItem<?>.MetaValueItem LARGE_FLUID_CELL_TUNGSTENSTEEL;
 
@@ -104,13 +102,6 @@ public final class MetaItems {
     public static MetaItem<?>.MetaValueItem TOOL_LIGHTER_PLATINUM_FULL;
 
     public static MetaItem<?>.MetaValueItem INGOT_IRIDIUM_ALLOY;
-
-    public static MetaItem<?>.MetaValueItem PAPER_PRINTED_PAGES;
-    public static MetaItem<?>.MetaValueItem PAPER_MAGIC_EMPTY;
-    public static MetaItem<?>.MetaValueItem PAPER_MAGIC_PAGE;
-    public static MetaItem<?>.MetaValueItem PAPER_MAGIC_PAGES;
-    public static MetaItem<?>.MetaValueItem PAPER_PUNCH_CARD_EMPTY;
-    public static MetaItem<?>.MetaValueItem PAPER_PUNCH_CARD_ENCODED;
 
     public static MetaItem<?>.MetaValueItem SCHEMATIC;
     public static MetaItem<?>.MetaValueItem SCHEMATIC_CRAFTING;
@@ -170,12 +161,6 @@ public final class MetaItems {
     public static MetaItem<?>.MetaValueItem FLUID_REGULATOR_IV;
 
     public static MetaItem<?>.MetaValueItem FLUID_FILTER;
-
-    public static MetaItem<?>.MetaValueItem ROTOR_LV;
-    public static MetaItem<?>.MetaValueItem ROTOR_MV;
-    public static MetaItem<?>.MetaValueItem ROTOR_HV;
-    public static MetaItem<?>.MetaValueItem ROTOR_EV;
-    public static MetaItem<?>.MetaValueItem ROTOR_IV;
 
     public static MetaItem<?>.MetaValueItem CONVEYOR_MODULE_LV;
     public static MetaItem<?>.MetaValueItem CONVEYOR_MODULE_MV;
@@ -290,9 +275,7 @@ public final class MetaItems {
     public static MetaItem<?>.MetaValueItem COVER_SOLARPANEL_UV;
 
     public static MetaItem<?>.MetaValueItem TOOL_CHEAT;
-    public static MetaItem<?>.MetaValueItem TOOL_SCANNER;
 
-    public static MetaItem<?>.MetaValueItem NC_SENSORKIT;
     public static MetaItem<?>.MetaValueItem DUCT_TAPE;
     public static MetaItem<?>.MetaValueItem MCGUFFIUM_239;
 
@@ -300,27 +283,9 @@ public final class MetaItems {
 
     public static MetaItem<?>.MetaValueItem FLUID_CELL;
 
-    public static MetaItem<?>.MetaValueItem THERMOS_CAN_DARK_COFFEE;
-    public static MetaItem<?>.MetaValueItem THERMOS_CAN_DARK_CAFE_AU_LAIT;
-    public static MetaItem<?>.MetaValueItem THERMOS_CAN_COFFEE;
-    public static MetaItem<?>.MetaValueItem THERMOS_CAN_CAFE_AU_LAIT;
-    public static MetaItem<?>.MetaValueItem THERMOS_CAN_LAIT_AU_CAFE;
-    public static MetaItem<?>.MetaValueItem THERMOS_CAN_DARK_CHOCOLATE_MILK;
-    public static MetaItem<?>.MetaValueItem THERMOS_CAN_CHOCOLATE_MILK;
-    public static MetaItem<?>.MetaValueItem THERMOS_CAN_TEA;
-    public static MetaItem<?>.MetaValueItem THERMOS_CAN_SWEET_TEA;
-    public static MetaItem<?>.MetaValueItem THERMOS_CAN_ICE_TEA;
-
     public static MetaItem<?>.MetaValueItem GELLED_TOLUENE;
 
     public static MetaItem<?>.MetaValueItem BOTTLE_PURPLE_DRINK;
-    public static MetaItem<?>.MetaValueItem BOTTLE_GLEN_MCKENNER;
-    public static MetaItem<?>.MetaValueItem BOTTLE_DIABOLO_SAUCE;
-    public static MetaItem<?>.MetaValueItem BOTTLE_DIABLO_SAUCE;
-    public static MetaItem<?>.MetaValueItem BOTTLE_SNITCHES_GLITCH_SAUCE;
-    public static MetaItem<?>.MetaValueItem BOTTLE_NOTCHES_BREW;
-    public static MetaItem<?>.MetaValueItem BOTTLE_CAVE_JOHNSONS_GRENADE_JUICE;
-    public static MetaItem<?>.MetaValueItem BOTTLE_HOLY_WATER;
 
     public static MetaItem<?>.MetaValueItem FOOD_CHUM;
     public static MetaItem<?>.MetaValueItem FOOD_CHUM_ON_STICK;

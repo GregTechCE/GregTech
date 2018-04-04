@@ -1,8 +1,6 @@
 package gregtech.api.block.machines;
 
 import codechicken.lib.render.particle.CustomParticleHandler;
-import codechicken.lib.vec.Cuboid6;
-import codechicken.lib.vec.Vector3;
 import gregtech.api.GregTechAPI;
 import gregtech.api.capability.ICustomHighlightBlock;
 import gregtech.api.metatileentity.MetaTileEntity;
@@ -11,12 +9,12 @@ import gregtech.api.render.MetaTileEntityRenderer;
 import gregtech.api.unification.stack.SimpleItemStack;
 import gregtech.api.util.GTUtility;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockFurnace;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.particle.ParticleManager;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -306,4 +304,12 @@ public class BlockMachine extends Block implements ITileEntityProvider, ICustomH
         return true;
     }
 
+
+    @Override
+    public void getSubBlocks(CreativeTabs tab, NonNullList<ItemStack> items) {
+        for (String metaTileEntityId : GregTechAPI.META_TILE_ENTITY_REGISTRY.getKeys()) {
+            int metaId = GregTechAPI.META_TILE_ENTITY_REGISTRY.getIdByObjectName(metaTileEntityId);
+            items.add(new ItemStack(this, 1, metaId));
+        }
+    }
 }

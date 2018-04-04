@@ -26,7 +26,6 @@ public class DungeonLootLoader {
 //
         ChestGenHooks.addItem(LootTableList.CHESTS_SPAWN_BONUS_CHEST, MetaItems.BOTTLE_PURPLE_DRINK.getStackForm(), 8, 16, 2);
 
-        ChestGenHooks.addItem(LootTableList.CHESTS_SIMPLE_DUNGEON, MetaItems.BOTTLE_HOLY_WATER.getStackForm(), 4, 8, 10);
         ChestGenHooks.addItem(LootTableList.CHESTS_SIMPLE_DUNGEON, MetaItems.BOTTLE_PURPLE_DRINK.getStackForm(), 8, 16, 40);
         ChestGenHooks.addItem(LootTableList.CHESTS_SIMPLE_DUNGEON, OreDictUnifier.get(OrePrefix.ingot, Materials.Silver, 1), 1, 6, 30);
         ChestGenHooks.addItem(LootTableList.CHESTS_SIMPLE_DUNGEON, OreDictUnifier.get(OrePrefix.ingot, Materials.Lead, 1), 1, 6, 7);
@@ -44,7 +43,6 @@ public class DungeonLootLoader {
         ChestGenHooks.addItem(LootTableList.CHESTS_SIMPLE_DUNGEON, OreDictUnifier.get(OrePrefix.dust, Materials.Neodymium, 1), 1, 6, 10);
         ChestGenHooks.addItem(LootTableList.CHESTS_SIMPLE_DUNGEON, OreDictUnifier.get(OrePrefix.dust, Materials.Chrome, 1), 1, 3, 10);
 
-        ChestGenHooks.addItem(LootTableList.CHESTS_DESERT_PYRAMID, MetaItems.BOTTLE_HOLY_WATER.getStackForm(), 4, 8, 2);
         ChestGenHooks.addItem(LootTableList.CHESTS_DESERT_PYRAMID, OreDictUnifier.get(OrePrefix.ingot, Materials.Silver, 1), 4, 16, 6);
         ChestGenHooks.addItem(LootTableList.CHESTS_DESERT_PYRAMID, OreDictUnifier.get(OrePrefix.ingot, Materials.Platinum, 1), 2, 8, 3);
         ChestGenHooks.addItem(LootTableList.CHESTS_DESERT_PYRAMID, OreDictUnifier.get(OrePrefix.gem, Materials.Ruby, 1), 2, 8, 1);
@@ -89,7 +87,6 @@ public class DungeonLootLoader {
         ChestGenHooks.addItem(LootTableList.CHESTS_VILLAGE_BLACKSMITH, OreDictUnifier.get(OrePrefix.ingot, Materials.Brass, 1), 4, 12, 6);
         ChestGenHooks.addItem(LootTableList.CHESTS_VILLAGE_BLACKSMITH, OreDictUnifier.get(OrePrefix.ingot, Materials.DamascusSteel, 1), 4, 12, 1);
 
-        ChestGenHooks.addItem(LootTableList.CHESTS_STRONGHOLD_CROSSING, MetaItems.BOTTLE_HOLY_WATER.getStackForm(), 4, 8, 6);
         ChestGenHooks.addItem(LootTableList.CHESTS_STRONGHOLD_CROSSING, MetaItems.MCGUFFIUM_239.getStackForm(), 1, 1, 8);
         ChestGenHooks.addItem(LootTableList.CHESTS_STRONGHOLD_CORRIDOR, OreDictUnifier.get(OrePrefix.toolHeadSword, Materials.DamascusSteel, 1), 1, 4, 4);
         ChestGenHooks.addItem(LootTableList.CHESTS_STRONGHOLD_CORRIDOR, OreDictUnifier.get(OrePrefix.toolHeadAxe, Materials.DamascusSteel, 1), 1, 4, 4);

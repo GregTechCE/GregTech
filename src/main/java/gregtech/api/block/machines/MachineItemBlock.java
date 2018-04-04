@@ -4,14 +4,12 @@ import gregtech.api.GregTechAPI;
 import gregtech.api.metatileentity.MetaTileEntity;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.NonNullList;
 import net.minecraft.world.World;
-import scala.actors.threadpool.Arrays;
 
 import javax.annotation.Nullable;
+import java.util.Arrays;
 import java.util.List;
 
 public class MachineItemBlock extends ItemBlock {
@@ -45,13 +43,4 @@ public class MachineItemBlock extends ItemBlock {
         }
         metaTileEntity.addInformation(stack, worldIn, tooltip, flagIn.isAdvanced());
     }
-
-    @Override
-    public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> items) {
-        for(String metaTileEntityId : GregTechAPI.META_TILE_ENTITY_REGISTRY.getKeys()) {
-            int metaId = GregTechAPI.META_TILE_ENTITY_REGISTRY.getIdByObjectName(metaTileEntityId);
-            items.add(new ItemStack(this, 1, metaId));
-        }
-    }
-
 }

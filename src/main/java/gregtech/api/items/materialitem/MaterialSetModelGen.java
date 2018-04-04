@@ -1,12 +1,12 @@
 package gregtech.api.items.materialitem;
 
-import scala.actors.threadpool.Arrays;
-
 import java.io.File;
 import java.nio.file.Files;
+import java.util.Arrays;
 
 /**
- * Генерирует файлы моделей материалсетов из их текстур, короче. вот.
+ *
+ * Generates files of materialset models from their textures, in short.
  */
 public class MaterialSetModelGen {
 
