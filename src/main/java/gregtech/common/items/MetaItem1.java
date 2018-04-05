@@ -15,6 +15,7 @@ import gregtech.api.unification.stack.ItemMaterialInfo;
 import gregtech.api.unification.stack.MaterialStack;
 import gregtech.api.util.RandomPotionEffect;
 import gregtech.common.items.behaviors.ColorSprayBehaviour;
+import gregtech.common.items.behaviors.IntCircuitBehaviour;
 import gregtech.common.items.behaviors.LighterBehaviour;
 import net.minecraft.block.BlockCauldron;
 import net.minecraft.block.state.IBlockState;
@@ -358,18 +359,17 @@ public class MetaItem1 extends MaterialMetaItem {
         DUCT_TAPE = addItem(764, "duct.tape").addOreDict(OreDictNames.craftingDuctTape);
         MCGUFFIUM_239 = addItem(765, "mcguffium.239");
 
-        INTEGRATED_CIRCUIT = addItem(766, "circuit.integrated");
+        INTEGRATED_CIRCUIT = addItem(766, "circuit.integrated").addStats(new IntCircuitBehaviour());
 
         FLUID_CELL = addItem(767, "cell.fluid").addStats(new FluidStats(16000, Integer.MIN_VALUE, Integer.MAX_VALUE));
     }
 
     public void registerRecipes() {
-//        RecipeMaps.ASSEMBLER_RECIPES.recipeBuilder()
-//            .inputs(OreDictUnifier.get(OrePrefix.dust, Materials.Redstone), OreDictUnifier.get(OrePrefix.cell, MarkerMaterials.Empty)) // TODO FLUID CONTAINERS
-//            .outputs(SPRAY_EMPTY.getStackForm())
-//            .duration(800)
-//            .EUt(1)
-//            .buildAndRegister();
+        RecipeMaps.ASSEMBLER_RECIPES.recipeBuilder()
+            .inputs(OreDictUnifier.get(OrePrefix.dust, Materials.Redstone), OreDictUnifier.get(OrePrefix.plate, Materials.Tin, 2)) // TODO FLUID CONTAINERS
+            .outputs(SPRAY_EMPTY.getStackForm())
+            .duration(800).EUt(1)
+            .buildAndRegister();
 
         RecipeMaps.ASSEMBLER_RECIPES.recipeBuilder()
             .inputs(OreDictUnifier.get(OrePrefix.plate, Materials.Steel), OreDictUnifier.get(OrePrefix.ring, Materials.Steel, 2))

@@ -8,7 +8,6 @@ import codechicken.lib.render.item.IItemRenderer;
 import codechicken.lib.render.particle.IModelParticleProvider;
 import codechicken.lib.render.pipeline.IVertexOperation;
 import codechicken.lib.texture.TextureUtils;
-import codechicken.lib.texture.TextureUtils.IIconRegister;
 import codechicken.lib.vec.Cuboid6;
 import codechicken.lib.vec.Translation;
 import codechicken.lib.vec.uv.IconTransformation;
@@ -17,12 +16,10 @@ import gregtech.api.block.machines.BlockMachine;
 import gregtech.api.block.machines.MachineItemBlock;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.util.GTLog;
-import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.block.model.IBakedModel;
 import net.minecraft.client.renderer.block.model.ItemCameraTransforms.TransformType;
 import net.minecraft.client.renderer.block.model.ItemTransformVec3f;
@@ -32,9 +29,7 @@ import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.client.resources.IResource;
-import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
@@ -43,7 +38,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.client.event.ModelBakeEvent;
-import net.minecraftforge.client.model.pipeline.LightUtil;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.model.IModelState;
 import net.minecraftforge.common.model.TRSRTransformation;
@@ -138,7 +132,7 @@ public class MetaTileEntityRenderer implements ICCBlockRenderer, IItemRenderer, 
 
     @Override
     public boolean isBuiltInRenderer() {
-        return false;
+        return true;
     }
 
     @Override
@@ -213,4 +207,5 @@ public class MetaTileEntityRenderer implements ICCBlockRenderer, IItemRenderer, 
     public boolean isGui3d() {
         return true;
     }
+
 }

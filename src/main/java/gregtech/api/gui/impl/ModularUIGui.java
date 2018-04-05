@@ -60,7 +60,7 @@ public class ModularUIGui extends GuiContainer {
             .forEach(widget -> {
                 GlStateManager.pushMatrix();
                 GlStateManager.color(1.0f, 1.0f, 1.0f);
-                widget.drawInForeground(mouseX, mouseY);
+                widget.drawInForeground(mouseX - guiLeft, mouseY - guiTop);
                 GlStateManager.popMatrix();
             });
     }

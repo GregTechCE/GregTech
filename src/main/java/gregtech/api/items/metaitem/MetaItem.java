@@ -67,6 +67,7 @@ public abstract class MetaItem<T extends MetaItem<?>.MetaValueItem> extends Item
     protected TShortObjectMap<T> metaItems = new TShortObjectHashMap<>();
     private Map<String, T> names = new HashMap<>();
     protected TShortObjectMap<ModelResourceLocation> metaItemsModels = new TShortObjectHashMap<>();
+    protected TShortObjectHashMap<ModelResourceLocation[]> specialItemsModels = new TShortObjectHashMap<>();
     private static final ModelResourceLocation MISSING_LOCATION = new ModelResourceLocation("builtin/missing", "inventory");
 
     protected final short metaItemOffset;
@@ -87,17 +88,44 @@ public abstract class MetaItem<T extends MetaItem<?>.MetaValueItem> extends Item
         TShortObjectHashMap<ModelResourceLocation> itemModels = new TShortObjectHashMap<>();
         for(short itemMetaKey : metaItems.keys()) {
             T metaValueItem = metaItems.get(itemMetaKey);
+            int numberOfModels = getNumberOfModels(metaValueItem);
+            if (numberOfModels > 1) {
+                ModelResourceLocation[] resourceLocations = new ModelResourceLocation[numberOfModels];
+                for (int i = 0; i < resourceLocations.length; i++) {
+                    ResourceLocation resourceLocation = new ResourceLocation(GTValues.MODID, "metaitems/" + metaValueItem.unlocalizedName + "/" + (i + 1));
+                    ModelBakery.registerItemVariants(this, resourceLocation);
+                    resourceLocations[i] = new ModelResourceLocation(resourceLocation, "inventory");
+                }
+                specialItemsModels.put((short) (metaItemOffset + itemMetaKey), resourceLocations);
+                continue;
+            }
             ResourceLocation resourceLocation = new ResourceLocation(GTValues.MODID, "metaitems/" + metaValueItem.unlocalizedName);
             ModelBakery.registerItemVariants(this, resourceLocation);
             metaItemsModels.put((short) (metaItemOffset + itemMetaKey), new ModelResourceLocation(resourceLocation, "inventory"));
         }
+
         ModelLoader.setCustomMeshDefinition(this, itemStack -> {
             short itemDamage = (short) itemStack.getItemDamage();
+            if(specialItemsModels.containsKey(itemDamage)) {
+                int modelIndex = getModelIndex((short) (itemDamage - metaItemOffset), itemStack);
+                return specialItemsModels.get(itemDamage)[modelIndex];
+            }
             if(metaItemsModels.containsKey(itemDamage)) {
                 return metaItemsModels.get(itemDamage);
             }
             return MISSING_LOCATION;
         });
+    }
+
+    @SideOnly(Side.CLIENT)
+    protected int getNumberOfModels(T metaValueItem) {
+        return metaValueItem.getElectricStats() == null ? 1 : 8;
+    }
+
+    protected int getModelIndex(short metaItemKey, ItemStack itemStack) {
+        IElectricItem electricItem = itemStack.getCapability(IElectricItem.CAPABILITY_ELECTRIC_ITEM, null);
+        long itemCharge = electricItem.discharge(Long.MAX_VALUE, Integer.MAX_VALUE, true, false, true);
+        return (int) ((itemCharge / (electricItem.getMaxCharge() * 1.0)) * 7);
     }
 
     @SideOnly(Side.CLIENT)
@@ -398,17 +426,15 @@ public abstract class MetaItem<T extends MetaItem<?>.MetaValueItem> extends Item
     @Override
     @SideOnly(Side.CLIENT)
     public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> subItems) {
-        if (tab == CreativeTabs.SEARCH || tab == GregTechAPI.TAB_GREGTECH) {
-            for (T enabledItem : metaItems.valueCollection()) {
-                if (enabledItem.isVisible()) {
-                    ItemStack itemStack = enabledItem.getStackForm();
-                    subItems.add(itemStack.copy());
+        for (T enabledItem : metaItems.valueCollection()) {
+            if (enabledItem.isVisible()) {
+                ItemStack itemStack = enabledItem.getStackForm();
+                subItems.add(itemStack.copy());
 
-                    IElectricItem electricItem = itemStack.getCapability(IElectricItem.CAPABILITY_ELECTRIC_ITEM, null);
-                    if (electricItem != null) {
-                        electricItem.charge(Long.MAX_VALUE, Integer.MAX_VALUE, true, false);
-                        subItems.add(itemStack);
-                    }
+                IElectricItem electricItem = itemStack.getCapability(IElectricItem.CAPABILITY_ELECTRIC_ITEM, null);
+                if (electricItem != null) {
+                    electricItem.charge(Long.MAX_VALUE, Integer.MAX_VALUE, true, false);
+                    subItems.add(itemStack);
                 }
             }
         }
@@ -610,6 +636,10 @@ public abstract class MetaItem<T extends MetaItem<?>.MetaValueItem> extends Item
 
         public ItemStack getStackForm(int amount) {
             return new ItemStack(MetaItem.this, amount, metaItemOffset + metaValue);
+        }
+
+        public boolean isItemEqual(ItemStack itemStack) {
+            return itemStack.getItem() == MetaItem.this && itemStack.getItemDamage() == (metaItemOffset + metaValue);
         }
 
         public ItemStack getStackForm() {

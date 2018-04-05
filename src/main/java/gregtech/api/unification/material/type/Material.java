@@ -216,9 +216,13 @@ public abstract class Material implements Comparable<Material> {
 		return CaseFormat.LOWER_UNDERSCORE.to(CaseFormat.UPPER_CAMEL, toString());
 	}
 
+	public String getUnlocalizedName() {
+	    return "material." + MATERIAL_REGISTRY.getNameForObject(this);
+    }
+
 	@SideOnly(Side.CLIENT)
 	public String getLocalizedName() {
-		return I18n.format("material." + MATERIAL_REGISTRY.getNameForObject(this));
+		return I18n.format(getUnlocalizedName());
 	}
 
 	@Override

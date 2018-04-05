@@ -29,6 +29,10 @@ public abstract class Widget<T extends IUIHolder> implements Comparable<Widget<T
         this.drawPriority = drawPriority;
     }
 
+    public static boolean isMouseOver(int x, int y, int width, int height, int mouseX, int mouseY) {
+        return mouseX >= x && mouseY >= y && x + width >= mouseX && y + height >= mouseY;
+    }
+
     /**
      * Called on both sides to init widget data
      */

@@ -27,7 +27,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import org.apache.commons.lang3.ArrayUtils;
 
-public abstract class  SteamMetaTileEntity extends MetaTileEntity {
+public abstract class SteamMetaTileEntity extends MetaTileEntity {
 
     public final TextureArea BRONZE_BACKGROUND_TEXTURE;
     public final TextureArea BRONZE_SLOT_BACKGROUND_TEXTURE;

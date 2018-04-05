@@ -14,7 +14,6 @@ import net.minecraftforge.fluids.FluidRegistry;
 import java.util.HashSet;
 import java.util.Set;
 
-@SuppressWarnings("WeakerAccess")
 public class MetaFluids {
 
     private static final Set<ResourceLocation> fluidSprites = new HashSet<>();
@@ -46,7 +45,6 @@ public class MetaFluids {
 
         FluidRegistry.registerFluid(DISTILLED_WATER);
         Materials.DistilledWater.setMaterialFluid(DISTILLED_WATER);
-        FluidRegistry.addBucketForFluid(DISTILLED_WATER);
         fluidSprites.add(AUTO_GENERATED_FLUID_TEXTURE);
 
         //TODO TWEAK VALUES
@@ -132,7 +130,12 @@ public class MetaFluids {
         } else {
             textureLocation = AUTO_GENERATED_FLUID_TEXTURE;
         }
-        Fluid fluid = new Fluid(typeName + "." + materialName, textureLocation, textureLocation);
+        Fluid fluid = new Fluid(typeName + "." + materialName, textureLocation, textureLocation) {
+            @Override
+            public String getUnlocalizedName() {
+                return material.getUnlocalizedName();
+            }
+        };
         fluid.setTemperature(temp);
         if(!setCustomTexture) {
             //since normal textures are already colored properly
@@ -161,7 +164,6 @@ public class MetaFluids {
         }
 
         FluidRegistry.registerFluid(fluid);
-        FluidRegistry.addBucketForFluid(fluid);
         return fluid;
     }
 

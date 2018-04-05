@@ -1,9 +1,11 @@
 package gregtech.common.blocks;
 
 import java.util.*;
+import java.util.Map.Entry;
 
 import gregtech.api.GregTechAPI;
 import gregtech.api.render.MetaTileEntityRenderer;
+import gregtech.api.unification.OreDictUnifier;
 import gregtech.api.unification.material.Materials;
 import gregtech.api.unification.material.type.DustMaterial;
 import gregtech.api.unification.material.type.Material;
@@ -21,6 +23,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.renderer.block.statemap.DefaultStateMapper;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -195,6 +198,30 @@ public class MetaBlocks {
             Minecraft.getMinecraft().getBlockColors().registerBlockColorHandler(ORE_BLOCK_COLOR, block);
             Minecraft.getMinecraft().getItemColors().registerItemColorHandler(ORE_ITEM_COLOR, block);
         });
+    }
+
+    public static void registerOreDict() {
+        for(Entry<DustMaterial, BlockCompressed> entry : COMPRESSED.entrySet()) {
+            DustMaterial material = entry.getKey();
+            BlockCompressed block = entry.getValue();
+            ItemStack itemStack = block.getItem(block.getDefaultState()
+                .withProperty(block.variantProperty, material));
+            OreDictUnifier.registerOre(itemStack, OrePrefix.block, material);
+        }
+        for(BlockOre blockOre : ORES) {
+            DustMaterial material = blockOre.material;
+            for(StoneType stoneType : blockOre.STONE_TYPE.getAllowedValues()) {
+                ItemStack normalStack = blockOre.getItem(blockOre.getDefaultState()
+                    .withProperty(blockOre.STONE_TYPE, stoneType)
+                    .withProperty(BlockOre.SMALL, false));
+                ItemStack smallOreStack = blockOre.getItem(blockOre.getDefaultState()
+                    .withProperty(blockOre.STONE_TYPE, stoneType)
+                    .withProperty(BlockOre.SMALL, true));
+                OreDictUnifier.registerOre(normalStack, stoneType.processingPrefix, material);
+                //small ore variants are always registered as oreSmall, not taking stone type into account
+                OreDictUnifier.registerOre(smallOreStack, OrePrefix.oreSmall, material);
+            }
+        }
     }
 
     private static String statePropertiesToString(Map<IProperty<?>, Comparable<?>> properties) {

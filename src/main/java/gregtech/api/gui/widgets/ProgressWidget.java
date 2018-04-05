@@ -40,7 +40,7 @@ public class ProgressWidget<T extends IUIHolder> extends Widget<T> {
         this.width = width;
         this.height = height;
         this.emptyBarArea = fullImage.getSubArea(0.0, 0.0, 1.0, 0.5);
-        this.filledBarArea = fullImage.getSubArea(0.0, 0.5, 1.0, 1.0);
+        this.filledBarArea = fullImage.getSubArea(0.0, 0.5, 1.0, 0.5);
         this.moveType = moveType;
     }
 
@@ -59,9 +59,13 @@ public class ProgressWidget<T extends IUIHolder> extends Widget<T> {
         if(filledBarArea != null) {
             //fuck this precision-dependent things, they are so fucking annoying
             if(moveType == MoveType.HORIZONTAL) {
-                filledBarArea.drawSubArea(x, y, (int) (width * lastProgressValue), height, 1.0, 1.0, ((int) (width * lastProgressValue)) / (width * 1.0), 1.0);
+                filledBarArea.drawSubArea(x, y, (int) (width * lastProgressValue), height,
+                    0.0, 0.0, ((int) (width * lastProgressValue)) / (width * 1.0), 1.0);
             } else if(moveType == MoveType.VERTICAL) {
-                filledBarArea.drawSubArea(x, y + (int) (height * (1.0 - lastProgressValue)), width, (int) (height * lastProgressValue), 1.0, ((int) (height * lastProgressValue)) / (height * 1.0), 1.0, 1.0);
+                int progressValueScaled = (int) (height * lastProgressValue);
+                filledBarArea.drawSubArea(x, y + height - progressValueScaled, width, progressValueScaled,
+                    0.0, 1.0 - (progressValueScaled / (height * 1.0)),
+                    1.0, (progressValueScaled / (height * 1.0)));
             }
         }
     }

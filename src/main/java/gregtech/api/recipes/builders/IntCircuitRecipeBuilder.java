@@ -5,6 +5,7 @@ import gregtech.api.recipes.CountableIngredient;
 import gregtech.api.recipes.Recipe;
 import gregtech.api.recipes.RecipeBuilder;
 import gregtech.api.recipes.RecipeMap;
+import gregtech.api.recipes.ingredients.IntCircuitIngredient;
 import gregtech.api.util.EnumValidationResult;
 import gregtech.api.util.GTLog;
 import gregtech.api.util.ValidationResult;
@@ -47,7 +48,7 @@ public class IntCircuitRecipeBuilder extends RecipeBuilder<IntCircuitRecipeBuild
     @Override
     protected EnumValidationResult finalizeAndValidate() {
         if (circuitMeta >= 0) {
-            inputs.add(CountableIngredient.from(MetaItems.getIntegratedCircuit(circuitMeta)));
+            inputs.add(CountableIngredient.from(IntCircuitIngredient.getIntegratedCircuit(circuitMeta)));
         }
         return super.finalizeAndValidate();
     }

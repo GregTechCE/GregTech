@@ -15,10 +15,13 @@ import gregtech.api.gui.widgets.TankWidget;
 import gregtech.api.recipes.builders.IntCircuitRecipeBuilder;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.ValidationResult;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.IItemHandlerModifiable;
 
 import javax.annotation.Nullable;
@@ -177,7 +180,7 @@ public class RecipeMap<R extends RecipeBuilder<R>> {
         int fluidInputsCount = fluidHandler.getTanks();
         boolean invertedInputSlots = false;
         if(itemInputsCount == 0 || fluidInputsCount > itemInputsCount ||
-            (recipeBuilderSample instanceof IntCircuitRecipeBuilder && itemInputsCount == 1)) {
+            (!isOutputs && recipeBuilderSample instanceof IntCircuitRecipeBuilder && itemInputsCount == 1)) {
             itemInputsCount = fluidHandler.getTanks();
             fluidInputsCount = itemHandler.getSlots();
             invertedInputSlots = true;
@@ -194,10 +197,10 @@ public class RecipeMap<R extends RecipeBuilder<R>> {
             }
         }
         if(fluidInputsCount > 0) {
-            int startSpecX = 69 - fluidInputsCount * 18;
-            int startSpecY = 62;
+            int startSpecX = isOutputs ? 130 : 7;
+            int startSpecY = 32 - (int) (fluidInputsCount / 2.0 * 18);
             for(int i = 0; i < fluidInputsCount; i++) {
-                addSlot(builder, startSpecX + 18 * i, startSpecY, i, itemHandler, fluidHandler, !invertedInputSlots, isOutputs);
+                addSlot(builder, startSpecX, startSpecY + 18 * i, i, itemHandler, fluidHandler, !invertedInputSlots, isOutputs);
             }
         }
     }
@@ -207,7 +210,7 @@ public class RecipeMap<R extends RecipeBuilder<R>> {
             builder.widget(new SlotWidget<>(itemHandler, slotIndex, x, y)
                 .setBackgroundTexture(getOverlaysForSlot(isOutputs, false,slotIndex == itemHandler.getSlots() - 1)));
         } else {
-            builder.widget(new TankWidget<>(fluidHandler.getTankAt(slotIndex), x, y, 18, 18)
+            builder.widget(new TankWidget<>(fluidHandler.getTankAt(slotIndex), x, y - 1, 18, 18)
                 .setBackgroundTexture(getOverlaysForSlot(isOutputs, true, slotIndex == fluidHandler.getTanks() - 1)));
         }
     }
@@ -242,6 +245,11 @@ public class RecipeMap<R extends RecipeBuilder<R>> {
             itemSlotsToLeft = 2;
         }
         return new int[] {itemSlotsToLeft, itemSlotsToDown};
+    }
+
+    @SideOnly(Side.CLIENT)
+    public String getLocalizedName() {
+	    return I18n.format("recipemap." + unlocalizedName + ".name");
     }
 
 	public R recipeBuilder() {

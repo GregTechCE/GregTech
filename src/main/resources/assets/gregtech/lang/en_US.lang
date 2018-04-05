@@ -2,7 +2,9 @@ metaitem.dust.tooltip.purify=Throw into Cauldron to get clean Dust
 metaitem.generic.fluid_container.tooltip=%d/%dL %s
 metaitem.generic.fluid_container.tooltip_empty=Empty
 metaitem.generic.electric_item.tooltip=%d/%d EU - Tier %d
+metaitem.int_circuit.configuration=Configuration: %d
 item.invalid.name=Invalid item
+fluid.empty=Empty
 
 metaitem.credit.copper.name=Copper Credit
 metaitem.credit.copper.tooltip=0.125 Credits
@@ -910,12 +912,6 @@ metaitem.tool.turbine.large.tooltip=Turbine Rotors for your power station
 metaitem.tool.turbine.huge.name=Huge Turbine Rotor
 metaitem.tool.turbine.huge.tooltip=Turbine Rotors for your power station
 
-metaitem..name=
-metaitem..tooltip=
-
-
-
-
 # %s is a localized material name
 item.material.oreprefix.oreBlackgranite=Granite %s Ore
 item.material.oreprefix.oreRedgranite=Granite %s Ore
@@ -1209,6 +1205,7 @@ material.chromite=Chromite
 material.chromium_dioxide=Chromium Dioxide
 material.cinnabar=Cinnabar
 material.water=Water
+material.steam=Steam
 material.clay=Clay
 material.coal=Coal
 material.cobaltite=Cobaltite
@@ -1989,6 +1986,13 @@ behaviour.paintspray.black.tooltip=Can paint things in black
 behaviour.paintspray.uses=Remaining Uses: %d
 behaviour.prospecting=Usable for Prospecting
 
-gregtech.recipe.eu=EU/t: %d
+gregtech.recipe.total=Total: %d EU
+gregtech.recipe.eu=Usage: %d EU/t
 gregtech.recipe.duration=Duration: %d secs
 gregtech.recipe.amperage=Amperage: %d
+
+gregtech.fluid.empty=Empty
+gregtech.fluid.amount=§7%,d/%,d
+gregtech.fluid.temperature=§7%dK
+gregtech.fluid.state_gas=§7Gaseous
+gregtech.fluid.state_liquid=§7Liquid

@@ -83,16 +83,7 @@ public class RecipeMaps {
      * 				.buildAndRegister();
      * </pre>
      */
-    public static final RecipeMap<DefaultRecipeBuilder> MIXER_RECIPES = new RecipeMap<>("mixer", 1, 4, 0, 0, 0, 1, 0, 1, 1, new DefaultRecipeBuilder() {
-        @Override
-        protected EnumValidationResult validate() {
-            if (!((inputs.isEmpty() && fluidInputs.isEmpty()) || (outputs.isEmpty() && fluidOutputs.isEmpty()))) {
-                GTLog.logger.error("Recipe should have at least one input and one output", new IllegalArgumentException());
-                recipeStatus = EnumValidationResult.INVALID;
-            }
-            return super.validate();
-        }
-    });
+    public static final RecipeMap<DefaultRecipeBuilder> MIXER_RECIPES = new RecipeMap<>("mixer", 1, 4, 0, 0, 0, 1, 0, 1, 1, new DefaultRecipeBuilder());
 
     /**
      * Example:
@@ -268,16 +259,7 @@ public class RecipeMaps {
      * 				.buildAndRegister();
      * </pre>
      */
-    public static final RecipeMap<DefaultRecipeBuilder> CENTRIFUGE_RECIPES = new RecipeMap<>("centrifuge", 0, 2, 0, 6, 0, 1, 0, 1, 1, new DefaultRecipeBuilder() {
-        @Override
-        protected EnumValidationResult validate() {
-            if (!((inputs.isEmpty() && fluidInputs.isEmpty()) || (outputs.isEmpty() && fluidOutputs.isEmpty()))) {
-                GTLog.logger.error("Recipe should have at least one input and one output", new IllegalArgumentException());
-                recipeStatus = EnumValidationResult.INVALID;
-            }
-            return super.validate();
-        }
-    }.EUt(5));
+    public static final RecipeMap<DefaultRecipeBuilder> CENTRIFUGE_RECIPES = new RecipeMap<>("centrifuge", 0, 2, 0, 6, 0, 1, 0, 1, 1, new DefaultRecipeBuilder().EUt(5));
 
     /**
      * Examples:
@@ -301,16 +283,7 @@ public class RecipeMaps {
      * 				.buildAndRegister();
      * </pre>
      */
-    public static final RecipeMap<DefaultRecipeBuilder> ELECTROLYZER_RECIPES = new RecipeMap<>("electrolyzer", 0, 2, 0, 6, 0, 1, 0, 1, 1, new DefaultRecipeBuilder() {
-        @Override
-        protected EnumValidationResult validate() {
-            if (!((inputs.isEmpty() && fluidInputs.isEmpty()) || (outputs.isEmpty() && fluidOutputs.isEmpty()))) {
-                GTLog.logger.error("Recipe should have at least one input and one output", new IllegalArgumentException());
-                recipeStatus = EnumValidationResult.INVALID;
-            }
-            return super.validate();
-        }
-    });
+    public static final RecipeMap<DefaultRecipeBuilder> ELECTROLYZER_RECIPES = new RecipeMap<>("electrolyzer", 0, 2, 0, 6, 0, 1, 0, 1, 1, new DefaultRecipeBuilder());
 
     /**
      * Example:
@@ -364,16 +337,7 @@ public class RecipeMaps {
      * 				.buildAndRegister();
      * </pre>
      */
-    public static final RecipeMap<DefaultRecipeBuilder> CHEMICAL_RECIPES = new RecipeMap<>("chemicalreactor", 0, 2, 0, 1, 0, 1, 0, 1, 1, new DefaultRecipeBuilder() {
-        @Override
-        protected EnumValidationResult validate() {
-            if (!((inputs.isEmpty() && fluidInputs.isEmpty()) || (outputs.isEmpty() && fluidOutputs.isEmpty()))) {
-                GTLog.logger.error("Recipe should have at least one input and one output", new IllegalArgumentException());
-                recipeStatus = EnumValidationResult.INVALID;
-            }
-            return super.validate();
-        }
-    }.duration(30));
+    public static final RecipeMap<DefaultRecipeBuilder> CHEMICAL_RECIPES = new RecipeMap<>("chemicalreactor", 0, 2, 0, 1, 0, 1, 0, 1, 1, new DefaultRecipeBuilder().duration(30));
 
     /**
      * If universal every Fluid also gets separate distillation recipes
@@ -410,16 +374,7 @@ public class RecipeMaps {
      *         		.buildAndRegister();
      * </pre>
      */
-    public static final RecipeMap<DefaultRecipeBuilder> CRACKING_RECIPES = new RecipeMap<>("craker", 0, 0, 0, 0, 1, 2, 1, 2, 1, new DefaultRecipeBuilder() {
-        @Override
-        public void buildAndRegister() {
-            super.buildAndRegister();
-            FluidStack fluidInput = fluidInputs.get(0);
-            FluidStack fluidOutput = fluidInputs.get(0);
-            recipeMap.addRecipe(this.copy().fluidInputs(fluidInput, ModHandler.getSteam(fluidInput.amount)).fluidOutputs(fluidOutput, Materials.Hydrogen.getFluid(fluidInput.amount)).build());
-            recipeMap.addRecipe(this.copy().fluidInputs(fluidInput, Materials.Hydrogen.getFluid(fluidInput.amount)).fluidOutputs(new FluidStack(fluidOutput.getFluid(), (int) (fluidOutput.amount * 1.3))).build());
-        }
-    }.notOptimized());
+    public static final RecipeMap<CrackingRecipeBuilder> CRACKING_RECIPES = new RecipeMap<>("craker", 0, 0, 0, 0, 1, 2, 1, 2, 1, new CrackingRecipeBuilder().notOptimized());
 
     /**
      * Example:
@@ -461,13 +416,7 @@ public class RecipeMaps {
      * 				.buildAndRegister();
      * </pre>
      */
-    public static final RecipeMap<IntCircuitRecipeBuilder> BENDER_RECIPES = new RecipeMap<>("metalbender", 2, 2, 1, 1, 0, 0, 0, 0, 1, new IntCircuitRecipeBuilder() {
-        @Override
-        protected EnumValidationResult finalizeAndValidate() {
-            this.circuitMeta(this.inputs.get(0).getCount());
-            return super.finalizeAndValidate();
-        }
-    });
+    public static final RecipeMap<IntCircuitRecipeBuilder> BENDER_RECIPES = new RecipeMap<>("metalbender", 2, 2, 1, 1, 0, 0, 0, 0, 1, new IntCircuitRecipeBuilder());
 
 
     public static final RecipeMap<NotConsumableInputRecipeBuilder> ALLOY_SMELTER_RECIPES = new RecipeMap<>("alloysmelter", 1, 2, 1, 1, 0, 0, 0, 0, 1, new NotConsumableInputRecipeBuilder());
@@ -510,18 +459,7 @@ public class RecipeMaps {
      * 				.buildAndRegister();
      * </pre>
      */
-    public static final RecipeMap<DefaultRecipeBuilder> CUTTER_RECIPES = new RecipeMap<>("cuttingsaw", 1, 1, 1, 1, 0, 1, 0, 0, 1, new DefaultRecipeBuilder() {
-        @Override
-        public void buildAndRegister() {
-            if (fluidInputs.isEmpty()) {
-                recipeMap.addRecipe(this.copy().fluidInputs(Materials.Water.getFluid(Math.max(4, Math.min(1000, duration * EUt / 320)))).duration(duration * 2).build());
-                recipeMap.addRecipe(this.copy().fluidInputs(ModHandler.getDistilledWater(Math.max(3, Math.min(750, duration * EUt / 426)))).duration(duration * 2).build());
-                recipeMap.addRecipe(this.copy().fluidInputs(Materials.Lubricant.getFluid(Math.max(1, Math.min(250, duration * EUt / 1280)))).duration(duration * 2).build());
-            } else {
-                recipeMap.addRecipe(build());
-            }
-        }
-    });
+    public static final RecipeMap<CutterRecipeBuilder> CUTTER_RECIPES = new RecipeMap<>("cuttingsaw", 1, 1, 1, 1, 0, 1, 0, 0, 1, new CutterRecipeBuilder());
 
     /**
      * <pre>

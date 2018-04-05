@@ -7,12 +7,18 @@ import gregtech.api.gui.resources.TextureArea;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.texture.TextureMap;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.PacketBuffer;
+import net.minecraft.util.text.TextFormatting;
+import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.IFluidTank;
+import net.minecraftforge.fml.client.config.GuiUtils;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class TankWidget<T extends IUIHolder> extends Widget<T> {
 
@@ -27,7 +33,7 @@ public class TankWidget<T extends IUIHolder> extends Widget<T> {
     private int lastTankCapacity;
 
     public TankWidget(IFluidTank fluidTank, int x, int y, int width, int height) {
-        super(SLOT_DRAW_PRIORITY + 200);
+        super(SLOT_DRAW_PRIORITY + 300);
         this.fluidTank = fluidTank;
         this.x = x;
         this.y = y;
@@ -60,6 +66,22 @@ public class TankWidget<T extends IUIHolder> extends Widget<T> {
         }
         if(overlayTexture != null) {
             overlayTexture.draw(x, y, width, height);
+        }
+
+        if(isMouseOver(x, y, width, height, mouseX, mouseY)) {
+            List<String> tooltips = new ArrayList<>();
+            if(lastFluidInTank != null) {
+                Fluid fluid = lastFluidInTank.getFluid();
+                tooltips.add(fluid.getLocalizedName(lastFluidInTank));
+                tooltips.add(I18n.format("gregtech.fluid.amount", lastFluidInTank.amount, fluidTank.getCapacity()));
+                tooltips.add(I18n.format("gregtech.fluid.temperature", fluid.getTemperature(lastFluidInTank)));
+                tooltips.add(I18n.format(fluid.isGaseous(lastFluidInTank) ? "gregtech.fluid.state_gas" : "gregtech.fluid.state_liquid"));
+            } else {
+                tooltips.add(I18n.format("gregtech.fluid.empty"));
+                tooltips.add(I18n.format("gregtech.fluid.amount", 0, fluidTank.getCapacity()));
+            }
+            GuiUtils.drawHoveringText(tooltips, mouseX, mouseY, gui.width, gui.height, -1, Minecraft.getMinecraft().fontRenderer);
+            GlStateManager.color(1.0f, 1.0f, 1.0f);
         }
     }
 

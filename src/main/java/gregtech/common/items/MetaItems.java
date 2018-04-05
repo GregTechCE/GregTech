@@ -434,12 +434,4 @@ public final class MetaItems {
         }
     }
 
-    public static ItemStack getIntegratedCircuit(int configuration) {
-        ItemStack stack = INTEGRATED_CIRCUIT.getStackForm();
-        NBTTagCompound tagCompound = new NBTTagCompound();
-        tagCompound.setInteger("Configuration", configuration);
-        stack.setTagCompound(tagCompound);
-        return stack;
-    }
-
 }

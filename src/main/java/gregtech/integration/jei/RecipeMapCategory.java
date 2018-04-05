@@ -57,7 +57,7 @@ public class RecipeMapCategory implements IRecipeCategory<GTRecipeWrapper> {
 
     @Override
     public String getTitle() {
-        return I18n.format("gregtech.recipe." + getUid());
+        return recipeMap.getLocalizedName();
     }
 
     @Override
