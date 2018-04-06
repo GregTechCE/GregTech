@@ -77,7 +77,7 @@ public class NotConsumableInputRecipeBuilder extends RecipeBuilder<NotConsumable
             GTLog.logger.error("Stacktrace:", new IllegalArgumentException());
             recipeStatus = EnumValidationResult.INVALID;
         } else {
-            inputs.add(CountableIngredient.from(item.getStackForm(0)));
+            inputs.add(CountableIngredient.from(item.getStackForm(1)));
         }
         return this;
     }
