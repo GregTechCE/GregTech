@@ -17,6 +17,7 @@ import org.apache.commons.lang3.Validate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
 /**
  * Class that represent machine recipe.<p>
@@ -207,6 +208,17 @@ public class Recipe {
 	public NonNullList<ItemStack> getOutputs() {
 		return outputs;
 	}
+
+	public List<ItemStack> getResultItemOutputs(Random random) {
+        ArrayList<ItemStack> outputs = new ArrayList<>(GTUtility.copyStackList(getOutputs()));
+        TObjectIntMap<ItemStack> chancedOutputsMap = getChancedOutputs();
+	    for(ItemStack chancedOutput : chancedOutputsMap.keySet()) {
+	        int outputChance = chancedOutputsMap.get(chancedOutput);
+	        if(random.nextInt(Recipe.getMaxChancedValue()) <= outputChance)
+	            outputs.add(chancedOutput.copy());
+        }
+	    return outputs;
+    }
 
 	public TObjectIntMap<ItemStack> getChancedOutputs() {
 		return chancedOutputs;

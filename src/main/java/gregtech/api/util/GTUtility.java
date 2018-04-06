@@ -361,12 +361,12 @@ public class GTUtility {
         return compound == null ? new NBTTagCompound() : compound;
     }
 
-    public static List<ItemStack> copyStackList(List<ItemStack> itemStacks) {
+    public static NonNullList<ItemStack> copyStackList(List<ItemStack> itemStacks) {
         ItemStack[] stacks = new ItemStack[itemStacks.size()];
         for (int i = 0; i < itemStacks.size(); i++) {
             stacks[i] = copy(itemStacks.get(i));
         }
-        return Arrays.asList(stacks);
+        return NonNullList.from(ItemStack.EMPTY, stacks);
     }
 
     public static ItemStack[] copyStackArray(ItemStack... stacks) {

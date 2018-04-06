@@ -16,7 +16,6 @@ import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.recipe.IRecipeCategory;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.resources.I18n;
 import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.items.ItemStackHandler;
 
@@ -100,9 +99,10 @@ public class RecipeMapCategory implements IRecipeCategory<GTRecipeWrapper> {
                         tankWidget.fluidTank.getCapacity(), true, null);
                 }
             }
-            itemStackGroup.set(ingredients);
-            fluidStackGroup.set(ingredients);
         }
+        itemStackGroup.addTooltipCallback(recipeWrapper::addTooltip);
+        itemStackGroup.set(ingredients);
+        fluidStackGroup.set(ingredients);
     }
 
     @Override

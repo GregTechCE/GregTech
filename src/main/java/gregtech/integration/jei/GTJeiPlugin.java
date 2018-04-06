@@ -3,12 +3,13 @@ package gregtech.integration.jei;
 import gregtech.api.GregTechAPI;
 import gregtech.api.capability.IWorkable;
 import gregtech.api.capability.impl.RecipeMapWorkableHandler;
+import gregtech.api.items.metaitem.MetaItem;
 import gregtech.api.metatileentity.MetaTileEntity;
-import gregtech.api.metatileentity.SimpleMachineMetaTileEntity;
-import gregtech.api.recipes.Recipe;
 import gregtech.api.recipes.RecipeMap;
+import gregtech.common.items.MetaItems;
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.IModRegistry;
+import mezz.jei.api.ISubtypeRegistry;
 import mezz.jei.api.JEIPlugin;
 import mezz.jei.api.recipe.IRecipeCategoryRegistration;
 
@@ -17,6 +18,14 @@ import java.util.stream.Collectors;
 
 @JEIPlugin
 public class GTJeiPlugin implements IModPlugin {
+
+    @Override
+    public void registerItemSubtypes(ISubtypeRegistry subtypeRegistry) {
+        MetaItemSubtype metaItemSubtype = new MetaItemSubtype();
+        for(MetaItem<?> metaItem : MetaItems.ITEMS) {
+            subtypeRegistry.registerSubtypeInterpreter(metaItem, metaItemSubtype);
+        }
+    }
 
     @Override
     public void registerCategories(IRecipeCategoryRegistration registry) {

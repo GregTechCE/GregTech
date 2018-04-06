@@ -462,6 +462,14 @@ public abstract class MetaTileEntity {
         }
     }
 
+    public static boolean isItemHandlerEmpty(IItemHandler handler) {
+        for(int i = 0; i < handler.getSlots(); i++) {
+            if(!handler.getStackInSlot(i).isEmpty())
+                return false;
+        }
+        return true;
+    }
+
     public static boolean addItemsToItemHandler(IItemHandler handler, boolean simulate, NonNullList<ItemStack> items) {
         boolean notAllInserted = false;
         List<ItemStack> stacks = new ArrayList<>(items); //copy collection

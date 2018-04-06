@@ -3,7 +3,6 @@ package gregtech.api.items.toolitem;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 import gregtech.api.GTValues;
-import gregtech.api.GregTechAPI;
 import gregtech.api.capability.IElectricItem;
 import gregtech.api.enchants.EnchantmentData;
 import gregtech.api.items.IDamagableItem;
@@ -14,11 +13,9 @@ import gregtech.api.unification.material.Materials;
 import gregtech.api.unification.material.type.Material;
 import gregtech.api.unification.material.type.SolidMaterial;
 import gregtech.api.unification.stack.SimpleItemStack;
-import gregtech.api.util.GTUtility;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.block.model.ModelBakery;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
-import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
@@ -61,7 +58,6 @@ public class ToolMetaItem<T extends ToolMetaItem<?>.MetaToolValueItem> extends M
 
     public ToolMetaItem() {
         super((short) 0);
-        setCreativeTab(GregTechAPI.TAB_GREGTECH);
     }
 
     @Override

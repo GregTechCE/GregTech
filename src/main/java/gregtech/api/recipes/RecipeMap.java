@@ -197,7 +197,7 @@ public class RecipeMap<R extends RecipeBuilder<R>> {
             }
         }
         if(fluidInputsCount > 0) {
-            int startSpecX = isOutputs ? 130 : 7;
+            int startSpecX = isOutputs ? 151 : 7;
             int startSpecY = 32 - (int) (fluidInputsCount / 2.0 * 18);
             for(int i = 0; i < fluidInputsCount; i++) {
                 addSlot(builder, startSpecX, startSpecY + 18 * i, i, itemHandler, fluidHandler, !invertedInputSlots, isOutputs);
@@ -291,4 +291,5 @@ public class RecipeMap<R extends RecipeBuilder<R>> {
     public int getAmperage() {
         return amperage;
     }
+
 }

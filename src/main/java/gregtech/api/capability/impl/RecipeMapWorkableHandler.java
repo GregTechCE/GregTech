@@ -7,6 +7,7 @@ import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.recipes.Recipe;
 import gregtech.api.recipes.RecipeMap;
 import gregtech.api.util.GTUtility;
+import gregtech.api.util.XSTR;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -18,6 +19,7 @@ import net.minecraftforge.fluids.FluidStack;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public abstract class RecipeMapWorkableHandler extends MTETrait implements IWorkable {
 
@@ -29,6 +31,7 @@ public abstract class RecipeMapWorkableHandler extends MTETrait implements IWork
     protected int recipeEUt;
     protected List<FluidStack> fluidOutputs;
     protected NonNullList<ItemStack> itemOutputs;
+    protected final Random random = new XSTR();
 
     private boolean isActive;
     private boolean workingEnabled = true;
@@ -81,6 +84,7 @@ public abstract class RecipeMapWorkableHandler extends MTETrait implements IWork
         int[] resultOverclock = calculateOverclock(recipe.getEUt(), getMaxVoltage(), recipeMap.getAmperage(), recipe.getDuration());
         int totalEUt = resultOverclock[0] * resultOverclock[1];
         return (totalEUt >= 0 ? getEnergyStored() >= totalEUt : getEnergyStored() - totalEUt <= getEnergyCapacity()) &&
+            (!recipe.needsEmptyOutput() || MetaTileEntity.isItemHandlerEmpty(metaTileEntity.getExportItems())) &&
             MetaTileEntity.addItemsToItemHandler(metaTileEntity.getExportItems(), true, recipe.getOutputs()) &&
             MetaTileEntity.addFluidsToFluidHandler(metaTileEntity.getExportFluids(), true, recipe.getFluidOutputs()) &&
             recipe.matches(true, false, metaTileEntity.getImportItems(), metaTileEntity.getImportFluids());
@@ -108,8 +112,8 @@ public abstract class RecipeMapWorkableHandler extends MTETrait implements IWork
         this.progressTime = 1;
         setMaxProgress(resultOverclock[1]);
         this.recipeEUt = resultOverclock[0];
-        this.fluidOutputs = recipe.getFluidOutputs();
-        this.itemOutputs = recipe.getOutputs();
+        this.fluidOutputs = GTUtility.copyFluidList(recipe.getFluidOutputs());
+        this.itemOutputs = GTUtility.copyStackList(recipe.getResultItemOutputs(random));
         setActive(true);
     }
 

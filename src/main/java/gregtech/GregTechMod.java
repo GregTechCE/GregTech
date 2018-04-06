@@ -22,7 +22,6 @@ import gregtech.loaders.oreprocessing.OreProcessingHandler;
 import gregtech.loaders.postload.DungeonLootLoader;
 import gregtech.loaders.preload.MaterialInfoLoader;
 import gregtech.loaders.preload.OreDictionaryLoader;
-import net.minecraft.init.Items;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.LoaderException;
@@ -31,7 +30,6 @@ import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 
 @Mod(modid = GTValues.MODID,
      name = "GregTech",
@@ -84,6 +82,7 @@ public class GregTechMod {
 
         OreDictionaryLoader.init();
         MetaItems.registerOreDict();
+        MetaBlocks.registerOreDict();
         MaterialInfoLoader.init();
         OrePrefix.runMaterialHandlers();
         MetaItems.registerRecipes();

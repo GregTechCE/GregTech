@@ -15,6 +15,10 @@ public class CountableIngredient {
         return new CountableIngredient(Ingredient.fromStacks(stack), stack.getCount());
     }
 
+    public static CountableIngredient from(ItemStack stack, int amount) {
+        return new CountableIngredient(Ingredient.fromStacks(stack), amount);
+    }
+
     public static CountableIngredient from(String oredict, int count) {
         return new CountableIngredient(new OreIngredient(oredict), count);
     }

@@ -13,9 +13,11 @@ import gregtech.api.unification.stack.MaterialStack;
 import gregtech.api.unification.stack.SimpleItemStack;
 import gregtech.api.unification.stack.UnificationEntry;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.NonNullList;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.oredict.OreDictionary;
+import net.minecraftforge.oredict.OreDictionary.OreRegisterEvent;
 
 import javax.annotation.Nullable;
 import java.util.*;
@@ -52,11 +54,17 @@ public class OreDictUnifier {
     }
 
     public static void init() {
+        for(String registeredOreName : OreDictionary.getOreNames()) {
+            NonNullList<ItemStack> theseOres = OreDictionary.getOres(registeredOreName);
+            for(ItemStack itemStack : theseOres) {
+                onItemRegistration(new OreRegisterEvent(registeredOreName, itemStack));
+            }
+        }
         MinecraftForge.EVENT_BUS.register(OreDictUnifier.class);
     }
 
     @SubscribeEvent
-    public static void onItemRegistration(OreDictionary.OreRegisterEvent event) {
+    public static void onItemRegistration(OreRegisterEvent event) {
         SimpleItemStack simpleItemStack = new SimpleItemStack(event.getOre());
         String oreName = event.getName();
         //cache this registration by name

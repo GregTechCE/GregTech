@@ -1990,6 +1990,8 @@ gregtech.recipe.total=Total: %d EU
 gregtech.recipe.eu=Usage: %d EU/t
 gregtech.recipe.duration=Duration: %d secs
 gregtech.recipe.amperage=Amperage: %d
+gregtech.recipe.not_consumed=Not consumed in process
+gregtech.recipe.chance=Chance: %s
 
 gregtech.fluid.empty=Empty
 gregtech.fluid.amount=§7%,d/%,d
