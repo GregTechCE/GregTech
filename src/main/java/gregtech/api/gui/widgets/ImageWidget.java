@@ -9,9 +9,8 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.function.BooleanSupplier;
-import java.util.function.Predicate;
 
-public class ImageWidget<T extends IUIHolder> extends Widget<T> {
+public class ImageWidget extends Widget {
 
     protected TextureArea area;
     protected final int xPosition;
@@ -41,12 +40,12 @@ public class ImageWidget<T extends IUIHolder> extends Widget<T> {
         this.area = area;
     }
 
-    public ImageWidget<T> setImage(TextureArea area) {
+    public ImageWidget setImage(TextureArea area) {
         this.area = area;
         return this;
     }
 
-    public ImageWidget<T> setPredicate(BooleanSupplier predicate) {
+    public ImageWidget setPredicate(BooleanSupplier predicate) {
         this.predicate = predicate;
         this.isVisible = false;
         return this;

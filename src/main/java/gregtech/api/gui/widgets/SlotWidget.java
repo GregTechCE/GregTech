@@ -15,7 +15,7 @@ import net.minecraftforge.items.SlotItemHandler;
 
 import javax.annotation.Nonnull;
 
-public class SlotWidget<T extends IUIHolder> extends Widget<T> implements INativeWidget {
+public class SlotWidget extends Widget implements INativeWidget {
 
     protected Slot slotReference;
 
@@ -52,7 +52,7 @@ public class SlotWidget<T extends IUIHolder> extends Widget<T> implements INativ
      * Sets array of background textures used by slot
      * they are drawn on top of each other
      */
-    public SlotWidget<T> setBackgroundTexture(TextureArea... backgroundTexture) {
+    public SlotWidget setBackgroundTexture(TextureArea... backgroundTexture) {
         this.backgroundTexture = backgroundTexture;
         return this;
     }

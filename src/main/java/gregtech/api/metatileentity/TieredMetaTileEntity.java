@@ -16,11 +16,15 @@ import org.apache.commons.lang3.ArrayUtils;
 public abstract class TieredMetaTileEntity extends MetaTileEntity {
 
     private final int tier;
-    protected final EnergyContainerHandler energyContainer;
+    protected EnergyContainerHandler energyContainer;
 
     public TieredMetaTileEntity(String metaTileEntityId, int tier) {
         super(metaTileEntityId);
         this.tier = tier;
+        initializeEnergyContainer();
+    }
+
+    protected void initializeEnergyContainer() {
         long tierVoltage = GTValues.V[tier];
         if (isEnergyEmitter()) {
             this.energyContainer = addTrait(EnergyContainerHandler.emitterContainer(

@@ -1,6 +1,5 @@
 package gregtech.api.gui.widgets;
 
-import gregtech.api.gui.IUIHolder;
 import gregtech.api.gui.Widget;
 import gregtech.api.gui.resources.TextureArea;
 import gregtech.api.util.function.BooleanConsumer;
@@ -10,7 +9,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.function.BooleanSupplier;
 
-public class ButtonWidget extends Widget<IUIHolder> {
+public class ButtonWidget extends Widget {
 
     protected int xPosition;
     protected int yPosition;

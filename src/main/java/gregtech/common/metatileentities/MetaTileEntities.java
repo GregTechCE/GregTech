@@ -3,6 +3,7 @@ package gregtech.common.metatileentities;
 import gregtech.api.GregTechAPI;
 import gregtech.api.metatileentity.MaceratorMetaTileEntity;
 import gregtech.api.metatileentity.MetaTileEntityHolder;
+import gregtech.api.metatileentity.SimpleGeneratorMetaTileEntity;
 import gregtech.api.metatileentity.SimpleMachineMetaTileEntity;
 import gregtech.api.recipes.RecipeMaps;
 import gregtech.api.render.Textures;
@@ -286,5 +287,9 @@ public class MetaTileEntities {
         GregTechAPI.registerMetaTileEntity(472, new SimpleMachineMetaTileEntity("wiremill.hv", RecipeMaps.WIREMILL_RECIPES, Textures.WIREMILL_OVERLAY, 3));
         GregTechAPI.registerMetaTileEntity(473, new SimpleMachineMetaTileEntity("wiremill.ev", RecipeMaps.WIREMILL_RECIPES, Textures.WIREMILL_OVERLAY, 4));
         GregTechAPI.registerMetaTileEntity(474, new SimpleMachineMetaTileEntity("wiremill.iv", RecipeMaps.WIREMILL_RECIPES, Textures.WIREMILL_OVERLAY, 5));
+
+        GregTechAPI.registerMetaTileEntity(475, new SimpleGeneratorMetaTileEntity("diesel_generator.lv", RecipeMaps.DIESEL_GENERATOR_FUELS, Textures.DIESEL_GENERATOR_OVERLAY, 1));
+        GregTechAPI.registerMetaTileEntity(476, new SimpleGeneratorMetaTileEntity("diesel_generator.mv", RecipeMaps.DIESEL_GENERATOR_FUELS, Textures.DIESEL_GENERATOR_OVERLAY, 2));
+        GregTechAPI.registerMetaTileEntity(477, new SimpleGeneratorMetaTileEntity("diesel_generator.hv", RecipeMaps.DIESEL_GENERATOR_FUELS, Textures.DIESEL_GENERATOR_OVERLAY, 3));
     }
 }

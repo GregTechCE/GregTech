@@ -5,7 +5,7 @@ import gregtech.api.gui.IUIHolder;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.items.IItemHandlerModifiable;
 
-public class DischargerSlotWidget<T extends IUIHolder> extends SlotWidget<T> {
+public class DischargerSlotWidget extends SlotWidget {
 
     public DischargerSlotWidget(IItemHandlerModifiable itemHandler, int slotIndex, int xPosition, int yPosition) {
         super(itemHandler, slotIndex, xPosition, yPosition, true, true);

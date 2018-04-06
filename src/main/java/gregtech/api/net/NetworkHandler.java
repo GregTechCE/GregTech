@@ -6,10 +6,7 @@ import gregtech.api.gui.UIFactory;
 import gregtech.api.gui.impl.ModularUIContainer;
 import gregtech.api.gui.impl.ModularUIGui;
 import io.netty.buffer.Unpooled;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.network.NetHandlerPlayClient;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.Container;
 import net.minecraft.network.INetHandler;
 import net.minecraft.network.NetHandlerPlayServer;
@@ -140,7 +137,7 @@ public class NetworkHandler {
             Container openContainer = handler.player.openContainer;
             if(openContainer instanceof ModularUIContainer &&
                 openContainer.windowId == packet.windowId) {
-                ModularUI<?> modularUI = ((ModularUIContainer) openContainer).getModularUI();
+                ModularUI modularUI = ((ModularUIContainer) openContainer).getModularUI();
                 PacketBuffer buffer = packet.updateData;
                 modularUI.guiWidgets.get(packet.widgetId).handleClientAction(buffer.readInt(), buffer);
             }

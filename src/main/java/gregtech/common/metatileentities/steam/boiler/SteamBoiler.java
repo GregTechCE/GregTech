@@ -5,7 +5,6 @@ import codechicken.lib.render.pipeline.ColourMultiplier;
 import codechicken.lib.render.pipeline.IVertexOperation;
 import gregtech.api.capability.impl.FilteredFluidHandler;
 import gregtech.api.capability.impl.FluidTankHandler;
-import gregtech.api.gui.IUIHolder;
 import gregtech.api.gui.ModularUI;
 import gregtech.api.gui.resources.TextureArea;
 import gregtech.api.gui.widgets.*;
@@ -18,20 +17,13 @@ import gregtech.api.render.SimpleSidedRenderer.RenderSide;
 import gregtech.api.render.Textures;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.EnumFacing;
-import net.minecraftforge.event.ForgeEventFactory;
-import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import net.minecraftforge.items.IItemHandlerModifiable;
-import net.minecraftforge.items.ItemStackHandler;
 import org.apache.commons.lang3.ArrayUtils;
-
-import javax.annotation.Nonnull;
 
 public abstract class SteamBoiler extends MetaTileEntity {
 
@@ -226,25 +218,25 @@ public abstract class SteamBoiler extends MetaTileEntity {
             type, pathTemplate.replace("%s", type)));
     }
 
-    public ModularUI.Builder<IUIHolder> createUITemplate(EntityPlayer player) {
+    public ModularUI.Builder createUITemplate(EntityPlayer player) {
         return ModularUI.builder(BRONZE_BACKGROUND_TEXTURE, 176, 166)
-            .widget(0, new LabelWidget<>(6, 6, getMetaName()))
+            .widget(0, new LabelWidget(6, 6, getMetaName()))
 
-            .widget(1, new ProgressWidget<>(this::getTemperaturePercent, 95, 17, 11, 55)
+            .widget(1, new ProgressWidget(this::getTemperaturePercent, 95, 17, 11, 55)
                 .setProgressBar(getGuiTexture("bar_%s_empty"),
                     getGuiTexture("bar_heat"),
                     MoveType.VERTICAL))
 
-            .widget(2, new TankWidget<>(waterFluidTank, 82, 17, 11, 55)
+            .widget(2, new TankWidget(waterFluidTank, 82, 17, 11, 55)
                 .setBackgroundTexture(getGuiTexture("bar_%s_empty")))
-            .widget(3, new TankWidget<>(steamFluidTank, 69, 17, 11, 55)
+            .widget(3, new TankWidget(steamFluidTank, 69, 17, 11, 55)
                 .setBackgroundTexture(getGuiTexture("bar_%s_empty")))
 
-            .widget(4, new SlotWidget<>(this.importItems, 0, 43, 18)
+            .widget(4, new SlotWidget(this.importItems, 0, 43, 18)
                 .setBackgroundTexture(BRONZE_SLOT_BACKGROUND_TEXTURE, getGuiTexture("overlay_%s_in")))
-            .widget(5, new SlotWidget<>(this.exportItems, 0, 43, 54, true, false)
+            .widget(5, new SlotWidget(this.exportItems, 0, 43, 54, true, false)
                 .setBackgroundTexture(BRONZE_SLOT_BACKGROUND_TEXTURE, getGuiTexture("overlay_%s_out")))
-            .widget(6, new ImageWidget<>(42, 35, 18, 18)
+            .widget(6, new ImageWidget(42, 35, 18, 18)
                 .setImage(getGuiTexture("overlay_%s_fluid_container")))
 
             .bindPlayerInventory(player.inventory, 8, BRONZE_SLOT_BACKGROUND_TEXTURE);

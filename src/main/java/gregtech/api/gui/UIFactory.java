@@ -29,7 +29,7 @@ public abstract class UIFactory<E extends IUIHolder> {
             return;
         }
 
-        ModularUI<E> uiTemplate = createUITemplate(holder, player);
+        ModularUI uiTemplate = createUITemplate(holder, player);
         uiTemplate.initWidgets();
         if (player.openContainer != player.inventoryContainer) {
             player.closeScreen();
@@ -52,7 +52,7 @@ public abstract class UIFactory<E extends IUIHolder> {
         E holder = readHolderFromSyncData(serializedHolder);
         Minecraft minecraft = Minecraft.getMinecraft();
         EntityPlayerSP entityPlayer = minecraft.player;
-        ModularUI<E> uiTemplate = createUITemplate(holder, entityPlayer);
+        ModularUI uiTemplate = createUITemplate(holder, entityPlayer);
         uiTemplate.initWidgets();
         minecraft.addScheduledTask(() -> {
             minecraft.displayGuiScreen(new ModularUIGui(uiTemplate));
@@ -60,7 +60,7 @@ public abstract class UIFactory<E extends IUIHolder> {
         });
     }
 
-    protected abstract ModularUI<E> createUITemplate(E holder, EntityPlayer entityPlayer);
+    protected abstract ModularUI createUITemplate(E holder, EntityPlayer entityPlayer);
 
     @SideOnly(Side.CLIENT)
     protected abstract E readHolderFromSyncData(PacketBuffer syncData);

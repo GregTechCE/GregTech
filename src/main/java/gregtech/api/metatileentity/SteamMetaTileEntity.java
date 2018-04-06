@@ -7,12 +7,8 @@ import gregtech.api.GTValues;
 import gregtech.api.capability.impl.FilteredFluidHandler;
 import gregtech.api.capability.impl.FluidTankHandler;
 import gregtech.api.capability.impl.SteamRecipeMapWorkableHandler;
-import gregtech.api.gui.IUIHolder;
 import gregtech.api.gui.ModularUI;
 import gregtech.api.gui.widgets.LabelWidget;
-import gregtech.api.gui.widgets.ProgressWidget;
-import gregtech.api.gui.widgets.ProgressWidget.MoveType;
-import gregtech.api.gui.widgets.SlotWidget;
 import gregtech.api.recipes.ModHandler;
 import gregtech.api.recipes.RecipeMap;
 import gregtech.api.gui.resources.TextureArea;
@@ -104,9 +100,9 @@ public abstract class SteamMetaTileEntity extends MetaTileEntity {
             type, pathTemplate.replace("%s", type)));
     }
 
-    public ModularUI.Builder<IUIHolder> createUITemplate(EntityPlayer player) {
+    public ModularUI.Builder createUITemplate(EntityPlayer player) {
         return ModularUI.builder(BRONZE_BACKGROUND_TEXTURE, 176, 166)
-            .widget(0, new LabelWidget<>(6, 6, getMetaName()))
+            .widget(0, new LabelWidget(6, 6, getMetaName()))
             .bindPlayerInventory(player.inventory, 2, BRONZE_SLOT_BACKGROUND_TEXTURE);
     }
 }

@@ -5,7 +5,6 @@ import gnu.trove.map.hash.TByteObjectHashMap;
 import gregtech.api.capability.IMultipleTankHandler;
 import gregtech.api.capability.impl.FluidTankHandler;
 import gregtech.api.gui.GuiTextures;
-import gregtech.api.gui.IUIHolder;
 import gregtech.api.gui.ModularUI;
 import gregtech.api.gui.resources.TextureArea;
 import gregtech.api.gui.widgets.ProgressWidget;
@@ -167,15 +166,15 @@ public class RecipeMap<R extends RecipeBuilder<R>> {
 	}
 
 	//this DOES NOT add machine control widgets or binds player inventory
-	public ModularUI.Builder<IUIHolder> createUITemplate(DoubleSupplier progressSupplier, IItemHandlerModifiable importItems, IItemHandlerModifiable exportItems, FluidTankHandler importFluids, FluidTankHandler exportFluids) {
-        ModularUI.Builder<IUIHolder> builder = ModularUI.defaultBuilder();
-        builder.widget(new ProgressWidget<>(progressSupplier, 77, 23, 20, 15, progressBarTexture, moveType));
+	public ModularUI.Builder createUITemplate(DoubleSupplier progressSupplier, IItemHandlerModifiable importItems, IItemHandlerModifiable exportItems, FluidTankHandler importFluids, FluidTankHandler exportFluids) {
+        ModularUI.Builder builder = ModularUI.defaultBuilder();
+        builder.widget(new ProgressWidget(progressSupplier, 77, 23, 20, 15, progressBarTexture, moveType));
         addInventorySlotGroup(builder, importItems, importFluids, false);
         addInventorySlotGroup(builder, exportItems, exportFluids, true);
         return builder;
     }
 
-    private void addInventorySlotGroup(ModularUI.Builder<IUIHolder> builder, IItemHandlerModifiable itemHandler, FluidTankHandler fluidHandler, boolean isOutputs) {
+    private void addInventorySlotGroup(ModularUI.Builder builder, IItemHandlerModifiable itemHandler, FluidTankHandler fluidHandler, boolean isOutputs) {
         int itemInputsCount = itemHandler.getSlots();
         int fluidInputsCount = fluidHandler.getTanks();
         boolean invertedInputSlots = false;
@@ -205,12 +204,12 @@ public class RecipeMap<R extends RecipeBuilder<R>> {
         }
     }
 
-    private void addSlot(ModularUI.Builder<IUIHolder> builder, int x, int y, int slotIndex, IItemHandlerModifiable itemHandler, FluidTankHandler fluidHandler, boolean isFluid, boolean isOutputs) {
+    private void addSlot(ModularUI.Builder builder, int x, int y, int slotIndex, IItemHandlerModifiable itemHandler, FluidTankHandler fluidHandler, boolean isFluid, boolean isOutputs) {
         if(!isFluid) {
-            builder.widget(new SlotWidget<>(itemHandler, slotIndex, x, y)
+            builder.widget(new SlotWidget(itemHandler, slotIndex, x, y)
                 .setBackgroundTexture(getOverlaysForSlot(isOutputs, false,slotIndex == itemHandler.getSlots() - 1)));
         } else {
-            builder.widget(new TankWidget<>(fluidHandler.getTankAt(slotIndex), x, y - 1, 18, 18)
+            builder.widget(new TankWidget(fluidHandler.getTankAt(slotIndex), x, y - 1, 18, 18)
                 .setBackgroundTexture(getOverlaysForSlot(isOutputs, true, slotIndex == fluidHandler.getTanks() - 1)));
         }
     }

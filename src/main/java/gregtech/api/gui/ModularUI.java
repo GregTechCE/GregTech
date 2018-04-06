@@ -2,12 +2,17 @@ package gregtech.api.gui;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableBiMap;
-import gregtech.api.gui.widgets.LabelWidget;
-import gregtech.api.gui.widgets.SlotWidget;
+import gregtech.api.gui.widgets.*;
+import gregtech.api.gui.widgets.ProgressWidget.MoveType;
 import gregtech.api.gui.resources.TextureArea;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraftforge.fluids.IFluidTank;
+import net.minecraftforge.items.IItemHandlerModifiable;
 import net.minecraftforge.items.wrapper.PlayerMainInvWrapper;
+
+import java.util.function.DoubleSupplier;
+import java.util.function.Supplier;
 
 /**
  * ModularUI is user-interface implementation concrete, based on widgets system
@@ -17,12 +22,10 @@ import net.minecraftforge.items.wrapper.PlayerMainInvWrapper;
  * However widget data will sync, widgets themself, background, sizes and other important info will not
  * To open and create ModularUI, see {@link UIFactory}
  *
- *
- * @param <H> type of modular UI holder
  */
-public final class ModularUI<H extends IUIHolder> {
+public final class ModularUI {
 
-    public final ImmutableBiMap<Integer, Widget<H>> guiWidgets;
+    public final ImmutableBiMap<Integer, Widget> guiWidgets;
 
     public final TextureArea backgroundPath;
     public final int width, height;
@@ -31,11 +34,11 @@ public final class ModularUI<H extends IUIHolder> {
      * UIHolder of this modular UI
      * Can be tile entity in world impl or item impl
      */
-    public final H holder;
+    public final IUIHolder holder;
     public final EntityPlayer entityPlayer;
     public boolean isJEIHandled;
 
-    public ModularUI(ImmutableBiMap<Integer, Widget<H>> guiWidgets, TextureArea backgroundPath, int width, int height, H holder, EntityPlayer entityPlayer) {
+    public ModularUI(ImmutableBiMap<Integer, Widget> guiWidgets, TextureArea backgroundPath, int width, int height, IUIHolder holder, EntityPlayer entityPlayer) {
         this.guiWidgets = guiWidgets;
         this.backgroundPath = backgroundPath;
         this.width = width;
@@ -51,21 +54,20 @@ public final class ModularUI<H extends IUIHolder> {
         });
     }
 
-    public static <T extends IUIHolder> Builder<T> defaultBuilder() {
-        return new Builder<>(GuiTextures.BACKGROUND, 176, 166);
+    public static Builder defaultBuilder() {
+        return new Builder(GuiTextures.BACKGROUND, 176, 166);
     }
 
-    public static <T extends IUIHolder> Builder<T> builder(TextureArea background, int width, int height) {
-        return new Builder<>(background, width, height);
+    public static Builder builder(TextureArea background, int width, int height) {
+        return new Builder(background, width, height);
     }
 
     /**
      * Simple builder for  ModularUI objects
-     * @param <T> UI holder type
      */
-    public static class Builder<T extends IUIHolder> {
+    public static class Builder {
 
-        private ImmutableBiMap.Builder<Integer, Widget<T>> widgets = ImmutableBiMap.builder();
+        private ImmutableBiMap.Builder<Integer, Widget> widgets = ImmutableBiMap.builder();
         private TextureArea background;
         private int width, height;
         private int nextFreeWidgetId = 1000;
@@ -77,47 +79,80 @@ public final class ModularUI<H extends IUIHolder> {
             this.height = height;
         }
 
-        public Builder<T> widget(Widget<T> widget) {
+        public Builder widget(Widget widget) {
             return widget(nextFreeWidgetId++, widget);
         }
 
-        public Builder<T> widget(int id, Widget<T> widget) {
+        public Builder label(int x, int y, String localizationKey) {
+            return widget(new LabelWidget(x, y, localizationKey));
+        }
+
+        public Builder label(int x, int y, String localizationKey, int color) {
+            return widget(new LabelWidget(x, y, localizationKey, color));
+        }
+
+        public Builder dynamicLabel(int x, int y, Supplier<String> text) {
+            return widget(new DynamicLabelWidget(x, y, text));
+        }
+
+        public Builder dynamicLabel(int x, int y, Supplier<String> text, int color) {
+            return widget(new DynamicLabelWidget(x, y, text, color));
+        }
+
+        public Builder slot(IItemHandlerModifiable itemHandler, int slotIndex, int x, int y, TextureArea... overlays) {
+            return widget(new SlotWidget(itemHandler, slotIndex, x, y).setBackgroundTexture(overlays));
+        }
+
+        public Builder tank(IFluidTank fluidTank, int x, int y, int width, int height, TextureArea... backgrounds) {
+            return widget(new TankWidget(fluidTank, x, y, width, height).setBackgroundTexture(backgrounds));
+        }
+
+        public Builder progressBar(DoubleSupplier progressSupplier, int x, int y, int width, int height, TextureArea texture, MoveType moveType) {
+            return widget(new ProgressWidget(progressSupplier, x, y, width, height, texture, moveType));
+        }
+
+        public Builder bindPlayerInventory(InventoryPlayer inventoryPlayer) {
+            bindPlayerInventory(inventoryPlayer, nextFreeWidgetId, GuiTextures.SLOT);
+            nextFreeWidgetId += 36;
+            return this;
+        }
+
+        public Builder widget(int id, Widget widget) {
             Preconditions.checkNotNull(widget);
             widgets.put(id, widget);
             return this;
         }
 
-        public Builder<T> bindPlayerInventory(InventoryPlayer inventoryPlayer, int startWidgetId) {
+        public Builder bindPlayerInventory(InventoryPlayer inventoryPlayer, int startWidgetId) {
             return bindPlayerInventory(inventoryPlayer, startWidgetId, GuiTextures.SLOT);
         }
 
-        public Builder<T> bindPlayerInventory(InventoryPlayer inventoryPlayer, int startWidgetId, TextureArea imageLocation) {
-            //widget(startWidgetId, new LabelWidget<T>(8, 166 - 96 + 2, "container.inventory"));
-            return bindPlayerInventory(inventoryPlayer, startWidgetId + 1, imageLocation, 8, 84);
+        public Builder bindPlayerInventory(InventoryPlayer inventoryPlayer, int startWidgetId, TextureArea imageLocation) {
+            return bindPlayerInventory(inventoryPlayer, startWidgetId, imageLocation, 8, 84);
         }
 
-        public Builder<T> bindPlayerInventory(InventoryPlayer inventoryPlayer, int startWidgetId, TextureArea imageLocation, int x, int y) {
+        public Builder bindPlayerInventory(InventoryPlayer inventoryPlayer, int startWidgetId, TextureArea imageLocation, int x, int y) {
             for (int row = 0; row < 3; row++) {
                 for (int col = 0; col < 9; col++) {
                     this.widget(startWidgetId + col + (row + 1) * 9,
-                        new SlotWidget<T>(new PlayerMainInvWrapper(inventoryPlayer), col + (row + 1) * 9, x + col * 18, y + row * 18)
+                        new SlotWidget(new PlayerMainInvWrapper(inventoryPlayer), col + (row + 1) * 9, x + col * 18, y + row * 18)
                             .setBackgroundTexture(imageLocation));
                 }
             }
             return bindPlayerHotbar(inventoryPlayer, startWidgetId, imageLocation, x, y + 58);
         }
 
-        public Builder<T> bindPlayerHotbar(InventoryPlayer inventoryPlayer, int startWidgetId, TextureArea imageLocation, int x, int y) {
+        public Builder bindPlayerHotbar(InventoryPlayer inventoryPlayer, int startWidgetId, TextureArea imageLocation, int x, int y) {
             for (int slot = 0; slot < 9; slot++) {
                 this.widget(startWidgetId + slot,
-                    new SlotWidget<T>(new PlayerMainInvWrapper(inventoryPlayer), slot, x + slot * 18, y)
+                    new SlotWidget(new PlayerMainInvWrapper(inventoryPlayer), slot, x + slot * 18, y)
                         .setBackgroundTexture(imageLocation));
             }
             return this;
         }
 
-        public ModularUI<T> build(T holder, EntityPlayer player) {
-            return new ModularUI<>(widgets.build(), background, width, height, holder, player);
+        public ModularUI build(IUIHolder holder, EntityPlayer player) {
+            return new ModularUI(widgets.build(), background, width, height, holder, player);
         }
 
     }

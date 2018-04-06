@@ -1,30 +1,31 @@
 package gregtech.api.gui.widgets;
 
-import gregtech.api.gui.IUIHolder;
 import gregtech.api.gui.Widget;
 import gregtech.api.gui.resources.RenderUtil;
 import gregtech.api.gui.resources.TextureArea;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.PacketBuffer;
-import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.IFluidTank;
 import net.minecraftforge.fml.client.config.GuiUtils;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TankWidget<T extends IUIHolder> extends Widget<T> {
+public class TankWidget extends Widget {
 
     public final IFluidTank fluidTank;
 
     public final int x, y, width, height;
+    private int fluidRenderOffset = 1;
+    private boolean hideTooltip;
 
     private TextureArea[] backgroundTexture;
     private TextureArea overlayTexture;
@@ -41,14 +42,36 @@ public class TankWidget<T extends IUIHolder> extends Widget<T> {
         this.height = height;
     }
 
-    public TankWidget<T> setBackgroundTexture(TextureArea... backgroundTexture) {
+    public TankWidget setHideTooltip(boolean hideTooltip) {
+        this.hideTooltip = hideTooltip;
+        return this;
+    }
+
+    public TankWidget setBackgroundTexture(TextureArea... backgroundTexture) {
         this.backgroundTexture = backgroundTexture;
         return this;
     }
 
-    public TankWidget<T> setOverlayTexture(TextureArea overlayTexture) {
+    public TankWidget setOverlayTexture(TextureArea overlayTexture) {
         this.overlayTexture = overlayTexture;
         return this;
+    }
+
+    public TankWidget setFluidRenderOffset(int fluidRenderOffset) {
+        this.fluidRenderOffset = fluidRenderOffset;
+        return this;
+    }
+
+    public FluidStack getLastFluidInTank() {
+        return lastFluidInTank;
+    }
+
+    public String getFormattedFluidAmount() {
+        return String.format("%,d", lastFluidInTank == null ? 0 : lastFluidInTank.amount);
+    }
+
+    public String getFluidLocalizedName() {
+        return lastFluidInTank == null ? "" : lastFluidInTank.getLocalizedName();
     }
 
     @Override
@@ -61,24 +84,26 @@ public class TankWidget<T extends IUIHolder> extends Widget<T> {
         //do not draw fluids if they are handled by JEI - it draws them itself
         if(lastFluidInTank != null && !gui.isJEIHandled) {
             GlStateManager.disableBlend();
-            RenderUtil.drawFluidForGui(lastFluidInTank, fluidTank.getCapacity(), x + 1, y + 1, width - 1, height - 1);
+            RenderUtil.drawFluidForGui(lastFluidInTank, lastTankCapacity,
+                x + fluidRenderOffset, y + fluidRenderOffset,
+                width - fluidRenderOffset, height - fluidRenderOffset);
             GlStateManager.enableBlend();
         }
         if(overlayTexture != null) {
             overlayTexture.draw(x, y, width, height);
         }
 
-        if(isMouseOver(x, y, width, height, mouseX, mouseY)) {
+        if(!hideTooltip && !gui.isJEIHandled && isMouseOver(x, y, width, height, mouseX, mouseY)) {
             List<String> tooltips = new ArrayList<>();
             if(lastFluidInTank != null) {
                 Fluid fluid = lastFluidInTank.getFluid();
                 tooltips.add(fluid.getLocalizedName(lastFluidInTank));
-                tooltips.add(I18n.format("gregtech.fluid.amount", lastFluidInTank.amount, fluidTank.getCapacity()));
+                tooltips.add(I18n.format("gregtech.fluid.amount", lastFluidInTank.amount, lastTankCapacity));
                 tooltips.add(I18n.format("gregtech.fluid.temperature", fluid.getTemperature(lastFluidInTank)));
                 tooltips.add(I18n.format(fluid.isGaseous(lastFluidInTank) ? "gregtech.fluid.state_gas" : "gregtech.fluid.state_liquid"));
             } else {
                 tooltips.add(I18n.format("gregtech.fluid.empty"));
-                tooltips.add(I18n.format("gregtech.fluid.amount", 0, fluidTank.getCapacity()));
+                tooltips.add(I18n.format("gregtech.fluid.amount", 0, lastTankCapacity));
             }
             GuiUtils.drawHoveringText(tooltips, mouseX, mouseY, gui.width, gui.height, -1, Minecraft.getMinecraft().fontRenderer);
             GlStateManager.color(1.0f, 1.0f, 1.0f);

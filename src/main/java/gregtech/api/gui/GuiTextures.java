@@ -8,6 +8,7 @@ public class GuiTextures {
     public static final TextureArea BACKGROUND = TextureArea.fullImage("textures/gui/base/background.png");
     public static final TextureArea SLOT = TextureArea.fullImage("textures/gui/base/slot.png");
     public static final TextureArea FLUID_SLOT = TextureArea.fullImage("textures/gui/base/fluid_slot.png");
+    public static final TextureArea DISPLAY = TextureArea.fullImage("textures/gui/base/display.png");
 
     //FLUID & ITEM OUTPUT BUTTONS
     public static final TextureArea BUTTON_FLUID_OUTPUT = TextureArea.fullImage("textures/gui/base/button_fluid_output.png");

@@ -3,10 +3,7 @@ package gregtech.api.recipes;
 import gregtech.api.gui.GuiTextures;
 import gregtech.api.gui.widgets.ProgressWidget.MoveType;
 import gregtech.api.recipes.builders.*;
-import gregtech.api.recipes.machines.RecipeMapFluidCanner;
-import gregtech.api.recipes.machines.RecipeMapFormingPress;
-import gregtech.api.recipes.machines.RecipeMapFurnace;
-import gregtech.api.recipes.machines.RecipeMapPrinter;
+import gregtech.api.recipes.machines.*;
 import gregtech.api.unification.material.Materials;
 import gregtech.api.util.EnumValidationResult;
 import gregtech.api.util.GTLog;
@@ -518,20 +515,25 @@ public class RecipeMaps {
      */
     public static final RecipeMap<AmplifierRecipeBuilder> AMPLIFIERS = new RecipeMap<>("uuamplifier", 1, 1, 0, 0, 0, 0, 1, 1, 1, new AmplifierRecipeBuilder().EUt(32));
 
-    public static final RecipeMap<DefaultRecipeBuilder> DIESEL_FUELS = new RecipeMap<>("dieselgeneratorfuel", 1, 1, 0, 4, 0, 0, 0, 0, 1, new DefaultRecipeBuilder());
-    public static final RecipeMap<DefaultRecipeBuilder> TURBINE_FUELS = new RecipeMap<>("gasturbinefuel", 0, 1, 0, 4, 0, 0, 0, 0, 1, new DefaultRecipeBuilder());
-    public static final RecipeMap<DefaultRecipeBuilder> HOT_FUELS = new RecipeMap<>("thermalgeneratorfuel", 0, 1, 0, 4, 0, 0, 0, 0, 1, new DefaultRecipeBuilder());
-    public static final RecipeMap<DefaultRecipeBuilder> DENSE_LIQUID_FUELS = new RecipeMap<>("semifluidboilerfuels", 0, 1, 0, 4, 0, 0, 0, 0, 1, new DefaultRecipeBuilder());
-    public static final RecipeMap<DefaultRecipeBuilder> PLASMA_FUELS = new RecipeMap<>("plasmageneratorfuels", 0, 1, 0, 4, 0, 0, 0, 0, 1, new DefaultRecipeBuilder());
+    public static final RecipeMapLiquidFuel DIESEL_GENERATOR_FUELS = new RecipeMapLiquidFuel("diesel_generator", 0, 0, 1, new DefaultRecipeBuilder());
 
-    /**
-     * Use {@link RecipeBuilder#EUt(int)} to set EU/t produced
-     */
+    public static final RecipeMapLiquidFuel GAS_TURBINE_FUELS = new RecipeMapLiquidFuel("gas_turbine", 0, 0, 1, new DefaultRecipeBuilder());
+
+    public static final RecipeMapLiquidFuel THERMAL_GENERATOR_FUELS = new RecipeMapLiquidFuel("thermal_generator", 0, 1, 1, new DefaultRecipeBuilder());
+
+    public static final RecipeMapLiquidFuel SEMI_FLUID_GENERATOR_FUELS = new RecipeMapLiquidFuel("semi_fluid_generator", 0, 0, 1, new DefaultRecipeBuilder());
+
+    public static final RecipeMapLiquidFuel PLASMA_GENERATOR_FUELS = new RecipeMapLiquidFuel("plasma_generator", 0, 1, 1, new DefaultRecipeBuilder());
+
+    public static final RecipeMapLiquidFuel FLUID_NAQUADAH_REACTOR_FUELS = new RecipeMapLiquidFuel("fluid_naquadah_reactor", 0, 0, 1, new DefaultRecipeBuilder());
+
+
+
+
     public static final RecipeMap<DefaultRecipeBuilder> MAGIC_FUELS = new RecipeMap<>("magicfuels", 1, 1, 0, 1, 0, 0, 0, 0, 1, new DefaultRecipeBuilder());
 
     public static final RecipeMap<DefaultRecipeBuilder> SMALL_NAQUADAH_REACTOR_FUELS = new RecipeMap<>("smallnaquadahreactor", 1, 1, 0, 0, 0, 1, 0, 0, 1, new DefaultRecipeBuilder());
-    public static final RecipeMap<DefaultRecipeBuilder> LARGE_NAQUADAH_REACTOR_FUELS = new RecipeMap<>("largenaquadahreactor", 1, 1, 0, 0, 0, 1, 0, 0, 1, new DefaultRecipeBuilder());
-    public static final RecipeMap<DefaultRecipeBuilder> FLUID_NAQUADAH_REACTOR_FUELS = new RecipeMap<>("fluidnaquadahreactor", 0, 0, 0, 0, 1, 1, 0, 0, 1, new DefaultRecipeBuilder());
 
+    public static final RecipeMap<DefaultRecipeBuilder> LARGE_NAQUADAH_REACTOR_FUELS = new RecipeMap<>("largenaquadahreactor", 1, 1, 0, 0, 0, 1, 0, 0, 1, new DefaultRecipeBuilder());
 
 }

@@ -1,6 +1,5 @@
 package gregtech.common.metatileentities.steam;
 
-import gregtech.api.gui.IUIHolder;
 import gregtech.api.gui.ModularUI;
 import gregtech.api.gui.widgets.ProgressWidget;
 import gregtech.api.gui.widgets.SlotWidget;
@@ -35,15 +34,15 @@ public class SteamMacerator extends SteamMetaTileEntity {
     }
 
     @Override
-    public ModularUI<IUIHolder> createUI(EntityPlayer player) {
+    public ModularUI createUI(EntityPlayer player) {
         return createUITemplate(player)
-            .widget(101, new SlotWidget<>(this.importItems, 0, 53, 25)
+            .widget(101, new SlotWidget(this.importItems, 0, 53, 25)
                 .setBackgroundTexture(BRONZE_SLOT_BACKGROUND_TEXTURE, getFullGuiTexture("slot_%s_macerator_background")))
-            .widget(102, new ProgressWidget<>(workableHandler::getProgressPercent, 78, 25, 20, 18)
+            .widget(102, new ProgressWidget(workableHandler::getProgressPercent, 78, 25, 20, 18)
                 .setProgressBar(getFullGuiTexture("progress_bar_%s_macerator"),
                     getFullGuiTexture("progress_bar_%s_macerator_filled"),
                     ProgressWidget.MoveType.HORIZONTAL))
-            .widget(103, new SlotWidget<>(this.exportItems, 0, 107, 25, true, false)
+            .widget(103, new SlotWidget(this.exportItems, 0, 107, 25, true, false)
                 .setBackgroundTexture(BRONZE_SLOT_BACKGROUND_TEXTURE))
             .build(getHolder(), player);
     }

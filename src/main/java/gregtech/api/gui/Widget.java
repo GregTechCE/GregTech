@@ -16,13 +16,12 @@ import java.util.function.Consumer;
  * Widget is functional element of ModularUI
  * It can draw, perform actions, react to key press and mouse
  * It's information is also synced to client
- * @param <T> type of UIHolder this widget requires
  */
-public abstract class Widget<T extends IUIHolder> implements Comparable<Widget<T>> {
+public abstract class Widget implements Comparable<Widget> {
 
     public static final int SLOT_DRAW_PRIORITY = 1000;
 
-    protected ModularUI<T> gui;
+    protected ModularUI gui;
     public final int drawPriority;
 
     public Widget(int drawPriority) {
@@ -137,7 +136,7 @@ public abstract class Widget<T extends IUIHolder> implements Comparable<Widget<T
     }
 
     @Override
-    public int compareTo(Widget<T> widget) {
+    public int compareTo(Widget widget) {
         return Integer.compare(drawPriority, widget.drawPriority);
     }
 

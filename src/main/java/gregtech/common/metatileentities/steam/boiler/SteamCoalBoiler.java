@@ -1,6 +1,5 @@
 package gregtech.common.metatileentities.steam.boiler;
 
-import gregtech.api.gui.IUIHolder;
 import gregtech.api.gui.ModularUI;
 import gregtech.api.gui.widgets.ProgressWidget;
 import gregtech.api.gui.widgets.ProgressWidget.MoveType;
@@ -61,13 +60,13 @@ public class SteamCoalBoiler extends SteamBoiler {
     }
 
     @Override
-    public ModularUI<IUIHolder> createUI(EntityPlayer player) {
+    public ModularUI createUI(EntityPlayer player) {
         return createUITemplate(player)
-            .widget(100, new SlotWidget<>(this.importItems, 1, 115, 54)
+            .widget(100, new SlotWidget(this.importItems, 1, 115, 54)
                 .setBackgroundTexture(BRONZE_SLOT_BACKGROUND_TEXTURE, SLOT_FURNACE_BACKGROUND))
-            .widget(101, new SlotWidget<>(this.exportItems, 1, 115, 18, true, false)
+            .widget(101, new SlotWidget(this.exportItems, 1, 115, 18, true, false)
                 .setBackgroundTexture(BRONZE_SLOT_BACKGROUND_TEXTURE))
-            .widget(102, new ProgressWidget<>(this::getFuelLeftPercent, 114, 35, 18, 18)
+            .widget(102, new ProgressWidget(this::getFuelLeftPercent, 114, 35, 18, 18)
                 .setProgressBar(getGuiTexture("boiler_%s_fuel"),
                     getGuiTexture("boiler_%s_fuel_full"),
                     MoveType.VERTICAL))

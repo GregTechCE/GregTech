@@ -36,7 +36,7 @@ import static gregtech.api.unification.material.type.SolidMaterial.MatFlags.MORT
 public class OreProcessingHandler {
 
     public void registerProcessing() {
-        OrePrefix.log.addProcessingHandler(this::processLog);
+        //OrePrefix.log.addProcessingHandler(this::processLog);
         OrePrefix.plank.addProcessingHandler(this::processPlank);
         OrePrefix.plate.addProcessingHandler(this::processPlate, this::processPolarizing);
         OrePrefix.rotor.addProcessingHandler(this::processRotor, this::processPolarizing);
@@ -44,7 +44,7 @@ public class OreProcessingHandler {
         //OrePrefix.stoneSmooth.addProcessingHandler(this::processStone);
         //OrePrefix.stone.addProcessingHandler(this::processStone);
         OrePrefix.stick.addProcessingHandler(this::processStick, this::processPolarizing);
-        OrePrefix.stickLong.addProcessingHandler(this::processLongStick, this::processPolarizing);
+        //OrePrefix.stickLong.addProcessingHandler(this::processLongStick, this::processPolarizing);
         OrePrefix.dust.addProcessingHandler(this::processDust);
         OrePrefix.ingot.addProcessingHandler(this::processot, this::processPolarizing /*, this::processShaping*/);
         OrePrefix.nugget.addProcessingHandler(this::processNugget, this::processPolarizing);

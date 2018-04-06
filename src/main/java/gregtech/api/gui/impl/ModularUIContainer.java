@@ -15,9 +15,9 @@ import java.util.HashMap;
 public class ModularUIContainer extends Container {
 
     private final HashMap<Slot, INativeWidget> slotMap = new HashMap<>();
-    private final ModularUI<?> modularUI;
+    private final ModularUI modularUI;
 
-    public ModularUIContainer(ModularUI<?> modularUI) {
+    public ModularUIContainer(ModularUI modularUI) {
         this.modularUI = modularUI;
         modularUI.guiWidgets.values().stream()
                 .filter(widget -> widget instanceof INativeWidget)
@@ -29,7 +29,7 @@ public class ModularUIContainer extends Container {
                 });
     }
 
-    public ModularUI<?> getModularUI() {
+    public ModularUI getModularUI() {
         return modularUI;
     }
 

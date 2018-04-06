@@ -2,17 +2,13 @@ package gregtech.common.metatileentities.steam.boiler;
 
 import gregtech.api.capability.impl.FilteredFluidHandler;
 import gregtech.api.capability.impl.FluidTankHandler;
-import gregtech.api.gui.IUIHolder;
 import gregtech.api.gui.ModularUI;
-import gregtech.api.gui.widgets.ProgressWidget;
-import gregtech.api.gui.widgets.ProgressWidget.MoveType;
 import gregtech.api.gui.widgets.TankWidget;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.MetaTileEntityHolder;
 import gregtech.api.recipes.ModHandler;
 import gregtech.api.render.Textures;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.items.IItemHandlerModifiable;
 import net.minecraftforge.items.ItemStackHandler;
@@ -60,9 +56,9 @@ public class SteamLavaBoiler extends SteamBoiler {
     }
 
     @Override
-    protected ModularUI<IUIHolder> createUI(EntityPlayer entityPlayer) {
+    protected ModularUI createUI(EntityPlayer entityPlayer) {
         return createUITemplate(entityPlayer)
-            .widget(100, new TankWidget<>(lavaFluidTank, 108, 17, 11, 55)
+            .widget(100, new TankWidget(lavaFluidTank, 108, 17, 11, 55)
                 .setBackgroundTexture(getGuiTexture("bar_%s_empty")))
             .build(getHolder(), entityPlayer);
     }

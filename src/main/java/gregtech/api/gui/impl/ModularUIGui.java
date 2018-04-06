@@ -14,13 +14,13 @@ public class ModularUIGui extends GuiContainer {
 
     public static Queue<PacketUIWidgetUpdate> queuingWidgetUpdates = new ArrayDeque<>();
 
-    private final ModularUI<?> modularUI;
+    private final ModularUI modularUI;
 
-    public ModularUI<?> getModularUI() {
+    public ModularUI getModularUI() {
         return modularUI;
     }
 
-    public ModularUIGui(ModularUI<?> modularUI) {
+    public ModularUIGui(ModularUI modularUI) {
         super(new ModularUIContainer(modularUI));
         this.modularUI = modularUI;
     }
@@ -37,7 +37,7 @@ public class ModularUIGui extends GuiContainer {
         super.updateScreen();
         PacketUIWidgetUpdate packet = queuingWidgetUpdates.poll();
         if(packet != null && packet.windowId == inventorySlots.windowId) {
-            Widget<?> widget = modularUI.guiWidgets.get(packet.widgetId);
+            Widget widget = modularUI.guiWidgets.get(packet.widgetId);
             int discriminator = packet.updateData.readInt();
             if(widget != null) widget.readUpdateInfo(discriminator, packet.updateData);
         }

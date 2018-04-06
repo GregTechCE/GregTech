@@ -9,18 +9,13 @@ import codechicken.lib.vec.Cuboid6;
 import codechicken.lib.vec.uv.IconTransformation;
 import com.google.common.base.Preconditions;
 import gregtech.api.GregTechAPI;
-import gregtech.api.block.machines.BlockMachine;
-import gregtech.api.capability.ICustomDataTile;
 import gregtech.api.capability.impl.FluidHandlerProxy;
 import gregtech.api.capability.impl.FluidTankHandler;
 import gregtech.api.capability.impl.ItemHandlerProxy;
-import gregtech.api.gui.IUIHolder;
 import gregtech.api.gui.ModularUI;
 import gregtech.api.util.GTUtility;
 import gregtech.common.blocks.MetaBlocks;
 import net.minecraft.block.Block;
-import net.minecraft.block.SoundType;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -208,7 +203,7 @@ public abstract class MetaTileEntity {
      * @param entityPlayer player opening inventory
      * @return freshly created UI instance
      */
-    protected abstract ModularUI<IUIHolder> createUI(EntityPlayer entityPlayer);
+    protected abstract ModularUI createUI(EntityPlayer entityPlayer);
 
     /**
      * Called when player clicks on specific side of this meta tile entity

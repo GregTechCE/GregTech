@@ -7,7 +7,7 @@ import net.minecraft.network.PacketBuffer;
 
 import java.util.function.DoubleSupplier;
 
-public class ProgressWidget<T extends IUIHolder> extends Widget<T> {
+public class ProgressWidget extends Widget {
 
     public enum MoveType {
         VERTICAL,
@@ -44,7 +44,7 @@ public class ProgressWidget<T extends IUIHolder> extends Widget<T> {
         this.moveType = moveType;
     }
 
-    public ProgressWidget<T> setProgressBar(TextureArea emptyBarArea, TextureArea filledBarArea, MoveType moveType) {
+    public ProgressWidget setProgressBar(TextureArea emptyBarArea, TextureArea filledBarArea, MoveType moveType) {
         this.emptyBarArea = emptyBarArea;
         this.filledBarArea = filledBarArea;
         this.moveType = moveType;
