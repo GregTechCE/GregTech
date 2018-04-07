@@ -39,6 +39,7 @@ public class OreProcessingHandler {
         //OrePrefix.log.addProcessingHandler(this::processLog);
         OrePrefix.plank.addProcessingHandler(this::processPlank);
         OrePrefix.plate.addProcessingHandler(this::processPlate, this::processPolarizing);
+        OrePrefix.plateDense.addProcessingHandler(this::processPlate, this::processPolarizing);
         OrePrefix.rotor.addProcessingHandler(this::processRotor, this::processPolarizing);
         //OrePrefix.stoneCobble.addProcessingHandler(this::processStone);
         //OrePrefix.stoneSmooth.addProcessingHandler(this::processStone);
@@ -1027,13 +1028,16 @@ public class OreProcessingHandler {
         switch (platePrefix) {
             case plate:
                 if (material instanceof FluidMaterial) {
-                    RecipeMaps.FLUID_SOLIDFICATION_RECIPES.recipeBuilder()
-                        .notConsumable(MetaItems.SHAPE_MOLD_PLATE)
-                        .fluidInputs(((FluidMaterial) material).getFluid(L))
-                        .outputs(OreDictUnifier.get(OrePrefix.plate, material))
-                        .duration(32)
-                        .EUt(8)
-                        .buildAndRegister();
+                    FluidStack fluid = ((FluidMaterial) material).getFluid(L);
+                    if (fluid != null) {
+                        RecipeMaps.FLUID_SOLIDFICATION_RECIPES.recipeBuilder()
+                            .notConsumable(MetaItems.SHAPE_MOLD_PLATE)
+                            .fluidInputs(fluid)
+                            .outputs(OreDictUnifier.get(OrePrefix.plate, material))
+                            .duration(32)
+                            .EUt(8)
+                            .buildAndRegister();
+                    }
                 }
 
                 RecipeMaps.IMPLOSION_RECIPES.recipeBuilder()
@@ -1089,6 +1093,7 @@ public class OreProcessingHandler {
                 if (!noSmashing) {
                     RecipeMaps.BENDER_RECIPES.recipeBuilder()
                         .inputs(OreDictUnifier.get(OrePrefix.plate, material, 9))
+                        .circuitMeta(2)
                         .outputs(GTUtility.copyAmount(1, stack))
                         .duration((int) Math.max(materialMass * 9L, 1L))
                         .EUt(96)
