@@ -18,6 +18,7 @@ import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.fluids.FluidStack;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
@@ -64,6 +65,7 @@ public abstract class RecipeMapWorkableHandler extends MTETrait implements IWork
             long maxVoltage = getMaxVoltage();
             Recipe pickedRecipe = recipeMap.findRecipe(maxVoltage, metaTileEntity.getImportItems(), metaTileEntity.getImportFluids());
             if(pickedRecipe != null && setupAndConsumeRecipeInputs(pickedRecipe)) {
+                System.out.println("check recipe " + pickedRecipe + " " + recipeMap.unlocalizedName);
                 if(pickedRecipe.canBeBuffered()) {
                     this.previousRecipe = pickedRecipe;
                 } else this.previousRecipe = null;
@@ -91,6 +93,9 @@ public abstract class RecipeMapWorkableHandler extends MTETrait implements IWork
     }
 
     private static int[] calculateOverclock(int EUt, long voltage, long amperage, int duration) {
+        boolean negativeEU = EUt < 0;
+        if(negativeEU)
+            EUt = -EUt;
         int tier = GTUtility.getTierByVoltage(voltage);
         if (EUt <= 16) {
             int resultEUt = EUt * (1 << (tier - 1)) * (1 << (tier - 1));
@@ -103,7 +108,7 @@ public abstract class RecipeMapWorkableHandler extends MTETrait implements IWork
                 resultEUt *= 4;
                 resultDuration /= 2;
             }
-            return new int[] {resultEUt, resultDuration};
+            return new int[] {negativeEU ? -resultEUt : resultEUt, resultDuration};
         }
     }
 

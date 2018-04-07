@@ -59,7 +59,7 @@ public class RenderUtil {
                     int maskTop = 16 - height;
                     int maskRight = 16 - width;
 
-                    drawFluidTexture(x, y, fluidStillSprite, maskTop, maskRight, 100);
+                    drawFluidTexture(x, y, fluidStillSprite, maskTop, maskRight, 0.0);
                 }
             }
         }

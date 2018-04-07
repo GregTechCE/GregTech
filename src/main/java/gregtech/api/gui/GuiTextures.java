@@ -17,10 +17,16 @@ public class GuiTextures {
     //INDICATORS
     public static final TextureArea INDICATOR_NO_ENERGY = TextureArea.fullImage("textures/gui/base/indicator_no_energy.png");
 
+    //ICONS
+    public static final TextureArea TANK_ICON = TextureArea.fullImage("textures/gui/base/tank_icon.png");
+
     //SLOT OVERLAYS
     public static final TextureArea CHARGER_OVERLAY = TextureArea.fullImage("textures/gui/base/charger_slot_overlay.png");
     public static final TextureArea INT_CIRCUIT_OVERLAY = TextureArea.fullImage("textures/gui/base/int_circuit_overlay.png");
     public static final TextureArea FURNACE_OVERLAY = TextureArea.fullImage("textures/gui/base/furnace_overlay.png");
+
+    public static final TextureArea IN_SLOT_OVERLAY = TextureArea.fullImage("textures/gui/base/in_slot_overlay.png");
+    public static final TextureArea OUT_SLOT_OVERLAY = TextureArea.fullImage("textures/gui/base/out_slot_overlay.png");
 
     //PROGRESS BARS
     public static final TextureArea PROGRESS_BAR_ARROW = TextureArea.fullImage("textures/gui/base/progress_bar_arrow.png");

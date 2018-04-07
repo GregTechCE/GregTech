@@ -158,7 +158,7 @@ public abstract class SteamBoiler extends MetaTileEntity {
 
         if(!getWorld().isRemote) {
             if(getTimer() % 5 == 0) {
-                fillInternalTankFromFluidContainer(0, 0);
+                fillInternalTankFromFluidContainer(importItems, exportItems, 0, 0);
                 pushFluidsIntoNearbyHandlers(STEAM_PUSH_DIRECTIONS);
             }
             if(currentTemperature >= 100 && getTimer() % (isHighPressure ? 10 : 25) == 0) {
@@ -232,7 +232,7 @@ public abstract class SteamBoiler extends MetaTileEntity {
             .widget(3, new TankWidget(steamFluidTank, 69, 17, 11, 55)
                 .setBackgroundTexture(getGuiTexture("bar_%s_empty")))
 
-            .widget(4, new SlotWidget(this.importItems, 0, 43, 18)
+            .widget(4, new FluidContainerSlotWidget(this.importItems, 0, 43, 18)
                 .setBackgroundTexture(BRONZE_SLOT_BACKGROUND_TEXTURE, getGuiTexture("overlay_%s_in")))
             .widget(5, new SlotWidget(this.exportItems, 0, 43, 54, true, false)
                 .setBackgroundTexture(BRONZE_SLOT_BACKGROUND_TEXTURE, getGuiTexture("overlay_%s_out")))

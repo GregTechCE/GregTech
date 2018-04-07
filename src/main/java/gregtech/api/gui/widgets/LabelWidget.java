@@ -19,7 +19,7 @@ public class LabelWidget extends Widget {
     }
 
     public LabelWidget(int xPosition, int yPosition, String text, int color) {
-        super(SLOT_DRAW_PRIORITY + 200);
+        super(SLOT_DRAW_PRIORITY + 500);
         this.xPosition = xPosition;
         this.yPosition = yPosition;
         this.text = text;

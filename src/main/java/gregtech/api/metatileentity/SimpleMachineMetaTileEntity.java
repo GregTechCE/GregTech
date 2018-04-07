@@ -93,13 +93,7 @@ public class SimpleMachineMetaTileEntity extends WorkableTieredMetaTileEntity {
     @Override
     public void clearMachineInventory(NonNullList<ItemStack> itemBuffer) {
         super.clearMachineInventory(itemBuffer);
-        for(int i = 0; i < chargerInventory.getSlots(); i++) {
-            ItemStack stackInSlot = chargerInventory.getStackInSlot(i);
-            if(!stackInSlot.isEmpty()) {
-                chargerInventory.setStackInSlot(i, ItemStack.EMPTY);
-                itemBuffer.add(stackInSlot);
-            }
-        }
+        clearInventory(itemBuffer, chargerInventory);
     }
 
     @Override

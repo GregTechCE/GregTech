@@ -116,7 +116,7 @@ public class SlotWidget extends Widget implements INativeWidget {
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void drawInBackground(float partialTicks, int mouseX, int mouseY) {
+    public void drawInBackground(int mouseX, int mouseY) {
         if(backgroundTexture != null) {
             for(TextureArea backgroundTexture : this.backgroundTexture) {
                 backgroundTexture.draw(this.xPosition - 1, this.yPosition - 1, 18, 18);

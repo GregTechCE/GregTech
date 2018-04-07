@@ -77,6 +77,11 @@ public class Textures {
     public static SimpleOverlayRenderer FLUID_OUTPUT_OVERLAY = new SimpleOverlayRenderer("machine/overlay_fluid_output");
     public static SimpleOverlayRenderer ITEM_OUTPUT_OVERLAY = new SimpleOverlayRenderer("machine/overlay_item_output");
 
+    public static SimpleOverlayRenderer ENERGY_OUT = new SimpleOverlayRenderer("machine/overlay_energy_out");
+    public static SimpleOverlayRenderer ENERGY_IN = new SimpleOverlayRenderer("machine/overlay_energy_in");
+    public static SimpleOverlayRenderer ENERGY_OUT_MULTI = new SimpleOverlayRenderer("machine/overlay_energy_out_multi");
+    public static SimpleOverlayRenderer ENERGY_IN_MULTI = new SimpleOverlayRenderer("machine/overlay_energy_in_multi");
+
     static {
         for(int i = 0; i < VOLTAGE_CASINGS.length; i++) {
             String voltageName = GTValues.VN[i].toLowerCase();

@@ -21,7 +21,7 @@ public class ButtonWidget extends Widget {
 
     public ButtonWidget(int xPosition, int yPosition, int width, int height, TextureArea buttonTexture,
                         BooleanSupplier isPressedCondition, BooleanConsumer setPressedExecutor) {
-        super(Widget.SLOT_DRAW_PRIORITY - 1);
+        super(Widget.SLOT_DRAW_PRIORITY + 100);
         this.xPosition = xPosition;
         this.yPosition = yPosition;
         this.width = width;
@@ -33,7 +33,7 @@ public class ButtonWidget extends Widget {
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void drawInBackground(float partialTicks, int mouseX, int mouseY) {
+    public void drawInBackground(int mouseX, int mouseY) {
         if(!this.isPressed) {
             buttonTexture.drawSubArea(xPosition, yPosition, width, height, 0.0, 0.0, 1.0, 0.5);
         } else {

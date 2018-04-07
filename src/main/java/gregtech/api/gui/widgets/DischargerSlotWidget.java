@@ -1,7 +1,6 @@
 package gregtech.api.gui.widgets;
 
 import gregtech.api.capability.IElectricItem;
-import gregtech.api.gui.IUIHolder;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.items.IItemHandlerModifiable;
 

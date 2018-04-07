@@ -85,6 +85,7 @@ public class GregTechMod {
         MetaBlocks.registerOreDict();
         MaterialInfoLoader.init();
         OrePrefix.runMaterialHandlers();
+        FuelLoader.registerFuels();
         MetaItems.registerRecipes();
 
         gregtechproxy.onLoad();
@@ -103,7 +104,6 @@ public class GregTechMod {
 
         gregtechproxy.onPostLoad();
 
-        FuelLoader.registerFuels();
         DungeonLootLoader.init();
         GTLog.logger.info("PostInit-Phase finished!");
     }

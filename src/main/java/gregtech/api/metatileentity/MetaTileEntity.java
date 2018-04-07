@@ -379,7 +379,7 @@ public abstract class MetaTileEntity {
         return null;
     }
 
-    public boolean fillInternalTankFromFluidContainer(int inputSlot, int outputSlot) {
+    public boolean fillInternalTankFromFluidContainer(IItemHandlerModifiable importItems, IItemHandlerModifiable exportItems, int inputSlot, int outputSlot) {
         ItemStack inputContainerStack = importItems.extractItem(inputSlot, 1, true);
         IFluidHandlerItem fluidHandler = inputContainerStack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY, null);
         if(fluidHandler == null) return false; //if not fluid container, return
@@ -399,7 +399,7 @@ public abstract class MetaTileEntity {
         return true;
     }
 
-    public boolean fillContainerFromInternalTank(int inputSlot, int outputSlot) {
+    public boolean fillContainerFromInternalTank(IItemHandlerModifiable importItems, IItemHandlerModifiable exportItems, int inputSlot, int outputSlot) {
         ItemStack emptyContainer = importItems.extractItem(inputSlot, 1, true);
         IFluidHandlerItem fluidHandler = emptyContainer.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY, null);
         if(fluidHandler == null) return false; //if not fluid container, return
@@ -530,17 +530,15 @@ public abstract class MetaTileEntity {
     }
 
     public void clearMachineInventory(NonNullList<ItemStack> itemBuffer) {
-        for(int i = 0; i < importItems.getSlots(); i++) {
-            ItemStack stackInSlot = importItems.getStackInSlot(i);
+        clearInventory(itemBuffer, importItems);
+        clearInventory(itemBuffer, exportItems);
+    }
+
+    protected static void clearInventory(NonNullList<ItemStack> itemBuffer, IItemHandlerModifiable inventory) {
+        for(int i = 0; i < inventory.getSlots(); i++) {
+            ItemStack stackInSlot = inventory.getStackInSlot(i);
             if(!stackInSlot.isEmpty()) {
-                importItems.setStackInSlot(i, ItemStack.EMPTY);
-                itemBuffer.add(stackInSlot);
-            }
-        }
-        for(int i = 0; i < exportItems.getSlots(); i++) {
-            ItemStack stackInSlot = exportItems.getStackInSlot(i);
-            if(!stackInSlot.isEmpty()) {
-                exportItems.setStackInSlot(i, ItemStack.EMPTY);
+                inventory.setStackInSlot(i, ItemStack.EMPTY);
                 itemBuffer.add(stackInSlot);
             }
         }

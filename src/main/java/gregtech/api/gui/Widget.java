@@ -65,7 +65,7 @@ public abstract class Widget implements Comparable<Widget> {
      * Note that current GL state is ALREADY translated to (guiLeft, guiTop, 0.0)!
      */
     @SideOnly(Side.CLIENT)
-    public void drawInBackground(float partialTicks, int mouseX, int mouseY) {
+    public void drawInBackground(int mouseX, int mouseY) {
     }
 
     /**

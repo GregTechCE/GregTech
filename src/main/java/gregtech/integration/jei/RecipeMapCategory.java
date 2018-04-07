@@ -109,7 +109,7 @@ public class RecipeMapCategory implements IRecipeCategory<GTRecipeWrapper> {
     public void drawExtras(Minecraft minecraft) {
         GlStateManager.translate(1.0 + OFFSET_DRAW_X, 1.0 + OFFSET_DRAW_Y, 0.0);
         for(Widget widget : modularUI.guiWidgets.values()) {
-            widget.drawInBackground(0.0f, 0, 0);
+            widget.drawInBackground(0, 0);
             widget.drawInForeground(0, 0);
         }
     }

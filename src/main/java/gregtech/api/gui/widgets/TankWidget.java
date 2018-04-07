@@ -34,7 +34,7 @@ public class TankWidget extends Widget {
     private int lastTankCapacity;
 
     public TankWidget(IFluidTank fluidTank, int x, int y, int width, int height) {
-        super(SLOT_DRAW_PRIORITY + 300);
+        super(SLOT_DRAW_PRIORITY + 100);
         this.fluidTank = fluidTank;
         this.x = x;
         this.y = y;
@@ -75,7 +75,7 @@ public class TankWidget extends Widget {
     }
 
     @Override
-    public void drawInForeground(int mouseX, int mouseY) {
+    public void drawInBackground(int mouseX, int mouseY) {
         if(backgroundTexture != null) {
             for(TextureArea textureArea : backgroundTexture) {
                 textureArea.draw(x, y, width, height);
@@ -92,7 +92,10 @@ public class TankWidget extends Widget {
         if(overlayTexture != null) {
             overlayTexture.draw(x, y, width, height);
         }
+    }
 
+    @Override
+    public void drawInForeground(int mouseX, int mouseY) {
         if(!hideTooltip && !gui.isJEIHandled && isMouseOver(x, y, width, height, mouseX, mouseY)) {
             List<String> tooltips = new ArrayList<>();
             if(lastFluidInTank != null) {

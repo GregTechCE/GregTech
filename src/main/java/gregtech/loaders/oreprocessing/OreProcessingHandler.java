@@ -40,13 +40,14 @@ public class OreProcessingHandler {
         OrePrefix.plank.addProcessingHandler(this::processPlank);
         OrePrefix.plate.addProcessingHandler(this::processPlate, this::processPolarizing);
         OrePrefix.rotor.addProcessingHandler(this::processRotor, this::processPolarizing);
+        OrePrefix.plateDense.addProcessingHandler(this::processDenyPlate, this::processPolarizing);
         //OrePrefix.stoneCobble.addProcessingHandler(this::processStone);
         //OrePrefix.stoneSmooth.addProcessingHandler(this::processStone);
         //OrePrefix.stone.addProcessingHandler(this::processStone);
         OrePrefix.stick.addProcessingHandler(this::processStick, this::processPolarizing);
         //OrePrefix.stickLong.addProcessingHandler(this::processLongStick, this::processPolarizing);
         OrePrefix.dust.addProcessingHandler(this::processDust);
-        OrePrefix.ingot.addProcessingHandler(this::processot, this::processPolarizing /*, this::processShaping*/);
+        OrePrefix.ingot.addProcessingHandler(this::processIngot, this::processPolarizing /*, this::processShaping*/);
         OrePrefix.nugget.addProcessingHandler(this::processNugget, this::processPolarizing);
         OrePrefix.dustSmall.addProcessingHandler(this::processSmallDust);
         OrePrefix.dustTiny.addProcessingHandler(this::processTinyDust);
@@ -316,7 +317,7 @@ public class OreProcessingHandler {
             fineWireStack, 'x', OreDictUnifier.get(OrePrefix.ingot, material));
     }
 
-    private void processot(OrePrefix ingotPrefix, Material material) {
+    private void processIngot(OrePrefix ingotPrefix, Material material) {
         if (!(material instanceof MetalMaterial))
             return;
         ItemStack ingotStack = OreDictUnifier.get(ingotPrefix, material);
@@ -1020,82 +1021,61 @@ public class OreProcessingHandler {
     }
 
     private void processPlate(OrePrefix platePrefix, Material material) { //for plate and plateDense
+        if (!(material instanceof DustMaterial))
+            return;
+        DustMaterial dustMaterial = (DustMaterial) material;
         ItemStack stack = OreDictUnifier.get(platePrefix, material);
-        boolean noSmashing = material.hasFlag(NO_SMASHING);
-        long materialMass = material.getMass();
+        if (dustMaterial.shouldGenerateFluid()) {
+            RecipeMaps.FLUID_SOLIDFICATION_RECIPES.recipeBuilder()
+                .notConsumable(MetaItems.SHAPE_MOLD_PLATE)
+                .fluidInputs(dustMaterial.getFluid(L))
+                .outputs(stack)
+                .duration(32).EUt(8)
+                .buildAndRegister();
+        }
 
-        switch (platePrefix) {
-            case plate:
-                if (material instanceof FluidMaterial) {
-                    RecipeMaps.FLUID_SOLIDFICATION_RECIPES.recipeBuilder()
-                        .notConsumable(MetaItems.SHAPE_MOLD_PLATE)
-                        .fluidInputs(((FluidMaterial) material).getFluid(L))
-                        .outputs(OreDictUnifier.get(OrePrefix.plate, material))
-                        .duration(32)
-                        .EUt(8)
-                        .buildAndRegister();
-                }
+        ItemStack compressedStack = OreDictUnifier.get(OrePrefix.compressed, material);
+        if (!compressedStack.isEmpty()) {
+            RecipeMaps.IMPLOSION_RECIPES.recipeBuilder()
+                .inputs(GTUtility.copyAmount(2, stack))
+                .explosivesAmount(2)
+                .outputs(compressedStack, OreDictUnifier.get(OrePrefix.dustTiny, Materials.DarkAsh))
+                .buildAndRegister();
+        }
 
-                RecipeMaps.IMPLOSION_RECIPES.recipeBuilder()
-                    .inputs(GTUtility.copyAmount(2, stack))
-                    .explosivesAmount(2)
-                    .outputs(OreDictUnifier.get(OrePrefix.compressed, material), OreDictUnifier.get(OrePrefix.dustTiny, Materials.DarkAsh))
-                    .buildAndRegister();
+        if (!material.hasFlag(NO_SMASHING)) {
+            if (material instanceof MetalMaterial) {
+                ModHandler.addShapedRecipe("ingot_to_plate_" + material,
+                    OreDictUnifier.get(OrePrefix.plate, material),
+                    "h", "X", "X",
+                    'X', new UnificationEntry(OrePrefix.ingot, material));
+            } else if (material instanceof GemMaterial) {
+                ModHandler.addShapedRecipe("gem_to_plate_" + material,
+                    OreDictUnifier.get(OrePrefix.plate, material),
+                    "h", "X",
+                    'X', new UnificationEntry(OrePrefix.gem, material));
+            }
+        }
 
-                if (material == Materials.Paper)
-                    ModHandler.addShapedRecipe("papar_f_scane_" + material,
-                        GTUtility.copyAmount(3, stack),
-                        "XXX",
-                        'X', new ItemStack(Items.REEDS, 1, W));
+        if (material.hasFlag(MORTAR_GRINDABLE)) {
+            ModHandler.addShapedRecipe("plate_to_dust_" + material,
+                OreDictUnifier.get(OrePrefix.dust, material),
+                "X", "m", 'X', stack);
+        }
+    }
 
-                if (!noSmashing) {
-                    ModHandler.addShapedRecipe("ingot_t_plate_" + material,
-                        OreDictUnifier.get(OrePrefix.plate, material),
-                        "h",
-                        "X",
-                        "X",
-                        'X', new UnificationEntry(OrePrefix.ingot, material));
-
-                    ModHandler.addShapedRecipe("ingot_t_plate_od_" + material,
-                        OreDictUnifier.get(OrePrefix.plate, material),
-                        "H",
-                        "X",
-                        'H', ToolDictNames.craftingToolForgeHammer,
-                        'X', new UnificationEntry(OrePrefix.ingot, material));
-
-                    ModHandler.addShapedRecipe("gem_t_plate_" + material,
-                        OreDictUnifier.get(OrePrefix.plate, material),
-                        "h",
-                        "X",
-                        'X', new UnificationEntry(OrePrefix.gem, material));
-
-                    ModHandler.addShapedRecipe("gem_t_plate_od_" + material,
-                        OreDictUnifier.get(OrePrefix.plate, material),
-                        "H",
-                        "X",
-                        'H', ToolDictNames.craftingToolForgeHammer,
-                        'X', new UnificationEntry(OrePrefix.gem, material));
-                }
-
-                if (material.hasFlag(MORTAR_GRINDABLE))
-                    ModHandler.addShapedRecipe("plate_t_dust_" + material,
-                        OreDictUnifier.get(OrePrefix.dust, material),
-                        "X",
-                        "m",
-                        'X', new UnificationEntry(OrePrefix.plate, material));
-
-                break;
-            case plateDense:
-                if (!noSmashing) {
-                    RecipeMaps.BENDER_RECIPES.recipeBuilder()
-                        .inputs(OreDictUnifier.get(OrePrefix.plate, material, 9))
-                        .outputs(GTUtility.copyAmount(1, stack))
-                        .duration((int) Math.max(materialMass * 9L, 1L))
-                        .EUt(96)
-                        .buildAndRegister();
-
-                }
-                break;
+    private void processDenyPlate(OrePrefix orePrefix, Material material) {
+        if (!(material instanceof DustMaterial))
+            return;
+        DustMaterial dustMaterial = (DustMaterial) material;
+        ItemStack stack = OreDictUnifier.get(orePrefix, material);
+        if (!material.hasFlag(NO_SMASHING)) {
+            RecipeMaps.BENDER_RECIPES.recipeBuilder()
+                .inputs(OreDictUnifier.get(OrePrefix.plate, material, 9))
+                .circuitMeta(9)
+                .outputs(GTUtility.copyAmount(1, stack))
+                .duration((int) Math.max(material.getMass() * 9L, 1L)).EUt(96)
+                .buildAndRegister();
         }
     }
 
