@@ -21,8 +21,8 @@ import net.minecraftforge.items.ItemStackHandler;
 
 public class RecipeMapCategory implements IRecipeCategory<GTRecipeWrapper> {
 
-    private static final int OFFSET_DRAW_X = -6;
-    private static final int OFFSET_DRAW_Y = -20;
+    private static final int OFFSET_DRAW_X = -1;
+    private static final int OFFSET_DRAW_Y = -30;
     private final RecipeMap<?> recipeMap;
     private final ModularUI modularUI;
     private ItemStackHandler importItems, exportItems;

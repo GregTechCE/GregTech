@@ -207,11 +207,11 @@ public class MetaTileEntities {
         GregTechAPI.registerMetaTileEntity(333, new SimpleMachineMetaTileEntity("forge_hammer.ev", RecipeMaps.FORGE_HAMMER_RECIPES, Textures.FORGE_HAMMER_OVERLAY, 4));
         GregTechAPI.registerMetaTileEntity(334, new SimpleMachineMetaTileEntity("forge_hammer.iv", RecipeMaps.FORGE_HAMMER_RECIPES, Textures.FORGE_HAMMER_OVERLAY, 5));
 
-        GregTechAPI.registerMetaTileEntity(340, new SimpleMachineMetaTileEntity("forming_press.lv", RecipeMaps.PRESS_RECIPES, Textures.FORMING_PRESS_OVERLAY, 1));
-        GregTechAPI.registerMetaTileEntity(341, new SimpleMachineMetaTileEntity("forming_press.mv", RecipeMaps.PRESS_RECIPES, Textures.FORMING_PRESS_OVERLAY, 2));
-        GregTechAPI.registerMetaTileEntity(342, new SimpleMachineMetaTileEntity("forming_press.hv", RecipeMaps.PRESS_RECIPES, Textures.FORMING_PRESS_OVERLAY, 3));
-        GregTechAPI.registerMetaTileEntity(343, new SimpleMachineMetaTileEntity("forming_press.ev", RecipeMaps.PRESS_RECIPES, Textures.FORMING_PRESS_OVERLAY, 4));
-        GregTechAPI.registerMetaTileEntity(344, new SimpleMachineMetaTileEntity("forming_press.iv", RecipeMaps.PRESS_RECIPES, Textures.FORMING_PRESS_OVERLAY, 5));
+        GregTechAPI.registerMetaTileEntity(340, new SimpleMachineMetaTileEntity("forming_press.lv", RecipeMaps.FORMING_PRESS_RECIPES, Textures.FORMING_PRESS_OVERLAY, 1));
+        GregTechAPI.registerMetaTileEntity(341, new SimpleMachineMetaTileEntity("forming_press.mv", RecipeMaps.FORMING_PRESS_RECIPES, Textures.FORMING_PRESS_OVERLAY, 2));
+        GregTechAPI.registerMetaTileEntity(342, new SimpleMachineMetaTileEntity("forming_press.hv", RecipeMaps.FORMING_PRESS_RECIPES, Textures.FORMING_PRESS_OVERLAY, 3));
+        GregTechAPI.registerMetaTileEntity(343, new SimpleMachineMetaTileEntity("forming_press.ev", RecipeMaps.FORMING_PRESS_RECIPES, Textures.FORMING_PRESS_OVERLAY, 4));
+        GregTechAPI.registerMetaTileEntity(344, new SimpleMachineMetaTileEntity("forming_press.iv", RecipeMaps.FORMING_PRESS_RECIPES, Textures.FORMING_PRESS_OVERLAY, 5));
 
         GregTechAPI.registerMetaTileEntity(350, new SimpleMachineMetaTileEntity("lathe.lv", RecipeMaps.LATHE_RECIPES, Textures.LATHE_OVERLAY, 1));
         GregTechAPI.registerMetaTileEntity(351, new SimpleMachineMetaTileEntity("lathe.mv", RecipeMaps.LATHE_RECIPES, Textures.LATHE_OVERLAY, 2));

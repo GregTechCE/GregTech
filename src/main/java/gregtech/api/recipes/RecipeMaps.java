@@ -4,19 +4,29 @@ import gregtech.api.gui.GuiTextures;
 import gregtech.api.gui.widgets.ProgressWidget.MoveType;
 import gregtech.api.recipes.builders.*;
 import gregtech.api.recipes.machines.*;
-import gregtech.api.unification.material.Materials;
-import gregtech.api.util.EnumValidationResult;
-import gregtech.api.util.GTLog;
-import net.minecraftforge.fluids.FluidStack;
 
 public class RecipeMaps {
 
-    public static final RecipeMap<DefaultRecipeBuilder> COMPRESSOR_RECIPES = new RecipeMap<>("compressor", 1, 1, 1, 1, 0, 0, 0, 0, 1, new DefaultRecipeBuilder().duration(400).EUt(2));
-    public static final RecipeMap<DefaultRecipeBuilder> EXTRACTOR_RECIPES = new RecipeMap<>("extractor", 1, 1, 1, 1, 0, 0, 0, 0, 1, new DefaultRecipeBuilder().duration(400).EUt(2));
-    public static final RecipeMap<DefaultRecipeBuilder> MACERATOR_RECIPES = new RecipeMap<>("macerator", 1, 1, 1, 4, 0, 0, 0, 0, 1, new DefaultRecipeBuilder().duration(400).EUt(2));
+    public static final RecipeMap<DefaultRecipeBuilder> COMPRESSOR_RECIPES = new RecipeMap<>("compressor", 1, 1, 1, 1, 0, 0, 0, 0, 1, new DefaultRecipeBuilder().duration(400).EUt(2))
+        .setSlotOverlay(false, false, GuiTextures.COMPRESSOR_OVERLAY)
+        .setProgressBar(GuiTextures.PROGRESS_BAR_COMPRESS, MoveType.HORIZONTAL);
+    public static final RecipeMap<DefaultRecipeBuilder> EXTRACTOR_RECIPES = new RecipeMap<>("extractor", 1, 1, 1, 1, 0, 0, 0, 0, 1, new DefaultRecipeBuilder().duration(400).EUt(2))
+        .setSlotOverlay(false, false, GuiTextures.EXTRACTOR_OVERLAY)
+        .setProgressBar(GuiTextures.PROGRESS_BAR_EXTRACT, MoveType.HORIZONTAL);
+    public static final RecipeMap<DefaultRecipeBuilder> MACERATOR_RECIPES = new RecipeMap<>("macerator", 1, 1, 1, 4, 0, 0, 0, 0, 1, new DefaultRecipeBuilder().duration(400).EUt(2))
+        .setSlotOverlay(false, false, GuiTextures.CRUSHED_ORE_OVERLAY)
+        .setSlotOverlay(true, false, GuiTextures.DUST_OVERLAY)
+        .setProgressBar(GuiTextures.PROGRESS_BAR_MACERATE, MoveType.HORIZONTAL);
 
-    public static final RecipeMap<DefaultRecipeBuilder> ORE_WASHER_RECIPES = new RecipeMap<>("orewasher", 1, 1, 3, 3, 0, 1, 0, 0, 1, new DefaultRecipeBuilder().duration(400).EUt(16));
-    public static final RecipeMap<DefaultRecipeBuilder> THERMAL_CENTRIFUGE_RECIPES = new RecipeMap<>("thermalcentrifuge", 1, 1, 1, 3, 0, 0, 0, 0, 2, new DefaultRecipeBuilder().duration(400).EUt(48));
+    public static final RecipeMap<DefaultRecipeBuilder> ORE_WASHER_RECIPES = new RecipeMap<>("orewasher", 1, 1, 3, 3, 0, 1, 0, 0, 1, new DefaultRecipeBuilder().duration(400).EUt(16))
+        .setSlotOverlay(false, false, GuiTextures.CRUSHED_ORE_OVERLAY)
+        .setSlotOverlay(true, false, GuiTextures.DUST_OVERLAY)
+        .setProgressBar(GuiTextures.PROGRESS_BAR_BATH, MoveType.HORIZONTAL);
+
+    public static final RecipeMap<DefaultRecipeBuilder> THERMAL_CENTRIFUGE_RECIPES = new RecipeMap<>("thermalcentrifuge", 1, 1, 1, 3, 0, 0, 0, 0, 2, new DefaultRecipeBuilder().duration(400).EUt(48))
+        .setSlotOverlay(false, false, GuiTextures.CRUSHED_ORE_OVERLAY)
+        .setSlotOverlay(true, false, GuiTextures.DUST_OVERLAY)
+        .setProgressBar(GuiTextures.PROGRESS_BAR_ARROW, MoveType.HORIZONTAL);
 
     public static final RecipeMap<DefaultRecipeBuilder> FURNACE_RECIPES = new RecipeMapFurnace("furnace", 1, 1, 1, 1, 0, 0, 0, 0, 1, new DefaultRecipeBuilder())
         .setSlotOverlay(false, false, GuiTextures.FURNACE_OVERLAY)
@@ -26,16 +36,31 @@ public class RecipeMaps {
         .setSlotOverlay(false, false, GuiTextures.FURNACE_OVERLAY)
         .setProgressBar(GuiTextures.PROGRESS_BAR_ARROW, MoveType.HORIZONTAL);
 
-    public static final RecipeMap<IntCircuitRecipeBuilder> ASSEMBLER_RECIPES = new RecipeMap<>("assembler", 1, 2, 1, 1, 0, 1, 0, 0, 1, new AssemblerRecipeBuilder());
+    public static final RecipeMap<IntCircuitRecipeBuilder> ASSEMBLER_RECIPES = new RecipeMap<>("assembler", 1, 2, 1, 1, 0, 1, 0, 0, 1, new AssemblerRecipeBuilder())
+        .setSlotOverlay(false, false, GuiTextures.CIRCUIT_OVERLAY)
+        .setProgressBar(GuiTextures.PROGRESS_BAR_CIRCUIT, MoveType.HORIZONTAL);
 
-    public static final RecipeMap<DefaultRecipeBuilder> PRINTER_RECIPES = new RecipeMapPrinter("printer", 1, 2, 1, 1, 1, 1, 0, 0, 1, new DefaultRecipeBuilder());
-    public static final RecipeMap<NotConsumableInputRecipeBuilder> PRESS_RECIPES = new RecipeMapFormingPress("press", 2, 2, 1, 1, 0, 0, 0, 0, 1, new NotConsumableInputRecipeBuilder());
+    public static final RecipeMap<DefaultRecipeBuilder> PRINTER_RECIPES = new RecipeMapPrinter("printer", 1, 2, 1, 1, 1, 1, 0, 0, 1, new DefaultRecipeBuilder())
+        .setSlotOverlay(false, false, GuiTextures.PAPER_OVERLAY)
+        .setSlotOverlay(true, false, GuiTextures.PRINTED_PAPER_OVERLAY)
+        .setProgressBar(GuiTextures.PROGRESS_BAR_ARROW, MoveType.HORIZONTAL);
 
-    public static final RecipeMap<DefaultRecipeBuilder> FLUID_CANNER_RECIPES = new RecipeMapFluidCanner("fluidcanner", 1, 1, 0, 1, 0, 1, 0, 1, 1, new DefaultRecipeBuilder());
+    public static final RecipeMap<NotConsumableInputRecipeBuilder> FORMING_PRESS_RECIPES = new RecipeMapFormingPress("formingpress", 2, 2, 1, 1, 0, 0, 0, 0, 1, new NotConsumableInputRecipeBuilder())
+        .setSlotOverlay(false, false, false, GuiTextures.PRESS_OVERLAY_1)
+        .setSlotOverlay(false, false, true, GuiTextures.PRESS_OVERLAY_2)
+        .setSlotOverlay(true, false, GuiTextures.PRESS_OVERLAY_3)
+        .setProgressBar(GuiTextures.PROGRESS_BAR_COMPRESS, MoveType.HORIZONTAL);
+
+    public static final RecipeMap<DefaultRecipeBuilder> FLUID_CANNER_RECIPES = new RecipeMapFluidCanner("fluidcanner", 1, 1, 0, 1, 0, 1, 0, 1, 1, new DefaultRecipeBuilder())
+        .setSlotOverlay(false, false, GuiTextures.CANISTER_OVERLAY)
+        .setSlotOverlay(true, false, GuiTextures.CANISTER_OVERLAY)
+        .setProgressBar(GuiTextures.PROGRESS_BAR_CANNER, MoveType.HORIZONTAL);
 
 
-    public static final RecipeMap<DefaultRecipeBuilder> PLASMA_ARC_FURNACE_RECIPES = new RecipeMap<>("plasmaarcfurnace", 1, 1, 1, 4, 1, 1, 0, 1, 1, new DefaultRecipeBuilder());
-    public static final RecipeMap<ArcFurnaceRecipeBuilder> ARC_FURNACE_RECIPES = new RecipeMap<>("arcfurnace", 1, 1, 1, 4, 1, 1, 0, 0, 3, new ArcFurnaceRecipeBuilder());
+    public static final RecipeMap<DefaultRecipeBuilder> PLASMA_ARC_FURNACE_RECIPES = new RecipeMap<>("plasmaarcfurnace", 1, 1, 1, 4, 1, 1, 0, 1, 1, new DefaultRecipeBuilder())
+        .setProgressBar(GuiTextures.PROGRESS_BAR_ARROW, MoveType.HORIZONTAL);
+    public static final RecipeMap<ArcFurnaceRecipeBuilder> ARC_FURNACE_RECIPES = new RecipeMap<>("arcfurnace", 1, 1, 1, 4, 1, 1, 0, 0, 3, new ArcFurnaceRecipeBuilder())
+        .setProgressBar(GuiTextures.PROGRESS_BAR_ARROW, MoveType.HORIZONTAL);
 
     /**
      * Example:
@@ -52,7 +77,8 @@ public class RecipeMaps {
      *     			.buildAndRegister();
      * </pre>
      */
-    public static final RecipeMap<DefaultRecipeBuilder> SIFTER_RECIPES = new RecipeMap<>("sifter", 1, 1, 0, 6, 0, 0, 0, 0, 1, new DefaultRecipeBuilder());
+    public static final RecipeMap<DefaultRecipeBuilder> SIFTER_RECIPES = new RecipeMap<>("sifter", 1, 1, 0, 6, 0, 0, 0, 0, 1, new DefaultRecipeBuilder())
+        .setProgressBar(GuiTextures.PROGRESS_BAR_SIFT, MoveType.HORIZONTAL);
 
     /**
      * Example:
@@ -66,7 +92,9 @@ public class RecipeMaps {
      * 				.buildAndRegister();
      * </pre>
      */
-    public static final RecipeMap<NotConsumableInputRecipeBuilder> LASER_ENGRAVER_RECIPES = new RecipeMap<>("laserengraver", 2, 2, 1, 1, 0, 0, 0, 0, 1, new NotConsumableInputRecipeBuilder());
+    public static final RecipeMap<NotConsumableInputRecipeBuilder> LASER_ENGRAVER_RECIPES = new RecipeMap<>("laserengraver", 2, 2, 1, 1, 0, 0, 0, 0, 1, new NotConsumableInputRecipeBuilder())
+        .setSlotOverlay(false, false, true, GuiTextures.LENS_OVERLAY)
+        .setProgressBar(GuiTextures.PROGRESS_BAR_ARROW, MoveType.HORIZONTAL);
 
     /**
      * Example:
@@ -80,7 +108,10 @@ public class RecipeMaps {
      * 				.buildAndRegister();
      * </pre>
      */
-    public static final RecipeMap<DefaultRecipeBuilder> MIXER_RECIPES = new RecipeMap<>("mixer", 1, 4, 0, 0, 0, 1, 0, 1, 1, new DefaultRecipeBuilder());
+    public static final RecipeMap<DefaultRecipeBuilder> MIXER_RECIPES = new RecipeMap<>("mixer", 1, 4, 0, 0, 0, 1, 0, 1, 1, new DefaultRecipeBuilder())
+        .setSlotOverlay(false, false, GuiTextures.DUST_OVERLAY)
+        .setSlotOverlay(true, false, GuiTextures.DUST_OVERLAY)
+        .setProgressBar(GuiTextures.PROGRESS_BAR_BATH, MoveType.HORIZONTAL);
 
     /**
      * Example:
@@ -94,7 +125,10 @@ public class RecipeMaps {
      * 				.buildAndRegister();
      * </pre>
      */
-    public static final RecipeMap<DefaultRecipeBuilder> AUTOCLAVE_RECIPES = new RecipeMap<>("autoclave", 1, 1, 1, 1, 1, 1, 0, 0, 1, new DefaultRecipeBuilder());
+    public static final RecipeMap<DefaultRecipeBuilder> AUTOCLAVE_RECIPES = new RecipeMap<>("autoclave", 1, 1, 1, 1, 1, 1, 0, 0, 1, new DefaultRecipeBuilder())
+        .setSlotOverlay(false, false, GuiTextures.DUST_OVERLAY)
+        .setSlotOverlay(true, false, GuiTextures.CRYSTAL_OVERLAY)
+        .setProgressBar(GuiTextures.PROGRESS_BAR_ARROW, MoveType.HORIZONTAL);
 
     /**
      * Example:
@@ -109,7 +143,10 @@ public class RecipeMaps {
      * 				.buildAndRegister();
      * </pre>
      */
-    public static final RecipeMap<DefaultRecipeBuilder> ELECTROMAGNETIC_SEPARATOR_RECIPES = new RecipeMap<>("electromagneticseparator", 1, 1, 1, 3, 0, 0, 0, 0, 1, new DefaultRecipeBuilder());
+    public static final RecipeMap<DefaultRecipeBuilder> ELECTROMAGNETIC_SEPARATOR_RECIPES = new RecipeMap<>("electromagneticseparator", 1, 1, 1, 3, 0, 0, 0, 0, 1, new DefaultRecipeBuilder())
+        .setSlotOverlay(false, false, GuiTextures.CRUSHED_ORE_OVERLAY)
+        .setSlotOverlay(true, false, GuiTextures.DUST_OVERLAY)
+        .setProgressBar(GuiTextures.PROGRESS_BAR_MAGNET, MoveType.HORIZONTAL);
 
     /**
      * Example:
@@ -122,7 +159,8 @@ public class RecipeMaps {
      * 				.buildAndRegister();
      * </pre>
      */
-    public static final RecipeMap<DefaultRecipeBuilder> POLARIZER_RECIPES = new RecipeMap<>("polarizer", 1, 1, 1, 1, 0, 0, 0, 0, 1, new DefaultRecipeBuilder());
+    public static final RecipeMap<DefaultRecipeBuilder> POLARIZER_RECIPES = new RecipeMap<>("polarizer", 1, 1, 1, 1, 0, 0, 0, 0, 1, new DefaultRecipeBuilder())
+        .setProgressBar(GuiTextures.PROGRESS_BAR_MAGNET, MoveType.HORIZONTAL);
 
     /**
      * Example:
@@ -136,7 +174,8 @@ public class RecipeMaps {
      * 				.buildAndRegister();
      * </pre>
      */
-    public static final RecipeMap<DefaultRecipeBuilder> CHEMICAL_BATH_RECIPES = new RecipeMap<>("chemicalbath", 1, 1, 1, 3, 1, 1, 0, 0, 1, new DefaultRecipeBuilder());
+    public static final RecipeMap<DefaultRecipeBuilder> CHEMICAL_BATH_RECIPES = new RecipeMap<>("chemicalbath", 1, 1, 1, 3, 1, 1, 0, 0, 1, new DefaultRecipeBuilder())
+        .setProgressBar(GuiTextures.PROGRESS_BAR_BATH, MoveType.HORIZONTAL);
 
     /**
      * Example:
@@ -148,7 +187,9 @@ public class RecipeMaps {
      *         		.buildAndRegister();
      * </pre>
      */
-    public static final RecipeMap<BrewingRecipeBuilder> BREWING_RECIPES = new RecipeMap<>("brewer", 1, 1, 0, 0, 1, 1, 1, 1, 1, new BrewingRecipeBuilder().notOptimized().duration(128).EUt(4));
+    public static final RecipeMap<BrewingRecipeBuilder> BREWING_RECIPES = new RecipeMap<>("brewer", 1, 1, 0, 0, 1, 1, 1, 1, 1, new BrewingRecipeBuilder().notOptimized().duration(128).EUt(4))
+        .setSlotOverlay(false, false, GuiTextures.BREWER_OVERLAY)
+        .setProgressBar(GuiTextures.PROGRESS_BAR_ARROW_MULTIPLE, MoveType.HORIZONTAL);
 
     /**
      * Example:
@@ -162,7 +203,8 @@ public class RecipeMaps {
      * 				.buildAndRegister();
      * </pre>
      */
-    public static final RecipeMap<IntCircuitRecipeBuilder> FLUID_HEATER_RECIPES = new RecipeMap<>("fluidheater", 1, 1, 0, 0, 1, 1, 1, 1, 1, new IntCircuitRecipeBuilder());
+    public static final RecipeMap<IntCircuitRecipeBuilder> FLUID_HEATER_RECIPES = new RecipeMap<>("fluidheater", 1, 1, 0, 0, 1, 1, 1, 1, 1, new IntCircuitRecipeBuilder())
+        .setProgressBar(GuiTextures.PROGRESS_BAR_ARROW, MoveType.HORIZONTAL);
 
     /**
      * Example:
@@ -176,7 +218,8 @@ public class RecipeMaps {
      * 	 			.buildAndRegister();
      * </pre>
      */
-    public static final RecipeMap<IntCircuitRecipeBuilder> DISTILLERY_RECIPES = new RecipeMap<>("distillery", 1, 1, 0, 0, 1, 1, 1, 1, 1, new IntCircuitRecipeBuilder());
+    public static final RecipeMap<IntCircuitRecipeBuilder> DISTILLERY_RECIPES = new RecipeMap<>("distillery", 1, 1, 0, 0, 1, 1, 1, 1, 1, new IntCircuitRecipeBuilder())
+        .setProgressBar(GuiTextures.PROGRESS_BAR_ARROW_MULTIPLE, MoveType.HORIZONTAL);
 
     /**
      * Example:
@@ -188,7 +231,8 @@ public class RecipeMaps {
      * 				.buildAndRegister();
      * </pre>
      */
-    public static final RecipeMap<DefaultRecipeBuilder> FERMENTING_RECIPES = new RecipeMap<>("fermenter", 0, 0, 0, 0, 1, 1, 1, 1, 1, new DefaultRecipeBuilder().notOptimized().EUt(2));
+    public static final RecipeMap<DefaultRecipeBuilder> FERMENTING_RECIPES = new RecipeMap<>("fermenter", 0, 0, 0, 0, 1, 1, 1, 1, 1, new DefaultRecipeBuilder().notOptimized().EUt(2))
+        .setProgressBar(GuiTextures.PROGRESS_BAR_ARROW, MoveType.HORIZONTAL);
 
     /**
      * Example:
@@ -202,7 +246,9 @@ public class RecipeMaps {
      * 				.buildAndRegister();
      * </pre>
      */
-    public static final RecipeMap<NotConsumableInputRecipeBuilder> FLUID_SOLIDFICATION_RECIPES = new RecipeMap<>("fluidsolidifier", 1, 1, 1, 1, 1, 1, 0, 0, 1, new NotConsumableInputRecipeBuilder());
+    public static final RecipeMap<NotConsumableInputRecipeBuilder> FLUID_SOLIDFICATION_RECIPES = new RecipeMap<>("fluidsolidifier", 1, 1, 1, 1, 1, 1, 0, 0, 1, new NotConsumableInputRecipeBuilder())
+        .setSlotOverlay(false, false, GuiTextures.SOLIDIFIER_OVERLAY)
+        .setProgressBar(GuiTextures.PROGRESS_BAR_ARROW, MoveType.HORIZONTAL);
 
     /**
      * Examples:
@@ -223,7 +269,9 @@ public class RecipeMaps {
      * 				.buildAndRegister();
      * </pre>
      */
-    public static final RecipeMap<NotConsumableInputRecipeBuilder> FLUID_EXTRACTION_RECIPES = new RecipeMap<>("fluidextractor", 1, 1, 0, 1, 0, 0, 1, 1, 1, new NotConsumableInputRecipeBuilder());
+    public static final RecipeMap<NotConsumableInputRecipeBuilder> FLUID_EXTRACTION_RECIPES = new RecipeMap<>("fluidextractor", 1, 1, 0, 1, 0, 0, 1, 1, 1, new NotConsumableInputRecipeBuilder())
+        .setSlotOverlay(false, false, GuiTextures.EXTRACTOR_OVERLAY)
+        .setProgressBar(GuiTextures.PROGRESS_BAR_EXTRACT, MoveType.HORIZONTAL);
 
     /**
      * Example:
@@ -256,7 +304,10 @@ public class RecipeMaps {
      * 				.buildAndRegister();
      * </pre>
      */
-    public static final RecipeMap<DefaultRecipeBuilder> CENTRIFUGE_RECIPES = new RecipeMap<>("centrifuge", 0, 2, 0, 6, 0, 1, 0, 1, 1, new DefaultRecipeBuilder().EUt(5));
+    public static final RecipeMap<DefaultRecipeBuilder> CENTRIFUGE_RECIPES = new RecipeMap<>("centrifuge", 0, 2, 0, 6, 0, 1, 0, 1, 1, new DefaultRecipeBuilder().EUt(5))
+        .setSlotOverlay(false, false, false, GuiTextures.EXTRACTOR_OVERLAY)
+        .setSlotOverlay(false, false, true, GuiTextures.CANISTER_OVERLAY)
+        .setProgressBar(GuiTextures.PROGRESS_BAR_EXTRACT, MoveType.HORIZONTAL);
 
     /**
      * Examples:
@@ -280,7 +331,10 @@ public class RecipeMaps {
      * 				.buildAndRegister();
      * </pre>
      */
-    public static final RecipeMap<DefaultRecipeBuilder> ELECTROLYZER_RECIPES = new RecipeMap<>("electrolyzer", 0, 2, 0, 6, 0, 1, 0, 1, 1, new DefaultRecipeBuilder());
+    public static final RecipeMap<DefaultRecipeBuilder> ELECTROLYZER_RECIPES = new RecipeMap<>("electrolyzer", 0, 2, 0, 6, 0, 1, 0, 1, 1, new DefaultRecipeBuilder())
+        .setSlotOverlay(false, false, false, GuiTextures.CHARGER_OVERLAY)
+        .setSlotOverlay(false, false, true, GuiTextures.CANISTER_OVERLAY)
+        .setProgressBar(GuiTextures.PROGRESS_BAR_EXTRACT, MoveType.HORIZONTAL);
 
     /**
      * Example:
@@ -334,7 +388,13 @@ public class RecipeMaps {
      * 				.buildAndRegister();
      * </pre>
      */
-    public static final RecipeMap<DefaultRecipeBuilder> CHEMICAL_RECIPES = new RecipeMap<>("chemicalreactor", 0, 2, 0, 1, 0, 1, 0, 1, 1, new DefaultRecipeBuilder().duration(30));
+    public static final RecipeMap<DefaultRecipeBuilder> CHEMICAL_RECIPES = new RecipeMap<>("chemicalreactor", 0, 2, 0, 1, 0, 1, 0, 1, 1, new DefaultRecipeBuilder().duration(30))
+        .setSlotOverlay(false, false, false, GuiTextures.MOLECULAR_OVERLAY_1)
+        .setSlotOverlay(false, false, true, GuiTextures.MOLECULAR_OVERLAY_2)
+        .setSlotOverlay(false, true, GuiTextures.MOLECULAR_OVERLAY_3)
+        .setSlotOverlay(true, false, GuiTextures.VIAL_OVERLAY_1)
+        .setSlotOverlay(true, true, GuiTextures.VIAL_OVERLAY_2)
+        .setProgressBar(GuiTextures.PROGRESS_BAR_ARROW_MULTIPLE, MoveType.HORIZONTAL);
 
     /**
      * If universal every Fluid also gets separate distillation recipes
@@ -400,7 +460,9 @@ public class RecipeMaps {
      * 				.buildAndRegister();
      * </pre>
      */
-    public static final RecipeMap<DefaultRecipeBuilder> WIREMILL_RECIPES = new RecipeMap<>("wiremill", 1, 1, 1, 1, 0, 0, 0, 0, 1, new DefaultRecipeBuilder());
+    public static final RecipeMap<DefaultRecipeBuilder> WIREMILL_RECIPES = new RecipeMap<>("wiremill", 1, 1, 1, 1, 0, 0, 0, 0, 1, new DefaultRecipeBuilder())
+        .setSlotOverlay(false, false, GuiTextures.WIREMILL_OVERLAY)
+        .setProgressBar(GuiTextures.PROGRESS_BAR_WIREMILL, MoveType.HORIZONTAL);
 
     /**
      * Example:
@@ -413,10 +475,14 @@ public class RecipeMaps {
      * 				.buildAndRegister();
      * </pre>
      */
-    public static final RecipeMap<IntCircuitRecipeBuilder> BENDER_RECIPES = new RecipeMap<>("metalbender", 2, 2, 1, 1, 0, 0, 0, 0, 1, new IntCircuitRecipeBuilder());
+    public static final RecipeMap<IntCircuitRecipeBuilder> BENDER_RECIPES = new RecipeMap<>("metalbender", 2, 2, 1, 1, 0, 0, 0, 0, 1, new IntCircuitRecipeBuilder())
+        .setSlotOverlay(false, false, false, GuiTextures.BENDER_OVERLAY)
+        .setProgressBar(GuiTextures.PROGRESS_BAR_BENDING, MoveType.HORIZONTAL);
 
 
-    public static final RecipeMap<NotConsumableInputRecipeBuilder> ALLOY_SMELTER_RECIPES = new RecipeMap<>("alloysmelter", 1, 2, 1, 1, 0, 0, 0, 0, 1, new NotConsumableInputRecipeBuilder());
+    public static final RecipeMap<NotConsumableInputRecipeBuilder> ALLOY_SMELTER_RECIPES = new RecipeMap<>("alloysmelter", 1, 2, 1, 1, 0, 0, 0, 0, 1, new NotConsumableInputRecipeBuilder())
+        .setSlotOverlay(false, false, GuiTextures.FURNACE_OVERLAY)
+        .setProgressBar(GuiTextures.PROGRESS_BAR_ARROW, MoveType.HORIZONTAL);
 
     /**
      * Example:
@@ -429,7 +495,10 @@ public class RecipeMaps {
      * 				.buildAndRegister();
      * </pre>
      */
-    public static final RecipeMap<DefaultRecipeBuilder> CANNER_RECIPES = new RecipeMap<>("canner", 1, 2, 1, 2, 0, 0, 0, 0, 1, new DefaultRecipeBuilder());
+    public static final RecipeMap<DefaultRecipeBuilder> CANNER_RECIPES = new RecipeMap<>("canner", 1, 2, 1, 2, 0, 0, 0, 0, 1, new DefaultRecipeBuilder())
+        .setSlotOverlay(false, false, false, GuiTextures.CANNER_OVERLAY)
+        .setSlotOverlay(false, false, true, GuiTextures.CANISTER_OVERLAY)
+        .setProgressBar(GuiTextures.PROGRESS_BAR_CANNER, MoveType.HORIZONTAL);
 
     /**
      * Example:
@@ -442,7 +511,11 @@ public class RecipeMaps {
      * 				.buildAndRegister();
      * </pre>
      */
-    public static final RecipeMap<DefaultRecipeBuilder> LATHE_RECIPES = new RecipeMap<>("lathe", 1, 1, 1, 2, 0, 0, 0, 0, 1, new DefaultRecipeBuilder());
+    public static final RecipeMap<DefaultRecipeBuilder> LATHE_RECIPES = new RecipeMap<>("lathe", 1, 1, 1, 2, 0, 0, 0, 0, 1, new DefaultRecipeBuilder())
+        .setSlotOverlay(false, false, GuiTextures.PIPE_OVERLAY_1)
+        .setSlotOverlay(true, false, false, GuiTextures.PIPE_OVERLAY_2)
+        .setSlotOverlay(true, false, true, GuiTextures.DUST_OVERLAY)
+        .setProgressBar(GuiTextures.PROGRESS_BAR_LATHE, MoveType.HORIZONTAL);
 
     /**
      * Example:
@@ -456,21 +529,11 @@ public class RecipeMaps {
      * 				.buildAndRegister();
      * </pre>
      */
-    public static final RecipeMap<CutterRecipeBuilder> CUTTER_RECIPES = new RecipeMap<>("cuttingsaw", 1, 1, 1, 1, 0, 1, 0, 0, 1, new CutterRecipeBuilder());
-
-    /**
-     * <pre>
-     * Example:
-     * 	    RecipeMap.SLICER_RECIPES.recipeBuilder()
-     * 				.inputs(ItemList.Food_Baked_Bread.get(1))
-     * 				.notConsumable(ItemList.Shape_Slicer_Flat)
-     * 				.outputs(ItemList.Food_Sliced_Bread.get(2))
-     * 				.duration(128)
-     * 				.EUt(4)
-     * 				.buildAndRegister();
-     * </pre>
-     */
-    public static final RecipeMap<NotConsumableInputRecipeBuilder> SLICER_RECIPES = new RecipeMap<>("slicer", 2, 2, 1, 1, 0, 0, 0, 0, 1, new NotConsumableInputRecipeBuilder());
+    public static final RecipeMap<CutterRecipeBuilder> CUTTER_RECIPES = new RecipeMap<>("cuttingsaw", 1, 1, 1, 1, 0, 1, 0, 0, 1, new CutterRecipeBuilder())
+        .setSlotOverlay(false, false, GuiTextures.BOX_OVERLAY)
+        .setSlotOverlay(true, false, false, GuiTextures.CUTTER_OVERLAY)
+        .setSlotOverlay(true, false, true, GuiTextures.DUST_OVERLAY)
+        .setProgressBar(GuiTextures.PROGRESS_BAR_SLICE, MoveType.HORIZONTAL);
 
     /**
      * Example:
@@ -484,7 +547,9 @@ public class RecipeMaps {
      * 				.buildAndRegister();
      * </pre>
      */
-    public static final RecipeMap<NotConsumableInputRecipeBuilder> EXTRUDER_RECIPES = new RecipeMap<>("extruder", 2, 2, 1, 1, 0, 0, 0, 0, 1, new NotConsumableInputRecipeBuilder());
+    public static final RecipeMap<NotConsumableInputRecipeBuilder> EXTRUDER_RECIPES = new RecipeMap<>("extruder", 2, 2, 1, 1, 0, 0, 0, 0, 1, new NotConsumableInputRecipeBuilder())
+        .setSlotOverlay(false, false, true, GuiTextures.MOLD_OVERLAY)
+        .setProgressBar(GuiTextures.PROGRESS_BAR_EXTRUDER, MoveType.HORIZONTAL);
 
     /**
      * Example:
@@ -497,10 +562,17 @@ public class RecipeMaps {
      * 				.buildAndRegister();
      * </pre>
      */
-    public static final RecipeMap<DefaultRecipeBuilder> FORGE_HAMMER_RECIPES = new RecipeMap<>("forge_hammer", 1, 1, 1, 1, 0, 0, 0, 0, 1, new DefaultRecipeBuilder());
+    public static final RecipeMap<DefaultRecipeBuilder> FORGE_HAMMER_RECIPES = new RecipeMap<>("forge_hammer", 1, 1, 1, 1, 0, 0, 0, 0, 1, new DefaultRecipeBuilder())
+        .setSlotOverlay(false, false, GuiTextures.HAMMER_OVERLAY)
+        .setProgressBar(GuiTextures.PROGRESS_BAR_HAMMER, MoveType.VERTICAL);
 
-    public static final RecipeMap<DefaultRecipeBuilder> PACKER_RECIPES = new RecipeMap<>("packer", 2, 2, 1, 1, 0, 0, 0, 0, 1, new DefaultRecipeBuilder());
-    public static final RecipeMap<DefaultRecipeBuilder> UNPACKER_RECIPES = new RecipeMap<>("unpacker", 1, 1, 2, 2, 0, 0, 0, 0, 1, new DefaultRecipeBuilder());
+    public static final RecipeMap<DefaultRecipeBuilder> PACKER_RECIPES = new RecipeMap<>("packer", 2, 2, 1, 1, 0, 0, 0, 0, 1, new DefaultRecipeBuilder())
+        .setSlotOverlay(false, false, true, GuiTextures.BOX_OVERLAY)
+        .setSlotOverlay(true, false, GuiTextures.BOXED_OVERLAY)
+        .setProgressBar(GuiTextures.PROGRESS_BAR_ARROW, MoveType.HORIZONTAL);
+    public static final RecipeMap<DefaultRecipeBuilder> UNPACKER_RECIPES = new RecipeMap<>("unpacker", 1, 1, 2, 2, 0, 0, 0, 0, 1, new DefaultRecipeBuilder())
+        .setSlotOverlay(false, false, GuiTextures.BOXED_OVERLAY)
+        .setProgressBar(GuiTextures.PROGRESS_BAR_ARROW, MoveType.HORIZONTAL);
 
 
     /**
