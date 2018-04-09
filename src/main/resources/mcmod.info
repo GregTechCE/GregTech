@@ -3,7 +3,7 @@
   "name": "GregTech Community Edition",
   "description": "Finally, the awesome technology of GregTech-Intergalactical can be used in 1.12!",
   "version": "${version}",
-  "mcversion": "${mc_version}",
+  "mcversion": "${mcversion}",
   "logoFile": "/assets/gregtech/textures/gt_logo_long.png",
   "url": "<insert curseforge here>",
   "authorList": [
