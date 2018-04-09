@@ -125,6 +125,10 @@ public class TileEntityCableEmitter extends TileEntity implements IEnergyContain
     }
 
     @Override
+    public void addEnergy(long energyToAdd) {
+        
+    }
+
     public void setEnergyStored(long energyStored) {
         long voltage = getInputVoltage();
         acceptEnergyFromNetwork(null, voltage, energyStored / voltage);
