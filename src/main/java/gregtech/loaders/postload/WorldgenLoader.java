@@ -1,30 +1,162 @@
 package gregtech.loaders.postload;
 
 import gregtech.api.unification.material.Materials;
+import gregtech.api.unification.material.type.DustMaterial;
 import gregtech.api.unification.ore.StoneTypes;
 import gregtech.api.util.GTLog;
 import gregtech.common.blocks.MetaBlocks;
-import gregtech.common.worldgen.GTWorldGenAsteroid;
-import gregtech.common.worldgen.GTWorldGenOreSmall;
-import gregtech.common.worldgen.GTWorldGenOreVein;
-import gregtech.common.worldgen.GTWorldGenStone;
-import gregtech.common.worldgen.WorldGenerator;
+import gregtech.common.worldgen.*;
+import net.minecraft.util.math.ChunkPos;
+import net.minecraft.world.World;
+import net.minecraft.world.chunk.IChunkProvider;
+import net.minecraft.world.gen.IChunkGenerator;
+import net.minecraftforge.common.config.ConfigCategory;
+import net.minecraftforge.common.config.Configuration;
+import net.minecraftforge.common.config.Property;
+import net.minecraftforge.fml.common.Loader;
+import net.minecraftforge.fml.common.registry.GameRegistry;
+
+import java.io.File;
+import java.util.*;
+import java.util.function.Supplier;
+import java.util.stream.Collectors;
+
+import static gregtech.loaders.postload.WorldgenLoader.DepositConfig.DEPOSITS_CATEGORY_PREFIX;
 
 public class WorldgenLoader {
+    public static final Map<ShapeType, Supplier<IShapeGenerator>> ShapeGenSuppliers = new HashMap<>();
+
+    public static List<DepositConfig> deposits = new ArrayList<>();
+    public static List<SmallOreConfig> smallOres = new ArrayList<>();
+
+    static {
+        ShapeGenSuppliers.put(ShapeType.ELLIPSOID, EllipsoidGenerator::new);
+        //ShapeGenSuppliers.put("ellipsoid", EllipsoidGenerator::new);
+
+        deposits.add(new DepositConfig("red_granite_small", 200, new EllipsoidGenerator(5, 10), true));
+        deposits.add(new DepositConfig("red_granite_medium", 400, new EllipsoidGenerator(10, 20), true));
+        deposits.add(new DepositConfig("red_granite_big", 800, new EllipsoidGenerator(20, 40), true));
+    }
 
     public static void init() {
-        
-        GTLog.logger.info("GregTechMod: Loading world generators");
-        
-        //TODO Custom worldgen from configs
-        //boolean pfaa = (GregTechAPI.sWorldgenFile.get(ConfigCategories.general, "AutoDetectPFAA", true)) && (Loader.isModLoaded("PFAAGeologica"));
-        
-        WorldGenerator.init();
-        
-        //new GTWorldGen_Stone("debug_stone", true, 20, 80, 4, 24, 30, 1, MetaBlocks.GRANITE.withVariant(BlockGranite.GraniteVariant.BLACK_GRANITE, StoneBlock.ChiselingVariant.NORMAL) , false, new String[]{"overworld"}, new String[]{"all"});
-        //new GTWorldGen_Asteroid("debug_asteroid", true, 180, 240, 4, 24, 30, 1, MetaBlocks.MINERAL.withVariant(BlockMineral.MineralVariant.MARBLE, StoneBlock.ChiselingVariant.NORMAL), new String[]{"overworld"}, new String[]{"all"});
-        //new GTWorldGen_OreVein("debug_orevein", true, 60, 40, 80, 32, 7, 8, Materials.Aluminium, Materials.Bauxite, Materials.Ilmenite, Materials.Titanium, new String[]{"overworld"}, new String[]{"all"}, new String[]{"debug_asteroid"});
-        
+        GTLog.logger.info("Loading world generators");
+        GameRegistry.registerWorldGenerator(new GTWorldGenerator(), 0x3fffffff);
+        Configuration config = new Configuration(new File(Loader.instance().getConfigDir(), "GregTech/WorldGeneration.cfg"));
+        loadConfig(config);
+        config.save();
+    }
+
+    private static void loadConfig(Configuration config) {
+        //default deposits
+        for (DepositConfig deposit : deposits) {
+            deposit.loadFromConfig(config);
+        }
+        Set<String> defaultCategories = deposits.stream().map(cd -> cd.name).collect(Collectors.toSet());
+        //custom deposits
+        for (ConfigCategory category : config.getCategory(DEPOSITS_CATEGORY_PREFIX).getChildren()) {
+            if (defaultCategories.contains(category.getName())) continue;
+            deposits.add(new DepositConfig(category.getName(), config));
+        }
+
+        deposits.sort(Comparator.comparing(o -> o.category));
+        smallOres.sort(Comparator.comparing(o -> o.category));
+    }
+
+    public static class DepositConfig {
+        public static final String DEPOSITS_CATEGORY_PREFIX = "deposits";
+
+        public final String category;
+        public final String name;
+        public int distance;
+        public boolean enabled;
+        public IShapeGenerator generator;
+
+        private DepositConfig(String name) {
+            this.name = name;
+            this.category = DEPOSITS_CATEGORY_PREFIX + "." + name;
+        }
+
+        public DepositConfig(String name, Configuration config) {
+            this(name);
+            loadFromConfig(config);
+        }
+
+        public DepositConfig(String name, int distance, IShapeGenerator generator, boolean enabled) {
+            this(name);
+            this.distance = distance;
+            this.enabled = enabled;
+            this.generator = generator;
+        }
+
+        public void loadFromConfig(Configuration config) {
+            distance = config.get(category, "distance", distance).getInt();
+            enabled = config.get(category, "enabled", enabled).getBoolean();
+            String shapeCategory = category + ".shape";
+            ShapeType shapeType = ShapeType.valueOf(config.get(shapeCategory, "type", generator.getShapeType().name()).getString());
+            if (shapeType != generator.getShapeType())
+                generator = ShapeGenSuppliers.get(shapeType).get();
+            generator.loadFromConfig(config, shapeCategory);
+        }
+
+        public Vec2i getNearest(ChunkPos chunkPos, Random random) {
+            final long shift = 0x80000000L;
+            long x = chunkPos.getXStart() + shift;
+            long z = chunkPos.getZStart() + shift;
+
+            long gridX = getGridCoordinate(x);
+            long gridZ = getGridCoordinate(z);
+
+            if (gridX != getGridCoordinate(chunkPos.getXEnd()) || gridZ != getGridCoordinate(chunkPos.getZEnd())) return null;
+            Random gridRandom = new Random(gridX * random.nextInt() + gridZ * random.nextInt() ^ random.nextLong());
+
+            double ratio = 0.5;
+            double offsetX = getRndCoordInCell(gridRandom, ratio);
+            double offsetZ = getRndCoordInCell(gridRandom, ratio);
+
+            int depositX = (int) (offsetX * distance + gridX - shift);
+            int depositZ = (int) (offsetZ * distance + gridZ - shift);
+
+            return new Vec2i(depositX, depositZ);
+        }
+
+        private long getGridCoordinate(long coordinate) {
+            return coordinate - coordinate % distance;
+        }
+
+        //random number from [(1 - ratio) / 2 .. (1 + ratio) / 2]
+        private double getRndCoordInCell(Random random, double ratio) {
+            return ratio * (random.nextDouble() - 0.5) + 0.5;
+        }
+
+        public void generate(Random random, int chunkX, int chunkZ, World world, IChunkGenerator chunkGenerator, IChunkProvider chunkProvider) {
+        }
+    }
+
+    private static class SmallOreConfig {
+        public final static String SMALL_ORE_CATEGORY_PREFIX = "small_ores";
+
+        public final String category;
+        public int minY;
+        public int maxY;
+        public DustMaterial ore;
+
+        private SmallOreConfig(String category) {
+            this.category = category;
+        }
+
+        public SmallOreConfig(String name, int minY, int maxY, DustMaterial ore) {
+            this(SMALL_ORE_CATEGORY_PREFIX + "." + name);
+            this.minY = minY;
+            this.maxY = maxY;
+            this.ore = ore;
+        }
+
+        public void loadFromConfig(Configuration config) {
+
+        }
+    }
+
+    private static void loadConfigOld() {
         String[] overworld = {"overworld"};
         String[] allBiome = {"all"};
         String[] allDims = {"overworld", "the_nether", "the_end", "?moon", "?mars", "?asteroid"};
@@ -32,85 +164,31 @@ public class WorldgenLoader {
         String[] noEndMoon = {"overworld", "the_nether", "?mars", "?asteroid"};
         String[] nether = {"the_nether"};
         String[] none = new String[0];
-        
+
         new GTWorldGenStone("tiny.blackgranite",   true, 0, 120,  4,  8,  48, 1, MetaBlocks.BLACK_GRANITE, false, overworld, allBiome);
         new GTWorldGenStone("small.blackgranite",  true, 0, 120,  8, 16,  96, 1, MetaBlocks.BLACK_GRANITE, false, overworld, allBiome);
         new GTWorldGenStone("medium.blackgranite", true, 0, 120, 16, 24, 144, 1, MetaBlocks.BLACK_GRANITE, false, overworld, allBiome);
         new GTWorldGenStone("large.blackgranite",  true, 0, 120, 24, 32, 192, 1, MetaBlocks.BLACK_GRANITE, false, overworld, allBiome);
         new GTWorldGenStone("huge.blackgranite",   true, 0, 120, 32, 40, 240, 1, MetaBlocks.BLACK_GRANITE, false, overworld, allBiome);
-        
+
         new GTWorldGenStone("tiny.redgranite",   true, 0, 120,  4,  8,  48, 1, MetaBlocks.RED_GRANITE, false, overworld, allBiome);
         new GTWorldGenStone("small.redgranite",  true, 0, 120,  8, 16,  96, 1, MetaBlocks.RED_GRANITE, false, overworld, allBiome);
         new GTWorldGenStone("medium.redgranite", true, 0, 120, 16, 24, 144, 1, MetaBlocks.RED_GRANITE, false, overworld, allBiome);
         new GTWorldGenStone("large.redgranite",  true, 0, 120, 24, 32, 192, 1, MetaBlocks.RED_GRANITE, false, overworld, allBiome);
         new GTWorldGenStone("huge.redgranite",   true, 0, 120, 32, 40, 240, 1, MetaBlocks.RED_GRANITE, false, overworld, allBiome);
-        
+
         new GTWorldGenStone("tiny.basalt",   true, 0, 120,  4,  8,  48, 1, MetaBlocks.BASALT, false, overworld, allBiome);
         new GTWorldGenStone("small.basalt",  true, 0, 120,  8, 16,  96, 1, MetaBlocks.BASALT, false, overworld, allBiome);
         new GTWorldGenStone("medium.basalt", true, 0, 120, 16, 24, 144, 1, MetaBlocks.BASALT, false, overworld, allBiome);
         new GTWorldGenStone("large.basalt",  true, 0, 120, 24, 32, 192, 1, MetaBlocks.BASALT, false, overworld, allBiome);
         new GTWorldGenStone("huge.basalt",   true, 0, 120, 32, 40, 240, 1, MetaBlocks.BASALT, false, overworld, allBiome);
-        
+
         new GTWorldGenStone("tiny.marble",   true, 0, 120,  4,  8,  48, 1, MetaBlocks.MARBLE, false, overworld, allBiome);
         new GTWorldGenStone("small.marble",  true, 0, 120,  8, 16,  96, 1, MetaBlocks.MARBLE, false, overworld, allBiome);
         new GTWorldGenStone("medium.marble", true, 0, 120, 16, 24, 144, 1, MetaBlocks.MARBLE, false, overworld, allBiome);
         new GTWorldGenStone("large.marble",  true, 0, 120, 24, 32, 192, 1, MetaBlocks.MARBLE, false, overworld, allBiome);
         new GTWorldGenStone("huge.marble",   true, 0, 120, 32, 40, 240, 1, MetaBlocks.MARBLE, false, overworld, allBiome);
-        
-        /*IBlockState blockState = GregTechAPI.sBlockGranites.getDefaultState()
-                .withProperty(BlockStonesAbstract.STONE_VARIANT, BlockStonesAbstract.EnumStoneVariant.NORMAL)
-                .withProperty(GregTechAPI.sBlockGranites.getMaterialProperty(), Materials.GraniteBlack);
-        new GT_Worldgen_Stone("overworld.stone.blackgranite.tiny", true, blockState, 0, 1, 50, 48, 0, 120, null, false);
-        new GT_Worldgen_Stone("overworld.stone.blackgranite.small", true, blockState, 0, 1, 100, 96, 0, 120, null, false);
-        new GT_Worldgen_Stone("overworld.stone.blackgranite.medium", true, blockState, 0, 1, 200, 144, 0, 120, null, false);
-        new GT_Worldgen_Stone("overworld.stone.blackgranite.large", true, blockState, 0, 1, 300, 192, 0, 120, null, false);
-        new GT_Worldgen_Stone("overworld.stone.blackgranite.huge", true, blockState, 0, 1, 400, 240, 0, 120, null, false);
-		blockState = blockState.withProperty(GregTechAPI.sBlockGranites.getMaterialProperty(), Materials.GraniteRed);
-        new GT_Worldgen_Stone("overworld.stone.redgranite.tiny", true, blockState, 0, 1, 50, 48, 0, 120, null, false);
-        new GT_Worldgen_Stone("overworld.stone.redgranite.small", true, blockState, 0, 1, 100, 96, 0, 120, null, false);
-        new GT_Worldgen_Stone("overworld.stone.redgranite.medium", true, blockState, 0, 1, 200, 144, 0, 120, null, false);
-        new GT_Worldgen_Stone("overworld.stone.redgranite.large", true, blockState, 0, 1, 300, 192, 0, 120, null, false);
-        new GT_Worldgen_Stone("overworld.stone.redgranite.huge", true, blockState, 0, 1, 400, 240, 0, 120, null, false);
 
-		blockState = blockState.withProperty(GregTechAPI.sBlockGranites.getMaterialProperty(), Materials.GraniteBlack);
-		new GT_Worldgen_Stone("nether.stone.blackgranite.tiny", false, blockState, -1, 1, 50, 48, 0, 120, null, false);
-        new GT_Worldgen_Stone("nether.stone.blackgranite.small", false, blockState, -1, 1, 100, 96, 0, 120, null, false);
-        new GT_Worldgen_Stone("nether.stone.blackgranite.medium", false, blockState, -1, 1, 200, 144, 0, 120, null, false);
-        new GT_Worldgen_Stone("nether.stone.blackgranite.large", false, blockState, -1, 1, 300, 192, 0, 120, null, false);
-        new GT_Worldgen_Stone("nether.stone.blackgranite.huge", false, blockState, -1, 1, 400, 240, 0, 120, null, false);
-		blockState = blockState.withProperty(GregTechAPI.sBlockGranites.getMaterialProperty(), Materials.GraniteRed);
-		new GT_Worldgen_Stone("nether.stone.redgranite.tiny", false, blockState, -1, 1, 50, 48, 0, 120, null, false);
-        new GT_Worldgen_Stone("nether.stone.redgranite.small", false, blockState, -1, 1, 100, 96, 0, 120, null, false);
-        new GT_Worldgen_Stone("nether.stone.redgranite.medium", false, blockState, -1, 1, 200, 144, 0, 120, null, false);
-        new GT_Worldgen_Stone("nether.stone.redgranite.large", false, blockState, -1, 1, 300, 192, 0, 120, null, false);
-        new GT_Worldgen_Stone("nether.stone.redgranite.huge", false, blockState, -1, 1, 400, 240, 0, 120, null, false);
-
-		blockState = GregTechAPI.sBlockStones.getDefaultState();
-        new GT_Worldgen_Stone("overworld.stone.marble.tiny", true, blockState, 0, 1, 50, 48, 0, 120, null, false);
-        new GT_Worldgen_Stone("overworld.stone.marble.small", true, blockState, 0, 1, 100, 96, 0, 120, null, false);
-        new GT_Worldgen_Stone("overworld.stone.marble.medium", true, blockState, 0, 1, 200, 144, 0, 120, null, false);
-        new GT_Worldgen_Stone("overworld.stone.marble.large", true, blockState, 0, 1, 300, 192, 0, 120, null, false);
-        new GT_Worldgen_Stone("overworld.stone.marble.huge", true, blockState, 0, 1, 400, 240, 0, 120, null, false);
-		blockState = blockState.withProperty(GregTechAPI.sBlockStones.getMaterialProperty(), Materials.Basalt);
-        new GT_Worldgen_Stone("overworld.stone.basalt.tiny", true, blockState, 0, 1, 50, 48, 0, 120, null, false);
-        new GT_Worldgen_Stone("overworld.stone.basalt.small", true, blockState, 0, 1, 100, 96, 0, 120, null, false);
-        new GT_Worldgen_Stone("overworld.stone.basalt.medium", true, blockState, 0, 1, 200, 144, 0, 120, null, false);
-        new GT_Worldgen_Stone("overworld.stone.basalt.large", true, blockState, 0, 1, 300, 192, 0, 120, null, false);
-        new GT_Worldgen_Stone("overworld.stone.basalt.huge", true, blockState, 0, 1, 400, 240, 0, 120, null, false);
-
-		blockState = blockState.withProperty(GregTechAPI.sBlockStones.getMaterialProperty(), Materials.Marble);
-        new GT_Worldgen_Stone("nether.stone.marble.tiny", false, blockState, -1, 1, 50, 48, 0, 120, null, false);
-        new GT_Worldgen_Stone("nether.stone.marble.small", false, blockState, -1, 1, 100, 96, 0, 120, null, false);
-        new GT_Worldgen_Stone("nether.stone.marble.medium", false, blockState, -1, 1, 200, 144, 0, 120, null, false);
-        new GT_Worldgen_Stone("nether.stone.marble.large", false, blockState, -1, 1, 300, 192, 0, 120, null, false);
-        new GT_Worldgen_Stone("nether.stone.marble.huge", false, blockState, -1, 1, 400, 240, 0, 120, null, false);
-		blockState = blockState.withProperty(GregTechAPI.sBlockStones.getMaterialProperty(), Materials.Basalt);
-        new GT_Worldgen_Stone("nether.stone.basalt.tiny", false,blockState, -1, 1, 50, 48, 0, 120, null, false);
-        new GT_Worldgen_Stone("nether.stone.basalt.small", false, blockState, -1, 1, 100, 96, 0, 120, null, false);
-        new GT_Worldgen_Stone("nether.stone.basalt.medium", false, blockState, -1, 1, 200, 144, 0, 120, null, false);
-        new GT_Worldgen_Stone("nether.stone.basalt.large", false, blockState, -1, 1, 300, 192, 0, 120, null, false);
-        new GT_Worldgen_Stone("nether.stone.basalt.huge", false, blockState, -1, 1, 400, 240, 0, 120, null, false);*/
-        
         new GTWorldGenOreSmall("copper", true, 60, 120, 32, Materials.Copper, noAst, allBiome);
         new GTWorldGenOreSmall("tin", true, 60, 120, 32, Materials.Tin, allDims, allBiome);
         new GTWorldGenOreSmall("bismuth", true, 80, 120, 8, Materials.Bismuth, new String[]{"overworld", "the_nether", "?moon", "?mars"}, allBiome);
@@ -143,46 +221,11 @@ public class WorldgenLoader {
         new GTWorldGenOreSmall("saltpeter", true, 10, 60, 8, Materials.Saltpeter, nether, allBiome);
         new GTWorldGenOreSmall("sulfur_n", true, 10, 60, 32, Materials.Sulfur, nether, allBiome);
         new GTWorldGenOreSmall("sulfur_o", true, 5, 15, 8, Materials.Sulfur, overworld, allBiome);
-        
-        /*new GT_Worldgen_GT_Ore_SmallPieces("ore.small.copper", true, 60, 120, 32,     !tPFAA, true, true, true, true, false, Materials.Copper);
-        new GT_Worldgen_GT_Ore_SmallPieces("ore.small.tin", true, 60, 120, 32,          !tPFAA, true, true, true, true, true, Materials.Tin);
-        new GT_Worldgen_GT_Ore_SmallPieces("ore.small.bismuth", true, 80, 120, 8,       !tPFAA, true, false, true, true, false, Materials.Bismuth);
-        new GT_Worldgen_GT_Ore_SmallPieces("ore.small.coal", true, 60, 100, 24,         !tPFAA, false, false, false, false, false, Materials.Coal);
-        new GT_Worldgen_GT_Ore_SmallPieces("ore.small.iron", true, 40, 80, 16,          !tPFAA, true, true, true, true, false, Materials.Iron);
-        new GT_Worldgen_GT_Ore_SmallPieces("ore.small.lead", true, 40, 80, 16,          !tPFAA, true, true, true, true, true, Materials.Lead);
-        new GT_Worldgen_GT_Ore_SmallPieces("ore.small.zinc", true, 30, 60, 12,          !tPFAA, true, true, true, true, false, Materials.Zinc);
-        new GT_Worldgen_GT_Ore_SmallPieces("ore.small.gold", true, 20, 40, 8,           !tPFAA, true, true, true, true, true, Materials.Gold);
-        new GT_Worldgen_GT_Ore_SmallPieces("ore.small.silver", true, 20, 40, 8,         !tPFAA, true, true, true, true, true, Materials.Silver);
-        new GT_Worldgen_GT_Ore_SmallPieces("ore.small.nickel", true, 20, 40, 8,         !tPFAA, true, true, true, true, true, Materials.Nickel);
-        new GT_Worldgen_GT_Ore_SmallPieces("ore.small.lapis", true, 20, 40, 4,          !tPFAA, false, false, true, false, true, Materials.Lapis);
-        new GT_Worldgen_GT_Ore_SmallPieces("ore.small.diamond", true, 5, 10, 2,         !tPFAA, true, false, true, true, true, Materials.Diamond);
-        new GT_Worldgen_GT_Ore_SmallPieces("ore.small.emerald", true, 5, 250, 1,        !tPFAA, true, false, false, true, true, Materials.Emerald);
-        new GT_Worldgen_GT_Ore_SmallPieces("ore.small.ruby", true, 5, 250, 1,           !tPFAA, true, false, false, true, true, Materials.Ruby);
-        new GT_Worldgen_GT_Ore_SmallPieces("ore.small.sapphire", true, 5, 250, 1,       !tPFAA, true, false, false, true, true, Materials.Sapphire);
-        new GT_Worldgen_GT_Ore_SmallPieces("ore.small.greensapphire", true, 5, 250, 1,  !tPFAA, true, false, false, true, true, Materials.GreenSapphire);
-        new GT_Worldgen_GT_Ore_SmallPieces("ore.small.olivine", true, 5, 250, 1,        !tPFAA, true, false, false, true, true, Materials.Olivine);
-        new GT_Worldgen_GT_Ore_SmallPieces("ore.small.topaz", true, 5, 250, 1,          !tPFAA, true, false, false, true, true, Materials.Topaz);
-        new GT_Worldgen_GT_Ore_SmallPieces("ore.small.tanzanite", true, 5, 250, 1,      !tPFAA, true, false, false, true, true, Materials.Tanzanite);
-        new GT_Worldgen_GT_Ore_SmallPieces("ore.small.amethyst", true, 5, 250, 1,       !tPFAA, true, false, false, true, true, Materials.Amethyst);
-        new GT_Worldgen_GT_Ore_SmallPieces("ore.small.opal", true, 5, 250, 1,           !tPFAA, true, false, false, true, true, Materials.Opal);
-        new GT_Worldgen_GT_Ore_SmallPieces("ore.small.jasper", true, 5, 250, 1,         !tPFAA, true, false, false, true, true, Materials.Jasper);
-        new GT_Worldgen_GT_Ore_SmallPieces("ore.small.bluetopaz", true, 5, 250, 1,      !tPFAA, true, false, false, true, true, Materials.BlueTopaz);
-        new GT_Worldgen_GT_Ore_SmallPieces("ore.small.amber", true, 5, 250, 1,          !tPFAA, true, false, false, true, true, Materials.Amber);
-        new GT_Worldgen_GT_Ore_SmallPieces("ore.small.foolsruby", true, 5, 250, 1,      !tPFAA, true, false, false, true, true, Materials.FoolsRuby);
-        new GT_Worldgen_GT_Ore_SmallPieces("ore.small.garnetred", true, 5, 250, 1,      !tPFAA, true, false, false, true, true, Materials.GarnetRed);
-        new GT_Worldgen_GT_Ore_SmallPieces("ore.small.garnetyellow", true, 5, 250, 1,   !tPFAA, true, false, false, true, true, Materials.GarnetYellow);
-        new GT_Worldgen_GT_Ore_SmallPieces("ore.small.redstone", true, 5, 20, 8,        !tPFAA, true, false, true, true, true, Materials.Redstone);
-        new GT_Worldgen_GT_Ore_SmallPieces("ore.small.platinum", true, 20, 40, 8,       false, false, true, false, true, true, Materials.Platinum);
-        new GT_Worldgen_GT_Ore_SmallPieces("ore.small.iridium", true, 20, 40, 8,        false, false, true, false, true, true, Materials.Iridium);
-        new GT_Worldgen_GT_Ore_SmallPieces("ore.small.netherquartz", true, 30, 120, 64, false, true, false, false, false, false, Materials.NetherQuartz);
-        new GT_Worldgen_GT_Ore_SmallPieces("ore.small.saltpeter", true, 10, 60, 8,      false, true, false, false, false, false, Materials.Saltpeter);
-        new GT_Worldgen_GT_Ore_SmallPieces("ore.small.sulfur_n", true, 10, 60, 32,      false, true, false, false, false, false, Materials.Sulfur);
-        new GT_Worldgen_GT_Ore_SmallPieces("ore.small.sulfur_o", true, 5, 15, 8,        !tPFAA, false, false, false, false, false, Materials.Sulfur);*/
-        
+
         new GTWorldGenAsteroid("endstone", true, 50, 200, 6, 30, 300, 1, StoneTypes.ENDSTONE, new String[]{"the_end"}, allBiome, new String[]{"naquadah", "cassiterite", "nickel", "platinum", "molybdenum", "tungstate", "manganese", "olivine", "lapis", "beryllium"});
         new GTWorldGenAsteroid("blackgranite", true, 50, 200, 12, 50, 150, 1, MetaBlocks.BLACK_GRANITE, new String[]{"?asteroid"}, allBiome, new String[]{"naquadah", "gold", "bauxite", "platinum", "pitchblende", "uranium", "monazite", "manganese", "quartz", "galena", "beryllium"});
         new GTWorldGenAsteroid("redgranite", true, 50, 200, 12, 50, 150, 1, MetaBlocks.RED_GRANITE, new String[]{"?asteroid"}, allBiome, new String[]{"cassiterite", "tetrahedrite", "nickel", "redstone", "monazite", "molybdenum", "tungstate", "sapphire", "diamond", "olivine", "lapis"});
-        
+
         new GTWorldGenOreVein("naquadah", true, 10, 10, 60, 32, 7, 5, Materials.Naquadah, Materials.Naquadah, Materials.Naquadah, Materials.NaquadahEnriched, new String[]{"the_end", "?mars"}, allBiome);
         new GTWorldGenOreVein("lignite", true, 160, 50, 130, 32, 7, 8, Materials.Lignite, Materials.Lignite, Materials.Lignite, Materials.Coal, overworld, allBiome);
         new GTWorldGenOreVein("coal", true, 80, 50, 80, 32, 7, 6, Materials.Coal, Materials.Coal, Materials.Coal, Materials.Lignite, overworld, allBiome);
@@ -215,39 +258,5 @@ public class WorldgenLoader {
         new GTWorldGenOreVein("beryllium", true, 30, 5, 30, 16, 7, 3, Materials.Beryllium, Materials.Beryllium, Materials.Emerald, Materials.Thorium, new String[]{"overworld", "the_end", "?moon", "?mars"}, allBiome);
         new GTWorldGenOreVein("oilsand", true, 80, 50, 80, 32, 7, 6, Materials.Oilsands, Materials.Oilsands, Materials.Oilsands, Materials.Oilsands, overworld, allBiome);
         new GTWorldGenOreVein("apatite", true, 60, 40, 60, 16, 7, 3, Materials.Apatite, Materials.Apatite, Materials.Phosphor, Materials.Phosphate, overworld, allBiome);//TODO Missing Pyrochlore.
-        
-        /*new GT_Worldgen_GT_Ore_Layer("ore.mix.naquadah", true, 10, 60, 10, 5, 32, false, false, true, false, true, true, Materials.Naquadah, Materials.Naquadah, Materials.Naquadah, Materials.NaquadahEnriched);
-        new GT_Worldgen_GT_Ore_Layer("ore.mix.lignite", true, 50, 130, 160, 8, 32, !tPFAA, false, false, false, false, false, Materials.Lignite, Materials.Lignite, Materials.Lignite, Materials.Coal);
-        new GT_Worldgen_GT_Ore_Layer("ore.mix.coal", true, 50, 80, 80, 6, 32, !tPFAA, false, false, false, false, false, Materials.Coal, Materials.Coal, Materials.Coal, Materials.Lignite);
-        new GT_Worldgen_GT_Ore_Layer("ore.mix.magnetite", true, 50, 120, 160, 3, 32, !tPFAA, true, false, true, true, false, Materials.Magnetite, Materials.Magnetite, Materials.Iron, Materials.VanadiumMagnetite);
-        new GT_Worldgen_GT_Ore_Layer("ore.mix.gold", true, 60, 80, 160, 3, 32, !tPFAA, false, false, true, true, true, Materials.Magnetite, Materials.Magnetite, Materials.VanadiumMagnetite, Materials.Gold);
-        new GT_Worldgen_GT_Ore_Layer("ore.mix.iron", true, 10, 40, 120, 4, 24, !tPFAA, true, false, true, true, false, Materials.BrownLimonite, Materials.YellowLimonite, Materials.BandedIron, Materials.Malachite);
-        new GT_Worldgen_GT_Ore_Layer("ore.mix.cassiterite", true, 40, 120, 50, 5, 24, !tPFAA, false, true, true, true, true, Materials.Tin, Materials.Tin, Materials.Cassiterite, Materials.Tin);
-        new GT_Worldgen_GT_Ore_Layer("ore.mix.tetrahedrite", true, 80, 120, 70, 4, 24, !tPFAA, true, false, true, true, true, Materials.Tetrahedrite, Materials.Tetrahedrite, Materials.Copper, Materials.Stibnite);
-        new GT_Worldgen_GT_Ore_Layer("ore.mix.netherquartz", true, 40, 80, 80, 5, 24, false, true, false, false, false, false, Materials.NetherQuartz, Materials.NetherQuartz, Materials.NetherQuartz, Materials.NetherQuartz);
-        new GT_Worldgen_GT_Ore_Layer("ore.mix.sulfur", true, 5, 20, 100, 5, 24, false, true, false, false, true, false, Materials.Sulfur, Materials.Sulfur, Materials.Pyrite, Materials.Sphalerite);
-        new GT_Worldgen_GT_Ore_Layer("ore.mix.copper", true, 10, 30, 80, 4, 24, !tPFAA, true, false, true, true, false, Materials.Chalcopyrite, Materials.Iron, Materials.Pyrite, Materials.Copper);
-        new GT_Worldgen_GT_Ore_Layer("ore.mix.bauxite", true, 50, 90, 80, 4, 24, !tPFAA, tPFAA, false, true, true, true, Materials.Bauxite, Materials.Bauxite, Materials.Aluminium, Materials.Ilmenite);
-        new GT_Worldgen_GT_Ore_Layer("ore.mix.salts", true, 50, 60, 50, 3, 24, !tPFAA, false, false, true, false, false, Materials.RockSalt, Materials.Salt, Materials.Lepidolite, Materials.Spodumene);
-        new GT_Worldgen_GT_Ore_Layer("ore.mix.redstone", true, 10, 40, 60, 3, 24, !tPFAA, true, false, true, true, true, Materials.Redstone, Materials.Redstone, Materials.Ruby, Materials.Cinnabar);
-        new GT_Worldgen_GT_Ore_Layer("ore.mix.soapstone", true, 10, 40, 40, 3, 16, !tPFAA, false, false, true, true, false, Materials.Soapstone, Materials.Talc, Materials.Glauconite, Materials.Pentlandite);
-        new GT_Worldgen_GT_Ore_Layer("ore.mix.nickel", true, 10, 40, 40, 3, 16, !tPFAA, true, true, true, true, true, Materials.Garnierite, Materials.Nickel, Materials.Cobaltite, Materials.Pentlandite);
-        new GT_Worldgen_GT_Ore_Layer("ore.mix.platinum", true, 40, 50, 5, 3, 16, !tPFAA, false, true, false, true, true, Materials.Cooperite, Materials.Palladium, Materials.Platinum, Materials.Iridium);
-        new GT_Worldgen_GT_Ore_Layer("ore.mix.pitchblende", true, 10, 40, 40, 3, 16, !tPFAA, false, false, true, true, true, Materials.Pitchblende, Materials.Pitchblende, Materials.Uraninite, Materials.Uraninite);
-        new GT_Worldgen_GT_Ore_Layer("ore.mix.uranium", true, 20, 30, 20, 3, 16, !tPFAA, false, false, true, true, true, Materials.Uraninite, Materials.Uraninite, Materials.Uranium, Materials.Uranium);
-        new GT_Worldgen_GT_Ore_Layer("ore.mix.monazite", true, 20, 40, 30, 3, 16, !tPFAA, tPFAA, false, true, true, true, Materials.Bastnasite, Materials.Bastnasite, Materials.Monazite, Materials.Neodymium);
-        new GT_Worldgen_GT_Ore_Layer("ore.mix.molybdenum", true, 20, 50, 5, 3, 16, !tPFAA, false, true, true, true, true, Materials.Wulfenite, Materials.Molybdenite, Materials.Molybdenum, Materials.Powellite);
-        new GT_Worldgen_GT_Ore_Layer("ore.mix.tungstate", true, 20, 50, 10, 3, 16, !tPFAA, false, true, true, true, true, Materials.Scheelite, Materials.Scheelite, Materials.Tungstate, Materials.Lithium);
-        new GT_Worldgen_GT_Ore_Layer("ore.mix.sapphire", true, 10, 40, 60, 3, 16, !tPFAA, tPFAA, tPFAA, true, true, true, Materials.Almandine, Materials.Pyrope, Materials.Sapphire, Materials.GreenSapphire);
-        new GT_Worldgen_GT_Ore_Layer("ore.mix.manganese", true, 20, 30, 20, 3, 16, !tPFAA, false, true, true, false, true, Materials.Grossular, Materials.Spessartine, Materials.Pyrolusite, Materials.Tantalite);
-        new GT_Worldgen_GT_Ore_Layer("ore.mix.quartz", true, 40, 80, 60, 3, 16, !tPFAA, tPFAA, false, true, true, true, Materials.Quartzite, Materials.Barite, Materials.CertusQuartz, Materials.CertusQuartz);
-        new GT_Worldgen_GT_Ore_Layer("ore.mix.diamond", true, 5, 20, 40, 2, 16, !tPFAA, false, false, true, true, true, Materials.Graphite, Materials.Graphite, Materials.Diamond, Materials.Coal);
-        new GT_Worldgen_GT_Ore_Layer("ore.mix.olivine", true, 10, 40, 60, 3, 16, !tPFAA, false, true, true, true, true, Materials.Bentonite, Materials.Magnesite, Materials.Olivine, Materials.Glauconite);
-        new GT_Worldgen_GT_Ore_Layer("ore.mix.apatite", true, 40, 60, 60, 3, 16, !tPFAA, false, false, false, false, false, Materials.Apatite, Materials.Apatite, Materials.Phosphor, Materials.Phosphate);
-        new GT_Worldgen_GT_Ore_Layer("ore.mix.galena", true, 30, 60, 40, 5, 16, !tPFAA, false, false, true, true, true, Materials.Galena, Materials.Galena, Materials.Silver, Materials.Lead);
-        new GT_Worldgen_GT_Ore_Layer("ore.mix.lapis", true, 20, 50, 40, 5, 16, !tPFAA, false, true, true, true, true, Materials.Lazurite, Materials.Sodalite, Materials.Lapis, Materials.Calcite);
-        new GT_Worldgen_GT_Ore_Layer("ore.mix.beryllium", true, 5, 30, 30, 3, 16, !tPFAA, false, true, true, true, true, Materials.Beryllium, Materials.Beryllium, Materials.Emerald, Materials.Thorium);
-        new GT_Worldgen_GT_Ore_Layer("ore.mix.oilsand", true, 50, 80, 80, 6, 32, !tPFAA, false, false, false, false, false, Materials.Oilsands, Materials.Oilsands, Materials.Oilsands, Materials.Oilsands);
-        */
     }
 }

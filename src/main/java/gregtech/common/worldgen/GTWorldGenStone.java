@@ -129,7 +129,7 @@ public class GTWorldGenStone extends GTWorldGen {
         }
 
         BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos();
-        Random rnd = new XSTR(WorldGenerator.getRandomSeed(world, centerX, centerZ));
+        Random rnd = new XSTR(WorldGeneratorOld.getRandomSeed(world, centerX, centerZ));
         for (int x = minX; x < maxX; x++) {
             for (int z = minZ; z < maxZ; z++) {
                 for (int y = minY; y < maxY; y++) {

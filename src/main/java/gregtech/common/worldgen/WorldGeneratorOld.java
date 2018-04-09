@@ -16,7 +16,7 @@ import net.minecraft.world.gen.IChunkGenerator;
 import net.minecraftforge.fml.common.IWorldGenerator;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
-public class WorldGenerator implements IWorldGenerator {
+public class WorldGeneratorOld implements IWorldGenerator {
 
     public static int getVeinCenterCoordinate(int c) {
         c += c < 0 ? 1 : 3;
@@ -43,10 +43,10 @@ public class WorldGenerator implements IWorldGenerator {
     }
 
     public static void init() {
-        GameRegistry.registerWorldGenerator(new WorldGenerator(), 1073741823);
+        GameRegistry.registerWorldGenerator(new WorldGeneratorOld(), 0x3fffffff);
     }
 
-    private WorldGenerator() {
+    private WorldGeneratorOld() {
     }
 
     private Boolean sorted = false;
