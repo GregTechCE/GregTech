@@ -83,7 +83,6 @@ public class EnergyContainerHandler extends MTETrait implements IEnergyContainer
         return this.energyStored;
     }
 
-    @Override
     public void setEnergyStored(long energyStored) {
         this.energyStored = energyStored;
         if(!metaTileEntity.getWorld().isRemote) {
@@ -193,6 +192,11 @@ public class EnergyContainerHandler extends MTETrait implements IEnergyContainer
     @Override
     public boolean outputsEnergy(EnumFacing side) {
         return getOutputVoltage() > 0 && (sideOutputCondition == null || sideOutputCondition.test(side));
+    }
+
+    @Override
+    public void addEnergy(long energyToAdd) {
+        setEnergyStored(Math.max(0, Math.min(getEnergyCapacity(), getEnergyStored() + energyToAdd)));
     }
 
     @Override
