@@ -41,12 +41,13 @@ public class RecipeMaps {
         .setProgressBar(GuiTextures.PROGRESS_BAR_CIRCUIT, MoveType.HORIZONTAL);
 
     public static final RecipeMap<DefaultRecipeBuilder> PRINTER_RECIPES = new RecipeMapPrinter("printer", 1, 2, 1, 1, 1, 1, 0, 0, 1, new DefaultRecipeBuilder())
-//        .setSlotOverlay(false, false, GuiTextures.) // TODO
+        .setSlotOverlay(false, false, GuiTextures.PAPER_OVERLAY)
+        .setSlotOverlay(true, false, GuiTextures.PRINTED_PAPER_OVERLAY)
         .setProgressBar(GuiTextures.PROGRESS_BAR_ARROW, MoveType.HORIZONTAL);
 
     public static final RecipeMap<NotConsumableInputRecipeBuilder> FORMING_PRESS_RECIPES = new RecipeMapFormingPress("formingpress", 2, 2, 1, 1, 0, 0, 0, 0, 1, new NotConsumableInputRecipeBuilder())
-//        .setSlotOverlay(false, false, GuiTextures.PRESS_OVERLAY_1) // TODO
-//        .setSlotOverlay(false, false, GuiTextures.PRESS_OVERLAY_2)
+        .setSlotOverlay(false, false, false, GuiTextures.PRESS_OVERLAY_1)
+        .setSlotOverlay(false, false, true, GuiTextures.PRESS_OVERLAY_2)
         .setSlotOverlay(true, false, GuiTextures.PRESS_OVERLAY_3)
         .setProgressBar(GuiTextures.PROGRESS_BAR_COMPRESS, MoveType.HORIZONTAL);
 
@@ -92,7 +93,7 @@ public class RecipeMaps {
      * </pre>
      */
     public static final RecipeMap<NotConsumableInputRecipeBuilder> LASER_ENGRAVER_RECIPES = new RecipeMap<>("laserengraver", 2, 2, 1, 1, 0, 0, 0, 0, 1, new NotConsumableInputRecipeBuilder())
-//        .setSlotOverlay(false, false, GuiTextures.LENS_OVERLAY)  // TODO
+        .setSlotOverlay(false, false, true, GuiTextures.LENS_OVERLAY)
         .setProgressBar(GuiTextures.PROGRESS_BAR_ARROW, MoveType.HORIZONTAL);
 
     /**
@@ -110,7 +111,7 @@ public class RecipeMaps {
     public static final RecipeMap<DefaultRecipeBuilder> MIXER_RECIPES = new RecipeMap<>("mixer", 1, 4, 0, 0, 0, 1, 0, 1, 1, new DefaultRecipeBuilder())
         .setSlotOverlay(false, false, GuiTextures.DUST_OVERLAY)
         .setSlotOverlay(true, false, GuiTextures.DUST_OVERLAY)
-        .setProgressBar(GuiTextures.PROGRESS_BAR_BATH, MoveType.HORIZONTAL); // TODO WEIRD SIZE
+        .setProgressBar(GuiTextures.PROGRESS_BAR_BATH, MoveType.HORIZONTAL);
 
     /**
      * Example:
@@ -203,7 +204,6 @@ public class RecipeMaps {
      * </pre>
      */
     public static final RecipeMap<IntCircuitRecipeBuilder> FLUID_HEATER_RECIPES = new RecipeMap<>("fluidheater", 1, 1, 0, 0, 1, 1, 1, 1, 1, new IntCircuitRecipeBuilder())
-        .setSlotOverlay(false, false, GuiTextures.INT_CIRCUIT_OVERLAY)
         .setProgressBar(GuiTextures.PROGRESS_BAR_ARROW, MoveType.HORIZONTAL);
 
     /**
@@ -219,7 +219,6 @@ public class RecipeMaps {
      * </pre>
      */
     public static final RecipeMap<IntCircuitRecipeBuilder> DISTILLERY_RECIPES = new RecipeMap<>("distillery", 1, 1, 0, 0, 1, 1, 1, 1, 1, new IntCircuitRecipeBuilder())
-        .setSlotOverlay(false, false, GuiTextures.INT_CIRCUIT_OVERLAY)
         .setProgressBar(GuiTextures.PROGRESS_BAR_ARROW_MULTIPLE, MoveType.HORIZONTAL);
 
     /**
@@ -306,8 +305,8 @@ public class RecipeMaps {
      * </pre>
      */
     public static final RecipeMap<DefaultRecipeBuilder> CENTRIFUGE_RECIPES = new RecipeMap<>("centrifuge", 0, 2, 0, 6, 0, 1, 0, 1, 1, new DefaultRecipeBuilder().EUt(5))
-//        .setSlotOverlay(false, false, GuiTextures.EXTRACTOR_OVERLAY) //TODO
-//        .setSlotOverlay(false, false, GuiTextures.CANISTER_OVERLAY)
+        .setSlotOverlay(false, false, false, GuiTextures.EXTRACTOR_OVERLAY)
+        .setSlotOverlay(false, false, true, GuiTextures.CANISTER_OVERLAY)
         .setProgressBar(GuiTextures.PROGRESS_BAR_EXTRACT, MoveType.HORIZONTAL);
 
     /**
@@ -333,8 +332,8 @@ public class RecipeMaps {
      * </pre>
      */
     public static final RecipeMap<DefaultRecipeBuilder> ELECTROLYZER_RECIPES = new RecipeMap<>("electrolyzer", 0, 2, 0, 6, 0, 1, 0, 1, 1, new DefaultRecipeBuilder())
-//        .setSlotOverlay(false, false, GuiTextures.CHARGER_OVERLAY) // TODO
-//        .setSlotOverlay(false, false, GuiTextures.CANISTER_OVERLAY)
+        .setSlotOverlay(false, false, false, GuiTextures.CHARGER_OVERLAY)
+        .setSlotOverlay(false, false, true, GuiTextures.CANISTER_OVERLAY)
         .setProgressBar(GuiTextures.PROGRESS_BAR_EXTRACT, MoveType.HORIZONTAL);
 
     /**
@@ -390,8 +389,8 @@ public class RecipeMaps {
      * </pre>
      */
     public static final RecipeMap<DefaultRecipeBuilder> CHEMICAL_RECIPES = new RecipeMap<>("chemicalreactor", 0, 2, 0, 1, 0, 1, 0, 1, 1, new DefaultRecipeBuilder().duration(30))
-//        .setSlotOverlay(false, false, GuiTextures.MOLECULAR_OVERLAY_1) // TODO
-//        .setSlotOverlay(false, false, GuiTextures.MOLECULAR_OVERLAY_2)
+        .setSlotOverlay(false, false, false, GuiTextures.MOLECULAR_OVERLAY_1)
+        .setSlotOverlay(false, false, true, GuiTextures.MOLECULAR_OVERLAY_2)
         .setSlotOverlay(false, true, GuiTextures.MOLECULAR_OVERLAY_3)
         .setSlotOverlay(true, false, GuiTextures.VIAL_OVERLAY_1)
         .setSlotOverlay(true, true, GuiTextures.VIAL_OVERLAY_2)
@@ -477,8 +476,7 @@ public class RecipeMaps {
      * </pre>
      */
     public static final RecipeMap<IntCircuitRecipeBuilder> BENDER_RECIPES = new RecipeMap<>("metalbender", 2, 2, 1, 1, 0, 0, 0, 0, 1, new IntCircuitRecipeBuilder())
-//        .setSlotOverlay(false, false, GuiTextures.BENDER_OVERLAY) // TODO
-//        .setSlotOverlay(false, false, GuiTextures.INT_CIRCUIT_OVERLAY)
+        .setSlotOverlay(false, false, false, GuiTextures.BENDER_OVERLAY)
         .setProgressBar(GuiTextures.PROGRESS_BAR_BENDING, MoveType.HORIZONTAL);
 
 
@@ -498,8 +496,8 @@ public class RecipeMaps {
      * </pre>
      */
     public static final RecipeMap<DefaultRecipeBuilder> CANNER_RECIPES = new RecipeMap<>("canner", 1, 2, 1, 2, 0, 0, 0, 0, 1, new DefaultRecipeBuilder())
-//        .setSlotOverlay(false, false, GuiTextures.CANNER_OVERLAY) // TODO
-//        .setSlotOverlay(false, false, GuiTextures.CANISTER_OVERLAY)
+        .setSlotOverlay(false, false, false, GuiTextures.CANNER_OVERLAY)
+        .setSlotOverlay(false, false, true, GuiTextures.CANISTER_OVERLAY)
         .setProgressBar(GuiTextures.PROGRESS_BAR_CANNER, MoveType.HORIZONTAL);
 
     /**
@@ -515,8 +513,8 @@ public class RecipeMaps {
      */
     public static final RecipeMap<DefaultRecipeBuilder> LATHE_RECIPES = new RecipeMap<>("lathe", 1, 1, 1, 2, 0, 0, 0, 0, 1, new DefaultRecipeBuilder())
         .setSlotOverlay(false, false, GuiTextures.PIPE_OVERLAY_1)
-//        .setSlotOverlay(true, false, GuiTextures.PIPE_OVERLAY_2) // TODO
-//        .setSlotOverlay(true, false, GuiTextures.DUST_OVERLAY)
+        .setSlotOverlay(true, false, false, GuiTextures.PIPE_OVERLAY_2)
+        .setSlotOverlay(true, false, true, GuiTextures.DUST_OVERLAY)
         .setProgressBar(GuiTextures.PROGRESS_BAR_LATHE, MoveType.HORIZONTAL);
 
     /**
@@ -533,8 +531,8 @@ public class RecipeMaps {
      */
     public static final RecipeMap<CutterRecipeBuilder> CUTTER_RECIPES = new RecipeMap<>("cuttingsaw", 1, 1, 1, 1, 0, 1, 0, 0, 1, new CutterRecipeBuilder())
         .setSlotOverlay(false, false, GuiTextures.BOX_OVERLAY)
-//        .setSlotOverlay(true, false, GuiTextures.CUTTER_OVERLAY) // TODO
-//        .setSlotOverlay(true, false, GuiTextures.DUST_OVERLAY)
+        .setSlotOverlay(true, false, false, GuiTextures.CUTTER_OVERLAY)
+        .setSlotOverlay(true, false, true, GuiTextures.DUST_OVERLAY)
         .setProgressBar(GuiTextures.PROGRESS_BAR_SLICE, MoveType.HORIZONTAL);
 
     /**
@@ -550,7 +548,7 @@ public class RecipeMaps {
      * </pre>
      */
     public static final RecipeMap<NotConsumableInputRecipeBuilder> EXTRUDER_RECIPES = new RecipeMap<>("extruder", 2, 2, 1, 1, 0, 0, 0, 0, 1, new NotConsumableInputRecipeBuilder())
-//        .setSlotOverlay(false, false, GuiTextures.MOLD_OVERLAY) // TODO
+        .setSlotOverlay(false, false, true, GuiTextures.MOLD_OVERLAY)
         .setProgressBar(GuiTextures.PROGRESS_BAR_EXTRUDER, MoveType.HORIZONTAL);
 
     /**
@@ -569,7 +567,7 @@ public class RecipeMaps {
         .setProgressBar(GuiTextures.PROGRESS_BAR_HAMMER, MoveType.VERTICAL);
 
     public static final RecipeMap<DefaultRecipeBuilder> PACKER_RECIPES = new RecipeMap<>("packer", 2, 2, 1, 1, 0, 0, 0, 0, 1, new DefaultRecipeBuilder())
-//        .setSlotOverlay(false, false, GuiTextures.BOX_OVERLAY) // TODO
+        .setSlotOverlay(false, false, true, GuiTextures.BOX_OVERLAY)
         .setSlotOverlay(true, false, GuiTextures.BOXED_OVERLAY)
         .setProgressBar(GuiTextures.PROGRESS_BAR_ARROW, MoveType.HORIZONTAL);
     public static final RecipeMap<DefaultRecipeBuilder> UNPACKER_RECIPES = new RecipeMap<>("unpacker", 1, 1, 2, 2, 0, 0, 0, 0, 1, new DefaultRecipeBuilder())

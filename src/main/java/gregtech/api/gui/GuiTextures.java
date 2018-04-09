@@ -49,6 +49,8 @@ public class GuiTextures {
     public static final TextureArea CUTTER_OVERLAY = TextureArea.fullImage("textures/gui/base/cutter_overlay.png");
     public static final TextureArea MOLD_OVERLAY = TextureArea.fullImage("textures/gui/base/mold_overlay.png");
     public static final TextureArea HAMMER_OVERLAY = TextureArea.fullImage("textures/gui/base/hammer_overlay.png");
+    public static final TextureArea PAPER_OVERLAY = TextureArea.fullImage("textures/gui/base/paper_overlay.png");
+    public static final TextureArea PRINTED_PAPER_OVERLAY = TextureArea.fullImage("textures/gui/base/printed_paper_overlay.png");
 
     //PROGRESS BARS
     public static final TextureArea PROGRESS_BAR_ARROW = TextureArea.fullImage("textures/gui/base/progress_bar_arrow.png");

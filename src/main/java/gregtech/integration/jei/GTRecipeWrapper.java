@@ -84,7 +84,7 @@ public class GTRecipeWrapper implements IRecipeWrapper {
     public void drawInfo(Minecraft minecraft, int recipeWidth, int recipeHeight, int mouseX, int mouseY) {
         minecraft.fontRenderer.drawString(I18n.format("gregtech.recipe.total", recipe.getEUt() * recipeMap.getAmperage() * recipe.getDuration()), 10, 55, 0x111111);
         minecraft.fontRenderer.drawString(I18n.format("gregtech.recipe.eu", recipe.getEUt()), 10, 65, 0x111111);
-        minecraft.fontRenderer.drawString(I18n.format("gregtech.recipe.duration", recipe.getDuration() / 20), 10, 75, 0x111111);
+        minecraft.fontRenderer.drawString(I18n.format("gregtech.recipe.duration", recipe.getDuration() / 20f), 10, 75, 0x111111);
         minecraft.fontRenderer.drawString(I18n.format("gregtech.recipe.amperage", recipeMap.getAmperage()), 10, 85, 0x111111);
     }
 }
