@@ -23,10 +23,6 @@ version = getVersionFromJava(file("src/main/java/gregtech/GregTechVersion.java")
 group = "gregtech"
 archivesBaseName = "gregtech"
 
-if (System.getenv().BUILD_NUMBER != null) { //adds the build number to the end of the version string if on a build server
-    version += ".${System.getenv().BUILD_NUMBER}"
-}
-
 minecraft {
     version = "${config.minecraft.version}-${config.forge.version}"
 	mappings = "snapshot_20170928"
@@ -169,8 +165,7 @@ String getVersionFromJava(File file) {
     String prefix = "public static final int"
     file.eachLine { String s ->
         s = s.trim()
-        if (s.startsWith(prefix))
-        {
+        if (s.startsWith(prefix)) {
             s = s.substring(prefix.length(), s.length() - 1)
             s = s.replace('=', ' ').replaceAll(" +", " ").trim()
             String[] pts = s.split(" ")

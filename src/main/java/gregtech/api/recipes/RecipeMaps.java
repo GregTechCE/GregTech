@@ -591,6 +591,8 @@ public class RecipeMaps {
 
     public static final RecipeMapLiquidFuel GAS_TURBINE_FUELS = new RecipeMapLiquidFuel("gas_turbine", 0, 0, 1, new DefaultRecipeBuilder());
 
+    public static final RecipeMapLiquidFuel STEAM_TURBINE_FUELS = new RecipeMapLiquidFuel("steam_turbine", 0, 0, 1, new DefaultRecipeBuilder());
+
     public static final RecipeMapLiquidFuel THERMAL_GENERATOR_FUELS = new RecipeMapLiquidFuel("thermal_generator", 0, 1, 1, new DefaultRecipeBuilder());
 
     public static final RecipeMapLiquidFuel SEMI_FLUID_GENERATOR_FUELS = new RecipeMapLiquidFuel("semi_fluid_generator", 0, 0, 1, new DefaultRecipeBuilder());

@@ -1,6 +1,5 @@
 package gregtech.api.recipes.ingredients;
 
-import gregtech.api.recipes.ModHandler;
 import gregtech.common.items.MetaItems;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.Ingredient;
