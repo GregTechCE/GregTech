@@ -165,8 +165,6 @@ public class BlockMachine extends Block implements ITileEntityProvider, ICustomH
         super.breakBlock(worldIn, pos, state);
     }
 
-
-
     @Override
     public void getDrops(NonNullList<ItemStack> drops, IBlockAccess world, BlockPos pos, IBlockState state, int fortune) {
         MetaTileEntity metaTileEntity = tileEntities.get() == null ? getMetaTileEntity(world, pos) : tileEntities.get();

@@ -58,6 +58,7 @@ public class MetaTileEntityRenderer implements ICCBlockRenderer, IItemRenderer, 
     public static MetaTileEntityRenderer INSTANCE = new MetaTileEntityRenderer();
     public static EnumBlockRenderType BLOCK_RENDER_TYPE;
     public static Map<TransformType, TRSRTransformation> BLOCK_TRANSFORMS = new HashMap<>();
+    private static ThreadLocal<BlockFace> blockFaces = ThreadLocal.withInitial(BlockFace::new);
 
     public static void preInit() {
         BLOCK_RENDER_TYPE = BlockRenderingRegistry.createRenderType("meta_tile_entity");
@@ -140,29 +141,9 @@ public class MetaTileEntityRenderer implements ICCBlockRenderer, IItemRenderer, 
         renderItem(new ItemStack(state.getBlock()), TransformType.NONE);
     }
 
-    private static ThreadLocal<BlockFace> blockFaces = ThreadLocal.withInitial(BlockFace::new);
-
     @Override
     public void handleRenderBlockDamage(IBlockAccess world, BlockPos pos, IBlockState state, TextureAtlasSprite sprite, BufferBuilder buffer) {
-        BlockMachine blockMachine = ((BlockMachine) state.getBlock());
-        Collection<AxisAlignedBB> boxes = blockMachine.getSelectedBoundingBoxes(world, pos, state);
-        List<Cuboid6> cuboid6List = boxes.stream()
-            .map(aabb -> new Cuboid6(aabb).subtract(pos))
-            .collect(Collectors.toList());
-        CCRenderState renderState = CCRenderState.instance();
-        renderState.reset();
-        renderState.bind(buffer);
-        IVertexOperation[] pipeline = new IVertexOperation[2];
-        pipeline[0] = new Translation(pos);
-        pipeline[1] = new IconTransformation(sprite);
-        BlockFace blockFace = blockFaces.get();
-        for(Cuboid6 boundingBox : cuboid6List) {
-            for(EnumFacing face : EnumFacing.VALUES) {
-                blockFace.loadCuboidFace(boundingBox, face.getIndex());
-                renderState.setPipeline(blockFace, 0, blockFace.verts.length, pipeline);
-                renderState.render();
-            }
-        }
+        //todo implement properly
     }
 
     @Override

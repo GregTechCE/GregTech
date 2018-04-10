@@ -1,4 +1,4 @@
-package gregtech.common.cable.net;
+package gregtech.api.cable.net;
 
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;

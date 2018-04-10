@@ -6,6 +6,7 @@ import java.util.function.Supplier;
 import gregtech.api.GTValues;
 import gregtech.api.block.machines.BlockMachine;
 import gregtech.api.block.machines.MachineItemBlock;
+import gregtech.api.cable.ItemBlockCable;
 import gregtech.api.enchants.EnchantmentEnderDamage;
 import gregtech.api.enchants.EnchantmentRadioactivity;
 import gregtech.api.items.metaitem.MetaItem;
@@ -36,7 +37,6 @@ public class CommonProxy {
         IForgeRegistry<Block> registry = event.getRegistry();
 
         registry.register(MACHINE);
-        registry.register(CABLE);
 
         registry.register(BOILER_CASING);
         registry.register(METAL_CASING);
@@ -49,8 +49,9 @@ public class CommonProxy {
         registry.register(MINERAL);
         registry.register(CONCRETE);
 
+        CABLES.values().forEach(registry::register);
         COMPRESSED.values().stream().distinct().forEach(registry::register);
-        ORES.stream().distinct().forEach(registry::register);
+        ORES.forEach(registry::register);
     }
 
     @SubscribeEvent
@@ -64,7 +65,6 @@ public class CommonProxy {
         }
 
         registry.register(createItemBlock(MACHINE, MachineItemBlock::new));
-        registry.register(createItemBlock(CABLE, ItemBlock::new));
         registry.register(createItemBlock(BOILER_CASING, VariantItemBlock::new));
         registry.register(createItemBlock(METAL_CASING, VariantItemBlock::new));
         registry.register(createItemBlock(TURBINE_CASING, VariantItemBlock::new));
@@ -76,13 +76,14 @@ public class CommonProxy {
         registry.register(createItemBlock(MINERAL, StoneItemBlock::new));
         registry.register(createItemBlock(CONCRETE, StoneItemBlock::new));
 
+        CABLES.values().stream()
+            .map(block -> createItemBlock(block, ItemBlockCable::new))
+            .forEach(registry::register);
         COMPRESSED.values()
-            .stream()
-            .distinct()
+            .stream().distinct()
             .map(block -> createItemBlock(block, CompressedItemBlock::new))
             .forEach(registry::register);
         ORES.stream()
-            .distinct()
             .map(block -> createItemBlock(block, OreItemBlock::new))
             .forEach(registry::register);
     }

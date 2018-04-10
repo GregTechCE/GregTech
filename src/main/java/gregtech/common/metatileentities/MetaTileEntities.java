@@ -1,6 +1,7 @@
 package gregtech.common.metatileentities;
 
 import gregtech.api.GregTechAPI;
+import gregtech.api.cable.tile.TileEntityCable;
 import gregtech.api.metatileentity.MaceratorMetaTileEntity;
 import gregtech.api.metatileentity.MetaTileEntityHolder;
 import gregtech.api.metatileentity.SimpleGeneratorMetaTileEntity;
@@ -8,7 +9,6 @@ import gregtech.api.metatileentity.SimpleMachineMetaTileEntity;
 import gregtech.api.recipes.RecipeMaps;
 import gregtech.api.render.Textures;
 import gregtech.api.util.GTLog;
-import gregtech.common.blocks.tileentity.TileEntityCableEmitter;
 import gregtech.common.metatileentities.steam.*;
 import gregtech.common.metatileentities.steam.boiler.SteamCoalBoiler;
 import gregtech.common.metatileentities.steam.boiler.SteamLavaBoiler;
@@ -21,7 +21,7 @@ public class MetaTileEntities {
         GTLog.logger.info("Registering MetaTileEntities");
 
         GameRegistry.registerTileEntity(MetaTileEntityHolder.class, "gregtech_machine");
-        GameRegistry.registerTileEntity(TileEntityCableEmitter.class, "gregtech_cable_emitter");
+        GameRegistry.registerTileEntity(TileEntityCable.class, "gregtech_cable");
 
         GregTechAPI.registerMetaTileEntity(1, new SteamCoalBoiler("steam_boiler_coal_bronze", false));
         GregTechAPI.registerMetaTileEntity(2, new SteamCoalBoiler("steam_boiler_coal_steel", true));

@@ -1224,7 +1224,7 @@ public class OreProcessingHandler {
                 RecipeMaps.EXTRUDER_RECIPES.recipeBuilder()
                     .inputs(GTUtility.copyAmount(1, stack))
                     .notConsumable(MetaItems.SHAPE_EXTRUDER_WIRE)
-                    .outputs(OreDictUnifier.get(OrePrefix.wireGt01, smeltInto, amount * 2))
+                    .outputs(OreDictUnifier.get(OrePrefix.wireGtSingle, smeltInto, amount * 2))
                     .duration((int) Math.max(materialMass * 2L * amount, amount))
                     .EUt(6 * voltageMultiplier)
                     .buildAndRegister();
@@ -2629,45 +2629,45 @@ public class OreProcessingHandler {
     private void processinWire(OrePrefix wirePrefix, Material material) {
         ItemStack stack = OreDictUnifier.get(wirePrefix, material);
         switch (wirePrefix) {
-            case wireGt01:
+            case wireGtSingle:
                 if (material == Materials.Cobalt
                     || material == Materials.Lead
                     || material == Materials.Tin
                     || material == Materials.Zinc
                     || material == Materials.SolderingAlloy) {
 
-                    ModHandler.addShapelessRecipe(material + "_t_cable01", OreDictUnifier.get(OrePrefix.cableGt01, material),
+                    ModHandler.addShapelessRecipe(material + "_t_cable01", OreDictUnifier.get(OrePrefix.cableGtSingle, material),
                         new UnificationEntry(wirePrefix, material),
                         new ItemStack(Blocks.CARPET, 1, 15),
                         new ItemStack(Items.STRING));
 
                     RecipeMaps.PACKER_RECIPES.recipeBuilder()
                         .inputs(GTUtility.copyAmount(1, stack), new ItemStack(Blocks.CARPET, 1, 15))
-                        .outputs(OreDictUnifier.get(OrePrefix.cableGt01, material))
+                        .outputs(OreDictUnifier.get(OrePrefix.cableGtSingle, material))
                         .duration(100)
                         .EUt(8)
                         .buildAndRegister();
 
                     RecipeMaps.UNPACKER_RECIPES.recipeBuilder()
-                        .inputs(OreDictUnifier.get(OrePrefix.cableGt01, material))
+                        .inputs(OreDictUnifier.get(OrePrefix.cableGtSingle, material))
                         .outputs(GTUtility.copyAmount(1, stack), new ItemStack(Blocks.CARPET, 1, 15))
                         .duration(100)
                         .EUt(8)
                         .buildAndRegister();
                 } else if (material == Materials.RedAlloy) {
-                    ModHandler.addShapelessRecipe(material + "_t_cable01", OreDictUnifier.get(OrePrefix.cableGt01, material),
+                    ModHandler.addShapelessRecipe(material + "_t_cable01", OreDictUnifier.get(OrePrefix.cableGtSingle, material),
                         new UnificationEntry(wirePrefix, material),
                         new UnificationEntry(OrePrefix.plate, Materials.Paper));
 
                     RecipeMaps.PACKER_RECIPES.recipeBuilder()
                         .inputs(GTUtility.copyAmount(1, stack), OreDictUnifier.get(OrePrefix.plate, Materials.Paper))
-                        .outputs(OreDictUnifier.get(OrePrefix.cableGt01, material))
+                        .outputs(OreDictUnifier.get(OrePrefix.cableGtSingle, material))
                         .duration(100)
                         .EUt(8)
                         .buildAndRegister();
 
                     RecipeMaps.UNPACKER_RECIPES.recipeBuilder()
-                        .inputs(OreDictUnifier.get(OrePrefix.cableGt01, material))
+                        .inputs(OreDictUnifier.get(OrePrefix.cableGtSingle, material))
                         .outputs(GTUtility.copyAmount(1, stack), OreDictUnifier.get(OrePrefix.plate, Materials.Paper))
                         .duration(100)
                         .EUt(8)
@@ -2677,13 +2677,13 @@ public class OreProcessingHandler {
                         .inputs(stack)
                         .circuitMeta(24)
                         .fluidInputs(Materials.Rubber.getFluid(L))
-                        .outputs(OreDictUnifier.get(OrePrefix.cableGt01, material))
+                        .outputs(OreDictUnifier.get(OrePrefix.cableGtSingle, material))
                         .duration(100)
                         .EUt(8)
                         .buildAndRegister();
 
                     RecipeMaps.UNPACKER_RECIPES.recipeBuilder()
-                        .inputs(OreDictUnifier.get(OrePrefix.cableGt01, material))
+                        .inputs(OreDictUnifier.get(OrePrefix.cableGtSingle, material))
                         .outputs(GTUtility.copyAmount(1, stack), OreDictUnifier.get(OrePrefix.plate, Materials.Rubber))
                         .duration(100)
                         .EUt(8)
@@ -2716,84 +2716,84 @@ public class OreProcessingHandler {
                         .buildAndRegister();
                 }
                 if (!material.hasFlag(DustMaterial.MatFlags.NO_WORKING)) {
-                    ModHandler.addShapedRecipe(material + "_t_wire01", OreDictUnifier.get(OrePrefix.wireGt01, material),
+                    ModHandler.addShapedRecipe(material + "_t_wire01", OreDictUnifier.get(OrePrefix.wireGtSingle, material),
                         "Xx",
                         'X', OreDictUnifier.get(OrePrefix.plate, material));
                 }
                 RecipeMaps.ASSEMBLER_RECIPES.recipeBuilder()
                     .inputs(GTUtility.copyAmount(2, stack))
                     .circuitMeta(2)
-                    .outputs(OreDictUnifier.get(OrePrefix.wireGt02, material))
+                    .outputs(OreDictUnifier.get(OrePrefix.wireGtDouble, material))
                     .duration(150)
                     .EUt(8)
                     .buildAndRegister();
                 RecipeMaps.ASSEMBLER_RECIPES.recipeBuilder()
                     .inputs(GTUtility.copyAmount(4, stack))
                     .circuitMeta(4)
-                    .outputs(OreDictUnifier.get(OrePrefix.wireGt04, material))
+                    .outputs(OreDictUnifier.get(OrePrefix.wireGtQuadruple, material))
                     .duration(200)
                     .EUt(8).buildAndRegister();
                 RecipeMaps.ASSEMBLER_RECIPES.recipeBuilder()
                     .inputs(GTUtility.copyAmount(8, stack))
                     .circuitMeta(8)
-                    .outputs(OreDictUnifier.get(OrePrefix.wireGt08, material))
+                    .outputs(OreDictUnifier.get(OrePrefix.wireGtOctal, material))
                     .duration(300)
                     .EUt(8)
                     .buildAndRegister();
                 RecipeMaps.ASSEMBLER_RECIPES.recipeBuilder()
                     .inputs(GTUtility.copyAmount(12, stack))
                     .circuitMeta(12)
-                    .outputs(OreDictUnifier.get(OrePrefix.wireGt12, material))
+                    .outputs(OreDictUnifier.get(OrePrefix.wireGtTwelve, material))
                     .duration(400)
                     .EUt(8)
                     .buildAndRegister();
                 RecipeMaps.ASSEMBLER_RECIPES.recipeBuilder()
                     .inputs(GTUtility.copyAmount(16, stack))
                     .circuitMeta(16)
-                    .outputs(OreDictUnifier.get(OrePrefix.wireGt16, material))
+                    .outputs(OreDictUnifier.get(OrePrefix.wireGtHex, material))
                     .duration(500)
                     .EUt(8)
                     .buildAndRegister();
                 break;
-            case wireGt02:
+            case wireGtDouble:
                 if (material == Materials.Cobalt
                     || material == Materials.Lead
                     || material == Materials.Tin
                     || material == Materials.Zinc
                     || material == Materials.SolderingAlloy) {
 
-                    ModHandler.addShapelessRecipe(material + "_t_cable02", OreDictUnifier.get(OrePrefix.cableGt02, material),
+                    ModHandler.addShapelessRecipe(material + "_t_cable02", OreDictUnifier.get(OrePrefix.cableGtDouble, material),
                         new UnificationEntry(wirePrefix, material),
                         new ItemStack(Blocks.CARPET, 1, 15),
                         new ItemStack(Items.STRING));
 
                     RecipeMaps.PACKER_RECIPES.recipeBuilder()
                         .inputs(GTUtility.copyAmount(1, stack), new ItemStack(Blocks.CARPET, 1, 15))
-                        .outputs(OreDictUnifier.get(OrePrefix.cableGt02, material))
+                        .outputs(OreDictUnifier.get(OrePrefix.cableGtDouble, material))
                         .duration(100)
                         .EUt(8)
                         .buildAndRegister();
 
                     RecipeMaps.UNPACKER_RECIPES.recipeBuilder()
-                        .inputs(OreDictUnifier.get(OrePrefix.cableGt02, material))
+                        .inputs(OreDictUnifier.get(OrePrefix.cableGtDouble, material))
                         .outputs(GTUtility.copyAmount(1, stack), new ItemStack(Blocks.CARPET, 1, 15))
                         .duration(100)
                         .EUt(8)
                         .buildAndRegister();
                 } else if (material == Materials.RedAlloy) {
-                    ModHandler.addShapelessRecipe(material + "_t_cable02", OreDictUnifier.get(OrePrefix.cableGt02, material),
+                    ModHandler.addShapelessRecipe(material + "_t_cable02", OreDictUnifier.get(OrePrefix.cableGtDouble, material),
                         new UnificationEntry(wirePrefix, material),
                         new UnificationEntry(OrePrefix.plate, Materials.Paper));
 
                     RecipeMaps.PACKER_RECIPES.recipeBuilder()
                         .inputs(GTUtility.copyAmount(1, stack), OreDictUnifier.get(OrePrefix.plate, Materials.Paper))
-                        .outputs(OreDictUnifier.get(OrePrefix.cableGt02, material))
+                        .outputs(OreDictUnifier.get(OrePrefix.cableGtDouble, material))
                         .duration(100)
                         .EUt(8)
                         .buildAndRegister();
 
                     RecipeMaps.UNPACKER_RECIPES.recipeBuilder()
-                        .inputs(OreDictUnifier.get(OrePrefix.cableGt02, material))
+                        .inputs(OreDictUnifier.get(OrePrefix.cableGtDouble, material))
                         .outputs(GTUtility.copyAmount(1, stack), OreDictUnifier.get(OrePrefix.plate, Materials.Paper))
                         .duration(100)
                         .EUt(8)
@@ -2803,33 +2803,33 @@ public class OreProcessingHandler {
                         .inputs(stack)
                         .circuitMeta(24)
                         .fluidInputs(Materials.Rubber.getFluid(L))
-                        .outputs(OreDictUnifier.get(OrePrefix.cableGt02, material))
+                        .outputs(OreDictUnifier.get(OrePrefix.cableGtDouble, material))
                         .duration(100)
                         .EUt(8)
                         .buildAndRegister();
 
                     RecipeMaps.UNPACKER_RECIPES.recipeBuilder()
-                        .inputs(OreDictUnifier.get(OrePrefix.cableGt02, material))
+                        .inputs(OreDictUnifier.get(OrePrefix.cableGtDouble, material))
                         .outputs(GTUtility.copyAmount(1, stack), OreDictUnifier.get(OrePrefix.plate, Materials.Rubber))
                         .duration(100)
                         .EUt(8)
                         .buildAndRegister();
                 }
-                ModHandler.addShapelessRecipe(material + "_wire02_t_wire01", OreDictUnifier.get(OrePrefix.wireGt01, material, 2),
+                ModHandler.addShapelessRecipe(material + "_wire02_t_wire01", OreDictUnifier.get(OrePrefix.wireGtSingle, material, 2),
                     new UnificationEntry(wirePrefix, material));
                 ModHandler.addShapelessRecipe(material + "_wire01_t_wire02", GTUtility.copyAmount(1, stack),
-                    new UnificationEntry(OrePrefix.wireGt01, material),
-                    new UnificationEntry(OrePrefix.wireGt01, material));
+                    new UnificationEntry(OrePrefix.wireGtSingle, material),
+                    new UnificationEntry(OrePrefix.wireGtSingle, material));
 
                 break;
-            case wireGt04:
+            case wireGtQuadruple:
                 if (material == Materials.Cobalt
                     || material == Materials.Lead
                     || material == Materials.Tin
                     || material == Materials.Zinc
                     || material == Materials.SolderingAlloy) {
 
-                    ModHandler.addShapelessRecipe(material + "_t_cable04", OreDictUnifier.get(OrePrefix.cableGt04, material),
+                    ModHandler.addShapelessRecipe(material + "_t_cable04", OreDictUnifier.get(OrePrefix.cableGtQuadruple, material),
                         new UnificationEntry(wirePrefix, material),
                         new ItemStack(Blocks.CARPET, 1, 15),
                         new ItemStack(Blocks.CARPET, 1, 15),
@@ -2837,31 +2837,31 @@ public class OreProcessingHandler {
 
                     RecipeMaps.PACKER_RECIPES.recipeBuilder()
                         .inputs(GTUtility.copyAmount(1, stack), new ItemStack(Blocks.CARPET, 2, 15))
-                        .outputs(OreDictUnifier.get(OrePrefix.cableGt04, material))
+                        .outputs(OreDictUnifier.get(OrePrefix.cableGtQuadruple, material))
                         .duration(100)
                         .EUt(8)
                         .buildAndRegister();
 
                     RecipeMaps.UNPACKER_RECIPES.recipeBuilder()
-                        .inputs(OreDictUnifier.get(OrePrefix.cableGt04, material))
+                        .inputs(OreDictUnifier.get(OrePrefix.cableGtQuadruple, material))
                         .outputs(GTUtility.copyAmount(1, stack), new ItemStack(Blocks.CARPET, 2, 15))
                         .duration(100)
                         .EUt(8)
                         .buildAndRegister();
                 } else if (material == Materials.RedAlloy) {
-                    ModHandler.addShapelessRecipe(material + "_t_cable04", OreDictUnifier.get(OrePrefix.cableGt04, material),
+                    ModHandler.addShapelessRecipe(material + "_t_cable04", OreDictUnifier.get(OrePrefix.cableGtQuadruple, material),
                         new UnificationEntry(wirePrefix, material),
                         new UnificationEntry(OrePrefix.plate, Materials.Paper),
                         new UnificationEntry(OrePrefix.plate, Materials.Paper));
 
                     RecipeMaps.PACKER_RECIPES.recipeBuilder()
                         .inputs(GTUtility.copyAmount(1, stack), OreDictUnifier.get(OrePrefix.plate, Materials.Paper, 2))
-                        .outputs(OreDictUnifier.get(OrePrefix.cableGt04, material))
+                        .outputs(OreDictUnifier.get(OrePrefix.cableGtQuadruple, material))
                         .duration(100)
                         .EUt(8)
                         .buildAndRegister();
                     RecipeMaps.UNPACKER_RECIPES.recipeBuilder()
-                        .inputs(OreDictUnifier.get(OrePrefix.cableGt04, material))
+                        .inputs(OreDictUnifier.get(OrePrefix.cableGtQuadruple, material))
                         .outputs(GTUtility.copyAmount(1, stack), OreDictUnifier.get(OrePrefix.plate, Materials.Paper, 2))
                         .duration(100)
                         .EUt(8)
@@ -2871,34 +2871,34 @@ public class OreProcessingHandler {
                         .inputs(stack)
                         .circuitMeta(24)
                         .fluidInputs(Materials.Rubber.getFluid(2 * L))
-                        .outputs(OreDictUnifier.get(OrePrefix.cableGt04, material))
+                        .outputs(OreDictUnifier.get(OrePrefix.cableGtQuadruple, material))
                         .duration(100)
                         .EUt(8)
                         .buildAndRegister();
 
                     RecipeMaps.UNPACKER_RECIPES.recipeBuilder()
-                        .inputs(OreDictUnifier.get(OrePrefix.cableGt04, material))
+                        .inputs(OreDictUnifier.get(OrePrefix.cableGtQuadruple, material))
                         .outputs(GTUtility.copyAmount(1, stack), OreDictUnifier.get(OrePrefix.plate, Materials.Rubber, 2))
                         .duration(100)
                         .EUt(8)
                         .buildAndRegister();
                 }
-                ModHandler.addShapelessRecipe(material + "_wire04_t_wire01", OreDictUnifier.get(OrePrefix.wireGt01, material, 4),
+                ModHandler.addShapelessRecipe(material + "_wire04_t_wire01", OreDictUnifier.get(OrePrefix.wireGtSingle, material, 4),
                     new UnificationEntry(wirePrefix, material));
 
                 ModHandler.addShapelessRecipe(material + "_wire02_t_wire04", GTUtility.copyAmount(1, stack),
-                    new UnificationEntry(OrePrefix.wireGt02, material),
-                    new UnificationEntry(OrePrefix.wireGt02, material));
+                    new UnificationEntry(OrePrefix.wireGtDouble, material),
+                    new UnificationEntry(OrePrefix.wireGtDouble, material));
 
                 break;
-            case wireGt08:
+            case wireGtOctal:
                 if (material == Materials.Cobalt
                     || material == Materials.Lead
                     || material == Materials.Tin
                     || material == Materials.Zinc
                     || material == Materials.SolderingAlloy) {
 
-                    ModHandler.addShapelessRecipe(material + "_wire08_t_cable08", OreDictUnifier.get(OrePrefix.cableGt08, material),
+                    ModHandler.addShapelessRecipe(material + "_wire08_t_cable08", OreDictUnifier.get(OrePrefix.cableGtOctal, material),
                         new UnificationEntry(wirePrefix, material),
                         new ItemStack(Blocks.CARPET, 1, 15),
                         new ItemStack(Blocks.CARPET, 1, 15),
@@ -2907,12 +2907,12 @@ public class OreProcessingHandler {
 
                     RecipeMaps.PACKER_RECIPES.recipeBuilder()
                         .inputs(GTUtility.copyAmount(1, stack), new ItemStack(Blocks.CARPET, 3, 15))
-                        .outputs(OreDictUnifier.get(OrePrefix.cableGt08, material))
+                        .outputs(OreDictUnifier.get(OrePrefix.cableGtOctal, material))
                         .duration(100)
                         .EUt(8)
                         .buildAndRegister();
                     RecipeMaps.UNPACKER_RECIPES.recipeBuilder()
-                        .inputs(OreDictUnifier.get(OrePrefix.cableGt08, material))
+                        .inputs(OreDictUnifier.get(OrePrefix.cableGtOctal, material))
                         .outputs(GTUtility.copyAmount(1, stack), new ItemStack(Blocks.CARPET, 3, 15))
                         .duration(100)
                         .EUt(8)
@@ -2920,7 +2920,7 @@ public class OreProcessingHandler {
 
                 } else if (material == Materials.RedAlloy) {
 
-                    ModHandler.addShapelessRecipe(material + "_wire08_t_cable08", OreDictUnifier.get(OrePrefix.cableGt08, material),
+                    ModHandler.addShapelessRecipe(material + "_wire08_t_cable08", OreDictUnifier.get(OrePrefix.cableGtOctal, material),
                         new UnificationEntry(wirePrefix, material),
                         new UnificationEntry(OrePrefix.plate, Materials.Paper),
                         new UnificationEntry(OrePrefix.plate, Materials.Paper),
@@ -2928,12 +2928,12 @@ public class OreProcessingHandler {
 
                     RecipeMaps.PACKER_RECIPES.recipeBuilder()
                         .inputs(GTUtility.copyAmount(1, stack), OreDictUnifier.get(OrePrefix.plate, Materials.Paper))
-                        .outputs(OreDictUnifier.get(OrePrefix.cableGt08, material))
+                        .outputs(OreDictUnifier.get(OrePrefix.cableGtOctal, material))
                         .duration(100)
                         .EUt(8)
                         .buildAndRegister();
                     RecipeMaps.UNPACKER_RECIPES.recipeBuilder()
-                        .inputs(OreDictUnifier.get(OrePrefix.cableGt08, material))
+                        .inputs(OreDictUnifier.get(OrePrefix.cableGtOctal, material))
                         .outputs(GTUtility.copyAmount(1, stack), OreDictUnifier.get(OrePrefix.plate, Materials.Paper, 3))
                         .duration(100)
                         .EUt(8)
@@ -2943,33 +2943,33 @@ public class OreProcessingHandler {
                         .inputs(stack)
                         .circuitMeta(24)
                         .fluidInputs(Materials.Rubber.getFluid(3 * L))
-                        .outputs(OreDictUnifier.get(OrePrefix.cableGt08, material))
+                        .outputs(OreDictUnifier.get(OrePrefix.cableGtOctal, material))
                         .duration(100)
                         .EUt(8)
                         .buildAndRegister();
 
                     RecipeMaps.UNPACKER_RECIPES.recipeBuilder()
-                        .inputs(OreDictUnifier.get(OrePrefix.cableGt08, material))
+                        .inputs(OreDictUnifier.get(OrePrefix.cableGtOctal, material))
                         .outputs(GTUtility.copyAmount(1, stack), OreDictUnifier.get(OrePrefix.plate, Materials.Rubber, 3))
                         .duration(100)
                         .EUt(8)
                         .buildAndRegister();
                 }
-                ModHandler.addShapelessRecipe(material + "_wire08_t_wire01", OreDictUnifier.get(OrePrefix.wireGt01, material, 8),
+                ModHandler.addShapelessRecipe(material + "_wire08_t_wire01", OreDictUnifier.get(OrePrefix.wireGtSingle, material, 8),
                     new UnificationEntry(wirePrefix, material));
                 ModHandler.addShapelessRecipe(material + "_wire04_t_wire08", GTUtility.copyAmount(1, stack),
-                    OreDictUnifier.get(OrePrefix.wireGt04, material),
-                    OreDictUnifier.get(OrePrefix.wireGt04, material));
+                    OreDictUnifier.get(OrePrefix.wireGtQuadruple, material),
+                    OreDictUnifier.get(OrePrefix.wireGtQuadruple, material));
 
                 break;
-            case wireGt12:
+            case wireGtTwelve:
                 if (material == Materials.Cobalt
                     || material == Materials.Lead
                     || material == Materials.Tin
                     || material == Materials.Zinc
                     || material == Materials.SolderingAlloy) {
 
-                    ModHandler.addShapelessRecipe(material + "_wire12_t_cable12", OreDictUnifier.get(OrePrefix.cableGt12, material),
+                    ModHandler.addShapelessRecipe(material + "_wire12_t_cable12", OreDictUnifier.get(OrePrefix.cableGtTwelve, material),
                         new UnificationEntry(wirePrefix, material),
                         new ItemStack(Blocks.CARPET, 1, 15),
                         new ItemStack(Blocks.CARPET, 1, 15),
@@ -2979,12 +2979,12 @@ public class OreProcessingHandler {
 
                     RecipeMaps.PACKER_RECIPES.recipeBuilder()
                         .inputs(GTUtility.copyAmount(1, stack), new ItemStack(Blocks.CARPET, 4, 15))
-                        .outputs(OreDictUnifier.get(OrePrefix.cableGt12, material))
+                        .outputs(OreDictUnifier.get(OrePrefix.cableGtTwelve, material))
                         .duration(100)
                         .EUt(8)
                         .buildAndRegister();
                     RecipeMaps.UNPACKER_RECIPES.recipeBuilder()
-                        .inputs(OreDictUnifier.get(OrePrefix.cableGt12, material))
+                        .inputs(OreDictUnifier.get(OrePrefix.cableGtTwelve, material))
                         .outputs(GTUtility.copyAmount(1, stack), new ItemStack(Blocks.CARPET, 4, 15))
                         .duration(100)
                         .EUt(8)
@@ -2992,7 +2992,7 @@ public class OreProcessingHandler {
 
                 } else if (material == Materials.RedAlloy) {
 
-                    ModHandler.addShapelessRecipe(material + "_wire12_t_cable12", OreDictUnifier.get(OrePrefix.cableGt12, material),
+                    ModHandler.addShapelessRecipe(material + "_wire12_t_cable12", OreDictUnifier.get(OrePrefix.cableGtTwelve, material),
                         new UnificationEntry(wirePrefix, material),
                         new UnificationEntry(OrePrefix.plate, Materials.Paper),
                         new UnificationEntry(OrePrefix.plate, Materials.Paper),
@@ -3001,12 +3001,12 @@ public class OreProcessingHandler {
 
                     RecipeMaps.PACKER_RECIPES.recipeBuilder()
                         .inputs(GTUtility.copyAmount(1, stack), OreDictUnifier.get(OrePrefix.plate, Materials.Paper, 4))
-                        .outputs(OreDictUnifier.get(OrePrefix.cableGt12, material))
+                        .outputs(OreDictUnifier.get(OrePrefix.cableGtTwelve, material))
                         .duration(100)
                         .EUt(8)
                         .buildAndRegister();
                     RecipeMaps.UNPACKER_RECIPES.recipeBuilder()
-                        .inputs(OreDictUnifier.get(OrePrefix.cableGt12, material))
+                        .inputs(OreDictUnifier.get(OrePrefix.cableGtTwelve, material))
                         .outputs(GTUtility.copyAmount(1, stack), OreDictUnifier.get(OrePrefix.plate, Materials.Paper, 4))
                         .duration(100)
                         .EUt(8)
@@ -3017,33 +3017,33 @@ public class OreProcessingHandler {
                         .inputs(stack)
                         .circuitMeta(24)
                         .fluidInputs(Materials.Rubber.getFluid(4 * L))
-                        .outputs(OreDictUnifier.get(OrePrefix.cableGt12, material))
+                        .outputs(OreDictUnifier.get(OrePrefix.cableGtTwelve, material))
                         .duration(100)
                         .EUt(8)
                         .buildAndRegister();
 
                     RecipeMaps.UNPACKER_RECIPES.recipeBuilder()
-                        .inputs(OreDictUnifier.get(OrePrefix.cableGt12, material))
+                        .inputs(OreDictUnifier.get(OrePrefix.cableGtTwelve, material))
                         .outputs(GTUtility.copyAmount(1, stack), OreDictUnifier.get(OrePrefix.plate, Materials.Rubber, 4))
                         .duration(100)
                         .EUt(8)
                         .buildAndRegister();
                 }
-                ModHandler.addShapelessRecipe(material + "_wire12_t_wire01", OreDictUnifier.get(OrePrefix.wireGt01, material, 12),
+                ModHandler.addShapelessRecipe(material + "_wire12_t_wire01", OreDictUnifier.get(OrePrefix.wireGtSingle, material, 12),
                     new UnificationEntry(wirePrefix, material));
 
                 ModHandler.addShapelessRecipe(material + "_wire12_t_wire08_04", GTUtility.copyAmount(1, stack),
-                    OreDictUnifier.get(OrePrefix.wireGt08, material),
-                    OreDictUnifier.get(OrePrefix.wireGt04, material));
+                    OreDictUnifier.get(OrePrefix.wireGtOctal, material),
+                    OreDictUnifier.get(OrePrefix.wireGtQuadruple, material));
 
                 break;
-            case wireGt16:
-                ModHandler.addShapelessRecipe(material + "_wire01_t_wire16", OreDictUnifier.get(OrePrefix.wireGt01, material, 16),
+            case wireGtHex:
+                ModHandler.addShapelessRecipe(material + "_wire01_t_wire16", OreDictUnifier.get(OrePrefix.wireGtSingle, material, 16),
                     new UnificationEntry(wirePrefix, material));
 
                 ModHandler.addShapelessRecipe(material + "_wire08_t_wire16", GTUtility.copyAmount(1, stack),
-                    OreDictUnifier.get(OrePrefix.wireGt08, material),
-                    OreDictUnifier.get(OrePrefix.wireGt08, material));
+                    OreDictUnifier.get(OrePrefix.wireGtOctal, material),
+                    OreDictUnifier.get(OrePrefix.wireGtOctal, material));
 
                 break;
         }

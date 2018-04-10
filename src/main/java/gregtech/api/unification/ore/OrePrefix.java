@@ -210,17 +210,19 @@ public enum OrePrefix {
     pipeRestrictiveHuge("Huge Restrictive Pipes", M * 12, null, null, ENABLE_UNIFICATION, null),
     pipe("Pipes", -1, null, null, DISALLOW_RECYCLING, null),
 
-    wireGt16("16x Wires", M * 8, null, MaterialIconType.wire, ENABLE_UNIFICATION, null),
-    wireGt12("12x Wires", M * 6, null, MaterialIconType.wire, ENABLE_UNIFICATION, null),
-    wireGt08("8x Wires", M * 4, null, MaterialIconType.wire, ENABLE_UNIFICATION, null),
-    wireGt04("4x Wires", M * 2, null, MaterialIconType.wire, ENABLE_UNIFICATION, null),
-    wireGt02("2x Wires", M, null, MaterialIconType.wire, ENABLE_UNIFICATION, null),
-    wireGt01("1x Wires", M / 2, null, MaterialIconType.wire, ENABLE_UNIFICATION, null),
-    cableGt12("12x Cables", M * 6, null, null, ENABLE_UNIFICATION, null),
-    cableGt08("8x Cables", M * 4, null, null, ENABLE_UNIFICATION, null),
-    cableGt04("4x Cables", M * 2, null, null, ENABLE_UNIFICATION, null),
-    cableGt02("2x Cables", M, null, null, ENABLE_UNIFICATION, null),
-    cableGt01("1x Cables", M / 2, null, null, ENABLE_UNIFICATION, null),
+    wireGtHex("Hex wires", M * 8, null, null, ENABLE_UNIFICATION, null),
+    wireGtTwelve("Twelve wires", M * 6, null, null, ENABLE_UNIFICATION, null),
+    wireGtOctal("Octal wires", M * 4, null, null, ENABLE_UNIFICATION, null),
+    wireGtQuadruple("Quadruple wires", M * 2, null, null, ENABLE_UNIFICATION, null),
+    wireGtDouble("Double wires", M, null, null, ENABLE_UNIFICATION, null),
+    wireGtSingle("Single wires", M / 2, null, null, ENABLE_UNIFICATION, null),
+
+    cableGtHex("Hex cables", M * 8, null, null, ENABLE_UNIFICATION, null),
+    cableGtTwelve("Twelve cables", M * 6, null, null, ENABLE_UNIFICATION, null),
+    cableGtOctal("Octal cables", M * 4, null, null, ENABLE_UNIFICATION, null),
+    cableGtQuadruple("Quadruple cables", M * 2, null, null, ENABLE_UNIFICATION, null),
+    cableGtDouble("Double cables", M, null, null, ENABLE_UNIFICATION, null),
+    cableGtSingle("Single cables", M / 2, null, null, ENABLE_UNIFICATION, null),
 
     /* Electric Components.
      *
@@ -358,11 +360,11 @@ public enum OrePrefix {
         pipeRestrictiveLarge.secondaryMaterial = new MaterialStack(Materials.Steel, ring.materialAmount * 4);
         pipeRestrictiveHuge.secondaryMaterial = new MaterialStack(Materials.Steel, ring.materialAmount * 5);
 
-        cableGt12.secondaryMaterial = new MaterialStack(Materials.Ash, dustSmall.materialAmount * 4);
-        cableGt08.secondaryMaterial = new MaterialStack(Materials.Ash, dustSmall.materialAmount * 3);
-        cableGt04.secondaryMaterial = new MaterialStack(Materials.Ash, dustSmall.materialAmount * 2);
-        cableGt02.secondaryMaterial = new MaterialStack(Materials.Ash, dustSmall.materialAmount);
-        cableGt01.secondaryMaterial = new MaterialStack(Materials.Ash, dustSmall.materialAmount);
+        cableGtHex.secondaryMaterial = new MaterialStack(Materials.Ash, dustSmall.materialAmount * 4);
+        cableGtOctal.secondaryMaterial = new MaterialStack(Materials.Ash, dustSmall.materialAmount * 3);
+        cableGtQuadruple.secondaryMaterial = new MaterialStack(Materials.Ash, dustSmall.materialAmount * 2);
+        cableGtDouble.secondaryMaterial = new MaterialStack(Materials.Ash, dustSmall.materialAmount);
+        cableGtSingle.secondaryMaterial = new MaterialStack(Materials.Ash, dustSmall.materialAmount);
 
         bucket.secondaryMaterial = new MaterialStack(Materials.Iron, ingot.materialAmount * 3);
 
