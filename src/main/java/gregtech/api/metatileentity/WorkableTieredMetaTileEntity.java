@@ -27,7 +27,7 @@ public abstract class WorkableTieredMetaTileEntity extends TieredMetaTileEntity 
         this.renderer = renderer;
         this.workable = addTrait(new EnergyRecipeMapWorkableHandler(energyContainer, recipeMap));
         initializeInventory();
-        initializeEnergyContainer();
+        reinitializeEnergyContainer();
     }
 
     @Override

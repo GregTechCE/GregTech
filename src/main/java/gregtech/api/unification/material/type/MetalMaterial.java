@@ -1,6 +1,7 @@
 package gregtech.api.unification.material.type;
 
 import com.google.common.collect.ImmutableList;
+import gregtech.api.cable.WireProperties;
 import gregtech.api.unification.Element;
 import gregtech.api.unification.material.MaterialIconSet;
 import gregtech.api.unification.stack.MaterialStack;
@@ -58,6 +59,13 @@ public class MetalMaterial extends SolidMaterial {
      * If below 1000C, primitive blast furnace recipes will be also added
      */
     public final int blastFurnaceTemperature;
+
+    /**
+     * If set, cable will be generated for this material with base stats
+     * specified by this field
+     */
+    @Nullable
+    public WireProperties cableProperties;
 
     public MetalMaterial(int metaItemSubId, String name, int materialRGB, MaterialIconSet materialIconSet, int harvestLevel, ImmutableList<MaterialStack> materialComponents, long materialGenerationFlags, Element element, float toolSpeed, int toolDurability, int blastFurnaceTemperature) {
         super(metaItemSubId, name, materialRGB, materialIconSet, harvestLevel, materialComponents, materialGenerationFlags, element, toolSpeed, toolDurability);
@@ -127,6 +135,11 @@ public class MetalMaterial extends SolidMaterial {
 
     public MetalMaterial setArcSmeltingInto(MetalMaterial arcSmeltingInto) {
         this.arcSmeltInto = arcSmeltingInto;
+        return this;
+    }
+
+    public MetalMaterial setCableProperties(WireProperties wireProperties) {
+        this.cableProperties = wireProperties;
         return this;
     }
 

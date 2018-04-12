@@ -20,9 +20,7 @@ public interface IEnergyContainer {
         return false;
     }
 
-    default void addEnergy(long energyToAdd) {
-        setEnergyStored(Math.min(getEnergyStored() + energyToAdd, getEnergyCapacity()));
-    }
+    void addEnergy(long energyToAdd);
 
     default boolean canUse(long energy) {
         return getEnergyStored()  >= energy;
@@ -36,8 +34,6 @@ public interface IEnergyContainer {
      * Gets the stored electric energy
      */
     long getEnergyStored();
-
-    void setEnergyStored(long energyStored);
 
     /**
      * Gets the largest electric energy capacity

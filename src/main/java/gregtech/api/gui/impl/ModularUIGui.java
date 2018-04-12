@@ -35,13 +35,17 @@ public class ModularUIGui extends GuiContainer {
     @Override
     public void updateScreen() {
         super.updateScreen();
+        processWidgetPackets();
+        modularUI.guiWidgets.values().forEach(Widget::updateScreen);
+    }
+
+    private void processWidgetPackets() {
         PacketUIWidgetUpdate packet = queuingWidgetUpdates.poll();
         if(packet != null && packet.windowId == inventorySlots.windowId) {
             Widget widget = modularUI.guiWidgets.get(packet.widgetId);
             int discriminator = packet.updateData.readInt();
             if(widget != null) widget.readUpdateInfo(discriminator, packet.updateData);
         }
-        modularUI.guiWidgets.values().forEach(Widget::updateScreen);
     }
 
     @Override
@@ -54,9 +58,7 @@ public class ModularUIGui extends GuiContainer {
     @Override
     //for foreground gl state is already translated
     protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
-        modularUI.guiWidgets.values().stream()
-                .filter(widget -> widget.drawPriority > Widget.SLOT_DRAW_PRIORITY)
-                .sorted()
+        modularUI.guiWidgets.values().stream().sorted()
             .forEach(widget -> {
                 GlStateManager.pushMatrix();
                 GlStateManager.color(1.0f, 1.0f, 1.0f);
@@ -70,13 +72,11 @@ public class ModularUIGui extends GuiContainer {
         GlStateManager.pushMatrix();
         GlStateManager.translate(guiLeft, guiTop, 0.0);
         modularUI.backgroundPath.draw(0, 0, xSize, ySize);
-        modularUI.guiWidgets.values().stream()
-                .filter(widget -> widget.drawPriority <= Widget.SLOT_DRAW_PRIORITY)
-                .sorted()
+        modularUI.guiWidgets.values().stream().sorted()
                 .forEach(widget -> {
                     GlStateManager.pushMatrix();
                     GlStateManager.color(1.0f, 1.0f, 1.0f);
-                    widget.drawInBackground(partialTicks,  mouseX - guiLeft, mouseY - guiTop);
+                    widget.drawInBackground(mouseX - guiLeft, mouseY - guiTop);
                     GlStateManager.popMatrix();
                 });
         GlStateManager.popMatrix();

@@ -4,11 +4,15 @@ import java.util.*;
 import java.util.Map.Entry;
 
 import gregtech.api.GregTechAPI;
+import gregtech.api.cable.BlockCable;
+import gregtech.api.cable.Insulation;
+import gregtech.api.render.CableRenderer;
 import gregtech.api.render.MetaTileEntityRenderer;
 import gregtech.api.unification.OreDictUnifier;
 import gregtech.api.unification.material.Materials;
 import gregtech.api.unification.material.type.DustMaterial;
 import gregtech.api.unification.material.type.Material;
+import gregtech.api.unification.material.type.MetalMaterial;
 import gregtech.api.unification.ore.OrePrefix;
 import gregtech.api.unification.ore.StoneType;
 import gregtech.api.unification.ore.StoneTypes;
@@ -20,6 +24,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.ItemMeshDefinition;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.renderer.block.statemap.DefaultStateMapper;
 import net.minecraft.item.Item;
@@ -35,7 +40,6 @@ public class MetaBlocks {
     private MetaBlocks() {}
 
     public static BlockMachine MACHINE;
-    public static BlockCable CABLE;
 
     public static BlockBoilerCasing BOILER_CASING;
     public static BlockMetalCasing METAL_CASING;
@@ -49,8 +53,9 @@ public class MetaBlocks {
     public static BlockMineral MINERAL;
     public static BlockConcrete CONCRETE;
 
-    public static HashMap<DustMaterial, BlockCompressed> COMPRESSED;
-    public static Collection<BlockOre> ORES;
+    public static Map<MetalMaterial, BlockCable> CABLES = new HashMap<>();
+    public static HashMap<DustMaterial, BlockCompressed> COMPRESSED = new HashMap<>();
+    public static Collection<BlockOre> ORES = new HashSet<>();
 
     public static StoneType BLACK_GRANITE;
     public static StoneType RED_GRANITE;
@@ -60,9 +65,6 @@ public class MetaBlocks {
     public static void init() {
         MACHINE = new BlockMachine();
         MACHINE.setRegistryName("machine");
-        CABLE = new BlockCable(64, 2, 0);
-        CABLE.setRegistryName("cable");
-
         BOILER_CASING = new BlockBoilerCasing();
         BOILER_CASING.setRegistryName("boiler_casing");
         METAL_CASING = new BlockMetalCasing();
@@ -88,14 +90,21 @@ public class MetaBlocks {
         CONCRETE = new BlockConcrete();
         CONCRETE.setRegistryName("concrete");
 
-        COMPRESSED = new HashMap<>();
-        ORES = new ArrayList<>();
         StoneType.init();
         Material[] materialBuffer = new Material[16];
         Arrays.fill(materialBuffer, Materials._NULL);
         int generationIndex = 0;
         for (Material material : Material.MATERIAL_REGISTRY.getObjectsWithIds()) {
             if (material instanceof DustMaterial) {
+                if(material instanceof MetalMaterial) {
+                    MetalMaterial metalMaterial = (MetalMaterial) material;
+                    if(metalMaterial.cableProperties != null) {
+                        createCableBlock(metalMaterial);
+                    }
+                }
+                if (material.hasFlag(DustMaterial.MatFlags.GENERATE_ORE)) {
+                    createOreBlock((DustMaterial) material);
+                }
                 int id = Material.MATERIAL_REGISTRY.getIDForObject(material);
                 int index = id / 16;
                 if (index > generationIndex) {
@@ -106,12 +115,15 @@ public class MetaBlocks {
                     materialBuffer[id % 16] = material;
                     generationIndex = index;
                 }
-                if (material.hasFlag(DustMaterial.MatFlags.GENERATE_ORE)) {
-                    createOreBlock((DustMaterial) material);
-                }
             }
         }
         createCompressedBlock(materialBuffer, generationIndex);
+    }
+
+    private static void createCableBlock(MetalMaterial material) {
+        BlockCable blockCable = new BlockCable(material.cableProperties);
+        blockCable.setRegistryName("cable_" + material.toString());
+        CABLES.put(material, blockCable);
     }
 
     private static void createCompressedBlock(Material[] materials, int index) {
@@ -163,7 +175,8 @@ public class MetaBlocks {
         registerItemModel(MINERAL);
         registerItemModel(CONCRETE);
 
-
+        ItemMeshDefinition cableMeshDefinition = stack -> CableRenderer.MODEL_LOCATION;
+        CABLES.values().forEach(cable -> ModelLoader.setCustomMeshDefinition(Item.getItemFromBlock(cable), cableMeshDefinition));
         COMPRESSED.values().stream().distinct().forEach(MetaBlocks::registerItemModel);
         ORES.stream().distinct().forEach(MetaBlocks::registerItemModel);
     }
@@ -185,6 +198,13 @@ public class MetaBlocks {
                 return MetaTileEntityRenderer.MODEL_LOCATION;
             }
         });
+        DefaultStateMapper cableStateMapper = new DefaultStateMapper() {
+            @Override
+            protected ModelResourceLocation getModelResourceLocation(IBlockState state) {
+                return CableRenderer.MODEL_LOCATION;
+            }
+        };
+        CABLES.values().forEach(cable -> ModelLoader.setCustomStateMapper(cable, cableStateMapper));
     }
 
     @SideOnly(Side.CLIENT)
@@ -220,6 +240,13 @@ public class MetaBlocks {
                 OreDictUnifier.registerOre(normalStack, stoneType.processingPrefix, material);
                 //small ore variants are always registered as oreSmall, not taking stone type into account
                 OreDictUnifier.registerOre(smallOreStack, OrePrefix.oreSmall, material);
+            }
+        }
+        for(BlockCable blockCable : CABLES.values()) {
+            for(Insulation insulation : Insulation.values()) {
+                ItemStack itemStack = blockCable.getItem(insulation);
+                MetalMaterial material = blockCable.baseProps.material;
+                OreDictUnifier.registerOre(itemStack, insulation.orePrefix, material);
             }
         }
     }

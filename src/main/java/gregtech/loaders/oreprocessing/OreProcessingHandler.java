@@ -1099,7 +1099,6 @@ public class OreProcessingHandler {
                 "X",
                 "m",
                 'X', new UnificationEntry(OrePrefix.plate, material));
-
     }
 
 private void processPlateDense(OrePrefix orePrefix, Material material){

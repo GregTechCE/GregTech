@@ -264,7 +264,7 @@ public enum Element {
     /**
      * Links to every pure Material containing just this Element.
      */
-    public ArrayList<Materials> mLinkedMaterials = new ArrayList<Materials>();
+    public ArrayList<Materials> linkedMaterials = new ArrayList<Materials>();
 
     /**
      * @param protons         Amount of Protons
@@ -273,7 +273,7 @@ public enum Element {
      * @param decayTo         String representing the Elements it decays to. Separated by an '&' Character
      * @param name            Name of the Element
      */
-    private Element(long protons, long neutrons, long halfLifeSeconds, String decayTo, String name, boolean isIsotope) {
+    Element(long protons, long neutrons, long halfLifeSeconds, String decayTo, String name, boolean isIsotope) {
         this.protons = protons;
         this.neutrons = neutrons;
         this.halfLifeSeconds = halfLifeSeconds;

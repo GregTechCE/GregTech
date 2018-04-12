@@ -84,7 +84,7 @@ public class StoneType implements Comparable<StoneType> {
         this.stone = stone;
         if (id > -1) {
             STONE_TYPE_REGISTRY.register(id, name, this);
-            this.conditioin = new Condition.Or<IBlockState>(conditions);
+            this.conditioin = new Condition.Or<>(conditions);
         } else {
             STONE_TYPE_REGISTRY.putObject(name, this);
             this.conditioin = state -> false;

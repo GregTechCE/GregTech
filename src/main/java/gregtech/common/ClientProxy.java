@@ -9,6 +9,7 @@ import codechicken.lib.render.item.CCRenderItem;
 import codechicken.lib.texture.TextureUtils;
 import gregtech.api.block.machines.BlockMachine;
 import gregtech.api.capability.ICustomHighlightBlock;
+import gregtech.api.render.CableRenderer;
 import gregtech.api.render.MetaTileEntityRenderer;
 import gregtech.common.blocks.BlockCompressed;
 import gregtech.common.blocks.BlockOre;
@@ -62,6 +63,7 @@ public class ClientProxy extends CommonProxy {
     public void onPreLoad() {
         super.onPreLoad();
         MetaTileEntityRenderer.preInit();
+        CableRenderer.preInit();
         TextureUtils.addIconRegister(MetaFluids::registerSprites);
     }
 

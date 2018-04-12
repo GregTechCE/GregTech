@@ -14,6 +14,8 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.items.IItemHandlerModifiable;
 
 import javax.annotation.Nullable;
+import java.util.function.Function;
+import java.util.function.Predicate;
 
 public class EnergyContainerHandler extends MTETrait implements IEnergyContainer {
 
@@ -26,12 +28,23 @@ public class EnergyContainerHandler extends MTETrait implements IEnergyContainer
     private final long maxOutputVoltage;
     private final long maxOutputAmperage;
 
+    private Predicate<EnumFacing> sideInputCondition;
+    private Predicate<EnumFacing> sideOutputCondition;
+
     public EnergyContainerHandler(long maxCapacity, long maxInputVoltage, long maxInputAmperage, long maxOutputVoltage, long maxOutputAmperage) {
         this.maxCapacity = maxCapacity;
         this.maxInputVoltage = maxInputVoltage;
         this.maxInputAmperage = maxInputAmperage;
         this.maxOutputVoltage = maxOutputVoltage;
         this.maxOutputAmperage = maxOutputAmperage;
+    }
+
+    public void setSideInputCondition(Predicate<EnumFacing> sideInputCondition) {
+        this.sideInputCondition = sideInputCondition;
+    }
+
+    public void setSideOutputCondition(Predicate<EnumFacing> sideOutputCondition) {
+        this.sideOutputCondition = sideOutputCondition;
     }
 
     public static EnergyContainerHandler emitterContainer(long maxCapacity, long maxOutputVoltage, long maxOutputAmperage) {
@@ -70,7 +83,6 @@ public class EnergyContainerHandler extends MTETrait implements IEnergyContainer
         return this.energyStored;
     }
 
-    @Override
     public void setEnergyStored(long energyStored) {
         this.energyStored = energyStored;
         if(!metaTileEntity.getWorld().isRemote) {
@@ -132,7 +144,7 @@ public class EnergyContainerHandler extends MTETrait implements IEnergyContainer
                 EnumFacing oppositeSide = side.getOpposite();
                 if(tileEntity != null && tileEntity.hasCapability(IEnergyContainer.CAPABILITY_ENERGY_CONTAINER, oppositeSide)) {
                     IEnergyContainer energyContainer = tileEntity.getCapability(IEnergyContainer.CAPABILITY_ENERGY_CONTAINER, oppositeSide);
-                    if(energyContainer.inputsEnergy(oppositeSide)) continue;
+                    if(energyContainer == null || !energyContainer.inputsEnergy(oppositeSide)) continue;
                     amperesUsed += energyContainer.acceptEnergyFromNetwork(oppositeSide, outputVoltage, outputAmperes - amperesUsed);
                     if(amperesUsed == outputAmperes) break;
                 }
@@ -174,12 +186,17 @@ public class EnergyContainerHandler extends MTETrait implements IEnergyContainer
 
     @Override
     public boolean inputsEnergy(EnumFacing side) {
-        return getInputVoltage() > 0;
+        return getInputVoltage() > 0 && (sideInputCondition == null || sideInputCondition.test(side));
     }
 
     @Override
     public boolean outputsEnergy(EnumFacing side) {
-        return getOutputVoltage() > 0;
+        return getOutputVoltage() > 0 && (sideOutputCondition == null || sideOutputCondition.test(side));
+    }
+
+    @Override
+    public void addEnergy(long energyToAdd) {
+        setEnergyStored(Math.max(0, Math.min(getEnergyCapacity(), getEnergyStored() + energyToAdd)));
     }
 
     @Override

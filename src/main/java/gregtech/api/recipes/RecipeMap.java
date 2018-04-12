@@ -79,7 +79,13 @@ public class RecipeMap<R extends RecipeBuilder<R>> {
     }
 
     public RecipeMap<R> setSlotOverlay(boolean isOutput, boolean isFluid, TextureArea slotOverlay) {
-	    this.slotOverlays.put((byte) ((isOutput ? 2 : 0) + (isFluid ? 1 : 0)), slotOverlay);
+	    return this
+            .setSlotOverlay(isOutput, isFluid, false, slotOverlay)
+            .setSlotOverlay(isOutput, isFluid, true, slotOverlay);
+    }
+
+    public RecipeMap<R> setSlotOverlay(boolean isOutput, boolean isFluid, boolean isLast, TextureArea slotOverlay) {
+	    this.slotOverlays.put((byte) ((isOutput ? 2 : 0) + (isFluid ? 1 : 0) + (isLast ? 4 : 0)), slotOverlay);
 	    return this;
     }
 
@@ -220,7 +226,7 @@ public class RecipeMap<R extends RecipeBuilder<R>> {
 	        //automatically add int circuit overlay to last item input slot
             return new TextureArea[]{base, GuiTextures.INT_CIRCUIT_OVERLAY};
         }
-        byte overlayKey = (byte) ((isOutput ? 2 : 0) + (isFluid ? 1 : 0));
+        byte overlayKey = (byte) ((isOutput ? 2 : 0) + (isFluid ? 1 : 0) + (isLast ? 4 : 0));
 	    if(slotOverlays.containsKey(overlayKey)) {
 	        return new TextureArea[] {base, slotOverlays.get(overlayKey)};
         }

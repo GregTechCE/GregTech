@@ -91,6 +91,10 @@ public final class ModularUI {
             return widget(new LabelWidget(x, y, localizationKey, color));
         }
 
+        public Builder image(int x, int y, int width, int height, TextureArea area) {
+            return widget(new ImageWidget(x, y, width, height, area));
+        }
+
         public Builder dynamicLabel(int x, int y, Supplier<String> text) {
             return widget(new DynamicLabelWidget(x, y, text));
         }

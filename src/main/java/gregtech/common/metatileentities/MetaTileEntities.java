@@ -1,6 +1,7 @@
 package gregtech.common.metatileentities;
 
 import gregtech.api.GregTechAPI;
+import gregtech.api.cable.tile.TileEntityCable;
 import gregtech.api.metatileentity.MaceratorMetaTileEntity;
 import gregtech.api.metatileentity.MetaTileEntityHolder;
 import gregtech.api.metatileentity.SimpleGeneratorMetaTileEntity;
@@ -8,7 +9,6 @@ import gregtech.api.metatileentity.SimpleMachineMetaTileEntity;
 import gregtech.api.recipes.RecipeMaps;
 import gregtech.api.render.Textures;
 import gregtech.api.util.GTLog;
-import gregtech.common.blocks.tileentity.TileEntityCableEmitter;
 import gregtech.common.metatileentities.steam.*;
 import gregtech.common.metatileentities.steam.boiler.SteamCoalBoiler;
 import gregtech.common.metatileentities.steam.boiler.SteamLavaBoiler;
@@ -21,7 +21,7 @@ public class MetaTileEntities {
         GTLog.logger.info("Registering MetaTileEntities");
 
         GameRegistry.registerTileEntity(MetaTileEntityHolder.class, "gregtech_machine");
-        GameRegistry.registerTileEntity(TileEntityCableEmitter.class, "gregtech_cable_emitter");
+        GameRegistry.registerTileEntity(TileEntityCable.class, "gregtech_cable");
 
         GregTechAPI.registerMetaTileEntity(1, new SteamCoalBoiler("steam_boiler_coal_bronze", false));
         GregTechAPI.registerMetaTileEntity(2, new SteamCoalBoiler("steam_boiler_coal_steel", true));
@@ -288,8 +288,16 @@ public class MetaTileEntities {
         GregTechAPI.registerMetaTileEntity(473, new SimpleMachineMetaTileEntity("wiremill.ev", RecipeMaps.WIREMILL_RECIPES, Textures.WIREMILL_OVERLAY, 4));
         GregTechAPI.registerMetaTileEntity(474, new SimpleMachineMetaTileEntity("wiremill.iv", RecipeMaps.WIREMILL_RECIPES, Textures.WIREMILL_OVERLAY, 5));
 
-        GregTechAPI.registerMetaTileEntity(475, new SimpleGeneratorMetaTileEntity("diesel_generator.lv", RecipeMaps.DIESEL_GENERATOR_FUELS, Textures.DIESEL_GENERATOR_OVERLAY, 1));
-        GregTechAPI.registerMetaTileEntity(476, new SimpleGeneratorMetaTileEntity("diesel_generator.mv", RecipeMaps.DIESEL_GENERATOR_FUELS, Textures.DIESEL_GENERATOR_OVERLAY, 2));
-        GregTechAPI.registerMetaTileEntity(477, new SimpleGeneratorMetaTileEntity("diesel_generator.hv", RecipeMaps.DIESEL_GENERATOR_FUELS, Textures.DIESEL_GENERATOR_OVERLAY, 3));
+        GregTechAPI.registerMetaTileEntity(480, new SimpleGeneratorMetaTileEntity("diesel_generator.lv", RecipeMaps.DIESEL_GENERATOR_FUELS, Textures.DIESEL_GENERATOR_OVERLAY, 1));
+        GregTechAPI.registerMetaTileEntity(481, new SimpleGeneratorMetaTileEntity("diesel_generator.mv", RecipeMaps.DIESEL_GENERATOR_FUELS, Textures.DIESEL_GENERATOR_OVERLAY, 2));
+        GregTechAPI.registerMetaTileEntity(482, new SimpleGeneratorMetaTileEntity("diesel_generator.hv", RecipeMaps.DIESEL_GENERATOR_FUELS, Textures.DIESEL_GENERATOR_OVERLAY, 3));
+
+        GregTechAPI.registerMetaTileEntity(485, new SimpleGeneratorMetaTileEntity("steam_turbine.lv", RecipeMaps.STEAM_TURBINE_FUELS, Textures.STEAM_TURBINE_OVERLAY, 1));
+        GregTechAPI.registerMetaTileEntity(486, new SimpleGeneratorMetaTileEntity("steam_turbine.mv", RecipeMaps.STEAM_TURBINE_FUELS, Textures.STEAM_TURBINE_OVERLAY, 2));
+        GregTechAPI.registerMetaTileEntity(487, new SimpleGeneratorMetaTileEntity("steam_turbine.hv", RecipeMaps.STEAM_TURBINE_FUELS, Textures.STEAM_TURBINE_OVERLAY, 3));
+
+        GregTechAPI.registerMetaTileEntity(490, new SimpleGeneratorMetaTileEntity("gas_turbine.lv", RecipeMaps.GAS_TURBINE_FUELS, Textures.GAS_TURBINE_OVERLAY, 1));
+        GregTechAPI.registerMetaTileEntity(491, new SimpleGeneratorMetaTileEntity("gas_turbine.mv", RecipeMaps.GAS_TURBINE_FUELS, Textures.GAS_TURBINE_OVERLAY, 2));
+        GregTechAPI.registerMetaTileEntity(492, new SimpleGeneratorMetaTileEntity("gas_turbine.hv", RecipeMaps.GAS_TURBINE_FUELS, Textures.GAS_TURBINE_OVERLAY, 3));
     }
 }

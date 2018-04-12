@@ -24,7 +24,7 @@ public class ImageWidget extends Widget {
     private boolean isVisible = true;
 
     public ImageWidget(int xPosition, int yPosition, int width, int height) {
-        super(SLOT_DRAW_PRIORITY - 100);
+        super(SLOT_DRAW_PRIORITY + 100);
         this.xPosition = xPosition;
         this.yPosition = yPosition;
         this.width = width;
@@ -32,7 +32,7 @@ public class ImageWidget extends Widget {
     }
 
     public ImageWidget(int xPosition, int yPosition, int width, int height, TextureArea area) {
-        super(SLOT_DRAW_PRIORITY - 100);
+        super(SLOT_DRAW_PRIORITY + 100);
         this.xPosition = xPosition;
         this.yPosition = yPosition;
         this.width = width;
@@ -70,7 +70,7 @@ public class ImageWidget extends Widget {
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void drawInBackground(float partialTicks, int mouseX, int mouseY) {
+    public void drawInBackground(int mouseX, int mouseY) {
         if (!this.isVisible || area == null) return;
         area.draw(xPosition, yPosition, width, height);
     }

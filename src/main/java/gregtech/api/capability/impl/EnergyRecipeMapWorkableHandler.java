@@ -26,7 +26,7 @@ public class EnergyRecipeMapWorkableHandler extends RecipeMapWorkableHandler {
     protected boolean drawEnergy(int recipeEUt) {
         long resultEnergy = getEnergyStored() - recipeEUt;
         if(resultEnergy >= 0L && resultEnergy <= getEnergyCapacity()) {
-            energyContainer.setEnergyStored(resultEnergy);
+            energyContainer.addEnergy(-recipeEUt);
             return true;
         } else return false;
     }

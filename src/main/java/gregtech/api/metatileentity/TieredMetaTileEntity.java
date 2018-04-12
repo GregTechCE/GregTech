@@ -21,10 +21,10 @@ public abstract class TieredMetaTileEntity extends MetaTileEntity {
     public TieredMetaTileEntity(String metaTileEntityId, int tier) {
         super(metaTileEntityId);
         this.tier = tier;
-        initializeEnergyContainer();
+        reinitializeEnergyContainer();
     }
 
-    protected void initializeEnergyContainer() {
+    protected void reinitializeEnergyContainer() {
         long tierVoltage = GTValues.V[tier];
         if (isEnergyEmitter()) {
             this.energyContainer = addTrait(EnergyContainerHandler.emitterContainer(
