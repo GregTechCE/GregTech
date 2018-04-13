@@ -15,6 +15,7 @@ import gregtech.common.MetaFluids;
 import gregtech.common.blocks.MetaBlocks;
 import gregtech.common.blocks.modelfactories.BlockCompressedFactory;
 import gregtech.common.blocks.modelfactories.BlockOreFactory;
+import gregtech.common.cable.BlockCable;
 import gregtech.common.items.MetaItems;
 import gregtech.common.metatileentities.MetaTileEntities;
 import gregtech.loaders.load.FuelLoader;
@@ -22,11 +23,9 @@ import gregtech.loaders.oreprocessing.OreProcessingHandler;
 import gregtech.loaders.postload.DungeonLootLoader;
 import gregtech.loaders.preload.MaterialInfoLoader;
 import gregtech.loaders.preload.OreDictionaryLoader;
+import mcmultipart.multipart.MultipartRegistry;
 import net.minecraftforge.fluids.FluidRegistry;
-import net.minecraftforge.fml.common.FMLCommonHandler;
-import net.minecraftforge.fml.common.LoaderException;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.common.SidedProxy;
+import net.minecraftforge.fml.common.*;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
@@ -87,8 +86,14 @@ public class GregTechMod {
         OrePrefix.runMaterialHandlers();
         FuelLoader.registerFuels();
         MetaItems.registerRecipes();
-
         gregtechproxy.onLoad();
+
+        if(Loader.isModLoaded(GTValues.MODID_MCMP)) {
+            for(BlockCable blockCable : MetaBlocks.CABLES.values()) {
+                MultipartRegistry.INSTANCE.registerPartWrapper(blockCable, blockCable);
+                MultipartRegistry.INSTANCE.registerStackWrapper(blockCable);
+            }
+        }
 
         if (RecipeMap.foundInvalidRecipe) {
             throw new LoaderException("Found at least one invalid recipe. Please read the log above for more details.");

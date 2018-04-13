@@ -1,12 +1,10 @@
 package gregtech.common;
 
 import java.util.function.Function;
-import java.util.function.Supplier;
 
 import gregtech.api.GTValues;
-import gregtech.api.block.machines.BlockMachine;
 import gregtech.api.block.machines.MachineItemBlock;
-import gregtech.api.cable.ItemBlockCable;
+import gregtech.common.cable.ItemBlockCable;
 import gregtech.api.enchants.EnchantmentEnderDamage;
 import gregtech.api.enchants.EnchantmentRadioactivity;
 import gregtech.api.items.metaitem.MetaItem;

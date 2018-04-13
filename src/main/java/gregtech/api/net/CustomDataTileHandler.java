@@ -1,6 +1,5 @@
 package gregtech.api.net;
 
-import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
 import com.google.common.collect.Multimaps;
 import gregtech.api.capability.ICustomDataTile;
@@ -19,11 +18,13 @@ import net.minecraftforge.fml.common.gameevent.TickEvent.Phase;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import java.util.*;
+import java.util.Iterator;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 class CustomDataTileHandler {
 
-    static final Multimap<BlockPos, PacketBuffer> pendingInitialSyncData = Multimaps.synchronizedListMultimap(ArrayListMultimap.create());
+    static final Multimap<BlockPos, PacketBuffer> pendingInitialSyncData = Multimaps.newListMultimap(new ConcurrentHashMap<>(), CopyOnWriteArrayList::new);
 
     @SideOnly(Side.CLIENT)
     @SubscribeEvent

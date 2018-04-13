@@ -65,6 +65,10 @@ repositories {
         name = "tehnut maven"
         url = "http://tehnut.info/maven/"
     }
+    maven {
+        name = "amadornes maven"
+        url = "http://maven.amadornes.com/"
+    }
 }
 
 dependencies {
@@ -76,12 +80,9 @@ dependencies {
 
     deobfCompile "cofh:ThermalDynamics:${config.minecraft.version}-${config.thermaldynamics.version}:deobf"
 
-    // compile against the JEI API but do not include it at runtime
     deobfCompile "mezz.jei:jei_${config.minecraft.version}:${config.jei.version}:api"
-    // at runtime, use the full JEI jar
-    //runtime "mezz.jei:jei_${config.minecraft.version}:${config.jei.version}"
 
-    deobfCompile "info.amerifrance.guideapi:Guide-API:1.12-${config.guideapi.version}"
+    deobfCompile "MCMultiPart2:MCMultiPart:${config.mcmp.version}:deobf"
 }
 
 sourceCompatibility = "1.8"

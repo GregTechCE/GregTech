@@ -18,7 +18,6 @@ import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.fluids.FluidStack;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
@@ -37,6 +36,7 @@ public abstract class RecipeMapWorkableHandler extends MTETrait implements IWork
     private boolean isActive;
     private boolean workingEnabled = true;
     private boolean hasNotEnoughEnergy;
+    private boolean wasActiveAndNeedsUpdate;
 
     public RecipeMapWorkableHandler(RecipeMap<?> recipeMap) {
         this.recipeMap = recipeMap;
@@ -65,7 +65,6 @@ public abstract class RecipeMapWorkableHandler extends MTETrait implements IWork
             long maxVoltage = getMaxVoltage();
             Recipe pickedRecipe = recipeMap.findRecipe(maxVoltage, metaTileEntity.getImportItems(), metaTileEntity.getImportFluids());
             if(pickedRecipe != null && setupAndConsumeRecipeInputs(pickedRecipe)) {
-                System.out.println("check recipe " + pickedRecipe + " " + recipeMap.unlocalizedName);
                 if(pickedRecipe.canBeBuffered()) {
                     this.previousRecipe = pickedRecipe;
                 } else this.previousRecipe = null;
@@ -77,15 +76,23 @@ public abstract class RecipeMapWorkableHandler extends MTETrait implements IWork
                     completeRecipe();
                 }
             } else {
-                this.hasNotEnoughEnergy = true;
+                if(recipeEUt > 0) {
+                    //only set hasNotEnoughEnergy if this recipe is consuming recipe
+                    //generators always have enough energy
+                    this.hasNotEnoughEnergy = true;
+                }
             }
+        }
+        if(wasActiveAndNeedsUpdate) {
+            this.wasActiveAndNeedsUpdate = false;
+            setActive(false);
         }
     }
 
     protected boolean setupAndConsumeRecipeInputs(Recipe recipe) {
         int[] resultOverclock = calculateOverclock(recipe.getEUt(), getMaxVoltage(), recipeMap.getAmperage(), recipe.getDuration());
         int totalEUt = resultOverclock[0] * resultOverclock[1];
-        return (totalEUt >= 0 ? getEnergyStored() >= totalEUt : getEnergyStored() - totalEUt <= getEnergyCapacity()) &&
+        return (totalEUt >= 0 ? getEnergyStored() >= totalEUt : getEnergyStored() - resultOverclock[0] <= getEnergyCapacity()) &&
             (!recipe.needsEmptyOutput() || MetaTileEntity.isItemHandlerEmpty(metaTileEntity.getExportItems())) &&
             MetaTileEntity.addItemsToItemHandler(metaTileEntity.getExportItems(), true, recipe.getOutputs()) &&
             MetaTileEntity.addFluidsToFluidHandler(metaTileEntity.getExportFluids(), true, recipe.getFluidOutputs()) &&
@@ -104,7 +111,7 @@ public abstract class RecipeMapWorkableHandler extends MTETrait implements IWork
         } else {
             int resultEUt = EUt;
             int resultDuration = duration;
-            while (EUt <= GTValues.V[tier - 1] * amperage) {
+            while (resultEUt <= GTValues.V[tier - 1] * amperage) {
                 resultEUt *= 4;
                 resultDuration /= 2;
             }
@@ -119,7 +126,11 @@ public abstract class RecipeMapWorkableHandler extends MTETrait implements IWork
         this.recipeEUt = resultOverclock[0];
         this.fluidOutputs = GTUtility.copyFluidList(recipe.getFluidOutputs());
         this.itemOutputs = GTUtility.copyStackList(recipe.getResultItemOutputs(random));
-        setActive(true);
+        if(this.wasActiveAndNeedsUpdate) {
+            this.wasActiveAndNeedsUpdate = false;
+        } else {
+            this.setActive(true);
+        }
     }
 
     protected void completeRecipe() {
@@ -131,7 +142,7 @@ public abstract class RecipeMapWorkableHandler extends MTETrait implements IWork
         this.fluidOutputs = null;
         this.itemOutputs = null;
         this.hasNotEnoughEnergy = false;
-        setActive(false);
+        this.wasActiveAndNeedsUpdate = true;
     }
 
     public double getProgressPercent() {

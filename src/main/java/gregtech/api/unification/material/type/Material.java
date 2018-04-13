@@ -3,21 +3,19 @@ package gregtech.api.unification.material.type;
 import com.google.common.base.CaseFormat;
 import com.google.common.collect.ImmutableList;
 import gregtech.api.unification.Element;
-import gregtech.api.unification.material.MaterialIconSet;
 import gregtech.api.unification.material.IMaterialHandler;
+import gregtech.api.unification.material.MaterialIconSet;
 import gregtech.api.unification.stack.MaterialStack;
 import gregtech.api.util.GTControlledRegistry;
 import gregtech.api.util.GTLog;
-import gregtech.api.util.GTUtility;
 import net.minecraft.client.resources.I18n;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nullable;
-import java.util.ArrayList;
 
 import static gregtech.api.GTValues.M;
-import static gregtech.api.util.GTUtility.*;
+import static gregtech.api.util.GTUtility.createFlag;
 
 public abstract class Material implements Comparable<Material> {
 

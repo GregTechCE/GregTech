@@ -4,7 +4,6 @@ import com.google.common.base.Preconditions;
 import gregtech.api.GregTechAPI;
 import gregtech.api.capability.ICustomDataTile;
 import gregtech.api.gui.IUIHolder;
-import net.minecraft.client.renderer.RenderGlobal;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.EnumFacing;
@@ -36,6 +35,8 @@ public class MetaTileEntityHolder extends TickableTileEntityBase implements ICus
                 buffer.writeString(metaTileEntity.metaTileEntityId);
                 metaTileEntity.writeInitialSyncData(buffer);
             });
+            //just to update neighbours so cables and other things will work properly
+            world.neighborChanged(getPos(), getBlockType(), getPos());
             markDirty();
         }
         return metaTileEntity;

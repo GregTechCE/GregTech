@@ -31,7 +31,6 @@ import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.IItemHandler;
@@ -41,7 +40,6 @@ import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.*;
 import java.util.function.Predicate;
-import java.util.function.Supplier;
 
 import static gregtech.api.GTValues.*;
 
@@ -88,6 +86,14 @@ public class GTUtility {
             return Integer.compare(totalDiffB, totalDiffA);
         });
         return colors.get(0);
+    }
+
+    //just because CCL uses a different color format
+    public static int convertRGBtoOpaqueRGBA(int colorValue) {
+        int r = (colorValue >> 16) & 0xFF;
+        int g = (colorValue >> 8) & 0xFF;
+        int b = (colorValue & 0xFF);
+        return (r & 0xFF) << 24 | (g & 0xFF) << 16 | (b & 0xFF) << 8 | (255 & 0xFF);
     }
 
     /**

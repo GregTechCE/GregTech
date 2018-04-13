@@ -1,4 +1,4 @@
-package gregtech.api.cable.net;
+package gregtech.common.cable.net;
 
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -12,7 +12,7 @@ import java.util.List;
 
 public class WorldENet extends WorldSavedData {
 
-    private static final String DATA_ID = "gregtech:e_net";
+    private static final String DATA_ID = "gregtech.e_net";
     private World world;
     private List<EnergyNet> energyNets = new ArrayList<>();
 
@@ -57,6 +57,7 @@ public class WorldENet extends WorldSavedData {
         for(int i = 0; i < allEnergyNets.tagCount(); i++) {
             NBTTagCompound eNetTag = allEnergyNets.getCompoundTagAt(i);
             EnergyNet eNet = new EnergyNet(this);
+            energyNets.add(eNet);
             eNet.deserializeNBT(eNetTag);
         }
     }

@@ -14,8 +14,6 @@ import gregtech.api.capability.impl.FluidTankHandler;
 import gregtech.api.capability.impl.ItemHandlerProxy;
 import gregtech.api.gui.ModularUI;
 import gregtech.api.util.GTUtility;
-import gregtech.common.blocks.MetaBlocks;
-import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -26,7 +24,6 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.NonNullList;
-import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
@@ -45,12 +42,14 @@ import net.minecraftforge.items.ItemHandlerHelper;
 import org.apache.commons.lang3.ArrayUtils;
 
 import javax.annotation.Nullable;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.function.Consumer;
 
 public abstract class MetaTileEntity {
 
-    public static final Collection<AxisAlignedBB> FULL_CUBE_COLLISION = Collections.singletonList(Block.FULL_BLOCK_AABB);
+    public static final Cuboid6[] FULL_CUBE_COLLISION = new Cuboid6[] {Cuboid6.full};
 
     public final String metaTileEntityId;
     MetaTileEntityHolder holder;
@@ -261,7 +260,7 @@ public abstract class MetaTileEntity {
 
     public final ItemStack getStackForm(int amount) {
         int metaTileEntityIntId = GregTechAPI.META_TILE_ENTITY_REGISTRY.getIdByObjectName(metaTileEntityId);
-        return new ItemStack(MetaBlocks.MACHINE, amount, metaTileEntityIntId);
+        return new ItemStack(GregTechAPI.MACHINE, amount, metaTileEntityIntId);
     }
 
     /**
@@ -281,7 +280,7 @@ public abstract class MetaTileEntity {
      * and ray tracing this meta tile entity's block in world
      * @return list of collision boxes
      */
-    public Collection<AxisAlignedBB> getCollisionBoxes() {
+    public Cuboid6[] getCollisionBox() {
         return FULL_CUBE_COLLISION;
     }
 

@@ -1,6 +1,6 @@
 package gregtech.api;
 
-import com.google.common.collect.EnumHashBiMap;
+import gregtech.api.block.machines.BlockMachine;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.unification.OreDictUnifier;
 import gregtech.api.unification.material.Materials;
@@ -21,6 +21,8 @@ import net.minecraftforge.fluids.Fluid;
 import java.util.*;
 
 public class GregTechAPI {
+
+    public static BlockMachine MACHINE;
 
     public static final CreativeTabs TAB_GREGTECH = new CreativeTabs("gregtech.main") {
         @Override

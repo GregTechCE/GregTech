@@ -1,8 +1,9 @@
 package gregtech.api.block.machines;
 
+import codechicken.lib.raytracer.RayTracer;
 import codechicken.lib.render.particle.CustomParticleHandler;
+import codechicken.lib.vec.Cuboid6;
 import gregtech.api.GregTechAPI;
-import gregtech.api.capability.ICustomHighlightBlock;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.MetaTileEntityHolder;
 import gregtech.api.render.MetaTileEntityRenderer;
@@ -35,10 +36,13 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nullable;
-import java.util.*;
+import java.util.Arrays;
+import java.util.List;
 
 @SuppressWarnings("deprecation")
-public class BlockMachine extends Block implements ITileEntityProvider, ICustomHighlightBlock {
+public class BlockMachine extends Block implements ITileEntityProvider {
+
+    private static final Cuboid6[] EMPTY_COLLISION_BOX = new Cuboid6[0];
 
     public BlockMachine() {
         super(Material.IRON);
@@ -55,11 +59,11 @@ public class BlockMachine extends Block implements ITileEntityProvider, ICustomH
         return holder == null ? null : holder.getMetaTileEntity();
     }
 
-    private Collection<AxisAlignedBB> getBoundingBoxes(IBlockAccess blockAccess, BlockPos pos) {
+    private Cuboid6[] getCollisionBox(IBlockAccess blockAccess, BlockPos pos) {
         MetaTileEntity metaTileEntity = getMetaTileEntity(blockAccess, pos);
         if(metaTileEntity == null)
-            return Collections.emptyList();
-        return metaTileEntity.getCollisionBoxes();
+            return EMPTY_COLLISION_BOX;
+        return metaTileEntity.getCollisionBox();
     }
 
     @Override
@@ -73,35 +77,16 @@ public class BlockMachine extends Block implements ITileEntityProvider, ICustomH
 
     @Override
     public void addCollisionBoxToList(IBlockState state, World worldIn, BlockPos pos, AxisAlignedBB entityBox, List<AxisAlignedBB> collidingBoxes, @Nullable Entity entityIn, boolean isActualState) {
-        for(AxisAlignedBB axisAlignedBB : getBoundingBoxes(worldIn, pos)) {
-            AxisAlignedBB offsetBox = axisAlignedBB.offset(pos);
-            if (entityBox.intersects(offsetBox)) {
-                collidingBoxes.add(offsetBox);
-            }
+        for(Cuboid6 axisAlignedBB : getCollisionBox(worldIn, pos)) {
+            AxisAlignedBB offsetBox = axisAlignedBB.aabb().offset(pos);
+            if (offsetBox.intersects(entityBox)) collidingBoxes.add(offsetBox);
         }
-    }
-
-    @Override
-    public Collection<AxisAlignedBB> getSelectedBoundingBoxes(IBlockAccess world, BlockPos blockPos, IBlockState blockState) {
-        ArrayList<AxisAlignedBB> selection = new ArrayList<>();
-        for(AxisAlignedBB axisAlignedBB : getBoundingBoxes(world, blockPos)) {
-            selection.add(axisAlignedBB.offset(blockPos));
-        }
-        return selection;
     }
 
     @Nullable
     @Override
     public RayTraceResult collisionRayTrace(IBlockState blockState, World worldIn, BlockPos pos, Vec3d start, Vec3d end) {
-        for(AxisAlignedBB boundingBox : getBoundingBoxes(worldIn, pos)) {
-            Vec3d vec3d = start.subtract(pos.getX(), pos.getY(), pos.getZ());
-            Vec3d vec3d1 = end.subtract(pos.getX(), pos.getY(), pos.getZ());
-            RayTraceResult raytraceresult = boundingBox.calculateIntercept(vec3d, vec3d1);
-            if(raytraceresult != null) {
-                return new RayTraceResult(raytraceresult.hitVec.addVector(pos.getX(), pos.getY(), pos.getZ()), raytraceresult.sideHit, pos);
-            }
-        }
-        return null;
+        return RayTracer.rayTraceCuboidsClosest(start, end, pos, getCollisionBox(worldIn, pos));
     }
 
     @Override
@@ -278,7 +263,7 @@ public class BlockMachine extends Block implements ITileEntityProvider, ICustomH
 
     @Override
     public BlockRenderLayer getBlockLayer() {
-        return BlockRenderLayer.CUTOUT;
+        return BlockRenderLayer.CUTOUT_MIPPED;
     }
 
     @Override
@@ -301,7 +286,6 @@ public class BlockMachine extends Block implements ITileEntityProvider, ICustomH
     public boolean addRunningEffects(IBlockState state, World world, BlockPos pos, Entity entity) {
         return true;
     }
-
 
     @Override
     public void getSubBlocks(CreativeTabs tab, NonNullList<ItemStack> items) {

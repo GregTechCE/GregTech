@@ -1,5 +1,6 @@
 package gregtech.api.unification.material;
 
+import gregtech.api.GTValues;
 import gregtech.api.unification.Element;
 import gregtech.api.unification.material.type.*;
 import gregtech.api.unification.stack.MaterialStack;
@@ -607,7 +608,7 @@ public class Materials {
         Cobalt.addOreByProducts(Cobaltite);
         Sulfur.addOreByProducts(Sulfur);
         Saltpeter.addOreByProducts(Saltpeter);
-        //Endstone.addOreByProducts(Helium3); //FIXME
+        Endstone.addOreByProducts(Helium3);
         Osmium.addOreByProducts(Iridium);
         Magnesium.addOreByProducts(Olivine);
         Aluminium.addOreByProducts(Bauxite);
@@ -637,5 +638,10 @@ public class Materials {
         RockSalt.addOreByProducts(Salt);
         Andesite.addOreByProducts(Basalt);
         Diorite.addOreByProducts(NetherQuartz);
+
+        RedAlloy.setCableProperties(GTValues.V[0], 1, 0);
+        Tin.setCableProperties(GTValues.V[1], 1, 1);
+        Copper.setCableProperties(GTValues.V[2], 1, 2);
+
     }
 }

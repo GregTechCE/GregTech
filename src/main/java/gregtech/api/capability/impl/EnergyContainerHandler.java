@@ -14,7 +14,6 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.items.IItemHandlerModifiable;
 
 import javax.annotation.Nullable;
-import java.util.function.Function;
 import java.util.function.Predicate;
 
 public class EnergyContainerHandler extends MTETrait implements IEnergyContainer {

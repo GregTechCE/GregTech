@@ -1,4 +1,4 @@
-package gregtech.api.cable;
+package gregtech.common.cable;
 
 import gregtech.api.GTValues;
 import gregtech.api.unification.material.type.MetalMaterial;

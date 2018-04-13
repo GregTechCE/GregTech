@@ -8,7 +8,7 @@ public class FuelLoader {
     public static void registerFuels() {
         RecipeMaps.DIESEL_GENERATOR_FUELS.recipeBuilder()
             .fluidInputs(Materials.Fuel.getFluid(1))
-            .duration(200).EUt(30)
+            .duration(200).EUt(-30)
             .buildAndRegister();
     }
 

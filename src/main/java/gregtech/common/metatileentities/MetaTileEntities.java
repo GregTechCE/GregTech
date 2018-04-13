@@ -1,7 +1,7 @@
 package gregtech.common.metatileentities;
 
 import gregtech.api.GregTechAPI;
-import gregtech.api.cable.tile.TileEntityCable;
+import gregtech.common.cable.tile.TileEntityCable;
 import gregtech.api.metatileentity.MaceratorMetaTileEntity;
 import gregtech.api.metatileentity.MetaTileEntityHolder;
 import gregtech.api.metatileentity.SimpleGeneratorMetaTileEntity;

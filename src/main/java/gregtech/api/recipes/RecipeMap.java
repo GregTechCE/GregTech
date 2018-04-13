@@ -212,7 +212,7 @@ public class RecipeMap<R extends RecipeBuilder<R>> {
 
     private void addSlot(ModularUI.Builder builder, int x, int y, int slotIndex, IItemHandlerModifiable itemHandler, FluidTankHandler fluidHandler, boolean isFluid, boolean isOutputs) {
         if(!isFluid) {
-            builder.widget(new SlotWidget(itemHandler, slotIndex, x, y)
+            builder.widget(new SlotWidget(itemHandler, slotIndex, x, y, true, !isOutputs)
                 .setBackgroundTexture(getOverlaysForSlot(isOutputs, false,slotIndex == itemHandler.getSlots() - 1)));
         } else {
             builder.widget(new TankWidget(fluidHandler.getTankAt(slotIndex), x, y - 1, 18, 18)

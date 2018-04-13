@@ -8,9 +8,7 @@ import codechicken.lib.render.item.IItemRenderer;
 import codechicken.lib.render.particle.IModelParticleProvider;
 import codechicken.lib.render.pipeline.IVertexOperation;
 import codechicken.lib.texture.TextureUtils;
-import codechicken.lib.vec.Cuboid6;
 import codechicken.lib.vec.Translation;
-import codechicken.lib.vec.uv.IconTransformation;
 import gregtech.api.GTValues;
 import gregtech.api.block.machines.BlockMachine;
 import gregtech.api.block.machines.MachineItemBlock;
@@ -31,9 +29,7 @@ import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.client.resources.IResource;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumBlockRenderType;
-import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.IBlockAccess;
@@ -49,8 +45,10 @@ import javax.annotation.Nonnull;
 import javax.vecmath.Matrix4f;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 
 public class MetaTileEntityRenderer implements ICCBlockRenderer, IItemRenderer, IModelParticleProvider {
 
@@ -70,8 +68,9 @@ public class MetaTileEntityRenderer implements ICCBlockRenderer, IItemRenderer, 
     @SuppressWarnings("deprecation")
     public static void postInit() {
         try {
-            IResource resource = Minecraft.getMinecraft().getResourceManager().getResource(new ResourceLocation("models/block/block.json"));
-            try(InputStreamReader reader = new InputStreamReader(resource.getInputStream())) {
+
+            try(IResource resource = Minecraft.getMinecraft().getResourceManager().getResource(new ResourceLocation("models/block/block.json"))) {
+                InputStreamReader reader = new InputStreamReader(resource.getInputStream());
                 ModelBlock modelBlock = ModelBlock.deserialize(reader);
                 for(TransformType transformType : TransformType.values()) {
                     ItemTransformVec3f vec3f = modelBlock.getAllTransforms().getTransform(transformType);

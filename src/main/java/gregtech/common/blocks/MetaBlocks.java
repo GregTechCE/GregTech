@@ -1,12 +1,7 @@
 package gregtech.common.blocks;
 
-import java.util.*;
-import java.util.Map.Entry;
-
 import gregtech.api.GregTechAPI;
-import gregtech.api.cable.BlockCable;
-import gregtech.api.cable.Insulation;
-import gregtech.api.render.CableRenderer;
+import gregtech.api.block.machines.BlockMachine;
 import gregtech.api.render.MetaTileEntityRenderer;
 import gregtech.api.unification.OreDictUnifier;
 import gregtech.api.unification.material.Materials;
@@ -19,7 +14,9 @@ import gregtech.api.unification.ore.StoneTypes;
 import gregtech.common.blocks.BlockGranite.GraniteVariant;
 import gregtech.common.blocks.BlockMineral.MineralVariant;
 import gregtech.common.blocks.StoneBlock.ChiselingVariant;
-import gregtech.api.block.machines.BlockMachine;
+import gregtech.common.cable.BlockCable;
+import gregtech.common.cable.Insulation;
+import gregtech.common.render.CableRenderer;
 import net.minecraft.block.Block;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.state.IBlockState;
@@ -32,6 +29,9 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+
+import java.util.*;
+import java.util.Map.Entry;
 
 import static gregtech.common.ClientProxy.*;
 
@@ -63,7 +63,7 @@ public class MetaBlocks {
     public static StoneType BASALT;
 
     public static void init() {
-        MACHINE = new BlockMachine();
+        GregTechAPI.MACHINE = MACHINE = new BlockMachine();
         MACHINE.setRegistryName("machine");
         BOILER_CASING = new BlockBoilerCasing();
         BOILER_CASING.setRegistryName("boiler_casing");

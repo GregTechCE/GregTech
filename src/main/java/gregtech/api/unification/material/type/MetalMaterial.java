@@ -1,7 +1,7 @@
 package gregtech.api.unification.material.type;
 
 import com.google.common.collect.ImmutableList;
-import gregtech.api.cable.WireProperties;
+import gregtech.common.cable.WireProperties;
 import gregtech.api.unification.Element;
 import gregtech.api.unification.material.MaterialIconSet;
 import gregtech.api.unification.stack.MaterialStack;
@@ -138,8 +138,8 @@ public class MetalMaterial extends SolidMaterial {
         return this;
     }
 
-    public MetalMaterial setCableProperties(WireProperties wireProperties) {
-        this.cableProperties = wireProperties;
+    public MetalMaterial setCableProperties(long voltage, int baseAmperage, int lossPerBlock) {
+        this.cableProperties = new WireProperties(this, (int) voltage, baseAmperage, lossPerBlock);
         return this;
     }
 

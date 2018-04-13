@@ -1,6 +1,6 @@
-package gregtech.api.cable.tile;
+package gregtech.common.cable.tile;
 
-import gregtech.api.cable.RoutePath;
+import gregtech.common.cable.RoutePath;
 import gregtech.api.capability.IEnergyContainer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
@@ -48,7 +48,7 @@ public class CableEnergyContainer implements IEnergyContainer {
             //do not allow cables to load chunks
             if(!world.isBlockLoaded(nodePos)) continue;
             TileEntity tileEntity = world.getTileEntity(blockPos);
-            if(tileEntity == null) continue;
+            if(tileEntity == null || tileEntity instanceof TileEntityCable) continue;
             IEnergyContainer energyContainer = tileEntity.getCapability(IEnergyContainer.CAPABILITY_ENERGY_CONTAINER, null);
             if(energyContainer == null) continue;
             amperesUsed += energyContainer.acceptEnergyFromNetwork(facing.getOpposite(), voltage, amperage - amperesUsed);

@@ -54,7 +54,8 @@ public class GTValues {
     public static final String MODID = "gregtech",
             MODID_RC = "Railcraft",
             MODID_FR = "Forestry",
-            MODID_JEI = "jei";
+            MODID_JEI = "jei",
+            MODID_MCMP = "mcmultipart";
 
     /**
      * Not really Constant, but it set using the Config and therefore should be constant (this is for the Debug Mode)

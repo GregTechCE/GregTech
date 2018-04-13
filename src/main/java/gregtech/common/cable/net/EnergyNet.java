@@ -1,7 +1,7 @@
-package gregtech.api.cable.net;
+package gregtech.common.cable.net;
 
-import gregtech.api.cable.RoutePath;
-import gregtech.api.cable.WireProperties;
+import gregtech.common.cable.RoutePath;
+import gregtech.common.cable.WireProperties;
 import gregtech.api.unification.material.type.Material;
 import gregtech.api.unification.material.type.MetalMaterial;
 import net.minecraft.nbt.NBTTagCompound;
@@ -18,8 +18,9 @@ import java.util.Map.Entry;
 
 public class EnergyNet implements INBTSerializable<NBTTagCompound> {
 
-    private WorldENet worldData;
+    private final WorldENet worldData;
     private Map<BlockPos, WireProperties> allNodes = new HashMap<>();
+    private Map<BlockPos, Integer> blockedConnections = new HashMap<>();
     private Set<BlockPos> activeNodes = new HashSet<>();
     private long lastUpdatedTime;
 
@@ -27,10 +28,21 @@ public class EnergyNet implements INBTSerializable<NBTTagCompound> {
         this.worldData = world;
     }
 
-    private EnergyNet(Map<BlockPos, WireProperties> allNodesCopy, Set<BlockPos> activeNodes) {
+    private EnergyNet(WorldENet worldENet, Map<BlockPos, WireProperties> allNodesCopy, Map<BlockPos, Integer> blockedConnections, Set<BlockPos> activeNodes) {
+        this.worldData = worldENet;
         this.allNodes = allNodesCopy;
         this.activeNodes = new HashSet<>(activeNodes);
+        this.blockedConnections = new HashMap<>(blockedConnections);
+        this.blockedConnections.keySet().removeIf(p -> !allNodes.containsKey(p));
         this.activeNodes.removeIf(p -> !allNodes.containsKey(p));
+    }
+
+    public Map<BlockPos, WireProperties> getAllNodes() {
+        return Collections.unmodifiableMap(allNodes);
+    }
+
+    public Set<BlockPos> getActiveNodes() {
+        return Collections.unmodifiableSet(activeNodes);
     }
 
     public World getWorldData() {
@@ -40,6 +52,7 @@ public class EnergyNet implements INBTSerializable<NBTTagCompound> {
     public void removeNode(BlockPos nodePos) {
         if(allNodes.containsKey(nodePos)) {
             activeNodes.remove(nodePos);
+            blockedConnections.remove(nodePos);
             boolean needToUpdateRoutes = allNodes.remove(nodePos) != null;
             int amountOfConnectedSides = 0;
             for(EnumFacing facing : EnumFacing.values()) {
@@ -51,9 +64,9 @@ public class EnergyNet implements INBTSerializable<NBTTagCompound> {
             //because they are only on on side or doesn't exist at all
             //this saves a lot of performance in big networks, which are quite big to depth-first them fastly
             if(amountOfConnectedSides >= 2) {
-                for(EnumFacing facing : EnumFacing.values()) {
+                for(EnumFacing facing : EnumFacing.VALUES) {
                     BlockPos offsetPos = nodePos.offset(facing);
-                    if(!allNodes.containsKey(offsetPos))
+                    if(!containsNotBlocked(offsetPos, facing.getOpposite()))
                         continue;
                     HashMap<BlockPos, WireProperties> thisENet = findAllConnectedBlocks(offsetPos);
                     if(allNodes.equals(thisENet)) {
@@ -61,11 +74,12 @@ public class EnergyNet implements INBTSerializable<NBTTagCompound> {
                         //the network didn't change so keep it as is
                         break;
                     } else {
+                        //and use them to create new network with caching active nodes set
+                        EnergyNet energyNet = new EnergyNet(worldData, thisENet, blockedConnections, activeNodes);
                         //remove blocks that aren't connected with this network
                         allNodes.keySet().removeAll(thisENet.keySet());
+                        blockedConnections.keySet().removeAll(thisENet.keySet());
                         activeNodes.removeAll(thisENet.keySet());
-                        //and use them to create new network with caching active nodes set
-                        EnergyNet energyNet = new EnergyNet(thisENet, activeNodes);
                         worldData.addEnergyNet(energyNet);
                         needToUpdateRoutes = true;
                     }
@@ -92,8 +106,9 @@ public class EnergyNet implements INBTSerializable<NBTTagCompound> {
         return allNodes.containsKey(blockPos);
     }
 
-    public void addNode(BlockPos nodePos, WireProperties wireProperties) {
+    public void addNode(BlockPos nodePos, WireProperties wireProperties, int blockedConnectionsMask) {
         allNodes.put(nodePos, wireProperties);
+        blockedConnections.put(nodePos, blockedConnectionsMask);
         worldData.markDirty();
     }
 
@@ -117,8 +132,14 @@ public class EnergyNet implements INBTSerializable<NBTTagCompound> {
         worldData.removeEnergyNet(energyNet);
         allNodes.putAll(energyNet.allNodes);
         activeNodes.addAll(energyNet.activeNodes);
+        blockedConnections.putAll(energyNet.blockedConnections);
         worldData.markDirty();
         lastUpdatedTime = System.currentTimeMillis();
+    }
+
+    public boolean containsNotBlocked(BlockPos blockPos, EnumFacing fromSide) {
+        return allNodes.containsKey(blockPos) &&
+            (blockedConnections.get(blockPos) & 1 << fromSide.getIndex()) == 0;
     }
 
     public List<RoutePath> computePatches(BlockPos startPos) {
@@ -131,7 +152,7 @@ public class EnergyNet implements INBTSerializable<NBTTagCompound> {
         main: while(true) {
             for(EnumFacing facing : EnumFacing.VALUES) {
                 currentPos.move(facing);
-                if(allNodes.containsKey(currentPos) && !observedSet.contains(currentPos)) {
+                if(containsNotBlocked(currentPos, facing.getOpposite()) && !observedSet.contains(currentPos)) {
                     BlockPos immutablePos = currentPos.toImmutable();
                     observedSet.add(immutablePos);
                     moveStack.push(facing.getOpposite());
@@ -164,7 +185,7 @@ public class EnergyNet implements INBTSerializable<NBTTagCompound> {
         main: while(true) {
             for(EnumFacing facing : EnumFacing.VALUES) {
                 currentPos.move(facing);
-                if(allNodes.containsKey(currentPos) && !observedSet.containsKey(currentPos)) {
+                if(containsNotBlocked(currentPos, facing.getOpposite()) && !observedSet.containsKey(currentPos)) {
                     observedSet.put(currentPos.toImmutable(), allNodes.get(currentPos));
                     moveStack.push(facing.getOpposite());
                     continue main;
@@ -180,18 +201,19 @@ public class EnergyNet implements INBTSerializable<NBTTagCompound> {
     @Override
     public NBTTagCompound serializeNBT() {
         NBTTagCompound compound = new NBTTagCompound();
-        compound.setTag("AllNodes", serializeAllNodeList(allNodes));
-        compound.setTag("ActiveNodes", serializeNodeList(activeNodes));
+        compound.setTag("Nodes", serializeAllNodeList(allNodes, blockedConnections, activeNodes));
         return compound;
     }
 
     @Override
     public void deserializeNBT(NBTTagCompound nbt) {
-        this.allNodes = deserializeAllNodeList(nbt.getCompoundTag("AllNodes"));
-        this.activeNodes = deserializeNodeList(nbt.getTagList("ActiveNodes", NBT.TAG_COMPOUND));
+        Result result = deserializeAllNodeList(nbt.getCompoundTag("Nodes"));
+        this.allNodes = result.allNodes;
+        this.blockedConnections = result.blockedConnections;
+        this.activeNodes = result.activeNodes;
     }
 
-    private static NBTTagCompound serializeAllNodeList(Map<BlockPos, WireProperties> allNodes) {
+    private static NBTTagCompound serializeAllNodeList(Map<BlockPos, WireProperties> allNodes, Map<BlockPos, Integer> blockedConnections, Set<BlockPos> activeNodes) {
         NBTTagCompound compound = new NBTTagCompound();
         NBTTagList allNodesList = new NBTTagList();
         NBTTagList wirePropertiesList = new NBTTagList();
@@ -212,6 +234,12 @@ public class EnergyNet implements INBTSerializable<NBTTagCompound> {
                 currentIndex++;
             }
             nodeTag.setInteger("index", wirePropertiesIndex);
+            if(blockedConnections.containsKey(nodePos)) {
+                nodeTag.setInteger("blocked", blockedConnections.get(nodePos));
+            }
+            if(activeNodes.contains(nodePos)) {
+                nodeTag.setBoolean("active", true);
+            }
             allNodesList.appendTag(nodeTag);
         }
 
@@ -232,11 +260,25 @@ public class EnergyNet implements INBTSerializable<NBTTagCompound> {
         return compound;
     }
 
-    private static HashMap<BlockPos, WireProperties> deserializeAllNodeList(NBTTagCompound compound) {
+    private static class Result {
+        HashMap<BlockPos, WireProperties> allNodes;
+        HashMap<BlockPos, Integer> blockedConnections;
+        HashSet<BlockPos> activeNodes;
+
+        public Result(HashMap<BlockPos, WireProperties> allNodes, HashMap<BlockPos, Integer> blockedConnections, HashSet<BlockPos> activeNodes) {
+            this.allNodes = allNodes;
+            this.blockedConnections = blockedConnections;
+            this.activeNodes = activeNodes;
+        }
+    }
+
+    private static Result deserializeAllNodeList(NBTTagCompound compound) {
         NBTTagList allNodesList = compound.getTagList("NodeIndexes", NBT.TAG_COMPOUND);
         NBTTagList wirePropertiesList = compound.getTagList("WireProperties", NBT.TAG_COMPOUND);
         HashMap<Integer, WireProperties> readProperties = new HashMap<>();
         HashMap<BlockPos, WireProperties> allNodes = new HashMap<>();
+        HashMap<BlockPos, Integer> blockedConnections = new HashMap<>();
+        HashSet<BlockPos> activeNodes = new HashSet<>();
 
         for(int i = 0; i < wirePropertiesList.tagCount(); i++) {
             NBTTagCompound propertiesTag = wirePropertiesList.getCompoundTagAt(i);
@@ -254,34 +296,16 @@ public class EnergyNet implements INBTSerializable<NBTTagCompound> {
             int y = nodeTag.getInteger("y");
             int z = nodeTag.getInteger("z");
             int wirePropertiesIndex = nodeTag.getInteger("index");
-            allNodes.put(new BlockPos(x, y, z), readProperties.get(wirePropertiesIndex));
+            BlockPos blockPos = new BlockPos(x, y, z);
+            allNodes.put(blockPos, readProperties.get(wirePropertiesIndex));
+            blockedConnections.put(blockPos, nodeTag.getInteger("blocked"));
+            if(nodeTag.getBoolean("active")) {
+                activeNodes.add(blockPos);
+            }
         }
 
-        return allNodes;
+        return new Result(allNodes, blockedConnections, activeNodes);
     }
 
-    private static NBTTagList serializeNodeList(Set<BlockPos> allNodes) {
-        NBTTagList allNodesList = new NBTTagList();
-        for(BlockPos nodePos : allNodes) {
-            NBTTagCompound nodeTag = new NBTTagCompound();
-            nodeTag.setInteger("x", nodePos.getX());
-            nodeTag.setInteger("y", nodePos.getY());
-            nodeTag.setInteger("z", nodePos.getZ());
-            allNodesList.appendTag(nodeTag);
-        }
-        return allNodesList;
-    }
-
-    private static HashSet<BlockPos> deserializeNodeList(NBTTagList allNodeList) {
-        HashSet<BlockPos> allNodes = new HashSet<>();
-        for(int i = 0; i < allNodeList.tagCount(); i++) {
-            NBTTagCompound nodeTag = allNodeList.getCompoundTagAt(i);
-            int x = nodeTag.getInteger("x");
-            int y = nodeTag.getInteger("y");
-            int z = nodeTag.getInteger("z");
-            allNodes.add(new BlockPos(x, y, z));
-        }
-        return allNodes;
-    }
 
 }
