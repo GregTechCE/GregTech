@@ -75,7 +75,7 @@ public abstract class SteamBoiler extends MetaTileEntity {
 
     @Override
     public void renderMetaTileEntity(CCRenderState renderState, IVertexOperation[] pipeline) {
-        IVertexOperation[] colouredPipeline = ArrayUtils.add(pipeline, new ColourMultiplier(paintingColor));
+        IVertexOperation[] colouredPipeline = ArrayUtils.add(pipeline, new ColourMultiplier(getPaintingColorForRendering()));
         getBaseRenderer().render(renderState, colouredPipeline);
         renderer.render(renderState, pipeline, getFrontFacing(), fuelBurnTimeLeft > 0);
     }

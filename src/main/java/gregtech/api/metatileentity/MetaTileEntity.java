@@ -67,7 +67,7 @@ public abstract class MetaTileEntity {
     protected List<MTETrait> mteTraits = new ArrayList<>();
 
     protected EnumFacing frontFacing = EnumFacing.NORTH;
-    protected int paintingColor = 0xFFFFFFFF;
+    protected int paintingColor = 0xFFFFFF;
 
     protected int[] sidedRedstoneOutput = new int[6];
 
@@ -134,7 +134,7 @@ public abstract class MetaTileEntity {
     @SideOnly(Side.CLIENT)
     public void renderMetaTileEntity(CCRenderState renderState, IVertexOperation[] pipeline) {
         TextureAtlasSprite atlasSprite = TextureUtils.getMissingSprite();
-        IVertexOperation[] renderPipeline = ArrayUtils.add(pipeline, new ColourMultiplier(paintingColor));
+        IVertexOperation[] renderPipeline = ArrayUtils.add(pipeline, new ColourMultiplier(getPaintingColorForRendering()));
         for(EnumFacing face : EnumFacing.VALUES) {
             renderFace(renderState, face, Cuboid6.full, atlasSprite, renderPipeline);
         }
@@ -557,6 +557,11 @@ public abstract class MetaTileEntity {
 
     public int getPaintingColor() {
         return paintingColor;
+    }
+
+    @SideOnly(Side.CLIENT)
+    public int getPaintingColorForRendering() {
+        return GTUtility.convertRGBtoOpaqueRGBA(getPaintingColor());
     }
 
     public IItemHandler getItemInventory() {

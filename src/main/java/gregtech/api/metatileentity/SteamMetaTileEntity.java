@@ -68,7 +68,7 @@ public abstract class SteamMetaTileEntity extends MetaTileEntity {
 
     @Override
     public void renderMetaTileEntity(CCRenderState renderState, IVertexOperation[] pipeline) {
-        IVertexOperation[] colouredPipeline = ArrayUtils.add(pipeline, new ColourMultiplier(paintingColor));
+        IVertexOperation[] colouredPipeline = ArrayUtils.add(pipeline, new ColourMultiplier(getPaintingColorForRendering()));
         getBaseRenderer().render(renderState, colouredPipeline);
         renderer.render(renderState, pipeline, getFrontFacing(), workableHandler.isActive());
         Textures.PIPE_OUT_OVERLAY.renderSided(workableHandler.getVentingSide(), renderState, pipeline);
