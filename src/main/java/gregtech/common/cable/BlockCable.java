@@ -56,7 +56,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-@Interface(iface = "mcmultipart.api.multipart.IMultipart", modid = GTValues.MODID)
+@Interface(iface = "mcmultipart.api.multipart.IMultipart", modid = GTValues.MODID_MCMP)
 public class BlockCable extends Block implements ITileEntityProvider, IMultipart {
 
     public static final PropertyEnum<Insulation> INSULATION = PropertyEnum.create("insulation", Insulation.class);
