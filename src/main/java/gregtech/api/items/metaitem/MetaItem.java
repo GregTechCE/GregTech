@@ -653,6 +653,16 @@ public abstract class MetaItem<T extends MetaItem<?>.MetaValueItem> extends Item
             return getStackForm(1);
         }
 
+        public ItemStack getFullyCharged(int amount) {
+            if(electricStats == null)
+                return getStackForm(amount);
+            ItemStack itemStack = getStackForm(1);
+            IElectricItem electricItem = itemStack.getCapability(IElectricItem.CAPABILITY_ELECTRIC_ITEM, null);
+            electricItem.charge(Long.MAX_VALUE, Integer.MAX_VALUE, true, false);
+            itemStack.setCount(amount);
+            return itemStack;
+        }
+
         @Override
         public String toString() {
             return new ToStringBuilder(this)

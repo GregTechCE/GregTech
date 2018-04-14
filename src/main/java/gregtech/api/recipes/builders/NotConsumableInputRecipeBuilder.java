@@ -1,5 +1,6 @@
 package gregtech.api.recipes.builders;
 
+import com.google.common.base.Predicates;
 import com.google.common.collect.ImmutableMap;
 import gregtech.api.items.metaitem.MetaItem;
 import gregtech.api.recipes.CountableIngredient;
@@ -8,10 +9,13 @@ import gregtech.api.recipes.RecipeBuilder;
 import gregtech.api.recipes.RecipeMap;
 import gregtech.api.util.EnumValidationResult;
 import gregtech.api.util.GTLog;
+import gregtech.api.util.GTUtility;
 import gregtech.api.util.ValidationResult;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.Ingredient;
+
+import java.util.Collection;
+import java.util.Objects;
 
 public class NotConsumableInputRecipeBuilder extends RecipeBuilder<NotConsumableInputRecipeBuilder> {
 
@@ -36,15 +40,26 @@ public class NotConsumableInputRecipeBuilder extends RecipeBuilder<NotConsumable
         return new NotConsumableInputRecipeBuilder(this);
     }
 
-    public NotConsumableInputRecipeBuilder notConsumable(Item item) {
-        if (item == null) {
-            GTLog.logger.error("Not consumable input cannot be null.");
+
+    @Override
+    public NotConsumableInputRecipeBuilder inputs(Collection<ItemStack> inputs) {
+        if (GTUtility.iterableContains(inputs, Predicates.or(Objects::isNull, GTUtility::isEmptyIgnoringSize))) {
+            GTLog.logger.error("Input cannot contain null or empty ItemStacks. Inputs: {}", inputs);
             GTLog.logger.error("Stacktrace:", new IllegalArgumentException());
             recipeStatus = EnumValidationResult.INVALID;
-        } else {
-            inputs.add(CountableIngredient.from(new ItemStack(item, 0)));
         }
-        return this;
+        inputs.forEach(stack -> {
+            if(stack != null) {
+                //workaround for old recipes using zero-size stacks as non-consumed
+                int originalCount = stack.getCount();
+                if(originalCount == 0)
+                    stack.setCount(1);
+                if (!stack.isEmpty()) {
+                    this.inputs.add(CountableIngredient.from(stack, originalCount));
+                }
+            }
+        });
+        return getThis();
     }
 
     public NotConsumableInputRecipeBuilder notConsumable(ItemStack itemStack) {
@@ -54,8 +69,7 @@ public class NotConsumableInputRecipeBuilder extends RecipeBuilder<NotConsumable
             recipeStatus = EnumValidationResult.INVALID;
         } else {
             ItemStack stack = itemStack.copy();
-            stack.setCount(0);
-            inputs.add(CountableIngredient.from(stack));
+            inputs.add(CountableIngredient.from(stack, 0));
         }
         return this;
     }

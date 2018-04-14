@@ -231,6 +231,12 @@ public class GTUtility {
         return "";
     }
 
+    public static boolean isEmptyIgnoringSize(ItemStack itemStack) {
+        itemStack = itemStack.copy();
+        itemStack.setCount(1);
+        return itemStack.isEmpty();
+    }
+
     /**
      * @return lowest tier that can handle passed voltage
      */
