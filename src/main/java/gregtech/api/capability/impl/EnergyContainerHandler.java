@@ -185,7 +185,7 @@ public class EnergyContainerHandler extends MTETrait implements IEnergyContainer
 
     @Override
     public boolean inputsEnergy(EnumFacing side) {
-        return getInputVoltage() > 0 && (sideInputCondition == null || sideInputCondition.test(side));
+        return !outputsEnergy(side) && getInputVoltage() > 0 && (sideInputCondition == null || sideInputCondition.test(side));
     }
 
     @Override

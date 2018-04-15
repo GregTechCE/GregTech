@@ -4,13 +4,10 @@ import com.google.common.base.CaseFormat;
 import gregtech.api.items.materialitem.MaterialMetaItem;
 import gregtech.api.items.metaitem.FoodStats;
 import gregtech.api.recipes.CountableIngredient;
-import gregtech.api.recipes.ModHandler;
 import gregtech.api.recipes.RecipeMaps;
 import gregtech.api.unification.OreDictUnifier;
 import gregtech.api.unification.material.Materials;
 import gregtech.api.unification.ore.OrePrefix;
-import gregtech.api.unification.stack.ItemMaterialInfo;
-import gregtech.api.unification.stack.MaterialStack;
 import gregtech.api.util.RandomPotionEffect;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -18,7 +15,6 @@ import net.minecraft.init.MobEffects;
 import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.ItemStack;
 
-import static gregtech.api.GTValues.W;
 import static gregtech.common.items.MetaItems.*;
 
 public class MetaItem2 extends MaterialMetaItem {
@@ -54,9 +50,6 @@ public class MetaItem2 extends MaterialMetaItem {
         PLANK_JUNGLE = addItem(473, "plank.jungle").setBurnValue(75);
         PLANK_ACACIA = addItem(474, "plank.acacia").setBurnValue(75);
         PLANK_DARKOAK = addItem(475, "plank.darkoak").setBurnValue(75);
-
-        SFMIXTURE = addItem(270, "sfmixture");
-        MSFMIXTURE = addItem(271, "msfmixture");
 
         CROP_DROP_PLUMBILIA = addItem(500, "crop.drop.plumbilia");
         CROP_DROP_ARGENTIA = addItem(501, "crop.drop.argentia");
@@ -95,6 +88,8 @@ public class MetaItem2 extends MaterialMetaItem {
         CROP_DROP_GRAPES = addItem(554, "crop.drop.grapes").addOreDict("cropGrape").addStats(new FoodStats(2, 0.3F));
         CROP_DROP_ONION = addItem(555, "crop.drop.onion").addOreDict("cropOnion").addStats(new FoodStats(2, 0.2F));
         CROP_DROP_CUCUMBER = addItem(556, "crop.drop.cucumber").addOreDict("cropCucumber").addStats(new FoodStats(1, 0.2F));
+
+        PLANT_BALL = addItem(570, "plant.ball").setBurnValue(75); //TODO @Exidex texture
     }
 
     public void registerRecipes() {

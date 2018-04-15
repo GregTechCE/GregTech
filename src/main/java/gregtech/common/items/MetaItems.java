@@ -3,8 +3,6 @@ package gregtech.common.items;
 import gregtech.api.items.materialitem.MaterialMetaItem;
 import gregtech.api.items.metaitem.MetaItem;
 import gregtech.api.items.toolitem.ToolMetaItem;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -292,15 +290,14 @@ public final class MetaItems {
 
     public static MetaItem<?>.MetaValueItem DYE_INDIGO;
 
+    public static MetaItem<?>.MetaValueItem PLANT_BALL;
+
     public static MetaItem<?>.MetaValueItem PLANK_OAK;
     public static MetaItem<?>.MetaValueItem PLANK_SPRUCE;
     public static MetaItem<?>.MetaValueItem PLANK_BIRCH;
     public static MetaItem<?>.MetaValueItem PLANK_JUNGLE;
     public static MetaItem<?>.MetaValueItem PLANK_ACACIA;
     public static MetaItem<?>.MetaValueItem PLANK_DARKOAK;
-
-    public static MetaItem<?>.MetaValueItem SFMIXTURE;
-    public static MetaItem<?>.MetaValueItem MSFMIXTURE;
 
     public static MetaItem<?>.MetaValueItem CROP_DROP_PLUMBILIA;
     public static MetaItem<?>.MetaValueItem CROP_DROP_ARGENTIA;

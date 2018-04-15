@@ -197,6 +197,10 @@ public abstract class MetaTileEntity {
 
     protected abstract FluidTankHandler createExportFluidHandler();
 
+    protected boolean openGUIOnRightClick() {
+        return true;
+    }
+
     /**
      * Creates a UI instance for player opening inventory of this meta tile entity
      * @param entityPlayer player opening inventory
@@ -209,7 +213,7 @@ public abstract class MetaTileEntity {
      * @return true if something happened, so animation will be played
      */
     public boolean onRightClick(EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
-        if(!playerIn.isSneaking()) {
+        if(!playerIn.isSneaking() && openGUIOnRightClick()) {
             if(!getWorld().isRemote) {
                 MetaTileEntityUIFactory.INSTANCE.openUI(getHolder(), (EntityPlayerMP) playerIn);
             }
@@ -261,6 +265,10 @@ public abstract class MetaTileEntity {
     public final ItemStack getStackForm(int amount) {
         int metaTileEntityIntId = GregTechAPI.META_TILE_ENTITY_REGISTRY.getIdByObjectName(metaTileEntityId);
         return new ItemStack(GregTechAPI.MACHINE, amount, metaTileEntityIntId);
+    }
+
+    public final ItemStack getStackForm() {
+        return getStackForm(1);
     }
 
     /**

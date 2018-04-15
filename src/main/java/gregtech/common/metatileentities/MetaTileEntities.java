@@ -1,5 +1,6 @@
 package gregtech.common.metatileentities;
 
+import gregtech.api.GTValues;
 import gregtech.api.GregTechAPI;
 import gregtech.common.cable.tile.TileEntityCable;
 import gregtech.api.metatileentity.MaceratorMetaTileEntity;
@@ -9,6 +10,7 @@ import gregtech.api.metatileentity.SimpleMachineMetaTileEntity;
 import gregtech.api.recipes.RecipeMaps;
 import gregtech.api.render.Textures;
 import gregtech.api.util.GTLog;
+import gregtech.common.metatileentities.electric.MetaTileEntity;
 import gregtech.common.metatileentities.steam.*;
 import gregtech.common.metatileentities.steam.boiler.SteamCoalBoiler;
 import gregtech.common.metatileentities.steam.boiler.SteamLavaBoiler;
@@ -16,6 +18,8 @@ import gregtech.common.metatileentities.steam.boiler.SteamSolarBoiler;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
 public class MetaTileEntities {
+
+    public static MetaTileEntity[] HULL = new MetaTileEntity[GTValues.V.length];
 
     public static void init() {
         GTLog.logger.info("Registering MetaTileEntities");
@@ -110,12 +114,6 @@ public class MetaTileEntities {
         GregTechAPI.registerMetaTileEntity(150, new SimpleMachineMetaTileEntity("centrifuge.lv", RecipeMaps.CENTRIFUGE_RECIPES, Textures.CENTRIFUGE_OVERLAY, 1));
         GregTechAPI.registerMetaTileEntity(151, new SimpleMachineMetaTileEntity("centrifuge.mv", RecipeMaps.CENTRIFUGE_RECIPES, Textures.CENTRIFUGE_OVERLAY, 2));
         GregTechAPI.registerMetaTileEntity(152, new SimpleMachineMetaTileEntity("centrifuge.hv", RecipeMaps.CENTRIFUGE_RECIPES, Textures.CENTRIFUGE_OVERLAY, 3));
-
-//        GregTechAPI.registerMetaTileEntity(160, new SimpleMachineMetaTileEntity("circuit_assembler.lv", RecipeMaps.BENDER_RECIPES, Textures.ALLOY_SMELTER_OVERLAY, 1));
-//        GregTechAPI.registerMetaTileEntity(161, new SimpleMachineMetaTileEntity("circuit_assembler.mv", RecipeMaps.BENDER_RECIPES, Textures.ALLOY_SMELTER_OVERLAY, 2));
-//        GregTechAPI.registerMetaTileEntity(162, new SimpleMachineMetaTileEntity("circuit_assembler.hv", RecipeMaps.BENDER_RECIPES, Textures.ALLOY_SMELTER_OVERLAY, 3));
-//        GregTechAPI.registerMetaTileEntity(163, new SimpleMachineMetaTileEntity("circuit_assembler.ev", RecipeMaps.BENDER_RECIPES, Textures.ALLOY_SMELTER_OVERLAY, 4));
-//        GregTechAPI.registerMetaTileEntity(164, new SimpleMachineMetaTileEntity("circuit_assembler.iv", RecipeMaps.BENDER_RECIPES, Textures.ALLOY_SMELTER_OVERLAY, 5));
 
         GregTechAPI.registerMetaTileEntity(180, new SimpleMachineMetaTileEntity("chemical_bath.lv", RecipeMaps.CHEMICAL_BATH_RECIPES, Textures.CHEMICAL_BATH_OVERLAY, 1));
         GregTechAPI.registerMetaTileEntity(181, new SimpleMachineMetaTileEntity("chemical_bath.mv", RecipeMaps.CHEMICAL_BATH_RECIPES, Textures.CHEMICAL_BATH_OVERLAY, 2));
@@ -299,5 +297,11 @@ public class MetaTileEntities {
         GregTechAPI.registerMetaTileEntity(490, new SimpleGeneratorMetaTileEntity("gas_turbine.lv", RecipeMaps.GAS_TURBINE_FUELS, Textures.GAS_TURBINE_OVERLAY, 1));
         GregTechAPI.registerMetaTileEntity(491, new SimpleGeneratorMetaTileEntity("gas_turbine.mv", RecipeMaps.GAS_TURBINE_FUELS, Textures.GAS_TURBINE_OVERLAY, 2));
         GregTechAPI.registerMetaTileEntity(492, new SimpleGeneratorMetaTileEntity("gas_turbine.hv", RecipeMaps.GAS_TURBINE_FUELS, Textures.GAS_TURBINE_OVERLAY, 3));
+
+        for(int i = 0; i < HULL.length; i++) {
+            MetaTileEntity metaTileEntity = new MetaTileEntity("hull." + GTValues.VN[i].toLowerCase(), i);
+            GregTechAPI.registerMetaTileEntity(500 + i, metaTileEntity);
+            HULL[i] = metaTileEntity;
+        }
     }
 }
