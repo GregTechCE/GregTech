@@ -337,7 +337,7 @@ public class GTUtility {
             entity.addPotionEffect(new PotionEffect(MobEffects.NAUSEA, level * 130 * amountOfItems));
             entity.addPotionEffect(new PotionEffect(MobEffects.WEAKNESS, level * 150 * amountOfItems));
             entity.addPotionEffect(new PotionEffect(MobEffects.HUNGER, level * 130 * amountOfItems));
-//            entity.addPotionEffect(new PotionEffect(IC2Potion.radiation, level * 180 * amountOfItems)); // TODO radiation
+            entity.attackEntityFrom(DamageSources.getRadioactiveDamage(), level * 6 * amountOfItems);
             return true;
         }
         return false;

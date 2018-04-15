@@ -17,9 +17,7 @@ import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.init.MobEffects;
 import net.minecraft.item.ItemStack;
-import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
@@ -125,13 +123,17 @@ public class MaterialMetaItem extends StandardMetaItem {
             EntityLivingBase entity = (EntityLivingBase) entityIn;
             Material material = Material.MATERIAL_REGISTRY.getObjectById(itemStack.getItemDamage() % 1000);
             OrePrefix prefix = orePrefixes[itemStack.getItemDamage() / 1000];
-            if(prefix.heatDamage > 0.0 && GTUtility.isWearingFullHeatHazmat(entity) && worldIn.getTotalWorldTime() % 20 == 0) {
-                entity.attackEntityFrom(DamageSources.getHeatDamage(), prefix.heatDamage);
-            } else if(prefix.heatDamage < 0.0 && GTUtility.isWearingFullFrostHazmat(entity) && worldIn.getTotalWorldTime() % 20 == 0) {
-                entity.attackEntityFrom(DamageSources.getFrostDamage(), -prefix.heatDamage);
-            }
-            if(prefix.name().contains("Dense")) {
-                entity.addPotionEffect(new PotionEffect(MobEffects.SLOWNESS, 100, 1));
+            if(worldIn.getTotalWorldTime() % 20 == 0) {
+                if(prefix.heatDamage != 0.0) {
+                    if(prefix.heatDamage > 0.0 && !GTUtility.isWearingFullHeatHazmat(entity)) {
+                        entity.attackEntityFrom(DamageSources.getHeatDamage(), prefix.heatDamage);
+                    } else if(prefix.heatDamage < 0.0 && !GTUtility.isWearingFullFrostHazmat(entity)) {
+                        entity.attackEntityFrom(DamageSources.getFrostDamage(), -prefix.heatDamage);
+                    }
+                }
+                if(material != null && material.isRadioactive() && GTUtility.isWearingFullRadioHazmat(entity)) {
+                    GTUtility.applyRadioactivity(entity, 1, itemStack.getCount());
+                }
             }
         }
     }
@@ -139,15 +141,19 @@ public class MaterialMetaItem extends StandardMetaItem {
     @Override
     public void addInformation(ItemStack itemStack, @Nullable World worldIn, List<String> lines, ITooltipFlag tooltipFlag) {
         super.addInformation(itemStack, worldIn, lines, tooltipFlag);
-        if(tooltipFlag.isAdvanced() && itemStack.getMetadata() < metaItemOffset) {
-            OrePrefix prefix = this.orePrefixes[itemStack.getMetadata() / 1000];
-            Material material = Material.MATERIAL_REGISTRY.getObjectById(itemStack.getMetadata() % 1000);
-            if (prefix != null) {
+        int damage = itemStack.getItemDamage();
+        if (damage < this.metaItemOffset) {
+            Material material = Material.MATERIAL_REGISTRY.getObjectById(damage % 1000);
+            OrePrefix prefix = this.orePrefixes[(damage / 1000)];
+            if(material == null) return;
+            lines.add(material.chemicalFormula);
+            addMaterialTooltip(itemStack, prefix, material, lines, tooltipFlag);
+            if(tooltipFlag.isAdvanced()) {
                 lines.add("IconType: " + prefix.materialIconType);
-            }
-            if (material != null) {
                 lines.add("IconSet: " + material.materialIconSet);
             }
         }
     }
+
+    protected void addMaterialTooltip(ItemStack itemStack, OrePrefix prefix, Material material, List<String> lines, ITooltipFlag tooltipFlag) {}
 }

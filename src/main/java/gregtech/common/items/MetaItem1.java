@@ -29,11 +29,7 @@ import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
-import javax.annotation.Nullable;
 import java.util.List;
 
 import static gregtech.common.items.MetaItems.*;
@@ -510,62 +506,72 @@ public class MetaItem1 extends MaterialMetaItem {
             .outputs(BATTERY_HULL_HV.getStackForm())
             .buildAndRegister();
 
-/*
         RecipeMaps.FLUID_CANNER_RECIPES.recipeBuilder()
-            .inputs(OreDictUnifier.get(OrePrefix.dust, Materials.Cadmium, 2), BATTERY_HULL_LV.getStackForm())
+            .inputs(BATTERY_HULL_LV.getStackForm())
+            .input(OrePrefix.dust, Materials.Cadmium, 2)
             .outputs(BATTERY_RE_LV_CADMIUM.getStackForm())
             .duration(100)
             .EUt(2)
             .buildAndRegister();
         RecipeMaps.FLUID_CANNER_RECIPES.recipeBuilder()
-            .inputs(OreDictUnifier.get(OrePrefix.dust, Materials.Lithium, 2), BATTERY_HULL_LV.getStackForm())
+            .inputs(BATTERY_HULL_LV.getStackForm())
+            .input(OrePrefix.dust, Materials.Lithium, 2)
             .outputs(BATTERY_RE_LV_LITHIUM.getStackForm())
             .duration(100)
             .EUt(2)
             .buildAndRegister();
         RecipeMaps.FLUID_CANNER_RECIPES.recipeBuilder()
-            .inputs(OreDictUnifier.get(OrePrefix.dust, Materials.Sodium, 2), BATTERY_HULL_LV.getStackForm())
+            .inputs(BATTERY_HULL_LV.getStackForm())
+            .input(OrePrefix.dust, Materials.Sodium, 2)
             .outputs(BATTERY_RE_LV_SODIUM.getStackForm())
             .duration(100)
             .EUt(2)
             .buildAndRegister();
+
         RecipeMaps.FLUID_CANNER_RECIPES.recipeBuilder()
-            .inputs(OreDictUnifier.get(OrePrefix.dust, Materials.Cadmium, 8), BATTERY_HULL_MV.getStackForm())
+            .inputs(BATTERY_HULL_MV.getStackForm())
+            .input(OrePrefix.dust, Materials.Cadmium, 8)
             .outputs(BATTERY_RE_MV_CADMIUM.getStackForm())
             .duration(400)
             .EUt(2)
             .buildAndRegister();
         RecipeMaps.FLUID_CANNER_RECIPES.recipeBuilder()
-            .inputs(OreDictUnifier.get(OrePrefix.dust, Materials.Lithium, 8), BATTERY_HULL_MV.getStackForm())
+            .inputs(BATTERY_HULL_MV.getStackForm())
+            .input(OrePrefix.dust, Materials.Lithium, 8)
             .outputs(BATTERY_RE_MV_LITHIUM.getStackForm())
             .duration(400)
             .EUt(2)
             .buildAndRegister();
         RecipeMaps.FLUID_CANNER_RECIPES.recipeBuilder()
-            .inputs(OreDictUnifier.get(OrePrefix.dust, Materials.Sodium, 8), BATTERY_HULL_MV.getStackForm())
+            .inputs(BATTERY_HULL_MV.getStackForm())
+            .input(OrePrefix.dust, Materials.Sodium, 8)
             .outputs(BATTERY_RE_MV_SODIUM.getStackForm())
             .duration(400)
             .EUt(2)
             .buildAndRegister();
+
         RecipeMaps.FLUID_CANNER_RECIPES.recipeBuilder()
-            .inputs(OreDictUnifier.get(OrePrefix.dust, Materials.Cadmium, 32), BATTERY_HULL_HV.getStackForm())
+            .inputs(BATTERY_HULL_HV.getStackForm())
+            .input(OrePrefix.dust, Materials.Cadmium, 32)
             .outputs(BATTERY_RE_HV_CADMIUM.getStackForm())
             .duration(1600)
             .EUt(2)
             .buildAndRegister();
         RecipeMaps.FLUID_CANNER_RECIPES.recipeBuilder()
-            .inputs(OreDictUnifier.get(OrePrefix.dust, Materials.Lithium, 32), BATTERY_HULL_HV.getStackForm())
+            .inputs(BATTERY_HULL_HV.getStackForm())
+            .input(OrePrefix.dust, Materials.Lithium, 32)
             .outputs(BATTERY_RE_HV_LITHIUM.getStackForm())
             .duration(1600)
             .EUt(2)
             .buildAndRegister();
         RecipeMaps.FLUID_CANNER_RECIPES.recipeBuilder()
-            .inputs(OreDictUnifier.get(OrePrefix.dust, Materials.Sodium, 32), BATTERY_HULL_HV.getStackForm())
+            .inputs(BATTERY_HULL_HV.getStackForm())
+            .input(OrePrefix.dust, Materials.Sodium, 32)
             .outputs(BATTERY_RE_HV_SODIUM.getStackForm())
             .duration(1600)
             .EUt(2)
             .buildAndRegister();
-*/
+
 
         // Upgrades recipes
         RecipeMaps.ASSEMBLER_RECIPES.recipeBuilder()
@@ -624,13 +630,14 @@ public class MetaItem1 extends MaterialMetaItem {
             .buildAndRegister();
 
         // Misc
-//        RecipeMaps.ASSEMBLER_RECIPES.recipeBuilder()
-//            .inputs(ModHandler.IC2.getIC2Item(ItemName.crafting, CraftingItemType.carbon_mesh, 4), OreDictUnifier.get(OrePrefix.foil, Materials.Zinc, 16))
-//            .fluidInputs(Materials.Plastic.getFluid(144)) // TODO FLUIDS
-//            .outputs(COMPONENT_FILTER.getStackForm())
-//            .duration(1600)
-//            .EUt(32)
-//            .buildAndRegister();
+        RecipeMaps.ASSEMBLER_RECIPES.recipeBuilder()
+            .input(OrePrefix.plate, Materials.Aluminium, 2)
+            .input(OrePrefix.foil, Materials.Zinc, 16)
+            .fluidInputs(Materials.Plastic.getFluid(144))
+            .outputs(COMPONENT_FILTER.getStackForm())
+            .duration(1600)
+            .EUt(32)
+            .buildAndRegister();
 
         RecipeMaps.ASSEMBLER_RECIPES.recipeBuilder()
             .inputs(OreDictUnifier.get(OrePrefix.circuit, MarkerMaterials.Tier.Good, 4), OreDictUnifier.get(OrePrefix.plate, Materials.StainlessSteel, 2))
@@ -709,33 +716,10 @@ public class MetaItem1 extends MaterialMetaItem {
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
-    public void addInformation(ItemStack itemStack, @Nullable World world, List<String> lines, ITooltipFlag tooltipFlag) {
-        super.addInformation(itemStack, world, lines, tooltipFlag);
-        int damage = itemStack.getItemDamage();
-        if (damage < this.metaItemOffset && damage >= 0) {
-            Material material = Material.MATERIAL_REGISTRY.getObjectById(damage % 1000);
-            if (material != null) {
-                OrePrefix prefix = this.orePrefixes[(damage / 1000)];
-                if (prefix == OrePrefix.dustImpure || prefix == OrePrefix.dustPure) {
-                    lines.add(I18n.format("metaitem.dust.tooltip.purify"));
-                }
-            }
+    protected void addMaterialTooltip(ItemStack itemStack, OrePrefix prefix, Material material, List<String> lines, ITooltipFlag tooltipFlag) {
+        if (prefix == OrePrefix.dustImpure || prefix == OrePrefix.dustPure) {
+            lines.add(I18n.format("metaitem.dust.tooltip.purify"));
         }
     }
 
-    @Override
-    public ItemStack getContainerItem(ItemStack stack) {
-        int damage = stack.getItemDamage();
-        if (damage >= this.metaItemOffset + 430 && damage <= this.metaItemOffset + 461) {
-            return SPRAY_EMPTY.getStackForm();
-        }
-        if (damage == this.metaItemOffset + 479 || damage == this.metaItemOffset + 476) {
-            return new ItemStack(this, 1, damage - 2);
-        }
-        if (damage == this.metaItemOffset + 401) {
-            return new ItemStack(this, 1, damage - 1);
-        }
-        return super.getContainerItem(stack);
-    }
 }

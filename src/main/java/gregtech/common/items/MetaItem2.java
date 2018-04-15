@@ -181,10 +181,10 @@ public class MetaItem2 extends MaterialMetaItem {
             .outputs(DYE_INDIGO.getStackForm())
             .buildAndRegister();
 
-//        RecipeMaps.EXTRACTOR_RECIPES.recipeBuilder()
-//            .inputs(CROP_DROP_MILK_WART.getStackForm())
-//            .outputs(OreDictUnifier.get(OrePrefix.dustSmall, Materials.Milk))
-//            .buildAndRegister();
+        RecipeMaps.EXTRACTOR_RECIPES.recipeBuilder()
+            .inputs(CROP_DROP_MILK_WART.getStackForm())
+            .outputs(OreDictUnifier.get(OrePrefix.dustSmall, Materials.Milk))
+            .buildAndRegister();
 
         RecipeMaps.EXTRACTOR_RECIPES.recipeBuilder()
             .inputs(CROP_DROP_COPPON.getStackForm())
