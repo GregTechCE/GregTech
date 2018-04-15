@@ -28,7 +28,7 @@ public class LabelWidget extends Widget {
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void drawInForeground(int mouseX, int mouseY) {
+    public void drawInBackground(int mouseX, int mouseY) {
         Minecraft.getMinecraft().fontRenderer.drawString(I18n.format(text), this.xPosition, this.yPosition, color);
     }
 

@@ -388,9 +388,9 @@ public class GTUtility {
     }
 
     public static List<FluidStack> copyFluidList(List<FluidStack> fluidStacks) {
-        List<FluidStack> stacks = new ArrayList<>(fluidStacks.size());
-        for (int i = 0; i < fluidStacks.size(); i++) stacks.set(i, fluidStacks.get(i).copy());
-        return stacks;
+        FluidStack[] stacks = new FluidStack[fluidStacks.size()];
+        for (int i = 0; i < fluidStacks.size(); i++) stacks[i] = fluidStacks.get(i).copy();
+        return Lists.newArrayList(stacks);
     }
 
     public static FluidStack[] copyFluidArray(FluidStack... stacks) {

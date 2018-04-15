@@ -10,6 +10,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
 import javax.annotation.Nonnull;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -18,8 +19,8 @@ public class AssemblyLineRecipeBuilder {
 	private ItemStack researchItem;
 	private int researchTime;
 
-	private List<ItemStack> inputs;
-	private List<FluidStack> fluidInputs;
+	private List<ItemStack> inputs = new ArrayList<>();
+	private List<FluidStack> fluidInputs = new ArrayList<>();
 	private ItemStack output;
 
 	private int duration;
@@ -28,7 +29,7 @@ public class AssemblyLineRecipeBuilder {
 	private AssemblyLineRecipeBuilder() {
 	}
 
-	public AssemblyLineRecipeBuilder start() {
+	public static AssemblyLineRecipeBuilder start() {
 		return new AssemblyLineRecipeBuilder();
 	}
 

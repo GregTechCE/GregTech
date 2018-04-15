@@ -21,6 +21,8 @@ import gregtech.common.metatileentities.MetaTileEntities;
 import gregtech.loaders.load.FuelLoader;
 import gregtech.loaders.oreprocessing.OreProcessingHandler;
 import gregtech.loaders.postload.DungeonLootLoader;
+import gregtech.loaders.postload.MachineRecipeLoader;
+import gregtech.loaders.postload.WorldgenLoader;
 import gregtech.loaders.preload.MaterialInfoLoader;
 import gregtech.loaders.preload.OreDictionaryLoader;
 import mcmultipart.multipart.MultipartRegistry;
@@ -86,6 +88,7 @@ public class GregTechMod {
         OrePrefix.runMaterialHandlers();
         FuelLoader.registerFuels();
         MetaItems.registerRecipes();
+//        MachineRecipeLoader.init();
         gregtechproxy.onLoad();
 
         if(Loader.isModLoaded(GTValues.MODID_MCMP)) {
@@ -107,6 +110,7 @@ public class GregTechMod {
     public void onPostInit(FMLPostInitializationEvent event) {
         GTLog.logger.info("PostInit-Phase started!");
 
+        WorldgenLoader.init();
         gregtechproxy.onPostLoad();
 
         DungeonLootLoader.init();

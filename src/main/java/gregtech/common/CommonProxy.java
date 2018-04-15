@@ -14,7 +14,6 @@ import gregtech.common.blocks.OreItemBlock;
 import gregtech.common.blocks.StoneItemBlock;
 import gregtech.common.blocks.VariantItemBlock;
 import gregtech.common.items.MetaItems;
-import gregtech.loaders.postload.WorldgenLoader;
 import net.minecraft.block.Block;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.item.Item;
@@ -107,6 +106,5 @@ public class CommonProxy {
     }
 
     public void onPostLoad() {
-        WorldgenLoader.init();
     }
 }

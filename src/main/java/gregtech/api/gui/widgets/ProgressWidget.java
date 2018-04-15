@@ -52,7 +52,7 @@ public class ProgressWidget extends Widget {
     }
 
     @Override
-    public void drawInForeground(int mouseX, int mouseY) {
+    public void drawInBackground(int mouseX, int mouseY) {
         if(emptyBarArea != null) {
             emptyBarArea.draw(x, y, width, height);
         }

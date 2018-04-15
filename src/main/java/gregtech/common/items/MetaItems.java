@@ -165,6 +165,9 @@ public final class MetaItems {
     public static MetaItem<?>.MetaValueItem CONVEYOR_MODULE_HV;
     public static MetaItem<?>.MetaValueItem CONVEYOR_MODULE_EV;
     public static MetaItem<?>.MetaValueItem CONVEYOR_MODULE_IV;
+    public static MetaItem<?>.MetaValueItem CONVEYOR_MODULE_LUV;
+    public static MetaItem<?>.MetaValueItem CONVEYOR_MODULE_ZPM;
+    public static MetaItem<?>.MetaValueItem CONVEYOR_MODULE_UV;
 
     public static MetaItem<?>.MetaValueItem ELECTRIC_PISTON_LV;
     public static MetaItem<?>.MetaValueItem ELECTRIC_PISTON_MV;

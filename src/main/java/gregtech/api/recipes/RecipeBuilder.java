@@ -122,6 +122,10 @@ public abstract class RecipeBuilder<R extends RecipeBuilder<R>> {
 	    return inputs(CountableIngredient.from(oredict, count));
     }
 
+    public R input(OrePrefix orePrefix, Material material) {
+	    return inputs(CountableIngredient.from(orePrefix, material, 1));
+    }
+
     public R input(OrePrefix orePrefix, Material material, int count) {
 	    return inputs(CountableIngredient.from(orePrefix, material, count));
     }

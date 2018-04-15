@@ -2,9 +2,11 @@ package gregtech.loaders.postload;
 
 import gregtech.api.recipes.ModHandler;
 import gregtech.api.recipes.RecipeMaps;
+import gregtech.api.recipes.builders.AssemblyLineRecipeBuilder;
 import gregtech.api.unification.OreDictUnifier;
 import gregtech.api.unification.material.MarkerMaterials;
 import gregtech.api.unification.material.Materials;
+import gregtech.api.unification.material.type.MarkerMaterial;
 import gregtech.api.unification.material.type.MetalMaterial;
 import gregtech.api.unification.ore.OrePrefix;
 import gregtech.api.unification.stack.MaterialStack;
@@ -25,11 +27,12 @@ import net.minecraftforge.oredict.OreDictionary;
 
 import java.util.Arrays;
 
+import static gregtech.api.GTValues.L;
 import static gregtech.api.GTValues.M;
 
-public class MachineRecipeLoader implements Runnable {
+public class MachineRecipeLoader {
 
-    private final MaterialStack[][] alloySmelterList = {
+    private static final MaterialStack[][] alloySmelterList = {
         {new MaterialStack(Materials.Tetrahedrite, 3L), new MaterialStack(Materials.Tin, 1), new MaterialStack(Materials.Bronze, 3L)},
         {new MaterialStack(Materials.Tetrahedrite, 3L), new MaterialStack(Materials.Zinc, 1), new MaterialStack(Materials.Brass, 3L)},
         {new MaterialStack(Materials.Copper, 3L), new MaterialStack(Materials.Tin, 1), new MaterialStack(Materials.Bronze, 4L)},
@@ -49,14 +52,13 @@ public class MachineRecipeLoader implements Runnable {
         {new MaterialStack(Materials.Gold, 1), new MaterialStack(Materials.Silver, 1), new MaterialStack(Materials.Electrum, 2L)},
         {new MaterialStack(Materials.Magnesium, 1), new MaterialStack(Materials.Aluminium, 2L), new MaterialStack(Materials.Magnalium, 3L)}};
 
-    private final MaterialStack[] solderingList = {
+    private static final MaterialStack[] solderingList = {
         new MaterialStack(Materials.Tin, 2L),
         new MaterialStack(Materials.SolderingAlloy, 1L),
         new MaterialStack(Materials.Lead, 4L)
     };
 
-    @Override
-    public void run() {
+    public static void init() {
         for (OrePrefix prefix : Arrays.asList(OrePrefix.dust, OrePrefix.dustSmall, OrePrefix.dustTiny)) {
             RecipeMaps.MIXER_RECIPES.recipeBuilder().duration((int) (100 * prefix.materialAmount / M)).EUt(8).input(prefix, Materials.EnderPearl, 1).input(prefix, Materials.Blaze, 1).outputs(OreDictUnifier.getDust(Materials.EnderEye, 1 * prefix.materialAmount)).buildAndRegister();
             RecipeMaps.MIXER_RECIPES.recipeBuilder().duration((int) (200 * prefix.materialAmount / M)).EUt(8).input(prefix, Materials.Gold, 1).input(prefix, Materials.Silver, 1).outputs(OreDictUnifier.getDust(Materials.Electrum, 2 * prefix.materialAmount)).buildAndRegister();
@@ -131,7 +133,7 @@ public class MachineRecipeLoader implements Runnable {
         RecipeMaps.FLUID_CANNER_RECIPES.recipeBuilder().inputs(MetaItems.BATTERY_HULL_LV.getStackForm()).fluidInputs(Materials.SulfuricAcid.getFluid(1000)).outputs(MetaItems.BATTERY_SU_LV_SULFURICACID.getFullyCharged(1)).buildAndRegister();
         RecipeMaps.FLUID_CANNER_RECIPES.recipeBuilder().inputs(MetaItems.BATTERY_HULL_MV.getStackForm()).fluidInputs(Materials.SulfuricAcid.getFluid(4000)).outputs(MetaItems.BATTERY_SU_MV_SULFURICACID.getFullyCharged(1)).buildAndRegister();
         RecipeMaps.FLUID_CANNER_RECIPES.recipeBuilder().inputs(MetaItems.BATTERY_HULL_HV.getStackForm()).fluidInputs(Materials.SulfuricAcid.getFluid(16000)).outputs(MetaItems.BATTERY_SU_HV_SULFURICACID.getFullyCharged(1)).buildAndRegister();
-     
+
         RecipeMaps.FLUID_SOLIDFICATION_RECIPES.recipeBuilder().duration(128).EUt(4).inputs(MetaItems.SHAPE_MOLD_BALL.getStackForm(0)).fluidInputs(Materials.Mercury.getFluid(1000)).outputs(OreDictUnifier.get(OrePrefix.gem,Materials.Mercury,1)).buildAndRegister();
         RecipeMaps.FLUID_SOLIDFICATION_RECIPES.recipeBuilder().duration(128).EUt(4).inputs(MetaItems.SHAPE_MOLD_BALL.getStackForm(0)).fluidInputs(Materials.Water.getFluid(250)).outputs(new ItemStack(Items.SNOWBALL)).buildAndRegister();
         RecipeMaps.FLUID_SOLIDFICATION_RECIPES.recipeBuilder().duration(128).EUt(4).inputs(MetaItems.SHAPE_MOLD_BALL.getStackForm(0)).fluidInputs(ModHandler.getDistilledWater(250)).outputs(new ItemStack(Items.SNOWBALL)).buildAndRegister();
@@ -152,7 +154,7 @@ public class MachineRecipeLoader implements Runnable {
         RecipeMaps.CHEMICAL_BATH_RECIPES.recipeBuilder().duration(12).EUt(4).input(OrePrefix.dust, Materials.Coal, 1).fluidInputs(ModHandler.getDistilledWater(125)).outputs(OreDictUnifier.get(OrePrefix.dust,Materials.HydratedCoal,1)).buildAndRegister();
         RecipeMaps.CHEMICAL_BATH_RECIPES.recipeBuilder().duration(200).EUt(4).input(OrePrefix.dust, Materials.Wood, 1).fluidInputs(ModHandler.getDistilledWater(100)).outputs(new ItemStack(Items.PAPER)).buildAndRegister();
         RecipeMaps.CHEMICAL_BATH_RECIPES.recipeBuilder().duration(100).EUt(4).input(OrePrefix.dust, Materials.Paper, 1).fluidInputs(ModHandler.getDistilledWater(100)).outputs(new ItemStack(Items.PAPER)).buildAndRegister();
-      
+
         RecipeMaps.CHEMICAL_BATH_RECIPES.recipeBuilder().duration(100).EUt(8).inputs(new ItemStack(Items.REEDS, 1, OreDictionary.WILDCARD_VALUE)).fluidInputs(ModHandler.getDistilledWater(100)).outputs(new ItemStack(Items.PAPER)).buildAndRegister();
         RecipeMaps.CHEMICAL_BATH_RECIPES.recipeBuilder().duration(400).EUt(2).inputs(new ItemStack(Blocks.WOOL, 1, OreDictionary.WILDCARD_VALUE)).fluidInputs(Materials.Chlorine.getFluid(50)).outputs(new ItemStack(Blocks.WOOL)).buildAndRegister();
         RecipeMaps.CHEMICAL_BATH_RECIPES.recipeBuilder().duration(400).EUt(2).inputs(new ItemStack(Blocks.CARPET, 1, OreDictionary.WILDCARD_VALUE)).fluidInputs(Materials.Chlorine.getFluid(25)).outputs(new ItemStack(Blocks.CARPET)).buildAndRegister();
@@ -169,7 +171,7 @@ public class MachineRecipeLoader implements Runnable {
         RecipeMaps.FLUID_EXTRACTION_RECIPES.recipeBuilder().duration(32).EUt(4).inputs(new ItemStack(Items.SNOWBALL)).fluidOutputs(Materials.Water.getFluid(250)).buildAndRegister();
         RecipeMaps.FLUID_EXTRACTION_RECIPES.recipeBuilder().duration(128).EUt(4).inputs(new ItemStack(Blocks.SNOW)).fluidOutputs(Materials.Water.getFluid(1000)).buildAndRegister();
         RecipeMaps.AUTOCLAVE_RECIPES.recipeBuilder().duration(72000).EUt(480).input(OrePrefix.dust, Materials.NetherStar, 1).fluidInputs(Materials.UUMatter.getFluid(576)).chancedOutput(OreDictUnifier.get(OrePrefix.gem,Materials.NetherStar,1), 3333).buildAndRegister();
-      
+
         RecipeMaps.ASSEMBLER_RECIPES.recipeBuilder().duration(1800).EUt(30).input(OrePrefix.dust, Materials.EnderPearl, 1).input(OrePrefix.circuit, MarkerMaterials.Tier.Basic, 4).fluidInputs(Materials.Osmium.getFluid(288)).outputs(MetaItems.FIELD_GENERATOR_LV.getStackForm()).buildAndRegister();
         RecipeMaps.ASSEMBLER_RECIPES.recipeBuilder().duration(1800).EUt(120).input(OrePrefix.dust, Materials.EnderEye, 1).input(OrePrefix.circuit, MarkerMaterials.Tier.Good, 4).fluidInputs(Materials.Osmium.getFluid(576)).outputs(MetaItems.FIELD_GENERATOR_MV.getStackForm()).buildAndRegister();
         RecipeMaps.ASSEMBLER_RECIPES.recipeBuilder().duration(1800).EUt(480).inputs(MetaItems.QUANTUMEYE.getStackForm()).input(OrePrefix.circuit, MarkerMaterials.Tier.Advanced, 4).fluidInputs(Materials.Osmium.getFluid(1152)).outputs(MetaItems.FIELD_GENERATOR_HV.getStackForm()).buildAndRegister();
@@ -177,12 +179,12 @@ public class MachineRecipeLoader implements Runnable {
         RecipeMaps.ASSEMBLER_RECIPES.recipeBuilder().duration(1800).EUt(7680).inputs(MetaItems.QUANTUMSTAR.getStackForm()).input(OrePrefix.circuit, MarkerMaterials.Tier.Master, 4).fluidInputs(Materials.Osmium.getFluid(4608)).outputs(MetaItems.FIELD_GENERATOR_IV.getStackForm()).buildAndRegister();
         RecipeMaps.ASSEMBLER_RECIPES.recipeBuilder().duration(1600).EUt(16).input(OrePrefix.wireFine, Materials.Steel, 64).input(OrePrefix.foil, Materials.Zinc, 16).outputs(MetaItems.COMPONENT_FILTER.getStackForm()).buildAndRegister();
         RecipeMaps.ASSEMBLER_RECIPES.recipeBuilder().duration(480).EUt(240).input(OrePrefix.dust, Materials.Graphite, 8).input(OrePrefix.foil, Materials.Silicon, 1).fluidInputs(Materials.Glue.getFluid(250)).outputs(OreDictUnifier.get(OrePrefix.dustSmall,Materials.Graphene,1)).buildAndRegister();
-       
+
         RecipeMaps.CENTRIFUGE_RECIPES.recipeBuilder().duration(1600).EUt(8).fluidInputs(Materials.Air.getFluid(10000)).fluidOutputs(Materials.Nitrogen.getFluid(3900), Materials.Oxygen.getFluid(1000)).buildAndRegister();
         RecipeMaps.CHEMICAL_RECIPES.recipeBuilder().duration(950).EUt(30).fluidInputs(Materials.Water.getFluid(2000), Materials.NitrogenDioxide.getFluid(4000), Materials.Oxygen.getFluid(1000)).fluidOutputs(Materials.NitricAcid.getFluid(4000)).buildAndRegister();
         RecipeMaps.ASSEMBLER_RECIPES.recipeBuilder().duration(16).input(OrePrefix.plate, Materials.Silicon, 1).input(OrePrefix.plate, Materials.Plastic, 1).outputs(MetaItems.EMPTY_BOARD_BASIC.getStackForm()).duration(32).buildAndRegister();
         RecipeMaps.ASSEMBLER_RECIPES.recipeBuilder().duration(256).input(OrePrefix.plate, Materials.Silicon, 2).input(OrePrefix.plate, Materials.Polytetrafluoroethylene, 1).outputs(MetaItems.EMPTY_BOARD_ELITE.getStackForm()).duration(32).buildAndRegister();
-        
+
         RecipeMaps.FORMING_PRESS_RECIPES.recipeBuilder().duration(32).EUt(16).inputs(MetaItems.EMPTY_BOARD_BASIC.getStackForm(), MetaItems.CIRCUIT_PARTS_WIRING_BASIC.getStackForm(4)).outputs(MetaItems.CIRCUIT_BOARD_BASIC.getStackForm()).buildAndRegister();
         RecipeMaps.FORMING_PRESS_RECIPES.recipeBuilder().duration(32).EUt(64).inputs(MetaItems.EMPTY_BOARD_BASIC.getStackForm(), MetaItems.CIRCUIT_PARTS_WIRING_ADVANCED.getStackForm(4)).outputs(MetaItems.CIRCUIT_BOARD_ADVANCED.getStackForm()).buildAndRegister();
         RecipeMaps.FORMING_PRESS_RECIPES.recipeBuilder().duration(32).EUt(256).inputs(MetaItems.EMPTY_BOARD_ELITE.getStackForm(), MetaItems.CIRCUIT_PARTS_WIRING_ELITE.getStackForm(4)).outputs(MetaItems.CIRCUIT_BOARD_ELITE.getStackForm()).buildAndRegister();
@@ -192,7 +194,7 @@ public class MachineRecipeLoader implements Runnable {
         RecipeMaps.ASSEMBLER_RECIPES.recipeBuilder().duration(800).EUt(1).inputs(new ItemStack(Blocks.REDSTONE_TORCH, 2, OreDictionary.WILDCARD_VALUE)).input(OrePrefix.dust, Materials.Redstone, 1).fluidInputs(Materials.Concrete.getFluid(144)).outputs(new ItemStack(Items.REPEATER)).buildAndRegister();
         RecipeMaps.ASSEMBLER_RECIPES.recipeBuilder().duration(100).EUt(8).inputs(new ItemStack(Items.LEATHER, 1, OreDictionary.WILDCARD_VALUE), new ItemStack(Items.LEAD, 1, OreDictionary.WILDCARD_VALUE)).fluidInputs(Materials.Glue.getFluid(50)).outputs(new ItemStack(Items.NAME_TAG)).buildAndRegister();
         RecipeMaps.ASSEMBLER_RECIPES.recipeBuilder().duration(100).EUt(8).inputs(new ItemStack(Items.COMPASS, 1, OreDictionary.WILDCARD_VALUE)).input(OrePrefix.plate, Materials.Paper, 8).outputs(new ItemStack(Items.MAP)).buildAndRegister();
-     
+
         RecipeMaps.ASSEMBLER_RECIPES.recipeBuilder().duration(100).EUt(4).input(OrePrefix.dust, Materials.Tantalum, 1).input(OrePrefix.plate, Materials.Manganese, 1).fluidInputs(Materials.Plastic.getFluid(144)).outputs(MetaItems.BATTERY_RE_ULV_TANTALUM.getStackForm()).buildAndRegister();
         RecipeMaps.ASSEMBLER_RECIPES.recipeBuilder().duration(512).EUt(256).inputs(MetaItems.CIRCUIT_ELITE.getStackForm(2), MetaItems.CIRCUIT_PARTS_CRYSTAL_CHIP_ELITE.getStackForm(18)).outputs(MetaItems.TOOL_DATAORB.getStackForm()).buildAndRegister();
         RecipeMaps.ASSEMBLER_RECIPES.recipeBuilder().duration(512).EUt(1024).inputs(MetaItems.CIRCUIT_MASTER.getStackForm(2), MetaItems.CIRCUIT_PARTS_CRYSTAL_CHIP_MASTER.getStackForm(18)).outputs(MetaItems.ENERGY_LAPOTRONICORB.getStackForm()).buildAndRegister();
@@ -205,15 +207,15 @@ public class MachineRecipeLoader implements Runnable {
         RecipeMaps.ASSEMBLER_RECIPES.recipeBuilder().duration(16).inputs(new ItemStack(Items.IRON_DOOR)).input(OrePrefix.plate, Materials.Aluminium, 2).outputs(MetaItems.COVER_SHUTTER.getStackForm(4)).duration(800).buildAndRegister();
         RecipeMaps.ASSEMBLER_RECIPES.recipeBuilder().duration(16).inputs(new ItemStack(Items.IRON_DOOR)).input(OrePrefix.plate, Materials.Iron, 2).outputs(MetaItems.COVER_SHUTTER.getStackForm(2)).duration(800).buildAndRegister();
         RecipeMaps.ASSEMBLER_RECIPES.recipeBuilder().duration(16).inputs(new ItemStack(Items.IRON_DOOR)).input(OrePrefix.plate, Materials.WroughtIron, 2).outputs(MetaItems.COVER_SHUTTER.getStackForm(3)).duration(800).buildAndRegister();
-       
+
         RecipeMaps.DISTILLERY_RECIPES.recipeBuilder().duration(16).EUt(24).fluidInputs(Materials.HeavyFuel.getFluid(10)).circuitMeta(1).fluidOutputs(Materials.Toluene.getFluid(4)).buildAndRegister();
         RecipeMaps.DISTILLERY_RECIPES.recipeBuilder().duration(16).EUt(24).fluidInputs(Materials.Toluene.getFluid(30)).circuitMeta(1).fluidOutputs(Materials.LightFuel.getFluid(30)).buildAndRegister();
-       
+
         RecipeMaps.FLUID_SOLIDFICATION_RECIPES.recipeBuilder().duration(100).EUt(16).inputs(MetaItems.SHAPE_MOLD_BALL.getStackForm(0)).fluidInputs(Materials.Toluene.getFluid(100)).outputs(MetaItems.GELLED_TOLUENE.getStackForm()).buildAndRegister();
-       
+
         RecipeMaps.CHEMICAL_RECIPES.recipeBuilder().duration(200).EUt(24).inputs(MetaItems.GELLED_TOLUENE.getStackForm(4)).fluidInputs(Materials.SulfuricAcid.getFluid(250)).outputs(new ItemStack(Blocks.TNT)).buildAndRegister();
         RecipeMaps.CHEMICAL_RECIPES.recipeBuilder().duration(140).EUt(192).inputs(new ItemStack(Items.SUGAR)).input(OrePrefix.dustTiny, Materials.Plastic, 1).fluidInputs(Materials.Toluene.getFluid(133)).outputs(MetaItems.GELLED_TOLUENE.getStackForm(2)).buildAndRegister();
-      
+
         RecipeMaps.MIXER_RECIPES.recipeBuilder().duration(500).EUt(2).fluidInputs(Materials.NitricAcid.getFluid(1000), Materials.SulfuricAcid.getFluid(1000)).fluidOutputs(Materials.NitrationMixture.getFluid(2000)).buildAndRegister();
 
         RecipeMaps.CHEMICAL_RECIPES.recipeBuilder().duration(160).fluidInputs(Materials.NaturalGas.getFluid(16000), Materials.Hydrogen.getFluid(1000)).fluidOutputs(Materials.Gas.getFluid(16000), Materials.HydrogenSulfide.getFluid(2000)).buildAndRegister();
@@ -232,10 +234,10 @@ public class MachineRecipeLoader implements Runnable {
         RecipeMaps.CHEMICAL_RECIPES.recipeBuilder().duration(240).EUt(256).fluidInputs(Materials.Epichlorhydrin.getFluid(432), Materials.Naphtha.getFluid(3000), Materials.Fluorine.getFluid(1000)).fluidOutputs(Materials.Polytetrafluoroethylene.getFluid(432)).buildAndRegister();
         RecipeMaps.CHEMICAL_RECIPES.recipeBuilder().duration(240).EUt(96).input(OrePrefix.dust, Materials.Silicon, 1).fluidInputs(Materials.Epichlorhydrin.getFluid(144)).fluidOutputs(Materials.Silicone.getFluid(144)).buildAndRegister();
         RecipeMaps.CHEMICAL_RECIPES.recipeBuilder().duration(240).EUt(30).fluidInputs(Materials.Epichlorhydrin.getFluid(144), Materials.Naphtha.getFluid(3000), Materials.NitrogenDioxide.getFluid(1000)).fluidOutputs(Materials.Epoxid.getFluid(288)).buildAndRegister();
-      
+
         RecipeMaps.CRACKING_RECIPES.recipeBuilder().duration(16).EUt(320).fluidInputs(Materials.LightFuel.getFluid(128), Materials.CrackedLightFuel.getFluid(192)).buildAndRegister();
         RecipeMaps.CRACKING_RECIPES.recipeBuilder().duration(16).EUt(320).fluidInputs(Materials.HeavyFuel.getFluid(128), Materials.CrackedHeavyFuel.getFluid(192)).buildAndRegister();
-       
+
         RecipeMaps.DISTILLERY_RECIPES.recipeBuilder().duration(16).EUt(24).fluidInputs(Materials.Creosote.getFluid(3)).circuitMeta(4).fluidOutputs(Materials.Lubricant.getFluid(1)).buildAndRegister();
         RecipeMaps.DISTILLERY_RECIPES.recipeBuilder().duration(16).EUt(24).fluidInputs(Materials.SeedOil.getFluid(4)).circuitMeta(4).fluidOutputs(Materials.Lubricant.getFluid(1)).buildAndRegister();
         RecipeMaps.DISTILLERY_RECIPES.recipeBuilder().duration(16).EUt(24).fluidInputs(Materials.FishOil.getFluid(3)).circuitMeta(4).fluidOutputs(Materials.Lubricant.getFluid(1)).buildAndRegister();
@@ -245,27 +247,27 @@ public class MachineRecipeLoader implements Runnable {
         RecipeMaps.DISTILLERY_RECIPES.recipeBuilder().duration(16).EUt(24).fluidInputs(Materials.OilLight.getFluid(300)).circuitMeta(4).fluidOutputs(Materials.Oil.getFluid(100)).buildAndRegister();
         RecipeMaps.DISTILLERY_RECIPES.recipeBuilder().duration(16).EUt(24).fluidInputs(Materials.OilMedium.getFluid(200)).circuitMeta(4).fluidOutputs(Materials.Oil.getFluid(100)).buildAndRegister();
         RecipeMaps.DISTILLERY_RECIPES.recipeBuilder().duration(16).EUt(24).fluidInputs(Materials.OilHeavy.getFluid(100)).circuitMeta(4).fluidOutputs(Materials.Oil.getFluid(100)).buildAndRegister();
-      
+
         RecipeMaps.FLUID_HEATER_RECIPES.recipeBuilder().duration(30).EUt(32).fluidInputs(Materials.Water.getFluid(6)).circuitMeta(1).fluidOutputs(Materials.Water.getFluid(960)).buildAndRegister();
         RecipeMaps.FLUID_HEATER_RECIPES.recipeBuilder().duration(30).EUt(32).fluidInputs(ModHandler.getDistilledWater(6)).circuitMeta(1).fluidOutputs(Materials.Water.getFluid(960)).buildAndRegister();
         RecipeMaps.FLUID_HEATER_RECIPES.recipeBuilder().duration(16).EUt(32).fluidInputs(Materials.SeedOil.getFluid(16)).circuitMeta(1).fluidOutputs(Materials.FryingOilHot.getFluid(16)).buildAndRegister();
         RecipeMaps.FLUID_HEATER_RECIPES.recipeBuilder().duration(16).EUt(32).fluidInputs(Materials.FishOil.getFluid(16)).circuitMeta(1).fluidOutputs(Materials.FryingOilHot.getFluid(16)).buildAndRegister();
-       
+
         RecipeMaps.EXTRACTOR_RECIPES.recipeBuilder().inputs(new ItemStack(Blocks.BOOKSHELF, 1, OreDictionary.WILDCARD_VALUE)).outputs(new ItemStack(Items.BOOK, 3)).buildAndRegister();
         RecipeMaps.EXTRACTOR_RECIPES.recipeBuilder().inputs(new ItemStack(Items.SLIME_BALL)).outputs(OreDictUnifier.get(OrePrefix.dust,Materials.RawRubber,2)).buildAndRegister();
-       
+
         RecipeMaps.COMPRESSOR_RECIPES.recipeBuilder().inputs(new ItemStack(Blocks.ICE, 2, OreDictionary.WILDCARD_VALUE)).outputs(new ItemStack(Blocks.PACKED_ICE)).buildAndRegister();
         RecipeMaps.COMPRESSOR_RECIPES.recipeBuilder().input(OrePrefix.dust, Materials.Ice, 1).outputs(new ItemStack(Blocks.ICE)).buildAndRegister();
         RecipeMaps.COMPRESSOR_RECIPES.recipeBuilder().inputs(new ItemStack(Items.QUARTZ, 4)).outputs(new ItemStack(Blocks.QUARTZ_BLOCK)).buildAndRegister();
         RecipeMaps.COMPRESSOR_RECIPES.recipeBuilder().inputs(new ItemStack(Items.WHEAT, 9)).outputs(new ItemStack(Blocks.HAY_BLOCK)).buildAndRegister();
         RecipeMaps.COMPRESSOR_RECIPES.recipeBuilder().input(OrePrefix.dust, Materials.Glowstone, 4).outputs(new ItemStack(Blocks.GLOWSTONE)).buildAndRegister();
-      
+
         RecipeMaps.CUTTER_RECIPES.recipeBuilder().duration(500).EUt(48).input(OrePrefix.block, Materials.Graphite, 1).outputs(OreDictUnifier.get(OrePrefix.ingot,Materials.Graphite,9)).buildAndRegister();
         RecipeMaps.MACERATOR_RECIPES.recipeBuilder().inputs(new ItemStack(Items.BLAZE_ROD)).outputs(new ItemStack(Items.BLAZE_POWDER, 3)).buildAndRegister();
         RecipeMaps.MACERATOR_RECIPES.recipeBuilder().inputs(new ItemStack(Items.FLINT, 1, OreDictionary.WILDCARD_VALUE)).outputs(OreDictUnifier.get(OrePrefix.dustTiny,Materials.Flint,4)).buildAndRegister();
         RecipeMaps.MACERATOR_RECIPES.recipeBuilder().inputs(new ItemStack(Items.ITEM_FRAME, 1, OreDictionary.WILDCARD_VALUE)).outputs(new ItemStack(Items.LEATHER)).buildAndRegister();
         RecipeMaps.MACERATOR_RECIPES.recipeBuilder().inputs(new ItemStack(Items.BOW)).outputs(new ItemStack(Items.STRING, 3)).buildAndRegister();
-      
+
         RecipeMaps.FORGE_HAMMER_RECIPES.recipeBuilder().duration(16).EUt(10).inputs(new ItemStack(Blocks.STONEBRICK)).outputs(new ItemStack(Blocks.STONEBRICK, 1, 2)).buildAndRegister();
         RecipeMaps.FORGE_HAMMER_RECIPES.recipeBuilder().duration(16).EUt(10).inputs(new ItemStack(Blocks.STONE)).outputs(new ItemStack(Blocks.COBBLESTONE)).buildAndRegister();
         RecipeMaps.FORGE_HAMMER_RECIPES.recipeBuilder().duration(16).EUt(10).inputs(new ItemStack(Blocks.COBBLESTONE)).outputs(new ItemStack(Blocks.GRAVEL)).buildAndRegister();
@@ -280,7 +282,7 @@ public class MachineRecipeLoader implements Runnable {
         RecipeMaps.FORGE_HAMMER_RECIPES.recipeBuilder().duration(16).EUt(10).inputs(new ItemStack(Blocks.GLASS, 1, OreDictionary.WILDCARD_VALUE)).outputs(OreDictUnifier.get(OrePrefix.dust,Materials.Glass,1)).buildAndRegister();
         RecipeMaps.FORGE_HAMMER_RECIPES.recipeBuilder().duration(16).EUt(10).inputs(new ItemStack(Blocks.STAINED_GLASS_PANE, 1, OreDictionary.WILDCARD_VALUE)).outputs(OreDictUnifier.get(OrePrefix.dustTiny,Materials.Glass,3)).buildAndRegister();
         RecipeMaps.FORGE_HAMMER_RECIPES.recipeBuilder().duration(16).EUt(10).inputs(new ItemStack(Blocks.GLASS_PANE, 1, OreDictionary.WILDCARD_VALUE)).outputs(OreDictUnifier.get(OrePrefix.dustTiny,Materials.Glass,3)).buildAndRegister();
-    
+
         RecipeMaps.BLAST_RECIPES.recipeBuilder().duration((int) Math.max(Materials.TungstenSteel.getMass() / 80,1) * Materials.TungstenSteel.blastFurnaceTemperature).EUt(480).input(OrePrefix.ingot, Materials.Tungsten, 1).input(OrePrefix.ingot, Materials.Steel, 1).outputs(OreDictUnifier.get(OrePrefix.ingotHot,Materials.TungstenSteel,2), OreDictUnifier.get(OrePrefix.dustSmall,Materials.DarkAsh,1)).blastFurnaceTemp(Materials.TungstenSteel.blastFurnaceTemperature).buildAndRegister();
         RecipeMaps.BLAST_RECIPES.recipeBuilder().duration((int) Math.max(Materials.TungstenCarbide.getMass() / 40,1) * Materials.TungstenCarbide.blastFurnaceTemperature).EUt(480).input(OrePrefix.ingot, Materials.Tungsten, 1).input(OrePrefix.dust, Materials.Carbon, 1).outputs(OreDictUnifier.get(OrePrefix.ingotHot,Materials.TungstenCarbide,1), OreDictUnifier.get(OrePrefix.dustSmall,Materials.Ash,2)).blastFurnaceTemp(Materials.TungstenCarbide.blastFurnaceTemperature).buildAndRegister();
         RecipeMaps.BLAST_RECIPES.recipeBuilder().duration((int) Math.max(Materials.VanadiumGallium.getMass() / 40,1) * Materials.VanadiumGallium.blastFurnaceTemperature).EUt(480).input(OrePrefix.ingot, Materials.Vanadium, 3).input(OrePrefix.ingot, Materials.Gallium, 1).outputs(OreDictUnifier.get(OrePrefix.ingotHot,Materials.VanadiumGallium,4), OreDictUnifier.get(OrePrefix.dustSmall,Materials.DarkAsh,2)).blastFurnaceTemp(Materials.VanadiumGallium.blastFurnaceTemperature).buildAndRegister();
@@ -306,16 +308,16 @@ public class MachineRecipeLoader implements Runnable {
         RecipeMaps.BLAST_RECIPES.recipeBuilder().duration(500).EUt(120).input(OrePrefix.ingot, Materials.Copper, 1).fluidInputs(Materials.Oxygen.getFluid(1000)).outputs(OreDictUnifier.get(OrePrefix.ingot,Materials.AnnealedCopper,1)).blastFurnaceTemp(1200).buildAndRegister();
         RecipeMaps.BLAST_RECIPES.recipeBuilder().duration(500).EUt(1920).input(OrePrefix.ingot, Materials.Iridium, 3).input(OrePrefix.ingot, Materials.Osmium, 1).fluidInputs(Materials.Helium.getFluid(1000)).outputs(OreDictUnifier.get(OrePrefix.ingotHot,Materials.Osmiridium,4)).blastFurnaceTemp(2900).buildAndRegister();
         RecipeMaps.BLAST_RECIPES.recipeBuilder().duration(500).EUt(30720).input(OrePrefix.ingot, Materials.Naquadah, 1).input(OrePrefix.ingot, Materials.Osmiridium, 1).fluidInputs(Materials.Argon.getFluid(1000)).outputs(OreDictUnifier.get(OrePrefix.ingotHot,Materials.NaquadahAlloy,2)).blastFurnaceTemp(Materials.NaquadahAlloy.blastFurnaceTemperature).buildAndRegister();
-     
+
         RecipeMaps.FUSION_RECIPES.recipeBuilder().duration(32).EUt(32768).fluidInputs(Materials.Lithium.getFluid(16), Materials.Tungsten.getFluid(16)).fluidOutputs(Materials.Iridium.getFluid(16)).EUToStart(300000000).buildAndRegister();
         RecipeMaps.FLUID_EXTRACTION_RECIPES.recipeBuilder().duration(600).EUt(28).input(OrePrefix.dust, Materials.Quartzite, 1).fluidOutputs(Materials.Glass.getFluid(72)).buildAndRegister();
-       
+
         RecipeMaps.DISTILLATION_RECIPES.recipeBuilder().duration(16).EUt(96).fluidInputs(Materials.Creosote.getFluid(24)).fluidOutputs(Materials.Lubricant.getFluid(12)).buildAndRegister();
         RecipeMaps.DISTILLATION_RECIPES.recipeBuilder().duration(16).EUt(96).fluidInputs(Materials.SeedOil.getFluid(32)).fluidOutputs(Materials.Lubricant.getFluid(12)).buildAndRegister();
         RecipeMaps.DISTILLATION_RECIPES.recipeBuilder().duration(16).EUt(96).fluidInputs(Materials.FishOil.getFluid(24)).fluidOutputs(Materials.Lubricant.getFluid(12)).buildAndRegister();
         RecipeMaps.DISTILLATION_RECIPES.recipeBuilder().duration(25).EUt(64).fluidInputs(Materials.Biomass.getFluid(150)).outputs(OreDictUnifier.get(OrePrefix.dustSmall,Materials.Wood,1)).fluidOutputs(Materials.Ethanol.getFluid(60), Materials.Water.getFluid(60)).buildAndRegister();
         RecipeMaps.DISTILLATION_RECIPES.recipeBuilder().duration(16).EUt(64).fluidInputs(Materials.Water.getFluid(288)).fluidOutputs(ModHandler.getDistilledWater(260)).buildAndRegister();
-      
+
         RecipeMaps.ELECTROLYZER_RECIPES.recipeBuilder().duration(1500).EUt(30).fluidInputs(Materials.Water.getFluid(3000)).fluidOutputs(Materials.Hydrogen.getFluid(2000), Materials.Oxygen.getFluid(1000)).buildAndRegister();
         RecipeMaps.ELECTROLYZER_RECIPES.recipeBuilder().duration(1500).EUt(30).fluidInputs(ModHandler.getDistilledWater(3000)).fluidOutputs(Materials.Hydrogen.getFluid(2000), Materials.Oxygen.getFluid(1000)).buildAndRegister();
         RecipeMaps.ELECTROLYZER_RECIPES.recipeBuilder().inputs(new ItemStack(Items.DYE, 3)).outputs(OreDictUnifier.get(OrePrefix.dust,Materials.Calcium,1)).duration(96).EUt(26).buildAndRegister();
@@ -323,7 +325,7 @@ public class MachineRecipeLoader implements Runnable {
         RecipeMaps.ELECTROLYZER_RECIPES.recipeBuilder().duration(120).EUt(1920).input(OrePrefix.dust, Materials.Tungstate, 7).fluidInputs(Materials.Hydrogen.getFluid(7000)).outputs(OreDictUnifier.get(OrePrefix.dust,Materials.Tungsten,1), OreDictUnifier.get(OrePrefix.dust,Materials.Lithium,2)).fluidOutputs(Materials.Oxygen.getFluid(4000)).buildAndRegister();
         RecipeMaps.ELECTROLYZER_RECIPES.recipeBuilder().duration(120).EUt(1920).input(OrePrefix.dust, Materials.Scheelite, 7).fluidInputs(Materials.Hydrogen.getFluid(7000)).outputs(OreDictUnifier.get(OrePrefix.dust,Materials.Tungsten,1), OreDictUnifier.get(OrePrefix.dust,Materials.Calcium,2)).fluidOutputs(Materials.Oxygen.getFluid(4000)).buildAndRegister();
         RecipeMaps.ELECTROLYZER_RECIPES.recipeBuilder().input(OrePrefix.dust, Materials.Graphite, 1).outputs(OreDictUnifier.get(OrePrefix.dust,Materials.Carbon,4)).duration(100).EUt(26).buildAndRegister();
-    
+
         RecipeMaps.CHEMICAL_RECIPES.recipeBuilder().duration(500).input(OrePrefix.dust, Materials.NetherQuartz, 3).input(OrePrefix.dust, Materials.Sodium, 1).fluidInputs(Materials.Water.getFluid(1000)).outputs(OreDictUnifier.get(OrePrefix.gem,Materials.NetherQuartz,3)).buildAndRegister();
         RecipeMaps.CHEMICAL_RECIPES.recipeBuilder().duration(500).input(OrePrefix.dust, Materials.CertusQuartz, 3).input(OrePrefix.dust, Materials.Sodium, 1).fluidInputs(Materials.Water.getFluid(1000)).outputs(OreDictUnifier.get(OrePrefix.gem,Materials.CertusQuartz,3)).buildAndRegister();
         RecipeMaps.CHEMICAL_RECIPES.recipeBuilder().duration(500).input(OrePrefix.dust, Materials.Quartzite, 3).input(OrePrefix.dust, Materials.Sodium, 1).fluidInputs(Materials.Water.getFluid(1000)).outputs(OreDictUnifier.get(OrePrefix.gem,Materials.Quartzite,3)).buildAndRegister();
@@ -358,10 +360,10 @@ public class MachineRecipeLoader implements Runnable {
         RecipeMaps.CHEMICAL_RECIPES.recipeBuilder().duration(50).input(OrePrefix.dust, Materials.Blaze, 1).input(OrePrefix.gem, Materials.EnderPearl, 1).outputs(OreDictUnifier.get(OrePrefix.gem,Materials.EnderEye,1)).buildAndRegister();
         RecipeMaps.CHEMICAL_RECIPES.recipeBuilder().duration(50).inputs(new ItemStack(Items.SLIME_BALL, 1, OreDictionary.WILDCARD_VALUE)).input(OrePrefix.dust, Materials.Blaze, 1).outputs(new ItemStack(Items.MAGMA_CREAM)).buildAndRegister();
         RecipeMaps.CHEMICAL_RECIPES.recipeBuilder().duration(12000).EUt(8).input(OrePrefix.ingot, Materials.Plutonium, 6).outputs(OreDictUnifier.get(OrePrefix.dust,Materials.Plutonium,6)).fluidOutputs(Materials.Radon.getFluid(100)).buildAndRegister();
-     
+
         RecipeMaps.CHEMICAL_BATH_RECIPES.recipeBuilder().duration(480).EUt(384).input(OrePrefix.gem, Materials.EnderEye, 1).fluidInputs(Materials.Radon.getFluid(250)).outputs(MetaItems.QUANTUMEYE.getStackForm()).buildAndRegister();
         RecipeMaps.CHEMICAL_BATH_RECIPES.recipeBuilder().duration(1920).EUt(384).input(OrePrefix.gem, Materials.NetherStar, 1).fluidInputs(Materials.Radon.getFluid(1250)).outputs(MetaItems.QUANTUMSTAR.getStackForm()).buildAndRegister();
-     
+
         RecipeMaps.AUTOCLAVE_RECIPES.recipeBuilder().duration(480).EUt(7680).input(OrePrefix.gem, Materials.NetherStar, 1).fluidInputs(Materials.Darmstadtium.getFluid(288)).outputs(MetaItems.GRAVISTAR.getStackForm()).buildAndRegister();
 
         RecipeMaps.BENDER_RECIPES.recipeBuilder().duration(800).EUt(4).input(OrePrefix.plate, Materials.Iron, 12).circuitMeta(1).outputs(new ItemStack(Items.BUCKET, 4)).buildAndRegister();
@@ -369,7 +371,7 @@ public class MachineRecipeLoader implements Runnable {
 
         RecipeMaps.VACUUM_RECIPES.recipeBuilder().duration(50).fluidInputs(Materials.Water.getFluid(1000)).fluidOutputs(Materials.Ice.getFluid(1000)).buildAndRegister();
         RecipeMaps.ALLOY_SMELTER_RECIPES.recipeBuilder().duration(200).EUt(8).input(OrePrefix.dust, Materials.RawRubber, 3).input(OrePrefix.dust, Materials.Sulfur, 1).outputs(OreDictUnifier.get(OrePrefix.ingot,Materials.Rubber,1)).buildAndRegister();
-      
+
         for(int i = 0; i < 16; i++) {
             RecipeMaps.CUTTER_RECIPES.recipeBuilder().duration(50).EUt(8).inputs(new ItemStack(Blocks.STAINED_GLASS, 3, i)).outputs(new ItemStack(Blocks.STAINED_GLASS_PANE, 8, i)).buildAndRegister();
         }
@@ -382,10 +384,10 @@ public class MachineRecipeLoader implements Runnable {
         RecipeMaps.CUTTER_RECIPES.recipeBuilder().duration(25).EUt(8).inputs(new ItemStack(Blocks.NETHER_BRICK)).outputs(new ItemStack(Blocks.STONE_SLAB, 2, 6)).buildAndRegister();
         RecipeMaps.CUTTER_RECIPES.recipeBuilder().duration(25).EUt(8).inputs(new ItemStack(Blocks.QUARTZ_BLOCK, 1, OreDictionary.WILDCARD_VALUE)).outputs(new ItemStack(Blocks.STONE_SLAB, 2, 7)).buildAndRegister();
         RecipeMaps.CUTTER_RECIPES.recipeBuilder().duration(100).EUt(16).inputs(new ItemStack(Blocks.GLOWSTONE)).outputs(OreDictUnifier.get(OrePrefix.plate,Materials.Glowstone,4)).buildAndRegister();
-     
+
         RecipeMaps.FORMING_PRESS_RECIPES.recipeBuilder().duration(100).EUt(16).inputs(MetaItems.SHAPE_MOLD_CREDIT.getStackForm(0)).input(OrePrefix.plate, Materials.Cupronickel, 1).outputs(MetaItems.CREDIT_CUPRONICKEL.getStackForm(4)).buildAndRegister();
         RecipeMaps.FORMING_PRESS_RECIPES.recipeBuilder().duration(100).EUt(16).inputs(MetaItems.SHAPE_MOLD_CREDIT.getStackForm(0)).input(OrePrefix.plate, Materials.Brass, 1).outputs(MetaItems.COIN_DOGE.getStackForm(4)).buildAndRegister();
-    
+
         RecipeMaps.ASSEMBLER_RECIPES.recipeBuilder().duration(1).inputs(new ItemStack(Items.COAL, 1, OreDictionary.WILDCARD_VALUE)).input(OrePrefix.stick, Materials.Wood, 1).outputs(new ItemStack(Blocks.TORCH,4)).duration(400).buildAndRegister();
         RecipeMaps.ASSEMBLER_RECIPES.recipeBuilder().duration(4).input(OrePrefix.plate, Materials.Gold, 2).outputs(new ItemStack(Blocks.LIGHT_WEIGHTED_PRESSURE_PLATE,1)).circuitMeta(2).duration(200).buildAndRegister();
         RecipeMaps.ASSEMBLER_RECIPES.recipeBuilder().duration(4).input(OrePrefix.plate, Materials.Iron, 2).outputs(new ItemStack(Blocks.HEAVY_WEIGHTED_PRESSURE_PLATE,1)).circuitMeta(2).duration(200).buildAndRegister();
@@ -418,7 +420,7 @@ public class MachineRecipeLoader implements Runnable {
 
         RecipeMaps.ASSEMBLER_RECIPES.recipeBuilder().duration(4).inputs(new ItemStack(Blocks.SANDSTONE, 1, 1)).outputs(new ItemStack(Blocks.SANDSTONE,1,0)).circuitMeta(1).duration(50).buildAndRegister();
         RecipeMaps.ASSEMBLER_RECIPES.recipeBuilder().duration(4).inputs(new ItemStack(Blocks.SANDSTONE, 1, 2)).outputs(new ItemStack(Blocks.SANDSTONE,1,0)).circuitMeta(1).duration(50).buildAndRegister();
-        
+
         RecipeMaps.ASSEMBLER_RECIPES.recipeBuilder().duration(16).input(OrePrefix.plate, Materials.WroughtIron, 8).outputs(MetaBlocks.MACHINE_CASING.getItemVariant(MachineCasingType.ULV)).circuitMeta(8).duration(25).buildAndRegister();
         RecipeMaps.ASSEMBLER_RECIPES.recipeBuilder().duration(16).input(OrePrefix.plate, Materials.Steel, 8).outputs(MetaBlocks.MACHINE_CASING.getItemVariant(MachineCasingType.LV)).circuitMeta(8).duration(50).buildAndRegister();
         RecipeMaps.ASSEMBLER_RECIPES.recipeBuilder().duration(16).input(OrePrefix.plate, Materials.Aluminium, 8).outputs(MetaBlocks.MACHINE_CASING.getItemVariant(MachineCasingType.MV)).circuitMeta(8).duration(50).buildAndRegister();
@@ -506,307 +508,440 @@ public class MachineRecipeLoader implements Runnable {
         RecipeMaps.CENTRIFUGE_RECIPES.recipeBuilder().duration(64).EUt(20).input(OrePrefix.dust, Materials.RareEarth, 1).chancedOutput(OreDictUnifier.get(OrePrefix.dustSmall,Materials.Cadmium,1), 2500).chancedOutput(OreDictUnifier.get(OrePrefix.dustSmall,Materials.Neodymium,1), 2500).chancedOutput(OreDictUnifier.get(OrePrefix.dustSmall,Materials.Caesium,1), 2500).chancedOutput(OreDictUnifier.get(OrePrefix.dustSmall,Materials.Cerium,1), 2500).chancedOutput(OreDictUnifier.get(OrePrefix.dustSmall,Materials.Yttrium,1), 2500).chancedOutput(OreDictUnifier.get(OrePrefix.dustSmall,Materials.Lanthanum,1), 2500).buildAndRegister();
     }
 
-    //These need to be done by hand. @Exidex
-    /*public void registerAssemblyLineRecipes() {
-        addAssemblylineRecipe(ItemList.Electric_Motor_IV.get(1), 144000, new ItemStack[]{
-            GT_OreDictUnificator.get(OrePrefixes.stickLong, Materials.NeodymiumMagnetic, 1),
-            GT_OreDictUnificator.get(OrePrefixes.stickLong, Materials.HSSG, 2L),
-            GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.AnnealedCopper, 64L),
-            GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.AnnealedCopper, 64L),
-            GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.AnnealedCopper, 64L),
-            GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.AnnealedCopper, 64L),
-            GT_OreDictUnificator.get(OrePrefixes.cableGtSingle, Materials.YttriumBariumCuprate, 2L)}, new FluidStack[]{
-            Materials.SolderingAlloy.getMolten(144),
-            Materials.Lubricant.getFluid(250)}, ItemList.Electric_Motor_LuV.get(1), 600, 6000);
+    public static void registerAssemblyLineRecipes() {
 
-        addAssemblylineRecipe(ItemList.Electric_Motor_LuV.get(1), 144000, new ItemStack[]{
-            GT_OreDictUnificator.get(OrePrefixes.stickLong, Materials.NeodymiumMagnetic, 2L),
-            GT_OreDictUnificator.get(OrePrefixes.stickLong, Materials.HSSE, 4L),
-            GT_OreDictUnificator.get(OrePrefixes.ring, Materials.HSSE, 4L),
-            GT_OreDictUnificator.get(OrePrefixes.round, Materials.HSSE, 16L),
-            GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Platinum, 64L),
-            GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Platinum, 64L),
-            GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Platinum, 64L),
-            GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Platinum, 64L),
-            GT_OreDictUnificator.get(OrePrefixes.cableGt04, Materials.VanadiumGallium, 2L)}, new FluidStack[]{
-            Materials.SolderingAlloy.getMolten(288),
-            Materials.Lubricant.getFluid(750)}, ItemList.Electric_Motor_ZPM.get(1), 600, 24000);
+        AssemblyLineRecipeBuilder.start()
+            .researchItem(MetaItems.ELECTRIC_MOTOR_IV.getStackForm())
+            .researchTime(144000)
+            .inputs(OreDictUnifier.get(OrePrefix.stickLong, Materials.NeodymiumMagnetic, 1),
+                OreDictUnifier.get(OrePrefix.stickLong, Materials.HSSG, 2),
+                OreDictUnifier.get(OrePrefix.wireFine, Materials.AnnealedCopper, 64),
+                OreDictUnifier.get(OrePrefix.wireFine, Materials.AnnealedCopper, 64),
+                OreDictUnifier.get(OrePrefix.wireFine, Materials.AnnealedCopper, 64),
+                OreDictUnifier.get(OrePrefix.wireFine, Materials.AnnealedCopper, 64),
+                OreDictUnifier.get(OrePrefix.cableGtSingle, Materials.YttriumBariumCuprate, 2))
+            .fluidInputs(Materials.SolderingAlloy.getFluid(L), Materials.Lubricant.getFluid(250))
+            .output(MetaItems.ELECTRIC_MOTOR_LUV.getStackForm())
+            .duration(600)
+            .EUt(6000)
+            .buildAndRegister();
 
-        addAssemblylineRecipe(ItemList.Electric_Motor_ZPM.get(1), 288000, new ItemStack[]{
-            GT_OreDictUnificator.get(OrePrefixes.block, Materials.NeodymiumMagnetic, 1),
-            GT_OreDictUnificator.get(OrePrefixes.stickLong, Materials.Neutronium, 4L),
-            GT_OreDictUnificator.get(OrePrefixes.ring, Materials.Neutronium, 4L),
-            GT_OreDictUnificator.get(OrePrefixes.round, Materials.Neutronium, 16),
-            GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.Superconductor, 64L),
-            GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.Superconductor, 64L),
-            GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.Superconductor, 64L),
-            GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.Superconductor, 64L),
-            GT_OreDictUnificator.get(OrePrefixes.cableGt04, Materials.NiobiumTitanium, 2L)}, new FluidStack[]{
-            Materials.SolderingAlloy.getMolten(1296),
-            Materials.Lubricant.getFluid(2000)}, ItemList.Electric_Motor_UV.get(1), 600, 100000);
+        AssemblyLineRecipeBuilder.start()
+            .researchItem(MetaItems.ELECTRIC_MOTOR_LUV.getStackForm())
+            .researchTime(144000)
+            .inputs(OreDictUnifier.get(OrePrefix.stickLong, Materials.NeodymiumMagnetic, 2),
+                OreDictUnifier.get(OrePrefix.stickLong, Materials.HSSE, 4),
+                OreDictUnifier.get(OrePrefix.ring, Materials.HSSE, 4),
+                OreDictUnifier.get(OrePrefix.screw, Materials.HSSE, 16),
+                OreDictUnifier.get(OrePrefix.wireFine, Materials.Platinum, 64),
+                OreDictUnifier.get(OrePrefix.wireFine, Materials.Platinum, 64),
+                OreDictUnifier.get(OrePrefix.wireFine, Materials.Platinum, 64),
+                OreDictUnifier.get(OrePrefix.wireFine, Materials.Platinum, 64),
+                OreDictUnifier.get(OrePrefix.cableGtOctal, Materials.VanadiumGallium, 2))
+            .fluidInputs(Materials.SolderingAlloy.getFluid(2 * L),
+                Materials.Lubricant.getFluid(750))
+            .output(MetaItems.ELECTRIC_MOTOR_ZPM.getStackForm())
+            .duration(600)
+            .EUt(24000)
+            .buildAndRegister();
 
-        addAssemblylineRecipe(ItemList.Electric_Pump_IV.get(1), 144000, new ItemStack[]{
-            ItemList.Electric_Motor_LuV.get(1),
-            GT_OreDictUnificator.get(OrePrefixes.pipeSmall, Materials.Ultimate, 2L),
-            GT_OreDictUnificator.get(OrePrefixes.plate, Materials.HSSG, 2L),
-            GT_OreDictUnificator.get(OrePrefixes.screw, Materials.HSSG, 8L),
-            GT_OreDictUnificator.get(OrePrefixes.ring, Materials.Rubber, 4L),
-            GT_OreDictUnificator.get(OrePrefixes.rotor, Materials.HSSG, 2L),
-            GT_OreDictUnificator.get(OrePrefixes.cableGtSingle, Materials.YttriumBariumCuprate, 2L)}, new FluidStack[]{
-            Materials.SolderingAlloy.getMolten(144),
-            Materials.Lubricant.getFluid(250)}, ItemList.Electric_Pump_LuV.get(1), 600, 6000);
+        AssemblyLineRecipeBuilder.start()
+            .researchItem(MetaItems.ELECTRIC_MOTOR_ZPM.getStackForm())
+            .researchTime(288000)
+            .inputs(OreDictUnifier.get(OrePrefix.block, Materials.NeodymiumMagnetic, 1),
+                OreDictUnifier.get(OrePrefix.stickLong, Materials.Darmstadtium, 4),
+                OreDictUnifier.get(OrePrefix.ring, Materials.Darmstadtium, 4),
+                OreDictUnifier.get(OrePrefix.screw, Materials.Darmstadtium, 16),
+                OreDictUnifier.get(OrePrefix.wireGtSingle, MarkerMaterials.Tier.Superconductor, 64),
+                OreDictUnifier.get(OrePrefix.wireGtSingle, MarkerMaterials.Tier.Superconductor, 64),
+                OreDictUnifier.get(OrePrefix.wireGtSingle, MarkerMaterials.Tier.Superconductor, 64),
+                OreDictUnifier.get(OrePrefix.wireGtSingle, MarkerMaterials.Tier.Superconductor, 64),
+                OreDictUnifier.get(OrePrefix.cableGtOctal, Materials.NiobiumTitanium, 2))
+            .fluidInputs(Materials.SolderingAlloy.getFluid(9 * L),
+                Materials.Lubricant.getFluid(2000))
+            .output(MetaItems.ELECTRIC_MOTOR_UV.getStackForm())
+            .duration(600)
+            .EUt(100000)
+            .buildAndRegister();
 
-        addAssemblylineRecipe(ItemList.Electric_Pump_LuV.get(1), 144000, new ItemStack[]{
-            ItemList.Electric_Motor_ZPM.get(1),
-            GT_OreDictUnificator.get(OrePrefixes.pipeMedium, Materials.Ultimate, 2L),
-            GT_OreDictUnificator.get(OrePrefixes.plate, Materials.HSSE, 2L),
-            GT_OreDictUnificator.get(OrePrefixes.screw, Materials.HSSE, 8L),
-            GT_OreDictUnificator.get(OrePrefixes.ring, Materials.Rubber, 16L),
-            GT_OreDictUnificator.get(OrePrefixes.rotor, Materials.HSSE, 2L),
-            GT_OreDictUnificator.get(OrePrefixes.cableGt04, Materials.VanadiumGallium, 2L)}, new FluidStack[]{
-            Materials.SolderingAlloy.getMolten(288),
-            Materials.Lubricant.getFluid(750)}, ItemList.Electric_Pump_ZPM.get(1), 600, 24000);
+        AssemblyLineRecipeBuilder.start()
+            .researchItem(MetaItems.ELECTRIC_PUMP_IV.getStackForm())
+            .researchTime(144000)
+            .inputs(MetaItems.ELECTRIC_MOTOR_LUV.getStackForm(),
+                OreDictUnifier.get(OrePrefix.pipeSmall, MarkerMaterials.Tier.Ultimate, 2),
+                OreDictUnifier.get(OrePrefix.plate, Materials.HSSG, 2),
+                OreDictUnifier.get(OrePrefix.screw, Materials.HSSG, 8),
+                OreDictUnifier.get(OrePrefix.ring, Materials.Rubber, 4),
+                OreDictUnifier.get(OrePrefix.rotor, Materials.HSSG, 2),
+                OreDictUnifier.get(OrePrefix.cableGtSingle, Materials.YttriumBariumCuprate, 2))
+            .fluidInputs(Materials.SolderingAlloy.getFluid(L), Materials.Lubricant.getFluid(250))
+            .output(MetaItems.ELECTRIC_PUMP_LUV.getStackForm())
+            .duration(600)
+            .EUt(6000)
+            .buildAndRegister();
 
-        addAssemblylineRecipe(ItemList.Electric_Pump_ZPM.get(1), 288000, new ItemStack[]{
-            ItemList.Electric_Motor_UV.get(1),
-            GT_OreDictUnificator.get(OrePrefixes.pipeLarge, Materials.Ultimate, 2L),
-            GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Neutronium, 2L),
-            GT_OreDictUnificator.get(OrePrefixes.screw, Materials.Neutronium, 8L),
-            GT_OreDictUnificator.get(OrePrefixes.ring, Materials.Rubber, 16L),
-            GT_OreDictUnificator.get(OrePrefixes.rotor, Materials.Neutronium, 2L),
-            GT_OreDictUnificator.get(OrePrefixes.cableGt04, Materials.NiobiumTitanium, 2L)}, new FluidStack[]{
-            Materials.SolderingAlloy.getMolten(1296),
-            Materials.Lubricant.getFluid(2000)}, ItemList.Electric_Pump_UV.get(1), 600, 100000);
+        AssemblyLineRecipeBuilder.start()
+            .researchItem(MetaItems.ELECTRIC_PUMP_LUV.getStackForm())
+            .researchTime(144000)
+            .inputs(MetaItems.ELECTRIC_MOTOR_ZPM.getStackForm(),
+                OreDictUnifier.get(OrePrefix.pipeMedium, MarkerMaterials.Tier.Ultimate, 2),
+                OreDictUnifier.get(OrePrefix.plate, Materials.HSSE, 2),
+                OreDictUnifier.get(OrePrefix.screw, Materials.HSSE, 8),
+                OreDictUnifier.get(OrePrefix.ring, Materials.Rubber, 16),
+                OreDictUnifier.get(OrePrefix.rotor, Materials.HSSE, 2),
+                OreDictUnifier.get(OrePrefix.cableGtOctal, Materials.VanadiumGallium, 2))
+            .fluidInputs(Materials.SolderingAlloy.getFluid(2 * L),
+                Materials.Lubricant.getFluid(750))
+            .output(MetaItems.ELECTRIC_PUMP_ZPM.getStackForm())
+            .duration(600)
+            .EUt(24000)
+            .buildAndRegister();
 
-        addAssemblylineRecipe(ItemList.Conveyor_Module_IV.get(1), 144000, new ItemStack[]{
-            ItemList.Electric_Motor_LuV.get(2),
-            GT_OreDictUnificator.get(OrePrefixes.plate, Materials.HSSG, 2L),
-            GT_OreDictUnificator.get(OrePrefixes.ring, Materials.HSSG, 4L),
-            GT_OreDictUnificator.get(OrePrefixes.round, Materials.HSSG, 32L),
-            GT_OreDictUnificator.get(OrePrefixes.cableGtSingle, Materials.YttriumBariumCuprate, 2L)}, new FluidStack[]{
-            Materials.Rubber.getMolten(1440),
-            Materials.Lubricant.getFluid(250)}, ItemList.Conveyor_Module_LuV.get(1), 600, 6000);
+        AssemblyLineRecipeBuilder.start()
+            .researchItem(MetaItems.ELECTRIC_PUMP_ZPM.getStackForm())
+            .researchTime(288000)
+            .inputs(MetaItems.ELECTRIC_MOTOR_UV.getStackForm(),
+                OreDictUnifier.get(OrePrefix.pipeLarge, MarkerMaterials.Tier.Ultimate, 2),
+                OreDictUnifier.get(OrePrefix.plate, Materials.Darmstadtium, 2),
+                OreDictUnifier.get(OrePrefix.screw, Materials.Darmstadtium, 8),
+                OreDictUnifier.get(OrePrefix.ring, Materials.Rubber, 16),
+                OreDictUnifier.get(OrePrefix.rotor, Materials.Darmstadtium, 2),
+                OreDictUnifier.get(OrePrefix.cableGtOctal, Materials.NiobiumTitanium, 2))
+            .fluidInputs(Materials.SolderingAlloy.getFluid(1296),
+                Materials.Lubricant.getFluid(2000))
+            .output(MetaItems.ELECTRIC_PUMP_UV.getStackForm())
+            .duration(600)
+            .EUt(100000)
+            .buildAndRegister();
 
-        addAssemblylineRecipe(ItemList.Conveyor_Module_LuV.get(1), 144000, new ItemStack[]{
-            ItemList.Electric_Motor_ZPM.get(2),
-            GT_OreDictUnificator.get(OrePrefixes.plate, Materials.HSSE, 2L),
-            GT_OreDictUnificator.get(OrePrefixes.ring, Materials.HSSE, 4L),
-            GT_OreDictUnificator.get(OrePrefixes.round, Materials.HSSE, 32L),
-            GT_OreDictUnificator.get(OrePrefixes.cableGt04, Materials.VanadiumGallium, 2L)}, new FluidStack[]{
-            Materials.Rubber.getMolten(2880),
-            Materials.Lubricant.getFluid(750)}, ItemList.Conveyor_Module_ZPM.get(1), 600, 24000);
+        AssemblyLineRecipeBuilder.start()
+            .researchItem(MetaItems.CONVEYOR_MODULE_IV.getStackForm())
+            .researchTime(144000)
+            .inputs(MetaItems.ELECTRIC_MOTOR_LUV.getStackForm(2),
+                OreDictUnifier.get(OrePrefix.plate, Materials.HSSG, 2),
+                OreDictUnifier.get(OrePrefix.ring, Materials.HSSG, 4),
+                OreDictUnifier.get(OrePrefix.screw, Materials.HSSG, 32),
+                OreDictUnifier.get(OrePrefix.cableGtSingle, Materials.YttriumBariumCuprate, 2))
+            .fluidInputs(Materials.Rubber.getFluid(10 * L),
+                Materials.Lubricant.getFluid(250))
+            .output(MetaItems.CONVEYOR_MODULE_LUV.getStackForm())
+            .duration(600)
+            .EUt(6000)
+            .buildAndRegister();
 
-        addAssemblylineRecipe(ItemList.Conveyor_Module_ZPM.get(1), 288000, new ItemStack[]{
-            ItemList.Electric_Motor_UV.get(2),
-            GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Neutronium, 2L),
-            GT_OreDictUnificator.get(OrePrefixes.ring, Materials.Neutronium, 4L),
-            GT_OreDictUnificator.get(OrePrefixes.round, Materials.Neutronium, 32L),
-            GT_OreDictUnificator.get(OrePrefixes.cableGt04, Materials.NiobiumTitanium, 2L)}, new FluidStack[]{
-            Materials.Rubber.getMolten(2880),
-            Materials.Lubricant.getFluid(2000)}, ItemList.Conveyor_Module_UV.get(1), 600, 100000);
+        AssemblyLineRecipeBuilder.start()
+            .researchItem(MetaItems.CONVEYOR_MODULE_LUV.getStackForm())
+            .researchTime(144000)
+            .inputs(MetaItems.ELECTRIC_MOTOR_ZPM.getStackForm(2),
+                OreDictUnifier.get(OrePrefix.plate, Materials.HSSE, 2),
+                OreDictUnifier.get(OrePrefix.ring, Materials.HSSE, 4),
+                OreDictUnifier.get(OrePrefix.screw, Materials.HSSE, 32),
+                OreDictUnifier.get(OrePrefix.cableGtOctal, Materials.VanadiumGallium, 2))
+            .fluidInputs(Materials.Rubber.getFluid(2880),
+                Materials.Lubricant.getFluid(750))
+            .output(MetaItems.CONVEYOR_MODULE_ZPM.getStackForm())
+            .duration(600)
+            .EUt(24000)
+            .buildAndRegister();
 
-        addAssemblylineRecipe(ItemList.Electric_Piston_IV.get(1), 144000, new ItemStack[]{
-            ItemList.Electric_Motor_LuV.get(1),
-            GT_OreDictUnificator.get(OrePrefixes.plate, Materials.HSSG, 6L),
-            GT_OreDictUnificator.get(OrePrefixes.ring, Materials.HSSG, 4L),
-            GT_OreDictUnificator.get(OrePrefixes.round, Materials.HSSG, 32L),
-            GT_OreDictUnificator.get(OrePrefixes.stick, Materials.HSSG, 4L),
-            GT_OreDictUnificator.get(OrePrefixes.gear, Materials.HSSG, 1),
-            GT_OreDictUnificator.get(OrePrefixes.gearGtSmall, Materials.HSSG, 2L),
-            GT_OreDictUnificator.get(OrePrefixes.cableGtSingle, Materials.YttriumBariumCuprate, 4L)}, new FluidStack[]{
-            Materials.SolderingAlloy.getMolten(144),
-            Materials.Lubricant.getFluid(250)}, ItemList.Electric_Piston_LuV.get(1), 600, 6000);
+        AssemblyLineRecipeBuilder.start()
+            .researchItem(MetaItems.CONVEYOR_MODULE_ZPM.getStackForm())
+            .researchTime(288000)
+            .inputs(MetaItems.ELECTRIC_MOTOR_UV.getStackForm(2),
+                OreDictUnifier.get(OrePrefix.plate, Materials.Darmstadtium, 2),
+                OreDictUnifier.get(OrePrefix.ring, Materials.Darmstadtium, 4),
+                OreDictUnifier.get(OrePrefix.screw, Materials.Darmstadtium, 32),
+                OreDictUnifier.get(OrePrefix.cableGtOctal, Materials.NiobiumTitanium, 2))
+            .fluidInputs(Materials.Rubber.getFluid(20 * L),
+                Materials.Lubricant.getFluid(2000))
+            .output(MetaItems.CONVEYOR_MODULE_UV.getStackForm())
+            .duration(600)
+            .EUt(100000)
+            .buildAndRegister();
 
-        addAssemblylineRecipe(ItemList.Electric_Piston_LuV.get(1), 144000, new ItemStack[]{
-            ItemList.Electric_Motor_ZPM.get(1),
-            GT_OreDictUnificator.get(OrePrefixes.plate, Materials.HSSE, 6L),
-            GT_OreDictUnificator.get(OrePrefixes.ring, Materials.HSSE, 4L),
-            GT_OreDictUnificator.get(OrePrefixes.round, Materials.HSSE, 32L),
-            GT_OreDictUnificator.get(OrePrefixes.stick, Materials.HSSE, 4L),
-            GT_OreDictUnificator.get(OrePrefixes.gear, Materials.HSSE, 1),
-            GT_OreDictUnificator.get(OrePrefixes.gearGtSmall, Materials.HSSE, 2L),
-            GT_OreDictUnificator.get(OrePrefixes.cableGt04, Materials.VanadiumGallium, 4L)}, new FluidStack[]{
-            Materials.SolderingAlloy.getMolten(288),
-            Materials.Lubricant.getFluid(750)}, ItemList.Electric_Piston_ZPM.get(1), 600, 24000);
+        AssemblyLineRecipeBuilder.start()
+            .researchItem(MetaItems.ELECTRIC_PISTON_IV.getStackForm())
+            .researchTime(144000)
+            .inputs(MetaItems.ELECTRIC_MOTOR_LUV.getStackForm(),
+                OreDictUnifier.get(OrePrefix.plate, Materials.HSSG, 6),
+                OreDictUnifier.get(OrePrefix.ring, Materials.HSSG, 4),
+                OreDictUnifier.get(OrePrefix.screw, Materials.HSSG, 32),
+                OreDictUnifier.get(OrePrefix.stick, Materials.HSSG, 4),
+                OreDictUnifier.get(OrePrefix.gear, Materials.HSSG, 1),
+                OreDictUnifier.get(OrePrefix.gearSmall, Materials.HSSG, 2),
+                OreDictUnifier.get(OrePrefix.cableGtSingle, Materials.YttriumBariumCuprate, 4))
+            .fluidInputs(Materials.SolderingAlloy.getFluid(L),
+                Materials.Lubricant.getFluid(250))
+            .output( MetaItems.ELECTRIC_PISTON_LUV.getStackForm())
+            .duration(600)
+            .EUt(6000)
+            .buildAndRegister();
 
-        addAssemblylineRecipe(ItemList.Electric_Piston_ZPM.get(1), 288000, new ItemStack[]{
-            ItemList.Electric_Motor_UV.get(1),
-            GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Neutronium, 6L),
-            GT_OreDictUnificator.get(OrePrefixes.ring, Materials.Neutronium, 4L),
-            GT_OreDictUnificator.get(OrePrefixes.round, Materials.Neutronium, 32L),
-            GT_OreDictUnificator.get(OrePrefixes.stick, Materials.Neutronium, 4L),
-            GT_OreDictUnificator.get(OrePrefixes.gear, Materials.Neutronium, 1),
-            GT_OreDictUnificator.get(OrePrefixes.gearGtSmall, Materials.Neutronium, 2L),
-            GT_OreDictUnificator.get(OrePrefixes.cableGt04, Materials.NiobiumTitanium, 4L)}, new FluidStack[]{
-            Materials.SolderingAlloy.getMolten(1296),
-            Materials.Lubricant.getFluid(2000)}, ItemList.Electric_Piston_UV.get(1), 600, 100000);
+        AssemblyLineRecipeBuilder.start()
+            .researchItem(MetaItems.ELECTRIC_PISTON_LUV.getStackForm())
+            .researchTime(144000)
+            .inputs(MetaItems.ELECTRIC_MOTOR_ZPM.getStackForm(),
+                OreDictUnifier.get(OrePrefix.plate, Materials.HSSE, 6),
+                OreDictUnifier.get(OrePrefix.ring, Materials.HSSE, 4),
+                OreDictUnifier.get(OrePrefix.screw, Materials.HSSE, 32),
+                OreDictUnifier.get(OrePrefix.stick, Materials.HSSE, 4),
+                OreDictUnifier.get(OrePrefix.gear, Materials.HSSE, 1),
+                OreDictUnifier.get(OrePrefix.gearSmall, Materials.HSSE, 2),
+                OreDictUnifier.get(OrePrefix.cableGtOctal, Materials.VanadiumGallium, 4))
+            .fluidInputs(Materials.SolderingAlloy.getFluid(2 * L),
+                Materials.Lubricant.getFluid(750))
+            .output(MetaItems.ELECTRIC_PISTON_ZPM.getStackForm())
+            .duration(600)
+            .EUt(24000)
+            .buildAndRegister();
 
-        addAssemblylineRecipe(ItemList.Robot_Arm_IV.get(1), 144000, new ItemStack[]{
-            GT_OreDictUnificator.get(OrePrefixes.stickLong, Materials.HSSG, 4L),
-            GT_OreDictUnificator.get(OrePrefixes.gear, Materials.HSSG, 1),
-            GT_OreDictUnificator.get(OrePrefixes.gearGtSmall, Materials.HSSG, 3L),
-            ItemList.Electric_Motor_LuV.get(2),
-            ItemList.Electric_Piston_LuV.get(1),
-            GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Master, 2L),
-            GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Elite, 2L),
-            GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Advanced, 6L),
-            GT_OreDictUnificator.get(OrePrefixes.cableGtSingle, Materials.YttriumBariumCuprate, 6L)}, new FluidStack[]{
-            Materials.SolderingAlloy.getMolten(576),
-            Materials.Lubricant.getFluid(250)}, ItemList.Robot_Arm_LuV.get(1), 600, 6000);
+        AssemblyLineRecipeBuilder.start()
+            .researchItem(MetaItems.ELECTRIC_PISTON_ZPM.getStackForm())
+            .researchTime(288000)
+            .inputs(MetaItems.ELECTRIC_MOTOR_UV.getStackForm(),
+                OreDictUnifier.get(OrePrefix.plate, Materials.Darmstadtium, 6),
+                OreDictUnifier.get(OrePrefix.ring, Materials.Darmstadtium, 4),
+                OreDictUnifier.get(OrePrefix.screw, Materials.Darmstadtium, 32),
+                OreDictUnifier.get(OrePrefix.stick, Materials.Darmstadtium, 4),
+                OreDictUnifier.get(OrePrefix.gear, Materials.Darmstadtium, 1),
+                OreDictUnifier.get(OrePrefix.gearSmall, Materials.Darmstadtium, 2),
+                OreDictUnifier.get(OrePrefix.cableGtOctal, Materials.NiobiumTitanium, 4))
+            .fluidInputs(Materials.SolderingAlloy.getFluid(9 * L),
+                Materials.Lubricant.getFluid(2000))
+            .output(MetaItems.ELECTRIC_PISTON_UV.getStackForm())
+            .duration(600)
+            .EUt(100000)
+            .buildAndRegister();
 
-        addAssemblylineRecipe(ItemList.Robot_Arm_LuV.get(1), 144000, new ItemStack[]{
-            GT_OreDictUnificator.get(OrePrefixes.stickLong, Materials.HSSE, 4L),
-            GT_OreDictUnificator.get(OrePrefixes.gear, Materials.HSSE, 1),
-            GT_OreDictUnificator.get(OrePrefixes.gearGtSmall, Materials.HSSE, 3L),
-            ItemList.Electric_Motor_ZPM.get(2),
-            ItemList.Electric_Piston_ZPM.get(1),
-            GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Master, 4L),
-            GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Elite, 4L),
-            GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Advanced, 12L),
-            GT_OreDictUnificator.get(OrePrefixes.cableGt04, Materials.VanadiumGallium, 6L)}, new FluidStack[]{
-            Materials.SolderingAlloy.getMolten(1152),
-            Materials.Lubricant.getFluid(750)}, ItemList.Robot_Arm_ZPM.get(1), 600, 24000);
+        AssemblyLineRecipeBuilder.start()
+            .researchItem(MetaItems.ROBOT_ARM_IV.getStackForm())
+            .researchTime(144000)
+            .inputs(OreDictUnifier.get(OrePrefix.stickLong, Materials.HSSG, 4),
+                OreDictUnifier.get(OrePrefix.gear, Materials.HSSG, 1),
+                OreDictUnifier.get(OrePrefix.gearSmall, Materials.HSSG, 3),
+                MetaItems.ELECTRIC_MOTOR_LUV.getStackForm(2),
+                MetaItems.ELECTRIC_PISTON_LUV.getStackForm(),
+                OreDictUnifier.get(OrePrefix.circuit, MarkerMaterials.Tier.Master, 2),
+                OreDictUnifier.get(OrePrefix.circuit, MarkerMaterials.Tier.Elite, 2),
+                OreDictUnifier.get(OrePrefix.circuit, MarkerMaterials.Tier.Advanced, 6),
+                OreDictUnifier.get(OrePrefix.cableGtSingle, Materials.YttriumBariumCuprate, 6))
+            .fluidInputs(Materials.SolderingAlloy.getFluid(4 * L),
+                Materials.Lubricant.getFluid(250))
+            .output(MetaItems.ROBOT_ARM_LUV.getStackForm())
+            .duration(600)
+            .EUt(6000)
+            .buildAndRegister();
 
-        addAssemblylineRecipe(ItemList.Robot_Arm_ZPM.get(1), 288000, new ItemStack[]{
-            GT_OreDictUnificator.get(OrePrefixes.stickLong, Materials.Neutronium, 4L),
-            GT_OreDictUnificator.get(OrePrefixes.gear, Materials.Neutronium, 1),
-            GT_OreDictUnificator.get(OrePrefixes.gearGtSmall, Materials.Neutronium, 3L),
-            ItemList.Electric_Motor_UV.get(2),
-            ItemList.Electric_Piston_UV.get(1),
-            GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Master, 8L),
-            GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Elite, 8L),
-            GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Advanced, 24L),
-            GT_OreDictUnificator.get(OrePrefixes.cableGt04, Materials.NiobiumTitanium, 6L)}, new FluidStack[]{
-            Materials.SolderingAlloy.getMolten(2304),
-            Materials.Lubricant.getFluid(2000)}, ItemList.Robot_Arm_UV.get(1), 600, 100000);
+        AssemblyLineRecipeBuilder.start()
+            .researchItem(MetaItems.ROBOT_ARM_LUV.getStackForm())
+            .researchTime(144000)
+            .inputs(OreDictUnifier.get(OrePrefix.stickLong, Materials.HSSE, 4),
+                OreDictUnifier.get(OrePrefix.gear, Materials.HSSE, 1),
+                OreDictUnifier.get(OrePrefix.gearSmall, Materials.HSSE, 3),
+                MetaItems.ELECTRIC_MOTOR_ZPM.getStackForm(2),
+                MetaItems.ELECTRIC_PISTON_ZPM.getStackForm(),
+                OreDictUnifier.get(OrePrefix.circuit, MarkerMaterials.Tier.Master, 4),
+                OreDictUnifier.get(OrePrefix.circuit, MarkerMaterials.Tier.Elite, 4),
+                OreDictUnifier.get(OrePrefix.circuit, MarkerMaterials.Tier.Advanced, 12),
+                OreDictUnifier.get(OrePrefix.cableGtOctal, Materials.VanadiumGallium, 6))
+            .fluidInputs(Materials.SolderingAlloy.getFluid(8 * L),
+                Materials.Lubricant.getFluid(750))
+            .output(MetaItems.ROBOT_ARM_ZPM.getStackForm())
+            .duration(600)
+            .EUt(24000)
+            .buildAndRegister();
 
-        addAssemblylineRecipe(ItemList.Emitter_IV.get(1), 144000, new ItemStack[]{
-                GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.HSSG, 1),
-                ItemList.Emitter_IV.get(1),
-                ItemList.Emitter_EV.get(2),
-                ItemList.Emitter_HV.get(4),
-                GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Advanced, 7L),
-                GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Electrum, 64L),
-                GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Electrum, 64L),
-                GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Electrum, 64L),
-                GT_OreDictUnificator.get(OrePrefixes.cableGtSingle, Materials.YttriumBariumCuprate, 7L)}, new FluidStack[]{
-                Materials.SolderingAlloy.getMolten(576)},
-            ItemList.Emitter_LuV.get(1), 600, 6000);
+        AssemblyLineRecipeBuilder.start()
+            .researchItem(MetaItems.ROBOT_ARM_ZPM.getStackForm())
+            .researchTime(288000)
+            .inputs(OreDictUnifier.get(OrePrefix.stickLong, Materials.Darmstadtium, 4),
+                OreDictUnifier.get(OrePrefix.gear, Materials.Darmstadtium, 1),
+                OreDictUnifier.get(OrePrefix.gearSmall, Materials.Darmstadtium, 3),
+                MetaItems.ELECTRIC_MOTOR_UV.getStackForm(2),
+                MetaItems.ELECTRIC_PISTON_UV.getStackForm(),
+                OreDictUnifier.get(OrePrefix.circuit, MarkerMaterials.Tier.Master, 8),
+                OreDictUnifier.get(OrePrefix.circuit, MarkerMaterials.Tier.Elite, 8),
+                OreDictUnifier.get(OrePrefix.circuit, MarkerMaterials.Tier.Advanced, 24),
+                OreDictUnifier.get(OrePrefix.cableGtOctal, Materials.NiobiumTitanium, 6))
+            .fluidInputs(Materials.SolderingAlloy.getFluid(16 * L),
+                Materials.Lubricant.getFluid(2000))
+            .output(MetaItems.ROBOT_ARM_UV.getStackForm())
+            .duration(600)
+            .EUt(100000)
+            .buildAndRegister();
 
-        addAssemblylineRecipe(ItemList.Emitter_LuV.get(1), 144000, new ItemStack[]{
-                GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.HSSE, 1),
-                ItemList.Emitter_LuV.get(1),
-                ItemList.Emitter_IV.get(2),
-                ItemList.Emitter_EV.get(4),
-                GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Elite, 7L),
-                GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Platinum, 64L),
-                GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Platinum, 64L),
-                GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Platinum, 64L),
-                GT_OreDictUnificator.get(OrePrefixes.cableGt04, Materials.VanadiumGallium, 7L)}, new FluidStack[]{
-                Materials.SolderingAlloy.getMolten(576)},
-            ItemList.Emitter_ZPM.get(1), 600, 24000);
+        AssemblyLineRecipeBuilder.start()
+            .researchItem(MetaItems.EMITTER_IV.getStackForm())
+            .researchTime(144000)
+            .inputs(OreDictUnifier.get(OrePrefix.frameGt, Materials.HSSG, 1),
+                MetaItems.EMITTER_IV.getStackForm(),
+                MetaItems.EMITTER_EV.getStackForm(2),
+                MetaItems.EMITTER_HV.getStackForm(4),
+                OreDictUnifier.get(OrePrefix.circuit, MarkerMaterials.Tier.Advanced, 7),
+                OreDictUnifier.get(OrePrefix.foil, Materials.Electrum, 64),
+                OreDictUnifier.get(OrePrefix.foil, Materials.Electrum, 64),
+                OreDictUnifier.get(OrePrefix.foil, Materials.Electrum, 64),
+                OreDictUnifier.get(OrePrefix.cableGtSingle, Materials.YttriumBariumCuprate, 7))
+            .fluidInputs(Materials.SolderingAlloy.getFluid(576))
+            .output(MetaItems.EMITTER_LUV.getStackForm())
+            .duration(600)
+            .EUt(6000)
+            .buildAndRegister();
 
-        addAssemblylineRecipe(ItemList.Emitter_ZPM.get(1), 288000, new ItemStack[]{
-                GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Neutronium, 1),
-                ItemList.Emitter_ZPM.get(1),
-                ItemList.Emitter_LuV.get(2),
-                ItemList.Emitter_IV.get(4),
-                GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Master, 7L),
-                GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Osmiridium, 64L),
-                GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Osmiridium, 64L),
-                GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Osmiridium, 64L),
-                GT_OreDictUnificator.get(OrePrefixes.cableGt04, Materials.NiobiumTitanium, 7L)}, new FluidStack[]{
-                Materials.SolderingAlloy.getMolten(576)},
-            ItemList.Emitter_UV.get(1), 600, 100000);
+        AssemblyLineRecipeBuilder.start()
+            .researchItem(MetaItems.EMITTER_LUV.getStackForm())
+            .researchTime(144000)
+            .inputs(OreDictUnifier.get(OrePrefix.frameGt, Materials.HSSE, 1),
+                MetaItems.EMITTER_LUV.getStackForm(),
+                MetaItems.EMITTER_IV.getStackForm(2),
+                MetaItems.EMITTER_EV.getStackForm(4),
+                OreDictUnifier.get(OrePrefix.circuit, MarkerMaterials.Tier.Elite, 7),
+                OreDictUnifier.get(OrePrefix.foil, Materials.Platinum, 64),
+                OreDictUnifier.get(OrePrefix.foil, Materials.Platinum, 64),
+                OreDictUnifier.get(OrePrefix.foil, Materials.Platinum, 64),
+                OreDictUnifier.get(OrePrefix.cableGtOctal, Materials.VanadiumGallium, 7))
+            .fluidInputs(Materials.SolderingAlloy.getFluid(4 * L))
+            .output(MetaItems.EMITTER_ZPM.getStackForm())
+            .duration(600)
+            .EUt(24000)
+            .buildAndRegister();
 
-        addAssemblylineRecipe(ItemList.Sensor_IV.get(1), 144000, new ItemStack[]{
-                GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.HSSG, 1),
-                ItemList.Sensor_IV.get(1),
-                ItemList.Sensor_EV.get(2),
-                ItemList.Sensor_HV.get(4),
-                GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Advanced, 7L),
-                GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Electrum, 64L),
-                GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Electrum, 64L),
-                GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Electrum, 64L),
-                GT_OreDictUnificator.get(OrePrefixes.cableGtSingle, Materials.YttriumBariumCuprate, 7L)}, new FluidStack[]{
-                Materials.SolderingAlloy.getMolten(576)},
-            ItemList.Sensor_LuV.get(1), 600, 6000);
+        AssemblyLineRecipeBuilder.start()
+            .researchItem(MetaItems.EMITTER_ZPM.getStackForm())
+            .researchTime(288000)
+            .inputs(OreDictUnifier.get(OrePrefix.frameGt, Materials.Darmstadtium, 1),
+                MetaItems.EMITTER_ZPM.getStackForm(),
+                MetaItems.EMITTER_LUV.getStackForm(2),
+                MetaItems.EMITTER_IV.getStackForm(4),
+                OreDictUnifier.get(OrePrefix.circuit, MarkerMaterials.Tier.Master, 7),
+                OreDictUnifier.get(OrePrefix.foil, Materials.Osmiridium, 64),
+                OreDictUnifier.get(OrePrefix.foil, Materials.Osmiridium, 64),
+                OreDictUnifier.get(OrePrefix.foil, Materials.Osmiridium, 64),
+                OreDictUnifier.get(OrePrefix.cableGtOctal, Materials.NiobiumTitanium, 7))
+            .fluidInputs(Materials.SolderingAlloy.getFluid(4 * L))
+            .output(MetaItems.EMITTER_UV.getStackForm())
+            .duration(600)
+            .EUt(100000)
+            .buildAndRegister();
 
-        addAssemblylineRecipe(ItemList.Sensor_LuV.get(1), 144000, new ItemStack[]{
-                GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.HSSE, 1),
-                ItemList.Sensor_LuV.get(1),
-                ItemList.Sensor_IV.get(2),
-                ItemList.Sensor_EV.get(4),
-                GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Elite, 7L),
-                GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Platinum, 64L),
-                GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Platinum, 64L),
-                GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Platinum, 64L),
-                GT_OreDictUnificator.get(OrePrefixes.cableGt04, Materials.VanadiumGallium, 7L)}, new FluidStack[]{
-                Materials.SolderingAlloy.getMolten(576)},
-            ItemList.Sensor_ZPM.get(1), 600, 24000);
+        AssemblyLineRecipeBuilder.start()
+            .researchItem(MetaItems.SENSOR_IV.getStackForm())
+            .researchTime(144000)
+            .inputs(OreDictUnifier.get(OrePrefix.frameGt, Materials.HSSG, 1),
+                MetaItems.SENSOR_IV.getStackForm(),
+                MetaItems.SENSOR_EV.getStackForm(2),
+                MetaItems.SENSOR_HV.getStackForm(4),
+                OreDictUnifier.get(OrePrefix.circuit, MarkerMaterials.Tier.Advanced, 7),
+                OreDictUnifier.get(OrePrefix.foil, Materials.Electrum, 64),
+                OreDictUnifier.get(OrePrefix.foil, Materials.Electrum, 64),
+                OreDictUnifier.get(OrePrefix.foil, Materials.Electrum, 64),
+                OreDictUnifier.get(OrePrefix.cableGtSingle, Materials.YttriumBariumCuprate, 7))
+            .fluidInputs(Materials.SolderingAlloy.getFluid(4 * L))
+            .output(MetaItems.SENSOR_LUV.getStackForm())
+            .duration(600)
+            .EUt(6000)
+            .buildAndRegister();
 
-        addAssemblylineRecipe(ItemList.Sensor_ZPM.get(1), 288000, new ItemStack[]{
-                GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Neutronium, 1),
-                ItemList.Sensor_ZPM.get(1),
-                ItemList.Sensor_LuV.get(2),
-                ItemList.Sensor_IV.get(4),
-                GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Master, 7L),
-                GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Osmiridium, 64L),
-                GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Osmiridium, 64L),
-                GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Osmiridium, 64L),
-                GT_OreDictUnificator.get(OrePrefixes.cableGt04, Materials.NiobiumTitanium, 7L)}, new FluidStack[]{
-                Materials.SolderingAlloy.getMolten(576)},
-            ItemList.Sensor_UV.get(1), 600, 100000);
+        AssemblyLineRecipeBuilder.start()
+            .researchItem(MetaItems.SENSOR_LUV.getStackForm())
+            .researchTime(144000)
+            .inputs(OreDictUnifier.get(OrePrefix.frameGt, Materials.HSSE, 1),
+                MetaItems.SENSOR_LUV.getStackForm(),
+                MetaItems.SENSOR_IV.getStackForm(2),
+                MetaItems.SENSOR_EV.getStackForm(4),
+                OreDictUnifier.get(OrePrefix.circuit, MarkerMaterials.Tier.Elite, 7),
+                OreDictUnifier.get(OrePrefix.foil, Materials.Platinum, 64),
+                OreDictUnifier.get(OrePrefix.foil, Materials.Platinum, 64),
+                OreDictUnifier.get(OrePrefix.foil, Materials.Platinum, 64),
+                OreDictUnifier.get(OrePrefix.cableGtOctal, Materials.VanadiumGallium, 7))
+            .fluidInputs(Materials.SolderingAlloy.getFluid(4 * L))
+            .output(MetaItems.SENSOR_ZPM.getStackForm())
+            .duration(600)
+            .EUt(24000)
+            .buildAndRegister();
 
-        addAssemblylineRecipe(ItemList.Field_Generator_IV.get(1), 144000, new ItemStack[]{
-                GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.HSSG, 1),
-                GT_OreDictUnificator.get(OrePrefixes.plate, Materials.HSSG, 6L),
-                ItemList.QuantumStar.get(1),
-                ItemList.Emitter_LuV.get(4),
-                GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Master, 8L),
-                GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Osmium, 64L),
-                GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Osmium, 64L),
-                GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Osmium, 64L),
-                GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Osmium, 64L),
-                GT_OreDictUnificator.get(OrePrefixes.cableGtSingle, Materials.YttriumBariumCuprate, 8L)}, new FluidStack[]{
-                Materials.SolderingAlloy.getMolten(576)},
-            ItemList.Field_Generator_LuV.get(1), 600, 6000);
+        AssemblyLineRecipeBuilder.start()
+            .researchItem(MetaItems.SENSOR_ZPM.getStackForm())
+            .researchTime(288000)
+            .inputs(OreDictUnifier.get(OrePrefix.frameGt, Materials.Darmstadtium, 1),
+                MetaItems.SENSOR_ZPM.getStackForm(),
+                MetaItems.SENSOR_LUV.getStackForm(2),
+                MetaItems.SENSOR_IV.getStackForm(4),
+                OreDictUnifier.get(OrePrefix.circuit, MarkerMaterials.Tier.Master, 7),
+                OreDictUnifier.get(OrePrefix.foil, Materials.Osmiridium, 64),
+                OreDictUnifier.get(OrePrefix.foil, Materials.Osmiridium, 64),
+                OreDictUnifier.get(OrePrefix.foil, Materials.Osmiridium, 64),
+                OreDictUnifier.get(OrePrefix.cableGtOctal, Materials.NiobiumTitanium, 7))
+            .fluidInputs(Materials.SolderingAlloy.getFluid(4 * L))
+            .output(MetaItems.SENSOR_UV.getStackForm())
+            .duration(600)
+            .EUt(100000)
+            .buildAndRegister();
 
-        addAssemblylineRecipe(ItemList.Field_Generator_LuV.get(1), 144000, new ItemStack[]{
-                GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.HSSE, 1),
-                GT_OreDictUnificator.get(OrePrefixes.plate, Materials.HSSE, 6L),
-                ItemList.QuantumStar.get(4),
-                ItemList.Emitter_ZPM.get(4),
-                GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Master, 16L),
-                GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Osmium, 64L),
-                GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Osmium, 64L),
-                GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Osmium, 64L),
-                GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Osmium, 64L),
-                GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Osmium, 64L),
-                GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Osmium, 64L),
-                GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Osmium, 64L),
-                GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Osmium, 64L),
-                GT_OreDictUnificator.get(OrePrefixes.cableGt04, Materials.VanadiumGallium, 8L)}, new FluidStack[]{
-                Materials.SolderingAlloy.getMolten(1152)},
-            ItemList.Field_Generator_ZPM.get(1), 600, 24000);
+        AssemblyLineRecipeBuilder.start()
+            .researchItem(MetaItems.FIELD_GENERATOR_IV.getStackForm())
+            .researchTime(144000)
+            .inputs(OreDictUnifier.get(OrePrefix.frameGt, Materials.HSSG, 1),
+                OreDictUnifier.get(OrePrefix.plate, Materials.HSSG, 6),
+                MetaItems.QUANTUMSTAR.getStackForm(),
+                MetaItems.EMITTER_LUV.getStackForm(4),
+                OreDictUnifier.get(OrePrefix.circuit, MarkerMaterials.Tier.Master, 8),
+                OreDictUnifier.get(OrePrefix.wireFine, Materials.Osmium, 64),
+                OreDictUnifier.get(OrePrefix.wireFine, Materials.Osmium, 64),
+                OreDictUnifier.get(OrePrefix.wireFine, Materials.Osmium, 64),
+                OreDictUnifier.get(OrePrefix.wireFine, Materials.Osmium, 64),
+                OreDictUnifier.get(OrePrefix.cableGtSingle, Materials.YttriumBariumCuprate, 8))
+            .fluidInputs(Materials.SolderingAlloy.getFluid(4 * L))
+            .output(MetaItems.FIELD_GENERATOR_LUV.getStackForm())
+            .duration(600)
+            .EUt(6000)
+            .buildAndRegister();
 
-        addAssemblylineRecipe(ItemList.Field_Generator_ZPM.get(1), 288000, new ItemStack[]{
-                GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Neutronium, 1),
-                GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Neutronium, 6L),
-                ItemList.Gravistar.get(1),
-                ItemList.Emitter_UV.get(4),
-                GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Master, 64L),
-                GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Osmium, 64L),
-                GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Osmium, 64L),
-                GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Osmium, 64L),
-                GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Osmium, 64L),
-                GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Osmium, 64L),
-                GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Osmium, 64L),
-                GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Osmium, 64L),
-                GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Osmium, 64L),
-                GT_OreDictUnificator.get(OrePrefixes.cableGt04, Materials.NiobiumTitanium, 8L)}, new FluidStack[]{
-                Materials.SolderingAlloy.getMolten(2304)},
-            ItemList.Field_Generator_UV.get(1), 600, 100000);
-    }*/
+        AssemblyLineRecipeBuilder.start()
+            .researchItem(MetaItems.FIELD_GENERATOR_LUV.getStackForm())
+            .researchTime(144000)
+            .inputs(OreDictUnifier.get(OrePrefix.frameGt, Materials.HSSE, 1),
+                OreDictUnifier.get(OrePrefix.plate, Materials.HSSE, 6),
+                MetaItems.QUANTUMSTAR.getStackForm(4),
+                MetaItems.EMITTER_ZPM.getStackForm(4),
+                OreDictUnifier.get(OrePrefix.circuit, MarkerMaterials.Tier.Master, 16),
+                OreDictUnifier.get(OrePrefix.wireFine, Materials.Osmium, 64),
+                OreDictUnifier.get(OrePrefix.wireFine, Materials.Osmium, 64),
+                OreDictUnifier.get(OrePrefix.wireFine, Materials.Osmium, 64),
+                OreDictUnifier.get(OrePrefix.wireFine, Materials.Osmium, 64),
+                OreDictUnifier.get(OrePrefix.wireFine, Materials.Osmium, 64),
+                OreDictUnifier.get(OrePrefix.wireFine, Materials.Osmium, 64),
+                OreDictUnifier.get(OrePrefix.wireFine, Materials.Osmium, 64),
+                OreDictUnifier.get(OrePrefix.wireFine, Materials.Osmium, 64),
+                OreDictUnifier.get(OrePrefix.cableGtOctal, Materials.VanadiumGallium, 8))
+            .fluidInputs(Materials.SolderingAlloy.getFluid(8 * L))
+            .output(MetaItems.FIELD_GENERATOR_ZPM.getStackForm())
+            .duration(600)
+            .EUt(24000)
+            .buildAndRegister();
+
+        AssemblyLineRecipeBuilder.start()
+            .researchItem(MetaItems.FIELD_GENERATOR_ZPM.getStackForm())
+            .researchTime(288000)
+            .inputs(OreDictUnifier.get(OrePrefix.frameGt, Materials.Darmstadtium, 1),
+                OreDictUnifier.get(OrePrefix.plate, Materials.Darmstadtium, 6),
+                MetaItems.GRAVISTAR.getStackForm(),
+                MetaItems.EMITTER_UV.getStackForm(4),
+                OreDictUnifier.get(OrePrefix.circuit, MarkerMaterials.Tier.Master, 64),
+                OreDictUnifier.get(OrePrefix.wireFine, Materials.Osmium, 64),
+                OreDictUnifier.get(OrePrefix.wireFine, Materials.Osmium, 64),
+                OreDictUnifier.get(OrePrefix.wireFine, Materials.Osmium, 64),
+                OreDictUnifier.get(OrePrefix.wireFine, Materials.Osmium, 64),
+                OreDictUnifier.get(OrePrefix.wireFine, Materials.Osmium, 64),
+                OreDictUnifier.get(OrePrefix.wireFine, Materials.Osmium, 64),
+                OreDictUnifier.get(OrePrefix.wireFine, Materials.Osmium, 64),
+                OreDictUnifier.get(OrePrefix.wireFine, Materials.Osmium, 64),
+                OreDictUnifier.get(OrePrefix.cableGtOctal, Materials.NiobiumTitanium, 8))
+            .fluidInputs(Materials.SolderingAlloy.getFluid(16 * L))
+            .output(MetaItems.FIELD_GENERATOR_UV.getStackForm())
+            .duration(600)
+            .EUt(100000)
+            .buildAndRegister();
+    }
 
 }

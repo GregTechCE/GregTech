@@ -182,11 +182,6 @@ public class MetaItem2 extends MaterialMetaItem {
             .buildAndRegister();
 
         RecipeMaps.EXTRACTOR_RECIPES.recipeBuilder()
-            .inputs(CROP_DROP_MILK_WART.getStackForm())
-            .outputs(OreDictUnifier.get(OrePrefix.dustSmall, Materials.Milk))
-            .buildAndRegister();
-
-        RecipeMaps.EXTRACTOR_RECIPES.recipeBuilder()
             .inputs(CROP_DROP_COPPON.getStackForm())
             .outputs(OreDictUnifier.get(OrePrefix.dustTiny, Materials.Copper))
             .buildAndRegister();
