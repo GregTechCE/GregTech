@@ -183,12 +183,11 @@ public class RecipeMap<R extends RecipeBuilder<R>> {
     private void addInventorySlotGroup(ModularUI.Builder builder, IItemHandlerModifiable itemHandler, FluidTankHandler fluidHandler, boolean isOutputs) {
         int itemInputsCount = itemHandler.getSlots();
         int fluidInputsCount = fluidHandler.getTanks();
-        boolean invertedInputSlots = false;
-        if(itemInputsCount == 0 || fluidInputsCount > itemInputsCount ||
-            (!isOutputs && recipeBuilderSample instanceof IntCircuitRecipeBuilder && itemInputsCount == 1)) {
-            itemInputsCount = fluidHandler.getTanks();
-            fluidInputsCount = itemHandler.getSlots();
-            invertedInputSlots = true;
+        boolean invertFluids = false;
+        if(itemInputsCount == 0) {
+            itemInputsCount = fluidInputsCount;
+            fluidInputsCount = 0;
+            invertFluids = true;
         }
         int[] inputSlotGrid = determineSlotsGrid(itemInputsCount);
         int itemSlotsToLeft = inputSlotGrid[0];
@@ -198,24 +197,25 @@ public class RecipeMap<R extends RecipeBuilder<R>> {
         for(int i = 0; i < itemSlotsToDown; i++) {
             for (int j = 0; j < itemSlotsToLeft; j++) {
                 int slotIndex = i * itemSlotsToDown + j;
-                addSlot(builder, startInputsX + 18 * j, startInputsY + 18 * i, slotIndex, itemHandler, fluidHandler, invertedInputSlots, isOutputs);
+                addSlot(builder, startInputsX + 18 * j, startInputsY + 18 * i, slotIndex, itemHandler, fluidHandler, invertFluids, isOutputs);
             }
         }
         if(fluidInputsCount > 0) {
-            int startSpecX = isOutputs ? 151 : 7;
+            int startSpecX = isOutputs ? 158 : 1;
             int startSpecY = 32 - (int) (fluidInputsCount / 2.0 * 18);
             for(int i = 0; i < fluidInputsCount; i++) {
-                addSlot(builder, startSpecX, startSpecY + 18 * i, i, itemHandler, fluidHandler, !invertedInputSlots, isOutputs);
+                addSlot(builder, startSpecX, startSpecY + 18 * i, i, itemHandler, fluidHandler, !invertFluids, isOutputs);
             }
         }
     }
 
-    private void addSlot(ModularUI.Builder builder, int x, int y, int slotIndex, IItemHandlerModifiable itemHandler, FluidTankHandler fluidHandler, boolean isFluid, boolean isOutputs) {
+    protected void addSlot(ModularUI.Builder builder, int x, int y, int slotIndex, IItemHandlerModifiable itemHandler, FluidTankHandler fluidHandler, boolean isFluid, boolean isOutputs) {
         if(!isFluid) {
             builder.widget(new SlotWidget(itemHandler, slotIndex, x, y, true, !isOutputs)
                 .setBackgroundTexture(getOverlaysForSlot(isOutputs, false,slotIndex == itemHandler.getSlots() - 1)));
         } else {
             builder.widget(new TankWidget(fluidHandler.getTankAt(slotIndex), x, y - 1, 18, 18)
+                .setAlwaysShowFull(true)
                 .setBackgroundTexture(getOverlaysForSlot(isOutputs, true, slotIndex == fluidHandler.getTanks() - 1)));
         }
     }

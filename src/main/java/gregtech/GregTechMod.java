@@ -88,7 +88,7 @@ public class GregTechMod {
         OrePrefix.runMaterialHandlers();
         FuelLoader.registerFuels();
         MetaItems.registerRecipes();
-//        MachineRecipeLoader.init();
+        MachineRecipeLoader.init();
         gregtechproxy.onLoad();
 
         if(Loader.isModLoaded(GTValues.MODID_MCMP)) {

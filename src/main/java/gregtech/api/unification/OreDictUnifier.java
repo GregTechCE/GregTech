@@ -166,6 +166,10 @@ public class OreDictUnifier {
         return keys.size() > 0 ? keys.get(0).asItemStack(itemStack.getCount()) : itemStack;
     }
 
+    public static ItemStack get(UnificationEntry unificationEntry) {
+        return get(unificationEntry.orePrefix, unificationEntry.material);
+    }
+
     public static ItemStack get(OrePrefix orePrefix, Material material) {
         return get(orePrefix, material, 1);
     }

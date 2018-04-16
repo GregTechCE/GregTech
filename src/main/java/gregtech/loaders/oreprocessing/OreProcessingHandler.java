@@ -314,9 +314,11 @@ public class OreProcessingHandler {
         if (!(material instanceof MetalMaterial) || material.hasFlag(DustMaterial.MatFlags.NO_WORKING | Material.MatFlags.NO_UNIFICATION))
             return;
         ItemStack fineWireStack = OreDictUnifier.get(fineWirePrefix, material);
-        ItemStack foilStack = OreDictUnifier.get(OrePrefix.foil, material);
-        ModHandler.addShapelessRecipe(String.format("fine_wire_%s", material.toString()),
-            fineWireStack, 'x', foilStack);
+        UnificationEntry unificationEntry = new UnificationEntry(OrePrefix.foil, material);
+        if(!OreDictUnifier.get(unificationEntry).isEmpty()) {
+            ModHandler.addShapelessRecipe(String.format("fine_wire_%s", material.toString()),
+                fineWireStack, 'x', unificationEntry);
+        }
     }
 
     private void processIngot(OrePrefix ingotPrefix, Material material) {

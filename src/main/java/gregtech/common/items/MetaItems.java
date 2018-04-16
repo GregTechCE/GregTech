@@ -406,9 +406,7 @@ public final class MetaItems {
             }
         }
     }
-    
-    //TODO JSON!
-    @Deprecated
+
     public static void registerRecipes() {
         for (MetaItem<?> item : ITEMS) {
             if (item instanceof MetaItem1)
