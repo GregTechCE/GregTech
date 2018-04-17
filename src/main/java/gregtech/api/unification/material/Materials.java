@@ -642,5 +642,46 @@ public class Materials {
         Tin.setCableProperties(GTValues.V[1], 1, 1);
         Copper.setCableProperties(GTValues.V[2], 1, 2);
 
+        RedAlloy.setCableProperties(GTValues.V[0], 1, 0);
+
+        Cobalt.setCableProperties(GTValues.V[1], 2, 2);
+        Lead.setCableProperties(GTValues.V[1], 2, 2);
+        Tin.setCableProperties(GTValues.V[1], 1, 1);
+        Zinc.setCableProperties(GTValues.V[1], 1, 1);
+        SolderingAlloy.setCableProperties(GTValues.V[1], 1, 1);
+
+        Iron.setCableProperties(GTValues.V[2], 2, 3);
+        Nickel.setCableProperties(GTValues.V[2], 3, 3);
+        Cupronickel.setCableProperties(GTValues.V[2], 2, 3);
+        Copper.setCableProperties(GTValues.V[2], 1, 2);
+        AnnealedCopper.setCableProperties(GTValues.V[2], 1, 1);
+
+        Kanthal.setCableProperties(GTValues.V[3], 4, 3);
+        Gold.setCableProperties(GTValues.V[3], 3, 2);
+        Electrum.setCableProperties(GTValues.V[3], 2, 2);
+        Silver.setCableProperties(GTValues.V[3], 1, 1);
+
+        Nichrome.setCableProperties(GTValues.V[4], 3, 4);
+        Steel.setCableProperties(GTValues.V[4], 2, 2);
+        BlackSteel.setCableProperties(GTValues.V[4], 3, 2);
+        Titanium.setCableProperties(GTValues.V[4], 4, 2);
+        Aluminium.setCableProperties(GTValues.V[4], 1, 1);
+
+        Graphene.setCableProperties(GTValues.V[5], 1, 1);
+        Osmium.setCableProperties(GTValues.V[5], 4, 2);
+        Platinum.setCableProperties(GTValues.V[5], 2, 1);
+        TungstenSteel.setCableProperties(GTValues.V[5], 3, 2);
+        Tungsten.setCableProperties(GTValues.V[5], 2, 2);
+
+        HSSG.setCableProperties(GTValues.V[6], 4, 2);
+        NiobiumTitanium.setCableProperties(GTValues.V[6], 4, 2);
+        VanadiumGallium.setCableProperties(GTValues.V[6], 4, 2);
+        YttriumBariumCuprate.setCableProperties(GTValues.V[6], 4, 4);
+
+        Materials.Naquadah.setCableProperties(GTValues.V[7], 2, 2);
+
+        Materials.NaquadahAlloy.setCableProperties(GTValues.V[8], 2, 4);
+        Materials.Duranium.setCableProperties(GTValues.V[8], 1, 8);
     }
+
 }

@@ -31,7 +31,7 @@ public class RoutePath {
         for(WireProperties wireProperties : path.values()) {
             newPath.minAmperage = Math.min(newPath.minAmperage, wireProperties.amperage);
             newPath.minVoltage = Math.min(newPath.minVoltage, wireProperties.voltage);
-            newPath.totalLoss += newPath.totalLoss;
+            newPath.totalLoss += wireProperties.lossPerBlock;
         }
         return newPath;
     }
@@ -42,7 +42,6 @@ public class RoutePath {
         for(BlockPos blockPos : path.keySet()) {
             WireProperties wireProperties = path.get(blockPos);
             if(voltage > wireProperties.voltage || amperage > wireProperties.amperage) {
-                System.out.print("burning cable");
                 TileEntity tileEntity = world.getTileEntity(blockPos);
                 if(!world.isRemote) {
                     ((WorldServer) world).spawnParticle(EnumParticleTypes.SMOKE_LARGE,

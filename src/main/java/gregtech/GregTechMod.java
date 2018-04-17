@@ -14,6 +14,7 @@ import gregtech.common.CommonProxy;
 import gregtech.common.MetaFluids;
 import gregtech.common.blocks.MetaBlocks;
 import gregtech.common.blocks.modelfactories.BlockCompressedFactory;
+import gregtech.common.blocks.modelfactories.BlockFrameFactory;
 import gregtech.common.blocks.modelfactories.BlockOreFactory;
 import gregtech.common.cable.BlockCable;
 import gregtech.common.items.MetaItems;
@@ -45,6 +46,7 @@ public class GregTechMod {
             ResourcePackHook.init();
             BlockOreFactory.init();
             BlockCompressedFactory.init();
+            BlockFrameFactory.init();
         }
     }
 

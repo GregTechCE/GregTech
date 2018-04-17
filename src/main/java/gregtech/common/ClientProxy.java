@@ -6,6 +6,7 @@
 package gregtech.common;
 
 import codechicken.lib.texture.TextureUtils;
+import gregtech.common.blocks.BlockFrame;
 import gregtech.common.render.CableRenderer;
 import gregtech.api.render.MetaTileEntityRenderer;
 import gregtech.common.blocks.BlockCompressed;
@@ -33,6 +34,15 @@ public class ClientProxy extends CommonProxy {
 
     public static final IItemColor COMPRESSED_ITEM_COLOR = (stack, tintIndex) -> {
         BlockCompressed block = (BlockCompressed) ((ItemBlock) stack.getItem()).getBlock();
+        IBlockState state = block.getStateFromMeta(stack.getItemDamage());
+        return state.getValue(block.variantProperty).materialRGB;
+    };
+
+    public static final IBlockColor FRAME_BLOCK_COLOR = (IBlockState state, IBlockAccess worldIn, BlockPos pos, int tintIndex) ->
+        state.getValue(((BlockFrame) state.getBlock()).variantProperty).materialRGB;
+
+    public static final IItemColor FRAME_ITEM_COLOR = (stack, tintIndex) -> {
+        BlockFrame block = (BlockFrame) ((ItemBlock) stack.getItem()).getBlock();
         IBlockState state = block.getStateFromMeta(stack.getItemDamage());
         return state.getValue(block.variantProperty).materialRGB;
     };

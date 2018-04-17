@@ -200,7 +200,7 @@ public class RecipeMap<R extends RecipeBuilder<R>> {
                 addSlot(builder, startInputsX + 18 * j, startInputsY + 18 * i, slotIndex, itemHandler, fluidHandler, invertFluids, isOutputs);
             }
         }
-        if(fluidInputsCount > 0) {
+        if(fluidInputsCount > 0 || invertFluids) {
             int startSpecX = isOutputs ? 158 : 1;
             int startSpecY = 32 - (int) (fluidInputsCount / 2.0 * 18);
             for(int i = 0; i < fluidInputsCount; i++) {

@@ -16,8 +16,11 @@ import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.recipe.IRecipeCategory;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
+import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.items.ItemStackHandler;
+
+import java.util.List;
 
 public class RecipeMapCategory implements IRecipeCategory<GTRecipeWrapper> {
 
@@ -88,15 +91,23 @@ public class RecipeMapCategory implements IRecipeCategory<GTRecipeWrapper> {
                 int importIndex = importFluids.getFluidTanks().indexOf(tankWidget.fluidTank);
                 int exportIndex = exportFluids.getFluidTanks().indexOf(tankWidget.fluidTank);
                 if(importIndex != -1) {
+                    List<List<FluidStack>> inputsList = ingredients.getInputs(FluidStack.class);
+                    int fluidAmount = 0;
+                    if(inputsList.size() > importIndex && !inputsList.get(importIndex).isEmpty())
+                        fluidAmount = inputsList.get(importIndex).get(0).amount;
                     //this is input tank widget, so add it to fluid group
                     fluidStackGroup.init(importIndex, true,
                         tankWidget.x + 2 + OFFSET_DRAW_X, tankWidget.y + 2 + OFFSET_DRAW_Y, tankWidget.width - 1, tankWidget.height - 1,
-                        tankWidget.fluidTank.getCapacity(), true, null);
+                        fluidAmount, false, null);
                 } else if(exportIndex != -1) {
+                    List<List<FluidStack>> inputsList = ingredients.getOutputs(FluidStack.class);
+                    int fluidAmount = 0;
+                    if(inputsList.size() > exportIndex && !inputsList.get(exportIndex).isEmpty())
+                        fluidAmount = inputsList.get(exportIndex).get(0).amount;
                     //this is output tank widget, so add it to fluid group
                     fluidStackGroup.init(importFluids.getTanks() + exportIndex, false,
                         tankWidget.x + 2 + OFFSET_DRAW_X, tankWidget.y + 2 + OFFSET_DRAW_Y, tankWidget.width - 1, tankWidget.height - 1,
-                        tankWidget.fluidTank.getCapacity(), true, null);
+                        fluidAmount, false, null);
                 }
             }
         }

@@ -1,6 +1,7 @@
 package gregtech.api.unification.stack;
 
 import gregtech.api.unification.material.type.Material;
+import gregtech.api.util.SmallDigits;
 
 public class MaterialStack {
 
@@ -38,10 +39,13 @@ public class MaterialStack {
 
     @Override
     public String toString() {
-        String string = Long.toString(amount);
+        String string = "";
         if(material.materialComponents.size() > 1) {
             string += '(' + material.chemicalFormula + ')';
         } else string += material.chemicalFormula;
+        if(amount > 1) {
+            string += SmallDigits.toSmallDownNumbers(Long.toString(amount));
+        }
         return string;
     }
 
