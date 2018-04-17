@@ -37,9 +37,6 @@ import static gregtech.common.items.MetaItems.*;
 
 public class MetaItem1 extends MaterialMetaItem {
 
-    private final static String emptyRow = "   ";
-    private final static String textShape = " P ";
-
     public MetaItem1() {
         super(OrePrefix.dustTiny, OrePrefix.dustSmall, OrePrefix.dust, OrePrefix.dustImpure, OrePrefix.dustPure,
             OrePrefix.crushed, OrePrefix.crushedPurified, OrePrefix.crushedCentrifuged, OrePrefix.gem, OrePrefix.nugget,

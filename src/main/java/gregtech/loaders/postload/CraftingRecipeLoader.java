@@ -1,9 +1,8 @@
 package gregtech.loaders.postload;
 
-public class CraftingRecipeLoader implements Runnable {
+public class CraftingRecipeLoader {
 
-    @Override
-    public void run() {
+    public void init() {
         loadCraftingRecipes();
     }
 

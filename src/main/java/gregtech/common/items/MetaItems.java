@@ -389,7 +389,7 @@ public final class MetaItems {
 
     public static void init() {
         MetaItem1 first = new MetaItem1();
-        first.setRegistryName("meta_item_1"); // Move into item class?
+        first.setRegistryName("meta_item_1");
         ITEMS.add(first);
         MetaItem2 second = new MetaItem2();
         second.setRegistryName("meta_item_2");
