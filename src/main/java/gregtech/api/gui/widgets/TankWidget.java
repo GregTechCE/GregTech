@@ -23,7 +23,7 @@ public class TankWidget extends Widget {
     public final IFluidTank fluidTank;
 
     public final int x, y, width, height;
-    private int fluidRenderOffset = 1;
+    public int fluidRenderOffset = 1;
     private boolean hideTooltip;
     private boolean alwaysShowFull;
 

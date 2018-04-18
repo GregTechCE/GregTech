@@ -35,10 +35,7 @@ import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandlerItem;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import net.minecraftforge.items.CapabilityItemHandler;
-import net.minecraftforge.items.IItemHandler;
-import net.minecraftforge.items.IItemHandlerModifiable;
-import net.minecraftforge.items.ItemHandlerHelper;
+import net.minecraftforge.items.*;
 import org.apache.commons.lang3.ArrayUtils;
 
 import javax.annotation.Nullable;
@@ -189,13 +186,21 @@ public abstract class MetaTileEntity {
         }
     }
 
-    protected abstract IItemHandlerModifiable createImportItemHandler();
+    protected IItemHandlerModifiable createImportItemHandler() {
+        return new ItemStackHandler(0);
+    }
 
-    protected abstract IItemHandlerModifiable createExportItemHandler();
+    protected IItemHandlerModifiable createExportItemHandler() {
+        return new ItemStackHandler(0);
+    }
 
-    protected abstract FluidTankHandler createImportFluidHandler();
+    protected FluidTankHandler createImportFluidHandler() {
+        return new FluidTankHandler();
+    }
 
-    protected abstract FluidTankHandler createExportFluidHandler();
+    protected FluidTankHandler createExportFluidHandler() {
+        return new FluidTankHandler();
+    }
 
     protected boolean openGUIOnRightClick() {
         return true;

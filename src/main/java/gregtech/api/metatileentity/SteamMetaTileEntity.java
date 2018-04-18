@@ -85,11 +85,6 @@ public abstract class SteamMetaTileEntity extends MetaTileEntity {
         return new FluidTankHandler(steamFluidTank);
     }
 
-    @Override
-    public FluidTankHandler createExportFluidHandler() {
-        return new FluidTankHandler();
-    }
-
     public int getSteamCapacity() {
         return 16000;
     }
