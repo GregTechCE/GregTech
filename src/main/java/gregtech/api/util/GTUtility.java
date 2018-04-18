@@ -10,6 +10,8 @@ import gregtech.api.items.IDamagableItem;
 import gregtech.api.unification.OreDictUnifier;
 import gregtech.api.unification.stack.SimpleItemStack;
 import gregtech.api.unification.stack.UnificationEntry;
+import gregtech.common.ConfigHolder;
+
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EnumCreatureAttribute;
@@ -167,7 +169,7 @@ public class GTUtility {
             return ((IDamagableItem) item).doDamageToItem(itemStack, vanillaDamage, simulate);
         } else if (itemStack.hasCapability(IElectricItem.CAPABILITY_ELECTRIC_ITEM, null)) {
             IElectricItem capability = itemStack.getCapability(IElectricItem.CAPABILITY_ELECTRIC_ITEM, null);
-            int energyNeeded = vanillaDamage * 100; // TODO CONFIG
+            int energyNeeded = (int) Math.floor(vanillaDamage * 100 * ConfigHolder.toolEnergyMultiplier);
             return capability != null
                 && capability.canUse(energyNeeded)
                 && capability.discharge(energyNeeded, Integer.MAX_VALUE, true, false, simulate) == energyNeeded;

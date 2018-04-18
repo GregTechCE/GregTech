@@ -4,6 +4,8 @@ import gregtech.api.capability.IElectricItem;
 import gregtech.api.capability.IEnergyContainer;
 import gregtech.api.metatileentity.MTETrait;
 import gregtech.api.util.GTUtility;
+import gregtech.common.ConfigHolder;
+
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.PacketBuffer;
@@ -161,10 +163,11 @@ public class EnergyContainerHandler extends MTETrait implements IEnergyContainer
             if(voltage > getInputVoltage()) {
                 BlockPos pos = metaTileEntity.getPos();
                 metaTileEntity.getWorld().setBlockToAir(pos);
-                //TODO config option for explosions
-                metaTileEntity.getWorld().createExplosion(null,
-                    pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5,
-                    GTUtility.getTierByVoltage(voltage), true);
+                if(ConfigHolder.doExplosions) {
+                    metaTileEntity.getWorld().createExplosion(null,
+                        pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5,
+                        GTUtility.getTierByVoltage(voltage), true);
+                }
                 return Math.min(amperage, getInputAmperage());
             }
             if(canAccept >= voltage) {
