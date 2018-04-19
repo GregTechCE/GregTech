@@ -15,6 +15,6 @@ public class ConfigHolder {
     @Config.Comment("Whether machines should explode when overloaded with power")
     public static boolean doExplosions = true;
 
-    @Config.Comment("Energy use multiplier for items")
-    public static int energyUsageMultiplier = 1;
+    @Config.Comment("Energy use multiplier for electric items")
+    public static int energyUsageMultiplier = 100;
 }
