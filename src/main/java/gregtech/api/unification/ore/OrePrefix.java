@@ -400,6 +400,8 @@ public enum OrePrefix {
 
         stickLong.processOreRegistration(Materials.Wood);
         gear.processOreRegistration(Materials.Wood);
+
+        ring.processOreRegistration(Materials.Paper);
     }
 
     @SafeVarargs

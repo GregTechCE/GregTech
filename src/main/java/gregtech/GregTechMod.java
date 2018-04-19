@@ -21,22 +21,18 @@ import gregtech.common.items.MetaItems;
 import gregtech.common.metatileentities.MetaTileEntities;
 import gregtech.loaders.load.FuelLoader;
 import gregtech.loaders.oreprocessing.OreProcessingHandler;
+import gregtech.loaders.postload.CraftingRecipeLoader;
 import gregtech.loaders.postload.DungeonLootLoader;
 import gregtech.loaders.postload.MachineRecipeLoader;
 import gregtech.loaders.postload.WorldgenLoader;
 import gregtech.loaders.preload.MaterialInfoLoader;
-import gregtech.loaders.preload.OreDictionaryLoader;
+import gregtech.loaders.load.OreDictionaryLoader;
 import mcmultipart.multipart.MultipartRegistry;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.common.config.Config;
-import net.minecraftforge.common.config.ConfigManager;
 import net.minecraftforge.fluids.FluidRegistry;
-import net.minecraftforge.fml.client.event.ConfigChangedEvent;
 import net.minecraftforge.fml.common.*;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 @Mod(modid = GTValues.MODID,
      name = "GregTech",
@@ -64,7 +60,6 @@ public class GregTechMod {
     @Mod.EventHandler
     public void onPreInit(FMLPreInitializationEvent event) {
         GTLog.init(event.getModLog());
-        MinecraftForge.EVENT_BUS.register(this);
 
         GTLog.logger.info("PreInit-Phase started!");
 
@@ -97,6 +92,7 @@ public class GregTechMod {
         FuelLoader.registerFuels();
         MetaItems.registerRecipes();
         MachineRecipeLoader.init();
+        CraftingRecipeLoader.init();
         gregtechproxy.onLoad();
 
         if(Loader.isModLoaded(GTValues.MODID_MCMP)) {
@@ -123,12 +119,5 @@ public class GregTechMod {
 
         DungeonLootLoader.init();
         GTLog.logger.info("PostInit-Phase finished!");
-    }
-
-    @SubscribeEvent
-    public void onConfigChangedEvent(ConfigChangedEvent.OnConfigChangedEvent event) {
-        if (event.getModID().equals(GTValues.MODID)) {
-            ConfigManager.sync(GTValues.MODID, Config.Type.INSTANCE);
-        }
     }
 }

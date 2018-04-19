@@ -324,11 +324,11 @@ public class OreProcessingHandler {
     private void processIngot(OrePrefix ingotPrefix, Material material) {
         if (!(material instanceof MetalMaterial))
             return;
-        ItemStack ingotStack = OreDictUnifier.get(ingotPrefix, material);
 
         if (material.hasFlag(SolidMaterial.MatFlags.MORTAR_GRINDABLE)) {
             ModHandler.addShapelessRecipe(String.format("mortar_grind_%s", material.toString()),
-                OreDictUnifier.get(OrePrefix.dust, material), 'm', ingotStack);
+                OreDictUnifier.get(OrePrefix.dust, material),
+                'm', new UnificationEntry(ingotPrefix, material));
         }
 
         RecipeMaps.FLUID_SOLIDFICATION_RECIPES.recipeBuilder()
@@ -338,40 +338,44 @@ public class OreProcessingHandler {
             .duration(20).EUt(8)
             .buildAndRegister();
 
-        if (!material.hasFlag(DustMaterial.MatFlags.GENERATE_PLATE) ||
-            material.hasFlag(DustMaterial.MatFlags.NO_SMASHING))
+        if (!material.hasFlag(DustMaterial.MatFlags.GENERATE_PLATE) || material.hasFlag(DustMaterial.MatFlags.NO_SMASHING)) {
             return;
+        }
+
         ItemStack plateStack = OreDictUnifier.get(OrePrefix.plate, material);
 
         RecipeMaps.BENDER_RECIPES.recipeBuilder()
             .circuitMeta(0)
-            .inputs(ingotStack)
+            .input(ingotPrefix, material)
             .outputs(plateStack)
             .circuitMeta(0)
             .EUt(24).duration((int) (material.getMass() / 1.5))
             .buildAndRegister();
 
         RecipeMaps.FORGE_HAMMER_RECIPES.recipeBuilder()
-            .inputs(GTUtility.copyAmount(2, ingotStack))
+            .input(ingotPrefix, material, 2)
             .outputs(plateStack)
             .EUt(16).duration((int) (material.getMass() / 2L))
             .buildAndRegister();
 
         ModHandler.addShapedRecipe(String.format("plate_%s", material.toString()),
-            plateStack, "h  ", "I  ", "I  ", 'I',
-            ingotStack);
+            plateStack,
+            "h",
+            "I",
+            "I",
+            'I', new UnificationEntry(ingotPrefix, material));
 
         if (material.hasFlag(MetalMaterial.MatFlags.GENERATE_DENSE)) {
             ItemStack denseStack = OreDictUnifier.get(OrePrefix.plateDense, material);
             RecipeMaps.BENDER_RECIPES.recipeBuilder()
-                .inputs(GTUtility.copyAmount(9, ingotStack))
+                .input(ingotPrefix, material, 9)
                 .outputs(denseStack)
                 .circuitMeta(5)
                 .EUt(96).duration((int) (material.getMass() * 9))
                 .buildAndRegister();
 
             RecipeMaps.BENDER_RECIPES.recipeBuilder()
-                .inputs(GTUtility.copyAmount(9, plateStack))
+                .input(OrePrefix.plate, material, 9)
                 .outputs(denseStack)
                 .circuitMeta(5)
                 .EUt(96).duration((int) (material.getMass() * 1.5))
