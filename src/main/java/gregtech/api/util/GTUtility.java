@@ -169,7 +169,7 @@ public class GTUtility {
             return ((IDamagableItem) item).doDamageToItem(itemStack, vanillaDamage, simulate);
         } else if (itemStack.hasCapability(IElectricItem.CAPABILITY_ELECTRIC_ITEM, null)) {
             IElectricItem capability = itemStack.getCapability(IElectricItem.CAPABILITY_ELECTRIC_ITEM, null);
-            int energyNeeded = (int) Math.floor(vanillaDamage * 100 * ConfigHolder.toolEnergyMultiplier);
+            int energyNeeded = ConfigHolder.toolEnergyUsage;
             return capability != null
                 && capability.canUse(energyNeeded)
                 && capability.discharge(energyNeeded, Integer.MAX_VALUE, true, false, simulate) == energyNeeded;

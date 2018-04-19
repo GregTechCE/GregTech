@@ -16,6 +16,5 @@ public class ConfigHolder {
     public static boolean doExplosions = true;
 
     @Config.Comment("Energy use multiplier for items")
-    @Config.RangeDouble(min = 0.1D, max = 10.0D)
-    public static double toolEnergyMultiplier = 1.0D;
+    public static int toolEnergyUsage = 100;
 }
