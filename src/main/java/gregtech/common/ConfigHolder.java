@@ -16,5 +16,5 @@ public class ConfigHolder {
     public static boolean doExplosions = true;
 
     @Config.Comment("Energy use multiplier for items")
-    public static int toolEnergyUsage = 100;
+    public static int energyUsageMultiplier = 1;
 }
