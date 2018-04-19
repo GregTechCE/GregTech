@@ -11,4 +11,10 @@ public class ConfigHolder {
 
     @Config.Comment("Whether to add [GregTech] prefix in logger. Default: false")
     public static boolean useLoggerPrefix = false;
+
+    @Config.Comment("Whether machines should explode when overloaded with power")
+    public static boolean doExplosions = true;
+
+    @Config.Comment("Energy use multiplier for electric items")
+    public static int energyUsageMultiplier = 100;
 }
