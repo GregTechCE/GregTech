@@ -1,21 +1,30 @@
 package gregtech.api.util;
 
-import net.minecraft.util.IObjectIntIterable;
+import com.google.common.collect.BiMap;
+import com.google.common.collect.HashBiMap;
+import net.minecraft.util.IntIdentityHashBiMap;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.registry.RegistryNamespaced;
+import net.minecraft.util.registry.RegistrySimple;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.ModContainer;
 
+import javax.annotation.Nullable;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 
-public class GTControlledRegistry<T> extends RegistryNamespaced<String, T> implements IObjectIntIterable {
+public class GTControlledRegistry<T> extends RegistrySimple<String, T> {
 
     private HashMap<String, String> modRegistryTracking = new HashMap<>();
     private boolean frozen = false;
     private final int maxId;
 
+    protected final IntIdentityHashBiMap<T> underlyingIntegerMap = new IntIdentityHashBiMap<>(256);
+    protected final Map<T, String> inverseObjectRegistry;
+
     public GTControlledRegistry(int maxId) {
         this.maxId = maxId;
+        this.inverseObjectRegistry = ((BiMap<String, T>)this.registryObjects).inverse();
     }
 
     public void freezeRegistry() {
@@ -29,7 +38,6 @@ public class GTControlledRegistry<T> extends RegistryNamespaced<String, T> imple
         return underlyingIntegerMap;
     }
 
-    @Override
     public void register(int id, String key, T value) {
         if(id < 0 || id >= maxId) {
             throw new IndexOutOfBoundsException("Id is out of range: " + id);
@@ -72,4 +80,32 @@ public class GTControlledRegistry<T> extends RegistryNamespaced<String, T> imple
         return valueWithKey == null ? null : getNameForObject(valueWithKey);
     }
 
+    @Override
+    protected Map<String, T> createUnderlyingMap()
+    {
+        return HashBiMap.create();
+    }
+
+    @Nullable
+    public String getNameForObject(T value)
+    {
+        return this.inverseObjectRegistry.get(value);
+    }
+
+    public int getIDForObject(@Nullable T value)
+    {
+        return this.underlyingIntegerMap.getId(value);
+    }
+
+    @Nullable
+    public T getObjectById(int id)
+    {
+        return this.underlyingIntegerMap.get(id);
+    }
+
+    @Override
+    public Iterator<T> iterator()
+    {
+        return this.underlyingIntegerMap.iterator();
+    }
 }
