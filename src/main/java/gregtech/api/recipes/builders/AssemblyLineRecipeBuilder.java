@@ -1,7 +1,6 @@
 package gregtech.api.recipes.builders;
 
 import gregtech.api.recipes.Recipe;
-import gregtech.api.recipes.RecipeBuilder;
 import gregtech.api.util.EnumValidationResult;
 import gregtech.api.util.GTLog;
 import gregtech.api.util.GTUtility;
@@ -85,12 +84,12 @@ public class AssemblyLineRecipeBuilder {
 			result = EnumValidationResult.INVALID;
 		}
 
-		if (output == null) {
-			GTLog.logger.error("Output ItemStack cannot be null", new IllegalArgumentException());
+		if (output == null || output.isEmpty()) {
+			GTLog.logger.error("Output ItemStack cannot be null or empty", new IllegalArgumentException());
 			result = EnumValidationResult.INVALID;
 		}
-		if (researchItem == null) {
-			GTLog.logger.error("Research ItemStack cannot be null", new IllegalArgumentException());
+		if (researchItem == null || output.isEmpty()) {
+			GTLog.logger.error("Research ItemStack cannot be null or empty", new IllegalArgumentException());
 			result = EnumValidationResult.INVALID;
 		}
 

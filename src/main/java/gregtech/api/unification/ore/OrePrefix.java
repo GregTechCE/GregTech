@@ -331,7 +331,6 @@ public enum OrePrefix {
         nugget.ignoredMaterials.add(Materials.Gold);
         plate.ignoredMaterials.add(Materials.Paper);
 
-
         bucket.ignoredMaterials.add(Materials.Lava);
         bucket.ignoredMaterials.add(Materials.Milk);
         bucket.ignoredMaterials.add(Materials.Water);

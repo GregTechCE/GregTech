@@ -10,7 +10,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.items.IItemHandlerModifiable;
 import org.apache.commons.lang3.Validate;
 
@@ -344,8 +343,35 @@ public class Recipe {
 			return duration;
 		}
 
-		public int getEUt() {
-			return EUt;
-		}
-	}
+        public int getEUt() {
+            return EUt;
+        }
+    }
+
+    public static class PrimitiveBlastFurnaceRecipe {
+
+        private final int duration;
+
+        private final int fuelAmount;
+
+        private final ItemStack output;
+
+        public PrimitiveBlastFurnaceRecipe(int duration, int fuelAmount, ItemStack output) {
+            this.duration = duration;
+            this.fuelAmount = fuelAmount;
+            this.output = output;
+        }
+
+        public int getDuration() {
+            return duration;
+        }
+
+        public int getFuelAmount() {
+            return fuelAmount;
+        }
+
+        public ItemStack getOutput() {
+            return output;
+        }
+    }
 }

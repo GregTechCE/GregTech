@@ -4,6 +4,10 @@ import gregtech.api.gui.GuiTextures;
 import gregtech.api.gui.widgets.ProgressWidget.MoveType;
 import gregtech.api.recipes.builders.*;
 import gregtech.api.recipes.machines.*;
+import gregtech.api.unification.stack.SimpleItemStack;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class RecipeMaps {
 
@@ -609,5 +613,10 @@ public class RecipeMaps {
     public static final RecipeMap<DefaultRecipeBuilder> SMALL_NAQUADAH_REACTOR_FUELS = new RecipeMap<>("smallnaquadahreactor", 1, 1, 0, 0, 0, 1, 0, 0, 1, new DefaultRecipeBuilder());
 
     public static final RecipeMap<DefaultRecipeBuilder> LARGE_NAQUADAH_REACTOR_FUELS = new RecipeMap<>("largenaquadahreactor", 1, 1, 0, 0, 0, 1, 0, 0, 1, new DefaultRecipeBuilder());
+
+    /**
+     * Create recipes via {@link PrimitiveBlastFurnaceRecipeBuilder}
+     */
+    public static final Map<SimpleItemStack, Recipe.PrimitiveBlastFurnaceRecipe> PRIMITIVE_BLAST_FURNACE = new HashMap<>();
 
 }

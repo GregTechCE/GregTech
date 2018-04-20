@@ -55,7 +55,7 @@ public class FluidTankHandler implements IFluidHandler, IMultipleTankHandler, IN
         if (properties == null) {
             List<IFluidTankProperties> props = Lists.newArrayList();
             fluidTanks.forEach(tank -> Collections.addAll(props, tank.getTankProperties()));
-            properties = props.toArray(new IFluidTankProperties[props.size()]);
+            properties = props.toArray(new IFluidTankProperties[0]);
         }
         return properties;
     }
