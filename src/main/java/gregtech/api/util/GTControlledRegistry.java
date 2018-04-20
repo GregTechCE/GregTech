@@ -5,10 +5,9 @@ import net.minecraft.util.registry.RegistryNamespaced;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.ModContainer;
 
-import java.util.Collection;
 import java.util.HashMap;
 
-public class GTControlledRegistry<T> extends RegistryNamespaced<String, T> {
+public class GTControlledRegistry<T> extends RegistryNamespaced<String, T> implements Iterable<T> {
 
     private HashMap<String, String> modRegistryTracking = new HashMap<>();
     private boolean frozen = false;
