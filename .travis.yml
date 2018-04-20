@@ -15,8 +15,7 @@ cache:
     - $HOME/.gradle/wrapper/
 
 install:
-#   because './gradlew setupCIWorkspace' fails with compile error
-    - ./gradlew setupDecompWorkspace
+    - ./gradlew setupCiWorkspace
     - ./gradlew ciWriteBuildNumber
 script: "./gradlew build"
 
