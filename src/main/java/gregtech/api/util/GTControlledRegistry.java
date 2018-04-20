@@ -8,7 +8,7 @@ import net.minecraftforge.fml.common.ModContainer;
 
 import java.util.HashMap;
 
-public class GTControlledRegistry<T> extends RegistryNamespaced<String, T> implements IObjectIntIterable<T> {
+public class GTControlledRegistry<T> extends RegistryNamespaced<String, T> implements IObjectIntIterable {
 
     private HashMap<String, String> modRegistryTracking = new HashMap<>();
     private boolean frozen = false;
