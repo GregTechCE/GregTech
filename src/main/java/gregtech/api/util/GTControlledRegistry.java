@@ -13,14 +13,13 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
+// this class should extend RegistryNamespaced but due to
+// ForgeGradle bug (https://github.com/MinecraftForge/ForgeGradle/issues/498) it gives compile errors in CI environment
 public class GTControlledRegistry<T> extends RegistrySimple<String, T> {
 
     private HashMap<String, String> modRegistryTracking = new HashMap<>();
     private boolean frozen = false;
     private final int maxId;
-
-    protected final IntIdentityHashBiMap<T> underlyingIntegerMap = new IntIdentityHashBiMap<>(256);
-    protected final Map<T, String> inverseObjectRegistry;
 
     public GTControlledRegistry(int maxId) {
         this.maxId = maxId;
@@ -79,6 +78,11 @@ public class GTControlledRegistry<T> extends RegistrySimple<String, T> {
         T valueWithKey = getObjectById(id);
         return valueWithKey == null ? null : getNameForObject(valueWithKey);
     }
+
+//     =================== RegistryNamespaced stuff ===================
+
+    protected final IntIdentityHashBiMap<T> underlyingIntegerMap = new IntIdentityHashBiMap<>(256);
+    protected final Map<T, String> inverseObjectRegistry;
 
     @Override
     protected Map<String, T> createUnderlyingMap()
