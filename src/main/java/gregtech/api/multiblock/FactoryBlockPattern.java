@@ -1,8 +1,6 @@
 package gregtech.api.multiblock;
 
 import com.google.common.base.Joiner;
-import com.google.common.base.Predicate;
-import com.google.common.base.Predicates;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 
@@ -12,6 +10,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.function.Predicate;
 
 public class FactoryBlockPattern {
 
@@ -22,7 +21,7 @@ public class FactoryBlockPattern {
     private int rowWidth;
 
     private FactoryBlockPattern() {
-        this.symbolMap.put(' ', Predicates.alwaysTrue());
+        this.symbolMap.put(' ', k -> true);
     }
 
     /**

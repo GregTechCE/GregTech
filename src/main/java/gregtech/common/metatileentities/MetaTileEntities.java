@@ -10,7 +10,8 @@ import gregtech.api.metatileentity.SimpleMachineMetaTileEntity;
 import gregtech.api.recipes.RecipeMaps;
 import gregtech.api.render.Textures;
 import gregtech.api.util.GTLog;
-import gregtech.common.metatileentities.electric.MetaTileEntity;
+import gregtech.common.metatileentities.electric.MetaTileEntityHull;
+import gregtech.common.metatileentities.multi.MetaTileEntityPrimitiveBF;
 import gregtech.common.metatileentities.steam.*;
 import gregtech.common.metatileentities.steam.boiler.SteamCoalBoiler;
 import gregtech.common.metatileentities.steam.boiler.SteamLavaBoiler;
@@ -20,8 +21,10 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 @SuppressWarnings("WeakerAccess")
 public class MetaTileEntities {
 
-    public static MetaTileEntity[] HULL = new MetaTileEntity[GTValues.V.length];
+    //HULLS
+    public static MetaTileEntityHull[] HULL = new MetaTileEntityHull[GTValues.V.length];
 
+    //BRONZE MACHINES SECTION
     public static SteamCoalBoiler STEAM_BOILER_COAL_BRONZE;
     public static SteamCoalBoiler STEAM_BOILER_COAL_STEEL;
     public static SteamSolarBoiler STEAM_BOILER_SOLAR_BRONZE;
@@ -40,10 +43,11 @@ public class MetaTileEntities {
     public static SteamAlloySmelter STEAM_ALLOY_SMELTER_BRONZE;
     public static SteamAlloySmelter STEAM_ALLOY_SMELTER_STEEL;
 
+    //SIMPLE MACHINES SECTION
     public static SimpleMachineMetaTileEntity[] ELECTRIC_FURNACE = new SimpleMachineMetaTileEntity[4];
     public static MaceratorMetaTileEntity[] MACERATOR = new MaceratorMetaTileEntity[4];
     public static SimpleMachineMetaTileEntity[] ALLOY_SMELTER = new SimpleMachineMetaTileEntity[5];
-    public static SimpleMachineMetaTileEntity[] AMPLIFAB = new SimpleMachineMetaTileEntity[5];
+    public static SimpleMachineMetaTileEntity[] AMPLIFABRICATOR = new SimpleMachineMetaTileEntity[5];
     public static SimpleMachineMetaTileEntity[] ARC_FURNACE = new SimpleMachineMetaTileEntity[5];
     public static SimpleMachineMetaTileEntity[] ASSEMBLER = new SimpleMachineMetaTileEntity[5];
     public static SimpleMachineMetaTileEntity[] AUTOCLAVE = new SimpleMachineMetaTileEntity[5];
@@ -80,9 +84,14 @@ public class MetaTileEntities {
     public static SimpleMachineMetaTileEntity[] SIFTER = new SimpleMachineMetaTileEntity[5];
     public static SimpleMachineMetaTileEntity[] THERMAL_CENTRIFUGE = new SimpleMachineMetaTileEntity[5];
     public static SimpleMachineMetaTileEntity[] WIREMILL = new SimpleMachineMetaTileEntity[5];
+
+    //GENERATORS SECTION
     public static SimpleGeneratorMetaTileEntity[] DIESEL_GENERATOR = new SimpleGeneratorMetaTileEntity[3];
     public static SimpleGeneratorMetaTileEntity[] STEAM_TURBINE = new SimpleGeneratorMetaTileEntity[3];
     public static SimpleGeneratorMetaTileEntity[] GAS_TURBINE = new SimpleGeneratorMetaTileEntity[3];
+
+    //MULTIBLOCKS SECTION
+    public static MetaTileEntityPrimitiveBF BRONZE_PRIMITIVE_BLAST_FURNACE;
 
     public static void init() {
         GTLog.logger.info("Registering MetaTileEntities");
@@ -132,11 +141,11 @@ public class MetaTileEntities {
         ALLOY_SMELTER[3] = GregTechAPI.registerMetaTileEntity(73, new SimpleMachineMetaTileEntity("alloy_smelter.ev", RecipeMaps.ALLOY_SMELTER_RECIPES, Textures.ALLOY_SMELTER_OVERLAY, 4));
         ALLOY_SMELTER[4] = GregTechAPI.registerMetaTileEntity(74, new SimpleMachineMetaTileEntity("alloy_smelter.iv", RecipeMaps.ALLOY_SMELTER_RECIPES, Textures.ALLOY_SMELTER_OVERLAY, 5));
 
-        AMPLIFAB[0] = GregTechAPI.registerMetaTileEntity(80, new SimpleMachineMetaTileEntity("amplifab.lv", RecipeMaps.AMPLIFIERS, Textures.AMPLIFAB_OVERLAY, 1));
-        AMPLIFAB[1] = GregTechAPI.registerMetaTileEntity(81, new SimpleMachineMetaTileEntity("amplifab.mv", RecipeMaps.AMPLIFIERS, Textures.AMPLIFAB_OVERLAY, 2));
-        AMPLIFAB[2] = GregTechAPI.registerMetaTileEntity(82, new SimpleMachineMetaTileEntity("amplifab.hv", RecipeMaps.AMPLIFIERS, Textures.AMPLIFAB_OVERLAY, 3));
-        AMPLIFAB[3] = GregTechAPI.registerMetaTileEntity(83, new SimpleMachineMetaTileEntity("amplifab.ev", RecipeMaps.AMPLIFIERS, Textures.AMPLIFAB_OVERLAY, 4));
-        AMPLIFAB[4] = GregTechAPI.registerMetaTileEntity(84, new SimpleMachineMetaTileEntity("amplifab.iv", RecipeMaps.AMPLIFIERS, Textures.AMPLIFAB_OVERLAY, 5));
+        AMPLIFABRICATOR[0] = GregTechAPI.registerMetaTileEntity(80, new SimpleMachineMetaTileEntity("amplifab.lv", RecipeMaps.AMPLIFIERS, Textures.AMPLIFAB_OVERLAY, 1));
+        AMPLIFABRICATOR[1] = GregTechAPI.registerMetaTileEntity(81, new SimpleMachineMetaTileEntity("amplifab.mv", RecipeMaps.AMPLIFIERS, Textures.AMPLIFAB_OVERLAY, 2));
+        AMPLIFABRICATOR[2] = GregTechAPI.registerMetaTileEntity(82, new SimpleMachineMetaTileEntity("amplifab.hv", RecipeMaps.AMPLIFIERS, Textures.AMPLIFAB_OVERLAY, 3));
+        AMPLIFABRICATOR[3] = GregTechAPI.registerMetaTileEntity(83, new SimpleMachineMetaTileEntity("amplifab.ev", RecipeMaps.AMPLIFIERS, Textures.AMPLIFAB_OVERLAY, 4));
+        AMPLIFABRICATOR[4] = GregTechAPI.registerMetaTileEntity(84, new SimpleMachineMetaTileEntity("amplifab.iv", RecipeMaps.AMPLIFIERS, Textures.AMPLIFAB_OVERLAY, 5));
 
         ARC_FURNACE[0] = GregTechAPI.registerMetaTileEntity(90, new SimpleMachineMetaTileEntity("arc_furnace.lv", RecipeMaps.ARC_FURNACE_RECIPES, Textures.ARC_FURNACE_OVERLAY, 1));
         ARC_FURNACE[1] = GregTechAPI.registerMetaTileEntity(91, new SimpleMachineMetaTileEntity("arc_furnace.mv", RecipeMaps.ARC_FURNACE_RECIPES, Textures.ARC_FURNACE_OVERLAY, 2));
@@ -362,9 +371,11 @@ public class MetaTileEntities {
         GAS_TURBINE[2] = GregTechAPI.registerMetaTileEntity(492, new SimpleGeneratorMetaTileEntity("gas_turbine.hv", RecipeMaps.GAS_TURBINE_FUELS, Textures.GAS_TURBINE_OVERLAY, 3));
 
         for(int i = 0; i < HULL.length; i++) {
-            MetaTileEntity metaTileEntity = new MetaTileEntity("hull." + GTValues.VN[i].toLowerCase(), i);
+            MetaTileEntityHull metaTileEntity = new MetaTileEntityHull("hull." + GTValues.VN[i].toLowerCase(), i);
             GregTechAPI.registerMetaTileEntity(500 + i, metaTileEntity);
             HULL[i] = metaTileEntity;
         }
+
+        BRONZE_PRIMITIVE_BLAST_FURNACE = GregTechAPI.registerMetaTileEntity(510, new MetaTileEntityPrimitiveBF("primitive_blast_furnace.bronze"));
     }
 }

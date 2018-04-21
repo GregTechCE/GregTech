@@ -1,17 +1,18 @@
 package gregtech.api.multiblock;
 
-import com.google.common.base.Predicate;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockPos.MutableBlockPos;
 import net.minecraft.world.World;
 
+import java.util.function.Predicate;
+
 public class BlockPattern {
 
-    private final Predicate<BlockWorldState>[][][] blockMatches;
-    private final int fingerLength;
-    private final int thumbLength;
-    private final int palmLength;
+    private final Predicate<BlockWorldState>[][][] blockMatches; //[z][y][x]
+    private final int fingerLength; //z size
+    private final int thumbLength; //y size
+    private final int palmLength; //x size
 
     public BlockPattern(Predicate<BlockWorldState>[][][] predicatesIn) {
         this.blockMatches = predicatesIn;
@@ -43,44 +44,36 @@ public class BlockPattern {
         return this.palmLength;
     }
 
-    public boolean checkPatternAt(World world, BlockPos pos, EnumFacing finger, EnumFacing thumb) {
+    public PatternMatchContext checkPatternAt(World world, BlockPos centerPos, EnumFacing facing) {
+        int cornerX = centerPos.getX() - (palmLength / 2);
+        int cornerZ = centerPos.getZ() - (fingerLength / 2);
         BlockWorldState worldState = new BlockWorldState();
         MutableBlockPos blockPos = new MutableBlockPos();
         PatternMatchContext matchContext = new PatternMatchContext();
-        for (int i = 0; i < this.palmLength; ++i) {
-            for (int j = 0; j < this.thumbLength; ++j) {
-                for (int k = 0; k < this.fingerLength; ++k) {
-                    Predicate<BlockWorldState> predicate = this.blockMatches[k][j][i];
-                    blockPos.setPos(pos);
-                    translateOffset(blockPos, finger, thumb, i, j, k);
+        for (int x = 0; x < this.palmLength; x++) {
+            for (int y = 0; y < this.thumbLength; y++) {
+                for (int z = 0; z < this.fingerLength; z++) {
+                    Predicate<BlockWorldState> predicate = this.blockMatches[z][y][x];
+                    blockPos.setPos(x, y, z);
+                    rotate(blockPos, facing, palmLength - 1, fingerLength - 1);
+                    blockPos.setPos(blockPos.getX() + cornerX, blockPos.getY() + centerPos.getY(), blockPos.getZ() + cornerZ);
+                    //world.setBlockState(blockPos,
+                    //    Blocks.WOOL.getDefaultState().withProperty(BlockColored.COLOR, EnumDyeColor.values()[new Random(predicate.hashCode()).nextInt(15)]));
                     worldState.update(world, blockPos, matchContext);
-                    if (!predicate.apply(worldState)) return false;
+                    if (!predicate.test(worldState)) return null;
                 }
             }
         }
-        return true;
+        return matchContext;
     }
 
-    /**
-     * Offsets the position of pos in the direction of finger and thumb facing by offset amounts, follows the right-hand
-     * rule for cross products (finger, thumb, palm) @return A new BlockPos offset in the facing directions
-     */
-    protected static void translateOffset(MutableBlockPos pos, EnumFacing finger, EnumFacing thumb, int palmOffset, int thumbOffset, int fingerOffset) {
-        if (finger != thumb && finger != thumb.getOpposite()) {
-            int fingerX = finger.getFrontOffsetX();
-            int fingerY = finger.getFrontOffsetY();
-            int fingerZ = finger.getFrontOffsetZ();
-            int thumbX = thumb.getFrontOffsetX();
-            int thumbY = thumb.getFrontOffsetY();
-            int thumbZ = thumb.getFrontOffsetZ();
-            int crossX = fingerY * thumbZ - fingerZ * thumbY;
-            int crossY = fingerZ * thumbX - fingerX * thumbZ;
-            int crossZ = fingerX * thumbY - fingerY * thumbX;
-            pos.setPos(pos.getX() + thumbX * -thumbOffset + crossX * palmOffset + fingerX * fingerOffset,
-                pos.getY() + thumbY * -thumbOffset + crossY * palmOffset + fingerY * fingerOffset,
-                pos.getZ() + thumbZ * -thumbOffset + crossZ * palmOffset + fingerZ * fingerOffset);
-        } else {
-            throw new IllegalArgumentException("Invalid forwards & up combination");
+    private static MutableBlockPos rotate(MutableBlockPos pos, EnumFacing facing, int xSize, int zSize) {
+        switch (facing) {
+            case NORTH: return pos;
+            case SOUTH: return pos.setPos(xSize - pos.getX(), pos.getY(), zSize - pos.getZ());
+            case WEST: return pos.setPos(pos.getZ(), pos.getY(), xSize - pos.getX());
+            case EAST: return pos.setPos(zSize - pos.getZ(), pos.getY(), pos.getX());
+            default: throw new IllegalArgumentException("Can rotate only horizontally");
         }
     }
 

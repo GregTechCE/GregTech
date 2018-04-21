@@ -1,14 +1,12 @@
 package gregtech.api.metatileentity.multiblock;
 
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.capabilities.CapabilityInject;
+import java.util.List;
 
-public interface IMultiblockPart {
+public interface IMultiblockPart<T> {
 
-    @CapabilityInject(IMultiblockPart.class)
-    Capability<IMultiblockPart> CAPABILITY_MULTIBLOCK_PART = null;
+    MultiblockAbility<T> getAbility();
 
-    void addToMultiBlock(MultiblockControllerBase controllerBase);
+    void addToMultiBlock(MultiblockControllerBase controllerBase, List<T> abilityList);
 
     void removeFromMultiblock(MultiblockControllerBase controllerBase);
 

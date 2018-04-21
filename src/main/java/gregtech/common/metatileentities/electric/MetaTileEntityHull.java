@@ -14,15 +14,15 @@ import net.minecraft.util.EnumFacing;
 import net.minecraftforge.items.IItemHandlerModifiable;
 import net.minecraftforge.items.ItemStackHandler;
 
-public class MetaTileEntity extends TieredMetaTileEntity  {
+public class MetaTileEntityHull extends TieredMetaTileEntity  {
 
-    public MetaTileEntity(String metaTileEntityId, int tier) {
+    public MetaTileEntityHull(String metaTileEntityId, int tier) {
         super(metaTileEntityId, tier);
     }
 
     @Override
     public gregtech.api.metatileentity.MetaTileEntity createMetaTileEntity(MetaTileEntityHolder holder) {
-        return new MetaTileEntity(metaTileEntityId, getTier());
+        return new MetaTileEntityHull(metaTileEntityId, getTier());
     }
 
     @Override

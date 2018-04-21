@@ -58,6 +58,10 @@ public final class ModularUI {
         return new Builder(GuiTextures.BACKGROUND, 176, 166);
     }
 
+    public static Builder cutBuilder() {
+        return new Builder(GuiTextures.BACKGROUND_CUT, 176, 85);
+    }
+
     public static Builder builder(TextureArea background, int width, int height) {
         return new Builder(background, width, height);
     }
@@ -121,14 +125,16 @@ public final class ModularUI {
             return this;
         }
 
+        public Builder bindPlayerInventory(InventoryPlayer inventoryPlayer, TextureArea slotTexture) {
+            bindPlayerInventory(inventoryPlayer, nextFreeWidgetId, slotTexture);
+            nextFreeWidgetId += 36;
+            return this;
+        }
+
         public Builder widget(int id, Widget widget) {
             Preconditions.checkNotNull(widget);
             widgets.put(id, widget);
             return this;
-        }
-
-        public Builder bindPlayerInventory(InventoryPlayer inventoryPlayer, int startWidgetId) {
-            return bindPlayerInventory(inventoryPlayer, startWidgetId, GuiTextures.SLOT);
         }
 
         public Builder bindPlayerInventory(InventoryPlayer inventoryPlayer, int startWidgetId, TextureArea imageLocation) {

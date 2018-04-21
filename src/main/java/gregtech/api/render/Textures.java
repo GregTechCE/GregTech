@@ -3,13 +3,11 @@ package gregtech.api.render;
 import codechicken.lib.texture.TextureUtils.IIconRegister;
 import gregtech.api.GTValues;
 import gregtech.api.util.GTLog;
-import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import static gregtech.api.render.OrientedOverlayRenderer.OverlayFace.*;
@@ -22,12 +20,14 @@ public class Textures {
     public static SimpleSidedRenderer STEAM_CASING_STEEL = new SimpleSidedRenderer("casings/steam/steel");
     public static SimpleSidedRenderer STEAM_BRICKED_CASING_BRONZE = new SimpleSidedRenderer("casings/steam/bricked_bronze");
     public static SimpleSidedRenderer STEAM_BRICKED_CASING_STEEL = new SimpleSidedRenderer("casings/steam/bricked_steel");
+    public static SimpleSidedRenderer STEAM_BRONZE_BRICK_CASING = new SimpleSidedRenderer("casings/steam/plated_bronze_brick");
     public static SimpleSidedRenderer[] VOLTAGE_CASINGS = new SimpleSidedRenderer[GTValues.V.length];
 
     public static OrientedOverlayRenderer COAL_BOILER_OVERLAY = new OrientedOverlayRenderer("generators/boiler/coal", FRONT);
     public static OrientedOverlayRenderer LAVA_BOILER_OVERLAY = new OrientedOverlayRenderer("generators/boiler/lava", FRONT);
     public static OrientedOverlayRenderer SOLAR_BOILER_OVERLAY = new OrientedOverlayRenderer("generators/boiler/solar", TOP);
 
+    public static OrientedOverlayRenderer PRIMITIVE_BLAST_FURNACE_OVERLAY = new OrientedOverlayRenderer("machines/primitive_blast_furnace", FRONT);
     public static OrientedOverlayRenderer ALLOY_SMELTER_OVERLAY = new OrientedOverlayRenderer("machines/alloy_smelter", FRONT);
     public static OrientedOverlayRenderer FURNACE_OVERLAY = new OrientedOverlayRenderer("machines/furnace", FRONT);
     public static OrientedOverlayRenderer ELECTRIC_FURNACE_OVERLAY = new OrientedOverlayRenderer("machines/electric_furnace", FRONT);

@@ -1,6 +1,7 @@
 package gregtech.api.multiblock;
 
 import java.util.HashMap;
+import java.util.function.Supplier;
 
 /**
  * Contains an context used for storing temporary data
@@ -21,6 +22,15 @@ public class PatternMatchContext {
     @SuppressWarnings("unchecked")
     public <T> T get(String key) {
         return (T) data.get(key);
+    }
+
+    public <T> T get(String key, Supplier<T> creator) {
+        T result = get(key);
+        if(result == null) {
+            result = creator.get();
+            set(key, result);
+        }
+        return result;
     }
 
 }

@@ -2,48 +2,72 @@ package gregtech.api.recipes.builders;
 
 import gregtech.api.recipes.Recipe;
 import gregtech.api.recipes.RecipeMaps;
-import gregtech.api.unification.stack.SimpleItemStack;
+import gregtech.api.unification.material.type.Material;
+import gregtech.api.unification.ore.OrePrefix;
 import gregtech.api.util.EnumValidationResult;
 import gregtech.api.util.GTLog;
 import gregtech.api.util.ValidationResult;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.Ingredient;
+import net.minecraftforge.oredict.OreIngredient;
 
-public class PrimitiveBlastFurnaceRecipeBuilder {
+public class PBFRecipeBuilder {
+
+    private Ingredient input;
+    private ItemStack output;
 
     private int duration = -1;
     private int fuelAmount = -1;
 
-    private ItemStack output;
-
-	private PrimitiveBlastFurnaceRecipeBuilder() {
+	private PBFRecipeBuilder() {
 	}
 
-	public static PrimitiveBlastFurnaceRecipeBuilder start() {
-		return new PrimitiveBlastFurnaceRecipeBuilder();
+	public static PBFRecipeBuilder start() {
+		return new PBFRecipeBuilder();
 	}
 
-    public PrimitiveBlastFurnaceRecipeBuilder setDuration(int duration) {
+    public PBFRecipeBuilder input(Ingredient input) {
+        this.input = input;
+        return this;
+	}
+
+	public PBFRecipeBuilder input(ItemStack itemStack) {
+	    this.input = Ingredient.fromStacks(itemStack);
+	    return this;
+    }
+
+    public PBFRecipeBuilder input(OrePrefix orePrefix, Material material) {
+	    this.input = new OreIngredient(orePrefix.name() + material.toCamelCaseString());
+	    return this;
+    }
+
+    public PBFRecipeBuilder duration(int duration) {
         this.duration = duration;
         return this;
     }
 
-    public PrimitiveBlastFurnaceRecipeBuilder setFuelAmount(int fuelAmount) {
+    public PBFRecipeBuilder fuelAmount(int fuelAmount) {
         this.fuelAmount = fuelAmount;
         return this;
     }
 
-    public PrimitiveBlastFurnaceRecipeBuilder setOutput(ItemStack output) {
+    public PBFRecipeBuilder output(ItemStack output) {
         this.output = output;
         return this;
     }
 
     public ValidationResult<Recipe.PrimitiveBlastFurnaceRecipe> build() {
 		return ValidationResult.newResult(validate(),
-				new Recipe.PrimitiveBlastFurnaceRecipe(duration, fuelAmount, output));
+				new Recipe.PrimitiveBlastFurnaceRecipe(input, output, duration, fuelAmount));
 	}
 
 	protected EnumValidationResult validate() {
 		EnumValidationResult result = EnumValidationResult.VALID;
+
+		if(input == null) {
+            GTLog.logger.error("Input Ingredient cannot be null", new IllegalArgumentException());
+            result = EnumValidationResult.INVALID;
+        }
 
 		if (output == null || output.isEmpty()) {
 			GTLog.logger.error("Output ItemStack cannot be null or empty", new IllegalArgumentException());
@@ -67,7 +91,7 @@ public class PrimitiveBlastFurnaceRecipeBuilder {
 
 		if (result.getType() == EnumValidationResult.VALID) {
             Recipe.PrimitiveBlastFurnaceRecipe recipe = result.getResult();
-            RecipeMaps.PRIMITIVE_BLAST_FURNACE.put(new SimpleItemStack(recipe.getOutput()), recipe);
+            RecipeMaps.PRIMITIVE_BLAST_FURNACE_RECIPES.add(recipe);
 		}
 	}
 }

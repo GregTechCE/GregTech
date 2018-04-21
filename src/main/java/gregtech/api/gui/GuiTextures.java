@@ -6,9 +6,18 @@ public class GuiTextures {
 
     //BASE TEXTURES
     public static final TextureArea BACKGROUND = TextureArea.fullImage("textures/gui/base/background.png");
+    public static final TextureArea BACKGROUND_CUT = TextureArea.fullImage("textures/gui/base/background_cut.png");
     public static final TextureArea SLOT = TextureArea.fullImage("textures/gui/base/slot.png");
     public static final TextureArea FLUID_SLOT = TextureArea.fullImage("textures/gui/base/fluid_slot.png");
     public static final TextureArea DISPLAY = TextureArea.fullImage("textures/gui/base/display.png");
+
+    //BRONZE
+    public static final TextureArea BRONZE_BACKGROUND = TextureArea.fullImage("textures/gui/steam/bronze/bronze_gui.png");
+    public static final TextureArea BRONZE_SLOT = TextureArea.fullImage("textures/gui/steam/bronze/slot_bronze.png");
+    public static final TextureArea BRONZE_BLAST_FURNACE_PROGRESS_BAR = TextureArea.fullImage("textures/gui/steam/bronze/progress_bar_bronze_blast_furnace.png");
+    public static final TextureArea BRONZE_FURNACE_OVERLAY = TextureArea.fullImage("textures/gui/steam/bronze/slot_bronze_furnace_background.png");
+    public static final TextureArea BRONZE_INGOT_OVERLAY = TextureArea.fullImage("textures/gui/steam/bronze/overlay_bronze_ingot.png");
+    public static final TextureArea BRONZE_DUST_OVERLAY = TextureArea.fullImage("textures/gui/steam/bronze/overlay_bronze_dust.png");
 
     //FLUID & ITEM OUTPUT BUTTONS
     public static final TextureArea BUTTON_FLUID_OUTPUT = TextureArea.fullImage("textures/gui/base/button_fluid_output.png");
@@ -19,6 +28,9 @@ public class GuiTextures {
 
     //ICONS
     public static final TextureArea TANK_ICON = TextureArea.fullImage("textures/gui/base/tank_icon.png");
+
+    //MULTIBLOCK PATTERNS
+    public static final TextureArea PATTERN_BRONZE_BLAST_FURNACE = TextureArea.fullImage("textures/gui/multiblock/pattern_bronze_blast_furnace.png");
 
     //SLOT OVERLAYS
     public static final TextureArea CHARGER_OVERLAY = TextureArea.fullImage("textures/gui/base/charger_slot_overlay.png");
