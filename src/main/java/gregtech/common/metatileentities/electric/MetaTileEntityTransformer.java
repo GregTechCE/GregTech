@@ -96,11 +96,11 @@ public class MetaTileEntityTransformer extends TieredMetaTileEntity {
     public void renderMetaTileEntity(CCRenderState renderState, IVertexOperation[] pipeline) {
         super.renderMetaTileEntity(renderState, pipeline);
         if(isTransformUp) {
-            Textures.ENERGY_IN_MULTI.renderSided(getFrontFacing(), renderState, pipeline);
-            Textures.ENERGY_OUT.renderSided(getFrontFacing().getOpposite(), renderState, pipeline);
-        } else {
             Textures.ENERGY_OUT_MULTI.renderSided(getFrontFacing(), renderState, pipeline);
             Textures.ENERGY_IN.renderSided(getFrontFacing().getOpposite(), renderState, pipeline);
+        } else {
+            Textures.ENERGY_IN_MULTI.renderSided(getFrontFacing(), renderState, pipeline);
+            Textures.ENERGY_OUT.renderSided(getFrontFacing().getOpposite(), renderState, pipeline);
         }
     }
 
@@ -112,7 +112,6 @@ public class MetaTileEntityTransformer extends TieredMetaTileEntity {
     @Override
     public boolean onRightClick(EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
         ItemStack itemStack = playerIn.getHeldItem(hand);
-        System.out.println("hello " + isTransformUp + " " + energyContainer.getEnergyStored() + " " + energyContainer.getEnergyCapacity());
         if(!itemStack.isEmpty() && GregTechAPI.softHammerList.contains(new SimpleItemStack(itemStack))) {
             if(getWorld().isRemote)
                 return true;
