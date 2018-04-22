@@ -4,15 +4,13 @@ import codechicken.lib.render.CCRenderState;
 import codechicken.lib.render.pipeline.IVertexOperation;
 import gregtech.api.GTValues;
 import gregtech.api.capability.impl.EnergyContainerHandler;
-import gregtech.api.capability.impl.FluidTankHandler;
 import gregtech.api.gui.ModularUI;
 import gregtech.api.metatileentity.MetaTileEntityHolder;
 import gregtech.api.metatileentity.TieredMetaTileEntity;
 import gregtech.api.render.Textures;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.EnumFacing;
-import net.minecraftforge.items.IItemHandlerModifiable;
-import net.minecraftforge.items.ItemStackHandler;
+import net.minecraft.util.EnumHand;
 
 public class MetaTileEntityHull extends TieredMetaTileEntity  {
 
@@ -28,8 +26,8 @@ public class MetaTileEntityHull extends TieredMetaTileEntity  {
     @Override
     protected void reinitializeEnergyContainer() {
         long tierVoltage = GTValues.V[getTier()];
-        this.energyContainer = new EnergyContainerHandler(tierVoltage * 16L, tierVoltage, 1L, tierVoltage, 1L);
-        this.energyContainer.setSideOutputCondition(s -> s == getFrontFacing());
+        this.energyContainer = new EnergyContainerHandler(this, tierVoltage * 16L, tierVoltage, 1L, tierVoltage, 1L);
+        ((EnergyContainerHandler) this.energyContainer).setSideOutputCondition(s -> s == getFrontFacing());
     }
 
     @Override
@@ -44,28 +42,8 @@ public class MetaTileEntityHull extends TieredMetaTileEntity  {
     }
 
     @Override
-    protected boolean openGUIOnRightClick() {
+    public boolean onRightClick(EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
         return false;
-    }
-
-    @Override
-    protected IItemHandlerModifiable createImportItemHandler() {
-        return new ItemStackHandler(0);
-    }
-
-    @Override
-    protected IItemHandlerModifiable createExportItemHandler() {
-        return new ItemStackHandler(0);
-    }
-
-    @Override
-    protected FluidTankHandler createImportFluidHandler() {
-        return new FluidTankHandler();
-    }
-
-    @Override
-    protected FluidTankHandler createExportFluidHandler() {
-        return new FluidTankHandler();
     }
 
     @Override

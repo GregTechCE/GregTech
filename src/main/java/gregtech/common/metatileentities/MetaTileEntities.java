@@ -10,7 +10,9 @@ import gregtech.api.metatileentity.SimpleMachineMetaTileEntity;
 import gregtech.api.recipes.RecipeMaps;
 import gregtech.api.render.Textures;
 import gregtech.api.util.GTLog;
+import gregtech.common.metatileentities.electric.MetaTileEntityBatteryBuffer;
 import gregtech.common.metatileentities.electric.MetaTileEntityHull;
+import gregtech.common.metatileentities.electric.MetaTileEntityTransformer;
 import gregtech.common.metatileentities.multi.MetaTileEntityPrimitiveBF;
 import gregtech.common.metatileentities.steam.*;
 import gregtech.common.metatileentities.steam.boiler.SteamCoalBoiler;
@@ -23,6 +25,8 @@ public class MetaTileEntities {
 
     //HULLS
     public static MetaTileEntityHull[] HULL = new MetaTileEntityHull[GTValues.V.length];
+    public static MetaTileEntityTransformer[] TRANSFORMER = new MetaTileEntityTransformer[GTValues.V.length - 2];
+    public static MetaTileEntityBatteryBuffer[][] BATTERY_BUFFER = new MetaTileEntityBatteryBuffer[GTValues.V.length][];
 
     //BRONZE MACHINES SECTION
     public static SteamCoalBoiler STEAM_BOILER_COAL_BRONZE;
@@ -377,5 +381,19 @@ public class MetaTileEntities {
         }
 
         BRONZE_PRIMITIVE_BLAST_FURNACE = GregTechAPI.registerMetaTileEntity(510, new MetaTileEntityPrimitiveBF("primitive_blast_furnace.bronze"));
+
+        int[] batteryBufferSlots = new int[] {1, 4, 9, 16};
+        for(int i = 0; i < GTValues.V.length; i++) {
+            if(i > 0 && i < GTValues.V.length - 1) {
+                MetaTileEntityTransformer transformer = new MetaTileEntityTransformer("transformer." + GTValues.VN[i].toLowerCase(), i);
+                TRANSFORMER[i - 1] = GregTechAPI.registerMetaTileEntity(600 + (i - 1), transformer);
+            }
+            BATTERY_BUFFER[i] = new MetaTileEntityBatteryBuffer[batteryBufferSlots.length];
+            for(int slot = 0; slot < batteryBufferSlots.length; slot++) {
+                String transformerId = "battery_buffer." + GTValues.VN[i].toLowerCase() + "." + batteryBufferSlots[slot];
+                MetaTileEntityBatteryBuffer batteryBuffer = new MetaTileEntityBatteryBuffer(transformerId, i, batteryBufferSlots[slot]);
+                BATTERY_BUFFER[i][slot] = GregTechAPI.registerMetaTileEntity(610 + batteryBufferSlots.length * i + slot, batteryBuffer);
+            }
+        }
     }
 }

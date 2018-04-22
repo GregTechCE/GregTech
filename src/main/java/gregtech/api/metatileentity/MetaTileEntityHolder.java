@@ -98,7 +98,6 @@ public class MetaTileEntityHolder extends TickableTileEntityBase implements ICus
         }
     }
 
-
     @Override
     public void writeInitialSyncData(PacketBuffer buf) {
         if(metaTileEntity != null) {
@@ -129,5 +128,10 @@ public class MetaTileEntityHolder extends TickableTileEntityBase implements ICus
             metaTileEntity.receiveCustomData(discriminator, buffer);
             scheduleChunkForRenderUpdate();
         }
+    }
+
+    @Override
+    public void markAsDirty() {
+        markDirty();
     }
 }

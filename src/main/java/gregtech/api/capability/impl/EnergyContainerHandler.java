@@ -3,6 +3,7 @@ package gregtech.api.capability.impl;
 import gregtech.api.capability.IElectricItem;
 import gregtech.api.capability.IEnergyContainer;
 import gregtech.api.metatileentity.MTETrait;
+import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.util.GTUtility;
 import gregtech.common.ConfigHolder;
 
@@ -32,7 +33,8 @@ public class EnergyContainerHandler extends MTETrait implements IEnergyContainer
     private Predicate<EnumFacing> sideInputCondition;
     private Predicate<EnumFacing> sideOutputCondition;
 
-    public EnergyContainerHandler(long maxCapacity, long maxInputVoltage, long maxInputAmperage, long maxOutputVoltage, long maxOutputAmperage) {
+    public EnergyContainerHandler(MetaTileEntity tileEntity, long maxCapacity, long maxInputVoltage, long maxInputAmperage, long maxOutputVoltage, long maxOutputAmperage) {
+        super(tileEntity);
         this.maxCapacity = maxCapacity;
         this.maxInputVoltage = maxInputVoltage;
         this.maxInputAmperage = maxInputAmperage;
@@ -48,12 +50,12 @@ public class EnergyContainerHandler extends MTETrait implements IEnergyContainer
         this.sideOutputCondition = sideOutputCondition;
     }
 
-    public static EnergyContainerHandler emitterContainer(long maxCapacity, long maxOutputVoltage, long maxOutputAmperage) {
-        return new EnergyContainerHandler(maxCapacity, 0L, 0L, maxOutputVoltage, maxOutputAmperage);
+    public static EnergyContainerHandler emitterContainer(MetaTileEntity tileEntity, long maxCapacity, long maxOutputVoltage, long maxOutputAmperage) {
+        return new EnergyContainerHandler(tileEntity, maxCapacity, 0L, 0L, maxOutputVoltage, maxOutputAmperage);
     }
 
-    public static EnergyContainerHandler receiverContainer(long maxCapacity, long maxInputVoltage, long maxInputAmperage) {
-        return new EnergyContainerHandler(maxCapacity, maxInputVoltage, maxInputAmperage, 0L, 0L);
+    public static EnergyContainerHandler receiverContainer(MetaTileEntity tileEntity, long maxCapacity, long maxInputVoltage, long maxInputAmperage) {
+        return new EnergyContainerHandler(tileEntity, maxCapacity, maxInputVoltage, maxInputAmperage, 0L, 0L);
     }
 
     @Override

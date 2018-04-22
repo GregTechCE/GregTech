@@ -2,6 +2,7 @@ package gregtech.api.metatileentity;
 
 import codechicken.lib.render.CCRenderState;
 import codechicken.lib.render.pipeline.IVertexOperation;
+import gregtech.api.capability.impl.EnergyContainerHandler;
 import gregtech.api.gui.GuiTextures;
 import gregtech.api.gui.ModularUI;
 import gregtech.api.gui.widgets.ButtonWidget;
@@ -48,7 +49,7 @@ public class SimpleMachineMetaTileEntity extends WorkableTieredMetaTileEntity {
     @Override
     public void update() {
         super.update();
-        energyContainer.dischargeEnergyContainers(chargerInventory, 0);
+        ((EnergyContainerHandler) this.energyContainer).dischargeEnergyContainers(chargerInventory, 0);
         if(getTimer() % 5 == 0) {
             EnumFacing outputFacing = getOutputFacing();
             if(autoOutputFluids) {

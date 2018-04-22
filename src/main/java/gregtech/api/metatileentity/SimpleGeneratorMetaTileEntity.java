@@ -2,6 +2,7 @@ package gregtech.api.metatileentity;
 
 import codechicken.lib.render.CCRenderState;
 import codechicken.lib.render.pipeline.IVertexOperation;
+import gregtech.api.capability.impl.EnergyContainerHandler;
 import gregtech.api.gui.GuiTextures;
 import gregtech.api.gui.ModularUI;
 import gregtech.api.gui.widgets.FluidContainerSlotWidget;
@@ -66,7 +67,7 @@ public class SimpleGeneratorMetaTileEntity extends WorkableTieredMetaTileEntity 
     @Override
     protected void reinitializeEnergyContainer() {
         super.reinitializeEnergyContainer();
-        this.energyContainer.setSideOutputCondition(side -> side == getFrontFacing());
+        ((EnergyContainerHandler) this.energyContainer).setSideOutputCondition(side -> side == getFrontFacing());
     }
 
     @Override

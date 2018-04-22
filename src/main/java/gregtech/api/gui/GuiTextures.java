@@ -41,6 +41,7 @@ public class GuiTextures {
     public static final TextureArea CRUSHED_ORE_OVERLAY = TextureArea.fullImage("textures/gui/base/crushed_ore_overlay.png");
     public static final TextureArea DUST_OVERLAY = TextureArea.fullImage("textures/gui/base/dust_overlay.png");
     public static final TextureArea CIRCUIT_OVERLAY = TextureArea.fullImage("textures/gui/base/circuit_overlay.png");
+    public static final TextureArea BATTERY_OVERLAY = TextureArea.fullImage("textures/gui/base/battery_overlay.png");
     public static final TextureArea PRESS_OVERLAY_1 = TextureArea.fullImage("textures/gui/base/press_overlay_1.png");
     public static final TextureArea PRESS_OVERLAY_2 = TextureArea.fullImage("textures/gui/base/press_overlay_2.png");
     public static final TextureArea PRESS_OVERLAY_3 = TextureArea.fullImage("textures/gui/base/press_overlay_3.png");

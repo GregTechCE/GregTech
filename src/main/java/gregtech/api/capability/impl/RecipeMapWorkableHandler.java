@@ -38,7 +38,8 @@ public abstract class RecipeMapWorkableHandler extends MTETrait implements IWork
     private boolean hasNotEnoughEnergy;
     private boolean wasActiveAndNeedsUpdate;
 
-    public RecipeMapWorkableHandler(RecipeMap<?> recipeMap) {
+    public RecipeMapWorkableHandler(MetaTileEntity tileEntity, RecipeMap<?> recipeMap) {
+        super(tileEntity);
         this.recipeMap = recipeMap;
     }
 

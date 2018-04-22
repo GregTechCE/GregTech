@@ -157,12 +157,11 @@ public abstract class MetaTileEntity {
      * traits are objects linked with meta tile entity and performing certian
      * actions. usually traits implement capabilities
      * @param trait trait object to add
-     * @return trait object passed in arguments
+     * @return index of trait in list
      */
-    protected <T extends MTETrait> T addTrait(T trait) {
-        trait.setMetaTileEntityAndIndex(this, mteTraits.size());
+    int addMetaTileEntityTrait(MTETrait trait) {
         this.mteTraits.add(trait);
-        return trait;
+        return mteTraits.size() - 1;
     }
 
     /**
