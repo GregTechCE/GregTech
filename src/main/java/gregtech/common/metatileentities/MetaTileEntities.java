@@ -11,6 +11,7 @@ import gregtech.api.recipes.RecipeMaps;
 import gregtech.api.render.Textures;
 import gregtech.api.util.GTLog;
 import gregtech.common.metatileentities.electric.MetaTileEntityBatteryBuffer;
+import gregtech.common.metatileentities.electric.MetaTileEntityCharger;
 import gregtech.common.metatileentities.electric.MetaTileEntityHull;
 import gregtech.common.metatileentities.electric.MetaTileEntityTransformer;
 import gregtech.common.metatileentities.multi.MetaTileEntityPrimitiveBF;
@@ -27,6 +28,7 @@ public class MetaTileEntities {
     public static MetaTileEntityHull[] HULL = new MetaTileEntityHull[GTValues.V.length];
     public static MetaTileEntityTransformer[] TRANSFORMER = new MetaTileEntityTransformer[GTValues.V.length - 2];
     public static MetaTileEntityBatteryBuffer[][] BATTERY_BUFFER = new MetaTileEntityBatteryBuffer[GTValues.V.length][];
+    public static MetaTileEntityCharger[] CHARGER = new MetaTileEntityCharger[GTValues.V.length];
 
     //BRONZE MACHINES SECTION
     public static SteamCoalBoiler STEAM_BOILER_COAL_BRONZE;
@@ -394,6 +396,9 @@ public class MetaTileEntities {
                 MetaTileEntityBatteryBuffer batteryBuffer = new MetaTileEntityBatteryBuffer(transformerId, i, batteryBufferSlots[slot]);
                 BATTERY_BUFFER[i][slot] = GregTechAPI.registerMetaTileEntity(610 + batteryBufferSlots.length * i + slot, batteryBuffer);
             }
+            String chargerId = "charger." + GTValues.VN[i].toLowerCase();
+            MetaTileEntityCharger charger = new MetaTileEntityCharger(chargerId, i, 4);
+            CHARGER[i] = GregTechAPI.registerMetaTileEntity(680 + i, charger);
         }
     }
 }
