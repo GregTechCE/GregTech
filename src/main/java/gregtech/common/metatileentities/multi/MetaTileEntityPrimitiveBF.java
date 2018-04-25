@@ -185,13 +185,14 @@ public class MetaTileEntityPrimitiveBF extends MultiblockControllerBase {
         return MetaBlocks.METAL_CASING.getState(MetalCasingType.BRONZE_BRICKS);
     }
 
-    protected SimpleSidedRenderer getBaseTexture() {
+    @Override
+    public SimpleSidedRenderer getBaseTexture() {
         return Textures.STEAM_BRONZE_BRICK_CASING;
     }
 
     @Override
     public void renderMetaTileEntity(CCRenderState renderState, IVertexOperation[] pipeline) {
-        getBaseTexture().render(renderState, pipeline);
+        super.renderMetaTileEntity(renderState, pipeline);
         Textures.PRIMITIVE_BLAST_FURNACE_OVERLAY.render(renderState, pipeline, getFrontFacing(), isActive());
     }
 

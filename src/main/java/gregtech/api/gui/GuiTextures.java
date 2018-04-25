@@ -33,6 +33,8 @@ public class GuiTextures {
     public static final TextureArea PATTERN_BRONZE_BLAST_FURNACE = TextureArea.fullImage("textures/gui/multiblock/pattern_bronze_blast_furnace.png");
 
     //SLOT OVERLAYS
+    public static final TextureArea ARROW_LEFT_OVERLAY = TextureArea.fullImage("textures/gui/base/arrow_left_overlay.png");
+    public static final TextureArea ARROW_RIGHT_OVERLAY = TextureArea.fullImage("textures/gui/base/arrow_right_overlay.png");
     public static final TextureArea CHARGER_OVERLAY = TextureArea.fullImage("textures/gui/base/charger_slot_overlay.png");
     public static final TextureArea INT_CIRCUIT_OVERLAY = TextureArea.fullImage("textures/gui/base/int_circuit_overlay.png");
     public static final TextureArea FURNACE_OVERLAY = TextureArea.fullImage("textures/gui/base/furnace_overlay.png");

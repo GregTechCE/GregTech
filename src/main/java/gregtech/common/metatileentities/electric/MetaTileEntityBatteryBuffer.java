@@ -74,19 +74,10 @@ public class MetaTileEntityBatteryBuffer extends TieredMetaTileEntity {
 
     @Override
     protected ModularUI createUI(EntityPlayer entityPlayer) {
-        ModularUI.Builder builder = ModularUI.defaultBuilder()
+        return ModularUI.defaultBuilder()
             .label(6, 6, getMetaName())
-            .bindPlayerInventory(entityPlayer.inventory);
-        int slotsPerRow = (int) Math.sqrt(inventorySize);
-        int startX = 88 - (slotsPerRow * 9);
-        int startY = 45 - (slotsPerRow * 9);
-        for(int x = 0; x < slotsPerRow; x++) {
-            for(int y = 0; y < slotsPerRow; y++) {
-                builder.slot(importItems, slotsPerRow * y + x,
-                    startX + 18 * x,
-                    startY + 18 * y, GuiTextures.SLOT, GuiTextures.BATTERY_OVERLAY);
-            }
-        }
-        return builder.build(getHolder(), entityPlayer);
+            .squareOfSlots(importItems, 0, inventorySize, GuiTextures.SLOT, GuiTextures.BATTERY_OVERLAY)
+            .bindPlayerInventory(entityPlayer.inventory)
+            .build(getHolder(), entityPlayer);
     }
 }

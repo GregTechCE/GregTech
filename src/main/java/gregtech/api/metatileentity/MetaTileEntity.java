@@ -10,7 +10,7 @@ import codechicken.lib.vec.uv.IconTransformation;
 import com.google.common.base.Preconditions;
 import gregtech.api.GregTechAPI;
 import gregtech.api.capability.impl.FluidHandlerProxy;
-import gregtech.api.capability.impl.FluidTankHandler;
+import gregtech.api.capability.impl.FluidTankList;
 import gregtech.api.capability.impl.ItemHandlerProxy;
 import gregtech.api.gui.ModularUI;
 import gregtech.api.util.GTUtility;
@@ -56,8 +56,8 @@ public abstract class MetaTileEntity {
 
     protected IItemHandler itemInventory;
 
-    protected FluidTankHandler importFluids;
-    protected FluidTankHandler exportFluids;
+    protected FluidTankList importFluids;
+    protected FluidTankList exportFluids;
 
     protected IFluidHandler fluidInventory;
 
@@ -193,12 +193,12 @@ public abstract class MetaTileEntity {
         return new ItemStackHandler(0);
     }
 
-    protected FluidTankHandler createImportFluidHandler() {
-        return new FluidTankHandler();
+    protected FluidTankList createImportFluidHandler() {
+        return new FluidTankList();
     }
 
-    protected FluidTankHandler createExportFluidHandler() {
-        return new FluidTankHandler();
+    protected FluidTankList createExportFluidHandler() {
+        return new FluidTankList();
     }
 
     protected boolean openGUIOnRightClick() {
@@ -468,6 +468,43 @@ public abstract class MetaTileEntity {
         }
     }
 
+    public void pullItemsFromNearbyHandlers(EnumFacing... allowedFaces) {
+        for(EnumFacing nearbyFacing : allowedFaces) {
+            TileEntity tileEntity = getWorld().getTileEntity(getPos().offset(nearbyFacing));
+            if(tileEntity == null) continue;
+            IItemHandler itemHandler = tileEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, nearbyFacing.getOpposite());
+            if(itemHandler == null) continue;
+            for(int slotIndex = 0; slotIndex < itemHandler.getSlots(); slotIndex++) {
+                ItemStack stackInSlot = itemHandler.extractItem(slotIndex, itemHandler.getSlotLimit(slotIndex), true);
+                if(stackInSlot.isEmpty()) continue;
+                for(int hisSlotIndex = 0; hisSlotIndex < importItems.getSlots(); hisSlotIndex++) {
+                    ItemStack remainingStack = importItems.insertItem(hisSlotIndex, stackInSlot, true);
+                    if(remainingStack != stackInSlot) {
+                        ItemStack actualStack = itemHandler.extractItem(slotIndex, stackInSlot.getCount() - remainingStack.getCount(), false);
+                        stackInSlot = importItems.insertItem(hisSlotIndex, actualStack, false);
+                    }
+                    if(stackInSlot.isEmpty()) break;
+                }
+            }
+        }
+    }
+
+    public void pullFluidsFromNearbyHandlers(EnumFacing... allowedFaces) {
+        for(EnumFacing nearbyFacing : allowedFaces) {
+            TileEntity tileEntity = getWorld().getTileEntity(getPos().offset(nearbyFacing));
+            if(tileEntity == null) continue;
+            IFluidHandler fluidHandler = tileEntity.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, nearbyFacing.getOpposite());
+            if(fluidHandler == null) continue;
+            FluidStack fluidStack = fluidHandler.drain(Integer.MAX_VALUE, false);
+            if(fluidStack == null || fluidStack.amount == 0) continue;
+            int canInsertAmount = importFluids.fill(fluidStack, false);
+            if(canInsertAmount > 0) {
+                fluidStack = fluidHandler.drain(canInsertAmount, true);
+                importFluids.fill(fluidStack, true);
+            }
+        }
+    }
+
     public static boolean isItemHandlerEmpty(IItemHandler handler) {
         for(int i = 0; i < handler.getSlots(); i++) {
             if(!handler.getStackInSlot(i).isEmpty())
@@ -592,11 +629,11 @@ public abstract class MetaTileEntity {
         return exportItems;
     }
 
-    public FluidTankHandler getImportFluids() {
+    public FluidTankList getImportFluids() {
         return importFluids;
     }
 
-    public FluidTankHandler getExportFluids() {
+    public FluidTankList getExportFluids() {
         return exportFluids;
     }
 

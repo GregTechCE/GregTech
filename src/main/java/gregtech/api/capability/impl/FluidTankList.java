@@ -10,22 +10,27 @@ import net.minecraftforge.common.util.INBTSerializable;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.IFluidTank;
+import net.minecraftforge.fluids.capability.FluidTankPropertiesWrapper;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidTankProperties;
 
 import javax.annotation.Nullable;
 import java.util.*;
 
-public class FluidTankHandler implements IFluidHandler, IMultipleTankHandler, INBTSerializable<NBTTagCompound> {
+public class FluidTankList implements IFluidHandler, IMultipleTankHandler, INBTSerializable<NBTTagCompound> {
 
-    protected final List<FluidTank> fluidTanks;
+    protected final List<IFluidTank> fluidTanks;
     protected IFluidTankProperties[] properties;
 
-    public FluidTankHandler(FluidTank... fluidTanks) {
+    public FluidTankList(IFluidTank... fluidTanks) {
         this.fluidTanks = Arrays.asList(fluidTanks);
     }
 
-    public FluidTankHandler(FluidTankHandler parent, FluidTank... additionalTanks) {
+    public FluidTankList(List<? extends IFluidTank> fluidTanks) {
+        this.fluidTanks = new ArrayList<>(fluidTanks);
+    }
+
+    public FluidTankList(FluidTankList parent, IFluidTank... additionalTanks) {
         this.fluidTanks = new ArrayList<>();
         this.fluidTanks.addAll(parent.fluidTanks);
         this.fluidTanks.addAll(Arrays.asList(additionalTanks));
@@ -52,12 +57,15 @@ public class FluidTankHandler implements IFluidHandler, IMultipleTankHandler, IN
 
     @Override
     public IFluidTankProperties[] getTankProperties() {
-        if (properties == null) {
-            List<IFluidTankProperties> props = Lists.newArrayList();
-            fluidTanks.forEach(tank -> Collections.addAll(props, tank.getTankProperties()));
-            properties = props.toArray(new IFluidTankProperties[0]);
+        List<IFluidTankProperties> props = Lists.newArrayList();
+        for(IFluidTank fluidTank : fluidTanks) {
+            if(fluidTank instanceof FluidTank) {
+                props.add(new FluidTankPropertiesWrapper((FluidTank) fluidTank));
+            } else if(fluidTank instanceof IFluidHandler) {
+                props.addAll(Arrays.asList(((IFluidHandler) fluidTank).getTankProperties()));
+            }
         }
-        return properties;
+        return props.toArray(new IFluidTankProperties[0]);
     }
 
     @Override
@@ -68,7 +76,7 @@ public class FluidTankHandler implements IFluidHandler, IMultipleTankHandler, IN
         resource = resource.copy();
 
         int totalFillAmount = 0;
-        for (IFluidHandler handler : fluidTanks) {
+        for (IFluidTank handler : fluidTanks) {
             int fillAmount = handler.fill(resource, doFill);
             totalFillAmount += fillAmount;
             resource.amount -= fillAmount;
@@ -87,8 +95,10 @@ public class FluidTankHandler implements IFluidHandler, IMultipleTankHandler, IN
         resource = resource.copy();
 
         FluidStack totalDrained = null;
-        for (IFluidHandler handler : fluidTanks) {
-            FluidStack drain = handler.drain(resource, doDrain);
+        for (IFluidTank handler : fluidTanks) {
+            if(!resource.isFluidEqual(handler.getFluid()))
+                continue;
+            FluidStack drain = handler.drain(resource.amount, doDrain);
             if (drain != null) {
                 if (totalDrained == null)
                     totalDrained = drain;
@@ -109,7 +119,7 @@ public class FluidTankHandler implements IFluidHandler, IMultipleTankHandler, IN
         if (maxDrain == 0)
             return null;
         FluidStack totalDrained = null;
-        for (IFluidHandler handler : fluidTanks) {
+        for (IFluidTank handler : fluidTanks) {
             if (totalDrained == null) {
                 totalDrained = handler.drain(maxDrain, doDrain);
                 if (totalDrained != null) {
@@ -118,7 +128,9 @@ public class FluidTankHandler implements IFluidHandler, IMultipleTankHandler, IN
             } else {
                 FluidStack copy = totalDrained.copy();
                 copy.amount = maxDrain;
-                FluidStack drain = handler.drain(copy, doDrain);
+                if(!copy.isFluidEqual(handler.getFluid()))
+                    continue;
+                FluidStack drain = handler.drain(copy.amount, doDrain);
                 if (drain != null) {
                     totalDrained.amount += drain.amount;
                     maxDrain -= drain.amount;
@@ -138,7 +150,15 @@ public class FluidTankHandler implements IFluidHandler, IMultipleTankHandler, IN
 
         NBTTagList tanks = new NBTTagList();
         for (int i = 0; i < this.getTanks(); i++) {
-            tanks.appendTag(this.fluidTanks.get(i).writeToNBT(new NBTTagCompound()));
+            NBTBase writeTag;
+            IFluidTank fluidTank = fluidTanks.get(i);
+            if(fluidTank instanceof FluidTank) {
+                writeTag = ((FluidTank) fluidTank).writeToNBT(new NBTTagCompound());
+            } else if(fluidTank instanceof INBTSerializable) {
+                writeTag = ((INBTSerializable) fluidTank).serializeNBT();
+            } else writeTag = new NBTTagCompound();
+
+            tanks.appendTag(writeTag);
         }
         fluidInventory.setTag("Tanks", tanks);
         return fluidInventory;
@@ -149,8 +169,11 @@ public class FluidTankHandler implements IFluidHandler, IMultipleTankHandler, IN
         NBTTagList tanks = nbt.getTagList("Tanks", Constants.NBT.TAG_COMPOUND);
         for (int i = 0; i < nbt.getInteger("TankAmount"); i++) {
             NBTBase nbtTag = tanks.get(i);
-            if (nbtTag instanceof NBTTagCompound) {
-                fluidTanks.get(i).readFromNBT((NBTTagCompound) nbtTag);
+            IFluidTank fluidTank = fluidTanks.get(i);
+            if(fluidTank instanceof FluidTank) {
+                ((FluidTank) fluidTank).readFromNBT((NBTTagCompound) nbtTag);
+            } else if(fluidTank instanceof INBTSerializable) {
+                ((INBTSerializable) fluidTank).deserializeNBT(nbtTag);
             }
         }
     }

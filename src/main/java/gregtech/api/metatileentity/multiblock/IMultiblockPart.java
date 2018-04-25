@@ -1,12 +1,8 @@
 package gregtech.api.metatileentity.multiblock;
 
-import java.util.List;
+public interface IMultiblockPart {
 
-public interface IMultiblockPart<T> {
-
-    MultiblockAbility<T> getAbility();
-
-    void addToMultiBlock(MultiblockControllerBase controllerBase, List<T> abilityList);
+    void addToMultiBlock(MultiblockControllerBase controllerBase);
 
     void removeFromMultiblock(MultiblockControllerBase controllerBase);
 

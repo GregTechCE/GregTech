@@ -1,10 +1,13 @@
 package gregtech.api.metatileentity.multiblock;
 
+import codechicken.lib.render.CCRenderState;
+import codechicken.lib.render.pipeline.IVertexOperation;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.MetaTileEntityHolder;
 import gregtech.api.multiblock.BlockPattern;
 import gregtech.api.multiblock.BlockWorldState;
 import gregtech.api.multiblock.PatternMatchContext;
+import gregtech.api.render.SimpleSidedRenderer;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.tileentity.TileEntity;
@@ -14,15 +17,16 @@ import net.minecraft.util.math.Vec3i;
 import org.apache.commons.lang3.ArrayUtils;
 
 import java.util.*;
+import java.util.function.BooleanSupplier;
 import java.util.function.Predicate;
 
 public abstract class MultiblockControllerBase extends MetaTileEntity {
 
-    private BlockPattern structurePattern;
-    private Predicate<MultiblockControllerBase> validationPredicate;
+    protected final BlockPattern structurePattern;
+    protected final BooleanSupplier validationPredicate;
 
     private final Map<MultiblockAbility<Object>, List<Object>> multiblockAbilities = new HashMap<>();
-    private final List<IMultiblockPart<Object>> multiblockParts = new ArrayList<>();
+    private final List<IMultiblockPart> multiblockParts = new ArrayList<>();
     private boolean structureFormed;
 
     public MultiblockControllerBase(String metaTileEntityId) {
@@ -38,7 +42,7 @@ public abstract class MultiblockControllerBase extends MetaTileEntity {
             if(getTimer() % 20 == 0) {
                 checkStructurePattern();
             }
-            if(structureFormed && validationPredicate.test(this)) {
+            if(structureFormed && validationPredicate.getAsBoolean()) {
                 updateFormedValid();
             }
         }
@@ -59,8 +63,10 @@ public abstract class MultiblockControllerBase extends MetaTileEntity {
      */
     protected abstract BlockPattern createStructurePattern();
 
-    protected Predicate<MultiblockControllerBase> getValidationPredicate() {
-        return t -> true;
+    public abstract SimpleSidedRenderer getBaseTexture();
+
+    protected BooleanSupplier getValidationPredicate() {
+        return () -> true;
     }
 
     public static Predicate<BlockWorldState> tilePredicate(Predicate<MetaTileEntity> predicate) {
@@ -80,9 +86,13 @@ public abstract class MultiblockControllerBase extends MetaTileEntity {
         };
     }
 
-    public static Predicate<BlockWorldState> partPredicate(MultiblockAbility<?>... allowedAbilities) {
-        return tilePredicate(tile -> tile instanceof IMultiblockPart<?> &&
-            ArrayUtils.contains(allowedAbilities, ((IMultiblockPart) tile).getAbility()));
+    public static Predicate<BlockWorldState> abilityPartPredicate(MultiblockAbility<?>... allowedAbilities) {
+        return tilePredicate(tile -> tile instanceof IMultiblockAbilityPart<?> &&
+            ArrayUtils.contains(allowedAbilities, ((IMultiblockAbilityPart<?>) tile).getAbility()));
+    }
+
+    public static Predicate<BlockWorldState> partPredicate(Class<? extends IMultiblockPart> baseClass) {
+        return tilePredicate(tile -> tile instanceof IMultiblockPart && baseClass.isAssignableFrom(tile.getClass()));
     }
 
     public static Predicate<BlockWorldState> statePredicate(IBlockState... allowedStates) {
@@ -97,6 +107,11 @@ public abstract class MultiblockControllerBase extends MetaTileEntity {
         return tilePredicate(tile -> tile.metaTileEntityId.equals(metaTileEntityId));
     }
 
+    @Override
+    public void renderMetaTileEntity(CCRenderState renderState, IVertexOperation[] pipeline) {
+        getBaseTexture().render(renderState, pipeline);
+    }
+
     protected void checkStructurePattern() {
         EnumFacing facing = getFrontFacing().getOpposite();
         Vec3i offset = getCenterOffset();
@@ -105,17 +120,25 @@ public abstract class MultiblockControllerBase extends MetaTileEntity {
             facing.getFrontOffsetZ() * offset.getX() + (1 - facing.getFrontOffsetZ()) * offset.getZ());
         PatternMatchContext context = structurePattern.checkPatternAt(getWorld(), checkPos, facing);
         if(context != null && !structureFormed) {
-            List<IMultiblockPart<Object>> partsFound = context.get("MultiblockParts", ArrayList::new);
+            List<IMultiblockPart> partsFound = context.get("MultiblockParts", ArrayList::new);
             this.multiblockParts.addAll(partsFound);
             multiblockParts.forEach(part -> {
-                MultiblockAbility<Object> ability = part.getAbility();
-                List<Object> abilityList = multiblockAbilities.computeIfAbsent(ability, k -> new ArrayList<>());
-                part.addToMultiBlock(this, abilityList);
+                part.addToMultiBlock(this);
+                if(part instanceof IMultiblockAbilityPart<?>) {
+                    IMultiblockAbilityPart<Object> abilityPart = (IMultiblockAbilityPart<Object>) part;
+                    MultiblockAbility<Object> ability = abilityPart.getAbility();
+                    List<Object> abilityList = multiblockAbilities.computeIfAbsent(ability, k -> new ArrayList<>());
+                    abilityPart.registerAbilities(abilityList);
+                }
             });
             this.structureFormed = true;
+            formStructure(context);
         } else if(context == null && structureFormed) {
             invalidateStructure();
         }
+    }
+
+    protected void formStructure(PatternMatchContext context) {
     }
 
     public void invalidateStructure() {

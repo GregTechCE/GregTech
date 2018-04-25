@@ -1,7 +1,7 @@
 package gregtech.common.metatileentities.steam.boiler;
 
 import gregtech.api.capability.impl.FilteredFluidHandler;
-import gregtech.api.capability.impl.FluidTankHandler;
+import gregtech.api.capability.impl.FluidTankList;
 import gregtech.api.gui.ModularUI;
 import gregtech.api.gui.widgets.TankWidget;
 import gregtech.api.metatileentity.MetaTileEntity;
@@ -27,11 +27,11 @@ public class SteamLavaBoiler extends SteamBoiler {
     }
 
     @Override
-    protected FluidTankHandler createImportFluidHandler() {
-        FluidTankHandler superHandler = super.createImportFluidHandler();
+    protected FluidTankList createImportFluidHandler() {
+        FluidTankList superHandler = super.createImportFluidHandler();
         this.lavaFluidTank = new FilteredFluidHandler(16000)
             .setFillPredicate(ModHandler::isLava);
-        return new FluidTankHandler(superHandler, lavaFluidTank);
+        return new FluidTankList(superHandler, lavaFluidTank);
 
     }
 

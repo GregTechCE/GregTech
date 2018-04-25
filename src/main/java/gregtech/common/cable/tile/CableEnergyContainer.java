@@ -75,11 +75,11 @@ public class CableEnergyContainer implements IEnergyContainer {
     }
 
     @Override
-    public void addEnergy(long energyToAdd) {
+    public long addEnergy(long energyToAdd) {
         //just a fallback case if somebody will call this method
-        acceptEnergyFromNetwork(EnumFacing.UP,
+        return acceptEnergyFromNetwork(EnumFacing.UP,
             energyToAdd / getInputVoltage(),
-            energyToAdd / getInputAmperage());
+            energyToAdd / getInputAmperage()) * getInputVoltage();
     }
 
     @Override

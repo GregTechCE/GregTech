@@ -33,4 +33,13 @@ public class PatternMatchContext {
         return result;
     }
 
+    public <T> T get(String key, T initialValue) {
+        T result = get(key);
+        if(result == null) {
+            result = initialValue;
+            set(key, result);
+        }
+        return result;
+    }
+
 }

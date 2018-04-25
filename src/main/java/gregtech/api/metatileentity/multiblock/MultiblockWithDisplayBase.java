@@ -9,9 +9,9 @@ import net.minecraft.util.text.TextComponentTranslation;
 
 import java.util.List;
 
-public abstract class MultiblockElectricBase extends MultiblockControllerBase {
+public abstract class MultiblockWithDisplayBase extends MultiblockControllerBase {
 
-    public MultiblockElectricBase(String metaTileEntityId) {
+    public MultiblockWithDisplayBase(String metaTileEntityId) {
         super(metaTileEntityId);
     }
 
@@ -23,6 +23,8 @@ public abstract class MultiblockElectricBase extends MultiblockControllerBase {
     protected void addDisplayText(List<ITextComponent> textList) {
         if(!isStructureFormed()) {
             textList.add(new TextComponentTranslation("gregtech.multiblock.invalid_structure"));
+        } else if(!validationPredicate.getAsBoolean()) {
+            textList.add(new TextComponentTranslation("gregtech.multiblock.validation_failed"));
         }
     }
 
