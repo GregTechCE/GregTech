@@ -1,6 +1,7 @@
 package gregtech.api.capability.impl;
 
 import gregtech.api.GTValues;
+import gregtech.api.capability.IMultipleTankHandler;
 import gregtech.api.capability.IWorkable;
 import gregtech.api.metatileentity.MTETrait;
 import gregtech.api.metatileentity.MetaTileEntity;
@@ -16,6 +17,7 @@ import net.minecraft.util.NonNullList;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.items.IItemHandlerModifiable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,7 +40,8 @@ public abstract class RecipeMapWorkableHandler extends MTETrait implements IWork
     private boolean hasNotEnoughEnergy;
     private boolean wasActiveAndNeedsUpdate;
 
-    public RecipeMapWorkableHandler(RecipeMap<?> recipeMap) {
+    public RecipeMapWorkableHandler(MetaTileEntity tileEntity, RecipeMap<?> recipeMap) {
+        super(tileEntity);
         this.recipeMap = recipeMap;
     }
 
@@ -46,6 +49,22 @@ public abstract class RecipeMapWorkableHandler extends MTETrait implements IWork
     protected abstract long getEnergyCapacity();
     protected abstract boolean drawEnergy(int recipeEUt);
     protected abstract long getMaxVoltage();
+
+    protected IItemHandlerModifiable getImportItemsInventory() {
+        return metaTileEntity.getImportItems();
+    }
+
+    protected IMultipleTankHandler getImportFluidsInventory() {
+        return metaTileEntity.getImportFluids();
+    }
+
+    protected IItemHandlerModifiable getExportItemsInventory() {
+        return metaTileEntity.getExportItems();
+    }
+
+    protected IMultipleTankHandler getExportFluidsInventory() {
+        return metaTileEntity.getExportFluids();
+    }
 
     @Override
     public String getName() {
@@ -63,7 +82,7 @@ public abstract class RecipeMapWorkableHandler extends MTETrait implements IWork
             return;
         if(progressTime == 0) {
             long maxVoltage = getMaxVoltage();
-            Recipe pickedRecipe = recipeMap.findRecipe(maxVoltage, metaTileEntity.getImportItems(), metaTileEntity.getImportFluids());
+            Recipe pickedRecipe = recipeMap.findRecipe(maxVoltage, getImportItemsInventory(), getImportFluidsInventory());
             if(pickedRecipe != null && setupAndConsumeRecipeInputs(pickedRecipe)) {
                 if(pickedRecipe.canBeBuffered()) {
                     this.previousRecipe = pickedRecipe;
@@ -92,11 +111,12 @@ public abstract class RecipeMapWorkableHandler extends MTETrait implements IWork
     protected boolean setupAndConsumeRecipeInputs(Recipe recipe) {
         int[] resultOverclock = calculateOverclock(recipe.getEUt(), getMaxVoltage(), recipeMap.getAmperage(), recipe.getDuration());
         int totalEUt = resultOverclock[0] * resultOverclock[1];
-        return (totalEUt >= 0 ? getEnergyStored() >= totalEUt : getEnergyStored() - resultOverclock[0] <= getEnergyCapacity()) &&
-            (!recipe.needsEmptyOutput() || MetaTileEntity.isItemHandlerEmpty(metaTileEntity.getExportItems())) &&
-            MetaTileEntity.addItemsToItemHandler(metaTileEntity.getExportItems(), true, recipe.getOutputs()) &&
-            MetaTileEntity.addFluidsToFluidHandler(metaTileEntity.getExportFluids(), true, recipe.getFluidOutputs()) &&
-            recipe.matches(true, false, metaTileEntity.getImportItems(), metaTileEntity.getImportFluids());
+        return (totalEUt >= 0 ? getEnergyStored() >= (totalEUt > getEnergyCapacity() / 2 ? resultOverclock[0] : totalEUt) :
+            getEnergyStored() - resultOverclock[0] <= getEnergyCapacity()) &&
+            (!recipe.needsEmptyOutput() || MetaTileEntity.isItemHandlerEmpty(getExportItemsInventory())) &&
+            MetaTileEntity.addItemsToItemHandler(getExportItemsInventory(), true, recipe.getOutputs()) &&
+            MetaTileEntity.addFluidsToFluidHandler(getExportFluidsInventory(), true, recipe.getFluidOutputs()) &&
+            recipe.matches(true, false, getImportItemsInventory(), getImportFluidsInventory());
     }
 
     private static int[] calculateOverclock(int EUt, long voltage, long amperage, int duration) {
@@ -134,8 +154,8 @@ public abstract class RecipeMapWorkableHandler extends MTETrait implements IWork
     }
 
     protected void completeRecipe() {
-        MetaTileEntity.addItemsToItemHandler(metaTileEntity.getExportItems(), false, itemOutputs);
-        MetaTileEntity.addFluidsToFluidHandler(metaTileEntity.getExportFluids(), false, fluidOutputs);
+        MetaTileEntity.addItemsToItemHandler(getExportItemsInventory(), false, itemOutputs);
+        MetaTileEntity.addFluidsToFluidHandler(getExportFluidsInventory(), false, fluidOutputs);
         this.progressTime = 0;
         setMaxProgress(0);
         this.recipeEUt = 0;

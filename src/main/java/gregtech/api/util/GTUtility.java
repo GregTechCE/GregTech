@@ -10,6 +10,8 @@ import gregtech.api.items.IDamagableItem;
 import gregtech.api.unification.OreDictUnifier;
 import gregtech.api.unification.stack.SimpleItemStack;
 import gregtech.api.unification.stack.UnificationEntry;
+import gregtech.common.ConfigHolder;
+
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EnumCreatureAttribute;
@@ -167,7 +169,7 @@ public class GTUtility {
             return ((IDamagableItem) item).doDamageToItem(itemStack, vanillaDamage, simulate);
         } else if (itemStack.hasCapability(IElectricItem.CAPABILITY_ELECTRIC_ITEM, null)) {
             IElectricItem capability = itemStack.getCapability(IElectricItem.CAPABILITY_ELECTRIC_ITEM, null);
-            int energyNeeded = vanillaDamage * 100; // TODO CONFIG
+            int energyNeeded = vanillaDamage * ConfigHolder.energyUsageMultiplier;
             return capability != null
                 && capability.canUse(energyNeeded)
                 && capability.discharge(energyNeeded, Integer.MAX_VALUE, true, false, simulate) == energyNeeded;
@@ -331,7 +333,7 @@ public class GTUtility {
             entity.addPotionEffect(new PotionEffect(MobEffects.NAUSEA, level * 130 * amountOfItems));
             entity.addPotionEffect(new PotionEffect(MobEffects.WEAKNESS, level * 150 * amountOfItems));
             entity.addPotionEffect(new PotionEffect(MobEffects.HUNGER, level * 130 * amountOfItems));
-//            entity.addPotionEffect(new PotionEffect(IC2Potion.radiation, level * 180 * amountOfItems)); // TODO radiation
+            entity.attackEntityFrom(DamageSources.getRadioactiveDamage(), level * 6 * amountOfItems);
             return true;
         }
         return false;
@@ -382,9 +384,9 @@ public class GTUtility {
     }
 
     public static List<FluidStack> copyFluidList(List<FluidStack> fluidStacks) {
-        List<FluidStack> stacks = new ArrayList<>(fluidStacks.size());
-        for (int i = 0; i < fluidStacks.size(); i++) stacks.set(i, fluidStacks.get(i).copy());
-        return stacks;
+        FluidStack[] stacks = new FluidStack[fluidStacks.size()];
+        for (int i = 0; i < fluidStacks.size(); i++) stacks[i] = fluidStacks.get(i).copy();
+        return Lists.newArrayList(stacks);
     }
 
     public static FluidStack[] copyFluidArray(FluidStack... stacks) {

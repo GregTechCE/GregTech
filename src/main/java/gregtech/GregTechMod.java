@@ -14,15 +14,19 @@ import gregtech.common.CommonProxy;
 import gregtech.common.MetaFluids;
 import gregtech.common.blocks.MetaBlocks;
 import gregtech.common.blocks.modelfactories.BlockCompressedFactory;
+import gregtech.common.blocks.modelfactories.BlockFrameFactory;
 import gregtech.common.blocks.modelfactories.BlockOreFactory;
 import gregtech.common.cable.BlockCable;
 import gregtech.common.items.MetaItems;
 import gregtech.common.metatileentities.MetaTileEntities;
 import gregtech.loaders.load.FuelLoader;
 import gregtech.loaders.oreprocessing.OreProcessingHandler;
+import gregtech.loaders.postload.CraftingRecipeLoader;
 import gregtech.loaders.postload.DungeonLootLoader;
+import gregtech.loaders.postload.MachineRecipeLoader;
+import gregtech.loaders.postload.WorldgenLoader;
 import gregtech.loaders.preload.MaterialInfoLoader;
-import gregtech.loaders.preload.OreDictionaryLoader;
+import gregtech.loaders.load.OreDictionaryLoader;
 import mcmultipart.multipart.MultipartRegistry;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fml.common.*;
@@ -43,6 +47,7 @@ public class GregTechMod {
             ResourcePackHook.init();
             BlockOreFactory.init();
             BlockCompressedFactory.init();
+            BlockFrameFactory.init();
         }
     }
 
@@ -86,6 +91,8 @@ public class GregTechMod {
         OrePrefix.runMaterialHandlers();
         FuelLoader.registerFuels();
         MetaItems.registerRecipes();
+        MachineRecipeLoader.init();
+        CraftingRecipeLoader.init();
         gregtechproxy.onLoad();
 
         if(Loader.isModLoaded(GTValues.MODID_MCMP)) {
@@ -107,6 +114,7 @@ public class GregTechMod {
     public void onPostInit(FMLPostInitializationEvent event) {
         GTLog.logger.info("PostInit-Phase started!");
 
+        WorldgenLoader.init();
         gregtechproxy.onPostLoad();
 
         DungeonLootLoader.init();

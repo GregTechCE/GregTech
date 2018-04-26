@@ -17,20 +17,23 @@ public class BlockWireCoil extends VariantBlock<BlockWireCoil.CoilType> {
 
     public enum CoilType implements IStringSerializable {
 
-        CUPRONICKEL("cupronickel"),
-        KANTHAL("kanthal"),
-        NICHROME("nichrome"),
-        TUNGSTENSTEEL("tungstensteel"),
-        HSS_G("hss_g"),
-        NAQUADAH("naquadah"),
-        NAQUADAH_ALLOY("naquadah_alloy"),
-        SUPERCONDUCTOR("superconductor"),
-        FUSION_COIL("fusion_coil");
+        //TODO proper temperature values @Exidex
+        CUPRONICKEL("cupronickel", 1800),
+        KANTHAL("kanthal", 2500),
+        NICHROME("nichrome", 2900),
+        TUNGSTENSTEEL("tungstensteel", 3500),
+        HSS_G("hss_g", 4000),
+        NAQUADAH("naquadah", 4700),
+        NAQUADAH_ALLOY("naquadah_alloy", 5000),
+        SUPERCONDUCTOR("superconductor", 5300),
+        FUSION_COIL("fusion_coil", 5700);
 
         private final String name;
+        private final int coilTemperature;
 
-        CoilType(String name) {
+        CoilType(String name, int coilTemperature) {
             this.name = name;
+            this.coilTemperature = coilTemperature;
         }
 
         @Override
@@ -38,6 +41,9 @@ public class BlockWireCoil extends VariantBlock<BlockWireCoil.CoilType> {
             return this.name;
         }
 
+        public int getCoilTemperature() {
+            return coilTemperature;
+        }
     }
 
 }

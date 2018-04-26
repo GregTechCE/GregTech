@@ -57,8 +57,9 @@ public class GregTechAPI {
 
     public static final GTControlledRegistry<MetaTileEntity> META_TILE_ENTITY_REGISTRY = new GTControlledRegistry<>(Short.MAX_VALUE);
 
-    public static void registerMetaTileEntity(int id, MetaTileEntity sampleMetaTileEntity) {
+    public static <T extends MetaTileEntity> T registerMetaTileEntity(int id, T sampleMetaTileEntity) {
         META_TILE_ENTITY_REGISTRY.register(id, sampleMetaTileEntity.metaTileEntityId, sampleMetaTileEntity);
+        return sampleMetaTileEntity;
     }
 
     public static final Map<Fluid, EnumDyeColor> LIQUID_DYE_MAP = new HashMap<>();

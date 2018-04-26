@@ -4,25 +4,19 @@ import gregtech.api.GregTechAPI;
 import gregtech.api.unification.material.Materials;
 import gregtech.api.unification.material.type.*;
 import gregtech.common.blocks.properties.PropertyMaterial;
-import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.event.RegistryEvent;
-import net.minecraftforge.fml.common.registry.GameRegistry;
 
 import javax.annotation.Nullable;
-import java.util.Collection;
-import java.util.List;
 
 public final class BlockCompressed extends DelayedStateBlock {
 
@@ -84,6 +78,10 @@ public final class BlockCompressed extends DelayedStateBlock {
     @SuppressWarnings("deprecation")
     public ItemStack getItem(IBlockState blockState) {
         return new ItemStack(this, 1, getMetaFromState(blockState));
+    }
+
+    public ItemStack getItem(Material material) {
+        return getItem(getDefaultState().withProperty(variantProperty, material));
     }
 
     @Override

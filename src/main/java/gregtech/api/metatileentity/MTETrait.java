@@ -14,9 +14,9 @@ public abstract class MTETrait {
     protected MetaTileEntity metaTileEntity;
     protected int index;
 
-    public void setMetaTileEntityAndIndex(MetaTileEntity metaTileEntity, int index) {
+    public MTETrait(MetaTileEntity metaTileEntity) {
         this.metaTileEntity = metaTileEntity;
-        this.index = index;
+        this.index = metaTileEntity.addMetaTileEntityTrait(this);
     }
 
     public MetaTileEntity getMetaTileEntity() {

@@ -1,25 +1,21 @@
 package gregtech.common.worldgen;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Random;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.function.Predicate;
-import java.util.stream.Collectors;
-
-import gregtech.api.GTValues;
 import gregtech.api.unification.material.type.DustMaterial;
 import gregtech.api.util.GTWorldGen;
 import gregtech.api.util.IWeighted;
 import gregtech.api.util.WeightedList;
 import gregtech.api.util.WeightedList.WeightedWrapperList;
+import gregtech.common.ConfigHolder;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraft.world.gen.IChunkGenerator;
+
+import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 public class GTWorldGenOreVein extends GTWorldGen implements IWeighted {
 
@@ -191,7 +187,7 @@ public class GTWorldGenOreVein extends GTWorldGen implements IWeighted {
                     }
                 }
             }
-            if (GTValues.DEBUG)
+            if (ConfigHolder.debug)
                 System.out.println("Generated Orevein: " + this.name + " " + (chunkX << 4) + " " + (chunkZ << 4));
         }
     }

@@ -10,7 +10,7 @@ import codechicken.lib.vec.uv.IconTransformation;
 import com.google.common.base.Preconditions;
 import gregtech.api.GregTechAPI;
 import gregtech.api.capability.impl.FluidHandlerProxy;
-import gregtech.api.capability.impl.FluidTankHandler;
+import gregtech.api.capability.impl.FluidTankList;
 import gregtech.api.capability.impl.ItemHandlerProxy;
 import gregtech.api.gui.ModularUI;
 import gregtech.api.util.GTUtility;
@@ -35,10 +35,7 @@ import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandlerItem;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import net.minecraftforge.items.CapabilityItemHandler;
-import net.minecraftforge.items.IItemHandler;
-import net.minecraftforge.items.IItemHandlerModifiable;
-import net.minecraftforge.items.ItemHandlerHelper;
+import net.minecraftforge.items.*;
 import org.apache.commons.lang3.ArrayUtils;
 
 import javax.annotation.Nullable;
@@ -59,8 +56,8 @@ public abstract class MetaTileEntity {
 
     protected IItemHandler itemInventory;
 
-    protected FluidTankHandler importFluids;
-    protected FluidTankHandler exportFluids;
+    protected FluidTankList importFluids;
+    protected FluidTankList exportFluids;
 
     protected IFluidHandler fluidInventory;
 
@@ -160,12 +157,11 @@ public abstract class MetaTileEntity {
      * traits are objects linked with meta tile entity and performing certian
      * actions. usually traits implement capabilities
      * @param trait trait object to add
-     * @return trait object passed in arguments
+     * @return index of trait in list
      */
-    protected <T extends MTETrait> T addTrait(T trait) {
-        trait.setMetaTileEntityAndIndex(this, mteTraits.size());
+    int addMetaTileEntityTrait(MTETrait trait) {
         this.mteTraits.add(trait);
-        return trait;
+        return mteTraits.size() - 1;
     }
 
     /**
@@ -189,13 +185,25 @@ public abstract class MetaTileEntity {
         }
     }
 
-    protected abstract IItemHandlerModifiable createImportItemHandler();
+    protected IItemHandlerModifiable createImportItemHandler() {
+        return new ItemStackHandler(0);
+    }
 
-    protected abstract IItemHandlerModifiable createExportItemHandler();
+    protected IItemHandlerModifiable createExportItemHandler() {
+        return new ItemStackHandler(0);
+    }
 
-    protected abstract FluidTankHandler createImportFluidHandler();
+    protected FluidTankList createImportFluidHandler() {
+        return new FluidTankList();
+    }
 
-    protected abstract FluidTankHandler createExportFluidHandler();
+    protected FluidTankList createExportFluidHandler() {
+        return new FluidTankList();
+    }
+
+    protected boolean openGUIOnRightClick() {
+        return true;
+    }
 
     /**
      * Creates a UI instance for player opening inventory of this meta tile entity
@@ -209,7 +217,7 @@ public abstract class MetaTileEntity {
      * @return true if something happened, so animation will be played
      */
     public boolean onRightClick(EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
-        if(!playerIn.isSneaking()) {
+        if(!playerIn.isSneaking() && openGUIOnRightClick()) {
             if(!getWorld().isRemote) {
                 MetaTileEntityUIFactory.INSTANCE.openUI(getHolder(), (EntityPlayerMP) playerIn);
             }
@@ -261,6 +269,10 @@ public abstract class MetaTileEntity {
     public final ItemStack getStackForm(int amount) {
         int metaTileEntityIntId = GregTechAPI.META_TILE_ENTITY_REGISTRY.getIdByObjectName(metaTileEntityId);
         return new ItemStack(GregTechAPI.MACHINE, amount, metaTileEntityIntId);
+    }
+
+    public final ItemStack getStackForm() {
+        return getStackForm(1);
     }
 
     /**
@@ -456,6 +468,43 @@ public abstract class MetaTileEntity {
         }
     }
 
+    public void pullItemsFromNearbyHandlers(EnumFacing... allowedFaces) {
+        for(EnumFacing nearbyFacing : allowedFaces) {
+            TileEntity tileEntity = getWorld().getTileEntity(getPos().offset(nearbyFacing));
+            if(tileEntity == null) continue;
+            IItemHandler itemHandler = tileEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, nearbyFacing.getOpposite());
+            if(itemHandler == null) continue;
+            for(int slotIndex = 0; slotIndex < itemHandler.getSlots(); slotIndex++) {
+                ItemStack stackInSlot = itemHandler.extractItem(slotIndex, itemHandler.getSlotLimit(slotIndex), true);
+                if(stackInSlot.isEmpty()) continue;
+                for(int hisSlotIndex = 0; hisSlotIndex < importItems.getSlots(); hisSlotIndex++) {
+                    ItemStack remainingStack = importItems.insertItem(hisSlotIndex, stackInSlot, true);
+                    if(remainingStack != stackInSlot) {
+                        ItemStack actualStack = itemHandler.extractItem(slotIndex, stackInSlot.getCount() - remainingStack.getCount(), false);
+                        stackInSlot = importItems.insertItem(hisSlotIndex, actualStack, false);
+                    }
+                    if(stackInSlot.isEmpty()) break;
+                }
+            }
+        }
+    }
+
+    public void pullFluidsFromNearbyHandlers(EnumFacing... allowedFaces) {
+        for(EnumFacing nearbyFacing : allowedFaces) {
+            TileEntity tileEntity = getWorld().getTileEntity(getPos().offset(nearbyFacing));
+            if(tileEntity == null) continue;
+            IFluidHandler fluidHandler = tileEntity.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, nearbyFacing.getOpposite());
+            if(fluidHandler == null) continue;
+            FluidStack fluidStack = fluidHandler.drain(Integer.MAX_VALUE, false);
+            if(fluidStack == null || fluidStack.amount == 0) continue;
+            int canInsertAmount = importFluids.fill(fluidStack, false);
+            if(canInsertAmount > 0) {
+                fluidStack = fluidHandler.drain(canInsertAmount, true);
+                importFluids.fill(fluidStack, true);
+            }
+        }
+    }
+
     public static boolean isItemHandlerEmpty(IItemHandler handler) {
         for(int i = 0; i < handler.getSlots(); i++) {
             if(!handler.getStackInSlot(i).isEmpty())
@@ -580,11 +629,11 @@ public abstract class MetaTileEntity {
         return exportItems;
     }
 
-    public FluidTankHandler getImportFluids() {
+    public FluidTankList getImportFluids() {
         return importFluids;
     }
 
-    public FluidTankHandler getExportFluids() {
+    public FluidTankList getExportFluids() {
         return exportFluids;
     }
 

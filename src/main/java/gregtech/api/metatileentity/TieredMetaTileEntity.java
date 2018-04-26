@@ -4,6 +4,7 @@ import codechicken.lib.render.CCRenderState;
 import codechicken.lib.render.pipeline.ColourMultiplier;
 import codechicken.lib.render.pipeline.IVertexOperation;
 import gregtech.api.GTValues;
+import gregtech.api.capability.IEnergyContainer;
 import gregtech.api.capability.impl.EnergyContainerHandler;
 import gregtech.api.render.SimpleSidedRenderer;
 import gregtech.api.render.SimpleSidedRenderer.RenderSide;
@@ -16,7 +17,7 @@ import org.apache.commons.lang3.ArrayUtils;
 public abstract class TieredMetaTileEntity extends MetaTileEntity {
 
     private final int tier;
-    protected EnergyContainerHandler energyContainer;
+    protected IEnergyContainer energyContainer;
 
     public TieredMetaTileEntity(String metaTileEntityId, int tier) {
         super(metaTileEntityId);
@@ -27,10 +28,10 @@ public abstract class TieredMetaTileEntity extends MetaTileEntity {
     protected void reinitializeEnergyContainer() {
         long tierVoltage = GTValues.V[tier];
         if (isEnergyEmitter()) {
-            this.energyContainer = addTrait(EnergyContainerHandler.emitterContainer(
-                tierVoltage * 16L, tierVoltage, getMaxInputOutputAmperage()));
-        } else this.energyContainer = addTrait(EnergyContainerHandler.receiverContainer(
-            tierVoltage * 16L, tierVoltage, getMaxInputOutputAmperage()));
+            this.energyContainer = EnergyContainerHandler.emitterContainer(this,
+                tierVoltage * 32L, tierVoltage, getMaxInputOutputAmperage());
+        } else this.energyContainer = EnergyContainerHandler.receiverContainer(this,
+            tierVoltage * 32L, tierVoltage, getMaxInputOutputAmperage());
     }
 
     @SideOnly(Side.CLIENT)

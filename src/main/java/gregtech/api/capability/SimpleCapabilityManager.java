@@ -1,5 +1,6 @@
 package gregtech.api.capability;
 
+import gregtech.api.metatileentity.multiblock.IMultiblockPart;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.capabilities.Capability;
@@ -31,6 +32,7 @@ public class SimpleCapabilityManager {
         registerCapability(IEnergyContainer.class);
         registerCapability(IElectricItem.class);
         registerCapability(IWorkable.class);
+        registerCapability(IMultiblockPart.class);
     }
 
 }

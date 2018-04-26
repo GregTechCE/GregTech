@@ -4,6 +4,7 @@ import gregtech.api.gui.Widget;
 import gregtech.api.gui.resources.RenderUtil;
 import gregtech.api.gui.resources.TextureArea;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.nbt.NBTTagCompound;
@@ -12,8 +13,6 @@ import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.IFluidTank;
 import net.minecraftforge.fml.client.config.GuiUtils;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -24,8 +23,9 @@ public class TankWidget extends Widget {
     public final IFluidTank fluidTank;
 
     public final int x, y, width, height;
-    private int fluidRenderOffset = 1;
+    public int fluidRenderOffset = 1;
     private boolean hideTooltip;
+    private boolean alwaysShowFull;
 
     private TextureArea[] backgroundTexture;
     private TextureArea overlayTexture;
@@ -44,6 +44,11 @@ public class TankWidget extends Widget {
 
     public TankWidget setHideTooltip(boolean hideTooltip) {
         this.hideTooltip = hideTooltip;
+        return this;
+    }
+
+    public TankWidget setAlwaysShowFull(boolean alwaysShowFull) {
+        this.alwaysShowFull = alwaysShowFull;
         return this;
     }
 
@@ -84,14 +89,21 @@ public class TankWidget extends Widget {
         //do not draw fluids if they are handled by JEI - it draws them itself
         if(lastFluidInTank != null && !gui.isJEIHandled) {
             GlStateManager.disableBlend();
-            RenderUtil.drawFluidForGui(lastFluidInTank, lastTankCapacity,
+            RenderUtil.drawFluidForGui(lastFluidInTank, alwaysShowFull ? lastFluidInTank.amount : lastTankCapacity,
                 x + fluidRenderOffset, y + fluidRenderOffset,
                 width - fluidRenderOffset, height - fluidRenderOffset);
+            int bucketsAmount = lastFluidInTank.amount / 1000;
+            if(alwaysShowFull && bucketsAmount > 0) {
+                String s = String.valueOf(bucketsAmount);
+                FontRenderer fontRenderer = Minecraft.getMinecraft().fontRenderer;
+                fontRenderer.drawStringWithShadow(s, x + 1 + width - 2 - fontRenderer.getStringWidth(s), y + (height / 3) + 3, 0xFFFFFF);
+            }
             GlStateManager.enableBlend();
         }
         if(overlayTexture != null) {
             overlayTexture.draw(x, y, width, height);
         }
+
     }
 
     @Override

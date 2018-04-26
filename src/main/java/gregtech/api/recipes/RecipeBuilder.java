@@ -1,23 +1,19 @@
 package gregtech.api.recipes;
 
 import com.google.common.base.Predicates;
-import com.google.common.collect.ImmutableMap;
 import gnu.trove.map.TObjectIntMap;
 import gnu.trove.map.hash.TObjectIntHashMap;
-import gregtech.api.recipes.builders.IntCircuitRecipeBuilder;
 import gregtech.api.unification.OreDictUnifier;
-import gregtech.api.unification.material.Materials;
+import gregtech.api.unification.material.type.Material;
+import gregtech.api.unification.ore.OrePrefix;
 import gregtech.api.util.EnumValidationResult;
 import gregtech.api.util.GTLog;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.ValidationResult;
-import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
-import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 
-import javax.annotation.Nonnull;
 import java.util.*;
 
 /**
@@ -124,6 +120,14 @@ public abstract class RecipeBuilder<R extends RecipeBuilder<R>> {
 
     public R input(String oredict, int count) {
 	    return inputs(CountableIngredient.from(oredict, count));
+    }
+
+    public R input(OrePrefix orePrefix, Material material) {
+	    return inputs(CountableIngredient.from(orePrefix, material, 1));
+    }
+
+    public R input(OrePrefix orePrefix, Material material, int count) {
+	    return inputs(CountableIngredient.from(orePrefix, material, count));
     }
 
     public R inputs(CountableIngredient... inputs) {

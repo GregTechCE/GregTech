@@ -272,7 +272,7 @@ public class ModHandler {
         skip |= validateRecipe(recipe);
         if (skip) return;
 
-        IRecipe shapedOreRecipe = new ShapedOreRecipe(new ResourceLocation(GTValues.MODID, "general"), result.copy(), finalizeRecipeInput(recipe))
+        IRecipe shapedOreRecipe = new ShapedOreRecipe(new ResourceLocation(GTValues.MODID, "general"), result.copy(), finalizeShapedRecipeInput(recipe))
             .setMirrored(true)
             .setRegistryName(regName);
         ForgeRegistries.RECIPES.register(shapedOreRecipe);
@@ -316,7 +316,7 @@ public class ModHandler {
         skip |= validateRecipe(recipe);
         if (skip) return;
 
-        IRecipe shapedOreRecipe = new ShapedOreRecipe(null, result.copy(), finalizeRecipeInput(recipe))
+        IRecipe shapedOreRecipe = new ShapedOreRecipe(null, result.copy(), finalizeShapedRecipeInput(recipe))
             .setRegistryName(regName);
         ForgeRegistries.RECIPES.register(shapedOreRecipe);
     }
@@ -344,7 +344,7 @@ public class ModHandler {
         return skip;
     }
 
-    private static Object[] finalizeRecipeInput(Object... recipe) {
+    private static Object[] finalizeShapedRecipeInput(Object... recipe) {
         for (byte i = 0; i < recipe.length; i++) {
             if (recipe[i] instanceof MetaItem.MetaValueItem) {
                 recipe[i] = ((MetaItem<?>.MetaValueItem) recipe[i]).getStackForm();

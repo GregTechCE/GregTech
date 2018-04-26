@@ -58,6 +58,10 @@ public final class ModularUI {
         return new Builder(GuiTextures.BACKGROUND, 176, 166);
     }
 
+    public static Builder cutBuilder() {
+        return new Builder(GuiTextures.BACKGROUND_CUT, 176, 85);
+    }
+
     public static Builder builder(TextureArea background, int width, int height) {
         return new Builder(background, width, height);
     }
@@ -115,8 +119,32 @@ public final class ModularUI {
             return widget(new ProgressWidget(progressSupplier, x, y, width, height, texture, moveType));
         }
 
+        public Builder squareOfSlots(IItemHandlerModifiable itemHandler, int startIndex, int size, TextureArea... backgrounds) {
+            int sizeSqrt = (int) Math.sqrt(size);
+            return groupOfSlots(itemHandler, startIndex, sizeSqrt, sizeSqrt, backgrounds);
+        }
+
+        public Builder groupOfSlots(IItemHandlerModifiable itemHandler, int startIndex, int width, int height, TextureArea... backgrounds) {
+            int startX = 88 - (width * 9);
+            int startY = 45 - (height * 9);
+            for(int x = 0; x < width; x++) {
+                for(int y = 0; y < height; y++) {
+                    this.slot(itemHandler, startIndex + height * y + x,
+                        startX + 18 * x,
+                        startY + 18 * y, backgrounds);
+                }
+            }
+            return this;
+        }
+
         public Builder bindPlayerInventory(InventoryPlayer inventoryPlayer) {
             bindPlayerInventory(inventoryPlayer, nextFreeWidgetId, GuiTextures.SLOT);
+            nextFreeWidgetId += 36;
+            return this;
+        }
+
+        public Builder bindPlayerInventory(InventoryPlayer inventoryPlayer, TextureArea slotTexture) {
+            bindPlayerInventory(inventoryPlayer, nextFreeWidgetId, slotTexture);
             nextFreeWidgetId += 36;
             return this;
         }
@@ -125,10 +153,6 @@ public final class ModularUI {
             Preconditions.checkNotNull(widget);
             widgets.put(id, widget);
             return this;
-        }
-
-        public Builder bindPlayerInventory(InventoryPlayer inventoryPlayer, int startWidgetId) {
-            return bindPlayerInventory(inventoryPlayer, startWidgetId, GuiTextures.SLOT);
         }
 
         public Builder bindPlayerInventory(InventoryPlayer inventoryPlayer, int startWidgetId, TextureArea imageLocation) {

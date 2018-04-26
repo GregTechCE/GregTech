@@ -331,7 +331,6 @@ public enum OrePrefix {
         nugget.ignoredMaterials.add(Materials.Gold);
         plate.ignoredMaterials.add(Materials.Paper);
 
-
         bucket.ignoredMaterials.add(Materials.Lava);
         bucket.ignoredMaterials.add(Materials.Milk);
         bucket.ignoredMaterials.add(Materials.Water);
@@ -352,7 +351,6 @@ public enum OrePrefix {
         block.ignoredMaterials.add(Materials.Endstone);
         block.ignoredMaterials.add(Materials.Wheat);
         block.ignoredMaterials.add(Materials.Oilsands);
-        block.ignoredMaterials.add(Materials.Snow);
 
         pipeRestrictiveTiny.secondaryMaterial = new MaterialStack(Materials.Steel, ring.materialAmount);
         pipeRestrictiveSmall.secondaryMaterial = new MaterialStack(Materials.Steel, ring.materialAmount * 2);
@@ -401,6 +399,8 @@ public enum OrePrefix {
 
         stickLong.processOreRegistration(Materials.Wood);
         gear.processOreRegistration(Materials.Wood);
+
+        ring.processOreRegistration(Materials.Paper);
     }
 
     @SafeVarargs

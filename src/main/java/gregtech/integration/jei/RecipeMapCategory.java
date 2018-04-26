@@ -1,7 +1,7 @@
 package gregtech.integration.jei;
 
 import gregtech.api.GTValues;
-import gregtech.api.capability.impl.FluidTankHandler;
+import gregtech.api.capability.impl.FluidTankList;
 import gregtech.api.gui.ModularUI;
 import gregtech.api.gui.Widget;
 import gregtech.api.gui.widgets.SlotWidget;
@@ -15,18 +15,18 @@ import mezz.jei.api.gui.IRecipeLayout;
 import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.recipe.IRecipeCategory;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.GlStateManager;
+import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.items.ItemStackHandler;
 
+import java.util.List;
+
 public class RecipeMapCategory implements IRecipeCategory<GTRecipeWrapper> {
 
-    private static final int OFFSET_DRAW_X = -1;
-    private static final int OFFSET_DRAW_Y = -30;
     private final RecipeMap<?> recipeMap;
     private final ModularUI modularUI;
     private ItemStackHandler importItems, exportItems;
-    private FluidTankHandler importFluids, exportFluids;
+    private FluidTankList importFluids, exportFluids;
     private final IDrawable backgroundDrawable;
 
     public RecipeMapCategory(RecipeMap<?> recipeMap) {
@@ -40,13 +40,12 @@ public class RecipeMapCategory implements IRecipeCategory<GTRecipeWrapper> {
         this.modularUI = recipeMap.createUITemplate(() -> 0.0,
             (importItems = new ItemStackHandler(recipeMap.getMaxInputs())),
             (exportItems = new ItemStackHandler(recipeMap.getMaxOutputs())),
-            (importFluids = new FluidTankHandler(importFluidTanks)),
-            (exportFluids = new FluidTankHandler(exportFluidTanks))
+            (importFluids = new FluidTankList(importFluidTanks)),
+            (exportFluids = new FluidTankList(exportFluidTanks))
             ).build(() -> {}, Minecraft.getMinecraft().player);
-        this.backgroundDrawable = Internal.getHelpers().getGuiHelper()
-            .createBlankDrawable(modularUI.width, 70);
         this.modularUI.isJEIHandled = true;
         this.modularUI.initWidgets();
+        this.backgroundDrawable = Internal.getHelpers().getGuiHelper().createBlankDrawable(modularUI.width, modularUI.height);
     }
 
     @Override
@@ -78,25 +77,39 @@ public class RecipeMapCategory implements IRecipeCategory<GTRecipeWrapper> {
                 SlotWidget slotWidget = (SlotWidget) uiWidget;
                 if(slotWidget.itemHandler == importItems) {
                     //this is input item stack slot widget, so add it to item group
-                    itemStackGroup.init(slotWidget.slotIndex, true, slotWidget.xPosition + OFFSET_DRAW_X, slotWidget.yPosition + OFFSET_DRAW_Y);
+                    itemStackGroup.init(slotWidget.slotIndex, true, slotWidget.xPosition - 1, slotWidget.yPosition - 1);
                 } else if(slotWidget.itemHandler == exportItems) {
                     //this is output item stack slot widget, so add it to item group
-                    itemStackGroup.init(importItems.getSlots() + slotWidget.slotIndex, false, slotWidget.xPosition + OFFSET_DRAW_X, slotWidget.yPosition + OFFSET_DRAW_Y);
+                    itemStackGroup.init(importItems.getSlots() + slotWidget.slotIndex, false, slotWidget.xPosition - 1, slotWidget.yPosition - 1);
                 }
             } else if(uiWidget instanceof TankWidget) {
                 TankWidget tankWidget = (TankWidget) uiWidget;
-                int importIndex = importFluids.getFluidTanks().indexOf(tankWidget.fluidTank);
-                int exportIndex = exportFluids.getFluidTanks().indexOf(tankWidget.fluidTank);
-                if(importIndex != -1) {
+                if(importFluids.getFluidTanks().contains(tankWidget.fluidTank)) {
+                    int importIndex = importFluids.getFluidTanks().indexOf(tankWidget.fluidTank);
+                    List<List<FluidStack>> inputsList = ingredients.getInputs(FluidStack.class);
+                    int fluidAmount = 0;
+                    if(inputsList.size() > importIndex && !inputsList.get(importIndex).isEmpty())
+                        fluidAmount = inputsList.get(importIndex).get(0).amount;
                     //this is input tank widget, so add it to fluid group
                     fluidStackGroup.init(importIndex, true,
-                        tankWidget.x + 2 + OFFSET_DRAW_X, tankWidget.y + 2 + OFFSET_DRAW_Y, tankWidget.width - 1, tankWidget.height - 1,
-                        tankWidget.fluidTank.getCapacity(), true, null);
-                } else if(exportIndex != -1) {
+                        tankWidget.x + tankWidget.fluidRenderOffset,
+                        tankWidget.y + tankWidget.fluidRenderOffset,
+                        tankWidget.width - tankWidget.fluidRenderOffset,
+                        tankWidget.height - tankWidget.fluidRenderOffset,
+                        fluidAmount, false, null);
+                } else if(exportFluids.getFluidTanks().contains(tankWidget.fluidTank)) {
+                    int exportIndex = exportFluids.getFluidTanks().indexOf(tankWidget.fluidTank);
+                    List<List<FluidStack>> inputsList = ingredients.getOutputs(FluidStack.class);
+                    int fluidAmount = 0;
+                    if(inputsList.size() > exportIndex && !inputsList.get(exportIndex).isEmpty())
+                        fluidAmount = inputsList.get(exportIndex).get(0).amount;
                     //this is output tank widget, so add it to fluid group
-                    fluidStackGroup.init(importFluids.getTanks() + exportIndex, false,
-                        tankWidget.x + 2 + OFFSET_DRAW_X, tankWidget.y + 2 + OFFSET_DRAW_Y, tankWidget.width - 1, tankWidget.height - 1,
-                        tankWidget.fluidTank.getCapacity(), true, null);
+                    fluidStackGroup.init(importFluids.getFluidTanks().size() + exportIndex, false,
+                        tankWidget.x + tankWidget.fluidRenderOffset,
+                        tankWidget.y + tankWidget.fluidRenderOffset,
+                        tankWidget.width - tankWidget.fluidRenderOffset,
+                        tankWidget.height - tankWidget.fluidRenderOffset,
+                        fluidAmount, false, null);
                 }
             }
         }
@@ -107,7 +120,6 @@ public class RecipeMapCategory implements IRecipeCategory<GTRecipeWrapper> {
 
     @Override
     public void drawExtras(Minecraft minecraft) {
-        GlStateManager.translate(1.0 + OFFSET_DRAW_X, 1.0 + OFFSET_DRAW_Y, 0.0);
         for(Widget widget : modularUI.guiWidgets.values()) {
             widget.drawInBackground(0, 0);
             widget.drawInForeground(0, 0);

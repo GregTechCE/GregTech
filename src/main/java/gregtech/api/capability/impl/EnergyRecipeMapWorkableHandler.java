@@ -1,14 +1,15 @@
 package gregtech.api.capability.impl;
 
 import gregtech.api.capability.IEnergyContainer;
+import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.recipes.RecipeMap;
 
 public class EnergyRecipeMapWorkableHandler extends RecipeMapWorkableHandler {
 
     private final IEnergyContainer energyContainer;
 
-    public EnergyRecipeMapWorkableHandler(IEnergyContainer energyContainer, RecipeMap<?> recipeMap) {
-        super(recipeMap);
+    public EnergyRecipeMapWorkableHandler(MetaTileEntity tileEntity, RecipeMap<?> recipeMap, IEnergyContainer energyContainer) {
+        super(tileEntity, recipeMap);
         this.energyContainer = energyContainer;
     }
 

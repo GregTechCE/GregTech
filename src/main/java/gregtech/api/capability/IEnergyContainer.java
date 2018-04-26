@@ -20,7 +20,7 @@ public interface IEnergyContainer {
         return false;
     }
 
-    void addEnergy(long energyToAdd);
+    long addEnergy(long energyToAdd);
 
     default boolean canUse(long energy) {
         return getEnergyStored()  >= energy;

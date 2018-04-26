@@ -7,10 +7,10 @@ import gnu.trove.map.TObjectIntMap;
 import gregtech.api.capability.IMultipleTankHandler;
 import gregtech.api.util.GTUtility;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.util.NonNullList;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.items.IItemHandlerModifiable;
 import org.apache.commons.lang3.Validate;
 
@@ -344,8 +344,40 @@ public class Recipe {
 			return duration;
 		}
 
-		public int getEUt() {
-			return EUt;
-		}
-	}
+        public int getEUt() {
+            return EUt;
+        }
+    }
+
+    public static class PrimitiveBlastFurnaceRecipe {
+
+	    private final Ingredient input;
+        private final ItemStack output;
+
+        private final int duration;
+        private final int fuelAmount;
+
+        public PrimitiveBlastFurnaceRecipe(Ingredient input, ItemStack output, int duration, int fuelAmount) {
+            this.input = input;
+            this.output = output;
+            this.duration = duration;
+            this.fuelAmount = fuelAmount;
+        }
+
+        public Ingredient getInput() {
+            return input;
+        }
+
+        public int getDuration() {
+            return duration;
+        }
+
+        public int getFuelAmount() {
+            return fuelAmount;
+        }
+
+        public ItemStack getOutput() {
+            return output;
+        }
+    }
 }

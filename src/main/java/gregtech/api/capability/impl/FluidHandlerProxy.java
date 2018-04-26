@@ -22,7 +22,7 @@ public class FluidHandlerProxy implements IFluidHandler {
         List<IFluidTankProperties> tanks = Lists.newArrayList();
         Collections.addAll(tanks, input.getTankProperties());
         Collections.addAll(tanks, output.getTankProperties());
-        this.properties = tanks.toArray(new IFluidTankProperties[tanks.size()]);
+        this.properties = tanks.toArray(new IFluidTankProperties[0]);
     }
 
     @Override

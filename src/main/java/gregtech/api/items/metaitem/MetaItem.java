@@ -136,7 +136,7 @@ public abstract class MetaItem<T extends MetaItem<?>.MetaValueItem> extends Item
     protected abstract T constructMetaValueItem(short metaValue, String unlocalizedName, String... nameParameters);
 
     public final T addItem(int metaValue, String unlocalizedName, String... nameParameters) {
-        Validate.inclusiveBetween(0, Short.MAX_VALUE - 1, metaValue, "MetaItem ID should be in range from 0 to Short.MAX_VALUE-1");
+        Validate.inclusiveBetween(0, Short.MAX_VALUE - 1, metaValue + metaItemOffset, "MetaItem ID should be in range from 0 to Short.MAX_VALUE-1");
         T metaValueItem = constructMetaValueItem((short) metaValue, unlocalizedName, nameParameters);
         metaItems.put((short) metaValue, metaValueItem);
         names.put(unlocalizedName, metaValueItem);
@@ -651,6 +651,16 @@ public abstract class MetaItem<T extends MetaItem<?>.MetaValueItem> extends Item
 
         public ItemStack getStackForm() {
             return getStackForm(1);
+        }
+
+        public ItemStack getFullyCharged(int amount) {
+            if(electricStats == null)
+                return getStackForm(amount);
+            ItemStack itemStack = getStackForm(1);
+            IElectricItem electricItem = itemStack.getCapability(IElectricItem.CAPABILITY_ELECTRIC_ITEM, null);
+            electricItem.charge(Long.MAX_VALUE, Integer.MAX_VALUE, true, false);
+            itemStack.setCount(amount);
+            return itemStack;
         }
 
         @Override

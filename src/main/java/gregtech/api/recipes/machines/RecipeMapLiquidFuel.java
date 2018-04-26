@@ -1,10 +1,9 @@
 package gregtech.api.recipes.machines;
 
-import gregtech.api.capability.impl.FluidTankHandler;
+import gregtech.api.capability.impl.FluidTankList;
 import gregtech.api.gui.GuiTextures;
 import gregtech.api.gui.ModularUI;
 import gregtech.api.gui.ModularUI.Builder;
-import gregtech.api.gui.widgets.ImageWidget;
 import gregtech.api.gui.widgets.TankWidget;
 import gregtech.api.recipes.RecipeMap;
 import gregtech.api.recipes.builders.DefaultRecipeBuilder;
@@ -19,10 +18,11 @@ public class RecipeMapLiquidFuel extends RecipeMap<DefaultRecipeBuilder> {
     }
 
     @Override
-    public Builder createUITemplate(DoubleSupplier progressSupplier, IItemHandlerModifiable importItems, IItemHandlerModifiable exportItems, FluidTankHandler importFluids, FluidTankHandler exportFluids) {
+    public Builder createUITemplate(DoubleSupplier progressSupplier, IItemHandlerModifiable importItems, IItemHandlerModifiable exportItems, FluidTankList importFluids, FluidTankList exportFluids) {
         Builder builder = ModularUI.defaultBuilder();
         builder.image(7, 16, 81, 55, GuiTextures.DISPLAY);
-        TankWidget tankWidget = new TankWidget(importFluids.getTankAt(0), 67, 50, 18, 18).setHideTooltip(true);
+        TankWidget tankWidget = new TankWidget(importFluids.getTankAt(0), 67, 50, 18, 18)
+            .setHideTooltip(true).setAlwaysShowFull(true);
         builder.widget(tankWidget);
         builder.label(11, 20, "gregtech.gui.fuel_amount", 0xFFFFFF);
         builder.dynamicLabel(11, 30, tankWidget::getFormattedFluidAmount, 0xFFFFFF);

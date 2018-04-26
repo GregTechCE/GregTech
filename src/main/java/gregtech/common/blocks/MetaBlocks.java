@@ -8,6 +8,7 @@ import gregtech.api.unification.material.Materials;
 import gregtech.api.unification.material.type.DustMaterial;
 import gregtech.api.unification.material.type.Material;
 import gregtech.api.unification.material.type.MetalMaterial;
+import gregtech.api.unification.material.type.SolidMaterial;
 import gregtech.api.unification.ore.OrePrefix;
 import gregtech.api.unification.ore.StoneType;
 import gregtech.api.unification.ore.StoneTypes;
@@ -55,6 +56,7 @@ public class MetaBlocks {
 
     public static Map<MetalMaterial, BlockCable> CABLES = new HashMap<>();
     public static HashMap<DustMaterial, BlockCompressed> COMPRESSED = new HashMap<>();
+    public static HashMap<SolidMaterial, BlockFrame> FRAMES = new HashMap<>();
     public static Collection<BlockOre> ORES = new HashSet<>();
 
     public static StoneType BLACK_GRANITE;
@@ -91,33 +93,50 @@ public class MetaBlocks {
         CONCRETE.setRegistryName("concrete");
 
         StoneType.init();
-        Material[] materialBuffer = new Material[16];
-        Arrays.fill(materialBuffer, Materials._NULL);
-        int generationIndex = 0;
+        Material[] compressedMaterialBuffer = new Material[16];
+        Material[] frameMaterialBuffer = new Material[16];
+        Arrays.fill(compressedMaterialBuffer, Materials._NULL);
+        Arrays.fill(frameMaterialBuffer, Materials._NULL);
+        int compressedGenerationIndex = 0;
+        int frameGenerationIndex = 0;
         for (Material material : Material.MATERIAL_REGISTRY.getObjectsWithIds()) {
             if (material instanceof DustMaterial) {
-                if(material instanceof MetalMaterial) {
-                    MetalMaterial metalMaterial = (MetalMaterial) material;
-                    if(metalMaterial.cableProperties != null) {
-                        createCableBlock(metalMaterial);
-                    }
-                }
-                if (material.hasFlag(DustMaterial.MatFlags.GENERATE_ORE)) {
-                    createOreBlock((DustMaterial) material);
-                }
                 int id = Material.MATERIAL_REGISTRY.getIDForObject(material);
                 int index = id / 16;
-                if (index > generationIndex) {
-                    createCompressedBlock(materialBuffer, generationIndex);
-                    Arrays.fill(materialBuffer, Materials._NULL);
+                if (index > compressedGenerationIndex) {
+                    createCompressedBlock(compressedMaterialBuffer, compressedGenerationIndex);
+                    Arrays.fill(compressedMaterialBuffer, Materials._NULL);
                 }
                 if (!OrePrefix.block.isIgnored(material)) {
-                    materialBuffer[id % 16] = material;
-                    generationIndex = index;
+                    compressedMaterialBuffer[id % 16] = material;
+                    compressedGenerationIndex = index;
+                }
+            }
+            if(material instanceof SolidMaterial) {
+                int id = Material.MATERIAL_REGISTRY.getIDForObject(material);
+                int index = id / 16;
+                if (index > frameGenerationIndex) {
+                    createFrameBlock(frameMaterialBuffer, frameGenerationIndex);
+                    Arrays.fill(frameMaterialBuffer, Materials._NULL);
+                }
+                if (!OrePrefix.frameGt.isIgnored(material)) {
+                    frameMaterialBuffer[id % 16] = material;
+                    frameGenerationIndex = index;
+                }
+            }
+            if (material instanceof DustMaterial &&
+                material.hasFlag(DustMaterial.MatFlags.GENERATE_ORE)) {
+                createOreBlock((DustMaterial) material);
+            }
+            if(material instanceof MetalMaterial) {
+                MetalMaterial metalMaterial = (MetalMaterial) material;
+                if(metalMaterial.cableProperties != null) {
+                    createCableBlock(metalMaterial);
                 }
             }
         }
-        createCompressedBlock(materialBuffer, generationIndex);
+        createCompressedBlock(compressedMaterialBuffer, compressedGenerationIndex);
+        createFrameBlock(frameMaterialBuffer, frameGenerationIndex);
     }
 
     private static void createCableBlock(MetalMaterial material) {
@@ -132,6 +151,16 @@ public class MetaBlocks {
         for (Material material : materials) {
             if (material instanceof DustMaterial) {
                 COMPRESSED.put((DustMaterial) material, block);
+            }
+        }
+    }
+
+    private static void createFrameBlock(Material[] materials, int index) {
+        BlockFrame block = new BlockFrame(materials);
+        block.setRegistryName("frame_" + index);
+        for (Material material : materials) {
+            if (material instanceof SolidMaterial) {
+                FRAMES.put((SolidMaterial) material, block);
             }
         }
     }
@@ -178,6 +207,7 @@ public class MetaBlocks {
         ItemMeshDefinition cableMeshDefinition = stack -> CableRenderer.MODEL_LOCATION;
         CABLES.values().forEach(cable -> ModelLoader.setCustomMeshDefinition(Item.getItemFromBlock(cable), cableMeshDefinition));
         COMPRESSED.values().stream().distinct().forEach(MetaBlocks::registerItemModel);
+        FRAMES.values().stream().distinct().forEach(MetaBlocks::registerItemModel);
         ORES.stream().distinct().forEach(MetaBlocks::registerItemModel);
     }
 
@@ -214,6 +244,11 @@ public class MetaBlocks {
             Minecraft.getMinecraft().getItemColors().registerItemColorHandler(COMPRESSED_ITEM_COLOR, block);
         });
 
+        MetaBlocks.FRAMES.values().stream().distinct().forEach(block -> {
+            Minecraft.getMinecraft().getBlockColors().registerBlockColorHandler(FRAME_BLOCK_COLOR, block);
+            Minecraft.getMinecraft().getItemColors().registerItemColorHandler(FRAME_ITEM_COLOR, block);
+        });
+
         MetaBlocks.ORES.stream().distinct().forEach(block -> {
             Minecraft.getMinecraft().getBlockColors().registerBlockColorHandler(ORE_BLOCK_COLOR, block);
             Minecraft.getMinecraft().getItemColors().registerItemColorHandler(ORE_ITEM_COLOR, block);
@@ -224,10 +259,17 @@ public class MetaBlocks {
         for(Entry<DustMaterial, BlockCompressed> entry : COMPRESSED.entrySet()) {
             DustMaterial material = entry.getKey();
             BlockCompressed block = entry.getValue();
-            ItemStack itemStack = block.getItem(block.getDefaultState()
-                .withProperty(block.variantProperty, material));
+            ItemStack itemStack = block.getItem(material);
             OreDictUnifier.registerOre(itemStack, OrePrefix.block, material);
         }
+
+        for(Entry<SolidMaterial, BlockFrame> entry : FRAMES.entrySet()) {
+            SolidMaterial material = entry.getKey();
+            BlockFrame block = entry.getValue();
+            ItemStack itemStack = block.getItem(material);
+            OreDictUnifier.registerOre(itemStack, OrePrefix.frameGt, material);
+        }
+
         for(BlockOre blockOre : ORES) {
             DustMaterial material = blockOre.material;
             for(StoneType stoneType : blockOre.STONE_TYPE.getAllowedValues()) {

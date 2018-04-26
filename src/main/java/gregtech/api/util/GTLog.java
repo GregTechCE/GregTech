@@ -1,7 +1,6 @@
 package gregtech.api.util;
 
-import gregtech.api.GTValues;
-
+import gregtech.common.ConfigHolder;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.Marker;
@@ -26,10 +25,10 @@ public class GTLog extends AbstractLogger { //TODO Add static logger methods and
 
     @Override
     public void logMessage(String fqcn, Level level, Marker marker, Message message, Throwable t) {
-        if (!GTValues.DEBUG && level.isLessSpecificThan(Level.DEBUG)) {
+        if (!ConfigHolder.debug && level.isLessSpecificThan(Level.DEBUG)) {
             return;
         }
-        if (GTValues.useLoggerPrefix) {
+        if (ConfigHolder.useLoggerPrefix) {
             message = getMessageFactory().newMessage("[GregTech] " + message.getFormattedMessage());
         }
         internal.log(level, marker, message, t);
@@ -37,7 +36,7 @@ public class GTLog extends AbstractLogger { //TODO Add static logger methods and
 
     @Override
     public Level getLevel() {
-        return GTValues.DEBUG ? Level.ALL : Level.INFO;
+        return ConfigHolder.debug ? Level.ALL : Level.INFO;
     }
 
     //Internal methods

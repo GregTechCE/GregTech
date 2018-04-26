@@ -1,20 +1,14 @@
 package gregtech.common;
 
-import java.util.function.Function;
-
 import gregtech.api.GTValues;
 import gregtech.api.block.machines.MachineItemBlock;
-import gregtech.common.cable.ItemBlockCable;
 import gregtech.api.enchants.EnchantmentEnderDamage;
 import gregtech.api.enchants.EnchantmentRadioactivity;
 import gregtech.api.items.metaitem.MetaItem;
 import gregtech.api.util.GTLog;
-import gregtech.common.blocks.CompressedItemBlock;
-import gregtech.common.blocks.OreItemBlock;
-import gregtech.common.blocks.StoneItemBlock;
-import gregtech.common.blocks.VariantItemBlock;
+import gregtech.common.blocks.*;
+import gregtech.common.cable.ItemBlockCable;
 import gregtech.common.items.MetaItems;
-import gregtech.loaders.postload.WorldgenLoader;
 import net.minecraft.block.Block;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.item.Item;
@@ -23,6 +17,8 @@ import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.registries.IForgeRegistry;
+
+import java.util.function.Function;
 
 import static gregtech.common.blocks.MetaBlocks.*;
 
@@ -49,6 +45,7 @@ public class CommonProxy {
 
         CABLES.values().forEach(registry::register);
         COMPRESSED.values().stream().distinct().forEach(registry::register);
+        FRAMES.values().stream().distinct().forEach(registry::register);
         ORES.forEach(registry::register);
     }
 
@@ -81,6 +78,10 @@ public class CommonProxy {
             .stream().distinct()
             .map(block -> createItemBlock(block, CompressedItemBlock::new))
             .forEach(registry::register);
+        FRAMES.values()
+            .stream().distinct()
+            .map(block -> createItemBlock(block, FrameItemBlock::new))
+            .forEach(registry::register);
         ORES.stream()
             .map(block -> createItemBlock(block, OreItemBlock::new))
             .forEach(registry::register);
@@ -107,6 +108,5 @@ public class CommonProxy {
     }
 
     public void onPostLoad() {
-        WorldgenLoader.init();
     }
 }

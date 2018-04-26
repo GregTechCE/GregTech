@@ -5,7 +5,7 @@ import codechicken.lib.render.pipeline.ColourMultiplier;
 import codechicken.lib.render.pipeline.IVertexOperation;
 import gregtech.api.GTValues;
 import gregtech.api.capability.impl.FilteredFluidHandler;
-import gregtech.api.capability.impl.FluidTankHandler;
+import gregtech.api.capability.impl.FluidTankList;
 import gregtech.api.capability.impl.SteamRecipeMapWorkableHandler;
 import gregtech.api.gui.ModularUI;
 import gregtech.api.gui.widgets.LabelWidget;
@@ -35,8 +35,8 @@ public abstract class SteamMetaTileEntity extends MetaTileEntity {
 
     public SteamMetaTileEntity(String metaTileEntityId, RecipeMap<?> recipeMap, OrientedOverlayRenderer renderer, boolean isHighPressure) {
         super(metaTileEntityId);
-        this.workableHandler = addTrait(new SteamRecipeMapWorkableHandler(
-            recipeMap, GTValues.V[isHighPressure ? 1 : 0], steamFluidTank, 1.0));
+        this.workableHandler = new SteamRecipeMapWorkableHandler(this,
+            recipeMap, GTValues.V[isHighPressure ? 1 : 0], steamFluidTank, 1.0);
         this.isHighPressure = isHighPressure;
         this.renderer = renderer;
         BRONZE_BACKGROUND_TEXTURE = getFullGuiTexture("%s_gui");
@@ -79,15 +79,10 @@ public abstract class SteamMetaTileEntity extends MetaTileEntity {
     }
 
     @Override
-    public FluidTankHandler createImportFluidHandler() {
+    public FluidTankList createImportFluidHandler() {
         this.steamFluidTank = new FilteredFluidHandler(getSteamCapacity())
             .setFillPredicate(ModHandler::isSteam);
-        return new FluidTankHandler(steamFluidTank);
-    }
-
-    @Override
-    public FluidTankHandler createExportFluidHandler() {
-        return new FluidTankHandler();
+        return new FluidTankList(steamFluidTank);
     }
 
     public int getSteamCapacity() {

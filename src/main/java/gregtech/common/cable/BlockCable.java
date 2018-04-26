@@ -274,7 +274,7 @@ public class BlockCable extends Block implements ITileEntityProvider, IMultipart
         for(int i = 0; i < insulationArray.length; i++) {
             Insulation insulation = insulationArray[i];
             int totalAmperage = baseProps.amperage * insulation.amperage;
-            int totalLossPerBlock = baseProps.lossPerBlock * insulation.amperage * insulation.lossMultiplier;
+            int totalLossPerBlock = baseProps.lossPerBlock * insulation.lossMultiplier;
             this.insulatedPropsCache[i] = new WireProperties(baseProps.material, baseProps.voltage,
                 totalAmperage, totalLossPerBlock);
         }
@@ -338,9 +338,9 @@ public class BlockCable extends Block implements ITileEntityProvider, IMultipart
         return false;
     }
 
-    @Override
+    /*@Override
     public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
-        if(!worldIn.isRemote) {
+        if(!worldIn.isRemote && GTValues.DEBUG) {
             WorldENet worldENet = WorldENet.getWorldENet(worldIn);
             EnergyNet energyNet = worldENet.getNetFromPos(pos);
             playerIn.sendMessage(new TextComponentString("Energy net: " + energyNet));
@@ -352,8 +352,8 @@ public class BlockCable extends Block implements ITileEntityProvider, IMultipart
                 playerIn.sendMessage(new TextComponentString("Emit paths: " + tileEntityCable.getPaths()));
             }
         }
-        return true;
-    }
+        return false;
+    }*/
 
     @Override
     public void breakBlock(World worldIn, BlockPos pos, IBlockState state) {
@@ -368,13 +368,12 @@ public class BlockCable extends Block implements ITileEntityProvider, IMultipart
 
     @Override
     public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos) {
-        boolean hasTileEntity = worldIn.getTileEntity(pos) != null;
         boolean hasCapability = hasEnergyCapabilities(worldIn, pos);
         EnergyNet energyNet = WorldENet.getWorldENet(worldIn).getNetFromPos(pos);
         if(energyNet != null) {
-            if(hasCapability && !hasTileEntity) {
+            if(hasCapability) {
                 energyNet.markNodeAsActive(pos);
-            } else if(!hasCapability && hasTileEntity) {
+            } else {
                 energyNet.markNodeAsInactive(pos);
             }
         }

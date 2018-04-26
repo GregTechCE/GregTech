@@ -4,7 +4,7 @@ import codechicken.lib.render.CCRenderState;
 import codechicken.lib.render.pipeline.ColourMultiplier;
 import codechicken.lib.render.pipeline.IVertexOperation;
 import gregtech.api.capability.impl.FilteredFluidHandler;
-import gregtech.api.capability.impl.FluidTankHandler;
+import gregtech.api.capability.impl.FluidTankList;
 import gregtech.api.gui.ModularUI;
 import gregtech.api.gui.resources.TextureArea;
 import gregtech.api.gui.widgets.*;
@@ -200,16 +200,16 @@ public abstract class SteamBoiler extends MetaTileEntity {
     }
 
     @Override
-    protected FluidTankHandler createImportFluidHandler() {
+    protected FluidTankList createImportFluidHandler() {
         this.waterFluidTank = new FilteredFluidHandler(16000)
             .setFillPredicate(ModHandler::isWater);
-        return new FluidTankHandler(waterFluidTank);
+        return new FluidTankList(waterFluidTank);
     }
 
     @Override
-    protected FluidTankHandler createExportFluidHandler() {
+    protected FluidTankList createExportFluidHandler() {
         this.steamFluidTank = new FluidTank(16000);
-        return new FluidTankHandler(steamFluidTank);
+        return new FluidTankList(steamFluidTank);
     }
 
     protected TextureArea getGuiTexture(String pathTemplate) {

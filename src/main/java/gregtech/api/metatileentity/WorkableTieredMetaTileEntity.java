@@ -4,7 +4,7 @@ import codechicken.lib.render.CCRenderState;
 import codechicken.lib.render.pipeline.IVertexOperation;
 import gregtech.api.capability.impl.EnergyRecipeMapWorkableHandler;
 import gregtech.api.capability.impl.FilteredFluidHandler;
-import gregtech.api.capability.impl.FluidTankHandler;
+import gregtech.api.capability.impl.FluidTankList;
 import gregtech.api.recipes.Recipe;
 import gregtech.api.recipes.RecipeMap;
 import gregtech.api.render.OrientedOverlayRenderer;
@@ -25,7 +25,7 @@ public abstract class WorkableTieredMetaTileEntity extends TieredMetaTileEntity 
     public WorkableTieredMetaTileEntity(String metaTileEntityId, RecipeMap<?> recipeMap, OrientedOverlayRenderer renderer, int tier) {
         super(metaTileEntityId, tier);
         this.renderer = renderer;
-        this.workable = addTrait(new EnergyRecipeMapWorkableHandler(energyContainer, recipeMap));
+        this.workable = new EnergyRecipeMapWorkableHandler(this, recipeMap, energyContainer);
         initializeInventory();
         reinitializeEnergyContainer();
     }
@@ -54,25 +54,25 @@ public abstract class WorkableTieredMetaTileEntity extends TieredMetaTileEntity 
     }
 
     @Override
-    protected FluidTankHandler createImportFluidHandler() {
-        if(workable == null) return new FluidTankHandler();
+    protected FluidTankList createImportFluidHandler() {
+        if(workable == null) return new FluidTankList();
         FilteredFluidHandler[] fluidImports = new FilteredFluidHandler[workable.recipeMap.getMaxFluidInputs()];
         for(int i = 0; i < fluidImports.length; i++) {
             FilteredFluidHandler filteredFluidHandler = new FilteredFluidHandler(getInputTankCapacity(i));
             filteredFluidHandler.setFillPredicate(fluid -> canInputFluid(fluid.getFluid()));
             fluidImports[i] = filteredFluidHandler;
         }
-        return new FluidTankHandler(fluidImports);
+        return new FluidTankList(fluidImports);
     }
 
     @Override
-    protected FluidTankHandler createExportFluidHandler() {
-        if(workable == null) return new FluidTankHandler();
+    protected FluidTankList createExportFluidHandler() {
+        if(workable == null) return new FluidTankList();
         FluidTank[] fluidExports = new FluidTank[workable.recipeMap.getMaxFluidOutputs()];
         for(int i = 0; i < fluidExports.length; i++) {
             fluidExports[i] = new FluidTank(getOutputTankCapacity(i));
         }
-        return new FluidTankHandler(fluidExports);
+        return new FluidTankList(fluidExports);
     }
 
     protected boolean canInputFluid(Fluid inputFluid) {

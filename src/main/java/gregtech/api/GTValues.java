@@ -36,17 +36,17 @@ public class GTValues {
     /**
      * The Voltage Tiers. Use this Array instead of the old named Voltage Variables
      */
-    public static final long[] V = new long[]{8, 32, 128, 512, 2048, 8192, 32768, 131072, 524288, Integer.MAX_VALUE, Integer.MAX_VALUE, Integer.MAX_VALUE, Integer.MAX_VALUE, Integer.MAX_VALUE, Integer.MAX_VALUE, Integer.MAX_VALUE};
+    public static final long[] V = new long[]{8, 32, 128, 512, 2048, 8192, 32768, 131072, 524288, Integer.MAX_VALUE};
 
     /**
      * The short Names for the Voltages
      */
-    public static final String[] VN = new String[]{"ULV", "LV", "MV", "HV", "EV", "IV", "LuV", "ZPM", "UV", "MAX", "MAX", "MAX", "MAX", "MAX", "MAX", "MAX"};
+    public static final String[] VN = new String[]{"ULV", "LV", "MV", "HV", "EV", "IV", "LuV", "ZPM", "UV", "MAX"};
 
     /**
      * The long Names for the Voltages
      */
-    public static final String[] VOLTAGE_NAMES = new String[]{"Ultra Low Voltage", "Low Voltage", "Medium Voltage", "High Voltage", "Extreme Voltage", "Insane Voltage", "Ludicrous Voltage", "ZPM Voltage", "Ultimate Voltage", "Maximum Voltage", "Maximum Voltage", "Maximum Voltage", "Maximum Voltage", "Maximum Voltage", "Maximum Voltage", "Maximum Voltage"};
+    public static final String[] VOLTAGE_NAMES = new String[]{"Ultra Low Voltage", "Low Voltage", "Medium Voltage", "High Voltage", "Extreme Voltage", "Insane Voltage", "Ludicrous Voltage", "ZPM Voltage", "Ultimate Voltage", "Maximum Voltage"};
 
     /**
      * MOD ID Strings, since they are very common Parameters.
@@ -56,18 +56,6 @@ public class GTValues {
             MODID_FR = "Forestry",
             MODID_JEI = "jei",
             MODID_MCMP = "mcmultipart";
-
-    /**
-     * Not really Constant, but it set using the Config and therefore should be constant (this is for the Debug Mode)
-     */
-    //TODO CONFIG
-    public static boolean DEBUG = false;
-
-    /**
-     * Use [GregTech] prefix in logger. Will move to config once that exists.
-     */
-    //TODO CONFIG
-    public static boolean useLoggerPrefix = false;
 
     /**
      * If you have to give something a World Parameter but there is no World... (Dummy World)

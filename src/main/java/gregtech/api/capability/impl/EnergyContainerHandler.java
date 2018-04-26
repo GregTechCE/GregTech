@@ -3,7 +3,10 @@ package gregtech.api.capability.impl;
 import gregtech.api.capability.IElectricItem;
 import gregtech.api.capability.IEnergyContainer;
 import gregtech.api.metatileentity.MTETrait;
+import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.util.GTUtility;
+import gregtech.common.ConfigHolder;
+
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.PacketBuffer;
@@ -30,7 +33,8 @@ public class EnergyContainerHandler extends MTETrait implements IEnergyContainer
     private Predicate<EnumFacing> sideInputCondition;
     private Predicate<EnumFacing> sideOutputCondition;
 
-    public EnergyContainerHandler(long maxCapacity, long maxInputVoltage, long maxInputAmperage, long maxOutputVoltage, long maxOutputAmperage) {
+    public EnergyContainerHandler(MetaTileEntity tileEntity, long maxCapacity, long maxInputVoltage, long maxInputAmperage, long maxOutputVoltage, long maxOutputAmperage) {
+        super(tileEntity);
         this.maxCapacity = maxCapacity;
         this.maxInputVoltage = maxInputVoltage;
         this.maxInputAmperage = maxInputAmperage;
@@ -46,12 +50,12 @@ public class EnergyContainerHandler extends MTETrait implements IEnergyContainer
         this.sideOutputCondition = sideOutputCondition;
     }
 
-    public static EnergyContainerHandler emitterContainer(long maxCapacity, long maxOutputVoltage, long maxOutputAmperage) {
-        return new EnergyContainerHandler(maxCapacity, 0L, 0L, maxOutputVoltage, maxOutputAmperage);
+    public static EnergyContainerHandler emitterContainer(MetaTileEntity tileEntity, long maxCapacity, long maxOutputVoltage, long maxOutputAmperage) {
+        return new EnergyContainerHandler(tileEntity, maxCapacity, 0L, 0L, maxOutputVoltage, maxOutputAmperage);
     }
 
-    public static EnergyContainerHandler receiverContainer(long maxCapacity, long maxInputVoltage, long maxInputAmperage) {
-        return new EnergyContainerHandler(maxCapacity, maxInputVoltage, maxInputAmperage, 0L, 0L);
+    public static EnergyContainerHandler receiverContainer(MetaTileEntity tileEntity, long maxCapacity, long maxInputVoltage, long maxInputAmperage) {
+        return new EnergyContainerHandler(tileEntity, maxCapacity, maxInputVoltage, maxInputAmperage, 0L, 0L);
     }
 
     @Override
@@ -161,10 +165,11 @@ public class EnergyContainerHandler extends MTETrait implements IEnergyContainer
             if(voltage > getInputVoltage()) {
                 BlockPos pos = metaTileEntity.getPos();
                 metaTileEntity.getWorld().setBlockToAir(pos);
-                //TODO config option for explosions
-                metaTileEntity.getWorld().createExplosion(null,
-                    pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5,
-                    GTUtility.getTierByVoltage(voltage), true);
+                if(ConfigHolder.doExplosions) {
+                    metaTileEntity.getWorld().createExplosion(null,
+                        pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5,
+                        GTUtility.getTierByVoltage(voltage), true);
+                }
                 return Math.min(amperage, getInputAmperage());
             }
             if(canAccept >= voltage) {
@@ -185,7 +190,7 @@ public class EnergyContainerHandler extends MTETrait implements IEnergyContainer
 
     @Override
     public boolean inputsEnergy(EnumFacing side) {
-        return getInputVoltage() > 0 && (sideInputCondition == null || sideInputCondition.test(side));
+        return !outputsEnergy(side) && getInputVoltage() > 0 && (sideInputCondition == null || sideInputCondition.test(side));
     }
 
     @Override
@@ -194,8 +199,15 @@ public class EnergyContainerHandler extends MTETrait implements IEnergyContainer
     }
 
     @Override
-    public void addEnergy(long energyToAdd) {
-        setEnergyStored(Math.max(0, Math.min(getEnergyCapacity(), getEnergyStored() + energyToAdd)));
+    public long addEnergy(long energyToAdd) {
+        long oldEnergyStored = getEnergyStored();
+        long newEnergyStored = oldEnergyStored + energyToAdd;
+        if(newEnergyStored > getEnergyCapacity())
+            newEnergyStored = getEnergyCapacity();
+        else if(newEnergyStored < 0)
+            newEnergyStored = 0;
+        setEnergyStored(newEnergyStored);
+        return newEnergyStored - oldEnergyStored;
     }
 
     @Override

@@ -3,8 +3,6 @@ package gregtech.common.items;
 import gregtech.api.items.materialitem.MaterialMetaItem;
 import gregtech.api.items.metaitem.MetaItem;
 import gregtech.api.items.toolitem.ToolMetaItem;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -167,6 +165,9 @@ public final class MetaItems {
     public static MetaItem<?>.MetaValueItem CONVEYOR_MODULE_HV;
     public static MetaItem<?>.MetaValueItem CONVEYOR_MODULE_EV;
     public static MetaItem<?>.MetaValueItem CONVEYOR_MODULE_IV;
+    public static MetaItem<?>.MetaValueItem CONVEYOR_MODULE_LUV;
+    public static MetaItem<?>.MetaValueItem CONVEYOR_MODULE_ZPM;
+    public static MetaItem<?>.MetaValueItem CONVEYOR_MODULE_UV;
 
     public static MetaItem<?>.MetaValueItem ELECTRIC_PISTON_LV;
     public static MetaItem<?>.MetaValueItem ELECTRIC_PISTON_MV;
@@ -292,15 +293,14 @@ public final class MetaItems {
 
     public static MetaItem<?>.MetaValueItem DYE_INDIGO;
 
+    public static MetaItem<?>.MetaValueItem PLANT_BALL;
+
     public static MetaItem<?>.MetaValueItem PLANK_OAK;
     public static MetaItem<?>.MetaValueItem PLANK_SPRUCE;
     public static MetaItem<?>.MetaValueItem PLANK_BIRCH;
     public static MetaItem<?>.MetaValueItem PLANK_JUNGLE;
     public static MetaItem<?>.MetaValueItem PLANK_ACACIA;
     public static MetaItem<?>.MetaValueItem PLANK_DARKOAK;
-
-    public static MetaItem<?>.MetaValueItem SFMIXTURE;
-    public static MetaItem<?>.MetaValueItem MSFMIXTURE;
 
     public static MetaItem<?>.MetaValueItem CROP_DROP_PLUMBILIA;
     public static MetaItem<?>.MetaValueItem CROP_DROP_ARGENTIA;
@@ -389,7 +389,7 @@ public final class MetaItems {
 
     public static void init() {
         MetaItem1 first = new MetaItem1();
-        first.setRegistryName("meta_item_1"); // Move into item class?
+        first.setRegistryName("meta_item_1");
         ITEMS.add(first);
         MetaItem2 second = new MetaItem2();
         second.setRegistryName("meta_item_2");
@@ -406,9 +406,7 @@ public final class MetaItems {
             }
         }
     }
-    
-    //TODO JSON!
-    @Deprecated
+
     public static void registerRecipes() {
         for (MetaItem<?> item : ITEMS) {
             if (item instanceof MetaItem1)

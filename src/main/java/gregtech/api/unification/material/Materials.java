@@ -129,10 +129,12 @@ public class Materials {
     public static FluidMaterial SeedOil = new FluidMaterial(327, "seed_oil", 0xC4FF00, MaterialIconSet.FLUID, of(), 0);
     public static DustMaterial Stone = new DustMaterial(328, "stone", 0xCDCDCD, MaterialIconSet.ROUGH, 1, of(), MORTAR_GRINDABLE | GENERATE_GEAR | GENERATE_PLATE | NO_SMASHING | NO_RECYCLING);
     public static FluidMaterial Lava = new FluidMaterial(329, "lava", 0xFF4000, MaterialIconSet.FLUID, of(), 0);
-    public static DustMaterial Glowstone = new DustMaterial(330, "glowstone", 0xFFFF00, MaterialIconSet.SHINY, 1, of(), NO_SMASHING | SMELT_INTO_FLUID);
+    public static DustMaterial Glowstone = new DustMaterial(330, "glowstone", 0xFFFF00, MaterialIconSet.SHINY, 1, of(), NO_SMASHING | SMELT_INTO_FLUID | GENERATE_PLATE);
     public static GemMaterial NetherStar = new GemMaterial(331, "nether_star", 0xFFFFFF, MaterialIconSet.NETHERSTAR, 4, of(), STD_SOLID | GENERATE_LENSE | NO_SMASHING | NO_SMELTING, null, 1.0F, 5120);
     public static DustMaterial Endstone = new DustMaterial(332, "endstone", 0xFFFFFF, MaterialIconSet.DULL, 1, of(), NO_SMASHING);
     public static DustMaterial Netherrack = new DustMaterial(333, "netherrack", 0xC80000, MaterialIconSet.ROUGH, 1, of(), NO_SMASHING | FLAMMABLE);
+    public static FluidMaterial DrillingFluid = new FluidMaterial(348, "drilling_fluid", 0xFFFFAA, MaterialIconSet.FLUID, of(), 0);
+
 
     /**
      * First Degree Compounds
@@ -199,18 +201,18 @@ public class Materials {
     public static DustMaterial Obsidian = new DustMaterial(138, "obsidian", 0x503264, MaterialIconSet.DULL, 3, of(new MaterialStack(Magnesium, 1), new MaterialStack(Iron, 1), new MaterialStack(Silicon, 2), new MaterialStack(Oxygen, 8)), NO_SMASHING);
     public static DustMaterial Phosphate = new DustMaterial(139, "phosphate", 0xFFFF00, MaterialIconSet.ROUGH, 1, of(new MaterialStack(Phosphorus, 1), new MaterialStack(Oxygen, 4)), GENERATE_ORE | NO_SMASHING | NO_SMELTING | FLAMMABLE | EXPLOSIVE);
     public static MetalMaterial PigIron = new MetalMaterial(140, "pig_iron", 0xC8B4B4, MaterialIconSet.METALLIC, 2, of(new MaterialStack(Iron, 1)), EXT_METAL | GENERATE_RING, 6.0F, 384);
-    public static DustMaterial Plastic = new DustMaterial(141, "plastic", 0xC8C8C8, MaterialIconSet.DULL, 1, of(new MaterialStack(Carbon, 1), new MaterialStack(Hydrogen, 2)), GENERATE_PLATE | FLAMMABLE | NO_SMASHING);
+    public static DustMaterial Plastic = new DustMaterial(141, "plastic", 0xC8C8C8, MaterialIconSet.DULL, 1, of(new MaterialStack(Carbon, 1), new MaterialStack(Hydrogen, 2)), GENERATE_PLATE | FLAMMABLE | NO_SMASHING | SMELT_INTO_FLUID);
     public static MetalMaterial Epoxid = new MetalMaterial(142, "epoxid", 0xC88C14, MaterialIconSet.DULL, 1, of(new MaterialStack(Carbon, 2), new MaterialStack(Hydrogen, 4), new MaterialStack(Oxygen, 1)), EXT2_METAL, 3.0F, 32);
     public static DustMaterial Silicone = new DustMaterial(143, "silicone", 0xDCDCDC, MaterialIconSet.DULL, 1, of(new MaterialStack(Carbon, 1), new MaterialStack(Hydrogen, 1), new MaterialStack(Silicon, 2), new MaterialStack(Oxygen, 1)), GENERATE_PLATE | FLAMMABLE | NO_SMASHING);
-    public static DustMaterial Polycaprolactam = new DustMaterial(144, "polycaprolactam", 0x323232, MaterialIconSet.DULL, 1, of(new MaterialStack(Carbon, 6), new MaterialStack(Hydrogen, 11), new MaterialStack(Nitrogen, 1), new MaterialStack(Oxygen, 1)), GENERATE_PLATE);
-    public static DustMaterial Polytetrafluoroethylene = new DustMaterial(145, "polytetrafluoroethylene", 0x646464, MaterialIconSet.DULL, 1, of(new MaterialStack(Carbon, 2), new MaterialStack(Fluorine, 4)), GENERATE_PLATE);
+    public static DustMaterial Polycaprolactam = new DustMaterial(144, "polycaprolactam", 0x323232, MaterialIconSet.DULL, 1, of(new MaterialStack(Carbon, 6), new MaterialStack(Hydrogen, 11), new MaterialStack(Nitrogen, 1), new MaterialStack(Oxygen, 1)), GENERATE_PLATE | SMELT_INTO_FLUID);
+    public static DustMaterial Polytetrafluoroethylene = new DustMaterial(145, "polytetrafluoroethylene", 0x646464, MaterialIconSet.DULL, 1, of(new MaterialStack(Carbon, 2), new MaterialStack(Fluorine, 4)), GENERATE_PLATE | SMELT_INTO_FLUID);
     public static DustMaterial Powellite = new DustMaterial(146, "powellite", 0xFFFF00, MaterialIconSet.ROUGH, 2, of(new MaterialStack(Calcium, 1), new MaterialStack(Molybdenum, 1), new MaterialStack(Oxygen, 4)), GENERATE_ORE);
     public static DustMaterial Pumice = new DustMaterial(147, "pumice", 0xE6B9B9, MaterialIconSet.PAPER, 2, of(new MaterialStack(Stone, 1)), 0);
     public static DustMaterial Pyrite = new DustMaterial(148, "pyrite", 0x967828, MaterialIconSet.ROUGH, 1, of(new MaterialStack(Iron, 1), new MaterialStack(Sulfur, 2)), GENERATE_ORE | INDUCTION_SMELTING_LOW_OUTPUT);
     public static DustMaterial Pyrolusite = new DustMaterial(149, "pyrolusite", 0x9696AA, MaterialIconSet.ROUGH, 2, of(new MaterialStack(Manganese, 1), new MaterialStack(Oxygen, 2)), GENERATE_ORE);
     public static DustMaterial Pyrope = new DustMaterial(150, "pyrope", 0x783264, MaterialIconSet.ROUGH, 2, of(new MaterialStack(Aluminium, 2), new MaterialStack(Magnesium, 3), new MaterialStack(Silicon, 3), new MaterialStack(Oxygen, 12)), GENERATE_ORE);
     public static DustMaterial RockSalt = new DustMaterial(151, "rock_salt", 0xF0C8C8, MaterialIconSet.FINE, 1, of(new MaterialStack(Potassium, 1), new MaterialStack(Chlorine, 1)), GENERATE_ORE | NO_SMASHING);
-    public static DustMaterial Rubber = new DustMaterial(152, "rubber", 0x151515, MaterialIconSet.ROUGH, 0, of(new MaterialStack(Carbon, 5), new MaterialStack(Hydrogen, 8)), GENERATE_PLATE | GENERATE_GEAR | FLAMMABLE | NO_SMASHING | GENERATE_RING);
+    public static MetalMaterial Rubber = new MetalMaterial(152, "rubber", 0x151515, MaterialIconSet.ROUGH, 0, of(new MaterialStack(Carbon, 5), new MaterialStack(Hydrogen, 8)), GENERATE_PLATE | GENERATE_GEAR | GENERATE_RING | FLAMMABLE | NO_SMASHING | GENERATE_RING);
     public static DustMaterial RawRubber = new DustMaterial(153, "raw_rubber", 0xCCC789, MaterialIconSet.SAND, 0, of(new MaterialStack(Carbon, 5), new MaterialStack(Hydrogen, 8)), 0);
     public static GemMaterial Ruby = new GemMaterial(154, "ruby", 0xFF6464, MaterialIconSet.RUBY, 2, of(new MaterialStack(Chrome, 1), new MaterialStack(Aluminium, 2), new MaterialStack(Oxygen, 3)), STD_GEM | NO_SMASHING | NO_SMELTING | HIGH_SIFTER_OUTPUT | SMELT_INTO_FLUID, 7.0F, 256);
     public static DustMaterial Salt = new DustMaterial(155, "salt", 0xFFFFFF, MaterialIconSet.SAND, 1, of(new MaterialStack(Sodium, 1), new MaterialStack(Chlorine, 1)), GENERATE_ORE | NO_SMASHING);
@@ -218,12 +220,13 @@ public class Materials {
     public static GemMaterial Sapphire = new GemMaterial(157, "sapphire", 0x6464C8, MaterialIconSet.GEM_VERTICAL, 2, of(new MaterialStack(Aluminium, 2), new MaterialStack(Oxygen, 3)), STD_GEM | NO_SMASHING | NO_SMELTING | HIGH_SIFTER_OUTPUT, null, 7.0F, 256);
     public static DustMaterial Scheelite = new DustMaterial(158, "scheelite", 0xC88C14, MaterialIconSet.DULL, 3, of(new MaterialStack(Tungsten, 1), new MaterialStack(Calcium, 2), new MaterialStack(Oxygen, 4)), GENERATE_ORE);
     public static DustMaterial SiliconDioxide = new DustMaterial(159, "silicon_dioxide", 0xC8C8C8, MaterialIconSet.QUARTZ, 1, of(new MaterialStack(Silicon, 1), new MaterialStack(Oxygen, 2)), NO_SMASHING | NO_SMELTING | CRYSTALLISABLE);
-    public static RoughMaterial Snow = new RoughMaterial(160, "snow", 0xFFFFFF, MaterialIconSet.FINE, 0, of(new MaterialStack(Hydrogen, 2), new MaterialStack(Oxygen, 1)), NO_SMASHING | NO_RECYCLING);
     public static GemMaterial Sodalite = new GemMaterial(161, "sodalite", 0x1414FF, MaterialIconSet.LAPIS, 1, of(new MaterialStack(Aluminium, 3), new MaterialStack(Silicon, 3), new MaterialStack(Sodium, 4), new MaterialStack(Chlorine, 1)), GENERATE_ORE | GENERATE_PLATE | GENERATE_ROD | NO_SMASHING | NO_SMELTING | CRYSTALLISABLE | GENERATE_ROD);
     public static FluidMaterial SodiumPersulfate = new FluidMaterial(162, "sodium_persulfate", 0xFFFFFF, MaterialIconSet.FLUID, of(new MaterialStack(Sodium, 1), new MaterialStack(Sulfur, 1), new MaterialStack(Oxygen, 4)), 0);
-    public static FluidMaterial SodiumSulfide = new FluidMaterial(163, "sodium_sulfide", 0xFFFFFF, MaterialIconSet.FLUID, of(new MaterialStack(Sodium, 2), new MaterialStack(Sulfur, 1)), 0);
+    public static FluidMaterial SodiumSulfide = new FluidMaterial(163, "sodium_sulfide", 0xAAAA00, MaterialIconSet.FLUID, of(new MaterialStack(Sodium, 2), new MaterialStack(Sulfur, 1)), 0);
     public static FluidMaterial HydrogenSulfide = new FluidMaterial(164, "hydrogen_sulfide", 0xFFFFFF, MaterialIconSet.FLUID, of(new MaterialStack(Hydrogen, 2), new MaterialStack(Sulfur, 1)), 0);
     public static FluidMaterial Steam = new FluidMaterial(346, "steam", 0xFFFFFF, MaterialIconSet.GAS, of(new MaterialStack(Hydrogen, 2), new MaterialStack(Oxygen, 1)), NO_RECYCLING);
+    public static FluidMaterial Epichlorhydrin = new FluidMaterial(349, "epichlorhydrin", 0xFFFFFF, MaterialIconSet.FLUID, of(new MaterialStack(Carbon, 3), new MaterialStack(Hydrogen, 5), new MaterialStack(Chlorine, 1), new MaterialStack(Oxygen, 1)), 0);
+    public static FluidMaterial NitricAcid = new FluidMaterial(351, "nitric_acid", 0xCCCC00, MaterialIconSet.FLUID, of(new MaterialStack(Hydrogen, 1), new MaterialStack(Nitrogen, 1), new MaterialStack(Oxygen, 3)), 0);
 
     public static FluidMaterial OilHeavy = new FluidMaterial(165, "oil_heavy", 0x0A0A0A, MaterialIconSet.FLUID, of(), 0);
     public static FluidMaterial OilMedium = new FluidMaterial(166, "oil_medium", 0x0A0A0A, MaterialIconSet.FLUID, of(), 0);
@@ -240,17 +243,18 @@ public class Materials {
     public static FluidMaterial LPG = new FluidMaterial(177, "lpg", 0xFFFF00, MaterialIconSet.FLUID, of(), 0);
     public static FluidMaterial CrackedLightFuel = new FluidMaterial(178, "cracked_light_fuel", 0xFFFF00, MaterialIconSet.FLUID, of(), 0);
     public static FluidMaterial CrackedHeavyFuel = new FluidMaterial(179, "cracked_heavy_fuel", 0xFFFF00, MaterialIconSet.FLUID, of(), 0);
+    public static FluidMaterial Toluene = new FluidMaterial(350, "toluene", 0xFFFFFF, MaterialIconSet.FLUID, of(), 0);
 
     public static MetalMaterial SolderingAlloy = new MetalMaterial(180, "soldering_alloy", 0xDCDCE6, MaterialIconSet.DULL, 1, of(new MaterialStack(Tin, 9), new MaterialStack(Antimony, 1)), EXT_METAL | GENERATE_FINE_WIRE, null, 400);
     public static DustMaterial Spessartine = new DustMaterial(181, "spessartine", 0xFF6464, MaterialIconSet.GEM_VERTICAL, 2, of(new MaterialStack(Aluminium, 2), new MaterialStack(Manganese, 3), new MaterialStack(Silicon, 3), new MaterialStack(Oxygen, 12)), GENERATE_ORE);
     public static DustMaterial Sphalerite = new DustMaterial(182, "sphalerite", 0xFFFFFF, MaterialIconSet.ROUGH, 1, of(new MaterialStack(Zinc, 1), new MaterialStack(Sulfur, 1)), GENERATE_ORE | INDUCTION_SMELTING_LOW_OUTPUT);
     public static MetalMaterial StainlessSteel = new MetalMaterial(183, "stainless_steel", 0xC8C8DC, MaterialIconSet.SHINY, 2, of(new MaterialStack(Iron, 6), new MaterialStack(Chrome, 1), new MaterialStack(Manganese, 1), new MaterialStack(Nickel, 1)), EXT2_METAL | GENERATE_RING | GENERATE_ROTOR | GENERATE_SMALL_GEAR, null, 7.0F, 480, 1700);
-    public static MetalMaterial Steel = new MetalMaterial(184, "steel", 0x808080, MaterialIconSet.METALLIC, 2, of(new MaterialStack(Iron, 50), new MaterialStack(Carbon, 1)), EXT2_METAL | MORTAR_GRINDABLE | GENERATE_RING | GENERATE_ROTOR | GENERATE_SMALL_GEAR, null, 6.0F, 512, 1000);
+    public static MetalMaterial Steel = new MetalMaterial(184, "steel", 0x505050, MaterialIconSet.METALLIC, 2, of(new MaterialStack(Iron, 50), new MaterialStack(Carbon, 1)), EXT2_METAL | MORTAR_GRINDABLE | GENERATE_RING | GENERATE_ROTOR | GENERATE_SMALL_GEAR, null, 6.0F, 512, 1000);
     public static DustMaterial Stibnite = new DustMaterial(185, "stibnite", 0x464646, MaterialIconSet.ROUGH, 2, of(new MaterialStack(Antimony, 2), new MaterialStack(Sulfur, 3)), GENERATE_ORE);
     public static FluidMaterial SulfuricAcid = new FluidMaterial(186, "sulfuric_acid", 0xFF8000, MaterialIconSet.FLUID, of(new MaterialStack(Hydrogen, 2), new MaterialStack(Sulfur, 1), new MaterialStack(Oxygen, 4)), 0);
     public static GemMaterial Tanzanite = new GemMaterial(187, "tanzanite", 0x4000C8, MaterialIconSet.GEM_VERTICAL, 2, of(new MaterialStack(Calcium, 2), new MaterialStack(Aluminium, 3), new MaterialStack(Silicon, 3), new MaterialStack(Hydrogen, 1), new MaterialStack(Oxygen, 13)), EXT_METAL | GENERATE_ORE | NO_SMASHING | NO_SMELTING | HIGH_SIFTER_OUTPUT, null, 7.0F, 256);
     public static DustMaterial Tetrahedrite = new DustMaterial(188, "tetrahedrite", 0xC82000, MaterialIconSet.ROUGH, 2, of(new MaterialStack(Copper, 3), new MaterialStack(Antimony, 1), new MaterialStack(Sulfur, 3), new MaterialStack(Iron, 1)), GENERATE_ORE | INDUCTION_SMELTING_LOW_OUTPUT);
-    public static MetalMaterial TinAlloy = new MetalMaterial(189, "tin_alloy", 0xC8C8C8, MaterialIconSet.METALLIC, 2, of(new MaterialStack(Tin, 1), new MaterialStack(Iron, 1)), EXT2_METAL, null, 6.5F, 96);
+    public static MetalMaterial TinAlloy = new MetalMaterial(189, "tin_alloy", 0xC8C8C8, MaterialIconSet.DULL, 2, of(new MaterialStack(Tin, 1), new MaterialStack(Iron, 1)), EXT2_METAL, null, 6.5F, 96);
     public static GemMaterial Topaz = new GemMaterial(190, "topaz", 0xFF8000, MaterialIconSet.GEM_HORIZONTAL, 3, of(new MaterialStack(Aluminium, 2), new MaterialStack(Silicon, 1), new MaterialStack(Fluorine, 2), new MaterialStack(Hydrogen, 2), new MaterialStack(Oxygen, 6)), STD_GEM | NO_SMASHING | NO_SMELTING | HIGH_SIFTER_OUTPUT, null, 7.0F, 256);
     public static MetalMaterial Tungstate = new MetalMaterial(191, "tungstate", 0x373223, MaterialIconSet.DULL, 3, of(new MaterialStack(Tungsten, 1), new MaterialStack(Lithium, 2), new MaterialStack(Oxygen, 4)), GENERATE_ORE, null, 2500);
     public static MetalMaterial Ultimet = new MetalMaterial(192, "ultimet", 0xB4B4E6, MaterialIconSet.SHINY, 4, of(new MaterialStack(Cobalt, 5), new MaterialStack(Chrome, 2), new MaterialStack(Nickel, 1), new MaterialStack(Molybdenum, 1)), EXT2_METAL, null, 9.0F, 2048, 2700);
@@ -265,10 +269,11 @@ public class Materials {
     public static GemMaterial NetherQuartz = new GemMaterial(201, "nether_quartz", 0xE6D2D2, MaterialIconSet.QUARTZ, 1, of(), STD_SOLID | NO_SMASHING | NO_SMELTING | CRYSTALLISABLE | GENERATE_ORE, null, 1.0F, 32);
     public static GemMaterial CertusQuartz = new GemMaterial(202, "certus_quartz", 0xD2D2E6, MaterialIconSet.QUARTZ, 1, of(), STD_SOLID | NO_SMASHING | NO_SMELTING | CRYSTALLISABLE | GENERATE_ORE, null, 5.0F, 32);
     public static GemMaterial Quartzite = new GemMaterial(203, "quartzite", 0xD2E6D2, MaterialIconSet.QUARTZ, 1, of(), NO_SMASHING | NO_SMELTING | CRYSTALLISABLE | GENERATE_ORE);
-    public static DustMaterial Graphite = new DustMaterial(204, "graphite", 0x808080, MaterialIconSet.DULL, 2, of(), GENERATE_ORE | NO_SMASHING |NO_SMELTING |FLAMMABLE);
-    public static DustMaterial Graphene = new DustMaterial(205, "graphene", 0x808080, MaterialIconSet.SHINY, 2, of(), 0);
+    public static MetalMaterial Graphite = new MetalMaterial(204, "graphite", 0x808080, MaterialIconSet.DULL, 2, of(), GENERATE_PLATE | GENERATE_ORE | NO_SMASHING |NO_SMELTING |FLAMMABLE);
+    public static MetalMaterial Graphene = new MetalMaterial(205, "graphene", 0x808080, MaterialIconSet.SHINY, 2, of(), GENERATE_PLATE);
     public static GemMaterial Jasper = new GemMaterial(206, "jasper", 0xC85050, MaterialIconSet.EMERALD, 2, of(), STD_GEM | NO_SMASHING | NO_SMELTING | HIGH_SIFTER_OUTPUT);
     public static MetalMaterial Osmiridium = new MetalMaterial(207, "osmiridium", 0x6464FF, MaterialIconSet.METALLIC, 3, of(new MaterialStack(Iridium, 3), new MaterialStack(Osmium, 1)), EXT2_METAL, null, 7.0F, 1600, 2500);
+    public static FluidMaterial NitrationMixture = new FluidMaterial(352, "nitration_mixture", 0xEEEEAA, MaterialIconSet.FLUID, of(new MaterialStack(NitricAcid, 1), new MaterialStack(SulfuricAcid, 1)), 0);
 
     /**
      * Second Degree Compounds
@@ -381,17 +386,11 @@ public class Materials {
     /**
      * Actual food
      */
-    public static DustMaterial Cheese = new DustMaterial(334,  "cheese", 0xFFFF00, MaterialIconSet.ROUGH, 0, of(), 0);
-    public static DustMaterial Chili = new DustMaterial(335, "chili", 0xC80000, MaterialIconSet.FINE, 0, of(), 0);
-    public static DustMaterial Chocolate = new DustMaterial(336, "chocolate", 0xBE5F00, MaterialIconSet.ROUGH, 0, of(), 0);
-    public static DustMaterial MeatRaw = new DustMaterial(337, "meat_raw", 0xFFC8C8, MaterialIconSet.ROUGH, 0, of(), NO_SMASHING);
-    public static DustMaterial MeatCooked = new DustMaterial(338, "meat_cooked", 0x963C14, MaterialIconSet.ROUGH, 0, of(), NO_SMASHING | NO_SMELTING);
     public static FluidMaterial Milk = new FluidMaterial(339, "milk", 0xFEFEFE, MaterialIconSet.FINE, of(), 0);
     public static FluidMaterial FryingOilHot = new FluidMaterial(340, "frying_oil_hot", 0xC8C400, MaterialIconSet.FLUID, of(), 0);
     public static FluidMaterial Honey = new FluidMaterial(341, "honey", 0xD2C800, MaterialIconSet.FLUID, of(), 0);
     public static FluidMaterial FishOil = new FluidMaterial(342, "fish_oil", 0xFFC400, MaterialIconSet.FLUID, of(), 0);
     public static DustMaterial Cocoa = new DustMaterial(343, "cocoa", 0xBE5F00, MaterialIconSet.ROUGH, 0, of(), 0);
-    public static DustMaterial Coffee = new DustMaterial(345, "coffee", 0x964B00, MaterialIconSet.FINE, 0, of(), 0);
     public static DustMaterial Wheat = new DustMaterial(345, "wheat", 0xFFFFC4, MaterialIconSet.POWDER, 0, of(), 0);
 
 
@@ -643,5 +642,46 @@ public class Materials {
         Tin.setCableProperties(GTValues.V[1], 1, 1);
         Copper.setCableProperties(GTValues.V[2], 1, 2);
 
+        RedAlloy.setCableProperties(GTValues.V[0], 1, 0);
+
+        Cobalt.setCableProperties(GTValues.V[1], 2, 2);
+        Lead.setCableProperties(GTValues.V[1], 2, 2);
+        Tin.setCableProperties(GTValues.V[1], 1, 1);
+        Zinc.setCableProperties(GTValues.V[1], 1, 1);
+        SolderingAlloy.setCableProperties(GTValues.V[1], 1, 1);
+
+        Iron.setCableProperties(GTValues.V[2], 2, 3);
+        Nickel.setCableProperties(GTValues.V[2], 3, 3);
+        Cupronickel.setCableProperties(GTValues.V[2], 2, 3);
+        Copper.setCableProperties(GTValues.V[2], 1, 2);
+        AnnealedCopper.setCableProperties(GTValues.V[2], 1, 1);
+
+        Kanthal.setCableProperties(GTValues.V[3], 4, 3);
+        Gold.setCableProperties(GTValues.V[3], 3, 2);
+        Electrum.setCableProperties(GTValues.V[3], 2, 2);
+        Silver.setCableProperties(GTValues.V[3], 1, 1);
+
+        Nichrome.setCableProperties(GTValues.V[4], 3, 4);
+        Steel.setCableProperties(GTValues.V[4], 2, 2);
+        BlackSteel.setCableProperties(GTValues.V[4], 3, 2);
+        Titanium.setCableProperties(GTValues.V[4], 4, 2);
+        Aluminium.setCableProperties(GTValues.V[4], 1, 1);
+
+        Graphene.setCableProperties(GTValues.V[5], 1, 1);
+        Osmium.setCableProperties(GTValues.V[5], 4, 2);
+        Platinum.setCableProperties(GTValues.V[5], 2, 1);
+        TungstenSteel.setCableProperties(GTValues.V[5], 3, 2);
+        Tungsten.setCableProperties(GTValues.V[5], 2, 2);
+
+        HSSG.setCableProperties(GTValues.V[6], 4, 2);
+        NiobiumTitanium.setCableProperties(GTValues.V[6], 4, 2);
+        VanadiumGallium.setCableProperties(GTValues.V[6], 4, 2);
+        YttriumBariumCuprate.setCableProperties(GTValues.V[6], 4, 4);
+
+        Materials.Naquadah.setCableProperties(GTValues.V[7], 2, 2);
+
+        Materials.NaquadahAlloy.setCableProperties(GTValues.V[8], 2, 4);
+        Materials.Duranium.setCableProperties(GTValues.V[8], 1, 8);
     }
+
 }

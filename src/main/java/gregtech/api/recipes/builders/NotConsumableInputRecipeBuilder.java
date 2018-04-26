@@ -9,7 +9,6 @@ import gregtech.api.recipes.RecipeMap;
 import gregtech.api.util.EnumValidationResult;
 import gregtech.api.util.GTLog;
 import gregtech.api.util.ValidationResult;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.Ingredient;
 
@@ -36,17 +35,6 @@ public class NotConsumableInputRecipeBuilder extends RecipeBuilder<NotConsumable
         return new NotConsumableInputRecipeBuilder(this);
     }
 
-    public NotConsumableInputRecipeBuilder notConsumable(Item item) {
-        if (item == null) {
-            GTLog.logger.error("Not consumable input cannot be null.");
-            GTLog.logger.error("Stacktrace:", new IllegalArgumentException());
-            recipeStatus = EnumValidationResult.INVALID;
-        } else {
-            inputs.add(CountableIngredient.from(new ItemStack(item, 0)));
-        }
-        return this;
-    }
-
     public NotConsumableInputRecipeBuilder notConsumable(ItemStack itemStack) {
         if (itemStack == null) {
             GTLog.logger.error("Not consumable input cannot be null.");
@@ -54,8 +42,7 @@ public class NotConsumableInputRecipeBuilder extends RecipeBuilder<NotConsumable
             recipeStatus = EnumValidationResult.INVALID;
         } else {
             ItemStack stack = itemStack.copy();
-            stack.setCount(0);
-            inputs.add(CountableIngredient.from(stack));
+            inputs.add(CountableIngredient.from(stack, 0));
         }
         return this;
     }

@@ -1,9 +1,9 @@
 package gregtech.api.capability.impl;
 
 import gregtech.api.damagesources.DamageSources;
+import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.recipes.Recipe;
 import gregtech.api.recipes.RecipeMap;
-import gregtech.api.util.XSTR;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
@@ -27,8 +27,8 @@ public class SteamRecipeMapWorkableHandler extends RecipeMapWorkableHandler {
     private boolean ventingStuck;
     private EnumFacing ventingSide;
 
-    public SteamRecipeMapWorkableHandler(RecipeMap<?> recipeMap, long maxVoltage, IFluidTank steamFluidTank, double conversionRate) {
-        super(recipeMap);
+    public SteamRecipeMapWorkableHandler(MetaTileEntity tileEntity, RecipeMap<?> recipeMap, long maxVoltage, IFluidTank steamFluidTank, double conversionRate) {
+        super(tileEntity, recipeMap);
         this.steamFluidTank = steamFluidTank;
         this.conversionRate = conversionRate;
         this.maxVoltage = maxVoltage;
