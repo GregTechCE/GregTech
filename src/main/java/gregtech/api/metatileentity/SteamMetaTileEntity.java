@@ -13,8 +13,8 @@ import gregtech.api.recipes.ModHandler;
 import gregtech.api.recipes.RecipeMap;
 import gregtech.api.gui.resources.TextureArea;
 import gregtech.api.render.OrientedOverlayRenderer;
-import gregtech.api.render.SimpleSidedRenderer;
-import gregtech.api.render.SimpleSidedRenderer.RenderSide;
+import gregtech.api.render.SimpleSidedCubeRenderer;
+import gregtech.api.render.SimpleSidedCubeRenderer.RenderSide;
 import gregtech.api.render.Textures;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.entity.player.EntityPlayer;
@@ -44,7 +44,7 @@ public abstract class SteamMetaTileEntity extends MetaTileEntity {
     }
 
     @SideOnly(Side.CLIENT)
-    private SimpleSidedRenderer getBaseRenderer() {
+    private SimpleSidedCubeRenderer getBaseRenderer() {
         if(isHighPressure) {
             if(isBrickedCasing()) {
                 return Textures.STEAM_BRICKED_CASING_STEEL;

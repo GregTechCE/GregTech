@@ -149,7 +149,7 @@ public abstract class MetaTileEntity {
     }
 
     public final String getMetaName() {
-        return "gregtech.machine." + metaTileEntityId;
+        return "gregtech.machine." + metaTileEntityId + ".name";
     }
 
     /**

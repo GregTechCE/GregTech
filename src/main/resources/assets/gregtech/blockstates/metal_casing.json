@@ -7,7 +7,7 @@
     "variant": {
       "bronze_bricks": {
         "textures": {
-          "all": "gregtech:blocks/casings/solid/machine_bronzeplatedbricks"
+          "all": "gregtech:blocks/casings/solid/machine_bronze_plated_bricks"
         }
       },
       "invar_heatproof": {
@@ -27,7 +27,7 @@
       },
       "stainless_clean": {
         "textures": {
-          "all": "gregtech:blocks/casings/solid/machine_casing_clean_stainlesssteel"
+          "all": "gregtech:blocks/casings/solid/machine_casing_clean_stainless_steel"
         }
       },
       "titanium_stable": {

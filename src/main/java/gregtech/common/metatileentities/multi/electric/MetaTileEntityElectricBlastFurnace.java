@@ -10,7 +10,7 @@ import gregtech.api.multiblock.FactoryBlockPattern;
 import gregtech.api.multiblock.PatternMatchContext;
 import gregtech.api.recipes.Recipe;
 import gregtech.api.recipes.RecipeMaps;
-import gregtech.api.render.SimpleSidedRenderer;
+import gregtech.api.render.ICubeRenderer;
 import gregtech.api.render.Textures;
 import gregtech.common.blocks.BlockMetalCasing.MetalCasingType;
 import gregtech.common.blocks.BlockWireCoil;
@@ -19,10 +19,13 @@ import gregtech.common.blocks.MetaBlocks;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.math.Vec3i;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TextComponentTranslation;
 
+import java.util.List;
 import java.util.function.Predicate;
 
-public class MetaTileEntityElectricBF extends RecipeMapMultiblockController {
+public class MetaTileEntityElectricBlastFurnace extends RecipeMapMultiblockController {
 
     private static final MultiblockAbility<?>[] ALLOWED_ABILITIES = {
         MultiblockAbility.IMPORT_ITEMS, MultiblockAbility.IMPORT_FLUIDS,
@@ -32,18 +35,26 @@ public class MetaTileEntityElectricBF extends RecipeMapMultiblockController {
 
     private int blastFurnaceTemperature;
 
-    public MetaTileEntityElectricBF(String metaTileEntityId) {
+    public MetaTileEntityElectricBlastFurnace(String metaTileEntityId) {
         super(metaTileEntityId, RecipeMaps.BLAST_RECIPES);
     }
 
     @Override
     public MetaTileEntity createMetaTileEntity(MetaTileEntityHolder holder) {
-        return new MetaTileEntityElectricBF(metaTileEntityId);
+        return new MetaTileEntityElectricBlastFurnace(metaTileEntityId);
+    }
+
+    @Override
+    protected void addDisplayText(List<ITextComponent> textList) {
+        if(isStructureFormed()) {
+            textList.add(new TextComponentTranslation("gregtech.multiblock.max_temperature", blastFurnaceTemperature));
+        }
+        super.addDisplayText(textList);
     }
 
     @Override
     protected Vec3i getCenterOffset() {
-        return new Vec3i(-1, 0, 0);
+        return new Vec3i(1, 0, 0);
     }
 
     @Override
@@ -79,13 +90,13 @@ public class MetaTileEntityElectricBF extends RecipeMapMultiblockController {
     @Override
     protected BlockPattern createStructurePattern() {
         return FactoryBlockPattern.start()
-            .aisle("XYX", "CCC", "CCC", "XXX")
-            .aisle("XXX", "C#C", "C#C", "XXX")
             .aisle("XXX", "CCC", "CCC", "XXX")
+            .aisle("XXX", "C#C", "C#C", "XXX")
+            .aisle("XSX", "CCC", "CCC", "XXX")
+            .where('S', selfPredicate())
             .where('X', statePredicate(getCasingState()).or(abilityPartPredicate(ALLOWED_ABILITIES)))
             .where('C', heatingCoilPredicate())
             .where('#', blockPredicate(Blocks.AIR))
-            .where('Y', selfPredicate())
             .build();
     }
 
@@ -94,8 +105,8 @@ public class MetaTileEntityElectricBF extends RecipeMapMultiblockController {
     }
 
     @Override
-    public SimpleSidedRenderer getBaseTexture() {
-        return Textures.STEAM_BRONZE_BRICK_CASING; //TODO proper texture @Exidex
+    public ICubeRenderer getBaseTexture() {
+        return Textures.HEAT_PROOF_CASING;
     }
 
 }

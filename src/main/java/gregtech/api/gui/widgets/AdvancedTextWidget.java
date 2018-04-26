@@ -23,7 +23,6 @@ public class AdvancedTextWidget extends Widget {
 
     protected Consumer<List<ITextComponent>> textSupplier;
     private ArrayList<ITextComponent> lastText = new ArrayList<>();
-    private ArrayList<ITextComponent> textBuffer = new ArrayList<>();
     private int color;
 
     public AdvancedTextWidget(int xPosition, int yPosition, Consumer<List<ITextComponent>> text, int color) {
@@ -36,12 +35,11 @@ public class AdvancedTextWidget extends Widget {
 
     @Override
     public void detectAndSendChanges() {
-        textBuffer.clear();
+        ArrayList<ITextComponent> textBuffer = new ArrayList<>();
         textSupplier.accept(textBuffer);
         if(!lastText.equals(textBuffer)) {
-            this.lastText.clear();
-            this.lastText.addAll(textBuffer);
-            writeClientAction(1, buffer -> {
+            this.lastText = textBuffer;
+            writeUpdateInfo(1, buffer -> {
                 buffer.writeInt(lastText.size());
                 for(ITextComponent textComponent : lastText) {
                     buffer.writeString(ITextComponent.Serializer.componentToJson(textComponent));

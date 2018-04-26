@@ -169,6 +169,10 @@ public abstract class RecipeMapWorkableHandler extends MTETrait implements IWork
         return getMaxProgress() == 0 ? 0.0 : getProgress() / (getMaxProgress() * 1.0);
     }
 
+    public int getTicksTimeLeft() {
+        return maxProgressTime == 0 ? 0 : (maxProgressTime - progressTime);
+    }
+
     @Override
     public int getProgress() {
         return progressTime;

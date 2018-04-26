@@ -16,18 +16,27 @@ public class Textures {
 
     public static List<IIconRegister> iconRegisters = new ArrayList<>();
 
-    public static SimpleSidedRenderer STEAM_CASING_BRONZE = new SimpleSidedRenderer("casings/steam/bronze");
-    public static SimpleSidedRenderer STEAM_CASING_STEEL = new SimpleSidedRenderer("casings/steam/steel");
-    public static SimpleSidedRenderer STEAM_BRICKED_CASING_BRONZE = new SimpleSidedRenderer("casings/steam/bricked_bronze");
-    public static SimpleSidedRenderer STEAM_BRICKED_CASING_STEEL = new SimpleSidedRenderer("casings/steam/bricked_steel");
-    public static SimpleSidedRenderer STEAM_BRONZE_BRICK_CASING = new SimpleSidedRenderer("casings/steam/plated_bronze_brick");
-    public static SimpleSidedRenderer[] VOLTAGE_CASINGS = new SimpleSidedRenderer[GTValues.V.length];
+    public static SimpleSidedCubeRenderer STEAM_CASING_BRONZE = new SimpleSidedCubeRenderer("casings/steam/bronze");
+    public static SimpleSidedCubeRenderer STEAM_CASING_STEEL = new SimpleSidedCubeRenderer("casings/steam/steel");
+    public static SimpleSidedCubeRenderer STEAM_BRICKED_CASING_BRONZE = new SimpleSidedCubeRenderer("casings/steam/bricked_bronze");
+    public static SimpleSidedCubeRenderer STEAM_BRICKED_CASING_STEEL = new SimpleSidedCubeRenderer("casings/steam/bricked_steel");
+    public static SimpleSidedCubeRenderer[] VOLTAGE_CASINGS = new SimpleSidedCubeRenderer[GTValues.V.length];
+
+    public static SimpleCubeRenderer BRONZE_PLATED_BRICKS = new SimpleCubeRenderer("casings/solid/machine_bronze_plated_bricks");
+    public static SimpleCubeRenderer HEAT_PROOF_CASING = new SimpleCubeRenderer("casings/solid/machine_casing_heatproof");
+    public static SimpleCubeRenderer FROST_PROOF_CASING = new SimpleCubeRenderer("casings/solid/machine_casing_frost_proof");
+    public static SimpleCubeRenderer SOLID_STEEL_CASING = new SimpleCubeRenderer("casings/solid/machine_casing_solid_steel");
+    public static SimpleCubeRenderer CLEAN_STAINLESS_STEEL_CASING = new SimpleCubeRenderer("casings/solid/machine_casing_clean_stainless_steel");
+    public static SimpleCubeRenderer STABLE_TITANIUM_CASING = new SimpleCubeRenderer("casings/solid/machine_casing_stable_titanium");
+    public static SimpleCubeRenderer ROBUST_TUNGSTENSTEEL_CASING = new SimpleCubeRenderer("casings/solid/machine_casing_robust_tungstensteel");
 
     public static OrientedOverlayRenderer COAL_BOILER_OVERLAY = new OrientedOverlayRenderer("generators/boiler/coal", FRONT);
     public static OrientedOverlayRenderer LAVA_BOILER_OVERLAY = new OrientedOverlayRenderer("generators/boiler/lava", FRONT);
     public static OrientedOverlayRenderer SOLAR_BOILER_OVERLAY = new OrientedOverlayRenderer("generators/boiler/solar", TOP);
 
     public static OrientedOverlayRenderer PRIMITIVE_BLAST_FURNACE_OVERLAY = new OrientedOverlayRenderer("machines/primitive_blast_furnace", FRONT);
+    public static OrientedOverlayRenderer MULTIBLOCK_WORKABLE_OVERLAY = new OrientedOverlayRenderer("machines/multiblock_workable", FRONT);
+
     public static OrientedOverlayRenderer ALLOY_SMELTER_OVERLAY = new OrientedOverlayRenderer("machines/alloy_smelter", FRONT);
     public static OrientedOverlayRenderer FURNACE_OVERLAY = new OrientedOverlayRenderer("machines/furnace", FRONT);
     public static OrientedOverlayRenderer ELECTRIC_FURNACE_OVERLAY = new OrientedOverlayRenderer("machines/electric_furnace", FRONT);
@@ -88,7 +97,7 @@ public class Textures {
     static {
         for(int i = 0; i < VOLTAGE_CASINGS.length; i++) {
             String voltageName = GTValues.VN[i].toLowerCase();
-            VOLTAGE_CASINGS[i] = new SimpleSidedRenderer("casings/voltage/" + voltageName);
+            VOLTAGE_CASINGS[i] = new SimpleSidedCubeRenderer("casings/voltage/" + voltageName);
         }
     }
 

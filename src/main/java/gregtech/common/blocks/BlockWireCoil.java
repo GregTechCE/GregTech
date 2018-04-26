@@ -17,16 +17,15 @@ public class BlockWireCoil extends VariantBlock<BlockWireCoil.CoilType> {
 
     public enum CoilType implements IStringSerializable {
 
-        //TODO proper temperature values @Exidex
         CUPRONICKEL("cupronickel", 1800),
-        KANTHAL("kanthal", 2500),
-        NICHROME("nichrome", 2900),
-        TUNGSTENSTEEL("tungstensteel", 3500),
-        HSS_G("hss_g", 4000),
+        KANTHAL("kanthal", 2700),
+        NICHROME("nichrome", 3600),
+        TUNGSTENSTEEL("tungstensteel", 4500),
+        HSS_G("hss_g", 5400),
         NAQUADAH("naquadah", 4700),
-        NAQUADAH_ALLOY("naquadah_alloy", 5000),
-        SUPERCONDUCTOR("superconductor", 5300),
-        FUSION_COIL("fusion_coil", 5700);
+        NAQUADAH_ALLOY("naquadah_alloy", 7200),
+        SUPERCONDUCTOR("superconductor", 8600),
+        FUSION_COIL("fusion_coil", 9700);
 
         private final String name;
         private final int coilTemperature;
