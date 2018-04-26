@@ -119,19 +119,19 @@ public final class ModularUI {
             return widget(new ProgressWidget(progressSupplier, x, y, width, height, texture, moveType));
         }
 
-        public Builder squareOfSlots(IItemHandlerModifiable itemHandler, int startIndex, int size, TextureArea... backgrounds) {
+        public Builder squareOfSlots(IItemHandlerModifiable itemHandler, int startIndex, int size, boolean allowTakeStack, boolean allowPutStack, TextureArea... backgrounds) {
             int sizeSqrt = (int) Math.sqrt(size);
-            return groupOfSlots(itemHandler, startIndex, sizeSqrt, sizeSqrt, backgrounds);
+            return groupOfSlots(itemHandler, startIndex, sizeSqrt, sizeSqrt, allowTakeStack, allowPutStack, backgrounds);
         }
 
-        public Builder groupOfSlots(IItemHandlerModifiable itemHandler, int startIndex, int width, int height, TextureArea... backgrounds) {
+        public Builder groupOfSlots(IItemHandlerModifiable itemHandler, int startIndex, int width, int height, boolean allowTakeStack, boolean allowPutStack, TextureArea... backgrounds) {
             int startX = 88 - (width * 9);
             int startY = 45 - (height * 9);
             for(int x = 0; x < width; x++) {
                 for(int y = 0; y < height; y++) {
-                    this.slot(itemHandler, startIndex + height * y + x,
-                        startX + 18 * x,
-                        startY + 18 * y, backgrounds);
+                    this.widget(new SlotWidget(itemHandler, startIndex + height * y + x,
+                        startX + 18 * x, startY + 18 * y,
+                        allowPutStack, allowTakeStack).setBackgroundTexture(backgrounds));
                 }
             }
             return this;

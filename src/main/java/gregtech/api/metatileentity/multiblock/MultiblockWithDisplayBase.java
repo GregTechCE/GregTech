@@ -29,15 +29,17 @@ public abstract class MultiblockWithDisplayBase extends MultiblockControllerBase
     }
 
     protected boolean shouldBindInventory() {
-        return false;
+        return true;
     }
 
     protected ModularUI.Builder createUITemplate(EntityPlayer entityPlayer) {
         boolean shouldBindInventory = shouldBindInventory();
         ModularUI.Builder builder = shouldBindInventory ? ModularUI.defaultBuilder() : ModularUI.cutBuilder();
-        builder.image(7, 4, 143, 75, GuiTextures.DISPLAY);
-        builder.label(10, 7, getMetaName());
+        builder.image(7, 4, 162, 75, GuiTextures.DISPLAY);
+        builder.label(10, 7, getMetaName(), 0xFFFFFF);
         builder.widget(new AdvancedTextWidget(10, 17, this::addDisplayText, 0xFFFFFF));
+        if(shouldBindInventory)
+            builder.bindPlayerInventory(entityPlayer.inventory);
         return builder;
     }
 

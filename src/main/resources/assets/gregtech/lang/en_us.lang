@@ -1987,12 +1987,15 @@ behaviour.paintspray.black.tooltip=Can paint things in black
 behaviour.paintspray.uses=Remaining Uses: %d
 behaviour.prospecting=Usable for Prospecting
 
+gregtech.machine.electric_blast_furnace.name=Electric Blast Furnace
+
+
 gregtech.recipe.total=Total: %d EU
 gregtech.recipe.eu=Usage: %d EU/t
 gregtech.recipe.duration=Duration: %.1f secs
 gregtech.recipe.amperage=Amperage: %d
 gregtech.recipe.not_consumed=Not consumed in process
-gregtech.recipe.chance=Chance: %s
+gregtech.recipe.chance=Chance: %s%%
 
 gregtech.fluid.empty=Empty
 gregtech.fluid.amount=§7%,d/%,d
@@ -2004,3 +2007,15 @@ gregtech.gui.fuel_amount=Fuel Amount:
 gregtech.cable.voltage=Voltage: §e%d §f(§e%s§f)
 gregtech.cable.amperage=Amperage: §e%d
 gregtech.cable.loss_per_block=Loss per block: §c%d
+
+gregtech.multiblock.work_paused=Work Paused.
+gregtech.multiblock.running=Running perfectly.
+gregtech.multiblock.idling=Idling...
+gregtech.multiblock.not_enough_energy=§cWARNING: Machine needs more energy.
+gregtech.multiblock.progress=Progress: %s%%
+gregtech.multiblock.invalid_structure=§cInvalid structure.
+gregtech.multiblock.validation_failed=§cInvalid amount of inputs/outputs.
+gregtech.multiblock.max_temperature=Max Temperature: %sK
+
+
+

@@ -6,8 +6,8 @@ import codechicken.lib.render.pipeline.IVertexOperation;
 import gregtech.api.GTValues;
 import gregtech.api.capability.IEnergyContainer;
 import gregtech.api.capability.impl.EnergyContainerHandler;
-import gregtech.api.render.SimpleSidedRenderer;
-import gregtech.api.render.SimpleSidedRenderer.RenderSide;
+import gregtech.api.render.SimpleSidedCubeRenderer;
+import gregtech.api.render.SimpleSidedCubeRenderer.RenderSide;
 import gregtech.api.render.Textures;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraftforge.fml.relauncher.Side;
@@ -35,7 +35,7 @@ public abstract class TieredMetaTileEntity extends MetaTileEntity {
     }
 
     @SideOnly(Side.CLIENT)
-    private SimpleSidedRenderer getBaseRenderer() {
+    private SimpleSidedCubeRenderer getBaseRenderer() {
         return Textures.VOLTAGE_CASINGS[tier];
     }
 

@@ -1,5 +1,7 @@
 package gregtech.api.metatileentity.multiblock;
 
+import codechicken.lib.render.CCRenderState;
+import codechicken.lib.render.pipeline.IVertexOperation;
 import gregtech.api.capability.IEnergyContainer;
 import gregtech.api.capability.impl.EnergyContainerList;
 import gregtech.api.capability.impl.FluidTankList;
@@ -8,6 +10,7 @@ import gregtech.api.capability.impl.MultiblockRecipeMapWorkable;
 import gregtech.api.multiblock.PatternMatchContext;
 import gregtech.api.recipes.Recipe;
 import gregtech.api.recipes.RecipeMap;
+import gregtech.api.render.Textures;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraftforge.items.IItemHandler;
@@ -16,6 +19,8 @@ import java.util.List;
 import java.util.function.BooleanSupplier;
 
 public abstract class RecipeMapMultiblockController extends MultiblockWithDisplayBase {
+
+
 
     public final RecipeMap<?> recipeMap;
     private MultiblockRecipeMapWorkable recipeMapWorkable;
@@ -63,17 +68,19 @@ public abstract class RecipeMapMultiblockController extends MultiblockWithDispla
     @Override
     protected void addDisplayText(List<ITextComponent> textList) {
         super.addDisplayText(textList);
-        if(!recipeMapWorkable.isWorkingEnabled()) {
-            textList.add(new TextComponentTranslation("gregtech.multiblock.work_paused"));
-        } else if(recipeMapWorkable.isActive()) {
-            textList.add(new TextComponentTranslation("gregtech.multiblock.running"));
-            double currentProgress = recipeMapWorkable.getProgressPercent() * 100;
-            textList.add(new TextComponentTranslation("gregtech.multiblock.progress", currentProgress));
-        } else {
-            textList.add(new TextComponentTranslation("gregtech.multiblock.idling"));
-        }
-        if(recipeMapWorkable.isHasNotEnoughEnergy()) {
-            textList.add(new TextComponentTranslation("gregtech.multiblock.not_enough_energy"));
+        if(isStructureFormed()) {
+            if(!recipeMapWorkable.isWorkingEnabled()) {
+                textList.add(new TextComponentTranslation("gregtech.multiblock.work_paused"));
+            } else if(recipeMapWorkable.isActive()) {
+                textList.add(new TextComponentTranslation("gregtech.multiblock.running"));
+                int currentProgress = (int) (recipeMapWorkable.getProgressPercent() * 100);
+                textList.add(new TextComponentTranslation("gregtech.multiblock.progress", currentProgress));
+            } else {
+                textList.add(new TextComponentTranslation("gregtech.multiblock.idling"));
+            }
+            if(recipeMapWorkable.isHasNotEnoughEnergy()) {
+                textList.add(new TextComponentTranslation("gregtech.multiblock.not_enough_energy"));
+            }
         }
     }
 
@@ -92,5 +99,9 @@ public abstract class RecipeMapMultiblockController extends MultiblockWithDispla
         };
     }
 
-
+    @Override
+    public void renderMetaTileEntity(CCRenderState renderState, IVertexOperation[] pipeline) {
+        super.renderMetaTileEntity(renderState, pipeline);
+        Textures.MULTIBLOCK_WORKABLE_OVERLAY.render(renderState, pipeline, getFrontFacing(), recipeMapWorkable.isActive());
+    }
 }

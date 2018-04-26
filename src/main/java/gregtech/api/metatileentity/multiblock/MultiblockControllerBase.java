@@ -7,7 +7,7 @@ import gregtech.api.metatileentity.MetaTileEntityHolder;
 import gregtech.api.multiblock.BlockPattern;
 import gregtech.api.multiblock.BlockWorldState;
 import gregtech.api.multiblock.PatternMatchContext;
-import gregtech.api.render.SimpleSidedRenderer;
+import gregtech.api.render.ICubeRenderer;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.tileentity.TileEntity;
@@ -63,7 +63,7 @@ public abstract class MultiblockControllerBase extends MetaTileEntity {
      */
     protected abstract BlockPattern createStructurePattern();
 
-    public abstract SimpleSidedRenderer getBaseTexture();
+    public abstract ICubeRenderer getBaseTexture();
 
     protected BooleanSupplier getValidationPredicate() {
         return () -> true;

@@ -13,7 +13,7 @@ import gregtech.api.multiblock.BlockPattern;
 import gregtech.api.multiblock.FactoryBlockPattern;
 import gregtech.api.recipes.Recipe.PrimitiveBlastFurnaceRecipe;
 import gregtech.api.recipes.RecipeMaps;
-import gregtech.api.render.SimpleSidedRenderer;
+import gregtech.api.render.ICubeRenderer;
 import gregtech.api.render.Textures;
 import gregtech.api.unification.OreDictUnifier;
 import gregtech.api.unification.material.Materials;
@@ -37,7 +37,7 @@ import net.minecraftforge.items.ItemStackHandler;
 
 import javax.annotation.Nonnull;
 
-public class MetaTileEntityPrimitiveBF extends MultiblockControllerBase {
+public class MetaTileEntityPrimitiveBlastFurnace extends MultiblockControllerBase {
 
     private int maxProgressDuration;
     private int currentProgress;
@@ -45,7 +45,7 @@ public class MetaTileEntityPrimitiveBF extends MultiblockControllerBase {
     private boolean isActive;
     private boolean wasActiveAndNeedUpdate;
 
-    public MetaTileEntityPrimitiveBF(String metaTileEntityId) {
+    public MetaTileEntityPrimitiveBlastFurnace(String metaTileEntityId) {
         super(metaTileEntityId);
     }
 
@@ -186,8 +186,8 @@ public class MetaTileEntityPrimitiveBF extends MultiblockControllerBase {
     }
 
     @Override
-    public SimpleSidedRenderer getBaseTexture() {
-        return Textures.STEAM_BRONZE_BRICK_CASING;
+    public ICubeRenderer getBaseTexture() {
+        return Textures.BRONZE_PLATED_BRICKS;
     }
 
     @Override
@@ -233,7 +233,7 @@ public class MetaTileEntityPrimitiveBF extends MultiblockControllerBase {
 
     @Override
     public MetaTileEntity createMetaTileEntity(MetaTileEntityHolder holder) {
-        return new MetaTileEntityPrimitiveBF(metaTileEntityId);
+        return new MetaTileEntityPrimitiveBlastFurnace(metaTileEntityId);
     }
 
     @Override

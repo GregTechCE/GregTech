@@ -77,7 +77,7 @@ public class MetaTileEntityCharger extends TieredMetaTileEntity {
     protected ModularUI createUI(EntityPlayer entityPlayer) {
         return ModularUI.defaultBuilder()
             .label(6, 6, getMetaName())
-            .squareOfSlots(importItems, 0, inventorySize, GuiTextures.SLOT, GuiTextures.CHARGER_OVERLAY)
+            .squareOfSlots(importItems, 0, inventorySize, true, true, GuiTextures.SLOT, GuiTextures.CHARGER_OVERLAY)
             .bindPlayerInventory(entityPlayer.inventory)
             .build(getHolder(), entityPlayer);
     }

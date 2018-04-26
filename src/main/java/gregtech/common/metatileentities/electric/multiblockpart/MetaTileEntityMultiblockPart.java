@@ -14,6 +14,7 @@ import net.minecraft.util.math.BlockPos;
 public abstract class MetaTileEntityMultiblockPart extends MetaTileEntity implements IMultiblockPart {
 
     private final int tier;
+    private BlockPos controllerPos;
     private MultiblockControllerBase controller;
 
     public MetaTileEntityMultiblockPart(String metaTileEntityId, int tier) {
@@ -24,6 +25,7 @@ public abstract class MetaTileEntityMultiblockPart extends MetaTileEntity implem
 
     @Override
     public void renderMetaTileEntity(CCRenderState renderState, IVertexOperation[] pipeline) {
+        MultiblockControllerBase controller = getController();
         if(controller != null) {
             controller.getBaseTexture().render(renderState, pipeline);
         } else {
@@ -36,6 +38,11 @@ public abstract class MetaTileEntityMultiblockPart extends MetaTileEntity implem
     }
 
     public MultiblockControllerBase getController() {
+        if(getWorld() != null && getWorld().isRemote) { //check this only clientside
+            if(controller == null && controllerPos != null) {
+                this.controller = (MultiblockControllerBase) BlockMachine.getMetaTileEntity(getWorld(), controllerPos);
+            }
+        }
         return controller;
     }
 
@@ -57,8 +64,8 @@ public abstract class MetaTileEntityMultiblockPart extends MetaTileEntity implem
     public void receiveInitialSyncData(PacketBuffer buf) {
         super.receiveInitialSyncData(buf);
         if(buf.readBoolean()) {
-            BlockPos controllerPos = buf.readBlockPos();
-            this.controller = (MultiblockControllerBase) BlockMachine.getMetaTileEntity(getWorld(), controllerPos);
+            this.controllerPos = buf.readBlockPos();
+            this.controller = null;
         }
     }
 
@@ -67,9 +74,10 @@ public abstract class MetaTileEntityMultiblockPart extends MetaTileEntity implem
         super.receiveCustomData(dataId, buf);
         if(dataId == -100) {
             if(buf.readBoolean()) {
-                BlockPos controllerPos = buf.readBlockPos();
-                this.controller = (MultiblockControllerBase) BlockMachine.getMetaTileEntity(getWorld(), controllerPos);
+                this.controllerPos = buf.readBlockPos();
+                this.controller = null;
             } else {
+                this.controllerPos = null;
                 this.controller = null;
             }
         }

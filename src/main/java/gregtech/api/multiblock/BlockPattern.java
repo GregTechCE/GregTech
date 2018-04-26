@@ -60,7 +60,9 @@ public class BlockPattern {
                     //world.setBlockState(blockPos,
                     //    Blocks.WOOL.getDefaultState().withProperty(BlockColored.COLOR, EnumDyeColor.values()[new Random(predicate.hashCode()).nextInt(15)]));
                     worldState.update(world, blockPos, matchContext);
-                    if (!predicate.test(worldState)) return null;
+                    if (!predicate.test(worldState)) {
+                        return null;
+                    }
                 }
             }
         }

@@ -12,11 +12,10 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import javax.annotation.Nullable;
 import java.util.HashMap;
 import java.util.Map;
 
-public class SimpleSidedRenderer {
+public class SimpleSidedCubeRenderer implements ICubeRenderer {
 
     public enum RenderSide {
         TOP, BOTTOM, SIDE;
@@ -30,12 +29,12 @@ public class SimpleSidedRenderer {
         }
     }
 
-    private final String basePath;
+    protected final String basePath;
 
     @SideOnly(Side.CLIENT)
-    private Map<RenderSide, TextureAtlasSprite> sprites;
+    protected Map<RenderSide, TextureAtlasSprite> sprites;
 
-    public SimpleSidedRenderer(String basePath) {
+    public SimpleSidedCubeRenderer(String basePath) {
         this.basePath = basePath;
         Textures.iconRegisters.add(this::registerSprites);
     }
@@ -55,6 +54,7 @@ public class SimpleSidedRenderer {
         return sprites.get(renderSide);
     }
 
+    @Override
     public void render(CCRenderState renderState, IVertexOperation[] pipeline, Cuboid6 bounds) {
         for(EnumFacing renderSide : EnumFacing.VALUES) {
             RenderSide overlayFace = RenderSide.bySide(renderSide);
@@ -62,10 +62,5 @@ public class SimpleSidedRenderer {
             MetaTileEntity.renderFace(renderState, renderSide, bounds, renderSprite, pipeline);
         }
     }
-
-    public void render(CCRenderState renderState, IVertexOperation[] pipeline) {
-        render(renderState, pipeline, Cuboid6.full);
-    }
-
 
 }
