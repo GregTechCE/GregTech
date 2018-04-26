@@ -32,7 +32,7 @@ import java.util.Arrays;
 import static gregtech.api.GTValues.L;
 import static gregtech.api.GTValues.M;
 
-public class MachineRecipeLoader implements Runnable {
+public class MachineRecipeLoader {
 
     private static final MaterialStack[][] alloySmelterList = {
         {new MaterialStack(Materials.Tetrahedrite, 3L), new MaterialStack(Materials.Tin, 1), new MaterialStack(Materials.Bronze, 3L)},
@@ -60,8 +60,7 @@ public class MachineRecipeLoader implements Runnable {
         new MaterialStack(Materials.Lead, 4L)
     };
 
-    @Override
-    public void run() {
+    public static void init() {
         shapingRecipes();
         for (OrePrefix prefix : Arrays.asList(OrePrefix.dust, OrePrefix.dustSmall, OrePrefix.dustTiny)) {
             RecipeMaps.MIXER_RECIPES.recipeBuilder().duration((int) (100 * prefix.materialAmount / M)).EUt(8).input(prefix, Materials.EnderPearl, 1).input(prefix, Materials.Blaze, 1).outputs(OreDictUnifier.getDust(Materials.EnderEye, 1 * prefix.materialAmount)).buildAndRegister();
@@ -516,7 +515,7 @@ public class MachineRecipeLoader implements Runnable {
         RecipeMaps.CENTRIFUGE_RECIPES.recipeBuilder().duration(80).EUt(80).fluidInputs(Materials.Lava.getFluid(100)).chancedOutput(OreDictUnifier.get(OrePrefix.nugget,Materials.Tantalum,1), 250).chancedOutput(OreDictUnifier.get(OrePrefix.nugget,Materials.Gold,1), 250).chancedOutput(OreDictUnifier.get(OrePrefix.nugget,Materials.Tin,1), 1000).chancedOutput(OreDictUnifier.get(OrePrefix.dustSmall,Materials.Tungstate,1), 250).chancedOutput(OreDictUnifier.get(OrePrefix.nugget,Materials.Copper,1), 2000).chancedOutput(OreDictUnifier.get(OrePrefix.nugget,Materials.Silver,1), 250).buildAndRegister();
         RecipeMaps.CENTRIFUGE_RECIPES.recipeBuilder().duration(64).EUt(20).input(OrePrefix.dust, Materials.RareEarth, 1).chancedOutput(OreDictUnifier.get(OrePrefix.dustSmall,Materials.Cadmium,1), 2500).chancedOutput(OreDictUnifier.get(OrePrefix.dustSmall,Materials.Neodymium,1), 2500).chancedOutput(OreDictUnifier.get(OrePrefix.dustSmall,Materials.Caesium,1), 2500).chancedOutput(OreDictUnifier.get(OrePrefix.dustSmall,Materials.Cerium,1), 2500).chancedOutput(OreDictUnifier.get(OrePrefix.dustSmall,Materials.Yttrium,1), 2500).chancedOutput(OreDictUnifier.get(OrePrefix.dustSmall,Materials.Lanthanum,1), 2500).buildAndRegister();
     }
-    private void shapingRecipes() {
+    public static void shapingRecipes() {
         RecipeMaps.ALLOY_SMELTER_RECIPES.recipeBuilder()
             .inputs(GTUtility.copyAmount(31, OreDictUnifier.get(OrePrefix.ingot, Materials.Iron)))
             .notConsumable(MetaItems.SHAPE_MOLD_ANVIL)
