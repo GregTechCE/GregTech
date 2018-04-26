@@ -10,6 +10,12 @@ public class FuelLoader {
             .fluidInputs(Materials.Fuel.getFluid(1))
             .duration(200).EUt(-30)
             .buildAndRegister();
+
+        RecipeMaps.STEAM_TURBINE_FUELS.recipeBuilder()
+            .fluidInputs(Materials.Steam.getFluid(1))
+            .duration(5).EUt(-30)
+            .buildAndRegister();
     }
+
 
 }

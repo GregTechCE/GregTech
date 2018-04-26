@@ -5,8 +5,6 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -22,16 +20,6 @@ public class RecipeDefConverter {
         System.out.println("Matches? " + matcher.matches());
         System.out.println("First group: " + matcher.group(1));
         System.out.println("Second group: " + matcher.group(2));
-
-    }
-
-    public static List<String> splitOnArgs(String argsArray) {
-        int depth = 0;
-        ArrayList<String> result = new ArrayList<>();
-        for(int i = 0; i < argsArray.length(); i++) {
-            char charAt = argsArray.charAt(i);
-            //if(charAt)
-        }
 
     }
 

@@ -68,6 +68,7 @@ public class MetaTool extends ToolMetaItem<ToolMetaItem<?>.MetaToolValueItem> {
         TURBINE_HUGE = addItem(39, "tool.turbine.huge").setToolStats(new ToolTurbineHuge());
 
         MAGNIFYING_GLASS = addItem(40, "tool.magnifying_glass").setToolStats(new ToolMagnifyingGlass()).addOreDict(ToolDictNames.craftingToolMagnifyingGlass);
+        PLUNGER = addItem(41, "tool.plunger").setToolStats(new ToolPlunger()).addOreDict(ToolDictNames.craftingToolPlunger);
     }
 
     public void registerRecipes() {
