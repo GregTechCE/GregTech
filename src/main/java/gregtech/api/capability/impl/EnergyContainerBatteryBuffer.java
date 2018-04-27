@@ -1,5 +1,7 @@
 package gregtech.api.capability.impl;
 
+import gnu.trove.list.TIntList;
+import gnu.trove.list.array.TIntArrayList;
 import gregtech.api.GTValues;
 import gregtech.api.capability.IElectricItem;
 import gregtech.api.capability.IEnergyContainer;
@@ -69,18 +71,20 @@ public class EnergyContainerBatteryBuffer extends MTETrait implements IEnergyCon
             IItemHandlerModifiable inventory = getInventory();
             long voltage = getOutputVoltage();
             long maxAmperage = 0L;
+            TIntList slotsList = new TIntArrayList();
             for (int i = 0; i < inventory.getSlots(); i++) {
                 ItemStack batteryStack = inventory.getStackInSlot(i);
                 IElectricItem electricItem = getBatteryContainer(batteryStack);
                 if (electricItem == null) continue;
                 if(electricItem.discharge(voltage, getTier(), true, true, true) == voltage) {
+                    slotsList.add(i);
                     maxAmperage++;
                 }
             }
             if(maxAmperage == 0) return;
             long amperageUsed = energyContainer.acceptEnergyFromNetwork(outFacing.getOpposite(), voltage, maxAmperage);
             if(amperageUsed == 0) return;
-            for (int i = 0; i < inventory.getSlots(); i++) {
+            for (int i : slotsList.toArray()) {
                 ItemStack batteryStack = inventory.getStackInSlot(i);
                 IElectricItem electricItem = getBatteryContainer(batteryStack);
                 if (electricItem == null) continue;

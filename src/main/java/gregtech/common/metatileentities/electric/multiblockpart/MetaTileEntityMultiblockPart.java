@@ -7,6 +7,7 @@ import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.multiblock.IMultiblockPart;
 import gregtech.api.metatileentity.multiblock.MultiblockControllerBase;
 import gregtech.api.render.Textures;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
@@ -21,6 +22,16 @@ public abstract class MetaTileEntityMultiblockPart extends MetaTileEntity implem
         super(metaTileEntityId);
         this.tier = tier;
         initializeInventory();
+    }
+
+    @Override
+    public TextureAtlasSprite getParticleTexture() {
+        MultiblockControllerBase controller = getController();
+        if(controller != null) {
+            return controller.getBaseTexture().getParticleSprite();
+        } else {
+            return Textures.VOLTAGE_CASINGS[tier].getParticleSprite();
+        }
     }
 
     @Override

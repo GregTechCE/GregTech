@@ -29,15 +29,24 @@ public class SimpleCubeRenderer implements ICubeRenderer {
         this.sprite = textureMap.registerSprite(new ResourceLocation(GTValues.MODID, "blocks/" + basePath));
     }
 
+    @SideOnly(Side.CLIENT)
     public void renderSided(EnumFacing side, Cuboid6 bounds, CCRenderState renderState, IVertexOperation[] pipeline) {
         MetaTileEntity.renderFace(renderState, side, bounds, sprite, pipeline);
     }
 
+    @SideOnly(Side.CLIENT)
     public void renderSided(EnumFacing side, CCRenderState renderState, IVertexOperation[] pipeline) {
         renderSided(side, Cuboid6.full, renderState, pipeline);
     }
 
     @Override
+    @SideOnly(Side.CLIENT)
+    public TextureAtlasSprite getParticleSprite() {
+        return sprite;
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
     public void render(CCRenderState renderState, IVertexOperation[] pipeline, Cuboid6 bounds) {
         for(EnumFacing side : EnumFacing.values()) {
             renderSided(side, bounds, renderState, pipeline);

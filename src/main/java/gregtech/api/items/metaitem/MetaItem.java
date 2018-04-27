@@ -125,7 +125,7 @@ public abstract class MetaItem<T extends MetaItem<?>.MetaValueItem> extends Item
     protected int getModelIndex(short metaItemKey, ItemStack itemStack) {
         IElectricItem electricItem = itemStack.getCapability(IElectricItem.CAPABILITY_ELECTRIC_ITEM, null);
         long itemCharge = electricItem.discharge(Long.MAX_VALUE, Integer.MAX_VALUE, true, false, true);
-        return (int) ((itemCharge / (electricItem.getMaxCharge() * 1.0)) * 7);
+        return (int) Math.min(((itemCharge / (electricItem.getMaxCharge() * 1.0)) * 7), 7);
     }
 
     @SideOnly(Side.CLIENT)

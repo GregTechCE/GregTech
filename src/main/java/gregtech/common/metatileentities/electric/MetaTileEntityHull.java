@@ -12,7 +12,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 
-public class MetaTileEntityHull extends TieredMetaTileEntity  {
+public class MetaTileEntityHull extends TieredMetaTileEntity {
 
     public MetaTileEntityHull(String metaTileEntityId, int tier) {
         super(metaTileEntityId, tier);

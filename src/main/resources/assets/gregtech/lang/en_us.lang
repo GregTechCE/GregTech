@@ -2010,12 +2010,13 @@ gregtech.cable.loss_per_block=Loss per block: §c%d
 
 gregtech.multiblock.work_paused=Work Paused.
 gregtech.multiblock.running=Running perfectly.
-gregtech.multiblock.idling=Idling...
-gregtech.multiblock.not_enough_energy=§cWARNING: Machine needs more energy.
+gregtech.multiblock.idling=Idling.
+gregtech.multiblock.not_enough_energy=WARNING: Machine needs more energy.
 gregtech.multiblock.progress=Progress: %s%%
-gregtech.multiblock.invalid_structure=§cInvalid structure.
-gregtech.multiblock.validation_failed=§cInvalid amount of inputs/outputs.
+gregtech.multiblock.invalid_structure=Invalid structure.
+gregtech.multiblock.validation_failed=Invalid amount of inputs/outputs.
 gregtech.multiblock.max_temperature=Max Temperature: %sK
+gregtech.multiblock.max_energy_per_tick=Max EU/t: %s (%s)
 
 
 

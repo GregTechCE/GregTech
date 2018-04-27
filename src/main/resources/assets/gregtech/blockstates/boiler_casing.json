@@ -36,7 +36,7 @@
       },
       "bronze_firebox": {
         "textures": {
-          "bottom": "gregtech:blocks/casings/solid/machine_bronzeplatedbricks",
+          "bottom": "gregtech:blocks/casings/solid/machine_bronze_plated_bricks",
           "top": "gregtech:blocks/casings/firebox/machine_casing_firebox_bronze",
           "side": "gregtech:blocks/casings/firebox/machine_casing_firebox_bronze"
         }

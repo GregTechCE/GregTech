@@ -44,23 +44,26 @@ public class EnergyContainerList implements IEnergyContainer {
 
     @Override
     public long getInputAmperage() {
-        return energyContainerList.stream()
-            .mapToLong(IEnergyContainer::getInputAmperage)
-            .max().orElse(0L);
+        return 1L;
+    }
+
+    @Override
+    public long getOutputAmperage() {
+        return 1L;
     }
 
     @Override
     public long getInputVoltage() {
         return energyContainerList.stream()
-            .mapToLong(IEnergyContainer::getInputVoltage)
-            .max().orElse(0L);
+            .mapToLong(v -> v.getInputVoltage() * v.getInputAmperage())
+            .sum();
     }
 
     @Override
     public long getOutputVoltage() {
         return energyContainerList.stream()
-            .mapToLong(IEnergyContainer::getOutputVoltage)
-            .max().orElse(0L);
+            .mapToLong(v -> v.getOutputVoltage() * v.getOutputAmperage())
+            .sum();
     }
 
     @Override

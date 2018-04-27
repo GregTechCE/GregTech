@@ -3,6 +3,7 @@ package gregtech.api.gui.widgets;
 import gregtech.api.gui.Widget;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
+import net.minecraft.client.gui.GuiUtilRenderComponents;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraftforge.fml.relauncher.Side;
@@ -11,6 +12,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
+import java.util.stream.Collectors;
 
 /**
  * Represents a text-component based widget, which obtains
@@ -20,6 +22,7 @@ public class AdvancedTextWidget extends Widget {
 
     protected int xPosition;
     protected int yPosition;
+    protected int maxWidthLimit;
 
     protected Consumer<List<ITextComponent>> textSupplier;
     private ArrayList<ITextComponent> lastText = new ArrayList<>();
@@ -31,6 +34,11 @@ public class AdvancedTextWidget extends Widget {
         this.yPosition = yPosition;
         this.textSupplier = text;
         this.color = color;
+    }
+
+    public AdvancedTextWidget setMaxWidthLimit(int maxWidthLimit) {
+        this.maxWidthLimit = maxWidthLimit;
+        return this;
     }
 
     @Override
@@ -64,8 +72,16 @@ public class AdvancedTextWidget extends Widget {
     @SideOnly(Side.CLIENT)
     public void drawInForeground(int mouseX, int mouseY) {
         FontRenderer fontRenderer = Minecraft.getMinecraft().fontRenderer;
-        for(int i = 0; i < lastText.size(); i++) {
-            fontRenderer.drawString(lastText.get(i).getFormattedText(), this.xPosition, this.yPosition + (i * (fontRenderer.FONT_HEIGHT + 2)), color);
+        List<ITextComponent> cutText;
+        if(maxWidthLimit > 0) {
+            cutText = lastText.stream()
+                .flatMap(c -> GuiUtilRenderComponents.splitText(c, maxWidthLimit, fontRenderer, true, true).stream())
+                .collect(Collectors.toList());
+        } else {
+            cutText = lastText;
+        }
+        for(int i = 0; i < cutText.size(); i++) {
+            fontRenderer.drawString(cutText.get(i).getFormattedText(), this.xPosition, this.yPosition + (i * (fontRenderer.FONT_HEIGHT + 2)), color);
         }
     }
 }

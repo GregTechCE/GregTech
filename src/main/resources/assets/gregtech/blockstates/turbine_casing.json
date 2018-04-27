@@ -33,7 +33,7 @@
       },
       "stainless_turbine_casing": {
         "textures": {
-          "all": "gregtech:blocks/casings/solid/machine_casing_clean_stainlesssteel"
+          "all": "gregtech:blocks/casings/solid/machine_casing_clean_stainless_steel"
         }
       },
       "tungstensteel_turbine_casing": {
