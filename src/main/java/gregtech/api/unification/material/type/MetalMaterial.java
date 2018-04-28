@@ -139,7 +139,7 @@ public class MetalMaterial extends SolidMaterial {
     }
 
     public MetalMaterial setCableProperties(long voltage, int baseAmperage, int lossPerBlock) {
-        this.cableProperties = new WireProperties(this, (int) voltage, baseAmperage, lossPerBlock);
+        this.cableProperties = new WireProperties((int) voltage, baseAmperage, lossPerBlock);
         return this;
     }
 

@@ -27,7 +27,11 @@ public class BlockMachineCasing extends VariantBlock<BlockMachineCasing.MachineC
         LuV("ludicrous_voltage"),
         ZPM("zero_point_module"),
         UV("ultra_voltage"),
-        MAX("maximum_voltage");
+        MAX("maximum_voltage"),
+        BRONZE_HULL("bronze_hull"),
+        BRONZE_BRICKS_HULL("bronze_bricks_hull"),
+        STEEL_HULL("steel_hull"),
+        STEEL_BRICKS_HULL("steel_bricks_hull");
 
         private final String name;
 

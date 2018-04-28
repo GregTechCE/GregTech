@@ -22,6 +22,9 @@ public class ConfigHolder {
     @Config.Comment("Chance with which flint and steel will create fire. Default: 50")
     public static int flintChanceToCreateFire = 50;
 
+    @Config.Comment("Recipes for machine hulls use more materials. Default: false")
+    public static boolean harderMachineHulls = false;
+
     @Config.Comment("Category that contains configs for changing vanilla recipes")
     public static VanillaRecipes vanillaRecipes = new VanillaRecipes();
 

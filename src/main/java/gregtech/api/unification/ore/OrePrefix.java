@@ -24,6 +24,7 @@ import static gregtech.api.unification.material.type.DustMaterial.MatFlags.*;
 import static gregtech.api.unification.material.type.GemMaterial.MatFlags.GENERATE_LENSE;
 import static gregtech.api.unification.material.type.MetalMaterial.MatFlags.*;
 import static gregtech.api.unification.material.type.SolidMaterial.MatFlags.GENERATE_GEAR;
+import static gregtech.api.unification.material.type.SolidMaterial.MatFlags.GENERATE_LONG_ROD;
 import static gregtech.api.unification.material.type.SolidMaterial.MatFlags.GENERATE_ROD;
 import static gregtech.api.unification.ore.OrePrefix.Conditions.*;
 import static gregtech.api.unification.ore.OrePrefix.Flags.*;
@@ -88,16 +89,16 @@ public enum OrePrefix {
 
     foil("Foils", M / 4, null, MaterialIconType.foil, ENABLE_UNIFICATION, mat -> mat instanceof MetalMaterial && mat.hasFlag(GENERATE_FOIL)), // Foil made of 1/4 Ingot/Dust.
 
-    stickLong("Long Sticks/Rods", M, null, MaterialIconType.stickLong, ENABLE_UNIFICATION, mat -> mat instanceof SolidMaterial && mat.hasFlag(GENERATE_ROD)), // Stick made of an Ingot.
+    stickLong("Long Sticks/Rods", M, null, MaterialIconType.stickLong, ENABLE_UNIFICATION, mat -> mat instanceof SolidMaterial && mat.hasFlag(GENERATE_LONG_ROD)), // Stick made of an Ingot.
     stick("Sticks/Rods", M / 2, null, MaterialIconType.stick, ENABLE_UNIFICATION, mat -> mat instanceof SolidMaterial && mat.hasFlag(GENERATE_ROD)), // Stick made of half an Ingot. Introduced by Eloraam
 
-    bolt("Bolts", M / 8, null, MaterialIconType.bolt, ENABLE_UNIFICATION, mat -> mat.hasFlag(GENERATE_BOLT_SCREW)), // consisting out of 1/8 Ingot or 1/4 Stick.
+    bolt("Bolts", M / 8, null, MaterialIconType.bolt, ENABLE_UNIFICATION, mat -> mat instanceof SolidMaterial && mat.hasFlag(GENERATE_BOLT_SCREW)), // consisting out of 1/8 Ingot or 1/4 Stick.
 
     comb("Combs", M, null, null, DISALLOW_RECYCLING, null), // contain dusts
 
     screw("Screws", M / 9, null, MaterialIconType.screw, ENABLE_UNIFICATION, mat -> mat instanceof MetalMaterial && mat.hasFlag(GENERATE_BOLT_SCREW)), // consisting out of a Bolt.
 
-    ring("Rings", M / 4, null, MaterialIconType.ring, ENABLE_UNIFICATION, mat -> mat instanceof MetalMaterial && mat.hasFlag(GENERATE_RING)), // consisting out of 1/2 Stick.
+    ring("Rings", M / 4, null, MaterialIconType.ring, ENABLE_UNIFICATION, mat -> mat instanceof SolidMaterial && mat.hasFlag(GENERATE_RING)), // consisting out of 1/2 Stick.
 
     springSmall("Small Springs", M / 4, null, MaterialIconType.springSmall, ENABLE_UNIFICATION, and(mat -> mat instanceof MetalMaterial, hasFlag(GENERATE_SPRING_SMALL), noFlag(NO_SMASHING))), // consisting out of 1 Fine Wire.
 
@@ -324,11 +325,15 @@ public enum OrePrefix {
         stick.ignoredMaterials.add(Materials.Wood);
         stick.ignoredMaterials.add(Materials.Bone);
         stick.ignoredMaterials.add(Materials.Blaze);
+        stick.ignoredMaterials.add(Materials.Paper);
         ingot.ignoredMaterials.add(Materials.Iron);
         ingot.ignoredMaterials.add(Materials.Gold);
         ingot.ignoredMaterials.add(Materials.WoodSealed);
         ingot.ignoredMaterials.add(Materials.Wood);
+        ingot.ignoredMaterials.add(Materials.Paper);
+        nugget.ignoredMaterials.add(Materials.Wood);
         nugget.ignoredMaterials.add(Materials.Gold);
+        nugget.ignoredMaterials.add(Materials.Paper);
         plate.ignoredMaterials.add(Materials.Paper);
 
         bucket.ignoredMaterials.add(Materials.Lava);
@@ -351,6 +356,8 @@ public enum OrePrefix {
         block.ignoredMaterials.add(Materials.Endstone);
         block.ignoredMaterials.add(Materials.Wheat);
         block.ignoredMaterials.add(Materials.Oilsands);
+        block.ignoredMaterials.add(Materials.Wood);
+        block.ignoredMaterials.add(Materials.WoodSealed);
 
         pipeRestrictiveTiny.secondaryMaterial = new MaterialStack(Materials.Steel, ring.materialAmount);
         pipeRestrictiveSmall.secondaryMaterial = new MaterialStack(Materials.Steel, ring.materialAmount * 2);
@@ -396,11 +403,6 @@ public enum OrePrefix {
         toolHeadDrill.secondaryMaterial = new MaterialStack(Materials.Steel, plate.materialAmount * 4);
         toolHeadChainsaw.secondaryMaterial = new MaterialStack(Materials.Steel, plate.materialAmount * 4 + ring.materialAmount * 2);
         toolHeadWrench.secondaryMaterial = new MaterialStack(Materials.Steel, ring.materialAmount + screw.materialAmount * 2);
-
-        stickLong.processOreRegistration(Materials.Wood);
-        gear.processOreRegistration(Materials.Wood);
-
-        ring.processOreRegistration(Materials.Paper);
     }
 
     @SafeVarargs

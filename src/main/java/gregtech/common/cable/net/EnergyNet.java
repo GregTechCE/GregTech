@@ -248,7 +248,6 @@ public class EnergyNet implements INBTSerializable<NBTTagCompound> {
             int wirePropertiesIndex = entry.getValue();
             NBTTagCompound propertiesTag = new NBTTagCompound();
             propertiesTag.setInteger("index", wirePropertiesIndex);
-            propertiesTag.setString("material", wireProperties.material.toString());
             propertiesTag.setInteger("voltage", wireProperties.voltage);
             propertiesTag.setInteger("amperage", wireProperties.amperage);
             propertiesTag.setInteger("loss_per_block", wireProperties.lossPerBlock);
@@ -283,11 +282,10 @@ public class EnergyNet implements INBTSerializable<NBTTagCompound> {
         for(int i = 0; i < wirePropertiesList.tagCount(); i++) {
             NBTTagCompound propertiesTag = wirePropertiesList.getCompoundTagAt(i);
             int wirePropertiesIndex = propertiesTag.getInteger("index");
-            MetalMaterial material = (MetalMaterial) Material.MATERIAL_REGISTRY.getObject(propertiesTag.getString("material"));
             int voltage = propertiesTag.getInteger("voltage");
             int amperage = propertiesTag.getInteger("amperage");
             int lossPerBlock = propertiesTag.getInteger("loss_per_block");
-            readProperties.put(wirePropertiesIndex, new WireProperties(material, voltage, amperage, lossPerBlock));
+            readProperties.put(wirePropertiesIndex, new WireProperties(voltage, amperage, lossPerBlock));
         }
 
         for(int i = 0; i < allNodesList.tagCount(); i++) {

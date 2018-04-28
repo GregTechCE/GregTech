@@ -4,6 +4,7 @@ import gregtech.api.GregTechAPI;
 import gregtech.api.block.machines.BlockMachine;
 import gregtech.api.render.MetaTileEntityRenderer;
 import gregtech.api.unification.OreDictUnifier;
+import gregtech.api.unification.material.MarkerMaterials;
 import gregtech.api.unification.material.Materials;
 import gregtech.api.unification.material.type.DustMaterial;
 import gregtech.api.unification.material.type.Material;
@@ -17,6 +18,7 @@ import gregtech.common.blocks.BlockMineral.MineralVariant;
 import gregtech.common.blocks.StoneBlock.ChiselingVariant;
 import gregtech.common.cable.BlockCable;
 import gregtech.common.cable.Insulation;
+import gregtech.common.cable.WireProperties;
 import gregtech.common.render.CableRenderer;
 import net.minecraft.block.Block;
 import net.minecraft.block.properties.IProperty;
@@ -54,7 +56,7 @@ public class MetaBlocks {
     public static BlockMineral MINERAL;
     public static BlockConcrete CONCRETE;
 
-    public static Map<MetalMaterial, BlockCable> CABLES = new HashMap<>();
+    public static Map<Material, BlockCable> CABLES = new HashMap<>();
     public static HashMap<DustMaterial, BlockCompressed> COMPRESSED = new HashMap<>();
     public static HashMap<SolidMaterial, BlockFrame> FRAMES = new HashMap<>();
     public static Collection<BlockOre> ORES = new HashSet<>();
@@ -137,10 +139,16 @@ public class MetaBlocks {
         }
         createCompressedBlock(compressedMaterialBuffer, compressedGenerationIndex);
         createFrameBlock(frameMaterialBuffer, frameGenerationIndex);
+
+        createCableBlock(MarkerMaterials.Tier.Superconductor, new WireProperties(Integer.MAX_VALUE, 4, 1));
     }
 
     private static void createCableBlock(MetalMaterial material) {
-        BlockCable blockCable = new BlockCable(material.cableProperties);
+        createCableBlock(material, material.cableProperties);
+    }
+
+    private static void createCableBlock(Material material, WireProperties wireProperties) {
+        BlockCable blockCable = new BlockCable(material, wireProperties);
         blockCable.setRegistryName("cable_" + material.toString());
         CABLES.put(material, blockCable);
     }
@@ -287,8 +295,7 @@ public class MetaBlocks {
         for(BlockCable blockCable : CABLES.values()) {
             for(Insulation insulation : Insulation.values()) {
                 ItemStack itemStack = blockCable.getItem(insulation);
-                MetalMaterial material = blockCable.baseProps.material;
-                OreDictUnifier.registerOre(itemStack, insulation.orePrefix, material);
+                OreDictUnifier.registerOre(itemStack, insulation.orePrefix, blockCable.material);
             }
         }
     }
