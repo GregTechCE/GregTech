@@ -2,6 +2,7 @@ package gregtech.api.render;
 
 import codechicken.lib.render.CCRenderState;
 import codechicken.lib.render.pipeline.IVertexOperation;
+import codechicken.lib.texture.TextureUtils.IIconRegister;
 import codechicken.lib.vec.Cuboid6;
 import gregtech.api.GTValues;
 import gregtech.api.metatileentity.MetaTileEntity;
@@ -15,7 +16,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import java.util.HashMap;
 import java.util.Map;
 
-public class OrientedOverlayRenderer {
+public class OrientedOverlayRenderer implements IIconRegister {
 
     public enum OverlayFace {
         FRONT, BACK, TOP, BOTTOM, SIDE;
@@ -58,11 +59,12 @@ public class OrientedOverlayRenderer {
     public OrientedOverlayRenderer(String basePath, OverlayFace... faces) {
         this.basePath = basePath;
         this.faces = faces;
-        Textures.iconRegisters.add(this::registerSprites);
+        Textures.iconRegisters.add(this);
     }
 
+    @Override
     @SideOnly(Side.CLIENT)
-    public void registerSprites(TextureMap textureMap) {
+    public void registerIcons(TextureMap textureMap) {
         this.sprites = new HashMap<>();
         for(OverlayFace overlayFace : faces) {
             String faceName = overlayFace.name().toLowerCase();

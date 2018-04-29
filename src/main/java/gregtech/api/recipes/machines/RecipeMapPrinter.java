@@ -4,13 +4,12 @@ import gregtech.api.GTValues;
 import gregtech.api.GregTechAPI;
 import gregtech.api.recipes.ModHandler;
 import gregtech.api.recipes.Recipe;
-import gregtech.api.recipes.builders.DefaultRecipeBuilder;
 import gregtech.api.recipes.RecipeMap;
+import gregtech.api.recipes.builders.DefaultRecipeBuilder;
 import gregtech.api.util.GTUtility;
 import net.minecraft.init.Items;
 import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.NonNullList;
 import net.minecraftforge.fluids.FluidStack;
 
 import javax.annotation.Nullable;
@@ -24,7 +23,7 @@ public class RecipeMapPrinter extends RecipeMap<DefaultRecipeBuilder> {
 
     @Override
     @Nullable
-    public Recipe findRecipe(long voltage, NonNullList<ItemStack> inputs, List<FluidStack> fluidInputs) {
+    public Recipe findRecipe(long voltage, List<ItemStack> inputs, List<FluidStack> fluidInputs) {
         Recipe recipe = super.findRecipe(voltage, inputs, fluidInputs);
         if (recipe != null || inputs.size() == 0 || inputs.get(0).isEmpty())
             return recipe;

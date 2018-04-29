@@ -8,6 +8,7 @@ import gregtech.api.recipes.RecipeMap;
 import net.minecraftforge.items.IItemHandlerModifiable;
 
 import java.util.function.BiFunction;
+import java.util.function.Supplier;
 
 public class MultiblockRecipeMapWorkable extends RecipeMapWorkableHandler {
 
@@ -17,6 +18,7 @@ public class MultiblockRecipeMapWorkable extends RecipeMapWorkableHandler {
     private IMultipleTankHandler exportFluidsInventory;
     private IEnergyContainer energyContainer;
     private BiFunction<Recipe, Boolean, Boolean> recipeChecker;
+    private Supplier<Recipe> recipeSupplier;
 
     public MultiblockRecipeMapWorkable(MetaTileEntity tileEntity, RecipeMap<?> recipeMap, BiFunction<Recipe, Boolean, Boolean> recipeChecker) {
         super(tileEntity, recipeMap);

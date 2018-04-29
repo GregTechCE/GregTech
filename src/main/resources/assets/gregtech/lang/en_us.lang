@@ -2011,8 +2011,18 @@ gregtech.multiblock.not_enough_energy=WARNING: Machine needs more energy.
 gregtech.multiblock.progress=Progress: %s%%
 gregtech.multiblock.invalid_structure=Invalid structure.
 gregtech.multiblock.validation_failed=Invalid amount of inputs/outputs.
-gregtech.multiblock.max_temperature=Max Temperature: %sK
 gregtech.multiblock.max_energy_per_tick=Max EU/t: %s (%s)
+gregtech.multiblock.generation_eu=Outputting: %s EU/t
+
+gregtech.multiblock.max_temperature=Max Temperature: %sK
+gregtech.multiblock.heating_coil_level=Heating Coil Level: %s
+gregtech.multiblock.heating_coil_discount=Heating Coil EU Boost: %sx
+gregtech.multiblock.distilling_fluid=Distilling %s
+
+gregtech.multiblock.lubricant_amount=Lubricant Amount: %sL
+gregtech.multiblock.fuel_amount=Fuel Amount: %sL
+gregtech.multiblock.oxygen_boosted=Oxygen boosted.
+gregtech.multiblock.supply_oxygen_to_boost=Supply oxygen to boost output.
 
 
 

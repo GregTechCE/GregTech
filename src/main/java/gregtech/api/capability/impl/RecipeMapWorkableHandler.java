@@ -82,7 +82,7 @@ public abstract class RecipeMapWorkableHandler extends MTETrait implements IWork
             return;
         if(progressTime == 0) {
             long maxVoltage = getMaxVoltage();
-            Recipe pickedRecipe = recipeMap.findRecipe(maxVoltage, getImportItemsInventory(), getImportFluidsInventory());
+            Recipe pickedRecipe = findRecipe(maxVoltage, getImportItemsInventory(), getImportFluidsInventory());
             if(pickedRecipe != null && setupAndConsumeRecipeInputs(pickedRecipe)) {
                 if(pickedRecipe.canBeBuffered()) {
                     this.previousRecipe = pickedRecipe;
@@ -108,8 +108,12 @@ public abstract class RecipeMapWorkableHandler extends MTETrait implements IWork
         }
     }
 
+    protected Recipe findRecipe(long maxVoltage, IItemHandlerModifiable inputs, IMultipleTankHandler fluidInputs) {
+        return recipeMap.findRecipe(maxVoltage, getImportItemsInventory(), getImportFluidsInventory());
+    }
+
     protected boolean setupAndConsumeRecipeInputs(Recipe recipe) {
-        int[] resultOverclock = calculateOverclock(recipe.getEUt(), getMaxVoltage(), recipeMap.getAmperage(), recipe.getDuration());
+        int[] resultOverclock = calculateOverclock(recipe.getEUt(), getMaxVoltage(), recipeMap.getAmperage(), recipe.getDuration(), false);
         int totalEUt = resultOverclock[0] * resultOverclock[1];
         return (totalEUt >= 0 ? getEnergyStored() >= (totalEUt > getEnergyCapacity() / 2 ? resultOverclock[0] : totalEUt) :
             getEnergyStored() - resultOverclock[0] <= getEnergyCapacity()) &&
@@ -119,7 +123,7 @@ public abstract class RecipeMapWorkableHandler extends MTETrait implements IWork
             recipe.matches(true, false, getImportItemsInventory(), getImportFluidsInventory());
     }
 
-    private static int[] calculateOverclock(int EUt, long voltage, long amperage, int duration) {
+    protected int[] calculateOverclock(int EUt, long voltage, long amperage, int duration, boolean consumeInputs) {
         boolean negativeEU = EUt < 0;
         if(negativeEU)
             EUt = -EUt;
@@ -140,7 +144,7 @@ public abstract class RecipeMapWorkableHandler extends MTETrait implements IWork
     }
 
     protected void setupRecipe(Recipe recipe) {
-        int[] resultOverclock = calculateOverclock(recipe.getEUt(), getMaxVoltage(), recipeMap.getAmperage(), recipe.getDuration());
+        int[] resultOverclock = calculateOverclock(recipe.getEUt(), getMaxVoltage(), recipeMap.getAmperage(), recipe.getDuration(), true);
         this.progressTime = 1;
         setMaxProgress(resultOverclock[1]);
         this.recipeEUt = resultOverclock[0];
@@ -181,6 +185,10 @@ public abstract class RecipeMapWorkableHandler extends MTETrait implements IWork
     @Override
     public int getMaxProgress() {
         return maxProgressTime;
+    }
+
+    public int getRecipeEUt() {
+        return recipeEUt;
     }
 
     public void setMaxProgress(int maxProgress) {

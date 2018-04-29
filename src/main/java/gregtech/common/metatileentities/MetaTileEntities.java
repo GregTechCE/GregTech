@@ -115,6 +115,9 @@ public class MetaTileEntities {
     public static MetaTileEntityImplosionCompressor IMPLOSION_COMPRESSOR;
     public static MetaTileEntityPyrolyseOven PYROLYSE_OVEN;
     public static MetaTileEntityDistillationTower DISTILLATION_TOWER;
+    public static MetaTileEntityMultiFurnace MULTI_FURNACE;
+    public static MetaTileEntityDieselEngine DIESEL_ENGINE;
+
 
     public static void init() {
         GTLog.logger.info("Registering MetaTileEntities");
@@ -405,6 +408,8 @@ public class MetaTileEntities {
         IMPLOSION_COMPRESSOR = GregTechAPI.registerMetaTileEntity(513, new MetaTileEntityImplosionCompressor("implosion_compressor"));
         PYROLYSE_OVEN = GregTechAPI.registerMetaTileEntity(514, new MetaTileEntityPyrolyseOven("pyrolyse_oven"));
         DISTILLATION_TOWER = GregTechAPI.registerMetaTileEntity(515, new MetaTileEntityDistillationTower("distillation_tower"));
+        MULTI_FURNACE = GregTechAPI.registerMetaTileEntity(516, new MetaTileEntityMultiFurnace("multi_furnace"));
+        DIESEL_ENGINE = GregTechAPI.registerMetaTileEntity(517, new MetaTileEntityDieselEngine("diesel_engine"));
 
         int[] batteryBufferSlots = new int[] {1, 4, 9, 16};
         for(int i = 0; i < GTValues.V.length; i++) {

@@ -16,7 +16,6 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.ValidationResult;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.NonNullList;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fml.relauncher.Side;
@@ -130,7 +129,7 @@ public class RecipeMap<R extends RecipeBuilder<R>> {
 	 * @return the Recipe it has found or null for no matching Recipe
 	 */
 	@Nullable
-	public Recipe findRecipe(long voltage, NonNullList<ItemStack> inputs, List<FluidStack> fluidInputs) {
+	public Recipe findRecipe(long voltage, List<ItemStack> inputs, List<FluidStack> fluidInputs) {
         if (recipeList.isEmpty())
             return null;
         if (minFluidInputs > 0 && GTUtility.amountOfNonNullElements(fluidInputs) < minFluidInputs) {
@@ -147,7 +146,7 @@ public class RecipeMap<R extends RecipeBuilder<R>> {
     }
 
     @Nullable
-    private Recipe findByFluidInputs(long voltage, NonNullList<ItemStack> inputs, List<FluidStack> fluidInputs) {
+    private Recipe findByFluidInputs(long voltage, List<ItemStack> inputs, List<FluidStack> fluidInputs) {
         for (FluidStack fluid : fluidInputs) {
             if (fluid == null) continue;
             Collection<Recipe> recipes = recipeFluidMap.get(fluid.getFluid());
@@ -162,7 +161,7 @@ public class RecipeMap<R extends RecipeBuilder<R>> {
     }
 
 	@Nullable
-	private Recipe findByInputs(long voltage, NonNullList<ItemStack> inputs, List<FluidStack> fluidInputs) {
+	private Recipe findByInputs(long voltage, List<ItemStack> inputs, List<FluidStack> fluidInputs) {
         for (Recipe recipe : recipeList) {
             if (recipe.matches(false, false, inputs, fluidInputs)) {
                 return voltage * amperage >= recipe.getEUt() ? recipe : null;

@@ -14,6 +14,11 @@ import gregtech.common.blocks.MetaBlocks;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.math.Vec3i;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TextComponentTranslation;
+import net.minecraftforge.fluids.FluidStack;
+
+import java.util.List;
 
 public class MetaTileEntityDistillationTower extends RecipeMapMultiblockController {
 
@@ -29,6 +34,18 @@ public class MetaTileEntityDistillationTower extends RecipeMapMultiblockControll
     @Override
     protected Vec3i getCenterOffset() {
         return new Vec3i(1, 0, 0);
+    }
+
+    @Override
+    protected void addDisplayText(List<ITextComponent> textList) {
+        if(isStructureFormed()) {
+            FluidStack stackInTank = importFluids.drain(Integer.MAX_VALUE, false);
+            if(stackInTank != null && stackInTank.amount > 0) {
+                TextComponentTranslation fluidName = new TextComponentTranslation(stackInTank.getFluid().getUnlocalizedName(stackInTank));
+                textList.add(new TextComponentTranslation("gregtech.multiblock.distilling_fluid", fluidName));
+            }
+        }
+        super.addDisplayText(textList);
     }
 
     @Override

@@ -100,7 +100,7 @@ public class Recipe {
 		return matches(consumeIfSuccessful, dontCheckStackSizes, GTUtility.itemHandlerToList(inputs), GTUtility.fluidHandlerToList(fluidInputs));
 	}
 
-	public boolean matches(boolean consumeIfSuccessful, boolean dontCheckStackSizes, NonNullList<ItemStack> inputs, List<FluidStack> fluidInputs) {
+	public boolean matches(boolean consumeIfSuccessful, boolean dontCheckStackSizes, List<ItemStack> inputs, List<FluidStack> fluidInputs) {
 		if (this.fluidInputs.size() > 0 && fluidInputs.size() == 0) return false;
 		int amount;
 		for (FluidStack fluidInput : this.fluidInputs) {

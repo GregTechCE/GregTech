@@ -75,7 +75,7 @@ public class MetaTileEntityElectricBlastFurnace extends RecipeMapMultiblockContr
         return this.blastFurnaceTemperature >= recipeRequiredTemp;
     }
 
-    protected static Predicate<BlockWorldState> heatingCoilPredicate() {
+    public static Predicate<BlockWorldState> heatingCoilPredicate() {
         return blockWorldState -> {
             IBlockState blockState = blockWorldState.getBlockState();
             if(!(blockState.getBlock() instanceof BlockWireCoil))

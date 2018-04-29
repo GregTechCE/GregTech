@@ -356,10 +356,10 @@ public class GTUtility {
         return amount;
     }
 
-    public static int amountOfNonEmptyStacks(NonNullList<ItemStack> collection) {
+    public static int amountOfNonEmptyStacks(List<ItemStack> collection) {
         int amount = 0;
         for(ItemStack object : collection) {
-            if(!object.isEmpty()) amount++;
+            if(object != null && !object.isEmpty()) amount++;
         }
         return amount;
     }

@@ -2,6 +2,7 @@ package gregtech.api.render;
 
 import codechicken.lib.render.CCRenderState;
 import codechicken.lib.render.pipeline.IVertexOperation;
+import codechicken.lib.texture.TextureUtils.IIconRegister;
 import codechicken.lib.vec.Cuboid6;
 import gregtech.api.GTValues;
 import gregtech.api.metatileentity.MetaTileEntity;
@@ -12,7 +13,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class SimpleCubeRenderer implements ICubeRenderer {
+public class SimpleCubeRenderer implements ICubeRenderer, IIconRegister {
 
     private final String basePath;
 
@@ -21,9 +22,10 @@ public class SimpleCubeRenderer implements ICubeRenderer {
 
     public SimpleCubeRenderer(String basePath) {
         this.basePath = basePath;
-        Textures.iconRegisters.add(this::registerIcons);
+        Textures.iconRegisters.add(this);
     }
 
+    @Override
     @SideOnly(Side.CLIENT)
     public void registerIcons(TextureMap textureMap) {
         this.sprite = textureMap.registerSprite(new ResourceLocation(GTValues.MODID, "blocks/" + basePath));

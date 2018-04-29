@@ -18,6 +18,7 @@ import net.minecraft.util.math.Vec3i;
 import org.apache.commons.lang3.ArrayUtils;
 
 import java.util.*;
+import java.util.function.BiFunction;
 import java.util.function.BooleanSupplier;
 import java.util.function.Predicate;
 
@@ -70,13 +71,13 @@ public abstract class MultiblockControllerBase extends MetaTileEntity {
         return () -> true;
     }
 
-    public static Predicate<BlockWorldState> tilePredicate(Predicate<MetaTileEntity> predicate) {
+    public static Predicate<BlockWorldState> tilePredicate(BiFunction<BlockWorldState, MetaTileEntity, Boolean> predicate) {
         return blockWorldState -> {
             TileEntity tileEntity = blockWorldState.getTileEntity();
             if(!(tileEntity instanceof MetaTileEntityHolder))
                 return false;
             MetaTileEntity metaTileEntity = ((MetaTileEntityHolder) tileEntity).getMetaTileEntity();
-            if(predicate.test(metaTileEntity)) {
+            if(predicate.apply(blockWorldState, metaTileEntity)) {
                 if(metaTileEntity instanceof IMultiblockPart) {
                     List<IMultiblockPart> partsFound = blockWorldState.getMatchContext().get("MultiblockParts", ArrayList::new);
                     partsFound.add((IMultiblockPart) metaTileEntity);
@@ -88,12 +89,12 @@ public abstract class MultiblockControllerBase extends MetaTileEntity {
     }
 
     public static Predicate<BlockWorldState> abilityPartPredicate(MultiblockAbility<?>... allowedAbilities) {
-        return tilePredicate(tile -> tile instanceof IMultiblockAbilityPart<?> &&
+        return tilePredicate((state, tile) -> tile instanceof IMultiblockAbilityPart<?> &&
             ArrayUtils.contains(allowedAbilities, ((IMultiblockAbilityPart<?>) tile).getAbility()));
     }
 
     public static Predicate<BlockWorldState> partPredicate(Class<? extends IMultiblockPart> baseClass) {
-        return tilePredicate(tile -> tile instanceof IMultiblockPart && baseClass.isAssignableFrom(tile.getClass()));
+        return tilePredicate((state, tile) -> tile instanceof IMultiblockPart && baseClass.isAssignableFrom(tile.getClass()));
     }
 
     public static Predicate<BlockWorldState> statePredicate(IBlockState... allowedStates) {
@@ -105,7 +106,7 @@ public abstract class MultiblockControllerBase extends MetaTileEntity {
     }
 
     public Predicate<BlockWorldState> selfPredicate() {
-        return tilePredicate(tile -> tile.metaTileEntityId.equals(metaTileEntityId));
+        return tilePredicate((state, tile) -> tile.metaTileEntityId.equals(metaTileEntityId));
     }
 
     @Override
