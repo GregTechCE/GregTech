@@ -45,6 +45,10 @@ public class VariantBlock<T extends Enum<T> & IStringSerializable> extends Block
         return new ItemStack(this, 1, variant.ordinal());
     }
 
+    public ItemStack getItemVariant(T variant, int amount) {
+        return new ItemStack(this, amount, variant.ordinal());
+    }
+
     @Override
     protected BlockStateContainer createBlockState() {
         Class<T> enumClass = GTUtility.getActualTypeParameter(getClass(), VariantBlock.class, 0);

@@ -270,7 +270,10 @@ public class ModHandler {
             skip = true;
         }
         skip |= validateRecipe(recipe);
-        if (skip) return;
+        if (skip) {
+            RecipeMap.foundInvalidRecipe = true;
+            return;
+        }
 
         IRecipe shapedOreRecipe = new ShapedOreRecipe(new ResourceLocation(GTValues.MODID, "general"), result.copy(), finalizeShapedRecipeInput(recipe))
             .setMirrored(true)
@@ -314,7 +317,10 @@ public class ModHandler {
             skip = true;
         }
         skip |= validateRecipe(recipe);
-        if (skip) return;
+        if (skip) {
+            RecipeMap.foundInvalidRecipe = true;
+            return;
+        }
 
         IRecipe shapedOreRecipe = new ShapedOreRecipe(null, result.copy(), finalizeShapedRecipeInput(recipe))
             .setRegistryName(regName);
@@ -395,7 +401,10 @@ public class ModHandler {
             skip = true;
         }
         skip |= validateRecipe(recipe);
-        if (skip) return;
+        if (skip) {
+            RecipeMap.foundInvalidRecipe = true;
+            return;
+        }
 
         for (byte i = 0; i < recipe.length; i++) {
             if (recipe[i] instanceof MetaItem.MetaValueItem) {

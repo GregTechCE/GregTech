@@ -38,6 +38,17 @@ public class GTValues {
      */
     public static final long[] V = new long[]{8, 32, 128, 512, 2048, 8192, 32768, 131072, 524288, Integer.MAX_VALUE};
 
+    public static final int ULV = 0;
+    public static final int LV = 1;
+    public static final int MV = 2;
+    public static final int HV = 3;
+    public static final int EV = 4;
+    public static final int IV = 5;
+    public static final int LuV = 6;
+    public static final int ZPM = 7;
+    public static final int UV = 8;
+    public static final int MAX = 9;
+
     /**
      * The short Names for the Voltages
      */

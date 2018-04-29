@@ -5,7 +5,9 @@ import gregtech.api.gui.ModularUI;
 import gregtech.api.gui.widgets.AdvancedTextWidget;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.Style;
 import net.minecraft.util.text.TextComponentTranslation;
+import net.minecraft.util.text.TextFormatting;
 
 import java.util.List;
 
@@ -22,24 +24,21 @@ public abstract class MultiblockWithDisplayBase extends MultiblockControllerBase
      */
     protected void addDisplayText(List<ITextComponent> textList) {
         if(!isStructureFormed()) {
-            textList.add(new TextComponentTranslation("gregtech.multiblock.invalid_structure"));
+            textList.add(new TextComponentTranslation("gregtech.multiblock.invalid_structure")
+                .setStyle(new Style().setColor(TextFormatting.RED)));
         } else if(!validationPredicate.getAsBoolean()) {
-            textList.add(new TextComponentTranslation("gregtech.multiblock.validation_failed"));
+            textList.add(new TextComponentTranslation("gregtech.multiblock.validation_failed")
+                .setStyle(new Style().setColor(TextFormatting.RED)));
         }
     }
 
-    protected boolean shouldBindInventory() {
-        return true;
-    }
-
     protected ModularUI.Builder createUITemplate(EntityPlayer entityPlayer) {
-        boolean shouldBindInventory = shouldBindInventory();
-        ModularUI.Builder builder = shouldBindInventory ? ModularUI.defaultBuilder() : ModularUI.cutBuilder();
-        builder.image(7, 4, 162, 75, GuiTextures.DISPLAY);
+        ModularUI.Builder builder = ModularUI.extendedBuilder();
+        builder.image(7, 4, 162, 121, GuiTextures.DISPLAY);
         builder.label(10, 7, getMetaName(), 0xFFFFFF);
-        builder.widget(new AdvancedTextWidget(10, 17, this::addDisplayText, 0xFFFFFF));
-        if(shouldBindInventory)
-            builder.bindPlayerInventory(entityPlayer.inventory);
+        builder.widget(new AdvancedTextWidget(10, 17, this::addDisplayText, 0xFFFFFF)
+            .setMaxWidthLimit(156));
+        builder.bindPlayerInventory(entityPlayer.inventory, 134);
         return builder;
     }
 

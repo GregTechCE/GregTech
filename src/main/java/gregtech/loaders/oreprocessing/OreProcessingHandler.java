@@ -255,12 +255,14 @@ public class OreProcessingHandler {
             } else {
                 blockComponent = OreDictUnifier.get(OrePrefix.dust, material);
             }
-            ModHandler.addShapedRecipe(String.format("%s_block_compress", material.toString()),
-                blockStack, "XXX", "XXX", "XXX",
-                'X', blockComponent);
-            ModHandler.addShapelessRecipe(String.format("%s_block_decompress", material.toString()),
-                GTUtility.copyAmount(9, blockComponent),
-                blockStack);
+            if (!blockComponent.isEmpty()) {
+                ModHandler.addShapedRecipe(String.format("%s_block_compress", material.toString()),
+                    blockStack, "XXX", "XXX", "XXX",
+                    'X', blockComponent);
+                ModHandler.addShapelessRecipe(String.format("%s_block_decompress", material.toString()),
+                    GTUtility.copyAmount(9, blockComponent),
+                    blockStack);
+            }
         }
     }
 
@@ -270,9 +272,9 @@ public class OreProcessingHandler {
         ItemStack boltStack = OreDictUnifier.get(boltPrefix, material);
         ItemStack screwStack = OreDictUnifier.get(OrePrefix.screw, material);
         ItemStack ingotStack = OreDictUnifier.get(OrePrefix.ingot, material);
-        if (!boltStack.isEmpty()) { // if boltStack is empty we can probably expect the other 2 to be empty too
+        if (!boltStack.isEmpty() && !screwStack.isEmpty()) {
             ModHandler.addShapedRecipe(String.format("%s_bolt", material.toString()),
-                boltStack, "fS ", "S  ",
+                boltStack, "fS", "S ",
                 'S', screwStack);
 
             RecipeMaps.CUTTER_RECIPES.recipeBuilder()
@@ -280,7 +282,8 @@ public class OreProcessingHandler {
                 .outputs(boltStack)
                 .duration(20).EUt(24)
                 .buildAndRegister();
-
+        }
+        if (!boltStack.isEmpty() && !ingotStack.isEmpty()) {
             RecipeMaps.EXTRUDER_RECIPES.recipeBuilder()
                 .notConsumable(MetaItems.SHAPE_EXTRUDER_BOLT)
                 .inputs(ingotStack)
@@ -2380,7 +2383,8 @@ public class OreProcessingHandler {
             if (!OreDictUnifier.get(OrePrefix.stick, solidMaterial.handleMaterial).isEmpty()) {
                 ModHandler.addShapelessRecipe(String.format("file_handle_%s", solidMaterial.toString()),
                     MetaItems.FILE.getStackForm(solidMaterial, solidMaterial.handleMaterial),
-                    new UnificationEntry(toolPrefix, material), OreDictUnifier.get(OrePrefix.stick, solidMaterial.handleMaterial));
+                    new UnificationEntry(toolPrefix, material),
+                    OreDictUnifier.get(OrePrefix.stick, solidMaterial.handleMaterial));
                 if (!smashing) {
                     ModHandler.addMirroredShapedRecipe(String.format("file_%s", solidMaterial),
                         MetaItems.FILE.getStackForm(solidMaterial, solidMaterial.handleMaterial),

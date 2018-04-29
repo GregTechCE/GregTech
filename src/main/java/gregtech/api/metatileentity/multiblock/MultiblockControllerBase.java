@@ -10,6 +10,7 @@ import gregtech.api.multiblock.PatternMatchContext;
 import gregtech.api.render.ICubeRenderer;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
@@ -110,6 +111,11 @@ public abstract class MultiblockControllerBase extends MetaTileEntity {
     @Override
     public void renderMetaTileEntity(CCRenderState renderState, IVertexOperation[] pipeline) {
         getBaseTexture().render(renderState, pipeline);
+    }
+
+    @Override
+    public TextureAtlasSprite getParticleTexture() {
+        return getBaseTexture().getParticleSprite();
     }
 
     protected void checkStructurePattern() {

@@ -2,6 +2,7 @@ package gregtech.api.metatileentity.multiblock;
 
 import codechicken.lib.render.CCRenderState;
 import codechicken.lib.render.pipeline.IVertexOperation;
+import gregtech.api.GTValues;
 import gregtech.api.capability.IEnergyContainer;
 import gregtech.api.capability.impl.EnergyContainerList;
 import gregtech.api.capability.impl.FluidTankList;
@@ -11,8 +12,11 @@ import gregtech.api.multiblock.PatternMatchContext;
 import gregtech.api.recipes.Recipe;
 import gregtech.api.recipes.RecipeMap;
 import gregtech.api.render.Textures;
+import gregtech.api.util.GTUtility;
 import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.Style;
 import net.minecraft.util.text.TextComponentTranslation;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.items.IItemHandler;
 
 import java.util.List;
@@ -69,6 +73,12 @@ public abstract class RecipeMapMultiblockController extends MultiblockWithDispla
     protected void addDisplayText(List<ITextComponent> textList) {
         super.addDisplayText(textList);
         if(isStructureFormed()) {
+            IEnergyContainer energyContainer = recipeMapWorkable.getEnergyContainer();
+            if(energyContainer.getEnergyCapacity() > 0) {
+                long maxVoltage = shouldUseEnergyOutputs() ? energyContainer.getOutputVoltage() : energyContainer.getInputVoltage();
+                String voltageName = GTValues.VN[GTUtility.getTierByVoltage(maxVoltage)];
+                textList.add(new TextComponentTranslation("gregtech.multiblock.max_energy_per_tick", maxVoltage, voltageName));
+            }
             if(!recipeMapWorkable.isWorkingEnabled()) {
                 textList.add(new TextComponentTranslation("gregtech.multiblock.work_paused"));
             } else if(recipeMapWorkable.isActive()) {
@@ -79,7 +89,8 @@ public abstract class RecipeMapMultiblockController extends MultiblockWithDispla
                 textList.add(new TextComponentTranslation("gregtech.multiblock.idling"));
             }
             if(recipeMapWorkable.isHasNotEnoughEnergy()) {
-                textList.add(new TextComponentTranslation("gregtech.multiblock.not_enough_energy"));
+                textList.add(new TextComponentTranslation("gregtech.multiblock.not_enough_energy")
+                    .setStyle(new Style().setColor(TextFormatting.RED)));
             }
         }
     }

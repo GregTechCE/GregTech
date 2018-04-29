@@ -58,8 +58,8 @@ public final class ModularUI {
         return new Builder(GuiTextures.BACKGROUND, 176, 166);
     }
 
-    public static Builder cutBuilder() {
-        return new Builder(GuiTextures.BACKGROUND_CUT, 176, 85);
+    public static Builder extendedBuilder() {
+        return new Builder(GuiTextures.BACKGROUND_EXTENDED, 176, 216);
     }
 
     public static Builder builder(TextureArea background, int width, int height) {
@@ -139,6 +139,12 @@ public final class ModularUI {
 
         public Builder bindPlayerInventory(InventoryPlayer inventoryPlayer) {
             bindPlayerInventory(inventoryPlayer, nextFreeWidgetId, GuiTextures.SLOT);
+            nextFreeWidgetId += 36;
+            return this;
+        }
+
+        public Builder bindPlayerInventory(InventoryPlayer inventoryPlayer, int startY) {
+            bindPlayerInventory(inventoryPlayer, nextFreeWidgetId, GuiTextures.SLOT, 8, startY);
             nextFreeWidgetId += 36;
             return this;
         }

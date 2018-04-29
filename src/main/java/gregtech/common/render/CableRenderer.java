@@ -15,6 +15,7 @@ import codechicken.lib.vec.uv.IconTransformation;
 import gregtech.api.GTValues;
 import gregtech.api.unification.material.MaterialIconSet;
 import gregtech.api.unification.material.MaterialIconType;
+import gregtech.api.unification.material.type.Material;
 import gregtech.api.unification.material.type.MetalMaterial;
 import gregtech.api.util.GTLog;
 import gregtech.api.util.GTUtility;
@@ -70,7 +71,7 @@ public class CableRenderer implements ICCBlockRenderer, IItemRenderer, IModelPar
         BlockRenderingRegistry.registerRenderer(BLOCK_RENDER_TYPE, INSTANCE);
         MinecraftForge.EVENT_BUS.register(INSTANCE);
         TextureUtils.addIconRegister(INSTANCE::registerIcons);
-        for(MetalMaterial material : MetaBlocks.CABLES.keySet()) {
+        for(Material material : MetaBlocks.CABLES.keySet()) {
             MaterialIconSet iconSet = material.materialIconSet;
             INSTANCE.generatedSets.add(iconSet);
         }
@@ -102,7 +103,7 @@ public class CableRenderer implements ICCBlockRenderer, IItemRenderer, IModelPar
         renderState.reset();
         renderState.startDrawing(GL11.GL_QUADS, DefaultVertexFormats.ITEM);
         Insulation insulation = BlockCable.getInsulation(stack);
-        MetalMaterial material = ((BlockCable) ((ItemBlock) stack.getItem()).getBlock()).baseProps.material;
+        Material material = ((BlockCable) ((ItemBlock) stack.getItem()).getBlock()).material;
         renderCableBlock(material, insulation, TileEntityCable.DEFAULT_INSULATION_COLOR, renderState, new IVertexOperation[0],
             1 << EnumFacing.SOUTH.getIndex() | 1 << EnumFacing.NORTH.getIndex() | 1 << 7);
         renderState.draw();
@@ -124,13 +125,13 @@ public class CableRenderer implements ICCBlockRenderer, IItemRenderer, IModelPar
         int connectedSidesMask = BlockCable.getActualConnections(tileEntityCable, world, pos);
 
         Insulation insulation = state.getValue(BlockCable.INSULATION);
-        MetalMaterial material = ((BlockCable) state.getBlock()).baseProps.material;
+        Material material = ((BlockCable) state.getBlock()).material;
 
         renderCableBlock(material, insulation, paintingColor, renderState, pipeline, connectedSidesMask);
         return true;
     }
 
-    public void renderCableBlock(MetalMaterial material, Insulation insulation1, int insulationColor1, CCRenderState state, IVertexOperation[] pipeline, int connectMask) {
+    public void renderCableBlock(Material material, Insulation insulation1, int insulationColor1, CCRenderState state, IVertexOperation[] pipeline, int connectMask) {
         MaterialIconSet iconSet = material.materialIconSet;
         int wireColor = GTUtility.convertRGBtoOpaqueRGBA(material.materialRGB);
         float thickness = insulation1.thickness;
@@ -245,7 +246,7 @@ public class CableRenderer implements ICCBlockRenderer, IItemRenderer, IModelPar
     @Override
     public Set<TextureAtlasSprite> getDestroyEffects(IBlockState state, IBlockAccess world, BlockPos pos) {
         Insulation insulation = state.getValue(BlockCable.INSULATION);
-        MetalMaterial material = ((BlockCable) state.getBlock()).baseProps.material;
+        Material material = ((BlockCable) state.getBlock()).material;
         return Collections.singleton(insulation.insulationLevel > -1 ? insulationTextures[5] : wireTextures.get(material.materialIconSet));
     }
 }

@@ -6,7 +6,7 @@ public class GuiTextures {
 
     //BASE TEXTURES
     public static final TextureArea BACKGROUND = TextureArea.fullImage("textures/gui/base/background.png");
-    public static final TextureArea BACKGROUND_CUT = TextureArea.fullImage("textures/gui/base/background_cut.png");
+    public static final TextureArea BACKGROUND_EXTENDED = TextureArea.fullImage("textures/gui/base/background_extended.png");
     public static final TextureArea SLOT = TextureArea.fullImage("textures/gui/base/slot.png");
     public static final TextureArea FLUID_SLOT = TextureArea.fullImage("textures/gui/base/fluid_slot.png");
     public static final TextureArea DISPLAY = TextureArea.fullImage("textures/gui/base/display.png");

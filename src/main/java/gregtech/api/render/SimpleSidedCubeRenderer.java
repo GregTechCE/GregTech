@@ -55,6 +55,13 @@ public class SimpleSidedCubeRenderer implements ICubeRenderer {
     }
 
     @Override
+    @SideOnly(Side.CLIENT)
+    public TextureAtlasSprite getParticleSprite() {
+        return getSpriteOnSide(RenderSide.TOP);
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
     public void render(CCRenderState renderState, IVertexOperation[] pipeline, Cuboid6 bounds) {
         for(EnumFacing renderSide : EnumFacing.VALUES) {
             RenderSide overlayFace = RenderSide.bySide(renderSide);

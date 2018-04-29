@@ -7,6 +7,7 @@ import codechicken.lib.vec.Cuboid6;
 import gregtech.api.GTValues;
 import gregtech.api.GregTechAPI;
 import gregtech.api.capability.IEnergyContainer;
+import gregtech.api.unification.material.type.Material;
 import gregtech.common.cable.net.EnergyNet;
 import gregtech.common.cable.net.WorldENet;
 import gregtech.common.cable.tile.TileEntityCable;
@@ -22,7 +23,6 @@ import mcmultipart.api.slot.IPartSlot;
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.SoundType;
-import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.BlockStateContainer;
@@ -40,7 +40,6 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
-import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
@@ -62,10 +61,12 @@ public class BlockCable extends Block implements ITileEntityProvider, IMultipart
     public static final PropertyEnum<Insulation> INSULATION = PropertyEnum.create("insulation", Insulation.class);
 
     public final WireProperties baseProps;
+    public final Material material;
     private WireProperties[] insulatedPropsCache;
 
-    public BlockCable(WireProperties cableProperties) {
-        super(Material.IRON);
+    public BlockCable(Material material, WireProperties cableProperties) {
+        super(net.minecraft.block.material.Material.IRON);
+        this.material = material;
         this.baseProps = cableProperties;
         setUnlocalizedName("cable");
         setCreativeTab(GregTechAPI.TAB_GREGTECH);
@@ -275,8 +276,7 @@ public class BlockCable extends Block implements ITileEntityProvider, IMultipart
             Insulation insulation = insulationArray[i];
             int totalAmperage = baseProps.amperage * insulation.amperage;
             int totalLossPerBlock = baseProps.lossPerBlock * insulation.lossMultiplier;
-            this.insulatedPropsCache[i] = new WireProperties(baseProps.material, baseProps.voltage,
-                totalAmperage, totalLossPerBlock);
+            this.insulatedPropsCache[i] = new WireProperties(baseProps.voltage, totalAmperage, totalLossPerBlock);
         }
     }
 

@@ -20,6 +20,7 @@ import gregtech.common.cable.BlockCable;
 import gregtech.common.items.MetaItems;
 import gregtech.common.metatileentities.MetaTileEntities;
 import gregtech.loaders.load.FuelLoader;
+import gregtech.loaders.load.MetaTileEntityLoader;
 import gregtech.loaders.oreprocessing.OreProcessingHandler;
 import gregtech.loaders.postload.CraftingRecipeLoader;
 import gregtech.loaders.postload.DungeonLootLoader;
@@ -92,6 +93,7 @@ public class GregTechMod {
         FuelLoader.registerFuels();
         MetaItems.registerRecipes();
         MachineRecipeLoader.init();
+        MetaTileEntityLoader.init();
         CraftingRecipeLoader.init();
         gregtechproxy.onLoad();
 

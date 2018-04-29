@@ -30,8 +30,7 @@ public class ItemBlockCable extends ItemBlock {
     @Override
     public String getItemStackDisplayName(ItemStack stack) {
         Insulation insulation = BlockCable.getInsulation(stack);
-        MetalMaterial material = blockCable.baseProps.material;
-        return insulation.orePrefix.getLocalNameForItem(material);
+        return insulation.orePrefix.getLocalNameForItem(blockCable.material);
     }
 
     @Override

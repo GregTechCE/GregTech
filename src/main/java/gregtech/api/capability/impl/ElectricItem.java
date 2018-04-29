@@ -35,16 +35,16 @@ public class ElectricItem implements IElectricItem, ICapabilityProvider {
         if (!itemStack.hasTagCompound()) {
             itemStack.setTagCompound(new NBTTagCompound());
         }
-
         itemStack.getTagCompound().setLong("Charge", change);
     }
 
     protected long getCharge() {
         NBTTagCompound tagCompound = itemStack.getTagCompound();
-        if (tagCompound == null || !tagCompound.hasKey("Charge")) {
+        if(tagCompound == null)
             return 0;
-        }
-        return itemStack.getTagCompound().getLong("Charge");
+        if(tagCompound.getBoolean("Infinite"))
+            return maxCharge;
+        return tagCompound.getLong("Charge");
     }
 
     @Override

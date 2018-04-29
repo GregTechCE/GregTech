@@ -27,6 +27,10 @@ public class MultiblockRecipeMapWorkable extends RecipeMapWorkableHandler {
     public void update() {
     }
 
+    public IEnergyContainer getEnergyContainer() {
+        return energyContainer;
+    }
+
     public void reinitializeAbilities(IItemHandlerModifiable importItemsInventory, IMultipleTankHandler importFluidsInventory,
                                       IItemHandlerModifiable exportItemsInventory, IMultipleTankHandler exportFluidsInventory,
                                       IEnergyContainer energyContainer) {
