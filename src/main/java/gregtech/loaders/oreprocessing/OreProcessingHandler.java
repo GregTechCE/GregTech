@@ -314,7 +314,7 @@ public class OreProcessingHandler {
         if (!(material instanceof MetalMaterial) || material.hasFlag(MatFlags.NO_SMASHING))
             return;
         ItemStack foilStack = OreDictUnifier.get(foilPrefix, material);
-        ItemStack plateStack = OreDictUnifier.get(foilPrefix, material);
+        ItemStack plateStack = OreDictUnifier.get(OrePrefix.plate, material);
         RecipeMaps.BENDER_RECIPES.recipeBuilder()
             .inputs(plateStack)
             .outputs(GTUtility.copyAmount(4, foilStack))

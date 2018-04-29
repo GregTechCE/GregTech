@@ -12,8 +12,8 @@ public class FuelLoader {
             .buildAndRegister();
 
         RecipeMaps.STEAM_TURBINE_FUELS.recipeBuilder()
-            .fluidInputs(Materials.Steam.getFluid(1))
-            .duration(5).EUt(-30)
+            .fluidInputs(Materials.Steam.getFluid(10))
+            .duration(5).EUt(-15)
             .buildAndRegister();
     }
 
