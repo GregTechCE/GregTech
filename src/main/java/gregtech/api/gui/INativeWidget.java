@@ -1,6 +1,7 @@
 package gregtech.api.gui;
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Items;
 import net.minecraft.inventory.ClickType;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.Item;
@@ -12,7 +13,7 @@ import net.minecraft.item.ItemStack;
  */
 public interface INativeWidget {
 
-    ItemStack VANILLA_LOGIC = new ItemStack((Item) null);
+    ItemStack VANILLA_LOGIC = new ItemStack(Items.AIR);
 
     /**
      * You should return MC slot handle instance you created earlier

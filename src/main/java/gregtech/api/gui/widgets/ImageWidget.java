@@ -1,10 +1,8 @@
 package gregtech.api.gui.widgets;
 
-import gregtech.api.gui.IUIHolder;
 import gregtech.api.gui.Widget;
 import gregtech.api.gui.resources.TextureArea;
 import net.minecraft.network.PacketBuffer;
-import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -17,8 +15,6 @@ public class ImageWidget extends Widget {
     protected final int yPosition;
     private int width;
     private int height;
-
-    private ResourceLocation imageLocation;
 
     private BooleanSupplier predicate;
     private boolean isVisible = true;

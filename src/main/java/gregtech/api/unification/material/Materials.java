@@ -387,12 +387,9 @@ public class Materials {
      * Actual food
      */
     public static FluidMaterial Milk = new FluidMaterial(339, "milk", 0xFEFEFE, MaterialIconSet.FINE, of(), 0);
-    public static FluidMaterial FryingOilHot = new FluidMaterial(340, "frying_oil_hot", 0xC8C400, MaterialIconSet.FLUID, of(), 0);
     public static FluidMaterial Honey = new FluidMaterial(341, "honey", 0xD2C800, MaterialIconSet.FLUID, of(), 0);
-    public static FluidMaterial FishOil = new FluidMaterial(342, "fish_oil", 0xFFC400, MaterialIconSet.FLUID, of(), 0);
     public static DustMaterial Cocoa = new DustMaterial(343, "cocoa", 0xBE5F00, MaterialIconSet.ROUGH, 0, of(), 0);
     public static DustMaterial Wheat = new DustMaterial(345, "wheat", 0xFFFFC4, MaterialIconSet.POWDER, 0, of(), 0);
-
 
     static {
         for (DustMaterial dustMaterial : new DustMaterial[]{Bastnasite, Monazite}) {

@@ -69,6 +69,7 @@ public class ModularUIGui extends GuiContainer {
 
     @Override
     protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY) {
+        GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
         GlStateManager.pushMatrix();
         GlStateManager.translate(guiLeft, guiTop, 0.0);
         modularUI.backgroundPath.draw(0, 0, xSize, ySize);

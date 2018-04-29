@@ -85,6 +85,8 @@ public enum MaterialIconType {
     ore,
     oreSmall,
     frameGt,
+    frameSide,
+    frameTop,
     pipeSide,
     pipeTiny,
     pipeSmall,

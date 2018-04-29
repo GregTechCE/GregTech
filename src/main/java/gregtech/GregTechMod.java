@@ -2,6 +2,7 @@ package gregtech;
 
 import gregtech.api.GTValues;
 import gregtech.api.capability.SimpleCapabilityManager;
+import gregtech.api.items.MetaItemUIFactory;
 import gregtech.api.metatileentity.MetaTileEntityUIFactory;
 import gregtech.api.model.ResourcePackHook;
 import gregtech.api.net.NetworkHandler;
@@ -66,6 +67,7 @@ public class GregTechMod {
 
         NetworkHandler.init();
         MetaTileEntityUIFactory.INSTANCE.init();
+        MetaItemUIFactory.INSTANCE.init();
         SimpleCapabilityManager.init();
 
         OreDictUnifier.init();

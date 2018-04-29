@@ -19,7 +19,8 @@ public class BlockFrameFactory extends AbstractBlockModelFactory {
     private static final String VARIANT_DEFINITION =
             "\"$MATERIAL$\": {\n" +
                 "        \"textures\": {\n" +
-                "          \"all\": \"$TEXTURE$\",\n" +
+                "          \"side\": \"$TEXTURE$\",\n" +
+                "          \"top\": \"$TEXTURE_TOP$\",\n" +
                 "          \"particle\": \"$TEXTURE$\"\n" +
                 "        }\n" +
                 "      }";
@@ -42,7 +43,8 @@ public class BlockFrameFactory extends AbstractBlockModelFactory {
         for(Material material : allowedValues) {
             variants.add(VARIANT_DEFINITION
                     .replace("$MATERIAL$", material.toString())
-                    .replace("$TEXTURE$", MaterialIconType.frameGt.getBlockPath(material.materialIconSet).toString())
+                    .replace("$TEXTURE$", MaterialIconType.frameSide.getBlockPath(material.materialIconSet).toString())
+                    .replace("$TEXTURE_TOP$", MaterialIconType.frameTop.getBlockPath(material.materialIconSet).toString())
             );
         }
         return blockStateSample.replace("$VARIANTS$", COMMA_JOINER.join(variants));

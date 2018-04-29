@@ -2,7 +2,7 @@
   "forge_marker": 1,
   "defaults": {
     "uvlock": true,
-    "model": "gregtech:tinted_cube_all",
+    "model": "gregtech:tinted_cube_top",
     "textures": {
       "all": "missingno"
     }

@@ -92,7 +92,6 @@ public class MetaFluids {
         registerFluid(Materials.Lubricant, FluidType.LIQUID, 295, true);
         registerFluid(Materials.Creosote, FluidType.LIQUID, 295, true);
         registerFluid(Materials.SeedOil, FluidType.LIQUID, 295, true);
-        registerFluid(Materials.FishOil, FluidType.LIQUID, 295, true);
         registerFluid(Materials.Oil, FluidType.LIQUID, 295, true);
         registerFluid(Materials.Fuel, FluidType.LIQUID, 295, true);
         registerFluid(Materials.Honey, FluidType.LIQUID, 295, true);
@@ -102,7 +101,6 @@ public class MetaFluids {
         registerFluid(Materials.Milk, FluidType.LIQUID, 290, true);
         registerFluid(Materials.McGuffium239, FluidType.LIQUID, 295, true);
         registerFluid(Materials.Glue, FluidType.LIQUID, 295, true);
-        registerFluid(Materials.FryingOilHot, FluidType.LIQUID, 400, true);
 
         for (Material material : Material.MATERIAL_REGISTRY) {
             if (!(material instanceof FluidMaterial)) continue;

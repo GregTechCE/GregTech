@@ -6,10 +6,13 @@ public class GuiTextures {
 
     //BASE TEXTURES
     public static final TextureArea BACKGROUND = TextureArea.fullImage("textures/gui/base/background.png");
+    public static final TextureArea BACKGROUND_SMALL = TextureArea.fullImage("textures/gui/base/background_small.png");
     public static final TextureArea BACKGROUND_EXTENDED = TextureArea.fullImage("textures/gui/base/background_extended.png");
     public static final TextureArea SLOT = TextureArea.fullImage("textures/gui/base/slot.png");
     public static final TextureArea FLUID_SLOT = TextureArea.fullImage("textures/gui/base/fluid_slot.png");
     public static final TextureArea DISPLAY = TextureArea.fullImage("textures/gui/base/display.png");
+    public static final TextureArea DISPLAY_ONE_LINE = TextureArea.fullImage("textures/gui/base/display_one_line.png");
+    public static final TextureArea DISPLAY_SQUARE = TextureArea.fullImage("textures/gui/base/display_square.png");
 
     //BRONZE
     public static final TextureArea BRONZE_BACKGROUND = TextureArea.fullImage("textures/gui/steam/bronze/bronze_gui.png");
@@ -22,6 +25,11 @@ public class GuiTextures {
     //FLUID & ITEM OUTPUT BUTTONS
     public static final TextureArea BUTTON_FLUID_OUTPUT = TextureArea.fullImage("textures/gui/base/button_fluid_output.png");
     public static final TextureArea BUTTON_ITEM_OUTPUT = TextureArea.fullImage("textures/gui/base/button_item_output.png");
+
+    public static final TextureArea VANILLA_BUTTON = TextureArea.fullImage("textures/gui/base/vanilla_button.png");
+    public static final TextureArea BUTTON = TextureArea.fullImage("textures/gui/base/button.png");
+    public static final TextureArea SWITCH = TextureArea.fullImage("textures/gui/base/switch.png");
+    public static final TextureArea SWITCH_HORIZONTAL = TextureArea.fullImage("textures/gui/base/switch_horizontal.png");
 
     //INDICATORS
     public static final TextureArea INDICATOR_NO_ENERGY = TextureArea.fullImage("textures/gui/base/indicator_no_energy.png");

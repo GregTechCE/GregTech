@@ -467,6 +467,7 @@ public abstract class MetaItem<T extends MetaItem<?>.MetaValueItem> extends Item
         private List<IItemBehaviour> behaviours = new ArrayList<>();
         @Nullable
         private IItemUseManager useManager;
+        private IUIManager uiManager;
         @Nullable
         private IItemDurabilityManager durabilityManager;
         private int burnValue = 0;
@@ -552,6 +553,9 @@ public abstract class MetaItem<T extends MetaItem<?>.MetaValueItem> extends Item
                 if (metaItemStats instanceof IFluidStats) {
                     setFluidStats((IFluidStats) metaItemStats);
                 }
+                if (metaItemStats instanceof IUIManager) {
+                    setUIManager((IUIManager) metaItemStats);
+                }
             }
             return this;
         }
@@ -605,6 +609,16 @@ public abstract class MetaItem<T extends MetaItem<?>.MetaValueItem> extends Item
             this.behaviours.add(behaviour);
         }
 
+        protected void setUIManager(IUIManager uiManager) {
+            if (uiManager == null) {
+                throw new IllegalArgumentException("Cannot set UIManager to null.");
+            }
+            if (this.fluidStats != null) {
+                throw new IllegalStateException("Tried to set UIManager to " + uiManager + ", but they're already set to " + this.uiManager);
+            }
+            this.uiManager = uiManager;
+        }
+
         public int getMetaValue() {
             return metaValue;
         }
@@ -627,6 +641,10 @@ public abstract class MetaItem<T extends MetaItem<?>.MetaValueItem> extends Item
 
         public IItemUseManager getUseManager() {
             return useManager;
+        }
+
+        public IUIManager getUIManager() {
+            return uiManager;
         }
 
         public int getBurnValue() {

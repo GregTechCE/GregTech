@@ -409,6 +409,8 @@ metaitem.tool.datastick.name=Data Stick
 metaitem.tool.datastick.tooltip=A Low Capacity Data Storage
 metaitem.tool.dataorb.name=Data Orb
 metaitem.tool.dataorb.tooltip=A High Capacity Data Storage
+metaitem.circuit.integrated.name=Integrated circuit
+metaitem.circuit.integrated.gui=Integrated circuit configuration
 
 metaitem.circuit.primitive.name=NAND Chip
 metaitem.circuit.primitive.tooltip=A very simple Circuit
@@ -1434,9 +1436,7 @@ material.chocolate=Chocolate
 material.meat_raw=Raw Meat
 material.meat_cooked=Cooked Meat
 material.milk=Milk
-material.frying_oil_hot=Hot Frying Oil
 material.honey=Honey
-material.fish_oil=Fish Oil
 material.cocoa=Cocoa
 material.coffee=Coffee
 material.wheat=Wheat
@@ -1534,9 +1534,6 @@ death.attack.explosion.player=%s exploded with help of %s.
 death.attack.heat=%s was boiled alive.
 death.attack.heat.player=%s was boiled alive by %s.
 
-death.attack.frost=%s was frozen.
-death.attack.frost=%s was frozen by %s.
-
 enchantment.damage.endermen=Disjunction
 enchantment.damage.radioactivity=Radioactivity
 
@@ -1546,7 +1543,6 @@ tile.casing.mv=MV Machine Casing
 tile.casing.hv=HV Machine Casing
 tile.casing.ev=EV Machine Casing
 tile.casing.iv=IV Machine Casing
-tile.casing.
 
 achievement.Naquadah=Find Naquadah Ore
 achievement.Naquadah.desc=Height: 10-60, Chance: 10, End
