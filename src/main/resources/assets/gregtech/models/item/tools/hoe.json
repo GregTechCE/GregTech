@@ -3,6 +3,7 @@
   "textures": {
     "layer0": "gregtech:items/tools/handle",
 	"layer1": "gregtech:items/void",
-    "layer2": "gregtech:items/tools/hoe"
+    "layer2": "gregtech:items/tools/hoe",
+	"layer3": "gregtech:items/void" 
   }
 }

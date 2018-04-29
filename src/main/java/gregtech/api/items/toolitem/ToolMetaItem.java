@@ -58,6 +58,7 @@ public class ToolMetaItem<T extends ToolMetaItem<?>.MetaToolValueItem> extends M
 
     public ToolMetaItem() {
         super((short) 0);
+        setMaxStackSize(1);
     }
 
     @Override

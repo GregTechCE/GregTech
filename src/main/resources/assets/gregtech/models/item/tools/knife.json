@@ -1,7 +1,9 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "gregtech:items/tools/knife",
-    "layer1": "gregtech:items/tools/knife_overlay"
+    "layer0": "gregtech:items/void",
+    "layer1": "gregtech:items/tools/knife_overlay",
+	"layer2": "gregtech:items/tools/knife",
+	"layer3": "gregtech:items/void" 
   }
 }

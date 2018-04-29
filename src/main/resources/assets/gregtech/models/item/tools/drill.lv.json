@@ -1,8 +1,9 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "gregtech:items/tools/drill",
+    "layer0": "gregtech:items/void",
     "layer1": "gregtech:items/tools/power_unit_lv",
-	"layer2": "gregtech:items/tools/power_unit_lv_overlay"
+	"layer2": "gregtech:items/tools/drill",
+	"layer3": "gregtech:items/tools/power_unit_lv_overlay"
   }
 }

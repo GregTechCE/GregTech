@@ -1,8 +1,9 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "gregtech:items/tools/chainsaw",
-    "layer1": "gregtech:items/tools/power_unit_hv",
-	"layer2": "gregtech:items/tools/power_unit_hv_overlay"
+    "layer0": "gregtech:items/void",
+    "layer1": "gregtech:items/tools/power_unit_mv",
+	"layer2": "gregtech:items/tools/chainsaw",
+	"layer3": "gregtech:items/tools/power_unit_mv_overlay"
   }
 }

@@ -45,7 +45,7 @@ public class OreProcessingHandler {
         //OrePrefix.stone.addProcessingHandler(this::processStone);
         OrePrefix.stick.addProcessingHandler(this::processStick, this::processPolarizing);
         OrePrefix.stickLong.addProcessingHandler(this::processLongStick, this::processPolarizing);
-        OrePrefix.dust.addProcessingHandler(this::processDust);
+        OrePrefix.dust.addProcessingHandler(this::processDust, this::processDecomposition);
         OrePrefix.ingot.addProcessingHandler(this::processIngot, this::processPolarizing /*, this::processShaping*/);
         OrePrefix.nugget.addProcessingHandler(this::processNugget, this::processPolarizing);
         OrePrefix.dustSmall.addProcessingHandler(this::processSmallDust);
@@ -2417,10 +2417,12 @@ public class OreProcessingHandler {
             if (!OreDictUnifier.get(OrePrefix.stick, solidMaterial.handleMaterial).isEmpty()) {
                 ModHandler.addShapelessRecipe(String.format("hoe_fh_%s", solidMaterial.toString()),
                     MetaItems.HOE.getStackForm(solidMaterial, solidMaterial.handleMaterial),
+                    new UnificationEntry(toolPrefix, material),
                     OreDictUnifier.get(OrePrefix.stick, solidMaterial.handleMaterial));
             } else {
                 ModHandler.addShapelessRecipe(String.format("hoe_fh_%s", solidMaterial.toString()),
                     MetaItems.HOE.getStackForm(solidMaterial, Materials.Wood),
+                    new UnificationEntry(toolPrefix, material),
                     OreDictUnifier.get(OrePrefix.stick, Materials.Wood));
             }
             if (smashing)

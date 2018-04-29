@@ -1,9 +1,9 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "gregtech:items/tools/screwdriver",
+    "layer0": "gregtech:items/tools/handle_electric_screwdriver",
 	"layer1": "gregtech:items/void",
-    "layer2": "gregtech:items/tools/handle_electric_screwdriver",
+    "layer2": "gregtech:items/tools/screwdriver",
 	"layer3": "gregtech:items/tools/handle_electric_screwdriver_overlay"
   }
 }
