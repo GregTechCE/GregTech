@@ -24,26 +24,12 @@ public class GregTechAPI {
 
     public static BlockMachine MACHINE;
 
-    public static final BaseCreativeTab TAB_GREGTECH = new BaseCreativeTab(GTValues.MODID + ".main") {
-        @Override
-        public ItemStack getTabIconItem() {
-            return MetaItems.BATTERY_HULL_HV.getStackForm();
-        }
-    };
-
-    public static final BaseCreativeTab TAB_GREGTECH_MATERIALS = new BaseCreativeTab(GTValues.MODID + ".materials", true) {
-        @Override
-        public ItemStack getTabIconItem() {
-            return OreDictUnifier.get(OrePrefix.ingot, Materials.Aluminium);
-        }
-    };
-
-    public static final BaseCreativeTab TAB_GREGTECH_ORES = new BaseCreativeTab(GTValues.MODID + ".ores", true) {
-        @Override
-        public ItemStack getTabIconItem() {
-            return MetaItems.JACKHAMMER.getStackForm();
-        }
-    };
+    public static final BaseCreativeTab TAB_GREGTECH =
+        new BaseCreativeTab(GTValues.MODID + ".main", () -> MetaItems.BATTERY_HULL_HV.getStackForm());
+    public static final BaseCreativeTab TAB_GREGTECH_MATERIALS =
+        new BaseCreativeTab(GTValues.MODID + ".materials", () -> OreDictUnifier.get(OrePrefix.ingot, Materials.Aluminium), true);
+    public static final BaseCreativeTab TAB_GREGTECH_ORES =
+        new BaseCreativeTab(GTValues.MODID + ".ores", () -> MetaItems.JACKHAMMER.getStackForm(), true);
 
     public static final GTControlledRegistry<MetaTileEntity> META_TILE_ENTITY_REGISTRY = new GTControlledRegistry<>(Short.MAX_VALUE);
 
