@@ -1,6 +1,7 @@
 package gregtech.api;
 
 import gregtech.api.block.machines.BlockMachine;
+import gregtech.api.creativetabs.BaseCreativeTab;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.unification.OreDictUnifier;
 import gregtech.api.unification.material.Materials;
@@ -12,7 +13,6 @@ import gregtech.api.util.GTControlledRegistry;
 import gregtech.api.util.GTWorldGen;
 import gregtech.api.util.IBlockOre;
 import gregtech.common.items.MetaItems;
-import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
@@ -24,34 +24,24 @@ public class GregTechAPI {
 
     public static BlockMachine MACHINE;
 
-    public static final CreativeTabs TAB_GREGTECH = new CreativeTabs("gregtech.main") {
+    public static final BaseCreativeTab TAB_GREGTECH = new BaseCreativeTab(GTValues.MODID + ".main") {
         @Override
         public ItemStack getTabIconItem() {
             return MetaItems.BATTERY_HULL_HV.getStackForm();
         }
     };
 
-    public static final CreativeTabs TAB_GREGTECH_MATERIALS = new CreativeTabs("gregtech.materials") {
+    public static final BaseCreativeTab TAB_GREGTECH_MATERIALS = new BaseCreativeTab(GTValues.MODID + ".materials", true) {
         @Override
         public ItemStack getTabIconItem() {
             return OreDictUnifier.get(OrePrefix.ingot, Materials.Aluminium);
         }
-
-        @Override
-        public boolean hasSearchBar() {
-            return true;
-        }
     };
 
-    public static final CreativeTabs TAB_GREGTECH_ORES = new CreativeTabs("gregtech.ores") {
+    public static final BaseCreativeTab TAB_GREGTECH_ORES = new BaseCreativeTab(GTValues.MODID + ".ores", true) {
         @Override
         public ItemStack getTabIconItem() {
             return MetaItems.JACKHAMMER.getStackForm();
-        }
-
-        @Override
-        public boolean hasSearchBar() {
-            return true;
         }
     };
 

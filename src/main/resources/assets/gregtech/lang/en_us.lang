@@ -1926,6 +1926,11 @@ achievement.denseaspossible.desc=Produce Neutronium
 achievement.whatnow=What now?
 achievement.whatnow.desc=Craft a Ultimate Battery
 
+# Creative tabs
+itemGroup.gregtech.main=Main
+itemGroup.gregtech.materials=Materials
+itemGroup.gregtech.ores=Ores
+
 for.bees.species.clay=Clay
 for.bees.species.slimeball=Slimeball
 for.bees.species.peat=Peat
