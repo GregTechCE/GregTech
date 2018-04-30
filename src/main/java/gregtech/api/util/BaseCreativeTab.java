@@ -1,6 +1,4 @@
-package gregtech.api.creativetabs;
-
-import gregtech.api.util.GTLog;
+package gregtech.api.util;
 
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Blocks;

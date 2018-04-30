@@ -1,7 +1,6 @@
 package gregtech.api;
 
 import gregtech.api.block.machines.BlockMachine;
-import gregtech.api.creativetabs.BaseCreativeTab;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.unification.OreDictUnifier;
 import gregtech.api.unification.material.Materials;
@@ -9,12 +8,12 @@ import gregtech.api.unification.material.type.DustMaterial;
 import gregtech.api.unification.ore.OrePrefix;
 import gregtech.api.unification.ore.StoneType;
 import gregtech.api.unification.stack.SimpleItemStack;
+import gregtech.api.util.BaseCreativeTab;
 import gregtech.api.util.GTControlledRegistry;
 import gregtech.api.util.GTWorldGen;
 import gregtech.api.util.IBlockOre;
 import gregtech.common.items.MetaItems;
 import net.minecraft.item.EnumDyeColor;
-import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.Fluid;
 
