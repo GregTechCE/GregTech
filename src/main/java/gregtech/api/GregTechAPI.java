@@ -8,13 +8,12 @@ import gregtech.api.unification.material.type.DustMaterial;
 import gregtech.api.unification.ore.OrePrefix;
 import gregtech.api.unification.ore.StoneType;
 import gregtech.api.unification.stack.SimpleItemStack;
+import gregtech.api.util.BaseCreativeTab;
 import gregtech.api.util.GTControlledRegistry;
 import gregtech.api.util.GTWorldGen;
 import gregtech.api.util.IBlockOre;
 import gregtech.common.items.MetaItems;
-import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.EnumDyeColor;
-import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.Fluid;
 
@@ -24,36 +23,12 @@ public class GregTechAPI {
 
     public static BlockMachine MACHINE;
 
-    public static final CreativeTabs TAB_GREGTECH = new CreativeTabs("gregtech.main") {
-        @Override
-        public ItemStack getTabIconItem() {
-            return MetaItems.BATTERY_HULL_HV.getStackForm();
-        }
-    };
-
-    public static final CreativeTabs TAB_GREGTECH_MATERIALS = new CreativeTabs("gregtech.materials") {
-        @Override
-        public ItemStack getTabIconItem() {
-            return OreDictUnifier.get(OrePrefix.ingot, Materials.Aluminium);
-        }
-
-        @Override
-        public boolean hasSearchBar() {
-            return true;
-        }
-    };
-
-    public static final CreativeTabs TAB_GREGTECH_ORES = new CreativeTabs("gregtech.ores") {
-        @Override
-        public ItemStack getTabIconItem() {
-            return MetaItems.JACKHAMMER.getStackForm();
-        }
-
-        @Override
-        public boolean hasSearchBar() {
-            return true;
-        }
-    };
+    public static final BaseCreativeTab TAB_GREGTECH =
+        new BaseCreativeTab(GTValues.MODID + ".main", () -> MetaItems.BATTERY_HULL_HV.getStackForm());
+    public static final BaseCreativeTab TAB_GREGTECH_MATERIALS =
+        new BaseCreativeTab(GTValues.MODID + ".materials", () -> OreDictUnifier.get(OrePrefix.ingot, Materials.Aluminium), true);
+    public static final BaseCreativeTab TAB_GREGTECH_ORES =
+        new BaseCreativeTab(GTValues.MODID + ".ores", () -> MetaItems.JACKHAMMER.getStackForm(), true);
 
     public static final GTControlledRegistry<MetaTileEntity> META_TILE_ENTITY_REGISTRY = new GTControlledRegistry<>(Short.MAX_VALUE);
 
