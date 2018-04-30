@@ -2029,5 +2029,5 @@ gregtech.multiblock.fuel_amount=Fuel Amount: %sL
 gregtech.multiblock.oxygen_boosted=Oxygen boosted.
 gregtech.multiblock.supply_oxygen_to_boost=Supply oxygen to boost output.
 
-
+commands.gt.usage=Use /gt <subcommand>
 

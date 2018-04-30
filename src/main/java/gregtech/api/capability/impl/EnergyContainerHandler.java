@@ -166,9 +166,7 @@ public class EnergyContainerHandler extends MTETrait implements IEnergyContainer
                 BlockPos pos = metaTileEntity.getPos();
                 metaTileEntity.getWorld().setBlockToAir(pos);
                 if(ConfigHolder.doExplosions) {
-                    metaTileEntity.getWorld().createExplosion(null,
-                        pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5,
-                        GTUtility.getTierByVoltage(voltage), true);
+                    metaTileEntity.getWorld().createExplosion(null, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, GTUtility.getTierByVoltage(voltage), true);
                 }
                 return Math.min(amperage, getInputAmperage());
             }

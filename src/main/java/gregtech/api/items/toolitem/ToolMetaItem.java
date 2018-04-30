@@ -92,11 +92,11 @@ public class ToolMetaItem<T extends ToolMetaItem<?>.MetaToolValueItem> extends M
 
         switch (tintIndex) {
             case 0:
-                return primaryMaterial != null ? primaryMaterial.materialRGB : 0xFFFFFF;
+                return handleMaterial != null ? handleMaterial.materialRGB : 0xFFFFFF;
             case 1:
                 return 0xFFFFFF;
             case 2:
-                return handleMaterial != null ? handleMaterial.materialRGB : 0xFFFFFF;
+                return primaryMaterial != null ? primaryMaterial.materialRGB : 0xFFFFFF;
             case 3:
                 return 0xFFFFFF;
         }

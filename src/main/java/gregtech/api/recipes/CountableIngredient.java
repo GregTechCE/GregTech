@@ -7,6 +7,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.Ingredient;
 import net.minecraftforge.oredict.OreIngredient;
 
+import java.util.Arrays;
 import java.util.Objects;
 
 public class CountableIngredient {
@@ -17,6 +18,10 @@ public class CountableIngredient {
 
     public static CountableIngredient from(ItemStack stack, int amount) {
         return new CountableIngredient(Ingredient.fromStacks(stack), amount);
+    }
+
+    public static CountableIngredient from(String oredict) {
+        return new CountableIngredient(new OreIngredient(oredict), 1);
     }
 
     public static CountableIngredient from(String oredict, int count) {
@@ -59,5 +64,13 @@ public class CountableIngredient {
     @Override
     public int hashCode() {
         return Objects.hash(ingredient, count);
+    }
+
+    @Override
+    public String toString() {
+        return "CountableIngredient{" +
+            "ingredient=" + Arrays.toString(ingredient.getMatchingStacks()) +
+            ", count=" + count +
+            '}';
     }
 }

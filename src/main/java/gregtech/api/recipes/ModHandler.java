@@ -167,10 +167,12 @@ public class ModHandler {
         if (input.isEmpty()) {
             GTLog.logger.error("Input cannot be an empty ItemStack", new IllegalArgumentException());
             skip = true;
+            RecipeMap.foundInvalidRecipe = true;
         }
         if (output.isEmpty()) {
             GTLog.logger.error("Output cannot be an empty ItemStack", new IllegalArgumentException());
             skip = true;
+            RecipeMap.foundInvalidRecipe = true;
         }
         if (skip) return;
 

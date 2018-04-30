@@ -509,6 +509,112 @@ public class MachineRecipeLoader {
         RecipeMaps.CENTRIFUGE_RECIPES.recipeBuilder().duration(200).EUt(80).inputs(new ItemStack(Blocks.SOUL_SAND)).chancedOutput(OreDictUnifier.get(OrePrefix.dustSmall,Materials.Saltpeter,1), 8000).chancedOutput(new ItemStack(Blocks.SAND), 9000).chancedOutput(OreDictUnifier.get(OrePrefix.dustTiny,Materials.Coal,1), 2000).fluidOutputs(Materials.Oil.getFluid(80)).buildAndRegister();
         RecipeMaps.CENTRIFUGE_RECIPES.recipeBuilder().duration(80).EUt(80).fluidInputs(Materials.Lava.getFluid(100)).chancedOutput(OreDictUnifier.get(OrePrefix.nugget,Materials.Tantalum,1), 250).chancedOutput(OreDictUnifier.get(OrePrefix.nugget,Materials.Gold,1), 250).chancedOutput(OreDictUnifier.get(OrePrefix.nugget,Materials.Tin,1), 1000).chancedOutput(OreDictUnifier.get(OrePrefix.dustSmall,Materials.Tungstate,1), 250).chancedOutput(OreDictUnifier.get(OrePrefix.nugget,Materials.Copper,1), 2000).chancedOutput(OreDictUnifier.get(OrePrefix.nugget,Materials.Silver,1), 250).buildAndRegister();
         RecipeMaps.CENTRIFUGE_RECIPES.recipeBuilder().duration(64).EUt(20).input(OrePrefix.dust, Materials.RareEarth, 1).chancedOutput(OreDictUnifier.get(OrePrefix.dustSmall,Materials.Cadmium,1), 2500).chancedOutput(OreDictUnifier.get(OrePrefix.dustSmall,Materials.Neodymium,1), 2500).chancedOutput(OreDictUnifier.get(OrePrefix.dustSmall,Materials.Caesium,1), 2500).chancedOutput(OreDictUnifier.get(OrePrefix.dustSmall,Materials.Cerium,1), 2500).chancedOutput(OreDictUnifier.get(OrePrefix.dustSmall,Materials.Yttrium,1), 2500).chancedOutput(OreDictUnifier.get(OrePrefix.dustSmall,Materials.Lanthanum,1), 2500).buildAndRegister();
+
+        RecipeMaps.MACERATOR_RECIPES.recipeBuilder()
+            .input(OrePrefix.stone, Materials.Endstone)
+            .outputs(OreDictUnifier.get(OrePrefix.dustImpure, Materials.Endstone))
+            .chancedOutput(OreDictUnifier.get(OrePrefix.dustTiny, Materials.Tungsten), 500)
+            .buildAndRegister();
+
+        RecipeMaps.MACERATOR_RECIPES.recipeBuilder()
+            .input(OrePrefix.stone, Materials.Netherrack)
+            .outputs(OreDictUnifier.get(OrePrefix.dustImpure, Materials.Netherrack, 1))
+            .chancedOutput(OreDictUnifier.get(OrePrefix.nugget, Materials.Gold, 1), 500)
+            .buildAndRegister();
+
+        RecipeMaps.ASSEMBLER_RECIPES.recipeBuilder()
+            .input(OrePrefix.gem, Materials.NetherStar).input(OrePrefix.stone, Materials.Obsidian, 3)
+            .fluidInputs(Materials.Glass.getFluid(720)).outputs(new ItemStack(Blocks.BEACON))
+            .duration(32)
+            .EUt(16)
+            .buildAndRegister();
+
+        RecipeMaps.ASSEMBLER_RECIPES.recipeBuilder()
+            .input(OrePrefix.stone, Materials.Obsidian, 8)
+            .input(OrePrefix.gem, Materials.EnderEye)
+            .outputs(new ItemStack(Blocks.ENDER_CHEST, 1))
+            .duration(400)
+            .EUt(4)
+            .buildAndRegister();
+
+        RecipeMaps.MACERATOR_RECIPES.recipeBuilder()
+            .input(OrePrefix.stone, Materials.Concrete)
+            .outputs(OreDictUnifier.get(OrePrefix.dust, Materials.Concrete))
+            .buildAndRegister();
+
+        RecipeMaps.MACERATOR_RECIPES.recipeBuilder()
+            .input(OrePrefix.stone, Materials.Soapstone)
+            .outputs(OreDictUnifier.get(OrePrefix.dustImpure, Materials.Talc, 1))
+            .chancedOutput(OreDictUnifier.get(OrePrefix.dustTiny, Materials.Chromite, 1), 1000)
+            .buildAndRegister();
+
+        RecipeMaps.MACERATOR_RECIPES.recipeBuilder()
+            .input(OrePrefix.stone, Materials.Redrock)
+            .outputs(OreDictUnifier.get(OrePrefix.dustImpure, Materials.Redrock))
+            .chancedOutput(OreDictUnifier.get(OrePrefix.dust, Materials.Redrock), 1000)
+            .buildAndRegister();
+
+        RecipeMaps.MACERATOR_RECIPES.recipeBuilder()
+            .input(OrePrefix.stone, Materials.Marble)
+            .outputs(OreDictUnifier.get(OrePrefix.dustImpure, Materials.Marble))
+            .chancedOutput(OreDictUnifier.get(OrePrefix.dust, Materials.Marble), 1000)
+            .buildAndRegister();
+
+        RecipeMaps.MACERATOR_RECIPES.recipeBuilder()
+            .input(OrePrefix.stone, Materials.Basalt)
+            .outputs(OreDictUnifier.get(OrePrefix.dustImpure, Materials.Basalt, 1))
+            .chancedOutput(OreDictUnifier.get(OrePrefix.dust, Materials.Basalt, 1), 1000)
+            .buildAndRegister();
+
+        RecipeMaps.MACERATOR_RECIPES.recipeBuilder()
+            .input(OrePrefix.stone, Materials.Quartzite)
+            .outputs(OreDictUnifier.get(OrePrefix.dustImpure, Materials.Quartzite, 1))
+            .chancedOutput(OreDictUnifier.get(OrePrefix.dust, Materials.Quartzite, 1), 1000)
+            .buildAndRegister();
+
+        RecipeMaps.MACERATOR_RECIPES.recipeBuilder()
+            .input(OrePrefix.stone, Materials.Flint)
+            .outputs(OreDictUnifier.get(OrePrefix.dustImpure, Materials.Flint, 2))
+            .chancedOutput(new ItemStack(Items.FLINT, 1), 5000)
+            .buildAndRegister();
+
+        RecipeMaps.MACERATOR_RECIPES.recipeBuilder()
+            .input(OrePrefix.stone, Materials.GraniteBlack)
+            .outputs(OreDictUnifier.get(OrePrefix.dustImpure, Materials.GraniteBlack, 1))
+            .chancedOutput(OreDictUnifier.get(OrePrefix.dust, Materials.Thorium, 1), 100)
+            .buildAndRegister();
+
+        RecipeMaps.MACERATOR_RECIPES.recipeBuilder()
+            .input(OrePrefix.stone, Materials.GraniteRed)
+            .outputs(OreDictUnifier.get(OrePrefix.dustImpure, Materials.GraniteRed, 1))
+            .chancedOutput(OreDictUnifier.get(OrePrefix.dustSmall, Materials.Uranium, 1), 100)
+            .buildAndRegister();
+
+        RecipeMaps.MACERATOR_RECIPES.recipeBuilder()
+            .input(OrePrefix.stone, Materials.GraniteRed)
+            .outputs(OreDictUnifier.get(OrePrefix.dustImpure, Materials.GraniteRed, 1))
+            .chancedOutput(OreDictUnifier.get(OrePrefix.dustSmall, Materials.Stone, 1), 100)
+            .buildAndRegister();
+
+        RecipeMaps.MACERATOR_RECIPES.recipeBuilder()
+            .input(OrePrefix.stone, Materials.Andesite)
+            .outputs(OreDictUnifier.get(OrePrefix.dustImpure, Materials.Andesite, 1))
+            .chancedOutput(OreDictUnifier.get(OrePrefix.dustSmall, Materials.Stone, 1), 100)
+            .buildAndRegister();
+
+        RecipeMaps.MACERATOR_RECIPES.recipeBuilder()
+            .input(OrePrefix.stone, Materials.Diorite)
+            .outputs(OreDictUnifier.get(OrePrefix.dustImpure, Materials.Diorite, 1))
+            .chancedOutput(OreDictUnifier.get(OrePrefix.dustSmall, Materials.Stone, 1), 100)
+            .buildAndRegister();
+
+        RecipeMaps.ALLOY_SMELTER_RECIPES.recipeBuilder()
+            .input(OrePrefix.ingot, Materials.Iron)
+            .notConsumable(MetaItems.SHAPE_MOLD_ANVIL)
+            .outputs(new ItemStack(Blocks.ANVIL, 1, 0))
+            .duration(512)
+            .EUt(4 * 53)
+            .buildAndRegister();
     }
     public static void shapingRecipes() {
         RecipeMaps.ALLOY_SMELTER_RECIPES.recipeBuilder()
