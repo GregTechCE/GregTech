@@ -30,6 +30,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.NonNullList;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.Vec3i;
 import net.minecraftforge.common.util.Constants.NBT;
 import net.minecraftforge.items.IItemHandlerModifiable;
@@ -215,8 +216,8 @@ public class MetaTileEntityPrimitiveBlastFurnace extends MultiblockControllerBas
     }
 
     @Override
-    protected Vec3i getCenterOffset() {
-        return new Vec3i(1, -1, 0);
+    protected Vec3d getCenterOffset() {
+        return new Vec3d(1, -1, 0);
     }
 
     @Override

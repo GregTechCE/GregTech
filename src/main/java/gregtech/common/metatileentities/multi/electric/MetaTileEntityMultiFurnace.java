@@ -18,6 +18,7 @@ import gregtech.common.blocks.MetaBlocks;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.Vec3i;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentTranslation;
@@ -57,8 +58,8 @@ public class MetaTileEntityMultiFurnace extends RecipeMapMultiblockController {
     }
 
     @Override
-    protected Vec3i getCenterOffset() {
-        return new Vec3i(1, 0, 0);
+    protected Vec3d getCenterOffset() {
+        return new Vec3d(1, 0, 0);
     }
 
     @Override

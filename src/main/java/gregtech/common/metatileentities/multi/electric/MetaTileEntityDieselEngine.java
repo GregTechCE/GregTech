@@ -24,6 +24,7 @@ import gregtech.common.blocks.MetaBlocks;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.Vec3i;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentTranslation;
@@ -116,8 +117,8 @@ public class MetaTileEntityDieselEngine extends RecipeMapMultiblockController {
     }
 
     @Override
-    protected Vec3i getCenterOffset() {
-        return new Vec3i(1, -1, 0);
+    protected Vec3d getCenterOffset() {
+        return new Vec3d(2, -1, 0);
     }
 
     protected Predicate<BlockWorldState> intakeCasingPredicate() {
@@ -134,6 +135,7 @@ public class MetaTileEntityDieselEngine extends RecipeMapMultiblockController {
     protected BlockPattern createStructurePattern() {
         return FactoryBlockPattern.start()
             .aisle("XXX", "XDX", "XXX")
+            .aisle("XHX", "HGH", "XHX")
             .aisle("XHX", "HGH", "XHX")
             .aisle("XHX", "HGH", "XHX")
             .aisle("AAA", "AYA", "AAA")

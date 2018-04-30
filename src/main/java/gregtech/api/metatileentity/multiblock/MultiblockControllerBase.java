@@ -14,6 +14,7 @@ import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.Vec3i;
 import org.apache.commons.lang3.ArrayUtils;
 
@@ -58,7 +59,7 @@ public abstract class MultiblockControllerBase extends MetaTileEntity {
     /**
      * @return offset vector in format {back, up, left}
      */
-    protected abstract Vec3i getCenterOffset();
+    protected abstract Vec3d getCenterOffset();
 
     /**
      * @return structure pattern of this multiblock
@@ -121,10 +122,10 @@ public abstract class MultiblockControllerBase extends MetaTileEntity {
 
     protected void checkStructurePattern() {
         EnumFacing facing = getFrontFacing().getOpposite();
-        Vec3i offset = getCenterOffset();
+        Vec3d offset = getCenterOffset();
         BlockPos checkPos = getPos().add(
-            facing.getFrontOffsetX() * offset.getX() + (1 - facing.getFrontOffsetX()) * offset.getZ(), offset.getY(),
-            facing.getFrontOffsetZ() * offset.getX() + (1 - facing.getFrontOffsetZ()) * offset.getZ());
+            facing.getFrontOffsetX() * offset.x + (1 - facing.getFrontOffsetX()) * offset.z, offset.y,
+            facing.getFrontOffsetZ() * offset.x + (1 - facing.getFrontOffsetZ()) * offset.z);
         PatternMatchContext context = structurePattern.checkPatternAt(getWorld(), checkPos, facing);
         if(context != null && !structureFormed) {
             List<IMultiblockPart> partsFound = context.get("MultiblockParts", ArrayList::new);

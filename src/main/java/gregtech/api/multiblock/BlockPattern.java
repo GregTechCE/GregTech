@@ -1,10 +1,14 @@
 package gregtech.api.multiblock;
 
+import net.minecraft.block.BlockColored;
+import net.minecraft.init.Blocks;
+import net.minecraft.item.EnumDyeColor;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockPos.MutableBlockPos;
 import net.minecraft.world.World;
 
+import java.util.Random;
 import java.util.function.Predicate;
 
 public class BlockPattern {
@@ -57,8 +61,8 @@ public class BlockPattern {
                     blockPos.setPos(x, y, z);
                     rotate(blockPos, facing, palmLength - 1, fingerLength - 1);
                     blockPos.setPos(blockPos.getX() + cornerX, blockPos.getY() + centerPos.getY(), blockPos.getZ() + cornerZ);
-                    //world.setBlockState(blockPos,
-                    //    Blocks.WOOL.getDefaultState().withProperty(BlockColored.COLOR, EnumDyeColor.values()[new Random(predicate.hashCode()).nextInt(15)]));
+                   // world.setBlockState(blockPos,
+                   //     Blocks.WOOL.getDefaultState().withProperty(BlockColored.COLOR, EnumDyeColor.values()[new Random(predicate.hashCode()).nextInt(15)]));
                     worldState.update(world, blockPos, matchContext);
                     if (!predicate.test(worldState)) {
                         return null;
