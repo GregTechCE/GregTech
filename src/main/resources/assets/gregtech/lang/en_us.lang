@@ -1604,6 +1604,23 @@ tile.metal_casing.stainless_clean.name=Clean Stainless Steel Casing
 tile.metal_casing.titanium_stable.name=Stable Titanium Machine Casing
 tile.metal_casing.tungstensteel_robust.name=Robust Tungstensteel Machine Casing
 
+# Machine casing blocks
+tile.machine_casing.ultra_low_voltage.name=ULV Machine Casing
+tile.machine_casing.low_voltage.name=LV Machine Casing
+tile.machine_casing.medium_voltage.name=MV Machine Casing
+tile.machine_casing.high_voltage.name=HV Machine Casing
+tile.machine_casing.extreme_voltage.name=EV Machine Casing
+tile.machine_casing.insane_voltage.name=IV Machine Casing
+tile.machine_casing.ludicrous_voltage.name=LuV Machine Casing
+tile.machine_casing.zero_point_module.name=ZPM Machine Casing
+tile.machine_casing.ultra_voltage.name=UV Machine Casing
+tile.machine_casing.maximum_voltage.name=MAX Machine Casing
+
+tile.machine_casing.bronze_hull.name=Bronze Hull
+tile.machine_casing.bronze_bricks_hull.name=Bricked Bronze Hull
+tile.machine_casing.steel_hull.name=Steel Hull
+tile.machine_casing.steel_bricks_hull.name=Bricked Steel Hull
+
 achievement.Naquadah=Find Naquadah Ore
 achievement.Naquadah.desc=Height: 10-60, Chance: 10, End
 achievement.NaquadahEnriched=Find NaquadahEnriched Ore
