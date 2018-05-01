@@ -114,13 +114,25 @@ public abstract class RecipeMapWorkableHandler extends MTETrait implements IWork
 
     protected boolean setupAndConsumeRecipeInputs(Recipe recipe) {
         int[] resultOverclock = calculateOverclock(recipe.getEUt(), getMaxVoltage(), recipeMap.getAmperage(), recipe.getDuration(), false);
-        int totalEUt = resultOverclock[0] * resultOverclock[1];
-        return (totalEUt >= 0 ? getEnergyStored() >= (totalEUt > getEnergyCapacity() / 2 ? resultOverclock[0] : totalEUt) :
-            getEnergyStored() - resultOverclock[0] <= getEnergyCapacity()) &&
-            (!recipe.needsEmptyOutput() || MetaTileEntity.isItemHandlerEmpty(getExportItemsInventory())) &&
-            MetaTileEntity.addItemsToItemHandler(getExportItemsInventory(), true, recipe.getOutputs()) &&
-            MetaTileEntity.addFluidsToFluidHandler(getExportFluidsInventory(), true, recipe.getFluidOutputs()) &&
-            recipe.matches(true, false, getImportItemsInventory(), getImportFluidsInventory());
+        int totalEU = resultOverclock[0] * resultOverclock[1];
+        boolean isStoredEnough;
+        if (totalEU >= 0) {
+            int neededEU;
+            if (totalEU > getEnergyCapacity() / 2) {
+                neededEU = resultOverclock[0];
+            } else {
+                neededEU = totalEU;
+            }
+            isStoredEnough = getEnergyStored() >= neededEU;
+        } else {
+            isStoredEnough = getEnergyStored() - resultOverclock[0] <= getEnergyCapacity();
+        }
+
+        return isStoredEnough
+            && (!recipe.needsEmptyOutput() || MetaTileEntity.isItemHandlerEmpty(getExportItemsInventory()))
+            && MetaTileEntity.addItemsToItemHandler(getExportItemsInventory(), true, recipe.getOutputs())
+            && MetaTileEntity.addFluidsToFluidHandler(getExportFluidsInventory(), true, recipe.getFluidOutputs())
+            && recipe.matches(true, false, getImportItemsInventory(), getImportFluidsInventory());
     }
 
     protected int[] calculateOverclock(int EUt, long voltage, long amperage, int duration, boolean consumeInputs) {
@@ -131,7 +143,7 @@ public abstract class RecipeMapWorkableHandler extends MTETrait implements IWork
         if (EUt <= 16) {
             int resultEUt = EUt * (1 << (tier - 1)) * (1 << (tier - 1));
             int resultDuration = duration / (1 << (tier - 1));
-            return new int[] {resultEUt, resultDuration};
+            return new int[] {negativeEU ? -resultEUt : resultEUt, resultDuration};
         } else {
             int resultEUt = EUt;
             int resultDuration = duration;

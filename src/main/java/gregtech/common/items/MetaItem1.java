@@ -353,7 +353,7 @@ public class MetaItem1 extends MaterialMetaItem {
 
         TOOL_CHEAT = addItem(761, "tool.cheat").addStats(new ElectricStats(-2000000000, -1));
 
-        FLUID_CELL = addItem(762, "cell.fluid").addStats(new FluidStats(16000, Integer.MIN_VALUE, Integer.MAX_VALUE));
+        FLUID_CELL = addItem(762, "cell.fluid").addStats(new FluidStats(1000, Integer.MIN_VALUE, Integer.MAX_VALUE));
 
         DUCT_TAPE = addItem(764, "duct.tape").addOreDict(OreDictNames.craftingDuctTape);
         MCGUFFIUM_239 = addItem(765, "mcguffium.239");
