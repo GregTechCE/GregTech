@@ -77,8 +77,8 @@ public class GTUtility {
     public static EnumDyeColor determineDyeColor(int rgbColor) {
         ArrayList<EnumDyeColor> colors = Lists.newArrayList(EnumDyeColor.values());
         colors.sort((a, b) -> {
-            int colorA = a.getColorValue();
-            int colorB = b.getColorValue();
+            int colorA = a.colorValue;
+            int colorB = b.colorValue;
             int diffRedA = Math.abs(((colorA >> 16) & 0xFF) - ((rgbColor >> 16) & 0xFF));
             int diffGreenA = Math.abs(((colorA >> 8) & 0xFF) - ((rgbColor >> 8) & 0xFF));
             int diffBlueA = Math.abs((colorA & 0xFF) - (rgbColor & 0xFF));
