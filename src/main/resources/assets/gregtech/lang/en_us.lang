@@ -1558,6 +1558,21 @@ tile.casing.hv=HV Machine Casing
 tile.casing.ev=EV Machine Casing
 tile.casing.iv=IV Machine Casing
 
+# Wire coil blocks
+tile.wire_coil.tooltip_heat=Base Heating Capacity: %dK
+tile.wire_coil.tooltip_level=Level: %d
+tile.wire_coil.tooltip_discount=Energy Discount: %d
+
+tile.wire_coil.cupronickel.name=Cupronickel Coil Block
+tile.wire_coil.kanthal.name=Kanthal Coil Block
+tile.wire_coil.nichrome.name=Nichrome Coil Block
+tile.wire_coil.tungstensteel.name=Tungstensteel Coil Block
+tile.wire_coil.hss_g.name=HSS-G Coil Block
+tile.wire_coil.naquadah.name=Naquadah Coil Block
+tile.wire_coil.naquadah_alloy.name=Naquadah Alloy Coil Block
+tile.wire_coil.superconductor.name=Superconducting Coil Block
+tile.wire_coil.fusion_coil.name=Fusion Coil Block
+
 achievement.Naquadah=Find Naquadah Ore
 achievement.Naquadah.desc=Height: 10-60, Chance: 10, End
 achievement.NaquadahEnriched=Find NaquadahEnriched Ore
