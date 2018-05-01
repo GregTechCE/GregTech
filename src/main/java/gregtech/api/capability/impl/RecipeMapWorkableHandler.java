@@ -127,7 +127,7 @@ public abstract class RecipeMapWorkableHandler extends MTETrait implements IWork
         if (EUt <= 16) {
             int resultEUt = EUt * (1 << (tier - 1)) * (1 << (tier - 1));
             int resultDuration = duration / (1 << (tier - 1));
-            return new int[] {resultEUt, resultDuration};
+            return new int[] {negativeEU ? -resultEUt : resultEUt, resultDuration};
         } else {
             int resultEUt = EUt;
             int resultDuration = duration;
