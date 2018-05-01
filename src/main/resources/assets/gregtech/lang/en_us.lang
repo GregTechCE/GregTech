@@ -1595,6 +1595,15 @@ tile.boiler_casing.steel_firebox.name=Steel Firebox Casing
 tile.boiler_casing.titanium_firebox.name=Titanium Firebox Casing
 tile.boiler_casing.tungstensteel_firebox.name=Tungstensteel Firebox Casing
 
+# Metal casing blocks
+tile.metal_casing.bronze_bricks.name=Bronze Machine Casing
+tile.metal_casing.invar_heatproof.name=Heat Proof Machine Casing
+tile.metal_casing.aluminium_frostproof.name=Frost Proof Machine Casing
+tile.metal_casing.steel_solid.name=Solid Steel Machine Casing
+tile.metal_casing.stainless_clean.name=Clean Stainless Steel Casing
+tile.metal_casing.titanium_stable.name=Stable Titanium Machine Casing
+tile.metal_casing.tungstensteel_robust.name=Robust Tungstensteel Machine Casing
+
 achievement.Naquadah=Find Naquadah Ore
 achievement.Naquadah.desc=Height: 10-60, Chance: 10, End
 achievement.NaquadahEnriched=Find NaquadahEnriched Ore
