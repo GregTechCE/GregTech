@@ -1573,6 +1573,18 @@ tile.wire_coil.naquadah_alloy.name=Naquadah Alloy Coil Block
 tile.wire_coil.superconductor.name=Superconducting Coil Block
 tile.wire_coil.fusion_coil.name=Fusion Coil Block
 
+# Warning sign blocks
+tile.warning_sign.yellow_stripes.name=Yellow Stripes Block
+tile.warning_sign.small_yellow_stripes.name=Yellow Stripes Block
+tile.warning_sign.radioactive_hazard.name=Radioactive Hazard Sign Block
+tile.warning_sign.bio_hazard.name=Bio Hazard Sign Block
+tile.warning_sign.explosion_hazard.name=Explosion Hazard Sign Block
+tile.warning_sign.fire_hazard.name=Fire Hazard Sign Block
+tile.warning_sign.acid_hazard.name=Acid Hazard Sign Block
+tile.warning_sign.magic_hazard.name=Magic Hazard Sign Block
+tile.warning_sign.frost_hazard.name=Frost Hazard Sign Block
+tile.warning_sign.noise_hazard.name=Noise Hazard Sign Block
+
 achievement.Naquadah=Find Naquadah Ore
 achievement.Naquadah.desc=Height: 10-60, Chance: 10, End
 achievement.NaquadahEnriched=Find NaquadahEnriched Ore
