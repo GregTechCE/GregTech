@@ -1585,6 +1585,16 @@ tile.warning_sign.magic_hazard.name=Magic Hazard Sign Block
 tile.warning_sign.frost_hazard.name=Frost Hazard Sign Block
 tile.warning_sign.noise_hazard.name=Noise Hazard Sign Block
 
+# Boiler casing blocks
+tile.boiler_casing.bronze_pipe.name=Bronze Pipe Casing
+tile.boiler_casing.steel_pipe.name=Steel Pipe Casing
+tile.boiler_casing.titanium_pipe.name=Titanium Pipe Casing
+tile.boiler_casing.tungstensteel_pipe.name=Tungstensteel Pipe Casing
+tile.boiler_casing.bronze_firebox.name=Bronze Firebox Casing
+tile.boiler_casing.steel_firebox.name=Steel Firebox Casing
+tile.boiler_casing.titanium_firebox.name=Titanium Firebox Casing
+tile.boiler_casing.tungstensteel_firebox.name=Tungstensteel Firebox Casing
+
 achievement.Naquadah=Find Naquadah Ore
 achievement.Naquadah.desc=Height: 10-60, Chance: 10, End
 achievement.NaquadahEnriched=Find NaquadahEnriched Ore
