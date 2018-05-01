@@ -105,7 +105,8 @@ public class CableRenderer implements ICCBlockRenderer, IItemRenderer, IModelPar
         Insulation insulation = BlockCable.getInsulation(stack);
         Material material = ((BlockCable) ((ItemBlock) stack.getItem()).getBlock()).material;
         renderCableBlock(material, insulation, TileEntityCable.DEFAULT_INSULATION_COLOR, renderState, new IVertexOperation[0],
-            1 << EnumFacing.SOUTH.getIndex() | 1 << EnumFacing.NORTH.getIndex() | 1 << 7);
+            1 << EnumFacing.SOUTH.getIndex() | 1 << EnumFacing.NORTH.getIndex() |
+                1 << (6 + EnumFacing.SOUTH.getIndex()) | 1 << (6 + EnumFacing.NORTH.getIndex()));
         renderState.draw();
         GlStateManager.disableBlend();
     }
@@ -171,15 +172,17 @@ public class CableRenderer implements ICCBlockRenderer, IItemRenderer, IModelPar
 
     private static void renderCableCube(int connections, CCRenderState renderState, IVertexOperation[] pipeline, IVertexOperation[] wire, IVertexOperation[] overlays, EnumFacing side, float thickness) {
         if((connections & 1 << side.getIndex()) > 0) {
-            boolean isItem = (connections & 1 << 7) > 0;
+            boolean renderFrontSide = (connections & 1 << (6 + side.getIndex())) > 0;
             Cuboid6 cuboid6 = BlockCable.getSideBox(side, thickness);
             for(EnumFacing renderedSide : EnumFacing.VALUES) {
-                if(renderedSide == side || renderedSide == side.getOpposite()) {
-                    if(isItem) {
+                if(renderedSide == side) {
+                    if(renderFrontSide) {
                         renderCableSide(renderState, wire, renderedSide, cuboid6);
                         renderCableSide(renderState, overlays, renderedSide, cuboid6);
                     }
-                } else renderCableSide(renderState, pipeline, renderedSide, cuboid6);
+                } else if(renderedSide != side.getOpposite()) {
+                    renderCableSide(renderState, pipeline, renderedSide, cuboid6);
+                }
             }
         }
     }

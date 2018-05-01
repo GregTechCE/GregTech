@@ -170,6 +170,7 @@ public class MetaTileEntityHolder extends TickableTileEntityBase implements IUIH
             NBTTagCompound entryTag = new NBTTagCompound();
             entryTag.setInteger("id", updateEntry.discriminator);
             entryTag.setByteArray("data", updateEntry.updateData);
+            tagList.appendTag(entryTag);
         }
         updateEntries.clear();
         updateTag.setTag("data", tagList);
