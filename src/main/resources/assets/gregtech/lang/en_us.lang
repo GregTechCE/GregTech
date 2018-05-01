@@ -1514,6 +1514,13 @@ recipemap.largenaquadahreactor.name=Large Naquadah Reactor
 recipemap.largenaquadahreactor.value=Fuel Value: %s EU
 recipemap.fluidnaquadahreactor.name=Fluid Naquadah Reactor
 recipemap.fluidnaquadahreactor.value=Fuel Value: %s EU
+recipemap.formingpress.name=Forming Press
+recipemap.forge_hammer.name=Forge Hammer
+recipemap.compressor.name=Compressor
+recipemap.packer.name=Packer
+recipemap.unpacker.name=Unpacker
+recipemap.diesel_generator.name=Diesel Generator
+recipemap.steam_turbine.name=Steam Turbine
 
 machine.mte_test=Test MetaTileEntity
 machine.steam_extractor=Steam Extractor
