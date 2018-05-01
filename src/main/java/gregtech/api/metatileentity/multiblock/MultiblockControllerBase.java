@@ -123,10 +123,11 @@ public abstract class MultiblockControllerBase extends MetaTileEntity {
     protected void checkStructurePattern() {
         EnumFacing facing = getFrontFacing().getOpposite();
         Vec3d offset = getCenterOffset();
-        BlockPos checkPos = getPos().add(
-            facing.getFrontOffsetX() * offset.x + (1 - facing.getFrontOffsetX()) * offset.z, offset.y,
-            facing.getFrontOffsetZ() * offset.x + (1 - facing.getFrontOffsetZ()) * offset.z);
-        PatternMatchContext context = structurePattern.checkPatternAt(getWorld(), checkPos, facing);
+        int floorY = (int) (getPos().getY() + offset.y);
+        //don't even ask why 0.5 is needed on z and not needed on x. i don't fucking know.
+        double centerX = getPos().getX() + facing.getFrontOffsetX() * offset.x + (1 - facing.getFrontOffsetX()) * offset.z;
+        double centerZ = getPos().getZ() + 0.5 + facing.getFrontOffsetZ() * offset.x + (1 - facing.getFrontOffsetZ()) * offset.z;
+        PatternMatchContext context = structurePattern.checkPatternAt(getWorld(), centerX, floorY, centerZ, facing);
         if(context != null && !structureFormed) {
             List<IMultiblockPart> partsFound = context.get("MultiblockParts", ArrayList::new);
             this.multiblockParts.addAll(partsFound);

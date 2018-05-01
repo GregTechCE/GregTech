@@ -27,11 +27,15 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.Vec3i;
 import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.IFluidTank;
+import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.items.IItemHandlerModifiable;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.function.BiFunction;
 import java.util.function.Predicate;
@@ -42,7 +46,7 @@ public class MetaTileEntityDieselEngine extends RecipeMapMultiblockController {
 
     public MetaTileEntityDieselEngine(String metaTileEntityId) {
         super(metaTileEntityId, RecipeMaps.DIESEL_GENERATOR_FUELS);
-        this.recipeMapWorkable = new DieselEngineWorkableHandler(this, recipeMap, this::checkRecipe);
+        this.recipeMapWorkable = new DieselEngineWorkableHandler(this);
     }
 
     @Override
@@ -54,31 +58,25 @@ public class MetaTileEntityDieselEngine extends RecipeMapMultiblockController {
     protected void addDisplayText(List<ITextComponent> textList) {
         if(isStructureFormed()) {
             FluidStack lubricantStack = importFluids.drain(Materials.Lubricant.getFluid(Integer.MAX_VALUE), false);
+            FluidStack oxygenStack = importFluids.drain(Materials.Oxygen.getFluid(Integer.MAX_VALUE), false);
+            FluidStack fuelStack = ((DieselEngineWorkableHandler) recipeMapWorkable).getFuelStack();
             int lubricantAmount = lubricantStack == null ? 0 : lubricantStack.amount;
-            Fluid currentRecipeFluid = ((DieselEngineWorkableHandler) recipeMapWorkable).getCurrentInputFluid();
-            FluidStack fuelStack = importFluids.drain(new FluidStack(currentRecipeFluid, Integer.MAX_VALUE), false);
-            boolean isBoostingEU = ((DieselEngineWorkableHandler) recipeMapWorkable).isBoostingEU();
+            int oxygenAmount = oxygenStack == null ? 0 : oxygenStack.amount;
+            int fuelAmount = fuelStack == null ? 0 : fuelStack.amount;
 
+            ITextComponent fuelName = new TextComponentTranslation(fuelAmount == 0 ? "gregtech.fluid.empty" : fuelStack.getUnlocalizedName());
             textList.add(new TextComponentTranslation("gregtech.multiblock.lubricant_amount", lubricantAmount));
-
-            if(fuelStack != null) {
-                textList.add(new TextComponentTranslation("gregtech.multiblock.fuel_amount", fuelStack.amount,
-                    new TextComponentTranslation(fuelStack.getUnlocalizedName())));
-            }
-
-            if(isBoostingEU) {
-                textList.add(new TextComponentTranslation("gregtech.multiblock.oxygen_boosted"));
-            } else {
-                textList.add(new TextComponentTranslation("gregtech.multiblock.supply_oxygen_to_boost"));
-            }
+            textList.add(new TextComponentTranslation("gregtech.multiblock.fuel_amount", fuelAmount, fuelName));
+            textList.add(new TextComponentTranslation("gregtech.multiblock.oxygen_amount", oxygenAmount));
+            textList.add(new TextComponentTranslation(oxygenAmount >= 2 ? "gregtech.multiblock.oxygen_boosted" : "gregtech.multiblock.supply_oxygen_to_boost"));
         }
         super.addDisplayText(textList);
     }
 
     @Override
-    protected boolean checkRecipe(Recipe recipe, boolean consumeIfSuccess) {
+    public boolean checkRecipe(Recipe recipe, boolean consumeIfSuccess) {
         int nextCycleIndex = currentCycle + 1;
-        if(nextCycleIndex >= 5) {
+        if(nextCycleIndex >= 20) {
             FluidStack lubricantStack = Materials.Lubricant.getFluid(2);
             FluidStack drainStack = importFluids.drain(lubricantStack, false);
             if(drainStack != null && drainStack.amount == lubricantStack.amount) {
@@ -118,7 +116,7 @@ public class MetaTileEntityDieselEngine extends RecipeMapMultiblockController {
 
     @Override
     protected Vec3d getCenterOffset() {
-        return new Vec3d(2, -1, 0);
+        return new Vec3d(1.5, -1, 0);
     }
 
     protected Predicate<BlockWorldState> intakeCasingPredicate() {
@@ -135,7 +133,6 @@ public class MetaTileEntityDieselEngine extends RecipeMapMultiblockController {
     protected BlockPattern createStructurePattern() {
         return FactoryBlockPattern.start()
             .aisle("XXX", "XDX", "XXX")
-            .aisle("XHX", "HGH", "XHX")
             .aisle("XHX", "HGH", "XHX")
             .aisle("XHX", "HGH", "XHX")
             .aisle("AAA", "AYA", "AAA")
@@ -159,19 +156,15 @@ public class MetaTileEntityDieselEngine extends RecipeMapMultiblockController {
 
     protected static class DieselEngineWorkableHandler extends MultiblockRecipeMapWorkable {
 
-        private boolean isBoostingEU = false;
-        private Fluid currentInputFluid = null;
-
-        public DieselEngineWorkableHandler(MetaTileEntity tileEntity, RecipeMap<?> recipeMap, BiFunction<Recipe, Boolean, Boolean> recipeChecker) {
-            super(tileEntity, recipeMap, recipeChecker);
+        public DieselEngineWorkableHandler(RecipeMapMultiblockController tileEntity) {
+            super(tileEntity);
         }
 
-        public boolean isBoostingEU() {
-            return isBoostingEU;
-        }
-
-        public Fluid getCurrentInputFluid() {
-            return currentInputFluid;
+        public FluidStack getFuelStack() {
+            if(previousRecipe == null)
+                return null;
+            FluidStack fuelStack = previousRecipe.getFluidInputs().get(0);
+            return metaTileEntity.getImportFluids().drain(new FluidStack(fuelStack.getFluid(), Integer.MAX_VALUE), false);
         }
 
         @Override
@@ -180,29 +173,16 @@ public class MetaTileEntityDieselEngine extends RecipeMapMultiblockController {
         }
 
         @Override
-        protected void setupRecipe(Recipe recipe) {
-            super.setupRecipe(recipe);
-            this.currentInputFluid = recipe.getFluidInputs().get(0).getFluid();
-        }
-
-        @Override
-        protected void completeRecipe() {
-            super.completeRecipe();
-            this.isBoostingEU = false;
-            this.currentInputFluid = null;
-        }
-
-        @Override
         protected Recipe findRecipe(long maxVoltage, IItemHandlerModifiable inputs, IMultipleTankHandler fluidInputs) {
             Recipe recipe = recipeMap.findRecipe(maxVoltage, inputs, fluidInputs);
             if(recipe == null)
                 return recipe;
             FluidStack inputFluid = recipe.getFluidInputs().get(0);
-            int fuelValue = recipe.getEUt() * recipe.getDuration() / inputFluid.amount;
+            int fuelValue = Math.abs(recipe.getEUt()) * recipe.getDuration() / inputFluid.amount;
 
             return recipeMap.recipeBuilder()
                 .fluidInputs(GTUtility.copyAmount(4096 / fuelValue, inputFluid))
-                .EUt(2048).duration(2) //2 to allow dividing by 2 below without re-finding recipe
+                .EUt(-2048).duration(6) //2 to allow dividing by 2 below without re-finding recipe
                 .build().getResult();
         }
 
@@ -210,14 +190,13 @@ public class MetaTileEntityDieselEngine extends RecipeMapMultiblockController {
         protected int[] calculateOverclock(int EUt, long voltage, long amperage, int duration, boolean consumeInputs) {
             int[] overclock = super.calculateOverclock(EUt, voltage, amperage, duration, consumeInputs);
             FluidStack oxygenStack = Materials.Oxygen.getFluid(2 * overclock[1]);
-            IMultipleTankHandler importFluids = getImportFluidsInventory();
+            IFluidHandler importFluids = metaTileEntity.getImportFluids();
             FluidStack drainStack = importFluids.drain(oxygenStack, false);
             if(drainStack != null && drainStack.amount == oxygenStack.amount) {
                 overclock[0] *= 3; //resultEUt *= 3
                 overclock[1] /= 2; //duration /= 2
                 if(consumeInputs) {
                     importFluids.drain(oxygenStack, true);
-                    this.isBoostingEU = true;
                 }
             }
             return overclock;

@@ -4,20 +4,22 @@ import codechicken.lib.render.CCRenderState;
 import codechicken.lib.render.pipeline.IVertexOperation;
 import gregtech.api.GTValues;
 import gregtech.api.capability.IEnergyContainer;
-import gregtech.api.capability.impl.EnergyContainerList;
-import gregtech.api.capability.impl.FluidTankList;
-import gregtech.api.capability.impl.ItemHandlerList;
-import gregtech.api.capability.impl.MultiblockRecipeMapWorkable;
+import gregtech.api.capability.impl.*;
 import gregtech.api.multiblock.PatternMatchContext;
 import gregtech.api.recipes.Recipe;
 import gregtech.api.recipes.RecipeMap;
 import gregtech.api.render.Textures;
 import gregtech.api.util.GTUtility;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.Style;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.util.text.TextFormatting;
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
+import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
+import net.minecraftforge.items.ItemStackHandler;
 
 import java.util.List;
 import java.util.function.BooleanSupplier;
@@ -26,13 +28,27 @@ public abstract class RecipeMapMultiblockController extends MultiblockWithDispla
 
     public final RecipeMap<?> recipeMap;
     protected MultiblockRecipeMapWorkable recipeMapWorkable;
+    protected IEnergyContainer energyContainer;
 
     public RecipeMapMultiblockController(String metaTileEntityId, RecipeMap<?> recipeMap) {
         super(metaTileEntityId);
         this.recipeMap = recipeMap;
-        this.recipeMapWorkable = new MultiblockRecipeMapWorkable(this, recipeMap, this::checkRecipe);
+        this.recipeMapWorkable = new MultiblockRecipeMapWorkable(this);
+        resetTileAbilities();
     }
 
+    @Override
+    protected boolean shouldSerializeInventories() {
+        return false; //as inventories are temporary
+    }
+
+    public IEnergyContainer getEnergyContainer() {
+        return energyContainer;
+    }
+
+    /**
+     * @return true if multiblock uses energy emitter hatches, false otherwise
+     */
     protected boolean shouldUseEnergyOutputs() {
         return false;
     }
@@ -41,30 +57,49 @@ public abstract class RecipeMapMultiblockController extends MultiblockWithDispla
      * Performs extra checks for validity of given recipe before multiblock
      * will start it's processing.
      */
-    protected boolean checkRecipe(Recipe recipe, boolean consumeIfSuccess) {
+    public boolean checkRecipe(Recipe recipe, boolean consumeIfSuccess) {
         return true;
     }
 
     @Override
     protected void formStructure(PatternMatchContext context) {
         super.formStructure(context);
-        ItemHandlerList importItemsList = new ItemHandlerList(getAbilities(MultiblockAbility.IMPORT_ITEMS));
-        FluidTankList importFluidsList = new FluidTankList(getAbilities(MultiblockAbility.IMPORT_FLUIDS));
-        ItemHandlerList exportItemsList = new ItemHandlerList(getAbilities(MultiblockAbility.EXPORT_ITEMS));
-        FluidTankList exportFluidsList = new FluidTankList(getAbilities(MultiblockAbility.EXPORT_FLUIDS));
-        EnergyContainerList energyContainerList = new EnergyContainerList(getAbilities(shouldUseEnergyOutputs() ? MultiblockAbility.OUTPUT_ENERGY : MultiblockAbility.INPUT_ENERGY));
-        this.recipeMapWorkable.reinitializeAbilities(importItemsList, importFluidsList, exportItemsList, exportFluidsList, energyContainerList);
+        initializeAbilities();
     }
 
     @Override
     public void invalidateStructure() {
         super.invalidateStructure();
-        this.recipeMapWorkable.resetAbilities();
+        resetTileAbilities();
     }
 
     @Override
     protected void updateFormedValid() {
         this.recipeMapWorkable.updateWorkable();
+    }
+
+    private void initializeAbilities() {
+        this.importItems = new ItemHandlerList(getAbilities(MultiblockAbility.IMPORT_ITEMS));
+        this.importFluids = new FluidTankList(getAbilities(MultiblockAbility.IMPORT_FLUIDS));
+        this.exportItems = new ItemHandlerList(getAbilities(MultiblockAbility.EXPORT_ITEMS));
+        this.exportFluids = new FluidTankList(getAbilities(MultiblockAbility.EXPORT_FLUIDS));
+        this.energyContainer = new EnergyContainerList(getAbilities(shouldUseEnergyOutputs() ?
+            MultiblockAbility.OUTPUT_ENERGY : MultiblockAbility.INPUT_ENERGY));
+    }
+
+    private void resetTileAbilities() {
+        this.importItems = new ItemStackHandler(0);
+        this.importFluids = new FluidTankList();
+        this.exportItems = new ItemStackHandler(0);
+        this.exportFluids = new FluidTankList();
+    }
+
+    @Override
+    protected void initializeInventory() {
+        ItemStackHandler emptyInventory = new ItemStackHandler(0);
+        FluidTankList emptyFluidInventory = new FluidTankList();
+        this.itemInventory = new ItemHandlerProxy(emptyInventory, emptyInventory);
+        this.fluidInventory = new FluidHandlerProxy(emptyFluidInventory, emptyFluidInventory);
     }
 
     @Override
@@ -107,14 +142,12 @@ public abstract class RecipeMapMultiblockController extends MultiblockWithDispla
     @Override
     protected BooleanSupplier getValidationPredicate() {
         return () -> {
-            //basically check minimal requirements for inputs count & amperage
+            //basically check minimal requirements for inputs count
             int itemInputsCount = getAbilities(MultiblockAbility.IMPORT_ITEMS)
                 .stream().mapToInt(IItemHandler::getSlots).sum();
             int fluidInputsCount = getAbilities(MultiblockAbility.IMPORT_FLUIDS).size();
-            int maxEnergyHatches = getAbilities(MultiblockAbility.INPUT_ENERGY).size();
             return itemInputsCount >= recipeMap.getMinInputs() &&
-                fluidInputsCount >= recipeMap.getMinFluidInputs() &&
-                maxEnergyHatches * 4 >= recipeMap.getAmperage();
+                fluidInputsCount >= recipeMap.getMinFluidInputs();
         };
     }
 

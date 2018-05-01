@@ -36,7 +36,7 @@ public class MetaTileEntityPyrolyseOven extends RecipeMapMultiblockController {
 
     @Override
     protected Vec3d getCenterOffset() {
-        return new Vec3d(1, -1, 0);
+        return new Vec3d(1.5, -1, 0);
     }
 
     @Override

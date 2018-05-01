@@ -13,6 +13,7 @@ import gregtech.api.render.Textures;
 import gregtech.common.blocks.BlockTurbineCasing.TurbineCasingType;
 import gregtech.common.blocks.MetaBlocks;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.init.Blocks;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.Vec3i;
 import net.minecraftforge.items.IItemHandlerModifiable;
@@ -45,6 +46,10 @@ public class MetaTileEntityLargeTurbine extends RecipeMapMultiblockController {
         this.turbineType = turbineType;
     }
 
+    public boolean isActive() {
+        return recipeMapWorkable.isActive();
+    }
+
     @Override
     public MetaTileEntity createMetaTileEntity(MetaTileEntityHolder holder) {
         return new MetaTileEntityLargeTurbine(metaTileEntityId, turbineType);
@@ -58,13 +63,22 @@ public class MetaTileEntityLargeTurbine extends RecipeMapMultiblockController {
     @Override
     protected BlockPattern createStructurePattern() {
         return FactoryBlockPattern.start()
-            .aisle("####", "#HH#", "####")
-            .aisle("#HH#", "RGGD", "#HH#")
-            .aisle("####", "#CH#", "####")
-           // .where("C")
-
-
+            .aisle("CCCC", "CHHC", "CCCC")
+            .aisle("CHHC", "R##D", "CHHC")
+            .aisle("CCCC", "CSHC", "CCCC")
+            .where('S', selfPredicate())
+            .where('#', blockPredicate(Blocks.AIR))
+            .where('C', statePredicate(getCasingState()))
+            .where('H', statePredicate(getCasingState()).or(abilityPartPredicate(getAllowedAbilities())))
+            .where('R', abilityPartPredicate(ABILITY_ROTOR_HOLDER))
+            .where('D', abilityPartPredicate(MultiblockAbility.OUTPUT_ENERGY))
             .build();
+    }
+
+    public MultiblockAbility[] getAllowedAbilities() {
+        return turbineType.recipeMap.getMaxFluidOutputs() > 0 ?
+            new MultiblockAbility[] {MultiblockAbility.IMPORT_FLUIDS, MultiblockAbility.EXPORT_FLUIDS} :
+            new MultiblockAbility[] {MultiblockAbility.IMPORT_FLUIDS};
     }
 
     public IBlockState getCasingState() {
@@ -76,4 +90,8 @@ public class MetaTileEntityLargeTurbine extends RecipeMapMultiblockController {
         return turbineType.casingRenderer;
     }
 
+    @Override
+    protected boolean shouldUseEnergyOutputs() {
+        return true;
+    }
 }

@@ -33,6 +33,8 @@ import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.FluidTank;
+import net.minecraftforge.fluids.IFluidTank;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.IItemHandler;
@@ -245,20 +247,58 @@ public class GTUtility {
         return tier;
     }
 
-    public static NonNullList<ItemStack> itemHandlerToList(IItemHandlerModifiable inputs) {
-        NonNullList<ItemStack> stacks = NonNullList.create();
-        for (int i = 0; i < inputs.getSlots(); i++) {
-            stacks.add(inputs.getStackInSlot(i));
-        }
-        return stacks;
+    /**
+     * @return a list of itemstack linked with given item handler
+     * modifications in list will reflect on item handler and wise-versa
+     */
+    public static List<ItemStack> itemHandlerToList(IItemHandlerModifiable inputs) {
+        return new AbstractList<ItemStack>() {
+            @Override
+            public ItemStack set(int index, ItemStack element) {
+                ItemStack oldStack = inputs.getStackInSlot(index);
+                inputs.setStackInSlot(index, element == null ? ItemStack.EMPTY : element);
+                return oldStack;
+            }
+
+            @Override
+            public ItemStack get(int index) {
+                return inputs.getStackInSlot(index);
+            }
+
+            @Override
+            public int size() {
+                return inputs.getSlots();
+            }
+        };
     }
 
+    /**
+     * @return a list of fluidstack linked with given fluid handler
+     * modifications in list will reflect on fluid handler and wise-versa
+     */
     public static List<FluidStack> fluidHandlerToList(IMultipleTankHandler fluidInputs) {
-        List<FluidStack> fluidStacks = new ArrayList<>(fluidInputs.getTanks());
-        for (int i = 0; i < fluidInputs.getTanks(); i++) {
-            fluidStacks.add(fluidInputs.getTankAt(i).getFluid());
-        }
-        return fluidStacks;
+        List<IFluidTank> backedList = fluidInputs.getFluidTanks();
+        return new AbstractList<FluidStack>() {
+            @Override
+            public FluidStack set(int index, FluidStack element) {
+                IFluidTank fluidTank = backedList.get(index);
+                FluidStack oldStack = fluidTank.getFluid();
+                if(!(fluidTank instanceof FluidTank))
+                    return oldStack;
+                ((FluidTank) backedList.get(index)).setFluid(element);
+                return oldStack;
+            }
+
+            @Override
+            public FluidStack get(int index) {
+                return backedList.get(index).getFluid();
+            }
+
+            @Override
+            public int size() {
+                return backedList.size();
+            }
+        };
     }
 
     public static boolean isWearingFullSuit(EntityLivingBase entity, Set<SimpleItemStack> suitParts) {

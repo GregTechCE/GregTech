@@ -129,6 +129,11 @@ public class MetaTileEntityTransformer extends TieredMetaTileEntity {
     }
 
     @Override
+    protected boolean openGUIOnRightClick() {
+        return false;
+    }
+
+    @Override
     protected ModularUI createUI(EntityPlayer entityPlayer) {
         return null;
     }

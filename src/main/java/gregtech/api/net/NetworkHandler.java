@@ -77,20 +77,6 @@ public class NetworkHandler {
         channel = NetworkRegistry.INSTANCE.newEventDrivenChannel(GTValues.MODID);
         channel.register(new NetworkHandler());
 
-        registerPacket(0, PacketCustomTileData.class, new PacketCodec<>(
-            (packet, buf) -> {
-                buf.writeBlockPos(packet.tileEntityPos);
-                byte[] data = packet.payload.array();
-                buf.writeInt(data.length);
-                buf.writeBytes(data);
-            },
-            (buf) -> new PacketCustomTileData(
-                buf.readBlockPos(),
-                new PacketBuffer(buf.readBytes(buf.readInt()))
-            )
-        ));
-        MinecraftForge.EVENT_BUS.register(new CustomDataTileHandler());
-
         registerPacket(1, PacketUIOpen.class, new PacketCodec<>(
             (packet, buf) -> {
                 buf.writeInt(packet.uiFactoryId);
@@ -151,9 +137,6 @@ public class NetworkHandler {
 
     @SideOnly(Side.CLIENT)
     private static void initClient() {
-        registerClientExecutor(PacketCustomTileData.class, (packet, handler) -> {
-            CustomDataTileHandler.pendingInitialSyncData.put(packet.tileEntityPos, packet.payload);
-        });
         registerClientExecutor(PacketUIOpen.class, (packet, handler) -> {
             UIFactory<?> uiFactory = UIFactory.FACTORY_REGISTRY.getObjectById(packet.uiFactoryId);
             uiFactory.initClientUI(packet.serializedHolder, packet.windowId);

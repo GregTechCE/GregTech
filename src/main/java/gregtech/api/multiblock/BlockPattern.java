@@ -48,9 +48,9 @@ public class BlockPattern {
         return this.palmLength;
     }
 
-    public PatternMatchContext checkPatternAt(World world, BlockPos centerPos, EnumFacing facing) {
-        int cornerX = centerPos.getX() - (palmLength / 2);
-        int cornerZ = centerPos.getZ() - (fingerLength / 2);
+    public PatternMatchContext checkPatternAt(World world, double centerX, int floorY, double centerZ, EnumFacing facing) {
+        int cornerX = (int) (centerX - (palmLength / 2.0));
+        int cornerZ = (int) (centerZ - (fingerLength / 2.0));
         BlockWorldState worldState = new BlockWorldState();
         MutableBlockPos blockPos = new MutableBlockPos();
         PatternMatchContext matchContext = new PatternMatchContext();
@@ -60,9 +60,9 @@ public class BlockPattern {
                     Predicate<BlockWorldState> predicate = this.blockMatches[z][y][x];
                     blockPos.setPos(x, y, z);
                     rotate(blockPos, facing, palmLength - 1, fingerLength - 1);
-                    blockPos.setPos(blockPos.getX() + cornerX, blockPos.getY() + centerPos.getY(), blockPos.getZ() + cornerZ);
-                   // world.setBlockState(blockPos,
-                   //     Blocks.WOOL.getDefaultState().withProperty(BlockColored.COLOR, EnumDyeColor.values()[new Random(predicate.hashCode()).nextInt(15)]));
+                    blockPos.setPos(blockPos.getX() + cornerX, blockPos.getY() + floorY, blockPos.getZ() + cornerZ);
+                    //world.setBlockState(blockPos,
+                    //    Blocks.WOOL.getDefaultState().withProperty(BlockColored.COLOR, EnumDyeColor.values()[new Random(predicate.hashCode()).nextInt(15)]));
                     worldState.update(world, blockPos, matchContext);
                     if (!predicate.test(worldState)) {
                         return null;

@@ -296,15 +296,22 @@ public abstract class MetaTileEntity {
         return FULL_CUBE_COLLISION;
     }
 
+
+    protected boolean shouldSerializeInventories() {
+        return true;
+    }
+
     public NBTTagCompound writeToNBT(NBTTagCompound data) {
         data.setInteger("FrontFacing", frontFacing.getIndex());
         data.setInteger("PaintingColor", paintingColor);
 
-        GTUtility.writeItems(importItems, "ImportInventory", data);
-        GTUtility.writeItems(exportItems, "ExportInventory", data);
+        if(shouldSerializeInventories()) {
+            GTUtility.writeItems(importItems, "ImportInventory", data);
+            GTUtility.writeItems(exportItems, "ExportInventory", data);
 
-        data.setTag("ImportFluidInventory", importFluids.serializeNBT());
-        data.setTag("ExportFluidInventory", exportFluids.serializeNBT());
+            data.setTag("ImportFluidInventory", importFluids.serializeNBT());
+            data.setTag("ExportFluidInventory", exportFluids.serializeNBT());
+        }
 
         for(MTETrait mteTrait : this.mteTraits) {
             data.setTag(mteTrait.getName(), mteTrait.serializeNBT());
@@ -317,11 +324,13 @@ public abstract class MetaTileEntity {
         this.frontFacing = EnumFacing.VALUES[data.getInteger("FrontFacing")];
         this.paintingColor = data.getInteger("PaintingColor");
 
-        GTUtility.readItems(importItems, "ImportInventory", data);
-        GTUtility.readItems(exportItems, "ExportInventory", data);
+        if(shouldSerializeInventories()) {
+            GTUtility.readItems(importItems, "ImportInventory", data);
+            GTUtility.readItems(exportItems, "ExportInventory", data);
 
-        importFluids.deserializeNBT(data.getCompoundTag("ImportFluidInventory"));
-        exportFluids.deserializeNBT(data.getCompoundTag("ExportFluidInventory"));
+            importFluids.deserializeNBT(data.getCompoundTag("ImportFluidInventory"));
+            exportFluids.deserializeNBT(data.getCompoundTag("ExportFluidInventory"));
+        }
 
         for(MTETrait mteTrait : this.mteTraits) {
             NBTTagCompound traitCompound = data.getCompoundTag(mteTrait.getName());

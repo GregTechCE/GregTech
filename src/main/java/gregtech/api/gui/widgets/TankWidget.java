@@ -87,13 +87,13 @@ public class TankWidget extends Widget {
             }
         }
         //do not draw fluids if they are handled by JEI - it draws them itself
-        if(lastFluidInTank != null && !gui.isJEIHandled) {
+        if(lastFluidInTank != null && lastFluidInTank.amount > 0 && !gui.isJEIHandled) {
             GlStateManager.disableBlend();
             RenderUtil.drawFluidForGui(lastFluidInTank, alwaysShowFull ? lastFluidInTank.amount : lastTankCapacity,
                 x + fluidRenderOffset, y + fluidRenderOffset,
                 width - fluidRenderOffset, height - fluidRenderOffset);
             int bucketsAmount = lastFluidInTank.amount / 1000;
-            if(alwaysShowFull && bucketsAmount > 0) {
+            if(alwaysShowFull && !hideTooltip && bucketsAmount > 0) {
                 String s = String.valueOf(bucketsAmount);
                 FontRenderer fontRenderer = Minecraft.getMinecraft().fontRenderer;
                 fontRenderer.drawStringWithShadow(s, x + 1 + width - 2 - fontRenderer.getStringWidth(s), y + (height / 3) + 3, 0xFFFFFF);

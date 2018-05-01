@@ -42,7 +42,7 @@ import java.util.List;
 @SuppressWarnings("deprecation")
 public class BlockMachine extends Block implements ITileEntityProvider {
 
-    private static final Cuboid6[] EMPTY_COLLISION_BOX = new Cuboid6[0];
+    private static final Cuboid6[] EMPTY_COLLISION_BOX = new Cuboid6[] {Cuboid6.full};
 
     public BlockMachine() {
         super(Material.IRON);

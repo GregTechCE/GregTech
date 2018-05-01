@@ -40,7 +40,7 @@ public class MetaTileEntityMultiFurnace extends RecipeMapMultiblockController {
 
     public MetaTileEntityMultiFurnace(String metaTileEntityId) {
         super(metaTileEntityId, RecipeMaps.FURNACE_RECIPES);
-        this.recipeMapWorkable = new MultiFurnaceWorkable(this, recipeMap, this::checkRecipe);
+        this.recipeMapWorkable = new MultiFurnaceWorkable(this);
     }
 
     @Override
@@ -101,8 +101,8 @@ public class MetaTileEntityMultiFurnace extends RecipeMapMultiblockController {
 
     protected class MultiFurnaceWorkable extends MultiblockRecipeMapWorkable {
 
-        public MultiFurnaceWorkable(MetaTileEntity tileEntity, RecipeMap<?> recipeMap, BiFunction<Recipe, Boolean, Boolean> recipeChecker) {
-            super(tileEntity, recipeMap, recipeChecker);
+        public MultiFurnaceWorkable(RecipeMapMultiblockController tileEntity) {
+            super(tileEntity);
         }
 
         @Override
