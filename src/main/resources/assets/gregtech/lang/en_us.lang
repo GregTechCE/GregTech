@@ -1621,6 +1621,64 @@ tile.machine_casing.bronze_bricks_hull.name=Bricked Bronze Hull
 tile.machine_casing.steel_hull.name=Steel Hull
 tile.machine_casing.steel_bricks_hull.name=Bricked Steel Hull
 
+# Granite blocks
+tile.granite.black_granite.normal.name=Black Granite
+tile.granite.black_granite.cracked.name=Black Granite Cobblestone
+tile.granite.black_granite.mossy.name=Mossy Black Granite Cobblestone
+tile.granite.black_granite.chiseled.name=Chiseled Black Granite
+tile.granite.black_granite_bricks.normal.name=Black Granite Bricks
+tile.granite.black_granite_bricks.cracked.name=Cracked Black Granite Bricks
+tile.granite.black_granite_bricks.mossy.name=Mossy Black Granite Bricks
+tile.granite.black_granite_bricks.chiseled.name=Chiseled Black Granite Bricks
+
+tile.granite.red_granite.normal.name=Red Granite
+tile.granite.red_granite.cracked.name=Red Granite Cobblestone
+tile.granite.red_granite.mossy.name=Mossy Red Granite Cobblestone
+tile.granite.red_granite.chiseled.name=Chiseled Red Granite
+tile.granite.red_granite_bricks.normal.name=Red Granite Bricks
+tile.granite.red_granite_bricks.cracked.name=Cracked Red Granite Bricks
+tile.granite.red_granite_bricks.mossy.name=Mossy Red Granite Bricks
+tile.granite.red_granite_bricks.chiseled.name=Chiseled Red Granite Bricks
+
+# Mineral blocks
+tile.mineral.marble.normal.name=Marble
+tile.mineral.marble.cracked.name=Marble Cobblestone
+tile.mineral.marble.mossy.name=Mossy Marble Cobblestone
+tile.mineral.marble.chiseled.name=Chiseled Marble
+tile.mineral.marble_bricks.normal.name=Marble Bricks
+tile.mineral.marble_bricks.cracked.name=Cracked Marble Bricks
+tile.mineral.marble_bricks.mossy.name=Mossy Marble Bricks
+tile.mineral.marble_bricks.chiseled.name=Chiseled Marble Bricks
+
+tile.mineral.basalt.normal.name=Basalt
+tile.mineral.basalt.cracked.name=Basalt Cobblestone
+tile.mineral.basalt.mossy.name=Mossy Basalt Cobblestone
+tile.mineral.basalt.chiseled.name=Chiseled Basalt
+tile.mineral.basalt_bricks.normal.name=Basalt Bricks
+tile.mineral.basalt_bricks.cracked.name=Cracked Basalt Bricks
+tile.mineral.basalt_bricks.mossy.name=Mossy Basalt Bricks
+tile.mineral.basalt_bricks.chiseled.name=Chiseled Basalt Bricks
+
+# Concrete blocks
+tile.concrete.light_concrete.normal.name=Light Concrete
+tile.concrete.light_concrete.cracked.name=Light Concrete Cobblestone
+tile.concrete.light_concrete.mossy.name=Mossy Light Concrete Cobblestone
+tile.concrete.light_concrete.chiseled.name=Chiseled Light Concrete Cobblestone
+tile.concrete.light_bricks.normal.name=Light Concrete Bricks
+tile.concrete.light_bricks.cracked.name=Cracked Light Concrete Bricks
+tile.concrete.light_bricks.mossy.name=Mossy Light Concrete Bricks
+tile.concrete.light_bricks.chiseled.name=Chiseled Light Concrete Bricks
+
+tile.concrete.dark_concrete.normal.name=Dark Concrete
+tile.concrete.dark_concrete.cracked.name=Dark Concrete Cobblestone
+tile.concrete.dark_concrete.mossy.name=Mossy Dark Concrete Cobblestone
+tile.concrete.dark_concrete.chiseled.name=Chiseled Dark Concrete Cobblestone
+tile.concrete.dark_bricks.normal.name=Dark Concrete Bricks
+tile.concrete.dark_bricks.cracked.name=Cracked Dark Concrete Bricks
+tile.concrete.dark_bricks.mossy.name=Mossy Dark Concrete Bricks
+tile.concrete.dark_bricks.chiseled.name=Chiseled Dark Concrete Bricks
+
+# Achievement ores
 achievement.Naquadah=Find Naquadah Ore
 achievement.Naquadah.desc=Height: 10-60, Chance: 10, End
 achievement.NaquadahEnriched=Find NaquadahEnriched Ore
