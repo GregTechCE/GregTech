@@ -1698,6 +1698,17 @@ gregtech.machine.steam_furnace_steel.name=High Pressure Steam Furnace
 gregtech.machine.steam_alloy_smelter_bronze.name=Steam Alloy Smelter
 gregtech.machine.steam_alloy_smelter_steel.name=High Pressure Steam Alloy Smelter
 
+#Generators
+gregtech.machine.diesel_generator.lv.name=Basic Diesel Generator
+gregtech.machine.diesel_generator.mv.name=Advanced Diesel Generator
+gregtech.machine.diesel_generator.hv.name=Turbo Diesel Generator
+gregtech.machine.steam_turbine.lv.name=Basic Steam Turbine
+gregtech.machine.steam_turbine.mv.name=Advanced Steam Turbine
+gregtech.machine.steam_turbine.hv.name=Turbo Steam Turbine
+gregtech.machine.gas_turbine.lv.name=Basic Gas Turbine
+gregtech.machine.gas_turbine.mv.name=Advanced Gas Turbine
+gregtech.machine.gas_turbine.hv.name=Turbo Gas Turbine
+
 # Achievement ores
 achievement.Naquadah=Find Naquadah Ore
 achievement.Naquadah.desc=Height: 10-60, Chance: 10, End
