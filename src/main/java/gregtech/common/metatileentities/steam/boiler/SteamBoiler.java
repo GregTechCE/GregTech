@@ -220,7 +220,7 @@ public abstract class SteamBoiler extends MetaTileEntity {
 
     public ModularUI.Builder createUITemplate(EntityPlayer player) {
         return ModularUI.builder(BRONZE_BACKGROUND_TEXTURE, 176, 166)
-            .widget(0, new LabelWidget(6, 6, getMetaName()))
+            .widget(0, new LabelWidget(6, 6, getMetaFullname()))
 
             .widget(1, new ProgressWidget(this::getTemperaturePercent, 95, 17, 11, 55)
                 .setProgressBar(getGuiTexture("bar_%s_empty"),

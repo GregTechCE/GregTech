@@ -78,7 +78,7 @@ public class MetaTileEntityItemBus extends MetaTileEntityMultiblockPart implemen
     @Override
     protected ModularUI createUI(EntityPlayer entityPlayer) {
         return ModularUI.defaultBuilder()
-            .label(6, 6, getMetaName())
+            .label(6, 6, getMetaFullname())
             .squareOfSlots(isExportHatch ? exportItems : importItems, 0, getInventorySize(),
                 true, isExportHatch,
                 GuiTextures.SLOT, isExportHatch ? GuiTextures.ARROW_RIGHT_OVERLAY : GuiTextures.ARROW_LEFT_OVERLAY)

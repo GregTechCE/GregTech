@@ -97,7 +97,7 @@ public abstract class SteamMetaTileEntity extends MetaTileEntity {
 
     public ModularUI.Builder createUITemplate(EntityPlayer player) {
         return ModularUI.builder(BRONZE_BACKGROUND_TEXTURE, 176, 166)
-            .widget(0, new LabelWidget(6, 6, getMetaName()))
+            .widget(0, new LabelWidget(6, 6, getMetaFullname()))
             .bindPlayerInventory(player.inventory, 2, BRONZE_SLOT_BACKGROUND_TEXTURE);
     }
 }
