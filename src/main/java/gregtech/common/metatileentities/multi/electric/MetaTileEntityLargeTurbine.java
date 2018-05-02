@@ -1,5 +1,6 @@
 package gregtech.common.metatileentities.multi.electric;
 
+import gregtech.api.GTValues;
 import gregtech.api.capability.IMultipleTankHandler;
 import gregtech.api.capability.impl.DoubleCachedMultiblockWorkable;
 import gregtech.api.metatileentity.MetaTileEntity;
@@ -17,7 +18,6 @@ import gregtech.api.util.GTUtility;
 import gregtech.common.blocks.BlockTurbineCasing.TurbineCasingType;
 import gregtech.common.blocks.MetaBlocks;
 import gregtech.common.metatileentities.electric.multiblockpart.MetaTileEntityRotorHolder;
-import gregtech.common.metatileentities.multi.electric.MetaTileEntityDieselEngine.DieselEngineWorkableHandler;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.text.ITextComponent;
@@ -102,7 +102,7 @@ public class MetaTileEntityLargeTurbine extends RecipeMapMultiblockController {
     protected void addDisplayText(List<ITextComponent> textList) {
         if(isStructureFormed()) {
             MetaTileEntityRotorHolder rotorHolder = getAbilities(ABILITY_ROTOR_HOLDER).get(0);
-            FluidStack fuelStack = ((DieselEngineWorkableHandler) recipeMapWorkable).getFuelStack();
+            FluidStack fuelStack = ((LargeTurbineWorkableHandler) recipeMapWorkable).getFuelStack();
             int fuelAmount = fuelStack == null ? 0 : fuelStack.amount;
 
             ITextComponent fuelName = new TextComponentTranslation(fuelAmount == 0 ? "gregtech.fluid.empty" : fuelStack.getUnlocalizedName());
@@ -110,7 +110,7 @@ public class MetaTileEntityLargeTurbine extends RecipeMapMultiblockController {
 
             if(rotorHolder.getRotorEfficiency() > 0.0) {
                 textList.add(new TextComponentTranslation("gregtech.multiblock.turbine.rotor_speed", rotorHolder.getCurrentRotorSpeed(), rotorHolder.getMaxRotorSpeed()));
-                textList.add(new TextComponentTranslation("gregtech.multiblock.turbine.rotor_efficiency", rotorHolder.getRotorEfficiency()));
+                textList.add(new TextComponentTranslation("gregtech.multiblock.turbine.rotor_efficiency", (int) (rotorHolder.getRotorEfficiency() * 100)));
                 int rotorDurability = (int) (rotorHolder.getRotorDurability() * 100);
                 if(rotorDurability > MIN_DURABILITY_TO_WARN) {
                     textList.add(new TextComponentTranslation("gregtech.multiblock.turbine.rotor_durability", rotorDurability));
@@ -170,6 +170,21 @@ public class MetaTileEntityLargeTurbine extends RecipeMapMultiblockController {
                 return null;
             FluidStack fuelStack = doublePreviousRecipe.getFluidInputs().get(0);
             return metaTileEntity.getImportFluids().drain(new FluidStack(fuelStack.getFluid(), Integer.MAX_VALUE), false);
+        }
+
+        @Override
+        protected long getMaxVoltage() {
+            return GTValues.V[4];
+        }
+
+        @Override
+        protected boolean ignoreTooMuchEnergy() {
+            return true;
+        }
+
+        @Override
+        protected int[] calculateOverclock(int EUt, long voltage, long amperage, int duration, boolean consumeInputs) {
+            return new int[] {EUt, duration};
         }
 
         @Override

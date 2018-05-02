@@ -205,7 +205,7 @@ public class ToolMetaItem<T extends ToolMetaItem<?>.MetaToolValueItem> extends M
                 return HashMultimap.create();
             }
             SolidMaterial baseMaterial = getPrimaryMaterial(stack);
-            float attackDamage = toolStats.getBaseDamage(stack) + baseMaterial.toolSpeed / 3.5f; //temporary TODO @Exidex
+            float attackDamage = toolStats.getBaseDamage(stack) + (baseMaterial == null ? 0 : baseMaterial.toolSpeed) / 3.5f; //temporary TODO @Exidex
             float attackSpeed = toolStats.getAttackSpeed(stack);
 
             HashMultimap<String, AttributeModifier> modifiers = HashMultimap.create();
@@ -298,23 +298,23 @@ public class ToolMetaItem<T extends ToolMetaItem<?>.MetaToolValueItem> extends M
     @Override
     public int getInternalDamage(ItemStack itemStack) {
         NBTTagCompound statsTag = itemStack.getSubCompound("GT.ToolStats");
-        if (statsTag == null || !statsTag.hasKey("GT.ToolDamage", Constants.NBT.TAG_INT)) {
+        if (statsTag == null || !statsTag.hasKey("Damage", Constants.NBT.TAG_INT)) {
             return 0;
         }
-        return statsTag.getInteger("GT.ToolDamage");
+        return statsTag.getInteger("Damage");
     }
 
     private void setInternalDamage(ItemStack itemStack, int damage) {
         NBTTagCompound statsTag = itemStack.getOrCreateSubCompound("GT.ToolStats");
-        statsTag.setInteger("GT.ToolDamage", damage);
+        statsTag.setInteger("Damage", damage);
     }
 
     @Nullable
     public static SolidMaterial getPrimaryMaterial(ItemStack itemStack) {
         NBTTagCompound statsTag = itemStack.getSubCompound("GT.ToolStats");
-        if(statsTag == null || !statsTag.hasKey("GT.ToolPrimaryMaterial", Constants.NBT.TAG_STRING))
+        if(statsTag == null || !statsTag.hasKey("PrimaryMaterial", Constants.NBT.TAG_STRING))
             return null;
-        Material material = Material.MATERIAL_REGISTRY.getObject(statsTag.getString("GT.ToolPrimaryMaterial"));
+        Material material = Material.MATERIAL_REGISTRY.getObject(statsTag.getString("PrimaryMaterial"));
         if(material instanceof SolidMaterial) {
             return (SolidMaterial) material;
         }
@@ -324,9 +324,9 @@ public class ToolMetaItem<T extends ToolMetaItem<?>.MetaToolValueItem> extends M
     @Nullable
     public static SolidMaterial getHandleMaterial(ItemStack itemStack) {
         NBTTagCompound statsTag = itemStack.getSubCompound("GT.ToolStats");
-        if(statsTag == null || !statsTag.hasKey("GT.ToolHandleMaterial", Constants.NBT.TAG_STRING))
+        if(statsTag == null || !statsTag.hasKey("HandleMaterial", Constants.NBT.TAG_STRING))
             return null;
-        Material material = Material.MATERIAL_REGISTRY.getObject(statsTag.getString("GT.ToolHandleMaterial"));
+        Material material = Material.MATERIAL_REGISTRY.getObject(statsTag.getString("HandleMaterial"));
         if(material instanceof SolidMaterial) {
             return (SolidMaterial) material;
         }
@@ -400,11 +400,10 @@ public class ToolMetaItem<T extends ToolMetaItem<?>.MetaToolValueItem> extends M
 
                     NBTTagCompound toolNBT = new NBTTagCompound();
                     if (primaryMaterial instanceof SolidMaterial) {
-                        toolNBT.setString("GT.ToolPrimaryMaterial", primaryMaterial.toString());
-                        toolNBT.setLong("GT.MaxDamage", 100L * (long) ((((SolidMaterial) primaryMaterial).toolDurability) * metaToolValueItem.toolStats.getMaxDurabilityMultiplier(stack)));
+                        toolNBT.setString("PrimaryMaterial", primaryMaterial.toString());
                     }
                     if (this.getToolStats().hasMaterialHandle() && handleMaterial instanceof SolidMaterial)
-                        toolNBT.setString("GT.ToolHandleMaterial", handleMaterial.toString());
+                        toolNBT.setString("HandleMaterial", handleMaterial.toString());
 
                     NBTTagCompound nbtTag = new NBTTagCompound();
                     nbtTag.setTag("GT.ToolStats", toolNBT);

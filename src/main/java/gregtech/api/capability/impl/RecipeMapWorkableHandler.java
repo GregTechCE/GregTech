@@ -65,7 +65,7 @@ public abstract class RecipeMapWorkableHandler extends MTETrait implements IWork
         if (getMetaTileEntity().getWorld().isRemote)
             return;
         if(progressTime > 0 && workingEnabled) {
-            if (drawEnergy(recipeEUt)) {
+            if (drawEnergy(recipeEUt) || (recipeEUt < 0 && ignoreTooMuchEnergy())) {
                 if (++progressTime >= maxProgressTime) {
                     completeRecipe();
                 }
@@ -112,11 +112,15 @@ public abstract class RecipeMapWorkableHandler extends MTETrait implements IWork
         int[] resultOverclock = calculateOverclock(recipe.getEUt(), getMaxVoltage(), recipeMap.getAmperage(), recipe.getDuration(), false);
         int totalEUt = resultOverclock[0] * resultOverclock[1];
         return (totalEUt >= 0 ? getEnergyStored() >= (totalEUt > getEnergyCapacity() / 2 ? resultOverclock[0] : totalEUt) :
-            getEnergyStored() - resultOverclock[0] <= getEnergyCapacity()) &&
+            (ignoreTooMuchEnergy() || getEnergyStored() - resultOverclock[0] <= getEnergyCapacity())) &&
             (!recipe.needsEmptyOutput() || MetaTileEntity.isItemHandlerEmpty(metaTileEntity.getExportItems())) &&
             MetaTileEntity.addItemsToItemHandler(metaTileEntity.getExportItems(), true, recipe.getOutputs()) &&
             MetaTileEntity.addFluidsToFluidHandler(metaTileEntity.getExportFluids(), true, recipe.getFluidOutputs()) &&
             recipe.matches(true, false, metaTileEntity.getImportItems(), metaTileEntity.getImportFluids());
+    }
+
+    protected boolean ignoreTooMuchEnergy() {
+        return false;
     }
 
     protected int[] calculateOverclock(int EUt, long voltage, long amperage, int duration, boolean consumeInputs) {

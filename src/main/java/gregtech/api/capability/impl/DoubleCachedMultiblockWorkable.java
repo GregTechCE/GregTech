@@ -29,7 +29,7 @@ public class DoubleCachedMultiblockWorkable extends MultiblockRecipeMapWorkable 
             currentRecipe = doublePreviousRecipe;
         } else {
             //else, try searching new recipe for given inputs
-            currentRecipe = findRecipe(maxVoltage, metaTileEntity.getImportItems(), metaTileEntity.getImportFluids());
+            currentRecipe = recipeMap.findRecipe(maxVoltage, inputs, fluidInputs);
             //if we found recipe that can be buffered, buffer it
             if(currentRecipe != null && currentRecipe.canBeBuffered()) {
                 this.doublePreviousRecipe = currentRecipe;

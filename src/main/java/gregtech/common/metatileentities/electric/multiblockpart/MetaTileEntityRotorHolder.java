@@ -23,6 +23,7 @@ import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumFacing.Axis;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.items.ItemStackHandler;
@@ -63,7 +64,7 @@ public class MetaTileEntityRotorHolder extends MetaTileEntityMultiblockPart impl
     public void update() {
         super.update();
 
-        if(!getWorld().isRemote) {
+        if(getWorld().isRemote) {
             return;
         }
         if(getTimer() % 10 == 0) {
@@ -101,7 +102,6 @@ public class MetaTileEntityRotorHolder extends MetaTileEntityMultiblockPart impl
         }
         return true;
     }
-
 
     private boolean onRotorHolderInteract(EntityPlayer player) {
         if(!getWorld().isRemote && isRotorLooping) {
@@ -202,6 +202,12 @@ public class MetaTileEntityRotorHolder extends MetaTileEntityMultiblockPart impl
     }
 
     @Override
+    public void clearMachineInventory(NonNullList<ItemStack> itemBuffer) {
+        super.clearMachineInventory(itemBuffer);
+        clearInventory(itemBuffer, rotorInventory);
+    }
+
+    @Override
     public NBTTagCompound writeToNBT(NBTTagCompound data) {
         super.writeToNBT(data);
         data.setTag("RotorInventory", rotorInventory.serializeNBT());
@@ -228,7 +234,7 @@ public class MetaTileEntityRotorHolder extends MetaTileEntityMultiblockPart impl
     protected ModularUI createUI(EntityPlayer entityPlayer) {
         return ModularUI.defaultBuilder()
             .label(6, 6, getMetaName())
-            .slot(rotorInventory, 0, 79, 36, GuiTextures.TURBINE_OVERLAY)
+            .slot(rotorInventory, 0, 79, 36, GuiTextures.SLOT, GuiTextures.TURBINE_OVERLAY)
             .bindPlayerInventory(entityPlayer.inventory)
             .build(getHolder(), entityPlayer);
     }
@@ -278,7 +284,7 @@ public class MetaTileEntityRotorHolder extends MetaTileEntityMultiblockPart impl
 
         @Override
         protected void onLoad() {
-            onContentsChanged(0);
+            hasRotor = !getStackInSlot(0).isEmpty();
         }
 
         @Override

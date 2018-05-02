@@ -175,7 +175,7 @@ public class MetaTileEntityDieselEngine extends RecipeMapMultiblockController {
 
         @Override
         protected int[] calculateOverclock(int EUt, long voltage, long amperage, int duration, boolean consumeInputs) {
-            int[] overclock = super.calculateOverclock(EUt, voltage, amperage, duration, consumeInputs);
+            int[] overclock = new int[] {EUt, duration};
             FluidStack oxygenStack = Materials.Oxygen.getFluid(2 * overclock[1]);
             IFluidHandler importFluids = metaTileEntity.getImportFluids();
             FluidStack drainStack = importFluids.drain(oxygenStack, false);
