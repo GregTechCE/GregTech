@@ -1698,7 +1698,7 @@ gregtech.machine.steam_furnace_steel.name=High Pressure Steam Furnace
 gregtech.machine.steam_alloy_smelter_bronze.name=Steam Alloy Smelter
 gregtech.machine.steam_alloy_smelter_steel.name=High Pressure Steam Alloy Smelter
 
-#Generators
+# Generators
 gregtech.machine.diesel_generator.lv.name=Basic Diesel Generator
 gregtech.machine.diesel_generator.mv.name=Advanced Diesel Generator
 gregtech.machine.diesel_generator.hv.name=Turbo Diesel Generator
@@ -1708,6 +1708,99 @@ gregtech.machine.steam_turbine.hv.name=Turbo Steam Turbine
 gregtech.machine.gas_turbine.lv.name=Basic Gas Turbine
 gregtech.machine.gas_turbine.mv.name=Advanced Gas Turbine
 gregtech.machine.gas_turbine.hv.name=Turbo Gas Turbine
+
+# Machines
+gregtech.machine.electric_furnace.lv.name=Basic Electric Furnace
+gregtech.machine.electric_furnace.mv.name=Advanced Electric Furnace
+gregtech.machine.electric_furnace.hv.name=Advanced Electric Furnace II
+gregtech.machine.electric_furnace.ev.name=Advanced Electric Furnace III
+
+gregtech.machine.macerator.lv.name=Basic Macerator
+gregtech.machine.macerator.mv.name=Advanced Macerator
+gregtech.machine.macerator.hv.name=Universal Macerator
+gregtech.machine.macerator.ev.name=Universal Pulverizer
+
+gregtech.machine.alloy_smelter.lv.name=Basic Alloy Smelter
+gregtech.machine.alloy_smelter.mv.name=Advanced Alloy Smelter
+gregtech.machine.alloy_smelter.hv.name=Advanced Alloy Smelter II
+gregtech.machine.alloy_smelter.ev.name=Advanced Alloy Smelter III
+gregtech.machine.alloy_smelter.iv.name=Advanced Alloy Smelter IV
+
+gregtech.machine.amplifab.lv.name=Basic Amplifabricator
+gregtech.machine.amplifab.mv.name=Advanced Amplifabricator
+gregtech.machine.amplifab.hv.name=Advanced Amplifabricator II
+gregtech.machine.amplifab.ev.name=Advanced Amplifabricator III
+gregtech.machine.amplifab.iv.name=Advanced Amplifabricator IV
+
+gregtech.machine.arc_furnace.lv.name=Basic Arc Furnace
+gregtech.machine.arc_furnace.mv.name=Advanced Arc Furnace
+gregtech.machine.arc_furnace.hv.name=Advanced Arc Furnace II
+gregtech.machine.arc_furnace.ev.name=Advanced Arc Furnace III
+gregtech.machine.arc_furnace.iv.name=Advanced Arc Furnace IV
+
+gregtech.machine.assembler.lv.name=Basic Assembling Machine
+gregtech.machine.assembler.mv.name=Advanced Assembling Machine
+gregtech.machine.assembler.hv.name=Advanced Assembling Machine II
+gregtech.machine.assembler.ev.name=Advanced Assembling Machine III
+gregtech.machine.assembler.iv.name=Advanced Assembling Machine IV
+
+gregtech.machine.autoclave.lv.name=Basic Autoclave
+gregtech.machine.autoclave.mv.name=Advanced Autoclave
+gregtech.machine.autoclave.hv.name=Advanced Autoclave II
+gregtech.machine.autoclave.ev.name=Advanced Autoclave III
+gregtech.machine.autoclave.iv.name=Advanced Autoclave IV
+
+gregtech.machine.bender.lv.name=Basic Bending Machine
+gregtech.machine.bender.mv.name=Advanced Bending Machine
+gregtech.machine.bender.hv.name=Advanced Bending Machine II
+gregtech.machine.bender.ev.name=Advanced Bending Machine III
+gregtech.machine.bender.iv.name=Advanced Bending Machine IV
+
+gregtech.machine.brewery.lv.name=Basic Brewery
+gregtech.machine.brewery.mv.name=Advanced Brewery
+gregtech.machine.brewery.hv.name=Advanced Brewery II
+gregtech.machine.brewery.ev.name=Advanced Brewery III
+gregtech.machine.brewery.iv.name=Advanced Brewery IV
+
+gregtech.machine.canner.lv.name=Basic Canning Machine
+gregtech.machine.canner.mv.name=Advanced Canning Machine
+gregtech.machine.canner.hv.name=Advanced Canning Machine II
+gregtech.machine.canner.ev.name=Advanced Canning Machine III
+gregtech.machine.canner.iv.name=Advanced Canning Machine IV
+
+gregtech.machine.centrifuge.lv.name=Basic Centrifuge
+gregtech.machine.centrifuge.mv.name=Advanced Centrifuge
+gregtech.machine.centrifuge.hv.name=Turbo Centrifuge
+
+gregtech.machine.chemical_bath.lv.name=Basic Chemical Bath
+gregtech.machine.chemical_bath.mv.name=Advanced Chemical Bath
+gregtech.machine.chemical_bath.hv.name=Advanced Chemical Bath II
+gregtech.machine.chemical_bath.ev.name=Advanced Chemical Bath III
+gregtech.machine.chemical_bath.iv.name=Advanced Chemical Bath IV
+
+gregtech.machine.chemical_reactor.lv.name=Basic Chemical Reactor
+gregtech.machine.chemical_reactor.mv.name=Advanced Chemical Reactor
+gregtech.machine.chemical_reactor.hv.name=Advanced Chemical Reactor II
+gregtech.machine.chemical_reactor.ev.name=Advanced Chemical Reactor III
+gregtech.machine.chemical_reactor.iv.name=Advanced Chemical Reactor IV
+
+gregtech.machine.compressor.lv.name=Basic Compressor
+gregtech.machine.compressor.mv.name=Advanced Compressor
+gregtech.machine.compressor.hv.name=Advanced Compressor II
+gregtech.machine.compressor.ev.name=Advanced Compressor III
+gregtech.machine.compressor.iv.name=Singularity Compressor
+
+gregtech.machine.cutter.lv.name=Basic Cutting Machine
+gregtech.machine.cutter.mv.name=Advanced Cutting Machine
+gregtech.machine.cutter.hv.name=Advanced Cutting Machine II
+gregtech.machine.cutter.ev.name=Advanced Cutting Machine III
+gregtech.machine.cutter.iv.name=Advanced Cutting Machine IV
+
+gregtech.machine.distillery.lv.name=Basic Distillery
+gregtech.machine.distillery.mv.name=Advanced Distillery
+gregtech.machine.distillery.hv.name=Advanced Distillery II
+gregtech.machine.distillery.ev.name=Advanced Distillery III
+gregtech.machine.distillery.iv.name=Advanced Distillery IV
 
 # Achievement ores
 achievement.Naquadah=Find Naquadah Ore
