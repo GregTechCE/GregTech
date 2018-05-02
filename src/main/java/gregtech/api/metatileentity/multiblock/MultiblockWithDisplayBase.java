@@ -26,9 +26,6 @@ public abstract class MultiblockWithDisplayBase extends MultiblockControllerBase
         if(!isStructureFormed()) {
             textList.add(new TextComponentTranslation("gregtech.multiblock.invalid_structure")
                 .setStyle(new Style().setColor(TextFormatting.RED)));
-        } else if(!validationPredicate.getAsBoolean()) {
-            textList.add(new TextComponentTranslation("gregtech.multiblock.validation_failed")
-                .setStyle(new Style().setColor(TextFormatting.RED)));
         }
     }
 

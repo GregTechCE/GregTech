@@ -13,8 +13,6 @@ import gregtech.common.blocks.BlockMetalCasing.MetalCasingType;
 import gregtech.common.blocks.MetaBlocks;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
-import net.minecraft.util.math.Vec3d;
-import net.minecraft.util.math.Vec3i;
 
 public class MetaTileEntityImplosionCompressor extends RecipeMapMultiblockController {
 
@@ -29,11 +27,6 @@ public class MetaTileEntityImplosionCompressor extends RecipeMapMultiblockContro
     @Override
     public MetaTileEntity createMetaTileEntity(MetaTileEntityHolder holder) {
         return new MetaTileEntityImplosionCompressor(metaTileEntityId);
-    }
-
-    @Override
-    protected Vec3d getCenterOffset() {
-        return new Vec3d(1, -1, 0);
     }
 
     @Override

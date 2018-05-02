@@ -20,6 +20,7 @@ public class MetaTileEntityCharger extends TieredMetaTileEntity {
     public MetaTileEntityCharger(String metaTileEntityId, int tier, int inventorySize) {
         super(metaTileEntityId, tier);
         this.inventorySize = inventorySize;
+        initializeInventory();
     }
 
     @Override

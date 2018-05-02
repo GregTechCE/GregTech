@@ -1,3 +1,9 @@
+death.attack.heat=%s was boiled alive.
+death.attack.frost=%s explored cryogenics.
+death.attack.electric=%s was shocked.
+death.attack.radiation=%s glows with joy now.
+death.attack.turbine=%s put his hands into turbine.
+
 metaitem.dust.tooltip.purify=Throw into Cauldron to get clean Dust
 metaitem.generic.fluid_container.tooltip=%d/%dL %s
 metaitem.generic.fluid_container.tooltip_empty=Empty
@@ -2020,16 +2026,22 @@ gregtech.multiblock.validation_failed=Invalid amount of inputs/outputs.
 gregtech.multiblock.max_energy_per_tick=Max EU/t: %s (%s)
 gregtech.multiblock.generation_eu=Outputting: %s EU/t
 
-gregtech.multiblock.max_temperature=Max Temperature: %sK
-gregtech.multiblock.heating_coil_level=Heating Coil Level: %s
-gregtech.multiblock.heating_coil_discount=Heating Coil EU Boost: %sx
-gregtech.multiblock.distilling_fluid=Distilling %s
+gregtech.multiblock.blast_furnace.max_temperature=Max Temperature: %sK
+gregtech.multiblock.multi_furnace.heating_coil_level=Heating Coil Level: %s
+gregtech.multiblock.multi_furnace.heating_coil_discount=Heating Coil EU Boost: %sx
+gregtech.multiblock.distillation_tower.distilling_fluid=Distilling %s
 
-gregtech.multiblock.lubricant_amount=Lubricant Amount: %sL
-gregtech.multiblock.fuel_amount=Fuel Amount: %sL (%s)
-gregtech.multiblock.oxygen_amount=Oxygen Amount: %sL
-gregtech.multiblock.oxygen_boosted=Oxygen boosted.
-gregtech.multiblock.supply_oxygen_to_boost=Supply oxygen to boost.
+gregtech.multiblock.diesel_engine.lubricant_amount=Lubricant Amount: %sL
+gregtech.multiblock.diesel_engine.fuel_amount=Fuel Amount: %sL (%s)
+gregtech.multiblock.diesel_engine.oxygen_amount=Oxygen Amount: %sL
+gregtech.multiblock.diesel_engine.oxygen_boosted=Oxygen boosted.
+gregtech.multiblock.diesel_engine.supply_oxygen_to_boost=Supply oxygen to boost.
+
+gregtech.multiblock.turbine.fuel_amount=Fuel Amount: %sL (%s)
+gregtech.multiblock.turbine.rotor_speed=Rotor Speed: %s / %s RPM
+gregtech.multiblock.turbine.rotor_efficiency=Rotor Efficiency: %s%%
+gregtech.multiblock.turbine.rotor_durability=Rotor Durability: %s%%
+gregtech.multiblock.turbine.low_rotor_durability=WARNING: Rotor Durability below %s%% (%s%%)
 
 commands.gt.usage=Use /gt <subcommand>
 

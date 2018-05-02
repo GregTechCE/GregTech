@@ -2596,28 +2596,10 @@ public class OreProcessingHandler {
         if (material instanceof SolidMaterial) {
             SolidMaterial solidMaterial = (SolidMaterial) material;
             RecipeMaps.ASSEMBLER_RECIPES.recipeBuilder()
-                .input(OrePrefix.turbineBlade, solidMaterial, 4).input(OrePrefix.stickLong, Materials.Magnalium)
-                .outputs(MetaItems.TURBINE_SMALL.getStackForm(solidMaterial, solidMaterial))
-                .duration(160)
-                .EUt(100)
-                .buildAndRegister();
-            RecipeMaps.ASSEMBLER_RECIPES.recipeBuilder()
                 .input(OrePrefix.turbineBlade, solidMaterial, 8).input(OrePrefix.stickLong, Materials.Titanium)
-                .outputs(MetaItems.TURBINE_NORMAL.getStackForm(solidMaterial, solidMaterial))
+                .outputs(MetaItems.TURBINE.getStackForm(solidMaterial, solidMaterial))
                 .duration(320)
                 .EUt(400)
-                .buildAndRegister();
-            RecipeMaps.ASSEMBLER_RECIPES.recipeBuilder()
-                .input(OrePrefix.turbineBlade, solidMaterial, 12).input(OrePrefix.stickLong, Materials.TungstenSteel)
-                .outputs(MetaItems.TURBINE_LARGE.getStackForm(solidMaterial, solidMaterial))
-                .duration(640)
-                .EUt(1600)
-                .buildAndRegister();
-            RecipeMaps.ASSEMBLER_RECIPES.recipeBuilder()
-                .input(OrePrefix.turbineBlade, solidMaterial, 16).input(OrePrefix.stickLong, Materials.Americium)
-                .outputs(MetaItems.TURBINE_HUGE.getStackForm(solidMaterial, solidMaterial))
-                .duration(1280)
-                .EUt(6400)
                 .buildAndRegister();
             if (working) {
                 ModHandler.addShapedRecipe(String.format("blade_%s" , solidMaterial.toString()),

@@ -63,6 +63,7 @@ public class MetaTool extends ToolMetaItem<ToolMetaItem<?>.MetaToolValueItem> {
         SOLDERING_IRON_LV = addItem(35, "tool.soldering_iron.lv").setToolStats(new ToolSolderingIron()).addOreDict(ToolDictNames.craftingToolSolderingIron).addToList(GregTechAPI.solderingToolList);
         MAGNIFYING_GLASS = addItem(36, "tool.magnifying_glass").setToolStats(new ToolMagnifyingGlass()).addOreDict(ToolDictNames.craftingToolMagnifyingGlass);
         PLUNGER = addItem(37, "tool.plunger").setToolStats(new ToolPlunger()).addOreDict(ToolDictNames.craftingToolPlunger);
+        TURBINE = addItem(38, "tool.turbine.normal").setToolStats(new ToolTurbineRotor());
     }
 
     public void registerRecipes() {

@@ -45,6 +45,7 @@ public class GuiTextures {
     public static final TextureArea ARROW_RIGHT_OVERLAY = TextureArea.fullImage("textures/gui/base/arrow_right_overlay.png");
     public static final TextureArea CHARGER_OVERLAY = TextureArea.fullImage("textures/gui/base/charger_slot_overlay.png");
     public static final TextureArea INT_CIRCUIT_OVERLAY = TextureArea.fullImage("textures/gui/base/int_circuit_overlay.png");
+    public static final TextureArea TURBINE_OVERLAY = TextureArea.fullImage("textures/gui/base/turbine_overlay.png");
     public static final TextureArea FURNACE_OVERLAY = TextureArea.fullImage("textures/gui/base/furnace_overlay.png");
     public static final TextureArea COMPRESSOR_OVERLAY = TextureArea.fullImage("textures/gui/base/compressor_overlay.png");
     public static final TextureArea EXTRACTOR_OVERLAY = TextureArea.fullImage("textures/gui/base/extractor_overlay.png");

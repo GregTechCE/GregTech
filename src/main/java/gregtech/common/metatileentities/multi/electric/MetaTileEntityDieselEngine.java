@@ -11,7 +11,6 @@ import gregtech.api.multiblock.BlockPattern;
 import gregtech.api.multiblock.BlockWorldState;
 import gregtech.api.multiblock.FactoryBlockPattern;
 import gregtech.api.recipes.Recipe;
-import gregtech.api.recipes.RecipeMap;
 import gregtech.api.recipes.RecipeMaps;
 import gregtech.api.render.ICubeRenderer;
 import gregtech.api.render.Textures;
@@ -24,20 +23,13 @@ import gregtech.common.blocks.MetaBlocks;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.math.Vec3d;
-import net.minecraft.util.math.Vec3i;
 import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextComponentTranslation;
-import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.IFluidTank;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.items.IItemHandlerModifiable;
 
-import java.util.Arrays;
 import java.util.List;
-import java.util.function.BiFunction;
 import java.util.function.Predicate;
 
 public class MetaTileEntityDieselEngine extends RecipeMapMultiblockController {
@@ -65,10 +57,10 @@ public class MetaTileEntityDieselEngine extends RecipeMapMultiblockController {
             int fuelAmount = fuelStack == null ? 0 : fuelStack.amount;
 
             ITextComponent fuelName = new TextComponentTranslation(fuelAmount == 0 ? "gregtech.fluid.empty" : fuelStack.getUnlocalizedName());
-            textList.add(new TextComponentTranslation("gregtech.multiblock.lubricant_amount", lubricantAmount));
-            textList.add(new TextComponentTranslation("gregtech.multiblock.fuel_amount", fuelAmount, fuelName));
-            textList.add(new TextComponentTranslation("gregtech.multiblock.oxygen_amount", oxygenAmount));
-            textList.add(new TextComponentTranslation(oxygenAmount >= 2 ? "gregtech.multiblock.oxygen_boosted" : "gregtech.multiblock.supply_oxygen_to_boost"));
+            textList.add(new TextComponentTranslation("gregtech.multiblock.diesel_engine.lubricant_amount", lubricantAmount));
+            textList.add(new TextComponentTranslation("gregtech.multiblock.diesel_engine.fuel_amount", fuelAmount, fuelName));
+            textList.add(new TextComponentTranslation("gregtech.multiblock.diesel_engine.oxygen_amount", oxygenAmount));
+            textList.add(new TextComponentTranslation(oxygenAmount >= 2 ? "gregtech.multiblock.diesel_engine.oxygen_boosted" : "gregtech.multiblock.diesel_engine.supply_oxygen_to_boost"));
         }
         super.addDisplayText(textList);
     }
@@ -112,11 +104,6 @@ public class MetaTileEntityDieselEngine extends RecipeMapMultiblockController {
     @Override
     protected boolean shouldUseEnergyOutputs() {
         return true;
-    }
-
-    @Override
-    protected Vec3d getCenterOffset() {
-        return new Vec3d(1.5, -1, 0);
     }
 
     protected Predicate<BlockWorldState> intakeCasingPredicate() {
@@ -178,11 +165,11 @@ public class MetaTileEntityDieselEngine extends RecipeMapMultiblockController {
             if(recipe == null)
                 return recipe;
             FluidStack inputFluid = recipe.getFluidInputs().get(0);
-            int fuelValue = Math.abs(recipe.getEUt()) * recipe.getDuration() / inputFluid.amount;
+            double fuelValue = Math.abs(recipe.getEUt()) * recipe.getDuration() / inputFluid.amount;
 
             return recipeMap.recipeBuilder()
-                .fluidInputs(GTUtility.copyAmount(4096 / fuelValue, inputFluid))
-                .EUt(-2048).duration(6) //2 to allow dividing by 2 below without re-finding recipe
+                .fluidInputs(GTUtility.copyAmount((int) (4096 / fuelValue), inputFluid))
+                .EUt(-2048 + -2048 * (int) (fuelValue / 4096)).duration(6) //2 to allow dividing by 2 below without re-finding recipe
                 .build().getResult();
         }
 

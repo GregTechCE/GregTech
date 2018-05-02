@@ -18,8 +18,6 @@ import gregtech.common.blocks.BlockWireCoil.CoilType;
 import gregtech.common.blocks.MetaBlocks;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
-import net.minecraft.util.math.Vec3d;
-import net.minecraft.util.math.Vec3i;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentTranslation;
 
@@ -48,14 +46,9 @@ public class MetaTileEntityElectricBlastFurnace extends RecipeMapMultiblockContr
     @Override
     protected void addDisplayText(List<ITextComponent> textList) {
         if(isStructureFormed()) {
-            textList.add(new TextComponentTranslation("gregtech.multiblock.max_temperature", blastFurnaceTemperature));
+            textList.add(new TextComponentTranslation("gregtech.multiblock.blast_furnace.max_temperature", blastFurnaceTemperature));
         }
         super.addDisplayText(textList);
-    }
-
-    @Override
-    protected Vec3d getCenterOffset() {
-        return new Vec3d(1, 0, 0);
     }
 
     @Override

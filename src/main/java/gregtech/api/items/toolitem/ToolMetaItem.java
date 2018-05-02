@@ -204,7 +204,8 @@ public class ToolMetaItem<T extends ToolMetaItem<?>.MetaToolValueItem> extends M
             if (toolStats == null) {
                 return HashMultimap.create();
             }
-            float attackDamage = toolStats.getBaseDamage(stack);
+            SolidMaterial baseMaterial = getPrimaryMaterial(stack);
+            float attackDamage = toolStats.getBaseDamage(stack) + baseMaterial.toolSpeed / 3.5f; //temporary TODO @Exidex
             float attackSpeed = toolStats.getAttackSpeed(stack);
 
             HashMultimap<String, AttributeModifier> modifiers = HashMultimap.create();
@@ -282,7 +283,8 @@ public class ToolMetaItem<T extends ToolMetaItem<?>.MetaToolValueItem> extends M
         return capability.canUse(damage) && getInternalDamage(stack) + (damage / 10) < getMaxInternalDamage(stack);
     }
 
-    private int getMaxInternalDamage(ItemStack itemStack) {
+    @Override
+    public int getMaxInternalDamage(ItemStack itemStack) {
         T metaToolValueItem = getItem(itemStack);
         if (metaToolValueItem != null) {
             SolidMaterial toolMaterial = getPrimaryMaterial(itemStack);
@@ -293,7 +295,8 @@ public class ToolMetaItem<T extends ToolMetaItem<?>.MetaToolValueItem> extends M
         return 0;
     }
 
-    private int getInternalDamage(ItemStack itemStack) {
+    @Override
+    public int getInternalDamage(ItemStack itemStack) {
         NBTTagCompound statsTag = itemStack.getSubCompound("GT.ToolStats");
         if (statsTag == null || !statsTag.hasKey("GT.ToolDamage", Constants.NBT.TAG_INT)) {
             return 0;
@@ -304,7 +307,6 @@ public class ToolMetaItem<T extends ToolMetaItem<?>.MetaToolValueItem> extends M
     private void setInternalDamage(ItemStack itemStack, int damage) {
         NBTTagCompound statsTag = itemStack.getOrCreateSubCompound("GT.ToolStats");
         statsTag.setInteger("GT.ToolDamage", damage);
-
     }
 
     @Nullable

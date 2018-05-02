@@ -44,7 +44,7 @@ public class LargeTurbineRenderer implements IIconRegister {
         }
     }
 
-    public void renderSided(CCRenderState renderState, IVertexOperation[] pipeline, EnumFacing side, boolean hasRotor, boolean isActive) {
+    public void renderSided(CCRenderState renderState, IVertexOperation[] pipeline, EnumFacing side, boolean hasBase, boolean hasRotor, boolean isActive) {
         for(int i = 0; i < 9; i++) {
             int x = 1 - i % 3;
             int y = 1 - i / 3;
@@ -56,7 +56,9 @@ public class LargeTurbineRenderer implements IIconRegister {
                 default: throw new IllegalArgumentException(side.toString());
             }
             IVertexOperation[] offset = ArrayUtils.add(pipeline, translation);
-            MetaTileEntity.renderFace(renderState, side, Cuboid6.full, baseTexture[i], offset);
+            if(hasBase) {
+                MetaTileEntity.renderFace(renderState, side, Cuboid6.full, baseTexture[i], offset);
+            }
             if(hasRotor) {
                 if(!isActive) {
                     MetaTileEntity.renderFace(renderState, side, Cuboid6.full, bladeTexture[i], offset);

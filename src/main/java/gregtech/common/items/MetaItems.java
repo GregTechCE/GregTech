@@ -381,10 +381,7 @@ public final class MetaItems {
     public static ToolMetaItem<?>.MetaToolValueItem BUZZSAW;
     public static ToolMetaItem<?>.MetaToolValueItem SCREWDRIVER_LV;
     public static ToolMetaItem<?>.MetaToolValueItem SOLDERING_IRON_LV;
-    public static ToolMetaItem<?>.MetaToolValueItem TURBINE_SMALL;
-    public static ToolMetaItem<?>.MetaToolValueItem TURBINE_NORMAL;
-    public static ToolMetaItem<?>.MetaToolValueItem TURBINE_LARGE;
-    public static ToolMetaItem<?>.MetaToolValueItem TURBINE_HUGE;
+    public static ToolMetaItem<?>.MetaToolValueItem TURBINE;
     public static ToolMetaItem<?>.MetaToolValueItem MAGNIFYING_GLASS;
 
     public static void init() {

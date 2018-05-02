@@ -6,6 +6,7 @@ import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.MetaTileEntityHolder;
 import gregtech.api.multiblock.BlockPattern;
 import gregtech.api.multiblock.BlockWorldState;
+import gregtech.api.multiblock.IPatternCenterPredicate;
 import gregtech.api.multiblock.PatternMatchContext;
 import gregtech.api.render.ICubeRenderer;
 import net.minecraft.block.Block;
@@ -13,9 +14,6 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Vec3d;
-import net.minecraft.util.math.Vec3i;
 import org.apache.commons.lang3.ArrayUtils;
 
 import java.util.*;
@@ -31,6 +29,7 @@ public abstract class MultiblockControllerBase extends MetaTileEntity {
     private final Map<MultiblockAbility<Object>, List<Object>> multiblockAbilities = new HashMap<>();
     private final List<IMultiblockPart> multiblockParts = new ArrayList<>();
     private boolean structureFormed;
+    private boolean validationSuccess;
 
     public MultiblockControllerBase(String metaTileEntityId) {
         super(metaTileEntityId);
@@ -45,7 +44,7 @@ public abstract class MultiblockControllerBase extends MetaTileEntity {
             if(getTimer() % 20 == 0) {
                 checkStructurePattern();
             }
-            if(structureFormed && validationPredicate.getAsBoolean()) {
+            if(isStructureFormed()) {
                 updateFormedValid();
             }
         }
@@ -55,11 +54,6 @@ public abstract class MultiblockControllerBase extends MetaTileEntity {
      * Called when the multiblock is formed and validation predicate is matched
      */
     protected abstract void updateFormedValid();
-
-    /**
-     * @return offset vector in format {back, up, left}
-     */
-    protected abstract Vec3d getCenterOffset();
 
     /**
      * @return structure pattern of this multiblock
@@ -106,8 +100,8 @@ public abstract class MultiblockControllerBase extends MetaTileEntity {
         return blockWorldState -> ArrayUtils.contains(block, blockWorldState.getBlockState().getBlock());
     }
 
-    public Predicate<BlockWorldState> selfPredicate() {
-        return tilePredicate((state, tile) -> tile.metaTileEntityId.equals(metaTileEntityId));
+    public IPatternCenterPredicate selfPredicate() {
+        return IPatternCenterPredicate.wrap(tilePredicate((state, tile) -> tile.metaTileEntityId.equals(metaTileEntityId)));
     }
 
     @Override
@@ -122,12 +116,10 @@ public abstract class MultiblockControllerBase extends MetaTileEntity {
 
     protected void checkStructurePattern() {
         EnumFacing facing = getFrontFacing().getOpposite();
-        Vec3d offset = getCenterOffset();
-        int floorY = (int) (getPos().getY() + offset.y);
-        //don't even ask why 0.5 is needed on z and not needed on x. i don't fucking know.
-        double centerX = getPos().getX() + facing.getFrontOffsetX() * offset.x + (1 - facing.getFrontOffsetX()) * offset.z;
-        double centerZ = getPos().getZ() + 0.5 + facing.getFrontOffsetZ() * offset.x + (1 - facing.getFrontOffsetZ()) * offset.z;
-        PatternMatchContext context = structurePattern.checkPatternAt(getWorld(), centerX, floorY, centerZ, facing);
+        PatternMatchContext context = structurePattern.checkPatternAt(getWorld(), getPos(), facing);
+        if(context != null && structureFormed) {
+            this.validationSuccess = validationPredicate.getAsBoolean();
+        }
         if(context != null && !structureFormed) {
             List<IMultiblockPart> partsFound = context.get("MultiblockParts", ArrayList::new);
             this.multiblockParts.addAll(partsFound);
@@ -141,6 +133,7 @@ public abstract class MultiblockControllerBase extends MetaTileEntity {
                 }
             });
             this.structureFormed = true;
+            this.validationSuccess = validationPredicate.getAsBoolean();
             formStructure(context);
         } else if(context == null && structureFormed) {
             invalidateStructure();
@@ -155,6 +148,7 @@ public abstract class MultiblockControllerBase extends MetaTileEntity {
         this.multiblockAbilities.clear();
         this.multiblockParts.clear();
         this.structureFormed = false;
+        this.validationSuccess = false;
     }
 
     @SuppressWarnings("unchecked")
@@ -168,7 +162,7 @@ public abstract class MultiblockControllerBase extends MetaTileEntity {
     }
 
     public boolean isStructureFormed() {
-        return structureFormed;
+        return structureFormed && validationSuccess;
     }
 
 }
