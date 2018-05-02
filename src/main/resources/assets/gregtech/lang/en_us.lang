@@ -1678,6 +1678,26 @@ tile.concrete.dark_bricks.cracked.name=Cracked Dark Concrete Bricks
 tile.concrete.dark_bricks.mossy.name=Mossy Dark Concrete Bricks
 tile.concrete.dark_bricks.chiseled.name=Chiseled Dark Concrete Bricks
 
+# Steam machines
+gregtech.machine.steam_boiler_coal_bronze.name=Small Steam Coal Boiler
+gregtech.machine.steam_boiler_coal_steel.name=High Pressure Steam Coal Boiler
+gregtech.machine.steam_boiler_solar_bronze.name=Steam Solar Boiler
+gregtech.machine.steam_boiler_lava_bronze.name=Small Steam Lava Boiler
+gregtech.machine.steam_boiler_lava_steel.name=High Pressure Steam Lava Boiler
+
+gregtech.machine.steam_extractor_bronze.name=Steam Extractor
+gregtech.machine.steam_extractor_steel.name=High Pressure Steam Extractor
+gregtech.machine.steam_macerator_bronze.name=Steam Macerator
+gregtech.machine.steam_macerator_steel.name=High Pressure Steam Macerator
+gregtech.machine.steam_compressor_bronze.name=Steam Compressor
+gregtech.machine.steam_compressor_steel.name=High Pressure Steam Compressor
+gregtech.machine.steam_hammer_bronze.name=Steam Forge Hammer
+gregtech.machine.steam_hammer_steel.name=High Pressure Steam Forge Hammer
+gregtech.machine.steam_furnace_bronze.name=Steam Furnace
+gregtech.machine.steam_furnace_steel.name=High Pressure Steam Furnace
+gregtech.machine.steam_alloy_smelter_bronze.name=Steam Alloy Smelter
+gregtech.machine.steam_alloy_smelter_steel.name=High Pressure Steam Alloy Smelter
+
 # Achievement ores
 achievement.Naquadah=Find Naquadah Ore
 achievement.Naquadah.desc=Height: 10-60, Chance: 10, End
