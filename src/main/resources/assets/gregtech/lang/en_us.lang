@@ -1802,6 +1802,105 @@ gregtech.machine.distillery.hv.name=Advanced Distillery II
 gregtech.machine.distillery.ev.name=Advanced Distillery III
 gregtech.machine.distillery.iv.name=Advanced Distillery IV
 
+gregtech.machine.electrolyzer.lv.name=Basic Electrolyzer
+gregtech.machine.electrolyzer.mv.name=Advanced Electrolyzer
+gregtech.machine.electrolyzer.hv.name=Advanced Electrolyzer II
+gregtech.machine.electrolyzer.ev.name=Advanced Electrolyzer III
+gregtech.machine.electrolyzer.iv.name=Molecular Disintegrator E-4908
+
+gregtech.machine.electromagnetic_separator.lv.name=Basic Electromagnetic Separator
+gregtech.machine.electromagnetic_separator.mv.name=Advanced Electromagnetic Separator
+gregtech.machine.electromagnetic_separator.hv.name=Advanced Electromagnetic Separator II
+gregtech.machine.electromagnetic_separator.ev.name=Advanced Electromagnetic Separator III
+gregtech.machine.electromagnetic_separator.iv.name=Advanced Electromagnetic Separator IV
+
+gregtech.machine.extractor.lv.name=Basic Extractor
+gregtech.machine.extractor.mv.name=Advanced Extractor
+gregtech.machine.extractor.hv.name=Advanced Extractor II
+gregtech.machine.extractor.ev.name=Advanced Extractor III
+gregtech.machine.extractor.iv.name=Vacuum Extractor
+
+gregtech.machine.extruder.lv.name=Basic Extruder
+gregtech.machine.extruder.mv.name=Advanced Extruder
+gregtech.machine.extruder.hv.name=Advanced Extruder II
+gregtech.machine.extruder.ev.name=Advanced Extruder III
+gregtech.machine.extruder.iv.name=Advanced Extruder IV
+
+gregtech.machine.fermenter.lv.name=Basic Fermenter
+gregtech.machine.fermenter.mv.name=Advanced Fermenter
+gregtech.machine.fermenter.hv.name=Advanced Fermenter II
+gregtech.machine.fermenter.ev.name=Advanced Fermenter III
+gregtech.machine.fermenter.iv.name=Advanced Fermenter IV
+
+gregtech.machine.fluid_canner.lv.name=Basic Fluid Canner
+gregtech.machine.fluid_canner.mv.name=Advanced Fluid Canner
+gregtech.machine.fluid_canner.hv.name=Quick Fluid Canner II
+gregtech.machine.fluid_canner.ev.name=Turbo Fluid Canner III
+gregtech.machine.fluid_canner.iv.name=Instant Fluid Canner IV
+
+gregtech.machine.fluid_extractor.lv.name=Basic Fluid Extractor
+gregtech.machine.fluid_extractor.mv.name=Advanced Fluid Extractor
+gregtech.machine.fluid_extractor.hv.name=Advanced Fluid Extractor II
+gregtech.machine.fluid_extractor.ev.name=Advanced Fluid Extractor III
+gregtech.machine.fluid_extractor.iv.name=Advanced Fluid Extractor IV
+
+gregtech.machine.fluid_heater.lv.name=Basic Fluid Heater
+gregtech.machine.fluid_heater.mv.name=Advanced Fluid Heater
+gregtech.machine.fluid_heater.hv.name=Advanced Fluid Heater II
+gregtech.machine.fluid_heater.ev.name=Advanced Fluid Heater III
+gregtech.machine.fluid_heater.iv.name=Advanced Fluid Heater IV
+
+gregtech.machine.fluid_solidifier.lv.name=Basic Fluid Solidifier
+gregtech.machine.fluid_solidifier.mv.name=Advanced Fluid Solidifier
+gregtech.machine.fluid_solidifier.hv.name=Advanced Fluid Solidifier II
+gregtech.machine.fluid_solidifier.ev.name=Advanced Fluid Solidifier III
+gregtech.machine.fluid_solidifier.iv.name=Advanced Fluid Solidifier IV
+
+gregtech.machine.forge_hammer.lv.name=Basic Forge Hammer
+gregtech.machine.forge_hammer.mv.name=Advanced Forge Hammer
+gregtech.machine.forge_hammer.hv.name=Advanced Forge Hammer II
+gregtech.machine.forge_hammer.ev.name=Advanced Forge Hammer III
+gregtech.machine.forge_hammer.iv.name=Advanced Forge Hammer IV
+
+gregtech.machine.forming_press.lv.name=Basic Forming Press
+gregtech.machine.forming_press.mv.name=Advanced Forming Press
+gregtech.machine.forming_press.hv.name=Advanced Forming Press II
+gregtech.machine.forming_press.ev.name=Advanced Forming Press III
+gregtech.machine.forming_press.iv.name=Advanced Forming Press IV
+
+gregtech.machine.lathe.lv.name=Basic Lathe
+gregtech.machine.lathe.mv.name=Advanced Lathe
+gregtech.machine.lathe.hv.name=Advanced Lathe II
+gregtech.machine.lathe.ev.name=Advanced Lathe III
+gregtech.machine.lathe.iv.name=Advanced Lathe IV
+
+gregtech.machine.microwave.lv.name=Basic Microwave
+gregtech.machine.microwave.mv.name=Advanced Microwave
+gregtech.machine.microwave.hv.name=Advanced Microwave II
+gregtech.machine.microwave.ev.name=Advanced Microwave III
+gregtech.machine.microwave.iv.name=Advanced Microwave IV
+
+gregtech.machine.mixer.lv.name=Basic Mixer
+gregtech.machine.mixer.mv.name=Advanced Mixer
+gregtech.machine.mixer.hv.name=Advanced Mixer II
+gregtech.machine.mixer.ev.name=Advanced Mixer III
+gregtech.machine.mixer.iv.name=Advanced Mixer IV
+
+gregtech.machine.ore_washer.lv.name=Basic Ore Washing Plant
+gregtech.machine.ore_washer.mv.name=Advanced Ore Washing Plant
+gregtech.machine.ore_washer.hv.name=Advanced Ore Washing Plant II
+gregtech.machine.ore_washer.ev.name=Advanced Ore Washing Plant III
+
+gregtech.machine.packer.lv.name=Basic Packager
+gregtech.machine.packer.mv.name=Advanced Packager
+gregtech.machine.packer.hv.name=Advanced Packager II
+gregtech.machine.packer.ev.name=Advanced Packager III
+
+gregtech.machine.unpacker.lv.name=Basic Unpackager
+gregtech.machine.unpacker.mv.name=Advanced Unpackager
+gregtech.machine.unpacker.hv.name=Advanced Unpackager II
+gregtech.machine.unpacker.ev.name=Advanced Unpackager III
+
 # Achievement ores
 achievement.Naquadah=Find Naquadah Ore
 achievement.Naquadah.desc=Height: 10-60, Chance: 10, End
