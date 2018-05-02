@@ -23,8 +23,8 @@ import java.util.function.Predicate;
 
 public abstract class MultiblockControllerBase extends MetaTileEntity {
 
-    protected final BlockPattern structurePattern;
-    protected final BooleanSupplier validationPredicate;
+    protected BlockPattern structurePattern;
+    protected BooleanSupplier validationPredicate;
 
     private final Map<MultiblockAbility<Object>, List<Object>> multiblockAbilities = new HashMap<>();
     private final List<IMultiblockPart> multiblockParts = new ArrayList<>();
@@ -33,6 +33,10 @@ public abstract class MultiblockControllerBase extends MetaTileEntity {
 
     public MultiblockControllerBase(String metaTileEntityId) {
         super(metaTileEntityId);
+        reinitializeStructurePattern();
+    }
+
+    protected void reinitializeStructurePattern() {
         this.structurePattern = createStructurePattern();
         this.validationPredicate = getValidationPredicate();
     }

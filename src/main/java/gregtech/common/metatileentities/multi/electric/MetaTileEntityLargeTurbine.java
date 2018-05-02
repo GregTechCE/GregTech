@@ -61,6 +61,7 @@ public class MetaTileEntityLargeTurbine extends RecipeMapMultiblockController {
         super(metaTileEntityId, turbineType.recipeMap);
         this.turbineType = turbineType;
         this.recipeMapWorkable = new LargeTurbineWorkableHandler(this);
+        reinitializeStructurePattern();
     }
 
     @Override
@@ -124,7 +125,8 @@ public class MetaTileEntityLargeTurbine extends RecipeMapMultiblockController {
 
     @Override
     protected BlockPattern createStructurePattern() {
-        return FactoryBlockPattern.start()
+        return turbineType == null ? null :
+            FactoryBlockPattern.start()
             .aisle("CCCC", "CHHC", "CCCC")
             .aisle("CHHC", "R##D", "CHHC")
             .aisle("CCCC", "CSHC", "CCCC")
