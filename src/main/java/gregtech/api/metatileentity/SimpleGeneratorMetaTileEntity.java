@@ -77,7 +77,7 @@ public class SimpleGeneratorMetaTileEntity extends WorkableTieredMetaTileEntity 
 
     protected ModularUI.Builder createGuiTemplate(EntityPlayer player) {
         return workable.recipeMap.createUITemplate(workable::getProgressPercent, importItems, exportItems, importFluids, exportFluids)
-            .label(6, 6, getMetaName())
+            .label(6, 6, getMetaFullname())
             .widget(new FluidContainerSlotWidget(containerInventory, 0, 90, 17)
                 .setBackgroundTexture(GuiTextures.SLOT, GuiTextures.IN_SLOT_OVERLAY))
             .widget(new ImageWidget(91, 36, 14, 15, GuiTextures.TANK_ICON))
