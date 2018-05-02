@@ -30,6 +30,7 @@ import static gregtech.api.GTValues.L;
 import static gregtech.api.GTValues.M;
 import static gregtech.api.unification.material.type.DustMaterial.MatFlags.*;
 import static gregtech.api.unification.material.type.Material.MatFlags.NO_UNIFICATION;
+import static gregtech.api.unification.material.type.SolidMaterial.MatFlags.GENERATE_ROD;
 import static gregtech.api.unification.material.type.SolidMaterial.MatFlags.MORTAR_GRINDABLE;
 
 public class OreProcessingHandler {
@@ -55,8 +56,9 @@ public class OreProcessingHandler {
         OrePrefix.screw.addProcessingHandler(this::processScrew, this::processPolarizing);
         OrePrefix.wireFine.addProcessingHandler(this::processFineWire, this::processPolarizing);
         OrePrefix.foil.addProcessingHandler(this::processFoil, this::processPolarizing);
-        OrePrefix.lens.addProcessingHandler(this::processLens, this::processCraftingLens);
+        OrePrefix.lens.addProcessingHandler(this::processLens);
         OrePrefix.ore.addProcessingHandler(this::processOre);
+        OrePrefix.frameGt.addProcessingHandler(this::processFrame);
         OrePrefix.oreBasalt.addProcessingHandler(this::processOre);
         OrePrefix.oreBlackgranite.addProcessingHandler(this::processOre);
         OrePrefix.oreEndstone.addProcessingHandler(this::processOre);
@@ -98,6 +100,12 @@ public class OreProcessingHandler {
         OrePrefix.toolHeadUniversalSpade.addProcessingHandler(this::processSpadeHead);
         OrePrefix.toolHeadScrewdriver.addProcessingHandler(this::processScrewdriverHead);
         OrePrefix.toolHeadHammer.addProcessingHandler(this::processHammerHead);
+    }
+
+    private void processFrame(OrePrefix framePrefix, Material material) {
+        if (material instanceof MetalMaterial && !framePrefix.isIgnored(material) && material.hasFlag(GENERATE_PLATE | GENERATE_ROD)) {
+            ModHandler.addShapedRecipe(String.format("frame_%s", material), OreDictUnifier.get(framePrefix, material, 4), "PPP", "SSS", "SwS", 'P', new UnificationEntry(OrePrefix.plate, material), 'S', new UnificationEntry(OrePrefix.stick, material));
+        }
     }
 
     private static final List<OrePrefix> GEM_ORDER = Arrays.asList(
@@ -421,84 +429,6 @@ public class OreProcessingHandler {
                     .EUt(96).duration((int) (material.getMass() * 1.5))
                     .buildAndRegister();
             }
-        }
-    }
-
-    private void processCraftingLens(OrePrefix lensPrefix, Material material) {
-
-        if (material == MarkerMaterials.Color.Red) {
-            RecipeMaps.LASER_ENGRAVER_RECIPES.recipeBuilder()
-                .input(OrePrefix.foil, Materials.Copper)
-                .notConsumable(OreDictUnifier.get(OrePrefix.lens, material))
-                .outputs(MetaItems.CIRCUIT_PARTS_WIRING_BASIC.getStackForm())
-                .duration(64)
-                .EUt(30)
-                .buildAndRegister();
-            RecipeMaps.LASER_ENGRAVER_RECIPES.recipeBuilder()
-                .input(OrePrefix.foil, Materials.AnnealedCopper)
-                .notConsumable(OreDictUnifier.get(OrePrefix.lens, material))
-                .outputs(MetaItems.CIRCUIT_PARTS_WIRING_BASIC.getStackForm())
-                .duration(64)
-                .EUt(30)
-                .buildAndRegister();
-            RecipeMaps.LASER_ENGRAVER_RECIPES.recipeBuilder()
-                .input(OrePrefix.foil, Materials.Gold)
-                .notConsumable(OreDictUnifier.get(OrePrefix.lens, material))
-                .outputs(MetaItems.CIRCUIT_PARTS_WIRING_ADVANCED.getStackForm())
-                .duration(64)
-                .EUt(120)
-                .buildAndRegister();
-            RecipeMaps.LASER_ENGRAVER_RECIPES.recipeBuilder()
-                .input(OrePrefix.foil, Materials.Electrum)
-                .notConsumable(OreDictUnifier.get(OrePrefix.lens, material))
-                .outputs(MetaItems.CIRCUIT_PARTS_WIRING_ADVANCED.getStackForm())
-                .duration(64)
-                .EUt(120)
-                .buildAndRegister();
-            RecipeMaps.LASER_ENGRAVER_RECIPES.recipeBuilder()
-                .input(OrePrefix.foil, Materials.Platinum)
-                .notConsumable(OreDictUnifier.get(OrePrefix.lens, material))
-                .outputs(MetaItems.CIRCUIT_PARTS_WIRING_ELITE.getStackForm())
-                .duration(64)
-                .EUt(480)
-                .buildAndRegister();
-        } else if (material == MarkerMaterials.Color.Green) {
-            RecipeMaps.LASER_ENGRAVER_RECIPES.recipeBuilder()
-                .input(OrePrefix.plate, Materials.Olivine)
-                .notConsumable(OreDictUnifier.get(OrePrefix.lens, material))
-                .outputs(MetaItems.CIRCUIT_PARTS_CRYSTAL_CHIP_ELITE.getStackForm())
-                .duration(256)
-                .EUt(480)
-                .buildAndRegister();
-            RecipeMaps.LASER_ENGRAVER_RECIPES.recipeBuilder()
-                .input(OrePrefix.plate, Materials.Emerald)
-                .notConsumable(OreDictUnifier.get(OrePrefix.lens, material))
-                .outputs(MetaItems.CIRCUIT_PARTS_CRYSTAL_CHIP_ELITE.getStackForm())
-                .duration(256)
-                .EUt(480)
-                .buildAndRegister();
-        } else if (material == MarkerMaterials.Color.White) {
-            RecipeMaps.LASER_ENGRAVER_RECIPES.recipeBuilder()
-                .inputs(new ItemStack(Blocks.SANDSTONE, 1, 2))
-                .notConsumable(OreDictUnifier.get(OrePrefix.lens, material))
-                .outputs(new ItemStack(Blocks.SANDSTONE, 1, 1))
-                .duration(20)
-                .EUt(16)
-                .buildAndRegister();
-            RecipeMaps.LASER_ENGRAVER_RECIPES.recipeBuilder()
-                .inputs(CountableIngredient.from("stone"))
-                .notConsumable(OreDictUnifier.get(OrePrefix.lens, material))
-                .outputs(new ItemStack(Blocks.STONEBRICK, 1, 3))
-                .duration(50)
-                .EUt(16)
-                .buildAndRegister();
-            RecipeMaps.LASER_ENGRAVER_RECIPES.recipeBuilder()
-                .inputs(new ItemStack(Blocks.QUARTZ_BLOCK))
-                .notConsumable(OreDictUnifier.get(OrePrefix.lens, material))
-                .outputs(new ItemStack(Blocks.QUARTZ_BLOCK, 1, 1))
-                .duration(50)
-                .EUt(16)
-                .buildAndRegister();
         }
     }
 

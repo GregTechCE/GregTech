@@ -53,6 +53,9 @@ public class ConfigHolder {
 
         @Config.Comment("Default: true")
         public boolean bowlRequireKnife = true;
+
+        @Config.Comment("Default: true")
+        public boolean harderMinecarts = true;
     }
 
 }

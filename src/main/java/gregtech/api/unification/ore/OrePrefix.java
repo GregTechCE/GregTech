@@ -475,7 +475,7 @@ public enum OrePrefix {
     }
 
     public boolean doGenerateItem(Material material) {
-        return !isSelfReferencing && generationCondition != null && materialIconType != null && !ignoredMaterials.contains(material) && generationCondition.isTrue(material);
+        return !isSelfReferencing && generationCondition != null && materialIconType != null && !isIgnored(material) && generationCondition.isTrue(material);
     }
 
     public boolean addProcessingHandler(IOreRegistrationHandler... processingHandler) {

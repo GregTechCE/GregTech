@@ -392,7 +392,7 @@ public class RecipeMaps {
      * 				.buildAndRegister();
      * </pre>
      */
-    public static final RecipeMap<DefaultRecipeBuilder> CHEMICAL_RECIPES = new RecipeMap<>("chemicalreactor", 0, 2, 0, 1, 0, 3, 0, 2, 1, new DefaultRecipeBuilder().duration(30))
+    public static final RecipeMap<DefaultRecipeBuilder> CHEMICAL_RECIPES = new RecipeMap<>("chemicalreactor", 0, 2, 0, 1, 0, 3, 0, 2, 1, new DefaultRecipeBuilder().EUt(30))
         .setSlotOverlay(false, false, false, GuiTextures.MOLECULAR_OVERLAY_1)
         .setSlotOverlay(false, false, true, GuiTextures.MOLECULAR_OVERLAY_2)
         .setSlotOverlay(false, true, GuiTextures.MOLECULAR_OVERLAY_3)

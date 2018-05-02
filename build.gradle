@@ -19,7 +19,8 @@ file "build.properties" withReader {
     ext.config = new ConfigSlurper().parse prop
 }
 
-version = getVersionFromJava(file("src/main/java/gregtech/GregTechVersion.java"))
+def mod_version = getVersionFromJava(file("src/main/java/gregtech/GregTechVersion.java"))
+version = "${config.minecraft.version}-${mod_version}"
 group = "gregtech"
 archivesBaseName = "gregtech"
 
@@ -27,7 +28,7 @@ minecraft {
     version = "${config.minecraft.version}-${config.forge.version}"
 	mappings = "snapshot_20170928"
     runDir = "run"
-    replace '@VERSION@', project.version
+    replace '@VERSION@', mod_version
 }
 
 configurations {
@@ -96,7 +97,7 @@ compileJava {
 
 processResources {
     // this will ensure that this task is redone when the versions change.
-    inputs.property "version", project.version
+    inputs.property "version", mod_version
     inputs.property "mcversion", project.minecraft.version
 
     // replace stuff in mcmod.info, nothing else
@@ -104,7 +105,7 @@ processResources {
         include 'mcmod.info'
                 
         // replace version and mcversion
-        expand 'version':project.version, 'mcversion':project.minecraft.version
+        expand 'version':mod_version, 'mcversion':project.minecraft.version
     }
         
     // copy everything else, thats not the mcmod.info
@@ -179,5 +180,5 @@ String getVersionFromJava(File file) {
 
     build = System.getenv("BUILD_NUMBER") ?: project.ext.properties.buildNumber ?: 0
 
-    return "${config.minecraft.version}-$major.$minor.$revision.$build"
+    return "$major.$minor.$revision.$build"
 }

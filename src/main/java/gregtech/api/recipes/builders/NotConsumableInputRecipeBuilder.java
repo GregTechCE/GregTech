@@ -6,6 +6,8 @@ import gregtech.api.recipes.CountableIngredient;
 import gregtech.api.recipes.Recipe;
 import gregtech.api.recipes.RecipeBuilder;
 import gregtech.api.recipes.RecipeMap;
+import gregtech.api.unification.material.type.Material;
+import gregtech.api.unification.ore.OrePrefix;
 import gregtech.api.util.EnumValidationResult;
 import gregtech.api.util.GTLog;
 import gregtech.api.util.ValidationResult;
@@ -43,6 +45,17 @@ public class NotConsumableInputRecipeBuilder extends RecipeBuilder<NotConsumable
         } else {
             ItemStack stack = itemStack.copy();
             inputs.add(CountableIngredient.from(stack, 0));
+        }
+        return this;
+    }
+
+    public NotConsumableInputRecipeBuilder notConsumable(OrePrefix prefix, Material material) {
+        if (prefix == null) {
+            GTLog.logger.error("Ore prefix input cannot be null.");
+            GTLog.logger.error("Stacktrace:", new IllegalArgumentException());
+            recipeStatus = EnumValidationResult.INVALID;
+        } else {
+            inputs.add(CountableIngredient.from(prefix, material, 0));
         }
         return this;
     }

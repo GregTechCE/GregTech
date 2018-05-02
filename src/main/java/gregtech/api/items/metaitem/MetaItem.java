@@ -44,10 +44,7 @@ import org.apache.commons.lang3.Validate;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import javax.annotation.Nullable;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * MetaItem is item that can have up to Short.MAX_VALUE items inside one id.
@@ -88,7 +85,7 @@ public abstract class MetaItem<T extends MetaItem<?>.MetaValueItem> extends Item
         TShortObjectHashMap<ModelResourceLocation> itemModels = new TShortObjectHashMap<>();
         for(short itemMetaKey : metaItems.keys()) {
             T metaValueItem = metaItems.get(itemMetaKey);
-            int numberOfModels = getNumberOfModels(metaValueItem);
+            int numberOfModels = metaValueItem.getModelAmount();
             if (numberOfModels > 1) {
                 ModelResourceLocation[] resourceLocations = new ModelResourceLocation[numberOfModels];
                 for (int i = 0; i < resourceLocations.length; i++) {
@@ -115,11 +112,6 @@ public abstract class MetaItem<T extends MetaItem<?>.MetaValueItem> extends Item
             }
             return MISSING_LOCATION;
         });
-    }
-
-    @SideOnly(Side.CLIENT)
-    protected int getNumberOfModels(T metaValueItem) {
-        return metaValueItem.getElectricStats() == null ? 1 : 8;
     }
 
     protected int getModelIndex(short metaItemKey, ItemStack itemStack) {
@@ -394,7 +386,7 @@ public abstract class MetaItem<T extends MetaItem<?>.MetaValueItem> extends Item
         if (item != null) {
             String unlocalizedTooltip = "metaitem." + item.unlocalizedName + ".tooltip";
             if (I18n.hasKey(unlocalizedTooltip)) {
-                lines.add(I18n.format(unlocalizedTooltip));
+                lines.addAll(Arrays.asList(I18n.format(unlocalizedTooltip).split("/n")));
             }
 
             IElectricItem electricItem = itemStack.getCapability(IElectricItem.CAPABILITY_ELECTRIC_ITEM, null);
@@ -473,6 +465,7 @@ public abstract class MetaItem<T extends MetaItem<?>.MetaValueItem> extends Item
         private int burnValue = 0;
         private boolean visible = true;
         private int maxStackSize = 64;
+        private int modelAmount = 1;
 
         protected MetaValueItem(int metaValue, String unlocalizedName, String... nameParameters) {
             this.metaValue = metaValue;
@@ -530,6 +523,14 @@ public abstract class MetaItem<T extends MetaItem<?>.MetaValueItem> extends Item
                 throw new IllegalArgumentException("Cannot set Burn Value to negative or zero number.");
             }
             this.burnValue = burnValue;
+            return this;
+        }
+
+        public MetaValueItem setModelAmount(int modelAmount) {
+            if (modelAmount <= 0) {
+                throw new IllegalArgumentException("Cannot set amount of models to negative or zero number.");
+            }
+            this.modelAmount = modelAmount;
             return this;
         }
 
@@ -657,6 +658,10 @@ public abstract class MetaItem<T extends MetaItem<?>.MetaValueItem> extends Item
 
         public boolean isVisible() {
             return visible;
+        }
+
+        public int getModelAmount() {
+            return modelAmount;
         }
 
         public ItemStack getStackForm(int amount) {

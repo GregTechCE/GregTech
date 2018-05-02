@@ -43,9 +43,6 @@ public final class MetaItems {
     public static MetaItem<?>.MetaValueItem SHAPE_MOLD_BALL;
     public static MetaItem<?>.MetaValueItem SHAPE_MOLD_BLOCK;
     public static MetaItem<?>.MetaValueItem SHAPE_MOLD_NUGGET;
-    public static MetaItem<?>.MetaValueItem SHAPE_MOLD_BUN;
-    public static MetaItem<?>.MetaValueItem SHAPE_MOLD_BREAD;
-    public static MetaItem<?>.MetaValueItem SHAPE_MOLD_BAGUETTE;
     public static MetaItem<?>.MetaValueItem SHAPE_MOLD_CYLINDER;
     public static MetaItem<?>.MetaValueItem SHAPE_MOLD_ANVIL;
     public static MetaItem<?>.MetaValueItem SHAPE_MOLD_NAME;
@@ -344,6 +341,9 @@ public final class MetaItems {
 
     public static MetaItem<?>.MetaValueItem[] SPRAY_CAN_DYES = new MetaItem.MetaValueItem[16];
     public static MetaItem<?>.MetaValueItem[] SPRAY_CAN_DYES_USED = new MetaItem.MetaValueItem[16];
+
+    public static MetaItem<?>.MetaValueItem SMALL_BRONZE_PIPE;
+    public static MetaItem<?>.MetaValueItem SMALL_STEEL_PIPE;
 
     public static ToolMetaItem<?>.MetaToolValueItem SWORD;
     public static ToolMetaItem<?>.MetaToolValueItem PICKAXE;
