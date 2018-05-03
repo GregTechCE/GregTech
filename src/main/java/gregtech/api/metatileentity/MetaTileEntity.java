@@ -151,6 +151,10 @@ public abstract class MetaTileEntity {
     }
 
     public final String getMetaName() {
+        return "gregtech.machine." + metaTileEntityId;
+    }
+
+    public final String getMetaFullname() {
         return "gregtech.machine." + metaTileEntityId + ".name";
     }
 

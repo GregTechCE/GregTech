@@ -114,7 +114,7 @@ public class MetaBlocks {
                     compressedGenerationIndex = index;
                 }
             }
-            if(material instanceof SolidMaterial) {
+            if(material instanceof MetalMaterial) {
                 int id = Material.MATERIAL_REGISTRY.getIDForObject(material);
                 int index = id / 16;
                 if (index > frameGenerationIndex) {

@@ -111,7 +111,7 @@ public class MetaTileEntityFluidHatch extends MetaTileEntityMultiblockPart imple
 
     @Override
     protected ModularUI createUI(EntityPlayer entityPlayer) {
-        return createTankUI((isExportHatch ? exportFluids : importFluids).getTankAt(0), containerInventory, getMetaName(), entityPlayer)
+        return createTankUI((isExportHatch ? exportFluids : importFluids).getTankAt(0), containerInventory, getMetaFullname(), entityPlayer)
             .build(getHolder(), entityPlayer);
     }
 

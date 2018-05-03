@@ -2,7 +2,15 @@ package gregtech.common.blocks;
 
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.resources.I18n;
+import net.minecraft.client.util.ITooltipFlag;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.IStringSerializable;
+import net.minecraft.world.World;
+
+import javax.annotation.Nullable;
+import java.util.List;
 
 public class BlockWireCoil extends VariantBlock<BlockWireCoil.CoilType> {
 
@@ -13,6 +21,17 @@ public class BlockWireCoil extends VariantBlock<BlockWireCoil.CoilType> {
         setResistance(10.0f);
         setSoundType(SoundType.METAL);
         setHarvestLevel("wrench", 2);
+    }
+
+    @Override
+    public void addInformation(ItemStack itemStack, @Nullable World worldIn, List<String> lines, ITooltipFlag tooltipFlag) {
+        VariantItemBlock itemBlock = (VariantItemBlock<CoilType, BlockWireCoil>) itemStack.getItem();
+        IBlockState stackState = itemBlock.getBlockState(itemStack);
+        CoilType coilType = getState(stackState);
+
+        lines.add(I18n.format("tile.wire_coil.tooltip_heat", coilType.coilTemperature));
+        lines.add(I18n.format("tile.wire_coil.tooltip_level", coilType.level));
+        lines.add(I18n.format("tile.wire_coil.tooltip_discount", coilType.energyDiscount));
     }
 
     public enum CoilType implements IStringSerializable {
@@ -58,5 +77,4 @@ public class BlockWireCoil extends VariantBlock<BlockWireCoil.CoilType> {
             return energyDiscount;
         }
     }
-
 }
