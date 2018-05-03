@@ -2,7 +2,6 @@ package gregtech.api.items.toolitem;
 
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
-import gregtech.api.GTValues;
 import gregtech.api.capability.IElectricItem;
 import gregtech.api.enchants.EnchantmentData;
 import gregtech.api.items.IDamagableItem;
@@ -14,8 +13,6 @@ import gregtech.api.unification.material.type.Material;
 import gregtech.api.unification.material.type.SolidMaterial;
 import gregtech.api.unification.stack.SimpleItemStack;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.renderer.block.model.ModelBakery;
-import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
@@ -30,7 +27,6 @@ import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -54,7 +50,7 @@ import java.util.Optional;
  * @see IToolStats
  * @see MetaItem
  */
-public class ToolMetaItem<T extends ToolMetaItem<?>.MetaToolValueItem> extends MetaItem<T> implements IDamagableItem/*, IBoxable*/ {
+public class ToolMetaItem<T extends ToolMetaItem<?>.MetaToolValueItem> extends MetaItem<T> implements IDamagableItem {
 
     public ToolMetaItem() {
         super((short) 0);
@@ -68,20 +64,9 @@ public class ToolMetaItem<T extends ToolMetaItem<?>.MetaToolValueItem> extends M
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
-    public void registerModels() {
-        for(T metaItem : this.metaItems.valueCollection()) {
-            String name = metaItem.unlocalizedName;
-            ModelBakery.registerItemVariants(this, new ResourceLocation(GTValues.MODID, "tools/" + name.substring(name.indexOf(".") + 1)));
-        }
-
-        ModelLoader.setCustomMeshDefinition(this, stack -> {
-            if (stack.getMetadata() < this.metaItems.size()) {
-                String name = getItem(stack).unlocalizedName;
-                return new ModelResourceLocation(new ResourceLocation(GTValues.MODID, "tools/" + name.substring(name.indexOf(".") + 1)), "inventory");
-            }
-            return new ModelResourceLocation("builtin/missing", "missing");
-        });
+    protected String formatModelPath(T metaValueItem) {
+        String name = metaValueItem.unlocalizedName;
+        return "tools/" + (name.indexOf('.') == -1 ? name : name.substring(name.indexOf(".") + 1));
     }
 
     @Override

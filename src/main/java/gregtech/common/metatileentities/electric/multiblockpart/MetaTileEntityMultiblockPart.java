@@ -2,6 +2,7 @@ package gregtech.common.metatileentities.electric.multiblockpart;
 
 import codechicken.lib.render.CCRenderState;
 import codechicken.lib.render.pipeline.IVertexOperation;
+import codechicken.lib.vec.Matrix4;
 import gregtech.api.block.machines.BlockMachine;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.multiblock.IMultiblockPart;
@@ -35,12 +36,12 @@ public abstract class MetaTileEntityMultiblockPart extends MetaTileEntity implem
     }
 
     @Override
-    public void renderMetaTileEntity(CCRenderState renderState, IVertexOperation[] pipeline) {
+    public void renderMetaTileEntity(CCRenderState renderState, Matrix4 translation, IVertexOperation[] pipeline) {
         MultiblockControllerBase controller = getController();
         if(controller != null) {
-            controller.getBaseTexture().render(renderState, pipeline);
+            controller.getBaseTexture().render(renderState, translation, pipeline);
         } else {
-            Textures.VOLTAGE_CASINGS[tier].render(renderState, pipeline);
+            Textures.VOLTAGE_CASINGS[tier].render(renderState, translation, pipeline);
         }
     }
 

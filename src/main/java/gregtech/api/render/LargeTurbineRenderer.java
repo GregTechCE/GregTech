@@ -1,15 +1,17 @@
 package gregtech.api.render;
 
 import codechicken.lib.render.CCRenderState;
+import codechicken.lib.render.pipeline.ColourMultiplier;
 import codechicken.lib.render.pipeline.IVertexOperation;
 import codechicken.lib.texture.TextureUtils.IIconRegister;
 import codechicken.lib.vec.Cuboid6;
+import codechicken.lib.vec.Matrix4;
 import gregtech.api.GTValues;
 import gregtech.api.metatileentity.MetaTileEntity;
+import gregtech.api.util.GTUtility;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumFacing.AxisDirection;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -17,14 +19,16 @@ import org.apache.commons.lang3.ArrayUtils;
 
 public class LargeTurbineRenderer implements IIconRegister {
 
-    @SideOnly(Side.CLIENT)
-    private TextureAtlasSprite[] baseTexture;
+    private static final Cuboid6 BIG_CUBOID = new Cuboid6(0.0, 0.0, 0.0, 3.0, 3.0, 3.0);
 
     @SideOnly(Side.CLIENT)
-    private TextureAtlasSprite[] bladeTexture;
-
+    private TextureAtlasSprite baseRingSprite;
     @SideOnly(Side.CLIENT)
-    private TextureAtlasSprite[] activeBladeTexture;
+    private TextureAtlasSprite baseBackgroundSprite;
+    @SideOnly(Side.CLIENT)
+    private TextureAtlasSprite idleBladeSprite;
+    @SideOnly(Side.CLIENT)
+    private TextureAtlasSprite activeBladeSprite;
 
     public LargeTurbineRenderer() {
         Textures.iconRegisters.add(this);
@@ -33,40 +37,39 @@ public class LargeTurbineRenderer implements IIconRegister {
     @Override
     @SideOnly(Side.CLIENT)
     public void registerIcons(TextureMap textureMap) {
-        this.baseTexture = new TextureAtlasSprite[9];
-        this.bladeTexture = new TextureAtlasSprite[9];
-        this.activeBladeTexture = new TextureAtlasSprite[9];
-        for(int i = 0; i < 9; i++) {
-            String basePath = "blocks/multiblock/large_turbine/%s/%d";
-            this.baseTexture[i] = textureMap.registerSprite(new ResourceLocation(GTValues.MODID, String.format(basePath, "base", i + 1)));
-            this.bladeTexture[i] = textureMap.registerSprite(new ResourceLocation(GTValues.MODID, String.format(basePath, "blade", i + 1)));
-            this.activeBladeTexture[i] = textureMap.registerSprite(new ResourceLocation(GTValues.MODID, String.format(basePath, "blade_active", i + 1)));
+        this.baseRingSprite = textureMap.registerSprite(new ResourceLocation(GTValues.MODID, "blocks/multiblock/large_turbine/base_ring"));
+        this.baseBackgroundSprite = textureMap.registerSprite(new ResourceLocation(GTValues.MODID, "blocks/multiblock/large_turbine/base_bg"));
+        this.idleBladeSprite = textureMap.registerSprite(new ResourceLocation(GTValues.MODID, "blocks/multiblock/large_turbine/rotor_idle"));
+        this.activeBladeSprite = textureMap.registerSprite(new ResourceLocation(GTValues.MODID, "blocks/multiblock/large_turbine/rotor_spinning"));
+    }
+
+    public void renderSided(CCRenderState renderState, Matrix4 translation, IVertexOperation[] pipeline, EnumFacing side, boolean hasBase, boolean hasRotor, boolean isActive, int rotorRGB) {
+        Matrix4 cornerOffset = null;
+        switch (side.getAxis()) {
+            case X:
+                cornerOffset = translation.copy().translate(0.01 * side.getFrontOffsetX(), -1.0, -1.0);
+                cornerOffset.scale(1.0, 3.0, 3.0);
+                break;
+            case Z:
+                cornerOffset = translation.copy().translate(-1.0, -1.0, 0.01 * side.getFrontOffsetZ());
+                cornerOffset.scale(3.0, 3.0, 1.0);
+                break;
+            case Y:
+                cornerOffset = translation.copy().translate(-1.0, 0.01 * side.getFrontOffsetY(), -1.0);
+                cornerOffset.scale(3.0, 1.0, 3.0);
+                break;
+        }
+        if(hasBase) {
+            MetaTileEntity.renderFace(renderState, cornerOffset, pipeline, side, Cuboid6.full, baseRingSprite);
+            renderState.brightness = 0xF000F0;
+            renderState.colour = 0xFFFFFFFF;
+            MetaTileEntity.renderFace(renderState, cornerOffset, new IVertexOperation[0], side, Cuboid6.full, baseBackgroundSprite);
+        }
+        if(hasRotor) {
+            TextureAtlasSprite sprite = isActive ? activeBladeSprite : idleBladeSprite;
+            IVertexOperation[] color = ArrayUtils.add(pipeline, new ColourMultiplier(GTUtility.convertRGBtoOpaqueRGBA(rotorRGB)));
+            MetaTileEntity.renderFace(renderState, cornerOffset, color, side, Cuboid6.full, sprite);
         }
     }
 
-    public void renderSided(CCRenderState renderState, IVertexOperation[] pipeline, EnumFacing side, boolean hasBase, boolean hasRotor, boolean isActive) {
-        for(int i = 0; i < 9; i++) {
-            int x = 1 - i % 3;
-            int y = 1 - i / 3;
-            RelativeTranslation translation;
-            switch (side.getAxis()) {
-                case X: translation = new RelativeTranslation(0, y, side.getAxisDirection() == AxisDirection.POSITIVE ? x : -x); break;
-                case Y: translation = new RelativeTranslation(x, 0, y); break;
-                case Z: translation = new RelativeTranslation(side.getAxisDirection() == AxisDirection.POSITIVE ? -x : x, y, 0); break;
-                default: throw new IllegalArgumentException(side.toString());
-            }
-            IVertexOperation[] offset = ArrayUtils.add(pipeline, translation);
-            if(hasBase) {
-                MetaTileEntity.renderFace(renderState, side, Cuboid6.full, baseTexture[i], offset);
-            }
-            if(hasRotor) {
-                if(!isActive) {
-                    MetaTileEntity.renderFace(renderState, side, Cuboid6.full, bladeTexture[i], offset);
-                } else {
-                    MetaTileEntity.renderFace(renderState, side, Cuboid6.full, activeBladeTexture[i], offset);
-                }
-            }
-        }
-
-    }
 }

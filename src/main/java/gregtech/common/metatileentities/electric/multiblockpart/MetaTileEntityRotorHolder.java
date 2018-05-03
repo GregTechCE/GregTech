@@ -2,6 +2,7 @@ package gregtech.common.metatileentities.electric.multiblockpart;
 
 import codechicken.lib.render.CCRenderState;
 import codechicken.lib.render.pipeline.IVertexOperation;
+import codechicken.lib.vec.Matrix4;
 import gregtech.api.damagesources.DamageSources;
 import gregtech.api.gui.GuiTextures;
 import gregtech.api.gui.ModularUI;
@@ -12,6 +13,7 @@ import gregtech.api.metatileentity.MetaTileEntityHolder;
 import gregtech.api.metatileentity.multiblock.IMultiblockAbilityPart;
 import gregtech.api.metatileentity.multiblock.MultiblockAbility;
 import gregtech.api.render.Textures;
+import gregtech.api.unification.material.type.SolidMaterial;
 import gregtech.common.metatileentities.multi.electric.MetaTileEntityLargeTurbine;
 import gregtech.common.tools.ITurbineToolStats;
 import net.minecraft.block.state.IBlockState;
@@ -41,7 +43,7 @@ public class MetaTileEntityRotorHolder extends MetaTileEntityMultiblockPart impl
     private int currentRotorSpeed;
 
     private boolean isRotorLooping;
-    private boolean hasRotor;
+    private int rotorColor = -1;
     private boolean frontFaceFree;
 
     public MetaTileEntityRotorHolder(String metaTileEntityId, int tier, int maxSpeed) {
@@ -135,7 +137,11 @@ public class MetaTileEntityRotorHolder extends MetaTileEntityMultiblockPart impl
      * this will return true even if it's client side and used for rendering
      */
     public boolean isHasRotor() {
-        return hasRotor;
+        return rotorColor != -1;
+    }
+
+    public int getRotorColor() {
+        return rotorColor;
     }
 
     public double getRotorEfficiency() {
@@ -168,11 +174,11 @@ public class MetaTileEntityRotorHolder extends MetaTileEntityMultiblockPart impl
        }
     }
 
-    private void setHasRotor(boolean hasRotor1) {
-        boolean lastHasRotor = hasRotor;
-        this.hasRotor = hasRotor1;
-        if(hasRotor != lastHasRotor && !getWorld().isRemote) {
-            writeCustomData(-201, writer -> writer.writeBoolean(hasRotor));
+    private void setRotorColor(int hasRotor1) {
+        int lastHasRotor = rotorColor;
+        this.rotorColor = hasRotor1;
+        if(rotorColor != lastHasRotor && !getWorld().isRemote) {
+            writeCustomData(-201, writer -> writer.writeInt(rotorColor));
             markDirty();
         }
     }
@@ -183,7 +189,7 @@ public class MetaTileEntityRotorHolder extends MetaTileEntityMultiblockPart impl
         if(dataId == -200) {
             this.isRotorLooping = buf.readBoolean();
         } else if(dataId == -201) {
-            this.hasRotor = buf.readBoolean();
+            this.rotorColor = buf.readInt();
         }
     }
 
@@ -191,14 +197,14 @@ public class MetaTileEntityRotorHolder extends MetaTileEntityMultiblockPart impl
     public void writeInitialSyncData(PacketBuffer buf) {
         super.writeInitialSyncData(buf);
         buf.writeBoolean(isRotorLooping);
-        buf.writeBoolean(hasRotor);
+        buf.writeInt(rotorColor);
     }
 
     @Override
     public void receiveInitialSyncData(PacketBuffer buf) {
         super.receiveInitialSyncData(buf);
         this.isRotorLooping = buf.readBoolean();
-        this.hasRotor = buf.readBoolean();
+        this.rotorColor = buf.readInt();
     }
 
     @Override
@@ -223,11 +229,11 @@ public class MetaTileEntityRotorHolder extends MetaTileEntityMultiblockPart impl
     }
 
     @Override
-    public void renderMetaTileEntity(CCRenderState renderState, IVertexOperation[] pipeline) {
-        super.renderMetaTileEntity(renderState, pipeline);
-        Textures.ROTOR_HOLDER_OVERLAY.renderSided(getFrontFacing(), renderState, pipeline);
-        Textures.LARGE_TURBINE_ROTOR_RENDERER.renderSided(renderState, pipeline, getFrontFacing(),
-            getController() != null, isHasRotor(), isRotorLooping());
+    public void renderMetaTileEntity(CCRenderState renderState, Matrix4 translation, IVertexOperation[] pipeline) {
+        super.renderMetaTileEntity(renderState, translation, pipeline);
+        Textures.ROTOR_HOLDER_OVERLAY.renderSided(getFrontFacing(), renderState, translation, pipeline);
+        Textures.LARGE_TURBINE_ROTOR_RENDERER.renderSided(renderState, translation, pipeline, getFrontFacing(),
+            getController() != null, isHasRotor(), isRotorLooping(), rotorColor);
     }
 
     @Override
@@ -284,13 +290,20 @@ public class MetaTileEntityRotorHolder extends MetaTileEntityMultiblockPart impl
 
         @Override
         protected void onLoad() {
-            hasRotor = !getStackInSlot(0).isEmpty();
+            rotorColor = getRotorColor();
         }
 
         @Override
         protected void onContentsChanged(int slot) {
-            boolean hasRotorNow = !getStackInSlot(0).isEmpty();
-            setHasRotor(hasRotorNow);
+            setRotorColor(getRotorColor());
+        }
+
+        private int getRotorColor() {
+            ItemStack itemStack = getStackInSlot(0);
+            if(itemStack.isEmpty() || !(itemStack.getItem() instanceof ToolMetaItem))
+                return -1;
+            SolidMaterial material = ToolMetaItem.getPrimaryMaterial(itemStack);
+            return material == null ? -1 : material.materialRGB;
         }
 
         public double getRotorEfficiency() {

@@ -4,6 +4,7 @@ import codechicken.lib.render.CCRenderState;
 import codechicken.lib.render.pipeline.IVertexOperation;
 import codechicken.lib.texture.TextureUtils.IIconRegister;
 import codechicken.lib.vec.Cuboid6;
+import codechicken.lib.vec.Matrix4;
 import gregtech.api.GTValues;
 import gregtech.api.metatileentity.MetaTileEntity;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
@@ -76,18 +77,18 @@ public class OrientedOverlayRenderer implements IIconRegister {
         }
     }
 
-    public void render(CCRenderState renderState, IVertexOperation[] pipeline, Cuboid6 bounds, EnumFacing frontFacing, boolean isActive) {
+    public void render(CCRenderState renderState, Matrix4 translation, IVertexOperation[] ops, Cuboid6 bounds, EnumFacing frontFacing, boolean isActive) {
         for(EnumFacing renderSide : EnumFacing.VALUES) {
             OverlayFace overlayFace = OverlayFace.bySide(renderSide, frontFacing);
             if(sprites.containsKey(overlayFace)) {
                 TextureAtlasSprite renderSprite = sprites.get(overlayFace).getSprite(isActive);
-                MetaTileEntity.renderFace(renderState, renderSide, bounds, renderSprite, pipeline);
+                MetaTileEntity.renderFace(renderState, translation, ops, renderSide, bounds, renderSprite);
             }
         }
     }
 
-    public void render(CCRenderState renderState, IVertexOperation[] pipeline, EnumFacing frontFacing, boolean isActive) {
-        render(renderState, pipeline, Cuboid6.full, frontFacing, isActive);
+    public void render(CCRenderState renderState, Matrix4 translation, IVertexOperation[] pipeline, EnumFacing frontFacing, boolean isActive) {
+        render(renderState, translation, pipeline, Cuboid6.full, frontFacing, isActive);
     }
 
 

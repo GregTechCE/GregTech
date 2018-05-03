@@ -351,7 +351,7 @@ public class MetaItem1 extends MaterialMetaItem {
         COVER_SOLARPANEL_ZPM = addItem(758, "cover.solar.panel.zpm");
         COVER_SOLARPANEL_UV = addItem(759, "cover.solar.panel.uv");
 
-        TOOL_CHEAT = addItem(761, "tool.cheat").addStats(new ElectricStats(-2000000000, -1));
+        //TOOL_CHEAT = addItem(761, "tool.cheat").addStats(new ElectricStats(-2000000000, -1));
 
         FLUID_CELL = addItem(762, "cell.fluid").addStats(new FluidStats(1000, Integer.MIN_VALUE, Integer.MAX_VALUE));
 

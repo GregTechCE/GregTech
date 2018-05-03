@@ -4,6 +4,7 @@ import codechicken.lib.render.CCRenderState;
 import codechicken.lib.render.pipeline.IVertexOperation;
 import codechicken.lib.texture.TextureUtils.IIconRegister;
 import codechicken.lib.vec.Cuboid6;
+import codechicken.lib.vec.Matrix4;
 import gregtech.api.GTValues;
 import gregtech.api.metatileentity.MetaTileEntity;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
@@ -32,13 +33,13 @@ public class SimpleCubeRenderer implements ICubeRenderer, IIconRegister {
     }
 
     @SideOnly(Side.CLIENT)
-    public void renderSided(EnumFacing side, Cuboid6 bounds, CCRenderState renderState, IVertexOperation[] pipeline) {
-        MetaTileEntity.renderFace(renderState, side, bounds, sprite, pipeline);
+    public void renderSided(EnumFacing side, Matrix4 translation, Cuboid6 bounds, CCRenderState renderState, IVertexOperation[] pipeline) {
+        MetaTileEntity.renderFace(renderState, translation, pipeline, side, bounds, sprite);
     }
 
     @SideOnly(Side.CLIENT)
-    public void renderSided(EnumFacing side, CCRenderState renderState, IVertexOperation[] pipeline) {
-        renderSided(side, Cuboid6.full, renderState, pipeline);
+    public void renderSided(EnumFacing side, CCRenderState renderState, Matrix4 translation, IVertexOperation[] pipeline) {
+        renderSided(side, translation, Cuboid6.full, renderState, pipeline);
     }
 
     @Override
@@ -49,9 +50,9 @@ public class SimpleCubeRenderer implements ICubeRenderer, IIconRegister {
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void render(CCRenderState renderState, IVertexOperation[] pipeline, Cuboid6 bounds) {
+    public void render(CCRenderState renderState, Matrix4 translation, IVertexOperation[] pipeline, Cuboid6 bounds) {
         for(EnumFacing side : EnumFacing.values()) {
-            renderSided(side, bounds, renderState, pipeline);
+            renderSided(side, translation, bounds, renderState, pipeline);
         }
     }
 }

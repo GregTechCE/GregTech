@@ -2,6 +2,7 @@ package gregtech.api.metatileentity;
 
 import codechicken.lib.render.CCRenderState;
 import codechicken.lib.render.pipeline.IVertexOperation;
+import codechicken.lib.vec.Matrix4;
 import gregtech.api.capability.impl.EnergyContainerHandler;
 import gregtech.api.gui.GuiTextures;
 import gregtech.api.gui.ModularUI;
@@ -33,15 +34,15 @@ public class SimpleMachineMetaTileEntity extends WorkableTieredMetaTileEntity {
     }
 
     @Override
-    public void renderMetaTileEntity(CCRenderState renderState, IVertexOperation[] pipeline) {
-        super.renderMetaTileEntity(renderState, pipeline);
+    public void renderMetaTileEntity(CCRenderState renderState, Matrix4 translation, IVertexOperation[] pipeline) {
+        super.renderMetaTileEntity(renderState, translation, pipeline);
         if(outputFacing != null) {
-            Textures.PIPE_OUT_OVERLAY.renderSided(outputFacing, renderState, pipeline);
+            Textures.PIPE_OUT_OVERLAY.renderSided(outputFacing, renderState, translation, pipeline);
             if(autoOutputItems) {
-                Textures.ITEM_OUTPUT_OVERLAY.renderSided(outputFacing, renderState, pipeline);
+                Textures.ITEM_OUTPUT_OVERLAY.renderSided(outputFacing, renderState, translation, pipeline);
             }
             if(autoOutputFluids) {
-                Textures.FLUID_OUTPUT_OVERLAY.renderSided(outputFacing, renderState, pipeline);
+                Textures.FLUID_OUTPUT_OVERLAY.renderSided(outputFacing, renderState, translation, pipeline);
             }
         }
     }

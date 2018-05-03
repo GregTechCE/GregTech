@@ -72,7 +72,7 @@ public class MetaTileEntityLargeTurbine extends RecipeMapMultiblockController {
     @Override
     public boolean checkRecipe(Recipe recipe, boolean consumeIfSuccess) {
         MetaTileEntityRotorHolder rotorHolder = getAbilities(ABILITY_ROTOR_HOLDER).get(0);
-        int damageToBeApplied = (int) (BASE_ROTOR_DAMAGE * rotorHolder.getRelativeRotorSpeed());
+        int damageToBeApplied = (int) (BASE_ROTOR_DAMAGE * rotorHolder.getRelativeRotorSpeed()) + 1;
         return rotorHolder.applyDamageToRotor(damageToBeApplied, !consumeIfSuccess);
     }
 

@@ -2,6 +2,7 @@ package gregtech.common.metatileentities.electric.multiblockpart;
 
 import codechicken.lib.render.CCRenderState;
 import codechicken.lib.render.pipeline.IVertexOperation;
+import codechicken.lib.vec.Matrix4;
 import gregtech.api.GTValues;
 import gregtech.api.capability.IEnergyContainer;
 import gregtech.api.capability.impl.EnergyContainerHandler;
@@ -36,9 +37,9 @@ public class MetaTileEntityEnergyHatch extends MetaTileEntityMultiblockPart impl
     }
 
     @Override
-    public void renderMetaTileEntity(CCRenderState renderState, IVertexOperation[] pipeline) {
-        super.renderMetaTileEntity(renderState, pipeline);
-        (isExportHatch ? Textures.ENERGY_OUT_MULTI : Textures.ENERGY_IN_MULTI).renderSided(getFrontFacing(), renderState, pipeline);
+    public void renderMetaTileEntity(CCRenderState renderState, Matrix4 translation, IVertexOperation[] pipeline) {
+        super.renderMetaTileEntity(renderState, translation, pipeline);
+        (isExportHatch ? Textures.ENERGY_OUT_MULTI : Textures.ENERGY_IN_MULTI).renderSided(getFrontFacing(), renderState, translation, pipeline);
     }
 
     @Override

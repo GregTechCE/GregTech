@@ -2,6 +2,7 @@ package gregtech.api.metatileentity;
 
 import codechicken.lib.render.CCRenderState;
 import codechicken.lib.render.pipeline.IVertexOperation;
+import codechicken.lib.vec.Matrix4;
 import gregtech.api.capability.impl.EnergyRecipeMapWorkableHandler;
 import gregtech.api.capability.impl.FilteredFluidHandler;
 import gregtech.api.capability.impl.FluidTankList;
@@ -36,9 +37,9 @@ public abstract class WorkableTieredMetaTileEntity extends TieredMetaTileEntity 
     }
 
     @Override
-    public void renderMetaTileEntity(CCRenderState renderState, IVertexOperation[] pipeline) {
-        super.renderMetaTileEntity(renderState, pipeline);
-        renderer.render(renderState, pipeline, getFrontFacing(), workable.isActive());
+    public void renderMetaTileEntity(CCRenderState renderState, Matrix4 translation, IVertexOperation[] pipeline) {
+        super.renderMetaTileEntity(renderState, translation, pipeline);
+        renderer.render(renderState, translation, pipeline, getFrontFacing(), workable.isActive());
     }
 
     @Override

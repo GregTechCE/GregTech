@@ -2,6 +2,7 @@ package gregtech.common.metatileentities.electric;
 
 import codechicken.lib.render.CCRenderState;
 import codechicken.lib.render.pipeline.IVertexOperation;
+import codechicken.lib.vec.Matrix4;
 import gregtech.api.GTValues;
 import gregtech.api.GregTechAPI;
 import gregtech.api.capability.impl.EnergyContainerHandler;
@@ -93,14 +94,14 @@ public class MetaTileEntityTransformer extends TieredMetaTileEntity {
     }
 
     @Override
-    public void renderMetaTileEntity(CCRenderState renderState, IVertexOperation[] pipeline) {
-        super.renderMetaTileEntity(renderState, pipeline);
+    public void renderMetaTileEntity(CCRenderState renderState, Matrix4 translation, IVertexOperation[] pipeline) {
+        super.renderMetaTileEntity(renderState, translation, pipeline);
         if(isTransformUp) {
-            Textures.ENERGY_OUT_MULTI.renderSided(getFrontFacing(), renderState, pipeline);
-            Textures.ENERGY_IN.renderSided(getFrontFacing().getOpposite(), renderState, pipeline);
+            Textures.ENERGY_OUT_MULTI.renderSided(getFrontFacing(), renderState, translation, pipeline);
+            Textures.ENERGY_IN.renderSided(getFrontFacing().getOpposite(), renderState, translation, pipeline);
         } else {
-            Textures.ENERGY_IN_MULTI.renderSided(getFrontFacing(), renderState, pipeline);
-            Textures.ENERGY_OUT.renderSided(getFrontFacing().getOpposite(), renderState, pipeline);
+            Textures.ENERGY_IN_MULTI.renderSided(getFrontFacing(), renderState, translation, pipeline);
+            Textures.ENERGY_OUT.renderSided(getFrontFacing().getOpposite(), renderState, translation, pipeline);
         }
     }
 

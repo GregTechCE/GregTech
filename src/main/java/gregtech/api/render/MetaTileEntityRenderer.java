@@ -8,7 +8,7 @@ import codechicken.lib.render.item.IItemRenderer;
 import codechicken.lib.render.particle.IModelParticleProvider;
 import codechicken.lib.render.pipeline.IVertexOperation;
 import codechicken.lib.texture.TextureUtils;
-import codechicken.lib.vec.Translation;
+import codechicken.lib.vec.Matrix4;
 import gregtech.api.GTValues;
 import gregtech.api.block.machines.BlockMachine;
 import gregtech.api.block.machines.MachineItemBlock;
@@ -96,7 +96,7 @@ public class MetaTileEntityRenderer implements ICCBlockRenderer, IItemRenderer, 
         CCRenderState renderState = CCRenderState.instance();
         renderState.reset();
         renderState.startDrawing(GL11.GL_QUADS, DefaultVertexFormats.ITEM);
-        metaTileEntity.renderMetaTileEntity(renderState, new IVertexOperation[0]);
+        metaTileEntity.renderMetaTileEntity(renderState, new Matrix4(), new IVertexOperation[0]);
         renderState.draw();
         GlStateManager.disableBlend();
     }
@@ -110,10 +110,8 @@ public class MetaTileEntityRenderer implements ICCBlockRenderer, IItemRenderer, 
         renderState.reset();
         renderState.bind(buffer);
         renderState.lightMatrix.locate(world, pos);
-        IVertexOperation[] pipeline = new IVertexOperation[2];
-        pipeline[0] = new Translation(pos);
-        pipeline[1] = renderState.lightMatrix;
-        metaTileEntity.renderMetaTileEntity(renderState, pipeline);
+        IVertexOperation[] pipeline = new IVertexOperation[] {renderState.lightMatrix};
+        metaTileEntity.renderMetaTileEntity(renderState, new Matrix4().translate(pos.getX(), pos.getY(), pos.getZ()), pipeline);
         return true;
     }
 

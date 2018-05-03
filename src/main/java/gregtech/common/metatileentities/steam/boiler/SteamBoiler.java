@@ -3,6 +3,7 @@ package gregtech.common.metatileentities.steam.boiler;
 import codechicken.lib.render.CCRenderState;
 import codechicken.lib.render.pipeline.ColourMultiplier;
 import codechicken.lib.render.pipeline.IVertexOperation;
+import codechicken.lib.vec.Matrix4;
 import gregtech.api.capability.impl.FilteredFluidHandler;
 import gregtech.api.capability.impl.FluidTankList;
 import gregtech.api.gui.ModularUI;
@@ -74,10 +75,10 @@ public abstract class SteamBoiler extends MetaTileEntity {
     }
 
     @Override
-    public void renderMetaTileEntity(CCRenderState renderState, IVertexOperation[] pipeline) {
+    public void renderMetaTileEntity(CCRenderState renderState, Matrix4 translation, IVertexOperation[] pipeline) {
         IVertexOperation[] colouredPipeline = ArrayUtils.add(pipeline, new ColourMultiplier(getPaintingColorForRendering()));
-        getBaseRenderer().render(renderState, colouredPipeline);
-        renderer.render(renderState, pipeline, getFrontFacing(), fuelBurnTimeLeft > 0);
+        getBaseRenderer().render(renderState, translation, colouredPipeline);
+        renderer.render(renderState, translation, pipeline, getFrontFacing(), fuelBurnTimeLeft > 0);
     }
 
     @Override

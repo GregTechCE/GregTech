@@ -2,6 +2,7 @@ package gregtech.api.metatileentity.multiblock;
 
 import codechicken.lib.render.CCRenderState;
 import codechicken.lib.render.pipeline.IVertexOperation;
+import codechicken.lib.vec.Matrix4;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.MetaTileEntityHolder;
 import gregtech.api.multiblock.BlockPattern;
@@ -109,8 +110,8 @@ public abstract class MultiblockControllerBase extends MetaTileEntity {
     }
 
     @Override
-    public void renderMetaTileEntity(CCRenderState renderState, IVertexOperation[] pipeline) {
-        getBaseTexture().render(renderState, pipeline);
+    public void renderMetaTileEntity(CCRenderState renderState, Matrix4 translation, IVertexOperation[] pipeline) {
+        getBaseTexture().render(renderState, translation, pipeline);
     }
 
     @Override

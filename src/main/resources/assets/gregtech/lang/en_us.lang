@@ -911,14 +911,8 @@ metaitem.tool.screwdriver.lv.name=Screwdriver (LV)
 metaitem.tool.screwdriver.lv.tooltip=Adjusts Covers and Machines
 metaitem.tool.soldering.iron.lv.name=Soldering Iron (LV)
 metaitem.tool.soldering.iron.lv.tooltip=Fixes burned out Circuits. Needs soldering materials in inventory and 10kEU
-metaitem.tool.turbine.small.name=Small Turbine Rotor
-metaitem.tool.turbine.small.tooltip=Turbine Rotors for your power station
-metaitem.tool.turbine.normal.name=Turbine Rotor
-metaitem.tool.turbine.normal.tooltip=Turbine Rotors for your power station
-metaitem.tool.turbine.large.name=Large Turbine Rotor
-metaitem.tool.turbine.large.tooltip=Turbine Rotors for your power station
-metaitem.tool.turbine.huge.name=Huge Turbine Rotor
-metaitem.tool.turbine.huge.tooltip=Turbine Rotors for your power station
+metaitem.tool.turbine.name=Turbine Rotor
+metaitem.tool.turbine.tooltip=Turbine Rotors for your power station
 
 # %s is a localized material name
 item.material.oreprefix.oreBlackgranite=Granite %s Ore

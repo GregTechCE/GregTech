@@ -4,6 +4,7 @@ import codechicken.lib.render.CCRenderState;
 import codechicken.lib.render.pipeline.IVertexOperation;
 import codechicken.lib.texture.TextureUtils.IIconRegister;
 import codechicken.lib.vec.Cuboid6;
+import codechicken.lib.vec.Matrix4;
 import gregtech.api.GTValues;
 import gregtech.api.metatileentity.MetaTileEntity;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
@@ -64,11 +65,11 @@ public class SimpleSidedCubeRenderer implements ICubeRenderer, IIconRegister {
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void render(CCRenderState renderState, IVertexOperation[] pipeline, Cuboid6 bounds) {
+    public void render(CCRenderState renderState, Matrix4 translation, IVertexOperation[] pipeline, Cuboid6 bounds) {
         for(EnumFacing renderSide : EnumFacing.VALUES) {
             RenderSide overlayFace = RenderSide.bySide(renderSide);
             TextureAtlasSprite renderSprite = sprites.get(overlayFace);
-            MetaTileEntity.renderFace(renderState, renderSide, bounds, renderSprite, pipeline);
+            MetaTileEntity.renderFace(renderState, translation, pipeline, renderSide, bounds, renderSprite);
         }
     }
 

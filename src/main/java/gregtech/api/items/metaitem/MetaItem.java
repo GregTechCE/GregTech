@@ -92,14 +92,14 @@ public abstract class MetaItem<T extends MetaItem<?>.MetaValueItem> extends Item
             if (numberOfModels > 1) {
                 ModelResourceLocation[] resourceLocations = new ModelResourceLocation[numberOfModels];
                 for (int i = 0; i < resourceLocations.length; i++) {
-                    ResourceLocation resourceLocation = new ResourceLocation(GTValues.MODID, "metaitems/" + metaValueItem.unlocalizedName + "/" + (i + 1));
+                    ResourceLocation resourceLocation = new ResourceLocation(GTValues.MODID, formatModelPath(metaValueItem) + "/" + (i + 1));
                     ModelBakery.registerItemVariants(this, resourceLocation);
                     resourceLocations[i] = new ModelResourceLocation(resourceLocation, "inventory");
                 }
                 specialItemsModels.put((short) (metaItemOffset + itemMetaKey), resourceLocations);
                 continue;
             }
-            ResourceLocation resourceLocation = new ResourceLocation(GTValues.MODID, "metaitems/" + metaValueItem.unlocalizedName);
+            ResourceLocation resourceLocation = new ResourceLocation(GTValues.MODID, formatModelPath(metaValueItem));
             ModelBakery.registerItemVariants(this, resourceLocation);
             metaItemsModels.put((short) (metaItemOffset + itemMetaKey), new ModelResourceLocation(resourceLocation, "inventory"));
         }
@@ -115,6 +115,10 @@ public abstract class MetaItem<T extends MetaItem<?>.MetaValueItem> extends Item
             }
             return MISSING_LOCATION;
         });
+    }
+
+    protected String formatModelPath(T metaValueItem) {
+        return "metaitems/" + metaValueItem.unlocalizedName;
     }
 
     @SideOnly(Side.CLIENT)

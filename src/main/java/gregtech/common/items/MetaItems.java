@@ -275,8 +275,6 @@ public final class MetaItems {
     public static MetaItem<?>.MetaValueItem COVER_SOLARPANEL_ZPM;
     public static MetaItem<?>.MetaValueItem COVER_SOLARPANEL_UV;
 
-    public static MetaItem<?>.MetaValueItem TOOL_CHEAT;
-
     public static MetaItem<?>.MetaValueItem DUCT_TAPE;
     public static MetaItem<?>.MetaValueItem MCGUFFIUM_239;
 

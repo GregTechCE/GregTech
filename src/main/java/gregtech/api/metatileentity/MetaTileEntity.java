@@ -6,6 +6,8 @@ import codechicken.lib.render.pipeline.ColourMultiplier;
 import codechicken.lib.render.pipeline.IVertexOperation;
 import codechicken.lib.texture.TextureUtils;
 import codechicken.lib.vec.Cuboid6;
+import codechicken.lib.vec.Matrix4;
+import codechicken.lib.vec.TransformationList;
 import codechicken.lib.vec.uv.IconTransformation;
 import com.google.common.base.Preconditions;
 import gregtech.api.GregTechAPI;
@@ -129,22 +131,22 @@ public abstract class MetaTileEntity {
      * @param pipeline default set of pipeline transformations
      */
     @SideOnly(Side.CLIENT)
-    public void renderMetaTileEntity(CCRenderState renderState, IVertexOperation[] pipeline) {
+    public void renderMetaTileEntity(CCRenderState renderState, Matrix4 translation, IVertexOperation[] pipeline) {
         TextureAtlasSprite atlasSprite = TextureUtils.getMissingSprite();
         IVertexOperation[] renderPipeline = ArrayUtils.add(pipeline, new ColourMultiplier(getPaintingColorForRendering()));
         for(EnumFacing face : EnumFacing.VALUES) {
-            renderFace(renderState, face, Cuboid6.full, atlasSprite, renderPipeline);
+            renderFace(renderState, translation, renderPipeline, face, Cuboid6.full, atlasSprite);
         }
     }
 
     private static final ThreadLocal<BlockFace> blockFaces = ThreadLocal.withInitial(BlockFace::new);
 
     @SideOnly(Side.CLIENT)
-    public static void renderFace(CCRenderState renderState, EnumFacing face, Cuboid6 bounds, TextureAtlasSprite sprite, IVertexOperation... pipeline) {
+    public static void renderFace(CCRenderState renderState, Matrix4 translation, IVertexOperation[] ops, EnumFacing face, Cuboid6 bounds, TextureAtlasSprite sprite) {
         BlockFace blockFace = blockFaces.get();
         blockFace.loadCuboidFace(bounds, face.getIndex());
         renderState.setPipeline(blockFace, 0, blockFace.verts.length,
-            ArrayUtils.add(pipeline, new IconTransformation(sprite)));
+            ArrayUtils.addAll(ops, new TransformationList(translation), new IconTransformation(sprite)));
         renderState.render();
     }
 
