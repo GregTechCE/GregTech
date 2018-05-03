@@ -2404,8 +2404,19 @@ behaviour.paintspray.black.tooltip=Can paint things in black
 behaviour.paintspray.uses=Remaining Uses: %d
 behaviour.prospecting=Usable for Prospecting
 
+# Multiblock machines
+gregtech.machine.primitive_blast_furnace.bronze.name=Bronze Plated Blast Furnace
 gregtech.machine.electric_blast_furnace.name=Electric Blast Furnace
+gregtech.machine.vacuum_freezer.name=Vacuum Freezer
+gregtech.machine.implosion_compressor.name=Implosion Compressor
+gregtech.machine.pyrolyse_oven.name=Pyrolyse Oven
+gregtech.machine.distillation_tower.name=Distillation Tower
+gregtech.machine.multi_furnace.name=Multi Smelter
+
 gregtech.machine.diesel_engine.name=Diesel Engine
+gregtech.machine.large_turbine.steam.name=Large Steam Turbine
+gregtech.machine.large_turbine.gas.name=Large Gas Turbine
+gregtech.machine.large_turbine.plasma.name=Large Plasma Turbine
 
 gregtech.recipe.total=Total: %d EU
 gregtech.recipe.eu=Usage: %d EU/t
