@@ -13,6 +13,7 @@ import gregtech.api.util.ValidationResult;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
 import net.minecraftforge.fluids.FluidStack;
+import org.apache.commons.lang3.Validate;
 
 import java.util.*;
 
@@ -355,7 +356,10 @@ public abstract class RecipeBuilder<R extends RecipeBuilder<R>> {
             recipeStatus = EnumValidationResult.INVALID;
 		}
 
-//			Validate.isTrue(EUt > 0, "EU/t cannot be less of equal to 0");
+        if (EUt == 0){
+            GTLog.logger.error("EU/t cannot be equal to 0", new IllegalArgumentException());
+            recipeStatus = EnumValidationResult.INVALID;
+        }
 
         if (duration <= 0){
             GTLog.logger.error("Duration cannot be less or equal to 0", new IllegalArgumentException());

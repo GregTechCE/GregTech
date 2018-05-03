@@ -63,7 +63,7 @@ public class MetaItem1 extends MaterialMetaItem {
             .setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.Brass, 907200L)));
         COIN_CHOCOLATE = addItem(10, "coin.chocolate")
             .setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.Gold, OrePrefix.foil.materialAmount)))
-            .addStats(new FoodStats(1, 0.1F, false, true, OreDictUnifier.get(OrePrefix.foil, Materials.Gold, 1), new RandomPotionEffect(MobEffects.SPEED, 200, 1, 10)));
+            .addStats(new FoodStats(1, 0.1F, false, true, OreDictUnifier.get(OrePrefix.foil, Materials.Gold), new RandomPotionEffect(MobEffects.SPEED, 200, 1, 10)));
 
         MINECART_WHEELS_IRON = addItem(100, "minecart.wheels.iron");
         MINECART_WHEELS_STEEL = addItem(101, "minecart.wheels.steel");
@@ -71,7 +71,6 @@ public class MetaItem1 extends MaterialMetaItem {
         SHAPE_EMPTY = addItem(300, "shape.empty");
 
         SHAPE_MOLD_PLATE = addItem(301, "shape.mold.plate");
-        SHAPE_MOLD_CASING = addItem(302, "shape.mold.casing");
         SHAPE_MOLD_GEAR = addItem(303, "shape.mold.gear");
         SHAPE_MOLD_CREDIT = addItem(304, "shape.mold.credit");
         SHAPE_MOLD_BOTTLE = addItem(305, "shape.mold.bottle");
@@ -91,7 +90,6 @@ public class MetaItem1 extends MaterialMetaItem {
         SHAPE_EXTRUDER_CELL = addItem(354, "shape.extruder.cell");
         SHAPE_EXTRUDER_INGOT = addItem(355, "shape.extruder.ingot");
         SHAPE_EXTRUDER_WIRE = addItem(356, "shape.extruder.wire");
-        SHAPE_EXTRUDER_CASING = addItem(357, "shape.extruder.casing");
         SHAPE_EXTRUDER_PIPE_TINY = addItem(358, "shape.extruder.pipe.tiny").setInvisible();
         SHAPE_EXTRUDER_PIPE_SMALL = addItem(359, "shape.extruder.pipe.small").setInvisible();
         SHAPE_EXTRUDER_PIPE_MEDIUM = addItem(360, "shape.extruder.pipe.medium").setInvisible();
@@ -109,8 +107,8 @@ public class MetaItem1 extends MaterialMetaItem {
         SHAPE_EXTRUDER_GEAR = addItem(372, "shape.extruder.gear");
         SHAPE_EXTRUDER_BOTTLE = addItem(373, "shape.extruder.bottle");
 
-        SHAPE_SLICER_FLAT = addItem(398, "shape.slicer.flat");
-        SHAPE_SLICER_STRIPES = addItem(399, "shape.slicer.stripes");
+        SHAPE_SLICER_FLAT = addItem(398, "shape.slicer.flat").setInvisible();
+        SHAPE_SLICER_STRIPES = addItem(399, "shape.slicer.stripes").setInvisible();
 
         FUEL_CAN_PLASTIC_EMPTY = addItem(400, "fuel.can.plastic.empty")
             .setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.Plastic, OrePrefix.plate.materialAmount)))

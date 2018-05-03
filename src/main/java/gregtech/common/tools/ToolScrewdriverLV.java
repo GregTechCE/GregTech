@@ -6,6 +6,6 @@ public class ToolScrewdriverLV extends ToolScrewdriver {
 
     @Override
     public int getToolDamagePerContainerCraft(ItemStack stack) {
-        return 200;
+        return 2;
     }
 }

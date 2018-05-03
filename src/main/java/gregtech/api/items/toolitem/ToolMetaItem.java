@@ -13,6 +13,8 @@ import gregtech.api.unification.material.type.Material;
 import gregtech.api.unification.material.type.SolidMaterial;
 import gregtech.api.unification.stack.SimpleItemStack;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.resources.I18n;
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
@@ -36,6 +38,7 @@ import org.apache.commons.lang3.Validate;
 import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -54,7 +57,6 @@ public class ToolMetaItem<T extends ToolMetaItem<?>.MetaToolValueItem> extends M
 
     public ToolMetaItem() {
         super((short) 0);
-        setMaxStackSize(1);
     }
 
     @Override
@@ -190,7 +192,7 @@ public class ToolMetaItem<T extends ToolMetaItem<?>.MetaToolValueItem> extends M
                 return HashMultimap.create();
             }
             SolidMaterial baseMaterial = getPrimaryMaterial(stack);
-            float attackDamage = toolStats.getBaseDamage(stack) + (baseMaterial == null ? 0 : baseMaterial.toolSpeed) / 3.5f; //temporary TODO @Exidex
+            float attackDamage = toolStats.getBaseDamage(stack) + (baseMaterial == null ? 0 : baseMaterial.harvestLevel) / 3.5f;
             float attackSpeed = toolStats.getAttackSpeed(stack);
 
             HashMultimap<String, AttributeModifier> modifiers = HashMultimap.create();
@@ -251,10 +253,10 @@ public class ToolMetaItem<T extends ToolMetaItem<?>.MetaToolValueItem> extends M
         IElectricItem capability = stack.getCapability(IElectricItem.CAPABILITY_ELECTRIC_ITEM, null);
         if(!simulate) {
             if(capability == null || capability.getMaxCharge() == 0) {
-                setInternalDamage(stack, getInternalDamage(stack) + vanillaDamage);
+                setInternalDamage(stack, getInternalDamage(stack) - vanillaDamage);
             } else {
                 capability.discharge(vanillaDamage, capability.getTier(), true, false, false);
-                setInternalDamage(stack, getInternalDamage(stack) + (vanillaDamage / 10));
+                setInternalDamage(stack, getInternalDamage(stack) - (vanillaDamage / 10));
             }
         }
         return true;
@@ -263,9 +265,45 @@ public class ToolMetaItem<T extends ToolMetaItem<?>.MetaToolValueItem> extends M
     public boolean isUsable(ItemStack stack, int damage) {
         IElectricItem capability = stack.getCapability(IElectricItem.CAPABILITY_ELECTRIC_ITEM, null);
         if(capability == null || capability.getMaxCharge() == 0) {
-            return getInternalDamage(stack) + damage < getMaxInternalDamage(stack);
+            return getInternalDamage(stack) - damage > 0;
         }
-        return capability.canUse(damage) && getInternalDamage(stack) + (damage / 10) < getMaxInternalDamage(stack);
+        return capability.canUse(damage) && getInternalDamage(stack) - (damage / 10) < getMaxInternalDamage(stack);
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public String getItemStackDisplayName(ItemStack stack) {
+        if (stack.getItemDamage() >= metaItemOffset) {
+            T item = getItem(stack);
+            SolidMaterial primaryMaterial = getPrimaryMaterial(stack);
+            String materialName = primaryMaterial == null ? "" : String.valueOf(primaryMaterial.getLocalizedName());
+            return I18n.format("metaitem." + item.unlocalizedName + ".name", materialName);
+        }
+        return super.getItemStackDisplayName(stack);
+    }
+
+    @Override
+    public void addInformation(ItemStack itemStack, @Nullable World worldIn, List<String> lines, ITooltipFlag tooltipFlag) {
+        T item = getItem(itemStack);
+        IToolStats toolStats = item.getToolStats();
+        SolidMaterial primaryMaterial = getPrimaryMaterial(itemStack);
+        SolidMaterial handleMaterial = getHandleMaterial(itemStack);
+        int maxInternalDamage = getMaxInternalDamage(itemStack);
+
+        if (maxInternalDamage > 0) {
+            lines.add(I18n.format("metaitem.tool.tooltip.durability", getInternalDamage(itemStack), maxInternalDamage));
+        }
+        if (primaryMaterial != null) {
+            lines.add(I18n.format("metaitem.tool.tooltip.primary_material", primaryMaterial.getLocalizedName(), primaryMaterial.harvestLevel));
+        }
+        if (handleMaterial != null) {
+            lines.add(I18n.format("metaitem.tool.tooltip.handle_material", handleMaterial.getLocalizedName(), handleMaterial.harvestLevel));
+        }
+        if (primaryMaterial != null) {
+            lines.add(I18n.format("metaitem.tool.tooltip.attack_damage", toolStats.getBaseDamage(itemStack) + primaryMaterial.harvestLevel));
+            lines.add(I18n.format("metaitem.tool.tooltip.mining_speed", primaryMaterial.toolSpeed));
+        }
+        super.addInformation(itemStack, worldIn, lines, tooltipFlag);
     }
 
     @Override
@@ -284,7 +322,9 @@ public class ToolMetaItem<T extends ToolMetaItem<?>.MetaToolValueItem> extends M
     public int getInternalDamage(ItemStack itemStack) {
         NBTTagCompound statsTag = itemStack.getSubCompound("GT.ToolStats");
         if (statsTag == null || !statsTag.hasKey("Damage", Constants.NBT.TAG_INT)) {
-            return 0;
+            int maxInternalDamage = getMaxInternalDamage(itemStack);
+            setInternalDamage(itemStack, maxInternalDamage);
+            return maxInternalDamage;
         }
         return statsTag.getInteger("Damage");
     }
@@ -324,6 +364,7 @@ public class ToolMetaItem<T extends ToolMetaItem<?>.MetaToolValueItem> extends M
 
         private MetaToolValueItem(int metaValue, String unlocalizedName, String... nameParameters) {
             super(metaValue, unlocalizedName, nameParameters);
+            setMaxStackSize(1);
         }
 
         @Override

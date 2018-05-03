@@ -35,7 +35,6 @@ public final class MetaItems {
     public static MetaItem<?>.MetaValueItem SHAPE_EMPTY;
 
     public static MetaItem<?>.MetaValueItem SHAPE_MOLD_PLATE;
-    public static MetaItem<?>.MetaValueItem SHAPE_MOLD_CASING;
     public static MetaItem<?>.MetaValueItem SHAPE_MOLD_GEAR;
     public static MetaItem<?>.MetaValueItem SHAPE_MOLD_CREDIT;
     public static MetaItem<?>.MetaValueItem SHAPE_MOLD_BOTTLE;
@@ -55,7 +54,6 @@ public final class MetaItems {
     public static MetaItem<?>.MetaValueItem SHAPE_EXTRUDER_CELL;
     public static MetaItem<?>.MetaValueItem SHAPE_EXTRUDER_INGOT;
     public static MetaItem<?>.MetaValueItem SHAPE_EXTRUDER_WIRE;
-    public static MetaItem<?>.MetaValueItem SHAPE_EXTRUDER_CASING;
     public static MetaItem<?>.MetaValueItem SHAPE_EXTRUDER_PIPE_TINY;
     public static MetaItem<?>.MetaValueItem SHAPE_EXTRUDER_PIPE_SMALL;
     public static MetaItem<?>.MetaValueItem SHAPE_EXTRUDER_PIPE_MEDIUM;

@@ -251,8 +251,8 @@ public enum OrePrefix {
         public static final long DISALLOW_RECYCLING = GTUtility.createFlag(3);
     }
 
-	static class Conditions {
-		static Condition<Material> isToolMaterial = mat -> mat instanceof SolidMaterial && ((SolidMaterial) mat).toolDurability > 0;
+	public static class Conditions {
+		public static Condition<Material> isToolMaterial = mat -> mat instanceof SolidMaterial && ((SolidMaterial) mat).toolDurability > 0;
 	}
 
     static {
@@ -406,15 +406,15 @@ public enum OrePrefix {
     }
 
     @SafeVarargs
-    private static Condition<Material> and(Condition<Material>... conditions) {
+    public static Condition<Material> and(Condition<Material>... conditions) {
         return new Condition.And<>(conditions);
     }
 
-    private static Condition<Material> hasFlag(long generationFlags) {
+    public static Condition<Material> hasFlag(long generationFlags) {
         return (material) -> material.hasFlag(generationFlags);
     }
 
-    private static Condition<Material> noFlag(long generationFlags) {
+    public static Condition<Material> noFlag(long generationFlags) {
         return (material) -> !material.hasFlag(generationFlags);
     }
 

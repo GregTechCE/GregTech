@@ -43,7 +43,7 @@ public class FoodUseManager implements IItemBehaviour, IItemUseManager {
 
     @Override
     public int getMaxItemUseDuration(ItemStack itemStack) {
-        return 3000;
+        return 32;
     }
 
     @Override

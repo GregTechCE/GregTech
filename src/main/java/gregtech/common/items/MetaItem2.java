@@ -34,12 +34,12 @@ public class MetaItem2 extends MaterialMetaItem {
 
         GELLED_TOLUENE = addItem(10, "gelled_toluene").setInvisible();
 
-        BOTTLE_PURPLE_DRINK = addItem(100, "bottle.purple.drink").addStats(new FoodStats(8, 0.2F, true, false, new ItemStack(Items.GLASS_BOTTLE), new RandomPotionEffect(MobEffects.HASTE, 400, 1, 90)));
+        BOTTLE_PURPLE_DRINK = addItem(100, "bottle.purple.drink").addStats(new FoodStats(8, 0.2F, true, true, new ItemStack(Items.GLASS_BOTTLE), new RandomPotionEffect(MobEffects.HASTE, 800, 1, 90)));
 
         FOOD_CHUM = addItem(210, "food.chum").addStats(new FoodStats(5, 0.2F, false, true, null, new RandomPotionEffect(MobEffects.ABSORPTION, 1000, 4, 100), new RandomPotionEffect(MobEffects.REGENERATION, 300, 1, 80)));
         FOOD_CHUM_ON_STICK = addItem(211, "food.chum.on.stick").addStats(new FoodStats(5, 0.2F, false, true, new ItemStack(Items.STICK), new RandomPotionEffect(MobEffects.ABSORPTION, 1000, 4, 100), new RandomPotionEffect(MobEffects.REGENERATION, 300, 1, 80)));
 
-        DYE_INDIGO = addItem(410, "dye.indigo").addOreDict("dyeBlue");
+        DYE_INDIGO = addItem(410, "dye.indigo").addOreDict("dyeBlue").setInvisible();
         for (byte i = 0; i < 16; i = (byte) (i + 1)) {
             DYE_ONLY_ITEMS[i] = addItem(414 + i, "dye." + EnumDyeColor.byMetadata(i).getName()).addOreDict("dye" + CaseFormat.LOWER_UNDERSCORE.to(CaseFormat.UPPER_CAMEL, EnumDyeColor.byMetadata(i).getName()));
         }

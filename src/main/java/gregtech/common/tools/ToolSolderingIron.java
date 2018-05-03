@@ -25,22 +25,22 @@ public class ToolSolderingIron extends ToolBase {
 
     @Override
     public int getToolDamagePerBlockBreak(ItemStack stack) {
-        return 1000;
+        return 10;
     }
 
     @Override
     public int getToolDamagePerDropConversion(ItemStack stack) {
-        return 500;
+        return 5;
     }
 
     @Override
     public int getToolDamagePerContainerCraft(ItemStack stack) {
-        return 1000;
+        return 10;
     }
 
     @Override
     public int getToolDamagePerEntityAttack(ItemStack stack) {
-        return 500;
+        return 5;
     }
 
     @Override

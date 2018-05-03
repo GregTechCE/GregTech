@@ -354,13 +354,6 @@ public abstract class MetaItem<T extends MetaItem<?>.MetaValueItem> extends Item
                 return EnumActionResult.PASS;
             }
         }
-        EnumAction useAction = getItemUseAction(stack);
-        if (useAction != EnumAction.NONE) {
-            player.setActiveHand(hand);
-            return EnumActionResult.SUCCESS;
-        }
-        if (!ItemStack.areItemStacksEqual(originalStack, stack))
-            player.setHeldItem(hand, stack);
         return EnumActionResult.PASS;
     }
 
@@ -566,7 +559,7 @@ public abstract class MetaItem<T extends MetaItem<?>.MetaValueItem> extends Item
         }
 
         protected void setFoodStats(IFoodStats foodStats) {
-            addBehaviour(new FoodUseManager(foodStats));
+            addStats(new FoodUseManager(foodStats));
         }
 
         protected void setDurabilityManager(IItemDurabilityManager durabilityManager) {
