@@ -2010,6 +2010,29 @@ gregtech.machine.battery_buffer.max.4.name=MAX Voltage Battery Buffer
 gregtech.machine.battery_buffer.max.9.name=MAX Voltage Battery Buffer
 gregtech.machine.battery_buffer.max.16.name=MAX Voltage Battery Buffer
 
+# Transformers
+gregtech.machine.transformer.lv.name=Low Voltage Transformer
+gregtech.machine.transformer.mv.name=Medium Voltage Transformer
+gregtech.machine.transformer.hv.name=High Voltage Transformer
+gregtech.machine.transformer.ev.name=Extreme Voltage Transformer
+gregtech.machine.transformer.iv.name=Insane Voltage Transformer
+gregtech.machine.transformer.luv.name=Ludicrous Voltage Transformer
+gregtech.machine.transformer.zpm.name=ZPM Voltage Transformer
+gregtech.machine.transformer.uv.name=Ultimate Voltage Transformer
+gregtech.machine.transformer.max.name=MAX Voltage Transformer
+
+# Chargers
+gregtech.machine.charger.ulv.name=Ultra Low Voltage Battery Charger
+gregtech.machine.charger.lv.name=Low Voltage Battery Charger
+gregtech.machine.charger.mv.name=Medium Voltage Battery Charger
+gregtech.machine.charger.hv.name=High Voltage Battery Charger
+gregtech.machine.charger.ev.name=Extreme Voltage Battery Charger
+gregtech.machine.charger.iv.name=Insane Voltage Battery Charger
+gregtech.machine.charger.luv.name=Ludicrous Voltage Battery Charger
+gregtech.machine.charger.zpm.name=ZPM Voltage Battery Charger
+gregtech.machine.charger.uv.name=Ultimate Voltage Battery Charger
+gregtech.machine.charger.max.name=MAX Voltage Battery Charger
+
 # Achievement ores
 achievement.Naquadah=Find Naquadah Ore
 achievement.Naquadah.desc=Height: 10-60, Chance: 10, End
