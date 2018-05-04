@@ -142,8 +142,10 @@ metaitem.spray.empty.tooltip=Used for making Sprays
 metaitem.thermos_can.empty.name=Empty Thermos Can
 metaitem.thermos_can.empty.tooltip=Keeping hot things hot and cold things cold
 
-metaitem.large.fluid.cell.steel.name=Large Steel Fluid Cell
+metaitem.plant.ball.name=Plantball
 
+metaitem.cell.fluid.name=Fluid Cell
+metaitem.large.fluid.cell.steel.name=Large Steel Fluid Cell
 metaitem.large.fluid.cell.tungstensteel.name=Large Tungstensteel Fluid Cell
 
 metaitem.spray.can.dyes.white.name=Spray Can (White)
@@ -1624,6 +1626,22 @@ tile.machine_casing.bronze_hull.name=Bronze Hull
 tile.machine_casing.bronze_bricks_hull.name=Bricked Bronze Hull
 tile.machine_casing.steel_hull.name=Steel Hull
 tile.machine_casing.steel_bricks_hull.name=Bricked Steel Hull
+
+# Turbine casing blocks
+tile.turbine_casing.bronze_gearbox.name=Bronze Gear Box Casing
+tile.turbine_casing.steel_gearbox.name=Steel Gear Box Casing
+tile.turbine_casing.titanium_gearbox.name=Titanium Gear Box Casing
+tile.turbine_casing.steel_turbine_casing.name=Steel Turbine Casing
+tile.turbine_casing.titanium_turbine_casing.name=Titanium Turbine Casing
+tile.turbine_casing.stainless_turbine_casing.name=Stainless Turbine Casing
+tile.turbine_casing.tungstensteel_turbine_casing.name=Tungstensteel Turbine Casing
+
+# Multiblock casing blocks
+tile.multiblock_casing.engine_intake.name=Engine Intake Casing
+tile.multiblock_casing.grate.name=Grate Machine Casing
+tile.multiblock_casing.assembler.name=Assembler Machine Casing
+tile.multiblock_casing.fusion.name=Fusion Machine Casing
+tile.multiblock_casing.fusion_mk2.name=Fusion Machine Casing MK II
 
 # Granite blocks
 tile.granite.black_granite.normal.name=Black Granite
