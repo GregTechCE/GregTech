@@ -2478,7 +2478,7 @@ behaviour.paintspray.black.tooltip=Can paint things in black
 behaviour.paintspray.uses=Remaining Uses: %d
 behaviour.prospecting=Usable for Prospecting
 
-# Multiblock machines
+# Multiblock machine controllers
 gregtech.machine.primitive_blast_furnace.bronze.name=Bronze Plated Blast Furnace
 gregtech.machine.electric_blast_furnace.name=Electric Blast Furnace
 gregtech.machine.vacuum_freezer.name=Vacuum Freezer
@@ -2491,6 +2491,84 @@ gregtech.machine.diesel_engine.name=Diesel Engine
 gregtech.machine.large_turbine.steam.name=Large Steam Turbine
 gregtech.machine.large_turbine.gas.name=Large Gas Turbine
 gregtech.machine.large_turbine.plasma.name=Large Plasma Turbine
+
+# Multiblock machine parts
+gregtech.machine.item_bus.import.ulv.name=Input Bus (ULV)
+gregtech.machine.item_bus.import.lv.name=Input Bus (LV)
+gregtech.machine.item_bus.import.mv.name=Input Bus (MV)
+gregtech.machine.item_bus.import.hv.name=Input Bus (HV)
+gregtech.machine.item_bus.import.ev.name=Input Bus (EV)
+gregtech.machine.item_bus.import.iv.name=Input Bus (IV)
+gregtech.machine.item_bus.import.luv.name=Input Bus (LuV)
+gregtech.machine.item_bus.import.zpm.name=Input Bus (ZPM)
+gregtech.machine.item_bus.import.uv.name=Input Bus (UV)
+gregtech.machine.item_bus.import.max.name=Input Bus (MAX)
+
+gregtech.machine.item_bus.export.ulv.name=Output Bus (ULV)
+gregtech.machine.item_bus.export.lv.name=Output Bus (LV)
+gregtech.machine.item_bus.export.mv.name=Output Bus (MV)
+gregtech.machine.item_bus.export.hv.name=Output Bus (HV)
+gregtech.machine.item_bus.export.ev.name=Output Bus (EV)
+gregtech.machine.item_bus.export.iv.name=Output Bus (IV)
+gregtech.machine.item_bus.export.luv.name=Output Bus (LuV)
+gregtech.machine.item_bus.export.zpm.name=Output Bus (ZPM)
+gregtech.machine.item_bus.export.uv.name=Output Bus (UV)
+gregtech.machine.item_bus.export.max.name=Output Bus (MAX)
+
+gregtech.machine.fluid_hatch.import.ulv.name=Input Hatch (ULV)
+gregtech.machine.fluid_hatch.import.lv.name=Input Hatch (LV)
+gregtech.machine.fluid_hatch.import.mv.name=Input Hatch (MV)
+gregtech.machine.fluid_hatch.import.hv.name=Input Hatch (HV)
+gregtech.machine.fluid_hatch.import.ev.name=Input Hatch (EV)
+gregtech.machine.fluid_hatch.import.iv.name=Input Hatch (IV)
+gregtech.machine.fluid_hatch.import.luv.name=Input Hatch (LuV)
+gregtech.machine.fluid_hatch.import.zpm.name=Input Hatch (ZPM)
+gregtech.machine.fluid_hatch.import.uv.name=Input Hatch (UV)
+gregtech.machine.fluid_hatch.import.max.name=Input Hatch (MAX)
+
+gregtech.machine.fluid_hatch.export.ulv.name=Output Hatch (ULV)
+gregtech.machine.fluid_hatch.export.lv.name=Output Hatch (LV)
+gregtech.machine.fluid_hatch.export.mv.name=Output Hatch (MV)
+gregtech.machine.fluid_hatch.export.hv.name=Output Hatch (HV)
+gregtech.machine.fluid_hatch.export.ev.name=Output Hatch (EV)
+gregtech.machine.fluid_hatch.export.iv.name=Output Hatch (IV)
+gregtech.machine.fluid_hatch.export.luv.name=Output Hatch (LuV)
+gregtech.machine.fluid_hatch.export.zpm.name=Output Hatch (ZPM)
+gregtech.machine.fluid_hatch.export.uv.name=Output Hatch (UV)
+gregtech.machine.fluid_hatch.export.max.name=Output Hatch (MAX)
+
+gregtech.machine.energy_hatch.input.ulv.name=Energy Input Hatch (ULV)
+gregtech.machine.energy_hatch.input.lv.name=Energy Input Hatch (LV)
+gregtech.machine.energy_hatch.input.mv.name=Energy Input Hatch (MV)
+gregtech.machine.energy_hatch.input.hv.name=Energy Input Hatch (HV)
+gregtech.machine.energy_hatch.input.ev.name=Energy Input Hatch (EV)
+gregtech.machine.energy_hatch.input.iv.name=Energy Input Hatch (IV)
+gregtech.machine.energy_hatch.input.luv.name=Energy Input Hatch (LuV)
+gregtech.machine.energy_hatch.input.zpm.name=Energy Input Hatch (ZPM)
+gregtech.machine.energy_hatch.input.uv.name=Energy Input Hatch (UV)
+gregtech.machine.energy_hatch.input.max.name=Energy Input Hatch (MAX)
+
+gregtech.machine.energy_hatch.output.ulv.name=Energy Output Hatch (ULV)
+gregtech.machine.energy_hatch.output.lv.name=Energy Output Hatch (LV)
+gregtech.machine.energy_hatch.output.mv.name=Energy Output Hatch (MV)
+gregtech.machine.energy_hatch.output.hv.name=Energy Output Hatch (HV)
+gregtech.machine.energy_hatch.output.ev.name=Energy Output Hatch (EV)
+gregtech.machine.energy_hatch.output.iv.name=Energy Output Hatch (IV)
+gregtech.machine.energy_hatch.output.luv.name=Energy Output Hatch (LuV)
+gregtech.machine.energy_hatch.output.zpm.name=Energy Output Hatch (ZPM)
+gregtech.machine.energy_hatch.output.uv.name=Energy Output Hatch (UV)
+gregtech.machine.energy_hatch.output.max.name=Energy Output Hatch (MAX)
+
+gregtech.machine.rotor_holder.ulv.name=Rotor Holder (ULV)
+gregtech.machine.rotor_holder.lv.name=Rotor Holder (LV)
+gregtech.machine.rotor_holder.mv.name=Rotor Holder (MV)
+gregtech.machine.rotor_holder.hv.name=Rotor Holder (HV)
+gregtech.machine.rotor_holder.ev.name=Rotor Holder (EV)
+gregtech.machine.rotor_holder.iv.name=Rotor Holder (IV)
+gregtech.machine.rotor_holder.luv.name=Rotor Holder (LuV)
+gregtech.machine.rotor_holder.zpm.name=Rotor Holder (ZPM)
+gregtech.machine.rotor_holder.uv.name=Rotor Holder (UV)
+gregtech.machine.rotor_holder.max.name=Rotor Holder (MAX)
 
 gregtech.recipe.total=Total: %d EU
 gregtech.recipe.eu=Usage: %d EU/t
