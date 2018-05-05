@@ -267,6 +267,16 @@ public class BlockMachine extends Block implements ITileEntityProvider {
     }
 
     @Override
+    public boolean isOpaqueCube(IBlockState state) {
+        return false;
+    }
+
+    @Override
+    public boolean isFullCube(IBlockState state) {
+        return false;
+    }
+
+    @Override
     public boolean addLandingEffects(IBlockState state, WorldServer worldObj, BlockPos blockPosition, IBlockState iblockstate, EntityLivingBase entity, int numberOfParticles) {
         return CustomParticleHandler.handleLandingEffects(worldObj, blockPosition, entity, numberOfParticles);
     }

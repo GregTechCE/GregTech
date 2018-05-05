@@ -1,20 +1,18 @@
 package gregtech.api.metatileentity;
 
-import codechicken.lib.render.BlockRenderer.BlockFace;
 import codechicken.lib.render.CCRenderState;
 import codechicken.lib.render.pipeline.ColourMultiplier;
 import codechicken.lib.render.pipeline.IVertexOperation;
 import codechicken.lib.texture.TextureUtils;
 import codechicken.lib.vec.Cuboid6;
 import codechicken.lib.vec.Matrix4;
-import codechicken.lib.vec.TransformationList;
-import codechicken.lib.vec.uv.IconTransformation;
 import com.google.common.base.Preconditions;
 import gregtech.api.GregTechAPI;
 import gregtech.api.capability.impl.FluidHandlerProxy;
 import gregtech.api.capability.impl.FluidTankList;
 import gregtech.api.capability.impl.ItemHandlerProxy;
 import gregtech.api.gui.ModularUI;
+import gregtech.api.render.Textures;
 import gregtech.api.util.GTUtility;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.entity.player.EntityPlayer;
@@ -135,19 +133,8 @@ public abstract class MetaTileEntity {
         TextureAtlasSprite atlasSprite = TextureUtils.getMissingSprite();
         IVertexOperation[] renderPipeline = ArrayUtils.add(pipeline, new ColourMultiplier(getPaintingColorForRendering()));
         for(EnumFacing face : EnumFacing.VALUES) {
-            renderFace(renderState, translation, renderPipeline, face, Cuboid6.full, atlasSprite);
+            Textures.renderFace(renderState, translation, renderPipeline, face, Cuboid6.full, atlasSprite);
         }
-    }
-
-    private static final ThreadLocal<BlockFace> blockFaces = ThreadLocal.withInitial(BlockFace::new);
-
-    @SideOnly(Side.CLIENT)
-    public static void renderFace(CCRenderState renderState, Matrix4 translation, IVertexOperation[] ops, EnumFacing face, Cuboid6 bounds, TextureAtlasSprite sprite) {
-        BlockFace blockFace = blockFaces.get();
-        blockFace.loadCuboidFace(bounds, face.getIndex());
-        renderState.setPipeline(blockFace, 0, blockFace.verts.length,
-            ArrayUtils.addAll(ops, new TransformationList(translation), new IconTransformation(sprite)));
-        renderState.render();
     }
 
     public final String getMetaName() {

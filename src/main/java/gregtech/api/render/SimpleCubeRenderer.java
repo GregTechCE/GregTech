@@ -6,7 +6,6 @@ import codechicken.lib.texture.TextureUtils.IIconRegister;
 import codechicken.lib.vec.Cuboid6;
 import codechicken.lib.vec.Matrix4;
 import gregtech.api.GTValues;
-import gregtech.api.metatileentity.MetaTileEntity;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.util.EnumFacing;
@@ -34,7 +33,7 @@ public class SimpleCubeRenderer implements ICubeRenderer, IIconRegister {
 
     @SideOnly(Side.CLIENT)
     public void renderSided(EnumFacing side, Matrix4 translation, Cuboid6 bounds, CCRenderState renderState, IVertexOperation[] pipeline) {
-        MetaTileEntity.renderFace(renderState, translation, pipeline, side, bounds, sprite);
+        Textures.renderFace(renderState, translation, pipeline, side, bounds, sprite);
     }
 
     @SideOnly(Side.CLIENT)

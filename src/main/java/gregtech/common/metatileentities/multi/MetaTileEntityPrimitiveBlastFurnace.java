@@ -204,7 +204,7 @@ public class MetaTileEntityPrimitiveBlastFurnace extends MultiblockControllerBas
             TextureAtlasSprite sprite = TextureUtils.getBlockTexture("lava_still");
             renderState.brightness = 0xF000F0;
             renderState.colour = 0xFFFFFFFF;
-            renderFace(renderState, offset, new IVertexOperation[0], EnumFacing.UP, Cuboid6.full, sprite);
+            Textures.renderFace(renderState, offset, new IVertexOperation[0], EnumFacing.UP, Cuboid6.full, sprite);
         }
     }
 

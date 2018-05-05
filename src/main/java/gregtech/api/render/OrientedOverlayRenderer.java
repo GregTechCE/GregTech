@@ -6,7 +6,6 @@ import codechicken.lib.texture.TextureUtils.IIconRegister;
 import codechicken.lib.vec.Cuboid6;
 import codechicken.lib.vec.Matrix4;
 import gregtech.api.GTValues;
-import gregtech.api.metatileentity.MetaTileEntity;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.util.EnumFacing;
@@ -82,7 +81,7 @@ public class OrientedOverlayRenderer implements IIconRegister {
             OverlayFace overlayFace = OverlayFace.bySide(renderSide, frontFacing);
             if(sprites.containsKey(overlayFace)) {
                 TextureAtlasSprite renderSprite = sprites.get(overlayFace).getSprite(isActive);
-                MetaTileEntity.renderFace(renderState, translation, ops, renderSide, bounds, renderSprite);
+                Textures.renderFace(renderState, translation, ops, renderSide, bounds, renderSprite);
             }
         }
     }

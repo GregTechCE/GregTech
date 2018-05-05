@@ -74,6 +74,7 @@ public class BlockCable extends Block implements ITileEntityProvider, IMultipart
         setHarvestLevel("cutter", 1);
         setHardness(2.0f);
         setResistance(3.0f);
+        setLightOpacity(1);
     }
 
     ///////////////////////// COLLISION AND BOUNDING BOXES /////////////////////////////////

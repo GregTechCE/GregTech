@@ -7,7 +7,6 @@ import codechicken.lib.texture.TextureUtils.IIconRegister;
 import codechicken.lib.vec.Cuboid6;
 import codechicken.lib.vec.Matrix4;
 import gregtech.api.GTValues;
-import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.util.GTUtility;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureMap;
@@ -60,15 +59,15 @@ public class LargeTurbineRenderer implements IIconRegister {
                 break;
         }
         if(hasBase) {
-            MetaTileEntity.renderFace(renderState, cornerOffset, pipeline, side, Cuboid6.full, baseRingSprite);
+            Textures.renderFace(renderState, cornerOffset, pipeline, side, Cuboid6.full, baseRingSprite);
             renderState.brightness = 0xF000F0;
             renderState.colour = 0xFFFFFFFF;
-            MetaTileEntity.renderFace(renderState, cornerOffset, new IVertexOperation[0], side, Cuboid6.full, baseBackgroundSprite);
+            Textures.renderFace(renderState, cornerOffset, new IVertexOperation[0], side, Cuboid6.full, baseBackgroundSprite);
         }
         if(hasRotor) {
             TextureAtlasSprite sprite = isActive ? activeBladeSprite : idleBladeSprite;
             IVertexOperation[] color = ArrayUtils.add(pipeline, new ColourMultiplier(GTUtility.convertRGBtoOpaqueRGBA(rotorRGB)));
-            MetaTileEntity.renderFace(renderState, cornerOffset, color, side, Cuboid6.full, sprite);
+            Textures.renderFace(renderState, cornerOffset, color, side, Cuboid6.full, sprite);
         }
     }
 
