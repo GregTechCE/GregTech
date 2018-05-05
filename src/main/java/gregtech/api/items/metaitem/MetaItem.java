@@ -8,6 +8,7 @@ import gregtech.api.GregTechAPI;
 import gregtech.api.capability.IElectricItem;
 import gregtech.api.capability.impl.CombinedCapabilityProvider;
 import gregtech.api.capability.impl.ElectricItem;
+import gregtech.api.capability.impl.SimpleThermalFluidHandlerItemStack;
 import gregtech.api.capability.impl.ThermalFluidHandlerItemStack;
 import gregtech.api.items.OreDictNames;
 import gregtech.api.items.metaitem.stats.*;
@@ -33,6 +34,8 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandlerItem;
@@ -54,9 +57,9 @@ import java.util.*;
  *
  * You can also extend this class and occupy some of it's MetaData, and just pass an meta offset in constructor, and everything will work properly.
  *
- * Items are added in MetaItem via {@link #addItem(int, String, String...)}. You will get {@link MetaValueItem} instance, which you can configure in builder-alike pattern:
+ * Items are added in MetaItem via {@link #addItem(int, String)}. You will get {@link MetaValueItem} instance, which you can configure in builder-alike pattern:
  * {@code addItem(0, "test_item").addStats(new ElectricStats(10000, 1,  false)) }
- * This will add single-use (unchargeable) LV battery with initial capacity 10000 EU
+ * This will add single-use (not rechargeable) LV battery with initial capacity 10000 EU
  */
 @SuppressWarnings("deprecation")
 public abstract class MetaItem<T extends MetaItem<?>.MetaValueItem> extends Item {
@@ -126,14 +129,19 @@ public abstract class MetaItem<T extends MetaItem<?>.MetaValueItem> extends Item
 
     @SideOnly(Side.CLIENT)
     protected int getColorForItemStack(ItemStack stack, int tintIndex) {
+        IFluidHandlerItem fluidContainerItem = stack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY, null);
+        if(tintIndex == 0 && fluidContainerItem != null) {
+            FluidStack fluidStack = fluidContainerItem.drain(Integer.MAX_VALUE, false);
+            return fluidStack == null ? 0xFFFFFF : fluidStack.getFluid().getColor(fluidStack);
+        }
         return 0xFFFFFF;
     }
 
-    protected abstract T constructMetaValueItem(short metaValue, String unlocalizedName, String... nameParameters);
+    protected abstract T constructMetaValueItem(short metaValue, String unlocalizedName);
 
-    public final T addItem(int metaValue, String unlocalizedName, String... nameParameters) {
+    public final T addItem(int metaValue, String unlocalizedName) {
         Validate.inclusiveBetween(0, Short.MAX_VALUE - 1, metaValue + metaItemOffset, "MetaItem ID should be in range from 0 to Short.MAX_VALUE-1");
-        T metaValueItem = constructMetaValueItem((short) metaValue, unlocalizedName, nameParameters);
+        T metaValueItem = constructMetaValueItem((short) metaValue, unlocalizedName);
         metaItems.put((short) metaValue, metaValueItem);
         names.put(unlocalizedName, metaValueItem);
         return metaValueItem;
@@ -163,10 +171,18 @@ public abstract class MetaItem<T extends MetaItem<?>.MetaValueItem> extends Item
         IFluidStats fluidStats = metaValueItem.getFluidStats();
         IElectricStats electricStats = metaValueItem.getElectricStats();
         if (electricStats != null && fluidStats != null) {
-            ThermalFluidHandlerItemStack handlerItemStack = new ThermalFluidHandlerItemStack(stack,
-                fluidStats.getCapacity(stack),
-                fluidStats.getMinFluidTemperature(stack),
-                fluidStats.getMaxFluidTemperature(stack));
+            ICapabilityProvider handlerItemStack;
+            if(fluidStats.allowPartiallyFilled()) {
+                handlerItemStack = new ThermalFluidHandlerItemStack(stack,
+                    fluidStats.getCapacity(stack),
+                    fluidStats.getMinFluidTemperature(stack),
+                    fluidStats.getMaxFluidTemperature(stack));
+            } else {
+                handlerItemStack = new SimpleThermalFluidHandlerItemStack(stack,
+                    fluidStats.getCapacity(stack),
+                    fluidStats.getMinFluidTemperature(stack),
+                    fluidStats.getMaxFluidTemperature(stack));
+            }
 
             ElectricItem electricItem = new ElectricItem(stack,
                 electricStats.getMaxCharge(),
@@ -178,7 +194,7 @@ public abstract class MetaItem<T extends MetaItem<?>.MetaValueItem> extends Item
         }
 
         if (fluidStats != null) {
-            return new ThermalFluidHandlerItemStack(stack,
+            return new SimpleThermalFluidHandlerItemStack(stack,
                 fluidStats.getCapacity(stack),
                 fluidStats.getMinFluidTemperature(stack),
                 fluidStats.getMaxFluidTemperature(stack));
@@ -362,14 +378,11 @@ public abstract class MetaItem<T extends MetaItem<?>.MetaValueItem> extends Item
     public String getItemStackDisplayName(ItemStack stack) {
         if (stack.getItemDamage() >= metaItemOffset) {
             T item = getItem(stack);
-
-            if (item.nameParameters.length != 0) {
-                String[] localizedParams = new String[item.nameParameters.length];
-                for (int i = 0; i < item.nameParameters.length; i++) {
-                    localizedParams[i] = I18n.format(item.nameParameters[i]);
-                }
-
-                return I18n.format("metaitem." + item.unlocalizedName + ".name", (Object[]) localizedParams);
+            IFluidHandlerItem fluidHandlerItem = stack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY, null);
+            if(fluidHandlerItem != null) {
+                FluidStack fluidInside = fluidHandlerItem.drain(Integer.MAX_VALUE, false);
+                String name = fluidInside == null ? "metaitem.fluid_cell.empty" : fluidInside.getUnlocalizedName();
+                return I18n.format("metaitem." + item.unlocalizedName + ".name", I18n.format(name));
             }
             return I18n.format("metaitem." + item.unlocalizedName + ".name");
         }
@@ -420,19 +433,33 @@ public abstract class MetaItem<T extends MetaItem<?>.MetaValueItem> extends Item
     @Override
     @SideOnly(Side.CLIENT)
     public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> subItems) {
-        if(tab == GregTechAPI.TAB_GREGTECH || tab == CreativeTabs.SEARCH) {
-            for (T enabledItem : metaItems.valueCollection()) {
-                if (enabledItem.isVisible()) {
-                    ItemStack itemStack = enabledItem.getStackForm();
-                    subItems.add(itemStack.copy());
+        if(tab != GregTechAPI.TAB_GREGTECH && tab != CreativeTabs.SEARCH)
+            return;
 
-                    IElectricItem electricItem = itemStack.getCapability(IElectricItem.CAPABILITY_ELECTRIC_ITEM, null);
-                    if (electricItem != null) {
-                        electricItem.charge(Long.MAX_VALUE, Integer.MAX_VALUE, true, false);
-                        subItems.add(itemStack);
-                    }
+        for (T enabledItem : metaItems.valueCollection()) {
+            if (!enabledItem.isVisible())
+                continue;
+
+            ItemStack itemStack = enabledItem.getStackForm();
+            subItems.add(itemStack.copy());
+
+            IElectricItem electricItem = itemStack.getCapability(IElectricItem.CAPABILITY_ELECTRIC_ITEM, null);
+            if (electricItem != null) {
+                electricItem.charge(Long.MAX_VALUE, Integer.MAX_VALUE, true, false);
+                subItems.add(itemStack);
+            }
+
+            if (tab == CreativeTabs.SEARCH && itemStack.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY, null)) {
+                for (Fluid fluid : FluidRegistry.getRegisteredFluids().values()) {
+                    ItemStack containerStack = itemStack.copy();
+                    IFluidHandlerItem fluidContainer = containerStack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY, null);
+                    fluidContainer.fill(new FluidStack(fluid, Integer.MAX_VALUE), true);
+                    if (fluidContainer.drain(Integer.MAX_VALUE, false) == null)
+                        continue; //do not add empty containers multiple times
+                    subItems.add(fluidContainer.getContainer());
                 }
             }
+
         }
     }
 
@@ -445,9 +472,6 @@ public abstract class MetaItem<T extends MetaItem<?>.MetaValueItem> extends Item
         public final int metaValue;
 
         public final String unlocalizedName;
-
-        //Parameters can be either localized or not
-        protected final String[] nameParameters;
 
         @Nullable
         private IElectricStats electricStats;
@@ -464,10 +488,9 @@ public abstract class MetaItem<T extends MetaItem<?>.MetaValueItem> extends Item
         private int maxStackSize = 64;
         private int modelAmount = 1;
 
-        protected MetaValueItem(int metaValue, String unlocalizedName, String... nameParameters) {
+        protected MetaValueItem(int metaValue, String unlocalizedName) {
             this.metaValue = metaValue;
             this.unlocalizedName = unlocalizedName;
-            this.nameParameters = nameParameters;
         }
 
         public MetaValueItem setMaterialInfo(ItemMaterialInfo materialInfo) {

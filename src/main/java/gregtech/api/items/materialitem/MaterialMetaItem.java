@@ -85,7 +85,7 @@ public class MaterialMetaItem extends StandardMetaItem {
             Material material = Material.MATERIAL_REGISTRY.getObjectById(stack.getMetadata() % 1000);
             return material.materialRGB;
         }
-        return 0xFFFFFF;
+        return super.getColorForItemStack(stack, tintIndex);
     }
 
     protected boolean canGenerate(OrePrefix orePrefix, Material material) {

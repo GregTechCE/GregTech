@@ -11,6 +11,8 @@ import gregtech.api.recipes.Recipe;
 import gregtech.api.recipes.RecipeMap;
 import gregtech.api.render.Textures;
 import gregtech.api.util.GTUtility;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.Style;
 import net.minecraft.util.text.TextComponentTranslation;
@@ -97,6 +99,10 @@ public abstract class RecipeMapMultiblockController extends MultiblockWithDispla
         FluidTankList emptyFluidInventory = new FluidTankList();
         this.itemInventory = new ItemHandlerProxy(emptyInventory, emptyInventory);
         this.fluidInventory = new FluidHandlerProxy(emptyFluidInventory, emptyFluidInventory);
+    }
+
+    @Override
+    public void clearMachineInventory(NonNullList<ItemStack> itemBuffer) {
     }
 
     @Override

@@ -121,7 +121,7 @@ public class MetaTileEntityRotorHolder extends MetaTileEntityMultiblockPart impl
      * used for scaling stats like produced EU, rotor damage and interact damage
      */
     public double getRelativeRotorSpeed() {
-        return currentRotorSpeed / (NORMAL_MAXIMUM_SPEED * 1.0);
+        return currentRotorSpeed == 0 ? 0.01 : currentRotorSpeed / (NORMAL_MAXIMUM_SPEED * 1.0);
     }
 
     /**

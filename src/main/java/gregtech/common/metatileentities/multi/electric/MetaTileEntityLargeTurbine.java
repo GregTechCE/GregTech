@@ -33,9 +33,9 @@ public class MetaTileEntityLargeTurbine extends RecipeMapMultiblockController {
 
     public static final MultiblockAbility<MetaTileEntityRotorHolder> ABILITY_ROTOR_HOLDER = new MultiblockAbility<>();
 
-    private static final int BASE_ROTOR_DAMAGE = 20;
+    private static final int BASE_ROTOR_DAMAGE = 2;
     private static final int BASE_EU_OUTPUT = 1024;
-    private static final int EU_OUTPUT_BONUS = 2048;
+    private static final int EU_OUTPUT_BONUS = 4096;
     private static final int MIN_DURABILITY_TO_WARN = 10;
 
     public enum TurbineType {
@@ -200,8 +200,8 @@ public class MetaTileEntityLargeTurbine extends RecipeMapMultiblockController {
             double relativeRotorSpeed = rotorHolder.getRelativeRotorSpeed();
             double rotorEfficiency = rotorHolder.getRotorEfficiency();
 
-            int fuelToConsume = (int) Math.floor((2048 / fuelValue) * (relativeRotorSpeed * relativeRotorSpeed));
-            int EUt = -(int) ((BASE_EU_OUTPUT + EU_OUTPUT_BONUS * rotorEfficiency) * (relativeRotorSpeed * relativeRotorSpeed));
+            int fuelToConsume = (int) Math.ceil((2048 / fuelValue) * (relativeRotorSpeed * relativeRotorSpeed));
+            int EUt = -(int) Math.ceil((BASE_EU_OUTPUT + EU_OUTPUT_BONUS * rotorEfficiency) * (relativeRotorSpeed * relativeRotorSpeed));
 
             return recipeMap.recipeBuilder()
                 .fluidInputs(GTUtility.copyAmount(fuelToConsume, inputFluid))

@@ -61,8 +61,8 @@ public class ToolMetaItem<T extends ToolMetaItem<?>.MetaToolValueItem> extends M
 
     @Override
     @SuppressWarnings("unchecked")
-    protected T constructMetaValueItem(short metaValue, String unlocalizedName, String... nameParameters) {
-        return (T) new MetaToolValueItem(metaValue, unlocalizedName, nameParameters);
+    protected T constructMetaValueItem(short metaValue, String unlocalizedName) {
+        return (T) new MetaToolValueItem(metaValue, unlocalizedName);
     }
 
     @Override
@@ -253,10 +253,10 @@ public class ToolMetaItem<T extends ToolMetaItem<?>.MetaToolValueItem> extends M
         IElectricItem capability = stack.getCapability(IElectricItem.CAPABILITY_ELECTRIC_ITEM, null);
         if(!simulate) {
             if(capability == null || capability.getMaxCharge() == 0) {
-                setInternalDamage(stack, getInternalDamage(stack) - vanillaDamage);
+                setInternalDamage(stack, getInternalDamage(stack) + vanillaDamage);
             } else {
                 capability.discharge(vanillaDamage, capability.getTier(), true, false, false);
-                setInternalDamage(stack, getInternalDamage(stack) - (vanillaDamage / 10));
+                setInternalDamage(stack, getInternalDamage(stack) + (vanillaDamage / 10));
             }
         }
         return true;
@@ -265,9 +265,9 @@ public class ToolMetaItem<T extends ToolMetaItem<?>.MetaToolValueItem> extends M
     public boolean isUsable(ItemStack stack, int damage) {
         IElectricItem capability = stack.getCapability(IElectricItem.CAPABILITY_ELECTRIC_ITEM, null);
         if(capability == null || capability.getMaxCharge() == 0) {
-            return getInternalDamage(stack) - damage > 0;
+            return getInternalDamage(stack) + damage < getMaxInternalDamage(stack);
         }
-        return capability.canUse(damage) && getInternalDamage(stack) - (damage / 10) < getMaxInternalDamage(stack);
+        return capability.canUse(damage) && getInternalDamage(stack) + (damage / 10) < getMaxInternalDamage(stack);
     }
 
     @Override
@@ -291,7 +291,7 @@ public class ToolMetaItem<T extends ToolMetaItem<?>.MetaToolValueItem> extends M
         int maxInternalDamage = getMaxInternalDamage(itemStack);
 
         if (maxInternalDamage > 0) {
-            lines.add(I18n.format("metaitem.tool.tooltip.durability", getInternalDamage(itemStack), maxInternalDamage));
+            lines.add(I18n.format("metaitem.tool.tooltip.durability", maxInternalDamage - getInternalDamage(itemStack), maxInternalDamage));
         }
         if (primaryMaterial != null) {
             lines.add(I18n.format("metaitem.tool.tooltip.primary_material", primaryMaterial.getLocalizedName(), primaryMaterial.harvestLevel));
@@ -322,9 +322,7 @@ public class ToolMetaItem<T extends ToolMetaItem<?>.MetaToolValueItem> extends M
     public int getInternalDamage(ItemStack itemStack) {
         NBTTagCompound statsTag = itemStack.getSubCompound("GT.ToolStats");
         if (statsTag == null || !statsTag.hasKey("Damage", Constants.NBT.TAG_INT)) {
-            int maxInternalDamage = getMaxInternalDamage(itemStack);
-            setInternalDamage(itemStack, maxInternalDamage);
-            return maxInternalDamage;
+            return 0;
         }
         return statsTag.getInteger("Damage");
     }
@@ -362,8 +360,8 @@ public class ToolMetaItem<T extends ToolMetaItem<?>.MetaToolValueItem> extends M
 
         protected IToolStats toolStats;
 
-        private MetaToolValueItem(int metaValue, String unlocalizedName, String... nameParameters) {
-            super(metaValue, unlocalizedName, nameParameters);
+        private MetaToolValueItem(int metaValue, String unlocalizedName) {
+            super(metaValue, unlocalizedName);
             setMaxStackSize(1);
         }
 

@@ -127,7 +127,8 @@ public abstract class RecipeMapWorkableHandler extends MTETrait implements IWork
         boolean negativeEU = EUt < 0;
         if(negativeEU)
             EUt = -EUt;
-        int tier = GTUtility.getTierByVoltage(voltage);
+        //round tier down so 64 EU/t won't be overclocked to require 128 EU/t+, but 32 EU/t
+        int tier = GTUtility.getTierByVoltageRoundDown(voltage);
         if (EUt <= 16) {
             int resultEUt = EUt * (1 << (tier - 1)) * (1 << (tier - 1));
             int resultDuration = duration / (1 << (tier - 1));
@@ -268,7 +269,6 @@ public abstract class RecipeMapWorkableHandler extends MTETrait implements IWork
     @Override
     public NBTTagCompound serializeNBT() {
         NBTTagCompound compound = new NBTTagCompound();
-        compound.setBoolean("Active", this.isActive);
         compound.setBoolean("WorkEnabled", this.workingEnabled);
         if(progressTime > 0) {
             compound.setInteger("Progress", progressTime);
@@ -290,10 +290,11 @@ public abstract class RecipeMapWorkableHandler extends MTETrait implements IWork
 
     @Override
     public void deserializeNBT(NBTTagCompound compound) {
-        this.isActive = compound.getBoolean("Active");
         this.workingEnabled = compound.getBoolean("WorkEnabled");
         this.progressTime = compound.getInteger("Progress");
+        this.isActive = false;
         if (progressTime > 0) {
+            this.isActive = true;
             this.maxProgressTime = compound.getInteger("MaxProgress");
             this.recipeEUt = compound.getInteger("RecipeEUt");
             NBTTagList itemOutputsList = compound.getTagList("ItemOutputs", Constants.NBT.TAG_COMPOUND);

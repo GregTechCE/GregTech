@@ -120,13 +120,13 @@ public class MetaItem1 extends MaterialMetaItem {
         SPRAY_EMPTY = addItem(402, "spray.empty")
             .setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.Tin, OrePrefix.plate.materialAmount * 2L), new MaterialStack(Materials.Redstone, OrePrefix.dust.materialAmount)));
 
-        LARGE_FLUID_CELL_STEEL = addItem(405, "large.fluid.cell.steel")
-            .addStats(new FluidStats(16000, Integer.MAX_VALUE, Integer.MAX_VALUE))
+        LARGE_FLUID_CELL_STEEL = addItem(405, "large_fluid_cell.steel")
+            .addStats(new FluidStats(16000, Integer.MAX_VALUE, Integer.MAX_VALUE, true))
             .setMaxStackSize(16)
             .setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.Steel, OrePrefix.plate.materialAmount * 2L + 2L * OrePrefix.ring.materialAmount)));
 
-        LARGE_FLUID_CELL_TUNGSTENSTEEL = addItem(406, "large.fluid.cell.tungstensteel")
-            .addStats(new FluidStats(64000, Integer.MAX_VALUE, Integer.MAX_VALUE))
+        LARGE_FLUID_CELL_TUNGSTENSTEEL = addItem(406, "large_fluid_cell.tungstensteel")
+            .addStats(new FluidStats(64000, Integer.MAX_VALUE, Integer.MAX_VALUE, true))
             .setMaxStackSize(16)
             .setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.TungstenSteel, OrePrefix.plate.materialAmount * 2L + 2L * OrePrefix.ring.materialAmount)));
 
@@ -365,7 +365,7 @@ public class MetaItem1 extends MaterialMetaItem {
 
         //TOOL_CHEAT = addItem(761, "tool.cheat").addStats(new ElectricStats(-2000000000, -1));
 
-        FLUID_CELL = addItem(762, "cell.fluid").addStats(new FluidStats(1000, Integer.MIN_VALUE, Integer.MAX_VALUE));
+        FLUID_CELL = addItem(762, "fluid_cell").addStats(new FluidStats(1000, Integer.MIN_VALUE, Integer.MAX_VALUE, false));
 
         DUCT_TAPE = addItem(764, "duct.tape").addOreDict(OreDictNames.craftingDuctTape).setInvisible();
         MCGUFFIUM_239 = addItem(765, "mcguffium.239");

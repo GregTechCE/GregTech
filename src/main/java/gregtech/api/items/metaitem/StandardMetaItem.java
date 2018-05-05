@@ -7,8 +7,8 @@ public class StandardMetaItem extends MetaItem<MetaItem<?>.MetaValueItem> {
     }
 
     @Override
-    protected MetaValueItem constructMetaValueItem(short metaValue, String unlocalizedName, String... nameParameters) {
-        return new MetaValueItem(metaValue, unlocalizedName, nameParameters);
+    protected MetaValueItem constructMetaValueItem(short metaValue, String unlocalizedName) {
+        return new MetaValueItem(metaValue, unlocalizedName);
     }
 
 }

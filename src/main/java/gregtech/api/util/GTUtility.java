@@ -265,6 +265,15 @@ public class GTUtility {
         return tier;
     }
 
+    public static byte getTierByVoltageRoundDown(long voltage) {
+        byte tier = 0;
+        while (++tier < V.length) {
+            if (voltage < V[tier])
+                return (byte) (tier - 1);
+        }
+        return tier;
+    }
+
     /**
      * @return a list of itemstack linked with given item handler
      * modifications in list will reflect on item handler and wise-versa

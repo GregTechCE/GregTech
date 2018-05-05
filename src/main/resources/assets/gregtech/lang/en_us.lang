@@ -144,9 +144,10 @@ metaitem.thermos_can.empty.tooltip=Keeping hot things hot and cold things cold
 
 metaitem.plant.ball.name=Plantball
 
-metaitem.cell.fluid.name=Fluid Cell
-metaitem.large.fluid.cell.steel.name=Large Steel Fluid Cell
-metaitem.large.fluid.cell.tungstensteel.name=Large Tungstensteel Fluid Cell
+metaitem.fluid_cell.empty=Empty
+metaitem.fluid_cell.name=%s Cell
+metaitem.large_fluid_cell.steel.name=%s Steel Cell
+metaitem.large_fluid_cell.tungstensteel.name=%s Tungstensteel Cell
 
 metaitem.spray.can.dyes.white.name=Spray Can (White)
 metaitem.spray.can.dyes.white.tooltip=Full
@@ -2641,7 +2642,7 @@ gregtech.multiblock.turbine.rotor_durability=Rotor Durability: %s%%
 gregtech.multiblock.turbine.low_rotor_durability=WARNING: Rotor Durability below %s%% (%s%%)
 
 gregtech.multiblock.large_boiler.temperature=Temperature: %s / %s C
-gregtech.multiblock.large_boiler.steam_output=Steam Output: %s / %s mb/t
+gregtech.multiblock.large_boiler.steam_output=Steam Output: %s mb/t
 
 commands.gt.usage=Use /gt <subcommand>
 
