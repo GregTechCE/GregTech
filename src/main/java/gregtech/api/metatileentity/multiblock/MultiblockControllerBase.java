@@ -13,6 +13,7 @@ import gregtech.api.render.ICubeRenderer;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.network.PacketBuffer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import org.apache.commons.lang3.ArrayUtils;
@@ -123,7 +124,11 @@ public abstract class MultiblockControllerBase extends MetaTileEntity {
         EnumFacing facing = getFrontFacing().getOpposite();
         PatternMatchContext context = structurePattern.checkPatternAt(getWorld(), getPos(), facing);
         if(context != null && structureFormed) {
-            this.validationSuccess = validationPredicate.getAsBoolean();
+            boolean newValidationSuccess = validationPredicate.getAsBoolean();
+            if(validationSuccess != newValidationSuccess) {
+                this.validationSuccess = newValidationSuccess;
+                writeCustomData(-400, buf -> buf.writeBoolean(validationSuccess));
+            }
         }
         if(context != null && !structureFormed) {
             List<IMultiblockPart> partsFound = context.get("MultiblockParts", ArrayList::new);
@@ -139,6 +144,7 @@ public abstract class MultiblockControllerBase extends MetaTileEntity {
             });
             this.structureFormed = true;
             this.validationSuccess = validationPredicate.getAsBoolean();
+            writeCustomData(-400, buf -> buf.writeBoolean(validationSuccess));
             formStructure(context);
         } else if(context == null && structureFormed) {
             invalidateStructure();
@@ -154,6 +160,7 @@ public abstract class MultiblockControllerBase extends MetaTileEntity {
         this.multiblockParts.clear();
         this.structureFormed = false;
         this.validationSuccess = false;
+        writeCustomData(-400, buf -> buf.writeBoolean(false));
     }
 
     @SuppressWarnings("unchecked")
@@ -164,6 +171,26 @@ public abstract class MultiblockControllerBase extends MetaTileEntity {
 
     public List<IMultiblockPart> getMultiblockParts() {
         return Collections.unmodifiableList(multiblockParts);
+    }
+
+    @Override
+    public void writeInitialSyncData(PacketBuffer buf) {
+        super.writeInitialSyncData(buf);
+        buf.writeBoolean(structureFormed && validationSuccess);
+    }
+
+    @Override
+    public void receiveInitialSyncData(PacketBuffer buf) {
+        super.receiveInitialSyncData(buf);
+        this.structureFormed = this.validationSuccess = buf.readBoolean();
+    }
+
+    @Override
+    public void receiveCustomData(int dataId, PacketBuffer buf) {
+        super.receiveCustomData(dataId, buf);
+        if(dataId == -400) {
+            this.structureFormed = this.validationSuccess = buf.readBoolean();
+        }
     }
 
     public boolean isStructureFormed() {

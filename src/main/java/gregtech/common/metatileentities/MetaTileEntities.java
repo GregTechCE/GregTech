@@ -18,6 +18,8 @@ import gregtech.common.metatileentities.electric.multiblockpart.MetaTileEntityEn
 import gregtech.common.metatileentities.electric.multiblockpart.MetaTileEntityFluidHatch;
 import gregtech.common.metatileentities.electric.multiblockpart.MetaTileEntityItemBus;
 import gregtech.common.metatileentities.electric.multiblockpart.MetaTileEntityRotorHolder;
+import gregtech.common.metatileentities.multi.MetaTileEntityLargeBoiler;
+import gregtech.common.metatileentities.multi.MetaTileEntityLargeBoiler.BoilerType;
 import gregtech.common.metatileentities.multi.MetaTileEntityPrimitiveBlastFurnace;
 import gregtech.common.metatileentities.multi.electric.*;
 import gregtech.common.metatileentities.multi.electric.MetaTileEntityLargeTurbine.TurbineType;
@@ -120,9 +122,15 @@ public class MetaTileEntities {
     public static MetaTileEntityDistillationTower DISTILLATION_TOWER;
     public static MetaTileEntityMultiFurnace MULTI_FURNACE;
     public static MetaTileEntityDieselEngine DIESEL_ENGINE;
+
     public static MetaTileEntityLargeTurbine LARGE_STEAM_TURBINE;
     public static MetaTileEntityLargeTurbine LARGE_GAS_TURBINE;
     public static MetaTileEntityLargeTurbine LARGE_PLASMA_TURBINE;
+
+    public static MetaTileEntityLargeBoiler LARGE_BRONZE_BOILER;
+    public static MetaTileEntityLargeBoiler LARGE_STEEL_BOILER;
+    public static MetaTileEntityLargeBoiler LARGE_TITANIUM_BOILER;
+    public static MetaTileEntityLargeBoiler LARGE_TUNGSTENSTEEL_BOILER;
 
     public static void init() {
         GTLog.logger.info("Registering MetaTileEntities");
@@ -415,9 +423,15 @@ public class MetaTileEntities {
         DISTILLATION_TOWER = GregTechAPI.registerMetaTileEntity(515, new MetaTileEntityDistillationTower("distillation_tower"));
         MULTI_FURNACE = GregTechAPI.registerMetaTileEntity(516, new MetaTileEntityMultiFurnace("multi_furnace"));
         DIESEL_ENGINE = GregTechAPI.registerMetaTileEntity(517, new MetaTileEntityDieselEngine("diesel_engine"));
+
         LARGE_STEAM_TURBINE = GregTechAPI.registerMetaTileEntity(518, new MetaTileEntityLargeTurbine("large_turbine.steam", TurbineType.STEAM));
         LARGE_GAS_TURBINE = GregTechAPI.registerMetaTileEntity(519, new MetaTileEntityLargeTurbine("large_turbine.gas", TurbineType.GAS));
         LARGE_PLASMA_TURBINE = GregTechAPI.registerMetaTileEntity(520, new MetaTileEntityLargeTurbine("large_turbine.plasma", TurbineType.PLASMA));
+
+        LARGE_BRONZE_BOILER = GregTechAPI.registerMetaTileEntity(521, new MetaTileEntityLargeBoiler("large_boiler.bronze", BoilerType.BRONZE));
+        LARGE_STEEL_BOILER = GregTechAPI.registerMetaTileEntity(522, new MetaTileEntityLargeBoiler("large_boiler.steel", BoilerType.STEEL));
+        LARGE_TITANIUM_BOILER = GregTechAPI.registerMetaTileEntity(523, new MetaTileEntityLargeBoiler("large_boiler.titanium", BoilerType.TITANIUM));
+        LARGE_TUNGSTENSTEEL_BOILER = GregTechAPI.registerMetaTileEntity(524, new MetaTileEntityLargeBoiler("large_boiler.tungstensteel", BoilerType.TUNGSTENSTEEL));
 
         int[] batteryBufferSlots = new int[] {1, 4, 9, 16};
         for(int i = 0; i < GTValues.V.length; i++) {
