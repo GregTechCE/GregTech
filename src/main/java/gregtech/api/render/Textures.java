@@ -10,7 +10,6 @@ import codechicken.lib.vec.TransformationList;
 import codechicken.lib.vec.uv.IconTransformation;
 import gregtech.api.GTValues;
 import gregtech.api.util.GTLog;
-import gregtech.common.render.ChestRenderer;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.util.EnumFacing;
@@ -30,6 +29,9 @@ public class Textures {
 
     public static ChestRenderer WOODEN_CHEST = new ChestRenderer("storage/wooden_chest");
     public static ChestRenderer METAL_CHEST = new ChestRenderer("storage/metal_chest");
+
+    public static TankRenderer WOODEN_TANK = new TankRenderer("storage/tank/wooden_tank");
+    public static TankRenderer METAL_TANK = new TankRenderer("storage/tank/metal_tank");
 
     public static SimpleSidedCubeRenderer STEAM_CASING_BRONZE = new SimpleSidedCubeRenderer("casings/steam/bronze");
     public static SimpleSidedCubeRenderer STEAM_CASING_STEEL = new SimpleSidedCubeRenderer("casings/steam/steel");

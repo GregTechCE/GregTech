@@ -17,6 +17,7 @@ import gregtech.api.render.OrientedOverlayRenderer;
 import gregtech.api.render.SimpleSidedCubeRenderer;
 import gregtech.api.render.SimpleSidedCubeRenderer.RenderSide;
 import gregtech.api.render.Textures;
+import gregtech.api.util.GTUtility;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.fluids.FluidTank;
@@ -69,7 +70,7 @@ public abstract class SteamMetaTileEntity extends MetaTileEntity {
 
     @Override
     public void renderMetaTileEntity(CCRenderState renderState, Matrix4 translation, IVertexOperation[] pipeline) {
-        IVertexOperation[] colouredPipeline = ArrayUtils.add(pipeline, new ColourMultiplier(getPaintingColorForRendering()));
+        IVertexOperation[] colouredPipeline = ArrayUtils.add(pipeline, new ColourMultiplier(GTUtility.convertRGBtoOpaqueRGBA(getPaintingColorForRendering())));
         getBaseRenderer().render(renderState, translation, colouredPipeline);
         renderer.render(renderState, translation, pipeline, getFrontFacing(), workableHandler.isActive());
         Textures.PIPE_OUT_OVERLAY.renderSided(workableHandler.getVentingSide(), renderState, translation, pipeline);
@@ -98,7 +99,7 @@ public abstract class SteamMetaTileEntity extends MetaTileEntity {
 
     public ModularUI.Builder createUITemplate(EntityPlayer player) {
         return ModularUI.builder(BRONZE_BACKGROUND_TEXTURE, 176, 166)
-            .widget(0, new LabelWidget(6, 6, getMetaFullname()))
+            .widget(0, new LabelWidget(6, 6, getMetaFullName()))
             .bindPlayerInventory(player.inventory, 2, BRONZE_SLOT_BACKGROUND_TEXTURE);
     }
 }

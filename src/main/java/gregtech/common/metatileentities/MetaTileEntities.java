@@ -29,6 +29,7 @@ import gregtech.common.metatileentities.steam.boiler.SteamCoalBoiler;
 import gregtech.common.metatileentities.steam.boiler.SteamLavaBoiler;
 import gregtech.common.metatileentities.steam.boiler.SteamSolarBoiler;
 import gregtech.common.metatileentities.storage.MetaTileEntityChest;
+import gregtech.common.metatileentities.storage.MetaTileEntityTank;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
 @SuppressWarnings("WeakerAccess")
@@ -141,6 +142,13 @@ public class MetaTileEntities {
     public static MetaTileEntityChest STAINLESS_STEEL_CHEST;
     public static MetaTileEntityChest TITANIUM_CHEST;
     public static MetaTileEntityChest TUNGSTENSTEEL_CHEST;
+
+    public static MetaTileEntityTank WOODEN_TANK;
+    public static MetaTileEntityTank BRONZE_TANK;
+    public static MetaTileEntityTank STEEL_TANK;
+    public static MetaTileEntityTank STAINLESS_STEEL_TANK;
+    public static MetaTileEntityTank TITANIUM_TANK;
+    public static MetaTileEntityTank TUNGSTENSTEEL_TANK;
 
     public static void init() {
         GTLog.logger.info("Registering MetaTileEntities");
@@ -479,10 +487,18 @@ public class MetaTileEntities {
             GregTechAPI.registerMetaTileEntity(700 + 10 * i + 6, ROTOR_HOLDER[i]);
         }
 
-        WOODEN_CHEST = GregTechAPI.registerMetaTileEntity(801, new MetaTileEntityChest("wooden_chest", 0xFFFFFF, 27));
-        BRONZE_CHEST = GregTechAPI.registerMetaTileEntity(802, new MetaTileEntityChest("bronze_chest", Materials.Bronze.materialRGB, 36));
-        STEEL_CHEST = GregTechAPI.registerMetaTileEntity(803, new MetaTileEntityChest("steel_chest", Materials.Steel.materialRGB, 45));
-        TITANIUM_CHEST = GregTechAPI.registerMetaTileEntity(804, new MetaTileEntityChest("titanium_chest", Materials.Titanium.materialRGB, 54));
-        TUNGSTENSTEEL_CHEST = GregTechAPI.registerMetaTileEntity(805, new MetaTileEntityChest("tungstensteel_chest", Materials.TungstenSteel.materialRGB, 63));
+        WOODEN_CHEST = GregTechAPI.registerMetaTileEntity(801, new MetaTileEntityChest("wooden_chest", Materials.Wood, 27));
+        BRONZE_CHEST = GregTechAPI.registerMetaTileEntity(802, new MetaTileEntityChest("bronze_chest", Materials.Bronze, 36));
+        STEEL_CHEST = GregTechAPI.registerMetaTileEntity(803, new MetaTileEntityChest("steel_chest", Materials.Steel, 45));
+        TITANIUM_CHEST = GregTechAPI.registerMetaTileEntity(804, new MetaTileEntityChest("titanium_chest", Materials.Titanium, 54));
+        TUNGSTENSTEEL_CHEST = GregTechAPI.registerMetaTileEntity(805, new MetaTileEntityChest("tungstensteel_chest", Materials.TungstenSteel, 63));
+
+        WOODEN_TANK = GregTechAPI.registerMetaTileEntity(811, new MetaTileEntityTank("wooden_tank", Materials.Wood, 4000));
+        BRONZE_TANK = GregTechAPI.registerMetaTileEntity(812, new MetaTileEntityTank("bronze_tank", Materials.Bronze,8000));
+        STEEL_TANK = GregTechAPI.registerMetaTileEntity(813, new MetaTileEntityTank("steel_tank", Materials.Steel, 16000));
+        TITANIUM_TANK = GregTechAPI.registerMetaTileEntity(814, new MetaTileEntityTank("titanium_tank", Materials.Titanium, 32000));
+        TUNGSTENSTEEL_TANK = GregTechAPI.registerMetaTileEntity(815, new MetaTileEntityTank("tungstensteel_tank", Materials.TungstenSteel, 64000));
+
     }
+
 }

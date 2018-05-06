@@ -2595,6 +2595,8 @@ gregtech.machine.rotor_holder.zpm.name=Rotor Holder (ZPM)
 gregtech.machine.rotor_holder.uv.name=Rotor Holder (UV)
 gregtech.machine.rotor_holder.max.name=Rotor Holder (MAX)
 
+gregtech.machine.fluid_tank.fluid=Contains %s mb of %s
+
 gregtech.recipe.total=Total: %d EU
 gregtech.recipe.eu=Usage: %d EU/t
 gregtech.recipe.duration=Duration: %.1f secs

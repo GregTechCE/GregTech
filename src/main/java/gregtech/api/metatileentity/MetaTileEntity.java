@@ -122,6 +122,19 @@ public abstract class MetaTileEntity {
     }
 
     /**
+     * ItemStack currently being rendered by this meta tile entity
+     * Use this to obtain itemstack-specific data like contained fluid, painting color
+     * Generally useful in combination with {@link #writeItemStackData(net.minecraft.nbt.NBTTagCompound)}
+     */
+    @SideOnly(Side.CLIENT)
+    protected ItemStack renderContextStack;
+
+    @SideOnly(Side.CLIENT)
+    public void setRenderContextStack(ItemStack itemStack) {
+        this.renderContextStack = itemStack;
+    }
+
+    /**
      * Renders this meta tile entity
      * Note that you shouldn't refer to world-related information in this method, because it
      * will be called on ItemStacks too
@@ -137,24 +150,15 @@ public abstract class MetaTileEntity {
         }
     }
 
-    public final String getMetaName() {
-        return "gregtech.machine." + metaTileEntityId;
-    }
-
-    public final String getMetaFullname() {
-        return "gregtech.machine." + metaTileEntityId + ".name";
-    }
-
-    /**
-     * Adds a trait to this meta tile entity
-     * traits are objects linked with meta tile entity and performing certian
-     * actions. usually traits implement capabilities
-     * @param trait trait object to add
-     * @return index of trait in list
-     */
-    int addMetaTileEntityTrait(MTETrait trait) {
-        this.mteTraits.add(trait);
-        return mteTraits.size() - 1;
+    @SideOnly(Side.CLIENT)
+    public int getPaintingColorForRendering() {
+        if(getWorld() == null && renderContextStack != null) {
+            NBTTagCompound tagCompound = renderContextStack.getTagCompound();
+            if(tagCompound != null && tagCompound.hasKey("PaintingColor", NBT.TAG_INT)) {
+                return tagCompound.getInteger("PaintingColor");
+            }
+        }
+        return paintingColor;
     }
 
     /**
@@ -176,6 +180,26 @@ public abstract class MetaTileEntity {
         if(this.paintingColor != 0xFFFFFFFF) { //for machines to stack
             itemStack.setInteger("PaintingColor", this.paintingColor);
         }
+    }
+
+    public final String getMetaName() {
+        return "gregtech.machine." + metaTileEntityId;
+    }
+
+    public final String getMetaFullName() {
+        return "gregtech.machine." + metaTileEntityId + ".name";
+    }
+
+    /**
+     * Adds a trait to this meta tile entity
+     * traits are objects linked with meta tile entity and performing certian
+     * actions. usually traits implement capabilities
+     * @param trait trait object to add
+     * @return index of trait in list
+     */
+    int addMetaTileEntityTrait(MTETrait trait) {
+        this.mteTraits.add(trait);
+        return mteTraits.size() - 1;
     }
 
     protected IItemHandlerModifiable createImportItemHandler() {
@@ -289,7 +313,24 @@ public abstract class MetaTileEntity {
         return FULL_CUBE_COLLISION;
     }
 
+    /**
+     * @return tool required to dismantle this meta tile entity properly
+     */
+    public String getHarvestTool() {
+        return "wrench";
+    }
 
+    /**
+     * @return minimal level of tool required to dismantle this meta tile entity properly
+     */
+    public int getHarvestLevel() {
+        return 1;
+    }
+
+    /**
+     * @return true if this meta tile entity should serialze it's export and import inventories
+     * Useful when you use your own unified inventory and don't need these dummies to be saved
+     */
     protected boolean shouldSerializeInventories() {
         return true;
     }
@@ -368,8 +409,10 @@ public abstract class MetaTileEntity {
     }
 
     public boolean hasCapability(Capability<?> capability, EnumFacing side) {
-        if(capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY ||
-            capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+        if((capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY &&
+            getFluidInventory().getTankProperties().length > 0) ||
+            (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY &&
+            getItemInventory().getSlots() > 0))
             return true;
         for(MTETrait mteTrait : this.mteTraits) {
             if(mteTrait.getImplementingCapability() == capability)
@@ -379,9 +422,11 @@ public abstract class MetaTileEntity {
     }
 
     public <T> T getCapability(Capability<T> capability, EnumFacing side) {
-        if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) {
+        if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY &&
+            getFluidInventory().getTankProperties().length > 0) {
             return CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY.cast(getFluidInventory());
-        } else if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
+        } else if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY &&
+            getItemInventory().getSlots() > 0) {
             return CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.cast(getItemInventory());
         }
         for(MTETrait mteTrait : this.mteTraits) {
@@ -608,11 +653,6 @@ public abstract class MetaTileEntity {
 
     public int getPaintingColor() {
         return paintingColor;
-    }
-
-    @SideOnly(Side.CLIENT)
-    public int getPaintingColorForRendering() {
-        return GTUtility.convertRGBtoOpaqueRGBA(getPaintingColor());
     }
 
     public IItemHandler getItemInventory() {

@@ -1,8 +1,10 @@
 package gregtech.common.metatileentities.storage;
 
+import codechicken.lib.colour.ColourRGBA;
 import codechicken.lib.render.CCRenderState;
 import codechicken.lib.render.pipeline.ColourMultiplier;
 import codechicken.lib.render.pipeline.IVertexOperation;
+import codechicken.lib.vec.Cuboid6;
 import codechicken.lib.vec.Matrix4;
 import gregtech.api.gui.GuiTextures;
 import gregtech.api.gui.ModularUI;
@@ -10,50 +12,74 @@ import gregtech.api.gui.ModularUI.Builder;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.MetaTileEntityHolder;
 import gregtech.api.render.Textures;
+import gregtech.api.unification.material.type.SolidMaterial;
 import gregtech.api.util.GTUtility;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraftforge.items.IItemHandlerModifiable;
+import net.minecraft.util.NonNullList;
 import net.minecraftforge.items.ItemStackHandler;
 import org.apache.commons.lang3.ArrayUtils;
 
 public class MetaTileEntityChest extends MetaTileEntity {
 
-    private final int colorRGB;
-    private final int inventorySize;
+    private static final Cuboid6[] CHEST_COLLISION = new Cuboid6[] {new Cuboid6(1 / 16.0, 0 / 16.0, 1 / 16.0, 15 / 16.0, 14 / 16.0, 15 / 16.0)};
 
-    public MetaTileEntityChest(String metaTileEntityId, int colorRGB, int inventorySize) {
+    private final SolidMaterial material;
+    private final int inventorySize;
+    private ItemStackHandler inventory;
+
+    public MetaTileEntityChest(String metaTileEntityId, SolidMaterial material, int inventorySize) {
         super(metaTileEntityId);
-        this.colorRGB = colorRGB;
+        this.material = material;
         this.inventorySize = inventorySize;
         initializeInventory();
     }
 
     @Override
     public MetaTileEntity createMetaTileEntity(MetaTileEntityHolder holder) {
-        return new MetaTileEntityChest(metaTileEntityId, colorRGB, inventorySize);
+        return new MetaTileEntityChest(metaTileEntityId, material, inventorySize);
+    }
+
+    @Override
+    public String getHarvestTool() {
+        return material.toString().contains("wood") ? "axe" : "pickaxe";
+    }
+
+    @Override
+    public Cuboid6[] getCollisionBox() {
+        return CHEST_COLLISION;
     }
 
     @Override
     protected void initializeInventory() {
         super.initializeInventory();
-        this.itemInventory = new ItemStackHandler(inventorySize);
+        this.inventory = new ItemStackHandler(inventorySize);
+        this.itemInventory = inventory;
+    }
+
+    @Override
+    public void clearMachineInventory(NonNullList<ItemStack> itemBuffer) {
+        clearInventory(itemBuffer, inventory);
     }
 
     @Override
     public TextureAtlasSprite getParticleTexture() {
-        return colorRGB == 0xFFFFFF ? Textures.WOODEN_CHEST.getParticleTexture() :
+        return material.toString().contains("wood") ? Textures.WOODEN_CHEST.getParticleTexture() :
             Textures.METAL_CHEST.getParticleTexture();
     }
 
     @Override
     public void renderMetaTileEntity(CCRenderState renderState, Matrix4 translation, IVertexOperation[] pipeline) {
-        if(colorRGB == 0xFFFFFF) {
-            Textures.WOODEN_CHEST.render(renderState, translation, pipeline, getFrontFacing());
+        if(material.toString().contains("wood")) {
+            ColourMultiplier multiplier = new ColourMultiplier(GTUtility.convertRGBtoOpaqueRGBA(getPaintingColorForRendering()));
+            Textures.WOODEN_CHEST.render(renderState, translation, ArrayUtils.add(pipeline, multiplier), getFrontFacing());
         } else {
-            Textures.METAL_CHEST.render(renderState, translation, ArrayUtils.add(pipeline,
-                new ColourMultiplier(GTUtility.convertRGBtoOpaqueRGBA(colorRGB))), getFrontFacing());
+            ColourMultiplier multiplier = new ColourMultiplier(ColourRGBA.multiply(
+                GTUtility.convertRGBtoOpaqueRGBA(material.materialRGB),
+                GTUtility.convertRGBtoOpaqueRGBA(getPaintingColorForRendering())));
+            Textures.METAL_CHEST.render(renderState, translation, ArrayUtils.add(pipeline, multiplier), getFrontFacing());
         }
     }
 
@@ -63,8 +89,7 @@ public class MetaTileEntityChest extends MetaTileEntity {
             18 + inventorySize * 2 + 94)
             .label(5, 5, getMetaName());
         for(int i = 0; i < inventorySize; i++) {
-            builder.slot((IItemHandlerModifiable) itemInventory, i,
-                8 + (i % 9) * 18, 18 + (i / 9) * 18, GuiTextures.SLOT);
+            builder.slot(inventory, i, 8 + (i % 9) * 18, 18 + (i / 9) * 18, GuiTextures.SLOT);
         }
         builder.bindPlayerInventory(entityPlayer.inventory, 18 + inventorySize * 2 + 12);
         return builder.build(getHolder(), entityPlayer);
@@ -73,14 +98,14 @@ public class MetaTileEntityChest extends MetaTileEntity {
     @Override
     public NBTTagCompound writeToNBT(NBTTagCompound data) {
         super.writeToNBT(data);
-        data.setTag("Inventory", ((ItemStackHandler) itemInventory).serializeNBT());
+        data.setTag("Inventory", inventory.serializeNBT());
         return data;
     }
 
     @Override
     public void readFromNBT(NBTTagCompound data) {
         super.readFromNBT(data);
-        ((ItemStackHandler) this.itemInventory).deserializeNBT(data.getCompoundTag("Inventory"));
+        this.inventory.deserializeNBT(data.getCompoundTag("Inventory"));
     }
 
     @Override

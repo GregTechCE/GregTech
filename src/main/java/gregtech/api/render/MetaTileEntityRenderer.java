@@ -96,7 +96,9 @@ public class MetaTileEntityRenderer implements ICCBlockRenderer, IItemRenderer, 
         CCRenderState renderState = CCRenderState.instance();
         renderState.reset();
         renderState.startDrawing(GL11.GL_QUADS, DefaultVertexFormats.ITEM);
+        metaTileEntity.setRenderContextStack(stack);
         metaTileEntity.renderMetaTileEntity(renderState, new Matrix4(), new IVertexOperation[0]);
+        metaTileEntity.setRenderContextStack(null);
         renderState.draw();
         GlStateManager.disableBlend();
     }
