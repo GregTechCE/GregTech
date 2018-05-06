@@ -7,10 +7,17 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.resources.I18n;
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.NonNullList;
+import net.minecraft.world.World;
+
+import javax.annotation.Nullable;
+import java.util.Arrays;
+import java.util.List;
 
 public class VariantBlock<T extends Enum<T> & IStringSerializable> extends Block {
 
@@ -51,6 +58,16 @@ public class VariantBlock<T extends Enum<T> & IStringSerializable> extends Block
         this.VARIANT = PropertyEnum.create("variant", enumClass);
         this.VALUES = enumClass.getEnumConstants();
         return new BlockStateContainer(this, VARIANT);
+    }
+
+    @Override
+    public void addInformation(ItemStack stack, @Nullable World player, List<String> tooltip, ITooltipFlag advanced) {
+        String unlocalizedVariantTooltip = getUnlocalizedName() + ".tooltip";
+        if (I18n.hasKey(unlocalizedVariantTooltip))
+            tooltip.addAll(Arrays.asList(I18n.format(unlocalizedVariantTooltip).split("/n")));
+        String unlocalizedTooltip = stack.getUnlocalizedName() + ".tooltip";
+        if (I18n.hasKey(unlocalizedTooltip))
+            tooltip.addAll(Arrays.asList(I18n.format(unlocalizedTooltip).split("/n")));
     }
 
     @Override
