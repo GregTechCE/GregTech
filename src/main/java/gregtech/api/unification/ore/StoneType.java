@@ -1,13 +1,13 @@
 package gregtech.api.unification.ore;
 
-import java.util.EnumMap;
-import java.util.function.Supplier;
-
 import gregtech.api.unification.material.type.DustMaterial;
 import gregtech.api.util.Condition;
 import gregtech.api.util.GTControlledRegistry;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.EnumFacing;
+
+import java.util.EnumMap;
+import java.util.function.Supplier;
 
 /**
  * For ore generation
@@ -148,7 +148,7 @@ public class StoneType implements Comparable<StoneType> {
         for (StoneType stoneType : STONE_TYPE_REGISTRY.getObjectsWithIds()) {
             if (stoneType.conditioin.isTrue(blockState)) return stoneType;
         }
-        return StoneTypes._NULL;
+        return StoneTypes.STONE; //return stone if nothing did match
     }
 
 }

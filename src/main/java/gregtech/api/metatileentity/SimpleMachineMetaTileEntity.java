@@ -34,7 +34,7 @@ public class SimpleMachineMetaTileEntity extends WorkableTieredMetaTileEntity {
     private ItemStackHandler chargerInventory;
     private EnumFacing outputFacing;
 
-    private FluidHandlerProxy[] sidedTankOverrides;
+    private FluidHandlerProxy[] sidedTankOverrides = new FluidHandlerProxy[6];
     private boolean autoOutputItems;
     private boolean autoOutputFluids;
 
