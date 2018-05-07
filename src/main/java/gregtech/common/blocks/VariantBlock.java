@@ -62,9 +62,11 @@ public class VariantBlock<T extends Enum<T> & IStringSerializable> extends Block
 
     @Override
     public void addInformation(ItemStack stack, @Nullable World player, List<String> tooltip, ITooltipFlag advanced) {
+        //tier less tooltip like: tile.turbine_casing.tooltip
         String unlocalizedVariantTooltip = getUnlocalizedName() + ".tooltip";
         if (I18n.hasKey(unlocalizedVariantTooltip))
             tooltip.addAll(Arrays.asList(I18n.format(unlocalizedVariantTooltip).split("/n")));
+        //item specific tooltip: tile.turbine_casing.bronze_gearbox.tooltip
         String unlocalizedTooltip = stack.getUnlocalizedName() + ".tooltip";
         if (I18n.hasKey(unlocalizedTooltip))
             tooltip.addAll(Arrays.asList(I18n.format(unlocalizedTooltip).split("/n")));
