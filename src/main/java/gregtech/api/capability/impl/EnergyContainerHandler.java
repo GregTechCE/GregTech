@@ -6,7 +6,6 @@ import gregtech.api.metatileentity.MTETrait;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.util.GTUtility;
 import gregtech.common.ConfigHolder;
-
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.PacketBuffer;
@@ -117,18 +116,12 @@ public class EnergyContainerHandler extends MTETrait implements IEnergyContainer
         stackInSlot = stackInSlot.copy();
         IElectricItem electricItem = stackInSlot.getCapability(IElectricItem.CAPABILITY_ELECTRIC_ITEM, null);
         if(electricItem == null || !electricItem.canProvideChargeExternally()) return;
-        double chargePercent = getEnergyStored() / (getEnergyCapacity() * 1.0);
         int machineTier = GTUtility.getTierByVoltage(Math.max(getInputVoltage(), getOutputVoltage()));
-        if(chargePercent < 0.6) {
+        if(getEnergyCanBeInserted() > 0) {
             long dischargedBy = electricItem.discharge(getEnergyCanBeInserted(), machineTier, false, true, false);
             if(dischargedBy == 0L) return;
             itemHandler.setStackInSlot(slotIndex, stackInSlot);
             addEnergy(dischargedBy);
-        } else if(chargePercent >= 0.7) {
-            long chargedBy = electricItem.charge(getEnergyStored(), machineTier, false, false);
-            if(chargedBy == 0L) return;
-            itemHandler.setStackInSlot(slotIndex, stackInSlot);
-            addEnergy(-chargedBy);
         }
     }
 

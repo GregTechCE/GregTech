@@ -9,20 +9,27 @@ import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import org.lwjgl.opengl.GL11;
-import scala.collection.parallel.ParIterableLike.Min;
 
 @SideOnly(Side.CLIENT)
 public class RenderUtil {
 
-    public static void setGlColorFromInt(int colorValue) {
+    public static void setGlColorFromInt(int colorValue, int opacity) {
         int i = (colorValue & 16711680) >> 16;
         int j = (colorValue & 65280) >> 8;
         int k = (colorValue & 255);
-        GlStateManager.color(i / 255.0f, j / 255.0f, k / 255.0f);
+        GlStateManager.color(i / 255.0f, j / 255.0f, k / 255.0f, opacity / 255.0f);
+    }
+
+    public static int getFluidColor(FluidStack fluidStack) {
+        if(fluidStack.getFluid() == FluidRegistry.WATER)
+            return 0x3094CF;
+        else if(fluidStack.getFluid() == FluidRegistry.LAVA)
+            return 0xFFD700;
+        return fluidStack.getFluid().getColor(fluidStack);
     }
 
     public static void drawFluidForGui(FluidStack contents, int tankCapacity, int startX, int startY, int widthT, int heightT) {
@@ -39,8 +46,9 @@ public class RenderUtil {
         if (scaledAmount > heightT) {
             scaledAmount = heightT;
         }
+        GlStateManager.enableBlend();
         Minecraft.getMinecraft().renderEngine.bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
-        setGlColorFromInt(fluidColor);
+        setGlColorFromInt(fluidColor, 200);
 
         final int xTileCount = widthT / 16;
         final int xRemainder = widthT - xTileCount * 16;
@@ -63,6 +71,7 @@ public class RenderUtil {
                 }
             }
         }
+        GlStateManager.disableBlend();
     }
 
     private static void drawFluidTexture(double xCoord, double yCoord, TextureAtlasSprite textureSprite, int maskTop, int maskRight, double zLevel) {

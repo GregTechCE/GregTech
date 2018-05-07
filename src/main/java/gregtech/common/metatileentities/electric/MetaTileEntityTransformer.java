@@ -117,11 +117,13 @@ public class MetaTileEntityTransformer extends TieredMetaTileEntity {
             if(getWorld().isRemote)
                 return true;
             if(isTransformUp) {
-                playerIn.sendMessage(new TextComponentTranslation("machine.transformer.transform_down"));
+                playerIn.sendStatusMessage(new TextComponentTranslation("gregtech.machine.transformer.transform_down",
+                    GTValues.VN[getTier()], GTValues.VN[getTier() - 1]), true);
                 setTransformUp(false);
                 return true;
             } else {
-                playerIn.sendMessage(new TextComponentTranslation("machine.transformer.transform_up"));
+                playerIn.sendStatusMessage(new TextComponentTranslation("gregtech.machine.transformer.transform_up",
+                    GTValues.VN[getTier() - 1], GTValues.VN[getTier()]), true);
                 setTransformUp(true);
                 return true;
             }

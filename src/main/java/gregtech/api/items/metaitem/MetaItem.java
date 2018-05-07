@@ -10,6 +10,7 @@ import gregtech.api.capability.impl.CombinedCapabilityProvider;
 import gregtech.api.capability.impl.ElectricItem;
 import gregtech.api.capability.impl.SimpleThermalFluidHandlerItemStack;
 import gregtech.api.capability.impl.ThermalFluidHandlerItemStack;
+import gregtech.api.gui.resources.RenderUtil;
 import gregtech.api.items.OreDictNames;
 import gregtech.api.items.metaitem.stats.*;
 import gregtech.api.unification.OreDictUnifier;
@@ -42,6 +43,7 @@ import net.minecraftforge.fluids.capability.IFluidHandlerItem;
 import net.minecraftforge.fluids.capability.IFluidTankProperties;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.items.ItemHandlerHelper;
 import net.minecraftforge.oredict.OreDictionary;
 import org.apache.commons.lang3.Validate;
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -129,10 +131,11 @@ public abstract class MetaItem<T extends MetaItem<?>.MetaValueItem> extends Item
 
     @SideOnly(Side.CLIENT)
     protected int getColorForItemStack(ItemStack stack, int tintIndex) {
-        IFluidHandlerItem fluidContainerItem = stack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY, null);
+        IFluidHandlerItem fluidContainerItem = ItemHandlerHelper.copyStackWithSize(stack, 1)
+            .getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY, null);
         if(tintIndex == 0 && fluidContainerItem != null) {
             FluidStack fluidStack = fluidContainerItem.drain(Integer.MAX_VALUE, false);
-            return fluidStack == null ? 0xFFFFFF : fluidStack.getFluid().getColor(fluidStack);
+            return fluidStack == null ? 0x666666 : RenderUtil.getFluidColor(fluidStack);
         }
         return 0xFFFFFF;
     }
@@ -378,7 +381,8 @@ public abstract class MetaItem<T extends MetaItem<?>.MetaValueItem> extends Item
     public String getItemStackDisplayName(ItemStack stack) {
         if (stack.getItemDamage() >= metaItemOffset) {
             T item = getItem(stack);
-            IFluidHandlerItem fluidHandlerItem = stack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY, null);
+            IFluidHandlerItem fluidHandlerItem = ItemHandlerHelper.copyStackWithSize(stack, 1)
+                .getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY, null);
             if(fluidHandlerItem != null) {
                 FluidStack fluidInside = fluidHandlerItem.drain(Integer.MAX_VALUE, false);
                 String name = fluidInside == null ? "metaitem.fluid_cell.empty" : fluidInside.getUnlocalizedName();
@@ -407,7 +411,8 @@ public abstract class MetaItem<T extends MetaItem<?>.MetaValueItem> extends Item
                     electricItem.getTier()));
             }
 
-            IFluidHandlerItem fluidHandler = itemStack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY, null);
+            IFluidHandlerItem fluidHandler = ItemHandlerHelper.copyStackWithSize(itemStack, 1)
+                .getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY, null);
             if (fluidHandler != null) {
                 IFluidTankProperties fluidTankProperties = fluidHandler.getTankProperties()[0];
                 FluidStack fluid = fluidTankProperties.getContents();

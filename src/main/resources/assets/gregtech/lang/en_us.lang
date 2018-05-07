@@ -2058,6 +2058,12 @@ gregtech.machine.charger.zpm.name=ZPM Voltage Battery Charger
 gregtech.machine.charger.uv.name=Ultimate Voltage Battery Charger
 gregtech.machine.charger.max.name=MAX Voltage Battery Charger
 
+#General machinery
+gregtech.machine.transformer.transform_down=Transforming %s -> 4 %s (upper voltage split)
+gregtech.machine.transformer.transform_up=Transforming 4 %s -> %s (lower voltage combine)
+gregtech.machine.basic.output_override.reset=Output filter: all tanks.
+gregtech.machine.basic.output_override.set=Output filter: tank #%s.
+
 # Achievement ores
 achievement.Naquadah=Find Naquadah Ore
 achievement.Naquadah.desc=Height: 10-60, Chance: 10, End
@@ -2604,11 +2610,17 @@ gregtech.recipe.amperage=Amperage: %d
 gregtech.recipe.not_consumed=Not consumed in process
 gregtech.recipe.chance=Chance: %s%%
 
+gregtech.fluid.click_to_fill=§7Click with a empty fluid container to fill it from tank.
+gregtech.fluid.click_to_fill.shift=§7(Shift-clicking will fill all containers in your hand)
+
+gregtech.fluid.click_to_empty=§7Click with a filled fluid container to empty in into tank.
+gregtech.fluid.click_to_empty.shift=§7(Shift-clicking will empty all containers in your hand)
+
 gregtech.fluid.empty=Empty
 gregtech.fluid.amount=§7%,d/%,d
-gregtech.fluid.temperature=§7%dK
-gregtech.fluid.state_gas=§7Gaseous
-gregtech.fluid.state_liquid=§7Liquid
+gregtech.fluid.temperature=§7Temperature: %dK
+gregtech.fluid.state_gas=§7State: Gaseous
+gregtech.fluid.state_liquid=§7State: Liquid
 gregtech.gui.fuel_amount=Fuel Amount:
 gregtech.gui.fluid_amount=Fluid Amount:
 

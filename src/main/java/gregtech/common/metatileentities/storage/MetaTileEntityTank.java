@@ -22,8 +22,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants.NBT;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
-import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
-import net.minecraftforge.fluids.capability.IFluidHandlerItem;
+import net.minecraftforge.fluids.FluidUtil;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -123,52 +122,7 @@ public class MetaTileEntityTank extends MetaTileEntity {
 
     @Override
     public boolean onRightClick(EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
-        ItemStack stackInHand = playerIn.getHeldItem(hand);
-        if(stackInHand.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY, null)) {
-
-            ItemStack resultStack = stackInHand.copy();
-            resultStack.setCount(1);
-            IFluidHandlerItem fluidHandlerItem = resultStack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY, null);
-
-            if(getWorld().isRemote) {
-                return true;
-            }
-
-            FluidStack fluidInContainer = fluidHandlerItem.drain(fluidTank.getCapacity() - fluidTank.getFluidAmount(), true);
-            if(fluidInContainer != null && fluidInContainer.amount > 0 &&
-                fluidTank.fill(fluidInContainer, false) == fluidInContainer.amount) {
-                if(!setFluidContainer(fluidHandlerItem, playerIn, hand, stackInHand))
-                    return false;
-                fluidTank.fill(fluidInContainer, true);
-                return true;
-            }
-
-            if(fluidTank.getFluid() != null) {
-                int amountFilled = fluidHandlerItem.fill(fluidTank.getFluid(), true);
-                if(amountFilled > 0 && fluidTank.drain(amountFilled, false) != null) {
-                    if(!setFluidContainer(fluidHandlerItem, playerIn, hand, stackInHand))
-                        return false;
-                    fluidTank.drain(amountFilled, true);
-                    return true;
-                }
-            }
-
-        }
-        return false;
-    }
-
-    private static boolean setFluidContainer(IFluidHandlerItem fluidHandlerItem, EntityPlayer playerIn, EnumHand hand, ItemStack stackInHand) {
-        if(playerIn.capabilities.isCreativeMode)
-            return true;
-        ItemStack newContainer = fluidHandlerItem.getContainer();
-        if(!newContainer.isEmpty() && !playerIn.inventory.addItemStackToInventory(newContainer)) {
-            //if we can't insert remaining fluid container item into inventory, just return
-            return false;
-        }
-        stackInHand.shrink(1);
-        playerIn.setHeldItem(hand, stackInHand);
-        playerIn.openContainer.detectAndSendChanges();
-        return true;
+       return getWorld().isRemote || FluidUtil.interactWithFluidHandler(playerIn, hand, fluidTank);
     }
 
     @Override

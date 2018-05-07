@@ -4,17 +4,13 @@ import gregtech.api.GTValues;
 import gregtech.api.GregTechAPI;
 import gregtech.api.unification.material.Materials;
 import gregtech.common.cable.tile.TileEntityCable;
-import gregtech.common.metatileentities.electric.MetaTileEntityMacerator;
+import gregtech.common.metatileentities.electric.*;
 import gregtech.api.metatileentity.MetaTileEntityHolder;
 import gregtech.api.metatileentity.SimpleGeneratorMetaTileEntity;
 import gregtech.api.metatileentity.SimpleMachineMetaTileEntity;
 import gregtech.api.recipes.RecipeMaps;
 import gregtech.api.render.Textures;
 import gregtech.api.util.GTLog;
-import gregtech.common.metatileentities.electric.MetaTileEntityBatteryBuffer;
-import gregtech.common.metatileentities.electric.MetaTileEntityCharger;
-import gregtech.common.metatileentities.electric.MetaTileEntityHull;
-import gregtech.common.metatileentities.electric.MetaTileEntityTransformer;
 import gregtech.common.metatileentities.electric.multiblockpart.MetaTileEntityEnergyHatch;
 import gregtech.common.metatileentities.electric.multiblockpart.MetaTileEntityFluidHatch;
 import gregtech.common.metatileentities.electric.multiblockpart.MetaTileEntityItemBus;
@@ -149,6 +145,9 @@ public class MetaTileEntities {
     public static MetaTileEntityTank STAINLESS_STEEL_TANK;
     public static MetaTileEntityTank TITANIUM_TANK;
     public static MetaTileEntityTank TUNGSTENSTEEL_TANK;
+
+    //MISC MACHINES SECTION
+    public static MetaTileEntityPump[] PUMP = new MetaTileEntityPump[GTValues.V.length - 1];
 
     public static void init() {
         GTLog.logger.info("Registering MetaTileEntities");
@@ -499,6 +498,13 @@ public class MetaTileEntities {
         TITANIUM_TANK = GregTechAPI.registerMetaTileEntity(814, new MetaTileEntityTank("titanium_tank", Materials.Titanium, 32000));
         TUNGSTENSTEEL_TANK = GregTechAPI.registerMetaTileEntity(815, new MetaTileEntityTank("tungstensteel_tank", Materials.TungstenSteel, 64000));
 
+        for(int i = 0; i < GTValues.V.length; i++) {
+            String voltageName = GTValues.VN[i].toLowerCase();
+            if(i > 0) {
+                PUMP[i - 1] = new MetaTileEntityPump("pump." + voltageName, i);
+                GregTechAPI.registerMetaTileEntity(900 + 10 * (i - 1), PUMP[i - 1]);
+            }
+        }
     }
 
 }

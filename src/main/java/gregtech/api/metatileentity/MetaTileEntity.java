@@ -28,11 +28,12 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.Constants.NBT;
+import net.minecraftforge.fluids.FluidActionResult;
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.FluidUtil;
 import net.minecraftforge.fluids.IFluidTank;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
-import net.minecraftforge.fluids.capability.IFluidHandlerItem;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.*;
@@ -439,49 +440,38 @@ public abstract class MetaTileEntity {
 
     public boolean fillInternalTankFromFluidContainer(IItemHandlerModifiable importItems, IItemHandlerModifiable exportItems, int inputSlot, int outputSlot) {
         ItemStack inputContainerStack = importItems.extractItem(inputSlot, 1, true);
-        IFluidHandlerItem fluidHandler = inputContainerStack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY, null);
-        if(fluidHandler == null) return false; //if not fluid container, return
-        FluidStack fluidDrained = fluidHandler.drain(Integer.MAX_VALUE, false);
-        if(fluidDrained == null) return false; //if can't drain anything, return
-        int amountFilled = Math.min(fluidDrained.amount, importFluids.fill(fluidDrained, false));
-        if(amountFilled == 0) return false; //if can't put any fluid in internal tank, return
-        fluidDrained = fluidHandler.drain(amountFilled, true);
-        if(fluidDrained == null) return false; //if can't drain how much we need, return
-        ItemStack emptyStack = fluidHandler.getContainer();
-        if(!emptyStack.isEmpty()) { //if we don't have any output container, it's ok
-            ItemStack remainStack = exportItems.insertItem(outputSlot, emptyStack, false);
-            if(!remainStack.isEmpty()) return false; //if we can't insert all empty containers, return
+        FluidActionResult result = FluidUtil.tryEmptyContainer(inputContainerStack, importFluids, Integer.MAX_VALUE, null, false);
+        if(result.isSuccess()) {
+            ItemStack remainingItem = result.getResult();
+            if(!remainingItem.isEmpty() && !importItems.insertItem(outputSlot, remainingItem, true).isEmpty())
+                return false;
+            FluidUtil.tryEmptyContainer(inputContainerStack, importFluids, Integer.MAX_VALUE, null, true);
+            importItems.extractItem(inputSlot, 1, false);
+            importItems.insertItem(outputSlot, remainingItem, false);
+            return true;
         }
-        importItems.extractItem(inputSlot, 1, false);
-        importFluids.fill(fluidDrained, true);
-        return true;
+        return false;
     }
 
     public boolean fillContainerFromInternalTank(IItemHandlerModifiable importItems, IItemHandlerModifiable exportItems, int inputSlot, int outputSlot) {
         ItemStack emptyContainer = importItems.extractItem(inputSlot, 1, true);
-        IFluidHandlerItem fluidHandler = emptyContainer.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY, null);
-        if(fluidHandler == null) return false; //if not fluid container, return
-        FluidStack fluidDrained = exportFluids.drain(Integer.MAX_VALUE, false);
-        if(fluidDrained == null) return false; //if can't drain anything, return
-        int amountDrained = Math.min(fluidDrained.amount, fluidHandler.fill(fluidDrained, false));
-        if(amountDrained == 0) return false; //if can't put any fluid in container, return
-        amountDrained = fluidHandler.fill(fluidDrained, true);
-        if(amountDrained == 0) return false; //if can't drain how much we need, return
-        ItemStack filledStack = fluidHandler.getContainer();
-        if(!filledStack.isEmpty()) { //if we don't have any output container, it's ok
-            ItemStack remainStack = exportItems.insertItem(outputSlot, filledStack, false);
-            if(!remainStack.isEmpty()) return false; //if we can't insert all empty containers, return
+        FluidActionResult result = FluidUtil.tryFillContainer(emptyContainer, exportFluids, Integer.MAX_VALUE, null, false);
+        if(result.isSuccess()) {
+            ItemStack remainingItem = result.getResult();
+            if(!remainingItem.isEmpty() && !importItems.insertItem(outputSlot, remainingItem, true).isEmpty())
+                return false;
+            FluidUtil.tryFillContainer(emptyContainer, exportFluids, Integer.MAX_VALUE, null, true);
+            importItems.extractItem(inputSlot, 1, false);
+            importItems.insertItem(outputSlot, remainingItem, false);
+            return true;
         }
-        importItems.extractItem(inputSlot, 1, false);
-        exportFluids.drain(amountDrained, true);
-        return true;
+        return false;
     }
 
     public void pushFluidsIntoNearbyHandlers(EnumFacing... allowedFaces) {
         for(EnumFacing nearbyFacing : allowedFaces) {
-            TileEntity tileEntity = getWorld().getTileEntity(getPos().offset(nearbyFacing));
-            if(tileEntity == null) continue;
-            IFluidHandler fluidHandler = tileEntity.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, nearbyFacing.getOpposite());
+            IFluidHandler fluidHandler = FluidUtil.getFluidHandler(getWorld(),
+                getPos().offset(nearbyFacing), nearbyFacing.getOpposite());
             if(fluidHandler == null) continue;
             for(int tankIndex = 0; tankIndex < exportFluids.getTanks(); tankIndex++) {
                 IFluidTank tank = exportFluids.getTankAt(tankIndex);
@@ -538,9 +528,8 @@ public abstract class MetaTileEntity {
 
     public void pullFluidsFromNearbyHandlers(EnumFacing... allowedFaces) {
         for(EnumFacing nearbyFacing : allowedFaces) {
-            TileEntity tileEntity = getWorld().getTileEntity(getPos().offset(nearbyFacing));
-            if(tileEntity == null) continue;
-            IFluidHandler fluidHandler = tileEntity.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, nearbyFacing.getOpposite());
+            IFluidHandler fluidHandler = FluidUtil.getFluidHandler(getWorld(),
+                getPos().offset(nearbyFacing), nearbyFacing.getOpposite());
             if(fluidHandler == null) continue;
             FluidStack fluidStack = fluidHandler.drain(Integer.MAX_VALUE, false);
             if(fluidStack == null || fluidStack.amount == 0) continue;

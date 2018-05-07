@@ -184,8 +184,9 @@ public class RecipeMap<R extends RecipeBuilder<R>> {
         int fluidInputsCount = fluidHandler.getTanks();
         boolean invertFluids = false;
         if(itemInputsCount == 0) {
+            int tmp = itemInputsCount;
             itemInputsCount = fluidInputsCount;
-            fluidInputsCount = 0;
+            fluidInputsCount = tmp;
             invertFluids = true;
         }
         int[] inputSlotGrid = determineSlotsGrid(itemInputsCount);
@@ -200,10 +201,16 @@ public class RecipeMap<R extends RecipeBuilder<R>> {
             }
         }
         if(fluidInputsCount > 0 || invertFluids) {
-            int startSpecX = isOutputs ? 158 : 1;
-            int startSpecY = 32 - (int) (fluidInputsCount / 2.0 * 18);
-            for(int i = 0; i < fluidInputsCount; i++) {
-                addSlot(builder, startSpecX, startSpecY + 18 * i, i, itemHandler, fluidHandler, !invertFluids, isOutputs);
+            if(itemSlotsToDown >= fluidInputsCount) {
+                int startSpecX = isOutputs ? startInputsX + itemSlotsToLeft * 18 : startInputsX - 18;
+                for(int i = 0; i < fluidInputsCount; i++) {
+                    addSlot(builder, startSpecX, startInputsY + 18 * i, i, itemHandler, fluidHandler, !invertFluids, isOutputs);
+                }
+            } else {
+                int startSpecY = startInputsY + itemSlotsToDown * 18;
+                for(int i = 0; i < fluidInputsCount; i++) {
+                    addSlot(builder, startInputsX + 18 * i, startSpecY, i, itemHandler, fluidHandler, !invertFluids, isOutputs);
+                }
             }
         }
     }
@@ -213,9 +220,10 @@ public class RecipeMap<R extends RecipeBuilder<R>> {
             builder.widget(new SlotWidget(itemHandler, slotIndex, x, y, true, !isOutputs)
                 .setBackgroundTexture(getOverlaysForSlot(isOutputs, false,slotIndex == itemHandler.getSlots() - 1)));
         } else {
-            builder.widget(new TankWidget(fluidHandler.getTankAt(slotIndex), x, y - 1, 18, 18)
+            builder.widget(new TankWidget(fluidHandler.getTankAt(slotIndex), x - 1, y - 1, 18, 18)
                 .setAlwaysShowFull(true)
-                .setBackgroundTexture(getOverlaysForSlot(isOutputs, true, slotIndex == fluidHandler.getTanks() - 1)));
+                .setBackgroundTexture(getOverlaysForSlot(isOutputs, true, slotIndex == fluidHandler.getTanks() - 1))
+                .setContainerIO(isOutputs, !isOutputs));
         }
     }
 

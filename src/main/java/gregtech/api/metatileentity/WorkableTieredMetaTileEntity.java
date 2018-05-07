@@ -26,7 +26,7 @@ public abstract class WorkableTieredMetaTileEntity extends TieredMetaTileEntity 
     public WorkableTieredMetaTileEntity(String metaTileEntityId, RecipeMap<?> recipeMap, OrientedOverlayRenderer renderer, int tier) {
         super(metaTileEntityId, tier);
         this.renderer = renderer;
-        this.workable = new EnergyRecipeMapWorkableHandler(this, recipeMap, energyContainer);
+        this.workable = new EnergyRecipeMapWorkableHandler(this, recipeMap, () -> energyContainer);
         initializeInventory();
         reinitializeEnergyContainer();
     }
