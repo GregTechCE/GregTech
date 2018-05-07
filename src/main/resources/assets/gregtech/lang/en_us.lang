@@ -2096,7 +2096,7 @@ gregtech.machine.battery_buffer.max.9.name=MAX Voltage Battery Buffer
 gregtech.machine.battery_buffer.max.16.name=MAX Voltage Battery Buffer
 
 # Transformers
-gregtech.machine.transformer.tooltip=Use Soft Hammer to invert (Starts as Transform Down)
+gregtech.machine.transformer.tooltip_tool_usage=Use Soft Hammer to invert (Starts as Transform Down)
 gregtech.machine.transformer.tooltip_transform_down=Transform Down:
 gregtech.machine.transformer.message_transform_down=Transforming Down, In: %dV %d Amp, Out: %dV %d Amp
 gregtech.machine.transformer.tooltip_transform_up=Transform Up:

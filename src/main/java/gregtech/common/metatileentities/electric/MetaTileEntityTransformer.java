@@ -155,7 +155,7 @@ public class MetaTileEntityTransformer extends TieredMetaTileEntity {
         long lowerAmperage = energyContainer.getInputAmperage();
         long higherAmperage = energyContainer.getOutputAmperage();
 
-        tooltip.add(I18n.format("gregtech.machine.transformer.tooltip"));
+        tooltip.add(I18n.format("gregtech.machine.transformer.tooltip_tool_usage"));
         tooltip.add(I18n.format("gregtech.universal.tooltip.energy_storage_capacity", energyContainer.getEnergyCapacity()));
         tooltip.add(I18n.format("gregtech.machine.transformer.tooltip_transform_down"));
         tooltip.add(I18n.format("gregtech.universal.tooltip.voltage_in", higherVoltage, higherTierName));
