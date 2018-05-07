@@ -1632,11 +1632,11 @@ tile.machine_casing.maximum_voltage.name=MAX Machine Casing
 tile.machine_casing.bronze_hull.name=Bronze Hull
 tile.machine_casing.bronze_hull.tooltip=For your first Steam Machines
 tile.machine_casing.bronze_bricks_hull.name=Bricked Bronze Hull
-tile.machine_casing.bronze_brick_hull.tooltip=For your first Steam Machines
+tile.machine_casing.bronze_bricks_hull.tooltip=For your first Steam Machines
 tile.machine_casing.steel_hull.name=Steel Hull
 tile.machine_casing.steel_hull.tooltip=For improved Steam Machines
 tile.machine_casing.steel_bricks_hull.name=Bricked Steel Hull
-tile.machine_casing.steel_brick_hull.tooltip=For improved Steam Machines
+tile.machine_casing.steel_bricks_hull.tooltip=For improved Steam Machines
 
 # Turbine casing blocks
 tile.turbine_casing.bronze_gearbox.name=Bronze Gear Box Casing
@@ -1653,6 +1653,13 @@ tile.multiblock_casing.grate.name=Grate Machine Casing
 tile.multiblock_casing.assembler.name=Assembler Machine Casing
 tile.multiblock_casing.fusion.name=Fusion Machine Casing
 tile.multiblock_casing.fusion_mk2.name=Fusion Machine Casing MK II
+
+# Chests
+gregtech.machine.wooden_chest.name=Wood Chest
+gregtech.machine.bronze_chest.name=Bronze Chest
+gregtech.machine.steel_chest.name=Steel Chest
+gregtech.machine.titanium_chest.name=Titanium Chest
+gregtech.machine.tungstensteel_chest.name=Tungstensteel Chest
 
 # Granite blocks
 tile.granite.black_granite.normal.name=Black Granite
@@ -2589,6 +2596,11 @@ gregtech.machine.large_turbine.steam.name=Large Steam Turbine
 gregtech.machine.large_turbine.gas.name=Large Gas Turbine
 gregtech.machine.large_turbine.plasma.name=Large Plasma Turbine
 
+gregtech.machine.large_boiler.bronze.name=Large Bronze Boiler
+gregtech.machine.large_boiler.steel.name=Large Steel Boiler
+gregtech.machine.large_boiler.titanium.name=Large Titanium Boiler
+gregtech.machine.large_boiler.tungstensteel.name=Large Tungstensteel Boiler
+
 # Multiblock machine parts
 gregtech.machine.item_bus.import.tooltip=Item Input for Multiblocks
 
@@ -2683,8 +2695,8 @@ gregtech.machine.rotor_holder.max.name=Rotor Holder (MAX)
 
 # Universal tooltips
 gregtech.universal.tooltip.produces_steam=Produces %dmb of steam in %d ticks
-gregtech.universal.tooltip.voltage_in=Voltage IN: §a%d (%s)
-gregtech.universal.tooltip.voltage_out=Voltage OUT: §a%d (%s)
+gregtech.universal.tooltip.voltage_in=Voltage IN: §a%d §7(§a%s§7)
+gregtech.universal.tooltip.voltage_out=Voltage OUT: §a%d §7(§a%s§7)
 gregtech.universal.tooltip.energy_storage_capacity=Internal Energy Capacity: §9%d
 gregtech.universal.tooltip.amperage_in=Amperage IN: §e%d
 gregtech.universal.tooltip.amperage_in_till=Amperage IN up to: §e%d
@@ -2714,7 +2726,7 @@ gregtech.fluid.state_liquid=§7State: Liquid
 gregtech.gui.fuel_amount=Fuel Amount:
 gregtech.gui.fluid_amount=Fluid Amount:
 
-gregtech.cable.voltage=Voltage: §e%d §f(§e%s§f)
+gregtech.cable.voltage=Voltage: §a%d §7(§a%s§7)
 gregtech.cable.amperage=Amperage: §e%d
 gregtech.cable.loss_per_block=Loss per block: §c%d
 
