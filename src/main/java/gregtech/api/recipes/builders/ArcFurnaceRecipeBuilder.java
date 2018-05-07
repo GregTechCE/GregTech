@@ -9,6 +9,7 @@ import gregtech.api.recipes.RecipeMaps;
 import gregtech.api.unification.material.Materials;
 import gregtech.api.unification.material.type.FluidMaterial;
 import gregtech.api.util.ValidationResult;
+import org.apache.commons.lang3.builder.ToStringBuilder;
 
 public class ArcFurnaceRecipeBuilder extends RecipeBuilder<ArcFurnaceRecipeBuilder> {
 
@@ -72,5 +73,13 @@ public class ArcFurnaceRecipeBuilder extends RecipeBuilder<ArcFurnaceRecipeBuild
         return ValidationResult.newResult(finalizeAndValidate(),
             new Recipe(inputs, outputs, chancedOutputs, fluidInputs, fluidOutputs,
                 ImmutableMap.of(), duration, EUt, hidden, canBeBuffered, needsEmptyOutput));
+    }
+
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this)
+            .appendSuper(super.toString())
+            .append("simple", simple)
+            .toString();
     }
 }
