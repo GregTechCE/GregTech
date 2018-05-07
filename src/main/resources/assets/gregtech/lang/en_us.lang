@@ -1655,11 +1655,18 @@ tile.multiblock_casing.fusion.name=Fusion Machine Casing
 tile.multiblock_casing.fusion_mk2.name=Fusion Machine Casing MK II
 
 # Chests
-gregtech.machine.wooden_chest.name=Wood Chest
+gregtech.machine.wooden_chest.name=Wooden Chest
 gregtech.machine.bronze_chest.name=Bronze Chest
 gregtech.machine.steel_chest.name=Steel Chest
 gregtech.machine.titanium_chest.name=Titanium Chest
 gregtech.machine.tungstensteel_chest.name=Tungstensteel Chest
+
+# Tanks
+gregtech.machine.wooden_tank.name=Wooden Tank
+gregtech.machine.bronze_tank.name=Bronze Tank
+gregtech.machine.steel_tank.name=Steel Tank
+gregtech.machine.titanium_tank.name=Titanium Tank
+gregtech.machine.tungstensteel_tank.name=Tungstensteel Tank
 
 # Granite blocks
 tile.granite.black_granite.normal.name=Black Granite
@@ -2703,9 +2710,11 @@ gregtech.universal.tooltip.amperage_in_till=Amperage IN up to: §e%d
 gregtech.universal.tooltip.amperage_out=Amperage OUT: §e%d
 gregtech.universal.tooltip.amperage_out_till=Amperage OUT up to: §e%d
 gregtech.universal.tooltip.item_storage_capacity=Item Slots: %d
-gregtech.universal.tooltip.fluid_storage_capacity=Fluid Capacity: %dmb
+gregtech.universal.tooltip.fluid_storage_capacity=Fluid Capacity: %d mb
 
-gregtech.machine.fluid_tank.fluid=Contains %s mb of %sgregtech.recipe.total=Total: %d EU
+gregtech.machine.fluid_tank.fluid=Contains %s mb of %s
+
+gregtech.recipe.total=Total: %d EU
 gregtech.recipe.eu=Usage: %d EU/t
 gregtech.recipe.duration=Duration: %.1f secs
 gregtech.recipe.amperage=Amperage: %d
