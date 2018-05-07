@@ -2590,6 +2590,8 @@ gregtech.machine.large_turbine.gas.name=Large Gas Turbine
 gregtech.machine.large_turbine.plasma.name=Large Plasma Turbine
 
 # Multiblock machine parts
+gregtech.machine.item_bus.import.tooltip=Item Input for Multiblocks
+
 gregtech.machine.item_bus.import.ulv.name=Input Bus (ULV)
 gregtech.machine.item_bus.import.lv.name=Input Bus (LV)
 gregtech.machine.item_bus.import.mv.name=Input Bus (MV)
@@ -2600,6 +2602,8 @@ gregtech.machine.item_bus.import.luv.name=Input Bus (LuV)
 gregtech.machine.item_bus.import.zpm.name=Input Bus (ZPM)
 gregtech.machine.item_bus.import.uv.name=Input Bus (UV)
 gregtech.machine.item_bus.import.max.name=Input Bus (MAX)
+
+gregtech.machine.item_bus.export.tooltip=Item Output for Multiblocks
 
 gregtech.machine.item_bus.export.ulv.name=Output Bus (ULV)
 gregtech.machine.item_bus.export.lv.name=Output Bus (LV)
@@ -2612,6 +2616,8 @@ gregtech.machine.item_bus.export.zpm.name=Output Bus (ZPM)
 gregtech.machine.item_bus.export.uv.name=Output Bus (UV)
 gregtech.machine.item_bus.export.max.name=Output Bus (MAX)
 
+gregtech.machine.fluid_hatch.import.tooltip=Fluid Input for Multiblocks
+
 gregtech.machine.fluid_hatch.import.ulv.name=Input Hatch (ULV)
 gregtech.machine.fluid_hatch.import.lv.name=Input Hatch (LV)
 gregtech.machine.fluid_hatch.import.mv.name=Input Hatch (MV)
@@ -2622,6 +2628,8 @@ gregtech.machine.fluid_hatch.import.luv.name=Input Hatch (LuV)
 gregtech.machine.fluid_hatch.import.zpm.name=Input Hatch (ZPM)
 gregtech.machine.fluid_hatch.import.uv.name=Input Hatch (UV)
 gregtech.machine.fluid_hatch.import.max.name=Input Hatch (MAX)
+
+gregtech.machine.fluid_hatch.export.tooltip=Fluid Output for Multiblocks
 
 gregtech.machine.fluid_hatch.export.ulv.name=Output Hatch (ULV)
 gregtech.machine.fluid_hatch.export.lv.name=Output Hatch (LV)
@@ -2634,6 +2642,8 @@ gregtech.machine.fluid_hatch.export.zpm.name=Output Hatch (ZPM)
 gregtech.machine.fluid_hatch.export.uv.name=Output Hatch (UV)
 gregtech.machine.fluid_hatch.export.max.name=Output Hatch (MAX)
 
+gregtech.machine.energy_hatch.input.tooltip=Energy Input for Multiblocks
+
 gregtech.machine.energy_hatch.input.ulv.name=Energy Input Hatch (ULV)
 gregtech.machine.energy_hatch.input.lv.name=Energy Input Hatch (LV)
 gregtech.machine.energy_hatch.input.mv.name=Energy Input Hatch (MV)
@@ -2645,6 +2655,8 @@ gregtech.machine.energy_hatch.input.zpm.name=Energy Input Hatch (ZPM)
 gregtech.machine.energy_hatch.input.uv.name=Energy Input Hatch (UV)
 gregtech.machine.energy_hatch.input.max.name=Energy Input Hatch (MAX)
 
+gregtech.machine.energy_hatch.input.tooltip=Energy Output for Multiblocks
+
 gregtech.machine.energy_hatch.output.ulv.name=Energy Output Hatch (ULV)
 gregtech.machine.energy_hatch.output.lv.name=Energy Output Hatch (LV)
 gregtech.machine.energy_hatch.output.mv.name=Energy Output Hatch (MV)
@@ -2655,6 +2667,8 @@ gregtech.machine.energy_hatch.output.luv.name=Energy Output Hatch (LuV)
 gregtech.machine.energy_hatch.output.zpm.name=Energy Output Hatch (ZPM)
 gregtech.machine.energy_hatch.output.uv.name=Energy Output Hatch (UV)
 gregtech.machine.energy_hatch.output.max.name=Energy Output Hatch (MAX)
+
+gregtech.machine.rotor_holder.tooltip=Rotor Holder for Multiblocks/nHolds Rotor in place so it will not fly away
 
 gregtech.machine.rotor_holder.ulv.name=Rotor Holder (ULV)
 gregtech.machine.rotor_holder.lv.name=Rotor Holder (LV)
@@ -2673,8 +2687,11 @@ gregtech.universal.tooltip.voltage_in=Voltage IN: §a%d (%s)
 gregtech.universal.tooltip.voltage_out=Voltage OUT: §a%d (%s)
 gregtech.universal.tooltip.energy_storage_capacity=Internal Energy Capacity: §9%d
 gregtech.universal.tooltip.amperage_in=Amperage IN: §e%d
+gregtech.universal.tooltip.amperage_in_till=Amperage IN up to: §e%d
 gregtech.universal.tooltip.amperage_out=Amperage OUT: §e%d
+gregtech.universal.tooltip.amperage_out_till=Amperage OUT up to: §e%d
 gregtech.universal.tooltip.item_storage_capacity=Item Slots: %d
+gregtech.universal.tooltip.fluid_storage_capacity=Fluid Capacity: %dmb
 
 gregtech.machine.fluid_tank.fluid=Contains %s mb of %sgregtech.recipe.total=Total: %d EU
 gregtech.recipe.eu=Usage: %d EU/t
