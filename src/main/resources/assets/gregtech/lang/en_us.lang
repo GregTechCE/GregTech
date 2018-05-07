@@ -1630,9 +1630,13 @@ tile.machine_casing.ultra_voltage.name=UV Machine Casing
 tile.machine_casing.maximum_voltage.name=MAX Machine Casing
 
 tile.machine_casing.bronze_hull.name=Bronze Hull
+tile.machine_casing.bronze_hull.tooltip=For your first Steam Machines
 tile.machine_casing.bronze_bricks_hull.name=Bricked Bronze Hull
+tile.machine_casing.bronze_brick_hull.tooltip=For your first Steam Machines
 tile.machine_casing.steel_hull.name=Steel Hull
+tile.machine_casing.steel_hull.tooltip=For improved Steam Machines
 tile.machine_casing.steel_bricks_hull.name=Bricked Steel Hull
+tile.machine_casing.steel_brick_hull.tooltip=For improved Steam Machines
 
 # Turbine casing blocks
 tile.turbine_casing.bronze_gearbox.name=Bronze Gear Box Casing
@@ -1709,23 +1713,40 @@ tile.concrete.dark_bricks.chiseled.name=Chiseled Dark Concrete Bricks
 
 # Steam machines
 gregtech.machine.steam_boiler_coal_bronze.name=Small Steam Coal Boiler
+gregtech.machine.steam_boiler_coal_bronze.tooltip=An early way to get Steam Power
 gregtech.machine.steam_boiler_coal_steel.name=High Pressure Steam Coal Boiler
+gregtech.machine.steam_boiler_coal_steel.tooltip=Faster then the Small Steam Coal Boiler
 gregtech.machine.steam_boiler_solar_bronze.name=Steam Solar Boiler
+gregtech.machine.steam_boiler_solar_bronze.tooltip=Steam Power by Sun
 gregtech.machine.steam_boiler_lava_bronze.name=Small Steam Lava Boiler
+gregtech.machine.steam_boiler_lava_bronze.tooltip=A Boiler running off Lava
 gregtech.machine.steam_boiler_lava_steel.name=High Pressure Steam Lava Boiler
+gregtech.machine.steam_boiler_lava_steel.tooltip=Faster then Small Steam Lava Boiler
 
 gregtech.machine.steam_extractor_bronze.name=Steam Extractor
+gregtech.machine.steam_extractor_bronze.tooltip=Extracting your first Rubber
 gregtech.machine.steam_extractor_steel.name=High Pressure Steam Extractor
+gregtech.machine.steam_extractor_steel.tooltip=Extracting your second Rubber
 gregtech.machine.steam_macerator_bronze.name=Steam Macerator
+gregtech.machine.steam_macerator_bronze.tooltip=Macerating your Ores
 gregtech.machine.steam_macerator_steel.name=High Pressure Steam Macerator
+gregtech.machine.steam_macerator_steel.tooltip=Macerating your Ores
 gregtech.machine.steam_compressor_bronze.name=Steam Compressor
+gregtech.machine.steam_compressor_bronze.tooltip=Compressing Items
 gregtech.machine.steam_compressor_steel.name=High Pressure Steam Compressor
+gregtech.machine.steam_compressor_steel.tooltip=Compressing Items
 gregtech.machine.steam_hammer_bronze.name=Steam Forge Hammer
+gregtech.machine.steam_hammer_bronze.tooltip=Forge Hammer
 gregtech.machine.steam_hammer_steel.name=High Pressure Steam Forge Hammer
+gregtech.machine.steam_hammer_steel.tooltip=Forge Hammer
 gregtech.machine.steam_furnace_bronze.name=Steam Furnace
+gregtech.machine.steam_furnace_bronze.tooltip=Smelting things with Steam
 gregtech.machine.steam_furnace_steel.name=High Pressure Steam Furnace
+gregtech.machine.steam_furnace_steel.tooltip=Smelting things with compressed Steam
 gregtech.machine.steam_alloy_smelter_bronze.name=Steam Alloy Smelter
+gregtech.machine.steam_alloy_smelter_bronze.tooltip=Combination Smelter
 gregtech.machine.steam_alloy_smelter_steel.name=High Pressure Steam Alloy Smelter
+gregtech.machine.steam_alloy_smelter_steel.tooltip=Combination Smelter
 
 # Generators
 gregtech.machine.diesel_generator.lv.name=Basic Diesel Generator
@@ -2601,9 +2622,10 @@ gregtech.machine.rotor_holder.zpm.name=Rotor Holder (ZPM)
 gregtech.machine.rotor_holder.uv.name=Rotor Holder (UV)
 gregtech.machine.rotor_holder.max.name=Rotor Holder (MAX)
 
-gregtech.machine.fluid_tank.fluid=Contains %s mb of %s
+# Universal tooltips
+gregtech.universal.tooltip.produces_steam=Produces %dmb of steam in %d ticks
 
-gregtech.recipe.total=Total: %d EU
+gregtech.machine.fluid_tank.fluid=Contains %s mb of %sgregtech.recipe.total=Total: %d EU
 gregtech.recipe.eu=Usage: %d EU/t
 gregtech.recipe.duration=Duration: %.1f secs
 gregtech.recipe.amperage=Amperage: %d

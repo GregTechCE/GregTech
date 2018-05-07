@@ -33,9 +33,9 @@ public class MachineItemBlock extends ItemBlock {
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
         MetaTileEntity metaTileEntity = getMetaTileEntity(stack);
         if(metaTileEntity == null) return;
-        String descriptionLocale = metaTileEntity.getMetaName() + ".desc";
-        if(I18n.hasKey(descriptionLocale)) {
-            String[] lines = I18n.format(metaTileEntity.getMetaName() + ".desc").split("/n");
+        String tooltipLocale = metaTileEntity.getMetaName() + ".tooltip";
+        if (I18n.hasKey(tooltipLocale)) {
+            String[] lines = I18n.format(tooltipLocale).split("/n");
             tooltip.addAll(Arrays.asList(lines));
         }
         if(flagIn.isAdvanced()) {

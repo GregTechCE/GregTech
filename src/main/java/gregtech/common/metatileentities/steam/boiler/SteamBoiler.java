@@ -18,19 +18,27 @@ import gregtech.api.render.SimpleSidedCubeRenderer.RenderSide;
 import gregtech.api.render.Textures;
 import gregtech.api.util.GTUtility;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import org.apache.commons.lang3.ArrayUtils;
 
+import javax.annotation.Nullable;
+import java.util.List;
+
 public abstract class SteamBoiler extends MetaTileEntity {
 
     private static final EnumFacing[] STEAM_PUSH_DIRECTIONS = ArrayUtils.add(EnumFacing.HORIZONTALS, EnumFacing.UP);
     //public static final int DEFAULT_TEMPERATURE = 20;
+    public static final int BOILING_CYCLE_LENGTH = 25;
+    public static final int HIGH_PRESSURE_BOILING_CYCLE_LENGTH = 10;
 
     public final TextureArea BRONZE_BACKGROUND_TEXTURE;
     public final TextureArea BRONZE_SLOT_BACKGROUND_TEXTURE;
@@ -163,7 +171,7 @@ public abstract class SteamBoiler extends MetaTileEntity {
                 fillInternalTankFromFluidContainer(importItems, exportItems, 0, 0);
                 pushFluidsIntoNearbyHandlers(STEAM_PUSH_DIRECTIONS);
             }
-            if(currentTemperature >= 100 && getTimer() % (isHighPressure ? 10 : 25) == 0) {
+            if (currentTemperature >= 100 && getTimer() % getBoilingCycleLength() == 0) {
                 float additionalTempBonus = (currentTemperature - 100) / (getMaxTemperate() - 100.0f);
                 int fillAmount = baseSteamOutput + (int) (baseSteamOutput * additionalTempBonus);
                 boolean hasDrainedWater = waterFluidTank.drain(1, true) != null;
@@ -244,4 +252,14 @@ public abstract class SteamBoiler extends MetaTileEntity {
             .bindPlayerInventory(player.inventory, 8, BRONZE_SLOT_BACKGROUND_TEXTURE);
     }
 
+    private int getBoilingCycleLength() {
+        return isHighPressure ? HIGH_PRESSURE_BOILING_CYCLE_LENGTH : BOILING_CYCLE_LENGTH;
+    }
+
+    @Override
+    public void addInformation(ItemStack stack, @Nullable World player, List<String> tooltip, boolean advanced) {
+        super.addInformation(stack, player, tooltip, advanced);
+
+        tooltip.add(I18n.format("gregtech.universal.tooltip.produces_steam", baseSteamOutput, getBoilingCycleLength()));
+    }
 }
