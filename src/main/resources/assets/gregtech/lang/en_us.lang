@@ -1726,6 +1726,8 @@ tile.concrete.dark_bricks.mossy.name=Mossy Dark Concrete Bricks
 tile.concrete.dark_bricks.chiseled.name=Chiseled Dark Concrete Bricks
 
 # Steam machines
+gregtech.machine.steam_boiler.tooltip_produces=Produces %dmb of steam in %d ticks
+
 gregtech.machine.steam_boiler_coal_bronze.name=Small Steam Coal Boiler
 gregtech.machine.steam_boiler_coal_bronze.tooltip=An early way to get Steam Power
 gregtech.machine.steam_boiler_coal_steel.name=High Pressure Steam Coal Boiler
@@ -2138,9 +2140,21 @@ gregtech.machine.charger.zpm.name=ZPM Voltage Battery Charger
 gregtech.machine.charger.uv.name=Ultimate Voltage Battery Charger
 gregtech.machine.charger.max.name=MAX Voltage Battery Charger
 
-#General machinery
-gregtech.machine.transformer.transform_down=Transforming %s -> 4 %s (upper voltage split)
-gregtech.machine.transformer.transform_up=Transforming 4 %s -> %s (lower voltage combine)
+# Pumps
+gregtech.machine.pump.tooltip_range=Pumping Area: %dx%d
+gregtech.machine.pump.tooltip_speed=Pumps Fluid every %d ticks
+
+gregtech.machine.pump.lv.name=Basic Pump
+gregtech.machine.pump.mv.name=Advanced Pump
+gregtech.machine.pump.hv.name=Advanced Pump II
+gregtech.machine.pump.ev.name=Advanced Pump III
+gregtech.machine.pump.iv.name=Advanced Pump IV
+gregtech.machine.pump.luv.name=Advanced Pump V
+gregtech.machine.pump.zpm.name=Advanced Pump VI
+gregtech.machine.pump.uv.name=Advanced Pump VI
+gregtech.machine.pump.max.name=Advanced Pump VII
+
+# General machinery
 gregtech.machine.basic.output_override.reset=Output filter: all tanks.
 gregtech.machine.basic.output_override.set=Output filter: tank #%s.
 
@@ -2701,7 +2715,6 @@ gregtech.machine.rotor_holder.uv.name=Rotor Holder (UV)
 gregtech.machine.rotor_holder.max.name=Rotor Holder (MAX)
 
 # Universal tooltips
-gregtech.universal.tooltip.produces_steam=Produces %dmb of steam in %d ticks
 gregtech.universal.tooltip.voltage_in=Voltage IN: §a%d §7(§a%s§7)
 gregtech.universal.tooltip.voltage_out=Voltage OUT: §a%d §7(§a%s§7)
 gregtech.universal.tooltip.energy_storage_capacity=Internal Energy Capacity: §9%d
