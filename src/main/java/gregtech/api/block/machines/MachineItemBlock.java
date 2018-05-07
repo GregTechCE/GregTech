@@ -33,6 +33,14 @@ public class MachineItemBlock extends ItemBlock {
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
         MetaTileEntity metaTileEntity = getMetaTileEntity(stack);
         if(metaTileEntity == null) return;
+
+        //for loading tooltips that span through all tiers of a electric machine; like gregtech.machine.lathe.tooltip
+        String tierlessTooltip = metaTileEntity.getTierlessTooltipKey();
+        if (tierlessTooltip != null && I18n.hasKey(tierlessTooltip)) {
+            String[] lines = I18n.format(tierlessTooltip).split("/n");
+            tooltip.addAll(Arrays.asList(lines));
+        }
+
         String tooltipLocale = metaTileEntity.getMetaName() + ".tooltip";
         if (I18n.hasKey(tooltipLocale)) {
             String[] lines = I18n.format(tooltipLocale).split("/n");

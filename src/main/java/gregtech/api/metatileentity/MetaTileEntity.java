@@ -7,6 +7,7 @@ import codechicken.lib.texture.TextureUtils;
 import codechicken.lib.vec.Cuboid6;
 import codechicken.lib.vec.Matrix4;
 import com.google.common.base.Preconditions;
+import gregtech.api.GTValues;
 import gregtech.api.GregTechAPI;
 import gregtech.api.capability.impl.FluidHandlerProxy;
 import gregtech.api.capability.impl.FluidTankList;
@@ -42,6 +43,7 @@ import org.apache.commons.lang3.ArrayUtils;
 import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
 import java.util.function.Consumer;
 
@@ -181,6 +183,25 @@ public abstract class MetaTileEntity {
         if(this.paintingColor != 0xFFFFFFFF) { //for machines to stack
             itemStack.setInteger("PaintingColor", this.paintingColor);
         }
+    }
+
+    /**
+     * Returns tier less tooltip key if MetaTileEntity has tiers (lv, mv, ...)
+     *
+     * @return tier less tooltip key or null (if does not have tiers)
+     */
+    public final String getTierlessTooltipKey() {
+        List<String> parts = new ArrayList<>(Arrays.asList(getMetaName().split("\\.")));
+
+        boolean hadTier = false;
+        for (Iterator<String> iterator = parts.iterator(); iterator.hasNext(); ) {
+            if (GTValues.VN_LIST_LOWER_CASE.contains(iterator.next())) {
+                hadTier = true;
+                iterator.remove();
+            }
+        }
+
+        return hadTier ? String.join(".", parts) + ".tooltip" : null;
     }
 
     public final String getMetaName() {

@@ -3,6 +3,9 @@ package gregtech.api;
 import net.minecraft.world.World;
 import net.minecraftforge.oredict.OreDictionary;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 /**
  * Made for static imports, this Class is just a Helper.
  */
@@ -53,6 +56,7 @@ public class GTValues {
      * The short Names for the Voltages
      */
     public static final String[] VN = new String[]{"ULV", "LV", "MV", "HV", "EV", "IV", "LuV", "ZPM", "UV", "MAX"};
+    public static final List<String> VN_LIST_LOWER_CASE = java.util.Arrays.stream(VN).map(String::toLowerCase).collect(Collectors.toList());
 
     /**
      * The long Names for the Voltages
