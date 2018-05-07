@@ -68,7 +68,6 @@ public class MetaTileEntityEnergyHatch extends MetaTileEntityMultiblockPart impl
 
     @Override
     public void addInformation(ItemStack stack, @Nullable World player, List<String> tooltip, boolean advanced) {
-
         String tierName = GTValues.VN[getTier()];
 
         if (isExportHatch) {
@@ -78,7 +77,6 @@ public class MetaTileEntityEnergyHatch extends MetaTileEntityMultiblockPart impl
             tooltip.add(I18n.format("gregtech.universal.tooltip.voltage_in", energyContainer.getInputVoltage(), tierName));
             tooltip.add(I18n.format("gregtech.universal.tooltip.amperage_in_till", energyContainer.getInputAmperage()));
         }
-
         tooltip.add(I18n.format("gregtech.universal.tooltip.energy_storage_capacity", energyContainer.getEnergyCapacity()));
     }
 }
