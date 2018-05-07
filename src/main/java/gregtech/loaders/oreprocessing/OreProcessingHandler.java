@@ -14,6 +14,7 @@ import gregtech.api.unification.material.type.DustMaterial.MatFlags;
 import gregtech.api.unification.ore.OrePrefix;
 import gregtech.api.unification.stack.MaterialStack;
 import gregtech.api.unification.stack.UnificationEntry;
+import gregtech.api.util.GTLog;
 import gregtech.api.util.GTUtility;
 import gregtech.common.items.MetaItems;
 import net.minecraft.init.Blocks;
@@ -391,6 +392,10 @@ public class OreProcessingHandler {
                     'I', ingotStack);
             }
 
+            FluidStack fluid = ((FluidMaterial) material).getFluid(L);
+            if (fluid == null) {
+                GTLog.logger.error("METAL MATERIAL: {} DOESN'T HAVE FLUID", material);
+            }
             RecipeMaps.FLUID_SOLIDFICATION_RECIPES.recipeBuilder()
                 .notConsumable(MetaItems.SHAPE_MOLD_INGOT)
                 .fluidInputs(((FluidMaterial) material).getFluid(L))

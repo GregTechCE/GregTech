@@ -8,6 +8,7 @@ import gregtech.api.unification.material.Materials;
 import gregtech.api.util.EnumValidationResult;
 import gregtech.api.util.GTLog;
 import gregtech.api.util.ValidationResult;
+import org.apache.commons.lang3.builder.ToStringBuilder;
 
 public class AmplifierRecipeBuilder extends RecipeBuilder<AmplifierRecipeBuilder> {
 
@@ -57,5 +58,13 @@ public class AmplifierRecipeBuilder extends RecipeBuilder<AmplifierRecipeBuilder
             new Recipe(inputs, outputs, chancedOutputs, fluidInputs, fluidOutputs,
                 ImmutableMap.of("amplifierAmountOutputted", amplifierAmountOutputted),
                 duration, EUt, hidden, canBeBuffered, needsEmptyOutput));
+    }
+
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this)
+            .appendSuper(super.toString())
+            .append("amplifierAmountOutputted", amplifierAmountOutputted)
+            .toString();
     }
 }

@@ -7,6 +7,7 @@ import gregtech.api.recipes.RecipeMap;
 import gregtech.api.recipes.RecipeMaps;
 import gregtech.api.util.ValidationResult;
 import net.minecraftforge.fluids.FluidStack;
+import org.apache.commons.lang3.builder.ToStringBuilder;
 
 public class UniversalDistillationRecipeBuilder extends RecipeBuilder<UniversalDistillationRecipeBuilder> {
 
@@ -58,5 +59,13 @@ public class UniversalDistillationRecipeBuilder extends RecipeBuilder<UniversalD
         return ValidationResult.newResult(finalizeAndValidate(),
             new Recipe(inputs, outputs, chancedOutputs, fluidInputs, fluidOutputs,
                 ImmutableMap.of(), duration, EUt, hidden, canBeBuffered, needsEmptyOutput));
+    }
+
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this)
+            .appendSuper(super.toString())
+            .append("universal", universal)
+            .toString();
     }
 }
