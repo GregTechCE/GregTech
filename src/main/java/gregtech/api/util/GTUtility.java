@@ -30,11 +30,13 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.Tuple;
 import net.minecraft.util.text.TextFormatting;
+import net.minecraftforge.common.BiomeDictionary;
 import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.IFluidTank;
+import net.minecraftforge.fml.relauncher.ReflectionHelper;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.IItemHandler;
@@ -45,6 +47,7 @@ import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.*;
 import java.util.List;
+import java.util.Map.Entry;
 import java.util.function.Predicate;
 
 import static gregtech.api.GTValues.*;
@@ -272,6 +275,33 @@ public class GTUtility {
                 return (byte) (tier - 1);
         }
         return tier;
+    }
+
+    public static BiomeDictionary.Type getBiomeTypeTagByName(String name) {
+        Map<String, BiomeDictionary.Type> byName = ReflectionHelper.getPrivateValue(BiomeDictionary.Type.class, null, "byName");
+        return byName.get(name);
+    }
+
+    public static <T> T getRandomItem(Random random, List<Entry<Integer, T>> randomList) {
+        if(randomList.isEmpty())
+            return null;
+        int[] baseOffsets = new int[randomList.size()];
+        int currentIndex = 0;
+        for(int i = 0; i < randomList.size(); i++) {
+            Entry<Integer, T> entry = randomList.get(i);
+            if(entry.getKey() <= 0) {
+                throw new IllegalArgumentException("Invalid weight: " + entry.getKey());
+            }
+            currentIndex += entry.getKey();
+            baseOffsets[i] = currentIndex;
+        }
+        int randomValue = random.nextInt(currentIndex);
+        for(int i = 0; i < randomList.size(); i++) {
+            Entry<Integer, T> entry = randomList.get(i);
+            if(randomValue < baseOffsets[i])
+                return entry.getValue();
+        }
+        throw new IllegalArgumentException("Invalid weight");
     }
 
     /**

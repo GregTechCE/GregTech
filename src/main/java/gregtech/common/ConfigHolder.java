@@ -9,8 +9,11 @@ public class ConfigHolder {
     @Config.Comment("Whether to enable more verbose logging. Default: false")
     public static boolean debug = false;
 
-    @Config.Comment("Whether to add [GregTech] prefix in logger. Default: false")
-    public static boolean useLoggerPrefix = false;
+    @Config.Comment("Probability of generation of vein in 3x3x3 chunk area (1/value_here). The bigger value, the less veins you get")
+    public static int chunkOreVeinGenerationProbability = 80;
+
+    @Config.Comment("Probability of secondary vein generation in 3x3x3 chunk area.")
+    public static int chunkOreVeinSecondaryProbability = 20;
 
     @Config.Comment("Whether machines should explode when overloaded with power. Default: true")
     public static boolean doExplosions = true;
@@ -23,9 +26,11 @@ public class ConfigHolder {
     public static int flintChanceToCreateFire = 50;
 
     @Config.Comment("Recipes for machine hulls use more materials. Default: false")
+    @Config.RequiresMcRestart
     public static boolean harderMachineHulls = false;
 
     @Config.Comment("Category that contains configs for changing vanilla recipes")
+    @Config.RequiresMcRestart
     public static VanillaRecipes vanillaRecipes = new VanillaRecipes();
 
     public static class VanillaRecipes {

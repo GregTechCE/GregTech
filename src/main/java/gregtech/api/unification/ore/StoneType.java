@@ -148,7 +148,7 @@ public class StoneType implements Comparable<StoneType> {
         for (StoneType stoneType : STONE_TYPE_REGISTRY.getObjectsWithIds()) {
             if (stoneType.conditioin.isTrue(blockState)) return stoneType;
         }
-        return StoneTypes.STONE; //return stone if nothing did match
+        return StoneTypes._NULL;
     }
 
 }

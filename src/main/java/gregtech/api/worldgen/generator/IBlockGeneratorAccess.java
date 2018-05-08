@@ -2,6 +2,6 @@ package gregtech.api.worldgen.generator;
 
 public interface IBlockGeneratorAccess {
 
-    void generateBlock(int x, int y, int z);
+    boolean generateBlock(int x, int y, int z);
 
 }
