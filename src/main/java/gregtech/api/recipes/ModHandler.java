@@ -472,7 +472,12 @@ public class ModHandler {
      * Removes a Smelting Recipe
      */
     public static boolean removeFurnaceSmelting(ItemStack input) {
-        Validate.isTrue(!input.isEmpty(), "Cannot remove furnace recipe with empty input.");
+        if (input.isEmpty()) {
+            GTLog.logger.error("Cannot remove furnace recipe with empty input.");
+            GTLog.logger.error("Stacktrace:", new IllegalArgumentException());
+            RecipeMap.foundInvalidRecipe = true;
+            return false;
+        }
         for (ItemStack stack : FurnaceRecipes.instance().getSmeltingList().keySet()) {
             if (ItemStack.areItemStacksEqual(input, stack)) {
                 FurnaceRecipes.instance().getSmeltingList().remove(stack);
