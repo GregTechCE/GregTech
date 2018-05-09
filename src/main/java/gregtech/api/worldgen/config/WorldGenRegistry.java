@@ -1,6 +1,7 @@
 package gregtech.api.worldgen.config;
 
 import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import gregtech.api.GTValues;
 import gregtech.api.util.GTLog;
 import gregtech.api.worldgen.filler.IBlockFiller;
@@ -11,18 +12,23 @@ import net.minecraft.world.WorldProvider;
 import net.minecraft.world.biome.Biome;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.registry.GameRegistry;
+import org.apache.commons.io.IOUtils;
 
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.util.*;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.nio.file.*;
 import java.util.AbstractMap.SimpleEntry;
+import java.util.*;
 import java.util.Map.Entry;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 public class WorldGenRegistry {
 
+    private static final JsonParser jsonParser = new JsonParser();
     public static final WorldGenRegistry INSTANCE = new WorldGenRegistry();
     private WorldGenRegistry() {}
 
@@ -97,12 +103,52 @@ public class WorldGenRegistry {
             .filter(path -> Files.isRegularFile(path))
             .collect(Collectors.toList());
 
-
-
+        for(Path worldgenDefinition : worldgenFiles) {
+            String depositName = worldgenRootPath.relativize(worldgenDefinition).toString();
+            try(InputStream fileStream = Files.newInputStream(worldgenDefinition)) {
+                InputStreamReader streamReader = new InputStreamReader(fileStream);
+                JsonObject element = jsonParser.parse(streamReader).getAsJsonObject();
+                OreDepositDefinition deposit = new OreDepositDefinition(depositName);
+                deposit.initializeFromConfig(element);
+                registeredDefinitions.add(deposit);
+            }
+        }
+        GTLog.logger.info("Loaded {} worldgen definitions", registeredDefinitions.size());
     }
 
-    private static void extractJarVeinDefinitions(Path worldgenRootPath) {
-
+    private static void extractJarVeinDefinitions(Path worldgenRootPath) throws IOException {
+        FileSystem zipFileSystem = null;
+        try {
+            URI sampleUri = WorldGenRegistry.class.getResource("/assets/gregtech/.gtassetsroot").toURI();
+            Path worldgenJarRootPath;
+            if(sampleUri.getScheme().equals("jar") || sampleUri.getScheme().equals("zip")) {
+                zipFileSystem = FileSystems.newFileSystem(sampleUri, Collections.emptyMap());
+                worldgenJarRootPath = zipFileSystem.getPath("/assets/gregtech/worldgen");
+            } else if(sampleUri.getScheme().equals("file")) {
+                worldgenJarRootPath = Paths.get(WorldGenRegistry.class.getResource("/assets/gregtech/worldgen").toURI());
+            } else {
+                throw new IllegalStateException("Unable to locate absolute path to worldgen root directory: " + sampleUri);
+            }
+            GTLog.logger.info("Attempting extraction of standard worldgen definitions from {} to {}",
+                worldgenJarRootPath, worldgenJarRootPath);
+            List<Path> jarFiles = Files.walk(worldgenJarRootPath)
+                .filter(jarFile -> Files.isRegularFile(jarFile))
+                .collect(Collectors.toList());
+            for(Path jarFile : jarFiles) {
+                Path worldgenPath = worldgenJarRootPath.resolve(worldgenJarRootPath.relativize(jarFile));
+                Files.createDirectories(worldgenPath.getParent());
+                Files.copy(jarFile, worldgenPath, StandardCopyOption.REPLACE_EXISTING);
+            }
+            GTLog.logger.info("Extracted {} builtin worldgen definitions into worldgen folder", jarFiles.size());
+        } catch (URISyntaxException impossible) {
+            //this is impossible, since getResource always returns valid URI
+            throw new RuntimeException(impossible);
+        } finally {
+            if(zipFileSystem != null) {
+                //close zip file system to avoid issues
+                IOUtils.closeQuietly(zipFileSystem);
+            }
+        }
     }
 
     public void registerShapeGenerator(String identifier, Supplier<IShapeGenerator> shapeGeneratorSupplier) {

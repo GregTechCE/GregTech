@@ -258,8 +258,11 @@ public class OreConfigUtils {
                 if(!parsedValue.isPresent()) {
                     throw new IllegalArgumentException("Couldn't parse property " + property.getName() + " value " + valueElement);
                 }
-                //god only by omitting type of comparable down i can make this fucking generic shit work
-                blockState = blockState.withProperty(property, (Comparable) parsedValue.get());
+                //fuck java
+                @SuppressWarnings("UnnecessaryLocalVariable")
+                IProperty areYouFuckingSerious = property;
+                Comparable fuckJava = (Comparable) parsedValue.get();
+                blockState = blockState.withProperty(areYouFuckingSerious, fuckJava);
             }
         }
 

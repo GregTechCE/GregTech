@@ -2658,5 +2658,9 @@ gregtech.multiblock.turbine.low_rotor_durability=WARNING: Rotor Durability below
 gregtech.multiblock.large_boiler.temperature=Temperature: %s / %s C
 gregtech.multiblock.large_boiler.steam_output=Steam Output: %s mb/t
 
-commands.gt.usage=Use /gt <subcommand>
+gregtech.command.usage=Usage: /gregtech <sub_command>
+gregtech.command.worldgen.usage=Usage: /gregtech worldgen <reload>
+gregtech.command.worldgen.reload.Usage: /gregtech worldgen reload
+gregtech.command.worldgen.reload.success=Worldgen successfully reloaded from config.
+gregtech.command.worldgen.reload.failed=Worldgen reload failed. Check console for errors.
 
