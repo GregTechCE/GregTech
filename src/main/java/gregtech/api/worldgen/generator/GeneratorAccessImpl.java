@@ -1,5 +1,6 @@
 package gregtech.api.worldgen.generator;
 
+import gregtech.api.util.GTUtility;
 import gregtech.api.util.XSTR;
 import gregtech.api.worldgen.config.OreDepositDefinition;
 import gregtech.api.worldgen.config.WorldGenRegistry;
@@ -16,6 +17,7 @@ public class GeneratorAccessImpl implements IBlockGeneratorAccess {
 
     protected final World world;
     protected final int chunkX, chunkY, chunkZ;
+    protected boolean performYCheck;
 
     private Random gridRandom;
     private int gridX, gridY, gridZ;
@@ -24,11 +26,12 @@ public class GeneratorAccessImpl implements IBlockGeneratorAccess {
     private OreDepositDefinition currentOreVein;
     private MutableBlockPos currentPos = new MutableBlockPos();
 
-    public GeneratorAccessImpl(World world, int chunkX, int chunkY, int chunkZ) {
+    public GeneratorAccessImpl(World world, int chunkX, int chunkY, int chunkZ, boolean performYCheck) {
         this.world = world;
         this.chunkX = chunkX;
         this.chunkY = chunkY;
         this.chunkZ = chunkZ;
+        this.performYCheck = performYCheck;
     }
 
     public void setupGridEntry(int gridX, int gridY, int gridZ) {
@@ -55,10 +58,10 @@ public class GeneratorAccessImpl implements IBlockGeneratorAccess {
             gridY * gridSizeY + gridSizeY / 2,
             gridZ * gridSizeZ + gridSizeZ / 2);
         Biome currentBiome = world.getBiomeProvider().getBiome(currentPos);
-        List<Entry<OreDepositDefinition, Integer>> cachedDepositMap = new ArrayList<>(
+        List<Entry<Integer, OreDepositDefinition>> cachedDepositMap = new ArrayList<>(
             WorldGenRegistry.INSTANCE.getCachedBiomeVeins(world.provider, currentBiome));
 
-        cachedDepositMap.removeIf(entry -> !entry.getKey().checkInHeightLimit(currentPos.getY()));
+        cachedDepositMap.removeIf(entry -> !entry.getValue().checkInHeightLimit(currentPos.getY()));
         if(cachedDepositMap.isEmpty())
             return false; //do not try to generate an empty vein list
 
@@ -67,10 +70,14 @@ public class GeneratorAccessImpl implements IBlockGeneratorAccess {
         while(!cachedDepositMap.isEmpty()) {
             if(currentCycle != 0 && gridRandom.nextInt(ConfigHolder.chunkOreVeinSecondaryProbability * currentCycle) != 0)
                 break; //give 100% generation in first cycle, then decrease it every time we generate secondary vein
-            OreDepositDefinition randomEntry = cachedDepositMap.remove(
-                gridRandom.nextInt(cachedDepositMap.size())).getKey();
-            generatedDeposits.add(randomEntry); //need to cache into list first to apply priority properly, so
+            //instead of removing already generated veins, we swap last element with one we selected
+            int randomEntryIndex = GTUtility.getRandomItem(gridRandom, cachedDepositMap, cachedDepositMap.size() - currentCycle);
+            OreDepositDefinition randomEntry = cachedDepositMap.get(randomEntryIndex).getValue();
+            Collections.swap(cachedDepositMap, randomEntryIndex, cachedDepositMap.size() - 1 - currentCycle);
+            //need to put into list first to apply priority properly, so
             //red granite vein will be properly filled with ores from other veins
+            generatedDeposits.add(randomEntry);
+            currentCycle++;
         }
         //sort generated veins according to their priority, so they get mixed in properly
         generatedDeposits.sort(Collections.reverseOrder(Comparator.comparing(OreDepositDefinition::getPriority)));
@@ -96,7 +103,7 @@ public class GeneratorAccessImpl implements IBlockGeneratorAccess {
     //xyz are in global world space
     protected boolean checkChunkBounds(int x, int y, int z) {
         return x >= chunkX * 16 && chunkX * 16 + 16 > x &&
-            //y >= chunkY * 16 && chunkY * 16 + 16 > y &&
+            (!performYCheck || y >= chunkY * 16 && chunkY * 16 + 16 > y) &&
             z >= chunkZ * 16 && chunkZ * 16 + 16 > z;
     }
 

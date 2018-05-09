@@ -32,16 +32,21 @@ public class EllipsoidGenerator implements IShapeGenerator {
 
     @Override
     public void generate(Random gridRandom, IBlockGeneratorAccess blockAccess) {
-        long a = (long) (gridRandom.nextInt(radiusMax - radiusMin) + radiusMin);
-        long b = (long) (gridRandom.nextInt(radiusMax - radiusMin) + radiusMin) / 2;
-        long c = (long) (gridRandom.nextInt(radiusMax - radiusMin) + radiusMin);
-        long ab2 = a * a * b * b, ac2 = a * a * c * c, bc2 = b * b * c * c, abc2 = ab2 * c * c;
+        int a = (gridRandom.nextInt(radiusMax - radiusMin) + radiusMin);
+        int b = (gridRandom.nextInt(radiusMax - radiusMin) + radiusMin) / 2;
+        int c = (gridRandom.nextInt(radiusMax - radiusMin) + radiusMin);
+        int ab2 = a * a * b * b, ac2 = a * a * c * c, bc2 = b * b * c * c, abc2 = ab2 * c * c;
 
-        int max = (int) Math.max(a, Math.max(b, c));
+        int max = Math.max(a, Math.max(b, c));
         for (int x = -max; x <= max; x++) {
+            int xr = bc2 * x * x;
+            if(xr > abc2) continue;
             for (int y = -max; y <= max; y++) {
+                int yr = xr + ac2 * y * y + ab2;
+                if(yr > abc2) continue;
                 for (int z = -max; z <= max; z++) {
-                    if (bc2 * x * x + ac2 * y * y + ab2 * z * z > abc2) continue;
+                    int zr = yr + ab2 * z * z;
+                    if (zr > abc2) continue;
                     blockAccess.generateBlock(x, y, z);
                 }
             }

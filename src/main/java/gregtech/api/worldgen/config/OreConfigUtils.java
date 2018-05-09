@@ -229,7 +229,8 @@ public class OreConfigUtils {
             randomList.add(new SimpleEntry<>(weight, filler));
         }
         return state -> {
-            Function<IBlockState, IBlockState> randomFunction = GTUtility.getRandomItem(blockStateRandom, randomList);
+            int functionIndex = GTUtility.getRandomItem(blockStateRandom, randomList, randomList.size());
+            Function<IBlockState, IBlockState> randomFunction = randomList.get(functionIndex).getValue();
             return randomFunction.apply(state);
         };
     }

@@ -5,6 +5,7 @@ import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraft.world.gen.IChunkGenerator;
 import net.minecraftforge.fml.common.IWorldGenerator;
 
+import java.util.Objects;
 import java.util.Random;
 
 //TODO implement CC support here
@@ -16,24 +17,24 @@ public class WorldGeneratorImpl implements IWorldGenerator {
 
     @Override
     public void generate(Random random, int chunkX, int chunkZ, World world, IChunkGenerator chunkGenerator, IChunkProvider chunkProvider) {
-        //long start = System.currentTimeMillis();
-        generateInternal(world, chunkX, 0, chunkZ);
-        //System.out.println("Chunk generation took " + (System.currentTimeMillis() - start));
+        int selfGridX = Math.floorDiv(chunkX, GRID_SIZE_X);
+        int selfGridZ = Math.floorDiv(chunkZ, GRID_SIZE_Z);
+        //because some way to generate random Y is needed here
+        int randomChunkY = (int) (Objects.hash(selfGridX, selfGridZ) ^ world.getSeed() & 16);
+        int selfGridY = Math.floorDiv(randomChunkY, GRID_SIZE_Y);
+        generateInternal(world, selfGridX, selfGridY, selfGridZ, chunkX, randomChunkY, chunkZ, false);
     }
 
-    private void generateInternal(World world, int chunkX, int chunkY, int chunkZ) {
-        GeneratorAccessImpl generatorAccess = new GeneratorAccessImpl(world, chunkX, chunkY, chunkZ);
-        int selfGridX = (chunkX / GRID_SIZE_X) + (chunkX >= 0 ? 0 : -1); //append -1 to negative chunks
-        int selfGridY = (chunkY / GRID_SIZE_Y) + (chunkY >= 0 ? 0 : -1); //append -1 to negative chunks
-        int selfGridZ = (chunkZ / GRID_SIZE_Z) + (chunkZ >= 0 ? 0 : -1); //append -1 to negative chunks
+    private void generateInternal(World world, int selfGridX, int selfGridY, int selfGridZ, int chunkX, int chunkY, int chunkZ, boolean respectYChunk) {
+        GeneratorAccessImpl generatorAccess = new GeneratorAccessImpl(world, chunkX, chunkY, chunkZ, respectYChunk);
         int halfSizeX = (GRID_SIZE_X - 1) / 2;
         int halfSizeY = (GRID_SIZE_Y - 1) / 2;
         int halfSizeZ = (GRID_SIZE_Z - 1) / 2;
         for(int gridX = -halfSizeX; gridX <= halfSizeX; gridX++) {
             for(int gridY = -halfSizeY; gridY <= halfSizeY; gridY++) {
                 for(int gridZ = -halfSizeZ; gridZ <= halfSizeZ; gridZ++) {
-                    if(selfGridY + gridY < 0 || selfGridY + gridY > 5)
-                        continue;
+                    if(!respectYChunk && (selfGridY + gridY < 0 || selfGridY + gridY > 5))
+                        continue; //if not respecting y chunks, then skip generation outside vanilla range
                     generatorAccess.setupGridEntry(selfGridX + gridX, selfGridY + gridY, selfGridZ + gridZ);
                     generatorAccess.triggerVeinsGeneration();
                 }

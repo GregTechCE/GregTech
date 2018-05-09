@@ -282,12 +282,12 @@ public class GTUtility {
         return byName.get(name);
     }
 
-    public static <T> T getRandomItem(Random random, List<Entry<Integer, T>> randomList) {
+    public static <T> int getRandomItem(Random random, List<Entry<Integer, T>> randomList, int size) {
         if(randomList.isEmpty())
-            return null;
-        int[] baseOffsets = new int[randomList.size()];
+            return -1;
+        int[] baseOffsets = new int[size];
         int currentIndex = 0;
-        for(int i = 0; i < randomList.size(); i++) {
+        for(int i = 0; i < size; i++) {
             Entry<Integer, T> entry = randomList.get(i);
             if(entry.getKey() <= 0) {
                 throw new IllegalArgumentException("Invalid weight: " + entry.getKey());
@@ -296,10 +296,10 @@ public class GTUtility {
             baseOffsets[i] = currentIndex;
         }
         int randomValue = random.nextInt(currentIndex);
-        for(int i = 0; i < randomList.size(); i++) {
+        for(int i = 0; i < size; i++) {
             Entry<Integer, T> entry = randomList.get(i);
             if(randomValue < baseOffsets[i])
-                return entry.getValue();
+                return i;
         }
         throw new IllegalArgumentException("Invalid weight");
     }

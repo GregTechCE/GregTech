@@ -40,7 +40,7 @@ public class WorldGenRegistry {
 
     private class WorldOreVeinCache {
         private final List<OreDepositDefinition> worldVeins;
-        private final Map<Biome, List<Entry<OreDepositDefinition, Integer>>> biomeVeins = new HashMap<>();
+        private final Map<Biome, List<Entry<Integer, OreDepositDefinition>>> biomeVeins = new HashMap<>();
 
         public WorldOreVeinCache(WorldProvider worldProvider) {
             this.worldVeins = registeredDefinitions.stream()
@@ -49,19 +49,19 @@ public class WorldGenRegistry {
                 .collect(Collectors.toList());
         }
 
-        private List<Entry<OreDepositDefinition, Integer>> getBiomeEntry(Biome biome) {
+        private List<Entry<Integer, OreDepositDefinition>> getBiomeEntry(Biome biome) {
             if(biomeVeins.containsKey(biome))
                 return biomeVeins.get(biome);
-            List<Entry<OreDepositDefinition, Integer>> result = worldVeins.stream()
-                .map(vein -> new SimpleEntry<>(vein, vein.getWeight() + vein.getBiomeWeightModifier().apply(biome)))
-                .filter(entry -> entry.getValue() > 0)
+            List<Entry<Integer, OreDepositDefinition>> result = worldVeins.stream()
+                .map(vein -> new SimpleEntry<>(vein.getWeight() + vein.getBiomeWeightModifier().apply(biome), vein))
+                .filter(entry -> entry.getKey() > 0)
                 .collect(Collectors.toList());
             biomeVeins.put(biome, result);
             return result;
         }
     }
 
-    public List<Entry<OreDepositDefinition, Integer>> getCachedBiomeVeins(WorldProvider provider, Biome biome) {
+    public List<Entry<Integer, OreDepositDefinition>> getCachedBiomeVeins(WorldProvider provider, Biome biome) {
         if(oreVeinCache.containsKey(provider))
             return oreVeinCache.get(provider).getBiomeEntry(biome);
         WorldOreVeinCache worldOreVeinCache = new WorldOreVeinCache(provider);
