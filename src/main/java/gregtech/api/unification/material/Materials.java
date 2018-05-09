@@ -28,23 +28,23 @@ public class Materials {
     /**
      * Direct Elements
      */
-    public static MetalMaterial Aluminium = new MetalMaterial(1, "aluminium", 0x41CDF4, MaterialIconSet.DULL, 2, of(), EXT2_METAL | GENERATE_SMALL_GEAR | GENERATE_ORE | GENERATE_RING, Element.Al, 10.0F, 128, 1700);
-    public static MetalMaterial Americium = new MetalMaterial(2, "americium", 0xDDDDDD, MaterialIconSet.METALLIC, 3, of(), STD_METAL | GENERATE_ROD | GENERATE_LONG_ROD, Element.Am);
-    public static MetalMaterial Antimony = new MetalMaterial(3, "antimony", 0xCCCCDD, MaterialIconSet.SHINY, 2, of(), EXT_METAL | MORTAR_GRINDABLE, Element.Sb);
+    public static MetalMaterial Aluminium = new MetalMaterial(1, "aluminium", 0x80C8F0, MaterialIconSet.DULL, 2, of(), EXT2_METAL | GENERATE_SMALL_GEAR | GENERATE_ORE | GENERATE_RING, Element.Al, 10.0F, 128, 1700);
+    public static MetalMaterial Americium = new MetalMaterial(2, "americium", 0xC8C8C8, MaterialIconSet.METALLIC, 3, of(), STD_METAL | GENERATE_ROD | GENERATE_LONG_ROD, Element.Am);
+    public static MetalMaterial Antimony = new MetalMaterial(3, "antimony", 0xDCDCC8, MaterialIconSet.SHINY, 2, of(), EXT_METAL | MORTAR_GRINDABLE, Element.Sb);
     public static FluidMaterial Argon = new FluidMaterial(4, "argon", 0xBBBB00, MaterialIconSet.FLUID, of(), STATE_GAS | GENERATE_PLASMA, Element.Ar);
-    public static DustMaterial Arsenic = new DustMaterial(5, "arsenic", 0xFFFFFF, MaterialIconSet.SAND, 2, of(), 0, Element.As);
+    public static DustMaterial Arsenic = new DustMaterial(5, "arsenic", 0xDDDDDD, MaterialIconSet.SAND, 2, of(), 0, Element.As);
     public static MetalMaterial Barium = new MetalMaterial(6, "barium", 0xFFFFFF, MaterialIconSet.SHINY, 2, of(), 0, Element.Ba);
-    public static MetalMaterial Beryllium = new MetalMaterial(7, "beryllium", 0x66BB66, MaterialIconSet.METALLIC, 2, of(), STD_METAL | GENERATE_ORE, Element.Be, 14.0F, 64);
-    public static MetalMaterial Bismuth = new MetalMaterial(8, "bismuth", 0x008080, MaterialIconSet.METALLIC, 1, of(), GENERATE_ORE, Element.Bi, 6.0F, 64);
-    public static DustMaterial Boron = new DustMaterial(9, "boron", 0xFCFCFC, MaterialIconSet.SAND, 2, of(), 0, Element.B);
+    public static MetalMaterial Beryllium = new MetalMaterial(7, "beryllium", 0x64B464, MaterialIconSet.METALLIC, 2, of(), STD_METAL | GENERATE_ORE, Element.Be, 14.0F, 64);
+    public static MetalMaterial Bismuth = new MetalMaterial(8, "bismuth", 0x64A0A0, MaterialIconSet.METALLIC, 1, of(), GENERATE_ORE, Element.Bi, 6.0F, 64);
+    public static DustMaterial Boron = new DustMaterial(9, "boron", 0xD2F0D2, MaterialIconSet.SAND, 2, of(), 0, Element.B);
     public static MetalMaterial Caesium = new MetalMaterial(10, "caesium", 0xFFFFFC, MaterialIconSet.DULL, 2, of(), 0, Element.Cs);
     public static MetalMaterial Calcium = new MetalMaterial(11, "calcium", 0xDDDDAA, MaterialIconSet.METALLIC, 2, of(), 0, Element.Ca);
-    public static MetalMaterial Carbon = new MetalMaterial(12, "carbon", 0x555555, MaterialIconSet.DULL, 2, of(), 0, Element.C, 1.0F, 64);
+    public static MetalMaterial Carbon = new MetalMaterial(12, "carbon", 0x333333, MaterialIconSet.DULL, 2, of(), 0, Element.C, 1.0F, 64);
     public static MetalMaterial Cadmium = new MetalMaterial(13, "cadmium", 0x505060, MaterialIconSet.SHINY, 2, of(), 0, Element.Ca);
     public static MetalMaterial Cerium = new MetalMaterial(14, "cerium", 0xEEEEEE, MaterialIconSet.METALLIC, 2, of(), 0, Element.Ce, 1068);
     public static FluidMaterial Chlorine = new FluidMaterial(15, "chlorine", 0xEEEECC, MaterialIconSet.GAS, of(), STATE_GAS, Element.Cl);
     public static MetalMaterial Chrome = new MetalMaterial(16, "chrome", 0xFFAAAB, MaterialIconSet.SHINY, 3, of(), EXT2_METAL | GENERATE_RING | GENERATE_ROTOR, Element.Cr, 11.0F, 256, 1700);
-    public static MetalMaterial Cobalt = new MetalMaterial(17, "cobalt", 0xAAAAFF, MaterialIconSet.METALLIC, 3, of(), STD_METAL | GENERATE_ORE, Element.Co, 8.0F, 512);
+    public static MetalMaterial Cobalt = new MetalMaterial(17, "cobalt", 0x2929BC, MaterialIconSet.METALLIC, 3, of(), STD_METAL | GENERATE_ORE, Element.Co, 8.0F, 512);
     public static MetalMaterial Copper = new MetalMaterial(18, "copper", 0xFF8000, MaterialIconSet.SHINY, 1, of(), EXT2_METAL | GENERATE_ORE | MORTAR_GRINDABLE | GENERATE_DENSE, Element.Cu);
     public static FluidMaterial Deuterium = new FluidMaterial(19, "deuterium", 0xEEEE00, MaterialIconSet.FLUID, of(), STATE_GAS | GENERATE_PLASMA, Element.D);
     public static MetalMaterial Dysprosium = new MetalMaterial(20, "dysprosium", 0xFFFFEE, MaterialIconSet.SHINY, 2, of(), 0, Element.Dy, 1680);
@@ -62,14 +62,14 @@ public class Materials {
     public static MetalMaterial Iridium = new MetalMaterial(32, "iridium", 0xFFFFFF, MaterialIconSet.DULL, 3, of(), GENERATE_ORE | EXT2_METAL | GENERATE_ORE | GENERATE_RING | GENERATE_ROTOR, Element.Ir, 6.0F, 2560, 2719);
     public static MetalMaterial Iron = new MetalMaterial(33, "iron", 0xAAAAAA, MaterialIconSet.METALLIC, 2, of(), EXT2_METAL | GENERATE_ORE | MORTAR_GRINDABLE | GENERATE_RING | GENERATE_DENSE, Element.Fe, 6.0F, 256);
     public static MetalMaterial Lanthanum = new MetalMaterial(34, "lanthanum", 0xFFFFFF, MaterialIconSet.METALLIC, 2, of(), 0, Element.La, 1193);
-    public static MetalMaterial Lead = new MetalMaterial(35, "lead", 0x770077, MaterialIconSet.DULL, 1, of(), EXT2_METAL | GENERATE_ORE | MORTAR_GRINDABLE | GENERATE_DENSE, Element.Pb, 8.0F, 64);
+    public static MetalMaterial Lead = new MetalMaterial(35, "lead", 0x8C648C, MaterialIconSet.DULL, 1, of(), EXT2_METAL | GENERATE_ORE | MORTAR_GRINDABLE | GENERATE_DENSE, Element.Pb, 8.0F, 64);
     public static MetalMaterial Lithium = new MetalMaterial(36, "lithium", 0xCBCBCB, MaterialIconSet.DULL, 2, of(), STD_METAL | GENERATE_ORE, Element.Li);
     public static MetalMaterial Lutetium = new MetalMaterial(37, "lutetium", 0xFFFFFF, MaterialIconSet.METALLIC, 2, of(), 0, Element.Lu, 1925);
     public static MetalMaterial Magnesium = new MetalMaterial(38, "magnesium", 0xFFBBBB, MaterialIconSet.METALLIC, 2, of(), 0, Element.Mg);
     public static MetalMaterial Manganese = new MetalMaterial(39, "manganese", 0xEEEEEE, MaterialIconSet.DULL, 2, of(), 0, Element.Mn, 7.0F, 512);
     public static FluidMaterial Mercury = new FluidMaterial(40, "mercury", 0xFFDDDD, MaterialIconSet.FLUID, of(), SMELT_INTO_FLUID, Element.Hg);
     public static MetalMaterial Molybdenum = new MetalMaterial(41, "molybdenum", 0xAAAADD, MaterialIconSet.DULL, 2, of(), GENERATE_ORE, Element.Mo, 7.0F, 512, 2);
-    public static MetalMaterial Neodymium = new MetalMaterial(42, "neodymium", 0x999999, MaterialIconSet.METALLIC, 2, of(), STD_METAL | GENERATE_ROD | GENERATE_ORE, Element.Nd, 7.0F, 512, 1297);
+    public static MetalMaterial Neodymium = new MetalMaterial(42, "neodymium", 0x777777, MaterialIconSet.METALLIC, 2, of(), STD_METAL | GENERATE_ROD | GENERATE_ORE, Element.Nd, 7.0F, 512, 1297);
     public static MetalMaterial Darmstadtium = new MetalMaterial(43, "darmstadtium", 0xAAAAAA, MaterialIconSet.METALLIC, 6, of(), EXT2_METAL | GENERATE_RING | GENERATE_ROTOR | GENERATE_SMALL_GEAR | GENERATE_LONG_ROD, Element.Ds, 24.0F, 655360);
     public static MetalMaterial Nickel = new MetalMaterial(44, "nickel", 0xAAAAFF, MaterialIconSet.METALLIC, 2, of(), STD_METAL | GENERATE_ORE | MORTAR_GRINDABLE, Element.Ni, 6.0F, 64);
     public static MetalMaterial Niobium = new MetalMaterial(45, "niobium", 0x9486AA, MaterialIconSet.METALLIC, 2, of(), STD_METAL | GENERATE_ORE, Element.Nb, 2750);
@@ -249,7 +249,7 @@ public class Materials {
     public static DustMaterial Spessartine = new DustMaterial(181, "spessartine", 0xFF6464, MaterialIconSet.GEM_VERTICAL, 2, of(new MaterialStack(Aluminium, 2), new MaterialStack(Manganese, 3), new MaterialStack(Silicon, 3), new MaterialStack(Oxygen, 12)), GENERATE_ORE);
     public static DustMaterial Sphalerite = new DustMaterial(182, "sphalerite", 0xFFFFFF, MaterialIconSet.ROUGH, 1, of(new MaterialStack(Zinc, 1), new MaterialStack(Sulfur, 1)), GENERATE_ORE | INDUCTION_SMELTING_LOW_OUTPUT);
     public static MetalMaterial StainlessSteel = new MetalMaterial(183, "stainless_steel", 0xC8C8DC, MaterialIconSet.SHINY, 2, of(new MaterialStack(Iron, 6), new MaterialStack(Chrome, 1), new MaterialStack(Manganese, 1), new MaterialStack(Nickel, 1)), EXT2_METAL | GENERATE_RING | GENERATE_ROTOR | GENERATE_SMALL_GEAR, null, 7.0F, 480, 1700);
-    public static MetalMaterial Steel = new MetalMaterial(184, "steel", 0x505050, MaterialIconSet.METALLIC, 2, of(new MaterialStack(Iron, 50), new MaterialStack(Carbon, 1)), EXT2_METAL | MORTAR_GRINDABLE | GENERATE_RING | GENERATE_ROTOR | GENERATE_SMALL_GEAR, null, 6.0F, 512, 1000);
+    public static MetalMaterial Steel = new MetalMaterial(184, "steel", 0x505050, MaterialIconSet.DULL, 2, of(new MaterialStack(Iron, 50), new MaterialStack(Carbon, 1)), EXT2_METAL | MORTAR_GRINDABLE | GENERATE_RING | GENERATE_ROTOR | GENERATE_SMALL_GEAR, null, 6.0F, 512, 1000);
     public static DustMaterial Stibnite = new DustMaterial(185, "stibnite", 0x464646, MaterialIconSet.ROUGH, 2, of(new MaterialStack(Antimony, 2), new MaterialStack(Sulfur, 3)), GENERATE_ORE);
     public static FluidMaterial SulfuricAcid = new FluidMaterial(186, "sulfuric_acid", 0xFF8000, MaterialIconSet.FLUID, of(new MaterialStack(Hydrogen, 2), new MaterialStack(Sulfur, 1), new MaterialStack(Oxygen, 4)), 0);
     public static GemMaterial Tanzanite = new GemMaterial(187, "tanzanite", 0x4000C8, MaterialIconSet.GEM_VERTICAL, 2, of(new MaterialStack(Calcium, 2), new MaterialStack(Aluminium, 3), new MaterialStack(Silicon, 3), new MaterialStack(Hydrogen, 1), new MaterialStack(Oxygen, 13)), EXT_METAL | GENERATE_ORE | NO_SMASHING | NO_SMELTING | HIGH_SIFTER_OUTPUT, null, 7.0F, 256);
@@ -297,14 +297,14 @@ public class Materials {
     public static RoughMaterial Niter = new RoughMaterial(223, "niter", 0xFFC8C8, MaterialIconSet.FLINT, 1, of(new MaterialStack(Saltpeter, 1)), NO_SMASHING | NO_SMELTING);
     public static DustMaterial Tantalite = new DustMaterial(224, "tantalite", 0x915028, MaterialIconSet.METALLIC, 3, of(new MaterialStack(Manganese, 1), new MaterialStack(Tantalum, 2), new MaterialStack(Oxygen, 6)), GENERATE_ORE);
     public static DustMaterial HydratedCoal = new DustMaterial(225, "hydrated_coal", 0x464664, MaterialIconSet.ROUGH, 1, of(new MaterialStack(Coal, 8), new MaterialStack(Water, 1)), 0);
-    public static GemMaterial Apatite = new GemMaterial(226, "apatite", 0xC8C8FF, MaterialIconSet.GEM_VERTICAL, 1, of(new MaterialStack(Calcium, 5), new MaterialStack(Phosphate, 3), new MaterialStack(Chlorine, 1)), GENERATE_ORE | NO_SMASHING | NO_SMELTING | CRYSTALLISABLE);
+    public static GemMaterial Apatite = new GemMaterial(226, "apatite", 0xC8C8FF, MaterialIconSet.EMERALD, 1, of(new MaterialStack(Calcium, 5), new MaterialStack(Phosphate, 3), new MaterialStack(Chlorine, 1)), GENERATE_ORE | NO_SMASHING | NO_SMELTING | CRYSTALLISABLE);
     public static MetalMaterial SterlingSilver = new MetalMaterial(227, "sterling_silver", 0xFADCE1, MaterialIconSet.SHINY, 2, of(new MaterialStack(Copper, 1), new MaterialStack(Silver, 4)), EXT2_METAL, null, 13.0F, 128, 1700);
     public static MetalMaterial RoseGold = new MetalMaterial(228, "rose_gold", 0xFFE61E, MaterialIconSet.SHINY, 2, of(new MaterialStack(Copper, 1), new MaterialStack(Gold, 4)), EXT2_METAL, null, 14.0F, 128, 1600);
     public static MetalMaterial BlackBronze = new MetalMaterial(229, "black_bronze", 0x64327D, MaterialIconSet.DULL, 2, of(new MaterialStack(Gold, 1), new MaterialStack(Silver, 1), new MaterialStack(Copper, 3)), EXT2_METAL, null, 12.0F, 256, 2000);
     public static MetalMaterial BismuthBronze = new MetalMaterial(230, "bismuth_bronze", 0x647D7D, MaterialIconSet.DULL, 2, of(new MaterialStack(Bismuth, 1), new MaterialStack(Zinc, 1), new MaterialStack(Copper, 3)), EXT2_METAL, null, 8.0F, 256, 1100);
-    public static MetalMaterial BlackSteel = new MetalMaterial(231, "black_steel", 0x646464, MaterialIconSet.METALLIC, 2, of(new MaterialStack(Nickel, 1), new MaterialStack(BlackBronze, 1), new MaterialStack(Steel, 3)), EXT_METAL, null, 6.5F, 768, 1200);
-    public static MetalMaterial RedSteel = new MetalMaterial(232, "red_steel", 0x8C6464, MaterialIconSet.METALLIC, 2, of(new MaterialStack(SterlingSilver, 1), new MaterialStack(BismuthBronze, 1), new MaterialStack(Steel, 2), new MaterialStack(BlackSteel, 4)), EXT_METAL, null, 7.0F, 896, 1300);
-    public static MetalMaterial BlueSteel = new MetalMaterial(233, "blue_steel", 0x64648C, MaterialIconSet.METALLIC, 2, of(new MaterialStack(RoseGold, 1), new MaterialStack(Brass, 1), new MaterialStack(Steel, 2), new MaterialStack(BlackSteel, 4)), EXT_METAL, null, 7.5F, 1024, 1400);
+    public static MetalMaterial BlackSteel = new MetalMaterial(231, "black_steel", 0x646464, MaterialIconSet.DULL, 2, of(new MaterialStack(Nickel, 1), new MaterialStack(BlackBronze, 1), new MaterialStack(Steel, 3)), EXT_METAL, null, 6.5F, 768, 1200);
+    public static MetalMaterial RedSteel = new MetalMaterial(232, "red_steel", 0x8C6464, MaterialIconSet.DULL, 2, of(new MaterialStack(SterlingSilver, 1), new MaterialStack(BismuthBronze, 1), new MaterialStack(Steel, 2), new MaterialStack(BlackSteel, 4)), EXT_METAL, null, 7.0F, 896, 1300);
+    public static MetalMaterial BlueSteel = new MetalMaterial(233, "blue_steel", 0x64648C, MaterialIconSet.DULL, 2, of(new MaterialStack(RoseGold, 1), new MaterialStack(Brass, 1), new MaterialStack(Steel, 2), new MaterialStack(BlackSteel, 4)), EXT_METAL, null, 7.5F, 1024, 1400);
     public static MetalMaterial DamascusSteel = new MetalMaterial(234, "damascus_steel", 0x6E6E6E, MaterialIconSet.METALLIC, 2, of(new MaterialStack(Steel, 1)), EXT_METAL, null, 8.0F, 1280, 1500);
     public static MetalMaterial TungstenSteel = new MetalMaterial(235, "tungsten_steel", 0x6464A0, MaterialIconSet.METALLIC, 4, of(new MaterialStack(Steel, 1), new MaterialStack(Tungsten, 1)), EXT2_METAL | GENERATE_RING | GENERATE_ROTOR | GENERATE_SMALL_GEAR | GENERATE_LONG_ROD, null, 8.0F, 2560, 3000);
     public static FluidMaterial NitroFuel = new FluidMaterial(236, "nitro_fuel", 0xC8FF00, MaterialIconSet.FLUID, of(new MaterialStack(Glyceryl, 1), new MaterialStack(Fuel, 4)), FLAMMABLE | EXPLOSIVE | NO_SMELTING | NO_SMASHING);
@@ -361,7 +361,7 @@ public class Materials {
     public static MetalMaterial IronMagnetic = new MetalMaterial(297, "iron_magnetic", 0xC8C8C8, MaterialIconSet.MAGNETIC, 2, of(new MaterialStack(Iron, 1)), EXT2_METAL | MORTAR_GRINDABLE, null, 6.0F, 256);
     public static MetalMaterial SteelMagnetic = new MetalMaterial(298, "steel_magnetic", 0x808080, MaterialIconSet.MAGNETIC, 2, of(new MaterialStack(Steel, 1)), EXT2_METAL | GENERATE_RING | GENERATE_ROTOR | GENERATE_SMALL_GEAR | MORTAR_GRINDABLE, null, 6.0F, 512, 1000);
     public static MetalMaterial NeodymiumMagnetic = new MetalMaterial(299, "neodymium_magnetic", 0x646464, MaterialIconSet.MAGNETIC, 2, of(new MaterialStack(Neodymium, 1)), EXT2_METAL | GENERATE_LONG_ROD, null, 7.0F, 512, 1297);
-    public static MetalMaterial TungstenCarbide = new MetalMaterial(300, "tungsten_carbide", 0x330066, MaterialIconSet.METALLIC, 4, of(new MaterialStack(Tungsten, 1)), EXT2_METAL, null, 14.0F, 1280, 2460);
+    public static MetalMaterial TungstenCarbide = new MetalMaterial(300, "tungsten_carbide", 0x330066, MaterialIconSet.METALLIC, 4, of(new MaterialStack(Tungsten, 1), new MaterialStack(Carbon, 1)), EXT2_METAL, null, 14.0F, 1280, 2460);
     public static MetalMaterial VanadiumSteel = new MetalMaterial(301, "vanadium_steel", 0xC0C0C0, MaterialIconSet.METALLIC, 3, of(new MaterialStack(Vanadium, 1), new MaterialStack(Chrome, 1), new MaterialStack(Steel, 7)), EXT2_METAL, null, 3.0F, 1920, 1453);
     public static MetalMaterial HSSG = new MetalMaterial(302, "hssg", 0x999900, MaterialIconSet.METALLIC, 3, of(new MaterialStack(TungstenSteel, 5), new MaterialStack(Chrome, 1), new MaterialStack(Molybdenum, 2), new MaterialStack(Vanadium, 1)), EXT2_METAL | GENERATE_RING | GENERATE_ROTOR | GENERATE_SMALL_GEAR | GENERATE_LONG_ROD, null, 10.0F, 4000, 4500);
     public static MetalMaterial HSSE = new MetalMaterial(303, "hsse", 0x336600, MaterialIconSet.METALLIC, 4, of(new MaterialStack(HSSG, 6), new MaterialStack(Cobalt, 1), new MaterialStack(Manganese, 1), new MaterialStack(Silicon, 1)), EXT2_METAL | GENERATE_RING | GENERATE_ROTOR | GENERATE_SMALL_GEAR | GENERATE_LONG_ROD, null, 10.0F, 5120, 5400);

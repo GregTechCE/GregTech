@@ -35,7 +35,7 @@ import static gregtech.api.unification.material.type.SolidMaterial.MatFlags.MORT
 public class OreProcessingHandler {
 
     public void registerProcessing() {
-        //OrePrefix.log.addProcessingHandler(this::processLog);
+        OrePrefix.log.addProcessingHandler(this::processLog);
         OrePrefix.plank.addProcessingHandler(this::processPlank);
         OrePrefix.plate.addProcessingHandler(this::processPlate, this::processPolarizing);
         OrePrefix.plateDense.addProcessingHandler(this::processPlateDense, this::processPolarizing);
@@ -148,20 +148,25 @@ public class OreProcessingHandler {
                     ModHandler.addSmeltingRecipe(tinyDustStack, nuggetStack);
                 } else {
                     int duration = Math.max(1, (int) (material.getMass() * metalMaterial.blastFurnaceTemperature / 50L));
-                    ModHandler.removeFurnaceSmelting(ingotStack);
-                    RecipeMaps.BLAST_RECIPES.recipeBuilder()
-                        .inputs(dustStack).outputs(ingotStack)
-                        .duration(duration).EUt(120)
-                        .blastFurnaceTemp(metalMaterial.blastFurnaceTemperature)
-                        .buildAndRegister();
-                    RecipeMaps.BLAST_RECIPES.recipeBuilder()
-                        .inputs(tinyDustStack).outputs(nuggetStack)
-                        .duration(Math.max(1, duration / 9)).EUt(120)
-                        .blastFurnaceTemp(metalMaterial.blastFurnaceTemperature)
-                        .buildAndRegister();
-                    if (metalMaterial.blastFurnaceTemperature <= 1000) {
-                        ModHandler.addRCFurnaceRecipe(dustStack, ingotStack, duration);
-                        ModHandler.addRCFurnaceRecipe(tinyDustStack, nuggetStack, Math.max(1, duration / 9));
+                    if (!ingotStack.isEmpty()) {
+                        ModHandler.removeFurnaceSmelting(ingotStack);
+                        RecipeMaps.BLAST_RECIPES.recipeBuilder()
+                            .inputs(dustStack).outputs(ingotStack)
+                            .duration(duration).EUt(120)
+                            .blastFurnaceTemp(metalMaterial.blastFurnaceTemperature)
+                            .buildAndRegister();
+
+                        if (!nuggetStack.isEmpty() || !tinyDustStack.isEmpty()) {
+                            RecipeMaps.BLAST_RECIPES.recipeBuilder()
+                                .inputs(tinyDustStack).outputs(nuggetStack)
+                                .duration(Math.max(1, duration / 9)).EUt(120)
+                                .blastFurnaceTemp(metalMaterial.blastFurnaceTemperature)
+                                .buildAndRegister();
+                        }
+                        if (metalMaterial.blastFurnaceTemperature <= 1000) {
+                            ModHandler.addRCFurnaceRecipe(dustStack, ingotStack, duration);
+                            ModHandler.addRCFurnaceRecipe(tinyDustStack, nuggetStack, Math.max(1, duration / 9));
+                        }
                     }
                 }
             } else if (material.hasFlag(MatFlags.GENERATE_PLATE) &&
@@ -354,7 +359,7 @@ public class OreProcessingHandler {
                     " I ",
                     'I', ingotStack);
             }
-
+            System.out.println(((FluidMaterial) material).toString());
             RecipeMaps.FLUID_SOLIDFICATION_RECIPES.recipeBuilder()
                 .notConsumable(MetaItems.SHAPE_MOLD_INGOT)
                 .fluidInputs(((FluidMaterial) material).getFluid(L))
