@@ -8,6 +8,7 @@
     "radius": 80
   },
   "filler": {
+    "type": "simple",
     "value": {
       "type": "weight_random",
       "values": [

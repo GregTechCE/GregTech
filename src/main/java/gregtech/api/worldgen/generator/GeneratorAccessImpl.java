@@ -57,6 +57,7 @@ public class GeneratorAccessImpl implements IBlockGeneratorAccess {
         Biome currentBiome = world.getBiomeProvider().getBiome(currentPos);
         List<Entry<OreDepositDefinition, Integer>> cachedDepositMap = new ArrayList<>(
             WorldGenRegistry.INSTANCE.getCachedBiomeVeins(world.provider, currentBiome));
+
         cachedDepositMap.removeIf(entry -> !entry.getKey().checkInHeightLimit(currentPos.getY()));
         if(cachedDepositMap.isEmpty())
             return false; //do not try to generate an empty vein list
@@ -95,7 +96,7 @@ public class GeneratorAccessImpl implements IBlockGeneratorAccess {
     //xyz are in global world space
     protected boolean checkChunkBounds(int x, int y, int z) {
         return x >= chunkX * 16 && chunkX * 16 + 16 > x &&
-            y >= chunkY * 16 && chunkY * 16 + 16 > y &&
+            //y >= chunkY * 16 && chunkY * 16 + 16 > y &&
             z >= chunkZ * 16 && chunkZ * 16 + 16 > z;
     }
 

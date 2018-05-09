@@ -46,7 +46,6 @@ public class PlateGenerator implements IShapeGenerator {
         int length = (minLength + minLength >= maxLength ? 0 : gridRandom.nextInt(maxLength - minLength)) / 2;
         int depth = (minDepth + minDepth >= maxDepth ? 0 : gridRandom.nextInt(maxDepth - minDepth)) / 2;
         int height = (minHeight + minHeight >= maxHeight ? 0 : gridRandom.nextInt(maxHeight - minHeight)) / 2;
-        Vector3 positionVec = new Vector3();
         for(int x = -length; x <= length; x++) {
             for(int z = -depth; z <= depth; depth++) {
                 boolean hasFloorSub = floorSharpness > gridRandom.nextFloat();
@@ -54,15 +53,10 @@ public class PlateGenerator implements IShapeGenerator {
                 for(int y = -height; y <= height; y++) {
                     if(hasRoofSub && (y == height || gridRandom.nextBoolean())) {
                         continue;
-                    } else {
-                        hasRoofSub = false;
-                    }
-                    if(hasFloorSub && y == -height) {
+                    } else hasRoofSub = false;
+                    if(hasFloorSub && y == -height)
                         continue;
-                    }
-                    positionVec.set(x, y, z);
-                    positionVec.rotate(Math.PI * gridRandom.nextFloat(), zRotation);
-                    relativeBlockAccess.generateBlock((int) positionVec.x, (int) positionVec.y, (int) positionVec.z);
+                    relativeBlockAccess.generateBlock(x, y, z);
                 }
             }
         }

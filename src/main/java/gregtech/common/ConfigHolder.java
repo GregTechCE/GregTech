@@ -13,7 +13,7 @@ public class ConfigHolder {
     public static int chunkOreVeinGenerationProbability = 80;
 
     @Config.Comment("Probability of secondary vein generation in 3x3x3 chunk area.")
-    public static int chunkOreVeinSecondaryProbability = 20;
+    public static int chunkOreVeinSecondaryProbability = 10;
 
     @Config.Comment("Whether machines should explode when overloaded with power. Default: true")
     public static boolean doExplosions = true;

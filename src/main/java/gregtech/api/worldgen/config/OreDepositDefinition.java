@@ -1,8 +1,6 @@
 package gregtech.api.worldgen.config;
 
 import com.google.gson.JsonObject;
-import gregtech.api.unification.ore.StoneType;
-import gregtech.api.unification.ore.StoneTypes;
 import gregtech.api.worldgen.filler.IBlockFiller;
 import gregtech.api.worldgen.shape.IShapeGenerator;
 import net.minecraft.block.state.IBlockState;
@@ -16,7 +14,7 @@ public class OreDepositDefinition {
 
     public static final Function<Biome, Integer> NO_BIOME_INFLUENCE = biome -> 0;
     public static final Predicate<WorldProvider> PREDICATE_SURFACE_WORLD = WorldProvider::isSurfaceWorld;
-    public static final Predicate<IBlockState> PREDICATE_STONE_TYPE = state -> StoneType.computeStoneType(state) != StoneTypes._NULL;
+    public static final Predicate<IBlockState> PREDICATE_STONE_TYPE = state -> true;
 
     private final String depositName;
 
@@ -86,7 +84,7 @@ public class OreDepositDefinition {
     }
 
     public boolean checkInHeightLimit(int yLevel) {
-        return yLevel >= heightLimit[0] && yLevel <= heightLimit[1];
+        return true;//return yLevel >= heightLimit[0] && yLevel <= heightLimit[1];
     }
 
     public int[] getHeightLimit() {

@@ -26,8 +26,8 @@ public class EllipsoidGenerator implements IShapeGenerator {
     @Override
     public void loadFromConfig(JsonObject object) {
         int[] data = IShapeGenerator.getIntRange(object.get("radius"));
-        this.radiusMin = data[0];
-        this.radiusMax = data[1];
+        this.radiusMin = data[0] - 30;
+        this.radiusMax = data[1] + 30;
     }
 
     @Override
@@ -37,20 +37,12 @@ public class EllipsoidGenerator implements IShapeGenerator {
         long c = (long) (gridRandom.nextInt(radiusMax - radiusMin) + radiusMin);
         long ab2 = a * a * b * b, ac2 = a * a * c * c, bc2 = b * b * c * c, abc2 = ab2 * c * c;
 
-        float roll = (float) (gridRandom.nextFloat() * Math.PI);
-        float pitch = (float) (gridRandom.nextFloat() * Math.PI);
-        float yaw = (float) (gridRandom.nextFloat() * Math.PI);
-        Vector3 point = new Vector3();
         int max = (int) Math.max(a, Math.max(b, c));
         for (int x = -max; x <= max; x++) {
             for (int y = -max; y <= max; y++) {
                 for (int z = -max; z <= max; z++) {
-                    point.set(x, y, z);
-                    point.rotate(roll, xRotation);
-                    point.rotate(pitch, yRotation);
-                    point.rotate(yaw, zRotation);
-                    if (bc2 * point.x * point.x + ac2 * point.y * point.y + ab2 * point.z * point.z > abc2) continue;
-                    blockAccess.generateBlock((int) point.x, (int) point.y, (int) point.z);
+                    if (bc2 * x * x + ac2 * y * y + ab2 * z * z > abc2) continue;
+                    blockAccess.generateBlock(x, y, z);
                 }
             }
         }

@@ -29,7 +29,7 @@ public class CommandWorldgenReload extends CommandBase {
             WorldGenRegistry.INSTANCE.reinitializeRegisteredVeins();
             sender.sendMessage(new TextComponentTranslation("gregtech.command.worldgen.reload.success")
                 .setStyle(new Style().setColor(TextFormatting.GREEN)));
-        } catch (IOException exception) {
+        } catch (IOException | RuntimeException exception) {
             GTLog.logger.error("Failed to reload worldgen config", exception);
             sender.sendMessage(new TextComponentTranslation("gregtech.command.worldgen.reload.failed")
                 .setStyle(new Style().setColor(TextFormatting.RED)));

@@ -130,12 +130,12 @@ public class WorldGenRegistry {
                 throw new IllegalStateException("Unable to locate absolute path to worldgen root directory: " + sampleUri);
             }
             GTLog.logger.info("Attempting extraction of standard worldgen definitions from {} to {}",
-                worldgenJarRootPath, worldgenJarRootPath);
+                worldgenJarRootPath, worldgenRootPath);
             List<Path> jarFiles = Files.walk(worldgenJarRootPath)
                 .filter(jarFile -> Files.isRegularFile(jarFile))
                 .collect(Collectors.toList());
             for(Path jarFile : jarFiles) {
-                Path worldgenPath = worldgenJarRootPath.resolve(worldgenJarRootPath.relativize(jarFile));
+                Path worldgenPath = worldgenRootPath.resolve(worldgenJarRootPath.relativize(jarFile));
                 Files.createDirectories(worldgenPath.getParent());
                 Files.copy(jarFile, worldgenPath, StandardCopyOption.REPLACE_EXISTING);
             }
