@@ -2,6 +2,7 @@ package gregtech.api.block.machines;
 
 import gregtech.api.GregTechAPI;
 import gregtech.api.metatileentity.MetaTileEntity;
+import gregtech.api.metatileentity.TieredMetaTileEntity;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.item.ItemBlock;
@@ -33,9 +34,20 @@ public class MachineItemBlock extends ItemBlock {
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
         MetaTileEntity metaTileEntity = getMetaTileEntity(stack);
         if(metaTileEntity == null) return;
-        String descriptionLocale = metaTileEntity.getMetaName() + ".desc";
-        if(I18n.hasKey(descriptionLocale)) {
-            String[] lines = I18n.format(metaTileEntity.getMetaName() + ".desc").split("/n");
+
+        //tier less tooltip for a electric machine like: gregtech.machine.lathe.tooltip
+        if (metaTileEntity instanceof TieredMetaTileEntity) {
+            String tierlessTooltip = ((TieredMetaTileEntity) metaTileEntity).getTierlessTooltipKey();
+            if (tierlessTooltip != null && I18n.hasKey(tierlessTooltip)) {
+                String[] lines = I18n.format(tierlessTooltip).split("/n");
+                tooltip.addAll(Arrays.asList(lines));
+            }
+        }
+
+        //item specific tooltip like: gregtech.machine.lathe.lv.tooltip
+        String tooltipLocale = metaTileEntity.getMetaName() + ".tooltip";
+        if (I18n.hasKey(tooltipLocale)) {
+            String[] lines = I18n.format(tooltipLocale).split("/n");
             tooltip.addAll(Arrays.asList(lines));
         }
         if(flagIn.isAdvanced()) {
