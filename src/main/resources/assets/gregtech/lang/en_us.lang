@@ -1579,6 +1579,8 @@ tile.casing.hv=HV Machine Casing
 tile.casing.ev=EV Machine Casing
 tile.casing.iv=IV Machine Casing
 
+fluid.distilled_water=Distilled Water
+
 # Wire coil blocks
 tile.wire_coil.tooltip_heat=Base Heating Capacity: %dK
 tile.wire_coil.tooltip_level=Level: %d
