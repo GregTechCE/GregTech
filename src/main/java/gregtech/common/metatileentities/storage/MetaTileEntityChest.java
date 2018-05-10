@@ -15,12 +15,18 @@ import gregtech.api.render.Textures;
 import gregtech.api.unification.material.type.SolidMaterial;
 import gregtech.api.util.GTUtility;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.NonNullList;
+import net.minecraft.world.World;
+import net.minecraftforge.items.IItemHandlerModifiable;
 import net.minecraftforge.items.ItemStackHandler;
 import org.apache.commons.lang3.ArrayUtils;
+
+import javax.annotation.Nullable;
+import java.util.List;
 
 public class MetaTileEntityChest extends MetaTileEntity {
 
@@ -111,5 +117,10 @@ public class MetaTileEntityChest extends MetaTileEntity {
     @Override
     protected boolean shouldSerializeInventories() {
         return false; //handled manually
+    }
+
+    @Override
+    public void addInformation(ItemStack stack, @Nullable World player, List<String> tooltip, boolean advanced) {
+        tooltip.add(I18n.format("gregtech.universal.tooltip.item_storage_capacity", inventorySize));
     }
 }

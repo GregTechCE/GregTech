@@ -3,6 +3,7 @@ package gregtech.api.metatileentity;
 import codechicken.lib.render.CCRenderState;
 import codechicken.lib.render.pipeline.IVertexOperation;
 import codechicken.lib.vec.Matrix4;
+import gregtech.api.GTValues;
 import gregtech.api.capability.impl.EnergyContainerHandler;
 import gregtech.api.gui.GuiTextures;
 import gregtech.api.gui.ModularUI;
@@ -12,11 +13,17 @@ import gregtech.api.gui.widgets.SlotWidget;
 import gregtech.api.recipes.machines.RecipeMapLiquidFuel;
 import gregtech.api.render.OrientedOverlayRenderer;
 import gregtech.api.render.Textures;
+import gregtech.api.util.GTUtility;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.NonNullList;
+import net.minecraft.world.World;
 import net.minecraftforge.items.ItemStackHandler;
+
+import javax.annotation.Nullable;
+import java.util.List;
 
 public class SimpleGeneratorMetaTileEntity extends WorkableTieredMetaTileEntity {
 
@@ -90,5 +97,11 @@ public class SimpleGeneratorMetaTileEntity extends WorkableTieredMetaTileEntity 
     @Override
     protected ModularUI createUI(EntityPlayer entityPlayer) {
         return createGuiTemplate(entityPlayer).build(getHolder(), entityPlayer);
+    }
+
+    @Override
+    public void addInformation(ItemStack stack, @Nullable World player, List<String> tooltip, boolean advanced) {
+        tooltip.add(I18n.format("gregtech.universal.tooltip.voltage_out", energyContainer.getOutputVoltage(), GTValues.VN[getTier()]));
+        tooltip.add(I18n.format("gregtech.universal.tooltip.energy_storage_capacity", energyContainer.getEnergyCapacity()));
     }
 }
