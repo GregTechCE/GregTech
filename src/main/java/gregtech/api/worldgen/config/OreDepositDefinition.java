@@ -2,6 +2,7 @@ package gregtech.api.worldgen.config;
 
 import com.google.gson.JsonObject;
 import gregtech.api.unification.ore.StoneType;
+import gregtech.api.unification.ore.StoneTypes;
 import gregtech.api.worldgen.filler.IBlockFiller;
 import gregtech.api.worldgen.shape.IShapeGenerator;
 import net.minecraft.block.state.IBlockState;
@@ -15,7 +16,7 @@ public class OreDepositDefinition {
 
     public static final Function<Biome, Integer> NO_BIOME_INFLUENCE = biome -> 0;
     public static final Predicate<WorldProvider> PREDICATE_SURFACE_WORLD = WorldProvider::isSurfaceWorld;
-    public static final Predicate<IBlockState> PREDICATE_STONE_TYPE = state -> StoneType.computeStoneType(state) != null;
+    public static final Predicate<IBlockState> PREDICATE_STONE_TYPE = state -> StoneType.computeStoneType(state) != StoneTypes._NULL;
 
     private final String depositName;
 
@@ -63,6 +64,9 @@ public class OreDepositDefinition {
         }
         if(configRoot.has("dimension_filter")) {
             this.dimensionFilter = OreConfigUtils.createWorldPredicate(configRoot.get("dimension_filter"));
+        }
+        if(configRoot.has("generation_predicate")) {
+            this.generationPredicate = OreConfigUtils.createBlockStatePredicate(configRoot.get("generation_predocate"));
         }
         this.blockFiller = WorldGenRegistry.INSTANCE.createBlockFiller(configRoot.get("filler").getAsJsonObject());
         this.shapeGenerator = WorldGenRegistry.INSTANCE.createShapeGenerator(configRoot.get("generator").getAsJsonObject());
