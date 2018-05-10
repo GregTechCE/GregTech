@@ -1202,6 +1202,11 @@ material.glowstone=Glowstone
 material.nether_star=Nether Star
 material.endstone=Endstone
 material.netherrack=Netherrack
+material.toluene=Toluene
+material.drilling_fluid=Drilling Fluid
+material.epichlorhydrin=Epichlorohydrin
+material.nitric_acid=Nitric Acid
+material.nitration_mixture=Nitration Mixture
 
 material.methane=Methane
 material.carbon_dioxide=Carbon Dioxide
