@@ -1739,13 +1739,13 @@ gregtech.machine.steam_boiler.tooltip_produces=Produces %dmb of steam in %d tick
 gregtech.machine.steam_boiler_coal_bronze.name=Small Steam Coal Boiler
 gregtech.machine.steam_boiler_coal_bronze.tooltip=An early way to get Steam Power
 gregtech.machine.steam_boiler_coal_steel.name=High Pressure Steam Coal Boiler
-gregtech.machine.steam_boiler_coal_steel.tooltip=Faster then the Small Steam Coal Boiler
+gregtech.machine.steam_boiler_coal_steel.tooltip=Faster than the Small Steam Coal Boiler
 gregtech.machine.steam_boiler_solar_bronze.name=Steam Solar Boiler
 gregtech.machine.steam_boiler_solar_bronze.tooltip=Steam Power by Sun
 gregtech.machine.steam_boiler_lava_bronze.name=Small Steam Lava Boiler
 gregtech.machine.steam_boiler_lava_bronze.tooltip=A Boiler running off Lava
 gregtech.machine.steam_boiler_lava_steel.name=High Pressure Steam Lava Boiler
-gregtech.machine.steam_boiler_lava_steel.tooltip=Faster then Small Steam Lava Boiler
+gregtech.machine.steam_boiler_lava_steel.tooltip=Faster than Small Steam Lava Boiler
 
 gregtech.machine.steam_extractor_bronze.name=Steam Extractor
 gregtech.machine.steam_extractor_bronze.tooltip=Extracting your first Rubber
@@ -1851,7 +1851,7 @@ gregtech.machine.centrifuge.lv.name=Basic Centrifuge
 gregtech.machine.centrifuge.mv.name=Advanced Centrifuge
 gregtech.machine.centrifuge.hv.name=Turbo Centrifuge
 
-gregtech.machine.chemical_bath.tooltip=Bathing Ores in Chemicals ot separate them
+gregtech.machine.chemical_bath.tooltip=Bathing Ores in Chemicals to separate them
 
 gregtech.machine.chemical_bath.lv.name=Basic Chemical Bath
 gregtech.machine.chemical_bath.mv.name=Advanced Chemical Bath
