@@ -1564,6 +1564,8 @@ death.attack.heat.player=%s was boiled alive by %s.
 enchantment.damage.endermen=Disjunction
 enchantment.damage.radioactivity=Radioactivity
 
+tile.surface_rock.name=Surface Rock
+
 tile.casing.ulv=ULV Machine Casing
 tile.casing.lv=LV Machine Casing
 tile.casing.mv=MV Machine Casing

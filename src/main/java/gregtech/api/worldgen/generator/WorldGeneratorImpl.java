@@ -1,7 +1,12 @@
 package gregtech.api.worldgen.generator;
 
+import gregtech.api.unification.material.type.MetalMaterial;
 import gregtech.api.worldgen.config.OreDepositDefinition;
 import gregtech.common.ConfigHolder;
+import gregtech.common.blocks.BlockSurfaceRock;
+import gregtech.common.blocks.MetaBlocks;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraft.world.gen.IChunkGenerator;
@@ -30,7 +35,21 @@ public class WorldGeneratorImpl implements IWorldGenerator {
         //if generated ores aren't empty, and surface rocks are enabled in config, attempt to generate them
         if(!generatedOres.isEmpty() && ConfigHolder.enableOreVeinSurfaceRocks) {
             for(OreDepositDefinition depositDefinition : generatedOres) {
-
+                MetalMaterial material = depositDefinition.getSurfaceStoneMaterial();
+                if(material == null) continue;
+                int stonesCount = random.nextInt(2);
+                for(int i = 0; i < stonesCount; i++) {
+                    int randomX = chunkX * 16 + random.nextInt(16);
+                    int randomZ = chunkZ * 16 + random.nextInt(16);
+                    BlockPos topBlockPos = new BlockPos(randomX, 0, randomZ);
+                    topBlockPos = world.getTopSolidOrLiquidBlock(topBlockPos).down();
+                    IBlockState blockState = world.getBlockState(topBlockPos);
+                    if(!blockState.isBlockNormalCube() || !blockState.isFullBlock())
+                        continue;
+                    BlockSurfaceRock blockSurfaceRock = MetaBlocks.SURFACE_ROCKS.get(material);
+                    IBlockState statePlace = blockSurfaceRock.getDefaultState().withProperty(blockSurfaceRock.materialProperty, material);
+                    world.setBlockState(topBlockPos.up(), statePlace, 16);
+                }
             }
         }
     }

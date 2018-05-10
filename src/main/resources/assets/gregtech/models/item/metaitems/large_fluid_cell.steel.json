@@ -1,7 +1,13 @@
 {
-  "parent": "item/generated",
-  "textures": {
-    "layer0": "gregtech:items/metaitems/large_fluid_cell.steel/base",
-    "layer1": "gregtech:items/metaitems/large_fluid_cell.steel/overlay"
+  "forge_marker": 1,
+  "variants": {
+    "inventory": {
+      "model": "forge:forgebucket",
+      "textures": {
+        "base": "gregtech:items/metaitems/large_fluid_cell.steel/base",
+        "fluid": "gregtech:items/metaitems/large_fluid_cell.steel/overlay"
+      },
+      "transform": "forge:default-item"
+    }
   }
 }

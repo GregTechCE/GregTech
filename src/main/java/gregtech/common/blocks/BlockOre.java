@@ -1,9 +1,5 @@
 package gregtech.common.blocks;
 
-import java.util.Random;
-
-import javax.annotation.Nullable;
-
 import gregtech.api.GregTechAPI;
 import gregtech.api.unification.material.type.DustMaterial;
 import gregtech.api.unification.material.type.SolidMaterial;
@@ -14,7 +10,6 @@ import gregtech.common.blocks.properties.PropertyStoneType;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockFalling;
 import net.minecraft.block.SoundType;
-import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
@@ -29,11 +24,12 @@ import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import javax.annotation.Nullable;
+import java.util.Random;
+
 public class BlockOre extends BlockFalling implements IBlockOre {
 
-    public static final PropertyBool SMALL = PropertyBool.create("small");
     public final PropertyStoneType STONE_TYPE;
-
     public final DustMaterial material;
 
     public BlockOre(DustMaterial material, StoneType[] allowedValues) {
@@ -73,8 +69,7 @@ public class BlockOre extends BlockFalling implements IBlockOre {
     @Override
     public int getHarvestLevel(IBlockState state) {
         StoneType stoneType = state.getValue(STONE_TYPE);
-        boolean small = state.getValue(SMALL);
-        if(material instanceof SolidMaterial) {
+        if (material instanceof SolidMaterial) {
             int toolQuality = ((SolidMaterial) material).harvestLevel;
             return Math.max(stoneType.stoneMaterial.harvestLevel, toolQuality > 1 ? toolQuality - 1 : toolQuality);
         }
@@ -84,25 +79,23 @@ public class BlockOre extends BlockFalling implements IBlockOre {
     @Override
     @SuppressWarnings("deprecation")
     public IBlockState getStateFromMeta(int meta) {
-        return getDefaultState().withProperty(STONE_TYPE, STONE_TYPE.getAllowedValues().get(meta % 8)).withProperty(SMALL, meta / 8 > 0);
+        return getDefaultState().withProperty(STONE_TYPE, STONE_TYPE.getAllowedValues().get(meta));
     }
 
     @Override
     public int getMetaFromState(IBlockState state) {
-        return STONE_TYPE.getAllowedValues().indexOf(state.getValue(STONE_TYPE)) + (state.getValue(SMALL) ? 8 : 0);
+        return STONE_TYPE.getAllowedValues().indexOf(state.getValue(STONE_TYPE));
     }
 
     @Override
     @SuppressWarnings("deprecation")
-    public float getBlockHardness(IBlockState blockState, World worldIn, BlockPos pos)
-    {
+    public float getBlockHardness(IBlockState blockState, World worldIn, BlockPos pos) {
         return blockState.getValue(STONE_TYPE).unbreakable ? -1.0f : this.blockHardness;
     }
 
     @Override
     @SuppressWarnings("deprecation")
-    public float getExplosionResistance(World world, BlockPos pos, @Nullable Entity exploder, Explosion explosion)
-    {
+    public float getExplosionResistance(World world, BlockPos pos, @Nullable Entity exploder, Explosion explosion) {
         return world.getBlockState(pos).getValue(STONE_TYPE).unbreakable ? 1200000.0F : getExplosionResistance(exploder);
     }
 
@@ -124,7 +117,7 @@ public class BlockOre extends BlockFalling implements IBlockOre {
     }
 
     private BlockStateContainer createStateContainer() {
-        return new BlockStateContainer(this, STONE_TYPE, SMALL);
+        return new BlockStateContainer(this, STONE_TYPE);
     }
 
     @Override
@@ -159,7 +152,8 @@ public class BlockOre extends BlockFalling implements IBlockOre {
     }
 
     @Override
-    public IBlockState getOreBlock(StoneType stoneType, boolean small) {
-        return this.getDefaultState().withProperty(this.STONE_TYPE, stoneType).withProperty(SMALL, small);
+    public IBlockState getOreBlock(StoneType stoneType) {
+        return this.getDefaultState().withProperty(this.STONE_TYPE, stoneType);
     }
+
 }

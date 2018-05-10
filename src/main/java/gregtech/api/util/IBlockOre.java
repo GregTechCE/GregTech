@@ -5,6 +5,6 @@ import net.minecraft.block.state.IBlockState;
 
 public interface IBlockOre {
 
-    IBlockState getOreBlock(StoneType stoneType, boolean small);
+    IBlockState getOreBlock(StoneType stoneType);
 
 }

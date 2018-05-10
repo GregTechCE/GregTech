@@ -6,7 +6,6 @@ import gregtech.api.unification.material.MaterialIconType;
 import gregtech.api.unification.material.Materials;
 import gregtech.api.unification.material.type.*;
 import gregtech.api.unification.stack.MaterialStack;
-import gregtech.api.unification.stack.UnificationEntry;
 import gregtech.api.util.Condition;
 import gregtech.api.util.GTUtility;
 import net.minecraft.client.resources.I18n;
@@ -23,10 +22,8 @@ import static gregtech.api.GTValues.M;
 import static gregtech.api.unification.material.type.DustMaterial.MatFlags.*;
 import static gregtech.api.unification.material.type.GemMaterial.MatFlags.GENERATE_LENSE;
 import static gregtech.api.unification.material.type.MetalMaterial.MatFlags.*;
-import static gregtech.api.unification.material.type.SolidMaterial.MatFlags.GENERATE_GEAR;
-import static gregtech.api.unification.material.type.SolidMaterial.MatFlags.GENERATE_LONG_ROD;
-import static gregtech.api.unification.material.type.SolidMaterial.MatFlags.GENERATE_ROD;
-import static gregtech.api.unification.ore.OrePrefix.Conditions.*;
+import static gregtech.api.unification.material.type.SolidMaterial.MatFlags.*;
+import static gregtech.api.unification.ore.OrePrefix.Conditions.isToolMaterial;
 import static gregtech.api.unification.ore.OrePrefix.Flags.*;
 
 public enum OrePrefix {
@@ -46,8 +43,8 @@ public enum OrePrefix {
     oreDense("Dense Ores", -1, null, MaterialIconType.ore, ENABLE_UNIFICATION | DISALLOW_RECYCLING, null), // Prefix of the Dense-Ores Mod. Causes Ores to double. Ore -> Material is a Oneway Operation!
     oreRich("Rich Ores", -1, null, MaterialIconType.ore, ENABLE_UNIFICATION | DISALLOW_RECYCLING, null), // Prefix of TFC
     oreNormal("Normal Ores", -1, null, MaterialIconType.ore, ENABLE_UNIFICATION | DISALLOW_RECYCLING, null), // Prefix of TFC
-    oreSmall("Small Ores", -1, null, MaterialIconType.oreSmall, ENABLE_UNIFICATION | DISALLOW_RECYCLING, (mat) -> mat instanceof DustMaterial && mat.hasFlag(GENERATE_ORE)), // Prefix of Railcraft.
-    orePoor("Poor Ores", -1, null, MaterialIconType.oreSmall, ENABLE_UNIFICATION | DISALLOW_RECYCLING, null), // Prefix of Railcraft.
+    oreSmall("Small Ores", -1, null, null, ENABLE_UNIFICATION | DISALLOW_RECYCLING, null), // Prefix of Railcraft.
+    orePoor("Poor Ores", -1, null, null, ENABLE_UNIFICATION | DISALLOW_RECYCLING, null), // Prefix of Railcraft.
 
     oreEndstone("Endstone Ores", -1, null, MaterialIconType.ore, ENABLE_UNIFICATION | DISALLOW_RECYCLING, (mat) -> mat instanceof DustMaterial && mat.hasFlag(GENERATE_ORE)), // In case of an End-Ores Mod. Ore -> Material is a Oneway Operation!
     oreEnd("End Ores", -1,null,  MaterialIconType.ore, ENABLE_UNIFICATION | DISALLOW_RECYCLING, null), // In case of an End-Ores Mod. Ore -> Material is a Oneway Operation!

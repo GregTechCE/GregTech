@@ -83,7 +83,6 @@ public enum MaterialIconType {
     foilBlock,
     wire,
     ore,
-    oreSmall,
     frameGt,
     frameSide,
     frameTop,
