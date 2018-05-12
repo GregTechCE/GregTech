@@ -7,6 +7,7 @@ import gregtech.api.recipes.RecipeMap;
 import gregtech.api.util.EnumValidationResult;
 import gregtech.api.util.GTLog;
 import gregtech.api.util.ValidationResult;
+import org.apache.commons.lang3.builder.ToStringBuilder;
 
 public class BlastRecipeBuilder extends RecipeBuilder<BlastRecipeBuilder> {
 
@@ -48,5 +49,13 @@ public class BlastRecipeBuilder extends RecipeBuilder<BlastRecipeBuilder> {
             new Recipe(inputs, outputs, chancedOutputs, fluidInputs, fluidOutputs,
                 ImmutableMap.of("blastFurnaceTemp", blastFurnaceTemp),
                 duration, EUt, hidden, canBeBuffered, needsEmptyOutput));
+    }
+
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this)
+            .appendSuper(super.toString())
+            .append("blastFurnaceTemp", blastFurnaceTemp)
+            .toString();
     }
 }

@@ -13,6 +13,8 @@ import gregtech.api.util.ValidationResult;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
 import net.minecraftforge.fluids.FluidStack;
+import org.apache.commons.lang3.Validate;
+import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import java.util.*;
 
@@ -355,11 +357,18 @@ public abstract class RecipeBuilder<R extends RecipeBuilder<R>> {
             recipeStatus = EnumValidationResult.INVALID;
 		}
 
-//			Validate.isTrue(EUt > 0, "EU/t cannot be less of equal to 0");
+        if (EUt == 0){
+            GTLog.logger.error("EU/t cannot be equal to 0", new IllegalArgumentException());
+            recipeStatus = EnumValidationResult.INVALID;
+        }
 
         if (duration <= 0){
             GTLog.logger.error("Duration cannot be less or equal to 0", new IllegalArgumentException());
 			recipeStatus = EnumValidationResult.INVALID;
+        }
+
+        if (recipeStatus == EnumValidationResult.INVALID) {
+            GTLog.logger.error("Invalid recipe, read the errors above: {}", this);
         }
 
 		return recipeStatus;
@@ -393,4 +402,23 @@ public abstract class RecipeBuilder<R extends RecipeBuilder<R>> {
 		return fluidOutputs;
 	}
 
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this)
+            .append("recipeMap", recipeMap)
+            .append("inputs", inputs)
+            .append("outputs", outputs)
+            .append("chancedOutputs", chancedOutputs)
+            .append("fluidInputs", fluidInputs)
+            .append("fluidOutputs", fluidOutputs)
+            .append("duration", duration)
+            .append("EUt", EUt)
+            .append("hidden", hidden)
+            .append("canBeBuffered", canBeBuffered)
+            .append("needsEmptyOutput", needsEmptyOutput)
+            .append("optimized", optimized)
+            .append("unificate", unificate)
+            .append("recipeStatus", recipeStatus)
+            .toString();
+    }
 }

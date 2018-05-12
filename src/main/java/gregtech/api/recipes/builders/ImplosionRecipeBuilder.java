@@ -11,6 +11,7 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.ValidationResult;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
+import org.apache.commons.lang3.builder.ToStringBuilder;
 
 public class ImplosionRecipeBuilder extends RecipeBuilder<ImplosionRecipeBuilder> {
 
@@ -70,5 +71,13 @@ public class ImplosionRecipeBuilder extends RecipeBuilder<ImplosionRecipeBuilder
         return ValidationResult.newResult(finalizeAndValidate(),
             new Recipe(inputs, outputs, chancedOutputs, fluidInputs, fluidOutputs,
                 ImmutableMap.of(), duration, EUt, hidden, canBeBuffered, needsEmptyOutput));
+    }
+
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this)
+            .appendSuper(super.toString())
+            .append("explosivesAmount", explosivesAmount)
+            .toString();
     }
 }

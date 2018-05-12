@@ -12,7 +12,7 @@ public class ToolScoop extends ToolBase {
 
     @Override
     public int getToolDamagePerBlockBreak(ItemStack stack) {
-        return 200;
+        return 2;
     }
 
     @Override

@@ -2,7 +2,6 @@ package gregtech.api.items.toolitem;
 
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
-import gregtech.api.GTValues;
 import gregtech.api.capability.IElectricItem;
 import gregtech.api.enchants.EnchantmentData;
 import gregtech.api.items.IDamagableItem;
@@ -14,8 +13,8 @@ import gregtech.api.unification.material.type.Material;
 import gregtech.api.unification.material.type.SolidMaterial;
 import gregtech.api.unification.stack.SimpleItemStack;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.renderer.block.model.ModelBakery;
-import net.minecraft.client.renderer.block.model.ModelResourceLocation;
+import net.minecraft.client.resources.I18n;
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
@@ -30,7 +29,6 @@ import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -40,6 +38,7 @@ import org.apache.commons.lang3.Validate;
 import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -54,34 +53,22 @@ import java.util.Optional;
  * @see IToolStats
  * @see MetaItem
  */
-public class ToolMetaItem<T extends ToolMetaItem<?>.MetaToolValueItem> extends MetaItem<T> implements IDamagableItem/*, IBoxable*/ {
+public class ToolMetaItem<T extends ToolMetaItem<?>.MetaToolValueItem> extends MetaItem<T> implements IDamagableItem {
 
     public ToolMetaItem() {
         super((short) 0);
-        setMaxStackSize(1);
     }
 
     @Override
     @SuppressWarnings("unchecked")
-    protected T constructMetaValueItem(short metaValue, String unlocalizedName, String... nameParameters) {
-        return (T) new MetaToolValueItem(metaValue, unlocalizedName, nameParameters);
+    protected T constructMetaValueItem(short metaValue, String unlocalizedName) {
+        return (T) new MetaToolValueItem(metaValue, unlocalizedName);
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
-    public void registerModels() {
-        for(T metaItem : this.metaItems.valueCollection()) {
-            String name = metaItem.unlocalizedName;
-            ModelBakery.registerItemVariants(this, new ResourceLocation(GTValues.MODID, "tools/" + name.substring(name.indexOf(".") + 1)));
-        }
-
-        ModelLoader.setCustomMeshDefinition(this, stack -> {
-            if (stack.getMetadata() < this.metaItems.size()) {
-                String name = getItem(stack).unlocalizedName;
-                return new ModelResourceLocation(new ResourceLocation(GTValues.MODID, "tools/" + name.substring(name.indexOf(".") + 1)), "inventory");
-            }
-            return new ModelResourceLocation("builtin/missing", "missing");
-        });
+    protected String formatModelPath(T metaValueItem) {
+        String name = metaValueItem.unlocalizedName;
+        return "tools/" + (name.indexOf('.') == -1 ? name : name.substring(name.indexOf(".") + 1));
     }
 
     @Override
@@ -92,11 +79,11 @@ public class ToolMetaItem<T extends ToolMetaItem<?>.MetaToolValueItem> extends M
 
         switch (tintIndex) {
             case 0:
-                return primaryMaterial != null ? primaryMaterial.materialRGB : 0xFFFFFF;
+                return handleMaterial != null ? handleMaterial.materialRGB : 0xFFFFFF;
             case 1:
                 return 0xFFFFFF;
             case 2:
-                return handleMaterial != null ? handleMaterial.materialRGB : 0xFFFFFF;
+                return primaryMaterial != null ? primaryMaterial.materialRGB : 0xFFFFFF;
             case 3:
                 return 0xFFFFFF;
         }
@@ -204,7 +191,8 @@ public class ToolMetaItem<T extends ToolMetaItem<?>.MetaToolValueItem> extends M
             if (toolStats == null) {
                 return HashMultimap.create();
             }
-            float attackDamage = toolStats.getBaseDamage(stack);
+            SolidMaterial baseMaterial = getPrimaryMaterial(stack);
+            float attackDamage = toolStats.getBaseDamage(stack) + (baseMaterial == null ? 0 : baseMaterial.harvestLevel) / 3.5f;
             float attackSpeed = toolStats.getAttackSpeed(stack);
 
             HashMultimap<String, AttributeModifier> modifiers = HashMultimap.create();
@@ -282,7 +270,44 @@ public class ToolMetaItem<T extends ToolMetaItem<?>.MetaToolValueItem> extends M
         return capability.canUse(damage) && getInternalDamage(stack) + (damage / 10) < getMaxInternalDamage(stack);
     }
 
-    private int getMaxInternalDamage(ItemStack itemStack) {
+    @Override
+    @SideOnly(Side.CLIENT)
+    public String getItemStackDisplayName(ItemStack stack) {
+        if (stack.getItemDamage() >= metaItemOffset) {
+            T item = getItem(stack);
+            SolidMaterial primaryMaterial = getPrimaryMaterial(stack);
+            String materialName = primaryMaterial == null ? "" : String.valueOf(primaryMaterial.getLocalizedName());
+            return I18n.format("metaitem." + item.unlocalizedName + ".name", materialName);
+        }
+        return super.getItemStackDisplayName(stack);
+    }
+
+    @Override
+    public void addInformation(ItemStack itemStack, @Nullable World worldIn, List<String> lines, ITooltipFlag tooltipFlag) {
+        T item = getItem(itemStack);
+        IToolStats toolStats = item.getToolStats();
+        SolidMaterial primaryMaterial = getPrimaryMaterial(itemStack);
+        SolidMaterial handleMaterial = getHandleMaterial(itemStack);
+        int maxInternalDamage = getMaxInternalDamage(itemStack);
+
+        if (maxInternalDamage > 0) {
+            lines.add(I18n.format("metaitem.tool.tooltip.durability", maxInternalDamage - getInternalDamage(itemStack), maxInternalDamage));
+        }
+        if (primaryMaterial != null) {
+            lines.add(I18n.format("metaitem.tool.tooltip.primary_material", primaryMaterial.getLocalizedName(), primaryMaterial.harvestLevel));
+        }
+        if (handleMaterial != null) {
+            lines.add(I18n.format("metaitem.tool.tooltip.handle_material", handleMaterial.getLocalizedName(), handleMaterial.harvestLevel));
+        }
+        if (primaryMaterial != null) {
+            lines.add(I18n.format("metaitem.tool.tooltip.attack_damage", toolStats.getBaseDamage(itemStack) + primaryMaterial.harvestLevel));
+            lines.add(I18n.format("metaitem.tool.tooltip.mining_speed", primaryMaterial.toolSpeed));
+        }
+        super.addInformation(itemStack, worldIn, lines, tooltipFlag);
+    }
+
+    @Override
+    public int getMaxInternalDamage(ItemStack itemStack) {
         T metaToolValueItem = getItem(itemStack);
         if (metaToolValueItem != null) {
             SolidMaterial toolMaterial = getPrimaryMaterial(itemStack);
@@ -293,26 +318,26 @@ public class ToolMetaItem<T extends ToolMetaItem<?>.MetaToolValueItem> extends M
         return 0;
     }
 
-    private int getInternalDamage(ItemStack itemStack) {
+    @Override
+    public int getInternalDamage(ItemStack itemStack) {
         NBTTagCompound statsTag = itemStack.getSubCompound("GT.ToolStats");
-        if (statsTag == null || !statsTag.hasKey("GT.ToolDamage", Constants.NBT.TAG_INT)) {
+        if (statsTag == null || !statsTag.hasKey("Damage", Constants.NBT.TAG_INT)) {
             return 0;
         }
-        return statsTag.getInteger("GT.ToolDamage");
+        return statsTag.getInteger("Damage");
     }
 
     private void setInternalDamage(ItemStack itemStack, int damage) {
         NBTTagCompound statsTag = itemStack.getOrCreateSubCompound("GT.ToolStats");
-        statsTag.setInteger("GT.ToolDamage", damage);
-
+        statsTag.setInteger("Damage", damage);
     }
 
     @Nullable
     public static SolidMaterial getPrimaryMaterial(ItemStack itemStack) {
         NBTTagCompound statsTag = itemStack.getSubCompound("GT.ToolStats");
-        if(statsTag == null || !statsTag.hasKey("GT.ToolPrimaryMaterial", Constants.NBT.TAG_STRING))
+        if(statsTag == null || !statsTag.hasKey("PrimaryMaterial", Constants.NBT.TAG_STRING))
             return null;
-        Material material = Material.MATERIAL_REGISTRY.getObject(statsTag.getString("GT.ToolPrimaryMaterial"));
+        Material material = Material.MATERIAL_REGISTRY.getObject(statsTag.getString("PrimaryMaterial"));
         if(material instanceof SolidMaterial) {
             return (SolidMaterial) material;
         }
@@ -322,9 +347,9 @@ public class ToolMetaItem<T extends ToolMetaItem<?>.MetaToolValueItem> extends M
     @Nullable
     public static SolidMaterial getHandleMaterial(ItemStack itemStack) {
         NBTTagCompound statsTag = itemStack.getSubCompound("GT.ToolStats");
-        if(statsTag == null || !statsTag.hasKey("GT.ToolHandleMaterial", Constants.NBT.TAG_STRING))
+        if(statsTag == null || !statsTag.hasKey("HandleMaterial", Constants.NBT.TAG_STRING))
             return null;
-        Material material = Material.MATERIAL_REGISTRY.getObject(statsTag.getString("GT.ToolHandleMaterial"));
+        Material material = Material.MATERIAL_REGISTRY.getObject(statsTag.getString("HandleMaterial"));
         if(material instanceof SolidMaterial) {
             return (SolidMaterial) material;
         }
@@ -335,8 +360,9 @@ public class ToolMetaItem<T extends ToolMetaItem<?>.MetaToolValueItem> extends M
 
         protected IToolStats toolStats;
 
-        private MetaToolValueItem(int metaValue, String unlocalizedName, String... nameParameters) {
-            super(metaValue, unlocalizedName, nameParameters);
+        private MetaToolValueItem(int metaValue, String unlocalizedName) {
+            super(metaValue, unlocalizedName);
+            setMaxStackSize(1);
         }
 
         @Override
@@ -398,11 +424,10 @@ public class ToolMetaItem<T extends ToolMetaItem<?>.MetaToolValueItem> extends M
 
                     NBTTagCompound toolNBT = new NBTTagCompound();
                     if (primaryMaterial instanceof SolidMaterial) {
-                        toolNBT.setString("GT.ToolPrimaryMaterial", primaryMaterial.toString());
-                        toolNBT.setLong("GT.MaxDamage", 100L * (long) ((((SolidMaterial) primaryMaterial).toolDurability) * metaToolValueItem.toolStats.getMaxDurabilityMultiplier(stack)));
+                        toolNBT.setString("PrimaryMaterial", primaryMaterial.toString());
                     }
                     if (this.getToolStats().hasMaterialHandle() && handleMaterial instanceof SolidMaterial)
-                        toolNBT.setString("GT.ToolHandleMaterial", handleMaterial.toString());
+                        toolNBT.setString("HandleMaterial", handleMaterial.toString());
 
                     NBTTagCompound nbtTag = new NBTTagCompound();
                     nbtTag.setTag("GT.ToolStats", toolNBT);

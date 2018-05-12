@@ -3,6 +3,7 @@ package gregtech.common.tools;
 import gregtech.api.GregTechAPI;
 import gregtech.api.items.metaitem.MetaItem;
 import gregtech.common.items.behaviors.WrenchBehaviour;
+import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
@@ -25,7 +26,7 @@ public class ToolWrench extends ToolBase {
 
     @Override
     public int getToolDamagePerBlockBreak(ItemStack stack) {
-        return 50;
+        return 1;
     }
 
     @Override
@@ -44,14 +45,15 @@ public class ToolWrench extends ToolBase {
     }
 
     @Override
-    public boolean isMinableBlock(IBlockState block, ItemStack stack) {
-        String tool = block.getBlock().getHarvestTool(block);
-        return tool != null && tool.equals("wrench") ||
-            block.getMaterial() == Material.PISTON ||
-            block == Blocks.HOPPER ||
-            block == Blocks.DISPENSER ||
-            block == Blocks.DROPPER ||
-                block.getMaterial() == Material.IRON;
+    public boolean isMinableBlock(IBlockState blockState, ItemStack stack) {
+        Block block = blockState.getBlock();
+        String tool = block.getHarvestTool(blockState);
+        return tool != null && tool.equals("wrench")
+            || blockState.getMaterial() == Material.PISTON
+            || block == Blocks.HOPPER
+            || block == Blocks.DISPENSER
+            || block == Blocks.DROPPER
+            || blockState.getMaterial() == Material.IRON;
     }
 
     @Override

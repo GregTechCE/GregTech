@@ -21,12 +21,10 @@ import javax.annotation.Nullable;
 public class EnergyContainerBatteryBuffer extends MTETrait implements IEnergyContainer {
 
     private final int tier;
-    private final IItemHandlerModifiable inventory;
 
-    public EnergyContainerBatteryBuffer(MetaTileEntity metaTileEntity, int tier, IItemHandlerModifiable inventory) {
+    public EnergyContainerBatteryBuffer(MetaTileEntity metaTileEntity, int tier) {
         super(metaTileEntity);
         this.tier = tier;
-        this.inventory = inventory;
     }
 
     @Override
@@ -185,7 +183,7 @@ public class EnergyContainerBatteryBuffer extends MTETrait implements IEnergyCon
     }
 
     protected IItemHandlerModifiable getInventory() {
-        return inventory;
+        return metaTileEntity.getImportItems();
     }
 
     protected int getTier() {

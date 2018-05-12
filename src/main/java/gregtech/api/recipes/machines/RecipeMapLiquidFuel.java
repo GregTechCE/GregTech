@@ -21,7 +21,7 @@ public class RecipeMapLiquidFuel extends RecipeMap<DefaultRecipeBuilder> {
     public Builder createUITemplate(DoubleSupplier progressSupplier, IItemHandlerModifiable importItems, IItemHandlerModifiable exportItems, FluidTankList importFluids, FluidTankList exportFluids) {
         Builder builder = ModularUI.defaultBuilder();
         builder.image(7, 16, 81, 55, GuiTextures.DISPLAY);
-        TankWidget tankWidget = new TankWidget(importFluids.getTankAt(0), 67, 50, 18, 18)
+        TankWidget tankWidget = new TankWidget(importFluids.getTankAt(0), 69, 52, 18, 18)
             .setHideTooltip(true).setAlwaysShowFull(true);
         builder.widget(tankWidget);
         builder.label(11, 20, "gregtech.gui.fuel_amount", 0xFFFFFF);

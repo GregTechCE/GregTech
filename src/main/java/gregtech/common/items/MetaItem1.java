@@ -63,7 +63,7 @@ public class MetaItem1 extends MaterialMetaItem {
             .setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.Brass, 907200L)));
         COIN_CHOCOLATE = addItem(10, "coin.chocolate")
             .setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.Gold, OrePrefix.foil.materialAmount)))
-            .addStats(new FoodStats(1, 0.1F, false, true, OreDictUnifier.get(OrePrefix.foil, Materials.Gold, 1), new RandomPotionEffect(MobEffects.SPEED, 200, 1, 10)));
+            .addStats(new FoodStats(1, 0.1F, false, true, OreDictUnifier.get(OrePrefix.foil, Materials.Gold), new RandomPotionEffect(MobEffects.SPEED, 200, 1, 10)));
 
         MINECART_WHEELS_IRON = addItem(100, "minecart.wheels.iron");
         MINECART_WHEELS_STEEL = addItem(101, "minecart.wheels.steel");
@@ -71,7 +71,6 @@ public class MetaItem1 extends MaterialMetaItem {
         SHAPE_EMPTY = addItem(300, "shape.empty");
 
         SHAPE_MOLD_PLATE = addItem(301, "shape.mold.plate");
-        SHAPE_MOLD_CASING = addItem(302, "shape.mold.casing");
         SHAPE_MOLD_GEAR = addItem(303, "shape.mold.gear");
         SHAPE_MOLD_CREDIT = addItem(304, "shape.mold.credit");
         SHAPE_MOLD_BOTTLE = addItem(305, "shape.mold.bottle");
@@ -79,9 +78,6 @@ public class MetaItem1 extends MaterialMetaItem {
         SHAPE_MOLD_BALL = addItem(307, "shape.mold.ball");
         SHAPE_MOLD_BLOCK = addItem(308, "shape.mold.block");
         SHAPE_MOLD_NUGGET = addItem(309, "shape.mold.nugget");
-        SHAPE_MOLD_BUN = addItem(310, "shape.mold.bun");
-        SHAPE_MOLD_BREAD = addItem(311, "shape.mold.bread");
-        SHAPE_MOLD_BAGUETTE = addItem(312, "shape.mold.baguette");
         SHAPE_MOLD_CYLINDER = addItem(313, "shape.mold.cylinder");
         SHAPE_MOLD_ANVIL = addItem(314, "shape.mold.anvil");
         SHAPE_MOLD_NAME = addItem(315, "shape.mold.name");
@@ -94,12 +90,11 @@ public class MetaItem1 extends MaterialMetaItem {
         SHAPE_EXTRUDER_CELL = addItem(354, "shape.extruder.cell");
         SHAPE_EXTRUDER_INGOT = addItem(355, "shape.extruder.ingot");
         SHAPE_EXTRUDER_WIRE = addItem(356, "shape.extruder.wire");
-        SHAPE_EXTRUDER_CASING = addItem(357, "shape.extruder.casing");
-        SHAPE_EXTRUDER_PIPE_TINY = addItem(358, "shape.extruder.pipe.tiny");
-        SHAPE_EXTRUDER_PIPE_SMALL = addItem(359, "shape.extruder.pipe.small");
-        SHAPE_EXTRUDER_PIPE_MEDIUM = addItem(360, "shape.extruder.pipe.medium");
-        SHAPE_EXTRUDER_PIPE_LARGE = addItem(361, "shape.extruder.pipe.large");
-        SHAPE_EXTRUDER_PIPE_HUGE = addItem(362, "shape.extruder.pipe.huge");
+        SHAPE_EXTRUDER_PIPE_TINY = addItem(358, "shape.extruder.pipe.tiny").setInvisible();
+        SHAPE_EXTRUDER_PIPE_SMALL = addItem(359, "shape.extruder.pipe.small").setInvisible();
+        SHAPE_EXTRUDER_PIPE_MEDIUM = addItem(360, "shape.extruder.pipe.medium").setInvisible();
+        SHAPE_EXTRUDER_PIPE_LARGE = addItem(361, "shape.extruder.pipe.large").setInvisible();
+        SHAPE_EXTRUDER_PIPE_HUGE = addItem(362, "shape.extruder.pipe.huge").setInvisible();
         SHAPE_EXTRUDER_BLOCK = addItem(363, "shape.extruder.block");
         SHAPE_EXTRUDER_SWORD = addItem(364, "shape.extruder.sword");
         SHAPE_EXTRUDER_PICKAXE = addItem(365, "shape.extruder.pickaxe");
@@ -112,30 +107,32 @@ public class MetaItem1 extends MaterialMetaItem {
         SHAPE_EXTRUDER_GEAR = addItem(372, "shape.extruder.gear");
         SHAPE_EXTRUDER_BOTTLE = addItem(373, "shape.extruder.bottle");
 
-        SHAPE_SLICER_FLAT = addItem(398, "shape.slicer.flat");
-        SHAPE_SLICER_STRIPES = addItem(399, "shape.slicer.stripes");
+        SHAPE_SLICER_FLAT = addItem(398, "shape.slicer.flat").setInvisible();
+        SHAPE_SLICER_STRIPES = addItem(399, "shape.slicer.stripes").setInvisible();
 
         FUEL_CAN_PLASTIC_EMPTY = addItem(400, "fuel.can.plastic.empty")
-            .setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.Plastic, OrePrefix.plate.materialAmount)));
+            .setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.Plastic, OrePrefix.plate.materialAmount)))
+            .setInvisible();
         FUEL_CAN_PLASTIC_FILLED = addItem(401, "fuel.can.plastic.filled")
-            .setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.Plastic, OrePrefix.plate.materialAmount)));
+            .setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.Plastic, OrePrefix.plate.materialAmount)))
+            .setInvisible();
 
         SPRAY_EMPTY = addItem(402, "spray.empty")
             .setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.Tin, OrePrefix.plate.materialAmount * 2L), new MaterialStack(Materials.Redstone, OrePrefix.dust.materialAmount)));
 
-        LARGE_FLUID_CELL_STEEL = addItem(405, "large.fluid.cell.steel")
-            .addStats(new FluidStats(16000, Integer.MAX_VALUE, Integer.MAX_VALUE))
+        LARGE_FLUID_CELL_STEEL = addItem(405, "large_fluid_cell.steel")
+            .addStats(new FluidStats(16000, Integer.MAX_VALUE, Integer.MAX_VALUE, true))
             .setMaxStackSize(16)
             .setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.Steel, OrePrefix.plate.materialAmount * 2L + 2L * OrePrefix.ring.materialAmount)));
 
-        LARGE_FLUID_CELL_TUNGSTENSTEEL = addItem(406, "large.fluid.cell.tungstensteel")
-            .addStats(new FluidStats(64000, Integer.MAX_VALUE, Integer.MAX_VALUE))
+        LARGE_FLUID_CELL_TUNGSTENSTEEL = addItem(406, "large_fluid_cell.tungstensteel")
+            .addStats(new FluidStats(64000, Integer.MAX_VALUE, Integer.MAX_VALUE, true))
             .setMaxStackSize(16)
             .setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.TungstenSteel, OrePrefix.plate.materialAmount * 2L + 2L * OrePrefix.ring.materialAmount)));
 
         for (byte i = 0; i < 16; i = (byte) (i + 1)) {
-            SPRAY_CAN_DYES[i] = addItem(430 + 2 * i, "spray.can.dyes." + EnumDyeColor.byDyeDamage(i).getName());
-            SPRAY_CAN_DYES_USED[i] = addItem(431 + 2 * i, "spray.can.dyes.used." + EnumDyeColor.byDyeDamage(i).getName());
+            SPRAY_CAN_DYES[i] = addItem(430 + 2 * i, "spray.can.dyes." + EnumDyeColor.byMetadata(i).getName());
+            SPRAY_CAN_DYES_USED[i] = addItem(431 + 2 * i, "spray.can.dyes.used." + EnumDyeColor.byMetadata(i).getName());
 
             ColorSprayBehaviour behaviour = new ColorSprayBehaviour(SPRAY_EMPTY.getStackForm(), SPRAY_CAN_DYES_USED[i].getStackForm(), SPRAY_CAN_DYES[i].getStackForm(), 512L, i);
             SPRAY_CAN_DYES[i].addStats(behaviour);
@@ -168,14 +165,26 @@ public class MetaItem1 extends MaterialMetaItem {
         TOOL_LIGHTER_PLATINUM_USED.addStats(behaviour);
         TOOL_LIGHTER_PLATINUM_FULL.addStats(behaviour);
 
-        INGOT_IRIDIUM_ALLOY = addItem(480, "ingot.iridiumalloy");
+        INGOT_IRIDIUM_ALLOY = addItem(480, "ingot.iridiumalloy").setInvisible();
 
-        SCHEMATIC = addItem(490, "schematic").setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.StainlessSteel, 7257600L)));
-        SCHEMATIC_CRAFTING = addItem(491, "schematic.crafting").setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.StainlessSteel, 7257600L)));
-        SCHEMATIC_1X1 = addItem(495, "schematic.1by1").setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.StainlessSteel, 7257600L)));
-        SCHEMATIC_2X2 = addItem(496, "schematic.2by2").setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.StainlessSteel, 7257600L)));
-        SCHEMATIC_3X3 = addItem(497, "schematic.3by3").setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.StainlessSteel, 7257600L)));
-        SCHEMATIC_DUST = addItem(498, "schematic.dust").setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.StainlessSteel, 7257600L)));
+        SCHEMATIC = addItem(490, "schematic")
+            .setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.StainlessSteel, 7257600L)))
+            .setInvisible();
+        SCHEMATIC_CRAFTING = addItem(491, "schematic.crafting")
+            .setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.StainlessSteel, 7257600L)))
+            .setInvisible();
+        SCHEMATIC_1X1 = addItem(495, "schematic.1by1")
+            .setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.StainlessSteel, 7257600L)))
+            .setInvisible();
+        SCHEMATIC_2X2 = addItem(496, "schematic.2by2")
+            .setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.StainlessSteel, 7257600L)))
+            .setInvisible();
+        SCHEMATIC_3X3 = addItem(497, "schematic.3by3")
+            .setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.StainlessSteel, 7257600L)))
+            .setInvisible();
+        SCHEMATIC_DUST = addItem(498, "schematic.dust")
+            .setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.StainlessSteel, 7257600L)))
+            .setInvisible();
 
         BATTERY_HULL_LV = addItem(500, "battery.hull.lv").setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.BatteryAlloy, OrePrefix.plate.materialAmount)));
         BATTERY_HULL_MV = addItem(501, "battery.hull.hv").setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.BatteryAlloy, OrePrefix.plate.materialAmount * 3L)));
@@ -183,32 +192,32 @@ public class MetaItem1 extends MaterialMetaItem {
 
         BATTERY_RE_ULV_TANTALUM = addItem(499, "battery.re.ulv.tantalum").addStats(new ElectricStats(1000, 0));
 
-        BATTERY_SU_LV_SULFURICACID = addItem(510, "battery.su.lv.sulfuricacid").addStats(new ElectricStats(18000, 1, false));
-        BATTERY_SU_LV_MERCURY = addItem(511, "battery.su.lv.mercury").addStats(new ElectricStats(32000, 1, false));
+        BATTERY_SU_LV_SULFURICACID = addItem(510, "battery.su.lv.sulfuricacid").addStats(new ElectricStats(18000, 1, false)).setModelAmount(8);
+        BATTERY_SU_LV_MERCURY = addItem(511, "battery.su.lv.mercury").addStats(new ElectricStats(32000, 1, false)).setModelAmount(8);
 
-        BATTERY_RE_LV_CADMIUM = addItem(517, "battery.re.lv.cadmium").addStats(new ElectricStats(75000, 1));
-        BATTERY_RE_LV_LITHIUM = addItem(518, "battery.re.lv.lithium").addStats(new ElectricStats(100000, 1));
-        BATTERY_RE_LV_SODIUM = addItem(519, "battery.re.lv.sodium").addStats(new ElectricStats(50000, 1));
+        BATTERY_RE_LV_CADMIUM = addItem(517, "battery.re.lv.cadmium").addStats(new ElectricStats(75000, 1)).setModelAmount(8);
+        BATTERY_RE_LV_LITHIUM = addItem(518, "battery.re.lv.lithium").addStats(new ElectricStats(100000, 1)).setModelAmount(8);
+        BATTERY_RE_LV_SODIUM = addItem(519, "battery.re.lv.sodium").addStats(new ElectricStats(50000, 1)).setModelAmount(8);
 
-        BATTERY_SU_MV_SULFURICACID = addItem(520, "battery.su.mv.sulfuricacid").addStats(new ElectricStats(72000, 2, false));
-        BATTERY_SU_MV_MERCURY = addItem(521, "battery.su.mv.mercury").addStats(new ElectricStats(128000, 2, false));
+        BATTERY_SU_MV_SULFURICACID = addItem(520, "battery.su.mv.sulfuricacid").addStats(new ElectricStats(72000, 2, false)).setModelAmount(8);
+        BATTERY_SU_MV_MERCURY = addItem(521, "battery.su.mv.mercury").addStats(new ElectricStats(128000, 2, false)).setModelAmount(8);
 
-        BATTERY_RE_MV_CADMIUM = addItem(527, "battery.re.mv.cadmium").addStats(new ElectricStats(300000, 2));
-        BATTERY_RE_MV_LITHIUM = addItem(528, "battery.re.mv.lithium").addStats(new ElectricStats(400000, 2));
-        BATTERY_RE_MV_SODIUM = addItem(529, "battery.re.mv.sodium").addStats(new ElectricStats(200000, 2));
+        BATTERY_RE_MV_CADMIUM = addItem(527, "battery.re.mv.cadmium").addStats(new ElectricStats(300000, 2)).setModelAmount(8);
+        BATTERY_RE_MV_LITHIUM = addItem(528, "battery.re.mv.lithium").addStats(new ElectricStats(400000, 2)).setModelAmount(8);
+        BATTERY_RE_MV_SODIUM = addItem(529, "battery.re.mv.sodium").addStats(new ElectricStats(200000, 2)).setModelAmount(8);
 
-        BATTERY_SU_HV_SULFURICACID = addItem(530, "battery.su.hv.sulfuricacid").addStats(new ElectricStats(288000, 3, false));
-        BATTERY_SU_HV_MERCURY = addItem(531, "battery.su.hv.mercury").addStats(new ElectricStats(512000, 3, false));
+        BATTERY_SU_HV_SULFURICACID = addItem(530, "battery.su.hv.sulfuricacid").addStats(new ElectricStats(288000, 3, false)).setModelAmount(8);
+        BATTERY_SU_HV_MERCURY = addItem(531, "battery.su.hv.mercury").addStats(new ElectricStats(512000, 3, false)).setModelAmount(8);
 
-        BATTERY_RE_HV_CADMIUM = addItem(537, "battery.re.hv.cadmium").addStats(new ElectricStats(1200000, 3));
-        BATTERY_RE_HV_LITHIUM = addItem(538, "battery.re.hv.lithium").addStats(new ElectricStats(1600000, 3));
-        BATTERY_RE_HV_SODIUM = addItem(539, "battery.re.hv.sodium").addStats(new ElectricStats(800000, 3));
+        BATTERY_RE_HV_CADMIUM = addItem(537, "battery.re.hv.cadmium").addStats(new ElectricStats(1200000, 3)).setModelAmount(8);
+        BATTERY_RE_HV_LITHIUM = addItem(538, "battery.re.hv.lithium").addStats(new ElectricStats(1600000, 3)).setModelAmount(8);
+        BATTERY_RE_HV_SODIUM = addItem(539, "battery.re.hv.sodium").addStats(new ElectricStats(800000, 3)).setModelAmount(8);
 
-        ENERGY_LAPOTRONICORB = addItem(597, "energy.lapotronicorb").addStats(new ElectricStats(100000000, 5)).setUnificationData(OrePrefix.battery, MarkerMaterials.Tier.Ultimate);
-        ENERGY_LAPOTRONICORB2 = addItem(598, "energy.lapotronicorb2").addStats(new ElectricStats(1000000000, 6)).setUnificationData(OrePrefix.battery, MarkerMaterials.Tier.Ultimate);
+        ENERGY_LAPOTRONICORB = addItem(597, "energy.lapotronicorb").addStats(new ElectricStats(100000000, 5)).setUnificationData(OrePrefix.battery, MarkerMaterials.Tier.Ultimate).setModelAmount(8);
+        ENERGY_LAPOTRONICORB2 = addItem(598, "energy.lapotronicorb2").addStats(new ElectricStats(1000000000, 6)).setUnificationData(OrePrefix.battery, MarkerMaterials.Tier.Ultimate).setModelAmount(8);
 
-        ZPM = addItem(599, "zpm").addStats(new ElectricStats(2000000000000L, 7, false));
-        ZPM2 = addItem(605, "zpm2").addStats(new ElectricStats(Long.MAX_VALUE, 8));
+        ZPM = addItem(599, "zpm").addStats(new ElectricStats(2000000000000L, 7, false)).setModelAmount(8);
+        ZPM2 = addItem(605, "zpm2").addStats(new ElectricStats(Long.MAX_VALUE, 8)).setModelAmount(8);
 
         ELECTRIC_MOTOR_LV = addItem(600, "electric.motor.lv");
         ELECTRIC_MOTOR_MV = addItem(601, "electric.motor.mv");
@@ -234,7 +243,10 @@ public class MetaItem1 extends MaterialMetaItem {
         FLUID_REGULATOR_EV = addItem(618, "fluidregulator.ev");
         FLUID_REGULATOR_IV = addItem(619, "fluidregulator.iv");
 
-        FLUID_FILTER = addItem(635, "fluidfilter");
+        SMALL_BRONZE_PIPE = addItem(620, "pipe.small.bronze").setUnificationData(OrePrefix.pipeSmall, Materials.Bronze);
+        SMALL_STEEL_PIPE = addItem(621, "pipe.small.steel").setUnificationData(OrePrefix.pipeSmall, Materials.Steel);
+
+        FLUID_FILTER = addItem(635, "fluidfilter").setInvisible();
 
         CONVEYOR_MODULE_LV = addItem(630, "conveyor.module.lv");
         CONVEYOR_MODULE_MV = addItem(631, "conveyor.module.mv");
@@ -325,37 +337,37 @@ public class MetaItem1 extends MaterialMetaItem {
         UPGRADE_MUFFLER = addItem(727, "upgrade.muffler");
         UPGRADE_LOCK = addItem(728, "upgrade.lock");
 
-        COMPONENT_FILTER = addItem(729, "component.filter").setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.Zinc, OrePrefix.foil.materialAmount * 16L))).addOreDict(OreDictNames.craftingFilter);
+        COMPONENT_FILTER = addItem(729, "component.filter").setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.Zinc, OrePrefix.foil.materialAmount * 16L))).addOreDict(OreDictNames.craftingFilter).setInvisible();
 
-        COVER_CONTROLLER = addItem(730, "cover.controller");
-        COVER_ACTIVITY_DETECTOR = addItem(731, "cover.activity.detector");
-        COVER_FLUID_DETECTOR = addItem(732, "cover.fluid.detector");
-        COVER_ITEM_DETECTOR = addItem(733, "cover.item.detector");
-        COVER_ENERGY_DETECTOR = addItem(734, "cover.energy.detector");
-        COVER_PLAYER_DETECTOR = addItem(735, "cover.player.detector");
+        COVER_CONTROLLER = addItem(730, "cover.controller").setInvisible();
+        COVER_ACTIVITY_DETECTOR = addItem(731, "cover.activity.detector").setInvisible();
+        COVER_FLUID_DETECTOR = addItem(732, "cover.fluid.detector").setInvisible();
+        COVER_ITEM_DETECTOR = addItem(733, "cover.item.detector").setInvisible();
+        COVER_ENERGY_DETECTOR = addItem(734, "cover.energy.detector").setInvisible();
+        COVER_PLAYER_DETECTOR = addItem(735, "cover.player.detector").setInvisible();
 
-        COVER_SCREEN = addItem(740, "cover.screen");
-        COVER_CRAFTING = addItem(744, "cover.crafting");
-        COVER_DRAIN = addItem(745, "cover.drain");
+        COVER_SCREEN = addItem(740, "cover.screen").setInvisible();
+        COVER_CRAFTING = addItem(744, "cover.crafting").setInvisible();
+        COVER_DRAIN = addItem(745, "cover.drain").setInvisible();
 
-        COVER_SHUTTER = addItem(749, "cover.shutter");
+        COVER_SHUTTER = addItem(749, "cover.shutter").setInvisible();
 
-        COVER_SOLARPANEL = addItem(750, "cover.solar.panel");
-        COVER_SOLARPANEL_8V = addItem(751, "cover.solar.panel.ulv");
-        COVER_SOLARPANEL_LV = addItem(752, "cover.solar.panel.lv");
-        COVER_SOLARPANEL_MV = addItem(753, "cover.solar.panel.mv");
-        COVER_SOLARPANEL_HV = addItem(754, "cover.solar.panel.hv");
-        COVER_SOLARPANEL_EV = addItem(755, "cover.solar.panel.ev");
-        COVER_SOLARPANEL_IV = addItem(756, "cover.solar.panel.iv");
-        COVER_SOLARPANEL_LUV = addItem(757, "cover.solar.panel.luv");
-        COVER_SOLARPANEL_ZPM = addItem(758, "cover.solar.panel.zpm");
-        COVER_SOLARPANEL_UV = addItem(759, "cover.solar.panel.uv");
+        COVER_SOLARPANEL = addItem(750, "cover.solar.panel").setInvisible();
+        COVER_SOLARPANEL_8V = addItem(751, "cover.solar.panel.ulv").setInvisible();
+        COVER_SOLARPANEL_LV = addItem(752, "cover.solar.panel.lv").setInvisible();
+        COVER_SOLARPANEL_MV = addItem(753, "cover.solar.panel.mv").setInvisible();
+        COVER_SOLARPANEL_HV = addItem(754, "cover.solar.panel.hv").setInvisible();
+        COVER_SOLARPANEL_EV = addItem(755, "cover.solar.panel.ev").setInvisible();
+        COVER_SOLARPANEL_IV = addItem(756, "cover.solar.panel.iv").setInvisible();
+        COVER_SOLARPANEL_LUV = addItem(757, "cover.solar.panel.luv").setInvisible();
+        COVER_SOLARPANEL_ZPM = addItem(758, "cover.solar.panel.zpm").setInvisible();
+        COVER_SOLARPANEL_UV = addItem(759, "cover.solar.panel.uv").setInvisible();
 
-        TOOL_CHEAT = addItem(761, "tool.cheat").addStats(new ElectricStats(-2000000000, -1));
+        //TOOL_CHEAT = addItem(761, "tool.cheat").addStats(new ElectricStats(-2000000000, -1));
 
-        FLUID_CELL = addItem(762, "cell.fluid").addStats(new FluidStats(16000, Integer.MIN_VALUE, Integer.MAX_VALUE));
+        FLUID_CELL = addItem(762, "fluid_cell").addStats(new FluidStats(1000, Integer.MIN_VALUE, Integer.MAX_VALUE, false));
 
-        DUCT_TAPE = addItem(764, "duct.tape").addOreDict(OreDictNames.craftingDuctTape);
+        DUCT_TAPE = addItem(764, "duct.tape").addOreDict(OreDictNames.craftingDuctTape).setInvisible();
         MCGUFFIUM_239 = addItem(765, "mcguffium.239");
 
         INTEGRATED_CIRCUIT = addItem(766, "circuit.integrated").addStats(new IntCircuitBehaviour());

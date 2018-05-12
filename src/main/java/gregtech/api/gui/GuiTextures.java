@@ -45,6 +45,7 @@ public class GuiTextures {
     public static final TextureArea ARROW_OUTPUT_OVERLAY = TextureArea.fullImage("textures/gui/base/arrow_output_overlay.png");
     public static final TextureArea CHARGER_OVERLAY = TextureArea.fullImage("textures/gui/base/charger_slot_overlay.png");
     public static final TextureArea INT_CIRCUIT_OVERLAY = TextureArea.fullImage("textures/gui/base/int_circuit_overlay.png");
+    public static final TextureArea TURBINE_OVERLAY = TextureArea.fullImage("textures/gui/base/turbine_overlay.png");
     public static final TextureArea FURNACE_OVERLAY = TextureArea.fullImage("textures/gui/base/furnace_overlay.png");
     public static final TextureArea COMPRESSOR_OVERLAY = TextureArea.fullImage("textures/gui/base/compressor_overlay.png");
     public static final TextureArea EXTRACTOR_OVERLAY = TextureArea.fullImage("textures/gui/base/extractor_overlay.png");
@@ -55,6 +56,7 @@ public class GuiTextures {
     public static final TextureArea PRESS_OVERLAY_1 = TextureArea.fullImage("textures/gui/base/press_overlay_1.png");
     public static final TextureArea PRESS_OVERLAY_2 = TextureArea.fullImage("textures/gui/base/press_overlay_2.png");
     public static final TextureArea PRESS_OVERLAY_3 = TextureArea.fullImage("textures/gui/base/press_overlay_3.png");
+    public static final TextureArea DARK_CANISTER_OVERLAY = TextureArea.fullImage("textures/gui/base/dark_canister_overlay.png");
     public static final TextureArea CANISTER_OVERLAY = TextureArea.fullImage("textures/gui/base/canister_overlay.png");
     public static final TextureArea LENS_OVERLAY = TextureArea.fullImage("textures/gui/base/lens_overlay.png");
     public static final TextureArea CRYSTAL_OVERLAY = TextureArea.fullImage("textures/gui/base/crystal_overlay.png");

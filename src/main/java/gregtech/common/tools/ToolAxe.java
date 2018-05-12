@@ -12,17 +12,17 @@ public class ToolAxe extends ToolBase {
 
     @Override
     public int getToolDamagePerBlockBreak(ItemStack stack) {
-        return 50;
+        return 1;
     }
 
     @Override
     public int getToolDamagePerDropConversion(ItemStack stack) {
-        return 100;
+        return 1;
     }
 
     @Override
     public int getToolDamagePerContainerCraft(ItemStack stack) {
-        return 100;
+        return 1;
     }
 
     @Override

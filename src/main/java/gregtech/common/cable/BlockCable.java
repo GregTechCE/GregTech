@@ -74,6 +74,7 @@ public class BlockCable extends Block implements ITileEntityProvider, IMultipart
         setHarvestLevel("cutter", 1);
         setHardness(2.0f);
         setResistance(3.0f);
+        setLightOpacity(1);
     }
 
     ///////////////////////// COLLISION AND BOUNDING BOXES /////////////////////////////////
@@ -150,7 +151,7 @@ public class BlockCable extends Block implements ITileEntityProvider, IMultipart
      * Tests whatever cable at given position can connect to cable ron fromFacing face with fromColor color
      * @return 0 - not a cable; 1 - cable but blocked; 2 - accessible
      */
-    public static int isCableAccessibleAtSide(IBlockAccess world, BlockPos pos, EnumFacing fromFacing, int fromColor) {
+    public static int isCableAccessibleAtSide(IBlockAccess world, BlockPos pos, EnumFacing fromFacing, int fromColor, float selfThickness) {
         TileEntityCable tileEntityCable = getCableTileEntity(world, pos);
         if(tileEntityCable == null)
             return 0;
@@ -161,7 +162,8 @@ public class BlockCable extends Block implements ITileEntityProvider, IMultipart
             tileEntityCable.getInsulationColor() != TileEntityCable.DEFAULT_INSULATION_COLOR &&
             fromColor != tileEntityCable.getInsulationColor())
             return 1;
-        return 2;
+        float thickness = tileEntityCable.getCableState().getValue(INSULATION).thickness;
+        return selfThickness > thickness ? 3 : 2;
     }
 
     /**
@@ -193,9 +195,13 @@ public class BlockCable extends Block implements ITileEntityProvider, IMultipart
                 continue; //do not check blocked connection sides
             BlockPos offsetPos = blockPos.offset(enumFacing);
             IBlockState blockState = world.getBlockState(offsetPos);
-            int cableState = isCableAccessibleAtSide(world, offsetPos, enumFacing.getOpposite(), selfTile.getInsulationColor());
-            if(cableState == 2) {
+            int cableState = isCableAccessibleAtSide(world, offsetPos, enumFacing.getOpposite(), selfTile.getInsulationColor(),
+                selfTile.getCableState().getValue(INSULATION).thickness);
+            if(cableState >= 2) {
                 connectedSidesMask |= 1 << enumFacing.getIndex();
+                if(cableState >= 3) {
+                    connectedSidesMask |= 1 << (6 + enumFacing.getIndex());
+                }
             } else if(cableState == 0 && blockState.getBlock().hasTileEntity(blockState)) {
                 TileEntity tileEntity = world.getTileEntity(offsetPos);
                 if(tileEntity != null && tileEntity.hasCapability(IEnergyContainer.CAPABILITY_ENERGY_CONTAINER,
@@ -218,8 +224,9 @@ public class BlockCable extends Block implements ITileEntityProvider, IMultipart
                 continue; //do not search blocked sides
             }
             BlockPos offsetPos = pos.offset(facing);
-            int cableState = isCableAccessibleAtSide(worldIn, offsetPos, facing.getOpposite(), tileEntityCable.getInsulationColor());
-            if(cableState == 2) {
+            int cableState = isCableAccessibleAtSide(worldIn, offsetPos, facing.getOpposite(), tileEntityCable.getInsulationColor(),
+                tileEntityCable.getCableState().getValue(INSULATION).thickness);
+            if(cableState >= 2) {
                 EnergyNet offsetEnergyNet = worldENet.getNetFromPos(offsetPos);
                 if(offsetEnergyNet == null) {
                     continue;

@@ -30,17 +30,24 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.Tuple;
 import net.minecraft.util.text.TextFormatting;
+import net.minecraftforge.common.BiomeDictionary;
 import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.FluidTank;
+import net.minecraftforge.fluids.IFluidTank;
+import net.minecraftforge.fml.relauncher.ReflectionHelper;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.IItemHandlerModifiable;
 
+import java.awt.*;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.*;
+import java.util.List;
+import java.util.Map.Entry;
 import java.util.function.Predicate;
 
 import static gregtech.api.GTValues.*;
@@ -73,21 +80,37 @@ public class GTUtility {
      * Determines dye color nearest to specified RGB color
      */
     public static EnumDyeColor determineDyeColor(int rgbColor) {
-        ArrayList<EnumDyeColor> colors = Lists.newArrayList(EnumDyeColor.values());
-        colors.sort((a, b) -> {
-            int colorA = a.getColorValue();
-            int colorB = b.getColorValue();
-            int diffRedA = Math.abs(((colorA >> 16) & 0xFF) - ((rgbColor >> 16) & 0xFF));
-            int diffGreenA = Math.abs(((colorA >> 8) & 0xFF) - ((rgbColor >> 8) & 0xFF));
-            int diffBlueA = Math.abs((colorA & 0xFF) - (rgbColor & 0xFF));
-            int diffRedB = Math.abs(((colorB >> 16) & 0xFF) - ((rgbColor >> 16) & 0xFF));
-            int diffGreenB = Math.abs(((colorB >> 8) & 0xFF) - ((rgbColor >> 8) & 0xFF));
-            int diffBlueB = Math.abs((colorB & 0xFF) - (rgbColor & 0xFF));
-            int totalDiffA = diffRedA + diffGreenA + diffBlueA;
-            int totalDiffB = diffRedB + diffGreenB + diffBlueB;
-            return Integer.compare(totalDiffB, totalDiffA);
-        });
-        return colors.get(0);
+        int rA = (rgbColor & 0xff0000) >> 16;
+        int gA = (rgbColor & 0xff00) >> 8;
+        int bA = (rgbColor & 0xff);
+        float[] hsb = Color.RGBtoHSB(rA, gA, bA, new float[3]);
+        return EnumDyeColor.values()[indexOfClosest(hsb[0], hueDyeValues)];
+    }
+
+    private static double[] hueDyeValues = Arrays.stream(EnumDyeColor.values())
+        .mapToDouble(color -> {
+            int rA = (color.colorValue & 0xff0000) >> 16;
+            int gA = (color.colorValue & 0xff00) >> 8;
+            int bA = (color.colorValue & 0xff);
+            float[] hsb = Color.RGBtoHSB(rA, gA, bA, new float[3]);
+            return hsb[0];
+        })
+        .toArray();
+
+    private static int indexOfClosest(double of, double[] in) {
+        double min = Double.POSITIVE_INFINITY;
+        int closestIndex = -1;
+
+        for (int i = 0; i < in.length; i++) {
+            double diff = Math.abs(in[i] - of);
+
+            if (diff < min) {
+                min = diff;
+                closestIndex = i;
+            }
+        }
+
+        return closestIndex;
     }
 
     //just because CCL uses a different color format
@@ -245,20 +268,94 @@ public class GTUtility {
         return tier;
     }
 
-    public static NonNullList<ItemStack> itemHandlerToList(IItemHandlerModifiable inputs) {
-        NonNullList<ItemStack> stacks = NonNullList.create();
-        for (int i = 0; i < inputs.getSlots(); i++) {
-            stacks.add(inputs.getStackInSlot(i));
+    public static byte getTierByVoltageRoundDown(long voltage) {
+        byte tier = 0;
+        while (++tier < V.length) {
+            if (voltage < V[tier])
+                return (byte) (tier - 1);
         }
-        return stacks;
+        return tier;
     }
 
-    public static List<FluidStack> fluidHandlerToList(IMultipleTankHandler fluidInputs) {
-        List<FluidStack> fluidStacks = new ArrayList<>(fluidInputs.getTanks());
-        for (int i = 0; i < fluidInputs.getTanks(); i++) {
-            fluidStacks.add(fluidInputs.getTankAt(i).getFluid());
+    public static BiomeDictionary.Type getBiomeTypeTagByName(String name) {
+        Map<String, BiomeDictionary.Type> byName = ReflectionHelper.getPrivateValue(BiomeDictionary.Type.class, null, "byName");
+        return byName.get(name);
+    }
+
+    public static <T> int getRandomItem(Random random, List<Entry<Integer, T>> randomList, int size) {
+        if(randomList.isEmpty())
+            return -1;
+        int[] baseOffsets = new int[size];
+        int currentIndex = 0;
+        for(int i = 0; i < size; i++) {
+            Entry<Integer, T> entry = randomList.get(i);
+            if(entry.getKey() <= 0) {
+                throw new IllegalArgumentException("Invalid weight: " + entry.getKey());
+            }
+            currentIndex += entry.getKey();
+            baseOffsets[i] = currentIndex;
         }
-        return fluidStacks;
+        int randomValue = random.nextInt(currentIndex);
+        for(int i = 0; i < size; i++) {
+            Entry<Integer, T> entry = randomList.get(i);
+            if(randomValue < baseOffsets[i])
+                return i;
+        }
+        throw new IllegalArgumentException("Invalid weight");
+    }
+
+    /**
+     * @return a list of itemstack linked with given item handler
+     * modifications in list will reflect on item handler and wise-versa
+     */
+    public static List<ItemStack> itemHandlerToList(IItemHandlerModifiable inputs) {
+        return new AbstractList<ItemStack>() {
+            @Override
+            public ItemStack set(int index, ItemStack element) {
+                ItemStack oldStack = inputs.getStackInSlot(index);
+                inputs.setStackInSlot(index, element == null ? ItemStack.EMPTY : element);
+                return oldStack;
+            }
+
+            @Override
+            public ItemStack get(int index) {
+                return inputs.getStackInSlot(index);
+            }
+
+            @Override
+            public int size() {
+                return inputs.getSlots();
+            }
+        };
+    }
+
+    /**
+     * @return a list of fluidstack linked with given fluid handler
+     * modifications in list will reflect on fluid handler and wise-versa
+     */
+    public static List<FluidStack> fluidHandlerToList(IMultipleTankHandler fluidInputs) {
+        List<IFluidTank> backedList = fluidInputs.getFluidTanks();
+        return new AbstractList<FluidStack>() {
+            @Override
+            public FluidStack set(int index, FluidStack element) {
+                IFluidTank fluidTank = backedList.get(index);
+                FluidStack oldStack = fluidTank.getFluid();
+                if(!(fluidTank instanceof FluidTank))
+                    return oldStack;
+                ((FluidTank) backedList.get(index)).setFluid(element);
+                return oldStack;
+            }
+
+            @Override
+            public FluidStack get(int index) {
+                return backedList.get(index).getFluid();
+            }
+
+            @Override
+            public int size() {
+                return backedList.size();
+            }
+        };
     }
 
     public static boolean isWearingFullSuit(EntityLivingBase entity, Set<SimpleItemStack> suitParts) {
@@ -356,10 +453,10 @@ public class GTUtility {
         return amount;
     }
 
-    public static int amountOfNonEmptyStacks(NonNullList<ItemStack> collection) {
+    public static int amountOfNonEmptyStacks(List<ItemStack> collection) {
         int amount = 0;
         for(ItemStack object : collection) {
-            if(!object.isEmpty()) amount++;
+            if(object != null && !object.isEmpty()) amount++;
         }
         return amount;
     }

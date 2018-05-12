@@ -16,7 +16,6 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.ValidationResult;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.NonNullList;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fml.relauncher.Side;
@@ -130,7 +129,7 @@ public class RecipeMap<R extends RecipeBuilder<R>> {
 	 * @return the Recipe it has found or null for no matching Recipe
 	 */
 	@Nullable
-	public Recipe findRecipe(long voltage, NonNullList<ItemStack> inputs, List<FluidStack> fluidInputs) {
+	public Recipe findRecipe(long voltage, List<ItemStack> inputs, List<FluidStack> fluidInputs) {
         if (recipeList.isEmpty())
             return null;
         if (minFluidInputs > 0 && GTUtility.amountOfNonNullElements(fluidInputs) < minFluidInputs) {
@@ -147,7 +146,7 @@ public class RecipeMap<R extends RecipeBuilder<R>> {
     }
 
     @Nullable
-    private Recipe findByFluidInputs(long voltage, NonNullList<ItemStack> inputs, List<FluidStack> fluidInputs) {
+    private Recipe findByFluidInputs(long voltage, List<ItemStack> inputs, List<FluidStack> fluidInputs) {
         for (FluidStack fluid : fluidInputs) {
             if (fluid == null) continue;
             Collection<Recipe> recipes = recipeFluidMap.get(fluid.getFluid());
@@ -162,7 +161,7 @@ public class RecipeMap<R extends RecipeBuilder<R>> {
     }
 
 	@Nullable
-	private Recipe findByInputs(long voltage, NonNullList<ItemStack> inputs, List<FluidStack> fluidInputs) {
+	private Recipe findByInputs(long voltage, List<ItemStack> inputs, List<FluidStack> fluidInputs) {
         for (Recipe recipe : recipeList) {
             if (recipe.matches(false, false, inputs, fluidInputs)) {
                 return voltage * amperage >= recipe.getEUt() ? recipe : null;
@@ -174,7 +173,7 @@ public class RecipeMap<R extends RecipeBuilder<R>> {
 	//this DOES NOT add machine control widgets or binds player inventory
 	public ModularUI.Builder createUITemplate(DoubleSupplier progressSupplier, IItemHandlerModifiable importItems, IItemHandlerModifiable exportItems, FluidTankList importFluids, FluidTankList exportFluids) {
         ModularUI.Builder builder = ModularUI.defaultBuilder();
-        builder.widget(new ProgressWidget(progressSupplier, 77, 23, 20, 15, progressBarTexture, moveType));
+        builder.widget(new ProgressWidget(progressSupplier, 77, 22, 20, 20, progressBarTexture, moveType));
         addInventorySlotGroup(builder, importItems, importFluids, false);
         addInventorySlotGroup(builder, exportItems, exportFluids, true);
         return builder;
@@ -185,8 +184,9 @@ public class RecipeMap<R extends RecipeBuilder<R>> {
         int fluidInputsCount = fluidHandler.getTanks();
         boolean invertFluids = false;
         if(itemInputsCount == 0) {
+            int tmp = itemInputsCount;
             itemInputsCount = fluidInputsCount;
-            fluidInputsCount = 0;
+            fluidInputsCount = tmp;
             invertFluids = true;
         }
         int[] inputSlotGrid = determineSlotsGrid(itemInputsCount);
@@ -201,10 +201,16 @@ public class RecipeMap<R extends RecipeBuilder<R>> {
             }
         }
         if(fluidInputsCount > 0 || invertFluids) {
-            int startSpecX = isOutputs ? 158 : 1;
-            int startSpecY = 32 - (int) (fluidInputsCount / 2.0 * 18);
-            for(int i = 0; i < fluidInputsCount; i++) {
-                addSlot(builder, startSpecX, startSpecY + 18 * i, i, itemHandler, fluidHandler, !invertFluids, isOutputs);
+            if(itemSlotsToDown >= fluidInputsCount) {
+                int startSpecX = isOutputs ? startInputsX + itemSlotsToLeft * 18 : startInputsX - 18;
+                for(int i = 0; i < fluidInputsCount; i++) {
+                    addSlot(builder, startSpecX, startInputsY + 18 * i, i, itemHandler, fluidHandler, !invertFluids, isOutputs);
+                }
+            } else {
+                int startSpecY = startInputsY + itemSlotsToDown * 18;
+                for(int i = 0; i < fluidInputsCount; i++) {
+                    addSlot(builder, startInputsX + 18 * i, startSpecY, i, itemHandler, fluidHandler, !invertFluids, isOutputs);
+                }
             }
         }
     }
@@ -214,9 +220,10 @@ public class RecipeMap<R extends RecipeBuilder<R>> {
             builder.widget(new SlotWidget(itemHandler, slotIndex, x, y, true, !isOutputs)
                 .setBackgroundTexture(getOverlaysForSlot(isOutputs, false,slotIndex == itemHandler.getSlots() - 1)));
         } else {
-            builder.widget(new TankWidget(fluidHandler.getTankAt(slotIndex), x, y - 1, 18, 18)
+            builder.widget(new TankWidget(fluidHandler.getTankAt(slotIndex), x - 1, y - 1, 18, 18)
                 .setAlwaysShowFull(true)
-                .setBackgroundTexture(getOverlaysForSlot(isOutputs, true, slotIndex == fluidHandler.getTanks() - 1)));
+                .setBackgroundTexture(getOverlaysForSlot(isOutputs, true, slotIndex == fluidHandler.getTanks() - 1))
+                .setContainerIO(isOutputs, !isOutputs));
         }
     }
 

@@ -18,7 +18,6 @@ import gregtech.common.blocks.BlockWireCoil.CoilType;
 import gregtech.common.blocks.MetaBlocks;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
-import net.minecraft.util.math.Vec3i;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentTranslation;
 
@@ -47,14 +46,9 @@ public class MetaTileEntityElectricBlastFurnace extends RecipeMapMultiblockContr
     @Override
     protected void addDisplayText(List<ITextComponent> textList) {
         if(isStructureFormed()) {
-            textList.add(new TextComponentTranslation("gregtech.multiblock.max_temperature", blastFurnaceTemperature));
+            textList.add(new TextComponentTranslation("gregtech.multiblock.blast_furnace.max_temperature", blastFurnaceTemperature));
         }
         super.addDisplayText(textList);
-    }
-
-    @Override
-    protected Vec3i getCenterOffset() {
-        return new Vec3i(1, 0, 0);
     }
 
     @Override
@@ -70,12 +64,12 @@ public class MetaTileEntityElectricBlastFurnace extends RecipeMapMultiblockContr
     }
 
     @Override
-    protected boolean checkRecipe(Recipe recipe, boolean consumeIfSuccess) {
+    public boolean checkRecipe(Recipe recipe, boolean consumeIfSuccess) {
         int recipeRequiredTemp = recipe.getIntegerProperty("blastFurnaceTemp");
         return this.blastFurnaceTemperature >= recipeRequiredTemp;
     }
 
-    protected static Predicate<BlockWorldState> heatingCoilPredicate() {
+    public static Predicate<BlockWorldState> heatingCoilPredicate() {
         return blockWorldState -> {
             IBlockState blockState = blockWorldState.getBlockState();
             if(!(blockState.getBlock() instanceof BlockWireCoil))

@@ -9,7 +9,7 @@ public class ToolPickaxe extends ToolBase {
 
     @Override
     public int getToolDamagePerBlockBreak(ItemStack stack) {
-        return 50;
+        return 1;
     }
 
     @Override

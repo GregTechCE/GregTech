@@ -100,101 +100,69 @@ public class Recipe {
 		return matches(consumeIfSuccessful, dontCheckStackSizes, GTUtility.itemHandlerToList(inputs), GTUtility.fluidHandlerToList(fluidInputs));
 	}
 
-	public boolean matches(boolean consumeIfSuccessful, boolean dontCheckStackSizes, NonNullList<ItemStack> inputs, List<FluidStack> fluidInputs) {
-		if (this.fluidInputs.size() > 0 && fluidInputs.size() == 0) return false;
-		int amount;
-		for (FluidStack fluidInput : this.fluidInputs) {
-			boolean skipRecipe = true;
-			amount = fluidInput.amount;
-			for (FluidStack fluid : fluidInputs) {
-				if (fluid != null && fluid.isFluidEqual(fluidInput)) {
-					if (dontCheckStackSizes) {
-						skipRecipe = false;
-						break;
-					}
-					amount -= fluid.amount;
-					if (amount < 1) {
-						skipRecipe = false;
-						break;
-					}
-				}
-			}
-			if (skipRecipe) {
-				return false;
-			}
-		}
+	public boolean matches(boolean consumeIfSuccessful, boolean dontCheckStackSizes, List<ItemStack> inputs, List<FluidStack> fluidInputs) {
+	    int[] fluidAmountInTank = new int[fluidInputs.size()];
+	    int[] itemAmountInSlot = new int[inputs.size()];
 
-		if (this.inputs.size() > 0 && inputs.size() == 0) {
-			return false;
-		}
+        for(int i = 0; i < fluidAmountInTank.length; i++) {
+            FluidStack fluidInTank = fluidInputs.get(i);
+            fluidAmountInTank[i] = fluidInTank == null ? 0 : fluidInTank.amount;
+        }
+        for(int i = 0; i < itemAmountInSlot.length; i++) {
+            ItemStack itemInSlot = inputs.get(i);
+            itemAmountInSlot[i] = itemInSlot.isEmpty() ? 0 : itemInSlot.getCount();
+        }
 
-		for (CountableIngredient ingredient : this.inputs) {
-			amount = ingredient.getCount();
-			boolean skipRecipe = true;
-			for (ItemStack stack : inputs) {
-				if (ingredient.getIngredient().apply(stack)) {
-					if (dontCheckStackSizes) {
-						skipRecipe = false;
-						break;
-					}
-					amount -= stack.getCount();
-					if (amount < 1) {
-						skipRecipe = false;
-						break;
-					}
-				}
-			}
-			if (skipRecipe) {
-				return false;
-			}
-		}
-		if (consumeIfSuccessful) {
-			if (fluidInputs != null) {
-				for (FluidStack fluid : this.fluidInputs) {
-					amount = fluid.amount;
-					for (FluidStack tmpFluid : fluidInputs) {
-						if (tmpFluid != null && tmpFluid.isFluidEqual(fluid)) {
-							if (dontCheckStackSizes) {
-								tmpFluid.amount -= amount;
-								break;
-							}
-							if (tmpFluid.amount < amount) {
-								amount -= tmpFluid.amount;
-								tmpFluid.amount = 0;
-							} else {
-								tmpFluid.amount -= amount;
-								amount = 0;
-								break;
-							}
-						}
-					}
-				}
-			}
+        for (FluidStack fluid : this.fluidInputs) {
+            int fluidAmount = fluid.amount;
+            for (int i = 0; i < fluidInputs.size(); i++) {
+                FluidStack tankFluid = fluidInputs.get(i);
+                if (tankFluid == null || !tankFluid.isFluidEqual(fluid))
+                    continue;
+                int fluidAmountToConsume = Math.min(fluidAmountInTank[i], fluidAmount);
+                fluidAmount -= fluidAmountToConsume;
+                fluidAmountInTank[i] -= fluidAmountToConsume;
+                if (fluidAmount == 0) break;
+            }
+            if(fluidAmount > 0)
+                return false;
+        }
 
-			if (inputs != null) {
-				for (CountableIngredient ingredient : this.inputs) {
-					amount = ingredient.getCount();
-					for (ItemStack stack : inputs) {
-						if (ingredient.getIngredient().apply(stack)) {
-							if (dontCheckStackSizes) {
-								stack.shrink(amount);
-								break;
-							}
-							if (stack.getCount() < amount) {
-								amount -= stack.getCount();
-								stack.setCount(0);
-							} else {
-								stack.shrink(amount);
-								amount = 0;
-								break;
-							}
-						}
-					}
-				}
-			}
-		}
+        for(CountableIngredient ingredient : this.inputs) {
+            int ingredientAmount = ingredient.getCount();
+            for (int i = 0; i < inputs.size(); i++) {
+                ItemStack inputStack = inputs.get(i);
+                if (inputStack.isEmpty() || !ingredient.getIngredient().apply(inputStack))
+                    continue;
+                int itemAmountToConsume = Math.min(itemAmountInSlot[i], ingredientAmount);
+                ingredientAmount -= itemAmountToConsume;
+                itemAmountInSlot[i] -= itemAmountToConsume;
+                if(ingredientAmount == 0) break;
+            }
+            if(ingredientAmount > 0)
+                return false;
+        }
 
-		return true;
+        if(consumeIfSuccessful) {
+            for(int i = 0; i < fluidAmountInTank.length; i++) {
+                FluidStack fluidStack = fluidInputs.get(i);
+                int fluidAmount = fluidAmountInTank[i];
+                if(fluidStack == null || fluidStack.amount == fluidAmount)
+                    continue;
+                fluidStack.amount = fluidAmount;
+                if(fluidStack.amount == 0)
+                    fluidInputs.set(i, null);
+            }
+            for(int i = 0; i < itemAmountInSlot.length; i++) {
+                ItemStack itemInSlot = inputs.get(i);
+                int itemAmount = itemAmountInSlot[i];
+                if(itemInSlot.isEmpty() || itemInSlot.getCount() == itemAmount)
+                    continue;
+                itemInSlot.setCount(itemAmountInSlot[i]);
+            }
+        }
+
+        return true;
 	}
 
 	///////////////////

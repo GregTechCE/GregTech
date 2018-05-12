@@ -2,6 +2,7 @@ package gregtech.common.metatileentities.electric;
 
 import codechicken.lib.render.CCRenderState;
 import codechicken.lib.render.pipeline.IVertexOperation;
+import codechicken.lib.vec.Matrix4;
 import gregtech.api.capability.impl.EnergyContainerBatteryBuffer;
 import gregtech.api.gui.GuiTextures;
 import gregtech.api.gui.ModularUI;
@@ -34,14 +35,14 @@ public class MetaTileEntityBatteryBuffer extends TieredMetaTileEntity {
     }
 
     @Override
-    public void renderMetaTileEntity(CCRenderState renderState, IVertexOperation[] pipeline) {
-        super.renderMetaTileEntity(renderState, pipeline);
-        Textures.ENERGY_OUT.renderSided(getFrontFacing(), renderState, pipeline);
+    public void renderMetaTileEntity(CCRenderState renderState, Matrix4 translation, IVertexOperation[] pipeline) {
+        super.renderMetaTileEntity(renderState, translation, pipeline);
+        Textures.ENERGY_OUT.renderSided(getFrontFacing(), renderState, translation, pipeline);
     }
 
     @Override
     protected void reinitializeEnergyContainer() {
-        this.energyContainer = new EnergyContainerBatteryBuffer(this, getTier(), importItems);
+        this.energyContainer = new EnergyContainerBatteryBuffer(this, getTier());
     }
 
     @Override
@@ -75,7 +76,7 @@ public class MetaTileEntityBatteryBuffer extends TieredMetaTileEntity {
     @Override
     protected ModularUI createUI(EntityPlayer entityPlayer) {
         return ModularUI.defaultBuilder()
-            .label(6, 6, getMetaName())
+            .label(6, 6, getMetaFullName())
             .squareOfSlots(importItems, 0, inventorySize, true, true, GuiTextures.SLOT, GuiTextures.BATTERY_OVERLAY)
             .bindPlayerInventory(entityPlayer.inventory)
             .build(getHolder(), entityPlayer);

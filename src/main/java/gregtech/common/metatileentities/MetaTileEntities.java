@@ -2,27 +2,30 @@ package gregtech.common.metatileentities;
 
 import gregtech.api.GTValues;
 import gregtech.api.GregTechAPI;
+import gregtech.api.unification.material.Materials;
 import gregtech.common.cable.tile.TileEntityCable;
-import gregtech.api.metatileentity.MaceratorMetaTileEntity;
+import gregtech.common.metatileentities.electric.*;
 import gregtech.api.metatileentity.MetaTileEntityHolder;
 import gregtech.api.metatileentity.SimpleGeneratorMetaTileEntity;
 import gregtech.api.metatileentity.SimpleMachineMetaTileEntity;
 import gregtech.api.recipes.RecipeMaps;
 import gregtech.api.render.Textures;
 import gregtech.api.util.GTLog;
-import gregtech.common.metatileentities.electric.MetaTileEntityBatteryBuffer;
-import gregtech.common.metatileentities.electric.MetaTileEntityCharger;
-import gregtech.common.metatileentities.electric.MetaTileEntityHull;
-import gregtech.common.metatileentities.electric.MetaTileEntityTransformer;
 import gregtech.common.metatileentities.electric.multiblockpart.MetaTileEntityEnergyHatch;
 import gregtech.common.metatileentities.electric.multiblockpart.MetaTileEntityFluidHatch;
 import gregtech.common.metatileentities.electric.multiblockpart.MetaTileEntityItemBus;
+import gregtech.common.metatileentities.electric.multiblockpart.MetaTileEntityRotorHolder;
+import gregtech.common.metatileentities.multi.MetaTileEntityLargeBoiler;
+import gregtech.common.metatileentities.multi.MetaTileEntityLargeBoiler.BoilerType;
 import gregtech.common.metatileentities.multi.MetaTileEntityPrimitiveBlastFurnace;
 import gregtech.common.metatileentities.multi.electric.*;
+import gregtech.common.metatileentities.multi.electric.MetaTileEntityLargeTurbine.TurbineType;
 import gregtech.common.metatileentities.steam.*;
 import gregtech.common.metatileentities.steam.boiler.SteamCoalBoiler;
 import gregtech.common.metatileentities.steam.boiler.SteamLavaBoiler;
 import gregtech.common.metatileentities.steam.boiler.SteamSolarBoiler;
+import gregtech.common.metatileentities.storage.MetaTileEntityChest;
+import gregtech.common.metatileentities.storage.MetaTileEntityTank;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
 @SuppressWarnings("WeakerAccess")
@@ -55,7 +58,7 @@ public class MetaTileEntities {
 
     //SIMPLE MACHINES SECTION
     public static SimpleMachineMetaTileEntity[] ELECTRIC_FURNACE = new SimpleMachineMetaTileEntity[4];
-    public static MaceratorMetaTileEntity[] MACERATOR = new MaceratorMetaTileEntity[4];
+    public static MetaTileEntityMacerator[] MACERATOR = new MetaTileEntityMacerator[4];
     public static SimpleMachineMetaTileEntity[] ALLOY_SMELTER = new SimpleMachineMetaTileEntity[5];
     public static SimpleMachineMetaTileEntity[] AMPLIFABRICATOR = new SimpleMachineMetaTileEntity[5];
     public static SimpleMachineMetaTileEntity[] ARC_FURNACE = new SimpleMachineMetaTileEntity[5];
@@ -107,6 +110,7 @@ public class MetaTileEntities {
     public static MetaTileEntityFluidHatch[] FLUID_EXPORT_HATCH = new MetaTileEntityFluidHatch[GTValues.V.length];
     public static MetaTileEntityEnergyHatch[] ENERGY_INPUT_HATCH = new MetaTileEntityEnergyHatch[GTValues.V.length];
     public static MetaTileEntityEnergyHatch[] ENERGY_OUTPUT_HATCH = new MetaTileEntityEnergyHatch[GTValues.V.length];
+    public static MetaTileEntityRotorHolder[] ROTOR_HOLDER = new MetaTileEntityRotorHolder[GTValues.V.length];
 
     //MULTIBLOCKS SECTION
     public static MetaTileEntityPrimitiveBlastFurnace BRONZE_PRIMITIVE_BLAST_FURNACE;
@@ -115,6 +119,35 @@ public class MetaTileEntities {
     public static MetaTileEntityImplosionCompressor IMPLOSION_COMPRESSOR;
     public static MetaTileEntityPyrolyseOven PYROLYSE_OVEN;
     public static MetaTileEntityDistillationTower DISTILLATION_TOWER;
+    public static MetaTileEntityMultiFurnace MULTI_FURNACE;
+    public static MetaTileEntityDieselEngine DIESEL_ENGINE;
+
+    public static MetaTileEntityLargeTurbine LARGE_STEAM_TURBINE;
+    public static MetaTileEntityLargeTurbine LARGE_GAS_TURBINE;
+    public static MetaTileEntityLargeTurbine LARGE_PLASMA_TURBINE;
+
+    public static MetaTileEntityLargeBoiler LARGE_BRONZE_BOILER;
+    public static MetaTileEntityLargeBoiler LARGE_STEEL_BOILER;
+    public static MetaTileEntityLargeBoiler LARGE_TITANIUM_BOILER;
+    public static MetaTileEntityLargeBoiler LARGE_TUNGSTENSTEEL_BOILER;
+
+    //STORAGE SECTION
+    public static MetaTileEntityChest WOODEN_CHEST;
+    public static MetaTileEntityChest BRONZE_CHEST;
+    public static MetaTileEntityChest STEEL_CHEST;
+    public static MetaTileEntityChest STAINLESS_STEEL_CHEST;
+    public static MetaTileEntityChest TITANIUM_CHEST;
+    public static MetaTileEntityChest TUNGSTENSTEEL_CHEST;
+
+    public static MetaTileEntityTank WOODEN_TANK;
+    public static MetaTileEntityTank BRONZE_TANK;
+    public static MetaTileEntityTank STEEL_TANK;
+    public static MetaTileEntityTank STAINLESS_STEEL_TANK;
+    public static MetaTileEntityTank TITANIUM_TANK;
+    public static MetaTileEntityTank TUNGSTENSTEEL_TANK;
+
+    //MISC MACHINES SECTION
+    public static MetaTileEntityPump[] PUMP = new MetaTileEntityPump[GTValues.V.length - 1];
 
     public static void init() {
         GTLog.logger.info("Registering MetaTileEntities");
@@ -153,10 +186,10 @@ public class MetaTileEntities {
         ELECTRIC_FURNACE[2] = GregTechAPI.registerMetaTileEntity(52, new SimpleMachineMetaTileEntity("electric_furnace.hv", RecipeMaps.FURNACE_RECIPES, Textures.ELECTRIC_FURNACE_OVERLAY, 3));
         ELECTRIC_FURNACE[3] = GregTechAPI.registerMetaTileEntity(53, new SimpleMachineMetaTileEntity("electric_furnace.ev", RecipeMaps.FURNACE_RECIPES, Textures.ELECTRIC_FURNACE_OVERLAY, 4));
 
-        MACERATOR[0] = GregTechAPI.registerMetaTileEntity(60, new MaceratorMetaTileEntity("macerator.lv", RecipeMaps.MACERATOR_RECIPES, 1, Textures.MACERATOR_OVERLAY, 1));
-        MACERATOR[1] = GregTechAPI.registerMetaTileEntity(61, new MaceratorMetaTileEntity("macerator.mv", RecipeMaps.MACERATOR_RECIPES, 1, Textures.MACERATOR_OVERLAY, 2));
-        MACERATOR[2] = GregTechAPI.registerMetaTileEntity(62, new MaceratorMetaTileEntity("macerator.hv", RecipeMaps.MACERATOR_RECIPES, 2, Textures.MACERATOR_OVERLAY, 3));
-        MACERATOR[3] = GregTechAPI.registerMetaTileEntity(63, new MaceratorMetaTileEntity("macerator.ev", RecipeMaps.MACERATOR_RECIPES, 3, Textures.MACERATOR_OVERLAY, 4));
+        MACERATOR[0] = GregTechAPI.registerMetaTileEntity(60, new MetaTileEntityMacerator("macerator.lv", RecipeMaps.MACERATOR_RECIPES, 1, Textures.MACERATOR_OVERLAY, 1));
+        MACERATOR[1] = GregTechAPI.registerMetaTileEntity(61, new MetaTileEntityMacerator("macerator.mv", RecipeMaps.MACERATOR_RECIPES, 1, Textures.MACERATOR_OVERLAY, 2));
+        MACERATOR[2] = GregTechAPI.registerMetaTileEntity(62, new MetaTileEntityMacerator("macerator.hv", RecipeMaps.MACERATOR_RECIPES, 2, Textures.MACERATOR_OVERLAY, 3));
+        MACERATOR[3] = GregTechAPI.registerMetaTileEntity(63, new MetaTileEntityMacerator("macerator.ev", RecipeMaps.MACERATOR_RECIPES, 3, Textures.MACERATOR_OVERLAY, 4));
 
         ALLOY_SMELTER[0] = GregTechAPI.registerMetaTileEntity(70, new SimpleMachineMetaTileEntity("alloy_smelter.lv", RecipeMaps.ALLOY_SMELTER_RECIPES, Textures.ALLOY_SMELTER_OVERLAY, 1));
         ALLOY_SMELTER[1] = GregTechAPI.registerMetaTileEntity(71, new SimpleMachineMetaTileEntity("alloy_smelter.mv", RecipeMaps.ALLOY_SMELTER_RECIPES, Textures.ALLOY_SMELTER_OVERLAY, 2));
@@ -405,6 +438,17 @@ public class MetaTileEntities {
         IMPLOSION_COMPRESSOR = GregTechAPI.registerMetaTileEntity(513, new MetaTileEntityImplosionCompressor("implosion_compressor"));
         PYROLYSE_OVEN = GregTechAPI.registerMetaTileEntity(514, new MetaTileEntityPyrolyseOven("pyrolyse_oven"));
         DISTILLATION_TOWER = GregTechAPI.registerMetaTileEntity(515, new MetaTileEntityDistillationTower("distillation_tower"));
+        MULTI_FURNACE = GregTechAPI.registerMetaTileEntity(516, new MetaTileEntityMultiFurnace("multi_furnace"));
+        DIESEL_ENGINE = GregTechAPI.registerMetaTileEntity(517, new MetaTileEntityDieselEngine("diesel_engine"));
+
+        LARGE_STEAM_TURBINE = GregTechAPI.registerMetaTileEntity(518, new MetaTileEntityLargeTurbine("large_turbine.steam", TurbineType.STEAM));
+        LARGE_GAS_TURBINE = GregTechAPI.registerMetaTileEntity(519, new MetaTileEntityLargeTurbine("large_turbine.gas", TurbineType.GAS));
+        LARGE_PLASMA_TURBINE = GregTechAPI.registerMetaTileEntity(520, new MetaTileEntityLargeTurbine("large_turbine.plasma", TurbineType.PLASMA));
+
+        LARGE_BRONZE_BOILER = GregTechAPI.registerMetaTileEntity(521, new MetaTileEntityLargeBoiler("large_boiler.bronze", BoilerType.BRONZE));
+        LARGE_STEEL_BOILER = GregTechAPI.registerMetaTileEntity(522, new MetaTileEntityLargeBoiler("large_boiler.steel", BoilerType.STEEL));
+        LARGE_TITANIUM_BOILER = GregTechAPI.registerMetaTileEntity(523, new MetaTileEntityLargeBoiler("large_boiler.titanium", BoilerType.TITANIUM));
+        LARGE_TUNGSTENSTEEL_BOILER = GregTechAPI.registerMetaTileEntity(524, new MetaTileEntityLargeBoiler("large_boiler.tungstensteel", BoilerType.TUNGSTENSTEEL));
 
         int[] batteryBufferSlots = new int[] {1, 4, 9, 16};
         for(int i = 0; i < GTValues.V.length; i++) {
@@ -431,6 +475,7 @@ public class MetaTileEntities {
             FLUID_EXPORT_HATCH[i] = new MetaTileEntityFluidHatch("fluid_hatch.export." + voltageName, i, true);
             ENERGY_INPUT_HATCH[i] = new MetaTileEntityEnergyHatch("energy_hatch.input." + voltageName, i, false);
             ENERGY_OUTPUT_HATCH[i] = new MetaTileEntityEnergyHatch("energy_hatch.output." + voltageName, i, true);
+            ROTOR_HOLDER[i] = new MetaTileEntityRotorHolder("rotor_holder." + voltageName, i);
 
             GregTechAPI.registerMetaTileEntity(700 + 10 * i, ITEM_IMPORT_BUS[i]);
             GregTechAPI.registerMetaTileEntity(700 + 10 * i + 1, ITEM_EXPORT_BUS[i]);
@@ -438,6 +483,28 @@ public class MetaTileEntities {
             GregTechAPI.registerMetaTileEntity(700 + 10 * i + 3, FLUID_EXPORT_HATCH[i]);
             GregTechAPI.registerMetaTileEntity(700 + 10 * i + 4, ENERGY_INPUT_HATCH[i]);
             GregTechAPI.registerMetaTileEntity(700 + 10 * i + 5, ENERGY_OUTPUT_HATCH[i]);
+            GregTechAPI.registerMetaTileEntity(700 + 10 * i + 6, ROTOR_HOLDER[i]);
+        }
+
+        WOODEN_CHEST = GregTechAPI.registerMetaTileEntity(801, new MetaTileEntityChest("wooden_chest", Materials.Wood, 27));
+        BRONZE_CHEST = GregTechAPI.registerMetaTileEntity(802, new MetaTileEntityChest("bronze_chest", Materials.Bronze, 36));
+        STEEL_CHEST = GregTechAPI.registerMetaTileEntity(803, new MetaTileEntityChest("steel_chest", Materials.Steel, 45));
+        TITANIUM_CHEST = GregTechAPI.registerMetaTileEntity(804, new MetaTileEntityChest("titanium_chest", Materials.Titanium, 54));
+        TUNGSTENSTEEL_CHEST = GregTechAPI.registerMetaTileEntity(805, new MetaTileEntityChest("tungstensteel_chest", Materials.TungstenSteel, 63));
+
+        WOODEN_TANK = GregTechAPI.registerMetaTileEntity(811, new MetaTileEntityTank("wooden_tank", Materials.Wood, 4000));
+        BRONZE_TANK = GregTechAPI.registerMetaTileEntity(812, new MetaTileEntityTank("bronze_tank", Materials.Bronze,8000));
+        STEEL_TANK = GregTechAPI.registerMetaTileEntity(813, new MetaTileEntityTank("steel_tank", Materials.Steel, 16000));
+        TITANIUM_TANK = GregTechAPI.registerMetaTileEntity(814, new MetaTileEntityTank("titanium_tank", Materials.Titanium, 32000));
+        TUNGSTENSTEEL_TANK = GregTechAPI.registerMetaTileEntity(815, new MetaTileEntityTank("tungstensteel_tank", Materials.TungstenSteel, 64000));
+
+        for(int i = 0; i < GTValues.V.length; i++) {
+            String voltageName = GTValues.VN[i].toLowerCase();
+            if(i > 0) {
+                PUMP[i - 1] = new MetaTileEntityPump("pump." + voltageName, i);
+                GregTechAPI.registerMetaTileEntity(900 + 10 * (i - 1), PUMP[i - 1]);
+            }
         }
     }
+
 }

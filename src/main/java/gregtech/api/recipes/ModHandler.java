@@ -8,6 +8,7 @@ import gregtech.api.items.metaitem.MetaItem;
 import gregtech.api.recipes.builders.NotConsumableInputRecipeBuilder;
 import gregtech.api.unification.OreDictUnifier;
 import gregtech.api.unification.material.Materials;
+import gregtech.api.unification.material.type.FluidMaterial;
 import gregtech.api.unification.material.type.Material;
 import gregtech.api.unification.ore.OrePrefix;
 import gregtech.api.unification.stack.MaterialStack;
@@ -29,6 +30,8 @@ import net.minecraft.world.World;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
+import net.minecraftforge.fluids.capability.IFluidHandlerItem;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.ShapedOreRecipe;
@@ -130,6 +133,13 @@ public class ModHandler {
         return GameRegistry.makeItemStack(modID + ":" + itemName, meta, amount, null);
     }
 
+    public static ItemStack getCellWithFluid(FluidMaterial material) {
+        ItemStack stack = MetaItems.FLUID_CELL.getStackForm();
+        IFluidHandlerItem capability = stack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY, null);
+        capability.fill(material.getFluid(1000), true);
+        return stack;
+    }
+
     public static ItemStack getBurningFuelRemainder(Random random, ItemStack fuelStack) {
         float remainderChance;
         ItemStack remainder;
@@ -167,10 +177,12 @@ public class ModHandler {
         if (input.isEmpty()) {
             GTLog.logger.error("Input cannot be an empty ItemStack", new IllegalArgumentException());
             skip = true;
+            RecipeMap.foundInvalidRecipe = true;
         }
         if (output.isEmpty()) {
             GTLog.logger.error("Output cannot be an empty ItemStack", new IllegalArgumentException());
             skip = true;
+            RecipeMap.foundInvalidRecipe = true;
         }
         if (skip) return;
 
@@ -460,7 +472,12 @@ public class ModHandler {
      * Removes a Smelting Recipe
      */
     public static boolean removeFurnaceSmelting(ItemStack input) {
-        Validate.isTrue(!input.isEmpty(), "Cannot remove furnace recipe with empty input.");
+        if (input.isEmpty()) {
+            GTLog.logger.error("Cannot remove furnace recipe with empty input.");
+            GTLog.logger.error("Stacktrace:", new IllegalArgumentException());
+            RecipeMap.foundInvalidRecipe = true;
+            return false;
+        }
         for (ItemStack stack : FurnaceRecipes.instance().getSmeltingList().keySet()) {
             if (ItemStack.areItemStacksEqual(input, stack)) {
                 FurnaceRecipes.instance().getSmeltingList().remove(stack);

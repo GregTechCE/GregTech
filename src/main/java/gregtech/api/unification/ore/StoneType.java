@@ -1,13 +1,13 @@
 package gregtech.api.unification.ore;
 
-import java.util.EnumMap;
-import java.util.function.Supplier;
-
 import gregtech.api.unification.material.type.DustMaterial;
 import gregtech.api.util.Condition;
 import gregtech.api.util.GTControlledRegistry;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.EnumFacing;
+
+import java.util.EnumMap;
+import java.util.function.Supplier;
 
 /**
  * For ore generation

@@ -6,7 +6,7 @@ public class ToolWrenchLV extends ToolWrench {
 
     @Override
     public int getToolDamagePerBlockBreak(ItemStack stack) {
-        return 50;
+        return 1;
     }
 
     @Override

@@ -13,12 +13,12 @@ public class ToolBuzzSaw extends ToolSaw {
 
     @Override
     public int getToolDamagePerContainerCraft(ItemStack stack) {
-        return 100;
+        return 1;
     }
 
     @Override
     public int getToolDamagePerEntityAttack(ItemStack stack) {
-        return 300;
+        return 3;
     }
 
     @Override

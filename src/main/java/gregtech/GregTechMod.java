@@ -11,6 +11,7 @@ import gregtech.api.unification.OreDictUnifier;
 import gregtech.api.unification.material.type.Material;
 import gregtech.api.unification.ore.OrePrefix;
 import gregtech.api.util.GTLog;
+import gregtech.api.worldgen.config.WorldGenRegistry;
 import gregtech.common.CommonProxy;
 import gregtech.common.MetaFluids;
 import gregtech.common.blocks.MetaBlocks;
@@ -18,23 +19,24 @@ import gregtech.common.blocks.modelfactories.BlockCompressedFactory;
 import gregtech.common.blocks.modelfactories.BlockFrameFactory;
 import gregtech.common.blocks.modelfactories.BlockOreFactory;
 import gregtech.common.cable.BlockCable;
+import gregtech.common.command.GregTechCommand;
 import gregtech.common.items.MetaItems;
 import gregtech.common.metatileentities.MetaTileEntities;
 import gregtech.loaders.load.FuelLoader;
 import gregtech.loaders.load.MetaTileEntityLoader;
+import gregtech.loaders.load.OreDictionaryLoader;
 import gregtech.loaders.oreprocessing.OreProcessingHandler;
 import gregtech.loaders.postload.CraftingRecipeLoader;
 import gregtech.loaders.postload.DungeonLootLoader;
 import gregtech.loaders.postload.MachineRecipeLoader;
-import gregtech.loaders.postload.WorldgenLoader;
 import gregtech.loaders.preload.MaterialInfoLoader;
-import gregtech.loaders.load.OreDictionaryLoader;
 import mcmultipart.multipart.MultipartRegistry;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fml.common.*;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 
 @Mod(modid = GTValues.MODID,
      name = "GregTech",
@@ -118,10 +120,15 @@ public class GregTechMod {
     public void onPostInit(FMLPostInitializationEvent event) {
         GTLog.logger.info("PostInit-Phase started!");
 
-        WorldgenLoader.init();
+        WorldGenRegistry.INSTANCE.initializeRegistry();
         gregtechproxy.onPostLoad();
 
         DungeonLootLoader.init();
         GTLog.logger.info("PostInit-Phase finished!");
+    }
+
+    @Mod.EventHandler
+    public void serverLoad(FMLServerStartingEvent event) {
+        event.registerServerCommand(new GregTechCommand());
     }
 }

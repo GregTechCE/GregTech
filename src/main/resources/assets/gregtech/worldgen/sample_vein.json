@@ -1,0 +1,30 @@
+{
+  "weight": 300,
+  "density": 0.57,
+  "min_height": 80,
+
+  "generator": {
+    "type": "ellipsoid",
+    "radius": 80
+  },
+  "filler": {
+    "type": "simple",
+    "value": {
+      "type": "weight_random",
+      "values": [
+        {
+          "weight": 400,
+          "value": "ore:tetrahedrite"
+        },
+        {
+          "weight": 200,
+          "value": "ore:copper"
+        },
+        {
+          "weight": 100,
+          "value": "ore:stibnite"
+        }
+      ]
+    }
+  }
+}

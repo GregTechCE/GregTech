@@ -2,6 +2,9 @@ package gregtech.common.metatileentities.multi;
 
 import codechicken.lib.render.CCRenderState;
 import codechicken.lib.render.pipeline.IVertexOperation;
+import codechicken.lib.texture.TextureUtils;
+import codechicken.lib.vec.Cuboid6;
+import codechicken.lib.vec.Matrix4;
 import gregtech.api.gui.GuiTextures;
 import gregtech.api.gui.ModularUI;
 import gregtech.api.gui.widgets.ProgressWidget.MoveType;
@@ -22,6 +25,7 @@ import gregtech.api.unification.stack.SimpleItemStack;
 import gregtech.common.blocks.BlockMetalCasing.MetalCasingType;
 import gregtech.common.blocks.MetaBlocks;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -29,8 +33,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.PacketBuffer;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.NonNullList;
-import net.minecraft.util.math.Vec3i;
 import net.minecraftforge.common.util.Constants.NBT;
 import net.minecraftforge.items.IItemHandlerModifiable;
 import net.minecraftforge.items.ItemStackHandler;
@@ -191,9 +195,17 @@ public class MetaTileEntityPrimitiveBlastFurnace extends MultiblockControllerBas
     }
 
     @Override
-    public void renderMetaTileEntity(CCRenderState renderState, IVertexOperation[] pipeline) {
-        super.renderMetaTileEntity(renderState, pipeline);
-        Textures.PRIMITIVE_BLAST_FURNACE_OVERLAY.render(renderState, pipeline, getFrontFacing(), isActive());
+    public void renderMetaTileEntity(CCRenderState renderState, Matrix4 translation, IVertexOperation[] pipeline) {
+        super.renderMetaTileEntity(renderState, translation, pipeline);
+        Textures.PRIMITIVE_BLAST_FURNACE_OVERLAY.render(renderState, translation, pipeline, getFrontFacing(), isActive());
+        if(isActive()) {
+            EnumFacing back = getFrontFacing().getOpposite();
+            Matrix4 offset = translation.copy().translate(back.getFrontOffsetX(), -0.3, back.getFrontOffsetZ());
+            TextureAtlasSprite sprite = TextureUtils.getBlockTexture("lava_still");
+            renderState.brightness = 0xF000F0;
+            renderState.colour = 0xFFFFFFFF;
+            Textures.renderFace(renderState, offset, new IVertexOperation[0], EnumFacing.UP, Cuboid6.full, sprite);
+        }
     }
 
     @Override
@@ -212,11 +224,6 @@ public class MetaTileEntityPrimitiveBlastFurnace extends MultiblockControllerBas
     @Override
     protected IItemHandlerModifiable createExportItemHandler() {
         return new ItemStackHandler(2);
-    }
-
-    @Override
-    protected Vec3i getCenterOffset() {
-        return new Vec3i(1, -1, 0);
     }
 
     @Override

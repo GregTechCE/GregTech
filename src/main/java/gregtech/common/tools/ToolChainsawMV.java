@@ -6,22 +6,22 @@ public class ToolChainsawMV extends ToolChainsawLV {
 
     @Override
     public int getToolDamagePerBlockBreak(ItemStack stack) {
-        return 200;
+        return 2;
     }
 
     @Override
     public int getToolDamagePerDropConversion(ItemStack stack) {
-        return 400;
+        return 4;
     }
 
     @Override
     public int getToolDamagePerContainerCraft(ItemStack stack) {
-        return 3200;
+        return 32;
     }
 
     @Override
     public int getToolDamagePerEntityAttack(ItemStack stack) {
-        return 800;
+        return 8;
     }
 
     @Override

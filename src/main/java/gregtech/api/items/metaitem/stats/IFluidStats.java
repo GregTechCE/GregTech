@@ -1,9 +1,10 @@
 package gregtech.api.items.metaitem.stats;
 
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.fluids.FluidStack;
 
 public interface IFluidStats extends IMetaItemStats {
+
+    boolean allowPartiallyFilled();
 
     /**
      *

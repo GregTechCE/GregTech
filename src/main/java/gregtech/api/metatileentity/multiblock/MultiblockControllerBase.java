@@ -2,36 +2,43 @@ package gregtech.api.metatileentity.multiblock;
 
 import codechicken.lib.render.CCRenderState;
 import codechicken.lib.render.pipeline.IVertexOperation;
+import codechicken.lib.vec.Matrix4;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.MetaTileEntityHolder;
 import gregtech.api.multiblock.BlockPattern;
 import gregtech.api.multiblock.BlockWorldState;
+import gregtech.api.multiblock.IPatternCenterPredicate;
 import gregtech.api.multiblock.PatternMatchContext;
 import gregtech.api.render.ICubeRenderer;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.network.PacketBuffer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Vec3i;
 import org.apache.commons.lang3.ArrayUtils;
 
 import java.util.*;
+import java.util.function.BiFunction;
 import java.util.function.BooleanSupplier;
 import java.util.function.Predicate;
 
 public abstract class MultiblockControllerBase extends MetaTileEntity {
 
-    protected final BlockPattern structurePattern;
-    protected final BooleanSupplier validationPredicate;
+    protected BlockPattern structurePattern;
+    protected BooleanSupplier validationPredicate;
 
     private final Map<MultiblockAbility<Object>, List<Object>> multiblockAbilities = new HashMap<>();
     private final List<IMultiblockPart> multiblockParts = new ArrayList<>();
     private boolean structureFormed;
+    private boolean validationSuccess;
 
     public MultiblockControllerBase(String metaTileEntityId) {
         super(metaTileEntityId);
+        reinitializeStructurePattern();
+    }
+
+    protected void reinitializeStructurePattern() {
         this.structurePattern = createStructurePattern();
         this.validationPredicate = getValidationPredicate();
     }
@@ -43,7 +50,7 @@ public abstract class MultiblockControllerBase extends MetaTileEntity {
             if(getTimer() % 20 == 0) {
                 checkStructurePattern();
             }
-            if(structureFormed && validationPredicate.getAsBoolean()) {
+            if(isStructureFormed()) {
                 updateFormedValid();
             }
         }
@@ -53,11 +60,6 @@ public abstract class MultiblockControllerBase extends MetaTileEntity {
      * Called when the multiblock is formed and validation predicate is matched
      */
     protected abstract void updateFormedValid();
-
-    /**
-     * @return offset vector in format {back, up, left}
-     */
-    protected abstract Vec3i getCenterOffset();
 
     /**
      * @return structure pattern of this multiblock
@@ -70,13 +72,13 @@ public abstract class MultiblockControllerBase extends MetaTileEntity {
         return () -> true;
     }
 
-    public static Predicate<BlockWorldState> tilePredicate(Predicate<MetaTileEntity> predicate) {
+    public static Predicate<BlockWorldState> tilePredicate(BiFunction<BlockWorldState, MetaTileEntity, Boolean> predicate) {
         return blockWorldState -> {
             TileEntity tileEntity = blockWorldState.getTileEntity();
             if(!(tileEntity instanceof MetaTileEntityHolder))
                 return false;
             MetaTileEntity metaTileEntity = ((MetaTileEntityHolder) tileEntity).getMetaTileEntity();
-            if(predicate.test(metaTileEntity)) {
+            if(predicate.apply(blockWorldState, metaTileEntity)) {
                 if(metaTileEntity instanceof IMultiblockPart) {
                     List<IMultiblockPart> partsFound = blockWorldState.getMatchContext().get("MultiblockParts", ArrayList::new);
                     partsFound.add((IMultiblockPart) metaTileEntity);
@@ -88,12 +90,12 @@ public abstract class MultiblockControllerBase extends MetaTileEntity {
     }
 
     public static Predicate<BlockWorldState> abilityPartPredicate(MultiblockAbility<?>... allowedAbilities) {
-        return tilePredicate(tile -> tile instanceof IMultiblockAbilityPart<?> &&
+        return tilePredicate((state, tile) -> tile instanceof IMultiblockAbilityPart<?> &&
             ArrayUtils.contains(allowedAbilities, ((IMultiblockAbilityPart<?>) tile).getAbility()));
     }
 
     public static Predicate<BlockWorldState> partPredicate(Class<? extends IMultiblockPart> baseClass) {
-        return tilePredicate(tile -> tile instanceof IMultiblockPart && baseClass.isAssignableFrom(tile.getClass()));
+        return tilePredicate((state, tile) -> tile instanceof IMultiblockPart && baseClass.isAssignableFrom(tile.getClass()));
     }
 
     public static Predicate<BlockWorldState> statePredicate(IBlockState... allowedStates) {
@@ -104,13 +106,13 @@ public abstract class MultiblockControllerBase extends MetaTileEntity {
         return blockWorldState -> ArrayUtils.contains(block, blockWorldState.getBlockState().getBlock());
     }
 
-    public Predicate<BlockWorldState> selfPredicate() {
-        return tilePredicate(tile -> tile.metaTileEntityId.equals(metaTileEntityId));
+    public IPatternCenterPredicate selfPredicate() {
+        return IPatternCenterPredicate.wrap(tilePredicate((state, tile) -> tile.metaTileEntityId.equals(metaTileEntityId)));
     }
 
     @Override
-    public void renderMetaTileEntity(CCRenderState renderState, IVertexOperation[] pipeline) {
-        getBaseTexture().render(renderState, pipeline);
+    public void renderMetaTileEntity(CCRenderState renderState, Matrix4 translation, IVertexOperation[] pipeline) {
+        getBaseTexture().render(renderState, translation, pipeline);
     }
 
     @Override
@@ -120,11 +122,14 @@ public abstract class MultiblockControllerBase extends MetaTileEntity {
 
     protected void checkStructurePattern() {
         EnumFacing facing = getFrontFacing().getOpposite();
-        Vec3i offset = getCenterOffset();
-        BlockPos checkPos = getPos().add(
-            facing.getFrontOffsetX() * offset.getX() + (1 - facing.getFrontOffsetX()) * offset.getZ(), offset.getY(),
-            facing.getFrontOffsetZ() * offset.getX() + (1 - facing.getFrontOffsetZ()) * offset.getZ());
-        PatternMatchContext context = structurePattern.checkPatternAt(getWorld(), checkPos, facing);
+        PatternMatchContext context = structurePattern.checkPatternAt(getWorld(), getPos(), facing);
+        if(context != null && structureFormed) {
+            boolean newValidationSuccess = validationPredicate.getAsBoolean();
+            if(validationSuccess != newValidationSuccess) {
+                this.validationSuccess = newValidationSuccess;
+                writeCustomData(-400, buf -> buf.writeBoolean(validationSuccess));
+            }
+        }
         if(context != null && !structureFormed) {
             List<IMultiblockPart> partsFound = context.get("MultiblockParts", ArrayList::new);
             this.multiblockParts.addAll(partsFound);
@@ -138,6 +143,8 @@ public abstract class MultiblockControllerBase extends MetaTileEntity {
                 }
             });
             this.structureFormed = true;
+            this.validationSuccess = validationPredicate.getAsBoolean();
+            writeCustomData(-400, buf -> buf.writeBoolean(validationSuccess));
             formStructure(context);
         } else if(context == null && structureFormed) {
             invalidateStructure();
@@ -152,6 +159,8 @@ public abstract class MultiblockControllerBase extends MetaTileEntity {
         this.multiblockAbilities.clear();
         this.multiblockParts.clear();
         this.structureFormed = false;
+        this.validationSuccess = false;
+        writeCustomData(-400, buf -> buf.writeBoolean(false));
     }
 
     @SuppressWarnings("unchecked")
@@ -164,8 +173,28 @@ public abstract class MultiblockControllerBase extends MetaTileEntity {
         return Collections.unmodifiableList(multiblockParts);
     }
 
+    @Override
+    public void writeInitialSyncData(PacketBuffer buf) {
+        super.writeInitialSyncData(buf);
+        buf.writeBoolean(structureFormed && validationSuccess);
+    }
+
+    @Override
+    public void receiveInitialSyncData(PacketBuffer buf) {
+        super.receiveInitialSyncData(buf);
+        this.structureFormed = this.validationSuccess = buf.readBoolean();
+    }
+
+    @Override
+    public void receiveCustomData(int dataId, PacketBuffer buf) {
+        super.receiveCustomData(dataId, buf);
+        if(dataId == -400) {
+            this.structureFormed = this.validationSuccess = buf.readBoolean();
+        }
+    }
+
     public boolean isStructureFormed() {
-        return structureFormed;
+        return structureFormed && validationSuccess;
     }
 
 }

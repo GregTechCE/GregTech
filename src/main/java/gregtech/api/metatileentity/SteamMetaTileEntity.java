@@ -3,6 +3,7 @@ package gregtech.api.metatileentity;
 import codechicken.lib.render.CCRenderState;
 import codechicken.lib.render.pipeline.ColourMultiplier;
 import codechicken.lib.render.pipeline.IVertexOperation;
+import codechicken.lib.vec.Matrix4;
 import gregtech.api.GTValues;
 import gregtech.api.capability.impl.FilteredFluidHandler;
 import gregtech.api.capability.impl.FluidTankList;
@@ -16,6 +17,7 @@ import gregtech.api.render.OrientedOverlayRenderer;
 import gregtech.api.render.SimpleSidedCubeRenderer;
 import gregtech.api.render.SimpleSidedCubeRenderer.RenderSide;
 import gregtech.api.render.Textures;
+import gregtech.api.util.GTUtility;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.fluids.FluidTank;
@@ -67,11 +69,11 @@ public abstract class SteamMetaTileEntity extends MetaTileEntity {
     }
 
     @Override
-    public void renderMetaTileEntity(CCRenderState renderState, IVertexOperation[] pipeline) {
-        IVertexOperation[] colouredPipeline = ArrayUtils.add(pipeline, new ColourMultiplier(getPaintingColorForRendering()));
-        getBaseRenderer().render(renderState, colouredPipeline);
-        renderer.render(renderState, pipeline, getFrontFacing(), workableHandler.isActive());
-        Textures.PIPE_OUT_OVERLAY.renderSided(workableHandler.getVentingSide(), renderState, pipeline);
+    public void renderMetaTileEntity(CCRenderState renderState, Matrix4 translation, IVertexOperation[] pipeline) {
+        IVertexOperation[] colouredPipeline = ArrayUtils.add(pipeline, new ColourMultiplier(GTUtility.convertRGBtoOpaqueRGBA(getPaintingColorForRendering())));
+        getBaseRenderer().render(renderState, translation, colouredPipeline);
+        renderer.render(renderState, translation, pipeline, getFrontFacing(), workableHandler.isActive());
+        Textures.PIPE_OUT_OVERLAY.renderSided(workableHandler.getVentingSide(), renderState, translation, pipeline);
     }
 
     protected boolean isBrickedCasing() {
@@ -97,7 +99,7 @@ public abstract class SteamMetaTileEntity extends MetaTileEntity {
 
     public ModularUI.Builder createUITemplate(EntityPlayer player) {
         return ModularUI.builder(BRONZE_BACKGROUND_TEXTURE, 176, 166)
-            .widget(0, new LabelWidget(6, 6, getMetaName()))
+            .widget(0, new LabelWidget(6, 6, getMetaFullName()))
             .bindPlayerInventory(player.inventory, 2, BRONZE_SLOT_BACKGROUND_TEXTURE);
     }
 }

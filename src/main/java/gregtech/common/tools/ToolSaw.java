@@ -8,12 +8,12 @@ public class ToolSaw extends ToolBase {
 
     @Override
     public int getToolDamagePerBlockBreak(ItemStack stack) {
-        return 50;
+        return 1;
     }
 
     @Override
     public int getToolDamagePerContainerCraft(ItemStack stack) {
-        return 200;
+        return 2;
     }
 
     @Override

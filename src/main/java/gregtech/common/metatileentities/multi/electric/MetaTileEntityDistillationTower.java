@@ -13,7 +13,11 @@ import gregtech.common.blocks.BlockMetalCasing.MetalCasingType;
 import gregtech.common.blocks.MetaBlocks;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
-import net.minecraft.util.math.Vec3i;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TextComponentTranslation;
+import net.minecraftforge.fluids.FluidStack;
+
+import java.util.List;
 
 public class MetaTileEntityDistillationTower extends RecipeMapMultiblockController {
 
@@ -27,8 +31,15 @@ public class MetaTileEntityDistillationTower extends RecipeMapMultiblockControll
     }
 
     @Override
-    protected Vec3i getCenterOffset() {
-        return new Vec3i(1, 0, 0);
+    protected void addDisplayText(List<ITextComponent> textList) {
+        if(isStructureFormed()) {
+            FluidStack stackInTank = importFluids.drain(Integer.MAX_VALUE, false);
+            if(stackInTank != null && stackInTank.amount > 0) {
+                TextComponentTranslation fluidName = new TextComponentTranslation(stackInTank.getFluid().getUnlocalizedName(stackInTank));
+                textList.add(new TextComponentTranslation("gregtech.multiblock.distillation_tower.distilling_fluid", fluidName));
+            }
+        }
+        super.addDisplayText(textList);
     }
 
     @Override
@@ -36,7 +47,7 @@ public class MetaTileEntityDistillationTower extends RecipeMapMultiblockControll
         return FactoryBlockPattern.start()
             .aisle("YYY", "XXX", "XXX", "XXX", "XXX", "XXX")
             .aisle("YZY", "X#X", "X#X", "X#X", "X#X", "XXX")
-            .aisle("YYY", "XXX", "XXX", "XXX", "XXX", "XXX")
+            .aisle("YSY", "XXX", "XXX", "XXX", "XXX", "XXX")
             .where('S', selfPredicate())
             .where('Z', abilityPartPredicate(MultiblockAbility.IMPORT_FLUIDS))
             .where('Y', statePredicate(getCasingState()).or(abilityPartPredicate(MultiblockAbility.EXPORT_ITEMS, MultiblockAbility.INPUT_ENERGY)))

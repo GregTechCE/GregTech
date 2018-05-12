@@ -8,6 +8,8 @@ import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -28,6 +30,7 @@ public class ItemBlockCable extends ItemBlock {
     }
 
     @Override
+    @SideOnly(Side.CLIENT)
     public String getItemStackDisplayName(ItemStack stack) {
         Insulation insulation = BlockCable.getInsulation(stack);
         return insulation.orePrefix.getLocalNameForItem(blockCable.material);

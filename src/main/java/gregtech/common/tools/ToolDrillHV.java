@@ -7,22 +7,22 @@ public class ToolDrillHV extends ToolDrillLV {
 
     @Override
     public int getToolDamagePerBlockBreak(ItemStack stack) {
-        return 800;
+        return 8;
     }
 
     @Override
     public int getToolDamagePerDropConversion(ItemStack stack) {
-        return 1600;
+        return 16;
     }
 
     @Override
     public int getToolDamagePerContainerCraft(ItemStack stack) {
-        return 12800;
+        return 128;
     }
 
     @Override
     public int getToolDamagePerEntityAttack(ItemStack stack) {
-        return 3200;
+        return 32;
     }
 
     @Override

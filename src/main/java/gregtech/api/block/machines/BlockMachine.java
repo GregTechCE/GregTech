@@ -1,5 +1,7 @@
 package gregtech.api.block.machines;
 
+import codechicken.lib.block.property.unlisted.UnlistedIntegerProperty;
+import codechicken.lib.block.property.unlisted.UnlistedStringProperty;
 import codechicken.lib.raytracer.RayTracer;
 import codechicken.lib.render.particle.CustomParticleHandler;
 import codechicken.lib.vec.Cuboid6;
@@ -13,6 +15,8 @@ import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.properties.IProperty;
+import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.particle.ParticleManager;
 import net.minecraft.creativetab.CreativeTabs;
@@ -32,6 +36,9 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
+import net.minecraftforge.common.property.ExtendedBlockState;
+import net.minecraftforge.common.property.IExtendedBlockState;
+import net.minecraftforge.common.property.IUnlistedProperty;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -42,7 +49,9 @@ import java.util.List;
 @SuppressWarnings("deprecation")
 public class BlockMachine extends Block implements ITileEntityProvider {
 
-    private static final Cuboid6[] EMPTY_COLLISION_BOX = new Cuboid6[0];
+    private static final Cuboid6[] EMPTY_COLLISION_BOX = new Cuboid6[] {Cuboid6.full};
+    private static final IUnlistedProperty<String> HARVEST_TOOL = new UnlistedStringProperty("harvest_tool");
+    private static final IUnlistedProperty<Integer> HARVEST_LEVEL = new UnlistedIntegerProperty("harvest_level");
 
     public BlockMachine() {
         super(Material.IRON);
@@ -52,6 +61,33 @@ public class BlockMachine extends Block implements ITileEntityProvider {
         setResistance(6.0f);
         setUnlocalizedName("unnamed");
         setHarvestLevel("wrench", 1);
+    }
+
+    @Nullable
+    @Override
+    public String getHarvestTool(IBlockState state) {
+        return ((IExtendedBlockState) state).getValue(HARVEST_TOOL);
+    }
+
+    @Override
+    public int getHarvestLevel(IBlockState state) {
+        Integer value = ((IExtendedBlockState) state).getValue(HARVEST_LEVEL);
+        return value == null ? 0 : value; //safety check for mods who don't handle state properly
+    }
+
+    @Override
+    public IBlockState getActualState(IBlockState state, IBlockAccess worldIn, BlockPos pos) {
+        MetaTileEntity metaTileEntity = getMetaTileEntity(worldIn, pos);
+        if(metaTileEntity == null)
+            return state;
+        return ((IExtendedBlockState) state)
+            .withProperty(HARVEST_TOOL, metaTileEntity.getHarvestTool())
+            .withProperty(HARVEST_LEVEL, metaTileEntity.getHarvestLevel());
+    }
+
+    @Override
+    protected BlockStateContainer createBlockState() {
+        return new ExtendedBlockState(this, new IProperty[0], new IUnlistedProperty[] {HARVEST_TOOL, HARVEST_LEVEL});
     }
 
     public static MetaTileEntity getMetaTileEntity(IBlockAccess blockAccess, BlockPos pos) {
@@ -183,10 +219,8 @@ public class BlockMachine extends Block implements ITileEntityProvider {
                     return true;
                 } else return false;
             } else if(GregTechAPI.wrenchList.contains(simpleItemStack)) {
-                //System.out.println("We are here " + );
                 if(GTUtility.doDamageItem(itemInHand, DAMAGE_FOR_WRENCH_CLICK, true) &&
                     metaTileEntity.onWrenchClick(playerIn, hand, facing, hitX, hitY, hitZ)) {
-                    //System.out.println("And here we now");
                     GTUtility.doDamageItem(itemInHand, DAMAGE_FOR_WRENCH_CLICK, false);
                     return true;
                 } else return false;
@@ -264,6 +298,16 @@ public class BlockMachine extends Block implements ITileEntityProvider {
     @Override
     public BlockRenderLayer getBlockLayer() {
         return BlockRenderLayer.CUTOUT_MIPPED;
+    }
+
+    @Override
+    public boolean isOpaqueCube(IBlockState state) {
+        return false;
+    }
+
+    @Override
+    public boolean isFullCube(IBlockState state) {
+        return false;
     }
 
     @Override

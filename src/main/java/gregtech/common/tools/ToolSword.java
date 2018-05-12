@@ -9,17 +9,17 @@ public class ToolSword extends ToolBase {
 
     @Override
     public int getToolDamagePerBlockBreak(ItemStack stack) {
-        return 200;
+        return 2;
     }
 
     @Override
     public int getToolDamagePerContainerCraft(ItemStack stack) {
-        return 100;
+        return 1;
     }
 
     @Override
     public int getToolDamagePerEntityAttack(ItemStack stack) {
-        return 100;
+        return 1;
     }
 
     @Override

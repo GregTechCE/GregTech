@@ -25,12 +25,12 @@ public class ToolScrewdriver extends ToolBase {
 
     @Override
     public int getToolDamagePerBlockBreak(ItemStack stack) {
-        return 200;
+        return 2;
     }
 
     @Override
     public int getToolDamagePerContainerCraft(ItemStack stack) {
-        return 400;
+        return 4;
     }
 
     @Override

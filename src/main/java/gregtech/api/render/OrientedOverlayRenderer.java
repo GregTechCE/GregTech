@@ -2,9 +2,10 @@ package gregtech.api.render;
 
 import codechicken.lib.render.CCRenderState;
 import codechicken.lib.render.pipeline.IVertexOperation;
+import codechicken.lib.texture.TextureUtils.IIconRegister;
 import codechicken.lib.vec.Cuboid6;
+import codechicken.lib.vec.Matrix4;
 import gregtech.api.GTValues;
-import gregtech.api.metatileentity.MetaTileEntity;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.util.EnumFacing;
@@ -15,7 +16,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import java.util.HashMap;
 import java.util.Map;
 
-public class OrientedOverlayRenderer {
+public class OrientedOverlayRenderer implements IIconRegister {
 
     public enum OverlayFace {
         FRONT, BACK, TOP, BOTTOM, SIDE;
@@ -58,11 +59,12 @@ public class OrientedOverlayRenderer {
     public OrientedOverlayRenderer(String basePath, OverlayFace... faces) {
         this.basePath = basePath;
         this.faces = faces;
-        Textures.iconRegisters.add(this::registerSprites);
+        Textures.iconRegisters.add(this);
     }
 
+    @Override
     @SideOnly(Side.CLIENT)
-    public void registerSprites(TextureMap textureMap) {
+    public void registerIcons(TextureMap textureMap) {
         this.sprites = new HashMap<>();
         for(OverlayFace overlayFace : faces) {
             String faceName = overlayFace.name().toLowerCase();
@@ -74,18 +76,18 @@ public class OrientedOverlayRenderer {
         }
     }
 
-    public void render(CCRenderState renderState, IVertexOperation[] pipeline, Cuboid6 bounds, EnumFacing frontFacing, boolean isActive) {
+    public void render(CCRenderState renderState, Matrix4 translation, IVertexOperation[] ops, Cuboid6 bounds, EnumFacing frontFacing, boolean isActive) {
         for(EnumFacing renderSide : EnumFacing.VALUES) {
             OverlayFace overlayFace = OverlayFace.bySide(renderSide, frontFacing);
             if(sprites.containsKey(overlayFace)) {
                 TextureAtlasSprite renderSprite = sprites.get(overlayFace).getSprite(isActive);
-                MetaTileEntity.renderFace(renderState, renderSide, bounds, renderSprite, pipeline);
+                Textures.renderFace(renderState, translation, ops, renderSide, bounds, renderSprite);
             }
         }
     }
 
-    public void render(CCRenderState renderState, IVertexOperation[] pipeline, EnumFacing frontFacing, boolean isActive) {
-        render(renderState, pipeline, Cuboid6.full, frontFacing, isActive);
+    public void render(CCRenderState renderState, Matrix4 translation, IVertexOperation[] pipeline, EnumFacing frontFacing, boolean isActive) {
+        render(renderState, translation, pipeline, Cuboid6.full, frontFacing, isActive);
     }
 
 

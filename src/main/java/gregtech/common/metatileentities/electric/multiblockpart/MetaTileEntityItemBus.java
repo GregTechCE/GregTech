@@ -2,6 +2,7 @@ package gregtech.common.metatileentities.electric.multiblockpart;
 
 import codechicken.lib.render.CCRenderState;
 import codechicken.lib.render.pipeline.IVertexOperation;
+import codechicken.lib.vec.Matrix4;
 import gregtech.api.gui.GuiTextures;
 import gregtech.api.gui.ModularUI;
 import gregtech.api.metatileentity.MetaTileEntity;
@@ -46,9 +47,9 @@ public class MetaTileEntityItemBus extends MetaTileEntityMultiblockPart implemen
     }
 
     @Override
-    public void renderMetaTileEntity(CCRenderState renderState, IVertexOperation[] pipeline) {
-        super.renderMetaTileEntity(renderState, pipeline);
-        (isExportHatch ? Textures.PIPE_OUT_OVERLAY : Textures.PIPE_IN_OVERLAY).renderSided(getFrontFacing(), renderState, pipeline);
+    public void renderMetaTileEntity(CCRenderState renderState, Matrix4 translation, IVertexOperation[] pipeline) {
+        super.renderMetaTileEntity(renderState, translation, pipeline);
+        (isExportHatch ? Textures.PIPE_OUT_OVERLAY : Textures.PIPE_IN_OVERLAY).renderSided(getFrontFacing(), renderState, translation, pipeline);
     }
 
     private int getInventorySize() {
@@ -78,7 +79,7 @@ public class MetaTileEntityItemBus extends MetaTileEntityMultiblockPart implemen
     @Override
     protected ModularUI createUI(EntityPlayer entityPlayer) {
         return ModularUI.defaultBuilder()
-            .label(6, 6, getMetaName())
+            .label(6, 6, getMetaFullName())
             .squareOfSlots(isExportHatch ? exportItems : importItems, 0, getInventorySize(),
                 true, isExportHatch,
                 GuiTextures.SLOT, isExportHatch ? GuiTextures.ARROW_OUTPUT_OVERLAY : GuiTextures.ARROW_INPUT_OVERLAY)

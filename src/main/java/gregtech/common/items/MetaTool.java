@@ -37,7 +37,7 @@ public class MetaTool extends ToolMetaItem<ToolMetaItem<?>.MetaToolValueItem> {
         CROWBAR = addItem(10, "tool.crowbar").setToolStats(new ToolCrowbar()).addOreDict(ToolDictNames.craftingToolCrowbar).addToList(GregTechAPI.crowbarList);
         SCREWDRIVER = addItem(11, "tool.screwdriver").setToolStats(new ToolScrewdriver()).addOreDict(ToolDictNames.craftingToolScrewdriver).addToList(GregTechAPI.screwdriverList);
         MORTAR = addItem(12, "tool.mortar").setToolStats(new ToolMortar()).addOreDict(ToolDictNames.craftingToolMortar);
-        WIRECUTTER = addItem(13, "tool.wirecutter").setToolStats(new ToolWireCutter()).addOreDict(ToolDictNames.craftingToolWireCutter);
+        WIRECUTTER = addItem(13, "tool.wire_cutter").setToolStats(new ToolWireCutter()).addOreDict(ToolDictNames.craftingToolWireCutter);
         SCOOP = addItem(14, "tool.scoop").setToolStats(new ToolScoop()).addOreDict(ToolDictNames.craftingToolScoop);
         BRANCHCUTTER = addItem(15, "tool.branch_cutter").setToolStats(new ToolBranchCutter()).addOreDict(ToolDictNames.craftingToolBranchCutter);
         UNIVERSALSPADE = addItem(16, "tool.universal_spade").setToolStats(new ToolUniversalSpade()).addOreDict(ToolDictNames.craftingToolBlade, ToolDictNames.craftingToolShovel, ToolDictNames.craftingToolCrowbar, ToolDictNames.craftingToolSaw).addToList(GregTechAPI.crowbarList);
@@ -61,14 +61,9 @@ public class MetaTool extends ToolMetaItem<ToolMetaItem<?>.MetaToolValueItem> {
         BUZZSAW = addItem(33, "tool.buzzsaw").setToolStats(new ToolBuzzSaw()).addOreDict(ToolDictNames.craftingToolSaw);
         SCREWDRIVER_LV = addItem(34, "tool.screwdriver.lv").setToolStats(new ToolScrewdriverLV()).addOreDict(ToolDictNames.craftingToolScrewdriver).addToList(GregTechAPI.screwdriverList);
         SOLDERING_IRON_LV = addItem(35, "tool.soldering_iron.lv").setToolStats(new ToolSolderingIron()).addOreDict(ToolDictNames.craftingToolSolderingIron).addToList(GregTechAPI.solderingToolList);
-
-        TURBINE_SMALL = addItem(36, "tool.turbine.small").setToolStats(new ToolTurbineSmall());
-        TURBINE_NORMAL = addItem(37, "tool.turbine.normal").setToolStats(new ToolTurbineNormal());
-        TURBINE_LARGE = addItem(38, "tool.turbine.large").setToolStats(new ToolTurbineLarge());
-        TURBINE_HUGE = addItem(39, "tool.turbine.huge").setToolStats(new ToolTurbineHuge());
-
-        MAGNIFYING_GLASS = addItem(40, "tool.magnifying_glass").setToolStats(new ToolMagnifyingGlass()).addOreDict(ToolDictNames.craftingToolMagnifyingGlass);
-        PLUNGER = addItem(41, "tool.plunger").setToolStats(new ToolPlunger()).addOreDict(ToolDictNames.craftingToolPlunger);
+        MAGNIFYING_GLASS = addItem(36, "tool.magnifying_glass").setToolStats(new ToolMagnifyingGlass()).addOreDict(ToolDictNames.craftingToolMagnifyingGlass);
+        PLUNGER = addItem(37, "tool.plunger").setToolStats(new ToolPlunger()).addOreDict(ToolDictNames.craftingToolPlunger);
+        TURBINE = addItem(38, "tool.turbine").setToolStats(new ToolTurbineRotor());
     }
 
     public void registerRecipes() {

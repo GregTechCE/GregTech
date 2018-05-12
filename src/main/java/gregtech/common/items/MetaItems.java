@@ -35,7 +35,6 @@ public final class MetaItems {
     public static MetaItem<?>.MetaValueItem SHAPE_EMPTY;
 
     public static MetaItem<?>.MetaValueItem SHAPE_MOLD_PLATE;
-    public static MetaItem<?>.MetaValueItem SHAPE_MOLD_CASING;
     public static MetaItem<?>.MetaValueItem SHAPE_MOLD_GEAR;
     public static MetaItem<?>.MetaValueItem SHAPE_MOLD_CREDIT;
     public static MetaItem<?>.MetaValueItem SHAPE_MOLD_BOTTLE;
@@ -43,9 +42,6 @@ public final class MetaItems {
     public static MetaItem<?>.MetaValueItem SHAPE_MOLD_BALL;
     public static MetaItem<?>.MetaValueItem SHAPE_MOLD_BLOCK;
     public static MetaItem<?>.MetaValueItem SHAPE_MOLD_NUGGET;
-    public static MetaItem<?>.MetaValueItem SHAPE_MOLD_BUN;
-    public static MetaItem<?>.MetaValueItem SHAPE_MOLD_BREAD;
-    public static MetaItem<?>.MetaValueItem SHAPE_MOLD_BAGUETTE;
     public static MetaItem<?>.MetaValueItem SHAPE_MOLD_CYLINDER;
     public static MetaItem<?>.MetaValueItem SHAPE_MOLD_ANVIL;
     public static MetaItem<?>.MetaValueItem SHAPE_MOLD_NAME;
@@ -58,7 +54,6 @@ public final class MetaItems {
     public static MetaItem<?>.MetaValueItem SHAPE_EXTRUDER_CELL;
     public static MetaItem<?>.MetaValueItem SHAPE_EXTRUDER_INGOT;
     public static MetaItem<?>.MetaValueItem SHAPE_EXTRUDER_WIRE;
-    public static MetaItem<?>.MetaValueItem SHAPE_EXTRUDER_CASING;
     public static MetaItem<?>.MetaValueItem SHAPE_EXTRUDER_PIPE_TINY;
     public static MetaItem<?>.MetaValueItem SHAPE_EXTRUDER_PIPE_SMALL;
     public static MetaItem<?>.MetaValueItem SHAPE_EXTRUDER_PIPE_MEDIUM;
@@ -275,8 +270,6 @@ public final class MetaItems {
     public static MetaItem<?>.MetaValueItem COVER_SOLARPANEL_ZPM;
     public static MetaItem<?>.MetaValueItem COVER_SOLARPANEL_UV;
 
-    public static MetaItem<?>.MetaValueItem TOOL_CHEAT;
-
     public static MetaItem<?>.MetaValueItem DUCT_TAPE;
     public static MetaItem<?>.MetaValueItem MCGUFFIUM_239;
 
@@ -345,6 +338,9 @@ public final class MetaItems {
     public static MetaItem<?>.MetaValueItem[] SPRAY_CAN_DYES = new MetaItem.MetaValueItem[16];
     public static MetaItem<?>.MetaValueItem[] SPRAY_CAN_DYES_USED = new MetaItem.MetaValueItem[16];
 
+    public static MetaItem<?>.MetaValueItem SMALL_BRONZE_PIPE;
+    public static MetaItem<?>.MetaValueItem SMALL_STEEL_PIPE;
+
     public static ToolMetaItem<?>.MetaToolValueItem SWORD;
     public static ToolMetaItem<?>.MetaToolValueItem PICKAXE;
     public static ToolMetaItem<?>.MetaToolValueItem SHOVEL;
@@ -381,10 +377,7 @@ public final class MetaItems {
     public static ToolMetaItem<?>.MetaToolValueItem BUZZSAW;
     public static ToolMetaItem<?>.MetaToolValueItem SCREWDRIVER_LV;
     public static ToolMetaItem<?>.MetaToolValueItem SOLDERING_IRON_LV;
-    public static ToolMetaItem<?>.MetaToolValueItem TURBINE_SMALL;
-    public static ToolMetaItem<?>.MetaToolValueItem TURBINE_NORMAL;
-    public static ToolMetaItem<?>.MetaToolValueItem TURBINE_LARGE;
-    public static ToolMetaItem<?>.MetaToolValueItem TURBINE_HUGE;
+    public static ToolMetaItem<?>.MetaToolValueItem TURBINE;
     public static ToolMetaItem<?>.MetaToolValueItem MAGNIFYING_GLASS;
 
     public static void init() {

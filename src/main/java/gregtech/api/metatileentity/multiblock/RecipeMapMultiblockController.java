@@ -2,39 +2,52 @@ package gregtech.api.metatileentity.multiblock;
 
 import codechicken.lib.render.CCRenderState;
 import codechicken.lib.render.pipeline.IVertexOperation;
+import codechicken.lib.vec.Matrix4;
 import gregtech.api.GTValues;
 import gregtech.api.capability.IEnergyContainer;
-import gregtech.api.capability.impl.EnergyContainerList;
-import gregtech.api.capability.impl.FluidTankList;
-import gregtech.api.capability.impl.ItemHandlerList;
-import gregtech.api.capability.impl.MultiblockRecipeMapWorkable;
+import gregtech.api.capability.impl.*;
 import gregtech.api.multiblock.PatternMatchContext;
 import gregtech.api.recipes.Recipe;
 import gregtech.api.recipes.RecipeMap;
 import gregtech.api.render.Textures;
 import gregtech.api.util.GTUtility;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.Style;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.items.IItemHandler;
+import net.minecraftforge.items.ItemStackHandler;
 
 import java.util.List;
 import java.util.function.BooleanSupplier;
 
 public abstract class RecipeMapMultiblockController extends MultiblockWithDisplayBase {
 
-
-
     public final RecipeMap<?> recipeMap;
-    private MultiblockRecipeMapWorkable recipeMapWorkable;
+    protected MultiblockRecipeMapWorkable recipeMapWorkable;
+    protected IEnergyContainer energyContainer;
 
     public RecipeMapMultiblockController(String metaTileEntityId, RecipeMap<?> recipeMap) {
         super(metaTileEntityId);
         this.recipeMap = recipeMap;
-        this.recipeMapWorkable = new MultiblockRecipeMapWorkable(this, recipeMap, this::checkRecipe);
+        this.recipeMapWorkable = new MultiblockRecipeMapWorkable(this);
+        resetTileAbilities();
     }
 
+    @Override
+    protected boolean shouldSerializeInventories() {
+        return false; //as inventories are temporary
+    }
+
+    public IEnergyContainer getEnergyContainer() {
+        return energyContainer;
+    }
+
+    /**
+     * @return true if multiblock uses energy emitter hatches, false otherwise
+     */
     protected boolean shouldUseEnergyOutputs() {
         return false;
     }
@@ -43,25 +56,20 @@ public abstract class RecipeMapMultiblockController extends MultiblockWithDispla
      * Performs extra checks for validity of given recipe before multiblock
      * will start it's processing.
      */
-    protected boolean checkRecipe(Recipe recipe, boolean consumeIfSuccess) {
+    public boolean checkRecipe(Recipe recipe, boolean consumeIfSuccess) {
         return true;
     }
 
     @Override
     protected void formStructure(PatternMatchContext context) {
         super.formStructure(context);
-        ItemHandlerList importItemsList = new ItemHandlerList(getAbilities(MultiblockAbility.IMPORT_ITEMS));
-        FluidTankList importFluidsList = new FluidTankList(getAbilities(MultiblockAbility.IMPORT_FLUIDS));
-        ItemHandlerList exportItemsList = new ItemHandlerList(getAbilities(MultiblockAbility.EXPORT_ITEMS));
-        FluidTankList exportFluidsList = new FluidTankList(getAbilities(MultiblockAbility.EXPORT_FLUIDS));
-        EnergyContainerList energyContainerList = new EnergyContainerList(getAbilities(shouldUseEnergyOutputs() ? MultiblockAbility.OUTPUT_ENERGY : MultiblockAbility.INPUT_ENERGY));
-        this.recipeMapWorkable.reinitializeAbilities(importItemsList, importFluidsList, exportItemsList, exportFluidsList, energyContainerList);
+        initializeAbilities();
     }
 
     @Override
     public void invalidateStructure() {
         super.invalidateStructure();
-        this.recipeMapWorkable.resetAbilities();
+        resetTileAbilities();
     }
 
     @Override
@@ -69,28 +77,67 @@ public abstract class RecipeMapMultiblockController extends MultiblockWithDispla
         this.recipeMapWorkable.updateWorkable();
     }
 
+    private void initializeAbilities() {
+        this.importItems = new ItemHandlerList(getAbilities(MultiblockAbility.IMPORT_ITEMS));
+        this.importFluids = new FluidTankList(getAbilities(MultiblockAbility.IMPORT_FLUIDS));
+        this.exportItems = new ItemHandlerList(getAbilities(MultiblockAbility.EXPORT_ITEMS));
+        this.exportFluids = new FluidTankList(getAbilities(MultiblockAbility.EXPORT_FLUIDS));
+        this.energyContainer = new EnergyContainerList(getAbilities(shouldUseEnergyOutputs() ?
+            MultiblockAbility.OUTPUT_ENERGY : MultiblockAbility.INPUT_ENERGY));
+    }
+
+    private void resetTileAbilities() {
+        this.importItems = new ItemStackHandler(0);
+        this.importFluids = new FluidTankList();
+        this.exportItems = new ItemStackHandler(0);
+        this.exportFluids = new FluidTankList();
+    }
+
+    @Override
+    protected void initializeInventory() {
+        ItemStackHandler emptyInventory = new ItemStackHandler(0);
+        FluidTankList emptyFluidInventory = new FluidTankList();
+        this.itemInventory = new ItemHandlerProxy(emptyInventory, emptyInventory);
+        this.fluidInventory = new FluidHandlerProxy(emptyFluidInventory, emptyFluidInventory);
+    }
+
+    @Override
+    public void clearMachineInventory(NonNullList<ItemStack> itemBuffer) {
+    }
+
     @Override
     protected void addDisplayText(List<ITextComponent> textList) {
         super.addDisplayText(textList);
-        if(isStructureFormed()) {
+        if (isStructureFormed()) {
+            boolean isGenerator = shouldUseEnergyOutputs();
             IEnergyContainer energyContainer = recipeMapWorkable.getEnergyContainer();
-            if(energyContainer.getEnergyCapacity() > 0) {
+            if(!isGenerator && energyContainer.getEnergyCapacity() > 0) {
                 long maxVoltage = shouldUseEnergyOutputs() ? energyContainer.getOutputVoltage() : energyContainer.getInputVoltage();
                 String voltageName = GTValues.VN[GTUtility.getTierByVoltage(maxVoltage)];
                 textList.add(new TextComponentTranslation("gregtech.multiblock.max_energy_per_tick", maxVoltage, voltageName));
             }
-            if(!recipeMapWorkable.isWorkingEnabled()) {
+
+            if (!recipeMapWorkable.isWorkingEnabled()) {
                 textList.add(new TextComponentTranslation("gregtech.multiblock.work_paused"));
-            } else if(recipeMapWorkable.isActive()) {
+
+            } else if (recipeMapWorkable.isActive()) {
                 textList.add(new TextComponentTranslation("gregtech.multiblock.running"));
-                int currentProgress = (int) (recipeMapWorkable.getProgressPercent() * 100);
-                textList.add(new TextComponentTranslation("gregtech.multiblock.progress", currentProgress));
+                if (!isGenerator) {
+                    //show current progress for standard multiblocks
+                    int currentProgress = (int) (recipeMapWorkable.getProgressPercent() * 100);
+                    textList.add(new TextComponentTranslation("gregtech.multiblock.progress", currentProgress));
+                } else {
+                    //for generators, show generated EU/t instead
+                    int recipeEUt = -recipeMapWorkable.getRecipeEUt();
+                    textList.add(new TextComponentTranslation("gregtech.multiblock.generation_eu", recipeEUt));
+                }
+
             } else {
                 textList.add(new TextComponentTranslation("gregtech.multiblock.idling"));
             }
-            if(recipeMapWorkable.isHasNotEnoughEnergy()) {
-                textList.add(new TextComponentTranslation("gregtech.multiblock.not_enough_energy")
-                    .setStyle(new Style().setColor(TextFormatting.RED)));
+
+            if (recipeMapWorkable.isHasNotEnoughEnergy()) {
+                textList.add(new TextComponentTranslation("gregtech.multiblock.not_enough_energy").setStyle(new Style().setColor(TextFormatting.RED)));
             }
         }
     }
@@ -98,21 +145,18 @@ public abstract class RecipeMapMultiblockController extends MultiblockWithDispla
     @Override
     protected BooleanSupplier getValidationPredicate() {
         return () -> {
-            //basically check minimal requirements for inputs count & amperage
+            //basically check minimal requirements for inputs count
             int itemInputsCount = getAbilities(MultiblockAbility.IMPORT_ITEMS)
                 .stream().mapToInt(IItemHandler::getSlots).sum();
             int fluidInputsCount = getAbilities(MultiblockAbility.IMPORT_FLUIDS).size();
-            long maxAmperage = getAbilities(MultiblockAbility.INPUT_ENERGY).stream()
-                .mapToLong(IEnergyContainer::getInputAmperage).sum();
             return itemInputsCount >= recipeMap.getMinInputs() &&
-                fluidInputsCount >= recipeMap.getMinFluidInputs() &&
-                maxAmperage >= recipeMap.getAmperage();
+                fluidInputsCount >= recipeMap.getMinFluidInputs();
         };
     }
 
     @Override
-    public void renderMetaTileEntity(CCRenderState renderState, IVertexOperation[] pipeline) {
-        super.renderMetaTileEntity(renderState, pipeline);
-        Textures.MULTIBLOCK_WORKABLE_OVERLAY.render(renderState, pipeline, getFrontFacing(), recipeMapWorkable.isActive());
+    public void renderMetaTileEntity(CCRenderState renderState, Matrix4 translation, IVertexOperation[] pipeline) {
+        super.renderMetaTileEntity(renderState, translation, pipeline);
+        Textures.MULTIBLOCK_WORKABLE_OVERLAY.render(renderState, translation, pipeline, getFrontFacing(), recipeMapWorkable.isActive());
     }
 }

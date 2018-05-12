@@ -2,13 +2,12 @@ package gregtech.api.recipes.machines;
 
 import gregtech.api.recipes.Recipe;
 import gregtech.api.recipes.RecipeBuilder;
-import gregtech.api.recipes.builders.NotConsumableInputRecipeBuilder;
 import gregtech.api.recipes.RecipeMap;
+import gregtech.api.recipes.builders.NotConsumableInputRecipeBuilder;
 import gregtech.api.util.GTUtility;
 import gregtech.common.items.MetaItems;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.NonNullList;
 import net.minecraftforge.fluids.FluidStack;
 
 import javax.annotation.Nullable;
@@ -22,7 +21,7 @@ public class RecipeMapFormingPress extends RecipeMap<NotConsumableInputRecipeBui
 
     @Override
     @Nullable
-    public Recipe findRecipe(long voltage, NonNullList<ItemStack> inputs, List<FluidStack> fluidInputs) {
+    public Recipe findRecipe(long voltage, List<ItemStack> inputs, List<FluidStack> fluidInputs) {
         Recipe recipe = super.findRecipe(voltage, inputs, fluidInputs);
         if (inputs.size() < 2 || inputs.get(0).isEmpty() || inputs.get(1).isEmpty())
             return recipe;

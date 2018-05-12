@@ -2,11 +2,11 @@ package gregtech.api.capability.impl;
 
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.capability.templates.FluidHandlerItemStackSimple;
+import net.minecraftforge.fluids.capability.templates.FluidHandlerItemStack;
 
 import javax.annotation.Nonnull;
 
-public class ThermalFluidHandlerItemStack extends FluidHandlerItemStackSimple {
+public class ThermalFluidHandlerItemStack extends FluidHandlerItemStack {
 
     public final int minFluidTemperature;
     public final int maxFluidTemperature;

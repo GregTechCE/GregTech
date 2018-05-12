@@ -135,10 +135,7 @@ public class MetaFluids {
             }
         };
         fluid.setTemperature(temp);
-        if(!setCustomTexture) {
-            //since normal textures are already colored properly
-            fluid.setColor(material.materialRGB);
-        }
+        fluid.setColor(material.materialRGB);
 
         switch(type) {
             case LIQUID:

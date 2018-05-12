@@ -3,6 +3,7 @@ package gregtech.common.metatileentities.steam.boiler;
 import codechicken.lib.render.CCRenderState;
 import codechicken.lib.render.pipeline.ColourMultiplier;
 import codechicken.lib.render.pipeline.IVertexOperation;
+import codechicken.lib.vec.Matrix4;
 import gregtech.api.capability.impl.FilteredFluidHandler;
 import gregtech.api.capability.impl.FluidTankList;
 import gregtech.api.gui.ModularUI;
@@ -15,6 +16,7 @@ import gregtech.api.render.OrientedOverlayRenderer;
 import gregtech.api.render.SimpleSidedCubeRenderer;
 import gregtech.api.render.SimpleSidedCubeRenderer.RenderSide;
 import gregtech.api.render.Textures;
+import gregtech.api.util.GTUtility;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
@@ -74,10 +76,10 @@ public abstract class SteamBoiler extends MetaTileEntity {
     }
 
     @Override
-    public void renderMetaTileEntity(CCRenderState renderState, IVertexOperation[] pipeline) {
-        IVertexOperation[] colouredPipeline = ArrayUtils.add(pipeline, new ColourMultiplier(getPaintingColorForRendering()));
-        getBaseRenderer().render(renderState, colouredPipeline);
-        renderer.render(renderState, pipeline, getFrontFacing(), fuelBurnTimeLeft > 0);
+    public void renderMetaTileEntity(CCRenderState renderState, Matrix4 translation, IVertexOperation[] pipeline) {
+        IVertexOperation[] colouredPipeline = ArrayUtils.add(pipeline, new ColourMultiplier(GTUtility.convertRGBtoOpaqueRGBA(getPaintingColorForRendering())));
+        getBaseRenderer().render(renderState, translation, colouredPipeline);
+        renderer.render(renderState, translation, pipeline, getFrontFacing(), fuelBurnTimeLeft > 0);
     }
 
     @Override
@@ -220,7 +222,7 @@ public abstract class SteamBoiler extends MetaTileEntity {
 
     public ModularUI.Builder createUITemplate(EntityPlayer player) {
         return ModularUI.builder(BRONZE_BACKGROUND_TEXTURE, 176, 166)
-            .widget(0, new LabelWidget(6, 6, getMetaName()))
+            .widget(0, new LabelWidget(6, 6, getMetaFullName()))
 
             .widget(1, new ProgressWidget(this::getTemperaturePercent, 95, 17, 11, 55)
                 .setProgressBar(getGuiTexture("bar_%s_empty"),

@@ -9,12 +9,12 @@ public class ToolChainsawLV extends ToolSaw {
 
     @Override
     public int getToolDamagePerBlockBreak(ItemStack stack) {
-        return 50;
+        return 1;
     }
 
     @Override
     public int getToolDamagePerContainerCraft(ItemStack stack) {
-        return 800;
+        return 8;
     }
 
     @Override

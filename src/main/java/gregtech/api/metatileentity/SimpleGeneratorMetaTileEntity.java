@@ -2,6 +2,7 @@ package gregtech.api.metatileentity;
 
 import codechicken.lib.render.CCRenderState;
 import codechicken.lib.render.pipeline.IVertexOperation;
+import codechicken.lib.vec.Matrix4;
 import gregtech.api.capability.impl.EnergyContainerHandler;
 import gregtech.api.gui.GuiTextures;
 import gregtech.api.gui.ModularUI;
@@ -27,9 +28,9 @@ public class SimpleGeneratorMetaTileEntity extends WorkableTieredMetaTileEntity 
     }
 
     @Override
-    public void renderMetaTileEntity(CCRenderState renderState, IVertexOperation[] pipeline) {
-        super.renderMetaTileEntity(renderState, pipeline);
-        Textures.ENERGY_OUT.renderSided(getFrontFacing(), renderState, pipeline);
+    public void renderMetaTileEntity(CCRenderState renderState, Matrix4 translation, IVertexOperation[] pipeline) {
+        super.renderMetaTileEntity(renderState, translation, pipeline);
+        Textures.ENERGY_OUT.renderSided(getFrontFacing(), renderState, translation, pipeline);
     }
 
     @Override
@@ -77,7 +78,7 @@ public class SimpleGeneratorMetaTileEntity extends WorkableTieredMetaTileEntity 
 
     protected ModularUI.Builder createGuiTemplate(EntityPlayer player) {
         return workable.recipeMap.createUITemplate(workable::getProgressPercent, importItems, exportItems, importFluids, exportFluids)
-            .label(6, 6, getMetaName())
+            .label(6, 6, getMetaFullName())
             .widget(new FluidContainerSlotWidget(containerInventory, 0, 90, 17)
                 .setBackgroundTexture(GuiTextures.SLOT, GuiTextures.IN_SLOT_OVERLAY))
             .widget(new ImageWidget(91, 36, 14, 15, GuiTextures.TANK_ICON))

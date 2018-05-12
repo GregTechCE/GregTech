@@ -2,7 +2,9 @@ package gregtech.api.multiblock;
 
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.BlockPos.MutableBlockPos;
 import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
@@ -49,6 +51,16 @@ public class BlockWorldState {
 
     public BlockPos getPos() {
         return this.pos.toImmutable();
+    }
+
+    public IBlockState getOffsetState(EnumFacing face) {
+        if(pos instanceof MutableBlockPos) {
+            ((MutableBlockPos) pos).move(face);
+            IBlockState blockState = world.getBlockState(pos);
+            ((MutableBlockPos) pos).move(face.getOpposite());
+            return blockState;
+        }
+        return world.getBlockState(this.pos.offset(face));
     }
 
 }

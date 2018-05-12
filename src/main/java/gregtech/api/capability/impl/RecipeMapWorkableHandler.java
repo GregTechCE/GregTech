@@ -50,22 +50,6 @@ public abstract class RecipeMapWorkableHandler extends MTETrait implements IWork
     protected abstract boolean drawEnergy(int recipeEUt);
     protected abstract long getMaxVoltage();
 
-    protected IItemHandlerModifiable getImportItemsInventory() {
-        return metaTileEntity.getImportItems();
-    }
-
-    protected IMultipleTankHandler getImportFluidsInventory() {
-        return metaTileEntity.getImportFluids();
-    }
-
-    protected IItemHandlerModifiable getExportItemsInventory() {
-        return metaTileEntity.getExportItems();
-    }
-
-    protected IMultipleTankHandler getExportFluidsInventory() {
-        return metaTileEntity.getExportFluids();
-    }
-
     @Override
     public String getName() {
         return "RecipeMapWorkable";
@@ -80,54 +64,75 @@ public abstract class RecipeMapWorkableHandler extends MTETrait implements IWork
     public void update() {
         if (getMetaTileEntity().getWorld().isRemote)
             return;
-        if(progressTime == 0) {
-            long maxVoltage = getMaxVoltage();
-            Recipe pickedRecipe = recipeMap.findRecipe(maxVoltage, getImportItemsInventory(), getImportFluidsInventory());
-            if(pickedRecipe != null && setupAndConsumeRecipeInputs(pickedRecipe)) {
-                if(pickedRecipe.canBeBuffered()) {
-                    this.previousRecipe = pickedRecipe;
-                } else this.previousRecipe = null;
-                setupRecipe(pickedRecipe);
-            }
-        } else if(workingEnabled) {
-            if(drawEnergy(recipeEUt)) {
-                if(++progressTime >= maxProgressTime) {
+        if(progressTime > 0 && workingEnabled) {
+            if (drawEnergy(recipeEUt) || (recipeEUt < 0 && ignoreTooMuchEnergy())) {
+                if (++progressTime >= maxProgressTime) {
                     completeRecipe();
                 }
             } else {
-                if(recipeEUt > 0) {
+                if (recipeEUt > 0) {
                     //only set hasNotEnoughEnergy if this recipe is consuming recipe
                     //generators always have enough energy
                     this.hasNotEnoughEnergy = true;
                 }
             }
         }
-        if(wasActiveAndNeedsUpdate) {
+
+        if(progressTime == 0 && workingEnabled) {
+            long maxVoltage = getMaxVoltage();
+            Recipe currentRecipe;
+            if(previousRecipe != null && previousRecipe.matches(false, false,
+                metaTileEntity.getImportItems(), metaTileEntity.getImportFluids())) {
+                //if previous recipe still matches inputs, try to use it
+                currentRecipe = previousRecipe;
+            } else {
+                //else, try searching new recipe for given inputs
+                currentRecipe = findRecipe(maxVoltage, metaTileEntity.getImportItems(), metaTileEntity.getImportFluids());
+                //if we found recipe that can be buffered, buffer it
+                if(currentRecipe != null && currentRecipe.canBeBuffered()) {
+                    this.previousRecipe = currentRecipe;
+                }
+            }
+            if(currentRecipe != null && setupAndConsumeRecipeInputs(currentRecipe)) {
+                setupRecipe(currentRecipe);
+            }
+        }
+
+        if (wasActiveAndNeedsUpdate) {
             this.wasActiveAndNeedsUpdate = false;
             setActive(false);
         }
     }
 
-    protected boolean setupAndConsumeRecipeInputs(Recipe recipe) {
-        int[] resultOverclock = calculateOverclock(recipe.getEUt(), getMaxVoltage(), recipeMap.getAmperage(), recipe.getDuration());
-        int totalEUt = resultOverclock[0] * resultOverclock[1];
-        return (totalEUt >= 0 ? getEnergyStored() >= (totalEUt > getEnergyCapacity() / 2 ? resultOverclock[0] : totalEUt) :
-            getEnergyStored() - resultOverclock[0] <= getEnergyCapacity()) &&
-            (!recipe.needsEmptyOutput() || MetaTileEntity.isItemHandlerEmpty(getExportItemsInventory())) &&
-            MetaTileEntity.addItemsToItemHandler(getExportItemsInventory(), true, recipe.getOutputs()) &&
-            MetaTileEntity.addFluidsToFluidHandler(getExportFluidsInventory(), true, recipe.getFluidOutputs()) &&
-            recipe.matches(true, false, getImportItemsInventory(), getImportFluidsInventory());
+    protected Recipe findRecipe(long maxVoltage, IItemHandlerModifiable inputs, IMultipleTankHandler fluidInputs) {
+        return recipeMap.findRecipe(maxVoltage, inputs, fluidInputs);
     }
 
-    private static int[] calculateOverclock(int EUt, long voltage, long amperage, int duration) {
+    protected boolean setupAndConsumeRecipeInputs(Recipe recipe) {
+        int[] resultOverclock = calculateOverclock(recipe.getEUt(), getMaxVoltage(), recipeMap.getAmperage(), recipe.getDuration(), false);
+        int totalEUt = resultOverclock[0] * resultOverclock[1];
+        return (totalEUt >= 0 ? getEnergyStored() >= (totalEUt > getEnergyCapacity() / 2 ? resultOverclock[0] : totalEUt) :
+            (ignoreTooMuchEnergy() || getEnergyStored() - resultOverclock[0] <= getEnergyCapacity())) &&
+            (!recipe.needsEmptyOutput() || MetaTileEntity.isItemHandlerEmpty(metaTileEntity.getExportItems())) &&
+            MetaTileEntity.addItemsToItemHandler(metaTileEntity.getExportItems(), true, recipe.getOutputs()) &&
+            MetaTileEntity.addFluidsToFluidHandler(metaTileEntity.getExportFluids(), true, recipe.getFluidOutputs()) &&
+            recipe.matches(true, false, metaTileEntity.getImportItems(), metaTileEntity.getImportFluids());
+    }
+
+    protected boolean ignoreTooMuchEnergy() {
+        return false;
+    }
+
+    protected int[] calculateOverclock(int EUt, long voltage, long amperage, int duration, boolean consumeInputs) {
         boolean negativeEU = EUt < 0;
         if(negativeEU)
             EUt = -EUt;
-        int tier = GTUtility.getTierByVoltage(voltage);
+        //round tier down so 64 EU/t won't be overclocked to require 128 EU/t+, but 32 EU/t
+        int tier = GTUtility.getTierByVoltageRoundDown(voltage);
         if (EUt <= 16) {
             int resultEUt = EUt * (1 << (tier - 1)) * (1 << (tier - 1));
             int resultDuration = duration / (1 << (tier - 1));
-            return new int[] {resultEUt, resultDuration};
+            return new int[] {negativeEU ? -resultEUt : resultEUt, resultDuration};
         } else {
             int resultEUt = EUt;
             int resultDuration = duration;
@@ -140,7 +145,7 @@ public abstract class RecipeMapWorkableHandler extends MTETrait implements IWork
     }
 
     protected void setupRecipe(Recipe recipe) {
-        int[] resultOverclock = calculateOverclock(recipe.getEUt(), getMaxVoltage(), recipeMap.getAmperage(), recipe.getDuration());
+        int[] resultOverclock = calculateOverclock(recipe.getEUt(), getMaxVoltage(), recipeMap.getAmperage(), recipe.getDuration(), true);
         this.progressTime = 1;
         setMaxProgress(resultOverclock[1]);
         this.recipeEUt = resultOverclock[0];
@@ -154,8 +159,8 @@ public abstract class RecipeMapWorkableHandler extends MTETrait implements IWork
     }
 
     protected void completeRecipe() {
-        MetaTileEntity.addItemsToItemHandler(getExportItemsInventory(), false, itemOutputs);
-        MetaTileEntity.addFluidsToFluidHandler(getExportFluidsInventory(), false, fluidOutputs);
+        MetaTileEntity.addItemsToItemHandler(metaTileEntity.getExportItems(), false, itemOutputs);
+        MetaTileEntity.addFluidsToFluidHandler(metaTileEntity.getExportFluids(), false, fluidOutputs);
         this.progressTime = 0;
         setMaxProgress(0);
         this.recipeEUt = 0;
@@ -181,6 +186,10 @@ public abstract class RecipeMapWorkableHandler extends MTETrait implements IWork
     @Override
     public int getMaxProgress() {
         return maxProgressTime;
+    }
+
+    public int getRecipeEUt() {
+        return recipeEUt;
     }
 
     public void setMaxProgress(int maxProgress) {
@@ -260,7 +269,6 @@ public abstract class RecipeMapWorkableHandler extends MTETrait implements IWork
     @Override
     public NBTTagCompound serializeNBT() {
         NBTTagCompound compound = new NBTTagCompound();
-        compound.setBoolean("Active", this.isActive);
         compound.setBoolean("WorkEnabled", this.workingEnabled);
         if(progressTime > 0) {
             compound.setInteger("Progress", progressTime);
@@ -282,10 +290,11 @@ public abstract class RecipeMapWorkableHandler extends MTETrait implements IWork
 
     @Override
     public void deserializeNBT(NBTTagCompound compound) {
-        this.isActive = compound.getBoolean("Active");
         this.workingEnabled = compound.getBoolean("WorkEnabled");
         this.progressTime = compound.getInteger("Progress");
+        this.isActive = false;
         if (progressTime > 0) {
+            this.isActive = true;
             this.maxProgressTime = compound.getInteger("MaxProgress");
             this.recipeEUt = compound.getInteger("RecipeEUt");
             NBTTagList itemOutputsList = compound.getTagList("ItemOutputs", Constants.NBT.TAG_COMPOUND);

@@ -1,0 +1,355 @@
+package gregtech.common.metatileentities.electric.multiblockpart;
+
+import codechicken.lib.render.CCRenderState;
+import codechicken.lib.render.pipeline.IVertexOperation;
+import codechicken.lib.vec.Matrix4;
+import gregtech.api.damagesources.DamageSources;
+import gregtech.api.gui.GuiTextures;
+import gregtech.api.gui.ModularUI;
+import gregtech.api.items.toolitem.ToolMetaItem;
+import gregtech.api.items.toolitem.ToolMetaItem.MetaToolValueItem;
+import gregtech.api.metatileentity.MetaTileEntity;
+import gregtech.api.metatileentity.MetaTileEntityHolder;
+import gregtech.api.metatileentity.multiblock.IMultiblockAbilityPart;
+import gregtech.api.metatileentity.multiblock.MultiblockAbility;
+import gregtech.api.render.Textures;
+import gregtech.api.unification.material.type.SolidMaterial;
+import gregtech.common.metatileentities.multi.electric.MetaTileEntityLargeTurbine;
+import gregtech.common.tools.ITurbineToolStats;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.PacketBuffer;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumFacing.Axis;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.NonNullList;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
+import net.minecraftforge.items.ItemStackHandler;
+
+import javax.annotation.Nonnull;
+import java.util.List;
+
+public class MetaTileEntityRotorHolder extends MetaTileEntityMultiblockPart implements IMultiblockAbilityPart<MetaTileEntityRotorHolder> {
+
+    private static final int NORMAL_MAXIMUM_SPEED = 6000;
+    private static final float DAMAGE_PER_INTERACT = 40.0f;
+
+    private InventoryRotorHolder rotorInventory;
+    private final int maxRotorSpeed;
+    private int currentRotorSpeed;
+
+    private boolean isRotorLooping;
+    private int rotorColor = -1;
+    private boolean frontFaceFree;
+
+    public MetaTileEntityRotorHolder(String metaTileEntityId, int tier, int maxSpeed) {
+        super(metaTileEntityId, tier);
+        this.maxRotorSpeed = maxSpeed;
+        this.currentRotorSpeed = 0;
+        this.rotorInventory = new InventoryRotorHolder();
+    }
+
+    public MetaTileEntityRotorHolder(String metaTileEntityId, int tier) {
+        this(metaTileEntityId, tier, (int) (NORMAL_MAXIMUM_SPEED * (tier + 1) * 0.2));
+    }
+
+    @Override
+    public MetaTileEntity createMetaTileEntity(MetaTileEntityHolder holder) {
+        return new MetaTileEntityRotorHolder(metaTileEntityId, getTier(), maxRotorSpeed);
+    }
+
+    @Override
+    public void update() {
+        super.update();
+
+        if(getWorld().isRemote) {
+            return;
+        }
+        if(getTimer() % 10 == 0) {
+            this.frontFaceFree = checkTurbineFaceFree();
+        }
+
+        MetaTileEntityLargeTurbine controller = (MetaTileEntityLargeTurbine) getController();
+        boolean isControllerActive = controller != null && controller.isActive();
+
+        if(currentRotorSpeed < maxRotorSpeed && isControllerActive) {
+            incrementSpeed(1);
+        } else if(currentRotorSpeed > 0 && !isControllerActive) {
+            incrementSpeed(-1);
+        }
+    }
+
+    /**
+     * @return true if front face is free and contains only air blocks in 3x3 area
+     */
+    public boolean isFrontFaceFree() {
+        return frontFaceFree;
+    }
+
+    private boolean checkTurbineFaceFree() {
+        EnumFacing facing = getFrontFacing();
+        boolean permuteXZ = facing.getAxis() == Axis.Z;
+        BlockPos centerPos = getPos().offset(facing);
+        for(int x = -1; x < 2; x++) {
+            for(int y = -1; y < 2; y++) {
+                BlockPos blockPos = centerPos.add(permuteXZ ? x : 0, y, permuteXZ ? 0 : x);
+                IBlockState blockState = getWorld().getBlockState(blockPos);
+                if(blockState.getBlock() != Blocks.AIR)
+                    return false;
+            }
+        }
+        return true;
+    }
+
+    private boolean onRotorHolderInteract(EntityPlayer player) {
+        if(!getWorld().isRemote && isRotorLooping) {
+            double relativeSpeed = getRelativeRotorSpeed();
+            float damageApplied = (float) (DAMAGE_PER_INTERACT * relativeSpeed);
+            player.attackEntityFrom(DamageSources.getTurbineDamage(), damageApplied);
+            //TODO achievement here
+            return true;
+        }
+        return isRotorLooping;
+    }
+
+    /**
+     * @return current rotor speed, relative to NORMAL_MAXIMUM_SPEED
+     * used for scaling stats like produced EU, rotor damage and interact damage
+     */
+    public double getRelativeRotorSpeed() {
+        return currentRotorSpeed == 0 ? 0.01 : currentRotorSpeed / (NORMAL_MAXIMUM_SPEED * 1.0);
+    }
+
+    /**
+     * @return true if current rotor is still looping, i.e it's current speed > 0
+     * this can return true even if multiblock is not formed
+     */
+    public boolean isRotorLooping() {
+        return isRotorLooping;
+    }
+
+    /**
+     * @return true if this holder has rotor in it's inventory
+     * this will return true even if it's client side and used for rendering
+     */
+    public boolean isHasRotor() {
+        return rotorColor != -1;
+    }
+
+    public int getRotorColor() {
+        return rotorColor;
+    }
+
+    public double getRotorEfficiency() {
+        return rotorInventory.getRotorEfficiency();
+    }
+
+    public boolean applyDamageToRotor(int damageAmount, boolean simulate) {
+        return rotorInventory.applyDamageToRotor(damageAmount, simulate);
+    }
+
+    public double getRotorDurability() {
+        return 1.0 - rotorInventory.getRotorDamagePercentage();
+    }
+
+    public int getMaxRotorSpeed() {
+        return maxRotorSpeed;
+    }
+
+    public int getCurrentRotorSpeed() {
+        return currentRotorSpeed;
+    }
+
+    protected void incrementSpeed(int incrementSpeed) {
+       boolean lastIsLooping = currentRotorSpeed > 0;
+       this.currentRotorSpeed = MathHelper.clamp(currentRotorSpeed + incrementSpeed, 0, maxRotorSpeed);
+       this.isRotorLooping = currentRotorSpeed > 0;
+       if(isRotorLooping != lastIsLooping && !getWorld().isRemote) {
+           writeCustomData(-200, writer -> writer.writeBoolean(isRotorLooping));
+           markDirty();
+       }
+    }
+
+    private void setRotorColor(int hasRotor1) {
+        int lastHasRotor = rotorColor;
+        this.rotorColor = hasRotor1;
+        if(rotorColor != lastHasRotor && !getWorld().isRemote) {
+            writeCustomData(-201, writer -> writer.writeInt(rotorColor));
+            markDirty();
+        }
+    }
+
+    @Override
+    public void receiveCustomData(int dataId, PacketBuffer buf) {
+        super.receiveCustomData(dataId, buf);
+        if(dataId == -200) {
+            this.isRotorLooping = buf.readBoolean();
+        } else if(dataId == -201) {
+            this.rotorColor = buf.readInt();
+        }
+    }
+
+    @Override
+    public void writeInitialSyncData(PacketBuffer buf) {
+        super.writeInitialSyncData(buf);
+        buf.writeBoolean(isRotorLooping);
+        buf.writeInt(rotorColor);
+    }
+
+    @Override
+    public void receiveInitialSyncData(PacketBuffer buf) {
+        super.receiveInitialSyncData(buf);
+        this.isRotorLooping = buf.readBoolean();
+        this.rotorColor = buf.readInt();
+    }
+
+    @Override
+    public void clearMachineInventory(NonNullList<ItemStack> itemBuffer) {
+        super.clearMachineInventory(itemBuffer);
+        clearInventory(itemBuffer, rotorInventory);
+    }
+
+    @Override
+    public NBTTagCompound writeToNBT(NBTTagCompound data) {
+        super.writeToNBT(data);
+        data.setTag("RotorInventory", rotorInventory.serializeNBT());
+        data.setInteger("CurrentSpeed", currentRotorSpeed);
+        return data;
+    }
+
+    @Override
+    public void readFromNBT(NBTTagCompound data) {
+        super.readFromNBT(data);
+        this.rotorInventory.deserializeNBT(data.getCompoundTag("RotorInventory"));
+        this.currentRotorSpeed = data.getInteger("CurrentSpeed");
+    }
+
+    @Override
+    public void renderMetaTileEntity(CCRenderState renderState, Matrix4 translation, IVertexOperation[] pipeline) {
+        super.renderMetaTileEntity(renderState, translation, pipeline);
+        Textures.ROTOR_HOLDER_OVERLAY.renderSided(getFrontFacing(), renderState, translation, pipeline);
+        Textures.LARGE_TURBINE_ROTOR_RENDERER.renderSided(renderState, translation, pipeline, getFrontFacing(),
+            getController() != null, isHasRotor(), isRotorLooping(), rotorColor);
+    }
+
+    @Override
+    protected ModularUI createUI(EntityPlayer entityPlayer) {
+        return ModularUI.defaultBuilder()
+            .label(6, 6, getMetaName())
+            .slot(rotorInventory, 0, 79, 36, GuiTextures.SLOT, GuiTextures.TURBINE_OVERLAY)
+            .bindPlayerInventory(entityPlayer.inventory)
+            .build(getHolder(), entityPlayer);
+    }
+
+    @Override
+    public boolean onRightClick(EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+        return onRotorHolderInteract(playerIn) ||
+            super.onRightClick(playerIn, hand, facing, hitX, hitY, hitZ);
+    }
+
+    @Override
+    public boolean onWrenchClick(EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+        return onRotorHolderInteract(playerIn) ||
+            super.onWrenchClick(playerIn, hand, facing, hitX, hitY, hitZ);
+    }
+
+    @Override
+    public boolean onScrewdriverClick(EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+        return onRotorHolderInteract(playerIn);
+    }
+
+    @Override
+    public void onLeftClick(EntityPlayer player) {
+        onRotorHolderInteract(player);
+    }
+
+    @Override
+    public MultiblockAbility<MetaTileEntityRotorHolder> getAbility() {
+        return MetaTileEntityLargeTurbine.ABILITY_ROTOR_HOLDER;
+    }
+
+    @Override
+    public void registerAbilities(List<MetaTileEntityRotorHolder> abilityList) {
+        abilityList.add(this);
+    }
+
+    private class InventoryRotorHolder extends ItemStackHandler {
+
+        public InventoryRotorHolder() {
+            super(1);
+        }
+
+        @Override
+        public int getSlotLimit(int slot) {
+            return 1;
+        }
+
+        @Override
+        protected void onLoad() {
+            rotorColor = getRotorColor();
+        }
+
+        @Override
+        protected void onContentsChanged(int slot) {
+            setRotorColor(getRotorColor());
+        }
+
+        private int getRotorColor() {
+            ItemStack itemStack = getStackInSlot(0);
+            if(itemStack.isEmpty() || !(itemStack.getItem() instanceof ToolMetaItem))
+                return -1;
+            SolidMaterial material = ToolMetaItem.getPrimaryMaterial(itemStack);
+            return material == null ? -1 : material.materialRGB;
+        }
+
+        public double getRotorEfficiency() {
+            ItemStack itemStack = getStackInSlot(0);
+            if(itemStack.isEmpty() || !(itemStack.getItem() instanceof ToolMetaItem))
+                return 0.0;
+            ToolMetaItem<?> metaTool = (ToolMetaItem<?>) itemStack.getItem();
+            MetaToolValueItem toolType = metaTool.getItem(itemStack);
+            if(!(toolType.getToolStats() instanceof ITurbineToolStats))
+                return 0.0;
+            ITurbineToolStats turbineToolStats = (ITurbineToolStats) toolType.getToolStats();
+            return turbineToolStats.getRotorEfficiency(itemStack);
+        }
+
+        public double getRotorDamagePercentage() {
+            ItemStack itemStack = getStackInSlot(0);
+            if(itemStack.isEmpty() || !(itemStack.getItem() instanceof ToolMetaItem))
+                return 0.0;
+            ToolMetaItem<?> metaTool = (ToolMetaItem<?>) itemStack.getItem();
+            return metaTool.getInternalDamage(itemStack) / (metaTool.getMaxInternalDamage(itemStack) * 1.0);
+        }
+
+        public boolean applyDamageToRotor(int damageAmount, boolean simulate) {
+            ItemStack itemStack = getStackInSlot(0);
+            if(itemStack.isEmpty() || !(itemStack.getItem() instanceof ToolMetaItem))
+                return false;
+            ToolMetaItem<?> metaTool = (ToolMetaItem<?>) itemStack.getItem();
+            boolean value = metaTool.doDamageToItem(itemStack, damageAmount, simulate);
+            if(!simulate && value) {
+                setStackInSlot(0, itemStack);
+            }
+            return value;
+        }
+
+        @Nonnull
+        @Override
+        public ItemStack insertItem(int slot, @Nonnull ItemStack stack, boolean simulate) {
+            if(stack.getItem() instanceof ToolMetaItem) {
+                ToolMetaItem<?> metaTool = (ToolMetaItem<?>) stack.getItem();
+                MetaToolValueItem toolType = metaTool.getItem(stack);
+                if(toolType.getToolStats() instanceof ITurbineToolStats) {
+                    return super.insertItem(slot, stack, simulate);
+                }
+            }
+            return stack;
+        }
+    }
+
+}
