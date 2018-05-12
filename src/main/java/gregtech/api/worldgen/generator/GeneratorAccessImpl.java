@@ -1,5 +1,6 @@
 package gregtech.api.worldgen.generator;
 
+import gregtech.api.util.GTLog;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.XSTR;
 import gregtech.api.worldgen.config.OreDepositDefinition;
@@ -46,10 +47,12 @@ public class GeneratorAccessImpl implements IBlockGeneratorAccess {
      * Generates random veins in current grid section using current
      * grid random seed within this chunk
      * Biome lookup is applied to center chunk of grid section
+     *
+     * @return list of generated veins or empty if none generated
      */
-    public boolean triggerVeinsGeneration() {
+    public List<OreDepositDefinition> triggerVeinsGeneration() {
         if(gridRandom.nextInt(ConfigHolder.chunkOreVeinGenerationProbability) != 0)
-            return false;
+            return Collections.emptyList();
         int gridSizeX = WorldGeneratorImpl.GRID_SIZE_X * 16;
         int gridSizeY = WorldGeneratorImpl.GRID_SIZE_Y * 16;
         int gridSizeZ = WorldGeneratorImpl.GRID_SIZE_Z * 16;
@@ -63,11 +66,11 @@ public class GeneratorAccessImpl implements IBlockGeneratorAccess {
 
         cachedDepositMap.removeIf(entry -> !entry.getValue().checkInHeightLimit(currentPos.getY()));
         if(cachedDepositMap.isEmpty())
-            return false; //do not try to generate an empty vein list
+            return Collections.emptyList(); //do not try to generate an empty vein list
 
         ArrayList<OreDepositDefinition> generatedDeposits = new ArrayList<>();
         int currentCycle = 0;
-        while(!cachedDepositMap.isEmpty()) {
+        while(currentCycle < cachedDepositMap.size()) {
             if(currentCycle != 0 && gridRandom.nextInt(ConfigHolder.chunkOreVeinSecondaryProbability * currentCycle) != 0)
                 break; //give 100% generation in first cycle, then decrease it every time we generate secondary vein
             //instead of removing already generated veins, we swap last element with one we selected
@@ -79,13 +82,18 @@ public class GeneratorAccessImpl implements IBlockGeneratorAccess {
             generatedDeposits.add(randomEntry);
             currentCycle++;
         }
+
         //sort generated veins according to their priority, so they get mixed in properly
         generatedDeposits.sort(Collections.reverseOrder(Comparator.comparing(OreDepositDefinition::getPriority)));
         //and finally generate all of them
+
+        if(ConfigHolder.debug) {
+            GTLog.logger.info("Generating ore vein {} at {}", generatedDeposits, currentPos);
+        }
         for(OreDepositDefinition depositDefinition : generatedDeposits) {
             doGenerateVein(depositDefinition);
         }
-        return true;
+        return generatedDeposits;
     }
 
     public void doGenerateVein(OreDepositDefinition oreVein) {
@@ -132,9 +140,8 @@ public class GeneratorAccessImpl implements IBlockGeneratorAccess {
 
         IBlockState placedState = currentOreVein.getBlockFiller().getStateForGeneration(blockStateHere, x, y, z);
 
-        if(blockStateHere == placedState)
+        if(placedState == null || blockStateHere == placedState)
             return false; //do not place anything if state didn't change
-
         //finally place block in world without sending to client and
         //with 16 flag to prevent observers update from loading neighbour chunks
         return world.setBlockState(currentPos, placedState, 16);

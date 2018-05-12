@@ -7,6 +7,7 @@ import gregtech.api.unification.OreDictUnifier;
 import gregtech.api.unification.material.MarkerMaterials;
 import gregtech.api.unification.material.Materials;
 import gregtech.api.unification.material.type.DustMaterial;
+import gregtech.api.unification.material.type.DustMaterial.MatFlags;
 import gregtech.api.unification.material.type.Material;
 import gregtech.api.unification.material.type.MetalMaterial;
 import gregtech.api.unification.material.type.SolidMaterial;
@@ -35,6 +36,8 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.*;
 import java.util.Map.Entry;
+import java.util.function.BiConsumer;
+import java.util.function.Predicate;
 
 import static gregtech.common.ClientProxy.*;
 
@@ -58,6 +61,7 @@ public class MetaBlocks {
 
     public static Map<Material, BlockCable> CABLES = new HashMap<>();
     public static HashMap<DustMaterial, BlockCompressed> COMPRESSED = new HashMap<>();
+    public static HashMap<MetalMaterial, BlockSurfaceRock> SURFACE_ROCKS = new HashMap<>();
     public static HashMap<SolidMaterial, BlockFrame> FRAMES = new HashMap<>();
     public static Collection<BlockOre> ORES = new HashSet<>();
 
@@ -95,37 +99,15 @@ public class MetaBlocks {
         CONCRETE.setRegistryName("concrete");
 
         StoneType.init();
-        Material[] compressedMaterialBuffer = new Material[16];
-        Material[] frameMaterialBuffer = new Material[16];
-        Arrays.fill(compressedMaterialBuffer, Materials._NULL);
-        Arrays.fill(frameMaterialBuffer, Materials._NULL);
-        int compressedGenerationIndex = 0;
-        int frameGenerationIndex = 0;
+
+        createGeneratedBlock(material -> material instanceof DustMaterial &&
+            !OrePrefix.block.isIgnored(material), MetaBlocks::createCompressedBlock);
+        createGeneratedBlock(material -> material instanceof MetalMaterial &&
+            !OrePrefix.frameGt.isIgnored(material), MetaBlocks::createFrameBlock);
+        createGeneratedBlock(material -> material instanceof MetalMaterial &&
+            material.hasFlag(MatFlags.GENERATE_ORE), MetaBlocks::createSurfaceRockBlock);
+
         for (Material material : Material.MATERIAL_REGISTRY.getObjectsWithIds()) {
-            if (material instanceof DustMaterial) {
-                int id = Material.MATERIAL_REGISTRY.getIDForObject(material);
-                int index = id / 16;
-                if (index > compressedGenerationIndex) {
-                    createCompressedBlock(compressedMaterialBuffer, compressedGenerationIndex);
-                    Arrays.fill(compressedMaterialBuffer, Materials._NULL);
-                }
-                if (!OrePrefix.block.isIgnored(material)) {
-                    compressedMaterialBuffer[id % 16] = material;
-                    compressedGenerationIndex = index;
-                }
-            }
-            if(material instanceof MetalMaterial) {
-                int id = Material.MATERIAL_REGISTRY.getIDForObject(material);
-                int index = id / 16;
-                if (index > frameGenerationIndex) {
-                    createFrameBlock(frameMaterialBuffer, frameGenerationIndex);
-                    Arrays.fill(frameMaterialBuffer, Materials._NULL);
-                }
-                if (!OrePrefix.frameGt.isIgnored(material)) {
-                    frameMaterialBuffer[id % 16] = material;
-                    frameGenerationIndex = index;
-                }
-            }
             if (material instanceof DustMaterial &&
                 material.hasFlag(DustMaterial.MatFlags.GENERATE_ORE)) {
                 createOreBlock((DustMaterial) material);
@@ -137,10 +119,26 @@ public class MetaBlocks {
                 }
             }
         }
-        createCompressedBlock(compressedMaterialBuffer, compressedGenerationIndex);
-        createFrameBlock(frameMaterialBuffer, frameGenerationIndex);
-
         createCableBlock(MarkerMaterials.Tier.Superconductor, new WireProperties(Integer.MAX_VALUE, 4, 1));
+    }
+
+    private static void createGeneratedBlock(Predicate<Material> materialPredicate, BiConsumer<Material[], Integer> blockGenerator) {
+        Material[] materialBuffer = new Material[16];
+        Arrays.fill(materialBuffer, Materials._NULL);
+        int currentGenerationIndex = 0;
+        for(Material material : Material.MATERIAL_REGISTRY.getObjectsWithIds()) {
+            if(materialPredicate.test(material)) {
+                if(currentGenerationIndex > 0 && currentGenerationIndex % 16 == 0) {
+                    blockGenerator.accept(materialBuffer, currentGenerationIndex / 16 - 1);
+                    Arrays.fill(materialBuffer, Materials._NULL);
+                }
+                materialBuffer[currentGenerationIndex % 16] = material;
+                currentGenerationIndex++;
+            }
+        }
+        if(materialBuffer[0] != Materials._NULL) {
+            blockGenerator.accept(materialBuffer, currentGenerationIndex / 16);
+        }
     }
 
     private static void createCableBlock(MetalMaterial material) {
@@ -151,6 +149,16 @@ public class MetaBlocks {
         BlockCable blockCable = new BlockCable(material, wireProperties);
         blockCable.setRegistryName("cable_" + material.toString());
         CABLES.put(material, blockCable);
+    }
+
+    private static void createSurfaceRockBlock(Material[] materials, int index) {
+        BlockSurfaceRock block = new BlockSurfaceRock(materials);
+        block.setRegistryName("surface_rock_" + index);
+        for (Material material : materials) {
+            if (material instanceof DustMaterial) {
+                SURFACE_ROCKS.put((MetalMaterial) material, block);
+            }
+        }
     }
 
     private static void createCompressedBlock(Material[] materials, int index) {
@@ -174,16 +182,16 @@ public class MetaBlocks {
     }
 
     private static void createOreBlock(DustMaterial material) {
-        StoneType[] stoneTypeBuffer = new StoneType[8];
+        StoneType[] stoneTypeBuffer = new StoneType[16];
         Arrays.fill(stoneTypeBuffer, StoneTypes._NULL);
         int generationIndex = 0;
         for (StoneType stoneType : StoneType.STONE_TYPE_REGISTRY) {
-            int id = StoneType.STONE_TYPE_REGISTRY.getIDForObject(stoneType), index = id / 8;
+            int id = StoneType.STONE_TYPE_REGISTRY.getIDForObject(stoneType), index = id / 16;
             if (index > generationIndex) {
                 createOreBlock(material, stoneTypeBuffer, generationIndex);
                 Arrays.fill(stoneTypeBuffer, StoneTypes._NULL);
             }
-            stoneTypeBuffer[id % 8] = stoneType;
+            stoneTypeBuffer[id % 16] = stoneType;
             generationIndex = index;
         }
         createOreBlock(material, stoneTypeBuffer, generationIndex);
@@ -261,6 +269,9 @@ public class MetaBlocks {
             Minecraft.getMinecraft().getBlockColors().registerBlockColorHandler(ORE_BLOCK_COLOR, block);
             Minecraft.getMinecraft().getItemColors().registerItemColorHandler(ORE_ITEM_COLOR, block);
         });
+
+        MetaBlocks.SURFACE_ROCKS.values().stream().distinct().forEach(block ->
+            Minecraft.getMinecraft().getBlockColors().registerBlockColorHandler(SURFACE_ROCK_COLOR, block));
     }
 
     public static void registerOreDict() {
@@ -282,14 +293,8 @@ public class MetaBlocks {
             DustMaterial material = blockOre.material;
             for(StoneType stoneType : blockOre.STONE_TYPE.getAllowedValues()) {
                 ItemStack normalStack = blockOre.getItem(blockOre.getDefaultState()
-                    .withProperty(blockOre.STONE_TYPE, stoneType)
-                    .withProperty(BlockOre.SMALL, false));
-                ItemStack smallOreStack = blockOre.getItem(blockOre.getDefaultState()
-                    .withProperty(blockOre.STONE_TYPE, stoneType)
-                    .withProperty(BlockOre.SMALL, true));
+                    .withProperty(blockOre.STONE_TYPE, stoneType));
                 OreDictUnifier.registerOre(normalStack, stoneType.processingPrefix, material);
-                //small ore variants are always registered as oreSmall, not taking stone type into account
-                OreDictUnifier.registerOre(smallOreStack, OrePrefix.oreSmall, material);
             }
         }
         for(BlockCable blockCable : CABLES.values()) {

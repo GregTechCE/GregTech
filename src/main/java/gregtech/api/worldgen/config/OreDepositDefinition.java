@@ -1,7 +1,9 @@
 package gregtech.api.worldgen.config;
 
 import com.google.gson.JsonObject;
+import gregtech.api.unification.material.type.MetalMaterial;
 import gregtech.api.unification.ore.StoneType;
+import gregtech.api.unification.ore.StoneTypes;
 import gregtech.api.worldgen.filler.IBlockFiller;
 import gregtech.api.worldgen.shape.IShapeGenerator;
 import net.minecraft.block.state.IBlockState;
@@ -15,7 +17,7 @@ public class OreDepositDefinition {
 
     public static final Function<Biome, Integer> NO_BIOME_INFLUENCE = biome -> 0;
     public static final Predicate<WorldProvider> PREDICATE_SURFACE_WORLD = WorldProvider::isSurfaceWorld;
-    public static final Predicate<IBlockState> PREDICATE_STONE_TYPE = state -> StoneType.computeStoneType(state) != null;
+    public static final Predicate<IBlockState> PREDICATE_STONE_TYPE = state -> StoneType.computeStoneType(state) != StoneTypes._NULL;
 
     private final String depositName;
 
@@ -23,6 +25,7 @@ public class OreDepositDefinition {
     private int weight;
     private float density;
     private int[] heightLimit = new int[] {Integer.MIN_VALUE, Integer.MAX_VALUE};
+    private MetalMaterial surfaceStoneMaterial;
 
     private Function<Biome, Integer> biomeWeightModifier = NO_BIOME_INFLUENCE;
     private Predicate<WorldProvider> dimensionFilter = PREDICATE_SURFACE_WORLD;
@@ -33,17 +36,6 @@ public class OreDepositDefinition {
 
     public OreDepositDefinition(String depositName) {
         this.depositName = depositName;
-    }
-
-    public OreDepositDefinition(String depositName, int priority, int weight, float density, int[] heightLimit, Predicate<IBlockState> generationPredicate, IBlockFiller blockFiller, IShapeGenerator shapeGenerator) {
-        this.depositName = depositName;
-        this.priority = priority;
-        this.weight = weight;
-        this.density = density;
-        this.heightLimit = heightLimit;
-        this.generationPredicate = generationPredicate;
-        this.blockFiller = blockFiller;
-        this.shapeGenerator = shapeGenerator;
     }
 
     public void initializeFromConfig(JsonObject configRoot) {
@@ -64,6 +56,12 @@ public class OreDepositDefinition {
         if(configRoot.has("dimension_filter")) {
             this.dimensionFilter = OreConfigUtils.createWorldPredicate(configRoot.get("dimension_filter"));
         }
+        if(configRoot.has("generation_predicate")) {
+            this.generationPredicate = OreConfigUtils.createBlockStatePredicate(configRoot.get("generation_predicate"));
+        }
+        if(configRoot.has("surface_stone_material")) {
+            this.surfaceStoneMaterial = (MetalMaterial) OreConfigUtils.getMaterialByName(configRoot.get("surface_stone_material").getAsString());
+        }
         this.blockFiller = WorldGenRegistry.INSTANCE.createBlockFiller(configRoot.get("filler").getAsJsonObject());
         this.shapeGenerator = WorldGenRegistry.INSTANCE.createShapeGenerator(configRoot.get("generator").getAsJsonObject());
     }
@@ -82,6 +80,10 @@ public class OreDepositDefinition {
 
     public float getDensity() {
         return density;
+    }
+
+    public MetalMaterial getSurfaceStoneMaterial() {
+        return surfaceStoneMaterial;
     }
 
     public boolean checkInHeightLimit(int yLevel) {

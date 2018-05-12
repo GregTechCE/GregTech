@@ -24,7 +24,7 @@ public class PlateGenerator implements IShapeGenerator {
 
     @Override
     public void loadFromConfig(JsonObject object) {
-        int[] length = IShapeGenerator.getIntRange(object.get("radius"));
+        int[] length = IShapeGenerator.getIntRange(object.get("length"));
         int[] depth = IShapeGenerator.getIntRange(object.get("depth"));
         int[] height = IShapeGenerator.getIntRange(object.get("height"));
         this.minLength = length[0];

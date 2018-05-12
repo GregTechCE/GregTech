@@ -1,11 +1,6 @@
 package gregtech.common.blocks.modelfactories;
 
-import static net.minecraft.util.EnumFacing.*;
-
-import java.util.stream.Collectors;
-
 import com.google.common.base.Joiner;
-
 import gregtech.api.model.AbstractBlockModelFactory;
 import gregtech.api.model.ResourcePackHook;
 import gregtech.api.unification.material.MaterialIconType;
@@ -13,6 +8,10 @@ import gregtech.common.blocks.BlockOre;
 import net.minecraft.block.Block;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+
+import java.util.stream.Collectors;
+
+import static net.minecraft.util.EnumFacing.*;
 
 @SideOnly(Side.CLIENT)
 public class BlockOreFactory extends AbstractBlockModelFactory {
@@ -54,8 +53,7 @@ public class BlockOreFactory extends AbstractBlockModelFactory {
                                 .replace("$BASE_TEXTURE_EAST$", stoneType.baseTexture.getOrDefault(EAST, "missingno"))
                                 .replace("$PARTICLE$", stoneType.particleTexture))
                         .collect(Collectors.toList())))
-                .replace("$MATERIAL_TEXTURE_NORMAL$", MaterialIconType.ore.getBlockPath(((BlockOre) block).material.materialIconSet).toString())
-                .replace("$MATERIAL_TEXTURE_SMALL$", MaterialIconType.oreSmall.getBlockPath(((BlockOre) block).material.materialIconSet).toString());
+                .replace("$MATERIAL_TEXTURE_NORMAL$", MaterialIconType.ore.getBlockPath(((BlockOre) block).material.materialIconSet).toString());
     }
 
 }

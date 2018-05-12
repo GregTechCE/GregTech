@@ -153,6 +153,8 @@ public class MetaTileEntityTank extends MetaTileEntity {
     @Override
     @SideOnly(Side.CLIENT)
     public void addInformation(ItemStack stack, @Nullable World player, List<String> tooltip, boolean advanced) {
+        tooltip.add(I18n.format("gregtech.universal.tooltip.fluid_storage_capacity", tankSize));
+
         NBTTagCompound tagCompound = stack.getTagCompound();
         if(tagCompound != null && tagCompound.hasKey("Fluid", NBT.TAG_COMPOUND)) {
             FluidStack fluidStack = FluidStack.loadFluidStackFromNBT(tagCompound.getCompoundTag("Fluid"));

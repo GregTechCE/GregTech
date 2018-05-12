@@ -6,13 +6,11 @@
 package gregtech.common;
 
 import codechicken.lib.texture.TextureUtils;
-import gregtech.common.blocks.BlockFrame;
+import gregtech.common.blocks.*;
 import gregtech.common.render.CableRenderer;
 import gregtech.api.render.MetaTileEntityRenderer;
-import gregtech.common.blocks.BlockCompressed;
-import gregtech.common.blocks.BlockOre;
-import gregtech.common.blocks.MetaBlocks;
 import gregtech.common.items.MetaItems;
+import gregtech.common.render.StoneRenderer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.color.IBlockColor;
 import net.minecraft.client.renderer.color.IItemColor;
@@ -53,10 +51,14 @@ public class ClientProxy extends CommonProxy {
     public static final IItemColor ORE_ITEM_COLOR = (stack, tintIndex) ->
         tintIndex == 1 ? ((BlockOre) ((ItemBlock) stack.getItem()).getBlock()).material.materialRGB : 0xFFFFFF;
 
+    public static final IBlockColor SURFACE_ROCK_COLOR = (IBlockState state, IBlockAccess worldIn, BlockPos pos, int tintIndex) ->
+        state.getValue(((BlockSurfaceRock) state.getBlock()).materialProperty).materialRGB;
+
     public void onPreLoad() {
         super.onPreLoad();
         MetaTileEntityRenderer.preInit();
         CableRenderer.preInit();
+        StoneRenderer.preInit();
         TextureUtils.addIconRegister(MetaFluids::registerSprites);
     }
 

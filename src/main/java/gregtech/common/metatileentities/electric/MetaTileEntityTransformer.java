@@ -12,6 +12,7 @@ import gregtech.api.metatileentity.MetaTileEntityHolder;
 import gregtech.api.metatileentity.TieredMetaTileEntity;
 import gregtech.api.render.Textures;
 import gregtech.api.unification.stack.SimpleItemStack;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -19,6 +20,10 @@ import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.text.TextComponentTranslation;
+import net.minecraft.world.World;
+
+import javax.annotation.Nullable;
+import java.util.List;
 
 public class MetaTileEntityTransformer extends TieredMetaTileEntity {
 
@@ -117,14 +122,14 @@ public class MetaTileEntityTransformer extends TieredMetaTileEntity {
             if(getWorld().isRemote)
                 return true;
             if(isTransformUp) {
-                playerIn.sendStatusMessage(new TextComponentTranslation("gregtech.machine.transformer.transform_down",
-                    GTValues.VN[getTier()], GTValues.VN[getTier() - 1]), true);
                 setTransformUp(false);
+                playerIn.sendMessage(new TextComponentTranslation("gregtech.machine.transformer.message_transform_down",
+                    energyContainer.getInputVoltage(), energyContainer.getInputAmperage(), energyContainer.getOutputVoltage(), energyContainer.getOutputAmperage()));
                 return true;
             } else {
-                playerIn.sendStatusMessage(new TextComponentTranslation("gregtech.machine.transformer.transform_up",
-                    GTValues.VN[getTier() - 1], GTValues.VN[getTier()]), true);
                 setTransformUp(true);
+                playerIn.sendMessage(new TextComponentTranslation("gregtech.machine.transformer.message_transform_up",
+                    energyContainer.getInputVoltage(), energyContainer.getInputAmperage(), energyContainer.getOutputVoltage(), energyContainer.getOutputAmperage()));
                 return true;
             }
         }
@@ -139,5 +144,28 @@ public class MetaTileEntityTransformer extends TieredMetaTileEntity {
     @Override
     protected ModularUI createUI(EntityPlayer entityPlayer) {
         return null;
+    }
+
+    @Override
+    public void addInformation(ItemStack stack, @Nullable World player, List<String> tooltip, boolean advanced) {
+        String lowerTierName = GTValues.VN[getTier() - 1];
+        String higherTierName = GTValues.VN[getTier()];
+        long lowerVoltage = energyContainer.getOutputVoltage();
+        long higherVoltage = energyContainer.getInputVoltage();
+        long lowerAmperage = energyContainer.getInputAmperage();
+        long higherAmperage = energyContainer.getOutputAmperage();
+
+        tooltip.add(I18n.format("gregtech.machine.transformer.tooltip_tool_usage"));
+        tooltip.add(I18n.format("gregtech.universal.tooltip.energy_storage_capacity", energyContainer.getEnergyCapacity()));
+        tooltip.add(I18n.format("gregtech.machine.transformer.tooltip_transform_down"));
+        tooltip.add(I18n.format("gregtech.universal.tooltip.voltage_in", higherVoltage, higherTierName));
+        tooltip.add(I18n.format("gregtech.universal.tooltip.voltage_out", lowerVoltage, lowerTierName));
+        tooltip.add(I18n.format("gregtech.universal.tooltip.amperage_in", lowerAmperage));
+        tooltip.add(I18n.format("gregtech.universal.tooltip.amperage_out", higherAmperage));
+        tooltip.add(I18n.format("gregtech.machine.transformer.tooltip_transform_up"));
+        tooltip.add(I18n.format("gregtech.universal.tooltip.voltage_in", lowerVoltage, lowerTierName));
+        tooltip.add(I18n.format("gregtech.universal.tooltip.voltage_out", higherVoltage, higherTierName));
+        tooltip.add(I18n.format("gregtech.universal.tooltip.amperage_in", higherAmperage));
+        tooltip.add(I18n.format("gregtech.universal.tooltip.amperage_out", lowerAmperage));
     }
 }

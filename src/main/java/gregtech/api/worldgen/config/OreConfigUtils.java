@@ -143,7 +143,7 @@ public class OreConfigUtils {
         if(stringDeclaration.startsWith("block:")) {
             Block block = getBlockByName(stringDeclaration.substring(6));
             return state -> block.getDefaultState();
-        } else if(stringDeclaration.startsWith("ore:") || stringDeclaration.startsWith("small_ore:")) {
+        } else if(stringDeclaration.startsWith("ore:")) {
             Map<StoneType, IBlockState> blockStateMap = getOreStateMap(stringDeclaration);
             return stoneState -> {
                 StoneType stoneType = StoneType.computeStoneType(stoneState);
@@ -372,28 +372,23 @@ public class OreConfigUtils {
 
     private static Map<StoneType, IBlockState> getOreStateMap(String stringDeclaration) {
         String materialName;
-        boolean isSmallOre;
-        if(stringDeclaration.startsWith("small_ore:")) {
-            materialName = stringDeclaration.substring(10);
-            isSmallOre = true;
-        } else if(stringDeclaration.startsWith("ore:")) {
+        if(stringDeclaration.startsWith("ore:")) {
             materialName = stringDeclaration.substring(4);
-            isSmallOre = false;
         } else {
             throw new IllegalArgumentException("Invalid string ore decl: " + stringDeclaration);
         }
         DustMaterial material = getMaterialByName(materialName);
-        return getOreForMaterial(material, isSmallOre);
+        return getOreForMaterial(material);
     }
 
-    public static Map<StoneType, IBlockState> getOreForMaterial(DustMaterial material, boolean small) {
+    public static Map<StoneType, IBlockState> getOreForMaterial(DustMaterial material) {
         List<BlockOre> oreBlocks = MetaBlocks.ORES.stream()
             .filter(ore -> ore.material == material)
             .collect(Collectors.toList());
         HashMap<StoneType, IBlockState> stoneTypeMap = new HashMap<>();
         for(BlockOre blockOre : oreBlocks) {
             for(StoneType stoneType : blockOre.STONE_TYPE.getAllowedValues()) {
-                IBlockState blockState = blockOre.getOreBlock(stoneType, small);
+                IBlockState blockState = blockOre.getOreBlock(stoneType);
                 stoneTypeMap.put(stoneType, blockState);
             }
         }

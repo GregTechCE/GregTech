@@ -15,6 +15,9 @@ public class ConfigHolder {
     @Config.Comment("Probability of secondary vein generation in 3x3x3 chunk area.")
     public static int chunkOreVeinSecondaryProbability = 10;
 
+    @Config.Comment("True to enable surface rocks indicating vein under them")
+    public static boolean enableOreVeinSurfaceRocks = true;
+
     @Config.Comment("Whether machines should explode when overloaded with power. Default: true")
     public static boolean doExplosions = true;
 

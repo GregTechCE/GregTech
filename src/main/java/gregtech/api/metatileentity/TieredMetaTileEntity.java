@@ -16,6 +16,8 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import org.apache.commons.lang3.ArrayUtils;
 
+import java.util.Arrays;
+
 public abstract class TieredMetaTileEntity extends MetaTileEntity {
 
     private final int tier;
@@ -79,4 +81,13 @@ public abstract class TieredMetaTileEntity extends MetaTileEntity {
         return false;
     }
 
+    /**
+     * Returns tier less tooltip key
+     * It is generated from getMetaName by removing last part (like: ".lv") and adding ".tooltip" part
+     * @return tier less tooltip key
+     */
+    public final String getTierlessTooltipKey() {
+        String[] parts = getMetaName().split("\\.");
+        return String.join(".", Arrays.copyOfRange(parts, 0, parts.length - 1)) + ".tooltip";
+    }
 }

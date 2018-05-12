@@ -45,6 +45,7 @@ public class CommonProxy {
 
         CABLES.values().forEach(registry::register);
         COMPRESSED.values().stream().distinct().forEach(registry::register);
+        SURFACE_ROCKS.values().stream().distinct().forEach(registry::register);
         FRAMES.values().stream().distinct().forEach(registry::register);
         ORES.forEach(registry::register);
     }

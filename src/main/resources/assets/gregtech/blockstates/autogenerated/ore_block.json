@@ -5,23 +5,11 @@
     "model": "gregtech:overlay_model_all_overlay",
     "textures": {
       "base": "missingno",
-      "overlay": "missingno",
+      "overlay": "$MATERIAL_TEXTURE_NORMAL$",
       "particle": "missingno"
     }
   },
   "variants": {
-    "small": {
-      "true": {
-        "textures": {
-          "overlay": "$MATERIAL_TEXTURE_SMALL$"
-        }
-      },
-      "false": {
-        "textures": {
-          "overlay": "$MATERIAL_TEXTURE_NORMAL$"
-        }
-      }
-    },
     "stone_type": {
 $STONE_TYPES$
     }

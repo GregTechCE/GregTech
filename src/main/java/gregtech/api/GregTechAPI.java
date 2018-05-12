@@ -10,7 +10,6 @@ import gregtech.api.unification.ore.StoneType;
 import gregtech.api.unification.stack.SimpleItemStack;
 import gregtech.api.util.BaseCreativeTab;
 import gregtech.api.util.GTControlledRegistry;
-import gregtech.api.util.GTWorldGen;
 import gregtech.api.util.IBlockOre;
 import gregtech.common.items.MetaItems;
 import net.minecraft.item.EnumDyeColor;
@@ -69,11 +68,6 @@ public class GregTechAPI {
      * Mystcraft and Twilight Forest are automatically considered a Dimension, without being in this List.
      */
     public static final Collection<Integer> dimensionalList = new HashSet<>();
-
-    /**
-     * The List of all GT worldgens, except for ore veins.
-     */
-    public static final List<GTWorldGen> worldgenList = new ArrayList<>();
 
     /**
      * Table of all ore blocks
