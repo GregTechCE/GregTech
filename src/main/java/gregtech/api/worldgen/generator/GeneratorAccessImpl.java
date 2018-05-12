@@ -140,7 +140,7 @@ public class GeneratorAccessImpl implements IBlockGeneratorAccess {
 
         IBlockState placedState = currentOreVein.getBlockFiller().getStateForGeneration(blockStateHere, x, y, z);
 
-        if(blockStateHere == placedState)
+        if(placedState == null || blockStateHere == placedState)
             return false; //do not place anything if state didn't change
         //finally place block in world without sending to client and
         //with 16 flag to prevent observers update from loading neighbour chunks
