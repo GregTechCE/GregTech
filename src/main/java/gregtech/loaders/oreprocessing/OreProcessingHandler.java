@@ -2823,8 +2823,7 @@ public class OreProcessingHandler {
         ItemStack dustStack = OreDictUnifier.get(OrePrefix.dust, material);
         ItemStack ingotStack = OreDictUnifier.get(OrePrefix.ingot, material);
         DustMaterial byproductMaterial = GTUtility.selectItemInList(0, material, material.oreByProducts, DustMaterial.class);
-        if (!oreStack.isEmpty() && !crushedStack.isEmpty() && !dustStack.isEmpty()) {
-
+        if (!crushedStack.isEmpty() && !dustStack.isEmpty()) {
             RecipeMaps.FORGE_HAMMER_RECIPES.recipeBuilder()
                 .input(orePrefix, materialIn)
                 .outputs(crushedStack)

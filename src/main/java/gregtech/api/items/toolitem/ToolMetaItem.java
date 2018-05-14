@@ -115,13 +115,20 @@ public class ToolMetaItem<T extends ToolMetaItem<?>.MetaToolValueItem> extends M
     }
 
     @Override
+    public boolean hasContainerItem(ItemStack stack) {
+        return true;
+    }
+
+    @Override
     public ItemStack getContainerItem(ItemStack stack) {
+        stack = stack.copy();
+        stack.setCount(1);
         T metaToolValueItem = getItem(stack);
-        if(metaToolValueItem != null) {
-            IToolStats toolStats = metaToolValueItem.getToolStats();
-            if(!doDamageToItem(stack, toolStats.getToolDamagePerContainerCraft(stack), true)) {
-                return null;
-            }
+        if(metaToolValueItem != null && metaToolValueItem.toolStats != null) {
+            IToolStats toolStats = metaToolValueItem.toolStats;
+            int toolDamagePerCraft =  toolStats.getToolDamagePerContainerCraft(stack);
+            boolean canApplyDamage = doDamageToItem(stack, toolDamagePerCraft, false);
+            if(!canApplyDamage) return null;
         }
         return stack;
     }
