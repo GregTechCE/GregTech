@@ -26,15 +26,15 @@ public class EllipsoidGenerator implements IShapeGenerator {
     @Override
     public void loadFromConfig(JsonObject object) {
         int[] data = IShapeGenerator.getIntRange(object.get("radius"));
-        this.radiusMin = data[0] - 30;
-        this.radiusMax = data[1] + 30;
+        this.radiusMin = data[0];
+        this.radiusMax = data[1];
     }
 
     @Override
     public void generate(Random gridRandom, IBlockGeneratorAccess blockAccess) {
-        int a = (gridRandom.nextInt(radiusMax - radiusMin) + radiusMin);
-        int b = (gridRandom.nextInt(radiusMax - radiusMin) + radiusMin) / 2;
-        int c = (gridRandom.nextInt(radiusMax - radiusMin) + radiusMin);
+        int a = radiusMin >= radiusMax ? radiusMin : (gridRandom.nextInt(radiusMax - radiusMin) + radiusMin);
+        int b = radiusMin >= radiusMax ? radiusMin / 2 : (gridRandom.nextInt(radiusMax - radiusMin) + radiusMin) / 2;
+        int c = radiusMin >= radiusMax ? radiusMin : (gridRandom.nextInt(radiusMax - radiusMin) + radiusMin);
         int ab2 = a * a * b * b, ac2 = a * a * c * c, bc2 = b * b * c * c, abc2 = ab2 * c * c;
 
         int max = Math.max(a, Math.max(b, c));

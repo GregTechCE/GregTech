@@ -15,6 +15,8 @@ import gregtech.api.unification.stack.SimpleItemStack;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
+import net.minecraft.enchantment.Enchantment;
+import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
@@ -28,6 +30,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.fml.relauncher.Side;
@@ -36,10 +39,7 @@ import net.minecraftforge.oredict.OreDictionary;
 import org.apache.commons.lang3.Validate;
 
 import javax.annotation.Nullable;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 /**
  * ToolMetaItem is item that can have up to Short.MAX_VALUE tools inside it
@@ -91,30 +91,27 @@ public class ToolMetaItem<T extends ToolMetaItem<?>.MetaToolValueItem> extends M
     }
 
     @Override
-    public void onCreated(ItemStack stack, World world, EntityPlayer player) {
-        T metaToolValueItem = getItem(stack);
-        if(metaToolValueItem != null) {
-            IToolStats toolStats = metaToolValueItem.getToolStats();
-            toolStats.onToolCrafted(stack, player);
-            ArrayList<EnchantmentData> enchantments = new ArrayList<>(toolStats.getEnchantments(stack));
-            SolidMaterial material = getPrimaryMaterial(stack);
-            if (material == null) {
-                return;
-            }
-            for(EnchantmentData enchantmentData : material.toolEnchantments) {
-                Optional<EnchantmentData> sameEnchantment = enchantments.stream().filter(it -> it.enchantment == enchantmentData.enchantment).findAny();
-                if(sameEnchantment.isPresent()) {
-                    enchantments.remove(sameEnchantment.get());
-                    int level = Math.min(enchantmentData.level + sameEnchantment.get().level, enchantmentData.enchantment.getMaxLevel());
-                    enchantments.add(new EnchantmentData(enchantmentData.enchantment, level));
-                } else {
-                    enchantments.add(enchantmentData);
-                }
-            }
-            for(EnchantmentData enchantmentData : enchantments) {
-                stack.addEnchantment(enchantmentData.enchantment, enchantmentData.level);
-            }
+    public boolean showDurabilityBar(ItemStack stack) {
+        return true; //always show durability for tools
+    }
+
+    @Override
+    public double getDurabilityForDisplay(ItemStack stack) {
+        //if itemstack has electric charge ability, show electric charge percentage
+        if(stack.hasCapability(IElectricItem.CAPABILITY_ELECTRIC_ITEM, null)) {
+            IElectricItem electricItem = stack.getCapability(IElectricItem.CAPABILITY_ELECTRIC_ITEM, null);
+            long currentCharge = electricItem.discharge(Long.MAX_VALUE, Integer.MAX_VALUE, true, false, true);
+            return currentCharge / (electricItem.getMaxCharge() * 1.0);
         }
+        //otherwise, show actual durability percentage
+        return getInternalDamage(stack) / (getMaxInternalDamage(stack) * 1.0);
+    }
+
+    @Override
+    public int getRGBDurabilityForDisplay(ItemStack stack) {
+        //always color durability bar as item internal damage
+        double internalDamage = getInternalDamage(stack) / (getMaxInternalDamage(stack) * 1.0);
+        return MathHelper.hsvToRGB(Math.max(0.0F, (float) (1.0 - internalDamage)) / 3.0F, 1.0F, 1.0F);
     }
 
     @Override
@@ -411,30 +408,49 @@ public class ToolMetaItem<T extends ToolMetaItem<?>.MetaToolValueItem> extends M
             return getStackForm(Materials.Darmstadtium, Materials.Darmstadtium);
         }
 
-        public ItemStack getStackForm(Material primaryMaterial, Material handleMaterial) {
+        public ItemStack getStackForm(SolidMaterial primaryMaterial, SolidMaterial handleMaterial) {
             return getStackForm(primaryMaterial, handleMaterial, 1);
         }
 
-        public final ItemStack getStackForm(Material primaryMaterial, Material handleMaterial, int amount) {
+        public final ItemStack getStackForm(SolidMaterial primaryMaterial, SolidMaterial handleMaterial, int amount) {
             ItemStack stack = new ItemStack(ToolMetaItem.this, amount, metaItemOffset + metaValue);
-
             T metaToolValueItem = getItem(stack);
-            if (metaToolValueItem != null) {
-                if (metaToolValueItem.toolStats != null) {
+            if (metaToolValueItem != null && metaToolValueItem.toolStats != null) {
+                NBTTagCompound toolNBT = new NBTTagCompound();
+                ArrayList<SolidMaterial> materials = new ArrayList<>();
 
-                    NBTTagCompound toolNBT = new NBTTagCompound();
-                    if (primaryMaterial instanceof SolidMaterial) {
-                        toolNBT.setString("PrimaryMaterial", primaryMaterial.toString());
-                    }
-                    if (this.getToolStats().hasMaterialHandle() && handleMaterial instanceof SolidMaterial)
-                        toolNBT.setString("HandleMaterial", handleMaterial.toString());
+                toolNBT.setString("PrimaryMaterial", primaryMaterial.toString());
+                materials.add(primaryMaterial);
 
-                    NBTTagCompound nbtTag = new NBTTagCompound();
-                    nbtTag.setTag("GT.ToolStats", toolNBT);
-                    stack.setTagCompound(nbtTag);
+                if (this.getToolStats().hasMaterialHandle() && handleMaterial != null) {
+                    toolNBT.setString("HandleMaterial", handleMaterial.toString());
+                    materials.add(handleMaterial);
                 }
+
+                NBTTagCompound nbtTag = new NBTTagCompound();
+                nbtTag.setTag("GT.ToolStats", toolNBT);
+                stack.setTagCompound(nbtTag);
+
+                Map<Enchantment, Integer> enchantments = bakeEnchantmentsMap(materials);
+                EnchantmentHelper.setEnchantments(enchantments, stack);
             }
             return stack;
+        }
+
+        private Map<Enchantment, Integer> bakeEnchantmentsMap(Collection<SolidMaterial> materials) {
+            Map<Enchantment, Integer> enchantments = new HashMap<>();
+            for(SolidMaterial material : materials) {
+                for(EnchantmentData enchantmentData : material.toolEnchantments) {
+                    if(enchantments.containsKey(enchantmentData.enchantment)) {
+                        int level = Math.min(enchantments.get(enchantmentData.enchantment) + enchantmentData.level,
+                            enchantmentData.enchantment.getMaxLevel());
+                        enchantments.put(enchantmentData.enchantment, level);
+                    } else {
+                        enchantments.put(enchantmentData.enchantment, enchantmentData.level);
+                    }
+                }
+            }
+            return enchantments;
         }
 
     }

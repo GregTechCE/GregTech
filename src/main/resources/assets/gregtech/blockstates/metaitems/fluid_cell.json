@@ -5,7 +5,8 @@
       "model": "forge:forgebucket",
       "textures": {
         "base": "gregtech:items/metaitems/fluid_cell/base",
-        "fluid": "gregtech:items/metaitems/fluid_cell/overlay"
+        "fluid": "gregtech:items/metaitems/fluid_cell/overlay",
+        "cover": "gregtech:items/metaitems/fluid_cell/base"
       },
       "transform": "forge:default-item"
     }
