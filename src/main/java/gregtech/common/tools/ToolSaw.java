@@ -56,11 +56,4 @@ public class ToolSaw extends ToolBase {
             block.getMaterial() == Material.PACKED_ICE;
     }
 
-//    @Override
-//    public ITextComponent getDeathMessage(EntityLivingBase player, EntityLivingBase entity) {
-//        return new TextComponentString(TextFormatting.GREEN + "")
-//                .appendSibling(player.getDisplayName())
-//                .appendText(TextFormatting.WHITE + " was getting cut down " + TextFormatting.RED)
-//                .appendSibling(entity.getDisplayName());
-//    }
 }

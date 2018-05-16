@@ -22,7 +22,6 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.item.EntityItem;
-import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.init.MobEffects;
 import net.minecraft.item.EnumDyeColor;
@@ -30,12 +29,16 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static gregtech.api.GTValues.L;
 import static gregtech.common.items.MetaItems.*;
 
 public class MetaItem1 extends MaterialMetaItem {
+
+    public final Map<OrePrefix, OrePrefix> purifyMap = new HashMap<>();
 
     public MetaItem1() {
         super(OrePrefix.dustTiny, OrePrefix.dustSmall, OrePrefix.dust, OrePrefix.dustImpure, OrePrefix.dustPure,
@@ -43,11 +46,18 @@ public class MetaItem1 extends MaterialMetaItem {
             OrePrefix.ingot, OrePrefix.ingotHot, OrePrefix.plate, OrePrefix.plateDense, OrePrefix.stick, OrePrefix.lens,
             OrePrefix.bolt, OrePrefix.screw, OrePrefix.ring, OrePrefix.foil,
             null, null, null, null, null, null, null, null, null, null, null, null);
+        registerPurifyRecipes();
+    }
+
+    private void registerPurifyRecipes() {
+        purifyMap.put(OrePrefix.crushed, OrePrefix.crushedCentrifuged);
+        purifyMap.put(OrePrefix.crushedPurified, OrePrefix.crushedCentrifuged);
+        purifyMap.put(OrePrefix.dustImpure, OrePrefix.dust);
+        purifyMap.put(OrePrefix.dustPure, OrePrefix.dust);
     }
 
     @Override
     public void registerSubItems() {
-
         CREDIT_COPPER = addItem(0, "credit.copper");
         CREDIT_CUPRONICKEL = addItem(1, "credit.cupronickel").setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.Cupronickel, 907200L)));
         CREDIT_SILVER = addItem(2, "credit.silver");
@@ -690,40 +700,30 @@ public class MetaItem1 extends MaterialMetaItem {
             .buildAndRegister();
     }
 
+
     @Override
     public boolean onEntityItemUpdate(EntityItem itemEntity) {
         int damage = itemEntity.getItem().getMetadata();
-        if (damage < this.metaItemOffset && damage >= 0 && !itemEntity.getEntityWorld().isRemote) {
-
-            Material material = Material.MATERIAL_REGISTRY.getObjectById(damage % 1000);
-            if (material != null) {
-                int posX = MathHelper.floor(itemEntity.posX);
-                int posY = MathHelper.floor(itemEntity.posY);
-                int posZ = MathHelper.floor(itemEntity.posZ);
-                OrePrefix prefix = this.orePrefixes[(damage / 1000)];
-                if (prefix == OrePrefix.dustImpure || prefix == OrePrefix.dustPure || prefix == OrePrefix.crushed || prefix == OrePrefix.dust) {
-
-                    IBlockState blockState = itemEntity.getEntityWorld().getBlockState(new BlockPos(posX, posY, posZ));
-                    if (blockState.getBlock() == Blocks.CAULDRON) {
-                        int waterLevel = blockState.getValue(BlockCauldron.LEVEL);
-                        if (waterLevel > 0) {
-                            boolean waterConsumed = false;
-                            if (prefix == OrePrefix.crushed) {
-                                itemEntity.setItem(OreDictUnifier.get(OrePrefix.crushedPurified, material, itemEntity.getItem().getCount()));
-                                waterConsumed = true;
-                            } else if (prefix == OrePrefix.dustImpure || prefix == OrePrefix.dustPure){
-                                itemEntity.setItem(OreDictUnifier.get(OrePrefix.dust, material, itemEntity.getItem().getCount()));
-                                waterConsumed = true;
-                            }
-                            if (waterConsumed){
-                                itemEntity.getEntityWorld().setBlockState(new BlockPos(posX, posY, posZ), blockState.withProperty(BlockCauldron.LEVEL, waterLevel - 1));
-                            }
-                            return true;
-                        }
-                    }
-                }
-            }
-        }
+        if (damage >= this.metaItemOffset || itemEntity.getEntityWorld().isRemote)
+            return false;
+        Material material = Material.MATERIAL_REGISTRY.getObjectById(damage % 1000);
+        OrePrefix prefix = this.orePrefixes[(damage / 1000)];
+        if (!purifyMap.containsKey(prefix))
+            return false;
+        int posX = MathHelper.floor(itemEntity.posX);
+        int posY = MathHelper.floor(itemEntity.posY);
+        int posZ = MathHelper.floor(itemEntity.posZ);
+        BlockPos blockPos = new BlockPos(itemEntity);
+        IBlockState blockState = itemEntity.getEntityWorld().getBlockState(blockPos);
+        int waterLevel = blockState.getBlock() instanceof BlockCauldron ?
+            blockState.getValue(BlockCauldron.LEVEL) : 0;
+        if(waterLevel == 0)
+            return false;
+        itemEntity.getEntityWorld().setBlockState(blockPos,
+            blockState.withProperty(BlockCauldron.LEVEL, waterLevel - 1));
+        ItemStack replacementStack = OreDictUnifier.get(purifyMap.get(prefix), material,
+            itemEntity.getItem().getCount());
+        itemEntity.setItem(replacementStack);
         return false;
     }
 

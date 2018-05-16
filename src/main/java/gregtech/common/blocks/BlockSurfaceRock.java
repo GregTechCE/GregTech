@@ -3,6 +3,7 @@ package gregtech.common.blocks;
 import codechicken.lib.vec.Cuboid6;
 import gregtech.api.unification.OreDictUnifier;
 import gregtech.api.unification.material.type.Material;
+import gregtech.api.unification.material.type.MetalMaterial;
 import gregtech.api.unification.ore.OrePrefix;
 import gregtech.api.util.XSTR;
 import gregtech.common.blocks.properties.PropertyMaterial;
@@ -23,6 +24,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 
 import java.util.Arrays;
+import java.util.Random;
 
 public class BlockSurfaceRock extends Block {
 
@@ -75,14 +77,23 @@ public class BlockSurfaceRock extends Block {
         return getShapeFromBlockPos(pos).aabb();
     }
 
+    private ItemStack getDropStack(IBlockState blockState, int amount) {
+        Material material = blockState.getValue(materialProperty);
+        if(material instanceof MetalMaterial && ((MetalMaterial) material).blastFurnaceTemperature == 0)
+            return OreDictUnifier.get(OrePrefix.nugget, material, amount);
+        return OreDictUnifier.get(OrePrefix.dustTiny, material, amount);
+    }
+
     @Override
     public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player) {
-        return OreDictUnifier.get(OrePrefix.nugget, state.getValue(materialProperty));
+        return getDropStack(state, 1);
     }
 
     @Override
     public void getDrops(NonNullList<ItemStack> drops, IBlockAccess world, BlockPos pos, IBlockState state, int fortune) {
-        drops.add(OreDictUnifier.get(OrePrefix.nugget, state.getValue(materialProperty)));
+        Random rand = world instanceof World ? ((World)world).rand : RANDOM;
+        int amount = 1 + rand.nextInt(fortune == 0 ? 1 : fortune);
+        drops.add(getDropStack(state, amount));
     }
 
     @Override

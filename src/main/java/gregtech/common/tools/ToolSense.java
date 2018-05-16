@@ -58,11 +58,4 @@ public class ToolSense extends ToolBase {
         return conversions;
     }
 
-//    @Override
-//    public ITextComponent getDeathMessage(EntityLivingBase player, EntityLivingBase entity) {
-//        return new TextComponentString(TextFormatting.GREEN + "")
-//                .appendSibling(player.getDisplayName())
-//                .appendText(TextFormatting.WHITE + " has taken the Soul of " + TextFormatting.RED)
-//                .appendSibling(entity.getDisplayName());
-//    }
 }

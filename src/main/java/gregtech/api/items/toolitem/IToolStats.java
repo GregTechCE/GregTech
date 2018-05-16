@@ -105,7 +105,6 @@ public interface IToolStats {
      * This lets you modify the Drop List, when this type of Tool has been used.
      *
      */
-    // TODO add fortune as parameter
     int convertBlockDrops(World world, BlockPos blockPos, IBlockState blockState, EntityPlayer harvester, NonNullList<ItemStack> drops);
 
     /**

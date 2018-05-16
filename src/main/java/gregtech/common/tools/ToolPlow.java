@@ -7,12 +7,9 @@ import net.minecraft.entity.monster.EntitySnowman;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumHand;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-
-import java.util.List;
 
 public class ToolPlow extends ToolBase {
 
@@ -34,7 +31,6 @@ public class ToolPlow extends ToolBase {
     @Override
     public int convertBlockDrops(World world, BlockPos blockPos, IBlockState blockState, EntityPlayer harvester, NonNullList<ItemStack> drops) {
         int conversions = 0;
-        ItemStack stack = harvester.getHeldItem(EnumHand.MAIN_HAND);
         if (this.sIsHarvestingRightNow.get() == null && harvester instanceof EntityPlayerMP) {
             this.sIsHarvestingRightNow.set(this);
             for (int i = -1; i < 2; i++) {
@@ -42,9 +38,7 @@ public class ToolPlow extends ToolBase {
                     for (int k = -1; k < 2; k++) {
                         BlockPos block = blockPos.add(i, j, k);
                         IBlockState state = harvester.getEntityWorld().getBlockState(block);
-                        if ((i != 0 || j != 0 || k != 0) &&
-                                stack.getDestroySpeed(state) > 0.0F &&
-                                ((EntityPlayerMP) harvester).interactionManager.tryHarvestBlock(block)) {
+                        if ((i != 0 || j != 0 || k != 0) && ((EntityPlayerMP) harvester).interactionManager.tryHarvestBlock(block)) {
                               conversions++;
                         }
                     }
