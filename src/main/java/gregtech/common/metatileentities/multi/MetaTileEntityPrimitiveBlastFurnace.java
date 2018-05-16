@@ -186,12 +186,12 @@ public class MetaTileEntityPrimitiveBlastFurnace extends MultiblockControllerBas
     }
 
     protected IBlockState getCasingState() {
-        return MetaBlocks.METAL_CASING.getState(MetalCasingType.BRONZE_BRICKS);
+        return MetaBlocks.METAL_CASING.getState(MetalCasingType.PRIMITIVE_BRICKS);
     }
 
     @Override
     public ICubeRenderer getBaseTexture() {
-        return Textures.BRONZE_PLATED_BRICKS;
+        return Textures.PRIMITIVE_BRICKS;
     }
 
     @Override

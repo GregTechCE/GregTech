@@ -18,6 +18,7 @@ public class BlockMetalCasing extends VariantBlock<BlockMetalCasing.MetalCasingT
     public enum MetalCasingType implements IStringSerializable {
 
         BRONZE_BRICKS("bronze_bricks"),
+        PRIMITIVE_BRICKS("primitive_bricks"),
         INVAR_HEATPROOF("invar_heatproof"),
         ALUMINIUM_FROSTPROOF("aluminium_frostproof"),
         STEEL_SOLID("steel_solid"),

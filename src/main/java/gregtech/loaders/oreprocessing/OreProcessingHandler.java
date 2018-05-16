@@ -31,11 +31,7 @@ import static gregtech.api.GTValues.L;
 import static gregtech.api.GTValues.M;
 import static gregtech.api.unification.material.type.DustMaterial.MatFlags.*;
 import static gregtech.api.unification.material.type.Material.MatFlags.NO_UNIFICATION;
-import static gregtech.api.unification.material.type.MetalMaterial.MatFlags.GENERATE_BOLT_SCREW;
-import static gregtech.api.unification.material.type.MetalMaterial.MatFlags.GENERATE_RING;
-import static gregtech.api.unification.material.type.SolidMaterial.MatFlags.GENERATE_GEAR;
-import static gregtech.api.unification.material.type.SolidMaterial.MatFlags.GENERATE_ROD;
-import static gregtech.api.unification.material.type.SolidMaterial.MatFlags.MORTAR_GRINDABLE;
+import static gregtech.api.unification.material.type.SolidMaterial.MatFlags.*;
 import static gregtech.api.unification.ore.OrePrefix.Conditions.isToolMaterial;
 import static gregtech.api.unification.ore.OrePrefix.and;
 import static gregtech.api.unification.ore.OrePrefix.noFlag;
@@ -159,18 +155,20 @@ public class OreProcessingHandler {
                 } else {
                     int duration = Math.max(1, (int) (material.getMass() * metalMaterial.blastFurnaceTemperature / 50L));
                     ModHandler.removeFurnaceSmelting(ingotStack);
-                    RecipeMaps.BLAST_RECIPES.recipeBuilder()
-                        .input(dustPrefix, material)
-                        .outputs(ingotStack)
-                        .duration(duration).EUt(120)
-                        .blastFurnaceTemp(metalMaterial.blastFurnaceTemperature)
-                        .buildAndRegister();
-                    RecipeMaps.BLAST_RECIPES.recipeBuilder()
-                        .input(OrePrefix.dustTiny, material)
-                        .outputs(nuggetStack)
-                        .duration(Math.max(1, duration / 9)).EUt(120)
-                        .blastFurnaceTemp(metalMaterial.blastFurnaceTemperature)
-                        .buildAndRegister();
+                    if (!ingotStack.isEmpty() && !nuggetStack.isEmpty()) {
+                        RecipeMaps.BLAST_RECIPES.recipeBuilder()
+                            .input(dustPrefix, material)
+                            .outputs(ingotStack)
+                            .duration(duration).EUt(120)
+                            .blastFurnaceTemp(metalMaterial.blastFurnaceTemperature)
+                            .buildAndRegister();
+                        RecipeMaps.BLAST_RECIPES.recipeBuilder()
+                            .input(OrePrefix.dustTiny, material)
+                            .outputs(nuggetStack)
+                            .duration(Math.max(1, duration / 9)).EUt(120)
+                            .blastFurnaceTemp(metalMaterial.blastFurnaceTemperature)
+                            .buildAndRegister();
+                    }
                     if (metalMaterial.blastFurnaceTemperature <= 1000) {
                         ModHandler.addRCFurnaceRecipe(dustStack, ingotStack, duration);
                         ModHandler.addRCFurnaceRecipe(tinyDustStack, nuggetStack, Math.max(1, duration / 9));
