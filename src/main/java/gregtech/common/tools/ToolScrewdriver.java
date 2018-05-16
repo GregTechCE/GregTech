@@ -6,13 +6,8 @@ import gregtech.common.items.behaviors.ScrewdriverBehaviour;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.monster.EntityCaveSpider;
-import net.minecraft.entity.monster.EntitySpider;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
-
-import java.util.Arrays;
-import java.util.List;
 
 public class ToolScrewdriver extends ToolBase {
 
@@ -20,7 +15,7 @@ public class ToolScrewdriver extends ToolBase {
     public float getNormalDamageBonus(EntityLivingBase entity, ItemStack stack, EntityLivingBase attacker) {
         String name = entity.getClass().getName();
         name = name.substring(name.lastIndexOf('.') + 1);
-        return name.toLowerCase().contains("spider") ? 2.0F : 1.0F;
+        return name.toLowerCase().contains("spider") ? 3.0F : 1.0F;
     }
 
     @Override
@@ -54,11 +49,4 @@ public class ToolScrewdriver extends ToolBase {
         item.addStats(new ScrewdriverBehaviour(2));
     }
 
-//    @Override
-//    public ITextComponent getDeathMessage(EntityLivingBase player, EntityLivingBase entity) {
-//        return new TextComponentString(TextFormatting.RED + "")
-//                .appendSibling(entity.getDisplayName())
-//                .appendText(TextFormatting.WHITE + " got screwed by " + TextFormatting.GREEN)
-//                .appendSibling(player.getDisplayName());
-//    }
 }

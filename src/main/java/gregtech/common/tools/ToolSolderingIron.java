@@ -1,18 +1,11 @@
 package gregtech.common.tools;
 
-import gregtech.api.GregTechAPI;
 import gregtech.api.items.metaitem.MetaItem;
 import gregtech.common.items.behaviors.ScrewdriverBehaviour;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.monster.EntityCaveSpider;
-import net.minecraft.entity.monster.EntitySpider;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.ResourceLocation;
-
-import java.util.Arrays;
-import java.util.List;
 
 public class ToolSolderingIron extends ToolBase {
 
@@ -49,16 +42,6 @@ public class ToolSolderingIron extends ToolBase {
     }
 
     @Override
-    public ResourceLocation getCraftingSound(ItemStack stack) {
-        return GregTechAPI.soundList.get(100);
-    }
-
-    @Override
-    public ResourceLocation getBreakingSound(ItemStack stack) {
-        return GregTechAPI.soundList.get(0);
-    }
-
-    @Override
     public boolean isMinableBlock(IBlockState block, ItemStack stack) {
         return block.getMaterial() == Material.CIRCUITS;
     }
@@ -68,11 +51,4 @@ public class ToolSolderingIron extends ToolBase {
         item.addStats(new ScrewdriverBehaviour(2));
     }
 
-//    @Override
-//    public ITextComponent getDeathMessage(EntityLivingBase player, EntityLivingBase entity) {
-//        return new TextComponentString(TextFormatting.RED + "")
-//                .appendSibling(entity.getDisplayName())
-//                .appendText(TextFormatting.WHITE + " got soldert by " + TextFormatting.GREEN)
-//                .appendSibling(player.getDisplayName());
-//    }
 }

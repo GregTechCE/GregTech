@@ -1,33 +1,24 @@
 package gregtech.common.tools;
 
 import gregtech.api.GregTechAPI;
-import gregtech.api.damagesources.DamageSources;
 import gregtech.api.enchants.EnchantmentData;
 import gregtech.api.items.metaitem.MetaItem;
 import gregtech.api.items.toolitem.IToolStats;
 import gregtech.api.items.toolitem.ToolMetaItem;
 import gregtech.api.unification.material.type.SolidMaterial;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.enchantment.Enchantment;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.EntityDamageSource;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.ITextComponent;
 import net.minecraft.world.World;
 
-import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public abstract class ToolBase implements IToolStats {
-
-    public static final EnchantmentData[] ZERO_ENCHANTMENTS = new EnchantmentData[0];
 
     @Override
     public int getToolDamagePerBlockBreak(ItemStack stack) {
@@ -94,14 +85,6 @@ public abstract class ToolBase implements IToolStats {
         return false;
     }
 
-//    public DamageSource getDamageSource(EntityLivingBase player, Entity entity) {
-//        return DamageSources.getCombatDamage((player instanceof EntityPlayer) ? "player" : "mob", player, (entity instanceof EntityLivingBase) ? getDeathMessage(player, (EntityLivingBase) entity) : null);
-//    }
-//
-//    public ITextComponent getDeathMessage(EntityLivingBase player, EntityLivingBase entity) {
-//        return new EntityDamageSource((player instanceof EntityPlayer) ? "player" : "mob", player).getDeathMessage(entity);
-//    }
-
     @Override
     public ItemStack getBrokenItem(ItemStack stack) {
         return null;
@@ -109,7 +92,7 @@ public abstract class ToolBase implements IToolStats {
 
     @Override
     public List<EnchantmentData> getEnchantments(ItemStack stack) {
-        return new ArrayList<>(Arrays.asList(ZERO_ENCHANTMENTS));
+        return Collections.emptyList();
     }
 
     @Override

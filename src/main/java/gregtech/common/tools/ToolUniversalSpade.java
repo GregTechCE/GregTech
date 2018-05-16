@@ -42,8 +42,7 @@ public class ToolUniversalSpade extends ToolBase {
     @Override
     public boolean isMinableBlock(IBlockState block, ItemStack stack) {
         String tool = block.getBlock().getHarvestTool(block);
-        return tool != null && (
-                        tool.equals("shovel") ||
+        return tool != null && (tool.equals("shovel") ||
                         tool.equals("axe") ||
                         tool.equals("saw") ||
                         tool.equals("sword") ||
@@ -79,11 +78,4 @@ public class ToolUniversalSpade extends ToolBase {
         super.onToolCrafted(stack, player);
     }
 
-//    @Override
-//    public ITextComponent getDeathMessage(EntityLivingBase player, EntityLivingBase entity) {
-//        return new TextComponentString(TextFormatting.RED + "")
-//                .appendSibling(entity.getDisplayName())
-//                .appendText(TextFormatting.WHITE + " has been universal digged by " + TextFormatting.GREEN)
-//                .appendSibling(player.getDisplayName());
-//    }
 }

@@ -26,11 +26,4 @@ public class ToolWireCutter extends ToolBase {
         return tool != null && tool.equals("cutter");
     }
 
-//    @Override
-//    public ITextComponent getDeathMessage(EntityLivingBase player, EntityLivingBase entity) {
-//        return new TextComponentString(TextFormatting.GREEN + "")
-//                .appendSibling(player.getDisplayName())
-//                .appendText(TextFormatting.WHITE + " has cut the Cable for the Life Support Machine of " + TextFormatting.RED)
-//                .appendSibling(player.getDisplayName());
-//    }
 }

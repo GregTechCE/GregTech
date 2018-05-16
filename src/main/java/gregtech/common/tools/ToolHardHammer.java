@@ -4,13 +4,9 @@ import gregtech.api.GregTechAPI;
 import gregtech.api.items.metaitem.MetaItem;
 import gregtech.common.items.behaviors.ProspectingBehaviour;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.monster.EntityIronGolem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
-
-import java.util.Arrays;
-import java.util.List;
 
 public class ToolHardHammer extends ToolBase {
 
@@ -55,6 +51,9 @@ public class ToolHardHammer extends ToolBase {
     public ResourceLocation getBreakingSound(ItemStack stack) {
         return GregTechAPI.soundList.get(2);
     }
+
+
+
 
 //    @Override
 //    public boolean isMinableBlock(IBlockState block, ItemStack stack) {

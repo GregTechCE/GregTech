@@ -1,10 +1,8 @@
 package gregtech.common.tools;
 
-import gregtech.api.GregTechAPI;
 import gregtech.api.items.metaitem.MetaItem;
 import gregtech.common.items.behaviors.SoftHammerBehaviour;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.ResourceLocation;
 
 public class ToolSoftHammer extends ToolBase {
 
@@ -29,21 +27,6 @@ public class ToolSoftHammer extends ToolBase {
     }
 
     @Override
-    public ResourceLocation getCraftingSound(ItemStack stack) {
-        return GregTechAPI.soundList.get(101);
-    }
-
-    @Override
-    public ResourceLocation getEntityHitSound(ItemStack stack) {
-        return GregTechAPI.soundList.get(101);
-    }
-
-    @Override
-    public ResourceLocation getMiningSound(ItemStack stack) {
-        return GregTechAPI.soundList.get(101);
-    }
-
-    @Override
     public boolean hasMaterialHandle() {
         return true;
     }
@@ -53,11 +36,4 @@ public class ToolSoftHammer extends ToolBase {
         item.addStats(new SoftHammerBehaviour(100));
     }
 
-//    @Override
-//    public ITextComponent getDeathMessage(EntityLivingBase player, EntityLivingBase entity) {
-//        return new TextComponentString(TextFormatting.RED + "")
-//                .appendSibling(entity.getDisplayName())
-//                .appendText(TextFormatting.WHITE + " was stopped working by " + TextFormatting.GREEN)
-//                .appendSibling(player.getDisplayName());
-//    }
 }

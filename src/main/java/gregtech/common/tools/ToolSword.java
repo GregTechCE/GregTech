@@ -2,7 +2,6 @@ package gregtech.common.tools;
 
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 
 public class ToolSword extends ToolBase {
@@ -42,12 +41,6 @@ public class ToolSword extends ToolBase {
             block.getMaterial() == Material.CAKE ||
             block.getMaterial() == Material.TNT ||
             block.getMaterial() == Material.SPONGE;
-    }
-
-    @Override
-    public void onToolCrafted(ItemStack stack, EntityPlayer player) {
-        super.onToolCrafted(stack, player);
-//        player.addStat(AchievementList.BUILD_SWORD);
     }
 
     @Override

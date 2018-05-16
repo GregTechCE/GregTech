@@ -1,19 +1,13 @@
 package gregtech.common.tools;
 
-import net.minecraft.block.BlockOldLeaf;
-import net.minecraft.block.BlockPlanks;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-
-import java.util.List;
 
 public class ToolBranchCutter extends ToolBase {
 
@@ -55,11 +49,4 @@ public class ToolBranchCutter extends ToolBase {
         return tool != null && tool.equals("grafter") || block.getMaterial() == Material.LEAVES;
     }
 
-//    @Override
-//    public ITextComponent getDeathMessage(EntityLivingBase player, EntityLivingBase entity) {
-//        return new TextComponentString(TextFormatting.RED + "")
-//                .appendSibling(entity.getDisplayName())
-//                .appendText(TextFormatting.WHITE + " has been trimmed by " + TextFormatting.GREEN)
-//                .appendSibling(player.getDisplayName());
-//    }
 }

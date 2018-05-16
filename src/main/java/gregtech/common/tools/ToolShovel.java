@@ -37,11 +37,4 @@ public class ToolShovel extends ToolBase {
         return true;
     }
 
-//    @Override
-//    public ITextComponent getDeathMessage(EntityLivingBase player, EntityLivingBase entity) {
-//        return new TextComponentString(TextFormatting.RED + "")
-//                .appendSibling(entity.getDisplayName())
-//                .appendText(TextFormatting.WHITE + " got dug up by " + TextFormatting.GREEN)
-//                .appendSibling(player.getDisplayName());
-//    }
 }

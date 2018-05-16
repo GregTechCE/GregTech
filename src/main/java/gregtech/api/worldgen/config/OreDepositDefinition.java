@@ -1,6 +1,7 @@
 package gregtech.api.worldgen.config;
 
 import com.google.gson.JsonObject;
+import gregtech.api.unification.material.type.DustMaterial.MatFlags;
 import gregtech.api.unification.material.type.MetalMaterial;
 import gregtech.api.unification.ore.StoneType;
 import gregtech.api.unification.ore.StoneTypes;
@@ -61,6 +62,9 @@ public class OreDepositDefinition {
         }
         if(configRoot.has("surface_stone_material")) {
             this.surfaceStoneMaterial = (MetalMaterial) OreConfigUtils.getMaterialByName(configRoot.get("surface_stone_material").getAsString());
+            if(!surfaceStoneMaterial.hasFlag(MatFlags.GENERATE_ORE)) {
+                throw new IllegalArgumentException("Material " + surfaceStoneMaterial + " doesn't have surface rock variant");
+            }
         }
         this.blockFiller = WorldGenRegistry.INSTANCE.createBlockFiller(configRoot.get("filler").getAsJsonObject());
         this.shapeGenerator = WorldGenRegistry.INSTANCE.createShapeGenerator(configRoot.get("generator").getAsJsonObject());
