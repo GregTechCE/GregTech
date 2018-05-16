@@ -291,10 +291,10 @@ public class OreProcessingHandler {
                 blockEntry = new UnificationEntry(OrePrefix.dust, material);
             }
             if (!blockComponent.isEmpty()) {
-                ModHandler.addShapedRecipe(String.format("%s_block_compress", material.toString()),
+                ModHandler.addShapedRecipe(String.format("block_compress_%s", material.toString()),
                     blockStack, "XXX", "XXX", "XXX",
                     'X', blockEntry);
-                ModHandler.addShapelessRecipe(String.format("%s_block_decompress", material.toString()),
+                ModHandler.addShapelessRecipe(String.format("block_decompress_%s", material.toString()),
                     GTUtility.copyAmount(9, blockComponent),
                     new UnificationEntry(blockPrefix, material));
             }
@@ -308,7 +308,7 @@ public class OreProcessingHandler {
         ItemStack screwStack = OreDictUnifier.get(OrePrefix.screw, material);
         ItemStack ingotStack = OreDictUnifier.get(OrePrefix.ingot, material);
         if (!boltStack.isEmpty() && !screwStack.isEmpty()) {
-            ModHandler.addShapedRecipe(String.format("%s_bolt", material.toString()),
+            ModHandler.addShapedRecipe(String.format("bolt_%s", material.toString()),
                 boltStack, "fS", "S ",
                 'S', new UnificationEntry(OrePrefix.screw, material));
 
@@ -486,7 +486,7 @@ public class OreProcessingHandler {
                 .chancedOutput(OreDictUnifier.get(OrePrefix.dust, byproductMaterial), 1000)
                 .buildAndRegister();
 
-            ModHandler.addShapelessRecipe(String.format("crushed_%s_ore_to_dust", material),
+            ModHandler.addShapelessRecipe(String.format("crushed_ore_to_dust_%s", material),
                 impureDustStack, 'h', new UnificationEntry(crushedPrefix, material));
 
             RecipeMaps.ORE_WASHER_RECIPES.recipeBuilder()
@@ -553,7 +553,7 @@ public class OreProcessingHandler {
                 .EUt(16)
                 .buildAndRegister();
 
-            ModHandler.addShapelessRecipe(String.format("centrifuged_%s_ore_to_dust", material), dustStack,
+            ModHandler.addShapelessRecipe(String.format("centrifuged_ore_to_dust_%s", material), dustStack,
                 'h', new UnificationEntry(centrifugedPrefix, material));
 
             ItemStack output = OreDictUnifier.get(OrePrefix.nugget, solidMaterial, 10);
@@ -587,7 +587,7 @@ public class OreProcessingHandler {
                 .EUt(16)
                 .buildAndRegister();
 
-            ModHandler.addShapelessRecipe(String.format("purified_%s_ore_to_dust", material), dustStack,
+            ModHandler.addShapelessRecipe(String.format("purified_ore_to_dust_%s", material), dustStack,
                 'h', new UnificationEntry(purifiedPrefix, material));
 
             if (!crushedCentrifugedStack.isEmpty()) {
@@ -1045,7 +1045,7 @@ public class OreProcessingHandler {
                     .EUt(4)
                     .buildAndRegister();
 
-                ModHandler.addShapedRecipe(String.format("slab?_%s", material),
+                ModHandler.addShapedRecipe(String.format("slab_%s", material),
                     GTUtility.copyAmount(output.getCount() / 3, output),
                     "sP",
                     'P', new UnificationEntry(plankPrefix, material));
@@ -1085,7 +1085,7 @@ public class OreProcessingHandler {
                     "X",
                     'X', new UnificationEntry(OrePrefix.ingot, material));
 
-                ModHandler.addShapedRecipe(String.format("ingot_to_plate_od_%s", material),
+                ModHandler.addShapedRecipe(String.format("ingot_to_plate_oredict_%s", material),
                     stack,
                     "H",
                     "X",
@@ -1098,7 +1098,7 @@ public class OreProcessingHandler {
                     "X",
                     'X', new UnificationEntry(OrePrefix.gem, material));
 
-                ModHandler.addShapedRecipe(String.format("gem_to_plate_od_%s", material),
+                ModHandler.addShapedRecipe(String.format("gem_to_plate_oredict_%s", material),
                     stack,
                     "H",
                     "X",
@@ -1471,7 +1471,7 @@ public class OreProcessingHandler {
                     "fPh", " S ",
                     'S', new UnificationEntry(stickPrefix, material),
                     'P', new UnificationEntry(OrePrefix.plate, material));
-                ModHandler.addShapedRecipe(String.format("butch_knife_%s", material.toString()),
+                ModHandler.addShapedRecipe(String.format("butchery_knife_%s", material.toString()),
                     MetaItems.BUTCHERYKNIFE.getStackForm((SolidMaterial) material, null),
                     "PPf", "PP ", "Sh ",
                     'S', new UnificationEntry(stickPrefix, material),
@@ -1732,7 +1732,7 @@ public class OreProcessingHandler {
         boolean working = !material.hasFlag(DustMaterial.MatFlags.NO_WORKING);
         if (material instanceof SolidMaterial) {
             SolidMaterial solidMaterial = (SolidMaterial) material;
-            ModHandler.addShapedRecipe(String.format("buzzsaw_lith_%s", solidMaterial.toString()),
+            ModHandler.addShapedRecipe(String.format("buzzsaw_lithium_%s", solidMaterial.toString()),
                 MetaItems.BUZZSAW.getStackForm(solidMaterial, Materials.StainlessSteel), // new long[]{100000L, 32L, 1L, -1L}),
                 "PBM",
                 "dXG",
@@ -1744,7 +1744,7 @@ public class OreProcessingHandler {
                 'G', new UnificationEntry(OrePrefix.gearSmall, Materials.StainlessSteel),
                 'B', MetaItems.BATTERY_RE_LV_LITHIUM.getStackForm());
 
-            ModHandler.addShapedRecipe(String.format("bsaw_cad_%s", solidMaterial.toString()),
+            ModHandler.addShapedRecipe(String.format("buzzsaw_cadmium_%s", solidMaterial.toString()),
                 MetaItems.BUZZSAW.getStackForm(solidMaterial, Materials.StainlessSteel), // new long[]{75000L, 32L, 1L, -1L}),
                 "PBM",
                 "dXG",
@@ -1756,7 +1756,7 @@ public class OreProcessingHandler {
                 'G', new UnificationEntry(OrePrefix.gearSmall, Materials.StainlessSteel),
                 'B', MetaItems.BATTERY_RE_LV_CADMIUM.getStackForm());
 
-            ModHandler.addShapedRecipe(String.format("bsaw_sod_%s", solidMaterial.toString()),
+            ModHandler.addShapedRecipe(String.format("buzzsaw_sodium_%s", solidMaterial.toString()),
                 MetaItems.BUZZSAW.getStackForm(solidMaterial, Materials.StainlessSteel), // new long[]{50000L, 32L, 1L, -1L}),
                 "PBM",
                 "dXG",
@@ -1770,7 +1770,7 @@ public class OreProcessingHandler {
 
             if (working)
                 if (!OreDictUnifier.get(OrePrefix.plate, solidMaterial).isEmpty())
-                    ModHandler.addShapedRecipe(String.format("bsaw_head_%s", solidMaterial.toString()),
+                    ModHandler.addShapedRecipe(String.format("buzzsaw_head_%s", solidMaterial.toString()),
                         OreDictUnifier.get(OrePrefix.toolHeadBuzzSaw, solidMaterial),
                         "wXh",
                         "X X",
@@ -1784,7 +1784,7 @@ public class OreProcessingHandler {
         boolean working = !material.hasFlag(DustMaterial.MatFlags.NO_WORKING);
         if (material instanceof SolidMaterial) {
             SolidMaterial solidMaterial = (SolidMaterial) material;
-            ModHandler.addShapedRecipe(String.format("chsaw_lv_lith_%s", solidMaterial.toString()),
+            ModHandler.addShapedRecipe(String.format("chainsaw_lv_lithium_%s", solidMaterial.toString()),
                 MetaItems.CHAINSAW_LV.getStackForm(solidMaterial, Materials.StainlessSteel), // new long[]{100000L, 32L, 1L, -1L}),
                 "SXd",
                 "GMG",
@@ -1796,7 +1796,7 @@ public class OreProcessingHandler {
                 'G', new UnificationEntry(OrePrefix.gearSmall, Materials.StainlessSteel),
                 'B', MetaItems.BATTERY_RE_LV_LITHIUM.getStackForm());
 
-            ModHandler.addShapedRecipe(String.format("chsaw_mv_tit_lith_%s", solidMaterial.toString()),
+            ModHandler.addShapedRecipe(String.format("chainsaw_mv_tit_lithium_%s", solidMaterial.toString()),
                 MetaItems.CHAINSAW_MV.getStackForm(solidMaterial, Materials.Titanium), // new long[]{400000L, 128L, 2L, -1L}),
                 "SXd",
                 "GMG",
@@ -1808,7 +1808,7 @@ public class OreProcessingHandler {
                 'G', new UnificationEntry(OrePrefix.plate, Materials.Titanium),
                 'B', MetaItems.BATTERY_RE_MV_LITHIUM.getStackForm());
 
-            ModHandler.addShapedRecipe(String.format("chsaw_hv_lith_%s", solidMaterial.toString()),
+            ModHandler.addShapedRecipe(String.format("chainsaw_hv_lithium_%s", solidMaterial.toString()),
                 MetaItems.CHAINSAW_HV.getStackForm(solidMaterial, Materials.TungstenSteel), // new long[]{1600000L, 512L, 3L, -1L}),
                 "SXd",
                 "GMG",
@@ -1820,7 +1820,7 @@ public class OreProcessingHandler {
                 'G', new UnificationEntry(OrePrefix.gearSmall, Materials.TungstenSteel),
                 'B', MetaItems.BATTERY_RE_HV_LITHIUM.getStackForm());
 
-            ModHandler.addShapedRecipe(String.format("chsaw_lv_cad_%s", solidMaterial.toString()),
+            ModHandler.addShapedRecipe(String.format("chainsaw_lv_cadmium_%s", solidMaterial.toString()),
                 MetaItems.CHAINSAW_LV.getStackForm(solidMaterial, Materials.StainlessSteel), // new long[]{75000L, 32L, 1L, -1L}),
                 "SXd",
                 "GMG",
@@ -1832,7 +1832,7 @@ public class OreProcessingHandler {
                 'G', new UnificationEntry(OrePrefix.gearSmall, Materials.StainlessSteel),
                 'B', MetaItems.BATTERY_RE_LV_CADMIUM.getStackForm());
 
-            ModHandler.addShapedRecipe(String.format("chsaw_mv_cad_%s", solidMaterial.toString()),
+            ModHandler.addShapedRecipe(String.format("chainsaw_mv_cadmium_%s", solidMaterial.toString()),
                 MetaItems.CHAINSAW_MV.getStackForm(solidMaterial, Materials.Titanium), // new long[]{300000L, 128L, 2L, -1L}),
                 "SXd",
                 "GMG",
@@ -1844,7 +1844,7 @@ public class OreProcessingHandler {
                 'G', new UnificationEntry(OrePrefix.plate, Materials.Titanium),
                 'B', MetaItems.BATTERY_RE_MV_CADMIUM.getStackForm());
 
-            ModHandler.addShapedRecipe(String.format("chsaw_hv_cad_%s", solidMaterial.toString()),
+            ModHandler.addShapedRecipe(String.format("chainsaw_hv_cadmium_%s", solidMaterial.toString()),
                 MetaItems.CHAINSAW_HV.getStackForm(solidMaterial, Materials.TungstenSteel), // new long[]{1200000L, 512L, 3L, -1L}),
                 "SXd",
                 "GMG",
@@ -1856,7 +1856,7 @@ public class OreProcessingHandler {
                 'G', new UnificationEntry(OrePrefix.gearSmall, Materials.TungstenSteel),
                 'B', MetaItems.BATTERY_RE_HV_CADMIUM.getStackForm());
 
-            ModHandler.addShapedRecipe(String.format("chsaw_lv_sod_%s", solidMaterial.toString()),
+            ModHandler.addShapedRecipe(String.format("chainsaw_lv_sodium_%s", solidMaterial.toString()),
                 MetaItems.CHAINSAW_LV.getStackForm(solidMaterial, Materials.StainlessSteel), // new long[]{50000L, 32L, 1L, -1L}),
                 "SXd",
                 "GMG",
@@ -1868,7 +1868,7 @@ public class OreProcessingHandler {
                 'G', new UnificationEntry(OrePrefix.gearSmall, Materials.StainlessSteel),
                 'B', MetaItems.BATTERY_RE_LV_SODIUM.getStackForm());
 
-            ModHandler.addShapedRecipe(String.format("chsaw_mv_sod_%s", solidMaterial.toString()),
+            ModHandler.addShapedRecipe(String.format("chainsaw_mv_sodium_%s", solidMaterial.toString()),
                 MetaItems.CHAINSAW_MV.getStackForm(solidMaterial, Materials.Titanium), // new long[]{200000L, 128L, 2L, -1L}),
                 "SXd",
                 "GMG",
@@ -1880,7 +1880,7 @@ public class OreProcessingHandler {
                 'G', new UnificationEntry(OrePrefix.plate, Materials.Titanium),
                 'B', MetaItems.BATTERY_RE_MV_SODIUM.getStackForm());
 
-            ModHandler.addShapedRecipe(String.format("chsaw_hv_sod_%s", solidMaterial.toString()),
+            ModHandler.addShapedRecipe(String.format("chainsaw_hv_sodium_%s", solidMaterial.toString()),
                 MetaItems.CHAINSAW_HV.getStackForm(solidMaterial, Materials.TungstenSteel), // new long[]{800000L, 512L, 3L, -1L}),
                 "SXd",
                 "GMG",
@@ -1894,7 +1894,7 @@ public class OreProcessingHandler {
 
             if (working)
                 if (!OreDictUnifier.get(OrePrefix.plate, solidMaterial).isEmpty())
-                    ModHandler.addShapedRecipe(String.format("chsaw_head_%s", solidMaterial.toString()),
+                    ModHandler.addShapedRecipe(String.format("chainsaw_head_%s", solidMaterial.toString()),
                         OreDictUnifier.get(OrePrefix.toolHeadChainsaw, solidMaterial),
                         "SRS",
                         "XhX",
@@ -1910,7 +1910,7 @@ public class OreProcessingHandler {
         boolean working = !material.hasFlag(DustMaterial.MatFlags.NO_WORKING);
         if (material instanceof SolidMaterial) {
             SolidMaterial solidMaterial = (SolidMaterial) material;
-            ModHandler.addShapedRecipe(String.format("drill_lv_lith_%s", solidMaterial),
+            ModHandler.addShapedRecipe(String.format("drill_lv_lithium_%s", solidMaterial),
                 MetaItems.DRILL_LV.getStackForm(solidMaterial, Materials.StainlessSteel), // new long[]{100000L, 32L, 1L, -1L}),
                 "SXd",
                 "GMG",
@@ -1922,7 +1922,7 @@ public class OreProcessingHandler {
                 'G', new UnificationEntry(OrePrefix.gearSmall, Materials.StainlessSteel),
                 'B', MetaItems.BATTERY_RE_LV_LITHIUM.getStackForm());
 
-            ModHandler.addShapedRecipe(String.format("drill_lv_cad_%s", solidMaterial.toString()),
+            ModHandler.addShapedRecipe(String.format("drill_lv_cadium_%s", solidMaterial.toString()),
                 MetaItems.DRILL_LV.getStackForm(solidMaterial, Materials.StainlessSteel), // new long[]{75000L, 32L, 1L, -1L}),
                 "SXd",
                 "GMG",
@@ -1934,7 +1934,7 @@ public class OreProcessingHandler {
                 'G', new UnificationEntry(OrePrefix.gearSmall, Materials.StainlessSteel),
                 'B', MetaItems.BATTERY_RE_LV_CADMIUM.getStackForm());
 
-            ModHandler.addShapedRecipe(String.format("drill_lv_sod_%s", solidMaterial.toString()),
+            ModHandler.addShapedRecipe(String.format("drill_lv_sodium_%s", solidMaterial.toString()),
                 MetaItems.DRILL_LV.getStackForm(solidMaterial, Materials.StainlessSteel), // new long[]{50000L, 32L, 1L, -1L}),
                 "SXd",
                 "GMG",
@@ -1946,7 +1946,7 @@ public class OreProcessingHandler {
                 'G', new UnificationEntry(OrePrefix.gearSmall, Materials.StainlessSteel),
                 'B', MetaItems.BATTERY_RE_LV_SODIUM.getStackForm());
 
-            ModHandler.addShapedRecipe(String.format("dill_mv_lith_%s", solidMaterial.toString()),
+            ModHandler.addShapedRecipe(String.format("dill_mv_lithium_%s", solidMaterial.toString()),
                 MetaItems.DRILL_MV.getStackForm(solidMaterial, Materials.Titanium), // new long[]{400000L, 128L, 2L, -1L}),
                 "SXd",
                 "GMG",
@@ -1958,7 +1958,7 @@ public class OreProcessingHandler {
                 'G', new UnificationEntry(OrePrefix.plate, Materials.Titanium),
                 'B', MetaItems.BATTERY_RE_MV_LITHIUM.getStackForm());
 
-            ModHandler.addShapedRecipe(String.format("drill_mv_cad_%s", solidMaterial.toString()),
+            ModHandler.addShapedRecipe(String.format("drill_mv_cadmium_%s", solidMaterial.toString()),
                 MetaItems.DRILL_MV.getStackForm(solidMaterial, Materials.Titanium), // new long[]{300000L, 128L, 2L, -1L}),
                 "SXd",
                 "GMG",
@@ -1970,7 +1970,7 @@ public class OreProcessingHandler {
                 'G', new UnificationEntry(OrePrefix.plate, Materials.Titanium),
                 'B', MetaItems.BATTERY_RE_MV_CADMIUM.getStackForm());
 
-            ModHandler.addShapedRecipe(String.format("drill_mv_sod_%s", solidMaterial.toString()),
+            ModHandler.addShapedRecipe(String.format("drill_mv_sodium_%s", solidMaterial.toString()),
                 MetaItems.DRILL_MV.getStackForm(solidMaterial, Materials.Titanium), // new long[]{200000L, 128L, 2L, -1L}),
                 "SXd",
                 "GMG",
@@ -1982,7 +1982,7 @@ public class OreProcessingHandler {
                 'G', new UnificationEntry(OrePrefix.plate, Materials.Titanium),
                 'B', MetaItems.BATTERY_RE_MV_SODIUM.getStackForm());
 
-            ModHandler.addShapedRecipe(String.format("drool_hv_lith_%s", solidMaterial.toString()),
+            ModHandler.addShapedRecipe(String.format("drool_hv_lithium_%s", solidMaterial.toString()),
                 MetaItems.DRILL_HV.getStackForm(solidMaterial, Materials.TungstenSteel), // new long[]{1600000L, 512L, 3L, -1L}),
                 "SXd",
                 "GMG",
@@ -1994,7 +1994,7 @@ public class OreProcessingHandler {
                 'G', new UnificationEntry(OrePrefix.gearSmall, Materials.TungstenSteel),
                 'B', MetaItems.BATTERY_RE_HV_LITHIUM.getStackForm());
 
-            ModHandler.addShapedRecipe(String.format("drill_hv_cad_%s", solidMaterial.toString()),
+            ModHandler.addShapedRecipe(String.format("drill_hv_cadmium_%s", solidMaterial.toString()),
                 MetaItems.DRILL_HV.getStackForm(solidMaterial, Materials.TungstenSteel), // new long[]{1200000L, 512L, 3L, -1L}),
                 "SXd",
                 "GMG",
@@ -2005,7 +2005,7 @@ public class OreProcessingHandler {
                 'P', OreDictUnifier.get(OrePrefix.plate, Materials.TungstenSteel),
                 'G', OreDictUnifier.get(OrePrefix.gearSmall, Materials.TungstenSteel),
                 'B', MetaItems.BATTERY_RE_HV_CADMIUM.getStackForm());
-            ModHandler.addShapedRecipe(String.format("drill_hv_sod_%s", solidMaterial.toString()),
+            ModHandler.addShapedRecipe(String.format("drill_hv_sodium_%s", solidMaterial.toString()),
                 MetaItems.DRILL_HV.getStackForm(solidMaterial, Materials.TungstenSteel), // new long[]{800000L, 512L, 3L, -1L}),
                 "SXd",
                 "GMG",
@@ -2259,13 +2259,13 @@ public class OreProcessingHandler {
             }
             if (smashing)
                 if (!OreDictUnifier.get(OrePrefix.plate, solidMaterial).isEmpty())
-                    ModHandler.addShapedRecipe(String.format("shovel_head_m_%s", solidMaterial.toString()),
+                    ModHandler.addShapedRecipe(String.format("shovel_head_metal_%s", solidMaterial.toString()),
                         OreDictUnifier.get(OrePrefix.toolHeadShovel, solidMaterial),
                         "fPh",
                         'P', new UnificationEntry(OrePrefix.plate, solidMaterial));
             if (working)
                 if (!OreDictUnifier.get(OrePrefix.gem, solidMaterial).isEmpty())
-                    ModHandler.addShapedRecipe(String.format("shovel_head_g_%s", solidMaterial.toString()),
+                    ModHandler.addShapedRecipe(String.format("shovel_head_gem_%s", solidMaterial.toString()),
                         OreDictUnifier.get(OrePrefix.toolHeadShovel, solidMaterial),
                         "fG",
                         'G', new UnificationEntry(OrePrefix.gem, solidMaterial));
@@ -2291,14 +2291,14 @@ public class OreProcessingHandler {
             }
             if (smashing)
                 if (!OreDictUnifier.get(OrePrefix.plate, solidMaterial).isEmpty())
-                    ModHandler.addShapedRecipe(String.format("sword_head_m_%s", solidMaterial.toString()),
+                    ModHandler.addShapedRecipe(String.format("sword_head_metal_%s", solidMaterial.toString()),
                         OreDictUnifier.get(OrePrefix.toolHeadSword, solidMaterial),
                         " P ",
                         "fPh",
                         'P', new UnificationEntry(OrePrefix.plate, solidMaterial));
             if (working)
                 if (!OreDictUnifier.get(OrePrefix.gem, solidMaterial).isEmpty())
-                    ModHandler.addShapedRecipe(String.format("sword_head_g_%s", solidMaterial.toString()),
+                    ModHandler.addShapedRecipe(String.format("sword_head_gem_%s", solidMaterial.toString()),
                         OreDictUnifier.get(OrePrefix.toolHeadSword, solidMaterial),
                         " G",
                         "fG",
@@ -2331,7 +2331,7 @@ public class OreProcessingHandler {
         boolean working = !material.hasFlag(DustMaterial.MatFlags.NO_WORKING);
         if (material instanceof SolidMaterial && !ModHandler.isMaterialWood(material)) {
             SolidMaterial solidMaterial = (SolidMaterial) material;
-            ModHandler.addShapedRecipe(String.format("wrench_lv_lith_%s", solidMaterial.toString()),
+            ModHandler.addShapedRecipe(String.format("wrench_lv_lithium_%s", solidMaterial.toString()),
                 MetaItems.WRENCH_LV.getStackForm(solidMaterial, Materials.StainlessSteel), // new long[]{100000L, 32L, 1L, -1L}),
                 "SXd",
                 "GMG",
@@ -2342,7 +2342,7 @@ public class OreProcessingHandler {
                 'P', new UnificationEntry(OrePrefix.plate, Materials.StainlessSteel),
                 'G', new UnificationEntry(OrePrefix.gearSmall, Materials.StainlessSteel),
                 'B', MetaItems.BATTERY_RE_LV_LITHIUM.getStackForm());
-            ModHandler.addShapedRecipe(String.format("wrench_mv_lith_%s", solidMaterial.toString()),
+            ModHandler.addShapedRecipe(String.format("wrench_mv_lithium_%s", solidMaterial.toString()),
                 MetaItems.WRENCH_MV.getStackForm(solidMaterial, Materials.Titanium), // new long[]{400000L, 128L, 2L, -1L}),
                 "SXd",
                 "GMG",
@@ -2353,7 +2353,7 @@ public class OreProcessingHandler {
                 'P', new UnificationEntry(OrePrefix.plate, Materials.Titanium),
                 'G', new UnificationEntry(OrePrefix.gearSmall, Materials.Titanium),
                 'B', MetaItems.BATTERY_RE_MV_LITHIUM.getStackForm());
-            ModHandler.addShapedRecipe(String.format("wrench_hv_lith_%s", solidMaterial.toString()),
+            ModHandler.addShapedRecipe(String.format("wrench_hv_lithium_%s", solidMaterial.toString()),
                 MetaItems.WRENCH_HV.getStackForm(solidMaterial, Materials.TungstenSteel), // new long[]{1600000L, 512L, 3L, -1L}),
                 "SXd",
                 "GMG",
@@ -2364,7 +2364,7 @@ public class OreProcessingHandler {
                 'P', new UnificationEntry(OrePrefix.plate, Materials.TungstenSteel),
                 'G', new UnificationEntry(OrePrefix.gearSmall, Materials.TungstenSteel),
                 'B', MetaItems.BATTERY_RE_HV_LITHIUM.getStackForm());
-            ModHandler.addShapedRecipe(String.format("wrench_lv_cad_%s", solidMaterial.toString()),
+            ModHandler.addShapedRecipe(String.format("wrench_lv_cadmium_%s", solidMaterial.toString()),
                 MetaItems.WRENCH_LV.getStackForm(solidMaterial, Materials.StainlessSteel), // new long[]{75000L, 32L, 1L, -1L}),
                 "SXd",
                 "GMG",
@@ -2375,7 +2375,7 @@ public class OreProcessingHandler {
                 'P', new UnificationEntry(OrePrefix.plate, Materials.StainlessSteel),
                 'G', new UnificationEntry(OrePrefix.gearSmall, Materials.StainlessSteel),
                 'B', MetaItems.BATTERY_RE_LV_CADMIUM.getStackForm());
-            ModHandler.addShapedRecipe(String.format("wrench_mv_cad_%s", solidMaterial.toString()),
+            ModHandler.addShapedRecipe(String.format("wrench_mv_cadmium_%s", solidMaterial.toString()),
                 MetaItems.WRENCH_MV.getStackForm(solidMaterial, Materials.Titanium), // new long[]{300000L, 128L, 2L, -1L}),
                 "SXd",
                 "GMG",
@@ -2386,7 +2386,7 @@ public class OreProcessingHandler {
                 'P', new UnificationEntry(OrePrefix.plate, Materials.Titanium),
                 'G', new UnificationEntry(OrePrefix.gearSmall, Materials.Titanium),
                 'B', MetaItems.BATTERY_RE_MV_CADMIUM.getStackForm());
-            ModHandler.addShapedRecipe(String.format("wrench_hv_cad_%s", solidMaterial.toString()),
+            ModHandler.addShapedRecipe(String.format("wrench_hv_cadmium_%s", solidMaterial.toString()),
                 MetaItems.WRENCH_HV.getStackForm(solidMaterial, Materials.TungstenSteel),  //new long[]{1200000L, 512L, 3L, -1L}),
                 "SXd",
                 "GMG",
@@ -2397,7 +2397,7 @@ public class OreProcessingHandler {
                 'P', new UnificationEntry(OrePrefix.plate, Materials.TungstenSteel),
                 'G', new UnificationEntry(OrePrefix.gearSmall, Materials.TungstenSteel),
                 'B', MetaItems.BATTERY_RE_HV_CADMIUM.getStackForm());
-            ModHandler.addShapedRecipe(String.format("wrench_lv_sod_%s", solidMaterial.toString()),
+            ModHandler.addShapedRecipe(String.format("wrench_lv_sodium_%s", solidMaterial.toString()),
                 MetaItems.WRENCH_LV.getStackForm(solidMaterial, Materials.StainlessSteel),  //new long[]{50000L, 32L, 1L, -1L}),
                 "SXd",
                 "GMG",
@@ -2408,7 +2408,7 @@ public class OreProcessingHandler {
                 'P', new UnificationEntry(OrePrefix.plate, Materials.StainlessSteel),
                 'G', new UnificationEntry(OrePrefix.gearSmall, Materials.StainlessSteel),
                 'B', MetaItems.BATTERY_RE_LV_SODIUM.getStackForm());
-            ModHandler.addShapedRecipe(String.format("wrench_mv_sod_%s", solidMaterial.toString()),
+            ModHandler.addShapedRecipe(String.format("wrench_mv_sodium_%s", solidMaterial.toString()),
                 MetaItems.WRENCH_MV.getStackForm(solidMaterial, Materials.Titanium),  //new long[]{200000L, 128L, 2L, -1L}),
                 "SXd",
                 "GMG",
@@ -2419,7 +2419,7 @@ public class OreProcessingHandler {
                 'P', new UnificationEntry(OrePrefix.plate, Materials.Titanium),
                 'G', new UnificationEntry(OrePrefix.gearSmall, Materials.Titanium),
                 'B', MetaItems.BATTERY_RE_MV_SODIUM.getStackForm());
-            ModHandler.addShapedRecipe(String.format("wrench_hv_sod_%s", solidMaterial.toString()),
+            ModHandler.addShapedRecipe(String.format("wrench_hv_sodium_%s", solidMaterial.toString()),
                 MetaItems.WRENCH_HV.getStackForm(solidMaterial, Materials.TungstenSteel),  //new long[]{800000L, 512L, 3L, -1L}),
                 "SXd",
                 "GMG",
@@ -2449,7 +2449,7 @@ public class OreProcessingHandler {
         if (material instanceof SolidMaterial && !ModHandler.isMaterialWood(material)) {
             SolidMaterial solidMaterial = (SolidMaterial) material;
 
-            ModHandler.addShapedRecipe(String.format("sdriver_lv_lith_%s", solidMaterial.toString()),
+            ModHandler.addShapedRecipe(String.format("screwdriver_lv_lithium_%s", solidMaterial.toString()),
                 MetaItems.SCREWDRIVER_LV.getStackForm(solidMaterial, Materials.StainlessSteel),  //new long[]{100000L, 32L, 1L, -1L}),
                 "PdX",
                 "MGS",
@@ -2460,7 +2460,7 @@ public class OreProcessingHandler {
                 'P', new UnificationEntry(OrePrefix.plate, Materials.StainlessSteel),
                 'G', new UnificationEntry(OrePrefix.gearSmall, Materials.StainlessSteel),
                 'B', MetaItems.BATTERY_RE_LV_LITHIUM.getStackForm());
-            ModHandler.addShapedRecipe(String.format("sdriver_lv_cad_%s", solidMaterial.toString()),
+            ModHandler.addShapedRecipe(String.format("screwdriver_lv_cadmium_%s", solidMaterial.toString()),
                 MetaItems.SCREWDRIVER_LV.getStackForm(solidMaterial, Materials.StainlessSteel),  //new long[]{75000L, 32L, 1L, -1L}),
                 "PdX",
                 "MGS",
@@ -2471,7 +2471,7 @@ public class OreProcessingHandler {
                 'P', new UnificationEntry(OrePrefix.plate, Materials.StainlessSteel),
                 'G', new UnificationEntry(OrePrefix.gearSmall, Materials.StainlessSteel),
                 'B', MetaItems.BATTERY_RE_LV_CADMIUM.getStackForm());
-            ModHandler.addShapedRecipe(String.format("sdriver_lv_sod_%s", solidMaterial.toString()),
+            ModHandler.addShapedRecipe(String.format("screwdriver_lv_sodium_%s", solidMaterial.toString()),
                 MetaItems.SCREWDRIVER_LV.getStackForm(solidMaterial, Materials.StainlessSteel),  //new long[]{50000L, 32L, 1L, -1L}),
                 "PdX",
                 "MGS",
@@ -2491,12 +2491,12 @@ public class OreProcessingHandler {
         if (material instanceof SolidMaterial && !ModHandler.isMaterialWood(material)) {
             SolidMaterial solidMaterial = (SolidMaterial) material;
             if (!OreDictUnifier.get(OrePrefix.stick, solidMaterial.handleMaterial).isEmpty()) {
-                ModHandler.addShapelessRecipe(String.format("hammer_fh_%s", solidMaterial.toString()),
+                ModHandler.addShapelessRecipe(String.format("hammer_from_head_%s", solidMaterial.toString()),
                     MetaItems.HARDHAMMER.getStackForm(solidMaterial, solidMaterial.handleMaterial),
                     new UnificationEntry(toolPrefix, material),
                     new UnificationEntry(OrePrefix.stick, solidMaterial.handleMaterial));
 
-                ModHandler.addShapedRecipe(String.format("hammer_m_%s", solidMaterial.toString()),
+                ModHandler.addShapedRecipe(String.format("hammer_metal_%s", solidMaterial.toString()),
                     MetaItems.HARDHAMMER.getStackForm(solidMaterial, solidMaterial.handleMaterial),
                     "XX ",
                     "XXS",
@@ -2504,7 +2504,7 @@ public class OreProcessingHandler {
                     'X', new UnificationEntry(OrePrefix.ingot, solidMaterial),
                     'S', new UnificationEntry(OrePrefix.stick, solidMaterial.handleMaterial));
                 if (!OreDictUnifier.get(OrePrefix.gem, solidMaterial).isEmpty())
-                    ModHandler.addShapedRecipe(String.format("hammer_g_%s", solidMaterial.toString()),
+                    ModHandler.addShapedRecipe(String.format("hammer_gem_%s", solidMaterial.toString()),
                         MetaItems.HARDHAMMER.getStackForm(solidMaterial, solidMaterial.handleMaterial),
                         "XX ",
                         "XXS",
@@ -2522,12 +2522,12 @@ public class OreProcessingHandler {
 
                 }
             } else {
-                ModHandler.addShapelessRecipe(String.format("hammer_fh_%s", solidMaterial.toString()),
+                ModHandler.addShapelessRecipe(String.format("hammer_from_head_%s", solidMaterial.toString()),
                     MetaItems.HARDHAMMER.getStackForm(solidMaterial, Materials.Wood),
                     new UnificationEntry(toolPrefix, material),
                     new UnificationEntry(OrePrefix.stick, Materials.Wood));
 
-                ModHandler.addShapedRecipe(String.format("hammer_m_%s", solidMaterial.toString()),
+                ModHandler.addShapedRecipe(String.format("hammer_metal_%s", solidMaterial.toString()),
                     MetaItems.HARDHAMMER.getStackForm(solidMaterial, Materials.Wood),
                     "XX ",
                     "XXS",
@@ -2535,7 +2535,7 @@ public class OreProcessingHandler {
                     'X', new UnificationEntry(OrePrefix.ingot, solidMaterial),
                     'S', new UnificationEntry(OrePrefix.stick, Materials.Wood));
                 if (!OreDictUnifier.get(OrePrefix.gem, solidMaterial).isEmpty())
-                    ModHandler.addShapedRecipe(String.format("hammer_g_%s", solidMaterial.toString()),
+                    ModHandler.addShapedRecipe(String.format("hammer_gem_%s", solidMaterial.toString()),
                         MetaItems.HARDHAMMER.getStackForm(solidMaterial, Materials.Wood),
                         "XX ",
                         "XXS",
