@@ -31,6 +31,7 @@ import net.minecraft.client.renderer.block.statemap.DefaultStateMapper;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.client.model.ModelLoader;
+import net.minecraftforge.fluids.BlockFluidBase;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -64,6 +65,7 @@ public class MetaBlocks {
     public static HashMap<MetalMaterial, BlockSurfaceRock> SURFACE_ROCKS = new HashMap<>();
     public static HashMap<SolidMaterial, BlockFrame> FRAMES = new HashMap<>();
     public static Collection<BlockOre> ORES = new HashSet<>();
+    public static Collection<BlockFluidBase> FLUID_BLOCKS = new HashSet<>();
 
     public static StoneType BLACK_GRANITE;
     public static StoneType RED_GRANITE;

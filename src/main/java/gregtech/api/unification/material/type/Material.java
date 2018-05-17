@@ -77,7 +77,7 @@ public abstract class Material implements Comparable<Material> {
 		public static final long NO_UNIFICATION = createFlag(5);
 
 		/**
-		 * Add to material if any of it's items cannot be recycled to get scrap
+		 * Add to material if any of it's items cannot be recycled to get scrub
 		 */
 		public static final long NO_RECYCLING = createFlag(6);
 	}

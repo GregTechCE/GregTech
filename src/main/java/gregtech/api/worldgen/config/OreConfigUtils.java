@@ -23,6 +23,8 @@ import net.minecraft.world.WorldProvider;
 import net.minecraft.world.biome.Biome;
 import net.minecraftforge.common.BiomeDictionary;
 import net.minecraftforge.common.BiomeDictionary.Type;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.OreDictionary;
 
@@ -143,6 +145,15 @@ public class OreConfigUtils {
         if(stringDeclaration.startsWith("block:")) {
             Block block = getBlockByName(stringDeclaration.substring(6));
             return state -> block.getDefaultState();
+        } else if(stringDeclaration.startsWith("fluid:")) {
+            String fluidName = stringDeclaration.substring(6);
+            Fluid fluid = FluidRegistry.getFluid(fluidName);
+            if(fluid == null)
+                throw new IllegalArgumentException("Fluid not found with name " + fluidName);
+            if(fluid.getBlock() == null)
+                throw new IllegalArgumentException("Block is not defined for fluid " + fluidName);
+            Block fluidBlock = fluid.getBlock();
+            return state -> fluidBlock.getDefaultState();
         } else if(stringDeclaration.startsWith("ore:")) {
             Map<StoneType, IBlockState> blockStateMap = getOreStateMap(stringDeclaration);
             return stoneState -> {

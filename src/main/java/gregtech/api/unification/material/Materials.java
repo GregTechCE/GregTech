@@ -8,6 +8,7 @@ import net.minecraft.init.Enchantments;
 
 import static com.google.common.collect.ImmutableList.of;
 import static gregtech.api.unification.material.type.DustMaterial.MatFlags.*;
+import static gregtech.api.unification.material.type.FluidMaterial.MatFlags.GENERATE_BLOCK;
 import static gregtech.api.unification.material.type.FluidMaterial.MatFlags.GENERATE_PLASMA;
 import static gregtech.api.unification.material.type.FluidMaterial.MatFlags.STATE_GAS;
 import static gregtech.api.unification.material.type.GemMaterial.MatFlags.*;
@@ -224,16 +225,16 @@ public class Materials {
     public static FluidMaterial SodiumPersulfate = new FluidMaterial(162, "sodium_persulfate", 0xFFFFFF, MaterialIconSet.FLUID, of(new MaterialStack(Sodium, 1), new MaterialStack(Sulfur, 1), new MaterialStack(Oxygen, 4)), 0);
     public static FluidMaterial SodiumSulfide = new FluidMaterial(163, "sodium_sulfide", 0xAAAA00, MaterialIconSet.FLUID, of(new MaterialStack(Sodium, 2), new MaterialStack(Sulfur, 1)), 0);
     public static FluidMaterial HydrogenSulfide = new FluidMaterial(164, "hydrogen_sulfide", 0xFFFFFF, MaterialIconSet.FLUID, of(new MaterialStack(Hydrogen, 2), new MaterialStack(Sulfur, 1)), 0);
-    public static FluidMaterial Steam = new FluidMaterial(346, "steam", 0xFFFFFF, MaterialIconSet.GAS, of(new MaterialStack(Hydrogen, 2), new MaterialStack(Oxygen, 1)), NO_RECYCLING);
+    public static FluidMaterial Steam = new FluidMaterial(346, "steam", 0xFFFFFF, MaterialIconSet.GAS, of(new MaterialStack(Hydrogen, 2), new MaterialStack(Oxygen, 1)), NO_RECYCLING | GENERATE_BLOCK);
     public static FluidMaterial Epichlorhydrin = new FluidMaterial(349, "epichlorhydrin", 0xFFFFFF, MaterialIconSet.FLUID, of(new MaterialStack(Carbon, 3), new MaterialStack(Hydrogen, 5), new MaterialStack(Chlorine, 1), new MaterialStack(Oxygen, 1)), 0);
     public static FluidMaterial NitricAcid = new FluidMaterial(351, "nitric_acid", 0xCCCC00, MaterialIconSet.FLUID, of(new MaterialStack(Hydrogen, 1), new MaterialStack(Nitrogen, 1), new MaterialStack(Oxygen, 3)), 0);
 
-    public static FluidMaterial OilHeavy = new FluidMaterial(165, "oil_heavy", 0x0A0A0A, MaterialIconSet.FLUID, of(), 0);
-    public static FluidMaterial OilMedium = new FluidMaterial(166, "oil_medium", 0x0A0A0A, MaterialIconSet.FLUID, of(), 0);
-    public static FluidMaterial OilLight = new FluidMaterial(167, "oil_light", 0x0A0A0A, MaterialIconSet.FLUID, of(), 0);
-    public static FluidMaterial NaturalGas = new FluidMaterial(168, "natural_gas", 0xFFFFFF, MaterialIconSet.FLUID, of(), STATE_GAS);
-    public static FluidMaterial SulfuricGas = new FluidMaterial(169, "sulfuric_gas", 0xFFFFFF, MaterialIconSet.FLUID, of(), STATE_GAS);
-    public static FluidMaterial Gas = new FluidMaterial(170, "gas", 0xFFFFFF, MaterialIconSet.FLUID, of(), STATE_GAS);
+    public static FluidMaterial OilHeavy = new FluidMaterial(165, "oil_heavy", 0x0A0A0A, MaterialIconSet.FLUID, of(), GENERATE_BLOCK);
+    public static FluidMaterial OilMedium = new FluidMaterial(166, "oil_medium", 0x0A0A0A, MaterialIconSet.FLUID, of(), GENERATE_BLOCK);
+    public static FluidMaterial OilLight = new FluidMaterial(167, "oil_light", 0x0A0A0A, MaterialIconSet.FLUID, of(), GENERATE_BLOCK);
+    public static FluidMaterial NaturalGas = new FluidMaterial(168, "natural_gas", 0xFFFFFF, MaterialIconSet.FLUID, of(), STATE_GAS | GENERATE_BLOCK);
+    public static FluidMaterial SulfuricGas = new FluidMaterial(169, "sulfuric_gas", 0xFFFFFF, MaterialIconSet.FLUID, of(), STATE_GAS | GENERATE_BLOCK);
+    public static FluidMaterial Gas = new FluidMaterial(170, "gas", 0xFFFFFF, MaterialIconSet.FLUID, of(), STATE_GAS | GENERATE_BLOCK);
     public static FluidMaterial SulfuricNaphtha = new FluidMaterial(171, "sulfuric_naphtha", 0xFFFF00, MaterialIconSet.FLUID, of(), 0);
     public static FluidMaterial SulfuricLightFuel = new FluidMaterial(172, "sulfuric_light_fuel", 0xFFFF00, MaterialIconSet.FLUID, of(), 0);
     public static FluidMaterial SulfuricHeavyFuel = new FluidMaterial(173, "sulfuric_heavy_fuel", 0xFFFF00, MaterialIconSet.FLUID, of(), 0);

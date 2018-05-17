@@ -1,7 +1,6 @@
 package gregtech.loaders.postload;
 
 import com.google.common.collect.Lists;
-import gregtech.api.util.GTUtility;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.storage.loot.LootContext;
@@ -50,22 +49,23 @@ public class ChestGenHooks {
         }
     }
 
-    public static void addItem(ResourceLocation loottable, ItemStack item, int minChance, int maxChance, int weight) {
-        /*LootEntryItem itemEntry = new LootEntryItem(item.getItem(), weight, 1, new LootFunction[] {
+    public static void addItem(ResourceLocation lootTable, ItemStack item, int minChance, int maxChance, int weight) {
+        LootEntryItem itemEntry = new LootEntryItem(item.getItem(), weight, 1, new LootFunction[] {
                 new LootFunction(NO_CONDITIONS) {
                     @Override
                     public ItemStack apply(ItemStack stack, Random rand, LootContext context) {
                         stack.setItemDamage(item.getItemDamage());
-                        stack.stackSize = minChance + rand.nextInt(maxChance);
+                        stack.setTagCompound(item.getTagCompound());
+                        stack.setCount(minChance + rand.nextInt(maxChance));
                         return stack;
                     }
                 }
-        }, NO_CONDITIONS, "#loot_" + GTUtility.stackToIntHash(item));
-        if(lootEntryItems.containsKey(loottable)) {
-            lootEntryItems.get(loottable).add(itemEntry);
+        }, NO_CONDITIONS, "#loot_" + item.toString());
+        if(lootEntryItems.containsKey(lootTable)) {
+            lootEntryItems.get(lootTable).add(itemEntry);
         } else {
-            lootEntryItems.put(loottable, Lists.newArrayList(itemEntry));
-        }*/
+            lootEntryItems.put(lootTable, Lists.newArrayList(itemEntry));
+        }
     }
 
     public static void addRolls(ResourceLocation tableLocation, int minAdd, int maxAdd) {

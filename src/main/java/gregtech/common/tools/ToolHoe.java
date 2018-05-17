@@ -4,8 +4,6 @@ import gregtech.api.items.metaitem.MetaItem;
 import gregtech.common.items.behaviors.HoeBehaviour;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 
 public class ToolHoe extends ToolBase {
@@ -31,11 +29,4 @@ public class ToolHoe extends ToolBase {
         item.addStats(new HoeBehaviour(100));
     }
 
-//    @Override
-//    public ITextComponent getDeathMessage(EntityLivingBase player, EntityLivingBase entity) {
-//        return new TextComponentString(TextFormatting.RED + "")
-//                .appendSibling(entity.getDisplayName())
-//                .appendText(TextFormatting.WHITE + " has been called a stupid Hoe by " + TextFormatting.GREEN)
-//                .appendSibling(player.getDisplayName());
-//    }
 }

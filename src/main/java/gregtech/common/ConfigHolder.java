@@ -9,6 +9,9 @@ public class ConfigHolder {
     @Config.Comment("Whether to enable more verbose logging. Default: false")
     public static boolean debug = false;
 
+    @Config.Comment("Whether to increase number of rolls for dungeon chests. Increases dungeon loot drastically.")
+    public static boolean increaseDungeonLoot = true;
+
     @Config.Comment("Probability of generation of vein in 3x3x3 chunk area (1/value_here). The bigger value, the less veins you get")
     public static int chunkOreVeinGenerationProbability = 80;
 

@@ -17,15 +17,20 @@ public class FluidMaterial extends Material {
     public static final class MatFlags {
 
         /**
+         * Whenever system should generate fluid block for this fluid material
+         */
+        public static final long GENERATE_BLOCK = GTUtility.createFlag(8);
+
+        /**
          * Add this flag to enable plasma generation for this material
          */
-        public static final long GENERATE_PLASMA = GTUtility.createFlag(10);
+        public static final long GENERATE_PLASMA = GTUtility.createFlag(9);
 
         /**
          * Marks material state as gas
          * Examples: Air, Argon, Refinery Gas, Oxygen, Hydrogen
          */
-        public static final long STATE_GAS = GTUtility.createFlag(11);
+        public static final long STATE_GAS = GTUtility.createFlag(10);
 
     }
 

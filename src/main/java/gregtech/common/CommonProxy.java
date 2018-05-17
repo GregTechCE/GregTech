@@ -48,6 +48,7 @@ public class CommonProxy {
         SURFACE_ROCKS.values().stream().distinct().forEach(registry::register);
         FRAMES.values().stream().distinct().forEach(registry::register);
         ORES.forEach(registry::register);
+        FLUID_BLOCKS.forEach(registry::register);
     }
 
     @SubscribeEvent

@@ -1,12 +1,8 @@
 package gregtech.common.tools;
 
 import gregtech.api.items.toolitem.ToolMetaItem;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TextComponentString;
-import net.minecraft.util.text.TextFormatting;
 
 public class ToolButcheryKnife extends ToolBase {
 
@@ -39,14 +35,6 @@ public class ToolButcheryKnife extends ToolBase {
     public int getColor(boolean isToolHead, ItemStack stack) {
         return isToolHead ? ToolMetaItem.getPrimaryMaterial(stack).materialRGB : ToolMetaItem.getHandleMaterial(stack).materialRGB;
     }
-
-//    @Override
-//    public ITextComponent getDeathMessage(EntityLivingBase player, EntityLivingBase entity) {
-//        return new TextComponentString(TextFormatting.GREEN + "")
-//                .appendSibling(player.getDisplayName())
-//                .appendText(TextFormatting.WHITE + " has butchered " + TextFormatting.RED)
-//                .appendSibling(entity.getDisplayName());
-//    }
 
     @Override
     public float getNormalDamageBonus(EntityLivingBase entity, ItemStack stack, EntityLivingBase attacker) {
