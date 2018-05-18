@@ -1,7 +1,5 @@
 package gregtech.common.tools;
 
-import gregtech.api.items.metaitem.MetaItem;
-import gregtech.common.items.behaviors.ScrewdriverBehaviour;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
@@ -44,11 +42,6 @@ public class ToolSolderingIron extends ToolBase {
     @Override
     public boolean isMinableBlock(IBlockState block, ItemStack stack) {
         return block.getMaterial() == Material.CIRCUITS;
-    }
-
-    @Override
-    public void onStatsAddedToTool(MetaItem.MetaValueItem item, int ID) {
-        item.addStats(new ScrewdriverBehaviour(2));
     }
 
 }

@@ -40,14 +40,14 @@ public class SoftHammerBehaviour implements IItemBehaviour {
                     workable.setWorkingEnabled(true);
                 }
                 GTUtility.doDamageItem(stack, cost, false);
+                return EnumActionResult.SUCCESS;
             }
         }
-
         return EnumActionResult.PASS;
     }
 
     @Override
     public void addInformation(ItemStack itemStack, List<String> lines) {
-        lines.add(I18n.format("behaviour.softhammer"));
+        lines.add(I18n.format("behaviour.soft_hammer"));
     }
 }

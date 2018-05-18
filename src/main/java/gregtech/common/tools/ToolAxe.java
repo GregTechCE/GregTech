@@ -31,14 +31,14 @@ public class ToolAxe extends ToolBase {
     }
 
     @Override
-    public float getSpeedMultiplier(ItemStack stack) {
+    public float getDigSpeedMultiplier(ItemStack stack) {
         return 2.0F;
     }
 
     @Override
     public boolean isMinableBlock(IBlockState block, ItemStack stack) {
         String tool = block.getBlock().getHarvestTool(block);
-        return "axe".equals(tool) || (block.getMaterial() == Material.WOOD);
+        return (tool != null && tool.equals("axe")) || block.getMaterial() == Material.WOOD;
     }
 
     @Override
@@ -47,22 +47,8 @@ public class ToolAxe extends ToolBase {
     }
 
     @Override
-    public int convertBlockDrops(World world, BlockPos blockPos, IBlockState blockState, EntityPlayer harvester, NonNullList<ItemStack> drops) {
-        int amount = 0;
-//        if (GregTechAPI.sTimber && !harvester.isSneaking() && OrePrefix.log.contains(getBlockStack(blockState))) {
-//            int tY = blockPos.getY() + 1;
-//            for (int tH = harvester.worldObj.getHeight(); tY < tH; tY++) {
-//                BlockPos block = new BlockPos(blockPos.getX(), tY, blockPos.getZ());
-//                if (!isStateEqual(harvester.worldObj.getBlockState(block), blockState) ||
-//                        !harvester.worldObj.destroyBlock(block, true)) break;
-//                amount++;
-//            }
-//        }
-        return amount;
+    public int convertBlockDrops(World world, BlockPos blockPos, IBlockState blockState, EntityPlayer harvester, NonNullList<ItemStack> drops, boolean recursive) {
+        return ToolUtility.applyTimberAxe(world, blockPos, blockState, harvester);
     }
 
-//    @Override
-//    public ITextComponent getDeathMessage(EntityLivingBase player, EntityLivingBase entity) {
-//        return new TextComponentString(TextFormatting.RED + "").appendSibling(entity.getDisplayName()).appendText(TextFormatting.WHITE + " has been chopped by " + TextFormatting.GREEN).appendSibling(player.getDisplayName());
-//    }
 }

@@ -4,7 +4,6 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumHand;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -17,7 +16,7 @@ public class ToolBranchCutter extends ToolBase {
     }
 
     @Override
-    public float getSpeedMultiplier(ItemStack stack) {
+    public float getDigSpeedMultiplier(ItemStack stack) {
         return 0.25F;
     }
 
@@ -32,13 +31,10 @@ public class ToolBranchCutter extends ToolBase {
     }
 
     @Override
-    public int convertBlockDrops(World world, BlockPos blockPos, IBlockState blockState, EntityPlayer harvester, NonNullList<ItemStack> drops) {
-        ItemStack stack = harvester.getHeldItem(EnumHand.MAIN_HAND);
-        if (blockState.getMaterial() == Material.LEAVES) {
-//            aEvent.setDropChance(Math.min(1.0F, Math.max(aEvent.getDropChance(), (stack.getItem().getHarvestLevel(stack, "", harvester, blockState) + 1) * 0.2F)));
-            if (blockState.getBlock().isLeaves(blockState, world, blockPos)) {
-                blockState.getBlock().getDrops(drops, world, blockPos, blockState, 1);
-            }
+    public int convertBlockDrops(World world, BlockPos blockPos, IBlockState blockState, EntityPlayer harvester, NonNullList<ItemStack> drops, boolean recursive) {
+        if (blockState.getBlock().isLeaves(blockState, world, blockPos)) {
+            drops.clear(); //clear previous drops to avoid possible issues
+            blockState.getBlock().getDrops(drops, world, blockPos, blockState, 3);
         }
         return 0;
     }
@@ -46,7 +42,7 @@ public class ToolBranchCutter extends ToolBase {
     @Override
     public boolean isMinableBlock(IBlockState block, ItemStack stack) {
         String tool = block.getBlock().getHarvestTool(block);
-        return tool != null && tool.equals("grafter") || block.getMaterial() == Material.LEAVES;
+        return (tool != null && tool.equals("grafter")) || block.getMaterial() == Material.LEAVES;
     }
 
 }

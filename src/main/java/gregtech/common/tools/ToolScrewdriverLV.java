@@ -8,4 +8,9 @@ public class ToolScrewdriverLV extends ToolScrewdriver {
     public int getToolDamagePerContainerCraft(ItemStack stack) {
         return 2;
     }
+
+    @Override
+    public boolean hasMaterialHandle() {
+        return true;
+    }
 }

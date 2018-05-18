@@ -4,7 +4,6 @@ import gregtech.api.items.metaitem.MetaItem;
 import gregtech.common.items.behaviors.CrowbarBehaviour;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 
 public class ToolUniversalSpade extends ToolBase {
@@ -30,7 +29,7 @@ public class ToolUniversalSpade extends ToolBase {
     }
 
     @Override
-    public float getSpeedMultiplier(ItemStack stack) {
+    public float getDigSpeedMultiplier(ItemStack stack) {
         return 0.75F;
     }
 
@@ -71,11 +70,6 @@ public class ToolUniversalSpade extends ToolBase {
     @Override
     public void onStatsAddedToTool(MetaItem.MetaValueItem item, int ID) {
         item.addStats(new CrowbarBehaviour(2));
-    }
-
-    @Override
-    public void onToolCrafted(ItemStack stack, EntityPlayer player) {
-        super.onToolCrafted(stack, player);
     }
 
 }

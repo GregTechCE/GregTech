@@ -63,7 +63,7 @@ public interface IToolStats {
     /**
      * @return This is a multiplier for the Tool Speed. 1.0F = no special Speed.
      */
-    float getSpeedMultiplier(ItemStack stack);
+    float getDigSpeedMultiplier(ItemStack stack);
 
     /**
      * @return This is a multiplier for the Tool Durability. 1.0F = no special Durability.
@@ -102,10 +102,19 @@ public interface IToolStats {
     boolean isMinableBlock(IBlockState block, ItemStack stack);
 
     /**
-     * This lets you modify the Drop List, when this type of Tool has been used.
-     *
+     * @return true to allow recursive calling of convertBlockDrops on this tool
+     * this is useful when you have tool that breaks multiple block area in unusual way and need to break it
+     * and ALSO convert it's drops. In such cases, recursive parameter of convertBlockDrops will be set to true
      */
-    int convertBlockDrops(World world, BlockPos blockPos, IBlockState blockState, EntityPlayer harvester, NonNullList<ItemStack> drops);
+    default boolean allowRecursiveConversion() {
+        return false;
+    }
+
+    /**
+     * This lets you modify the Drop List, when this type of Tool has been used.
+     * Allows special behaviors like timber axe, leaves cutting, etc
+     */
+    int convertBlockDrops(World world, BlockPos blockPos, IBlockState blockState, EntityPlayer harvester, NonNullList<ItemStack> drops, boolean recursive);
 
     /**
      * @return Returns a broken Version of the Item.

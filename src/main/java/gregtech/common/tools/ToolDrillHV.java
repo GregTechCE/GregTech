@@ -1,6 +1,5 @@
 package gregtech.common.tools;
 
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 
 public class ToolDrillHV extends ToolDrillLV {
@@ -32,11 +31,11 @@ public class ToolDrillHV extends ToolDrillLV {
 
     @Override
     public float getBaseDamage(ItemStack stack) {
-        return 3.0F;
+        return 5.0F;
     }
 
     @Override
-    public float getSpeedMultiplier(ItemStack stack) {
+    public float getDigSpeedMultiplier(ItemStack stack) {
         return 9.0F;
     }
 
@@ -45,10 +44,4 @@ public class ToolDrillHV extends ToolDrillLV {
         return 4.0F;
     }
 
-    @Override
-    public void onToolCrafted(ItemStack stack, EntityPlayer player) {
-        super.onToolCrafted(stack, player);
-//        GregTechMod.achievements.issueAchievement(player, "highpowerdrill"); // TODO ACHIEVEMENTS/ADVANCEMENTS
-//        GregTechMod.achievements.issueAchievement(player, "buildDDrill");
-    }
 }

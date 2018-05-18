@@ -1,8 +1,6 @@
 package gregtech.common.tools;
 
-import gregtech.api.GregTechAPI;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.ResourceLocation;
 
 public class ToolMagnifyingGlass extends ToolBase {
 
@@ -17,7 +15,7 @@ public class ToolMagnifyingGlass extends ToolBase {
     }
 
     @Override
-    public float getSpeedMultiplier(ItemStack stack) {
+    public float getDigSpeedMultiplier(ItemStack stack) {
         return 0.1F;
     }
 
@@ -26,32 +24,9 @@ public class ToolMagnifyingGlass extends ToolBase {
         return 8.0F;
     }
 
-    @Override
-    public ResourceLocation getCraftingSound(ItemStack stack) {
-        return GregTechAPI.soundList.get(101);
-    }
-
-    @Override
-    public ResourceLocation getEntityHitSound(ItemStack stack) {
-        return GregTechAPI.soundList.get(101);
-    }
-
-    @Override
-    public ResourceLocation getMiningSound(ItemStack stack) {
-        return GregTechAPI.soundList.get(101);
-    }
-
-
 //    @Override
 //    public void onStatsAddedToTool(MetaItem.MetaValueItem item, int ID) {
 //        item.addStats(new Behaviour_SoftHammer(100));
 //    }
 
-//    @Override
-//    public ITextComponent getDeathMessage(EntityLivingBase player, EntityLivingBase entity) {
-//        return new TextComponentString(TextFormatting.RED + "")
-//                .appendSibling(entity.getDisplayName())
-//                .appendText(TextFormatting.WHITE + " was stopped working by " + TextFormatting.GREEN)
-//                .appendSibling(player.getDisplayName());
-//    }
 }

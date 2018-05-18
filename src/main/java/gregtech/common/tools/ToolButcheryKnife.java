@@ -1,8 +1,11 @@
 package gregtech.common.tools;
 
-import gregtech.api.items.toolitem.ToolMetaItem;
-import net.minecraft.entity.EntityLivingBase;
+import com.google.common.collect.Lists;
+import gregtech.api.enchants.EnchantmentData;
+import net.minecraft.init.Enchantments;
 import net.minecraft.item.ItemStack;
+
+import java.util.List;
 
 public class ToolButcheryKnife extends ToolBase {
 
@@ -22,32 +25,20 @@ public class ToolButcheryKnife extends ToolBase {
     }
 
     @Override
-    public float getSpeedMultiplier(ItemStack stack) {
-        return 0.1F;
-    }
-
-//    @Override
-//    public int[] getEnchantmentLevels(ItemStack stack) {
-//        return new int[]{(2 + ToolMetaItem.getPrimaryMaterial(stack).harvestLevel) / 2};
-//    }
-
-    @Override
-    public int getColor(boolean isToolHead, ItemStack stack) {
-        return isToolHead ? ToolMetaItem.getPrimaryMaterial(stack).materialRGB : ToolMetaItem.getHandleMaterial(stack).materialRGB;
-    }
-
-    @Override
-    public float getNormalDamageBonus(EntityLivingBase entity, ItemStack stack, EntityLivingBase attacker) {
-        return 0;
-    }
-
-    @Override
-    public float getMagicDamageBonus(EntityLivingBase entity, ItemStack stack, EntityLivingBase player) {
-        return 0;
+    public float getBaseDamage(ItemStack stack) {
+        return 6.0f;
     }
 
     @Override
     public float getAttackSpeed(ItemStack stack) {
-        return 0;
+        return 0.1f;
     }
+
+    @Override
+    public List<EnchantmentData> getEnchantments(ItemStack stack) {
+        return Lists.newArrayList(new EnchantmentData(Enchantments.SHARPNESS, 2));
+    }
+
+
+
 }

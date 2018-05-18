@@ -35,7 +35,7 @@ public class ToolWrenchMV extends ToolWrenchLV {
     }
 
     @Override
-    public float getSpeedMultiplier(ItemStack stack) {
+    public float getDigSpeedMultiplier(ItemStack stack) {
         return 3.0F;
     }
 

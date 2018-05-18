@@ -165,7 +165,7 @@ public class ToolMetaItem<T extends ToolMetaItem<?>.MetaToolValueItem> extends M
             if(isUsable(stack, toolStats.getToolDamagePerBlockBreak(stack)) && toolStats.isMinableBlock(state, stack)) {
                 SolidMaterial material = getPrimaryMaterial(stack);
                 if (material != null) {
-                    return material.toolSpeed * toolStats.getSpeedMultiplier(stack);
+                    return material.toolSpeed * toolStats.getDigSpeedMultiplier(stack);
                 }
             }
         }
@@ -196,7 +196,7 @@ public class ToolMetaItem<T extends ToolMetaItem<?>.MetaToolValueItem> extends M
                 return HashMultimap.create();
             }
             SolidMaterial baseMaterial = getPrimaryMaterial(stack);
-            float attackDamage = toolStats.getBaseDamage(stack) + (baseMaterial == null ? 0 : baseMaterial.harvestLevel) / 3.5f;
+            float attackDamage = toolStats.getBaseDamage(stack) + (baseMaterial == null ? 0 : baseMaterial.harvestLevel);
             float attackSpeed = toolStats.getAttackSpeed(stack);
 
             HashMultimap<String, AttributeModifier> modifiers = HashMultimap.create();

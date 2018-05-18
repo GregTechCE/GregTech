@@ -1550,9 +1550,13 @@ machine.steam_alloy_smelter=Steam Alloy Smelter
 machine.steam_hammer=Steam Hammer
 machine.steam_boiler=Steam Boiler
 
-behaviour.hoe=Can till Dirt
-behaviour.lighter.tooltip=Can light things on Fire
-behaviour.lighter.uses=Remaining Uses: %d
+behaviour.scoop=Can catch butterflies
+behaviour.hoe=Can till dirt
+behaviour.wrench=Can rotate things
+behaviour.prospecting=Right click on ground to prospect ores
+behaviour.soft_hammer=Click machine to allow/disallow it to work
+behaviour.lighter.tooltip=Can light things on fire
+behaviour.lighter.uses=Remaining uses: %d
 behaviour.unstackable=Not usable when stacked!
 
 death.attack.explosion=%s exploded.

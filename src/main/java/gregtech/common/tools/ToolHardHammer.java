@@ -1,12 +1,16 @@
 package gregtech.common.tools;
 
-import gregtech.api.GregTechAPI;
-import gregtech.api.items.metaitem.MetaItem;
-import gregtech.common.items.behaviors.ProspectingBehaviour;
+import gregtech.api.recipes.RecipeMaps;
+import net.minecraft.block.material.Material;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.NonNullList;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
+
+import java.util.Collections;
 
 public class ToolHardHammer extends ToolBase {
 
@@ -38,81 +42,30 @@ public class ToolHardHammer extends ToolBase {
     }
 
     @Override
-    public float getSpeedMultiplier(ItemStack stack) {
+    public float getDigSpeedMultiplier(ItemStack stack) {
         return 0.75F;
     }
 
     @Override
-    public ResourceLocation getCraftingSound(ItemStack stack) {
-        return GregTechAPI.soundList.get(1);
+    public boolean hasMaterialHandle() {
+        return true;
     }
 
     @Override
-    public ResourceLocation getBreakingSound(ItemStack stack) {
-        return GregTechAPI.soundList.get(2);
-    }
-
-
-
-
-//    @Override
-//    public boolean isMinableBlock(IBlockState block, ItemStack stack) {
-//        String tTool = block.getBlock().getHarvestTool(block);
-//        return ((tTool != null) && ((tTool.equals("hammer")) ||
-//                (tTool.equals("pickaxe")))) ||
-//                (block.getMaterial() == Material.ROCK) ||
-//                (block.getMaterial() == Material.GLASS) ||
-//                (block.getMaterial() == Material.ICE) ||
-//                (block.getMaterial() == Material.PACKED_ICE) ||
-//                (RecipeMap.FORGE_HAMMER_RECIPES.containsInput(getBlockStack(block)));
-//    }
-//
-//    @Override
-//    public int convertBlockDrops(World world, BlockPos blockPos, IBlockState blockState, EntityPlayer harvester, List<ItemStack> drops) {
-//        int rConversions = 0;
-//        Recipe tRecipe = RecipeMap.FORGE_HAMMER_RECIPES.findRecipe(null, true, 2147483647L, null, new ItemStack[]{getBlockStack(blockState)});
-//        if ((tRecipe == null) || blockState.getBlock().hasTileEntity(blockState)) {
-//            for (ItemStack tDrop : drops) {
-//                tRecipe = RecipeMap.FORGE_HAMMER_RECIPES.findRecipe(null, true, 2147483647L, null, new ItemStack[]{GTUtility.copyAmount(1, tDrop)});
-//                if (tRecipe != null) {
-//                    ItemStack tHammeringOutput = tRecipe.getOutputs().get(0);
-//                    if (tHammeringOutput != null) {
-//                        rConversions += tDrop.stackSize;
-//                        tDrop.stackSize *= tHammeringOutput.stackSize;
-//                        tHammeringOutput.stackSize = tDrop.stackSize;
-//                        GTUtility.setStack(tDrop, tHammeringOutput);
-//                    }
-//                }
-//            }
-//        } else {
-//            drops.clear();
-//            drops.add(tRecipe.getOutputs().get(0));
-//            rConversions++;
-//        }
-//        return rConversions;
-//    }
-
-    @Override
-    public float getAttackSpeed(ItemStack stack) {
-        return 0;
+    public boolean isMinableBlock(IBlockState block, ItemStack stack) {
+        String tool = block.getBlock().getHarvestTool(block);
+        ItemStack itemStack = new ItemStack(block.getBlock(), 1, block.getBlock().getMetaFromState(block));
+        return (tool != null && (tool.equals("hammer") || tool.equals("pickaxe"))) ||
+            block.getMaterial() == Material.ROCK ||
+            block.getMaterial() == Material.GLASS ||
+            block.getMaterial() == Material.ICE ||
+            block.getMaterial() == Material.PACKED_ICE ||
+            RecipeMaps.FORGE_HAMMER_RECIPES.findRecipe(Long.MAX_VALUE,
+                Collections.singletonList(itemStack), Collections.emptyList()) != null;
     }
 
     @Override
-    public void onStatsAddedToTool(MetaItem.MetaValueItem item, int ID) {
-        item.addStats(new ProspectingBehaviour(10));
-    }
-
-//    @Override
-//    public ITextComponent getDeathMessage(EntityLivingBase player, EntityLivingBase entity) {
-//        return new TextComponentString(TextFormatting.RED + "")
-//                .appendSibling(entity.getDisplayName())
-//                .appendText(TextFormatting.WHITE + " was squashed by " + TextFormatting.GREEN)
-//                .appendSibling(player.getDisplayName());
-//    }
-
-    @Override
-    public void onToolCrafted(ItemStack stack, EntityPlayer player) {
-        super.onToolCrafted(stack, player);
-//        GregTechMod.achievements.issueAchievement(player, "tools"); // TODO ACHIEVEMENTS/ADVANCEMENTS
+    public int convertBlockDrops(World world, BlockPos blockPos, IBlockState blockState, EntityPlayer harvester, NonNullList<ItemStack> drops, boolean recursive) {
+        return ToolUtility.applyHammerDrops(world.rand, blockState, drops);
     }
 }

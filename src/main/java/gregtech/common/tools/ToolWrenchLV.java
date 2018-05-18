@@ -10,7 +10,12 @@ public class ToolWrenchLV extends ToolWrench {
     }
 
     @Override
-    public float getSpeedMultiplier(ItemStack stack) {
+    public float getDigSpeedMultiplier(ItemStack stack) {
         return 2.0F;
+    }
+
+    @Override
+    public boolean hasMaterialHandle() {
+        return true;
     }
 }

@@ -7,7 +7,6 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.monster.EntityCreeper;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -44,8 +43,6 @@ public class LighterBehaviour implements IItemBehaviour {
             stack = prepare(stack);
             long fuelAmount = getLighterFuel(stack);
             if (ItemStack.areItemStacksEqual(stack, this.usedLighter)) {
-//                GTUtility.sendSoundToPlayers(player.worldObj, GregTechAPI.sSoundList.get(6), 1.0F, 1.0F, MathHelper.floor_double(aEntity.posX), MathHelper.floor_double(aEntity.posY), MathHelper.floor_double(aEntity.posZ));
-
                 ((EntityCreeper) entity).ignite();
                 if (!player.capabilities.isCreativeMode) {
                     fuelAmount -= 1L;

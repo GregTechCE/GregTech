@@ -1,7 +1,7 @@
 package gregtech.common.items.behaviors;
 
 import forestry.api.lepidopterology.EnumFlutterType;
-import forestry.api.lepidopterology.IButterfly;
+import forestry.api.lepidopterology.IAlleleButterflySpecies;
 import forestry.api.lepidopterology.IEntityButterfly;
 import gregtech.api.items.metaitem.stats.IItemBehaviour;
 import gregtech.api.util.GTUtility;
@@ -28,9 +28,11 @@ public class ScoopBehaviour implements IItemBehaviour {
                 return true;
             }
             if (player.capabilities.isCreativeMode || GTUtility.doDamageItem(itemStack, this.cost, false)) {
-                Object tButterfly = ((IEntityButterfly) entity).getButterfly();
-                ((IButterfly) tButterfly).getGenome().getPrimary().getRoot().getBreedingTracker(entity.world, player.getGameProfile()).registerCatch((IButterfly) tButterfly);
-                player.world.spawnEntity(new EntityItem(player.world, entity.posX, entity.posY, entity.posZ, ((IButterfly) tButterfly).getGenome().getPrimary().getRoot().getMemberStack(((IButterfly) tButterfly).copy(), EnumFlutterType.BUTTERFLY)));
+                IEntityButterfly butterfly = (IEntityButterfly) entity;
+                IAlleleButterflySpecies species = butterfly.getButterfly().getGenome().getPrimary();
+                species.getRoot().getBreedingTracker(entity.world, player.getGameProfile()).registerCatch(butterfly.getButterfly());
+                player.world.spawnEntity(new EntityItem(player.world, entity.posX, entity.posY, entity.posZ,
+                    species.getRoot().getMemberStack(butterfly.getButterfly().copy(), EnumFlutterType.BUTTERFLY)));
                 entity.setDead();
             }
             return true;

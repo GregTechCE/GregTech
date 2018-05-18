@@ -82,13 +82,13 @@ public class SimpleMachineMetaTileEntity extends WorkableTieredMetaTileEntity {
 
     //OUTPUT TANKS OVERRIDE MANAGEMENT MECHANISM
 
-    private void setOutputOverride(EnumFacing side, int overrideIndex) {
+    public void setOutputOverride(EnumFacing side, int overrideIndex) {
         IFluidHandler fluidTank = overrideIndex < 0 ? exportFluids : (IFluidHandler) exportFluids.getTankAt(overrideIndex);
         this.sidedTankOverrides[side.getIndex()] = new FluidHandlerProxy(importFluids, fluidTank);
     }
 
     @SuppressWarnings("SuspiciousMethodCalls")
-    private int getOutputOverride(EnumFacing side) {
+    public int getOutputOverride(EnumFacing side) {
         FluidHandlerProxy override = this.sidedTankOverrides[side.getIndex()];
         return override == null ? -1 : exportFluids.getFluidTanks().indexOf(override.output);
     }

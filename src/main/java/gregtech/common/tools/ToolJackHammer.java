@@ -1,9 +1,18 @@
 package gregtech.common.tools;
 
+import gregtech.api.recipes.RecipeMaps;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.NonNullList;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
+
+import java.util.Collections;
 
 public class ToolJackHammer extends ToolDrillLV {
 
@@ -38,7 +47,7 @@ public class ToolJackHammer extends ToolDrillLV {
     }
 
     @Override
-    public float getSpeedMultiplier(ItemStack stack) {
+    public float getDigSpeedMultiplier(ItemStack stack) {
         return 12.0F;
     }
 
@@ -50,49 +59,46 @@ public class ToolJackHammer extends ToolDrillLV {
     @Override
     public boolean isMinableBlock(IBlockState block, ItemStack stack) {
         String tool = block.getBlock().getHarvestTool(block);
-        return tool != null && tool.equals("pickaxe") ||
+        ItemStack itemStack = new ItemStack(block.getBlock(), 1, block.getBlock().getMetaFromState(block));
+        return (tool != null && (tool.equals("hammer") || tool.equals("pickaxe"))) ||
             block.getMaterial() == Material.ROCK ||
             block.getMaterial() == Material.GLASS ||
             block.getMaterial() == Material.ICE ||
-            block.getMaterial() == Material.PACKED_ICE;
+            block.getMaterial() == Material.PACKED_ICE ||
+            RecipeMaps.FORGE_HAMMER_RECIPES.findRecipe(Long.MAX_VALUE,
+                Collections.singletonList(itemStack), Collections.emptyList()) != null;
     }
-
-//    @Override
-//    public int convertBlockDrops(World world, BlockPos blockPos, IBlockState blockState, EntityPlayer harvester, List<ItemStack> drops) {
-//        int rConversions = 0;
-//        Recipe tRecipe = RecipeMap.FORGE_HAMMER_RECIPES.findRecipe(null, true, 2147483647L, null, new ItemStack[]{getBlockStack(blockState)});
-//        if (tRecipe == null || blockState.getBlock().hasTileEntity(blockState)) {
-//            for (ItemStack tDrop : drops) {
-//                tRecipe = RecipeMap.FORGE_HAMMER_RECIPES.findRecipe(null, true, 2147483647L, null, new ItemStack[]{GTUtility.copyAmount(1, tDrop)});
-//                if (tRecipe != null) {
-//                    ItemStack tHammeringOutput = tRecipe.getOutputs().get(0);
-//                    if (tHammeringOutput != null) {
-//                        rConversions += tDrop.stackSize;
-//                        tDrop.stackSize *= tHammeringOutput.stackSize;
-//                        tHammeringOutput.stackSize = tDrop.stackSize;
-//                        GTUtility.setStack(tDrop, tHammeringOutput);
-//                    }
-//                }
-//            }
-//        } else {
-//            drops.clear();
-//            drops.add(tRecipe.getOutputs().get(0));
-//            rConversions++;
-//        }
-//        return rConversions;
-//    }
 
     @Override
-    public void onToolCrafted(ItemStack stack, EntityPlayer player) {
-        super.onToolCrafted(stack, player);
-//        GregTechMod.achievements.issueAchievement(player, "hammertime"); // TODO ACHIEVEMENTS/ADVANCEMENTS
+    public int convertBlockDrops(World world, BlockPos centerPos, IBlockState blockState, EntityPlayer harvester, NonNullList<ItemStack> drops, boolean recursive) {
+        int conversionsApplied = ToolUtility.applyHammerDrops(world.rand, blockState, drops);
+        if (recursive)
+            //on recursive calls, do not try to break multiple blocks
+            return conversionsApplied;
+
+        EnumFacing sideHit = ToolUtility.getSideHit(world, centerPos, harvester);
+        ItemStack selfStack = harvester.getHeldItem(EnumHand.MAIN_HAND);
+        for (int x = -1; x < 2; x++) {
+            for (int y = -1; y < 2; y++) {
+                //do not check center block - it's handled now
+                if (x == 0 && y == 0) continue;
+                BlockPos block = rotate(centerPos, x, y, sideHit);
+                if (!isMinableBlock(world.getBlockState(block), selfStack) ||
+                    !world.canMineBlockBody(harvester, block) ||
+                    !((EntityPlayerMP) harvester).interactionManager.tryHarvestBlock(block))
+                    continue;
+                conversionsApplied++;
+            }
+        }
+        return conversionsApplied;
     }
 
-//    @Override
-//    public ITextComponent getDeathMessage(EntityLivingBase player, EntityLivingBase entity) {
-//        return new TextComponentString(TextFormatting.RED + "")
-//                .appendSibling(entity.getDisplayName())
-//                .appendText(TextFormatting.WHITE + " has been jackhammered into pieces by " + TextFormatting.GREEN)
-//                .appendSibling(player.getDisplayName());
-//    }
+    private static BlockPos rotate(BlockPos origin, int x, int y, EnumFacing sideHit) {
+        switch (sideHit.getAxis()) {
+            case X: return origin.add(0, y, x);
+            case Z: return origin.add(x, y, 0);
+            case Y: return origin.add(x, 0, y);
+            default: throw new IllegalArgumentException("Unknown axis");
+        }
+    }
 }

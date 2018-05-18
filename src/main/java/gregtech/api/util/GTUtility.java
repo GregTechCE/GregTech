@@ -8,9 +8,13 @@ import gregtech.api.capability.IMultipleTankHandler;
 import gregtech.api.damagesources.DamageSources;
 import gregtech.api.items.IDamagableItem;
 import gregtech.api.unification.OreDictUnifier;
+import gregtech.api.unification.material.type.Material;
+import gregtech.api.unification.ore.OrePrefix;
+import gregtech.api.unification.stack.MaterialStack;
 import gregtech.api.unification.stack.SimpleItemStack;
 import gregtech.api.unification.stack.UnificationEntry;
 import gregtech.common.ConfigHolder;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EnumCreatureAttribute;
@@ -28,7 +32,9 @@ import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.Tuple;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextFormatting;
+import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.common.BiomeDictionary;
 import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.common.util.Constants;
@@ -118,6 +124,24 @@ public class GTUtility {
         int g = (colorValue >> 8) & 0xFF;
         int b = (colorValue & 0xFF);
         return (r & 0xFF) << 24 | (g & 0xFF) << 16 | (b & 0xFF) << 8 | (255 & 0xFF);
+    }
+
+    public static boolean isBlockOrePrefixed(IBlockAccess world, BlockPos pos, IBlockState blockState, OrePrefix targetPrefix, List<ItemStack> drops) {
+        for(ItemStack itemStack : drops) {
+            OrePrefix orePrefix = OreDictUnifier.getPrefix(itemStack);
+            if(orePrefix == targetPrefix)
+                return true;
+        }
+        return false;
+    }
+
+    public static long getBlockMaterialAmount(IBlockAccess world, BlockPos pos, IBlockState blockState, Material targetMaterial, List<ItemStack> drops) {
+        for(ItemStack itemStack : drops) {
+            MaterialStack materialStack = OreDictUnifier.getMaterial(itemStack);
+            if(materialStack != null && materialStack.material == targetMaterial)
+                return materialStack.amount;
+        }
+        return 0L;
     }
 
     /**

@@ -23,7 +23,7 @@ public class ToolSword extends ToolBase {
 
     @Override
     public float getBaseDamage(ItemStack stack) {
-        return 4.0F;
+        return 5.0F;
     }
 
     @Override

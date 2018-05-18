@@ -17,7 +17,7 @@ public class ToolSoftHammer extends ToolBase {
     }
 
     @Override
-    public float getSpeedMultiplier(ItemStack stack) {
+    public float getDigSpeedMultiplier(ItemStack stack) {
         return 0.1F;
     }
 

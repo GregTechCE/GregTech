@@ -10,20 +10,13 @@ public class ToolKnife extends ToolSword {
     }
 
     @Override
-    public float getBaseDamage(ItemStack stack) {
-        return 2.0F;
+    public float getAttackSpeed(ItemStack stack) {
+        return 3.0f; //3x faster than sword attack
     }
 
     @Override
-    public float getSpeedMultiplier(ItemStack stack) {
-        return 0.5F;
+    public float getBaseDamage(ItemStack stack) {
+        return 3.0F;
     }
 
-//    @Override
-//    public ITextComponent getDeathMessage(EntityLivingBase player, EntityLivingBase entity) {
-//        return new TextComponentString(TextFormatting.RED + "")
-//                .appendSibling(player.getDisplayName())
-//                .appendText(TextFormatting.WHITE + " has been murdered by " + TextFormatting.GREEN)
-//                .appendSibling(player.getDisplayName());
-//    }
 }

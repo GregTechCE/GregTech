@@ -1,13 +1,9 @@
 package gregtech.common.tools;
 
-import gregtech.api.GregTechAPI;
-import gregtech.api.items.metaitem.MetaItem;
-import gregtech.common.items.behaviors.ScrewdriverBehaviour;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.ResourceLocation;
 
 public class ToolScrewdriver extends ToolBase {
 
@@ -34,19 +30,9 @@ public class ToolScrewdriver extends ToolBase {
     }
 
     @Override
-    public ResourceLocation getCraftingSound(ItemStack stack) {
-        return GregTechAPI.soundList.get(100);
-    }
-
-    @Override
     public boolean isMinableBlock(IBlockState block, ItemStack stack) {
         String tool = block.getBlock().getHarvestTool(block);
         return tool != null && tool.equals("screwdriver") || block.getMaterial() == Material.CIRCUITS;
-    }
-
-    @Override
-    public void onStatsAddedToTool(MetaItem.MetaValueItem item, int ID) {
-        item.addStats(new ScrewdriverBehaviour(2));
     }
 
 }

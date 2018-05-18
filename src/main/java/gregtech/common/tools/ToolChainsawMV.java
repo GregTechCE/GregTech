@@ -31,11 +31,11 @@ public class ToolChainsawMV extends ToolChainsawLV {
 
     @Override
     public float getBaseDamage(ItemStack stack) {
-        return 3.5F;
+        return 5.0F;
     }
 
     @Override
-    public float getSpeedMultiplier(ItemStack stack) {
+    public float getDigSpeedMultiplier(ItemStack stack) {
         return 3.0F;
     }
 

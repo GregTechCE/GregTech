@@ -31,11 +31,11 @@ public class ToolDrillMV extends ToolDrillLV {
 
     @Override
     public float getBaseDamage(ItemStack stack) {
-        return 2.5F;
+        return 4.0F;
     }
 
     @Override
-    public float getSpeedMultiplier(ItemStack stack) {
+    public float getDigSpeedMultiplier(ItemStack stack) {
         return 6.0F;
     }
 

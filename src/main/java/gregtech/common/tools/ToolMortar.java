@@ -19,11 +19,4 @@ public class ToolMortar extends ToolBase {
         return 2.0F;
     }
 
-//    @Override
-//    public ITextComponent getDeathMessage(EntityLivingBase player, EntityLivingBase entity) {
-//        return new TextComponentString(TextFormatting.RED + "")
-//                .appendSibling(entity.getDisplayName())
-//                .appendText(TextFormatting.WHITE + " was grounded by " + TextFormatting.GREEN)
-//                .appendSibling(player.getDisplayName());
-//    }
 }
