@@ -12,9 +12,13 @@ public class ElectricStats implements IElectricStats {
     public final boolean chargeable;
     public final boolean dischargeable;
 
-    public ElectricStats(long maxCharge, int tier, boolean chargeable, boolean dischargeable) {
+    public static ElectricStats electricItem(long maxCharge, long tier) {
+        return new ElectricStats(maxCharge, tier, true, false);
+    }
+
+    public ElectricStats(long maxCharge, long tier, boolean chargeable, boolean dischargeable) {
         this.maxCharge = maxCharge;
-        this.tier = tier;
+        this.tier = (int) tier;
         this.chargeable = chargeable;
         this.dischargeable = dischargeable;
     }

@@ -53,11 +53,18 @@ public class ToolUtility {
         if(blockState.getBlock() instanceof IShearable) {
             IShearable shearable = (IShearable) blockState.getBlock();
             ItemStack selfStack = harvester.getHeldItem(EnumHand.MAIN_HAND);
-            if(shearable.isShearable(selfStack, world, blockPos)) {
-                drops.clear();
-                int fortuneLevel = EnchantmentHelper.getEnchantmentLevel(Enchantments.FORTUNE, selfStack);
-                drops.addAll(shearable.onSheared(selfStack, world, blockPos, fortuneLevel));
-                return drops.size();
+            //because fucking minecraft removes block before that
+            world.setBlockState(blockPos, blockState, 0);
+            try {
+                if(shearable.isShearable(selfStack, world, blockPos)) {
+                    drops.clear();
+                    int fortuneLevel = EnchantmentHelper.getEnchantmentLevel(Enchantments.FORTUNE, selfStack);
+                    drops.addAll(shearable.onSheared(selfStack, world, blockPos, fortuneLevel));
+                    return drops.size();
+                }
+            } finally {
+                //also make sure that we removed block
+                world.setBlockToAir(blockPos);
             }
         } else if(blockState.getMaterial() == Material.LEAVES) {
             int stackMetadata = blockState.getBlock().getMetaFromState(blockState);
@@ -75,12 +82,12 @@ public class ToolUtility {
         return 0;
     }
 
-    public static int applyMultiBreak(World world, BlockPos blockPos, EntityPlayer harvester, ToolBase self) {
+    public static int applyMultiBreak(World world, BlockPos blockPos, EntityPlayer harvester, ToolBase self, int size) {
         int conversions = 0;
         ItemStack selfStack = harvester.getHeldItem(EnumHand.MAIN_HAND);
-        for (int i = -1; i < 2; i++) {
-            for (int j = -1; j < 2; j++) {
-                for (int k = -1; k < 2; k++) {
+        for (int i = -size; i <= size; i++) {
+            for (int j = -size; j <= size; j++) {
+                for (int k = -size; k <= size; k++) {
                     if(i == 0 && j == 0 && k == 0)
                         continue;
                     BlockPos block = blockPos.add(i, j, k);

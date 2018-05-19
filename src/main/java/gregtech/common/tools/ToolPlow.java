@@ -6,9 +6,10 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.monster.EntitySnowman;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+
+import java.util.List;
 
 public class ToolPlow extends ToolBase {
 
@@ -31,7 +32,7 @@ public class ToolPlow extends ToolBase {
     }
 
     @Override
-    public int convertBlockDrops(World world, BlockPos blockPos, IBlockState blockState, EntityPlayer harvester, NonNullList<ItemStack> drops, boolean recursive) {
-        return ToolUtility.applyMultiBreak(world, blockPos, harvester, this);
+    public int convertBlockDrops(World world, BlockPos blockPos, IBlockState blockState, EntityPlayer harvester, List<ItemStack> drops, boolean recursive) {
+        return ToolUtility.applyMultiBreak(world, blockPos, harvester, this, 2);
     }
 }

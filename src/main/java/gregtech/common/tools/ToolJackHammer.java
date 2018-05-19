@@ -8,11 +8,11 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
-import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 import java.util.Collections;
+import java.util.List;
 
 public class ToolJackHammer extends ToolDrillLV {
 
@@ -48,7 +48,7 @@ public class ToolJackHammer extends ToolDrillLV {
 
     @Override
     public float getDigSpeedMultiplier(ItemStack stack) {
-        return 12.0F;
+        return 1.0F;
     }
 
     @Override
@@ -70,7 +70,12 @@ public class ToolJackHammer extends ToolDrillLV {
     }
 
     @Override
-    public int convertBlockDrops(World world, BlockPos centerPos, IBlockState blockState, EntityPlayer harvester, NonNullList<ItemStack> drops, boolean recursive) {
+    public boolean allowRecursiveConversion() {
+        return true;
+    }
+
+    @Override
+    public int convertBlockDrops(World world, BlockPos centerPos, IBlockState blockState, EntityPlayer harvester, List<ItemStack> drops, boolean recursive) {
         int conversionsApplied = ToolUtility.applyHammerDrops(world.rand, blockState, drops);
         if (recursive)
             //on recursive calls, do not try to break multiple blocks

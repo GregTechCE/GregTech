@@ -11,6 +11,7 @@ metaitem.generic.electric_item.tooltip=%d/%d EU - Tier %d
 metaitem.int_circuit.configuration=Configuration: %d
 item.invalid.name=Invalid item
 fluid.empty=Empty
+fluid.distilled_water=Distilled Water
 
 metaitem.credit.copper.name=Copper Credit
 metaitem.credit.copper.tooltip=0.125 Credits
@@ -1542,7 +1543,6 @@ recipemap.unpacker.name=Unpacker
 recipemap.diesel_generator.name=Diesel Generator
 recipemap.steam_turbine.name=Steam Turbine
 
-machine.mte_test=Test MetaTileEntity
 machine.steam_extractor=Steam Extractor
 machine.steam_macerator=Steam Macerator
 machine.steam_compressor=Steam Compressor
@@ -1550,6 +1550,8 @@ machine.steam_alloy_smelter=Steam Alloy Smelter
 machine.steam_hammer=Steam Hammer
 machine.steam_boiler=Steam Boiler
 
+behavior.magnifying_glass.description=Click on surface rock to inspect it
+behavior.magnifying_glass.inspect=This rock contains %s
 behaviour.scoop=Can catch butterflies
 behaviour.hoe=Can till dirt
 behaviour.wrench=Can rotate things

@@ -1,5 +1,7 @@
 package gregtech.common.tools;
 
+import gregtech.api.items.metaitem.MetaItem.MetaValueItem;
+import gregtech.common.items.behaviors.MagnifyingGlassBehaviour;
 import net.minecraft.item.ItemStack;
 
 public class ToolMagnifyingGlass extends ToolBase {
@@ -24,9 +26,9 @@ public class ToolMagnifyingGlass extends ToolBase {
         return 8.0F;
     }
 
-//    @Override
-//    public void onStatsAddedToTool(MetaItem.MetaValueItem item, int ID) {
-//        item.addStats(new Behaviour_SoftHammer(100));
-//    }
-
+    @Override
+    public void onStatsAddedToTool(MetaValueItem item, int ID) {
+        super.onStatsAddedToTool(item, ID);
+        item.addStats(new MagnifyingGlassBehaviour(7));
+    }
 }

@@ -4,9 +4,10 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+
+import java.util.List;
 
 public class ToolSaw extends ToolBase {
 
@@ -43,7 +44,7 @@ public class ToolSaw extends ToolBase {
     }
 
     @Override
-    public int convertBlockDrops(World world, BlockPos blockPos, IBlockState blockState, EntityPlayer harvester, NonNullList<ItemStack> drops, boolean recursive) {
+    public int convertBlockDrops(World world, BlockPos blockPos, IBlockState blockState, EntityPlayer harvester, List<ItemStack> drops, boolean recursive) {
         int shearableResult = ToolUtility.applyShearable(world, blockPos, blockState, drops, harvester);
         if(shearableResult > 0) {
             //if shearing was successful, then just return it's result
@@ -53,6 +54,7 @@ public class ToolSaw extends ToolBase {
             int stackMetadata = blockState.getBlock().getMetaFromState(blockState);
             ItemStack dropStack = new ItemStack(blockState.getBlock(), 1, stackMetadata);
             if(!dropStack.isEmpty()) {
+                world.setBlockToAir(blockPos); //because ice sets water
                 //do not set damage for non-subtype items
                 //good example here would be frosted ice
                 if(!dropStack.getItem().getHasSubtypes())

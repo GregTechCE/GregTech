@@ -3,9 +3,10 @@ package gregtech.common.tools;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+
+import java.util.List;
 
 public class ToolChainsawLV extends ToolSaw {
 
@@ -35,7 +36,7 @@ public class ToolChainsawLV extends ToolSaw {
     }
 
     @Override
-    public int convertBlockDrops(World world, BlockPos blockPos, IBlockState blockState, EntityPlayer harvester, NonNullList<ItemStack> drops, boolean recursive) {
+    public int convertBlockDrops(World world, BlockPos blockPos, IBlockState blockState, EntityPlayer harvester, List<ItemStack> drops, boolean recursive) {
         int superResult = super.convertBlockDrops(world, blockPos, blockState, harvester, drops, recursive);
         if(superResult > 0) {
             //we already harvested block and converted blocks in saw class

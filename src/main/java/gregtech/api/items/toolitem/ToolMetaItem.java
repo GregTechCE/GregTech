@@ -92,7 +92,9 @@ public class ToolMetaItem<T extends ToolMetaItem<?>.MetaToolValueItem> extends M
 
     @Override
     public boolean showDurabilityBar(ItemStack stack) {
-        return true; //always show durability for tools
+        //don't show durability if item is not electric and it's damage is zero
+        return stack.hasCapability(IElectricItem.CAPABILITY_ELECTRIC_ITEM, null) ||
+            getInternalDamage(stack) != 0;
     }
 
     @Override

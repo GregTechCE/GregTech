@@ -8,10 +8,7 @@ import gregtech.api.unification.material.type.GemMaterial;
 import gregtech.api.unification.material.type.Material;
 import gregtech.api.unification.material.type.MetalMaterial;
 import gregtech.api.unification.ore.OrePrefix;
-import gregtech.api.unification.stack.ItemMaterialInfo;
-import gregtech.api.unification.stack.MaterialStack;
-import gregtech.api.unification.stack.SimpleItemStack;
-import gregtech.api.unification.stack.UnificationEntry;
+import gregtech.api.unification.stack.*;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
 import net.minecraftforge.common.MinecraftForge;
@@ -28,10 +25,10 @@ public class OreDictUnifier {
 
     private OreDictUnifier() {}
 
-    private static final HashMap<SimpleItemStack, ItemMaterialInfo> materialUnificationInfo = new HashMap<>();
-    private static final HashMap<SimpleItemStack, UnificationEntry> stackUnificationInfo = new HashMap<>();
+    private static final HashMap<SimpleItemStack, ItemMaterialInfo> materialUnificationInfo = new WildcardAwareHashMap<>();
+    private static final HashMap<SimpleItemStack, UnificationEntry> stackUnificationInfo = new WildcardAwareHashMap<>();
     private static final HashMap<UnificationEntry, ArrayList<SimpleItemStack>> stackUnificationItems = new HashMap<>();
-    private static final HashMap<SimpleItemStack, Set<String>> stackOreDictName = new HashMap<>();
+    private static final HashMap<SimpleItemStack, Set<String>> stackOreDictName = new WildcardAwareHashMap<>();
 
     public static void registerOre(ItemStack itemStack, MaterialStack component, MaterialStack... byproducts) {
         if (itemStack.isEmpty()) return;

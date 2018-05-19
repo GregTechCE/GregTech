@@ -8,6 +8,8 @@ import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
+import java.util.List;
+
 public class ToolBranchCutter extends ToolBase {
 
     @Override
@@ -31,10 +33,12 @@ public class ToolBranchCutter extends ToolBase {
     }
 
     @Override
-    public int convertBlockDrops(World world, BlockPos blockPos, IBlockState blockState, EntityPlayer harvester, NonNullList<ItemStack> drops, boolean recursive) {
+    public int convertBlockDrops(World world, BlockPos blockPos, IBlockState blockState, EntityPlayer harvester, List<ItemStack> drops, boolean recursive) {
         if (blockState.getBlock().isLeaves(blockState, world, blockPos)) {
             drops.clear(); //clear previous drops to avoid possible issues
-            blockState.getBlock().getDrops(drops, world, blockPos, blockState, 3);
+            NonNullList<ItemStack> dropsNonNull = NonNullList.create();
+            blockState.getBlock().getDrops(dropsNonNull, world, blockPos, blockState, 10);
+            drops.addAll(dropsNonNull);
         }
         return 0;
     }
