@@ -1759,7 +1759,7 @@ public class OreProcessingHandler {
 
     //////////////////////////////////////////////////////////////////////////////////////////////
 
-    private void processSimpleTool(OrePrefix toolPrefix, SolidMaterial solidMaterial, MetaToolValueItem toolItem, String... recipe) {
+    private void processSimpleTool(OrePrefix toolPrefix, SolidMaterial solidMaterial, MetaToolValueItem toolItem, Object... recipe) {
         Material handleMaterial = solidMaterial.handleMaterial == null ? Materials.Wood : solidMaterial.handleMaterial;
 
         ModHandler.addShapelessRecipe(String.format("%s_%s_%s", toolItem.unlocalizedName, solidMaterial, handleMaterial),
@@ -1768,19 +1768,37 @@ public class OreProcessingHandler {
             new UnificationEntry(OrePrefix.stick, handleMaterial));
 
         if (solidMaterial instanceof MetalMaterial && solidMaterial.hasFlag(GENERATE_PLATE)) {
-            ModHandler.addShapedRecipe(String.format("head_%s_%s", toolItem.unlocalizedName, solidMaterial.toString()),
-                OreDictUnifier.get(OrePrefix.toolHeadAxe, solidMaterial),
-                ArrayUtils.addAll(recipe,
-                'P', new UnificationEntry(OrePrefix.plate, solidMaterial),
-                'I', new UnificationEntry(OrePrefix.ingot, solidMaterial)));
+            addSimpleToolRecipe(toolPrefix, solidMaterial, toolItem,
+                new UnificationEntry(OrePrefix.plate, solidMaterial),
+                new UnificationEntry(OrePrefix.ingot, solidMaterial), recipe);
         }
         if (solidMaterial instanceof GemMaterial) {
-            ModHandler.addShapedRecipe(String.format("head_%s_%s", toolItem.unlocalizedName, solidMaterial.toString()),
-                OreDictUnifier.get(OrePrefix.toolHeadAxe, solidMaterial),
-                ArrayUtils.addAll(recipe,
-                'P', new UnificationEntry(OrePrefix.gem, solidMaterial),
-                'I', new UnificationEntry(OrePrefix.gem, solidMaterial)));
+            addSimpleToolRecipe(toolPrefix, solidMaterial, toolItem,
+                new UnificationEntry(OrePrefix.gem, solidMaterial),
+                new UnificationEntry(OrePrefix.gem, solidMaterial), recipe);
         }
+    }
+
+    private void addSimpleToolRecipe(OrePrefix toolPrefix, SolidMaterial solidMaterial, MetaToolValueItem toolItem, UnificationEntry plate, UnificationEntry ingot, Object[] recipe) {
+        ArrayList<Character> usedChars = new ArrayList<>();
+        for(Object object : recipe) {
+            if(!(object instanceof String))
+                continue;
+            char[] chars = ((String) object).toCharArray();
+            for(char character : chars)
+                usedChars.add(character);
+        }
+
+        if(usedChars.contains('P')) {
+            recipe = ArrayUtils.addAll(recipe, 'P', plate);
+        }
+        if(usedChars.contains('I')) {
+            recipe = ArrayUtils.addAll(recipe, 'I', ingot);
+        }
+
+        ModHandler.addShapedRecipe(
+            String.format("head_%s_%s", toolItem.unlocalizedName, solidMaterial.toString()),
+            OreDictUnifier.get(toolPrefix, solidMaterial), recipe);
     }
 
     private void processAxeHead(OrePrefix toolPrefix, Material material) {
@@ -1805,7 +1823,7 @@ public class OreProcessingHandler {
     private void processPlowHead(OrePrefix toolPrefix, Material material) {
         if(!(material instanceof SolidMaterial)) return;
         SolidMaterial solidMaterial = (SolidMaterial) material;
-        processSimpleTool(toolPrefix, solidMaterial, MetaItems.PLOW, "PP", "PP", "hf");
+        processSimpleTool(toolPrefix, solidMaterial, MetaItems.PLOW, "PP ", "PP ", "hf ");
     }
 
     private void processSawHead(OrePrefix toolPrefix, Material material) {
@@ -1860,7 +1878,7 @@ public class OreProcessingHandler {
             SolidMaterial handleMaterial = solidMaterial.handleMaterial == null ? Materials.Wood : solidMaterial.handleMaterial;
             ModHandler.addMirroredShapedRecipe(String.format("file_%s", solidMaterial),
                 MetaItems.FILE.getStackForm(solidMaterial, handleMaterial),
-                "P", "P", "S",
+                "P  ", "P  ", "S  ",
                 'P', new UnificationEntry(OrePrefix.plate, solidMaterial),
                 'S', new UnificationEntry(OrePrefix.stick, handleMaterial));
         }
