@@ -1,9 +1,13 @@
 package gregtech.api.items.metaitem;
 
-import gregtech.api.items.metaitem.stats.IFluidStats;
+import gregtech.api.capability.impl.SimpleThermalFluidHandlerItemStack;
+import gregtech.api.capability.impl.ThermalFluidHandlerItemStack;
+import gregtech.api.items.metaitem.stats.IItemCapabilityProvider;
+import gregtech.api.items.metaitem.stats.IMetaItemStats;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.common.capabilities.ICapabilityProvider;
 
-public class FluidStats implements IFluidStats {
+public class FluidStats implements IMetaItemStats, IItemCapabilityProvider {
 
     public final int maxCapacity;
     public final int minFluidTemperature;
@@ -18,22 +22,10 @@ public class FluidStats implements IFluidStats {
     }
 
     @Override
-    public boolean allowPartiallyFilled() {
-        return allowPartlyFill;
-    }
-
-    @Override
-    public int getCapacity(ItemStack container) {
-        return maxCapacity;
-    }
-
-    @Override
-    public int getMinFluidTemperature(ItemStack container) {
-        return minFluidTemperature;
-    }
-
-    @Override
-    public int getMaxFluidTemperature(ItemStack container) {
-        return maxFluidTemperature;
+    public ICapabilityProvider createProvider(ItemStack itemStack) {
+        if(allowPartlyFill) {
+            return new ThermalFluidHandlerItemStack(itemStack, maxCapacity, minFluidTemperature, maxFluidTemperature);
+        }
+        return new SimpleThermalFluidHandlerItemStack(itemStack, maxCapacity, minFluidTemperature, maxFluidTemperature);
     }
 }

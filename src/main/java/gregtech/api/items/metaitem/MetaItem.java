@@ -8,8 +8,6 @@ import gregtech.api.GregTechAPI;
 import gregtech.api.capability.IElectricItem;
 import gregtech.api.capability.impl.CombinedCapabilityProvider;
 import gregtech.api.capability.impl.ElectricItem;
-import gregtech.api.capability.impl.SimpleThermalFluidHandlerItemStack;
-import gregtech.api.capability.impl.ThermalFluidHandlerItemStack;
 import gregtech.api.gui.resources.RenderUtil;
 import gregtech.api.items.OreDictNames;
 import gregtech.api.items.metaitem.stats.*;
@@ -171,46 +169,14 @@ public abstract class MetaItem<T extends MetaItem<?>.MetaValueItem> extends Item
         if (metaValueItem == null) {
             return null;
         }
-        IFluidStats fluidStats = metaValueItem.getFluidStats();
-        IElectricStats electricStats = metaValueItem.getElectricStats();
-        if (electricStats != null && fluidStats != null) {
-            ICapabilityProvider handlerItemStack;
-            if(fluidStats.allowPartiallyFilled()) {
-                handlerItemStack = new ThermalFluidHandlerItemStack(stack,
-                    fluidStats.getCapacity(stack),
-                    fluidStats.getMinFluidTemperature(stack),
-                    fluidStats.getMaxFluidTemperature(stack));
-            } else {
-                handlerItemStack = new SimpleThermalFluidHandlerItemStack(stack,
-                    fluidStats.getCapacity(stack),
-                    fluidStats.getMinFluidTemperature(stack),
-                    fluidStats.getMaxFluidTemperature(stack));
+        ArrayList<ICapabilityProvider> providers = new ArrayList<>();
+        for(IMetaItemStats metaItemStats : metaValueItem.getAllStats()) {
+            if(metaItemStats instanceof IItemCapabilityProvider) {
+                IItemCapabilityProvider provider = (IItemCapabilityProvider) metaItemStats;
+                providers.add(provider.createProvider(stack));
             }
-
-            ElectricItem electricItem = new ElectricItem(stack,
-                electricStats.getMaxCharge(),
-                electricStats.getTier(),
-                electricStats.isChargeable(),
-                electricStats.isDischargeable());
-
-            return new CombinedCapabilityProvider(handlerItemStack, electricItem);
         }
-
-        if (fluidStats != null) {
-            return new SimpleThermalFluidHandlerItemStack(stack,
-                fluidStats.getCapacity(stack),
-                fluidStats.getMinFluidTemperature(stack),
-                fluidStats.getMaxFluidTemperature(stack));
-        }
-
-        if (electricStats != null) {
-            return new ElectricItem(stack,
-                electricStats.getMaxCharge(),
-                electricStats.getTier(),
-                electricStats.isChargeable(),
-                electricStats.isDischargeable());
-        }
-        return null;
+        return new CombinedCapabilityProvider(providers);
     }
 
     //////////////////////////////////////////////////////////////////
@@ -478,16 +444,12 @@ public abstract class MetaItem<T extends MetaItem<?>.MetaValueItem> extends Item
 
         public final String unlocalizedName;
 
-        @Nullable
-        private IElectricStats electricStats;
-        @Nullable
-        private IFluidStats fluidStats;
+        private List<IMetaItemStats> allStats = new ArrayList<>();
         private List<IItemBehaviour> behaviours = new ArrayList<>();
-        @Nullable
         private IItemUseManager useManager;
         private IUIManager uiManager;
-        @Nullable
         private IItemDurabilityManager durabilityManager;
+
         private int burnValue = 0;
         private boolean visible = true;
         private int maxStackSize = 64;
@@ -561,114 +523,45 @@ public abstract class MetaItem<T extends MetaItem<?>.MetaValueItem> extends Item
 
         public MetaValueItem addStats(IMetaItemStats... stats) {
             for (IMetaItemStats metaItemStats : stats) {
-                if (metaItemStats instanceof IItemDurabilityManager) {
-                    setDurabilityManager((IItemDurabilityManager) metaItemStats);
-                }
-                if (metaItemStats instanceof IItemUseManager) {
-                    setUseManager((IItemUseManager) metaItemStats);
-                }
-                if (metaItemStats instanceof IFoodStats) {
-                    setFoodStats((IFoodStats) metaItemStats);
-                }
-                if (metaItemStats instanceof IItemBehaviour) {
-                    addBehaviour((IItemBehaviour) metaItemStats);
-                }
-                if (metaItemStats instanceof IElectricStats) {
-                    setElectricStats((IElectricStats) metaItemStats);
-                }
-                if (metaItemStats instanceof IFluidStats) {
-                    setFluidStats((IFluidStats) metaItemStats);
-                }
-                if (metaItemStats instanceof IUIManager) {
-                    setUIManager((IUIManager) metaItemStats);
-                }
+                if (metaItemStats instanceof IItemDurabilityManager)
+                    this.durabilityManager = (IItemDurabilityManager) metaItemStats;
+                if (metaItemStats instanceof IItemUseManager)
+                    this.useManager = (IItemUseManager) metaItemStats;
+                if (metaItemStats instanceof IFoodBehavior)
+                    this.useManager = new FoodUseManager((IFoodBehavior) metaItemStats);
+                if (metaItemStats instanceof IUIManager)
+                    this.uiManager = (IUIManager) metaItemStats;
+
+                if (metaItemStats instanceof IItemBehaviour)
+                    this.behaviours.add((IItemBehaviour) metaItemStats);
+                this.allStats.add(metaItemStats);
             }
             return this;
-        }
-
-        protected void setFoodStats(IFoodStats foodStats) {
-            addStats(new FoodUseManager(foodStats));
-        }
-
-        protected void setDurabilityManager(IItemDurabilityManager durabilityManager) {
-            if (durabilityManager == null) {
-                throw new IllegalArgumentException("Cannot set Durability Manager to null.");
-            }
-            if (this.durabilityManager != null) {
-                throw new IllegalStateException("Tried to set Durability Manager to " + durabilityManager + ", but they're already set to " + this.durabilityManager);
-            }
-            this.durabilityManager = durabilityManager;
-        }
-
-        protected void setElectricStats(IElectricStats electricStats) {
-            if (electricStats == null) {
-                throw new IllegalArgumentException("Cannot set Electric Stats to null.");
-            }
-            if (this.electricStats != null) {
-                throw new IllegalStateException("Tried to set Electric Stats to " + electricStats + ", but they're already set to " + this.electricStats);
-            }
-            this.electricStats = electricStats;
-        }
-
-        protected MetaValueItem setFluidStats(IFluidStats fluidStats) {
-            if (fluidStats == null) {
-                throw new IllegalArgumentException("Cannot set Fluid Stats to null.");
-            }
-            if (this.fluidStats != null) {
-                throw new IllegalStateException("Tried to set Fluid Stats to " + fluidStats + ", but they're already set to " + this.fluidStats);
-            }
-            this.fluidStats = fluidStats;
-            return this;
-        }
-
-        protected void setUseManager(IItemUseManager useManager) {
-            if (this.useManager != null) {
-                throw new IllegalStateException("Tried to set Use Manager to " + useManager + ", but it's already set to " + this.useManager);
-            }
-            this.useManager = useManager;
-        }
-
-        protected void addBehaviour(IItemBehaviour behaviour) {
-            if (behaviour == null) {
-                throw new IllegalArgumentException("Cannot add null behaviour.");
-            }
-            this.behaviours.add(behaviour);
-        }
-
-        protected void setUIManager(IUIManager uiManager) {
-            if (uiManager == null) {
-                throw new IllegalArgumentException("Cannot set UIManager to null.");
-            }
-            if (this.fluidStats != null) {
-                throw new IllegalStateException("Tried to set UIManager to " + uiManager + ", but they're already set to " + this.uiManager);
-            }
-            this.uiManager = uiManager;
         }
 
         public int getMetaValue() {
             return metaValue;
         }
 
-        public IElectricStats getElectricStats() {
-            return electricStats;
+        public List<IMetaItemStats> getAllStats() {
+            return Collections.unmodifiableList(allStats);
         }
 
-        public IFluidStats getFluidStats() {
-            return fluidStats;
+        public List<IItemBehaviour> getBehaviours() {
+            return Collections.unmodifiableList(behaviours);
         }
 
+        @Nullable
         public IItemDurabilityManager getDurabilityManager() {
             return durabilityManager;
         }
 
-        public List<IItemBehaviour> getBehaviours() {
-            return ImmutableList.copyOf(behaviours);
-        }
-
+        @Nullable
         public IItemUseManager getUseManager() {
             return useManager;
         }
 
+        @Nullable
         public IUIManager getUIManager() {
             return uiManager;
         }
@@ -701,13 +594,38 @@ public abstract class MetaItem<T extends MetaItem<?>.MetaValueItem> extends Item
             return getStackForm(1);
         }
 
-        public ItemStack getFullyCharged(int amount) {
-            if(electricStats == null)
-                return getStackForm(amount);
+        /**
+         * Attempts to get an fully charged variant of this electric item
+         * @param chargeAmount amount of charge
+         * @return charged electric item stack
+         * @throws java.lang.IllegalStateException if this item is not electric item
+         */
+        public ItemStack getChargedStack(long chargeAmount) {
             ItemStack itemStack = getStackForm(1);
             IElectricItem electricItem = itemStack.getCapability(IElectricItem.CAPABILITY_ELECTRIC_ITEM, null);
-            electricItem.charge(Long.MAX_VALUE, Integer.MAX_VALUE, true, false);
-            itemStack.setCount(amount);
+            if(electricItem == null) {
+                throw new IllegalStateException("Not an electric item.");
+            }
+            electricItem.charge(chargeAmount, Integer.MAX_VALUE, true, false);
+            return itemStack;
+        }
+
+        /**
+         * Attempts to get an electric item variant with override of max charge
+         * @param maxCharge new max charge of this electric item
+         * @return item stack with given max charge
+         * @throws java.lang.IllegalStateException if this item is not electric item or uses custom implementation
+         */
+        public ItemStack getMaxChargeOverrideStack(long maxCharge) {
+            ItemStack itemStack = getStackForm(1);
+            IElectricItem electricItem = itemStack.getCapability(IElectricItem.CAPABILITY_ELECTRIC_ITEM, null);
+            if(electricItem == null) {
+                throw new IllegalStateException("Not an electric item.");
+            }
+            if(!(electricItem instanceof ElectricItem)) {
+                throw new IllegalStateException("Only standard ElectricItem implementation supported, but this item uses " + electricItem.getClass());
+            }
+            ((ElectricItem) electricItem).setMaxChargeOverride(maxCharge);
             return itemStack;
         }
 

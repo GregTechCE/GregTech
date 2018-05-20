@@ -1,8 +1,12 @@
 package gregtech.api.items.metaitem;
 
-import gregtech.api.items.metaitem.stats.IElectricStats;
+import gregtech.api.capability.impl.ElectricItem;
+import gregtech.api.items.metaitem.stats.IItemCapabilityProvider;
+import gregtech.api.items.metaitem.stats.IMetaItemStats;
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.common.capabilities.ICapabilityProvider;
 
-public class ElectricStats implements IElectricStats {
+public class ElectricStats implements IMetaItemStats, IItemCapabilityProvider {
 
     public static final ElectricStats EMPTY = new ElectricStats(0, 0, false, false);
 
@@ -12,10 +16,6 @@ public class ElectricStats implements IElectricStats {
     public final boolean chargeable;
     public final boolean dischargeable;
 
-    public static ElectricStats electricItem(long maxCharge, long tier) {
-        return new ElectricStats(maxCharge, tier, true, false);
-    }
-
     public ElectricStats(long maxCharge, long tier, boolean chargeable, boolean dischargeable) {
         this.maxCharge = maxCharge;
         this.tier = (int) tier;
@@ -23,31 +23,20 @@ public class ElectricStats implements IElectricStats {
         this.dischargeable = dischargeable;
     }
 
-    public ElectricStats(long maxCharge, int tier, boolean chargeable) {
-        this(maxCharge, tier, chargeable, true);
+    public static ElectricStats createElectricItem(long maxCharge, long tier) {
+        return new ElectricStats(maxCharge, tier, true, false);
     }
 
-    public ElectricStats(long maxCharge, int tier) {
-        this(maxCharge, tier, true);
+    public static ElectricStats createRechargeableBattery(long maxCharge, int tier) {
+        return new ElectricStats(maxCharge, tier, true, true);
     }
 
-    @Override
-    public long getMaxCharge() {
-        return maxCharge;
-    }
-
-    @Override
-    public int getTier() {
-        return tier;
+    public static ElectricStats createBattery(long maxCharge, int tier, boolean rechargeable) {
+        return new ElectricStats(maxCharge, tier, rechargeable, true);
     }
 
     @Override
-    public boolean isChargeable() {
-        return chargeable;
-    }
-
-    @Override
-    public boolean isDischargeable() {
-        return dischargeable;
+    public ICapabilityProvider createProvider(ItemStack itemStack) {
+        return new ElectricItem(itemStack, maxCharge, tier, chargeable, dischargeable);
     }
 }

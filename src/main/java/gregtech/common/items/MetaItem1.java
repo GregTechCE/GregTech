@@ -200,34 +200,34 @@ public class MetaItem1 extends MaterialMetaItem {
         BATTERY_HULL_MV = addItem(501, "battery.hull.hv").setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.BatteryAlloy, OrePrefix.plate.materialAmount * 3L)));
         BATTERY_HULL_HV = addItem(502, "battery.hull.mv").setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.BatteryAlloy, OrePrefix.plate.materialAmount * 9L)));
 
-        BATTERY_RE_ULV_TANTALUM = addItem(499, "battery.re.ulv.tantalum").addStats(new ElectricStats(1000, 0));
+        BATTERY_RE_ULV_TANTALUM = addItem(499, "battery.re.ulv.tantalum").addStats(ElectricStats.createRechargeableBattery(1000, 0));
 
-        BATTERY_SU_LV_SULFURICACID = addItem(510, "battery.su.lv.sulfuricacid").addStats(new ElectricStats(18000, 1, false)).setModelAmount(8);
-        BATTERY_SU_LV_MERCURY = addItem(511, "battery.su.lv.mercury").addStats(new ElectricStats(32000, 1, false)).setModelAmount(8);
+        BATTERY_SU_LV_SULFURICACID = addItem(510, "battery.su.lv.sulfuricacid").addStats(ElectricStats.createBattery(18000, 1, false)).setModelAmount(8);
+        BATTERY_SU_LV_MERCURY = addItem(511, "battery.su.lv.mercury").addStats(ElectricStats.createBattery(32000, 1, false)).setModelAmount(8);
 
-        BATTERY_RE_LV_CADMIUM = addItem(517, "battery.re.lv.cadmium").addStats(new ElectricStats(75000, 1)).setModelAmount(8);
-        BATTERY_RE_LV_LITHIUM = addItem(518, "battery.re.lv.lithium").addStats(new ElectricStats(100000, 1)).setModelAmount(8);
-        BATTERY_RE_LV_SODIUM = addItem(519, "battery.re.lv.sodium").addStats(new ElectricStats(50000, 1)).setModelAmount(8);
+        BATTERY_RE_LV_CADMIUM = addItem(517, "battery.re.lv.cadmium").addStats(ElectricStats.createRechargeableBattery(75000, 1)).setModelAmount(8);
+        BATTERY_RE_LV_LITHIUM = addItem(518, "battery.re.lv.lithium").addStats(ElectricStats.createRechargeableBattery(100000, 1)).setModelAmount(8);
+        BATTERY_RE_LV_SODIUM = addItem(519, "battery.re.lv.sodium").addStats(ElectricStats.createRechargeableBattery(50000, 1)).setModelAmount(8);
 
-        BATTERY_SU_MV_SULFURICACID = addItem(520, "battery.su.mv.sulfuricacid").addStats(new ElectricStats(72000, 2, false)).setModelAmount(8);
-        BATTERY_SU_MV_MERCURY = addItem(521, "battery.su.mv.mercury").addStats(new ElectricStats(128000, 2, false)).setModelAmount(8);
+        BATTERY_SU_MV_SULFURICACID = addItem(520, "battery.su.mv.sulfuricacid").addStats(ElectricStats.createBattery(72000, 2, false)).setModelAmount(8);
+        BATTERY_SU_MV_MERCURY = addItem(521, "battery.su.mv.mercury").addStats(ElectricStats.createBattery(128000, 2, false)).setModelAmount(8);
 
-        BATTERY_RE_MV_CADMIUM = addItem(527, "battery.re.mv.cadmium").addStats(new ElectricStats(300000, 2)).setModelAmount(8);
-        BATTERY_RE_MV_LITHIUM = addItem(528, "battery.re.mv.lithium").addStats(new ElectricStats(400000, 2)).setModelAmount(8);
-        BATTERY_RE_MV_SODIUM = addItem(529, "battery.re.mv.sodium").addStats(new ElectricStats(200000, 2)).setModelAmount(8);
+        BATTERY_RE_MV_CADMIUM = addItem(527, "battery.re.mv.cadmium").addStats(ElectricStats.createRechargeableBattery(300000, 2)).setModelAmount(8);
+        BATTERY_RE_MV_LITHIUM = addItem(528, "battery.re.mv.lithium").addStats(ElectricStats.createRechargeableBattery(400000, 2)).setModelAmount(8);
+        BATTERY_RE_MV_SODIUM = addItem(529, "battery.re.mv.sodium").addStats(ElectricStats.createRechargeableBattery(200000, 2)).setModelAmount(8);
 
-        BATTERY_SU_HV_SULFURICACID = addItem(530, "battery.su.hv.sulfuricacid").addStats(new ElectricStats(288000, 3, false)).setModelAmount(8);
-        BATTERY_SU_HV_MERCURY = addItem(531, "battery.su.hv.mercury").addStats(new ElectricStats(512000, 3, false)).setModelAmount(8);
+        BATTERY_SU_HV_SULFURICACID = addItem(530, "battery.su.hv.sulfuricacid").addStats(ElectricStats.createBattery(288000, 3, false)).setModelAmount(8);
+        BATTERY_SU_HV_MERCURY = addItem(531, "battery.su.hv.mercury").addStats(ElectricStats.createBattery(512000, 3, false)).setModelAmount(8);
 
-        BATTERY_RE_HV_CADMIUM = addItem(537, "battery.re.hv.cadmium").addStats(new ElectricStats(1200000, 3)).setModelAmount(8);
-        BATTERY_RE_HV_LITHIUM = addItem(538, "battery.re.hv.lithium").addStats(new ElectricStats(1600000, 3)).setModelAmount(8);
-        BATTERY_RE_HV_SODIUM = addItem(539, "battery.re.hv.sodium").addStats(new ElectricStats(800000, 3)).setModelAmount(8);
+        BATTERY_RE_HV_CADMIUM = addItem(537, "battery.re.hv.cadmium").addStats(ElectricStats.createRechargeableBattery(1200000, 3)).setModelAmount(8);
+        BATTERY_RE_HV_LITHIUM = addItem(538, "battery.re.hv.lithium").addStats(ElectricStats.createRechargeableBattery(1600000, 3)).setModelAmount(8);
+        BATTERY_RE_HV_SODIUM = addItem(539, "battery.re.hv.sodium").addStats(ElectricStats.createRechargeableBattery(800000, 3)).setModelAmount(8);
 
-        ENERGY_LAPOTRONICORB = addItem(597, "energy.lapotronicorb").addStats(new ElectricStats(100000000, 5)).setUnificationData(OrePrefix.battery, MarkerMaterials.Tier.Ultimate).setModelAmount(8);
-        ENERGY_LAPOTRONICORB2 = addItem(598, "energy.lapotronicorb2").addStats(new ElectricStats(1000000000, 6)).setUnificationData(OrePrefix.battery, MarkerMaterials.Tier.Ultimate).setModelAmount(8);
+        ENERGY_LAPOTRONICORB = addItem(597, "energy.lapotronicorb").addStats(ElectricStats.createRechargeableBattery(100000000, 5)).setUnificationData(OrePrefix.battery, MarkerMaterials.Tier.Ultimate).setModelAmount(8);
+        ENERGY_LAPOTRONICORB2 = addItem(598, "energy.lapotronicorb2").addStats(ElectricStats.createRechargeableBattery(1000000000, 6)).setUnificationData(OrePrefix.battery, MarkerMaterials.Tier.Ultimate).setModelAmount(8);
 
-        ZPM = addItem(599, "zpm").addStats(new ElectricStats(2000000000000L, 7, false)).setModelAmount(8);
-        ZPM2 = addItem(605, "zpm2").addStats(new ElectricStats(Long.MAX_VALUE, 8)).setModelAmount(8);
+        ZPM = addItem(599, "zpm").addStats(ElectricStats.createBattery(2000000000000L, 7, false)).setModelAmount(8);
+        ZPM2 = addItem(605, "zpm2").addStats(ElectricStats.createRechargeableBattery(Long.MAX_VALUE, 8)).setModelAmount(8);
 
         ELECTRIC_MOTOR_LV = addItem(600, "electric.motor.lv");
         ELECTRIC_MOTOR_MV = addItem(601, "electric.motor.mv");

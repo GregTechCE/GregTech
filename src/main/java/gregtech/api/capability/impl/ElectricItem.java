@@ -9,6 +9,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
+import net.minecraftforge.common.util.Constants.NBT;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -38,12 +39,29 @@ public class ElectricItem implements IElectricItem, ICapabilityProvider {
         itemStack.getTagCompound().setLong("Charge", change);
     }
 
+    public void setMaxChargeOverride(long maxCharge) {
+        if (!itemStack.hasTagCompound()) {
+            itemStack.setTagCompound(new NBTTagCompound());
+        }
+        itemStack.getTagCompound().setLong("MaxCharge", maxCharge);
+    }
+
+    @Override
+    public long getMaxCharge() {
+        NBTTagCompound tagCompound = itemStack.getTagCompound();
+        if(tagCompound == null)
+            return maxCharge;
+        if(tagCompound.hasKey("MaxCharge", NBT.TAG_LONG))
+            return tagCompound.getLong("MaxCharge");
+        return maxCharge;
+    }
+
     protected long getCharge() {
         NBTTagCompound tagCompound = itemStack.getTagCompound();
         if(tagCompound == null)
             return 0;
         if(tagCompound.getBoolean("Infinite"))
-            return maxCharge;
+            return getMaxCharge();
         return tagCompound.getLong("Charge");
     }
 
@@ -54,7 +72,7 @@ public class ElectricItem implements IElectricItem, ICapabilityProvider {
 
     @Override
     public long charge(long amount, int chargerTier, boolean ignoreTransferLimit, boolean simulate) {
-        if ((chargeable || amount == Long.MAX_VALUE) && (chargerTier == Integer.MAX_VALUE || tier >= chargerTier) && maxCharge > 0) {
+        if ((chargeable || amount == Long.MAX_VALUE) && (chargerTier == Integer.MAX_VALUE || tier >= chargerTier) && getMaxCharge() > 0) {
             long canReceive = maxCharge - getCharge();
             if (!ignoreTransferLimit) {
                 amount = Math.min(amount, GTValues.V[tier]);
@@ -69,8 +87,8 @@ public class ElectricItem implements IElectricItem, ICapabilityProvider {
     }
 
     @Override
-    public long discharge(long amount, int dischargerTier, boolean ignoreTransferLimit, boolean externally, boolean simulate) {
-        if ((dischargeable || !externally || amount == Long.MAX_VALUE) && (dischargerTier == Integer.MAX_VALUE || dischargerTier >= tier) && maxCharge > 0) {
+    public long discharge(long amount, int chargerTier, boolean ignoreTransferLimit, boolean externally, boolean simulate) {
+        if ((dischargeable || !externally || amount == Long.MAX_VALUE) && (chargerTier == Integer.MAX_VALUE || chargerTier >= tier) && getMaxCharge() > 0) {
             if (!ignoreTransferLimit) {
                 amount = Math.min(amount, GTValues.V[tier]);
             }
@@ -85,13 +103,8 @@ public class ElectricItem implements IElectricItem, ICapabilityProvider {
     }
 
     @Override
-    public long getMaxCharge() {
-        return maxCharge;
-    }
-
-    @Override
     public boolean canUse(long amount) {
-        return maxCharge > 0 && getCharge() >= amount;
+        return getMaxCharge() > 0L && getCharge() >= amount;
     }
 
     @Override
@@ -105,11 +118,11 @@ public class ElectricItem implements IElectricItem, ICapabilityProvider {
 
     @Override
     public void chargeFromArmor(EntityLivingBase entity) {
-        if (maxCharge > 0 && chargeable && getCharge() != maxCharge) {
+        if (getMaxCharge() > 0 && chargeable && getCharge() != getMaxCharge()) {
             entity.getEquipmentAndArmor().forEach(otherStack -> {
                 if (ModHandler.isElectricItem(otherStack, tier)) {
                     IElectricItem capability = otherStack.getCapability(IElectricItem.CAPABILITY_ELECTRIC_ITEM, null);
-                    setChange(getCharge() + capability.discharge(maxCharge - getCharge(), tier, false, true, false));
+                    setChange(getCharge() + capability.discharge(getMaxCharge() - getCharge(), tier, false, true, false));
                 }
             });
         }

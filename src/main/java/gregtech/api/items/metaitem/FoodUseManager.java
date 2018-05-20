@@ -1,30 +1,23 @@
 package gregtech.api.items.metaitem;
 
-import gregtech.api.items.metaitem.stats.IFoodStats;
+import gregtech.api.items.metaitem.stats.IFoodBehavior;
 import gregtech.api.items.metaitem.stats.IItemBehaviour;
 import gregtech.api.items.metaitem.stats.IItemUseManager;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumAction;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.EnumActionResult;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumHand;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
 
 import java.util.List;
 
 public class FoodUseManager implements IItemBehaviour, IItemUseManager {
 
-    private final IFoodStats foodStats;
+    private final IFoodBehavior foodStats;
 
-    public FoodUseManager(IFoodStats foodStats) {
+    public FoodUseManager(IFoodBehavior foodStats) {
         this.foodStats = foodStats;
     }
 
-    public IFoodStats getFoodStats() {
+    public IFoodBehavior getFoodStats() {
         return foodStats;
     }
 

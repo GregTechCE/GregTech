@@ -1,6 +1,6 @@
 package gregtech.api.items.metaitem;
 
-import gregtech.api.items.metaitem.stats.IFoodStats;
+import gregtech.api.items.metaitem.stats.IFoodBehavior;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.RandomPotionEffect;
 import net.minecraft.entity.player.EntityPlayer;
@@ -12,11 +12,11 @@ import javax.annotation.Nullable;
 import java.util.List;
 
 /**
- * Simple {@link IFoodStats} implementation
+ * Simple {@link gregtech.api.items.metaitem.stats.IFoodBehavior} implementation
  *
  * @see gregtech.api.items.metaitem.MetaItem
  */
-public class FoodStats implements IFoodStats {
+public class FoodStats implements IFoodBehavior {
 
     public final int foodLevel;
     public final float saturation;

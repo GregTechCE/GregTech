@@ -4,7 +4,6 @@ import gregtech.api.gui.GuiTextures;
 import gregtech.api.gui.ModularUI;
 import gregtech.api.gui.widgets.AdvancedTextWidget;
 import gregtech.api.gui.widgets.ButtonWidget;
-import gregtech.api.gui.widgets.DynamicLabelWidget;
 import gregtech.api.gui.widgets.LabelWidget;
 import gregtech.api.items.HandUIWrapper;
 import gregtech.api.items.MetaItemUIFactory;
@@ -42,7 +41,7 @@ public class IntCircuitBehaviour implements IItemBehaviour, IUIManager {
     }
 
     @Override
-    public ModularUI createUI(HandUIWrapper holder, EntityPlayer entityPlayer) {
+    public ModularUI createUI(HandUIWrapper holder, EntityPlayer entityPlayer, ItemStack stack) {
         return ModularUI.builder(GuiTextures.BACKGROUND_SMALL, 176, 60)
             .label(9, 8, "metaitem.circuit.integrated.gui")
             .widget(new AdvancedTextWidget(82, 30, components -> addDisplayText(components, holder, entityPlayer), 0x404040))

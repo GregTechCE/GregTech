@@ -6,6 +6,7 @@ import net.minecraftforge.common.capabilities.ICapabilityProvider;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.util.List;
 
 public class CombinedCapabilityProvider implements ICapabilityProvider {
 
@@ -13,6 +14,10 @@ public class CombinedCapabilityProvider implements ICapabilityProvider {
 
     public CombinedCapabilityProvider(ICapabilityProvider... providers) {
         this.providers = providers;
+    }
+
+    public CombinedCapabilityProvider(List<ICapabilityProvider> providers) {
+        this.providers = providers.toArray(new ICapabilityProvider[0]);
     }
 
     @Override

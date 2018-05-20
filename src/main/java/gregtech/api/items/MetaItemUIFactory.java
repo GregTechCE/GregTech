@@ -26,7 +26,7 @@ public class MetaItemUIFactory extends UIFactory<HandUIWrapper> {
     @Override
     protected ModularUI createUITemplate(HandUIWrapper holder, EntityPlayer entityPlayer) {
         ItemStack stack = entityPlayer.getHeldItem(holder.hand);
-        return ((MetaItem) stack.getItem()).getItem(stack).getUIManager().createUI(holder, entityPlayer);
+        return ((MetaItem) stack.getItem()).getItem(stack).getUIManager().createUI(holder, entityPlayer, stack);
     }
 
     @Override

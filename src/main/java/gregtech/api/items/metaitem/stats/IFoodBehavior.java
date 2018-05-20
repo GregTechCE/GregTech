@@ -7,7 +7,7 @@ import net.minecraft.item.ItemStack;
 import javax.annotation.Nullable;
 import java.util.List;
 
-public interface IFoodStats extends IMetaItemStats {
+public interface IFoodBehavior extends IMetaItemStats {
 
     int getFoodLevel(ItemStack itemStack, @Nullable EntityPlayer player);
 
