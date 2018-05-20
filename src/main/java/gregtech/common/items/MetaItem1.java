@@ -312,8 +312,8 @@ public class MetaItem1 extends MaterialMetaItem {
         SENSOR_ZPM = addItem(696, "sensor.zpm");
         SENSOR_UV = addItem(697, "sensor.uv");
 
-        TOOL_DATASTICK = addItem(708, "tool.datastick").setUnificationData(OrePrefix.circuit, MarkerMaterials.Tier.Data);
-        TOOL_DATAORB = addItem(707, "tool.dataorb").setUnificationData(OrePrefix.circuit, MarkerMaterials.Tier.Ultimate);
+        TOOL_DATA_STICK = addItem(708, "tool.datastick").setUnificationData(OrePrefix.circuit, MarkerMaterials.Tier.Data);
+        TOOL_DATA_ORB = addItem(707, "tool.dataorb").setUnificationData(OrePrefix.circuit, MarkerMaterials.Tier.Ultimate);
 
         CIRCUIT_PRIMITIVE = addItem(700, "circuit.primitive").setUnificationData(OrePrefix.circuit, MarkerMaterials.Tier.Primitive);
         CIRCUIT_BASIC = addItem(701, "circuit.basic").setUnificationData(OrePrefix.circuit, MarkerMaterials.Tier.Basic);
@@ -322,7 +322,7 @@ public class MetaItem1 extends MaterialMetaItem {
         CIRCUIT_DATA = addItem(704, "circuit.data").setUnificationData(OrePrefix.circuit, MarkerMaterials.Tier.Data);
         CIRCUIT_ELITE = addItem(705, "circuit.elite").setUnificationData(OrePrefix.circuit, MarkerMaterials.Tier.Elite);
         CIRCUIT_MASTER = addItem(706, "circuit.master").setUnificationData(OrePrefix.circuit, MarkerMaterials.Tier.Master);
-        CIRCUIT_ULTIMATE = TOOL_DATAORB;
+        CIRCUIT_ULTIMATE = TOOL_DATA_ORB;
 
         CIRCUIT_BOARD_BASIC = addItem(710, "circuit.board.basic");
         CIRCUIT_BOARD_ADVANCED = addItem(711, "circuit.board.advanced");

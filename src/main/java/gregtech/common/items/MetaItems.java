@@ -211,8 +211,8 @@ public final class MetaItems {
     public static MetaItem<?>.MetaValueItem SENSOR_ZPM;
     public static MetaItem<?>.MetaValueItem SENSOR_UV;
 
-    public static MetaItem<?>.MetaValueItem TOOL_DATASTICK;
-    public static MetaItem<?>.MetaValueItem TOOL_DATAORB;
+    public static MetaItem<?>.MetaValueItem TOOL_DATA_STICK;
+    public static MetaItem<?>.MetaValueItem TOOL_DATA_ORB;
     public static MetaItem<?>.MetaValueItem CIRCUIT_PRIMITIVE;
     public static MetaItem<?>.MetaValueItem CIRCUIT_BASIC;
     public static MetaItem<?>.MetaValueItem CIRCUIT_GOOD;
@@ -349,19 +349,19 @@ public final class MetaItems {
     public static ToolMetaItem<?>.MetaToolValueItem AXE;
     public static ToolMetaItem<?>.MetaToolValueItem HOE;
     public static ToolMetaItem<?>.MetaToolValueItem SAW;
-    public static ToolMetaItem<?>.MetaToolValueItem HARDHAMMER;
-    public static ToolMetaItem<?>.MetaToolValueItem SOFTHAMMER;
+    public static ToolMetaItem<?>.MetaToolValueItem HARD_HAMMER;
+    public static ToolMetaItem<?>.MetaToolValueItem SOFT_HAMMER;
     public static ToolMetaItem<?>.MetaToolValueItem WRENCH;
     public static ToolMetaItem<?>.MetaToolValueItem FILE;
     public static ToolMetaItem<?>.MetaToolValueItem CROWBAR;
     public static ToolMetaItem<?>.MetaToolValueItem SCREWDRIVER;
     public static ToolMetaItem<?>.MetaToolValueItem MORTAR;
-    public static ToolMetaItem<?>.MetaToolValueItem WIRECUTTER;
+    public static ToolMetaItem<?>.MetaToolValueItem WIRE_CUTTER;
     public static ToolMetaItem<?>.MetaToolValueItem SCOOP;
-    public static ToolMetaItem<?>.MetaToolValueItem BRANCHCUTTER;
-    public static ToolMetaItem<?>.MetaToolValueItem UNIVERSALSPADE;
+    public static ToolMetaItem<?>.MetaToolValueItem BRANCH_CUTTER;
+    public static ToolMetaItem<?>.MetaToolValueItem UNIVERSAL_SPADE;
     public static ToolMetaItem<?>.MetaToolValueItem KNIFE;
-    public static ToolMetaItem<?>.MetaToolValueItem BUTCHERYKNIFE;
+    public static ToolMetaItem<?>.MetaToolValueItem BUTCHERY_KNIFE;
     public static ToolMetaItem<?>.MetaToolValueItem SENSE;
     public static ToolMetaItem<?>.MetaToolValueItem PLOW;
     public static ToolMetaItem<?>.MetaToolValueItem PLUNGER;

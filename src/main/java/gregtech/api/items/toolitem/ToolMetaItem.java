@@ -414,36 +414,60 @@ public class ToolMetaItem<T extends ToolMetaItem<?>.MetaToolValueItem> extends M
 
         @Override
         public ItemStack getStackForm(int amount) {
-            return getStackForm(Materials.Darmstadtium, Materials.Darmstadtium);
+            ItemStack rawStack = super.getStackForm(amount);
+            applyToolNBT(rawStack, Materials.Darmstadtium,
+                toolStats.hasMaterialHandle() ? Materials.Darmstadtium : null);
+            return rawStack;
         }
 
         public ItemStack getStackForm(SolidMaterial primaryMaterial, SolidMaterial handleMaterial) {
-            return getStackForm(primaryMaterial, handleMaterial, 1);
+            ItemStack rawStack = super.getStackForm(1);
+            applyToolNBT(rawStack, primaryMaterial,
+                toolStats.hasMaterialHandle() ? handleMaterial : null);
+            return rawStack;
+        }
+
+        public ItemStack getChargedStack(SolidMaterial primaryMaterial, SolidMaterial handleMaterial, long chargeAmount) {
+            ItemStack rawStack = super.getChargedStack(chargeAmount);
+            applyToolNBT(rawStack, primaryMaterial,
+                toolStats.hasMaterialHandle() ? handleMaterial : null);
+            return rawStack;
+        }
+
+        public ItemStack getMaxChargeOverrideStack(SolidMaterial primaryMaterial, SolidMaterial handleMaterial, long maxCharge) {
+            ItemStack rawStack = super.getMaxChargeOverrideStack(maxCharge);
+            applyToolNBT(rawStack, primaryMaterial,
+                toolStats.hasMaterialHandle() ? handleMaterial : null);
+            return rawStack;
         }
 
         public final ItemStack getStackForm(SolidMaterial primaryMaterial, SolidMaterial handleMaterial, int amount) {
             ItemStack stack = new ItemStack(ToolMetaItem.this, amount, metaItemOffset + metaValue);
             T metaToolValueItem = getItem(stack);
-            if (metaToolValueItem != null && metaToolValueItem.toolStats != null) {
-                NBTTagCompound toolNBT = new NBTTagCompound();
-                ArrayList<SolidMaterial> materials = new ArrayList<>();
-
-                toolNBT.setString("PrimaryMaterial", primaryMaterial.toString());
-                materials.add(primaryMaterial);
-
-                if (this.getToolStats().hasMaterialHandle() && handleMaterial != null) {
-                    toolNBT.setString("HandleMaterial", handleMaterial.toString());
-                    materials.add(handleMaterial);
-                }
-
-                NBTTagCompound nbtTag = new NBTTagCompound();
-                nbtTag.setTag("GT.ToolStats", toolNBT);
-                stack.setTagCompound(nbtTag);
-
-                Map<Enchantment, Integer> enchantments = bakeEnchantmentsMap(materials);
-                EnchantmentHelper.setEnchantments(enchantments, stack);
-            }
             return stack;
+        }
+
+        private void applyToolNBT(ItemStack stack, SolidMaterial primaryMaterial, SolidMaterial handleMaterial) {
+            NBTTagCompound toolNBT = new NBTTagCompound();
+            ArrayList<SolidMaterial> materials = new ArrayList<>();
+
+            toolNBT.setString("PrimaryMaterial", primaryMaterial.toString());
+            materials.add(primaryMaterial);
+
+            if (this.getToolStats().hasMaterialHandle() && handleMaterial != null) {
+                toolNBT.setString("HandleMaterial", handleMaterial.toString());
+                materials.add(handleMaterial);
+            }
+
+            NBTTagCompound nbtTag = stack.getTagCompound();
+            if (nbtTag == null) {
+                nbtTag = new NBTTagCompound();
+            }
+            nbtTag.setTag("GT.ToolStats", toolNBT);
+            stack.setTagCompound(nbtTag);
+
+            Map<Enchantment, Integer> enchantments = bakeEnchantmentsMap(materials);
+            EnchantmentHelper.setEnchantments(enchantments, stack);
         }
 
         private Map<Enchantment, Integer> bakeEnchantmentsMap(Collection<SolidMaterial> materials) {
