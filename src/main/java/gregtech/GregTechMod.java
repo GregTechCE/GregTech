@@ -93,6 +93,7 @@ public class GregTechMod {
         MetaItems.registerOreDict();
         MetaBlocks.registerOreDict();
         MaterialInfoLoader.init();
+        OreProcessingHandler.initializeMetaItems();
         OrePrefix.runMaterialHandlers();
         FuelLoader.registerFuels();
         MetaItems.registerRecipes();

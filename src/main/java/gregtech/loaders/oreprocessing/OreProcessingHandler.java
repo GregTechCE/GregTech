@@ -42,15 +42,6 @@ import static gregtech.api.unification.ore.OrePrefix.noFlag;
 
 public class OreProcessingHandler {
 
-    private static final MetaValueItem[][] batteryItems = {
-        {MetaItems.BATTERY_RE_LV_LITHIUM, MetaItems.BATTERY_RE_LV_CADMIUM, MetaItems.BATTERY_RE_LV_SODIUM},
-        {MetaItems.BATTERY_RE_MV_LITHIUM, MetaItems.BATTERY_RE_MV_CADMIUM, MetaItems.BATTERY_RE_MV_SODIUM},
-        {MetaItems.BATTERY_RE_HV_LITHIUM, MetaItems.BATTERY_RE_HV_CADMIUM, MetaItems.BATTERY_RE_HV_SODIUM}};
-    private static final MetaValueItem[] motorItems = {
-        MetaItems.ELECTRIC_MOTOR_LV, MetaItems.ELECTRIC_MOTOR_MV, MetaItems.ELECTRIC_MOTOR_HV};
-    private static final SolidMaterial[] baseMaterials = {
-        Materials.StainlessSteel, Materials.Titanium, Materials.TungstenSteel};
-
     public void registerProcessing() {
         OrePrefix.log.addProcessingHandler(this::processLog);
         OrePrefix.plank.addProcessingHandler(this::processPlank);
@@ -1678,6 +1669,19 @@ public class OreProcessingHandler {
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+    private static MetaValueItem[] motorItems;
+    private static SolidMaterial[] baseMaterials;
+    private static MetaValueItem[][] batteryItems;
+
+    public static void initializeMetaItems() {
+        motorItems = new MetaValueItem[]{MetaItems.ELECTRIC_MOTOR_LV, MetaItems.ELECTRIC_MOTOR_MV, MetaItems.ELECTRIC_MOTOR_HV};
+        baseMaterials = new SolidMaterial[]{Materials.StainlessSteel, Materials.Titanium, Materials.TungstenSteel};
+        batteryItems = new MetaValueItem[][]{
+            {MetaItems.BATTERY_RE_LV_LITHIUM, MetaItems.BATTERY_RE_LV_CADMIUM, MetaItems.BATTERY_RE_LV_SODIUM},
+            {MetaItems.BATTERY_RE_MV_LITHIUM, MetaItems.BATTERY_RE_MV_CADMIUM, MetaItems.BATTERY_RE_MV_SODIUM},
+            {MetaItems.BATTERY_RE_HV_LITHIUM, MetaItems.BATTERY_RE_HV_CADMIUM, MetaItems.BATTERY_RE_HV_SODIUM}};
+    }
+
     private void processSimpleElectricTool(OrePrefix toolPrefix, SolidMaterial solidMaterial, MetaToolValueItem[] toolItems) {
         for(int i = 0; i < toolItems.length; i++) {
             for(MetaValueItem battery : batteryItems[i]) {
@@ -1873,7 +1877,7 @@ public class OreProcessingHandler {
     private void processFileHead(OrePrefix toolPrefix, Material material) {
         if(!(material instanceof SolidMaterial)) return;
         SolidMaterial solidMaterial = (SolidMaterial) material;
-        processSimpleTool(toolPrefix, solidMaterial, MetaItems.HARD_HAMMER, "I ", " I ", "  h");
+        processSimpleTool(toolPrefix, solidMaterial, MetaItems.HARD_HAMMER, " I ", " I ", "  h");
         if(solidMaterial instanceof MetalMaterial) {
             SolidMaterial handleMaterial = solidMaterial.handleMaterial == null ? Materials.Wood : solidMaterial.handleMaterial;
             ModHandler.addMirroredShapedRecipe(String.format("file_%s", solidMaterial),
