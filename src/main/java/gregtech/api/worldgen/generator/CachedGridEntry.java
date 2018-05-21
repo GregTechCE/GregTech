@@ -120,8 +120,8 @@ public class CachedGridEntry implements IBlockGeneratorAccess {
         int gridSizeX = WorldGeneratorImpl.GRID_SIZE_X * 16;
         int gridSizeZ = WorldGeneratorImpl.GRID_SIZE_Z * 16;
         this.veinCenterX = gridX * gridSizeX + gridRandom.nextInt(gridSizeX);
-        int maximumHeight = Math.min(maxHeight, definition.getHeightLimit()[0]);
-        int minimumHeight = Math.max(3, definition.getHeightLimit()[1]);
+        int maximumHeight = Math.min(maxHeight, definition.getHeightLimit()[1]);
+        int minimumHeight = Math.max(3, definition.getHeightLimit()[0]);
         this.veinCenterY = minimumHeight + gridRandom.nextInt(maximumHeight - minimumHeight);
         this.veinCenterZ = gridZ * gridSizeZ + gridRandom.nextInt(gridSizeZ);
         this.currentOreVein.getShapeGenerator().generate(new XSTR(gridRandom.getSeed()), this);
