@@ -44,6 +44,7 @@ public class WorldGeneratorImpl implements IWorldGenerator {
                 BlockPos topBlockPos = new BlockPos(randomX, 0, randomZ);
                 topBlockPos = world.getTopSolidOrLiquidBlock(topBlockPos).down();
                 IBlockState blockState = world.getBlockState(topBlockPos);
+                System.out.println("Top block pos " + blockState);
                 if (!blockState.isBlockNormalCube() || !blockState.isFullBlock())
                     continue; //do not generate on non-solid blocks
 

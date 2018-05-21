@@ -95,7 +95,7 @@ public class CachedGridEntry implements IBlockGeneratorAccess {
 
         ArrayList<OreDepositDefinition> generatedDeposits = new ArrayList<>();
         int currentCycle = 0;
-        int maxCycles = 2 + gridRandom.next(5);
+        int maxCycles = 1 + gridRandom.next(2);
         while(currentCycle < cachedDepositMap.size() && currentCycle < maxCycles) {
             //instead of removing already generated veins, we swap last element with one we selected
             int randomEntryIndex = GTUtility.getRandomItem(gridRandom, cachedDepositMap, cachedDepositMap.size() - currentCycle);
@@ -120,7 +120,9 @@ public class CachedGridEntry implements IBlockGeneratorAccess {
         int gridSizeX = WorldGeneratorImpl.GRID_SIZE_X * 16;
         int gridSizeZ = WorldGeneratorImpl.GRID_SIZE_Z * 16;
         this.veinCenterX = gridX * gridSizeX + gridRandom.nextInt(gridSizeX);
-        this.veinCenterY = gridRandom.nextInt(maxHeight);
+        int maximumHeight = Math.min(maxHeight, definition.getHeightLimit()[0]);
+        int minimumHeight = Math.max(3, definition.getHeightLimit()[1]);
+        this.veinCenterY = minimumHeight + gridRandom.nextInt(maximumHeight - minimumHeight);
         this.veinCenterZ = gridZ * gridSizeZ + gridRandom.nextInt(gridSizeZ);
         this.currentOreVein.getShapeGenerator().generate(new XSTR(gridRandom.getSeed()), this);
         this.currentOreVein = null;
