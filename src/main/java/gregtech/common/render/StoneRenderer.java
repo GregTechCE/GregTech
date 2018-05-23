@@ -1,5 +1,6 @@
 package gregtech.common.render;
 
+import codechicken.lib.render.BlockRenderer;
 import codechicken.lib.render.CCRenderState;
 import codechicken.lib.render.block.BlockRenderingRegistry;
 import codechicken.lib.render.block.ICCBlockRenderer;
@@ -8,6 +9,8 @@ import codechicken.lib.render.pipeline.IVertexOperation;
 import codechicken.lib.texture.TextureUtils;
 import codechicken.lib.vec.Cuboid6;
 import codechicken.lib.vec.Matrix4;
+import codechicken.lib.vec.Vector3;
+import codechicken.lib.vec.uv.IconTransformation;
 import gregtech.api.render.Textures;
 import gregtech.api.unification.material.type.Material;
 import gregtech.api.util.GTUtility;
@@ -21,6 +24,7 @@ import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.IBlockAccess;
 import org.lwjgl.opengl.GL11;
 
@@ -39,13 +43,9 @@ public class StoneRenderer implements ICCBlockRenderer {
         CCRenderState renderState = CCRenderState.instance();
         renderState.reset();
         renderState.bind(buffer);
-        Cuboid6 boundCuboid = BlockSurfaceRock.getShapeFromBlockPos(pos);
-        Matrix4 identity = new Matrix4();
-        identity.translate(pos.getX(), pos.getY(), pos.getZ());
-        IVertexOperation[] noOperations = new IVertexOperation[0];
-        for(EnumFacing renderSide : EnumFacing.VALUES) {
-            Textures.renderFace(renderState, identity, noOperations, renderSide, boundCuboid, sprite);
-        }
+        renderState.setPipeline(new Vector3(new Vec3d(pos)).translation(), new IconTransformation(sprite));
+        Cuboid6 baseBox = BlockSurfaceRock.getShapeFromBlockPos(pos);
+        BlockRenderer.renderCuboid(renderState, baseBox, 0);
     }
 
     @Override
@@ -55,12 +55,11 @@ public class StoneRenderer implements ICCBlockRenderer {
         renderState.bind(buffer);
         Matrix4 translation = new Matrix4();
         translation.translate(pos.getX(), pos.getY(), pos.getZ());
-        IVertexOperation[] operations = new IVertexOperation[2];
+        IVertexOperation[] operations = new IVertexOperation[1];
         Material material = state.getValue(((BlockSurfaceRock) state.getBlock()).materialProperty);
-        operations[1] = new ColourMultiplier(GTUtility.convertRGBtoOpaqueRGBA(material.materialRGB));
+        operations[0] = new ColourMultiplier(GTUtility.convertRGBtoOpaqueRGBA(material.materialRGB));
         if(world != null) {
-            renderState.lightMatrix.locate(world, pos);
-            operations[0] = renderState.lightMatrix;
+          renderState.setBrightness(world, pos);
         }
         TextureAtlasSprite stoneSprite = TextureUtils.getBlockTexture("stone");
         Cuboid6 baseBox = BlockSurfaceRock.getShapeFromBlockPos(pos);

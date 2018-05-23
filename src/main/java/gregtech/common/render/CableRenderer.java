@@ -1,5 +1,6 @@
 package gregtech.common.render;
 
+import codechicken.lib.render.BlockRenderer;
 import codechicken.lib.render.BlockRenderer.BlockFace;
 import codechicken.lib.render.CCRenderState;
 import codechicken.lib.render.block.BlockRenderingRegistry;
@@ -11,6 +12,7 @@ import codechicken.lib.render.pipeline.IVertexOperation;
 import codechicken.lib.texture.TextureUtils;
 import codechicken.lib.vec.Cuboid6;
 import codechicken.lib.vec.Translation;
+import codechicken.lib.vec.Vector3;
 import codechicken.lib.vec.uv.IconTransformation;
 import gregtech.api.GTValues;
 import gregtech.api.unification.material.MaterialIconSet;
@@ -19,8 +21,10 @@ import gregtech.api.unification.material.type.Material;
 import gregtech.api.unification.material.type.MetalMaterial;
 import gregtech.api.util.GTLog;
 import gregtech.api.util.GTUtility;
+import gregtech.common.blocks.BlockSurfaceRock;
 import gregtech.common.blocks.MetaBlocks;
 import gregtech.common.cable.BlockCable;
+import gregtech.common.cable.ICableTile;
 import gregtech.common.cable.Insulation;
 import gregtech.common.cable.tile.TileEntityCable;
 import net.minecraft.block.state.IBlockState;
@@ -39,6 +43,7 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.client.event.ModelBakeEvent;
 import net.minecraftforge.common.MinecraftForge;
@@ -116,12 +121,11 @@ public class CableRenderer implements ICCBlockRenderer, IItemRenderer, IModelPar
         CCRenderState renderState = CCRenderState.instance();
         renderState.reset();
         renderState.bind(buffer);
-        renderState.lightMatrix.locate(world, pos);
-        IVertexOperation[] pipeline = new IVertexOperation[2];
-        pipeline[0] = new Translation(pos);
-        pipeline[1] = renderState.lightMatrix;
+        IVertexOperation[] pipeline = {new Translation(pos)};
+        renderState.setBrightness(world, pos);
 
-        TileEntityCable tileEntityCable = BlockCable.getCableTileEntity(world, pos);
+        ICableTile tileEntityCable = BlockCable.getCableTileEntity(world, pos);
+        if(tileEntityCable == null) return false;
         int paintingColor = tileEntityCable.getInsulationColor();
         int connectedSidesMask = BlockCable.getActualConnections(tileEntityCable, world, pos);
 
@@ -201,7 +205,22 @@ public class CableRenderer implements ICCBlockRenderer, IItemRenderer, IModelPar
 
     @Override
     public void handleRenderBlockDamage(IBlockAccess world, BlockPos pos, IBlockState state, TextureAtlasSprite sprite, BufferBuilder buffer) {
-        //TODO implement properly
+        CCRenderState renderState = CCRenderState.instance();
+        renderState.reset();
+        renderState.bind(buffer);
+        renderState.setPipeline(new Vector3(new Vec3d(pos)).translation(), new IconTransformation(sprite));
+        ICableTile tileEntityCable = BlockCable.getCableTileEntity(world, pos);
+        if(tileEntityCable == null) return;
+        float thickness = tileEntityCable.getInsulation().thickness;
+        int connectedSidesMask = BlockCable.getActualConnections(tileEntityCable, world, pos);
+        Cuboid6 baseBox = BlockCable.getSideBox(null, thickness);
+        BlockRenderer.renderCuboid(renderState, baseBox, 0);
+        for(EnumFacing renderSide : EnumFacing.VALUES) {
+            if((connectedSidesMask & (1 << renderSide.getIndex())) > 0) {
+                Cuboid6 sideBox = BlockCable.getSideBox(renderSide, thickness);
+                BlockRenderer.renderCuboid(renderState, sideBox, 0);
+            }
+        }
     }
 
     @Override

@@ -1,9 +1,7 @@
 package gregtech.common.cable.tile;
 
 import gregtech.api.capability.IEnergyContainer;
-import gregtech.common.cable.BlockCable;
-import gregtech.common.cable.RoutePath;
-import gregtech.common.cable.WireProperties;
+import gregtech.common.cable.*;
 import gregtech.common.cable.net.EnergyNet;
 import gregtech.common.cable.net.WorldENet;
 import net.minecraft.block.state.IBlockState;
@@ -12,12 +10,14 @@ import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
 
 import javax.annotation.Nullable;
 import java.util.List;
 
-public class TileEntityCable extends TileEntity {
+public class TileEntityCable extends TileEntity implements ICableTile {
 
     public static final int DEFAULT_INSULATION_COLOR = 0x777777;
 
@@ -25,16 +25,21 @@ public class TileEntityCable extends TileEntity {
     private int blockedConnections = 0;
     private int insulationColor = DEFAULT_INSULATION_COLOR;
 
-    public WireProperties getCableProperties() {
-        IBlockState blockState = getCableState();
-        return ((BlockCable) blockState.getBlock()).getProperties(blockState.getValue(BlockCable.INSULATION));
-    }
-
-    public IBlockState getCableState() {
+    private IBlockState getCableState() {
         if(cableState == null) {
             cableState = getWorld().getBlockState(getPos());
         }
         return cableState;
+    }
+
+    @Override
+    public World getCableWorld() {
+        return getWorld();
+    }
+
+    @Override
+    public BlockPos getCablePos() {
+        return getPos();
     }
 
     public int getBlockedConnections() {
@@ -44,20 +49,31 @@ public class TileEntityCable extends TileEntity {
     public void setBlockedConnections(int blockedConnections) {
         this.blockedConnections = blockedConnections;
         if(!getWorld().isRemote) {
-            BlockCable.updateCableConnections(getWorld(), getPos());
+            BlockCable.updateCableConnections(this, getWorld(), getPos());
             updateClientState();
             markDirty();
         }
     }
 
+    @Override
     public int getInsulationColor() {
         return insulationColor;
+    }
+
+    @Override
+    public Insulation getInsulation() {
+        return getCableState().getValue(BlockCable.INSULATION);
+    }
+
+    @Override
+    public WireProperties getWireProperties() {
+        return ((BlockCable) getCableState().getBlock()).getProperties(getInsulation());
     }
 
     public void setInsulationColor(int insulationColor) {
         this.insulationColor = insulationColor;
         if(!getWorld().isRemote) {
-            BlockCable.updateCableConnections(getWorld(), getPos());
+            BlockCable.updateCableConnections(this, getWorld(), getPos());
             updateClientState();
             markDirty();
         }
@@ -107,8 +123,6 @@ public class TileEntityCable extends TileEntity {
     ///////////////////////////////// E-NET EMITTING AND PATHS STUFF /////////////////////////
 
     private IEnergyContainer energyContainer;
-    private long lastCachedPathsTime;
-    private List<RoutePath> pathsCache;
 
     private IEnergyContainer getEnergyContainer() {
         if(energyContainer == null) {
@@ -116,25 +130,6 @@ public class TileEntityCable extends TileEntity {
         }
         return energyContainer;
     }
-
-    private void recomputePaths(EnergyNet energyNet) {
-        this.lastCachedPathsTime = System.currentTimeMillis();
-        this.pathsCache = energyNet.computePatches(getPos());
-    }
-
-    public List<RoutePath> getPaths() {
-        EnergyNet energyNet = getEnergyNet();
-        if(pathsCache == null || energyNet.getLastUpdatedTime() > lastCachedPathsTime) {
-            recomputePaths(energyNet);
-        }
-        return pathsCache;
-    }
-
-    public EnergyNet getEnergyNet() {
-        WorldENet worldENet = WorldENet.getWorldENet(getWorld());
-        return worldENet.getNetFromPos(getPos());
-    }
-
 
     @Override
     public boolean hasCapability(Capability<?> capability, @Nullable EnumFacing facing) {

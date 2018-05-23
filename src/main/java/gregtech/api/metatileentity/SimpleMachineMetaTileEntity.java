@@ -49,6 +49,18 @@ public class SimpleMachineMetaTileEntity extends WorkableTieredMetaTileEntity {
     }
 
     @Override
+    public boolean onWrenchClick(EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+        if(!playerIn.isSneaking()) {
+            EnumFacing currentOutputSide = getOutputFacing();
+            if(currentOutputSide == facing ||
+                getFrontFacing() == facing) return false;
+            setOutputFacing(facing);
+            return true;
+        }
+        return super.onWrenchClick(playerIn, hand, facing, hitX, hitY, hitZ);
+    }
+
+    @Override
     @SideOnly(Side.CLIENT)
     public void renderMetaTileEntity(CCRenderState renderState, Matrix4 translation, IVertexOperation[] pipeline) {
         super.renderMetaTileEntity(renderState, translation, pipeline);

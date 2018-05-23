@@ -4,6 +4,7 @@ import codechicken.lib.render.CCRenderState;
 import codechicken.lib.render.pipeline.ColourMultiplier;
 import codechicken.lib.render.pipeline.IVertexOperation;
 import codechicken.lib.vec.Matrix4;
+import com.sun.org.apache.regexp.internal.RE;
 import gregtech.api.GTValues;
 import gregtech.api.capability.impl.FilteredFluidHandler;
 import gregtech.api.capability.impl.FluidTankList;
@@ -20,6 +21,8 @@ import gregtech.api.render.Textures;
 import gregtech.api.util.GTUtility;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
 import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -60,6 +63,18 @@ public abstract class SteamMetaTileEntity extends MetaTileEntity {
                 return Textures.STEAM_CASING_BRONZE;
             }
         }
+    }
+
+    @Override
+    public boolean onWrenchClick(EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+        if(!playerIn.isSneaking()) {
+            EnumFacing currentVentingSide = workableHandler.getVentingSide();
+            if(currentVentingSide == facing ||
+                getFrontFacing() == facing) return false;
+            workableHandler.setVentingSide(facing);
+            return true;
+        }
+        return super.onWrenchClick(playerIn, hand, facing, hitX, hitY, hitZ);
     }
 
     @Override

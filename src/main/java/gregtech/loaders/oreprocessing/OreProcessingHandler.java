@@ -147,12 +147,17 @@ public class OreProcessingHandler {
                         .explosivesAmount(4)
                         .buildAndRegister();
                 }
-            } else if (material instanceof MetalMaterial && !material.hasFlag(Material.MatFlags.FLAMMABLE | DustMaterial.MatFlags.NO_SMELTING)) {
+            } else if (material instanceof MetalMaterial &&
+                !material.hasFlag(Material.MatFlags.FLAMMABLE | DustMaterial.MatFlags.NO_SMELTING)) {
                 MetalMaterial metalMaterial = (MetalMaterial) material;
 
                 ItemStack tinyDustStack = OreDictUnifier.get(OrePrefix.dustTiny, metalMaterial);
                 ItemStack ingotStack = OreDictUnifier.get(OrePrefix.ingot, metalMaterial);
                 ItemStack nuggetStack = OreDictUnifier.get(OrePrefix.nugget, metalMaterial);
+
+                if(ingotStack.isEmpty()) {
+                    GTLog.logger.fatal("INGOT ITEM STACK NULL FOR METAL MATERIAL " + metalMaterial);
+                }
 
                 if (metalMaterial.blastFurnaceTemperature <= 0) {
                     ModHandler.addSmeltingRecipe(dustStack, ingotStack);

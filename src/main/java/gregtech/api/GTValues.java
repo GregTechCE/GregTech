@@ -66,7 +66,7 @@ public class GTValues {
             MODID_RC = "Railcraft",
             MODID_FR = "Forestry",
             MODID_JEI = "jei",
-            MODID_MCMP = "mcmultipart";
+            MODID_FMP = "forgemultipartcbe";
 
     /**
      * If you have to give something a World Parameter but there is no World... (Dummy World)

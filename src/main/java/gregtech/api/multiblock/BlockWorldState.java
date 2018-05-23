@@ -8,6 +8,7 @@ import net.minecraft.util.math.BlockPos.MutableBlockPos;
 import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
+import java.util.function.Predicate;
 
 public class BlockWorldState {
 
@@ -17,6 +18,10 @@ public class BlockWorldState {
     private TileEntity tileEntity;
     private boolean tileEntityInitialized;
     private PatternMatchContext matchContext;
+
+    public static IPatternCenterPredicate wrap(Predicate<BlockWorldState> predicate) {
+        return predicate::test;
+    }
 
     public void update(World worldIn, BlockPos posIn, PatternMatchContext matchContext) {
         this.world = worldIn;

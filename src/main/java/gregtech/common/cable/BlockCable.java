@@ -4,6 +4,7 @@ import codechicken.lib.raytracer.IndexedCuboid6;
 import codechicken.lib.raytracer.RayTracer;
 import codechicken.lib.render.particle.CustomParticleHandler;
 import codechicken.lib.vec.Cuboid6;
+import codechicken.multipart.TileMultipart;
 import gregtech.api.GTValues;
 import gregtech.api.GregTechAPI;
 import gregtech.api.capability.IEnergyContainer;
@@ -11,15 +12,8 @@ import gregtech.api.unification.material.type.Material;
 import gregtech.common.cable.net.EnergyNet;
 import gregtech.common.cable.net.WorldENet;
 import gregtech.common.cable.tile.TileEntityCable;
+import gregtech.common.multipart.CableMultiPart;
 import gregtech.common.render.CableRenderer;
-import mcmultipart.api.container.IMultipartContainer;
-import mcmultipart.api.container.IPartInfo;
-import mcmultipart.api.multipart.IMultipart;
-import mcmultipart.api.multipart.IMultipartTile;
-import mcmultipart.api.ref.MCMPCapabilities;
-import mcmultipart.api.slot.EnumCenterSlot;
-import mcmultipart.api.slot.EnumFaceSlot;
-import mcmultipart.api.slot.IPartSlot;
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.SoundType;
@@ -40,23 +34,20 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.Optional.Interface;
-import net.minecraftforge.fml.common.Optional.Method;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
-@Interface(iface = "mcmultipart.api.multipart.IMultipart", modid = GTValues.MODID_MCMP)
-public class BlockCable extends Block implements ITileEntityProvider, IMultipart {
+public class BlockCable extends Block implements ITileEntityProvider {
 
     public static final PropertyEnum<Insulation> INSULATION = PropertyEnum.create("insulation", Insulation.class);
 
@@ -100,7 +91,7 @@ public class BlockCable extends Block implements ITileEntityProvider, IMultipart
     }
 
     private List<IndexedCuboid6> getCollisionBox(IBlockAccess world, BlockPos pos, IBlockState state) {
-        TileEntityCable tileEntityCable = getCableTileEntity(world, pos);
+        TileEntityCable tileEntityCable = (TileEntityCable) getCableTileEntity(world, pos);
         int actualConnections = getActualConnections(tileEntityCable, world, pos);
         float thickness = state.getValue(INSULATION).thickness;
         ArrayList<IndexedCuboid6> result = new ArrayList<>();
@@ -129,40 +120,45 @@ public class BlockCable extends Block implements ITileEntityProvider, IMultipart
     //////////////////////////////// E-NET STUFF ////////////////////////////////////////////
 
     /**
-     * Just returns proper cable tile entity, taking mc multipart into account
+     * Just returns proper cable tile entity
      */
-    public static TileEntityCable getCableTileEntity(IBlockAccess world, BlockPos selfPos) {
+    public static ICableTile getCableTileEntity(IBlockAccess world, BlockPos selfPos) {
         TileEntity tileEntityAtPos = world.getTileEntity(selfPos);
         if(tileEntityAtPos instanceof TileEntityCable) {
             return ((TileEntityCable) tileEntityAtPos);
-        } else if(tileEntityAtPos != null && Loader.isModLoaded(GTValues.MODID_MCMP)) {
-            IMultipartContainer container = tileEntityAtPos.getCapability(MCMPCapabilities.MULTIPART_CONTAINER, null);
-            IMultipart partInfoInSlot = container == null ? null : container.getPart(EnumCenterSlot.CENTER).orElse(null);
-            if(partInfoInSlot instanceof BlockCable) {
-                return (TileEntityCable) container.getPartTile(EnumCenterSlot.CENTER).
-                    map(IMultipartTile::getTileEntity).get();
-            }
+        } else if(Loader.isModLoaded(GTValues.MODID_FMP)) {
+            return tryGetMultipartTile(tileEntityAtPos);
+        }
+        return null;
+    }
+
+    private static ICableTile tryGetMultipartTile(TileEntity tileEntityAtPos) {
+        if(tileEntityAtPos instanceof TileMultipart) {
+            TileMultipart tileMultipart = (TileMultipart) tileEntityAtPos;
+            return (ICableTile) tileMultipart.jPartList().stream()
+                .filter(part -> part instanceof CableMultiPart)
+                .findFirst().orElse(null);
         }
         return null;
     }
 
 
     /**
-     * Tests whatever cable at given position can connect to cable ron fromFacing face with fromColor color
-     * @return 0 - not a cable; 1 - cable but blocked; 2 - accessible
+     * Tests whatever cable at given position can connect to cable from fromFacing face with fromColor color
+     * @return 0 - not a cable; 1 - cable but blocked; 2,3 - accessible
      */
-    public static int isCableAccessibleAtSide(IBlockAccess world, BlockPos pos, EnumFacing fromFacing, int fromColor, float selfThickness) {
-        TileEntityCable tileEntityCable = getCableTileEntity(world, pos);
+    private static int isCableAccessibleAtSide(IBlockAccess world, BlockPos pos, EnumFacing fromFacing, int fromColor, float selfThickness) {
+        ICableTile tileEntityCable = getCableTileEntity(world, pos);
         if(tileEntityCable == null)
             return 0;
-        if((tileEntityCable.getBlockedConnections() & 1 << fromFacing.getIndex()) > 0)
+        if((tileEntityCable.getBlockedConnections() & (1 << fromFacing.getIndex())) > 0)
             return 1;
 
         if(fromColor != TileEntityCable.DEFAULT_INSULATION_COLOR &&
             tileEntityCable.getInsulationColor() != TileEntityCable.DEFAULT_INSULATION_COLOR &&
             fromColor != tileEntityCable.getInsulationColor())
             return 1;
-        float thickness = tileEntityCable.getCableState().getValue(INSULATION).thickness;
+        float thickness = tileEntityCable.getInsulation().thickness;
         return selfThickness > thickness ? 3 : 2;
     }
 
@@ -171,16 +167,13 @@ public class BlockCable extends Block implements ITileEntityProvider, IMultipart
      * attachToNetwork(). This is useful when you change blocked connections,
      * wire color or cover placement, which causes network to recompute paths
      */
-    public static void updateCableConnections(World world, BlockPos blockPos) {
+    public static void updateCableConnections(ICableTile cableTile, World world, BlockPos blockPos) {
         WorldENet worldENet = WorldENet.getWorldENet(world);
         EnergyNet energyNet = worldENet.getNetFromPos(blockPos);
-        TileEntityCable tileEntityCable = getCableTileEntity(world, blockPos);
-        int blockedConnections = tileEntityCable.getBlockedConnections();
         if(energyNet != null) {
             //if should update node, remove it from current network and attach again
-            IBlockState blockState = world.getBlockState(blockPos);
             energyNet.removeNode(blockPos);
-            ((BlockCable) blockState.getBlock()).attachNoNearbyNetwork(world, blockPos, blockState);
+            attachNoNearbyNetwork(world, blockPos, cableTile);
         }
     }
 
@@ -188,15 +181,15 @@ public class BlockCable extends Block implements ITileEntityProvider, IMultipart
      * Returns bit mask of actual cable connections, including cable-cable and cable-receiver
      * connections. but excluding unaccessible covers on blocked sides
      */
-    public static int getActualConnections(TileEntityCable selfTile, IBlockAccess world, BlockPos blockPos) {
+    public static int getActualConnections(ICableTile selfTile, IBlockAccess world, BlockPos blockPos) {
         int connectedSidesMask = 0;
         for(EnumFacing enumFacing : EnumFacing.VALUES) {
-            if((selfTile.getBlockedConnections() & 1 << enumFacing.getIndex()) > 0)
+            if((selfTile.getBlockedConnections() & (1 << enumFacing.getIndex())) > 0)
                 continue; //do not check blocked connection sides
             BlockPos offsetPos = blockPos.offset(enumFacing);
             IBlockState blockState = world.getBlockState(offsetPos);
             int cableState = isCableAccessibleAtSide(world, offsetPos, enumFacing.getOpposite(), selfTile.getInsulationColor(),
-                selfTile.getCableState().getValue(INSULATION).thickness);
+                selfTile.getInsulation().thickness);
             if(cableState >= 2) {
                 connectedSidesMask |= 1 << enumFacing.getIndex();
                 if(cableState >= 3) {
@@ -212,20 +205,17 @@ public class BlockCable extends Block implements ITileEntityProvider, IMultipart
         return connectedSidesMask;
     }
 
-    private void attachNoNearbyNetwork(World worldIn, BlockPos pos, IBlockState state) {
+    public static void attachNoNearbyNetwork(World worldIn, BlockPos pos, ICableTile cableTile) {
         boolean hasCapability = hasEnergyCapabilities(worldIn, pos);
-        TileEntityCable tileEntityCable = getCableTileEntity(worldIn, pos);
-        int blockedConnections = tileEntityCable.getBlockedConnections();
         WorldENet worldENet = WorldENet.getWorldENet(worldIn);
         EnergyNet energyNet = null;
 
         for(EnumFacing facing : EnumFacing.VALUES) {
-            if((blockedConnections & 1 << facing.getIndex()) > 0) {
+            if((cableTile.getBlockedConnections() & (1 << facing.getIndex())) > 0)
                 continue; //do not search blocked sides
-            }
             BlockPos offsetPos = pos.offset(facing);
-            int cableState = isCableAccessibleAtSide(worldIn, offsetPos, facing.getOpposite(), tileEntityCable.getInsulationColor(),
-                tileEntityCable.getCableState().getValue(INSULATION).thickness);
+            int cableState = isCableAccessibleAtSide(worldIn, offsetPos, facing.getOpposite(),
+                cableTile.getInsulationColor(), cableTile.getInsulation().thickness);
             if(cableState >= 2) {
                 EnergyNet offsetEnergyNet = worldENet.getNetFromPos(offsetPos);
                 if(offsetEnergyNet == null) {
@@ -233,7 +223,7 @@ public class BlockCable extends Block implements ITileEntityProvider, IMultipart
                 }
                 if(energyNet == null) {
                     energyNet = offsetEnergyNet;
-                    energyNet.addNode(pos, getProperties(state.getValue(INSULATION)), blockedConnections);
+                    energyNet.addNode(pos, cableTile.getWireProperties(), cableTile.getBlockedConnections());
                 } else if(energyNet != offsetEnergyNet) {
                     //if there is another e-net here, unite with it
                     energyNet.uniteNetworks(offsetEnergyNet);
@@ -243,7 +233,7 @@ public class BlockCable extends Block implements ITileEntityProvider, IMultipart
 
         if(energyNet == null) {
             energyNet = new EnergyNet(worldENet);
-            energyNet.addNode(pos, getProperties(state.getValue(INSULATION)), blockedConnections);
+            energyNet.addNode(pos, cableTile.getWireProperties(), cableTile.getBlockedConnections());
             worldENet.addEnergyNet(energyNet);
             worldENet.markDirty();
         }
@@ -253,7 +243,8 @@ public class BlockCable extends Block implements ITileEntityProvider, IMultipart
         }
     }
 
-    private void detachFromNetwork(World worldIn, BlockPos pos) {
+
+    public static void detachFromNetwork(World worldIn, BlockPos pos) {
         WorldENet worldENet = WorldENet.getWorldENet(worldIn);
         EnergyNet energyNet = worldENet.getNetFromPos(pos);
         if(energyNet != null) {
@@ -265,7 +256,8 @@ public class BlockCable extends Block implements ITileEntityProvider, IMultipart
         for(EnumFacing facing : EnumFacing.VALUES) {
             BlockPos offsetPos = pos.offset(facing);
             TileEntity tileEntity = worldIn.getTileEntity(offsetPos);
-            if(tileEntity == null || tileEntity instanceof TileEntityCable) continue;
+            //do not connect to null cables and ignore cables
+            if(tileEntity == null || getCableTileEntity(worldIn, offsetPos) != null) continue;
             EnumFacing opposite = facing.getOpposite();
             IEnergyContainer energyContainer = tileEntity.getCapability(IEnergyContainer.CAPABILITY_ENERGY_CONTAINER, opposite);
             if(energyContainer != null)
@@ -276,7 +268,7 @@ public class BlockCable extends Block implements ITileEntityProvider, IMultipart
 
     ////////////////////////////// BLOCK METHODS /////////////////////////////////////
 
-    protected void initPropsCache() {
+    private void initPropsCache() {
         Insulation[] insulationArray = Insulation.values();
         this.insulatedPropsCache = new WireProperties[insulationArray.length];
         for(int i = 0; i < insulationArray.length; i++) {
@@ -337,7 +329,7 @@ public class BlockCable extends Block implements ITileEntityProvider, IMultipart
     @Override
     public boolean recolorBlock(World world, BlockPos pos, EnumFacing side, EnumDyeColor color) {
         TileEntityCable tileEntityCable = (TileEntityCable) world.getTileEntity(pos);
-        if(world.getBlockState(pos).getValue(INSULATION).insulationLevel != -1 &&
+        if(tileEntityCable != null && world.getBlockState(pos).getValue(INSULATION).insulationLevel != -1 &&
             tileEntityCable.getInsulationColor() != color.colorValue) {
             tileEntityCable.setInsulationColor(color.colorValue);
             return true;
@@ -345,22 +337,18 @@ public class BlockCable extends Block implements ITileEntityProvider, IMultipart
         return false;
     }
 
-    /*@Override
+    @Override
     public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
-        if(!worldIn.isRemote && GTValues.DEBUG) {
+        if(!worldIn.isRemote) {
             WorldENet worldENet = WorldENet.getWorldENet(worldIn);
             EnergyNet energyNet = worldENet.getNetFromPos(pos);
             playerIn.sendMessage(new TextComponentString("Energy net: " + energyNet));
             playerIn.sendMessage(new TextComponentString("All nodes: " + energyNet.getAllNodes().keySet()));
             playerIn.sendMessage(new TextComponentString("Active nodes: " + energyNet.getActiveNodes()));
             playerIn.sendMessage(new TextComponentString("Last update: " + energyNet.getLastUpdatedTime()));
-            TileEntityCable tileEntityCable = (TileEntityCable) worldIn.getTileEntity(pos);
-            if(hasEnergyCapabilities(worldIn, pos)) {
-                playerIn.sendMessage(new TextComponentString("Emit paths: " + tileEntityCable.getPaths()));
-            }
         }
         return false;
-    }*/
+    }
 
     @Override
     public void breakBlock(World worldIn, BlockPos pos, IBlockState state) {
@@ -370,7 +358,8 @@ public class BlockCable extends Block implements ITileEntityProvider, IMultipart
 
     @Override
     public void onBlockAdded(World worldIn, BlockPos pos, IBlockState state) {
-        attachNoNearbyNetwork(worldIn, pos, state);
+        Insulation insulation = state.getValue(INSULATION);
+        attachNoNearbyNetwork(worldIn, pos, new SimpleCableTile(insulation, getProperties(insulation)));
     }
 
     @Override
@@ -420,6 +409,7 @@ public class BlockCable extends Block implements ITileEntityProvider, IMultipart
     public TileEntity createNewTileEntity(World worldIn, int meta) {
         return new TileEntityCable();
     }
+
     ///////////////////////////////////////// PARTICLE HANDLING ////////////////////////////////////////////////////
 
     @Override
@@ -441,70 +431,6 @@ public class BlockCable extends Block implements ITileEntityProvider, IMultipart
     @Override
     public boolean addRunningEffects(IBlockState state, World world, BlockPos pos, Entity entity) {
         return true;
-    }
-
-    ///////////////////////////////////////// MULTIPART HANDLING ////////////////////////////////////////////////////
-
-    @Override
-    @Method(modid = GTValues.MODID_MCMP)
-    public IPartSlot getSlotForPlacement(World world, BlockPos pos, IBlockState state, EnumFacing facing, float hitX, float hitY, float hitZ, EntityLivingBase placer) {
-        return EnumCenterSlot.CENTER;
-    }
-
-    @Override
-    @Method(modid = GTValues.MODID_MCMP)
-    public IPartSlot getSlotFromWorld(IBlockAccess world, BlockPos pos, IBlockState state) {
-        return EnumCenterSlot.CENTER;
-    }
-
-    @Override
-    @Method(modid = GTValues.MODID_MCMP)
-    public IMultipartTile convertToMultipartTile(TileEntity tileEntity) {
-        return IMultipartTile.wrap(tileEntity);
-    }
-
-    @Override
-    @Method(modid = GTValues.MODID_MCMP)
-    public List<AxisAlignedBB> getOcclusionBoxes(IPartInfo part) {
-        return getCollisionBox(part.getPartWorld(), part.getPartPos(), part.getState())
-            .stream().map(Cuboid6::aabb).collect(Collectors.toList());
-    }
-
-    @Override
-    @Method(modid = GTValues.MODID_MCMP)
-    public void onAdded(IPartInfo part) {
-        int blockedConnections = 0;
-        for(EnumFacing face : EnumFacing.VALUES) {
-            Optional<IMultipart> partInSlot = part.getContainer().getPart(EnumFaceSlot.fromFace(face));
-            if(partInSlot.isPresent()) {
-                blockedConnections |= 1 << face.getIndex();
-            }
-        }
-        TileEntityCable tileEntity = (TileEntityCable) part.getTile().getTileEntity();
-        tileEntity.setBlockedConnections(blockedConnections);
-        onBlockAdded(part.getPartWorld(), part.getPartPos(), part.getState());
-    }
-
-    @Override
-    @Method(modid = GTValues.MODID_MCMP)
-    public void onPartAdded(IPartInfo part, IPartInfo otherPart) {
-        if(otherPart.getSlot() instanceof EnumFaceSlot) {
-            TileEntityCable tileEntity = (TileEntityCable) part.getTile().getTileEntity();
-            int blockedConnections = tileEntity.getBlockedConnections();
-            blockedConnections |= 1 << ((EnumFaceSlot) otherPart.getSlot()).getFacing().getIndex();
-            tileEntity.setBlockedConnections(blockedConnections);
-        }
-    }
-
-    @Override
-    @Method(modid = GTValues.MODID_MCMP)
-    public void onPartRemoved(IPartInfo part, IPartInfo otherPart) {
-        if(otherPart.getSlot() instanceof EnumFaceSlot) {
-            TileEntityCable tileEntity = (TileEntityCable) part.getTile().getTileEntity();
-            int blockedConnections = tileEntity.getBlockedConnections();
-            blockedConnections &= ~(1 << ((EnumFaceSlot) otherPart.getSlot()).getFacing().getIndex());
-            tileEntity.setBlockedConnections(blockedConnections);
-        }
     }
 
 }

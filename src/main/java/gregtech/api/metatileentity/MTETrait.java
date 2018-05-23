@@ -12,11 +12,10 @@ import java.util.function.Consumer;
 public abstract class MTETrait {
 
     protected MetaTileEntity metaTileEntity;
-    protected int index;
 
     public MTETrait(MetaTileEntity metaTileEntity) {
         this.metaTileEntity = metaTileEntity;
-        this.index = metaTileEntity.addMetaTileEntityTrait(this);
+        metaTileEntity.addMetaTileEntityTrait(this);
     }
 
     public MetaTileEntity getMetaTileEntity() {
@@ -57,13 +56,16 @@ public abstract class MTETrait {
 
     public final void writeCustomData(int id, Consumer<PacketBuffer> writer) {
         Preconditions.checkElementIndex(id, 100, "Only 0-100 sync ids allowed");
-        metaTileEntity.writeCustomData(index * 100 + id, writer);
+        metaTileEntity.writeCustomData(-4, buffer -> {
+            buffer.writeString(getName());
+            buffer.writeInt(id);
+            writer.accept(buffer);
+        });
     }
 
-    final void readSyncData(int id, PacketBuffer buffer) {
-        if(id >= index * 100 && id < (index + 1) * 100) {
-            receiveCustomData(id - index * 100, buffer);
-        }
+    final void readSyncData(PacketBuffer buffer) {
+        int internalId = buffer.readInt();
+        receiveCustomData(internalId, buffer);
     }
 
 }

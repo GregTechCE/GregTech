@@ -20,7 +20,6 @@ import java.util.*;
 public class WorldGeneratorImpl implements IWorldGenerator {
 
     public static final int GRID_SIZE_X = 3;
-    public static final int GRID_SIZE_Y = 3;
     public static final int GRID_SIZE_Z = 3;
 
     @Override
@@ -44,7 +43,6 @@ public class WorldGeneratorImpl implements IWorldGenerator {
                 BlockPos topBlockPos = new BlockPos(randomX, 0, randomZ);
                 topBlockPos = world.getTopSolidOrLiquidBlock(topBlockPos).down();
                 IBlockState blockState = world.getBlockState(topBlockPos);
-                System.out.println("Top block pos " + blockState);
                 if (!blockState.isBlockNormalCube() || !blockState.isFullBlock())
                     continue; //do not generate on non-solid blocks
 
@@ -64,7 +62,6 @@ public class WorldGeneratorImpl implements IWorldGenerator {
     private List<OreDepositDefinition> generateInternal(World world, int selfGridX, int selfGridZ, int chunkX, int chunkZ) {
         List<OreDepositDefinition> allGeneratedOres = Collections.emptyList();
         int halfSizeX = (GRID_SIZE_X - 1) / 2;
-        int halfSizeY = (GRID_SIZE_Y - 1) / 2;
         int halfSizeZ = (GRID_SIZE_Z - 1) / 2;
         for(int gridX = -halfSizeX; gridX <= halfSizeX; gridX++) {
                 for(int gridZ = -halfSizeZ; gridZ <= halfSizeZ; gridZ++) {

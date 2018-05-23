@@ -125,16 +125,17 @@ public class OreConfigUtils {
                 throw new IllegalArgumentException("Missing required type for block state predicate");
             }
             String predicateType = object.get("type").getAsString();
-            if(predicateType.equals("random")) {
-                return createRandomStateFiller(object);
-            } else if(predicateType.equals("weight_random")) {
-                return createWeightRandomStateFiller(object);
-            } else if(predicateType.equals("stone_type_match")) {
-                return createStoneTypeMatchFiller(object);
-            } else if(predicateType.equals("state_match")) {
-                return createBlockStateFiller(object);
-            } else {
-                throw new IllegalArgumentException("Unknown filler match type: " + predicateType);
+            switch (predicateType) {
+                case "random":
+                    return createRandomStateFiller(object);
+                case "weight_random":
+                    return createWeightRandomStateFiller(object);
+                case "stone_type_match":
+                    return createStoneTypeMatchFiller(object);
+                case "state_match":
+                    return createStateMatchFiller(object);
+                default:
+                    throw new IllegalArgumentException("Unknown filler match type: " + predicateType);
             }
         } else {
             throw new IllegalArgumentException("Unknown block state type " + element);
@@ -158,8 +159,12 @@ public class OreConfigUtils {
             Map<StoneType, IBlockState> blockStateMap = getOreStateMap(stringDeclaration);
             return stoneState -> {
                 StoneType stoneType = StoneType.computeStoneType(stoneState);
+                //use stone as fallback stone type for ore type defining
                 if(stoneType == StoneTypes._NULL)
-                    stoneType = StoneTypes.STONE; //use stone as fallback stone type for ore type defining
+                    stoneType = StoneTypes.STONE;
+                //if given stone type block doesn't exist, fallback to first existing
+                if(!blockStateMap.containsKey(stoneType))
+                    stoneType = blockStateMap.keySet().iterator().next();
                 return blockStateMap.get(stoneType);
             };
         } else if(stringDeclaration.startsWith("ore_dict:")) {
@@ -274,6 +279,7 @@ public class OreConfigUtils {
                 @SuppressWarnings("UnnecessaryLocalVariable")
                 IProperty areYouFuckingSerious = property;
                 Comparable fuckJava = (Comparable) parsedValue.get();
+                //noinspection unchecked
                 blockState = blockState.withProperty(areYouFuckingSerious, fuckJava);
             }
         }
@@ -369,7 +375,7 @@ public class OreConfigUtils {
         ArrayList<IBlockState> allBlocks = new ArrayList<>();
         for(ItemStack oreStack : allOres) {
             Block itemStackBlock = Block.getBlockFromItem(oreStack.getItem());
-            if(itemStackBlock == null)
+            if(itemStackBlock == Blocks.AIR)
                 continue;
             int placementMetadata = oreStack.getItem().getMetadata(oreStack.getMetadata());
             IBlockState placementState = itemStackBlock.getStateFromMeta(placementMetadata);
@@ -386,7 +392,7 @@ public class OreConfigUtils {
         if(stringDeclaration.startsWith("ore:")) {
             materialName = stringDeclaration.substring(4);
         } else {
-            throw new IllegalArgumentException("Invalid string ore decl: " + stringDeclaration);
+            throw new IllegalArgumentException("Invalid string ore declaration: " + stringDeclaration);
         }
         DustMaterial material = getMaterialByName(materialName);
         return getOreForMaterial(material);
@@ -402,6 +408,9 @@ public class OreConfigUtils {
                 IBlockState blockState = blockOre.getOreBlock(stoneType);
                 stoneTypeMap.put(stoneType, blockState);
             }
+        }
+        if(stoneTypeMap.isEmpty()) {
+            throw new IllegalArgumentException("There is no ore generated for material " + material);
         }
         return stoneTypeMap;
     }
@@ -421,4 +430,22 @@ public class OreConfigUtils {
         return block;
     }
 
+    public static int[] getIntRange(JsonElement element) {
+        if(element.isJsonArray()) {
+            JsonArray dataArray = element.getAsJsonArray();
+            int min = dataArray.get(0).getAsInt();
+            int max = dataArray.get(1).getAsInt();
+            return new int[] {min, max};
+        } else if(element.isJsonObject()) {
+            JsonObject dataObject = element.getAsJsonObject();
+            int min = dataObject.get("min").getAsInt();
+            int max = dataObject.get("max").getAsInt();
+            return new int[] {min, max};
+        } else if(element.isJsonPrimitive()) {
+            int size = element.getAsInt();
+            return new int[] {size, size};
+        } else {
+            throw new IllegalArgumentException("size range not defined");
+        }
+    }
 }

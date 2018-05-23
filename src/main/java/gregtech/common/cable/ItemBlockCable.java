@@ -1,7 +1,6 @@
 package gregtech.common.cable;
 
 import gregtech.api.GTValues;
-import gregtech.api.unification.material.type.MetalMaterial;
 import gregtech.api.util.GTUtility;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;

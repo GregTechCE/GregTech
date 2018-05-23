@@ -1,18 +1,12 @@
 package gregtech.common.cable;
 
-import gregtech.api.GTValues;
 import gregtech.common.cable.tile.TileEntityCable;
-import mcmultipart.api.container.IMultipartContainer;
-import mcmultipart.api.multipart.IMultipart;
-import mcmultipart.api.ref.MCMPCapabilities;
-import mcmultipart.api.slot.EnumCenterSlot;
 import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
-import net.minecraftforge.fml.common.Loader;
 
 import java.util.HashMap;
 
@@ -51,12 +45,6 @@ public class RoutePath {
                 if(tileEntity instanceof TileEntityCable) {
                     world.setBlockToAir(blockPos);
                     world.setBlockState(blockPos, Blocks.FIRE.getDefaultState());
-                } else if(Loader.isModLoaded(GTValues.MODID_MCMP)) {
-                    IMultipartContainer container = tileEntity.getCapability(MCMPCapabilities.MULTIPART_CONTAINER, null);
-                    IMultipart partInfoInSlot = container == null ? null : container.getPart(EnumCenterSlot.CENTER).orElse(null);
-                    if(partInfoInSlot instanceof BlockCable) {
-                        container.removePart(EnumCenterSlot.CENTER);
-                    }
                 }
             }
         }

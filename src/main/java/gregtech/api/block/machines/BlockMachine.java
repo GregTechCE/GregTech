@@ -41,6 +41,8 @@ import net.minecraftforge.common.property.IExtendedBlockState;
 import net.minecraftforge.common.property.IUnlistedProperty;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import sun.reflect.CallerSensitive;
+import sun.reflect.Reflection;
 
 import javax.annotation.Nullable;
 import java.util.Arrays;
@@ -52,6 +54,7 @@ public class BlockMachine extends Block implements ITileEntityProvider {
     private static final Cuboid6[] EMPTY_COLLISION_BOX = new Cuboid6[] {Cuboid6.full};
     private static final IUnlistedProperty<String> HARVEST_TOOL = new UnlistedStringProperty("harvest_tool");
     private static final IUnlistedProperty<Integer> HARVEST_LEVEL = new UnlistedIntegerProperty("harvest_level");
+    private static final ThreadLocal<Boolean> bypassActualState = ThreadLocal.withInitial(() -> false);
 
     public BlockMachine() {
         super(Material.IRON);
@@ -77,9 +80,12 @@ public class BlockMachine extends Block implements ITileEntityProvider {
 
     @Override
     public IBlockState getActualState(IBlockState state, IBlockAccess worldIn, BlockPos pos) {
+        if(bypassActualState.get())
+            return state;
         MetaTileEntity metaTileEntity = getMetaTileEntity(worldIn, pos);
         if(metaTileEntity == null)
             return state;
+
         return ((IExtendedBlockState) state)
             .withProperty(HARVEST_TOOL, metaTileEntity.getHarvestTool())
             .withProperty(HARVEST_LEVEL, metaTileEntity.getHarvestLevel());
@@ -312,18 +318,33 @@ public class BlockMachine extends Block implements ITileEntityProvider {
 
     @Override
     public boolean addLandingEffects(IBlockState state, WorldServer worldObj, BlockPos blockPosition, IBlockState iblockstate, EntityLivingBase entity, int numberOfParticles) {
-        return CustomParticleHandler.handleLandingEffects(worldObj, blockPosition, entity, numberOfParticles);
+        try {
+            bypassActualState.set(true);
+            return CustomParticleHandler.handleLandingEffects(worldObj, blockPosition, entity, numberOfParticles);
+        } finally {
+            bypassActualState.set(false);
+        }
     }
 
     @Override
     @SideOnly(Side.CLIENT)
     public boolean addHitEffects(IBlockState state, World worldObj, RayTraceResult target, ParticleManager manager) {
-        return CustomParticleHandler.handleHitEffects(state, worldObj, target, manager);
+        try {
+            bypassActualState.set(true);
+            return CustomParticleHandler.handleHitEffects(state, worldObj, target, manager);
+        } finally {
+            bypassActualState.set(false);
+        }
     }
 
     @Override
     public boolean addDestroyEffects(World world, BlockPos pos, ParticleManager manager) {
-        return CustomParticleHandler.handleDestroyEffects(world, pos, manager);
+        try {
+            bypassActualState.set(true);
+            return CustomParticleHandler.handleDestroyEffects(world, pos, manager);
+        } finally {
+            bypassActualState.set(false);
+        }
     }
 
     @Override

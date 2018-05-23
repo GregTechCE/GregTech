@@ -1,5 +1,6 @@
 package gregtech.api.render;
 
+import codechicken.lib.render.BlockRenderer;
 import codechicken.lib.render.BlockRenderer.BlockFace;
 import codechicken.lib.render.CCRenderState;
 import codechicken.lib.render.block.BlockRenderingRegistry;
@@ -8,7 +9,10 @@ import codechicken.lib.render.item.IItemRenderer;
 import codechicken.lib.render.particle.IModelParticleProvider;
 import codechicken.lib.render.pipeline.IVertexOperation;
 import codechicken.lib.texture.TextureUtils;
+import codechicken.lib.vec.Cuboid6;
 import codechicken.lib.vec.Matrix4;
+import codechicken.lib.vec.Vector3;
+import codechicken.lib.vec.uv.IconTransformation;
 import gregtech.api.GTValues;
 import gregtech.api.block.machines.BlockMachine;
 import gregtech.api.block.machines.MachineItemBlock;
@@ -32,6 +36,7 @@ import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.client.event.ModelBakeEvent;
 import net.minecraftforge.common.MinecraftForge;
@@ -142,7 +147,15 @@ public class MetaTileEntityRenderer implements ICCBlockRenderer, IItemRenderer, 
 
     @Override
     public void handleRenderBlockDamage(IBlockAccess world, BlockPos pos, IBlockState state, TextureAtlasSprite sprite, BufferBuilder buffer) {
-        //todo implement properly
+        MetaTileEntity metaTileEntity = BlockMachine.getMetaTileEntity(world, pos);
+        Cuboid6[] boundingBox = metaTileEntity == null ? new Cuboid6[0] : metaTileEntity.getCollisionBox();
+        CCRenderState renderState = CCRenderState.instance();
+        renderState.reset();
+        renderState.bind(buffer);
+        renderState.setPipeline(new Vector3(new Vec3d(pos)).translation(), new IconTransformation(sprite));
+        for(Cuboid6 cuboid : boundingBox) {
+            BlockRenderer.renderCuboid(renderState, cuboid, 0);
+        }
     }
 
     @Override

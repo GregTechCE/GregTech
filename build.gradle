@@ -11,6 +11,7 @@ buildscript {
     }
 }
 apply plugin: 'net.minecraftforge.gradle.forge'
+apply plugin: 'scala'
 apply plugin: 'idea'
 
 file "build.properties" withReader {
@@ -28,6 +29,7 @@ minecraft {
     version = "${config.minecraft.version}-${config.forge.version}"
 	mappings = "snapshot_20170928"
     runDir = "run"
+    useDepAts = true
     replace '@VERSION@', mod_version
 }
 
@@ -66,10 +68,6 @@ repositories {
         name = "tehnut maven"
         url = "http://tehnut.info/maven/"
     }
-    maven {
-        name = "amadornes maven"
-        url = "http://maven.amadornes.com/"
-    }
 }
 
 dependencies {
@@ -77,13 +75,13 @@ dependencies {
         transitive = false
     }
 
+    deobfCompile "codechicken:ChickenASM:${config.chickenasm.version}"
     deobfCompile "codechicken:CodeChickenLib:${config.minecraft.version}-${config.ccl.version}:deobf"
+    deobfCompile "codechicken:ForgeMultipart:${config.minecraft.version}-${config.multipart.version}:deobf"
 
     deobfCompile "cofh:ThermalDynamics:${config.minecraft.version}-${config.thermaldynamics.version}:deobf"
 
     deobfCompile "mezz.jei:jei_${config.minecraft.version}:${config.jei.version}:api"
-
-    deobfCompile "MCMultiPart2:MCMultiPart:${config.mcmp.version}:deobf"
 }
 
 sourceCompatibility = "1.8"

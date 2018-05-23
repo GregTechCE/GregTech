@@ -1,7 +1,10 @@
 package gregtech.common.cable.tile;
 
+import gregtech.common.cable.ICableTile;
 import gregtech.common.cable.RoutePath;
 import gregtech.api.capability.IEnergyContainer;
+import gregtech.common.cable.net.EnergyNet;
+import gregtech.common.cable.net.WorldENet;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
@@ -12,22 +15,24 @@ import java.util.List;
 
 public class CableEnergyContainer implements IEnergyContainer {
 
-    private final TileEntityCable tileEntityCable;
+    private final ICableTile tileEntityCable;
+    private long lastCachedPathsTime;
+    private List<RoutePath> pathsCache;
 
-    public CableEnergyContainer(TileEntityCable tileEntityCable) {
+    public CableEnergyContainer(ICableTile tileEntityCable) {
         this.tileEntityCable = tileEntityCable;
     }
 
     @Override
     public long acceptEnergyFromNetwork(EnumFacing side, long voltage, long amperage) {
-        List<RoutePath> paths = tileEntityCable.getPaths();
+        List<RoutePath> paths = getPaths();
         long amperesUsed = 0;
         for(RoutePath routePath : paths) {
             if(routePath.totalLoss >= voltage)
                 continue; //do not emit if loss is too high
             if(voltage > routePath.minVoltage || amperage > routePath.minAmperage) {
                 //if voltage or amperage is too big, burn cables down and break
-                routePath.burnCablesInPath(tileEntityCable.getWorld(), voltage, amperage);
+                routePath.burnCablesInPath(tileEntityCable.getCableWorld(), voltage, amperage);
                 break;
             }
             amperesUsed += dispatchEnergyToNode(routePath.destination,
@@ -41,7 +46,7 @@ public class CableEnergyContainer implements IEnergyContainer {
     private long dispatchEnergyToNode(BlockPos nodePos, long voltage, long amperage) {
         long amperesUsed = 0L;
         //use pooled mutable to avoid creating new objects every tick
-        World world = tileEntityCable.getWorld();
+        World world = tileEntityCable.getCableWorld();
         PooledMutableBlockPos blockPos = PooledMutableBlockPos.retain();
         for(EnumFacing facing : EnumFacing.VALUES) {
             blockPos.setPos(nodePos).move(facing);
@@ -61,12 +66,12 @@ public class CableEnergyContainer implements IEnergyContainer {
 
     @Override
     public long getInputAmperage() {
-        return tileEntityCable.getCableProperties().amperage;
+        return tileEntityCable.getWireProperties().amperage;
     }
 
     @Override
     public long getInputVoltage() {
-        return tileEntityCable.getCableProperties().voltage;
+        return tileEntityCable.getWireProperties().voltage;
     }
 
     @Override
@@ -95,6 +100,24 @@ public class CableEnergyContainer implements IEnergyContainer {
     @Override
     public long getEnergyStored() {
         return 0;
+    }
+
+    private void recomputePaths(EnergyNet energyNet) {
+        this.lastCachedPathsTime = System.currentTimeMillis();
+        this.pathsCache = energyNet.computePatches(tileEntityCable.getCablePos());
+    }
+
+    private List<RoutePath> getPaths() {
+        EnergyNet energyNet = getEnergyNet();
+        if(pathsCache == null || energyNet.getLastUpdatedTime() > lastCachedPathsTime) {
+            recomputePaths(energyNet);
+        }
+        return pathsCache;
+    }
+
+    private EnergyNet getEnergyNet() {
+        WorldENet worldENet = WorldENet.getWorldENet(tileEntityCable.getCableWorld());
+        return worldENet.getNetFromPos(tileEntityCable.getCablePos());
     }
 
 }

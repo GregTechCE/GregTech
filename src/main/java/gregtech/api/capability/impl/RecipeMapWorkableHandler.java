@@ -20,6 +20,7 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.items.IItemHandlerModifiable;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
@@ -137,8 +138,14 @@ public abstract class RecipeMapWorkableHandler extends MTETrait implements IWork
             int resultEUt = EUt;
             int resultDuration = duration;
             while (resultEUt <= GTValues.V[tier - 1] * amperage) {
-                resultEUt *= 4;
-                resultDuration /= 2;
+                if(!negativeEU) {
+                    resultEUt *= 4;
+                    resultDuration /= 2;
+                } else {
+                    //invert values for negative EU
+                    resultEUt *= 2;
+                    resultDuration /= 4;
+                }
             }
             return new int[] {negativeEU ? -resultEUt : resultEUt, resultDuration};
         }

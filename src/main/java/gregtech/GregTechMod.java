@@ -18,10 +18,11 @@ import gregtech.common.blocks.MetaBlocks;
 import gregtech.common.blocks.modelfactories.BlockCompressedFactory;
 import gregtech.common.blocks.modelfactories.BlockFrameFactory;
 import gregtech.common.blocks.modelfactories.BlockOreFactory;
-import gregtech.common.cable.BlockCable;
 import gregtech.common.command.GregTechCommand;
 import gregtech.common.items.MetaItems;
 import gregtech.common.metatileentities.MetaTileEntities;
+import gregtech.common.multipart.GTMultipartFactory;
+import gregtech.common.multipart.GTMultipartFactory$;
 import gregtech.loaders.load.FuelLoader;
 import gregtech.loaders.load.MetaTileEntityLoader;
 import gregtech.loaders.load.OreDictionaryLoader;
@@ -30,7 +31,6 @@ import gregtech.loaders.postload.CraftingRecipeLoader;
 import gregtech.loaders.postload.DungeonLootLoader;
 import gregtech.loaders.postload.MachineRecipeLoader;
 import gregtech.loaders.preload.MaterialInfoLoader;
-import mcmultipart.multipart.MultipartRegistry;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fml.common.*;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
@@ -42,7 +42,7 @@ import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
      name = "GregTech",
      version = "@VERSION@",
      acceptedMinecraftVersions = "[1.12,1.13)",
-     dependencies = "required:codechickenlib;before:forestry;after:mcmultipart")
+     dependencies = "required:codechickenlib;before:forestry;after:forgemultipartcbe")
 public class GregTechMod {
 
     static {
@@ -102,11 +102,8 @@ public class GregTechMod {
         CraftingRecipeLoader.init();
         gregtechproxy.onLoad();
 
-        if(Loader.isModLoaded(GTValues.MODID_MCMP)) {
-            for(BlockCable blockCable : MetaBlocks.CABLES.values()) {
-                MultipartRegistry.INSTANCE.registerPartWrapper(blockCable, blockCable);
-                MultipartRegistry.INSTANCE.registerStackWrapper(blockCable);
-            }
+        if(Loader.isModLoaded(GTValues.MODID_FMP)) {
+            registerForgeMultipartCompat();
         }
 
         if (RecipeMap.foundInvalidRecipe) {
@@ -115,6 +112,10 @@ public class GregTechMod {
 
         Material.init();
         GTLog.logger.info("Init-Phase finished!");
+    }
+
+    private void registerForgeMultipartCompat() {
+        GTMultipartFactory.registerFactory();
     }
 
     @Mod.EventHandler

@@ -193,14 +193,15 @@ public abstract class MetaTileEntity {
 
     /**
      * Adds a trait to this meta tile entity
-     * traits are objects linked with meta tile entity and performing certian
+     * traits are objects linked with meta tile entity and performing certain
      * actions. usually traits implement capabilities
+     * there can be only one trait for given name
+     *
      * @param trait trait object to add
-     * @return index of trait in list
      */
-    int addMetaTileEntityTrait(MTETrait trait) {
+    void addMetaTileEntityTrait(MTETrait trait) {
+        mteTraits.removeIf(otherTrait -> otherTrait.getName().equals(trait.getName()));
         this.mteTraits.add(trait);
-        return mteTraits.size() - 1;
     }
 
     protected IItemHandlerModifiable createImportItemHandler() {
@@ -252,7 +253,6 @@ public abstract class MetaTileEntity {
         if(playerIn.isSneaking()) {
             if(facing == getFrontFacing() || !isValidFrontFacing(facing))
                 return false;
-            //todo wrench sound here
             setFrontFacing(facing);
             return true;
         }
@@ -379,8 +379,10 @@ public abstract class MetaTileEntity {
         for (EnumFacing side : EnumFacing.VALUES) {
             buf.writeInt(sidedRedstoneOutput[side.getIndex()]);
         }
-        for(MTETrait mteTrait : this.mteTraits) {
-            mteTrait.writeInitialData(buf);
+        buf.writeShort(mteTraits.size());
+        for(MTETrait trait : mteTraits) {
+            buf.writeString(trait.getName());
+            trait.writeInitialData(buf);
         }
     }
 
@@ -390,8 +392,13 @@ public abstract class MetaTileEntity {
         for (EnumFacing side : EnumFacing.VALUES) {
             this.sidedRedstoneOutput[side.getIndex()] = buf.readInt();
         }
-        for(MTETrait mteTrait : this.mteTraits) {
-            mteTrait.receiveInitialData(buf);
+        int amountOfTraits = buf.readShort();
+        for(int i = 0; i < amountOfTraits; i++) {
+            String traitName = buf.readString(32767);
+            MTETrait trait = mteTraits.stream()
+                .filter(otherTrait -> otherTrait.getName().equals(traitName))
+                .findAny().orElseThrow(() -> new IllegalArgumentException("Invalid trait name: " + traitName));
+            trait.receiveInitialData(buf);
         }
     }
 
@@ -402,10 +409,12 @@ public abstract class MetaTileEntity {
             this.paintingColor = buf.readInt();
         } else if(dataId == -3) {
             this.sidedRedstoneOutput[buf.readByte()] = buf.readInt();
-        } else {
-            for(MTETrait mteTrait : this.mteTraits) {
-                mteTrait.readSyncData(dataId, buf);
-            }
+        } else if(dataId == -4) {
+            String traitName = buf.readString(32767);
+            MTETrait trait = mteTraits.stream()
+                .filter(otherTrait -> otherTrait.getName().equals(traitName))
+                .findAny().orElseThrow(() -> new IllegalArgumentException("Invalid trait name: " + traitName));
+            trait.readSyncData(buf);
         }
     }
 

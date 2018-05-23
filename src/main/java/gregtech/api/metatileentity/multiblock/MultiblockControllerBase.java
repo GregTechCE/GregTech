@@ -107,7 +107,7 @@ public abstract class MultiblockControllerBase extends MetaTileEntity {
     }
 
     public IPatternCenterPredicate selfPredicate() {
-        return IPatternCenterPredicate.wrap(tilePredicate((state, tile) -> tile.metaTileEntityId.equals(metaTileEntityId)));
+        return BlockWorldState.wrap(tilePredicate((state, tile) -> tile.metaTileEntityId.equals(metaTileEntityId)));
     }
 
     @Override

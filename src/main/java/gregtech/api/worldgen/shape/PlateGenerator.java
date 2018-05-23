@@ -2,6 +2,7 @@ package gregtech.api.worldgen.shape;
 
 import codechicken.lib.vec.Vector3;
 import com.google.gson.JsonObject;
+import gregtech.api.worldgen.config.OreConfigUtils;
 import gregtech.api.worldgen.generator.IBlockGeneratorAccess;
 
 import java.util.Random;
@@ -24,9 +25,9 @@ public class PlateGenerator implements IShapeGenerator {
 
     @Override
     public void loadFromConfig(JsonObject object) {
-        int[] length = IShapeGenerator.getIntRange(object.get("length"));
-        int[] depth = IShapeGenerator.getIntRange(object.get("depth"));
-        int[] height = IShapeGenerator.getIntRange(object.get("height"));
+        int[] length = OreConfigUtils.getIntRange(object.get("length"));
+        int[] depth = OreConfigUtils.getIntRange(object.get("depth"));
+        int[] height = OreConfigUtils.getIntRange(object.get("height"));
         this.minLength = length[0];
         this.maxLength = length[1];
         this.minDepth = depth[0];

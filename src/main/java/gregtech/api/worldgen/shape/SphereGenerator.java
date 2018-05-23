@@ -1,6 +1,7 @@
 package gregtech.api.worldgen.shape;
 
 import com.google.gson.JsonObject;
+import gregtech.api.worldgen.config.OreConfigUtils;
 import gregtech.api.worldgen.generator.IBlockGeneratorAccess;
 
 import java.util.Random;
@@ -20,7 +21,7 @@ public class SphereGenerator implements IShapeGenerator {
 
     @Override
     public void loadFromConfig(JsonObject object) {
-        int[] data = IShapeGenerator.getIntRange(object.get("radius"));
+        int[] data = OreConfigUtils.getIntRange(object.get("radius"));
         this.radiusMin = data[0];
         this.radiusMax = data[1];
     }
