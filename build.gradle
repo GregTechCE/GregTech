@@ -142,7 +142,7 @@ idea {
     }
 }
 
-task ciWriteBuildNumber << {
+task ciWriteBuildNumber doLast {
     def file = file("src/main/scala/gregtech/GregTechVersion.java")
     def bn = System.getenv("BUILD_NUMBER") ?: project.ext.properties.buildNumber ?: 0
     def outfile = ""
