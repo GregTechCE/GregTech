@@ -11,16 +11,34 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraft.world.gen.IChunkGenerator;
+import net.minecraftforge.event.terraingen.OreGenEvent;
+import net.minecraftforge.event.terraingen.OreGenEvent.GenerateMinable.EventType;
 import net.minecraftforge.fluids.IFluidBlock;
 import net.minecraftforge.fml.common.IWorldGenerator;
+import net.minecraftforge.fml.common.eventhandler.Event.Result;
+import net.minecraftforge.fml.common.eventhandler.EventPriority;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 import java.util.*;
+
+import static net.minecraftforge.event.terraingen.OreGenEvent.GenerateMinable.EventType.*;
 
 //TODO implement CC support here
 public class WorldGeneratorImpl implements IWorldGenerator {
 
+    private static final List<EventType> ORE_EVENT_TYPES = Arrays.asList(
+        COAL, DIAMOND, GOLD, IRON, LAPIS, REDSTONE, QUARTZ, DIORITE, GRANITE, ANDESITE, EMERALD);
     public static final int GRID_SIZE_X = 3;
     public static final int GRID_SIZE_Z = 3;
+
+    @SubscribeEvent(priority = EventPriority.HIGH)
+    public void onOreGenerate(OreGenEvent.GenerateMinable event) {
+        EventType eventType = event.getType();
+        if(ConfigHolder.disableVanillaOres &&
+            ORE_EVENT_TYPES.contains(eventType)) {
+            event.setResult(Result.ALLOW);
+        }
+    }
 
     @Override
     public void generate(Random random, int chunkX, int chunkZ, World world, IChunkGenerator chunkGenerator, IChunkProvider chunkProvider) {

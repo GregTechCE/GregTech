@@ -10,6 +10,7 @@ import gregtech.api.worldgen.generator.WorldGeneratorImpl;
 import gregtech.api.worldgen.shape.*;
 import net.minecraft.world.WorldProvider;
 import net.minecraft.world.biome.Biome;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import org.apache.commons.io.IOUtils;
@@ -76,7 +77,9 @@ public class WorldGenRegistry {
         registerShapeGenerator("plate", PlateGenerator::new);
         registerShapeGenerator("single", SingleBlockGenerator::new);
         registerBlockFiller("simple", SimpleBlockFiller::new);
-        GameRegistry.registerWorldGenerator(new WorldGeneratorImpl(), 1);
+        WorldGeneratorImpl worldGenerator = new WorldGeneratorImpl();
+        GameRegistry.registerWorldGenerator(worldGenerator, 1);
+        MinecraftForge.ORE_GEN_BUS.register(worldGenerator);
         try {
             reinitializeRegisteredVeins();
         } catch (IOException | RuntimeException exception) {

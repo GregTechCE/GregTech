@@ -3,6 +3,7 @@ package gregtech.common;
 import gregtech.api.GTValues;
 import gregtech.api.worldgen.generator.WorldGeneratorImpl;
 import net.minecraftforge.common.config.Config;
+import net.minecraftforge.common.config.Config.Comment;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -21,6 +22,9 @@ public class ConfigHolder {
 
     @Config.Comment("True to enable surface rocks indicating vein under them")
     public static boolean enableOreVeinSurfaceRocks = true;
+
+    @Config.Comment("Whether to disable vanilla ores generation in world. Default is false.")
+    public static boolean disableVanillaOres = false;
 
     @Config.Comment("Material flags in format material_name<->list of material flags strings")
     @Config.RequiresMcRestart
