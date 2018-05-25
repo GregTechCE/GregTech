@@ -196,7 +196,7 @@ public class RecipeMap<R extends RecipeBuilder<R>> {
         int startInputsY = 32 - (int) (itemSlotsToDown / 2.0 * 18);
         for(int i = 0; i < itemSlotsToDown; i++) {
             for (int j = 0; j < itemSlotsToLeft; j++) {
-                int slotIndex = i * itemSlotsToDown + j;
+                int slotIndex = i * itemSlotsToLeft + j;
                 addSlot(builder, startInputsX + 18 * j, startInputsY + 18 * i, slotIndex, itemHandler, fluidHandler, invertFluids, isOutputs);
             }
         }

@@ -135,6 +135,7 @@ public abstract class Material implements Comparable<Material> {
 		this.materialGenerationFlags = verifyMaterialBits(materialGenerationFlags);
 		this.element = element;
         this.chemicalFormula = calculateChemicalFormula();
+        calculateDecompositionType();
         if(metaItemSubId > -1) {
         	MATERIAL_REGISTRY.register(metaItemSubId, name, this);
 		} else MATERIAL_REGISTRY.putObject(name, this);
@@ -155,6 +156,27 @@ public abstract class Material implements Comparable<Material> {
 	public boolean hasFlag(long generationFlag) {
 		return (materialGenerationFlags & generationFlag) != 0;
 	}
+
+	protected void calculateDecompositionType() {
+	    if(!materialComponents.isEmpty() &&
+            !hasFlag(MatFlags.DECOMPOSITION_BY_CENTRIFUGING) &&
+            !hasFlag(MatFlags.DECOMPOSITION_BY_ELECTROLYZING)) {
+	        boolean onlyFluidMaterials = true;
+	        boolean onlyMetalMaterials = true;
+	        for(MaterialStack materialStack : materialComponents) {
+	            Material material = materialStack.material;
+	            onlyFluidMaterials &= material.getClass() == FluidMaterial.class;
+	            onlyMetalMaterials &= material.getClass() == MetalMaterial.class;
+            }
+            if(onlyFluidMaterials || onlyMetalMaterials) {
+	            //if we contain only fluids or only metals, then centrifuging will do it's job
+	            materialGenerationFlags |= MatFlags.DECOMPOSITION_BY_CENTRIFUGING;
+            } else {
+	            //otherwise, we use electrolyzing to break material into ions
+	            materialGenerationFlags |= MatFlags.DECOMPOSITION_BY_ELECTROLYZING;
+            }
+        }
+    }
 
 	protected void initMaterial(String name) {
 
