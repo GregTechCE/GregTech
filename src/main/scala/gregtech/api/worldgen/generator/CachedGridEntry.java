@@ -11,6 +11,7 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.XSTR;
 import gregtech.api.worldgen.config.OreDepositDefinition;
 import gregtech.api.worldgen.config.WorldGenRegistry;
+import gregtech.common.ConfigHolder;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockPos.MutableBlockPos;
@@ -95,7 +96,9 @@ public class CachedGridEntry implements IBlockGeneratorAccess {
 
         ArrayList<OreDepositDefinition> generatedDeposits = new ArrayList<>();
         int currentCycle = 0;
-        int maxCycles = 1 + gridRandom.next(2);
+        int[] veinsInSection = ConfigHolder.veinsInSection;
+        int maxCycles = veinsInSection[0] + veinsInSection[1] >= veinsInSection[0] ? 0 :
+            gridRandom.next(veinsInSection[1] - veinsInSection[0]);
         while(currentCycle < cachedDepositMap.size() && currentCycle < maxCycles) {
             //instead of removing already generated veins, we swap last element with one we selected
             int randomEntryIndex = GTUtility.getRandomItem(gridRandom, cachedDepositMap, cachedDepositMap.size() - currentCycle);

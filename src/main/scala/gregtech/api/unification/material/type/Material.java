@@ -40,7 +40,8 @@ public abstract class Material implements Comparable<Material> {
 		MATERIAL_REGISTRY.freezeRegistry();
 		for(String name : MATERIAL_REGISTRY.getKeys()) {
 			Material material = MATERIAL_REGISTRY.getObject(name);
-			material.initMaterial(name);
+            //noinspection ConstantConditions
+            material.initMaterial(name);
 		}
 	}
 

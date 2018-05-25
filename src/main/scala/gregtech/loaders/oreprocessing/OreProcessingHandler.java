@@ -140,7 +140,7 @@ public class OreProcessingHandler {
                         .duration(1500)
                         .EUt(24)
                         .buildAndRegister();
-                } else if (!material.hasFlag(Material.MatFlags.EXPLOSIVE | DustMaterial.MatFlags.NO_SMASHING)) {
+                } else if (!material.hasFlag(Material.MatFlags.EXPLOSIVE | MatFlags.NO_SMASHING)) {
                     RecipeMaps.IMPLOSION_RECIPES.recipeBuilder()
                         .input(dustPrefix, material, 4)
                         .outputs(GTUtility.copyAmount(3, gemStack))
@@ -148,7 +148,7 @@ public class OreProcessingHandler {
                         .buildAndRegister();
                 }
             } else if (material instanceof MetalMaterial &&
-                !material.hasFlag(Material.MatFlags.FLAMMABLE | DustMaterial.MatFlags.NO_SMELTING)) {
+                !material.hasFlag(Material.MatFlags.FLAMMABLE | MatFlags.NO_SMELTING)) {
                 MetalMaterial metalMaterial = (MetalMaterial) material;
 
                 ItemStack tinyDustStack = OreDictUnifier.get(OrePrefix.dustTiny, metalMaterial);
@@ -185,7 +185,7 @@ public class OreProcessingHandler {
                     }
                 }
             } else if (material.hasFlag(MatFlags.GENERATE_PLATE) &&
-                !material.hasFlag(Material.MatFlags.EXPLOSIVE | DustMaterial.MatFlags.NO_SMASHING)) {
+                !material.hasFlag(Material.MatFlags.EXPLOSIVE | MatFlags.NO_SMASHING)) {
                 RecipeMaps.COMPRESSOR_RECIPES.recipeBuilder()
                     .input(dustPrefix, material)
                     .outputs(OreDictUnifier.get(OrePrefix.plate, material))
@@ -269,7 +269,7 @@ public class OreProcessingHandler {
             return;
         ItemStack blockStack = OreDictUnifier.get(blockPrefix, material);
         if (!blockStack.isEmpty()) {
-            if (material.hasFlag(DustMaterial.MatFlags.SMELT_INTO_FLUID)) {
+            if (material.hasFlag(MatFlags.SMELT_INTO_FLUID)) {
                 FluidMaterial fluidMaterial = (FluidMaterial) material;
                 RecipeMaps.FLUID_SOLIDFICATION_RECIPES.recipeBuilder()
                     .notConsumable(MetaItems.SHAPE_MOLD_BLOCK)
@@ -279,7 +279,7 @@ public class OreProcessingHandler {
                     .buildAndRegister();
             }
 
-            if (material.hasFlag(DustMaterial.MatFlags.GENERATE_PLATE)) {
+            if (material.hasFlag(MatFlags.GENERATE_PLATE)) {
                 ItemStack plateStack = OreDictUnifier.get(OrePrefix.plate, material);
                 RecipeMaps.CUTTER_RECIPES.recipeBuilder()
                     .input(blockPrefix, material)
@@ -370,7 +370,7 @@ public class OreProcessingHandler {
     }
 
     private void processFineWire(OrePrefix fineWirePrefix, Material material) {
-        if (!(material instanceof MetalMaterial) || material.hasFlag(DustMaterial.MatFlags.NO_WORKING | Material.MatFlags.NO_UNIFICATION))
+        if (!(material instanceof MetalMaterial) || material.hasFlag(MatFlags.NO_WORKING | Material.MatFlags.NO_UNIFICATION))
             return;
         ItemStack fineWireStack = OreDictUnifier.get(fineWirePrefix, material);
         ItemStack foilStack = OreDictUnifier.get(OrePrefix.foil, material);
@@ -383,7 +383,7 @@ public class OreProcessingHandler {
     private void processIngot(OrePrefix ingotPrefix, Material material) {
         if (!(material instanceof MetalMaterial))
             return;
-        if (!material.hasFlag(DustMaterial.MatFlags.GENERATE_PLATE) || material.hasFlag(DustMaterial.MatFlags.NO_SMASHING))
+        if (!material.hasFlag(MatFlags.GENERATE_PLATE) || material.hasFlag(MatFlags.NO_SMASHING))
             return;
         ItemStack ingotStack = OreDictUnifier.get(ingotPrefix, material);
         if (!ingotStack.isEmpty()) {
@@ -774,7 +774,7 @@ public class OreProcessingHandler {
             if (!stack.isEmpty()) {
                 boolean isSmall = gearPrefix == OrePrefix.gearSmall;
 
-                if (material.hasFlag(DustMaterial.MatFlags.SMELT_INTO_FLUID)) {
+                if (material.hasFlag(MatFlags.SMELT_INTO_FLUID)) {
                     RecipeMaps.FLUID_SOLIDFICATION_RECIPES.recipeBuilder()
                         .notConsumable(isSmall ? MetaItems.SHAPE_MOLD_GEAR_SMALL : MetaItems.SHAPE_MOLD_GEAR)
                         .fluidInputs(material.getFluid(L * (isSmall ? 1 : 4)))
@@ -785,7 +785,7 @@ public class OreProcessingHandler {
                 }
 
                 if (isSmall) {
-                    if (material instanceof MetalMaterial && !material.hasFlag(DustMaterial.MatFlags.NO_SMASHING)) {
+                    if (material instanceof MetalMaterial && !material.hasFlag(MatFlags.NO_SMASHING)) {
                         ModHandler.addShapedRecipe(String.format("small_gear_%s", material),
                             stack,
                             "h ",
@@ -820,7 +820,7 @@ public class OreProcessingHandler {
                     ModHandler.addShapelessRecipe(String.format("gem_to_dust_%s", material), crushedStack, "m", new UnificationEntry(gemPrefix, materialIn));
                 }
 
-                if (!material.hasFlag(DustMaterial.MatFlags.NO_SMASHING)) {
+                if (!material.hasFlag(MatFlags.NO_SMASHING)) {
                     OrePrefix prevPrefix = GTUtility.getItem(GEM_ORDER, GEM_ORDER.indexOf(gemPrefix) - 1, null);
                     if (prevPrefix != null) {
                         ItemStack prevStack = OreDictUnifier.get(prevPrefix, material, 2);
@@ -834,7 +834,7 @@ public class OreProcessingHandler {
                     }
                 }
 
-                if (!material.hasFlag(DustMaterial.MatFlags.NO_WORKING)) {
+                if (!material.hasFlag(MatFlags.NO_WORKING)) {
                     if (material.hasFlag(SolidMaterial.MatFlags.GENERATE_LONG_ROD) && materialAmount >= M * 2) {
                         RecipeMaps.LATHE_RECIPES.recipeBuilder()
                             .input(gemPrefix, materialIn)
@@ -1427,7 +1427,7 @@ public class OreProcessingHandler {
         if (!(material instanceof DustMaterial))
             return;
 
-        if (!material.hasFlag(DustMaterial.MatFlags.NO_WORKING)) {
+        if (!material.hasFlag(MatFlags.NO_WORKING)) {
             if (material instanceof SolidMaterial) {
                 RecipeMaps.LATHE_RECIPES.recipeBuilder()
                     .inputs(material instanceof GemMaterial
@@ -1538,7 +1538,7 @@ public class OreProcessingHandler {
                 " X",
                 'X', new UnificationEntry(OrePrefix.ingot, material));
         }
-        if (!material.hasFlag(DustMaterial.MatFlags.NO_SMASHING)) {
+        if (!material.hasFlag(MatFlags.NO_SMASHING)) {
             if (!longStack.isEmpty()) {
                 RecipeMaps.FORGE_HAMMER_RECIPES.recipeBuilder()
                     .input(stickPrefix, material, 2)
@@ -1578,7 +1578,7 @@ public class OreProcessingHandler {
                     'B', MetaItems.BATTERY_RE_HV_LITHIUM.getStackForm());
             }
 
-            if (!material.hasFlag(DustMaterial.MatFlags.NO_WORKING)) {
+            if (!material.hasFlag(MatFlags.NO_WORKING)) {
                 RecipeMaps.CUTTER_RECIPES.recipeBuilder()
                     .input(longStickPrefix, material)
                     .outputs(GTUtility.copyAmount(2, stickStack))
@@ -1601,7 +1601,7 @@ public class OreProcessingHandler {
                     "sf", "G ",
                     'G', new UnificationEntry(OrePrefix.gemExquisite, material));
             }
-            if (!material.hasFlag(DustMaterial.MatFlags.NO_SMASHING)) {
+            if (!material.hasFlag(MatFlags.NO_SMASHING)) {
                 if (!OreDictUnifier.get(OrePrefix.spring, material).isEmpty())
                     RecipeMaps.BENDER_RECIPES.recipeBuilder()
                         .input(longStickPrefix, material)
@@ -1940,7 +1940,7 @@ public class OreProcessingHandler {
                 .buildAndRegister();
         }
 
-        if (!material.hasFlag(DustMaterial.MatFlags.NO_SMASHING)) {
+        if (!material.hasFlag(MatFlags.NO_SMASHING)) {
             if (!OreDictUnifier.get(OrePrefix.springSmall, material, 2).isEmpty())
                 RecipeMaps.BENDER_RECIPES.recipeBuilder()
                     .input(wirePrefix, material)
@@ -1963,7 +1963,7 @@ public class OreProcessingHandler {
                 .buildAndRegister();
 
         }
-        if (!material.hasFlag(DustMaterial.MatFlags.NO_WORKING)) {
+        if (!material.hasFlag(MatFlags.NO_WORKING)) {
             ModHandler.addShapedRecipe(String.format("%s_wire_single", material.toString()), OreDictUnifier.get(OrePrefix.wireGtSingle, material),
                 "Xx",
                 'X', new UnificationEntry(OrePrefix.plate, material));

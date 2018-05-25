@@ -1,7 +1,11 @@
 package gregtech.common;
 
 import gregtech.api.GTValues;
+import gregtech.api.worldgen.generator.WorldGeneratorImpl;
 import net.minecraftforge.common.config.Config;
+
+import java.util.HashMap;
+import java.util.Map;
 
 @Config(modid = GTValues.MODID)
 public class ConfigHolder {
@@ -12,14 +16,15 @@ public class ConfigHolder {
     @Config.Comment("Whether to increase number of rolls for dungeon chests. Increases dungeon loot drastically.")
     public static boolean increaseDungeonLoot = true;
 
-    @Config.Comment("Probability of generation of vein in 3x3x3 chunk area (1/value_here). The bigger value, the less veins you get")
-    public static int chunkOreVeinGenerationProbability = 80;
-
-    @Config.Comment("Probability of secondary vein generation in 3x3x3 chunk area.")
-    public static int chunkOreVeinSecondaryProbability = 10;
+    @Config.Comment("Specifies min amount of veins in section and max one")
+    public static int[] veinsInSection = new int[] {1, 2};
 
     @Config.Comment("True to enable surface rocks indicating vein under them")
     public static boolean enableOreVeinSurfaceRocks = true;
+
+    @Config.Comment("Material flags in format material_name<->list of material flags strings")
+    @Config.RequiresMcRestart
+    public static Map<String, String[]> materialFlags = new HashMap<>();
 
     @Config.Comment("Whether machines should explode when overloaded with power. Default: true")
     public static boolean doExplosions = true;

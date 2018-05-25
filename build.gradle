@@ -20,7 +20,7 @@ file "build.properties" withReader {
     ext.config = new ConfigSlurper().parse prop
 }
 
-def mod_version = getVersionFromJava(file("src/main/java/gregtech/GregTechVersion.java"))
+def mod_version = getVersionFromJava(file("src/main/scala/gregtech/GregTechVersion.java"))
 version = "${config.minecraft.version}-${mod_version}"
 group = "gregtech"
 archivesBaseName = "gregtech"
@@ -143,7 +143,7 @@ idea {
 }
 
 task ciWriteBuildNumber << {
-    def file = file("src/main/java/gregtech/GregTechVersion.java")
+    def file = file("src/main/scala/gregtech/GregTechVersion.java")
     def bn = System.getenv("BUILD_NUMBER") ?: project.ext.properties.buildNumber ?: 0
     def outfile = ""
     def ln = "\n" //Linux line endings because we're on git!

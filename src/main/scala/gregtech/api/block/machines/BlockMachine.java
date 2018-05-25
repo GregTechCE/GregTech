@@ -41,8 +41,6 @@ import net.minecraftforge.common.property.IExtendedBlockState;
 import net.minecraftforge.common.property.IUnlistedProperty;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import sun.reflect.CallerSensitive;
-import sun.reflect.Reflection;
 
 import javax.annotation.Nullable;
 import java.util.Arrays;
