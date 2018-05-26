@@ -298,7 +298,7 @@ public abstract class Material implements Comparable<Material> {
 	}
 
 	public String getUnlocalizedName() {
-	    return "material." + MATERIAL_REGISTRY.getNameForObject(this);
+	    return "material." + toString();
     }
 
 	@SideOnly(Side.CLIENT)

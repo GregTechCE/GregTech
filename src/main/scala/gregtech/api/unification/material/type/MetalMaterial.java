@@ -100,8 +100,8 @@ public class MetalMaterial extends SolidMaterial {
     }
 
     @Override
-    protected void initMaterial(String name) {
-        super.initMaterial(name);
+    protected void initializeMaterial() {
+        super.initializeMaterial();
         if(blastFurnaceTemperature > 0) {
             setFluidTemperature(blastFurnaceTemperature);
         }

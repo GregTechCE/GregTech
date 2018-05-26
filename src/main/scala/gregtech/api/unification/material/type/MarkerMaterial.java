@@ -11,6 +11,8 @@ import gregtech.api.unification.material.MaterialIconSet;
  */
 public final class MarkerMaterial extends Material {
 
+    private final String name;
+
     public MarkerMaterial(String name) {
         super(-1, name,
                 0xFFFFFF,
@@ -18,6 +20,12 @@ public final class MarkerMaterial extends Material {
                 ImmutableList.of(),
                 0,
                 null);
+        this.name = name;
     }
 
+    @Override
+    //since we're not registered, return overriden name
+    public String toString() {
+        return name;
+    }
 }
