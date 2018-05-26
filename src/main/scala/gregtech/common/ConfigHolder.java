@@ -27,6 +27,9 @@ public class ConfigHolder {
     @Config.Comment("Whether to disable vanilla ores generation in world. Default is false.")
     public static boolean disableVanillaOres = false;
 
+    @Config.Comment("Whether to disable rubber tree world generation. Default is false.")
+    public static boolean disableRubberTreeGeneration = false;
+
     @Config.Comment("Material flags in format material_name<->list of material flags strings")
     @Config.RequiresMcRestart
     public static Map<String, String[]> materialFlags = new HashMap<>();

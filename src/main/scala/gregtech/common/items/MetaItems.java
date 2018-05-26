@@ -343,6 +343,8 @@ public final class MetaItems {
     public static MetaItem<?>.MetaValueItem SMALL_BRONZE_PIPE;
     public static MetaItem<?>.MetaValueItem SMALL_STEEL_PIPE;
 
+    public static MetaItem<?>.MetaValueItem RUBBER_DROP;
+
     public static ToolMetaItem<?>.MetaToolValueItem SWORD;
     public static ToolMetaItem<?>.MetaToolValueItem PICKAXE;
     public static ToolMetaItem<?>.MetaToolValueItem SHOVEL;

@@ -13,6 +13,7 @@ import gregtech.api.unification.ore.OrePrefix;
 import gregtech.api.util.GTLog;
 import gregtech.api.worldgen.config.WorldGenRegistry;
 import gregtech.common.CommonProxy;
+import gregtech.common.ConfigHolder;
 import gregtech.common.MetaFluids;
 import gregtech.common.blocks.MetaBlocks;
 import gregtech.common.blocks.modelfactories.BlockCompressedFactory;
@@ -23,6 +24,7 @@ import gregtech.common.items.MetaItems;
 import gregtech.common.metatileentities.MetaTileEntities;
 import gregtech.common.multipart.GTMultipartFactory;
 import gregtech.common.multipart.GTMultipartFactory$;
+import gregtech.common.worldgen.WorldGenRubberTree;
 import gregtech.loaders.load.FuelLoader;
 import gregtech.loaders.load.MetaTileEntityLoader;
 import gregtech.loaders.load.OreDictionaryLoader;
@@ -37,6 +39,7 @@ import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 
 @Mod(modid = GTValues.MODID,
      name = "GregTech",
@@ -123,6 +126,9 @@ public class GregTechMod {
         GTLog.logger.info("PostInit-Phase started!");
 
         WorldGenRegistry.INSTANCE.initializeRegistry();
+        if(!ConfigHolder.disableRubberTreeGeneration) {
+            GameRegistry.registerWorldGenerator(new WorldGenRubberTree(), 10000);
+        }
         gregtechproxy.onPostLoad();
 
         DungeonLootLoader.init();

@@ -1,5 +1,6 @@
 package gregtech.common.blocks;
 
+import gregtech.api.GTValues;
 import gregtech.api.GregTechAPI;
 import gregtech.api.block.machines.BlockMachine;
 import gregtech.api.render.MetaTileEntityRenderer;
@@ -17,6 +18,9 @@ import gregtech.api.unification.ore.StoneTypes;
 import gregtech.common.blocks.BlockGranite.GraniteVariant;
 import gregtech.common.blocks.BlockMineral.MineralVariant;
 import gregtech.common.blocks.StoneBlock.ChiselingVariant;
+import gregtech.common.blocks.wood.BlockSapling;
+import gregtech.common.blocks.wood.BlockWoodLeaves;
+import gregtech.common.blocks.wood.BlockWoodLog;
 import gregtech.common.cable.BlockCable;
 import gregtech.common.cable.Insulation;
 import gregtech.common.cable.WireProperties;
@@ -60,6 +64,10 @@ public class MetaBlocks {
     public static BlockMineral MINERAL;
     public static BlockConcrete CONCRETE;
 
+    public static BlockWoodLog LOG;
+    public static BlockWoodLeaves LEAVES;
+    public static BlockSapling SAPLING;
+
     public static Map<Material, BlockCable> CABLES = new HashMap<>();
     public static HashMap<DustMaterial, BlockCompressed> COMPRESSED = new HashMap<>();
     public static HashMap<MetalMaterial, BlockSurfaceRock> SURFACE_ROCKS = new HashMap<>();
@@ -99,6 +107,13 @@ public class MetaBlocks {
         BASALT = new StoneType(15, "basalt", OrePrefix.oreBasalt, Materials.Basalt, "gregtech:blocks/stones/basalt/basalt_stone", () -> MINERAL.withVariant(MineralVariant.BASALT, ChiselingVariant.NORMAL), state -> state.getBlock() instanceof BlockMineral && ((BlockMineral) state.getBlock()).getVariant(state) == BlockMineral.MineralVariant.BASALT);
         CONCRETE = new BlockConcrete();
         CONCRETE.setRegistryName("concrete");
+
+        LOG = new BlockWoodLog();
+        LOG.setRegistryName("log");
+        LEAVES = new BlockWoodLeaves();
+        LEAVES.setRegistryName("leaves");
+        SAPLING = new BlockSapling();
+        SAPLING.setRegistryName("sapling");
 
         StoneType.init();
 
@@ -277,6 +292,10 @@ public class MetaBlocks {
     }
 
     public static void registerOreDict() {
+        OreDictUnifier.registerOre(new ItemStack(LOG, 1, GTValues.W), OrePrefix.log, Materials.Wood);
+        OreDictUnifier.registerOre(new ItemStack(LEAVES, 1, GTValues.W), OrePrefix.treeLeaves, null);
+        OreDictUnifier.registerOre(new ItemStack(SAPLING, 1, GTValues.W), OrePrefix.treeSapling, null);
+
         for(Entry<DustMaterial, BlockCompressed> entry : COMPRESSED.entrySet()) {
             DustMaterial material = entry.getKey();
             BlockCompressed block = entry.getValue();
