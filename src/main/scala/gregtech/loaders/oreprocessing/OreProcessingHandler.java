@@ -30,6 +30,7 @@ import org.apache.commons.lang3.ArrayUtils;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.function.Predicate;
 
 import static gregtech.api.GTValues.L;
 import static gregtech.api.GTValues.M;
@@ -41,6 +42,22 @@ import static gregtech.api.unification.ore.OrePrefix.and;
 import static gregtech.api.unification.ore.OrePrefix.noFlag;
 
 public class OreProcessingHandler {
+
+    private static final List<OrePrefix> GEM_ORDER = Arrays.asList(
+        OrePrefix.gemChipped, OrePrefix.gemFlawed, OrePrefix.gem, OrePrefix.gemFlawless, OrePrefix.gemExquisite);
+
+    private static final List<Object> CRUSHING_PREFIXES = Arrays.asList(
+        OrePrefix.ingot, OrePrefix.gem, OrePrefix.stick, OrePrefix.plate,
+        OrePrefix.ring, OrePrefix.stickLong, OrePrefix.foil, OrePrefix.bolt,
+        OrePrefix.screw, OrePrefix.nugget, OrePrefix.gearSmall, OrePrefix.gear,
+        OrePrefix.frameGt, OrePrefix.plateDense, OrePrefix.spring,
+        OrePrefix.springSmall, OrePrefix.block, OrePrefix.wireFine,
+        OrePrefix.rotor, OrePrefix.lens, OrePrefix.turbineBlade, OrePrefix.crystal,
+        (Predicate<OrePrefix>) orePrefix -> orePrefix.name().startsWith("toolHead"),
+        (Predicate<OrePrefix>) orePrefix -> orePrefix.name().startsWith("gem"),
+        (Predicate<OrePrefix>) orePrefix -> orePrefix.name().startsWith("cableGt"),
+        (Predicate<OrePrefix>) orePrefix -> orePrefix.name().startsWith("wireGt")
+    );
 
     public void registerProcessing() {
         OrePrefix.log.addProcessingHandler(this::processLog);
@@ -111,11 +128,33 @@ public class OreProcessingHandler {
         OrePrefix.toolHeadUniversalSpade.addProcessingHandler(this::processSpadeHead);
         OrePrefix.toolHeadScrewdriver.addProcessingHandler(this::processScrewdriverHead);
         OrePrefix.toolHeadHammer.addProcessingHandler(this::processHammerHead);
+
+        //registers universal maceration recipes for specified ore prefixes
+        for(OrePrefix orePrefix : OrePrefix.values()) {
+            if(CRUSHING_PREFIXES.stream().anyMatch(object -> {
+                if(object instanceof OrePrefix)
+                    return object == orePrefix;
+                else if(object instanceof Predicate)
+                    //noinspection unchecked
+                    return ((Predicate<OrePrefix>) object).test(orePrefix);
+                else return false;
+            })) orePrefix.addProcessingHandler(this::processCrushing);
+        }
     }
 
-    private static final List<OrePrefix> GEM_ORDER = Arrays.asList(
-        OrePrefix.gemChipped, OrePrefix.gemFlawed, OrePrefix.gem, OrePrefix.gemFlawless, OrePrefix.gemExquisite
-    );
+    private void processCrushing(OrePrefix thingPrefix, Material material) {
+        if(!(material instanceof DustMaterial)) return;
+        DustMaterial dustMaterial = (DustMaterial) material;
+        RecipeBuilder<?> recipeBuilder = RecipeMaps.MACERATOR_RECIPES.recipeBuilder()
+            .input(thingPrefix, material)
+            .outputs(OreDictUnifier.getDust(dustMaterial, thingPrefix.materialAmount))
+            .duration((int) Math.max(1L, thingPrefix.materialAmount * 20 / M));
+        if(thingPrefix.secondaryMaterial != null) {
+            MaterialStack secondary = thingPrefix.secondaryMaterial;
+            recipeBuilder.outputs(OreDictUnifier.getDust((DustMaterial) secondary.material, secondary.amount));
+        }
+        recipeBuilder.buildAndRegister();
+    }
 
     private void processDust(OrePrefix dustPrefix, Material material) {
         if (!(material instanceof DustMaterial))
