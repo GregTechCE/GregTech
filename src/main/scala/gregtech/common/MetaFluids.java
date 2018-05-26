@@ -142,7 +142,7 @@ public class MetaFluids {
         setFluidProperties(fluid, type, material);
         FluidRegistry.registerFluid(fluid);
 
-        if(material.hasFlag(MatFlags.GENERATE_BLOCK)) {
+        if(material.hasFlag(MatFlags.GENERATE_FLUID_BLOCK)) {
             BlockFluidBase fluidBlock = new BlockFluidClassic(fluid, net.minecraft.block.material.Material.WATER);
             fluidBlock.setRegistryName("fluid." + materialName);
             MetaBlocks.FLUID_BLOCKS.add(fluidBlock);

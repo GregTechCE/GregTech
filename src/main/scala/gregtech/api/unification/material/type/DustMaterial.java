@@ -14,6 +14,10 @@ public class DustMaterial extends FluidMaterial {
 
     public static final class MatFlags {
 
+        static {
+            Material.MatFlags.registerMaterialFlagsHolder(MatFlags.class, DustMaterial.class);
+        }
+
         public static final long GENERATE_ORE = createFlag(11);
 
         /**
@@ -102,8 +106,8 @@ public class DustMaterial extends FluidMaterial {
     }
 
     @Override
-    protected void initMaterial(String name) {
-        super.initMaterial(name);
+    protected void initializeMaterial() {
+        super.initializeMaterial();
         if(shouldGenerateFluid()) {
             setFluidTemperature(1200); //default value for dusts
         }

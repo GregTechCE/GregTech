@@ -7,6 +7,7 @@ import net.minecraftforge.common.config.Config.Comment;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.TreeMap;
 
 @Config(modid = GTValues.MODID)
 public class ConfigHolder {

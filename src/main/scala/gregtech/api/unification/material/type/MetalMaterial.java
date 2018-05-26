@@ -18,6 +18,10 @@ public class MetalMaterial extends SolidMaterial {
 
     public static final class MatFlags {
 
+        static {
+            Material.MatFlags.registerMaterialFlagsHolder(MatFlags.class, MetalMaterial.class);
+        }
+
         public static final long GENERATE_FOIL = createFlag(25);
         public static final long GENERATE_BOLT_SCREW = createFlag(26);
         public static final long GENERATE_RING = createFlag(27);

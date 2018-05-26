@@ -8,11 +8,20 @@ import gregtech.api.unification.material.MaterialIconSet;
 import gregtech.api.unification.stack.MaterialStack;
 import gregtech.api.util.GTControlledRegistry;
 import gregtech.api.util.GTLog;
+import gregtech.common.ConfigHolder;
 import net.minecraft.client.resources.I18n;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nullable;
+
+import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
+import java.util.AbstractMap.SimpleEntry;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.TreeMap;
 
 import static gregtech.api.GTValues.M;
 import static gregtech.api.util.GTUtility.createFlag;
@@ -20,32 +29,76 @@ import static gregtech.api.util.GTUtility.createFlag;
 public abstract class Material implements Comparable<Material> {
 
 	public static GTControlledRegistry<Material> MATERIAL_REGISTRY = new GTControlledRegistry<>(1000);
-	public static GTControlledRegistry<IMaterialHandler> MATERIAL_HANDLER_REGISTRY = new GTControlledRegistry<>(1000);
 
 	/**
-	 * Initializes material and also creates fluid instances
+	 * Initializes materials registry
 	 */
 	public static void init() {
-		MATERIAL_HANDLER_REGISTRY.freezeRegistry();
-		for (String name : MATERIAL_HANDLER_REGISTRY.getKeys()) {
-			IMaterialHandler materialHandler = MATERIAL_HANDLER_REGISTRY.getObject(name);
-			try {
-				materialHandler.onMaterialsInit();
-			} catch (Throwable exception) {
-				GTLog.logger.warn("Caught exception while trying to init materials by handler " +
-						MATERIAL_HANDLER_REGISTRY.getFullNameForObject(materialHandler), exception);
-			}
-		}
-
 		MATERIAL_REGISTRY.freezeRegistry();
-		for(String name : MATERIAL_REGISTRY.getKeys()) {
-			Material material = MATERIAL_REGISTRY.getObject(name);
-            //noinspection ConstantConditions
-            material.initMaterial(name);
-		}
+        Map<String, String[]> materialFlags = ConfigHolder.materialFlags;
+        for(String materialName : materialFlags.keySet()) {
+            Material material = MATERIAL_REGISTRY.getObject(materialName);
+            if(material == null) {
+                GTLog.logger.error("Couldn't find material {} from configuration of material flags. Skipping it..", materialName);
+                continue;
+            }
+            Class<? extends Material> materialClass = material.getClass();
+            long additionalFlags = 0L;
+            for(String flagName : materialFlags.get(materialName)) {
+                try {
+                    additionalFlags |= MatFlags.resolveFlag(flagName, materialClass);
+                } catch (IllegalArgumentException exception) {
+                    GTLog.logger.error("Couldn't apply configuration material flag {} to material {}: {}",
+                        flagName, material.toString(), exception.getMessage());
+                }
+            }
+            material.add(additionalFlags);
+        }
+
 	}
 
 	public static final class MatFlags {
+
+	    private static Map<String, Entry<Long, Class<? extends Material>>> materialFlagRegistry = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
+
+	    public static void registerMaterialFlag(String name, long value, Class<? extends Material> classFilter) {
+	        if(materialFlagRegistry.containsKey(name))
+	            throw new IllegalArgumentException("Flag with name " + name + " already registered!");
+	        materialFlagRegistry.put(name, new SimpleEntry<>(value, classFilter));
+        }
+
+        public static void registerMaterialFlagsHolder(Class<?> holder, Class<? extends Material> lowerBounds) {
+	        for(Field holderField : holder.getFields()) {
+	            int modifiers = holderField.getModifiers();
+	            if(holderField.getType() != long.class ||
+                    !Modifier.isPublic(modifiers) ||
+                    !Modifier.isStatic(modifiers) ||
+                    !Modifier.isFinal(modifiers))
+	                continue;
+	            String flagName = holderField.getName();
+                long flagValue;
+                try {
+                    flagValue = holderField.getLong(null);
+                } catch (IllegalAccessException exception) {
+                    throw new RuntimeException(exception);
+                }
+                registerMaterialFlag(flagName, flagValue, lowerBounds);
+            }
+        }
+
+        public static long resolveFlag(String name, Class<? extends Material> selfClass) {
+            Entry<Long, Class<? extends Material>> flagEntry = materialFlagRegistry.get(name);
+            if(flagEntry == null)
+                throw new IllegalArgumentException("Flag with name " + name + " not registered");
+            else if(!flagEntry.getValue().isAssignableFrom(selfClass))
+                throw new IllegalArgumentException("Flag " + name + " cannot be applied to material type " +
+                    selfClass.getSimpleName() + ", lower bound is " + flagEntry.getValue().getSimpleName());
+            return flagEntry.getKey();
+        }
+
+        static {
+	        registerMaterialFlagsHolder(MatFlags.class, Material.class);
+        }
 
 		/**
 		 * Enables electrolyzer decomposition recipe generation
@@ -136,10 +189,21 @@ public abstract class Material implements Comparable<Material> {
 		this.element = element;
         this.chemicalFormula = calculateChemicalFormula();
         calculateDecompositionType();
-        if(metaItemSubId > -1) {
-        	MATERIAL_REGISTRY.register(metaItemSubId, name, this);
-		} else MATERIAL_REGISTRY.putObject(name, this);
+        initializeMaterial();
+        //do not register any marker materials in registry
+        if(!(this instanceof MarkerMaterial)) {
+            if(metaItemSubId > -1) {
+                //if we have an generated metaitem, register ourselves with meta item ID
+                MATERIAL_REGISTRY.register(metaItemSubId, name, this);
+            } else {
+                //if we doesn't, just put name mapping for this material
+                MATERIAL_REGISTRY.putObject(name, this);
+            }
+        }
 	}
+
+	protected void initializeMaterial() {
+    }
 
 	protected long verifyMaterialBits(long materialBits) {
 		return materialBits;
@@ -177,10 +241,6 @@ public abstract class Material implements Comparable<Material> {
             }
         }
     }
-
-	protected void initMaterial(String name) {
-
-	}
 
 	public boolean isRadioactive() {
 		if (element != null)

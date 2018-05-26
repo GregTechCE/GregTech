@@ -19,6 +19,10 @@ public abstract class SolidMaterial extends DustMaterial {
 
     public static final class MatFlags {
 
+        static {
+            Material.MatFlags.registerMaterialFlagsHolder(MatFlags.class, SolidMaterial.class);
+        }
+
         public static final long GENERATE_ROD = createFlag(20);
         public static final long GENERATE_GEAR = createFlag(21);
         public static final long GENERATE_LONG_ROD = createFlag(22);
