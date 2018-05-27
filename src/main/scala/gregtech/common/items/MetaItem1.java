@@ -256,6 +256,8 @@ public class MetaItem1 extends MaterialMetaItem {
         SMALL_BRONZE_PIPE = addItem(620, "pipe.small.bronze").setUnificationData(OrePrefix.pipeSmall, Materials.Bronze);
         SMALL_STEEL_PIPE = addItem(621, "pipe.small.steel").setUnificationData(OrePrefix.pipeSmall, Materials.Steel);
 
+        RUBBER_DROP = addItem(622, "rubber_drop").setBurnValue(200);
+
         FLUID_FILTER = addItem(635, "fluidfilter").setInvisible();
 
         CONVEYOR_MODULE_LV = addItem(630, "conveyor.module.lv");
@@ -384,6 +386,12 @@ public class MetaItem1 extends MaterialMetaItem {
     }
 
     public void registerRecipes() {
+        RecipeMaps.EXTRACTOR_RECIPES.recipeBuilder()
+            .inputs(RUBBER_DROP.getStackForm())
+            .outputs(OreDictUnifier.get(OrePrefix.dust, Materials.RawRubber))
+            .duration(800).EUt(6)
+            .buildAndRegister();
+
         RecipeMaps.ASSEMBLER_RECIPES.recipeBuilder()
             .input(OrePrefix.dust, Materials.Redstone).input(OrePrefix.plate, Materials.Tin, 2)
             .outputs(SPRAY_EMPTY.getStackForm())

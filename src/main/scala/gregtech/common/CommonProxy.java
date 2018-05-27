@@ -7,12 +7,17 @@ import gregtech.api.enchants.EnchantmentRadioactivity;
 import gregtech.api.items.metaitem.MetaItem;
 import gregtech.api.util.GTLog;
 import gregtech.common.blocks.*;
+import gregtech.common.blocks.wood.BlockSapling;
+import gregtech.common.blocks.wood.BlockWoodLeaves;
+import gregtech.common.blocks.wood.BlockWoodLog;
 import gregtech.common.cable.ItemBlockCable;
 import gregtech.common.items.MetaItems;
 import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
+import net.minecraft.item.ItemMultiTexture;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -42,6 +47,9 @@ public class CommonProxy {
         registry.register(GRANITE);
         registry.register(MINERAL);
         registry.register(CONCRETE);
+        registry.register(LOG);
+        registry.register(LEAVES);
+        registry.register(SAPLING);
 
         CABLES.values().forEach(registry::register);
         COMPRESSED.values().stream().distinct().forEach(registry::register);
@@ -72,6 +80,9 @@ public class CommonProxy {
         registry.register(createItemBlock(GRANITE, StoneItemBlock::new));
         registry.register(createItemBlock(MINERAL, StoneItemBlock::new));
         registry.register(createItemBlock(CONCRETE, StoneItemBlock::new));
+        registry.register(createMultiTexItemBlock(LOG, state -> state.getValue(BlockWoodLog.VARIANT).getName()));
+        registry.register(createMultiTexItemBlock(LEAVES, state -> state.getValue(BlockWoodLeaves.VARIANT).getName()));
+        registry.register(createMultiTexItemBlock(SAPLING, state -> state.getValue(BlockSapling.VARIANT).getName()));
 
         CABLES.values().stream()
             .map(block -> createItemBlock(block, ItemBlockCable::new))
@@ -87,6 +98,15 @@ public class CommonProxy {
         ORES.stream()
             .map(block -> createItemBlock(block, OreItemBlock::new))
             .forEach(registry::register);
+    }
+
+    private static <T extends Block> ItemBlock createMultiTexItemBlock(T block, Function<IBlockState, String> nameProducer) {
+        ItemBlock itemBlock = new ItemMultiTexture(block, block, stack -> {
+            IBlockState blockState = block.getStateFromMeta(stack.getMetadata());
+            return nameProducer.apply(blockState);
+        });
+        itemBlock.setRegistryName(block.getRegistryName());
+        return itemBlock;
     }
 
     private static <T extends Block> ItemBlock createItemBlock(T block, Function<T, ItemBlock> producer) {
