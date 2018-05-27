@@ -18,9 +18,9 @@ import gregtech.api.unification.ore.StoneTypes;
 import gregtech.common.blocks.BlockGranite.GraniteVariant;
 import gregtech.common.blocks.BlockMineral.MineralVariant;
 import gregtech.common.blocks.StoneBlock.ChiselingVariant;
-import gregtech.common.blocks.wood.BlockSapling;
-import gregtech.common.blocks.wood.BlockWoodLeaves;
-import gregtech.common.blocks.wood.BlockWoodLog;
+import gregtech.common.blocks.wood.BlockSaplingGT;
+import gregtech.common.blocks.wood.BlockLeavesGT;
+import gregtech.common.blocks.wood.BlockLogGT;
 import gregtech.common.cable.BlockCable;
 import gregtech.common.cable.Insulation;
 import gregtech.common.cable.WireProperties;
@@ -64,9 +64,9 @@ public class MetaBlocks {
     public static BlockMineral MINERAL;
     public static BlockConcrete CONCRETE;
 
-    public static BlockWoodLog LOG;
-    public static BlockWoodLeaves LEAVES;
-    public static BlockSapling SAPLING;
+    public static BlockLogGT LOG;
+    public static BlockLeavesGT LEAVES;
+    public static BlockSaplingGT SAPLING;
 
     public static Map<Material, BlockCable> CABLES = new HashMap<>();
     public static HashMap<DustMaterial, BlockCompressed> COMPRESSED = new HashMap<>();
@@ -108,11 +108,11 @@ public class MetaBlocks {
         CONCRETE = new BlockConcrete();
         CONCRETE.setRegistryName("concrete");
 
-        LOG = new BlockWoodLog();
+        LOG = new BlockLogGT();
         LOG.setRegistryName("log");
-        LEAVES = new BlockWoodLeaves();
+        LEAVES = new BlockLeavesGT();
         LEAVES.setRegistryName("leaves");
-        SAPLING = new BlockSapling();
+        SAPLING = new BlockSaplingGT();
         SAPLING.setRegistryName("sapling");
 
         StoneType.init();
@@ -236,6 +236,9 @@ public class MetaBlocks {
         registerItemModel(GRANITE);
         registerItemModel(MINERAL);
         registerItemModel(CONCRETE);
+        registerItemModel(LOG);
+        registerItemModel(LEAVES);
+        registerItemModel(SAPLING);
 
         ItemMeshDefinition cableMeshDefinition = stack -> CableRenderer.MODEL_LOCATION;
         CABLES.values().forEach(cable -> ModelLoader.setCustomMeshDefinition(Item.getItemFromBlock(cable), cableMeshDefinition));

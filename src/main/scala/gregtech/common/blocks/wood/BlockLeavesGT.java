@@ -1,11 +1,10 @@
 package gregtech.common.blocks.wood;
 
 import com.google.common.collect.Lists;
+import gregtech.api.GregTechAPI;
 import gregtech.common.blocks.MetaBlocks;
-import gregtech.common.blocks.wood.BlockWoodLog.LogVariant;
-import net.minecraft.block.Block;
+import gregtech.common.blocks.wood.BlockLogGT.LogVariant;
 import net.minecraft.block.BlockLeaves;
-import net.minecraft.block.BlockPlanks;
 import net.minecraft.block.BlockPlanks.EnumType;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
@@ -22,15 +21,17 @@ import javax.annotation.Nonnull;
 import java.util.List;
 import java.util.Random;
 
-public class BlockWoodLeaves extends BlockLeaves {
+public class BlockLeavesGT extends BlockLeaves {
 
     public static final PropertyEnum<LogVariant> VARIANT = PropertyEnum.create("variant", LogVariant.class);
 
-    public BlockWoodLeaves() {
+    public BlockLeavesGT() {
         setDefaultState(this.blockState.getBaseState()
             .withProperty(VARIANT, LogVariant.RUBBER_WOOD)
             .withProperty(CHECK_DECAY, Boolean.TRUE)
             .withProperty(DECAYABLE, Boolean.TRUE));
+        setUnlocalizedName("gt.leaves");
+        this.setCreativeTab(GregTechAPI.TAB_GREGTECH);
     }
 
     @Override

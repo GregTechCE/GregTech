@@ -1,7 +1,8 @@
 package gregtech.common.blocks.wood;
 
+import gregtech.api.GregTechAPI;
 import gregtech.common.blocks.MetaBlocks;
-import gregtech.common.blocks.wood.BlockWoodLog.LogVariant;
+import gregtech.common.blocks.wood.BlockLogGT.LogVariant;
 import net.minecraft.block.*;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.properties.PropertyInteger;
@@ -16,20 +17,23 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.feature.*;
+import net.minecraftforge.common.EnumPlantType;
+import net.minecraftforge.common.IPlantable;
 
 import java.util.Random;
 
-public class BlockSapling extends BlockBush implements IGrowable {
+public class BlockSaplingGT extends BlockBush implements IGrowable, IPlantable {
 
     public static final PropertyEnum<LogVariant> VARIANT = PropertyEnum.create("type", LogVariant.class);
     public static final PropertyInteger STAGE = PropertyInteger.create("stage", 0, 1);
     protected static final AxisAlignedBB SAPLING_AABB = new AxisAlignedBB(0.1, 0.0D, 0.1, 0.9, 0.8, 0.9);
 
-    public BlockSapling() {
+    public BlockSaplingGT() {
         this.setDefaultState(this.blockState.getBaseState()
             .withProperty(VARIANT, LogVariant.RUBBER_WOOD)
             .withProperty(STAGE, 0));
-        this.setCreativeTab(CreativeTabs.DECORATIONS);
+        setUnlocalizedName("gt.sapling");
+        this.setCreativeTab(GregTechAPI.TAB_GREGTECH);
     }
 
     @Override
@@ -89,6 +93,11 @@ public class BlockSapling extends BlockBush implements IGrowable {
     }
 
     @Override
+    public EnumPlantType getPlantType(IBlockAccess world, BlockPos pos) {
+        return EnumPlantType.Plains;
+    }
+
+    @Override
     public void grow(World worldIn, Random rand, BlockPos pos, IBlockState state) {
         if (state.getValue(STAGE) == 0) {
             worldIn.setBlockState(pos, state.cycleProperty(STAGE), 4);
@@ -99,8 +108,8 @@ public class BlockSapling extends BlockBush implements IGrowable {
 
     public void generateTree(World worldIn, BlockPos pos, IBlockState state, Random rand) {
         WorldGenerator worldgenerator = new WorldGenTrees(true, 6,
-            MetaBlocks.LOG.getDefaultState().withProperty(BlockWoodLog.VARIANT, LogVariant.RUBBER_WOOD),
-            MetaBlocks.LEAVES.getDefaultState().withProperty(BlockWoodLog.VARIANT, LogVariant.RUBBER_WOOD),
+            MetaBlocks.LOG.getDefaultState().withProperty(BlockLogGT.VARIANT, LogVariant.RUBBER_WOOD),
+            MetaBlocks.LEAVES.getDefaultState().withProperty(BlockLogGT.VARIANT, LogVariant.RUBBER_WOOD),
             false);
         worldIn.setBlockState(pos, Blocks.AIR.getDefaultState(), 4);
         if (!worldgenerator.generate(worldIn, rand, pos)) {

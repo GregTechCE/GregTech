@@ -82,7 +82,7 @@ public final class MetaItems {
     public static MetaItem<?>.MetaValueItem SPRAY_EMPTY;
 
     public static MetaItem<?>.MetaValueItem LARGE_FLUID_CELL_STEEL;
-    public static MetaItem<?>.MetaValueItem LARGE_FLUID_CELL_TUNGSTENSTEEL;
+    public static MetaItem<?>.MetaValueItem LARGE_FLUID_CELL_TUNGSTEN_STEEL;
 
     public static MetaItem<?>.MetaValueItem TOOL_MATCHES;
     public static MetaItem<?>.MetaValueItem TOOL_MATCHBOX_USED;
@@ -110,24 +110,24 @@ public final class MetaItems {
     public static MetaItem<?>.MetaValueItem BATTERY_HULL_HV;
 
     public static MetaItem<?>.MetaValueItem BATTERY_RE_ULV_TANTALUM;
-    public static MetaItem<?>.MetaValueItem BATTERY_SU_LV_SULFURICACID;
+    public static MetaItem<?>.MetaValueItem BATTERY_SU_LV_SULFURIC_ACID;
     public static MetaItem<?>.MetaValueItem BATTERY_SU_LV_MERCURY;
     public static MetaItem<?>.MetaValueItem BATTERY_RE_LV_CADMIUM;
     public static MetaItem<?>.MetaValueItem BATTERY_RE_LV_LITHIUM;
     public static MetaItem<?>.MetaValueItem BATTERY_RE_LV_SODIUM;
-    public static MetaItem<?>.MetaValueItem BATTERY_SU_MV_SULFURICACID;
+    public static MetaItem<?>.MetaValueItem BATTERY_SU_MV_SULFURIC_ACID;
     public static MetaItem<?>.MetaValueItem BATTERY_SU_MV_MERCURY;
     public static MetaItem<?>.MetaValueItem BATTERY_RE_MV_CADMIUM;
     public static MetaItem<?>.MetaValueItem BATTERY_RE_MV_LITHIUM;
     public static MetaItem<?>.MetaValueItem BATTERY_RE_MV_SODIUM;
-    public static MetaItem<?>.MetaValueItem BATTERY_SU_HV_SULFURICACID;
+    public static MetaItem<?>.MetaValueItem BATTERY_SU_HV_SULFURIC_ACID;
     public static MetaItem<?>.MetaValueItem BATTERY_SU_HV_MERCURY;
     public static MetaItem<?>.MetaValueItem BATTERY_RE_HV_CADMIUM;
     public static MetaItem<?>.MetaValueItem BATTERY_RE_HV_LITHIUM;
     public static MetaItem<?>.MetaValueItem BATTERY_RE_HV_SODIUM;
 
-    public static MetaItem<?>.MetaValueItem ENERGY_LAPOTRONICORB;
-    public static MetaItem<?>.MetaValueItem ENERGY_LAPOTRONICORB2;
+    public static MetaItem<?>.MetaValueItem ENERGY_LAPOTRONIC_ORB;
+    public static MetaItem<?>.MetaValueItem ENERGY_LAPOTRONIC_ORB2;
     public static MetaItem<?>.MetaValueItem ZPM;
     public static MetaItem<?>.MetaValueItem ZPM2;
 
@@ -235,13 +235,13 @@ public final class MetaItems {
     public static MetaItem<?>.MetaValueItem EMPTY_BOARD_BASIC;
     public static MetaItem<?>.MetaValueItem EMPTY_BOARD_ELITE;
 
-    public static MetaItem<?>.MetaValueItem COMPONENT_SAWBLADE_DIAMOND;
+    public static MetaItem<?>.MetaValueItem COMPONENT_SAW_BLADE_DIAMOND;
     public static MetaItem<?>.MetaValueItem COMPONENT_GRINDER_DIAMOND;
     public static MetaItem<?>.MetaValueItem COMPONENT_GRINDER_TUNGSTEN;
 
-    public static MetaItem<?>.MetaValueItem QUANTUMEYE;
-    public static MetaItem<?>.MetaValueItem QUANTUMSTAR;
-    public static MetaItem<?>.MetaValueItem GRAVISTAR;
+    public static MetaItem<?>.MetaValueItem QUANTUM_EYE;
+    public static MetaItem<?>.MetaValueItem QUANTUM_STAR;
+    public static MetaItem<?>.MetaValueItem GRAVI_STAR;
 
     public static MetaItem<?>.MetaValueItem UPGRADE_MUFFLER;
     public static MetaItem<?>.MetaValueItem UPGRADE_LOCK;

@@ -1,5 +1,6 @@
 package gregtech.common.blocks.wood;
 
+import gregtech.api.GregTechAPI;
 import gregtech.common.items.MetaItems;
 import net.minecraft.block.BlockLog;
 import net.minecraft.block.BlockNewLog;
@@ -21,14 +22,16 @@ import net.minecraft.world.World;
 
 import java.util.Random;
 
-public class BlockWoodLog extends BlockLog {
+public class BlockLogGT extends BlockLog {
 
     public static final PropertyEnum<LogVariant> VARIANT = PropertyEnum.create("variant", LogVariant.class);
 
-    public BlockWoodLog() {
+    public BlockLogGT() {
         this.setDefaultState(this.blockState.getBaseState()
             .withProperty(VARIANT, LogVariant.RUBBER_WOOD)
             .withProperty(LOG_AXIS, BlockLog.EnumAxis.Y));
+        setUnlocalizedName("gt.log");
+        this.setCreativeTab(GregTechAPI.TAB_GREGTECH);
     }
 
     @Override

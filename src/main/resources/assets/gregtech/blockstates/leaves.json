@@ -1,0 +1,18 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+    "model": "block/leaves",
+    "textures": {
+      "all": "blocks/leaves_acacia"
+    }
+  },
+  "variants": {
+    "variant": {
+      "rubber_wood": {
+        "textures": {
+          "all": "blocks/leaves_spruce"
+        }
+      }
+    }
+  }
+}

@@ -1,8 +1,8 @@
 package gregtech.common.worldgen;
 
 import gregtech.common.blocks.MetaBlocks;
-import gregtech.common.blocks.wood.BlockSapling;
-import gregtech.common.blocks.wood.BlockWoodLog.LogVariant;
+import gregtech.common.blocks.wood.BlockSaplingGT;
+import gregtech.common.blocks.wood.BlockLogGT.LogVariant;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
@@ -19,14 +19,14 @@ public class WorldGenRubberTree implements IWorldGenerator {
     public void generate(Random random, int chunkX, int chunkZ, World world, IChunkGenerator chunkGenerator, IChunkProvider chunkProvider) {
         if(world.provider.isSurfaceWorld() && random.nextInt(5) == 0) {
             BlockPos randomPos = new BlockPos(chunkX * 16 + 8, 0, chunkZ * 16 + 8);
-            randomPos = world.getTopSolidOrLiquidBlock(randomPos);
+            randomPos = world.getTopSolidOrLiquidBlock(randomPos).down();
             IBlockState solidBlockState = world.getBlockState(randomPos);
-            BlockSapling sapling = MetaBlocks.SAPLING;
+            BlockSaplingGT sapling = MetaBlocks.SAPLING;
             if(solidBlockState.getBlock().canSustainPlant(solidBlockState, world, randomPos, EnumFacing.UP, sapling)) {
                 BlockPos abovePos = randomPos.up();
-                IBlockState saplingState = sapling.getDefaultState().withProperty(BlockSapling.VARIANT, LogVariant.RUBBER_WOOD);
+                IBlockState saplingState = sapling.getDefaultState().withProperty(BlockSaplingGT.VARIANT, LogVariant.RUBBER_WOOD);
                 world.setBlockState(abovePos, saplingState);
-                sapling.generateTree(world, randomPos, saplingState, random);
+                sapling.generateTree(world, abovePos, saplingState, random);
             }
         }
     }

@@ -1,0 +1,26 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+    "model": "block/cube_column",
+    "textures": {
+      "end": "blocks/log_acacia_top",
+      "side": "blocks/log_acacia"
+    }
+  },
+  "variants": {
+    "axis": {
+      "none": { "textures": { "end": "#side" } },
+      "x": { "x": 90, "y": 90 },
+      "y": {},
+      "z": { "x": 90 }
+    },
+    "variant": {
+      "rubber_wood": {
+        "textures": {
+          "end": "blocks/log_oak_top",
+          "side": "blocks/log_oak"
+        }
+      }
+    }
+  }
+}

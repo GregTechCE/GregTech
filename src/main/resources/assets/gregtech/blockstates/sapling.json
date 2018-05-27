@@ -1,0 +1,18 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+    "model": "block/cross",
+    "textures": {
+      "cross": "blocks/sapling_acacia"
+    }
+  },
+  "variants": {
+    "variant": {
+      "rubber_wood": {
+        "textures": {
+          "cross": "blocks/sapling_oak"
+        }
+      }
+    }
+  }
+}

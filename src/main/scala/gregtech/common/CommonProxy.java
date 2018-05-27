@@ -7,9 +7,9 @@ import gregtech.api.enchants.EnchantmentRadioactivity;
 import gregtech.api.items.metaitem.MetaItem;
 import gregtech.api.util.GTLog;
 import gregtech.common.blocks.*;
-import gregtech.common.blocks.wood.BlockSapling;
-import gregtech.common.blocks.wood.BlockWoodLeaves;
-import gregtech.common.blocks.wood.BlockWoodLog;
+import gregtech.common.blocks.wood.BlockSaplingGT;
+import gregtech.common.blocks.wood.BlockLeavesGT;
+import gregtech.common.blocks.wood.BlockLogGT;
 import gregtech.common.cable.ItemBlockCable;
 import gregtech.common.items.MetaItems;
 import net.minecraft.block.Block;
@@ -80,9 +80,9 @@ public class CommonProxy {
         registry.register(createItemBlock(GRANITE, StoneItemBlock::new));
         registry.register(createItemBlock(MINERAL, StoneItemBlock::new));
         registry.register(createItemBlock(CONCRETE, StoneItemBlock::new));
-        registry.register(createMultiTexItemBlock(LOG, state -> state.getValue(BlockWoodLog.VARIANT).getName()));
-        registry.register(createMultiTexItemBlock(LEAVES, state -> state.getValue(BlockWoodLeaves.VARIANT).getName()));
-        registry.register(createMultiTexItemBlock(SAPLING, state -> state.getValue(BlockSapling.VARIANT).getName()));
+        registry.register(createMultiTexItemBlock(LOG, state -> state.getValue(BlockLogGT.VARIANT).getName()));
+        registry.register(createMultiTexItemBlock(LEAVES, state -> state.getValue(BlockLeavesGT.VARIANT).getName()));
+        registry.register(createMultiTexItemBlock(SAPLING, state -> state.getValue(BlockSaplingGT.VARIANT).getName()));
 
         CABLES.values().stream()
             .map(block -> createItemBlock(block, ItemBlockCable::new))
