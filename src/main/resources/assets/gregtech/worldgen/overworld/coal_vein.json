@@ -6,7 +6,7 @@
 
   "generator": {
     "type": "ellipsoid",
-    "radius": [11, 11]
+    "radius": [16, 16]
   },
   "filler": {
     "type": "simple",

@@ -1,12 +1,12 @@
 {
-  "weight": 160,
+  "weight": 180,
   "density": 0.6,
-  "min_height": 65,
   "max_height": 150,
+  "min_height": 65,
 
   "generator": {
     "type": "ellipsoid",
-    "radius": [13, 14]
+    "radius": [19, 20]
   },
   "filler": {
     "type": "simple",
