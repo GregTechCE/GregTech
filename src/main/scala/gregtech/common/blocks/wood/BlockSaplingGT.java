@@ -24,7 +24,7 @@ import java.util.Random;
 
 public class BlockSaplingGT extends BlockBush implements IGrowable, IPlantable {
 
-    public static final PropertyEnum<LogVariant> VARIANT = PropertyEnum.create("type", LogVariant.class);
+    public static final PropertyEnum<LogVariant> VARIANT = PropertyEnum.create("variant", LogVariant.class);
     public static final PropertyInteger STAGE = PropertyInteger.create("stage", 0, 1);
     protected static final AxisAlignedBB SAPLING_AABB = new AxisAlignedBB(0.1, 0.0D, 0.1, 0.9, 0.8, 0.9);
 

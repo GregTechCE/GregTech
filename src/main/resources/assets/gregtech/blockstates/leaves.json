@@ -1,16 +1,24 @@
 {
   "forge_marker": 1,
   "defaults": {
-    "model": "block/leaves",
+    "model": "minecraft:leaves",
     "textures": {
-      "all": "blocks/leaves_acacia"
+      "all": "gregtech:blocks/rendering_error"
     }
   },
   "variants": {
+	"check_decay": {
+	  "false": {},
+	  "true": {}
+	},
+	"decayable": {
+	  "false": {},
+	  "true": {}
+	},
     "variant": {
       "rubber_wood": {
         "textures": {
-          "all": "blocks/leaves_spruce"
+          "all": "gregtech:blocks/wood/rubber/leaves_rubber"
         }
       }
     }
