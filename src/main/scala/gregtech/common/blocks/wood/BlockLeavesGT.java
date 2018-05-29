@@ -36,7 +36,8 @@ public class BlockLeavesGT extends BlockLeaves {
             .withProperty(DECAYABLE, Boolean.TRUE));
         setUnlocalizedName("gt.leaves");
         this.setCreativeTab(GregTechAPI.TAB_GREGTECH);
-    }
+        this.leavesFancy = true;
+   }
 
     @Override
     public EnumType getWoodType(int meta) {
@@ -81,25 +82,6 @@ public class BlockLeavesGT extends BlockLeaves {
     @Override
     public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player) {
         return new ItemStack(this, 1, state.getValue(VARIANT).ordinal());
-    }
-
-
-    @Override
-    @SideOnly(Side.CLIENT)
-    public BlockRenderLayer getBlockLayer() {
-        return BlockRenderLayer.CUTOUT_MIPPED;
-    }
-
-    @Override
-    public boolean isOpaqueCube(IBlockState state) {
-        return false;
-    }
-
-    @Override
-    @SideOnly(Side.CLIENT)
-    public boolean shouldSideBeRendered(IBlockState blockState, IBlockAccess blockAccess, BlockPos pos, EnumFacing side)
-    {
-        return true;
     }
 
     @Nonnull

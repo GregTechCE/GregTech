@@ -388,7 +388,7 @@ public class MetaItem1 extends MaterialMetaItem {
     public void registerRecipes() {
         RecipeMaps.EXTRACTOR_RECIPES.recipeBuilder()
             .inputs(RUBBER_DROP.getStackForm())
-            .outputs(OreDictUnifier.get(OrePrefix.dust, Materials.RawRubber))
+            .outputs(OreDictUnifier.get(OrePrefix.dust, Materials.RawRubber, 3))
             .duration(800).EUt(6)
             .buildAndRegister();
 
