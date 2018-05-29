@@ -1575,6 +1575,12 @@ death.attack.heat.player=%s was boiled alive by %s.
 enchantment.damage.endermen=Disjunction
 enchantment.damage.radioactivity=Radioactivity
 
+# Rubber stuff
+tile.gt.log.rubber_wood.name=Rubber Wood
+tile.gt.leaves.rubber_wood.name=Rubber Tree Leaves
+tile.gt.sapling.rubber_wood.name=Rubber Tree Sapling
+metaitem.rubber_drop.name=Rubber
+
 tile.surface_rock.name=Surface Rock
 
 tile.casing.ulv=ULV Machine Casing
@@ -1624,6 +1630,7 @@ tile.boiler_casing.titanium_firebox.name=Titanium Firebox Casing
 tile.boiler_casing.tungstensteel_firebox.name=Tungstensteel Firebox Casing
 
 # Metal casing blocks
+tile.metal_casing.primitive_bricks.name=Primitive Bricks
 tile.metal_casing.bronze_bricks.name=Bronze Machine Casing
 tile.metal_casing.invar_heatproof.name=Heat Proof Machine Casing
 tile.metal_casing.aluminium_frostproof.name=Frost Proof Machine Casing
