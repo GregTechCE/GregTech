@@ -108,7 +108,9 @@ public class BlockSaplingGT extends BlockBush implements IGrowable, IPlantable {
 
     public void generateTree(World worldIn, BlockPos pos, IBlockState state, Random rand) {
         WorldGenerator worldgenerator = new WorldGenTrees(true, 6,
-            MetaBlocks.LOG.getDefaultState().withProperty(BlockLogGT.VARIANT, LogVariant.RUBBER_WOOD),
+            MetaBlocks.LOG.getDefaultState()
+                .withProperty(BlockLogGT.VARIANT, LogVariant.RUBBER_WOOD)
+                .withProperty(BlockLogGT.NATURAL, true),
             MetaBlocks.LEAVES.getDefaultState().withProperty(BlockLogGT.VARIANT, LogVariant.RUBBER_WOOD),
             false);
         worldIn.setBlockState(pos, Blocks.AIR.getDefaultState(), 4);

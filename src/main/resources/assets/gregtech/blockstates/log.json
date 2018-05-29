@@ -15,7 +15,11 @@
       "y": {},
       "z": { "x": 90 }
     },
-	"inventory": [{}],
+    "natural": {
+      "true": {},
+      "false": {}
+    },
+    "inventory": [{}],
     "variant": {
       "rubber_wood": {
         "textures": {

@@ -24,7 +24,8 @@ public class WorldGenRubberTree implements IWorldGenerator {
             BlockSaplingGT sapling = MetaBlocks.SAPLING;
             if(solidBlockState.getBlock().canSustainPlant(solidBlockState, world, randomPos, EnumFacing.UP, sapling)) {
                 BlockPos abovePos = randomPos.up();
-                IBlockState saplingState = sapling.getDefaultState().withProperty(BlockSaplingGT.VARIANT, LogVariant.RUBBER_WOOD);
+                IBlockState saplingState = sapling.getDefaultState()
+                    .withProperty(BlockSaplingGT.VARIANT, LogVariant.RUBBER_WOOD);
                 world.setBlockState(abovePos, saplingState);
                 sapling.generateTree(world, abovePos, saplingState, random);
             }

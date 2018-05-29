@@ -1,5 +1,6 @@
 package gregtech.common.blocks;
 
+import com.google.common.collect.ImmutableMap;
 import gregtech.api.GTValues;
 import gregtech.api.GregTechAPI;
 import gregtech.api.block.machines.BlockMachine;
@@ -26,6 +27,7 @@ import gregtech.common.cable.Insulation;
 import gregtech.common.cable.WireProperties;
 import gregtech.common.render.CableRenderer;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockLog.EnumAxis;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
@@ -43,6 +45,7 @@ import java.util.*;
 import java.util.Map.Entry;
 import java.util.function.BiConsumer;
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 import static gregtech.common.ClientProxy.*;
 
@@ -236,7 +239,7 @@ public class MetaBlocks {
         registerItemModel(GRANITE);
         registerItemModel(MINERAL);
         registerItemModel(CONCRETE);
-        registerItemModel(LOG);
+        registerItemModel(LOG, ImmutableMap.of(BlockLogGT.LOG_AXIS, EnumAxis.Y));
         registerItemModel(LEAVES);
         registerItemModel(SAPLING);
 
@@ -250,9 +253,24 @@ public class MetaBlocks {
     @SideOnly(Side.CLIENT)
     private static void registerItemModel(Block block) {
         for (IBlockState state : block.getBlockState().getValidStates()) {
+            //noinspection ConstantConditions
             ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(block),
                 block.getMetaFromState(state),
-                new ModelResourceLocation(block.getRegistryName(), statePropertiesToString(state.getProperties())));
+                new ModelResourceLocation(block.getRegistryName(),
+                    statePropertiesToString(state.getProperties())));
+        }
+    }
+
+    @SideOnly(Side.CLIENT)
+    private static void registerItemModel(Block block, Map<IProperty<?>, Comparable<?>> stateOverrides) {
+        for (IBlockState state : block.getBlockState().getValidStates()) {
+            HashMap<IProperty<?>, Comparable<?>> stringProperties = new HashMap<>(state.getProperties());
+            stringProperties.putAll(stateOverrides);
+            //noinspection ConstantConditions
+            ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(block),
+                block.getMetaFromState(state),
+                new ModelResourceLocation(block.getRegistryName(),
+                    statePropertiesToString(stringProperties)));
         }
     }
 
@@ -332,7 +350,11 @@ public class MetaBlocks {
     private static String statePropertiesToString(Map<IProperty<?>, Comparable<?>> properties) {
         StringBuilder stringbuilder = new StringBuilder();
 
-        for (Map.Entry<IProperty<?>, Comparable<?>> entry : properties.entrySet()) {
+        List<Entry<IProperty<?>, Comparable<?>>> entries = properties.entrySet().stream()
+            .sorted(Comparator.comparing(c -> c.getKey().getName()))
+            .collect(Collectors.toList());
+
+        for (Map.Entry<IProperty<?>, Comparable<?>> entry : entries) {
             if (stringbuilder.length() != 0) {
                 stringbuilder.append(",");
             }

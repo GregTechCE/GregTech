@@ -6,6 +6,7 @@ import net.minecraft.block.BlockLog;
 import net.minecraft.block.BlockNewLog;
 import net.minecraft.block.BlockPlanks;
 import net.minecraft.block.properties.IProperty;
+import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
@@ -20,16 +21,19 @@ import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
+import javax.print.attribute.standard.MediaSize.NA;
 import java.util.Random;
 
 public class BlockLogGT extends BlockLog {
 
     public static final PropertyEnum<LogVariant> VARIANT = PropertyEnum.create("variant", LogVariant.class);
+    public static final PropertyBool NATURAL = PropertyBool.create("natural");
 
     public BlockLogGT() {
         this.setDefaultState(this.blockState.getBaseState()
             .withProperty(VARIANT, LogVariant.RUBBER_WOOD)
-            .withProperty(LOG_AXIS, BlockLog.EnumAxis.Y));
+            .withProperty(LOG_AXIS, BlockLog.EnumAxis.Y)
+            .withProperty(NATURAL, false));
         setUnlocalizedName("gt.log");
         this.setCreativeTab(GregTechAPI.TAB_GREGTECH);
     }
@@ -43,20 +47,22 @@ public class BlockLogGT extends BlockLog {
 
     @Override
     protected BlockStateContainer createBlockState() {
-        return new BlockStateContainer(this, VARIANT, LOG_AXIS);
+        return new BlockStateContainer(this, VARIANT, LOG_AXIS, NATURAL);
     }
 
     @Override
     public IBlockState getStateFromMeta(int meta) {
         return getDefaultState()
             .withProperty(LOG_AXIS, EnumAxis.values()[meta / 4])
-            .withProperty(VARIANT, LogVariant.values()[meta % 4]);
+            .withProperty(VARIANT, LogVariant.values()[meta % 4 % 2])
+            .withProperty(NATURAL, meta % 4 / 2 == 1);
     }
 
     @Override
     public int getMetaFromState(IBlockState state) {
         return state.getValue(LOG_AXIS).ordinal() * 4 +
-            state.getValue(VARIANT).ordinal();
+            state.getValue(VARIANT).ordinal() +
+            (state.getValue(NATURAL) ? 2 : 0);
     }
 
     @Override
@@ -74,7 +80,10 @@ public class BlockLogGT extends BlockLog {
     @Override
     public void getDrops(NonNullList<ItemStack> drops, IBlockAccess world, BlockPos pos, IBlockState state, int fortune) {
         Random rand = world instanceof World ? ((World)world).rand : RANDOM;
-        drops.add(MetaItems.RUBBER_DROP.getStackForm(1 + rand.nextInt(2)));
+        if(state.getValue(NATURAL)) {
+            drops.add(MetaItems.RUBBER_DROP.getStackForm(1 + rand.nextInt(2)));
+        }
+        drops.add(new ItemStack(this, 1, state.getValue(VARIANT).ordinal()));
     }
 
     public enum LogVariant implements IStringSerializable {
