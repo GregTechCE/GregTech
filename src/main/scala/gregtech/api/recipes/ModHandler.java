@@ -13,7 +13,9 @@ import gregtech.api.unification.material.type.Material;
 import gregtech.api.unification.ore.OrePrefix;
 import gregtech.api.unification.stack.MaterialStack;
 import gregtech.api.unification.stack.UnificationEntry;
+import gregtech.api.util.DummyContainer;
 import gregtech.api.util.GTLog;
+import gregtech.api.util.world.DummyWorld;
 import gregtech.common.MetaFluids;
 import gregtech.common.items.MetaItems;
 import net.minecraft.block.Block;
@@ -38,6 +40,8 @@ import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
 import net.minecraftforge.registries.IForgeRegistry;
 import org.apache.commons.lang3.Validate;
+import org.apache.commons.lang3.tuple.ImmutablePair;
+import org.apache.commons.lang3.tuple.Pair;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
@@ -46,8 +50,6 @@ import java.util.List;
 import java.util.Random;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
-
-import static gregtech.api.GTValues.DW;
 
 public class ModHandler {
 
@@ -528,36 +530,29 @@ public class ModHandler {
     //            Get Recipe Output Helpers          //
     ///////////////////////////////////////////////////
 
-    public static ItemStack getRecipeOutput(World world, ItemStack... recipe) {
-        if (recipe == null || recipe.length == 0) return ItemStack.EMPTY;
+    public static Pair<IRecipe, ItemStack> getRecipeOutput(World world, ItemStack... recipe) {
+        if (recipe == null || recipe.length == 0)
+            return ImmutablePair.of(null, ItemStack.EMPTY);
 
-        if (world == null) world = DW;
+        if (world == null) world = DummyWorld.INSTANCE;
 
-        boolean temp = false;
-        for (ItemStack stack : recipe) {
-            if (!stack.isEmpty()) {
-                temp = true;
-                break;
+        InventoryCrafting craftingGrid = new InventoryCrafting(new DummyContainer(), 3, 3);
+
+        for (int i = 0; i < 9 && i < recipe.length; i++) {
+            ItemStack recipeStack = recipe[i];
+            if(recipeStack != null && !recipeStack.isEmpty()) {
+                craftingGrid.setInventorySlotContents(i, recipeStack);
             }
         }
-        if (!temp) return ItemStack.EMPTY;
-
-        InventoryCrafting craftingGrid = new InventoryCrafting(new Container() {
-            @Override
-            public boolean canInteractWith(EntityPlayer var1) {
-                return false;
-            }
-        }, 3, 3);
-
-        for (int i = 0; i < 9 && i < recipe.length; i++) craftingGrid.setInventorySlotContents(i, recipe[i]);
 
         for (IRecipe tmpRecipe : CraftingManager.REGISTRY) {
             if (tmpRecipe.matches(craftingGrid, world)) {
-                return tmpRecipe.getCraftingResult(craftingGrid);
+                ItemStack itemStack = tmpRecipe.getCraftingResult(craftingGrid);
+                return ImmutablePair.of(tmpRecipe, itemStack);
             }
         }
 
-        return ItemStack.EMPTY;
+        return ImmutablePair.of(null, ItemStack.EMPTY);
     }
 
     public static ItemStack getSmeltingOutput(ItemStack input) {

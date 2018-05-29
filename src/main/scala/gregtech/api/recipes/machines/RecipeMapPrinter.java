@@ -34,7 +34,7 @@ public class RecipeMapPrinter extends RecipeMap<DefaultRecipeBuilder> {
             EnumDyeColor dyeColor = GregTechAPI.LIQUID_DYE_MAP.get(fluidStack.getFluid());
             if (dyeColor != null && fluidStack.amount >= GTValues.L) {
                 ItemStack dyeItemStack = new ItemStack(Items.DYE, 1, dyeColor.getDyeDamage());
-                ItemStack colouredItem = ModHandler.getRecipeOutput(null, dyeItemStack, firstInputItem);
+                ItemStack colouredItem = ModHandler.getRecipeOutput(null, dyeItemStack, firstInputItem).getRight();
                 if (colouredItem.isEmpty()) return null;
                 return recipeBuilder()
                     .inputs(GTUtility.copyAmount(1, firstInputItem))

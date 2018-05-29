@@ -54,32 +54,30 @@ public class ConfigHolder {
 
     public static class VanillaRecipes {
 
-        @Config.Ignore
-        public boolean steelRequireBlastFurnace = true;
+        @Config.Comment("Whether to nerf paper crafting recipe. Default is true.")
+        public boolean nerfPaperCrafting = true;
 
-        @Config.Comment("Default: true")
-        public boolean nerfedDustCrafting = true;
-
-        @Config.Comment("Default: true")
-        public boolean nerfedPaperCrafting = true;
-
-        @Config.Comment("Default: true")
+        @Config.Comment("Whether to make flint and steel recipe require steel nugget instead of iron one. Default is true")
         public boolean flintAndSteelRequireSteel = true;
 
-        @Config.Comment("Default: true")
-        public boolean nerfedStickCrafting = true;
+        @Config.Comment("Whether to nerf wood crafting to 2 planks from 1 log. Default is false.")
+        public boolean nerfWoodCrafting = false;
 
-        @Config.Comment("Default: true")
+        @Config.Comment("Whether to nerf wood crafting to 2 sticks from 2 planks. Default is false.")
+        public boolean nerfStickCrafting = false;
+
+        @Config.Comment("Whether to make iron bucket recipe harder by requiring hammer and plates. Default is true.")
         public boolean bucketRequirePlatesAndHammer = true;
 
-        @Config.Comment("Recipes for items like iron doors, trapdors, pressure plates, cauldron, hopper and iron bars require iron plates and hammer. Default: true")
+        @Config.Comment("Recipes for items like iron doors, trapdors, pressure plates, cauldron, hopper and iron bars require iron plates and hammer. Default is true")
         public boolean ironConsumingCraftingRecipesRequirePlates = true;
 
-        @Config.Comment("Default: true")
+        @Config.Comment("Require a knife for bowl crafting instead of only plank? Default is true.")
         public boolean bowlRequireKnife = true;
 
-        @Config.Comment("Default: true")
+        @Config.Comment("Require steel wheels to craft minecarts? Default is true.")
         public boolean harderMinecarts = true;
+
     }
 
 }

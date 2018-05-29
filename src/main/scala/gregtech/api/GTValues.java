@@ -1,5 +1,6 @@
 package gregtech.api;
 
+import gregtech.api.util.world.DummyWorld;
 import net.minecraft.world.World;
 import net.minecraftforge.oredict.OreDictionary;
 
@@ -63,14 +64,9 @@ public class GTValues {
      * MOD ID Strings, since they are very common Parameters.
      */
     public static final String MODID = "gregtech",
-            MODID_RC = "Railcraft",
+            MODID_RC = "railcraft",
             MODID_FR = "Forestry",
             MODID_JEI = "jei",
             MODID_FMP = "forgemultipartcbe";
-
-    /**
-     * If you have to give something a World Parameter but there is no World... (Dummy World)
-     */
-    public static World DW;
 
 }

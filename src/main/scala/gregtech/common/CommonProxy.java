@@ -5,6 +5,8 @@ import gregtech.api.block.machines.MachineItemBlock;
 import gregtech.api.enchants.EnchantmentEnderDamage;
 import gregtech.api.enchants.EnchantmentRadioactivity;
 import gregtech.api.items.metaitem.MetaItem;
+import gregtech.api.recipes.ModHandler;
+import gregtech.api.unification.OreDictUnifier;
 import gregtech.api.util.GTLog;
 import gregtech.common.blocks.*;
 import gregtech.common.blocks.wood.BlockSaplingGT;
@@ -15,12 +17,17 @@ import gregtech.common.items.MetaItems;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.enchantment.Enchantment;
+import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemMultiTexture;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.CraftingManager;
+import net.minecraft.util.NonNullList;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.registries.IForgeRegistry;
 
 import java.util.function.Function;
@@ -119,7 +126,7 @@ public class CommonProxy {
     public void registerEnchantments(RegistryEvent.Register<Enchantment> event) {
         EnchantmentEnderDamage.INSTANCE.register(event);
         EnchantmentRadioactivity.INSTANCE.register(event);
-    }   
+    }
 
     public void onPreLoad() {
 
@@ -131,4 +138,6 @@ public class CommonProxy {
 
     public void onPostLoad() {
     }
+
+
 }
