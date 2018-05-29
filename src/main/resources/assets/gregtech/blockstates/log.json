@@ -1,10 +1,11 @@
 {
   "forge_marker": 1,
   "defaults": {
-    "model": "block/cube_column",
+    "transform": "forge:default-block",
+    "model": "minecraft:cube_column",
     "textures": {
-      "end": "blocks/log_acacia_top",
-      "side": "blocks/log_acacia"
+      "end": "gregtech:blocks/rendering_error",
+      "side": "gregtech:blocks/rendering_error"
     }
   },
   "variants": {
@@ -14,11 +15,12 @@
       "y": {},
       "z": { "x": 90 }
     },
+	"inventory": [{}],
     "variant": {
       "rubber_wood": {
         "textures": {
-          "end": "blocks/log_oak_top",
-          "side": "blocks/log_oak"
+          "end": "gregtech:blocks/wood/rubber/log_rubber_top",
+          "side": "gregtech:blocks/wood/rubber/log_rubber_side"
         }
       }
     }

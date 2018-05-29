@@ -2,13 +2,13 @@
   "weight": 8,
   "density": 0.5,
   "max_height": 65,
-  "min_height": 40,
+  "min_height": 30,
   "dimension_filter": ["provider_class:WorldProviderEnd"],
   "surface_stone_material": "naquadah",
   
   "generator": {
     "type": "ellipsoid",
-    "radius": [16, 16]
+    "radius": [20, 20]
   },
   "filler": {
     "type": "simple",
