@@ -304,4 +304,10 @@ public class RecipeMap<R extends RecipeBuilder<R>> {
         return amperage;
     }
 
+    @Override
+    public String toString() {
+        return "RecipeMap{" +
+            "unlocalizedName='" + unlocalizedName + '\'' +
+            '}';
+    }
 }

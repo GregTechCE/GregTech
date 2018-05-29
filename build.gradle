@@ -10,7 +10,14 @@ buildscript {
         classpath 'net.minecraftforge.gradle:ForgeGradle:2.3-SNAPSHOT'
     }
 }
+
+plugins {
+    id "com.jfrog.bintray" version '1.8.0'
+}
+
 apply plugin: 'net.minecraftforge.gradle.forge'
+apply plugin: 'maven'
+apply plugin: 'maven-publish'
 apply plugin: 'scala'
 apply plugin: 'idea'
 
@@ -132,6 +139,7 @@ task dev(type: Jar) {
 }
 
 artifacts {
+    archives jar
     archives dev
 	archives source
 }
@@ -144,7 +152,7 @@ idea {
 
 task ciWriteBuildNumber doLast {
     def file = file("src/main/scala/gregtech/GregTechVersion.java")
-    def bn = System.getenv("BUILD_NUMBER") ?: project.ext.properties.buildNumber ?: 0
+    def bn = System.getenv("TRAVIS_BUILD_NUMBER") ?: project.ext.properties.buildNumber ?: 0
     def outfile = ""
     def ln = "\n" //Linux line endings because we're on git!
 
@@ -176,7 +184,35 @@ String getVersionFromJava(File file) {
         }
     }
 
-    build = System.getenv("BUILD_NUMBER") ?: project.ext.properties.buildNumber ?: 0
+    build = System.getenv("TRAVIS_BUILD_NUMBER") ?: project.ext.properties.buildNumber ?: 0
 
     return "$major.$minor.$revision.$build"
+}
+
+publishing {
+    publications {
+        MyPublication(MavenPublication) {
+            groupId = project.group
+            artifactId = project.archivesBaseName
+            version = mod_version
+            artifact jar
+            artifact source
+            artifact dev
+        }
+    }
+}
+
+bintray {
+    user = System.getenv('BINTRAY_USER')
+    key = System.getenv('BINTRAY_KEY')
+    publications = ['MyPublication']
+    publish = true
+    pkg {
+        repo = 'dev'
+        name = 'gregtech'
+        version {
+            name = mod_version
+            released = new Date()
+        }
+    }
 }
