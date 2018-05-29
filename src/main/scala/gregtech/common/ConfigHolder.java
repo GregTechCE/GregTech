@@ -1,13 +1,10 @@
 package gregtech.common;
 
 import gregtech.api.GTValues;
-import gregtech.api.worldgen.generator.WorldGeneratorImpl;
 import net.minecraftforge.common.config.Config;
-import net.minecraftforge.common.config.Config.Comment;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.TreeMap;
 
 @Config(modid = GTValues.MODID)
 public class ConfigHolder {

@@ -903,7 +903,7 @@ public class MachineRecipeLoader {
             if (!smeltingOutput.isEmpty() && smeltingOutput.getItem() == Items.COAL && smeltingOutput.getMetadata() == 1) {
                 int coalAmount = smeltingOutput.getCount();
                 RecipeMaps.PYROLYSE_RECIPES.recipeBuilder()
-                    .inputs(stack, 16)
+                    .inputs(GTUtility.copyAmount(16, stack))
                     .circuitMeta(0)
                     .outputs(new ItemStack(Items.COAL, 20 * coalAmount, 1))
                     .fluidOutputs(Materials.Creosote.getFluid(5000 * coalAmount))
@@ -911,7 +911,7 @@ public class MachineRecipeLoader {
                     .EUt(64)
                     .buildAndRegister();
                 RecipeMaps.PYROLYSE_RECIPES.recipeBuilder()
-                    .inputs(stack, 16)
+                    .inputs(GTUtility.copyAmount(16, stack))
                     .circuitMeta(1)
                     .fluidInputs(Materials.Nitrogen.getFluid(400))
                     .outputs(new ItemStack(Items.COAL, 20, 1))
@@ -920,7 +920,7 @@ public class MachineRecipeLoader {
                     .EUt(96)
                     .buildAndRegister();
                 RecipeMaps.PYROLYSE_RECIPES.recipeBuilder()
-                    .inputs(stack, 16)
+                    .inputs(GTUtility.copyAmount(16, stack))
                     .circuitMeta(2)
                     .outputs(OreDictUnifier.get(OrePrefix.dust, Materials.Ash, 5))
                     .fluidOutputs(Materials.OilHeavy.getFluid(300))
@@ -977,21 +977,21 @@ public class MachineRecipeLoader {
                 .buildAndRegister();
 
             RecipeMaps.ASSEMBLER_RECIPES.recipeBuilder()
-                .inputs(stack, 8).input(OrePrefix.dust, Materials.Redstone)
+                .inputs(GTUtility.copyAmount(8, stack)).input(OrePrefix.dust, Materials.Redstone)
                 .outputs(new ItemStack(Blocks.NOTEBLOCK, 1))
                 .duration(200)
                 .EUt(4)
                 .buildAndRegister();
 
             RecipeMaps.ASSEMBLER_RECIPES.recipeBuilder()
-                .inputs(stack, 8).input(OrePrefix.gem, Materials.Diamond)
+                .inputs(GTUtility.copyAmount(8, stack)).input(OrePrefix.gem, Materials.Diamond)
                 .outputs(new ItemStack(Blocks.JUKEBOX, 1))
                 .duration(400)
                 .EUt(4)
                 .buildAndRegister();
 
             RecipeMaps.ASSEMBLER_RECIPES.recipeBuilder()
-                .inputs(stack, 6)
+                .inputs(GTUtility.copyAmount(6, stack))
                 .inputs(new ItemStack(Items.BOOK, 3))
                 .outputs(new ItemStack(Blocks.BOOKSHELF, 1))
                 .duration(400)
@@ -1007,7 +1007,7 @@ public class MachineRecipeLoader {
                 .buildAndRegister();
 
             RecipeMaps.ASSEMBLER_RECIPES.recipeBuilder()
-                .inputs(stack, 2)
+                .inputs(GTUtility.copyAmount(2, stack))
                 .circuitMeta(2)
                 .outputs(new ItemStack(Blocks.WOODEN_PRESSURE_PLATE))
                 .duration(200)
@@ -1015,7 +1015,7 @@ public class MachineRecipeLoader {
                 .buildAndRegister();
 
             RecipeMaps.ASSEMBLER_RECIPES.recipeBuilder()
-                .inputs(stack, 3)
+                .inputs(GTUtility.copyAmount(3, stack))
                 .circuitMeta(3)
                 .outputs(new ItemStack(Blocks.TRAPDOOR))
                 .duration(300)
@@ -1023,7 +1023,7 @@ public class MachineRecipeLoader {
                 .buildAndRegister();
 
             RecipeMaps.ASSEMBLER_RECIPES.recipeBuilder()
-                .inputs(stack, 4)
+                .inputs(GTUtility.copyAmount(4, stack))
                 .circuitMeta(4)
                 .outputs(new ItemStack(Blocks.CRAFTING_TABLE))
                 .duration(400)
@@ -1031,7 +1031,7 @@ public class MachineRecipeLoader {
                 .buildAndRegister();
 
             RecipeMaps.ASSEMBLER_RECIPES.recipeBuilder()
-                .inputs(stack, 6)
+                .inputs(GTUtility.copyAmount(6, stack))
                 .circuitMeta(6)
                 .outputs(new ItemStack(Items.OAK_DOOR))
                 .duration(600)
@@ -1039,7 +1039,7 @@ public class MachineRecipeLoader {
                 .buildAndRegister();
 
             RecipeMaps.ASSEMBLER_RECIPES.recipeBuilder()
-                .inputs(stack, 8)
+                .inputs(GTUtility.copyAmount(8, stack))
                 .circuitMeta(8)
                 .outputs(new ItemStack(Blocks.CHEST, 1))
                 .duration(800)

@@ -105,11 +105,6 @@ public abstract class RecipeBuilder<R extends RecipeBuilder<R>> {
         return inputs(Arrays.asList(inputs));
     }
 
-    public R inputs(ItemStack input, int size) {
-	    input.setCount(size);
-        return inputs(Arrays.asList(input));
-    }
-
 	public R inputs(Collection<ItemStack> inputs) {
 		if (GTUtility.iterableContains(inputs, Predicates.or(Objects::isNull, ItemStack::isEmpty))) {
 			GTLog.logger.error("Input cannot contain null or empty ItemStacks. Inputs: {}", inputs);
