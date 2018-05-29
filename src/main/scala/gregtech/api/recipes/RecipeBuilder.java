@@ -13,7 +13,6 @@ import gregtech.api.util.ValidationResult;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
 import net.minecraftforge.fluids.FluidStack;
-import org.apache.commons.lang3.Validate;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import java.util.*;
@@ -103,8 +102,13 @@ public abstract class RecipeBuilder<R extends RecipeBuilder<R>> {
 	}
 
 	public R inputs(ItemStack... inputs) {
-		return inputs(Arrays.asList(inputs));
-	}
+        return inputs(Arrays.asList(inputs));
+    }
+
+    public R inputs(ItemStack input, int size) {
+	    input.setCount(size);
+        return inputs(Arrays.asList(input));
+    }
 
 	public R inputs(Collection<ItemStack> inputs) {
 		if (GTUtility.iterableContains(inputs, Predicates.or(Objects::isNull, ItemStack::isEmpty))) {

@@ -19,17 +19,13 @@ import gregtech.api.unification.stack.MaterialStack;
 import gregtech.api.unification.stack.UnificationEntry;
 import gregtech.api.util.GTLog;
 import gregtech.api.util.GTUtility;
-import gregtech.common.ConfigHolder;
 import gregtech.common.items.MetaItems;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.IRecipe;
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.oredict.ShapedOreRecipe;
 import org.apache.commons.lang3.ArrayUtils;
-import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -43,7 +39,6 @@ import static gregtech.api.unification.material.type.Material.MatFlags.NO_UNIFIC
 import static gregtech.api.unification.material.type.SolidMaterial.MatFlags.*;
 import static gregtech.api.unification.ore.OrePrefix.Conditions.isToolMaterial;
 import static gregtech.api.unification.ore.OrePrefix.and;
-import static gregtech.api.unification.ore.OrePrefix.log;
 import static gregtech.api.unification.ore.OrePrefix.noFlag;
 
 public class OreProcessingHandler {
@@ -65,8 +60,6 @@ public class OreProcessingHandler {
     );
 
     public void registerProcessing() {
-        OrePrefix.log.addProcessingHandler(this::processLog);
-        OrePrefix.plank.addProcessingHandler(this::processPlank);
 
         OrePrefix.plate.addProcessingHandler(this::processPlate, this::processPolarizing);
         OrePrefix.plateDense.addProcessingHandler(this::processPlateDense, this::processPolarizing);
@@ -915,199 +908,6 @@ public class OreProcessingHandler {
             EnumDyeColor dyeColor = GTUtility.determineDyeColor(material.materialRGB);
             MarkerMaterial colorMaterial = MarkerMaterials.Color.COLORS.get(dyeColor);
             OreDictUnifier.registerOre(stack, OrePrefix.craftingLens, colorMaterial);
-        }
-    }
-
-    private void processLog(OrePrefix logPrefix, Material material) {
-        ItemStack stack = OreDictUnifier.get(logPrefix, material);
-
-        RecipeMaps.MACERATOR_RECIPES.recipeBuilder()
-            .input(logPrefix, material)
-            .outputs(OreDictUnifier.get(OrePrefix.dust, Materials.Wood, 6))
-            .chancedOutput(OreDictUnifier.get(OrePrefix.dust, Materials.Wood), 8000)
-            .buildAndRegister();
-
-        ModHandler.addShapedRecipe(String.format("stick_long_%s", material),
-            OreDictUnifier.get(OrePrefix.stickLong, Materials.Wood, 2),
-            "sLf",
-            'L', new UnificationEntry(logPrefix, material));
-
-        RecipeMaps.LATHE_RECIPES.recipeBuilder()
-            .input(logPrefix, material)
-            .outputs(OreDictUnifier.get(OrePrefix.stickLong, Materials.Wood, 4), OreDictUnifier.get(OrePrefix.dust, Materials.Wood, 2))
-            .duration(160)
-            .EUt(8)
-            .buildAndRegister();
-
-        ItemStack smeltingOutput = ModHandler.getSmeltingOutput(stack);
-        if (!smeltingOutput.isEmpty() && smeltingOutput.getItem() == Items.COAL && smeltingOutput.getMetadata() == 1) {
-            int coalAmount = smeltingOutput.getCount();
-
-            RecipeMaps.PYROLYSE_RECIPES.recipeBuilder()
-                .input(logPrefix, material, 16)
-                .circuitMeta(0)
-                .outputs(new ItemStack(Items.COAL, 20 * coalAmount, 1))
-                .fluidOutputs(Materials.Creosote.getFluid(5000 * coalAmount))
-                .duration(440)
-                .EUt(64)
-                .buildAndRegister();
-            RecipeMaps.PYROLYSE_RECIPES.recipeBuilder()
-                .input(logPrefix, material, 16)
-                .circuitMeta(1)
-                .fluidInputs(Materials.Nitrogen.getFluid(400))
-                .outputs(new ItemStack(Items.COAL, 20, 1))
-                .fluidInputs(Materials.Creosote.getFluid(4000))
-                .duration(200)
-                .EUt(96)
-                .buildAndRegister();
-            RecipeMaps.PYROLYSE_RECIPES.recipeBuilder()
-                .input(logPrefix, material, 16)
-                .circuitMeta(2)
-                .outputs(OreDictUnifier.get(OrePrefix.dust, Materials.Ash, 5))
-                .fluidOutputs(Materials.OilHeavy.getFluid(300))
-                .duration(280)
-                .EUt(192)
-                .buildAndRegister();
-
-        }
-
-
-
-        Pair<IRecipe, ItemStack> outputPair = ModHandler.getRecipeOutput(null, stack);
-        ItemStack output = outputPair.getValue();
-        int originalOutput = output.getCount();
-
-        if (!output.isEmpty() && OreDictUnifier.getPrefix(output) == OrePrefix.plank) {
-            if (ConfigHolder.vanillaRecipes.nerfWoodCrafting) {
-                IRecipe outputRecipe = outputPair.getKey();
-                GTLog.logger.info("Nerfing planks crafting recipe {} -> {}", stack, output);
-                //noinspection ConstantConditions
-                ModHandler.addShapelessRecipe(outputRecipe.getRegistryName().toString(), stack,
-                    GTUtility.copyAmount(originalOutput / 2, output));
-            }
-
-            RecipeMaps.CUTTER_RECIPES.recipeBuilder()
-                .input(logPrefix, material)
-                .fluidInputs(Materials.Lubricant.getFluid(1))
-                .outputs(GTUtility.copyAmount(originalOutput * 2, stack),
-                    OreDictUnifier.get(OrePrefix.dust, Materials.Wood))
-                .duration(200).EUt(8)
-                .buildAndRegister();
-
-            RecipeMaps.CUTTER_RECIPES.recipeBuilder()
-                .input(logPrefix, material)
-                .outputs(GTUtility.copyAmount(originalOutput, output),
-                    OreDictUnifier.get(OrePrefix.dust, Materials.Wood, 2))
-                .duration(200).EUt(8)
-                .buildAndRegister();
-
-            ModHandler.removeRecipes(output);
-            ModHandler.addShapedRecipe(String.format("log_to_wood_%s", material),
-                GTUtility.copyAmount(originalOutput, output),
-                "s", "L",
-                'L', new UnificationEntry(logPrefix, material));
-        }
-    }
-
-    private void processPlank(OrePrefix plankPrefix, Material material) {
-        ItemStack stack = OreDictUnifier.get(plankPrefix, material);
-
-        if (stack.isEmpty()) {
-            return;
-        }
-
-        if (material == Materials.Wood) {
-            RecipeMaps.LATHE_RECIPES.recipeBuilder()
-                .input(plankPrefix, material)
-                .outputs(OreDictUnifier.get(OrePrefix.stick, Materials.Wood, 2))
-                .duration(10)
-                .EUt(8)
-                .buildAndRegister();
-
-            RecipeMaps.ASSEMBLER_RECIPES.recipeBuilder()
-                .input(plankPrefix, material, 8).input(OrePrefix.dust, Materials.Redstone)
-                .outputs(new ItemStack(Blocks.NOTEBLOCK, 1))
-                .duration(200)
-                .EUt(4)
-                .buildAndRegister();
-
-            RecipeMaps.ASSEMBLER_RECIPES.recipeBuilder()
-                .input(plankPrefix, material, 8).input(OrePrefix.gem, Materials.Diamond)
-                .outputs(new ItemStack(Blocks.JUKEBOX, 1))
-                .duration(400)
-                .EUt(4)
-                .buildAndRegister();
-
-            RecipeMaps.ASSEMBLER_RECIPES.recipeBuilder()
-                .input(plankPrefix, material, 6)
-                .inputs(new ItemStack(Items.BOOK, 3))
-                .outputs(new ItemStack(Blocks.BOOKSHELF, 1))
-                .duration(400)
-                .EUt(4)
-                .buildAndRegister();
-
-            RecipeMaps.ASSEMBLER_RECIPES.recipeBuilder()
-                .input(plankPrefix, material)
-                .circuitMeta(1)
-                .outputs(new ItemStack(Blocks.WOODEN_BUTTON, 1))
-                .duration(100)
-                .EUt(4)
-                .buildAndRegister();
-
-            RecipeMaps.ASSEMBLER_RECIPES.recipeBuilder()
-                .input(plankPrefix, material, 2)
-                .circuitMeta(2)
-                .outputs(new ItemStack(Blocks.WOODEN_PRESSURE_PLATE))
-                .duration(200)
-                .EUt(4)
-                .buildAndRegister();
-
-            RecipeMaps.ASSEMBLER_RECIPES.recipeBuilder()
-                .input(plankPrefix, material, 3)
-                .circuitMeta(3)
-                .outputs(new ItemStack(Blocks.TRAPDOOR))
-                .duration(300)
-                .EUt(4)
-                .buildAndRegister();
-
-            RecipeMaps.ASSEMBLER_RECIPES.recipeBuilder()
-                .input(plankPrefix, material, 4)
-                .circuitMeta(4)
-                .outputs(new ItemStack(Blocks.CRAFTING_TABLE))
-                .duration(400)
-                .EUt(4)
-                .buildAndRegister();
-
-            RecipeMaps.ASSEMBLER_RECIPES.recipeBuilder()
-                .input(plankPrefix, material, 6)
-                .circuitMeta(6)
-                .outputs(new ItemStack(Items.OAK_DOOR))
-                .duration(600)
-                .EUt(4)
-                .buildAndRegister();
-
-            RecipeMaps.ASSEMBLER_RECIPES.recipeBuilder()
-                .input(plankPrefix, material, 8)
-                .circuitMeta(8)
-                .outputs(new ItemStack(Blocks.CHEST, 1))
-                .duration(800)
-                .EUt(4)
-                .buildAndRegister();
-
-            ItemStack output = ModHandler.getRecipeOutput(null, stack, stack, stack).getValue();
-            if (!output.isEmpty() && output.getCount() >= 3) {
-                RecipeMaps.CUTTER_RECIPES.recipeBuilder()
-                    .input(plankPrefix, material)
-                    .outputs(GTUtility.copyAmount(output.getCount() / 3, output))
-                    .duration(25)
-                    .EUt(4)
-                    .buildAndRegister();
-
-                ModHandler.addShapedRecipe(String.format("slab_%s", material),
-                    GTUtility.copyAmount(output.getCount() / 3, output),
-                    "sP",
-                    'P', new UnificationEntry(plankPrefix, material));
-            }
         }
     }
 
