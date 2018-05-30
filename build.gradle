@@ -210,6 +210,7 @@ bintray {
     pkg {
         repo = 'dev'
         name = 'gregtech'
+        userOrg = System.getenv('BINTRAY_USER')
         version {
             name = mod_version
             released = new Date()
