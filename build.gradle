@@ -11,17 +11,6 @@ buildscript {
     }
 }
 
-boolean ignorePublish = new File(".nopublish").exists();
-
-if(!ignorePublish) {
-    plugins {
-        id "com.jfrog.bintray" version '1.8.0'
-    }
-
-    apply plugin: 'maven'
-    apply plugin: 'maven-publish'
-}
-
 apply plugin: 'net.minecraftforge.gradle.forge'
 apply plugin: 'scala'
 apply plugin: 'idea'
@@ -189,38 +178,8 @@ String getVersionFromJava(File file) {
         }
     }
 
-    build = System.getenv("TRAVIS_BUILD_NUMBER") ?: project.ext.properties.buildNumber ?: 0
+    build = System.getenv("TRAVIS_BUILD_NUMBER") ?: config.buildNumber ?: 0
 
     return "$major.$minor.$revision.$build"
 }
 
-if(!ignorePublish) {
-    publishing {
-        publications {
-            MyPublication(MavenPublication) {
-                groupId = project.group
-                artifactId = project.archivesBaseName
-                version = mod_version
-                artifact jar
-                artifact source
-                artifact dev
-            }
-        }
-    }
-
-    bintray {
-        user = System.getenv('BINTRAY_USER')
-        key = System.getenv('BINTRAY_KEY')
-        publications = ['MyPublication']
-        publish = true
-        pkg {
-            repo = 'dev'
-            name = 'gregtech'
-            userOrg = System.getenv('BINTRAY_USER')
-            version {
-                name = mod_version
-                released = new Date()
-            }
-        }
-    }
-}
