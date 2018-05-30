@@ -27,7 +27,7 @@ public final class UnlistedBlockPos implements IUnlistedProperty<BlockPos> {
 
 	@Override
 	public String valueToString(BlockPos value) {
-		return "";
+		return value.toString();
 	}
 
 }

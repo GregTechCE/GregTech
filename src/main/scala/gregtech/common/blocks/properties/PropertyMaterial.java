@@ -2,6 +2,7 @@ package gregtech.common.blocks.properties;
 
 import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableList;
+import gregtech.api.unification.material.Materials;
 import gregtech.api.unification.material.type.Material;
 import net.minecraft.block.properties.PropertyHelper;
 
@@ -36,7 +37,7 @@ public class PropertyMaterial extends PropertyHelper<Material> {
 		if (this.allowedValues.contains(material)) {
 			return Optional.of(material);
 		}
-		return Optional.absent();
+		return Optional.of(Materials._NULL);
 	}
 
 	@Override

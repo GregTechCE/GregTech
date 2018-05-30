@@ -89,7 +89,7 @@ public class MetaItem2 extends MaterialMetaItem {
         CROP_DROP_ONION = addItem(555, "crop.drop.onion").addOreDict("cropOnion").addStats(new FoodStats(2, 0.2F)).setInvisible();
         CROP_DROP_CUCUMBER = addItem(556, "crop.drop.cucumber").addOreDict("cropCucumber").addStats(new FoodStats(1, 0.2F)).setInvisible();
 
-        PLANT_BALL = addItem(570, "plant.ball").setBurnValue(75); //TODO @Exidex texture
+        PLANT_BALL = addItem(570, "plant_ball").setBurnValue(75);
     }
 
     public void registerRecipes() {

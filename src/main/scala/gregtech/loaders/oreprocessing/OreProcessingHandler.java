@@ -420,46 +420,38 @@ public class OreProcessingHandler {
     private void processIngot(OrePrefix ingotPrefix, Material material) {
         if (!(material instanceof MetalMaterial))
             return;
-        if (!material.hasFlag(MatFlags.GENERATE_PLATE) || material.hasFlag(MatFlags.NO_SMASHING))
-            return;
         ItemStack ingotStack = OreDictUnifier.get(ingotPrefix, material);
-        if (!ingotStack.isEmpty()) {
-            if (material.hasFlag(SolidMaterial.MatFlags.MORTAR_GRINDABLE)) {
-                ModHandler.addShapelessRecipe(String.format("mortar_grind_%s", material.toString()),
-                    OreDictUnifier.get(OrePrefix.dust, material), 'm', new UnificationEntry(ingotPrefix, material));
-            }
-            if (!material.hasFlag(MatFlags.NO_SMASHING)) {
-                ModHandler.addShapedRecipe(String.format("wrench_%s", material.toString()),
-                    MetaItems.WRENCH.getStackForm((SolidMaterial) material, null),
-                    "IhI",
-                    "III",
-                    " I ",
-                    'I', ingotStack);
-            }
-            FluidStack fluid = ((FluidMaterial) material).getFluid(L);
-            if (fluid == null) {
-                GTLog.logger.error("METAL MATERIAL: {} DOESN'T HAVE FLUID", material);
-            }
-            RecipeMaps.FLUID_SOLIDFICATION_RECIPES.recipeBuilder()
-                .notConsumable(MetaItems.SHAPE_MOLD_INGOT)
-                .fluidInputs(((FluidMaterial) material).getFluid(L))
-                .outputs(OreDictUnifier.get(OrePrefix.ingot, material))
-                .duration(20).EUt(8)
-                .buildAndRegister();
 
+        if (material.hasFlag(SolidMaterial.MatFlags.MORTAR_GRINDABLE)) {
+            ModHandler.addShapelessRecipe(String.format("mortar_grind_%s", material.toString()),
+                OreDictUnifier.get(OrePrefix.dust, material), 'm', new UnificationEntry(ingotPrefix, material));
+        }
 
+        if (!material.hasFlag(MatFlags.NO_SMASHING)) {
+            ModHandler.addShapedRecipe(String.format("wrench_%s", material.toString()),
+                MetaItems.WRENCH.getStackForm((SolidMaterial) material, null),
+                "IhI", "III", " I ", 'I', ingotStack);
+        }
+
+        RecipeMaps.FLUID_SOLIDFICATION_RECIPES.recipeBuilder()
+            .notConsumable(MetaItems.SHAPE_MOLD_INGOT)
+            .fluidInputs(((FluidMaterial) material).getFluid(L))
+            .outputs(ingotStack)
+            .duration(20).EUt(8)
+            .buildAndRegister();
+
+        if (material.hasFlag(SolidMaterial.MatFlags.MORTAR_GRINDABLE)) {
+            ModHandler.addShapelessRecipe(String.format("mortar_grind_%s", material.toString()),
+                OreDictUnifier.get(OrePrefix.dust, material),
+                'm', new UnificationEntry(ingotPrefix, material));
+        }
+
+        if (material.hasFlag(MatFlags.GENERATE_PLATE) && !material.hasFlag(NO_SMASHING)) {
             ItemStack plateStack = OreDictUnifier.get(OrePrefix.plate, material);
-            if (material.hasFlag(SolidMaterial.MatFlags.MORTAR_GRINDABLE)) {
-                ModHandler.addShapelessRecipe(String.format("mortar_grind_%s", material.toString()),
-                    OreDictUnifier.get(OrePrefix.dust, material),
-                    'm', new UnificationEntry(ingotPrefix, material));
-            }
-
             RecipeMaps.BENDER_RECIPES.recipeBuilder()
                 .circuitMeta(0)
                 .input(ingotPrefix, material)
                 .outputs(plateStack)
-                .circuitMeta(0)
                 .EUt(24).duration((int) (material.getMass() / 1.5))
                 .buildAndRegister();
 
@@ -470,19 +462,7 @@ public class OreProcessingHandler {
                 .buildAndRegister();
 
             ModHandler.addShapedRecipe(String.format("plate_%s", material.toString()),
-                plateStack,
-                "h",
-                "I",
-                "I",
-                'I', new UnificationEntry(ingotPrefix, material));
-
-            ModHandler.addShapedRecipe(String.format("plate_%s", material.toString()),
-                plateStack,
-                "h",
-                "I",
-                "I",
-                'I',
-                new UnificationEntry(ingotPrefix, material));
+                plateStack, "h", "I", "I", 'I', new UnificationEntry(ingotPrefix, material));
 
             if (material.hasFlag(MetalMaterial.MatFlags.GENERATE_DENSE)) {
                 ItemStack denseStack = OreDictUnifier.get(OrePrefix.plateDense, material);
@@ -912,65 +892,48 @@ public class OreProcessingHandler {
     }
 
     private void processPlate(OrePrefix platePrefix, Material material) { //for plate
-        ItemStack stack = OreDictUnifier.get(platePrefix, material);
-        ItemStack dustStack = OreDictUnifier.get(OrePrefix.dust, material);
-        boolean noSmashing = material.hasFlag(NO_SMASHING);
-        if (!stack.isEmpty()) {
-            if (material instanceof FluidMaterial) {
-                FluidStack fluid = ((FluidMaterial) material).getFluid(L);
-                if (fluid != null) {
-                    RecipeMaps.FLUID_SOLIDFICATION_RECIPES.recipeBuilder()
-                        .notConsumable(MetaItems.SHAPE_MOLD_PLATE)
-                        .fluidInputs(fluid)
-                        .outputs(OreDictUnifier.get(OrePrefix.plate, material))
-                        .duration(40)
-                        .EUt(8)
-                        .buildAndRegister();
-                }
-            }
-            ItemStack compressedStack = OreDictUnifier.get(OrePrefix.compressed, material); //wtf is a compressed
-            RecipeMaps.IMPLOSION_RECIPES.recipeBuilder()
-                .input(platePrefix, material, 2)
-                .explosivesAmount(2)
-                .outputs(compressedStack, OreDictUnifier.get(OrePrefix.dustTiny, Materials.DarkAsh))
+        if(!(material instanceof SolidMaterial) ||
+            !material.hasFlag(MatFlags.GENERATE_PLATE)) return;
+        SolidMaterial solidMaterial = (SolidMaterial) material;
+
+        if (solidMaterial.shouldGenerateFluid()) {
+            RecipeMaps.FLUID_SOLIDFICATION_RECIPES.recipeBuilder()
+                .notConsumable(MetaItems.SHAPE_MOLD_PLATE)
+                .fluidInputs(solidMaterial.getFluid(L))
+                .outputs(OreDictUnifier.get(OrePrefix.plate, material))
+                .duration(40)
+                .EUt(8)
                 .buildAndRegister();
-
-            if (!noSmashing) {
-                ModHandler.addShapedRecipe(String.format("ingot_to_plate_%s", material),
-                    stack,
-                    "h",
-                    "X",
-                    "X",
-                    'X', new UnificationEntry(OrePrefix.ingot, material));
-
-                ModHandler.addShapedRecipe(String.format("ingot_to_plate_oredict_%s", material),
-                    stack,
-                    "H",
-                    "X",
-                    'H', ToolDictNames.craftingToolForgeHammer,
-                    'X', new UnificationEntry(OrePrefix.ingot, material));
-
-                ModHandler.addShapedRecipe(String.format("gem_to_plate_%s", material),
-                    stack,
-                    "h",
-                    "X",
-                    'X', new UnificationEntry(OrePrefix.gem, material));
-
-                ModHandler.addShapedRecipe(String.format("gem_to_plate_oredict_%s", material),
-                    stack,
-                    "H",
-                    "X",
-                    'H', ToolDictNames.craftingToolForgeHammer,
-                    'X', new UnificationEntry(OrePrefix.gem, material));
-            }
-
-            if (material.hasFlag(MORTAR_GRINDABLE))
-                ModHandler.addShapedRecipe(String.format("plate_to_dust_%s", material),
-                    dustStack,
-                    "X",
-                    "m",
-                    'X', new UnificationEntry(OrePrefix.plate, material));
         }
+
+        if (!material.hasFlag(NO_SMASHING)) {
+            ItemStack stack = OreDictUnifier.get(platePrefix, material);
+            ModHandler.addShapedRecipe(String.format("ingot_to_plate_%s", material),
+                stack, "h", "X", "X",
+                'X', new UnificationEntry(OrePrefix.ingot, material));
+
+            ModHandler.addShapedRecipe(String.format("gem_to_plate_%s", material),
+                stack, "h", "X",
+                'X', new UnificationEntry(OrePrefix.gem, material));
+        }
+
+        if (material.hasFlag(MORTAR_GRINDABLE)) {
+            ItemStack dustStack = OreDictUnifier.get(OrePrefix.dust, material);
+            ModHandler.addShapedRecipe(String.format("plate_to_dust_%s", material),
+                dustStack, "X", "m",
+                'X', new UnificationEntry(OrePrefix.plate, material));
+        }
+    }
+
+    private void processCompressed(OrePrefix compressed, Material material) {
+        if(!(material instanceof SolidMaterial) ||
+            !material.hasFlag(MatFlags.GENERATE_PLATE)) return;
+        ItemStack compressedStack = OreDictUnifier.get(compressed, material);
+        RecipeMaps.IMPLOSION_RECIPES.recipeBuilder()
+            .input(OrePrefix.plank, material, 2)
+            .explosivesAmount(2)
+            .outputs(compressedStack, OreDictUnifier.get(OrePrefix.dustTiny, Materials.DarkAsh))
+            .buildAndRegister();
     }
 
     private void processPlateDense(OrePrefix orePrefix, Material material) {

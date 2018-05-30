@@ -19,6 +19,7 @@ import gregtech.api.util.world.DummyWorld;
 import gregtech.common.MetaFluids;
 import gregtech.common.items.MetaItems;
 import net.minecraft.block.Block;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.InventoryCrafting;
@@ -27,6 +28,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.item.crafting.IRecipe;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.Fluid;
@@ -44,10 +46,7 @@ import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
 
 import javax.annotation.Nullable;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
@@ -464,6 +463,26 @@ public class ModHandler {
             case 'x': return ToolDictNames.craftingToolWireCutter.name();
             default: return null;
         }
+    }
+
+    public static Collection<ItemStack> getAllSubItems(ItemStack item) {
+        //match subtypes only on wildcard damage value items
+        if(item.getItemDamage() != GTValues.W)
+            return Collections.singleton(item);
+        NonNullList<ItemStack> stackList = NonNullList.create();
+        CreativeTabs[] visibleTags = item.getItem().getCreativeTabs();
+        for(CreativeTabs creativeTab : visibleTags) {
+            NonNullList<ItemStack> thisList = NonNullList.create();
+            item.getItem().getSubItems(creativeTab, thisList);
+            loop: for(ItemStack newStack : thisList) {
+                for(ItemStack alreadyExists : stackList) {
+                    if(ItemStack.areItemStacksEqual(alreadyExists, newStack))
+                        continue loop; //do not add equal item stacks
+                }
+                stackList.add(newStack);
+            }
+        }
+        return stackList;
     }
 
     ///////////////////////////////////////////////////

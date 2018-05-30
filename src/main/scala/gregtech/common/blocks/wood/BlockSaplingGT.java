@@ -33,7 +33,9 @@ public class BlockSaplingGT extends BlockBush implements IGrowable, IPlantable {
             .withProperty(VARIANT, LogVariant.RUBBER_WOOD)
             .withProperty(STAGE, 0));
         setUnlocalizedName("gt.sapling");
-        this.setCreativeTab(GregTechAPI.TAB_GREGTECH);
+        setCreativeTab(GregTechAPI.TAB_GREGTECH);
+        setHardness(0.0F);
+        setSoundType(SoundType.PLANT);
     }
 
     @Override

@@ -45,7 +45,7 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
      name = "GregTech",
      version = "@VERSION@",
      acceptedMinecraftVersions = "[1.12,1.13)",
-     dependencies = "required:codechickenlib;before:forestry;after:forgemultipartcbe")
+     dependencies = "required:codechickenlib;after:forestry;after:forgemultipartcbe")
 public class GregTechMod {
 
     static {
@@ -97,12 +97,6 @@ public class GregTechMod {
         MetaBlocks.registerOreDict();
         MaterialInfoLoader.init();
         OreProcessingHandler.initializeMetaItems();
-        OrePrefix.runMaterialHandlers();
-        FuelLoader.registerFuels();
-        MetaItems.registerRecipes();
-        MachineRecipeLoader.init();
-        MetaTileEntityLoader.init();
-        CraftingRecipeLoader.init();
         gregtechproxy.onLoad();
 
         if(Loader.isModLoaded(GTValues.MODID_FMP)) {
@@ -124,6 +118,13 @@ public class GregTechMod {
     @Mod.EventHandler
     public void onPostInit(FMLPostInitializationEvent event) {
         GTLog.logger.info("PostInit-Phase started!");
+
+        OrePrefix.runMaterialHandlers();
+        FuelLoader.registerFuels();
+        MetaItems.registerRecipes();
+        MachineRecipeLoader.init();
+        CraftingRecipeLoader.init();
+        MetaTileEntityLoader.init();
 
         WorldGenRegistry.INSTANCE.initializeRegistry();
         if(!ConfigHolder.disableRubberTreeGeneration) {
