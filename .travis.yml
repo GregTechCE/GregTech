@@ -18,6 +18,7 @@ install:
     - ./gradlew setupCiWorkspace
     - ./gradlew ciWriteBuildNumber
 script: "./gradlew build"
+after_success: "./gradlew bintrayUpload"
 
 notifications:
   email: false
