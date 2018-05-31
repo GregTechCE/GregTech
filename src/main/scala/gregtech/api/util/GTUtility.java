@@ -85,6 +85,11 @@ public class GTUtility {
      * Determines dye color nearest to specified RGB color
      */
     public static EnumDyeColor determineDyeColor(int rgbColor) {
+        //add manual overrides for black and white
+        if(rgbColor == 0xFFFFFF)
+            return EnumDyeColor.WHITE;
+        else if(rgbColor == 0x000000)
+            return EnumDyeColor.BLACK;
         int rA = (rgbColor & 0xff0000) >> 16;
         int gA = (rgbColor & 0xff00) >> 8;
         int bA = (rgbColor & 0xff);
@@ -320,7 +325,6 @@ public class GTUtility {
         }
         int randomValue = random.nextInt(currentIndex);
         for(int i = 0; i < size; i++) {
-            Entry<Integer, T> entry = randomList.get(i);
             if(randomValue < baseOffsets[i])
                 return i;
         }
@@ -413,40 +417,6 @@ public class GTUtility {
         return isWearingFullSuit(entity, GregTechAPI.electroHazmatList);
     }
 
-    public static boolean isWearingFullGasHazmat(EntityLivingBase entity) {
-        return isWearingFullSuit(entity, GregTechAPI.gasHazmatList);
-    }
-
-    public static float getHeatDamageFromItem(ItemStack stack) {
-        UnificationEntry data = OreDictUnifier.getUnificationEntry(stack);
-        return data == null ? 0 : data.orePrefix.heatDamage;
-    }
-
-    public static boolean applyHeatDamage(EntityLivingBase entity, float damage) {
-        if (damage > 0 && entity.getActivePotionEffect(MobEffects.FIRE_RESISTANCE) == null && !isWearingFullHeatHazmat(entity)) {
-            entity.attackEntityFrom(DamageSources.getHeatDamage(), damage);
-            return true;
-        }
-        return false;
-    }
-
-    public static boolean applyFrostDamage(EntityLivingBase entity, float damage) {
-        if (damage > 0 && !isWearingFullFrostHazmat(entity)) {
-            entity.attackEntityFrom(DamageSources.getFrostDamage(), damage);
-            return true;
-        }
-        return false;
-    }
-
-    public static boolean applyElectricityDamage(EntityLivingBase entity, long voltage, long amperage) {
-        long damage = getTierByVoltage(voltage) * amperage * 4;
-        if (damage > 0 && !isWearingFullElectroHazmat(entity)) {
-            entity.attackEntityFrom(DamageSources.getElectricDamage(), damage);
-            return true;
-        }
-        return false;
-    }
-
     public static boolean applyRadioactivity(EntityLivingBase entity, int level, int amountOfItems) {
         if (level > 0 && entity.getCreatureAttribute() != EnumCreatureAttribute.UNDEAD && entity.getCreatureAttribute() != EnumCreatureAttribute.ARTHROPOD && !isWearingFullRadioHazmat(entity)) {
             entity.addPotionEffect(new PotionEffect(MobEffects.SLOWNESS, level * 140 * amountOfItems));
@@ -497,22 +467,10 @@ public class GTUtility {
         return NonNullList.from(ItemStack.EMPTY, stacks);
     }
 
-    public static ItemStack[] copyStackArray(ItemStack... stacks) {
-        ItemStack[] itemStacks = new ItemStack[stacks.length];
-        for (int i = 0; i < stacks.length; i++) itemStacks[i] = stacks[i].copy();
-        return itemStacks;
-    }
-
     public static List<FluidStack> copyFluidList(List<FluidStack> fluidStacks) {
         FluidStack[] stacks = new FluidStack[fluidStacks.size()];
         for (int i = 0; i < fluidStacks.size(); i++) stacks[i] = fluidStacks.get(i).copy();
         return Lists.newArrayList(stacks);
-    }
-
-    public static FluidStack[] copyFluidArray(FluidStack... stacks) {
-        FluidStack[] fluidStacks = new FluidStack[stacks.length];
-        for (int i = 0; i < stacks.length; i++) if (stacks[i] != null) fluidStacks[i] = stacks[i].copy();
-        return fluidStacks;
     }
 
     public static ItemStack copy(ItemStack... stacks) {
@@ -560,29 +518,6 @@ public class GTUtility {
         return replacement;
     }
 
-    public static boolean isStackInList(ItemStack stack, Collection<SimpleItemStack> list) {
-        if (stack.isEmpty()) return false;
-        return isStackInList(new SimpleItemStack(stack), list);
-    }
-
-    public static boolean isStackInList(SimpleItemStack stack, Collection<SimpleItemStack> list) {
-        return stack != null && (list.contains(stack) || list.contains(new SimpleItemStack(stack.item, stack.stackSize, W)));
-    }
-
-    /**
-     * Translates a material amount into an amount of fluid in fluid material units.
-     */
-    public static int mat2FlAmount(long materialAmount) {
-        return (int) translateMaterialToAmount(materialAmount, L);
-    }
-
-    /**
-     * Translates a material amount into an amount of fluid.
-     */
-    public static long translateMaterialToAmount(long materialAmount, long amountPerUnit) {
-        return (materialAmount * amountPerUnit) / M;
-    }
-
     /**
      * This checks if the dimension is really a dimension and not another planet or something.
      * Used for my teleporter.
@@ -592,58 +527,6 @@ public class GTUtility {
         if (clazzName.contains("mystcraft") || clazzName.contains("twilightforest") || clazzName.contains("rftools"))
             return true;
         return GregTechAPI.dimensionalList.contains(dimensionID);
-    }
-
-    public static EnumFacing determineWrenchingSide(EnumFacing side, float x, float y, float z) {
-        EnumFacing tBack = side.getOpposite();
-        switch (side) {
-            case DOWN:
-            case UP:
-                if (x < 0.25) {
-                    if (z < 0.25) return tBack;
-                    if (z > 0.75) return tBack;
-                    return EnumFacing.WEST;
-                }
-                if (x > 0.75) {
-                    if (z < 0.25) return tBack;
-                    if (z > 0.75) return tBack;
-                    return EnumFacing.EAST;
-                }
-                if (z < 0.25) return EnumFacing.NORTH;
-                if (z > 0.75) return EnumFacing.SOUTH;
-                return side;
-            case NORTH:
-            case SOUTH:
-                if (x < 0.25) {
-                    if (y < 0.25) return tBack;
-                    if (y > 0.75) return tBack;
-                    return EnumFacing.WEST;
-                }
-                if (x > 0.75) {
-                    if (y < 0.25) return tBack;
-                    if (y > 0.75) return tBack;
-                    return EnumFacing.EAST;
-                }
-                if (y < 0.25) return EnumFacing.DOWN;
-                if (y > 0.75) return EnumFacing.UP;
-                return side;
-            case WEST:
-            case EAST:
-                if (z < 0.25) {
-                    if (y < 0.25) return tBack;
-                    if (y > 0.75) return tBack;
-                    return EnumFacing.NORTH;
-                }
-                if (z > 0.75) {
-                    if (y < 0.25) return tBack;
-                    if (y > 0.75) return tBack;
-                    return EnumFacing.SOUTH;
-                }
-                if (y < 0.25) return EnumFacing.DOWN;
-                if (y > 0.75) return EnumFacing.UP;
-                return side;
-        }
-        return side;
     }
 
 	public static long createFlag(int id) {

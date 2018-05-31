@@ -1580,6 +1580,7 @@ tile.gt.log.rubber_wood.name=Rubber Wood
 tile.gt.leaves.rubber_wood.name=Rubber Tree Leaves
 tile.gt.sapling.rubber_wood.name=Rubber Tree Sapling
 metaitem.rubber_drop.name=Rubber
+metaitem.plant_ball.name=Plant Ball
 
 tile.surface_rock.name=Surface Rock
 
@@ -1680,6 +1681,7 @@ tile.multiblock_casing.fusion_mk2.name=Fusion Machine Casing MK II
 gregtech.machine.wooden_chest.name=Wooden Chest
 gregtech.machine.bronze_chest.name=Bronze Chest
 gregtech.machine.steel_chest.name=Steel Chest
+gregtech.machine.stainless_steel_chest.name=Stainless Steel Chest
 gregtech.machine.titanium_chest.name=Titanium Chest
 gregtech.machine.tungstensteel_chest.name=Tungstensteel Chest
 
@@ -1687,6 +1689,7 @@ gregtech.machine.tungstensteel_chest.name=Tungstensteel Chest
 gregtech.machine.wooden_tank.name=Wooden Tank
 gregtech.machine.bronze_tank.name=Bronze Tank
 gregtech.machine.steel_tank.name=Steel Tank
+gregtech.machine.stainless_steel_tank.name=Stainless Steel Tank
 gregtech.machine.titanium_tank.name=Titanium Tank
 gregtech.machine.tungstensteel_tank.name=Tungstensteel Tank
 

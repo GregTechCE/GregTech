@@ -189,8 +189,9 @@ public class OreProcessingHandler {
                 !material.hasFlag(Material.MatFlags.FLAMMABLE | MatFlags.NO_SMELTING)) {
                 MetalMaterial metalMaterial = (MetalMaterial) material;
 
+                boolean hasHotIngot = OrePrefix.ingotHot.doGenerateItem(metalMaterial);
                 ItemStack tinyDustStack = OreDictUnifier.get(OrePrefix.dustTiny, metalMaterial);
-                ItemStack ingotStack = OreDictUnifier.get(OrePrefix.ingot, metalMaterial);
+                ItemStack ingotStack = OreDictUnifier.get(hasHotIngot ? OrePrefix.ingotHot : OrePrefix.ingot, metalMaterial);
                 ItemStack nuggetStack = OreDictUnifier.get(OrePrefix.nugget, metalMaterial);
 
                 if(ingotStack.isEmpty()) {
@@ -203,13 +204,15 @@ public class OreProcessingHandler {
                 } else {
                     int duration = Math.max(1, (int) (material.getMass() * metalMaterial.blastFurnaceTemperature / 50L));
                     ModHandler.removeFurnaceSmelting(ingotStack);
-                    if (!ingotStack.isEmpty() && !nuggetStack.isEmpty()) {
-                        RecipeMaps.BLAST_RECIPES.recipeBuilder()
-                            .input(dustPrefix, material)
-                            .outputs(ingotStack)
-                            .duration(duration).EUt(120)
-                            .blastFurnaceTemp(metalMaterial.blastFurnaceTemperature)
-                            .buildAndRegister();
+
+                    RecipeMaps.BLAST_RECIPES.recipeBuilder()
+                        .input(dustPrefix, material)
+                        .outputs(ingotStack)
+                        .duration(duration).EUt(120)
+                        .blastFurnaceTemp(metalMaterial.blastFurnaceTemperature)
+                        .buildAndRegister();
+
+                    if (!hasHotIngot) {
                         RecipeMaps.BLAST_RECIPES.recipeBuilder()
                             .input(OrePrefix.dustTiny, material)
                             .outputs(nuggetStack)
@@ -217,6 +220,15 @@ public class OreProcessingHandler {
                             .blastFurnaceTemp(metalMaterial.blastFurnaceTemperature)
                             .buildAndRegister();
                     }
+
+                    if(hasHotIngot) {
+                        RecipeMaps.VACUUM_RECIPES.recipeBuilder()
+                            .input(OrePrefix.ingotHot, metalMaterial)
+                            .outputs(OreDictUnifier.get(OrePrefix.ingot, metalMaterial))
+                            .duration(metalMaterial.blastFurnaceTemperature / 16)
+                            .buildAndRegister();;
+                    }
+
                     if (metalMaterial.blastFurnaceTemperature <= 1000) {
                         ModHandler.addRCFurnaceRecipe(dustStack, ingotStack, duration);
                         ModHandler.addRCFurnaceRecipe(tinyDustStack, nuggetStack, Math.max(1, duration / 9));

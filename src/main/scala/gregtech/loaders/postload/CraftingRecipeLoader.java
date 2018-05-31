@@ -3,6 +3,7 @@ package gregtech.loaders.postload;
 import gregtech.api.recipes.ModHandler;
 import gregtech.api.unification.OreDictUnifier;
 import gregtech.api.unification.material.MarkerMaterials;
+import gregtech.api.unification.material.MarkerMaterials.Tier;
 import gregtech.api.unification.material.Materials;
 import gregtech.api.unification.ore.OrePrefix;
 import gregtech.api.unification.stack.UnificationEntry;
@@ -25,6 +26,10 @@ public class CraftingRecipeLoader {
 
     private static void loadCraftingRecipes() {
 
+        ModHandler.addShapedRecipe("primitive_circuit", MetaItems.CIRCUIT_PRIMITIVE.getStackForm(), "SR", "RT", 'S', new UnificationEntry(OrePrefix.plate, Materials.Steel), 'R', new UnificationEntry(OrePrefix.wireGtSingle, Materials.RedAlloy), 'T', new UnificationEntry(OrePrefix.wireGtSingle, Materials.Tin));
+        ModHandler.addShapedRecipe("basic_circuit", MetaItems.CIRCUIT_BASIC.getStackForm(), "XXX", "NPN", "XXX", 'P', new UnificationEntry(OrePrefix.plate, Materials.Steel), 'N', new UnificationEntry(OrePrefix.circuit, Tier.Primitive), 'X', new UnificationEntry(OrePrefix.cableGtSingle, Materials.Copper));
+        ModHandler.addShapelessRecipe("integrated_circuit", MetaItems.INTEGRATED_CIRCUIT.getStackForm(), MetaItems.CIRCUIT_BASIC.getStackForm());
+
         ModHandler.addShapelessRecipe("rubber_wood_planks", new ItemStack(Blocks.PLANKS, 4, EnumType.JUNGLE.getMetadata()), new ItemStack(MetaBlocks.LOG, 1, LogVariant.RUBBER_WOOD.ordinal()));
         ModHandler.addShapelessRecipe("chum_on_stick", MetaItems.FOOD_CHUM_ON_STICK.getStackForm(), new UnificationEntry(OrePrefix.stick, Materials.Wood), MetaItems.FOOD_CHUM);
         ModHandler.addShapedRecipe("rubber_ring", OreDictUnifier.get(OrePrefix.ring, Materials.Rubber), "k", "X", 'X', new UnificationEntry(OrePrefix.plate, Materials.Rubber));
@@ -45,8 +50,6 @@ public class CraftingRecipeLoader {
 
         ModHandler.addShapedRecipe("component_grinder_diamond", MetaItems.COMPONENT_GRINDER_DIAMOND.getStackForm(), "CWC", "WDW", "CWC", 'W', new UnificationEntry(OrePrefix.plate, Materials.Steel), 'C', new UnificationEntry(OrePrefix.dust, Materials.Diamond), 'D', new UnificationEntry(OrePrefix.gem, Materials.Diamond));
         ModHandler.addShapedRecipe("component_grinder_tungsten", MetaItems.COMPONENT_GRINDER_TUNGSTEN.getStackForm(), "WCW", "CDC", "WCW", 'W', new UnificationEntry(OrePrefix.plate, Materials.Tungsten), 'C', new UnificationEntry(OrePrefix.plate, Materials.Steel), 'D', new UnificationEntry(OrePrefix.gem, Materials.Diamond));
-
-        ModHandler.addShapelessRecipe("integrated_circuit", MetaItems.INTEGRATED_CIRCUIT.getStackForm(), MetaItems.CIRCUIT_BASIC.getStackForm());
 
         ModHandler.addShapedRecipe("emitter_lv", MetaItems.EMITTER_LV.getStackForm(), "WWC", "XDW", "CXW", 'W', new UnificationEntry(OrePrefix.stick, Materials.Brass), 'C', new UnificationEntry(OrePrefix.circuit, MarkerMaterials.Tier.Basic), 'D', new UnificationEntry(OrePrefix.gem, Materials.Quartzite), 'X', new UnificationEntry(OrePrefix.cableGtSingle, Materials.Tin));
         ModHandler.addShapedRecipe("emitter_mv", MetaItems.EMITTER_MV.getStackForm(), "WWC", "XDW", "CXW", 'W', new UnificationEntry(OrePrefix.stick, Materials.Electrum), 'C', new UnificationEntry(OrePrefix.circuit, MarkerMaterials.Tier.Good), 'D', new UnificationEntry(OrePrefix.gem, Materials.NetherQuartz), 'X', new UnificationEntry(OrePrefix.cableGtSingle, Materials.Copper));
@@ -107,7 +110,7 @@ public class CraftingRecipeLoader {
             ModHandler.addShapedRecipe("cauldron", new ItemStack(Items.CAULDRON), "X X", "XhX", "XXX", 'X', new UnificationEntry(OrePrefix.plate, Materials.Iron));
             ModHandler.removeRecipeByName(new ResourceLocation("minecraft:cauldron"));
 
-            ModHandler.addShapedRecipe("hopper", new ItemStack(Blocks.HOPPER), "XwX", "XCX", " X ", 'X', new UnificationEntry(OrePrefix.plate, Materials.Iron), 'C', "craftingChest");
+            ModHandler.addShapedRecipe("hopper", new ItemStack(Blocks.HOPPER), "XwX", "XCX", " X ", 'X', new UnificationEntry(OrePrefix.plate, Materials.Iron), 'C', "chestWood");
             ModHandler.removeRecipeByName(new ResourceLocation("minecraft:hopper"));
 
             ModHandler.addShapedRecipe("iron_bars", new ItemStack(Blocks.IRON_BARS, 8), " w ", "XXX", "XXX", 'X', new UnificationEntry(OrePrefix.stick, Materials.Iron));

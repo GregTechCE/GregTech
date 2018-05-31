@@ -84,8 +84,8 @@ public class OreDictionaryLoader {
         OreDictUnifier.registerOre(new ItemStack(Blocks.PISTON, 1, W), "craftingPiston");
         OreDictUnifier.registerOre(new ItemStack(Blocks.STICKY_PISTON, 1, W), "craftingPiston");
 
-        OreDictUnifier.registerOre(new ItemStack(Blocks.CHEST, 1, W), "craftingChest");
-        OreDictUnifier.registerOre(new ItemStack(Blocks.TRAPPED_CHEST, 1, W), "craftingChest");
+        OreDictUnifier.registerOre(new ItemStack(Blocks.CHEST, 1, W), "chestWood");
+        OreDictUnifier.registerOre(new ItemStack(Blocks.TRAPPED_CHEST, 1, W), "chestWood");
 
         OreDictUnifier.registerOre(new ItemStack(Blocks.FURNACE, 1, W), "craftingFurnace");
 
