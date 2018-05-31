@@ -962,8 +962,8 @@ public class MachineRecipeLoader {
                     IRecipe outputRecipe = outputPair.getKey();
                     GTLog.logger.info("Nerfing planks crafting recipe {} -> {}", stack, output);
                     //noinspection ConstantConditions
-                    ModHandler.addShapelessRecipe(outputRecipe.getRegistryName().toString(), stack,
-                        GTUtility.copyAmount(originalOutput / 2, output));
+                    ModHandler.addShapelessRecipe(outputRecipe.getRegistryName().toString(),
+                        GTUtility.copyAmount(originalOutput / 2, output), stack);
                 }
 
                 RecipeMaps.CUTTER_RECIPES.recipeBuilder()

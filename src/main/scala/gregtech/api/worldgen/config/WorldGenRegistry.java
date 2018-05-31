@@ -97,8 +97,12 @@ public class WorldGenRegistry {
         if(!Files.exists(worldgenRootPath)) {
             Files.createDirectories(worldgenRootPath);
         }
-        if(!Files.exists(jarFileExtractLock)) {
-            Files.createFile(jarFileExtractLock);
+        //attempt extraction if file extraction lock is absent or worldgen root directory is empty
+        if(!Files.exists(jarFileExtractLock) || !Files.list(worldgenRootPath).findFirst().isPresent()) {
+            if(!Files.exists(jarFileExtractLock)) {
+                //create extraction lock only if it doesn't exist
+                Files.createFile(jarFileExtractLock);
+            }
             extractJarVeinDefinitions(worldgenRootPath);
         }
         List<Path> worldgenFiles = Files.walk(worldgenRootPath)
@@ -138,7 +142,7 @@ public class WorldGenRegistry {
                 .filter(jarFile -> Files.isRegularFile(jarFile))
                 .collect(Collectors.toList());
             for(Path jarFile : jarFiles) {
-                Path worldgenPath = worldgenRootPath.resolve(worldgenJarRootPath.relativize(jarFile));
+                Path worldgenPath = worldgenRootPath.resolve(worldgenJarRootPath.relativize(jarFile).toString());
                 Files.createDirectories(worldgenPath.getParent());
                 Files.copy(jarFile, worldgenPath, StandardCopyOption.REPLACE_EXISTING);
             }

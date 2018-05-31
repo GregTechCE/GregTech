@@ -26,6 +26,7 @@ import gregtech.common.metatileentities.steam.boiler.SteamLavaBoiler;
 import gregtech.common.metatileentities.steam.boiler.SteamSolarBoiler;
 import gregtech.common.metatileentities.storage.MetaTileEntityChest;
 import gregtech.common.metatileentities.storage.MetaTileEntityTank;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
 @SuppressWarnings("WeakerAccess")
@@ -152,8 +153,8 @@ public class MetaTileEntities {
     public static void init() {
         GTLog.logger.info("Registering MetaTileEntities");
 
-        GameRegistry.registerTileEntity(MetaTileEntityHolder.class, "gregtech_machine");
-        GameRegistry.registerTileEntity(TileEntityCable.class, "gregtech_cable");
+        GameRegistry.registerTileEntity(MetaTileEntityHolder.class, new ResourceLocation(GTValues.MODID, "machine"));
+        GameRegistry.registerTileEntity(TileEntityCable.class, new ResourceLocation(GTValues.MODID, "cable"));
 
         STEAM_BOILER_COAL_BRONZE = GregTechAPI.registerMetaTileEntity(1, new SteamCoalBoiler("steam_boiler_coal_bronze", false));
         STEAM_BOILER_COAL_STEEL = GregTechAPI.registerMetaTileEntity(2, new SteamCoalBoiler("steam_boiler_coal_steel", true));
