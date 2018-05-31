@@ -7,9 +7,11 @@ import gregtech.api.GTValues;
 import gregtech.api.capability.impl.EnergyContainerHandler;
 import gregtech.api.gui.GuiTextures;
 import gregtech.api.gui.ModularUI;
+import gregtech.api.gui.ModularUI.Builder;
 import gregtech.api.gui.widgets.FluidContainerSlotWidget;
 import gregtech.api.gui.widgets.ImageWidget;
 import gregtech.api.gui.widgets.SlotWidget;
+import gregtech.api.gui.widgets.TankWidget;
 import gregtech.api.recipes.machines.RecipeMapLiquidFuel;
 import gregtech.api.render.OrientedOverlayRenderer;
 import gregtech.api.render.Textures;
@@ -84,8 +86,15 @@ public class SimpleGeneratorMetaTileEntity extends WorkableTieredMetaTileEntity 
     }
 
     protected ModularUI.Builder createGuiTemplate(EntityPlayer player) {
-        return workable.recipeMap.createUITemplate(workable::getProgressPercent, importItems, exportItems, importFluids, exportFluids)
-            .label(6, 6, getMetaFullName())
+        Builder builder = ModularUI.defaultBuilder();
+        builder.image(7, 16, 81, 55, GuiTextures.DISPLAY);
+        TankWidget tankWidget = new TankWidget(importFluids.getTankAt(0), 69, 52, 18, 18)
+            .setHideTooltip(true).setAlwaysShowFull(true);
+        builder.widget(tankWidget);
+        builder.label(11, 20, "gregtech.gui.fluid_amount", 0xFFFFFF);
+        builder.dynamicLabel(11, 30, tankWidget::getFormattedFluidAmount, 0xFFFFFF);
+        builder.dynamicLabel(11, 40, tankWidget::getFluidLocalizedName, 0xFFFFFF);
+        return builder.label(6, 6, getMetaFullName())
             .widget(new FluidContainerSlotWidget(containerInventory, 0, 90, 17)
                 .setBackgroundTexture(GuiTextures.SLOT, GuiTextures.IN_SLOT_OVERLAY))
             .widget(new ImageWidget(91, 36, 14, 15, GuiTextures.TANK_ICON))

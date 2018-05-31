@@ -43,7 +43,6 @@ public class MetaFluids {
 
     public static void init() {
         Materials.Water.setMaterialFluid(FluidRegistry.WATER);
-        Materials.Ice.setMaterialFluid(FluidRegistry.WATER);
         Materials.Lava.setMaterialFluid(FluidRegistry.LAVA);
 
         FluidRegistry.registerFluid(DISTILLED_WATER);

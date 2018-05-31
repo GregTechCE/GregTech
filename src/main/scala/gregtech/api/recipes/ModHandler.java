@@ -134,13 +134,6 @@ public class ModHandler {
         return GameRegistry.makeItemStack(modID + ":" + itemName, meta, amount, null);
     }
 
-    public static ItemStack getCellWithFluid(FluidMaterial material) {
-        ItemStack stack = MetaItems.FLUID_CELL.getStackForm();
-        IFluidHandlerItem capability = stack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY, null);
-        capability.fill(material.getFluid(1000), true);
-        return stack;
-    }
-
     public static ItemStack getBurningFuelRemainder(Random random, ItemStack fuelStack) {
         float remainderChance;
         ItemStack remainder;
