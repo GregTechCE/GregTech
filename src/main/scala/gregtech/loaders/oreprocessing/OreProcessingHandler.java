@@ -2034,10 +2034,10 @@ public class OreProcessingHandler {
     }
 
     private void processOre(OrePrefix orePrefix, Material materialIn) {
-        if (!(materialIn instanceof SolidMaterial)) return;
+        if (!(materialIn instanceof DustMaterial)) return;
 
         ItemStack oreStack = OreDictUnifier.get(orePrefix, materialIn);
-        SolidMaterial material = (SolidMaterial) materialIn;
+        DustMaterial material = (DustMaterial) materialIn;
 
         ItemStack crushedStack = OreDictUnifier.get(OrePrefix.crushed, material);
         ItemStack dustStack = OreDictUnifier.get(OrePrefix.dust, material);
