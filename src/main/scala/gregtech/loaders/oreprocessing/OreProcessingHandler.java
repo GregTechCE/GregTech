@@ -1347,7 +1347,7 @@ public class OreProcessingHandler {
             }
             RecipeMaps.WIREMILL_RECIPES.recipeBuilder()
                 .input(OrePrefix.stick, material)
-                .outputs(GTUtility.copy(stack, OreDictUnifier.get(OrePrefix.wireFine, material, 4)))
+                .outputs(OreDictUnifier.get(OrePrefix.wireFine, material, 4))
                 .duration(50)
                 .EUt(4)
                 .buildAndRegister();
