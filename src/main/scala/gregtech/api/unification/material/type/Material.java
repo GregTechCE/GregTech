@@ -307,17 +307,16 @@ public abstract class Material implements Comparable<Material> {
 	}
 
 	@Override
-	public String toString() {
-		return MATERIAL_REGISTRY.getNameForObject(this);
-	}
-
-	@Override
 	public int compareTo(Material material) {
-		String anotherId = MATERIAL_REGISTRY.getNameForObject(material);
-		return MATERIAL_REGISTRY.getNameForObject(this).compareTo(anotherId);
+		return toString().compareTo(material.toString());
 	}
 
-	public static @Nullable Material get(String matUnlocalizedName) {
+    @Override
+    public String toString() {
+        return MATERIAL_REGISTRY.getNameForObject(this);
+    }
+
+    public static @Nullable Material get(String matUnlocalizedName) {
 		return MATERIAL_REGISTRY.getObject(matUnlocalizedName);
 	}
 }
