@@ -2,7 +2,6 @@ package gregtech.loaders.oreprocessing;
 
 import gregtech.api.GTValues;
 import gregtech.api.capability.IElectricItem;
-import gregtech.api.items.ToolDictNames;
 import gregtech.api.items.metaitem.MetaItem.MetaValueItem;
 import gregtech.api.items.toolitem.ToolMetaItem.MetaToolValueItem;
 import gregtech.api.recipes.CountableIngredient;
@@ -1986,23 +1985,67 @@ public class OreProcessingHandler {
         }
     }
 
-    private void processWireHex(OrePrefix wirePrefix, Material material) {
+    private void processWireHex(OrePrefix wirePrefix, Material materialIn) {
+        MetalMaterial material = (MetalMaterial) materialIn;
         ItemStack stack = OreDictUnifier.get(wirePrefix, material);
-        ModHandler.addShapelessRecipe(String.format("%s_wire_hex_to_single", material.toString()), OreDictUnifier.get(OrePrefix.wireGtSingle, material, 16),
-            new UnificationEntry(wirePrefix, material));
+        if (!stack.isEmpty()) {
+            if (material.cableProperties != null && GTUtility.getTierByVoltage(material.cableProperties.voltage) == 1) {
+                ModHandler.addShapelessRecipe(String.format("%s_cable_hex", material.toString()), OreDictUnifier.get(OrePrefix.cableGtHex, material),
+                    new UnificationEntry(wirePrefix, material),
+                    new ItemStack(Blocks.CARPET, 1, 15),
+                    new ItemStack(Blocks.CARPET, 1, 15),
+                    new ItemStack(Blocks.CARPET, 1, 15),
+                    new ItemStack(Blocks.CARPET, 1, 15),
+                    new ItemStack(Blocks.CARPET, 1, 15),
+                    new ItemStack(Items.STRING));
 
-        ModHandler.addShapelessRecipe(String.format("%s_wire_octal_to_hex", material.toString()), GTUtility.copyAmount(1, stack),
-            new UnificationEntry(OrePrefix.wireGtOctal, material),
-            new UnificationEntry(OrePrefix.wireGtOctal, material));
+                RecipeMaps.PACKER_RECIPES.recipeBuilder()
+                    .inputs(GTUtility.copyAmount(1, stack), new ItemStack(Blocks.CARPET, 5, 15))
+                    .outputs(OreDictUnifier.get(OrePrefix.cableGtHex, material))
+                    .duration(100)
+                    .EUt(8)
+                    .buildAndRegister();
+                RecipeMaps.UNPACKER_RECIPES.recipeBuilder()
+                    .inputs(OreDictUnifier.get(OrePrefix.cableGtHex, material))
+                    .outputs(GTUtility.copyAmount(1, stack), new ItemStack(Blocks.CARPET, 5, 15))
+                    .duration(100)
+                    .EUt(8)
+                    .buildAndRegister();
+            } else {
+                RecipeMaps.ASSEMBLER_RECIPES.recipeBuilder()
+                    .input(wirePrefix, material, 1)
+                    .circuitMeta(24)
+                    .fluidInputs(Materials.Rubber.getFluid(720))
+                    .outputs(OreDictUnifier.get(OrePrefix.cableGtHex, material))
+                    .duration(150)
+                    .EUt(8)
+                    .buildAndRegister();
+                RecipeMaps.UNPACKER_RECIPES.recipeBuilder()
+                    .inputs(OreDictUnifier.get(OrePrefix.cableGtHex, material))
+                    .outputs(GTUtility.copyAmount(1, stack), OreDictUnifier.get(OrePrefix.plate, Materials.Rubber, 5))
+                    .duration(100)
+                    .EUt(8)
+                    .buildAndRegister();
+            }
+            ModHandler.addShapelessRecipe(String.format("%s_wire_hex_to_single", material.toString()), OreDictUnifier.get(OrePrefix.wireGtSingle, material, 16),
+                new UnificationEntry(wirePrefix, material));
+
+            ModHandler.addShapelessRecipe(String.format("%s_wire_octal_to_hex", material.toString()), GTUtility.copyAmount(1, stack),
+                new UnificationEntry(OrePrefix.wireGtOctal, material),
+                new UnificationEntry(OrePrefix.wireGtOctal, material));
+        }
     }
 
     private void processOre(OrePrefix orePrefix, Material materialIn) {
         if (!(materialIn instanceof SolidMaterial)) return;
+
         ItemStack oreStack = OreDictUnifier.get(orePrefix, materialIn);
         SolidMaterial material = (SolidMaterial) materialIn;
+
         ItemStack crushedStack = OreDictUnifier.get(OrePrefix.crushed, material);
         ItemStack dustStack = OreDictUnifier.get(OrePrefix.dust, material);
         ItemStack ingotStack = OreDictUnifier.get(OrePrefix.ingot, material);
+
         if (!crushedStack.isEmpty() && !dustStack.isEmpty()) {
             RecipeMaps.FORGE_HAMMER_RECIPES.recipeBuilder()
                 .input(orePrefix, materialIn)
