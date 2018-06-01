@@ -93,7 +93,7 @@ public class MetaTileEntityChest extends MetaTileEntity {
     protected ModularUI createUI(EntityPlayer entityPlayer) {
         Builder builder = ModularUI.builder(GuiTextures.BACKGROUND, 176,
             18 + inventorySize * 2 + 94)
-            .label(5, 5, getMetaName());
+            .label(5, 5, getMetaFullName());
         for(int i = 0; i < inventorySize; i++) {
             builder.slot(inventory, i, 8 + (i % 9) * 18, 18 + (i / 9) * 18, GuiTextures.SLOT);
         }

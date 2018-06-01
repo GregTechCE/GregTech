@@ -15,8 +15,11 @@ public class ConfigHolder {
     @Config.Comment("Whether to increase number of rolls for dungeon chests. Increases dungeon loot drastically.")
     public static boolean increaseDungeonLoot = true;
 
-    @Config.Comment("Specifies min amount of veins in section and max one")
-    public static int[] veinsInSection = new int[] {1, 2};
+    @Config.Comment("Specifies min amount of veins in section")
+    public static int minVeinsInSection = 4;
+
+    @Config.Comment("Specifies additional random amount of veins in section")
+    public static int additionalVeinsInSection = 7;
 
     @Config.Comment("True to enable surface rocks indicating vein under them")
     public static boolean enableOreVeinSurfaceRocks = true;

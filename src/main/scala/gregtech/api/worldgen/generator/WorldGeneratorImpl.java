@@ -36,7 +36,7 @@ public class WorldGeneratorImpl implements IWorldGenerator {
         EventType eventType = event.getType();
         if(ConfigHolder.disableVanillaOres &&
             ORE_EVENT_TYPES.contains(eventType)) {
-            event.setResult(Result.ALLOW);
+            event.setResult(Result.DENY);
         }
     }
 

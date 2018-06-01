@@ -93,12 +93,10 @@ public class CachedGridEntry implements IBlockGeneratorAccess {
     public List<OreDepositDefinition> triggerVeinsGeneration() {
         if(cachedDepositMap.isEmpty())
             return Collections.emptyList(); //do not try to generate an empty vein list
-
         ArrayList<OreDepositDefinition> generatedDeposits = new ArrayList<>();
         int currentCycle = 0;
-        int[] veinsInSection = ConfigHolder.veinsInSection;
-        int maxCycles = veinsInSection[0] + veinsInSection[1] >= veinsInSection[0] ? 0 :
-            gridRandom.next(veinsInSection[1] - veinsInSection[0]);
+        int maxCycles = ConfigHolder.minVeinsInSection + (ConfigHolder.additionalVeinsInSection == 0 ? 0 :
+            gridRandom.nextInt(ConfigHolder.additionalVeinsInSection));
         while(currentCycle < cachedDepositMap.size() && currentCycle < maxCycles) {
             //instead of removing already generated veins, we swap last element with one we selected
             int randomEntryIndex = GTUtility.getRandomItem(gridRandom, cachedDepositMap, cachedDepositMap.size() - currentCycle);
