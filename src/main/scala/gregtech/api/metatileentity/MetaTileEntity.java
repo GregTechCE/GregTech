@@ -452,11 +452,11 @@ public abstract class MetaTileEntity {
         FluidActionResult result = FluidUtil.tryEmptyContainer(inputContainerStack, importFluids, Integer.MAX_VALUE, null, false);
         if(result.isSuccess()) {
             ItemStack remainingItem = result.getResult();
-            if(!remainingItem.isEmpty() && !importItems.insertItem(outputSlot, remainingItem, true).isEmpty())
+            if(!remainingItem.isEmpty() && !exportItems.insertItem(outputSlot, remainingItem, true).isEmpty())
                 return false;
             FluidUtil.tryEmptyContainer(inputContainerStack, importFluids, Integer.MAX_VALUE, null, true);
             importItems.extractItem(inputSlot, 1, false);
-            importItems.insertItem(outputSlot, remainingItem, false);
+            exportItems.insertItem(outputSlot, remainingItem, false);
             return true;
         }
         return false;
@@ -467,11 +467,11 @@ public abstract class MetaTileEntity {
         FluidActionResult result = FluidUtil.tryFillContainer(emptyContainer, exportFluids, Integer.MAX_VALUE, null, false);
         if(result.isSuccess()) {
             ItemStack remainingItem = result.getResult();
-            if(!remainingItem.isEmpty() && !importItems.insertItem(outputSlot, remainingItem, true).isEmpty())
+            if(!remainingItem.isEmpty() && !exportItems.insertItem(outputSlot, remainingItem, true).isEmpty())
                 return false;
             FluidUtil.tryFillContainer(emptyContainer, exportFluids, Integer.MAX_VALUE, null, true);
             importItems.extractItem(inputSlot, 1, false);
-            importItems.insertItem(outputSlot, remainingItem, false);
+            exportItems.insertItem(outputSlot, remainingItem, false);
             return true;
         }
         return false;
