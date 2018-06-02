@@ -28,15 +28,6 @@ public class EventHandlers {
 	}
 
 	@SubscribeEvent
-	public static void onEntitySpawningEvent(EntityJoinWorldEvent event) {
-		if (event.getEntity() != null && !event.getEntity().getEntityWorld().isRemote) {
-			if (event.getEntity() instanceof EntityItem) {
-				((EntityItem) event.getEntity()).setItem(OreDictUnifier.getUnificated(((EntityItem) event.getEntity()).getItem()));
-			}
-		}
-	}
-
-	@SubscribeEvent
 	public static void onPlayerInteraction(PlayerInteractEvent.RightClickBlock event) {
 		ItemStack stack = event.getItemStack();
 		if (!stack.isEmpty() && stack.getItem() == Items.FLINT_AND_STEEL) {
