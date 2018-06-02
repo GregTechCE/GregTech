@@ -1,5 +1,6 @@
 package gregtech;
 
+import codechicken.lib.CodeChickenLib;
 import gregtech.api.GTValues;
 import gregtech.api.capability.SimpleCapabilityManager;
 import gregtech.api.items.MetaItemUIFactory;
@@ -23,7 +24,6 @@ import gregtech.common.command.GregTechCommand;
 import gregtech.common.items.MetaItems;
 import gregtech.common.metatileentities.MetaTileEntities;
 import gregtech.common.multipart.GTMultipartFactory;
-import gregtech.common.multipart.GTMultipartFactory$;
 import gregtech.common.worldgen.WorldGenRubberTree;
 import gregtech.loaders.load.FuelLoader;
 import gregtech.loaders.load.MetaTileEntityLoader;
@@ -43,9 +43,8 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 
 @Mod(modid = GTValues.MODID,
      name = "GregTech",
-     version = "@VERSION@",
      acceptedMinecraftVersions = "[1.12,1.13)",
-     dependencies = "required:codechickenlib;after:forestry;after:forgemultipartcbe")
+     dependencies = CodeChickenLib.MOD_VERSION_DEP + "after:forestry;after:forgemultipartcbe;after:jei@[4.9.1,);")
 public class GregTechMod {
 
     static {
