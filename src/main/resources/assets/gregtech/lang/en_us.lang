@@ -2442,7 +2442,7 @@ achievement.whereistheocean.desc=Build a Quantum Tank
 achievement.luck=Real Luck
 achievement.luck.desc=Find a Zero Point Module in a Jungle Temple
 achievement.steel=Steel
-achievement.steel.desc=Produce Steel in a Bronze Blast Furnace
+achievement.steel.desc=Produce Steel in a Primitive Blast Furnace
 achievement.highpressure=High Pressure
 achievement.highpressure.desc=Craft a High Pressure Boiler
 achievement.extremepressure=Extreme Pressure
@@ -2629,7 +2629,7 @@ behaviour.paintspray.uses=Remaining Uses: %d
 behaviour.prospecting=Usable for Prospecting
 
 # Multiblock machine controllers
-gregtech.machine.primitive_blast_furnace.bronze.name=Bronze Plated Blast Furnace
+gregtech.machine.primitive_blast_furnace.bronze.name=Primitive Blast Furnace
 gregtech.machine.electric_blast_furnace.name=Electric Blast Furnace
 gregtech.machine.vacuum_freezer.name=Vacuum Freezer
 gregtech.machine.implosion_compressor.name=Implosion Compressor

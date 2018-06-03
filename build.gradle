@@ -31,7 +31,6 @@ minecraft {
 	mappings = "snapshot_20170928"
     runDir = "run"
     useDepAts = true
-    replace '@VERSION@', mod_version
 }
 
 configurations {
@@ -153,7 +152,7 @@ idea {
 
 task ciWriteBuildNumber doLast {
     def file = file("src/main/scala/gregtech/GregTechVersion.java")
-    def bn = System.getenv("TRAVIS_BUILD_NUMBER") ?: project.ext.properties.buildNumber ?: 0
+    def bn = System.getenv("TRAVIS_BUILD_NUMBER") ?: config.buildNumberr ?: 0
     def outfile = ""
     def ln = "\n" //Linux line endings because we're on git!
 

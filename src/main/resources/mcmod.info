@@ -5,7 +5,7 @@
   "version": "${version}",
   "mcversion": "${mcversion}",
   "logoFile": "/assets/gregtech/textures/gt_logo_long.png",
-  "url": "<insert curseforge here>",
+  "url": "https://minecraft.curseforge.com/projects/gregtechce",
   "authorList": [
       "Gregorius Techneticies",
       "Exidex",
