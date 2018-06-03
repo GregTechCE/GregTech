@@ -2,8 +2,6 @@ package gregtech.common.cable.net;
 
 import gregtech.common.cable.RoutePath;
 import gregtech.common.cable.WireProperties;
-import gregtech.api.unification.material.type.Material;
-import gregtech.api.unification.material.type.MetalMaterial;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.EnumFacing;
@@ -145,6 +143,8 @@ public class EnergyNet implements INBTSerializable<NBTTagCompound> {
     public List<RoutePath> computePatches(BlockPos startPos) {
         ArrayList<RoutePath> readyPaths = new ArrayList<>();
         RoutePath currentPath = new RoutePath();
+        currentPath.path.put(startPos, allNodes.get(startPos));
+        readyPaths.add(currentPath.cloneAndCompute(startPos));
         HashSet<BlockPos> observedSet = new HashSet<>();
         observedSet.add(startPos);
         MutableBlockPos currentPos = new MutableBlockPos(startPos);

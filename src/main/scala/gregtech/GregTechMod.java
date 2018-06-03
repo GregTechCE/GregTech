@@ -44,7 +44,7 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 @Mod(modid = GTValues.MODID,
      name = "GregTech",
      acceptedMinecraftVersions = "[1.12,1.13)",
-     dependencies = CodeChickenLib.MOD_VERSION_DEP + "after:forestry;after:forgemultipartcbe;after:jei@[4.9.1,);")
+     dependencies = CodeChickenLib.MOD_VERSION_DEP + "after:forestry;after:forgemultipartcbe;after:jei@[4.8.6,);")
 public class GregTechMod {
 
     static {

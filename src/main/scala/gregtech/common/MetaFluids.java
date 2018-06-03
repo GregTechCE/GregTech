@@ -137,7 +137,9 @@ public class MetaFluids {
             }
         };
         fluid.setTemperature(temp);
-        fluid.setColor(material.materialRGB);
+        if(!setCustomTexture) {
+            fluid.setColor(material.materialRGB);
+        }
         setFluidProperties(fluid, type, material);
         FluidRegistry.registerFluid(fluid);
 

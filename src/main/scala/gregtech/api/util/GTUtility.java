@@ -12,7 +12,6 @@ import gregtech.api.unification.material.type.Material;
 import gregtech.api.unification.ore.OrePrefix;
 import gregtech.api.unification.stack.MaterialStack;
 import gregtech.api.unification.stack.SimpleItemStack;
-import gregtech.api.unification.stack.UnificationEntry;
 import gregtech.common.ConfigHolder;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.resources.I18n;
@@ -29,7 +28,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
-import net.minecraft.util.EnumFacing;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.Tuple;
 import net.minecraft.util.math.BlockPos;
@@ -55,7 +53,7 @@ import java.util.List;
 import java.util.Map.Entry;
 import java.util.function.Predicate;
 
-import static gregtech.api.GTValues.*;
+import static gregtech.api.GTValues.V;
 
 public class GTUtility {
 
@@ -292,15 +290,6 @@ public class GTUtility {
         while (++tier < V.length) {
             if (voltage <= V[tier])
                 return tier;
-        }
-        return tier;
-    }
-
-    public static byte getTierByVoltageRoundDown(long voltage) {
-        byte tier = 0;
-        while (++tier < V.length) {
-            if (voltage < V[tier])
-                return (byte) (tier - 1);
         }
         return tier;
     }

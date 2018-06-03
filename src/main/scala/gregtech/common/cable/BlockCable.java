@@ -34,12 +34,10 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
-import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.fml.common.Loader;
-import net.minecraftforge.fml.common.Optional.Interface;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -333,19 +331,6 @@ public class BlockCable extends Block implements ITileEntityProvider {
             tileEntityCable.getInsulationColor() != color.colorValue) {
             tileEntityCable.setInsulationColor(color.colorValue);
             return true;
-        }
-        return false;
-    }
-
-    @Override
-    public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
-        if(!worldIn.isRemote) {
-            WorldENet worldENet = WorldENet.getWorldENet(worldIn);
-            EnergyNet energyNet = worldENet.getNetFromPos(pos);
-            playerIn.sendMessage(new TextComponentString("Energy net: " + energyNet));
-            playerIn.sendMessage(new TextComponentString("All nodes: " + energyNet.getAllNodes().keySet()));
-            playerIn.sendMessage(new TextComponentString("Active nodes: " + energyNet.getActiveNodes()));
-            playerIn.sendMessage(new TextComponentString("Last update: " + energyNet.getLastUpdatedTime()));
         }
         return false;
     }

@@ -51,7 +51,7 @@ public abstract class Widget implements Comparable<Widget> {
     }
 
     /**
-     * Called each draw tick if drawPriority > Widget.SLOT_DRAW_PRIORITY to draw this widget in GUI
+     * Called each draw tick to draw this widget in GUI
      *
      * Note that current GL state is ALREADY translated to (guiLeft, guiTop, 0.0)!
      */
@@ -60,7 +60,7 @@ public abstract class Widget implements Comparable<Widget> {
     }
 
     /**
-     * Called each draw tick if drawPriority <= Widget.SLOT_DRAW_PRIORITY to draw this widget in GUI
+     * Called each draw tick to draw this widget in GUI
      *
      * Note that current GL state is ALREADY translated to (guiLeft, guiTop, 0.0)!
      */

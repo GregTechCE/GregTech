@@ -20,7 +20,6 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.items.IItemHandlerModifiable;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
@@ -128,8 +127,7 @@ public abstract class RecipeMapWorkableHandler extends MTETrait implements IWork
         boolean negativeEU = EUt < 0;
         if(negativeEU)
             EUt = -EUt;
-        //round tier down so 64 EU/t won't be overclocked to require 128 EU/t+, but 32 EU/t
-        int tier = GTUtility.getTierByVoltageRoundDown(voltage);
+        int tier = GTUtility.getTierByVoltage(voltage);
         if (EUt <= 16) {
             int resultEUt = EUt * (1 << (tier - 1)) * (1 << (tier - 1));
             int resultDuration = duration / (1 << (tier - 1));

@@ -2062,9 +2062,6 @@ public class OreProcessingHandler {
             if (!ingotStack.isEmpty() && doesMaterialUseNormalFurnace(material)) {
                 ModHandler.addSmeltingRecipe(oreStack, ingotStack);
             }
-
-            ModHandler.addShapedRecipe(String.format("ore_crushing_%s", material.toString()),
-                crushedStack, "h", "I", 'I', new UnificationEntry(orePrefix, material));
         }
     }
 
