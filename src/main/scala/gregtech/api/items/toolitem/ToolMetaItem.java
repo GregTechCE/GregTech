@@ -208,8 +208,8 @@ public class ToolMetaItem<T extends ToolMetaItem<?>.MetaToolValueItem> extends M
             float attackSpeed = toolStats.getAttackSpeed(stack);
 
             HashMultimap<String, AttributeModifier> modifiers = HashMultimap.create();
-            modifiers.put(SharedMonsterAttributes.ATTACK_DAMAGE.getName(), new AttributeModifier("Weapon modifier", attackDamage, 0));
-            modifiers.put(SharedMonsterAttributes.ATTACK_SPEED.getName(), new AttributeModifier("Weapon modifier", attackSpeed, 0));
+            modifiers.put(SharedMonsterAttributes.ATTACK_DAMAGE.getName(), new AttributeModifier(ATTACK_DAMAGE_MODIFIER, "Weapon modifier", attackDamage, 0));
+            modifiers.put(SharedMonsterAttributes.ATTACK_SPEED.getName(), new AttributeModifier(ATTACK_SPEED_MODIFIER, "Weapon modifier", attackSpeed, 0));
             return modifiers;
         }
         return HashMultimap.create();
