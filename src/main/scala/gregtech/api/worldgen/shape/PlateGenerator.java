@@ -44,11 +44,11 @@ public class PlateGenerator implements IShapeGenerator {
 
     @Override
     public void generate(Random gridRandom, IBlockGeneratorAccess relativeBlockAccess) {
-        int length = (minLength + minLength >= maxLength ? 0 : gridRandom.nextInt(maxLength - minLength)) / 2;
-        int depth = (minDepth + minDepth >= maxDepth ? 0 : gridRandom.nextInt(maxDepth - minDepth)) / 2;
-        int height = (minHeight + minHeight >= maxHeight ? 0 : gridRandom.nextInt(maxHeight - minHeight)) / 2;
+        int length = (minLength >= maxLength ? minLength : gridRandom.nextInt(maxLength - minLength)) / 2;
+        int depth = (minDepth >= maxDepth ? minDepth : gridRandom.nextInt(maxDepth - minDepth)) / 2;
+        int height = (minHeight >= maxHeight ? minHeight : gridRandom.nextInt(maxHeight - minHeight)) / 2;
         for(int x = -length; x <= length; x++) {
-            for(int z = -depth; z <= depth; depth++) {
+            for(int z = -depth; z <= depth; z++) {
                 boolean hasFloorSub = floorSharpness > gridRandom.nextFloat();
                 boolean hasRoofSub = roofSharpness > gridRandom.nextFloat();
                 for(int y = -height; y <= height; y++) {

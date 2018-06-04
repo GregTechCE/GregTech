@@ -1,20 +1,191 @@
 package gregtech.common.metatileentities.electric;
 
+import codechicken.lib.render.CCRenderState;
+import codechicken.lib.render.pipeline.ColourMultiplier;
+import codechicken.lib.render.pipeline.IVertexOperation;
+import codechicken.lib.vec.Matrix4;
+import gnu.trove.list.TIntList;
+import gnu.trove.list.array.TIntArrayList;
+import gregtech.api.GTValues;
 import gregtech.api.gui.ModularUI;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.MetaTileEntityHolder;
 import gregtech.api.metatileentity.TieredMetaTileEntity;
+import gregtech.api.render.Textures;
+import gregtech.api.util.GTUtility;
+import net.minecraft.block.BlockDragonEgg;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.boss.EntityDragon;
+import net.minecraft.entity.boss.dragon.phase.PhaseChargingPlayer;
+import net.minecraft.entity.boss.dragon.phase.PhaseList;
+import net.minecraft.entity.item.EntityEnderCrystal;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.network.PacketBuffer;
+import net.minecraft.util.DamageSource;
+import net.minecraft.util.EntitySelectors;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Vec3d;
+import net.minecraft.world.WorldProviderEnd;
+import net.minecraft.world.biome.BiomeEndDecorator;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
+import org.apache.commons.lang3.ArrayUtils;
+
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class MetaTileEntityMagicEnergyAbsorber extends TieredMetaTileEntity {
 
-    public MetaTileEntityMagicEnergyAbsorber(String metaTileEntityId, int tier) {
-        super(metaTileEntityId, tier);
+    private TIntList connectedCrystalsIds = new TIntArrayList();
+    private boolean hasDragonEggAmplifier = false;
+    private boolean isActive = false;
+
+    public MetaTileEntityMagicEnergyAbsorber(String metaTileEntityId) {
+        super(metaTileEntityId, GTValues.EV);
     }
 
     @Override
     public MetaTileEntity createMetaTileEntity(MetaTileEntityHolder holder) {
-        return null;
+        return new MetaTileEntityMagicEnergyAbsorber(metaTileEntityId);
+    }
+
+    @Override
+    public TextureAtlasSprite getParticleTexture() {
+        return (isActive ? Textures.MAGIC_ENERGY_ABSORBER_ACTIVE : Textures.MAGIC_ENERGY_ABSORBER).getParticleSprite();
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public void renderMetaTileEntity(CCRenderState renderState, Matrix4 translation, IVertexOperation[] pipeline) {
+        IVertexOperation[] colouredPipeline = ArrayUtils.add(pipeline, new ColourMultiplier(GTUtility.convertRGBtoOpaqueRGBA(getPaintingColorForRendering())));
+        (isActive ? Textures.MAGIC_ENERGY_ABSORBER_ACTIVE : Textures.MAGIC_ENERGY_ABSORBER).render(renderState, translation, colouredPipeline);
+    }
+
+    @Override
+    public void update() {
+        super.update();
+        if(getWorld().isRemote)
+            return;
+        if(!(getWorld().provider instanceof WorldProviderEnd)) {
+            return; //don't try to do anything outside end dimension
+        }
+        if(getTimer() % 20 == 0) {
+            updateDragonEggStatus();
+        }
+        if(getTimer() % 200 == 0) {
+            updateConnectedCrystals();
+        }
+        int totalEnergyGeneration = 0;
+        for(int connectedCrystalId : connectedCrystalsIds.toArray()) {
+            //since we don't check quite often, check twice before outputting energy
+            if(getWorld().getEntityByID(connectedCrystalId) instanceof EntityEnderCrystal) {
+                totalEnergyGeneration += hasDragonEggAmplifier ? 128 : 32;
+            }
+        }
+        if(totalEnergyGeneration > 0) {
+            energyContainer.addEnergy(totalEnergyGeneration);
+        }
+        setActive(totalEnergyGeneration > 0);
+    }
+
+    private void setActive(boolean isActive) {
+        if(this.isActive != isActive) {
+            this.isActive = isActive;
+            if(!getWorld().isRemote) {
+                writeCustomData(-100, w -> w.writeBoolean(isActive));
+            }
+        }
+    }
+
+    @Override
+    public void receiveCustomData(int dataId, PacketBuffer buf) {
+        super.receiveCustomData(dataId, buf);
+        if(dataId == -100) {
+            this.isActive = buf.readBoolean();
+        }
+    }
+
+    @Override
+    public void writeInitialSyncData(PacketBuffer buf) {
+        super.writeInitialSyncData(buf);
+        buf.writeBoolean(isActive);
+    }
+
+    @Override
+    public void receiveInitialSyncData(PacketBuffer buf) {
+        super.receiveInitialSyncData(buf);
+        this.isActive = buf.readBoolean();
+    }
+
+    @Override
+    public void onRemoval() {
+        super.onRemoval();
+        if(!getWorld().isRemote) {
+            resetConnectedEnderCrystals();
+        }
+    }
+
+    @Override
+    protected boolean isEnergyEmitter() {
+        return true;
+    }
+
+    private void updateConnectedCrystals() {
+        this.connectedCrystalsIds.clear();
+        final double maxDistance = 64 * 64;
+        List<EntityEnderCrystal> enderCrystals = Arrays.stream(BiomeEndDecorator.getSpikesForWorld(getWorld()))
+            .flatMap(endSpike -> getWorld().getEntitiesWithinAABB(EntityEnderCrystal.class, endSpike.getTopBoundingBox()).stream())
+            .filter(crystal -> crystal.getDistanceSq(getPos()) < maxDistance)
+            .collect(Collectors.toList());
+
+        for(EntityEnderCrystal entityEnderCrystal : enderCrystals) {
+            BlockPos beamTarget = entityEnderCrystal.getBeamTarget();
+            if(beamTarget == null) {
+                //if beam target is null, set ourselves as beam target
+                entityEnderCrystal.setBeamTarget(getPos());
+                this.connectedCrystalsIds.add(entityEnderCrystal.getEntityId());
+            } else if(beamTarget.equals(getPos())) {
+                //if beam target is ourselves, just add it to list
+                this.connectedCrystalsIds.add(entityEnderCrystal.getEntityId());
+            }
+        }
+
+        for(EntityDragon entityDragon : getWorld().getEntities(EntityDragon.class, EntitySelectors.IS_ALIVE)) {
+            if(entityDragon.healingEnderCrystal != null && connectedCrystalsIds.contains(entityDragon.healingEnderCrystal.getEntityId())) {
+                //if dragon is healing from crystal we draw energy from, reset it's healing crystal
+                entityDragon.healingEnderCrystal = null;
+                //if dragon is holding pattern, than deal damage and set it's phase to attack ourselves
+                if(entityDragon.getPhaseManager().getCurrentPhase().getType() == PhaseList.HOLDING_PATTERN) {
+                    entityDragon.attackEntityFrom(DamageSource.causeExplosionDamage((EntityLivingBase) null), 10.0f);
+                    entityDragon.getPhaseManager().setPhase(PhaseList.CHARGING_PLAYER);
+                    ((PhaseChargingPlayer) entityDragon.getPhaseManager().getCurrentPhase()).setTarget(new Vec3d(getPos()));
+                }
+            }
+        }
+    }
+
+    private void resetConnectedEnderCrystals() {
+        for(int connectedEnderCrystal : connectedCrystalsIds.toArray()) {
+            EntityEnderCrystal entityEnderCrystal = (EntityEnderCrystal) getWorld().getEntityByID(connectedEnderCrystal);
+            if(entityEnderCrystal != null && getPos().equals(entityEnderCrystal.getBeamTarget())) {
+                //on removal, reset ender crystal beam location so somebody can use it
+                entityEnderCrystal.setBeamTarget(null);
+            }
+        }
+        connectedCrystalsIds.clear();
+    }
+
+    private void updateDragonEggStatus() {
+        IBlockState blockState = getWorld().getBlockState(getPos().up());
+        this.hasDragonEggAmplifier = blockState.getBlock() instanceof BlockDragonEgg;
+    }
+
+    @Override
+    protected boolean openGUIOnRightClick() {
+        return false;
     }
 
     @Override

@@ -485,7 +485,7 @@ public enum OrePrefix {
         if(this.isSelfReferencing && material == null) {
             material = materialType; //append default material for self-referencing OrePrefix
         }
-        if(material != null && !ignoredMaterials.contains(material)) {
+        if(material != null) {
             generatedMaterials.add(material);
         }
     }

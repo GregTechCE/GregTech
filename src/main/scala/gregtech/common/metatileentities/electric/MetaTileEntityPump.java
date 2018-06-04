@@ -67,7 +67,13 @@ public class MetaTileEntityPump extends TieredMetaTileEntity {
     @SideOnly(Side.CLIENT)
     public void renderMetaTileEntity(CCRenderState renderState, Matrix4 translation, IVertexOperation[] pipeline) {
         super.renderMetaTileEntity(renderState, translation, pipeline);
-        Textures.PIPE_OUT_OVERLAY.renderSided(getFrontFacing(), renderState, translation, pipeline);
+        for(EnumFacing renderSide : EnumFacing.HORIZONTALS) {
+            if(renderSide == getFrontFacing()) {
+                Textures.PIPE_OUT_OVERLAY.renderSided(renderSide, renderState, translation, pipeline);
+            } else {
+                Textures.ADV_PUMP_OVERLAY.renderSided(renderSide, renderState, translation, pipeline);
+            }
+        }
         Textures.SCREEN.renderSided(EnumFacing.UP, renderState, translation, pipeline);
         Textures.PIPE_IN_OVERLAY.renderSided(EnumFacing.DOWN, renderState, translation, pipeline);
         for(int i = 0; i < pumpHeadY; i++) {

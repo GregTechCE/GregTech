@@ -35,21 +35,24 @@ public class MachineItemBlock extends ItemBlock {
         MetaTileEntity metaTileEntity = getMetaTileEntity(stack);
         if(metaTileEntity == null) return;
 
-        //tier less tooltip for a electric machine like: gregtech.machine.lathe.tooltip
-        if (metaTileEntity instanceof TieredMetaTileEntity) {
-            String tierlessTooltip = ((TieredMetaTileEntity) metaTileEntity).getTierlessTooltipKey();
-            if (tierlessTooltip != null && I18n.hasKey(tierlessTooltip)) {
-                String[] lines = I18n.format(tierlessTooltip).split("/n");
-                tooltip.addAll(Arrays.asList(lines));
-            }
-        }
-
         //item specific tooltip like: gregtech.machine.lathe.lv.tooltip
         String tooltipLocale = metaTileEntity.getMetaName() + ".tooltip";
         if (I18n.hasKey(tooltipLocale)) {
             String[] lines = I18n.format(tooltipLocale).split("/n");
             tooltip.addAll(Arrays.asList(lines));
         }
+
+        //tier less tooltip for a electric machine like: gregtech.machine.lathe.tooltip
+        if (metaTileEntity instanceof TieredMetaTileEntity) {
+            String tierlessTooltipLocale = ((TieredMetaTileEntity) metaTileEntity).getTierlessTooltipKey();
+            //only add tierless tooltip if it's key is not equal to normal tooltip key (i.e if machine name has dot in it's name)
+            //case when it's not true would be any machine extending from TieredMetaTileEntity but having only one tier
+            if (!tooltipLocale.equals(tierlessTooltipLocale) && I18n.hasKey(tierlessTooltipLocale)) {
+                String[] lines = I18n.format(tierlessTooltipLocale).split("/n");
+                tooltip.addAll(Arrays.asList(lines));
+            }
+        }
+
         if(flagIn.isAdvanced()) {
             tooltip.add(String.format("MetaTileEntity Id: %s", metaTileEntity.metaTileEntityId));
         }

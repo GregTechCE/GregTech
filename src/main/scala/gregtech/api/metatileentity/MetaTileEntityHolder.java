@@ -101,10 +101,12 @@ public class MetaTileEntityHolder extends TickableTileEntityBase implements IUIH
 
     @Override
     public void update() {
-        super.update();
         if(metaTileEntity != null) {
             metaTileEntity.update();
         }
+        //increment only after current tick, so meta tile entities will get first tick as timer == 0
+        //and update their settings which depend on getTimer() % N properly
+        super.update();
     }
 
     public void writeInitialSyncData(PacketBuffer buf) {

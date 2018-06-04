@@ -27,6 +27,7 @@ import gregtech.common.metatileentities.steam.boiler.SteamSolarBoiler;
 import gregtech.common.metatileentities.storage.MetaTileEntityChest;
 import gregtech.common.metatileentities.storage.MetaTileEntityTank;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
 @SuppressWarnings("WeakerAccess")
@@ -103,6 +104,8 @@ public class MetaTileEntities {
     public static SimpleGeneratorMetaTileEntity[] DIESEL_GENERATOR = new SimpleGeneratorMetaTileEntity[3];
     public static SimpleGeneratorMetaTileEntity[] STEAM_TURBINE = new SimpleGeneratorMetaTileEntity[3];
     public static SimpleGeneratorMetaTileEntity[] GAS_TURBINE = new SimpleGeneratorMetaTileEntity[3];
+    public static MetaTileEntityMagicEnergyAbsorber MAGIC_ENERGY_ABSORBER;
+    public static MetaTileEntityMagicEnergyConverter MAGIC_ENERGY_CONVERTER;
 
     //MULTIBLOCK PARTS SECTION
     public static MetaTileEntityItemBus[] ITEM_IMPORT_BUS = new MetaTileEntityItemBus[GTValues.V.length];
@@ -427,6 +430,11 @@ public class MetaTileEntities {
         GAS_TURBINE[1] = GregTechAPI.registerMetaTileEntity(491, new SimpleGeneratorMetaTileEntity("gas_turbine.mv", RecipeMaps.GAS_TURBINE_FUELS, Textures.GAS_TURBINE_OVERLAY, 2));
         GAS_TURBINE[2] = GregTechAPI.registerMetaTileEntity(492, new SimpleGeneratorMetaTileEntity("gas_turbine.hv", RecipeMaps.GAS_TURBINE_FUELS, Textures.GAS_TURBINE_OVERLAY, 3));
 
+        MAGIC_ENERGY_ABSORBER = GregTechAPI.registerMetaTileEntity(493, new MetaTileEntityMagicEnergyAbsorber("magic_energy_absorber"));
+        if(Loader.isModLoaded("thaumcraft")) {
+            MAGIC_ENERGY_CONVERTER = GregTechAPI.registerMetaTileEntity(494, new MetaTileEntityMagicEnergyConverter("magic_energy_converter"));
+        }
+
         for(int i = 0; i < HULL.length; i++) {
             MetaTileEntityHull metaTileEntity = new MetaTileEntityHull("hull." + GTValues.VN[i].toLowerCase(), i);
             GregTechAPI.registerMetaTileEntity(500 + i, metaTileEntity);
@@ -497,7 +505,7 @@ public class MetaTileEntities {
         WOODEN_TANK = GregTechAPI.registerMetaTileEntity(811, new MetaTileEntityTank("wooden_tank", Materials.Wood, 4000));
         BRONZE_TANK = GregTechAPI.registerMetaTileEntity(812, new MetaTileEntityTank("bronze_tank", Materials.Bronze,8000));
         STEEL_TANK = GregTechAPI.registerMetaTileEntity(813, new MetaTileEntityTank("steel_tank", Materials.Steel, 16000));
-        TUNGSTENSTEEL_TANK = GregTechAPI.registerMetaTileEntity(814, new MetaTileEntityTank("stainless_steel_tank", Materials.StainlessSteel, 24000));
+        STAINLESS_STEEL_TANK = GregTechAPI.registerMetaTileEntity(814, new MetaTileEntityTank("stainless_steel_tank", Materials.StainlessSteel, 24000));
         TITANIUM_TANK = GregTechAPI.registerMetaTileEntity(815, new MetaTileEntityTank("titanium_tank", Materials.Titanium, 32000));
         TUNGSTENSTEEL_TANK = GregTechAPI.registerMetaTileEntity(816, new MetaTileEntityTank("tungstensteel_tank", Materials.TungstenSteel, 48000));
 
