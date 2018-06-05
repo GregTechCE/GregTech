@@ -263,7 +263,7 @@ public class MetaTileEntities {
         COMPRESSOR[1] = GregTechAPI.registerMetaTileEntity(211, new SimpleMachineMetaTileEntity("compressor.mv", RecipeMaps.COMPRESSOR_RECIPES, Textures.COMPRESSOR_OVERLAY, 2));
         COMPRESSOR[2] = GregTechAPI.registerMetaTileEntity(212, new SimpleMachineMetaTileEntity("compressor.hv", RecipeMaps.COMPRESSOR_RECIPES, Textures.COMPRESSOR_OVERLAY, 3));
         COMPRESSOR[3] = GregTechAPI.registerMetaTileEntity(213, new SimpleMachineMetaTileEntity("compressor.ev", RecipeMaps.COMPRESSOR_RECIPES, Textures.COMPRESSOR_OVERLAY, 4));
-        COMPRESSOR[4] = GregTechAPI.registerMetaTileEntity(213, new SimpleMachineMetaTileEntity("compressor.iv", RecipeMaps.COMPRESSOR_RECIPES, Textures.COMPRESSOR_OVERLAY, 5));
+        COMPRESSOR[4] = GregTechAPI.registerMetaTileEntity(214, new SimpleMachineMetaTileEntity("compressor.iv", RecipeMaps.COMPRESSOR_RECIPES, Textures.COMPRESSOR_OVERLAY, 5));
 
         CUTTER[0] = GregTechAPI.registerMetaTileEntity(220, new SimpleMachineMetaTileEntity("cutter.lv", RecipeMaps.CUTTER_RECIPES, Textures.CUTTER_OVERLAY, 1));
         CUTTER[1] = GregTechAPI.registerMetaTileEntity(221, new SimpleMachineMetaTileEntity("cutter.mv", RecipeMaps.CUTTER_RECIPES, Textures.CUTTER_OVERLAY, 2));
@@ -509,12 +509,10 @@ public class MetaTileEntities {
         TITANIUM_TANK = GregTechAPI.registerMetaTileEntity(815, new MetaTileEntityTank("titanium_tank", Materials.Titanium, 32000));
         TUNGSTENSTEEL_TANK = GregTechAPI.registerMetaTileEntity(816, new MetaTileEntityTank("tungstensteel_tank", Materials.TungstenSteel, 48000));
 
-        for(int i = 0; i < GTValues.V.length; i++) {
+        for(int i = 1; i < GTValues.V.length; i++) {
             String voltageName = GTValues.VN[i].toLowerCase();
-            if(i > 0) {
-                PUMP[i - 1] = new MetaTileEntityPump("pump." + voltageName, i);
-                GregTechAPI.registerMetaTileEntity(900 + 10 * (i - 1), PUMP[i - 1]);
-            }
+            PUMP[i - 1] = new MetaTileEntityPump("pump." + voltageName, i);
+            GregTechAPI.registerMetaTileEntity(900 + 10 * (i - 1), PUMP[i - 1]);
         }
     }
 

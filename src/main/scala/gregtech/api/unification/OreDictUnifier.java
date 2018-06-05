@@ -4,9 +4,7 @@ import com.google.common.base.CaseFormat;
 import com.google.common.base.Joiner;
 import com.google.common.collect.ImmutableList;
 import gregtech.api.unification.material.type.DustMaterial;
-import gregtech.api.unification.material.type.GemMaterial;
 import gregtech.api.unification.material.type.Material;
-import gregtech.api.unification.material.type.MetalMaterial;
 import gregtech.api.unification.ore.OrePrefix;
 import gregtech.api.unification.stack.*;
 import net.minecraft.item.ItemStack;
@@ -180,47 +178,16 @@ public class OreDictUnifier {
         return keys.size() > 0 ? keys.get(0).asItemStack(stackSize) : ItemStack.EMPTY;
     }
 
-    public static ItemStack getGem(GemMaterial material, long materialAmount) {
-        ItemStack stack = ItemStack.EMPTY;
-        if (materialAmount >= M)
-            stack = get(OrePrefix.gem, material, (int) (materialAmount / M));
-        if (stack.isEmpty()) {
-            if ((materialAmount * 2) % M == 0 || materialAmount >= M * 16)
-                stack = get(OrePrefix.gemFlawed, material, (int) ((materialAmount * 2) / M));
-            if (materialAmount * 4 >= M)
-                stack = get(OrePrefix.gemChipped, material, (int) ((materialAmount * 4) / M));
-        }
-        return stack;
-    }
-
     public static ItemStack getDust(DustMaterial material, long materialAmount) {
         if (materialAmount <= 0) return ItemStack.EMPTY;
         ItemStack stack = ItemStack.EMPTY;
         if (materialAmount % M == 0 || materialAmount >= M * 16)
             stack = get(OrePrefix.dust, material, (int) (materialAmount / M));
-        if (stack.isEmpty() && (materialAmount * 4) % M == 0 || materialAmount >= M * 8)
+        else if ((materialAmount * 4) % M == 0 || materialAmount >= M * 8)
             stack = get(OrePrefix.dustSmall, material, (int) ((materialAmount * 4) / M));
-        if (stack.isEmpty() && (materialAmount * 9) >= M)
+        else if ((materialAmount * 9) >= M)
             stack = get(OrePrefix.dustTiny, material, (int) ((materialAmount * 9) / M));
         return stack;
     }
 
-    public static ItemStack getIngot(MetalMaterial material, long materialAmount) {
-        if (materialAmount <= 0) return ItemStack.EMPTY;
-        ItemStack stack = ItemStack.EMPTY;
-        if (((materialAmount % (M * 9) == 0 && materialAmount / (M * 9) > 1) || materialAmount >= M * 72))
-            stack = get(OrePrefix.block, material, (int) (materialAmount / (M * 9)));
-        if (stack.isEmpty() && ((materialAmount % M == 0) || materialAmount >= M * 8))
-            stack = get(OrePrefix.ingot, material, (int) (materialAmount / M));
-        if (stack.isEmpty() && (materialAmount * 9) >= M)
-            stack = get(OrePrefix.nugget, material, (int) ((materialAmount * 9) / M));
-        return stack;
-    }
-
-    public static ItemStack getDustOrIngot(DustMaterial material, long materialAmount) {
-        if (materialAmount <= 0) return ItemStack.EMPTY;
-        ItemStack stack = getDust(material, materialAmount);
-        if (stack.isEmpty()) stack = getIngot((MetalMaterial) material, materialAmount);
-        return stack;
-    }
 }

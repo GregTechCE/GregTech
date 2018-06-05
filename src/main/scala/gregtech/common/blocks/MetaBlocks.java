@@ -16,12 +16,9 @@ import gregtech.api.unification.material.type.SolidMaterial;
 import gregtech.api.unification.ore.OrePrefix;
 import gregtech.api.unification.ore.StoneType;
 import gregtech.api.unification.ore.StoneTypes;
-import gregtech.common.blocks.BlockGranite.GraniteVariant;
-import gregtech.common.blocks.BlockMineral.MineralVariant;
-import gregtech.common.blocks.StoneBlock.ChiselingVariant;
-import gregtech.common.blocks.wood.BlockSaplingGT;
 import gregtech.common.blocks.wood.BlockLeavesGT;
 import gregtech.common.blocks.wood.BlockLogGT;
+import gregtech.common.blocks.wood.BlockSaplingGT;
 import gregtech.common.cable.BlockCable;
 import gregtech.common.cable.Insulation;
 import gregtech.common.cable.WireProperties;
@@ -78,11 +75,6 @@ public class MetaBlocks {
     public static Collection<BlockOre> ORES = new HashSet<>();
     public static Collection<BlockFluidBase> FLUID_BLOCKS = new HashSet<>();
 
-    public static StoneType BLACK_GRANITE;
-    public static StoneType RED_GRANITE;
-    public static StoneType MARBLE;
-    public static StoneType BASALT;
-
     public static void init() {
         GregTechAPI.MACHINE = MACHINE = new BlockMachine();
         MACHINE.setRegistryName("machine");
@@ -102,12 +94,9 @@ public class MetaBlocks {
         WARNING_SIGN.setRegistryName("warning_sign");
         GRANITE = new BlockGranite();
         GRANITE.setRegistryName("granite");
-        BLACK_GRANITE = new StoneType(12, "black_granite", OrePrefix.oreBlackgranite, Materials.GraniteBlack, "gregtech:blocks/stones/granite/granite_black_stone", () -> GRANITE.withVariant(GraniteVariant.BLACK_GRANITE, ChiselingVariant.NORMAL), state -> state.getBlock() instanceof BlockGranite && ((BlockGranite) state.getBlock()).getVariant(state) == GraniteVariant.BLACK_GRANITE);
-        RED_GRANITE = new StoneType(13, "red_granite", OrePrefix.oreRedgranite, Materials.GraniteRed, "gregtech:blocks/stones/granite/granite_red_stone", () -> GRANITE.withVariant(GraniteVariant.RED_GRANITE, ChiselingVariant.NORMAL), state -> state.getBlock() instanceof BlockGranite && ((BlockGranite) state.getBlock()).getVariant(state) == GraniteVariant.RED_GRANITE);
         MINERAL = new BlockMineral();
         MINERAL.setRegistryName("mineral");
-        MARBLE = new StoneType(14, "marble", OrePrefix.oreMarble, Materials.Marble, "gregtech:blocks/stones/marble/marble_stone", () -> MINERAL.withVariant(MineralVariant.MARBLE, ChiselingVariant.NORMAL), state -> state.getBlock() instanceof BlockMineral && ((BlockMineral) state.getBlock()).getVariant(state) == BlockMineral.MineralVariant.MARBLE);
-        BASALT = new StoneType(15, "basalt", OrePrefix.oreBasalt, Materials.Basalt, "gregtech:blocks/stones/basalt/basalt_stone", () -> MINERAL.withVariant(MineralVariant.BASALT, ChiselingVariant.NORMAL), state -> state.getBlock() instanceof BlockMineral && ((BlockMineral) state.getBlock()).getVariant(state) == BlockMineral.MineralVariant.BASALT);
+
         CONCRETE = new BlockConcrete();
         CONCRETE.setRegistryName("concrete");
 

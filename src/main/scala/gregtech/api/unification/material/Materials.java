@@ -124,7 +124,7 @@ public class Materials {
     public static FluidMaterial Lubricant = new FluidMaterial(321, "lubricant", 0xFFC400, MaterialIconSet.FLUID, of(), 0);
     public static FluidMaterial McGuffium239 = new FluidMaterial(322, "mc_guffium239", 0xC83296, MaterialIconSet.FLUID, of(), 0);
     public static FluidMaterial Oil = new FluidMaterial(323, "oil", 0x0A0A0A, MaterialIconSet.FLUID, of(), 0);
-    public static DustMaterial Oilsands = new DustMaterial(324, "oilsands", 0x0A0A0A, MaterialIconSet.SAND, 1, of(), GENERATE_ORE);
+    public static DustMaterial Oilsands = new DustMaterial(324, "oilsands", 0x0A0A0A, MaterialIconSet.SAND, 1, of(new MaterialStack(Oil, 1L)), GENERATE_ORE);
     public static RoughSolidMaterial Paper = new RoughSolidMaterial(325, "paper", 0xFFFFFF, MaterialIconSet.PAPER, 0, of(), GENERATE_PLATE | FLAMMABLE | NO_SMELTING | NO_SMASHING | MORTAR_GRINDABLE | GENERATE_DENSE | GENERATE_RING);
     public static DustMaterial RareEarth = new DustMaterial(326, "rare_earth", 0x808064, MaterialIconSet.ROUGH, 0, of(), 0);
     public static FluidMaterial SeedOil = new FluidMaterial(327, "seed_oil", 0xC4FF00, MaterialIconSet.FLUID, of(), 0);

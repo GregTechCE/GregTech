@@ -2174,8 +2174,8 @@ gregtech.machine.pump.ev.name=Advanced Pump III
 gregtech.machine.pump.iv.name=Advanced Pump IV
 gregtech.machine.pump.luv.name=Advanced Pump V
 gregtech.machine.pump.zpm.name=Advanced Pump VI
-gregtech.machine.pump.uv.name=Advanced Pump VI
-gregtech.machine.pump.max.name=Advanced Pump VII
+gregtech.machine.pump.uv.name=Advanced Pump VII
+gregtech.machine.pump.max.name=Advanced Pump VIII
 
 # General machinery
 gregtech.machine.basic.output_override.reset=Output filter: all tanks.

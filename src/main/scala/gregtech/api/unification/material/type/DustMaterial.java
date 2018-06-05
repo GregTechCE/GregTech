@@ -63,17 +63,17 @@ public class DustMaterial extends FluidMaterial {
     /**
      * Crushed ore output amount multiplier during maceration
      */
-    public int oreMultiplier;
+    public int oreMultiplier = 1;
 
     /**
      * Byproducts output amount multiplier during pulverization
      */
-    public int byProductMultiplier;
+    public int byProductMultiplier = 1;
 
     /**
      * Smelting item amount multiplier during vanilla item smelting
      */
-    public int smeltingMultiplier;
+    public int smeltingMultiplier = 1;
 
     /**
      * Tool level needed to harvest block of this material
