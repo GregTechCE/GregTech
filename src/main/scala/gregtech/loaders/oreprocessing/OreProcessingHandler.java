@@ -95,7 +95,7 @@ public class OreProcessingHandler {
         OrePrefix.crystalline.addProcessingHandler(this::processCrystallizedPurified);
         OrePrefix.dust.addProcessingHandler(this::processDust, this::processDecomposition, this::processShaping);
         OrePrefix.dustImpure.addProcessingHandler(this::processDirtyDust);
-        OrePrefix.dustPure.addProcessingHandler(this::processPureStack);
+        OrePrefix.dustPure.addProcessingHandler(this::processPureDust);
         OrePrefix.dustSmall.addProcessingHandler(this::processSmallDust);
         OrePrefix.dustTiny.addProcessingHandler(this::processTinyDust);
         OrePrefix.gear.addProcessingHandler(this::processGear);
@@ -159,91 +159,88 @@ public class OreProcessingHandler {
     private void processDust(OrePrefix dustPrefix, Material material) {
         if (!(material instanceof DustMaterial))
             return;
-        ItemStack dustStack = OreDictUnifier.get(dustPrefix, material);
-        if (!dustStack.isEmpty()) {
-            if (material instanceof GemMaterial) {
-                ItemStack gemStack = OreDictUnifier.get(OrePrefix.gem, material);
 
-                if (material.hasFlag(GemMaterial.MatFlags.CRYSTALLISABLE)) {
+        if (material instanceof GemMaterial) {
+            ItemStack gemStack = OreDictUnifier.get(OrePrefix.gem, material);
 
-                    RecipeMaps.AUTOCLAVE_RECIPES.recipeBuilder()
-                        .input(dustPrefix, material)
-                        .fluidInputs(Materials.Water.getFluid(200))
-                        .chancedOutput(gemStack, 7000)
-                        .duration(2000)
-                        .EUt(24)
-                        .buildAndRegister();
+            if (material.hasFlag(GemMaterial.MatFlags.CRYSTALLISABLE)) {
 
-                    RecipeMaps.AUTOCLAVE_RECIPES.recipeBuilder()
-                        .input(dustPrefix, material)
-                        .fluidInputs(ModHandler.getDistilledWater(200))
-                        .chancedOutput(gemStack, 9000)
-                        .duration(1500)
-                        .EUt(24)
-                        .buildAndRegister();
-                } else if (!material.hasFlag(Material.MatFlags.EXPLOSIVE | MatFlags.NO_SMASHING)) {
-                    RecipeMaps.IMPLOSION_RECIPES.recipeBuilder()
-                        .input(dustPrefix, material, 4)
-                        .outputs(GTUtility.copyAmount(3, gemStack))
-                        .explosivesAmount(4)
-                        .buildAndRegister();
-                }
-            } else if (material instanceof MetalMaterial &&
-                !material.hasFlag(Material.MatFlags.FLAMMABLE | MatFlags.NO_SMELTING)) {
-                MetalMaterial metalMaterial = (MetalMaterial) material;
-
-                boolean hasHotIngot = OrePrefix.ingotHot.doGenerateItem(metalMaterial);
-                ItemStack tinyDustStack = OreDictUnifier.get(OrePrefix.dustTiny, metalMaterial);
-                ItemStack ingotStack = OreDictUnifier.get(hasHotIngot ? OrePrefix.ingotHot : OrePrefix.ingot, metalMaterial);
-                ItemStack nuggetStack = OreDictUnifier.get(OrePrefix.nugget, metalMaterial);
-
-                if(ingotStack.isEmpty()) {
-                    GTLog.logger.fatal("INGOT ITEM STACK NULL FOR METAL MATERIAL " + metalMaterial);
-                }
-
-                if (metalMaterial.blastFurnaceTemperature <= 0) {
-                    ModHandler.addSmeltingRecipe(dustStack, ingotStack);
-                    ModHandler.addSmeltingRecipe(tinyDustStack, nuggetStack);
-                } else {
-                    int duration = Math.max(1, (int) (material.getMass() * metalMaterial.blastFurnaceTemperature / 50L));
-                    ModHandler.removeFurnaceSmelting(ingotStack);
-
-                    RecipeMaps.BLAST_RECIPES.recipeBuilder()
-                        .input(dustPrefix, material)
-                        .outputs(ingotStack)
-                        .duration(duration).EUt(120)
-                        .blastFurnaceTemp(metalMaterial.blastFurnaceTemperature)
-                        .buildAndRegister();
-
-                    if (!hasHotIngot) {
-                        RecipeMaps.BLAST_RECIPES.recipeBuilder()
-                            .input(OrePrefix.dustTiny, material)
-                            .outputs(nuggetStack)
-                            .duration(Math.max(1, duration / 9)).EUt(120)
-                            .blastFurnaceTemp(metalMaterial.blastFurnaceTemperature)
-                            .buildAndRegister();
-                    }
-
-                    if(hasHotIngot) {
-                        RecipeMaps.VACUUM_RECIPES.recipeBuilder()
-                            .input(OrePrefix.ingotHot, metalMaterial)
-                            .outputs(OreDictUnifier.get(OrePrefix.ingot, metalMaterial))
-                            .duration(metalMaterial.blastFurnaceTemperature / 16)
-                            .buildAndRegister();;
-                    }
-
-                    if (metalMaterial.blastFurnaceTemperature <= 1000) {
-                        ModHandler.addRCFurnaceRecipe(dustStack, ingotStack, duration);
-                        ModHandler.addRCFurnaceRecipe(tinyDustStack, nuggetStack, Math.max(1, duration / 9));
-                    }
-                }
-            } else if (material.hasFlag(MatFlags.GENERATE_PLATE) &&
-                !material.hasFlag(Material.MatFlags.EXPLOSIVE | MatFlags.NO_SMASHING)) {
-                RecipeMaps.COMPRESSOR_RECIPES.recipeBuilder()
+                RecipeMaps.AUTOCLAVE_RECIPES.recipeBuilder()
                     .input(dustPrefix, material)
-                    .outputs(OreDictUnifier.get(OrePrefix.plate, material))
+                    .fluidInputs(Materials.Water.getFluid(200))
+                    .chancedOutput(gemStack, 7000)
+                    .duration(2000)
+                    .EUt(24)
+                    .buildAndRegister();
+
+                RecipeMaps.AUTOCLAVE_RECIPES.recipeBuilder()
+                    .input(dustPrefix, material)
+                    .fluidInputs(ModHandler.getDistilledWater(200))
+                    .chancedOutput(gemStack, 9000)
+                    .duration(1500)
+                    .EUt(24)
+                    .buildAndRegister();
+            } else if (!material.hasFlag(Material.MatFlags.EXPLOSIVE | MatFlags.NO_SMASHING)) {
+                RecipeMaps.IMPLOSION_RECIPES.recipeBuilder()
+                    .input(dustPrefix, material, 4)
+                    .outputs(GTUtility.copyAmount(3, gemStack))
+                    .explosivesAmount(4)
                     .buildAndRegister();
             }
+        } else if (material instanceof MetalMaterial && !material.hasFlag(Material.MatFlags.FLAMMABLE | MatFlags.NO_SMELTING)) {
+            MetalMaterial metalMaterial = (MetalMaterial) material;
+
+            boolean hasHotIngot = OrePrefix.ingotHot.doGenerateItem(metalMaterial);
+            ItemStack ingotStack = OreDictUnifier.get(hasHotIngot ? OrePrefix.ingotHot : OrePrefix.ingot, metalMaterial);
+            ItemStack nuggetStack = OreDictUnifier.get(OrePrefix.nugget, metalMaterial);
+
+            if (ingotStack.isEmpty()) {
+                GTLog.logger.fatal("INGOT ITEM STACK NULL FOR METAL MATERIAL " + metalMaterial);
+            }
+
+            if (metalMaterial.blastFurnaceTemperature <= 0) {
+                ModHandler.addSmeltingRecipe(new UnificationEntry(dustPrefix, metalMaterial), ingotStack);
+                ModHandler.addSmeltingRecipe(new UnificationEntry(OrePrefix.dustTiny, metalMaterial), nuggetStack);
+            } else {
+                int duration = Math.max(1, (int) (material.getMass() * metalMaterial.blastFurnaceTemperature / 50L));
+                ModHandler.removeFurnaceSmelting(new UnificationEntry(OrePrefix.ingot, metalMaterial));
+
+                RecipeMaps.BLAST_RECIPES.recipeBuilder()
+                    .input(dustPrefix, material)
+                    .outputs(ingotStack)
+                    .duration(duration).EUt(120)
+                    .blastFurnaceTemp(metalMaterial.blastFurnaceTemperature)
+                    .buildAndRegister();
+
+                if (!hasHotIngot) {
+                    RecipeMaps.BLAST_RECIPES.recipeBuilder()
+                        .input(OrePrefix.dustTiny, material)
+                        .outputs(nuggetStack)
+                        .duration(Math.max(1, duration / 9)).EUt(120)
+                        .blastFurnaceTemp(metalMaterial.blastFurnaceTemperature)
+                        .buildAndRegister();
+                }
+
+                if (hasHotIngot) {
+                    RecipeMaps.VACUUM_RECIPES.recipeBuilder()
+                        .input(OrePrefix.ingotHot, metalMaterial)
+                        .outputs(OreDictUnifier.get(OrePrefix.ingot, metalMaterial))
+                        .duration(metalMaterial.blastFurnaceTemperature / 16)
+                        .buildAndRegister();
+                    ;
+                }
+
+                if (metalMaterial.blastFurnaceTemperature <= 1000) {
+                    ModHandler.addRCFurnaceRecipe(new UnificationEntry(dustPrefix, metalMaterial), ingotStack, duration);
+                    ModHandler.addRCFurnaceRecipe(new UnificationEntry(OrePrefix.nugget, metalMaterial), nuggetStack, Math.max(1, duration / 9));
+                }
+            }
+        } else if (material.hasFlag(MatFlags.GENERATE_PLATE) &&
+            !material.hasFlag(Material.MatFlags.EXPLOSIVE | MatFlags.NO_SMASHING)) {
+            RecipeMaps.COMPRESSOR_RECIPES.recipeBuilder()
+                .input(dustPrefix, material)
+                .outputs(OreDictUnifier.get(OrePrefix.plate, material))
+                .buildAndRegister();
         }
 
         //dust gains same amount of material as normal dust
@@ -579,12 +576,11 @@ public class OreProcessingHandler {
             smeltingNuggetsAmount = pureMaterialAmount;
         }
         if(smeltingMaterial != null && doesMaterialUseNormalFurnace(smeltingMaterial)) {
-            ItemStack crushedOreStack = OreDictUnifier.get(crushedPrefix, material);
             ItemStack smeltingStack = smeltingNuggetsAmount % 9 == 0 ?
                 OreDictUnifier.get(OrePrefix.ingot, smeltingMaterial, smeltingNuggetsAmount / 9) :
                 OreDictUnifier.get(OrePrefix.nugget, smeltingMaterial, smeltingNuggetsAmount);
             if(!smeltingStack.isEmpty()) {
-                ModHandler.addSmeltingRecipe(crushedOreStack, smeltingStack);
+                ModHandler.addSmeltingRecipe(new UnificationEntry(crushedPrefix, material), smeltingStack);
             }
         }
     }
@@ -993,19 +989,17 @@ public class OreProcessingHandler {
                     .EUt(16)
                     .buildAndRegister();
 
-                ModHandler.addSmeltingRecipe(magneticStack, stack); //de-magnetizing
+                ModHandler.addSmeltingRecipe(new UnificationEntry(polarizingPrefix, material.magneticMaterial), stack); //de-magnetizing
             }
         }
     }
 
-    private void processPureStack(OrePrefix purePrefix, Material materialIn) {
+    private void processPureDust(OrePrefix purePrefix, Material materialIn) {
         if (!(materialIn instanceof DustMaterial))
             return;
         DustMaterial material = (DustMaterial) materialIn;
-        ItemStack stack = OreDictUnifier.get(purePrefix, materialIn);
         DustMaterial byproductMaterial = GTUtility.selectItemInList(1, material, material.oreByProducts, DustMaterial.class);
         ItemStack dustStack = OreDictUnifier.get(OrePrefix.dust, material);
-        ItemStack ingotStack = OreDictUnifier.get(OrePrefix.ingot, material);
 
         if (dustStack.isEmpty()) {
             //fallback for reduced & cleanGravel
@@ -1021,10 +1015,7 @@ public class OreProcessingHandler {
             .EUt(5)
             .buildAndRegister();
 
-        //do not add direct smelting for materials requiring EBF
-        if (!ingotStack.isEmpty() && doesMaterialUseNormalFurnace(material)) {
-            ModHandler.addSmeltingRecipe(stack, ingotStack);
-        }
+        processMetalSmelting(purePrefix, material, 9, 9);
     }
 
     private void processRotor(OrePrefix rotorPrefix, Material materialIn) {
@@ -2084,9 +2075,8 @@ public class OreProcessingHandler {
         }
 
         //do not try to add smelting recipes for materials which require blast furnace
-        ItemStack oreStack = OreDictUnifier.get(orePrefix, materialIn);
         if (!ingotStack.isEmpty() && doesMaterialUseNormalFurnace(material)) {
-            ModHandler.addSmeltingRecipe(oreStack, ingotStack);
+            ModHandler.addSmeltingRecipe(new UnificationEntry(orePrefix, materialIn), ingotStack);
         }
     }
 

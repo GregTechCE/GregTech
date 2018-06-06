@@ -16,6 +16,7 @@ import net.minecraftforge.oredict.OreDictionary.OreRegisterEvent;
 
 import javax.annotation.Nullable;
 import java.util.*;
+import java.util.stream.Collectors;
 
 import static gregtech.api.GTValues.M;
 
@@ -171,11 +172,19 @@ public class OreDictUnifier {
 
     public static ItemStack get(OrePrefix orePrefix, Material material, int stackSize) {
         UnificationEntry unificationEntry = new UnificationEntry(orePrefix, material);
-        if(!stackUnificationItems.containsKey(unificationEntry) || !unificationEntry.orePrefix.isUnificationEnabled)
+        if(!stackUnificationItems.containsKey(unificationEntry))
             return ItemStack.EMPTY;
         ArrayList<SimpleItemStack> keys = stackUnificationItems.get(unificationEntry);
         keys.sort(Comparator.comparing(a -> a.item.delegate.name().getResourceDomain()));
         return keys.size() > 0 ? keys.get(0).asItemStack(stackSize) : ItemStack.EMPTY;
+    }
+
+    public static List<ItemStack> getAll(UnificationEntry unificationEntry) {
+        if(!stackUnificationItems.containsKey(unificationEntry))
+            return Collections.emptyList();
+        ArrayList<SimpleItemStack> keys = stackUnificationItems.get(unificationEntry);
+        keys.sort(Comparator.comparing(a -> a.item.delegate.name().getResourceDomain()));
+        return keys.stream().map(SimpleItemStack::asItemStack).collect(Collectors.toList());
     }
 
     public static ItemStack getDust(DustMaterial material, long materialAmount) {

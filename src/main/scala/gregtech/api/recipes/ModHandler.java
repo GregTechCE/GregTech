@@ -2,13 +2,10 @@ package gregtech.api.recipes;
 
 import com.google.common.base.Preconditions;
 import gregtech.api.GTValues;
-import gregtech.api.capability.IElectricItem;
 import gregtech.api.items.ToolDictNames;
 import gregtech.api.items.metaitem.MetaItem;
-import gregtech.api.recipes.builders.NotConsumableInputRecipeBuilder;
 import gregtech.api.unification.OreDictUnifier;
 import gregtech.api.unification.material.Materials;
-import gregtech.api.unification.material.type.FluidMaterial;
 import gregtech.api.unification.material.type.Material;
 import gregtech.api.unification.ore.OrePrefix;
 import gregtech.api.unification.stack.MaterialStack;
@@ -17,11 +14,8 @@ import gregtech.api.util.DummyContainer;
 import gregtech.api.util.GTLog;
 import gregtech.api.util.world.DummyWorld;
 import gregtech.common.MetaFluids;
-import gregtech.common.items.MetaItems;
 import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.Container;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -34,14 +28,11 @@ import net.minecraft.world.World;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
-import net.minecraftforge.fluids.capability.IFluidHandlerItem;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
 import net.minecraftforge.registries.IForgeRegistry;
-import org.apache.commons.lang3.Validate;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
 
@@ -161,12 +152,18 @@ public class ModHandler {
     ///////////////////////////////////////////////////
     //        Furnace Smelting Recipe Helpers        //
     ///////////////////////////////////////////////////
+
+    public static void addSmeltingRecipe(UnificationEntry input, ItemStack output) {
+        List<ItemStack> allStacks = OreDictUnifier.getAll(input);
+        for(ItemStack inputStack : allStacks) {
+            addSmeltingRecipe(inputStack, output);
+        }
+    }
+
     /**
      * Just simple Furnace smelting
      */
     public static void addSmeltingRecipe(ItemStack input, ItemStack output) {
-        output = OreDictUnifier.getUnificated(output);
-
         boolean skip = false;
         if (input.isEmpty()) {
             GTLog.logger.error("Input cannot be an empty ItemStack", new IllegalArgumentException());
@@ -182,57 +179,6 @@ public class ModHandler {
 
 
         GameRegistry.addSmelting(input, output.copy(), 0.0F);
-    }
-
-    /**
-     * Adds to Furnace AND Alloysmelter AND Induction Smelter
-     */
-    public static void addSmeltingAndAlloySmeltingRecipe(ItemStack input, ItemStack output, boolean hidden) {
-        boolean skip = false;
-        if (input.isEmpty()) {
-            GTLog.logger.error("Input cannot be an empty ItemStack", new IllegalArgumentException());
-            skip = true;
-        }
-        if (output.isEmpty()) {
-            GTLog.logger.error("Output cannot be an empty ItemStack", new IllegalArgumentException());
-            skip = true;
-        }
-        if (skip) return;
-
-        if (input.getCount() == 1) {
-            addSmeltingRecipe(input, output);
-        }
-
-        NotConsumableInputRecipeBuilder recipeBuilder =
-                RecipeMaps.ALLOY_SMELTER_RECIPES.recipeBuilder()
-                        .inputs(input)
-                        .outputs(output)
-                        .duration(130)
-                        .EUt(3);
-
-        OrePrefix prefix = OreDictUnifier.getPrefix(output);
-        if (prefix != null) {
-            switch (prefix) {
-                case ingot:
-                    recipeBuilder.notConsumable(MetaItems.SHAPE_MOLD_INGOT);
-                    break;
-                case block:
-                    recipeBuilder.notConsumable(MetaItems.SHAPE_MOLD_BLOCK);
-                    break;
-                case nugget:
-                    recipeBuilder.notConsumable(MetaItems.SHAPE_MOLD_NUGGET);
-                    break;
-            }
-
-            if (hidden) {
-                recipeBuilder.hidden();
-            }
-            recipeBuilder.buildAndRegister();
-        }
-
-//        if (GregTechMod.gregtechproxy.mTEMachineRecipes) {
-//            ThermalExpansion.addInductionSmelterRecipe(input, null, output, null, output.stackSize * 1600, 0);
-//        }
     }
 
     ///////////////////////////////////////////////////
@@ -482,6 +428,15 @@ public class ModHandler {
     //              Recipe Remove Helpers            //
     ///////////////////////////////////////////////////
 
+    public static boolean removeFurnaceSmelting(UnificationEntry input) {
+        boolean result = false;
+        List<ItemStack> allStacks = OreDictUnifier.getAll(input);
+        for(ItemStack inputStack : allStacks) {
+            result |= removeFurnaceSmelting(inputStack);
+        }
+        return result;
+    }
+
     /**
      * Removes a Smelting Recipe
      */
@@ -572,6 +527,13 @@ public class ModHandler {
         return OreDictUnifier.getUnificated(FurnaceRecipes.instance().getSmeltingResult(input));
     }
 
+    public static void addRCFurnaceRecipe(UnificationEntry input, ItemStack output, int duration) {
+        List<ItemStack> allStacks = OreDictUnifier.getAll(input);
+        for(ItemStack inputStack : allStacks) {
+            addRCFurnaceRecipe(inputStack, output, duration);
+        }
+    }
+
     public static void addRCFurnaceRecipe(ItemStack input, ItemStack output, int duration) {
         Preconditions.checkNotNull(input);
         Preconditions.checkNotNull(output);
@@ -586,123 +548,4 @@ public class ModHandler {
 //        RailcraftCraftingManager.blastFurnace.addRecipe(input, true, false, duration, output);
 //    }
 
-    ///////////////////////////////////////////////////
-    //             Electric Items Helpers            //
-    ///////////////////////////////////////////////////
-
-    /**
-     * Charges an Electric Item. Only if it's a valid Electric Item of course.
-     * This forces the Usage of proper Voltages (so not the transfer limits defined by the Items) unless you ignore the Transfer Limit.
-     * If tier is Integer.MAX_VALUE it will ignore Tier based Limitations.
-     *
-     * @return the actually used Energy.
-     */
-    public static long chargeElectricItem(ItemStack stack, long charge, int tier, boolean ignoreLimit, boolean simulate) {
-        if (isElectricItem(stack)) {
-            IElectricItem electricItem = stack.getCapability(IElectricItem.CAPABILITY_ELECTRIC_ITEM, null);
-            return electricItem.charge(charge, tier, ignoreLimit, simulate);
-        }
-        return 0;
-    }
-
-    /**
-     * Discharges an Electric Item. Only if it's a valid Electric Item for that of course.
-     * This forces the Usage of proper Voltages (so not the transfer limits defined by the Items) unless you ignore the Transfer Limit.
-     * If tier is Integer.MAX_VALUE it will ignore Tier based Limitations.
-     *
-     * @return the Energy got from the Item.
-     */
-    public static long dischargeElectricItem(ItemStack stack, long charge, int tier, boolean ignoreLimit, boolean externally, boolean simulate) {
-        if (isElectricItem(stack)) {
-            IElectricItem electricItem = stack.getCapability(IElectricItem.CAPABILITY_ELECTRIC_ITEM, null);
-            return electricItem.discharge(charge, tier, ignoreLimit, externally, simulate);
-        }
-        return 0;
-    }
-
-    /**
-     * Uses an Electric Item. Only if it's a valid Electric Item for that of course.
-     *
-     * @return if the action was successful
-     */
-    public static boolean canUseElectricItem(ItemStack stack, long charge) {
-        boolean electricItem = isElectricItem(stack);
-        if (!electricItem) {
-            return false;
-        }
-        IElectricItem item = stack.getCapability(IElectricItem.CAPABILITY_ELECTRIC_ITEM, null);
-        return item.canUse(charge);
-    }
-
-    /**
-     * Uses an Electric Item. Only if it's a valid Electric Item for that of course.
-     *
-     * @return if the action was successful
-     */
-    public static boolean useElectricItem(ItemStack stack, long charge, EntityPlayer player) {
-        boolean electricItem = isElectricItem(stack);
-        if (!electricItem) {
-            return false;
-        }
-        IElectricItem item = stack.getCapability(IElectricItem.CAPABILITY_ELECTRIC_ITEM, null);
-        return item.use(charge, player);
-    }
-
-
-//    /**
-//     * Uses a Soldering Iron
-//     */
-//    public static boolean useSolderingIron(ItemStack stack, EntityLivingBase playerIn) {
-//        if (playerIn == null || stack == null) return false;
-//
-//        if (GTUtility.isStackInList(stack, GregTechAPI.solderingToolList)) {
-//            if (playerIn instanceof EntityPlayer) {
-//                EntityPlayer player = (EntityPlayer) playerIn;
-//                if (player.capabilities.isCreativeMode) return true;
-//
-//                if (isElectricItem(stack) && ElectricItem.manager.getCharge(stack) > 1000.0D) {
-//
-//                    for (int i = 0; i < player.inventory.mainInventory.size(); i++) {
-//                        if (GTUtility.isStackInList(player.inventory.mainInventory.get(i), GregTechAPI.solderingMetalList)) {
-//                            if (player.inventory.mainInventory.get(i).getCount() < 1) return false;
-//
-//                            if (player.inventory.mainInventory.get(i).getCount() == 1) {
-//                                player.inventory.mainInventory.set(i, ItemStack.EMPTY);
-//                            } else {
-//                                player.inventory.mainInventory.get(i).shrink(1);
-//                            }
-//
-//                            if (player.inventoryContainer != null) player.inventoryContainer.detectAndSendChanges();
-//
-//                            if (canUseElectricItem(stack, 10000)) {
-//                                return ModHandler.useElectricItem(stack, 10000, (EntityPlayer) playerIn);
-//                            }
-//
-//                            ModHandler.useElectricItem(stack, (int) ElectricItem.manager.getCharge(stack), (EntityPlayer) playerIn);
-//                            return false;
-//                        }
-//                    }
-//                }
-//            } else {
-//                damageOrDechargeItem(stack, 1, 1000, playerIn);
-//                return true;
-//            }
-//        }
-//        return false;
-//    }
-
-    /**
-     * Is this an electric Item?
-     */
-    public static boolean isElectricItem(ItemStack stack) {
-        return !stack.isEmpty() && stack.hasCapability(IElectricItem.CAPABILITY_ELECTRIC_ITEM, null);
-    }
-
-    public static boolean isElectricItem(ItemStack stack, int tier) {
-        if (isElectricItem(stack)) {
-            IElectricItem capability = stack.getCapability(IElectricItem.CAPABILITY_ELECTRIC_ITEM, null);
-            return capability.getTier() == tier;
-        }
-        return false;
-    }
 }
