@@ -321,7 +321,6 @@ public class MachineRecipeLoader {
         RecipeMaps.CHEMICAL_RECIPES.recipeBuilder().duration(160).fluidInputs(Materials.SulfuricHeavyFuel.getFluid(4000), Materials.Hydrogen.getFluid(1000)).fluidOutputs(Materials.HeavyFuel.getFluid(4000), Materials.HydrogenSulfide.getFluid(2000)).buildAndRegister();
         RecipeMaps.CENTRIFUGE_RECIPES.recipeBuilder().duration(200).EUt(5).fluidInputs(Materials.Gas.getFluid(8000)).fluidOutputs(Materials.Methane.getFluid(4000), Materials.LPG.getFluid(4000)).buildAndRegister();
         RecipeMaps.CHEMICAL_RECIPES.recipeBuilder().duration(320).fluidInputs(Materials.HydrogenSulfide.getFluid(2000), ModHandler.getWater(2000)).fluidOutputs(Materials.SulfuricAcid.getFluid(3000)).buildAndRegister();
-        RecipeMaps.CHEMICAL_RECIPES.recipeBuilder().duration(320).fluidInputs(Materials.Water.getFluid(2000), Materials.HydrogenSulfide.getFluid(2000), ModHandler.getWater(2000)).fluidOutputs(Materials.SulfuricAcid.getFluid(3000)).buildAndRegister();
         RecipeMaps.CHEMICAL_RECIPES.recipeBuilder().duration(640).fluidInputs(Materials.Naphtha.getFluid(L * 2), Materials.Air.getFluid(2000)).fluidOutputs(Materials.Plastic.getFluid(144)).buildAndRegister();
         RecipeMaps.CHEMICAL_RECIPES.recipeBuilder().duration(640).input(OrePrefix.dustTiny, Materials.Titanium, 1).fluidInputs(Materials.Naphtha.getFluid(1296), Materials.Oxygen.getFluid(16000)).fluidOutputs(Materials.Plastic.getFluid(1296)).buildAndRegister();
         RecipeMaps.CHEMICAL_RECIPES.recipeBuilder().duration(640).input(OrePrefix.dust, Materials.Saltpeter, 1).fluidInputs(Materials.Naphtha.getFluid(576)).outputs(OreDictUnifier.get(OrePrefix.dustTiny,Materials.Potassium,1)).fluidOutputs(Materials.Polycaprolactam.getFluid(1296)).buildAndRegister();
@@ -331,9 +330,8 @@ public class MachineRecipeLoader {
         RecipeMaps.CHEMICAL_RECIPES.recipeBuilder().duration(240).EUt(96).input(OrePrefix.dust, Materials.Silicon, 1).fluidInputs(Materials.Epichlorhydrin.getFluid(144)).fluidOutputs(Materials.Silicone.getFluid(144)).buildAndRegister();
         RecipeMaps.CHEMICAL_RECIPES.recipeBuilder().duration(240).EUt(30).fluidInputs(Materials.Epichlorhydrin.getFluid(144), Materials.Naphtha.getFluid(3000), Materials.NitrogenDioxide.getFluid(1000)).fluidOutputs(Materials.Epoxid.getFluid(L * 2)).buildAndRegister();
 
-        //FIX @Exidex
-        //RecipeMaps.CRACKING_RECIPES.recipeBuilder().duration(16).EUt(320).fluidInputs(Materials.LightFuel.getFluid(128)).fluidOutputs(Materials.CrackedLightFuel.getFluid(192)).buildAndRegister();
-        //RecipeMaps.CRACKING_RECIPES.recipeBuilder().duration(16).EUt(320).fluidInputs(Materials.HeavyFuel.getFluid(128)).fluidOutputs(Materials.CrackedHeavyFuel.getFluid(192)).buildAndRegister();
+        RecipeMaps.CRACKING_RECIPES.recipeBuilder().duration(16).EUt(320).fluidInputs(Materials.LightFuel.getFluid(128)).fluidOutputs(Materials.CrackedLightFuel.getFluid(192)).buildAndRegister();
+        RecipeMaps.CRACKING_RECIPES.recipeBuilder().duration(16).EUt(320).fluidInputs(Materials.HeavyFuel.getFluid(128)).fluidOutputs(Materials.CrackedHeavyFuel.getFluid(192)).buildAndRegister();
 
         RecipeMaps.DISTILLERY_RECIPES.recipeBuilder().duration(16).EUt(24).fluidInputs(Materials.Creosote.getFluid(3)).circuitMeta(4).fluidOutputs(Materials.Lubricant.getFluid(1)).buildAndRegister();
         RecipeMaps.DISTILLERY_RECIPES.recipeBuilder().duration(16).EUt(24).fluidInputs(Materials.SeedOil.getFluid(4)).circuitMeta(4).fluidOutputs(Materials.Lubricant.getFluid(1)).buildAndRegister();

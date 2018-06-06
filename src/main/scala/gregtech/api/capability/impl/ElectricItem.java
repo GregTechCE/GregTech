@@ -2,7 +2,6 @@ package gregtech.api.capability.impl;
 
 import gregtech.api.GTValues;
 import gregtech.api.capability.IElectricItem;
-import gregtech.api.recipes.ModHandler;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -120,9 +119,9 @@ public class ElectricItem implements IElectricItem, ICapabilityProvider {
     public void chargeFromArmor(EntityLivingBase entity) {
         if (getMaxCharge() > 0 && chargeable && getCharge() != getMaxCharge()) {
             entity.getEquipmentAndArmor().forEach(otherStack -> {
-                if (ModHandler.isElectricItem(otherStack, tier)) {
-                    IElectricItem capability = otherStack.getCapability(IElectricItem.CAPABILITY_ELECTRIC_ITEM, null);
-                    setChange(getCharge() + capability.discharge(getMaxCharge() - getCharge(), tier, false, true, false));
+                IElectricItem capability = otherStack.getCapability(IElectricItem.CAPABILITY_ELECTRIC_ITEM, null);
+                if(capability != null && capability.canProvideChargeExternally()) {
+                    setChange(getCharge() + capability.discharge(getMaxCharge() - getCharge(), getTier(), false, true, false));
                 }
             });
         }
