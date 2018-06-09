@@ -35,12 +35,12 @@
       },
       "fusion": {
         "textures": {
-          "all": "gregtech:blocks/multiblock_machines/fusion/fusioni_8"
+          "all": "gregtech:blocks/multiblock/fusion/fusioni_8"
         }
       },
       "fusion_mk2": {
         "textures": {
-          "all": "gregtech:blocks/multiblock_machines/fusion/fusionii_8"
+          "all": "gregtech:blocks/multiblock/fusion/fusionii_8"
         }
       }
     }
