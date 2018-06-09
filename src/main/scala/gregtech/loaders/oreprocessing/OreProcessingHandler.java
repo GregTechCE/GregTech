@@ -470,9 +470,6 @@ public class OreProcessingHandler {
                 .EUt(16).duration((int) (material.getMass() / 2L))
                 .buildAndRegister();
 
-            ModHandler.addShapedRecipe(String.format("plate_%s", material.toString()),
-                plateStack, "h", "I", "I", 'I', new UnificationEntry(ingotPrefix, material));
-
             if (material.hasFlag(MetalMaterial.MatFlags.GENERATE_DENSE)) {
                 ItemStack denseStack = OreDictUnifier.get(OrePrefix.plateDense, material);
                 RecipeMaps.BENDER_RECIPES.recipeBuilder()
