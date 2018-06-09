@@ -106,7 +106,7 @@ public class Materials {
     public static MetalMaterial Uranium = new MetalMaterial(75, "uranium", 0x32F032, MaterialIconSet.METALLIC, 3, of(), STD_METAL | GENERATE_ORE, Element.U, 6.0F, 512);
     public static MetalMaterial Uranium235 = new MetalMaterial(76, "uranium235", 0x46FA46, MaterialIconSet.SHINY, 3, of(), STD_METAL | GENERATE_ORE | GENERATE_ROD, Element.U_235, 6.0F, 512);
     public static MetalMaterial Vanadium = new MetalMaterial(77, "vanadium", 0x323232, MaterialIconSet.METALLIC, 2, of(), STD_METAL, Element.V, 2183);
-    public static MetalMaterial Ytterbium = new MetalMaterial(77, "ytterbium", 0xFFFFFF, MaterialIconSet.METALLIC, 2, of(), STD_METAL, Element.Yb, 1097);
+    public static MetalMaterial Ytterbium = new MetalMaterial(353, "ytterbium", 0xFFFFFF, MaterialIconSet.METALLIC, 2, of(), STD_METAL, Element.Yb, 1097);
     public static MetalMaterial Yttrium = new MetalMaterial(78, "yttrium", 0xDCFADC, MaterialIconSet.METALLIC, 2, of(), STD_METAL, Element.Y, 1799);
     public static MetalMaterial Zinc = new MetalMaterial(79, "zinc", 0xFAF0F0, MaterialIconSet.METALLIC, 1, of(), STD_METAL | GENERATE_ORE | MORTAR_GRINDABLE | GENERATE_FOIL, Element.Zn);
 
