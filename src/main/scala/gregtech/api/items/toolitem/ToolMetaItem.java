@@ -123,25 +123,6 @@ public class ToolMetaItem<T extends ToolMetaItem<?>.MetaToolValueItem> extends M
     }
 
     @Override
-    public boolean hasContainerItem(ItemStack stack) {
-        return true;
-    }
-
-    @Override
-    public ItemStack getContainerItem(ItemStack stack) {
-        stack = stack.copy();
-        stack.setCount(1);
-        T metaToolValueItem = getItem(stack);
-        if(metaToolValueItem != null && metaToolValueItem.toolStats != null) {
-            IToolStats toolStats = metaToolValueItem.toolStats;
-            int toolDamagePerCraft =  toolStats.getToolDamagePerContainerCraft(stack);
-            boolean canApplyDamage = doDamageToItem(stack, toolDamagePerCraft, false);
-            if(!canApplyDamage) return null;
-        }
-        return stack;
-    }
-
-    @Override
     public boolean onBlockDestroyed(ItemStack stack, World world, IBlockState state, BlockPos pos, EntityLivingBase entity) {
         T metaToolValueItem = getItem(stack);
         if(metaToolValueItem != null) {
@@ -280,6 +261,17 @@ public class ToolMetaItem<T extends ToolMetaItem<?>.MetaToolValueItem> extends M
             return getInternalDamage(stack) + damage < getMaxInternalDamage(stack);
         }
         return capability.canUse(damage) && getInternalDamage(stack) + (damage / 10) < getMaxInternalDamage(stack);
+    }
+
+    public int getContainerCraftingDamage(ItemStack stack) {
+        stack = stack.copy();
+        stack.setCount(1);
+        T metaToolValueItem = getItem(stack);
+        if(metaToolValueItem != null && metaToolValueItem.toolStats != null) {
+            IToolStats toolStats = metaToolValueItem.toolStats;
+            return toolStats.getToolDamagePerContainerCraft(stack);
+        }
+        return 0;
     }
 
     @Override
