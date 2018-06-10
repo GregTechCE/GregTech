@@ -3,9 +3,6 @@ package gregtech.common.blocks.wood;
 import gregtech.api.GregTechAPI;
 import gregtech.common.items.MetaItems;
 import net.minecraft.block.BlockLog;
-import net.minecraft.block.BlockNewLog;
-import net.minecraft.block.BlockPlanks;
-import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
@@ -21,7 +18,6 @@ import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
-import javax.print.attribute.standard.MediaSize.NA;
 import java.util.Random;
 
 public class BlockLogGT extends BlockLog {
@@ -53,9 +49,22 @@ public class BlockLogGT extends BlockLog {
     @Override
     public IBlockState getStateFromMeta(int meta) {
         return getDefaultState()
-            .withProperty(LOG_AXIS, EnumAxis.values()[meta / 4])
+            .withProperty(LOG_AXIS, getAxis(meta))
             .withProperty(VARIANT, LogVariant.values()[meta % 4 % 2])
             .withProperty(NATURAL, meta % 4 / 2 == 1);
+    }
+
+    private static EnumAxis getAxis(int meta) {
+        switch (meta & 12) {
+            case 0:
+                return EnumAxis.Y;
+            case 4:
+                return EnumAxis.X;
+            case 8:
+                return EnumAxis.Z;
+            default:
+                return EnumAxis.NONE;
+        }
     }
 
     @Override
