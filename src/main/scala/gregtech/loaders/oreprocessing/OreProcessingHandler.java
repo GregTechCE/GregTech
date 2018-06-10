@@ -449,12 +449,6 @@ public class OreProcessingHandler {
             .duration(20).EUt(8)
             .buildAndRegister();
 
-        if (material.hasFlag(SolidMaterial.MatFlags.MORTAR_GRINDABLE)) {
-            ModHandler.addShapelessRecipe(String.format("mortar_grind_%s", material.toString()),
-                OreDictUnifier.get(OrePrefix.dust, material),
-                'm', new UnificationEntry(ingotPrefix, material));
-        }
-
         if (material.hasFlag(MatFlags.GENERATE_PLATE) && !material.hasFlag(NO_SMASHING)) {
             ItemStack plateStack = OreDictUnifier.get(OrePrefix.plate, material);
             RecipeMaps.BENDER_RECIPES.recipeBuilder()
@@ -868,6 +862,9 @@ public class OreProcessingHandler {
                             .EUt(16)
                             .buildAndRegister();
                     }
+                    ModHandler.addShapedRecipe(String.format("gem_to_plate_%s", material),
+                        stack, "h", "X",
+                        'X', new UnificationEntry(OrePrefix.gem, material));
                 }
 
                 if (!material.hasFlag(MatFlags.NO_WORKING)) {
@@ -926,17 +923,6 @@ public class OreProcessingHandler {
                 .duration(40)
                 .EUt(8)
                 .buildAndRegister();
-        }
-
-        if (!material.hasFlag(NO_SMASHING)) {
-            ItemStack stack = OreDictUnifier.get(platePrefix, material);
-            ModHandler.addShapedRecipe(String.format("ingot_to_plate_%s", material),
-                stack, "h", "X", "X",
-                'X', new UnificationEntry(OrePrefix.ingot, material));
-
-            ModHandler.addShapedRecipe(String.format("gem_to_plate_%s", material),
-                stack, "h", "X",
-                'X', new UnificationEntry(OrePrefix.gem, material));
         }
 
         if (material.hasFlag(MORTAR_GRINDABLE)) {
