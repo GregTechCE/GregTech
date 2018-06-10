@@ -277,7 +277,7 @@ public class ToolMetaItem<T extends ToolMetaItem<?>.MetaToolValueItem> extends M
     public boolean isUsable(ItemStack stack, int damage) {
         IElectricItem capability = stack.getCapability(IElectricItem.CAPABILITY_ELECTRIC_ITEM, null);
         if(capability == null || capability.getMaxCharge() == 0) {
-            return getInternalDamage(stack) + damage < getMaxInternalDamage(stack);
+            return true;
         }
         return capability.canUse(damage) && getInternalDamage(stack) + (damage / 10) < getMaxInternalDamage(stack);
     }
@@ -342,6 +342,9 @@ public class ToolMetaItem<T extends ToolMetaItem<?>.MetaToolValueItem> extends M
     private void setInternalDamage(ItemStack itemStack, int damage) {
         NBTTagCompound statsTag = itemStack.getOrCreateSubCompound("GT.ToolStats");
         statsTag.setInteger("Damage", damage);
+        if(getInternalDamage(itemStack) >= getMaxInternalDamage(itemStack)) {
+            itemStack.setCount(0);
+        }
     }
 
     @Nullable
