@@ -14,6 +14,8 @@ import gregtech.api.util.DummyContainer;
 import gregtech.api.util.GTLog;
 import gregtech.api.util.world.DummyWorld;
 import gregtech.common.MetaFluids;
+import gregtech.common.crafting.DamageToolRecipe;
+
 import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.inventory.InventoryCrafting;
@@ -277,6 +279,24 @@ public class ModHandler {
         IRecipe shapedOreRecipe = new ShapedOreRecipe(null, result.copy(), finalizeShapedRecipeInput(recipe))
             .setRegistryName(regName);
         ForgeRegistries.RECIPES.register(shapedOreRecipe);
+    }
+
+    public static void addToolRecipe(String regName, ItemStack result, Object... recipe) {
+        boolean skip = false;
+        if (result.isEmpty()) {
+            GTLog.logger.error("Result cannot be an empty ItemStack. Recipe: {}", regName);
+            GTLog.logger.error("Stacktrace:", new IllegalArgumentException());
+            skip = true;
+        }
+        skip |= validateRecipe(recipe);
+        if (skip) {
+            RecipeMap.foundInvalidRecipe = true;
+            return;
+        }
+
+        IRecipe toolRecipe = new DamageToolRecipe(null, result.copy(), finalizeShapedRecipeInput(recipe))
+            .setRegistryName(regName);
+        ForgeRegistries.RECIPES.register(toolRecipe);
     }
 
     private static boolean validateRecipe(Object... recipe) {
