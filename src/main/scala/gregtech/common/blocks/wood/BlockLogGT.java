@@ -57,9 +57,9 @@ public class BlockLogGT extends BlockLog {
     private static EnumAxis getAxis(int meta) {
         switch (meta & 12) {
             case 0:
-                return EnumAxis.Y;
-            case 4:
                 return EnumAxis.X;
+            case 4:
+                return EnumAxis.Y;
             case 8:
                 return EnumAxis.Z;
             default:
