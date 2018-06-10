@@ -763,14 +763,6 @@ public class MachineRecipeLoader {
             .outputs(OreDictUnifier.get(OrePrefix.dustImpure, Materials.Diorite, 1))
             .chancedOutput(OreDictUnifier.get(OrePrefix.dustSmall, Materials.Stone, 1), 100)
             .buildAndRegister();
-
-        RecipeMaps.ALLOY_SMELTER_RECIPES.recipeBuilder()
-            .input(OrePrefix.ingot, Materials.Iron)
-            .notConsumable(MetaItems.SHAPE_MOLD_ANVIL)
-            .outputs(new ItemStack(Blocks.ANVIL, 1, 0))
-            .duration(512)
-            .EUt(4 * 53)
-            .buildAndRegister();
     }
     public static void shapingRecipes() {
         RecipeMaps.ALLOY_SMELTER_RECIPES.recipeBuilder()
