@@ -59,7 +59,7 @@ public class MetaFluids {
         registerFluid(Materials.Argon, FluidType.LIQUID, 295, true);
         registerFluid(Materials.Radon, FluidType.LIQUID, 295, true);
         registerFluid(Materials.Fluorine, FluidType.LIQUID, 53, true);
-        registerFluid(Materials.Titaniumtetrachloride, FluidType.LIQUID, 2200, true);
+        registerFluid(Materials.TitaniumTetrachloride, FluidType.LIQUID, 2200, true);
         registerFluid(Materials.Helium3, FluidType.LIQUID, 295, true);
         registerFluid(Materials.Methane, FluidType.LIQUID, 295, true);
         registerFluid(Materials.Nitrogen, FluidType.LIQUID, 295, true);
