@@ -449,12 +449,6 @@ public class OreProcessingHandler {
             .duration(20).EUt(8)
             .buildAndRegister();
 
-        if (material.hasFlag(SolidMaterial.MatFlags.MORTAR_GRINDABLE)) {
-            ModHandler.addShapelessRecipe(String.format("mortar_grind_%s", material.toString()),
-                OreDictUnifier.get(OrePrefix.dust, material),
-                'm', new UnificationEntry(ingotPrefix, material));
-        }
-
         if (material.hasFlag(MatFlags.GENERATE_PLATE) && !material.hasFlag(NO_SMASHING)) {
             ItemStack plateStack = OreDictUnifier.get(OrePrefix.plate, material);
             RecipeMaps.BENDER_RECIPES.recipeBuilder()
