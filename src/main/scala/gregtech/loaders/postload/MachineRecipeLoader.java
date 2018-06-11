@@ -895,11 +895,6 @@ public class MachineRecipeLoader {
             .duration(160).EUt(8)
             .buildAndRegister();
 
-
-        ModHandler.addShapedRecipe(String.format("stick_long_%s", Materials.Wood),
-            OreDictUnifier.get(OrePrefix.stickLong, Materials.Wood, 2),
-            "sLf", 'L', new UnificationEntry(OrePrefix.log, Materials.Wood));
-
         List<ItemStack> allWoodLogs =  OreDictionary.getOres("logWood").stream()
             .flatMap(stack -> ModHandler.getAllSubItems(stack).stream())
             .collect(Collectors.toList());

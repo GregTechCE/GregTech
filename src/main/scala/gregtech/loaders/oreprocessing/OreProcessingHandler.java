@@ -1512,7 +1512,7 @@ public class OreProcessingHandler {
     private void processSimpleTool(OrePrefix toolPrefix, SolidMaterial solidMaterial, MetaToolValueItem toolItem, Object... recipe) {
         Material handleMaterial = solidMaterial.handleMaterial == null ? Materials.Wood : solidMaterial.handleMaterial;
 
-        ModHandler.addShapelessRecipe(String.format("%s_%s_%s", toolItem.unlocalizedName, solidMaterial, handleMaterial),
+        ModHandler.addShapelessRecipe(String.format("%s_%s_%s", toolPrefix.name(), solidMaterial, handleMaterial),
             toolItem.getStackForm(solidMaterial, (SolidMaterial) handleMaterial),
             new UnificationEntry(toolPrefix, solidMaterial),
             new UnificationEntry(OrePrefix.stick, handleMaterial));
@@ -1547,7 +1547,7 @@ public class OreProcessingHandler {
         }
 
         ModHandler.addShapedRecipe(
-            String.format("head_%s_%s", toolItem.unlocalizedName, solidMaterial.toString()),
+            String.format("head_%s_%s", toolPrefix.name(), solidMaterial.toString()),
             OreDictUnifier.get(toolPrefix, solidMaterial), recipe);
     }
 
