@@ -38,6 +38,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import net.minecraftforge.fml.common.registry.ForgeRegistries;
+
 import static gregtech.api.GTValues.L;
 import static gregtech.api.GTValues.M;
 
@@ -1055,8 +1057,7 @@ public class MachineRecipeLoader {
                     .outputs(GTUtility.copyAmount(output.getCount() / 3, output))
                     .duration(25).EUt(4)
                     .buildAndRegister();
-
-                ModHandler.addShapedRecipe(String.format("slab_%s", Materials.Wood),
+                ModHandler.addShapedRecipe(String.format("slab_%s", stack.getUnlocalizedName()+stack.getMetadata()),    //TODO - find less ugly solution than this
                     GTUtility.copyAmount(output.getCount() / 3, output),
                     "sP", 'P', stack);
             }
