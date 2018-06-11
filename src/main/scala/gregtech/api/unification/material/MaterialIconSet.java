@@ -28,6 +28,6 @@ public enum MaterialIconSet {
     GEM_HORIZONTAL,
     GEM_VERTICAL,
     PAPER,
-    NETHERSTAR;
+    NETHERSTAR
 
 }

@@ -9,7 +9,6 @@ import gregtech.api.recipes.ingredients.IntCircuitIngredient;
 import gregtech.api.util.EnumValidationResult;
 import gregtech.api.util.GTLog;
 import gregtech.api.util.ValidationResult;
-import gregtech.common.items.MetaItems;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 public class IntCircuitRecipeBuilder extends RecipeBuilder<IntCircuitRecipeBuilder> {

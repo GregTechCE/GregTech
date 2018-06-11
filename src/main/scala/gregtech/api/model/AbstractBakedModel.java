@@ -11,8 +11,6 @@ import net.minecraftforge.client.model.pipeline.UnpackedBakedQuad;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import java.util.Optional;
-
 @SideOnly(Side.CLIENT)
 public abstract class AbstractBakedModel implements IBakedModel {
 

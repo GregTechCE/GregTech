@@ -38,8 +38,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import net.minecraftforge.fml.common.registry.ForgeRegistries;
-
 import static gregtech.api.GTValues.L;
 import static gregtech.api.GTValues.M;
 

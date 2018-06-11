@@ -1,7 +1,5 @@
 package gregtech.api.worldgen.shape;
 
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import gregtech.api.worldgen.generator.IBlockGeneratorAccess;
 

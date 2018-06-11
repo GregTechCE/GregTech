@@ -227,7 +227,6 @@ public class OreProcessingHandler {
                         .outputs(OreDictUnifier.get(OrePrefix.ingot, metalMaterial))
                         .duration(metalMaterial.blastFurnaceTemperature / 16)
                         .buildAndRegister();
-                    ;
                 }
 
                 if (metalMaterial.blastFurnaceTemperature <= 1000) {

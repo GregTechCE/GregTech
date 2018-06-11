@@ -15,7 +15,6 @@ import gregtech.api.gui.widgets.TankWidget;
 import gregtech.api.recipes.machines.RecipeMapLiquidFuel;
 import gregtech.api.render.OrientedOverlayRenderer;
 import gregtech.api.render.Textures;
-import gregtech.api.util.GTUtility;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;

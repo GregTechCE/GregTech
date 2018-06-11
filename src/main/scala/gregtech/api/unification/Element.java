@@ -264,7 +264,7 @@ public enum Element {
     /**
      * Links to every pure Material containing just this Element.
      */
-    public ArrayList<Materials> linkedMaterials = new ArrayList<Materials>();
+    public ArrayList<Materials> linkedMaterials = new ArrayList<>();
 
     /**
      * @param protons         Amount of Protons

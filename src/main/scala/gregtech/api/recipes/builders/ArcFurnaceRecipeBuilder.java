@@ -1,7 +1,6 @@
 package gregtech.api.recipes.builders;
 
 import com.google.common.collect.ImmutableMap;
-import gnu.trove.map.hash.TObjectIntHashMap;
 import gregtech.api.recipes.Recipe;
 import gregtech.api.recipes.RecipeBuilder;
 import gregtech.api.recipes.RecipeMap;

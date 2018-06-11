@@ -1,7 +1,5 @@
 package gregtech.api;
 
-import gregtech.api.util.world.DummyWorld;
-import net.minecraft.world.World;
 import net.minecraftforge.oredict.OreDictionary;
 
 /**

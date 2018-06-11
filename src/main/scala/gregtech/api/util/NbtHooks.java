@@ -1,6 +1,5 @@
 package gregtech.api.util;
 
-import net.minecraft.client.resources.I18n;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.*;

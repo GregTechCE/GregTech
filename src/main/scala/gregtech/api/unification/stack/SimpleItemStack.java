@@ -37,7 +37,7 @@ public final class SimpleItemStack {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || !(o instanceof SimpleItemStack)) return false;
+        if (!(o instanceof SimpleItemStack)) return false;
 
         SimpleItemStack that = (SimpleItemStack) o;
 
