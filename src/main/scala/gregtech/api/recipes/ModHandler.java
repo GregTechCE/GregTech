@@ -299,7 +299,7 @@ public class ModHandler {
             GTLog.logger.error("Stacktrace:", new IllegalArgumentException());
             skip = true;
         } else if (ForgeRegistries.RECIPES.containsKey(new ResourceLocation(GTValues.MODID, regName))) {
-            GTLog.logger.error(String.format("Tried to register recipe, %s, with duplicate key!", regName));
+            GTLog.logger.error("Tried to register recipe, {}, with duplicate key!", regName);
             skip = true;
         }
         return skip;
