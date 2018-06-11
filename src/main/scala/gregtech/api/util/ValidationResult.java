@@ -23,6 +23,6 @@ public class ValidationResult<T>
 
     public static <T> ValidationResult<T> newResult(EnumValidationResult result, T value)
     {
-        return new ValidationResult<T>(result, value);
+        return new ValidationResult<>(result, value);
     }
 }

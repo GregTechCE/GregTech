@@ -1,6 +1,5 @@
 package gregtech.common.metatileentities.steam.boiler;
 
-import gregtech.api.gui.IUIHolder;
 import gregtech.api.gui.ModularUI;
 import gregtech.api.gui.widgets.ProgressWidget;
 import gregtech.api.gui.widgets.ProgressWidget.MoveType;

@@ -7,7 +7,6 @@ import gregtech.api.recipes.RecipeBuilder;
 import gregtech.api.recipes.RecipeMap;
 import gregtech.api.unification.material.Materials;
 import gregtech.api.util.ValidationResult;
-import net.minecraftforge.fluids.FluidStack;
 
 public class CutterRecipeBuilder extends RecipeBuilder<CutterRecipeBuilder> {
 

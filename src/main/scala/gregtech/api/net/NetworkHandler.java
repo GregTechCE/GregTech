@@ -12,7 +12,6 @@ import net.minecraft.network.INetHandler;
 import net.minecraft.network.NetHandlerPlayServer;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.IntIdentityHashBiMap;
-import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.network.FMLEventChannel;
@@ -141,9 +140,7 @@ public class NetworkHandler {
             UIFactory<?> uiFactory = UIFactory.FACTORY_REGISTRY.getObjectById(packet.uiFactoryId);
             uiFactory.initClientUI(packet.serializedHolder, packet.windowId);
         });
-        registerClientExecutor(PacketUIWidgetUpdate.class, (packet, handler) -> {
-           ModularUIGui.queuingWidgetUpdates.add(packet);
-        });
+        registerClientExecutor(PacketUIWidgetUpdate.class, (packet, handler) -> ModularUIGui.queuingWidgetUpdates.add(packet));
     }
 
     public static <T extends Packet> void registerPacket(int packetId, Class<T> packetClass, PacketCodec<T> codec) {

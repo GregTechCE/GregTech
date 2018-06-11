@@ -1,7 +1,6 @@
 package gregtech.api.capability;
 
 
-import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.IFluidTank;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 

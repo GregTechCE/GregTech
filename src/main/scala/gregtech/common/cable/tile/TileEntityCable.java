@@ -2,8 +2,6 @@ package gregtech.common.cable.tile;
 
 import gregtech.api.capability.IEnergyContainer;
 import gregtech.common.cable.*;
-import gregtech.common.cable.net.EnergyNet;
-import gregtech.common.cable.net.WorldENet;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
@@ -15,7 +13,6 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
 
 import javax.annotation.Nullable;
-import java.util.List;
 
 public class TileEntityCable extends TileEntity implements ICableTile {
 

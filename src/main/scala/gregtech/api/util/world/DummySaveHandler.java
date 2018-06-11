@@ -3,7 +3,6 @@ package gregtech.api.util.world;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.datafix.DataFixer;
-import net.minecraft.world.MinecraftException;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldProvider;
 import net.minecraft.world.chunk.Chunk;
@@ -15,7 +14,6 @@ import net.minecraft.world.storage.WorldInfo;
 
 import javax.annotation.Nullable;
 import java.io.File;
-import java.io.IOException;
 
 public class DummySaveHandler implements ISaveHandler, IPlayerFileData, IChunkLoader {
 
