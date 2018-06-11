@@ -3,6 +3,10 @@ death.attack.frost=%s explored cryogenics.
 death.attack.electric=%s was shocked.
 death.attack.radiation=%s glows with joy now.
 death.attack.turbine=%s put his hands into turbine.
+death.attack.explosion=%s exploded.
+death.attack.explosion.player=%s exploded with help of %s.
+death.attack.heat.player=%s was boiled alive by %s.
+
 
 metaitem.dust.tooltip.purify=Throw into Cauldron to get clean Dust
 metaitem.generic.fluid_container.tooltip=%d/%dL %s
@@ -11,7 +15,6 @@ metaitem.generic.electric_item.tooltip=%d/%d EU - Tier %d
 metaitem.int_circuit.configuration=Configuration: %d
 item.invalid.name=Invalid item
 fluid.empty=Empty
-fluid.distilled_water=Distilled Water
 
 metaitem.credit.copper.name=Copper Credit
 metaitem.credit.copper.tooltip=0.125 Credits
@@ -1698,20 +1701,11 @@ recipemap.steam_turbine.name=Steam Turbine
 
 behavior.magnifying_glass.description=Click on surface rock to inspect it
 behavior.magnifying_glass.inspect=This rock contains %s
-behaviour.scoop=Can catch butterflies
 behaviour.hoe=Can till dirt
-behaviour.wrench=Can rotate things
-behaviour.prospecting=Right click on ground to prospect ores
 behaviour.soft_hammer=Click machine to allow/disallow it to work
 behaviour.lighter.tooltip=Can light things on fire
 behaviour.lighter.uses=Remaining uses: %d
 behaviour.unstackable=Not usable when stacked!
-
-death.attack.explosion=%s exploded.
-death.attack.explosion.player=%s exploded with help of %s.
-
-death.attack.heat=%s was boiled alive.
-death.attack.heat.player=%s was boiled alive by %s.
 
 enchantment.damage.endermen=Disjunction
 enchantment.damage.radioactivity=Radioactivity
@@ -2858,8 +2852,6 @@ gregtech.machine.energy_hatch.input.luv.name=Energy Input Hatch (LuV)
 gregtech.machine.energy_hatch.input.zpm.name=Energy Input Hatch (ZPM)
 gregtech.machine.energy_hatch.input.uv.name=Energy Input Hatch (UV)
 gregtech.machine.energy_hatch.input.max.name=Energy Input Hatch (MAX)
-
-gregtech.machine.energy_hatch.input.tooltip=Energy Output for Multiblocks
 
 gregtech.machine.energy_hatch.output.ulv.name=Energy Output Hatch (ULV)
 gregtech.machine.energy_hatch.output.lv.name=Energy Output Hatch (LV)
