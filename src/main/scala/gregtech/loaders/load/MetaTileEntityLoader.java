@@ -334,9 +334,7 @@ public class MetaTileEntityLoader {
         ModHandler.addShapedRecipe("large_steel_boiler", MetaTileEntities.LARGE_STEEL_BOILER.getStackForm(),  "PSP", "SAS", "PSP", 'P', new UnificationEntry(OrePrefix.cableGtSingle, Materials.Copper), 'S', new UnificationEntry(OrePrefix.circuit, MarkerMaterials.Tier.Advanced), 'A', MetaBlocks.BOILER_CASING.getItemVariant(STEEL_FIREBOX));
         ModHandler.addShapedRecipe("large_titanium_boiler", MetaTileEntities.LARGE_TITANIUM_BOILER.getStackForm(),  "PSP", "SAS", "PSP", 'P', new UnificationEntry(OrePrefix.cableGtSingle, Materials.Gold), 'S', new UnificationEntry(OrePrefix.circuit, MarkerMaterials.Tier.Elite), 'A', MetaBlocks.BOILER_CASING.getItemVariant(TITANIUM_FIREBOX));
         ModHandler.addShapedRecipe("large_tungstensteel_boiler", MetaTileEntities.LARGE_TUNGSTENSTEEL_BOILER.getStackForm(),  "PSP", "SAS", "PSP", 'P', new UnificationEntry(OrePrefix.cableGtSingle, Materials.Aluminium), 'S', new UnificationEntry(OrePrefix.circuit, MarkerMaterials.Tier.Master), 'A', MetaBlocks.BOILER_CASING.getItemVariant(TUNGSTENSTEEL_FIREBOX));
-
-        ModHandler.addShapedRecipe("distillation_tower", MetaTileEntities.DISTILLATION_TOWER.getStackForm(),  "PSP", "DAD", "PSP", 'S', MetaBlocks.METAL_CASING.getItemVariant(STAINLESS_CLEAN), 'P', new UnificationEntry(OrePrefix.circuit, MarkerMaterials.Tier.Elite), 'A', MetaTileEntities.HULL[GTValues.EV].getStackForm(), 'D', MetaItems.ELECTRIC_PUMP_EV);
-
+        
         // GENERATORS
         ModHandler.addShapedRecipe("diesel_generator_lv", MetaTileEntities.DIESEL_GENERATOR[0].getStackForm(), "PCP", "EME", "GWG", 'M', MetaTileEntities.HULL[GTValues.LV].getStackForm(), 'P', MetaItems.ELECTRIC_PISTON_LV, 'E', MetaItems.ELECTRIC_MOTOR_LV, 'C', new UnificationEntry(OrePrefix.circuit, MarkerMaterials.Tier.Basic), 'W', new UnificationEntry(OrePrefix.cableGtSingle, Materials.Tin), 'G', new UnificationEntry(OrePrefix.gear, Materials.Steel));
         ModHandler.addShapedRecipe("diesel_generator_mv", MetaTileEntities.DIESEL_GENERATOR[1].getStackForm(), "PCP", "EME", "GWG", 'M', MetaTileEntities.HULL[GTValues.MV].getStackForm(), 'P', MetaItems.ELECTRIC_PISTON_MV, 'E', MetaItems.ELECTRIC_MOTOR_MV, 'C', new UnificationEntry(OrePrefix.circuit, MarkerMaterials.Tier.Good), 'W', new UnificationEntry(OrePrefix.cableGtSingle, Materials.Copper), 'G', new UnificationEntry(OrePrefix.gear, Materials.Aluminium));
@@ -356,8 +354,6 @@ public class MetaTileEntityLoader {
         }
 
         // MACHINES
-        registerMachineRecipe(MetaTileEntities.PACKER, "BCB", "RMV", "WCW", 'M', Type.WORSE_HULL, 'R', Type.ROBOT_ARM, 'V', Type.CONVEYOR, 'C', Type.CIRCUIT, 'W', Type.CABLE, 'B', OreDictNames.chestWood);
-        registerMachineRecipe(MetaTileEntities.BREWERY, "GPG", "WMW", "CBC", 'M', Type.WORSE_HULL, 'P', Type.PUMP, 'B', Type.STICK_DISTILLATION, 'C', Type.CIRCUIT, 'W', Type.CABLE, 'G', new ItemStack(Blocks.GLASS));
         registerMachineRecipe(MetaTileEntities.ALLOY_SMELTER, "ECE", "CMC", "WCW", 'M', Type.HULL, 'E', Type.CIRCUIT, 'W', Type.CABLE, 'C', Type.COIL_HEATING_DOUBLE);
         registerMachineRecipe(MetaTileEntities.ASSEMBLER, "ACA", "VMV", "WCW", 'M', Type.HULL, 'V', Type.CONVEYOR, 'A', Type.ROBOT_ARM, 'C', Type.CIRCUIT, 'W', Type.CABLE);
         registerMachineRecipe(MetaTileEntities.BENDER, "PwP", "CMC", "EWE", 'M', Type.HULL, 'E', Type.MOTOR, 'P', Type.PISTON, 'C', Type.CIRCUIT, 'W', Type.CABLE);
