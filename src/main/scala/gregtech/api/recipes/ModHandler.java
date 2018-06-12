@@ -177,6 +177,9 @@ public class ModHandler {
         }
         if (skip) return;
 
+        if(FurnaceRecipes.instance().getSmeltingResult(input) != ItemStack.EMPTY) {
+            removeFurnaceSmelting(input);
+        }
 
         GameRegistry.addSmelting(input, output.copy(), 0.0F);
     }
