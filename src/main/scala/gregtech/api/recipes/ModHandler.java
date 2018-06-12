@@ -43,6 +43,7 @@ import java.util.stream.Collectors;
 
 public class ModHandler {
 
+    private static final Map<ItemStack, ItemStack> SMELTING_LIST = FurnaceRecipes.instance().getSmeltingList();
     /**
      * Returns if that Liquid is Water or Distilled Water
      */
@@ -177,6 +178,10 @@ public class ModHandler {
         }
         if (skip) return;
 
+        ItemStack test = FurnaceRecipes.instance().getSmeltingResult(input);
+        if(test != ItemStack.EMPTY) {
+            FurnaceRecipes.instance().getSmeltingList().keySet().removeIf(toRemove -> ItemStack.areItemStacksEqual(toRemove, input));
+        }
 
         GameRegistry.addSmelting(input, output.copy(), 0.0F);
     }
