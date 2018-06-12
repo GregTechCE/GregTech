@@ -362,11 +362,11 @@ public enum OrePrefix {
         pipeRestrictiveLarge.secondaryMaterial = new MaterialStack(Materials.Steel, ring.materialAmount * 4);
         pipeRestrictiveHuge.secondaryMaterial = new MaterialStack(Materials.Steel, ring.materialAmount * 5);
 
-        cableGtHex.secondaryMaterial = new MaterialStack(Materials.Ash, dustSmall.materialAmount * 4);
-        cableGtOctal.secondaryMaterial = new MaterialStack(Materials.Ash, dustSmall.materialAmount * 3);
-        cableGtQuadruple.secondaryMaterial = new MaterialStack(Materials.Ash, dustSmall.materialAmount * 2);
-        cableGtDouble.secondaryMaterial = new MaterialStack(Materials.Ash, dustSmall.materialAmount);
-        cableGtSingle.secondaryMaterial = new MaterialStack(Materials.Ash, dustSmall.materialAmount);
+        cableGtHex.secondaryMaterial = new MaterialStack(Materials.Rubber, dustSmall.materialAmount * 4);
+        cableGtOctal.secondaryMaterial = new MaterialStack(Materials.Rubber, dustSmall.materialAmount * 3);
+        cableGtQuadruple.secondaryMaterial = new MaterialStack(Materials.Rubber, dustSmall.materialAmount * 2);
+        cableGtDouble.secondaryMaterial = new MaterialStack(Materials.Rubber, dustSmall.materialAmount);
+        cableGtSingle.secondaryMaterial = new MaterialStack(Materials.Rubber, dustSmall.materialAmount);
 
         bucket.secondaryMaterial = new MaterialStack(Materials.Iron, ingot.materialAmount * 3);
 
