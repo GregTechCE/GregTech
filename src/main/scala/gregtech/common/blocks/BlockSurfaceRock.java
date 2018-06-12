@@ -15,6 +15,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumBlockRenderType;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
@@ -114,5 +115,19 @@ public class BlockSurfaceRock extends Block {
     @Override
     public EnumBlockRenderType getRenderType(IBlockState state) {
         return StoneRenderer.BLOCK_RENDER_TYPE;
+    }
+
+    @Override
+    public boolean canHarvestBlock(IBlockAccess world, BlockPos pos, EntityPlayer player) {
+        return true;
+    }
+
+    @Override
+    public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos) {
+        if (fromPos.up().equals(pos)) {
+            if(!worldIn.getBlockState(fromPos).isSideSolid(worldIn, fromPos, EnumFacing.UP)) {
+                worldIn.destroyBlock(pos, true);
+            }
+        }
     }
 }
