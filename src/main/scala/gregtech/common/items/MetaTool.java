@@ -7,6 +7,7 @@ import gregtech.api.items.toolitem.ToolMetaItem;
 import gregtech.api.recipes.ModHandler;
 import gregtech.api.unification.OreDictUnifier;
 import gregtech.api.unification.material.Materials;
+import gregtech.api.unification.material.type.Material;
 import gregtech.api.unification.ore.OrePrefix;
 import gregtech.api.unification.stack.UnificationEntry;
 import gregtech.common.tools.*;
@@ -250,6 +251,27 @@ public class MetaTool extends ToolMetaItem<ToolMetaItem<?>.MetaToolValueItem> {
         ModHandler.addShapelessRecipe("blaze_rod_to_powder", new ItemStack(Items.BLAZE_POWDER, 2),
             ToolDictNames.craftingToolMortar,
             new ItemStack(Items.BLAZE_ROD, 1));
+
+        ModHandler.addShapedRecipe("soft_hammer_rubber", SOFT_HAMMER.getStackForm(Materials.Rubber, Materials.Wood),
+            "RR ",
+            "RRS",
+            "RR ",
+            'R', new UnificationEntry(OrePrefix.ingot, Materials.Rubber),
+            'S', new ItemStack(Items.STICK));
+
+        ModHandler.addShapedRecipe("soft_hammer_wood", SOFT_HAMMER.getStackForm(Materials.Wood, Materials.Wood),
+            "RR ",
+            "RRS",
+            "RR ",
+            'R', new UnificationEntry(OrePrefix.plank, Materials.Wood),
+            'S', new ItemStack(Items.STICK));
+
+        ModHandler.addShapedRecipe("soft_hammer_polytetrafluoroethylene", SOFT_HAMMER.getStackForm(Materials.Polytetrafluoroethylene, Materials.Wood),
+            "RR ",
+            "RRS",
+            "RR ",
+            'R', new UnificationEntry(OrePrefix.ingot, Materials.Polytetrafluoroethylene),
+            'S', new ItemStack(Items.STICK));
     }
 
 }
