@@ -25,13 +25,15 @@ public class WorldGenRubberTree implements IWorldGenerator {
 
         if(BiomeDictionary.hasType(biome, Type.COLD) ||
             BiomeDictionary.hasType(biome, Type.HOT) ||
-            BiomeDictionary.hasType(biome, Type.DRY))
-            return; //do not generate in too hot or too cold biomes
+            BiomeDictionary.hasType(biome, Type.DRY) ||
+            BiomeDictionary.hasType(biome, Type.DEAD) ||
+            BiomeDictionary.hasType(biome, Type.SPOOKY))
+            return; //do not generate in inappropriate biomes
 
         int rubberTreeChance = 6;
         if(BiomeDictionary.hasType(biome, Type.SWAMP) ||
             BiomeDictionary.hasType(biome, Type.WET))
-            rubberTreeChance /= 2; //double change of spawning in swamp or wet biomes
+            rubberTreeChance /= 2; //double chance of spawning in swamp or wet biomes
 
         if(rubberTreeChance >= 0 &&world.provider.isSurfaceWorld() && random.nextInt(rubberTreeChance) == 0) {
             randomPos = world.getTopSolidOrLiquidBlock(randomPos).down();
