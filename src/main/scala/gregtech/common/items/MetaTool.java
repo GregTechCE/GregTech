@@ -7,7 +7,6 @@ import gregtech.api.items.toolitem.ToolMetaItem;
 import gregtech.api.recipes.ModHandler;
 import gregtech.api.unification.OreDictUnifier;
 import gregtech.api.unification.material.Materials;
-import gregtech.api.unification.material.type.Material;
 import gregtech.api.unification.ore.OrePrefix;
 import gregtech.api.unification.stack.UnificationEntry;
 import gregtech.common.tools.*;
@@ -227,69 +226,6 @@ public class MetaTool extends ToolMetaItem<ToolMetaItem<?>.MetaToolValueItem> {
             "S",
             'S', new UnificationEntry(OrePrefix.stick, Materials.Wood),
             'F', new ItemStack(Items.FLINT, 1));
-
-        ModHandler.addShapedRecipe("mortar_flint", MORTAR.getStackForm(Materials.Flint, null),
-            " I ",
-            "SIS",
-            "SSS",
-            'I', new ItemStack(Items.FLINT, 1),
-            'S', OrePrefix.stone);
-
-        ModHandler.addShapedRecipe("mortar_bronze", MORTAR.getStackForm(Materials.Bronze, null),
-            " I ",
-            "SIS",
-            "SSS",
-            'I', new UnificationEntry(OrePrefix.ingot, Materials.Bronze),
-            'S', OrePrefix.stone);
-
-        ModHandler.addShapedRecipe("mortar_iron", MORTAR.getStackForm(Materials.Iron, null),
-            " I ",
-            "SIS",
-            "SSS",
-            'I', new UnificationEntry(OrePrefix.ingot, Materials.Iron),
-            'S', OrePrefix.stone);
-
-        ModHandler.addShapedRecipe("mortar_steel", MORTAR.getStackForm(Materials.Steel, null),
-            " I ",
-            "SIS",
-            "SSS",
-            'I', new UnificationEntry(OrePrefix.ingot, Materials.Steel),
-            'S', OrePrefix.stone);
-
-        ModHandler.addShapedRecipe("mortar_wrought_iron", MORTAR.getStackForm(Materials.WroughtIron, null),
-            " I ",
-            "SIS",
-            "SSS",
-            'I', new UnificationEntry(OrePrefix.ingot, Materials.WroughtIron),
-            'S', OrePrefix.stone);
-
-        ModHandler.addShapedRecipe("mortar_red_steel", MORTAR.getStackForm(Materials.RedSteel, null),
-            " I ",
-            "SIS",
-            "SSS",
-            'I', new UnificationEntry(OrePrefix.ingot, Materials.RedSteel),
-            'S', OrePrefix.stone);
-
-        ModHandler.addShapedRecipe("mortar_blue_steel", MORTAR.getStackForm(Materials.BlueSteel, null),
-            " I ",
-            "SIS",
-            "SSS",
-            'I', new UnificationEntry(OrePrefix.ingot, Materials.BlueSteel),
-            'S', OrePrefix.stone);
-
-        ModHandler.addShapedRecipe("mortar_black_steel", MORTAR.getStackForm(Materials.BlackSteel, null),
-            " I ",
-            "SIS",
-            "SSS",
-            'I', new UnificationEntry(OrePrefix.ingot, Materials.BlackSteel),
-            'S', OrePrefix.stone);
-
-        ModHandler.addShapedRecipe("mortar_damascus_steel", MORTAR.getStackForm(Materials.DamascusSteel, null),
-            " I ",
-            "SIS",
-            "SSS",
-            'I', new UnificationEntry(OrePrefix.ingot, Materials.DamascusSteel),
-            'S', OrePrefix.stone);
 
         ModHandler.addShapelessRecipe("coal_to_dust", OreDictUnifier.get(OrePrefix.dust, Materials.Coal, 1),
             ToolDictNames.craftingToolMortar,

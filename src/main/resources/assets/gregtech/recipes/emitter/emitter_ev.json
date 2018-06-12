@@ -1,0 +1,29 @@
+{
+  "type": "gregtech:metaitem_shaped",
+  "pattern": [
+    "SSC",
+    "WQS",
+    "CWS"
+  ],
+  "key": {
+    "Q": {
+      "type": "forge:ore_dict",
+      "ore": "gemEnderPearl"
+    },
+    "S": {
+      "type": "forge:ore_dict",
+      "ore": "stickPlatinum"
+    },
+    "C": {
+      "type": "forge:ore_dict",
+      "ore": "circuitElite"
+    },
+    "W": {
+      "type": "forge:ore_dict",
+      "ore": "cableGtSingleAluminium"
+    }
+  },
+  "result": {
+    "name": "emitter.ev"
+  }
+}

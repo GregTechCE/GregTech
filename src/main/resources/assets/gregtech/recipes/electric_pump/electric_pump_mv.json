@@ -1,0 +1,45 @@
+{
+  "type": "gregtech:metaitem_shaped",
+  "pattern": [
+    "SXO",
+    "dPw",
+    "OMW"
+  ],
+  "key": {
+    "M": {
+      "type": "gregtech:metaitem",
+      "name": "electric.motor.mv"
+    },
+    "O": {
+      "type": "forge:ore_dict",
+      "ore": "ringPaper"
+    },
+    "X": {
+      "type": "forge:ore_dict",
+      "ore": "rotorBronze"
+    },
+    "S": {
+      "type": "forge:ore_dict",
+      "ore": "screwBronze"
+    },
+    "W": {
+      "type": "forge:ore_dict",
+      "ore": "cableGtSingleCopper"
+    },
+    "P": {
+      "type": "forge:ore_dict",
+      "ore": "pipeSmallBronze"
+    },
+    "d": {
+      "type": "forge:ore_dict",
+      "ore": "craftingToolScrewdriver"
+    },
+    "w": {
+      "type": "forge:ore_dict",
+      "ore": "craftingToolWrench"
+    }
+  },
+  "result": {
+    "name": "electric.pump.mv"
+  }
+}

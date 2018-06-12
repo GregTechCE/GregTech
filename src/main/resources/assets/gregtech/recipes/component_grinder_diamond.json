@@ -8,7 +8,7 @@
   "key": {
     "I": {
       "type": "forge:ore_dict",
-      "ore": "craftingIndustrialDiamond"
+      "ore": "gemDiamond"
     },
     "D": {
       "type": "forge:ore_dict",
