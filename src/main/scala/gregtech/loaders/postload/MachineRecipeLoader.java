@@ -1050,7 +1050,8 @@ public class MachineRecipeLoader {
                     .outputs(GTUtility.copyAmount(output.getCount() / 3, output))
                     .duration(25).EUt(4)
                     .buildAndRegister();
-                ModHandler.addShapedRecipe(String.format("slab_%s", stack.getUnlocalizedName()+stack.getMetadata()),    //TODO - find less ugly solution than this
+
+                ModHandler.addShapedRecipe(String.format("slab_%s", Materials.Wood),
                     GTUtility.copyAmount(output.getCount() / 3, output),
                     "sP", 'P', stack);
             }
