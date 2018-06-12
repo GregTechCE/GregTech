@@ -5,21 +5,24 @@ import gregtech.api.worldgen.config.OreDepositDefinition;
 import gregtech.common.ConfigHolder;
 import gregtech.common.blocks.BlockSurfaceRock;
 import gregtech.common.blocks.MetaBlocks;
-import net.minecraft.block.BlockLiquid;
+import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraft.world.gen.IChunkGenerator;
 import net.minecraftforge.event.terraingen.OreGenEvent;
 import net.minecraftforge.event.terraingen.OreGenEvent.GenerateMinable.EventType;
-import net.minecraftforge.fluids.IFluidBlock;
 import net.minecraftforge.fml.common.IWorldGenerator;
 import net.minecraftforge.fml.common.eventhandler.Event.Result;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.Random;
 
 import static net.minecraftforge.event.terraingen.OreGenEvent.GenerateMinable.EventType.*;
 
@@ -61,18 +64,11 @@ public class WorldGeneratorImpl implements IWorldGenerator {
                 BlockPos topBlockPos = new BlockPos(randomX, 0, randomZ);
                 topBlockPos = world.getTopSolidOrLiquidBlock(topBlockPos).down();
                 IBlockState blockState = world.getBlockState(topBlockPos);
-                if (!blockState.isBlockNormalCube() || !blockState.isFullBlock())
-                    continue; //do not generate on non-solid blocks
-
-                BlockPos topBlock = topBlockPos.up();
-                IBlockState upperState = world.getBlockState(topBlockPos);
-                if (upperState.getBlock() instanceof BlockLiquid ||
-                    upperState.getBlock() instanceof IFluidBlock)
-                    continue; //do not try to generate inside fluid blocks
-
+                if(blockState.getBlockFaceShape(world, topBlockPos, EnumFacing.UP) != BlockFaceShape.SOLID)
+                    continue;
                 BlockSurfaceRock blockSurfaceRock = MetaBlocks.SURFACE_ROCKS.get(material);
                 IBlockState statePlace = blockSurfaceRock.getDefaultState().withProperty(blockSurfaceRock.materialProperty, material);
-                world.setBlockState(topBlock, statePlace, 16);
+                world.setBlockState(topBlockPos.up(), statePlace, 16);
             }
         }
     }

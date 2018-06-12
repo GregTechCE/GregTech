@@ -15,27 +15,59 @@ import gregtech.api.render.Textures;
 import gregtech.api.unification.material.type.Material;
 import gregtech.api.util.GTUtility;
 import gregtech.common.blocks.BlockSurfaceRock;
+import net.minecraft.block.BlockLiquid;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.renderer.BlockFluidRenderer;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.color.BlockColors;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
+import net.minecraft.init.Blocks;
+import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.biome.BiomeColorHelper;
+import net.minecraftforge.client.MinecraftForgeClient;
 import org.lwjgl.opengl.GL11;
+
+import javax.annotation.Nullable;
 
 public class StoneRenderer implements ICCBlockRenderer {
 
+    private static BlockFluidRenderer waterRenderer;
     private static final StoneRenderer INSTANCE = new StoneRenderer();
     public static EnumBlockRenderType BLOCK_RENDER_TYPE;
 
     public static void preInit() {
         BLOCK_RENDER_TYPE = BlockRenderingRegistry.createRenderType("gt_stone");
         BlockRenderingRegistry.registerRenderer(BLOCK_RENDER_TYPE, INSTANCE);
+    }
+
+    private BlockFluidRenderer getWaterRenderer() {
+        //if(waterRenderer == null) {
+            BlockColors blockColors = new BlockColors() {
+                @Override
+                public int colorMultiplier(IBlockState state, @Nullable IBlockAccess blockAccess, @Nullable BlockPos pos, int renderPass) {
+                    return BiomeColorHelper.getWaterColorAtPos(blockAccess, pos);
+                }
+            };
+            waterRenderer = new BlockFluidRenderer(blockColors);
+       // }
+        return waterRenderer;
+    }
+
+    private boolean shouldRenderWater(IBlockAccess world, BlockPos pos) {
+        boolean renderWater = false;
+        for(EnumFacing facingValue : EnumFacing.VALUES) {
+            IBlockState blockState = world.getBlockState(pos.offset(facingValue));
+            renderWater |= blockState.getMaterial() == net.minecraft.block.material.Material.WATER;
+        }
+        return renderWater;
     }
 
     @Override
@@ -50,6 +82,19 @@ public class StoneRenderer implements ICCBlockRenderer {
 
     @Override
     public boolean renderBlock(IBlockAccess world, BlockPos pos, IBlockState state, BufferBuilder buffer) {
+        //render water in dedicated translucent rendering layer
+        if(MinecraftForgeClient.getRenderLayer() == BlockRenderLayer.TRANSLUCENT) {
+            boolean renderWater = world != null && shouldRenderWater(world, pos);
+            if(renderWater) {
+                //render water if next to it (because otherwise we will get invisible sides)
+                BlockFluidRenderer fluidRenderer = getWaterRenderer();
+                IBlockState liquidState = Blocks.WATER.getDefaultState().withProperty(BlockLiquid.LEVEL, state.getValue(BlockLiquid.LEVEL));
+                fluidRenderer.renderFluid(world, liquidState, pos, buffer);
+            }
+            return renderWater;
+        }
+
+        //otherwise, we are in solid rendering layer and render primary stone
         CCRenderState renderState = CCRenderState.instance();
         renderState.reset();
         renderState.bind(buffer);
@@ -66,6 +111,7 @@ public class StoneRenderer implements ICCBlockRenderer {
         for(EnumFacing renderSide : EnumFacing.VALUES) {
             Textures.renderFace(renderState, translation, operations, renderSide, baseBox, stoneSprite);
         }
+
         return true;
     }
 

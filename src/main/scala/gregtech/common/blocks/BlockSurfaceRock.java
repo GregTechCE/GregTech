@@ -1,20 +1,25 @@
 package gregtech.common.blocks;
 
 import codechicken.lib.vec.Cuboid6;
+import com.google.common.collect.ImmutableMap;
 import gregtech.api.unification.OreDictUnifier;
-import gregtech.api.unification.material.type.Material;
 import gregtech.api.unification.material.type.IngotMaterial;
+import gregtech.api.unification.material.type.Material;
 import gregtech.api.unification.ore.OrePrefix;
 import gregtech.api.util.XSTR;
 import gregtech.common.blocks.properties.PropertyMaterial;
 import gregtech.common.render.StoneRenderer;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockLiquid;
 import net.minecraft.block.SoundType;
+import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.BlockStateContainer;
+import net.minecraft.block.state.BlockStateContainer.StateImplementation;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.NonNullList;
@@ -23,9 +28,13 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.common.property.IUnlistedProperty;
 import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
+import sun.reflect.Reflection;
 
+import javax.annotation.Nullable;
 import java.util.Arrays;
+import java.util.Optional;
 import java.util.Random;
 
 public class BlockSurfaceRock extends Block {
@@ -50,7 +59,45 @@ public class BlockSurfaceRock extends Block {
 
     @Override
     protected BlockStateContainer createBlockState() {
-        return materialProperty == null ? new BlockStateContainer(this) : new BlockStateContainer(this, materialProperty);
+        if(materialProperty == null)
+            return new BlockStateContainer(this);
+        return new BlockStateContainer(this, materialProperty) {
+            @Override
+            protected StateImplementation createState(Block block, ImmutableMap<IProperty<?>, Comparable<?>> properties, @Nullable ImmutableMap<IUnlistedProperty<?>, Optional<?>> unlistedProperties) {
+                return new RockState(block, properties);
+            }
+        };
+    }
+
+    //hack used for making flooding work with surface rocks
+    private class RockState extends StateImplementation {
+
+        public RockState(Block blockIn, ImmutableMap<IProperty<?>, Comparable<?>> propertiesIn) {
+            super(blockIn, propertiesIn);
+        }
+
+        @Override
+        public net.minecraft.block.material.Material getMaterial() {
+            try {
+                Class<?> callerClass = Reflection.getCallerClass(2);
+                if(callerClass.getName().equals("net.minecraft.block.BlockLiquid")) {
+                    //return water material when being requested by BlockLiquid
+                    //this allows water blocks to skip sides rendering, avoiding air pockets in water areas
+                    return net.minecraft.block.material.Material.WATER;
+                }
+            } catch (Throwable ignored) {}
+            return super.getMaterial();
+        }
+
+        @Override
+        public <T extends Comparable<T>> T getValue(IProperty<T> property) {
+            if(property == BlockLiquid.LEVEL) {
+                //to avoid crash of BlockLiquid getting LEVEL from block state
+                //we always mimic full block of water in rendering
+                return (T) Integer.valueOf(15);
+            }
+            return super.getValue(property);
+        }
     }
 
     @Override
@@ -114,6 +161,11 @@ public class BlockSurfaceRock extends Block {
     }
 
     @Override
+    public boolean canRenderInLayer(IBlockState state, BlockRenderLayer layer) {
+        return super.canRenderInLayer(state, layer) || layer == BlockRenderLayer.TRANSLUCENT;
+    }
+
+    @Override
     public EnumBlockRenderType getRenderType(IBlockState state) {
         return StoneRenderer.BLOCK_RENDER_TYPE;
     }
@@ -126,7 +178,7 @@ public class BlockSurfaceRock extends Block {
     @Override
     public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos) {
         if (fromPos.up().equals(pos)) {
-            if(!worldIn.getBlockState(fromPos).isSideSolid(worldIn, fromPos, EnumFacing.UP)) {
+            if(worldIn.getBlockState(fromPos).getBlockFaceShape(worldIn, fromPos, EnumFacing.UP) != BlockFaceShape.SOLID) {
                 worldIn.destroyBlock(pos, true);
             }
         }
@@ -136,4 +188,5 @@ public class BlockSurfaceRock extends Block {
     public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face) {
         return BlockFaceShape.UNDEFINED;
     }
+
 }
