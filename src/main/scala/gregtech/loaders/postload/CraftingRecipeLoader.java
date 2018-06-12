@@ -48,7 +48,7 @@ public class CraftingRecipeLoader {
 
         ModHandler.addShapedRecipe("pipe_small_steel", MetaItems.SMALL_STEEL_PIPE.getStackForm(2), "WWW", "w h", "WWW", 'W', new UnificationEntry(OrePrefix.plate, Materials.Steel));
         ModHandler.addShapedRecipe("pipe_small_bronze", MetaItems.SMALL_BRONZE_PIPE.getStackForm(2), "WWW", "w h", "WWW", 'W', new UnificationEntry(OrePrefix.plate, Materials.Bronze));
-`
+
         ModHandler.addShapedRecipe("component_grinder_diamond", MetaItems.COMPONENT_GRINDER_DIAMOND.getStackForm(), "CWC", "WDW", "CWC", 'W', new UnificationEntry(OrePrefix.plate, Materials.Steel), 'C', new UnificationEntry(OrePrefix.dust, Materials.Diamond), 'D', new UnificationEntry(OrePrefix.gem, Materials.Diamond));
         ModHandler.addShapedRecipe("component_grinder_tungsten", MetaItems.COMPONENT_GRINDER_TUNGSTEN.getStackForm(), "WCW", "CDC", "WCW", 'W', new UnificationEntry(OrePrefix.plate, Materials.Tungsten), 'C', new UnificationEntry(OrePrefix.plate, Materials.Steel), 'D', new UnificationEntry(OrePrefix.gem, Materials.Diamond));
 
