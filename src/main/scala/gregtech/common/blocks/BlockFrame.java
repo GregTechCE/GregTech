@@ -4,7 +4,7 @@ import gregtech.api.GregTechAPI;
 import gregtech.api.unification.material.Materials;
 import gregtech.api.unification.material.type.GemMaterial;
 import gregtech.api.unification.material.type.Material;
-import gregtech.api.unification.material.type.MetalMaterial;
+import gregtech.api.unification.material.type.IngotMaterial;
 import gregtech.api.unification.material.type.SolidMaterial;
 import gregtech.common.blocks.properties.PropertyMaterial;
 import net.minecraft.block.Block;
@@ -170,7 +170,7 @@ public final class BlockFrame extends DelayedStateBlock {
         Material material = state.getValue(variantProperty);
         if(material instanceof GemMaterial) {
             return net.minecraft.block.material.Material.ROCK;
-        } else if(material instanceof MetalMaterial) {
+        } else if(material instanceof IngotMaterial) {
             return net.minecraft.block.material.Material.IRON;
         } else if(material.toString().contains("wood")) {
             return net.minecraft.block.material.Material.WOOD;
@@ -189,7 +189,7 @@ public final class BlockFrame extends DelayedStateBlock {
         Material material = state.getValue(variantProperty);
         if(material instanceof GemMaterial) {
             return SoundType.STONE;
-        } else if(material instanceof MetalMaterial) {
+        } else if(material instanceof IngotMaterial) {
             return SoundType.METAL;
         } else if(material.toString().contains("wood")) {
             return SoundType.WOOD;

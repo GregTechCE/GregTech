@@ -3,7 +3,7 @@ package gregtech.common.blocks;
 import codechicken.lib.vec.Cuboid6;
 import gregtech.api.unification.OreDictUnifier;
 import gregtech.api.unification.material.type.Material;
-import gregtech.api.unification.material.type.MetalMaterial;
+import gregtech.api.unification.material.type.IngotMaterial;
 import gregtech.api.unification.ore.OrePrefix;
 import gregtech.api.util.XSTR;
 import gregtech.common.blocks.properties.PropertyMaterial;
@@ -81,7 +81,7 @@ public class BlockSurfaceRock extends Block {
 
     private ItemStack getDropStack(IBlockState blockState, int amount) {
         Material material = blockState.getValue(materialProperty);
-        if(material instanceof MetalMaterial && ((MetalMaterial) material).blastFurnaceTemperature == 0)
+        if(material instanceof IngotMaterial && ((IngotMaterial) material).blastFurnaceTemperature == 0)
             return OreDictUnifier.get(OrePrefix.nugget, material, amount);
         return OreDictUnifier.get(OrePrefix.dustTiny, material, amount);
     }
