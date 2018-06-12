@@ -437,7 +437,7 @@ public class RecipeMaps {
      *         		.buildAndRegister();
      * </pre>
      */
-    public static final RecipeMap<CrackingRecipeBuilder> CRACKING_RECIPES = new RecipeMap<>("craker", 0, 0, 0, 0, 1, 1, 1, 1, 1, new CrackingRecipeBuilder().notOptimized());
+    public static final RecipeMap<CrackingRecipeBuilder> CRACKING_RECIPES = new RecipeMap<>("cracker", 0, 0, 0, 0, 1, 1, 1, 1, 1, new CrackingRecipeBuilder().notOptimized());
 
     /**
      * Example:
