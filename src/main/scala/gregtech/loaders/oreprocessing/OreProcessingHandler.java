@@ -201,7 +201,6 @@ public class OreProcessingHandler {
             }
 
             if (metalMaterial.blastFurnaceTemperature <= 0) {
-                ModHandler.addSmeltingRecipe(new UnificationEntry(dustPrefix, metalMaterial), ingotStack);
                 ModHandler.addSmeltingRecipe(new UnificationEntry(OrePrefix.dustTiny, metalMaterial), nuggetStack);
             } else {
                 int duration = Math.max(1, (int) (material.getMass() * metalMaterial.blastFurnaceTemperature / 50L));

@@ -154,7 +154,7 @@ public class ModHandler {
     ///////////////////////////////////////////////////
 
     public static void addSmeltingRecipe(UnificationEntry input, ItemStack output) {
-        List<ItemStack> allStacks = OreDictUnifier.getAll(input);
+        List<ItemStack> allStacks = OreDictUnifier.getAll(input).stream().filter(stack -> ForgeRegistries.ITEMS.getKey(stack.getItem()).getResourceDomain().equals(GTValues.MODID)).collect(Collectors.toList());
         for(ItemStack inputStack : allStacks) {
             addSmeltingRecipe(inputStack, output);
         }
@@ -172,6 +172,11 @@ public class ModHandler {
         }
         if (output.isEmpty()) {
             GTLog.logger.error("Output cannot be an empty ItemStack", new IllegalArgumentException());
+            skip = true;
+            RecipeMap.foundInvalidRecipe = true;
+        }
+        if(FurnaceRecipes.instance().getSmeltingResult(input) != ItemStack.EMPTY) {
+            GTLog.logger.error("Smelting recipe already exists for {}, {}!", input.getUnlocalizedName(), new IllegalArgumentException());
             skip = true;
             RecipeMap.foundInvalidRecipe = true;
         }
