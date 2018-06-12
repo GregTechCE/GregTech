@@ -24,6 +24,8 @@ import net.minecraft.init.Items;
 import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.oredict.OreDictionary;
+
 import org.apache.commons.lang3.ArrayUtils;
 
 import java.util.ArrayList;
@@ -1257,14 +1259,15 @@ public class OreProcessingHandler {
                         'R', new UnificationEntry(OrePrefix.plate, Materials.Rubber));
                 }
                 SolidMaterial solidMaterial = (SolidMaterial) material;
-                if (!OreDictUnifier.get(OrePrefix.stick, solidMaterial).isEmpty() && !OreDictUnifier.get(OrePrefix.stick, solidMaterial.handleMaterial).isEmpty()) {
-                    ModHandler.addShapedRecipe(String.format("screwdriver_%s_%s", solidMaterial.toString(), solidMaterial.handleMaterial.toString()),
-                        MetaItems.SCREWDRIVER.getStackForm(solidMaterial, solidMaterial.handleMaterial),
+                SolidMaterial handleMaterial = solidMaterial.handleMaterial == null ? Materials.Wood : solidMaterial.handleMaterial;
+                if (!OreDictUnifier.get(OrePrefix.stick, solidMaterial).isEmpty() && !OreDictUnifier.get(OrePrefix.stick, handleMaterial).isEmpty()) {
+                    ModHandler.addShapedRecipe(String.format("screwdriver_%s_%s", solidMaterial.toString(), handleMaterial.toString()),
+                        MetaItems.SCREWDRIVER.getStackForm(solidMaterial, handleMaterial),
                         " fS",
                         " Sh",
                         "W  ",
                         'S', new UnificationEntry(OrePrefix.stick, solidMaterial),
-                        'W', new UnificationEntry(OrePrefix.stick, solidMaterial.handleMaterial));
+                        'W', new UnificationEntry(OrePrefix.stick, handleMaterial));
                 }
                 ModHandler.addShapedRecipe(String.format("crowbar_%s", material),
                     MetaItems.CROWBAR.getStackForm((SolidMaterial) material, null),
@@ -1272,7 +1275,7 @@ public class OreProcessingHandler {
                     "DSD",
                     "SDf",
                     'S', new UnificationEntry(stickPrefix, material),
-                    'D', EnumDyeColor.BLUE);
+                    'D', new UnificationEntry(OrePrefix.dye, MarkerMaterials.Color.COLORS.get(EnumDyeColor.BLUE)));
                 ModHandler.addShapedRecipe(String.format("scoop_%s", material.toString()),
                     MetaItems.SCOOP.getStackForm((SolidMaterial) material, null),
                     "SWS",
@@ -1504,6 +1507,10 @@ public class OreProcessingHandler {
         if(!(material instanceof SolidMaterial)) return;
         SolidMaterial solidMaterial = (SolidMaterial) material;
         processSimpleElectricTool(toolPrefix, solidMaterial, new MetaToolValueItem[] {MetaItems.SCREWDRIVER_LV});
+        ModHandler.addShapedRecipe(String.format("screwdriver_head_%s", solidMaterial.toString()),
+            OreDictUnifier.get(OrePrefix.toolHeadScrewdriver, solidMaterial),
+            " fX", " Xh",
+            'X', new UnificationEntry(OrePrefix.stick, solidMaterial));
     }
 
     //////////////////////////////////////////////////////////////////////////////////////////////
@@ -1608,15 +1615,38 @@ public class OreProcessingHandler {
     private void processHammerHead(OrePrefix toolPrefix, Material material) {
         if(!(material instanceof SolidMaterial)) return;
         SolidMaterial solidMaterial = (SolidMaterial) material;
-        processSimpleTool(toolPrefix, solidMaterial, MetaItems.HARD_HAMMER, "II ", "IIh", "II ");
+        if(!solidMaterial.hasFlag(NO_WORKING)) {
+            processSimpleTool(toolPrefix, solidMaterial, MetaItems.HARD_HAMMER, "II ", "IIh", "II ");
+        }
         if(solidMaterial instanceof IngotMaterial) {
             SolidMaterial handleMaterial = solidMaterial.handleMaterial == null ? Materials.Wood : solidMaterial.handleMaterial;
-            ModHandler.addShapedRecipe(String.format("hammer_%s", solidMaterial.toString()),
-                MetaItems.HARD_HAMMER.getStackForm(solidMaterial, handleMaterial),
-                "XX ", "XXS", "XX ",
-                'X', new UnificationEntry(OrePrefix.ingot, solidMaterial),
-                'S', new UnificationEntry(OrePrefix.stick, handleMaterial));
+            if(!solidMaterial.hasFlag(NO_WORKING)) {
+                ModHandler.addShapedRecipe(String.format("hammer_%s", solidMaterial.toString()),
+                    MetaItems.HARD_HAMMER.getStackForm(solidMaterial, handleMaterial),
+                    "XX ", "XXS", "XX ",
+                    'X', new UnificationEntry(OrePrefix.ingot, solidMaterial),
+                    'S', new UnificationEntry(OrePrefix.stick, handleMaterial));
+            } else {
+                ModHandler.addShapedRecipe(String.format("soft_hammer_%s", solidMaterial.toString()),
+                    MetaItems.SOFT_HAMMER.getStackForm(solidMaterial, handleMaterial),
+                    "XX ", "XXS", "XX ",
+                    'X', new UnificationEntry(OrePrefix.ingot, solidMaterial),
+                    'S', new UnificationEntry(OrePrefix.stick, handleMaterial));
+            }
         }
+    }
+
+    private void processSoftHammerHead(OrePrefix toolPrefix, Material material) {
+        if(!(material instanceof IngotMaterial)) return;
+        IngotMaterial metalMaterial = (IngotMaterial) material;
+        processSimpleTool(toolPrefix, metalMaterial, MetaItems.SOFT_HAMMER, "II", "IIh", "II ");
+
+        SolidMaterial handleMaterial = metalMaterial.handleMaterial == null ? Materials.Wood : metalMaterial.handleMaterial;
+        ModHandler.addShapedRecipe(String.format("hammer_soft_%s", metalMaterial.toString()),
+            MetaItems.HARD_HAMMER.getStackForm(metalMaterial, handleMaterial),
+            "XX ", "XXS", "XX ",
+            'X', new UnificationEntry(OrePrefix.ingot, metalMaterial),
+            'S', new UnificationEntry(OrePrefix.stick, handleMaterial));
     }
 
     private void processFileHead(OrePrefix toolPrefix, Material material) {
