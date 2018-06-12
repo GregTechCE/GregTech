@@ -23,7 +23,7 @@ public class DustMaterial extends FluidMaterial {
         /**
          * Generate a plate for this material
          * If it's dust material, dust compressor recipe into plate will be generated
-         * If it's metal material, bending machine recipes will be generated
+         * If it's ingot material, bending machine recipes will be generated
          * If block is found, cutting machine recipe will be also generated
          */
         public static final long GENERATE_PLATE = createFlag(12);

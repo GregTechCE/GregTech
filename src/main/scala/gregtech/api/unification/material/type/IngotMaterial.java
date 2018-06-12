@@ -11,15 +11,15 @@ import javax.annotation.Nullable;
 import static gregtech.api.unification.material.type.DustMaterial.MatFlags.GENERATE_PLATE;
 import static gregtech.api.unification.material.type.DustMaterial.MatFlags.SMELT_INTO_FLUID;
 import static gregtech.api.util.GTUtility.createFlag;
-import static gregtech.api.unification.material.type.MetalMaterial.MatFlags.*;
+import static gregtech.api.unification.material.type.IngotMaterial.MatFlags.*;
 import static gregtech.api.unification.material.type.SolidMaterial.MatFlags.GENERATE_ROD;
 
-public class MetalMaterial extends SolidMaterial {
+public class IngotMaterial extends SolidMaterial {
 
     public static final class MatFlags {
 
         static {
-            Material.MatFlags.registerMaterialFlagsHolder(MatFlags.class, MetalMaterial.class);
+            Material.MatFlags.registerMaterialFlagsHolder(MatFlags.class, IngotMaterial.class);
         }
 
         public static final long GENERATE_FOIL = createFlag(25);
@@ -44,18 +44,18 @@ public class MetalMaterial extends SolidMaterial {
     /**
      * Specifies a material into which this material parts turn when heated
      */
-    public MetalMaterial smeltInto;
+    public IngotMaterial smeltInto;
 
     /**
      * Specifies a material into which this material parts turn when heated in arc furnace
      */
-    public MetalMaterial arcSmeltInto;
+    public IngotMaterial arcSmeltInto;
 
     /**
      * Material which obtained when this material is polarized
      */
     @Nullable
-    public MetalMaterial magneticMaterial;
+    public IngotMaterial magneticMaterial;
 
     /**
      * Blast furnace temperature of this material
@@ -71,7 +71,7 @@ public class MetalMaterial extends SolidMaterial {
     @Nullable
     public WireProperties cableProperties;
 
-    public MetalMaterial(int metaItemSubId, String name, int materialRGB, MaterialIconSet materialIconSet, int harvestLevel, ImmutableList<MaterialStack> materialComponents, long materialGenerationFlags, Element element, float toolSpeed, int toolDurability, int blastFurnaceTemperature) {
+    public IngotMaterial(int metaItemSubId, String name, int materialRGB, MaterialIconSet materialIconSet, int harvestLevel, ImmutableList<MaterialStack> materialComponents, long materialGenerationFlags, Element element, float toolSpeed, int toolDurability, int blastFurnaceTemperature) {
         super(metaItemSubId, name, materialRGB, materialIconSet, harvestLevel, materialComponents, materialGenerationFlags, element, toolSpeed, toolDurability);
         this.blastFurnaceTemperature = blastFurnaceTemperature;
         this.smeltInto = this;
@@ -79,23 +79,23 @@ public class MetalMaterial extends SolidMaterial {
         add(SMELT_INTO_FLUID);
     }
 
-    public MetalMaterial(int metaItemSubId, String name, int materialRGB, MaterialIconSet materialIconSet, int harvestLevel, ImmutableList<MaterialStack> materialComponents, long materialGenerationFlags, Element element) {
+    public IngotMaterial(int metaItemSubId, String name, int materialRGB, MaterialIconSet materialIconSet, int harvestLevel, ImmutableList<MaterialStack> materialComponents, long materialGenerationFlags, Element element) {
         this(metaItemSubId, name, materialRGB, materialIconSet, harvestLevel, materialComponents, materialGenerationFlags, element, 0, 0, 0);
     }
 
-    public MetalMaterial(int metaItemSubId, String name, int materialRGB, MaterialIconSet materialIconSet, int harvestLevel, ImmutableList<MaterialStack> materialComponents, long materialGenerationFlags, Element element, int blastFurnaceTemperature) {
+    public IngotMaterial(int metaItemSubId, String name, int materialRGB, MaterialIconSet materialIconSet, int harvestLevel, ImmutableList<MaterialStack> materialComponents, long materialGenerationFlags, Element element, int blastFurnaceTemperature) {
         this(metaItemSubId, name, materialRGB, materialIconSet, harvestLevel, materialComponents, materialGenerationFlags, element, 0, 0, blastFurnaceTemperature);
     }
 
-    public MetalMaterial(int metaItemSubId, String name, int materialRGB, MaterialIconSet materialIconSet, int harvestLevel, ImmutableList<MaterialStack> materialComponents, long materialGenerationFlags, Element element, float toolSpeed, int toolDurability) {
+    public IngotMaterial(int metaItemSubId, String name, int materialRGB, MaterialIconSet materialIconSet, int harvestLevel, ImmutableList<MaterialStack> materialComponents, long materialGenerationFlags, Element element, float toolSpeed, int toolDurability) {
         this(metaItemSubId, name, materialRGB, materialIconSet, harvestLevel, materialComponents, materialGenerationFlags, element, toolSpeed, toolDurability, 0);
     }
 
-    public MetalMaterial(int metaItemSubId, String name, int materialRGB, MaterialIconSet materialIconSet, int harvestLevel, ImmutableList<MaterialStack> materialComponents, long materialGenerationFlags, float toolSpeed, int toolDurability) {
+    public IngotMaterial(int metaItemSubId, String name, int materialRGB, MaterialIconSet materialIconSet, int harvestLevel, ImmutableList<MaterialStack> materialComponents, long materialGenerationFlags, float toolSpeed, int toolDurability) {
         this(metaItemSubId, name, materialRGB, materialIconSet, harvestLevel, materialComponents, materialGenerationFlags, null, toolSpeed, toolDurability, 0);
     }
 
-    public MetalMaterial(int metaItemSubId, String name, int materialRGB, MaterialIconSet materialIconSet, int harvestLevel, ImmutableList<MaterialStack> materialComponents, long materialGenerationFlags) {
+    public IngotMaterial(int metaItemSubId, String name, int materialRGB, MaterialIconSet materialIconSet, int harvestLevel, ImmutableList<MaterialStack> materialComponents, long materialGenerationFlags) {
         this(metaItemSubId, name, materialRGB, materialIconSet, harvestLevel, materialComponents, materialGenerationFlags, null, 0, 0, 0);
     }
 
@@ -132,17 +132,17 @@ public class MetalMaterial extends SolidMaterial {
         return super.verifyMaterialBits(generationBits);
     }
 
-    public MetalMaterial setSmeltingInto(MetalMaterial smeltInto) {
+    public IngotMaterial setSmeltingInto(IngotMaterial smeltInto) {
         this.smeltInto = smeltInto;
         return this;
     }
 
-    public MetalMaterial setArcSmeltingInto(MetalMaterial arcSmeltingInto) {
+    public IngotMaterial setArcSmeltingInto(IngotMaterial arcSmeltingInto) {
         this.arcSmeltInto = arcSmeltingInto;
         return this;
     }
 
-    public MetalMaterial setCableProperties(long voltage, int baseAmperage, int lossPerBlock) {
+    public IngotMaterial setCableProperties(long voltage, int baseAmperage, int lossPerBlock) {
         this.cableProperties = new WireProperties((int) voltage, baseAmperage, lossPerBlock);
         return this;
     }

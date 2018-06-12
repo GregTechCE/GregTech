@@ -8,7 +8,7 @@ import gregtech.api.recipes.builders.PBFRecipeBuilder;
 import gregtech.api.unification.OreDictUnifier;
 import gregtech.api.unification.material.MarkerMaterials;
 import gregtech.api.unification.material.Materials;
-import gregtech.api.unification.material.type.MetalMaterial;
+import gregtech.api.unification.material.type.IngotMaterial;
 import gregtech.api.unification.ore.OrePrefix;
 import gregtech.api.unification.stack.MaterialStack;
 import gregtech.api.unification.stack.UnificationEntry;
@@ -112,7 +112,7 @@ public class MachineRecipeLoader {
         }
 
         for (MaterialStack stack : solderingList) {
-            MetalMaterial material = (MetalMaterial) stack.material;
+            IngotMaterial material = (IngotMaterial) stack.material;
             int multiplier = (int) stack.amount;
             RecipeMaps.ASSEMBLER_RECIPES.recipeBuilder().duration(16).EUt(8).input(OrePrefix.plate, Materials.Steel, 1).input(OrePrefix.wireGtSingle, Materials.RedAlloy, 2).fluidInputs(material.getFluid(144 * multiplier / 8)).outputs(MetaItems.CIRCUIT_PRIMITIVE.getStackForm(2)).buildAndRegister();
             RecipeMaps.ASSEMBLER_RECIPES.recipeBuilder().duration(16).EUt(8).input(OrePrefix.plate, Materials.Plastic, 1).input(OrePrefix.wireGtSingle, Materials.RedAlloy, 1).fluidInputs(material.getFluid(144 * multiplier / 8)).outputs(MetaItems.CIRCUIT_PRIMITIVE.getStackForm(2)).buildAndRegister();
