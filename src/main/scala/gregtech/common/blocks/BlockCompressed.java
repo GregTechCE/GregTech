@@ -97,7 +97,7 @@ public final class BlockCompressed extends DelayedStateBlock {
         Material material = state.getValue(variantProperty);
         if(material instanceof GemMaterial) {
             return net.minecraft.block.material.Material.ROCK;
-        } else if(material instanceof MetalMaterial) {
+        } else if(material instanceof IngotMaterial) {
             return net.minecraft.block.material.Material.IRON;
         } else if(material instanceof DustMaterial) {
             return net.minecraft.block.material.Material.SAND;
@@ -116,7 +116,7 @@ public final class BlockCompressed extends DelayedStateBlock {
         Material material = state.getValue(variantProperty);
         if(material instanceof GemMaterial) {
             return SoundType.STONE;
-        } else if(material instanceof MetalMaterial) {
+        } else if(material instanceof IngotMaterial) {
             return SoundType.METAL;
         } else if(material instanceof DustMaterial) {
             return SoundType.SAND;

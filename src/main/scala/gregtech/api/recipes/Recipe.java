@@ -14,10 +14,7 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.items.IItemHandlerModifiable;
 import org.apache.commons.lang3.Validate;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
+import java.util.*;
 
 /**
  * Class that represent machine recipe.<p>
@@ -130,13 +127,18 @@ public class Recipe {
 
         for(CountableIngredient ingredient : this.inputs) {
             int ingredientAmount = ingredient.getCount();
+            boolean isNotConsumed = false;
+            if(ingredientAmount == 0) {
+                ingredientAmount = 1;
+                isNotConsumed = true;
+            }
             for (int i = 0; i < inputs.size(); i++) {
                 ItemStack inputStack = inputs.get(i);
                 if (inputStack.isEmpty() || !ingredient.getIngredient().apply(inputStack))
                     continue;
                 int itemAmountToConsume = Math.min(itemAmountInSlot[i], ingredientAmount);
                 ingredientAmount -= itemAmountToConsume;
-                itemAmountInSlot[i] -= itemAmountToConsume;
+                if(!isNotConsumed) itemAmountInSlot[i] -= itemAmountToConsume;
                 if(ingredientAmount == 0) break;
             }
             if(ingredientAmount > 0)
@@ -228,7 +230,11 @@ public class Recipe {
 	public boolean needsEmptyOutput() {
 		return needsEmptyOutput;
 	}
-	
+
+	public Set<String> getPropertyKeys() {
+	    return recipeProperties.keySet();
+    }
+
 	public boolean getBooleanProperty(String key) {
         Validate.notNull(key);
         Object o = this.recipeProperties.get(key);
@@ -248,7 +254,7 @@ public class Recipe {
     }
 
     @SuppressWarnings("unchecked")
-    public <T> T getProperty(String key, Class<T> targetClass) {
+    public <T> T getProperty(String key) {
         Validate.notNull(key);
         Object o = this.recipeProperties.get(key);
         if (o == null) {

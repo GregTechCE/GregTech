@@ -47,7 +47,7 @@ public class FusionRecipeBuilder extends RecipeBuilder<FusionRecipeBuilder> {
     public ValidationResult<Recipe> build() {
         return ValidationResult.newResult(finalizeAndValidate(),
             new Recipe(inputs, outputs, chancedOutputs, fluidInputs, fluidOutputs,
-                ImmutableMap.of("EUToStart", EUToStart),
+                ImmutableMap.of("eu_to_start", EUToStart),
                 duration, EUt, hidden, canBeBuffered, needsEmptyOutput));
     }
 

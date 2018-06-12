@@ -2,11 +2,13 @@ package gregtech.api.items.materialitem;
 
 import com.google.common.base.Preconditions;
 import gnu.trove.map.hash.TShortObjectHashMap;
+import gregtech.api.GTValues;
 import gregtech.api.GregTechAPI;
 import gregtech.api.damagesources.DamageSources;
 import gregtech.api.items.metaitem.StandardMetaItem;
 import gregtech.api.unification.OreDictUnifier;
 import gregtech.api.unification.material.MaterialIconSet;
+import gregtech.api.unification.material.type.DustMaterial;
 import gregtech.api.unification.material.type.MarkerMaterial;
 import gregtech.api.unification.material.type.Material;
 import gregtech.api.unification.ore.OrePrefix;
@@ -153,6 +155,21 @@ public class MaterialMetaItem extends StandardMetaItem {
                 lines.add("IconSet: " + material.materialIconSet);
             }
         }
+    }
+
+    @Override
+    public int getItemBurnTime(ItemStack itemStack) {
+        int damage = itemStack.getItemDamage();
+        if (damage < this.metaItemOffset) {
+            Material material = Material.MATERIAL_REGISTRY.getObjectById(damage % 1000);
+            OrePrefix prefix = this.orePrefixes[(damage / 1000)];
+            if (material instanceof DustMaterial) {
+                DustMaterial dustMaterial = (DustMaterial) material;
+                return (int) (dustMaterial.burnTime * prefix.materialAmount / GTValues.M);
+            }
+        }
+        return super.getItemBurnTime(itemStack);
+
     }
 
     protected void addMaterialTooltip(ItemStack itemStack, OrePrefix prefix, Material material, List<String> lines, ITooltipFlag tooltipFlag) {}

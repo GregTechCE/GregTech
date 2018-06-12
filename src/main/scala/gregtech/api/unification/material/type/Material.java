@@ -228,7 +228,7 @@ public abstract class Material implements Comparable<Material> {
 	        for(MaterialStack materialStack : materialComponents) {
 	            Material material = materialStack.material;
 	            onlyFluidMaterials &= material.getClass() == FluidMaterial.class;
-	            onlyMetalMaterials &= material.getClass() == MetalMaterial.class;
+	            onlyMetalMaterials &= material.getClass() == IngotMaterial.class;
             }
             if(onlyFluidMaterials || onlyMetalMaterials) {
 	            //if we contain only fluids or only metals, then centrifuging will do it's job

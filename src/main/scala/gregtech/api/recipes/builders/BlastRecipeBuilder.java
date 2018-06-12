@@ -47,7 +47,7 @@ public class BlastRecipeBuilder extends RecipeBuilder<BlastRecipeBuilder> {
     public ValidationResult<Recipe> build() {
         return ValidationResult.newResult(finalizeAndValidate(),
             new Recipe(inputs, outputs, chancedOutputs, fluidInputs, fluidOutputs,
-                ImmutableMap.of("blastFurnaceTemp", blastFurnaceTemp),
+                ImmutableMap.of("blast_furnace_temperature", blastFurnaceTemp),
                 duration, EUt, hidden, canBeBuffered, needsEmptyOutput));
     }
 
@@ -55,7 +55,7 @@ public class BlastRecipeBuilder extends RecipeBuilder<BlastRecipeBuilder> {
     public String toString() {
         return new ToStringBuilder(this)
             .appendSuper(super.toString())
-            .append("blastFurnaceTemp", blastFurnaceTemp)
+            .append("blast_furnace_temperature", blastFurnaceTemp)
             .toString();
     }
 }

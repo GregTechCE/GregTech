@@ -23,8 +23,10 @@ import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.EntityEquipmentSlot;
+import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.EntityDamageSource;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundCategory;
@@ -127,6 +129,20 @@ public class ToolMetaItem<T extends ToolMetaItem<?>.MetaToolValueItem> extends M
         return true;
     }
 
+    public void onToolCreated(ItemStack toolStack, InventoryCrafting ingredients) {
+        NBTTagList componentList = new NBTTagList();
+        for(int slotIndex = 0; slotIndex < ingredients.getSizeInventory(); slotIndex++) {
+            ItemStack stackInSlot = ingredients.getStackInSlot(slotIndex).copy();
+            stackInSlot.setCount(1);
+            if(!stackInSlot.isEmpty()) {
+                NBTTagCompound stackTag = new NBTTagCompound();
+                stackInSlot.writeToNBT(stackTag);
+                componentList.appendTag(stackTag);
+            }
+        }
+        toolStack.setTagInfo("CraftingComponents", componentList);
+    }
+
     @Override
     public ItemStack getContainerItem(ItemStack stack) {
         stack = stack.copy();
@@ -136,7 +152,7 @@ public class ToolMetaItem<T extends ToolMetaItem<?>.MetaToolValueItem> extends M
             IToolStats toolStats = metaToolValueItem.toolStats;
             int toolDamagePerCraft =  toolStats.getToolDamagePerContainerCraft(stack);
             boolean canApplyDamage = doDamageToItem(stack, toolDamagePerCraft, false);
-            if(!canApplyDamage) return null;
+            if(!canApplyDamage) return stack;
         }
         return stack;
     }
@@ -264,7 +280,7 @@ public class ToolMetaItem<T extends ToolMetaItem<?>.MetaToolValueItem> extends M
         }
         IElectricItem capability = stack.getCapability(IElectricItem.CAPABILITY_ELECTRIC_ITEM, null);
         if(!simulate) {
-            if(capability == null || capability.getMaxCharge() == 0) {
+            if(capability == null) {
                 setInternalDamage(stack, getInternalDamage(stack) + vanillaDamage);
             } else {
                 capability.discharge(vanillaDamage, capability.getTier(), true, false, false);
@@ -276,10 +292,7 @@ public class ToolMetaItem<T extends ToolMetaItem<?>.MetaToolValueItem> extends M
 
     public boolean isUsable(ItemStack stack, int damage) {
         IElectricItem capability = stack.getCapability(IElectricItem.CAPABILITY_ELECTRIC_ITEM, null);
-        if(capability == null || capability.getMaxCharge() == 0) {
-            return true;
-        }
-        return capability.canUse(damage) && getInternalDamage(stack) + (damage / 10) < getMaxInternalDamage(stack);
+        return capability == null || capability.canUse(damage);
     }
 
     @Override

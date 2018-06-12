@@ -452,8 +452,10 @@ public abstract class MetaTileEntity {
         FluidActionResult result = FluidUtil.tryEmptyContainer(inputContainerStack, importFluids, Integer.MAX_VALUE, null, false);
         if(result.isSuccess()) {
             ItemStack remainingItem = result.getResult();
+            if(ItemStack.areItemStacksEqual(inputContainerStack, remainingItem))
+                return false; //do not fill if item stacks match
             if(!remainingItem.isEmpty() && !exportItems.insertItem(outputSlot, remainingItem, true).isEmpty())
-                return false;
+                return false; //do not fill if can't put remaining item
             FluidUtil.tryEmptyContainer(inputContainerStack, importFluids, Integer.MAX_VALUE, null, true);
             importItems.extractItem(inputSlot, 1, false);
             exportItems.insertItem(outputSlot, remainingItem, false);

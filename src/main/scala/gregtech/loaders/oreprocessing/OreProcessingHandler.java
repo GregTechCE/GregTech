@@ -187,8 +187,8 @@ public class OreProcessingHandler {
                     .explosivesAmount(4)
                     .buildAndRegister();
             }
-        } else if (material instanceof MetalMaterial && !material.hasFlag(Material.MatFlags.FLAMMABLE | MatFlags.NO_SMELTING)) {
-            MetalMaterial metalMaterial = (MetalMaterial) material;
+        } else if (material instanceof IngotMaterial && !material.hasFlag(Material.MatFlags.FLAMMABLE | MatFlags.NO_SMELTING)) {
+            IngotMaterial metalMaterial = (IngotMaterial) material;
 
             boolean hasHotIngot = OrePrefix.ingotHot.doGenerateItem(metalMaterial);
             ItemStack ingotStack = OreDictUnifier.get(hasHotIngot ? OrePrefix.ingotHot : OrePrefix.ingot, metalMaterial);
@@ -247,7 +247,7 @@ public class OreProcessingHandler {
     }
 
     private void processFrame(OrePrefix framePrefix, Material material) {
-        if (material instanceof MetalMaterial && !framePrefix.isIgnored(material) && material.hasFlag(GENERATE_PLATE | GENERATE_ROD)) {
+        if (material instanceof IngotMaterial && !framePrefix.isIgnored(material) && material.hasFlag(GENERATE_PLATE | GENERATE_ROD)) {
             ModHandler.addShapedRecipe(String.format("frame_%s", material),
                 OreDictUnifier.get(framePrefix, material, 4),
                 "PPP",
@@ -261,7 +261,7 @@ public class OreProcessingHandler {
     private void processNugget(OrePrefix orePrefix, Material material) {
         ItemStack nuggetStack = OreDictUnifier.get(orePrefix, material);
         if (!nuggetStack.isEmpty()) {
-            if (material instanceof MetalMaterial) {
+            if (material instanceof IngotMaterial) {
                 ItemStack ingotStack = OreDictUnifier.get(OrePrefix.ingot, material);
                 if (!ingotStack.isEmpty()) {
                     ModHandler.addShapelessRecipe(String.format("nugget_disassembling_%s", material.toString()),
@@ -345,7 +345,7 @@ public class OreProcessingHandler {
         UnificationEntry blockEntry;
         if (material instanceof GemMaterial) {
             blockEntry = new UnificationEntry(OrePrefix.gem, material);
-        } else if (material instanceof MetalMaterial) {
+        } else if (material instanceof IngotMaterial) {
             blockEntry = new UnificationEntry(OrePrefix.ingot, material);
         } else {
             blockEntry = new UnificationEntry(OrePrefix.dust, material);
@@ -359,7 +359,7 @@ public class OreProcessingHandler {
     }
 
     private void processBolt(OrePrefix boltPrefix, Material material) {
-        if (!(material instanceof MetalMaterial) || material.hasFlag(MatFlags.NO_WORKING))
+        if (!(material instanceof IngotMaterial) || material.hasFlag(MatFlags.NO_WORKING))
             return;
         ItemStack boltStack = OreDictUnifier.get(boltPrefix, material);
         ItemStack screwStack = OreDictUnifier.get(OrePrefix.screw, material);
@@ -386,7 +386,7 @@ public class OreProcessingHandler {
     }
 
     private void processScrew(OrePrefix screwPrefix, Material material) {
-        if (!(material instanceof MetalMaterial) || material.hasFlag(MatFlags.NO_WORKING))
+        if (!(material instanceof IngotMaterial) || material.hasFlag(MatFlags.NO_WORKING))
             return;
         ItemStack screwStack = OreDictUnifier.get(screwPrefix, material);
         if (!screwStack.isEmpty()) {
@@ -403,7 +403,7 @@ public class OreProcessingHandler {
     }
 
     private void processFoil(OrePrefix foilPrefix, Material material) {
-        if (!(material instanceof MetalMaterial) || material.hasFlag(MatFlags.NO_SMASHING))
+        if (!(material instanceof IngotMaterial) || material.hasFlag(MatFlags.NO_SMASHING))
             return;
         ItemStack foilStack = OreDictUnifier.get(foilPrefix, material);
         RecipeMaps.BENDER_RECIPES.recipeBuilder()
@@ -415,7 +415,7 @@ public class OreProcessingHandler {
     }
 
     private void processFineWire(OrePrefix fineWirePrefix, Material material) {
-        if (!(material instanceof MetalMaterial) || material.hasFlag(MatFlags.NO_WORKING | Material.MatFlags.NO_UNIFICATION))
+        if (!(material instanceof IngotMaterial) || material.hasFlag(MatFlags.NO_WORKING | Material.MatFlags.NO_UNIFICATION))
             return;
         ItemStack fineWireStack = OreDictUnifier.get(fineWirePrefix, material);
         ItemStack foilStack = OreDictUnifier.get(OrePrefix.foil, material);
@@ -426,7 +426,7 @@ public class OreProcessingHandler {
     }
 
     private void processIngot(OrePrefix ingotPrefix, Material material) {
-        if (!(material instanceof MetalMaterial))
+        if (!(material instanceof IngotMaterial))
             return;
         ItemStack ingotStack = OreDictUnifier.get(ingotPrefix, material);
 
@@ -454,19 +454,19 @@ public class OreProcessingHandler {
                 .circuitMeta(0)
                 .input(ingotPrefix, material)
                 .outputs(plateStack)
-                .EUt(24).duration((int) (material.getMass() / 1.5))
+                .EUt(24).duration((int) (material.getMass()))
                 .buildAndRegister();
 
             RecipeMaps.FORGE_HAMMER_RECIPES.recipeBuilder()
                 .input(ingotPrefix, material, 3)
                 .outputs(GTUtility.copyAmount(2, plateStack))
-                .EUt(16).duration((int) (material.getMass() / 2L))
+                .EUt(16).duration((int) (material.getMass() * 2))
                 .buildAndRegister();
 
             ModHandler.addShapedRecipe(String.format("plate_%s", material.toString()),
                 plateStack, "h", "I", "I", 'I', new UnificationEntry(ingotPrefix, material));
 
-            if (material.hasFlag(MetalMaterial.MatFlags.GENERATE_DENSE)) {
+            if (material.hasFlag(IngotMaterial.MatFlags.GENERATE_DENSE)) {
                 ItemStack denseStack = OreDictUnifier.get(OrePrefix.plateDense, material);
                 RecipeMaps.BENDER_RECIPES.recipeBuilder()
                     .input(ingotPrefix, material, 9)
@@ -479,7 +479,7 @@ public class OreProcessingHandler {
                     .input(OrePrefix.plate, material, 9)
                     .outputs(denseStack)
                     .circuitMeta(5)
-                    .EUt(96).duration((int) (material.getMass() * 1.5))
+                    .EUt(96).duration((int) (material.getMass() * 2))
                     .buildAndRegister();
             }
         }
@@ -504,7 +504,7 @@ public class OreProcessingHandler {
         RecipeMaps.FORGE_HAMMER_RECIPES.recipeBuilder()
             .input(crushedPrefix, materialIn)
             .outputs(impureDustStack)
-            .duration(10).EUt(16)
+            .duration(20).EUt(16)
             .buildAndRegister();
 
         RecipeMaps.MACERATOR_RECIPES.recipeBuilder()
@@ -560,12 +560,12 @@ public class OreProcessingHandler {
 
     private void processMetalSmelting(OrePrefix crushedPrefix, DustMaterial material, int mixedMaterialAmount, int pureMaterialAmount) {
         int smeltingNuggetsAmount = 0;
-        MetalMaterial smeltingMaterial = null;
-        if(material.directSmelting instanceof MetalMaterial) {
-            smeltingMaterial = (MetalMaterial) material.directSmelting;
+        IngotMaterial smeltingMaterial = null;
+        if(material.directSmelting instanceof IngotMaterial) {
+            smeltingMaterial = (IngotMaterial) material.directSmelting;
             smeltingNuggetsAmount = mixedMaterialAmount;
-        } else if(material instanceof MetalMaterial) {
-            smeltingMaterial = (MetalMaterial) material;
+        } else if(material instanceof IngotMaterial) {
+            smeltingMaterial = (IngotMaterial) material;
             smeltingNuggetsAmount = pureMaterialAmount;
         }
         if(smeltingMaterial != null && doesMaterialUseNormalFurnace(smeltingMaterial)) {
@@ -589,16 +589,14 @@ public class OreProcessingHandler {
         RecipeMaps.FORGE_HAMMER_RECIPES.recipeBuilder()
             .input(centrifugedPrefix, material)
             .outputs(dustStack)
-            .duration(20)
-            .EUt(16)
+            .duration(20).EUt(16)
             .buildAndRegister();
 
         RecipeMaps.MACERATOR_RECIPES.recipeBuilder()
             .input(centrifugedPrefix, material)
             .outputs(dustStack)
             .chancedOutput(byproductStack, 1000)
-            .duration(40)
-            .EUt(16)
+            .duration(40).EUt(16)
             .buildAndRegister();
 
         ModHandler.addShapelessRecipe(String.format("centrifuged_ore_to_dust_%s", material), dustStack,
@@ -814,7 +812,7 @@ public class OreProcessingHandler {
                 }
 
                 if (isSmall) {
-                    if (material instanceof MetalMaterial && !material.hasFlag(MatFlags.NO_SMASHING)) {
+                    if (material instanceof IngotMaterial && !material.hasFlag(MatFlags.NO_SMASHING)) {
                         ModHandler.addShapedRecipe(String.format("small_gear_%s", material),
                             stack,
                             "h ",
@@ -960,8 +958,8 @@ public class OreProcessingHandler {
     }
 
     private void processPolarizing(OrePrefix polarizingPrefix, Material materialIn) {
-        if (materialIn instanceof MetalMaterial) {
-            MetalMaterial material = (MetalMaterial) materialIn;
+        if (materialIn instanceof IngotMaterial) {
+            IngotMaterial material = (IngotMaterial) materialIn;
             ItemStack stack = OreDictUnifier.get(polarizingPrefix, materialIn);
 
             if (material.magneticMaterial != null) {
@@ -1034,17 +1032,18 @@ public class OreProcessingHandler {
         int amount = (int) (shapingPrefix.materialAmount / M);
         int voltageMultiplier;
 
-        if ((material instanceof MetalMaterial) && ((MetalMaterial) material).blastFurnaceTemperature >= 2800) {
-            voltageMultiplier = 64;
+        if ((material instanceof IngotMaterial) &&
+            ((IngotMaterial) material).blastFurnaceTemperature >= 2800) {
+            voltageMultiplier = 32;
         } else {
-            voltageMultiplier = 16;
+            voltageMultiplier = 8;
         }
 
         if (!(amount > 0 && amount <= 64 && shapingPrefix.materialAmount % M == 0L)) {
             return;
         }
 
-        if (material instanceof MetalMaterial && !material.hasFlag(NO_SMELTING)) {
+        if (material instanceof IngotMaterial && !material.hasFlag(NO_SMELTING)) {
 
             if (material.hasFlag(NO_SMASHING)) {
                 voltageMultiplier /= 4;
@@ -1052,7 +1051,7 @@ public class OreProcessingHandler {
                 return;
             }
 
-            MetalMaterial smeltInto = ((MetalMaterial) material).smeltInto;
+            IngotMaterial smeltInto = ((IngotMaterial) material).smeltInto;
             if (!OrePrefix.block.isIgnored(smeltInto)) {
                 RecipeMaps.EXTRUDER_RECIPES.recipeBuilder()
                     .input(shapingPrefix, material, 9)
@@ -1242,7 +1241,7 @@ public class OreProcessingHandler {
                     .duration((int) Math.max(material.getMass() * 5L, 1L))
                     .EUt(16)
                     .buildAndRegister();
-                if (material instanceof MetalMaterial) {
+                if (material instanceof IngotMaterial) {
                     RecipeMaps.EXTRUDER_RECIPES.recipeBuilder()
                         .notConsumable(MetaItems.SHAPE_EXTRUDER_ROD)
                         .input(OrePrefix.ingot, material)
@@ -1303,7 +1302,7 @@ public class OreProcessingHandler {
                         'L', MetaItems.BATTERY_RE_LV_LITHIUM.getStackForm());
             }
 
-            if (material instanceof SolidMaterial && material.hasFlag(MetalMaterial.MatFlags.GENERATE_BOLT_SCREW)) {
+            if (material instanceof SolidMaterial && material.hasFlag(IngotMaterial.MatFlags.GENERATE_BOLT_SCREW)) {
                 ItemStack boltStack = OreDictUnifier.get(OrePrefix.bolt, material);
                 RecipeMaps.CUTTER_RECIPES.recipeBuilder()
                     .input(stickPrefix, material)
@@ -1346,7 +1345,7 @@ public class OreProcessingHandler {
                 .buildAndRegister();
         }
 
-        if(material.hasFlag(MetalMaterial.MatFlags.GENERATE_FINE_WIRE)) {
+        if(material.hasFlag(IngotMaterial.MatFlags.GENERATE_FINE_WIRE)) {
             RecipeMaps.WIREMILL_RECIPES.recipeBuilder()
                 .input(OrePrefix.stick, material)
                 .outputs(OreDictUnifier.get(OrePrefix.wireFine, material, 4))
@@ -1517,7 +1516,7 @@ public class OreProcessingHandler {
             new UnificationEntry(toolPrefix, solidMaterial),
             new UnificationEntry(OrePrefix.stick, handleMaterial));
 
-        if (solidMaterial instanceof MetalMaterial && solidMaterial.hasFlag(GENERATE_PLATE)) {
+        if (solidMaterial instanceof IngotMaterial && solidMaterial.hasFlag(GENERATE_PLATE)) {
             addSimpleToolRecipe(toolPrefix, solidMaterial, toolItem,
                 new UnificationEntry(OrePrefix.plate, solidMaterial),
                 new UnificationEntry(OrePrefix.ingot, solidMaterial), recipe);
@@ -1610,7 +1609,7 @@ public class OreProcessingHandler {
         if(!(material instanceof SolidMaterial)) return;
         SolidMaterial solidMaterial = (SolidMaterial) material;
         processSimpleTool(toolPrefix, solidMaterial, MetaItems.HARD_HAMMER, "II ", "IIh", "II ");
-        if(solidMaterial instanceof MetalMaterial) {
+        if(solidMaterial instanceof IngotMaterial) {
             SolidMaterial handleMaterial = solidMaterial.handleMaterial == null ? Materials.Wood : solidMaterial.handleMaterial;
             ModHandler.addShapedRecipe(String.format("hammer_%s", solidMaterial.toString()),
                 MetaItems.HARD_HAMMER.getStackForm(solidMaterial, handleMaterial),
@@ -1624,7 +1623,7 @@ public class OreProcessingHandler {
         if(!(material instanceof SolidMaterial)) return;
         SolidMaterial solidMaterial = (SolidMaterial) material;
         processSimpleTool(toolPrefix, solidMaterial, MetaItems.HARD_HAMMER, " I ", " I ", "  h");
-        if(solidMaterial instanceof MetalMaterial) {
+        if(solidMaterial instanceof IngotMaterial) {
             SolidMaterial handleMaterial = solidMaterial.handleMaterial == null ? Materials.Wood : solidMaterial.handleMaterial;
             ModHandler.addMirroredShapedRecipe(String.format("file_%s", solidMaterial),
                 MetaItems.FILE.getStackForm(solidMaterial, handleMaterial),
@@ -1656,8 +1655,8 @@ public class OreProcessingHandler {
     }
 
     private void processWireSingle(OrePrefix wirePrefix, Material materialIn) {
-        if (!(materialIn instanceof MetalMaterial)) return;
-        MetalMaterial material = (MetalMaterial) materialIn;
+        if (!(materialIn instanceof IngotMaterial)) return;
+        IngotMaterial material = (IngotMaterial) materialIn;
         ItemStack stack = OreDictUnifier.get(wirePrefix, material);
 
         if (material.cableProperties != null && GTUtility.getTierByVoltage(material.cableProperties.voltage) == 1) {
@@ -1766,8 +1765,8 @@ public class OreProcessingHandler {
     }
 
     private void processWireDouble(OrePrefix wirePrefix, Material materialIn) {
-        if (!(materialIn instanceof MetalMaterial)) return;
-        MetalMaterial material = (MetalMaterial) materialIn;
+        if (!(materialIn instanceof IngotMaterial)) return;
+        IngotMaterial material = (IngotMaterial) materialIn;
 
         ItemStack stack = OreDictUnifier.get(wirePrefix, material);
 
@@ -1815,8 +1814,8 @@ public class OreProcessingHandler {
     }
 
     private void processWireQuadruple(OrePrefix wirePrefix, Material materialIn) {
-        if (!(materialIn instanceof MetalMaterial)) return;
-        MetalMaterial material = (MetalMaterial) materialIn;
+        if (!(materialIn instanceof IngotMaterial)) return;
+        IngotMaterial material = (IngotMaterial) materialIn;
         ItemStack stack = OreDictUnifier.get(wirePrefix, material);
 
         if (material.cableProperties != null && GTUtility.getTierByVoltage(material.cableProperties.voltage) == 1) {
@@ -1871,8 +1870,8 @@ public class OreProcessingHandler {
     }
 
     private void processWireOctal(OrePrefix wirePrefix, Material materialIn) {
-        if (!(materialIn instanceof MetalMaterial)) return;
-        MetalMaterial material = (MetalMaterial) materialIn;
+        if (!(materialIn instanceof IngotMaterial)) return;
+        IngotMaterial material = (IngotMaterial) materialIn;
         ItemStack stack = OreDictUnifier.get(wirePrefix, material);
 
         if (material.cableProperties != null && GTUtility.getTierByVoltage(material.cableProperties.voltage) == 1) {
@@ -1921,9 +1920,9 @@ public class OreProcessingHandler {
 
 
     private void processWireTwelve(OrePrefix wirePrefix, Material materialIn) {
-        if (!(materialIn instanceof MetalMaterial)) return;
+        if (!(materialIn instanceof IngotMaterial)) return;
 
-        MetalMaterial material = (MetalMaterial) materialIn;
+        IngotMaterial material = (IngotMaterial) materialIn;
         ItemStack stack = OreDictUnifier.get(wirePrefix, material);
         if (!stack.isEmpty()) {
             if (material.cableProperties != null && GTUtility.getTierByVoltage(material.cableProperties.voltage) == 1) {
@@ -1974,7 +1973,7 @@ public class OreProcessingHandler {
     }
 
     private void processWireHex(OrePrefix wirePrefix, Material materialIn) {
-        MetalMaterial material = (MetalMaterial) materialIn;
+        IngotMaterial material = (IngotMaterial) materialIn;
         ItemStack stack = OreDictUnifier.get(wirePrefix, material);
         if (!stack.isEmpty()) {
             if (material.cableProperties != null && GTUtility.getTierByVoltage(material.cableProperties.voltage) == 1) {
@@ -2034,7 +2033,7 @@ public class OreProcessingHandler {
         if(material.directSmelting != null) {
             smeltingMaterial = material.directSmelting;
         }
-        if(smeltingMaterial instanceof MetalMaterial) {
+        if(smeltingMaterial instanceof IngotMaterial) {
             ingotStack = OreDictUnifier.get(OrePrefix.ingot, smeltingMaterial);
         } else if(smeltingMaterial instanceof GemMaterial) {
             ingotStack = OreDictUnifier.get(OrePrefix.gem, smeltingMaterial);
@@ -2066,8 +2065,8 @@ public class OreProcessingHandler {
     }
 
     private static boolean doesMaterialUseNormalFurnace(Material material) {
-        return !(material instanceof MetalMaterial) ||
-            ((MetalMaterial) material).blastFurnaceTemperature <= 0;
+        return !(material instanceof IngotMaterial) ||
+            ((IngotMaterial) material).blastFurnaceTemperature <= 0;
     }
 
 }

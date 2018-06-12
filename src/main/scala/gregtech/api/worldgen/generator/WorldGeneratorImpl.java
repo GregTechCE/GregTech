@@ -1,6 +1,6 @@
 package gregtech.api.worldgen.generator;
 
-import gregtech.api.unification.material.type.MetalMaterial;
+import gregtech.api.unification.material.type.IngotMaterial;
 import gregtech.api.worldgen.config.OreDepositDefinition;
 import gregtech.common.ConfigHolder;
 import gregtech.common.blocks.BlockSurfaceRock;
@@ -51,7 +51,7 @@ public class WorldGeneratorImpl implements IWorldGenerator {
             return;
 
         for (OreDepositDefinition depositDefinition : generatedOres) {
-            MetalMaterial material = depositDefinition.getSurfaceStoneMaterial();
+            IngotMaterial material = depositDefinition.getSurfaceStoneMaterial();
             if (material == null) continue;
             int stonesCount = random.nextInt(2);
 

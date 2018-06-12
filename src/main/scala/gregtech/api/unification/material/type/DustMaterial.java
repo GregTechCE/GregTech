@@ -95,6 +95,12 @@ public class DustMaterial extends FluidMaterial {
      */
     public DustMaterial separatedOnto;
 
+    /**
+     * Burn time of this material when used as fuel in furnace smelting
+     * Zero or negative value indicates that this material cannot be used as fuel
+     */
+    public int burnTime = 0;
+
     public DustMaterial(int metaItemSubId, String name, int materialRGB, MaterialIconSet materialIconSet, int harvestLevel, ImmutableList<MaterialStack> materialComponents, long materialGenerationFlags, Element element) {
         super(metaItemSubId, name, materialRGB, materialIconSet, materialComponents, materialGenerationFlags, element);
         this.harvestLevel = harvestLevel;
@@ -139,6 +145,11 @@ public class DustMaterial extends FluidMaterial {
 
     public DustMaterial setByProductMultiplier(int byProductMultiplier) {
         this.byProductMultiplier = byProductMultiplier;
+        return this;
+    }
+
+    public DustMaterial setBurnTime(int burnTime) {
+        this.burnTime = burnTime;
         return this;
     }
 }

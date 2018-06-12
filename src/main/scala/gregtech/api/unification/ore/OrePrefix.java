@@ -21,7 +21,7 @@ import java.util.*;
 import static gregtech.api.GTValues.M;
 import static gregtech.api.unification.material.type.DustMaterial.MatFlags.*;
 import static gregtech.api.unification.material.type.GemMaterial.MatFlags.GENERATE_LENSE;
-import static gregtech.api.unification.material.type.MetalMaterial.MatFlags.*;
+import static gregtech.api.unification.material.type.IngotMaterial.MatFlags.*;
 import static gregtech.api.unification.material.type.SolidMaterial.MatFlags.*;
 import static gregtech.api.unification.ore.OrePrefix.Conditions.isToolMaterial;
 import static gregtech.api.unification.ore.OrePrefix.Flags.*;
@@ -63,8 +63,8 @@ public enum OrePrefix {
     cleanGravel("Clean Gravels", -1, null, null, ENABLE_UNIFICATION | DISALLOW_RECYCLING, null),
     dirtyGravel("Dirty Gravels", -1, null, null, ENABLE_UNIFICATION | DISALLOW_RECYCLING, null),
 
-    ingotHot("Hot Ingots", M, null, MaterialIconType.ingotHot, ENABLE_UNIFICATION | DISALLOW_RECYCLING, mat -> (mat instanceof MetalMaterial) && ((MetalMaterial) mat).blastFurnaceTemperature > 1750), // A hot Ingot, which has to be cooled down by a Vacuum Freezer.
-    ingot("Ingots", M, null, MaterialIconType.ingot, ENABLE_UNIFICATION | DISALLOW_RECYCLING, mat -> mat instanceof MetalMaterial), // A regular Ingot. Introduced by Eloraam
+    ingotHot("Hot Ingots", M, null, MaterialIconType.ingotHot, ENABLE_UNIFICATION | DISALLOW_RECYCLING, mat -> (mat instanceof IngotMaterial) && ((IngotMaterial) mat).blastFurnaceTemperature > 1750), // A hot Ingot, which has to be cooled down by a Vacuum Freezer.
+    ingot("Ingots", M, null, MaterialIconType.ingot, ENABLE_UNIFICATION | DISALLOW_RECYCLING, mat -> mat instanceof IngotMaterial), // A regular Ingot. Introduced by Eloraam
 
     gem("Gemstones", M, null, MaterialIconType.gem, ENABLE_UNIFICATION, mat -> mat instanceof GemMaterial), // A regular Gem worth one Dust. Introduced by Eloraam
     gemChipped("Chipped Gemstones", M / 4, null, MaterialIconType.gemChipped, ENABLE_UNIFICATION, mat -> mat instanceof GemMaterial && gem.doGenerateItem(mat)), // A regular Gem worth one small Dust. Introduced by TerraFirmaCraft
@@ -79,12 +79,12 @@ public enum OrePrefix {
     dustPure("Purified Dusts", M, null, MaterialIconType.dustPure, ENABLE_UNIFICATION | DISALLOW_RECYCLING, mat -> mat instanceof DustMaterial && mat.hasFlag(GENERATE_ORE)),
     dust("Dusts", M, null, MaterialIconType.dust, ENABLE_UNIFICATION | DISALLOW_RECYCLING, mat -> mat instanceof DustMaterial), // Pure Dust worth of one Ingot or Gem. Introduced by Alblaka.
 
-    nugget("Nuggets", M / 9, null, MaterialIconType.nugget, ENABLE_UNIFICATION | DISALLOW_RECYCLING, mat -> mat instanceof MetalMaterial), // A Nugget. Introduced by Eloraam
+    nugget("Nuggets", M / 9, null, MaterialIconType.nugget, ENABLE_UNIFICATION | DISALLOW_RECYCLING, mat -> mat instanceof IngotMaterial), // A Nugget. Introduced by Eloraam
 
     plateDense("Dense Plates", M * 9, null, MaterialIconType.plateDense, ENABLE_UNIFICATION, and(mat -> mat instanceof DustMaterial, hasFlag(GENERATE_PLATE | GENERATE_DENSE), noFlag(NO_SMASHING))), // 9 Plates combined in one Item.
     plate("Plates", M, null, MaterialIconType.plate, ENABLE_UNIFICATION, mat -> mat instanceof DustMaterial && mat.hasFlag(GENERATE_PLATE)), // Regular Plate made of one Ingot/Dust. Introduced by Calclavia
 
-    foil("Foils", M / 4, null, MaterialIconType.foil, ENABLE_UNIFICATION, mat -> mat instanceof MetalMaterial && mat.hasFlag(GENERATE_FOIL)), // Foil made of 1/4 Ingot/Dust.
+    foil("Foils", M / 4, null, MaterialIconType.foil, ENABLE_UNIFICATION, mat -> mat instanceof IngotMaterial && mat.hasFlag(GENERATE_FOIL)), // Foil made of 1/4 Ingot/Dust.
 
     stickLong("Long Sticks/Rods", M, null, MaterialIconType.stickLong, ENABLE_UNIFICATION, mat -> mat instanceof SolidMaterial && mat.hasFlag(GENERATE_LONG_ROD)), // Stick made of an Ingot.
     stick("Sticks/Rods", M / 2, null, MaterialIconType.stick, ENABLE_UNIFICATION, mat -> mat instanceof SolidMaterial && mat.hasFlag(GENERATE_ROD)), // Stick made of half an Ingot. Introduced by Eloraam
@@ -93,19 +93,19 @@ public enum OrePrefix {
 
     comb("Combs", M, null, null, DISALLOW_RECYCLING, null), // contain dusts
 
-    screw("Screws", M / 9, null, MaterialIconType.screw, ENABLE_UNIFICATION, mat -> mat instanceof MetalMaterial && mat.hasFlag(GENERATE_BOLT_SCREW)), // consisting out of a Bolt.
+    screw("Screws", M / 9, null, MaterialIconType.screw, ENABLE_UNIFICATION, mat -> mat instanceof IngotMaterial && mat.hasFlag(GENERATE_BOLT_SCREW)), // consisting out of a Bolt.
 
     ring("Rings", M / 4, null, MaterialIconType.ring, ENABLE_UNIFICATION, mat -> mat instanceof SolidMaterial && mat.hasFlag(GENERATE_RING)), // consisting out of 1/2 Stick.
 
-    springSmall("Small Springs", M / 4, null, MaterialIconType.springSmall, ENABLE_UNIFICATION, and(mat -> mat instanceof MetalMaterial, hasFlag(GENERATE_SPRING_SMALL), noFlag(NO_SMASHING))), // consisting out of 1 Fine Wire.
+    springSmall("Small Springs", M / 4, null, MaterialIconType.springSmall, ENABLE_UNIFICATION, and(mat -> mat instanceof IngotMaterial, hasFlag(GENERATE_SPRING_SMALL), noFlag(NO_SMASHING))), // consisting out of 1 Fine Wire.
 
-    spring("Springs", M, null, MaterialIconType.spring, ENABLE_UNIFICATION, and(mat -> mat instanceof MetalMaterial, hasFlag(GENERATE_SPRING), noFlag(NO_SMASHING))), // consisting out of 2 Sticks.
+    spring("Springs", M, null, MaterialIconType.spring, ENABLE_UNIFICATION, and(mat -> mat instanceof IngotMaterial, hasFlag(GENERATE_SPRING), noFlag(NO_SMASHING))), // consisting out of 2 Sticks.
 
-    wireFine("Fine Wires", M / 8, null, MaterialIconType.wireFine, ENABLE_UNIFICATION, mat -> mat instanceof MetalMaterial && mat.hasFlag(GENERATE_FINE_WIRE)), // consisting out of 1/8 Ingot or 1/4 Wire.
+    wireFine("Fine Wires", M / 8, null, MaterialIconType.wireFine, ENABLE_UNIFICATION, mat -> mat instanceof IngotMaterial && mat.hasFlag(GENERATE_FINE_WIRE)), // consisting out of 1/8 Ingot or 1/4 Wire.
 
-    rotor("Rotors", M * 4 + M / 4, null, MaterialIconType.rotor, ENABLE_UNIFICATION, mat -> mat instanceof MetalMaterial && mat.hasFlag(GENERATE_ROTOR)), // consisting out of 4 Plates, 1 Ring and 1 Screw.
+    rotor("Rotors", M * 4 + M / 4, null, MaterialIconType.rotor, ENABLE_UNIFICATION, mat -> mat instanceof IngotMaterial && mat.hasFlag(GENERATE_ROTOR)), // consisting out of 4 Plates, 1 Ring and 1 Screw.
 
-    gearSmall("Small Gears", M, null, MaterialIconType.gearSmall, ENABLE_UNIFICATION, mat -> mat instanceof MetalMaterial && mat.hasFlag(GENERATE_SMALL_GEAR)),
+    gearSmall("Small Gears", M, null, MaterialIconType.gearSmall, ENABLE_UNIFICATION, mat -> mat instanceof IngotMaterial && mat.hasFlag(GENERATE_SMALL_GEAR)),
     gear("Gears", M * 4, null, MaterialIconType.gear, ENABLE_UNIFICATION, mat -> mat instanceof SolidMaterial && mat.hasFlag(GENERATE_GEAR)), // Introduced by me because BuildCraft has ruined the gear Prefix...
 
     lens("Lenses", (M * 3) / 4, null, MaterialIconType.lens, ENABLE_UNIFICATION, mat -> mat instanceof GemMaterial && mat.hasFlag(GENERATE_LENSE)), // 3/4 of a Plate or Gem used to shape a Lense. Normally only used on Transparent Materials.

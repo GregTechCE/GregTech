@@ -7,7 +7,7 @@ import gregtech.api.gui.Widget;
 import gregtech.api.gui.widgets.SlotWidget;
 import gregtech.api.gui.widgets.TankWidget;
 import gregtech.api.recipes.RecipeMap;
-import mezz.jei.Internal;
+import mezz.jei.api.IGuiHelper;
 import mezz.jei.api.gui.IDrawable;
 import mezz.jei.api.gui.IGuiFluidStackGroup;
 import mezz.jei.api.gui.IGuiItemStackGroup;
@@ -29,7 +29,7 @@ public class RecipeMapCategory implements IRecipeCategory<GTRecipeWrapper> {
     private FluidTankList importFluids, exportFluids;
     private final IDrawable backgroundDrawable;
 
-    public RecipeMapCategory(RecipeMap<?> recipeMap) {
+    public RecipeMapCategory(RecipeMap<?> recipeMap, IGuiHelper guiHelper) {
         this.recipeMap = recipeMap;
         FluidTank[] importFluidTanks = new FluidTank[recipeMap.getMaxFluidInputs()];
         for(int i = 0; i < importFluidTanks.length; i++)
@@ -45,12 +45,12 @@ public class RecipeMapCategory implements IRecipeCategory<GTRecipeWrapper> {
             ).build(() -> {}, Minecraft.getMinecraft().player);
         this.modularUI.isJEIHandled = true;
         this.modularUI.initWidgets();
-        this.backgroundDrawable = Internal.getHelpers().getGuiHelper().createBlankDrawable(modularUI.width, modularUI.height);
+        this.backgroundDrawable = guiHelper.createBlankDrawable(modularUI.width, modularUI.height * 2 / 3);
     }
 
     @Override
     public String getUid() {
-        return recipeMap.unlocalizedName;
+        return GTValues.MODID + ":" + recipeMap.unlocalizedName;
     }
 
     @Override

@@ -1,5 +1,6 @@
 package gregtech.integration.jei;
 
+import gregtech.api.GTValues;
 import gregtech.api.GregTechAPI;
 import gregtech.api.capability.IWorkable;
 import gregtech.api.capability.impl.RecipeMapWorkableHandler;
@@ -30,7 +31,7 @@ public class GTJeiPlugin implements IModPlugin {
     @Override
     public void registerCategories(IRecipeCategoryRegistration registry) {
         for(RecipeMap<?> recipeMap : RecipeMap.RECIPE_MAPS) {
-            registry.addRecipeCategories(new RecipeMapCategory(recipeMap));
+            registry.addRecipeCategories(new RecipeMapCategory(recipeMap, registry.getJeiHelpers().getGuiHelper()));
         }
     }
 
@@ -41,7 +42,7 @@ public class GTJeiPlugin implements IModPlugin {
                 .stream().filter(recipe -> !recipe.isHidden())
                 .map(r -> new GTRecipeWrapper(recipeMap, r))
                 .collect(Collectors.toList());
-            registry.addRecipes(recipesList, recipeMap.unlocalizedName);
+            registry.addRecipes(recipesList, GTValues.MODID + ":" + recipeMap.unlocalizedName);
         }
         for(String metaTileEntityId : GregTechAPI.META_TILE_ENTITY_REGISTRY.getKeys()) {
             MetaTileEntity metaTileEntity = GregTechAPI.META_TILE_ENTITY_REGISTRY.getObject(metaTileEntityId);
@@ -49,7 +50,7 @@ public class GTJeiPlugin implements IModPlugin {
                 IWorkable workableCapability = metaTileEntity.getCapability(IWorkable.CAPABILITY_WORKABLE, null);
                 if(workableCapability instanceof RecipeMapWorkableHandler) {
                     RecipeMap<?> recipeMap = ((RecipeMapWorkableHandler) workableCapability).recipeMap;
-                    registry.addRecipeCatalyst(metaTileEntity.getStackForm(1), recipeMap.unlocalizedName);
+                    registry.addRecipeCatalyst(metaTileEntity.getStackForm(1), GTValues.MODID + ":" + recipeMap.unlocalizedName);
                 }
             }
         }

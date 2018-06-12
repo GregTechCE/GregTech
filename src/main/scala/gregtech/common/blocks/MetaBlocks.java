@@ -11,7 +11,7 @@ import gregtech.api.unification.material.Materials;
 import gregtech.api.unification.material.type.DustMaterial;
 import gregtech.api.unification.material.type.DustMaterial.MatFlags;
 import gregtech.api.unification.material.type.Material;
-import gregtech.api.unification.material.type.MetalMaterial;
+import gregtech.api.unification.material.type.IngotMaterial;
 import gregtech.api.unification.material.type.SolidMaterial;
 import gregtech.api.unification.ore.OrePrefix;
 import gregtech.api.unification.ore.StoneType;
@@ -70,7 +70,7 @@ public class MetaBlocks {
 
     public static Map<Material, BlockCable> CABLES = new HashMap<>();
     public static HashMap<DustMaterial, BlockCompressed> COMPRESSED = new HashMap<>();
-    public static HashMap<MetalMaterial, BlockSurfaceRock> SURFACE_ROCKS = new HashMap<>();
+    public static HashMap<IngotMaterial, BlockSurfaceRock> SURFACE_ROCKS = new HashMap<>();
     public static HashMap<SolidMaterial, BlockFrame> FRAMES = new HashMap<>();
     public static Collection<BlockOre> ORES = new HashSet<>();
     public static Collection<BlockFluidBase> FLUID_BLOCKS = new HashSet<>();
@@ -111,9 +111,9 @@ public class MetaBlocks {
 
         createGeneratedBlock(material -> material instanceof DustMaterial &&
             !OrePrefix.block.isIgnored(material), MetaBlocks::createCompressedBlock);
-        createGeneratedBlock(material -> material instanceof MetalMaterial &&
+        createGeneratedBlock(material -> material instanceof IngotMaterial &&
             !OrePrefix.frameGt.isIgnored(material), MetaBlocks::createFrameBlock);
-        createGeneratedBlock(material -> material instanceof MetalMaterial &&
+        createGeneratedBlock(material -> material instanceof IngotMaterial &&
             material.hasFlag(MatFlags.GENERATE_ORE), MetaBlocks::createSurfaceRockBlock);
 
         for (Material material : Material.MATERIAL_REGISTRY.getObjectsWithIds()) {
@@ -121,14 +121,14 @@ public class MetaBlocks {
                 material.hasFlag(DustMaterial.MatFlags.GENERATE_ORE)) {
                 createOreBlock((DustMaterial) material);
             }
-            if(material instanceof MetalMaterial) {
-                MetalMaterial metalMaterial = (MetalMaterial) material;
+            if(material instanceof IngotMaterial) {
+                IngotMaterial metalMaterial = (IngotMaterial) material;
                 if(metalMaterial.cableProperties != null) {
                     createCableBlock(metalMaterial);
                 }
             }
         }
-        createCableBlock(MarkerMaterials.Tier.Superconductor, new WireProperties(Integer.MAX_VALUE, 4, 1));
+        createCableBlock(MarkerMaterials.Tier.Superconductor, new WireProperties(Integer.MAX_VALUE, 4, 0));
     }
 
     private static void createGeneratedBlock(Predicate<Material> materialPredicate, BiConsumer<Material[], Integer> blockGenerator) {
@@ -150,7 +150,7 @@ public class MetaBlocks {
         }
     }
 
-    private static void createCableBlock(MetalMaterial material) {
+    private static void createCableBlock(IngotMaterial material) {
         createCableBlock(material, material.cableProperties);
     }
 
@@ -165,7 +165,7 @@ public class MetaBlocks {
         block.setRegistryName("surface_rock_" + index);
         for (Material material : materials) {
             if (material instanceof DustMaterial) {
-                SURFACE_ROCKS.put((MetalMaterial) material, block);
+                SURFACE_ROCKS.put((IngotMaterial) material, block);
             }
         }
     }

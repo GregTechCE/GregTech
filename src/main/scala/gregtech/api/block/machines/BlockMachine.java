@@ -62,6 +62,7 @@ public class BlockMachine extends Block implements ITileEntityProvider {
         setResistance(6.0f);
         setUnlocalizedName("unnamed");
         setHarvestLevel("wrench", 1);
+        setLightOpacity(255); //because isOpaqueCube() returns false
     }
 
     @Nullable

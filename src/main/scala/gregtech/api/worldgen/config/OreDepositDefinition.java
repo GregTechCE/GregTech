@@ -2,7 +2,7 @@ package gregtech.api.worldgen.config;
 
 import com.google.gson.JsonObject;
 import gregtech.api.unification.material.type.DustMaterial.MatFlags;
-import gregtech.api.unification.material.type.MetalMaterial;
+import gregtech.api.unification.material.type.IngotMaterial;
 import gregtech.api.unification.ore.StoneType;
 import gregtech.api.unification.ore.StoneTypes;
 import gregtech.api.worldgen.filler.IBlockFiller;
@@ -26,7 +26,7 @@ public class OreDepositDefinition {
     private int weight;
     private float density;
     private int[] heightLimit = new int[] {Integer.MIN_VALUE, Integer.MAX_VALUE};
-    private MetalMaterial surfaceStoneMaterial;
+    private IngotMaterial surfaceStoneMaterial;
 
     private Function<Biome, Integer> biomeWeightModifier = NO_BIOME_INFLUENCE;
     private Predicate<WorldProvider> dimensionFilter = PREDICATE_SURFACE_WORLD;
@@ -61,7 +61,7 @@ public class OreDepositDefinition {
             this.generationPredicate = OreConfigUtils.createBlockStatePredicate(configRoot.get("generation_predicate"));
         }
         if(configRoot.has("surface_stone_material")) {
-            this.surfaceStoneMaterial = (MetalMaterial) OreConfigUtils.getMaterialByName(configRoot.get("surface_stone_material").getAsString());
+            this.surfaceStoneMaterial = (IngotMaterial) OreConfigUtils.getMaterialByName(configRoot.get("surface_stone_material").getAsString());
             if(!surfaceStoneMaterial.hasFlag(MatFlags.GENERATE_ORE)) {
                 throw new IllegalArgumentException("Material " + surfaceStoneMaterial + " doesn't have surface rock variant");
             }
@@ -86,7 +86,7 @@ public class OreDepositDefinition {
         return density;
     }
 
-    public MetalMaterial getSurfaceStoneMaterial() {
+    public IngotMaterial getSurfaceStoneMaterial() {
         return surfaceStoneMaterial;
     }
 

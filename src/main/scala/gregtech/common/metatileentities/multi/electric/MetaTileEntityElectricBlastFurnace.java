@@ -65,7 +65,7 @@ public class MetaTileEntityElectricBlastFurnace extends RecipeMapMultiblockContr
 
     @Override
     public boolean checkRecipe(Recipe recipe, boolean consumeIfSuccess) {
-        int recipeRequiredTemp = recipe.getIntegerProperty("blastFurnaceTemp");
+        int recipeRequiredTemp = recipe.getIntegerProperty("blast_furnace_temperature");
         return this.blastFurnaceTemperature >= recipeRequiredTemp;
     }
 

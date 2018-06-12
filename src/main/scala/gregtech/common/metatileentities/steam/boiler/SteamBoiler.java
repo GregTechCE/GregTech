@@ -36,7 +36,6 @@ import java.util.List;
 public abstract class SteamBoiler extends MetaTileEntity {
 
     private static final EnumFacing[] STEAM_PUSH_DIRECTIONS = ArrayUtils.add(EnumFacing.HORIZONTALS, EnumFacing.UP);
-    //public static final int DEFAULT_TEMPERATURE = 20;
     public static final int BOILING_CYCLE_LENGTH = 25;
     public static final int HIGH_PRESSURE_BOILING_CYCLE_LENGTH = 10;
 
@@ -147,8 +146,6 @@ public abstract class SteamBoiler extends MetaTileEntity {
     @Override
     public void update() {
         super.update();
-        //if(currentTemperature < DEFAULT_TEMPERATURE)
-        //    currentTemperature = DEFAULT_TEMPERATURE;
         if(fuelMaxBurnTime > 0) {
             if(getTimer() % 12 == 0) {
                 if(fuelBurnTimeLeft % 2 == 0 && currentTemperature < getMaxTemperate())
