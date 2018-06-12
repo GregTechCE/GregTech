@@ -6,12 +6,10 @@ import net.minecraft.item.EnumDyeColor;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockPos.MutableBlockPos;
-import net.minecraft.util.math.Vec3i;
 import net.minecraft.world.World;
 
-import java.util.EnumMap;
-import java.util.Random;
-import java.util.function.Predicate;
+import java.util.*;
+import java.util.function.*;
 
 public class BlockPattern {
 
@@ -22,11 +20,14 @@ public class BlockPattern {
     private final int fingerLength; //z size
     private final int thumbLength; //y size
     private final int palmLength; //x size
+    private final RelativeDirection[] structureDir;
+    private final int[][] aisleRepetitions;
 
     private static final EnumFacing[] ALLOWED_FACINGS = EnumFacing.HORIZONTALS;
-    private final EnumMap<EnumFacing, Vec3i> centerOffset = new EnumMap<>(EnumFacing.class);
+    // x, y, z, minZ, maxZ
+    private int[] centerOffset = null;
 
-    public BlockPattern(Predicate<BlockWorldState>[][][] predicatesIn) {
+    public BlockPattern(Predicate<BlockWorldState>[][][] predicatesIn, RelativeDirection[] structureDir, int[][] aisleRepetitions) {
         this.blockMatches = predicatesIn;
         this.fingerLength = predicatesIn.length;
 
@@ -42,30 +43,26 @@ public class BlockPattern {
             this.thumbLength = 0;
             this.palmLength = 0;
         }
+        this.structureDir = structureDir;
+        this.aisleRepetitions = aisleRepetitions;
+
         initializeCenterOffsets();
     }
 
     private void initializeCenterOffsets() {
-        Vec3i center = null;
         loop: for (int x = 0; x < this.palmLength; x++) {
             for (int y = 0; y < this.thumbLength; y++) {
-                for (int z = 0; z < this.fingerLength; z++) {
+                for (int z = 0, minZ = 0, maxZ = 0; z < this.fingerLength; minZ += aisleRepetitions[z][0], maxZ += aisleRepetitions[z][1], z++) {
                     Predicate<BlockWorldState> predicate = this.blockMatches[z][y][x];
                     if(predicate instanceof IPatternCenterPredicate) {
-                        center = new Vec3i(x, y, z);
+                        centerOffset = new int[]{x, y, z, minZ, maxZ};
                         break loop;
                     }
                 }
             }
         }
-        if(center == null) {
+        if(centerOffset == null) {
             throw new IllegalArgumentException("Didn't found center predicate");
-        }
-        MutableBlockPos blockPos = new MutableBlockPos();
-        for(EnumFacing facing : ALLOWED_FACINGS) {
-            blockPos.setPos(center);
-            rotate(blockPos, facing, palmLength - 1, fingerLength - 1);
-            centerOffset.put(facing, blockPos.toImmutable());
         }
     }
 
@@ -82,39 +79,96 @@ public class BlockPattern {
     }
 
     public PatternMatchContext checkPatternAt(World world, BlockPos centerPos, EnumFacing facing) {
-        Vec3i cornerOffset = centerPos.subtract(centerOffset.get(facing));
         BlockWorldState worldState = new BlockWorldState();
         MutableBlockPos blockPos = new MutableBlockPos();
         PatternMatchContext matchContext = new PatternMatchContext();
-        for (int x = 0; x < this.palmLength; x++) {
-            for (int y = 0; y < this.thumbLength; y++) {
-                for (int z = 0; z < this.fingerLength; z++) {
-                    Predicate<BlockWorldState> predicate = this.blockMatches[z][y][x];
-                    blockPos.setPos(x, y, z);
-                    rotate(blockPos, facing, palmLength - 1, fingerLength - 1);
-                    blockPos.setPos(blockPos.getX() + cornerOffset.getX(), blockPos.getY() + cornerOffset.getY(), blockPos.getZ() + cornerOffset.getZ());
-                    if(DEBUG_STRUCTURES) {
-                        EnumDyeColor dyeColor = EnumDyeColor.values()[new Random(predicate.hashCode()).nextInt(15)];
-                        world.setBlockState(blockPos, Blocks.WOOL.getDefaultState().withProperty(BlockColored.COLOR, dyeColor));
-                    } else {
-                        worldState.update(world, blockPos, matchContext);
-                        if (!predicate.test(worldState)) {
-                            return null;
+        boolean findFirstAisle = false;
+        int minZ = -centerOffset[4];
+        for (int c = 0, z = minZ++, r; c < this.fingerLength; c++) {
+
+            loop:for (r = 0; (findFirstAisle ? r < aisleRepetitions[c][1] : z <= -centerOffset[3]); r++) {//Checking repeatable slices
+
+                for (int b = 0, y = -centerOffset[1]; b < this.thumbLength; b++, y++) {//Checking single slice
+                    for (int a = 0, x = -centerOffset[0]; a < this.palmLength; a++, x++) {
+                        Predicate<BlockWorldState> predicate = this.blockMatches[c][b][a];
+                        setActurallRelativeOffset(blockPos, x, y, z, facing);
+                        blockPos.setPos(blockPos.getX() + centerPos.getX(), blockPos.getY() + centerPos.getY(), blockPos.getZ() + centerPos.getZ());
+                        if(DEBUG_STRUCTURES) {
+                            EnumDyeColor dyeColor = EnumDyeColor.values()[new Random(predicate.hashCode()).nextInt(15)];
+                            world.setBlockState(blockPos, Blocks.WOOL.getDefaultState().withProperty(BlockColored.COLOR, dyeColor));
+                        } else {
+                            worldState.update(world, blockPos, matchContext);
+                            if (!predicate.test(worldState)) {
+                                if (findFirstAisle) {
+                                    if (r < aisleRepetitions[c][0]) {//retreat to see if the first aisle can start later
+                                        r = c = 0;
+                                        z = minZ++;
+                                        matchContext.reset();
+                                        findFirstAisle = false;
+                                    }
+                                } else {
+                                    z++;//continue searching for the first aisle
+                                }
+                                continue loop;
+                            }
                         }
                     }
                 }
+                findFirstAisle = true;
+                z++;
+
+            }
+
+            if (r < aisleRepetitions[c][0]) {//Repetitions out of range
+                return null;
             }
         }
         return matchContext;
     }
 
-    private static MutableBlockPos rotate(MutableBlockPos pos, EnumFacing facing, int xSize, int zSize) {
-        switch (facing) {
-            case NORTH: return pos;
-            case SOUTH: return pos.setPos(xSize - pos.getX(), pos.getY(), zSize - pos.getZ());
-            case WEST: return pos.setPos(pos.getZ(), pos.getY(), xSize - pos.getX());
-            case EAST: return pos.setPos(zSize - pos.getZ(), pos.getY(), pos.getX());
-            default: throw new IllegalArgumentException("Can rotate only horizontally");
+    private MutableBlockPos setActurallRelativeOffset(MutableBlockPos pos, int x, int y, int z, EnumFacing facing) {
+        boolean available = false;
+        for (EnumFacing s : ALLOWED_FACINGS) {
+            if (s == facing) {
+                available = true;
+                break;
+            }
+        }
+        if (!available) throw new IllegalArgumentException("Can rotate only horizontally");
+
+        int[] c0 = new int[]{x, y, z}, c1 = new int[3];
+        for (int i = 0; i < 3; i++) {
+            switch (structureDir[i].getActualFacing(facing)) {
+                case UP: c1[1] = c0[i]; break;
+                case DOWN: c1[1] = -c0[i]; break;
+                case WEST: c1[0] = -c0[i]; break;
+                case EAST: c1[0] = c0[i]; break;
+                case NORTH: c1[2] = -c0[i]; break;
+                case SOUTH: c1[2] = c0[i]; break;
+            }
+        }
+        return pos.setPos(c1[0], c1[1], c1[2]);
+    }
+
+    /**
+     * Relative direction when facing horizontally
+     */
+    public enum RelativeDirection {
+        UP(f -> EnumFacing.UP),
+        DOWN(f -> EnumFacing.DOWN),
+        LEFT(EnumFacing::rotateYCCW),
+        RIGHT(EnumFacing::rotateY),
+        FRONT(Function.identity()),
+        BACK(EnumFacing::getOpposite);
+
+        Function<EnumFacing, EnumFacing> actualFacing;
+
+        RelativeDirection(Function<EnumFacing, EnumFacing> actualFacing) {
+            this.actualFacing = actualFacing;
+        }
+
+        public EnumFacing getActualFacing(EnumFacing facing) {
+            return actualFacing.apply(facing);
         }
     }
 

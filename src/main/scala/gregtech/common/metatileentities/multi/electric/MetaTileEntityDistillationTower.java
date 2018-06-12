@@ -19,6 +19,8 @@ import net.minecraftforge.fluids.FluidStack;
 
 import java.util.List;
 
+import static gregtech.api.multiblock.BlockPattern.RelativeDirection.*;
+
 public class MetaTileEntityDistillationTower extends RecipeMapMultiblockController {
 
     public MetaTileEntityDistillationTower(String metaTileEntityId) {
@@ -44,10 +46,10 @@ public class MetaTileEntityDistillationTower extends RecipeMapMultiblockControll
 
     @Override
     protected BlockPattern createStructurePattern() {
-        return FactoryBlockPattern.start()
-            .aisle("YYY", "XXX", "XXX", "XXX", "XXX", "XXX")
-            .aisle("YZY", "X#X", "X#X", "X#X", "X#X", "XXX")
-            .aisle("YSY", "XXX", "XXX", "XXX", "XXX", "XXX")
+        return FactoryBlockPattern.start(RIGHT, FRONT, UP)
+            .aisle("YSY", "YZY", "YYY")
+            .aisle("XXX", "X#X", "XXX").setRepeatable(4)
+            .aisle("XXX", "XXX", "XXX")
             .where('S', selfPredicate())
             .where('Z', abilityPartPredicate(MultiblockAbility.IMPORT_FLUIDS))
             .where('Y', statePredicate(getCasingState()).or(abilityPartPredicate(MultiblockAbility.EXPORT_ITEMS, MultiblockAbility.INPUT_ENERGY)))
