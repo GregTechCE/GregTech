@@ -1509,7 +1509,7 @@ public class OreProcessingHandler {
         processSimpleElectricTool(toolPrefix, solidMaterial, new MetaToolValueItem[] {MetaItems.SCREWDRIVER_LV});
         ModHandler.addShapedRecipe(String.format("screwdriver_head_%s", solidMaterial.toString()),
             OreDictUnifier.get(OrePrefix.toolHeadScrewdriver, solidMaterial),
-            " fX", " Xh",
+            "fX", "Xh",
             'X', new UnificationEntry(OrePrefix.stick, solidMaterial));
     }
 
@@ -1579,13 +1579,13 @@ public class OreProcessingHandler {
     private void processPlowHead(OrePrefix toolPrefix, Material material) {
         if(!(material instanceof SolidMaterial)) return;
         SolidMaterial solidMaterial = (SolidMaterial) material;
-        processSimpleTool(toolPrefix, solidMaterial, MetaItems.PLOW, "PP ", "PP ", "hf ");
+        processSimpleTool(toolPrefix, solidMaterial, MetaItems.PLOW, "PP", "PP", "hf");
     }
 
     private void processSawHead(OrePrefix toolPrefix, Material material) {
         if(!(material instanceof SolidMaterial)) return;
         SolidMaterial solidMaterial = (SolidMaterial) material;
-        processSimpleTool(toolPrefix, solidMaterial, MetaItems.SAW, "PP ", "fh ");
+        processSimpleTool(toolPrefix, solidMaterial, MetaItems.SAW, "PP", "fh");
     }
 
     private void processSenseHead(OrePrefix toolPrefix, Material material) {
@@ -1657,7 +1657,7 @@ public class OreProcessingHandler {
             SolidMaterial handleMaterial = solidMaterial.handleMaterial == null ? Materials.Wood : solidMaterial.handleMaterial;
             ModHandler.addMirroredShapedRecipe(String.format("file_%s", solidMaterial),
                 MetaItems.FILE.getStackForm(solidMaterial, handleMaterial),
-                "P  ", "P  ", "S  ",
+                "P", "P", "S",
                 'P', new UnificationEntry(OrePrefix.plate, solidMaterial),
                 'S', new UnificationEntry(OrePrefix.stick, handleMaterial));
         }
@@ -1947,7 +1947,6 @@ public class OreProcessingHandler {
             OreDictUnifier.get(OrePrefix.wireGtQuadruple, material),
             OreDictUnifier.get(OrePrefix.wireGtQuadruple, material));
     }
-
 
     private void processWireTwelve(OrePrefix wirePrefix, Material materialIn) {
         if (!(materialIn instanceof IngotMaterial)) return;
