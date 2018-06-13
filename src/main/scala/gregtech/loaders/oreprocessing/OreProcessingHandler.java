@@ -1655,7 +1655,7 @@ public class OreProcessingHandler {
         processSimpleTool(toolPrefix, solidMaterial, MetaItems.HARD_HAMMER, " I ", " I ", "  h");
         if(solidMaterial instanceof IngotMaterial) {
             SolidMaterial handleMaterial = solidMaterial.handleMaterial == null ? Materials.Wood : solidMaterial.handleMaterial;
-            ModHandler.addMirroredShapedRecipe(String.format("file_%s", solidMaterial),
+            ModHandler.addShapedRecipe(String.format("file_%s", solidMaterial),
                 MetaItems.FILE.getStackForm(solidMaterial, handleMaterial),
                 "P", "P", "S",
                 'P', new UnificationEntry(OrePrefix.plate, solidMaterial),
