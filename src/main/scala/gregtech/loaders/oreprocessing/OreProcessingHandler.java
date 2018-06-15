@@ -24,8 +24,6 @@ import net.minecraft.init.Items;
 import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.oredict.OreDictionary;
-
 import org.apache.commons.lang3.ArrayUtils;
 
 import java.util.ArrayList;
@@ -1366,7 +1364,7 @@ public class OreProcessingHandler {
         if (material instanceof SolidMaterial) {
             SolidMaterial solidMaterial = (SolidMaterial) material;
             ModHandler.addShapedRecipe(String.format("jack_hammer_lithium_%s", solidMaterial.toString()),
-                MetaItems.JACKHAMMER.getStackForm(solidMaterial, Materials.Titanium), // new long[]{1600000L, 512L, 3L, -1L}),
+                MetaItems.JACKHAMMER.getStackForm(solidMaterial, null), // new long[]{1600000L, 512L, 3L, -1L}),
                 "SXd", "PRP", "MPB",
                 'X', new UnificationEntry(OrePrefix.stickLong, solidMaterial),
                 'M', MetaItems.ELECTRIC_PISTON_HV.getStackForm(),
