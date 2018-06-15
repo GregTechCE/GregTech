@@ -95,7 +95,6 @@ public class MetaTileEntities {
     public static SimpleMachineMetaTileEntity[] PLASMA_ARC_FURNACE = new SimpleMachineMetaTileEntity[4];
     public static SimpleMachineMetaTileEntity[] POLARIZER = new SimpleMachineMetaTileEntity[4];
     public static SimpleMachineMetaTileEntity[] LASER_ENGRAVER = new SimpleMachineMetaTileEntity[4];
-    public static SimpleMachineMetaTileEntity[] PRINTER = new SimpleMachineMetaTileEntity[4];
     public static SimpleMachineMetaTileEntity[] SIFTER = new SimpleMachineMetaTileEntity[4];
     public static SimpleMachineMetaTileEntity[] THERMAL_CENTRIFUGE = new SimpleMachineMetaTileEntity[4];
     public static SimpleMachineMetaTileEntity[] WIREMILL = new SimpleMachineMetaTileEntity[4];
@@ -364,11 +363,6 @@ public class MetaTileEntities {
         LASER_ENGRAVER[1] = GregTechAPI.registerMetaTileEntity(431, new SimpleMachineMetaTileEntity("laser_engraver.mv", RecipeMaps.LASER_ENGRAVER_RECIPES, Textures.LASER_ENGRAVER_OVERLAY, 2));
         LASER_ENGRAVER[2] = GregTechAPI.registerMetaTileEntity(432, new SimpleMachineMetaTileEntity("laser_engraver.hv", RecipeMaps.LASER_ENGRAVER_RECIPES, Textures.LASER_ENGRAVER_OVERLAY, 3));
         LASER_ENGRAVER[3] = GregTechAPI.registerMetaTileEntity(433, new SimpleMachineMetaTileEntity("laser_engraver.ev", RecipeMaps.LASER_ENGRAVER_RECIPES, Textures.LASER_ENGRAVER_OVERLAY, 4));
-
-        PRINTER[0] = GregTechAPI.registerMetaTileEntity(440, new SimpleMachineMetaTileEntity("printer.lv", RecipeMaps.PRINTER_RECIPES, Textures.PRINTER_OVERLAY, 1));
-        PRINTER[1] = GregTechAPI.registerMetaTileEntity(441, new SimpleMachineMetaTileEntity("printer.mv", RecipeMaps.PRINTER_RECIPES, Textures.PRINTER_OVERLAY, 2));
-        PRINTER[2] = GregTechAPI.registerMetaTileEntity(442, new SimpleMachineMetaTileEntity("printer.hv", RecipeMaps.PRINTER_RECIPES, Textures.PRINTER_OVERLAY, 3));
-        PRINTER[3] = GregTechAPI.registerMetaTileEntity(443, new SimpleMachineMetaTileEntity("printer.ev", RecipeMaps.PRINTER_RECIPES, Textures.PRINTER_OVERLAY, 4));
 
         SIFTER[0] = GregTechAPI.registerMetaTileEntity(450, new SimpleMachineMetaTileEntity("sifter.lv", RecipeMaps.SIFTER_RECIPES, Textures.SIFTER_OVERLAY, 1));
         SIFTER[1] = GregTechAPI.registerMetaTileEntity(451, new SimpleMachineMetaTileEntity("sifter.mv", RecipeMaps.SIFTER_RECIPES, Textures.SIFTER_OVERLAY, 2));
