@@ -5,11 +5,11 @@ import com.google.common.collect.ImmutableList;
 public class ItemMaterialInfo {
 
     public final MaterialStack material;
-    public final ImmutableList<MaterialStack> byProducts;
+    public final ImmutableList<MaterialStack> additionalComponents;
 
-    public ItemMaterialInfo(MaterialStack material, MaterialStack... byProducts) {
+    public ItemMaterialInfo(MaterialStack material, MaterialStack... additionalComponents) {
         this.material = material;
-        this.byProducts = ImmutableList.copyOf(byProducts);
+        this.additionalComponents = ImmutableList.copyOf(additionalComponents);
     }
 
     @Override
@@ -20,13 +20,13 @@ public class ItemMaterialInfo {
         ItemMaterialInfo that = (ItemMaterialInfo) o;
 
         if (!material.equals(that.material)) return false;
-        return byProducts.equals(that.byProducts);
+        return additionalComponents.equals(that.additionalComponents);
     }
 
     @Override
     public int hashCode() {
         int result = material.hashCode();
-        result = 31 * result + byProducts.hashCode();
+        result = 31 * result + additionalComponents.hashCode();
         return result;
     }
 

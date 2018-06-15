@@ -19,13 +19,12 @@ import gregtech.api.unification.stack.UnificationEntry;
 import gregtech.api.util.GTLog;
 import gregtech.api.util.GTUtility;
 import gregtech.common.items.MetaItems;
+import gregtech.loaders.postload.MachineRecipeLoader;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.oredict.OreDictionary;
-
 import org.apache.commons.lang3.ArrayUtils;
 
 import java.util.ArrayList;
@@ -147,15 +146,10 @@ public class OreProcessingHandler {
         if(!(material instanceof DustMaterial) ||
             (thingPrefix == OrePrefix.block && material == Materials.Glowstone)) return;
         DustMaterial dustMaterial = (DustMaterial) material;
-        RecipeBuilder<?> recipeBuilder = RecipeMaps.MACERATOR_RECIPES.recipeBuilder()
-            .input(thingPrefix, material)
-            .outputs(OreDictUnifier.getDust(dustMaterial, thingPrefix.materialAmount))
-            .duration((int) Math.max(1L, thingPrefix.materialAmount * 20 / M));
-        if(thingPrefix.secondaryMaterial != null) {
-            MaterialStack secondary = thingPrefix.secondaryMaterial;
-            recipeBuilder.outputs(OreDictUnifier.getDust((DustMaterial) secondary.material, secondary.amount));
-        }
-        recipeBuilder.buildAndRegister();
+        ArrayList<MaterialStack> materialStacks = new ArrayList<>();
+        materialStacks.add(new MaterialStack(dustMaterial, thingPrefix.materialAmount));
+        materialStacks.addAll(thingPrefix.secondaryMaterials);
+        MachineRecipeLoader.registerArcRecyclingRecipe(builder -> builder.input(thingPrefix, dustMaterial), materialStacks);
     }
 
     private void processDust(OrePrefix dustPrefix, Material material) {

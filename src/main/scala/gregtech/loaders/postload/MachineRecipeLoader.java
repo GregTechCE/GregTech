@@ -2,14 +2,19 @@ package gregtech.loaders.postload;
 
 import gregtech.api.recipes.CountableIngredient;
 import gregtech.api.recipes.ModHandler;
+import gregtech.api.recipes.RecipeBuilder;
 import gregtech.api.recipes.RecipeMaps;
 import gregtech.api.recipes.builders.AssemblyLineRecipeBuilder;
 import gregtech.api.recipes.builders.PBFRecipeBuilder;
 import gregtech.api.unification.OreDictUnifier;
 import gregtech.api.unification.material.MarkerMaterials;
 import gregtech.api.unification.material.Materials;
+import gregtech.api.unification.material.type.DustMaterial;
+import gregtech.api.unification.material.type.GemMaterial;
 import gregtech.api.unification.material.type.IngotMaterial;
+import gregtech.api.unification.material.type.Material.MatFlags;
 import gregtech.api.unification.ore.OrePrefix;
+import gregtech.api.unification.stack.ItemMaterialInfo;
 import gregtech.api.unification.stack.MaterialStack;
 import gregtech.api.unification.stack.UnificationEntry;
 import gregtech.api.util.GTLog;
@@ -34,8 +39,11 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.oredict.OreDictionary;
 import org.apache.commons.lang3.tuple.Pair;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map.Entry;
+import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 import static gregtech.api.GTValues.L;
@@ -70,8 +78,10 @@ public class MachineRecipeLoader {
     };
 
     public static void init() {
-        shapingRecipes();
+        initializeShapingRecipes();
         initializeWoodRecipes();
+        initializeArcRecyclingRecipes();
+
         for (OrePrefix prefix : Arrays.asList(OrePrefix.dust, OrePrefix.dustSmall, OrePrefix.dustTiny)) {
             RecipeMaps.MIXER_RECIPES.recipeBuilder().duration((int) (100 * prefix.materialAmount / M)).EUt(8).input(prefix, Materials.EnderPearl, 1).input(prefix, Materials.Blaze, 1).outputs(OreDictUnifier.getDust(Materials.EnderEye, 1 * prefix.materialAmount)).buildAndRegister();
             RecipeMaps.MIXER_RECIPES.recipeBuilder().duration((int) (200 * prefix.materialAmount / M)).EUt(8).input(prefix, Materials.Gold, 1).input(prefix, Materials.Silver, 1).outputs(OreDictUnifier.getDust(Materials.Electrum, 2 * prefix.materialAmount)).buildAndRegister();
@@ -796,7 +806,8 @@ public class MachineRecipeLoader {
             .chancedOutput(OreDictUnifier.get(OrePrefix.dustSmall, Materials.Stone, 1), 100)
             .buildAndRegister();
     }
-    public static void shapingRecipes() {
+
+    public static void initializeShapingRecipes() {
         RecipeMaps.ALLOY_SMELTER_RECIPES.recipeBuilder()
             .inputs(GTUtility.copyAmount(31, OreDictUnifier.get(OrePrefix.ingot, Materials.Iron)))
             .notConsumable(MetaItems.SHAPE_MOLD_ANVIL)
@@ -908,11 +919,73 @@ public class MachineRecipeLoader {
             .duration(100)
             .EUt(8)
             .buildAndRegister();
-        
-
-
-
     }
+
+    public static void initializeArcRecyclingRecipes() {
+        for(Entry<ItemStack, ItemMaterialInfo> entry : OreDictUnifier.getAllItemInfos()) {
+            ItemStack itemStack = entry.getKey();
+            ItemMaterialInfo materialInfo = entry.getValue();
+            ArrayList<MaterialStack> materialStacks = new ArrayList<>();
+            materialStacks.add(materialInfo.material);
+            materialStacks.addAll(materialInfo.additionalComponents);
+            registerArcRecyclingRecipe(b -> b.inputs(itemStack), materialStacks);
+        }
+    }
+
+    public static void registerArcRecyclingRecipe(Consumer<RecipeBuilder<?>> inputSupplier, List<MaterialStack> components) {
+        MaterialStack firstStack = components.get(0);
+        int voltageMultiplier = 1;
+        if(firstStack.material instanceof IngotMaterial) {
+            int blastFurnaceTemperature = ((IngotMaterial) firstStack.material).blastFurnaceTemperature;
+            voltageMultiplier = blastFurnaceTemperature == 0 ? 1 : blastFurnaceTemperature > 2000 ? 16 : 4;
+        }
+        List<MaterialStack> dustMaterials = components.stream()
+            .filter(stack -> stack.material instanceof DustMaterial)
+            .collect(Collectors.toList());
+        if(dustMaterials.isEmpty()) return;
+
+        RecipeBuilder<?> maceratorRecipeBuilder = RecipeMaps.MACERATOR_RECIPES.recipeBuilder()
+            .outputs(dustMaterials.stream().map(OreDictUnifier::getDust).collect(Collectors.toList()))
+            .duration((int) (firstStack.amount * 30 / M))
+            .EUt(8 * voltageMultiplier);
+
+        RecipeBuilder<?> arcFurnaceRecipeBuilder = RecipeMaps.ARC_FURNACE_RECIPES.recipeBuilder()
+            .outputs(dustMaterials.stream().map(MachineRecipeLoader::getArcSmeltingResult).collect(Collectors.toList()))
+            .duration((int) (firstStack.amount * 60 / M))
+            .EUt(32 * voltageMultiplier);
+
+        inputSupplier.accept(maceratorRecipeBuilder);
+        inputSupplier.accept(arcFurnaceRecipeBuilder);
+
+        maceratorRecipeBuilder.buildAndRegister();
+        arcFurnaceRecipeBuilder.buildAndRegister();
+    }
+
+    private static ItemStack getArcSmeltingResult(MaterialStack materialStack) {
+        DustMaterial material = (DustMaterial) materialStack.material;
+        long materialAmount = materialStack.amount;
+        if(material.hasFlag(MatFlags.FLAMMABLE)) {
+            return OreDictUnifier.getDust(Materials.Ash, materialAmount);
+        } else if(material instanceof GemMaterial) {
+            if(materialStack.material.materialComponents.stream()
+                .anyMatch(stack -> stack.material == Materials.Oxygen)) {
+                return OreDictUnifier.getDust(Materials.DarkAsh, materialAmount);
+            }
+            if(materialStack.material.materialComponents.stream()
+                .anyMatch(stack -> stack.material == Materials.Carbon)) {
+                return OreDictUnifier.getDust(Materials.Carbon, materialAmount);
+            }
+            return OreDictUnifier.getGem((GemMaterial) material, materialAmount);
+        } else if(material instanceof IngotMaterial) {
+            IngotMaterial ingotMaterial = (IngotMaterial) material;
+            if(ingotMaterial.arcSmeltInto != null)
+                ingotMaterial = ingotMaterial.arcSmeltInto;
+            return OreDictUnifier.getIngot(ingotMaterial, materialAmount);
+        } else {
+            return OreDictUnifier.getDust(material, materialAmount);
+        }
+    }
+
     public static void initializeWoodRecipes() {
         RecipeMaps.MACERATOR_RECIPES.recipeBuilder()
             .input(OrePrefix.log, Materials.Wood)

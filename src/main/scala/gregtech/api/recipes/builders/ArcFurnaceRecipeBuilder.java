@@ -8,11 +8,8 @@ import gregtech.api.recipes.RecipeMaps;
 import gregtech.api.unification.material.Materials;
 import gregtech.api.unification.material.type.FluidMaterial;
 import gregtech.api.util.ValidationResult;
-import org.apache.commons.lang3.builder.ToStringBuilder;
 
 public class ArcFurnaceRecipeBuilder extends RecipeBuilder<ArcFurnaceRecipeBuilder> {
-
-    protected boolean simple = false;
 
     public ArcFurnaceRecipeBuilder() {
     }
@@ -35,21 +32,12 @@ public class ArcFurnaceRecipeBuilder extends RecipeBuilder<ArcFurnaceRecipeBuild
         return new ArcFurnaceRecipeBuilder(this);
     }
 
-    public ArcFurnaceRecipeBuilder simple() {
-        this.simple = true;
-        return getThis();
-    }
-
     @Override
     public void buildAndRegister() {
-        if (simple) {
-            this.copy().buildAndRegister();
-        } else {
-            this.copy().fluidInputs(Materials.Oxygen.getFluid(this.duration)).buildAndRegister();
-
+        if (fluidInputs.isEmpty()) {
+            fluidInputs(Materials.Oxygen.getFluid(this.duration));
             for (FluidMaterial material : new FluidMaterial[]{Materials.Argon, Materials.Nitrogen}) {
                 int plasmaAmount = (int) Math.max(1L, this.duration / (material.getMass() * 16L));
-
                 DefaultRecipeBuilder builder = RecipeMaps.PLASMA_ARC_FURNACE_RECIPES.recipeBuilder()
                     .inputsIngredients(this.inputs)
                     .outputs(this.outputs)
@@ -57,15 +45,14 @@ public class ArcFurnaceRecipeBuilder extends RecipeBuilder<ArcFurnaceRecipeBuild
                     .EUt(this.EUt / 3)
                     .fluidInputs(material.getPlasma(plasmaAmount))
                     .fluidOutputs(material.getFluid(plasmaAmount));
-
                 this.getChancedOutputs().forEachEntry((key, val) -> {
                    builder.chancedOutput(key, val);
                    return true;
                 });
-
                 builder.buildAndRegister();
             }
         }
+        super.buildAndRegister();
     }
 
     public ValidationResult<Recipe> build() {
@@ -74,11 +61,4 @@ public class ArcFurnaceRecipeBuilder extends RecipeBuilder<ArcFurnaceRecipeBuild
                 ImmutableMap.of(), duration, EUt, hidden, canBeBuffered, needsEmptyOutput));
     }
 
-    @Override
-    public String toString() {
-        return new ToStringBuilder(this)
-            .appendSuper(super.toString())
-            .append("simple", simple)
-            .toString();
-    }
 }

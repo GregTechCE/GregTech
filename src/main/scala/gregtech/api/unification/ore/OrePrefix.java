@@ -7,7 +7,6 @@ import gregtech.api.unification.material.Materials;
 import gregtech.api.unification.material.type.*;
 import gregtech.api.unification.stack.MaterialStack;
 import gregtech.api.util.Condition;
-import gregtech.api.util.GTLog;
 import gregtech.api.util.GTUtility;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.init.Items;
@@ -357,50 +356,50 @@ public enum OrePrefix {
         block.ignoredMaterials.add(Materials.Wood);
         block.ignoredMaterials.add(Materials.WoodSealed);
 
-        pipeRestrictiveTiny.secondaryMaterial = new MaterialStack(Materials.Steel, ring.materialAmount);
-        pipeRestrictiveSmall.secondaryMaterial = new MaterialStack(Materials.Steel, ring.materialAmount * 2);
-        pipeRestrictiveMedium.secondaryMaterial = new MaterialStack(Materials.Steel, ring.materialAmount * 3);
-        pipeRestrictiveLarge.secondaryMaterial = new MaterialStack(Materials.Steel, ring.materialAmount * 4);
-        pipeRestrictiveHuge.secondaryMaterial = new MaterialStack(Materials.Steel, ring.materialAmount * 5);
+        pipeRestrictiveTiny.addSecondaryMaterial(new MaterialStack(Materials.Steel, ring.materialAmount));
+        pipeRestrictiveSmall.addSecondaryMaterial(new MaterialStack(Materials.Steel, ring.materialAmount * 2));
+        pipeRestrictiveMedium.addSecondaryMaterial(new MaterialStack(Materials.Steel, ring.materialAmount * 3));
+        pipeRestrictiveLarge.addSecondaryMaterial(new MaterialStack(Materials.Steel, ring.materialAmount * 4));
+        pipeRestrictiveHuge.addSecondaryMaterial(new MaterialStack(Materials.Steel, ring.materialAmount * 5));
 
-        cableGtHex.secondaryMaterial = new MaterialStack(Materials.Rubber, dustSmall.materialAmount * 4);
-        cableGtOctal.secondaryMaterial = new MaterialStack(Materials.Rubber, dustSmall.materialAmount * 3);
-        cableGtQuadruple.secondaryMaterial = new MaterialStack(Materials.Rubber, dustSmall.materialAmount * 2);
-        cableGtDouble.secondaryMaterial = new MaterialStack(Materials.Rubber, dustSmall.materialAmount);
-        cableGtSingle.secondaryMaterial = new MaterialStack(Materials.Rubber, dustSmall.materialAmount);
+        cableGtHex.addSecondaryMaterial(new MaterialStack(Materials.Rubber, dustSmall.materialAmount * 4));
+        cableGtOctal.addSecondaryMaterial(new MaterialStack(Materials.Rubber, dustSmall.materialAmount * 3));
+        cableGtQuadruple.addSecondaryMaterial(new MaterialStack(Materials.Rubber, dustSmall.materialAmount * 2));
+        cableGtDouble.addSecondaryMaterial(new MaterialStack(Materials.Rubber, dustSmall.materialAmount));
+        cableGtSingle.addSecondaryMaterial(new MaterialStack(Materials.Rubber, dustSmall.materialAmount));
 
-        bucket.secondaryMaterial = new MaterialStack(Materials.Iron, ingot.materialAmount * 3);
+        bucket.addSecondaryMaterial(new MaterialStack(Materials.Iron, ingot.materialAmount * 3));
 
-        oreRedgranite.secondaryMaterial = new MaterialStack(Materials.GraniteRed, dust.materialAmount);
-        oreBlackgranite.secondaryMaterial = new MaterialStack(Materials.GraniteBlack, dust.materialAmount);
+        oreRedgranite.addSecondaryMaterial(new MaterialStack(Materials.GraniteRed, dust.materialAmount));
+        oreBlackgranite.addSecondaryMaterial(new MaterialStack(Materials.GraniteBlack, dust.materialAmount));
 
-        oreBasalt.secondaryMaterial = new MaterialStack(Materials.Basalt, dust.materialAmount);
-        oreMarble.secondaryMaterial = new MaterialStack(Materials.Marble, dust.materialAmount);
+        oreBasalt.addSecondaryMaterial(new MaterialStack(Materials.Basalt, dust.materialAmount));
+        oreMarble.addSecondaryMaterial(new MaterialStack(Materials.Marble, dust.materialAmount));
 
-        oreSand.secondaryMaterial = new MaterialStack(Materials.SiliconDioxide, dustTiny.materialAmount);
-        oreGravel.secondaryMaterial = new MaterialStack(Materials.Flint, dustTiny.materialAmount);
+        oreSand.addSecondaryMaterial(new MaterialStack(Materials.SiliconDioxide, dustTiny.materialAmount));
+        oreGravel.addSecondaryMaterial(new MaterialStack(Materials.Flint, dustTiny.materialAmount));
 
-        oreNetherrack.secondaryMaterial = new MaterialStack(Materials.Netherrack, dust.materialAmount);
-        oreNether.secondaryMaterial = new MaterialStack(Materials.Netherrack, dust.materialAmount);
+        oreNetherrack.addSecondaryMaterial(new MaterialStack(Materials.Netherrack, dust.materialAmount));
+        oreNether.addSecondaryMaterial(new MaterialStack(Materials.Netherrack, dust.materialAmount));
 
-        oreEndstone.secondaryMaterial = new MaterialStack(Materials.Endstone, dust.materialAmount);
-        oreEnd.secondaryMaterial = new MaterialStack(Materials.Endstone, dust.materialAmount);
+        oreEndstone.addSecondaryMaterial(new MaterialStack(Materials.Endstone, dust.materialAmount));
+        oreEnd.addSecondaryMaterial(new MaterialStack(Materials.Endstone, dust.materialAmount));
 
-        oreMarble.secondaryMaterial = new MaterialStack(Materials.Marble, dust.materialAmount);
-        oreBasalt.secondaryMaterial = new MaterialStack(Materials.Basalt, dust.materialAmount);
+        oreMarble.addSecondaryMaterial(new MaterialStack(Materials.Marble, dust.materialAmount));
+        oreBasalt.addSecondaryMaterial(new MaterialStack(Materials.Basalt, dust.materialAmount));
 
-        oreDense.secondaryMaterial = new MaterialStack(Materials.Stone, dust.materialAmount);
-        orePoor.secondaryMaterial = new MaterialStack(Materials.Stone, dust.materialAmount * 2);
-        oreSmall.secondaryMaterial = new MaterialStack(Materials.Stone, dust.materialAmount * 2);
-        oreNormal.secondaryMaterial = new MaterialStack(Materials.Stone, dust.materialAmount * 2);
-        oreRich.secondaryMaterial = new MaterialStack(Materials.Stone, dust.materialAmount * 2);
-        ore.secondaryMaterial = new MaterialStack(Materials.Stone, dust.materialAmount);
+        oreDense.addSecondaryMaterial(new MaterialStack(Materials.Stone, dust.materialAmount));
+        orePoor.addSecondaryMaterial(new MaterialStack(Materials.Stone, dust.materialAmount * 2));
+        oreSmall.addSecondaryMaterial(new MaterialStack(Materials.Stone, dust.materialAmount * 2));
+        oreNormal.addSecondaryMaterial(new MaterialStack(Materials.Stone, dust.materialAmount * 2));
+        oreRich.addSecondaryMaterial(new MaterialStack(Materials.Stone, dust.materialAmount * 2));
+        ore.addSecondaryMaterial(new MaterialStack(Materials.Stone, dust.materialAmount));
 
-        crushed.secondaryMaterial = new MaterialStack(Materials.Stone, dust.materialAmount);
+        crushed.addSecondaryMaterial(new MaterialStack(Materials.Stone, dust.materialAmount));
 
-        toolHeadDrill.secondaryMaterial = new MaterialStack(Materials.Steel, plate.materialAmount * 4);
-        toolHeadChainsaw.secondaryMaterial = new MaterialStack(Materials.Steel, plate.materialAmount * 4 + ring.materialAmount * 2);
-        toolHeadWrench.secondaryMaterial = new MaterialStack(Materials.Steel, ring.materialAmount + screw.materialAmount * 2);
+        toolHeadDrill.addSecondaryMaterial(new MaterialStack(Materials.Steel, plate.materialAmount * 4));
+        toolHeadChainsaw.addSecondaryMaterial(new MaterialStack(Materials.Steel, plate.materialAmount * 4 + ring.materialAmount * 2));
+        toolHeadWrench.addSecondaryMaterial(new MaterialStack(Materials.Steel, ring.materialAmount + screw.materialAmount * 2));
     }
 
     @SafeVarargs
@@ -442,7 +441,7 @@ public enum OrePrefix {
 
     public @Nullable ItemStack containerItem = null;
     public byte defaultStackSize = 64;
-    public @Nullable MaterialStack secondaryMaterial = null;
+    public final List<MaterialStack> secondaryMaterials = new ArrayList<>();
     public float heatDamage = 0.0F; // Negative for Frost Damage
 
     OrePrefix(String categoryName, long materialAmount, Material material, MaterialIconType materialIconType, long flags, Condition<Material> condition) {
@@ -458,6 +457,11 @@ public enum OrePrefix {
             Preconditions.checkNotNull( material, "Material is null for self-referencing OrePrefix");
             this.materialType = material;
         }
+    }
+
+    public void addSecondaryMaterial(MaterialStack secondaryMaterial) {
+        Preconditions.checkNotNull(secondaryMaterial, "secondaryMaterial");
+        secondaryMaterials.add(secondaryMaterial);
     }
 
     public static OrePrefix getPrefix(String prefixName) {
