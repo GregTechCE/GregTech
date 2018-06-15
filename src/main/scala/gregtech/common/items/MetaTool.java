@@ -7,7 +7,6 @@ import gregtech.api.items.toolitem.ToolMetaItem;
 import gregtech.api.recipes.ModHandler;
 import gregtech.api.unification.OreDictUnifier;
 import gregtech.api.unification.material.Materials;
-import gregtech.api.unification.material.type.Material;
 import gregtech.api.unification.ore.OrePrefix;
 import gregtech.api.unification.stack.UnificationEntry;
 import gregtech.common.tools.*;
@@ -55,30 +54,30 @@ public class MetaTool extends ToolMetaItem<ToolMetaItem<?>.MetaToolValueItem> {
             .addStats(ElectricStats.createElectricItem(100000L, 1L));
         DRILL_MV = (MetaToolValueItem) addItem(24, "tool.drill.mv").setToolStats(new ToolDrillMV())
             .addOreDict(ToolDictNames.craftingToolMiningDrill)
-            .addStats(ElectricStats.createElectricItem(400000L, 1L));
+            .addStats(ElectricStats.createElectricItem(400000L, 2L));
         DRILL_HV = (MetaToolValueItem) addItem(25, "tool.drill.hv").setToolStats(new ToolDrillHV())
             .addOreDict(ToolDictNames.craftingToolMiningDrill)
-            .addStats(ElectricStats.createElectricItem(1600000L, 1L));
+            .addStats(ElectricStats.createElectricItem(1600000L, 3L));
 
         CHAINSAW_LV = (MetaToolValueItem) addItem(26, "tool.chainsaw.lv").setToolStats(new ToolChainsawLV())
             .addOreDict(ToolDictNames.craftingToolSaw)
             .addStats(ElectricStats.createElectricItem(100000L, 1L));
         CHAINSAW_MV = (MetaToolValueItem) addItem(27, "tool.chainsaw.mv").setToolStats(new ToolChainsawMV())
             .addOreDict(ToolDictNames.craftingToolSaw)
-            .addStats(ElectricStats.createElectricItem(400000L, 1L));
+            .addStats(ElectricStats.createElectricItem(400000L, 2L));
         CHAINSAW_HV = (MetaToolValueItem) addItem(28, "tool.chainsaw.hv").setToolStats(new ToolChainsawHV())
             .addOreDict(ToolDictNames.craftingToolSaw)
-            .addStats(ElectricStats.createElectricItem(1600000L, 1L));
+            .addStats(ElectricStats.createElectricItem(1600000L, 3L));
 
         WRENCH_LV = (MetaToolValueItem) addItem(29, "tool.wrench.lv").setToolStats(new ToolWrenchLV())
             .addOreDict(ToolDictNames.craftingToolWrench).addToList(GregTechAPI.wrenchList)
             .addStats(ElectricStats.createElectricItem(100000L, 1L));
         WRENCH_MV = (MetaToolValueItem) addItem(30, "tool.wrench.mv").setToolStats(new ToolWrenchMV())
             .addOreDict(ToolDictNames.craftingToolWrench).addToList(GregTechAPI.wrenchList)
-            .addStats(ElectricStats.createElectricItem(400000L, 1L));
+            .addStats(ElectricStats.createElectricItem(400000L, 2L));
         WRENCH_HV = (MetaToolValueItem) addItem(31, "tool.wrench.hv").setToolStats(new ToolWrenchHV())
             .addOreDict(ToolDictNames.craftingToolWrench).addToList(GregTechAPI.wrenchList)
-            .addStats(ElectricStats.createElectricItem(1600000L, 1L));
+            .addStats(ElectricStats.createElectricItem(1600000L, 3L));
 
         SCREWDRIVER_LV = (MetaToolValueItem) addItem(34, "tool.screwdriver.lv").setToolStats(new ToolScrewdriverLV())
             .addOreDict(ToolDictNames.craftingToolScrewdriver).addToList(GregTechAPI.screwdriverList)

@@ -1716,6 +1716,8 @@ tile.gt.leaves.rubber_wood.name=Rubber Tree Leaves
 tile.gt.sapling.rubber_wood.name=Rubber Tree Sapling
 metaitem.rubber_drop.name=Rubber
 metaitem.plant_ball.name=Plant Ball
+metaitem.tool_parts_box.name=Tool Parts Box
+metaitem.tool_parts_box.tooltip=Contains some tool parts/nRight click to extract parts
 
 tile.surface_rock.name=Surface Rock
 

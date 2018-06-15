@@ -2,6 +2,7 @@ package gregtech.common.items;
 
 import gregtech.api.items.materialitem.MaterialMetaItem;
 import gregtech.api.items.metaitem.MetaItem;
+import gregtech.api.items.toolitem.ToolCraftingListener;
 import gregtech.api.items.toolitem.ToolHarvestListener;
 import gregtech.api.items.toolitem.ToolMetaItem;
 import net.minecraftforge.common.MinecraftForge;
@@ -383,9 +384,11 @@ public final class MetaItems {
     public static ToolMetaItem<?>.MetaToolValueItem SOLDERING_IRON_LV;
     public static ToolMetaItem<?>.MetaToolValueItem TURBINE;
     public static ToolMetaItem<?>.MetaToolValueItem MAGNIFYING_GLASS;
+    public static MetaItem<?>.MetaValueItem TOOL_PARTS_BOX;
 
     public static void init() {
         MinecraftForge.EVENT_BUS.register(new ToolHarvestListener());
+        MinecraftForge.EVENT_BUS.register(new ToolCraftingListener());
         MetaItem1 first = new MetaItem1();
         first.setRegistryName("meta_item_1");
         ITEMS.add(first);

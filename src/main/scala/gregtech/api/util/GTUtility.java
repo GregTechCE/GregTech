@@ -39,6 +39,7 @@ import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.IFluidTank;
+import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 import net.minecraftforge.fml.relauncher.ReflectionHelper;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -46,6 +47,7 @@ import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.IItemHandlerModifiable;
 
 import java.awt.*;
+import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.*;
@@ -134,6 +136,21 @@ public class GTUtility {
     public static int convertRGBtoOpaqueRGBA_MC(int colorValue) {
         long longValue = Long.parseLong("ff" + Integer.toString(colorValue, 16), 16);
         return (int) longValue;
+    }
+
+    public static void setItem(ItemStack itemStack, ItemStack newStack) {
+        //replace item object reference inside itemstack, keeping all other data
+        ObfuscationReflectionHelper.setPrivateValue(ItemStack.class, itemStack, newStack.getItem(), "item");
+        itemStack.setItemDamage(newStack.getItemDamage());
+        try {
+            Method forgeInit = ItemStack.class.getDeclaredMethod("forgeInit");
+            forgeInit.setAccessible(true);
+            //reinitialize forge capabilities and delegate reference
+            forgeInit.invoke(itemStack);
+        } catch (ReflectiveOperationException exception) {
+            //should be impossible, actually
+            throw new RuntimeException(exception);
+        }
     }
 
     public static boolean isBlockOrePrefixed(IBlockAccess world, BlockPos pos, IBlockState blockState, OrePrefix targetPrefix, List<ItemStack> drops) {

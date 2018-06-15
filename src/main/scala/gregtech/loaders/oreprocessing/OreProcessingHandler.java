@@ -1413,9 +1413,9 @@ public class OreProcessingHandler {
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    private static MetaValueItem[] motorItems;
-    private static SolidMaterial[] baseMaterials;
-    private static MetaValueItem[][] batteryItems;
+    public static MetaValueItem[] motorItems;
+    public static SolidMaterial[] baseMaterials;
+    public static MetaValueItem[][] batteryItems;
 
     public static void initializeMetaItems() {
         motorItems = new MetaValueItem[]{MetaItems.ELECTRIC_MOTOR_LV, MetaItems.ELECTRIC_MOTOR_MV, MetaItems.ELECTRIC_MOTOR_HV};

@@ -2,7 +2,6 @@ package gregtech.api.capability.impl;
 
 import gregtech.api.GTValues;
 import gregtech.api.capability.IElectricItem;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
@@ -12,6 +11,9 @@ import net.minecraftforge.common.util.Constants.NBT;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.function.BiConsumer;
 
 public class ElectricItem implements IElectricItem, ICapabilityProvider {
 
@@ -23,6 +25,8 @@ public class ElectricItem implements IElectricItem, ICapabilityProvider {
     protected final boolean chargeable;
     protected final boolean dischargeable;
 
+    protected List<BiConsumer<ItemStack, Long>> listeners = new ArrayList<>();
+
     public ElectricItem(ItemStack itemStack, long maxCharge, int tier, boolean chargeable, boolean dischargeable) {
         this.itemStack = itemStack;
         this.maxCharge = maxCharge;
@@ -31,11 +35,17 @@ public class ElectricItem implements IElectricItem, ICapabilityProvider {
         this.dischargeable = dischargeable;
     }
 
-    protected void setChange(long change) {
+    @Override
+    public void addChargeListener(BiConsumer<ItemStack, Long> chargeListener) {
+        listeners.add(chargeListener);
+    }
+
+    protected void setCharge(long change) {
         if (!itemStack.hasTagCompound()) {
             itemStack.setTagCompound(new NBTTagCompound());
         }
         itemStack.getTagCompound().setLong("Charge", change);
+        listeners.forEach(l -> l.accept(itemStack, change));
     }
 
     public void setMaxChargeOverride(long maxCharge) {
@@ -78,7 +88,7 @@ public class ElectricItem implements IElectricItem, ICapabilityProvider {
             }
             long charged = amount > canReceive ? canReceive : amount;
             if (!simulate) {
-                setChange(getCharge() + charged);
+                setCharge(getCharge() + charged);
             }
             return charged;
         }
@@ -94,7 +104,7 @@ public class ElectricItem implements IElectricItem, ICapabilityProvider {
             long charge = getCharge();
             long discharged = amount > charge ? charge : amount;
             if (!simulate) {
-                setChange(charge - discharged);
+                setCharge(charge - discharged);
             }
             return discharged;
         }
@@ -104,27 +114,6 @@ public class ElectricItem implements IElectricItem, ICapabilityProvider {
     @Override
     public boolean canUse(long amount) {
         return getMaxCharge() > 0L && getCharge() >= amount;
-    }
-
-    @Override
-    public boolean use(long amount, EntityLivingBase entity) {
-        if (canUse(amount)) {
-            discharge(amount, tier, true, false, false);
-            return true;
-        }
-        return false;
-    }
-
-    @Override
-    public void chargeFromArmor(EntityLivingBase entity) {
-        if (getMaxCharge() > 0 && chargeable && getCharge() != getMaxCharge()) {
-            entity.getEquipmentAndArmor().forEach(otherStack -> {
-                IElectricItem capability = otherStack.getCapability(IElectricItem.CAPABILITY_ELECTRIC_ITEM, null);
-                if(capability != null && capability.canProvideChargeExternally()) {
-                    setChange(getCharge() + capability.discharge(getMaxCharge() - getCharge(), getTier(), false, true, false));
-                }
-            });
-        }
     }
 
     @Override
