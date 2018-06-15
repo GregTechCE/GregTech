@@ -158,7 +158,7 @@ public class OreProcessingHandler {
 
         if (material instanceof GemMaterial) {
             ItemStack gemStack = OreDictUnifier.get(OrePrefix.gem, material);
-
+            ItemStack tinyDarkAshStack = OreDictUnifier.get(OrePrefix.dustTiny, Materials.DarkAsh);
             if (material.hasFlag(GemMaterial.MatFlags.CRYSTALLISABLE)) {
 
                 RecipeMaps.AUTOCLAVE_RECIPES.recipeBuilder()
@@ -176,10 +176,10 @@ public class OreProcessingHandler {
                     .duration(1500)
                     .EUt(24)
                     .buildAndRegister();
-            } else if (!material.hasFlag(Material.MatFlags.EXPLOSIVE | MatFlags.NO_SMASHING)) {
+            } else if (!material.hasFlag(Material.MatFlags.EXPLOSIVE)) {
                 RecipeMaps.IMPLOSION_RECIPES.recipeBuilder()
                     .input(dustPrefix, material, 4)
-                    .outputs(GTUtility.copyAmount(3, gemStack))
+                    .outputs(GTUtility.copyAmount(3, gemStack), GTUtility.copyAmount(2, tinyDarkAshStack))
                     .explosivesAmount(4)
                     .buildAndRegister();
             }
