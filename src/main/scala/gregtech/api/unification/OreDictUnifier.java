@@ -3,7 +3,6 @@ package gregtech.api.unification;
 import com.google.common.base.CaseFormat;
 import com.google.common.base.Joiner;
 import gregtech.api.unification.material.type.DustMaterial;
-import gregtech.api.unification.material.type.GemMaterial;
 import gregtech.api.unification.material.type.IngotMaterial;
 import gregtech.api.unification.material.type.Material;
 import gregtech.api.unification.ore.OrePrefix;
@@ -214,17 +213,5 @@ public class OreDictUnifier {
             return get(OrePrefix.nugget, material, (int) ((materialAmount * 9) / M));
         return ItemStack.EMPTY;
     }
-
-    public static ItemStack getGem(GemMaterial material, long materialAmount) {
-        if (materialAmount <= 0)
-            return ItemStack.EMPTY;
-        if (materialAmount % M == 0 || materialAmount >= M * 16)
-            return get(OrePrefix.gem, material, (int) (materialAmount / M));
-        else if ((materialAmount * 9) >= M)
-            return get(OrePrefix.nugget, material, (int) ((materialAmount * 9) / M));
-        return ItemStack.EMPTY;
-    }
-
-
 
 }

@@ -928,37 +928,38 @@ public class MachineRecipeLoader {
             ArrayList<MaterialStack> materialStacks = new ArrayList<>();
             materialStacks.add(materialInfo.material);
             materialStacks.addAll(materialInfo.additionalComponents);
-            registerArcRecyclingRecipe(b -> b.inputs(itemStack), materialStacks);
+            registerArcRecyclingRecipe(b -> b.inputs(itemStack), materialStacks, false);
         }
     }
 
-    public static void registerArcRecyclingRecipe(Consumer<RecipeBuilder<?>> inputSupplier, List<MaterialStack> components) {
-        MaterialStack firstStack = components.get(0);
+    public static void registerArcRecyclingRecipe(Consumer<RecipeBuilder<?>> inputSupplier, List<MaterialStack> components, boolean ignoreArcSmelting) {
+        List<MaterialStack> dustMaterials = components.stream()
+            .filter(stack -> stack.material instanceof DustMaterial)
+            .filter(stack -> stack.amount >= M / 9) //do only materials which have at least one nugget
+            .collect(Collectors.toList());
+        if(dustMaterials.isEmpty()) return;
+        MaterialStack firstStack = dustMaterials.get(0);
         int voltageMultiplier = 1;
         if(firstStack.material instanceof IngotMaterial) {
             int blastFurnaceTemperature = ((IngotMaterial) firstStack.material).blastFurnaceTemperature;
             voltageMultiplier = blastFurnaceTemperature == 0 ? 1 : blastFurnaceTemperature > 2000 ? 16 : 4;
         }
-        List<MaterialStack> dustMaterials = components.stream()
-            .filter(stack -> stack.material instanceof DustMaterial)
-            .collect(Collectors.toList());
-        if(dustMaterials.isEmpty()) return;
 
         RecipeBuilder<?> maceratorRecipeBuilder = RecipeMaps.MACERATOR_RECIPES.recipeBuilder()
             .outputs(dustMaterials.stream().map(OreDictUnifier::getDust).collect(Collectors.toList()))
-            .duration((int) (firstStack.amount * 30 / M))
+            .duration((int) Math.max(1L, firstStack.amount * 30 / M))
             .EUt(8 * voltageMultiplier);
-
-        RecipeBuilder<?> arcFurnaceRecipeBuilder = RecipeMaps.ARC_FURNACE_RECIPES.recipeBuilder()
-            .outputs(dustMaterials.stream().map(MachineRecipeLoader::getArcSmeltingResult).collect(Collectors.toList()))
-            .duration((int) (firstStack.amount * 60 / M))
-            .EUt(32 * voltageMultiplier);
-
         inputSupplier.accept(maceratorRecipeBuilder);
-        inputSupplier.accept(arcFurnaceRecipeBuilder);
-
         maceratorRecipeBuilder.buildAndRegister();
-        arcFurnaceRecipeBuilder.buildAndRegister();
+
+        if(!ignoreArcSmelting) {
+            RecipeBuilder<?> arcFurnaceRecipeBuilder = RecipeMaps.ARC_FURNACE_RECIPES.recipeBuilder()
+                .outputs(dustMaterials.stream().map(MachineRecipeLoader::getArcSmeltingResult).collect(Collectors.toList()))
+                .duration((int) Math.max(1L, firstStack.amount * 60 / M))
+                .EUt(32 * voltageMultiplier);
+            inputSupplier.accept(arcFurnaceRecipeBuilder);
+            arcFurnaceRecipeBuilder.buildAndRegister();
+        }
     }
 
     private static ItemStack getArcSmeltingResult(MaterialStack materialStack) {
@@ -969,13 +970,13 @@ public class MachineRecipeLoader {
         } else if(material instanceof GemMaterial) {
             if(materialStack.material.materialComponents.stream()
                 .anyMatch(stack -> stack.material == Materials.Oxygen)) {
-                return OreDictUnifier.getDust(Materials.DarkAsh, materialAmount);
+                return OreDictUnifier.getDust(Materials.Ash, materialAmount);
             }
             if(materialStack.material.materialComponents.stream()
                 .anyMatch(stack -> stack.material == Materials.Carbon)) {
                 return OreDictUnifier.getDust(Materials.Carbon, materialAmount);
             }
-            return OreDictUnifier.getGem((GemMaterial) material, materialAmount);
+            return OreDictUnifier.getDust(Materials.DarkAsh, materialAmount);
         } else if(material instanceof IngotMaterial) {
             IngotMaterial ingotMaterial = (IngotMaterial) material;
             if(ingotMaterial.arcSmeltInto != null)

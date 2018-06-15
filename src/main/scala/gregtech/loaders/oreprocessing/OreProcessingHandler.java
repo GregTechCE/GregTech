@@ -59,6 +59,9 @@ public class OreProcessingHandler {
         (Predicate<OrePrefix>) orePrefix -> orePrefix.name().startsWith("wireGt")
     );
 
+    private static final List<OrePrefix> IGNORE_ARC_SMELTING = Arrays.asList(
+        OrePrefix.ingot, OrePrefix.gem, OrePrefix.nugget, OrePrefix.block);
+
     public void registerProcessing() {
 
         OrePrefix.plate.addProcessingHandler(this::processPlate, this::processPolarizing);
@@ -149,7 +152,7 @@ public class OreProcessingHandler {
         ArrayList<MaterialStack> materialStacks = new ArrayList<>();
         materialStacks.add(new MaterialStack(dustMaterial, thingPrefix.materialAmount));
         materialStacks.addAll(thingPrefix.secondaryMaterials);
-        MachineRecipeLoader.registerArcRecyclingRecipe(builder -> builder.input(thingPrefix, dustMaterial), materialStacks);
+        MachineRecipeLoader.registerArcRecyclingRecipe(builder -> builder.input(thingPrefix, dustMaterial), materialStacks, IGNORE_ARC_SMELTING.contains(thingPrefix));
     }
 
     private void processDust(OrePrefix dustPrefix, Material material) {
@@ -230,8 +233,7 @@ public class OreProcessingHandler {
                     ModHandler.addRCFurnaceRecipe(new UnificationEntry(OrePrefix.nugget, metalMaterial), nuggetStack, Math.max(1, duration / 9));
                 }
             }
-        } else if (material.hasFlag(MatFlags.GENERATE_PLATE) &&
-            !material.hasFlag(Material.MatFlags.EXPLOSIVE | MatFlags.NO_SMASHING)) {
+        } else if (material.hasFlag(MatFlags.GENERATE_PLATE)) {
             RecipeMaps.COMPRESSOR_RECIPES.recipeBuilder()
                 .input(dustPrefix, material)
                 .outputs(OreDictUnifier.get(OrePrefix.plate, material))

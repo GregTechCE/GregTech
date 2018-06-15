@@ -43,13 +43,14 @@ public class CrackingRecipeBuilder extends RecipeBuilder<CrackingRecipeBuilder> 
     public void buildAndRegister() {
         super.buildAndRegister();
         FluidStack fluidInput = fluidInputs.get(0);
-        FluidStack fluidOutput = fluidInputs.get(0);
+        FluidStack fluidOutput = fluidOutputs.get(0);
+        fluidOutputs.clear(); //clear fluid outputs because we add them again with multipliers
         recipeMap.addRecipe(this.copy()
-            .fluidInputs(fluidInput, ModHandler.getSteam(fluidInput.amount))
+            .fluidInputs(ModHandler.getSteam(fluidInput.amount))
             .fluidOutputs(fluidOutput, Materials.Hydrogen.getFluid(fluidInput.amount))
             .build());
         recipeMap.addRecipe(this.copy()
-            .fluidInputs(fluidInput, Materials.Hydrogen.getFluid(fluidInput.amount))
+            .fluidInputs(Materials.Hydrogen.getFluid(fluidInput.amount))
             .fluidOutputs(new FluidStack(fluidOutput.getFluid(), (int) (fluidOutput.amount * 1.3)))
             .build());
     }

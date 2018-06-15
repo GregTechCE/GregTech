@@ -41,7 +41,7 @@ public class ArcFurnaceRecipeBuilder extends RecipeBuilder<ArcFurnaceRecipeBuild
                 DefaultRecipeBuilder builder = RecipeMaps.PLASMA_ARC_FURNACE_RECIPES.recipeBuilder()
                     .inputsIngredients(this.inputs)
                     .outputs(this.outputs)
-                    .duration(this.duration / 16)
+                    .duration(Math.max(1, this.duration / 16))
                     .EUt(this.EUt / 3)
                     .fluidInputs(material.getPlasma(plasmaAmount))
                     .fluidOutputs(material.getFluid(plasmaAmount));

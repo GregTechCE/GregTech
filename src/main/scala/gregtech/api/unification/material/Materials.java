@@ -113,7 +113,7 @@ public class Materials {
     /**
      * Not possible to determine exact Components
      */
-    public static RoughSolidMaterial Wood = new RoughSolidMaterial(196, "wood", 0x643200, MaterialIconSet.WOOD, 0, of(), STD_SOLID | FLAMMABLE | NO_SMELTING | NO_SMASHING | GENERATE_GEAR | GENERATE_LONG_ROD);
+    public static RoughSolidMaterial Wood = new RoughSolidMaterial(196, "wood", 0x643200, MaterialIconSet.WOOD, 0, of(), STD_SOLID | FLAMMABLE | NO_SMELTING | GENERATE_GEAR | GENERATE_LONG_ROD);
     public static FluidMaterial BioFuel = new FluidMaterial(314, "bio_fuel", 0xFF8000, MaterialIconSet.FLUID, of(), 0);
     public static FluidMaterial Biomass = new FluidMaterial(315, "biomass", 0x00FF00, MaterialIconSet.FLUID, of(), 0);
     public static FluidMaterial Creosote = new FluidMaterial(316, "creosote", 0x804000, MaterialIconSet.FLUID, of(), 0);
@@ -278,7 +278,7 @@ public class Materials {
     /**
      * Second Degree Compounds
      */
-    public static DustMaterial WoodSealed = new DustMaterial(208, "wood_sealed", 0x502800, MaterialIconSet.WOOD, 0, of(new MaterialStack(Wood, 1)), STD_SOLID | FLAMMABLE | NO_SMELTING | NO_SMASHING | NO_WORKING);
+    public static DustMaterial WoodSealed = new DustMaterial(208, "wood_sealed", 0x502800, MaterialIconSet.WOOD, 0, of(new MaterialStack(Wood, 1)), STD_SOLID | FLAMMABLE | NO_SMELTING | NO_WORKING);
     public static GemMaterial Glass = new GemMaterial(209, "glass", 0xFFFFFF, MaterialIconSet.GLASS, 0, of(new MaterialStack(SiliconDioxide, 1)), GENERATE_PLATE | GENERATE_LENSE | NO_SMASHING | NO_RECYCLING | SMELT_INTO_FLUID);
     public static DustMaterial Perlite = new DustMaterial(210, "perlite", 0x1E141E, MaterialIconSet.DULL, 1, of(new MaterialStack(Obsidian, 2), new MaterialStack(Water, 1)), 0);
     public static DustMaterial Borax = new DustMaterial(210, "borax", 0xFFFFFF, MaterialIconSet.SAND, 1, of(new MaterialStack(Sodium, 2), new MaterialStack(Boron, 4), new MaterialStack(Water, 10), new MaterialStack(Oxygen, 7)), 0);
