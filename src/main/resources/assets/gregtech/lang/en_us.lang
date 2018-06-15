@@ -2787,6 +2787,9 @@ gregtech.machine.large_boiler.steel.name=Large Steel Boiler
 gregtech.machine.large_boiler.titanium.name=Large Titanium Boiler
 gregtech.machine.large_boiler.tungstensteel.name=Large Tungstensteel Boiler
 
+# Multiblock Tooltips
+gregtech.machine.primitive_blast_furnace.bronze.tooltip=Structure: 3x3x4 (WxLxH) The entire structure is made out of Primitive Bricks (32 in total)./nFirst Layer is a 3x3 square./nSecond, third, and fourth layers are hollow, without the middle block./nThis block goes on the middle of any side in the second layer./nThe sides of Blast Furnaces can be shared, if the side does not have a controller./n
+
 # Multiblock machine parts
 gregtech.machine.item_bus.import.tooltip=Item Input for Multiblocks
 
