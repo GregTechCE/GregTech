@@ -44,11 +44,6 @@ public class RecipeMaps {
         .setSlotOverlay(false, false, GuiTextures.CIRCUIT_OVERLAY)
         .setProgressBar(GuiTextures.PROGRESS_BAR_CIRCUIT, MoveType.HORIZONTAL);
 
-    public static final RecipeMap<DefaultRecipeBuilder> PRINTER_RECIPES = new RecipeMapPrinter("printer", 1, 2, 1, 1, 1, 1, 0, 0, 1, new DefaultRecipeBuilder())
-        .setSlotOverlay(false, false, GuiTextures.PAPER_OVERLAY)
-        .setSlotOverlay(true, false, GuiTextures.PRINTED_PAPER_OVERLAY)
-        .setProgressBar(GuiTextures.PROGRESS_BAR_ARROW, MoveType.HORIZONTAL);
-
     public static final RecipeMap<NotConsumableInputRecipeBuilder> FORMING_PRESS_RECIPES = new RecipeMapFormingPress("formingpress", 2, 2, 1, 1, 0, 0, 0, 0, 1, new NotConsumableInputRecipeBuilder())
         .setSlotOverlay(false, false, false, GuiTextures.PRESS_OVERLAY_1)
         .setSlotOverlay(false, false, true, GuiTextures.PRESS_OVERLAY_2)

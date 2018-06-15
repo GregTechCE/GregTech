@@ -1630,7 +1630,6 @@ recipemap.byproductlist.name=Ore Byproduct List
 recipemap.replicator.name=Replicator
 recipemap.assemblyline.name=Assembly Line
 recipemap.assembler.name=Assembler
-recipemap.printer.name=Printer
 recipemap.press.name=Forming Press
 recipemap.macerator.name=Pulverization
 recipemap.unpackager.name=Unpackager
@@ -2156,13 +2155,6 @@ gregtech.machine.laser_engraver.lv.name=Basic Precision Laser Engraver
 gregtech.machine.laser_engraver.mv.name=Advanced Precision Laser Engraver
 gregtech.machine.laser_engraver.hv.name=Advanced Precision Laser Engraver II
 gregtech.machine.laser_engraver.ev.name=Advanced Precision Laser Engraver III
-
-gregtech.machine.printer.tooltip=It can copy Books and paint Stuff
-
-gregtech.machine.printer.lv.name=Basic Printer
-gregtech.machine.printer.mv.name=Advanced Printer
-gregtech.machine.printer.hv.name=Advanced Printer II
-gregtech.machine.printer.ev.name=Advanced Printer III
 
 gregtech.machine.sifter.tooltip=Stay calm and keep sifting
 
