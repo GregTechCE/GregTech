@@ -25,6 +25,7 @@ import net.minecraft.init.Items;
 import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
+
 import org.apache.commons.lang3.ArrayUtils;
 
 import java.util.ArrayList;
@@ -365,7 +366,7 @@ public class OreProcessingHandler {
         ItemStack screwStack = OreDictUnifier.get(OrePrefix.screw, material);
         ItemStack ingotStack = OreDictUnifier.get(OrePrefix.ingot, material);
         if (!boltStack.isEmpty() && !screwStack.isEmpty()) {
-            ModHandler.addShapedRecipe(String.format("bolt_%s", material.toString()),
+            ModHandler.addShapedRecipe(String.format("bolt_file_%s", material.toString()),
                 boltStack, "fS", "S ",
                 'S', new UnificationEntry(OrePrefix.screw, material));
 
@@ -1309,7 +1310,7 @@ public class OreProcessingHandler {
                     .EUt(4)
                     .buildAndRegister();
 
-                ModHandler.addShapedRecipe(String.format("bolt_%s", material.toString()),
+                ModHandler.addShapedRecipe(String.format("bolt_saw_%s", material.toString()),
                     GTUtility.copyAmount(2, boltStack),
                     "s ", " X",
                     'X', new UnificationEntry(stickPrefix, material));

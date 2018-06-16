@@ -1,25 +1,25 @@
 {
   "type": "gregtech:metaitem_shaped",
   "pattern": [
-    "TST",
-    "SIS",
-    "TST"
+    "WCW",
+    "CGC",
+    "WCW"
   ],
   "key": {
-    "I": {
+    "G": {
       "type": "forge:ore_dict",
-      "ore": "gemDiamond"
+      "ore": "gemEnderPearl"
     },
-    "T": {
+    "C": {
       "type": "forge:ore_dict",
-      "ore": "plateTungsten"
+      "ore": "circuitBasic"
     },
-    "S": {
+    "W": {
       "type": "forge:ore_dict",
-      "ore": "plateSteel"
+      "ore": "wireGtSingleOsmium"
     }
   },
   "result": {
-    "name": "component.grinder.tungsten"
+    "name": "field.generator.lv"
   }
 }
