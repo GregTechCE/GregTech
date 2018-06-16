@@ -8,6 +8,7 @@ import gregtech.api.items.IDamagableItem;
 import gregtech.api.items.ToolDictNames;
 import gregtech.api.items.metaitem.MetaItem;
 import gregtech.api.items.metaitem.stats.IMetaItemStats;
+import gregtech.api.unification.material.MaterialIconSet;
 import gregtech.api.unification.material.Materials;
 import gregtech.api.unification.material.type.Material;
 import gregtech.api.unification.material.type.SolidMaterial;
@@ -401,6 +402,49 @@ public class ToolMetaItem<T extends ToolMetaItem<?>.MetaToolValueItem> extends M
     }
 
     @Override
+    public boolean isEnchantable(ItemStack stack) {
+        return true;
+    }
+
+    @Override
+    public int getItemEnchantability(ItemStack stack) {
+        SolidMaterial primaryMaterial = getPrimaryMaterial(stack);
+        SolidMaterial handleMaterial = getHandleMaterial(stack);
+        return Math.max(primaryMaterial == null ? 0 : getMaterialEnchantability(primaryMaterial),
+            handleMaterial == null ? 0 : getMaterialEnchantability(handleMaterial));
+    }
+
+    private static int getMaterialEnchantability(SolidMaterial material) {
+        if(material.materialIconSet == MaterialIconSet.SHINY ||
+            material.materialIconSet == MaterialIconSet.RUBY) {
+            return 33; //all shiny metals have gold enchantability
+        } else if(material.materialIconSet == MaterialIconSet.DULL ||
+            material.materialIconSet == MaterialIconSet.METALLIC) {
+            return 21; //dull metals have iron enchantability
+        } else if(material.materialIconSet == MaterialIconSet.GEM_VERTICAL ||
+            material.materialIconSet == MaterialIconSet.GEM_HORIZONTAL ||
+            material.materialIconSet == MaterialIconSet.DIAMOND ||
+            material.materialIconSet == MaterialIconSet.OPAL ||
+            material.materialIconSet == MaterialIconSet.NETHERSTAR) {
+            return 15; //standard gems have diamond enchantability
+        } else if(material.materialIconSet == MaterialIconSet.WOOD ||
+            material.materialIconSet == MaterialIconSet.ROUGH ||
+            material.materialIconSet == MaterialIconSet.FINE) {
+            return 11; //wood and stone has their default enchantability
+        }
+        return 10; //otherwise return lowest enchantability
+    }
+
+    @Override
+    public boolean canApplyAtEnchantingTable(ItemStack stack, Enchantment enchantment) {
+        T metaToolValueItem = getItem(stack);
+        if (metaToolValueItem != null && metaToolValueItem.toolStats != null) {
+            return metaToolValueItem.toolStats.canApplyEnchantment(stack, enchantment);
+        }
+        return false;
+    }
+
+    @Override
     public int getMaxInternalDamage(ItemStack itemStack) {
         T metaToolValueItem = getItem(itemStack);
         if (metaToolValueItem != null) {
@@ -555,11 +599,11 @@ public class ToolMetaItem<T extends ToolMetaItem<?>.MetaToolValueItem> extends M
             nbtTag.setTag("GT.ToolStats", toolNBT);
             stack.setTagCompound(nbtTag);
 
-            Map<Enchantment, Integer> enchantments = bakeEnchantmentsMap(materials);
+            Map<Enchantment, Integer> enchantments = bakeEnchantmentsMap(stack, materials);
             EnchantmentHelper.setEnchantments(enchantments, stack);
         }
 
-        private Map<Enchantment, Integer> bakeEnchantmentsMap(Collection<SolidMaterial> materials) {
+        private Map<Enchantment, Integer> bakeEnchantmentsMap(ItemStack itemStack, Collection<SolidMaterial> materials) {
             Map<Enchantment, Integer> enchantments = new HashMap<>();
             for(SolidMaterial material : materials) {
                 for(EnchantmentData enchantmentData : material.toolEnchantments) {
@@ -570,6 +614,15 @@ public class ToolMetaItem<T extends ToolMetaItem<?>.MetaToolValueItem> extends M
                     } else {
                         enchantments.put(enchantmentData.enchantment, enchantmentData.level);
                     }
+                }
+            }
+            for(EnchantmentData enchantmentData : toolStats.getEnchantments(itemStack)) {
+                if(enchantments.containsKey(enchantmentData.enchantment)) {
+                    int level = Math.min(enchantments.get(enchantmentData.enchantment) + enchantmentData.level,
+                        enchantmentData.enchantment.getMaxLevel());
+                    enchantments.put(enchantmentData.enchantment, level);
+                } else {
+                    enchantments.put(enchantmentData.enchantment, enchantmentData.level);
                 }
             }
             return enchantments;

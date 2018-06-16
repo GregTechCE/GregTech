@@ -3,10 +3,18 @@ package gregtech.common.tools;
 import gregtech.api.GregTechAPI;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.enchantment.Enchantment;
+import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 
 public class ToolDrillLV extends ToolBase {
+
+    @Override
+    public boolean canApplyEnchantment(ItemStack stack, Enchantment enchantment) {
+        return enchantment.type.canEnchantItem(Items.IRON_PICKAXE) ||
+            enchantment.type.canEnchantItem(Items.IRON_SHOVEL);
+    }
 
     @Override
     public int getToolDamagePerBlockBreak(ItemStack stack) {

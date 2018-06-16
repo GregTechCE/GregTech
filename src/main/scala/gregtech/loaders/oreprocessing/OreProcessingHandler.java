@@ -1648,7 +1648,7 @@ public class OreProcessingHandler {
     private void processFileHead(OrePrefix toolPrefix, Material material) {
         if(!(material instanceof SolidMaterial)) return;
         SolidMaterial solidMaterial = (SolidMaterial) material;
-        processSimpleTool(toolPrefix, solidMaterial, MetaItems.HARD_HAMMER, " I ", " I ", "  h");
+        processSimpleTool(toolPrefix, solidMaterial, MetaItems.FILE, " I ", " I ", "  h");
         if(solidMaterial instanceof IngotMaterial) {
             SolidMaterial handleMaterial = solidMaterial.handleMaterial == null ? Materials.Wood : solidMaterial.handleMaterial;
             ModHandler.addShapedRecipe(String.format("file_%s", solidMaterial),

@@ -7,6 +7,7 @@ import gregtech.api.items.toolitem.IToolStats;
 import gregtech.api.items.toolitem.ToolMetaItem;
 import gregtech.api.unification.material.type.SolidMaterial;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -18,6 +19,11 @@ import java.util.Collections;
 import java.util.List;
 
 public abstract class ToolBase implements IToolStats {
+
+    @Override
+    public boolean canApplyEnchantment(ItemStack stack, Enchantment enchantment) {
+        return false;
+    }
 
     @Override
     public int getToolDamagePerBlockBreak(ItemStack stack) {

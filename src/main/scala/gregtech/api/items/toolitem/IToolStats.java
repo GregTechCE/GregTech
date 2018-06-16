@@ -3,6 +3,7 @@ package gregtech.api.items.toolitem;
 import gregtech.api.enchants.EnchantmentData;
 import gregtech.api.items.metaitem.MetaItem;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -79,6 +80,8 @@ public interface IToolStats {
     ResourceLocation getBreakingSound(ItemStack stack);
 
     List<EnchantmentData> getEnchantments(ItemStack stack);
+
+    boolean canApplyEnchantment(ItemStack stack, Enchantment enchantment);
 
     boolean hasMaterialHandle();
 

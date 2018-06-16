@@ -2,12 +2,19 @@ package gregtech.common.tools;
 
 import com.google.common.collect.Lists;
 import gregtech.api.enchants.EnchantmentData;
+import net.minecraft.enchantment.Enchantment;
 import net.minecraft.init.Enchantments;
+import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 
 import java.util.List;
 
 public class ToolButcheryKnife extends ToolBase {
+
+    @Override
+    public boolean canApplyEnchantment(ItemStack stack, Enchantment enchantment) {
+        return enchantment.type.canEnchantItem(Items.IRON_SWORD);
+    }
 
     @Override
     public int getToolDamagePerBlockBreak(ItemStack stack) {
@@ -38,7 +45,5 @@ public class ToolButcheryKnife extends ToolBase {
     public List<EnchantmentData> getEnchantments(ItemStack stack) {
         return Lists.newArrayList(new EnchantmentData(Enchantments.SHARPNESS, 2));
     }
-
-
 
 }
