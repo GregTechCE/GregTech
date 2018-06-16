@@ -102,7 +102,7 @@ public class StoneRenderer implements ICCBlockRenderer {
         translation.translate(pos.getX(), pos.getY(), pos.getZ());
         IVertexOperation[] operations = new IVertexOperation[1];
         Material material = state.getValue(((BlockSurfaceRock) state.getBlock()).materialProperty);
-        operations[0] = new ColourMultiplier(GTUtility.convertRGBtoOpaqueRGBA(material.materialRGB));
+        operations[0] = new ColourMultiplier(GTUtility.convertRGBtoOpaqueRGBA_CL(material.materialRGB));
         if(world != null) {
           renderState.setBrightness(world, pos);
         }

@@ -46,7 +46,7 @@ public class TankRenderer implements IIconRegister {
         if(fluidStack != null) {
             double fluidLevel = fluidStack == null ? 0.0 : fluidStack.amount / (capacity * 1.0) * 0.99;
             fluidCuboid = new Cuboid6(0.01, 0.01, 0.01, 0.99, fluidLevel, 0.99);
-            ColourMultiplier multiplier = new ColourMultiplier(GTUtility.convertRGBtoOpaqueRGBA(fluidStack.getFluid().getColor(fluidStack)));
+            ColourMultiplier multiplier = new ColourMultiplier(GTUtility.convertRGBtoOpaqueRGBA_CL(fluidStack.getFluid().getColor(fluidStack)));
             fluidPipeline = fluidStack.getFluid().getLuminosity(fluidStack) > 0 ?
                 new IVertexOperation[] {multiplier} :
                 ArrayUtils.add(pipeline, multiplier);

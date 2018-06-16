@@ -39,6 +39,7 @@ import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.IFluidTank;
+import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 import net.minecraftforge.fml.relauncher.ReflectionHelper;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -46,6 +47,7 @@ import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.IItemHandlerModifiable;
 
 import java.awt.*;
+import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.*;
@@ -122,11 +124,33 @@ public class GTUtility {
     }
 
     //just because CCL uses a different color format
-    public static int convertRGBtoOpaqueRGBA(int colorValue) {
+    //0xRRGGBBAA
+    public static int convertRGBtoOpaqueRGBA_CL(int colorValue) {
         int r = (colorValue >> 16) & 0xFF;
         int g = (colorValue >> 8) & 0xFF;
         int b = (colorValue & 0xFF);
         return (r & 0xFF) << 24 | (g & 0xFF) << 16 | (b & 0xFF) << 8 | (0xFF);
+    }
+
+    //0xAARRGGBB
+    public static int convertRGBtoOpaqueRGBA_MC(int colorValue) {
+        long longValue = Long.parseLong("ff" + Integer.toString(colorValue, 16), 16);
+        return (int) longValue;
+    }
+
+    public static void setItem(ItemStack itemStack, ItemStack newStack) {
+        //replace item object reference inside itemstack, keeping all other data
+        ObfuscationReflectionHelper.setPrivateValue(ItemStack.class, itemStack, newStack.getItem(), "item");
+        itemStack.setItemDamage(newStack.getItemDamage());
+        try {
+            Method forgeInit = ItemStack.class.getDeclaredMethod("forgeInit");
+            forgeInit.setAccessible(true);
+            //reinitialize forge capabilities and delegate reference
+            forgeInit.invoke(itemStack);
+        } catch (ReflectiveOperationException exception) {
+            //should be impossible, actually
+            throw new RuntimeException(exception);
+        }
     }
 
     public static boolean isBlockOrePrefixed(IBlockAccess world, BlockPos pos, IBlockState blockState, OrePrefix targetPrefix, List<ItemStack> drops) {

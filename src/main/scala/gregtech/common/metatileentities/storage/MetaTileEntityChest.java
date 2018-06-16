@@ -78,12 +78,12 @@ public class MetaTileEntityChest extends MetaTileEntity {
     @Override
     public void renderMetaTileEntity(CCRenderState renderState, Matrix4 translation, IVertexOperation[] pipeline) {
         if(material.toString().contains("wood")) {
-            ColourMultiplier multiplier = new ColourMultiplier(GTUtility.convertRGBtoOpaqueRGBA(getPaintingColorForRendering()));
+            ColourMultiplier multiplier = new ColourMultiplier(GTUtility.convertRGBtoOpaqueRGBA_CL(getPaintingColorForRendering()));
             Textures.WOODEN_CHEST.render(renderState, translation, ArrayUtils.add(pipeline, multiplier), getFrontFacing());
         } else {
             ColourMultiplier multiplier = new ColourMultiplier(ColourRGBA.multiply(
-                GTUtility.convertRGBtoOpaqueRGBA(material.materialRGB),
-                GTUtility.convertRGBtoOpaqueRGBA(getPaintingColorForRendering())));
+                GTUtility.convertRGBtoOpaqueRGBA_CL(material.materialRGB),
+                GTUtility.convertRGBtoOpaqueRGBA_CL(getPaintingColorForRendering())));
             Textures.METAL_CHEST.render(renderState, translation, ArrayUtils.add(pipeline, multiplier), getFrontFacing());
         }
     }

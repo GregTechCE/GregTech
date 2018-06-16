@@ -9,6 +9,7 @@ import gregtech.api.unification.OreDictUnifier;
 import gregtech.api.unification.material.Materials;
 import gregtech.api.unification.ore.OrePrefix;
 import gregtech.api.util.RandomPotionEffect;
+import gregtech.common.items.behaviors.ToolPartsBoxBehavior;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.init.MobEffects;
@@ -90,6 +91,8 @@ public class MetaItem2 extends MaterialMetaItem {
         CROP_DROP_CUCUMBER = addItem(556, "crop.drop.cucumber").addOreDict("cropCucumber").addStats(new FoodStats(1, 0.2F)).setInvisible();
 
         PLANT_BALL = addItem(570, "plant_ball").setBurnValue(75);
+
+        TOOL_PARTS_BOX = addItem(571, "tool_parts_box").addStats(new ToolPartsBoxBehavior());
     }
 
     public void registerRecipes() {

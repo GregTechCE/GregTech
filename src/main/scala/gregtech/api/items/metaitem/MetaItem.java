@@ -85,7 +85,6 @@ public abstract class MetaItem<T extends MetaItem<?>.MetaValueItem> extends Item
 
     @SideOnly(Side.CLIENT)
     public void registerModels() {
-        TShortObjectHashMap<ModelResourceLocation> itemModels = new TShortObjectHashMap<>();
         for(short itemMetaKey : metaItems.keys()) {
             T metaValueItem = metaItems.get(itemMetaKey);
             int numberOfModels = metaValueItem.getModelAmount();
@@ -105,7 +104,7 @@ public abstract class MetaItem<T extends MetaItem<?>.MetaValueItem> extends Item
         }
 
         ModelLoader.setCustomMeshDefinition(this, itemStack -> {
-            short itemDamage = (short) itemStack.getItemDamage();
+            short itemDamage = formatRawItemDamage((short) itemStack.getItemDamage());
             if(specialItemsModels.containsKey(itemDamage)) {
                 int modelIndex = getModelIndex((short) (itemDamage - metaItemOffset), itemStack);
                 return specialItemsModels.get(itemDamage)[modelIndex];
@@ -149,7 +148,7 @@ public abstract class MetaItem<T extends MetaItem<?>.MetaValueItem> extends Item
     }
 
     public final T getItem(short metaValue) {
-        return metaItems.get(metaValue);
+        return metaItems.get(formatRawItemDamage(metaValue));
     }
 
     public final T getItem(String valueName) {
@@ -160,9 +159,12 @@ public abstract class MetaItem<T extends MetaItem<?>.MetaValueItem> extends Item
         return getItem((short) (itemStack.getItemDamage() - metaItemOffset));
     }
 
+    protected short formatRawItemDamage(short metaValue) {
+        return metaValue;
+    }
+
     public void registerSubItems() {}
 
-    @Nullable
     @Override
     public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable NBTTagCompound nbt) {
         T metaValueItem = getItem(stack);

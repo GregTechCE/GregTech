@@ -36,6 +36,16 @@ public class FuelLoader {
             .fluidInputs(Materials.Steam.getFluid(10))
             .duration(3).EUt(-32)
             .buildAndRegister();
+
+        RecipeMaps.GAS_TURBINE_FUELS.recipeBuilder()
+            .fluidInputs(Materials.Hydrogen.getFluid(16))
+            .duration(5).EUt(-16)
+            .buildAndRegister();
+
+        RecipeMaps.GAS_TURBINE_FUELS.recipeBuilder()
+            .fluidInputs(Materials.Methane.getFluid(8))
+            .duration(10).EUt(-24)
+            .buildAndRegister();
     }
 
 

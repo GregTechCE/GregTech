@@ -129,11 +129,11 @@ public class MetaTileEntityTank extends MetaTileEntity {
     public void renderMetaTileEntity(CCRenderState renderState, Matrix4 translation, IVertexOperation[] pipeline) {
         FluidStack fluidStack = getFluidForRendering();
         if(material.toString().contains("wood")) {
-            Textures.WOODEN_TANK.render(renderState, translation, GTUtility.convertRGBtoOpaqueRGBA(getPaintingColorForRendering()), pipeline, tankSize, fluidStack);
+            Textures.WOODEN_TANK.render(renderState, translation, GTUtility.convertRGBtoOpaqueRGBA_CL(getPaintingColorForRendering()), pipeline, tankSize, fluidStack);
         } else {
             int baseColor = ColourRGBA.multiply(
-                GTUtility.convertRGBtoOpaqueRGBA(material.materialRGB),
-                GTUtility.convertRGBtoOpaqueRGBA(getPaintingColorForRendering()));
+                GTUtility.convertRGBtoOpaqueRGBA_CL(material.materialRGB),
+                GTUtility.convertRGBtoOpaqueRGBA_CL(getPaintingColorForRendering()));
             Textures.METAL_TANK.render(renderState, translation, baseColor, pipeline, tankSize, fluidStack);
         }
     }

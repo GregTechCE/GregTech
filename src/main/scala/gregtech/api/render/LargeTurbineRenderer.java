@@ -66,7 +66,7 @@ public class LargeTurbineRenderer implements IIconRegister {
         }
         if(hasRotor) {
             TextureAtlasSprite sprite = isActive ? activeBladeSprite : idleBladeSprite;
-            IVertexOperation[] color = ArrayUtils.add(pipeline, new ColourMultiplier(GTUtility.convertRGBtoOpaqueRGBA(rotorRGB)));
+            IVertexOperation[] color = ArrayUtils.add(pipeline, new ColourMultiplier(GTUtility.convertRGBtoOpaqueRGBA_CL(rotorRGB)));
             Textures.renderFace(renderState, cornerOffset, color, side, Cuboid6.full, sprite);
         }
     }

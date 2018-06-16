@@ -1,8 +1,10 @@
 package gregtech.api.capability;
 
-import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityInject;
+
+import java.util.function.BiConsumer;
 
 public interface IElectricItem {
 
@@ -15,6 +17,12 @@ public interface IElectricItem {
      * @return true if item can be discharged externally
      */
     boolean canProvideChargeExternally();
+
+    /**
+     * Adds charge listener to this electric item
+     * @param chargeListener listener will be called when charge changes
+     */
+    void addChargeListener(BiConsumer<ItemStack, Long> chargeListener);
 
     /**
      * Charge an item with a specified amount of energy.
@@ -63,25 +71,9 @@ public interface IElectricItem {
     boolean canUse(long amount);
 
     /**
-     * Try to retrieve a specific amount of energy from an Item, and if applicable, a BatPack.
-     *
-     * @param amount amount of energy to discharge in EU
-     * @param entity entity holding the item
-     * @return true if the operation succeeded
-     */
-    boolean use(long amount, EntityLivingBase entity);
-
-    /**
-     * Charge an item from the BatPack a player is wearing.
-     * use() already contains this functionality.
-     *
-     * @param entity entity holding the item
-     */
-    void chargeFromArmor(EntityLivingBase entity);
-
-    /**
      * Get the tier of the specified item.
      * @return The tier of the item.
      */
     int getTier();
+
 }

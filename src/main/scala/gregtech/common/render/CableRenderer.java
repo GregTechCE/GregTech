@@ -136,7 +136,7 @@ public class CableRenderer implements ICCBlockRenderer, IItemRenderer, IModelPar
 
     public void renderCableBlock(Material material, Insulation insulation1, int insulationColor1, CCRenderState state, IVertexOperation[] pipeline, int connectMask) {
         MaterialIconSet iconSet = material.materialIconSet;
-        int wireColor = GTUtility.convertRGBtoOpaqueRGBA(material.materialRGB);
+        int wireColor = GTUtility.convertRGBtoOpaqueRGBA_CL(material.materialRGB);
         float thickness = insulation1.thickness;
 
         IVertexOperation[] wire = ArrayUtils.addAll(pipeline, new IconTransformation(wireTextures.get(iconSet)), new ColourMultiplier(wireColor));
@@ -144,7 +144,7 @@ public class CableRenderer implements ICCBlockRenderer, IItemRenderer, IModelPar
         IVertexOperation[] insulation = wire;
 
         if(insulation1.insulationLevel != -1) {
-            int insulationColor = GTUtility.convertRGBtoOpaqueRGBA(insulationColor1);
+            int insulationColor = GTUtility.convertRGBtoOpaqueRGBA_CL(insulationColor1);
             ColourMultiplier multiplier = new ColourMultiplier(insulationColor);
             insulation = ArrayUtils.addAll(pipeline, new IconTransformation(insulationTextures[5]), multiplier);
             overlays = ArrayUtils.addAll(pipeline, new IconTransformation(insulationTextures[insulation1.insulationLevel]), multiplier);

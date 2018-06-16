@@ -2,14 +2,19 @@ package gregtech.loaders.postload;
 
 import gregtech.api.recipes.CountableIngredient;
 import gregtech.api.recipes.ModHandler;
+import gregtech.api.recipes.RecipeBuilder;
 import gregtech.api.recipes.RecipeMaps;
 import gregtech.api.recipes.builders.AssemblyLineRecipeBuilder;
 import gregtech.api.recipes.builders.PBFRecipeBuilder;
 import gregtech.api.unification.OreDictUnifier;
 import gregtech.api.unification.material.MarkerMaterials;
 import gregtech.api.unification.material.Materials;
+import gregtech.api.unification.material.type.DustMaterial;
+import gregtech.api.unification.material.type.GemMaterial;
 import gregtech.api.unification.material.type.IngotMaterial;
+import gregtech.api.unification.material.type.Material.MatFlags;
 import gregtech.api.unification.ore.OrePrefix;
+import gregtech.api.unification.stack.ItemMaterialInfo;
 import gregtech.api.unification.stack.MaterialStack;
 import gregtech.api.unification.stack.UnificationEntry;
 import gregtech.api.util.GTLog;
@@ -34,8 +39,11 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.oredict.OreDictionary;
 import org.apache.commons.lang3.tuple.Pair;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map.Entry;
+import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 import static gregtech.api.GTValues.L;
@@ -70,8 +78,10 @@ public class MachineRecipeLoader {
     };
 
     public static void init() {
-        shapingRecipes();
+        initializeShapingRecipes();
         initializeWoodRecipes();
+        initializeArcRecyclingRecipes();
+
         for (OrePrefix prefix : Arrays.asList(OrePrefix.dust, OrePrefix.dustSmall, OrePrefix.dustTiny)) {
             RecipeMaps.MIXER_RECIPES.recipeBuilder().duration((int) (100 * prefix.materialAmount / M)).EUt(8).input(prefix, Materials.EnderPearl, 1).input(prefix, Materials.Blaze, 1).outputs(OreDictUnifier.getDust(Materials.EnderEye, 1 * prefix.materialAmount)).buildAndRegister();
             RecipeMaps.MIXER_RECIPES.recipeBuilder().duration((int) (200 * prefix.materialAmount / M)).EUt(8).input(prefix, Materials.Gold, 1).input(prefix, Materials.Silver, 1).outputs(OreDictUnifier.getDust(Materials.Electrum, 2 * prefix.materialAmount)).buildAndRegister();
@@ -338,9 +348,34 @@ public class MachineRecipeLoader {
         RecipeMaps.DISTILLERY_RECIPES.recipeBuilder().duration(16).EUt(24).fluidInputs(Materials.Biomass.getFluid(40)).circuitMeta(1).fluidOutputs(Materials.Ethanol.getFluid(12)).buildAndRegister();
         RecipeMaps.DISTILLERY_RECIPES.recipeBuilder().duration(16).EUt(24).fluidInputs(Materials.Biomass.getFluid(40)).circuitMeta(5).fluidOutputs(Materials.Water.getFluid(12)).buildAndRegister();
         RecipeMaps.DISTILLERY_RECIPES.recipeBuilder().duration(16).EUt(8).fluidInputs(Materials.Water.getFluid(5)).circuitMeta(5).fluidOutputs(ModHandler.getDistilledWater(4)).buildAndRegister();
+        RecipeMaps.DISTILLERY_RECIPES.recipeBuilder().duration(21).EUt(16).fluidInputs(Materials.OilLight.getFluid(25)).circuitMeta(0).fluidOutputs(Materials.SulfuricGas.getFluid(80)).buildAndRegister();
+        RecipeMaps.DISTILLERY_RECIPES.recipeBuilder().duration(32).EUt(16).fluidInputs(Materials.OilLight.getFluid(25)).circuitMeta(1).fluidOutputs(Materials.SulfuricNaphtha.getFluid(15)).buildAndRegister();
+        RecipeMaps.DISTILLERY_RECIPES.recipeBuilder().duration(64).EUt(16).fluidInputs(Materials.OilLight.getFluid(25)).circuitMeta(2).fluidOutputs(Materials.SulfuricLightFuel.getFluid(20)).buildAndRegister();
+        RecipeMaps.DISTILLERY_RECIPES.recipeBuilder().duration(64).EUt(16).fluidInputs(Materials.OilLight.getFluid(25)).circuitMeta(3).fluidOutputs(Materials.SulfuricHeavyFuel.getFluid(10)).buildAndRegister();
         RecipeMaps.DISTILLERY_RECIPES.recipeBuilder().duration(16).EUt(24).fluidInputs(Materials.OilLight.getFluid(300)).circuitMeta(4).fluidOutputs(Materials.Oil.getFluid(100)).buildAndRegister();
+        RecipeMaps.DISTILLERY_RECIPES.recipeBuilder().duration(16).EUt(16).fluidInputs(Materials.OilMedium.getFluid(25)).circuitMeta(0).fluidOutputs(Materials.SulfuricGas.getFluid(15)).buildAndRegister();
+        RecipeMaps.DISTILLERY_RECIPES.recipeBuilder().duration(64).EUt(16).fluidInputs(Materials.OilMedium.getFluid(25)).circuitMeta(1).fluidOutputs(Materials.SulfuricNaphtha.getFluid(20)).buildAndRegister();
+        RecipeMaps.DISTILLERY_RECIPES.recipeBuilder().duration(64).EUt(16).fluidInputs(Materials.OilMedium.getFluid(25)).circuitMeta(2).fluidOutputs(Materials.SulfuricLightFuel.getFluid(50)).buildAndRegister();
+        RecipeMaps.DISTILLERY_RECIPES.recipeBuilder().duration(64).EUt(16).fluidInputs(Materials.OilMedium.getFluid(25)).circuitMeta(3).fluidOutputs(Materials.SulfuricHeavyFuel.getFluid(15)).buildAndRegister();
         RecipeMaps.DISTILLERY_RECIPES.recipeBuilder().duration(16).EUt(24).fluidInputs(Materials.OilMedium.getFluid(200)).circuitMeta(4).fluidOutputs(Materials.Oil.getFluid(100)).buildAndRegister();
+        RecipeMaps.DISTILLERY_RECIPES.recipeBuilder().duration(16).EUt(48).fluidInputs(Materials.OilHeavy.getFluid(25)).circuitMeta(0).fluidOutputs(Materials.SulfuricGas.getFluid(15)).buildAndRegister();
+        RecipeMaps.DISTILLERY_RECIPES.recipeBuilder().duration(64).EUt(48).fluidInputs(Materials.OilHeavy.getFluid(25)).circuitMeta(1).fluidOutputs(Materials.SulfuricNaphtha.getFluid(15)).buildAndRegister();
+        RecipeMaps.DISTILLERY_RECIPES.recipeBuilder().duration(64).EUt(48).fluidInputs(Materials.OilHeavy.getFluid(25)).circuitMeta(2).fluidOutputs(Materials.SulfuricLightFuel.getFluid(45)).buildAndRegister();
+        RecipeMaps.DISTILLERY_RECIPES.recipeBuilder().duration(64).EUt(48).fluidInputs(Materials.OilHeavy.getFluid(25)).circuitMeta(3).fluidOutputs(Materials.SulfuricHeavyFuel.getFluid(250)).buildAndRegister();
         RecipeMaps.DISTILLERY_RECIPES.recipeBuilder().duration(16).EUt(24).fluidInputs(Materials.OilHeavy.getFluid(100)).circuitMeta(4).fluidOutputs(Materials.Oil.getFluid(100)).buildAndRegister();
+        RecipeMaps.DISTILLERY_RECIPES.recipeBuilder().duration(32).EUt(16).fluidInputs(Materials.Oil.getFluid(25)).circuitMeta(0).fluidOutputs(Materials.SulfuricGas.getFluid(30)).buildAndRegister();
+        RecipeMaps.DISTILLERY_RECIPES.recipeBuilder().duration(64).EUt(16).fluidInputs(Materials.Oil.getFluid(25)).circuitMeta(1).fluidOutputs(Materials.SulfuricNaphtha.getFluid(20)).buildAndRegister();
+        RecipeMaps.DISTILLERY_RECIPES.recipeBuilder().duration(64).EUt(16).fluidInputs(Materials.Oil.getFluid(25)).circuitMeta(2).fluidOutputs(Materials.SulfuricLightFuel.getFluid(50)).buildAndRegister();
+        RecipeMaps.DISTILLERY_RECIPES.recipeBuilder().duration(64).EUt(16).fluidInputs(Materials.Oil.getFluid(25)).circuitMeta(3).fluidOutputs(Materials.SulfuricHeavyFuel.getFluid(15)).buildAndRegister();
+        RecipeMaps.DISTILLERY_RECIPES.recipeBuilder().duration(16).EUt(16).fluidInputs(Materials.CrackedLightFuel.getFluid(25)).circuitMeta(0).fluidOutputs(Materials.Gas.getFluid(120));
+        RecipeMaps.DISTILLERY_RECIPES.recipeBuilder().duration(16).EUt(16).fluidInputs(Materials.CrackedLightFuel.getFluid(25)).circuitMeta(1).fluidOutputs(Materials.Naphtha.getFluid(15));
+        RecipeMaps.DISTILLERY_RECIPES.recipeBuilder().duration(32).EUt(16).fluidInputs(Materials.CrackedLightFuel.getFluid(25)).circuitMeta(2).fluidOutputs(Materials.HeavyFuel.getFluid(10));
+        RecipeMaps.DISTILLERY_RECIPES.recipeBuilder().duration(32).EUt(16).fluidInputs(Materials.CrackedLightFuel.getFluid(25)).circuitMeta(3).fluidOutputs(Materials.Toluene.getFluid(10));
+        RecipeMaps.DISTILLERY_RECIPES.recipeBuilder().duration(16).EUt(16).fluidInputs(Materials.CrackedHeavyFuel.getFluid(25)).circuitMeta(0).fluidOutputs(Materials.Gas.getFluid(40));
+        RecipeMaps.DISTILLERY_RECIPES.recipeBuilder().duration(16).EUt(16).fluidInputs(Materials.CrackedHeavyFuel.getFluid(25)).circuitMeta(1).fluidOutputs(Materials.Naphtha.getFluid(5));
+        RecipeMaps.DISTILLERY_RECIPES.recipeBuilder().duration(32).EUt(16).fluidInputs(Materials.CrackedHeavyFuel.getFluid(25)).circuitMeta(2).fluidOutputs(Materials.HeavyFuel.getFluid(40));
+        RecipeMaps.DISTILLERY_RECIPES.recipeBuilder().duration(32).EUt(16).fluidInputs(Materials.CrackedHeavyFuel.getFluid(25)).circuitMeta(3).fluidOutputs(Materials.Toluene.getFluid(30));
+        RecipeMaps.DISTILLERY_RECIPES.recipeBuilder().duration(32).EUt(16).fluidInputs(Materials.CrackedHeavyFuel.getFluid(25)).circuitMeta(4).fluidOutputs(Materials.Lubricant.getFluid(5));
 
         RecipeMaps.FLUID_HEATER_RECIPES.recipeBuilder().duration(30).EUt(32).fluidInputs(Materials.Water.getFluid(6)).circuitMeta(1).fluidOutputs(Materials.Steam.getFluid(960)).buildAndRegister();
         RecipeMaps.FLUID_HEATER_RECIPES.recipeBuilder().duration(30).EUt(32).fluidInputs(ModHandler.getDistilledWater(6)).circuitMeta(1).fluidOutputs(Materials.Steam.getFluid(960)).buildAndRegister();
@@ -405,6 +440,13 @@ public class MachineRecipeLoader {
         RecipeMaps.DISTILLATION_RECIPES.recipeBuilder().duration(16).EUt(96).fluidInputs(Materials.SeedOil.getFluid(32)).fluidOutputs(Materials.Lubricant.getFluid(12)).buildAndRegister();
         RecipeMaps.DISTILLATION_RECIPES.recipeBuilder().duration(25).EUt(64).fluidInputs(Materials.Biomass.getFluid(150)).outputs(OreDictUnifier.get(OrePrefix.dustSmall,Materials.Wood,1)).fluidOutputs(Materials.Ethanol.getFluid(60), Materials.Water.getFluid(60)).buildAndRegister();
         RecipeMaps.DISTILLATION_RECIPES.recipeBuilder().duration(16).EUt(64).fluidInputs(Materials.Water.getFluid(L * 2)).fluidOutputs(ModHandler.getDistilledWater(260)).buildAndRegister();
+        RecipeMaps.DISTILLATION_RECIPES.recipeBuilder().duration(32).EUt(64).fluidInputs(Materials.OilLight.getFluid(25)).fluidOutputs(Materials.SulfuricGas.getFluid(80), Materials.SulfuricNaphtha.getFluid(15), Materials.SulfuricLightFuel.getFluid(20), Materials.SulfuricHeavyFuel.getFluid(10)).buildAndRegister();
+        RecipeMaps.DISTILLATION_RECIPES.recipeBuilder().duration(32).EUt(64).fluidInputs(Materials.Oil.getFluid(25)).fluidOutputs(Materials.SulfuricGas.getFluid(30), Materials.SulfuricNaphtha.getFluid(20), Materials.SulfuricLightFuel.getFluid(50), Materials.SulfuricHeavyFuel.getFluid(15)).buildAndRegister();
+        RecipeMaps.DISTILLATION_RECIPES.recipeBuilder().duration(32).EUt(192).fluidInputs(Materials.OilHeavy.getFluid(25)).fluidOutputs(Materials.SulfuricGas.getFluid(15),Materials.SulfuricNaphtha.getFluid(15), Materials.SulfuricLightFuel.getFluid(45), Materials.SulfuricHeavyFuel.getFluid(250)).buildAndRegister();
+        RecipeMaps.DISTILLATION_RECIPES.recipeBuilder().duration(32).EUt(64).fluidInputs(Materials.OilMedium.getFluid(25)).fluidOutputs(Materials.SulfuricGas.getFluid(15), Materials.SulfuricNaphtha.getFluid(20), Materials.SulfuricLightFuel.getFluid(50), Materials.SulfuricHeavyFuel.getFluid(15)).buildAndRegister();
+        RecipeMaps.DISTILLATION_RECIPES.recipeBuilder().duration(16).EUt(64).fluidInputs(Materials.CrackedLightFuel.getFluid(25)).fluidOutputs(Materials.Gas.getFluid(120), Materials.Naphtha.getFluid(15), Materials.HeavyFuel.getFluid(10), Materials.Toluene.getFluid(10)).buildAndRegister();
+        RecipeMaps.DISTILLATION_RECIPES.recipeBuilder().duration(16).EUt(64).fluidInputs(Materials.CrackedHeavyFuel.getFluid(25)).outputs(OreDictUnifier.get(OrePrefix.dustTiny,Materials.HydratedCoal, 1)).fluidOutputs(Materials.Gas.getFluid(40), Materials.Naphtha.getFluid(5), Materials.LightFuel.getFluid(40), Materials.Toluene.getFluid(30), Materials.Lubricant.getFluid(5)).buildAndRegister();
+
 
         RecipeMaps.ELECTROLYZER_RECIPES.recipeBuilder().duration(1500).EUt(30).fluidInputs(Materials.Water.getFluid(3000)).fluidOutputs(Materials.Hydrogen.getFluid(2000), Materials.Oxygen.getFluid(1000)).buildAndRegister();
         RecipeMaps.ELECTROLYZER_RECIPES.recipeBuilder().duration(1500).EUt(30).fluidInputs(ModHandler.getDistilledWater(3000)).fluidOutputs(Materials.Hydrogen.getFluid(2000), Materials.Oxygen.getFluid(1000)).buildAndRegister();
@@ -764,7 +806,8 @@ public class MachineRecipeLoader {
             .chancedOutput(OreDictUnifier.get(OrePrefix.dustSmall, Materials.Stone, 1), 100)
             .buildAndRegister();
     }
-    public static void shapingRecipes() {
+
+    public static void initializeShapingRecipes() {
         RecipeMaps.ALLOY_SMELTER_RECIPES.recipeBuilder()
             .inputs(GTUtility.copyAmount(31, OreDictUnifier.get(OrePrefix.ingot, Materials.Iron)))
             .notConsumable(MetaItems.SHAPE_MOLD_ANVIL)
@@ -876,11 +919,74 @@ public class MachineRecipeLoader {
             .duration(100)
             .EUt(8)
             .buildAndRegister();
-        
-
-
-
     }
+
+    public static void initializeArcRecyclingRecipes() {
+        for(Entry<ItemStack, ItemMaterialInfo> entry : OreDictUnifier.getAllItemInfos()) {
+            ItemStack itemStack = entry.getKey();
+            ItemMaterialInfo materialInfo = entry.getValue();
+            ArrayList<MaterialStack> materialStacks = new ArrayList<>();
+            materialStacks.add(materialInfo.material);
+            materialStacks.addAll(materialInfo.additionalComponents);
+            registerArcRecyclingRecipe(b -> b.inputs(itemStack), materialStacks, false);
+        }
+    }
+
+    public static void registerArcRecyclingRecipe(Consumer<RecipeBuilder<?>> inputSupplier, List<MaterialStack> components, boolean ignoreArcSmelting) {
+        List<MaterialStack> dustMaterials = components.stream()
+            .filter(stack -> stack.material instanceof DustMaterial)
+            .filter(stack -> stack.amount >= M / 9) //do only materials which have at least one nugget
+            .collect(Collectors.toList());
+        if(dustMaterials.isEmpty()) return;
+        MaterialStack firstStack = dustMaterials.get(0);
+        int voltageMultiplier = 1;
+        if(firstStack.material instanceof IngotMaterial) {
+            int blastFurnaceTemperature = ((IngotMaterial) firstStack.material).blastFurnaceTemperature;
+            voltageMultiplier = blastFurnaceTemperature == 0 ? 1 : blastFurnaceTemperature > 2000 ? 16 : 4;
+        }
+
+        RecipeBuilder<?> maceratorRecipeBuilder = RecipeMaps.MACERATOR_RECIPES.recipeBuilder()
+            .outputs(dustMaterials.stream().map(OreDictUnifier::getDust).collect(Collectors.toList()))
+            .duration((int) Math.max(1L, firstStack.amount * 30 / M))
+            .EUt(8 * voltageMultiplier);
+        inputSupplier.accept(maceratorRecipeBuilder);
+        maceratorRecipeBuilder.buildAndRegister();
+
+        if(!ignoreArcSmelting) {
+            RecipeBuilder<?> arcFurnaceRecipeBuilder = RecipeMaps.ARC_FURNACE_RECIPES.recipeBuilder()
+                .outputs(dustMaterials.stream().map(MachineRecipeLoader::getArcSmeltingResult).collect(Collectors.toList()))
+                .duration((int) Math.max(1L, firstStack.amount * 60 / M))
+                .EUt(32 * voltageMultiplier);
+            inputSupplier.accept(arcFurnaceRecipeBuilder);
+            arcFurnaceRecipeBuilder.buildAndRegister();
+        }
+    }
+
+    private static ItemStack getArcSmeltingResult(MaterialStack materialStack) {
+        DustMaterial material = (DustMaterial) materialStack.material;
+        long materialAmount = materialStack.amount;
+        if(material.hasFlag(MatFlags.FLAMMABLE)) {
+            return OreDictUnifier.getDust(Materials.Ash, materialAmount);
+        } else if(material instanceof GemMaterial) {
+            if(materialStack.material.materialComponents.stream()
+                .anyMatch(stack -> stack.material == Materials.Oxygen)) {
+                return OreDictUnifier.getDust(Materials.Ash, materialAmount);
+            }
+            if(materialStack.material.materialComponents.stream()
+                .anyMatch(stack -> stack.material == Materials.Carbon)) {
+                return OreDictUnifier.getDust(Materials.Carbon, materialAmount);
+            }
+            return OreDictUnifier.getDust(Materials.DarkAsh, materialAmount);
+        } else if(material instanceof IngotMaterial) {
+            IngotMaterial ingotMaterial = (IngotMaterial) material;
+            if(ingotMaterial.arcSmeltInto != null)
+                ingotMaterial = ingotMaterial.arcSmeltInto;
+            return OreDictUnifier.getIngot(ingotMaterial, materialAmount);
+        } else {
+            return OreDictUnifier.getDust(material, materialAmount);
+        }
+    }
+
     public static void initializeWoodRecipes() {
         RecipeMaps.MACERATOR_RECIPES.recipeBuilder()
             .input(OrePrefix.log, Materials.Wood)
