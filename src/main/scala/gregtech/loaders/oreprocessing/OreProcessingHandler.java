@@ -432,7 +432,7 @@ public class OreProcessingHandler {
 
         if (material.hasFlag(MORTAR_GRINDABLE)) {
             ModHandler.addShapedRecipe(String.format("mortar_grind_%s", material.toString()),
-                OreDictUnifier.get(OrePrefix.dust, material), "X", 'm', 'X', new UnificationEntry(ingotPrefix, material));
+                OreDictUnifier.get(OrePrefix.dust, material), "X", "m", 'X', new UnificationEntry(ingotPrefix, material));
         }
 
         if (!material.hasFlag(MatFlags.NO_SMASHING)) {
