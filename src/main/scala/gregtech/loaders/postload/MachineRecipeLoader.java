@@ -939,9 +939,10 @@ public class MachineRecipeLoader {
             .collect(Collectors.toList());
         if(dustMaterials.isEmpty()) return;
         MaterialStack firstStack = dustMaterials.get(0);
+        DustMaterial dustMaterial = (DustMaterial) firstStack.material;
         int voltageMultiplier = 1;
-        if(firstStack.material instanceof IngotMaterial) {
-            int blastFurnaceTemperature = ((IngotMaterial) firstStack.material).blastFurnaceTemperature;
+        if(dustMaterial instanceof IngotMaterial) {
+            int blastFurnaceTemperature = ((IngotMaterial) dustMaterial).blastFurnaceTemperature;
             voltageMultiplier = blastFurnaceTemperature == 0 ? 1 : blastFurnaceTemperature > 2000 ? 16 : 4;
         }
 
@@ -951,6 +952,15 @@ public class MachineRecipeLoader {
             .EUt(8 * voltageMultiplier);
         inputSupplier.accept(maceratorRecipeBuilder);
         maceratorRecipeBuilder.buildAndRegister();
+
+        if(dustMaterial.shouldGenerateFluid()) {
+            RecipeBuilder<?> fluidExtractorRecipeBuilder = RecipeMaps.FLUID_EXTRACTION_RECIPES.recipeBuilder()
+                .fluidOutputs(dustMaterial.getFluid((int) (firstStack.amount * L / M)))
+                .duration((int) Math.max(1L, firstStack.amount * 80 / M))
+                .EUt(32 * voltageMultiplier);
+            inputSupplier.accept(fluidExtractorRecipeBuilder);
+            fluidExtractorRecipeBuilder.buildAndRegister();
+        }
 
         if(!ignoreArcSmelting) {
             RecipeBuilder<?> arcFurnaceRecipeBuilder = RecipeMaps.ARC_FURNACE_RECIPES.recipeBuilder()

@@ -104,7 +104,9 @@ public class OreProcessingHandler {
         OrePrefix.dustTiny.addProcessingHandler(this::processTinyDust);
         OrePrefix.gear.addProcessingHandler(this::processGear);
         OrePrefix.gearSmall.addProcessingHandler(this::processGear);
-        OrePrefix.gem.addProcessingHandler(this::processGem);
+        for(OrePrefix orePrefix : GEM_ORDER) {
+            orePrefix.addProcessingHandler(this::processGem);
+        }
 
         OrePrefix.wireGtSingle.addProcessingHandler(this::processWireSingle);
         OrePrefix.wireGtDouble.addProcessingHandler(this::processWireDouble);
@@ -428,9 +430,9 @@ public class OreProcessingHandler {
             return;
         ItemStack ingotStack = OreDictUnifier.get(ingotPrefix, material);
 
-        if (material.hasFlag(SolidMaterial.MatFlags.MORTAR_GRINDABLE)) {
-            ModHandler.addShapelessRecipe(String.format("mortar_grind_%s", material.toString()),
-                OreDictUnifier.get(OrePrefix.dust, material), 'm', new UnificationEntry(ingotPrefix, material));
+        if (material.hasFlag(MORTAR_GRINDABLE)) {
+            ModHandler.addShapedRecipe(String.format("mortar_grind_%s", material.toString()),
+                OreDictUnifier.get(OrePrefix.dust, material), "X", 'm', 'X', new UnificationEntry(ingotPrefix, material));
         }
 
         if (!material.hasFlag(MatFlags.NO_SMASHING)) {
@@ -832,60 +834,57 @@ public class OreProcessingHandler {
     }
 
     private void processGem(OrePrefix gemPrefix, Material materialIn) {
-        if (materialIn instanceof GemMaterial) {
-            GemMaterial material = (GemMaterial) materialIn;
-            ItemStack stack = OreDictUnifier.get(gemPrefix, materialIn);
+        if (!(materialIn instanceof GemMaterial))
+            return;
+        GemMaterial material = (GemMaterial) materialIn;
+        ItemStack stack = OreDictUnifier.get(gemPrefix, materialIn);
+        long materialAmount = gemPrefix.materialAmount;
+        ItemStack crushedStack = OreDictUnifier.getDust(material, materialAmount);
 
-            if (!stack.isEmpty()) {
+        if (material.hasFlag(MORTAR_GRINDABLE)) {
+            ModHandler.addShapedRecipe(String.format("gem_to_dust_%s", material), crushedStack,
+                "X", "m", 'X', new UnificationEntry(gemPrefix, materialIn));
+        }
 
-                long materialAmount = gemPrefix.materialAmount;
-                ItemStack crushedStack = OreDictUnifier.getDust(material, materialAmount);
+        if (!material.hasFlag(MatFlags.NO_SMASHING)) {
+            OrePrefix prevPrefix = GTUtility.getItem(GEM_ORDER, GEM_ORDER.indexOf(gemPrefix) - 1, null);
+            if (prevPrefix != null) {
+                ItemStack prevStack = OreDictUnifier.get(prevPrefix, material, 2);
+                ModHandler.addShapelessRecipe(String.format("gem_to_gem_%s_%s", prevPrefix, material), prevStack, "h", new UnificationEntry(gemPrefix, materialIn));
+                RecipeMaps.FORGE_HAMMER_RECIPES.recipeBuilder()
+                    .input(gemPrefix, materialIn)
+                    .outputs(prevStack)
+                    .duration(20).EUt(16)
+                    .buildAndRegister();
+            }
+            ModHandler.addShapedRecipe(String.format("gem_to_plate_%s", material),
+                stack, "h", "X",
+                'X', new UnificationEntry(OrePrefix.gem, material));
+        }
 
-                if (material.hasFlag(SolidMaterial.MatFlags.MORTAR_GRINDABLE)) {
-                    ModHandler.addShapelessRecipe(String.format("gem_to_dust_%s", material), crushedStack, "m", new UnificationEntry(gemPrefix, materialIn));
-                }
-
-                if (!material.hasFlag(MatFlags.NO_SMASHING)) {
-                    OrePrefix prevPrefix = GTUtility.getItem(GEM_ORDER, GEM_ORDER.indexOf(gemPrefix) - 1, null);
-                    if (prevPrefix != null) {
-                        ItemStack prevStack = OreDictUnifier.get(prevPrefix, material, 2);
-                        ModHandler.addShapelessRecipe(String.format("gem_to_gem_%s_%s", prevPrefix, material), prevStack, "h", new UnificationEntry(gemPrefix, materialIn));
-                        RecipeMaps.FORGE_HAMMER_RECIPES.recipeBuilder()
-                            .input(gemPrefix, materialIn)
-                            .outputs(prevStack)
-                            .duration(20)
-                            .EUt(16)
-                            .buildAndRegister();
-                    }
-                    ModHandler.addShapedRecipe(String.format("gem_to_plate_%s", material),
-                        stack, "h", "X",
-                        'X', new UnificationEntry(OrePrefix.gem, material));
-                }
-
-                if (!material.hasFlag(MatFlags.NO_WORKING)) {
-                    if (material.hasFlag(SolidMaterial.MatFlags.GENERATE_LONG_ROD) && materialAmount >= M * 2) {
-                        RecipeMaps.LATHE_RECIPES.recipeBuilder()
-                            .input(gemPrefix, materialIn)
-                            .outputs(OreDictUnifier.get(OrePrefix.stickLong, material, (int) (materialAmount / (M * 2))),
-                                OreDictUnifier.getDust(material, materialAmount % (M * 2)))
-                            .duration((int) material.getMass())
-                            .EUt(16)
-                            .buildAndRegister();
-                    } else if (materialAmount >= M) {
-                        ItemStack gemStick = OreDictUnifier.get(OrePrefix.stick, material, (int) (materialAmount / M));
-                        ItemStack gemDust = OreDictUnifier.getDust(material, materialAmount % M);
-                        if (!gemStick.isEmpty() && !gemDust.isEmpty()) {
-                            RecipeMaps.LATHE_RECIPES.recipeBuilder()
-                                .input(gemPrefix, materialIn)
-                                .outputs(gemStick, gemDust)
-                                .duration((int) material.getMass())
-                                .EUt(16)
-                                .buildAndRegister();
-                        }
-                    }
+        if (!material.hasFlag(MatFlags.NO_WORKING)) {
+            if (material.hasFlag(SolidMaterial.MatFlags.GENERATE_LONG_ROD) && materialAmount >= M * 2) {
+                RecipeMaps.LATHE_RECIPES.recipeBuilder()
+                    .input(gemPrefix, materialIn)
+                    .outputs(OreDictUnifier.get(OrePrefix.stickLong, material, (int) (materialAmount / (M * 2))),
+                        OreDictUnifier.getDust(material, materialAmount % (M * 2)))
+                    .duration((int) material.getMass())
+                    .EUt(16)
+                    .buildAndRegister();
+            } else if (materialAmount >= M) {
+                ItemStack gemStick = OreDictUnifier.get(OrePrefix.stick, material, (int) (materialAmount / M));
+                ItemStack gemDust = OreDictUnifier.getDust(material, materialAmount % M);
+                if (!gemStick.isEmpty() && !gemDust.isEmpty()) {
+                    RecipeMaps.LATHE_RECIPES.recipeBuilder()
+                        .input(gemPrefix, materialIn)
+                        .outputs(gemStick, gemDust)
+                        .duration((int) material.getMass())
+                        .EUt(16)
+                        .buildAndRegister();
                 }
             }
         }
+
     }
 
     private void processLens(OrePrefix lensPrefix, Material material) {
