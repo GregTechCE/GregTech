@@ -3,6 +3,7 @@ package gregtech.common.worldgen;
 import gregtech.common.blocks.MetaBlocks;
 import gregtech.common.blocks.wood.BlockSaplingGT;
 import gregtech.common.blocks.wood.BlockLogGT.LogVariant;
+
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
@@ -12,6 +13,7 @@ import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraft.world.gen.IChunkGenerator;
 import net.minecraftforge.common.BiomeDictionary;
 import net.minecraftforge.common.BiomeDictionary.Type;
+
 import net.minecraftforge.fml.common.IWorldGenerator;
 
 import java.util.Random;
@@ -41,6 +43,10 @@ public class WorldGenRubberTree implements IWorldGenerator {
             BlockSaplingGT sapling = MetaBlocks.SAPLING;
             if(solidBlockState.getBlock().canSustainPlant(solidBlockState, world, randomPos, EnumFacing.UP, sapling)) {
                 BlockPos abovePos = randomPos.up();
+                IBlockState aboveState = world.getBlockState(abovePos);
+                if(!(aboveState.getBlock().isAir(aboveState, world, abovePos))) {
+                    return;
+                }
                 IBlockState saplingState = sapling.getDefaultState()
                     .withProperty(BlockSaplingGT.VARIANT, LogVariant.RUBBER_WOOD);
                 world.setBlockState(abovePos, saplingState);
