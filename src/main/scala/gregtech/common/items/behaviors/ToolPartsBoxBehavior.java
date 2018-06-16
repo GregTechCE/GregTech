@@ -10,6 +10,7 @@ import gregtech.api.unification.ore.OrePrefix;
 import gregtech.loaders.oreprocessing.OreProcessingHandler;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumHand;
@@ -28,10 +29,11 @@ public class ToolPartsBoxBehavior implements IItemBehaviour {
         ItemStack itemStack = player.getHeldItem(hand);
         List<ItemStack> components = ToolMetaItem.getToolComponents(itemStack);
         List<ItemStack> actualComponents = new ArrayList<>();
-        Random random = world.rand;
+        NBTTagCompound tagCompound = itemStack.getTagCompound();
+        Random random = new Random(tagCompound == null ? 0L : tagCompound.getLong("RandomKey"));
         for(ItemStack componentStack : components) {
             int restoreChance = getItemRestoreChance(componentStack);
-            if(random.nextInt(100) >= restoreChance) {
+            if(random.nextInt(100) >= 100 - restoreChance) {
                 actualComponents.add(componentStack);
             }
         }

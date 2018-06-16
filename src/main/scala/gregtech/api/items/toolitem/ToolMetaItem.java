@@ -25,6 +25,7 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Enchantments;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
@@ -139,9 +140,18 @@ public class ToolMetaItem<T extends ToolMetaItem<?>.MetaToolValueItem> extends M
         return true;
     }
 
-    public void onToolCreated(ItemStack toolStack, IInventory ingredients) {
+    public void onToolCreated(EntityPlayer entityPlayer, ItemStack toolStack, IInventory ingredients) {
         chargeToolFromComponents(toolStack, ingredients);
         saveToolComponents(toolStack, ingredients);
+        NBTTagCompound tagCompound = toolStack.getTagCompound();
+        tagCompound.setUniqueId("Creator", entityPlayer.getPersistentID());
+        tagCompound.setLong("RandomKey", entityPlayer.getRNG().nextLong());
+
+        T metaToolValueItem = getItem(toolStack);
+        if(metaToolValueItem != null) {
+            IToolStats toolStats = metaToolValueItem.getToolStats();
+            toolStats.onToolCrafted(toolStack, entityPlayer);
+        }
     }
 
     private static void chargeToolFromComponents(ItemStack toolStack, IInventory ingredients) {
@@ -436,7 +446,15 @@ public class ToolMetaItem<T extends ToolMetaItem<?>.MetaToolValueItem> extends M
     }
 
     @Override
+    public boolean isBookEnchantable(ItemStack stack, ItemStack book) {
+        return super.isBookEnchantable(stack, book);
+    }
+
+    @Override
     public boolean canApplyAtEnchantingTable(ItemStack stack, Enchantment enchantment) {
+        if(enchantment == Enchantments.MENDING ||
+            enchantment == Enchantments.UNBREAKING)
+            return false; //disallow applying of unbreaking and mending
         T metaToolValueItem = getItem(stack);
         if (metaToolValueItem != null && metaToolValueItem.toolStats != null) {
             return metaToolValueItem.toolStats.canApplyEnchantment(stack, enchantment);

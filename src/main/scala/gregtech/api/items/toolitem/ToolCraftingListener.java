@@ -13,7 +13,7 @@ public class ToolCraftingListener {
         ItemStack resultStack = event.crafting;
         if(resultStack.getItem() instanceof ToolMetaItem<?>) {
             ToolMetaItem<?> toolMetaItem = (ToolMetaItem<?>) resultStack.getItem();
-            toolMetaItem.onToolCreated(resultStack, craftingMatrix);
+            toolMetaItem.onToolCreated(event.player, resultStack, craftingMatrix);
         }
     }
 
