@@ -312,8 +312,10 @@ public class GTUtility {
     public static byte getTierByVoltage(long voltage) {
         byte tier = 0;
         while (++tier < V.length) {
-            if (voltage <= V[tier])
+            if (voltage == V[tier])
                 return tier;
+            else if(voltage < V[tier])
+                return (byte) Math.max(0, tier - 1);
         }
         return tier;
     }
