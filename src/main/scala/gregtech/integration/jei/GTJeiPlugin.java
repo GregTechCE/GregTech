@@ -8,11 +8,13 @@ import gregtech.api.items.metaitem.MetaItem;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.recipes.RecipeMap;
 import gregtech.common.items.MetaItems;
+import gregtech.common.metatileentities.MetaTileEntities;
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.IModRegistry;
 import mezz.jei.api.ISubtypeRegistry;
 import mezz.jei.api.JEIPlugin;
 import mezz.jei.api.recipe.IRecipeCategoryRegistration;
+import mezz.jei.api.recipe.VanillaRecipeCategoryUid;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -50,9 +52,14 @@ public class GTJeiPlugin implements IModPlugin {
                 IWorkable workableCapability = metaTileEntity.getCapability(IWorkable.CAPABILITY_WORKABLE, null);
                 if(workableCapability instanceof RecipeMapWorkableHandler) {
                     RecipeMap<?> recipeMap = ((RecipeMapWorkableHandler) workableCapability).recipeMap;
-                    registry.addRecipeCatalyst(metaTileEntity.getStackForm(1), GTValues.MODID + ":" + recipeMap.unlocalizedName);
+                    registry.addRecipeCatalyst(metaTileEntity.getStackForm(),
+                        GTValues.MODID + ":" + recipeMap.unlocalizedName);
                 }
             }
         }
+        for(MetaTileEntity breweryTile : MetaTileEntities.BREWERY) {
+            registry.addRecipeCatalyst(breweryTile.getStackForm(), VanillaRecipeCategoryUid.BREWING);
+        }
+
     }
 }

@@ -1362,17 +1362,21 @@ public class OreProcessingHandler {
         ItemStack stickStack = OreDictUnifier.get(OrePrefix.stick, material);
         if (!(material instanceof DustMaterial))
             return;
-        if (material instanceof SolidMaterial) {
+        if (material instanceof IngotMaterial && ((IngotMaterial) material).toolDurability > 0) {
             SolidMaterial solidMaterial = (SolidMaterial) material;
-            ModHandler.addShapedRecipe(String.format("jack_hammer_lithium_%s", solidMaterial.toString()),
-                MetaItems.JACKHAMMER.getStackForm(solidMaterial, null), // new long[]{1600000L, 512L, 3L, -1L}),
-                "SXd", "PRP", "MPB",
-                'X', new UnificationEntry(OrePrefix.stickLong, solidMaterial),
-                'M', MetaItems.ELECTRIC_PISTON_HV.getStackForm(),
-                'S', new UnificationEntry(OrePrefix.screw, Materials.Titanium),
-                'P', new UnificationEntry(OrePrefix.plate, Materials.Titanium),
-                'R', new UnificationEntry(OrePrefix.spring, Materials.Titanium),
-                'B', MetaItems.BATTERY_RE_HV_LITHIUM.getStackForm());
+            for(MetaValueItem batteryItem : batteryItems[2]) {
+                ItemStack batteryStack = batteryItem.getStackForm();
+                long maxCharge = batteryStack.getCapability(IElectricItem.CAPABILITY_ELECTRIC_ITEM, null).getMaxCharge();
+                ModHandler.addShapedRecipe(String.format("jack_hammer_%s_%s", batteryItem.unlocalizedName, solidMaterial.toString()),
+                    MetaItems.JACKHAMMER.getMaxChargeOverrideStack(solidMaterial, null, maxCharge),
+                    "SXd", "PRP", "MPB",
+                    'X', new UnificationEntry(OrePrefix.stickLong, solidMaterial),
+                    'M', MetaItems.ELECTRIC_PISTON_HV.getStackForm(),
+                    'S', new UnificationEntry(OrePrefix.screw, Materials.Titanium),
+                    'P', new UnificationEntry(OrePrefix.plate, Materials.Titanium),
+                    'R', new UnificationEntry(OrePrefix.spring, Materials.Titanium),
+                    'B', batteryItem);
+            }
         }
 
         if (!material.hasFlag(MatFlags.NO_WORKING)) {

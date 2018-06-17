@@ -20,9 +20,7 @@ public class OreDictionaryLoader {
         OreDictUnifier.registerOre(new ItemStack(Items.WATER_BUCKET), OrePrefix.bucket, Materials.Water);
         OreDictUnifier.registerOre(new ItemStack(Items.LAVA_BUCKET), OrePrefix.bucket, Materials.Lava);
         OreDictUnifier.registerOre(new ItemStack(Items.MILK_BUCKET), OrePrefix.bucket, Materials.Milk);
-
         OreDictUnifier.registerOre(new ItemStack(Items.GLASS_BOTTLE), OrePrefix.bottle, MarkerMaterials.Empty);
-        OreDictUnifier.registerOre(new ItemStack(Items.POTIONITEM), OrePrefix.bottle, Materials.Water);
 
         OreDictUnifier.registerOre(new ItemStack(Blocks.COAL_ORE), OrePrefix.ore, Materials.Coal);
         OreDictUnifier.registerOre(new ItemStack(Blocks.IRON_ORE), OrePrefix.ore, Materials.Iron);

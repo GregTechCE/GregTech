@@ -20,7 +20,7 @@ public class FluidModelHandler {
         for(BlockFluidBase fluidBlock : MetaBlocks.FLUID_BLOCKS) {
             Fluid fluid = ObfuscationReflectionHelper.getPrivateValue(BlockFluidBase.class, fluidBlock, "definedFluid");
             ModelFluid modelFluid = new ModelFluid(fluid);
-            IBakedModel bakedModel = modelFluid.bake(modelFluid.getDefaultState(), DefaultVertexFormats.BLOCK, TextureUtils::getTexture);
+            IBakedModel bakedModel = modelFluid.bake(modelFluid.getDefaultState(), DefaultVertexFormats.ITEM, TextureUtils::getTexture);
             ModelResourceLocation resourceLocation = new ModelResourceLocation(Block.REGISTRY.getNameForObject(fluidBlock), "");
             event.getModelRegistry().putObject(resourceLocation, bakedModel);
         }

@@ -123,7 +123,7 @@ public class Materials {
     public static DustMaterial Gunpowder = new DustMaterial(320, "gunpowder", 0x808080, MaterialIconSet.SAND, 0, of(), FLAMMABLE | EXPLOSIVE | NO_SMELTING | NO_SMASHING);
     public static FluidMaterial Lubricant = new FluidMaterial(321, "lubricant", 0xFFC400, MaterialIconSet.FLUID, of(), 0);
     public static FluidMaterial McGuffium239 = new FluidMaterial(322, "mc_guffium239", 0xC83296, MaterialIconSet.FLUID, of(), 0);
-    public static FluidMaterial Oil = new FluidMaterial(323, "oil", 0x0A0A0A, MaterialIconSet.FLUID, of(), 0);
+    public static FluidMaterial Oil = new FluidMaterial(323, "oil", 0x666666, MaterialIconSet.FLUID, of(), 0);
     public static DustMaterial Oilsands = new DustMaterial(324, "oilsands", 0x0A0A0A, MaterialIconSet.SAND, 1, of(new MaterialStack(Oil, 1L)), GENERATE_ORE);
     public static RoughSolidMaterial Paper = new RoughSolidMaterial(325, "paper", 0xFFFFFF, MaterialIconSet.PAPER, 0, of(), GENERATE_PLATE | FLAMMABLE | NO_SMELTING | NO_SMASHING | MORTAR_GRINDABLE | GENERATE_DENSE | GENERATE_RING);
     public static DustMaterial RareEarth = new DustMaterial(326, "rare_earth", 0x808064, MaterialIconSet.ROUGH, 0, of(), 0);
@@ -229,9 +229,9 @@ public class Materials {
     public static FluidMaterial Epichlorhydrin = new FluidMaterial(349, "epichlorhydrin", 0xFFFFFF, MaterialIconSet.FLUID, of(new MaterialStack(Carbon, 3), new MaterialStack(Hydrogen, 5), new MaterialStack(Chlorine, 1), new MaterialStack(Oxygen, 1)), 0);
     public static FluidMaterial NitricAcid = new FluidMaterial(351, "nitric_acid", 0xCCCC00, MaterialIconSet.FLUID, of(new MaterialStack(Hydrogen, 1), new MaterialStack(Nitrogen, 1), new MaterialStack(Oxygen, 3)), 0);
 
-    public static FluidMaterial OilHeavy = new FluidMaterial(165, "oil_heavy", 0x0A0A0A, MaterialIconSet.FLUID, of(), GENERATE_FLUID_BLOCK);
-    public static FluidMaterial OilMedium = new FluidMaterial(166, "oil_medium", 0x0A0A0A, MaterialIconSet.FLUID, of(), GENERATE_FLUID_BLOCK);
-    public static FluidMaterial OilLight = new FluidMaterial(167, "oil_light", 0x0A0A0A, MaterialIconSet.FLUID, of(), GENERATE_FLUID_BLOCK);
+    public static FluidMaterial OilHeavy = new FluidMaterial(165, "oil_heavy", 0x666666, MaterialIconSet.FLUID, of(), GENERATE_FLUID_BLOCK);
+    public static FluidMaterial OilMedium = new FluidMaterial(166, "oil_medium", 0x666666, MaterialIconSet.FLUID, of(), GENERATE_FLUID_BLOCK);
+    public static FluidMaterial OilLight = new FluidMaterial(167, "oil_light", 0x666666, MaterialIconSet.FLUID, of(), GENERATE_FLUID_BLOCK);
     public static FluidMaterial NaturalGas = new FluidMaterial(168, "natural_gas", 0xFFFFFF, MaterialIconSet.FLUID, of(), STATE_GAS | GENERATE_FLUID_BLOCK);
     public static FluidMaterial SulfuricGas = new FluidMaterial(169, "sulfuric_gas", 0xFFFFFF, MaterialIconSet.FLUID, of(), STATE_GAS | GENERATE_FLUID_BLOCK);
     public static FluidMaterial Gas = new FluidMaterial(170, "gas", 0xFFFFFF, MaterialIconSet.FLUID, of(), STATE_GAS | GENERATE_FLUID_BLOCK);

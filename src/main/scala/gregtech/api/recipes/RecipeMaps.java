@@ -188,7 +188,7 @@ public class RecipeMaps {
      *         		.buildAndRegister();
      * </pre>
      */
-    public static final RecipeMap<BrewingRecipeBuilder> BREWING_RECIPES = new RecipeMap<>("brewer", 1, 1, 0, 0, 1, 1, 1, 1, 1, new BrewingRecipeBuilder().notOptimized().duration(128).EUt(4))
+    public static final RecipeMap<DefaultRecipeBuilder> BREWING_RECIPES = new RecipeMapBrewer("brewer", 1, 1, 0, 0, 1, 1, 1, 1, 1, new DefaultRecipeBuilder().notOptimized().duration(128).EUt(4))
         .setSlotOverlay(false, false, GuiTextures.BREWER_OVERLAY)
         .setProgressBar(GuiTextures.PROGRESS_BAR_ARROW_MULTIPLE, MoveType.HORIZONTAL);
 

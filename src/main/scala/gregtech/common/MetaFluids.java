@@ -1,19 +1,19 @@
 package gregtech.common;
 
-import com.google.common.collect.BiMap;
-import com.google.common.collect.HashBiMap;
 import gregtech.api.GTValues;
 import gregtech.api.unification.material.Materials;
 import gregtech.api.unification.material.type.FluidMaterial;
 import gregtech.api.unification.material.type.FluidMaterial.MatFlags;
 import gregtech.api.unification.material.type.Material;
+import gregtech.api.util.GTUtility;
 import gregtech.common.blocks.MetaBlocks;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.init.Blocks;
-import net.minecraft.potion.Potion;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fluids.*;
-import net.minecraftforge.fml.common.registry.ForgeRegistries;
+import net.minecraftforge.fluids.BlockFluidBase;
+import net.minecraftforge.fluids.BlockFluidClassic;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidRegistry;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -29,17 +29,6 @@ public class MetaFluids {
         new ResourceLocation("blocks/water_still"),
         new ResourceLocation("blocks/water_flow"))
         .setBlock(Blocks.WATER);
-
-    private static final BiMap<ResourceLocation, Fluid> potionFluidMap = HashBiMap.create();
-
-    public static Fluid getFluidForPotion(Potion potion) {
-        return potionFluidMap.get(potion.getRegistryName());
-    }
-
-    public static Potion getPotionForFluid(Fluid potionFluid) {
-        ResourceLocation registryName = potionFluidMap.inverse().get(potionFluid);
-        return registryName == null ? null : ForgeRegistries.POTIONS.getValue(registryName);
-    }
 
     public enum FluidType {
         LIQUID,
@@ -132,19 +121,6 @@ public class MetaFluids {
         }
     }
 
-    public static void initPotionFluids() {
-        for(ResourceLocation registryName : ForgeRegistries.POTIONS.getKeys()) {
-            Potion potion = ForgeRegistries.POTIONS.getValue(registryName);
-            String fluidName = String.format("potion.%s.%s", registryName.getResourceDomain(), registryName.getResourcePath());
-            Fluid potionFluid = new Fluid(fluidName, AUTO_GENERATED_FLUID_TEXTURE, AUTO_GENERATED_FLUID_TEXTURE);
-            potionFluid.setColor(potion.getLiquidColor());
-            potionFluid.setUnlocalizedName(potion.getName());
-            BlockFluidBase fluidBlock = new BlockFluidFinite(potionFluid, net.minecraft.block.material.Material.WATER);
-            fluidBlock.setRegistryName("fluid." + fluidName);
-            MetaBlocks.FLUID_BLOCKS.add(fluidBlock);
-        }
-    }
-
     public static Fluid registerFluid(FluidMaterial material, FluidType type, int temp, boolean setCustomTexture) {
         String materialName = material.toString();
         String typeName = type.name().toLowerCase();
@@ -165,6 +141,7 @@ public class MetaFluids {
         fluid.setColor(GTUtility.convertRGBtoOpaqueRGBA_MC(material.materialRGB));
         setFluidProperties(fluid, type, material);
         FluidRegistry.registerFluid(fluid);
+        FluidRegistry.addBucketForFluid(fluid);
 
         if(material.hasFlag(MatFlags.GENERATE_FLUID_BLOCK)) {
             BlockFluidBase fluidBlock = new BlockFluidClassic(fluid, net.minecraft.block.material.Material.WATER);

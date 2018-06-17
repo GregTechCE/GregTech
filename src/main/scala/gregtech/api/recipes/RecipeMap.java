@@ -88,6 +88,15 @@ public class RecipeMap<R extends RecipeBuilder<R>> {
 	    return this;
     }
 
+    /**
+     * This is alternative case when machine can input given fluid
+     * If this method returns true, machine will receive given fluid even if getRecipesForFluid doesn't have
+     * any recipe for this fluid
+     */
+    public boolean canInputFluidForce(Fluid fluid) {
+	    return false;
+    }
+
     public Collection<Recipe> getRecipesForFluid(Fluid fluid) {
         return recipeFluidMap.getOrDefault(fluid, Collections.emptySet());
     }

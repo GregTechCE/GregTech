@@ -134,8 +134,7 @@ public class GTUtility {
 
     //0xAARRGGBB
     public static int convertRGBtoOpaqueRGBA_MC(int colorValue) {
-        long longValue = Long.parseLong("ff" + Integer.toString(colorValue, 16), 16);
-        return (int) longValue;
+        return Integer.parseUnsignedInt("ff" + Integer.toString(colorValue, 16), 16);
     }
 
     public static void setItem(ItemStack itemStack, ItemStack newStack) {
