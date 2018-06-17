@@ -18,7 +18,6 @@ import gregtech.common.ConfigHolder;
 import gregtech.common.MetaFluids;
 import gregtech.common.blocks.MetaBlocks;
 import gregtech.common.blocks.modelfactories.BlockCompressedFactory;
-import gregtech.common.blocks.modelfactories.BlockFluidFactory;
 import gregtech.common.blocks.modelfactories.BlockFrameFactory;
 import gregtech.common.blocks.modelfactories.BlockOreFactory;
 import gregtech.common.command.GregTechCommand;
@@ -55,7 +54,6 @@ public class GregTechMod {
             BlockOreFactory.init();
             BlockCompressedFactory.init();
             BlockFrameFactory.init();
-            BlockFluidFactory.init();
         }
     }
 

@@ -16,6 +16,7 @@ import gregtech.api.unification.material.type.SolidMaterial;
 import gregtech.api.unification.ore.OrePrefix;
 import gregtech.api.unification.ore.StoneType;
 import gregtech.api.unification.ore.StoneTypes;
+import gregtech.common.blocks.modelfactories.FluidModelHandler;
 import gregtech.common.blocks.wood.BlockLeavesGT;
 import gregtech.common.blocks.wood.BlockLogGT;
 import gregtech.common.blocks.wood.BlockSaplingGT;
@@ -34,8 +35,8 @@ import net.minecraft.client.renderer.block.statemap.DefaultStateMapper;
 import net.minecraft.client.renderer.block.statemap.StateMapperBase;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.client.model.ModelFluid;
 import net.minecraftforge.client.model.ModelLoader;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fluids.BlockFluidBase;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -279,13 +280,14 @@ public class MetaBlocks {
                 return CableRenderer.MODEL_LOCATION;
             }
         };
+
+        MinecraftForge.EVENT_BUS.register(new FluidModelHandler());
         StateMapperBase stateMapper = new StateMapperBase() {
             @Override
             protected ModelResourceLocation getModelResourceLocation(IBlockState state) {
-                return new ModelResourceLocation(Block.REGISTRY.getNameForObject(state.getBlock()), "default");
+                return new ModelResourceLocation(Block.REGISTRY.getNameForObject(state.getBlock()), "");
             }
         };
-        ModelFluid
         FLUID_BLOCKS.forEach(block -> ModelLoader.setCustomStateMapper(block, stateMapper));
         CABLES.values().forEach(cable -> ModelLoader.setCustomStateMapper(cable, cableStateMapper));
     }
