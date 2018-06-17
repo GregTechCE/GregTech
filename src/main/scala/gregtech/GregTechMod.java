@@ -18,6 +18,7 @@ import gregtech.common.ConfigHolder;
 import gregtech.common.MetaFluids;
 import gregtech.common.blocks.MetaBlocks;
 import gregtech.common.blocks.modelfactories.BlockCompressedFactory;
+import gregtech.common.blocks.modelfactories.BlockFluidFactory;
 import gregtech.common.blocks.modelfactories.BlockFrameFactory;
 import gregtech.common.blocks.modelfactories.BlockOreFactory;
 import gregtech.common.command.GregTechCommand;
@@ -54,6 +55,7 @@ public class GregTechMod {
             BlockOreFactory.init();
             BlockCompressedFactory.init();
             BlockFrameFactory.init();
+            BlockFluidFactory.init();
         }
     }
 
@@ -73,13 +75,15 @@ public class GregTechMod {
         MetaTileEntityUIFactory.INSTANCE.init();
         MetaItemUIFactory.INSTANCE.init();
         SimpleCapabilityManager.init();
-
         OreDictUnifier.init();
-        new OreProcessingHandler().registerProcessing();
+
+        //freeze material registry before processing items, blocks and fluids
+        Material.init();
 
         MetaBlocks.init();
         MetaItems.init();
         MetaFluids.init();
+        MetaFluids.initPotionFluids();
         MetaTileEntities.init();
 
         gregtechproxy.onPreLoad();
@@ -91,11 +95,13 @@ public class GregTechMod {
     public void onInit(FMLInitializationEvent event) {
         GTLog.logger.info("Init-Phase started!");
 
-        OreDictionaryLoader.init();
         MetaItems.registerOreDict();
         MetaBlocks.registerOreDict();
+        OreDictionaryLoader.init();
         MaterialInfoLoader.init();
+
         OreProcessingHandler.initializeMetaItems();
+        OreProcessingHandler.registerProcessing();
         gregtechproxy.onLoad();
 
         if(Loader.isModLoaded(GTValues.MODID_FMP)) {
@@ -106,7 +112,6 @@ public class GregTechMod {
             throw new LoaderException("Found at least one invalid recipe. Please read the log above for more details.");
         }
 
-        Material.init();
         GTLog.logger.info("Init-Phase finished!");
     }
 

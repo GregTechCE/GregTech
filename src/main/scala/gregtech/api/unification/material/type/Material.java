@@ -4,6 +4,7 @@ import com.google.common.base.CaseFormat;
 import com.google.common.collect.ImmutableList;
 import gregtech.api.unification.Element;
 import gregtech.api.unification.material.MaterialIconSet;
+import gregtech.api.unification.material.Materials;
 import gregtech.api.unification.stack.MaterialStack;
 import gregtech.api.util.GTControlledRegistry;
 import gregtech.api.util.GTLog;
@@ -13,7 +14,6 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nullable;
-
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.AbstractMap.SimpleEntry;
@@ -32,6 +32,7 @@ public abstract class Material implements Comparable<Material> {
 	 * Initializes materials registry
 	 */
 	public static void init() {
+	    Materials.class.getSimpleName();
 		MATERIAL_REGISTRY.freezeRegistry();
         Map<String, String[]> materialFlags = ConfigHolder.materialFlags;
         for(String materialName : materialFlags.keySet()) {

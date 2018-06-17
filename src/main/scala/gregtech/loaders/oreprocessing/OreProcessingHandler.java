@@ -25,7 +25,6 @@ import net.minecraft.init.Items;
 import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
-
 import org.apache.commons.lang3.ArrayUtils;
 
 import java.util.ArrayList;
@@ -63,7 +62,11 @@ public class OreProcessingHandler {
     private static final List<OrePrefix> IGNORE_ARC_SMELTING = Arrays.asList(
         OrePrefix.ingot, OrePrefix.gem, OrePrefix.nugget, OrePrefix.block);
 
-    public void registerProcessing() {
+    public static void registerProcessing() {
+        new OreProcessingHandler()._registerProcessing();
+    }
+
+    private void _registerProcessing() {
 
         OrePrefix.plate.addProcessingHandler(this::processPlate, this::processPolarizing);
         OrePrefix.plateDense.addProcessingHandler(this::processPlateDense, this::processPolarizing);
@@ -843,7 +846,7 @@ public class OreProcessingHandler {
         ItemStack crushedStack = OreDictUnifier.getDust(material, materialAmount);
 
         if (material.hasFlag(MORTAR_GRINDABLE)) {
-            ModHandler.addShapedRecipe(String.format("gem_to_dust_%s", material), crushedStack,
+            ModHandler.addShapedRecipe(String.format("gem_to_dust_%s_%s", material, gemPrefix), crushedStack,
                 "X", "m", 'X', new UnificationEntry(gemPrefix, materialIn));
         }
 
@@ -858,7 +861,7 @@ public class OreProcessingHandler {
                     .duration(20).EUt(16)
                     .buildAndRegister();
             }
-            ModHandler.addShapedRecipe(String.format("gem_to_plate_%s", material),
+            ModHandler.addShapedRecipe(String.format("gem_to_plate_%s_%s", material, gemPrefix),
                 stack, "h", "X",
                 'X', new UnificationEntry(OrePrefix.gem, material));
         }

@@ -1054,8 +1054,8 @@ public class MachineRecipeLoader {
             ItemStack output = outputPair.getValue();
             int originalOutput = output.getCount();
             if (!output.isEmpty()) {
+                IRecipe outputRecipe = outputPair.getKey();
                 if (ConfigHolder.vanillaRecipes.nerfWoodCrafting) {
-                    IRecipe outputRecipe = outputPair.getKey();
                     GTLog.logger.info("Nerfing planks crafting recipe {} -> {}", stack, output);
                     //noinspection ConstantConditions
                     ModHandler.addShapelessRecipe(outputRecipe.getRegistryName().toString(),
@@ -1070,8 +1070,7 @@ public class MachineRecipeLoader {
                     .duration(200).EUt(8)
                     .buildAndRegister();
 
-                ModHandler.addShapedRecipe(
-                    String.format("%s_%s_log_to_planks", stack.getItem().getRegistryName(), stack.getItemDamage()),
+                ModHandler.addShapedRecipe(outputRecipe.getRegistryName().getResourcePath() + "_saw",
                     GTUtility.copyAmount(originalOutput, output), "s", "L", 'L', stack);
             }
         }
