@@ -65,7 +65,9 @@ public class StoneRenderer implements ICCBlockRenderer {
         boolean renderWater = false;
         for(EnumFacing facingValue : EnumFacing.VALUES) {
             IBlockState blockState = world.getBlockState(pos.offset(facingValue));
-            renderWater |= blockState.getMaterial() == net.minecraft.block.material.Material.WATER;
+            //do not render if fluid other than water itself is near
+            renderWater |= blockState.getBlock() instanceof BlockLiquid &&
+                blockState.getMaterial() == net.minecraft.block.material.Material.WATER;
         }
         return renderWater;
     }
