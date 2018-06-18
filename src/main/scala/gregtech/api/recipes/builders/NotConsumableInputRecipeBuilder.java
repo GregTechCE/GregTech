@@ -1,6 +1,9 @@
 package gregtech.api.recipes.builders;
 
 import com.google.common.collect.ImmutableMap;
+import crafttweaker.annotations.ZenRegister;
+import crafttweaker.api.item.IIngredient;
+import gregtech.api.GTValues;
 import gregtech.api.items.metaitem.MetaItem;
 import gregtech.api.recipes.CountableIngredient;
 import gregtech.api.recipes.Recipe;
@@ -13,7 +16,12 @@ import gregtech.api.util.GTLog;
 import gregtech.api.util.ValidationResult;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.Ingredient;
+import net.minecraftforge.fml.common.Optional.Method;
+import stanhebben.zenscript.annotations.ZenClass;
+import stanhebben.zenscript.annotations.ZenMethod;
 
+@ZenClass
+@ZenRegister
 public class NotConsumableInputRecipeBuilder extends RecipeBuilder<NotConsumableInputRecipeBuilder> {
 
     public NotConsumableInputRecipeBuilder() {
@@ -35,6 +43,12 @@ public class NotConsumableInputRecipeBuilder extends RecipeBuilder<NotConsumable
     @Override
     public NotConsumableInputRecipeBuilder copy() {
         return new NotConsumableInputRecipeBuilder(this);
+    }
+
+    @ZenMethod
+    @Method(modid = GTValues.MODID_CC)
+    public NotConsumableInputRecipeBuilder notConsumable(IIngredient ingredient) {
+        return notConsumable(new CraftTweakerIngredientWrapper(ingredient));
     }
 
     public NotConsumableInputRecipeBuilder notConsumable(ItemStack itemStack) {

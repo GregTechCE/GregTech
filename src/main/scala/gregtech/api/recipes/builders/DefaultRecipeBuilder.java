@@ -1,11 +1,15 @@
 package gregtech.api.recipes.builders;
 
 import com.google.common.collect.ImmutableMap;
+import crafttweaker.annotations.ZenRegister;
 import gregtech.api.recipes.Recipe;
 import gregtech.api.recipes.RecipeBuilder;
 import gregtech.api.recipes.RecipeMap;
 import gregtech.api.util.ValidationResult;
+import stanhebben.zenscript.annotations.ZenClass;
 
+@ZenClass
+@ZenRegister
 public class DefaultRecipeBuilder extends RecipeBuilder<DefaultRecipeBuilder> {
 
     public DefaultRecipeBuilder() {

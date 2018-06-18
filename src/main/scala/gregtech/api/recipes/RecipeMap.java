@@ -1,5 +1,6 @@
 package gregtech.api.recipes;
 
+import crafttweaker.annotations.ZenRegister;
 import gnu.trove.map.TByteObjectMap;
 import gnu.trove.map.hash.TByteObjectHashMap;
 import gregtech.api.capability.IMultipleTankHandler;
@@ -21,11 +22,16 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.IItemHandlerModifiable;
+import stanhebben.zenscript.annotations.ZenClass;
+import stanhebben.zenscript.annotations.ZenGetter;
+import stanhebben.zenscript.annotations.ZenMethod;
 
 import javax.annotation.Nullable;
 import java.util.*;
 import java.util.function.DoubleSupplier;
 
+@ZenClass
+@ZenRegister
 public class RecipeMap<R extends RecipeBuilder<R>> {
 
 	public static final Collection<RecipeMap<?>> RECIPE_MAPS = new ArrayList<>();
@@ -269,10 +275,17 @@ public class RecipeMap<R extends RecipeBuilder<R>> {
     }
 
     @SideOnly(Side.CLIENT)
+    @ZenGetter("localizedName")
     public String getLocalizedName() {
 	    return I18n.format("recipemap." + unlocalizedName + ".name");
     }
 
+    @ZenGetter("unlocalizedName")
+    public String getUnlocalizedName() {
+	    return unlocalizedName;
+    }
+
+    @ZenMethod
 	public R recipeBuilder() {
 		return recipeBuilderSample.copy();
 	}

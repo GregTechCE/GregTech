@@ -1,6 +1,7 @@
 package gregtech.api.recipes.builders;
 
 import com.google.common.collect.ImmutableMap;
+import crafttweaker.annotations.ZenRegister;
 import gregtech.api.recipes.Recipe;
 import gregtech.api.recipes.RecipeBuilder;
 import gregtech.api.recipes.RecipeMap;
@@ -8,7 +9,11 @@ import gregtech.api.recipes.RecipeMaps;
 import gregtech.api.util.ValidationResult;
 import net.minecraftforge.fluids.FluidStack;
 import org.apache.commons.lang3.builder.ToStringBuilder;
+import stanhebben.zenscript.annotations.ZenClass;
+import stanhebben.zenscript.annotations.ZenMethod;
 
+@ZenClass
+@ZenRegister
 public class UniversalDistillationRecipeBuilder extends RecipeBuilder<UniversalDistillationRecipeBuilder> {
 
     protected boolean universal = false;
@@ -34,6 +39,7 @@ public class UniversalDistillationRecipeBuilder extends RecipeBuilder<UniversalD
         return new gregtech.api.recipes.builders.UniversalDistillationRecipeBuilder(this);
     }
 
+    @ZenMethod
     public gregtech.api.recipes.builders.UniversalDistillationRecipeBuilder universal() {
         this.universal = true;
         return getThis();

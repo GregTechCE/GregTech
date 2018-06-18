@@ -1,6 +1,7 @@
 package gregtech.api.recipes.builders;
 
 import com.google.common.collect.ImmutableMap;
+import crafttweaker.annotations.ZenRegister;
 import gregtech.api.recipes.Recipe;
 import gregtech.api.recipes.RecipeBuilder;
 import gregtech.api.recipes.RecipeMap;
@@ -9,7 +10,11 @@ import gregtech.api.util.EnumValidationResult;
 import gregtech.api.util.GTLog;
 import gregtech.api.util.ValidationResult;
 import org.apache.commons.lang3.builder.ToStringBuilder;
+import stanhebben.zenscript.annotations.ZenClass;
+import stanhebben.zenscript.annotations.ZenMethod;
 
+@ZenClass
+@ZenRegister
 public class AmplifierRecipeBuilder extends RecipeBuilder<AmplifierRecipeBuilder> {
 
     private int amplifierAmountOutputted = -1;
@@ -36,6 +41,7 @@ public class AmplifierRecipeBuilder extends RecipeBuilder<AmplifierRecipeBuilder
         return new AmplifierRecipeBuilder(this);
     }
 
+    @ZenMethod
     public AmplifierRecipeBuilder amplifierAmountOutputted(int amplifierAmountOutputted) {
         if (amplifierAmountOutputted <= 0) {
             GTLog.logger.error("Outputted Amplifier Amount cannot be less than or equal to 0", new IllegalArgumentException());

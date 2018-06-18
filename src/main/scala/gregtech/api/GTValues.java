@@ -65,6 +65,7 @@ public class GTValues {
             MODID_RC = "railcraft",
             MODID_FR = "Forestry",
             MODID_JEI = "jei",
-            MODID_FMP = "forgemultipartcbe";
+            MODID_FMP = "forgemultipartcbe",
+            MODID_CC = "crafttweaker";
 
 }

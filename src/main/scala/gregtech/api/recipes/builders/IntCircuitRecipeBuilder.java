@@ -1,6 +1,7 @@
 package gregtech.api.recipes.builders;
 
 import com.google.common.collect.ImmutableMap;
+import crafttweaker.annotations.ZenRegister;
 import gregtech.api.recipes.CountableIngredient;
 import gregtech.api.recipes.Recipe;
 import gregtech.api.recipes.RecipeBuilder;
@@ -10,7 +11,11 @@ import gregtech.api.util.EnumValidationResult;
 import gregtech.api.util.GTLog;
 import gregtech.api.util.ValidationResult;
 import org.apache.commons.lang3.builder.ToStringBuilder;
+import stanhebben.zenscript.annotations.ZenClass;
+import stanhebben.zenscript.annotations.ZenMethod;
 
+@ZenClass
+@ZenRegister
 public class IntCircuitRecipeBuilder extends RecipeBuilder<IntCircuitRecipeBuilder> {
 
     protected int circuitMeta = -1;
@@ -36,6 +41,7 @@ public class IntCircuitRecipeBuilder extends RecipeBuilder<IntCircuitRecipeBuild
         return new IntCircuitRecipeBuilder(this);
     }
 
+    @ZenMethod
     public IntCircuitRecipeBuilder circuitMeta(int circuitMeta) {
         if (circuitMeta < 0) {
             GTLog.logger.error("Integrated Circuit Metadata cannot be less than 0", new IllegalArgumentException()); // TODO cannot be more than what?

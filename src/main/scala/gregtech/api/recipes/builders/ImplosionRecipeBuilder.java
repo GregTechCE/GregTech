@@ -1,6 +1,7 @@
 package gregtech.api.recipes.builders;
 
 import com.google.common.collect.ImmutableMap;
+import crafttweaker.annotations.ZenRegister;
 import gregtech.api.recipes.CountableIngredient;
 import gregtech.api.recipes.Recipe;
 import gregtech.api.recipes.RecipeBuilder;
@@ -12,7 +13,11 @@ import gregtech.api.util.ValidationResult;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import org.apache.commons.lang3.builder.ToStringBuilder;
+import stanhebben.zenscript.annotations.ZenClass;
+import stanhebben.zenscript.annotations.ZenMethod;
 
+@ZenClass
+@ZenRegister
 public class ImplosionRecipeBuilder extends RecipeBuilder<ImplosionRecipeBuilder> {
 
     protected int explosivesAmount;
@@ -38,6 +43,7 @@ public class ImplosionRecipeBuilder extends RecipeBuilder<ImplosionRecipeBuilder
         return new ImplosionRecipeBuilder(this);
     }
 
+    @ZenMethod
     public ImplosionRecipeBuilder explosivesAmount(int explosivesAmount) {
         if (!GTUtility.isBetweenInclusive(1, 64, explosivesAmount)) {
             GTLog.logger.error("Amount of explosives should be from 1 to 64 inclusive", new IllegalArgumentException());
