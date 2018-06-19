@@ -456,7 +456,7 @@ public class RecipeMaps {
      * </pre>
      */
 
-    @ZenProperty public static final RecipeMap<UniversalDistillationRecipeBuilder> DISTILLATION_RECIPES = new RecipeMap<>("distillationtower", 0, 0, 0, 1, 1, 1, 1, 5, 1, new UniversalDistillationRecipeBuilder().notOptimized());
+    @ZenProperty public static final RecipeMap<UniversalDistillationRecipeBuilder> DISTILLATION_RECIPES = new RecipeMap<>("distillationtower", 0, 0, 0, 1, 1, 1, 1, 6, 1, new UniversalDistillationRecipeBuilder().notOptimized());
 
     /**
      * Example:

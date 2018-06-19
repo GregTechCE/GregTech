@@ -272,7 +272,8 @@ public class BlockCable extends Block implements ITileEntityProvider {
         for(int i = 0; i < insulationArray.length; i++) {
             Insulation insulation = insulationArray[i];
             int totalAmperage = baseProps.amperage * insulation.amperage;
-            int totalLossPerBlock = baseProps.lossPerBlock * insulation.lossMultiplier;
+            int minInsulationLoss = insulation.insulationLevel == -1 ? 1 : 0;
+            int totalLossPerBlock = Math.max(baseProps.lossPerBlock, minInsulationLoss) * insulation.lossMultiplier;
             this.insulatedPropsCache[i] = new WireProperties(baseProps.voltage, totalAmperage, totalLossPerBlock);
         }
     }

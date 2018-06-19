@@ -39,7 +39,6 @@ import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.IFluidTank;
-import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 import net.minecraftforge.fml.relauncher.ReflectionHelper;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -47,6 +46,7 @@ import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.IItemHandlerModifiable;
 
 import java.awt.*;
+import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
@@ -138,10 +138,15 @@ public class GTUtility {
     }
 
     public static void setItem(ItemStack itemStack, ItemStack newStack) {
-        //replace item object reference inside itemstack, keeping all other data
-        ObfuscationReflectionHelper.setPrivateValue(ItemStack.class, itemStack, newStack.getItem(), "item");
-        itemStack.setItemDamage(newStack.getItemDamage());
         try {
+            Field itemField = Arrays.stream(ItemStack.class.getDeclaredFields())
+                .filter(field -> field.getType() == Item.class)
+                .findFirst().orElseThrow(ReflectiveOperationException::new);
+            itemField.setAccessible(true);
+            //replace item field instance
+            itemField.set(itemStack, newStack.getItem());
+            //set damage then
+            itemStack.setItemDamage(newStack.getItemDamage());
             Method forgeInit = ItemStack.class.getDeclaredMethod("forgeInit");
             forgeInit.setAccessible(true);
             //reinitialize forge capabilities and delegate reference

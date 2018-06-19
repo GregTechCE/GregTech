@@ -1251,9 +1251,7 @@ public class OreProcessingHandler {
                         .buildAndRegister();
                     ModHandler.addShapedRecipe(String.format("plunger_%s", material),
                         MetaItems.PLUNGER.getStackForm((SolidMaterial) material, null),
-                        "xRR",
-                        " SR",
-                        "S f",
+                        "xRR", " SR", "S f",
                         'S', new UnificationEntry(OrePrefix.stick, material),
                         'R', new UnificationEntry(OrePrefix.plate, Materials.Rubber));
                 }

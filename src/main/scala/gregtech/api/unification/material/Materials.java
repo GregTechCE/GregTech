@@ -419,11 +419,8 @@ public class Materials {
         SteelMagnetic.setSmeltingInto(Steel).setArcSmeltingInto(Steel).setMaceratingInto(Steel);
         IronMagnetic.setSmeltingInto(Iron).setArcSmeltingInto(WroughtIron).setMaceratingInto(Iron);
 
-        Iron.setSmeltingInto(Iron).setArcSmeltingInto(WroughtIron).setMaceratingInto(Iron);
-        PigIron.setSmeltingInto(Iron).setArcSmeltingInto(WroughtIron).setMaceratingInto(Iron);
-        WroughtIron.setSmeltingInto(Iron).setArcSmeltingInto(WroughtIron).setMaceratingInto(Iron);
-        Copper.setSmeltingInto(Copper).setArcSmeltingInto(AnnealedCopper).setMaceratingInto(Copper);
-        AnnealedCopper.setSmeltingInto(Copper).setArcSmeltingInto(AnnealedCopper).setMaceratingInto(Copper);
+        Iron.setArcSmeltingInto(WroughtIron);
+        Copper.setArcSmeltingInto(AnnealedCopper);
 
         Tetrahedrite.setDirectSmelting(Copper);
         Chalcopyrite.setDirectSmelting(Copper);

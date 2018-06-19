@@ -112,10 +112,17 @@ public class MachineRecipeLoader {
             ItemStack secondIngot = OreDictUnifier.get(OrePrefix.ingot, stack[1].material, (int) stack[1].amount);
             ItemStack outputIngot = OreDictUnifier.get(OrePrefix.ingot, stack[2].material, (int) stack[2].amount);
             if (!outputIngot.isEmpty()) {
+                if(!firstIngot.isEmpty()) {
+                    RecipeMaps.ALLOY_SMELTER_RECIPES.recipeBuilder().duration((int) stack[2].amount * 50).EUt(16)
+                        .inputs(firstIngot, secondDust).outputs(outputIngot).buildAndRegister();
+                }
+                if(!secondIngot.isEmpty()) {
+                    RecipeMaps.ALLOY_SMELTER_RECIPES.recipeBuilder().duration((int) stack[2].amount * 50).EUt(16)
+                        .inputs(firstDust, secondIngot).outputs(outputIngot).buildAndRegister();
+                }
                 if(!firstIngot.isEmpty() && !secondIngot.isEmpty()) {
-                    RecipeMaps.ALLOY_SMELTER_RECIPES.recipeBuilder().duration((int) stack[2].amount * 50).EUt(16).inputs(firstIngot, secondIngot).outputs(outputIngot).buildAndRegister();
-                    RecipeMaps.ALLOY_SMELTER_RECIPES.recipeBuilder().duration((int) stack[2].amount * 50).EUt(16).inputs(firstDust, secondIngot).outputs(outputIngot).buildAndRegister();
-                    RecipeMaps.ALLOY_SMELTER_RECIPES.recipeBuilder().duration((int) stack[2].amount * 50).EUt(16).inputs(firstIngot, secondDust).outputs(outputIngot).buildAndRegister();
+                    RecipeMaps.ALLOY_SMELTER_RECIPES.recipeBuilder().duration((int) stack[2].amount * 50).EUt(16)
+                        .inputs(firstIngot, secondIngot).outputs(outputIngot).buildAndRegister();
                 }
                 RecipeMaps.ALLOY_SMELTER_RECIPES.recipeBuilder().duration((int) stack[2].amount * 50).EUt(16).inputs(firstDust, secondDust).outputs(outputIngot).buildAndRegister();
             }

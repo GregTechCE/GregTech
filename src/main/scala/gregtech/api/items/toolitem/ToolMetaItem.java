@@ -358,8 +358,8 @@ public class ToolMetaItem<T extends ToolMetaItem<?>.MetaToolValueItem> extends M
     @Override
     public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable NBTTagCompound nbt) {
         ICapabilityProvider capabilityProvider = super.initCapabilities(stack, nbt);
-        IElectricItem electricItem = capabilityProvider.getCapability(IElectricItem.CAPABILITY_ELECTRIC_ITEM, null);
-        if(electricItem != null) {
+        if(capabilityProvider != null && capabilityProvider.hasCapability(IElectricItem.CAPABILITY_ELECTRIC_ITEM, null)) {
+            IElectricItem electricItem = capabilityProvider.getCapability(IElectricItem.CAPABILITY_ELECTRIC_ITEM, null);
             electricItem.addChargeListener((itemStack, newCharge) -> {
                 int newDamage = (newCharge == 0 ? 16000 : 0) + itemStack.getItemDamage() % 16000;
                 if(newDamage != itemStack.getItemDamage()) {

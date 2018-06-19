@@ -65,7 +65,8 @@ public abstract class RecipeMapWorkableHandler extends MTETrait implements IWork
         if (getMetaTileEntity().getWorld().isRemote)
             return;
         if(progressTime > 0 && workingEnabled) {
-            if (drawEnergy(recipeEUt) || (recipeEUt < 0 && ignoreTooMuchEnergy())) {
+            boolean drawEnergy = drawEnergy(recipeEUt);
+            if (drawEnergy || (recipeEUt < 0 && ignoreTooMuchEnergy())) {
                 if (++progressTime >= maxProgressTime) {
                     completeRecipe();
                 }
@@ -128,6 +129,8 @@ public abstract class RecipeMapWorkableHandler extends MTETrait implements IWork
         if(negativeEU)
             EUt = -EUt;
         int tier = GTUtility.getTierByVoltage(voltage);
+        if(GTValues.V[tier] <= EUt || tier == 0)
+            return new int[] {EUt, duration};
         if (EUt <= 16) {
             int resultEUt = EUt * (1 << (tier - 1)) * (1 << (tier - 1));
             int resultDuration = duration / (1 << (tier - 1));
@@ -153,6 +156,7 @@ public abstract class RecipeMapWorkableHandler extends MTETrait implements IWork
         int[] resultOverclock = calculateOverclock(recipe.getEUt(), getMaxVoltage(), recipeMap.getAmperage(), recipe.getDuration(), true);
         this.progressTime = 1;
         setMaxProgress(resultOverclock[1]);
+        System.out.println("set recipe " + recipe.getInputs() + " " + recipe.getEUt() + " " + resultOverclock[0]);
         this.recipeEUt = resultOverclock[0];
         this.fluidOutputs = GTUtility.copyFluidList(recipe.getFluidOutputs());
         this.itemOutputs = GTUtility.copyStackList(recipe.getResultItemOutputs(random));
