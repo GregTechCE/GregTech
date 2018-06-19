@@ -22,7 +22,6 @@ import gregtech.common.blocks.modelfactories.BlockFrameFactory;
 import gregtech.common.blocks.modelfactories.BlockOreFactory;
 import gregtech.common.command.GregTechCommand;
 import gregtech.common.items.MetaItems;
-import gregtech.common.items.PotionFluids;
 import gregtech.common.metatileentities.MetaTileEntities;
 import gregtech.common.multipart.GTMultipartFactory;
 import gregtech.common.worldgen.WorldGenRubberTree;
@@ -82,7 +81,6 @@ public class GregTechMod {
         MetaBlocks.init();
         MetaItems.init();
         MetaFluids.init();
-        PotionFluids.initPotionFluids();
         MetaTileEntities.init();
 
         gregtechproxy.onPreLoad();

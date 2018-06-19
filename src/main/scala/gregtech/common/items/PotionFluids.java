@@ -105,7 +105,11 @@ public class PotionFluids {
             PotionType potionType = PotionUtils.getPotionFromItem(container);
             if(potionType == null || potionType == PotionTypes.EMPTY)
                 return null;
-            return new FluidStack(getFluidForPotion(potionType), capacity);
+            Fluid fluid = getFluidForPotion(potionType);
+            //because some mods are dumb enough to register potion types after block registry event
+            if(fluid == null)
+                return null;
+            return new FluidStack(fluid, capacity);
         }
 
         @Override

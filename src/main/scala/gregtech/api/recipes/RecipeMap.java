@@ -30,11 +30,11 @@ import javax.annotation.Nullable;
 import java.util.*;
 import java.util.function.DoubleSupplier;
 
-@ZenClass
+@ZenClass("mods.gregtech.RecipeMap")
 @ZenRegister
 public class RecipeMap<R extends RecipeBuilder<R>> {
 
-	public static final Collection<RecipeMap<?>> RECIPE_MAPS = new ArrayList<>();
+	private static final Map<String, RecipeMap<?>> RECIPE_MAPS = new HashMap<>();
 
 	public final String unlocalizedName;
 
@@ -74,8 +74,24 @@ public class RecipeMap<R extends RecipeBuilder<R>> {
 
         defaultRecipe.setRecipeMap(this);
         this.recipeBuilderSample = defaultRecipe;
-        RECIPE_MAPS.add(this);
+        RECIPE_MAPS.put(unlocalizedName, this);
 	}
+
+    @ZenMethod
+	public static Collection<RecipeMap<?>> getRecipeMapsCollection() {
+	    return Collections.unmodifiableCollection(RECIPE_MAPS.values());
+    }
+
+    @ZenMethod
+    public static Map<String, RecipeMap<?>> getRecipeMaps() {
+	    return Collections.unmodifiableMap(RECIPE_MAPS);
+    }
+
+    @ZenMethod
+    @Nullable
+    public static RecipeMap<?> get(String unlocalizedName) {
+	    return RECIPE_MAPS.get(unlocalizedName);
+    }
 
 	public RecipeMap<R> setProgressBar(TextureArea progressBar, MoveType moveType) {
         this.progressBarTexture = progressBar;

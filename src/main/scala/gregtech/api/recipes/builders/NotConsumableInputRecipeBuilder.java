@@ -20,7 +20,7 @@ import net.minecraftforge.fml.common.Optional.Method;
 import stanhebben.zenscript.annotations.ZenClass;
 import stanhebben.zenscript.annotations.ZenMethod;
 
-@ZenClass
+@ZenClass("mods.gregtech.builders.NotConsumableInputRecipeBuilder")
 @ZenRegister
 public class NotConsumableInputRecipeBuilder extends RecipeBuilder<NotConsumableInputRecipeBuilder> {
 

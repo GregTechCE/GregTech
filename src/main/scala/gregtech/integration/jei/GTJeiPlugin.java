@@ -32,14 +32,14 @@ public class GTJeiPlugin implements IModPlugin {
 
     @Override
     public void registerCategories(IRecipeCategoryRegistration registry) {
-        for(RecipeMap<?> recipeMap : RecipeMap.RECIPE_MAPS) {
+        for(RecipeMap<?> recipeMap : RecipeMap.getRecipeMapsCollection()) {
             registry.addRecipeCategories(new RecipeMapCategory(recipeMap, registry.getJeiHelpers().getGuiHelper()));
         }
     }
 
     @Override
     public void register(IModRegistry registry) {
-        for(RecipeMap<?> recipeMap : RecipeMap.RECIPE_MAPS) {
+        for(RecipeMap<?> recipeMap : RecipeMap.getRecipeMapsCollection()) {
             List<GTRecipeWrapper> recipesList = recipeMap.getRecipeList()
                 .stream().filter(recipe -> !recipe.isHidden())
                 .map(r -> new GTRecipeWrapper(recipeMap, r))

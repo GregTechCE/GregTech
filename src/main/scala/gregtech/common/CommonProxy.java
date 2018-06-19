@@ -12,6 +12,7 @@ import gregtech.common.blocks.wood.BlockLeavesGT;
 import gregtech.common.blocks.wood.BlockLogGT;
 import gregtech.common.cable.ItemBlockCable;
 import gregtech.common.items.MetaItems;
+import gregtech.common.items.PotionFluids;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.enchantment.Enchantment;
@@ -34,6 +35,9 @@ public class CommonProxy {
     public static void registerBlocks(RegistryEvent.Register<Block> event) {
         GTLog.logger.info("Registering Blocks...");
         IForgeRegistry<Block> registry = event.getRegistry();
+
+        //last chance for mods to register their potion types is here
+        PotionFluids.initPotionFluids();
 
         registry.register(MACHINE);
 

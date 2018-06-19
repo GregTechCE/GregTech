@@ -1,11 +1,7 @@
 package gregtech.api.recipes.builders;
 
-import crafttweaker.annotations.ZenRegister;
 import gregtech.api.unification.material.Materials;
-import stanhebben.zenscript.annotations.ZenClass;
 
-@ZenClass
-@ZenRegister
 public class AssemblerRecipeBuilder extends IntCircuitRecipeBuilder {
 
     @Override

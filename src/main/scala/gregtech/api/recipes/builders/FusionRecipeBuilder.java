@@ -12,7 +12,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import stanhebben.zenscript.annotations.ZenClass;
 import stanhebben.zenscript.annotations.ZenMethod;
 
-@ZenClass
+@ZenClass("mods.gregtech.builders.FusionRecipeBuilder")
 @ZenRegister
 public class FusionRecipeBuilder extends RecipeBuilder<FusionRecipeBuilder> {
 

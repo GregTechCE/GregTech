@@ -30,7 +30,7 @@ import java.util.stream.Collectors;
  * @see Recipe
  */
 
-@ZenClass
+@ZenClass("mods.gregtech.RecipeBuilder")
 @ZenRegister
 public abstract class RecipeBuilder<R extends RecipeBuilder<R>> {
 

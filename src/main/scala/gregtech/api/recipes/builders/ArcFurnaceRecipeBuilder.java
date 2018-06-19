@@ -1,7 +1,6 @@
 package gregtech.api.recipes.builders;
 
 import com.google.common.collect.ImmutableMap;
-import crafttweaker.annotations.ZenRegister;
 import gregtech.api.recipes.Recipe;
 import gregtech.api.recipes.RecipeBuilder;
 import gregtech.api.recipes.RecipeMap;
@@ -9,10 +8,7 @@ import gregtech.api.recipes.RecipeMaps;
 import gregtech.api.unification.material.Materials;
 import gregtech.api.unification.material.type.FluidMaterial;
 import gregtech.api.util.ValidationResult;
-import stanhebben.zenscript.annotations.ZenClass;
 
-@ZenClass
-@ZenRegister
 public class ArcFurnaceRecipeBuilder extends RecipeBuilder<ArcFurnaceRecipeBuilder> {
 
     public ArcFurnaceRecipeBuilder() {
