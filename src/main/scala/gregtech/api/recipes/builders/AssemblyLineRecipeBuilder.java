@@ -1,6 +1,6 @@
 package gregtech.api.recipes.builders;
 
-import gregtech.api.recipes.Recipe;
+import gregtech.api.recipes.recipes.AssemblyLineRecipe;
 import gregtech.api.util.EnumValidationResult;
 import gregtech.api.util.GTLog;
 import gregtech.api.util.GTUtility;
@@ -67,9 +67,9 @@ public class AssemblyLineRecipeBuilder {
 		return this;
 	}
 
-	public ValidationResult<Recipe.AssemblyLineRecipe> build() {
+	public ValidationResult<AssemblyLineRecipe> build() {
 		return ValidationResult.newResult(validate(),
-				new Recipe.AssemblyLineRecipe(researchItem, researchTime, inputs, fluidInputs, output, duration, EUt));
+				new AssemblyLineRecipe(researchItem, researchTime, inputs, fluidInputs, output, duration, EUt));
 	}
 
 	protected EnumValidationResult validate() {
@@ -121,7 +121,7 @@ public class AssemblyLineRecipeBuilder {
 	}
 
 	public void buildAndRegister() {
-		ValidationResult<Recipe.AssemblyLineRecipe> result = build();
+		ValidationResult<AssemblyLineRecipe> result = build();
 
 		if (result.getType() == EnumValidationResult.VALID) {
 			//RecipeMap.ASSEMBLYLINE_RECIPES.add(result.getResult());

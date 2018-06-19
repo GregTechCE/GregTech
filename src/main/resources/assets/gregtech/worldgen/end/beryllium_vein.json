@@ -4,7 +4,7 @@
   "max_height": 35,
   "min_height": 5,
   "surface_stone_material": "thorium",
-  "dimension_filter": ["provider_class:WorldProviderEnd"],
+  "dimension_filter": ["name:the_end"],
 
   "generator": {
     "type": "ellipsoid",

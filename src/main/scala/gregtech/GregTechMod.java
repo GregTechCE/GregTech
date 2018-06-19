@@ -27,12 +27,10 @@ import gregtech.common.multipart.GTMultipartFactory;
 import gregtech.common.worldgen.WorldGenRubberTree;
 import gregtech.loaders.load.FuelLoader;
 import gregtech.loaders.load.MetaTileEntityLoader;
-import gregtech.loaders.load.OreDictionaryLoader;
 import gregtech.loaders.oreprocessing.OreProcessingHandler;
 import gregtech.loaders.postload.CraftingRecipeLoader;
 import gregtech.loaders.postload.DungeonLootLoader;
 import gregtech.loaders.postload.MachineRecipeLoader;
-import gregtech.loaders.preload.MaterialInfoLoader;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fml.common.*;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
@@ -44,7 +42,7 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 @Mod(modid = GTValues.MODID,
      name = "GregTech",
      acceptedMinecraftVersions = "[1.12,1.13)",
-     dependencies = CodeChickenLib.MOD_VERSION_DEP + "after:forestry;after:forgemultipartcbe;after:jei@[4.8.6,);")
+     dependencies = CodeChickenLib.MOD_VERSION_DEP + "after:forestry;after:forgemultipartcbe;after:jei@[4.8.6,);before:crafttweaker;")
 public class GregTechMod {
 
     static {
@@ -92,12 +90,6 @@ public class GregTechMod {
     public void onInit(FMLInitializationEvent event) {
         GTLog.logger.info("Init-Phase started!");
 
-        MetaItems.registerOreDict();
-        MetaBlocks.registerOreDict();
-        OreDictionaryLoader.init();
-        MaterialInfoLoader.init();
-
-        OreProcessingHandler.initializeMetaItems();
         OreProcessingHandler.registerProcessing();
         gregtechproxy.onLoad();
 

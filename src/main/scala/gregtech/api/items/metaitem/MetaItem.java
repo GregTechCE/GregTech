@@ -64,6 +64,12 @@ import java.util.*;
 @SuppressWarnings("deprecation")
 public abstract class MetaItem<T extends MetaItem<?>.MetaValueItem> extends Item {
 
+    private static final List<MetaItem<?>> META_ITEMS = new ArrayList<>();
+
+    public static List<MetaItem<?>> getMetaItems() {
+        return Collections.unmodifiableList(META_ITEMS);
+    }
+
     protected TShortObjectMap<T> metaItems = new TShortObjectHashMap<>();
     private Map<String, T> names = new HashMap<>();
     protected TShortObjectMap<ModelResourceLocation> metaItemsModels = new TShortObjectHashMap<>();
@@ -76,6 +82,7 @@ public abstract class MetaItem<T extends MetaItem<?>.MetaValueItem> extends Item
         setUnlocalizedName("meta_item");
         setHasSubtypes(true);
         this.metaItemOffset = metaItemOffset;
+        META_ITEMS.add(this);
     }
 
     @SideOnly(Side.CLIENT)
@@ -145,6 +152,10 @@ public abstract class MetaItem<T extends MetaItem<?>.MetaValueItem> extends Item
         metaItems.put((short) metaValue, metaValueItem);
         names.put(unlocalizedName, metaValueItem);
         return metaValueItem;
+    }
+
+    public final Collection<T> getAllItems() {
+        return Collections.unmodifiableCollection(metaItems.valueCollection());
     }
 
     public final T getItem(short metaValue) {

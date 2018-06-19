@@ -6,27 +6,22 @@ import gregtech.api.recipes.RecipeBuilder;
 import gregtech.api.recipes.RecipeMap;
 import gregtech.api.util.ValidationResult;
 
-public class DefaultRecipeBuilder extends RecipeBuilder<DefaultRecipeBuilder> {
+public class SimpleRecipeBuilder extends RecipeBuilder<SimpleRecipeBuilder> {
 
-    public DefaultRecipeBuilder() {
+    public SimpleRecipeBuilder() {
     }
 
-    public DefaultRecipeBuilder(Recipe recipe, RecipeMap<DefaultRecipeBuilder> recipeMap) {
+    public SimpleRecipeBuilder(Recipe recipe, RecipeMap<SimpleRecipeBuilder> recipeMap) {
         super(recipe, recipeMap);
     }
 
-    public DefaultRecipeBuilder(RecipeBuilder<DefaultRecipeBuilder> recipeBuilder) {
+    public SimpleRecipeBuilder(RecipeBuilder<SimpleRecipeBuilder> recipeBuilder) {
         super(recipeBuilder);
     }
 
     @Override
-    protected DefaultRecipeBuilder getThis() {
-        return this;
-    }
-
-    @Override
-    public DefaultRecipeBuilder copy() {
-        return new DefaultRecipeBuilder(this);
+    public SimpleRecipeBuilder copy() {
+        return new SimpleRecipeBuilder(this);
     }
 
     public ValidationResult<Recipe> build() {

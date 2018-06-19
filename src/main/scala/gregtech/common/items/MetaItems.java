@@ -9,7 +9,6 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @SuppressWarnings("WeakerAccess")
@@ -17,7 +16,7 @@ public final class MetaItems {
 
     private MetaItems() {}
 
-    public static List<MetaItem<?>> ITEMS = new ArrayList<>();
+    public static List<MetaItem<?>> ITEMS = MetaItem.getMetaItems();
 
     public static MetaItem<?>.MetaValueItem CREDIT_COPPER;
     public static MetaItem<?>.MetaValueItem CREDIT_CUPRONICKEL;
@@ -391,13 +390,10 @@ public final class MetaItems {
         MinecraftForge.EVENT_BUS.register(new ToolCraftingListener());
         MetaItem1 first = new MetaItem1();
         first.setRegistryName("meta_item_1");
-        ITEMS.add(first);
         MetaItem2 second = new MetaItem2();
         second.setRegistryName("meta_item_2");
-        ITEMS.add(second);
         MetaTool tool = new MetaTool();
         tool.setRegistryName("meta_tool");
-        ITEMS.add(tool);
     }
 
     public static void registerOreDict() {

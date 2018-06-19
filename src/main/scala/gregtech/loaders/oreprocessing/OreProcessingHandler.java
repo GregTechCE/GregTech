@@ -587,7 +587,7 @@ public class OreProcessingHandler {
             return;
         DustMaterial solidMaterial = (DustMaterial) material;
         ItemStack dustStack = OreDictUnifier.get(OrePrefix.dust, solidMaterial);
-        ItemStack byproductStack = OreDictUnifier.get(OrePrefix.dustSmall, GTUtility.selectItemInList(2,
+        ItemStack byproductStack = OreDictUnifier.get(OrePrefix.dust, GTUtility.selectItemInList(2,
             solidMaterial, solidMaterial.oreByProducts, DustMaterial.class), 1);
 
         RecipeMaps.FORGE_HAMMER_RECIPES.recipeBuilder()
@@ -615,7 +615,7 @@ public class OreProcessingHandler {
         DustMaterial solidMaterial = (DustMaterial) material;
         ItemStack crushedCentrifugedStack = OreDictUnifier.get(OrePrefix.crushedCentrifuged, solidMaterial);
         ItemStack dustStack = OreDictUnifier.get(OrePrefix.dustPure, solidMaterial);
-        ItemStack byproductStack = OreDictUnifier.get(OrePrefix.dustTiny, GTUtility.selectItemInList(1, solidMaterial, solidMaterial.oreByProducts, DustMaterial.class));
+        ItemStack byproductStack = OreDictUnifier.get(OrePrefix.dust, GTUtility.selectItemInList(1, solidMaterial, solidMaterial.oreByProducts, DustMaterial.class));
 
         RecipeMaps.FORGE_HAMMER_RECIPES.recipeBuilder()
             .input(purifiedPrefix, material)

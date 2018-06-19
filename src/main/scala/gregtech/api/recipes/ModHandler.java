@@ -4,6 +4,7 @@ import com.google.common.base.Preconditions;
 import gregtech.api.GTValues;
 import gregtech.api.items.ToolDictNames;
 import gregtech.api.items.metaitem.MetaItem;
+import gregtech.api.recipes.recipes.DummyRecipe;
 import gregtech.api.unification.OreDictUnifier;
 import gregtech.api.unification.material.Materials;
 import gregtech.api.unification.material.type.Material;
@@ -108,7 +109,7 @@ public class ModHandler {
     }
 
     public static boolean isMaterialWood(Material material) {
-        return material == Materials.Wood || material == Materials.WoodSealed;
+        return material == Materials.Wood;
     }
 
     /**

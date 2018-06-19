@@ -7,18 +7,22 @@ import gregtech.api.enchants.EnchantmentRadioactivity;
 import gregtech.api.items.metaitem.MetaItem;
 import gregtech.api.util.GTLog;
 import gregtech.common.blocks.*;
-import gregtech.common.blocks.wood.BlockSaplingGT;
 import gregtech.common.blocks.wood.BlockLeavesGT;
 import gregtech.common.blocks.wood.BlockLogGT;
+import gregtech.common.blocks.wood.BlockSaplingGT;
 import gregtech.common.cable.ItemBlockCable;
 import gregtech.common.items.MetaItems;
 import gregtech.common.items.PotionFluids;
+import gregtech.loaders.load.OreDictionaryLoader;
+import gregtech.loaders.oreprocessing.OreProcessingHandler;
+import gregtech.loaders.preload.MaterialInfoLoader;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemMultiTexture;
+import net.minecraft.item.crafting.IRecipe;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -72,6 +76,7 @@ public class CommonProxy {
             registry.register(item);
             item.registerSubItems();
         }
+        OreProcessingHandler.initializeMetaItems();
 
         registry.register(createItemBlock(MACHINE, MachineItemBlock::new));
         registry.register(createItemBlock(BOILER_CASING, VariantItemBlock::new));
@@ -102,6 +107,17 @@ public class CommonProxy {
         ORES.stream()
             .map(block -> createItemBlock(block, OreItemBlock::new))
             .forEach(registry::register);
+    }
+
+    @SubscribeEvent
+    public static void registerRecipes(RegistryEvent.Register<IRecipe> event) {
+        GTLog.logger.info("Registering ore dictionary...");
+        //probably only right place to register ore dictionary
+        //TODO register all recipes here too
+        MetaItems.registerOreDict();
+        MetaBlocks.registerOreDict();
+        OreDictionaryLoader.init();
+        MaterialInfoLoader.init();
     }
 
     private static <T extends Block> ItemBlock createMultiTexItemBlock(T block, Function<IBlockState, String> nameProducer) {

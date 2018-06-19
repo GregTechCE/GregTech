@@ -1,6 +1,6 @@
 package gregtech.api.recipes.builders;
 
-import gregtech.api.recipes.Recipe;
+import gregtech.api.recipes.recipes.PrimitiveBlastFurnaceRecipe;
 import gregtech.api.recipes.RecipeMaps;
 import gregtech.api.unification.material.type.Material;
 import gregtech.api.unification.ore.OrePrefix;
@@ -56,9 +56,9 @@ public class PBFRecipeBuilder {
         return this;
     }
 
-    public ValidationResult<Recipe.PrimitiveBlastFurnaceRecipe> build() {
+    public ValidationResult<PrimitiveBlastFurnaceRecipe> build() {
 		return ValidationResult.newResult(validate(),
-				new Recipe.PrimitiveBlastFurnaceRecipe(input, output, duration, fuelAmount));
+				new PrimitiveBlastFurnaceRecipe(input, output, duration, fuelAmount));
 	}
 
 	protected EnumValidationResult validate() {
@@ -87,10 +87,10 @@ public class PBFRecipeBuilder {
 	}
 
 	public void buildAndRegister() {
-		ValidationResult<Recipe.PrimitiveBlastFurnaceRecipe> result = build();
+		ValidationResult<PrimitiveBlastFurnaceRecipe> result = build();
 
 		if (result.getType() == EnumValidationResult.VALID) {
-            Recipe.PrimitiveBlastFurnaceRecipe recipe = result.getResult();
+            PrimitiveBlastFurnaceRecipe recipe = result.getResult();
             RecipeMaps.PRIMITIVE_BLAST_FURNACE_RECIPES.add(recipe);
 		}
 	}

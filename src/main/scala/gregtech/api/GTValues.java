@@ -66,6 +66,6 @@ public class GTValues {
             MODID_FR = "Forestry",
             MODID_JEI = "jei",
             MODID_FMP = "forgemultipartcbe",
-            MODID_CC = "crafttweaker";
+            MODID_CT = "crafttweaker";
 
 }

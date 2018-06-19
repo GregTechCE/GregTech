@@ -112,12 +112,18 @@ public class WorldGenRegistry {
 
         for(Path worldgenDefinition : worldgenFiles) {
             String depositName = worldgenRootPath.relativize(worldgenDefinition).toString();
-            try(InputStream fileStream = Files.newInputStream(worldgenDefinition)) {
-                InputStreamReader streamReader = new InputStreamReader(fileStream);
-                JsonObject element = jsonParser.parse(streamReader).getAsJsonObject();
-                OreDepositDefinition deposit = new OreDepositDefinition(depositName);
-                deposit.initializeFromConfig(element);
-                registeredDefinitions.add(deposit);
+            try {
+                try(InputStream fileStream = Files.newInputStream(worldgenDefinition)) {
+                    InputStreamReader streamReader = new InputStreamReader(fileStream);
+                    JsonObject element = jsonParser.parse(streamReader).getAsJsonObject();
+                    OreDepositDefinition deposit = new OreDepositDefinition(depositName);
+                    deposit.initializeFromConfig(element);
+                    registeredDefinitions.add(deposit);
+                }
+            } catch (IOException exception) {
+                GTLog.logger.error("Failed to load worldgen definition file on path {}", worldgenDefinition, exception);
+            } catch (RuntimeException exception) {
+                GTLog.logger.error("Failed to parse worldgen definition {} on path {}", depositName, worldgenDefinition, exception);
             }
         }
         GTLog.logger.info("Loaded {} worldgen definitions", registeredDefinitions.size());

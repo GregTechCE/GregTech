@@ -3,7 +3,7 @@ package gregtech.api.recipes.machines;
 import gregtech.api.GTValues;
 import gregtech.api.recipes.Recipe;
 import gregtech.api.recipes.RecipeMap;
-import gregtech.api.recipes.builders.DefaultRecipeBuilder;
+import gregtech.api.recipes.builders.SimpleRecipeBuilder;
 import gregtech.api.util.GTUtility;
 import gregtech.common.items.PotionFluids;
 import net.minecraft.init.Items;
@@ -18,11 +18,11 @@ import net.minecraftforge.fluids.FluidStack;
 import javax.annotation.Nullable;
 import java.util.List;
 
-public class RecipeMapBrewer extends RecipeMap<DefaultRecipeBuilder> {
+public class RecipeMapBrewer extends RecipeMap<SimpleRecipeBuilder> {
 
     private static final int POTION_PER_INGREDIENT = GTValues.L * 3;
 
-    public RecipeMapBrewer(String unlocalizedName, int minInputs, int maxInputs, int minOutputs, int maxOutputs, int minFluidInputs, int maxFluidInputs, int minFluidOutputs, int maxFluidOutputs, int amperage, DefaultRecipeBuilder defaultRecipe) {
+    public RecipeMapBrewer(String unlocalizedName, int minInputs, int maxInputs, int minOutputs, int maxOutputs, int minFluidInputs, int maxFluidInputs, int minFluidOutputs, int maxFluidOutputs, int amperage, SimpleRecipeBuilder defaultRecipe) {
         super(unlocalizedName, minInputs, maxInputs, minOutputs, maxOutputs, minFluidInputs, maxFluidInputs, minFluidOutputs, maxFluidOutputs, amperage, defaultRecipe);
     }
 

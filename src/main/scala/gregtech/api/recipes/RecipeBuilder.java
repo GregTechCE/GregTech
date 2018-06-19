@@ -1,12 +1,9 @@
 package gregtech.api.recipes;
 
 import com.google.common.base.Predicates;
-import crafttweaker.annotations.ZenRegister;
-import crafttweaker.api.item.IIngredient;
-import crafttweaker.api.minecraft.CraftTweakerMC;
 import gnu.trove.map.TObjectIntMap;
 import gnu.trove.map.hash.TObjectIntHashMap;
-import gregtech.api.GTValues;
+import gregtech.api.items.metaitem.MetaItem;
 import gregtech.api.unification.material.type.Material;
 import gregtech.api.unification.ore.OrePrefix;
 import gregtech.api.util.EnumValidationResult;
@@ -17,21 +14,14 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.util.NonNullList;
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fml.common.Optional.Method;
 import org.apache.commons.lang3.builder.ToStringBuilder;
-import stanhebben.zenscript.annotations.ZenClass;
-import stanhebben.zenscript.annotations.ZenMethod;
 
-import javax.annotation.Nullable;
 import java.util.*;
-import java.util.stream.Collectors;
 
 /**
  * @see Recipe
  */
 
-@ZenClass("mods.gregtech.RecipeBuilder")
-@ZenRegister
 public abstract class RecipeBuilder<R extends RecipeBuilder<R>> {
 
 	protected RecipeMap<R> recipeMap;
@@ -110,6 +100,10 @@ public abstract class RecipeBuilder<R extends RecipeBuilder<R>> {
 		this.optimized = recipeBuilder.optimized;
 	}
 
+	public boolean applyProperty(String key, Object value) {
+	    return false;
+    }
+
 	public R inputs(ItemStack... inputs) {
         return inputs(Arrays.asList(inputs));
     }
@@ -125,7 +119,7 @@ public abstract class RecipeBuilder<R extends RecipeBuilder<R>> {
                 this.inputs.add(CountableIngredient.from(stack));
             }
         });
-        return getThis();
+        return (R) this;
     }
 
     public R input(String oredict, int count) {
@@ -156,10 +150,26 @@ public abstract class RecipeBuilder<R extends RecipeBuilder<R>> {
 
     public R inputsIngredients(Collection<CountableIngredient> ingredients) {
 	    this.inputs.addAll(ingredients);
-        return getThis();
+        return (R) this;
     }
 
-	public R outputs(ItemStack... outputs) {
+    public R notConsumable(ItemStack itemStack) {
+        return inputs(new CountableIngredient(Ingredient.fromStacks(itemStack), 0));
+    }
+
+    public R notConsumable(OrePrefix prefix, Material material) {
+        return input(prefix, material, 0);
+    }
+
+    public R notConsumable(Ingredient ingredient) {
+        return inputs(new CountableIngredient(ingredient, 0));
+    }
+
+    public R notConsumable(MetaItem<?>.MetaValueItem item) {
+        return inputs(item.getStackForm());
+    }
+
+    public R outputs(ItemStack... outputs) {
 		return outputs(Arrays.asList(outputs));
 	}
 
@@ -169,7 +179,7 @@ public abstract class RecipeBuilder<R extends RecipeBuilder<R>> {
             outputs.removeIf(Predicates.or(Objects::isNull, ItemStack::isEmpty));
         }
 		this.outputs.addAll(outputs);
-        return getThis();
+        return (R) this;
     }
 
 	public R fluidInputs(FluidStack... inputs) {
@@ -184,7 +194,7 @@ public abstract class RecipeBuilder<R extends RecipeBuilder<R>> {
 		}
 		this.fluidInputs.addAll(inputs);
         this.fluidInputs.removeIf(Objects::isNull);
-        return getThis();
+        return (R) this;
     }
 
 	public R fluidOutputs(FluidStack... outputs) {
@@ -195,64 +205,58 @@ public abstract class RecipeBuilder<R extends RecipeBuilder<R>> {
 		outputs = new ArrayList<>(outputs);
 		if(outputs.contains(null)) outputs.removeIf(Objects::isNull);
 		this.fluidOutputs.addAll(outputs);
-        return getThis();
+        return (R) this;
     }
 
 	public R chancedOutput(ItemStack stack, int chance) {
 		if (stack == null || stack.isEmpty()) {
-			return getThis();
+            return (R) this;
 		}
 
 		if (0 >= chance || chance > Recipe.getMaxChancedValue()){
 			GTLog.logger.error("Chance cannot be less or equal to 0 or more than {}. Actual: {}.", Recipe.getMaxChancedValue(), chance);
             GTLog.logger.error("Stacktrace:", new IllegalArgumentException());
             recipeStatus = EnumValidationResult.INVALID;
-			return getThis();
+            return (R) this;
 		}
 
 		this.chancedOutputs.put(stack, chance);
-		return getThis();
+        return (R) this;
 	}
 
-	@ZenMethod
 	public R duration(int duration) {
 		this.duration = duration;
-		return getThis();
+        return (R) this;
 	}
 
-	@ZenMethod
 	public R EUt(int EUt) {
 		this.EUt = EUt;
-		return getThis();
+        return (R) this;
 	}
 
-	@ZenMethod
 	public R hidden() {
 		this.hidden = true;
-		return getThis();
+        return (R) this;
 	}
 
-	@ZenMethod
 	public R cannotBeBuffered() {
 		this.canBeBuffered = false;
-		return getThis();
+        return (R) this;
 	}
 
-	@ZenMethod
 	public R notOptimized() {
 		this.optimized = false;
-		return getThis();
+        return (R) this;
 	}
 
-	@ZenMethod
 	public R needsEmptyOutput() {
 		this.needsEmptyOutput = true;
-		return getThis();
+        return (R) this;
 	}
 
 	public R setRecipeMap(RecipeMap<R> recipeMap) {
 		this.recipeMap = recipeMap;
-		return getThis();
+        return (R) this;
 	}
 
 	public R fromRecipe(Recipe recipe) {
@@ -267,13 +271,10 @@ public abstract class RecipeBuilder<R extends RecipeBuilder<R>> {
 		this.hidden = recipe.isHidden();
 		this.canBeBuffered = recipe.canBeBuffered();
 		this.needsEmptyOutput = recipe.needsEmptyOutput();
-		return getThis();
+		return (R) this;
 	}
 
 	public abstract R copy();
-
-	// To get rid of "unchecked cast" warning
-	protected abstract R getThis();
 
 	protected EnumValidationResult finalizeAndValidate() {
 		return validate();
@@ -326,7 +327,7 @@ public abstract class RecipeBuilder<R extends RecipeBuilder<R>> {
 		return recipeStatus;
 	}
 
-	@ZenMethod
+
 	public void buildAndRegister() {
 		recipeMap.addRecipe(build());
 	}
@@ -354,69 +355,6 @@ public abstract class RecipeBuilder<R extends RecipeBuilder<R>> {
 	public List<FluidStack> getFluidOutputs() {
 		return fluidOutputs;
 	}
-
-	////////CraftTweaker specific accessors////////////
-
-    @ZenMethod
-    @Method(modid = GTValues.MODID_CC)
-    public R inputs(IIngredient... ingredients) {
-	    return inputsIngredients(Arrays.stream(ingredients)
-            .map(s -> new CountableIngredient(new CraftTweakerIngredientWrapper(s), s.getAmount()))
-            .collect(Collectors.toList()));
-    }
-
-    //note that fluid input predicates are not supported
-    @ZenMethod
-    @Method(modid = GTValues.MODID_CC)
-    public R fluidInputs(IIngredient... ingredients) {
-	    return fluidInputs(Arrays.stream(ingredients)
-            .flatMap(s -> s.getLiquids().stream())
-            .map(CraftTweakerMC::getLiquidStack)
-            .collect(Collectors.toList()));
-    }
-
-    @ZenMethod
-    @Method(modid = GTValues.MODID_CC)
-    public R outputs(IIngredient... ingredients) {
-	    return outputs(Arrays.stream(ingredients)
-            .map(s -> s.getItems().get(0))
-            .map(CraftTweakerMC::getItemStack)
-            .collect(Collectors.toList()));
-    }
-
-    @ZenMethod
-    @Method(modid = GTValues.MODID_CC)
-    public R chancedOutput(IIngredient ingredient, int chanceValue) {
-	    return chancedOutput(CraftTweakerMC.getItemStack(ingredient.getItems().get(0)), chanceValue);
-    }
-
-    @ZenMethod
-    @Method(modid = GTValues.MODID_CC)
-    public R fluidOutputs(IIngredient... ingredients) {
-        return fluidOutputs(Arrays.stream(ingredients)
-            .map(s -> s.getLiquids().get(0))
-            .map(CraftTweakerMC::getLiquidStack)
-            .collect(Collectors.toList()));
-    }
-
-    protected static class CraftTweakerIngredientWrapper extends Ingredient {
-
-	    private final IIngredient ingredient;
-
-        public CraftTweakerIngredientWrapper(IIngredient ingredient) {
-            super(ingredient.getItems().stream()
-                .map(CraftTweakerMC::getItemStack)
-                .toArray(ItemStack[]::new));
-            this.ingredient = ingredient;
-        }
-
-        @Override
-        public boolean apply(@Nullable ItemStack itemStack) {
-            return ingredient.matches(CraftTweakerMC.getIItemStack(itemStack));
-        }
-    }
-
-    //////////////////////////////////////////////////
 
     @Override
     public String toString() {

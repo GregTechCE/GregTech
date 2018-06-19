@@ -28,11 +28,6 @@ public class CrackingRecipeBuilder extends RecipeBuilder<CrackingRecipeBuilder> 
     }
 
     @Override
-    protected CrackingRecipeBuilder getThis() {
-        return this;
-    }
-
-    @Override
     public ValidationResult<Recipe> build() {
         return ValidationResult.newResult(finalizeAndValidate(),
             new Recipe(inputs, outputs, chancedOutputs, fluidInputs, fluidOutputs,

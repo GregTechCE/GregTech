@@ -3,6 +3,7 @@ package gregtech.api.recipes;
 import crafttweaker.annotations.ZenRegister;
 import gnu.trove.map.TByteObjectMap;
 import gnu.trove.map.hash.TByteObjectHashMap;
+import gregtech.api.GTValues;
 import gregtech.api.capability.IMultipleTankHandler;
 import gregtech.api.capability.impl.FluidTankList;
 import gregtech.api.gui.GuiTextures;
@@ -13,12 +14,15 @@ import gregtech.api.gui.widgets.ProgressWidget.MoveType;
 import gregtech.api.gui.widgets.SlotWidget;
 import gregtech.api.gui.widgets.TankWidget;
 import gregtech.api.recipes.builders.IntCircuitRecipeBuilder;
+import gregtech.api.recipes.crafttweaker.CTRecipe;
+import gregtech.api.recipes.crafttweaker.CTRecipeBuilder;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.ValidationResult;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fml.common.Optional.Method;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.IItemHandlerModifiable;
@@ -29,12 +33,13 @@ import stanhebben.zenscript.annotations.ZenMethod;
 import javax.annotation.Nullable;
 import java.util.*;
 import java.util.function.DoubleSupplier;
+import java.util.stream.Collectors;
 
 @ZenClass("mods.gregtech.RecipeMap")
 @ZenRegister
 public class RecipeMap<R extends RecipeBuilder<R>> {
 
-	private static final Map<String, RecipeMap<?>> RECIPE_MAPS = new HashMap<>();
+	private static final List<RecipeMap<?>> RECIPE_MAPS = new ArrayList<>();
 
 	public final String unlocalizedName;
 
@@ -74,23 +79,19 @@ public class RecipeMap<R extends RecipeBuilder<R>> {
 
         defaultRecipe.setRecipeMap(this);
         this.recipeBuilderSample = defaultRecipe;
-        RECIPE_MAPS.put(unlocalizedName, this);
+        RECIPE_MAPS.add(this);
 	}
 
-    @ZenMethod
-	public static Collection<RecipeMap<?>> getRecipeMapsCollection() {
-	    return Collections.unmodifiableCollection(RECIPE_MAPS.values());
+	@ZenMethod
+	public static List<RecipeMap<?>> getRecipeMaps() {
+	    return Collections.unmodifiableList(RECIPE_MAPS);
     }
 
     @ZenMethod
-    public static Map<String, RecipeMap<?>> getRecipeMaps() {
-	    return Collections.unmodifiableMap(RECIPE_MAPS);
-    }
-
-    @ZenMethod
-    @Nullable
-    public static RecipeMap<?> get(String unlocalizedName) {
-	    return RECIPE_MAPS.get(unlocalizedName);
+    public static RecipeMap<?> getByName(String unlocalizedName) {
+	    return RECIPE_MAPS.stream()
+            .filter(map -> map.unlocalizedName.equals(unlocalizedName))
+            .findFirst().orElse(null);
     }
 
 	public RecipeMap<R> setProgressBar(TextureArea progressBar, MoveType moveType) {
@@ -121,10 +122,6 @@ public class RecipeMap<R extends RecipeBuilder<R>> {
 
     public Collection<Recipe> getRecipesForFluid(Fluid fluid) {
         return recipeFluidMap.getOrDefault(fluid, Collections.emptySet());
-    }
-
-    public Collection<Recipe> getRecipeList() {
-        return Collections.unmodifiableCollection(recipeList);
     }
 
     public static boolean foundInvalidRecipe = false;
@@ -290,6 +287,19 @@ public class RecipeMap<R extends RecipeBuilder<R>> {
         return new int[] {itemSlotsToLeft, itemSlotsToDown};
     }
 
+
+    public Collection<Recipe> getRecipeList() {
+        return Collections.unmodifiableCollection(recipeList);
+    }
+
+    @ZenGetter("recipes")
+    @Method(modid = GTValues.MODID_CT)
+    public List<CTRecipe> ccGetRecipeList() {
+	    return getRecipeList().stream()
+            .map(CTRecipe::new)
+            .collect(Collectors.toList());
+    }
+
     @SideOnly(Side.CLIENT)
     @ZenGetter("localizedName")
     public String getLocalizedName() {
@@ -301,48 +311,63 @@ public class RecipeMap<R extends RecipeBuilder<R>> {
 	    return unlocalizedName;
     }
 
-    @ZenMethod
 	public R recipeBuilder() {
 		return recipeBuilderSample.copy();
 	}
 
+	@ZenMethod("recipeBuilder")
+    @Method(modid = GTValues.MODID_CT)
+	public CTRecipeBuilder ctRecipeBuilder() {
+	    return new CTRecipeBuilder(recipeBuilder());
+    }
+
+    @ZenGetter("minInputs")
 	public int getMinInputs() {
 		return minInputs;
 	}
 
+    @ZenGetter("maxInputs")
 	public int getMaxInputs() {
 		return maxInputs;
 	}
 
+    @ZenGetter("minOutputs")
 	public int getMinOutputs() {
 		return minOutputs;
 	}
 
+    @ZenGetter("maxOutputs")
 	public int getMaxOutputs() {
 		return maxOutputs;
 	}
 
+    @ZenGetter("minFluidInputs")
 	public int getMinFluidInputs() {
 		return minFluidInputs;
 	}
 
+    @ZenGetter("maxFluidInputs")
 	public int getMaxFluidInputs() {
 		return maxFluidInputs;
 	}
 
+    @ZenGetter("minFluidOutputs")
 	public int getMinFluidOutputs() {
 		return minFluidOutputs;
 	}
 
+    @ZenGetter("maxFluidOutputs")
 	public int getMaxFluidOutputs() {
 		return maxFluidOutputs;
 	}
 
+    @ZenGetter("amperage")
     public int getAmperage() {
         return amperage;
     }
 
     @Override
+    @ZenMethod
     public String toString() {
         return "RecipeMap{" +
             "unlocalizedName='" + unlocalizedName + '\'' +

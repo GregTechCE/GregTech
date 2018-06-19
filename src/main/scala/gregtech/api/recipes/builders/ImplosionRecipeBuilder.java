@@ -1,7 +1,6 @@
 package gregtech.api.recipes.builders;
 
 import com.google.common.collect.ImmutableMap;
-import crafttweaker.annotations.ZenRegister;
 import gregtech.api.recipes.CountableIngredient;
 import gregtech.api.recipes.Recipe;
 import gregtech.api.recipes.RecipeBuilder;
@@ -13,11 +12,8 @@ import gregtech.api.util.ValidationResult;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import org.apache.commons.lang3.builder.ToStringBuilder;
-import stanhebben.zenscript.annotations.ZenClass;
 import stanhebben.zenscript.annotations.ZenMethod;
 
-@ZenClass("mods.gregtech.builders.ImplosionRecipeBuilder")
-@ZenRegister
 public class ImplosionRecipeBuilder extends RecipeBuilder<ImplosionRecipeBuilder> {
 
     protected int explosivesAmount;
@@ -34,13 +30,17 @@ public class ImplosionRecipeBuilder extends RecipeBuilder<ImplosionRecipeBuilder
     }
 
     @Override
-    protected ImplosionRecipeBuilder getThis() {
-        return this;
+    public ImplosionRecipeBuilder copy() {
+        return new ImplosionRecipeBuilder(this);
     }
 
     @Override
-    public ImplosionRecipeBuilder copy() {
-        return new ImplosionRecipeBuilder(this);
+    public boolean applyProperty(String key, Object value) {
+        if(key.equals("explosives")) {
+            explosivesAmount((int) value);
+            return true;
+        }
+        return false;
     }
 
     @ZenMethod
