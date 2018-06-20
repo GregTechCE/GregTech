@@ -126,11 +126,11 @@ public abstract class RecipeMapWorkableHandler extends MTETrait implements IWork
 
     protected int[] calculateOverclock(int EUt, long voltage, long amperage, int duration, boolean consumeInputs) {
         boolean negativeEU = EUt < 0;
-        if(negativeEU)
-            EUt = -EUt;
         int tier = GTUtility.getTierByVoltage(voltage);
         if(GTValues.V[tier] <= EUt || tier == 0)
             return new int[] {EUt, duration};
+        if(negativeEU)
+            EUt = -EUt;
         if (EUt <= 16) {
             int resultEUt = EUt * (1 << (tier - 1)) * (1 << (tier - 1));
             int resultDuration = duration / (1 << (tier - 1));
@@ -139,14 +139,8 @@ public abstract class RecipeMapWorkableHandler extends MTETrait implements IWork
             int resultEUt = EUt;
             int resultDuration = duration;
             while (resultEUt <= GTValues.V[tier - 1] * amperage) {
-                if(!negativeEU) {
-                    resultEUt *= 4;
-                    resultDuration /= 2;
-                } else {
-                    //invert values for negative EU
-                    resultEUt *= 2;
-                    resultDuration /= 4;
-                }
+                resultEUt *= 4;
+                resultDuration /= 2;
             }
             return new int[] {negativeEU ? -resultEUt : resultEUt, resultDuration};
         }
@@ -156,7 +150,6 @@ public abstract class RecipeMapWorkableHandler extends MTETrait implements IWork
         int[] resultOverclock = calculateOverclock(recipe.getEUt(), getMaxVoltage(), recipeMap.getAmperage(), recipe.getDuration(), true);
         this.progressTime = 1;
         setMaxProgress(resultOverclock[1]);
-        System.out.println("set recipe " + recipe.getInputs() + " " + recipe.getEUt() + " " + resultOverclock[0]);
         this.recipeEUt = resultOverclock[0];
         this.fluidOutputs = GTUtility.copyFluidList(recipe.getFluidOutputs());
         this.itemOutputs = GTUtility.copyStackList(recipe.getResultItemOutputs(random));

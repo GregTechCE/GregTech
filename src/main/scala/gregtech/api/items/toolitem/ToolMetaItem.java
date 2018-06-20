@@ -221,17 +221,10 @@ public class ToolMetaItem<T extends ToolMetaItem<?>.MetaToolValueItem> extends M
             IToolStats toolStats = metaToolValueItem.getToolStats();
             if(toolStats.isMinableBlock(state, stack)) {
                 doDamageToItem(stack, toolStats.getToolDamagePerBlockBreak(stack), false);
-                ResourceLocation mineSound = toolStats.getMiningSound(stack);
+                ResourceLocation mineSound = toolStats.getUseSound(stack);
                 if(mineSound != null) {
                     SoundEvent soundEvent = SoundEvent.REGISTRY.getObject(mineSound);
                     world.playSound(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, soundEvent, SoundCategory.PLAYERS, 0.27f, 1.0f, false);
-                }
-                if(!isUsable(stack, toolStats.getToolDamagePerBlockBreak(stack))) {
-                    ResourceLocation breakSound = toolStats.getBreakingSound(stack);
-                    if(breakSound != null) {
-                        SoundEvent soundEvent = SoundEvent.REGISTRY.getObject(breakSound);
-                        world.playSound(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, soundEvent, SoundCategory.PLAYERS, 1.0f, 1.0f, false);
-                    }
                 }
             }
         }
@@ -306,17 +299,10 @@ public class ToolMetaItem<T extends ToolMetaItem<?>.MetaToolValueItem> extends M
             IToolStats toolStats = metaValueItem.getToolStats();
             if(!doDamageToItem(stack, toolStats.getToolDamagePerEntityAttack(stack), false))
                 return true;
-            ResourceLocation hitSound = toolStats.getEntityHitSound(stack);
+            ResourceLocation hitSound = toolStats.getUseSound(stack);
             if(hitSound != null) {
                 SoundEvent soundEvent = SoundEvent.REGISTRY.getObject(hitSound);
                 target.getEntityWorld().playSound(target.posX, target.posY, target.posZ, soundEvent, SoundCategory.PLAYERS, 0.27f, 1.0f, false);
-            }
-            if(!isUsable(stack, toolStats.getToolDamagePerEntityAttack(stack))) {
-                ResourceLocation breakSound = toolStats.getBreakingSound(stack);
-                if(breakSound != null) {
-                    SoundEvent soundEvent = SoundEvent.REGISTRY.getObject(breakSound);
-                    target.getEntityWorld().playSound(target.posX, target.posY, target.posZ, soundEvent, SoundCategory.PLAYERS, 1.0f, 1.0f, false);
-                }
             }
             float additionalDamage = toolStats.getNormalDamageBonus(target, stack, attacker);
             float additionalMagicDamage = toolStats.getMagicDamageBonus(target, stack, attacker);

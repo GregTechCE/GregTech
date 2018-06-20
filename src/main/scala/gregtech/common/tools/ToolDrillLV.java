@@ -1,12 +1,10 @@
 package gregtech.common.tools;
 
-import gregtech.api.GregTechAPI;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.ResourceLocation;
 
 public class ToolDrillLV extends ToolBase {
 
@@ -39,26 +37,6 @@ public class ToolDrillLV extends ToolBase {
     @Override
     public boolean hasMaterialHandle() {
         return true;
-    }
-
-    @Override
-    public ResourceLocation getCraftingSound(ItemStack stack) {
-        return GregTechAPI.soundList.get(106);
-    }
-
-    @Override
-    public ResourceLocation getEntityHitSound(ItemStack stack) {
-        return GregTechAPI.soundList.get(106);
-    }
-
-    @Override
-    public ResourceLocation getBreakingSound(ItemStack stack) {
-        return GregTechAPI.soundList.get(106);
-    }
-
-    @Override
-    public ResourceLocation getMiningSound(ItemStack stack) {
-        return GregTechAPI.soundList.get(106);
     }
 
     @Override

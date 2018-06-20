@@ -57,6 +57,12 @@ public class OreDictionaryLoader {
         OreDictUnifier.registerOre(new ItemStack(Blocks.LAPIS_BLOCK), OrePrefix.block, Materials.Lapis);
         OreDictUnifier.registerOre(new ItemStack(Blocks.COAL_BLOCK), OrePrefix.block, Materials.Coal);
         OreDictUnifier.registerOre(new ItemStack(Blocks.REDSTONE_BLOCK), OrePrefix.block, Materials.Redstone);
+        OreDictUnifier.registerOre(new ItemStack(Blocks.QUARTZ_BLOCK), OrePrefix.block, Materials.NetherQuartz);
+        OreDictUnifier.registerOre(new ItemStack(Blocks.BONE_BLOCK), OrePrefix.block, Materials.Bone);
+        OreDictUnifier.registerOre(new ItemStack(Blocks.ICE), OrePrefix.block, Materials.Ice);
+        OreDictUnifier.registerOre(new ItemStack(Blocks.OBSIDIAN), OrePrefix.block, Materials.Obsidian);
+        OreDictUnifier.registerOre(new ItemStack(Blocks.GLASS), OrePrefix.block, Materials.Glass);
+
         OreDictUnifier.registerOre(new ItemStack(Blocks.STONE, 1, 1), OrePrefix.stone, Materials.GraniteBlack);
         OreDictUnifier.registerOre(new ItemStack(Blocks.STONE, 1, 2), OrePrefix.stone, Materials.GraniteBlack);
         OreDictUnifier.registerOre(new ItemStack(Blocks.STONE, 1, 5), OrePrefix.stone, Materials.Andesite);

@@ -30,6 +30,8 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.property.IUnlistedProperty;
 import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import sun.reflect.Reflection;
 
 import javax.annotation.Nullable;
@@ -166,6 +168,7 @@ public class BlockSurfaceRock extends Block {
     }
 
     @Override
+    @SideOnly(Side.CLIENT)
     public EnumBlockRenderType getRenderType(IBlockState state) {
         return StoneRenderer.BLOCK_RENDER_TYPE;
     }

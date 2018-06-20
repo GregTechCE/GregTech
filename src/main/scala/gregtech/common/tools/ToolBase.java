@@ -1,6 +1,5 @@
 package gregtech.common.tools;
 
-import gregtech.api.GregTechAPI;
 import gregtech.api.enchants.EnchantmentData;
 import gregtech.api.items.metaitem.MetaItem;
 import gregtech.api.items.toolitem.IToolStats;
@@ -56,23 +55,8 @@ public abstract class ToolBase implements IToolStats {
     }
 
     @Override
-    public ResourceLocation getMiningSound(ItemStack stack) {
+    public ResourceLocation getUseSound(ItemStack stack) {
         return null;
-    }
-
-    @Override
-    public ResourceLocation getCraftingSound(ItemStack stack) {
-        return null;
-    }
-
-    @Override
-    public ResourceLocation getEntityHitSound(ItemStack stack) {
-        return null;
-    }
-
-    @Override
-    public ResourceLocation getBreakingSound(ItemStack stack) {
-        return GregTechAPI.soundList.get(0);
     }
 
     @Override
@@ -88,11 +72,6 @@ public abstract class ToolBase implements IToolStats {
     @Override
     public boolean isGrafter(ItemStack stack) {
         return false;
-    }
-
-    @Override
-    public ItemStack getBrokenItem(ItemStack stack) {
-        return null;
     }
 
     @Override

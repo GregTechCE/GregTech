@@ -52,6 +52,10 @@ public class DustMaterial extends FluidMaterial {
          */
         public static final long SMELT_INTO_FLUID = createFlag(17);
 
+        public static final long EXCLUDE_BLOCK_CRAFTING_RECIPES = createFlag(18);
+
+        public static final long EXCLUDE_PLATE_COMPRESSOR_RECIPE = createFlag(19);
+
     }
 
 

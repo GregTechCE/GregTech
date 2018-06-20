@@ -133,6 +133,16 @@ public abstract class Material implements Comparable<Material> {
 		 * Add to material if any of it's items cannot be recycled to get scrub
 		 */
 		public static final long NO_RECYCLING = createFlag(6);
+
+        /**
+         * Disables decomposition recipe generation for this material and all materials that has it as component
+         */
+        public static final long DISABLE_DECOMPOSITION = createFlag(0);
+
+        /**
+         * Decomposition recipe requires hydrogen as additional input. Amount is equal to input amount
+         */
+        public static final long DECOMPOSITION_REQUIRES_HYDROGEN = createFlag(1);
 	}
 
 	/**
@@ -223,7 +233,8 @@ public abstract class Material implements Comparable<Material> {
 	protected void calculateDecompositionType() {
 	    if(!materialComponents.isEmpty() &&
             !hasFlag(MatFlags.DECOMPOSITION_BY_CENTRIFUGING) &&
-            !hasFlag(MatFlags.DECOMPOSITION_BY_ELECTROLYZING)) {
+            !hasFlag(MatFlags.DECOMPOSITION_BY_ELECTROLYZING) &&
+            !hasFlag(MatFlags.DISABLE_DECOMPOSITION)) {
 	        boolean onlyFluidMaterials = true;
 	        boolean onlyMetalMaterials = true;
 	        for(MaterialStack materialStack : materialComponents) {

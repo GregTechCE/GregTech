@@ -10,8 +10,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.List;
 
@@ -70,14 +68,7 @@ public interface IToolStats {
      */
     float getMaxDurabilityMultiplier(ItemStack stack);
 
-    @SideOnly(Side.CLIENT)
-    ResourceLocation getMiningSound(ItemStack stack);
-
-    ResourceLocation getCraftingSound(ItemStack stack);
-
-    ResourceLocation getEntityHitSound(ItemStack stack);
-
-    ResourceLocation getBreakingSound(ItemStack stack);
+    ResourceLocation getUseSound(ItemStack stack);
 
     List<EnchantmentData> getEnchantments(ItemStack stack);
 
@@ -117,11 +108,6 @@ public interface IToolStats {
      * Allows special behaviors like timber axe, leaves cutting, etc
      */
     int convertBlockDrops(World world, BlockPos blockPos, IBlockState blockState, EntityPlayer harvester, List<ItemStack> drops, boolean recursive);
-
-    /**
-     * @return Returns a broken Version of the Item.
-     */
-    ItemStack getBrokenItem(ItemStack stack);
 
     /**
      * @return the Damage actually done to the Mob.

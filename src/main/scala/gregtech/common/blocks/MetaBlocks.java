@@ -115,7 +115,7 @@ public class MetaBlocks {
         createGeneratedBlock(material -> material instanceof DustMaterial &&
             !OrePrefix.block.isIgnored(material), MetaBlocks::createCompressedBlock);
         createGeneratedBlock(material -> material instanceof IngotMaterial &&
-            !OrePrefix.frameGt.isIgnored(material), MetaBlocks::createFrameBlock);
+            !OrePrefix.frameGt.doGenerateItem(material), MetaBlocks::createFrameBlock);
         createGeneratedBlock(material -> material instanceof IngotMaterial &&
             material.hasFlag(MatFlags.GENERATE_ORE), MetaBlocks::createSurfaceRockBlock);
 

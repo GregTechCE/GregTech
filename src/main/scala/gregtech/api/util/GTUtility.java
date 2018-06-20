@@ -30,11 +30,13 @@ import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.Tuple;
+import net.minecraft.util.WeightedRandom;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.common.BiomeDictionary;
 import net.minecraftforge.common.DimensionManager;
+import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
@@ -327,6 +329,27 @@ public class GTUtility {
     public static BiomeDictionary.Type getBiomeTypeTagByName(String name) {
         Map<String, BiomeDictionary.Type> byName = ReflectionHelper.getPrivateValue(BiomeDictionary.Type.class, null, "byName");
         return byName.get(name);
+    }
+
+    public static List<Tuple<ItemStack, Integer>> getGrassSeedEntries() {
+        ArrayList<Tuple<ItemStack, Integer>> result = new ArrayList<>();
+        try {
+            Field seedListField = ForgeHooks.class.getDeclaredField("seedList");
+            seedListField.setAccessible(true);
+            Class<?> seedEntryClass = Class.forName("net.minecraftforge.common.ForgeHooks.SeedEntry");
+            Field seedField = seedEntryClass.getDeclaredField("seed");
+            seedField.setAccessible(true);
+            List<WeightedRandom.Item> seedList = (List<WeightedRandom.Item>) seedListField.get(null);
+            for(WeightedRandom.Item seedEntryObject : seedList) {
+                ItemStack seedStack = (ItemStack) seedField.get(seedEntryObject);
+                int chanceValue = seedEntryObject.itemWeight;
+                if(!seedStack.isEmpty())
+                    result.add(new Tuple<>(seedStack, chanceValue));
+            }
+        } catch (ReflectiveOperationException exception) {
+            GTLog.logger.error("Failed to get forge grass seed list", exception);
+        }
+        return result;
     }
 
     public static <T> int getRandomItem(Random random, List<Entry<Integer, T>> randomList, int size) {

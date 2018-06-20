@@ -367,7 +367,6 @@ public final class MetaItems {
     public static ToolMetaItem<?>.MetaToolValueItem SENSE;
     public static ToolMetaItem<?>.MetaToolValueItem PLOW;
     public static ToolMetaItem<?>.MetaToolValueItem PLUNGER;
-    public static ToolMetaItem<?>.MetaToolValueItem ROLLING_PIN;
     public static ToolMetaItem<?>.MetaToolValueItem DRILL_LV;
     public static ToolMetaItem<?>.MetaToolValueItem DRILL_MV;
     public static ToolMetaItem<?>.MetaToolValueItem DRILL_HV;

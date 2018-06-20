@@ -48,6 +48,10 @@ public class ConfigHolder {
     @Config.RequiresMcRestart
     public static boolean harderMachineHulls = false;
 
+    @Config.Comment("Flint tools (pickaxe, shovel, axe, sword, hoe) recipes will be disabled. Default is false.")
+    @Config.RequiresMcRestart
+    public static boolean disableFlintTools = false;
+
     @Config.Comment("Category that contains configs for changing vanilla recipes")
     @Config.RequiresMcRestart
     public static VanillaRecipes vanillaRecipes = new VanillaRecipes();
