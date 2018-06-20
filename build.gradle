@@ -86,7 +86,7 @@ dependencies {
     deobfCompile "codechicken:ChickenASM:${shortVersion}-${config.chickenasm.version}"
     deobfCompile "codechicken:CodeChickenLib:${config.minecraft.version}-${config.ccl.version}:deobf"
     deobfCompile "codechicken:ForgeMultipart:${config.minecraft.version}-${config.multipart.version}:deobf"
-    deobfCompile "CraftTweaker2:CraftTweaker2-MC${strippedVersion}-Main:${config.crafttweaker.version}:deobf"
+    deobfCompile "CraftTweaker2:CraftTweaker2-MC${strippedVersion}-Main:${config.crafttweaker.version}" //not deobf because it has bug with manifest
     deobfCompile "mezz.jei:jei_${config.minecraft.version}:${config.jei.version}:api"
 
     deobfCompile "baubles:Baubles:${shortVersion}:${config.baubles.version}"
