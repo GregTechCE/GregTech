@@ -3,6 +3,7 @@ package gregtech.loaders.postload;
 import gregtech.api.unification.OreDictUnifier;
 import gregtech.api.unification.material.Materials;
 import gregtech.api.unification.ore.OrePrefix;
+import gregtech.api.util.GTLog;
 import gregtech.common.ConfigHolder;
 import gregtech.common.items.MetaItems;
 import net.minecraft.init.Items;
@@ -12,6 +13,7 @@ import net.minecraft.world.storage.loot.LootTableList;
 public class DungeonLootLoader {
 
     public static void init() {
+        GTLog.logger.info("Registering dungeon loot...");
         ChestGenHooks.init();
         if (ConfigHolder.increaseDungeonLoot) {
             ChestGenHooks.addRolls(LootTableList.CHESTS_SPAWN_BONUS_CHEST, 2, 4);

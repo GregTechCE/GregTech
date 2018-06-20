@@ -1,7 +1,6 @@
 package gregtech.api.render;
 
 import codechicken.lib.render.BlockRenderer;
-import codechicken.lib.render.BlockRenderer.BlockFace;
 import codechicken.lib.render.CCRenderState;
 import codechicken.lib.render.block.BlockRenderingRegistry;
 import codechicken.lib.render.block.ICCBlockRenderer;
@@ -61,7 +60,6 @@ public class MetaTileEntityRenderer implements ICCBlockRenderer, IItemRenderer, 
     public static MetaTileEntityRenderer INSTANCE = new MetaTileEntityRenderer();
     public static EnumBlockRenderType BLOCK_RENDER_TYPE;
     public static Map<TransformType, TRSRTransformation> BLOCK_TRANSFORMS = new HashMap<>();
-    private static ThreadLocal<BlockFace> blockFaces = ThreadLocal.withInitial(BlockFace::new);
 
     public static void preInit() {
         BLOCK_RENDER_TYPE = BlockRenderingRegistry.createRenderType("meta_tile_entity");

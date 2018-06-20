@@ -4,6 +4,7 @@ import com.google.common.base.CaseFormat;
 import com.google.common.base.Joiner;
 import gregtech.api.unification.material.type.DustMaterial;
 import gregtech.api.unification.material.type.IngotMaterial;
+import gregtech.api.unification.material.type.MarkerMaterial;
 import gregtech.api.unification.material.type.Material;
 import gregtech.api.unification.ore.OrePrefix;
 import gregtech.api.unification.stack.*;
@@ -97,12 +98,16 @@ public class OreDictUnifier {
                 }
             }
         }
+
         //finally register item
         if(orePrefix != null && (material != null || orePrefix.isSelfReferencing)) {
             UnificationEntry unificationEntry = new UnificationEntry(orePrefix, material);
             stackUnificationInfo.put(simpleItemStack, unificationEntry);
             stackUnificationItems.computeIfAbsent(unificationEntry, p -> new ArrayList<>()).add(simpleItemStack);
-            orePrefix.processOreRegistration(material);
+            if(!(material instanceof MarkerMaterial)) {
+                //trigger processOreRegistration only for real materials
+                orePrefix.processOreRegistration(material);
+            }
         }
     }
 

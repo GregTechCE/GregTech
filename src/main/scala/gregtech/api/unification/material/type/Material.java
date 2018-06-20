@@ -8,7 +8,6 @@ import gregtech.api.unification.material.Materials;
 import gregtech.api.unification.stack.MaterialStack;
 import gregtech.api.util.GTControlledRegistry;
 import gregtech.api.util.GTLog;
-import gregtech.common.ConfigHolder;
 import net.minecraft.client.resources.I18n;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -28,32 +27,12 @@ public abstract class Material implements Comparable<Material> {
 
 	public static GTControlledRegistry<Material> MATERIAL_REGISTRY = new GTControlledRegistry<>(1000);
 
-	/**
-	 * Initializes materials registry
-	 */
-	public static void init() {
-	    Materials.class.getSimpleName();
-		MATERIAL_REGISTRY.freezeRegistry();
-        Map<String, String[]> materialFlags = ConfigHolder.materialFlags;
-        for(String materialName : materialFlags.keySet()) {
-            Material material = MATERIAL_REGISTRY.getObject(materialName);
-            if(material == null) {
-                GTLog.logger.error("Couldn't find material {} from configuration of material flags. Skipping it..", materialName);
-                continue;
-            }
-            Class<? extends Material> materialClass = material.getClass();
-            long additionalFlags = 0L;
-            for(String flagName : materialFlags.get(materialName)) {
-                try {
-                    additionalFlags |= MatFlags.resolveFlag(flagName, materialClass);
-                } catch (IllegalArgumentException exception) {
-                    GTLog.logger.error("Couldn't apply configuration material flag {} to material {}: {}",
-                        flagName, material.toString(), exception.getMessage());
-                }
-            }
-            material.add(additionalFlags);
-        }
+	public static void freezeRegistry() {
+        GTLog.logger.info("Freezing material registry...");
+        //just to make sure it was loaded
+	    Materials.register();
 
+		MATERIAL_REGISTRY.freezeRegistry();
 	}
 
 	public static final class MatFlags {
@@ -191,25 +170,22 @@ public abstract class Material implements Comparable<Material> {
     }
 
 	public Material(int metaItemSubId, String name, int materialRGB, MaterialIconSet materialIconSet, ImmutableList<MaterialStack> materialComponents, long materialGenerationFlags, Element element) {
-		this.materialRGB = materialRGB;
-		this.materialIconSet = materialIconSet;
-		this.materialComponents = materialComponents;
-		this.materialGenerationFlags = verifyMaterialBits(materialGenerationFlags);
-		this.element = element;
+        this.materialRGB = materialRGB;
+        this.materialIconSet = materialIconSet;
+        this.materialComponents = materialComponents;
+        this.materialGenerationFlags = verifyMaterialBits(materialGenerationFlags);
+        this.element = element;
         this.chemicalFormula = calculateChemicalFormula();
         calculateDecompositionType();
         initializeMaterial();
-        //do not register any marker materials in registry
-        if(!(this instanceof MarkerMaterial)) {
-            if(metaItemSubId > -1) {
-                //if we have an generated metaitem, register ourselves with meta item ID
-                MATERIAL_REGISTRY.register(metaItemSubId, name, this);
-            } else {
-                //if we doesn't, just put name mapping for this material
-                MATERIAL_REGISTRY.putObject(name, this);
-            }
+        if (metaItemSubId > -1) {
+            //if we have an generated metaitem, register ourselves with meta item ID
+            MATERIAL_REGISTRY.register(metaItemSubId, name, this);
+        } else {
+            //if we doesn't, just put name mapping for this material
+            MATERIAL_REGISTRY.putObject(name, this);
         }
-	}
+    }
 
 	protected void initializeMaterial() {
     }

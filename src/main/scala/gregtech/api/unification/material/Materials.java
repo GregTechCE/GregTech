@@ -19,6 +19,11 @@ import static gregtech.api.unification.material.type.SolidMaterial.MatFlags.*;
 @SuppressWarnings("WeakerAccess")
 public class Materials {
 
+    public static void register() {
+        Materials.Aluminium.toString();
+        MarkerMaterials.register();
+    }
+
     private static final long STD_SOLID = GENERATE_PLATE | GENERATE_ROD | GENERATE_BOLT_SCREW;
     private static final long STD_GEM = GENERATE_ORE | STD_SOLID | GENERATE_LENSE;
     private static final long STD_METAL = GENERATE_PLATE;

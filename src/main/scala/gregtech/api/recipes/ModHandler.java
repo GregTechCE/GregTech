@@ -178,8 +178,12 @@ public class ModHandler {
         }
         if (skip) return;
 
+        FurnaceRecipes recipes = FurnaceRecipes.instance();
 
-        GameRegistry.addSmelting(input, output.copy(), 0.0F);
+        if(recipes.getSmeltingResult(input).isEmpty()) {
+            //register only if there is no recipe with duplicate input
+            recipes.addSmeltingRecipe(input, output, 0.0f);
+        }
     }
 
     ///////////////////////////////////////////////////

@@ -526,6 +526,8 @@ public enum OrePrefix {
                 registrationHandler.processMaterial(this, registeredMaterial);
             }
         }
+        //clear generated materials for next pass
+        generatedMaterials.clear();
     }
 
     @SideOnly(Side.CLIENT)

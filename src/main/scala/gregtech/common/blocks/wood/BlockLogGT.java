@@ -50,7 +50,7 @@ public class BlockLogGT extends BlockLog {
     public IBlockState getStateFromMeta(int meta) {
         return getDefaultState()
             .withProperty(LOG_AXIS, getAxis(meta))
-            .withProperty(VARIANT, LogVariant.values()[meta % 4 % 2])
+            .withProperty(VARIANT, LogVariant.values()[meta % 4 % 2 % LogVariant.values().length])
             .withProperty(NATURAL, meta % 4 / 2 == 1);
     }
 

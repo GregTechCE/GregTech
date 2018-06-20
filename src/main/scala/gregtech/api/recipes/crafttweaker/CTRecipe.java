@@ -8,6 +8,7 @@ import crafttweaker.api.minecraft.CraftTweakerMC;
 import crafttweaker.mc1120.item.MCItemStack;
 import crafttweaker.mc1120.liquid.MCLiquidStack;
 import gregtech.api.recipes.Recipe;
+import gregtech.api.recipes.RecipeMap;
 import stanhebben.zenscript.annotations.ZenClass;
 import stanhebben.zenscript.annotations.ZenGetter;
 import stanhebben.zenscript.annotations.ZenMethod;
@@ -21,9 +22,11 @@ import java.util.stream.Collectors;
 @ZenRegister
 public class CTRecipe {
 
+    private final RecipeMap<?> recipeMap;
     private final Recipe backingRecipe;
 
-    public CTRecipe(Recipe backingRecipe) {
+    public CTRecipe(RecipeMap<?> recipeMap, Recipe backingRecipe) {
+        this.recipeMap = recipeMap;
         this.backingRecipe = backingRecipe;
     }
 
@@ -108,6 +111,11 @@ public class CTRecipe {
     @ZenMethod
     public Object getProperty(String key) {
         return this.backingRecipe.getProperty(key);
+    }
+
+    @ZenMethod
+    public boolean remove() {
+        return this.recipeMap.removeRecipe(this.backingRecipe);
     }
 
 }

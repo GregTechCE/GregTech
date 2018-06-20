@@ -336,7 +336,7 @@ public class GTUtility {
         try {
             Field seedListField = ForgeHooks.class.getDeclaredField("seedList");
             seedListField.setAccessible(true);
-            Class<?> seedEntryClass = Class.forName("net.minecraftforge.common.ForgeHooks.SeedEntry");
+            Class<?> seedEntryClass = Class.forName("net.minecraftforge.common.ForgeHooks$SeedEntry");
             Field seedField = seedEntryClass.getDeclaredField("seed");
             seedField.setAccessible(true);
             List<WeightedRandom.Item> seedList = (List<WeightedRandom.Item>) seedListField.get(null);

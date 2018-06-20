@@ -105,11 +105,6 @@ public class MetaTool extends ToolMetaItem<ToolMetaItem<?>.MetaToolValueItem> {
             'I', new ItemStack(Items.FLINT, 1),
             'S', OrePrefix.stone);
 
-        ModHandler.addShapedRecipe("soft_hammer_polytetrafluoroethylene", SOFT_HAMMER.getStackForm(Materials.Polytetrafluoroethylene, Materials.Wood),
-            "RR ", "RRS", "RR ",
-            'R', new UnificationEntry(OrePrefix.ingot, Materials.Polytetrafluoroethylene),
-            'S', new ItemStack(Items.STICK));
-
         IngotMaterial[] mortarMaterials = new IngotMaterial[] {Materials.Bronze, Materials.Iron,
             Materials.Steel, Materials.DamascusSteel, Materials.WroughtIron, Materials.RedSteel,
             Materials.BlackSteel, Materials.BlueSteel};

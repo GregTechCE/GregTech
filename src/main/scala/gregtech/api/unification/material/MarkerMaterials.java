@@ -7,6 +7,12 @@ import net.minecraft.item.EnumDyeColor;
 
 public class MarkerMaterials {
 
+    public static void register() {
+        Color.Colorless.toString();
+        Tier.Primitive.toString();
+        Empty.toString();
+    }
+
     /**
      * Marker materials without category
      */

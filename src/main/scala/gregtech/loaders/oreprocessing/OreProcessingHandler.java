@@ -47,7 +47,7 @@ public class OreProcessingHandler {
         OrePrefix.gemChipped, OrePrefix.gemFlawed, OrePrefix.gem, OrePrefix.gemFlawless, OrePrefix.gemExquisite);
 
     private static final List<Object> CRUSHING_PREFIXES = Arrays.asList(
-        OrePrefix.ingot, OrePrefix.gem, OrePrefix.stick, OrePrefix.plate,
+        OrePrefix.ingot, OrePrefix.gem, OrePrefix.stick, OrePrefix.plate, OrePrefix.plank,
         OrePrefix.ring, OrePrefix.stickLong, OrePrefix.foil, OrePrefix.bolt,
         OrePrefix.screw, OrePrefix.nugget, OrePrefix.gearSmall, OrePrefix.gear,
         OrePrefix.frameGt, OrePrefix.plateDense, OrePrefix.spring,

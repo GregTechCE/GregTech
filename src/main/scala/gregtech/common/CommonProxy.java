@@ -5,6 +5,7 @@ import gregtech.api.block.machines.MachineItemBlock;
 import gregtech.api.enchants.EnchantmentEnderDamage;
 import gregtech.api.enchants.EnchantmentRadioactivity;
 import gregtech.api.items.metaitem.MetaItem;
+import gregtech.api.unification.ore.OrePrefix;
 import gregtech.api.util.GTLog;
 import gregtech.common.blocks.*;
 import gregtech.common.blocks.wood.BlockLeavesGT;
@@ -13,8 +14,12 @@ import gregtech.common.blocks.wood.BlockSaplingGT;
 import gregtech.common.cable.ItemBlockCable;
 import gregtech.common.items.MetaItems;
 import gregtech.common.items.PotionFluids;
+import gregtech.loaders.load.FuelLoader;
+import gregtech.loaders.load.MetaTileEntityLoader;
 import gregtech.loaders.load.OreDictionaryLoader;
 import gregtech.loaders.oreprocessing.OreProcessingHandler;
+import gregtech.loaders.postload.CraftingRecipeLoader;
+import gregtech.loaders.postload.MachineRecipeLoader;
 import gregtech.loaders.preload.MaterialInfoLoader;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
@@ -25,6 +30,7 @@ import net.minecraft.item.ItemMultiTexture;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.registries.IForgeRegistry;
 
@@ -109,15 +115,42 @@ public class CommonProxy {
             .forEach(registry::register);
     }
 
+    //this is called with normal priority, so most mods working with
+    //ore dictionary and recipes will get recipes accessible in time
     @SubscribeEvent
     public static void registerRecipes(RegistryEvent.Register<IRecipe> event) {
         GTLog.logger.info("Registering ore dictionary...");
-        //probably only right place to register ore dictionary
-        //TODO register all recipes here too
+
         MetaItems.registerOreDict();
         MetaBlocks.registerOreDict();
         OreDictionaryLoader.init();
         MaterialInfoLoader.init();
+
+        GTLog.logger.info("Registering recipes...");
+
+        MetaItems.registerRecipes();
+        MachineRecipeLoader.init();
+        FuelLoader.registerFuels();
+        CraftingRecipeLoader.init();
+        MetaTileEntityLoader.init();
+        OreProcessingHandler.registerProcessing();
+    }
+
+    //this is called almost last, to make sure all mods registered their ore dictionary
+    //items and blocks for running first phase of material handlers
+    //it will also clear generated materials
+    @SubscribeEvent(priority = EventPriority.LOW)
+    public static void runEarlyMaterialHandlers(RegistryEvent.Register<IRecipe> event) {
+        GTLog.logger.info("Running early material handlers...");
+        OrePrefix.runMaterialHandlers();
+    }
+
+    //this is called last, so all mods finished registering their stuff, as example, CraftTweaker
+    //if it registered some kind of ore dictionary entry, late processing will hook it and generate recipes
+    @SubscribeEvent(priority = EventPriority.LOWEST)
+    public static void registerRecipesLowest(RegistryEvent.Register<IRecipe> event) {
+        GTLog.logger.info("Running late material handlers...");
+        OrePrefix.runMaterialHandlers();
     }
 
     private static <T extends Block> ItemBlock createMultiTexItemBlock(T block, Function<IBlockState, String> nameProducer) {

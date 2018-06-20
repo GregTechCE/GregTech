@@ -265,7 +265,7 @@ public class MachineRecipeLoader {
                 .input(OrePrefix.plate, Materials.TungstenSteel, 3)
                 .inputs(MetaItems.ELECTRIC_PUMP_LV.getStackForm())
                 .fluidInputs(Materials.Nitrogen.getFluid(2000))
-                .outputs(OreDictUnifier.get(OrePrefix.cableGtSingle, Tier.Superconductor, 3))
+                .outputs(OreDictUnifier.get(OrePrefix.wireGtSingle, Tier.Superconductor, 3))
                 .duration(20).EUt(512)
                 .buildAndRegister();
         }

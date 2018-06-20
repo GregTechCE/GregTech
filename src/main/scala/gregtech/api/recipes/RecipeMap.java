@@ -143,6 +143,17 @@ public class RecipeMap<R extends RecipeBuilder<R>> {
 		}
 	}
 
+	public boolean removeRecipe(Recipe recipe) {
+	    //if we actually removed this recipe
+	    if(recipeList.remove(recipe)) {
+	        //also iterate trough fluid mappings and remove recipe from them
+	        recipeFluidMap.values().forEach(fluidMap ->
+                fluidMap.removeIf(fluidRecipe -> fluidRecipe == recipe));
+	        return true;
+        }
+        return false;
+    }
+
     @Nullable
     public Recipe findRecipe(long voltage, IItemHandlerModifiable inputs, IMultipleTankHandler fluidInputs) {
         return this.findRecipe(voltage, GTUtility.itemHandlerToList(inputs), GTUtility.fluidHandlerToList(fluidInputs));
@@ -296,7 +307,7 @@ public class RecipeMap<R extends RecipeBuilder<R>> {
     @Method(modid = GTValues.MODID_CT)
     public List<CTRecipe> ccGetRecipeList() {
 	    return getRecipeList().stream()
-            .map(CTRecipe::new)
+            .map(recipe -> new CTRecipe(this, recipe))
             .collect(Collectors.toList());
     }
 

@@ -27,7 +27,6 @@ import java.util.*;
  *
  * Recipes are immutable.
  */
-//TODO CraftTweaker support
 public class Recipe {
 
     public static int getMaxChancedValue() {

@@ -132,6 +132,7 @@ public class MetaBlocks {
             }
         }
         createCableBlock(MarkerMaterials.Tier.Superconductor, new WireProperties(Integer.MAX_VALUE, 4, 0));
+
     }
 
     private static void createGeneratedBlock(Predicate<Material> materialPredicate, BiConsumer<Material[], Integer> blockGenerator) {
