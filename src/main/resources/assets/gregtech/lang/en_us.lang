@@ -1660,7 +1660,7 @@ recipemap.implosioncompressor.name=Implosion Compressor
 recipemap.vacuumfreezer.name=Vacuum Freezer
 recipemap.chemicalreactor.name=Chemical Reactor
 recipemap.distillationtower.name=Distillation Tower
-recipemap.craker.name=Oil Cracker
+recipemap.cracker.name=Cracking Unit
 recipemap.pyro.name=Pyrolyse Oven
 recipemap.wiremill.name=Wiremill
 recipemap.metalbender.name=Metal Bender
@@ -1696,6 +1696,7 @@ recipemap.compressor.name=Compressor
 recipemap.packer.name=Packer
 recipemap.unpacker.name=Unpacker
 recipemap.diesel_generator.name=Diesel Generator
+recipemap.gas_turbine.name=Gas Turbine
 recipemap.steam_turbine.name=Steam Turbine
 
 behavior.magnifying_glass.description=Click on surface rock to inspect it
@@ -1715,6 +1716,8 @@ tile.gt.leaves.rubber_wood.name=Rubber Tree Leaves
 tile.gt.sapling.rubber_wood.name=Rubber Tree Sapling
 metaitem.rubber_drop.name=Rubber
 metaitem.plant_ball.name=Plant Ball
+metaitem.tool_parts_box.name=Tool Parts Box
+metaitem.tool_parts_box.tooltip=Contains some tool parts/nRight click to extract parts
 
 tile.surface_rock.name=Surface Rock
 
@@ -2742,6 +2745,7 @@ gregtech.machine.implosion_compressor.name=Implosion Compressor
 gregtech.machine.pyrolyse_oven.name=Pyrolyse Oven
 gregtech.machine.distillation_tower.name=Distillation Tower
 gregtech.machine.multi_furnace.name=Multi Smelter
+gregtech.machine.cracker.name=Cracker Unit
 
 gregtech.machine.diesel_engine.name=Diesel Engine
 gregtech.machine.large_turbine.steam.name=Large Steam Turbine
@@ -2900,6 +2904,7 @@ gregtech.multiblock.blast_furnace.max_temperature=Max Temperature: %sK
 gregtech.multiblock.multi_furnace.heating_coil_level=Heating Coil Level: %s
 gregtech.multiblock.multi_furnace.heating_coil_discount=Heating Coil EU Boost: %sx
 gregtech.multiblock.distillation_tower.distilling_fluid=Distilling %s
+gregtech.multiblock.cracker.cracking_fluid=Cracking %s
 
 gregtech.multiblock.diesel_engine.lubricant_amount=Lubricant Amount: %sL
 gregtech.multiblock.diesel_engine.fuel_amount=Fuel Amount: %sL (%s)

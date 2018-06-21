@@ -1,10 +1,7 @@
 package gregtech.api.recipes.builders;
 
 import com.google.common.collect.ImmutableMap;
-import gregtech.api.recipes.ModHandler;
-import gregtech.api.recipes.Recipe;
-import gregtech.api.recipes.RecipeBuilder;
-import gregtech.api.recipes.RecipeMap;
+import gregtech.api.recipes.*;
 import gregtech.api.unification.material.Materials;
 import gregtech.api.util.ValidationResult;
 import net.minecraftforge.fluids.FluidStack;
@@ -28,11 +25,6 @@ public class CrackingRecipeBuilder extends RecipeBuilder<CrackingRecipeBuilder> 
     }
 
     @Override
-    protected CrackingRecipeBuilder getThis() {
-        return this;
-    }
-
-    @Override
     public ValidationResult<Recipe> build() {
         return ValidationResult.newResult(finalizeAndValidate(),
             new Recipe(inputs, outputs, chancedOutputs, fluidInputs, fluidOutputs,
@@ -41,16 +33,31 @@ public class CrackingRecipeBuilder extends RecipeBuilder<CrackingRecipeBuilder> 
 
     @Override
     public void buildAndRegister() {
-        super.buildAndRegister();
+        if(fluidInputs.size() == 1) {
+            FluidStack inputFluid = fluidInputs.get(0);
+            FluidStack outputFluid = fluidOutputs.get(0);
+            fluidOutputs.clear();
+            recipeMap.addRecipe(this.copy()
+                .fluidInputs(ModHandler.getSteam(inputFluid.amount))
+                .fluidOutputs(new FluidStack(outputFluid.getFluid(), outputFluid.amount))
+                .build());
+            recipeMap.addRecipe(this.copy()
+                .fluidInputs(Materials.Hydrogen.getFluid(inputFluid.amount))
+                .fluidOutputs(new FluidStack(outputFluid.getFluid(), outputFluid.amount))
+                .build());
+        }
+    }
+        /*super.buildAndRegister();
         FluidStack fluidInput = fluidInputs.get(0);
-        FluidStack fluidOutput = fluidInputs.get(0);
+        FluidStack fluidOutput = fluidOutputs.get(0);
+        fluidOutputs.clear(); //clear fluid outputs because we add them again with multipliers
         recipeMap.addRecipe(this.copy()
-            .fluidInputs(fluidInput, ModHandler.getSteam(fluidInput.amount))
+            .fluidInputs(ModHandler.getSteam(fluidInput.amount))
             .fluidOutputs(fluidOutput, Materials.Hydrogen.getFluid(fluidInput.amount))
             .build());
         recipeMap.addRecipe(this.copy()
-            .fluidInputs(fluidInput, Materials.Hydrogen.getFluid(fluidInput.amount))
+            .fluidInputs(Materials.Hydrogen.getFluid(fluidInput.amount))
             .fluidOutputs(new FluidStack(fluidOutput.getFluid(), (int) (fluidOutput.amount * 1.3)))
             .build());
-    }
+    }*/
 }
