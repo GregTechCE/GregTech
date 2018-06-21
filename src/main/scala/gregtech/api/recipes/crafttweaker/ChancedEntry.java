@@ -5,7 +5,7 @@ import crafttweaker.api.item.IItemStack;
 import stanhebben.zenscript.annotations.ZenClass;
 import stanhebben.zenscript.annotations.ZenGetter;
 
-@ZenClass("mods.gregtech.ChancedEntry")
+@ZenClass("mods.gregtech.recipe.ChancedEntry")
 @ZenRegister
 public class ChancedEntry {
 

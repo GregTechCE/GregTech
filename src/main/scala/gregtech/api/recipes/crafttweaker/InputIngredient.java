@@ -13,7 +13,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@ZenClass("mods.gregtech.InputIngredient")
+@ZenClass("mods.gregtech.recipe.InputIngredient")
 @ZenRegister
 public class InputIngredient {
 

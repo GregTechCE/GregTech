@@ -14,7 +14,7 @@ import javax.annotation.Nullable;
 import java.util.Arrays;
 import java.util.stream.Collectors;
 
-@ZenClass("mods.gregtech.RecipeBuilder")
+@ZenClass("mods.gregtech.recipe.RecipeBuilder")
 @ZenRegister
 public class CTRecipeBuilder {
     

@@ -2,6 +2,7 @@ package gregtech.api.unification.material.type;
 
 import com.google.common.base.CaseFormat;
 import com.google.common.collect.ImmutableList;
+import crafttweaker.annotations.ZenRegister;
 import gregtech.api.unification.Element;
 import gregtech.api.unification.material.MaterialIconSet;
 import gregtech.api.unification.material.Materials;
@@ -11,8 +12,8 @@ import gregtech.api.util.GTLog;
 import net.minecraft.client.resources.I18n;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import stanhebben.zenscript.annotations.*;
 
-import javax.annotation.Nullable;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.AbstractMap.SimpleEntry;
@@ -23,15 +24,14 @@ import java.util.TreeMap;
 import static gregtech.api.GTValues.M;
 import static gregtech.api.util.GTUtility.createFlag;
 
+@ZenClass("mods.gregtech.material.Material")
+@ZenRegister
 public abstract class Material implements Comparable<Material> {
 
 	public static GTControlledRegistry<Material> MATERIAL_REGISTRY = new GTControlledRegistry<>(1000);
 
 	public static void freezeRegistry() {
         GTLog.logger.info("Freezing material registry...");
-        //just to make sure it was loaded
-	    Materials.register();
-
 		MATERIAL_REGISTRY.freezeRegistry();
 	}
 
@@ -72,10 +72,6 @@ public abstract class Material implements Comparable<Material> {
                 throw new IllegalArgumentException("Flag " + name + " cannot be applied to material type " +
                     selfClass.getSimpleName() + ", lower bound is " + flagEntry.getValue().getSimpleName());
             return flagEntry.getKey();
-        }
-
-        static {
-	        registerMaterialFlagsHolder(MatFlags.class, Material.class);
         }
 
 		/**
@@ -122,26 +118,34 @@ public abstract class Material implements Comparable<Material> {
          * Decomposition recipe requires hydrogen as additional input. Amount is equal to input amount
          */
         public static final long DECOMPOSITION_REQUIRES_HYDROGEN = createFlag(1);
+
+        static {
+            registerMaterialFlagsHolder(MatFlags.class, Material.class);
+        }
 	}
 
 	/**
 	 * Color of material in RGB format
 	 */
-	public final int materialRGB;
+	@ZenProperty("color")
+    public final int materialRGB;
 
 	/**
 	 * Chemical formula of this material
 	 */
+	@ZenProperty
 	public final String chemicalFormula;
 
 	/**
 	 * Icon set for this material meta-items generation
 	 */
+	@ZenProperty("iconSet")
 	public final MaterialIconSet materialIconSet;
 
 	/**
 	 * List of this material component
 	 */
+	@ZenProperty("components")
 	public final ImmutableList<MaterialStack> materialComponents;
 
 	/**
@@ -149,11 +153,13 @@ public abstract class Material implements Comparable<Material> {
 	 * @see MatFlags
 	 * @see DustMaterial.MatFlags
 	 */
+	@ZenProperty("generationFlagsRaw")
 	protected long materialGenerationFlags;
 
 	/**
 	 * Element of this material consist of
 	 */
+	@ZenProperty
 	public final Element element;
 
 	private String calculateChemicalFormula() {
@@ -194,7 +200,10 @@ public abstract class Material implements Comparable<Material> {
 		return materialBits;
 	}
 
-	public void add(long... materialGenerationFlags) {
+	public void addFlag(long... materialGenerationFlags) {
+	    if(MATERIAL_REGISTRY.isFrozen()) {
+	        throw new IllegalStateException("Cannot add flag to material when registry is frozen!");
+        }
 		long combined = 0;
 		for (long materialGenerationFlag : materialGenerationFlags) {
 			combined |= materialGenerationFlag;
@@ -202,9 +211,30 @@ public abstract class Material implements Comparable<Material> {
 		this.materialGenerationFlags |= verifyMaterialBits(combined);
 	}
 
+	@ZenMethod("hasFlagRaw")
 	public boolean hasFlag(long generationFlag) {
 		return (materialGenerationFlags & generationFlag) != 0;
 	}
+
+	@ZenMethod
+	public void addFlags(String... flagNames) {
+        addFlag(convertMaterialFlags(getClass(), flagNames));
+    }
+
+    public static long convertMaterialFlags(Class<? extends Material> materialClass, String... flagNames) {
+        long combined = 0;
+        for(String flagName : flagNames) {
+            long materialFlagId = MatFlags.resolveFlag(flagName, materialClass);
+            combined |= materialFlagId;
+        }
+        return combined;
+    }
+
+	@ZenMethod
+	public boolean hasFlag(String flagName) {
+	    long materialFlagId = MatFlags.resolveFlag(flagName, getClass());
+	    return hasFlag(materialFlagId);
+    }
 
 	protected void calculateDecompositionType() {
 	    if(!materialComponents.isEmpty() &&
@@ -228,6 +258,7 @@ public abstract class Material implements Comparable<Material> {
         }
     }
 
+    @ZenGetter("radioactive")
 	public boolean isRadioactive() {
 		if (element != null)
 			return element.halfLifeSeconds >= 0;
@@ -236,6 +267,7 @@ public abstract class Material implements Comparable<Material> {
 		return false;
 	}
 
+	@ZenGetter("protons")
 	public long getProtons() {
 		if (element != null)
 			return element.getProtons();
@@ -249,6 +281,7 @@ public abstract class Material implements Comparable<Material> {
 		return (getDensity() * totalProtons) / (totalAmount * M);
 	}
 
+	@ZenGetter("neutrons")
 	public long getNeutrons() {
 		if (element != null)
 			return element.getNeutrons();
@@ -262,6 +295,7 @@ public abstract class Material implements Comparable<Material> {
 		return (getDensity() * totalProtons) / (totalAmount * M);
 	}
 
+	@ZenGetter("mass")
 	public long getMass() {
 		if (element != null)
 			return element.getMass();
@@ -275,34 +309,42 @@ public abstract class Material implements Comparable<Material> {
 		return (getDensity() * totalProtons) / (totalAmount * M);
 	}
 
+	@ZenGetter("density")
 	public long getDensity() {
 		return M;
 	}
 
+	@ZenGetter("camelCaseString")
 	public String toCamelCaseString() {
 		return CaseFormat.LOWER_UNDERSCORE.to(CaseFormat.UPPER_CAMEL, toString());
 	}
 
+	@ZenGetter("unlocalizedName")
 	public String getUnlocalizedName() {
 	    return "material." + toString();
     }
 
 	@SideOnly(Side.CLIENT)
+    @ZenGetter("localizedName")
 	public String getLocalizedName() {
 		return I18n.format(getUnlocalizedName());
 	}
 
 	@Override
+    @ZenMethod
 	public int compareTo(Material material) {
 		return toString().compareTo(material.toString());
 	}
 
     @Override
+    @ZenGetter("name")
     public String toString() {
         return MATERIAL_REGISTRY.getNameForObject(this);
     }
 
-    public static @Nullable Material get(String matUnlocalizedName) {
-		return MATERIAL_REGISTRY.getObject(matUnlocalizedName);
-	}
+    @ZenOperator(OperatorType.MUL)
+    public MaterialStack createMaterialStack(long amount) {
+	    return new MaterialStack(this, amount);
+    }
+
 }

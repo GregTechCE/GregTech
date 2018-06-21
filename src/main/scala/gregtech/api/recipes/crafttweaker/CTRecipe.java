@@ -18,7 +18,7 @@ import java.util.List;
 import java.util.Random;
 import java.util.stream.Collectors;
 
-@ZenClass("mods.gregtech.Recipe")
+@ZenClass("mods.gregtech.recipe.Recipe")
 @ZenRegister
 public class CTRecipe {
 

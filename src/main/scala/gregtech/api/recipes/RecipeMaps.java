@@ -12,7 +12,7 @@ import stanhebben.zenscript.annotations.ZenProperty;
 import java.util.ArrayList;
 import java.util.List;
 
-@ZenClass("mods.gregtech.RecipeMaps")
+@ZenClass("mods.gregtech.recipe.RecipeMaps")
 @ZenRegister
 public class RecipeMaps {
 

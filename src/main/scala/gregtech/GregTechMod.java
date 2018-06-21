@@ -1,6 +1,7 @@
 package gregtech;
 
 import codechicken.lib.CodeChickenLib;
+import crafttweaker.CraftTweakerAPI;
 import gregtech.api.GTValues;
 import gregtech.api.capability.SimpleCapabilityManager;
 import gregtech.api.items.MetaItemUIFactory;
@@ -9,6 +10,7 @@ import gregtech.api.model.ResourcePackHook;
 import gregtech.api.net.NetworkHandler;
 import gregtech.api.recipes.RecipeMap;
 import gregtech.api.unification.OreDictUnifier;
+import gregtech.api.unification.material.Materials;
 import gregtech.api.unification.material.type.Material;
 import gregtech.api.util.GTLog;
 import gregtech.api.worldgen.config.WorldGenRegistry;
@@ -27,6 +29,7 @@ import gregtech.common.worldgen.WorldGenRubberTree;
 import gregtech.loaders.postload.DungeonLootLoader;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fml.common.*;
+import net.minecraftforge.fml.common.Optional.Method;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
@@ -36,7 +39,7 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 @Mod(modid = GTValues.MODID,
      name = "GregTech",
      acceptedMinecraftVersions = "[1.12,1.13)",
-     dependencies = CodeChickenLib.MOD_VERSION_DEP + "after:forestry;after:forgemultipartcbe;after:jei@[4.8.6,);")
+     dependencies = CodeChickenLib.MOD_VERSION_DEP + "after:forestry;after:forgemultipartcbe;after:jei@[4.8.6,);after:crafttweaker;")
 public class GregTechMod {
 
     static {
@@ -64,6 +67,12 @@ public class GregTechMod {
         MetaItemUIFactory.INSTANCE.init();
         SimpleCapabilityManager.init();
         OreDictUnifier.init();
+        Materials.register();
+
+        if(Loader.isModLoaded(GTValues.MODID_CT)) {
+            GTLog.logger.info("Running early CraftTweaker initialization scripts...");
+            runEarlyCraftTweakerScripts();
+        }
 
         //freeze material registry before processing items, blocks and fluids
         Material.freezeRegistry();
@@ -98,8 +107,14 @@ public class GregTechMod {
         DungeonLootLoader.init();
     }
 
+    @Method(modid = GTValues.MODID_FMP)
     private void registerForgeMultipartCompat() {
         GTMultipartFactory.registerFactory();
+    }
+
+    @Method(modid = GTValues.MODID_CT)
+    private void runEarlyCraftTweakerScripts() {
+        CraftTweakerAPI.tweaker.loadScript(false, "gregtech");
     }
 
     @Mod.EventHandler

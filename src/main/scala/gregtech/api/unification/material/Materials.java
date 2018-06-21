@@ -284,7 +284,7 @@ public class Materials {
      */
     public static GemMaterial Glass = new GemMaterial(209, "glass", 0xFFFFFF, MaterialIconSet.GLASS, 0, of(new MaterialStack(SiliconDioxide, 1)), GENERATE_PLATE | GENERATE_LENSE | NO_SMASHING | NO_RECYCLING | SMELT_INTO_FLUID | EXCLUDE_BLOCK_CRAFTING_RECIPES);
     public static DustMaterial Perlite = new DustMaterial(210, "perlite", 0x1E141E, MaterialIconSet.DULL, 1, of(new MaterialStack(Obsidian, 2), new MaterialStack(Water, 1)), 0);
-    public static DustMaterial Borax = new DustMaterial(210, "borax", 0xFFFFFF, MaterialIconSet.SAND, 1, of(new MaterialStack(Sodium, 2), new MaterialStack(Boron, 4), new MaterialStack(Water, 10), new MaterialStack(Oxygen, 7)), 0);
+    public static DustMaterial Borax = new DustMaterial(313, "borax", 0xFFFFFF, MaterialIconSet.SAND, 1, of(new MaterialStack(Sodium, 2), new MaterialStack(Boron, 4), new MaterialStack(Water, 10), new MaterialStack(Oxygen, 7)), 0);
     public static GemMaterial Lignite = new GemMaterial(211, "lignite", 0x644646, MaterialIconSet.LIGNITE, 0, of(new MaterialStack(Carbon, 2), new MaterialStack(Water, 4), new MaterialStack(DarkAsh, 1)), GENERATE_ORE | FLAMMABLE | NO_SMELTING | NO_SMASHING | MORTAR_GRINDABLE);
     public static GemMaterial Olivine = new GemMaterial(212, "olivine", 0x96FF96, MaterialIconSet.RUBY, 2, of(new MaterialStack(Magnesium, 2), new MaterialStack(Iron, 1), new MaterialStack(SiliconDioxide, 2)), STD_GEM | NO_SMASHING | NO_SMELTING | HIGH_SIFTER_OUTPUT, 7.0F, 256);
     public static GemMaterial Opal = new GemMaterial(213, "opal", 0x0000FF, MaterialIconSet.OPAL, 2, of(new MaterialStack(SiliconDioxide, 1)), STD_GEM | NO_SMASHING | NO_SMELTING | HIGH_SIFTER_OUTPUT, 7.0F, 256);
@@ -405,10 +405,10 @@ public class Materials {
             dustMaterial.separatedOnto = Iron;
         }
         for (DustMaterial dustMaterial : new DustMaterial[]{Pyrite, YellowLimonite, BasalticMineralSand, GraniticMineralSand}) {
-            dustMaterial.add(BLAST_FURNACE_CALCITE_DOUBLE);
+            dustMaterial.addFlag(BLAST_FURNACE_CALCITE_DOUBLE);
         }
         for (DustMaterial dustMaterial : new DustMaterial[]{Iron, PigIron, WroughtIron, BrownLimonite}) {
-            dustMaterial.add(BLAST_FURNACE_CALCITE_TRIPLE);
+            dustMaterial.addFlag(BLAST_FURNACE_CALCITE_TRIPLE);
         }
         for (DustMaterial dustMaterial : new DustMaterial[]{Gold, Silver, Osmium, Platinum, Cooperite}) {
             dustMaterial.washedIn = Mercury;
@@ -420,9 +420,18 @@ public class Materials {
         Neodymium.magneticMaterial = NeodymiumMagnetic;
         Steel.magneticMaterial = SteelMagnetic;
         Iron.magneticMaterial = IronMagnetic;
-        NeodymiumMagnetic.setSmeltingInto(Neodymium).setArcSmeltingInto(Neodymium).setMaceratingInto(Neodymium);
-        SteelMagnetic.setSmeltingInto(Steel).setArcSmeltingInto(Steel).setMaceratingInto(Steel);
-        IronMagnetic.setSmeltingInto(Iron).setArcSmeltingInto(WroughtIron).setMaceratingInto(Iron);
+
+        NeodymiumMagnetic.setSmeltingInto(Neodymium);
+        NeodymiumMagnetic.setArcSmeltingInto(Neodymium);
+        NeodymiumMagnetic.setMaceratingInto(Neodymium);
+
+        SteelMagnetic.setSmeltingInto(Steel);
+        IronMagnetic.setArcSmeltingInto(Steel);
+        IronMagnetic.setMaceratingInto(Steel);;
+
+        IronMagnetic.setSmeltingInto(Iron);
+        IronMagnetic.setArcSmeltingInto(WroughtIron);
+        IronMagnetic.setMaceratingInto(Iron);
 
         Iron.setArcSmeltingInto(WroughtIron);
         Copper.setArcSmeltingInto(AnnealedCopper);
@@ -449,23 +458,50 @@ public class Materials {
         Magnesite.setDirectSmelting(Magnesium);
         Molybdenite.setDirectSmelting(Molybdenum);
 
-        Salt.setOreMultiplier(2).setSmeltingMultiplier(2);
-        RockSalt.setOreMultiplier(2).setSmeltingMultiplier(2);
-        Scheelite.setOreMultiplier(2).setSmeltingMultiplier(2);
-        Tungstate.setOreMultiplier(2).setSmeltingMultiplier(2);
-        Cassiterite.setOreMultiplier(2).setSmeltingMultiplier(2);
-        CassiteriteSand.setOreMultiplier(2).setSmeltingMultiplier(2);
-        NetherQuartz.setOreMultiplier(2).setSmeltingMultiplier(2);
-        CertusQuartz.setOreMultiplier(2).setSmeltingMultiplier(2);
-        Phosphor.setOreMultiplier(3).setSmeltingMultiplier(3);
-        Saltpeter.setOreMultiplier(4).setSmeltingMultiplier(4);
-        Apatite.setOreMultiplier(4).setSmeltingMultiplier(4).setByProductMultiplier(2);
-        Redstone.setOreMultiplier(5).setSmeltingMultiplier(5);
-        Glowstone.setOreMultiplier(5).setSmeltingMultiplier(5);
-        Lapis.setOreMultiplier(6).setSmeltingMultiplier(6).setByProductMultiplier(4);
-        Sodalite.setOreMultiplier(6).setSmeltingMultiplier(6).setByProductMultiplier(4);
-        Lazurite.setOreMultiplier(6).setSmeltingMultiplier(6).setByProductMultiplier(4);
-        Monazite.setOreMultiplier(8).setSmeltingMultiplier(8).setByProductMultiplier(2);
+        Salt.setOreMultiplier(2);
+        Salt.setSmeltingMultiplier(2);
+        RockSalt.setOreMultiplier(2);
+        RockSalt.setSmeltingMultiplier(2);
+
+        Scheelite.setOreMultiplier(2);
+        Scheelite.setSmeltingMultiplier(2);
+        Tungstate.setOreMultiplier(2);
+        Tungstate.setSmeltingMultiplier(2);
+
+        Cassiterite.setOreMultiplier(2);
+        Cassiterite.setSmeltingMultiplier(2);
+        CassiteriteSand.setOreMultiplier(2);
+        CassiteriteSand.setSmeltingMultiplier(2);
+        NetherQuartz.setOreMultiplier(2);
+        NetherQuartz.setSmeltingMultiplier(2);
+        CertusQuartz.setOreMultiplier(2);
+        CertusQuartz.setSmeltingMultiplier(2);
+
+        Phosphor.setOreMultiplier(3);
+        Phosphor.setSmeltingMultiplier(3);
+        Saltpeter.setOreMultiplier(4);
+        Saltpeter.setSmeltingMultiplier(4);
+        Apatite.setOreMultiplier(4);
+        Apatite.setSmeltingMultiplier(4);
+        Apatite.setByProductMultiplier(2);
+
+        Redstone.setOreMultiplier(5);
+        Redstone.setSmeltingMultiplier(5);
+        Glowstone.setOreMultiplier(5);
+        Glowstone.setSmeltingMultiplier(5);
+
+        Lapis.setOreMultiplier(6);
+        Lapis.setSmeltingMultiplier(6);
+        Lapis.setByProductMultiplier(4);
+        Sodalite.setOreMultiplier(6);
+        Sodalite.setSmeltingMultiplier(6);
+        Sodalite.setByProductMultiplier(4);
+        Lazurite.setOreMultiplier(6);
+        Lazurite.setSmeltingMultiplier(6);
+        Lazurite.setByProductMultiplier(4);
+        Monazite.setOreMultiplier(8);
+        Monazite.setSmeltingMultiplier(8);
+        Monazite.setByProductMultiplier(2);
 
         Coal.setBurnTime(1600); //default coal burn time in vanilla
         Lignite.setBurnTime(1200); //2/3 of burn time of coal

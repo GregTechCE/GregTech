@@ -2,24 +2,29 @@ package gregtech.api.unification.material.type;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
+import crafttweaker.annotations.ZenRegister;
+import crafttweaker.api.liquid.ILiquidDefinition;
+import crafttweaker.api.minecraft.CraftTweakerMC;
+import gregtech.api.GTValues;
 import gregtech.api.unification.Element;
 import gregtech.api.unification.material.MaterialIconSet;
 import gregtech.api.unification.stack.MaterialStack;
 import gregtech.api.util.GTUtility;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fml.common.Optional.Method;
+import stanhebben.zenscript.annotations.ZenClass;
+import stanhebben.zenscript.annotations.ZenGetter;
+import stanhebben.zenscript.annotations.ZenSetter;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+@ZenClass("mods.gregtech.material.FluidMaterial")
+@ZenRegister
 public class FluidMaterial extends Material {
 
     public static final class MatFlags {
-
-        static {
-            Material.MatFlags.registerMaterialFlagsHolder(MatFlags.class, FluidMaterial.class);
-        }
-
         /**
          * Whenever system should generate fluid block for this fluid material
          * Renamed to GENERATE_FLUID_BLOCK to avoid confusion with dust blocks
@@ -36,6 +41,10 @@ public class FluidMaterial extends Material {
          * Examples: Air, Argon, Refinery Gas, Oxygen, Hydrogen
          */
         public static final long STATE_GAS = GTUtility.createFlag(10);
+
+        static {
+            Material.MatFlags.registerMaterialFlagsHolder(MatFlags.class, FluidMaterial.class);
+        }
 
     }
 
@@ -61,20 +70,19 @@ public class FluidMaterial extends Material {
         super(metaItemSubId, name, materialRGB, materialIconSet, materialComponents, materialGenerationFlags, null);
     }
 
+    @ZenGetter("hasFluid")
     public boolean shouldGenerateFluid() {
         return true;
     }
 
-    public boolean isGas() {
-        return hasFlag(MatFlags.STATE_GAS);
-    }
-
-    public boolean isFluid() {
-        return !hasFlag(MatFlags.STATE_GAS) && !isGas();
-    }
-
+    @ZenGetter("hasPlasma")
     public boolean shouldGeneratePlasma() {
         return shouldGenerateFluid() && hasFlag(MatFlags.GENERATE_PLASMA);
+    }
+
+    @ZenGetter("isGaseous")
+    public boolean isGas() {
+        return hasFlag(MatFlags.STATE_GAS);
     }
 
     /**
@@ -109,13 +117,31 @@ public class FluidMaterial extends Material {
         return materialPlasma == null ? null : new FluidStack(materialPlasma, amount);
     }
 
-    public FluidMaterial setFluidTemperature(int fluidTemperature) {
+    @ZenSetter("fluidTemperature")
+    public void setFluidTemperature(int fluidTemperature) {
         Preconditions.checkArgument(fluidTemperature > 0, "Invalid temperature");
         this.fluidTemperature = fluidTemperature;
-        return this;
     }
 
+    @ZenGetter("fluidTemperature")
     public int getFluidTemperature() {
         return fluidTemperature;
     }
+
+    @ZenGetter("fluid")
+    @Method(modid = GTValues.MODID_CT)
+    @Nullable
+    public ILiquidDefinition ctGetFluid() {
+        Fluid materialFluid = getMaterialFluid();
+        return materialFluid == null ? null : CraftTweakerMC.getILiquidDefinition(materialFluid);
+    }
+
+    @ZenGetter("plasma")
+    @Method(modid = GTValues.MODID_CT)
+    @Nullable
+    public ILiquidDefinition ctGetPlasma() {
+        Fluid materialFluid = getMaterialPlasma();
+        return materialFluid == null ? null : CraftTweakerMC.getILiquidDefinition(materialFluid);
+    }
+
 }

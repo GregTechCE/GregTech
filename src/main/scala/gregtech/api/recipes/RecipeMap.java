@@ -1,6 +1,9 @@
 package gregtech.api.recipes;
 
 import crafttweaker.annotations.ZenRegister;
+import crafttweaker.api.item.IItemStack;
+import crafttweaker.api.liquid.ILiquidStack;
+import crafttweaker.api.minecraft.CraftTweakerMC;
 import gnu.trove.map.TByteObjectMap;
 import gnu.trove.map.hash.TByteObjectHashMap;
 import gregtech.api.GTValues;
@@ -35,7 +38,7 @@ import java.util.*;
 import java.util.function.DoubleSupplier;
 import java.util.stream.Collectors;
 
-@ZenClass("mods.gregtech.RecipeMap")
+@ZenClass("mods.gregtech.recipe.RecipeMap")
 @ZenRegister
 public class RecipeMap<R extends RecipeBuilder<R>> {
 
@@ -209,7 +212,7 @@ public class RecipeMap<R extends RecipeBuilder<R>> {
 		return null;
 	}
 
-	//this DOES NOT add machine control widgets or binds player inventory
+	//this DOES NOT addFlag machine control widgets or binds player inventory
 	public ModularUI.Builder createUITemplate(DoubleSupplier progressSupplier, IItemHandlerModifiable importItems, IItemHandlerModifiable exportItems, FluidTankList importFluids, FluidTankList exportFluids) {
         ModularUI.Builder builder = ModularUI.defaultBuilder();
         builder.widget(new ProgressWidget(progressSupplier, 77, 22, 20, 20, progressBarTexture, moveType));
@@ -301,6 +304,21 @@ public class RecipeMap<R extends RecipeBuilder<R>> {
 
     public Collection<Recipe> getRecipeList() {
         return Collections.unmodifiableCollection(recipeList);
+    }
+
+    @ZenMethod("findRecipe")
+    @Method(modid = GTValues.MODID_CT)
+    public CTRecipe ctFindRecipe(long maxVoltage, IItemStack[] itemInputs, ILiquidStack[] fluidInputs) {
+	    List<ItemStack> mcItemInputs = itemInputs == null ? Collections.emptyList() :
+            Arrays.stream(itemInputs)
+            .map(CraftTweakerMC::getItemStack)
+            .collect(Collectors.toList());
+	    List<FluidStack> mcFluidInputs = fluidInputs == null ? Collections.emptyList() :
+            Arrays.stream(fluidInputs)
+            .map(CraftTweakerMC::getLiquidStack)
+            .collect(Collectors.toList());
+	    Recipe backingRecipe = findRecipe(maxVoltage, mcItemInputs, mcFluidInputs);
+	    return backingRecipe == null ? null : new CTRecipe(this, backingRecipe);
     }
 
     @ZenGetter("recipes")

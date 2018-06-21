@@ -1,12 +1,16 @@
 package gregtech.api.unification;
 
-import gregtech.api.unification.material.Materials;
-
-import java.util.ArrayList;
+import crafttweaker.annotations.ZenRegister;
+import stanhebben.zenscript.annotations.ZenClass;
+import stanhebben.zenscript.annotations.ZenGetter;
+import stanhebben.zenscript.annotations.ZenMethod;
+import stanhebben.zenscript.annotations.ZenProperty;
 
 /**
  * This is some kind of Periodic Table, which I use to determine Properties of the Materials.
  */
+@ZenClass("mods.gregtech.material.Element")
+@ZenRegister
 public enum Element {
 
     H(1, 0, -1, null, "Hydrogen", false),
@@ -137,14 +141,16 @@ public enum Element {
     Dr(120, 180, -1, null, "Duranium", false),
     Nq(121, 172, 140, null, "Naquadah", true);
 
-    public final long protons, neutrons, halfLifeSeconds;
-    public final String name, decayTo;
-    public final boolean isIsotope;
+    public final String name;
+    public final long protons;
+    public final long neutrons;
 
-    /**
-     * Links to every pure Material containing just this Element.
-     */
-    public ArrayList<Materials> linkedMaterials = new ArrayList<>();
+    @ZenProperty("isotope")
+    public final boolean isIsotope;
+    @ZenProperty("halfLifeSeconds")
+    public final long halfLifeSeconds;
+    @ZenProperty("decayTo")
+    public final String decayTo;
 
     /**
      * @param protons         Amount of Protons
@@ -162,6 +168,7 @@ public enum Element {
         this.isIsotope = isIsotope;
     }
 
+    @ZenMethod
     public static Element get(String materialName) {
         try {
             return Element.valueOf(materialName);
@@ -170,16 +177,29 @@ public enum Element {
         }
     }
 
+    @ZenGetter("name")
+    public String getName() {
+        return name;
+    }
+
+    @ZenGetter("protons")
     public long getProtons() {
         return protons;
     }
 
+    @ZenGetter("neutrons")
     public long getNeutrons() {
         return neutrons;
     }
 
+    @ZenGetter("mass")
     public long getMass() {
         return protons + neutrons;
     }
 
+    @Override
+    @ZenMethod
+    public String toString() {
+        return super.toString();
+    }
 }

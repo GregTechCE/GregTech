@@ -18,10 +18,6 @@ public class IngotMaterial extends SolidMaterial {
 
     public static final class MatFlags {
 
-        static {
-            Material.MatFlags.registerMaterialFlagsHolder(MatFlags.class, IngotMaterial.class);
-        }
-
         public static final long GENERATE_FOIL = createFlag(25);
         public static final long GENERATE_BOLT_SCREW = createFlag(26);
         public static final long GENERATE_RING = createFlag(27);
@@ -39,6 +35,9 @@ public class IngotMaterial extends SolidMaterial {
         public static final long BLAST_FURNACE_CALCITE_DOUBLE = createFlag(35);
         public static final long BLAST_FURNACE_CALCITE_TRIPLE = createFlag(36);
 
+        static {
+            Material.MatFlags.registerMaterialFlagsHolder(MatFlags.class, IngotMaterial.class);
+        }
     }
 
     /**
@@ -76,7 +75,7 @@ public class IngotMaterial extends SolidMaterial {
         this.blastFurnaceTemperature = blastFurnaceTemperature;
         this.smeltInto = this;
         this.arcSmeltInto = this;
-        add(SMELT_INTO_FLUID);
+        addFlag(SMELT_INTO_FLUID);
     }
 
     public IngotMaterial(int metaItemSubId, String name, int materialRGB, MaterialIconSet materialIconSet, int harvestLevel, ImmutableList<MaterialStack> materialComponents, long materialGenerationFlags, Element element) {
@@ -132,19 +131,16 @@ public class IngotMaterial extends SolidMaterial {
         return super.verifyMaterialBits(generationBits);
     }
 
-    public IngotMaterial setSmeltingInto(IngotMaterial smeltInto) {
+    public void setSmeltingInto(IngotMaterial smeltInto) {
         this.smeltInto = smeltInto;
-        return this;
     }
 
-    public IngotMaterial setArcSmeltingInto(IngotMaterial arcSmeltingInto) {
+    public void setArcSmeltingInto(IngotMaterial arcSmeltingInto) {
         this.arcSmeltInto = arcSmeltingInto;
-        return this;
     }
 
-    public IngotMaterial setCableProperties(long voltage, int baseAmperage, int lossPerBlock) {
+    public void setCableProperties(long voltage, int baseAmperage, int lossPerBlock) {
         this.cableProperties = new WireProperties((int) voltage, baseAmperage, lossPerBlock);
-        return this;
     }
 
 }

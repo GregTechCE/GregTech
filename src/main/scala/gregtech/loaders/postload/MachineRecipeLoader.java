@@ -980,6 +980,10 @@ public class MachineRecipeLoader {
         if(dustMaterial instanceof IngotMaterial) {
             int blastFurnaceTemperature = ((IngotMaterial) dustMaterial).blastFurnaceTemperature;
             voltageMultiplier = blastFurnaceTemperature == 0 ? 1 : blastFurnaceTemperature > 2000 ? 16 : 4;
+        } else {
+            //do not apply arc smelting for gems, solid materials and dust materials
+            //only generate recipes for ingot materials
+            ignoreArcSmelting = true;
         }
 
         RecipeBuilder<?> maceratorRecipeBuilder = RecipeMaps.MACERATOR_RECIPES.recipeBuilder()
