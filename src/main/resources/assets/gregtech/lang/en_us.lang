@@ -7,6 +7,7 @@ death.attack.explosion=%s exploded.
 death.attack.explosion.player=%s exploded with help of %s.
 death.attack.heat.player=%s was boiled alive by %s.
 
+gregtech.top.working_disabled=Working Disabled
 
 metaitem.dust.tooltip.purify=Throw into Cauldron to get clean Dust
 metaitem.generic.fluid_container.tooltip=%d/%dL %s

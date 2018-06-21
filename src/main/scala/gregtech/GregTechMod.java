@@ -26,6 +26,7 @@ import gregtech.common.items.MetaItems;
 import gregtech.common.metatileentities.MetaTileEntities;
 import gregtech.common.multipart.GTMultipartFactory;
 import gregtech.common.worldgen.WorldGenRubberTree;
+import gregtech.integration.theoneprobe.TheOneProbeCompatibility;
 import gregtech.loaders.postload.DungeonLootLoader;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fml.common.*;
@@ -97,6 +98,11 @@ public class GregTechMod {
         if(Loader.isModLoaded(GTValues.MODID_FMP)) {
             GTLog.logger.info("ForgeMultiPart found. Enabling integration...");
             registerForgeMultipartCompat();
+        }
+
+        if(Loader.isModLoaded(GTValues.MODID_TOP)) {
+            GTLog.logger.info("TheOneProbe found. Enabling integration...");
+            TheOneProbeCompatibility.registerCompatibility();
         }
 
         WorldGenRegistry.INSTANCE.initializeRegistry();
