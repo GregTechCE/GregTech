@@ -383,17 +383,14 @@ public class MetaTileEntities {
         DIESEL_GENERATOR[0] = GregTechAPI.registerMetaTileEntity(480, new SimpleGeneratorMetaTileEntity("diesel_generator.lv", RecipeMaps.DIESEL_GENERATOR_FUELS, Textures.DIESEL_GENERATOR_OVERLAY, 1));
         DIESEL_GENERATOR[1] = GregTechAPI.registerMetaTileEntity(481, new SimpleGeneratorMetaTileEntity("diesel_generator.mv", RecipeMaps.DIESEL_GENERATOR_FUELS, Textures.DIESEL_GENERATOR_OVERLAY, 2));
         DIESEL_GENERATOR[2] = GregTechAPI.registerMetaTileEntity(482, new SimpleGeneratorMetaTileEntity("diesel_generator.hv", RecipeMaps.DIESEL_GENERATOR_FUELS, Textures.DIESEL_GENERATOR_OVERLAY, 3));
-        DIESEL_GENERATOR[3] = GregTechAPI.registerMetaTileEntity(483, new SimpleGeneratorMetaTileEntity("diesel_generator.ev", RecipeMaps.DIESEL_GENERATOR_FUELS, Textures.DIESEL_GENERATOR_OVERLAY, 4));
 
         STEAM_TURBINE[0] = GregTechAPI.registerMetaTileEntity(485, new SimpleGeneratorMetaTileEntity("steam_turbine.lv", RecipeMaps.STEAM_TURBINE_FUELS, Textures.STEAM_TURBINE_OVERLAY, 1));
         STEAM_TURBINE[1] = GregTechAPI.registerMetaTileEntity(486, new SimpleGeneratorMetaTileEntity("steam_turbine.mv", RecipeMaps.STEAM_TURBINE_FUELS, Textures.STEAM_TURBINE_OVERLAY, 2));
         STEAM_TURBINE[2] = GregTechAPI.registerMetaTileEntity(487, new SimpleGeneratorMetaTileEntity("steam_turbine.hv", RecipeMaps.STEAM_TURBINE_FUELS, Textures.STEAM_TURBINE_OVERLAY, 3));
-        STEAM_TURBINE[3] = GregTechAPI.registerMetaTileEntity(488, new SimpleGeneratorMetaTileEntity("steam_turbine.ev", RecipeMaps.STEAM_TURBINE_FUELS, Textures.STEAM_TURBINE_OVERLAY, 4));
 
         GAS_TURBINE[0] = GregTechAPI.registerMetaTileEntity(490, new SimpleGeneratorMetaTileEntity("gas_turbine.lv", RecipeMaps.GAS_TURBINE_FUELS, Textures.GAS_TURBINE_OVERLAY, 1));
         GAS_TURBINE[1] = GregTechAPI.registerMetaTileEntity(491, new SimpleGeneratorMetaTileEntity("gas_turbine.mv", RecipeMaps.GAS_TURBINE_FUELS, Textures.GAS_TURBINE_OVERLAY, 2));
         GAS_TURBINE[2] = GregTechAPI.registerMetaTileEntity(492, new SimpleGeneratorMetaTileEntity("gas_turbine.hv", RecipeMaps.GAS_TURBINE_FUELS, Textures.GAS_TURBINE_OVERLAY, 3));
-        GAS_TURBINE[3] = GregTechAPI.registerMetaTileEntity(495, new SimpleGeneratorMetaTileEntity("gas_turbine.ev", RecipeMaps.GAS_TURBINE_FUELS, Textures.GAS_TURBINE_OVERLAY, 4));
 
         MAGIC_ENERGY_ABSORBER = GregTechAPI.registerMetaTileEntity(493, new MetaTileEntityMagicEnergyAbsorber("magic_energy_absorber"));
         if(Loader.isModLoaded("thaumcraft")) {

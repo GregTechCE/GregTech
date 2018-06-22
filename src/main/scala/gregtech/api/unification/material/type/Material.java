@@ -111,12 +111,12 @@ public abstract class Material implements Comparable<Material> {
         /**
          * Disables decomposition recipe generation for this material and all materials that has it as component
          */
-        public static final long DISABLE_DECOMPOSITION = createFlag(0);
+        public static final long DISABLE_DECOMPOSITION = createFlag(7);
 
         /**
          * Decomposition recipe requires hydrogen as additional input. Amount is equal to input amount
          */
-        public static final long DECOMPOSITION_REQUIRES_HYDROGEN = createFlag(1);
+        public static final long DECOMPOSITION_REQUIRES_HYDROGEN = createFlag(8);
 
         static {
             registerMaterialFlagsHolder(MatFlags.class, Material.class);

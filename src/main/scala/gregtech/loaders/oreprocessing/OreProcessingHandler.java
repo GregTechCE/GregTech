@@ -184,7 +184,7 @@ public class OreProcessingHandler {
                     .duration(1500)
                     .EUt(24)
                     .buildAndRegister();
-            } else if (!material.hasFlag(Material.MatFlags.EXPLOSIVE)) {
+            } else if (!material.hasFlag(Material.MatFlags.EXPLOSIVE) && !material.hasFlag(Material.MatFlags.FLAMMABLE)) {
                 RecipeMaps.IMPLOSION_RECIPES.recipeBuilder()
                     .input(dustPrefix, material, 4)
                     .outputs(GTUtility.copyAmount(3, gemStack), GTUtility.copyAmount(2, tinyDarkAshStack))

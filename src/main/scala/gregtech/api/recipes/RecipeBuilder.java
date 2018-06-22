@@ -154,7 +154,7 @@ public abstract class RecipeBuilder<R extends RecipeBuilder<R>> {
     }
 
     public R notConsumable(ItemStack itemStack) {
-        return inputs(new CountableIngredient(Ingredient.fromStacks(itemStack), 0));
+        return inputs(CountableIngredient.from(itemStack, 0));
     }
 
     public R notConsumable(OrePrefix prefix, Material material) {
@@ -166,7 +166,7 @@ public abstract class RecipeBuilder<R extends RecipeBuilder<R>> {
     }
 
     public R notConsumable(MetaItem<?>.MetaValueItem item) {
-        return inputs(item.getStackForm());
+        return inputs(CountableIngredient.from(item.getStackForm(), 0));
     }
 
     public R outputs(ItemStack... outputs) {

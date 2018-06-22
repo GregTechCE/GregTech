@@ -74,7 +74,6 @@ public class GregTechAPI {
      */
     public static final Map<DustMaterial, Map<StoneType, IBlockOre>> oreBlockTable = new HashMap<>(); 
 
-    private static int size = 0; /* Used to assign Minecraft IDs to our SoundEvents. We don't use them. */
     /* TODO SOUNDS
     static {
         size = SoundEvent.REGISTRY.getKeys().size();
