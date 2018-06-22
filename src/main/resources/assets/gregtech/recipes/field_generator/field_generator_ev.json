@@ -1,0 +1,25 @@
+{
+  "type": "gregtech:metaitem_shaped",
+  "pattern": [
+    "WCW",
+    "CGC",
+    "WCW"
+  ],
+  "key": {
+    "G": {
+      "type": "forge:ore_dict",
+      "ore": "gemNetherStar"
+    },
+    "C": {
+      "type": "forge:ore_dict",
+      "ore": "circuitElite"
+    },
+    "W": {
+      "type": "forge:ore_dict",
+      "ore": "wireGtOctalOsmium"
+    }
+  },
+  "result": {
+    "name": "field.generator.ev"
+  }
+}

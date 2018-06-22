@@ -3,7 +3,7 @@ package gregtech.api.recipes;
 import com.google.common.base.Predicates;
 import gnu.trove.map.TObjectIntMap;
 import gnu.trove.map.hash.TObjectIntHashMap;
-import gregtech.api.unification.OreDictUnifier;
+import gregtech.api.items.metaitem.MetaItem;
 import gregtech.api.unification.material.type.Material;
 import gregtech.api.unification.ore.OrePrefix;
 import gregtech.api.util.EnumValidationResult;
@@ -11,6 +11,7 @@ import gregtech.api.util.GTLog;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.ValidationResult;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.util.NonNullList;
 import net.minecraftforge.fluids.FluidStack;
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -20,7 +21,7 @@ import java.util.*;
 /**
  * @see Recipe
  */
-@SuppressWarnings({"unused", "WeakerAccess"})
+
 public abstract class RecipeBuilder<R extends RecipeBuilder<R>> {
 
 	protected RecipeMap<R> recipeMap;
@@ -41,8 +42,6 @@ public abstract class RecipeBuilder<R extends RecipeBuilder<R>> {
 	protected boolean needsEmptyOutput = false;
 
 	protected boolean optimized = true;
-
-	protected boolean unificate = true;
 
 	protected EnumValidationResult recipeStatus = EnumValidationResult.VALID;
 
@@ -101,6 +100,10 @@ public abstract class RecipeBuilder<R extends RecipeBuilder<R>> {
 		this.optimized = recipeBuilder.optimized;
 	}
 
+	public boolean applyProperty(String key, Object value) {
+	    return false;
+    }
+
 	public R inputs(ItemStack... inputs) {
         return inputs(Arrays.asList(inputs));
     }
@@ -116,7 +119,7 @@ public abstract class RecipeBuilder<R extends RecipeBuilder<R>> {
                 this.inputs.add(CountableIngredient.from(stack));
             }
         });
-        return getThis();
+        return (R) this;
     }
 
     public R input(String oredict, int count) {
@@ -147,10 +150,26 @@ public abstract class RecipeBuilder<R extends RecipeBuilder<R>> {
 
     public R inputsIngredients(Collection<CountableIngredient> ingredients) {
 	    this.inputs.addAll(ingredients);
-        return getThis();
+        return (R) this;
     }
 
-	public R outputs(ItemStack... outputs) {
+    public R notConsumable(ItemStack itemStack) {
+        return inputs(new CountableIngredient(Ingredient.fromStacks(itemStack), 0));
+    }
+
+    public R notConsumable(OrePrefix prefix, Material material) {
+        return input(prefix, material, 0);
+    }
+
+    public R notConsumable(Ingredient ingredient) {
+        return inputs(new CountableIngredient(ingredient, 0));
+    }
+
+    public R notConsumable(MetaItem<?>.MetaValueItem item) {
+        return inputs(item.getStackForm());
+    }
+
+    public R outputs(ItemStack... outputs) {
 		return outputs(Arrays.asList(outputs));
 	}
 
@@ -160,7 +179,7 @@ public abstract class RecipeBuilder<R extends RecipeBuilder<R>> {
             outputs.removeIf(Predicates.or(Objects::isNull, ItemStack::isEmpty));
         }
 		this.outputs.addAll(outputs);
-        return getThis();
+        return (R) this;
     }
 
 	public R fluidInputs(FluidStack... inputs) {
@@ -175,7 +194,7 @@ public abstract class RecipeBuilder<R extends RecipeBuilder<R>> {
 		}
 		this.fluidInputs.addAll(inputs);
         this.fluidInputs.removeIf(Objects::isNull);
-        return getThis();
+        return (R) this;
     }
 
 	public R fluidOutputs(FluidStack... outputs) {
@@ -186,63 +205,58 @@ public abstract class RecipeBuilder<R extends RecipeBuilder<R>> {
 		outputs = new ArrayList<>(outputs);
 		if(outputs.contains(null)) outputs.removeIf(Objects::isNull);
 		this.fluidOutputs.addAll(outputs);
-        return getThis();
+        return (R) this;
     }
 
 	public R chancedOutput(ItemStack stack, int chance) {
 		if (stack == null || stack.isEmpty()) {
-			return getThis();
+            return (R) this;
 		}
 
 		if (0 >= chance || chance > Recipe.getMaxChancedValue()){
 			GTLog.logger.error("Chance cannot be less or equal to 0 or more than {}. Actual: {}.", Recipe.getMaxChancedValue(), chance);
             GTLog.logger.error("Stacktrace:", new IllegalArgumentException());
             recipeStatus = EnumValidationResult.INVALID;
-			return getThis();
+            return (R) this;
 		}
 
 		this.chancedOutputs.put(stack, chance);
-		return getThis();
+        return (R) this;
 	}
 
 	public R duration(int duration) {
 		this.duration = duration;
-		return getThis();
-	}
-
-	public R noUnification() {
-		this.unificate = false;
-		return getThis();
+        return (R) this;
 	}
 
 	public R EUt(int EUt) {
 		this.EUt = EUt;
-		return getThis();
+        return (R) this;
 	}
 
 	public R hidden() {
 		this.hidden = true;
-		return getThis();
+        return (R) this;
 	}
 
 	public R cannotBeBuffered() {
 		this.canBeBuffered = false;
-		return getThis();
+        return (R) this;
 	}
 
 	public R notOptimized() {
 		this.optimized = false;
-		return getThis();
+        return (R) this;
 	}
 
 	public R needsEmptyOutput() {
 		this.needsEmptyOutput = true;
-		return getThis();
+        return (R) this;
 	}
 
 	public R setRecipeMap(RecipeMap<R> recipeMap) {
 		this.recipeMap = recipeMap;
-		return getThis();
+        return (R) this;
 	}
 
 	public R fromRecipe(Recipe recipe) {
@@ -257,72 +271,12 @@ public abstract class RecipeBuilder<R extends RecipeBuilder<R>> {
 		this.hidden = recipe.isHidden();
 		this.canBeBuffered = recipe.canBeBuffered();
 		this.needsEmptyOutput = recipe.needsEmptyOutput();
-		return getThis();
+		return (R) this;
 	}
 
 	public abstract R copy();
 
-	// To get rid of "unchecked cast" warning
-	protected abstract R getThis();
-
 	protected EnumValidationResult finalizeAndValidate() {
-
-		if (unificate) {
-			outputs.replaceAll(OreDictUnifier::getUnificated);
-
-			ItemStack[] keys = chancedOutputs.keys(new ItemStack[0]);
-			int[] values = chancedOutputs.values();
-
-            for (int i = 0; i < keys.length; i++) {
-                keys[i] = OreDictUnifier.getUnificated(keys[i]);
-            }
-
-            chancedOutputs = new TObjectIntHashMap<>();
-            for (int i = 0; i < keys.length; i++) {
-                chancedOutputs.put(keys[i], values[i]);
-            }
-		}
-
-		/* TODO maybe some day
-		for (CountableIngredient ingredient : inputs) {
-			if (Items.FEATHER.getDamage(ingredient) != W) {
-				for (int j = 0; j < outputs.size(); j++) {
-					if (ItemStack.areItemStacksEqual(ingredient, outputs.get(j))) {
-						if (ingredient.getCount() >= outputs.get(j).getCount()) {
-							ingredient.shrink(outputs.get(j).getCount());
-							outputs.remove(j);
-						} else {
-							outputs.get(j).shrink(ingredient.getCount());
-						}
-					}
-				}
-			}
-		}
-
-		if (optimized && duration >= 32) {
-			ArrayList<ItemStack> itemStacks = new ArrayList<>();
-			itemStacks.addAll(inputs);
-			itemStacks.addAll(outputs);
-
-			for (byte i = (byte) Math.min(64, duration / 16); i > 1; i--)
-				if (duration / i >= 16) {
-					boolean temp = true;
-					for (int j = 0, k = itemStacks.size(); temp && j < k; j++)
-						if (itemStacks.get(j).getCount() % i != 0) temp = false;
-					for (int j = 0; temp && j < fluidInputs.size(); j++)
-						if (fluidInputs.get(j).amount % i != 0) temp = false;
-					for (int j = 0; temp && j < fluidOutputs.size(); j++)
-						if (fluidOutputs.get(j).amount % i != 0) temp = false;
-					if (temp) {
-						for (ItemStack stack : itemStacks) stack.setCount(stack.getCount() / i);
-						for (FluidStack fluidInput : fluidInputs) fluidInput.amount /= i;
-						for (FluidStack fluidOutput : fluidOutputs) fluidOutput.amount /= i;
-						duration /= i;
-					}
-				}
-		}
-		*/
-
 		return validate();
 	}
 
@@ -373,6 +327,7 @@ public abstract class RecipeBuilder<R extends RecipeBuilder<R>> {
 		return recipeStatus;
 	}
 
+
 	public void buildAndRegister() {
 		recipeMap.addRecipe(build());
 	}
@@ -416,7 +371,6 @@ public abstract class RecipeBuilder<R extends RecipeBuilder<R>> {
             .append("canBeBuffered", canBeBuffered)
             .append("needsEmptyOutput", needsEmptyOutput)
             .append("optimized", optimized)
-            .append("unificate", unificate)
             .append("recipeStatus", recipeStatus)
             .toString();
     }

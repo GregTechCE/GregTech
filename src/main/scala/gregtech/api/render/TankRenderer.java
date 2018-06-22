@@ -46,10 +46,8 @@ public class TankRenderer implements IIconRegister {
         if(fluidStack != null) {
             double fluidLevel = fluidStack == null ? 0.0 : fluidStack.amount / (capacity * 1.0) * 0.99;
             fluidCuboid = new Cuboid6(0.01, 0.01, 0.01, 0.99, fluidLevel, 0.99);
-            ColourMultiplier multiplier = new ColourMultiplier(GTUtility.convertRGBtoOpaqueRGBA(fluidStack.getFluid().getColor(fluidStack)));
-            fluidPipeline = fluidStack.getFluid().getLuminosity(fluidStack) > 0 ?
-                new IVertexOperation[] {multiplier} :
-                ArrayUtils.add(pipeline, multiplier);
+            ColourMultiplier multiplier = new ColourMultiplier(GTUtility.convertRGBtoOpaqueRGBA_CL(fluidStack.getFluid().getColor(fluidStack)));
+            fluidPipeline = new IVertexOperation[] {multiplier};
             fluidSprite = TextureUtils.getTexture(fluidStack.getFluid().getStill(fluidStack));
         }
 
@@ -59,10 +57,10 @@ public class TankRenderer implements IIconRegister {
                 .translate(renderSide.getFrontOffsetX(), renderSide.getFrontOffsetY(), renderSide.getFrontOffsetZ()),
                 basePipeline, renderSide.getOpposite(), Cuboid6.full, sideSprite); //for rendering sides from inside too
             if(fluidStack != null) {
-                if(fluidStack.getFluid().getLuminosity(fluidStack) > 0) {
-                    renderState.brightness = 0xF000F0;
-                }
+                int lastBrightness = renderState.brightness;
+                renderState.brightness = 0xF000F0;
                 Textures.renderFace(renderState, translation, fluidPipeline, renderSide, fluidCuboid, fluidSprite);
+                renderState.brightness = lastBrightness;
             }
         }
     }

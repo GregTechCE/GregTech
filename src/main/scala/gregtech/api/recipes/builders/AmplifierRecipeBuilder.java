@@ -27,22 +27,26 @@ public class AmplifierRecipeBuilder extends RecipeBuilder<AmplifierRecipeBuilder
     }
 
     @Override
-    protected AmplifierRecipeBuilder getThis() {
-        return this;
-    }
-
-    @Override
     public AmplifierRecipeBuilder copy() {
         return new AmplifierRecipeBuilder(this);
     }
 
-    public AmplifierRecipeBuilder amplifierAmountOutputted(int amplifierAmountOutputted) {
+    @Override
+    public boolean applyProperty(String key, Object value) {
+        if(key.equals("amplifier")) {
+            this.amplifierAmount(((Number) value).intValue());
+            return true;
+        }
+        return true;
+    }
+
+    public AmplifierRecipeBuilder amplifierAmount(int amplifierAmountOutputted) {
         if (amplifierAmountOutputted <= 0) {
             GTLog.logger.error("Outputted Amplifier Amount cannot be less than or equal to 0", new IllegalArgumentException());
             recipeStatus = EnumValidationResult.INVALID;
         }
         this.amplifierAmountOutputted = amplifierAmountOutputted;
-        return getThis();
+        return this;
     }
 
     @Override

@@ -4,7 +4,7 @@
   "max_height": 50,
   "min_height": 35,
   "surface_stone_material": "platinum",
-  "dimension_filter": ["provider_class:WorldProviderEnd"],
+  "dimension_filter": ["name:the_end"],
 
   "generator": {
     "type": "ellipsoid",

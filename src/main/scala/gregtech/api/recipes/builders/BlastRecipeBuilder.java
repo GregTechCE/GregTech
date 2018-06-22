@@ -26,13 +26,17 @@ public class BlastRecipeBuilder extends RecipeBuilder<BlastRecipeBuilder> {
     }
 
     @Override
-    protected BlastRecipeBuilder getThis() {
-        return this;
+    public BlastRecipeBuilder copy() {
+        return new BlastRecipeBuilder(this);
     }
 
     @Override
-    public BlastRecipeBuilder copy() {
-        return new BlastRecipeBuilder(this);
+    public boolean applyProperty(String key, Object value) {
+        if(key.equals("temperature")) {
+            this.blastFurnaceTemp(((Number) value).intValue());
+            return true;
+        }
+        return true;
     }
 
     public BlastRecipeBuilder blastFurnaceTemp(int blastFurnaceTemp) {
@@ -41,7 +45,7 @@ public class BlastRecipeBuilder extends RecipeBuilder<BlastRecipeBuilder> {
             recipeStatus = EnumValidationResult.INVALID;
         }
         this.blastFurnaceTemp = blastFurnaceTemp;
-        return getThis();
+        return this;
     }
 
     public ValidationResult<Recipe> build() {

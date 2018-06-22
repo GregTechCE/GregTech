@@ -81,7 +81,7 @@ public enum OrePrefix {
 
     nugget("Nuggets", M / 9, null, MaterialIconType.nugget, ENABLE_UNIFICATION | DISALLOW_RECYCLING, mat -> mat instanceof IngotMaterial), // A Nugget. Introduced by Eloraam
 
-    plateDense("Dense Plates", M * 9, null, MaterialIconType.plateDense, ENABLE_UNIFICATION, and(mat -> mat instanceof DustMaterial, hasFlag(GENERATE_PLATE | GENERATE_DENSE), noFlag(NO_SMASHING))), // 9 Plates combined in one Item.
+    plateDense("Dense Plates", M * 9, null, MaterialIconType.plateDense, ENABLE_UNIFICATION, and(mat -> mat instanceof IngotMaterial, hasFlag(GENERATE_PLATE | GENERATE_DENSE), noFlag(NO_SMASHING))), // 9 Plates combined in one Item.
     plate("Plates", M, null, MaterialIconType.plate, ENABLE_UNIFICATION, mat -> mat instanceof DustMaterial && mat.hasFlag(GENERATE_PLATE)), // Regular Plate made of one Ingot/Dust. Introduced by Calclavia
 
     foil("Foils", M / 4, null, MaterialIconType.foil, ENABLE_UNIFICATION, mat -> mat instanceof IngotMaterial && mat.hasFlag(GENERATE_FOIL)), // Foil made of 1/4 Ingot/Dust.
@@ -194,7 +194,7 @@ public enum OrePrefix {
     armorLeggings("Leggings", M * 7, null, null, 0, null), // vanilly Pants
     armorBoots("Boots", M * 4, null, null, 0, null), // vanilly Boots
     armor("Armor Parts", -1, null, null, DISALLOW_RECYCLING, null),
-    frameGt("Frame Boxes", M * 2, null, null, ENABLE_UNIFICATION, null),
+    frameGt("Frame Boxes", M * 2, null, null, ENABLE_UNIFICATION, material -> material instanceof IngotMaterial && material.hasFlag(GENERATE_ROD | GENERATE_PLATE)),
 
     pipeTiny("Tiny Pipes", M / 2, null, MaterialIconType.pipeTiny, ENABLE_UNIFICATION, null),
     pipeSmall("Small Pipes", M, null, MaterialIconType.pipeSmall, ENABLE_UNIFICATION, null),
@@ -325,7 +325,6 @@ public enum OrePrefix {
         stick.ignoredMaterials.add(Materials.Paper);
         ingot.ignoredMaterials.add(Materials.Iron);
         ingot.ignoredMaterials.add(Materials.Gold);
-        ingot.ignoredMaterials.add(Materials.WoodSealed);
         ingot.ignoredMaterials.add(Materials.Wood);
         ingot.ignoredMaterials.add(Materials.Paper);
         nugget.ignoredMaterials.add(Materials.Wood);
@@ -354,7 +353,12 @@ public enum OrePrefix {
         block.ignoredMaterials.add(Materials.Wheat);
         block.ignoredMaterials.add(Materials.Oilsands);
         block.ignoredMaterials.add(Materials.Wood);
-        block.ignoredMaterials.add(Materials.WoodSealed);
+        block.ignoredMaterials.add(Materials.RawRubber);
+        block.ignoredMaterials.add(Materials.Clay);
+        block.ignoredMaterials.add(Materials.Bone);
+        block.ignoredMaterials.add(Materials.NetherQuartz);
+        block.ignoredMaterials.add(Materials.Ice);
+        block.ignoredMaterials.add(Materials.Netherrack);
 
         pipeRestrictiveTiny.addSecondaryMaterial(new MaterialStack(Materials.Steel, ring.materialAmount));
         pipeRestrictiveSmall.addSecondaryMaterial(new MaterialStack(Materials.Steel, ring.materialAmount * 2));
@@ -464,6 +468,21 @@ public enum OrePrefix {
         secondaryMaterials.add(secondaryMaterial);
     }
 
+    public long getMaterialAmount(Material material) {
+        if(this == block) {
+            //glowstone and nether quartz blocks use 4 gems (dusts)
+            if(material == Materials.Glowstone ||
+                material == Materials.NetherQuartz)
+                return M * 4;
+            //glass, ice and obsidian gain only one dust
+            else if(material == Materials.Glass ||
+                material == Materials.Ice ||
+                material == Materials.Obsidian)
+                return M;
+        }
+        return materialAmount;
+    }
+
     public static OrePrefix getPrefix(String prefixName) {
         return getPrefix(prefixName, null);
     }
@@ -507,6 +526,8 @@ public enum OrePrefix {
                 registrationHandler.processMaterial(this, registeredMaterial);
             }
         }
+        //clear generated materials for next pass
+        generatedMaterials.clear();
     }
 
     @SideOnly(Side.CLIENT)

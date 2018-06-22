@@ -2,13 +2,13 @@ package gregtech.common.items;
 
 import gregtech.api.items.materialitem.MaterialMetaItem;
 import gregtech.api.items.metaitem.MetaItem;
+import gregtech.api.items.toolitem.ToolCraftingListener;
 import gregtech.api.items.toolitem.ToolHarvestListener;
 import gregtech.api.items.toolitem.ToolMetaItem;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @SuppressWarnings("WeakerAccess")
@@ -16,7 +16,7 @@ public final class MetaItems {
 
     private MetaItems() {}
 
-    public static List<MetaItem<?>> ITEMS = new ArrayList<>();
+    public static List<MetaItem<?>> ITEMS = MetaItem.getMetaItems();
 
     public static MetaItem<?>.MetaValueItem CREDIT_COPPER;
     public static MetaItem<?>.MetaValueItem CREDIT_CUPRONICKEL;
@@ -367,7 +367,6 @@ public final class MetaItems {
     public static ToolMetaItem<?>.MetaToolValueItem SENSE;
     public static ToolMetaItem<?>.MetaToolValueItem PLOW;
     public static ToolMetaItem<?>.MetaToolValueItem PLUNGER;
-    public static ToolMetaItem<?>.MetaToolValueItem ROLLING_PIN;
     public static ToolMetaItem<?>.MetaToolValueItem DRILL_LV;
     public static ToolMetaItem<?>.MetaToolValueItem DRILL_MV;
     public static ToolMetaItem<?>.MetaToolValueItem DRILL_HV;
@@ -383,18 +382,17 @@ public final class MetaItems {
     public static ToolMetaItem<?>.MetaToolValueItem SOLDERING_IRON_LV;
     public static ToolMetaItem<?>.MetaToolValueItem TURBINE;
     public static ToolMetaItem<?>.MetaToolValueItem MAGNIFYING_GLASS;
+    public static MetaItem<?>.MetaValueItem TOOL_PARTS_BOX;
 
     public static void init() {
         MinecraftForge.EVENT_BUS.register(new ToolHarvestListener());
+        MinecraftForge.EVENT_BUS.register(new ToolCraftingListener());
         MetaItem1 first = new MetaItem1();
         first.setRegistryName("meta_item_1");
-        ITEMS.add(first);
         MetaItem2 second = new MetaItem2();
         second.setRegistryName("meta_item_2");
-        ITEMS.add(second);
         MetaTool tool = new MetaTool();
         tool.setRegistryName("meta_tool");
-        ITEMS.add(tool);
     }
 
     public static void registerOreDict() {

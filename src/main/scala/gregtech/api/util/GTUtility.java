@@ -30,11 +30,13 @@ import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.Tuple;
+import net.minecraft.util.WeightedRandom;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.common.BiomeDictionary;
 import net.minecraftforge.common.DimensionManager;
+import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
@@ -46,6 +48,8 @@ import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.IItemHandlerModifiable;
 
 import java.awt.*;
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.*;
@@ -122,11 +126,37 @@ public class GTUtility {
     }
 
     //just because CCL uses a different color format
-    public static int convertRGBtoOpaqueRGBA(int colorValue) {
+    //0xRRGGBBAA
+    public static int convertRGBtoOpaqueRGBA_CL(int colorValue) {
         int r = (colorValue >> 16) & 0xFF;
         int g = (colorValue >> 8) & 0xFF;
         int b = (colorValue & 0xFF);
         return (r & 0xFF) << 24 | (g & 0xFF) << 16 | (b & 0xFF) << 8 | (0xFF);
+    }
+
+    //0xAARRGGBB
+    public static int convertRGBtoOpaqueRGBA_MC(int colorValue) {
+        return Integer.parseUnsignedInt("ff" + Integer.toString(colorValue, 16), 16);
+    }
+
+    public static void setItem(ItemStack itemStack, ItemStack newStack) {
+        try {
+            Field itemField = Arrays.stream(ItemStack.class.getDeclaredFields())
+                .filter(field -> field.getType() == Item.class)
+                .findFirst().orElseThrow(ReflectiveOperationException::new);
+            itemField.setAccessible(true);
+            //replace item field instance
+            itemField.set(itemStack, newStack.getItem());
+            //set damage then
+            itemStack.setItemDamage(newStack.getItemDamage());
+            Method forgeInit = ItemStack.class.getDeclaredMethod("forgeInit");
+            forgeInit.setAccessible(true);
+            //reinitialize forge capabilities and delegate reference
+            forgeInit.invoke(itemStack);
+        } catch (ReflectiveOperationException exception) {
+            //should be impossible, actually
+            throw new RuntimeException(exception);
+        }
     }
 
     public static boolean isBlockOrePrefixed(IBlockAccess world, BlockPos pos, IBlockState blockState, OrePrefix targetPrefix, List<ItemStack> drops) {
@@ -288,8 +318,10 @@ public class GTUtility {
     public static byte getTierByVoltage(long voltage) {
         byte tier = 0;
         while (++tier < V.length) {
-            if (voltage <= V[tier])
+            if (voltage == V[tier])
                 return tier;
+            else if(voltage < V[tier])
+                return (byte) Math.max(0, tier - 1);
         }
         return tier;
     }
@@ -297,6 +329,27 @@ public class GTUtility {
     public static BiomeDictionary.Type getBiomeTypeTagByName(String name) {
         Map<String, BiomeDictionary.Type> byName = ReflectionHelper.getPrivateValue(BiomeDictionary.Type.class, null, "byName");
         return byName.get(name);
+    }
+
+    public static List<Tuple<ItemStack, Integer>> getGrassSeedEntries() {
+        ArrayList<Tuple<ItemStack, Integer>> result = new ArrayList<>();
+        try {
+            Field seedListField = ForgeHooks.class.getDeclaredField("seedList");
+            seedListField.setAccessible(true);
+            Class<?> seedEntryClass = Class.forName("net.minecraftforge.common.ForgeHooks$SeedEntry");
+            Field seedField = seedEntryClass.getDeclaredField("seed");
+            seedField.setAccessible(true);
+            List<WeightedRandom.Item> seedList = (List<WeightedRandom.Item>) seedListField.get(null);
+            for(WeightedRandom.Item seedEntryObject : seedList) {
+                ItemStack seedStack = (ItemStack) seedField.get(seedEntryObject);
+                int chanceValue = seedEntryObject.itemWeight;
+                if(!seedStack.isEmpty())
+                    result.add(new Tuple<>(seedStack, chanceValue));
+            }
+        } catch (ReflectiveOperationException exception) {
+            GTLog.logger.error("Failed to get forge grass seed list", exception);
+        }
+        return result;
     }
 
     public static <T> int getRandomItem(Random random, List<Entry<Integer, T>> randomList, int size) {

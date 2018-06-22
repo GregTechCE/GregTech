@@ -26,13 +26,17 @@ public class FusionRecipeBuilder extends RecipeBuilder<FusionRecipeBuilder> {
     }
 
     @Override
-    protected FusionRecipeBuilder getThis() {
-        return this;
+    public FusionRecipeBuilder copy() {
+        return new FusionRecipeBuilder(this);
     }
 
     @Override
-    public FusionRecipeBuilder copy() {
-        return new FusionRecipeBuilder(this);
+    public boolean applyProperty(String key, Object value) {
+        if(key.equals("eu_to_start")) {
+            this.EUToStart(((Number) value).intValue());
+            return true;
+        }
+        return false;
     }
 
     public FusionRecipeBuilder EUToStart(int EUToStart) {
@@ -41,7 +45,7 @@ public class FusionRecipeBuilder extends RecipeBuilder<FusionRecipeBuilder> {
             recipeStatus = EnumValidationResult.INVALID;
         }
         this.EUToStart = EUToStart;
-        return getThis();
+        return this;
     }
 
     public ValidationResult<Recipe> build() {

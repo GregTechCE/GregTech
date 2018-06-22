@@ -26,6 +26,10 @@ public class GTControlledRegistry<T> extends RegistrySimple<String, T> {
         this.inverseObjectRegistry = ((BiMap<String, T>)this.registryObjects).inverse();
     }
 
+    public boolean isFrozen() {
+        return frozen;
+    }
+
     public void freezeRegistry() {
         if(frozen) {
             throw new IllegalStateException("Registry is already frozen!");
@@ -42,6 +46,12 @@ public class GTControlledRegistry<T> extends RegistrySimple<String, T> {
             throw new IndexOutOfBoundsException("Id is out of range: " + id);
         }
         this.putObject(key, value);
+
+        T objectWithId = getObjectById(id);
+        if(objectWithId != null) {
+            throw new IllegalArgumentException(String.format("Tried to reassign id %d to %s (%s), but it is already assigned to %s (%s)!",
+                id, value, key, objectWithId, getNameForObject(objectWithId)));
+        }
         underlyingIntegerMap.put(value, id);
     }
 

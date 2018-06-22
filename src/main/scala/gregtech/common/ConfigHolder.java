@@ -3,9 +3,6 @@ package gregtech.common;
 import gregtech.api.GTValues;
 import net.minecraftforge.common.config.Config;
 
-import java.util.HashMap;
-import java.util.Map;
-
 @Config(modid = GTValues.MODID)
 public class ConfigHolder {
 
@@ -30,10 +27,6 @@ public class ConfigHolder {
     @Config.Comment("Whether to disable rubber tree world generation. Default is false.")
     public static boolean disableRubberTreeGeneration = false;
 
-    @Config.Comment("Material flags in format material_name<->list of material flags strings")
-    @Config.RequiresMcRestart
-    public static Map<String, String[]> materialFlags = new HashMap<>();
-
     @Config.Comment("Whether machines should explode when overloaded with power. Default: true")
     public static boolean doExplosions = true;
 
@@ -47,6 +40,10 @@ public class ConfigHolder {
     @Config.Comment("Recipes for machine hulls use more materials. Default: false")
     @Config.RequiresMcRestart
     public static boolean harderMachineHulls = false;
+
+    @Config.Comment("Flint tools (pickaxe, shovel, axe, sword, hoe) recipes will be disabled. Default is false.")
+    @Config.RequiresMcRestart
+    public static boolean disableFlintTools = false;
 
     @Config.Comment("Category that contains configs for changing vanilla recipes")
     @Config.RequiresMcRestart

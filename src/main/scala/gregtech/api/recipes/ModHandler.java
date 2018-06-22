@@ -4,6 +4,7 @@ import com.google.common.base.Preconditions;
 import gregtech.api.GTValues;
 import gregtech.api.items.ToolDictNames;
 import gregtech.api.items.metaitem.MetaItem;
+import gregtech.api.recipes.recipes.DummyRecipe;
 import gregtech.api.unification.OreDictUnifier;
 import gregtech.api.unification.material.Materials;
 import gregtech.api.unification.material.type.Material;
@@ -108,7 +109,7 @@ public class ModHandler {
     }
 
     public static boolean isMaterialWood(Material material) {
-        return material == Materials.Wood || material == Materials.WoodSealed;
+        return material == Materials.Wood;
     }
 
     /**
@@ -177,8 +178,12 @@ public class ModHandler {
         }
         if (skip) return;
 
+        FurnaceRecipes recipes = FurnaceRecipes.instance();
 
-        GameRegistry.addSmelting(input, output.copy(), 0.0F);
+        if(recipes.getSmeltingResult(input).isEmpty()) {
+            //register only if there is no recipe with duplicate input
+            recipes.addSmeltingRecipe(input, output, 0.0f);
+        }
     }
 
     ///////////////////////////////////////////////////
@@ -221,7 +226,7 @@ public class ModHandler {
             GTLog.logger.error("Stacktrace:", new IllegalArgumentException());
             skip = true;
         }
-        skip |= validateRecipe(recipe);
+        skip |= validateRecipe(regName, recipe);
         if (skip) {
             RecipeMap.foundInvalidRecipe = true;
             return;
@@ -268,7 +273,7 @@ public class ModHandler {
             GTLog.logger.error("Stacktrace:", new IllegalArgumentException());
             skip = true;
         }
-        skip |= validateRecipe(recipe);
+        skip |= validateRecipe(regName, recipe);
         if (skip) {
             RecipeMap.foundInvalidRecipe = true;
             return;
@@ -279,7 +284,7 @@ public class ModHandler {
         ForgeRegistries.RECIPES.register(shapedOreRecipe);
     }
 
-    private static boolean validateRecipe(Object... recipe) {
+    private static boolean validateRecipe(String regName, Object... recipe) {
         boolean skip = false;
         if (recipe == null) {
             GTLog.logger.error("Recipe cannot be null", new IllegalArgumentException());
@@ -297,6 +302,9 @@ public class ModHandler {
                     .collect(Collectors.joining(", "))
             );
             GTLog.logger.error("Stacktrace:", new IllegalArgumentException());
+            skip = true;
+        } else if(ForgeRegistries.RECIPES.containsKey(new ResourceLocation(GTValues.MODID, regName))) {
+            GTLog.logger.error("Tried to register recipe, {}, with duplicate key", regName);
             skip = true;
         }
         return skip;
@@ -352,7 +360,7 @@ public class ModHandler {
             GTLog.logger.error("Stacktrace:", new IllegalArgumentException());
             skip = true;
         }
-        skip |= validateRecipe(recipe);
+        skip |= validateRecipe(regName, recipe);
         if (skip) {
             RecipeMap.foundInvalidRecipe = true;
             return;

@@ -56,7 +56,6 @@ public class MaterialInfoLoader {
         OreDictUnifier.registerOre(new ItemStack(Blocks.HOPPER, 1, W), new ItemMaterialInfo(new MaterialStack(Materials.Iron, 18144000L), new MaterialStack(Materials.Wood, 29030400L)));
         OreDictUnifier.registerOre(new ItemStack(Blocks.TRIPWIRE_HOOK, 1, W), new ItemMaterialInfo(new MaterialStack(Materials.Iron, OrePrefix.ring.materialAmount * 2L), new MaterialStack(Materials.Wood, M)));
         OreDictUnifier.registerOre(new ItemStack(Items.GLASS_BOTTLE), new ItemMaterialInfo(new MaterialStack(Materials.Glass, M)));
-        OreDictUnifier.registerOre(new ItemStack(Items.POTIONITEM, 1, W), new ItemMaterialInfo(new MaterialStack(Materials.Glass, M)));
         OreDictUnifier.registerOre(new ItemStack(Blocks.STAINED_GLASS, 1, W), new ItemMaterialInfo(new MaterialStack(Materials.Glass, M)));
         OreDictUnifier.registerOre(new ItemStack(Blocks.GLASS, 1, W), new ItemMaterialInfo(new MaterialStack(Materials.Glass, M)));
         OreDictUnifier.registerOre(new ItemStack(Blocks.STAINED_GLASS_PANE, 1, W), new ItemMaterialInfo(new MaterialStack(Materials.Glass, 1360800L)));

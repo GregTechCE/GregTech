@@ -1,27 +1,38 @@
 package gregtech.api.unification.stack;
 
+import crafttweaker.annotations.ZenRegister;
 import gregtech.api.unification.material.type.Material;
 import gregtech.api.util.SmallDigits;
+import stanhebben.zenscript.annotations.ZenClass;
+import stanhebben.zenscript.annotations.ZenMethod;
+import stanhebben.zenscript.annotations.ZenProperty;
 
+@ZenClass("mods.gregtech.material.MaterialStack")
+@ZenRegister
 public class MaterialStack {
 
-    public Material material;
-    public long amount;
+    @ZenProperty
+    public final Material material;
+    @ZenProperty
+    public final long amount;
 
     public MaterialStack(Material material, long amount) {
         this.material = material;
         this.amount = amount;
     }
 
+    @ZenMethod
     public MaterialStack copy(long amount) {
         return new MaterialStack(material, amount);
     }
 
+    @ZenMethod
     public MaterialStack copy() {
         return new MaterialStack(material, amount);
     }
 
     @Override
+    @ZenMethod
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
@@ -38,6 +49,7 @@ public class MaterialStack {
     }
 
     @Override
+    @ZenMethod
     public String toString() {
         String string = "";
         if(material.materialComponents.size() > 1) {

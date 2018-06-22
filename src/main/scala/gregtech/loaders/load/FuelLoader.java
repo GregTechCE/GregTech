@@ -103,7 +103,7 @@ public class FuelLoader {
             .duration(2)
             .EUt(-128)
             .buildAndRegister();
-        
+
         //9600EU
         RecipeMaps.GAS_TURBINE_FUELS.recipeBuilder()
             .fluidInputs(Materials.NaturalGas.getFluid(10))

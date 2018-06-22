@@ -33,7 +33,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static gregtech.api.GTValues.L;
 import static gregtech.common.items.MetaItems.*;
 
 public class MetaItem1 extends MaterialMetaItem {
@@ -537,67 +536,67 @@ public class MetaItem1 extends MaterialMetaItem {
             .outputs(BATTERY_HULL_HV.getStackForm())
             .buildAndRegister();
 
-        RecipeMaps.FLUID_CANNER_RECIPES.recipeBuilder()
+        RecipeMaps.CANNER_RECIPES.recipeBuilder()
             .inputs(BATTERY_HULL_LV.getStackForm())
-            .fluidInputs(Materials.Cadmium.getFluid(2 * L))
+            .input(OrePrefix.dust, Materials.Cadmium, 2)
             .outputs(BATTERY_RE_LV_CADMIUM.getStackForm())
             .duration(100)
             .EUt(2)
             .buildAndRegister();
-        RecipeMaps.FLUID_CANNER_RECIPES.recipeBuilder()
+        RecipeMaps.CANNER_RECIPES.recipeBuilder()
             .inputs(BATTERY_HULL_LV.getStackForm())
-            .fluidInputs(Materials.Lithium.getFluid(2 * L))
+            .input(OrePrefix.dust, Materials.Lithium, 2)
             .outputs(BATTERY_RE_LV_LITHIUM.getStackForm())
             .duration(100)
             .EUt(2)
             .buildAndRegister();
-        RecipeMaps.FLUID_CANNER_RECIPES.recipeBuilder()
+        RecipeMaps.CANNER_RECIPES.recipeBuilder()
             .inputs(BATTERY_HULL_LV.getStackForm())
-            .fluidInputs(Materials.Sodium.getFluid(2 * L))
+            .input(OrePrefix.dust, Materials.Sodium, 2)
             .outputs(BATTERY_RE_LV_SODIUM.getStackForm())
             .duration(100)
             .EUt(2)
             .buildAndRegister();
 
-        RecipeMaps.FLUID_CANNER_RECIPES.recipeBuilder()
+        RecipeMaps.CANNER_RECIPES.recipeBuilder()
             .inputs(BATTERY_HULL_MV.getStackForm())
-            .fluidInputs(Materials.Cadmium.getFluid(8 * L))
+            .input(OrePrefix.dust, Materials.Cadmium, 8)
             .outputs(BATTERY_RE_MV_CADMIUM.getStackForm())
             .duration(400)
             .EUt(2)
             .buildAndRegister();
-        RecipeMaps.FLUID_CANNER_RECIPES.recipeBuilder()
+        RecipeMaps.CANNER_RECIPES.recipeBuilder()
             .inputs(BATTERY_HULL_MV.getStackForm())
-            .fluidInputs(Materials.Lithium.getFluid(8 * L))
+            .input(OrePrefix.dust, Materials.Lithium, 8)
             .outputs(BATTERY_RE_MV_LITHIUM.getStackForm())
             .duration(400)
             .EUt(2)
             .buildAndRegister();
-        RecipeMaps.FLUID_CANNER_RECIPES.recipeBuilder()
+        RecipeMaps.CANNER_RECIPES.recipeBuilder()
             .inputs(BATTERY_HULL_MV.getStackForm())
-            .fluidInputs(Materials.Sodium.getFluid(8 * L))
+            .input(OrePrefix.dust, Materials.Sodium, 8)
             .outputs(BATTERY_RE_MV_SODIUM.getStackForm())
             .duration(400)
             .EUt(2)
             .buildAndRegister();
 
-        RecipeMaps.FLUID_CANNER_RECIPES.recipeBuilder()
+        RecipeMaps.CANNER_RECIPES.recipeBuilder()
             .inputs(BATTERY_HULL_HV.getStackForm())
-            .fluidInputs(Materials.Cadmium.getFluid(32 * L))
+            .input(OrePrefix.dust, Materials.Cadmium, 32)
             .outputs(BATTERY_RE_HV_CADMIUM.getStackForm())
             .duration(1600)
             .EUt(2)
             .buildAndRegister();
-        RecipeMaps.FLUID_CANNER_RECIPES.recipeBuilder()
+        RecipeMaps.CANNER_RECIPES.recipeBuilder()
             .inputs(BATTERY_HULL_HV.getStackForm())
-            .fluidInputs(Materials.Lithium.getFluid(32 * L))
+            .input(OrePrefix.dust, Materials.Lithium, 32)
             .outputs(BATTERY_RE_HV_LITHIUM.getStackForm())
             .duration(1600)
             .EUt(2)
             .buildAndRegister();
-        RecipeMaps.FLUID_CANNER_RECIPES.recipeBuilder()
+        RecipeMaps.CANNER_RECIPES.recipeBuilder()
             .inputs(BATTERY_HULL_HV.getStackForm())
-            .fluidInputs(Materials.Sodium.getFluid(32 * L))
+            .input(OrePrefix.dust, Materials.Sodium, 32)
             .outputs(BATTERY_RE_HV_SODIUM.getStackForm())
             .duration(1600)
             .EUt(2)

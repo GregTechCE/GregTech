@@ -12,6 +12,7 @@ import gregtech.api.util.ValidationResult;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import org.apache.commons.lang3.builder.ToStringBuilder;
+import stanhebben.zenscript.annotations.ZenMethod;
 
 public class ImplosionRecipeBuilder extends RecipeBuilder<ImplosionRecipeBuilder> {
 
@@ -29,15 +30,20 @@ public class ImplosionRecipeBuilder extends RecipeBuilder<ImplosionRecipeBuilder
     }
 
     @Override
-    protected ImplosionRecipeBuilder getThis() {
-        return this;
-    }
-
-    @Override
     public ImplosionRecipeBuilder copy() {
         return new ImplosionRecipeBuilder(this);
     }
 
+    @Override
+    public boolean applyProperty(String key, Object value) {
+        if(key.equals("explosives")) {
+            explosivesAmount((int) value);
+            return true;
+        }
+        return false;
+    }
+
+    @ZenMethod
     public ImplosionRecipeBuilder explosivesAmount(int explosivesAmount) {
         if (!GTUtility.isBetweenInclusive(1, 64, explosivesAmount)) {
             GTLog.logger.error("Amount of explosives should be from 1 to 64 inclusive", new IllegalArgumentException());

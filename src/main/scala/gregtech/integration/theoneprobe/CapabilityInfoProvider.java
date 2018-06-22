@@ -1,0 +1,33 @@
+package gregtech.integration.theoneprobe;
+
+import mcjty.theoneprobe.api.IProbeHitData;
+import mcjty.theoneprobe.api.IProbeInfo;
+import mcjty.theoneprobe.api.IProbeInfoProvider;
+import mcjty.theoneprobe.api.ProbeMode;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.world.World;
+import net.minecraftforge.common.capabilities.Capability;
+
+public abstract class CapabilityInfoProvider<T> implements IProbeInfoProvider {
+
+    protected abstract Capability<T> getCapability();
+
+    protected abstract void addProbeInfo(T capability, IProbeInfo probeInfo, TileEntity tileEntity, EnumFacing sideHit);
+
+    @Override
+    public void addProbeInfo(ProbeMode mode, IProbeInfo probeInfo, EntityPlayer player, World world, IBlockState blockState, IProbeHitData data) {
+        if(blockState.getBlock().hasTileEntity(blockState)) {
+            EnumFacing sideHit = data.getSideHit();
+            TileEntity tileEntity = world.getTileEntity(data.getPos());
+            Capability<T> capability = getCapability();
+            T resultCapability = tileEntity.getCapability(capability, sideHit);
+            if(resultCapability != null) {
+                addProbeInfo(resultCapability, probeInfo, tileEntity, sideHit);
+            }
+        }
+    }
+
+}

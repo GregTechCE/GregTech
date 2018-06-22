@@ -1,22 +1,24 @@
 package gregtech.api.unification.material.type;
 
 import com.google.common.collect.ImmutableList;
+import crafttweaker.annotations.ZenRegister;
 import gregtech.api.unification.Element;
 import gregtech.api.unification.material.MaterialIconSet;
 import gregtech.api.unification.stack.MaterialStack;
+import stanhebben.zenscript.annotations.ZenClass;
+import stanhebben.zenscript.annotations.ZenProperty;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import static gregtech.api.util.GTUtility.createFlag;
 
+@ZenClass("mods.gregtech.material.DustMaterial")
+@ZenRegister
 public class DustMaterial extends FluidMaterial {
 
     public static final class MatFlags {
-
-        static {
-            Material.MatFlags.registerMaterialFlagsHolder(MatFlags.class, DustMaterial.class);
-        }
 
         public static final long GENERATE_ORE = createFlag(11);
 
@@ -52,53 +54,70 @@ public class DustMaterial extends FluidMaterial {
          */
         public static final long SMELT_INTO_FLUID = createFlag(17);
 
+        public static final long EXCLUDE_BLOCK_CRAFTING_RECIPES = createFlag(18);
+
+        public static final long EXCLUDE_PLATE_COMPRESSOR_RECIPE = createFlag(19);
+
+        static {
+            Material.MatFlags.registerMaterialFlagsHolder(MatFlags.class, DustMaterial.class);
+        }
+
     }
 
 
     /**
      * List of ore by products
      */
-    public final ArrayList<FluidMaterial> oreByProducts = new ArrayList<>();
+    @ZenProperty
+    public final List<FluidMaterial> oreByProducts = new ArrayList<>();
 
     /**
      * Crushed ore output amount multiplier during maceration
      */
+    @ZenProperty
     public int oreMultiplier = 1;
 
     /**
      * Byproducts output amount multiplier during pulverization
      */
+    @ZenProperty
     public int byProductMultiplier = 1;
 
     /**
      * Smelting item amount multiplier during vanilla item smelting
      */
+    @ZenProperty
     public int smeltingMultiplier = 1;
 
     /**
      * Tool level needed to harvest block of this material
      */
-    public int harvestLevel;
+    @ZenProperty
+    public final int harvestLevel;
 
     /**
      * Material to which smelting of this material ore will result
      */
+    @ZenProperty
     public SolidMaterial directSmelting;
 
     /**
      * Material in which this material's ore should be washed to give additional output
      */
+    @ZenProperty
     public FluidMaterial washedIn;
 
     /**
      * During electromagnetic separation, this material ore will be separated onto this material and material specified by this field
      */
+    @ZenProperty
     public DustMaterial separatedOnto;
 
     /**
      * Burn time of this material when used as fuel in furnace smelting
      * Zero or negative value indicates that this material cannot be used as fuel
      */
+    @ZenProperty
     public int burnTime = 0;
 
     public DustMaterial(int metaItemSubId, String name, int materialRGB, MaterialIconSet materialIconSet, int harvestLevel, ImmutableList<MaterialStack> materialComponents, long materialGenerationFlags, Element element) {
@@ -128,28 +147,23 @@ public class DustMaterial extends FluidMaterial {
         this.oreByProducts.addAll(Arrays.asList(byProducts));
     }
 
-    public DustMaterial setDirectSmelting(SolidMaterial directSmelting) {
+    public void setDirectSmelting(SolidMaterial directSmelting) {
         this.directSmelting = directSmelting;
-        return this;
     }
 
-    public DustMaterial setOreMultiplier(int oreMultiplier) {
+    public void setOreMultiplier(int oreMultiplier) {
         this.oreMultiplier = oreMultiplier;
-        return this;
     }
 
-    public DustMaterial setSmeltingMultiplier(int smeltingMultiplier) {
+    public void setSmeltingMultiplier(int smeltingMultiplier) {
         this.smeltingMultiplier = smeltingMultiplier;
-        return this;
     }
 
-    public DustMaterial setByProductMultiplier(int byProductMultiplier) {
+    public void setByProductMultiplier(int byProductMultiplier) {
         this.byProductMultiplier = byProductMultiplier;
-        return this;
     }
 
-    public DustMaterial setBurnTime(int burnTime) {
+    public void setBurnTime(int burnTime) {
         this.burnTime = burnTime;
-        return this;
     }
 }

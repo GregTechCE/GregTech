@@ -27,8 +27,12 @@ public class IntCircuitRecipeBuilder extends RecipeBuilder<IntCircuitRecipeBuild
     }
 
     @Override
-    protected IntCircuitRecipeBuilder getThis() {
-        return this;
+    public boolean applyProperty(String key, Object value) {
+        if(key.equals("circuit") && value instanceof Number) {
+            this.circuitMeta = ((Number) value).intValue();
+            return true;
+        }
+        return false;
     }
 
     @Override

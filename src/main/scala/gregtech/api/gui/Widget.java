@@ -33,7 +33,7 @@ public abstract class Widget implements Comparable<Widget> {
     }
 
     /**
-     * Called on both sides to init widget data
+     * Called on both sides to freezeRegistry widget data
      */
     public void initWidget() {
     }

@@ -50,7 +50,7 @@ public class BlockLeavesGT extends BlockLeaves {
         return getDefaultState()
             .withProperty(CHECK_DECAY, meta / 8 == 1)
             .withProperty(DECAYABLE, meta / 4 == 1)
-            .withProperty(VARIANT, LogVariant.values()[meta % 4]);
+            .withProperty(VARIANT, LogVariant.values()[meta % 4 % LogVariant.values().length]);
     }
 
     @Override

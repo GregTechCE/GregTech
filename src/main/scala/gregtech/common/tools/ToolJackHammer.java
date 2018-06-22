@@ -3,8 +3,10 @@ package gregtech.common.tools;
 import gregtech.api.recipes.RecipeMaps;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
@@ -15,6 +17,12 @@ import java.util.Collections;
 import java.util.List;
 
 public class ToolJackHammer extends ToolDrillLV {
+
+    @Override
+    public boolean canApplyEnchantment(ItemStack stack, Enchantment enchantment) {
+        return enchantment.type.canEnchantItem(Items.IRON_PICKAXE);
+    }
+
 
     @Override
     public int getToolDamagePerBlockBreak(ItemStack stack) {

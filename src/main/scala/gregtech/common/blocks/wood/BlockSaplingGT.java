@@ -46,8 +46,8 @@ public class BlockSaplingGT extends BlockBush implements IGrowable, IPlantable {
     @Override
     public IBlockState getStateFromMeta(int meta) {
         return getDefaultState()
-            .withProperty(VARIANT, LogVariant.values()[meta % 4])
-            .withProperty(STAGE, meta / 4);
+            .withProperty(VARIANT, LogVariant.values()[meta % 4 % LogVariant.values().length])
+            .withProperty(STAGE, meta / 4 % 2);
     }
 
     @Override

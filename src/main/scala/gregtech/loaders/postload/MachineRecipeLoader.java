@@ -8,6 +8,7 @@ import gregtech.api.recipes.builders.AssemblyLineRecipeBuilder;
 import gregtech.api.recipes.builders.PBFRecipeBuilder;
 import gregtech.api.unification.OreDictUnifier;
 import gregtech.api.unification.material.MarkerMaterials;
+import gregtech.api.unification.material.MarkerMaterials.Tier;
 import gregtech.api.unification.material.Materials;
 import gregtech.api.unification.material.type.DustMaterial;
 import gregtech.api.unification.material.type.GemMaterial;
@@ -36,6 +37,7 @@ import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.Tuple;
 import net.minecraftforge.oredict.OreDictionary;
 import org.apache.commons.lang3.tuple.Pair;
 
@@ -112,10 +114,17 @@ public class MachineRecipeLoader {
             ItemStack secondIngot = OreDictUnifier.get(OrePrefix.ingot, stack[1].material, (int) stack[1].amount);
             ItemStack outputIngot = OreDictUnifier.get(OrePrefix.ingot, stack[2].material, (int) stack[2].amount);
             if (!outputIngot.isEmpty()) {
+                if(!firstIngot.isEmpty()) {
+                    RecipeMaps.ALLOY_SMELTER_RECIPES.recipeBuilder().duration((int) stack[2].amount * 50).EUt(16)
+                        .inputs(firstIngot, secondDust).outputs(outputIngot).buildAndRegister();
+                }
+                if(!secondIngot.isEmpty()) {
+                    RecipeMaps.ALLOY_SMELTER_RECIPES.recipeBuilder().duration((int) stack[2].amount * 50).EUt(16)
+                        .inputs(firstDust, secondIngot).outputs(outputIngot).buildAndRegister();
+                }
                 if(!firstIngot.isEmpty() && !secondIngot.isEmpty()) {
-                    RecipeMaps.ALLOY_SMELTER_RECIPES.recipeBuilder().duration((int) stack[2].amount * 50).EUt(16).inputs(firstIngot, secondIngot).outputs(outputIngot).buildAndRegister();
-                    RecipeMaps.ALLOY_SMELTER_RECIPES.recipeBuilder().duration((int) stack[2].amount * 50).EUt(16).inputs(firstDust, secondIngot).outputs(outputIngot).buildAndRegister();
-                    RecipeMaps.ALLOY_SMELTER_RECIPES.recipeBuilder().duration((int) stack[2].amount * 50).EUt(16).inputs(firstIngot, secondDust).outputs(outputIngot).buildAndRegister();
+                    RecipeMaps.ALLOY_SMELTER_RECIPES.recipeBuilder().duration((int) stack[2].amount * 50).EUt(16)
+                        .inputs(firstIngot, secondIngot).outputs(outputIngot).buildAndRegister();
                 }
                 RecipeMaps.ALLOY_SMELTER_RECIPES.recipeBuilder().duration((int) stack[2].amount * 50).EUt(16).inputs(firstDust, secondDust).outputs(outputIngot).buildAndRegister();
             }
@@ -226,10 +235,40 @@ public class MachineRecipeLoader {
         PBFRecipeBuilder.start().input(OrePrefix.ingot, Materials.WroughtIron).output(OreDictUnifier.get(OrePrefix.ingot, Materials.Steel)).duration(600).fuelAmount(2).buildAndRegister();
         PBFRecipeBuilder.start().input(OrePrefix.block, Materials.WroughtIron).output(OreDictUnifier.get(OrePrefix.block, Materials.Steel)).duration(5600).fuelAmount(18).buildAndRegister();
 
-        RecipeMaps.FLUID_EXTRACTION_RECIPES.recipeBuilder().duration(32).EUt(2).inputs(new ItemStack(Items.WHEAT_SEEDS, 1, OreDictionary.WILDCARD_VALUE)).fluidOutputs(Materials.SeedOil.getFluid(5)).buildAndRegister();
-        RecipeMaps.FLUID_EXTRACTION_RECIPES.recipeBuilder().duration(32).EUt(2).inputs(new ItemStack(Items.MELON_SEEDS, 1, OreDictionary.WILDCARD_VALUE)).fluidOutputs(Materials.SeedOil.getFluid(3)).buildAndRegister();
-        RecipeMaps.FLUID_EXTRACTION_RECIPES.recipeBuilder().duration(32).EUt(2).inputs(new ItemStack(Items.PUMPKIN_SEEDS, 1, OreDictionary.WILDCARD_VALUE)).fluidOutputs(Materials.SeedOil.getFluid(6)).buildAndRegister();
-        RecipeMaps.ALLOY_SMELTER_RECIPES.recipeBuilder().duration(100).EUt(16).input(OrePrefix.ingot, Materials.Rubber, 2).input(OrePrefix.wireGtSingle, Materials.Copper, 1).outputs(OreDictUnifier.get(OrePrefix.cableGtSingle,Materials.Copper,1)).buildAndRegister();
+        //register seed oil recipes for all seed entries
+        List<Tuple<ItemStack, Integer>> seedEntries = GTUtility.getGrassSeedEntries();
+        for(Tuple<ItemStack, Integer> seedEntry : seedEntries) {
+            RecipeMaps.FLUID_EXTRACTION_RECIPES.recipeBuilder()
+                .duration(32).EUt(2)
+                .inputs(seedEntry.getFirst())
+                .fluidOutputs(Materials.SeedOil.getFluid(5))
+                .buildAndRegister();
+        }
+
+        RecipeMaps.FLUID_EXTRACTION_RECIPES.recipeBuilder().duration(32).EUt(2)
+            .inputs(new ItemStack(Items.MELON_SEEDS, 1, OreDictionary.WILDCARD_VALUE))
+            .fluidOutputs(Materials.SeedOil.getFluid(3)).buildAndRegister();
+
+        RecipeMaps.FLUID_EXTRACTION_RECIPES.recipeBuilder().duration(32).EUt(2)
+            .inputs(new ItemStack(Items.PUMPKIN_SEEDS, 1, OreDictionary.WILDCARD_VALUE))
+            .fluidOutputs(Materials.SeedOil.getFluid(6)).buildAndRegister();
+
+        RecipeMaps.ALLOY_SMELTER_RECIPES.recipeBuilder().duration(100).EUt(16)
+            .input(OrePrefix.ingot, Materials.Rubber, 2)
+            .input(OrePrefix.wireGtSingle, Materials.Copper, 1)
+            .outputs(OreDictUnifier.get(OrePrefix.cableGtSingle, Materials.Copper,1))
+            .buildAndRegister();
+
+        for(IngotMaterial cableMaterial : new IngotMaterial[] {Materials.YttriumBariumCuprate, Materials.NiobiumTitanium, Materials.VanadiumGallium}) {
+            RecipeMaps.ASSEMBLER_RECIPES.recipeBuilder()
+                .input(OrePrefix.wireGtSingle, cableMaterial, 3)
+                .input(OrePrefix.plate, Materials.TungstenSteel, 3)
+                .inputs(MetaItems.ELECTRIC_PUMP_LV.getStackForm())
+                .fluidInputs(Materials.Nitrogen.getFluid(2000))
+                .outputs(OreDictUnifier.get(OrePrefix.wireGtSingle, Tier.Superconductor, 3))
+                .duration(20).EUt(512)
+                .buildAndRegister();
+        }
 
         RecipeMaps.MIXER_RECIPES.recipeBuilder().duration(20).EUt(16).input(OrePrefix.dust, Materials.Clay, 1).input(OrePrefix.dust, Materials.Stone, 3).fluidInputs(Materials.Water.getFluid(500)).fluidOutputs(Materials.Concrete.getFluid(576)).buildAndRegister();
         RecipeMaps.MIXER_RECIPES.recipeBuilder().duration(100).EUt(8).inputs(new ItemStack(Blocks.BROWN_MUSHROOM), new ItemStack(Items.SPIDER_EYE)).input(OrePrefix.dust, Materials.Sugar, 1).outputs(new ItemStack(Items.FERMENTED_SPIDER_EYE)).buildAndRegister();
@@ -389,7 +428,6 @@ public class MachineRecipeLoader {
         RecipeMaps.COMPRESSOR_RECIPES.recipeBuilder().inputs(new ItemStack(Items.WHEAT, 9)).outputs(new ItemStack(Blocks.HAY_BLOCK)).buildAndRegister();
         RecipeMaps.COMPRESSOR_RECIPES.recipeBuilder().input(OrePrefix.dust, Materials.Glowstone, 4).outputs(new ItemStack(Blocks.GLOWSTONE)).buildAndRegister();
 
-        RecipeMaps.CUTTER_RECIPES.recipeBuilder().duration(500).EUt(48).input(OrePrefix.block, Materials.Graphite, 1).outputs(OreDictUnifier.get(OrePrefix.ingot,Materials.Graphite,9)).buildAndRegister();
         RecipeMaps.MACERATOR_RECIPES.recipeBuilder().inputs(new ItemStack(Items.BLAZE_ROD)).outputs(new ItemStack(Items.BLAZE_POWDER, 3)).buildAndRegister();
         RecipeMaps.MACERATOR_RECIPES.recipeBuilder().inputs(new ItemStack(Items.FLINT, 1, OreDictionary.WILDCARD_VALUE)).outputs(OreDictUnifier.get(OrePrefix.dustTiny,Materials.Flint,4)).buildAndRegister();
         RecipeMaps.MACERATOR_RECIPES.recipeBuilder().inputs(new ItemStack(Items.ITEM_FRAME, 1, OreDictionary.WILDCARD_VALUE)).outputs(new ItemStack(Items.LEATHER)).buildAndRegister();
@@ -452,8 +490,6 @@ public class MachineRecipeLoader {
         RecipeMaps.ELECTROLYZER_RECIPES.recipeBuilder().duration(1500).EUt(30).fluidInputs(ModHandler.getDistilledWater(3000)).fluidOutputs(Materials.Hydrogen.getFluid(2000), Materials.Oxygen.getFluid(1000)).buildAndRegister();
         RecipeMaps.ELECTROLYZER_RECIPES.recipeBuilder().inputs(new ItemStack(Items.DYE, 3)).outputs(OreDictUnifier.get(OrePrefix.dust,Materials.Calcium,1)).duration(96).EUt(26).buildAndRegister();
         RecipeMaps.ELECTROLYZER_RECIPES.recipeBuilder().inputs(new ItemStack(Blocks.SAND, 8)).outputs(OreDictUnifier.get(OrePrefix.dust,Materials.SiliconDioxide,1)).duration(500).EUt(25).buildAndRegister();
-        RecipeMaps.ELECTROLYZER_RECIPES.recipeBuilder().duration(120).EUt(1920).input(OrePrefix.dust, Materials.Tungstate, 7).fluidInputs(Materials.Hydrogen.getFluid(7000)).outputs(OreDictUnifier.get(OrePrefix.dust,Materials.Tungsten,1), OreDictUnifier.get(OrePrefix.dust,Materials.Lithium,2)).fluidOutputs(Materials.Oxygen.getFluid(4000)).buildAndRegister();
-        RecipeMaps.ELECTROLYZER_RECIPES.recipeBuilder().duration(120).EUt(1920).input(OrePrefix.dust, Materials.Scheelite, 7).fluidInputs(Materials.Hydrogen.getFluid(7000)).outputs(OreDictUnifier.get(OrePrefix.dust,Materials.Tungsten,1), OreDictUnifier.get(OrePrefix.dust,Materials.Calcium,2)).fluidOutputs(Materials.Oxygen.getFluid(4000)).buildAndRegister();
         RecipeMaps.ELECTROLYZER_RECIPES.recipeBuilder().input(OrePrefix.dust, Materials.Graphite, 1).outputs(OreDictUnifier.get(OrePrefix.dust,Materials.Carbon,4)).duration(100).EUt(26).buildAndRegister();
 
         RecipeMaps.CHEMICAL_RECIPES.recipeBuilder().duration(500).input(OrePrefix.dust, Materials.NetherQuartz, 3).input(OrePrefix.dust, Materials.Sodium, 1).fluidInputs(Materials.Water.getFluid(1000)).outputs(OreDictUnifier.get(OrePrefix.gem,Materials.NetherQuartz,3)).buildAndRegister();
@@ -710,13 +746,13 @@ public class MachineRecipeLoader {
 
         RecipeMaps.MACERATOR_RECIPES.recipeBuilder()
             .input(OrePrefix.stone, Materials.Endstone)
-            .outputs(OreDictUnifier.get(OrePrefix.dustImpure, Materials.Endstone))
-            .chancedOutput(OreDictUnifier.get(OrePrefix.dustTiny, Materials.Tungsten), 500)
+            .outputs(OreDictUnifier.get(OrePrefix.dust, Materials.Endstone))
+            .chancedOutput(OreDictUnifier.get(OrePrefix.dustTiny, Materials.Tungstate), 1200)
             .buildAndRegister();
 
         RecipeMaps.MACERATOR_RECIPES.recipeBuilder()
             .input(OrePrefix.stone, Materials.Netherrack)
-            .outputs(OreDictUnifier.get(OrePrefix.dustImpure, Materials.Netherrack, 1))
+            .outputs(OreDictUnifier.get(OrePrefix.dust, Materials.Netherrack, 1))
             .chancedOutput(OreDictUnifier.get(OrePrefix.nugget, Materials.Gold, 1), 500)
             .buildAndRegister();
 
@@ -928,37 +964,52 @@ public class MachineRecipeLoader {
             ArrayList<MaterialStack> materialStacks = new ArrayList<>();
             materialStacks.add(materialInfo.material);
             materialStacks.addAll(materialInfo.additionalComponents);
-            registerArcRecyclingRecipe(b -> b.inputs(itemStack), materialStacks);
+            registerArcRecyclingRecipe(b -> b.inputs(itemStack), materialStacks, false);
         }
     }
 
-    public static void registerArcRecyclingRecipe(Consumer<RecipeBuilder<?>> inputSupplier, List<MaterialStack> components) {
-        MaterialStack firstStack = components.get(0);
-        int voltageMultiplier = 1;
-        if(firstStack.material instanceof IngotMaterial) {
-            int blastFurnaceTemperature = ((IngotMaterial) firstStack.material).blastFurnaceTemperature;
-            voltageMultiplier = blastFurnaceTemperature == 0 ? 1 : blastFurnaceTemperature > 2000 ? 16 : 4;
-        }
+    public static void registerArcRecyclingRecipe(Consumer<RecipeBuilder<?>> inputSupplier, List<MaterialStack> components, boolean ignoreArcSmelting) {
         List<MaterialStack> dustMaterials = components.stream()
             .filter(stack -> stack.material instanceof DustMaterial)
+            .filter(stack -> stack.amount >= M / 9) //do only materials which have at least one nugget
             .collect(Collectors.toList());
         if(dustMaterials.isEmpty()) return;
+        MaterialStack firstStack = dustMaterials.get(0);
+        DustMaterial dustMaterial = (DustMaterial) firstStack.material;
+        int voltageMultiplier = 1;
+        if(dustMaterial instanceof IngotMaterial) {
+            int blastFurnaceTemperature = ((IngotMaterial) dustMaterial).blastFurnaceTemperature;
+            voltageMultiplier = blastFurnaceTemperature == 0 ? 1 : blastFurnaceTemperature > 2000 ? 16 : 4;
+        } else {
+            //do not apply arc smelting for gems, solid materials and dust materials
+            //only generate recipes for ingot materials
+            ignoreArcSmelting = true;
+        }
 
         RecipeBuilder<?> maceratorRecipeBuilder = RecipeMaps.MACERATOR_RECIPES.recipeBuilder()
             .outputs(dustMaterials.stream().map(OreDictUnifier::getDust).collect(Collectors.toList()))
-            .duration((int) (firstStack.amount * 30 / M))
+            .duration((int) Math.max(1L, firstStack.amount * 30 / M))
             .EUt(8 * voltageMultiplier);
-
-        RecipeBuilder<?> arcFurnaceRecipeBuilder = RecipeMaps.ARC_FURNACE_RECIPES.recipeBuilder()
-            .outputs(dustMaterials.stream().map(MachineRecipeLoader::getArcSmeltingResult).collect(Collectors.toList()))
-            .duration((int) (firstStack.amount * 60 / M))
-            .EUt(32 * voltageMultiplier);
-
         inputSupplier.accept(maceratorRecipeBuilder);
-        inputSupplier.accept(arcFurnaceRecipeBuilder);
-
         maceratorRecipeBuilder.buildAndRegister();
-        arcFurnaceRecipeBuilder.buildAndRegister();
+
+        if(dustMaterial.shouldGenerateFluid()) {
+            RecipeBuilder<?> fluidExtractorRecipeBuilder = RecipeMaps.FLUID_EXTRACTION_RECIPES.recipeBuilder()
+                .fluidOutputs(dustMaterial.getFluid((int) (firstStack.amount * L / M)))
+                .duration((int) Math.max(1L, firstStack.amount * 80 / M))
+                .EUt(32 * voltageMultiplier);
+            inputSupplier.accept(fluidExtractorRecipeBuilder);
+            fluidExtractorRecipeBuilder.buildAndRegister();
+        }
+
+        if(!ignoreArcSmelting) {
+            RecipeBuilder<?> arcFurnaceRecipeBuilder = RecipeMaps.ARC_FURNACE_RECIPES.recipeBuilder()
+                .outputs(dustMaterials.stream().map(MachineRecipeLoader::getArcSmeltingResult).collect(Collectors.toList()))
+                .duration((int) Math.max(1L, firstStack.amount * 60 / M))
+                .EUt(32 * voltageMultiplier);
+            inputSupplier.accept(arcFurnaceRecipeBuilder);
+            arcFurnaceRecipeBuilder.buildAndRegister();
+        }
     }
 
     private static ItemStack getArcSmeltingResult(MaterialStack materialStack) {
@@ -969,13 +1020,13 @@ public class MachineRecipeLoader {
         } else if(material instanceof GemMaterial) {
             if(materialStack.material.materialComponents.stream()
                 .anyMatch(stack -> stack.material == Materials.Oxygen)) {
-                return OreDictUnifier.getDust(Materials.DarkAsh, materialAmount);
+                return OreDictUnifier.getDust(Materials.Ash, materialAmount);
             }
             if(materialStack.material.materialComponents.stream()
                 .anyMatch(stack -> stack.material == Materials.Carbon)) {
                 return OreDictUnifier.getDust(Materials.Carbon, materialAmount);
             }
-            return OreDictUnifier.getGem((GemMaterial) material, materialAmount);
+            return OreDictUnifier.getDust(Materials.DarkAsh, materialAmount);
         } else if(material instanceof IngotMaterial) {
             IngotMaterial ingotMaterial = (IngotMaterial) material;
             if(ingotMaterial.arcSmeltInto != null)
@@ -1043,8 +1094,8 @@ public class MachineRecipeLoader {
             ItemStack output = outputPair.getValue();
             int originalOutput = output.getCount();
             if (!output.isEmpty()) {
+                IRecipe outputRecipe = outputPair.getKey();
                 if (ConfigHolder.vanillaRecipes.nerfWoodCrafting) {
-                    IRecipe outputRecipe = outputPair.getKey();
                     GTLog.logger.info("Nerfing planks crafting recipe {} -> {}", stack, output);
                     //noinspection ConstantConditions
                     ModHandler.addShapelessRecipe(outputRecipe.getRegistryName().toString(),
@@ -1059,8 +1110,7 @@ public class MachineRecipeLoader {
                     .duration(200).EUt(8)
                     .buildAndRegister();
 
-                ModHandler.addShapedRecipe(
-                    String.format("%s_%s_log_to_planks", stack.getItem().getRegistryName(), stack.getItemDamage()),
+                ModHandler.addShapedRecipe(outputRecipe.getRegistryName().getResourcePath() + "_saw",
                     GTUtility.copyAmount(originalOutput, output), "s", "L", 'L', stack);
             }
         }
@@ -1156,7 +1206,7 @@ public class MachineRecipeLoader {
                     .duration(25).EUt(4)
                     .buildAndRegister();
 
-                ModHandler.addShapedRecipe(String.format("slab_%s", Materials.Wood),
+                ModHandler.addShapedRecipe(String.format("slab_%s", stack.getUnlocalizedName()+stack.getMetadata()), //TODO - make less ugly
                     GTUtility.copyAmount(output.getCount() / 3, output),
                     "sP", 'P', stack);
             }

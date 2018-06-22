@@ -5,6 +5,7 @@ import gregtech.api.unification.material.Materials;
 import gregtech.api.unification.material.type.FluidMaterial;
 import gregtech.api.unification.material.type.FluidMaterial.MatFlags;
 import gregtech.api.unification.material.type.Material;
+import gregtech.api.util.GTUtility;
 import gregtech.common.blocks.MetaBlocks;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.init.Blocks;
@@ -137,11 +138,10 @@ public class MetaFluids {
             }
         };
         fluid.setTemperature(temp);
-        if(!setCustomTexture) {
-            fluid.setColor(material.materialRGB);
-        }
+        fluid.setColor(GTUtility.convertRGBtoOpaqueRGBA_MC(material.materialRGB));
         setFluidProperties(fluid, type, material);
         FluidRegistry.registerFluid(fluid);
+        FluidRegistry.addBucketForFluid(fluid);
 
         if(material.hasFlag(MatFlags.GENERATE_FLUID_BLOCK)) {
             BlockFluidBase fluidBlock = new BlockFluidClassic(fluid, net.minecraft.block.material.Material.WATER);

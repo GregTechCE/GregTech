@@ -65,7 +65,9 @@ public class StoneRenderer implements ICCBlockRenderer {
         boolean renderWater = false;
         for(EnumFacing facingValue : EnumFacing.VALUES) {
             IBlockState blockState = world.getBlockState(pos.offset(facingValue));
-            renderWater |= blockState.getMaterial() == net.minecraft.block.material.Material.WATER;
+            //do not render if fluid other than water itself is near
+            renderWater |= blockState.getBlock() instanceof BlockLiquid &&
+                blockState.getMaterial() == net.minecraft.block.material.Material.WATER;
         }
         return renderWater;
     }
@@ -102,7 +104,7 @@ public class StoneRenderer implements ICCBlockRenderer {
         translation.translate(pos.getX(), pos.getY(), pos.getZ());
         IVertexOperation[] operations = new IVertexOperation[1];
         Material material = state.getValue(((BlockSurfaceRock) state.getBlock()).materialProperty);
-        operations[0] = new ColourMultiplier(GTUtility.convertRGBtoOpaqueRGBA(material.materialRGB));
+        operations[0] = new ColourMultiplier(GTUtility.convertRGBtoOpaqueRGBA_CL(material.materialRGB));
         if(world != null) {
           renderState.setBrightness(world, pos);
         }

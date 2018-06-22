@@ -27,11 +27,6 @@ public class CutterRecipeBuilder extends RecipeBuilder<CutterRecipeBuilder> {
     }
 
     @Override
-    protected CutterRecipeBuilder getThis() {
-        return this;
-    }
-
-    @Override
     public ValidationResult<Recipe> build() {
         return ValidationResult.newResult(finalizeAndValidate(),
             new Recipe(inputs, outputs, chancedOutputs, fluidInputs, fluidOutputs,

@@ -10,12 +10,13 @@ import gregtech.api.unification.material.MarkerMaterials;
 import gregtech.api.unification.material.Materials;
 import gregtech.api.unification.material.type.DustMaterial;
 import gregtech.api.unification.material.type.DustMaterial.MatFlags;
-import gregtech.api.unification.material.type.Material;
 import gregtech.api.unification.material.type.IngotMaterial;
+import gregtech.api.unification.material.type.Material;
 import gregtech.api.unification.material.type.SolidMaterial;
 import gregtech.api.unification.ore.OrePrefix;
 import gregtech.api.unification.ore.StoneType;
 import gregtech.api.unification.ore.StoneTypes;
+import gregtech.common.blocks.modelfactories.FluidModelHandler;
 import gregtech.common.blocks.wood.BlockLeavesGT;
 import gregtech.common.blocks.wood.BlockLogGT;
 import gregtech.common.blocks.wood.BlockSaplingGT;
@@ -31,9 +32,11 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.ItemMeshDefinition;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.renderer.block.statemap.DefaultStateMapper;
+import net.minecraft.client.renderer.block.statemap.StateMapperBase;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.client.model.ModelLoader;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fluids.BlockFluidBase;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -112,7 +115,7 @@ public class MetaBlocks {
         createGeneratedBlock(material -> material instanceof DustMaterial &&
             !OrePrefix.block.isIgnored(material), MetaBlocks::createCompressedBlock);
         createGeneratedBlock(material -> material instanceof IngotMaterial &&
-            !OrePrefix.frameGt.isIgnored(material), MetaBlocks::createFrameBlock);
+            !OrePrefix.frameGt.doGenerateItem(material), MetaBlocks::createFrameBlock);
         createGeneratedBlock(material -> material instanceof IngotMaterial &&
             material.hasFlag(MatFlags.GENERATE_ORE), MetaBlocks::createSurfaceRockBlock);
 
@@ -129,6 +132,7 @@ public class MetaBlocks {
             }
         }
         createCableBlock(MarkerMaterials.Tier.Superconductor, new WireProperties(Integer.MAX_VALUE, 4, 0));
+
     }
 
     private static void createGeneratedBlock(Predicate<Material> materialPredicate, BiConsumer<Material[], Integer> blockGenerator) {
@@ -277,6 +281,15 @@ public class MetaBlocks {
                 return CableRenderer.MODEL_LOCATION;
             }
         };
+
+        MinecraftForge.EVENT_BUS.register(new FluidModelHandler());
+        StateMapperBase stateMapper = new StateMapperBase() {
+            @Override
+            protected ModelResourceLocation getModelResourceLocation(IBlockState state) {
+                return new ModelResourceLocation(Block.REGISTRY.getNameForObject(state.getBlock()), "");
+            }
+        };
+        FLUID_BLOCKS.forEach(block -> ModelLoader.setCustomStateMapper(block, stateMapper));
         CABLES.values().forEach(cable -> ModelLoader.setCustomStateMapper(cable, cableStateMapper));
     }
 
@@ -323,6 +336,7 @@ public class MetaBlocks {
         for(BlockOre blockOre : ORES) {
             DustMaterial material = blockOre.material;
             for(StoneType stoneType : blockOre.STONE_TYPE.getAllowedValues()) {
+                if(stoneType == StoneTypes._NULL) continue;
                 ItemStack normalStack = blockOre.getItem(blockOre.getDefaultState()
                     .withProperty(blockOre.STONE_TYPE, stoneType));
                 OreDictUnifier.registerOre(normalStack, stoneType.processingPrefix, material);

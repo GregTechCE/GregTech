@@ -1,7 +1,14 @@
 package gregtech.api.enchants;
 
+import crafttweaker.api.enchantments.IEnchantmentDefinition;
+import crafttweaker.mc1120.enchantments.MCEnchantmentDefinition;
+import gregtech.api.GTValues;
 import net.minecraft.enchantment.Enchantment;
+import net.minecraftforge.fml.common.Optional.Method;
+import stanhebben.zenscript.annotations.ZenClass;
+import stanhebben.zenscript.annotations.ZenGetter;
 
+@ZenClass("gregtech.mods.EnchantmentData")
 public class EnchantmentData {
 
     public final Enchantment enchantment;
@@ -10,6 +17,21 @@ public class EnchantmentData {
     public EnchantmentData(Enchantment enchantment, int level) {
         this.enchantment = enchantment;
         this.level = level;
+    }
+
+    @ZenGetter("level")
+    public Enchantment getEnchantment() {
+        return enchantment;
+    }
+
+    @ZenGetter("enchantment")
+    @Method(modid = GTValues.MODID_CT)
+    public IEnchantmentDefinition ctGetEnchantment() {
+        return new MCEnchantmentDefinition(enchantment);
+    }
+
+    public int getLevel() {
+        return level;
     }
 
     @Override

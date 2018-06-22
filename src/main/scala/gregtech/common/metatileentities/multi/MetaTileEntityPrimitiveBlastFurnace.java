@@ -14,14 +14,13 @@ import gregtech.api.metatileentity.MetaTileEntityHolder;
 import gregtech.api.metatileentity.multiblock.MultiblockControllerBase;
 import gregtech.api.multiblock.BlockPattern;
 import gregtech.api.multiblock.FactoryBlockPattern;
-import gregtech.api.recipes.Recipe.PrimitiveBlastFurnaceRecipe;
+import gregtech.api.recipes.recipes.PrimitiveBlastFurnaceRecipe;
 import gregtech.api.recipes.RecipeMaps;
 import gregtech.api.render.ICubeRenderer;
 import gregtech.api.render.Textures;
 import gregtech.api.unification.OreDictUnifier;
 import gregtech.api.unification.material.Materials;
 import gregtech.api.unification.ore.OrePrefix;
-import gregtech.api.unification.stack.SimpleItemStack;
 import gregtech.common.blocks.BlockMetalCasing.MetalCasingType;
 import gregtech.common.blocks.MetaBlocks;
 import net.minecraft.block.state.IBlockState;
@@ -87,14 +86,13 @@ public class MetaTileEntityPrimitiveBlastFurnace extends MultiblockControllerBas
         int fuelUnitsPerItem = getFuelUnits(fuelStack);
         int fuelAmount = fuelUnitsPerItem * fuelStack.getCount();
         if(inputStack.isEmpty() || fuelAmount == 0) return false;
-        SimpleItemStack simpleInput = new SimpleItemStack(inputStack);
         PrimitiveBlastFurnaceRecipe recipe = RecipeMaps.PRIMITIVE_BLAST_FURNACE_RECIPES.stream()
             .filter(recipe1 -> recipe1.getInput().apply(inputStack))
             .findFirst().orElse(null);
         if(recipe == null || fuelAmount < recipe.getFuelAmount()) return false;
         NonNullList<ItemStack> outputs = NonNullList.create();
-        outputs.add(recipe.getOutput());
-        outputs.add(OreDictUnifier.get(OrePrefix.dustTiny, Materials.DarkAsh, Math.abs(3 - fuelUnitsPerItem)));
+        outputs.add(recipe.getOutput().copy());
+        outputs.add(OreDictUnifier.get(OrePrefix.dustTiny, Materials.DarkAsh, Math.max(1, Math.abs(3 - fuelUnitsPerItem))));
         if(MetaTileEntity.addItemsToItemHandler(exportItems, true, outputs)) {
             fuelStack.shrink(Math.max(1, recipe.getFuelAmount() / fuelUnitsPerItem));
             inputStack.shrink(1);

@@ -84,6 +84,8 @@ public abstract class WorkableTieredMetaTileEntity extends TieredMetaTileEntity 
 
     protected boolean canInputFluid(Fluid inputFluid) {
         RecipeMap<?> recipeMap = workable.recipeMap;
+        if(recipeMap.canInputFluidForce(inputFluid))
+            return true; //if recipe map forces input of given fluid, return true
         Set<Recipe> matchingRecipes = null;
         for(IFluidTank fluidTank : importFluids) {
             Fluid fluidInTank = fluidTank.getFluid() == null ? null : fluidTank.getFluid().getFluid();
