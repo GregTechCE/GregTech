@@ -288,9 +288,11 @@ public class ModHandler {
         boolean skip = false;
         if (recipe == null) {
             GTLog.logger.error("Recipe cannot be null", new IllegalArgumentException());
+            GTLog.logger.error("Stacktrace:", new IllegalArgumentException());
             skip = true;
         } else if (recipe.length == 0) {
             GTLog.logger.error("Recipe cannot be empty", new IllegalArgumentException());
+            GTLog.logger.error("Stacktrace:", new IllegalArgumentException());
             skip = true;
         } else if (Arrays.asList(recipe).contains(null) || Arrays.asList(recipe).contains(ItemStack.EMPTY)) {
             GTLog.logger.error("Recipe cannot contain null elements or Empty ItemStacks. Recipe: {}",
@@ -299,13 +301,17 @@ public class ModHandler {
                     .map(o -> o == ItemStack.EMPTY ? "EMPTY STACK" : o)
                     .map(Object::toString)
                     .map(s -> "\"" + s + "\"")
-                    .collect(Collectors.joining(", "))
-            );
+                    .collect(Collectors.joining(", ")));
             GTLog.logger.error("Stacktrace:", new IllegalArgumentException());
             skip = true;
         } else if(ForgeRegistries.RECIPES.containsKey(new ResourceLocation(GTValues.MODID, regName))) {
-            GTLog.logger.error("Tried to register recipe, {}, with duplicate key", regName);
-            skip = true;
+            GTLog.logger.error("Tried to register recipe, {}, with duplicate key. Recipe: {}", regName,
+                Arrays.stream(recipe)
+                    .map(Object::toString)
+                    .map(s -> "\"" + s + "\"")
+                    .collect(Collectors.joining(", ")));
+            GTLog.logger.error("Stacktrace:", new IllegalArgumentException());
+            //skip = true; TODO figure out why the fuck do these recipes collide
         }
         return skip;
     }

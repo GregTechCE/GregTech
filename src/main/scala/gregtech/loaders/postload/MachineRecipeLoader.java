@@ -45,6 +45,7 @@ import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map.Entry;
 import java.util.function.Consumer;
@@ -1204,16 +1205,24 @@ public class MachineRecipeLoader {
         List<ItemStack> allPlanksStacks = OreDictionary.getOres("plankWood").stream()
             .flatMap(stack -> ModHandler.getAllSubItems(stack).stream())
             .collect(Collectors.toList());
+        HashSet<String> alreadyProcessedPlanks = new HashSet<>();
         for (ItemStack stack : allPlanksStacks) {
             ItemStack output = ModHandler.getRecipeOutput(null, stack, stack, stack).getValue();
             if (!output.isEmpty() && output.getCount() >= 3) {
+                String recipeName = String.format("slab_%s_%s", stack.getUnlocalizedName(), stack.getMetadata());
+                if(alreadyProcessedPlanks.contains(recipeName)) {
+                    //any reason why this would ever happen trough? probably some mods just fuck up ore dictionary registrations
+                    //completely and just fucking register same item in registry twice
+                    continue;
+                }
+                alreadyProcessedPlanks.add(recipeName);
+
                 RecipeMaps.CUTTER_RECIPES.recipeBuilder()
                     .inputs(stack)
                     .outputs(GTUtility.copyAmount(output.getCount() / 3, output))
                     .duration(25).EUt(4)
                     .buildAndRegister();
-
-                ModHandler.addShapedRecipe(String.format("slab_%s", stack.getUnlocalizedName()+stack.getMetadata()), //TODO - make less ugly
+                ModHandler.addShapedRecipe(recipeName,
                     GTUtility.copyAmount(output.getCount() / 3, output),
                     "sP", 'P', stack);
             }
