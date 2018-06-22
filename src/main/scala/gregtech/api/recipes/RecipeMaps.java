@@ -12,7 +12,7 @@ import stanhebben.zenscript.annotations.ZenProperty;
 import java.util.ArrayList;
 import java.util.List;
 
-@ZenClass("mods.gregtech.RecipeMaps")
+@ZenClass("mods.gregtech.recipe.RecipeMaps")
 @ZenRegister
 public class RecipeMaps {
 
@@ -461,7 +461,7 @@ public class RecipeMaps {
     /**
      * Example:
      * <pre>
-     *      RecipeMap.CRACKING_RECIPES.recipeBuilder()
+     *      RecipeMap.REFINERY_RECIPES.recipeBuilder()
      *         		.fluidInputs(Materials.HeavyFuel.getFluid(128))
      *         		.fluidOutputs(Materials.CrackedHeavyFuel.getFluid(192))
      *         		.duration(16)
@@ -470,7 +470,7 @@ public class RecipeMaps {
      * </pre>
      */
 
-    @ZenProperty public static final RecipeMap<CrackingRecipeBuilder> CRACKING_RECIPES = new RecipeMap<>("craker", 0, 0, 0, 0, 1, 2, 1, 2, 1, new CrackingRecipeBuilder().notOptimized());
+    @ZenProperty public static final RecipeMap<CrackingRecipeBuilder> CRACKING_RECIPES = new RecipeMap<>("cracker", 0, 0, 0, 0, 2, 2, 1, 1, 1, new CrackingRecipeBuilder().notOptimized());
 
     /**
      * Example:
