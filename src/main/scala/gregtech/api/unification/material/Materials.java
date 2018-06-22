@@ -449,7 +449,6 @@ public class Materials {
         BandedIron.setDirectSmelting(Iron);
         Cassiterite.setDirectSmelting(Tin);
         CassiteriteSand.setDirectSmelting(Tin);
-        Chromite.setDirectSmelting(Chrome);
         Garnierite.setDirectSmelting(Nickel);
         Cobaltite.setDirectSmelting(Cobalt);
         Stibnite.setDirectSmelting(Antimony);

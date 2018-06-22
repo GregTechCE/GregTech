@@ -31,9 +31,15 @@ public class MetaFluids {
         .setBlock(Blocks.WATER);
 
     public enum FluidType {
-        LIQUID,
-        GAS,
-        PLASMA
+        LIQUID(""),
+        GAS(""),
+        PLASMA("plasma.");
+
+        public final String prefix;
+
+        FluidType(String prefix) {
+            this.prefix = prefix;
+        }
     }
     
     public static void registerSprites(TextureMap textureMap) {
@@ -123,7 +129,6 @@ public class MetaFluids {
 
     public static Fluid registerFluid(FluidMaterial material, FluidType type, int temp, boolean setCustomTexture) {
         String materialName = material.toString();
-        String typeName = type.name().toLowerCase();
         ResourceLocation textureLocation;
         if(setCustomTexture) {
             textureLocation = new ResourceLocation(GTValues.MODID, "blocks/fluids/fluid." + materialName);
@@ -131,7 +136,7 @@ public class MetaFluids {
         } else {
             textureLocation = AUTO_GENERATED_FLUID_TEXTURE;
         }
-        Fluid fluid = new Fluid(typeName + "." + materialName, textureLocation, textureLocation) {
+        Fluid fluid = new Fluid(type.prefix + materialName, textureLocation, textureLocation) {
             @Override
             public String getUnlocalizedName() {
                 return material.getUnlocalizedName();

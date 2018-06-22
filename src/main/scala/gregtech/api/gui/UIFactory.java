@@ -22,7 +22,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
  */
 public abstract class UIFactory<E extends IUIHolder> {
 
-    public static final GTControlledRegistry<UIFactory<?>> FACTORY_REGISTRY = new GTControlledRegistry<>(Short.MAX_VALUE);
+    public static final GTControlledRegistry<UIFactory<?>> FACTORY_REGISTRY = new GTControlledRegistry<>(Short.MAX_VALUE, false);
 
     public final void openUI(E holder, EntityPlayerMP player) {
         if (player instanceof FakePlayer) {

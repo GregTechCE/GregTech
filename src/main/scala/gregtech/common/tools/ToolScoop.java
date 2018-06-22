@@ -1,6 +1,6 @@
 package gregtech.common.tools;
 
-import gregtech.api.items.metaitem.MetaItem;
+import gregtech.api.items.metaitem.MetaItem.MetaValueItem;
 import gregtech.common.items.behaviors.ScoopBehaviour;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.ItemStack;
@@ -19,7 +19,7 @@ public class ToolScoop extends ToolBase {
     }
 
     @Override
-    public void onStatsAddedToTool(MetaItem.MetaValueItem item, int ID) {
+    public void onStatsAddedToTool(MetaValueItem item) {
         item.addStats(new ScoopBehaviour(200));
     }
 

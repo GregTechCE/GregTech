@@ -13,6 +13,9 @@ public class BlockConcrete extends StoneBlock<BlockConcrete.ConcreteVariant> {
         setResistance(3.0f);
         setSoundType(SoundType.STONE);
         setHarvestLevel("pickaxe", 1);
+        setDefaultState(withVariant(
+            ConcreteVariant.LIGHT_CONCRETE,
+            ChiselingVariant.NORMAL));
     }
 
     public enum ConcreteVariant implements IStringSerializable {

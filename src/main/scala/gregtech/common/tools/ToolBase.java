@@ -1,7 +1,7 @@
 package gregtech.common.tools;
 
 import gregtech.api.enchants.EnchantmentData;
-import gregtech.api.items.metaitem.MetaItem;
+import gregtech.api.items.metaitem.MetaItem.MetaValueItem;
 import gregtech.api.items.toolitem.IToolStats;
 import gregtech.api.items.toolitem.ToolMetaItem;
 import gregtech.api.unification.material.type.SolidMaterial;
@@ -89,7 +89,7 @@ public abstract class ToolBase implements IToolStats {
     }
 
     @Override
-    public void onStatsAddedToTool(MetaItem.MetaValueItem item, int ID) {
+    public void onStatsAddedToTool(MetaValueItem item) {
     }
 
     @Override

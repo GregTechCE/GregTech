@@ -13,6 +13,7 @@ public class BlockTurbineCasing extends VariantBlock<BlockTurbineCasing.TurbineC
         setResistance(10.0f);
         setSoundType(SoundType.METAL);
         setHarvestLevel("wrench", 2);
+        setDefaultState(getState(TurbineCasingType.BRONZE_GEARBOX));
     }
 
     public enum TurbineCasingType implements IStringSerializable {

@@ -186,6 +186,13 @@ public class SimpleMachineMetaTileEntity extends WorkableTieredMetaTileEntity {
         }
     }
 
+    @Override
+    public boolean isValidFrontFacing(EnumFacing facing) {
+        //use direct outputFacing field instead of getter method because otherwise
+        //it will just return SOUTH for null output facing
+        return super.isValidFrontFacing(facing) && facing != outputFacing;
+    }
+
     public void setOutputFacing(EnumFacing outputFacing) {
         this.outputFacing = outputFacing;
         if(!getWorld().isRemote) {

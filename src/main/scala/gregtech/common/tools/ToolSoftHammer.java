@@ -1,6 +1,6 @@
 package gregtech.common.tools;
 
-import gregtech.api.items.metaitem.MetaItem;
+import gregtech.api.items.metaitem.MetaItem.MetaValueItem;
 import gregtech.common.items.behaviors.SoftHammerBehaviour;
 import net.minecraft.item.ItemStack;
 
@@ -32,7 +32,7 @@ public class ToolSoftHammer extends ToolBase {
     }
 
     @Override
-    public void onStatsAddedToTool(MetaItem.MetaValueItem item, int ID) {
+    public void onStatsAddedToTool(MetaValueItem item) {
         item.addStats(new SoftHammerBehaviour(100));
     }
 

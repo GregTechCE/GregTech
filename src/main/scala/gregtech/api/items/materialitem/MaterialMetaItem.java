@@ -9,7 +9,6 @@ import gregtech.api.items.metaitem.StandardMetaItem;
 import gregtech.api.unification.OreDictUnifier;
 import gregtech.api.unification.material.MaterialIconSet;
 import gregtech.api.unification.material.type.DustMaterial;
-import gregtech.api.unification.material.type.MarkerMaterial;
 import gregtech.api.unification.material.type.Material;
 import gregtech.api.unification.ore.OrePrefix;
 import gregtech.api.util.GTUtility;
@@ -39,15 +38,13 @@ public class MaterialMetaItem extends StandardMetaItem {
         super((short) (1000 * orePrefixes.length));
         Preconditions.checkArgument(orePrefixes.length <= 32, "Max allowed OrePrefix count on MaterialMetaItem is 32.");
         this.orePrefixes = orePrefixes;
-        for(Material material : Material.MATERIAL_REGISTRY.getObjectsWithIds()) {
-            if(!(material instanceof MarkerMaterial)) {
-                int i = Material.MATERIAL_REGISTRY.getIDForObject(material);
-                for(int j = 0; j < orePrefixes.length; j++) {
-                    OrePrefix orePrefix = orePrefixes[j];
-                    if(orePrefix != null && canGenerate(orePrefix, material)) {
-                        short metadata = (short) (j * 1000 + i);
-                        generatedItems.add(metadata);
-                    }
+        for(Material material : Material.MATERIAL_REGISTRY) {
+            int i = Material.MATERIAL_REGISTRY.getIDForObject(material);
+            for (int j = 0; j < orePrefixes.length; j++) {
+                OrePrefix orePrefix = orePrefixes[j];
+                if (orePrefix != null && canGenerate(orePrefix, material)) {
+                    short metadata = (short) (j * 1000 + i);
+                    generatedItems.add(metadata);
                 }
             }
         }

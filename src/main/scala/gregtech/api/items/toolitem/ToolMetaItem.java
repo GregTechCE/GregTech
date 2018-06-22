@@ -523,6 +523,7 @@ public class ToolMetaItem<T extends ToolMetaItem<?>.MetaToolValueItem> extends M
                 throw new IllegalArgumentException("Cannot set Tool Stats to null.");
             }
             this.toolStats = toolStats;
+            toolStats.onStatsAddedToTool(this);
             return this;
         }
 

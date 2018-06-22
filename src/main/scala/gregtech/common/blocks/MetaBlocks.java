@@ -119,7 +119,7 @@ public class MetaBlocks {
         createGeneratedBlock(material -> material instanceof IngotMaterial &&
             material.hasFlag(MatFlags.GENERATE_ORE), MetaBlocks::createSurfaceRockBlock);
 
-        for (Material material : Material.MATERIAL_REGISTRY.getObjectsWithIds()) {
+        for (Material material : Material.MATERIAL_REGISTRY) {
             if (material instanceof DustMaterial &&
                 material.hasFlag(DustMaterial.MatFlags.GENERATE_ORE)) {
                 createOreBlock((DustMaterial) material);
@@ -139,7 +139,7 @@ public class MetaBlocks {
         Material[] materialBuffer = new Material[16];
         Arrays.fill(materialBuffer, Materials._NULL);
         int currentGenerationIndex = 0;
-        for(Material material : Material.MATERIAL_REGISTRY.getObjectsWithIds()) {
+        for(Material material : Material.MATERIAL_REGISTRY) {
             if(materialPredicate.test(material)) {
                 if(currentGenerationIndex > 0 && currentGenerationIndex % 16 == 0) {
                     blockGenerator.accept(materialBuffer, currentGenerationIndex / 16 - 1);

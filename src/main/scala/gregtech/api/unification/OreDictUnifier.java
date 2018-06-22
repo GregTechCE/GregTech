@@ -27,10 +27,19 @@ public class OreDictUnifier {
 
     private OreDictUnifier() {}
 
-    private static final HashMap<SimpleItemStack, ItemMaterialInfo> materialUnificationInfo = new WildcardAwareHashMap<>();
-    private static final HashMap<SimpleItemStack, UnificationEntry> stackUnificationInfo = new WildcardAwareHashMap<>();
-    private static final HashMap<UnificationEntry, ArrayList<SimpleItemStack>> stackUnificationItems = new HashMap<>();
-    private static final HashMap<SimpleItemStack, Set<String>> stackOreDictName = new WildcardAwareHashMap<>();
+    //simple version of material registry for marker materials
+    private static final Map<String, MarkerMaterial> markerMaterialRegistry = new HashMap<>();
+    private static final Map<SimpleItemStack, ItemMaterialInfo> materialUnificationInfo = new WildcardAwareHashMap<>();
+    private static final Map<SimpleItemStack, UnificationEntry> stackUnificationInfo = new WildcardAwareHashMap<>();
+    private static final Map<UnificationEntry, ArrayList<SimpleItemStack>> stackUnificationItems = new HashMap<>();
+    private static final Map<SimpleItemStack, Set<String>> stackOreDictName = new WildcardAwareHashMap<>();
+
+    public static void registerMarkerMaterial(MarkerMaterial markerMaterial) {
+        if(markerMaterialRegistry.containsKey(markerMaterial.toString())) {
+            throw new IllegalArgumentException(("Marker material with id " + markerMaterial.toString() + " is already registered!"));
+        }
+        markerMaterialRegistry.put(markerMaterial.toString(), markerMaterial);
+    }
 
     public static void registerOre(ItemStack itemStack, ItemMaterialInfo materialInfo) {
         if (itemStack.isEmpty()) return;
@@ -91,6 +100,10 @@ public class OreDictUnifier {
                 String possibleMaterialName = Joiner.on("").join(splits.subList(i + 1, splits.size())); //BasalticMineralSand
                 String underscoreName = CaseFormat.UPPER_CAMEL.to(CaseFormat.LOWER_UNDERSCORE, possibleMaterialName); //basaltic_mineral_sand
                 Material possibleMaterial = Material.MATERIAL_REGISTRY.getObject(underscoreName); //Materials.BasalticSand
+                if(possibleMaterial == null) {
+                    //if we didn't found real material, try using marker material registry
+                    possibleMaterial = markerMaterialRegistry.get(underscoreName);
+                }
                 if(maybePrefix != null && possibleMaterial != null) {
                     orePrefix = maybePrefix;
                     material = possibleMaterial;

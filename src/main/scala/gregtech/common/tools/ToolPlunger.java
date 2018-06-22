@@ -1,6 +1,5 @@
 package gregtech.common.tools;
 
-import gregtech.api.items.metaitem.MetaItem.MetaValueItem;
 import net.minecraft.item.ItemStack;
 
 public class ToolPlunger extends ToolBase {
@@ -20,8 +19,4 @@ public class ToolPlunger extends ToolBase {
         return 2.0F;
     }
 
-    @Override
-    public void onStatsAddedToTool(MetaValueItem item, int ID) {
-        super.onStatsAddedToTool(item, ID);
-    }
 }

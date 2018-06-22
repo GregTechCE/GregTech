@@ -1,6 +1,6 @@
 package gregtech.common.tools;
 
-import gregtech.api.items.metaitem.MetaItem;
+import gregtech.api.items.metaitem.MetaItem.MetaValueItem;
 import gregtech.common.items.behaviors.CrowbarBehaviour;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -68,7 +68,7 @@ public class ToolUniversalSpade extends ToolBase {
     }
 
     @Override
-    public void onStatsAddedToTool(MetaItem.MetaValueItem item, int ID) {
+    public void onStatsAddedToTool(MetaValueItem item) {
         item.addStats(new CrowbarBehaviour(2));
     }
 

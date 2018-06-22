@@ -13,6 +13,7 @@ public class BlockMultiblockCasing extends VariantBlock<BlockMultiblockCasing.Mu
         setResistance(10.0f);
         setSoundType(SoundType.METAL);
         setHarvestLevel("wrench", 2);
+        setDefaultState(getState(MultiblockCasingType.ENGINE_INTAKE_CASING));
     }
 
     public enum MultiblockCasingType implements IStringSerializable {

@@ -13,6 +13,7 @@ public class BlockWarningSign extends VariantBlock<BlockWarningSign.SignType> {
         setResistance(3.0f);
         setSoundType(SoundType.METAL);
         setHarvestLevel("pickaxe", 1);
+        setDefaultState(getState(SignType.YELLOW_STRIPES));
     }
 
     public enum SignType implements IStringSerializable {

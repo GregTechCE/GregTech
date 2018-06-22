@@ -22,8 +22,10 @@ import gregtech.api.util.GTLog;
 import gregtech.api.util.GTUtility;
 import gregtech.common.ConfigHolder;
 import gregtech.common.blocks.BlockConcrete.ConcreteVariant;
+import gregtech.common.blocks.BlockGranite.GraniteVariant;
 import gregtech.common.blocks.BlockMachineCasing.MachineCasingType;
 import gregtech.common.blocks.BlockMetalCasing.MetalCasingType;
+import gregtech.common.blocks.BlockMineral.MineralVariant;
 import gregtech.common.blocks.BlockMultiblockCasing.MultiblockCasingType;
 import gregtech.common.blocks.BlockTurbineCasing.TurbineCasingType;
 import gregtech.common.blocks.BlockWireCoil.CoilType;
@@ -287,7 +289,17 @@ public class MachineRecipeLoader {
         RecipeMaps.FLUID_SOLIDFICATION_RECIPES.recipeBuilder().duration(512).EUt(4).notConsumable(MetaItems.SHAPE_MOLD_BLOCK.getStackForm()).fluidInputs(Materials.Water.getFluid(1000)).outputs(new ItemStack(Blocks.SNOW)).buildAndRegister();
         RecipeMaps.FLUID_SOLIDFICATION_RECIPES.recipeBuilder().duration(512).EUt(4).notConsumable(MetaItems.SHAPE_MOLD_BLOCK.getStackForm()).fluidInputs(ModHandler.getDistilledWater(1000)).outputs(new ItemStack(Blocks.SNOW)).buildAndRegister();
         RecipeMaps.FLUID_SOLIDFICATION_RECIPES.recipeBuilder().duration(1024).EUt(16).notConsumable(MetaItems.SHAPE_MOLD_BLOCK.getStackForm()).fluidInputs(Materials.Lava.getFluid(1000)).outputs(new ItemStack(Blocks.OBSIDIAN)).buildAndRegister();
+
         RecipeMaps.FLUID_SOLIDFICATION_RECIPES.recipeBuilder().duration(12).EUt(4).notConsumable(MetaItems.SHAPE_MOLD_BLOCK.getStackForm()).fluidInputs(Materials.Concrete.getFluid(144)).outputs(MetaBlocks.CONCRETE.getItemVariant(ConcreteVariant.LIGHT_CONCRETE, ChiselingVariant.NORMAL)).buildAndRegister();
+        RecipeMaps.MIXER_RECIPES.recipeBuilder().duration(12).EUt(4).inputs(MetaBlocks.CONCRETE.getItemVariant(ConcreteVariant.LIGHT_CONCRETE, ChiselingVariant.NORMAL)).fluidInputs(Materials.Water.getFluid(144)).outputs(MetaBlocks.CONCRETE.getItemVariant(ConcreteVariant.DARK_CONCRETE, ChiselingVariant.NORMAL)).buildAndRegister();
+
+        ModHandler.addSmeltingRecipe(MetaBlocks.CONCRETE.getItemVariant(ConcreteVariant.LIGHT_CONCRETE, ChiselingVariant.NORMAL), MetaBlocks.CONCRETE.getItemVariant(ConcreteVariant.LIGHT_BRICKS, ChiselingVariant.NORMAL));
+        ModHandler.addSmeltingRecipe(MetaBlocks.CONCRETE.getItemVariant(ConcreteVariant.DARK_CONCRETE, ChiselingVariant.NORMAL), MetaBlocks.CONCRETE.getItemVariant(ConcreteVariant.DARK_BRICKS, ChiselingVariant.NORMAL));
+        ModHandler.addSmeltingRecipe(MetaBlocks.GRANITE.getItemVariant(GraniteVariant.BLACK_GRANITE, ChiselingVariant.NORMAL), MetaBlocks.GRANITE.getItemVariant(GraniteVariant.BLACK_GRANITE_BRICKS, ChiselingVariant.NORMAL));
+        ModHandler.addSmeltingRecipe(MetaBlocks.GRANITE.getItemVariant(GraniteVariant.RED_GRANITE, ChiselingVariant.NORMAL), MetaBlocks.GRANITE.getItemVariant(GraniteVariant.RED_GRANITE_BRICKS, ChiselingVariant.NORMAL));
+        ModHandler.addSmeltingRecipe(MetaBlocks.MINERAL.getItemVariant(MineralVariant.BASALT, ChiselingVariant.NORMAL), MetaBlocks.MINERAL.getItemVariant(MineralVariant.BASALT_BRICKS, ChiselingVariant.NORMAL));
+        ModHandler.addSmeltingRecipe(MetaBlocks.MINERAL.getItemVariant(MineralVariant.MARBLE, ChiselingVariant.NORMAL), MetaBlocks.MINERAL.getItemVariant(MineralVariant.MARBLE_BRICKS, ChiselingVariant.NORMAL));
+
         RecipeMaps.FLUID_SOLIDFICATION_RECIPES.recipeBuilder().duration(12).EUt(4).notConsumable(MetaItems.SHAPE_MOLD_BLOCK.getStackForm()).fluidInputs(Materials.Glowstone.getFluid(576)).outputs(new ItemStack(Blocks.GLOWSTONE)).buildAndRegister();
         RecipeMaps.FLUID_SOLIDFICATION_RECIPES.recipeBuilder().duration(12).EUt(4).notConsumable(MetaItems.SHAPE_MOLD_BLOCK.getStackForm()).fluidInputs(Materials.Glass.getFluid(144)).outputs(new ItemStack(Blocks.GLASS)).buildAndRegister();
         RecipeMaps.FLUID_SOLIDFICATION_RECIPES.recipeBuilder().duration(12).EUt(4).notConsumable(MetaItems.SHAPE_MOLD_PLATE.getStackForm()).fluidInputs(Materials.Glass.getFluid(144)).outputs(OreDictUnifier.get(OrePrefix.plate,Materials.Glass,1)).buildAndRegister();
@@ -772,11 +784,6 @@ public class MachineRecipeLoader {
             .buildAndRegister();
 
         RecipeMaps.MACERATOR_RECIPES.recipeBuilder()
-            .input(OrePrefix.stone, Materials.Concrete)
-            .outputs(OreDictUnifier.get(OrePrefix.dust, Materials.Concrete))
-            .buildAndRegister();
-
-        RecipeMaps.MACERATOR_RECIPES.recipeBuilder()
             .input(OrePrefix.stone, Materials.Soapstone)
             .outputs(OreDictUnifier.get(OrePrefix.dustImpure, Materials.Talc, 1))
             .chancedOutput(OreDictUnifier.get(OrePrefix.dustTiny, Materials.Chromite, 1), 1000)
@@ -784,19 +791,19 @@ public class MachineRecipeLoader {
 
         RecipeMaps.MACERATOR_RECIPES.recipeBuilder()
             .input(OrePrefix.stone, Materials.Redrock)
-            .outputs(OreDictUnifier.get(OrePrefix.dustImpure, Materials.Redrock))
+            .outputs(OreDictUnifier.get(OrePrefix.dust, Materials.Redrock))
             .chancedOutput(OreDictUnifier.get(OrePrefix.dust, Materials.Redrock), 1000)
             .buildAndRegister();
 
         RecipeMaps.MACERATOR_RECIPES.recipeBuilder()
             .input(OrePrefix.stone, Materials.Marble)
-            .outputs(OreDictUnifier.get(OrePrefix.dustImpure, Materials.Marble))
+            .outputs(OreDictUnifier.get(OrePrefix.dust, Materials.Marble))
             .chancedOutput(OreDictUnifier.get(OrePrefix.dust, Materials.Marble), 1000)
             .buildAndRegister();
 
         RecipeMaps.MACERATOR_RECIPES.recipeBuilder()
             .input(OrePrefix.stone, Materials.Basalt)
-            .outputs(OreDictUnifier.get(OrePrefix.dustImpure, Materials.Basalt, 1))
+            .outputs(OreDictUnifier.get(OrePrefix.dust, Materials.Basalt, 1))
             .chancedOutput(OreDictUnifier.get(OrePrefix.dust, Materials.Basalt, 1), 1000)
             .buildAndRegister();
 
@@ -808,37 +815,37 @@ public class MachineRecipeLoader {
 
         RecipeMaps.MACERATOR_RECIPES.recipeBuilder()
             .input(OrePrefix.stone, Materials.Flint)
-            .outputs(OreDictUnifier.get(OrePrefix.dustImpure, Materials.Flint, 2))
+            .outputs(OreDictUnifier.get(OrePrefix.dust, Materials.Flint, 2))
             .chancedOutput(new ItemStack(Items.FLINT, 1), 5000)
             .buildAndRegister();
 
         RecipeMaps.MACERATOR_RECIPES.recipeBuilder()
             .input(OrePrefix.stone, Materials.GraniteBlack)
-            .outputs(OreDictUnifier.get(OrePrefix.dustImpure, Materials.GraniteBlack, 1))
+            .outputs(OreDictUnifier.get(OrePrefix.dust, Materials.GraniteBlack, 1))
             .chancedOutput(OreDictUnifier.get(OrePrefix.dust, Materials.Thorium, 1), 100)
             .buildAndRegister();
 
         RecipeMaps.MACERATOR_RECIPES.recipeBuilder()
             .input(OrePrefix.stone, Materials.GraniteRed)
-            .outputs(OreDictUnifier.get(OrePrefix.dustImpure, Materials.GraniteRed, 1))
+            .outputs(OreDictUnifier.get(OrePrefix.dust, Materials.GraniteRed, 1))
             .chancedOutput(OreDictUnifier.get(OrePrefix.dustSmall, Materials.Uranium, 1), 100)
             .buildAndRegister();
 
         RecipeMaps.MACERATOR_RECIPES.recipeBuilder()
             .input(OrePrefix.stone, Materials.GraniteRed)
-            .outputs(OreDictUnifier.get(OrePrefix.dustImpure, Materials.GraniteRed, 1))
+            .outputs(OreDictUnifier.get(OrePrefix.dust, Materials.GraniteRed, 1))
             .chancedOutput(OreDictUnifier.get(OrePrefix.dustSmall, Materials.Stone, 1), 100)
             .buildAndRegister();
 
         RecipeMaps.MACERATOR_RECIPES.recipeBuilder()
             .input(OrePrefix.stone, Materials.Andesite)
-            .outputs(OreDictUnifier.get(OrePrefix.dustImpure, Materials.Andesite, 1))
+            .outputs(OreDictUnifier.get(OrePrefix.dust, Materials.Andesite, 1))
             .chancedOutput(OreDictUnifier.get(OrePrefix.dustSmall, Materials.Stone, 1), 100)
             .buildAndRegister();
 
         RecipeMaps.MACERATOR_RECIPES.recipeBuilder()
             .input(OrePrefix.stone, Materials.Diorite)
-            .outputs(OreDictUnifier.get(OrePrefix.dustImpure, Materials.Diorite, 1))
+            .outputs(OreDictUnifier.get(OrePrefix.dust, Materials.Diorite, 1))
             .chancedOutput(OreDictUnifier.get(OrePrefix.dustSmall, Materials.Stone, 1), 100)
             .buildAndRegister();
     }

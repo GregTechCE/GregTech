@@ -209,7 +209,7 @@ public class OreConfigUtils {
 
     private static Function<IBlockState, IBlockState> createStoneTypeMatchFiller(JsonObject object) {
         HashMap<StoneType, Function<IBlockState, IBlockState>> stateByStoneType = new HashMap<>();
-        for(StoneType stoneType : StoneType.STONE_TYPE_REGISTRY.getObjectsWithIds()) {
+        for(StoneType stoneType : StoneType.STONE_TYPE_REGISTRY) {
             JsonElement stoneTypeDefinition = object.get(stoneType.name);
             if(stoneTypeDefinition.isJsonNull()) continue;
             stateByStoneType.put(stoneType, createBlockStateFiller(stoneTypeDefinition));
@@ -269,7 +269,7 @@ public class OreConfigUtils {
 
         for(IProperty<?> property : block.getBlockState().getProperties()) {
             JsonElement valueElement = object.get(property.getName());
-            if(valueElement.isJsonPrimitive()) {
+            if(valueElement != null && valueElement.isJsonPrimitive()) {
                 String stringValue = valueElement.getAsString();
                 Optional<?> parsedValue = property.parseValue(stringValue);
                 if(!parsedValue.isPresent()) {

@@ -13,6 +13,7 @@ public class BlockMachineCasing extends VariantBlock<BlockMachineCasing.MachineC
         setResistance(8.0f);
         setSoundType(SoundType.METAL);
         setHarvestLevel("wrench", 2);
+        setDefaultState(getState(MachineCasingType.ULV));
     }
 
     public enum MachineCasingType implements IStringSerializable {

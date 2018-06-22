@@ -5,7 +5,6 @@ import com.google.common.collect.ImmutableList;
 import crafttweaker.annotations.ZenRegister;
 import gregtech.api.unification.Element;
 import gregtech.api.unification.material.MaterialIconSet;
-import gregtech.api.unification.material.Materials;
 import gregtech.api.unification.stack.MaterialStack;
 import gregtech.api.util.GTControlledRegistry;
 import gregtech.api.util.GTLog;
@@ -28,7 +27,7 @@ import static gregtech.api.util.GTUtility.createFlag;
 @ZenRegister
 public abstract class Material implements Comparable<Material> {
 
-	public static GTControlledRegistry<Material> MATERIAL_REGISTRY = new GTControlledRegistry<>(1000);
+	public static GTControlledRegistry<Material> MATERIAL_REGISTRY = new GTControlledRegistry<>(1000, false);
 
 	public static void freezeRegistry() {
         GTLog.logger.info("Freezing material registry...");
@@ -184,13 +183,11 @@ public abstract class Material implements Comparable<Material> {
         this.chemicalFormula = calculateChemicalFormula();
         calculateDecompositionType();
         initializeMaterial();
-        if (metaItemSubId > -1) {
-            //if we have an generated metaitem, register ourselves with meta item ID
-            MATERIAL_REGISTRY.register(metaItemSubId, name, this);
-        } else {
-            //if we doesn't, just put name mapping for this material
-            MATERIAL_REGISTRY.putObject(name, this);
-        }
+        registerMaterial(metaItemSubId, name);
+    }
+
+    protected void registerMaterial(int metaItemSubId, String name) {
+        MATERIAL_REGISTRY.register(metaItemSubId, name, this);
     }
 
 	protected void initializeMaterial() {

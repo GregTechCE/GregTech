@@ -27,8 +27,7 @@ public class ToolMagnifyingGlass extends ToolBase {
     }
 
     @Override
-    public void onStatsAddedToTool(MetaValueItem item, int ID) {
-        super.onStatsAddedToTool(item, ID);
+    public void onStatsAddedToTool(MetaValueItem item) {
         item.addStats(new MagnifyingGlassBehaviour(7));
     }
 }

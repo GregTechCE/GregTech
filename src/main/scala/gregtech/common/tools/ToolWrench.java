@@ -1,6 +1,6 @@
 package gregtech.common.tools;
 
-import gregtech.api.items.metaitem.MetaItem;
+import gregtech.api.items.metaitem.MetaItem.MetaValueItem;
 import gregtech.common.items.behaviors.WrenchBehaviour;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -41,7 +41,7 @@ public class ToolWrench extends ToolBase {
     }
 
     @Override
-    public void onStatsAddedToTool(MetaItem.MetaValueItem item, int ID) {
+    public void onStatsAddedToTool(MetaValueItem item) {
         item.addStats(new WrenchBehaviour(1));
     }
 

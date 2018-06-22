@@ -21,6 +21,7 @@ public class BlockWireCoil extends VariantBlock<BlockWireCoil.CoilType> {
         setResistance(10.0f);
         setSoundType(SoundType.METAL);
         setHarvestLevel("wrench", 2);
+        setDefaultState(getState(CoilType.CUPRONICKEL));
     }
 
     @Override

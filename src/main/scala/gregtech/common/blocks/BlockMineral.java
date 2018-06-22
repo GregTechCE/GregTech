@@ -13,6 +13,9 @@ public class BlockMineral extends StoneBlock<BlockMineral.MineralVariant> {
         setResistance(6.0f);
         setSoundType(SoundType.STONE);
         setHarvestLevel("pickaxe", 1);
+        setDefaultState(withVariant(
+            MineralVariant.MARBLE,
+            ChiselingVariant.NORMAL));
     }
 
     public enum MineralVariant implements IStringSerializable {

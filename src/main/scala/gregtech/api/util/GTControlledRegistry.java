@@ -20,9 +20,11 @@ public class GTControlledRegistry<T> extends RegistrySimple<String, T> {
     private HashMap<String, String> modRegistryTracking = new HashMap<>();
     private boolean frozen = false;
     private final int maxId;
+    private boolean allowDirectRegistrations;
 
-    public GTControlledRegistry(int maxId) {
+    public GTControlledRegistry(int maxId, boolean allowDirectRegistrations) {
         this.maxId = maxId;
+        this.allowDirectRegistrations = allowDirectRegistrations;
         this.inverseObjectRegistry = ((BiMap<String, T>)this.registryObjects).inverse();
     }
 
@@ -37,15 +39,11 @@ public class GTControlledRegistry<T> extends RegistrySimple<String, T> {
         this.frozen = true;
     }
 
-    public Iterable<T> getObjectsWithIds() {
-        return underlyingIntegerMap;
-    }
-
     public void register(int id, String key, T value) {
         if(id < 0 || id >= maxId) {
             throw new IndexOutOfBoundsException("Id is out of range: " + id);
         }
-        this.putObject(key, value);
+        putObjectInternal(key, value);
 
         T objectWithId = getObjectById(id);
         if(objectWithId != null) {
@@ -57,17 +55,24 @@ public class GTControlledRegistry<T> extends RegistrySimple<String, T> {
 
     @Override
     public void putObject(String key, T value) {
+       if(!allowDirectRegistrations) {
+           throw new IllegalStateException("Direct registrations are prohibited for this registry. Use #register(id, key, value)");
+       }
+       putObjectInternal(key, value);
+    }
+
+    private void putObjectInternal(String key, T value) {
         ModContainer activeMod = Loader.instance().activeModContainer();
         if(activeMod == null) {
             throw new IllegalThreadStateException("Tried to access registry outside mod context!");
         }
         if(frozen) {
             throw new IllegalStateException(String.format("Mod %s tried to register entry %s when registry was already in frozen state!",
-                    activeMod.getModId(), key));
+                activeMod.getModId(), key));
         }
         if(modRegistryTracking.containsKey(key)) {
             throw new IllegalArgumentException(String.format("Mod %s tries to overwrite registry entry %s, registered by mod %s!",
-                    activeMod.getModId(), key, modRegistryTracking.get(key)));
+                activeMod.getModId(), key, modRegistryTracking.get(key)));
         }
         modRegistryTracking.put(key, activeMod.getModId());
         super.putObject(key, value);

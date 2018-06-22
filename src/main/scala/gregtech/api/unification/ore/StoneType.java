@@ -22,7 +22,7 @@ public class StoneType implements Comparable<StoneType> {
     public final Supplier<IBlockState> stone;
     public Condition<IBlockState> conditioin;
 
-    public static final GTControlledRegistry<StoneType> STONE_TYPE_REGISTRY = new GTControlledRegistry<>(128);
+    public static final GTControlledRegistry<StoneType> STONE_TYPE_REGISTRY = new GTControlledRegistry<>(128, true);
 
     /**
      * @param processingPrefix  Prefix of the ores with this stone type
@@ -145,7 +145,7 @@ public class StoneType implements Comparable<StoneType> {
     }
 
     public static StoneType computeStoneType(IBlockState blockState) {
-        for (StoneType stoneType : STONE_TYPE_REGISTRY.getObjectsWithIds()) {
+        for (StoneType stoneType : STONE_TYPE_REGISTRY) {
             if (stoneType.conditioin.isTrue(blockState)) return stoneType;
         }
         return StoneTypes._NULL;

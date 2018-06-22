@@ -13,6 +13,7 @@ public class BlockMetalCasing extends VariantBlock<BlockMetalCasing.MetalCasingT
         setResistance(10.0f);
         setSoundType(SoundType.METAL);
         setHarvestLevel("wrench", 2);
+        setDefaultState(getState(MetalCasingType.BRONZE_BRICKS));
     }
 
     public enum MetalCasingType implements IStringSerializable {

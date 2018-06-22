@@ -25,7 +25,7 @@ public class CTMaterialRegistry {
 
     @ZenMethod
     public static List<Material> getAllMaterials() {
-        return Lists.newArrayList(Material.MATERIAL_REGISTRY.getObjectsWithIds());
+        return Lists.newArrayList(Material.MATERIAL_REGISTRY);
     }
 
     private static ImmutableList<MaterialStack> validateComponentList(@Nullable MaterialStack[] components) {

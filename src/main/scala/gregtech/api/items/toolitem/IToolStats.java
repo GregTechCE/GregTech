@@ -1,7 +1,7 @@
 package gregtech.api.items.toolitem;
 
 import gregtech.api.enchants.EnchantmentData;
-import gregtech.api.items.metaitem.MetaItem;
+import gregtech.api.items.metaitem.MetaItem.MetaValueItem;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.EntityLivingBase;
@@ -26,7 +26,7 @@ public interface IToolStats {
     /**
      * Called when this gets added to a Tool Item
      */
-    void onStatsAddedToTool(MetaItem.MetaValueItem metaValueItem, int ID);
+    void onStatsAddedToTool(MetaValueItem metaValueItem);
 
     /**
      * @return Damage the Tool receives when breaking a Block. 100 is one Damage Point (or 100 EU).
