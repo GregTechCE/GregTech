@@ -461,7 +461,7 @@ public class RecipeMaps {
     /**
      * Example:
      * <pre>
-     *      RecipeMap.CRACKING_RECIPES.recipeBuilder()
+     *      RecipeMap.REFINERY_RECIPES.recipeBuilder()
      *         		.fluidInputs(Materials.HeavyFuel.getFluid(128))
      *         		.fluidOutputs(Materials.CrackedHeavyFuel.getFluid(192))
      *         		.duration(16)

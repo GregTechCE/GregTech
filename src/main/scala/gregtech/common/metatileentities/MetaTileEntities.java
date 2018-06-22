@@ -122,6 +122,7 @@ public class MetaTileEntities {
     public static MetaTileEntityImplosionCompressor IMPLOSION_COMPRESSOR;
     public static MetaTileEntityPyrolyseOven PYROLYSE_OVEN;
     public static MetaTileEntityDistillationTower DISTILLATION_TOWER;
+    public static MetaTileEntityCrackingUnit CRACKER;
     public static MetaTileEntityMultiFurnace MULTI_FURNACE;
     public static MetaTileEntityDieselEngine DIESEL_ENGINE;
 
@@ -413,6 +414,7 @@ public class MetaTileEntities {
         DISTILLATION_TOWER = GregTechAPI.registerMetaTileEntity(515, new MetaTileEntityDistillationTower("distillation_tower"));
         MULTI_FURNACE = GregTechAPI.registerMetaTileEntity(516, new MetaTileEntityMultiFurnace("multi_furnace"));
         DIESEL_ENGINE = GregTechAPI.registerMetaTileEntity(517, new MetaTileEntityDieselEngine("diesel_engine"));
+        CRACKER = GregTechAPI.registerMetaTileEntity(525, new MetaTileEntityCrackingUnit("cracker"));
 
         LARGE_STEAM_TURBINE = GregTechAPI.registerMetaTileEntity(518, new MetaTileEntityLargeTurbine("large_turbine.steam", TurbineType.STEAM));
         LARGE_GAS_TURBINE = GregTechAPI.registerMetaTileEntity(519, new MetaTileEntityLargeTurbine("large_turbine.gas", TurbineType.GAS));
