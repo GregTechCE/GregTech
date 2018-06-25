@@ -52,7 +52,7 @@ public class IntCircuitRecipeBuilder extends RecipeBuilder<IntCircuitRecipeBuild
     @Override
     protected EnumValidationResult finalizeAndValidate() {
         if (circuitMeta >= 0) {
-            inputs.add(CountableIngredient.from(IntCircuitIngredient.getIntegratedCircuit(circuitMeta)));
+            inputs.add(CountableIngredient.from(IntCircuitIngredient.getIntegratedCircuit(circuitMeta), 0));
         }
         return super.finalizeAndValidate();
     }

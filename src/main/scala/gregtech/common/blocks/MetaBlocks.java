@@ -4,6 +4,7 @@ import com.google.common.collect.ImmutableMap;
 import gregtech.api.GTValues;
 import gregtech.api.GregTechAPI;
 import gregtech.api.block.machines.BlockMachine;
+import gregtech.api.metatileentity.MetaTileEntityHolder;
 import gregtech.api.render.MetaTileEntityRenderer;
 import gregtech.api.unification.OreDictUnifier;
 import gregtech.api.unification.material.MarkerMaterials;
@@ -16,14 +17,18 @@ import gregtech.api.unification.material.type.SolidMaterial;
 import gregtech.api.unification.ore.OrePrefix;
 import gregtech.api.unification.ore.StoneType;
 import gregtech.api.unification.ore.StoneTypes;
-import gregtech.common.blocks.modelfactories.FluidModelHandler;
+import gregtech.common.blocks.modelfactories.BakedModelHandler;
+import gregtech.common.blocks.tileentity.TileEntityCrusherBlade;
 import gregtech.common.blocks.wood.BlockLeavesGT;
 import gregtech.common.blocks.wood.BlockLogGT;
 import gregtech.common.blocks.wood.BlockSaplingGT;
 import gregtech.common.cable.BlockCable;
 import gregtech.common.cable.Insulation;
 import gregtech.common.cable.WireProperties;
+import gregtech.common.cable.tile.TileEntityCable;
 import gregtech.common.render.CableRenderer;
+import gregtech.common.render.tesr.TileEntityCrusherBladeRenderer;
+import gregtech.common.render.tesr.TileEntityRendererBase.TileEntityRenderBaseItem;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockLog.EnumAxis;
 import net.minecraft.block.properties.IProperty;
@@ -32,12 +37,14 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.ItemMeshDefinition;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.renderer.block.statemap.DefaultStateMapper;
-import net.minecraft.client.renderer.block.statemap.StateMapperBase;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fluids.BlockFluidBase;
+import net.minecraftforge.fml.client.registry.ClientRegistry;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -70,6 +77,8 @@ public class MetaBlocks {
     public static BlockLogGT LOG;
     public static BlockLeavesGT LEAVES;
     public static BlockSaplingGT SAPLING;
+
+    public static BlockCrusherBlade CRUSHER_BLADE;
 
     public static Map<Material, BlockCable> CABLES = new HashMap<>();
     public static HashMap<DustMaterial, BlockCompressed> COMPRESSED = new HashMap<>();
@@ -110,6 +119,9 @@ public class MetaBlocks {
         SAPLING = new BlockSaplingGT();
         SAPLING.setRegistryName("sapling");
 
+        CRUSHER_BLADE = new BlockCrusherBlade();
+        CRUSHER_BLADE.setRegistryName("crusher_blade");
+
         StoneType.init();
 
         createGeneratedBlock(material -> material instanceof DustMaterial &&
@@ -132,7 +144,7 @@ public class MetaBlocks {
             }
         }
         createCableBlock(MarkerMaterials.Tier.Superconductor, new WireProperties(Integer.MAX_VALUE, 4, 0));
-
+        registerTileEntity();
     }
 
     private static void createGeneratedBlock(Predicate<Material> materialPredicate, BiConsumer<Material[], Integer> blockGenerator) {
@@ -219,6 +231,12 @@ public class MetaBlocks {
         ORES.add(block);
     }
 
+    public static void registerTileEntity() {
+        GameRegistry.registerTileEntity(MetaTileEntityHolder.class, new ResourceLocation(GTValues.MODID, "machine"));
+        GameRegistry.registerTileEntity(TileEntityCable.class, new ResourceLocation(GTValues.MODID, "cable"));
+        GameRegistry.registerTileEntity(TileEntityCrusherBlade.class, new ResourceLocation(GTValues.MODID, "crusher_blade"));
+    }
+
     @SideOnly(Side.CLIENT)
     public static void registerItemModels() {
         ModelLoader.setCustomMeshDefinition(Item.getItemFromBlock(MACHINE), stack -> MetaTileEntityRenderer.MODEL_LOCATION);
@@ -281,16 +299,18 @@ public class MetaBlocks {
                 return CableRenderer.MODEL_LOCATION;
             }
         };
-
-        MinecraftForge.EVENT_BUS.register(new FluidModelHandler());
-        StateMapperBase stateMapper = new StateMapperBase() {
-            @Override
-            protected ModelResourceLocation getModelResourceLocation(IBlockState state) {
-                return new ModelResourceLocation(Block.REGISTRY.getNameForObject(state.getBlock()), "");
-            }
-        };
-        FLUID_BLOCKS.forEach(block -> ModelLoader.setCustomStateMapper(block, stateMapper));
         CABLES.values().forEach(cable -> ModelLoader.setCustomStateMapper(cable, cableStateMapper));
+
+        BakedModelHandler modelHandler = new BakedModelHandler();
+        MinecraftForge.EVENT_BUS.register(modelHandler);
+
+        FLUID_BLOCKS.forEach(modelHandler::addFluidBlock);
+
+        SURFACE_ROCKS.values().forEach(block -> modelHandler.addBuiltInBlock(block, "stone"));
+
+        modelHandler.addBuiltInBlock(CRUSHER_BLADE, "iron_block");
+        Item.getItemFromBlock(CRUSHER_BLADE).setTileEntityItemStackRenderer(new TileEntityRenderBaseItem<>(TileEntityCrusherBlade.class));
+        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityCrusherBlade.class, new TileEntityCrusherBladeRenderer());
     }
 
     @SideOnly(Side.CLIENT)

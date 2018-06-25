@@ -64,6 +64,7 @@ public class CommonProxy {
         registry.register(LOG);
         registry.register(LEAVES);
         registry.register(SAPLING);
+        registry.register(CRUSHER_BLADE);
 
         CABLES.values().forEach(registry::register);
         COMPRESSED.values().stream().distinct().forEach(registry::register);
@@ -98,6 +99,7 @@ public class CommonProxy {
         registry.register(createMultiTexItemBlock(LOG, state -> state.getValue(BlockLogGT.VARIANT).getName()));
         registry.register(createMultiTexItemBlock(LEAVES, state -> state.getValue(BlockLeavesGT.VARIANT).getName()));
         registry.register(createMultiTexItemBlock(SAPLING, state -> state.getValue(BlockSaplingGT.VARIANT).getName()));
+        registry.register(createItemBlock(CRUSHER_BLADE, ItemBlock::new));
 
         CABLES.values().stream()
             .map(block -> createItemBlock(block, ItemBlockCable::new))

@@ -7,6 +7,7 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockPos.MutableBlockPos;
 import net.minecraft.world.World;
+import org.apache.commons.lang3.ArrayUtils;
 
 import java.util.*;
 import java.util.function.*;
@@ -91,7 +92,7 @@ public class BlockPattern {
                 for (int b = 0, y = -centerOffset[1]; b < this.thumbLength; b++, y++) {//Checking single slice
                     for (int a = 0, x = -centerOffset[0]; a < this.palmLength; a++, x++) {
                         Predicate<BlockWorldState> predicate = this.blockMatches[c][b][a];
-                        setActurallRelativeOffset(blockPos, x, y, z, facing);
+                        setActualRelativeOffset(blockPos, x, y, z, facing);
                         blockPos.setPos(blockPos.getX() + centerPos.getX(), blockPos.getY() + centerPos.getY(), blockPos.getZ() + centerPos.getZ());
                         if(DEBUG_STRUCTURES) {
                             EnumDyeColor dyeColor = EnumDyeColor.values()[new Random(predicate.hashCode()).nextInt(15)];
@@ -126,15 +127,8 @@ public class BlockPattern {
         return matchContext;
     }
 
-    private MutableBlockPos setActurallRelativeOffset(MutableBlockPos pos, int x, int y, int z, EnumFacing facing) {
-        boolean available = false;
-        for (EnumFacing s : ALLOWED_FACINGS) {
-            if (s == facing) {
-                available = true;
-                break;
-            }
-        }
-        if (!available) throw new IllegalArgumentException("Can rotate only horizontally");
+    private MutableBlockPos setActualRelativeOffset(MutableBlockPos pos, int x, int y, int z, EnumFacing facing) {
+        if (!ArrayUtils.contains(ALLOWED_FACINGS, facing)) throw new IllegalArgumentException("Can rotate only horizontally");
 
         int[] c0 = new int[]{x, y, z}, c1 = new int[3];
         for (int i = 0; i < 3; i++) {

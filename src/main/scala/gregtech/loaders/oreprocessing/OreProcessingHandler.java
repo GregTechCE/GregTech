@@ -581,10 +581,17 @@ public class OreProcessingHandler {
             .chancedOutput(OreDictUnifier.get(OrePrefix.dust, byproductMaterial, material.byProductMultiplier), 1000)
             .buildAndRegister();
 
+        ItemStack crushedPurifiedOre = GTUtility.copy(
+            OreDictUnifier.get(OrePrefix.crushedPurified, material),
+            OreDictUnifier.get(OrePrefix.dust, material));
+        ItemStack crushedCentrifugedOre = GTUtility.copy(
+            OreDictUnifier.get(OrePrefix.crushedCentrifuged, material),
+            OreDictUnifier.get(OrePrefix.dust, material));
+
         RecipeMaps.ORE_WASHER_RECIPES.recipeBuilder()
             .input(crushedPrefix, materialIn)
             .fluidInputs(ModHandler.getWater(1000))
-            .outputs(OreDictUnifier.get(OrePrefix.crushedPurified, material),
+            .outputs(crushedPurifiedOre,
                 OreDictUnifier.get(OrePrefix.dustTiny, byproductMaterial, material.byProductMultiplier),
                 OreDictUnifier.get(OrePrefix.dust, Materials.Stone))
             .buildAndRegister();
@@ -592,7 +599,7 @@ public class OreProcessingHandler {
         RecipeMaps.ORE_WASHER_RECIPES.recipeBuilder()
             .input(crushedPrefix, materialIn)
             .fluidInputs(ModHandler.getDistilledWater(1000))
-            .outputs(OreDictUnifier.get(OrePrefix.crushedPurified, material),
+            .outputs(crushedPurifiedOre,
                 OreDictUnifier.get(OrePrefix.dustTiny, byproductMaterial, material.byProductMultiplier),
                 OreDictUnifier.get(OrePrefix.dust, Materials.Stone))
             .duration(300)
@@ -601,7 +608,7 @@ public class OreProcessingHandler {
         RecipeMaps.THERMAL_CENTRIFUGE_RECIPES.recipeBuilder()
             .input(crushedPrefix, materialIn)
             .duration((int) material.getMass() * 20)
-            .outputs(OreDictUnifier.get(OrePrefix.crushedCentrifuged, material),
+            .outputs(crushedCentrifugedOre,
                 OreDictUnifier.get(OrePrefix.dustTiny, byproductMaterial, material.byProductMultiplier),
                 OreDictUnifier.get(OrePrefix.dust, Materials.Stone))
             .buildAndRegister();
@@ -611,7 +618,7 @@ public class OreProcessingHandler {
             RecipeMaps.CHEMICAL_BATH_RECIPES.recipeBuilder()
                 .input(crushedPrefix, materialIn)
                 .fluidInputs(material.washedIn.getFluid(1000))
-                .outputs(OreDictUnifier.get(OrePrefix.crushedPurified, material))
+                .outputs(crushedPurifiedOre)
                 .chancedOutput(OreDictUnifier.get(OrePrefix.dust, washingByproduct, material.byProductMultiplier), 7000)
                 .chancedOutput(OreDictUnifier.get(OrePrefix.dust, Materials.Stone), 4000)
                 .duration(800)

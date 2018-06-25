@@ -194,7 +194,7 @@ public enum OrePrefix {
     armorLeggings("Leggings", M * 7, null, null, 0, null), // vanilly Pants
     armorBoots("Boots", M * 4, null, null, 0, null), // vanilly Boots
     armor("Armor Parts", -1, null, null, DISALLOW_RECYCLING, null),
-    frameGt("Frame Boxes", M * 2, null, null, ENABLE_UNIFICATION, material -> material instanceof IngotMaterial && material.hasFlag(GENERATE_ROD | GENERATE_PLATE)),
+    frameGt("Frame Boxes", (long) (M * 1.375), null, null, ENABLE_UNIFICATION, material -> material instanceof IngotMaterial && material.hasFlag(GENERATE_ROD | GENERATE_PLATE)),
 
     pipeTiny("Tiny Pipes", M / 2, null, MaterialIconType.pipeTiny, ENABLE_UNIFICATION, null),
     pipeSmall("Small Pipes", M, null, MaterialIconType.pipeSmall, ENABLE_UNIFICATION, null),
@@ -520,14 +520,29 @@ public enum OrePrefix {
         }
     }
 
+    private static final ThreadLocal<OrePrefix> currentProcessingPrefix = new ThreadLocal<>();
+    private static final ThreadLocal<Material> currentMaterial = new ThreadLocal<>();
+
+    public static OrePrefix getCurrentProcessingPrefix() {
+        return currentProcessingPrefix.get();
+    }
+
+    public static Material getCurrentMaterial() {
+        return currentMaterial.get();
+    }
+
     private void runGeneratedMaterialHandlers() {
+        currentProcessingPrefix.set(this);
         for(Material registeredMaterial : generatedMaterials) {
+            currentMaterial.set(registeredMaterial);
             for(IOreRegistrationHandler registrationHandler : oreProcessingHandlers) {
                 registrationHandler.processMaterial(this, registeredMaterial);
             }
+            currentMaterial.set(null);
         }
         //clear generated materials for next pass
         generatedMaterials.clear();
+        currentProcessingPrefix.set(null);
     }
 
     @SideOnly(Side.CLIENT)

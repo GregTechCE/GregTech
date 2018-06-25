@@ -90,7 +90,7 @@ public class GregTechMod {
     public void onInit(FMLInitializationEvent event) {
         gregtechproxy.onLoad();
 
-        if (RecipeMap.foundInvalidRecipe) {
+        if (RecipeMap.isFoundInvalidRecipe()) {
             GTLog.logger.fatal("Seems like invalid recipe was found. Loading will not continue.");
             throw new LoaderException("Found at least one invalid recipe. Please read the log above for more details.");
         }

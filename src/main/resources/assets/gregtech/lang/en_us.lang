@@ -2,10 +2,11 @@ death.attack.heat=%s was boiled alive.
 death.attack.frost=%s explored cryogenics.
 death.attack.electric=%s was shocked.
 death.attack.radiation=%s glows with joy now.
-death.attack.turbine=%s put his hands into turbine.
+death.attack.turbine=%s put his head into turbine.
 death.attack.explosion=%s exploded.
 death.attack.explosion.player=%s exploded with help of %s.
 death.attack.heat.player=%s was boiled alive by %s.
+death.attack.crusher=%s was grinded dead.
 
 gregtech.top.energy_stored=Energy:
 gregtech.top.progress=Progress:
@@ -1714,6 +1715,7 @@ enchantment.damage.endermen=Disjunction
 enchantment.damage.radioactivity=Radioactivity
 
 # Rubber stuff
+tile.crusher_blade.name=Crusher Blade
 tile.gt.log.rubber_wood.name=Rubber Wood
 tile.gt.leaves.rubber_wood.name=Rubber Tree Leaves
 tile.gt.sapling.rubber_wood.name=Rubber Tree Sapling

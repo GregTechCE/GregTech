@@ -12,6 +12,7 @@ import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.Loader;
+import net.minecraftforge.fml.common.Optional.Method;
 
 import java.util.List;
 
@@ -28,6 +29,7 @@ public class ScoopBehaviour implements IItemBehaviour {
         return Loader.isModLoaded(GTValues.MODID_FR) && processButterflyCatch(itemStack, player, entity);
     }
 
+    @Method(modid = GTValues.MODID_FR)
     private boolean processButterflyCatch(ItemStack itemStack, EntityPlayer player, Entity entity) {
         if (entity instanceof IEntityButterfly) {
             if (player.world.isRemote) {

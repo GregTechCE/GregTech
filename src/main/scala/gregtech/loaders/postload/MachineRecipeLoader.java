@@ -1106,8 +1106,13 @@ public class MachineRecipeLoader {
                 if (ConfigHolder.vanillaRecipes.nerfWoodCrafting) {
                     GTLog.logger.info("Nerfing planks crafting recipe {} -> {}", stack, output);
                     //noinspection ConstantConditions
-                    ModHandler.addShapelessRecipe(outputRecipe.getRegistryName().toString(),
-                        GTUtility.copyAmount(originalOutput / 2, output), stack);
+                    if(originalOutput / 2 > 0) {
+                        ModHandler.addShapelessRecipe(outputRecipe.getRegistryName().toString(),
+                            GTUtility.copyAmount(originalOutput / 2, output), stack);
+                    } else {
+                        //if not enough planks are on output, just remove recipe
+                        ModHandler.removeRecipeByName(outputRecipe.getRegistryName());
+                    }
                 }
 
                 RecipeMaps.CUTTER_RECIPES.recipeBuilder()

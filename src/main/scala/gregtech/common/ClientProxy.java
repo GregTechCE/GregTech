@@ -6,10 +6,10 @@
 package gregtech.common;
 
 import codechicken.lib.texture.TextureUtils;
-import gregtech.common.blocks.*;
-import gregtech.common.render.CableRenderer;
 import gregtech.api.render.MetaTileEntityRenderer;
+import gregtech.common.blocks.*;
 import gregtech.common.items.MetaItems;
+import gregtech.common.render.CableRenderer;
 import gregtech.common.render.StoneRenderer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.color.IBlockColor;

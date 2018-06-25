@@ -12,6 +12,7 @@ public class DamageSources {
     private static DamageSource ELECTRIC = new DamageSource("electric").setDamageBypassesArmor();
     private static DamageSource RADIATION = new DamageSource("radiation").setDamageBypassesArmor();
     private static DamageSource TURBINE = new DamageSource("turbine");
+    private static DamageSource CRUSHER = new DamageSource("crusher");
 
     public static DamageSource getElectricDamage() {
         return ELECTRIC;
@@ -35,6 +36,10 @@ public class DamageSources {
 
     public static DamageSource getTurbineDamage() {
         return TURBINE;
+    }
+
+    public static DamageSource getCrusherDamage() {
+        return CRUSHER;
     }
 
     public static DamageSource causeCombatDamage(String type, EntityLivingBase damager) {

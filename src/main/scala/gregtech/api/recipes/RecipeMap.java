@@ -19,6 +19,9 @@ import gregtech.api.gui.widgets.TankWidget;
 import gregtech.api.recipes.builders.IntCircuitRecipeBuilder;
 import gregtech.api.recipes.crafttweaker.CTRecipe;
 import gregtech.api.recipes.crafttweaker.CTRecipeBuilder;
+import gregtech.api.unification.material.type.Material;
+import gregtech.api.unification.ore.OrePrefix;
+import gregtech.api.util.GTLog;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.ValidationResult;
 import net.minecraft.client.resources.I18n;
@@ -97,7 +100,22 @@ public class RecipeMap<R extends RecipeBuilder<R>> {
             .findFirst().orElse(null);
     }
 
-	public RecipeMap<R> setProgressBar(TextureArea progressBar, MoveType moveType) {
+    public static boolean isFoundInvalidRecipe() {
+        return foundInvalidRecipe;
+    }
+
+    public static void setFoundInvalidRecipe(boolean foundInvalidRecipe) {
+        RecipeMap.foundInvalidRecipe |= foundInvalidRecipe;
+        OrePrefix currentOrePrefix = OrePrefix.getCurrentProcessingPrefix();
+        if(currentOrePrefix != null) {
+            Material currentMaterial = OrePrefix.getCurrentMaterial();
+            GTLog.logger.error("Error happened during processing ore registration of prefix {} and material {}. " +
+                    "Seems like cross-mod compatibility issue. Report to GTCE github.",
+                currentOrePrefix, currentMaterial);
+        }
+    }
+
+    public RecipeMap<R> setProgressBar(TextureArea progressBar, MoveType moveType) {
         this.progressBarTexture = progressBar;
         this.moveType = moveType;
         return this;
@@ -127,7 +145,7 @@ public class RecipeMap<R extends RecipeBuilder<R>> {
         return recipeFluidMap.getOrDefault(fluid, Collections.emptySet());
     }
 
-    public static boolean foundInvalidRecipe = false;
+    private static boolean foundInvalidRecipe = false;
 
 	//internal usage only, use buildAndRegister()
 	public void addRecipe(ValidationResult<Recipe> validationResult) {
@@ -135,7 +153,7 @@ public class RecipeMap<R extends RecipeBuilder<R>> {
 			case SKIP:
 				return;
 			case INVALID:
-				foundInvalidRecipe = true;
+				setFoundInvalidRecipe(true);
 				return;
 		}
 		Recipe recipe = validationResult.getResult();

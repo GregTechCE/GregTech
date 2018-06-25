@@ -22,6 +22,7 @@ public abstract class CapabilityInfoProvider<T> implements IProbeInfoProvider {
         if(blockState.getBlock().hasTileEntity(blockState)) {
             EnumFacing sideHit = data.getSideHit();
             TileEntity tileEntity = world.getTileEntity(data.getPos());
+            if(tileEntity == null) return;
             Capability<T> capability = getCapability();
             T resultCapability = tileEntity.getCapability(capability, sideHit);
             if(resultCapability != null) {
