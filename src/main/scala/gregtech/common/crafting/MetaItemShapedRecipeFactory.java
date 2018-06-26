@@ -1,12 +1,13 @@
 package gregtech.common.crafting;
 
+import com.google.common.collect.Maps;
+import com.google.common.collect.Sets;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonSyntaxException;
 import gregtech.api.items.metaitem.MetaItem;
 import gregtech.common.items.MetaItems;
-
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Set;
-
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.item.crafting.Ingredient;
@@ -19,12 +20,9 @@ import net.minecraftforge.common.crafting.IRecipeFactory;
 import net.minecraftforge.common.crafting.JsonContext;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 
-import com.google.common.collect.Maps;
-import com.google.common.collect.Sets;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonSyntaxException;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
 
 public class MetaItemShapedRecipeFactory implements IRecipeFactory {
     @Override
@@ -55,7 +53,7 @@ public class MetaItemShapedRecipeFactory implements IRecipeFactory {
         ShapedPrimer primer = new ShapedPrimer();
         primer.width = pattern[0].length();
         primer.height = pattern.length;
-        primer.mirrored = JsonUtils.getBoolean(json, "mirrored", true);
+        primer.mirrored = JsonUtils.getBoolean(json, "mirrored", false);
         primer.input = NonNullList.withSize(primer.width * primer.height, Ingredient.EMPTY);
 
         Set<Character> keys = Sets.newHashSet(ingMap.keySet());
