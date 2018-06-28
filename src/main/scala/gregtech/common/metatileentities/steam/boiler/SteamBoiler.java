@@ -177,6 +177,7 @@ public abstract class SteamBoiler extends MetaTileEntity {
                     filledSteam = steamFluidTank.fill(ModHandler.getSteam(fillAmount), true);
                 }
                 if(this.hasNoWater && hasDrainedWater) {
+                    getWorld().setBlockToAir(getPos());
                     getWorld().createExplosion(null,
                         getPos().getX() + 0.5, getPos().getY() + 0.5, getPos().getZ() + 0.5,
                         1.0f + 1.5f * additionalTempBonus, true);

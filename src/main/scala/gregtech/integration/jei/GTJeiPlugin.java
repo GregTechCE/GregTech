@@ -41,7 +41,7 @@ public class GTJeiPlugin implements IModPlugin {
     public void register(IModRegistry registry) {
         for(RecipeMap<?> recipeMap : RecipeMap.getRecipeMaps()) {
             List<GTRecipeWrapper> recipesList = recipeMap.getRecipeList()
-                .stream().filter(recipe -> !recipe.isHidden())
+                .stream().filter(recipe -> !recipe.isHidden() && recipe.hasValidInputsForDisplay())
                 .map(r -> new GTRecipeWrapper(recipeMap, r))
                 .collect(Collectors.toList());
             registry.addRecipes(recipesList, GTValues.MODID + ":" + recipeMap.unlocalizedName);

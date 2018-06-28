@@ -1,0 +1,74 @@
+package gregtech.api.items.gui;
+
+import com.google.common.base.Preconditions;
+import gregtech.api.gui.IUIHolder;
+import gregtech.api.gui.ModularUI;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumHand;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
+
+public class PlayerInventoryHolder implements IUIHolder {
+
+    public final EntityPlayer player;
+    /*package-local*/ final EnumHand hand;
+    /*package-local*/ ItemStack sampleItem;
+
+    @SideOnly(Side.CLIENT)
+    /*package-local*/ PlayerInventoryHolder(EntityPlayer player, EnumHand hand, ItemStack sampleItem) {
+        this.player = player;
+        this.hand = hand;
+        this.sampleItem = sampleItem;
+    }
+
+    public PlayerInventoryHolder(EntityPlayer entityPlayer, EnumHand hand) {
+        this.player = entityPlayer;
+        this.hand = hand;
+        this.sampleItem = player.getHeldItem(hand);
+        Preconditions.checkArgument(sampleItem.getItem() instanceof ItemUIFactory,
+            "Current Item should implement ItemUIFactory");
+    }
+
+    /*package-local*/ ModularUI createUI(EntityPlayer entityPlayer) {
+        ItemUIFactory uiFactory = (ItemUIFactory) sampleItem.getItem();
+        return uiFactory.createUI(this, entityPlayer);
+    }
+
+    public void openUI() {
+        PlayerInventoryUIFactory.INSTANCE.openUI(this, (EntityPlayerMP) player);
+    }
+
+    @Override
+    public boolean isValid() {
+        ItemStack itemStack = player.getHeldItem(hand);
+        return ItemStack.areItemsEqual(sampleItem, itemStack);
+    }
+
+    public ItemStack getCurrentItem() {
+        ItemStack itemStack = player.getHeldItem(hand);
+        if(!ItemStack.areItemsEqual(sampleItem, itemStack))
+            return null;
+        return itemStack;
+    }
+
+    /**
+     * Will replace current item in hand with the given one
+     * will also update sample item to this item
+     */
+    public void setCurrentItem(ItemStack item) {
+        ItemStack itemStack = player.getHeldItem(hand);
+        if(!ItemStack.areItemsEqual(sampleItem, itemStack))
+            return;
+        Preconditions.checkArgument(item.getItem() instanceof ItemUIFactory,
+            "Current Item should implement ItemUIFactory");
+        this.sampleItem = item;
+        player.setHeldItem(hand, item);
+    }
+
+    @Override
+    public void markAsDirty() {
+        player.inventory.markDirty();
+    }
+}

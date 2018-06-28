@@ -139,6 +139,11 @@ public class MetaTileEntityHolder extends TickableTileEntityBase implements IUIH
     }
 
     @Override
+    public boolean isValid() {
+        return !super.isInvalid() && metaTileEntity != null;
+    }
+
+    @Override
     public void markAsDirty() {
         markDirty();
     }

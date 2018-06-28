@@ -121,7 +121,7 @@ public class MetaTool extends ToolMetaItem<ToolMetaItem<?>.MetaToolValueItem> {
 
         for (IngotMaterial material : softHammerMaterials) {
             ModHandler.addShapedRecipe("soft_hammer_" + material.toString(),
-                SOFT_HAMMER.getStackForm(Materials.Wood, Materials.Wood),
+                SOFT_HAMMER.getStackForm(material, material),
                 "RR ", "RRS", "RR ",
                 'R', new UnificationEntry(OrePrefix.ingot, material),
                 'S', new ItemStack(Items.STICK));

@@ -38,6 +38,7 @@ import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
 
 import javax.annotation.Nullable;
+import java.lang.reflect.Field;
 import java.util.*;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
@@ -280,6 +281,7 @@ public class ModHandler {
         }
 
         IRecipe shapedOreRecipe = new ShapedOreRecipe(null, result.copy(), finalizeShapedRecipeInput(recipe))
+            .setMirrored(false) //make all recipes not mirrored by default
             .setRegistryName(regName);
         ForgeRegistries.RECIPES.register(shapedOreRecipe);
     }
@@ -395,6 +397,15 @@ public class ModHandler {
 
         IRecipe shapelessRecipe = new ShapelessOreRecipe(null, result.copy(), recipe)
             .setRegistryName(regName);
+
+        try {
+            //workaround for MC bug that makes all shaped recipe inputs that have enchanted items
+            //or renamed ones on input fail, even if all ingredients match it
+            Field field = ShapelessOreRecipe.class.getDeclaredField("isSimple");
+            field.setAccessible(true);
+            field.setBoolean(shapelessRecipe, true);
+        } catch (ReflectiveOperationException ignored) {}
+
         ForgeRegistries.RECIPES.register(shapelessRecipe);
     }
 

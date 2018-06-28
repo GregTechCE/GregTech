@@ -12,10 +12,19 @@ public class IntCircuitIngredient extends Ingredient {
 
     public static ItemStack getIntegratedCircuit(int configuration) {
         ItemStack stack = MetaItems.INTEGRATED_CIRCUIT.getStackForm();
-        NBTTagCompound tagCompound = new NBTTagCompound();
-        tagCompound.setInteger("Configuration", configuration);
-        stack.setTagCompound(tagCompound);
+        setCircuitConfiguration(stack, configuration);
         return stack;
+    }
+
+    public static void setCircuitConfiguration(ItemStack itemStack, int configuration) {
+        if(!MetaItems.INTEGRATED_CIRCUIT.isItemEqual(itemStack))
+            throw new IllegalArgumentException("Given item stack is not an integrated circuit!");
+        NBTTagCompound tagCompound = itemStack.getTagCompound();
+        if(tagCompound == null) {
+            tagCompound = new NBTTagCompound();
+            itemStack.setTagCompound(tagCompound);
+        }
+        tagCompound.setInteger("Configuration", configuration);
     }
 
     public static int getCircuitConfiguration(ItemStack itemStack) {

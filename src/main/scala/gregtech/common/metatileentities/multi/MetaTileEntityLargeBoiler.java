@@ -161,6 +161,7 @@ public class MetaTileEntityLargeBoiler extends MultiblockWithDisplayBase {
             if(drainedWater != null && drainedWater.amount > 0) {
                 if(currentTemperature > 100 && hasNoWater) {
                     float explosionPower = currentTemperature / 100 * 2.0f;
+                    getWorld().setBlockToAir(getPos());
                     getWorld().createExplosion(null, getPos().getX() + 0.5, getPos().getY() + 0.5, getPos().getZ() + 0.5,
                         explosionPower, true);
                 }

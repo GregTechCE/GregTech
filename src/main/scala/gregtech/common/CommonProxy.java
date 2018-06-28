@@ -17,7 +17,8 @@ import gregtech.common.items.PotionFluids;
 import gregtech.loaders.load.FuelLoader;
 import gregtech.loaders.load.MetaTileEntityLoader;
 import gregtech.loaders.load.OreDictionaryLoader;
-import gregtech.loaders.oreprocessing.OreProcessingHandler;
+import gregtech.loaders.oreprocessing.RecipeHandlerList;
+import gregtech.loaders.oreprocessing.ToolRecipeHandler;
 import gregtech.loaders.postload.CraftingRecipeLoader;
 import gregtech.loaders.postload.MachineRecipeLoader;
 import gregtech.loaders.preload.MaterialInfoLoader;
@@ -83,7 +84,7 @@ public class CommonProxy {
             registry.register(item);
             item.registerSubItems();
         }
-        OreProcessingHandler.initializeMetaItems();
+        ToolRecipeHandler.initializeMetaItems();
 
         registry.register(createItemBlock(MACHINE, MachineItemBlock::new));
         registry.register(createItemBlock(BOILER_CASING, VariantItemBlock::new));
@@ -135,7 +136,7 @@ public class CommonProxy {
         FuelLoader.registerFuels();
         CraftingRecipeLoader.init();
         MetaTileEntityLoader.init();
-        OreProcessingHandler.registerProcessing();
+        RecipeHandlerList.register();
     }
 
     //this is called almost last, to make sure all mods registered their ore dictionary

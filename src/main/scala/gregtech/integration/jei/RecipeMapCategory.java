@@ -2,6 +2,7 @@ package gregtech.integration.jei;
 
 import gregtech.api.GTValues;
 import gregtech.api.capability.impl.FluidTankList;
+import gregtech.api.gui.BlankUIHolder;
 import gregtech.api.gui.ModularUI;
 import gregtech.api.gui.Widget;
 import gregtech.api.gui.widgets.SlotWidget;
@@ -42,7 +43,7 @@ public class RecipeMapCategory implements IRecipeCategory<GTRecipeWrapper> {
             (exportItems = new ItemStackHandler(recipeMap.getMaxOutputs())),
             (importFluids = new FluidTankList(importFluidTanks)),
             (exportFluids = new FluidTankList(exportFluidTanks))
-            ).build(() -> {}, Minecraft.getMinecraft().player);
+            ).build(new BlankUIHolder(), Minecraft.getMinecraft().player);
         this.modularUI.isJEIHandled = true;
         this.modularUI.initWidgets();
         this.backgroundDrawable = guiHelper.createBlankDrawable(modularUI.width, modularUI.height * 2 / 3);

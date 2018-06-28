@@ -17,6 +17,7 @@ import org.apache.commons.lang3.Validate;
 
 import javax.annotation.Nullable;
 import java.util.*;
+import java.util.function.BiConsumer;
 
 import static gregtech.api.GTValues.M;
 import static gregtech.api.unification.material.type.DustMaterial.MatFlags.*;
@@ -209,14 +210,12 @@ public enum OrePrefix {
     pipe("Pipes", -1, null, null, DISALLOW_RECYCLING, null),
 
     wireGtHex("Hex wires", M * 8, null, null, ENABLE_UNIFICATION, null),
-    wireGtTwelve("Twelve wires", M * 6, null, null, ENABLE_UNIFICATION, null),
     wireGtOctal("Octal wires", M * 4, null, null, ENABLE_UNIFICATION, null),
     wireGtQuadruple("Quadruple wires", M * 2, null, null, ENABLE_UNIFICATION, null),
     wireGtDouble("Double wires", M, null, null, ENABLE_UNIFICATION, null),
     wireGtSingle("Single wires", M / 2, null, null, ENABLE_UNIFICATION, null),
 
     cableGtHex("Hex cables", M * 8, null, null, ENABLE_UNIFICATION, null),
-    cableGtTwelve("Twelve cables", M * 6, null, null, ENABLE_UNIFICATION, null),
     cableGtOctal("Octal cables", M * 4, null, null, ENABLE_UNIFICATION, null),
     cableGtQuadruple("Quadruple cables", M * 2, null, null, ENABLE_UNIFICATION, null),
     cableGtDouble("Double cables", M, null, null, ENABLE_UNIFICATION, null),
@@ -503,6 +502,15 @@ public enum OrePrefix {
         Preconditions.checkNotNull(processingHandler);
         Validate.noNullElements(processingHandler);
         return oreProcessingHandlers.addAll(Arrays.asList(processingHandler));
+    }
+
+    public <T extends Material> void addProcessingHandler(Class<T> materialFilter, BiConsumer<OrePrefix, T> handler) {
+        addProcessingHandler((orePrefix, material) -> {
+            if(materialFilter.isAssignableFrom(material.getClass())) {
+                //noinspection unchecked
+                handler.accept(orePrefix, (T) material);
+            }
+        });
     }
 
     public void processOreRegistration(@Nullable Material material) {

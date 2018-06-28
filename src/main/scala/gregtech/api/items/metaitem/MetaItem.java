@@ -8,8 +8,11 @@ import gregtech.api.GregTechAPI;
 import gregtech.api.capability.IElectricItem;
 import gregtech.api.capability.impl.CombinedCapabilityProvider;
 import gregtech.api.capability.impl.ElectricItem;
+import gregtech.api.gui.ModularUI;
 import gregtech.api.gui.resources.RenderUtil;
 import gregtech.api.items.OreDictNames;
+import gregtech.api.items.gui.ItemUIFactory;
+import gregtech.api.items.gui.PlayerInventoryHolder;
 import gregtech.api.items.metaitem.stats.*;
 import gregtech.api.unification.OreDictUnifier;
 import gregtech.api.unification.material.type.Material;
@@ -62,7 +65,7 @@ import java.util.*;
  * This will add single-use (not rechargeable) LV battery with initial capacity 10000 EU
  */
 @SuppressWarnings("deprecation")
-public abstract class MetaItem<T extends MetaItem<?>.MetaValueItem> extends Item {
+public abstract class MetaItem<T extends MetaItem<?>.MetaValueItem> extends Item implements ItemUIFactory {
 
     private static final List<MetaItem<?>> META_ITEMS = new ArrayList<>();
 
@@ -447,6 +450,14 @@ public abstract class MetaItem<T extends MetaItem<?>.MetaValueItem> extends Item
         }
     }
 
+    @Override
+    public ModularUI createUI(PlayerInventoryHolder holder, EntityPlayer entityPlayer) {
+        ItemStack itemStack = holder.getCurrentItem();
+        T metaValueItem = getItem(itemStack);
+        ItemUIFactory uiFactory = metaValueItem == null ? metaValueItem.getUIManager() : null;
+        return uiFactory == null ? null : uiFactory.createUI(holder, entityPlayer);
+    }
+
     public class MetaValueItem {
 
         public MetaItem<T> getMetaItem() {
@@ -460,7 +471,7 @@ public abstract class MetaItem<T extends MetaItem<?>.MetaValueItem> extends Item
         private List<IMetaItemStats> allStats = new ArrayList<>();
         private List<IItemBehaviour> behaviours = new ArrayList<>();
         private IItemUseManager useManager;
-        private IUIManager uiManager;
+        private ItemUIFactory uiManager;
         private IItemDurabilityManager durabilityManager;
 
         private int burnValue = 0;
@@ -542,9 +553,8 @@ public abstract class MetaItem<T extends MetaItem<?>.MetaValueItem> extends Item
                     this.useManager = (IItemUseManager) metaItemStats;
                 if (metaItemStats instanceof IFoodBehavior)
                     this.useManager = new FoodUseManager((IFoodBehavior) metaItemStats);
-                if (metaItemStats instanceof IUIManager)
-                    this.uiManager = (IUIManager) metaItemStats;
-
+                if (metaItemStats instanceof ItemUIFactory)
+                    this.uiManager = (ItemUIFactory) metaItemStats;
                 if (metaItemStats instanceof IItemBehaviour)
                     this.behaviours.add((IItemBehaviour) metaItemStats);
                 this.allStats.add(metaItemStats);
@@ -575,7 +585,7 @@ public abstract class MetaItem<T extends MetaItem<?>.MetaValueItem> extends Item
         }
 
         @Nullable
-        public IUIManager getUIManager() {
+        public ItemUIFactory getUIManager() {
             return uiManager;
         }
 

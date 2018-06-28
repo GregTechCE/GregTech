@@ -7,7 +7,7 @@ import gregtech.api.items.metaitem.stats.IItemBehaviour;
 import gregtech.api.items.toolitem.ToolMetaItem;
 import gregtech.api.unification.OreDictUnifier;
 import gregtech.api.unification.ore.OrePrefix;
-import gregtech.loaders.oreprocessing.OreProcessingHandler;
+import gregtech.loaders.oreprocessing.ToolRecipeHandler;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -58,7 +58,7 @@ public class ToolPartsBoxBehavior implements IItemBehaviour {
         if(itemStack.getItem() instanceof MetaItem<?>) {
             MetaItem<?> metaItem = (MetaItem<?>) itemStack.getItem();
             MetaValueItem metaValueItem = metaItem.getItem(itemStack);
-            if(ArrayUtils.contains(OreProcessingHandler.motorItems, metaValueItem))
+            if(ArrayUtils.contains(ToolRecipeHandler.motorItems, metaValueItem))
                 return 100; //always restore electrical components like motors
         }
         OrePrefix orePrefix = OreDictUnifier.getPrefix(itemStack);

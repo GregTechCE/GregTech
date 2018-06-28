@@ -4,7 +4,7 @@ import codechicken.lib.CodeChickenLib;
 import crafttweaker.CraftTweakerAPI;
 import gregtech.api.GTValues;
 import gregtech.api.capability.SimpleCapabilityManager;
-import gregtech.api.items.MetaItemUIFactory;
+import gregtech.api.items.gui.PlayerInventoryUIFactory;
 import gregtech.api.metatileentity.MetaTileEntityUIFactory;
 import gregtech.api.model.ResourcePackHook;
 import gregtech.api.net.NetworkHandler;
@@ -65,7 +65,7 @@ public class GregTechMod {
 
         NetworkHandler.init();
         MetaTileEntityUIFactory.INSTANCE.init();
-        MetaItemUIFactory.INSTANCE.init();
+        PlayerInventoryUIFactory.INSTANCE.init();
         SimpleCapabilityManager.init();
         OreDictUnifier.init();
         Materials.register();

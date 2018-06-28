@@ -89,6 +89,8 @@ public class Recipe {
 		this.hidden = hidden;
 		this.canBeBuffered = canBeBuffered;
 		this.needsEmptyOutput = needsEmptyOutput;
+		//sort input elements in descending order (i.e not consumables inputs are last)
+		this.inputs.sort(Comparator.comparing(CountableIngredient::getCount).reversed());
 	}
 
 	public boolean matches(boolean consumeIfSuccessful, boolean dontCheckStackSizes, IItemHandlerModifiable inputs, IMultipleTankHandler fluidInputs) {
@@ -220,6 +222,15 @@ public class Recipe {
 	public boolean isHidden() {
 		return hidden;
 	}
+
+	public boolean hasValidInputsForDisplay() {
+	    boolean hasValidInputs = false;
+	    for(CountableIngredient ingredient : inputs) {
+	        ItemStack[] matchingItems = ingredient.getIngredient().getMatchingStacks();
+	        hasValidInputs &= Arrays.stream(matchingItems).anyMatch(s -> !s.isEmpty());
+        }
+        return hasValidInputs;
+    }
 
 	public boolean canBeBuffered() {
 		return canBeBuffered;
