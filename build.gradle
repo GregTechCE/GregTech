@@ -157,9 +157,11 @@ idea {
 
 task ciWriteBuildNumber doLast {
     def file = file("src/main/scala/gregtech/GregTechVersion.java")
-    def bn = System.getenv("TRAVIS_BUILD_NUMBER") ?: config.buildNumber ?: 0
+    def bn = System.getenv("BUILD_NUMBER") ?: 0
     def outfile = ""
     def ln = "\n" //Linux line endings because we're on git!
+
+    println "Build number: $bn"
 
     file.eachLine { String s ->
         if (s.matches("^ {4}public static final int BUILD = [\\d]+;\$"))
@@ -188,7 +190,7 @@ String getVersionFromJava(File file) {
         }
     }
 
-    String build = System.getenv("TRAVIS_BUILD_NUMBER") ?: config.buildNumber ?: 0
+    String build = System.getenv("BUILD_NUMBER") ?: 0
 
     return "$major.$minor.$revision.$build"
 }
