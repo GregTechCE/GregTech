@@ -1,0 +1,27 @@
+image: java:8
+
+before_script:
+  - which java
+  - which javac
+
+stages:
+  - build
+#  - deploy
+
+build:
+  stage: build
+  before_script:
+    - ./gradlew setupCiWorkspace
+    - ./gradlew ciWriteBuildNumber
+  script:
+    - ./gradlew build
+  artifacts:
+    paths:
+    - build/libs/*.jar
+    expire_in: 1 month
+
+#production:
+#  stage: deploy
+#  script:
+#  only:
+#  - master
