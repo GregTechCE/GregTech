@@ -1,4 +1,4 @@
-image: java:8
+image: anapsix/alpine-java:8_jdk
 
 before_script:
   - which java
