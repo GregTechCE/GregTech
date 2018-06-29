@@ -403,8 +403,10 @@ public class ModHandler {
             //or renamed ones on input fail, even if all ingredients match it
             Field field = ShapelessOreRecipe.class.getDeclaredField("isSimple");
             field.setAccessible(true);
-            field.setBoolean(shapelessRecipe, true);
-        } catch (ReflectiveOperationException ignored) {}
+            field.setBoolean(shapelessRecipe, false);
+        } catch (ReflectiveOperationException exception) {
+            GTLog.logger.error("Failed to mark shapeless recipe as complex", exception);
+        }
 
         ForgeRegistries.RECIPES.register(shapelessRecipe);
     }
