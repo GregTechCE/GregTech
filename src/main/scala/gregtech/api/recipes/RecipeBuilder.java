@@ -1,6 +1,5 @@
 package gregtech.api.recipes;
 
-import com.google.common.base.Predicates;
 import gnu.trove.map.TObjectIntMap;
 import gnu.trove.map.hash.TObjectIntHashMap;
 import gregtech.api.items.metaitem.MetaItem;
@@ -22,6 +21,7 @@ import java.util.*;
  * @see Recipe
  */
 
+@SuppressWarnings("unchecked")
 public abstract class RecipeBuilder<R extends RecipeBuilder<R>> {
 
 	protected RecipeMap<R> recipeMap;
@@ -77,7 +77,8 @@ public abstract class RecipeBuilder<R extends RecipeBuilder<R>> {
 		this.needsEmptyOutput = recipe.needsEmptyOutput();
 	}
 
-	protected RecipeBuilder(RecipeBuilder<R> recipeBuilder) {
+	@SuppressWarnings("CopyConstructorMissesField")
+    protected RecipeBuilder(RecipeBuilder<R> recipeBuilder) {
 		this.recipeMap = recipeBuilder.recipeMap;
         this.inputs = NonNullList.create();
         this.inputs.addAll(recipeBuilder.getInputs());
@@ -109,7 +110,7 @@ public abstract class RecipeBuilder<R extends RecipeBuilder<R>> {
     }
 
 	public R inputs(Collection<ItemStack> inputs) {
-		if (GTUtility.iterableContains(inputs, Predicates.or(Objects::isNull, ItemStack::isEmpty))) {
+		if (GTUtility.iterableContains(inputs, stack -> stack == null || stack.isEmpty())) {
 			GTLog.logger.error("Input cannot contain null or empty ItemStacks. Inputs: {}", inputs);
             GTLog.logger.error("Stacktrace:", new IllegalArgumentException());
             recipeStatus = EnumValidationResult.INVALID;
@@ -175,9 +176,7 @@ public abstract class RecipeBuilder<R extends RecipeBuilder<R>> {
 
     public R outputs(Collection<ItemStack> outputs) {
 		outputs = new ArrayList<>(outputs);
-		if(GTUtility.iterableContains(outputs, Predicates.or(Objects::isNull, ItemStack::isEmpty))) {
-            outputs.removeIf(Predicates.or(Objects::isNull, ItemStack::isEmpty));
-        }
+        outputs.removeIf(stack -> stack == null || stack.isEmpty());
 		this.outputs.addAll(outputs);
         return (R) this;
     }
@@ -203,7 +202,7 @@ public abstract class RecipeBuilder<R extends RecipeBuilder<R>> {
 
     public R fluidOutputs(Collection<FluidStack> outputs) {
 		outputs = new ArrayList<>(outputs);
-		if(outputs.contains(null)) outputs.removeIf(Objects::isNull);
+		outputs.removeIf(Objects::isNull);
 		this.fluidOutputs.addAll(outputs);
         return (R) this;
     }

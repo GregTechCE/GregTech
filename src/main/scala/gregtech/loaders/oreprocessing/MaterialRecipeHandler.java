@@ -175,12 +175,14 @@ public class MaterialRecipeHandler {
             }
         }
 
-        RecipeMaps.FLUID_SOLIDFICATION_RECIPES.recipeBuilder()
-            .notConsumable(MetaItems.SHAPE_MOLD_INGOT)
-            .fluidInputs(material.getFluid(L))
-            .outputs(OreDictUnifier.get(ingotPrefix, material))
-            .duration(20).EUt(8)
-            .buildAndRegister();
+        if(material.shouldGenerateFluid()) {
+            RecipeMaps.FLUID_SOLIDFICATION_RECIPES.recipeBuilder()
+                .notConsumable(MetaItems.SHAPE_MOLD_INGOT)
+                .fluidInputs(material.getFluid(L))
+                .outputs(OreDictUnifier.get(ingotPrefix, material))
+                .duration(20).EUt(8)
+                .buildAndRegister();
+        }
 
         if(material.hasFlag(NO_SMASHING)) {
             RecipeMaps.EXTRUDER_RECIPES.recipeBuilder()
@@ -307,13 +309,15 @@ public class MaterialRecipeHandler {
             ModHandler.addShapedRecipe(String.format("nugget_assembling_%s", material.toString()),
                 ingotStack, "XXX", "XXX", "XXX", 'X', new UnificationEntry(orePrefix, material));
 
-            RecipeMaps.FLUID_SOLIDFICATION_RECIPES.recipeBuilder()
-                .notConsumable(MetaItems.SHAPE_MOLD_NUGGET)
-                .fluidInputs(material.getFluid(L))
-                .outputs(OreDictUnifier.get(orePrefix, material, 9))
-                .duration((int) material.getMass())
-                .EUt(8)
-                .buildAndRegister();
+            if(material.shouldGenerateFluid()) {
+                RecipeMaps.FLUID_SOLIDFICATION_RECIPES.recipeBuilder()
+                    .notConsumable(MetaItems.SHAPE_MOLD_NUGGET)
+                    .fluidInputs(material.getFluid(L))
+                    .outputs(OreDictUnifier.get(orePrefix, material, 9))
+                    .duration((int) material.getMass())
+                    .EUt(8)
+                    .buildAndRegister();
+            }
 
 
         } else if (material instanceof GemMaterial) {
@@ -339,7 +343,7 @@ public class MaterialRecipeHandler {
     public static void processBlock(OrePrefix blockPrefix, DustMaterial material) {
         ItemStack blockStack = OreDictUnifier.get(blockPrefix, material);
         long materialAmount = blockPrefix.getMaterialAmount(material);
-        if (material instanceof FluidMaterial && material.shouldGenerateFluid()) {
+        if (material.shouldGenerateFluid()) {
             RecipeMaps.FLUID_SOLIDFICATION_RECIPES.recipeBuilder()
                 .notConsumable(MetaItems.SHAPE_MOLD_BLOCK)
                 .fluidInputs(material.getFluid((int) (materialAmount * L / M)))

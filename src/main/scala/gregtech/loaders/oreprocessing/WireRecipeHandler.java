@@ -53,7 +53,7 @@ public class WireRecipeHandler {
     }
 
     public static void generateWireRecipe(OrePrefix wirePrefix, IngotMaterial material) {
-        int cableAmount = (int) (wirePrefix.materialAmount / M);
+        int cableAmount = (int) (wirePrefix.materialAmount * 2 / M);
         OrePrefix cablePrefix = OrePrefix.valueOf("cable" + wirePrefix.name().substring(4));
         ItemStack cableStack = OreDictUnifier.get(cablePrefix, material);
 
@@ -138,7 +138,7 @@ public class WireRecipeHandler {
                 OreDictUnifier.get(WIRE_DOUBLING_ORDER[wireIndex - 1], material, 2),
                 new UnificationEntry(wirePrefix, material));
 
-            ModHandler.addShapelessRecipe(String.format("%s_cable_%s_doubling", material, wirePrefix),
+            ModHandler.addShapelessRecipe(String.format("%s_cable_%s_splitting", material, wirePrefix),
                 OreDictUnifier.get(CABLE_DOUBLING_ORDER[wireIndex - 1], material, 2),
                 new UnificationEntry(cablePrefix, material));
         }

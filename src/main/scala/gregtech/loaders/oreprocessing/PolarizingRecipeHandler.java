@@ -21,7 +21,7 @@ public class PolarizingRecipeHandler {
     }
 
     public static void processPolarizing(OrePrefix polarizingPrefix, IngotMaterial material) {
-        if (material.magneticMaterial != null) {
+        if (material.magneticMaterial != null && polarizingPrefix.doGenerateItem(material.magneticMaterial)) {
             ItemStack magneticStack = OreDictUnifier.get(polarizingPrefix, material.magneticMaterial);
             RecipeMaps.POLARIZER_RECIPES.recipeBuilder() //polarizing
                 .input(polarizingPrefix, material)
