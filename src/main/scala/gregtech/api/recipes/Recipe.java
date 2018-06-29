@@ -224,7 +224,7 @@ public class Recipe {
 	}
 
 	public boolean hasValidInputsForDisplay() {
-	    boolean hasValidInputs = false;
+	    boolean hasValidInputs = true;
 	    for(CountableIngredient ingredient : inputs) {
 	        ItemStack[] matchingItems = ingredient.getIngredient().getMatchingStacks();
 	        hasValidInputs &= Arrays.stream(matchingItems).anyMatch(s -> !s.isEmpty());
