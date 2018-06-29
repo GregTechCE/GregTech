@@ -1,12 +1,26 @@
-image: java:8
+image: anapsix/alpine-java:8_jdk
 
 before_script:
   - which java
   - which javac
 
 stages:
+  - init
   - build
 #  - deploy
+
+increment_build_number:
+  stage: init
+  variables:
+    VAR_NAME: BUILD_NUMBER
+    TOKEN: ${CI_PIPELINE_IID_TOKEN}
+    GITLAB_URL: "https://gitlab.com"
+  before_script:
+  - apk add --update curl jq
+  script:
+  - "VAR=$(curl -s -f  --header \"PRIVATE-TOKEN: ${TOKEN}\" \"${GITLAB_URL}/api/v4/projects/${CI_PROJECT_ID}/variables/${VAR_NAME}\" | jq  -r '.value' ) "
+  - let VAR=VAR+1
+  - "curl -s -f --request PUT --header \"PRIVATE-TOKEN: ${TOKEN}\" \"${GITLAB_URL}/api/v4/projects/${CI_PROJECT_ID}/variables/${VAR_NAME}\" --form \"value=${VAR}\" "
 
 build:
   stage: build
