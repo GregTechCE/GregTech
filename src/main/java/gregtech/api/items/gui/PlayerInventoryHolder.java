@@ -70,5 +70,6 @@ public class PlayerInventoryHolder implements IUIHolder {
     @Override
     public void markAsDirty() {
         player.inventory.markDirty();
+        player.inventoryContainer.detectAndSendChanges();
     }
 }

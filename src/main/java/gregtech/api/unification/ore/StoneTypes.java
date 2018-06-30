@@ -10,6 +10,7 @@ import gregtech.common.blocks.StoneBlock.ChiselingVariant;
 import net.minecraft.block.BlockRedSandstone;
 import net.minecraft.block.BlockSandStone;
 import net.minecraft.block.BlockStone;
+import net.minecraft.block.SoundType;
 import net.minecraft.init.Blocks;
 
 public class StoneTypes {
@@ -20,7 +21,7 @@ public class StoneTypes {
     public static StoneType GRANITE = new StoneType(1, "granite", OrePrefix.ore, Materials.Stone, "blocks/stone_granite", () -> Blocks.STONE.getDefaultState().withProperty(BlockStone.VARIANT, BlockStone.EnumType.GRANITE), state -> state.getBlock() instanceof BlockStone && state.getValue(BlockStone.VARIANT) == BlockStone.EnumType.GRANITE);
     public static StoneType DIORITE = new StoneType(2, "diorite", OrePrefix.ore, Materials.Stone, "blocks/stone_diorite", () -> Blocks.STONE.getDefaultState().withProperty(BlockStone.VARIANT, BlockStone.EnumType.DIORITE), state -> state.getBlock() instanceof BlockStone && state.getValue(BlockStone.VARIANT) == BlockStone.EnumType.DIORITE);
     public static StoneType ANDESITE = new StoneType(3, "andesite", OrePrefix.ore, Materials.Stone, "blocks/stone_andesite", () -> Blocks.STONE.getDefaultState().withProperty(BlockStone.VARIANT, BlockStone.EnumType.ANDESITE), state -> state.getBlock() instanceof BlockStone && state.getValue(BlockStone.VARIANT) == BlockStone.EnumType.ANDESITE);
-    public static StoneType GRAVEL = new StoneType(4, "gravel", OrePrefix.oreGravel, Materials.Flint, "shovel", 0x2, "blocks/gravel", Blocks.GRAVEL::getDefaultState, state -> state.getBlock() == Blocks.GRAVEL).setTextureForAllFacing("blocks/gravel");
+    public static StoneType GRAVEL = new StoneType(4, "gravel", OrePrefix.oreGravel, Materials.Flint, "shovel", 0x2, "blocks/gravel", Blocks.GRAVEL::getDefaultState, state -> state.getBlock() == Blocks.GRAVEL).setTextureForAllFacing("blocks/gravel").setSoundType(SoundType.SAND);
     public static StoneType BEDROCK = new StoneType(5, "bedrock", OrePrefix.ore, Materials.Stone, 0x1, "blocks/bedrock", Blocks.BEDROCK::getDefaultState, state -> state.getBlock() == Blocks.BEDROCK).setTextureForAllFacing("blocks/bedrock");
     public static StoneType NETHERRACK = new StoneType(6, "netherrack", OrePrefix.oreNetherrack, Materials.Netherrack, "blocks/netherrack", Blocks.NETHERRACK::getDefaultState, state -> state.getBlock() == Blocks.NETHERRACK);
     public static StoneType ENDSTONE = new StoneType(7, "endstone", OrePrefix.oreEndstone, Materials.Endstone, "blocks/end_stone", Blocks.END_STONE::getDefaultState, state -> state.getBlock() == Blocks.END_STONE);

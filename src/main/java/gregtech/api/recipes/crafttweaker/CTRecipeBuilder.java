@@ -68,6 +68,7 @@ public class CTRecipeBuilder {
         return this;
     }
 
+    @ZenMethod
     public CTRecipeBuilder notConsumable(IIngredient ingredient) {
         this.backingBuilder.notConsumable(new CraftTweakerIngredientWrapper(ingredient));
         return this;

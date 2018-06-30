@@ -115,7 +115,7 @@ public class GregTechMod {
 
     @Method(modid = GTValues.MODID_FMP)
     private void registerForgeMultipartCompat() {
-        GTMultipartFactory.registerFactory();
+        GTMultipartFactory.INSTANCE.registerFactory();
     }
 
     @Method(modid = GTValues.MODID_CT)

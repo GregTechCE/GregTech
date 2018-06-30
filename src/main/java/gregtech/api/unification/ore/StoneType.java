@@ -3,6 +3,7 @@ package gregtech.api.unification.ore;
 import gregtech.api.unification.material.type.DustMaterial;
 import gregtech.api.util.Condition;
 import gregtech.api.util.GTControlledRegistry;
+import net.minecraft.block.SoundType;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.EnumFacing;
 
@@ -20,7 +21,8 @@ public class StoneType implements Comparable<StoneType> {
     public final DustMaterial stoneMaterial;
     public final boolean unbreakable, falling;
     public final Supplier<IBlockState> stone;
-    public Condition<IBlockState> conditioin;
+    public Condition<IBlockState> condition;
+    public SoundType soundType = SoundType.STONE;
 
     public static final GTControlledRegistry<StoneType> STONE_TYPE_REGISTRY = new GTControlledRegistry<>(128, true);
 
@@ -84,10 +86,10 @@ public class StoneType implements Comparable<StoneType> {
         this.stone = stone;
         if (id > -1) {
             STONE_TYPE_REGISTRY.register(id, name, this);
-            this.conditioin = new Condition.Or<>(conditions);
+            this.condition = new Condition.Or<>(conditions);
         } else {
             STONE_TYPE_REGISTRY.putObject(name, this);
-            this.conditioin = state -> false;
+            this.condition = state -> false;
         }
     }
 
@@ -134,19 +136,26 @@ public class StoneType implements Comparable<StoneType> {
                 .setTextureForAllSide(baseTexture);
     }
 
+    public StoneType setSoundType(SoundType soundType) {
+        this.soundType = soundType;
+        return this;
+    }
+
+
     @Override
     public int compareTo(StoneType stoneType) {
         return STONE_TYPE_REGISTRY.getIDForObject(this) - STONE_TYPE_REGISTRY.getIDForObject(stoneType);
     }
 
     public static void init() {
-        StoneType test = StoneTypes._NULL;
+        //noinspection ResultOfMethodCallIgnored
+        StoneTypes._NULL.toString();
         StoneType.STONE_TYPE_REGISTRY.freezeRegistry();
     }
 
     public static StoneType computeStoneType(IBlockState blockState) {
         for (StoneType stoneType : STONE_TYPE_REGISTRY) {
-            if (stoneType.conditioin.isTrue(blockState)) return stoneType;
+            if (stoneType.condition.isTrue(blockState)) return stoneType;
         }
         return StoneTypes._NULL;
     }

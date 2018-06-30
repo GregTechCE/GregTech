@@ -32,7 +32,10 @@ public class BlockWireCoil extends VariantBlock<BlockWireCoil.CoilType> {
         IBlockState stackState = itemBlock.getBlockState(itemStack);
         CoilType coilType = getState(stackState);
 
+        lines.add(I18n.format("tile.wire_coil.tooltip_ebf"));
         lines.add(I18n.format("tile.wire_coil.tooltip_heat", coilType.coilTemperature));
+        lines.add("");
+        lines.add(I18n.format("tile.wire_coil.tooltip_smelter"));
         lines.add(I18n.format("tile.wire_coil.tooltip_level", coilType.level));
         lines.add(I18n.format("tile.wire_coil.tooltip_discount", coilType.energyDiscount));
     }

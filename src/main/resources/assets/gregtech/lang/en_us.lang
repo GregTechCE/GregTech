@@ -15,7 +15,7 @@ gregtech.top.working_disabled=Working Disabled
 metaitem.dust.tooltip.purify=Throw into Cauldron to get clean Dust
 metaitem.generic.fluid_container.tooltip=%d/%dL %s
 metaitem.generic.fluid_container.tooltip_empty=Empty
-metaitem.generic.electric_item.tooltip=%d/%d EU - Tier %dthermal_centrifuge
+metaitem.generic.electric_item.tooltip=%d/%d EU - Tier §e%d
 metaitem.int_circuit.configuration=Configuration: %d
 item.invalid.name=Invalid item
 fluid.empty=Empty
@@ -1736,9 +1736,11 @@ tile.casing.iv=IV Machine Casing
 fluid.distilled_water=Distilled Water
 
 # Wire coil blocks
-tile.wire_coil.tooltip_heat=Base Heating Capacity: %dK
-tile.wire_coil.tooltip_level=Level: %d
-tile.wire_coil.tooltip_discount=Energy Discount: %d
+tile.wire_coil.tooltip_ebf=When used in §aElectric Blast Furnace§7:
+tile.wire_coil.tooltip_heat=  Base Heating Capacity: §e%dK
+tile.wire_coil.tooltip_smelter=When used in §aMulti Smelter§7:
+tile.wire_coil.tooltip_level=  Level: §e%d
+tile.wire_coil.tooltip_discount=  Energy Discount: §a%dx
 
 tile.wire_coil.cupronickel.name=Cupronickel Coil Block
 tile.wire_coil.kanthal.name=Kanthal Coil Block

@@ -61,6 +61,12 @@ public class BlockOre extends BlockFalling implements IBlockOre {
     }
 
     @Override
+    public SoundType getSoundType(IBlockState state, World world, BlockPos pos, @Nullable Entity entity) {
+        StoneType stoneType = state.getValue(STONE_TYPE);
+        return stoneType.soundType;
+    }
+
+    @Override
     public String getHarvestTool(IBlockState state) {
         StoneType stoneType = state.getValue(STONE_TYPE);
         return stoneType.harvestTool;
