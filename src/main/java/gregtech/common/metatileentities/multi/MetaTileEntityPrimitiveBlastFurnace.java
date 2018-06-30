@@ -87,7 +87,8 @@ public class MetaTileEntityPrimitiveBlastFurnace extends MultiblockControllerBas
         int fuelAmount = fuelUnitsPerItem * fuelStack.getCount();
         if(inputStack.isEmpty() || fuelAmount == 0) return false;
         PrimitiveBlastFurnaceRecipe recipe = RecipeMaps.PRIMITIVE_BLAST_FURNACE_RECIPES.stream()
-            .filter(recipe1 -> recipe1.getInput().apply(inputStack))
+            .filter(recipe1 -> recipe1.getInput().getIngredient().apply(inputStack) &&
+                inputStack.getCount() >= recipe1.getInput().getCount())
             .findFirst().orElse(null);
         if(recipe == null || fuelAmount < recipe.getFuelAmount()) return false;
         NonNullList<ItemStack> outputs = NonNullList.create();
@@ -95,7 +96,7 @@ public class MetaTileEntityPrimitiveBlastFurnace extends MultiblockControllerBas
         outputs.add(OreDictUnifier.get(OrePrefix.dustTiny, Materials.DarkAsh, Math.max(1, Math.abs(3 - fuelUnitsPerItem))));
         if(MetaTileEntity.addItemsToItemHandler(exportItems, true, outputs)) {
             fuelStack.shrink(Math.max(1, recipe.getFuelAmount() / fuelUnitsPerItem));
-            inputStack.shrink(1);
+            inputStack.shrink(recipe.getInput().getCount());
             importItems.setStackInSlot(1, fuelStack);
             importItems.setStackInSlot(0, inputStack);
             this.maxProgressDuration = recipe.getDuration();

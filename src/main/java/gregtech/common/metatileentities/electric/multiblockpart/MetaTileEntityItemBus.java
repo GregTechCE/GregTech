@@ -85,7 +85,7 @@ public class MetaTileEntityItemBus extends MetaTileEntityMultiblockPart implemen
         return ModularUI.defaultBuilder()
             .label(6, 6, getMetaFullName())
             .squareOfSlots(isExportHatch ? exportItems : importItems, 0, getInventorySize(),
-                true, isExportHatch,
+                true, !isExportHatch,
                 GuiTextures.SLOT, isExportHatch ? GuiTextures.ARROW_OUTPUT_OVERLAY : GuiTextures.ARROW_INPUT_OVERLAY)
             .bindPlayerInventory(entityPlayer.inventory)
             .build(getHolder(), entityPlayer);

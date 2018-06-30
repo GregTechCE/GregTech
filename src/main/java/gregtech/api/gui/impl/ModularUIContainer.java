@@ -3,14 +3,14 @@ package gregtech.api.gui.impl;
 import gregtech.api.gui.INativeWidget;
 import gregtech.api.gui.ModularUI;
 import gregtech.api.gui.Widget;
+import gregtech.api.util.GTUtility;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.ClickType;
-import net.minecraft.inventory.Container;
-import net.minecraft.inventory.IContainerListener;
-import net.minecraft.inventory.Slot;
+import net.minecraft.inventory.*;
 import net.minecraft.item.ItemStack;
 
-import java.util.HashMap;
+import java.util.*;
+import java.util.Map.Entry;
+import java.util.stream.Collectors;
 
 public class ModularUIContainer extends Container {
 
@@ -60,37 +60,40 @@ public class ModularUIContainer extends Container {
 
     @Override
     public ItemStack transferStackInSlot(EntityPlayer player, int index) {
-        ItemStack itemstack = ItemStack.EMPTY;
         Slot slot = inventorySlots.get(index);
-
-        if (slot != null && slot.getHasStack()) {
-            ItemStack itemstack1 = slot.getStack();
-            itemstack = itemstack1.copy();
-
-            int containerSlots = inventorySlots.size() - player.inventory.mainInventory.size();
-
-            if (index < containerSlots) {
-                if (!this.mergeItemStack(itemstack1, containerSlots, inventorySlots.size(), true)) {
-                    return ItemStack.EMPTY;
-                }
-            } else if (!this.mergeItemStack(itemstack1, 0, containerSlots, false)) {
-                return ItemStack.EMPTY;
-            }
-
-            if (itemstack1.getCount() == 0) {
-                slot.putStack(ItemStack.EMPTY);
-            } else {
-                slot.onSlotChanged();
-            }
-
-            if (itemstack1.getCount() == itemstack.getCount()) {
-                return ItemStack.EMPTY;
-            }
-
-            slot.onTake(player, itemstack1);
+        if(slot == null || !slot.getHasStack()) {
+            //return empty if we can't transfer it
+            return ItemStack.EMPTY;
+        }
+        ItemStack remainingStack = slot.getStack();
+        boolean mergedStack;
+        if(slotMap.get(slot).isPlayerInventorySlot()) {
+            //if we clicked on player inventory slot, move to container inventory, inverting indexes
+            List<Slot> containerSlots = slotMap.entrySet().stream()
+                .filter(s -> !s.getValue().isPlayerInventorySlot())
+                .map(Entry::getKey)
+                .sorted(Comparator.comparing(s -> s.slotNumber))
+                .collect(Collectors.toList());
+            mergedStack = GTUtility.mergeItemStack(remainingStack, containerSlots);
+        } else {
+            //if we clicked on a container inventory, move to player inventory
+            List<Slot> inventorySlots = slotMap.entrySet().stream()
+                .filter(s -> s.getValue().isPlayerInventorySlot())
+                .map(Entry::getKey)
+                .sorted(Collections.reverseOrder(Comparator.comparing(s -> s.slotNumber)))
+                .collect(Collectors.toList());
+            mergedStack = GTUtility.mergeItemStack(remainingStack, inventorySlots);
+        }
+        if(!mergedStack) {
+            return ItemStack.EMPTY; //if we didn't merge anything, return empty stack
         }
 
-        return itemstack;
+        if (remainingStack.isEmpty()) {
+            slot.putStack(ItemStack.EMPTY);
+        } else {
+            slot.onSlotChanged();
+        }
+        return remainingStack;
     }
 
     @Override

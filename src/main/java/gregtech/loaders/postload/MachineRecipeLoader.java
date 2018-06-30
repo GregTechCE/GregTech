@@ -109,26 +109,36 @@ public class MachineRecipeLoader {
         }
 
         for (MaterialStack[] stack : alloySmelterList) {
-            ItemStack firstDust = OreDictUnifier.get(OrePrefix.dust, stack[0].material, (int) stack[0].amount);
-            ItemStack secondDust = OreDictUnifier.get(OrePrefix.dust, stack[1].material, (int) stack[1].amount);
-            ItemStack firstIngot = OreDictUnifier.get(OrePrefix.ingot, stack[0].material, (int) stack[0].amount);
-            ItemStack secondIngot = OreDictUnifier.get(OrePrefix.ingot, stack[1].material, (int) stack[1].amount);
-            ItemStack outputIngot = OreDictUnifier.get(OrePrefix.ingot, stack[2].material, (int) stack[2].amount);
-            if (!outputIngot.isEmpty()) {
-                if(!firstIngot.isEmpty()) {
-                    RecipeMaps.ALLOY_SMELTER_RECIPES.recipeBuilder().duration((int) stack[2].amount * 50).EUt(16)
-                        .inputs(firstIngot, secondDust).outputs(outputIngot).buildAndRegister();
-                }
-                if(!secondIngot.isEmpty()) {
-                    RecipeMaps.ALLOY_SMELTER_RECIPES.recipeBuilder().duration((int) stack[2].amount * 50).EUt(16)
-                        .inputs(firstDust, secondIngot).outputs(outputIngot).buildAndRegister();
-                }
-                if(!firstIngot.isEmpty() && !secondIngot.isEmpty()) {
-                    RecipeMaps.ALLOY_SMELTER_RECIPES.recipeBuilder().duration((int) stack[2].amount * 50).EUt(16)
-                        .inputs(firstIngot, secondIngot).outputs(outputIngot).buildAndRegister();
-                }
-                RecipeMaps.ALLOY_SMELTER_RECIPES.recipeBuilder().duration((int) stack[2].amount * 50).EUt(16).inputs(firstDust, secondDust).outputs(outputIngot).buildAndRegister();
+            if (stack[0].material instanceof IngotMaterial) {
+                RecipeMaps.ALLOY_SMELTER_RECIPES.recipeBuilder()
+                    .duration((int) stack[2].amount * 50).EUt(16)
+                    .input(OrePrefix.ingot, stack[0].material, (int) stack[0].amount)
+                    .input(OrePrefix.dust, stack[1].material, (int) stack[1].amount)
+                    .outputs(OreDictUnifier.get(OrePrefix.ingot, stack[2].material, (int) stack[2].amount))
+                    .buildAndRegister();
             }
+            if (stack[1].material instanceof IngotMaterial) {
+                RecipeMaps.ALLOY_SMELTER_RECIPES.recipeBuilder()
+                    .duration((int) stack[2].amount * 50).EUt(16)
+                    .input(OrePrefix.dust, stack[0].material, (int) stack[0].amount)
+                    .input(OrePrefix.ingot, stack[1].material, (int) stack[1].amount)
+                    .outputs(OreDictUnifier.get(OrePrefix.ingot, stack[2].material, (int) stack[2].amount))
+                    .buildAndRegister();
+            }
+            if (stack[0].material instanceof IngotMaterial && stack[1].material instanceof IngotMaterial) {
+                RecipeMaps.ALLOY_SMELTER_RECIPES.recipeBuilder()
+                    .duration((int) stack[2].amount * 50).EUt(16)
+                    .input(OrePrefix.ingot, stack[0].material, (int) stack[0].amount)
+                    .input(OrePrefix.ingot, stack[1].material, (int) stack[1].amount)
+                    .outputs(OreDictUnifier.get(OrePrefix.ingot, stack[2].material, (int) stack[2].amount))
+                    .buildAndRegister();
+            }
+            RecipeMaps.ALLOY_SMELTER_RECIPES.recipeBuilder()
+                .duration((int) stack[2].amount * 50).EUt(16)
+                .input(OrePrefix.dust, stack[0].material, (int) stack[0].amount)
+                .input(OrePrefix.dust, stack[1].material, (int) stack[1].amount)
+                .outputs(OreDictUnifier.get(OrePrefix.ingot, stack[2].material, (int) stack[2].amount))
+                .buildAndRegister();
         }
 
         for (MaterialStack stack : solderingList) {

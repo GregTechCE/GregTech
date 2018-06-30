@@ -49,7 +49,7 @@ public class SteamSolarBoiler extends SteamBoiler {
     @Override
     protected ModularUI createUI(EntityPlayer entityPlayer) {
         return createUITemplate(entityPlayer)
-            .widget(100, new ProgressWidget(() -> checkCanSeeSun() ? 1.0 : 0.0, 115, 34, 20, 20)
+            .widget(new ProgressWidget(() -> checkCanSeeSun() ? 1.0 : 0.0, 115, 34, 20, 20)
                 .setProgressBar(getGuiTexture("boiler_sun"),
                     getGuiTexture("boiler_sun_active"), MoveType.HORIZONTAL))
             .build(getHolder(), entityPlayer);

@@ -7,6 +7,7 @@ import gregtech.api.recipes.builders.*;
 import gregtech.api.recipes.machines.*;
 import gregtech.api.recipes.recipes.PrimitiveBlastFurnaceRecipe;
 import stanhebben.zenscript.annotations.ZenClass;
+import stanhebben.zenscript.annotations.ZenMethod;
 import stanhebben.zenscript.annotations.ZenProperty;
 
 import java.util.ArrayList;
@@ -659,7 +660,12 @@ public class RecipeMaps {
     /**
      * Create recipes via {@link gregtech.api.recipes.builders.PBFRecipeBuilder}
      */
-    public static final List<PrimitiveBlastFurnaceRecipe> PRIMITIVE_BLAST_FURNACE_RECIPES = new ArrayList<>();
+    @ZenProperty public static final List<PrimitiveBlastFurnaceRecipe> PRIMITIVE_BLAST_FURNACE_RECIPES = new ArrayList<>();
 
+    @ZenMethod
+    @Deprecated
+    public static List<PrimitiveBlastFurnaceRecipe> getPrimitiveBlastFurnaceRecipes() {
+        return PRIMITIVE_BLAST_FURNACE_RECIPES;
+    }
 
 }

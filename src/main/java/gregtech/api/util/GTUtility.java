@@ -21,6 +21,7 @@ import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.ai.attributes.IAttribute;
 import net.minecraft.init.MobEffects;
 import net.minecraft.inventory.EntityEquipmentSlot;
+import net.minecraft.inventory.Slot;
 import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -157,6 +158,57 @@ public class GTUtility {
             //should be impossible, actually
             throw new RuntimeException(exception);
         }
+    }
+
+    /**
+     * Attempts to merge given ItemStack with ItemStacks in slot list supplied
+     * If it's not possible to merge it fully, it will attempt to insert it into first empty slots
+     */
+    public static boolean mergeItemStack(ItemStack itemStack, List<Slot> slots) {
+        if(itemStack.isEmpty())
+            return false; //if we are merging empty stack, return
+
+        boolean merged = false;
+        //iterate non-empty slots first
+        //to try to insert stack into them
+        for(Slot slot : slots) {
+            if(!slot.isItemValid(itemStack))
+                continue; //if itemstack cannot be placed into that slot, continue
+            ItemStack stackInSlot = slot.getStack();
+            if(!ItemStack.areItemsEqual(itemStack, stackInSlot) ||
+                !ItemStack.areItemStackTagsEqual(itemStack, stackInSlot))
+                continue; //if itemstacks don't match, continue
+            int slotMaxStackSize = Math.min(stackInSlot.getMaxStackSize(), slot.getItemStackLimit(stackInSlot));
+            int amountToInsert = Math.min(itemStack.getCount(), slotMaxStackSize - stackInSlot.getCount());
+            if(amountToInsert == 0)
+                continue; //if we can't insert anything, continue
+            //shrink our stack, grow slot's stack and mark slot as changed
+            stackInSlot.grow(amountToInsert);
+            itemStack.shrink(amountToInsert);
+            slot.onSlotChanged();
+            merged = true;
+            if(itemStack.isEmpty())
+                return true; //if we inserted all items, return
+        }
+
+        //then try to insert itemstack into empty slots
+        //breaking it into pieces if needed
+        for(Slot slot : slots) {
+            if(!slot.isItemValid(itemStack))
+                continue; //if itemstack cannot be placed into that slot, continue
+            if(slot.getHasStack())
+                continue; //if slot contains something, continue
+            int amountToInsert = Math.min(itemStack.getCount(), slot.getItemStackLimit(itemStack));
+            if(amountToInsert == 0)
+                continue; //if we can't insert anything, continue
+            //split our stack and put result in slot
+            ItemStack stackInSlot = itemStack.splitStack(amountToInsert);
+            slot.putStack(stackInSlot);
+            merged = true;
+            if(itemStack.isEmpty())
+                return true; //if we inserted all items, return
+        }
+        return merged;
     }
 
     public static boolean isBlockOrePrefixed(IBlockAccess world, BlockPos pos, IBlockState blockState, OrePrefix targetPrefix, List<ItemStack> drops) {
