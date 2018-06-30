@@ -45,6 +45,13 @@ public class WireRecipeHandler {
             .EUt(6 * getVoltageMultiplier(material))
             .buildAndRegister();
 
+        RecipeMaps.WIREMILL_RECIPES.recipeBuilder()
+            .input(OrePrefix.ingot, material)
+            .outputs(OreDictUnifier.get(OrePrefix.wireGtSingle, material, 2))
+            .duration((int) material.getMass())
+            .EUt(getVoltageMultiplier(material))
+            .buildAndRegister();
+
         if (!material.hasFlag(MatFlags.NO_WORKING)) {
             ModHandler.addShapedRecipe(String.format("%s_wire_single", material),
                 OreDictUnifier.get(OrePrefix.wireGtSingle, material), "Xx",
