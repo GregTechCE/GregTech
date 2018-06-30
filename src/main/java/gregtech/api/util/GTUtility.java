@@ -297,16 +297,26 @@ public class GTUtility {
     public static boolean doDamageItem(ItemStack itemStack, int vanillaDamage, boolean simulate) {
         Item item = itemStack.getItem();
         if (item instanceof IDamagableItem) {
-            return ((IDamagableItem) item).doDamageToItem(itemStack, vanillaDamage, simulate);
+            //if item implements IDamagableItem, it manages it's own durability itself
+            IDamagableItem damagableItem = (IDamagableItem) item;
+            return damagableItem.doDamageToItem(itemStack, vanillaDamage, simulate);
+
         } else if (itemStack.hasCapability(IElectricItem.CAPABILITY_ELECTRIC_ITEM, null)) {
+            //if we're using electric item, use default energy multiplier for textures
             IElectricItem capability = itemStack.getCapability(IElectricItem.CAPABILITY_ELECTRIC_ITEM, null);
             int energyNeeded = vanillaDamage * ConfigHolder.energyUsageMultiplier;
-            return capability != null
-                && capability.canUse(energyNeeded)
-                && capability.discharge(energyNeeded, Integer.MAX_VALUE, true, false, simulate) == energyNeeded;
-        } else {
-            return false;
+            //noinspection ConstantConditions
+            return capability.discharge(energyNeeded, Integer.MAX_VALUE, true, false, simulate) == energyNeeded;
+
+        } else if (itemStack.isItemStackDamageable()) {
+            if (!simulate && itemStack.attemptDamageItem(vanillaDamage, new Random(), null)) {
+                //if we can't accept more damage, just shrink stack and mark it as broken
+                //actually we would play broken animation here, but we don't have an entity who holds item
+                itemStack.shrink(1);
+            }
+            return true;
         }
+        return false;
     }
 
     public static void writeItems(IItemHandler handler, String tagName, NBTTagCompound tag) {
