@@ -1,5 +1,8 @@
 package gregtech.api.util.world;
 
+import io.netty.util.collection.LongObjectHashMap;
+import io.netty.util.collection.LongObjectMap;
+import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.IChunkProvider;
@@ -9,6 +12,7 @@ import javax.annotation.Nullable;
 public class DummyChunkProvider implements IChunkProvider {
 
     private final World world;
+    private final LongObjectMap<Chunk> loadedChunks = new LongObjectHashMap<>();
 
     public DummyChunkProvider(World world) {
         this.world = world;
@@ -17,17 +21,25 @@ public class DummyChunkProvider implements IChunkProvider {
     @Nullable
     @Override
     public Chunk getLoadedChunk(int x, int z) {
-        return provideChunk(x, z);
+        return loadedChunks.get(ChunkPos.asLong(x, z));
     }
 
     @Override
     public Chunk provideChunk(int x, int z) {
-        return new Chunk(world, x, z);
+        long chunkKey = ChunkPos.asLong(x, z);
+        if(loadedChunks.containsKey(chunkKey))
+            return loadedChunks.get(chunkKey);
+        Chunk chunk = new Chunk(world, x, z);
+        loadedChunks.put(chunkKey, chunk);
+        return chunk;
     }
 
     @Override
     public boolean tick() {
-        return false;
+        for(Chunk chunk : loadedChunks.values()) {
+            chunk.onTick(false);
+        }
+        return loadedChunks.size() > 0;
     }
 
     @Override
@@ -37,6 +49,6 @@ public class DummyChunkProvider implements IChunkProvider {
 
     @Override
     public boolean isChunkGeneratedAt(int x, int z) {
-        return false;
+        return true;
     }
 }

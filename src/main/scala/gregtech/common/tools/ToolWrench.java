@@ -32,7 +32,7 @@ public class ToolWrench extends ToolBase {
     public boolean isMinableBlock(IBlockState blockState, ItemStack stack) {
         Block block = blockState.getBlock();
         String tool = block.getHarvestTool(blockState);
-        return tool != null && tool.equals("wrench")
+        return (tool != null && tool.equals("wrench"))
             || blockState.getMaterial() == Material.PISTON
             || block == Blocks.HOPPER
             || block == Blocks.DISPENSER

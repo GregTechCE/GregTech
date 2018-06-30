@@ -24,6 +24,13 @@ public class RenderUtil {
         GlStateManager.color(i / 255.0f, j / 255.0f, k / 255.0f, opacity / 255.0f);
     }
 
+    public static void setGlClearColorFromInt(int colorValue, int opacity) {
+        int i = (colorValue & 16711680) >> 16;
+        int j = (colorValue & 65280) >> 8;
+        int k = (colorValue & 255);
+        GlStateManager.clearColor(i / 255.0f, j / 255.0f, k / 255.0f, opacity / 255.0f);
+    }
+
     public static int getFluidColor(FluidStack fluidStack) {
         if(fluidStack.getFluid() == FluidRegistry.WATER)
             return 0x3094CF;

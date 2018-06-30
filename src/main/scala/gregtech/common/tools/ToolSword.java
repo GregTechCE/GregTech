@@ -36,7 +36,7 @@ public class ToolSword extends ToolBase {
     @Override
     public boolean isMinableBlock(IBlockState block, ItemStack stack) {
         String tool = block.getBlock().getHarvestTool(block);
-        return tool != null && tool.equals("sword") ||
+        return (tool != null && tool.equals("sword")) ||
             block.getMaterial() == Material.LEAVES ||
             block.getMaterial() == Material.GOURD ||
             block.getMaterial() == Material.VINE ||

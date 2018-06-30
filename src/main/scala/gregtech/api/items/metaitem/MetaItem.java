@@ -454,7 +454,7 @@ public abstract class MetaItem<T extends MetaItem<?>.MetaValueItem> extends Item
     public ModularUI createUI(PlayerInventoryHolder holder, EntityPlayer entityPlayer) {
         ItemStack itemStack = holder.getCurrentItem();
         T metaValueItem = getItem(itemStack);
-        ItemUIFactory uiFactory = metaValueItem == null ? metaValueItem.getUIManager() : null;
+        ItemUIFactory uiFactory = metaValueItem == null ? null : metaValueItem.getUIManager();
         return uiFactory == null ? null : uiFactory.createUI(holder, entityPlayer);
     }
 

@@ -32,7 +32,7 @@ public class ToolShovel extends ToolBase {
     @Override
     public boolean isMinableBlock(IBlockState block, ItemStack stack) {
         String tool = block.getBlock().getHarvestTool(block);
-        return tool != null && tool.equals("shovel") ||
+        return (tool != null && tool.equals("shovel")) ||
             block.getMaterial() == Material.SAND ||
             block.getMaterial() == Material.GRASS ||
             block.getMaterial() == Material.GROUND ||

@@ -1,8 +1,10 @@
 package gregtech.common.tools;
 
+import net.minecraft.block.BlockQuartz;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.enchantment.Enchantment;
+import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 
@@ -27,7 +29,7 @@ public class ToolPickaxe extends ToolBase {
     @Override
     public boolean isMinableBlock(IBlockState block, ItemStack stack) {
         String tool = block.getBlock().getHarvestTool(block);
-        return tool != null && tool.equals("pickaxe") ||
+        return (tool != null && tool.equals("pickaxe")) ||
             block.getMaterial() == Material.ROCK ||
             block.getMaterial() == Material.IRON ||
             block.getMaterial() == Material.ANVIL ||
