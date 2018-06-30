@@ -14,6 +14,7 @@ import gregtech.api.unification.material.type.Material;
 import gregtech.api.unification.material.type.SolidMaterial;
 import gregtech.api.unification.stack.SimpleItemStack;
 import gregtech.api.util.GTUtility;
+import gregtech.common.ConfigHolder;
 import gregtech.common.items.MetaItems;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.resources.I18n;
@@ -319,26 +320,29 @@ public class ToolMetaItem<T extends ToolMetaItem<?>.MetaToolValueItem> extends M
     @Override
     public boolean doDamageToItem(ItemStack stack, int vanillaDamage, boolean simulate) {
         IElectricItem capability = stack.getCapability(IElectricItem.CAPABILITY_ELECTRIC_ITEM, null);
-        if(!simulate) {
-            if(capability == null) {
-                boolean canDamageItem = setInternalDamage(stack, getInternalDamage(stack) + vanillaDamage);
-                if(!canDamageItem) {
-                    //if this tool is not electric one, and we cannot apply damage to it,
-                    //break it by just reducing stack size
-                    stack.shrink(1);
-                }
-            } else {
-                capability.discharge(vanillaDamage, capability.getTier(), true, false, false);
-                boolean canDamageItem = setInternalDamage(stack, getInternalDamage(stack) + Math.max(1, vanillaDamage / 10));
-                if(!canDamageItem) {
-                    //if we can't damage electric tool, swap it with tool parts item and clear tool stats tag
-                    //but keep CraftingComponents for it to work
-                    GTUtility.setItem(stack, MetaItems.TOOL_PARTS_BOX.getStackForm());
-                    stack.removeSubCompound("GT.ToolStats");
-                }
+        if (capability == null) {
+            int newDamageValue = getInternalDamage(stack) + vanillaDamage * 10;
+            if(!simulate && !setInternalDamage(stack, newDamageValue)) {
+                stack.shrink(1);
             }
+            //non-electric tools are always damagable, and just break in case
+            //they don't have enough durability left
+            return true;
+        } else {
+            int energyAmount = ConfigHolder.energyUsageMultiplier * vanillaDamage;
+            if(capability.discharge(energyAmount, capability.getTier(), true, false, true) < energyAmount) {
+                //if we can't discharge full amount of energy, just return false
+                //and don't attempt to discharge left amount of energy
+                return false;
+            }
+            capability.discharge(energyAmount, capability.getTier(), true, false, simulate);
+            int newDamageValue = getInternalDamage(stack) + vanillaDamage;
+            if (!simulate && !setInternalDamage(stack, newDamageValue)) {
+                GTUtility.setItem(stack, MetaItems.TOOL_PARTS_BOX.getStackForm());
+                stack.removeSubCompound("GT.ToolStats");
+            }
+            return true;
         }
-        return true;
     }
 
     @Override
@@ -454,7 +458,7 @@ public class ToolMetaItem<T extends ToolMetaItem<?>.MetaToolValueItem> extends M
         if (metaToolValueItem != null) {
             SolidMaterial toolMaterial = getPrimaryMaterial(itemStack);
             if (toolMaterial != null) {
-                return (int) (toolMaterial.toolDurability * metaToolValueItem.getToolStats().getMaxDurabilityMultiplier(itemStack));
+                return (int) (toolMaterial.toolDurability * metaToolValueItem.getToolStats().getMaxDurabilityMultiplier(itemStack) * 10);
             }
         }
         return 0;

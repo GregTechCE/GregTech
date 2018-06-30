@@ -74,7 +74,7 @@ public final class ModularUI {
         private ImmutableBiMap.Builder<Integer, Widget> widgets = ImmutableBiMap.builder();
         private TextureArea background;
         private int width, height;
-        private int nextFreeWidgetId = 1000;
+        private int nextFreeWidgetId = 0;
 
         public Builder(TextureArea background, int width, int height) {
             Preconditions.checkNotNull(background);
@@ -84,7 +84,9 @@ public final class ModularUI {
         }
 
         public Builder widget(Widget widget) {
-            return widget(nextFreeWidgetId++, widget);
+            Preconditions.checkNotNull(widget);
+            widgets.put(nextFreeWidgetId++, widget);
+            return this;
         }
 
         public Builder label(int x, int y, String localizationKey) {
@@ -99,20 +101,12 @@ public final class ModularUI {
             return widget(new ImageWidget(x, y, width, height, area));
         }
 
-        public Builder dynamicLabel(int x, int y, Supplier<String> text) {
-            return widget(new DynamicLabelWidget(x, y, text));
-        }
-
         public Builder dynamicLabel(int x, int y, Supplier<String> text, int color) {
             return widget(new DynamicLabelWidget(x, y, text, color));
         }
 
         public Builder slot(IItemHandlerModifiable itemHandler, int slotIndex, int x, int y, TextureArea... overlays) {
             return widget(new SlotWidget(itemHandler, slotIndex, x, y).setBackgroundTexture(overlays));
-        }
-
-        public Builder tank(IFluidTank fluidTank, int x, int y, int width, int height, TextureArea... backgrounds) {
-            return widget(new TankWidget(fluidTank, x, y, width, height).setBackgroundTexture(backgrounds));
         }
 
         public Builder progressBar(DoubleSupplier progressSupplier, int x, int y, int width, int height, TextureArea texture, MoveType moveType) {
@@ -131,56 +125,42 @@ public final class ModularUI {
                 for(int y = 0; y < height; y++) {
                     this.widget(new SlotWidget(itemHandler, startIndex + height * y + x,
                         startX + 18 * x, startY + 18 * y,
-                        allowPutStack, allowTakeStack).setBackgroundTexture(backgrounds));
+                        allowTakeStack, allowPutStack).setBackgroundTexture(backgrounds));
                 }
             }
             return this;
         }
 
         public Builder bindPlayerInventory(InventoryPlayer inventoryPlayer) {
-            bindPlayerInventory(inventoryPlayer, nextFreeWidgetId, GuiTextures.SLOT);
-            nextFreeWidgetId += 36;
+            bindPlayerInventory(inventoryPlayer, GuiTextures.SLOT);
             return this;
         }
 
         public Builder bindPlayerInventory(InventoryPlayer inventoryPlayer, int startY) {
-            bindPlayerInventory(inventoryPlayer, nextFreeWidgetId, GuiTextures.SLOT, 8, startY);
-            nextFreeWidgetId += 36;
+            bindPlayerInventory(inventoryPlayer, GuiTextures.SLOT, 8, startY);
             return this;
         }
 
-        public Builder bindPlayerInventory(InventoryPlayer inventoryPlayer, TextureArea slotTexture) {
-            bindPlayerInventory(inventoryPlayer, nextFreeWidgetId, slotTexture);
-            nextFreeWidgetId += 36;
-            return this;
+        public Builder bindPlayerInventory(InventoryPlayer inventoryPlayer, TextureArea imageLocation) {
+            return bindPlayerInventory(inventoryPlayer, imageLocation, 8, 84);
         }
 
-        public Builder widget(int id, Widget widget) {
-            Preconditions.checkNotNull(widget);
-            widgets.put(id, widget);
-            return this;
-        }
-
-        public Builder bindPlayerInventory(InventoryPlayer inventoryPlayer, int startWidgetId, TextureArea imageLocation) {
-            return bindPlayerInventory(inventoryPlayer, startWidgetId, imageLocation, 8, 84);
-        }
-
-        public Builder bindPlayerInventory(InventoryPlayer inventoryPlayer, int startWidgetId, TextureArea imageLocation, int x, int y) {
+        public Builder bindPlayerInventory(InventoryPlayer inventoryPlayer, TextureArea imageLocation, int x, int y) {
             for (int row = 0; row < 3; row++) {
                 for (int col = 0; col < 9; col++) {
-                    this.widget(startWidgetId + col + (row + 1) * 9,
-                        new SlotWidget(new PlayerMainInvWrapper(inventoryPlayer), col + (row + 1) * 9, x + col * 18, y + row * 18)
-                            .setBackgroundTexture(imageLocation));
+                    this.widget(new SlotWidget(new PlayerMainInvWrapper(inventoryPlayer), col + (row + 1) * 9, x + col * 18, y + row * 18)
+                        .setBackgroundTexture(imageLocation)
+                        .markAsPlayerInventory());
                 }
             }
-            return bindPlayerHotbar(inventoryPlayer, startWidgetId, imageLocation, x, y + 58);
+            return bindPlayerHotbar(inventoryPlayer, imageLocation, x, y + 58);
         }
 
-        public Builder bindPlayerHotbar(InventoryPlayer inventoryPlayer, int startWidgetId, TextureArea imageLocation, int x, int y) {
+        public Builder bindPlayerHotbar(InventoryPlayer inventoryPlayer, TextureArea imageLocation, int x, int y) {
             for (int slot = 0; slot < 9; slot++) {
-                this.widget(startWidgetId + slot,
-                    new SlotWidget(new PlayerMainInvWrapper(inventoryPlayer), slot, x + slot * 18, y)
-                        .setBackgroundTexture(imageLocation));
+                this.widget(new SlotWidget(new PlayerMainInvWrapper(inventoryPlayer), slot, x + slot * 18, y)
+                    .setBackgroundTexture(imageLocation)
+                    .markAsPlayerInventory());
             }
             return this;
         }

@@ -58,7 +58,7 @@ public class SteamLavaBoiler extends SteamBoiler {
     @Override
     protected ModularUI createUI(EntityPlayer entityPlayer) {
         return createUITemplate(entityPlayer)
-            .widget(100, new TankWidget(lavaFluidTank, 108, 17, 11, 55)
+            .widget(new TankWidget(lavaFluidTank, 108, 17, 11, 55)
                 .setBackgroundTexture(getGuiTexture("bar_%s_empty")))
             .build(getHolder(), entityPlayer);
     }

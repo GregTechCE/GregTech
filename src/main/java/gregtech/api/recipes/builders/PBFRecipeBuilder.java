@@ -1,5 +1,12 @@
 package gregtech.api.recipes.builders;
 
+import crafttweaker.annotations.ZenRegister;
+import crafttweaker.api.item.IIngredient;
+import crafttweaker.api.item.IItemStack;
+import crafttweaker.api.minecraft.CraftTweakerMC;
+import gregtech.api.GTValues;
+import gregtech.api.recipes.CountableIngredient;
+import gregtech.api.recipes.crafttweaker.CTRecipeBuilder.CraftTweakerIngredientWrapper;
 import gregtech.api.recipes.recipes.PrimitiveBlastFurnaceRecipe;
 import gregtech.api.recipes.RecipeMaps;
 import gregtech.api.unification.material.type.Material;
@@ -9,11 +16,17 @@ import gregtech.api.util.GTLog;
 import gregtech.api.util.ValidationResult;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.Ingredient;
+import net.minecraftforge.common.crafting.CompoundIngredient;
+import net.minecraftforge.fml.common.Optional.Method;
 import net.minecraftforge.oredict.OreIngredient;
+import stanhebben.zenscript.annotations.ZenClass;
+import stanhebben.zenscript.annotations.ZenMethod;
 
+@ZenClass("mods.gregtech.recipe.PBFRecipeBuilder")
+@ZenRegister
 public class PBFRecipeBuilder {
 
-    private Ingredient input;
+    private CountableIngredient input;
     private ItemStack output;
 
     private int duration = -1;
@@ -22,30 +35,38 @@ public class PBFRecipeBuilder {
 	private PBFRecipeBuilder() {
 	}
 
+	@ZenMethod
 	public static PBFRecipeBuilder start() {
 		return new PBFRecipeBuilder();
 	}
 
-    public PBFRecipeBuilder input(Ingredient input) {
-        this.input = input;
+    public PBFRecipeBuilder input(Ingredient input, int amount) {
+        this.input = new CountableIngredient(input, amount);
         return this;
 	}
 
 	public PBFRecipeBuilder input(ItemStack itemStack) {
-	    this.input = Ingredient.fromStacks(itemStack);
+	    this.input = CountableIngredient.from(itemStack);
 	    return this;
     }
 
     public PBFRecipeBuilder input(OrePrefix orePrefix, Material material) {
-	    this.input = new OreIngredient(orePrefix.name() + material.toCamelCaseString());
+	    this.input = CountableIngredient.from(orePrefix, material);
 	    return this;
     }
 
+    public PBFRecipeBuilder input(OrePrefix orePrefix, Material material, int amount) {
+        this.input = CountableIngredient.from(orePrefix, material, amount);
+        return this;
+    }
+
+    @ZenMethod
     public PBFRecipeBuilder duration(int duration) {
         this.duration = duration;
         return this;
     }
 
+    @ZenMethod
     public PBFRecipeBuilder fuelAmount(int fuelAmount) {
         this.fuelAmount = fuelAmount;
         return this;
@@ -86,6 +107,7 @@ public class PBFRecipeBuilder {
 		return result;
 	}
 
+	@ZenMethod
 	public void buildAndRegister() {
 		ValidationResult<PrimitiveBlastFurnaceRecipe> result = build();
 
@@ -94,4 +116,17 @@ public class PBFRecipeBuilder {
             RecipeMaps.PRIMITIVE_BLAST_FURNACE_RECIPES.add(recipe);
 		}
 	}
+
+	@ZenMethod
+    @Method(modid = GTValues.MODID_CT)
+    public PBFRecipeBuilder input(IIngredient ingredient) {
+	    return input(new CraftTweakerIngredientWrapper(ingredient), ingredient.getAmount());
+    }
+
+    @ZenMethod
+    @Method(modid = GTValues.MODID_CT)
+    public PBFRecipeBuilder output(IItemStack itemStack) {
+	    return output(CraftTweakerMC.getItemStack(itemStack));
+    }
+
 }

@@ -267,7 +267,7 @@ public class SimpleMachineMetaTileEntity extends WorkableTieredMetaTileEntity {
     protected ModularUI.Builder createGuiTemplate(EntityPlayer player) {
         ModularUI.Builder builder = workable.recipeMap.createUITemplate(workable::getProgressPercent, importItems, exportItems, importFluids, exportFluids)
             .widget(new LabelWidget(5, 5, getMetaFullName()))
-            .widget(3, new DischargerSlotWidget(chargerInventory, 0, 79, 62)
+            .widget(new DischargerSlotWidget(chargerInventory, 0, 79, 62)
                 .setBackgroundTexture(GuiTextures.SLOT, GuiTextures.CHARGER_OVERLAY))
             .widget(new ImageWidget(79, 42, 18, 18, GuiTextures.INDICATOR_NO_ENERGY)
                 .setPredicate(workable::isHasNotEnoughEnergy))

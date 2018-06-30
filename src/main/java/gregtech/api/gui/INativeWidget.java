@@ -21,6 +21,11 @@ public interface INativeWidget {
     Slot allocateSlotHandle();
 
     /**
+     * @return true if this slot belongs to player inventory
+     */
+    boolean isPlayerInventorySlot();
+
+    /**
      * @return true when this slot is valid for shift clicking
      */
     boolean canMergeSlot(ItemStack stack);

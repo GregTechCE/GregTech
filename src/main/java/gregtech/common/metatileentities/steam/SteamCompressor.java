@@ -37,13 +37,13 @@ public class SteamCompressor extends SteamMetaTileEntity {
     @Override
     public ModularUI createUI(EntityPlayer player) {
         return createUITemplate(player)
-            .widget(101, new SlotWidget(this.importItems, 0, 53, 25)
+            .widget(new SlotWidget(this.importItems, 0, 53, 25)
                 .setBackgroundTexture(BRONZE_SLOT_BACKGROUND_TEXTURE, getFullGuiTexture("slot_%s_compressor_background")))
-            .widget(102, new ProgressWidget(workableHandler::getProgressPercent, 78, 23, 20, 18)
+            .widget(new ProgressWidget(workableHandler::getProgressPercent, 78, 23, 20, 18)
                 .setProgressBar(getFullGuiTexture("progress_bar_%s_compressor"),
                     getFullGuiTexture("progress_bar_%s_compressor_filled"),
                     MoveType.HORIZONTAL))
-            .widget(103, new SlotWidget(this.exportItems, 0, 107, 25, true, false)
+            .widget(new SlotWidget(this.exportItems, 0, 107, 25, true, false)
                 .setBackgroundTexture(BRONZE_SLOT_BACKGROUND_TEXTURE))
             .build(getHolder(), player);
     }

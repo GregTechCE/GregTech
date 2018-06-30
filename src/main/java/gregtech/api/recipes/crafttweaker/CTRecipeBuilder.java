@@ -130,7 +130,7 @@ public class CTRecipeBuilder {
         return this.backingBuilder.toString();
     }
 
-    protected static class CraftTweakerIngredientWrapper extends Ingredient {
+    public static class CraftTweakerIngredientWrapper extends Ingredient {
 
         private final IIngredient ingredient;
 

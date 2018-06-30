@@ -21,6 +21,7 @@ import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.ai.attributes.IAttribute;
 import net.minecraft.init.MobEffects;
 import net.minecraft.inventory.EntityEquipmentSlot;
+import net.minecraft.inventory.Slot;
 import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -159,6 +160,57 @@ public class GTUtility {
         }
     }
 
+    /**
+     * Attempts to merge given ItemStack with ItemStacks in slot list supplied
+     * If it's not possible to merge it fully, it will attempt to insert it into first empty slots
+     */
+    public static boolean mergeItemStack(ItemStack itemStack, List<Slot> slots) {
+        if(itemStack.isEmpty())
+            return false; //if we are merging empty stack, return
+
+        boolean merged = false;
+        //iterate non-empty slots first
+        //to try to insert stack into them
+        for(Slot slot : slots) {
+            if(!slot.isItemValid(itemStack))
+                continue; //if itemstack cannot be placed into that slot, continue
+            ItemStack stackInSlot = slot.getStack();
+            if(!ItemStack.areItemsEqual(itemStack, stackInSlot) ||
+                !ItemStack.areItemStackTagsEqual(itemStack, stackInSlot))
+                continue; //if itemstacks don't match, continue
+            int slotMaxStackSize = Math.min(stackInSlot.getMaxStackSize(), slot.getItemStackLimit(stackInSlot));
+            int amountToInsert = Math.min(itemStack.getCount(), slotMaxStackSize - stackInSlot.getCount());
+            if(amountToInsert == 0)
+                continue; //if we can't insert anything, continue
+            //shrink our stack, grow slot's stack and mark slot as changed
+            stackInSlot.grow(amountToInsert);
+            itemStack.shrink(amountToInsert);
+            slot.onSlotChanged();
+            merged = true;
+            if(itemStack.isEmpty())
+                return true; //if we inserted all items, return
+        }
+
+        //then try to insert itemstack into empty slots
+        //breaking it into pieces if needed
+        for(Slot slot : slots) {
+            if(!slot.isItemValid(itemStack))
+                continue; //if itemstack cannot be placed into that slot, continue
+            if(slot.getHasStack())
+                continue; //if slot contains something, continue
+            int amountToInsert = Math.min(itemStack.getCount(), slot.getItemStackLimit(itemStack));
+            if(amountToInsert == 0)
+                continue; //if we can't insert anything, continue
+            //split our stack and put result in slot
+            ItemStack stackInSlot = itemStack.splitStack(amountToInsert);
+            slot.putStack(stackInSlot);
+            merged = true;
+            if(itemStack.isEmpty())
+                return true; //if we inserted all items, return
+        }
+        return merged;
+    }
+
     public static boolean isBlockOrePrefixed(IBlockAccess world, BlockPos pos, IBlockState blockState, OrePrefix targetPrefix, List<ItemStack> drops) {
         for(ItemStack itemStack : drops) {
             OrePrefix orePrefix = OreDictUnifier.getPrefix(itemStack);
@@ -245,16 +297,26 @@ public class GTUtility {
     public static boolean doDamageItem(ItemStack itemStack, int vanillaDamage, boolean simulate) {
         Item item = itemStack.getItem();
         if (item instanceof IDamagableItem) {
-            return ((IDamagableItem) item).doDamageToItem(itemStack, vanillaDamage, simulate);
+            //if item implements IDamagableItem, it manages it's own durability itself
+            IDamagableItem damagableItem = (IDamagableItem) item;
+            return damagableItem.doDamageToItem(itemStack, vanillaDamage, simulate);
+
         } else if (itemStack.hasCapability(IElectricItem.CAPABILITY_ELECTRIC_ITEM, null)) {
+            //if we're using electric item, use default energy multiplier for textures
             IElectricItem capability = itemStack.getCapability(IElectricItem.CAPABILITY_ELECTRIC_ITEM, null);
             int energyNeeded = vanillaDamage * ConfigHolder.energyUsageMultiplier;
-            return capability != null
-                && capability.canUse(energyNeeded)
-                && capability.discharge(energyNeeded, Integer.MAX_VALUE, true, false, simulate) == energyNeeded;
-        } else {
-            return false;
+            //noinspection ConstantConditions
+            return capability.discharge(energyNeeded, Integer.MAX_VALUE, true, false, simulate) == energyNeeded;
+
+        } else if (itemStack.isItemStackDamageable()) {
+            if (!simulate && itemStack.attemptDamageItem(vanillaDamage, new Random(), null)) {
+                //if we can't accept more damage, just shrink stack and mark it as broken
+                //actually we would play broken animation here, but we don't have an entity who holds item
+                itemStack.shrink(1);
+            }
+            return true;
         }
+        return false;
     }
 
     public static void writeItems(IItemHandler handler, String tagName, NBTTagCompound tag) {

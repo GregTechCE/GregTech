@@ -2872,6 +2872,7 @@ gregtech.machine.fluid_tank.fluid=Contains %s mb of %s
 
 gregtech.recipe.total=Total: %d EU
 gregtech.recipe.eu=Usage: %d EU/t
+gregtech.recipe.eu_inverted=Generation: %d EU/t
 gregtech.recipe.duration=Duration: %.1f secs
 gregtech.recipe.amperage=Amperage: %d
 gregtech.recipe.not_consumed=Not consumed in process
