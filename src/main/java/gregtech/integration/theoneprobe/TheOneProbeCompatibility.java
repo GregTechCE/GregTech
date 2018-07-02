@@ -1,5 +1,7 @@
 package gregtech.integration.theoneprobe;
 
+import gregtech.integration.theoneprobe.provider.ElectricContainerInfoProvider;
+import gregtech.integration.theoneprobe.provider.WorkableInfoProvider;
 import mcjty.theoneprobe.TheOneProbe;
 import mcjty.theoneprobe.api.ITheOneProbe;
 

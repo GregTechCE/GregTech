@@ -1,4 +1,4 @@
-package gregtech.integration.jei;
+package gregtech.integration.jei.utils;
 
 import mezz.jei.api.ISubtypeRegistry.ISubtypeInterpreter;
 import net.minecraft.item.ItemStack;

@@ -9,6 +9,10 @@ import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.recipes.RecipeMap;
 import gregtech.common.items.MetaItems;
 import gregtech.common.metatileentities.MetaTileEntities;
+import gregtech.integration.jei.multiblock.MultiblockInfoCategory;
+import gregtech.integration.jei.recipe.GTRecipeWrapper;
+import gregtech.integration.jei.recipe.RecipeMapCategory;
+import gregtech.integration.jei.utils.MetaItemSubtype;
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.IModRegistry;
 import mezz.jei.api.ISubtypeRegistry;
@@ -32,6 +36,7 @@ public class GTJeiPlugin implements IModPlugin {
 
     @Override
     public void registerCategories(IRecipeCategoryRegistration registry) {
+        registry.addRecipeCategories(new MultiblockInfoCategory(registry.getJeiHelpers()));
         for(RecipeMap<?> recipeMap : RecipeMap.getRecipeMaps()) {
             registry.addRecipeCategories(new RecipeMapCategory(recipeMap, registry.getJeiHelpers().getGuiHelper()));
         }
@@ -39,6 +44,7 @@ public class GTJeiPlugin implements IModPlugin {
 
     @Override
     public void register(IModRegistry registry) {
+        MultiblockInfoCategory.registerRecipes(registry);
         for(RecipeMap<?> recipeMap : RecipeMap.getRecipeMaps()) {
             List<GTRecipeWrapper> recipesList = recipeMap.getRecipeList()
                 .stream().filter(recipe -> !recipe.isHidden() && recipe.hasValidInputsForDisplay())
@@ -60,6 +66,5 @@ public class GTJeiPlugin implements IModPlugin {
         for(MetaTileEntity breweryTile : MetaTileEntities.BREWERY) {
             registry.addRecipeCatalyst(breweryTile.getStackForm(), VanillaRecipeCategoryUid.BREWING);
         }
-
     }
 }

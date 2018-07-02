@@ -1,4 +1,4 @@
-package gregtech.integration.jei;
+package gregtech.integration.jei.recipe;
 
 import gregtech.api.GTValues;
 import gregtech.api.capability.impl.FluidTankList;

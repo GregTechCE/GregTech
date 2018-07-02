@@ -1,4 +1,4 @@
-package gregtech.integration.theoneprobe;
+package gregtech.integration.theoneprobe.provider;
 
 import gregtech.api.capability.IWorkable;
 import mcjty.theoneprobe.api.ElementAlignment;

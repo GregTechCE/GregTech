@@ -237,7 +237,7 @@ public abstract class MetaTileEntity {
      */
     public boolean onRightClick(EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
         if(!playerIn.isSneaking() && openGUIOnRightClick()) {
-            if(!getWorld().isRemote) {
+            if(getWorld() != null && !getWorld().isRemote) {
                 MetaTileEntityUIFactory.INSTANCE.openUI(getHolder(), (EntityPlayerMP) playerIn);
             }
             return true;
@@ -589,7 +589,7 @@ public abstract class MetaTileEntity {
     public final void setOutputRedstoneSignal(EnumFacing side, int strength) {
         Preconditions.checkNotNull(side, "side");
         this.sidedRedstoneOutput[side.getIndex()] = strength;
-        if (!getWorld().isRemote) {
+        if (getWorld() != null && !getWorld().isRemote) {
             markDirty();
             writeCustomData(-3, buf -> {
                 buf.writeByte(side.getIndex());
@@ -601,7 +601,7 @@ public abstract class MetaTileEntity {
     public void setFrontFacing(EnumFacing frontFacing) {
         Preconditions.checkNotNull(frontFacing, "frontFacing");
         this.frontFacing = frontFacing;
-        if (!getWorld().isRemote) {
+        if (getWorld() != null && !getWorld().isRemote) {
             markDirty();
             writeCustomData(-1, buf -> buf.writeByte(frontFacing.getIndex()));
             mteTraits.forEach(trait -> trait.onFrontFacingSet(frontFacing));
@@ -610,7 +610,7 @@ public abstract class MetaTileEntity {
 
     public void setPaintingColor(int paintingColor) {
         this.paintingColor = paintingColor;
-        if (!getWorld().isRemote) {
+        if (getWorld() != null && !getWorld().isRemote) {
             markDirty();
             writeCustomData(-2, buf -> buf.writeInt(paintingColor));
         }

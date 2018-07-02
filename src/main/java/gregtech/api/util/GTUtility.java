@@ -14,6 +14,9 @@ import gregtech.api.unification.stack.MaterialStack;
 import gregtech.api.unification.stack.SimpleItemStack;
 import gregtech.common.ConfigHolder;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.FontRenderer;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EnumCreatureAttribute;
@@ -286,6 +289,18 @@ public class GTUtility {
             }
 
         }
+    }
+
+    @SideOnly(Side.CLIENT)
+    public static void drawCenteredSizedText(int x, int y, String string, int color, double sizeMultiplier) {
+        FontRenderer fontRenderer = Minecraft.getMinecraft().fontRenderer;
+        int textWidth = fontRenderer.getStringWidth(string);
+        int textHeight = fontRenderer.FONT_HEIGHT;
+        GlStateManager.pushMatrix();
+        GlStateManager.scale(sizeMultiplier, sizeMultiplier, 0.0);
+        GlStateManager.translate(-textWidth * sizeMultiplier / 2, -textHeight * sizeMultiplier / 2, 0);
+        fontRenderer.drawString(string, x, y, color);
+        GlStateManager.popMatrix();
     }
 
     /**

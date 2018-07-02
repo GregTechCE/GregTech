@@ -1,4 +1,4 @@
-package gregtech.integration.theoneprobe;
+package gregtech.integration.theoneprobe.provider;
 
 import mcjty.theoneprobe.api.IProbeHitData;
 import mcjty.theoneprobe.api.IProbeInfo;

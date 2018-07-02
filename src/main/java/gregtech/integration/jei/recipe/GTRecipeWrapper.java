@@ -1,4 +1,4 @@
-package gregtech.integration.jei;
+package gregtech.integration.jei.recipe;
 
 import codechicken.lib.util.ItemNBTUtils;
 import gnu.trove.map.TObjectIntMap;
@@ -89,7 +89,7 @@ public class GTRecipeWrapper implements IRecipeWrapper {
         int baseYPosition = 110;
         for(String propertyKey : recipe.getPropertyKeys()) {
             minecraft.fontRenderer.drawString(I18n.format("gregtech.recipe." + propertyKey,
-                recipe.getProperty(propertyKey)), 0, baseYPosition, 0x111111);
+                recipe.<Object>getProperty(propertyKey)), 0, baseYPosition, 0x111111);
             baseYPosition += 10;
         }
     }

@@ -112,7 +112,7 @@ public class MetaTileEntities {
     public static MetaTileEntityRotorHolder[] ROTOR_HOLDER = new MetaTileEntityRotorHolder[GTValues.V.length];
 
     //MULTIBLOCKS SECTION
-    public static MetaTileEntityPrimitiveBlastFurnace BRONZE_PRIMITIVE_BLAST_FURNACE;
+    public static MetaTileEntityPrimitiveBlastFurnace PRIMITIVE_BLAST_FURNACE;
     public static MetaTileEntityElectricBlastFurnace ELECTRIC_BLAST_FURNACE;
     public static MetaTileEntityVacuumFreezer VACUUM_FREEZER;
     public static MetaTileEntityImplosionCompressor IMPLOSION_COMPRESSOR;
@@ -396,7 +396,7 @@ public class MetaTileEntities {
             HULL[i] = metaTileEntity;
         }
 
-        BRONZE_PRIMITIVE_BLAST_FURNACE = GregTechAPI.registerMetaTileEntity(510, new MetaTileEntityPrimitiveBlastFurnace("primitive_blast_furnace.bronze"));
+        PRIMITIVE_BLAST_FURNACE = GregTechAPI.registerMetaTileEntity(510, new MetaTileEntityPrimitiveBlastFurnace("primitive_blast_furnace.bronze"));
         ELECTRIC_BLAST_FURNACE = GregTechAPI.registerMetaTileEntity(511, new MetaTileEntityElectricBlastFurnace("electric_blast_furnace"));
         VACUUM_FREEZER = GregTechAPI.registerMetaTileEntity(512, new MetaTileEntityVacuumFreezer("vacuum_freezer"));
         IMPLOSION_COMPRESSOR = GregTechAPI.registerMetaTileEntity(513, new MetaTileEntityImplosionCompressor("implosion_compressor"));
