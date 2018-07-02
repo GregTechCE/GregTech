@@ -43,6 +43,7 @@ public class MultiblockInfoRecipeWrapper implements IRecipeWrapper, SceneRenderC
     private ItemStack lastSelectedBlock;
     private int lastMouseX;
     private float rotationY = -45.0f;
+    private int framesBeforeDisappear = 0;
 
     public MultiblockInfoRecipeWrapper(MultiblockInfoPage infoPage) {
         this.infoPage = infoPage;
@@ -138,18 +139,19 @@ public class MultiblockInfoRecipeWrapper implements IRecipeWrapper, SceneRenderC
         }
         //only try selecting when mouse is inside selection border
         if(mouseX >= 0 && mouseY >= scenePosY && mouseX <= recipeWidth && mouseY <= scenePosY + sceneHeight) {
-            BlockPos pos = renderer.select(recipeLayout.getPosX(), recipeLayout.getPosY() + 40, recipeWidth, recipeWidth - 40);
+            BlockPos pos = renderer.select(recipeLayout.getPosX(), recipeLayout.getPosY() + scenePosY, recipeWidth, sceneHeight);
             if(pos != null) {
                 IBlockState blockState = renderer.world.getBlockState(pos);
                 RayTraceResult result = new RayTraceResult(Vec3d.ZERO, EnumFacing.UP, pos);
                 this.lastSelectedBlock = blockState.getBlock().getPickBlock(blockState, result, renderer.world, pos, minecraft.player);
-            } else this.lastSelectedBlock = null;
+                this.framesBeforeDisappear = 3;
+            }
             if(Mouse.isButtonDown(0)) {
                 int mouseDeltaX = mouseX - lastMouseX;
                 this.rotationY += mouseDeltaX * 2.0f;
             }
-
-        } else {
+        }
+        if(framesBeforeDisappear > 0 && --framesBeforeDisappear == 0) {
             this.lastSelectedBlock = null;
         }
         this.lastMouseX = mouseX;

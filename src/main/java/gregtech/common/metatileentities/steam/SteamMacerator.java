@@ -50,7 +50,7 @@ public class SteamMacerator extends SteamMetaTileEntity {
                 return recipe;
             }
             //recipes are guaranteed to have at least one output
-            ItemStack firstOutput = recipe.getOutputs().get(0);
+            ItemStack firstOutput = recipe.getOutputs().get(0).copy();
             firstOutput.setCount(firstOutput.getCount() / 2); //divide output amount by 2
             int recipeEUt = recipe.getEUt() / 2; //divide EU/t amount by 3
             int duration = recipe.getDuration() / 2; //also divide duration by 2 since we output less

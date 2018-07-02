@@ -78,15 +78,6 @@ public class WireRecipeHandler {
 
         if(isPaperInsulatedCable(material)) {
             ItemStack carpetStack = new ItemStack(Blocks.CARPET, cableAmount, EnumDyeColor.BLACK.getMetadata());
-            if(wirePrefix != OrePrefix.wireGtSingle) {
-                RecipeMaps.PACKER_RECIPES.recipeBuilder()
-                    .input(OrePrefix.wireGtSingle, material, cableAmount)
-                    .inputs(carpetStack)
-                    .outputs(cableStack)
-                    .duration(100).EUt(8)
-                    .buildAndRegister();
-            }
-
             RecipeMaps.PACKER_RECIPES.recipeBuilder()
                 .input(wirePrefix, material)
                 .inputs(carpetStack)
@@ -104,7 +95,7 @@ public class WireRecipeHandler {
         } else {
             if(wirePrefix != OrePrefix.wireGtSingle) {
                 RecipeMaps.ASSEMBLER_RECIPES.recipeBuilder()
-                    .input(OrePrefix.wireGtSingle, material, cableAmount).circuitMeta(24)
+                    .input(OrePrefix.wireGtSingle, material, cableAmount).circuitMeta(24 + ArrayUtils.indexOf(WIRE_DOUBLING_ORDER, wirePrefix))
                     .fluidInputs(Materials.Rubber.getFluid(144 * cableAmount))
                     .outputs(cableStack)
                     .duration(150).EUt(8)
