@@ -22,24 +22,12 @@ public class MultiblockInfoCategory implements IRecipeCategory<MultiblockInfoRec
 
     public static void registerRecipes(IModRegistry registry) {
         registry.addRecipes(Lists.newArrayList(
-            new MultiblockInfoRecipeWrapper(new PrimitiveBlastFurnaceInfo())
-        ), "gregtech:multiblock_info");
-        registry.addRecipes(Lists.newArrayList(
-            new MultiblockInfoRecipeWrapper(new VacuumFreezerInfo())
-        ), "gregtech:multiblock_info");
-        registry.addRecipes(Lists.newArrayList(
-            new MultiblockInfoRecipeWrapper(new ImplosionCompressorInfo())
-        ), "gregtech:multiblock_info");
-        registry.addRecipes(Lists.newArrayList(
-            new MultiblockInfoRecipeWrapper(new PyrolyzeOvenInfo())
-        ), "gregtech:multiblock_info");
-        registry.addRecipes(Lists.newArrayList(
-            new MultiblockInfoRecipeWrapper(new CrackerUnitInfo())
-        ), "gregtech:multiblock_info");
-        registry.addRecipes(Lists.newArrayList(
-            new MultiblockInfoRecipeWrapper(new DieselEngineInfo())
-        ), "gregtech:multiblock_info");
-        registry.addRecipes(Lists.newArrayList(
+            new MultiblockInfoRecipeWrapper(new PrimitiveBlastFurnaceInfo()),
+            new MultiblockInfoRecipeWrapper(new VacuumFreezerInfo()),
+            new MultiblockInfoRecipeWrapper(new ImplosionCompressorInfo()),
+            new MultiblockInfoRecipeWrapper(new PyrolyzeOvenInfo()),
+            new MultiblockInfoRecipeWrapper(new CrackerUnitInfo()),
+            new MultiblockInfoRecipeWrapper(new DieselEngineInfo()),
             new MultiblockInfoRecipeWrapper(new DistillationTowerInfo())
         ), "gregtech:multiblock_info");
     }
