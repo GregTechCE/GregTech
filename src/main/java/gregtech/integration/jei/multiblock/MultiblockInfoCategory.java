@@ -2,7 +2,7 @@ package gregtech.integration.jei.multiblock;
 
 import com.google.common.collect.Lists;
 import gregtech.api.GTValues;
-import gregtech.integration.jei.multiblock.infos.PrimitiveBlastFurnaceInfo;
+import gregtech.integration.jei.multiblock.infos.*;
 import mezz.jei.api.IJeiHelpers;
 import mezz.jei.api.IModRegistry;
 import mezz.jei.api.gui.IDrawable;
@@ -22,7 +22,13 @@ public class MultiblockInfoCategory implements IRecipeCategory<MultiblockInfoRec
 
     public static void registerRecipes(IModRegistry registry) {
         registry.addRecipes(Lists.newArrayList(
-            new MultiblockInfoRecipeWrapper(new PrimitiveBlastFurnaceInfo())
+            new MultiblockInfoRecipeWrapper(new PrimitiveBlastFurnaceInfo()),
+            new MultiblockInfoRecipeWrapper(new VacuumFreezerInfo()),
+            new MultiblockInfoRecipeWrapper(new ImplosionCompressorInfo()),
+            new MultiblockInfoRecipeWrapper(new PyrolyzeOvenInfo()),
+            new MultiblockInfoRecipeWrapper(new CrackerUnitInfo()),
+            new MultiblockInfoRecipeWrapper(new DieselEngineInfo()),
+            new MultiblockInfoRecipeWrapper(new DistillationTowerInfo())
         ), "gregtech:multiblock_info");
     }
 
