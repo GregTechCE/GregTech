@@ -8,6 +8,7 @@ import gregtech.api.recipes.RecipeMap;
 import gregtech.api.recipes.ingredients.IntCircuitIngredient;
 import gregtech.api.util.EnumValidationResult;
 import gregtech.api.util.GTLog;
+import gregtech.api.util.GTUtility;
 import gregtech.api.util.ValidationResult;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
@@ -41,8 +42,8 @@ public class IntCircuitRecipeBuilder extends RecipeBuilder<IntCircuitRecipeBuild
     }
 
     public IntCircuitRecipeBuilder circuitMeta(int circuitMeta) {
-        if (circuitMeta < 0) {
-            GTLog.logger.error("Integrated Circuit Metadata cannot be less than 0", new IllegalArgumentException()); // TODO cannot be more than what?
+        if (!GTUtility.isBetweenInclusive(0, 32, circuitMeta)) {
+            GTLog.logger.error("Integrated Circuit Metadata cannot be less than 0 and more than 32", new IllegalArgumentException());
             recipeStatus = EnumValidationResult.INVALID;
         }
         this.circuitMeta = circuitMeta;
