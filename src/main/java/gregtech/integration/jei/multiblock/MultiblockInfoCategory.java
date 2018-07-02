@@ -2,7 +2,7 @@ package gregtech.integration.jei.multiblock;
 
 import com.google.common.collect.Lists;
 import gregtech.api.GTValues;
-import gregtech.integration.jei.multiblock.infos.PrimitiveBlastFurnaceInfo;
+import gregtech.integration.jei.multiblock.infos.*;
 import mezz.jei.api.IJeiHelpers;
 import mezz.jei.api.IModRegistry;
 import mezz.jei.api.gui.IDrawable;
@@ -23,6 +23,24 @@ public class MultiblockInfoCategory implements IRecipeCategory<MultiblockInfoRec
     public static void registerRecipes(IModRegistry registry) {
         registry.addRecipes(Lists.newArrayList(
             new MultiblockInfoRecipeWrapper(new PrimitiveBlastFurnaceInfo())
+        ), "gregtech:multiblock_info");
+        registry.addRecipes(Lists.newArrayList(
+            new MultiblockInfoRecipeWrapper(new VacuumFreezerInfo())
+        ), "gregtech:multiblock_info");
+        registry.addRecipes(Lists.newArrayList(
+            new MultiblockInfoRecipeWrapper(new ImplossionCompressorInfo())
+        ), "gregtech:multiblock_info");
+        registry.addRecipes(Lists.newArrayList(
+            new MultiblockInfoRecipeWrapper(new PyrolyzeOvenInfo())
+        ), "gregtech:multiblock_info");
+        registry.addRecipes(Lists.newArrayList(
+            new MultiblockInfoRecipeWrapper(new CrackerUnitInfo())
+        ), "gregtech:multiblock_info");
+        registry.addRecipes(Lists.newArrayList(
+            new MultiblockInfoRecipeWrapper(new DieselEngineInfo())
+        ), "gregtech:multiblock_info");
+        registry.addRecipes(Lists.newArrayList(
+            new MultiblockInfoRecipeWrapper(new DistillationTowerInfo())
         ), "gregtech:multiblock_info");
     }
 
