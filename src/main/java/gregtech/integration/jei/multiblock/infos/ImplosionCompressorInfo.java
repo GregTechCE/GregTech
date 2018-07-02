@@ -14,7 +14,7 @@ import net.minecraft.util.EnumFacing;
 
 import java.util.List;
 
-public class ImplossionCompressorInfo extends MultiblockInfoPage {
+public class ImplosionCompressorInfo extends MultiblockInfoPage {
 
     @Override
     public MultiblockControllerBase getController() {
@@ -39,7 +39,7 @@ public class ImplossionCompressorInfo extends MultiblockInfoPage {
 
     @Override
     public String[] getDescription() {
-        return new String[] {I18n.format("gregtech.multiblock.implossion_compressor.description")};
+        return new String[] {I18n.format("gregtech.multiblock.implosion_compressor.description")};
     }
 
 }

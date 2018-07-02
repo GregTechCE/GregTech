@@ -28,7 +28,7 @@ public class MultiblockInfoCategory implements IRecipeCategory<MultiblockInfoRec
             new MultiblockInfoRecipeWrapper(new VacuumFreezerInfo())
         ), "gregtech:multiblock_info");
         registry.addRecipes(Lists.newArrayList(
-            new MultiblockInfoRecipeWrapper(new ImplossionCompressorInfo())
+            new MultiblockInfoRecipeWrapper(new ImplosionCompressorInfo())
         ), "gregtech:multiblock_info");
         registry.addRecipes(Lists.newArrayList(
             new MultiblockInfoRecipeWrapper(new PyrolyzeOvenInfo())
