@@ -30,7 +30,7 @@ public class PrimitiveBlastFurnaceInfo extends MultiblockInfoPage {
             .where('C', MetaTileEntities.PRIMITIVE_BLAST_FURNACE, EnumFacing.WEST)
             .where('#', Blocks.AIR.getDefaultState())
             .build();
-        return Lists.newArrayList(shapeInfo, shapeInfo);
+        return Lists.newArrayList(shapeInfo);
     }
 
     @Override

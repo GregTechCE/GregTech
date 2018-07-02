@@ -14,17 +14,13 @@ import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.glu.GLU;
-import org.lwjgl.util.vector.Matrix4f;
-import scala.util.control.Exception.By;
 
 import javax.vecmath.Vector3f;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
-import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 import java.util.ArrayList;
 import java.util.List;
@@ -183,7 +179,7 @@ public class WorldSceneRenderer {
             VIEWPORT_BUFFER.rewind();
             int mouseX = Mouse.getX();
             int mouseY = Mouse.getY();
-            GLU.gluPickMatrix(mouseX, mouseY, 2.0f, 2.0f, VIEWPORT_BUFFER);
+            GLU.gluPickMatrix(mouseX, mouseY, 3f, 3f, VIEWPORT_BUFFER);
         }
 
         float aspectRatio = width / (height * 1.0f);
@@ -220,9 +216,7 @@ public class WorldSceneRenderer {
 
         //if we're resetting from picking, reset render mode to render
         if(isPickingMode) {
-            int pickedNames = GL11.glRenderMode(GL11.GL_RENDER);
-            if(DEBUG_PICKING) System.out.println("Hits found: " + pickedNames);
-            return pickedNames;
+            return GL11.glRenderMode(GL11.GL_RENDER);
         }
         return 0;
     }

@@ -21,6 +21,7 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
+import org.lwjgl.input.Mouse;
 
 import javax.vecmath.Vector3f;
 import java.util.*;
@@ -40,6 +41,8 @@ public class MultiblockInfoRecipeWrapper implements IRecipeWrapper, SceneRenderC
     private GuiButton buttonNextPattern;
     private GuiButton nextLayerButton;
     private ItemStack lastSelectedBlock;
+    private int lastMouseX;
+    private float rotationY = -45.0f;
 
     public MultiblockInfoRecipeWrapper(MultiblockInfoPage infoPage) {
         this.infoPage = infoPage;
@@ -113,11 +116,11 @@ public class MultiblockInfoRecipeWrapper implements IRecipeWrapper, SceneRenderC
     public void preRenderScene(WorldSceneRenderer renderer) {
         Vector3f size = renderer.getSize();
         int layerIndex = getLayerIndex();
-        GlStateManager.translate(-size.x / 2.0f, -size.y / 2.0f, -size.z / 2.0f);
-        GlStateManager.rotate(-45.0f, 0.0f, 1.0f, 0.0f);
-        GlStateManager.scale(3.0, 3.0, 3.0);
         GlStateManager.translate(size.x / 2.0f, size.y / 2.0f, size.z / 2.0f);
-        GlStateManager.translate(0.5f, -3.5f, 0.0f);
+        GlStateManager.rotate(rotationY, 0.0f, 1.0f, 0.0f);
+        GlStateManager.scale(1.5, 1.5, 1.5);
+        GlStateManager.translate(-size.x / 2.0f, -size.y / 2.0f, -size.z / 2.0f);
+        GlStateManager.translate(-1.0f, -2.0f, 0.0f);
         if(layerIndex > 0) {
             GlStateManager.translate(0.0, -layerIndex, 0.0);
         }
@@ -136,12 +139,20 @@ public class MultiblockInfoRecipeWrapper implements IRecipeWrapper, SceneRenderC
         //only try selecting when mouse is inside selection border
         if(mouseX >= 0 && mouseY >= scenePosY && mouseX <= recipeWidth && mouseY <= scenePosY + sceneHeight) {
             BlockPos pos = renderer.select(recipeLayout.getPosX(), recipeLayout.getPosY() + 40, recipeWidth, recipeWidth - 40);
-            IBlockState blockState = renderer.world.getBlockState(pos);
-            RayTraceResult result = new RayTraceResult(Vec3d.ZERO, EnumFacing.UP, pos);
-            this.lastSelectedBlock = blockState.getBlock().getPickBlock(blockState, result, renderer.world, pos, minecraft.player);
+            if(pos != null) {
+                IBlockState blockState = renderer.world.getBlockState(pos);
+                RayTraceResult result = new RayTraceResult(Vec3d.ZERO, EnumFacing.UP, pos);
+                this.lastSelectedBlock = blockState.getBlock().getPickBlock(blockState, result, renderer.world, pos, minecraft.player);
+            } else this.lastSelectedBlock = null;
+            if(Mouse.isButtonDown(0)) {
+                int mouseDeltaX = mouseX - lastMouseX;
+                this.rotationY += mouseDeltaX * 2.0f;
+            }
+
         } else {
             this.lastSelectedBlock = null;
         }
+        this.lastMouseX = mouseX;
     }
 
     private void drawText(Minecraft minecraft, int recipeWidth) {
@@ -173,7 +184,7 @@ public class MultiblockInfoRecipeWrapper implements IRecipeWrapper, SceneRenderC
 
     @Override
     public List<String> getTooltipStrings(int mouseX, int mouseY) {
-        if(lastSelectedBlock != null && !lastSelectedBlock.isEmpty()) {
+        if(lastSelectedBlock != null && !lastSelectedBlock.isEmpty() && !Mouse.isButtonDown(0)) {
             Minecraft minecraft = Minecraft.getMinecraft();
             ITooltipFlag flag = minecraft.gameSettings.advancedItemTooltips ? TooltipFlags.ADVANCED : TooltipFlags.NORMAL;
             return lastSelectedBlock.getTooltip(minecraft.player, flag);
