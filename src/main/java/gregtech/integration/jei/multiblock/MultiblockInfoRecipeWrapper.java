@@ -17,10 +17,9 @@ import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.client.util.ITooltipFlag.TooltipFlags;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.RayTraceResult.Type;
 import org.lwjgl.input.Mouse;
 
 import javax.vecmath.Vector3f;
@@ -43,7 +42,6 @@ public class MultiblockInfoRecipeWrapper implements IRecipeWrapper, SceneRenderC
     private ItemStack lastSelectedBlock;
     private int lastMouseX;
     private float rotationY = -45.0f;
-    private int framesBeforeDisappear = 0;
 
     public MultiblockInfoRecipeWrapper(MultiblockInfoPage infoPage) {
         this.infoPage = infoPage;
@@ -139,21 +137,19 @@ public class MultiblockInfoRecipeWrapper implements IRecipeWrapper, SceneRenderC
         }
         //only try selecting when mouse is inside selection border
         if(mouseX >= 0 && mouseY >= scenePosY && mouseX <= recipeWidth && mouseY <= scenePosY + sceneHeight) {
-            BlockPos pos = renderer.select(recipeLayout.getPosX(), recipeLayout.getPosY() + scenePosY, recipeWidth, sceneHeight);
-            if(pos != null) {
+            RayTraceResult result = renderer.rayTraceFromMouse(
+                recipeLayout.getPosX(), recipeLayout.getPosY() + scenePosY, recipeWidth, sceneHeight);
+            if(result != null && result.typeOfHit == Type.BLOCK) {
+                BlockPos pos = result.getBlockPos();
                 IBlockState blockState = renderer.world.getBlockState(pos);
-                RayTraceResult result = new RayTraceResult(Vec3d.ZERO, EnumFacing.UP, pos);
                 this.lastSelectedBlock = blockState.getBlock().getPickBlock(blockState, result, renderer.world, pos, minecraft.player);
-                this.framesBeforeDisappear = 3;
-            }
+                System.out.println("Result " + result);
+            } else this.lastSelectedBlock = null;
             if(Mouse.isButtonDown(0)) {
                 int mouseDeltaX = mouseX - lastMouseX;
                 this.rotationY += mouseDeltaX * 2.0f;
             }
-        }
-        if(framesBeforeDisappear > 0 && --framesBeforeDisappear == 0) {
-            this.lastSelectedBlock = null;
-        }
+        } else this.lastSelectedBlock = null;
         this.lastMouseX = mouseX;
     }
 
@@ -209,6 +205,7 @@ public class MultiblockInfoRecipeWrapper implements IRecipeWrapper, SceneRenderC
             }
         }
         WorldSceneRenderer worldSceneRenderer = new WorldSceneRenderer(blockMap);
+        worldSceneRenderer.world.updateEntities();
         worldSceneRenderer.setRenderCallback(this);
         worldSceneRenderer.setRenderFilter(this::shouldDisplayBlock);
         return worldSceneRenderer;

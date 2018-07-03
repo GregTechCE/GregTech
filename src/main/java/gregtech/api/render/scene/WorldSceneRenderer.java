@@ -14,6 +14,8 @@ import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.util.math.Vec3d;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.glu.GLU;
@@ -21,6 +23,7 @@ import org.lwjgl.util.glu.GLU;
 import javax.vecmath.Vector3f;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
+import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 import java.util.ArrayList;
 import java.util.List;
@@ -30,15 +33,16 @@ import java.util.function.Predicate;
 
 public class WorldSceneRenderer {
 
-    private static final boolean DEBUG_PICKING = false;
-    private static final IntBuffer VIEWPORT_BUFFER = ByteBuffer.allocateDirect(4 * 4).order(ByteOrder.nativeOrder()).asIntBuffer();
-    private static final IntBuffer SELECTION_BUFFER = ByteBuffer.allocateDirect(32 * 4).order(ByteOrder.nativeOrder()).asIntBuffer();
+    private static final FloatBuffer MODELVIEW_MATRIX_BUFFER = ByteBuffer.allocateDirect(16 * 4).order(ByteOrder.nativeOrder()).asFloatBuffer();
+    private static final FloatBuffer PROJECTION_MATRIX_BUFFER = ByteBuffer.allocateDirect(16 * 4).order(ByteOrder.nativeOrder()).asFloatBuffer();
+    private static final IntBuffer VIEWPORT_BUFFER = ByteBuffer.allocateDirect(16 * 4).order(ByteOrder.nativeOrder()).asIntBuffer();
+    private static final FloatBuffer POSITION_NEAR_BUFFER = ByteBuffer.allocateDirect(3 * 4).order(ByteOrder.nativeOrder()).asFloatBuffer();
+    private static final FloatBuffer POSITION_FAR_BUFFER = ByteBuffer.allocateDirect(3 * 4).order(ByteOrder.nativeOrder()).asFloatBuffer();
 
     public final TrackedDummyWorld world = new TrackedDummyWorld();
     private final List<BlockPos> renderedBlocks = new ArrayList<>();
     private SceneRenderCallback renderCallback;
     private Predicate<BlockPos> renderFilter;
-
 
     public WorldSceneRenderer(Map<BlockPos, BlockInfo> renderedBlocks) {
         for(Entry<BlockPos, BlockInfo> renderEntry : renderedBlocks.entrySet()) {
@@ -63,6 +67,30 @@ public class WorldSceneRenderer {
         return world.getSize();
     }
 
+    public RayTraceResult rayTraceFromMouse(int x, int y, int width, int height) {
+        float windowMouseX = Mouse.getX();
+        float windowMouseY = Minecraft.getMinecraft().displayHeight - Mouse.getY();
+        setupCamera(x, y, width, height, -1);
+        GL11.glGetFloat(GL11.GL_PROJECTION_MATRIX, PROJECTION_MATRIX_BUFFER);
+        GL11.glGetFloat(GL11.GL_MODELVIEW_MATRIX, MODELVIEW_MATRIX_BUFFER);
+        GL11.glGetInteger(GL11.GL_VIEWPORT, VIEWPORT_BUFFER);
+        VIEWPORT_BUFFER.rewind();
+        PROJECTION_MATRIX_BUFFER.rewind();
+        MODELVIEW_MATRIX_BUFFER.rewind();
+
+        POSITION_NEAR_BUFFER.rewind();
+        POSITION_FAR_BUFFER.rewind();
+        GLU.gluUnProject(windowMouseX, windowMouseY, 0.0f, MODELVIEW_MATRIX_BUFFER, PROJECTION_MATRIX_BUFFER, VIEWPORT_BUFFER, POSITION_NEAR_BUFFER);
+        GLU.gluUnProject(windowMouseX, windowMouseY, 1.0f, MODELVIEW_MATRIX_BUFFER, PROJECTION_MATRIX_BUFFER, VIEWPORT_BUFFER, POSITION_FAR_BUFFER);
+        POSITION_NEAR_BUFFER.rewind();
+        POSITION_FAR_BUFFER.rewind();
+        Vec3d nearPosition = new Vec3d(POSITION_NEAR_BUFFER.get(), POSITION_NEAR_BUFFER.get(), POSITION_NEAR_BUFFER.get());
+        Vec3d farPosition = new Vec3d(POSITION_FAR_BUFFER.get(), POSITION_FAR_BUFFER.get(), POSITION_FAR_BUFFER.get());
+        resetCamera();
+        return world.rayTraceBlocks(nearPosition, farPosition);
+    }
+
+
     /**
      * Renders scene on given coordinates with given width and height, and RGB background color
      * Note that this will ignore any transformations applied currently to projection/view matrix,
@@ -70,35 +98,7 @@ public class WorldSceneRenderer {
      * It will return matrices of projection and view in previous state after rendering
      */
     public void render(int x, int y, int width, int height, int backgroundColor) {
-        renderInternal(x, y, width, height, backgroundColor, false);
-    }
-
-    /**
-     * Attempts to pick block on the mouse cursor, returning block position on
-     * successful hit and null if no hit was found
-     */
-    public BlockPos select(int x, int y, int width, int height) {
-        int hitRecords = renderInternal(x, y, width, height, 0xFFFFFF, true);
-        SELECTION_BUFFER.rewind();
-        int lastHitRecord = -1;
-        for(int i = 0; i < hitRecords; i++) {
-            if(DEBUG_PICKING) System.out.println("Hit record " + i);
-            int namesCount = SELECTION_BUFFER.get();
-            if(DEBUG_PICKING) System.out.println("Names amount: " + namesCount);
-            int minDepthValue = SELECTION_BUFFER.get();
-            int maxDepthValue = SELECTION_BUFFER.get();
-            if(DEBUG_PICKING) System.out.println("Depth values: " + minDepthValue + "-" + maxDepthValue);
-            for(int nameIndex = 0; nameIndex < namesCount; nameIndex++) {
-                int name = SELECTION_BUFFER.get();
-                if(DEBUG_PICKING) System.out.println("Hit name: " + name);
-                lastHitRecord = name;
-            }
-        }
-        return lastHitRecord == -1 ? null : renderedBlocks.get(lastHitRecord);
-    }
-
-    private int renderInternal(int x, int y, int width, int height, int backgroundColor, boolean isPickingMode) {
-        setupCamera(x, y, width, height, backgroundColor, isPickingMode);
+        setupCamera(x, y, width, height, backgroundColor);
         if(renderCallback != null) {
             renderCallback.preRenderScene(this);
         }
@@ -107,39 +107,20 @@ public class WorldSceneRenderer {
         BlockRendererDispatcher dispatcher = minecraft.getBlockRendererDispatcher();
         Tessellator tessellator = Tessellator.getInstance();
         BufferBuilder bufferBuilder = tessellator.getBuffer();
-        if(!isPickingMode) {
-            //if we're not in picking mode, buffer all draw calls into one
-            bufferBuilder.begin(GL11.GL_QUADS, DefaultVertexFormats.BLOCK);
-        }
 
-        for(int index = 0; index < renderedBlocks.size(); index++) {
-            BlockPos pos = renderedBlocks.get(index);
-            if(renderFilter != null && !renderFilter.test(pos))
+        bufferBuilder.begin(GL11.GL_QUADS, DefaultVertexFormats.BLOCK);
+        for (BlockPos pos : renderedBlocks) {
+            if (renderFilter != null && !renderFilter.test(pos))
                 continue; //do not render if position is skipped
             IBlockState blockState = world.getBlockState(pos);
-            if(isPickingMode) {
-                //if we're in picking mode, every block should get it's own draw call
-                //with it's name set to block position index
-                bufferBuilder.begin(GL11.GL_QUADS, DefaultVertexFormats.BLOCK);
-                GL11.glPushName(index);
-            }
             dispatcher.renderBlock(blockState, pos, world, bufferBuilder);
-            if(isPickingMode) {
-                //if we're in picking mode, every block should get it's own draw call
-                //with it's name set to block position index
-                tessellator.draw();
-                GL11.glPopName();
-            }
+        }
+        tessellator.draw();
 
-        }
-        if(!isPickingMode) {
-            //if we're not in picking mode, buffer all draw calls into one
-            tessellator.draw();
-        }
-        return resetCamera(isPickingMode);
+        resetCamera();
     }
 
-    public static void setupCamera(int x, int y, int width, int height, int skyColor, boolean isPickingMode) {
+    public static void setupCamera(int x, int y, int width, int height, int skyColor) {
         Minecraft mc = Minecraft.getMinecraft();
         ScaledResolution resolution = new ScaledResolution(mc);
 
@@ -157,7 +138,7 @@ public class WorldSceneRenderer {
         //setup viewport and clear GL buffers
         GlStateManager.viewport(windowX, windowY, windowWidth, windowHeight);
 
-        if(!isPickingMode) {
+        if(skyColor >= 0) {
             GL11.glEnable(GL11.GL_SCISSOR_TEST);
             GL11.glScissor(windowX, windowY, windowWidth, windowHeight);
             RenderUtil.setGlClearColorFromInt(skyColor, 255);
@@ -169,18 +150,6 @@ public class WorldSceneRenderer {
         GlStateManager.matrixMode(GL11.GL_PROJECTION);
         GlStateManager.pushMatrix();
         GlStateManager.loadIdentity();
-        //if we're picking, apply pick matrix before perspective
-        if (isPickingMode) {
-            VIEWPORT_BUFFER.rewind();
-            VIEWPORT_BUFFER.put(windowX);
-            VIEWPORT_BUFFER.put(windowY);
-            VIEWPORT_BUFFER.put(windowWidth);
-            VIEWPORT_BUFFER.put(windowHeight);
-            VIEWPORT_BUFFER.rewind();
-            int mouseX = Mouse.getX();
-            int mouseY = Mouse.getY();
-            GLU.gluPickMatrix(mouseX, mouseY, 3f, 3f, VIEWPORT_BUFFER);
-        }
 
         float aspectRatio = width / (height * 1.0f);
         GLU.gluPerspective(60.0f, aspectRatio, 0.1f, 10000.0f);
@@ -190,15 +159,9 @@ public class WorldSceneRenderer {
         GlStateManager.pushMatrix();
         GlStateManager.loadIdentity();
         GLU.gluLookAt(0.0f, 0.0f, -10.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f);
-
-        //if we're picking, bind selection buffer and set render mode to select
-        if (isPickingMode) {
-            GL11.glSelectBuffer(SELECTION_BUFFER);
-            GL11.glRenderMode(GL11.GL_SELECT);
-        }
     }
 
-    public static int resetCamera(boolean isPickingMode) {
+    public static void resetCamera() {
         //reset viewport
         Minecraft minecraft = Minecraft.getMinecraft();
         GlStateManager.viewport(0, 0, minecraft.displayWidth, minecraft.displayHeight);
@@ -213,12 +176,6 @@ public class WorldSceneRenderer {
 
         //reset attributes
         GlStateManager.popAttrib();
-
-        //if we're resetting from picking, reset render mode to render
-        if(isPickingMode) {
-            return GL11.glRenderMode(GL11.GL_RENDER);
-        }
-        return 0;
     }
     
     public class TrackedDummyWorld extends DummyWorld {
