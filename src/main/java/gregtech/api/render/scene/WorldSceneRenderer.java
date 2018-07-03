@@ -69,7 +69,7 @@ public class WorldSceneRenderer {
 
     public RayTraceResult rayTraceFromMouse(int x, int y, int width, int height) {
         float windowMouseX = Mouse.getX();
-        float windowMouseY = Minecraft.getMinecraft().displayHeight - Mouse.getY();
+        float windowMouseY = Mouse.getY();
         setupCamera(x, y, width, height, -1);
         GL11.glGetFloat(GL11.GL_PROJECTION_MATRIX, PROJECTION_MATRIX_BUFFER);
         GL11.glGetFloat(GL11.GL_MODELVIEW_MATRIX, MODELVIEW_MATRIX_BUFFER);
