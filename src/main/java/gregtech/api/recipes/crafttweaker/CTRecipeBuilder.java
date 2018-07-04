@@ -100,9 +100,8 @@ public class CTRecipeBuilder {
     }
 
     @ZenMethod
-    public CTRecipeBuilder fluidOutputs(IIngredient... ingredients) {
+    public CTRecipeBuilder fluidOutputs(ILiquidStack... ingredients) {
         this.backingBuilder.fluidOutputs(Arrays.stream(ingredients)
-            .map(s -> s.getLiquids().get(0))
             .map(CraftTweakerMC::getLiquidStack)
             .collect(Collectors.toList()));
         return this;
