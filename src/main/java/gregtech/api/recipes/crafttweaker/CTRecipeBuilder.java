@@ -2,6 +2,8 @@ package gregtech.api.recipes.crafttweaker;
 
 import crafttweaker.annotations.ZenRegister;
 import crafttweaker.api.item.IIngredient;
+import crafttweaker.api.item.IItemStack;
+import crafttweaker.api.liquid.ILiquidStack;
 import crafttweaker.api.minecraft.CraftTweakerMC;
 import gregtech.api.recipes.CountableIngredient;
 import gregtech.api.recipes.RecipeBuilder;
@@ -76,18 +78,16 @@ public class CTRecipeBuilder {
 
     //note that fluid input predicates are not supported
     @ZenMethod
-    public CTRecipeBuilder fluidInputs(IIngredient... ingredients) {
+    public CTRecipeBuilder fluidInputs(ILiquidStack... ingredients) {
         this.backingBuilder.fluidInputs(Arrays.stream(ingredients)
-            .map(s -> s.getLiquids().get(0))
             .map(CraftTweakerMC::getLiquidStack)
             .collect(Collectors.toList()));
         return this;
     }
 
     @ZenMethod
-    public CTRecipeBuilder outputs(IIngredient... ingredients) {
+    public CTRecipeBuilder outputs(IItemStack... ingredients) {
         this.backingBuilder.outputs(Arrays.stream(ingredients)
-            .map(s -> s.getItems().get(0))
             .map(CraftTweakerMC::getItemStack)
             .collect(Collectors.toList()));
         return this;
