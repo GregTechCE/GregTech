@@ -158,8 +158,7 @@ public class MultiblockInfoRecipeWrapper implements IRecipeWrapper, SceneRenderC
         GTUtility.drawCenteredSizedText(recipeWidth / 2, 0, localizedName, 0x333333, 1.3);
         FontRenderer fontRenderer = minecraft.fontRenderer;
         List<String> lines = Arrays.stream(infoPage.getDescription())
-            .map(s -> fontRenderer.wrapFormattedStringToWidth(s, recipeWidth))
-            .flatMap(s -> Arrays.stream(s.split("\n")))
+            .flatMap(s -> fontRenderer.listFormattedStringToWidth(s, recipeWidth).stream())
             .collect(Collectors.toList());
         for(int i = 0; i < lines.size(); i++) {
             String lineText = lines.get(i);
