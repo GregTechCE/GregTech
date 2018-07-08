@@ -29,36 +29,45 @@ public class RecipeMapFluidCanner extends RecipeMap<SimpleRecipeBuilder> {
         Recipe recipe = super.findRecipe(voltage, inputs, fluidInputs);
         if (inputs.size() == 0 || inputs.get(0).isEmpty() || recipe != null)
             return recipe;
-        ItemStack inputStack = inputs.get(0);
-        //we call inputStack.copy() because interacting with capability changes stack itself
-        IFluidHandlerItem fluidHandlerItem = inputStack.copy()
-            .getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY, null);
-        if(fluidHandlerItem != null) {
-            FluidStack containerFluid = fluidHandlerItem.drain(Integer.MAX_VALUE, true);
-            if(containerFluid != null) {
-                //if we actually drained something, then it's draining recipe
+
+        // Fail early if input isn't a fluid container
+        if (!inputs.get(0).hasCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY, null))
+            return null;
+
+        // Make a copy to use for creating recipes
+        ItemStack inputStack = inputs.get(0).copy();
+        inputStack.setCount(1);
+
+        // Make another copy to use for draining and filling
+        ItemStack fluidHandlerItemStack = inputStack.copy();
+        IFluidHandlerItem fluidHandlerItem = fluidHandlerItemStack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY, null);
+        if(fluidHandlerItem == null)
+            return null;
+
+        FluidStack containerFluid = fluidHandlerItem.drain(Integer.MAX_VALUE, true);
+        if(containerFluid != null) {
+            //if we actually drained something, then it's draining recipe
+            return recipeBuilder()
+                .inputs(inputStack)
+                .outputs(fluidHandlerItem.getContainer())
+                .fluidOutputs(containerFluid)
+                .duration(Math.max(16, containerFluid.amount / 64)).EUt(8)
+                .cannotBeBuffered()
+                .build().getResult();
+        }
+
+        //if we didn't drain anything, try filling container
+        if(!fluidInputs.isEmpty() && fluidInputs.get(0) != null) {
+            FluidStack inputFluid = fluidInputs.get(0).copy();
+            inputFluid.amount = fluidHandlerItem.fill(inputFluid, true);
+            if(inputFluid.amount > 0) {
                 return recipeBuilder()
                     .inputs(inputStack)
+                    .fluidInputs(inputFluid)
                     .outputs(fluidHandlerItem.getContainer())
-                    .fluidOutputs(containerFluid)
-                    .duration(Math.max(1, containerFluid.amount / 10)).EUt(8)
+                    .duration(Math.max(16, inputFluid.amount / 64)).EUt(8)
                     .cannotBeBuffered()
                     .build().getResult();
-            }
-            //if we didn't drain anything, try filling container
-            if(!fluidInputs.isEmpty() && fluidInputs.get(0) != null) {
-                FluidStack inputFluid = fluidInputs.get(0).copy();
-                inputFluid.amount = fluidHandlerItem.fill(inputFluid, true);
-                if(inputFluid.amount > 0) {
-                    return recipeBuilder()
-                        .inputs(inputStack)
-                        .fluidInputs(inputFluid)
-                        .outputs(fluidHandlerItem.getContainer())
-                        .duration(Math.max(1, inputFluid.amount / 10)).EUt(8)
-                        .cannotBeBuffered()
-                        .build().getResult();
-                }
-
             }
         }
         return null;
