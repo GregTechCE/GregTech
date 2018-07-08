@@ -2,7 +2,11 @@ package gregtech.common.blocks;
 
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.EntityLiving.SpawnPlacementType;
 import net.minecraft.util.IStringSerializable;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.IBlockAccess;
 
 public class BlockTurbineCasing extends VariantBlock<BlockTurbineCasing.TurbineCasingType> {
 
@@ -15,6 +19,12 @@ public class BlockTurbineCasing extends VariantBlock<BlockTurbineCasing.TurbineC
         setHarvestLevel("wrench", 2);
         setDefaultState(getState(TurbineCasingType.BRONZE_GEARBOX));
     }
+
+    @Override
+    public boolean canCreatureSpawn(IBlockState state, IBlockAccess world, BlockPos pos, SpawnPlacementType type) {
+        return false;
+    }
+
 
     public enum TurbineCasingType implements IStringSerializable {
 
@@ -37,7 +47,6 @@ public class BlockTurbineCasing extends VariantBlock<BlockTurbineCasing.TurbineC
         public String getName() {
             return this.name;
         }
-
     }
 
 }
