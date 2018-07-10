@@ -208,7 +208,7 @@ curseforge {
 
     apiKey = System.getenv('CURSE_API_KEY')
     project {
-        id = 'gregtechce'
+        id = '293327'
         changelog = file('CHANGELOG.md')
         changelogType = 'markdown'
         releaseType = 'alpha'
