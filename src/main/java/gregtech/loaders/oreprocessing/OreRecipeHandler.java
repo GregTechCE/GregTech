@@ -79,14 +79,14 @@ public class OreRecipeHandler {
             RecipeMaps.FORGE_HAMMER_RECIPES.recipeBuilder()
                 .input(orePrefix, material)
                 .outputs(crushedStack)
-                .duration(40).EUt(16)
+                .duration(40).EUt(6)
                 .buildAndRegister();
 
             RecipeBuilder<?> builder = RecipeMaps.MACERATOR_RECIPES.recipeBuilder()
                 .input(orePrefix, material)
                 .outputs(GTUtility.copyAmount(crushedStack.getCount() * 2, crushedStack))
                 .chancedOutput(byproductStack, 1000)
-                .duration(200).EUt(20);
+                .duration(200).EUt(12);
             for(MaterialStack secondaryMaterial : orePrefix.secondaryMaterials) {
                 if(secondaryMaterial.material instanceof DustMaterial) {
                     ItemStack dustStack = OreDictUnifier.getDust(secondaryMaterial);
@@ -119,13 +119,13 @@ public class OreRecipeHandler {
         RecipeMaps.FORGE_HAMMER_RECIPES.recipeBuilder()
             .input(crushedPrefix, material)
             .outputs(impureDustStack)
-            .duration(20).EUt(16)
+            .duration(20).EUt(8)
             .buildAndRegister();
 
         RecipeMaps.MACERATOR_RECIPES.recipeBuilder()
             .input(crushedPrefix, material)
             .outputs(impureDustStack)
-            .duration(100).EUt(24)
+            .duration(100).EUt(12)
             .chancedOutput(OreDictUnifier.get(OrePrefix.dust, byproductMaterial, material.byProductMultiplier), 1000)
             .buildAndRegister();
 
@@ -188,14 +188,14 @@ public class OreRecipeHandler {
         RecipeMaps.FORGE_HAMMER_RECIPES.recipeBuilder()
             .input(centrifugedPrefix, material)
             .outputs(dustStack)
-            .duration(20).EUt(16)
+            .duration(20).EUt(8)
             .buildAndRegister();
 
         RecipeMaps.MACERATOR_RECIPES.recipeBuilder()
             .input(centrifugedPrefix, material)
             .outputs(dustStack)
             .chancedOutput(byproductStack, 1000)
-            .duration(40).EUt(16)
+            .duration(40).EUt(12)
             .buildAndRegister();
 
         ModHandler.addShapelessRecipe(String.format("centrifuged_ore_to_dust_%s", material), dustStack,
@@ -213,7 +213,7 @@ public class OreRecipeHandler {
             .input(purifiedPrefix, material)
             .outputs(dustStack)
             .duration(20)
-            .EUt(16)
+            .EUt(8)
             .buildAndRegister();
 
         RecipeMaps.MACERATOR_RECIPES.recipeBuilder()
@@ -221,7 +221,7 @@ public class OreRecipeHandler {
             .outputs(dustStack)
             .chancedOutput(byproductStack, 1000)
             .duration(40)
-            .EUt(16)
+            .EUt(12)
             .buildAndRegister();
 
         ModHandler.addShapelessRecipe(String.format("purified_ore_to_dust_%s", material), dustStack,
