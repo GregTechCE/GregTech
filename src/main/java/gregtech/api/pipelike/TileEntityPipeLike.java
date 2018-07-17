@@ -1,7 +1,10 @@
 package gregtech.api.pipelike;
 
+import gregtech.api.block.machines.BlockMachine;
+import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.unification.material.type.Material;
-import mcp.MethodsReturnNonnullByDefault;
+import gregtech.api.worldobject.PipeNet;
+import gregtech.api.worldobject.WorldPipeNet;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
@@ -10,15 +13,16 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-public class TileEntityPipeLike<Q extends Enum<Q> & IBaseProperty & IStringSerializable, P extends ITileProperty, T extends ITilePipeLike<Q, P>, C> extends TileEntity implements ITilePipeLike<Q, P> {
+public class TileEntityPipeLike<Q extends Enum<Q> & IBaseProperty & IStringSerializable, P extends IPipeLikeTileProperty, C> extends TileEntity implements ITilePipeLike<Q, P> {
 
-    public final PipeLikeObjectFactory<Q, P, T, C> factory;
+    private PipeLikeObjectFactory<Q, P, C> factory;
 
     private IBlockState blockState;
     private Material material;
@@ -26,10 +30,22 @@ public class TileEntityPipeLike<Q extends Enum<Q> & IBaseProperty & IStringSeria
     private P tileProperty;
     private int color;
     private int internalConnections = 0;
+    private int renderMask = 0;
 
-    protected TileEntityPipeLike(PipeLikeObjectFactory<Q, P, T, C> factory) {
+    /**
+     * Dangerous constructor. Must set the {@link #factory} after initialized.
+     * Called by {@link TileEntity#create(World, NBTTagCompound)}
+     */
+    public TileEntityPipeLike(){}
+
+    protected TileEntityPipeLike(PipeLikeObjectFactory<Q, P, C> factory) {
         this.factory = factory;
         color = factory.getDefaultColor();
+    }
+
+    @Override
+    public PipeLikeObjectFactory<Q, P, C> getFactory() {
+        return factory;
     }
 
     protected IBlockState getBlockState() {
@@ -44,13 +60,13 @@ public class TileEntityPipeLike<Q extends Enum<Q> & IBaseProperty & IStringSeria
     @SuppressWarnings("unchecked")
     @Override
     public P getTileProperty() {
-        return tileProperty == null ? (tileProperty = ((BlockPipeLike<Q, P, T, C>) getBlockState().getBlock()).getActualProperty(getBaseProperty())) : tileProperty;
+        return tileProperty == null ? (tileProperty = ((BlockPipeLike<Q, P, C>) getBlockState().getBlock()).getActualProperty(getBaseProperty())) : tileProperty;
     }
 
     @SuppressWarnings("unchecked")
     @Override
     public Material getMaterial() {
-        return material == null ? (material = ((BlockPipeLike<Q, P, T, C>) getBlockState().getBlock()).material) : material;
+        return material == null ? (material = ((BlockPipeLike<Q, P, C>) getBlockState().getBlock()).material) : material;
     }
 
     @Override
@@ -66,21 +82,32 @@ public class TileEntityPipeLike<Q extends Enum<Q> & IBaseProperty & IStringSeria
     @Override
     public void setColor(int color) {
         this.color = color;
-        onConnectionUpdate();
+        updateRenderMask(false);
+        if (!world.isRemote) {
+            IBlockState blockState = getBlockState();
+            world.notifyBlockUpdate(pos, blockState, blockState, 0b00010);
+        }
+        updateNode();
+        markDirty();
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public void readFromNBT(NBTTagCompound compound) {
         super.readFromNBT(compound);
+        factory = PipeLikeObjectFactory.allFactories.get(compound.getString("factory"));
         color = compound.getInteger("color");
         internalConnections = compound.getInteger("internalConnections");
+        renderMask = compound.getInteger("renderMask");
     }
 
     @Override
     public NBTTagCompound writeToNBT(NBTTagCompound compound) {
         super.writeToNBT(compound);
+        compound.setString("factory", factory.name);
         compound.setInteger("color", color);
         compound.setInteger("internalConnections", internalConnections);
+        compound.setInteger("renderMask", renderMask);
         return compound;
     }
 
@@ -94,17 +121,34 @@ public class TileEntityPipeLike<Q extends Enum<Q> & IBaseProperty & IStringSeria
 
     @Override
     public void updateInternalConnection() {
+        /*int lastValue = internalConnections;
+        internalConnections = 0;
         //TODO Covers
-        //TODO Check active
+        lastValue ^= internalConnections;
+        if ((lastValue & 0b111111_111111_000000_000000) != 0) updateRenderMask();
+        if ((lastValue & 0b111111_000000_111111_111111) != 0) updateNode();
+        if ((lastValue & 0b111111_000000_000000_000000) != 0) markDirty();*/
     }
 
-    protected void onConnectionUpdate() {
-        if (!world.isRemote) {
-            factory.onConnectionUpdate(this, world, pos);
+    protected void updateRenderMask() {
+        updateRenderMask(true);
+    }
+
+    protected void updateRenderMask(boolean update) {
+        int lastValue = renderMask;
+        renderMask = factory.getRenderMask(this, world, pos);
+        lastValue ^= renderMask;
+
+        if (update && lastValue != 0 && !world.isRemote) {
             IBlockState blockState = getBlockState();
-            //send only tile entity sync packet
-            getWorld().notifyBlockUpdate(getPos(), blockState, blockState, 0b00010);
-            markDirty();
+            world.notifyBlockUpdate(pos, blockState, blockState, 0b00010);
+        }
+    }
+
+    protected void updateNode() {
+        if (!world.isRemote) {
+            PipeNet<Q, P, C> net = WorldPipeNet.getWorldPipeNet(world).getPipeNetFromPos(pos, factory);
+            if (net != null) net.updateNode(pos, this);
         }
     }
 
@@ -165,6 +209,13 @@ public class TileEntityPipeLike<Q extends Enum<Q> & IBaseProperty & IStringSeria
         BlockPos.MutableBlockPos pos = mutablePos.get();
         pos.move(facing);
         ICapabilityProvider result = world == null ? null : world.getTileEntity(pos);
+        if (result != null && color != factory.getDefaultColor()) {
+            MetaTileEntity mte = BlockMachine.getMetaTileEntity(world, pos);
+            if (mte != null && mte.getPaintingColor() != MetaTileEntity.DEFAULT_PAINTING_COLOR
+                && mte.getPaintingColor() != color) {
+                result = null;
+            }
+        }
         pos.move(facing.getOpposite());
         return result;
     }

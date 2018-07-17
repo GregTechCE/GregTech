@@ -1,5 +1,7 @@
 package gregtech.common.cable;
 
+import gregtech.common.pipelike.Insulation;
+import gregtech.common.pipelike.WireProperties;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 

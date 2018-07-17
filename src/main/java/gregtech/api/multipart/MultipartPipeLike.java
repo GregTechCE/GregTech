@@ -12,9 +12,13 @@ import codechicken.lib.vec.Translation;
 import codechicken.lib.vec.Vector3;
 import codechicken.lib.vec.uv.IconTransformation;
 import codechicken.multipart.*;
+import gregtech.api.block.machines.BlockMachine;
+import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.pipelike.*;
 import gregtech.api.render.PipeLikeRenderer;
 import gregtech.api.unification.material.type.Material;
+import gregtech.api.worldobject.PipeNet;
+import gregtech.api.worldobject.WorldPipeNet;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.entity.player.EntityPlayer;
@@ -38,32 +42,37 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class MultipartPipeLike<Q extends Enum<Q> & IBaseProperty & IStringSerializable, P extends ITileProperty, T extends ITilePipeLike<Q, P>, C> extends TMultiPart implements TNormalOcclusionPart, TPartialOcclusionPart, ITilePipeLike<Q, P> {
+public class MultipartPipeLike<Q extends Enum<Q> & IBaseProperty & IStringSerializable, P extends IPipeLikeTileProperty, C> extends TMultiPart implements TNormalOcclusionPart, TPartialOcclusionPart, ITilePipeLike<Q, P> {
 
-    public final PipeLikeObjectFactory<Q, P, T, C> factory;
+    private PipeLikeObjectFactory<Q, P, C> factory;
 
-    private BlockPipeLike<Q, P, T, C> block;
+    private BlockPipeLike<Q, P, C> block;
     private Q baseProperty;
     private P tileProperty;
     private int color;
-    private int internalConnection = 0;
+    private int internalConnections = 0;
     private int renderMask = 0;
 
     private Cuboid6 centerBox;
     private List<Cuboid6> sideBoxes = new ArrayList<>();
 
-    public MultipartPipeLike(PipeLikeObjectFactory<Q, P, T, C> factory) {
+    public MultipartPipeLike(PipeLikeObjectFactory<Q, P, C> factory) {
         this.factory = factory;
     }
 
     @SuppressWarnings("unchecked")
-    public MultipartPipeLike(PipeLikeObjectFactory<Q, P, T, C> factory, TileEntityPipeLike<Q, P, T, C> tile, IBlockState state) {
+    public MultipartPipeLike(PipeLikeObjectFactory<Q, P, C> factory, TileEntityPipeLike<Q, P, C> tile, IBlockState state) {
         this.factory = factory;
-        block = (BlockPipeLike<Q, P, T, C>) state.getBlock();
+        block = (BlockPipeLike<Q, P, C>) state.getBlock();
         baseProperty = state.getValue(block.getBaseProperty());
         tileProperty = block.getActualProperty(baseProperty);
-        color = tile.getColor();
+        color = tile != null ? tile.getColor() : factory.getDefaultColor();
         reinitShape();
+    }
+
+    @Override
+    public PipeLikeObjectFactory<Q, P, C> getFactory() {
+        return factory;
     }
 
     /////////////////////////////// BASE PROPERTIES ////////////////////////////////////////
@@ -73,7 +82,7 @@ public class MultipartPipeLike<Q extends Enum<Q> & IBaseProperty & IStringSerial
         tag.setString("material", block.material.toString());
         tag.setInteger("baseProperty", baseProperty.ordinal());
         tag.setInteger("color", color);
-        tag.setInteger("internalConnection", internalConnection);
+        tag.setInteger("internalConnections", internalConnections);
         tag.setInteger("renderMask", renderMask);
     }
 
@@ -83,7 +92,7 @@ public class MultipartPipeLike<Q extends Enum<Q> & IBaseProperty & IStringSerial
         baseProperty = factory.getBaseProperty(tag.getInteger("baseProperty"));
         tileProperty = block.getActualProperty(baseProperty);
         color = tag.getInteger("color");
-        internalConnection = tag.getInteger("internalConnection");
+        internalConnections = tag.getInteger("internalConnections");
         renderMask = tag.getInteger("renderMask");
         reinitShape();
     }
@@ -126,13 +135,15 @@ public class MultipartPipeLike<Q extends Enum<Q> & IBaseProperty & IStringSerial
     @Override
     public void setColor(int color) {
         this.color = color;
-        updateRenderMask(true);
-        onConnectionUpdate();
+        updateRenderMask(false);
+        if (!world().isRemote) sendDescUpdate();
+        updateNode();
+        notifyTile();
     }
 
     @Override
     public int getInternalConnections() {
-        return internalConnection;
+        return internalConnections;
     }
 
     ///////////////////////////////// ITEM DROPPED /////////////////////////////////////////
@@ -163,44 +174,60 @@ public class MultipartPipeLike<Q extends Enum<Q> & IBaseProperty & IStringSerial
         if (tile() == null || tile().isInvalid()) return;
 
         float thickness = baseProperty.getThickness();
-        int lastValue = internalConnection;
-        internalConnection = 0;
+        int lastValue = internalConnections;
+        internalConnections = 0;
         for (EnumFacing facing : EnumFacing.VALUES) {
-            if (tile().canReplacePart(this, new NormallyOccludedPart(PipeLikeObjectFactory.getSideBox(facing, thickness)))) {
-                internalConnection |= MASK_FORMAL_CONNECTION << facing.getIndex();
-            } else {
-                internalConnection |= (MASK_BLOCKED | MASK_INPUT_DISABLED | MASK_OUTPUT_DISABLED) << facing.getIndex();//TODO Covers
+            if (!tile().canReplacePart(this, new NormallyOccludedPart(PipeLikeObjectFactory.getSideBox(facing, thickness)))) {
+                internalConnections |= (MASK_BLOCKED | MASK_INPUT_DISABLED | MASK_OUTPUT_DISABLED) << facing.getIndex();//TODO Covers
             }
         }
 
-        lastValue ^= internalConnection;
-        if ((lastValue & 0b111111_111111_000000_000000) != 0) updateRenderMask(false);
-        if ((lastValue & 0b111111_000000_111111_111111) != 0) onConnectionUpdate();
-        //TODO Check active
+        lastValue ^= internalConnections;
+        if ((lastValue & 0b111111_111111_000000_000000) != 0) updateRenderMask();
+        if ((lastValue & 0b111111_000000_111111_111111) != 0) updateNode();
+        if ((lastValue & 0b111111_000000_000000_000000) != 0) notifyTile();
     }
 
-    protected void updateRenderMask(boolean update) {
+    protected void updateRenderMask() {
+        updateRenderMask(true);
+    }
+
+    protected void updateRenderMask(boolean sync) {
         if (tile() == null || tile().isInvalid() || world() == null) return;
 
         int lastValue = renderMask;
         renderMask = factory.getRenderMask(this, world(), pos());
         lastValue ^= renderMask;
 
-        if ((lastValue & 0b000000_111111) != 0) {
-            reinitSides();
-            update = true;
-        }
-        if (update && !world().isRemote) {
-            sendDescUpdate();
+        if ((lastValue & 0b000000_111111) != 0) reinitSides();
+        if (sync && lastValue != 0 && world() != null && !world().isRemote) sendDescUpdate();
+    }
+
+    protected void updateNode() {
+        World world = world();
+        if (world != null && !world.isRemote) {
+            PipeNet<Q, P, C> net = WorldPipeNet.getWorldPipeNet(world).getPipeNetFromPos(pos(), factory);
+            if (net != null) net.updateNode(pos(), this);
         }
     }
 
-    protected void onConnectionUpdate() {
+    protected void notifyTile() {
         World world = world();
-        if (world != null && !world.isRemote) {
-            factory.onConnectionUpdate(this, world, pos());
-            if (tile() != null) tile().notifyPartChange(this);
+        if (world != null && !world.isRemote && tile() != null) {
+            tile().notifyPartChange(this);
         }
+    }
+
+    @Override
+    public void onAdded() {
+        updateInternalConnection();
+        updateRenderMask(false);
+        WorldPipeNet.getWorldPipeNet(world()).addNodeToAdjacentOrNewNet(pos(), this, factory);
+    }
+
+    @Override
+    public void onRemoved() {
+        WorldPipeNet.getWorldPipeNet(world()).removeNodeFromNet(pos(), factory);
     }
 
     /////////////////////////////// COLLISION BOXES ////////////////////////////////////////
@@ -259,19 +286,13 @@ public class MultipartPipeLike<Q extends Enum<Q> & IBaseProperty & IStringSerial
         return true;
     }
 
+    @Override
+    public void onNeighborChanged() {
+        updateRenderMask();
+        updateNode();
+    }
+
     ///////////////////////////////// SYNCHRONIZE //////////////////////////////////////////
-
-    @Override
-    public void onAdded() {
-        super.onAdded();
-        updateInternalConnection();
-        //TODO attach into network
-    }
-
-    @Override
-    public void onRemoved() {
-        //TODO detach from network
-    }
 
     @Override
     public void onPartChanged(TMultiPart part) {
@@ -283,12 +304,6 @@ public class MultipartPipeLike<Q extends Enum<Q> & IBaseProperty & IStringSerial
     @Override
     public void scheduledTick() {
         updateInternalConnection();
-    }
-
-    @Override
-    public void onNeighborChanged() {
-        updateRenderMask(false);
-        scheduleTick(1);
     }
 
     @Override
@@ -336,6 +351,13 @@ public class MultipartPipeLike<Q extends Enum<Q> & IBaseProperty & IStringSerial
         pos.move(facing);
         World world = world();
         ICapabilityProvider result = world == null ? null : world.getTileEntity(pos);
+        if (result != null && color != factory.getDefaultColor()) {
+            MetaTileEntity mte = BlockMachine.getMetaTileEntity(world, pos);
+            if (mte != null && mte.getPaintingColor() != MetaTileEntity.DEFAULT_PAINTING_COLOR
+                && mte.getPaintingColor() != color) {
+                result = null;
+            }
+        }
         pos.move(facing.getOpposite());
         return result;
     }

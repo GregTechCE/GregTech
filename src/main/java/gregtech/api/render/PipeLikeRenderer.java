@@ -47,14 +47,14 @@ import java.util.Set;
 import static gregtech.api.render.MetaTileEntityRenderer.BLOCK_TRANSFORMS;
 
 @SuppressWarnings({"unchecked"})
-public abstract class PipeLikeRenderer<Q extends Enum<Q> & IBaseProperty & IStringSerializable, T extends ITilePipeLike<Q, ?>> implements ICCBlockRenderer, IItemRenderer, IModelParticleProvider {
+public abstract class PipeLikeRenderer<Q extends Enum<Q> & IBaseProperty & IStringSerializable> implements ICCBlockRenderer, IItemRenderer, IModelParticleProvider {
 
     public static int MASK_FORMAL_CONNECTION = 1;
     public static int MASK_RENDER_SIDE = 1 << 6;
 
-    private PipeLikeObjectFactory<Q, ?, T, ?> factory;
+    private PipeLikeObjectFactory<Q, ?, ?> factory;
 
-    protected PipeLikeRenderer(PipeLikeObjectFactory<Q, ?, T, ?> factory) {
+    protected PipeLikeRenderer(PipeLikeObjectFactory<Q, ?, ?> factory) {
         this.factory = factory;
     }
 
@@ -68,7 +68,7 @@ public abstract class PipeLikeRenderer<Q extends Enum<Q> & IBaseProperty & IStri
         GlStateManager.enableBlend();
         renderState.reset();
         renderState.startDrawing(GL11.GL_QUADS, DefaultVertexFormats.ITEM);
-        BlockPipeLike<Q, ?, T, ?> block = (BlockPipeLike<Q, ?, T, ?>) ((ItemBlock) stack.getItem()).getBlock();
+        BlockPipeLike<Q, ?, ?> block = (BlockPipeLike<Q, ?, ?>) ((ItemBlock) stack.getItem()).getBlock();
         Q baseProperty = block.getBaseProperties(stack);
         Material material = block.material;
         renderBlock(material, baseProperty, factory.getDefaultColor(), renderState, new IVertexOperation[0], ITEM_RENDER_MASK);
@@ -84,8 +84,8 @@ public abstract class PipeLikeRenderer<Q extends Enum<Q> & IBaseProperty & IStri
         IVertexOperation[] pipeline = {new Translation(pos)};
         renderState.setBrightness(world, pos);
 
-        BlockPipeLike<Q, ?, T, ?> block = (BlockPipeLike<Q, ?, T, ?>) state.getBlock();
-        T tile = factory.getTile(world, pos);
+        BlockPipeLike<Q, ?, ?> block = (BlockPipeLike<Q, ?, ?>) state.getBlock();
+        ITilePipeLike<Q, ?> tile = factory.getTile(world, pos);
         if(tile == null) return false;
         int paintingColor = tile.getColor();
         int connectedSidesMask = factory.getRenderMask(tile, world, pos);
@@ -108,7 +108,7 @@ public abstract class PipeLikeRenderer<Q extends Enum<Q> & IBaseProperty & IStri
         renderState.reset();
         renderState.bind(buffer);
         renderState.setPipeline(new Vector3(new Vec3d(pos)).translation(), new IconTransformation(sprite));
-        T tile = factory.getTile(world, pos);
+        ITilePipeLike<Q, ?> tile = factory.getTile(world, pos);
         if(tile == null) return;
         float thickness = tile.getBaseProperty().getThickness();
         int connectedSidesMask = factory.getRenderMask(tile, world, pos);
@@ -166,7 +166,7 @@ public abstract class PipeLikeRenderer<Q extends Enum<Q> & IBaseProperty & IStri
 
     @Override
     public Set<TextureAtlasSprite> getDestroyEffects(IBlockState state, IBlockAccess world, BlockPos pos) {
-        BlockPipeLike<Q, ?, T, ?> block = (BlockPipeLike<Q, ?, T, ?>) state.getBlock();
+        BlockPipeLike<Q, ?, ?> block = (BlockPipeLike<Q, ?, ?>) state.getBlock();
         return Collections.singleton(state.getValue(block.getBaseProperty()).isColorable() ? getDullTexture() : getBaseTexture(block.material.materialIconSet));
     }
 

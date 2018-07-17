@@ -29,7 +29,6 @@ import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.property.IUnlistedProperty;
-import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import sun.reflect.Reflection;
@@ -39,7 +38,7 @@ import java.util.Arrays;
 import java.util.Optional;
 import java.util.Random;
 
-public class BlockSurfaceRock extends Block {
+public class BlockSurfaceRock extends DelayedStateBlock {
 
     public final PropertyMaterial materialProperty;
 
@@ -53,16 +52,8 @@ public class BlockSurfaceRock extends Block {
         initBlockState();
     }
 
-    protected void initBlockState() {
-        BlockStateContainer stateContainer = createBlockState();
-        ObfuscationReflectionHelper.setPrivateValue(Block.class, this, stateContainer, 21); //this.stateContainer
-        setDefaultState(stateContainer.getBaseState());
-    }
-
     @Override
-    protected BlockStateContainer createBlockState() {
-        if(materialProperty == null)
-            return new BlockStateContainer(this);
+    protected BlockStateContainer createStateContainer() {
         return new BlockStateContainer(this, materialProperty) {
             @Override
             protected StateImplementation createState(Block block, ImmutableMap<IProperty<?>, Comparable<?>> properties, @Nullable ImmutableMap<IUnlistedProperty<?>, Optional<?>> unlistedProperties) {

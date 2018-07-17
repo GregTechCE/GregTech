@@ -1,6 +1,7 @@
 package gregtech.common.cable;
 
 import gregtech.common.cable.tile.TileEntityCable;
+import gregtech.common.pipelike.WireProperties;
 import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumParticleTypes;
@@ -23,9 +24,9 @@ public class RoutePath {
         newPath.path = new HashMap<>(path);
         newPath.destination = destination;
         for(WireProperties wireProperties : path.values()) {
-            newPath.minAmperage = Math.min(newPath.minAmperage, wireProperties.amperage);
-            newPath.minVoltage = Math.min(newPath.minVoltage, wireProperties.voltage);
-            newPath.totalLoss += wireProperties.lossPerBlock;
+            newPath.minAmperage = Math.min(newPath.minAmperage, wireProperties.getAmperage());
+            newPath.minVoltage = Math.min(newPath.minVoltage, wireProperties.getVoltage());
+            newPath.totalLoss += wireProperties.getLossPerBlock();
         }
         return newPath;
     }
@@ -35,7 +36,7 @@ public class RoutePath {
             return false;
         for(BlockPos blockPos : path.keySet()) {
             WireProperties wireProperties = path.get(blockPos);
-            if(voltage > wireProperties.voltage || amperage > wireProperties.amperage) {
+            if(voltage > wireProperties.getVoltage() || amperage > wireProperties.getAmperage()) {
                 TileEntity tileEntity = world.getTileEntity(blockPos);
                 if(!world.isRemote) {
                     ((WorldServer) world).spawnParticle(EnumParticleTypes.SMOKE_LARGE,

@@ -6,7 +6,8 @@ import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-public interface ITilePipeLike<Q extends Enum<Q> & IBaseProperty & IStringSerializable, P extends ITileProperty> extends ICoverableTile {
+public interface ITilePipeLike<Q extends Enum<Q> & IBaseProperty & IStringSerializable, P extends IPipeLikeTileProperty> extends ICoverableTile {
+    PipeLikeObjectFactory<Q, P, ?> getFactory();
     World getWorld();
     BlockPos getPos();
     Material getMaterial();
@@ -22,11 +23,17 @@ public interface ITilePipeLike<Q extends Enum<Q> & IBaseProperty & IStringSerial
 
     /**
      * @return bitmask for internal connection status, considering the affect of covers.
-     *          =  (side blocked, 6 bits)       << 18  * Prevent other tiles from connecting to this tile
-     *           | (formal connection, 6 bits)  << 12  * Show the side box of this tile for render and collision. Set by the covers.
-     *           | (input disabled, 6 bits)      << 6   * Disable network actions pass-in to this tile from certain side
-     *           | (output disabled, 6 bits)            * Disable network actions pass-out from this tile from certain side
+     *          =  (render mask, 6 bits)       << 18  * Prevent other tiles from connecting to this tile
+     *           | (formal connection, 6 bits)  << 12  * Forced to show the side box of this tile for render and collision. Set by the covers.
+     *           | (input disabled, 6 bits)      << 6  * Disable network actions pass-in to this tile from certain side
+     *           | (output disabled, 6 bits)           * Disable network actions pass-out from this tile from certain side
      */
     int getInternalConnections();
+
+    /**
+     * @return bitmask
+     *          = update connection
+     *          | notify neighbor change    << 1
+     */
     void updateInternalConnection();
 }

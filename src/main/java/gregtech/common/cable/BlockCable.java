@@ -13,6 +13,8 @@ import gregtech.common.cable.net.EnergyNet;
 import gregtech.common.cable.net.WorldENet;
 import gregtech.common.cable.tile.TileEntityCable;
 import gregtech.common.multipart.CableMultiPart;
+import gregtech.common.pipelike.Insulation;
+import gregtech.common.pipelike.WireProperties;
 import gregtech.common.render.CableRenderer;
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
@@ -271,10 +273,10 @@ public class BlockCable extends Block implements ITileEntityProvider {
         this.insulatedPropsCache = new WireProperties[insulationArray.length];
         for(int i = 0; i < insulationArray.length; i++) {
             Insulation insulation = insulationArray[i];
-            int totalAmperage = baseProps.amperage * insulation.amperage;
+            int totalAmperage = baseProps.getAmperage() * insulation.amperage;
             int minInsulationLoss = insulation.insulationLevel == -1 ? 1 : 0;
-            int totalLossPerBlock = Math.max(baseProps.lossPerBlock, minInsulationLoss) * insulation.lossMultiplier;
-            this.insulatedPropsCache[i] = new WireProperties(baseProps.voltage, totalAmperage, totalLossPerBlock);
+            int totalLossPerBlock = Math.max(baseProps.getLossPerBlock(), minInsulationLoss) * insulation.lossMultiplier;
+            this.insulatedPropsCache[i] = new WireProperties(baseProps.getVoltage(), totalAmperage, totalLossPerBlock);
         }
     }
 

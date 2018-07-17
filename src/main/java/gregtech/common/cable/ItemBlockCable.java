@@ -2,6 +2,8 @@ package gregtech.common.cable;
 
 import gregtech.api.GTValues;
 import gregtech.api.util.GTUtility;
+import gregtech.common.pipelike.Insulation;
+import gregtech.common.pipelike.WireProperties;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.item.ItemBlock;
@@ -39,9 +41,9 @@ public class ItemBlockCable extends ItemBlock {
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
         Insulation insulation = BlockCable.getInsulation(stack);
         WireProperties wireProperties = blockCable.getProperties(insulation);
-        String voltageName = GTValues.VN[GTUtility.getTierByVoltage(wireProperties.voltage)];
-        tooltip.add(I18n.format("gregtech.cable.voltage", wireProperties.voltage, voltageName));
-        tooltip.add(I18n.format("gregtech.cable.amperage", wireProperties.amperage));
-        tooltip.add(I18n.format("gregtech.cable.loss_per_block", wireProperties.lossPerBlock));
+        String voltageName = GTValues.VN[GTUtility.getTierByVoltage(wireProperties.getVoltage())];
+        tooltip.add(I18n.format("gregtech.cable.voltage", wireProperties.getVoltage(), voltageName));
+        tooltip.add(I18n.format("gregtech.cable.amperage", wireProperties.getAmperage()));
+        tooltip.add(I18n.format("gregtech.cable.loss_per_block", wireProperties.getLossPerBlock()));
     }
 }

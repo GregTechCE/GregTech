@@ -4,8 +4,10 @@ import codechicken.lib.raytracer.RayTracer;
 import codechicken.lib.render.particle.CustomParticleHandler;
 import codechicken.lib.vec.Cuboid6;
 import gregtech.api.unification.material.type.Material;
+import gregtech.api.worldobject.WorldPipeNet;
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
+import net.minecraft.block.SoundType;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.BlockStateContainer;
@@ -27,28 +29,36 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
+import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.List;
 
 @SuppressWarnings("deprecation")
-public class BlockPipeLike<Q extends Enum<Q> & IBaseProperty & IStringSerializable, P extends ITileProperty, T extends ITilePipeLike<Q, P>, C> extends Block implements ITileEntityProvider {
+public class BlockPipeLike<Q extends Enum<Q> & IBaseProperty & IStringSerializable, P extends IPipeLikeTileProperty, C> extends Block implements ITileEntityProvider {
 
-    public final PipeLikeObjectFactory<Q, P, T, C> factory;
+    public final PipeLikeObjectFactory<Q, P, C> factory;
     public final Material material;
     private P[] actualProperties;
 
-    protected BlockPipeLike(PipeLikeObjectFactory<Q, P, T, C> factory, net.minecraft.block.material.Material mcMaterial, Material material, P[] actualProperties) {
+    protected BlockPipeLike(PipeLikeObjectFactory<Q, P, C> factory, net.minecraft.block.material.Material mcMaterial, Material material, P[] actualProperties) {
         super(mcMaterial);
         this.factory = factory;
         this.material = material;
         this.actualProperties = actualProperties;
+        initBlockState();
     }
 
     public PropertyEnum<Q> getBaseProperty() {
         return factory.baseProperty;
+    }
+
+    @Override
+    public Block setSoundType(SoundType sound) {
+        return super.setSoundType(sound);
     }
 
     ///////////////////////// COLLISION AND BOUNDING BOXES /////////////////////////////////
@@ -87,8 +97,13 @@ public class BlockPipeLike<Q extends Enum<Q> & IBaseProperty & IStringSerializab
     }
 
     @Override
-    protected BlockStateContainer createBlockState() {
-        return new BlockStateContainer(this, factory.baseProperty);
+    protected final BlockStateContainer createBlockState() {
+        return new BlockStateContainer(this);
+    }
+
+    private void initBlockState() {
+        blockState = new BlockStateContainer(this, factory.baseProperty);
+        setDefaultState(blockState.getBaseState());
     }
 
     @Override
@@ -120,7 +135,7 @@ public class BlockPipeLike<Q extends Enum<Q> & IBaseProperty & IStringSerializab
 
     @Override
     public boolean recolorBlock(World world, BlockPos pos, EnumFacing side, @Nullable EnumDyeColor color) {
-        T tile = factory.getTile(world, pos);
+        ITilePipeLike<Q, P> tile = factory.getTile(world, pos);
         if(tile != null && world.getBlockState(pos).getValue(factory.baseProperty).isColorable()) {
             if (color == null) {
                 if (tile.getColor() != factory.getDefaultColor()) {
@@ -131,7 +146,6 @@ public class BlockPipeLike<Q extends Enum<Q> & IBaseProperty & IStringSerializab
                 tile.setColor(color.colorValue);
                 return true;
             }
-            return false;
         }
         return false;
     }
@@ -170,19 +184,22 @@ public class BlockPipeLike<Q extends Enum<Q> & IBaseProperty & IStringSerializab
     @Override
     public void breakBlock(World worldIn, BlockPos pos, IBlockState state) {
         super.breakBlock(worldIn, pos, state);
-        //TODO detach from network
+        WorldPipeNet.getWorldPipeNet(worldIn).removeNodeFromNet(pos, factory);
     }
 
     @Override
     public void onBlockAdded(World worldIn, BlockPos pos, IBlockState state) {
         super.onBlockAdded(worldIn, pos, state);
-        //TODO attach to network
+        WorldPipeNet.getWorldPipeNet(worldIn).addScheduledCheck(factory, pos);
     }
 
     @Override
     public void onNeighborChange(IBlockAccess world, BlockPos pos, BlockPos neighbor) {
         TileEntity tile = world.getTileEntity(pos);
-        if (tile instanceof TileEntityPipeLike) ((TileEntityPipeLike) tile).updateInternalConnection();
+        if (tile instanceof TileEntityPipeLike) {
+            ((TileEntityPipeLike) tile).updateRenderMask();
+            ((TileEntityPipeLike) tile).updateNode();
+        }
     }
 
     @Override

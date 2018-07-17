@@ -18,9 +18,9 @@ import gregtech.api.unification.material.type.Material;
 import gregtech.common.blocks.MetaBlocks;
 import gregtech.common.cable.BlockCable;
 import gregtech.common.cable.ICableTile;
-import gregtech.common.cable.Insulation;
-import gregtech.common.cable.WireProperties;
-import gregtech.common.cable.tile.CableEnergyContainer;
+import gregtech.common.pipelike.Insulation;
+import gregtech.common.pipelike.WireProperties;
+import gregtech.common.pipelike.CableEnergyContainer;
 import gregtech.common.cable.tile.TileEntityCable;
 import gregtech.common.render.CableRenderer;
 import net.minecraft.block.state.IBlockState;
@@ -66,7 +66,7 @@ public class CableMultiPart extends TMultiPart implements TNormalOcclusionPart, 
 
     public CableEnergyContainer getEnergyContainer() {
         if (energyContainer == null) {
-            this.energyContainer = new CableEnergyContainer(this);
+            //this.energyContainer = new CableEnergyContainer(this);
         }
         return energyContainer;
     }
@@ -263,7 +263,7 @@ public class CableMultiPart extends TMultiPart implements TNormalOcclusionPart, 
     @Override
     public void load(NBTTagCompound tag) {
         String materialName = tag.getString("CableMaterial");
-        this.cableBlock = MetaBlocks.CABLES.get(Material.MATERIAL_REGISTRY.getObject(materialName));
+        //this.cableBlock = MetaBlocks.CABLES.get(Material.MATERIAL_REGISTRY.getObject(materialName));
         this.insulation = Insulation.values()[tag.getInteger("Insulation")];
         this.insulationColor = tag.getInteger("InsulationColor");
         this.activeConnections = tag.getInteger("ActiveConnections");
@@ -283,7 +283,7 @@ public class CableMultiPart extends TMultiPart implements TNormalOcclusionPart, 
     @Override
     public void readDesc(MCDataInput packet) {
         String materialName = packet.readString();
-        this.cableBlock = MetaBlocks.CABLES.get(Material.MATERIAL_REGISTRY.getObject(materialName));
+        //this.cableBlock = MetaBlocks.CABLES.get(Material.MATERIAL_REGISTRY.getObject(materialName));
         this.insulation = packet.readEnum(Insulation.class);
         this.insulationColor = packet.readInt();
         this.activeConnections = packet.readInt();
@@ -326,9 +326,9 @@ public class CableMultiPart extends TMultiPart implements TNormalOcclusionPart, 
     public boolean renderStatic(Vector3 pos, BlockRenderLayer layer, CCRenderState ccrs) {
         TileMultipart tileMultipart = tile();
         ccrs.setBrightness(tileMultipart.getWorld(), tileMultipart.getPos());
-        CableRenderer.INSTANCE.renderCableBlock(cableBlock.material, insulation, insulationColor, ccrs,
+        /*CableRenderer.INSTANCE.renderCableBlock(cableBlock.material, insulation, insulationColor, ccrs,
             new IVertexOperation[] {new Translation(tileMultipart.getPos())},
-            activeConnections & ~blockedConnections);
+            activeConnections & ~blockedConnections);*/
         return true;
     }
 

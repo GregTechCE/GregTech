@@ -1,9 +1,10 @@
-package gregtech.common.cable;
+package gregtech.common.pipelike;
 
+import gregtech.api.pipelike.IBaseProperty;
 import gregtech.api.unification.ore.OrePrefix;
 import net.minecraft.util.IStringSerializable;
 
-public enum Insulation implements IStringSerializable {
+public enum Insulation implements IBaseProperty, IStringSerializable {
 
     WIRE_SINGLE("wire_single", 0.2f, 1, 2, OrePrefix.wireGtSingle, -1),
     WIRE_DOUBLE("wire_double", 0.3f, 2, 2, OrePrefix.wireGtDouble, -1),
@@ -36,5 +37,20 @@ public enum Insulation implements IStringSerializable {
     @Override
     public String getName() {
         return name;
+    }
+
+    @Override
+    public OrePrefix getOrePrefix() {
+        return orePrefix;
+    }
+
+    @Override
+    public float getThickness() {
+        return thickness;
+    }
+
+    @Override
+    public boolean isColorable() {
+        return insulationLevel > -1;
     }
 }

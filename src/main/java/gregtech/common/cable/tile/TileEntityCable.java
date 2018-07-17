@@ -2,6 +2,9 @@ package gregtech.common.cable.tile;
 
 import gregtech.api.capability.IEnergyContainer;
 import gregtech.common.cable.*;
+import gregtech.common.pipelike.CableEnergyContainer;
+import gregtech.common.pipelike.Insulation;
+import gregtech.common.pipelike.WireProperties;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
@@ -123,7 +126,7 @@ public class TileEntityCable extends TileEntity implements ICableTile {
 
     private IEnergyContainer getEnergyContainer() {
         if(energyContainer == null) {
-            energyContainer = new CableEnergyContainer(this);
+            //energyContainer = new CableEnergyContainer(this);
         }
         return energyContainer;
     }

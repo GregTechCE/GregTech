@@ -8,12 +8,14 @@ import gregtech.api.items.gui.PlayerInventoryUIFactory;
 import gregtech.api.metatileentity.MetaTileEntityUIFactory;
 import gregtech.api.model.ResourcePackHook;
 import gregtech.api.net.NetworkHandler;
+import gregtech.api.pipelike.PipeLikeObjectFactory;
 import gregtech.api.recipes.RecipeMap;
 import gregtech.api.unification.OreDictUnifier;
 import gregtech.api.unification.material.Materials;
 import gregtech.api.unification.material.type.Material;
 import gregtech.api.util.GTLog;
 import gregtech.api.worldgen.config.WorldGenRegistry;
+import gregtech.api.worldobject.WorldPipeNet;
 import gregtech.common.CommonProxy;
 import gregtech.common.ConfigHolder;
 import gregtech.common.MetaFluids;
@@ -24,10 +26,10 @@ import gregtech.common.blocks.modelfactories.BlockOreFactory;
 import gregtech.common.command.GregTechCommand;
 import gregtech.common.items.MetaItems;
 import gregtech.common.metatileentities.MetaTileEntities;
-import gregtech.common.multipart.GTMultipartFactory;
 import gregtech.common.worldgen.WorldGenRubberTree;
 import gregtech.integration.theoneprobe.TheOneProbeCompatibility;
 import gregtech.loaders.postload.DungeonLootLoader;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fml.common.*;
 import net.minecraftforge.fml.common.Optional.Method;
@@ -82,6 +84,7 @@ public class GregTechMod {
         MetaItems.init();
         MetaFluids.init();
         MetaTileEntities.init();
+        MinecraftForge.EVENT_BUS.register(WorldPipeNet.class);
 
         gregtechproxy.onPreLoad();
     }
@@ -97,7 +100,7 @@ public class GregTechMod {
 
         if(Loader.isModLoaded(GTValues.MODID_FMP)) {
             GTLog.logger.info("ForgeMultiPart found. Enabling integration...");
-            registerForgeMultipartCompat();
+            PipeLikeObjectFactory.registerMultipartFactory();
         }
 
         if(Loader.isModLoaded(GTValues.MODID_TOP)) {
@@ -111,11 +114,6 @@ public class GregTechMod {
         }
 
         DungeonLootLoader.init();
-    }
-
-    @Method(modid = GTValues.MODID_FMP)
-    private void registerForgeMultipartCompat() {
-        GTMultipartFactory.INSTANCE.registerFactory();
     }
 
     @Method(modid = GTValues.MODID_CT)

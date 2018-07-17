@@ -1,7 +1,7 @@
 package gregtech.common.cable.net;
 
 import gregtech.common.cable.RoutePath;
-import gregtech.common.cable.WireProperties;
+import gregtech.common.pipelike.WireProperties;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.EnumFacing;
@@ -248,9 +248,9 @@ public class EnergyNet implements INBTSerializable<NBTTagCompound> {
             int wirePropertiesIndex = entry.getValue();
             NBTTagCompound propertiesTag = new NBTTagCompound();
             propertiesTag.setInteger("index", wirePropertiesIndex);
-            propertiesTag.setInteger("voltage", wireProperties.voltage);
-            propertiesTag.setInteger("amperage", wireProperties.amperage);
-            propertiesTag.setInteger("loss_per_block", wireProperties.lossPerBlock);
+            propertiesTag.setInteger("voltage", wireProperties.getVoltage());
+            propertiesTag.setInteger("amperage", wireProperties.getAmperage());
+            propertiesTag.setInteger("loss_per_block", wireProperties.getLossPerBlock());
             wirePropertiesList.appendTag(propertiesTag);
         }
 
