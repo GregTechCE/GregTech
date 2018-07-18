@@ -4,20 +4,20 @@ import gregtech.api.GregTechAPI;
 import gregtech.api.capability.IEnergyContainer;
 import gregtech.api.pipelike.BlockPipeLike;
 import gregtech.api.pipelike.ITilePipeLike;
-import gregtech.api.pipelike.PipeLikeObjectFactory;
+import gregtech.api.pipelike.PipeFactory;
 import gregtech.api.render.PipeLikeRenderer;
 import gregtech.api.unification.material.MarkerMaterials;
 import gregtech.api.unification.material.type.IngotMaterial;
 import gregtech.api.unification.material.type.Material;
-import gregtech.api.worldobject.PipeNet;
-import gregtech.api.worldobject.WorldPipeNet;
+import gregtech.api.worldentries.PipeNet;
+import gregtech.api.worldentries.WorldPipeNet;
 import gregtech.common.render.CableRenderer;
 import net.minecraft.block.SoundType;
 
 import static gregtech.api.GTValues.V;
 import static gregtech.api.unification.material.Materials.*;
 
-public class CableFactory extends PipeLikeObjectFactory<Insulation, WireProperties, IEnergyContainer> {
+public class CableFactory extends PipeFactory<Insulation, WireProperties, IEnergyContainer> {
 
     public static final CableFactory INSTANCE = new CableFactory();
 

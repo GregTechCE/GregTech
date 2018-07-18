@@ -32,7 +32,7 @@ public class ItemBlockPipeLike<Q extends Enum<Q> & IBaseProperty & IStringSerial
     @Override
     public boolean canPlaceBlockOnSide(World worldIn, BlockPos pos, EnumFacing side, EntityPlayer player, ItemStack stack) {
         if (Loader.isModLoaded(GTValues.MODID_FMP)) {
-            return PipeLikeObjectFactory.canPlaceBlockOnSide(worldIn, pos, side, player, stack, blockPipeLike);
+            return PipeFactory.canPlaceBlockOnSide(worldIn, pos, side, player, stack, blockPipeLike);
         }
         return super.canPlaceBlockOnSide(worldIn, pos, side, player, stack);
     }

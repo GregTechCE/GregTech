@@ -7,7 +7,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 public interface ITilePipeLike<Q extends Enum<Q> & IBaseProperty & IStringSerializable, P extends IPipeLikeTileProperty> extends ICoverableTile {
-    PipeLikeObjectFactory<Q, P, ?> getFactory();
+    PipeFactory<Q, P, ?> getFactory();
     World getWorld();
     BlockPos getPos();
     Material getMaterial();
@@ -30,10 +30,5 @@ public interface ITilePipeLike<Q extends Enum<Q> & IBaseProperty & IStringSerial
      */
     int getInternalConnections();
 
-    /**
-     * @return bitmask
-     *          = update connection
-     *          | notify neighbor change    << 1
-     */
     void updateInternalConnection();
 }

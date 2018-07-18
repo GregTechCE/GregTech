@@ -12,7 +12,6 @@ import gregtech.common.blocks.*;
 import gregtech.common.blocks.wood.BlockLeavesGT;
 import gregtech.common.blocks.wood.BlockLogGT;
 import gregtech.common.blocks.wood.BlockSaplingGT;
-import gregtech.common.cable.ItemBlockCable;
 import gregtech.common.items.MetaItems;
 import gregtech.common.items.PotionFluids;
 import gregtech.loaders.load.FuelLoader;

@@ -3,8 +3,6 @@ package gregtech.api.pipelike;
 import gregtech.api.block.machines.BlockMachine;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.unification.material.type.Material;
-import gregtech.api.worldobject.PipeNet;
-import gregtech.api.worldobject.WorldPipeNet;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
@@ -22,7 +20,7 @@ import javax.annotation.Nullable;
 
 public class TileEntityPipeLike<Q extends Enum<Q> & IBaseProperty & IStringSerializable, P extends IPipeLikeTileProperty, C> extends TileEntity implements ITilePipeLike<Q, P> {
 
-    private PipeLikeObjectFactory<Q, P, C> factory;
+    private PipeFactory<Q, P, C> factory;
 
     private IBlockState blockState;
     private Material material;
@@ -38,13 +36,13 @@ public class TileEntityPipeLike<Q extends Enum<Q> & IBaseProperty & IStringSeria
      */
     public TileEntityPipeLike(){}
 
-    protected TileEntityPipeLike(PipeLikeObjectFactory<Q, P, C> factory) {
+    protected TileEntityPipeLike(PipeFactory<Q, P, C> factory) {
         this.factory = factory;
         color = factory.getDefaultColor();
     }
 
     @Override
-    public PipeLikeObjectFactory<Q, P, C> getFactory() {
+    public PipeFactory<Q, P, C> getFactory() {
         return factory;
     }
 
@@ -95,7 +93,7 @@ public class TileEntityPipeLike<Q extends Enum<Q> & IBaseProperty & IStringSeria
     @Override
     public void readFromNBT(NBTTagCompound compound) {
         super.readFromNBT(compound);
-        factory = PipeLikeObjectFactory.allFactories.get(compound.getString("factory"));
+        factory = PipeFactory.allFactories.get(compound.getString("factory"));
         color = compound.getInteger("color");
         internalConnections = compound.getInteger("internalConnections");
         renderMask = compound.getInteger("renderMask");
@@ -147,8 +145,7 @@ public class TileEntityPipeLike<Q extends Enum<Q> & IBaseProperty & IStringSeria
 
     protected void updateNode() {
         if (!world.isRemote) {
-            PipeNet<Q, P, C> net = WorldPipeNet.getWorldPipeNet(world).getPipeNetFromPos(pos, factory);
-            if (net != null) net.updateNode(pos, this);
+            factory.updateNode(world, pos, this);
         }
     }
 

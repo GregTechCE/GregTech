@@ -17,8 +17,6 @@ import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.pipelike.*;
 import gregtech.api.render.PipeLikeRenderer;
 import gregtech.api.unification.material.type.Material;
-import gregtech.api.worldobject.PipeNet;
-import gregtech.api.worldobject.WorldPipeNet;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.entity.player.EntityPlayer;
@@ -42,9 +40,9 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class MultipartPipeLike<Q extends Enum<Q> & IBaseProperty & IStringSerializable, P extends IPipeLikeTileProperty, C> extends TMultiPart implements TNormalOcclusionPart, TPartialOcclusionPart, ITilePipeLike<Q, P> {
+public class MultipartPipeLike<Q extends Enum<Q> & IBaseProperty & IStringSerializable, P extends IPipeLikeTileProperty, C> extends TMultiPart implements TNormalOcclusionPart, TPartialOcclusionPart, INeighborTileChangePart, ITilePipeLike<Q, P> {
 
-    private PipeLikeObjectFactory<Q, P, C> factory;
+    private PipeFactory<Q, P, C> factory;
 
     private BlockPipeLike<Q, P, C> block;
     private Q baseProperty;
@@ -56,12 +54,12 @@ public class MultipartPipeLike<Q extends Enum<Q> & IBaseProperty & IStringSerial
     private Cuboid6 centerBox;
     private List<Cuboid6> sideBoxes = new ArrayList<>();
 
-    public MultipartPipeLike(PipeLikeObjectFactory<Q, P, C> factory) {
+    public MultipartPipeLike(PipeFactory<Q, P, C> factory) {
         this.factory = factory;
     }
 
     @SuppressWarnings("unchecked")
-    public MultipartPipeLike(PipeLikeObjectFactory<Q, P, C> factory, TileEntityPipeLike<Q, P, C> tile, IBlockState state) {
+    public MultipartPipeLike(PipeFactory<Q, P, C> factory, TileEntityPipeLike<Q, P, C> tile, IBlockState state) {
         this.factory = factory;
         block = (BlockPipeLike<Q, P, C>) state.getBlock();
         baseProperty = state.getValue(block.getBaseProperty());
@@ -71,7 +69,7 @@ public class MultipartPipeLike<Q extends Enum<Q> & IBaseProperty & IStringSerial
     }
 
     @Override
-    public PipeLikeObjectFactory<Q, P, C> getFactory() {
+    public PipeFactory<Q, P, C> getFactory() {
         return factory;
     }
 
@@ -177,7 +175,7 @@ public class MultipartPipeLike<Q extends Enum<Q> & IBaseProperty & IStringSerial
         int lastValue = internalConnections;
         internalConnections = 0;
         for (EnumFacing facing : EnumFacing.VALUES) {
-            if (!tile().canReplacePart(this, new NormallyOccludedPart(PipeLikeObjectFactory.getSideBox(facing, thickness)))) {
+            if (!tile().canReplacePart(this, new NormallyOccludedPart(PipeFactory.getSideBox(facing, thickness)))) {
                 internalConnections |= (MASK_BLOCKED | MASK_INPUT_DISABLED | MASK_OUTPUT_DISABLED) << facing.getIndex();//TODO Covers
             }
         }
@@ -206,8 +204,7 @@ public class MultipartPipeLike<Q extends Enum<Q> & IBaseProperty & IStringSerial
     protected void updateNode() {
         World world = world();
         if (world != null && !world.isRemote) {
-            PipeNet<Q, P, C> net = WorldPipeNet.getWorldPipeNet(world).getPipeNetFromPos(pos(), factory);
-            if (net != null) net.updateNode(pos(), this);
+            factory.updateNode(world, pos(), this);
         }
     }
 
@@ -222,18 +219,20 @@ public class MultipartPipeLike<Q extends Enum<Q> & IBaseProperty & IStringSerial
     public void onAdded() {
         updateInternalConnection();
         updateRenderMask(false);
-        WorldPipeNet.getWorldPipeNet(world()).addNodeToAdjacentOrNewNet(pos(), this, factory);
+        if (!world().isRemote) {
+            factory.addToPipeNet(world(), pos(), this);
+        }
     }
 
     @Override
     public void onRemoved() {
-        WorldPipeNet.getWorldPipeNet(world()).removeNodeFromNet(pos(), factory);
+        factory.removeFromPipeNet(world(), pos());
     }
 
     /////////////////////////////// COLLISION BOXES ////////////////////////////////////////
 
     protected void reinitShape() {
-        centerBox = PipeLikeObjectFactory.getSideBox(null, baseProperty.getThickness());
+        centerBox = PipeFactory.getSideBox(null, baseProperty.getThickness());
         reinitSides();
     }
 
@@ -242,7 +241,7 @@ public class MultipartPipeLike<Q extends Enum<Q> & IBaseProperty & IStringSerial
         float thickness = baseProperty.getThickness();
         for (EnumFacing facing : EnumFacing.VALUES) {
             if (0 != (renderMask & PipeLikeRenderer.MASK_FORMAL_CONNECTION << facing.getIndex())) {
-                sideBoxes.add(PipeLikeObjectFactory.getSideBox(facing, thickness));
+                sideBoxes.add(PipeFactory.getSideBox(facing, thickness));
             }
         }
     }
@@ -288,6 +287,23 @@ public class MultipartPipeLike<Q extends Enum<Q> & IBaseProperty & IStringSerial
 
     @Override
     public void onNeighborChanged() {
+        updateRenderMask();
+        updateNode();
+    }
+
+    @Override
+    public boolean weakTileChanges() {
+        return false;
+    }
+
+    /**
+     * Try to fix the recolor issue but failed.
+     * Not my fault. {@link BlockMultipart#onNeighborChange} is passing the wrong parameter to {@link TileMultipart#onNeighborTileChange}.
+     * Using ForgeMultipart 2.4.2.58.
+     * See <a herf=https://github.com/TheCBProject/ForgeMultipart/pull/32>this PR</a>
+     */
+    @Override
+    public void onNeighborTileChanged(int side, boolean weak) {
         updateRenderMask();
         updateNode();
     }

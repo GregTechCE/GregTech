@@ -5,6 +5,7 @@ import gregtech.api.gui.ModularUI;
 import gregtech.api.gui.UIFactory;
 import gregtech.api.gui.impl.ModularUIContainer;
 import gregtech.api.gui.impl.ModularUIGui;
+import gregtech.api.worldentries.WorldPipeNet;
 import io.netty.buffer.Unpooled;
 import net.minecraft.client.network.NetHandlerPlayClient;
 import net.minecraft.inventory.Container;
@@ -117,6 +118,23 @@ public class NetworkHandler {
                 new PacketBuffer(buf.readBytes(buf.readInt()))
             )
         ));
+
+        registerPacket(4, PacketPipeNetUpdate.class, new PacketCodec<>(
+            (packet, buf) -> {
+                buf.writeInt(packet.pipeNetName.length());
+                buf.writeString(packet.pipeNetName);
+                buf.writeLong(packet.uid);
+                buf.writeInt(packet.updateData.readableBytes());
+                buf.writeBytes(packet.updateData);
+            },
+            buf -> new PacketPipeNetUpdate(
+                buf.readString(buf.readInt()),
+                buf.readLong(),
+                new PacketBuffer(buf.readBytes(buf.readInt()))
+            )
+        ));
+
+        registerClientExecutor(PacketPipeNetUpdate.class, ((packet, handler) -> WorldPipeNet.onServerPacket(packet)));
 
         registerServerExecutor(PacketUIClientAction.class, (packet, handler) -> {
             Container openContainer = handler.player.openContainer;

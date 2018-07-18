@@ -15,8 +15,8 @@ import gregtech.api.render.PipeLikeRenderer;
 import gregtech.api.unification.material.type.GemMaterial;
 import gregtech.api.unification.material.type.IngotMaterial;
 import gregtech.api.unification.material.type.Material;
-import gregtech.api.worldobject.PipeNet;
-import gregtech.api.worldobject.WorldPipeNet;
+import gregtech.api.worldentries.PipeNet;
+import gregtech.api.worldentries.WorldPipeNet;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.properties.PropertyEnum;
@@ -40,12 +40,12 @@ import java.util.*;
 import java.util.function.Supplier;
 
 
-public abstract class PipeLikeObjectFactory<Q extends Enum<Q> & IBaseProperty & IStringSerializable, P extends IPipeLikeTileProperty, C> {
+public abstract class PipeFactory<Q extends Enum<Q> & IBaseProperty & IStringSerializable, P extends IPipeLikeTileProperty, C> {
 
     ///////////////////////////////////// REGISTRIES ///////////////////////////////////////
 
-    public static final Map<String, PipeLikeObjectFactory> allFactories = new HashMap<>();
-    private static final Map<ResourceLocation, PipeLikeObjectFactory> multipartFactories = new HashMap<>();
+    public static final Map<String, PipeFactory> allFactories = new HashMap<>();
+    private static final Map<ResourceLocation, PipeFactory> multipartFactories = new HashMap<>();
     private final Map<Material, BlockPipeLike<Q, P, C>> blockMap = new HashMap<>();
 
 
@@ -53,9 +53,9 @@ public abstract class PipeLikeObjectFactory<Q extends Enum<Q> & IBaseProperty & 
     private boolean freezePropertyRegistry = false;
     private final Map<Material, P> REGISTERED_PROPERTIES = new LinkedHashMap<>();
 
-    public void registerPropertyForMaterial(Material material, P materialProperty) {
-        if (freezePropertyRegistry) throw new IllegalStateException("Property registry of " + name + " is already frozen");
-        REGISTERED_PROPERTIES.put(material, materialProperty);
+    protected void registerPropertyForMaterial(Material material, P property) {
+        if (freezePropertyRegistry) throw new IllegalStateException("Property registry of " + name +" is already freezed!");
+        REGISTERED_PROPERTIES.put(material, property);
     }
 
     ////////////////////////////// BASIC FIELDS AND INITS //////////////////////////////////
@@ -71,7 +71,7 @@ public abstract class PipeLikeObjectFactory<Q extends Enum<Q> & IBaseProperty & 
 
     public final Capability<C> capability;
 
-    protected PipeLikeObjectFactory(String name, Capability<C> capability, Class<Q> classBaseProperty, Class<P> classTileProperty) {
+    protected PipeFactory(String name, Capability<C> capability, Class<Q> classBaseProperty, Class<P> classTileProperty) {
         if (allFactories.containsKey(name)) throw new IllegalArgumentException(String.format("GT pipe-like multipart \"%s\" already existed!", name));
         this.name = name;
         this.multipartType = new ResourceLocation(GTValues.MODID, name);
@@ -86,10 +86,6 @@ public abstract class PipeLikeObjectFactory<Q extends Enum<Q> & IBaseProperty & 
     }
 
     ///////////////////////////////// BLOCKS AND TILES /////////////////////////////////////
-
-    public Map<Material, P> getRegisteredProperties() {
-        return REGISTERED_PROPERTIES;
-    }
 
     public boolean isRegistered(Material material) {
         return REGISTERED_PROPERTIES.containsKey(material);
@@ -143,7 +139,7 @@ public abstract class PipeLikeObjectFactory<Q extends Enum<Q> & IBaseProperty & 
     }
 
     public TileEntityPipeLike<Q, P, C> createNewTileEntity() {
-        return new TileEntityPipeLike<Q, P, C>(this);
+        return new TileEntityPipeLike<>(this);
     }
 
 
@@ -172,7 +168,7 @@ public abstract class PipeLikeObjectFactory<Q extends Enum<Q> & IBaseProperty & 
     @Method(modid = GTValues.MODID_FMP)
     public static void registerMultipartFactory() {
         MultiPartRegistry.registerParts((IPartFactory) (identifier, client) -> {
-            PipeLikeObjectFactory factory = multipartFactories.get(identifier);
+            PipeFactory factory = multipartFactories.get(identifier);
             if (factory == null) return null;
             return factory.createMultipart();
         }, multipartFactories.keySet());
@@ -376,6 +372,19 @@ public abstract class PipeLikeObjectFactory<Q extends Enum<Q> & IBaseProperty & 
     public abstract C createCapability(ITilePipeLike<Q, P> tile);
 
     public abstract PipeNet<Q, P, C> createPipeNet(WorldPipeNet worldNet);
+
+    public PipeNet<Q, P, C> addToPipeNet(World world, BlockPos pos, ITilePipeLike<Q, P> tile) {
+        return WorldPipeNet.getWorldPipeNet(world).addNodeToAdjacentOrNewNet(pos, tile, this);
+    }
+
+    public void removeFromPipeNet(World world, BlockPos pos) {
+        WorldPipeNet.getWorldPipeNet(world).removeNodeFromNet(pos, this);
+    }
+
+    public void updateNode(World world, BlockPos pos, ITilePipeLike<Q, P> tile) {
+        PipeNet<Q, P, C> net = WorldPipeNet.getWorldPipeNet(world).getPipeNetFromPos(pos, this);
+        if (net != null) net.updateNode(pos, tile);
+    }
 
     /**
      * Override this method for casting

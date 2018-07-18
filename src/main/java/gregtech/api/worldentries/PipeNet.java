@@ -1,11 +1,12 @@
-package gregtech.api.worldobject;
+package gregtech.api.worldentries;
 
 import com.google.common.collect.*;
 import gregtech.api.pipelike.IBaseProperty;
 import gregtech.api.pipelike.IPipeLikeTileProperty;
 import gregtech.api.pipelike.ITilePipeLike;
-import gregtech.api.pipelike.PipeLikeObjectFactory;
+import gregtech.api.pipelike.PipeFactory;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.EnumFacing;
@@ -16,6 +17,7 @@ import net.minecraftforge.common.util.INBTSerializable;
 import org.apache.commons.lang3.mutable.MutableInt;
 import org.apache.commons.lang3.tuple.MutableTriple;
 
+import javax.annotation.Nullable;
 import java.lang.reflect.Array;
 import java.util.*;
 import java.util.function.Consumer;
@@ -30,7 +32,8 @@ import static net.minecraftforge.common.util.Constants.NBT.TAG_COMPOUND;
 //TODO Covers
 public abstract class PipeNet<Q extends Enum<Q> & IBaseProperty & IStringSerializable, P extends IPipeLikeTileProperty, C> implements INBTSerializable<NBTTagCompound> {
 
-    protected PipeLikeObjectFactory<Q, P, C> factory;
+    final long uid;
+    protected PipeFactory<Q, P, C> factory;
     protected WorldPipeNet worldNets;
     private ListMultimap<ChunkPos, BlockPos> area = ArrayListMultimap.create();
 
@@ -39,13 +42,16 @@ public abstract class PipeNet<Q extends Enum<Q> & IBaseProperty & IStringSeriali
      */
     protected final Map<BlockPos, MutableTriple<P, Integer, Integer>> allNodes = Maps.newHashMap();
     protected final Map<BlockPos, Integer> activeNodes = Maps.newHashMap();
+    protected final Collection<BlockPos> removedNodes = Sets.newHashSet();
 
-    protected PipeNet(PipeLikeObjectFactory<Q, P, C> factory, WorldPipeNet worldNets) {
+    protected PipeNet(PipeFactory<Q, P, C> factory, WorldPipeNet worldNets) {
         this.factory = factory;
         this.worldNets = worldNets;
+        uid = worldNets.getUID();
+        worldNets.uids.put(this, uid);
     }
 
-    public PipeLikeObjectFactory<Q, P, C> getFactory() {
+    public PipeFactory<Q, P, C> getFactory() {
         return factory;
     }
 
@@ -59,6 +65,15 @@ public abstract class PipeNet<Q extends Enum<Q> & IBaseProperty & IStringSeriali
             }
         }
         return false;
+    }
+
+    public Collection<ChunkPos> getArea() {
+        return area.keySet();
+    }
+
+    public boolean isPlayerWatching(EntityPlayerMP player) {
+        return area.keySet().stream()
+            .anyMatch(chunkPos -> player.getServerWorld().getPlayerChunkMap().isPlayerWatchingChunk(player, chunkPos.x, chunkPos.z));
     }
 
     private void addPosToArea(BlockPos pos) {
@@ -165,13 +180,16 @@ public abstract class PipeNet<Q extends Enum<Q> & IBaseProperty & IStringSeriali
         if (area.get(chunkPos).isEmpty()) area.removeAll(chunkPos);
     }
 
-    protected abstract void onPostTick(long tickTimer);
+    protected abstract void onPreTick(long tickTimer);//precalculate tasks here
+    protected abstract void onPostTick(long tickTimer);//world interactions here
 
     private long tickTimer = 0;
-    protected long lastUpdate = 0;
+    protected long lastUpdate = 1;
 
     public void onPreTick() {
-
+        removedNodes.forEach(this::trySplitPipeNet);
+        removedNodes.clear();
+        onPreTick(tickTimer);
     }
 
     public void onPostTick() {
@@ -200,9 +218,7 @@ public abstract class PipeNet<Q extends Enum<Q> & IBaseProperty & IStringSeriali
 
         allNodes.forEach((pos, triple) -> {
             NBTTagCompound node = new NBTTagCompound();
-            node.setInteger("x", pos.getX());
-            node.setInteger("y", pos.getY());
-            node.setInteger("z", pos.getZ());
+            node.setIntArray("x", new int[]{pos.getX(), pos.getY(), pos.getZ()});
             node.setInteger("m", triple.getMiddle());
             node.setInteger("c", triple.getRight());
             node.setInteger("p", properties.computeIfAbsent(triple.getLeft(), p -> index.getAndIncrement()));
@@ -239,7 +255,8 @@ public abstract class PipeNet<Q extends Enum<Q> & IBaseProperty & IStringSeriali
         nodeList.forEach(nbtBase -> {
             if (nbtBase.getId() == TAG_COMPOUND) {
                 NBTTagCompound node = (NBTTagCompound) nbtBase;
-                BlockPos pos = new BlockPos(node.getInteger("x"), node.getInteger("y"), node.getInteger("z"));
+                int[] coord = node.getIntArray("x");
+                BlockPos pos = new BlockPos(coord[0], coord[1], coord[2]);
                 allNodes.put(pos, MutableTriple.of(properties[node.getInteger("p")], node.getInteger("m"), node.getInteger("c")));
                 int mask = node.getInteger("a");
                 if (mask != 0) activeNodes.put(pos, mask);
@@ -251,7 +268,7 @@ public abstract class PipeNet<Q extends Enum<Q> & IBaseProperty & IStringSeriali
     }
 
     public boolean containsNode(BlockPos pos) {
-        return allNodes.containsKey(pos);
+        return area.values().contains(pos);
     }
 
     public void updateNode(BlockPos pos, ITilePipeLike<Q, P> tile) {
@@ -274,6 +291,9 @@ public abstract class PipeNet<Q extends Enum<Q> & IBaseProperty & IStringSeriali
 
     public void addNode(BlockPos blockPos, ITilePipeLike<Q, P> tile) {
         allNodes.put(blockPos, MutableTriple.of(tile.getTileProperty(), factory.getConnectionMask(tile, worldNets.getWorld(), blockPos), tile.getColor()));
+        int tileMask = factory.getActiveSideMask(tile);
+        if (tileMask != 0) activeNodes.put(blockPos, tileMask);
+        removedNodes.remove(blockPos);
         addPosToArea(blockPos);
         onConnectionUpdate();
     }
@@ -305,9 +325,14 @@ public abstract class PipeNet<Q extends Enum<Q> & IBaseProperty & IStringSeriali
         activeNodes.remove(blockPos);
         removeData(blockPos);
         removePosFromArea(blockPos);
+        removedNodes.add(blockPos);
+        onConnectionUpdate();
+        return true;
+    }
 
+    private void trySplitPipeNet(BlockPos startPos) {
         for (EnumFacing facing : EnumFacing.VALUES) {
-            Collection<BlockPos> searchResult = dfs(blockPos.offset(facing), adjacent, p -> {}, noshortCircuit).keySet();
+            Collection<BlockPos> searchResult = dfs(startPos.offset(facing), adjacent, p -> {}, noshortCircuit).keySet();
             if (searchResult.size() == allNodes.size()) break;
             if (!searchResult.isEmpty()) {
                 PipeNet<Q, P, C> newNet = factory.createPipeNet(worldNets);
@@ -321,7 +346,7 @@ public abstract class PipeNet<Q extends Enum<Q> & IBaseProperty & IStringSeriali
                     removePosFromArea(pos);
                     removeData(pos);
                 }
-                newNet.lastUpdate = ++lastUpdate;
+                newNet.lastUpdate = lastUpdate + 1;
                 worldNets.addPipeNet(newNet);
             }
             searchResult.clear();
@@ -329,7 +354,6 @@ public abstract class PipeNet<Q extends Enum<Q> & IBaseProperty & IStringSeriali
 
         if (allNodes.isEmpty()) worldNets.removePipeNet(this);
         onConnectionUpdate();
-        return true;
     }
 
     @FunctionalInterface
@@ -341,7 +365,7 @@ public abstract class PipeNet<Q extends Enum<Q> & IBaseProperty & IStringSeriali
     protected final PassingThroughCondition adjacent = (fromPos, dir, toPos) -> true;
     protected final PassingThroughCondition checkConnectionMask = (fromPos, dir, toPos) ->
         ((allNodes.get(fromPos).getMiddle() & MASK_OUTPUT_DISABLED << dir.getIndex()) == 0)
-        && ((allNodes.get(toPos).getMiddle() & MASK_INPUT_DISABLED << dir.getIndex()) == 0);
+        && ((allNodes.get(toPos).getMiddle() & MASK_INPUT_DISABLED << dir.getOpposite().getIndex()) == 0);
 
     /**
      * Collect all nodes connecting to the start pos
@@ -359,7 +383,7 @@ public abstract class PipeNet<Q extends Enum<Q> & IBaseProperty & IStringSeriali
      *          Will be empty if start pos is not in this net.
      */
     public Map<BlockPos, BlockPos> bfs(BlockPos startPos, PassingThroughCondition condition, Consumer<BlockPos> onActiveNode, Predicate<BlockPos> shortCircuit) {
-        LinkedList<BlockPos> buffer = Lists.newLinkedList();
+        Queue<BlockPos> buffer = Lists.newLinkedList();
         return search(startPos, condition, onActiveNode, shortCircuit, buffer, buffer::offer, buffer::poll);
     }
 
@@ -392,5 +416,15 @@ public abstract class PipeNet<Q extends Enum<Q> & IBaseProperty & IStringSeriali
         }
         return result;
     }
+
+    boolean clientSync = false;
+    public void issueClientSync() {
+        clientSync = true;
+    }
+
+    @Nullable
+    protected abstract NBTTagCompound getUpdateTag();
+
+    protected abstract void onUpdate(NBTTagCompound tag);
 
 }

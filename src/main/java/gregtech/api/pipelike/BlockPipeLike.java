@@ -4,7 +4,7 @@ import codechicken.lib.raytracer.RayTracer;
 import codechicken.lib.render.particle.CustomParticleHandler;
 import codechicken.lib.vec.Cuboid6;
 import gregtech.api.unification.material.type.Material;
-import gregtech.api.worldobject.WorldPipeNet;
+import gregtech.api.worldentries.WorldPipeNet;
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.SoundType;
@@ -29,22 +29,20 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
-import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.List;
 
 @SuppressWarnings("deprecation")
 public class BlockPipeLike<Q extends Enum<Q> & IBaseProperty & IStringSerializable, P extends IPipeLikeTileProperty, C> extends Block implements ITileEntityProvider {
 
-    public final PipeLikeObjectFactory<Q, P, C> factory;
+    public final PipeFactory<Q, P, C> factory;
     public final Material material;
     private P[] actualProperties;
 
-    protected BlockPipeLike(PipeLikeObjectFactory<Q, P, C> factory, net.minecraft.block.material.Material mcMaterial, Material material, P[] actualProperties) {
+    protected BlockPipeLike(PipeFactory<Q, P, C> factory, net.minecraft.block.material.Material mcMaterial, Material material, P[] actualProperties) {
         super(mcMaterial);
         this.factory = factory;
         this.material = material;
@@ -184,13 +182,24 @@ public class BlockPipeLike<Q extends Enum<Q> & IBaseProperty & IStringSerializab
     @Override
     public void breakBlock(World worldIn, BlockPos pos, IBlockState state) {
         super.breakBlock(worldIn, pos, state);
-        WorldPipeNet.getWorldPipeNet(worldIn).removeNodeFromNet(pos, factory);
+        factory.removeFromPipeNet(worldIn, pos);
     }
 
     @Override
     public void onBlockAdded(World worldIn, BlockPos pos, IBlockState state) {
         super.onBlockAdded(worldIn, pos, state);
-        WorldPipeNet.getWorldPipeNet(worldIn).addScheduledCheck(factory, pos);
+        if (!worldIn.isRemote) {
+            WorldPipeNet.getWorldPipeNet(worldIn).addScheduledCheck(factory, pos);
+        }
+    }
+
+    @Override
+    public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos) {
+        TileEntity tile = worldIn.getTileEntity(pos);
+        if (tile instanceof TileEntityPipeLike) {
+            ((TileEntityPipeLike) tile).updateRenderMask();
+            ((TileEntityPipeLike) tile).updateNode();
+        }
     }
 
     @Override

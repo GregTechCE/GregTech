@@ -2,17 +2,17 @@ package gregtech.common.pipelike;
 
 import gregtech.api.capability.IEnergyContainer;
 import gregtech.api.pipelike.ITilePipeLike;
-import gregtech.common.cable.RoutePath;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 
-import java.util.List;
+import java.util.LinkedList;
+import java.util.Map;
 
 public class CableEnergyContainer implements IEnergyContainer {
 
-    private final ITilePipeLike<Insulation, WireProperties> tileEntityCable;
-    private long lastCachedPathsTime;
-    private List<RoutePath> pathsCache;
+    final ITilePipeLike<Insulation, WireProperties> tileEntityCable;
+    long lastCachedPathsTime = 0;
+    Map<LinkedList<BlockPos>, Long> pathsCache;
 
     public CableEnergyContainer(ITilePipeLike<Insulation, WireProperties> tileEntityCable) {
         this.tileEntityCable = tileEntityCable;
@@ -20,45 +20,8 @@ public class CableEnergyContainer implements IEnergyContainer {
 
     @Override
     public long acceptEnergyFromNetwork(EnumFacing side, long voltage, long amperage) {
-        /*List<RoutePath> paths = getPaths();
-        long amperesUsed = 0;
-        for(RoutePath routePath : paths) {
-            if(routePath.totalLoss >= voltage)
-                continue; //do not emit if loss is too high
-            if(voltage > routePath.minVoltage || amperage > routePath.minAmperage) {
-                //if voltage or amperage is too big, burn cables down and break
-                routePath.burnCablesInPath(tileEntityCable.getCableWorld(), voltage, amperage);
-                break;
-            }
-            amperesUsed += dispatchEnergyToNode(routePath.destination,
-                voltage - routePath.totalLoss, amperage - amperesUsed);
-            if(amperesUsed == amperage)
-                break; //do not continue if all amperes are exhausted
-        }
-        return amperesUsed;*/
-        return 0;
-    }
-
-    private long dispatchEnergyToNode(BlockPos nodePos, long voltage, long amperage) {
-        /*long amperesUsed = 0L;
-        //use pooled mutable to avoid creating new objects every tick
-        World world = tileEntityCable.getCableWorld();
-        PooledMutableBlockPos blockPos = PooledMutableBlockPos.retain();
-        for(EnumFacing facing : EnumFacing.VALUES) {
-            blockPos.setPos(nodePos).move(facing);
-            //do not allow cables to load chunks
-            if(!world.isBlockLoaded(nodePos)) continue;
-            TileEntity tileEntity = world.getTileEntity(blockPos);
-            if(tileEntity == null || tileEntity instanceof TileEntityCable) continue;
-            IEnergyContainer energyContainer = tileEntity.getCapability(IEnergyContainer.CAPABILITY_ENERGY_CONTAINER, null);
-            if(energyContainer == null) continue;
-            amperesUsed += energyContainer.acceptEnergyFromNetwork(facing.getOpposite(), voltage, amperage - amperesUsed);
-            if(amperesUsed == amperage)
-                break;
-        }
-        blockPos.release();
-        return amperesUsed;*/
-        return 0;
+        EnergyNet net = getEnergyNet();
+        return net != null ? net.acceptEnergy(this, voltage, amperage) : 0;
     }
 
     @Override
@@ -99,22 +62,8 @@ public class CableEnergyContainer implements IEnergyContainer {
         return 0;
     }
 
-    /*private void recomputePaths(EnergyNet energyNet) {
-        this.lastCachedPathsTime = System.currentTimeMillis();
-        this.pathsCache = energyNet.computePatches(tileEntityCable.getPos());
-    }
-
-    private List<RoutePath> getPaths() {
-        EnergyNet energyNet = getEnergyNet();
-        if(pathsCache == null || energyNet.getLastUpdatedTime() > lastCachedPathsTime) {
-            recomputePaths(energyNet);
-        }
-        return pathsCache;
-    }
-
     private EnergyNet getEnergyNet() {
-        WorldENet worldENet = WorldENet.getWorldENet(tileEntityCable.getCableWorld());
-        return worldENet.getNetFromPos(tileEntityCable.getCablePos());
-    }*/
+        return CableFactory.INSTANCE.getPipeNetAt(tileEntityCable);
+    }
 
 }
