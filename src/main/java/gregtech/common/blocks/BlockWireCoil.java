@@ -5,8 +5,11 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
+import net.minecraft.entity.EntityLiving.SpawnPlacementType;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IStringSerializable;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
@@ -38,6 +41,11 @@ public class BlockWireCoil extends VariantBlock<BlockWireCoil.CoilType> {
         lines.add(I18n.format("tile.wire_coil.tooltip_smelter"));
         lines.add(I18n.format("tile.wire_coil.tooltip_level", coilType.level));
         lines.add(I18n.format("tile.wire_coil.tooltip_discount", coilType.energyDiscount));
+    }
+
+    @Override
+    public boolean canCreatureSpawn(IBlockState state, IBlockAccess world, BlockPos pos, SpawnPlacementType type) {
+        return false;
     }
 
     public enum CoilType implements IStringSerializable {

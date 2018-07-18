@@ -29,7 +29,7 @@ public class PyrolyzeOvenInfo extends MultiblockInfoPage {
             .aisle("CCC", "C#C", "CCC")
             .aisle("CCC", "C#C", "CCC")
             .aisle("XXX", "ISF", "XXX")
-            .where('S', MetaTileEntities.IMPLOSION_COMPRESSOR, EnumFacing.SOUTH)
+            .where('S', MetaTileEntities.PYROLYSE_OVEN, EnumFacing.SOUTH)
             .where('X', MetaBlocks.MACHINE_CASING.getState(BlockMachineCasing.MachineCasingType.ULV))
             .where('C', MetaBlocks.WIRE_COIL.getState(BlockWireCoil.CoilType.CUPRONICKEL))
             .where('#', Blocks.AIR.getDefaultState())
