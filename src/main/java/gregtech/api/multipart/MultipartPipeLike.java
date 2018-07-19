@@ -6,6 +6,7 @@ import codechicken.lib.raytracer.CuboidRayTraceResult;
 import codechicken.lib.raytracer.IndexedCuboid6;
 import codechicken.lib.render.BlockRenderer;
 import codechicken.lib.render.CCRenderState;
+import codechicken.lib.render.particle.CustomParticleHandler;
 import codechicken.lib.render.pipeline.IVertexOperation;
 import codechicken.lib.vec.Cuboid6;
 import codechicken.lib.vec.Translation;
@@ -18,6 +19,7 @@ import gregtech.api.pipelike.*;
 import gregtech.api.render.PipeLikeRenderer;
 import gregtech.api.unification.material.type.Material;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.particle.ParticleManager;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -395,5 +397,17 @@ public class MultipartPipeLike<Q extends Enum<Q> & IBaseProperty & IStringSerial
         for(Cuboid6 box : sideBoxes) {
             BlockRenderer.renderCuboid(ccrs, box, 0);
         }
+    }
+
+    @SideOnly(Side.CLIENT)
+    @Override
+    public void addDestroyEffects(CuboidRayTraceResult hit, ParticleManager manager) {
+        PipeLikeRenderer.handleDestroyEffects(world(), block.getDefaultState().withProperty(factory.baseProperty, baseProperty), pos(), manager);
+    }
+
+    @SideOnly(Side.CLIENT)
+    @Override
+    public void addHitEffects(CuboidRayTraceResult hit, ParticleManager manager) {
+        CustomParticleHandler.handleHitEffects(block.getDefaultState().withProperty(factory.baseProperty, baseProperty), world(), hit, manager);
     }
 }

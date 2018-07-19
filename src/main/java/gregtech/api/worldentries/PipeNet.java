@@ -15,7 +15,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraftforge.common.util.INBTSerializable;
 import org.apache.commons.lang3.mutable.MutableInt;
-import org.apache.commons.lang3.tuple.MutableTriple;
 
 import javax.annotation.Nullable;
 import java.lang.reflect.Array;
@@ -23,12 +22,12 @@ import java.util.*;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
+import java.util.stream.Collector;
 
 import static gregtech.api.pipelike.ITilePipeLike.MASK_INPUT_DISABLED;
 import static gregtech.api.pipelike.ITilePipeLike.MASK_OUTPUT_DISABLED;
 import static net.minecraftforge.common.util.Constants.NBT.TAG_COMPOUND;
 
-//TODO Client Sync
 //TODO Covers
 public abstract class PipeNet<Q extends Enum<Q> & IBaseProperty & IStringSerializable, P extends IPipeLikeTileProperty, C> implements INBTSerializable<NBTTagCompound> {
 
@@ -36,13 +35,9 @@ public abstract class PipeNet<Q extends Enum<Q> & IBaseProperty & IStringSeriali
     protected PipeFactory<Q, P, C> factory;
     protected WorldPipeNet worldNets;
     private ListMultimap<ChunkPos, BlockPos> area = ArrayListMultimap.create();
+    protected final Map<BlockPos, Node<P>> allNodes = Maps.newHashMap();
 
-    /**
-     * property, connection mask, color
-     */
-    protected final Map<BlockPos, MutableTriple<P, Integer, Integer>> allNodes = Maps.newHashMap();
-    protected final Map<BlockPos, Integer> activeNodes = Maps.newHashMap();
-    protected final Collection<BlockPos> removedNodes = Sets.newHashSet();
+    protected static final Map<BlockPos, PipeNet> removedNodes = Maps.newHashMap();
 
     protected PipeNet(PipeFactory<Q, P, C> factory, WorldPipeNet worldNets) {
         this.factory = factory;
@@ -78,6 +73,402 @@ public abstract class PipeNet<Q extends Enum<Q> & IBaseProperty & IStringSeriali
 
     private void addPosToArea(BlockPos pos) {
         area.put(new ChunkPos(pos), pos);
+    }
+
+    private ThreadLocal<MutableChunkPos> chunkPosThreadLocal = ThreadLocal.withInitial(MutableChunkPos::new);
+    private void removePosFromArea(BlockPos pos) {
+        MutableChunkPos chunkPos = chunkPosThreadLocal.get();
+        chunkPos.setPos(pos);
+        area.remove(chunkPos, pos);
+        if (area.get(chunkPos).isEmpty()) area.removeAll(chunkPos);
+    }
+
+    protected abstract void onPreTick(long tickTimer);//precalculate tasks here
+    protected abstract void onPostTick(long tickTimer);//world interactions here
+
+    private long tickTimer = 0;
+    protected long lastUpdate = 1;
+
+    public void onPreTick() {
+        onPreTick(tickTimer);
+    }
+
+    public void onPostTick() {
+        onPostTick(tickTimer++);
+    }
+
+    public long getLastUpdate() {
+        return lastUpdate;
+    }
+
+    public void onConnectionUpdate() {
+        lastUpdate++;
+        worldNets.markDirty();
+    }
+
+    protected abstract void serializeNodeData(BlockPos pos, NBTTagCompound nodeTag);
+    protected abstract void deserializeNodeData(BlockPos pos, NBTTagCompound nodeTag);
+
+    @Override
+    public NBTTagCompound serializeNBT() {
+        NBTTagCompound nbt = new NBTTagCompound();
+        NBTTagList nodeList = new NBTTagList();
+        NBTTagList propertyList = new NBTTagList();
+        BiMap<P, Integer> properties = HashBiMap.create();
+        final MutableInt index = new MutableInt(0);
+
+        allNodes.values().forEach(node -> {
+            NBTTagCompound tag = new NBTTagCompound();
+            tag.setIntArray("node", new int[]{node.getX(), node.getY(), node.getZ(),
+                properties.computeIfAbsent(node.property, p -> index.getAndIncrement()),
+                node.connectionMask, node.color, node.activeMask});
+            serializeNodeData(node, tag);
+            nodeList.appendTag(tag);
+        });
+
+        for (int i = 0; i < properties.size(); i++) {
+            propertyList.appendTag(properties.inverse().get(i).serializeNBT());
+        }
+
+        nbt.setTag("nodes", nodeList);
+        nbt.setTag("properties", propertyList);
+
+        return nbt;
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public void deserializeNBT(NBTTagCompound nbt) {
+        allNodes.clear();
+
+        NBTTagList nodeList = nbt.getTagList("nodes", TAG_COMPOUND);
+        NBTTagList propertyList = nbt.getTagList("properties", TAG_COMPOUND);
+
+        P[] properties = (P[]) Array.newInstance(factory.classTileProperty, propertyList.tagCount());
+        for (int i = 0; i < propertyList.tagCount(); i++) {
+            properties[i] = factory.createEmptyProperty();
+            properties[i].deserializeNBT(propertyList.getCompoundTagAt(i));
+        }
+
+        nodeList.forEach(nbtBase -> {
+            if (nbtBase.getId() == TAG_COMPOUND) {
+                NBTTagCompound node = (NBTTagCompound) nbtBase;
+                int[] data = node.getIntArray("node");
+                BlockPos pos = new BlockPos(data[0], data[1], data[2]);
+                allNodes.put(pos, new Node<>(pos, properties[data[3]], data[4], data[5], data[6]));
+                deserializeNodeData(pos, node);
+                addPosToArea(pos);
+            }
+        });
+        onConnectionUpdate();
+    }
+
+    public boolean containsNode(BlockPos pos) {
+        return allNodes.containsKey(pos);
+    }
+
+    public void updateNode(BlockPos pos, ITilePipeLike<Q, P> tile) {
+        Node<P> data = allNodes.get(pos);
+        if (data != null) {
+            int connectionMask = factory.getConnectionMask(tile, worldNets.getWorld(), pos);
+            int color = tile.getColor();
+            if (data.connectionMask != connectionMask || data.color != color) {
+                data.connectionMask = connectionMask;
+                data.color = color;
+                onConnectionUpdate();
+            }
+        }
+        data.activeMask = factory.getActiveSideMask(tile);
+    }
+
+    protected abstract void transferNodeDataTo(Collection<? extends BlockPos> nodeToTransfer, PipeNet<Q, P, C> toNet);
+    protected abstract void removeData(BlockPos pos);
+
+    public void addNode(BlockPos blockPos, ITilePipeLike<Q, P> tile) {
+        allNodes.put(blockPos, new Node<>(blockPos, tile.getTileProperty(),
+            factory.getConnectionMask(tile, worldNets.getWorld(), blockPos), tile.getColor(), factory.getActiveSideMask(tile)));
+        removedNodes.remove(blockPos);
+        addPosToArea(blockPos);
+        onConnectionUpdate();
+    }
+
+    public boolean removeNode(BlockPos blockPos) {
+        if (null == allNodes.remove(blockPos)) return false;
+        removeData(blockPos);
+        removePosFromArea(blockPos);
+        removedNodes.put(blockPos, this);
+        onConnectionUpdate();
+        return true;
+    }
+
+    /**
+     * Assert that all given nets are in the same world.
+     * @return merged result; or null if the list is empty.
+     */
+    static <Q extends Enum<Q> & IBaseProperty & IStringSerializable, P extends IPipeLikeTileProperty, C>
+    PipeNet<Q, P, C> mergeNets(List<PipeNet<Q, P, C>> nets) {
+        if (nets.size() == 0) return null;
+        PipeNet<Q, P, C> result = nets.get(0);
+        long lastUpdate = result.lastUpdate;
+        for (PipeNet<Q, P, C> net : nets) if (net != result) {
+            result.allNodes.putAll(net.allNodes);
+            result.area.putAll(net.area);
+            net.transferNodeDataTo(net.allNodes.keySet(), result);
+            net.allNodes.clear(); // will be removed in WorldPipeNet::onPreTick
+            net.area.clear();     // not tickable anymore.
+            if (net.lastUpdate > lastUpdate) lastUpdate = net.lastUpdate;
+        }
+        result.lastUpdate = ++lastUpdate;
+        result.onConnectionUpdate();
+        return result;
+    }
+
+    static void trySplitPipeNet(BlockPos startPos, PipeNet net) {
+        for (EnumFacing facing : EnumFacing.VALUES) {
+            Collection<? extends BlockPos> searchResult = net.dfs(startPos.offset(facing), adjacent, n -> {}, n -> false);
+            if (searchResult.size() == net.allNodes.size()) break;
+            if (!searchResult.isEmpty()) {
+                PipeNet newNet = net.factory.createPipeNet(net.worldNets);
+                net.transferNodeDataTo(searchResult, newNet);
+                for (BlockPos pos : searchResult) {
+                    newNet.allNodes.put(pos, net.allNodes.get(pos));
+                    newNet.addPosToArea(pos);
+                    net.allNodes.remove(pos);
+                    net.removePosFromArea(pos);
+                    net.removeData(pos);
+                }
+                newNet.lastUpdate = net.lastUpdate + 1;
+                net.worldNets.addPipeNet(newNet);
+            }
+            searchResult.clear();
+        }
+
+        net.onConnectionUpdate();
+    }
+
+    protected static final PassingThroughCondition adjacent = (fromNode, dir, toNode) -> true;
+    protected static final PassingThroughCondition checkConnectionMask = (fromNode, dir, toNode) ->
+        ((fromNode.connectionMask & MASK_OUTPUT_DISABLED << dir.getIndex()) == 0)
+        && ((toNode.connectionMask & MASK_INPUT_DISABLED << dir.getOpposite().getIndex()) == 0);
+
+    /**
+     * Compute all route paths from start pos to each reachable active nodes, using bfs.
+     * @param collector Collect the cable loss, the route value or sth else. Result will be accumulated from the destination to the start pos.
+     */
+    public <R> List<RoutePath<P, ?, R>> computeRoutePaths(BlockPos startPos, PassingThroughCondition condition, Collector<LinkedNode<P>, ?, R> collector, Predicate<LinkedNode<P>> shortCircuit) {
+        List<RoutePath<P, ?, R>> result = Lists.newArrayList();
+        bfs(startPos, condition, activeNode -> {
+            RoutePath<P, ?, R> routePath = new RoutePath<>(collector);
+            new NodeChain<>(activeNode).forEach(routePath::extend);
+            result.add(routePath);
+        }, shortCircuit);
+        return result;
+    }
+
+    /**
+     * Collect all nodes connecting to the start pos
+     * @return All reachable nodes, with each of them linked to its parent node, and the start pos linked to null;
+     *          Will be empty if start pos is not in this net.
+     */
+    public Collection<LinkedNode<P>> dfs(BlockPos startPos, PassingThroughCondition condition, Consumer<LinkedNode<P>> onActiveNode, Predicate<LinkedNode<P>> shortCircuit) {
+        return search(startPos, condition, onActiveNode, shortCircuit, SearchType.DFS);
+    }
+
+    /**
+     * Collect all nodes connecting to the start pos
+     * @return All reachable nodes, with each of them linked to its parent node, and the start pos linked to null;
+     *          Will be empty if start pos is not in this net.
+     */
+    public Collection<LinkedNode<P>> bfs(BlockPos startPos, PassingThroughCondition condition, Consumer<LinkedNode<P>> onActiveNode, Predicate<LinkedNode<P>> shortCircuit) {
+        return search(startPos, condition, onActiveNode, shortCircuit, SearchType.BFS);
+    }
+
+    private enum SearchType {
+        BFS, DFS;
+    }
+
+    private Collection<LinkedNode<P>> search(BlockPos startPos, PassingThroughCondition condition, Consumer<LinkedNode<P>> onActiveNode, Predicate<LinkedNode<P>> shortCircuit, SearchType type) {
+        Collection<LinkedNode<P>> result = Sets.newHashSet();
+        if (allNodes.containsKey(startPos)) {
+            LinkedNode<P> startNode = new LinkedNode<>(allNodes.get(startPos), null);
+            result.add(startNode);
+            if (startNode.isActive()) onActiveNode.accept(startNode);
+            if (shortCircuit.test(startNode)) return result;
+            BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos();
+            LinkedList<LinkedNode<P>> buffer = Lists.newLinkedList();
+            Consumer<LinkedNode<P>> putter = null;
+            Supplier<LinkedNode<P>> getter = null;
+            switch (type) {
+                case BFS: putter = buffer::offerLast; getter = buffer::pollFirst; break;
+                case DFS: putter = buffer::offerLast; getter = buffer::pollLast; break;
+            }
+            putter.accept(startNode);
+            while (!buffer.isEmpty()) {
+                LinkedNode<P> current = getter.get();
+                pos.setPos(current);
+                for (EnumFacing facing : EnumFacing.VALUES) {
+                    pos.move(facing);
+                    if (!result.contains(pos) && allNodes.containsKey(pos)) {
+                        Node<P> side = allNodes.get(pos);
+                        if (condition.test(current, facing, side)) {
+                            LinkedNode<P> sideNode = new LinkedNode<P>(side, current);
+                            result.add(sideNode);
+                            putter.accept(sideNode);
+                            if (sideNode.isActive()) onActiveNode.accept(sideNode);
+                            if (shortCircuit.test(sideNode)) return result;
+                        }
+                    }
+                    pos.move(facing.getOpposite());
+                }
+            }
+        }
+        return result;
+    }
+
+    boolean clientSync = false;
+    public void issueClientSync() {
+        clientSync = true;
+    }
+
+    @Nullable
+    protected abstract NBTTagCompound getUpdateTag();
+
+    protected abstract void onUpdate(NBTTagCompound tag);
+
+
+
+
+    public static class Node<P> extends BlockPos {
+        public final P property;
+        int connectionMask, color, activeMask;
+
+        Node(BlockPos pos, P property, int connectionMask, int color, int activeMask) {
+            super(pos);
+            this.property = property;
+            this.connectionMask = connectionMask;
+            this.color = color;
+            this.activeMask = activeMask;
+        }
+
+        public int getConnectionMask() {
+            return connectionMask;
+        }
+
+        public int getColor() {
+            return color;
+        }
+
+        public int getActiveMask() {
+            return activeMask;
+        }
+
+        public boolean isActive() {
+            return activeMask != 0;
+        }
+    }
+
+    public static class LinkedNode<P> extends Node<P> {
+        LinkedNode<P> target;
+        LinkedNode(Node<P> node, LinkedNode<P> target) {
+            super(node, node.property, node.connectionMask, node.color, node.activeMask);
+            this.target = target;
+        }
+
+        public LinkedNode<P> getTarget() {
+            return target;
+        }
+    }
+
+    public static class NodeChain<P> implements Iterable<Node<P>> {
+        LinkedNode<P> startNode = null;
+        public NodeChain(){}
+        public NodeChain(LinkedNode<P> startNode) {
+            this.startNode = startNode;
+        }
+
+        public NodeChain<P> extend(Node<P> node) {
+            LinkedNode<P> newNode = new LinkedNode<>(node, startNode);
+            return this;
+        }
+
+        public LinkedNode<P> getStartNode() {
+            return startNode;
+        }
+
+        @Override
+        public Iterator<Node<P>> iterator() {
+            return new NodeChainIterator<>(this);
+        }
+
+        static class NodeChainIterator<P> implements Iterator<Node<P>> {
+            private NodeChain<P> chain;
+            private LinkedNode<P> current = null;
+            private NodeChainIterator(NodeChain<P> chain) {
+                this.chain = chain;
+            }
+
+            @Override
+            public LinkedNode<P> next() {
+                return current = current == null ? chain.startNode : current.target;
+            }
+
+            @Override
+            public boolean hasNext() {
+                return (current == null ? chain.startNode : current.target) != null;
+            }
+        }
+
+    }
+
+    public static class RoutePath<P, A, R> extends NodeChain<P> {
+        LinkedNode<P> endNode = null;
+        private final Collector<LinkedNode<P>, A, R> collector;
+        private A accumulator;
+        public RoutePath(Collector<LinkedNode<P>, A, R> collector) {
+            this.collector = collector;
+            this.accumulator = collector.supplier().get();
+        }
+
+        public RoutePath(LinkedNode<P> startNode, Collector<LinkedNode<P>, A, R> collector) {
+            super(startNode);
+            this.collector = collector;
+            this.accumulator = collector.supplier().get();
+            if (startNode != null) {
+                for (endNode = startNode; endNode.target != null; endNode = endNode.target) {
+                    collector.accumulator().accept(accumulator, endNode);
+                }
+                collector.accumulator().accept(accumulator, endNode);
+            }
+        }
+
+        @Override
+        public RoutePath<P, A, R> extend(Node<P> node) {
+            LinkedNode<P> newNode = new LinkedNode<>(node, startNode);
+            startNode = newNode;
+            if (endNode == null) endNode = newNode;
+            collector.accumulator().accept(accumulator, newNode);
+            return this;
+        }
+
+        public RoutePath<P, A, R> extend(RoutePath<P, A, R> routePath) {
+            accumulator = collector.combiner().apply(accumulator, routePath.accumulator);
+            routePath.endNode.target = startNode;
+            startNode = routePath.startNode;
+            return this;
+        }
+
+        public LinkedNode<P> getEndNode() {
+            return endNode;
+        }
+
+        public R getAccumulatedVal() {
+            return collector.finisher().apply(accumulator);
+        }
+    }
+
+    @FunctionalInterface
+    interface PassingThroughCondition<P> {
+        boolean test(Node<P> fromNode, EnumFacing dir, Node<P> toNode);
     }
 
     class MutableChunkPos extends ChunkPos {
@@ -171,260 +562,5 @@ public abstract class PipeNet<Q extends Enum<Q> & IBaseProperty & IStringSeriali
             return "[" + x + ", " + z + "]";
         }
     }
-
-    private ThreadLocal<MutableChunkPos> chunkPosThreadLocal = ThreadLocal.withInitial(MutableChunkPos::new);
-    private void removePosFromArea(BlockPos pos) {
-        MutableChunkPos chunkPos = chunkPosThreadLocal.get();
-        chunkPos.setPos(pos);
-        area.remove(chunkPos, pos);
-        if (area.get(chunkPos).isEmpty()) area.removeAll(chunkPos);
-    }
-
-    protected abstract void onPreTick(long tickTimer);//precalculate tasks here
-    protected abstract void onPostTick(long tickTimer);//world interactions here
-
-    private long tickTimer = 0;
-    protected long lastUpdate = 1;
-
-    public void onPreTick() {
-        removedNodes.forEach(this::trySplitPipeNet);
-        removedNodes.clear();
-        onPreTick(tickTimer);
-    }
-
-    public void onPostTick() {
-        onPostTick(tickTimer++);
-    }
-
-    public long getLastUpdate() {
-        return lastUpdate;
-    }
-
-    public void onConnectionUpdate() {
-        lastUpdate++;
-        worldNets.markDirty();
-    }
-
-    protected abstract void serializeNodeData(BlockPos pos, NBTTagCompound nodeTag);
-    protected abstract void deserializeNodeData(BlockPos pos, NBTTagCompound nodeTag);
-
-    @Override
-    public NBTTagCompound serializeNBT() {
-        NBTTagCompound nbt = new NBTTagCompound();
-        NBTTagList nodeList = new NBTTagList();
-        NBTTagList propertyList = new NBTTagList();
-        BiMap<P, Integer> properties = HashBiMap.create();
-        final MutableInt index = new MutableInt(0);
-
-        allNodes.forEach((pos, triple) -> {
-            NBTTagCompound node = new NBTTagCompound();
-            node.setIntArray("x", new int[]{pos.getX(), pos.getY(), pos.getZ()});
-            node.setInteger("m", triple.getMiddle());
-            node.setInteger("c", triple.getRight());
-            node.setInteger("p", properties.computeIfAbsent(triple.getLeft(), p -> index.getAndIncrement()));
-            Optional.ofNullable(activeNodes.get(pos)).ifPresent(mask -> node.setInteger("a", mask));
-            serializeNodeData(pos, node);
-            nodeList.appendTag(node);
-        });
-
-        for (int i = 0; i < properties.size(); i++) {
-            propertyList.appendTag(properties.inverse().get(i).serializeNBT());
-        }
-
-        nbt.setTag("nodes", nodeList);
-        nbt.setTag("properties", propertyList);
-
-        return nbt;
-    }
-
-    @SuppressWarnings("unchecked")
-    @Override
-    public void deserializeNBT(NBTTagCompound nbt) {
-        allNodes.clear();
-        activeNodes.clear();
-
-        NBTTagList nodeList = nbt.getTagList("nodes", TAG_COMPOUND);
-        NBTTagList propertyList = nbt.getTagList("properties", TAG_COMPOUND);
-
-        P[] properties = (P[]) Array.newInstance(factory.classTileProperty, propertyList.tagCount());
-        for (int i = 0; i < propertyList.tagCount(); i++) {
-            properties[i] = factory.createEmptyProperty();
-            properties[i].deserializeNBT(propertyList.getCompoundTagAt(i));
-        }
-
-        nodeList.forEach(nbtBase -> {
-            if (nbtBase.getId() == TAG_COMPOUND) {
-                NBTTagCompound node = (NBTTagCompound) nbtBase;
-                int[] coord = node.getIntArray("x");
-                BlockPos pos = new BlockPos(coord[0], coord[1], coord[2]);
-                allNodes.put(pos, MutableTriple.of(properties[node.getInteger("p")], node.getInteger("m"), node.getInteger("c")));
-                int mask = node.getInteger("a");
-                if (mask != 0) activeNodes.put(pos, mask);
-                deserializeNodeData(pos, node);
-                addPosToArea(pos);
-            }
-        });
-        onConnectionUpdate();
-    }
-
-    public boolean containsNode(BlockPos pos) {
-        return area.values().contains(pos);
-    }
-
-    public void updateNode(BlockPos pos, ITilePipeLike<Q, P> tile) {
-        MutableTriple<P, Integer, Integer> data = allNodes.get(pos);
-        if (data != null) {
-            int connectionMask = factory.getConnectionMask(tile, worldNets.getWorld(), pos);
-            int color = tile.getColor();
-            if (data.getMiddle() != connectionMask || data.getRight() != color) {
-                data.setMiddle(connectionMask);
-                data.setRight(color);
-                onConnectionUpdate();
-            }
-        }
-        int activeMask = factory.getActiveSideMask(tile);
-        if (activeMask != 0) activeNodes.put(pos, activeMask);
-    }
-
-    protected abstract void transferNodeDataTo(Collection<BlockPos> nodeToTransfer, PipeNet<Q, P, C> toNet);
-    protected abstract void removeData(BlockPos pos);
-
-    public void addNode(BlockPos blockPos, ITilePipeLike<Q, P> tile) {
-        allNodes.put(blockPos, MutableTriple.of(tile.getTileProperty(), factory.getConnectionMask(tile, worldNets.getWorld(), blockPos), tile.getColor()));
-        int tileMask = factory.getActiveSideMask(tile);
-        if (tileMask != 0) activeNodes.put(blockPos, tileMask);
-        removedNodes.remove(blockPos);
-        addPosToArea(blockPos);
-        onConnectionUpdate();
-    }
-
-    /**
-     * Assert that all given nets are in the same world.
-     * @return merged result; or null if the list is empty.
-     */
-    static <Q extends Enum<Q> & IBaseProperty & IStringSerializable, P extends IPipeLikeTileProperty, C>
-    PipeNet<Q, P, C> mergeNets(List<PipeNet<Q, P, C>> nets) {
-        if (nets.size() == 0) return null;
-        PipeNet<Q, P, C> result = nets.get(0);
-        long lastUpdate = result.lastUpdate;
-        for (PipeNet<Q, P, C> net : nets) if (net != result) {
-            result.allNodes.putAll(net.allNodes);
-            result.activeNodes.putAll(net.activeNodes);
-            result.area.putAll(net.area);
-            net.transferNodeDataTo(net.allNodes.keySet(), result);
-            result.worldNets.removePipeNet(net);
-            if (net.lastUpdate > lastUpdate) lastUpdate = net.lastUpdate;
-        }
-        result.lastUpdate = ++lastUpdate;
-        result.onConnectionUpdate();
-        return result;
-    }
-
-    public boolean removeNode(BlockPos blockPos) {
-        if (null == allNodes.remove(blockPos)) return false;
-        activeNodes.remove(blockPos);
-        removeData(blockPos);
-        removePosFromArea(blockPos);
-        removedNodes.add(blockPos);
-        onConnectionUpdate();
-        return true;
-    }
-
-    private void trySplitPipeNet(BlockPos startPos) {
-        for (EnumFacing facing : EnumFacing.VALUES) {
-            Collection<BlockPos> searchResult = dfs(startPos.offset(facing), adjacent, p -> {}, noshortCircuit).keySet();
-            if (searchResult.size() == allNodes.size()) break;
-            if (!searchResult.isEmpty()) {
-                PipeNet<Q, P, C> newNet = factory.createPipeNet(worldNets);
-                transferNodeDataTo(searchResult, newNet);
-                for (BlockPos pos : searchResult) {
-                    newNet.allNodes.put(pos, allNodes.get(pos));
-                    if (activeNodes.containsKey(pos)) newNet.activeNodes.put(pos, activeNodes.get(pos));
-                    newNet.addPosToArea(pos);
-                    allNodes.remove(pos);
-                    activeNodes.remove(pos);
-                    removePosFromArea(pos);
-                    removeData(pos);
-                }
-                newNet.lastUpdate = lastUpdate + 1;
-                worldNets.addPipeNet(newNet);
-            }
-            searchResult.clear();
-        }
-
-        if (allNodes.isEmpty()) worldNets.removePipeNet(this);
-        onConnectionUpdate();
-    }
-
-    @FunctionalInterface
-    interface PassingThroughCondition {
-        boolean test(BlockPos fromPos, EnumFacing dir, BlockPos toPos);
-    }
-
-    protected static final Predicate<BlockPos> noshortCircuit = pos -> false;
-    protected final PassingThroughCondition adjacent = (fromPos, dir, toPos) -> true;
-    protected final PassingThroughCondition checkConnectionMask = (fromPos, dir, toPos) ->
-        ((allNodes.get(fromPos).getMiddle() & MASK_OUTPUT_DISABLED << dir.getIndex()) == 0)
-        && ((allNodes.get(toPos).getMiddle() & MASK_INPUT_DISABLED << dir.getOpposite().getIndex()) == 0);
-
-    /**
-     * Collect all nodes connecting to the start pos
-     * @return All reachable nodes, with each of them mapping to its parent node, and the start pos mapping to null;
-     *          Will be empty if start pos is not in this net.
-     */
-    public Map<BlockPos, BlockPos> dfs(BlockPos startPos, PassingThroughCondition condition, Consumer<BlockPos> onActiveNode, Predicate<BlockPos> shortCircuit) {
-        Stack<BlockPos> buffer = new Stack<>();
-        return search(startPos, condition, onActiveNode, shortCircuit, buffer, buffer::push, buffer::pop);
-    }
-
-    /**
-     * Collect all nodes connecting to the start pos
-     * @return All reachable nodes, with each of them mapping to its parent node, and the start pos mapping to null;
-     *          Will be empty if start pos is not in this net.
-     */
-    public Map<BlockPos, BlockPos> bfs(BlockPos startPos, PassingThroughCondition condition, Consumer<BlockPos> onActiveNode, Predicate<BlockPos> shortCircuit) {
-        Queue<BlockPos> buffer = Lists.newLinkedList();
-        return search(startPos, condition, onActiveNode, shortCircuit, buffer, buffer::offer, buffer::poll);
-    }
-
-    private Map<BlockPos, BlockPos> search(BlockPos startPos, PassingThroughCondition condition, Consumer<BlockPos> onActiveNode, Predicate<BlockPos> shortCircuit,
-                                           Collection<BlockPos> buffer, Consumer<BlockPos> putIntoBuffer, Supplier<BlockPos> getFromBuffer) {
-        Map<BlockPos, BlockPos> result = Maps.newHashMap();
-        if (allNodes.containsKey(startPos)) {
-            result.put(startPos, null);
-            if (activeNodes.containsKey(startPos)) onActiveNode.accept(startPos);
-            if (shortCircuit.test(startPos)) return result;
-            BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos();
-            putIntoBuffer.accept(startPos);
-            while (!buffer.isEmpty()) {
-                BlockPos currentPos = getFromBuffer.get();
-                pos.setPos(currentPos);
-                for (EnumFacing facing : EnumFacing.VALUES) {
-                    pos.move(facing);
-                    if (!result.containsKey(pos) && allNodes.containsKey(pos)) {
-                        if (condition.test(currentPos, facing, pos)) {
-                            BlockPos sidePos = pos.toImmutable();
-                            result.put(sidePos, currentPos);
-                            putIntoBuffer.accept(sidePos);
-                            if (activeNodes.containsKey(sidePos)) onActiveNode.accept(sidePos);
-                            if (shortCircuit.test(sidePos)) return result;
-                        }
-                    }
-                    pos.move(facing.getOpposite());
-                }
-            }
-        }
-        return result;
-    }
-
-    boolean clientSync = false;
-    public void issueClientSync() {
-        clientSync = true;
-    }
-
-    @Nullable
-    protected abstract NBTTagCompound getUpdateTag();
-
-    protected abstract void onUpdate(NBTTagCompound tag);
 
 }

@@ -85,62 +85,19 @@ public class CableRenderer extends PipeLikeRenderer<Insulation> {
     }
 
     @Override
-    public void renderBlock(Material material, Insulation baseProperty, int tileColor, CCRenderState state, IVertexOperation[] pipeline, int renderMask)  {
-        MaterialIconSet iconSet = material.materialIconSet;
-        int materialColor = GTUtility.convertRGBtoOpaqueRGBA_CL(material.materialRGB);
-        float thickness = baseProperty.getThickness();
-
-        IVertexOperation[] bases = ArrayUtils.addAll(pipeline, new IconTransformation(wireTextures.get(iconSet)), new ColourMultiplier(materialColor));
-        IVertexOperation[] overlays = bases;
-        IVertexOperation[] dullSides = bases;
+    protected IVertexOperation[][] getVertexOperations(Insulation baseProperty, IVertexOperation[] pipeline, MaterialIconSet iconSet, int tileColor, int materialColor) {
+        IVertexOperation[][] vo = new IVertexOperation[3][];
+        vo[0] = ArrayUtils.addAll(pipeline, new IconTransformation(wireTextures.get(iconSet)), new ColourMultiplier(materialColor));
+        vo[1] = vo[0];
+        vo[2] = vo[0];
 
         if(baseProperty.isColorable()) {
             int insulationColor = GTUtility.convertRGBtoOpaqueRGBA_CL(tileColor);
             ColourMultiplier multiplier = new ColourMultiplier(insulationColor);
-            dullSides = ArrayUtils.addAll(pipeline, new IconTransformation(insulationTextures[5]), multiplier);
-            overlays = ArrayUtils.addAll(pipeline, new IconTransformation(insulationTextures[baseProperty.insulationLevel]), multiplier);
+            vo[2] = ArrayUtils.addAll(pipeline, new IconTransformation(insulationTextures[5]), multiplier);
+            vo[1] = ArrayUtils.addAll(pipeline, new IconTransformation(insulationTextures[baseProperty.insulationLevel]), multiplier);
         }
-
-        Cuboid6 cuboid6 = PipeFactory.getSideBox(null, thickness);
-        for(EnumFacing renderedSide : EnumFacing.VALUES) {
-            if((renderMask & MASK_FORMAL_CONNECTION << renderedSide.getIndex()) == 0) {
-                int oppositeIndex = renderedSide.getOpposite().getIndex();
-                if((renderMask & MASK_FORMAL_CONNECTION << oppositeIndex) > 0 && (renderMask & ~(MASK_FORMAL_CONNECTION << oppositeIndex)) == 0) {
-                    //if there is something on opposite side, render overlay + base
-                    renderSide(state, bases, renderedSide, cuboid6);
-                    renderSide(state, overlays, renderedSide, cuboid6);
-                } else {
-                    renderSide(state, dullSides, renderedSide, cuboid6);
-                }
-            }
-        }
-
-        for (EnumFacing side : EnumFacing.VALUES) renderSideBox(renderMask, state, dullSides, bases, overlays, side, thickness);
-    }
-
-    private static void renderSideBox(int renderMask, CCRenderState renderState, IVertexOperation[] pipeline, IVertexOperation[] bases, IVertexOperation[] overlays, EnumFacing side, float thickness) {
-        if((renderMask & MASK_FORMAL_CONNECTION << side.getIndex()) > 0) {
-            boolean renderFrontSide = (renderMask & MASK_RENDER_SIDE << side.getIndex()) > 0;
-            Cuboid6 cuboid6 = PipeFactory.getSideBox(side, thickness);
-            for(EnumFacing renderedSide : EnumFacing.VALUES) {
-                if(renderedSide == side) {
-                    if(renderFrontSide) {
-                        renderSide(renderState, bases, renderedSide, cuboid6);
-                        renderSide(renderState, overlays, renderedSide, cuboid6);
-                    }
-                } else if(renderedSide != side.getOpposite()) {
-                    renderSide(renderState, pipeline, renderedSide, cuboid6);
-                }
-            }
-        }
-    }
-
-    private static ThreadLocal<BlockRenderer.BlockFace> blockFaces = ThreadLocal.withInitial(BlockRenderer.BlockFace::new);
-    private static void renderSide(CCRenderState renderState, IVertexOperation[] pipeline, EnumFacing side, Cuboid6 cuboid6) {
-        BlockRenderer.BlockFace blockFace = blockFaces.get();
-        blockFace.loadCuboidFace(cuboid6, side.getIndex());
-        renderState.setPipeline(blockFace, 0, blockFace.verts.length, pipeline);
-        renderState.render();
+        return vo;
     }
 
     @Override

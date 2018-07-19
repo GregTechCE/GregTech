@@ -166,13 +166,11 @@ public class WorldPipeNet extends WorldSavedData {
             }
         });
         scheduledCheck.clear();
+        PipeNet.removedNodes.forEach(PipeNet::trySplitPipeNet);
+        PipeNet.removedNodes.clear();
+        pipeNets.values().removeIf(net -> net.allNodes.isEmpty());
         pipeNets.values().forEach(net -> {
-            if (net.allNodes.isEmpty()) {
-                removePipeNet(net);
-            }
-            else {
-                if (net.isAnyAreaLoaded()) net.onPreTick();
-            }
+            if (net.isAnyAreaLoaded()) net.onPreTick();
         });
     }
 
@@ -182,8 +180,8 @@ public class WorldPipeNet extends WorldSavedData {
         pipeNets.values().forEach(net -> {
             if (net.isAnyAreaLoaded()) net.onPostTick();
         });
+        //Sync
         pipeNets.forEach((name, net) -> {
-            //Sync
             if (world instanceof WorldServer && net.clientSync) {
                 NBTTagCompound updateTag = net.getUpdateTag();
                 if (updateTag != null) {
@@ -197,6 +195,7 @@ public class WorldPipeNet extends WorldSavedData {
                             NetworkHandler.channel.sendTo(NetworkHandler.packet2proxy(packet), player);
                         });
                 }
+                net.clientSync = false;
             }
         });
     }

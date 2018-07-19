@@ -2,17 +2,16 @@ package gregtech.common.pipelike;
 
 import gregtech.api.capability.IEnergyContainer;
 import gregtech.api.pipelike.ITilePipeLike;
+import gregtech.api.worldentries.PipeNet;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.math.BlockPos;
 
-import java.util.LinkedList;
-import java.util.Map;
+import java.util.List;
 
 public class CableEnergyContainer implements IEnergyContainer {
 
     final ITilePipeLike<Insulation, WireProperties> tileEntityCable;
     long lastCachedPathsTime = 0;
-    Map<LinkedList<BlockPos>, Long> pathsCache;
+    List<PipeNet.RoutePath<WireProperties, ?, Long>> pathsCache;
 
     public CableEnergyContainer(ITilePipeLike<Insulation, WireProperties> tileEntityCable) {
         this.tileEntityCable = tileEntityCable;

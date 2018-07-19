@@ -65,7 +65,7 @@ public abstract class PipeFactory<Q extends Enum<Q> & IBaseProperty & IStringSer
 
     public final String name;
 
-    protected final PropertyEnum<Q> baseProperty;
+    public final PropertyEnum<Q> baseProperty;
     protected final Q[] baseProperties;
     public final ResourceLocation multipartType;
 
