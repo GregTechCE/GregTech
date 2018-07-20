@@ -20,7 +20,7 @@ public class CableEnergyContainer implements IEnergyContainer {
     @Override
     public long acceptEnergyFromNetwork(EnumFacing side, long voltage, long amperage) {
         EnergyNet net = getEnergyNet();
-        return net != null ? net.acceptEnergy(this, voltage, amperage) : 0;
+        return net != null ? net.acceptEnergy(this, voltage, amperage, side) : 0;
     }
 
     @Override
@@ -35,7 +35,7 @@ public class CableEnergyContainer implements IEnergyContainer {
 
     @Override
     public long getEnergyCapacity() {
-        return getInputVoltage() * getInputAmperage();
+        return Long.MAX_VALUE;
     }
 
     @Override
@@ -63,6 +63,12 @@ public class CableEnergyContainer implements IEnergyContainer {
 
     private EnergyNet getEnergyNet() {
         return CableFactory.INSTANCE.getPipeNetAt(tileEntityCable);
+    }
+
+    public long[] getAverageData() {
+        EnergyNet net = getEnergyNet();
+        if (net != null) return net.getStatisticData(tileEntityCable.getPos());
+        return EnergyNet.NO_DATA;
     }
 
 }

@@ -2,6 +2,7 @@ package gregtech.api.worldentries;
 
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
+import com.google.common.collect.Sets;
 import gregtech.api.net.NetworkHandler;
 import gregtech.api.net.PacketPipeNetUpdate;
 import gregtech.api.pipelike.IBaseProperty;
@@ -50,10 +51,7 @@ public class WorldPipeNet extends WorldSavedData {
 
     @SubscribeEvent
     public static void onWorldTick(TickEvent.WorldTickEvent event) {
-        switch (event.phase) {
-            case START: getWorldPipeNet(event.world).onPreTick();
-            case END: getWorldPipeNet(event.world).onPostTick();
-        }
+        if (event.phase == TickEvent.Phase.END) getWorldPipeNet(event.world).update();
     }
 
     public WorldPipeNet(String name) {
@@ -154,8 +152,7 @@ public class WorldPipeNet extends WorldSavedData {
         scheduledCheck.put(factory, pos);
     }
 
-    //preperation tasks
-    public void onPreTick() {
+    public void update() {
         scheduledCheck.forEach((factory, pos) -> {
             ITilePipeLike tile = factory.getTile(world, pos);
             if (tile != null) {
@@ -166,38 +163,41 @@ public class WorldPipeNet extends WorldSavedData {
             }
         });
         scheduledCheck.clear();
-        PipeNet.removedNodes.forEach(PipeNet::trySplitPipeNet);
-        PipeNet.removedNodes.clear();
-        pipeNets.values().removeIf(net -> net.allNodes.isEmpty());
-        pipeNets.values().forEach(net -> {
+
+        Collection<PipeNet> nets = pipeNets.values();
+
+        Sets.newHashSet(nets).forEach(PipeNet::trySplitPipeNet);
+        nets.removeIf(net -> net.allNodes.isEmpty());
+
+        nets.forEach(net -> {
             if (net.isAnyAreaLoaded()) net.onPreTick();
         });
-    }
 
-    //net logic and client sync
-    public void onPostTick() {
-        //Tick
-        pipeNets.values().forEach(net -> {
+        nets.forEach(net -> { if (net.isAnyAreaLoaded()) net.update(); });
+
+        Sets.newHashSet(nets).forEach(PipeNet::trySplitPipeNet);
+        nets.removeIf(net -> net.allNodes.isEmpty());
+
+        nets.forEach(net -> {
             if (net.isAnyAreaLoaded()) net.onPostTick();
         });
-        //Sync
-        pipeNets.forEach((name, net) -> {
-            if (world instanceof WorldServer && net.clientSync) {
-                NBTTagCompound updateTag = net.getUpdateTag();
-                if (updateTag != null) {
-                    world.playerEntities.stream()
-                        .map(player -> (EntityPlayerMP) player)
-                        .filter(net::isPlayerWatching)
-                        .forEach(player -> {
-                            PacketBuffer packetBuffer = new PacketBuffer(Unpooled.buffer());
-                            packetBuffer.writeCompoundTag(updateTag);
-                            PacketPipeNetUpdate packet = new PacketPipeNetUpdate(name, net.uid, packetBuffer);
-                            NetworkHandler.channel.sendTo(NetworkHandler.packet2proxy(packet), player);
-                        });
+
+        if (world instanceof WorldServer) {
+            nets.forEach(net -> {
+                if (net.needsClientSync()) {
+                    NBTTagCompound updateTag = net.getTagForPacket();
+                    if (updateTag != null) {
+                        world.playerEntities.stream()
+                            .map(EntityPlayerMP.class::cast)
+                            .filter(net::isPlayerWatching)
+                            .forEach(player -> NetworkHandler.channel
+                                .sendTo(NetworkHandler.packet2proxy(new PacketPipeNetUpdate(net.factory.name, net.uid,
+                                    new PacketBuffer(Unpooled.buffer()).writeCompoundTag(updateTag))), player));
+                    }
+                    net.clientSync = false;
                 }
-                net.clientSync = false;
-            }
-        });
+            });
+        }
     }
 
     final WeakHashMap<PipeNet, Long> uids = new WeakHashMap<>();
@@ -230,7 +230,7 @@ public class WorldPipeNet extends WorldSavedData {
                 .orElse(null));
         if (net != null) {
             try {
-                net.onUpdate(packet.updateData.readCompoundTag());
+                net.onPacketTag(packet.updateData.readCompoundTag());
             } catch (IOException e) {
                 e.printStackTrace();
             }

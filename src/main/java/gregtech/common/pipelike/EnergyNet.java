@@ -1,30 +1,28 @@
 package gregtech.common.pipelike;
 
-import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import com.google.common.collect.Sets;
 import gregtech.api.capability.IEnergyContainer;
 import gregtech.api.worldentries.PipeNet;
 import gregtech.api.worldentries.WorldPipeNet;
 import net.minecraft.init.Blocks;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
-import org.apache.commons.lang3.mutable.MutableLong;
 
-import javax.annotation.Nullable;
 import java.util.Collection;
 import java.util.Map;
-import java.util.Queue;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class EnergyNet extends PipeNet<Insulation, WireProperties, IEnergyContainer> {
 
-    private Map<BlockPos, MutableLong> accumulated = Maps.newHashMap();
-    private Queue<BlockPos> burntBlock = Lists.newLinkedList();
+    private Map<BlockPos, EnergyPacket> tickCount = Maps.newHashMap();
+    private Map<BlockPos, Statistics> statistics = Maps.newHashMap();
+    private Collection<BlockPos> burntBlock = Sets.newHashSet();
 
     public EnergyNet(WorldPipeNet worldNet) {
         super(CableFactory.INSTANCE, worldNet);
@@ -32,59 +30,47 @@ public class EnergyNet extends PipeNet<Insulation, WireProperties, IEnergyContai
 
     @Override
     protected void onPreTick(long tickTimer) {
-        accumulated.clear();
+        if (!worldNets.getWorld().isRemote) {
+            statistics.forEach((pos, stat) -> stat.addData(tickCount.get(pos)));
+            tickCount.forEach((pos, data) -> statistics.computeIfAbsent(pos, p -> Statistics.create(data)));
+            statistics.entrySet().removeIf(e -> e.getValue().isEmpty());
+        }
+        tickCount.clear();
     }
 
     @Override
-    protected void onPostTick(long tickTimer) {
+    protected void update(long tickTimer) {
         World world = worldNets.getWorld();
         if (!world.isRemote) {
-            if (!burntBlock.isEmpty()) {
-                while (!burntBlock.isEmpty()) {
-                    BlockPos pos = burntBlock.poll();
-                    world.setBlockToAir(pos);
-                    world.setBlockState(pos, Blocks.FIRE.getDefaultState());
-                    if (!world.isRemote) {
-                        ((WorldServer) world).spawnParticle(EnumParticleTypes.SMOKE_LARGE,
-                            pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5,
-                            5 + world.rand.nextInt(3), 0.0, 0.0, 0.0, 0.1);
-                    }
-                }
-            }
+            burntBlock.forEach(pos -> {
+                world.setBlockToAir(pos);
+                world.setBlockState(pos, Blocks.FIRE.getDefaultState());
+                ((WorldServer) world).spawnParticle(EnumParticleTypes.SMOKE_LARGE,
+                    pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5,
+                    5 + world.rand.nextInt(3), 0.0, 0.0, 0.0, 0.1);
+            });
+            burntBlock.clear();
         }
     }
-
-    @Override
-    protected void serializeNodeData(BlockPos pos, NBTTagCompound nodeTag) {}
-
-    @Override
-    protected void deserializeNodeData(BlockPos pos, NBTTagCompound nodeTag) {}
 
     @Override
     protected void transferNodeDataTo(Collection<? extends BlockPos> nodeToTransfer, PipeNet<Insulation, WireProperties, IEnergyContainer> toNet) {
         EnergyNet net = (EnergyNet) toNet;
         for (BlockPos pos : nodeToTransfer) {
-            if (accumulated.containsKey(pos)) net.accumulated.put(pos, accumulated.get(pos));
+            if (tickCount.containsKey(pos)) net.tickCount.put(pos, tickCount.get(pos));
             if (burntBlock.contains(pos)) net.burntBlock.add(pos);
+            if (statistics.containsKey(pos)) net.statistics.put(pos, statistics.get(pos));
         }
     }
 
     @Override
     protected void removeData(BlockPos pos) {
-        accumulated.remove(pos);
-        burntBlock.remove(pos);
+        tickCount.remove(pos);
+        //burntBlock.remove(pos);
+        statistics.remove(pos);
     }
 
-    @Nullable
-    @Override
-    protected NBTTagCompound getUpdateTag() {
-        return null;
-    }
-
-    @Override
-    protected void onUpdate(NBTTagCompound nbt) {}
-
-    public long acceptEnergy(CableEnergyContainer energyContainer, long voltage, long amperage) {
+    public long acceptEnergy(CableEnergyContainer energyContainer, long voltage, long amperage, EnumFacing side) {
         if (energyContainer.pathsCache == null || energyContainer.lastCachedPathsTime < lastUpdate) {
             energyContainer.lastCachedPathsTime = lastUpdate;
             energyContainer.pathsCache = computeRoutePaths(energyContainer.tileEntityCable.getPos(), checkConnectionMask,
@@ -93,16 +79,17 @@ public class EnergyNet extends PipeNet<Insulation, WireProperties, IEnergyContai
         long amperesUsed = 0L;
         for (RoutePath<WireProperties, ?, Long> path : energyContainer.pathsCache) {
             if (path.getAccumulatedVal() >= voltage) continue; //do not emit if loss is too high
-            amperesUsed += dispatchEnergyToNode(path, voltage, amperage - amperesUsed);
+            amperesUsed += dispatchEnergyToNode(path, voltage, amperage - amperesUsed, side);
             if (amperesUsed == amperage) break; //do not continue if all amperes are exhausted
         }
         return amperesUsed;
     }
 
-    public long dispatchEnergyToNode(RoutePath<WireProperties, ?, Long> path, long voltage, long amperage) {
+    public long dispatchEnergyToNode(RoutePath<WireProperties, ?, Long> path, long voltage, long amperage, EnumFacing ignoreFacing) {
         long amperesUsed = 0L;
         Node<WireProperties> destination = path.getEndNode();
         int tileMask = destination.getActiveMask();
+        if (destination.equals(path.getStartNode())) tileMask &= ~(1 << ignoreFacing.getOpposite().getIndex());
         BlockPos.PooledMutableBlockPos pos = BlockPos.PooledMutableBlockPos.retain();
         World world = worldNets.getWorld();
         for (EnumFacing facing : EnumFacing.VALUES) if (0 != (tileMask & 1 << facing.getIndex())) {
@@ -129,14 +116,76 @@ public class EnergyNet extends PipeNet<Insulation, WireProperties, IEnergyContai
 
     private void onEnergyPacket(Node<WireProperties> node, long voltage, long amperage) {
         WireProperties prop = node.property;
-        long amp = accumulated.compute(node, (pos, a) -> {
-            if (a == null) {
-                return new MutableLong(amperage);
-            } else {
-                a.add(amperage);
-                return a;
-            }
-        }).getValue();
+        long amp = tickCount.compute(node, (pos, ePacket) -> ePacket == null ? EnergyPacket.create(amperage, voltage) : ePacket.accumulate(amperage, voltage)).amperage;
         if (voltage > prop.getVoltage() || amp > prop.getAmperage()) burntBlock.add(node);
+    }
+
+    // amperage, energy, count
+    public long[] getStatisticData(BlockPos pos) {
+        return Optional.ofNullable(statistics.get(pos)).map(Statistics::getData).orElse(NO_DATA);
+    }
+
+    public static final int STATISTIC_COUNT = 20;
+
+    public static class EnergyPacket {
+        public long amperage;
+        public long energy;
+
+        EnergyPacket(long amperage, long energy) {
+            this.amperage = amperage;
+            this.energy = energy;
+        }
+
+        static EnergyPacket create(long amperage, long voltage) {
+            return new EnergyPacket(amperage, amperage * voltage);
+        }
+
+        EnergyPacket accumulate(long amperage, long voltage) {
+            this.amperage += amperage;
+            this.energy += amperage * voltage;
+            return this;
+        }
+    }
+
+    public static final long[] NO_DATA = {0L, 0L, 0L};
+
+    static class Statistics {
+        long[] amperes = new long[STATISTIC_COUNT];
+        long[] energies = new long[STATISTIC_COUNT];
+        int pointer = 0;
+        int count = 0;
+
+        static Statistics create(EnergyPacket data) {
+            return new Statistics().addData(data);
+        }
+
+        public Statistics addData(EnergyPacket data) {
+            if (data != null && (data.amperage != 0 || data.energy != 0)) {
+                amperes[pointer] = data.amperage;
+                energies[pointer] = data.energy;
+                if (count < STATISTIC_COUNT) count++;
+            } else {
+                amperes[pointer] = 0;
+                energies[pointer] = 0;
+                if (count > 0) count--;
+            }
+            pointer++;
+            if (pointer >= STATISTIC_COUNT) pointer -= STATISTIC_COUNT;
+            return this;
+        }
+
+        public boolean isEmpty() {
+            return count == 0;
+        }
+
+        public long[] getData() {
+            if (count == 0) return NO_DATA;
+            long amperage = 0, energy = 0;
+            for (int i = 0; i < STATISTIC_COUNT; i++) {
+                amperage += amperes[i];
+                energy += energies[i];
+            }
+            return new long[]{amperage, energy, count};
+        }
     }
 }

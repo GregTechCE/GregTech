@@ -37,7 +37,7 @@ public abstract class PipeNet<Q extends Enum<Q> & IBaseProperty & IStringSeriali
     private ListMultimap<ChunkPos, BlockPos> area = ArrayListMultimap.create();
     protected final Map<BlockPos, Node<P>> allNodes = Maps.newHashMap();
 
-    protected static final Map<BlockPos, PipeNet> removedNodes = Maps.newHashMap();
+    protected final Collection<BlockPos> removedNodes = Sets.newHashSet();
 
     protected PipeNet(PipeFactory<Q, P, C> factory, WorldPipeNet worldNets) {
         this.factory = factory;
@@ -83,17 +83,22 @@ public abstract class PipeNet<Q extends Enum<Q> & IBaseProperty & IStringSeriali
         if (area.get(chunkPos).isEmpty()) area.removeAll(chunkPos);
     }
 
-    protected abstract void onPreTick(long tickTimer);//precalculate tasks here
-    protected abstract void onPostTick(long tickTimer);//world interactions here
+    protected void onPreTick(long tickTimer) {}//pre calculations here
+    protected void update(long tickTimer) {}// world interactions here
+    protected void onPostTick(long tickTimer) {}//post calculations here
 
     private long tickTimer = 0;
     protected long lastUpdate = 1;
 
-    public void onPreTick() {
+    public final void onPreTick() {
         onPreTick(tickTimer);
     }
 
-    public void onPostTick() {
+    public final void update() {
+        update(tickTimer);
+    }
+
+    public final void onPostTick() {
         onPostTick(tickTimer++);
     }
 
@@ -106,8 +111,8 @@ public abstract class PipeNet<Q extends Enum<Q> & IBaseProperty & IStringSeriali
         worldNets.markDirty();
     }
 
-    protected abstract void serializeNodeData(BlockPos pos, NBTTagCompound nodeTag);
-    protected abstract void deserializeNodeData(BlockPos pos, NBTTagCompound nodeTag);
+    protected void serializeNodeData(BlockPos pos, NBTTagCompound nodeTag) {}
+    protected void deserializeNodeData(BlockPos pos, NBTTagCompound nodeTag) {}
 
     @Override
     public NBTTagCompound serializeNBT() {
@@ -177,8 +182,8 @@ public abstract class PipeNet<Q extends Enum<Q> & IBaseProperty & IStringSeriali
                 data.color = color;
                 onConnectionUpdate();
             }
+            data.activeMask = factory.getActiveSideMask(tile);
         }
-        data.activeMask = factory.getActiveSideMask(tile);
     }
 
     protected abstract void transferNodeDataTo(Collection<? extends BlockPos> nodeToTransfer, PipeNet<Q, P, C> toNet);
@@ -196,7 +201,7 @@ public abstract class PipeNet<Q extends Enum<Q> & IBaseProperty & IStringSeriali
         if (null == allNodes.remove(blockPos)) return false;
         removeData(blockPos);
         removePosFromArea(blockPos);
-        removedNodes.put(blockPos, this);
+        removedNodes.add(blockPos);
         onConnectionUpdate();
         return true;
     }
@@ -214,7 +219,7 @@ public abstract class PipeNet<Q extends Enum<Q> & IBaseProperty & IStringSeriali
             result.allNodes.putAll(net.allNodes);
             result.area.putAll(net.area);
             net.transferNodeDataTo(net.allNodes.keySet(), result);
-            net.allNodes.clear(); // will be removed in WorldPipeNet::onPreTick
+            net.allNodes.clear(); // will be removed in WorldPipeNet::update()
             net.area.clear();     // not tickable anymore.
             if (net.lastUpdate > lastUpdate) lastUpdate = net.lastUpdate;
         }
@@ -223,27 +228,28 @@ public abstract class PipeNet<Q extends Enum<Q> & IBaseProperty & IStringSeriali
         return result;
     }
 
-    static void trySplitPipeNet(BlockPos startPos, PipeNet net) {
-        for (EnumFacing facing : EnumFacing.VALUES) {
-            Collection<? extends BlockPos> searchResult = net.dfs(startPos.offset(facing), adjacent, n -> {}, n -> false);
-            if (searchResult.size() == net.allNodes.size()) break;
+    void trySplitPipeNet() {
+        if (removedNodes.isEmpty()) return;
+        Collection<BlockPos> sides = Sets.newHashSet();
+        removedNodes.forEach(pos -> {for (EnumFacing facing : EnumFacing.VALUES) Optional.ofNullable(allNodes.get(pos.offset(facing))).ifPresent(sides::add);});
+        for (BlockPos startPos : sides) {
+            Collection<? extends BlockPos> searchResult = dfs(startPos, adjacent, null, null, null);
+            if (searchResult.size() == allNodes.size()) break;
             if (!searchResult.isEmpty()) {
-                PipeNet newNet = net.factory.createPipeNet(net.worldNets);
-                net.transferNodeDataTo(searchResult, newNet);
+                PipeNet<Q, P, C> newNet = factory.createPipeNet(worldNets);
+                transferNodeDataTo(searchResult, newNet);
                 for (BlockPos pos : searchResult) {
-                    newNet.allNodes.put(pos, net.allNodes.get(pos));
+                    newNet.allNodes.put(pos, allNodes.get(pos));
                     newNet.addPosToArea(pos);
-                    net.allNodes.remove(pos);
-                    net.removePosFromArea(pos);
-                    net.removeData(pos);
+                    allNodes.remove(pos);
+                    removePosFromArea(pos);
+                    removeData(pos);
                 }
-                newNet.lastUpdate = net.lastUpdate + 1;
-                net.worldNets.addPipeNet(newNet);
+                newNet.lastUpdate = lastUpdate + 1;
+                worldNets.addPipeNet(newNet);
             }
-            searchResult.clear();
         }
-
-        net.onConnectionUpdate();
+        onConnectionUpdate();
     }
 
     protected static final PassingThroughCondition adjacent = (fromNode, dir, toNode) -> true;
@@ -257,7 +263,7 @@ public abstract class PipeNet<Q extends Enum<Q> & IBaseProperty & IStringSeriali
      */
     public <R> List<RoutePath<P, ?, R>> computeRoutePaths(BlockPos startPos, PassingThroughCondition condition, Collector<LinkedNode<P>, ?, R> collector, Predicate<LinkedNode<P>> shortCircuit) {
         List<RoutePath<P, ?, R>> result = Lists.newArrayList();
-        bfs(startPos, condition, activeNode -> {
+        bfs(startPos, condition, null, activeNode -> {
             RoutePath<P, ?, R> routePath = new RoutePath<>(collector);
             new NodeChain<>(activeNode).forEach(routePath::extend);
             result.add(routePath);
@@ -270,8 +276,8 @@ public abstract class PipeNet<Q extends Enum<Q> & IBaseProperty & IStringSeriali
      * @return All reachable nodes, with each of them linked to its parent node, and the start pos linked to null;
      *          Will be empty if start pos is not in this net.
      */
-    public Collection<LinkedNode<P>> dfs(BlockPos startPos, PassingThroughCondition condition, Consumer<LinkedNode<P>> onActiveNode, Predicate<LinkedNode<P>> shortCircuit) {
-        return search(startPos, condition, onActiveNode, shortCircuit, SearchType.DFS);
+    public Collection<LinkedNode<P>> dfs(BlockPos startPos, PassingThroughCondition<P> condition, @Nullable Consumer<LinkedNode<P>> onNode, @Nullable Consumer<LinkedNode<P>> onActiveNode, @Nullable Predicate<LinkedNode<P>> shortCircuit) {
+        return search(startPos, condition, onNode, onActiveNode, shortCircuit, SearchType.DFS);
     }
 
     /**
@@ -279,21 +285,22 @@ public abstract class PipeNet<Q extends Enum<Q> & IBaseProperty & IStringSeriali
      * @return All reachable nodes, with each of them linked to its parent node, and the start pos linked to null;
      *          Will be empty if start pos is not in this net.
      */
-    public Collection<LinkedNode<P>> bfs(BlockPos startPos, PassingThroughCondition condition, Consumer<LinkedNode<P>> onActiveNode, Predicate<LinkedNode<P>> shortCircuit) {
-        return search(startPos, condition, onActiveNode, shortCircuit, SearchType.BFS);
+    public Collection<LinkedNode<P>> bfs(BlockPos startPos, PassingThroughCondition<P> condition, @Nullable Consumer<LinkedNode<P>> onNode, @Nullable Consumer<LinkedNode<P>> onActiveNode, @Nullable Predicate<LinkedNode<P>> shortCircuit) {
+        return search(startPos, condition, onNode, onActiveNode, shortCircuit, SearchType.BFS);
     }
 
     private enum SearchType {
-        BFS, DFS;
+        BFS, DFS
     }
 
-    private Collection<LinkedNode<P>> search(BlockPos startPos, PassingThroughCondition condition, Consumer<LinkedNode<P>> onActiveNode, Predicate<LinkedNode<P>> shortCircuit, SearchType type) {
+    private Collection<LinkedNode<P>> search(BlockPos startPos, PassingThroughCondition<P> condition, @Nullable Consumer<LinkedNode<P>> onNode, @Nullable Consumer<LinkedNode<P>> onActiveNode, @Nullable Predicate<LinkedNode<P>> shortCircuit, SearchType type) {
         Collection<LinkedNode<P>> result = Sets.newHashSet();
         if (allNodes.containsKey(startPos)) {
             LinkedNode<P> startNode = new LinkedNode<>(allNodes.get(startPos), null);
             result.add(startNode);
-            if (startNode.isActive()) onActiveNode.accept(startNode);
-            if (shortCircuit.test(startNode)) return result;
+            if (onNode != null) onNode.accept(startNode);
+            if (onActiveNode != null && startNode.isActive()) onActiveNode.accept(startNode);
+            if (shortCircuit != null && shortCircuit.test(startNode)) return result;
             BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos();
             LinkedList<LinkedNode<P>> buffer = Lists.newLinkedList();
             Consumer<LinkedNode<P>> putter = null;
@@ -311,11 +318,12 @@ public abstract class PipeNet<Q extends Enum<Q> & IBaseProperty & IStringSeriali
                     if (!result.contains(pos) && allNodes.containsKey(pos)) {
                         Node<P> side = allNodes.get(pos);
                         if (condition.test(current, facing, side)) {
-                            LinkedNode<P> sideNode = new LinkedNode<P>(side, current);
+                            LinkedNode<P> sideNode = new LinkedNode<>(side, current);
                             result.add(sideNode);
                             putter.accept(sideNode);
-                            if (sideNode.isActive()) onActiveNode.accept(sideNode);
-                            if (shortCircuit.test(sideNode)) return result;
+                            if (onNode != null) onNode.accept(sideNode);
+                            if (onActiveNode != null && sideNode.isActive()) onActiveNode.accept(sideNode);
+                            if (shortCircuit != null && shortCircuit.test(sideNode)) return result;
                         }
                     }
                     pos.move(facing.getOpposite());
@@ -326,14 +334,21 @@ public abstract class PipeNet<Q extends Enum<Q> & IBaseProperty & IStringSeriali
     }
 
     boolean clientSync = false;
+
     public void issueClientSync() {
         clientSync = true;
     }
 
-    @Nullable
-    protected abstract NBTTagCompound getUpdateTag();
+    boolean needsClientSync() {
+        return clientSync;
+    }
 
-    protected abstract void onUpdate(NBTTagCompound tag);
+    @Nullable
+    protected NBTTagCompound getTagForPacket() {
+        return null;
+    }
+
+    protected void onPacketTag(NBTTagCompound tag) {}
 
 
 

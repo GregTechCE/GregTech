@@ -205,7 +205,7 @@ public abstract class PipeFactory<Q extends Enum<Q> & IBaseProperty & IStringSer
         double depth = hit.copy().scalarProject(Rotation.axes[side]) + (side % 2 ^ 1);
 
         Supplier<EnumActionResult> place = () -> {//TODO Covers
-            TMultiPart part = new MultipartPipeLike<>(this, null, state);
+            TMultiPart part = createMultipart(null, state);
             if (!(worldIn.getTileEntity(pos) instanceof TileMultipart) || !TileMultipart.canPlacePart(worldIn, pos, part)) return EnumActionResult.FAIL;
 
             if (!worldIn.isRemote) {
@@ -227,12 +227,13 @@ public abstract class PipeFactory<Q extends Enum<Q> & IBaseProperty & IStringSer
      * Modified version of {@link net.minecraft.item.ItemBlock#canPlaceBlockOnSide(World, BlockPos, EnumFacing, EntityPlayer, ItemStack)}
      */
     @Method(modid = GTValues.MODID_FMP)
-    public static boolean canPlaceBlockOnSide(World worldIn, BlockPos pos, EnumFacing side, EntityPlayer player, ItemStack stack, Block blockPipeLike) {
+    public boolean canPlaceBlockOnSide(World worldIn, BlockPos pos, EnumFacing side, EntityPlayer player, ItemStack stack, BlockPipeLike blockPipeLike) {
         Block block = worldIn.getBlockState(pos).getBlock();
+        TMultiPart part = createMultipart(null, blockPipeLike.getStateFromMeta(stack.getItemDamage()));
 
         if (block == Blocks.SNOW_LAYER && block.isReplaceable(worldIn, pos)) {
             side = EnumFacing.UP;
-        } else if (!block.isReplaceable(worldIn, pos)) {
+        } else if (!block.isReplaceable(worldIn, pos) && !(worldIn.getTileEntity(pos) instanceof TileMultipart) || !TileMultipart.canPlacePart(worldIn, pos, part)) {
             pos = pos.offset(side);
         }
 
