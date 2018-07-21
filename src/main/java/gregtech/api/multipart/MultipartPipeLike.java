@@ -18,9 +18,11 @@ import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.pipelike.*;
 import gregtech.api.render.PipeLikeRenderer;
 import gregtech.api.unification.material.type.Material;
+import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.particle.ParticleManager;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -29,6 +31,7 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
@@ -46,6 +49,7 @@ public class MultipartPipeLike<Q extends Enum<Q> & IBaseProperty & IStringSerial
 
     private PipeFactory<Q, P, C> factory;
 
+    private IBlockState blockState;
     private BlockPipeLike<Q, P, C> block;
     private Q baseProperty;
     private P tileProperty;
@@ -146,20 +150,58 @@ public class MultipartPipeLike<Q extends Enum<Q> & IBaseProperty & IStringSerial
         return internalConnections;
     }
 
+    @Override
+    public int getRenderMask() {
+        return renderMask;
+    }
+
+    public IBlockState getBlockState() {
+        return blockState == null ? blockState = block.getDefaultState().withProperty(factory.baseProperty, baseProperty) : blockState;
+    }
+
     ///////////////////////////////// ITEM DROPPED /////////////////////////////////////////
 
     protected ItemStack getItem() {
         return block.getItem(baseProperty);
     }
 
+    /**
+     * Modified version of {@link net.minecraftforge.common.ForgeHooks#blockStrength(IBlockState, EntityPlayer, World, BlockPos)}
+     */
     @Override
-    public Iterable<ItemStack> getDrops() {//TODO Tools
-        return Collections.singleton(getItem());//TODO Covers?
+    public float getStrength(EntityPlayer player, CuboidRayTraceResult hit) {
+        IBlockState state = getBlockState();
+        World world = world();
+        BlockPos pos = pos();
+        float hardness = state.getBlockHardness(world, pos);
+        if (hardness < 0.0F) return 0.0F;
+        return player.getDigSpeed(state, pos) / hardness / (canHarvestPart(player) ? 30F : 100F);
+    }
+
+    /**
+     * Modified version of {@link net.minecraftforge.common.ForgeHooks#canHarvestBlock(Block, EntityPlayer, IBlockAccess, BlockPos)}
+     */
+    protected boolean canHarvestPart(EntityPlayer player) {
+        IBlockState state = getBlockState();
+        if (state.getMaterial().isToolNotRequired()) return true;
+
+        ItemStack stack = player.getHeldItemMainhand();
+        String tool = block.getHarvestTool(state);
+        if (stack.isEmpty() || tool == null) return player.canHarvestBlock(state);
+
+        int toolLevel = stack.getItem().getHarvestLevel(stack, tool, player, state);
+        if (toolLevel < 0) return player.canHarvestBlock(state);
+
+        return toolLevel >= block.getHarvestLevel(state);
     }
 
     @Override
     public void harvest(EntityPlayer player, CuboidRayTraceResult hit) {
-        super.harvest(player, hit);//TODO Tools
+        if (!player.capabilities.isCreativeMode) {
+            if (canHarvestPart(player))
+                tile().dropItems(Collections.singleton(getItem()));//TODO Covers?
+        }
+        tile().remPart(this);
     }
 
     @Override
@@ -288,6 +330,11 @@ public class MultipartPipeLike<Q extends Enum<Q> & IBaseProperty & IStringSerial
     }
 
     @Override
+    public void onEntityCollision(Entity entity) {
+        factory.onEntityCollidedWithBlock(entity, this);
+    }
+
+    @Override
     public void onNeighborChanged() {
         updateRenderMask();
         updateNode();
@@ -299,7 +346,7 @@ public class MultipartPipeLike<Q extends Enum<Q> & IBaseProperty & IStringSerial
     }
 
     /**
-     * Try to fix the recolor issue but failed.
+     * Try to fix a recolor issue but failed.
      * Not my fault. {@link BlockMultipart#onNeighborChange} is passing the wrong parameter to {@link TileMultipart#onNeighborTileChange}.
      * Using ForgeMultipart 2.4.2.58.
      * See <a herf=https://github.com/TheCBProject/ForgeMultipart/pull/32>this PR</a>
@@ -359,13 +406,10 @@ public class MultipartPipeLike<Q extends Enum<Q> & IBaseProperty & IStringSerial
         return null;
     }
 
-    //use mutable pos for frequent side check
-    protected ThreadLocal<BlockPos.MutableBlockPos> mutablePos = ThreadLocal.withInitial(() -> new BlockPos.MutableBlockPos(pos()));
-
     @Nullable
     @Override
     public ICapabilityProvider getCapabilityProviderAtSide(@Nonnull EnumFacing facing) {
-        BlockPos.MutableBlockPos pos = mutablePos.get();
+        BlockPos.MutableBlockPos pos = BlockPos.PooledMutableBlockPos.retain(pos());
         pos.move(facing);
         World world = world();
         ICapabilityProvider result = world == null ? null : world.getTileEntity(pos);
@@ -402,12 +446,12 @@ public class MultipartPipeLike<Q extends Enum<Q> & IBaseProperty & IStringSerial
     @SideOnly(Side.CLIENT)
     @Override
     public void addDestroyEffects(CuboidRayTraceResult hit, ParticleManager manager) {
-        PipeLikeRenderer.handleDestroyEffects(world(), block.getDefaultState().withProperty(factory.baseProperty, baseProperty), pos(), manager);
+        PipeLikeRenderer.handleDestroyEffects(world(), getBlockState(), pos(), manager);
     }
 
     @SideOnly(Side.CLIENT)
     @Override
     public void addHitEffects(CuboidRayTraceResult hit, ParticleManager manager) {
-        CustomParticleHandler.handleHitEffects(block.getDefaultState().withProperty(factory.baseProperty, baseProperty), world(), hit, manager);
+        CustomParticleHandler.handleHitEffects(getBlockState(), world(), hit, manager);
     }
 }

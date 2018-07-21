@@ -122,7 +122,7 @@ public abstract class ToolBase implements IToolStats {
     }
 
     @Override
-    public boolean isMinableBlock(IBlockState block, ItemStack stack) {
+    public boolean isMinableBlock(IBlockState block, ItemStack stack, String tool) {
         return false;
     }
 

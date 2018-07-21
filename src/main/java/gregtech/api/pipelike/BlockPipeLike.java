@@ -212,6 +212,12 @@ public class BlockPipeLike<Q extends Enum<Q> & IBaseProperty & IStringSerializab
     }
 
     @Override
+    public void onEntityCollidedWithBlock(World worldIn, BlockPos pos, IBlockState state, Entity entityIn) {
+        ITilePipeLike<Q, P> tile = factory.getTile(worldIn, pos);
+        if (tile != null) factory.onEntityCollidedWithBlock(entityIn, tile);
+    }
+
+    @Override
     public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face) {
         return BlockFaceShape.UNDEFINED;
     }

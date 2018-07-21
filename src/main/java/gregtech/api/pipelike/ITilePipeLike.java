@@ -29,6 +29,7 @@ public interface ITilePipeLike<Q extends Enum<Q> & IBaseProperty & IStringSerial
      *           | (output disabled, 6 bits)           * Disable network actions pass-out from this tile from certain side
      */
     int getInternalConnections();
+    int getRenderMask();
 
     void updateInternalConnection();
 }

@@ -73,6 +73,11 @@ public class TileEntityPipeLike<Q extends Enum<Q> & IBaseProperty & IStringSeria
     }
 
     @Override
+    public int getRenderMask() {
+        return renderMask;
+    }
+
+    @Override
     public int getColor() {
         return color;
     }
@@ -197,13 +202,10 @@ public class TileEntityPipeLike<Q extends Enum<Q> & IBaseProperty & IStringSeria
         return filterGetCapabilityResult(capability, facing, getCapabilityInternal(capability, facing), false);
     }
 
-    //use mutable pos for frequent side check
-    protected ThreadLocal<BlockPos.MutableBlockPos> mutablePos = ThreadLocal.withInitial(() -> new BlockPos.MutableBlockPos(pos));
-
     @Nullable
     @Override
     public ICapabilityProvider getCapabilityProviderAtSide(@Nonnull EnumFacing facing) {
-        BlockPos.MutableBlockPos pos = mutablePos.get();
+        BlockPos.MutableBlockPos pos = BlockPos.PooledMutableBlockPos.retain(this.pos);
         pos.move(facing);
         ICapabilityProvider result = world == null ? null : world.getTileEntity(pos);
         if (result != null && color != factory.getDefaultColor()) {

@@ -44,8 +44,7 @@ public class ToolBranchCutter extends ToolBase {
     }
 
     @Override
-    public boolean isMinableBlock(IBlockState block, ItemStack stack) {
-        String tool = block.getBlock().getHarvestTool(block);
+    public boolean isMinableBlock(IBlockState block, ItemStack stack, String tool) {
         return (tool != null && tool.equals("grafter")) || block.getMaterial() == Material.LEAVES;
     }
 

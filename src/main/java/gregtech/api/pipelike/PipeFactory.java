@@ -9,6 +9,8 @@ import codechicken.multipart.TMultiPart;
 import codechicken.multipart.TileMultipart;
 import codechicken.multipart.api.IPartConverter;
 import codechicken.multipart.api.IPartFactory;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import gregtech.api.GTValues;
 import gregtech.api.multipart.MultipartPipeLike;
 import gregtech.api.render.PipeLikeRenderer;
@@ -21,6 +23,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
@@ -36,7 +39,8 @@ import net.minecraftforge.fml.common.Optional.Method;
 
 import javax.annotation.Nullable;
 import java.lang.reflect.Array;
-import java.util.*;
+import java.util.List;
+import java.util.Map;
 import java.util.function.Supplier;
 
 
@@ -44,14 +48,14 @@ public abstract class PipeFactory<Q extends Enum<Q> & IBaseProperty & IStringSer
 
     ///////////////////////////////////// REGISTRIES ///////////////////////////////////////
 
-    public static final Map<String, PipeFactory> allFactories = new HashMap<>();
-    private static final Map<ResourceLocation, PipeFactory> multipartFactories = new HashMap<>();
-    private final Map<Material, BlockPipeLike<Q, P, C>> blockMap = new HashMap<>();
+    public static final Map<String, PipeFactory> allFactories = Maps.newHashMap();
+    private static final Map<ResourceLocation, PipeFactory> multipartFactories = Maps.newHashMap();
+    private final Map<Material, BlockPipeLike<Q, P, C>> blockMap = Maps.newHashMap();
 
 
 
     private boolean freezePropertyRegistry = false;
-    private final Map<Material, P> REGISTERED_PROPERTIES = new LinkedHashMap<>();
+    private final Map<Material, P> REGISTERED_PROPERTIES = Maps.newLinkedHashMap();
 
     protected void registerPropertyForMaterial(Material material, P property) {
         if (freezePropertyRegistry) throw new IllegalStateException("Property registry of " + name +" is already freezed!");
@@ -289,11 +293,11 @@ public abstract class PipeFactory<Q extends Enum<Q> & IBaseProperty & IStringSer
 
     public List<IndexedCuboid6> getCollisionBox(IBlockAccess world, BlockPos pos, IBlockState state) {//TODO Covers
         ITilePipeLike<Q, P> tile = getTile(world, pos);
-        List<IndexedCuboid6> result = new ArrayList<>();
+        List<IndexedCuboid6> result = Lists.newArrayList();
         float thickness = state.getValue(baseProperty).getThickness();
         result.add(new IndexedCuboid6(0, getSideBox(null, thickness)));
         if (tile != null) {
-            int formalConnections = getRenderMask(tile, world, pos);
+            int formalConnections = tile.getRenderMask();
             for(EnumFacing facing : EnumFacing.VALUES) {
                 if((formalConnections & PipeLikeRenderer.MASK_FORMAL_CONNECTION << facing.getIndex()) != 0)
                     result.add(new IndexedCuboid6(0, getSideBox(facing, thickness)));
@@ -301,6 +305,22 @@ public abstract class PipeFactory<Q extends Enum<Q> & IBaseProperty & IStringSer
         }
         return result;
     }
+
+    public void onEntityCollidedWithBlock(Entity entity, ITilePipeLike<Q, P> tile) {
+        float thickness = tile.getBaseProperty().getThickness();
+        List<Cuboid6> boxes = Lists.newArrayList();
+        boxes.add(getSideBox(null, thickness));
+        for (EnumFacing facing : EnumFacing.VALUES) {
+            boxes.add(getSideBox(facing, thickness));
+        }
+        if (boxes.stream()
+            .map(cuboid6 -> cuboid6.aabb().offset(tile.getPos()))
+            .anyMatch(entity.getEntityBoundingBox()::intersects)) {
+            onEntityCollided(entity, tile);
+        }
+    }
+
+    protected abstract void onEntityCollided(Entity entity, ITilePipeLike<Q, P> tile);
 
     ///////////////////////////////// CONNECTIONS //////////////////////////////////////////
 

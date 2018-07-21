@@ -19,8 +19,7 @@ public class ToolPlow extends ToolBase {
     }
 
     @Override
-    public boolean isMinableBlock(IBlockState block, ItemStack stack) {
-        String tool = block.getBlock().getHarvestTool(block);
+    public boolean isMinableBlock(IBlockState block, ItemStack stack, String tool) {
         return (tool != null && tool.equals("plow")) ||
             block.getMaterial() == Material.SNOW ||
             block.getMaterial() == Material.CRAFTED_SNOW;

@@ -13,6 +13,7 @@ import gregtech.api.worldentries.PipeNet;
 import gregtech.api.worldentries.WorldPipeNet;
 import gregtech.common.render.CableRenderer;
 import net.minecraft.block.SoundType;
+import net.minecraft.entity.Entity;
 
 import static gregtech.api.GTValues.V;
 import static gregtech.api.unification.material.Materials.*;
@@ -91,6 +92,11 @@ public class CableFactory extends PipeFactory<Insulation, WireProperties, IEnerg
         return new WireProperties(materialProperty.getVoltage(),
             materialProperty.getAmperage() * baseProperty.amperage,
             materialProperty.getLossPerBlock() * baseProperty.lossMultiplier);
+    }
+
+    @Override
+    protected void onEntityCollided(Entity entity, ITilePipeLike<Insulation, WireProperties> tile) {
+        //TODO electric shock
     }
 
     @Override
