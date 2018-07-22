@@ -1,7 +1,5 @@
 package gregtech.api.cover;
 
-import gregtech.api.capability.ICoverHandler;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -13,8 +11,8 @@ import javax.annotation.Nullable;
 
 public interface ICoverableTile extends ICapabilityProvider {
 
-    World getWorld();
-    BlockPos getPos();
+    World getTileWorld();
+    BlockPos getTilePos();
 
     boolean hasCapabilityInternal(@Nonnull Capability<?> capability, @Nullable EnumFacing facing);
     <T> T getCapabilityInternal(@Nonnull Capability<T> capability, @Nullable EnumFacing facing);
@@ -60,6 +58,6 @@ public interface ICoverableTile extends ICapabilityProvider {
      */
     @Nullable
     default ICapabilityProvider getCapabilityProviderAtSide(@Nonnull EnumFacing facing) {
-        return getWorld().getTileEntity(getPos().offset(facing));
+        return getTileWorld().getTileEntity(getTilePos().offset(facing));
     }
 }

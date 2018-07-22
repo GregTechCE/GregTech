@@ -107,12 +107,12 @@ public class MultipartPipeLike<Q extends Enum<Q> & IBaseProperty & IStringSerial
     }
 
     @Override
-    public World getWorld() {
+    public World getTileWorld() {
         return world();
     }
 
     @Override
-    public BlockPos getPos() {
+    public BlockPos getTilePos() {
         return pos();
     }
 

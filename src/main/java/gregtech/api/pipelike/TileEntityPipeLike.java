@@ -47,7 +47,17 @@ public class TileEntityPipeLike<Q extends Enum<Q> & IBaseProperty & IStringSeria
     }
 
     protected IBlockState getBlockState() {
-        return blockState == null ? (blockState = getWorld().getBlockState(pos)) : blockState;
+        return blockState == null ? (blockState = getTileWorld().getBlockState(pos)) : blockState;
+    }
+
+    @Override
+    public World getTileWorld() {
+        return world;
+    }
+
+    @Override
+    public BlockPos getTilePos() {
+        return pos;
     }
 
     @Override
@@ -159,7 +169,7 @@ public class TileEntityPipeLike<Q extends Enum<Q> & IBaseProperty & IStringSeria
     @Nullable
     @Override
     public SPacketUpdateTileEntity getUpdatePacket() {
-        return new SPacketUpdateTileEntity(getPos(), 0, getUpdateTag());
+        return new SPacketUpdateTileEntity(getTilePos(), 0, getUpdateTag());
     }
 
     @Override
@@ -170,7 +180,7 @@ public class TileEntityPipeLike<Q extends Enum<Q> & IBaseProperty & IStringSeria
     @Override
     public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity pkt) {
         handleUpdateTag(pkt.getNbtCompound());
-        getWorld().markBlockRangeForRenderUpdate(getPos().add(-1, -1, -1), getPos().add(1, 1, 1));
+        getTileWorld().markBlockRangeForRenderUpdate(getTilePos().add(-1, -1, -1), getTilePos().add(1, 1, 1));
     }
 
     ///////////////////////////////// CAPABILITIES /////////////////////////////////////////
@@ -193,13 +203,13 @@ public class TileEntityPipeLike<Q extends Enum<Q> & IBaseProperty & IStringSeria
 
     @Override
     public boolean hasCapability(@Nonnull Capability<?> capability, @Nullable EnumFacing facing) {
-        return filterHasCapabilityResult(capability, facing, hasCapabilityInternal(capability, facing), false);
+        return ITilePipeLike.super.hasCapability(capability, facing);
     }
 
     @Nullable
     @Override
     public <U> U getCapability(@Nonnull Capability<U> capability, @Nullable EnumFacing facing) {
-        return filterGetCapabilityResult(capability, facing, getCapabilityInternal(capability, facing), false);
+        return ITilePipeLike.super.getCapability(capability, facing);
     }
 
     @Nullable

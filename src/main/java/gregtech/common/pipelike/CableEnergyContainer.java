@@ -67,7 +67,7 @@ public class CableEnergyContainer implements IEnergyContainer {
 
     public long[] getAverageData() {
         EnergyNet net = getEnergyNet();
-        if (net != null) return net.getStatisticData(tileEntityCable.getPos());
+        if (net != null) return net.getStatisticData(tileEntityCable.getTilePos());
         return EnergyNet.NO_DATA;
     }
 

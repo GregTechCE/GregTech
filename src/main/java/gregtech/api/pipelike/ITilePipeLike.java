@@ -3,13 +3,9 @@ package gregtech.api.pipelike;
 import gregtech.api.cover.ICoverableTile;
 import gregtech.api.unification.material.type.Material;
 import net.minecraft.util.IStringSerializable;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
 
 public interface ITilePipeLike<Q extends Enum<Q> & IBaseProperty & IStringSerializable, P extends IPipeLikeTileProperty> extends ICoverableTile {
     PipeFactory<Q, P, ?> getFactory();
-    World getWorld();
-    BlockPos getPos();
     Material getMaterial();
     Q getBaseProperty();
     P getTileProperty();

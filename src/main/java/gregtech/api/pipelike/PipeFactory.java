@@ -169,47 +169,26 @@ public abstract class PipeFactory<Q extends Enum<Q> & IBaseProperty & IStringSer
 
     /////////////////////////////// MULTIPART METHODS //////////////////////////////////////
 
-    @Method(modid = GTValues.MODID_FMP)
-    public static void registerMultipartFactory() {
-        MultiPartRegistry.registerParts((IPartFactory) (identifier, client) -> {
-            PipeFactory factory = multipartFactories.get(identifier);
-            if (factory == null) return null;
-            return factory.createMultipart();
-        }, multipartFactories.keySet());
-        MultiPartRegistry.registerConverter(new IPartConverter() {
-            @Override
-            public boolean canConvert(World world, BlockPos pos, IBlockState state) {
-                return state.getBlock() instanceof BlockPipeLike;
-            }
-
-            @Override
-            public Iterable<TMultiPart> convertToParts(World world, BlockPos pos, IBlockState state) {
-                return IPartConverter.super.convertToParts(world, pos, state);//TODO Covers
-            }
-
-            @SuppressWarnings("unchecked")
-            @Override
-            public TMultiPart convert(World world, BlockPos pos, IBlockState state) {
-                if (state.getBlock() instanceof BlockPipeLike) {
-                    TileEntity tileEntity = world.getTileEntity(pos);
-                    if (tileEntity instanceof TileEntityPipeLike) {
-                        return ((TileEntityPipeLike) tileEntity).getFactory().createMultipart((TileEntityPipeLike) tileEntity, state);
-                    }
-                }
-                return null;
-            }
-        });
+    public EnumActionResult tryPlaceMultipart(EntityPlayer player, World worldIn, BlockPos blockPos, ItemStack stack, EnumFacing facing, Vector3 hit, BlockPipeLike<Q, P, C> blockPipeLike) {
+        return _tryPlaceMultipart(player, worldIn, blockPos, stack, facing, hit, blockPipeLike);
     }
 
+    public boolean canPlaceBlockOnSide(World worldIn, BlockPos pos, EnumFacing side, EntityPlayer player, ItemStack stack, BlockPipeLike blockPipeLike) {
+        return _canPlaceBlockOnSide(worldIn, pos, side, player, stack, blockPipeLike);
+    }
+
+    /**
+     * Resembling {@link codechicken.multipart.TItemMultiPart#onItemUse(EntityPlayer, World, BlockPos, EnumHand, EnumFacing, float, float, float)}
+     */
     @Method(modid = GTValues.MODID_FMP)
-    public EnumActionResult tryPlaceMultipart(EntityPlayer player, World worldIn, BlockPos blockPos, ItemStack stack, EnumFacing facing, Vector3 hit, BlockPipeLike<Q, P, C> blockPipeLike) {
+    protected EnumActionResult _tryPlaceMultipart(EntityPlayer player, World worldIn, BlockPos blockPos, ItemStack stack, EnumFacing facing, Vector3 hit, BlockPipeLike<Q, P, C> blockPipeLike) {
         IBlockState state = blockPipeLike.getStateFromMeta(stack.getItemDamage());
         BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos(blockPos);
         int side = facing.getIndex();
         double depth = hit.copy().scalarProject(Rotation.axes[side]) + (side % 2 ^ 1);
 
         Supplier<EnumActionResult> place = () -> {//TODO Covers
-            TMultiPart part = createMultipart(null, state);
+            TMultiPart part = (TMultiPart) createMultipart(null, state);
             if (!(worldIn.getTileEntity(pos) instanceof TileMultipart) || !TileMultipart.canPlacePart(worldIn, pos, part)) return EnumActionResult.FAIL;
 
             if (!worldIn.isRemote) {
@@ -231,9 +210,9 @@ public abstract class PipeFactory<Q extends Enum<Q> & IBaseProperty & IStringSer
      * Modified version of {@link net.minecraft.item.ItemBlock#canPlaceBlockOnSide(World, BlockPos, EnumFacing, EntityPlayer, ItemStack)}
      */
     @Method(modid = GTValues.MODID_FMP)
-    public boolean canPlaceBlockOnSide(World worldIn, BlockPos pos, EnumFacing side, EntityPlayer player, ItemStack stack, BlockPipeLike blockPipeLike) {
+    protected boolean _canPlaceBlockOnSide(World worldIn, BlockPos pos, EnumFacing side, EntityPlayer player, ItemStack stack, BlockPipeLike blockPipeLike) {
         Block block = worldIn.getBlockState(pos).getBlock();
-        TMultiPart part = createMultipart(null, blockPipeLike.getStateFromMeta(stack.getItemDamage()));
+        TMultiPart part = (TMultiPart) createMultipart(null, blockPipeLike.getStateFromMeta(stack.getItemDamage()));
 
         if (block == Blocks.SNOW_LAYER && block.isReplaceable(worldIn, pos)) {
             side = EnumFacing.UP;
@@ -252,7 +231,6 @@ public abstract class PipeFactory<Q extends Enum<Q> & IBaseProperty & IStringSer
     }
 
     @SuppressWarnings("unchecked")
-    @Method(modid = GTValues.MODID_FMP)
     private ITilePipeLike<Q, P> getFromMultipart(TileEntity tile) {
         if (tile instanceof TileMultipart) {
             return (ITilePipeLike<Q, P>) ((TileMultipart) tile).jPartList().stream()
@@ -263,12 +241,50 @@ public abstract class PipeFactory<Q extends Enum<Q> & IBaseProperty & IStringSer
     }
 
     @Method(modid = GTValues.MODID_FMP)
-    protected MultipartPipeLike<Q, P, C> createMultipart() {
+    public static void registerMultipartFactory() {
+        MultiPartRegistry.registerParts((IPartFactory) (identifier, client) -> {
+            PipeFactory factory = multipartFactories.get(identifier);
+            if (factory == null) return null;
+            return (TMultiPart) factory.createMultipart();
+        }, multipartFactories.keySet());
+        MultiPartRegistry.registerConverter(new IPartConverter() {
+            @Override
+            public boolean canConvert(World world, BlockPos pos, IBlockState state) {
+                return state.getBlock() instanceof BlockPipeLike;
+            }
+
+            @Override
+            public Iterable<TMultiPart> convertToParts(World world, BlockPos pos, IBlockState state) {
+                return IPartConverter.super.convertToParts(world, pos, state);//TODO Covers
+            }
+
+            @SuppressWarnings("unchecked")
+            @Override
+            public TMultiPart convert(World world, BlockPos pos, IBlockState state) {
+                if (state.getBlock() instanceof BlockPipeLike) {
+                    TileEntity tileEntity = world.getTileEntity(pos);
+                    if (tileEntity instanceof TileEntityPipeLike) {
+                        return (TMultiPart) ((TileEntityPipeLike) tileEntity).getFactory().createMultipart((TileEntityPipeLike) tileEntity, state);
+                    }
+                }
+                return null;
+            }
+        });
+    }
+
+    /**
+     * @return Must extends {@link TMultiPart}
+     */
+    @Method(modid = GTValues.MODID_FMP)
+    protected ITilePipeLike<Q, P> createMultipart() {
         return new MultipartPipeLike<>(this);
     }
 
+    /**
+     * @return Must extends {@link TMultiPart}
+     */
     @Method(modid = GTValues.MODID_FMP)
-    protected MultipartPipeLike<Q, P, C> createMultipart(TileEntityPipeLike<Q, P, C> tileEntity, IBlockState state) {
+    protected ITilePipeLike<Q, P> createMultipart(TileEntityPipeLike<Q, P, C> tileEntity, IBlockState state) {
         return new MultipartPipeLike<>(this, tileEntity, state);
     }
 
@@ -314,7 +330,7 @@ public abstract class PipeFactory<Q extends Enum<Q> & IBaseProperty & IStringSer
             boxes.add(getSideBox(facing, thickness));
         }
         if (boxes.stream()
-            .map(cuboid6 -> cuboid6.aabb().offset(tile.getPos()))
+            .map(cuboid6 -> cuboid6.aabb().offset(tile.getTilePos()))
             .anyMatch(entity.getEntityBoundingBox()::intersects)) {
             onEntityCollided(entity, tile);
         }
@@ -411,7 +427,7 @@ public abstract class PipeFactory<Q extends Enum<Q> & IBaseProperty & IStringSer
      * Override this method for casting
      */
     public PipeNet<Q, P, C> getPipeNetAt(ITilePipeLike<Q, P> tile) {
-        return WorldPipeNet.getWorldPipeNet(tile.getWorld()).getPipeNetFromPos(tile.getPos(), this);
+        return WorldPipeNet.getWorldPipeNet(tile.getTileWorld()).getPipeNetFromPos(tile.getTilePos(), this);
     }
 
     public abstract P createEmptyProperty();
@@ -419,10 +435,10 @@ public abstract class PipeFactory<Q extends Enum<Q> & IBaseProperty & IStringSer
     public int getActiveSideMask(ITilePipeLike<Q, P> tile) {
         int result = 0;
         int connectionMask = tile.getInternalConnections();
-        BlockPos.MutableBlockPos sidePos = new BlockPos.MutableBlockPos(tile.getPos());
+        BlockPos.MutableBlockPos sidePos = new BlockPos.MutableBlockPos(tile.getTilePos());
         for (EnumFacing facing : EnumFacing.VALUES) if ((connectionMask & ITilePipeLike.MASK_BLOCKED << facing.getIndex()) == 0) {
             sidePos.move(facing);
-            if (getTile(tile.getWorld(), sidePos) == null // ignore other pipes
+            if (getTile(tile.getTileWorld(), sidePos) == null // ignore other pipes
                 && tile.hasCapabilityAtSide(capability, facing)) {
                 result |= 1 << facing.getIndex();
             }

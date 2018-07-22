@@ -56,7 +56,6 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 import static gregtech.common.ClientProxy.*;
-import static gregtech.api.unification.material.Materials.*;
 
 public class MetaBlocks {
 

@@ -73,7 +73,7 @@ public class EnergyNet extends PipeNet<Insulation, WireProperties, IEnergyContai
     public long acceptEnergy(CableEnergyContainer energyContainer, long voltage, long amperage, EnumFacing side) {
         if (energyContainer.pathsCache == null || energyContainer.lastCachedPathsTime < lastUpdate) {
             energyContainer.lastCachedPathsTime = lastUpdate;
-            energyContainer.pathsCache = computeRoutePaths(energyContainer.tileEntityCable.getPos(), checkConnectionMask,
+            energyContainer.pathsCache = computeRoutePaths(energyContainer.tileEntityCable.getTilePos(), checkConnectionMask,
                 Collectors.summingLong(node -> node.property.getLossPerBlock()), n -> false);
         }
         long amperesUsed = 0L;
