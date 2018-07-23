@@ -60,8 +60,7 @@ public class ToolHardHammer extends ToolBase {
     }
 
     @Override
-    public boolean isMinableBlock(IBlockState block, ItemStack stack) {
-        String tool = block.getBlock().getHarvestTool(block);
+    public boolean isMinableBlock(IBlockState block, ItemStack stack, String tool) {
         ItemStack itemStack = new ItemStack(block.getBlock(), 1, block.getBlock().getMetaFromState(block));
         return (tool != null && (tool.equals("hammer") || tool.equals("pickaxe"))) ||
             block.getMaterial() == Material.ROCK ||

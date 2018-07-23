@@ -39,8 +39,7 @@ public class ToolSaw extends ToolBase {
     }
 
     @Override
-    public boolean isMinableBlock(IBlockState block, ItemStack stack) {
-        String tool = block.getBlock().getHarvestTool(block);
+    public boolean isMinableBlock(IBlockState block, ItemStack stack, String tool) {
         return (tool != null && (tool.equals("axe") || tool.equals("saw"))) ||
             block.getMaterial() == Material.LEAVES ||
             block.getMaterial() == Material.VINE ||

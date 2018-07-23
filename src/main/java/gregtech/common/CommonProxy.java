@@ -5,13 +5,13 @@ import gregtech.api.block.machines.MachineItemBlock;
 import gregtech.api.enchants.EnchantmentEnderDamage;
 import gregtech.api.enchants.EnchantmentRadioactivity;
 import gregtech.api.items.metaitem.MetaItem;
+import gregtech.api.pipelike.ItemBlockPipeLike;
 import gregtech.api.unification.ore.OrePrefix;
 import gregtech.api.util.GTLog;
 import gregtech.common.blocks.*;
 import gregtech.common.blocks.wood.BlockLeavesGT;
 import gregtech.common.blocks.wood.BlockLogGT;
 import gregtech.common.blocks.wood.BlockSaplingGT;
-import gregtech.common.cable.ItemBlockCable;
 import gregtech.common.items.MetaItems;
 import gregtech.common.items.PotionFluids;
 import gregtech.loaders.load.FuelLoader;
@@ -103,7 +103,7 @@ public class CommonProxy {
         registry.register(createItemBlock(CRUSHER_BLADE, ItemBlock::new));
 
         CABLES.values().stream()
-            .map(block -> createItemBlock(block, ItemBlockCable::new))
+            .map(block -> createItemBlock(block, ItemBlockPipeLike::new))
             .forEach(registry::register);
         COMPRESSED.values()
             .stream().distinct()

@@ -22,8 +22,7 @@ public class ToolSense extends ToolBase {
     }
 
     @Override
-    public boolean isMinableBlock(IBlockState block, ItemStack stack) {
-        String tool = block.getBlock().getHarvestTool(block);
+    public boolean isMinableBlock(IBlockState block, ItemStack stack, String tool) {
         return (tool != null && (tool.equals("sense") || tool.equals("scythe"))) ||
                 block.getMaterial() == Material.PLANTS ||
                 block.getMaterial() == Material.LEAVES;

@@ -4,10 +4,12 @@ import com.google.common.collect.ImmutableMap;
 import gregtech.api.GTValues;
 import gregtech.api.GregTechAPI;
 import gregtech.api.block.machines.BlockMachine;
+import gregtech.api.capability.IEnergyContainer;
 import gregtech.api.metatileentity.MetaTileEntityHolder;
+import gregtech.api.pipelike.BlockPipeLike;
+import gregtech.api.pipelike.TileEntityPipeLike;
 import gregtech.api.render.MetaTileEntityRenderer;
 import gregtech.api.unification.OreDictUnifier;
-import gregtech.api.unification.material.MarkerMaterials;
 import gregtech.api.unification.material.Materials;
 import gregtech.api.unification.material.type.DustMaterial;
 import gregtech.api.unification.material.type.DustMaterial.MatFlags;
@@ -22,10 +24,9 @@ import gregtech.common.blocks.tileentity.TileEntityCrusherBlade;
 import gregtech.common.blocks.wood.BlockLeavesGT;
 import gregtech.common.blocks.wood.BlockLogGT;
 import gregtech.common.blocks.wood.BlockSaplingGT;
-import gregtech.common.cable.BlockCable;
-import gregtech.common.cable.Insulation;
-import gregtech.common.cable.WireProperties;
-import gregtech.common.cable.tile.TileEntityCable;
+import gregtech.common.pipelike.CableFactory;
+import gregtech.common.pipelike.Insulation;
+import gregtech.common.pipelike.WireProperties;
 import gregtech.common.render.CableRenderer;
 import gregtech.common.render.tesr.TileEntityCrusherBladeRenderer;
 import gregtech.common.render.tesr.TileEntityRendererBase.TileEntityRenderBaseItem;
@@ -80,7 +81,7 @@ public class MetaBlocks {
 
     public static BlockCrusherBlade CRUSHER_BLADE;
 
-    public static Map<Material, BlockCable> CABLES = new HashMap<>();
+    public static Map<Material, BlockPipeLike<Insulation, WireProperties, IEnergyContainer>> CABLES;
     public static HashMap<DustMaterial, BlockCompressed> COMPRESSED = new HashMap<>();
     public static HashMap<IngotMaterial, BlockSurfaceRock> SURFACE_ROCKS = new HashMap<>();
     public static HashMap<SolidMaterial, BlockFrame> FRAMES = new HashMap<>();
@@ -136,14 +137,10 @@ public class MetaBlocks {
                 material.hasFlag(DustMaterial.MatFlags.GENERATE_ORE)) {
                 createOreBlock((DustMaterial) material);
             }
-            if(material instanceof IngotMaterial) {
-                IngotMaterial metalMaterial = (IngotMaterial) material;
-                if(metalMaterial.cableProperties != null) {
-                    createCableBlock(metalMaterial);
-                }
-            }
         }
-        createCableBlock(MarkerMaterials.Tier.Superconductor, new WireProperties(Integer.MAX_VALUE, 4, 0));
+
+        CABLES = CableFactory.INSTANCE.createBlockWithRegisteredProperties();
+
         registerTileEntity();
     }
 
@@ -164,16 +161,6 @@ public class MetaBlocks {
         if(materialBuffer[0] != Materials._NULL) {
             blockGenerator.accept(materialBuffer, currentGenerationIndex / 16);
         }
-    }
-
-    private static void createCableBlock(IngotMaterial material) {
-        createCableBlock(material, material.cableProperties);
-    }
-
-    private static void createCableBlock(Material material, WireProperties wireProperties) {
-        BlockCable blockCable = new BlockCable(material, wireProperties);
-        blockCable.setRegistryName("cable_" + material.toString());
-        CABLES.put(material, blockCable);
     }
 
     private static void createSurfaceRockBlock(Material[] materials, int index) {
@@ -233,7 +220,7 @@ public class MetaBlocks {
 
     public static void registerTileEntity() {
         GameRegistry.registerTileEntity(MetaTileEntityHolder.class, new ResourceLocation(GTValues.MODID, "machine"));
-        GameRegistry.registerTileEntity(TileEntityCable.class, new ResourceLocation(GTValues.MODID, "cable"));
+        GameRegistry.registerTileEntity(TileEntityPipeLike.class, new ResourceLocation(GTValues.MODID, "pipe_like"));
         GameRegistry.registerTileEntity(TileEntityCrusherBlade.class, new ResourceLocation(GTValues.MODID, "crusher_blade"));
     }
 
@@ -362,7 +349,7 @@ public class MetaBlocks {
                 OreDictUnifier.registerOre(normalStack, stoneType.processingPrefix, material);
             }
         }
-        for(BlockCable blockCable : CABLES.values()) {
+        for(BlockPipeLike<Insulation, WireProperties, IEnergyContainer> blockCable : CABLES.values()) {
             for(Insulation insulation : Insulation.values()) {
                 ItemStack itemStack = blockCable.getItem(insulation);
                 OreDictUnifier.registerOre(itemStack, insulation.orePrefix, blockCable.material);
