@@ -18,18 +18,18 @@ import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.pipelike.*;
 import gregtech.api.render.PipeLikeRenderer;
 import gregtech.api.unification.material.type.Material;
+import gregtech.api.util.world.DummyWorld;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.particle.ParticleManager;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.BlockRenderLayer;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.IStringSerializable;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -143,6 +143,39 @@ public class MultipartPipeLike<Q extends Enum<Q> & IBaseProperty & IStringSerial
         if (!world().isRemote) sendDescUpdate();
         updateNode();
         notifyTile();
+    }
+
+    /**
+     * Try recolor the pipe.
+     */
+    @Override
+    public boolean activate(EntityPlayer player, CuboidRayTraceResult hit, ItemStack item, EnumHand hand) {
+        if (!player.world.isRemote) {
+            try {
+                World dummy = new DummyWorld() {
+                    @Override
+                    public IBlockState getBlockState(BlockPos pos) {
+                        if (MultipartPipeLike.this.pos().equals(pos)) return MultipartPipeLike.this.getBlockState();
+                        return Blocks.AIR.getDefaultState();
+                    }
+                    @Nullable
+                    @Override
+                    public TileEntity getTileEntity(BlockPos pos) {
+                        if (MultipartPipeLike.this.pos().equals(pos)) return MultipartPipeLike.this.tile();
+                        return null;
+                    }
+                };
+                switch (item.onItemUseFirst(player, dummy, pos(), hand, hit.sideHit, (float) hit.hitVec.x, (float) hit.hitVec.y, (float) hit.hitVec.z)) {
+                    case SUCCESS: return true;
+                    case FAIL: return false;
+                }
+                switch (item.onItemUse(player, dummy, pos(), hand, hit.sideHit, (float) hit.hitVec.x, (float) hit.hitVec.y, (float) hit.hitVec.z)) {
+                    case SUCCESS: return true;
+                    case FAIL: return false;
+                }
+            } catch (Exception e) {}
+        }
+        return false;
     }
 
     @Override
@@ -345,12 +378,6 @@ public class MultipartPipeLike<Q extends Enum<Q> & IBaseProperty & IStringSerial
         return false;
     }
 
-    /**
-     * Try to fix a recolor issue but failed.
-     * Not my fault. {@link BlockMultipart#onNeighborChange} is passing the wrong parameter to {@link TileMultipart#onNeighborTileChange}.
-     * Using ForgeMultipart 2.4.2.58.
-     * See <a herf=https://github.com/TheCBProject/ForgeMultipart/pull/32>this PR</a>
-     */
     @Override
     public void onNeighborTileChanged(int side, boolean weak) {
         updateRenderMask();
