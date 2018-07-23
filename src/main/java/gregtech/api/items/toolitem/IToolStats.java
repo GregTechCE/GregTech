@@ -92,7 +92,17 @@ public interface IToolStats {
      *
      * @return If this is a minable Block. Tool Quality checks (like Diamond Tier or something) are separate from this check.
      */
-    boolean isMinableBlock(IBlockState block, ItemStack stack);
+    boolean isMinableBlock(IBlockState block, ItemStack stack, String tool);
+
+    /**
+     * block.getHarvestTool(metaData) can return the following Values for example.
+     * "axe", "pickaxe", "sword", "shovel", "hoe", "grafter", "saw", "wrench", "crowbar", "file", "hammer", "plow", "plunger", "scoop", "screwdriver", "sense", "scythe", "softhammer", "cutter", "plasmatorch"
+     *
+     * @return If this is a minable Block. Tool Quality checks (like Diamond Tier or something) are separate from this check.
+     */
+    default boolean isMinableBlock(IBlockState block, ItemStack stack) {
+        return isMinableBlock(block, stack, block.getBlock().getHarvestTool(block));
+    }
 
     /**
      * @return true to allow recursive calling of convertBlockDrops on this tool

@@ -39,8 +39,7 @@ public class ToolUniversalSpade extends ToolBase {
     }
 
     @Override
-    public boolean isMinableBlock(IBlockState block, ItemStack stack) {
-        String tool = block.getBlock().getHarvestTool(block);
+    public boolean isMinableBlock(IBlockState block, ItemStack stack, String tool) {
         return (tool != null && (tool.equals("shovel") ||
             tool.equals("axe") ||
             tool.equals("saw") ||

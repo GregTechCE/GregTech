@@ -12,6 +12,7 @@ import gregtech.api.unification.ore.OrePrefix;
 import gregtech.api.unification.stack.UnificationEntry;
 import gregtech.api.util.GTUtility;
 import gregtech.common.items.MetaItems;
+import gregtech.common.pipelike.CableFactory;
 import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.ItemStack;
 
@@ -36,7 +37,7 @@ public class PartsRecipeHandler {
         OrePrefix.rotor.addProcessingHandler(IngotMaterial.class, PartsRecipeHandler::processRotor);
         OrePrefix.bolt.addProcessingHandler(IngotMaterial.class, PartsRecipeHandler::processBolt);
         OrePrefix.screw.addProcessingHandler(IngotMaterial.class, PartsRecipeHandler::processScrew);
-        OrePrefix.wireFine.addProcessingHandler(IngotMaterial.class, PartsRecipeHandler::processFineWire);
+        OrePrefix.wireFine.addProcessingHandler(IngotMaterial.class, PartsRecipeHandler::processFineWire).addProcessingHandler(IngotMaterial.class, PartsRecipeHandler::processWireFine);
         OrePrefix.foil.addProcessingHandler(IngotMaterial.class, PartsRecipeHandler::processFoil);
         OrePrefix.lens.addProcessingHandler(GemMaterial.class, PartsRecipeHandler::processLens);
 
@@ -218,7 +219,7 @@ public class PartsRecipeHandler {
     }
 
     public static void processSpringSmall(OrePrefix springPrefix, IngotMaterial material) {
-        if(material.cableProperties != null) {
+        if(CableFactory.INSTANCE.isRegistered(material)) {
             RecipeMaps.BENDER_RECIPES.recipeBuilder()
                 .input(OrePrefix.wireGtSingle, material)
                 .outputs(OreDictUnifier.get(OrePrefix.springSmall, material, 2))
@@ -228,7 +229,7 @@ public class PartsRecipeHandler {
     }
 
     public static void processWireFine(OrePrefix wirePrefix, IngotMaterial material) {
-        if(material.cableProperties != null) {
+        if(CableFactory.INSTANCE.isRegistered(material)) {
             RecipeMaps.WIREMILL_RECIPES.recipeBuilder()
                 .input(OrePrefix.wireGtSingle, material)
                 .outputs(OreDictUnifier.get(OrePrefix.wireFine, material, 4))

@@ -8,11 +8,6 @@ import net.minecraft.item.ItemStack;
 public class ToolTurbineRotor extends ToolBase implements ITurbineToolStats {
 
     @Override
-    public boolean isMinableBlock(IBlockState block, ItemStack stack) {
-        return false;
-    }
-
-    @Override
     public float getMaxDurabilityMultiplier(ItemStack stack) {
         return 6.0f;
     }
