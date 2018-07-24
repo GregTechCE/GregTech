@@ -4,11 +4,8 @@ import codechicken.lib.raytracer.IndexedCuboid6;
 import codechicken.lib.vec.Cuboid6;
 import codechicken.lib.vec.Rotation;
 import codechicken.lib.vec.Vector3;
-import codechicken.multipart.MultiPartRegistry;
 import codechicken.multipart.TMultiPart;
 import codechicken.multipart.TileMultipart;
-import codechicken.multipart.api.IPartConverter;
-import codechicken.multipart.api.IPartFactory;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import gregtech.api.GTValues;
@@ -17,8 +14,8 @@ import gregtech.api.render.PipeLikeRenderer;
 import gregtech.api.unification.material.type.GemMaterial;
 import gregtech.api.unification.material.type.IngotMaterial;
 import gregtech.api.unification.material.type.Material;
-import gregtech.api.worldentries.PipeNet;
-import gregtech.api.worldentries.WorldPipeNet;
+import gregtech.api.worldentries.pipenet.PipeNet;
+import gregtech.api.worldentries.pipenet.WorldPipeNet;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.properties.PropertyEnum;
@@ -49,13 +46,10 @@ public abstract class PipeFactory<Q extends Enum<Q> & IBaseProperty & IStringSer
     ///////////////////////////////////// REGISTRIES ///////////////////////////////////////
 
     public static final Map<String, PipeFactory> allFactories = Maps.newHashMap();
-    private static final Map<ResourceLocation, PipeFactory> multipartFactories = Maps.newHashMap();
     private final Map<Material, BlockPipeLike<Q, P, C>> blockMap = Maps.newHashMap();
 
-
-
     private boolean freezePropertyRegistry = false;
-    private final Map<Material, P> REGISTERED_PROPERTIES = Maps.newLinkedHashMap();
+    private final Map<Material, P> REGISTERED_PROPERTIES = Maps.newTreeMap();
 
     protected void registerPropertyForMaterial(Material material, P property) {
         if (freezePropertyRegistry) throw new IllegalStateException("Property registry of " + name +" is already freezed!");
@@ -86,7 +80,6 @@ public abstract class PipeFactory<Q extends Enum<Q> & IBaseProperty & IStringSer
         this.baseProperties = classBaseProperty.getEnumConstants();
         this.baseProperty = PropertyEnum.create(name + "_property", classBaseProperty);
         allFactories.put(name, this);
-        multipartFactories.put(multipartType, this);
     }
 
     ///////////////////////////////// BLOCKS AND TILES /////////////////////////////////////
@@ -240,43 +233,15 @@ public abstract class PipeFactory<Q extends Enum<Q> & IBaseProperty & IStringSer
         return null;
     }
 
-    @Method(modid = GTValues.MODID_FMP)
-    public static void registerMultipartFactory() {
-        MultiPartRegistry.registerParts((IPartFactory) (identifier, client) -> {
-            PipeFactory factory = multipartFactories.get(identifier);
-            if (factory == null) return null;
-            return (TMultiPart) factory.createMultipart();
-        }, multipartFactories.keySet());
-        MultiPartRegistry.registerConverter(new IPartConverter() {
-            @Override
-            public boolean canConvert(World world, BlockPos pos, IBlockState state) {
-                return state.getBlock() instanceof BlockPipeLike;
-            }
-
-            @Override
-            public Iterable<TMultiPart> convertToParts(World world, BlockPos pos, IBlockState state) {
-                return IPartConverter.super.convertToParts(world, pos, state);//TODO Covers
-            }
-
-            @SuppressWarnings("unchecked")
-            @Override
-            public TMultiPart convert(World world, BlockPos pos, IBlockState state) {
-                if (state.getBlock() instanceof BlockPipeLike) {
-                    TileEntity tileEntity = world.getTileEntity(pos);
-                    if (tileEntity instanceof TileEntityPipeLike) {
-                        return (TMultiPart) ((TileEntityPipeLike) tileEntity).getFactory().createMultipart((TileEntityPipeLike) tileEntity, state);
-                    }
-                }
-                return null;
-            }
-        });
+    public ResourceLocation getMultipartType() {
+        return multipartType;
     }
 
     /**
      * @return Must extends {@link TMultiPart}
      */
     @Method(modid = GTValues.MODID_FMP)
-    protected ITilePipeLike<Q, P> createMultipart() {
+    public ITilePipeLike<Q, P> createMultipart() {
         return new MultipartPipeLike<>(this);
     }
 
@@ -284,7 +249,7 @@ public abstract class PipeFactory<Q extends Enum<Q> & IBaseProperty & IStringSer
      * @return Must extends {@link TMultiPart}
      */
     @Method(modid = GTValues.MODID_FMP)
-    protected ITilePipeLike<Q, P> createMultipart(TileEntityPipeLike<Q, P, C> tileEntity, IBlockState state) {
+    public ITilePipeLike<Q, P> createMultipart(TileEntityPipeLike<Q, P, C> tileEntity, IBlockState state) {
         return new MultipartPipeLike<>(this, tileEntity, state);
     }
 

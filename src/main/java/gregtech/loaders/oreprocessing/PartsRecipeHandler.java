@@ -12,7 +12,7 @@ import gregtech.api.unification.ore.OrePrefix;
 import gregtech.api.unification.stack.UnificationEntry;
 import gregtech.api.util.GTUtility;
 import gregtech.common.items.MetaItems;
-import gregtech.common.pipelike.CableFactory;
+import gregtech.common.pipelike.cables.CableFactory;
 import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.ItemStack;
 

@@ -1,4 +1,4 @@
-package gregtech.common.pipelike;
+package gregtech.common.pipelike.cables;
 
 import gregtech.api.GTValues;
 import gregtech.api.pipelike.IPipeLikeTileProperty;

@@ -1,10 +1,11 @@
-package gregtech.common.pipelike;
+package gregtech.common.pipelike.cables;
 
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import gregtech.api.capability.IEnergyContainer;
-import gregtech.api.worldentries.PipeNet;
-import gregtech.api.worldentries.WorldPipeNet;
+import gregtech.api.worldentries.pipenet.PipeNet;
+import gregtech.api.worldentries.pipenet.RoutePath;
+import gregtech.api.worldentries.pipenet.WorldPipeNet;
 import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;

@@ -2,8 +2,8 @@ package gregtech.integration.theoneprobe.provider;
 
 import gregtech.api.capability.IEnergyContainer;
 import gregtech.api.capability.IWorkable;
-import gregtech.common.pipelike.CableEnergyContainer;
-import gregtech.common.pipelike.EnergyNet;
+import gregtech.common.pipelike.cables.CableEnergyContainer;
+import gregtech.common.pipelike.cables.EnergyNet;
 import gregtech.integration.theoneprobe.element.ElementProgressDecimal;
 import gregtech.integration.theoneprobe.element.ElementTextAdvanced;
 import mcjty.theoneprobe.api.ElementAlignment;
