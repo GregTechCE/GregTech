@@ -569,4 +569,8 @@ public enum OrePrefix {
         return ignoredMaterials.contains(material);
     }
 
+    public void setIgnored(Material material) {
+        ignoredMaterials.add(material);
+    }
+
 }

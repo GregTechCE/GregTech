@@ -7,15 +7,15 @@ import gregtech.api.capability.SimpleCapabilityManager;
 import gregtech.api.items.gui.PlayerInventoryUIFactory;
 import gregtech.api.metatileentity.MetaTileEntityUIFactory;
 import gregtech.api.model.ResourcePackHook;
+import gregtech.api.multipart.PipeMultipartFactory;
 import gregtech.api.net.NetworkHandler;
-import gregtech.api.pipelike.PipeFactory;
 import gregtech.api.recipes.RecipeMap;
 import gregtech.api.unification.OreDictUnifier;
 import gregtech.api.unification.material.Materials;
 import gregtech.api.unification.material.type.Material;
 import gregtech.api.util.GTLog;
+import gregtech.api.worldentries.pipenet.WorldPipeNet;
 import gregtech.api.worldgen.config.WorldGenRegistry;
-import gregtech.api.worldentries.WorldPipeNet;
 import gregtech.common.CommonProxy;
 import gregtech.common.ConfigHolder;
 import gregtech.common.MetaFluids;
@@ -100,7 +100,7 @@ public class GregTechMod {
 
         if(Loader.isModLoaded(GTValues.MODID_FMP)) {
             GTLog.logger.info("ForgeMultiPart found. Enabling integration...");
-            PipeFactory.registerMultipartFactory();
+            PipeMultipartFactory.registerMultipartFactory();
         }
 
         if(Loader.isModLoaded(GTValues.MODID_TOP)) {

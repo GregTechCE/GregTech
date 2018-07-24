@@ -1,4 +1,4 @@
-package gregtech.common.pipelike;
+package gregtech.common.pipelike.cables;
 
 import gregtech.api.GregTechAPI;
 import gregtech.api.capability.IEnergyContainer;
@@ -9,14 +9,15 @@ import gregtech.api.render.PipeLikeRenderer;
 import gregtech.api.unification.material.MarkerMaterials;
 import gregtech.api.unification.material.type.IngotMaterial;
 import gregtech.api.unification.material.type.Material;
-import gregtech.api.worldentries.PipeNet;
-import gregtech.api.worldentries.WorldPipeNet;
+import gregtech.api.worldentries.pipenet.PipeNet;
+import gregtech.api.worldentries.pipenet.WorldPipeNet;
 import gregtech.common.render.CableRenderer;
 import net.minecraft.block.SoundType;
 import net.minecraft.entity.Entity;
 
 import static gregtech.api.GTValues.V;
 import static gregtech.api.unification.material.Materials.*;
+import static gregtech.api.unification.ore.OrePrefix.*;
 
 public class CableFactory extends PipeFactory<Insulation, WireProperties, IEnergyContainer> {
 
@@ -54,6 +55,7 @@ public class CableFactory extends PipeFactory<Insulation, WireProperties, IEnerg
         registerCable(Aluminium, V[4], 1, 1);
 
         registerCable(Graphene, V[5], 1, 1);
+        setNotInsulable(Graphene);
         registerCable(Osmium, V[5], 4, 2);
         registerCable(Platinum, V[5], 2, 1);
         registerCable(TungstenSteel, V[5], 3, 2);
@@ -71,10 +73,27 @@ public class CableFactory extends PipeFactory<Insulation, WireProperties, IEnerg
         registerCable(Duranium, V[8], 1, 8);
 
         registerCable(MarkerMaterials.Tier.Superconductor, Integer.MAX_VALUE, 4, 0);
+        setNotInsulable(MarkerMaterials.Tier.Superconductor);
     }
 
     public void registerCable(Material material, long voltage, int baseAmperage, int lossPerBlock) {
         registerPropertyForMaterial(material, new WireProperties((int) voltage, baseAmperage, lossPerBlock));
+    }
+
+    public void setNotInsulable(Material material) {
+        cableGtSingle.setIgnored(material);
+        cableGtDouble.setIgnored(material);
+        cableGtQuadruple.setIgnored(material);
+        cableGtOctal.setIgnored(material);
+        cableGtHex.setIgnored(material);
+    }
+
+    public void setMustInsulated(Material material) {
+        wireGtSingle.setIgnored(material);
+        wireGtDouble.setIgnored(material);
+        wireGtQuadruple.setIgnored(material);
+        wireGtOctal.setIgnored(material);
+        wireGtHex.setIgnored(material);
     }
 
     @Override

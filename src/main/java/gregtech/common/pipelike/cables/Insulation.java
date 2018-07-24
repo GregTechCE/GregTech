@@ -1,4 +1,4 @@
-package gregtech.common.pipelike;
+package gregtech.common.pipelike.cables;
 
 import gregtech.api.pipelike.IBaseProperty;
 import gregtech.api.unification.ore.OrePrefix;

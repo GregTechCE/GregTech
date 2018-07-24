@@ -1,11 +1,11 @@
-package gregtech.api.worldentries;
+package gregtech.api.worldentries.pipenet;
 
 import com.google.common.collect.*;
 import gregtech.api.pipelike.IBaseProperty;
 import gregtech.api.pipelike.IPipeLikeTileProperty;
 import gregtech.api.pipelike.ITilePipeLike;
 import gregtech.api.pipelike.PipeFactory;
-import net.minecraft.entity.Entity;
+import gregtech.api.util.MutableChunkPos;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -124,7 +124,7 @@ public abstract class PipeNet<Q extends Enum<Q> & IBaseProperty & IStringSeriali
 
         allNodes.values().forEach(node -> {
             NBTTagCompound tag = new NBTTagCompound();
-            tag.setIntArray("node", new int[]{node.getX(), node.getY(), node.getZ(),
+            tag.setIntArray("Node", new int[]{node.getX(), node.getY(), node.getZ(),
                 properties.computeIfAbsent(node.property, p -> index.getAndIncrement()),
                 node.connectionMask, node.color, node.activeMask});
             serializeNodeData(node, tag);
@@ -135,8 +135,8 @@ public abstract class PipeNet<Q extends Enum<Q> & IBaseProperty & IStringSeriali
             propertyList.appendTag(properties.inverse().get(i).serializeNBT());
         }
 
-        nbt.setTag("nodes", nodeList);
-        nbt.setTag("properties", propertyList);
+        nbt.setTag("Nodes", nodeList);
+        nbt.setTag("Properties", propertyList);
 
         return nbt;
     }
@@ -146,8 +146,8 @@ public abstract class PipeNet<Q extends Enum<Q> & IBaseProperty & IStringSeriali
     public void deserializeNBT(NBTTagCompound nbt) {
         allNodes.clear();
 
-        NBTTagList nodeList = nbt.getTagList("nodes", TAG_COMPOUND);
-        NBTTagList propertyList = nbt.getTagList("properties", TAG_COMPOUND);
+        NBTTagList nodeList = nbt.getTagList("Nodes", TAG_COMPOUND);
+        NBTTagList propertyList = nbt.getTagList("Properties", TAG_COMPOUND);
 
         P[] properties = (P[]) Array.newInstance(factory.classTileProperty, propertyList.tagCount());
         for (int i = 0; i < propertyList.tagCount(); i++) {
@@ -158,7 +158,7 @@ public abstract class PipeNet<Q extends Enum<Q> & IBaseProperty & IStringSeriali
         nodeList.forEach(nbtBase -> {
             if (nbtBase.getId() == TAG_COMPOUND) {
                 NBTTagCompound node = (NBTTagCompound) nbtBase;
-                int[] data = node.getIntArray("node");
+                int[] data = node.getIntArray("Node");
                 BlockPos pos = new BlockPos(data[0], data[1], data[2]);
                 allNodes.put(pos, new Node<>(pos, properties[data[3]], data[4], data[5], data[6]));
                 deserializeNodeData(pos, node);
@@ -261,7 +261,7 @@ public abstract class PipeNet<Q extends Enum<Q> & IBaseProperty & IStringSeriali
      * Compute all route paths from start pos to each reachable active nodes, using bfs.
      * @param collector Collect the cable loss, the route value or sth else. Result will be accumulated from the destination to the start pos.
      */
-    public <R> List<RoutePath<P, ?, R>> computeRoutePaths(BlockPos startPos, PassingThroughCondition condition, Collector<LinkedNode<P>, ?, R> collector, Predicate<LinkedNode<P>> shortCircuit) {
+    public <R> List<RoutePath<P, ?, R>> computeRoutePaths(BlockPos startPos, PassingThroughCondition<P> condition, Collector<LinkedNode<P>, ?, R> collector, Predicate<LinkedNode<P>> shortCircuit) {
         List<RoutePath<P, ?, R>> result = Lists.newArrayList();
         bfs(startPos, condition, null, activeNode -> {
             RoutePath<P, ?, R> routePath = new RoutePath<>(collector);
@@ -394,188 +394,8 @@ public abstract class PipeNet<Q extends Enum<Q> & IBaseProperty & IStringSeriali
         }
     }
 
-    public static class NodeChain<P> implements Iterable<Node<P>> {
-        LinkedNode<P> startNode = null;
-        public NodeChain(){}
-        public NodeChain(LinkedNode<P> startNode) {
-            this.startNode = startNode;
-        }
-
-        public NodeChain<P> extend(Node<P> node) {
-            LinkedNode<P> newNode = new LinkedNode<>(node, startNode);
-            return this;
-        }
-
-        public LinkedNode<P> getStartNode() {
-            return startNode;
-        }
-
-        @Override
-        public Iterator<Node<P>> iterator() {
-            return new NodeChainIterator<>(this);
-        }
-
-        static class NodeChainIterator<P> implements Iterator<Node<P>> {
-            private NodeChain<P> chain;
-            private LinkedNode<P> current = null;
-            private NodeChainIterator(NodeChain<P> chain) {
-                this.chain = chain;
-            }
-
-            @Override
-            public LinkedNode<P> next() {
-                return current = current == null ? chain.startNode : current.target;
-            }
-
-            @Override
-            public boolean hasNext() {
-                return (current == null ? chain.startNode : current.target) != null;
-            }
-        }
-
-    }
-
-    public static class RoutePath<P, A, R> extends NodeChain<P> {
-        LinkedNode<P> endNode = null;
-        private final Collector<LinkedNode<P>, A, R> collector;
-        private A accumulator;
-        public RoutePath(Collector<LinkedNode<P>, A, R> collector) {
-            this.collector = collector;
-            this.accumulator = collector.supplier().get();
-        }
-
-        public RoutePath(LinkedNode<P> startNode, Collector<LinkedNode<P>, A, R> collector) {
-            super(startNode);
-            this.collector = collector;
-            this.accumulator = collector.supplier().get();
-            if (startNode != null) {
-                for (endNode = startNode; endNode.target != null; endNode = endNode.target) {
-                    collector.accumulator().accept(accumulator, endNode);
-                }
-                collector.accumulator().accept(accumulator, endNode);
-            }
-        }
-
-        @Override
-        public RoutePath<P, A, R> extend(Node<P> node) {
-            LinkedNode<P> newNode = new LinkedNode<>(node, startNode);
-            startNode = newNode;
-            if (endNode == null) endNode = newNode;
-            collector.accumulator().accept(accumulator, newNode);
-            return this;
-        }
-
-        public RoutePath<P, A, R> extend(RoutePath<P, A, R> routePath) {
-            accumulator = collector.combiner().apply(accumulator, routePath.accumulator);
-            routePath.endNode.target = startNode;
-            startNode = routePath.startNode;
-            return this;
-        }
-
-        public LinkedNode<P> getEndNode() {
-            return endNode;
-        }
-
-        public R getAccumulatedVal() {
-            return collector.finisher().apply(accumulator);
-        }
-    }
-
     @FunctionalInterface
     interface PassingThroughCondition<P> {
         boolean test(Node<P> fromNode, EnumFacing dir, Node<P> toNode);
     }
-
-    class MutableChunkPos extends ChunkPos {
-        int x, z;
-
-        MutableChunkPos() {
-            super(0,0);
-        }
-
-        MutableChunkPos(int x, int z) {
-            this();
-            this.x = x;
-            this.z = z;
-        }
-
-        MutableChunkPos(BlockPos pos) {
-            this();
-            x = pos.getX() >> 4;
-            z = pos.getZ() >> 4;
-        }
-
-        void setPos(int x, int z) {
-            this.x = x;
-            this.z = z;
-        }
-
-        void setPos(BlockPos pos) {
-            x = pos.getX() >> 4;
-            z = pos.getZ() >> 4;
-        }
-
-        ChunkPos toImmutable() {
-            return new ChunkPos(x, z);
-        }
-
-        @Override
-        public int hashCode()
-        {
-            int i = 1664525 * x + 1013904223;
-            int j = 1664525 * (z ^ -559038737) + 1013904223;
-            return i ^ j;
-        }
-
-        @Override
-        public boolean equals(Object obj) {
-            if (this == obj) return true;
-            else if (!(obj instanceof ChunkPos)) return false;
-            else {
-                ChunkPos chunkpos = (ChunkPos)obj;
-                return this.x == chunkpos.x && this.z == chunkpos.z;
-            }
-        }
-
-        @Override
-        public double getDistanceSq(Entity entityIn) {
-            double d0 = (double)(x * 16 + 8);
-            double d1 = (double)(z * 16 + 8);
-            double d2 = d0 - entityIn.posX;
-            double d3 = d1 - entityIn.posZ;
-            return d2 * d2 + d3 * d3;
-        }
-
-        @Override
-        public int getXStart() {
-            return x << 4;
-        }
-
-        @Override
-        public int getZStart() {
-            return z << 4;
-        }
-
-        @Override
-        public int getXEnd() {
-            return (x << 4) + 15;
-        }
-
-        @Override
-        public int getZEnd() {
-            return (this.z << 4) + 15;
-        }
-
-        @Override
-        public BlockPos getBlock(int x, int y, int z) {
-            return new BlockPos((x << 4) + x, y, (z << 4) + z);
-        }
-
-        @Override
-        public String toString()
-        {
-            return "[" + x + ", " + z + "]";
-        }
-    }
-
 }

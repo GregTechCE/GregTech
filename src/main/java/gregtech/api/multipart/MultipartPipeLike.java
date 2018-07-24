@@ -83,21 +83,21 @@ public class MultipartPipeLike<Q extends Enum<Q> & IBaseProperty & IStringSerial
 
     @Override
     public void save(NBTTagCompound tag) {
-        tag.setString("material", block.material.toString());
-        tag.setInteger("baseProperty", baseProperty.ordinal());
-        tag.setInteger("color", color);
-        tag.setInteger("internalConnections", internalConnections);
-        tag.setInteger("renderMask", renderMask);
+        tag.setString("Material", block.material.toString());
+        tag.setInteger("BaseProperty", baseProperty.ordinal());
+        tag.setInteger("Color", color);
+        tag.setInteger("InternalConnections", internalConnections);
+        tag.setInteger("RenderMask", renderMask);
     }
 
     @Override
     public void load(NBTTagCompound tag) {
-        block = factory.getBlock(Material.MATERIAL_REGISTRY.getObject(tag.getString("material")));
-        baseProperty = factory.getBaseProperty(tag.getInteger("baseProperty"));
+        block = factory.getBlock(Material.MATERIAL_REGISTRY.getObject(tag.getString("Material")));
+        baseProperty = factory.getBaseProperty(tag.getInteger("BaseProperty"));
         tileProperty = block.getActualProperty(baseProperty);
-        color = tag.getInteger("color");
-        internalConnections = tag.getInteger("internalConnections");
-        renderMask = tag.getInteger("renderMask");
+        color = tag.getInteger("Color");
+        internalConnections = tag.getInteger("InternalConnections");
+        renderMask = tag.getInteger("RenderMask");
         reinitShape();
     }
 

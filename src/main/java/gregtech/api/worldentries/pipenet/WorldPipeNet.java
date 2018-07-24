@@ -1,4 +1,4 @@
-package gregtech.api.worldentries;
+package gregtech.api.worldentries.pipenet;
 
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;

@@ -5,7 +5,7 @@ import gregtech.api.gui.ModularUI;
 import gregtech.api.gui.UIFactory;
 import gregtech.api.gui.impl.ModularUIContainer;
 import gregtech.api.gui.impl.ModularUIGui;
-import gregtech.api.worldentries.WorldPipeNet;
+import gregtech.api.worldentries.pipenet.WorldPipeNet;
 import io.netty.buffer.Unpooled;
 import net.minecraft.client.network.NetHandlerPlayClient;
 import net.minecraft.inventory.Container;

@@ -108,19 +108,19 @@ public class TileEntityPipeLike<Q extends Enum<Q> & IBaseProperty & IStringSeria
     @Override
     public void readFromNBT(NBTTagCompound compound) {
         super.readFromNBT(compound);
-        factory = PipeFactory.allFactories.get(compound.getString("factory"));
-        color = compound.getInteger("color");
-        internalConnections = compound.getInteger("internalConnections");
-        renderMask = compound.getInteger("renderMask");
+        factory = PipeFactory.allFactories.get(compound.getString("Factory"));
+        color = compound.getInteger("Color");
+        internalConnections = compound.getInteger("InternalConnections");
+        renderMask = compound.getInteger("RenderMask");
     }
 
     @Override
     public NBTTagCompound writeToNBT(NBTTagCompound compound) {
         super.writeToNBT(compound);
-        compound.setString("factory", factory.name);
-        compound.setInteger("color", color);
-        compound.setInteger("internalConnections", internalConnections);
-        compound.setInteger("renderMask", renderMask);
+        compound.setString("Factory", factory.name);
+        compound.setInteger("Color", color);
+        compound.setInteger("InternalConnections", internalConnections);
+        compound.setInteger("RenderMask", renderMask);
         return compound;
     }
 

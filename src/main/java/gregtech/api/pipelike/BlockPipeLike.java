@@ -4,7 +4,7 @@ import codechicken.lib.raytracer.RayTracer;
 import codechicken.lib.render.particle.CustomParticleHandler;
 import codechicken.lib.vec.Cuboid6;
 import gregtech.api.unification.material.type.Material;
-import gregtech.api.worldentries.WorldPipeNet;
+import gregtech.api.worldentries.pipenet.WorldPipeNet;
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.SoundType;
@@ -127,7 +127,9 @@ public class BlockPipeLike<Q extends Enum<Q> & IBaseProperty & IStringSerializab
     @Override
     public void getSubBlocks(CreativeTabs itemIn, NonNullList<ItemStack> items) {
         for(Q baseProperty : factory.baseProperties) {
-            items.add(getItem(baseProperty));
+            if (!baseProperty.getOrePrefix().isIgnored(material)) {
+                items.add(getItem(baseProperty));
+            }
         }
     }
 
