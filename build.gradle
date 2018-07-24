@@ -11,6 +11,10 @@ buildscript {
     }
 }
 
+plugins {
+    id 'com.matthewprenger.cursegradle' version '1.0.11'
+}
+
 apply plugin: 'net.minecraftforge.gradle.forge'
 
 file "build.properties" withReader {
@@ -143,7 +147,6 @@ task dev(type: Jar) {
 
 artifacts {
     archives jar
-    archives dev
 	archives source
 }
 
@@ -188,8 +191,36 @@ String getVersionFromJava(File file) {
         }
     }
 
+    def branchName = System.getenv("CI_COMMIT_REF_NAME")
+    if (branchName != "master") {
+        return "$major.$minor.$revision.0-$branchName"
+    }
+
     String build = System.getenv("BUILD_NUMBER") ?: 0
 
     return "$major.$minor.$revision.$build"
 }
 
+curseforge {
+    if (!System.getenv('CURSE_API_KEY')) {
+        return
+    }
+
+    apiKey = System.getenv('CURSE_API_KEY')
+    project {
+        id = '293327'
+        changelog = file('CHANGELOG.md')
+        changelogType = 'markdown'
+        releaseType = 'alpha'
+
+        relations {
+            requiredLibrary 'codechicken-lib-1-8'
+            optionalLibrary 'forge-multipart-cbe'
+            optionalLibrary 'crafttweaker'
+            optionalLibrary 'jei'
+            optionalLibrary 'the-one-probe'
+        }
+
+        addArtifact source
+    }
+}
