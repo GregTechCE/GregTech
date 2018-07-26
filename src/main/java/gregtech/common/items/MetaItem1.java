@@ -242,22 +242,22 @@ public class MetaItem1 extends MaterialMetaItem {
         ELECTRIC_PUMP_HV = addItem(612, "electric.pump.hv");
         ELECTRIC_PUMP_EV = addItem(613, "electric.pump.ev");
         ELECTRIC_PUMP_IV = addItem(614, "electric.pump.iv");
-        ELECTRIC_PUMP_LUV = addItem(620, "electric.pump.luv");
-        ELECTRIC_PUMP_ZPM = addItem(621, "electric.pump.zpm");
-        ELECTRIC_PUMP_UV = addItem(622, "electric.pump.uv");
+        ELECTRIC_PUMP_LUV = addItem(615, "electric.pump.luv");
+        ELECTRIC_PUMP_ZPM = addItem(616, "electric.pump.zpm");
+        ELECTRIC_PUMP_UV = addItem(617, "electric.pump.uv");
 
-        FLUID_REGULATOR_LV = addItem(615, "fluidregulator.lv");
-        FLUID_REGULATOR_MV = addItem(616, "fluidregulator.mv");
-        FLUID_REGULATOR_HV = addItem(617, "fluidregulator.hv");
-        FLUID_REGULATOR_EV = addItem(618, "fluidregulator.ev");
-        FLUID_REGULATOR_IV = addItem(619, "fluidregulator.iv");
+        FLUID_REGULATOR_LV = addItem(620, "fluidregulator.lv");
+        FLUID_REGULATOR_MV = addItem(621, "fluidregulator.mv");
+        FLUID_REGULATOR_HV = addItem(622, "fluidregulator.hv");
+        FLUID_REGULATOR_EV = addItem(623, "fluidregulator.ev");
+        FLUID_REGULATOR_IV = addItem(624, "fluidregulator.iv");
 
-        SMALL_BRONZE_PIPE = addItem(620, "pipe.small.bronze").setUnificationData(OrePrefix.pipeSmall, Materials.Bronze);
-        SMALL_STEEL_PIPE = addItem(621, "pipe.small.steel").setUnificationData(OrePrefix.pipeSmall, Materials.Steel);
+        SMALL_BRONZE_PIPE = addItem(625, "pipe.small.bronze").setUnificationData(OrePrefix.pipeSmall, Materials.Bronze);
+        SMALL_STEEL_PIPE = addItem(626, "pipe.small.steel").setUnificationData(OrePrefix.pipeSmall, Materials.Steel);
 
-        RUBBER_DROP = addItem(622, "rubber_drop").setBurnValue(200);
+        RUBBER_DROP = addItem(627, "rubber_drop").setBurnValue(200);
 
-        FLUID_FILTER = addItem(635, "fluidfilter").setInvisible();
+        FLUID_FILTER = addItem(628, "fluidfilter").setInvisible();
 
         CONVEYOR_MODULE_LV = addItem(630, "conveyor.module.lv");
         CONVEYOR_MODULE_MV = addItem(631, "conveyor.module.mv");
