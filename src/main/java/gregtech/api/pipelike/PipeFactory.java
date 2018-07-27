@@ -10,7 +10,6 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import gregtech.api.GTValues;
 import gregtech.api.multipart.MultipartPipeLike;
-import gregtech.api.render.PipeLikeRenderer;
 import gregtech.api.unification.material.type.GemMaterial;
 import gregtech.api.unification.material.type.IngotMaterial;
 import gregtech.api.unification.material.type.Material;
@@ -255,6 +254,9 @@ public abstract class PipeFactory<Q extends Enum<Q> & IBaseProperty & IStringSer
 
     ///////////////////////// COLLISION AND BOUNDING BOXES /////////////////////////////////
 
+    public static int MASK_FORMAL_CONNECTION = 1;
+    public static int MASK_RENDER_SIDE = 1 << 6;
+
     public static Cuboid6 getSideBox(EnumFacing side, float thickness) {//TODO Covers
         float min = (1.0f - thickness) / 2.0f;
         float max = min + thickness;
@@ -280,7 +282,7 @@ public abstract class PipeFactory<Q extends Enum<Q> & IBaseProperty & IStringSer
         if (tile != null) {
             int formalConnections = tile.getRenderMask();
             for(EnumFacing facing : EnumFacing.VALUES) {
-                if((formalConnections & PipeLikeRenderer.MASK_FORMAL_CONNECTION << facing.getIndex()) != 0)
+                if((formalConnections & MASK_FORMAL_CONNECTION << facing.getIndex()) != 0)
                     result.add(new IndexedCuboid6(0, getSideBox(facing, thickness)));
             }
         }
@@ -335,11 +337,11 @@ public abstract class PipeFactory<Q extends Enum<Q> & IBaseProperty & IStringSer
                 continue;
             sidePos.move(facing);
             switch (isPipeAccessibleAtSide(world, sidePos, facing.getOpposite(), tile.getColor(), tile.getBaseProperty().getThickness())) {
-                case 3: connectedSideMask |= PipeLikeRenderer.MASK_RENDER_SIDE << facing.getIndex();
-                case 2: connectedSideMask |= PipeLikeRenderer.MASK_FORMAL_CONNECTION << facing.getIndex(); break;
+                case 3: connectedSideMask |= MASK_RENDER_SIDE << facing.getIndex();
+                case 2: connectedSideMask |= MASK_FORMAL_CONNECTION << facing.getIndex(); break;
                 case 0: {
                     if (tile.hasCapabilityAtSide(capability, facing)) {
-                        connectedSideMask |= PipeLikeRenderer.MASK_FORMAL_CONNECTION << facing.getIndex();
+                        connectedSideMask |= MASK_FORMAL_CONNECTION << facing.getIndex();
                     }
                     break;
                 }
@@ -411,8 +413,4 @@ public abstract class PipeFactory<Q extends Enum<Q> & IBaseProperty & IStringSer
         }
         return result;
     }
-
-    //////////////////////////////////// RENDER ////////////////////////////////////////////
-
-    public abstract PipeLikeRenderer<Q> getRenderer();
 }
