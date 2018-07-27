@@ -8,7 +8,7 @@ import net.minecraftforge.fml.common.Optional.Method;
 import stanhebben.zenscript.annotations.ZenClass;
 import stanhebben.zenscript.annotations.ZenGetter;
 
-@ZenClass("gregtech.mods.EnchantmentData")
+@ZenClass("mods.gregtech.EnchantmentData")
 public class EnchantmentData {
 
     public final Enchantment enchantment;
