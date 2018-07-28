@@ -63,6 +63,8 @@ metaitem.minecart.wheels.steel.tooltip=To get things rolling
 metaitem.shape.empty.name=Empty Shape Plate
 metaitem.shape.empty.tooltip=Raw Plate to make Molds and Extrude Shapes
 
+metaitem.dynamite.name=Dynamite
+
 metaitem.shape.mold.plate.name=Mold (Plate)
 metaitem.shape.mold.plate.tooltip=Mold for making Plates
 metaitem.shape.mold.casing.name=Mold (Casing)

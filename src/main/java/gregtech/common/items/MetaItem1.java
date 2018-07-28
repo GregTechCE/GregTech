@@ -15,6 +15,7 @@ import gregtech.api.unification.stack.ItemMaterialInfo;
 import gregtech.api.unification.stack.MaterialStack;
 import gregtech.api.util.RandomPotionEffect;
 import gregtech.common.items.behaviors.ColorSprayBehaviour;
+import gregtech.common.items.behaviors.DynamiteBehaviour;
 import gregtech.common.items.behaviors.IntCircuitBehaviour;
 import gregtech.common.items.behaviors.LighterBehaviour;
 import net.minecraft.block.BlockCauldron;
@@ -258,6 +259,8 @@ public class MetaItem1 extends MaterialMetaItem {
         RUBBER_DROP = addItem(627, "rubber_drop").setBurnValue(200);
 
         FLUID_FILTER = addItem(628, "fluidfilter").setInvisible();
+
+        DYNAMITE = addItem(629, "dynamite").addStats(new DynamiteBehaviour()).setMaxStackSize(16);
 
         CONVEYOR_MODULE_LV = addItem(630, "conveyor.module.lv");
         CONVEYOR_MODULE_MV = addItem(631, "conveyor.module.mv");

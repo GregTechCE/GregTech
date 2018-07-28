@@ -49,6 +49,7 @@ public class CraftingRecipeLoader {
         ModHandler.addShapedRecipe("pipe_small_steel", MetaItems.SMALL_STEEL_PIPE.getStackForm(2), "WWW", "w h", "WWW", 'W', new UnificationEntry(OrePrefix.plate, Materials.Steel));
         ModHandler.addShapedRecipe("pipe_small_bronze", MetaItems.SMALL_BRONZE_PIPE.getStackForm(2), "WWW", "w h", "WWW", 'W', new UnificationEntry(OrePrefix.plate, Materials.Bronze));
 
+        ModHandler.addShapelessRecipe("dynamite", MetaItems.DYNAMITE.getStackForm(), Items.STRING, Items.PAPER, Items.GUNPOWDER);
         GTLog.logger.info("Modifying vanilla recipes according to config. DON'T BE SCARED OF FML's WARNING ABOUT DANGEROUS ALTERNATIVE PREFIX.");
 
         if (ConfigHolder.vanillaRecipes.bucketRequirePlatesAndHammer) {

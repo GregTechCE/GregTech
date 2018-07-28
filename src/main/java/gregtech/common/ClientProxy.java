@@ -59,6 +59,7 @@ public class ClientProxy extends CommonProxy {
         MetaTileEntityRenderer.preInit();
         CableRenderer.preInit();
         StoneRenderer.preInit();
+        MetaEntities.initRenderers();
         TextureUtils.addIconRegister(MetaFluids::registerSprites);
     }
 

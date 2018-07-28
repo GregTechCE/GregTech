@@ -18,6 +18,7 @@ import gregtech.api.worldentries.pipenet.WorldPipeNet;
 import gregtech.api.worldgen.config.WorldGenRegistry;
 import gregtech.common.CommonProxy;
 import gregtech.common.ConfigHolder;
+import gregtech.common.MetaEntities;
 import gregtech.common.MetaFluids;
 import gregtech.common.blocks.MetaBlocks;
 import gregtech.common.blocks.modelfactories.BlockCompressedFactory;
@@ -84,6 +85,7 @@ public class GregTechMod {
         MetaItems.init();
         MetaFluids.init();
         MetaTileEntities.init();
+        MetaEntities.init();
         MinecraftForge.EVENT_BUS.register(WorldPipeNet.class);
 
         gregtechproxy.onPreLoad();

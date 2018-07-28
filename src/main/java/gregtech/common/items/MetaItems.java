@@ -157,6 +157,8 @@ public final class MetaItems {
 
     public static MetaItem<?>.MetaValueItem FLUID_FILTER;
 
+    public static MetaItem<?>.MetaValueItem DYNAMITE;
+
     public static MetaItem<?>.MetaValueItem CONVEYOR_MODULE_LV;
     public static MetaItem<?>.MetaValueItem CONVEYOR_MODULE_MV;
     public static MetaItem<?>.MetaValueItem CONVEYOR_MODULE_HV;
