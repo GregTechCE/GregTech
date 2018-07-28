@@ -317,7 +317,7 @@ public class MultipartPipeLike<Q extends Enum<Q> & IBaseProperty & IStringSerial
         sideBoxes.clear();
         float thickness = baseProperty.getThickness();
         for (EnumFacing facing : EnumFacing.VALUES) {
-            if (0 != (renderMask & PipeLikeRenderer.MASK_FORMAL_CONNECTION << facing.getIndex())) {
+            if (0 != (renderMask & PipeFactory.MASK_FORMAL_CONNECTION << facing.getIndex())) {
                 sideBoxes.add(PipeFactory.getSideBox(facing, thickness));
             }
         }
@@ -456,7 +456,7 @@ public class MultipartPipeLike<Q extends Enum<Q> & IBaseProperty & IStringSerial
     @Override
     public boolean renderStatic(Vector3 pos, BlockRenderLayer layer, CCRenderState ccrs) {
         ccrs.setBrightness(world(), pos());
-        factory.getRenderer().renderBlock(block.material, baseProperty, color, ccrs, new IVertexOperation[] {new Translation(pos())}, renderMask);
+        PipeLikeRenderer.getRenderer(factory).renderBlock(block.material, baseProperty, color, ccrs, new IVertexOperation[] {new Translation(pos())}, renderMask);
         return true;
     }
 

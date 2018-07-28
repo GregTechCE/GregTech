@@ -12,6 +12,7 @@ import codechicken.lib.vec.Cuboid6;
 import codechicken.lib.vec.Translation;
 import codechicken.lib.vec.Vector3;
 import codechicken.lib.vec.uv.IconTransformation;
+import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import gregtech.api.pipelike.BlockPipeLike;
 import gregtech.api.pipelike.IBaseProperty;
@@ -53,21 +54,29 @@ import javax.annotation.Nonnull;
 import javax.vecmath.Matrix4f;
 import java.lang.reflect.Field;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import static gregtech.api.pipelike.PipeFactory.MASK_FORMAL_CONNECTION;
+import static gregtech.api.pipelike.PipeFactory.MASK_RENDER_SIDE;
 import static gregtech.api.render.MetaTileEntityRenderer.BLOCK_TRANSFORMS;
 
+@SideOnly(Side.CLIENT)
 @SuppressWarnings({"unchecked"})
 public abstract class PipeLikeRenderer<Q extends Enum<Q> & IBaseProperty & IStringSerializable> implements ICCBlockRenderer, IItemRenderer, IModelParticleProvider {
 
-    public static int MASK_FORMAL_CONNECTION = 1;
-    public static int MASK_RENDER_SIDE = 1 << 6;
+    private static final Map<PipeFactory, PipeLikeRenderer> RENDERERS = Maps.newHashMap();
+
+    public static <Q extends Enum<Q> & IBaseProperty & IStringSerializable> PipeLikeRenderer<Q> getRenderer(PipeFactory<Q, ?, ?> factory) {
+        return RENDERERS.get(factory);
+    }
 
     private PipeFactory<Q, ?, ?> factory;
 
     protected PipeLikeRenderer(PipeFactory<Q, ?, ?> factory) {
         this.factory = factory;
+        RENDERERS.put(factory, this);
     }
 
     private static final int ITEM_RENDER_MASK = (MASK_RENDER_SIDE | MASK_FORMAL_CONNECTION) << EnumFacing.SOUTH.getIndex()
