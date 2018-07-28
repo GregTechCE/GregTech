@@ -65,6 +65,28 @@ import static gregtech.api.GTValues.V;
 
 public class GTUtility {
 
+    public static int gcd(int a, int b) {
+        if (a == 0 || b == 0) throw new ArithmeticException("div by 0");
+        if (a < 0) a = -a;
+        if (b < 0) b = -b;
+        while (true) {
+            if (0 == (a %= b)) return b;
+            if (0 == (b %= a)) return a;
+        }
+    }
+
+    public static int lcm(int a, int b) {
+        if (a == 0 || b == 0) throw new ArithmeticException("div by 0");
+        if (a < 0) a = -a;
+        if (b < 0) b = -b;
+        int d;
+        while (true) {
+            if (0 == (a %= b)) {d = b; break;}
+            if (0 == (b %= a)) {d = a; break;}
+        }
+        return a / d * b;
+    }
+
     //magic is here
     @SuppressWarnings("unchecked")
     public static <T, R> Class<T> getActualTypeParameter(Class<? extends R> thisClass, Class<R> declaringClass, int index) {

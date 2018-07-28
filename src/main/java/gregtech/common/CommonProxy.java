@@ -5,7 +5,9 @@ import gregtech.api.block.machines.MachineItemBlock;
 import gregtech.api.enchants.EnchantmentEnderDamage;
 import gregtech.api.enchants.EnchantmentRadioactivity;
 import gregtech.api.items.metaitem.MetaItem;
+import gregtech.api.pipelike.BlockPipeLike;
 import gregtech.api.pipelike.ItemBlockPipeLike;
+import gregtech.api.pipelike.PipeFactory;
 import gregtech.api.unification.ore.OrePrefix;
 import gregtech.api.util.GTLog;
 import gregtech.common.blocks.*;
@@ -35,6 +37,7 @@ import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.registries.IForgeRegistry;
 
+import java.util.Collection;
 import java.util.function.Function;
 
 import static gregtech.common.blocks.MetaBlocks.*;
@@ -67,7 +70,8 @@ public class CommonProxy {
         registry.register(SAPLING);
         registry.register(CRUSHER_BLADE);
 
-        CABLES.values().forEach(registry::register);
+        PipeFactory.allFactories.values().forEach(factory ->
+            ((Collection<? extends BlockPipeLike>) factory.getBlockMap().values()).forEach(registry::register));
         COMPRESSED.values().stream().distinct().forEach(registry::register);
         SURFACE_ROCKS.values().stream().distinct().forEach(registry::register);
         FRAMES.values().stream().distinct().forEach(registry::register);
@@ -103,6 +107,9 @@ public class CommonProxy {
         registry.register(createItemBlock(CRUSHER_BLADE, ItemBlock::new));
 
         CABLES.values().stream()
+            .map(block -> createItemBlock(block, ItemBlockPipeLike::new))
+            .forEach(registry::register);
+        ITEM_PIPES.values().stream()
             .map(block -> createItemBlock(block, ItemBlockPipeLike::new))
             .forEach(registry::register);
         COMPRESSED.values()

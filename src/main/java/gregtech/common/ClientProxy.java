@@ -6,6 +6,7 @@
 package gregtech.common;
 
 import codechicken.lib.texture.TextureUtils;
+import gregtech.api.pipelike.PipeFactory;
 import gregtech.api.render.MetaTileEntityRenderer;
 import gregtech.common.blocks.*;
 import gregtech.common.items.MetaItems;
@@ -57,7 +58,7 @@ public class ClientProxy extends CommonProxy {
     public void onPreLoad() {
         super.onPreLoad();
         MetaTileEntityRenderer.preInit();
-        CableRenderer.preInit();
+        PipeFactory.allFactories.values().forEach(factory -> factory.getRenderer().preInit());
         StoneRenderer.preInit();
         TextureUtils.addIconRegister(MetaFluids::registerSprites);
     }

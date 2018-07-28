@@ -2,9 +2,11 @@ package gregtech.api.render;
 
 import codechicken.lib.render.BlockRenderer;
 import codechicken.lib.render.CCRenderState;
+import codechicken.lib.render.block.BlockRenderingRegistry;
 import codechicken.lib.render.block.ICCBlockRenderer;
 import codechicken.lib.render.item.IItemRenderer;
 import codechicken.lib.render.particle.CustomParticleHandler;
+import codechicken.lib.render.particle.DigIconParticle;
 import codechicken.lib.render.particle.IModelParticleProvider;
 import codechicken.lib.render.pipeline.IVertexOperation;
 import codechicken.lib.texture.TextureUtils;
@@ -13,13 +15,13 @@ import codechicken.lib.vec.Translation;
 import codechicken.lib.vec.Vector3;
 import codechicken.lib.vec.uv.IconTransformation;
 import com.google.common.collect.Sets;
+import gregtech.api.GTValues;
 import gregtech.api.pipelike.BlockPipeLike;
 import gregtech.api.pipelike.IBaseProperty;
 import gregtech.api.pipelike.ITilePipeLike;
 import gregtech.api.pipelike.PipeFactory;
 import gregtech.api.unification.material.MaterialIconSet;
 import gregtech.api.unification.material.type.Material;
-import gregtech.api.util.GTUtility;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
@@ -29,6 +31,7 @@ import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.block.model.IBakedModel;
 import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
+import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
@@ -37,11 +40,13 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.IStringSerializable;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.model.IModelState;
 import net.minecraftforge.common.model.TRSRTransformation;
 import net.minecraftforge.fml.relauncher.Side;
@@ -61,13 +66,19 @@ import static gregtech.api.render.MetaTileEntityRenderer.BLOCK_TRANSFORMS;
 @SuppressWarnings({"unchecked"})
 public abstract class PipeLikeRenderer<Q extends Enum<Q> & IBaseProperty & IStringSerializable> implements ICCBlockRenderer, IItemRenderer, IModelParticleProvider {
 
+    public ModelResourceLocation MODEL_LOCATION;
+    public EnumBlockRenderType BLOCK_RENDER_TYPE;
+
+    protected Set<MaterialIconSet> generatedSets = Sets.newHashSet();
+
     public static int MASK_FORMAL_CONNECTION = 1;
     public static int MASK_RENDER_SIDE = 1 << 6;
 
-    private PipeFactory<Q, ?, ?> factory;
+    protected PipeFactory<Q, ?, ?> factory;
 
     protected PipeLikeRenderer(PipeFactory<Q, ?, ?> factory) {
         this.factory = factory;
+        MODEL_LOCATION = new ModelResourceLocation(new ResourceLocation(GTValues.MODID, factory.name), "normal");
     }
 
     private static final int ITEM_RENDER_MASK = (MASK_RENDER_SIDE | MASK_FORMAL_CONNECTION) << EnumFacing.SOUTH.getIndex()
@@ -89,12 +100,12 @@ public abstract class PipeLikeRenderer<Q extends Enum<Q> & IBaseProperty & IStri
 
     /**
      * {@link Block#addHitEffects}
-     * {@link CustomParticleHandler#handleDestroyEffects(World, BlockPos, ParticleManager)} with fake block state
+     * {@link CustomParticleHandler#handleDestroyEffects(World, BlockPos, ParticleManager)} with specified block state
      * Provided the model bound is an instance of IModelParticleProvider, you will have landing particles just handled for you.
      * Use the default PerspectiveModel implementations inside CCL, Destroy effects will just be handled for you.
      *
      * @param world   The world.
-     * @param state   Fake block state for
+     * @param state   Fake block state for render
      * @param pos     The position of the block.
      * @param manager The ParticleManager.
      * @return True if particles were added, basically just return the result of this method inside {@link Block#addHitEffects}
@@ -111,11 +122,47 @@ public abstract class PipeLikeRenderer<Q extends Enum<Q> & IBaseProperty & IStri
         if (model instanceof IModelParticleProvider) {
             Cuboid6 bounds = new Cuboid6(state.getBoundingBox(world, pos));
             Set<TextureAtlasSprite> destroySprites = ((IModelParticleProvider) model).getDestroyEffects(state, world, pos);
+            int color = 0x999999;
+            if (model instanceof PipeLikeRenderer) color = ((PipeLikeRenderer) model).getDestoryEffectColor(state, world, pos);
             List<TextureAtlasSprite> sprites = destroySprites.stream().filter(sprite -> !getIgnoredParticleSprites().contains(sprite)).collect(Collectors.toList());
-            CustomParticleHandler.addBlockDestroyEffects(world, bounds.add(pos), sprites, manager);
+            addBlockDestroyEffects(world, bounds.add(pos), sprites, manager, color);
             return true;
         }
         return false;
+    }
+
+    /**
+     * {@link CustomParticleHandler#addBlockDestroyEffects(World, Cuboid6, List, ParticleManager)} with color
+     */
+    @SideOnly (Side.CLIENT)
+    public static void addBlockDestroyEffects(World world, Cuboid6 bounds, List<TextureAtlasSprite> icons, ParticleManager particleManager, int color) {
+        Vector3 diff = bounds.max.copy().subtract(bounds.min);
+        Vector3 center = bounds.min.copy().add(bounds.max).multiply(0.5);
+        Vector3 density = diff.copy().multiply(4).ceil();
+
+        for (int i = 0; i < density.x; ++i) {
+            for (int j = 0; j < density.y; ++j) {
+                for (int k = 0; k < density.z; ++k) {
+                    double x = bounds.min.x + (i + 0.5) * diff.x / density.x;
+                    double y = bounds.min.y + (j + 0.5) * diff.y / density.y;
+                    double z = bounds.min.z + (k + 0.5) * diff.z / density.z;
+                    particleManager.addEffect(new ColoredDigIconParticle(world, x, y, z, x - center.x, y - center.y, z - center.z, icons.get(world.rand.nextInt(icons.size())), color));
+                }
+            }
+        }
+    }
+
+    private static class ColoredDigIconParticle extends DigIconParticle {
+        ColoredDigIconParticle(World world, double x, double y, double z, double dx, double dy, double dz, TextureAtlasSprite icon, int color) {
+            super(world, x, y, z, dx, dy, dz, icon);
+            this.particleRed = (float) (color >> 16 & 0xFF) / 255.0F;
+            this.particleGreen = (float) (color >> 8 & 0xFF) / 255.0F;
+            this.particleBlue = (float) (color & 0xFF) / 255.0F;
+        }
+    }
+
+    protected int getDestoryEffectColor(IBlockState state, World world, BlockPos pos) {
+        return 0x999999;
     }
 
     @Override
@@ -221,64 +268,36 @@ public abstract class PipeLikeRenderer<Q extends Enum<Q> & IBaseProperty & IStri
         return getDestroyEffects(state, world, pos);
     }
 
-    public void renderBlock(Material material, Q baseProperty, int tileColor, CCRenderState state, IVertexOperation[] pipeline, int renderMask)  {
-        MaterialIconSet iconSet = material.materialIconSet;
-        int materialColor = GTUtility.convertRGBtoOpaqueRGBA_CL(material.materialRGB);
-        float thickness = baseProperty.getThickness();
-
-        IVertexOperation[][] vo = getVertexOperations(baseProperty, pipeline, iconSet, tileColor, materialColor);
-
-        Cuboid6 cuboid6 = PipeFactory.getSideBox(null, thickness);
-        for(EnumFacing renderedSide : EnumFacing.VALUES) {
-            if((renderMask & MASK_FORMAL_CONNECTION << renderedSide.getIndex()) == 0) {
-                int oppositeIndex = renderedSide.getOpposite().getIndex();
-                if((renderMask & MASK_FORMAL_CONNECTION << oppositeIndex) != 0 && (renderMask & ~(MASK_FORMAL_CONNECTION << oppositeIndex)) == 0) {
-                    //if there is something only on opposite side, render overlay + base
-                    renderSide(state, vo[0], renderedSide, cuboid6);
-                    renderSide(state, vo[1], renderedSide, cuboid6);
-                } else {
-                    renderSide(state, vo[2], renderedSide, cuboid6);
-                }
-            }
-        }
-
-        for (EnumFacing side : EnumFacing.VALUES) renderSideBox(renderMask, state, vo[2], vo[0], vo[1], side, thickness);
-    }
-
-    private static void renderSideBox(int renderMask, CCRenderState renderState, IVertexOperation[] pipeline, IVertexOperation[] bases, IVertexOperation[] overlays, EnumFacing side, float thickness) {
-        if((renderMask & MASK_FORMAL_CONNECTION << side.getIndex()) > 0) {
-            boolean renderFrontSide = (renderMask & MASK_RENDER_SIDE << side.getIndex()) > 0;
-            Cuboid6 cuboid6 = PipeFactory.getSideBox(side, thickness);
-            for(EnumFacing renderedSide : EnumFacing.VALUES) {
-                if(renderedSide == side) {
-                    if(renderFrontSide) {
-                        renderSide(renderState, bases, renderedSide, cuboid6);
-                        renderSide(renderState, overlays, renderedSide, cuboid6);
-                    }
-                } else if(renderedSide != side.getOpposite()) {
-                    renderSide(renderState, pipeline, renderedSide, cuboid6);
-                }
-            }
-        }
-    }
+    public abstract void renderBlock(Material material, Q baseProperty, int tileColor, CCRenderState state, IVertexOperation[] pipeline, int renderMask);
 
     private static ThreadLocal<BlockRenderer.BlockFace> blockFaces = ThreadLocal.withInitial(BlockRenderer.BlockFace::new);
-    private static void renderSide(CCRenderState renderState, IVertexOperation[] pipeline, EnumFacing side, Cuboid6 cuboid6) {
+    protected static void renderSide(CCRenderState renderState, IVertexOperation[] pipeline, EnumFacing side, Cuboid6 cuboid6) {
+        if (pipeline == null) return;
         BlockRenderer.BlockFace blockFace = blockFaces.get();
         blockFace.loadCuboidFace(cuboid6, side.getIndex());
         renderState.setPipeline(blockFace, 0, blockFace.verts.length, pipeline);
         renderState.render();
     }
 
-    /**
-     * @return IVertexOperation[3][].
-     *          [0] = texture of the inner texture of the exposed edges, or the texture of the bare wire
-     *          [1] = overlay of the exposed edge above
-     *          [2] = texture of the non-exposed sides
-     */
-    protected abstract IVertexOperation[][] getVertexOperations(Q baseProperty, IVertexOperation[] pipeline, MaterialIconSet iconSet, int tileColor, int materialColor);
+    public EnumBlockRenderType getRenderType() {
+        return BLOCK_RENDER_TYPE;
+    }
 
+    public void preInit() {
+        BLOCK_RENDER_TYPE = BlockRenderingRegistry.createRenderType("gt_cable");
+        BlockRenderingRegistry.registerRenderer(BLOCK_RENDER_TYPE, this);
+        MinecraftForge.EVENT_BUS.register(this);
+        TextureUtils.addIconRegister(this::registerIcons);
+        for(Material material : factory.getBlockMap().keySet()) {
+            MaterialIconSet iconSet = material.materialIconSet;
+            this.generatedSets.add(iconSet);
+        }
+    }
 
-    public abstract EnumBlockRenderType getRenderType();
+    protected abstract void registerIcons(TextureMap map);
+
+    public ModelResourceLocation getModelLocation() {
+        return MODEL_LOCATION;
+    }
 
 }

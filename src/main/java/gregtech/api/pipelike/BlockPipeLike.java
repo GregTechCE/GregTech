@@ -3,6 +3,7 @@ package gregtech.api.pipelike;
 import codechicken.lib.raytracer.RayTracer;
 import codechicken.lib.render.particle.CustomParticleHandler;
 import codechicken.lib.vec.Cuboid6;
+import gregtech.api.render.PipeLikeRenderer;
 import gregtech.api.unification.material.type.Material;
 import gregtech.api.worldentries.pipenet.WorldPipeNet;
 import net.minecraft.block.Block;
@@ -265,7 +266,7 @@ public class BlockPipeLike<Q extends Enum<Q> & IBaseProperty & IStringSerializab
 
     @Override
     public boolean addDestroyEffects(World world, BlockPos pos, ParticleManager manager) {
-        return CustomParticleHandler.handleDestroyEffects(world, pos, manager);
+        return PipeLikeRenderer.handleDestroyEffects(world, world.getBlockState(pos), pos, manager);
     }
 
     @Override

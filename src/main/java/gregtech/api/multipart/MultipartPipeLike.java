@@ -410,6 +410,7 @@ public class MultipartPipeLike<Q extends Enum<Q> & IBaseProperty & IStringSerial
     public void readDesc(MCDataInput packet) {
         block = factory.getBlock(Material.MATERIAL_REGISTRY.getObject(packet.readString()));
         baseProperty = packet.readEnum(factory.classBaseProperty);
+        tileProperty = block.getActualProperty(baseProperty);
         color = packet.readInt();
         renderMask = packet.readInt();
         reinitShape();
