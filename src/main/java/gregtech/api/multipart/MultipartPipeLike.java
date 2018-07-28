@@ -145,39 +145,6 @@ public class MultipartPipeLike<Q extends Enum<Q> & IBaseProperty & IStringSerial
         notifyTile();
     }
 
-    /**
-     * Try recolor the pipe.
-     */
-    @Override
-    public boolean activate(EntityPlayer player, CuboidRayTraceResult hit, ItemStack item, EnumHand hand) {
-        if (!player.world.isRemote) {
-            try {
-                World dummy = new DummyWorld() {
-                    @Override
-                    public IBlockState getBlockState(BlockPos pos) {
-                        if (MultipartPipeLike.this.pos().equals(pos)) return MultipartPipeLike.this.getBlockState();
-                        return Blocks.AIR.getDefaultState();
-                    }
-                    @Nullable
-                    @Override
-                    public TileEntity getTileEntity(BlockPos pos) {
-                        if (MultipartPipeLike.this.pos().equals(pos)) return MultipartPipeLike.this.tile();
-                        return null;
-                    }
-                };
-                switch (item.onItemUseFirst(player, dummy, pos(), hand, hit.sideHit, (float) hit.hitVec.x, (float) hit.hitVec.y, (float) hit.hitVec.z)) {
-                    case SUCCESS: return true;
-                    case FAIL: return false;
-                }
-                switch (item.onItemUse(player, dummy, pos(), hand, hit.sideHit, (float) hit.hitVec.x, (float) hit.hitVec.y, (float) hit.hitVec.z)) {
-                    case SUCCESS: return true;
-                    case FAIL: return false;
-                }
-            } catch (Exception e) {}
-        }
-        return false;
-    }
-
     @Override
     public int getInternalConnections() {
         return internalConnections;
