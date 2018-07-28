@@ -24,6 +24,8 @@ import net.minecraft.world.WorldServer;
 import net.minecraft.world.storage.WorldSavedData;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nullable;
 import java.io.IOException;
@@ -222,6 +224,7 @@ public class WorldPipeNet extends WorldSavedData {
         return this;
     }
 
+    @SideOnly(Side.CLIENT)
     public static void onServerPacket(PacketPipeNetUpdate packet) {
         WorldPipeNet pipeNets = getWorldPipeNet(Minecraft.getMinecraft().world);
         PipeNet net = pipeNets.pipeNets.values().stream().filter(n -> n.uid == packet.uid).findAny()

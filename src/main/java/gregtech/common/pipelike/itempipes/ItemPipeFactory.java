@@ -4,12 +4,10 @@ import gregtech.api.GregTechAPI;
 import gregtech.api.pipelike.BlockPipeLike;
 import gregtech.api.pipelike.ITilePipeLike;
 import gregtech.api.pipelike.PipeFactory;
-import gregtech.api.render.PipeLikeRenderer;
 import gregtech.api.unification.material.type.GemMaterial;
 import gregtech.api.unification.material.type.IngotMaterial;
 import gregtech.api.unification.material.type.Material;
 import gregtech.api.worldentries.pipenet.WorldPipeNet;
-import gregtech.common.render.ItemPipeRenderer;
 import net.minecraft.block.SoundType;
 import net.minecraft.entity.Entity;
 import net.minecraftforge.items.CapabilityItemHandler;
@@ -84,10 +82,5 @@ public class ItemPipeFactory extends PipeFactory<TypeItemPipe, ItemPipePropertie
     @Override
     public ItemPipeProperties createEmptyProperty() {
         return new ItemPipeProperties();
-    }
-
-    @Override
-    public PipeLikeRenderer<TypeItemPipe> getRenderer() {
-        return ItemPipeRenderer.INSTANCE;
     }
 }

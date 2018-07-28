@@ -26,6 +26,8 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.client.event.ModelBakeEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import org.apache.commons.lang3.ArrayUtils;
 
 import java.util.Collections;
@@ -33,6 +35,10 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
+import static gregtech.api.pipelike.PipeFactory.MASK_FORMAL_CONNECTION;
+import static gregtech.api.pipelike.PipeFactory.MASK_RENDER_SIDE;
+
+@SideOnly(Side.CLIENT)
 public class CableRenderer extends PipeLikeRenderer<Insulation> {
 
     public static CableRenderer INSTANCE = new CableRenderer();
@@ -65,13 +71,13 @@ public class CableRenderer extends PipeLikeRenderer<Insulation> {
 
     @Override
     public Set<TextureAtlasSprite> getDestroyEffects(IBlockState state, IBlockAccess world, BlockPos pos) {
-        BlockPipeLike<Insulation, ?, ?> block = (BlockPipeLike<Insulation, ?, ?>) state.getBlock();
+        BlockPipeLike<Insulation, ?, ?> block = getBlock(state);
         return Collections.singleton(state.getValue(block.getBaseProperty()).isColorable() ? insulationTextures[5] : wireTextures.get(block.material.materialIconSet));
     }
 
     @Override
     protected int getDestoryEffectColor(IBlockState state, World world, BlockPos pos) {
-        BlockPipeLike<Insulation, ?, ?> block = (BlockPipeLike<Insulation, ?, ?>) state.getBlock();
+        BlockPipeLike<Insulation, ?, ?> block = getBlock(state);
         return state.getValue(block.getBaseProperty()).isColorable() ? 0x999999 : block.material.materialRGB;
     }
 

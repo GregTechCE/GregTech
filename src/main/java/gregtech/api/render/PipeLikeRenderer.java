@@ -14,6 +14,7 @@ import codechicken.lib.vec.Cuboid6;
 import codechicken.lib.vec.Translation;
 import codechicken.lib.vec.Vector3;
 import codechicken.lib.vec.uv.IconTransformation;
+import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import gregtech.api.GTValues;
 import gregtech.api.pipelike.BlockPipeLike;
@@ -58,27 +59,34 @@ import javax.annotation.Nonnull;
 import javax.vecmath.Matrix4f;
 import java.lang.reflect.Field;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import static gregtech.api.pipelike.PipeFactory.MASK_FORMAL_CONNECTION;
+import static gregtech.api.pipelike.PipeFactory.MASK_RENDER_SIDE;
 import static gregtech.api.render.MetaTileEntityRenderer.BLOCK_TRANSFORMS;
 
+@SideOnly(Side.CLIENT)
 @SuppressWarnings({"unchecked"})
 public abstract class PipeLikeRenderer<Q extends Enum<Q> & IBaseProperty & IStringSerializable> implements ICCBlockRenderer, IItemRenderer, IModelParticleProvider {
 
+    private static final Map<PipeFactory, PipeLikeRenderer> RENDERERS = Maps.newHashMap();
+
+    public static <Q extends Enum<Q> & IBaseProperty & IStringSerializable> PipeLikeRenderer<Q> getRenderer(PipeFactory<Q, ?, ?> factory) {
+        return RENDERERS.get(factory);
+    }
     public ModelResourceLocation MODEL_LOCATION;
     public EnumBlockRenderType BLOCK_RENDER_TYPE;
 
     protected Set<MaterialIconSet> generatedSets = Sets.newHashSet();
-
-    public static int MASK_FORMAL_CONNECTION = 1;
-    public static int MASK_RENDER_SIDE = 1 << 6;
 
     protected PipeFactory<Q, ?, ?> factory;
 
     protected PipeLikeRenderer(PipeFactory<Q, ?, ?> factory) {
         this.factory = factory;
         MODEL_LOCATION = new ModelResourceLocation(new ResourceLocation(GTValues.MODID, factory.name), "normal");
+        RENDERERS.put(factory, this);
     }
 
     private static final int ITEM_RENDER_MASK = (MASK_RENDER_SIDE | MASK_FORMAL_CONNECTION) << EnumFacing.SOUTH.getIndex()
@@ -161,9 +169,7 @@ public abstract class PipeLikeRenderer<Q extends Enum<Q> & IBaseProperty & IStri
         }
     }
 
-    protected int getDestoryEffectColor(IBlockState state, World world, BlockPos pos) {
-        return 0x999999;
-    }
+    protected abstract int getDestoryEffectColor(IBlockState state, World world, BlockPos pos);
 
     @Override
     public void renderItem(ItemStack stack, ItemCameraTransforms.TransformType transformType) {
@@ -284,7 +290,7 @@ public abstract class PipeLikeRenderer<Q extends Enum<Q> & IBaseProperty & IStri
     }
 
     public void preInit() {
-        BLOCK_RENDER_TYPE = BlockRenderingRegistry.createRenderType("gt_cable");
+        BLOCK_RENDER_TYPE = BlockRenderingRegistry.createRenderType("gt_" + factory.name);
         BlockRenderingRegistry.registerRenderer(BLOCK_RENDER_TYPE, this);
         MinecraftForge.EVENT_BUS.register(this);
         TextureUtils.addIconRegister(this::registerIcons);
@@ -298,6 +304,10 @@ public abstract class PipeLikeRenderer<Q extends Enum<Q> & IBaseProperty & IStri
 
     public ModelResourceLocation getModelLocation() {
         return MODEL_LOCATION;
+    }
+
+    protected BlockPipeLike<Q, ?, ?> getBlock(IBlockState state) {
+        return (BlockPipeLike<Q, ?, ?>) state.getBlock();
     }
 
 }

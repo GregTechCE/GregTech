@@ -5,13 +5,11 @@ import gregtech.api.capability.IEnergyContainer;
 import gregtech.api.pipelike.BlockPipeLike;
 import gregtech.api.pipelike.ITilePipeLike;
 import gregtech.api.pipelike.PipeFactory;
-import gregtech.api.render.PipeLikeRenderer;
 import gregtech.api.unification.material.MarkerMaterials;
 import gregtech.api.unification.material.type.IngotMaterial;
 import gregtech.api.unification.material.type.Material;
 import gregtech.api.worldentries.pipenet.PipeNet;
 import gregtech.api.worldentries.pipenet.WorldPipeNet;
-import gregtech.common.render.CableRenderer;
 import net.minecraft.block.SoundType;
 import net.minecraft.entity.Entity;
 
@@ -141,10 +139,5 @@ public class CableFactory extends PipeFactory<Insulation, WireProperties, IEnerg
     @Override
     public WireProperties createEmptyProperty() {
         return new WireProperties();
-    }
-
-    @Override
-    public PipeLikeRenderer<Insulation> getRenderer() {
-        return CableRenderer.INSTANCE;
     }
 }

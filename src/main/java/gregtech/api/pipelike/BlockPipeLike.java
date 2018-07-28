@@ -232,7 +232,7 @@ public class BlockPipeLike<Q extends Enum<Q> & IBaseProperty & IStringSerializab
 
     @Override
     public EnumBlockRenderType getRenderType(IBlockState state) {
-        return factory.getRenderer().getRenderType();
+        return PipeLikeRenderer.getRenderer(factory).getRenderType();
     }
 
     @Override

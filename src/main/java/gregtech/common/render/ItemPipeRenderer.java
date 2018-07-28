@@ -7,7 +7,6 @@ import codechicken.lib.vec.Cuboid6;
 import codechicken.lib.vec.uv.IconTransformation;
 import com.google.common.collect.Maps;
 import gregtech.api.GTValues;
-import gregtech.api.pipelike.BlockPipeLike;
 import gregtech.api.pipelike.PipeFactory;
 import gregtech.api.render.PipeLikeRenderer;
 import gregtech.api.unification.material.MaterialIconSet;
@@ -27,12 +26,18 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.client.event.ModelBakeEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import org.apache.commons.lang3.ArrayUtils;
 
 import java.util.Collections;
 import java.util.Map;
 import java.util.Set;
 
+import static gregtech.api.pipelike.PipeFactory.MASK_FORMAL_CONNECTION;
+import static gregtech.api.pipelike.PipeFactory.MASK_RENDER_SIDE;
+
+@SideOnly(Side.CLIENT)
 public class ItemPipeRenderer extends PipeLikeRenderer<TypeItemPipe> {
 
     public static ItemPipeRenderer INSTANCE = new ItemPipeRenderer();
@@ -69,13 +74,12 @@ public class ItemPipeRenderer extends PipeLikeRenderer<TypeItemPipe> {
 
     @Override
     public Set<TextureAtlasSprite> getDestroyEffects(IBlockState state, IBlockAccess world, BlockPos pos) {
-        BlockPipeLike<TypeItemPipe, ?, ?> block = (BlockPipeLike<TypeItemPipe, ?, ?>) state.getBlock();
-        return Collections.singleton(itemPipeTextures.get(block.material.materialIconSet)[5]);
+        return Collections.singleton(itemPipeTextures.get(getBlock(state).material.materialIconSet)[5]);
     }
 
     @Override
     protected int getDestoryEffectColor(IBlockState state, World world, BlockPos pos) {
-        return ((BlockPipeLike<TypeItemPipe, ?, ?>) state.getBlock()).material.materialRGB;
+        return getBlock(state).material.materialRGB;
     }
 
     @Override

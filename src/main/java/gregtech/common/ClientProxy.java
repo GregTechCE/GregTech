@@ -6,11 +6,11 @@
 package gregtech.common;
 
 import codechicken.lib.texture.TextureUtils;
-import gregtech.api.pipelike.PipeFactory;
 import gregtech.api.render.MetaTileEntityRenderer;
 import gregtech.common.blocks.*;
 import gregtech.common.items.MetaItems;
 import gregtech.common.render.CableRenderer;
+import gregtech.common.render.ItemPipeRenderer;
 import gregtech.common.render.StoneRenderer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.color.IBlockColor;
@@ -58,7 +58,8 @@ public class ClientProxy extends CommonProxy {
     public void onPreLoad() {
         super.onPreLoad();
         MetaTileEntityRenderer.preInit();
-        PipeFactory.allFactories.values().forEach(factory -> factory.getRenderer().preInit());
+        CableRenderer.INSTANCE.preInit();
+        ItemPipeRenderer.INSTANCE.preInit();
         StoneRenderer.preInit();
         TextureUtils.addIconRegister(MetaFluids::registerSprites);
     }

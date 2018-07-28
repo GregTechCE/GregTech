@@ -134,8 +134,6 @@ public class NetworkHandler {
             )
         ));
 
-        registerClientExecutor(PacketPipeNetUpdate.class, ((packet, handler) -> WorldPipeNet.onServerPacket(packet)));
-
         registerServerExecutor(PacketUIClientAction.class, (packet, handler) -> {
             Container openContainer = handler.player.openContainer;
             if(openContainer instanceof ModularUIContainer &&
@@ -159,6 +157,7 @@ public class NetworkHandler {
             uiFactory.initClientUI(packet.serializedHolder, packet.windowId);
         });
         registerClientExecutor(PacketUIWidgetUpdate.class, (packet, handler) -> ModularUIGui.queuingWidgetUpdates.add(packet));
+        registerClientExecutor(PacketPipeNetUpdate.class, ((packet, handler) -> WorldPipeNet.onServerPacket(packet)));
     }
 
     public static <T extends Packet> void registerPacket(int packetId, Class<T> packetClass, PacketCodec<T> codec) {

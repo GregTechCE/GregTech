@@ -10,6 +10,7 @@ import gregtech.api.pipelike.BlockPipeLike;
 import gregtech.api.pipelike.PipeFactory;
 import gregtech.api.pipelike.TileEntityPipeLike;
 import gregtech.api.render.MetaTileEntityRenderer;
+import gregtech.api.render.PipeLikeRenderer;
 import gregtech.api.unification.OreDictUnifier;
 import gregtech.api.unification.material.Materials;
 import gregtech.api.unification.material.type.DustMaterial;
@@ -38,7 +39,6 @@ import net.minecraft.block.BlockLog.EnumAxis;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.ItemMeshDefinition;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.renderer.block.statemap.DefaultStateMapper;
 import net.minecraft.item.Item;
@@ -248,9 +248,9 @@ public class MetaBlocks {
         registerItemModel(SAPLING);
 
         PipeFactory.allFactories.values().forEach(factory -> {
-            ModelResourceLocation modelResourceLocation = factory.getRenderer().getModelLocation();
-            ItemMeshDefinition meshDefinition = stack -> modelResourceLocation;
-            ((Collection<? extends BlockPipeLike>) factory.getBlockMap().values()).forEach(block -> ModelLoader.setCustomMeshDefinition(Item.getItemFromBlock(block), meshDefinition));
+            ModelResourceLocation modelResourceLocation = PipeLikeRenderer.getRenderer(factory).getModelLocation();
+            ((Collection<BlockPipeLike>) factory.getBlockMap().values())
+                .forEach(block -> ModelLoader.setCustomMeshDefinition(Item.getItemFromBlock(block), stack -> modelResourceLocation));
         });
         COMPRESSED.values().stream().distinct().forEach(MetaBlocks::registerItemModel);
         FRAMES.values().stream().distinct().forEach(MetaBlocks::registerItemModel);
@@ -289,16 +289,16 @@ public class MetaBlocks {
                 return MetaTileEntityRenderer.MODEL_LOCATION;
             }
         });
-        PipeFactory.allFactories.values().forEach(factory -> {
-            ModelResourceLocation modelResourceLocation = factory.getRenderer().getModelLocation();
+        for (PipeFactory factory : PipeFactory.allFactories.values()) {
+            ModelResourceLocation modelResourceLocation = PipeLikeRenderer.getRenderer(factory).getModelLocation();
             DefaultStateMapper stateMapper = new DefaultStateMapper() {
                 @Override
                 protected ModelResourceLocation getModelResourceLocation(IBlockState state) {
                     return modelResourceLocation;
                 }
             };
-            ((Collection<? extends BlockPipeLike>) factory.getBlockMap().values()).forEach(block -> ModelLoader.setCustomStateMapper(block, stateMapper));
-        });
+            ((Collection<BlockPipeLike>) factory.getBlockMap().values()).forEach(block -> ModelLoader.setCustomStateMapper(block, stateMapper));
+        }
 
         BakedModelHandler modelHandler = new BakedModelHandler();
         MinecraftForge.EVENT_BUS.register(modelHandler);
