@@ -196,7 +196,7 @@ public class TileEntityPipeLike<Q extends Enum<Q> & IBaseProperty & IStringSeria
 
     public <U> U getCapabilityInternal(@Nonnull Capability<U> capability, @Nullable EnumFacing facing) {
         if (capability == factory.capability) {
-            return factory.capability.cast(getNetworkCapability());
+            return factory.capability.cast(factory.onGettingNetworkCapability(getNetworkCapability(), facing));
         }
         return super.getCapability(capability, facing);
     }
@@ -215,7 +215,7 @@ public class TileEntityPipeLike<Q extends Enum<Q> & IBaseProperty & IStringSeria
     @Nullable
     @Override
     public ICapabilityProvider getCapabilityProviderAtSide(@Nonnull EnumFacing facing) {
-        BlockPos.MutableBlockPos pos = BlockPos.PooledMutableBlockPos.retain(this.pos);
+        BlockPos.PooledMutableBlockPos pos = BlockPos.PooledMutableBlockPos.retain(this.pos);
         pos.move(facing);
         ICapabilityProvider result = world == null ? null : world.getTileEntity(pos);
         if (result != null && color != factory.getDefaultColor()) {
@@ -226,6 +226,7 @@ public class TileEntityPipeLike<Q extends Enum<Q> & IBaseProperty & IStringSeria
             }
         }
         pos.move(facing.getOpposite());
+        pos.release();
         return result;
     }
 }

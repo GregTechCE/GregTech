@@ -177,12 +177,16 @@ public abstract class PipeNet<Q extends Enum<Q> & IBaseProperty & IStringSeriali
         if (data != null) {
             int connectionMask = factory.getConnectionMask(tile, worldNets.getWorld(), pos);
             int color = tile.getColor();
+            int activeMask = factory.getActiveSideMask(tile);
             if (data.connectionMask != connectionMask || data.color != color) {
                 data.connectionMask = connectionMask;
                 data.color = color;
                 onConnectionUpdate();
             }
-            data.activeMask = factory.getActiveSideMask(tile);
+            if (data.activeMask != activeMask) {
+                data.activeMask = activeMask;
+                worldNets.markDirty();
+            }
         }
     }
 
@@ -231,11 +235,13 @@ public abstract class PipeNet<Q extends Enum<Q> & IBaseProperty & IStringSeriali
     void trySplitPipeNet() {
         if (removedNodes.isEmpty()) return;
         Collection<BlockPos> sides = Sets.newHashSet();
+        boolean splited = false;
         removedNodes.forEach(pos -> {for (EnumFacing facing : EnumFacing.VALUES) Optional.ofNullable(allNodes.get(pos.offset(facing))).ifPresent(sides::add);});
         for (BlockPos startPos : sides) {
-            Collection<? extends BlockPos> searchResult = dfs(startPos, adjacent, null, null, null);
+            Collection<? extends BlockPos> searchResult = dfs(startPos, adjacent(), null, null);
             if (searchResult.size() == allNodes.size()) break;
             if (!searchResult.isEmpty()) {
+                splited = true;
                 PipeNet<Q, P, C> newNet = factory.createPipeNet(worldNets);
                 transferNodeDataTo(searchResult, newNet);
                 for (BlockPos pos : searchResult) {
@@ -249,24 +255,30 @@ public abstract class PipeNet<Q extends Enum<Q> & IBaseProperty & IStringSeriali
                 worldNets.addPipeNet(newNet);
             }
         }
-        onConnectionUpdate();
+        if (splited) onConnectionUpdate();
     }
 
-    protected static final PassingThroughCondition adjacent = (fromNode, dir, toNode) -> true;
-    protected static final PassingThroughCondition checkConnectionMask = (fromNode, dir, toNode) ->
-        ((fromNode.connectionMask & MASK_OUTPUT_DISABLED << dir.getIndex()) == 0)
-        && ((toNode.connectionMask & MASK_INPUT_DISABLED << dir.getOpposite().getIndex()) == 0);
+    protected static <P> PassingThroughCondition<P> adjacent() {
+        return (fromNode, dir, toNode) -> true;
+    }
+    protected static <P> PassingThroughCondition<P> checkConnectionMask() {
+        return (fromNode, dir, toNode) ->
+            ((fromNode.connectionMask & MASK_OUTPUT_DISABLED << dir.getIndex()) == 0)
+                && ((toNode.connectionMask & MASK_INPUT_DISABLED << dir.getOpposite().getIndex()) == 0);
+    }
 
     /**
      * Compute all route paths from start pos to each reachable active nodes, using bfs.
      * @param collector Collect the cable loss, the route value or sth else. Result will be accumulated from the destination to the start pos.
      */
-    public <R> List<RoutePath<P, ?, R>> computeRoutePaths(BlockPos startPos, PassingThroughCondition<P> condition, Collector<LinkedNode<P>, ?, R> collector, Predicate<LinkedNode<P>> shortCircuit) {
+    public <R> List<RoutePath<P, ?, R>> computeRoutePaths(BlockPos startPos, PassingThroughCondition<P> condition, Collector<LinkedNode<P>, ?, R> collector, @Nullable Predicate<LinkedNode<P>> shortCircuit) {
         List<RoutePath<P, ?, R>> result = Lists.newArrayList();
-        bfs(startPos, condition, null, activeNode -> {
-            RoutePath<P, ?, R> routePath = new RoutePath<>(collector);
-            new NodeChain<>(activeNode).forEach(routePath::extend);
-            result.add(routePath);
+        bfs(startPos, condition, node -> {
+            if (node.isActive()) {
+                RoutePath<P, ?, R> routePath = new RoutePath<>(collector);
+                new NodeChain<>(node).forEach(routePath::extend);
+                result.add(routePath);
+            }
         }, shortCircuit);
         return result;
     }
@@ -276,8 +288,8 @@ public abstract class PipeNet<Q extends Enum<Q> & IBaseProperty & IStringSeriali
      * @return All reachable nodes, with each of them linked to its parent node, and the start pos linked to null;
      *          Will be empty if start pos is not in this net.
      */
-    public Collection<LinkedNode<P>> dfs(BlockPos startPos, PassingThroughCondition<P> condition, @Nullable Consumer<LinkedNode<P>> onNode, @Nullable Consumer<LinkedNode<P>> onActiveNode, @Nullable Predicate<LinkedNode<P>> shortCircuit) {
-        return search(startPos, condition, onNode, onActiveNode, shortCircuit, SearchType.DFS);
+    public Collection<LinkedNode<P>> dfs(BlockPos startPos, PassingThroughCondition<P> condition, @Nullable Consumer<LinkedNode<P>> onNode, @Nullable Predicate<LinkedNode<P>> shortCircuit) {
+        return search(startPos, condition, onNode, shortCircuit, SearchType.DFS);
     }
 
     /**
@@ -285,23 +297,22 @@ public abstract class PipeNet<Q extends Enum<Q> & IBaseProperty & IStringSeriali
      * @return All reachable nodes, with each of them linked to its parent node, and the start pos linked to null;
      *          Will be empty if start pos is not in this net.
      */
-    public Collection<LinkedNode<P>> bfs(BlockPos startPos, PassingThroughCondition<P> condition, @Nullable Consumer<LinkedNode<P>> onNode, @Nullable Consumer<LinkedNode<P>> onActiveNode, @Nullable Predicate<LinkedNode<P>> shortCircuit) {
-        return search(startPos, condition, onNode, onActiveNode, shortCircuit, SearchType.BFS);
+    public Collection<LinkedNode<P>> bfs(BlockPos startPos, PassingThroughCondition<P> condition, @Nullable Consumer<LinkedNode<P>> onNode, @Nullable Predicate<LinkedNode<P>> shortCircuit) {
+        return search(startPos, condition, onNode, shortCircuit, SearchType.BFS);
     }
 
     private enum SearchType {
         BFS, DFS
     }
 
-    private Collection<LinkedNode<P>> search(BlockPos startPos, PassingThroughCondition<P> condition, @Nullable Consumer<LinkedNode<P>> onNode, @Nullable Consumer<LinkedNode<P>> onActiveNode, @Nullable Predicate<LinkedNode<P>> shortCircuit, SearchType type) {
+    private Collection<LinkedNode<P>> search(BlockPos startPos, PassingThroughCondition<P> condition, @Nullable Consumer<LinkedNode<P>> onNode, @Nullable Predicate<LinkedNode<P>> shortCircuit, SearchType type) {
         Collection<LinkedNode<P>> result = Sets.newHashSet();
         if (allNodes.containsKey(startPos)) {
             LinkedNode<P> startNode = new LinkedNode<>(allNodes.get(startPos), null);
             result.add(startNode);
             if (onNode != null) onNode.accept(startNode);
-            if (onActiveNode != null && startNode.isActive()) onActiveNode.accept(startNode);
             if (shortCircuit != null && shortCircuit.test(startNode)) return result;
-            BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos();
+            BlockPos.PooledMutableBlockPos pos = BlockPos.PooledMutableBlockPos.retain();
             LinkedList<LinkedNode<P>> buffer = Lists.newLinkedList();
             Consumer<LinkedNode<P>> putter = null;
             Supplier<LinkedNode<P>> getter = null;
@@ -322,13 +333,13 @@ public abstract class PipeNet<Q extends Enum<Q> & IBaseProperty & IStringSeriali
                             result.add(sideNode);
                             putter.accept(sideNode);
                             if (onNode != null) onNode.accept(sideNode);
-                            if (onActiveNode != null && sideNode.isActive()) onActiveNode.accept(sideNode);
                             if (shortCircuit != null && shortCircuit.test(sideNode)) return result;
                         }
                     }
                     pos.move(facing.getOpposite());
                 }
             }
+            pos.release();
         }
         return result;
     }
@@ -379,6 +390,11 @@ public abstract class PipeNet<Q extends Enum<Q> & IBaseProperty & IStringSeriali
 
         public boolean isActive() {
             return activeMask != 0;
+        }
+
+        @Override
+        public String toString() {
+            return String.format("Node@(%d, %d, %d)", getX(), getY(), getZ());
         }
     }
 

@@ -1,6 +1,7 @@
 package gregtech.api.worldentries.pipenet;
 
 import com.google.common.collect.HashMultimap;
+import com.google.common.collect.Maps;
 import com.google.common.collect.Multimap;
 import com.google.common.collect.Sets;
 import gregtech.api.net.NetworkHandler;
@@ -39,13 +40,13 @@ public class WorldPipeNet extends WorldSavedData {
     public static final String DATA_ID = "gregtech.pipe_net";
     private World world;
     private final Multimap<String, PipeNet> pipeNets = HashMultimap.create();
-    private final Multimap<PipeFactory, BlockPos> scheduledCheck = HashMultimap.create();
+    private static final Map<World, Multimap<PipeFactory, BlockPos>> scheduledCheck = Maps.newHashMap();
 
     public static WorldPipeNet getWorldPipeNet(World world) {
-        WorldPipeNet nets = (WorldPipeNet) world.loadData(WorldPipeNet.class, DATA_ID);
+        WorldPipeNet nets = (WorldPipeNet) world.getPerWorldStorage().getOrLoadData(WorldPipeNet.class, DATA_ID);
         if (nets == null) {
             nets = new WorldPipeNet(DATA_ID);
-            world.setData(DATA_ID, nets);
+            world.getPerWorldStorage().setData(DATA_ID, nets);
         }
         nets.world = world;
         return nets;
@@ -53,7 +54,19 @@ public class WorldPipeNet extends WorldSavedData {
 
     @SubscribeEvent
     public static void onWorldTick(TickEvent.WorldTickEvent event) {
-        if (event.phase == TickEvent.Phase.END) getWorldPipeNet(event.world).update();
+        if (event.phase == TickEvent.Phase.END) {
+            World world = event.world;
+            Optional.ofNullable(scheduledCheck.get(world)).ifPresent(map -> map.forEach((factory, pos) -> {
+                ITilePipeLike tile = factory.getTile(world, pos);
+                if (tile != null) {
+                    factory.addToPipeNet(world, pos, tile);
+                    tile.updateInternalConnection();
+                }
+            }));
+            scheduledCheck.clear();
+
+            getWorldPipeNet(world).update();
+        }
     }
 
     public WorldPipeNet(String name) {
@@ -150,22 +163,11 @@ public class WorldPipeNet extends WorldSavedData {
         return compound;
     }
 
-    public void addScheduledCheck(PipeFactory factory, BlockPos pos) {
-        scheduledCheck.put(factory, pos);
+    public static void addScheduledCheck(PipeFactory factory, World world, BlockPos pos) {
+        scheduledCheck.computeIfAbsent(world, w -> HashMultimap.create()).put(factory, pos);
     }
 
     public void update() {
-        scheduledCheck.forEach((factory, pos) -> {
-            ITilePipeLike tile = factory.getTile(world, pos);
-            if (tile != null) {
-                PipeNet net = factory.addToPipeNet(world, pos, tile);
-                tile.updateInternalConnection();
-            } else {
-                removeNodeFromNet(pos, factory);
-            }
-        });
-        scheduledCheck.clear();
-
         Collection<PipeNet> nets = pipeNets.values();
 
         Sets.newHashSet(nets).forEach(PipeNet::trySplitPipeNet);
@@ -203,7 +205,7 @@ public class WorldPipeNet extends WorldSavedData {
     }
 
     final WeakHashMap<PipeNet, Long> uids = new WeakHashMap<>();
-    private static Random rnd = new XSTR();
+    public static Random rnd = new XSTR();
 
     private Long tempUID = null;
     long getUID() {

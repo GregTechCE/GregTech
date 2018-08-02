@@ -23,11 +23,6 @@ public class ItemPipeProperties implements IPipeLikeTileProperty {
         int d = GTUtility.gcd(transferCapacity, tickRate);
         this.transferCapacity = transferCapacity / d;
         this.tickRate = tickRate / d;
-        if (20 % this.tickRate == 0) {
-            d = 20 / this.tickRate;
-            this.transferCapacity *= d;
-            this.tickRate *= d;
-        }
         this.routingValue = routingValue;
     }
 
@@ -60,16 +55,9 @@ public class ItemPipeProperties implements IPipeLikeTileProperty {
 
     @Override
     public void addInformation(List<String> tooltip) {
-        if (tickRate % 20 == 0) {
-            int t = tickRate / 20;
-            tooltip.add(t != 1 ? I18n.format("gregtech.item_pipe.capacity1", transferCapacity, t)
-                : transferCapacity != 1 ? I18n.format("gregtech.item_pipe.capacity2", transferCapacity)
-                : I18n.format("gregtech.item_pipe.capacity3"));
-        } else {
-            tooltip.add(tickRate != 1 ? I18n.format("gregtech.item_pipe.capacity4", transferCapacity, tickRate)
-                : transferCapacity != 1 ? I18n.format("gregtech.item_pipe.capacity5", transferCapacity)
-                : I18n.format("gregtech.item_pipe.capacity6"));
-        }
+        tooltip.add(tickRate != 1 ? I18n.format("gregtech.item_pipe.capacity1", transferCapacity, tickRate)
+            : transferCapacity != 1 ? I18n.format("gregtech.item_pipe.capacity2", transferCapacity)
+            : I18n.format("gregtech.item_pipe.capacity3"));
         tooltip.add(I18n.format("gregtech.item_pipe.routing_value", routingValue));
     }
 

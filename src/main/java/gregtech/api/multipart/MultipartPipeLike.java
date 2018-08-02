@@ -18,18 +18,18 @@ import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.pipelike.*;
 import gregtech.api.render.PipeLikeRenderer;
 import gregtech.api.unification.material.type.Material;
-import gregtech.api.util.world.DummyWorld;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.particle.ParticleManager;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.*;
+import net.minecraft.util.BlockRenderLayer;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.IStringSerializable;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -270,6 +270,7 @@ public class MultipartPipeLike<Q extends Enum<Q> & IBaseProperty & IStringSerial
 
     @Override
     public void onRemoved() {
+        factory.onBreakingTile(this);
         factory.removeFromPipeNet(world(), pos());
     }
 
@@ -396,7 +397,7 @@ public class MultipartPipeLike<Q extends Enum<Q> & IBaseProperty & IStringSerial
 
     public <U> U getCapabilityInternal(@Nonnull Capability<U> capability, @Nullable EnumFacing facing) {
         if (capability == factory.capability) {
-            return factory.capability.cast(getNetworkCapability());//TODO Covers
+            return factory.capability.cast(factory.onGettingNetworkCapability(getNetworkCapability(), facing));//TODO Covers
         }
         return null;
     }
@@ -404,7 +405,7 @@ public class MultipartPipeLike<Q extends Enum<Q> & IBaseProperty & IStringSerial
     @Nullable
     @Override
     public ICapabilityProvider getCapabilityProviderAtSide(@Nonnull EnumFacing facing) {
-        BlockPos.MutableBlockPos pos = BlockPos.PooledMutableBlockPos.retain(pos());
+        BlockPos.PooledMutableBlockPos pos = BlockPos.PooledMutableBlockPos.retain(pos());
         pos.move(facing);
         World world = world();
         ICapabilityProvider result = world == null ? null : world.getTileEntity(pos);
@@ -416,6 +417,7 @@ public class MultipartPipeLike<Q extends Enum<Q> & IBaseProperty & IStringSerial
             }
         }
         pos.move(facing.getOpposite());
+        pos.release();
         return result;
     }
     //////////////////////////////////// RENDER ////////////////////////////////////////////

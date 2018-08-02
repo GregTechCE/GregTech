@@ -32,6 +32,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.Tuple;
 import net.minecraft.util.WeightedRandom;
@@ -51,6 +52,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.IItemHandlerModifiable;
 
+import javax.annotation.Nullable;
 import java.awt.*;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -76,15 +78,43 @@ public class GTUtility {
     }
 
     public static int lcm(int a, int b) {
-        if (a == 0 || b == 0) throw new ArithmeticException("div by 0");
-        if (a < 0) a = -a;
-        if (b < 0) b = -b;
-        int d;
-        while (true) {
-            if (0 == (a %= b)) {d = b; break;}
-            if (0 == (b %= a)) {d = a; break;}
+        return a / gcd(a, b) * b;
+    }
+
+    @Nullable
+    public static EnumFacing getRelativeDirection(BlockPos from, BlockPos to) {
+        int dx = to.getX() - from.getX();
+        int dy = to.getY() - from.getY();
+        int dz = to.getZ() - from.getZ();
+        if (dx == 0) {
+            if (dy == 0) {
+                return dz > 0 ? EnumFacing.NORTH : EnumFacing.SOUTH;
+            } else if (dz == 0) {
+                return dy > 0 ? EnumFacing.UP : EnumFacing.DOWN;
+            }
+        } else if (dy == 0 && dz == 0) {
+            return dx > 0 ? EnumFacing.EAST : EnumFacing.WEST;
         }
-        return a / d * b;
+        return null;
+    }
+
+    public static int[] getIncrementingIntArray(int size) {
+        switch (size) {
+            case  0: return new int[0];
+            case  1: return new int[]{0};
+            case  2: return new int[]{0, 1};
+            case  3: return new int[]{0, 1, 2};
+            case  4: return new int[]{0, 1, 2, 3};
+            case  5: return new int[]{0, 1, 2, 3, 4};
+            case  6: return new int[]{0, 1, 2, 3, 4, 5};
+            case  7: return new int[]{0, 1, 2, 3, 4, 5, 6};
+            case  8: return new int[]{0, 1, 2, 3, 4, 5, 6, 7};
+            case  9: return new int[]{0, 1, 2, 3, 4, 5, 6, 7, 8};
+            case 10: return new int[]{0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
+            default: int[] result = new int[size];
+            for (int i = 0; i < size; i++) result[i] = i;
+            return result;
+        }
     }
 
     //magic is here

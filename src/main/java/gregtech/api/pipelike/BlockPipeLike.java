@@ -184,6 +184,7 @@ public class BlockPipeLike<Q extends Enum<Q> & IBaseProperty & IStringSerializab
 
     @Override
     public void breakBlock(World worldIn, BlockPos pos, IBlockState state) {
+        factory.onBreakingTile(factory.getTile(worldIn, pos));
         super.breakBlock(worldIn, pos, state);
         factory.removeFromPipeNet(worldIn, pos);
     }
@@ -192,7 +193,7 @@ public class BlockPipeLike<Q extends Enum<Q> & IBaseProperty & IStringSerializab
     public void onBlockAdded(World worldIn, BlockPos pos, IBlockState state) {
         super.onBlockAdded(worldIn, pos, state);
         if (!worldIn.isRemote) {
-            WorldPipeNet.getWorldPipeNet(worldIn).addScheduledCheck(factory, pos);
+            WorldPipeNet.addScheduledCheck(factory, worldIn, pos);
         }
     }
 

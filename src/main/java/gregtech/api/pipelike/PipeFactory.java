@@ -49,7 +49,7 @@ public abstract class PipeFactory<Q extends Enum<Q> & IBaseProperty & IStringSer
     private final Map<Material, BlockPipeLike<Q, P, C>> blockMap = Maps.newHashMap();
 
     private boolean freezePropertyRegistry = false;
-    private final Map<Material, P> REGISTERED_PROPERTIES = Maps.newTreeMap();
+    private final Map<Material, P> REGISTERED_PROPERTIES = Maps.newLinkedHashMap();
 
     protected void registerPropertyForMaterial(Material material, P property) {
         if (freezePropertyRegistry) throw new IllegalStateException("Property registry of " + name +" is already freezed!");
@@ -170,6 +170,8 @@ public abstract class PipeFactory<Q extends Enum<Q> & IBaseProperty & IStringSer
     public Q getBaseProperty(int index) {
         return index >= 0 && index < baseProperties.length ? baseProperties[index] : null;
     }
+
+    public void onBreakingTile(ITilePipeLike<Q, P> tile) {}
 
     /////////////////////////////// MULTIPART METHODS //////////////////////////////////////
 
@@ -383,6 +385,10 @@ public abstract class PipeFactory<Q extends Enum<Q> & IBaseProperty & IStringSer
     public abstract C createCapability(ITilePipeLike<Q, P> tile);
 
     public abstract PipeNet<Q, P, C> createPipeNet(WorldPipeNet worldNet);
+
+    public C onGettingNetworkCapability(C capability, EnumFacing facing) {
+        return capability;
+    }
 
     public PipeNet<Q, P, C> addToPipeNet(World world, BlockPos pos, ITilePipeLike<Q, P> tile) {
         return WorldPipeNet.getWorldPipeNet(world).addNodeToAdjacentOrNewNet(pos, tile, this);

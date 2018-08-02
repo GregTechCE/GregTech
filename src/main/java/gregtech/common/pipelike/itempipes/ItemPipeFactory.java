@@ -8,8 +8,12 @@ import gregtech.api.unification.material.type.GemMaterial;
 import gregtech.api.unification.material.type.IngotMaterial;
 import gregtech.api.unification.material.type.Material;
 import gregtech.api.worldentries.pipenet.WorldPipeNet;
+import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.entity.Entity;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.NonNullList;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 
@@ -57,12 +61,24 @@ public class ItemPipeFactory extends PipeFactory<TypeItemPipe, ItemPipePropertie
     protected ItemPipeProperties createActualProperty(TypeItemPipe baseProperty, ItemPipeProperties materialProperty) {
         int capacity = baseProperty.transferCapacity * materialProperty.getTransferCapacity();
         int tickRate = baseProperty.tickRate * materialProperty.getTickRate();
-        long routingValue = (long) baseProperty.baseRoutingValue * materialProperty.getRoutingValue() * tickRate / 20 / capacity;
+        long routingValue = (long) baseProperty.baseRoutingValue * materialProperty.getRoutingValue() * tickRate / capacity;
         return new ItemPipeProperties(capacity, tickRate, (int) routingValue);
     }
 
     @Override
     protected void onEntityCollided(Entity entity, ITilePipeLike<TypeItemPipe, ItemPipeProperties> tile) {}
+
+    @Override
+    public void onBreakingTile(ITilePipeLike<TypeItemPipe, ItemPipeProperties> tile) {
+        ItemPipeNet net = getPipeNetAt(tile);
+        if (net != null) {
+            NonNullList<ItemStack> inventoryContents = NonNullList.create();
+            net.cleanBufferedItems(tile.getTilePos(), inventoryContents);
+            for(ItemStack itemStack : inventoryContents) {
+                Block.spawnAsEntity(tile.getTileWorld(), tile.getTilePos(), itemStack);
+            }
+        }
+    }
 
     @Override
     public int getDefaultColor() {
@@ -75,8 +91,19 @@ public class ItemPipeFactory extends PipeFactory<TypeItemPipe, ItemPipePropertie
     }
 
     @Override
+    public IItemHandler onGettingNetworkCapability(IItemHandler capability, EnumFacing facing) {
+        if (capability instanceof ItemPipeHandler) ((ItemPipeHandler) capability).currentFacing = facing;
+        return capability;
+    }
+
+    @Override
     public ItemPipeNet createPipeNet(WorldPipeNet worldNet) {
         return new ItemPipeNet(worldNet);
+    }
+
+    @Override
+    public ItemPipeNet getPipeNetAt(ITilePipeLike<TypeItemPipe, ItemPipeProperties> tile) {
+        return (ItemPipeNet) super.getPipeNetAt(tile);
     }
 
     @Override
