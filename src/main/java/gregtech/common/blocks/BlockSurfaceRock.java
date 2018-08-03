@@ -38,6 +38,7 @@ import java.util.Arrays;
 import java.util.Optional;
 import java.util.Random;
 
+@SuppressWarnings("deprecation")
 public class BlockSurfaceRock extends DelayedStateBlock {
 
     public final PropertyMaterial materialProperty;

@@ -249,7 +249,7 @@ public class MetaBlocks {
 
         PipeFactory.allFactories.values().forEach(factory -> {
             ModelResourceLocation modelResourceLocation = PipeLikeRenderer.getRenderer(factory).getModelLocation();
-            ((Collection<BlockPipeLike>) factory.getBlockMap().values())
+            factory.getBlockMap().values()
                 .forEach(block -> ModelLoader.setCustomMeshDefinition(Item.getItemFromBlock(block), stack -> modelResourceLocation));
         });
         COMPRESSED.values().stream().distinct().forEach(MetaBlocks::registerItemModel);
@@ -289,7 +289,7 @@ public class MetaBlocks {
                 return MetaTileEntityRenderer.MODEL_LOCATION;
             }
         });
-        for (PipeFactory factory : PipeFactory.allFactories.values()) {
+        for (PipeFactory<?, ?, ?> factory : PipeFactory.allFactories.values()) {
             ModelResourceLocation modelResourceLocation = PipeLikeRenderer.getRenderer(factory).getModelLocation();
             DefaultStateMapper stateMapper = new DefaultStateMapper() {
                 @Override
@@ -297,7 +297,7 @@ public class MetaBlocks {
                     return modelResourceLocation;
                 }
             };
-            ((Collection<BlockPipeLike>) factory.getBlockMap().values()).forEach(block -> ModelLoader.setCustomStateMapper(block, stateMapper));
+            factory.getBlockMap().values().forEach(block -> ModelLoader.setCustomStateMapper(block, stateMapper));
         }
 
         BakedModelHandler modelHandler = new BakedModelHandler();

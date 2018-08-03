@@ -13,8 +13,6 @@ import codechicken.lib.vec.Translation;
 import codechicken.lib.vec.Vector3;
 import codechicken.lib.vec.uv.IconTransformation;
 import codechicken.multipart.*;
-import gregtech.api.block.machines.BlockMachine;
-import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.pipelike.*;
 import gregtech.api.render.PipeLikeRenderer;
 import gregtech.api.unification.material.type.Material;
@@ -405,20 +403,7 @@ public class MultipartPipeLike<Q extends Enum<Q> & IBaseProperty & IStringSerial
     @Nullable
     @Override
     public ICapabilityProvider getCapabilityProviderAtSide(@Nonnull EnumFacing facing) {
-        BlockPos.PooledMutableBlockPos pos = BlockPos.PooledMutableBlockPos.retain(pos());
-        pos.move(facing);
-        World world = world();
-        ICapabilityProvider result = world == null ? null : world.getTileEntity(pos);
-        if (result != null && color != factory.getDefaultColor()) {
-            MetaTileEntity mte = BlockMachine.getMetaTileEntity(world, pos);
-            if (mte != null && mte.getPaintingColor() != MetaTileEntity.DEFAULT_PAINTING_COLOR
-                && mte.getPaintingColor() != color) {
-                result = null;
-            }
-        }
-        pos.move(facing.getOpposite());
-        pos.release();
-        return result;
+        return factory.getCapabilityProviderAtSide(facing, this);
     }
     //////////////////////////////////// RENDER ////////////////////////////////////////////
 

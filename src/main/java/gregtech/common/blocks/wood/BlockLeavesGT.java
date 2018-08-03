@@ -45,6 +45,7 @@ public class BlockLeavesGT extends BlockLeaves {
         return new BlockStateContainer(this, DECAYABLE, CHECK_DECAY, VARIANT);
     }
 
+    @SuppressWarnings("deprecation")
     @Override
     public IBlockState getStateFromMeta(int meta) {
         return getDefaultState()

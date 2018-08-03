@@ -52,12 +52,12 @@ public class ItemPipeNet extends PipeNet<TypeItemPipe, ItemPipeProperties, IItem
 
     @Override
     protected void serializeNodeData(BlockPos pos, NBTTagCompound nodeTag) {
-        Pipe buffer = pipes.get(pos);
-        if (buffer != null) {
-            nodeTag.setInteger("BufferCounter", buffer.counter);
-            if (buffer.getBufferedItemCount() > 0) {
+        Pipe pipe = pipes.get(pos);
+        if (pipe != null) {
+            nodeTag.setInteger("BufferCounter", pipe.counter);
+            if (pipe.getBufferedItemCount() > 0) {
                 NBTTagList list = new NBTTagList();
-                for (BufferedItem bufferedItem : buffer.bufferedItems) if (!bufferedItem.isEmpty()) {
+                for (BufferedItem bufferedItem : pipe.bufferedItems) if (!bufferedItem.isEmpty()) {
                     NBTTagCompound item = bufferedItem.bufferedStack.serializeNBT();
                     item.setIntArray("GTItemPipeBuffered", new int[]{bufferedItem.fromDir == null ? -1 : bufferedItem.fromDir.getIndex(), bufferedItem.countDown});
                     list.appendTag(item);
@@ -70,17 +70,17 @@ public class ItemPipeNet extends PipeNet<TypeItemPipe, ItemPipeProperties, IItem
     @Override
     protected void deserializeNodeData(BlockPos pos, NBTTagCompound nodeTag) {
         if (nodeTag.hasKey("BufferCounter")) {
-            Pipe buffer = new Pipe(allNodes.get(pos).property);
-            pipes.put(pos, buffer);
-            buffer.counter = nodeTag.getInteger("BufferCounter");
+            Pipe pipe = new Pipe(allNodes.get(pos).property);
+            pipes.put(pos, pipe);
+            pipe.counter = nodeTag.getInteger("BufferCounter");
             if (nodeTag.hasKey("BufferedItems")) {
                 NBTTagList list = nodeTag.getTagList("BufferedItems", TAG_COMPOUND);
                 list.forEach(nbtBase -> {
                     if (nbtBase.getId() == TAG_COMPOUND) {
                         NBTTagCompound compound = (NBTTagCompound) nbtBase;
                         int[] data = compound.getIntArray("GTItemPipeBuffered");
-                        int index = buffer.addItem(new ItemStack(compound), data[0] < 0 ? null : EnumFacing.VALUES[data[0]]);
-                        if (index >= 0) buffer.bufferedItems[index].countDown = data[1];
+                        int index = pipe.addItem(new ItemStack(compound), data[0] < 0 ? null : EnumFacing.VALUES[data[0]]);
+                        if (index >= 0) pipe.bufferedItems[index].countDown = data[1];
                     }
                 });
             }
@@ -90,6 +90,12 @@ public class ItemPipeNet extends PipeNet<TypeItemPipe, ItemPipeProperties, IItem
     @Override
     public void onConnectionUpdate() {
         super.onConnectionUpdate();
+        capacityUpdated = true;
+    }
+
+    @Override
+    public void onWeakUpdate() {
+        super.onWeakUpdate();
         capacityUpdated = true;
     }
 
@@ -114,11 +120,11 @@ public class ItemPipeNet extends PipeNet<TypeItemPipe, ItemPipeProperties, IItem
         if (!world.isRemote) {
             if (!pipes.isEmpty()) {
                 Multimap<ItemPipeHandler, BufferedItem> toTransfer = HashMultimap.create();
-                pipes.forEach((pos, buffer) -> {
-                    if (buffer.getBufferedItemCount() > 0 && (capacityUpdated || allNodes.get(pos).isActive() || inserted.contains(pos))) {
-                        for (BufferedItem bufferedItem : buffer.bufferedItems) if (!bufferedItem.isEmpty()) {
+                pipes.forEach((pos, pipe) -> {
+                    if (pipe.getBufferedItemCount() > 0 && (capacityUpdated || allNodes.get(pos).isActive() || inserted.contains(pos))) {
+                        for (BufferedItem bufferedItem : pipe.bufferedItems) if (!bufferedItem.isEmpty()) {
                             ItemPipeHandler handler = (ItemPipeHandler) factory.getTile(world, pos)
-                                .getCapabilityInternal(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, bufferedItem.fromDir == null ? null : bufferedItem.fromDir.getOpposite());
+                                .getCapabilityInternal(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
                             toTransfer.put(handler, bufferedItem);
                         }
                     }
@@ -157,9 +163,13 @@ public class ItemPipeNet extends PipeNet<TypeItemPipe, ItemPipeProperties, IItem
         BlockPos startPos = handler.tile.getTilePos();
         if (handler.pathsCache == null || handler.lastCachedPathTime < lastUpdate) {
             handler.lastCachedPathTime = lastUpdate;
+            handler.lastWeakUpdate = lastWeakUpdate;
             handler.pathsCache = computeRoutePaths(startPos, checkConnectionMask(),
-                Collectors.summingLong(node -> (long) node.property.getRoutingValue()), n -> false)
+                Collectors.summingLong(node -> (long) node.property.getRoutingValue()), null)
                 .stream().collect(Collectors.groupingBy(RoutePath::getAccumulatedVal, Maps::newTreeMap, Collectors.toList()));
+        } else if (handler.lastWeakUpdate < lastWeakUpdate) {
+            handler.lastWeakUpdate = lastWeakUpdate;
+            handler.pathsCache.values().forEach(this::updateNodeChain);
         }
         ItemStack result = stack;
         for (List<RoutePath<ItemPipeProperties, ?, Long>> paths : handler.pathsCache.values()) {

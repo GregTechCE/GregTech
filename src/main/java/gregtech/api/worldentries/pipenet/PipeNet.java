@@ -89,6 +89,7 @@ public abstract class PipeNet<Q extends Enum<Q> & IBaseProperty & IStringSeriali
 
     private long tickTimer = 0;
     protected long lastUpdate = 1;
+    protected long lastWeakUpdate = 1;
 
     public final void onPreTick() {
         onPreTick(tickTimer);
@@ -106,8 +107,17 @@ public abstract class PipeNet<Q extends Enum<Q> & IBaseProperty & IStringSeriali
         return lastUpdate;
     }
 
+    public long getLastWeakUpdate() {
+        return lastWeakUpdate;
+    }
+
     public void onConnectionUpdate() {
         lastUpdate++;
+        worldNets.markDirty();
+    }
+
+    public void onWeakUpdate() {
+        lastWeakUpdate++;
         worldNets.markDirty();
     }
 
@@ -178,15 +188,18 @@ public abstract class PipeNet<Q extends Enum<Q> & IBaseProperty & IStringSeriali
             int connectionMask = factory.getConnectionMask(tile, worldNets.getWorld(), pos);
             int color = tile.getColor();
             int activeMask = factory.getActiveSideMask(tile);
+            boolean weakUpdate = data.isActive();
             if (data.connectionMask != connectionMask || data.color != color) {
                 data.connectionMask = connectionMask;
                 data.color = color;
                 onConnectionUpdate();
+                weakUpdate = false;
             }
             if (data.activeMask != activeMask) {
                 data.activeMask = activeMask;
-                worldNets.markDirty();
+                if (weakUpdate) onWeakUpdate();
             }
+
         }
     }
 
@@ -256,6 +269,14 @@ public abstract class PipeNet<Q extends Enum<Q> & IBaseProperty & IStringSeriali
             }
         }
         if (splited) onConnectionUpdate();
+    }
+
+    public void updateNodeChain(Collection<? extends NodeChain<P>> chains) {
+        chains.forEach(this::updateNodeChain);
+    }
+
+    public void updateNodeChain(NodeChain<P> chain) {
+        chain.forEach(node -> node.activeMask = allNodes.get(node).activeMask);
     }
 
     protected static <P> PassingThroughCondition<P> adjacent() {

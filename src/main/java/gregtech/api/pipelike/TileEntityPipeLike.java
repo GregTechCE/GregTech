@@ -1,7 +1,5 @@
 package gregtech.api.pipelike;
 
-import gregtech.api.block.machines.BlockMachine;
-import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.unification.material.type.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.nbt.NBTTagCompound;
@@ -108,7 +106,7 @@ public class TileEntityPipeLike<Q extends Enum<Q> & IBaseProperty & IStringSeria
     @Override
     public void readFromNBT(NBTTagCompound compound) {
         super.readFromNBT(compound);
-        factory = PipeFactory.allFactories.get(compound.getString("Factory"));
+        factory = PipeFactory.getFactoryByName(compound.getString("Factory"));
         color = compound.getInteger("Color");
         internalConnections = compound.getInteger("InternalConnections");
         renderMask = compound.getInteger("RenderMask");
@@ -215,18 +213,6 @@ public class TileEntityPipeLike<Q extends Enum<Q> & IBaseProperty & IStringSeria
     @Nullable
     @Override
     public ICapabilityProvider getCapabilityProviderAtSide(@Nonnull EnumFacing facing) {
-        BlockPos.PooledMutableBlockPos pos = BlockPos.PooledMutableBlockPos.retain(this.pos);
-        pos.move(facing);
-        ICapabilityProvider result = world == null ? null : world.getTileEntity(pos);
-        if (result != null && color != factory.getDefaultColor()) {
-            MetaTileEntity mte = BlockMachine.getMetaTileEntity(world, pos);
-            if (mte != null && mte.getPaintingColor() != MetaTileEntity.DEFAULT_PAINTING_COLOR
-                && mte.getPaintingColor() != color) {
-                result = null;
-            }
-        }
-        pos.move(facing.getOpposite());
-        pos.release();
-        return result;
+        return factory.getCapabilityProviderAtSide(facing, this);
     }
 }

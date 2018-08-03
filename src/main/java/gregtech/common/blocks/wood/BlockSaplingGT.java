@@ -43,6 +43,7 @@ public class BlockSaplingGT extends BlockBush implements IGrowable, IPlantable {
         return new BlockStateContainer(this, VARIANT, STAGE);
     }
 
+    @SuppressWarnings("deprecation")
     @Override
     public IBlockState getStateFromMeta(int meta) {
         return getDefaultState()

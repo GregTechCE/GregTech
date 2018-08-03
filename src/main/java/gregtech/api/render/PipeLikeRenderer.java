@@ -194,7 +194,7 @@ public abstract class PipeLikeRenderer<Q extends Enum<Q> & IBaseProperty & IStri
         IVertexOperation[] pipeline = {new Translation(pos)};
         renderState.setBrightness(world, pos);
 
-        BlockPipeLike<Q, ?, ?> block = (BlockPipeLike<Q, ?, ?>) state.getBlock();
+        BlockPipeLike<Q, ?, ?> block = getBlock(state);
         ITilePipeLike<Q, ?> tile = factory.getTile(world, pos);
         if(tile == null) return false;
         int paintingColor = tile.getColor();

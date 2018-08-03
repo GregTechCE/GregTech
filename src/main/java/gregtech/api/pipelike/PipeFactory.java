@@ -9,6 +9,8 @@ import codechicken.multipart.TileMultipart;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import gregtech.api.GTValues;
+import gregtech.api.block.machines.BlockMachine;
+import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.multipart.MultipartPipeLike;
 import gregtech.api.unification.OreDictUnifier;
 import gregtech.api.unification.material.type.GemMaterial;
@@ -31,9 +33,11 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.Optional.Method;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.lang.reflect.Array;
 import java.util.List;
@@ -45,11 +49,16 @@ public abstract class PipeFactory<Q extends Enum<Q> & IBaseProperty & IStringSer
 
     ///////////////////////////////////// REGISTRIES ///////////////////////////////////////
 
-    public static final Map<String, PipeFactory> allFactories = Maps.newHashMap();
+    public static final Map<String, PipeFactory<?, ?, ?>> allFactories = Maps.newHashMap();
     private final Map<Material, BlockPipeLike<Q, P, C>> blockMap = Maps.newHashMap();
 
     private boolean freezePropertyRegistry = false;
     private final Map<Material, P> REGISTERED_PROPERTIES = Maps.newLinkedHashMap();
+
+    @SuppressWarnings("unchecked")
+    public static <Q extends Enum<Q> & IBaseProperty & IStringSerializable, P extends IPipeLikeTileProperty, C> PipeFactory<Q, P, C> getFactoryByName(String name) {
+        return (PipeFactory<Q, P, C>) allFactories.get(name);
+    }
 
     protected void registerPropertyForMaterial(Material material, P property) {
         if (freezePropertyRegistry) throw new IllegalStateException("Property registry of " + name +" is already freezed!");
@@ -104,7 +113,7 @@ public abstract class PipeFactory<Q extends Enum<Q> & IBaseProperty & IStringSer
         return REGISTERED_PROPERTIES.get(material);
     }
 
-    public Map<Material, ? extends BlockPipeLike<Q, P, C>> getBlockMap() {
+    public Map<Material, BlockPipeLike<Q, P, C>> getBlockMap() {
         return blockMap;
     }
 
@@ -388,6 +397,23 @@ public abstract class PipeFactory<Q extends Enum<Q> & IBaseProperty & IStringSer
 
     public C onGettingNetworkCapability(C capability, EnumFacing facing) {
         return capability;
+    }
+
+    @Nullable
+    public ICapabilityProvider getCapabilityProviderAtSide(@Nonnull EnumFacing facing, ITilePipeLike<?, ?> tile) {
+        World world = tile.getTileWorld();
+        int color = tile.getColor();
+        BlockPos.PooledMutableBlockPos pos = BlockPos.PooledMutableBlockPos.retain(tile.getTilePos()).move(facing);
+        ICapabilityProvider result = world == null ? null : world.getTileEntity(pos);
+        if (result != null && color != getDefaultColor()) {
+            MetaTileEntity mte = BlockMachine.getMetaTileEntity(world, pos);
+            if (mte != null && mte.getPaintingColor() != MetaTileEntity.DEFAULT_PAINTING_COLOR
+                && mte.getPaintingColor() != color) {
+                result = null;
+            }
+        }
+        pos.release();
+        return result;
     }
 
     public PipeNet<Q, P, C> addToPipeNet(World world, BlockPos pos, ITilePipeLike<Q, P> tile) {

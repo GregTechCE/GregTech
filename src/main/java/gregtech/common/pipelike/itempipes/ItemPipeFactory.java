@@ -70,6 +70,7 @@ public class ItemPipeFactory extends PipeFactory<TypeItemPipe, ItemPipePropertie
 
     @Override
     public void onBreakingTile(ITilePipeLike<TypeItemPipe, ItemPipeProperties> tile) {
+        if (tile == null) return;
         ItemPipeNet net = getPipeNetAt(tile);
         if (net != null) {
             NonNullList<ItemStack> inventoryContents = NonNullList.create();

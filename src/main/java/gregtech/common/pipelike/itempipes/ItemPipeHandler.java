@@ -16,6 +16,7 @@ public class ItemPipeHandler implements IItemHandler {
     final int capacity;
     EnumFacing currentFacing = null;
     long lastCachedPathTime = 0;
+    long lastWeakUpdate = 0;
     Map<Long, List<RoutePath<ItemPipeProperties, ?, Long>>> pathsCache;
 
     public ItemPipeHandler(ITilePipeLike<TypeItemPipe, ItemPipeProperties> tile) {

@@ -5,7 +5,6 @@ import gregtech.api.block.machines.MachineItemBlock;
 import gregtech.api.enchants.EnchantmentEnderDamage;
 import gregtech.api.enchants.EnchantmentRadioactivity;
 import gregtech.api.items.metaitem.MetaItem;
-import gregtech.api.pipelike.BlockPipeLike;
 import gregtech.api.pipelike.ItemBlockPipeLike;
 import gregtech.api.pipelike.PipeFactory;
 import gregtech.api.unification.ore.OrePrefix;
@@ -37,7 +36,6 @@ import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.registries.IForgeRegistry;
 
-import java.util.Collection;
 import java.util.function.Function;
 
 import static gregtech.common.blocks.MetaBlocks.*;
@@ -71,7 +69,7 @@ public class CommonProxy {
         registry.register(CRUSHER_BLADE);
 
         PipeFactory.allFactories.values().forEach(factory ->
-            ((Collection<? extends BlockPipeLike>) factory.getBlockMap().values()).forEach(registry::register));
+            factory.getBlockMap().values().forEach(registry::register));
         COMPRESSED.values().stream().distinct().forEach(registry::register);
         SURFACE_ROCKS.values().stream().distinct().forEach(registry::register);
         FRAMES.values().stream().distinct().forEach(registry::register);
@@ -106,12 +104,10 @@ public class CommonProxy {
         registry.register(createMultiTexItemBlock(SAPLING, state -> state.getValue(BlockSaplingGT.VARIANT).getName()));
         registry.register(createItemBlock(CRUSHER_BLADE, ItemBlock::new));
 
-        CABLES.values().stream()
-            .map(block -> createItemBlock(block, ItemBlockPipeLike::new))
-            .forEach(registry::register);
-        ITEM_PIPES.values().stream()
-            .map(block -> createItemBlock(block, ItemBlockPipeLike::new))
-            .forEach(registry::register);
+        PipeFactory.allFactories.values().forEach(factory ->
+            factory.getBlockMap().values().stream()
+                .map(block -> createItemBlock(block, ItemBlockPipeLike::new))
+                .forEach(registry::register));
         COMPRESSED.values()
             .stream().distinct()
             .map(block -> createItemBlock(block, CompressedItemBlock::new))
@@ -163,6 +159,7 @@ public class CommonProxy {
         OrePrefix.runMaterialHandlers();
     }
 
+    @SuppressWarnings("deprecation")
     private static <T extends Block> ItemBlock createMultiTexItemBlock(T block, Function<IBlockState, String> nameProducer) {
         ItemBlock itemBlock = new ItemMultiTexture(block, block, stack -> {
             IBlockState blockState = block.getStateFromMeta(stack.getMetadata());
