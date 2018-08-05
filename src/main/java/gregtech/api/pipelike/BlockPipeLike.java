@@ -193,7 +193,7 @@ public class BlockPipeLike<Q extends Enum<Q> & IBaseProperty & IStringSerializab
     public void onBlockAdded(World worldIn, BlockPos pos, IBlockState state) {
         super.onBlockAdded(worldIn, pos, state);
         if (!worldIn.isRemote) {
-            WorldPipeNet.addScheduledCheck(factory, worldIn, pos);
+            WorldPipeNet.getWorldPipeNet(worldIn).addScheduledCheck(factory, pos);
         }
     }
 
