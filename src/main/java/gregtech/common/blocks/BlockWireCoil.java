@@ -31,7 +31,7 @@ public class BlockWireCoil extends VariantBlock<BlockWireCoil.CoilType> {
     public void addInformation(ItemStack itemStack, @Nullable World worldIn, List<String> lines, ITooltipFlag tooltipFlag) {
         super.addInformation(itemStack, worldIn, lines, tooltipFlag);
 
-        VariantItemBlock itemBlock = (VariantItemBlock<CoilType, BlockWireCoil>) itemStack.getItem();
+        VariantItemBlock itemBlock = (VariantItemBlock<BlockWireCoil>) itemStack.getItem();
         IBlockState stackState = itemBlock.getBlockState(itemStack);
         CoilType coilType = getState(stackState);
 

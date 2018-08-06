@@ -64,16 +64,15 @@ public class WireProperties implements IPipeLikeTileProperty {
     @Override
     public NBTTagCompound serializeNBT() {
         NBTTagCompound nbt = new NBTTagCompound();
-        nbt.setInteger("v", voltage);
-        nbt.setInteger("a", amperage);
-        nbt.setInteger("l", lossPerBlock);
+        nbt.setIntArray("WireProperties", new int[]{voltage, amperage, lossPerBlock});
         return nbt;
     }
 
     @Override
     public void deserializeNBT(NBTTagCompound nbt) {
-        voltage = nbt.getInteger("v");
-        amperage = nbt.getInteger("a");
-        lossPerBlock = nbt.getInteger("l");
+        int[] data = nbt.getIntArray("WireProperties");
+        voltage = data[0];
+        amperage = data[1];
+        lossPerBlock = data[2];
     }
 }

@@ -10,6 +10,7 @@ import gregtech.api.render.MetaTileEntityRenderer;
 import gregtech.common.blocks.*;
 import gregtech.common.items.MetaItems;
 import gregtech.common.render.CableRenderer;
+import gregtech.common.render.ItemPipeRenderer;
 import gregtech.common.render.StoneRenderer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.color.IBlockColor;
@@ -57,7 +58,8 @@ public class ClientProxy extends CommonProxy {
     public void onPreLoad() {
         super.onPreLoad();
         MetaTileEntityRenderer.preInit();
-        CableRenderer.preInit();
+        CableRenderer.INSTANCE.preInit();
+        ItemPipeRenderer.INSTANCE.preInit();
         StoneRenderer.preInit();
         MetaEntities.initRenderers();
         TextureUtils.addIconRegister(MetaFluids::registerSprites);

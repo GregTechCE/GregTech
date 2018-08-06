@@ -24,6 +24,7 @@ import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
 
+@SuppressWarnings("deprecation")
 public class BlockCrusherBlade extends Block implements ITileEntityProvider {
 
     public static final Cuboid6[] basicModel = new Cuboid6[] {

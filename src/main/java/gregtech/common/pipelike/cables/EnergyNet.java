@@ -74,8 +74,12 @@ public class EnergyNet extends PipeNet<Insulation, WireProperties, IEnergyContai
     public long acceptEnergy(CableEnergyContainer energyContainer, long voltage, long amperage, EnumFacing side) {
         if (energyContainer.pathsCache == null || energyContainer.lastCachedPathsTime < lastUpdate) {
             energyContainer.lastCachedPathsTime = lastUpdate;
-            energyContainer.pathsCache = computeRoutePaths(energyContainer.tileEntityCable.getTilePos(), checkConnectionMask,
-                Collectors.summingLong(node -> node.property.getLossPerBlock()), n -> false);
+            energyContainer.lastWeakUpdate = lastWeakUpdate;
+            energyContainer.pathsCache = computeRoutePaths(energyContainer.tileEntityCable.getTilePos(), checkConnectionMask(),
+                Collectors.summingLong(node -> node.property.getLossPerBlock()), null);
+        } else if (energyContainer.lastWeakUpdate < lastWeakUpdate) {
+            energyContainer.lastWeakUpdate = lastWeakUpdate;
+            updateNodeChain(energyContainer.pathsCache);
         }
         long amperesUsed = 0L;
         for (RoutePath<WireProperties, ?, Long> path : energyContainer.pathsCache) {
@@ -86,24 +90,29 @@ public class EnergyNet extends PipeNet<Insulation, WireProperties, IEnergyContai
         return amperesUsed;
     }
 
-    public long dispatchEnergyToNode(RoutePath<WireProperties, ?, Long> path, long voltage, long amperage, EnumFacing ignoreFacing) {
+    public long dispatchEnergyToNode(RoutePath<WireProperties, ?, Long> path, long voltage, long amperage, EnumFacing ignoredFacing) {
         long amperesUsed = 0L;
         Node<WireProperties> destination = path.getEndNode();
         int tileMask = destination.getActiveMask();
-        if (destination.equals(path.getStartNode())) tileMask &= ~(1 << ignoreFacing.getOpposite().getIndex());
+        if (ignoredFacing != null && destination.equals(path.getStartNode())) tileMask &= ~(1 << ignoredFacing.getOpposite().getIndex());
         BlockPos.PooledMutableBlockPos pos = BlockPos.PooledMutableBlockPos.retain();
         World world = worldNets.getWorld();
-        for (EnumFacing facing : EnumFacing.VALUES) if (0 != (tileMask & 1 << facing.getIndex())) {
-            pos.setPos(destination).move(facing);
-            if (!world.isBlockLoaded(pos)) continue; //do not allow cables to load chunks
-            TileEntity tile = world.getTileEntity(pos);
-            if (tile == null) continue;
-            IEnergyContainer energyContainer = tile.getCapability(IEnergyContainer.CAPABILITY_ENERGY_CONTAINER, facing.getOpposite());
-            if (energyContainer == null) continue;
-            amperesUsed += onEnergyPacket(path, voltage,
-                energyContainer.acceptEnergyFromNetwork(facing.getOpposite(), voltage - path.getAccumulatedVal(), amperage - amperesUsed));
-            if(amperesUsed == amperage) break;
+        int[] indices = {0, 1, 2, 3, 4, 5};
+        for (int i = 6, r; i > 0 && amperesUsed < amperage; indices[r] = indices[--i]) { // shuffle & traverse
+            r = WorldPipeNet.rnd.nextInt(i);
+            EnumFacing facing = EnumFacing.VALUES[indices[r]];
+            if (0 != (tileMask & 1 << facing.getIndex())) {
+                pos.setPos(destination).move(facing);
+                if (!world.isBlockLoaded(pos)) continue; //do not allow cables to load chunks
+                TileEntity tile = world.getTileEntity(pos);
+                if (tile == null) continue;
+                IEnergyContainer energyContainer = tile.getCapability(IEnergyContainer.CAPABILITY_ENERGY_CONTAINER, facing.getOpposite());
+                if (energyContainer == null) continue;
+                amperesUsed += onEnergyPacket(path, voltage,
+                    energyContainer.acceptEnergyFromNetwork(facing.getOpposite(), voltage - path.getAccumulatedVal(), amperage - amperesUsed));
+            }
         }
+        pos.release();
         return amperesUsed;
     }
 

@@ -13,23 +13,21 @@ import codechicken.lib.vec.Translation;
 import codechicken.lib.vec.Vector3;
 import codechicken.lib.vec.uv.IconTransformation;
 import codechicken.multipart.*;
-import gregtech.api.block.machines.BlockMachine;
-import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.pipelike.*;
 import gregtech.api.render.PipeLikeRenderer;
 import gregtech.api.unification.material.type.Material;
-import gregtech.api.util.world.DummyWorld;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.particle.ParticleManager;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.*;
+import net.minecraft.util.BlockRenderLayer;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.IStringSerializable;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -143,39 +141,6 @@ public class MultipartPipeLike<Q extends Enum<Q> & IBaseProperty & IStringSerial
         if (!world().isRemote) sendDescUpdate();
         updateNode();
         notifyTile();
-    }
-
-    /**
-     * Try recolor the pipe.
-     */
-    @Override
-    public boolean activate(EntityPlayer player, CuboidRayTraceResult hit, ItemStack item, EnumHand hand) {
-        if (!player.world.isRemote) {
-            try {
-                World dummy = new DummyWorld() {
-                    @Override
-                    public IBlockState getBlockState(BlockPos pos) {
-                        if (MultipartPipeLike.this.pos().equals(pos)) return MultipartPipeLike.this.getBlockState();
-                        return Blocks.AIR.getDefaultState();
-                    }
-                    @Nullable
-                    @Override
-                    public TileEntity getTileEntity(BlockPos pos) {
-                        if (MultipartPipeLike.this.pos().equals(pos)) return MultipartPipeLike.this.tile();
-                        return null;
-                    }
-                };
-                switch (item.onItemUseFirst(player, dummy, pos(), hand, hit.sideHit, (float) hit.hitVec.x, (float) hit.hitVec.y, (float) hit.hitVec.z)) {
-                    case SUCCESS: return true;
-                    case FAIL: return false;
-                }
-                switch (item.onItemUse(player, dummy, pos(), hand, hit.sideHit, (float) hit.hitVec.x, (float) hit.hitVec.y, (float) hit.hitVec.z)) {
-                    case SUCCESS: return true;
-                    case FAIL: return false;
-                }
-            } catch (Exception e) {}
-        }
-        return false;
     }
 
     @Override
@@ -303,6 +268,7 @@ public class MultipartPipeLike<Q extends Enum<Q> & IBaseProperty & IStringSerial
 
     @Override
     public void onRemoved() {
+        factory.onBreakingTile(this);
         factory.removeFromPipeNet(world(), pos());
     }
 
@@ -410,6 +376,7 @@ public class MultipartPipeLike<Q extends Enum<Q> & IBaseProperty & IStringSerial
     public void readDesc(MCDataInput packet) {
         block = factory.getBlock(Material.MATERIAL_REGISTRY.getObject(packet.readString()));
         baseProperty = packet.readEnum(factory.classBaseProperty);
+        tileProperty = block.getActualProperty(baseProperty);
         color = packet.readInt();
         renderMask = packet.readInt();
         reinitShape();
@@ -428,7 +395,7 @@ public class MultipartPipeLike<Q extends Enum<Q> & IBaseProperty & IStringSerial
 
     public <U> U getCapabilityInternal(@Nonnull Capability<U> capability, @Nullable EnumFacing facing) {
         if (capability == factory.capability) {
-            return factory.capability.cast(getNetworkCapability());//TODO Covers
+            return factory.capability.cast(factory.onGettingNetworkCapability(getNetworkCapability(), facing));//TODO Covers
         }
         return null;
     }
@@ -436,19 +403,7 @@ public class MultipartPipeLike<Q extends Enum<Q> & IBaseProperty & IStringSerial
     @Nullable
     @Override
     public ICapabilityProvider getCapabilityProviderAtSide(@Nonnull EnumFacing facing) {
-        BlockPos.MutableBlockPos pos = BlockPos.PooledMutableBlockPos.retain(pos());
-        pos.move(facing);
-        World world = world();
-        ICapabilityProvider result = world == null ? null : world.getTileEntity(pos);
-        if (result != null && color != factory.getDefaultColor()) {
-            MetaTileEntity mte = BlockMachine.getMetaTileEntity(world, pos);
-            if (mte != null && mte.getPaintingColor() != MetaTileEntity.DEFAULT_PAINTING_COLOR
-                && mte.getPaintingColor() != color) {
-                result = null;
-            }
-        }
-        pos.move(facing.getOpposite());
-        return result;
+        return factory.getCapabilityProviderAtSide(facing, this);
     }
     //////////////////////////////////// RENDER ////////////////////////////////////////////
 
