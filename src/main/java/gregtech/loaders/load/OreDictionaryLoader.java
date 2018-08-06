@@ -12,7 +12,7 @@ import net.minecraft.item.ItemStack;
 import static gregtech.api.GTValues.W;
 
 public class OreDictionaryLoader {
-    
+
     public static void init() {
         GTLog.logger.info("Registering OreDict entries.");
 

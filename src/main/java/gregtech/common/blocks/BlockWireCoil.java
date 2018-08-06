@@ -54,10 +54,10 @@ public class BlockWireCoil extends VariantBlock<BlockWireCoil.CoilType> {
         KANTHAL("kanthal", 2700, 2, 1),
         NICHROME("nichrome", 3600, 4, 1),
         TUNGSTENSTEEL("tungstensteel", 4500, 8, 1),
-        HSS_G("hss_g", 4700, 8, 2),
-        NAQUADAH("naquadah", 5400, 16, 1),
-        NAQUADAH_ALLOY("naquadah_alloy", 7200, 16, 2),
-        SUPERCONDUCTOR("superconductor", 8600, 16, 4),
+        HSS_G("hss_g", 5400, 8, 2),
+        NAQUADAH("naquadah", 7200, 16, 1),
+        NAQUADAH_ALLOY("naquadah_alloy", 8600, 16, 2),
+        SUPERCONDUCTOR("superconductor", 9001, 16, 4),
         FUSION_COIL("fusion_coil", 9700, 16, 8);
 
         private final String name;
