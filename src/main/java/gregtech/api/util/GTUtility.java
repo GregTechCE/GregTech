@@ -98,25 +98,6 @@ public class GTUtility {
         return null;
     }
 
-    public static int[] getIncrementingIntArray(int size) {
-        switch (size) {
-            case  0: return new int[0];
-            case  1: return new int[]{0};
-            case  2: return new int[]{0, 1};
-            case  3: return new int[]{0, 1, 2};
-            case  4: return new int[]{0, 1, 2, 3};
-            case  5: return new int[]{0, 1, 2, 3, 4};
-            case  6: return new int[]{0, 1, 2, 3, 4, 5};
-            case  7: return new int[]{0, 1, 2, 3, 4, 5, 6};
-            case  8: return new int[]{0, 1, 2, 3, 4, 5, 6, 7};
-            case  9: return new int[]{0, 1, 2, 3, 4, 5, 6, 7, 8};
-            case 10: return new int[]{0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
-            default: int[] result = new int[size];
-            for (int i = 0; i < size; i++) result[i] = i;
-            return result;
-        }
-    }
-
     //magic is here
     @SuppressWarnings("unchecked")
     public static <T, R> Class<T> getActualTypeParameter(Class<? extends R> thisClass, Class<R> declaringClass, int index) {
