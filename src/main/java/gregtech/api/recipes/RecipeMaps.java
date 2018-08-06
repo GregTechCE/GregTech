@@ -471,7 +471,7 @@ public class RecipeMaps {
      * </pre>
      */
 
-    @ZenProperty public static final RecipeMap<CrackingRecipeBuilder> CRACKING_RECIPES = new RecipeMap<>("craker", 0, 0, 0, 0, 1, 2, 1, 2, 1, new CrackingRecipeBuilder().notOptimized());
+    @ZenProperty public static final RecipeMap<CrackingRecipeBuilder> CRACKING_RECIPES = new RecipeMap<>("cracker", 0, 0, 0, 0, 1, 2, 1, 2, 1, new CrackingRecipeBuilder().notOptimized());
 
     /**
      * Example:
