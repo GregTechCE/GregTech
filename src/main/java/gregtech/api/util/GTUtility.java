@@ -105,11 +105,33 @@ public class GTUtility {
         return value.compareTo(LONG_MAX) >= 0 ? Long.MAX_VALUE : value.compareTo(LONG_MIN) <= 0 ? Long.MIN_VALUE : value.longValue();
     }
 
+    public static long castedSum(long... values) {
+        if (values.length == 0) return 0L;
+        if (values.length == 1) return values[0];
+        int p = 0;
+        // try combine the values first, in order not to use BigInteger so frequently.
+        for (int i = 1; i < values.length; i++) {
+            if (values[i] == 0L) continue;
+            if ((values[i] > 0 && Long.MAX_VALUE - values[p] >= values[i])
+                || (values[i] < 0 && Long.MIN_VALUE - values[i] <= values[p])) {
+                values[p] += values[i];
+            } else {
+                values[++p] = values[i];
+            }
+        }
+        if (p == 0) return values[0];
+        BigInteger result = BigInteger.ZERO;
+        for (int i = 0; i <= p; i++) {
+            result = result.add(BigInteger.valueOf(values[i]));
+        }
+        return castToLong(result);
+    }
+
     public static BigInteger sum(long... values) {
         if (values.length == 0) return BigInteger.ZERO;
         if (values.length == 1) return BigInteger.valueOf(values[0]);
         int p = 0;
-        // try combine the values first in order not to call BigInteger::add so frequently.
+        // try combine the values first in order not to use BigInteger so frequently.
         for (int i = 1; i < values.length; i++) {
             if (values[i] == 0L) continue;
             if ((values[i] > 0 && Long.MAX_VALUE - values[p] >= values[i])

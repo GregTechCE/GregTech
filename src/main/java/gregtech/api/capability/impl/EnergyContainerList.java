@@ -1,11 +1,15 @@
 package gregtech.api.capability.impl;
 
 import gregtech.api.capability.IEnergyContainer;
-import gregtech.api.util.GTUtility;
 import net.minecraft.util.EnumFacing;
 
 import java.math.BigInteger;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Function;
+import java.util.function.ToLongFunction;
+
+import static gregtech.api.util.GTUtility.*;
 
 public class EnergyContainerList implements IEnergyContainer.IEnergyContainerOverflowSafe {
 
@@ -35,28 +39,59 @@ public class EnergyContainerList implements IEnergyContainer.IEnergyContainerOve
         return energyAdded;
     }
 
-    @Override
-    public BigInteger getEnergyStoredActual() {
-        BigInteger result = GTUtility.sum(energyContainerList.stream()
-            .filter(IEnergyContainer::overflowSafeInSummation)
-            .mapToLong(IEnergyContainer::getEnergyStored)
+    private long getCastedSum(ToLongFunction<IEnergyContainer> toLong, Function<IEnergyContainer, BigInteger> toBigInteger) {
+        List<IEnergyContainer> overflowSafe = new ArrayList<>();
+        List<IEnergyContainer> overflowUnsafe = new ArrayList<>();
+        for (IEnergyContainer energyContainer : energyContainerList) {
+            (energyContainer.isSummationOverflowSafe() ? overflowSafe : overflowUnsafe).add(energyContainer);
+        }
+        long[] values = overflowSafe.stream()
+            .mapToLong(toLong)
+            .toArray();
+        if (overflowUnsafe.isEmpty()) {
+            return castedSum(values);
+        } else {
+            BigInteger result = sum(values);
+            for (IEnergyContainer energyContainer : overflowUnsafe) {
+                result = result.add(toBigInteger.apply(energyContainer));
+            }
+            return castToLong(result);
+        }
+    }
+
+    private BigInteger getActualSum(ToLongFunction<IEnergyContainer> toLong, Function<IEnergyContainer, BigInteger> toBigInteger) {
+        List<IEnergyContainer> overflowSafe = new ArrayList<>();
+        List<IEnergyContainer> overflowUnsafe = new ArrayList<>();
+        for (IEnergyContainer energyContainer : energyContainerList) {
+            (energyContainer.isSummationOverflowSafe() ? overflowSafe : overflowUnsafe).add(energyContainer);
+        }
+        BigInteger result = sum(overflowSafe.stream()
+            .mapToLong(toLong)
             .toArray());
-        for (IEnergyContainer energyContainer : energyContainerList) if (!energyContainer.overflowSafeInSummation()) {
-            result = result.add(energyContainer.getEnergyStoredActual());
+        if (!overflowUnsafe.isEmpty()) for (IEnergyContainer energyContainer : overflowUnsafe) {
+            result = result.add(toBigInteger.apply(energyContainer));
         }
         return result;
     }
 
     @Override
+    public long getEnergyStored() {
+        return getCastedSum(IEnergyContainer::getEnergyStored, IEnergyContainer::getEnergyStoredActual);
+    }
+
+    @Override
+    public BigInteger getEnergyStoredActual() {
+        return getActualSum(IEnergyContainer::getEnergyStored, IEnergyContainer::getEnergyStoredActual);
+    }
+
+    @Override
+    public long getEnergyCapacity() {
+        return getCastedSum(IEnergyContainer::getEnergyCapacity, IEnergyContainer::getEnergyCapacityActual);
+    }
+
+    @Override
     public BigInteger getEnergyCapacityActual() {
-        BigInteger result = GTUtility.sum(energyContainerList.stream()
-            .filter(IEnergyContainer::overflowSafeInSummation)
-            .mapToLong(IEnergyContainer::getEnergyCapacity)
-            .toArray());
-        for (IEnergyContainer energyContainer : energyContainerList) if (!energyContainer.overflowSafeInSummation()) {
-            result = result.add(energyContainer.getEnergyCapacityActual());
-        }
-        return result;
+        return getActualSum(IEnergyContainer::getEnergyCapacity, IEnergyContainer::getEnergyCapacityActual);
     }
 
     @Override

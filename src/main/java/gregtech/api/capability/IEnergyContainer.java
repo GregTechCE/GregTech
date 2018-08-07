@@ -42,7 +42,7 @@ public interface IEnergyContainer {
         }
 
         @Override
-        default boolean overflowSafeInSummation() {
+        default boolean isSummationOverflowSafe() {
             return false;
         }
     }
@@ -123,7 +123,7 @@ public interface IEnergyContainer {
     /**
      * Return true if this container won't overflow when computing {@link #getEnergyStored()} or {@link #getEnergyCapacity()}
      */
-    default boolean overflowSafeInSummation() {
+    default boolean isSummationOverflowSafe() {
         return true;
     }
 

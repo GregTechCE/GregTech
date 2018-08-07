@@ -7,7 +7,6 @@ import gregtech.api.capability.IElectricItem;
 import gregtech.api.capability.IEnergyContainer;
 import gregtech.api.metatileentity.MTETrait;
 import gregtech.api.metatileentity.MetaTileEntity;
-import gregtech.api.util.GTUtility;
 import gregtech.common.ConfigHolder;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -20,6 +19,9 @@ import javax.annotation.Nullable;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.ToLongFunction;
+
+import static gregtech.api.util.GTUtility.*;
 
 public class EnergyContainerBatteryBuffer extends MTETrait implements IEnergyContainer.IEnergyContainerOverflowSafe {
 
@@ -40,7 +42,7 @@ public class EnergyContainerBatteryBuffer extends MTETrait implements IEnergyCon
                 if (ConfigHolder.doExplosions) {
                     metaTileEntity.getWorld().createExplosion(null,
                         pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5,
-                        GTUtility.getTierByVoltage(voltage), true);
+                        getTierByVoltage(voltage), true);
                 }
                 return Math.min(amperage, getInputAmperage());
             }
@@ -96,8 +98,7 @@ public class EnergyContainerBatteryBuffer extends MTETrait implements IEnergyCon
         }
     }
 
-    @Override
-    public BigInteger getEnergyCapacityActual() {
+    private List<IElectricItem> getElectricItems() {
         List<IElectricItem> electricItems = new ArrayList<>();
         IItemHandlerModifiable inventory = getInventory();
         for(int i = 0; i < inventory.getSlots(); i++) {
@@ -105,23 +106,41 @@ public class EnergyContainerBatteryBuffer extends MTETrait implements IEnergyCon
             IElectricItem electricItem = getBatteryContainer(batteryStack);
             if (electricItem != null) electricItems.add(electricItem);
         }
-        return GTUtility.sum(electricItems.stream()
-            .mapToLong(IElectricItem::getMaxCharge)
+        return electricItems;
+    }
+
+    private long getCastedSum(ToLongFunction<IElectricItem> toLong) {
+        return castedSum(getElectricItems().stream()
+            .mapToLong(toLong)
             .toArray());
+    }
+
+    private BigInteger getActualSum(ToLongFunction<IElectricItem> toLong) {
+        return sum(getElectricItems().stream()
+            .mapToLong(toLong)
+            .toArray());
+    }
+
+    private final ToLongFunction<IElectricItem> getEnergyStored = electricItem -> electricItem.discharge(Long.MAX_VALUE, getTier(), true, true, true);
+
+    @Override
+    public long getEnergyCapacity() {
+        return getCastedSum(IElectricItem::getMaxCharge);
+    }
+
+    @Override
+    public BigInteger getEnergyCapacityActual() {
+        return getActualSum(IElectricItem::getMaxCharge);
+    }
+
+    @Override
+    public long getEnergyStored() {
+        return getCastedSum(getEnergyStored);
     }
 
     @Override
     public BigInteger getEnergyStoredActual() {
-        List<IElectricItem> electricItems = new ArrayList<>();
-        IItemHandlerModifiable inventory = getInventory();
-        for(int i = 0; i < inventory.getSlots(); i++) {
-            ItemStack batteryStack = inventory.getStackInSlot(i);
-            IElectricItem electricItem = getBatteryContainer(batteryStack);
-            if (electricItem != null) electricItems.add(electricItem);
-        }
-        return GTUtility.sum(electricItems.stream()
-            .mapToLong(electricItem -> electricItem.discharge(Long.MAX_VALUE, getTier(), true, true, true))
-            .toArray());
+        return getActualSum(getEnergyStored);
     }
 
     @Override
