@@ -5,6 +5,8 @@ import io.netty.buffer.ByteBuf;
 import mcjty.theoneprobe.api.IElement;
 import mcjty.theoneprobe.network.NetworkTools;
 
+import static gregtech.integration.theoneprobe.element.ElementRenders.*;
+
 /**
  * Advanced version of {@link mcjty.theoneprobe.apiimpl.elements.ElementText}
  * Use "{*key{%replacement1%}{%replacement2%}...{%replacementN%}*}"
@@ -28,12 +30,12 @@ public class ElementTextAdvanced implements IElement {
 
     @Override
     public void render(int x, int y) {
-        ElementRenders.renderTextAdvanced(text, x, y);
+        renderTextAdvanced(text, x, y);
     }
 
     @Override
     public int getWidth() {
-        return ElementRenders.getWidthTextAdvanced(text);
+        return getStringWidth(stylifyStringAdvanced(text));
     }
 
     @Override

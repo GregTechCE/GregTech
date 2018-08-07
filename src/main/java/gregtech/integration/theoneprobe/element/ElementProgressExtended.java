@@ -13,6 +13,8 @@ import java.util.Objects;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
 
+import static gregtech.integration.theoneprobe.element.ElementRenders.*;
+
 public class ElementProgressExtended implements IElement {
 
     private enum NumberType {
@@ -148,12 +150,12 @@ public class ElementProgressExtended implements IElement {
 
     @Override
     public void render(int x, int y) {
-        ElementRenders.render(style, current, max, format1, format2, infixWithFormat, x, y, getWidth(), getHeight());
+        renderProgress(style, current, max, format1, format2, infixWithFormat, x, y, getWidth(), getHeight());
     }
 
     @Override
     public int getWidth() {
-        return style.getWidth();
+        return Math.max(style.getWidth(), 3 + getStringWidth(getProgressText(current, max, format1, format2, infixWithFormat, style)));
     }
 
     @Override
