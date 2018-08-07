@@ -192,7 +192,7 @@ public class EnergyContainerHandler extends MTETrait implements IEnergyContainer
     @Override
     public long addEnergy(long energyToAdd) {
         long oldEnergyStored = getEnergyStored();
-        long newEnergyStored = maxCapacity - oldEnergyStored < energyToAdd ? maxCapacity : oldEnergyStored + energyToAdd;
+        long newEnergyStored = (maxCapacity - oldEnergyStored < energyToAdd) ? maxCapacity : (oldEnergyStored + energyToAdd);
         if(newEnergyStored < 0)
             newEnergyStored = 0;
         setEnergyStored(newEnergyStored);
