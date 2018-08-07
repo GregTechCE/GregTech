@@ -403,7 +403,7 @@ public abstract class PipeFactory<Q extends Enum<Q> & IBaseProperty & IStringSer
     public ICapabilityProvider getCapabilityProviderAtSide(@Nonnull EnumFacing facing, ITilePipeLike<?, ?> tile) {
         World world = tile.getTileWorld();
         int color = tile.getColor();
-        BlockPos.PooledMutableBlockPos pos = BlockPos.PooledMutableBlockPos.retain(tile.getTilePos()).move(facing);
+        BlockPos.PooledMutableBlockPos pos = BlockPos.PooledMutableBlockPos.retain().setPos(tile.getTilePos()).move(facing);
         ICapabilityProvider result = world == null ? null : world.getTileEntity(pos);
         if (result != null && color != getDefaultColor()) {
             MetaTileEntity mte = BlockMachine.getMetaTileEntity(world, pos);
