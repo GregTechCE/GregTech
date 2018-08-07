@@ -38,10 +38,10 @@ public class EnergyContainerList implements IEnergyContainer.IEnergyContainerOve
     @Override
     public BigInteger getEnergyStoredActual() {
         BigInteger result = GTUtility.sum(energyContainerList.stream()
-            .filter(IEnergyContainer::noLongOverflowInSummation)
+            .filter(IEnergyContainer::overflowSafeInSummation)
             .mapToLong(IEnergyContainer::getEnergyStored)
             .toArray());
-        for (IEnergyContainer energyContainer : energyContainerList) if (!energyContainer.noLongOverflowInSummation()) {
+        for (IEnergyContainer energyContainer : energyContainerList) if (!energyContainer.overflowSafeInSummation()) {
             result = result.add(energyContainer.getEnergyStoredActual());
         }
         return result;
@@ -50,10 +50,10 @@ public class EnergyContainerList implements IEnergyContainer.IEnergyContainerOve
     @Override
     public BigInteger getEnergyCapacityActual() {
         BigInteger result = GTUtility.sum(energyContainerList.stream()
-            .filter(IEnergyContainer::noLongOverflowInSummation)
+            .filter(IEnergyContainer::overflowSafeInSummation)
             .mapToLong(IEnergyContainer::getEnergyCapacity)
             .toArray());
-        for (IEnergyContainer energyContainer : energyContainerList) if (!energyContainer.noLongOverflowInSummation()) {
+        for (IEnergyContainer energyContainer : energyContainerList) if (!energyContainer.overflowSafeInSummation()) {
             result = result.add(energyContainer.getEnergyCapacityActual());
         }
         return result;

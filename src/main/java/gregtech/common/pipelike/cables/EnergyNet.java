@@ -71,7 +71,7 @@ public class EnergyNet extends PipeNet<Insulation, WireProperties, IEnergyContai
         statistics.remove(pos);
     }
 
-    public long acceptEnergy(CableEnergyContainer energyContainer, long voltage, long amperage, EnumFacing side) {
+    public long acceptEnergy(CableEnergyContainer energyContainer, long voltage, long amperage, EnumFacing ignoredFacing) {
         if (energyContainer.pathsCache == null || energyContainer.lastCachedPathsTime < lastUpdate) {
             energyContainer.lastCachedPathsTime = lastUpdate;
             energyContainer.lastWeakUpdate = lastWeakUpdate;
@@ -84,7 +84,7 @@ public class EnergyNet extends PipeNet<Insulation, WireProperties, IEnergyContai
         long amperesUsed = 0L;
         for (RoutePath<WireProperties, ?, Long> path : energyContainer.pathsCache) {
             if (path.getAccumulatedVal() >= voltage) continue; //do not emit if loss is too high
-            amperesUsed += dispatchEnergyToNode(path, voltage, amperage - amperesUsed, side);
+            amperesUsed += dispatchEnergyToNode(path, voltage, amperage - amperesUsed, ignoredFacing);
             if (amperesUsed == amperage) break; //do not continue if all amperes are exhausted
         }
         return amperesUsed;
@@ -94,7 +94,7 @@ public class EnergyNet extends PipeNet<Insulation, WireProperties, IEnergyContai
         long amperesUsed = 0L;
         Node<WireProperties> destination = path.getEndNode();
         int tileMask = destination.getActiveMask();
-        if (ignoredFacing != null && destination.equals(path.getStartNode())) tileMask &= ~(1 << ignoredFacing.getOpposite().getIndex());
+        if (ignoredFacing != null && destination.equals(path.getStartNode())) tileMask &= ~(1 << ignoredFacing.getIndex());
         BlockPos.PooledMutableBlockPos pos = BlockPos.PooledMutableBlockPos.retain();
         World world = worldNets.getWorld();
         int[] indices = {0, 1, 2, 3, 4, 5};
