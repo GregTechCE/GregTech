@@ -15,8 +15,8 @@ import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.Map;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class EnergyNet extends PipeNet<Insulation, WireProperties, IEnergyContainer> {
@@ -32,9 +32,14 @@ public class EnergyNet extends PipeNet<Insulation, WireProperties, IEnergyContai
     @Override
     protected void onPreTick(long tickTimer) {
         if (!worldNets.getWorld().isRemote) {
-            statistics.forEach((pos, stat) -> stat.addData(tickCount.get(pos)));
-            tickCount.forEach((pos, data) -> statistics.computeIfAbsent(pos, p -> Statistics.create(data)));
-            statistics.entrySet().removeIf(e -> e.getValue().isEmpty());
+            if (!statistics.isEmpty()) {
+                for (Iterator<Map.Entry<BlockPos, Statistics>> itr = statistics.entrySet().iterator(); itr.hasNext();) {
+                    Map.Entry<BlockPos, Statistics> e = itr.next();
+                    Statistics stat = e.getValue();
+                    stat.addData(tickCount.get(e.getKey()));
+                    if (stat.isRemovable()) itr.remove();
+                }
+            }
         }
         tickCount.clear();
     }
@@ -126,39 +131,33 @@ public class EnergyNet extends PipeNet<Insulation, WireProperties, IEnergyContai
 
     private void onEnergyPacket(Node<WireProperties> node, long voltage, long amperage) {
         WireProperties prop = node.property;
-        EnergyPacket packet = tickCount.compute(node, (pos, ePacket) -> ePacket == null ? EnergyPacket.create(amperage, voltage) : ePacket.accumulate(amperage, voltage));
-        if (packet.overflowed || voltage > prop.getVoltage() || packet.amperage > prop.getAmperage()) burntBlock.add(node);
+        long amp = tickCount.compute(node, (pos, ePacket) -> ePacket == null ? EnergyPacket.create(amperage, voltage) : ePacket.accumulate(amperage, voltage)).amperage;
+        if (voltage > prop.getVoltage() || amp > prop.getAmperage()) burntBlock.add(node);
     }
 
-    // amperage, energy, count
+    // amperage, energy
     public double[] getStatisticData(BlockPos pos) {
-        return Optional.ofNullable(statistics.get(pos)).map(Statistics::getData).orElse(NO_DATA);
+        return statistics.computeIfAbsent(pos, p -> new Statistics()).getData();
     }
 
     public static final int STATISTIC_COUNT = 20;
 
     public static class EnergyPacket {
         public long amperage;
-        public long energy;
-        boolean overflowed = false;
+        public double energy;
 
-        EnergyPacket(long amperage, long energy) {
+        EnergyPacket(long amperage, double energy) {
             this.amperage = amperage;
             this.energy = energy;
         }
 
         static EnergyPacket create(long amperage, long voltage) {
-            EnergyPacket packet = new EnergyPacket(amperage, amperage * voltage);
-            packet.overflowed = Long.MAX_VALUE / voltage < amperage;
-            return packet;
+            return new EnergyPacket(amperage, (double) amperage * (double) voltage);
         }
 
         EnergyPacket accumulate(long amperage, long voltage) {
             this.amperage += amperage;
-            overflowed = Long.MAX_VALUE / voltage < amperage;
-            long energy = amperage * voltage;
-            overflowed |= Long.MAX_VALUE - voltage < energy;
-            this.energy += energy;
+            this.energy += (double) amperage * (double) voltage;
             return this;
         }
     }
@@ -167,41 +166,39 @@ public class EnergyNet extends PipeNet<Insulation, WireProperties, IEnergyContai
 
     static class Statistics {
         long[] amperes = new long[STATISTIC_COUNT];
-        long[] energies = new long[STATISTIC_COUNT];
+        double[] energies = new double[STATISTIC_COUNT];
         int pointer = 0;
-        int count = 0;
+        int dataCount = 0;
+        int countDown = STATISTIC_COUNT * 5;
 
-        static Statistics create(EnergyPacket data) {
-            return new Statistics().addData(data);
-        }
-
-        public Statistics addData(EnergyPacket data) {
-            if (data != null && (data.amperage != 0 || data.energy != 0)) {
+        Statistics addData(EnergyPacket data) {
+            if (data != null) {
                 amperes[pointer] = data.amperage;
                 energies[pointer] = data.energy;
-                if (count < STATISTIC_COUNT) count++;
             } else {
                 amperes[pointer] = 0;
                 energies[pointer] = 0;
-                if (count > 0) count--;
             }
             pointer++;
             if (pointer >= STATISTIC_COUNT) pointer -= STATISTIC_COUNT;
+            if (dataCount < STATISTIC_COUNT) dataCount++;
+            if (countDown > 0) --countDown;
             return this;
         }
 
-        public boolean isEmpty() {
-            return count == 0;
+        boolean isRemovable() {
+            return countDown == 0;
         }
 
-        public double[] getData() {
-            if (count == 0) return NO_DATA;
+        double[] getData() {
+            if (dataCount == 0) return NO_DATA;
             double amperage = 0.0, energy = 0.0;
             for (int i = 0; i < STATISTIC_COUNT; i++) {
                 amperage += amperes[i];
                 energy += energies[i];
             }
-            return new double[]{amperage / STATISTIC_COUNT, energy / amperage};
+            countDown = STATISTIC_COUNT * 5;
+            return new double[]{amperage / dataCount, energy / amperage};
         }
     }
 }

@@ -72,12 +72,12 @@ public interface IEnergyContainer {
     }
 
     /**
-     * Gets the stored electric energy, casted to the max/min value of long if overflowed
+     * Gets the stored electric energy, casted to {@link Long#MAX_VALUE} if overflowed
      */
     long getEnergyStored();
 
     /**
-     * Gets the largest electric energy capacity, casted to the max/min value of long if overflowed
+     * Gets the largest electric energy capacity, casted to {@link Long#MAX_VALUE} if overflowed
      */
     long getEnergyCapacity();
 
