@@ -33,7 +33,7 @@ public class EnergyContainerBatteryBuffer extends MTETrait implements IEnergyCon
     @Override
     public long acceptEnergyFromNetwork(EnumFacing side, long voltage, long amperage) {
         long initialAmperage = amperage;
-        if(inputsEnergy(side) || side == null) {
+        if(side == null || inputsEnergy(side)) {
             if (voltage > getInputVoltage()) {
                 BlockPos pos = metaTileEntity.getPos();
                 metaTileEntity.getWorld().setBlockToAir(pos);
@@ -107,7 +107,7 @@ public class EnergyContainerBatteryBuffer extends MTETrait implements IEnergyCon
         }
         return GTUtility.sum(electricItems.stream()
             .mapToLong(IElectricItem::getMaxCharge)
-            .sorted().toArray());
+            .toArray());
     }
 
     @Override
@@ -121,7 +121,7 @@ public class EnergyContainerBatteryBuffer extends MTETrait implements IEnergyCon
         }
         return GTUtility.sum(electricItems.stream()
             .mapToLong(electricItem -> electricItem.discharge(Long.MAX_VALUE, getTier(), true, true, true))
-            .sorted().toArray());
+            .toArray());
     }
 
     @Override

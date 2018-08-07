@@ -72,16 +72,16 @@ public class ElectricContainerInfoProvider extends CapabilityInfoProvider<IEnerg
     @Override
     protected void addProbeInfo(IEnergyContainer capability, IProbeInfo probeInfo, TileEntity tileEntity, EnumFacing sideHit) {
         if (capability instanceof CableEnergyContainer) {
-            long[] data = ((CableEnergyContainer) capability).getAverageData();
+            double[] data = ((CableEnergyContainer) capability).getAverageData();
             long amperage = capability.getInputAmperage();
             long voltage = capability.getInputVoltage();
             if (data[0] == 0 || amperage == 0 || voltage == 0) return;
             IProbeInfo horizontalPane = probeInfo.horizontal(probeInfo.defaultLayoutStyle().alignment(ElementAlignment.ALIGN_CENTER));
             horizontalPane.element(new ElementTextAdvanced(TextStyleClass.INFO + "{*gregtech.top.cable_average_voltage{%"+ EnergyNet.STATISTIC_COUNT +"%}*} "));
-            setCableProgressBar(probeInfo, horizontalPane, (double) data[1] / (double) data[0], voltage, "%s / %s V", 5.0, 100.0);
+            setCableProgressBar(probeInfo, horizontalPane, data[1], voltage, "%s / %s V", 5.0, 100.0);
             horizontalPane = probeInfo.horizontal(probeInfo.defaultLayoutStyle().alignment(ElementAlignment.ALIGN_CENTER));
             horizontalPane.element(new ElementTextAdvanced(TextStyleClass.INFO + "{*gregtech.top.cable_average_amperage{%"+ EnergyNet.STATISTIC_COUNT +"%}*} "));
-            setCableProgressBar(probeInfo, horizontalPane, (double) data[0] / (double) EnergyNet.STATISTIC_COUNT, amperage, "%s / %s A", 3.0, 30.0);
+            setCableProgressBar(probeInfo, horizontalPane, data[0], amperage, "%s / %s A", 3.0, 30.0);
         } else {
             BigInteger energyStored = capability.getEnergyStoredActual();
             BigInteger maxStorage = capability.getEnergyCapacityActual();

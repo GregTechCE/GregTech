@@ -17,7 +17,12 @@ public class EnergyContainerList implements IEnergyContainer.IEnergyContainerOve
 
     @Override
     public long acceptEnergyFromNetwork(EnumFacing side, long voltage, long amperage) {
-        return (long) Math.floor(addEnergy(voltage * amperage) / (voltage * 1.0));
+        long amperesUsed = 0L;
+        for (IEnergyContainer energyContainer : energyContainerList) {
+            amperesUsed += energyContainer.acceptEnergyFromNetwork(null, voltage, amperage);
+            if (amperage == amperesUsed) break;
+        }
+        return amperesUsed;
     }
 
     @Override
@@ -35,7 +40,7 @@ public class EnergyContainerList implements IEnergyContainer.IEnergyContainerOve
         BigInteger result = GTUtility.sum(energyContainerList.stream()
             .filter(IEnergyContainer::noLongOverflowInSummation)
             .mapToLong(IEnergyContainer::getEnergyStored)
-            .sorted().toArray());
+            .toArray());
         for (IEnergyContainer energyContainer : energyContainerList) if (!energyContainer.noLongOverflowInSummation()) {
             result = result.add(energyContainer.getEnergyStoredActual());
         }
@@ -47,7 +52,7 @@ public class EnergyContainerList implements IEnergyContainer.IEnergyContainerOve
         BigInteger result = GTUtility.sum(energyContainerList.stream()
             .filter(IEnergyContainer::noLongOverflowInSummation)
             .mapToLong(IEnergyContainer::getEnergyCapacity)
-            .sorted().toArray());
+            .toArray());
         for (IEnergyContainer energyContainer : energyContainerList) if (!energyContainer.noLongOverflowInSummation()) {
             result = result.add(energyContainer.getEnergyCapacityActual());
         }

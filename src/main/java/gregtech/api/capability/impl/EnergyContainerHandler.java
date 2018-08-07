@@ -154,7 +154,7 @@ public class EnergyContainerHandler extends MTETrait implements IEnergyContainer
     @Override
     public long acceptEnergyFromNetwork(EnumFacing side, long voltage, long amperage) {
         long canAccept = getEnergyCapacity() - getEnergyStored();
-        if(inputsEnergy(side) || side == null) {
+        if(side == null || inputsEnergy(side)) {
             if(voltage > getInputVoltage()) {
                 BlockPos pos = metaTileEntity.getPos();
                 metaTileEntity.getWorld().setBlockToAir(pos);
@@ -192,10 +192,8 @@ public class EnergyContainerHandler extends MTETrait implements IEnergyContainer
     @Override
     public long addEnergy(long energyToAdd) {
         long oldEnergyStored = getEnergyStored();
-        long newEnergyStored = oldEnergyStored + energyToAdd;
-        if(newEnergyStored > getEnergyCapacity())
-            newEnergyStored = getEnergyCapacity();
-        else if(newEnergyStored < 0)
+        long newEnergyStored = maxCapacity - oldEnergyStored < energyToAdd ? maxCapacity : oldEnergyStored + energyToAdd;
+        if(newEnergyStored < 0)
             newEnergyStored = 0;
         setEnergyStored(newEnergyStored);
         return newEnergyStored - oldEnergyStored;

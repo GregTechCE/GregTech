@@ -126,12 +126,12 @@ public class EnergyNet extends PipeNet<Insulation, WireProperties, IEnergyContai
 
     private void onEnergyPacket(Node<WireProperties> node, long voltage, long amperage) {
         WireProperties prop = node.property;
-        long amp = tickCount.compute(node, (pos, ePacket) -> ePacket == null ? EnergyPacket.create(amperage, voltage) : ePacket.accumulate(amperage, voltage)).amperage;
-        if (voltage > prop.getVoltage() || amp > prop.getAmperage()) burntBlock.add(node);
+        EnergyPacket packet = tickCount.compute(node, (pos, ePacket) -> ePacket == null ? EnergyPacket.create(amperage, voltage) : ePacket.accumulate(amperage, voltage));
+        if (packet.overflowed || voltage > prop.getVoltage() || packet.amperage > prop.getAmperage()) burntBlock.add(node);
     }
 
     // amperage, energy, count
-    public long[] getStatisticData(BlockPos pos) {
+    public double[] getStatisticData(BlockPos pos) {
         return Optional.ofNullable(statistics.get(pos)).map(Statistics::getData).orElse(NO_DATA);
     }
 
@@ -140,6 +140,7 @@ public class EnergyNet extends PipeNet<Insulation, WireProperties, IEnergyContai
     public static class EnergyPacket {
         public long amperage;
         public long energy;
+        boolean overflowed = false;
 
         EnergyPacket(long amperage, long energy) {
             this.amperage = amperage;
@@ -147,17 +148,22 @@ public class EnergyNet extends PipeNet<Insulation, WireProperties, IEnergyContai
         }
 
         static EnergyPacket create(long amperage, long voltage) {
-            return new EnergyPacket(amperage, amperage * voltage);
+            EnergyPacket packet = new EnergyPacket(amperage, amperage * voltage);
+            packet.overflowed = Long.MAX_VALUE / voltage < amperage;
+            return packet;
         }
 
         EnergyPacket accumulate(long amperage, long voltage) {
             this.amperage += amperage;
-            this.energy += amperage * voltage;
+            overflowed = Long.MAX_VALUE / voltage < amperage;
+            long energy = amperage * voltage;
+            overflowed |= Long.MAX_VALUE - voltage < energy;
+            this.energy += energy;
             return this;
         }
     }
 
-    public static final long[] NO_DATA = {0L, 0L};
+    public static final double[] NO_DATA = {0.0, 0.0};
 
     static class Statistics {
         long[] amperes = new long[STATISTIC_COUNT];
@@ -188,14 +194,14 @@ public class EnergyNet extends PipeNet<Insulation, WireProperties, IEnergyContai
             return count == 0;
         }
 
-        public long[] getData() {
+        public double[] getData() {
             if (count == 0) return NO_DATA;
-            long amperage = 0, energy = 0;
+            double amperage = 0.0, energy = 0.0;
             for (int i = 0; i < STATISTIC_COUNT; i++) {
                 amperage += amperes[i];
                 energy += energies[i];
             }
-            return new long[]{amperage, energy};
+            return new double[]{amperage / STATISTIC_COUNT, energy / amperage};
         }
     }
 }
