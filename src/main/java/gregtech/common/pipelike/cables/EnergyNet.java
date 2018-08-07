@@ -157,7 +157,7 @@ public class EnergyNet extends PipeNet<Insulation, WireProperties, IEnergyContai
         }
     }
 
-    public static final long[] NO_DATA = {0L, 0L, 0L};
+    public static final long[] NO_DATA = {0L, 0L};
 
     static class Statistics {
         long[] amperes = new long[STATISTIC_COUNT];
@@ -195,7 +195,7 @@ public class EnergyNet extends PipeNet<Insulation, WireProperties, IEnergyContai
                 amperage += amperes[i];
                 energy += energies[i];
             }
-            return new long[]{amperage, energy, count};
+            return new long[]{amperage, energy};
         }
     }
 }

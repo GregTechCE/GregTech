@@ -17,8 +17,11 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.items.IItemHandlerModifiable;
 
 import javax.annotation.Nullable;
+import java.math.BigInteger;
+import java.util.ArrayList;
+import java.util.List;
 
-public class EnergyContainerBatteryBuffer extends MTETrait implements IEnergyContainer {
+public class EnergyContainerBatteryBuffer extends MTETrait implements IEnergyContainer.IEnergyContainerOverflowSafe {
 
     private final int tier;
 
@@ -94,29 +97,31 @@ public class EnergyContainerBatteryBuffer extends MTETrait implements IEnergyCon
     }
 
     @Override
-    public long getEnergyCapacity() {
-        long finalCapacity = 0L;
+    public BigInteger getEnergyCapacityActual() {
+        List<IElectricItem> electricItems = new ArrayList<>();
         IItemHandlerModifiable inventory = getInventory();
         for(int i = 0; i < inventory.getSlots(); i++) {
             ItemStack batteryStack = inventory.getStackInSlot(i);
             IElectricItem electricItem = getBatteryContainer(batteryStack);
-            if(electricItem == null) continue;
-            finalCapacity += electricItem.getMaxCharge();
+            if (electricItem != null) electricItems.add(electricItem);
         }
-        return finalCapacity;
+        return GTUtility.sum(electricItems.stream()
+            .mapToLong(IElectricItem::getMaxCharge)
+            .sorted().toArray());
     }
 
     @Override
-    public long getEnergyStored() {
-        long energyStored = 0L;
+    public BigInteger getEnergyStoredActual() {
+        List<IElectricItem> electricItems = new ArrayList<>();
         IItemHandlerModifiable inventory = getInventory();
         for(int i = 0; i < inventory.getSlots(); i++) {
             ItemStack batteryStack = inventory.getStackInSlot(i);
             IElectricItem electricItem = getBatteryContainer(batteryStack);
-            if(electricItem == null) continue;
-            energyStored += electricItem.discharge(Long.MAX_VALUE, getTier(), true, true, true);
+            if (electricItem != null) electricItems.add(electricItem);
         }
-        return energyStored;
+        return GTUtility.sum(electricItems.stream()
+            .mapToLong(electricItem -> electricItem.discharge(Long.MAX_VALUE, getTier(), true, true, true))
+            .sorted().toArray());
     }
 
     @Override

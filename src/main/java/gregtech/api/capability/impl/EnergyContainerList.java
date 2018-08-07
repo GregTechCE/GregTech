@@ -1,11 +1,13 @@
 package gregtech.api.capability.impl;
 
 import gregtech.api.capability.IEnergyContainer;
+import gregtech.api.util.GTUtility;
 import net.minecraft.util.EnumFacing;
 
+import java.math.BigInteger;
 import java.util.List;
 
-public class EnergyContainerList implements IEnergyContainer {
+public class EnergyContainerList implements IEnergyContainer.IEnergyContainerOverflowSafe {
 
     private List<IEnergyContainer> energyContainerList;
 
@@ -29,17 +31,27 @@ public class EnergyContainerList implements IEnergyContainer {
     }
 
     @Override
-    public long getEnergyStored() {
-        return energyContainerList.stream()
+    public BigInteger getEnergyStoredActual() {
+        BigInteger result = GTUtility.sum(energyContainerList.stream()
+            .filter(IEnergyContainer::noLongOverflowInSummation)
             .mapToLong(IEnergyContainer::getEnergyStored)
-            .sum();
+            .sorted().toArray());
+        for (IEnergyContainer energyContainer : energyContainerList) if (!energyContainer.noLongOverflowInSummation()) {
+            result = result.add(energyContainer.getEnergyStoredActual());
+        }
+        return result;
     }
 
     @Override
-    public long getEnergyCapacity() {
-        return energyContainerList.stream()
+    public BigInteger getEnergyCapacityActual() {
+        BigInteger result = GTUtility.sum(energyContainerList.stream()
+            .filter(IEnergyContainer::noLongOverflowInSummation)
             .mapToLong(IEnergyContainer::getEnergyCapacity)
-            .sum();
+            .sorted().toArray());
+        for (IEnergyContainer energyContainer : energyContainerList) if (!energyContainer.noLongOverflowInSummation()) {
+            result = result.add(energyContainer.getEnergyCapacityActual());
+        }
+        return result;
     }
 
     @Override

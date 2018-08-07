@@ -4,7 +4,48 @@ import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityInject;
 
+import java.math.BigInteger;
+
+import static gregtech.api.util.GTUtility.castToLong;
+
 public interface IEnergyContainer {
+
+    /**
+     * Use this in case of overflow
+     */
+    interface IEnergyContainerOverflowSafe extends IEnergyContainer {
+
+        @Override
+        BigInteger getEnergyStoredActual();
+
+        @Override
+        BigInteger getEnergyCapacityActual();
+
+        @Override
+        default long getEnergyStored() {
+            return castToLong(getEnergyStoredActual());
+        }
+
+        @Override
+        default long getEnergyCapacity() {
+            return castToLong(getEnergyCapacityActual());
+        }
+
+        @Override
+        default boolean canUse(long energy) {
+            return getEnergyStoredActual().compareTo(BigInteger.valueOf(energy)) >= 0;
+        }
+
+        @Override
+        default long getEnergyCanBeInserted() {
+            return castToLong(getEnergyCapacityActual().subtract(getEnergyStoredActual()));
+        }
+
+        @Override
+        default boolean noLongOverflowInSummation() {
+            return false;
+        }
+    }
 
     @CapabilityInject(IEnergyContainer.class)
     Capability<IEnergyContainer> CAPABILITY_ENERGY_CONTAINER = null;
@@ -31,14 +72,28 @@ public interface IEnergyContainer {
     }
 
     /**
-     * Gets the stored electric energy
+     * Gets the stored electric energy, casted to the max/min value of long if overflowed
      */
     long getEnergyStored();
 
     /**
-     * Gets the largest electric energy capacity
+     * Gets the largest electric energy capacity, casted to the max/min value of long if overflowed
      */
     long getEnergyCapacity();
+
+    /**
+     * Gets the actual stored electric energy, in case of overflow
+     */
+    default BigInteger getEnergyStoredActual() {
+        return BigInteger.valueOf(getEnergyStored());
+    }
+
+    /**
+     * Gets the largest electric energy capacity, in case of overflow
+     */
+    default BigInteger getEnergyCapacityActual() {
+        return BigInteger.valueOf(getEnergyCapacity());
+    }
 
     /**
      * Gets the amount of energy packets per tick.
@@ -64,5 +119,12 @@ public interface IEnergyContainer {
      * Overflowing this value will explode machine.
      */
     long getInputVoltage();
+
+    /**
+     * Return true if this container won't overflow when computing {@link #getEnergyStored()} or {@link #getEnergyCapacity()}
+     */
+    default boolean noLongOverflowInSummation() {
+        return true;
+    }
 
 }
