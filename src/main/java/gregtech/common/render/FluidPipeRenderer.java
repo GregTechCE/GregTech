@@ -5,8 +5,8 @@ import codechicken.lib.render.pipeline.ColourMultiplier;
 import codechicken.lib.render.pipeline.IVertexOperation;
 import codechicken.lib.vec.Cuboid6;
 import codechicken.lib.vec.uv.IconTransformation;
+import com.google.common.collect.Maps;
 import gregtech.api.GTValues;
-import gregtech.api.pipelike.BlockPipeLike;
 import gregtech.api.pipelike.PipeFactory;
 import gregtech.api.render.PipeLikeRenderer;
 import gregtech.api.unification.material.MaterialIconSet;
@@ -14,8 +14,8 @@ import gregtech.api.unification.material.MaterialIconType;
 import gregtech.api.unification.material.type.Material;
 import gregtech.api.util.GTLog;
 import gregtech.api.util.GTUtility;
-import gregtech.common.pipelike.cables.CableFactory;
-import gregtech.common.pipelike.cables.Insulation;
+import gregtech.common.pipelike.fluidpipes.FluidPipeFactory;
+import gregtech.common.pipelike.fluidpipes.TypeFluidPipe;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureMap;
@@ -31,81 +31,82 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import org.apache.commons.lang3.ArrayUtils;
 
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
 import static gregtech.api.pipelike.PipeFactory.MASK_FORMAL_CONNECTION;
 import static gregtech.api.pipelike.PipeFactory.MASK_RENDER_SIDE;
+import static gregtech.common.pipelike.fluidpipes.FluidPipeFactory.MASK_RENDER_EXPOSED;
 
 @SideOnly(Side.CLIENT)
-public class CableRenderer extends PipeLikeRenderer<Insulation> {
+public class FluidPipeRenderer extends PipeLikeRenderer<TypeFluidPipe> {
 
-    public static CableRenderer INSTANCE = new CableRenderer();
+    public static FluidPipeRenderer INSTANCE = new FluidPipeRenderer();
 
-    private TextureAtlasSprite[] insulationTextures = new TextureAtlasSprite[6];
-    private Map<MaterialIconSet, TextureAtlasSprite> wireTextures = new HashMap<>();
+    private TextureAtlasSprite pipeTextures;
+    private Map<MaterialIconSet, TextureAtlasSprite[]> fluidPipeTextures = Maps.newHashMap();
 
-    private CableRenderer() {
-        super(CableFactory.INSTANCE);
+    private FluidPipeRenderer() {
+        super(FluidPipeFactory.INSTANCE);
     }
 
     @Override
-    public void registerIcons(TextureMap map) {
-        GTLog.logger.info("Registering cable textures.");
-        for(int i = 0; i < insulationTextures.length; i++) {
-            ResourceLocation location = new ResourceLocation(GTValues.MODID, "blocks/insulation/insulation_" + i);
-            this.insulationTextures[i] = map.registerSprite(location);
-        }
+    protected void registerIcons(TextureMap map) {
+        GTLog.logger.info("Registering fluid pipe textures.");
+        pipeTextures = map.registerSprite(new ResourceLocation(GTValues.MODID, "blocks/pipe/pipe_center"));
         for(MaterialIconSet iconSet : generatedSets) {
-            ResourceLocation location = MaterialIconType.wire.getBlockPath(iconSet);
-            this.wireTextures.put(iconSet, map.registerSprite(location));
+            TextureAtlasSprite[] textures = new TextureAtlasSprite[9];
+            textures[0] = map.registerSprite(MaterialIconType.pipeTiny.getBlockPath(iconSet));
+            textures[1] = map.registerSprite(MaterialIconType.pipeSmall.getBlockPath(iconSet));
+            textures[2] = map.registerSprite(MaterialIconType.pipeMedium.getBlockPath(iconSet));
+            textures[3] = map.registerSprite(MaterialIconType.pipeLarge.getBlockPath(iconSet));
+            textures[4] = map.registerSprite(MaterialIconType.pipeHuge.getBlockPath(iconSet));
+            textures[5] = map.registerSprite(MaterialIconType.pipeQuadruple.getBlockPath(iconSet));
+            textures[6] = map.registerSprite(MaterialIconType.pipeNonuple.getBlockPath(iconSet));
+            textures[7] = map.registerSprite(MaterialIconType.pipeSexdecuple.getBlockPath(iconSet));
+            textures[8] = map.registerSprite(MaterialIconType.pipeSide.getBlockPath(iconSet));
+            this.fluidPipeTextures.put(iconSet, textures);
         }
     }
 
     @SubscribeEvent
     public void onModelsBake(ModelBakeEvent event) {
-        GTLog.logger.info("Injected cable render model");
+        GTLog.logger.info("Injected fluid pipe render model");
         event.getModelRegistry().putObject(MODEL_LOCATION, this);
     }
 
     @Override
     public Set<TextureAtlasSprite> getDestroyEffects(IBlockState state, IBlockAccess world, BlockPos pos) {
-        BlockPipeLike<Insulation, ?, ?> block = getBlock(state);
-        return Collections.singleton(state.getValue(block.getBaseProperty()).isColorable() ? insulationTextures[5] : wireTextures.get(block.material.materialIconSet));
+        return Collections.singleton(fluidPipeTextures.get(getBlock(state).material.materialIconSet)[8]);
     }
 
     @Override
     protected int getDestoryEffectColor(IBlockState state, World world, BlockPos pos) {
-        BlockPipeLike<Insulation, ?, ?> block = getBlock(state);
-        return state.getValue(block.getBaseProperty()).isColorable() ? 0x999999 : factory.getMaterialColorForRender(block.material);
+        return factory.getMaterialColorForRender(getBlock(state).material);
     }
 
     @Override
-    public void renderBlock(Material material, Insulation baseProperty, int tileColor, CCRenderState state, IVertexOperation[] pipeline, int renderMask) {
+    public void renderBlock(Material material, TypeFluidPipe baseProperty, int tileColor, CCRenderState state, IVertexOperation[] pipeline, int renderMask) {
         MaterialIconSet iconSet = material.materialIconSet;
         int materialColor = GTUtility.convertRGBtoOpaqueRGBA_CL(factory.getMaterialColorForRender(material));
         float thickness = baseProperty.getThickness();
 
         IVertexOperation[][] pipelines = new IVertexOperation[3][];
-        pipelines[0] = ArrayUtils.addAll(pipeline, new IconTransformation(wireTextures.get(iconSet)), new ColourMultiplier(materialColor));
-        pipelines[1] = pipelines[0];
-        pipelines[2] = pipelines[0];
-
-        if(baseProperty.isColorable()) {
-            int insulationColor = GTUtility.convertRGBtoOpaqueRGBA_CL(tileColor);
-            ColourMultiplier multiplier = new ColourMultiplier(insulationColor);
-            pipelines[2] = ArrayUtils.addAll(pipeline, new IconTransformation(insulationTextures[5]), multiplier);
-            pipelines[1] = ArrayUtils.addAll(pipeline, new IconTransformation(insulationTextures[baseProperty.insulationLevel]), multiplier);
-        }
+        ColourMultiplier multiplier = new ColourMultiplier(tileColor == factory.getDefaultColor() ? materialColor : GTUtility.convertRGBtoOpaqueRGBA_CL(tileColor));
+        pipelines[0] = ArrayUtils.addAll(pipeline, new IconTransformation(pipeTextures), new ColourMultiplier(materialColor));
+        pipelines[1] = ArrayUtils.addAll(pipeline, new IconTransformation(fluidPipeTextures.get(iconSet)[baseProperty.index]), multiplier);
+        pipelines[2] = ArrayUtils.addAll(pipeline, new IconTransformation(fluidPipeTextures.get(iconSet)[8]), multiplier);
 
         Cuboid6 cuboid6 = PipeFactory.getSideBox(null, thickness);
         int mask = renderMask & 0b111111;
+        int exposed = renderMask & 0b111111 << 12;
         for(EnumFacing renderedSide : EnumFacing.VALUES) {
-            if((mask & MASK_FORMAL_CONNECTION << renderedSide.getIndex()) == 0) {
+            int index = renderedSide.getIndex();
+            if((mask & MASK_FORMAL_CONNECTION << index) == 0) {
                 int oppositeIndex = renderedSide.getOpposite().getIndex();
-                if((mask & MASK_FORMAL_CONNECTION << oppositeIndex) != 0 && (mask & ~(MASK_FORMAL_CONNECTION << oppositeIndex)) == 0) {
-                    //if there is something only on opposite side, render overlay + base
+                if(mask == 0
+                    || (exposed != 0 ? ((exposed & MASK_RENDER_EXPOSED << index) != 0)
+                        : ((mask & MASK_FORMAL_CONNECTION << oppositeIndex) != 0 && (mask & ~(MASK_FORMAL_CONNECTION << oppositeIndex)) == 0))) {
                     renderSide(state, pipelines[0], renderedSide, cuboid6);
                     renderSide(state, pipelines[1], renderedSide, cuboid6);
                 } else {

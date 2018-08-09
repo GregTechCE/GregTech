@@ -29,6 +29,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nullable;
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.util.*;
 
 import static net.minecraftforge.common.util.Constants.NBT.TAG_COMPOUND;
@@ -161,8 +162,9 @@ public class WorldPipeNet extends WorldSavedData {
         scheduledCheck.forEach((factory, pos) -> {
             ITilePipeLike tile = factory.getTile(world, pos);
             if (tile != null) {
-                PipeNet net = factory.addToPipeNet(world, pos, tile);
+                factory.addToPipeNet(world, pos, tile);
                 tile.updateInternalConnection();
+                tile.updateRenderMask();
             } else {
                 removeNodeFromNet(pos, factory);
             }

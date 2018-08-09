@@ -200,19 +200,18 @@ public class BlockPipeLike<Q extends Enum<Q> & IBaseProperty & IStringSerializab
     @Override
     public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos) {
         TileEntity tile = worldIn.getTileEntity(pos);
-        if (tile instanceof TileEntityPipeLike) {
-            ((TileEntityPipeLike) tile).updateRenderMask();
-            ((TileEntityPipeLike) tile).updateNode();
-        }
+        if (tile instanceof TileEntityPipeLike) onNeighborChange((TileEntityPipeLike) tile);
     }
 
     @Override
     public void onNeighborChange(IBlockAccess world, BlockPos pos, BlockPos neighbor) {
         TileEntity tile = world.getTileEntity(pos);
-        if (tile instanceof TileEntityPipeLike) {
-            ((TileEntityPipeLike) tile).updateRenderMask();
-            ((TileEntityPipeLike) tile).updateNode();
-        }
+        if (tile instanceof TileEntityPipeLike) onNeighborChange((TileEntityPipeLike) tile);
+    }
+
+    private void onNeighborChange(TileEntityPipeLike tile) {
+        tile.updateRenderMask();
+        tile.updateNode();
     }
 
     @Override

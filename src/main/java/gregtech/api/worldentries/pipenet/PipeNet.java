@@ -17,7 +17,6 @@ import net.minecraftforge.common.util.INBTSerializable;
 import org.apache.commons.lang3.mutable.MutableInt;
 
 import javax.annotation.Nullable;
-import java.lang.reflect.Array;
 import java.util.*;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
@@ -159,7 +158,7 @@ public abstract class PipeNet<Q extends Enum<Q> & IBaseProperty & IStringSeriali
         NBTTagList nodeList = nbt.getTagList("Nodes", TAG_COMPOUND);
         NBTTagList propertyList = nbt.getTagList("Properties", TAG_COMPOUND);
 
-        P[] properties = (P[]) Array.newInstance(factory.classTileProperty, propertyList.tagCount());
+        P[] properties = ObjectArrays.newArray(factory.classTileProperty, propertyList.tagCount());
         for (int i = 0; i < propertyList.tagCount(); i++) {
             properties[i] = factory.createEmptyProperty();
             properties[i].deserializeNBT(propertyList.getCompoundTagAt(i));
@@ -342,7 +341,7 @@ public abstract class PipeNet<Q extends Enum<Q> & IBaseProperty & IStringSeriali
                 case DFS: putter = buffer::offerLast; getter = buffer::pollLast; break;
             }
             putter.accept(startNode);
-            while (!buffer.isEmpty()) {
+            search: while (!buffer.isEmpty()) {
                 LinkedNode<P> current = getter.get();
                 pos.setPos(current);
                 for (EnumFacing facing : EnumFacing.VALUES) {
@@ -354,7 +353,7 @@ public abstract class PipeNet<Q extends Enum<Q> & IBaseProperty & IStringSeriali
                             result.add(sideNode);
                             putter.accept(sideNode);
                             if (onNode != null) onNode.accept(sideNode);
-                            if (shortCircuit != null && shortCircuit.test(sideNode)) return result;
+                            if (shortCircuit != null && shortCircuit.test(sideNode)) break search;
                         }
                     }
                     pos.move(facing.getOpposite());
