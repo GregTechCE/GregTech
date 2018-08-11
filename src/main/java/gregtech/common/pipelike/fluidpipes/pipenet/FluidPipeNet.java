@@ -175,6 +175,7 @@ public class FluidPipeNet extends PipeNet<TypeFluidPipe, FluidPipeProperties, IF
                             boolean move = false;
                             boolean active = false;
                             for (EnumFacing facing : EnumFacing.VALUES) {
+                                boolean isOpen = i == ((Pipe.MultiPipe) pipe).entrances[facing.getOpposite().getIndex()];
                                 pos.setPos(p).move(facing);
                                 if (tanks[i].isFacingValid(facing)
                                     && (isActive && (node.getActiveMask() & 1 << facing.getIndex()) != 0
@@ -183,15 +184,15 @@ public class FluidPipeNet extends PipeNet<TypeFluidPipe, FluidPipeProperties, IF
                                     BufferTank sideTank = null;
                                     boolean flag = false;
                                     if (isActive && sidePipe == null) {
-                                        flag = i == ((Pipe.MultiPipe) pipe).entrances[facing.getOpposite().getIndex()];
+                                        flag = isOpen;
                                     } else switch (sidePipe.getType()) {
                                         case NORMAL:
-                                            flag = i == ((Pipe.MultiPipe) pipe).entrances[facing.getOpposite().getIndex()]
-                                                && (sideTank = ((Pipe.NormalPipe) sidePipe).tank).fill(tanks[i].bufferedStack, facing, false) > 0;
+                                            flag = isOpen && (sideTank = ((Pipe.NormalPipe) sidePipe).tank).fill(tanks[i].bufferedStack, facing, false) > 0;
                                             break;
                                         case MULTIPLE:
-                                            flag = ((Pipe.MultiPipe) sidePipe).tanks.length == tanks.length
-                                                && (sideTank = ((Pipe.MultiPipe) sidePipe).tanks[i]).fill(tanks[i].bufferedStack, facing, false) > 0;
+                                            flag = (sideTank = isOpen ? sidePipe.getAccessibleTank(facing)
+                                                    : ((Pipe.MultiPipe) sidePipe).tanks.length == tanks.length ? ((Pipe.MultiPipe) sidePipe).tanks[i] : null) != null
+                                                && sideTank.fill(tanks[i].bufferedStack, facing, false) > 0;
                                             break;
                                     }
                                     if (flag) {
