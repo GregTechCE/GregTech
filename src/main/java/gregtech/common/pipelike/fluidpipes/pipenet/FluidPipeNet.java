@@ -293,7 +293,7 @@ public class FluidPipeNet extends PipeNet<TypeFluidPipe, FluidPipeProperties, IF
                 snapshots.clear();
             }
             if (world.getTotalWorldTime() % 5 == 0) {
-                List<BlockPos> burnt = Lists.newArrayList();
+                Map<BlockPos, Integer> burnt = Maps.newHashMap();
                 pipes.forEach((p, pipe) -> {
                     List<FluidStack> leakedStacks = Lists.newArrayList();
                     FluidPipeProperties properties = allNodes.get(p).property;
@@ -308,8 +308,9 @@ public class FluidPipeNet extends PipeNet<TypeFluidPipe, FluidPipeProperties, IF
                                     tank.bufferedStack.amount -= leaked;
                                     leakedStacks.add(new FluidStack(tank.bufferedStack, leaked));
                                 }
-                                if (tank.bufferedStack.getFluid().getTemperature(tank.bufferedStack) > heatLimit) {
-                                    burnt.add(p);
+                                int tempDiff = tank.bufferedStack.getFluid().getTemperature(tank.bufferedStack) - heatLimit;
+                                if (tempDiff > 0) {
+                                    burnt.compute(p, (q, diff) -> diff == null || tempDiff > diff ? tempDiff : diff);
                                 }
                             }
                         } break;
@@ -321,8 +322,9 @@ public class FluidPipeNet extends PipeNet<TypeFluidPipe, FluidPipeProperties, IF
                                     tank.bufferedStack.amount -= leaked;
                                     leakedStacks.add(new FluidStack(tank.bufferedStack, leaked));
                                 }
-                                if (tank.bufferedStack.getFluid().getTemperature(tank.bufferedStack) > heatLimit) {
-                                    burnt.add(p);
+                                int tempDiff = tank.bufferedStack.getFluid().getTemperature(tank.bufferedStack) - heatLimit;
+                                if (tempDiff > 0) {
+                                    burnt.compute(p, (q, diff) -> diff == null || tempDiff > diff ? tempDiff : diff);
                                 }
                             }
                         }
@@ -337,15 +339,16 @@ public class FluidPipeNet extends PipeNet<TypeFluidPipe, FluidPipeProperties, IF
                         }
                     }
                 });
-                burnt.forEach(p -> {
-                    for (EnumFacing facing : EnumFacing.VALUES) if (WorldPipeNet.rnd.nextInt(10) == 0) {
+                burnt.forEach((p, tempDiff) -> {
+                    int chance = Math.max(1, 100 * 50 / tempDiff);
+                    for (EnumFacing facing : EnumFacing.VALUES) if (WorldPipeNet.rnd.nextInt(chance) < 15) {
                         pos.setPos(p).move(facing);
                         if (world.getBlockState(pos).getBlock().isReplaceable(world, pos)) {
                             world.setBlockToAir(pos);
                             world.setBlockState(pos, Blocks.FIRE.getDefaultState());
                         }
                     }
-                    if (WorldPipeNet.rnd.nextInt(100) == 0) {
+                    if (WorldPipeNet.rnd.nextInt(chance) == 0) {
                         world.setBlockToAir(p);
                         world.setBlockState(p, Blocks.FIRE.getDefaultState());
                     }
