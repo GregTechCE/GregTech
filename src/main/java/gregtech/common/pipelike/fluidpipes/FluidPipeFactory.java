@@ -8,16 +8,19 @@ import gregtech.api.unification.material.type.GemMaterial;
 import gregtech.api.unification.material.type.IngotMaterial;
 import gregtech.api.unification.material.type.Material;
 import gregtech.api.unification.ore.OrePrefix;
-import gregtech.api.worldentries.pipenet.PipeNet;
 import gregtech.api.worldentries.pipenet.WorldPipeNet;
+import gregtech.common.pipelike.fluidpipes.pipenet.FluidPipeNet;
 import net.minecraft.block.SoundType;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
-import net.minecraft.world.World;
+import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
+
+import java.util.Collection;
 
 import static gregtech.api.unification.material.MarkerMaterials.Tier.Superconductor;
 import static gregtech.api.unification.material.MarkerMaterials.Tier.Ultimate;
@@ -102,13 +105,26 @@ public class FluidPipeFactory extends PipeFactory<TypeFluidPipe, FluidPipeProper
     }
 
     @Override
-    public IFluidHandler createCapability(ITilePipeLike<TypeFluidPipe, FluidPipeProperties> tile) {
+    public FluidPipeHandler createCapability(ITilePipeLike<TypeFluidPipe, FluidPipeProperties> tile) {
         return new FluidPipeHandler(tile);
     }
 
     @Override
-    public PipeNet<TypeFluidPipe, FluidPipeProperties, IFluidHandler> createPipeNet(WorldPipeNet worldNet) {
+    public IFluidHandler onGettingNetworkCapability(IFluidHandler capability, EnumFacing facing) {
+        if (capability instanceof FluidPipeHandler && facing != null) {
+            return new FluidPipeHandler.SidedHandler((FluidPipeHandler) capability, facing);
+        }
+        return capability;
+    }
+
+    @Override
+    public FluidPipeNet createPipeNet(WorldPipeNet worldNet) {
         return new FluidPipeNet(worldNet);
+    }
+
+    @Override
+    public FluidPipeNet getPipeNetAt(ITilePipeLike<TypeFluidPipe, FluidPipeProperties> tile) {
+        return (FluidPipeNet) super.getPipeNetAt(tile);
     }
 
     @Override
@@ -116,10 +132,16 @@ public class FluidPipeFactory extends PipeFactory<TypeFluidPipe, FluidPipeProper
         return new FluidPipeProperties();
     }
 
+    public static void applyGasLeakingDamage(EntityLivingBase entity, Collection<FluidStack> fluidStack) {
+        //TODO
+    }
+
+    public static int MASK_RENDER_EXPOSED = 1 << 12;
+
     /**
      * @return 0: {@param tile} is not a multipipe
      *          -1: no access allowed
-     *          other: index of the subpipe that is available
+     *          other: 1 + index of the subpipe that is available
      */
     public int getMultiPipeAccessAtSide(ITilePipeLike<TypeFluidPipe, ?> tile, EnumFacing fromFacing) {
         if (tile == null) return -1;
@@ -127,6 +149,7 @@ public class FluidPipeFactory extends PipeFactory<TypeFluidPipe, FluidPipeProper
         return -1;//TODO actual logic
     }
 
+    @Override
     protected int isPipeAccessibleAtSide(ITilePipeLike<TypeFluidPipe, ?> tile, IBlockAccess world, BlockPos pos, EnumFacing fromFacing, int fromColor, float selfThickness) {
         ITilePipeLike<TypeFluidPipe, ?> sideTile = getTile(world, pos);
         int index = getMultiPipeAccessAtSide(tile, fromFacing);
@@ -138,8 +161,6 @@ public class FluidPipeFactory extends PipeFactory<TypeFluidPipe, FluidPipeProper
         if (fromColor != getDefaultColor() && sideTile.getColor() != getDefaultColor() && fromColor != sideTile.getColor()) return 1;
         return selfThickness <= sideTile.getBaseProperty().getThickness() ? 2 : 3;
     }
-
-    public static int MASK_RENDER_EXPOSED = 1 << 12;
 
     /**
      * @return bitmask for render
@@ -162,27 +183,6 @@ public class FluidPipeFactory extends PipeFactory<TypeFluidPipe, FluidPipeProper
                 case -1: connectedSideMask |= MASK_RENDER_EXPOSED << facing.getIndex(); break;
             }
             sidePos.move(opposite);
-        }
-        sidePos.release();
-        return connectedSideMask;
-    }
-
-    /**
-     * @return bitmask for actual connections AMONG PIPE-LIKE TILES
-     *          =  (input disabled, 6 bits)    << 6
-     *           | (output disabled, 6 bits)
-     */
-    @Override
-    public int getConnectionMask(ITilePipeLike<TypeFluidPipe, FluidPipeProperties> tile, World world, BlockPos pos) {
-        int blockedConnection = tile.getInternalConnections();
-        int connectedSideMask = blockedConnection & 0b111111_111111;
-        BlockPos.PooledMutableBlockPos sidePos = BlockPos.PooledMutableBlockPos.retain().setPos(pos);
-        for (EnumFacing facing : EnumFacing.VALUES) if ((blockedConnection & ITilePipeLike.MASK_BLOCKED << facing.getIndex()) == 0) {
-            sidePos.move(facing);
-            if (isPipeAccessibleAtSide(tile, world, sidePos, facing.getOpposite(), tile.getColor(), tile.getBaseProperty().getThickness()) < 2) {
-                connectedSideMask |= (ITilePipeLike.MASK_INPUT_DISABLED | ITilePipeLike.MASK_OUTPUT_DISABLED) << facing.getIndex();
-            }
-            sidePos.move(facing.getOpposite());
         }
         sidePos.release();
         return connectedSideMask;

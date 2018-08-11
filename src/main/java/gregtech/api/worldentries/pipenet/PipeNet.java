@@ -198,7 +198,6 @@ public abstract class PipeNet<Q extends Enum<Q> & IBaseProperty & IStringSeriali
                 data.activeMask = activeMask;
                 if (weakUpdate) onWeakUpdate();
             }
-
         }
     }
 
@@ -431,7 +430,7 @@ public abstract class PipeNet<Q extends Enum<Q> & IBaseProperty & IStringSeriali
     }
 
     @FunctionalInterface
-    interface PassingThroughCondition<P> {
+    public interface PassingThroughCondition<P> {
         boolean test(Node<P> fromNode, EnumFacing dir, Node<P> toNode);
     }
 }

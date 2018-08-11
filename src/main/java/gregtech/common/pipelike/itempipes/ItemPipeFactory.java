@@ -93,7 +93,9 @@ public class ItemPipeFactory extends PipeFactory<TypeItemPipe, ItemPipePropertie
 
     @Override
     public IItemHandler onGettingNetworkCapability(IItemHandler capability, EnumFacing facing) {
-        if (capability instanceof ItemPipeHandler) ((ItemPipeHandler) capability).currentFacing = facing;
+        if (capability instanceof ItemPipeHandler && facing != null) {
+            return new ItemPipeHandler.SidedHandler((ItemPipeHandler) capability, facing);
+        }
         return capability;
     }
 

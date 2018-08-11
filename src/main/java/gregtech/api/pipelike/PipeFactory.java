@@ -337,12 +337,12 @@ public abstract class PipeFactory<Q extends Enum<Q> & IBaseProperty & IStringSer
      *          2: accessible, self thickness <= tile thickness
      *          3: accessible, self thickness >  tile thickness
      */
-    protected int isPipeAccessibleAtSide(IBlockAccess world, BlockPos pos, EnumFacing fromFacing, int fromColor, float selfThickness) {
-        ITilePipeLike<Q, P> tile = getTile(world, pos);
-        if (tile == null) return 0;
-        if ((tile.getInternalConnections() & (ITilePipeLike.MASK_BLOCKED << fromFacing.getIndex())) != 0) return 1;
-        if (fromColor != getDefaultColor() && tile.getColor() != getDefaultColor() && fromColor != tile.getColor()) return 1;
-        return selfThickness <= tile.getBaseProperty().getThickness() ? 2 : 3;
+    protected int isPipeAccessibleAtSide(ITilePipeLike<Q, ?> tile, IBlockAccess world, BlockPos pos, EnumFacing fromFacing, int fromColor, float selfThickness) {
+        ITilePipeLike<Q, P> sideTile = getTile(world, pos);
+        if (sideTile == null) return 0;
+        if ((sideTile.getInternalConnections() & (ITilePipeLike.MASK_BLOCKED << fromFacing.getIndex())) != 0) return 1;
+        if (fromColor != getDefaultColor() && sideTile.getColor() != getDefaultColor() && fromColor != sideTile.getColor()) return 1;
+        return selfThickness <= sideTile.getBaseProperty().getThickness() ? 2 : 3;
     }
 
     /**
@@ -356,7 +356,7 @@ public abstract class PipeFactory<Q extends Enum<Q> & IBaseProperty & IStringSer
         BlockPos.PooledMutableBlockPos sidePos = BlockPos.PooledMutableBlockPos.retain().setPos(pos);
         for (EnumFacing facing : EnumFacing.VALUES) if ((blockedConnection & ITilePipeLike.MASK_BLOCKED << facing.getIndex()) == 0) {
             sidePos.move(facing);
-            switch (isPipeAccessibleAtSide(world, sidePos, facing.getOpposite(), tile.getColor(), tile.getBaseProperty().getThickness())) {
+            switch (isPipeAccessibleAtSide(tile, world, sidePos, facing.getOpposite(), tile.getColor(), tile.getBaseProperty().getThickness())) {
                 case 0: if (!tile.hasCapabilityAtSide(capability, facing)) break;
                 case 3: connectedSideMask |= MASK_RENDER_SIDE << facing.getIndex();
                 case 2: connectedSideMask |= MASK_FORMAL_CONNECTION << facing.getIndex(); break;
@@ -378,7 +378,7 @@ public abstract class PipeFactory<Q extends Enum<Q> & IBaseProperty & IStringSer
         BlockPos.PooledMutableBlockPos sidePos = BlockPos.PooledMutableBlockPos.retain().setPos(pos);
         for (EnumFacing facing : EnumFacing.VALUES)  if ((blockedConnection & ITilePipeLike.MASK_BLOCKED << facing.getIndex()) == 0) {
             sidePos.move(facing);
-            if (isPipeAccessibleAtSide(world, sidePos, facing.getOpposite(), tile.getColor(), tile.getBaseProperty().getThickness()) < 2) {
+            if (isPipeAccessibleAtSide(tile, world, sidePos, facing.getOpposite(), tile.getColor(), tile.getBaseProperty().getThickness()) < 2) {
                 connectedSideMask |= (ITilePipeLike.MASK_INPUT_DISABLED | ITilePipeLike.MASK_OUTPUT_DISABLED) << facing.getIndex();
             }
             sidePos.move(facing.getOpposite());
@@ -441,14 +441,19 @@ public abstract class PipeFactory<Q extends Enum<Q> & IBaseProperty & IStringSer
         int connectionMask = tile.getInternalConnections();
         BlockPos.MutableBlockPos sidePos = new BlockPos.MutableBlockPos(tile.getTilePos());
         for (EnumFacing facing : EnumFacing.VALUES) if ((connectionMask & ITilePipeLike.MASK_BLOCKED << facing.getIndex()) == 0) {
+            EnumFacing opposite = facing.getOpposite();
             sidePos.move(facing);
-            if (getTile(tile.getTileWorld(), sidePos) == null // ignore other pipes
-                && tile.hasCapabilityAtSide(capability, facing)) {
+            ITilePipeLike<Q, P> sideTile = getTile(tile.getTileWorld(), sidePos);
+            if (sideTile == null ? tile.hasCapabilityAtSide(capability, facing) : treatAsActive(sideTile, opposite)) {
                 result |= 1 << facing.getIndex();
             }
-            sidePos.move(facing.getOpposite());
+            sidePos.move(opposite);
         }
         return result;
+    }
+
+    protected boolean treatAsActive(ITilePipeLike<Q, P> tile, EnumFacing facing) {
+        return false;//TODO Might be used by covers
     }
 
     //////////////////////////////////// RENDER ////////////////////////////////////////////

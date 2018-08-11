@@ -29,7 +29,6 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nullable;
 import java.io.IOException;
-import java.lang.reflect.Array;
 import java.util.*;
 
 import static net.minecraftforge.common.util.Constants.NBT.TAG_COMPOUND;
