@@ -20,9 +20,10 @@ class BufferTank implements IFluidTank, INBTSerializable<NBTTagCompound> {
         this.capacity = capacity;
     }
 
-    void setCountDown(EnumFacing fromDir) {
-        this.moveCountDown = bufferedStack == null ? 0 : Math.max(1, FluidPipeNet.TICK_RATE * bufferedStack.getFluid().getViscosity(bufferedStack) / 1000);
-        if (fromDir != null) this.dirCountDown[fromDir.getIndex()] = moveCountDown * 8;
+    void setCountDown(EnumFacing fromDir, boolean lock) {
+        int countDown = bufferedStack == null ? 0 : Math.max(1, FluidPipeNet.TICK_RATE * (1000 + bufferedStack.getFluid().getViscosity(bufferedStack)) / 2000);
+        if (lock) this.moveCountDown = countDown;
+        if (fromDir != null) this.dirCountDown[fromDir.getIndex()] = countDown * 8;
     }
 
     boolean isEmpty() {
@@ -76,10 +77,11 @@ class BufferTank implements IFluidTank, INBTSerializable<NBTTagCompound> {
             if (doFill) {
                 if (bufferedStack == null) {
                     bufferedStack = new FluidStack(stack, filled);
+                    setCountDown(fromDir, true);
                 } else {
                     bufferedStack.amount += filled;
+                    setCountDown(fromDir, false);
                 }
-                setCountDown(fromDir);
             }
             return filled;
         }

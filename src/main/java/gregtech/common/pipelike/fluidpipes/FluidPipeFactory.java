@@ -8,6 +8,7 @@ import gregtech.api.unification.material.type.GemMaterial;
 import gregtech.api.unification.material.type.IngotMaterial;
 import gregtech.api.unification.material.type.Material;
 import gregtech.api.unification.ore.OrePrefix;
+import gregtech.api.util.GTUtility;
 import gregtech.api.worldentries.pipenet.WorldPipeNet;
 import gregtech.common.pipelike.fluidpipes.pipenet.FluidPipeNet;
 import net.minecraft.block.SoundType;
@@ -19,8 +20,12 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
+import net.minecraftforge.fluids.capability.IFluidTankProperties;
 
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 import static gregtech.api.unification.material.MarkerMaterials.Tier.Superconductor;
 import static gregtech.api.unification.material.MarkerMaterials.Tier.Ultimate;
@@ -96,7 +101,15 @@ public class FluidPipeFactory extends PipeFactory<TypeFluidPipe, FluidPipeProper
 
     @Override
     protected void onEntityCollided(Entity entity, ITilePipeLike<TypeFluidPipe, FluidPipeProperties> tile) {
-        //TODO scald and frostbite
+        if (entity instanceof EntityLivingBase) {
+            FluidPipeNet net = getPipeNetAt(tile);
+            if (net != null) {
+                applyThermalDamage((EntityLivingBase) entity, Arrays.stream(net.getTankProperties(tile.getTilePos(), null))
+                    .map(IFluidTankProperties::getContents)
+                    .filter(Objects::nonNull)
+                    .collect(Collectors.toList()), 1.0F);
+            }
+        }
     }
 
     @Override
@@ -132,8 +145,28 @@ public class FluidPipeFactory extends PipeFactory<TypeFluidPipe, FluidPipeProper
         return new FluidPipeProperties();
     }
 
-    public static void applyGasLeakingDamage(EntityLivingBase entity, Collection<FluidStack> fluidStack) {
-        //TODO
+    public static void applyGasLeakingDamage(EntityLivingBase entity, Collection<FluidStack> fluidStacks) {
+        applyThermalDamage(entity, fluidStacks, 2.0F);
+    }
+
+    private static void applyThermalDamage(EntityLivingBase entity, Collection<FluidStack> fluidStacks, float multiplier) {
+        float min = 0.0F, max = 0.0F;
+        for (FluidStack stack : fluidStacks) {
+            float damage = getThermalDamage(stack) * multiplier;
+            if (damage > max) max = damage;
+            if (damage < min) min = damage;
+        }
+        if (max == -min) return;
+        if (max < -min || !GTUtility.applyHeatDamage(entity, max)) {
+            GTUtility.applyFrostDamage(entity, -min);
+        }
+    }
+
+    private static float getThermalDamage(FluidStack stack) {
+        int temperature = stack.getFluid().getTemperature(stack);
+        if (temperature > 300) return (temperature - 300) / 50.0F;
+        if (temperature < 270) return (temperature - 270) / 25.0F;
+        return 0.0F;
     }
 
     public static int MASK_RENDER_EXPOSED = 1 << 12;

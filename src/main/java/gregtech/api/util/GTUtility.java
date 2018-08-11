@@ -541,7 +541,7 @@ public class GTUtility {
         for (EntityEquipmentSlot slot : EntityEquipmentSlot.values()) {
             if (slot.getSlotType() == EntityEquipmentSlot.Type.ARMOR) {
                 ItemStack equipment = entity.getItemStackFromSlot(slot);
-                if (!equipment.isEmpty() && !suitParts.contains(new SimpleItemStack(equipment))) {
+                if (equipment.isEmpty() || !suitParts.contains(new SimpleItemStack(equipment))) {
                     return false;
                 }
             }
@@ -577,6 +577,33 @@ public class GTUtility {
             entity.addPotionEffect(new PotionEffect(MobEffects.HUNGER, level * 130 * amountOfItems));
             entity.attackEntityFrom(DamageSources.getRadioactiveDamage(), level * 6 * amountOfItems);
             return true;
+        }
+        return false;
+    }
+
+    public static boolean applyHeatDamage(EntityLivingBase entity, float damage) {
+        if (damage > 0.0F && !entity.isImmuneToFire() && !entity.isPotionActive(MobEffects.FIRE_RESISTANCE) && !isWearingFullHeatHazmat(entity)) {
+            return entity.attackEntityFrom(DamageSources.getHeatDamage(), damage);
+        }
+        return false;
+    }
+
+    public static boolean applyFrostDamage(EntityLivingBase entity, float damage) {
+        if (damage > 0.0F  && !isWearingFullFrostHazmat(entity)) {
+            if (entity.getCreatureAttribute() != EnumCreatureAttribute.UNDEAD) {
+                if (entity.isImmuneToFire()) damage *= 2.0F;
+                return entity.attackEntityFrom(DamageSources.getFrostDamage(), damage);
+            } else {
+                entity.addPotionEffect(new PotionEffect(MobEffects.SLOWNESS, (int) damage * 30));
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public static boolean applyElectricDamage(EntityLivingBase entity, long voltage) {
+        if (voltage >= 36L && !isWearingFullElectroHazmat(entity)) {
+            return entity.attackEntityFrom(DamageSources.getElectricDamage(), (float) (voltage - 36L) / 36.0F);
         }
         return false;
     }

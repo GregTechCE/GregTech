@@ -4,7 +4,6 @@ import com.google.common.base.Preconditions;
 import gnu.trove.map.hash.TShortObjectHashMap;
 import gregtech.api.GTValues;
 import gregtech.api.GregTechAPI;
-import gregtech.api.damagesources.DamageSources;
 import gregtech.api.items.metaitem.StandardMetaItem;
 import gregtech.api.unification.OreDictUnifier;
 import gregtech.api.unification.material.MaterialIconSet;
@@ -123,14 +122,12 @@ public class MaterialMetaItem extends StandardMetaItem {
             Material material = Material.MATERIAL_REGISTRY.getObjectById(itemStack.getItemDamage() % 1000);
             OrePrefix prefix = orePrefixes[itemStack.getItemDamage() / 1000];
             if(worldIn.getTotalWorldTime() % 20 == 0) {
-                if(prefix.heatDamage != 0.0) {
-                    if(prefix.heatDamage > 0.0 && !GTUtility.isWearingFullHeatHazmat(entity)) {
-                        entity.attackEntityFrom(DamageSources.getHeatDamage(), prefix.heatDamage);
-                    } else if(prefix.heatDamage < 0.0 && !GTUtility.isWearingFullFrostHazmat(entity)) {
-                        entity.attackEntityFrom(DamageSources.getFrostDamage(), -prefix.heatDamage);
-                    }
+                if(prefix.heatDamage > 0.0) {
+                    GTUtility.applyHeatDamage(entity, prefix.heatDamage);
+                } else if(prefix.heatDamage < 0.0) {
+                    GTUtility.applyFrostDamage(entity, -prefix.heatDamage);
                 }
-                if(material != null && material.isRadioactive() && GTUtility.isWearingFullRadioHazmat(entity)) {
+                if(material != null && material.isRadioactive()) {
                     GTUtility.applyRadioactivity(entity, 1, itemStack.getCount());
                 }
             }

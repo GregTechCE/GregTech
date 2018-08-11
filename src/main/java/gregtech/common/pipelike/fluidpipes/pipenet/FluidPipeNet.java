@@ -291,63 +291,65 @@ public class FluidPipeNet extends PipeNet<TypeFluidPipe, FluidPipeProperties, IF
                 });
                 snapshots.clear();
             }
-            List<BlockPos> burnt = Lists.newArrayList();
-            pipes.forEach((p, pipe) -> {
-                List<FluidStack> leakedStacks = Lists.newArrayList();
-                FluidPipeProperties properties = allNodes.get(p).property;
-                boolean isGasProof = properties.isGasProof();
-                int heatLimit = properties.getHeatLimit();
-                switch (pipe.getType()) {
-                    case NORMAL: {
-                        BufferTank tank = ((Pipe.NormalPipe) pipe).tank;
-                        if (!tank.isEmpty()) {
-                            if (!isGasProof && tank.bufferedStack.getFluid().isGaseous(tank.bufferedStack)) {
-                                int leaked = Math.min(5, tank.bufferedStack.amount);
-                                tank.bufferedStack.amount -= leaked;
-                                leakedStacks.add(new FluidStack(tank.bufferedStack, leaked));
+            if (world.getTotalWorldTime() % 5 == 0) {
+                List<BlockPos> burnt = Lists.newArrayList();
+                pipes.forEach((p, pipe) -> {
+                    List<FluidStack> leakedStacks = Lists.newArrayList();
+                    FluidPipeProperties properties = allNodes.get(p).property;
+                    boolean isGasProof = properties.isGasProof();
+                    int heatLimit = properties.getHeatLimit();
+                    switch (pipe.getType()) {
+                        case NORMAL: {
+                            BufferTank tank = ((Pipe.NormalPipe) pipe).tank;
+                            if (!tank.isEmpty()) {
+                                if (!isGasProof && tank.bufferedStack.getFluid().isGaseous(tank.bufferedStack)) {
+                                    int leaked = Math.min(tank.capacity / 50, tank.bufferedStack.amount);
+                                    tank.bufferedStack.amount -= leaked;
+                                    leakedStacks.add(new FluidStack(tank.bufferedStack, leaked));
+                                }
+                                if (tank.bufferedStack.getFluid().getTemperature(tank.bufferedStack) > heatLimit) {
+                                    burnt.add(p);
+                                }
                             }
-                            if (tank.bufferedStack.getFluid().getTemperature(tank.bufferedStack) > heatLimit) {
-                                burnt.add(p);
+                        } break;
+                        case MULTIPLE: {
+                            BufferTank[] tanks = ((Pipe.MultiPipe) pipe).tanks;
+                            for (BufferTank tank : tanks) if (!tank.isEmpty()) {
+                                if (!isGasProof && tank.bufferedStack.getFluid().isGaseous(tank.bufferedStack)) {
+                                    int leaked = Math.min(5, tank.bufferedStack.amount);
+                                    tank.bufferedStack.amount -= leaked;
+                                    leakedStacks.add(new FluidStack(tank.bufferedStack, leaked));
+                                }
+                                if (tank.bufferedStack.getFluid().getTemperature(tank.bufferedStack) > heatLimit) {
+                                    burnt.add(p);
+                                }
                             }
                         }
-                    } break;
-                    case MULTIPLE: {
-                        BufferTank[] tanks = ((Pipe.MultiPipe) pipe).tanks;
-                        for (BufferTank tank : tanks) if (!tank.isEmpty()) {
-                            if (!isGasProof && tank.bufferedStack.getFluid().isGaseous(tank.bufferedStack)) {
-                                int leaked = Math.min(5, tank.bufferedStack.amount);
-                                tank.bufferedStack.amount -= leaked;
-                                leakedStacks.add(new FluidStack(tank.bufferedStack, leaked));
-                            }
-                            if (tank.bufferedStack.getFluid().getTemperature(tank.bufferedStack) > heatLimit) {
-                                burnt.add(p);
-                            }
+                    }
+                    if (!leakedStacks.isEmpty()) {
+                        ((WorldServer) world).spawnParticle(EnumParticleTypes.SMOKE_LARGE,
+                            p.getX() + 0.5, p.getY() + 0.5, p.getZ() + 0.5,
+                            8 + world.rand.nextInt(3), 0.0, 0.0, 0.0, 0.1);
+                        //TODO sound
+                        for (EntityLivingBase entity : world.getEntitiesWithinAABB(EntityLivingBase.class, new AxisAlignedBB(p).grow(4.0))) {
+                            FluidPipeFactory.applyGasLeakingDamage(entity, leakedStacks);
                         }
                     }
-                }
-                if (!leakedStacks.isEmpty()) {
-                    ((WorldServer) world).spawnParticle(EnumParticleTypes.SMOKE_LARGE,
-                        p.getX() + 0.5, p.getY() + 0.5, p.getZ() + 0.5,
-                        8 + world.rand.nextInt(3), 0.0, 0.0, 0.0, 0.1);
-                    //TODO sound
-                    for (EntityLivingBase entity : world.getEntitiesWithinAABB(EntityLivingBase.class, new AxisAlignedBB(p).grow(4.0))) {
-                        FluidPipeFactory.applyGasLeakingDamage(entity, leakedStacks);
+                });
+                burnt.forEach(p -> {
+                    for (EnumFacing facing : EnumFacing.VALUES) if (WorldPipeNet.rnd.nextInt(10) == 0) {
+                        pos.setPos(p).move(facing);
+                        if (world.getBlockState(pos).getBlock().isReplaceable(world, pos)) {
+                            world.setBlockToAir(pos);
+                            world.setBlockState(pos, Blocks.FIRE.getDefaultState());
+                        }
                     }
-                }
-            });
-            burnt.forEach(p -> {
-                for (EnumFacing facing : EnumFacing.VALUES) if (WorldPipeNet.rnd.nextInt(10) == 0) {
-                    pos.setPos(p).move(facing);
-                    if (world.getBlockState(pos).getBlock().isReplaceable(world, pos)) {
-                        world.setBlockToAir(pos);
-                        world.setBlockState(pos, Blocks.FIRE.getDefaultState());
+                    if (WorldPipeNet.rnd.nextInt(100) == 0) {
+                        world.setBlockToAir(p);
+                        world.setBlockState(p, Blocks.FIRE.getDefaultState());
                     }
-                }
-                if (WorldPipeNet.rnd.nextInt(100) == 0) {
-                    world.setBlockToAir(p);
-                    world.setBlockState(p, Blocks.FIRE.getDefaultState());
-                }
-            });
+                });
+            }
             pos.release();
         }
     }

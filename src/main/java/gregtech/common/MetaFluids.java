@@ -71,7 +71,7 @@ public class MetaFluids {
         registerFluid(Materials.Methane, FluidType.LIQUID, 295, true);
         registerFluid(Materials.Nitrogen, FluidType.LIQUID, 295, true);
         registerFluid(Materials.NitrogenDioxide, FluidType.LIQUID, 295, true);
-        registerFluid(Materials.Steam, FluidType.GAS, 295, true);
+        registerFluid(Materials.Steam, FluidType.GAS, 375, true);
 
         registerFluid(Materials.OilHeavy, FluidType.LIQUID, 295, true);
         registerFluid(Materials.OilMedium, FluidType.LIQUID, 295, true);
