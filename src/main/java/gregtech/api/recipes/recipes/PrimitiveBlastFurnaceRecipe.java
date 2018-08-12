@@ -1,15 +1,18 @@
 package gregtech.api.recipes.recipes;
 
+import crafttweaker.annotations.ZenRegister;
 import crafttweaker.api.item.IItemStack;
 import crafttweaker.api.minecraft.CraftTweakerMC;
 import gregtech.api.GTValues;
 import gregtech.api.recipes.CountableIngredient;
 import gregtech.api.recipes.crafttweaker.InputIngredient;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.Ingredient;
 import net.minecraftforge.fml.common.Optional.Method;
+import stanhebben.zenscript.annotations.ZenClass;
 import stanhebben.zenscript.annotations.ZenGetter;
 
+@ZenClass("mods.gregtech.recipe.PrimitiveBlastFurnaceRecipe")
+@ZenRegister
 public class PrimitiveBlastFurnaceRecipe {
 
     private final CountableIngredient input;
