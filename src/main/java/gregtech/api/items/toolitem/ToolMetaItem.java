@@ -248,6 +248,16 @@ public class ToolMetaItem<T extends ToolMetaItem<?>.MetaToolValueItem> extends M
     }
 
     @Override
+    public boolean canHarvestBlock(IBlockState state, ItemStack stack) {
+        T metaToolValueItem = getItem(stack);
+        if(metaToolValueItem != null) {
+            IToolStats toolStats = metaToolValueItem.getToolStats();
+            return isUsable(stack, toolStats.getToolDamagePerBlockBreak(stack)) && toolStats.isMinableBlock(state, stack);
+        }
+        return false;
+    }
+
+    @Override
     public int getHarvestLevel(ItemStack stack, String toolClass, EntityPlayer player, IBlockState blockState) {
         T metaToolValueItem = getItem(stack);
         if(metaToolValueItem != null) {
@@ -259,7 +269,7 @@ public class ToolMetaItem<T extends ToolMetaItem<?>.MetaToolValueItem> extends M
                 }
             }
         }
-        return -1;
+        return 100;
     }
 
     @Override

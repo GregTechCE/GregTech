@@ -10,6 +10,7 @@ import gregtech.common.blocks.properties.PropertyStoneType;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockFalling;
 import net.minecraft.block.SoundType;
+import net.minecraft.block.material.Material;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
@@ -41,6 +42,15 @@ public class BlockOre extends BlockFalling implements IBlockOre {
         this.material = material;
         STONE_TYPE = PropertyStoneType.create("stone_type", allowedValues);
         initBlockState();
+    }
+
+    @SuppressWarnings("deprecation")
+    @Override
+    public Material getMaterial(IBlockState state) {
+        String harvestTool = getHarvestTool(state);
+        if(harvestTool.equals("shovel"))
+            return Material.GROUND;
+        return Material.ROCK;
     }
 
     @Override
