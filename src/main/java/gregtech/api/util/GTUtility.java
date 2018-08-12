@@ -51,6 +51,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.IItemHandlerModifiable;
+import org.apache.commons.lang3.ArrayUtils;
 
 import javax.annotation.Nullable;
 import java.awt.*;
@@ -174,42 +175,21 @@ public class GTUtility {
      * Determines dye color nearest to specified RGB color
      */
     public static EnumDyeColor determineDyeColor(int rgbColor) {
-        //add manual overrides for black and white
-        if(rgbColor == 0xFFFFFF)
-            return EnumDyeColor.WHITE;
-        else if(rgbColor == 0x000000)
-            return EnumDyeColor.BLACK;
-        int rA = (rgbColor & 0xff0000) >> 16;
-        int gA = (rgbColor & 0xff00) >> 8;
-        int bA = (rgbColor & 0xff);
-        float[] hsb = Color.RGBtoHSB(rA, gA, bA, new float[3]);
-        return EnumDyeColor.values()[indexOfClosest(hsb[0], hueDyeValues)];
-    }
+        Color c = new Color(rgbColor);
 
-    private static double[] hueDyeValues = Arrays.stream(EnumDyeColor.values())
-        .mapToDouble(color -> {
-            int rA = (color.colorValue & 0xff0000) >> 16;
-            int gA = (color.colorValue & 0xff00) >> 8;
-            int bA = (color.colorValue & 0xff);
-            float[] hsb = Color.RGBtoHSB(rA, gA, bA, new float[3]);
-            return hsb[0];
-        })
-        .toArray();
+        Map<Double, EnumDyeColor> distances = new HashMap<>();
+        for (EnumDyeColor dyeColor : EnumDyeColor.values()) {
+            Color c2 = new Color(dyeColor.colorValue);
 
-    private static int indexOfClosest(double of, double[] in) {
-        double min = Double.POSITIVE_INFINITY;
-        int closestIndex = -1;
+            double distance = (c.getRed() - c2.getRed()) * (c.getRed() - c2.getRed())
+                + (c.getGreen() - c2.getGreen()) * (c.getGreen() - c2.getGreen())
+                + (c.getBlue() - c2.getBlue()) * (c.getBlue() - c2.getBlue());
 
-        for (int i = 0; i < in.length; i++) {
-            double diff = Math.abs(in[i] - of);
-
-            if (diff < min) {
-                min = diff;
-                closestIndex = i;
-            }
+            distances.put(distance, dyeColor);
         }
 
-        return closestIndex;
+        double min = Collections.min(distances.keySet());
+        return distances.get(min);
     }
 
     //just because CCL uses a different color format
