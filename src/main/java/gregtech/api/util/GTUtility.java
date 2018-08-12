@@ -58,6 +58,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
+import java.math.BigInteger;
 import java.util.*;
 import java.util.List;
 import java.util.Map.Entry;
@@ -96,6 +97,55 @@ public class GTUtility {
             return dx > 0 ? EnumFacing.EAST : EnumFacing.WEST;
         }
         return null;
+    }
+
+    public static BigInteger LONG_MAX = BigInteger.valueOf(Long.MAX_VALUE);
+    public static BigInteger LONG_MIN = BigInteger.valueOf(Long.MIN_VALUE);
+    public static long castToLong(BigInteger value) {
+        return value.compareTo(LONG_MAX) >= 0 ? Long.MAX_VALUE : value.compareTo(LONG_MIN) <= 0 ? Long.MIN_VALUE : value.longValue();
+    }
+
+    public static long castedSum(long... values) {
+        if (values.length == 0) return 0L;
+        if (values.length == 1) return values[0];
+        int p = 0;
+        // try combine the values first, in order not to use BigInteger so frequently.
+        for (int i = 1; i < values.length; i++) {
+            if (values[i] == 0L) continue;
+            if ((values[i] > 0 && Long.MAX_VALUE - values[p] >= values[i])
+                || (values[i] < 0 && Long.MIN_VALUE - values[i] <= values[p])) {
+                values[p] += values[i];
+            } else {
+                values[++p] = values[i];
+            }
+        }
+        if (p == 0) return values[0];
+        BigInteger result = BigInteger.ZERO;
+        for (int i = 0; i <= p; i++) {
+            result = result.add(BigInteger.valueOf(values[i]));
+        }
+        return castToLong(result);
+    }
+
+    public static BigInteger sum(long... values) {
+        if (values.length == 0) return BigInteger.ZERO;
+        if (values.length == 1) return BigInteger.valueOf(values[0]);
+        int p = 0;
+        // try combine the values first in order not to use BigInteger so frequently.
+        for (int i = 1; i < values.length; i++) {
+            if (values[i] == 0L) continue;
+            if ((values[i] > 0 && Long.MAX_VALUE - values[p] >= values[i])
+                || (values[i] < 0 && Long.MIN_VALUE - values[i] <= values[p])) {
+                values[p] += values[i];
+            } else {
+                values[++p] = values[i];
+            }
+        }
+        BigInteger result = BigInteger.ZERO;
+        for (int i = 0; i <= p; i++) {
+            result = result.add(BigInteger.valueOf(values[i]));
+        }
+        return result;
     }
 
     //magic is here

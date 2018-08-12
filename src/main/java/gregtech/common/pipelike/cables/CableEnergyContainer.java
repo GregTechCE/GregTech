@@ -42,7 +42,7 @@ public class CableEnergyContainer implements IEnergyContainer {
     @Override
     public long addEnergy(long energyToAdd) {
         //just a fallback case if somebody will call this method
-        return acceptEnergyFromNetwork(EnumFacing.UP,
+        return acceptEnergyFromNetwork(null,
             energyToAdd / getInputVoltage(),
             energyToAdd / getInputAmperage()) * getInputVoltage();
     }
@@ -66,7 +66,7 @@ public class CableEnergyContainer implements IEnergyContainer {
         return CableFactory.INSTANCE.getPipeNetAt(tileEntityCable);
     }
 
-    public long[] getAverageData() {
+    public double[] getAverageData() {
         EnergyNet net = getEnergyNet();
         if (net != null) return net.getStatisticData(tileEntityCable.getTilePos());
         return EnergyNet.NO_DATA;
