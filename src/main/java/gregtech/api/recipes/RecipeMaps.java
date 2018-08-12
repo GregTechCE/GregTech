@@ -10,8 +10,8 @@ import stanhebben.zenscript.annotations.ZenClass;
 import stanhebben.zenscript.annotations.ZenMethod;
 import stanhebben.zenscript.annotations.ZenProperty;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 @ZenClass("mods.gregtech.recipe.RecipeMaps")
 @ZenRegister
@@ -660,7 +660,7 @@ public class RecipeMaps {
     /**
      * Create recipes via {@link gregtech.api.recipes.builders.PBFRecipeBuilder}
      */
-    @ZenProperty public static final List<PrimitiveBlastFurnaceRecipe> PRIMITIVE_BLAST_FURNACE_RECIPES = new ArrayList<>();
+    @ZenProperty public static final List<PrimitiveBlastFurnaceRecipe> PRIMITIVE_BLAST_FURNACE_RECIPES = new CopyOnWriteArrayList<>();
 
     @ZenMethod
     @Deprecated
