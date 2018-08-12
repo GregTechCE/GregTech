@@ -79,13 +79,13 @@ public class ItemPipeRenderer extends PipeLikeRenderer<TypeItemPipe> {
 
     @Override
     protected int getDestoryEffectColor(IBlockState state, World world, BlockPos pos) {
-        return getBlock(state).material.materialRGB;
+        return factory.getMaterialColorForRender(getBlock(state).material);
     }
 
     @Override
     public void renderBlock(Material material, TypeItemPipe baseProperty, int tileColor, CCRenderState state, IVertexOperation[] pipeline, int renderMask) {
         MaterialIconSet iconSet = material.materialIconSet;
-        int materialColor = GTUtility.convertRGBtoOpaqueRGBA_CL(material.materialRGB);
+        int materialColor = GTUtility.convertRGBtoOpaqueRGBA_CL(factory.getMaterialColorForRender(material));
         float thickness = baseProperty.getThickness();
 
         IVertexOperation[][] pipelines = new IVertexOperation[4][];

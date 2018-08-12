@@ -141,7 +141,8 @@ public class TileEntityPipeLike<Q extends Enum<Q> & IBaseProperty & IStringSeria
         if ((lastValue & 0b111111_000000_000000_000000) != 0) markDirty();*/
     }
 
-    protected void updateRenderMask() {
+    @Override
+    public void updateRenderMask() {
         updateRenderMask(true);
     }
 

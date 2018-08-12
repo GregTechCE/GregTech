@@ -1,20 +1,17 @@
 package gregtech.common.pipelike.itempipes;
 
 import gregtech.api.pipelike.ITilePipeLike;
-import gregtech.api.worldentries.pipenet.RoutePath;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.items.IItemHandler;
 
 import javax.annotation.Nonnull;
-import java.util.List;
-import java.util.Map;
 
 public class ItemPipeHandler implements IItemHandler {
 
     final ITilePipeLike<TypeItemPipe, ItemPipeProperties> tile;
     final int capacity;
-    EnumFacing currentFacing = null;
+    EnumFacing facing = null;
 
     public ItemPipeHandler(ITilePipeLike<TypeItemPipe, ItemPipeProperties> tile) {
         this.tile = tile;
@@ -40,7 +37,7 @@ public class ItemPipeHandler implements IItemHandler {
         if (stack.isEmpty()) return ItemStack.EMPTY;
         validateSlotIndex(slot);
         ItemPipeNet net = getPipeNet();
-        return net == null ? stack : net.insertItem(this, stack, simulate, currentFacing.getOpposite());
+        return net == null ? stack : net.insertItem(this, stack, simulate, facing.getOpposite());
     }
 
     @Nonnull
@@ -63,5 +60,12 @@ public class ItemPipeHandler implements IItemHandler {
 
     private void validateSlotIndex(int slot) {
         if (slot < 0 || slot >= capacity) throw new RuntimeException("Slot " + slot + " not in valid range - [0," + capacity + ")");
+    }
+
+    static class SidedHandler extends ItemPipeHandler {
+        SidedHandler(ItemPipeHandler handler, EnumFacing facing) {
+            super(handler.tile);
+            this.facing = facing;
+        }
     }
 }
