@@ -1,5 +1,5 @@
 {
-  "parent": "item/generated",
+  "parent": "item/handheld",
   "textures": {
     "layer0": "gregtech:items/tools/handle_sword",
     "layer1": "gregtech:items/tools/handle_sword_overlay",

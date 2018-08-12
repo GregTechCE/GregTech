@@ -2,7 +2,7 @@ package gregtech.common.blocks.wood;
 
 import gregtech.api.GregTechAPI;
 import gregtech.common.blocks.MetaBlocks;
-import gregtech.common.blocks.wood.BlockLogGT.LogVariant;
+import gregtech.common.blocks.wood.BlockGregLog.LogVariant;
 import net.minecraft.block.*;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.properties.PropertyInteger;
@@ -22,13 +22,13 @@ import net.minecraftforge.common.IPlantable;
 
 import java.util.Random;
 
-public class BlockSaplingGT extends BlockBush implements IGrowable, IPlantable {
+public class BlockGregSapling extends BlockBush implements IGrowable, IPlantable {
 
     public static final PropertyEnum<LogVariant> VARIANT = PropertyEnum.create("variant", LogVariant.class);
     public static final PropertyInteger STAGE = PropertyInteger.create("stage", 0, 1);
     protected static final AxisAlignedBB SAPLING_AABB = new AxisAlignedBB(0.1, 0.0D, 0.1, 0.9, 0.8, 0.9);
 
-    public BlockSaplingGT() {
+    public BlockGregSapling() {
         this.setDefaultState(this.blockState.getBaseState()
             .withProperty(VARIANT, LogVariant.RUBBER_WOOD)
             .withProperty(STAGE, 0));
@@ -112,9 +112,10 @@ public class BlockSaplingGT extends BlockBush implements IGrowable, IPlantable {
     public void generateTree(World worldIn, BlockPos pos, IBlockState state, Random rand) {
         WorldGenerator worldgenerator = new WorldGenTrees(true, 6,
             MetaBlocks.LOG.getDefaultState()
-                .withProperty(BlockLogGT.VARIANT, LogVariant.RUBBER_WOOD)
-                .withProperty(BlockLogGT.NATURAL, true),
-            MetaBlocks.LEAVES.getDefaultState().withProperty(BlockLogGT.VARIANT, LogVariant.RUBBER_WOOD),
+                .withProperty(BlockGregLog.VARIANT, LogVariant.RUBBER_WOOD)
+                .withProperty(BlockGregLog.NATURAL, true),
+            MetaBlocks.LEAVES.getDefaultState()
+                .withProperty(BlockGregLog.VARIANT, LogVariant.RUBBER_WOOD),
             false);
         worldIn.setBlockState(pos, Blocks.AIR.getDefaultState(), 4);
         if (!worldgenerator.generate(worldIn, rand, pos)) {

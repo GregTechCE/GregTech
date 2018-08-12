@@ -1,9 +1,9 @@
 {
-  "parent": "item/generated",
+  "parent": "item/handheld",
   "textures": {
     "layer0": "gregtech:items/void",
     "layer1": "gregtech:items/tools/handle_soldering",
-	"layer2": "gregtech:items/tools/soldering_iron",
-	"layer3": "gregtech:items/tools/handle_soldering_overlay"
+  	"layer2": "gregtech:items/tools/soldering_iron",
+  	"layer3": "gregtech:items/tools/handle_soldering_overlay"
   }
 }

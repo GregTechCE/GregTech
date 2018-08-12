@@ -108,23 +108,13 @@ public class MetaTool extends ToolMetaItem<ToolMetaItem<?>.MetaToolValueItem> {
         IngotMaterial[] mortarMaterials = new IngotMaterial[] {Materials.Bronze, Materials.Iron,
             Materials.Steel, Materials.DamascusSteel, Materials.WroughtIron, Materials.RedSteel,
             Materials.BlackSteel, Materials.BlueSteel};
-        IngotMaterial[] softHammerMaterials = new IngotMaterial[] {Materials.Rubber, Materials.Polytetrafluoroethylene};
 
         for (IngotMaterial material : mortarMaterials) {
-
             ModHandler.addShapedRecipe("mortar_" + material.toString(),
                 MORTAR.getStackForm(material, null),
                 " I ", "SIS", "SSS",
                 'I', new UnificationEntry(OrePrefix.ingot, material),
                 'S', OrePrefix.stone);
-        }
-
-        for (IngotMaterial material : softHammerMaterials) {
-            ModHandler.addShapedRecipe("soft_hammer_" + material.toString(),
-                SOFT_HAMMER.getStackForm(material, material),
-                "RR ", "RRS", "RR ",
-                'R', new UnificationEntry(OrePrefix.ingot, material),
-                'S', new ItemStack(Items.STICK));
         }
 
         ModHandler.addShapelessRecipe("clay_to_dust", OreDictUnifier.get(OrePrefix.dust, Materials.Clay, 1),

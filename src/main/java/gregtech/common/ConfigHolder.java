@@ -45,6 +45,15 @@ public class ConfigHolder {
     @Config.RequiresMcRestart
     public static boolean disableFlintTools = false;
 
+    @Config.Comment("Whether to use modPriorities setting in config for prioritizing ore dictionary item registrations. " +
+        "By default, GTCE will sort ore dictionary registrations alphabetically comparing their owner ModIDs.")
+    public static boolean useCustomModPriorities = false;
+
+    @Config.Comment("Specifies priorities of mods in ore dictionary item registration. First ModID has highest priority, last - lowest. " +
+        "Unspecified ModIDs follow standard sorting, but always have lower priority than last specified ModID.")
+    @Config.RequiresMcRestart
+    public static String[] modPriorities = new String[0];
+
     @Config.Comment("Category that contains configs for changing vanilla recipes")
     @Config.RequiresMcRestart
     public static VanillaRecipes vanillaRecipes = new VanillaRecipes();

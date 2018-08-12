@@ -10,6 +10,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraft.world.WorldType;
 import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraft.world.gen.IChunkGenerator;
 import net.minecraftforge.event.terraingen.OreGenEvent;
@@ -49,8 +50,11 @@ public class WorldGeneratorImpl implements IWorldGenerator {
         int selfGridZ = Math.floorDiv(chunkZ, GRID_SIZE_Z);
         List<OreDepositDefinition> generatedOres = generateInternal(world, selfGridX, selfGridZ, chunkX, chunkZ);
 
-        //if generated ores aren't empty, and surface rocks are enabled in config, attempt to generate them
-        if (generatedOres.isEmpty() || !ConfigHolder.enableOreVeinSurfaceRocks)
+        //if we didn't generate anything, or surface rocks disabled, or it is a flat world,
+        //do not generate them at all
+        if (generatedOres.isEmpty() ||
+            !ConfigHolder.enableOreVeinSurfaceRocks ||
+            world.getWorldType() == WorldType.FLAT)
             return;
 
         for (OreDepositDefinition depositDefinition : generatedOres) {
@@ -64,7 +68,8 @@ public class WorldGeneratorImpl implements IWorldGenerator {
                 BlockPos topBlockPos = new BlockPos(randomX, 0, randomZ);
                 topBlockPos = world.getTopSolidOrLiquidBlock(topBlockPos).down();
                 IBlockState blockState = world.getBlockState(topBlockPos);
-                if(blockState.getBlockFaceShape(world, topBlockPos, EnumFacing.UP) != BlockFaceShape.SOLID)
+                if(blockState.getBlockFaceShape(world, topBlockPos, EnumFacing.UP) != BlockFaceShape.SOLID ||
+                    !blockState.isOpaqueCube() || !blockState.isFullBlock())
                     continue;
                 BlockSurfaceRock blockSurfaceRock = MetaBlocks.SURFACE_ROCKS.get(material);
                 IBlockState statePlace = blockSurfaceRock.getDefaultState().withProperty(blockSurfaceRock.materialProperty, material);
@@ -80,9 +85,10 @@ public class WorldGeneratorImpl implements IWorldGenerator {
         for(int gridX = -halfSizeX; gridX <= halfSizeX; gridX++) {
                 for(int gridZ = -halfSizeZ; gridZ <= halfSizeZ; gridZ++) {
                     CachedGridEntry cachedGridEntry = CachedGridEntry.getOrCreateEntry(world, selfGridX + gridX, selfGridZ + gridZ);
-                    cachedGridEntry.populateChunk(world, chunkX, chunkZ);
-                    if(gridX == 0 && gridZ == 0) {
+                    boolean generatedSomething = cachedGridEntry.populateChunk(world, chunkX, chunkZ);
+                    if(gridX == 0 && gridZ == 0 && generatedSomething) {
                         //add generated definitions only in current grid entry
+                        //and only if we really generated at least one block of ore in current chunk
                         allGeneratedOres = cachedGridEntry.getGeneratedVeins();
                     }
                 }

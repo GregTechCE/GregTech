@@ -1,9 +1,9 @@
 {
-  "parent": "item/generated",
+  "parent": "item/handheld",
   "textures": {
     "layer0": "gregtech:items/void",
     "layer1": "gregtech:items/tools/wire_cutter_overlay",
-	"layer2": "gregtech:items/tools/wire_cutter",
-	"layer3": "gregtech:items/void" 
+  	"layer2": "gregtech:items/tools/wire_cutter",
+	  "layer3": "gregtech:items/void"
   }
 }

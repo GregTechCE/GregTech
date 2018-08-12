@@ -8,7 +8,6 @@ import gregtech.api.capability.IMultipleTankHandler;
 import gregtech.api.util.GTUtility;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
-import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.items.IItemHandlerModifiable;
 import org.apache.commons.lang3.Validate;
@@ -93,11 +92,11 @@ public class Recipe {
 		this.inputs.sort(Comparator.comparing(CountableIngredient::getCount).reversed());
 	}
 
-	public boolean matches(boolean consumeIfSuccessful, boolean dontCheckStackSizes, IItemHandlerModifiable inputs, IMultipleTankHandler fluidInputs) {
-		return matches(consumeIfSuccessful, dontCheckStackSizes, GTUtility.itemHandlerToList(inputs), GTUtility.fluidHandlerToList(fluidInputs));
+	public final boolean matches(boolean consumeIfSuccessful, IItemHandlerModifiable inputs, IMultipleTankHandler fluidInputs) {
+		return matches(consumeIfSuccessful, GTUtility.itemHandlerToList(inputs), GTUtility.fluidHandlerToList(fluidInputs));
 	}
 
-	public boolean matches(boolean consumeIfSuccessful, boolean dontCheckStackSizes, List<ItemStack> inputs, List<FluidStack> fluidInputs) {
+	public boolean matches(boolean consumeIfSuccessful, List<ItemStack> inputs, List<FluidStack> fluidInputs) {
 	    int[] fluidAmountInTank = new int[fluidInputs.size()];
 	    int[] itemAmountInSlot = new int[inputs.size()];
 
@@ -112,13 +111,18 @@ public class Recipe {
 
         for (FluidStack fluid : this.fluidInputs) {
             int fluidAmount = fluid.amount;
+            boolean isNotConsumed = false;
+            if(fluidAmount == 0) {
+                fluidAmount = 1;
+                isNotConsumed = true;
+            }
             for (int i = 0; i < fluidInputs.size(); i++) {
                 FluidStack tankFluid = fluidInputs.get(i);
                 if (tankFluid == null || !tankFluid.isFluidEqual(fluid))
                     continue;
                 int fluidAmountToConsume = Math.min(fluidAmountInTank[i], fluidAmount);
                 fluidAmount -= fluidAmountToConsume;
-                fluidAmountInTank[i] -= fluidAmountToConsume;
+                if(!isNotConsumed) fluidAmountInTank[i] -= fluidAmountToConsume;
                 if (fluidAmount == 0) break;
             }
             if(fluidAmount > 0)
@@ -198,9 +202,9 @@ public class Recipe {
 		return fluidInputs;
 	}
 
-	public boolean hasInputFluid(Fluid fluid) {
+	public boolean hasInputFluid(FluidStack fluid) {
 	    for(FluidStack fluidStack : fluidInputs) {
-	        if(fluidStack.getFluid() == fluid) {
+	        if(fluidStack.isFluidEqual(fluid)) {
 	            return true;
             }
         }

@@ -82,7 +82,7 @@ public abstract class RecipeMapWorkableHandler extends MTETrait implements IWork
         if(progressTime == 0 && workingEnabled) {
             long maxVoltage = getMaxVoltage();
             Recipe currentRecipe;
-            if(previousRecipe != null && previousRecipe.matches(false, false,
+            if(previousRecipe != null && previousRecipe.matches(false,
                 metaTileEntity.getImportItems(), metaTileEntity.getImportFluids())) {
                 //if previous recipe still matches inputs, try to use it
                 currentRecipe = previousRecipe;
@@ -117,7 +117,7 @@ public abstract class RecipeMapWorkableHandler extends MTETrait implements IWork
             (!recipe.needsEmptyOutput() || MetaTileEntity.isItemHandlerEmpty(metaTileEntity.getExportItems())) &&
             MetaTileEntity.addItemsToItemHandler(metaTileEntity.getExportItems(), true, recipe.getOutputs()) &&
             MetaTileEntity.addFluidsToFluidHandler(metaTileEntity.getExportFluids(), true, recipe.getFluidOutputs()) &&
-            recipe.matches(true, false, metaTileEntity.getImportItems(), metaTileEntity.getImportFluids());
+            recipe.matches(true, metaTileEntity.getImportItems(), metaTileEntity.getImportFluids());
     }
 
     protected boolean ignoreTooMuchEnergy() {

@@ -23,9 +23,9 @@ import gregtech.api.unification.ore.StoneType;
 import gregtech.api.unification.ore.StoneTypes;
 import gregtech.common.blocks.modelfactories.BakedModelHandler;
 import gregtech.common.blocks.tileentity.TileEntityCrusherBlade;
-import gregtech.common.blocks.wood.BlockLeavesGT;
-import gregtech.common.blocks.wood.BlockLogGT;
-import gregtech.common.blocks.wood.BlockSaplingGT;
+import gregtech.common.blocks.wood.BlockGregLeaves;
+import gregtech.common.blocks.wood.BlockGregLog;
+import gregtech.common.blocks.wood.BlockGregSapling;
 import gregtech.common.pipelike.cables.CableFactory;
 import gregtech.common.pipelike.cables.Insulation;
 import gregtech.common.pipelike.cables.WireProperties;
@@ -44,6 +44,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.renderer.block.statemap.DefaultStateMapper;
+import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
@@ -83,9 +84,9 @@ public class MetaBlocks {
     public static BlockMineral MINERAL;
     public static BlockConcrete CONCRETE;
 
-    public static BlockLogGT LOG;
-    public static BlockLeavesGT LEAVES;
-    public static BlockSaplingGT SAPLING;
+    public static BlockGregLog LOG;
+    public static BlockGregLeaves LEAVES;
+    public static BlockGregSapling SAPLING;
 
     public static BlockCrusherBlade CRUSHER_BLADE;
 
@@ -123,11 +124,11 @@ public class MetaBlocks {
         CONCRETE = new BlockConcrete();
         CONCRETE.setRegistryName("concrete");
 
-        LOG = new BlockLogGT();
+        LOG = new BlockGregLog();
         LOG.setRegistryName("log");
-        LEAVES = new BlockLeavesGT();
+        LEAVES = new BlockGregLeaves();
         LEAVES.setRegistryName("leaves");
-        SAPLING = new BlockSaplingGT();
+        SAPLING = new BlockGregSapling();
         SAPLING.setRegistryName("sapling");
 
         CRUSHER_BLADE = new BlockCrusherBlade();
@@ -249,7 +250,7 @@ public class MetaBlocks {
         registerItemModel(GRANITE);
         registerItemModel(MINERAL);
         registerItemModel(CONCRETE);
-        registerItemModel(LOG, ImmutableMap.of(BlockLogGT.LOG_AXIS, EnumAxis.Y));
+        registerItemModel(LOG, ImmutableMap.of(BlockGregLog.LOG_AXIS, EnumAxis.Y));
         registerItemModel(LEAVES);
         registerItemModel(SAPLING);
 
@@ -343,6 +344,7 @@ public class MetaBlocks {
         OreDictUnifier.registerOre(new ItemStack(LOG, 1, GTValues.W), OrePrefix.log, Materials.Wood);
         OreDictUnifier.registerOre(new ItemStack(LEAVES, 1, GTValues.W), OrePrefix.treeLeaves, null);
         OreDictUnifier.registerOre(new ItemStack(SAPLING, 1, GTValues.W), OrePrefix.treeSapling, null);
+        GameRegistry.addSmelting(LOG, new ItemStack(Items.COAL, 1, 1), 0.15F);
 
         for(Entry<DustMaterial, BlockCompressed> entry : COMPRESSED.entrySet()) {
             DustMaterial material = entry.getKey();

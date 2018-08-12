@@ -1,9 +1,9 @@
 {
-  "parent": "item/generated",
+  "parent": "item/handheld",
   "textures": {
     "layer0": "gregtech:items/void",
     "layer1": "gregtech:items/tools/power_unit_mv",
-	"layer2": "gregtech:items/tools/drill",
-	"layer3": "gregtech:items/tools/power_unit_mv_overlay"
+	  "layer2": "gregtech:items/tools/drill",
+	  "layer3": "gregtech:items/tools/power_unit_mv_overlay"
   }
 }
