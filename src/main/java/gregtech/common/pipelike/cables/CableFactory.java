@@ -8,10 +8,12 @@ import gregtech.api.pipelike.PipeFactory;
 import gregtech.api.unification.material.MarkerMaterials;
 import gregtech.api.unification.material.type.IngotMaterial;
 import gregtech.api.unification.material.type.Material;
+import gregtech.api.util.GTUtility;
 import gregtech.api.worldentries.pipenet.PipeNet;
 import gregtech.api.worldentries.pipenet.WorldPipeNet;
 import net.minecraft.block.SoundType;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
 
 import static gregtech.api.GTValues.V;
 import static gregtech.api.unification.material.Materials.*;
@@ -114,7 +116,13 @@ public class CableFactory extends PipeFactory<Insulation, WireProperties, IEnerg
 
     @Override
     protected void onEntityCollided(Entity entity, ITilePipeLike<Insulation, WireProperties> tile) {
-        //TODO electric shock
+        if (tile.getBaseProperty().insulationLevel < 0 && entity instanceof EntityLivingBase) {
+            EnergyNet net = getPipeNetAt(tile);
+            if (net != null) {
+                long voltage = (long) net.getStatisticData(tile.getTilePos())[1];
+                if (voltage > 36L) GTUtility.applyElectricDamage((EntityLivingBase) entity, voltage);
+            }
+        }
     }
 
     @Override
