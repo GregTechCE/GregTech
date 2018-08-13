@@ -13,7 +13,7 @@ import gregtech.api.render.OrientedOverlayRenderer;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
-import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.IFluidTank;
 import net.minecraftforge.items.IItemHandlerModifiable;
@@ -66,7 +66,7 @@ public abstract class WorkableTieredMetaTileEntity extends TieredMetaTileEntity 
         FilteredFluidHandler[] fluidImports = new FilteredFluidHandler[workable.recipeMap.getMaxFluidInputs()];
         for(int i = 0; i < fluidImports.length; i++) {
             FilteredFluidHandler filteredFluidHandler = new FilteredFluidHandler(getInputTankCapacity(i));
-            filteredFluidHandler.setFillPredicate(fluid -> canInputFluid(fluid.getFluid()));
+            filteredFluidHandler.setFillPredicate(this::canInputFluid);
             fluidImports[i] = filteredFluidHandler;
         }
         return new FluidTankList(fluidImports);
@@ -82,13 +82,13 @@ public abstract class WorkableTieredMetaTileEntity extends TieredMetaTileEntity 
         return new FluidTankList(fluidExports);
     }
 
-    protected boolean canInputFluid(Fluid inputFluid) {
+    protected boolean canInputFluid(FluidStack inputFluid) {
         RecipeMap<?> recipeMap = workable.recipeMap;
-        if(recipeMap.canInputFluidForce(inputFluid))
+        if(recipeMap.canInputFluidForce(inputFluid.getFluid()))
             return true; //if recipe map forces input of given fluid, return true
         Set<Recipe> matchingRecipes = null;
         for(IFluidTank fluidTank : importFluids) {
-            Fluid fluidInTank = fluidTank.getFluid() == null ? null : fluidTank.getFluid().getFluid();
+            FluidStack fluidInTank = fluidTank.getFluid();
             if(fluidInTank != null) {
                 if (matchingRecipes == null) {
                     //if we didn't have a list of recipes with any fluids, obtain it from first tank with fluid

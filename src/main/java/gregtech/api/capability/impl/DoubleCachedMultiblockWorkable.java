@@ -24,7 +24,7 @@ public class DoubleCachedMultiblockWorkable extends MultiblockRecipeMapWorkable 
     @Override
     protected Recipe findRecipe(long maxVoltage, IItemHandlerModifiable inputs, IMultipleTankHandler fluidInputs) {
         Recipe currentRecipe;
-        if(doublePreviousRecipe != null && doublePreviousRecipe.matches(false, false, inputs, fluidInputs)) {
+        if(doublePreviousRecipe != null && doublePreviousRecipe.matches(false, inputs, fluidInputs)) {
             //if previous recipe still matches inputs, try to use it
             currentRecipe = doublePreviousRecipe;
         } else {

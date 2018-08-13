@@ -82,12 +82,13 @@ public class CachedGridEntry implements IBlockGeneratorAccess {
         return Collections.unmodifiableList(generatedVeins);
     }
 
-    public void populateChunk(World world, int chunkX, int chunkZ) {
+    public boolean populateChunk(World world, int chunkX, int chunkZ) {
         long chunkId = (long) chunkX << 32 | chunkZ & 0xFFFFFFFFL;
         ChunkDataEntry chunkDataEntry = dataByChunkPos.get(chunkId);
         if(chunkDataEntry != null) {
-            chunkDataEntry.populateChunk(world);
+            return chunkDataEntry.populateChunk(world);
         }
+        return false;
     }
 
     public List<OreDepositDefinition> triggerVeinsGeneration() {
@@ -183,8 +184,9 @@ public class CachedGridEntry implements IBlockGeneratorAccess {
             longList.add(blockIndex);
         }
 
-        public void populateChunk(World world) {
+        public boolean populateChunk(World world) {
             MutableBlockPos blockPos = new MutableBlockPos();
+            boolean generatedAnything = false;
             for(OreDepositDefinition definition : oreBlocks.keySet()) {
                 long[] blockIndexArray = oreBlocks.get(definition).toArray();
                 for(long blockIndex : blockIndexArray) {
@@ -199,8 +201,10 @@ public class CachedGridEntry implements IBlockGeneratorAccess {
                     IBlockState newState = definition.getBlockFiller().getStateForGeneration(currentState, blockX, blockY, blockZ);
                     //set flags as 16 to avoid observer updates loading neighbour chunks
                     world.setBlockState(blockPos, newState, 16);
+                    generatedAnything = true;
                 }
             }
+            return generatedAnything;
         }
 
     }

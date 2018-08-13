@@ -8,28 +8,70 @@ import mcjty.theoneprobe.api.NumberFormat;
 import mcjty.theoneprobe.apiimpl.styles.ProgressStyle;
 import mcjty.theoneprobe.network.NetworkTools;
 
+import java.math.BigInteger;
 import java.util.Objects;
+import java.util.function.BiConsumer;
+import java.util.function.Function;
 
-public class ElementProgressDecimal implements IElement {
+import static gregtech.integration.theoneprobe.element.ElementRenders.*;
+
+public class ElementProgressExtended implements IElement {
+
+    private enum NumberType {
+        Long(ByteBuf::readLong, (buf, value) -> buf.writeLong((Long) value)),
+        Double(ByteBuf::readDouble, (buf, value) -> buf.writeDouble((Double) value)),
+        BigInteger(buf -> new BigInteger(NetworkTools.readStringUTF8(buf)), (buf, value) -> NetworkTools.writeStringUTF8(buf, value.toString()));
+
+        final Function<ByteBuf, Number> reader;
+        final BiConsumer<ByteBuf, Number> writer;
+
+        NumberType(Function<ByteBuf, Number> reader, BiConsumer<ByteBuf, Number> writer) {
+            this.reader = reader;
+            this.writer = writer;
+        }
+
+        void writeValue(ByteBuf buf, Number value) {
+            writer.accept(buf, value);
+        }
+
+        Number readValue(ByteBuf buf) {
+            return reader.apply(buf);
+        }
+    }
 
     public static class Builder {
+        private NumberType typeCurrent, typeMax;
         private Number current, max;
         private IProgressStyle style;
         private String format1, format2, infixWithFormat;
         public Builder setCurrent(long current) {
             this.current = current;
+            typeCurrent = NumberType.Long;
             return this;
         }
         public Builder setCurrent(double current) {
             this.current = current;
+            typeCurrent = NumberType.Double;
+            return this;
+        }
+        public Builder setCurrent(BigInteger current) {
+            this.current = current;
+            typeCurrent = NumberType.BigInteger;
             return this;
         }
         public Builder setMax(long max) {
             this.max = max;
+            typeMax = NumberType.Long;
             return this;
         }
         public Builder setMax(double max) {
             this.max = max;
+            typeMax = NumberType.Double;
+            return this;
+        }
+        public Builder setMax(BigInteger max) {
+            this.max = max;
+            typeMax = NumberType.BigInteger;
             return this;
         }
         public Builder setStyle(IProgressStyle style) {
@@ -48,14 +90,14 @@ public class ElementProgressDecimal implements IElement {
             this.infixWithFormat = infixWithFormat;
             return this;
         }
-        public ElementProgressDecimal build() {
+        public ElementProgressExtended build() {
             Objects.requireNonNull(current);
             Objects.requireNonNull(max);
             Objects.requireNonNull(style);
             if (format1 == null) format1 = "";
             if (format2 == null) format2 = "";
             if (infixWithFormat == null) infixWithFormat = "%s / %s";
-            return new ElementProgressDecimal(current, max, style, format1, format2, infixWithFormat);
+            return new ElementProgressExtended(current, typeCurrent, max, typeMax, style, format1, format2, infixWithFormat);
         }
     }
 
@@ -63,6 +105,8 @@ public class ElementProgressDecimal implements IElement {
         return new Builder();
     }
 
+    private final NumberType typeCurrent;
+    private final NumberType typeMax;
     private final Number current;
     private final Number max;
     private final IProgressStyle style;
@@ -70,18 +114,22 @@ public class ElementProgressDecimal implements IElement {
     private final String format2;
     private final String infixWithFormat;
 
-    public ElementProgressDecimal(Number current, Number max, IProgressStyle style, String format1, String format2, String infixWithFormat) {
+    private ElementProgressExtended(Number current, NumberType typeCurrent, Number max, NumberType typeMax, IProgressStyle style, String format1, String format2, String infixWithFormat) {
         this.current = current;
+        this.typeCurrent = typeCurrent;
         this.max = max;
+        this.typeMax = typeMax;
         this.style = style;
         this.format1 = format1;
         this.format2 = format2;
         this.infixWithFormat = infixWithFormat;
     }
 
-    public ElementProgressDecimal(ByteBuf buf) {
-        current = buf.readBoolean() ? buf.readDouble() : buf.readLong();
-        max = buf.readBoolean() ? buf.readDouble() : buf.readLong();
+    public ElementProgressExtended(ByteBuf buf) {
+        typeCurrent = NumberType.values()[buf.readInt()];
+        current = typeCurrent.readValue(buf);
+        typeMax = NumberType.values()[buf.readInt()];
+        max = typeMax.readValue(buf);
         format1 = NetworkTools.readStringUTF8(buf);
         format2 = NetworkTools.readStringUTF8(buf);
         infixWithFormat = NetworkTools.readStringUTF8(buf);
@@ -102,12 +150,12 @@ public class ElementProgressDecimal implements IElement {
 
     @Override
     public void render(int x, int y) {
-        ElementRenders.render(style, current, max, format1, format2, infixWithFormat, x, y, getWidth(), getHeight());
+        renderProgress(style, current, max, format1, format2, infixWithFormat, x, y, getWidth(), getHeight());
     }
 
     @Override
     public int getWidth() {
-        return style.getWidth();
+        return Math.max(style.getWidth(), 3 + getStringWidth(getProgressText(current, max, format1, format2, infixWithFormat, style)));
     }
 
     @Override
@@ -117,14 +165,10 @@ public class ElementProgressDecimal implements IElement {
 
     @Override
     public void toBytes(ByteBuf buf) {
-        boolean isDouble = current instanceof Double;
-        buf.writeBoolean(isDouble);
-        if (isDouble) buf.writeDouble((Double) current);
-        else buf.writeLong((Long) current);
-        isDouble = max instanceof Double;
-        buf.writeBoolean(isDouble);
-        if (isDouble) buf.writeDouble((Double) max);
-        else buf.writeLong((Long) max);
+        buf.writeInt(typeCurrent.ordinal());
+        typeCurrent.writeValue(buf, current);
+        buf.writeInt(typeMax.ordinal());
+        typeMax.writeValue(buf, max);
         NetworkTools.writeStringUTF8(buf, format1);
         NetworkTools.writeStringUTF8(buf, format2);
         NetworkTools.writeStringUTF8(buf, infixWithFormat);
@@ -144,6 +188,6 @@ public class ElementProgressDecimal implements IElement {
 
     @Override
     public int getID() {
-        return TheOneProbeCompatibility.ELEMENT_PROGRESS_DECIMAL;
+        return TheOneProbeCompatibility.ELEMENT_PROGRESS_EXTENDED;
     }
 }

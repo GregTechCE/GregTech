@@ -10,7 +10,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class CompressedItemBlock extends ItemBlock {
 
-    private BlockCompressed block;
+    public final BlockCompressed block;
 
     public CompressedItemBlock(BlockCompressed block) {
         super(block);
@@ -24,7 +24,7 @@ public class CompressedItemBlock extends ItemBlock {
     }
 
     @SuppressWarnings("deprecation")
-    protected IBlockState getBlockState(ItemStack stack) {
+    public IBlockState getBlockState(ItemStack stack) {
         return block.getStateFromMeta(getMetadata(stack.getItemDamage()));
     }
 

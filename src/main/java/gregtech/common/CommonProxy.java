@@ -7,12 +7,14 @@ import gregtech.api.enchants.EnchantmentRadioactivity;
 import gregtech.api.items.metaitem.MetaItem;
 import gregtech.api.pipelike.ItemBlockPipeLike;
 import gregtech.api.pipelike.PipeFactory;
+import gregtech.api.unification.material.type.DustMaterial;
+import gregtech.api.unification.material.type.Material;
 import gregtech.api.unification.ore.OrePrefix;
 import gregtech.api.util.GTLog;
 import gregtech.common.blocks.*;
-import gregtech.common.blocks.wood.BlockLeavesGT;
-import gregtech.common.blocks.wood.BlockLogGT;
-import gregtech.common.blocks.wood.BlockSaplingGT;
+import gregtech.common.blocks.wood.BlockGregLeaves;
+import gregtech.common.blocks.wood.BlockGregLog;
+import gregtech.common.blocks.wood.BlockGregSapling;
 import gregtech.common.items.MetaItems;
 import gregtech.common.items.PotionFluids;
 import gregtech.loaders.load.FuelLoader;
@@ -29,8 +31,10 @@ import net.minecraft.enchantment.Enchantment;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemMultiTexture;
+import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraftforge.event.RegistryEvent;
+import net.minecraftforge.event.furnace.FurnaceFuelBurnTimeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -99,9 +103,9 @@ public class CommonProxy {
         registry.register(createItemBlock(GRANITE, StoneItemBlock::new));
         registry.register(createItemBlock(MINERAL, StoneItemBlock::new));
         registry.register(createItemBlock(CONCRETE, StoneItemBlock::new));
-        registry.register(createMultiTexItemBlock(LOG, state -> state.getValue(BlockLogGT.VARIANT).getName()));
-        registry.register(createMultiTexItemBlock(LEAVES, state -> state.getValue(BlockLeavesGT.VARIANT).getName()));
-        registry.register(createMultiTexItemBlock(SAPLING, state -> state.getValue(BlockSaplingGT.VARIANT).getName()));
+        registry.register(createMultiTexItemBlock(LOG, state -> state.getValue(BlockGregLog.VARIANT).getName()));
+        registry.register(createMultiTexItemBlock(LEAVES, state -> state.getValue(BlockGregLeaves.VARIANT).getName()));
+        registry.register(createMultiTexItemBlock(SAPLING, state -> state.getValue(BlockGregSapling.VARIANT).getName()));
         registry.register(createItemBlock(CRUSHER_BLADE, ItemBlock::new));
 
         PipeFactory.allFactories.values().forEach(factory ->
@@ -123,7 +127,8 @@ public class CommonProxy {
 
     //this is called with normal priority, so most mods working with
     //ore dictionary and recipes will get recipes accessible in time
-    @SubscribeEvent
+    //we use low priority so at this time mods like forestry will register their items to ore dictionary
+    @SubscribeEvent(priority = EventPriority.LOW)
     public static void registerRecipes(RegistryEvent.Register<IRecipe> event) {
         GTLog.logger.info("Registering ore dictionary...");
 
@@ -157,6 +162,29 @@ public class CommonProxy {
     public static void registerRecipesLowest(RegistryEvent.Register<IRecipe> event) {
         GTLog.logger.info("Running late material handlers...");
         OrePrefix.runMaterialHandlers();
+    }
+
+    @SubscribeEvent
+    public static void modifyFuelBurnTime(FurnaceFuelBurnTimeEvent event) {
+        ItemStack stack = event.getItemStack();
+        Block block = Block.getBlockFromItem(stack.getItem());
+        //handle sapling and log burn rates
+        if(block == MetaBlocks.LOG) {
+            event.setBurnTime(300);
+        } else if(block == MetaBlocks.SAPLING) {
+            event.setBurnTime(100);
+        }
+        //handle material blocks burn value
+        if(stack.getItem() instanceof CompressedItemBlock) {
+            CompressedItemBlock itemBlock = (CompressedItemBlock) stack.getItem();
+            Material material = itemBlock.getBlockState(stack).getValue(itemBlock.block.variantProperty);
+            if(material instanceof DustMaterial &&
+                ((DustMaterial) material).burnTime > 0) {
+                //compute burn value for block prefix, taking amount of material in block into account
+                double materialUnitsInBlock = OrePrefix.block.getMaterialAmount(material) / (GTValues.M * 1.0);
+                event.setBurnTime((int) (materialUnitsInBlock * ((DustMaterial) material).burnTime));
+            }
+        }
     }
 
     @SuppressWarnings("deprecation")

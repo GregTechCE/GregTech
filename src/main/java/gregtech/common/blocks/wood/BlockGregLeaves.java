@@ -3,7 +3,7 @@ package gregtech.common.blocks.wood;
 import com.google.common.collect.Lists;
 import gregtech.api.GregTechAPI;
 import gregtech.common.blocks.MetaBlocks;
-import gregtech.common.blocks.wood.BlockLogGT.LogVariant;
+import gregtech.common.blocks.wood.BlockGregLog.LogVariant;
 import net.minecraft.block.BlockLeaves;
 import net.minecraft.block.BlockPlanks.EnumType;
 import net.minecraft.block.properties.PropertyEnum;
@@ -21,11 +21,11 @@ import javax.annotation.Nonnull;
 import java.util.List;
 import java.util.Random;
 
-public class BlockLeavesGT extends BlockLeaves {
+public class BlockGregLeaves extends BlockLeaves {
 
     public static final PropertyEnum<LogVariant> VARIANT = PropertyEnum.create("variant", LogVariant.class);
 
-    public BlockLeavesGT() {
+    public BlockGregLeaves() {
         setDefaultState(this.blockState.getBaseState()
             .withProperty(VARIANT, LogVariant.RUBBER_WOOD)
             .withProperty(CHECK_DECAY, Boolean.TRUE)
@@ -49,9 +49,9 @@ public class BlockLeavesGT extends BlockLeaves {
     @Override
     public IBlockState getStateFromMeta(int meta) {
         return getDefaultState()
-            .withProperty(CHECK_DECAY, meta / 8 == 1)
-            .withProperty(DECAYABLE, meta / 4 == 1)
-            .withProperty(VARIANT, LogVariant.values()[meta % 4 % LogVariant.values().length]);
+            .withProperty(CHECK_DECAY, meta / 8 >= 1)
+            .withProperty(DECAYABLE, meta % 8 / 4 == 1)
+            .withProperty(VARIANT, LogVariant.values()[meta % 8 % 4 % LogVariant.values().length]);
     }
 
     @Override

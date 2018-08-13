@@ -161,8 +161,9 @@ public class WorldPipeNet extends WorldSavedData {
         scheduledCheck.forEach((factory, pos) -> {
             ITilePipeLike tile = factory.getTile(world, pos);
             if (tile != null) {
-                PipeNet net = factory.addToPipeNet(world, pos, tile);
+                factory.addToPipeNet(world, pos, tile);
                 tile.updateInternalConnection();
+                tile.updateRenderMask();
             } else {
                 removeNodeFromNet(pos, factory);
             }

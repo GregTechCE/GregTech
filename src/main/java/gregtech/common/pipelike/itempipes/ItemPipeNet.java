@@ -66,23 +66,21 @@ public class ItemPipeNet extends PipeNet<TypeItemPipe, ItemPipeProperties, IItem
 
     @Override
     protected void deserializeNodeData(BlockPos pos, NBTTagCompound nodeTag) {
-        if (nodeTag.hasKey("BufferCounter")) {
+        if (nodeTag.hasKey("BufferedItems")) {
             Pipe pipe = new Pipe(allNodes.get(pos).property);
             pipes.put(pos, pipe);
-            if (nodeTag.hasKey("BufferedItems")) {
-                NBTTagList list = nodeTag.getTagList("BufferedItems", TAG_COMPOUND);
-                list.forEach(nbtBase -> {
-                    if (nbtBase.getId() == TAG_COMPOUND) {
-                        NBTTagCompound compound = (NBTTagCompound) nbtBase;
-                        int[] data = compound.getIntArray("GTItemPipeBuffered");
-                        int index = pipe.addItem(new ItemStack(compound), data[0] < 0 ? null : EnumFacing.VALUES[data[0]]);
-                        if (index >= 0) {
-                            pipe.bufferedItems[index].moveCountDown = data[1];
-                            pipe.bufferedItems[index].dirCountDown = data[2];
-                        }
+            NBTTagList list = nodeTag.getTagList("BufferedItems", TAG_COMPOUND);
+            list.forEach(nbtBase -> {
+                if (nbtBase.getId() == TAG_COMPOUND) {
+                    NBTTagCompound compound = (NBTTagCompound) nbtBase;
+                    int[] data = compound.getIntArray("GTItemPipeBuffered");
+                    int index = pipe.addItem(new ItemStack(compound), data[0] < 0 ? null : EnumFacing.VALUES[data[0]]);
+                    if (index >= 0) {
+                        pipe.bufferedItems[index].moveCountDown = data[1];
+                        pipe.bufferedItems[index].dirCountDown = data[2];
                     }
-                });
-            }
+                }
+            });
         }
     }
 
@@ -208,11 +206,7 @@ public class ItemPipeNet extends PipeNet<TypeItemPipe, ItemPipeProperties, IItem
                 Pipe pipe = itr.next();
                 if (pipe.tick()) tryMoveBufferedItems = true;
                 if (pipe.getBufferedItemCount() == 0) {
-                    if (pipe.getRemainingCapacity() == pipe.capacity) {
-                        itr.remove();
-                    } else {
-                        pipe.bufferedItems = null;
-                    }
+                    itr.remove();
                 }
             }
             worldNets.markDirty();
@@ -250,6 +244,7 @@ public class ItemPipeNet extends PipeNet<TypeItemPipe, ItemPipeProperties, IItem
         pos.release();
 
         if (!handlers.isEmpty()) {
+            @SuppressWarnings("unchecked")
             RoutePath<ItemPipeProperties, ?, Long> path = ((Map.Entry<RoutePath<ItemPipeProperties, ?, Long>, IItemHandler>) handlers.entries().toArray()[WorldPipeNet.rnd.nextInt(handlers.size())]).getKey();
             LinkedNode<ItemPipeProperties> startNode = path.getStartNode();
             if (startNode.getTarget() == null) {

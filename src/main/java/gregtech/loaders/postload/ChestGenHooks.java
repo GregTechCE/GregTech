@@ -60,7 +60,7 @@ public class ChestGenHooks {
                         return stack;
                     }
                 }
-        }, NO_CONDITIONS, "#loot_" + item.toString());
+        }, NO_CONDITIONS, "#gregtech:loot_" + item.toString());
         if(lootEntryItems.containsKey(lootTable)) {
             lootEntryItems.get(lootTable).add(itemEntry);
         } else {

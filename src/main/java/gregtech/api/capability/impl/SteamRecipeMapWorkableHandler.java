@@ -1,9 +1,9 @@
 package gregtech.api.capability.impl;
 
-import gregtech.api.damagesources.DamageSources;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.recipes.Recipe;
 import gregtech.api.recipes.RecipeMap;
+import gregtech.api.util.GTUtility;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
@@ -115,7 +115,7 @@ public class SteamRecipeMapWorkableHandler extends RecipeMapWorkableHandler {
         if (blockOnPos.getCollisionBoundingBox(metaTileEntity.getWorld(), ventingBlockPos) == Block.NULL_AABB) {
             metaTileEntity.getWorld()
                 .getEntitiesWithinAABB(EntityLivingBase.class, new AxisAlignedBB(ventingBlockPos), EntitySelectors.CAN_AI_TARGET)
-                .forEach(entity -> entity.attackEntityFrom(DamageSources.getHeatDamage(), 6.0f));
+                .forEach(entity -> GTUtility.applyHeatDamage(entity, 6.0F));
             WorldServer world = (WorldServer) metaTileEntity.getWorld();
             world.spawnParticle(EnumParticleTypes.SMOKE_LARGE,
                 machinePos.getX() + 0.5 + ventingSide.getFrontOffsetX() * 0.6,

@@ -78,13 +78,13 @@ public class CableRenderer extends PipeLikeRenderer<Insulation> {
     @Override
     protected int getDestoryEffectColor(IBlockState state, World world, BlockPos pos) {
         BlockPipeLike<Insulation, ?, ?> block = getBlock(state);
-        return state.getValue(block.getBaseProperty()).isColorable() ? 0x999999 : block.material.materialRGB;
+        return state.getValue(block.getBaseProperty()).isColorable() ? 0x999999 : factory.getMaterialColorForRender(block.material);
     }
 
     @Override
     public void renderBlock(Material material, Insulation baseProperty, int tileColor, CCRenderState state, IVertexOperation[] pipeline, int renderMask) {
         MaterialIconSet iconSet = material.materialIconSet;
-        int materialColor = GTUtility.convertRGBtoOpaqueRGBA_CL(material.materialRGB);
+        int materialColor = GTUtility.convertRGBtoOpaqueRGBA_CL(factory.getMaterialColorForRender(material));
         float thickness = baseProperty.getThickness();
 
         IVertexOperation[][] pipelines = new IVertexOperation[3][];

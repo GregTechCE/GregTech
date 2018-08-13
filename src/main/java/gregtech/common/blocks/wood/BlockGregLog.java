@@ -20,12 +20,12 @@ import net.minecraft.world.World;
 
 import java.util.Random;
 
-public class BlockLogGT extends BlockLog {
+public class BlockGregLog extends BlockLog {
 
     public static final PropertyEnum<LogVariant> VARIANT = PropertyEnum.create("variant", LogVariant.class);
     public static final PropertyBool NATURAL = PropertyBool.create("natural");
 
-    public BlockLogGT() {
+    public BlockGregLog() {
         this.setDefaultState(this.blockState.getBaseState()
             .withProperty(VARIANT, LogVariant.RUBBER_WOOD)
             .withProperty(LOG_AXIS, BlockLog.EnumAxis.Y)

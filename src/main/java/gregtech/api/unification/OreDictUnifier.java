@@ -1,6 +1,7 @@
 package gregtech.api.unification;
 
 import com.google.common.base.CaseFormat;
+import com.google.common.base.Function;
 import com.google.common.base.Joiner;
 import gregtech.api.unification.material.type.DustMaterial;
 import gregtech.api.unification.material.type.IngotMaterial;
@@ -8,6 +9,8 @@ import gregtech.api.unification.material.type.MarkerMaterial;
 import gregtech.api.unification.material.type.Material;
 import gregtech.api.unification.ore.OrePrefix;
 import gregtech.api.unification.stack.*;
+import gregtech.api.util.CustomModPriorityComparator;
+import gregtech.common.ConfigHolder;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
 import net.minecraftforge.common.MinecraftForge;
@@ -33,6 +36,27 @@ public class OreDictUnifier {
     private static final Map<SimpleItemStack, UnificationEntry> stackUnificationInfo = new WildcardAwareHashMap<>();
     private static final Map<UnificationEntry, ArrayList<SimpleItemStack>> stackUnificationItems = new HashMap<>();
     private static final Map<SimpleItemStack, Set<String>> stackOreDictName = new WildcardAwareHashMap<>();
+
+    private static Comparator<SimpleItemStack> stackComparator;
+
+
+    public static Comparator<SimpleItemStack> getSimpleItemStackComparator() {
+        if(stackComparator == null) {
+            if(ConfigHolder.useCustomModPriorities) {
+                List<String> modPriorities = Arrays.asList(ConfigHolder.modPriorities);
+                stackComparator = Collections.reverseOrder(new CustomModPriorityComparator(modPriorities));
+            } else {
+                Function<SimpleItemStack, String> modIdExtractor = stack -> stack.item.getRegistryName().getResourceDomain();
+                stackComparator = Comparator.comparing(modIdExtractor);
+            }
+        }
+        return stackComparator;
+    }
+
+    public static Comparator<ItemStack> getItemStackComparator() {
+        Comparator<SimpleItemStack> comparator = getSimpleItemStackComparator();
+        return (first, second) -> comparator.compare(new SimpleItemStack(first), new SimpleItemStack(second));
+    }
 
     public static void registerMarkerMaterial(MarkerMaterial markerMaterial) {
         if(markerMaterialRegistry.containsKey(markerMaterial.toString())) {
@@ -171,7 +195,7 @@ public class OreDictUnifier {
         if(unificationEntry == null || !stackUnificationItems.containsKey(unificationEntry) || !unificationEntry.orePrefix.isUnificationEnabled)
             return itemStack;
         ArrayList<SimpleItemStack> keys = stackUnificationItems.get(unificationEntry);
-        keys.sort(Comparator.comparing(a -> a.item.delegate.name().getResourceDomain()));
+        keys.sort(getSimpleItemStackComparator());
         return keys.size() > 0 ? keys.get(0).asItemStack(itemStack.getCount()) : itemStack;
     }
 
@@ -188,7 +212,7 @@ public class OreDictUnifier {
         if(!stackUnificationItems.containsKey(unificationEntry))
             return ItemStack.EMPTY;
         ArrayList<SimpleItemStack> keys = stackUnificationItems.get(unificationEntry);
-        keys.sort(Comparator.comparing(a -> a.item.delegate.name().getResourceDomain()));
+        keys.sort(getSimpleItemStackComparator());
         return keys.size() > 0 ? keys.get(0).asItemStack(stackSize) : ItemStack.EMPTY;
     }
 
@@ -202,7 +226,7 @@ public class OreDictUnifier {
         if(!stackUnificationItems.containsKey(unificationEntry))
             return Collections.emptyList();
         ArrayList<SimpleItemStack> keys = stackUnificationItems.get(unificationEntry);
-        keys.sort(Comparator.comparing(a -> a.item.delegate.name().getResourceDomain()));
+        keys.sort(getSimpleItemStackComparator());
         return keys.stream().map(SimpleItemStack::asItemStack).collect(Collectors.toList());
     }
 

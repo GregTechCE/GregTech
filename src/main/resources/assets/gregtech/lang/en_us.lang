@@ -558,11 +558,6 @@ metaitem.duct.tape.tooltip=If you can't fix it with this, use more of it!
 metaitem.mcguffium.239.name=Mc Guffium 239
 metaitem.mcguffium.239.tooltip=42%% better than Phlebotnium
 
-metaitem.pipe.small.bronze.name=Small Bronze Pipe
-metaitem.pipe.small.bronze.tooltip=Just imagine this is pipe, ok?/nOh, and we are looking for an artist
-metaitem.pipe.small.steel.name=Small Steel Pipe
-metaitem.pipe.small.steel.tooltip=Just imagine this is pipe, ok?/nOh, and we are looking for an artist
-
 metaitem.thermos_can.dark.coffee.name=Dark Coffee
 metaitem.thermos_can.dark.coffee.tooltip=Coffee, dark, without anything else
 metaitem.thermos_can.dark.cafe.au.lait.name=Dark Coffee au lait
@@ -1106,6 +1101,9 @@ item.material.oreprefix.pipeRestrictiveSmall=Small Restrictive %s Pipe
 item.material.oreprefix.pipeRestrictiveMedium=Medium Restrictive %s Pipe
 item.material.oreprefix.pipeRestrictiveLarge=Large Restrictive %s Pipe
 item.material.oreprefix.pipeRestrictiveHuge=Huge Restrictive %s Pipe
+item.material.oreprefix.pipeQuadruple=Quadruple %s Pipe
+item.material.oreprefix.pipeNonuple=Nonuple %s Pipe
+item.material.oreprefix.pipeSexdecuple=Sexdecuple %s Pipe
 item.material.oreprefix.pipe=%s Pipe
 item.material.oreprefix.wireGtHex=16x %s wire
 item.material.oreprefix.wireGtTwelve=12x %s wire
@@ -2911,10 +2909,18 @@ gregtech.cable.voltage=Voltage: §a%d §7(§a%s§7)
 gregtech.cable.amperage=Amperage: §e%d
 gregtech.cable.loss_per_block=Loss per block: §c%d
 
-gregtech.item_pipe.capacity1=Item Capacity: %d Stacks/ %d sec
-gregtech.item_pipe.capacity2=Item Capacity: %d Stacks/sec
-gregtech.item_pipe.capacity3=Item Capacity: 1 Stack/sec
-gregtech.item_pipe.routing_value=Routing Value:  %d
+gregtech.item_pipe.normal=§6Item Pipe§7
+gregtech.item_pipe.capacity1=Item Capacity: §e%d§7 Stacks/ %d sec
+gregtech.item_pipe.capacity2=Item Capacity: §e%d§7 Stacks/sec
+gregtech.item_pipe.capacity3=Item Capacity: §e1§7 Stack/sec
+gregtech.item_pipe.routing_value=Routing Value: §2%d§7
+
+gregtech.fluid_pipe.normal=§1Fluid Pipe§7
+gregtech.fluid_pipe.multiple=§1Multiple Fluid Pipe§7
+gregtech.fluid_pipe.capacity1=Fluid Capacity: §9%d§7 L/sec
+gregtech.fluid_pipe.capacity2=Fluid Capacity: §9%d§7x§9%d§7 L/sec
+gregtech.fluid_pipe.heat_limit=Heat Limit:  §c%s§7 K
+gregtech.fluid_pipe.gas_proof=§aGas Proof§7
 
 gregtech.multiblock.work_paused=Work Paused.
 gregtech.multiblock.running=Running perfectly.

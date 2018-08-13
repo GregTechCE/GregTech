@@ -115,6 +115,7 @@ public class RecipeMapCategory implements IRecipeCategory<GTRecipeWrapper> {
             }
         }
         itemStackGroup.addTooltipCallback(recipeWrapper::addTooltip);
+        fluidStackGroup.addTooltipCallback(recipeWrapper::addTooltip);
         itemStackGroup.set(ingredients);
         fluidStackGroup.set(ingredients);
     }

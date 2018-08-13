@@ -37,7 +37,7 @@ public class MarkerMaterials {
         public static MarkerMaterial Blue = new MarkerMaterial("blue");
         public static MarkerMaterial Purple = new MarkerMaterial("purple");
         public static MarkerMaterial Cyan = new MarkerMaterial("cyan");
-        public static MarkerMaterial LightGray = new MarkerMaterial("light_gray");
+        public static MarkerMaterial Silver = new MarkerMaterial("silver");
         public static MarkerMaterial Gray = new MarkerMaterial("gray");
         public static MarkerMaterial Pink = new MarkerMaterial("pink");
         public static MarkerMaterial Lime = new MarkerMaterial("lime");
@@ -51,7 +51,7 @@ public class MarkerMaterials {
          * Arrays containing all possible color values (without Colorless!)
          */
         public static final MarkerMaterial[] VALUES = new MarkerMaterial[] {
-                Black, Red, Green, Brown, Blue, Purple, Cyan, LightGray, Gray, Pink, Lime, Yellow, LightBlue, Magenta, Orange, White
+                Black, Red, Green, Brown, Blue, Purple, Cyan, Silver, Gray, Pink, Lime, Yellow, LightBlue, Magenta, Orange, White
         };
 
         /**

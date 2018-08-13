@@ -51,6 +51,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.IItemHandlerModifiable;
+import org.apache.commons.lang3.ArrayUtils;
 
 import javax.annotation.Nullable;
 import java.awt.*;
@@ -58,6 +59,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
+import java.math.BigInteger;
 import java.util.*;
 import java.util.List;
 import java.util.Map.Entry;
@@ -98,6 +100,55 @@ public class GTUtility {
         return null;
     }
 
+    public static BigInteger LONG_MAX = BigInteger.valueOf(Long.MAX_VALUE);
+    public static BigInteger LONG_MIN = BigInteger.valueOf(Long.MIN_VALUE);
+    public static long castToLong(BigInteger value) {
+        return value.compareTo(LONG_MAX) >= 0 ? Long.MAX_VALUE : value.compareTo(LONG_MIN) <= 0 ? Long.MIN_VALUE : value.longValue();
+    }
+
+    public static long castedSum(long... values) {
+        if (values.length == 0) return 0L;
+        if (values.length == 1) return values[0];
+        int p = 0;
+        // try combine the values first, in order not to use BigInteger so frequently.
+        for (int i = 1; i < values.length; i++) {
+            if (values[i] == 0L) continue;
+            if ((values[i] > 0 && Long.MAX_VALUE - values[p] >= values[i])
+                || (values[i] < 0 && Long.MIN_VALUE - values[i] <= values[p])) {
+                values[p] += values[i];
+            } else {
+                values[++p] = values[i];
+            }
+        }
+        if (p == 0) return values[0];
+        BigInteger result = BigInteger.ZERO;
+        for (int i = 0; i <= p; i++) {
+            result = result.add(BigInteger.valueOf(values[i]));
+        }
+        return castToLong(result);
+    }
+
+    public static BigInteger sum(long... values) {
+        if (values.length == 0) return BigInteger.ZERO;
+        if (values.length == 1) return BigInteger.valueOf(values[0]);
+        int p = 0;
+        // try combine the values first in order not to use BigInteger so frequently.
+        for (int i = 1; i < values.length; i++) {
+            if (values[i] == 0L) continue;
+            if ((values[i] > 0 && Long.MAX_VALUE - values[p] >= values[i])
+                || (values[i] < 0 && Long.MIN_VALUE - values[i] <= values[p])) {
+                values[p] += values[i];
+            } else {
+                values[++p] = values[i];
+            }
+        }
+        BigInteger result = BigInteger.ZERO;
+        for (int i = 0; i <= p; i++) {
+            result = result.add(BigInteger.valueOf(values[i]));
+        }
+        return result;
+    }
+
     //magic is here
     @SuppressWarnings("unchecked")
     public static <T, R> Class<T> getActualTypeParameter(Class<? extends R> thisClass, Class<R> declaringClass, int index) {
@@ -124,42 +175,21 @@ public class GTUtility {
      * Determines dye color nearest to specified RGB color
      */
     public static EnumDyeColor determineDyeColor(int rgbColor) {
-        //add manual overrides for black and white
-        if(rgbColor == 0xFFFFFF)
-            return EnumDyeColor.WHITE;
-        else if(rgbColor == 0x000000)
-            return EnumDyeColor.BLACK;
-        int rA = (rgbColor & 0xff0000) >> 16;
-        int gA = (rgbColor & 0xff00) >> 8;
-        int bA = (rgbColor & 0xff);
-        float[] hsb = Color.RGBtoHSB(rA, gA, bA, new float[3]);
-        return EnumDyeColor.values()[indexOfClosest(hsb[0], hueDyeValues)];
-    }
+        Color c = new Color(rgbColor);
 
-    private static double[] hueDyeValues = Arrays.stream(EnumDyeColor.values())
-        .mapToDouble(color -> {
-            int rA = (color.colorValue & 0xff0000) >> 16;
-            int gA = (color.colorValue & 0xff00) >> 8;
-            int bA = (color.colorValue & 0xff);
-            float[] hsb = Color.RGBtoHSB(rA, gA, bA, new float[3]);
-            return hsb[0];
-        })
-        .toArray();
+        Map<Double, EnumDyeColor> distances = new HashMap<>();
+        for (EnumDyeColor dyeColor : EnumDyeColor.values()) {
+            Color c2 = new Color(dyeColor.colorValue);
 
-    private static int indexOfClosest(double of, double[] in) {
-        double min = Double.POSITIVE_INFINITY;
-        int closestIndex = -1;
+            double distance = (c.getRed() - c2.getRed()) * (c.getRed() - c2.getRed())
+                + (c.getGreen() - c2.getGreen()) * (c.getGreen() - c2.getGreen())
+                + (c.getBlue() - c2.getBlue()) * (c.getBlue() - c2.getBlue());
 
-        for (int i = 0; i < in.length; i++) {
-            double diff = Math.abs(in[i] - of);
-
-            if (diff < min) {
-                min = diff;
-                closestIndex = i;
-            }
+            distances.put(distance, dyeColor);
         }
 
-        return closestIndex;
+        double min = Collections.min(distances.keySet());
+        return distances.get(min);
     }
 
     //just because CCL uses a different color format
@@ -541,7 +571,7 @@ public class GTUtility {
         for (EntityEquipmentSlot slot : EntityEquipmentSlot.values()) {
             if (slot.getSlotType() == EntityEquipmentSlot.Type.ARMOR) {
                 ItemStack equipment = entity.getItemStackFromSlot(slot);
-                if (!equipment.isEmpty() && !suitParts.contains(new SimpleItemStack(equipment))) {
+                if (equipment.isEmpty() || !suitParts.contains(new SimpleItemStack(equipment))) {
                     return false;
                 }
             }
@@ -577,6 +607,33 @@ public class GTUtility {
             entity.addPotionEffect(new PotionEffect(MobEffects.HUNGER, level * 130 * amountOfItems));
             entity.attackEntityFrom(DamageSources.getRadioactiveDamage(), level * 6 * amountOfItems);
             return true;
+        }
+        return false;
+    }
+
+    public static boolean applyHeatDamage(EntityLivingBase entity, float damage) {
+        if (damage > 0.0F && !entity.isImmuneToFire() && !entity.isPotionActive(MobEffects.FIRE_RESISTANCE) && !isWearingFullHeatHazmat(entity)) {
+            return entity.attackEntityFrom(DamageSources.getHeatDamage(), damage);
+        }
+        return false;
+    }
+
+    public static boolean applyFrostDamage(EntityLivingBase entity, float damage) {
+        if (damage > 0.0F  && !isWearingFullFrostHazmat(entity)) {
+            if (entity.getCreatureAttribute() != EnumCreatureAttribute.UNDEAD) {
+                if (entity.isImmuneToFire()) damage *= 2.0F;
+                return entity.attackEntityFrom(DamageSources.getFrostDamage(), damage);
+            } else {
+                entity.addPotionEffect(new PotionEffect(MobEffects.SLOWNESS, (int) damage * 30));
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public static boolean applyElectricDamage(EntityLivingBase entity, long voltage) {
+        if (voltage >= 36L && !isWearingFullElectroHazmat(entity)) {
+            return entity.attackEntityFrom(DamageSources.getElectricDamage(), (float) (voltage - 36L) / 36.0F);
         }
         return false;
     }

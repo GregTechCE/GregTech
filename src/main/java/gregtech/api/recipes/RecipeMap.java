@@ -59,7 +59,7 @@ public class RecipeMap<R extends RecipeBuilder<R>> {
 	private TextureArea progressBarTexture;
 	private MoveType moveType;
 
-    private final Map<Fluid, Collection<Recipe>> recipeFluidMap = new HashMap<>();
+    private final Map<FluidKey, Collection<Recipe>> recipeFluidMap = new HashMap<>();
     private final Collection<Recipe> recipeList;
 
 	public RecipeMap(String unlocalizedName,
@@ -141,8 +141,8 @@ public class RecipeMap<R extends RecipeBuilder<R>> {
 	    return false;
     }
 
-    public Collection<Recipe> getRecipesForFluid(Fluid fluid) {
-        return recipeFluidMap.getOrDefault(fluid, Collections.emptySet());
+    public Collection<Recipe> getRecipesForFluid(FluidStack fluid) {
+        return recipeFluidMap.getOrDefault(new FluidKey(fluid), Collections.emptySet());
     }
 
     private static boolean foundInvalidRecipe = false;
@@ -160,7 +160,7 @@ public class RecipeMap<R extends RecipeBuilder<R>> {
 		recipeList.add(recipe);
 
 		for (FluidStack fluid : recipe.getFluidInputs()) {
-			recipeFluidMap.computeIfAbsent(fluid.getFluid(), k -> new HashSet<>(1)).add(recipe);
+			recipeFluidMap.computeIfAbsent(new FluidKey(fluid), k -> new HashSet<>(1)).add(recipe);
 		}
 	}
 
@@ -209,10 +209,10 @@ public class RecipeMap<R extends RecipeBuilder<R>> {
     private Recipe findByFluidInputs(long voltage, List<ItemStack> inputs, List<FluidStack> fluidInputs) {
         for (FluidStack fluid : fluidInputs) {
             if (fluid == null) continue;
-            Collection<Recipe> recipes = recipeFluidMap.get(fluid.getFluid());
+            Collection<Recipe> recipes = recipeFluidMap.get(new FluidKey(fluid));
             if (recipes == null) continue;
             for (Recipe tmpRecipe : recipes) {
-                if (tmpRecipe.matches(false, false, inputs, fluidInputs)) {
+                if (tmpRecipe.matches(false, inputs, fluidInputs)) {
                     return voltage * amperage >= tmpRecipe.getEUt() ? tmpRecipe : null;
                 }
             }
@@ -223,7 +223,7 @@ public class RecipeMap<R extends RecipeBuilder<R>> {
 	@Nullable
 	private Recipe findByInputs(long voltage, List<ItemStack> inputs, List<FluidStack> fluidInputs) {
         for (Recipe recipe : recipeList) {
-            if (recipe.matches(false, false, inputs, fluidInputs)) {
+            if (recipe.matches(false, inputs, fluidInputs)) {
                 return voltage * amperage >= recipe.getEUt() ? recipe : null;
             }
         }

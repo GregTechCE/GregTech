@@ -4,7 +4,7 @@ import gregtech.api.capability.IEnergyContainer;
 import gregtech.api.capability.IWorkable;
 import gregtech.common.pipelike.cables.CableEnergyContainer;
 import gregtech.common.pipelike.cables.EnergyNet;
-import gregtech.integration.theoneprobe.element.ElementProgressDecimal;
+import gregtech.integration.theoneprobe.element.ElementProgressExtended;
 import gregtech.integration.theoneprobe.element.ElementTextAdvanced;
 import mcjty.theoneprobe.api.ElementAlignment;
 import mcjty.theoneprobe.api.IProbeInfo;
@@ -12,6 +12,8 @@ import mcjty.theoneprobe.api.TextStyleClass;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.capabilities.Capability;
+
+import java.math.BigInteger;
 
 public class ElectricContainerInfoProvider extends CapabilityInfoProvider<IEnergyContainer> {
 
@@ -55,7 +57,7 @@ public class ElectricContainerInfoProvider extends CapabilityInfoProvider<IEnerg
             color1 = 0xFFD00000;
             color2 = 0xFFF00000;
         }
-        ElementProgressDecimal.Builder builder = ElementProgressDecimal.start().setCurrent(average).setMax(total).setFormatForMax("#").setInfixWithFormat(infixFormat)
+        ElementProgressExtended.Builder builder = ElementProgressExtended.start().setCurrent(average).setMax(total).setFormatForMax("#").setInfixWithFormat(infixFormat)
             .setStyle(probeInfo.defaultProgressStyle()
             .borderColor(0x00000000)
             .backgroundColor(0x00000000)
@@ -70,29 +72,35 @@ public class ElectricContainerInfoProvider extends CapabilityInfoProvider<IEnerg
     @Override
     protected void addProbeInfo(IEnergyContainer capability, IProbeInfo probeInfo, TileEntity tileEntity, EnumFacing sideHit) {
         if (capability instanceof CableEnergyContainer) {
-            long[] data = ((CableEnergyContainer) capability).getAverageData();
+            double[] data = ((CableEnergyContainer) capability).getAverageData();
             long amperage = capability.getInputAmperage();
             long voltage = capability.getInputVoltage();
-            if (data[0] == 0 || data[2] == 0 || amperage == 0 || voltage == 0) return;
+            if (data[0] == 0 || amperage == 0 || voltage == 0) return;
             IProbeInfo horizontalPane = probeInfo.horizontal(probeInfo.defaultLayoutStyle().alignment(ElementAlignment.ALIGN_CENTER));
             horizontalPane.element(new ElementTextAdvanced(TextStyleClass.INFO + "{*gregtech.top.cable_average_voltage{%"+ EnergyNet.STATISTIC_COUNT +"%}*} "));
-            setCableProgressBar(probeInfo, horizontalPane, (double) data[1] / (double) data[0], voltage, "%s / %s V", 5.0, 100.0);
+            setCableProgressBar(probeInfo, horizontalPane, data[1], voltage, "%s / %s V", 5.0, 100.0);
             horizontalPane = probeInfo.horizontal(probeInfo.defaultLayoutStyle().alignment(ElementAlignment.ALIGN_CENTER));
             horizontalPane.element(new ElementTextAdvanced(TextStyleClass.INFO + "{*gregtech.top.cable_average_amperage{%"+ EnergyNet.STATISTIC_COUNT +"%}*} "));
-            setCableProgressBar(probeInfo, horizontalPane, (double) data[0] / (double) data[2], amperage, "%s / %s A", 3.0, 30.0);
+            setCableProgressBar(probeInfo, horizontalPane, data[0], amperage, "%s / %s A", 3.0, 30.0);
         } else {
-            long energyStored = capability.getEnergyStored();
-            long maxStorage = capability.getEnergyCapacity();
-            if(maxStorage == 0) return; //do not add empty max storage progress bar
+            BigInteger energyStored = capability.getEnergyStoredActual();
+            BigInteger maxStorage = capability.getEnergyCapacityActual();
+            if(maxStorage.compareTo(BigInteger.ZERO) == 0) return; //do not add empty max storage progress bar
             IProbeInfo horizontalPane = probeInfo.horizontal(probeInfo.defaultLayoutStyle().alignment(ElementAlignment.ALIGN_CENTER));
             String additionalSpacing = tileEntity.hasCapability(IWorkable.CAPABILITY_WORKABLE, sideHit) ? "   " : "";
             horizontalPane.text(TextStyleClass.INFO + "{*gregtech.top.energy_stored*} " + additionalSpacing);
-            horizontalPane.progress(energyStored, maxStorage, probeInfo.defaultProgressStyle()
-                .suffix("/" + maxStorage + " EU")
-                .borderColor(0x00000000)
-                .backgroundColor(0x00000000)
-                .filledColor(0xFFFFE000)
-                .alternateFilledColor(0xFFEED000));
+            horizontalPane.element(ElementProgressExtended.start()
+                .setCurrent(energyStored)
+                .setMax(maxStorage)
+                .setFormatForCurrent("#")
+                .setFormatForMax("#")
+                .setInfixWithFormat("%s / %s EU")
+                .setStyle(probeInfo.defaultProgressStyle()
+                    .borderColor(0x00000000)
+                    .backgroundColor(0x00000000)
+                    .filledColor(0xFFFFE000)
+                    .alternateFilledColor(0xFFEED000))
+                .build());
         }
     }
 

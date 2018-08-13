@@ -22,7 +22,11 @@ import static mcjty.theoneprobe.api.IProbeInfo.STARTLOC;
 
 public class ElementRenders {
 
-    public static void render(IProgressStyle style, Number current, Number max, String format1, String format2, String infixWithFormat, int x, int y, int w, int h) {
+    public static int getStringWidth(String string) {
+        return Minecraft.getMinecraft().fontRenderer.getStringWidth(string);
+    }
+
+    public static void renderProgress(IProgressStyle style, Number current, Number max, String format1, String format2, String infixWithFormat, int x, int y, int w, int h) {
         RenderHelper.drawThickBeveledBox(x, y, x + w, y + h, 1, style.getBorderColor(), style.getBorderColor(), style.getBackgroundColor());
         if (current.doubleValue() > 0 && max.doubleValue() > 0) {
             // Determine the progress bar width, but limit it to the size of the element (minus 2).
@@ -41,22 +45,26 @@ public class ElementRenders {
         }
 
         if (style.isShowText()) {
-            if (!"".equals(format1) || !"".equals(format2)) {
-                String num1, num2;
-                if (!"".equals(format1)) {
-                    num1 = new DecimalFormat(format1).format(current);
-                } else {
-                    num1 = ElementProgress.format(current.longValue(), style.getNumberFormat(), "");
-                }
-                if (!"".equals(format2)) {
-                    num2 = new DecimalFormat(format2).format(max);
-                } else {
-                    num2 = ElementProgress.format(max.longValue(), style.getNumberFormat(), "");
-                }
-                RenderHelper.renderText(Minecraft.getMinecraft(), x + 3, y + 2, style.getPrefix() + String.format(stylifyStringAdvanced(infixWithFormat), num1, num2) + style.getSuffix());
+            RenderHelper.renderText(Minecraft.getMinecraft(), x + 3, y + 2, getProgressText(current, max, format1, format2, infixWithFormat, style));
+        }
+    }
+
+    public static String getProgressText(Number current, Number max, String format1, String format2, String infixWithFormat, IProgressStyle style) {
+        if (!"".equals(format1) || !"".equals(format2)) {
+            String num1, num2;
+            if (!"".equals(format1)) {
+                num1 = new DecimalFormat(format1).format(current);
             } else {
-                RenderHelper.renderText(Minecraft.getMinecraft(), x + 3, y + 2, style.getPrefix() + ElementProgress.format(current.longValue(), style.getNumberFormat(), style.getSuffix()));
+                num1 = ElementProgress.format(current.longValue(), style.getNumberFormat(), "");
             }
+            if (!"".equals(format2)) {
+                num2 = new DecimalFormat(format2).format(max);
+            } else {
+                num2 = ElementProgress.format(max.longValue(), style.getNumberFormat(), "");
+            }
+            return style.getPrefix() + String.format(stylifyStringAdvanced(infixWithFormat), num1, num2) + style.getSuffix();
+        } else {
+            return style.getPrefix() + ElementProgress.format(current.longValue(), style.getNumberFormat(), style.getSuffix());
         }
     }
 
@@ -64,11 +72,7 @@ public class ElementRenders {
         RenderHelper.renderText(Minecraft.getMinecraft(), x, y, stylifyStringAdvanced(text));
     }
 
-    public static int getWidthTextAdvanced(String text) {
-        return Minecraft.getMinecraft().fontRenderer.getStringWidth(stylifyStringAdvanced(text));
-    }
-
-    private static String stylifyStringAdvanced(String text) {
+    public static String stylifyStringAdvanced(String text) {
         while (text.contains(STARTLOC) && text.contains(ENDLOC)) {
             int start = text.indexOf(STARTLOC);
             int end = text.indexOf(ENDLOC);

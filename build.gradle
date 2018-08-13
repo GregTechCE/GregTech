@@ -211,7 +211,7 @@ curseforge {
         id = '293327'
         changelog = file('CHANGELOG.md')
         changelogType = 'markdown'
-        releaseType = 'alpha'
+        releaseType = 'beta'
 
         relations {
             requiredLibrary 'codechicken-lib-1-8'

@@ -5,6 +5,7 @@ import gnu.trove.map.TObjectIntMap;
 import gregtech.api.recipes.CountableIngredient;
 import gregtech.api.recipes.Recipe;
 import gregtech.api.recipes.RecipeMap;
+import gregtech.api.unification.OreDictUnifier;
 import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.recipe.IRecipeWrapper;
 import net.minecraft.client.Minecraft;
@@ -35,7 +36,9 @@ public class GTRecipeWrapper implements IRecipeWrapper {
             List<List<ItemStack>> matchingInputs = new ArrayList<>(recipeInputs.size());
             for (CountableIngredient ingredient : recipeInputs) {
                 List<ItemStack> ingredientValues = Arrays.stream(ingredient.getIngredient().getMatchingStacks())
-                    .map(ItemStack::copy).collect(Collectors.toList());
+                    .map(ItemStack::copy)
+                    .sorted(OreDictUnifier.getItemStackComparator())
+                    .collect(Collectors.toList());
                 ingredientValues.forEach(stack -> {
                     if(ingredient.getCount() == 0) {
                         ItemNBTUtils.setBoolean(stack, "not_consumed", true);
@@ -48,7 +51,16 @@ public class GTRecipeWrapper implements IRecipeWrapper {
         }
         if(!recipe.getFluidInputs().isEmpty()) {
             List<FluidStack> recipeInputs = recipe.getFluidInputs()
-                .stream().map(FluidStack::copy).collect(Collectors.toList());
+                .stream().map(FluidStack::copy)
+                .collect(Collectors.toList());
+            recipeInputs.forEach(stack -> {
+                if(stack.amount == 0) {
+                    if(stack.tag == null)
+                        stack.tag = new NBTTagCompound();
+                    stack.tag.setBoolean("not_consumed", true);
+                    stack.amount = 1;
+                }
+            });
             ingredients.setInputs(FluidStack.class, recipeInputs);
         }
         if(!recipe.getOutputs().isEmpty() || !recipe.getChancedOutputs().isEmpty()) {
@@ -70,8 +82,15 @@ public class GTRecipeWrapper implements IRecipeWrapper {
         }
     }
 
-    public void addTooltip(int slotIndex, boolean input, ItemStack ingredient, List<String> tooltip) {
-        NBTTagCompound tagCompound = ingredient.getTagCompound();
+    public void addTooltip(int slotIndex, boolean input, Object ingredient, List<String> tooltip) {
+        NBTTagCompound tagCompound;
+        if(ingredient instanceof ItemStack) {
+            tagCompound = ((ItemStack) ingredient).getTagCompound();
+        } else if(ingredient instanceof FluidStack) {
+            tagCompound = ((FluidStack) ingredient).tag;
+        } else {
+            throw new IllegalArgumentException("Unknown ingredient type: " + ingredient.getClass());
+        }
         if(tagCompound != null && tagCompound.hasKey("chance")) {
             String chanceString = Recipe.formatChanceValue(tagCompound.getInteger("chance"));
             tooltip.add(I18n.format("gregtech.recipe.chance", chanceString));
