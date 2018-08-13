@@ -55,7 +55,7 @@ public class ItemBlockPipeLike<Q extends Enum<Q> & IBaseProperty & IStringSerial
     @SideOnly(Side.CLIENT)
     public String getItemStackDisplayName(ItemStack stack) {
         Q baseProperty = blockPipeLike.getBaseProperties(stack);
-        return baseProperty == null ? super.getItemStackDisplayName(stack) : baseProperty.getOrePrefix().getLocalNameForItem(blockPipeLike.material);
+        return baseProperty == null ? super.getItemStackDisplayName(stack) : blockPipeLike.factory.getDisplayName(baseProperty.getOrePrefix(), blockPipeLike.material);
     }
 
     @Override

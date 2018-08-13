@@ -67,7 +67,6 @@ public class FluidPipeProperties implements IPipeLikeTileProperty {
 
     @Override
     public void addInformation(List<String> tooltip) {
-        tooltip.add(I18n.format("gregtech.fluid_pipe." + (multiple == 1 ? "normal" : "multiple")));
         tooltip.add(multiple == 1 ? I18n.format("gregtech.fluid_pipe.capacity1", fluidCapacity)
             : I18n.format("gregtech.fluid_pipe.capacity2", multiple, fluidCapacity));
         tooltip.add(I18n.format("gregtech.fluid_pipe.heat_limit", heatLimit));

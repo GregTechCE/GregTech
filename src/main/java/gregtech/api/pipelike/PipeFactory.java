@@ -17,6 +17,7 @@ import gregtech.api.unification.OreDictUnifier;
 import gregtech.api.unification.material.type.GemMaterial;
 import gregtech.api.unification.material.type.IngotMaterial;
 import gregtech.api.unification.material.type.Material;
+import gregtech.api.unification.ore.OrePrefix;
 import gregtech.api.worldentries.pipenet.PipeNet;
 import gregtech.api.worldentries.pipenet.WorldPipeNet;
 import net.minecraft.block.Block;
@@ -37,6 +38,8 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.Optional.Method;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -180,6 +183,11 @@ public abstract class PipeFactory<Q extends Enum<Q> & IBaseProperty & IStringSer
     }
 
     public void onBreakingTile(ITilePipeLike<Q, P> tile) {}
+
+    @SideOnly(Side.CLIENT)
+    public String getDisplayName(OrePrefix orePrefix, Material material) {
+        return orePrefix.getLocalNameForItem(material);
+    }
 
     /////////////////////////////// MULTIPART METHODS //////////////////////////////////////
 
