@@ -102,7 +102,7 @@ public class PipeRecipeHandler {
             }
             if (input > 0 && extruderShape != null) {
                 RecipeMaps.EXTRUDER_RECIPES.recipeBuilder()
-                    .input(material.hasFlag(NO_SMASHING) ? dust : ingot, material, input)
+                    .input(ingot, material, input)
                     .notConsumable(extruderShape)
                     .outputs(OreDictUnifier.get(pipePrefix, material, output))
                     .duration((int) material.getMass())
