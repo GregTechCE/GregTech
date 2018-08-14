@@ -17,6 +17,7 @@ import gregtech.api.unification.material.type.Material.MatFlags;
 import gregtech.api.unification.ore.OrePrefix;
 import gregtech.api.unification.stack.ItemMaterialInfo;
 import gregtech.api.unification.stack.MaterialStack;
+import gregtech.api.unification.stack.UnificationEntry;
 import gregtech.api.util.GTLog;
 import gregtech.api.util.GTUtility;
 import gregtech.common.ConfigHolder;
@@ -280,6 +281,44 @@ public class MachineRecipeLoader {
                 .duration(20).EUt(512)
                 .buildAndRegister();
         }
+
+        ModHandler.addShapedRecipe("wood_pipe_small_universal",
+            OreDictUnifier.get(OrePrefix.pipeSmall, Materials.Wood, 6),
+            "XsX", "X X", "XrX", 'X', new UnificationEntry(OrePrefix.plank, Materials.Wood));
+        ModHandler.addShapedRecipe("wood_pipe_medium_universal",
+            OreDictUnifier.get(OrePrefix.pipeMedium, Materials.Wood, 2),
+            "XXX", "r s", "XXX", 'X', new UnificationEntry(OrePrefix.plank, Materials.Wood));
+        ModHandler.addShapedRecipe("wood_pipe_large_universal",
+            OreDictUnifier.get(OrePrefix.pipeLarge, Materials.Wood),
+            "XrX", "X X", "XsX", 'X', new UnificationEntry(OrePrefix.plank, Materials.Wood));
+        RecipeMaps.ASSEMBLER_RECIPES.recipeBuilder()
+            .input(OrePrefix.pipeSmall, Materials.TungstenSteel)
+            .inputs(MetaItems.ELECTRIC_PUMP_EV.getStackForm())
+            .outputs(OreDictUnifier.get(OrePrefix.pipeSmall, Tier.Ultimate))
+            .duration(300)
+            .EUt(96)
+            .buildAndRegister();
+        RecipeMaps.ASSEMBLER_RECIPES.recipeBuilder()
+            .input(OrePrefix.pipeMedium, Materials.TungstenSteel)
+            .inputs(MetaItems.ELECTRIC_PUMP_IV.getStackForm())
+            .outputs(OreDictUnifier.get(OrePrefix.pipeMedium, Tier.Ultimate))
+            .duration(400)
+            .EUt(160)
+            .buildAndRegister();
+        RecipeMaps.ASSEMBLER_RECIPES.recipeBuilder()
+            .input(OrePrefix.pipeLarge, Materials.TungstenSteel)
+            .inputs(MetaItems.ELECTRIC_PUMP_IV.getStackForm(2))
+            .outputs(OreDictUnifier.get(OrePrefix.pipeLarge, Tier.Ultimate))
+            .duration(600)
+            .EUt(256)
+            .buildAndRegister();
+        ModHandler.addShapedRecipe("superconductor_pipe_medium",
+            OreDictUnifier.get(OrePrefix.pipeMedium, Tier.Superconductor),
+            "WSW", "CMC", "WSW",
+            'M', new UnificationEntry(OrePrefix.pipeMedium, Materials.Titanium),
+            'C', new UnificationEntry(OrePrefix.plate, Materials.NeodymiumMagnetic),
+            'W', new UnificationEntry(OrePrefix.plate, Materials.Plastic),
+            'S', new UnificationEntry(OrePrefix.wireGtDouble, Tier.Superconductor));
 
         RecipeMaps.MIXER_RECIPES.recipeBuilder().duration(20).EUt(16).input(OrePrefix.dust, Materials.Clay, 1).input(OrePrefix.dust, Materials.Stone, 3).fluidInputs(Materials.Water.getFluid(500)).fluidOutputs(Materials.Concrete.getFluid(576)).buildAndRegister();
         RecipeMaps.MIXER_RECIPES.recipeBuilder().duration(100).EUt(8).inputs(new ItemStack(Blocks.BROWN_MUSHROOM), new ItemStack(Items.SPIDER_EYE)).input(OrePrefix.dust, Materials.Sugar, 1).outputs(new ItemStack(Items.FERMENTED_SPIDER_EYE)).buildAndRegister();

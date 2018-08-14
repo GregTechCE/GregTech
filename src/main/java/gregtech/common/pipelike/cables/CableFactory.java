@@ -120,7 +120,7 @@ public class CableFactory extends PipeFactory<Insulation, WireProperties, IEnerg
             EnergyNet net = getPipeNetAt(tile);
             if (net != null) {
                 long voltage = (long) net.getStatisticData(tile.getTilePos())[1];
-                if (voltage > 36L) GTUtility.applyElectricDamage((EntityLivingBase) entity, voltage);
+                GTUtility.applyElectricDamage((EntityLivingBase) entity, voltage);
             }
         }
     }
