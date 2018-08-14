@@ -21,34 +21,32 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 
-import static gregtech.api.unification.material.Materials.*;
-
 public class ItemPipeFactory extends PipeFactory<TypeItemPipe, ItemPipeProperties, IItemHandler> {
 
     public static final ItemPipeFactory INSTANCE = new ItemPipeFactory();
 
     private ItemPipeFactory() {
         super("item_pipe", CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, TypeItemPipe.class, ItemPipeProperties.class);
-        registerDefaultItemPipes();
     }
 
-    private void registerDefaultItemPipes() {
-        registerItemPipe(Brass, 1);
-        registerItemPipe(WroughtIron, 1);
-        registerItemPipe(Nickel, 1);
-        registerItemPipe(Electrum, 2);
-        registerItemPipe(Cobalt, 2);
-        registerItemPipe(Aluminium, 2);
-        registerItemPipe(Platinum, 4);
-        registerItemPipe(Osmium, 8);
+    public static class ItemPipeRegistryEvent extends PipeRegistryEvent<TypeItemPipe, ItemPipeProperties> {
+
+        protected ItemPipeRegistryEvent(ItemPipeFactory factory) {
+            super(factory);
+        }
+
+        public void registerItemPipe(Material material, int transferCapacity) {
+            registerItemPipe(material, transferCapacity, 1, 1);
+        }
+
+        public void registerItemPipe(Material material, int transferCapacity, int tickRate, int routingValueMultiplier) {
+            registerPropertyForMaterial(material, new ItemPipeProperties(transferCapacity, tickRate, routingValueMultiplier));
+        }
     }
 
-    public void registerItemPipe(Material material, int transferCapacity) {
-        registerItemPipe(material, transferCapacity, 1, 1);
-    }
-
-    public void registerItemPipe(Material material, int transferCapacity, int tickRateMultiplier, int routingValueMultiplier) {
-        registerPropertyForMaterial(material, new ItemPipeProperties(transferCapacity, tickRateMultiplier, routingValueMultiplier));
+    @Override
+    protected PipeRegistryEvent<TypeItemPipe, ItemPipeProperties> getRegistryEvent() {
+        return new ItemPipeRegistryEvent(this);
     }
 
     @Override
