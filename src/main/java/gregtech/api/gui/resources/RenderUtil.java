@@ -17,6 +17,10 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public class RenderUtil {
 
+    public static int packColor(int red, int green, int blue, int alpha) {
+        return (red & 0xFF) << 24 | (green & 0xFF) << 16 | (blue & 0xFF) << 8 | (alpha & 0xFF);
+    }
+
     public static void setGlColorFromInt(int colorValue, int opacity) {
         int i = (colorValue & 16711680) >> 16;
         int j = (colorValue & 65280) >> 8;

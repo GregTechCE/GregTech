@@ -17,9 +17,10 @@ import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.client.util.ITooltipFlag.TooltipFlags;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
-import net.minecraft.util.math.RayTraceResult.Type;
+import net.minecraft.util.math.Vec3d;
 import org.lwjgl.input.Mouse;
 
 import javax.vecmath.Vector3f;
@@ -36,12 +37,14 @@ public class MultiblockInfoRecipeWrapper implements IRecipeWrapper, SceneRenderC
 
     private int layerIndex = -1;
     private int currentRendererPage = 0;
+    private int lastMouseX;
+    private float rotationY = -45.0f;
+
     private GuiButton buttonPreviousPattern;
     private GuiButton buttonNextPattern;
     private GuiButton nextLayerButton;
-    private ItemStack lastSelectedBlock;
-    private int lastMouseX;
-    private float rotationY = -45.0f;
+
+    private ItemStack tooltipBlockStack;
 
     public MultiblockInfoRecipeWrapper(MultiblockInfoPage infoPage) {
         this.infoPage = infoPage;
@@ -130,26 +133,31 @@ public class MultiblockInfoRecipeWrapper implements IRecipeWrapper, SceneRenderC
         WorldSceneRenderer renderer = getCurrentRenderer();
         int scenePosY = 40;
         int sceneHeight = recipeWidth - 40;
-        renderer.render(recipeLayout.getPosX(), recipeLayout.getPosY() + scenePosY, recipeWidth, sceneHeight, 0xC6C6C6);
+        renderer.render(recipeLayout.getPosX(), recipeLayout.getPosY() + scenePosY,
+            recipeWidth, sceneHeight, 0xC6C6C6);
         drawText(minecraft, recipeWidth);
         for(GuiButton button : buttons.keySet()) {
             button.drawButton(minecraft, mouseX, mouseY, 0.0f);
         }
-        //only try selecting when mouse is inside selection border
-        if(mouseX >= 0 && mouseY >= scenePosY && mouseX <= recipeWidth && mouseY <= scenePosY + sceneHeight) {
-            RayTraceResult result = renderer.rayTraceFromMouse(
-                recipeLayout.getPosX(), recipeLayout.getPosY() + scenePosY, recipeWidth, sceneHeight);
-            if(result != null && result.typeOfHit == Type.BLOCK) {
-                BlockPos pos = result.getBlockPos();
-                IBlockState blockState = renderer.world.getBlockState(pos);
-                this.lastSelectedBlock = blockState.getBlock().getPickBlock(blockState, result, renderer.world, pos, minecraft.player);
-                System.out.println("Result " + result);
-            } else this.lastSelectedBlock = null;
-            if(Mouse.isButtonDown(0)) {
-                int mouseDeltaX = mouseX - lastMouseX;
-                this.rotationY += mouseDeltaX * 2.0f;
+
+        this.tooltipBlockStack = null;
+        BlockPos pos = renderer.getLastHitBlock();
+        boolean leftClickHeld = Mouse.isButtonDown(0);
+
+        if(!leftClickHeld && pos != null && !renderer.world.isAirBlock(pos)) {
+            IBlockState blockState = renderer.world.getBlockState(pos);
+            RayTraceResult result = new RayTraceResult(Vec3d.ZERO, EnumFacing.WEST, pos);
+            ItemStack itemStack = blockState.getBlock().getPickBlock(blockState, result, renderer.world, pos, minecraft.player);
+            if(itemStack != null && !itemStack.isEmpty()) {
+                this.tooltipBlockStack = itemStack;
             }
-        } else this.lastSelectedBlock = null;
+        }
+
+        if(leftClickHeld) {
+            int mouseDeltaX = mouseX - lastMouseX;
+            this.rotationY += mouseDeltaX * 2.0f;
+        }
+
         this.lastMouseX = mouseX;
     }
 
@@ -181,10 +189,10 @@ public class MultiblockInfoRecipeWrapper implements IRecipeWrapper, SceneRenderC
 
     @Override
     public List<String> getTooltipStrings(int mouseX, int mouseY) {
-        if(lastSelectedBlock != null && !lastSelectedBlock.isEmpty() && !Mouse.isButtonDown(0)) {
+        if(tooltipBlockStack != null && !tooltipBlockStack.isEmpty() && !Mouse.isButtonDown(0)) {
             Minecraft minecraft = Minecraft.getMinecraft();
             ITooltipFlag flag = minecraft.gameSettings.advancedItemTooltips ? TooltipFlags.ADVANCED : TooltipFlags.NORMAL;
-            return lastSelectedBlock.getTooltip(minecraft.player, flag);
+            return tooltipBlockStack.getTooltip(minecraft.player, flag);
         }
         return Collections.emptyList();
     }

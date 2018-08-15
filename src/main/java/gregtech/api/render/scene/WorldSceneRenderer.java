@@ -1,5 +1,10 @@
 package gregtech.api.render.scene;
 
+import codechicken.lib.render.BlockRenderer.BlockFace;
+import codechicken.lib.render.CCRenderState;
+import codechicken.lib.render.pipeline.ColourMultiplier;
+import codechicken.lib.vec.Cuboid6;
+import codechicken.lib.vec.Translation;
 import gregtech.api.gui.resources.RenderUtil;
 import gregtech.api.util.BlockInfo;
 import gregtech.api.util.world.DummyWorld;
@@ -13,9 +18,10 @@ import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.init.Blocks;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.RayTraceResult;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.Vec2f;
+import net.minecraftforge.client.model.pipeline.LightUtil;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.glu.GLU;
@@ -36,13 +42,14 @@ public class WorldSceneRenderer {
     private static final FloatBuffer MODELVIEW_MATRIX_BUFFER = ByteBuffer.allocateDirect(16 * 4).order(ByteOrder.nativeOrder()).asFloatBuffer();
     private static final FloatBuffer PROJECTION_MATRIX_BUFFER = ByteBuffer.allocateDirect(16 * 4).order(ByteOrder.nativeOrder()).asFloatBuffer();
     private static final IntBuffer VIEWPORT_BUFFER = ByteBuffer.allocateDirect(16 * 4).order(ByteOrder.nativeOrder()).asIntBuffer();
-    private static final FloatBuffer POSITION_NEAR_BUFFER = ByteBuffer.allocateDirect(3 * 4).order(ByteOrder.nativeOrder()).asFloatBuffer();
-    private static final FloatBuffer POSITION_FAR_BUFFER = ByteBuffer.allocateDirect(3 * 4).order(ByteOrder.nativeOrder()).asFloatBuffer();
+    private static final FloatBuffer PIXEL_DEPTH_BUFFER = ByteBuffer.allocateDirect(4).order(ByteOrder.nativeOrder()).asFloatBuffer();
+    private static final FloatBuffer OBJECT_POS_BUFFER = ByteBuffer.allocateDirect(3 * 4).order(ByteOrder.nativeOrder()).asFloatBuffer();
 
     public final TrackedDummyWorld world = new TrackedDummyWorld();
     private final List<BlockPos> renderedBlocks = new ArrayList<>();
     private SceneRenderCallback renderCallback;
     private Predicate<BlockPos> renderFilter;
+    private BlockPos lastHitBlock;
 
     public WorldSceneRenderer(Map<BlockPos, BlockInfo> renderedBlocks) {
         for(Entry<BlockPos, BlockInfo> renderEntry : renderedBlocks.entrySet()) {
@@ -67,29 +74,9 @@ public class WorldSceneRenderer {
         return world.getSize();
     }
 
-    public RayTraceResult rayTraceFromMouse(int x, int y, int width, int height) {
-        float windowMouseX = Mouse.getX();
-        float windowMouseY = Mouse.getY();
-        setupCamera(x, y, width, height, -1);
-        GL11.glGetFloat(GL11.GL_PROJECTION_MATRIX, PROJECTION_MATRIX_BUFFER);
-        GL11.glGetFloat(GL11.GL_MODELVIEW_MATRIX, MODELVIEW_MATRIX_BUFFER);
-        GL11.glGetInteger(GL11.GL_VIEWPORT, VIEWPORT_BUFFER);
-        VIEWPORT_BUFFER.rewind();
-        PROJECTION_MATRIX_BUFFER.rewind();
-        MODELVIEW_MATRIX_BUFFER.rewind();
-
-        POSITION_NEAR_BUFFER.rewind();
-        POSITION_FAR_BUFFER.rewind();
-        GLU.gluUnProject(windowMouseX, windowMouseY, 0.0f, MODELVIEW_MATRIX_BUFFER, PROJECTION_MATRIX_BUFFER, VIEWPORT_BUFFER, POSITION_NEAR_BUFFER);
-        GLU.gluUnProject(windowMouseX, windowMouseY, 1.0f, MODELVIEW_MATRIX_BUFFER, PROJECTION_MATRIX_BUFFER, VIEWPORT_BUFFER, POSITION_FAR_BUFFER);
-        POSITION_NEAR_BUFFER.rewind();
-        POSITION_FAR_BUFFER.rewind();
-        Vec3d nearPosition = new Vec3d(POSITION_NEAR_BUFFER.get(), POSITION_NEAR_BUFFER.get(), POSITION_NEAR_BUFFER.get());
-        Vec3d farPosition = new Vec3d(POSITION_FAR_BUFFER.get(), POSITION_FAR_BUFFER.get(), POSITION_FAR_BUFFER.get());
-        resetCamera();
-        return world.rayTraceBlocks(nearPosition, farPosition);
+    public BlockPos getLastHitBlock() {
+        return lastHitBlock;
     }
-
 
     /**
      * Renders scene on given coordinates with given width and height, and RGB background color
@@ -98,7 +85,7 @@ public class WorldSceneRenderer {
      * It will return matrices of projection and view in previous state after rendering
      */
     public void render(int x, int y, int width, int height, int backgroundColor) {
-        setupCamera(x, y, width, height, backgroundColor);
+        Vec2f mousePosition = setupCamera(x, y, width, height, backgroundColor);
         if(renderCallback != null) {
             renderCallback.preRenderScene(this);
         }
@@ -106,21 +93,114 @@ public class WorldSceneRenderer {
         minecraft.renderEngine.bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
         BlockRendererDispatcher dispatcher = minecraft.getBlockRendererDispatcher();
         Tessellator tessellator = Tessellator.getInstance();
-        BufferBuilder bufferBuilder = tessellator.getBuffer();
+        BufferBuilder buffer = tessellator.getBuffer();
 
-        bufferBuilder.begin(GL11.GL_QUADS, DefaultVertexFormats.BLOCK);
+        buffer.begin(GL11.GL_QUADS, DefaultVertexFormats.BLOCK);
         for (BlockPos pos : renderedBlocks) {
             if (renderFilter != null && !renderFilter.test(pos))
                 continue; //do not render if position is skipped
             IBlockState blockState = world.getBlockState(pos);
-            dispatcher.renderBlock(blockState, pos, world, bufferBuilder);
+            dispatcher.renderBlock(blockState, pos, world, buffer);
         }
         tessellator.draw();
+
+        if(mousePosition != null) {
+            this.lastHitBlock = handleMouseHit(mousePosition);
+        } else {
+            this.lastHitBlock = null;
+        }
+
+        if(lastHitBlock != null) {
+            GlStateManager.disableTexture2D();
+            CCRenderState renderState = CCRenderState.instance();
+            renderState.startDrawing(GL11.GL_QUADS, DefaultVertexFormats.POSITION_COLOR, buffer);
+            ColourMultiplier multiplier = new ColourMultiplier(0);
+            renderState.setPipeline(new Translation(lastHitBlock), multiplier);
+            BlockFace blockFace = new BlockFace();
+            renderState.setModel(blockFace);
+            for(EnumFacing renderSide : EnumFacing.VALUES) {
+                float diffuse = LightUtil.diffuseLight(renderSide);
+                int color = (int) (255 * diffuse);
+                multiplier.colour = RenderUtil.packColor(color, color, color, 100);
+                blockFace.loadCuboidFace(Cuboid6.full, renderSide.getIndex());
+                renderState.render();
+            }
+            renderState.draw();
+            GlStateManager.enableTexture2D();
+        }
 
         resetCamera();
     }
 
-    public static void setupCamera(int x, int y, int width, int height, int skyColor) {
+    private BlockPos handleMouseHit(Vec2f mousePosition) {
+        //read depth of pixel under mouse
+        GL11.glReadPixels((int) mousePosition.x, (int) mousePosition.y, 1, 1,
+            GL11.GL_DEPTH_COMPONENT, GL11.GL_FLOAT, PIXEL_DEPTH_BUFFER);
+
+        //rewind buffer after write by glReadPixels
+        PIXEL_DEPTH_BUFFER.rewind();
+
+        //retrieve depth from buffer (0.0-1.0f)
+        float pixelDepth = PIXEL_DEPTH_BUFFER.get();
+
+        //rewind buffer after read
+        PIXEL_DEPTH_BUFFER.rewind();
+
+        //read current rendering parameters
+        GL11.glGetFloat(GL11.GL_MODELVIEW_MATRIX, MODELVIEW_MATRIX_BUFFER);
+        GL11.glGetFloat(GL11.GL_PROJECTION_MATRIX, PROJECTION_MATRIX_BUFFER);
+        GL11.glGetInteger(GL11.GL_VIEWPORT, VIEWPORT_BUFFER);
+
+        //rewind buffers after write by OpenGL glGet calls
+        MODELVIEW_MATRIX_BUFFER.rewind();
+        PROJECTION_MATRIX_BUFFER.rewind();
+        VIEWPORT_BUFFER.rewind();
+
+        //call gluUnProject with retrieved parameters
+        GLU.gluUnProject(mousePosition.x, mousePosition.y, pixelDepth,
+            MODELVIEW_MATRIX_BUFFER, PROJECTION_MATRIX_BUFFER, VIEWPORT_BUFFER, OBJECT_POS_BUFFER);
+
+        //rewind buffers after read by gluUnProject
+        VIEWPORT_BUFFER.rewind();
+        PROJECTION_MATRIX_BUFFER.rewind();
+        MODELVIEW_MATRIX_BUFFER.rewind();
+
+        //rewind buffer after write by gluUnProject
+        OBJECT_POS_BUFFER.rewind();
+
+        //obtain absolute position in world
+        float posX = OBJECT_POS_BUFFER.get();
+        float posY = OBJECT_POS_BUFFER.get();
+        float posZ = OBJECT_POS_BUFFER.get();
+
+        //rewind buffer after read
+        OBJECT_POS_BUFFER.rewind();
+
+        //System.out.println(String.format("%f %f %f %f", pixelDepth, posX, posY, posZ));
+        //if we didn't hit anything, just return null
+        //also return null if hit is too far from us
+        if(posY < -100.0f) {
+            return null; //stop execution at that point
+        }
+
+        BlockPos pos = new BlockPos(posX, posY, posZ);
+        if(world.isAirBlock(pos)) {
+            //if block is air, then search for nearest adjacent block
+            //this can happen under extreme rotation angles
+            for(EnumFacing offset : EnumFacing.VALUES) {
+                BlockPos relative = pos.offset(offset);
+                if(world.isAirBlock(relative)) continue;
+                pos = relative; break;
+            }
+        }
+        if(world.isAirBlock(pos)) {
+            //if we didn't found any other block, return null
+            return null;
+        }
+        return pos;
+    }
+
+    public static Vec2f setupCamera(int x, int y, int width, int height, int skyColor) {
         Minecraft mc = Minecraft.getMinecraft();
         ScaledResolution resolution = new ScaledResolution(mc);
 
@@ -130,11 +210,22 @@ public class WorldSceneRenderer {
         GlStateManager.enableDepth();
         GlStateManager.enableBlend();
 
-        //translate gui coordinates to window ones (y is inverted)
-        int windowX = (int) (x / (resolution.getScaledWidth() * 1.0) * mc.displayWidth);
+        //compute window size from scaled width & height
         int windowWidth = (int) (width / (resolution.getScaledWidth() * 1.0) * mc.displayWidth);
         int windowHeight = (int) (height / (resolution.getScaledHeight() * 1.0) * mc.displayHeight);
+
+        //translate gui coordinates to window's ones (y is inverted)
+        int windowX = (int) (x / (resolution.getScaledWidth() * 1.0) * mc.displayWidth);
         int windowY = mc.displayHeight - (int) (y / (resolution.getScaledHeight() * 1.0) * mc.displayHeight) - windowHeight;
+
+        int mouseX = Mouse.getX();
+        int mouseY = Mouse.getY();
+        Vec2f mousePosition = null;
+        //compute mouse position only if inside viewport
+        if(mouseX >= windowX && mouseY >= windowY && mouseX - windowX < windowWidth && mouseY - windowY < windowHeight) {
+            mousePosition = new Vec2f(mouseX, mouseY);
+        }
+
         //setup viewport and clear GL buffers
         GlStateManager.viewport(windowX, windowY, windowWidth, windowHeight);
 
@@ -159,6 +250,8 @@ public class WorldSceneRenderer {
         GlStateManager.pushMatrix();
         GlStateManager.loadIdentity();
         GLU.gluLookAt(0.0f, 0.0f, -10.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f);
+
+        return mousePosition;
     }
 
     public static void resetCamera() {
