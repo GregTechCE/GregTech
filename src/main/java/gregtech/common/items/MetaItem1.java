@@ -253,9 +253,6 @@ public class MetaItem1 extends MaterialMetaItem {
         FLUID_REGULATOR_EV = addItem(623, "fluidregulator.ev");
         FLUID_REGULATOR_IV = addItem(624, "fluidregulator.iv");
 
-        SMALL_BRONZE_PIPE = addItem(625, "pipe.small.bronze").setUnificationData(OrePrefix.pipeSmall, Materials.Bronze);
-        SMALL_STEEL_PIPE = addItem(626, "pipe.small.steel").setUnificationData(OrePrefix.pipeSmall, Materials.Steel);
-
         RUBBER_DROP = addItem(627, "rubber_drop").setBurnValue(200);
 
         FLUID_FILTER = addItem(628, "fluidfilter").setInvisible();
