@@ -26,7 +26,7 @@ public class ToolHoe extends ToolBase {
 
     @Override
     public void onStatsAddedToTool(MetaValueItem item) {
-        item.addStats(new HoeBehaviour(100));
+        item.addStats(new HoeBehaviour(1));
     }
 
     @Override
