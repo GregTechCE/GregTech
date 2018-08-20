@@ -1,0 +1,27 @@
+{
+  "weight": 120,
+  "density": 0.7,
+  "max_height": 128,
+  "min_height": 10,
+
+  "generator": {
+    "type": "sphere",
+    "radius": [12, 12]
+  },
+  "filler": {
+    "type": "simple",
+    "value": {
+      "type": "weight_random",
+      "values": [
+		{
+		  "weight": 100,
+		  "value": {
+			"block": "gregtech:mineral",
+			"variant": "basalt",
+			"chiseling_variant": "normal"
+		  }
+		}
+	  ]
+	}
+   }
+}
