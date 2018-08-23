@@ -7,17 +7,19 @@ import gregtech.api.pipelike.PipeFactory;
 import gregtech.api.unification.material.type.GemMaterial;
 import gregtech.api.unification.material.type.IngotMaterial;
 import gregtech.api.unification.material.type.Material;
+import gregtech.api.unification.ore.OrePrefix;
 import gregtech.api.worldentries.pipenet.WorldPipeNet;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.NonNullList;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
-
-import static gregtech.api.unification.material.Materials.*;
 
 public class ItemPipeFactory extends PipeFactory<TypeItemPipe, ItemPipeProperties, IItemHandler> {
 
@@ -25,26 +27,26 @@ public class ItemPipeFactory extends PipeFactory<TypeItemPipe, ItemPipePropertie
 
     private ItemPipeFactory() {
         super("item_pipe", CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, TypeItemPipe.class, ItemPipeProperties.class);
-        registerDefaultItemPipes();
     }
 
-    private void registerDefaultItemPipes() {
-        registerItemPipe(Brass, 1);
-        registerItemPipe(WroughtIron, 1);
-        registerItemPipe(Nickel, 1);
-        registerItemPipe(Electrum, 2);
-        registerItemPipe(Cobalt, 2);
-        registerItemPipe(Aluminium, 2);
-        registerItemPipe(Platinum, 4);
-        registerItemPipe(Osmium, 8);
+    public static class ItemPipeRegistryEvent extends PipeRegistryEvent<TypeItemPipe, ItemPipeProperties> {
+
+        protected ItemPipeRegistryEvent(ItemPipeFactory factory) {
+            super(factory);
+        }
+
+        public void registerItemPipe(Material material, int transferCapacity) {
+            registerItemPipe(material, transferCapacity, 1, 1);
+        }
+
+        public void registerItemPipe(Material material, int transferCapacity, int tickRate, int routingValueMultiplier) {
+            registerPropertyForMaterial(material, new ItemPipeProperties(transferCapacity, tickRate, routingValueMultiplier));
+        }
     }
 
-    public void registerItemPipe(Material material, int transferCapacity) {
-        registerItemPipe(material, transferCapacity, 1, 1);
-    }
-
-    public void registerItemPipe(Material material, int transferCapacity, int tickRateMultiplier, int routingValueMultiplier) {
-        registerPropertyForMaterial(material, new ItemPipeProperties(transferCapacity, tickRateMultiplier, routingValueMultiplier));
+    @Override
+    protected PipeRegistryEvent<TypeItemPipe, ItemPipeProperties> getRegistryEvent() {
+        return new ItemPipeRegistryEvent(this);
     }
 
     @Override
@@ -55,6 +57,17 @@ public class ItemPipeFactory extends PipeFactory<TypeItemPipe, ItemPipePropertie
         block.setHardness(4.0f);
         block.setResistance(4.5f);
         block.setLightOpacity(1);
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public String getDisplayName(OrePrefix orePrefix, Material material) {
+        String specifiedUnlocalized = "item." + material.toString() + "." + orePrefix.name();
+        if (I18n.hasKey(specifiedUnlocalized)) return I18n.format(specifiedUnlocalized);
+        String unlocalized = "item.item_pipe." + orePrefix.name();
+        String matLocalized = material.getLocalizedName();
+        String formatted = I18n.format(unlocalized, matLocalized);
+        return formatted.equals(unlocalized) ? matLocalized : formatted;
     }
 
     @Override

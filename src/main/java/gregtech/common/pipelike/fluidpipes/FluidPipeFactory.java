@@ -12,6 +12,7 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.worldentries.pipenet.WorldPipeNet;
 import gregtech.common.pipelike.fluidpipes.pipenet.FluidPipeNet;
 import net.minecraft.block.SoundType;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.EnumFacing;
@@ -21,6 +22,8 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidTankProperties;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -37,48 +40,34 @@ public class FluidPipeFactory extends PipeFactory<TypeFluidPipe, FluidPipeProper
 
     private FluidPipeFactory() {
         super("fluid_pipe", CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, TypeFluidPipe.class, FluidPipeProperties.class);
-        registerDefaultFluidPipes();
     }
 
-    private void registerDefaultFluidPipes() {
-        registerFluidPipe(Wood, 100, 350, false);
-        setOnlyMediumSized(Wood);
+    public static class FluidPipeRegistryEvent extends PipeRegistryEvent<TypeFluidPipe, FluidPipeProperties> {
 
-        registerFluidPipe(Copper, 200, 1000);
-        registerFluidPipe(Bronze, 400, 2000);
-        registerFluidPipe(Steel, 800, 2500);
-        registerFluidPipe(StainlessSteel, 1200, 3000);
-        registerFluidPipe(Titanium, 1600, 5000);
-        registerFluidPipe(TungstenSteel, 2000, 7500);
+        protected FluidPipeRegistryEvent(FluidPipeFactory factory) {
+            super(factory);
+        }
 
-        registerFluidPipe(Plastic, 1200, 350);
-        registerFluidPipe(Polytetrafluoroethylene, 2000, 600);
+        public void registerFluidPipe(Material material, int fluidCapacity, int heatLimit) {
+            registerPropertyForMaterial(material, new FluidPipeProperties(fluidCapacity, heatLimit, true));
+        }
 
-        registerFluidPipe(Ultimate, 24000, 1500);
-        setOnlyMediumSized(Ultimate);
-        specifyMaterialColor(Ultimate, 0xC80000);
+        public void registerFluidPipe(Material material, int fluidCapacity, int heatLimit, boolean isGasProof) {
+            registerPropertyForMaterial(material, new FluidPipeProperties(fluidCapacity, heatLimit, isGasProof));
+        }
 
-        registerFluidPipe(Superconductor, 800, 100000);
-        setOnlyMediumSized(Superconductor);
-        OrePrefix.pipeSmall.setIgnored(Superconductor);
-        OrePrefix.pipeLarge.setIgnored(Superconductor);
-        specifyMaterialColor(Superconductor, 0xFFFF00);
+        public void setOnlyMediumSized(Material material) {
+            setIgnored(TypeFluidPipe.PIPE_TINY, material);
+            setIgnored(TypeFluidPipe.PIPE_HUGE, material);
+            setIgnored(TypeFluidPipe.PIPE_QUADRUPLE, material);
+            setIgnored(TypeFluidPipe.PIPE_NONUPLE, material);
+            setIgnored(TypeFluidPipe.PIPE_SEXDECUPLE, material);
+        }
     }
 
-    public void setOnlyMediumSized(Material material) {
-        OrePrefix.pipeTiny.setIgnored(material);
-        OrePrefix.pipeHuge.setIgnored(material);
-        OrePrefix.pipeQuadruple.setIgnored(material);
-        OrePrefix.pipeNonuple.setIgnored(material);
-        OrePrefix.pipeSexdecuple.setIgnored(material);
-    }
-
-    public void registerFluidPipe(Material material, int fluidCapacity, int heatLimit) {
-        registerPropertyForMaterial(material, new FluidPipeProperties(fluidCapacity, heatLimit, true));
-    }
-
-    public void registerFluidPipe(Material material, int fluidCapacity, int heatLimit, boolean isGasProof) {
-        registerPropertyForMaterial(material, new FluidPipeProperties(fluidCapacity, heatLimit, isGasProof));
+    @Override
+    protected PipeRegistryEvent<TypeFluidPipe, FluidPipeProperties> getRegistryEvent() {
+        return new FluidPipeRegistryEvent(this);
     }
 
     @Override
@@ -89,6 +78,17 @@ public class FluidPipeFactory extends PipeFactory<TypeFluidPipe, FluidPipeProper
         block.setHardness(4.0f);
         block.setResistance(4.5f);
         block.setLightOpacity(1);
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public String getDisplayName(OrePrefix orePrefix, Material material) {
+        String specifiedUnlocalized = "item." + material.toString() + "." + orePrefix.name();
+        if (I18n.hasKey(specifiedUnlocalized)) return I18n.format(specifiedUnlocalized);
+        String unlocalized = "item.fluid_pipe." + orePrefix.name();
+        String matLocalized = material.getLocalizedName();
+        String formatted = I18n.format(unlocalized, matLocalized);
+        return formatted.equals(unlocalized) ? matLocalized : formatted;
     }
 
     @Override

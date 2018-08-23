@@ -1118,6 +1118,27 @@ item.material.oreprefix.cableGtQuadruple=4x %s cable
 item.material.oreprefix.cableGtDouble=2x %s cable
 item.material.oreprefix.cableGtSingle=1x %s cable
 
+item.item_pipe.pipeTiny=Tiny %s Item Pipe
+item.item_pipe.pipeSmall=Small %s Item Pipe
+item.item_pipe.pipeMedium=Medium %s Item Pipe
+item.item_pipe.pipeLarge=Large %s Item Pipe
+item.item_pipe.pipeHuge=Huge %s Item Pipe
+item.item_pipe.pipeRestrictiveTiny=Tiny Restrictive %s Item Pipe
+item.item_pipe.pipeRestrictiveSmall=Small Restrictive %s Item Pipe
+item.item_pipe.pipeRestrictiveMedium=Medium Restrictive %s Item Pipe
+item.item_pipe.pipeRestrictiveLarge=Large Restrictive %s Item Pipe
+item.item_pipe.pipeRestrictiveHuge=Huge Restrictive %s Item Pipe
+item.fluid_pipe.pipeTiny=Tiny %s Fluid Pipe
+item.fluid_pipe.pipeSmall=Small %s Fluid Pipe
+item.fluid_pipe.pipeMedium=Medium %s Fluid Pipe
+item.fluid_pipe.pipeLarge=Large %s Fluid Pipe
+item.fluid_pipe.pipeHuge=Huge %s Fluid Pipe
+item.fluid_pipe.pipeQuadruple=Quadruple %s Fluid Pipe
+item.fluid_pipe.pipeNonuple=Nonuple %s Fluid Pipe
+item.fluid_pipe.pipeSexdecuple=Sexdecuple %s Fluid Pipe
+
+
+
 material.aluminium=Aluminium
 material.americium=Americium
 material.antimony=Antimony
@@ -1485,6 +1506,10 @@ material.cocoa=Cocoa
 material.coffee=Coffee
 material.wheat=Wheat
 
+item.ultimate.pipeSmall=Small High Pressure Fluid Pipe
+item.ultimate.pipeMedium=Medium High Pressure Fluid Pipe
+item.ultimate.pipeLarge=Large High Pressure Fluid Pipe
+item.superconductor.pipeMedium=Plasma Containment Pipe
 item.gunpowder.dustTiny=Tiny Pile of Gunpowder
 item.gunpowder.dustSmall=Small Pile of Gunpowder
 item.paper.dustTiny=Tiny Pile of Chad
@@ -1513,9 +1538,11 @@ item.dark_ash.dust=Dark Ashes
 item.ice.dustTiny=Tiny Pile of Crushed Ice
 item.ice.dustSmall=Small Pile of Crushed Ice
 item.ice.dust=Crushed Ice
+item.plastic.ingot=Polyethylene Bar
 item.plastic.dustTiny=Tiny Pile of Polyethylene Pulp
 item.plastic.dustSmall=Small Pile of Polyethylene Pulp
 item.plastic.dust=Polyethylene Pulp
+item.plastic.nugget=Polyethylene Chip
 item.plastic.plate=Polyethylene Sheet
 item.epoxid.ingot=Epoxid Bar
 item.epoxid.dustTiny=Tiny Pile of Epoxid Pulp
@@ -2909,14 +2936,11 @@ gregtech.cable.voltage=Voltage: §a%d §7(§a%s§7)
 gregtech.cable.amperage=Amperage: §e%d
 gregtech.cable.loss_per_block=Loss per block: §c%d
 
-gregtech.item_pipe.normal=§6Item Pipe§7
 gregtech.item_pipe.capacity1=Item Capacity: §e%d§7 Stacks/ %d sec
 gregtech.item_pipe.capacity2=Item Capacity: §e%d§7 Stacks/sec
 gregtech.item_pipe.capacity3=Item Capacity: §e1§7 Stack/sec
 gregtech.item_pipe.routing_value=Routing Value: §2%d§7
 
-gregtech.fluid_pipe.normal=§1Fluid Pipe§7
-gregtech.fluid_pipe.multiple=§1Multiple Fluid Pipe§7
 gregtech.fluid_pipe.capacity1=Fluid Capacity: §9%d§7 L/sec
 gregtech.fluid_pipe.capacity2=Fluid Capacity: §9%d§7x§9%d§7 L/sec
 gregtech.fluid_pipe.heat_limit=Heat Limit:  §c%s§7 K

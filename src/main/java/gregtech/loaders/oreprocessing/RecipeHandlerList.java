@@ -7,6 +7,7 @@ public class RecipeHandlerList {
         OreRecipeHandler.register();
         PartsRecipeHandler.register();
         WireRecipeHandler.register();
+        PipeRecipeHandler.register();
         ToolRecipeHandler.register();
         PolarizingRecipeHandler.register();
         DecompositionRecipeHandler.register();

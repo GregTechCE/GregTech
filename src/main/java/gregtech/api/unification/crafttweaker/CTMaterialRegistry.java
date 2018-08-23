@@ -62,4 +62,12 @@ public class CTMaterialRegistry {
             Math.max(0.0f, toolSpeed), Math.max(0, toolDurability), blastFurnaceTemperature);
     }
 
+    @ZenMethod
+    public static RoughSolidMaterial createRoughSolidMaterial(int metaItemSubId, String name, int color, String iconSet, int harvestLevel, @Optional MaterialStack[] materialComponents, @Optional float toolSpeed, @Optional int toolDurability) {
+        return new RoughSolidMaterial(metaItemSubId, name, color,
+            MaterialIconSet.getByName(iconSet), harvestLevel,
+            validateComponentList(materialComponents), 0,
+            Math.max(0.0f, toolSpeed), Math.max(0, toolDurability));
+    }
+
 }

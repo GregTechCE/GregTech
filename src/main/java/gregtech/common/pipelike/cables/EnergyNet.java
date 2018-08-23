@@ -135,7 +135,7 @@ public class EnergyNet extends PipeNet<Insulation, WireProperties, IEnergyContai
         if (voltage > prop.getVoltage() || amp > prop.getAmperage()) burntBlock.add(node);
     }
 
-    // amperage, energy
+    // amperage, voltage
     public double[] getStatisticData(BlockPos pos) {
         return statistics.computeIfAbsent(pos, p -> new Statistics()).getData();
     }

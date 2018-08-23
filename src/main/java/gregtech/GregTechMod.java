@@ -30,6 +30,7 @@ import gregtech.common.metatileentities.MetaTileEntities;
 import gregtech.common.worldgen.WorldGenRubberTree;
 import gregtech.integration.theoneprobe.TheOneProbeCompatibility;
 import gregtech.loaders.postload.DungeonLootLoader;
+import gregtech.loaders.preload.PipeLoader;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fml.common.*;
@@ -81,6 +82,7 @@ public class GregTechMod {
         //freeze material registry before processing items, blocks and fluids
         Material.freezeRegistry();
 
+        PipeLoader.init();
         MetaBlocks.init();
         MetaItems.init();
         MetaFluids.init();

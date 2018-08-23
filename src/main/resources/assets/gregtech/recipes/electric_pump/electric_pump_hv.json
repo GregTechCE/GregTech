@@ -12,7 +12,7 @@
     },
     "O": {
       "type": "forge:ore_dict",
-      "ore": "ringPaper"
+      "ore": "ringRubber"
     },
     "X": {
       "type": "forge:ore_dict",
@@ -28,7 +28,7 @@
     },
     "P": {
       "type": "forge:ore_dict",
-      "ore": "pipeSmallBronze"
+      "ore": "pipeMediumStainlessSteel"
     },
     "d": {
       "type": "forge:ore_dict",

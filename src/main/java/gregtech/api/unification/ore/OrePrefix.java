@@ -560,8 +560,8 @@ public enum OrePrefix {
 
     @SideOnly(Side.CLIENT)
     public String getLocalNameForItem(Material material) {
-        String specfiedUnlocalized = "item." + material.toString() + "." + this.name();
-        if (I18n.hasKey(specfiedUnlocalized)) return I18n.format(specfiedUnlocalized);
+        String specifiedUnlocalized = "item." + material.toString() + "." + this.name();
+        if (I18n.hasKey(specifiedUnlocalized)) return I18n.format(specifiedUnlocalized);
         String unlocalized = "item.material.oreprefix." + this.name();
         String matLocalized = material.getLocalizedName();
         String formatted = I18n.format(unlocalized, matLocalized);
