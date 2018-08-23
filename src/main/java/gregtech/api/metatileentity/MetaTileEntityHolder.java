@@ -165,6 +165,7 @@ public class MetaTileEntityHolder extends TickableTileEntityBase implements IUIH
         dataWriter.accept(new PacketBuffer(backedBuffer));
         byte[] updateData = Arrays.copyOfRange(backedBuffer.array(), 0, backedBuffer.writerIndex());
         updateEntries.add(new UpdateEntry(discriminator, updateData));
+        @SuppressWarnings("deprecation")
         IBlockState blockState = getBlockType().getStateFromMeta(getBlockMetadata());
         world.notifyBlockUpdate(getPos(), blockState, blockState, 0);
     }

@@ -5,7 +5,9 @@ import gregtech.api.gui.ModularUI;
 import gregtech.api.gui.UIFactory;
 import gregtech.api.gui.impl.ModularUIContainer;
 import gregtech.api.gui.impl.ModularUIGui;
+import gregtech.api.util.GTLog;
 import gregtech.api.worldentries.pipenet.WorldPipeNet;
+import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import net.minecraft.client.network.NetHandlerPlayClient;
 import net.minecraft.inventory.Container;
@@ -79,44 +81,56 @@ public class NetworkHandler {
 
         registerPacket(1, PacketUIOpen.class, new PacketCodec<>(
             (packet, buf) -> {
-                buf.writeInt(packet.uiFactoryId);
                 buf.writeInt(packet.serializedHolder.readableBytes());
                 buf.writeBytes(packet.serializedHolder);
+                buf.writeInt(packet.uiFactoryId);
                 buf.writeInt(packet.windowId);
             },
-            (buf) -> new PacketUIOpen(
-                buf.readInt(),
-                new PacketBuffer(buf.readBytes(buf.readInt())),
-                buf.readInt()
-            )
+            (buf) -> {
+                ByteBuf directSliceBuffer = buf.readBytes(buf.readInt());
+                ByteBuf copiedDataBuffer = Unpooled.copiedBuffer(directSliceBuffer);
+                directSliceBuffer.release();
+                return new PacketUIOpen(
+                    buf.readInt(),
+                    new PacketBuffer(copiedDataBuffer),
+                    buf.readInt());
+            }
         ));
 
         registerPacket(2, PacketUIWidgetUpdate.class, new PacketCodec<>(
             (packet, buf) -> {
-                buf.writeInt(packet.windowId);
-                buf.writeInt(packet.widgetId);
                 buf.writeInt(packet.updateData.readableBytes());
                 buf.writeBytes(packet.updateData);
+                buf.writeInt(packet.windowId);
+                buf.writeInt(packet.widgetId);
             },
-            (buf) -> new PacketUIWidgetUpdate(
-                buf.readInt(),
-                buf.readInt(),
-                new PacketBuffer(buf.readBytes(buf.readInt()))
-            )
+            (buf) -> {
+                ByteBuf directSliceBuffer = buf.readBytes(buf.readInt());
+                ByteBuf copiedDataBuffer = Unpooled.copiedBuffer(directSliceBuffer);
+                directSliceBuffer.release();
+                return new PacketUIWidgetUpdate(
+                    buf.readInt(),
+                    buf.readInt(),
+                    new PacketBuffer(copiedDataBuffer));
+            }
         ));
 
         registerPacket(3, PacketUIClientAction.class, new PacketCodec<>(
             (packet, buf) -> {
-                buf.writeInt(packet.windowId);
-                buf.writeInt(packet.widgetId);
                 buf.writeInt(packet.updateData.readableBytes());
                 buf.writeBytes(packet.updateData);
+                buf.writeInt(packet.windowId);
+                buf.writeInt(packet.widgetId);
             },
-            (buf) -> new PacketUIClientAction(
-                buf.readInt(),
-                buf.readInt(),
-                new PacketBuffer(buf.readBytes(buf.readInt()))
-            )
+            (buf) -> {
+                ByteBuf directSliceBuffer = buf.readBytes(buf.readInt());
+                ByteBuf copiedDataBuffer = Unpooled.copiedBuffer(directSliceBuffer);
+                directSliceBuffer.release();
+                return new PacketUIClientAction(
+                    buf.readInt(),
+                    buf.readInt(),
+                    new PacketBuffer(copiedDataBuffer));
+            }
         ));
 
         registerPacket(4, PacketPipeNetUpdate.class, new PacketCodec<>(
@@ -154,7 +168,11 @@ public class NetworkHandler {
     private static void initClient() {
         registerClientExecutor(PacketUIOpen.class, (packet, handler) -> {
             UIFactory<?> uiFactory = UIFactory.FACTORY_REGISTRY.getObjectById(packet.uiFactoryId);
-            uiFactory.initClientUI(packet.serializedHolder, packet.windowId);
+            if(uiFactory == null) {
+                GTLog.logger.warn("Couldn't find UI Factory with id '{}'", packet.uiFactoryId);
+            } else {
+                uiFactory.initClientUI(packet.serializedHolder, packet.windowId);
+            }
         });
         registerClientExecutor(PacketUIWidgetUpdate.class, (packet, handler) -> ModularUIGui.queuingWidgetUpdates.add(packet));
         registerClientExecutor(PacketPipeNetUpdate.class, ((packet, handler) -> WorldPipeNet.onServerPacket(packet)));
