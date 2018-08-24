@@ -259,6 +259,9 @@ public class MetaItem1 extends MaterialMetaItem {
 
         DYNAMITE = addItem(629, "dynamite").addStats(new DynamiteBehaviour()).setMaxStackSize(16);
 
+        SMALL_BRONZE_PIPE = addItem(625, "pipe.small.bronze").setUnificationData(OrePrefix.pipeSmall, Materials.Bronze);
+        SMALL_STEEL_PIPE = addItem(626, "pipe.small.steel").setUnificationData(OrePrefix.pipeSmall, Materials.Steel);
+
         CONVEYOR_MODULE_LV = addItem(630, "conveyor.module.lv");
         CONVEYOR_MODULE_MV = addItem(631, "conveyor.module.mv");
         CONVEYOR_MODULE_HV = addItem(632, "conveyor.module.hv");

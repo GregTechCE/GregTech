@@ -342,6 +342,9 @@ public final class MetaItems {
     public static MetaItem<?>.MetaValueItem[] SPRAY_CAN_DYES = new MetaItem.MetaValueItem[16];
     public static MetaItem<?>.MetaValueItem[] SPRAY_CAN_DYES_USED = new MetaItem.MetaValueItem[16];
 
+    public static MetaItem<?>.MetaValueItem SMALL_BRONZE_PIPE;
+    public static MetaItem<?>.MetaValueItem SMALL_STEEL_PIPE;
+
     public static MetaItem<?>.MetaValueItem RUBBER_DROP;
 
     public static ToolMetaItem<?>.MetaToolValueItem SWORD;
