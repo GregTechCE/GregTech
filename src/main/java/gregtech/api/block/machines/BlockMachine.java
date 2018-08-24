@@ -297,6 +297,7 @@ public class BlockMachine extends Block implements ITileEntityProvider {
     }
 
     @Override
+    @SideOnly(Side.CLIENT)
     public EnumBlockRenderType getRenderType(IBlockState state) {
         return MetaTileEntityRenderer.BLOCK_RENDER_TYPE;
     }
