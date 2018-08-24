@@ -12,8 +12,6 @@ import gregtech.api.unification.ore.OrePrefix;
 import gregtech.api.unification.stack.UnificationEntry;
 import gregtech.api.util.GTUtility;
 import gregtech.common.items.MetaItems;
-import gregtech.common.pipelike.cables.CableFactory;
-import gregtech.common.pipelike.cables.WireProperties;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.ItemStack;
@@ -145,8 +143,7 @@ public class WireRecipeHandler {
     }
 
     public static boolean isPaperInsulatedCable(IngotMaterial material) {
-        WireProperties wireProperties = CableFactory.INSTANCE.getRegisteredProperty(material);
-        return wireProperties != null && GTUtility.getTierByVoltage(wireProperties.getVoltage()) <= 1;
+        return GTUtility.getTierByVoltage(material.cableProperties.voltage) <= 1;
     }
 
     private static int getVoltageMultiplier(Material material) {

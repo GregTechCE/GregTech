@@ -40,7 +40,7 @@ public class ToolSolderingIron extends ToolBase {
     }
 
     @Override
-    public boolean isMinableBlock(IBlockState block, ItemStack stack, String tool) {
+    public boolean isMinableBlock(IBlockState block, ItemStack stack) {
         return block.getMaterial() == Material.CIRCUITS;
     }
 

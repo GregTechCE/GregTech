@@ -1,6 +1,7 @@
 package gregtech.api.unification.material.type;
 
 import com.google.common.collect.ImmutableList;
+import gregtech.common.cable.WireProperties;
 import gregtech.api.unification.Element;
 import gregtech.api.unification.material.MaterialIconSet;
 import gregtech.api.unification.stack.MaterialStack;
@@ -9,9 +10,9 @@ import javax.annotation.Nullable;
 
 import static gregtech.api.unification.material.type.DustMaterial.MatFlags.GENERATE_PLATE;
 import static gregtech.api.unification.material.type.DustMaterial.MatFlags.SMELT_INTO_FLUID;
+import static gregtech.api.util.GTUtility.createFlag;
 import static gregtech.api.unification.material.type.IngotMaterial.MatFlags.*;
 import static gregtech.api.unification.material.type.SolidMaterial.MatFlags.GENERATE_ROD;
-import static gregtech.api.util.GTUtility.createFlag;
 
 public class IngotMaterial extends SolidMaterial {
 
@@ -61,6 +62,13 @@ public class IngotMaterial extends SolidMaterial {
      * If below 1000C, primitive blast furnace recipes will be also added
      */
     public final int blastFurnaceTemperature;
+
+    /**
+     * If set, cable will be generated for this material with base stats
+     * specified by this field
+     */
+    @Nullable
+    public WireProperties cableProperties;
 
     public IngotMaterial(int metaItemSubId, String name, int materialRGB, MaterialIconSet materialIconSet, int harvestLevel, ImmutableList<MaterialStack> materialComponents, long materialGenerationFlags, Element element, float toolSpeed, int toolDurability, int blastFurnaceTemperature) {
         super(metaItemSubId, name, materialRGB, materialIconSet, harvestLevel, materialComponents, materialGenerationFlags, element, toolSpeed, toolDurability);
@@ -129,6 +137,10 @@ public class IngotMaterial extends SolidMaterial {
 
     public void setArcSmeltingInto(IngotMaterial arcSmeltingInto) {
         this.arcSmeltInto = arcSmeltingInto;
+    }
+
+    public void setCableProperties(long voltage, int baseAmperage, int lossPerBlock) {
+        this.cableProperties = new WireProperties((int) voltage, baseAmperage, lossPerBlock);
     }
 
 }

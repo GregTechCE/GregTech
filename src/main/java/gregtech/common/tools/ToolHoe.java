@@ -19,7 +19,8 @@ public class ToolHoe extends ToolBase {
     }
 
     @Override
-    public boolean isMinableBlock(IBlockState block, ItemStack stack, String tool) {
+    public boolean isMinableBlock(IBlockState block, ItemStack stack) {
+        String tool = block.getBlock().getHarvestTool(block);
         return (tool != null && tool.equals("hoe")) ||
             block.getMaterial() == Material.GROUND;
     }

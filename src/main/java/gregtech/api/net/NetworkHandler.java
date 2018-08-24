@@ -6,7 +6,6 @@ import gregtech.api.gui.UIFactory;
 import gregtech.api.gui.impl.ModularUIContainer;
 import gregtech.api.gui.impl.ModularUIGui;
 import gregtech.api.util.GTLog;
-import gregtech.api.worldentries.pipenet.WorldPipeNet;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import net.minecraft.client.network.NetHandlerPlayClient;
@@ -175,7 +174,6 @@ public class NetworkHandler {
             }
         });
         registerClientExecutor(PacketUIWidgetUpdate.class, (packet, handler) -> ModularUIGui.queuingWidgetUpdates.add(packet));
-        registerClientExecutor(PacketPipeNetUpdate.class, ((packet, handler) -> WorldPipeNet.onServerPacket(packet)));
     }
 
     public static <T extends Packet> void registerPacket(int packetId, Class<T> packetClass, PacketCodec<T> codec) {

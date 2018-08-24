@@ -95,10 +95,9 @@ public class BlockMachine extends Block implements ITileEntityProvider {
         return new ExtendedBlockState(this, new IProperty[0], new IUnlistedProperty[] {HARVEST_TOOL, HARVEST_LEVEL});
     }
 
-    @Nullable
     public static MetaTileEntity getMetaTileEntity(IBlockAccess blockAccess, BlockPos pos) {
-        TileEntity tile = blockAccess.getTileEntity(pos);
-        return tile instanceof MetaTileEntityHolder ? ((MetaTileEntityHolder) tile).getMetaTileEntity() : null;
+        MetaTileEntityHolder holder = (MetaTileEntityHolder) blockAccess.getTileEntity(pos);
+        return holder == null ? null : holder.getMetaTileEntity();
     }
 
     private Cuboid6[] getCollisionBox(IBlockAccess blockAccess, BlockPos pos) {

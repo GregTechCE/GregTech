@@ -21,6 +21,7 @@ import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -58,9 +59,10 @@ public class BlockOre extends BlockFalling implements IBlockOre {
         return new BlockStateContainer(this);
     }
 
-    private void initBlockState() {
-        blockState = new BlockStateContainer(this, STONE_TYPE);
-        setDefaultState(blockState.getBaseState());
+    protected void initBlockState() {
+        BlockStateContainer stateContainer = createStateContainer();
+        ObfuscationReflectionHelper.setPrivateValue(Block.class, this, stateContainer, 21); //this.stateContainer
+        setDefaultState(stateContainer.getBaseState());
     }
 
     @Override
@@ -128,6 +130,10 @@ public class BlockOre extends BlockFalling implements IBlockOre {
     @Override
     public BlockRenderLayer getBlockLayer() {
         return BlockRenderLayer.CUTOUT_MIPPED;
+    }
+
+    private BlockStateContainer createStateContainer() {
+        return new BlockStateContainer(this, STONE_TYPE);
     }
 
     @Override

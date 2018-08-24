@@ -22,8 +22,9 @@ public abstract class DelayedStateBlock extends Block {
     }
 
     protected void initBlockState() {
-        blockState = createStateContainer();
-        setDefaultState(blockState.getBaseState());
+        BlockStateContainer stateContainer = createStateContainer();
+        ObfuscationReflectionHelper.setPrivateValue(Block.class, this, stateContainer, 21); //this.stateContainer
+        setDefaultState(stateContainer.getBaseState());
     }
 
     protected abstract BlockStateContainer createStateContainer();

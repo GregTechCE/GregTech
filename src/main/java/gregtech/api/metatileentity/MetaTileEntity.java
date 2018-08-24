@@ -48,7 +48,6 @@ import java.util.function.Consumer;
 public abstract class MetaTileEntity {
 
     public static final Cuboid6[] FULL_CUBE_COLLISION = new Cuboid6[] {Cuboid6.full};
-    public static final int DEFAULT_PAINTING_COLOR = 0xFFFFFF;
 
     public final String metaTileEntityId;
     MetaTileEntityHolder holder;
@@ -66,7 +65,7 @@ public abstract class MetaTileEntity {
     protected List<MTETrait> mteTraits = new ArrayList<>();
 
     protected EnumFacing frontFacing = EnumFacing.NORTH;
-    protected int paintingColor = DEFAULT_PAINTING_COLOR;
+    protected int paintingColor = 0xFFFFFF;
 
     protected int[] sidedRedstoneOutput = new int[6];
 

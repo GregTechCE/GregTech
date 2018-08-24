@@ -505,14 +505,13 @@ public enum OrePrefix {
         return oreProcessingHandlers.addAll(Arrays.asList(processingHandler));
     }
 
-    public <T extends Material> OrePrefix addProcessingHandler(Class<T> materialFilter, BiConsumer<OrePrefix, T> handler) {
+    public <T extends Material> void addProcessingHandler(Class<T> materialFilter, BiConsumer<OrePrefix, T> handler) {
         addProcessingHandler((orePrefix, material) -> {
             if(materialFilter.isAssignableFrom(material.getClass())) {
                 //noinspection unchecked
                 handler.accept(orePrefix, (T) material);
             }
         });
-        return this;
     }
 
     public void processOreRegistration(@Nullable Material material) {
