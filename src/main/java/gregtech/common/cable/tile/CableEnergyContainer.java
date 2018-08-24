@@ -120,4 +120,8 @@ public class CableEnergyContainer implements IEnergyContainer {
         return worldENet.getNetFromPos(tileEntityCable.getCablePos());
     }
 
+    @Override
+    public boolean isOneProbeHidden() {
+        return true;
+    }
 }

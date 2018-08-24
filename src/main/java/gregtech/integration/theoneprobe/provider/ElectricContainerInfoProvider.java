@@ -22,6 +22,11 @@ public class ElectricContainerInfoProvider extends CapabilityInfoProvider<IEnerg
     }
 
     @Override
+    protected boolean allowDisplaying(IEnergyContainer capability) {
+        return !capability.isOneProbeHidden();
+    }
+
+    @Override
     protected void addProbeInfo(IEnergyContainer capability, IProbeInfo probeInfo, TileEntity tileEntity, EnumFacing sideHit) {
         long energyStored = capability.getEnergyStored();
         long maxStorage = capability.getEnergyCapacity();

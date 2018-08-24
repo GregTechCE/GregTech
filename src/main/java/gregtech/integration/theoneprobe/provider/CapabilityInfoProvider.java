@@ -17,6 +17,10 @@ public abstract class CapabilityInfoProvider<T> implements IProbeInfoProvider {
 
     protected abstract void addProbeInfo(T capability, IProbeInfo probeInfo, TileEntity tileEntity, EnumFacing sideHit);
 
+    protected boolean allowDisplaying(T capability) {
+        return true;
+    }
+
     @Override
     public void addProbeInfo(ProbeMode mode, IProbeInfo probeInfo, EntityPlayer player, World world, IBlockState blockState, IProbeHitData data) {
         if(blockState.getBlock().hasTileEntity(blockState)) {
@@ -25,7 +29,7 @@ public abstract class CapabilityInfoProvider<T> implements IProbeInfoProvider {
             if(tileEntity == null) return;
             Capability<T> capability = getCapability();
             T resultCapability = tileEntity.getCapability(capability, sideHit);
-            if(resultCapability != null) {
+            if(resultCapability != null && allowDisplaying(resultCapability)) {
                 addProbeInfo(resultCapability, probeInfo, tileEntity, sideHit);
             }
         }

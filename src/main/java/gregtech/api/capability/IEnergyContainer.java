@@ -127,4 +127,8 @@ public interface IEnergyContainer {
         return true;
     }
 
+    default boolean isOneProbeHidden() {
+        return false;
+    }
+
 }
