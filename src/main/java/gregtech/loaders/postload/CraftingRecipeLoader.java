@@ -47,9 +47,6 @@ public class CraftingRecipeLoader {
         ModHandler.addShapedRecipe("piston_steel", new ItemStack(Blocks.PISTON, 1), "WWW", "CBC", "CRC", 'W', new UnificationEntry(OrePrefix.plank, Materials.Wood), 'C', OrePrefix.stoneCobble, 'R', new UnificationEntry(OrePrefix.dust, Materials.Redstone), 'B', new UnificationEntry(OrePrefix.ingot, Materials.Steel));
         ModHandler.addShapedRecipe("piston_titanium", new ItemStack(Blocks.PISTON, 1), "WWW", "CBC", "CRC", 'W', new UnificationEntry(OrePrefix.plank, Materials.Wood), 'C', OrePrefix.stoneCobble, 'R', new UnificationEntry(OrePrefix.dust, Materials.Redstone), 'B', new UnificationEntry(OrePrefix.ingot, Materials.Titanium));
 
-        ModHandler.addShapedRecipe("pipe_small_steel", OreDictUnifier.get(OrePrefix.pipeSmall, Materials.Steel, 2), "WWW", "w h", "WWW", 'W', new UnificationEntry(OrePrefix.plate, Materials.Steel));
-        ModHandler.addShapedRecipe("pipe_small_bronze", OreDictUnifier.get(OrePrefix.pipeSmall, Materials.Bronze, 2), "WWW", "w h", "WWW", 'W', new UnificationEntry(OrePrefix.plate, Materials.Bronze));
-
         ModHandler.addShapelessRecipe("dynamite", MetaItems.DYNAMITE.getStackForm(), Items.STRING, Items.PAPER, Items.GUNPOWDER);
         GTLog.logger.info("Modifying vanilla recipes according to config. DON'T BE SCARED OF FML's WARNING ABOUT DANGEROUS ALTERNATIVE PREFIX.");
 
