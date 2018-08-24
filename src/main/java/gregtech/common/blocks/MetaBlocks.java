@@ -7,10 +7,8 @@ import gregtech.api.block.machines.BlockMachine;
 import gregtech.api.capability.IEnergyContainer;
 import gregtech.api.metatileentity.MetaTileEntityHolder;
 import gregtech.api.pipelike.BlockPipeLike;
-import gregtech.api.pipelike.PipeFactory;
 import gregtech.api.pipelike.TileEntityPipeLike;
 import gregtech.api.render.MetaTileEntityRenderer;
-import gregtech.api.render.PipeLikeRenderer;
 import gregtech.api.unification.OreDictUnifier;
 import gregtech.api.unification.material.Materials;
 import gregtech.api.unification.material.type.DustMaterial;
@@ -29,9 +27,7 @@ import gregtech.common.blocks.wood.BlockGregSapling;
 import gregtech.common.pipelike.cables.CableFactory;
 import gregtech.common.pipelike.cables.Insulation;
 import gregtech.common.pipelike.cables.WireProperties;
-import gregtech.common.pipelike.itempipes.ItemPipeFactory;
-import gregtech.common.pipelike.itempipes.ItemPipeProperties;
-import gregtech.common.pipelike.itempipes.TypeItemPipe;
+import gregtech.common.render.CableRenderer;
 import gregtech.common.render.tesr.TileEntityCrusherBladeRenderer;
 import gregtech.common.render.tesr.TileEntityRendererBase.TileEntityRenderBaseItem;
 import net.minecraft.block.Block;
@@ -39,6 +35,7 @@ import net.minecraft.block.BlockLog.EnumAxis;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.ItemMeshDefinition;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.renderer.block.statemap.DefaultStateMapper;
 import net.minecraft.init.Items;
@@ -52,7 +49,6 @@ import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import net.minecraftforge.items.IItemHandler;
 
 import java.util.*;
 import java.util.Map.Entry;
@@ -87,7 +83,6 @@ public class MetaBlocks {
     public static BlockCrusherBlade CRUSHER_BLADE;
 
     public static Map<Material, BlockPipeLike<Insulation, WireProperties, IEnergyContainer>> CABLES;
-    public static Map<Material, BlockPipeLike<TypeItemPipe, ItemPipeProperties, IItemHandler>> ITEM_PIPES;
     public static HashMap<DustMaterial, BlockCompressed> COMPRESSED = new HashMap<>();
     public static HashMap<IngotMaterial, BlockSurfaceRock> SURFACE_ROCKS = new HashMap<>();
     public static HashMap<SolidMaterial, BlockFrame> FRAMES = new HashMap<>();
@@ -146,7 +141,6 @@ public class MetaBlocks {
         }
 
         CABLES = CableFactory.INSTANCE.createBlockWithRegisteredProperties();
-        ITEM_PIPES = ItemPipeFactory.INSTANCE.createBlockWithRegisteredProperties();
 
         registerTileEntity();
     }
@@ -248,11 +242,8 @@ public class MetaBlocks {
         registerItemModel(LEAVES);
         registerItemModel(SAPLING);
 
-        PipeFactory.allFactories.values().forEach(factory -> {
-            ModelResourceLocation modelResourceLocation = PipeLikeRenderer.getRenderer(factory).getModelLocation();
-            factory.getBlockMap().values()
-                .forEach(block -> ModelLoader.setCustomMeshDefinition(Item.getItemFromBlock(block), stack -> modelResourceLocation));
-        });
+        ItemMeshDefinition cableMeshDefinition = stack -> CableRenderer.MODEL_LOCATION;
+        CABLES.values().forEach(cable -> ModelLoader.setCustomMeshDefinition(Item.getItemFromBlock(cable), cableMeshDefinition));
         COMPRESSED.values().stream().distinct().forEach(MetaBlocks::registerItemModel);
         FRAMES.values().stream().distinct().forEach(MetaBlocks::registerItemModel);
         ORES.stream().distinct().forEach(MetaBlocks::registerItemModel);
@@ -290,16 +281,13 @@ public class MetaBlocks {
                 return MetaTileEntityRenderer.MODEL_LOCATION;
             }
         });
-        for (PipeFactory<?, ?, ?> factory : PipeFactory.allFactories.values()) {
-            ModelResourceLocation modelResourceLocation = PipeLikeRenderer.getRenderer(factory).getModelLocation();
-            DefaultStateMapper stateMapper = new DefaultStateMapper() {
-                @Override
-                protected ModelResourceLocation getModelResourceLocation(IBlockState state) {
-                    return modelResourceLocation;
-                }
-            };
-            factory.getBlockMap().values().forEach(block -> ModelLoader.setCustomStateMapper(block, stateMapper));
-        }
+        DefaultStateMapper cableStateMapper = new DefaultStateMapper() {
+            @Override
+            protected ModelResourceLocation getModelResourceLocation(IBlockState state) {
+                return CableRenderer.MODEL_LOCATION;
+            }
+        };
+        CABLES.values().forEach(cable -> ModelLoader.setCustomStateMapper(cable, cableStateMapper));
 
         BakedModelHandler modelHandler = new BakedModelHandler();
         MinecraftForge.EVENT_BUS.register(modelHandler);
@@ -363,7 +351,12 @@ public class MetaBlocks {
                 OreDictUnifier.registerOre(normalStack, stoneType.processingPrefix, material);
             }
         }
-        PipeFactory.allFactories.values().forEach(PipeFactory::registerOreDict);
+        for(BlockPipeLike<Insulation, WireProperties, IEnergyContainer> blockCable : CABLES.values()) {
+            for(Insulation insulation : Insulation.values()) {
+                ItemStack itemStack = blockCable.getItem(insulation);
+                OreDictUnifier.registerOre(itemStack, insulation.orePrefix, blockCable.material);
+            }
+        }
     }
 
     private static String statePropertiesToString(Map<IProperty<?>, Comparable<?>> properties) {

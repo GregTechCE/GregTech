@@ -1,6 +1,6 @@
 package gregtech.api.pipelike;
 
-import gregtech.api.covers.ICoverableTile;
+import gregtech.api.cover.ICoverableTile;
 import gregtech.api.unification.material.type.Material;
 import net.minecraft.util.IStringSerializable;
 

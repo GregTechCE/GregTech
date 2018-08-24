@@ -1,4 +1,4 @@
-package gregtech.api.covers;
+package gregtech.api.cover;
 
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;

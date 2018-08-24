@@ -9,10 +9,7 @@ import codechicken.multipart.TileMultipart;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import gregtech.api.GTValues;
-import gregtech.api.block.machines.BlockMachine;
-import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.multipart.MultipartPipeLike;
-import gregtech.api.unification.OreDictUnifier;
 import gregtech.api.unification.material.type.GemMaterial;
 import gregtech.api.unification.material.type.IngotMaterial;
 import gregtech.api.unification.material.type.Material;
@@ -33,11 +30,9 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.Optional.Method;
 
-import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.lang.reflect.Array;
 import java.util.List;
@@ -49,31 +44,15 @@ public abstract class PipeFactory<Q extends Enum<Q> & IBaseProperty & IStringSer
 
     ///////////////////////////////////// REGISTRIES ///////////////////////////////////////
 
-    public static final Map<String, PipeFactory<?, ?, ?>> allFactories = Maps.newHashMap();
+    public static final Map<String, PipeFactory> allFactories = Maps.newHashMap();
     private final Map<Material, BlockPipeLike<Q, P, C>> blockMap = Maps.newHashMap();
 
     private boolean freezePropertyRegistry = false;
-    private final Map<Material, P> REGISTERED_PROPERTIES = Maps.newLinkedHashMap();
-
-    @SuppressWarnings("unchecked")
-    public static <Q extends Enum<Q> & IBaseProperty & IStringSerializable, P extends IPipeLikeTileProperty, C> PipeFactory<Q, P, C> getFactoryByName(String name) {
-        return (PipeFactory<Q, P, C>) allFactories.get(name);
-    }
+    private final Map<Material, P> REGISTERED_PROPERTIES = Maps.newTreeMap();
 
     protected void registerPropertyForMaterial(Material material, P property) {
         if (freezePropertyRegistry) throw new IllegalStateException("Property registry of " + name +" is already freezed!");
         REGISTERED_PROPERTIES.put(material, property);
-    }
-
-    public void registerOreDict() {
-        blockMap.values().forEach(block -> {
-            for (Q baseProperty : baseProperties) {
-                if (!baseProperty.getOrePrefix().isIgnored(block.material)) {
-                    ItemStack itemStack = block.getItem(baseProperty);
-                    OreDictUnifier.registerOre(itemStack, baseProperty.getOrePrefix(), block.material);
-                }
-            }
-        });
     }
 
     ////////////////////////////// BASIC FIELDS AND INITS //////////////////////////////////
@@ -179,8 +158,6 @@ public abstract class PipeFactory<Q extends Enum<Q> & IBaseProperty & IStringSer
     public Q getBaseProperty(int index) {
         return index >= 0 && index < baseProperties.length ? baseProperties[index] : null;
     }
-
-    public void onBreakingTile(ITilePipeLike<Q, P> tile) {}
 
     /////////////////////////////// MULTIPART METHODS //////////////////////////////////////
 
@@ -360,9 +337,14 @@ public abstract class PipeFactory<Q extends Enum<Q> & IBaseProperty & IStringSer
                 continue;
             sidePos.move(facing);
             switch (isPipeAccessibleAtSide(world, sidePos, facing.getOpposite(), tile.getColor(), tile.getBaseProperty().getThickness())) {
-                case 0: if (!tile.hasCapabilityAtSide(capability, facing)) break;
                 case 3: connectedSideMask |= MASK_RENDER_SIDE << facing.getIndex();
                 case 2: connectedSideMask |= MASK_FORMAL_CONNECTION << facing.getIndex(); break;
+                case 0: {
+                    if (tile.hasCapabilityAtSide(capability, facing)) {
+                        connectedSideMask |= MASK_FORMAL_CONNECTION << facing.getIndex();
+                    }
+                    break;
+                }
             }
             sidePos.move(facing.getOpposite());
         }
@@ -394,27 +376,6 @@ public abstract class PipeFactory<Q extends Enum<Q> & IBaseProperty & IStringSer
     public abstract C createCapability(ITilePipeLike<Q, P> tile);
 
     public abstract PipeNet<Q, P, C> createPipeNet(WorldPipeNet worldNet);
-
-    public C onGettingNetworkCapability(C capability, EnumFacing facing) {
-        return capability;
-    }
-
-    @Nullable
-    public ICapabilityProvider getCapabilityProviderAtSide(@Nonnull EnumFacing facing, ITilePipeLike<?, ?> tile) {
-        World world = tile.getTileWorld();
-        int color = tile.getColor();
-        BlockPos.PooledMutableBlockPos pos = BlockPos.PooledMutableBlockPos.retain().setPos(tile.getTilePos()).move(facing);
-        ICapabilityProvider result = world == null ? null : world.getTileEntity(pos);
-        if (result != null && color != getDefaultColor()) {
-            MetaTileEntity mte = BlockMachine.getMetaTileEntity(world, pos);
-            if (mte != null && mte.getPaintingColor() != MetaTileEntity.DEFAULT_PAINTING_COLOR
-                && mte.getPaintingColor() != color) {
-                result = null;
-            }
-        }
-        pos.release();
-        return result;
-    }
 
     public PipeNet<Q, P, C> addToPipeNet(World world, BlockPos pos, ITilePipeLike<Q, P> tile) {
         return WorldPipeNet.getWorldPipeNet(world).addNodeToAdjacentOrNewNet(pos, tile, this);

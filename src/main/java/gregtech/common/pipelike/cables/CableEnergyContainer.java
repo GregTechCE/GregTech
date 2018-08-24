@@ -11,7 +11,6 @@ public class CableEnergyContainer implements IEnergyContainer {
 
     final ITilePipeLike<Insulation, WireProperties> tileEntityCable;
     long lastCachedPathsTime = 0;
-    long lastWeakUpdate = 0;
     List<RoutePath<WireProperties, ?, Long>> pathsCache;
 
     public CableEnergyContainer(ITilePipeLike<Insulation, WireProperties> tileEntityCable) {

@@ -10,7 +10,7 @@ death.attack.crusher=%s was grinded dead.
 
 gregtech.top.energy_stored=Energy:
 gregtech.top.cable_average_amperage=Average amperage in past %s ticks:
-gregtech.top.cable_average_voltage=Average voltage in past %s ticks:
+gregtech.top.cable_average_voltage=Average voltage in past %s ticks
 gregtech.top.progress=Progress:
 gregtech.top.working_disabled=Working Disabled
 
@@ -2905,11 +2905,6 @@ gregtech.gui.fluid_amount=Fluid Amount:
 gregtech.cable.voltage=Voltage: §a%d §7(§a%s§7)
 gregtech.cable.amperage=Amperage: §e%d
 gregtech.cable.loss_per_block=Loss per block: §c%d
-
-gregtech.item_pipe.capacity1=Item Capacity: %d Stacks/ %d sec
-gregtech.item_pipe.capacity2=Item Capacity: %d Stacks/sec
-gregtech.item_pipe.capacity3=Item Capacity: 1 Stack/sec
-gregtech.item_pipe.routing_value=Routing Value:  %d
 
 gregtech.multiblock.work_paused=Work Paused.
 gregtech.multiblock.running=Running perfectly.

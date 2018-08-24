@@ -42,10 +42,10 @@ public class WorldPipeNet extends WorldSavedData {
     private final Multimap<PipeFactory, BlockPos> scheduledCheck = HashMultimap.create();
 
     public static WorldPipeNet getWorldPipeNet(World world) {
-        WorldPipeNet nets = (WorldPipeNet) world.getPerWorldStorage().getOrLoadData(WorldPipeNet.class, DATA_ID);
+        WorldPipeNet nets = (WorldPipeNet) world.loadData(WorldPipeNet.class, DATA_ID);
         if (nets == null) {
             nets = new WorldPipeNet(DATA_ID);
-            world.getPerWorldStorage().setData(DATA_ID, nets);
+            world.setData(DATA_ID, nets);
         }
         nets.world = world;
         return nets;
@@ -53,10 +53,7 @@ public class WorldPipeNet extends WorldSavedData {
 
     @SubscribeEvent
     public static void onWorldTick(TickEvent.WorldTickEvent event) {
-        if (event.phase == TickEvent.Phase.END) {
-            World world = event.world;
-            getWorldPipeNet(world).update();
-        }
+        if (event.phase == TickEvent.Phase.END) getWorldPipeNet(event.world).update();
     }
 
     public WorldPipeNet(String name) {
@@ -206,7 +203,7 @@ public class WorldPipeNet extends WorldSavedData {
     }
 
     final WeakHashMap<PipeNet, Long> uids = new WeakHashMap<>();
-    public static Random rnd = new XSTR();
+    private static Random rnd = new XSTR();
 
     private Long tempUID = null;
     long getUID() {

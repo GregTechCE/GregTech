@@ -3,8 +3,9 @@ package gregtech.common.blocks;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.IStringSerializable;
 
-public class VariantItemBlock<T extends VariantBlock<?>> extends ItemBlock {
+public class VariantItemBlock<R extends Enum<R> & IStringSerializable, T extends VariantBlock<R>> extends ItemBlock {
 
     private final T genericBlock;
 

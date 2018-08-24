@@ -1,5 +1,7 @@
 package gregtech.api.pipelike;
 
+import gregtech.api.block.machines.BlockMachine;
+import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.unification.material.type.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.nbt.NBTTagCompound;
@@ -106,7 +108,7 @@ public class TileEntityPipeLike<Q extends Enum<Q> & IBaseProperty & IStringSeria
     @Override
     public void readFromNBT(NBTTagCompound compound) {
         super.readFromNBT(compound);
-        factory = PipeFactory.getFactoryByName(compound.getString("Factory"));
+        factory = PipeFactory.allFactories.get(compound.getString("Factory"));
         color = compound.getInteger("Color");
         internalConnections = compound.getInteger("InternalConnections");
         renderMask = compound.getInteger("RenderMask");
@@ -194,7 +196,7 @@ public class TileEntityPipeLike<Q extends Enum<Q> & IBaseProperty & IStringSeria
 
     public <U> U getCapabilityInternal(@Nonnull Capability<U> capability, @Nullable EnumFacing facing) {
         if (capability == factory.capability) {
-            return factory.capability.cast(factory.onGettingNetworkCapability(getNetworkCapability(), facing));
+            return factory.capability.cast(getNetworkCapability());
         }
         return super.getCapability(capability, facing);
     }
@@ -213,6 +215,17 @@ public class TileEntityPipeLike<Q extends Enum<Q> & IBaseProperty & IStringSeria
     @Nullable
     @Override
     public ICapabilityProvider getCapabilityProviderAtSide(@Nonnull EnumFacing facing) {
-        return factory.getCapabilityProviderAtSide(facing, this);
+        BlockPos.MutableBlockPos pos = BlockPos.PooledMutableBlockPos.retain(this.pos);
+        pos.move(facing);
+        ICapabilityProvider result = world == null ? null : world.getTileEntity(pos);
+        if (result != null && color != factory.getDefaultColor()) {
+            MetaTileEntity mte = BlockMachine.getMetaTileEntity(world, pos);
+            if (mte != null && mte.getPaintingColor() != MetaTileEntity.DEFAULT_PAINTING_COLOR
+                && mte.getPaintingColor() != color) {
+                result = null;
+            }
+        }
+        pos.move(facing.getOpposite());
+        return result;
     }
 }

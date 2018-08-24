@@ -32,7 +32,6 @@ import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
 
-@SuppressWarnings("deprecation")
 public final class BlockFrame extends DelayedStateBlock {
 
     private static final AxisAlignedBB COLLISION_BOX = new AxisAlignedBB(0.05, 0.0, 0.05, 0.95, 1.0, 0.95);

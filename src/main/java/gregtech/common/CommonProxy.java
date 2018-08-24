@@ -6,7 +6,6 @@ import gregtech.api.enchants.EnchantmentEnderDamage;
 import gregtech.api.enchants.EnchantmentRadioactivity;
 import gregtech.api.items.metaitem.MetaItem;
 import gregtech.api.pipelike.ItemBlockPipeLike;
-import gregtech.api.pipelike.PipeFactory;
 import gregtech.api.unification.material.type.DustMaterial;
 import gregtech.api.unification.material.type.Material;
 import gregtech.api.unification.ore.OrePrefix;
@@ -72,8 +71,7 @@ public class CommonProxy {
         registry.register(SAPLING);
         registry.register(CRUSHER_BLADE);
 
-        PipeFactory.allFactories.values().forEach(factory ->
-            factory.getBlockMap().values().forEach(registry::register));
+        CABLES.values().forEach(registry::register);
         COMPRESSED.values().stream().distinct().forEach(registry::register);
         SURFACE_ROCKS.values().stream().distinct().forEach(registry::register);
         FRAMES.values().stream().distinct().forEach(registry::register);
@@ -108,10 +106,9 @@ public class CommonProxy {
         registry.register(createMultiTexItemBlock(SAPLING, state -> state.getValue(BlockGregSapling.VARIANT).getName()));
         registry.register(createItemBlock(CRUSHER_BLADE, ItemBlock::new));
 
-        PipeFactory.allFactories.values().forEach(factory ->
-            factory.getBlockMap().values().stream()
-                .map(block -> createItemBlock(block, ItemBlockPipeLike::new))
-                .forEach(registry::register));
+        CABLES.values().stream()
+            .map(block -> createItemBlock(block, ItemBlockPipeLike::new))
+            .forEach(registry::register);
         COMPRESSED.values()
             .stream().distinct()
             .map(block -> createItemBlock(block, CompressedItemBlock::new))
@@ -127,8 +124,7 @@ public class CommonProxy {
 
     //this is called with normal priority, so most mods working with
     //ore dictionary and recipes will get recipes accessible in time
-    //we use low priority so at this time mods like forestry will register their items to ore dictionary
-    @SubscribeEvent(priority = EventPriority.LOW)
+    @SubscribeEvent
     public static void registerRecipes(RegistryEvent.Register<IRecipe> event) {
         GTLog.logger.info("Registering ore dictionary...");
 

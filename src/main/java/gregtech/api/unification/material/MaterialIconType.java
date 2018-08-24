@@ -91,10 +91,7 @@ public enum MaterialIconType {
     pipeSmall,
     pipeMedium,
     pipeLarge,
-    pipeHuge,
-    pipeQuadruple,
-    pipeNonuple,
-    pipeSexdecuple;
+    pipeHuge;
 
     public static final ImmutableMap<String, MaterialIconType> values;
 

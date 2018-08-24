@@ -528,14 +528,13 @@ public class ToolMetaItem<T extends ToolMetaItem<?>.MetaToolValueItem> extends M
         }
 
         @Override
-        public MetaToolValueItem addStats(IMetaItemStats... stats) {
+        public MetaValueItem addStats(IMetaItemStats... stats) {
             for(IMetaItemStats metaItemStats : stats) {
                 if(metaItemStats instanceof IToolStats) {
                     setToolStats((IToolStats) metaItemStats);
                 }
             }
-            super.addStats(stats);
-            return this;
+            return super.addStats(stats);
         }
 
         public MetaToolValueItem setToolStats(IToolStats toolStats) {

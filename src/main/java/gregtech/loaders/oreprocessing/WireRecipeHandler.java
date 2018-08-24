@@ -65,7 +65,6 @@ public class WireRecipeHandler {
         int cableAmount = (int) (wirePrefix.materialAmount * 2 / M);
         OrePrefix cablePrefix = OrePrefix.valueOf("cable" + wirePrefix.name().substring(4));
         ItemStack cableStack = OreDictUnifier.get(cablePrefix, material);
-        if (cableStack.isEmpty()) return;
 
         if (isPaperInsulatedCable(material)) {
             if (cableAmount <= 7) {
