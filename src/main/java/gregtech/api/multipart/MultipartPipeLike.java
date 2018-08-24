@@ -228,8 +228,7 @@ public class MultipartPipeLike<Q extends Enum<Q> & IBaseProperty & IStringSerial
         if ((lastValue & 0b111111_000000_000000_000000) != 0) notifyTile();
     }
 
-    @Override
-    public void updateRenderMask() {
+    protected void updateRenderMask() {
         updateRenderMask(true);
     }
 

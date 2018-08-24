@@ -28,5 +28,4 @@ public interface ITilePipeLike<Q extends Enum<Q> & IBaseProperty & IStringSerial
     int getRenderMask();
 
     void updateInternalConnection();
-    void updateRenderMask();
 }

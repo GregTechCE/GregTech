@@ -29,9 +29,6 @@ import gregtech.common.blocks.wood.BlockGregSapling;
 import gregtech.common.pipelike.cables.CableFactory;
 import gregtech.common.pipelike.cables.Insulation;
 import gregtech.common.pipelike.cables.WireProperties;
-import gregtech.common.pipelike.fluidpipes.FluidPipeFactory;
-import gregtech.common.pipelike.fluidpipes.FluidPipeProperties;
-import gregtech.common.pipelike.fluidpipes.TypeFluidPipe;
 import gregtech.common.pipelike.itempipes.ItemPipeFactory;
 import gregtech.common.pipelike.itempipes.ItemPipeProperties;
 import gregtech.common.pipelike.itempipes.TypeItemPipe;
@@ -51,7 +48,6 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fluids.BlockFluidBase;
-import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
@@ -92,7 +88,6 @@ public class MetaBlocks {
 
     public static Map<Material, BlockPipeLike<Insulation, WireProperties, IEnergyContainer>> CABLES;
     public static Map<Material, BlockPipeLike<TypeItemPipe, ItemPipeProperties, IItemHandler>> ITEM_PIPES;
-    public static Map<Material, BlockPipeLike<TypeFluidPipe, FluidPipeProperties, IFluidHandler>> FLUID_PIPES;
     public static HashMap<DustMaterial, BlockCompressed> COMPRESSED = new HashMap<>();
     public static HashMap<IngotMaterial, BlockSurfaceRock> SURFACE_ROCKS = new HashMap<>();
     public static HashMap<SolidMaterial, BlockFrame> FRAMES = new HashMap<>();
@@ -152,7 +147,6 @@ public class MetaBlocks {
 
         CABLES = CableFactory.INSTANCE.createBlockWithRegisteredProperties();
         ITEM_PIPES = ItemPipeFactory.INSTANCE.createBlockWithRegisteredProperties();
-        FLUID_PIPES = FluidPipeFactory.INSTANCE.createBlockWithRegisteredProperties();
 
         registerTileEntity();
     }

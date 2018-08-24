@@ -72,7 +72,6 @@ public class CableFactory extends PipeFactory<Insulation, WireProperties, IEnerg
 
         registerCable(MarkerMaterials.Tier.Superconductor, Integer.MAX_VALUE, 4, 0);
         setNotInsulable(MarkerMaterials.Tier.Superconductor);
-        specifyMaterialColor(MarkerMaterials.Tier.Superconductor, 0xDCFAFA);
     }
 
     public void registerCable(Material material, long voltage, int baseAmperage, int lossPerBlock) {

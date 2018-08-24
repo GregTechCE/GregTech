@@ -55,7 +55,6 @@ public class ItemPipeProperties implements IPipeLikeTileProperty {
 
     @Override
     public void addInformation(List<String> tooltip) {
-        tooltip.add(I18n.format("gregtech.item_pipe.normal"));
         tooltip.add(tickRate != 1 ? I18n.format("gregtech.item_pipe.capacity1", transferCapacity, tickRate)
             : transferCapacity != 1 ? I18n.format("gregtech.item_pipe.capacity2", transferCapacity)
             : I18n.format("gregtech.item_pipe.capacity3"));

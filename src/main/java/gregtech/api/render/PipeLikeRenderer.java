@@ -198,7 +198,7 @@ public abstract class PipeLikeRenderer<Q extends Enum<Q> & IBaseProperty & IStri
         ITilePipeLike<Q, ?> tile = factory.getTile(world, pos);
         if(tile == null) return false;
         int paintingColor = tile.getColor();
-        int connectedSidesMask = tile.getRenderMask();
+        int connectedSidesMask = factory.getRenderMask(tile, world, pos);
 
         Q baseProperty = state.getValue(block.getBaseProperty());
         Material material = block.material;

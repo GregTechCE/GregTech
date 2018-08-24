@@ -8,7 +8,6 @@ import codechicken.multipart.TMultiPart;
 import codechicken.multipart.TileMultipart;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import com.google.common.collect.ObjectArrays;
 import gregtech.api.GTValues;
 import gregtech.api.block.machines.BlockMachine;
 import gregtech.api.metatileentity.MetaTileEntity;
@@ -40,6 +39,7 @@ import net.minecraftforge.fml.common.Optional.Method;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.lang.reflect.Array;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Supplier;
@@ -50,7 +50,7 @@ public abstract class PipeFactory<Q extends Enum<Q> & IBaseProperty & IStringSer
     ///////////////////////////////////// REGISTRIES ///////////////////////////////////////
 
     public static final Map<String, PipeFactory<?, ?, ?>> allFactories = Maps.newHashMap();
-    private final Map<Material, BlockPipeLike<Q, P, C>> blockMap = Maps.newLinkedHashMap();
+    private final Map<Material, BlockPipeLike<Q, P, C>> blockMap = Maps.newHashMap();
 
     private boolean freezePropertyRegistry = false;
     private final Map<Material, P> REGISTERED_PROPERTIES = Maps.newLinkedHashMap();
@@ -141,8 +141,9 @@ public abstract class PipeFactory<Q extends Enum<Q> & IBaseProperty & IStringSer
         return blockMap;
     }
 
+    @SuppressWarnings("unchecked")
     public BlockPipeLike<Q, P, C> createBlock(Material material, P materialProperty) {
-        P[] materialProperties = ObjectArrays.newArray(classTileProperty, baseProperties.length);
+        P[] materialProperties = (P[]) Array.newInstance(classTileProperty, baseProperties.length);
         for (int i = 0; i < baseProperties.length; i++) {
             materialProperties[i] = createActualProperty(baseProperties[i], materialProperty);
         }
@@ -237,7 +238,7 @@ public abstract class PipeFactory<Q extends Enum<Q> & IBaseProperty & IStringSer
         IBlockState state = worldIn.getBlockState(pos);
         AxisAlignedBB axisalignedbb = blockPipeLike.getDefaultState().getCollisionBoundingBox(worldIn, pos);
 
-        if (axisalignedbb != null && axisalignedbb != Block.NULL_AABB && !worldIn.checkNoEntityCollision(axisalignedbb.offset(pos), null)) {
+        if (axisalignedbb != Block.NULL_AABB && !worldIn.checkNoEntityCollision(axisalignedbb.offset(pos), null)) {
             return false;
         } else {
             return (state.getBlock().isReplaceable(worldIn, pos) && blockPipeLike.canPlaceBlockOnSide(worldIn, pos, side)) || worldIn.getTileEntity(pos) instanceof TileMultipart;
@@ -337,12 +338,12 @@ public abstract class PipeFactory<Q extends Enum<Q> & IBaseProperty & IStringSer
      *          2: accessible, self thickness <= tile thickness
      *          3: accessible, self thickness >  tile thickness
      */
-    protected int isPipeAccessibleAtSide(ITilePipeLike<Q, ?> tile, IBlockAccess world, BlockPos pos, EnumFacing fromFacing, int fromColor, float selfThickness) {
-        ITilePipeLike<Q, P> sideTile = getTile(world, pos);
-        if (sideTile == null) return 0;
-        if ((sideTile.getInternalConnections() & (ITilePipeLike.MASK_BLOCKED << fromFacing.getIndex())) != 0) return 1;
-        if (fromColor != getDefaultColor() && sideTile.getColor() != getDefaultColor() && fromColor != sideTile.getColor()) return 1;
-        return selfThickness <= sideTile.getBaseProperty().getThickness() ? 2 : 3;
+    protected int isPipeAccessibleAtSide(IBlockAccess world, BlockPos pos, EnumFacing fromFacing, int fromColor, float selfThickness) {
+        ITilePipeLike<Q, P> tile = getTile(world, pos);
+        if (tile == null) return 0;
+        if ((tile.getInternalConnections() & (ITilePipeLike.MASK_BLOCKED << fromFacing.getIndex())) != 0) return 1;
+        if (fromColor != getDefaultColor() && tile.getColor() != getDefaultColor() && fromColor != tile.getColor()) return 1;
+        return selfThickness <= tile.getBaseProperty().getThickness() ? 2 : 3;
     }
 
     /**
@@ -353,17 +354,18 @@ public abstract class PipeFactory<Q extends Enum<Q> & IBaseProperty & IStringSer
     public int getRenderMask(ITilePipeLike<Q, ?> tile, IBlockAccess world, BlockPos pos) {
         int blockedConnection = tile.getInternalConnections();
         int connectedSideMask = blockedConnection >> 12 & 0b111111;
-        BlockPos.PooledMutableBlockPos sidePos = BlockPos.PooledMutableBlockPos.retain().setPos(pos);
-        for (EnumFacing facing : EnumFacing.VALUES) if ((blockedConnection & ITilePipeLike.MASK_BLOCKED << facing.getIndex()) == 0) {
+        BlockPos.MutableBlockPos sidePos = new BlockPos.MutableBlockPos(pos);
+        for (EnumFacing facing : EnumFacing.VALUES) {
+            if ((blockedConnection & ITilePipeLike.MASK_BLOCKED << facing.getIndex()) != 0)
+                continue;
             sidePos.move(facing);
-            switch (isPipeAccessibleAtSide(tile, world, sidePos, facing.getOpposite(), tile.getColor(), tile.getBaseProperty().getThickness())) {
+            switch (isPipeAccessibleAtSide(world, sidePos, facing.getOpposite(), tile.getColor(), tile.getBaseProperty().getThickness())) {
                 case 0: if (!tile.hasCapabilityAtSide(capability, facing)) break;
                 case 3: connectedSideMask |= MASK_RENDER_SIDE << facing.getIndex();
                 case 2: connectedSideMask |= MASK_FORMAL_CONNECTION << facing.getIndex(); break;
             }
             sidePos.move(facing.getOpposite());
         }
-        sidePos.release();
         return connectedSideMask;
     }
 
@@ -375,15 +377,15 @@ public abstract class PipeFactory<Q extends Enum<Q> & IBaseProperty & IStringSer
     public int getConnectionMask(ITilePipeLike<Q, P> tile, World world, BlockPos pos) {
         int blockedConnection = tile.getInternalConnections();
         int connectedSideMask = blockedConnection & 0b111111_111111;
-        BlockPos.PooledMutableBlockPos sidePos = BlockPos.PooledMutableBlockPos.retain().setPos(pos);
-        for (EnumFacing facing : EnumFacing.VALUES)  if ((blockedConnection & ITilePipeLike.MASK_BLOCKED << facing.getIndex()) == 0) {
+        BlockPos.MutableBlockPos sidePos = new BlockPos.MutableBlockPos(pos);
+        for (EnumFacing facing : EnumFacing.VALUES) {
             sidePos.move(facing);
-            if (isPipeAccessibleAtSide(tile, world, sidePos, facing.getOpposite(), tile.getColor(), tile.getBaseProperty().getThickness()) < 2) {
+            if ((blockedConnection & ITilePipeLike.MASK_BLOCKED << facing.getIndex()) != 0
+                || isPipeAccessibleAtSide(world, sidePos, facing.getOpposite(), tile.getColor(), tile.getBaseProperty().getThickness()) < 2) {
                 connectedSideMask |= (ITilePipeLike.MASK_INPUT_DISABLED | ITilePipeLike.MASK_OUTPUT_DISABLED) << facing.getIndex();
             }
             sidePos.move(facing.getOpposite());
         }
-        sidePos.release();
         return connectedSideMask;
     }
 
@@ -441,31 +443,13 @@ public abstract class PipeFactory<Q extends Enum<Q> & IBaseProperty & IStringSer
         int connectionMask = tile.getInternalConnections();
         BlockPos.MutableBlockPos sidePos = new BlockPos.MutableBlockPos(tile.getTilePos());
         for (EnumFacing facing : EnumFacing.VALUES) if ((connectionMask & ITilePipeLike.MASK_BLOCKED << facing.getIndex()) == 0) {
-            EnumFacing opposite = facing.getOpposite();
             sidePos.move(facing);
-            ITilePipeLike<Q, P> sideTile = getTile(tile.getTileWorld(), sidePos);
-            if (sideTile == null ? tile.hasCapabilityAtSide(capability, facing) : treatAsActive(sideTile, opposite)) {
+            if (getTile(tile.getTileWorld(), sidePos) == null // ignore other pipes
+                && tile.hasCapabilityAtSide(capability, facing)) {
                 result |= 1 << facing.getIndex();
             }
-            sidePos.move(opposite);
+            sidePos.move(facing.getOpposite());
         }
         return result;
-    }
-
-    protected boolean treatAsActive(ITilePipeLike<Q, P> tile, EnumFacing facing) {
-        return false;//TODO Might be used by covers
-    }
-
-    //////////////////////////////////// RENDER ////////////////////////////////////////////
-
-    private final Map<Material, Integer> SPECIFIED_COLOR = Maps.newHashMap();
-
-    public void specifyMaterialColor(Material material, int color) {
-        SPECIFIED_COLOR.put(material, color);
-    }
-
-    public int getMaterialColorForRender(Material material) {
-        Integer color = SPECIFIED_COLOR.get(material);
-        return color == null ? material.materialRGB : color;
     }
 }

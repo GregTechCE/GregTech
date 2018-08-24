@@ -207,9 +207,6 @@ public enum OrePrefix {
     pipeRestrictiveMedium("Medium Restrictive Pipes", M * 3, null, null, ENABLE_UNIFICATION, null),
     pipeRestrictiveLarge("Large Restrictive Pipes", M * 6, null, null, ENABLE_UNIFICATION, null),
     pipeRestrictiveHuge("Huge Restrictive Pipes", M * 12, null, null, ENABLE_UNIFICATION, null),
-    pipeQuadruple("Quadruple Pipes", M * 12, null, MaterialIconType.pipeQuadruple, ENABLE_UNIFICATION, null),
-    pipeNonuple("Nonuple Pipes", M * 9, null, MaterialIconType.pipeNonuple, ENABLE_UNIFICATION, null),
-    pipeSexdecuple("Sexdecuple Pipes", M * 8, null, MaterialIconType.pipeSexdecuple, ENABLE_UNIFICATION, null),
     pipe("Pipes", -1, null, null, DISALLOW_RECYCLING, null),
 
     wireGtHex("Hex wires", M * 8, null, null, ENABLE_UNIFICATION, null),
