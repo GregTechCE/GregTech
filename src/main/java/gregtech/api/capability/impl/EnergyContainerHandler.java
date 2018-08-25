@@ -1,5 +1,6 @@
 package gregtech.api.capability.impl;
 
+import gregtech.api.capability.GregtechCapabilities;
 import gregtech.api.capability.IElectricItem;
 import gregtech.api.capability.IEnergyContainer;
 import gregtech.api.metatileentity.MTETrait;
@@ -65,7 +66,7 @@ public class EnergyContainerHandler extends MTETrait implements IEnergyContainer
     @Nullable
     @Override
     public Capability<?> getImplementingCapability() {
-        return IEnergyContainer.CAPABILITY_ENERGY_CONTAINER;
+        return GregtechCapabilities.CAPABILITY_ENERGY_CONTAINER;
     }
 
     @Override
@@ -114,7 +115,7 @@ public class EnergyContainerHandler extends MTETrait implements IEnergyContainer
         ItemStack stackInSlot = itemHandler.getStackInSlot(slotIndex);
         if(stackInSlot.isEmpty()) return;
         stackInSlot = stackInSlot.copy();
-        IElectricItem electricItem = stackInSlot.getCapability(IElectricItem.CAPABILITY_ELECTRIC_ITEM, null);
+        IElectricItem electricItem = stackInSlot.getCapability(GregtechCapabilities.CAPABILITY_ELECTRIC_ITEM, null);
         if(electricItem == null || !electricItem.canProvideChargeExternally()) return;
         int machineTier = GTUtility.getTierByVoltage(Math.max(getInputVoltage(), getOutputVoltage()));
         if(getEnergyCanBeInserted() > 0) {
@@ -138,8 +139,8 @@ public class EnergyContainerHandler extends MTETrait implements IEnergyContainer
                 if(!outputsEnergy(side)) continue;
                 TileEntity tileEntity = metaTileEntity.getWorld().getTileEntity(metaTileEntity.getPos().offset(side));
                 EnumFacing oppositeSide = side.getOpposite();
-                if(tileEntity != null && tileEntity.hasCapability(IEnergyContainer.CAPABILITY_ENERGY_CONTAINER, oppositeSide)) {
-                    IEnergyContainer energyContainer = tileEntity.getCapability(IEnergyContainer.CAPABILITY_ENERGY_CONTAINER, oppositeSide);
+                if(tileEntity != null && tileEntity.hasCapability(GregtechCapabilities.CAPABILITY_ENERGY_CONTAINER, oppositeSide)) {
+                    IEnergyContainer energyContainer = tileEntity.getCapability(GregtechCapabilities.CAPABILITY_ENERGY_CONTAINER, oppositeSide);
                     if(energyContainer == null || !energyContainer.inputsEnergy(oppositeSide)) continue;
                     amperesUsed += energyContainer.acceptEnergyFromNetwork(oppositeSide, outputVoltage, outputAmperes - amperesUsed);
                     if(amperesUsed == outputAmperes) break;

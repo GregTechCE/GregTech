@@ -1,5 +1,6 @@
 package gregtech.common.items.behaviors;
 
+import gregtech.api.capability.GregtechCapabilities;
 import gregtech.api.capability.IWorkable;
 import gregtech.api.items.metaitem.stats.IItemBehaviour;
 import gregtech.api.util.GTUtility;
@@ -32,7 +33,7 @@ public class SoftHammerBehaviour implements IItemBehaviour {
 
         TileEntity tileEntity = world.getTileEntity(pos);
         if(tileEntity != null) {
-            IWorkable workable = tileEntity.getCapability(IWorkable.CAPABILITY_WORKABLE, null);
+            IWorkable workable = tileEntity.getCapability(GregtechCapabilities.CAPABILITY_WORKABLE, null);
             if (workable != null) {
                 if (workable.isWorkingEnabled()) {
                     workable.setWorkingEnabled(false);

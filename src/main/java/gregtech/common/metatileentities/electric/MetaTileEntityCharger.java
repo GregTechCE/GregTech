@@ -1,6 +1,7 @@
 package gregtech.common.metatileentities.electric;
 
 import gregtech.api.GTValues;
+import gregtech.api.capability.GregtechCapabilities;
 import gregtech.api.capability.IElectricItem;
 import gregtech.api.gui.GuiTextures;
 import gregtech.api.gui.ModularUI;
@@ -41,7 +42,7 @@ public class MetaTileEntityCharger extends TieredMetaTileEntity {
             long energyUsedUp = 0L;
             for(int i = 0; i < importItems.getSlots(); i++) {
                 ItemStack batteryStack = importItems.getStackInSlot(i);
-                IElectricItem electricItem = batteryStack.getCapability(IElectricItem.CAPABILITY_ELECTRIC_ITEM, null);
+                IElectricItem electricItem = batteryStack.getCapability(GregtechCapabilities.CAPABILITY_ELECTRIC_ITEM, null);
                 if(electricItem != null && electricItem.charge(inputVoltage, getTier(), false, true) > 0) {
                     energyUsedUp += electricItem.charge(inputVoltage, getTier(), false, false);
                     importItems.setStackInSlot(i, batteryStack);
@@ -60,7 +61,7 @@ public class MetaTileEntityCharger extends TieredMetaTileEntity {
             @Nonnull
             @Override
             public ItemStack insertItem(int slot, @Nonnull ItemStack stack, boolean simulate) {
-                IElectricItem electricItem = stack.getCapability(IElectricItem.CAPABILITY_ELECTRIC_ITEM, null);
+                IElectricItem electricItem = stack.getCapability(GregtechCapabilities.CAPABILITY_ELECTRIC_ITEM, null);
                 if(electricItem == null || electricItem.getTier() != getTier() ||
                     electricItem.charge(Long.MAX_VALUE, getTier(), false, true) == 0)
                     return stack; //why do i write these comments? because this line is too short while line above is long

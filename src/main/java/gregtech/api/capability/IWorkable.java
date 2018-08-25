@@ -8,9 +8,6 @@ import net.minecraftforge.common.capabilities.CapabilityInject;
  */
 public interface IWorkable {
 
-    @CapabilityInject(IWorkable.class)
-    Capability<IWorkable> CAPABILITY_WORKABLE = null;
-
     /**
      * @return current progress of machine
      */

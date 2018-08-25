@@ -1,6 +1,7 @@
 package gregtech.api.capability.impl;
 
 import gregtech.api.GTValues;
+import gregtech.api.capability.GregtechCapabilities;
 import gregtech.api.capability.IElectricItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -123,13 +124,13 @@ public class ElectricItem implements IElectricItem, ICapabilityProvider {
 
     @Override
     public boolean hasCapability(@Nonnull Capability<?> capability, @Nullable EnumFacing facing) {
-        return capability == IElectricItem.CAPABILITY_ELECTRIC_ITEM;
+        return capability == GregtechCapabilities.CAPABILITY_ELECTRIC_ITEM;
     }
 
     @Nullable
     @Override
     @SuppressWarnings("unchecked")
     public <T> T getCapability(@Nonnull Capability<T> capability, @Nullable EnumFacing facing) {
-        return capability == IElectricItem.CAPABILITY_ELECTRIC_ITEM ? (T) this : null;
+        return capability == GregtechCapabilities.CAPABILITY_ELECTRIC_ITEM ? (T) this : null;
     }
 }

@@ -13,13 +13,14 @@ import codechicken.lib.vec.Vector3;
 import codechicken.lib.vec.uv.IconTransformation;
 import codechicken.multipart.*;
 import com.google.common.collect.Lists;
-import gregtech.api.capability.IEnergyContainer;
+import gregtech.api.capability.GregtechCapabilities;
 import gregtech.api.unification.material.type.Material;
 import gregtech.common.blocks.MetaBlocks;
 import gregtech.common.cable.BlockCable;
 import gregtech.common.cable.ICableTile;
 import gregtech.common.cable.Insulation;
 import gregtech.common.cable.WireProperties;
+import gregtech.common.cable.net.WorldENet;
 import gregtech.common.cable.tile.CableEnergyContainer;
 import gregtech.common.cable.tile.TileEntityCable;
 import gregtech.common.render.CableRenderer;
@@ -51,7 +52,6 @@ public class CableMultiPart extends TMultiPart implements TNormalOcclusionPart, 
     private Cuboid6 centerBox;
     private List<Cuboid6> sidedConnections = new ArrayList<>();
     private CableEnergyContainer energyContainer;
-
 
     CableMultiPart() {}
 
@@ -86,10 +86,14 @@ public class CableMultiPart extends TMultiPart implements TNormalOcclusionPart, 
         return blockedConnections;
     }
 
+    private int getMark() {
+        return insulationColor == TileEntityCable.DEFAULT_INSULATION_COLOR ? 0 : insulationColor;
+    }
+
     public void setInsulationColor(int color) {
         this.insulationColor = color;
         this.sendDescUpdate();
-        BlockCable.updateCableConnections(this, this.tile().getWorld(), this.tile().getPos());
+        WorldENet.getWorldENet(world()).updateMark(pos(), getMark());
     }
 
     @Override
@@ -128,13 +132,13 @@ public class CableMultiPart extends TMultiPart implements TNormalOcclusionPart, 
 
     @Override
     public boolean hasCapability(Capability capability, EnumFacing facing) {
-        return capability == IEnergyContainer.CAPABILITY_ENERGY_CONTAINER;
+        return capability == GregtechCapabilities.CAPABILITY_ENERGY_CONTAINER;
     }
 
     @SuppressWarnings("unchecked")
     @Override
     public <T> T getCapability(Capability<T> capability, EnumFacing facing) {
-        if (capability == IEnergyContainer.CAPABILITY_ENERGY_CONTAINER) {
+        if (capability == GregtechCapabilities.CAPABILITY_ENERGY_CONTAINER) {
             return (T) getEnergyContainer();
         }
         return null;
@@ -180,7 +184,13 @@ public class CableMultiPart extends TMultiPart implements TNormalOcclusionPart, 
         }
 
         if (lastBlockedConnections != blockedConnections) {
-            BlockCable.updateCableConnections(this, tileMultipart.getWorld(), tileMultipart.getPos());
+            WorldENet worldENet = WorldENet.getWorldENet(world());
+            for(EnumFacing side : EnumFacing.VALUES) {
+                boolean isBlockedCurrently = (blockedConnections & 1 << side.getIndex()) > 0;
+                boolean wasBlocked = (lastBlockedConnections & 1 << side.getIndex()) > 0;
+                if(isBlockedCurrently == wasBlocked) continue;
+                worldENet.updateBlockedConnections(pos(), side, isBlockedCurrently);
+            }
             updateActualConnections();
         }
     }
@@ -207,12 +217,13 @@ public class CableMultiPart extends TMultiPart implements TNormalOcclusionPart, 
     public void onAdded() {
         this.updateBlockedConnections();
         this.updateActualConnections();
-        BlockCable.attachNoNearbyNetwork(getCableWorld(), getCablePos(), this);
+        WorldENet.getWorldENet(world()).addNode(pos(), getWireProperties(), getMark(), getBlockedConnections(),
+            BlockCable.hasEnergyCapabilities(world(), pos()));
     }
 
     @Override
     public void onRemoved() {
-        BlockCable.detachFromNetwork(getCableWorld(), getCablePos());
+        WorldENet.getWorldENet(world()).removeNode(pos());
     }
 
     @Override
@@ -232,6 +243,8 @@ public class CableMultiPart extends TMultiPart implements TNormalOcclusionPart, 
         updateActualConnections();
         getWriteStream().writeByte(1);
         scheduleTick(1);
+        boolean isActiveNode = BlockCable.hasEnergyCapabilities(world(), pos());
+        WorldENet.getWorldENet(world()).getNetFromPos(pos()).markNodeAsActive(pos(), isActiveNode);
     }
 
     @Override

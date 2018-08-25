@@ -2,6 +2,7 @@ package gregtech.integration.jei;
 
 import gregtech.api.GTValues;
 import gregtech.api.GregTechAPI;
+import gregtech.api.capability.GregtechCapabilities;
 import gregtech.api.capability.IWorkable;
 import gregtech.api.capability.impl.RecipeMapWorkableHandler;
 import gregtech.api.items.metaitem.MetaItem;
@@ -54,8 +55,8 @@ public class GTJeiPlugin implements IModPlugin {
         }
         for(String metaTileEntityId : GregTechAPI.META_TILE_ENTITY_REGISTRY.getKeys()) {
             MetaTileEntity metaTileEntity = GregTechAPI.META_TILE_ENTITY_REGISTRY.getObject(metaTileEntityId);
-            if(metaTileEntity.hasCapability(IWorkable.CAPABILITY_WORKABLE, null)) {
-                IWorkable workableCapability = metaTileEntity.getCapability(IWorkable.CAPABILITY_WORKABLE, null);
+            if(metaTileEntity.hasCapability(GregtechCapabilities.CAPABILITY_WORKABLE, null)) {
+                IWorkable workableCapability = metaTileEntity.getCapability(GregtechCapabilities.CAPABILITY_WORKABLE, null);
                 if(workableCapability instanceof RecipeMapWorkableHandler) {
                     RecipeMap<?> recipeMap = ((RecipeMapWorkableHandler) workableCapability).recipeMap;
                     registry.addRecipeCatalyst(metaTileEntity.getStackForm(),

@@ -1,7 +1,7 @@
 package gregtech.integration.theoneprobe.provider;
 
+import gregtech.api.capability.GregtechCapabilities;
 import gregtech.api.capability.IEnergyContainer;
-import gregtech.api.capability.IWorkable;
 import mcjty.theoneprobe.api.ElementAlignment;
 import mcjty.theoneprobe.api.IProbeInfo;
 import mcjty.theoneprobe.api.TextStyleClass;
@@ -13,7 +13,7 @@ public class ElectricContainerInfoProvider extends CapabilityInfoProvider<IEnerg
 
     @Override
     protected Capability<IEnergyContainer> getCapability() {
-        return IEnergyContainer.CAPABILITY_ENERGY_CONTAINER;
+        return GregtechCapabilities.CAPABILITY_ENERGY_CONTAINER;
     }
 
     @Override
@@ -32,7 +32,7 @@ public class ElectricContainerInfoProvider extends CapabilityInfoProvider<IEnerg
         long maxStorage = capability.getEnergyCapacity();
         if(maxStorage == 0) return; //do not add empty max storage progress bar
         IProbeInfo horizontalPane = probeInfo.horizontal(probeInfo.defaultLayoutStyle().alignment(ElementAlignment.ALIGN_CENTER));
-        String additionalSpacing = tileEntity.hasCapability(IWorkable.CAPABILITY_WORKABLE, sideHit) ? "   " : "";
+        String additionalSpacing = tileEntity.hasCapability(GregtechCapabilities.CAPABILITY_WORKABLE, sideHit) ? "   " : "";
         horizontalPane.text(TextStyleClass.INFO + "{*gregtech.top.energy_stored*} " + additionalSpacing);
         horizontalPane.progress(energyStored, maxStorage, probeInfo.defaultProgressStyle()
             .suffix("/" + maxStorage + " EU")

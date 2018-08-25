@@ -5,6 +5,7 @@ import gnu.trove.map.TShortObjectMap;
 import gnu.trove.map.hash.TShortObjectHashMap;
 import gregtech.api.GTValues;
 import gregtech.api.GregTechAPI;
+import gregtech.api.capability.GregtechCapabilities;
 import gregtech.api.capability.IElectricItem;
 import gregtech.api.capability.impl.CombinedCapabilityProvider;
 import gregtech.api.capability.impl.ElectricItem;
@@ -131,7 +132,7 @@ public abstract class MetaItem<T extends MetaItem<?>.MetaValueItem> extends Item
     }
 
     protected int getModelIndex(short metaItemKey, ItemStack itemStack) {
-        IElectricItem electricItem = itemStack.getCapability(IElectricItem.CAPABILITY_ELECTRIC_ITEM, null);
+        IElectricItem electricItem = itemStack.getCapability(GregtechCapabilities.CAPABILITY_ELECTRIC_ITEM, null);
         long itemCharge = electricItem.discharge(Long.MAX_VALUE, Integer.MAX_VALUE, true, false, true);
         return (int) Math.min(((itemCharge / (electricItem.getMaxCharge() * 1.0)) * 7), 7);
     }
@@ -385,7 +386,7 @@ public abstract class MetaItem<T extends MetaItem<?>.MetaValueItem> extends Item
                 lines.addAll(Arrays.asList(I18n.format(unlocalizedTooltip).split("/n")));
             }
 
-            IElectricItem electricItem = itemStack.getCapability(IElectricItem.CAPABILITY_ELECTRIC_ITEM, null);
+            IElectricItem electricItem = itemStack.getCapability(GregtechCapabilities.CAPABILITY_ELECTRIC_ITEM, null);
             if (electricItem != null) {
                 lines.add(I18n.format("metaitem.generic.electric_item.tooltip",
                     electricItem.discharge(Long.MAX_VALUE, Integer.MAX_VALUE, true, false, true),
@@ -430,7 +431,7 @@ public abstract class MetaItem<T extends MetaItem<?>.MetaValueItem> extends Item
             ItemStack itemStack = enabledItem.getStackForm();
             subItems.add(itemStack.copy());
 
-            IElectricItem electricItem = itemStack.getCapability(IElectricItem.CAPABILITY_ELECTRIC_ITEM, null);
+            IElectricItem electricItem = itemStack.getCapability(GregtechCapabilities.CAPABILITY_ELECTRIC_ITEM, null);
             if (electricItem != null) {
                 electricItem.charge(Long.MAX_VALUE, Integer.MAX_VALUE, true, false);
                 subItems.add(itemStack);
@@ -625,7 +626,7 @@ public abstract class MetaItem<T extends MetaItem<?>.MetaValueItem> extends Item
          */
         public ItemStack getChargedStack(long chargeAmount) {
             ItemStack itemStack = getStackForm(1);
-            IElectricItem electricItem = itemStack.getCapability(IElectricItem.CAPABILITY_ELECTRIC_ITEM, null);
+            IElectricItem electricItem = itemStack.getCapability(GregtechCapabilities.CAPABILITY_ELECTRIC_ITEM, null);
             if(electricItem == null) {
                 throw new IllegalStateException("Not an electric item.");
             }
@@ -641,7 +642,7 @@ public abstract class MetaItem<T extends MetaItem<?>.MetaValueItem> extends Item
          */
         public ItemStack getMaxChargeOverrideStack(long maxCharge) {
             ItemStack itemStack = getStackForm(1);
-            IElectricItem electricItem = itemStack.getCapability(IElectricItem.CAPABILITY_ELECTRIC_ITEM, null);
+            IElectricItem electricItem = itemStack.getCapability(GregtechCapabilities.CAPABILITY_ELECTRIC_ITEM, null);
             if(electricItem == null) {
                 throw new IllegalStateException("Not an electric item.");
             }

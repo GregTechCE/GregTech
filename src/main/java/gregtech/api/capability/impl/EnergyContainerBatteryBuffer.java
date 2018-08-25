@@ -3,6 +3,7 @@ package gregtech.api.capability.impl;
 import gnu.trove.list.TIntList;
 import gnu.trove.list.array.TIntArrayList;
 import gregtech.api.GTValues;
+import gregtech.api.capability.GregtechCapabilities;
 import gregtech.api.capability.IElectricItem;
 import gregtech.api.capability.IEnergyContainer;
 import gregtech.api.metatileentity.MTETrait;
@@ -69,7 +70,7 @@ public class EnergyContainerBatteryBuffer extends MTETrait implements IEnergyCon
                 (metaTileEntity.getPos().offset(outFacing));
             if(tileEntity == null) return;
             IEnergyContainer energyContainer = tileEntity.getCapability(
-                IEnergyContainer.CAPABILITY_ENERGY_CONTAINER, outFacing.getOpposite());
+                GregtechCapabilities.CAPABILITY_ENERGY_CONTAINER, outFacing.getOpposite());
             if(energyContainer == null) return;
             IItemHandlerModifiable inventory = getInventory();
             long voltage = getOutputVoltage();
@@ -157,7 +158,7 @@ public class EnergyContainerBatteryBuffer extends MTETrait implements IEnergyCon
     }
 
     public IElectricItem getBatteryContainer(ItemStack itemStack) {
-        IElectricItem electricItem = itemStack.getCapability(IElectricItem.CAPABILITY_ELECTRIC_ITEM, null);
+        IElectricItem electricItem = itemStack.getCapability(GregtechCapabilities.CAPABILITY_ELECTRIC_ITEM, null);
         if (electricItem == null || electricItem.getTier() != getTier() ||
             !electricItem.canProvideChargeExternally())
             return null;
@@ -203,7 +204,7 @@ public class EnergyContainerBatteryBuffer extends MTETrait implements IEnergyCon
     @Nullable
     @Override
     public Capability<?> getImplementingCapability() {
-        return IEnergyContainer.CAPABILITY_ENERGY_CONTAINER;
+        return GregtechCapabilities.CAPABILITY_ENERGY_CONTAINER;
     }
 
     protected IItemHandlerModifiable getInventory() {

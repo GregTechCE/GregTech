@@ -2,6 +2,7 @@ package gregtech.api.items.toolitem;
 
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
+import gregtech.api.capability.GregtechCapabilities;
 import gregtech.api.capability.IElectricItem;
 import gregtech.api.enchants.EnchantmentData;
 import gregtech.api.items.IDamagableItem;
@@ -118,15 +119,15 @@ public class ToolMetaItem<T extends ToolMetaItem<?>.MetaToolValueItem> extends M
     @Override
     public boolean showDurabilityBar(ItemStack stack) {
         //don't show durability if item is not electric and it's damage is zero
-        return stack.hasCapability(IElectricItem.CAPABILITY_ELECTRIC_ITEM, null) ||
+        return stack.hasCapability(GregtechCapabilities.CAPABILITY_ELECTRIC_ITEM, null) ||
             getInternalDamage(stack) != 0;
     }
 
     @Override
     public double getDurabilityForDisplay(ItemStack stack) {
         //if itemstack has electric charge ability, show electric charge percentage
-        if(stack.hasCapability(IElectricItem.CAPABILITY_ELECTRIC_ITEM, null)) {
-            IElectricItem electricItem = stack.getCapability(IElectricItem.CAPABILITY_ELECTRIC_ITEM, null);
+        if(stack.hasCapability(GregtechCapabilities.CAPABILITY_ELECTRIC_ITEM, null)) {
+            IElectricItem electricItem = stack.getCapability(GregtechCapabilities.CAPABILITY_ELECTRIC_ITEM, null);
             long currentCharge = electricItem.discharge(Long.MAX_VALUE, Integer.MAX_VALUE, true, false, true);
             return 1.0 - (currentCharge / (electricItem.getMaxCharge() * 1.0));
         }
@@ -161,12 +162,12 @@ public class ToolMetaItem<T extends ToolMetaItem<?>.MetaToolValueItem> extends M
     }
 
     private static void chargeToolFromComponents(ItemStack toolStack, IInventory ingredients) {
-        IElectricItem electricItem = toolStack.getCapability(IElectricItem.CAPABILITY_ELECTRIC_ITEM, null);
+        IElectricItem electricItem = toolStack.getCapability(GregtechCapabilities.CAPABILITY_ELECTRIC_ITEM, null);
         if(electricItem != null && electricItem.getMaxCharge() > 0L) {
             long maxCharge = electricItem.charge(Long.MAX_VALUE, Integer.MAX_VALUE, true, true);
             for (int slotIndex = 0; slotIndex < ingredients.getSizeInventory(); slotIndex++) {
                 ItemStack stackInSlot = ingredients.getStackInSlot(slotIndex);
-                IElectricItem batteryItem = stackInSlot.getCapability(IElectricItem.CAPABILITY_ELECTRIC_ITEM, null);
+                IElectricItem batteryItem = stackInSlot.getCapability(GregtechCapabilities.CAPABILITY_ELECTRIC_ITEM, null);
                 if (batteryItem != null && batteryItem.canProvideChargeExternally() && maxCharge > 0L) {
                     long discharged = batteryItem.discharge(maxCharge, Integer.MAX_VALUE, true, true, false);
                     maxCharge -= electricItem.charge(discharged, Integer.MAX_VALUE, true, false);
@@ -334,7 +335,7 @@ public class ToolMetaItem<T extends ToolMetaItem<?>.MetaToolValueItem> extends M
 
     @Override
     public boolean doDamageToItem(ItemStack stack, int vanillaDamage, boolean simulate) {
-        IElectricItem capability = stack.getCapability(IElectricItem.CAPABILITY_ELECTRIC_ITEM, null);
+        IElectricItem capability = stack.getCapability(GregtechCapabilities.CAPABILITY_ELECTRIC_ITEM, null);
         if (capability == null) {
             int newDamageValue = getInternalDamage(stack) + vanillaDamage * 10;
             if(!simulate && !setInternalDamage(stack, newDamageValue)) {
@@ -363,8 +364,8 @@ public class ToolMetaItem<T extends ToolMetaItem<?>.MetaToolValueItem> extends M
     @Override
     public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable NBTTagCompound nbt) {
         ICapabilityProvider capabilityProvider = super.initCapabilities(stack, nbt);
-        if(capabilityProvider != null && capabilityProvider.hasCapability(IElectricItem.CAPABILITY_ELECTRIC_ITEM, null)) {
-            IElectricItem electricItem = capabilityProvider.getCapability(IElectricItem.CAPABILITY_ELECTRIC_ITEM, null);
+        if(capabilityProvider != null && capabilityProvider.hasCapability(GregtechCapabilities.CAPABILITY_ELECTRIC_ITEM, null)) {
+            IElectricItem electricItem = capabilityProvider.getCapability(GregtechCapabilities.CAPABILITY_ELECTRIC_ITEM, null);
             electricItem.addChargeListener((itemStack, newCharge) -> {
                 int newDamage = (newCharge == 0 ? 16000 : 0) + itemStack.getItemDamage() % 16000;
                 if(newDamage != itemStack.getItemDamage()) {
@@ -376,7 +377,7 @@ public class ToolMetaItem<T extends ToolMetaItem<?>.MetaToolValueItem> extends M
     }
 
     public boolean isUsable(ItemStack stack, int damage) {
-        IElectricItem capability = stack.getCapability(IElectricItem.CAPABILITY_ELECTRIC_ITEM, null);
+        IElectricItem capability = stack.getCapability(GregtechCapabilities.CAPABILITY_ELECTRIC_ITEM, null);
         return capability == null || capability.canUse(damage);
     }
 

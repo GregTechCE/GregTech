@@ -1,6 +1,7 @@
 package gregtech.api.capability.impl;
 
 import gregtech.api.GTValues;
+import gregtech.api.capability.GregtechCapabilities;
 import gregtech.api.capability.IMultipleTankHandler;
 import gregtech.api.capability.IWorkable;
 import gregtech.api.metatileentity.MTETrait;
@@ -57,7 +58,7 @@ public abstract class RecipeMapWorkableHandler extends MTETrait implements IWork
 
     @Override
     public Capability<?> getImplementingCapability() {
-        return IWorkable.CAPABILITY_WORKABLE;
+        return GregtechCapabilities.CAPABILITY_WORKABLE;
     }
 
     @Override

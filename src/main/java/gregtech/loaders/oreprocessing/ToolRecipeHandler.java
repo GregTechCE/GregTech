@@ -1,7 +1,7 @@
 package gregtech.loaders.oreprocessing;
 
 import gregtech.api.GTValues;
-import gregtech.api.capability.IElectricItem;
+import gregtech.api.capability.GregtechCapabilities;
 import gregtech.api.items.metaitem.MetaItem.MetaValueItem;
 import gregtech.api.items.toolitem.ToolMetaItem.MetaToolValueItem;
 import gregtech.api.recipes.ModHandler;
@@ -73,7 +73,7 @@ public class ToolRecipeHandler {
                 ItemStack batteryStack = battery.getStackForm();
 
                 @SuppressWarnings("ConstantConditions")
-                long maxCharge = batteryStack.getCapability(IElectricItem.CAPABILITY_ELECTRIC_ITEM, null).getMaxCharge();
+                long maxCharge = batteryStack.getCapability(GregtechCapabilities.CAPABILITY_ELECTRIC_ITEM, null).getMaxCharge();
                 ItemStack drillStack = toolItems[i].getMaxChargeOverrideStack(
                     solidMaterial, baseMaterials[i], maxCharge);
                 String recipeName = String.format("%s_%s_%s",
@@ -168,7 +168,7 @@ public class ToolRecipeHandler {
         if (material.hasFlag(GENERATE_PLATE | GENERATE_ROD | GENERATE_BOLT_SCREW) && material.toolDurability > 0) {
             for (MetaValueItem batteryItem : batteryItems[0]) {
                 ItemStack batteryStack = batteryItem.getStackForm();
-                long maxCharge = batteryStack.getCapability(IElectricItem.CAPABILITY_ELECTRIC_ITEM, null).getMaxCharge();
+                long maxCharge = batteryStack.getCapability(GregtechCapabilities.CAPABILITY_ELECTRIC_ITEM, null).getMaxCharge();
                 ModHandler.addShapedRecipe(String.format("soldering_iron_lv_%s_%s", material.toString(), batteryItem.unlocalizedName),
                     MetaItems.SOLDERING_IRON_LV.getMaxChargeOverrideStack(material, Materials.Rubber, maxCharge),
                     "LBf", "Sd ", "P  ",
@@ -198,7 +198,7 @@ public class ToolRecipeHandler {
         if (material.toolDurability <= 0) return;
         for(MetaValueItem batteryItem : batteryItems[2]) {
             ItemStack batteryStack = batteryItem.getStackForm();
-            long maxCharge = batteryStack.getCapability(IElectricItem.CAPABILITY_ELECTRIC_ITEM, null).getMaxCharge();
+            long maxCharge = batteryStack.getCapability(GregtechCapabilities.CAPABILITY_ELECTRIC_ITEM, null).getMaxCharge();
             ModHandler.addShapedRecipe(String.format("jack_hammer_%s_%s", batteryItem.unlocalizedName, material.toString()),
                 MetaItems.JACKHAMMER.getMaxChargeOverrideStack(material, null, maxCharge),
                 "SXd", "PRP", "MPB",

@@ -1,7 +1,9 @@
 package gregtech.common.cable.tile;
 
+import gregtech.api.capability.GregtechCapabilities;
 import gregtech.api.capability.IEnergyContainer;
 import gregtech.common.cable.*;
+import gregtech.common.cable.net.WorldENet;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
@@ -43,15 +45,6 @@ public class TileEntityCable extends TileEntity implements ICableTile {
         return blockedConnections;
     }
 
-    public void setBlockedConnections(int blockedConnections) {
-        this.blockedConnections = blockedConnections;
-        if(!getWorld().isRemote) {
-            BlockCable.updateCableConnections(this, getWorld(), getPos());
-            updateClientState();
-            markDirty();
-        }
-    }
-
     @Override
     public int getInsulationColor() {
         return insulationColor;
@@ -67,10 +60,14 @@ public class TileEntityCable extends TileEntity implements ICableTile {
         return ((BlockCable) getCableState().getBlock()).getProperties(getInsulation());
     }
 
+    private int getCableMark() {
+        return insulationColor == DEFAULT_INSULATION_COLOR ? 0 : insulationColor;
+    }
+
     public void setInsulationColor(int insulationColor) {
         this.insulationColor = insulationColor;
         if(!getWorld().isRemote) {
-            BlockCable.updateCableConnections(this, getWorld(), getPos());
+            WorldENet.getWorldENet(world).updateMark(getPos(), getCableMark());
             updateClientState();
             markDirty();
         }
@@ -130,14 +127,14 @@ public class TileEntityCable extends TileEntity implements ICableTile {
 
     @Override
     public boolean hasCapability(Capability<?> capability, @Nullable EnumFacing facing) {
-        return capability == IEnergyContainer.CAPABILITY_ENERGY_CONTAINER || super.hasCapability(capability, facing);
+        return capability == GregtechCapabilities.CAPABILITY_ENERGY_CONTAINER || super.hasCapability(capability, facing);
     }
 
     @Nullable
     @Override
     public <T> T getCapability(Capability<T> capability, @Nullable EnumFacing facing) {
-        if(capability == IEnergyContainer.CAPABILITY_ENERGY_CONTAINER) {
-            return IEnergyContainer.CAPABILITY_ENERGY_CONTAINER.cast(getEnergyContainer());
+        if(capability == GregtechCapabilities.CAPABILITY_ENERGY_CONTAINER) {
+            return GregtechCapabilities.CAPABILITY_ENERGY_CONTAINER.cast(getEnergyContainer());
         }
         return super.getCapability(capability, facing);
     }

@@ -1,5 +1,6 @@
 package gregtech.common.cable.tile;
 
+import gregtech.api.capability.GregtechCapabilities;
 import gregtech.common.cable.ICableTile;
 import gregtech.common.cable.RoutePath;
 import gregtech.api.capability.IEnergyContainer;
@@ -11,12 +12,13 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockPos.PooledMutableBlockPos;
 import net.minecraft.world.World;
 
+import java.util.Collections;
 import java.util.List;
 
 public class CableEnergyContainer implements IEnergyContainer {
 
     private final ICableTile tileEntityCable;
-    private long lastCachedPathsTime;
+    private long lastCachedUpdate;
     private List<RoutePath> pathsCache;
 
     public CableEnergyContainer(ICableTile tileEntityCable) {
@@ -54,7 +56,7 @@ public class CableEnergyContainer implements IEnergyContainer {
             if(!world.isBlockLoaded(nodePos)) continue;
             TileEntity tileEntity = world.getTileEntity(blockPos);
             if(tileEntity == null || tileEntity instanceof TileEntityCable) continue;
-            IEnergyContainer energyContainer = tileEntity.getCapability(IEnergyContainer.CAPABILITY_ENERGY_CONTAINER, null);
+            IEnergyContainer energyContainer = tileEntity.getCapability(GregtechCapabilities.CAPABILITY_ENERGY_CONTAINER, null);
             if(energyContainer == null) continue;
             amperesUsed += energyContainer.acceptEnergyFromNetwork(facing.getOpposite(), voltage, amperage - amperesUsed);
             if(amperesUsed == amperage)
@@ -103,13 +105,16 @@ public class CableEnergyContainer implements IEnergyContainer {
     }
 
     private void recomputePaths(EnergyNet energyNet) {
-        this.lastCachedPathsTime = System.currentTimeMillis();
+        this.lastCachedUpdate = energyNet.getLastUpdate();
         this.pathsCache = energyNet.computePatches(tileEntityCable.getCablePos());
     }
 
     private List<RoutePath> getPaths() {
         EnergyNet energyNet = getEnergyNet();
-        if(pathsCache == null || energyNet.getLastUpdatedTime() > lastCachedPathsTime) {
+        if(energyNet == null) {
+            return Collections.emptyList();
+        }
+        if(pathsCache == null || energyNet.getLastUpdate() > lastCachedUpdate) {
             recomputePaths(energyNet);
         }
         return pathsCache;

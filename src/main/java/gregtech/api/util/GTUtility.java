@@ -3,6 +3,7 @@ package gregtech.api.util;
 
 import com.google.common.collect.Lists;
 import gregtech.api.GregTechAPI;
+import gregtech.api.capability.GregtechCapabilities;
 import gregtech.api.capability.IElectricItem;
 import gregtech.api.capability.IMultipleTankHandler;
 import gregtech.api.damagesources.DamageSources;
@@ -378,9 +379,9 @@ public class GTUtility {
             IDamagableItem damagableItem = (IDamagableItem) item;
             return damagableItem.doDamageToItem(itemStack, vanillaDamage, simulate);
 
-        } else if (itemStack.hasCapability(IElectricItem.CAPABILITY_ELECTRIC_ITEM, null)) {
+        } else if (itemStack.hasCapability(GregtechCapabilities.CAPABILITY_ELECTRIC_ITEM, null)) {
             //if we're using electric item, use default energy multiplier for textures
-            IElectricItem capability = itemStack.getCapability(IElectricItem.CAPABILITY_ELECTRIC_ITEM, null);
+            IElectricItem capability = itemStack.getCapability(GregtechCapabilities.CAPABILITY_ELECTRIC_ITEM, null);
             int energyNeeded = vanillaDamage * ConfigHolder.energyUsageMultiplier;
             //noinspection ConstantConditions
             return capability.discharge(energyNeeded, Integer.MAX_VALUE, true, false, simulate) == energyNeeded;

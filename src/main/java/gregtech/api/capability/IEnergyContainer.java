@@ -47,9 +47,6 @@ public interface IEnergyContainer {
         }
     }
 
-    @CapabilityInject(IEnergyContainer.class)
-    Capability<IEnergyContainer> CAPABILITY_ENERGY_CONTAINER = null;
-
     /**
      * @return amount of used amperes. 0 if not accepted anything.
      */

@@ -1,6 +1,6 @@
 package gregtech.common.items.behaviors;
 
-import gregtech.api.capability.IElectricItem;
+import gregtech.api.capability.GregtechCapabilities;
 import gregtech.api.items.metaitem.MetaItem;
 import gregtech.api.items.metaitem.MetaItem.MetaValueItem;
 import gregtech.api.items.metaitem.stats.IItemBehaviour;
@@ -53,7 +53,7 @@ public class ToolPartsBoxBehavior implements IItemBehaviour {
     }
 
     private static int getItemRestoreChance(ItemStack itemStack) {
-        if(itemStack.hasCapability(IElectricItem.CAPABILITY_ELECTRIC_ITEM, null))
+        if(itemStack.hasCapability(GregtechCapabilities.CAPABILITY_ELECTRIC_ITEM, null))
             return 100; //electric items are always restored
         if(itemStack.getItem() instanceof MetaItem<?>) {
             MetaItem<?> metaItem = (MetaItem<?>) itemStack.getItem();

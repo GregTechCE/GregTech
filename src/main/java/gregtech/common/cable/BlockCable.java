@@ -7,6 +7,7 @@ import codechicken.lib.vec.Cuboid6;
 import codechicken.multipart.TileMultipart;
 import gregtech.api.GTValues;
 import gregtech.api.GregTechAPI;
+import gregtech.api.capability.GregtechCapabilities;
 import gregtech.api.capability.IEnergyContainer;
 import gregtech.api.unification.material.type.Material;
 import gregtech.common.cable.net.EnergyNet;
@@ -161,21 +162,6 @@ public class BlockCable extends Block implements ITileEntityProvider {
     }
 
     /**
-     * Updates cable e-net by removing it from current one and re-calling
-     * attachToNetwork(). This is useful when you change blocked connections,
-     * wire color or cover placement, which causes network to recompute paths
-     */
-    public static void updateCableConnections(ICableTile cableTile, World world, BlockPos blockPos) {
-        WorldENet worldENet = WorldENet.getWorldENet(world);
-        EnergyNet energyNet = worldENet.getNetFromPos(blockPos);
-        if(energyNet != null) {
-            //if should update node, remove it from current network and attach again
-            energyNet.removeNode(blockPos);
-            attachNoNearbyNetwork(world, blockPos, cableTile);
-        }
-    }
-
-    /**
      * Returns bit mask of actual cable connections, including cable-cable and cable-receiver
      * connections. but excluding unaccessible covers on blocked sides
      */
@@ -195,7 +181,7 @@ public class BlockCable extends Block implements ITileEntityProvider {
                 }
             } else if(cableState == 0 && blockState.getBlock().hasTileEntity(blockState)) {
                 TileEntity tileEntity = world.getTileEntity(offsetPos);
-                if(tileEntity != null && tileEntity.hasCapability(IEnergyContainer.CAPABILITY_ENERGY_CONTAINER,
+                if(tileEntity != null && tileEntity.hasCapability(GregtechCapabilities.CAPABILITY_ENERGY_CONTAINER,
                     enumFacing.getOpposite()))
                     connectedSidesMask |= 1 << enumFacing.getIndex();
             }
@@ -203,61 +189,14 @@ public class BlockCable extends Block implements ITileEntityProvider {
         return connectedSidesMask;
     }
 
-    public static void attachNoNearbyNetwork(World worldIn, BlockPos pos, ICableTile cableTile) {
-        boolean hasCapability = hasEnergyCapabilities(worldIn, pos);
-        WorldENet worldENet = WorldENet.getWorldENet(worldIn);
-        EnergyNet energyNet = null;
-
-        for(EnumFacing facing : EnumFacing.VALUES) {
-            if((cableTile.getBlockedConnections() & (1 << facing.getIndex())) > 0)
-                continue; //do not search blocked sides
-            BlockPos offsetPos = pos.offset(facing);
-            int cableState = isCableAccessibleAtSide(worldIn, offsetPos, facing.getOpposite(),
-                cableTile.getInsulationColor(), cableTile.getInsulation().thickness);
-            if(cableState >= 2) {
-                EnergyNet offsetEnergyNet = worldENet.getNetFromPos(offsetPos);
-                if(offsetEnergyNet == null) {
-                    continue;
-                }
-                if(energyNet == null) {
-                    energyNet = offsetEnergyNet;
-                    energyNet.addNode(pos, cableTile.getWireProperties(), cableTile.getBlockedConnections());
-                } else if(energyNet != offsetEnergyNet) {
-                    //if there is another e-net here, unite with it
-                    energyNet.uniteNetworks(offsetEnergyNet);
-                }
-            }
-        }
-
-        if(energyNet == null) {
-            energyNet = new EnergyNet(worldENet);
-            energyNet.addNode(pos, cableTile.getWireProperties(), cableTile.getBlockedConnections());
-            worldENet.addEnergyNet(energyNet);
-            worldENet.markDirty();
-        }
-
-        if(hasCapability) {
-            energyNet.markNodeAsActive(pos);
-        }
-    }
-
-
-    public static void detachFromNetwork(World worldIn, BlockPos pos) {
-        WorldENet worldENet = WorldENet.getWorldENet(worldIn);
-        EnergyNet energyNet = worldENet.getNetFromPos(pos);
-        if(energyNet != null) {
-            energyNet.removeNode(pos);
-        }
-    }
-
-    private static boolean hasEnergyCapabilities(World worldIn, BlockPos pos) {
+    public static boolean hasEnergyCapabilities(World worldIn, BlockPos pos) {
         for(EnumFacing facing : EnumFacing.VALUES) {
             BlockPos offsetPos = pos.offset(facing);
             TileEntity tileEntity = worldIn.getTileEntity(offsetPos);
             //do not connect to null cables and ignore cables
             if(tileEntity == null || getCableTileEntity(worldIn, offsetPos) != null) continue;
             EnumFacing opposite = facing.getOpposite();
-            IEnergyContainer energyContainer = tileEntity.getCapability(IEnergyContainer.CAPABILITY_ENERGY_CONTAINER, opposite);
+            IEnergyContainer energyContainer = tileEntity.getCapability(GregtechCapabilities.CAPABILITY_ENERGY_CONTAINER, opposite);
             if(energyContainer != null)
                 return true;
         }
@@ -339,13 +278,13 @@ public class BlockCable extends Block implements ITileEntityProvider {
     @Override
     public void breakBlock(World worldIn, BlockPos pos, IBlockState state) {
         super.breakBlock(worldIn, pos, state);
-        detachFromNetwork(worldIn, pos);
+        WorldENet.getWorldENet(worldIn).removeNode(pos);
     }
 
     @Override
     public void onBlockAdded(World worldIn, BlockPos pos, IBlockState state) {
         Insulation insulation = state.getValue(INSULATION);
-        attachNoNearbyNetwork(worldIn, pos, new SimpleCableTile(insulation, getProperties(insulation)));
+        WorldENet.getWorldENet(worldIn).addNode(pos, getProperties(insulation), 0, 0, hasEnergyCapabilities(worldIn, pos));
     }
 
     @Override
@@ -353,11 +292,7 @@ public class BlockCable extends Block implements ITileEntityProvider {
         boolean hasCapability = hasEnergyCapabilities(worldIn, pos);
         EnergyNet energyNet = WorldENet.getWorldENet(worldIn).getNetFromPos(pos);
         if(energyNet != null) {
-            if(hasCapability) {
-                energyNet.markNodeAsActive(pos);
-            } else {
-                energyNet.markNodeAsInactive(pos);
-            }
+            energyNet.markNodeAsActive(pos, hasCapability);
         }
     }
 
@@ -372,6 +307,7 @@ public class BlockCable extends Block implements ITileEntityProvider {
     }
 
     @Override
+    @SideOnly(Side.CLIENT)
     public EnumBlockRenderType getRenderType(IBlockState state) {
         return CableRenderer.BLOCK_RENDER_TYPE;
     }
