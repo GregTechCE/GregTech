@@ -4,11 +4,10 @@ import codechicken.multipart.MultiPartRegistry;
 import codechicken.multipart.TMultiPart;
 import codechicken.multipart.api.IPartConverter;
 import codechicken.multipart.api.IPartFactory;
-import com.google.common.collect.Lists;
 import gregtech.api.GTValues;
-import gregtech.common.blocks.MetaBlocks;
-import gregtech.common.cable.BlockCable;
-import gregtech.common.cable.tile.TileEntityCable;
+import gregtech.common.pipelike.cable.BlockCable;
+import gregtech.common.pipelike.fluidpipe.BlockFluidPipe;
+import gregtech.common.pipelike.fluidpipe.tile.TileEntityFluidPipeActive;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.tileentity.TileEntity;
@@ -26,6 +25,8 @@ import java.util.function.Supplier;
 public final class GTMultipartFactory implements IPartFactory, IPartConverter {
 
     public static final ResourceLocation CABLE_PART_KEY = new ResourceLocation(GTValues.MODID, "cable");
+    public static final ResourceLocation FLUID_PIPE_PART_KEY = new ResourceLocation(GTValues.MODID, "fluid_pipe");
+    public static final ResourceLocation FLUID_PIPE_ACTIVE_PART_KEY = new ResourceLocation(GTValues.MODID, "fluid_pipe_active");
 
     public static final GTMultipartFactory INSTANCE = new GTMultipartFactory();
     private final Map<ResourceLocation, Supplier<TMultiPart>> partRegistry = new HashMap<>();
@@ -33,7 +34,16 @@ public final class GTMultipartFactory implements IPartFactory, IPartConverter {
 
     public void registerFactory() {
         registerPart(CABLE_PART_KEY, CableMultiPart::new);
+        registerPart(FLUID_PIPE_PART_KEY, FluidPipeMultiPart::new);
+        registerPart(FLUID_PIPE_ACTIVE_PART_KEY, FluidPipeActiveMultiPart::new);
         registerConverter(block -> block instanceof BlockCable, CableMultiPart::new);
+        registerConverter(block -> block instanceof BlockFluidPipe, (blockState, tileEntity) -> {
+            if(tileEntity instanceof TileEntityFluidPipeActive) {
+                return new FluidPipeActiveMultiPart(blockState, tileEntity);
+            } else {
+                return new FluidPipeMultiPart(blockState, tileEntity);
+            }
+        });
 
         MultiPartRegistry.registerParts(this, partRegistry.keySet());
         MultiPartRegistry.registerConverter(this);

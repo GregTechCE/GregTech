@@ -11,6 +11,7 @@ import gregtech.api.render.Textures;
 import gregtech.api.unification.material.type.Material.MatFlags;
 import gregtech.api.unification.material.type.SolidMaterial;
 import gregtech.api.util.GTUtility;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -123,6 +124,14 @@ public class MetaTileEntityTank extends MetaTileEntity {
     @Override
     public boolean onRightClick(EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
        return getWorld().isRemote || FluidUtil.interactWithFluidHandler(playerIn, hand, fluidTank);
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public TextureAtlasSprite getParticleTexture() {
+        return material.toString().contains("wood") ?
+            Textures.WOODEN_TANK.getParticleTexture() :
+            Textures.METAL_TANK.getParticleTexture();
     }
 
     @Override

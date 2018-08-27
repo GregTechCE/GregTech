@@ -32,7 +32,7 @@ public abstract class WorldPipeNet<NodeDataType, T extends PipeNet<NodeDataType>
             T pipeNet = getNetFromPos(offsetPos);
             Node<NodeDataType> secondNode = pipeNet == null ? null : pipeNet.getAllNodes().get(offsetPos);
             if(pipeNet != null && pipeNet.canAttachNode(nodeData) &&
-                pipeNet.canNodesConnect(node, facing, secondNode)) {
+                pipeNet.canNodesConnect(secondNode, facing.getOpposite(), node, null)) {
                 if(myPipeNet == null) {
                     myPipeNet = pipeNet;
                     myPipeNet.addNode(nodePos, node);
@@ -81,10 +81,12 @@ public abstract class WorldPipeNet<NodeDataType, T extends PipeNet<NodeDataType>
 
     protected void addPipeNet(T pipeNet) {
         this.pipeNets.add(pipeNet);
+        pipeNet.isValid = true;
     }
 
     protected void removePipeNet(T pipeNet) {
         this.pipeNets.remove(pipeNet);
+        pipeNet.isValid = false;
     }
 
     protected abstract T createNetInstance();
@@ -97,6 +99,7 @@ public abstract class WorldPipeNet<NodeDataType, T extends PipeNet<NodeDataType>
             NBTTagCompound pNetTag = allEnergyNets.getCompoundTagAt(i);
             T pipeNet = createNetInstance();
             pipeNets.add(pipeNet);
+            pipeNet.isValid = true;
             pipeNet.deserializeNBT(pNetTag);
         }
     }

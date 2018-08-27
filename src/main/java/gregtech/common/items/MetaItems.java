@@ -85,16 +85,9 @@ public final class MetaItems {
     public static MetaItem<?>.MetaValueItem LARGE_FLUID_CELL_TUNGSTEN_STEEL;
 
     public static MetaItem<?>.MetaValueItem TOOL_MATCHES;
-    public static MetaItem<?>.MetaValueItem TOOL_MATCHBOX_USED;
-    public static MetaItem<?>.MetaValueItem TOOL_MATCHBOX_FULL;
-
-    public static MetaItem<?>.MetaValueItem TOOL_LIGHTER_INVAR_EMPTY;
-    public static MetaItem<?>.MetaValueItem TOOL_LIGHTER_INVAR_USED;
-    public static MetaItem<?>.MetaValueItem TOOL_LIGHTER_INVAR_FULL;
-
-    public static MetaItem<?>.MetaValueItem TOOL_LIGHTER_PLATINUM_EMPTY;
-    public static MetaItem<?>.MetaValueItem TOOL_LIGHTER_PLATINUM_USED;
-    public static MetaItem<?>.MetaValueItem TOOL_LIGHTER_PLATINUM_FULL;
+    public static MetaItem<?>.MetaValueItem TOOL_MATCHBOX;
+    public static MetaItem<?>.MetaValueItem TOOL_LIGHTER_INVAR;
+    public static MetaItem<?>.MetaValueItem TOOL_LIGHTER_PLATINUM;
 
     public static MetaItem<?>.MetaValueItem INGOT_IRIDIUM_ALLOY;
 
@@ -340,7 +333,6 @@ public final class MetaItems {
     public static MetaItem<?>.MetaValueItem[] DYE_ONLY_ITEMS = new MetaItem.MetaValueItem[16];
 
     public static MetaItem<?>.MetaValueItem[] SPRAY_CAN_DYES = new MetaItem.MetaValueItem[16];
-    public static MetaItem<?>.MetaValueItem[] SPRAY_CAN_DYES_USED = new MetaItem.MetaValueItem[16];
 
     public static MetaItem<?>.MetaValueItem SMALL_BRONZE_PIPE;
     public static MetaItem<?>.MetaValueItem SMALL_STEEL_PIPE;

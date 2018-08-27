@@ -1,10 +1,12 @@
 package gregtech.api.unification.material.type;
 
 import com.google.common.collect.ImmutableList;
-import gregtech.common.cable.WireProperties;
+import gregtech.common.pipelike.cable.WireProperties;
 import gregtech.api.unification.Element;
 import gregtech.api.unification.material.MaterialIconSet;
 import gregtech.api.unification.stack.MaterialStack;
+import gregtech.common.pipelike.fluidpipe.FluidPipeProperties;
+import stanhebben.zenscript.annotations.ZenMethod;
 
 import javax.annotation.Nullable;
 
@@ -69,6 +71,13 @@ public class IngotMaterial extends SolidMaterial {
      */
     @Nullable
     public WireProperties cableProperties;
+
+    /**
+     * If set, fluid pipe will be generated for this materials with stats
+     * specified by this field
+     */
+    @Nullable
+    public FluidPipeProperties fluidPipeProperties;
 
     public IngotMaterial(int metaItemSubId, String name, int materialRGB, MaterialIconSet materialIconSet, int harvestLevel, ImmutableList<MaterialStack> materialComponents, long materialGenerationFlags, Element element, float toolSpeed, int toolDurability, int blastFurnaceTemperature) {
         super(metaItemSubId, name, materialRGB, materialIconSet, harvestLevel, materialComponents, materialGenerationFlags, element, toolSpeed, toolDurability);
@@ -139,8 +148,14 @@ public class IngotMaterial extends SolidMaterial {
         this.arcSmeltInto = arcSmeltingInto;
     }
 
+    @ZenMethod
     public void setCableProperties(long voltage, int baseAmperage, int lossPerBlock) {
         this.cableProperties = new WireProperties((int) voltage, baseAmperage, lossPerBlock);
+    }
+
+    @ZenMethod
+    public void setFluidPipeProperties(int throughput, int maxTemperature) {
+        this.fluidPipeProperties = new FluidPipeProperties(throughput, maxTemperature, throughput, false);
     }
 
 }

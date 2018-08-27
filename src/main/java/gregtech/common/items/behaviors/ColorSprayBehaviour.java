@@ -14,87 +14,44 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.Constants.NBT;
 
 import java.util.List;
 
-public class ColorSprayBehaviour implements IItemBehaviour {
+public class ColorSprayBehaviour extends AbstractUsableBehaviour {
 
     private final ItemStack empty;
-    private final ItemStack used;
-    private final ItemStack full;
-    private final long totalUses;
     private final EnumDyeColor color;
 
-    public ColorSprayBehaviour(ItemStack empty, ItemStack used, ItemStack full, long totalUses, int color) {
+    public ColorSprayBehaviour(ItemStack empty, int totalUses, int color) {
+        super(totalUses);
         this.empty = empty;
-        this.used = used;
-        this.full = full;
-        this.totalUses = totalUses;
         this.color = EnumDyeColor.values()[color];
     }
 
     @Override
     public EnumActionResult onItemUseFirst(EntityPlayer player, World world, BlockPos pos, EnumFacing side, float hitX, float hitY, float hitZ, EnumHand hand) {
         ItemStack stack = player.getHeldItem(hand);
-        if (world.isRemote || stack.getCount() != 1) {
-            return EnumActionResult.PASS;
-        }
-        EnumActionResult output = EnumActionResult.FAIL;
         if (!player.canPlayerEdit(pos, side, stack)) {
             return EnumActionResult.FAIL;
         }
-        NBTTagCompound compound = stack.getTagCompound();
-        if (compound == null) {
-            compound = new NBTTagCompound();
+        if(!tryPaintBlock(world, pos, side)) {
+            return EnumActionResult.PASS;
         }
-        long uses = compound.getLong("GT.RemainingPaint");
-        if (ItemStack.areItemStacksEqual(stack, this.full)) {
-            player.setHeldItem(hand, used);
-            uses = this.totalUses;
-        }
-        if (ItemStack.areItemStacksEqual(stack, this.used) && colorize(world, pos, side)) {
-//            GTUtility.sendSoundToPlayers(world, GregTechAPI.sSoundList.get(102), 1.0F, 1.0F, pos);
-            if (!player.capabilities.isCreativeMode) {
-                uses -= 1L;
-            }
-            output = EnumActionResult.SUCCESS;
-        }
-        compound.removeTag("GT.RemainingPaint");
-        if (uses > 0L) {
-            compound.setLong("GT.RemainingPaint", uses);
-        }
-        if (compound.hasNoTags()) {
-            stack.setTagCompound(null);
-        } else {
-            stack.setTagCompound(compound);
-        }
-        if (uses <= 0L) {
-            if (this.empty == null) {
-                stack.shrink(1);
-            } else {
-                player.setHeldItem(hand, empty);
-            }
-        }
-        return output;
+        useItemDurability(player, hand, stack, empty.copy());
+        return EnumActionResult.SUCCESS;
     }
 
-    private boolean colorize(World world, BlockPos pos, EnumFacing side) {
+    private boolean tryPaintBlock(World world, BlockPos pos, EnumFacing side) {
         IBlockState blockState = world.getBlockState(pos);
         Block block = blockState.getBlock();
-        if (block instanceof BlockColored) {
-            world.setBlockState(pos, blockState.withProperty(BlockColored.COLOR, color));
-            return true;
-        }
         return block.recolorBlock(world, pos, side, this.color);
     }
 
-
     @Override
     public void addInformation(ItemStack itemStack, List<String> lines) {
+        int remainingUses = getUsesLeft(itemStack);
         lines.add(I18n.format("behaviour.paintspray." + this.color.getUnlocalizedName() + ".tooltip"));
-        NBTTagCompound compound = itemStack.getTagCompound();
-        long remainingPaint = compound == null ? 0L : ItemStack.areItemStacksEqual(itemStack, this.full) ? this.totalUses : compound.getLong("GT.RemainingPaint");
-        lines.add(I18n.format("behaviour.paintspray.uses", remainingPaint));
-        lines.add(I18n.format("behaviour.unstackable"));
+        lines.add(I18n.format("behaviour.paintspray.uses", remainingUses));
     }
 }

@@ -36,6 +36,11 @@ public class TankRenderer implements IIconRegister {
         this.sideSprite = textureMap.registerSprite(new ResourceLocation(GTValues.MODID, "blocks/" + basePath));
     }
 
+    @SideOnly(Side.CLIENT)
+    public TextureAtlasSprite getParticleTexture() {
+        return sideSprite;
+    }
+
     public void render(CCRenderState renderState, Matrix4 translation, int baseColor, IVertexOperation[] pipeline, int capacity, FluidStack fluidStack) {
 
         IVertexOperation[] basePipeline = ArrayUtils.add(pipeline, new ColourMultiplier(baseColor));
@@ -44,7 +49,7 @@ public class TankRenderer implements IIconRegister {
         TextureAtlasSprite fluidSprite = null;
 
         if(fluidStack != null) {
-            double fluidLevel = fluidStack == null ? 0.0 : fluidStack.amount / (capacity * 1.0) * 0.99;
+            double fluidLevel = fluidStack.amount / (capacity * 1.0) * 0.99;
             fluidCuboid = new Cuboid6(0.01, 0.01, 0.01, 0.99, fluidLevel, 0.99);
             ColourMultiplier multiplier = new ColourMultiplier(GTUtility.convertRGBtoOpaqueRGBA_CL(fluidStack.getFluid().getColor(fluidStack)));
             fluidPipeline = new IVertexOperation[] {multiplier};

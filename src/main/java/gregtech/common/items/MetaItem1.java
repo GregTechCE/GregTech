@@ -1,5 +1,6 @@
 package gregtech.common.items;
 
+import gregtech.api.GTValues;
 import gregtech.api.items.OreDictNames;
 import gregtech.api.items.materialitem.MaterialMetaItem;
 import gregtech.api.items.metaitem.ElectricStats;
@@ -141,39 +142,21 @@ public class MetaItem1 extends MaterialMetaItem {
             .setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.TungstenSteel, OrePrefix.plate.materialAmount * 2L + 2L * OrePrefix.ring.materialAmount)));
 
         for (byte i = 0; i < 16; i = (byte) (i + 1)) {
-            SPRAY_CAN_DYES[i] = addItem(430 + 2 * i, "spray.can.dyes." + EnumDyeColor.byMetadata(i).getName());
-            SPRAY_CAN_DYES_USED[i] = addItem(431 + 2 * i, "spray.can.dyes.used." + EnumDyeColor.byMetadata(i).getName());
-
-            ColorSprayBehaviour behaviour = new ColorSprayBehaviour(SPRAY_EMPTY.getStackForm(), SPRAY_CAN_DYES_USED[i].getStackForm(), SPRAY_CAN_DYES[i].getStackForm(), 512L, i);
+            SPRAY_CAN_DYES[i] = addItem(430 + 2 * i, "spray.can.dyes." + EnumDyeColor.byMetadata(i).getName()).setMaxStackSize(1);
+            ColorSprayBehaviour behaviour = new ColorSprayBehaviour(SPRAY_EMPTY.getStackForm(), 512, i);
             SPRAY_CAN_DYES[i].addStats(behaviour);
-            SPRAY_CAN_DYES_USED[i].addStats(behaviour);
         }
 
-        TOOL_MATCHES = addItem(471, "tool.matches");
-        LighterBehaviour behaviour = new LighterBehaviour(null, TOOL_MATCHES.getStackForm(), TOOL_MATCHES.getStackForm(), 1L);
-        TOOL_MATCHES.addStats(behaviour);
-
-        TOOL_MATCHBOX_USED = addItem(472, "tool.matchbox.used");
-        TOOL_MATCHBOX_FULL = addItem(473, "tool.matchbox.full");
-        behaviour = new LighterBehaviour(null, TOOL_MATCHBOX_USED.getStackForm(), TOOL_MATCHBOX_FULL.getStackForm(), 16L);
-        TOOL_MATCHBOX_USED.addStats(behaviour);
-        TOOL_MATCHBOX_FULL.addStats(behaviour);
-
-        TOOL_LIGHTER_INVAR_EMPTY = addItem(474, "tool.lighter.invar.empty").setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.Invar, OrePrefix.plate.materialAmount * 2L)));
-
-        TOOL_LIGHTER_INVAR_USED = addItem(475, "tool.lighter.invar.used").setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.Invar, OrePrefix.plate.materialAmount * 2L)));
-        TOOL_LIGHTER_INVAR_FULL = addItem(476, "tool.lighter.invar.full").setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.Invar, OrePrefix.plate.materialAmount * 2L)));
-        behaviour = new LighterBehaviour(TOOL_LIGHTER_INVAR_EMPTY.getStackForm(), TOOL_LIGHTER_INVAR_USED.getStackForm(), TOOL_LIGHTER_INVAR_FULL.getStackForm(), 100L);
-        TOOL_LIGHTER_INVAR_USED.addStats(behaviour);
-        TOOL_LIGHTER_INVAR_FULL.addStats(behaviour);
-
-        TOOL_LIGHTER_PLATINUM_EMPTY = addItem(477, "tool.lighter.platinum.empty").setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.Platinum, OrePrefix.plate.materialAmount * 2L)));
-
-        TOOL_LIGHTER_PLATINUM_USED = addItem(478, "tool.lighter.platinum.used").setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.Platinum, OrePrefix.plate.materialAmount * 2L)));
-        TOOL_LIGHTER_PLATINUM_FULL = addItem(479, "tool.lighter.platinum.full").setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.Platinum, OrePrefix.plate.materialAmount * 2L)));
-        behaviour = new LighterBehaviour(TOOL_LIGHTER_PLATINUM_EMPTY.getStackForm(), TOOL_LIGHTER_PLATINUM_USED.getStackForm(), TOOL_LIGHTER_PLATINUM_FULL.getStackForm(), 1000L);
-        TOOL_LIGHTER_PLATINUM_USED.addStats(behaviour);
-        TOOL_LIGHTER_PLATINUM_FULL.addStats(behaviour);
+        TOOL_MATCHES = addItem(471, "tool.matches")
+            .addStats(new LighterBehaviour(1));
+        TOOL_MATCHBOX = addItem(473, "tool.matchbox")
+            .addStats(new LighterBehaviour(16)).setMaxStackSize(1);
+        TOOL_LIGHTER_INVAR = addItem(476, "tool.lighter.invar")
+            .setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.Invar, GTValues.L * 2)))
+            .addStats(new LighterBehaviour(100)).setMaxStackSize(1);
+        TOOL_LIGHTER_PLATINUM = addItem(477, "tool.lighter.platinum")
+            .setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.Platinum, GTValues.L * 2)))
+            .addStats(new LighterBehaviour(100)).setMaxStackSize(1);
 
         INGOT_IRIDIUM_ALLOY = addItem(480, "ingot.iridiumalloy").setInvisible();
 
@@ -445,21 +428,21 @@ public class MetaItem1 extends MaterialMetaItem {
 
         RecipeMaps.PACKER_RECIPES.recipeBuilder()
             .inputs(TOOL_MATCHES.getStackForm(16)).input(OrePrefix.plate, Materials.Paper)
-            .outputs(TOOL_MATCHBOX_FULL.getStackForm())
+            .outputs(TOOL_MATCHBOX.getStackForm())
             .duration(64)
             .EUt(16)
             .buildAndRegister();
 
         RecipeMaps.ASSEMBLER_RECIPES.recipeBuilder()
             .input(OrePrefix.plate, Materials.Invar, 2).inputs(new ItemStack(Items.FLINT, 1))
-            .outputs(TOOL_LIGHTER_INVAR_EMPTY.getStackForm())
+            .outputs(TOOL_LIGHTER_INVAR.getStackForm())
             .duration(256)
             .EUt(16)
             .buildAndRegister();
 
         RecipeMaps.ASSEMBLER_RECIPES.recipeBuilder()
             .input(OrePrefix.plate, Materials.Platinum, 2).inputs(new ItemStack(Items.FLINT, 1))
-            .outputs(TOOL_LIGHTER_PLATINUM_EMPTY.getStackForm())
+            .outputs(TOOL_LIGHTER_PLATINUM.getStackForm())
             .duration(256)
             .EUt(256)
             .buildAndRegister();

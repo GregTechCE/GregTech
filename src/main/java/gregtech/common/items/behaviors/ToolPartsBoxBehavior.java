@@ -72,9 +72,6 @@ public class ToolPartsBoxBehavior implements IItemBehaviour {
                 return 9; //restore tool heads only with 9% chance, because they will break almost always
         }
         return 37; //otherwise, restore with 37% chance
-
-
-
     }
 
 }

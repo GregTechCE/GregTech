@@ -275,7 +275,7 @@ public class ToolMetaItem<T extends ToolMetaItem<?>.MetaToolValueItem> extends M
                 }
             }
         }
-        return 100;
+        return -1;
     }
 
     @Override

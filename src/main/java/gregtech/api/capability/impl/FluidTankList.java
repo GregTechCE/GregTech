@@ -74,14 +74,18 @@ public class FluidTankList implements IFluidHandler, IMultipleTankHandler, INBTS
             return 0;
 
         resource = resource.copy();
-
         int totalFillAmount = 0;
         for (IFluidTank handler : fluidTanks) {
+            FluidStack fluidInTank = handler.getFluid();
             int fillAmount = handler.fill(resource, doFill);
             totalFillAmount += fillAmount;
             resource.amount -= fillAmount;
-            if (resource.amount <= 0)
+            if (resource.amount <= 0) {
                 break;
+            }
+            if (fluidInTank != null && fluidInTank.isFluidEqual(resource)) {
+                break; //allow filling of only one tank with same fluid
+            }
         }
         return totalFillAmount;
     }

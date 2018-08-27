@@ -21,6 +21,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.NonNullList;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.ItemStackHandler;
 import org.apache.commons.lang3.ArrayUtils;
 
@@ -70,6 +72,7 @@ public class MetaTileEntityChest extends MetaTileEntity {
     }
 
     @Override
+    @SideOnly(Side.CLIENT)
     public TextureAtlasSprite getParticleTexture() {
         return material.toString().contains("wood") ? Textures.WOODEN_CHEST.getParticleTexture() :
             Textures.METAL_CHEST.getParticleTexture();

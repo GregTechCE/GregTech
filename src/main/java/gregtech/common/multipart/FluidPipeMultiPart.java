@@ -12,7 +12,11 @@ import gregtech.common.pipelike.cable.BlockCable;
 import gregtech.common.pipelike.cable.Insulation;
 import gregtech.common.pipelike.cable.WireProperties;
 import gregtech.common.pipelike.cable.tile.CableEnergyContainer;
+import gregtech.common.pipelike.fluidpipe.FluidPipeProperties;
+import gregtech.common.pipelike.fluidpipe.FluidPipeType;
+import gregtech.common.pipelike.fluidpipe.tile.FluidPipeFluidHandler;
 import gregtech.common.render.CableRenderer;
+import gregtech.common.render.FluidPipeRenderer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
@@ -21,30 +25,50 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
+import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class CableMultiPart extends PipeMultiPart<Insulation, WireProperties> implements ICapabilityProvider {
+public class FluidPipeMultiPart extends PipeMultiPart<FluidPipeType, FluidPipeProperties> implements ICapabilityProvider {
 
-    private CableEnergyContainer energyContainer;
+    private FluidPipeFluidHandler fluidHandler;
 
-    CableMultiPart() {}
+    FluidPipeMultiPart() {}
 
-    public CableMultiPart(IBlockState blockState, TileEntity tile) {
+    public FluidPipeMultiPart(PipeMultiPart<FluidPipeType, FluidPipeProperties> sourceTile) {
+        super(sourceTile);
+    }
+
+    public FluidPipeMultiPart(IBlockState blockState, TileEntity tile) {
         super(blockState, tile);
     }
 
+
     @Override
     public ResourceLocation getType() {
-        return GTMultipartFactory.CABLE_PART_KEY;
+        return GTMultipartFactory.FLUID_PIPE_PART_KEY;
     }
 
+    @Override
+    protected void onModeChange(boolean isActiveNow) {
+        FluidPipeMultiPart part = isActiveNow ?
+            new FluidPipeActiveMultiPart(this) :
+            new FluidPipeMultiPart(this);
+        //mark parts for replacement
+        this.isBeingReplaced = true;
+        part.isBeingReplaced = true;
+        //and then remove old part and add new one
+        TileMultipart tileMultipart = tile();
+        tileMultipart.remPart(this);
+        TileMultipart.addPart(tileMultipart.getWorld(),
+            tileMultipart.getPos(), part);
+    }
 
-    public CableEnergyContainer getEnergyContainer() {
-        if (energyContainer == null) {
-            this.energyContainer = new CableEnergyContainer(this);
+    public FluidPipeFluidHandler getFluidHandler() {
+        if(fluidHandler == null) {
+            this.fluidHandler = new FluidPipeFluidHandler(this);
         }
-        return energyContainer;
+        return fluidHandler;
     }
 
     @Override
@@ -55,8 +79,8 @@ public class CableMultiPart extends PipeMultiPart<Insulation, WireProperties> im
     @SuppressWarnings("unchecked")
     @Override
     public <T> T getCapability(Capability<T> capability, EnumFacing facing) {
-        if (capability == GregtechCapabilities.CAPABILITY_ENERGY_CONTAINER) {
-            return (T) getEnergyContainer();
+        if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) {
+            return CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY.cast(getFluidHandler());
         }
         return null;
     }
@@ -65,20 +89,11 @@ public class CableMultiPart extends PipeMultiPart<Insulation, WireProperties> im
     public boolean renderStatic(Vector3 pos, BlockRenderLayer layer, CCRenderState ccrs) {
         TileMultipart tileMultipart = tile();
         ccrs.setBrightness(tileMultipart.getWorld(), tileMultipart.getPos());
-        CableRenderer.INSTANCE.renderCableBlock(getPipeBlock().material, getPipeType(), insulationColor, ccrs,
+        FluidPipeRenderer.INSTANCE.renderPipeBlock(getPipeBlock().material, getPipeType(), insulationColor, ccrs,
             new IVertexOperation[] {new Translation(tileMultipart.getPos())},
             activeConnections & ~getBlockedConnections());
         return true;
     }
 
-    @Override
-    public void load(NBTTagCompound tag) {
-        if(tag.hasKey("CableMaterial")) {
-            String materialName = tag.getString("CableMaterial");
-            BlockCable blockCable = MetaBlocks.CABLES.get(Material.MATERIAL_REGISTRY.getObject(materialName));
-            //noinspection ConstantConditions
-            tag.setString("PipeBlock", blockCable.getRegistryName().toString());
-        }
-        super.load(tag);
-    }
+
 }

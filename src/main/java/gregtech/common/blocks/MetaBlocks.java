@@ -22,11 +22,17 @@ import gregtech.common.blocks.tileentity.TileEntityCrusherBlade;
 import gregtech.common.blocks.wood.BlockGregLeaves;
 import gregtech.common.blocks.wood.BlockGregLog;
 import gregtech.common.blocks.wood.BlockGregSapling;
-import gregtech.common.cable.BlockCable;
-import gregtech.common.cable.Insulation;
-import gregtech.common.cable.WireProperties;
-import gregtech.common.cable.tile.TileEntityCable;
+import gregtech.common.pipelike.cable.BlockCable;
+import gregtech.common.pipelike.cable.Insulation;
+import gregtech.common.pipelike.cable.WireProperties;
+import gregtech.common.pipelike.cable.tile.TileEntityCable;
+import gregtech.common.pipelike.fluidpipe.BlockFluidPipe;
+import gregtech.common.pipelike.fluidpipe.FluidPipeProperties;
+import gregtech.common.pipelike.fluidpipe.FluidPipeType;
+import gregtech.common.pipelike.fluidpipe.tile.TileEntityFluidPipe;
+import gregtech.common.pipelike.fluidpipe.tile.TileEntityFluidPipeActive;
 import gregtech.common.render.CableRenderer;
+import gregtech.common.render.FluidPipeRenderer;
 import gregtech.common.render.tesr.TileEntityCrusherBladeRenderer;
 import gregtech.common.render.tesr.TileEntityRendererBase.TileEntityRenderBaseItem;
 import net.minecraft.block.Block;
@@ -82,6 +88,7 @@ public class MetaBlocks {
     public static BlockCrusherBlade CRUSHER_BLADE;
 
     public static Map<Material, BlockCable> CABLES = new HashMap<>();
+    public static Map<Material, BlockFluidPipe> FLUID_PIPES = new HashMap<>();
     public static HashMap<DustMaterial, BlockCompressed> COMPRESSED = new HashMap<>();
     public static HashMap<IngotMaterial, BlockSurfaceRock> SURFACE_ROCKS = new HashMap<>();
     public static HashMap<SolidMaterial, BlockFrame> FRAMES = new HashMap<>();
@@ -140,8 +147,12 @@ public class MetaBlocks {
             if(material instanceof IngotMaterial) {
                 IngotMaterial metalMaterial = (IngotMaterial) material;
                 if(metalMaterial.cableProperties != null) {
-                    createCableBlock(metalMaterial);
+                    createCableBlock(metalMaterial, metalMaterial.cableProperties);
                 }
+                if(metalMaterial.fluidPipeProperties != null) {
+                    createFluidPipeBlock(material, metalMaterial.fluidPipeProperties);
+                }
+
             }
         }
         createCableBlock(MarkerMaterials.Tier.Superconductor, new WireProperties(Integer.MAX_VALUE, 4, 0));
@@ -167,14 +178,16 @@ public class MetaBlocks {
         }
     }
 
-    private static void createCableBlock(IngotMaterial material) {
-        createCableBlock(material, material.cableProperties);
-    }
-
     private static void createCableBlock(Material material, WireProperties wireProperties) {
         BlockCable blockCable = new BlockCable(material, wireProperties);
         blockCable.setRegistryName("cable_" + material.toString());
         CABLES.put(material, blockCable);
+    }
+
+    public static void createFluidPipeBlock(Material material, FluidPipeProperties pipeProperties) {
+        BlockFluidPipe fluidPipe = new BlockFluidPipe(material, pipeProperties);
+        fluidPipe.setRegistryName("fluid_pipe_" + material.toString());
+        FLUID_PIPES.put(material, fluidPipe);
     }
 
     private static void createSurfaceRockBlock(Material[] materials, int index) {
@@ -234,8 +247,10 @@ public class MetaBlocks {
 
     public static void registerTileEntity() {
         GameRegistry.registerTileEntity(MetaTileEntityHolder.class, new ResourceLocation(GTValues.MODID, "machine"));
-        GameRegistry.registerTileEntity(TileEntityCable.class, new ResourceLocation(GTValues.MODID, "cable"));
         GameRegistry.registerTileEntity(TileEntityCrusherBlade.class, new ResourceLocation(GTValues.MODID, "crusher_blade"));
+        GameRegistry.registerTileEntity(TileEntityCable.class, new ResourceLocation(GTValues.MODID, "cable"));
+        GameRegistry.registerTileEntity(TileEntityFluidPipe.class, new ResourceLocation(GTValues.MODID, "fluid_pipe"));
+        GameRegistry.registerTileEntity(TileEntityFluidPipeActive.class, new ResourceLocation(GTValues.MODID, "fluid_pipe_active"));
     }
 
     @SideOnly(Side.CLIENT)
@@ -256,7 +271,9 @@ public class MetaBlocks {
         registerItemModel(SAPLING);
 
         ItemMeshDefinition cableMeshDefinition = stack -> CableRenderer.MODEL_LOCATION;
+        ItemMeshDefinition fluidPipeMeshDefinition = stack -> FluidPipeRenderer.MODEL_LOCATION;
         CABLES.values().forEach(cable -> ModelLoader.setCustomMeshDefinition(Item.getItemFromBlock(cable), cableMeshDefinition));
+        FLUID_PIPES.values().forEach(fluidPipe -> ModelLoader.setCustomMeshDefinition(Item.getItemFromBlock(fluidPipe), fluidPipeMeshDefinition));
         COMPRESSED.values().stream().distinct().forEach(MetaBlocks::registerItemModel);
         FRAMES.values().stream().distinct().forEach(MetaBlocks::registerItemModel);
         ORES.stream().distinct().forEach(MetaBlocks::registerItemModel);
@@ -300,7 +317,14 @@ public class MetaBlocks {
                 return CableRenderer.MODEL_LOCATION;
             }
         };
+        DefaultStateMapper fluidPipeMapper = new DefaultStateMapper() {
+            @Override
+            protected ModelResourceLocation getModelResourceLocation(IBlockState state) {
+                return FluidPipeRenderer.MODEL_LOCATION;
+            }
+        };
         CABLES.values().forEach(cable -> ModelLoader.setCustomStateMapper(cable, cableStateMapper));
+        FLUID_PIPES.values().forEach(fluidPipe -> ModelLoader.setCustomStateMapper(fluidPipe, fluidPipeMapper));
 
         BakedModelHandler modelHandler = new BakedModelHandler();
         MinecraftForge.EVENT_BUS.register(modelHandler);
@@ -368,6 +392,12 @@ public class MetaBlocks {
             for(Insulation insulation : Insulation.values()) {
                 ItemStack itemStack = blockCable.getItem(insulation);
                 OreDictUnifier.registerOre(itemStack, insulation.orePrefix, blockCable.material);
+            }
+        }
+        for(BlockFluidPipe fluidPipe : FLUID_PIPES.values()) {
+            for(FluidPipeType fluidPipeType : FluidPipeType.values()) {
+                ItemStack itemStack = fluidPipe.getItem(fluidPipeType);
+                OreDictUnifier.registerOre(itemStack, fluidPipeType.getOrePrefix(), fluidPipe.material);
             }
         }
     }

@@ -13,9 +13,10 @@ import gregtech.common.blocks.*;
 import gregtech.common.blocks.wood.BlockGregLeaves;
 import gregtech.common.blocks.wood.BlockGregLog;
 import gregtech.common.blocks.wood.BlockGregSapling;
-import gregtech.common.cable.ItemBlockCable;
+import gregtech.common.pipelike.cable.ItemBlockCable;
 import gregtech.common.items.MetaItems;
 import gregtech.common.items.PotionFluids;
+import gregtech.common.pipelike.fluidpipe.ItemBlockFluidPipe;
 import gregtech.loaders.load.FuelLoader;
 import gregtech.loaders.load.MetaTileEntityLoader;
 import gregtech.loaders.load.OreDictionaryLoader;
@@ -72,6 +73,7 @@ public class CommonProxy {
         registry.register(CRUSHER_BLADE);
 
         CABLES.values().forEach(registry::register);
+        FLUID_PIPES.values().forEach(registry::register);
         COMPRESSED.values().stream().distinct().forEach(registry::register);
         SURFACE_ROCKS.values().stream().distinct().forEach(registry::register);
         FRAMES.values().stream().distinct().forEach(registry::register);
@@ -109,6 +111,9 @@ public class CommonProxy {
 
         CABLES.values().stream()
             .map(block -> createItemBlock(block, ItemBlockCable::new))
+            .forEach(registry::register);
+        FLUID_PIPES.values().stream()
+            .map(block -> createItemBlock(block, ItemBlockFluidPipe::new))
             .forEach(registry::register);
         COMPRESSED.values()
             .stream().distinct()

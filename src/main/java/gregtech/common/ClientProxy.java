@@ -9,7 +9,9 @@ import codechicken.lib.texture.TextureUtils;
 import gregtech.api.render.MetaTileEntityRenderer;
 import gregtech.common.blocks.*;
 import gregtech.common.items.MetaItems;
+import gregtech.common.pipelike.fluidpipe.FluidPipeType;
 import gregtech.common.render.CableRenderer;
+import gregtech.common.render.FluidPipeRenderer;
 import gregtech.common.render.StoneRenderer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.color.IBlockColor;
@@ -58,6 +60,7 @@ public class ClientProxy extends CommonProxy {
         super.onPreLoad();
         MetaTileEntityRenderer.preInit();
         CableRenderer.preInit();
+        FluidPipeRenderer.preInit();
         StoneRenderer.preInit();
         MetaEntities.initRenderers();
         TextureUtils.addIconRegister(MetaFluids::registerSprites);

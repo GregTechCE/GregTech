@@ -1,0 +1,144 @@
+package gregtech.common.pipelike.cable.tile;
+
+import gregtech.api.capability.GregtechCapabilities;
+import gregtech.api.pipenet.tile.IPipeTile;
+import gregtech.common.pipelike.cable.Insulation;
+import gregtech.common.pipelike.cable.WireProperties;
+import gregtech.common.pipelike.cable.net.RoutePath;
+import gregtech.api.capability.IEnergyContainer;
+import gregtech.common.pipelike.cable.net.EnergyNet;
+import gregtech.common.pipelike.cable.net.WorldENet;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.BlockPos.PooledMutableBlockPos;
+import net.minecraft.world.World;
+
+import java.lang.ref.WeakReference;
+import java.util.Collections;
+import java.util.List;
+
+public class CableEnergyContainer implements IEnergyContainer {
+
+    private final IPipeTile<Insulation, WireProperties> tileEntityCable;
+    private WeakReference<EnergyNet> currentEnergyNet = new WeakReference<>(null);
+    private long lastCachedUpdate;
+    private List<RoutePath> pathsCache;
+
+    public CableEnergyContainer(IPipeTile<Insulation, WireProperties> tileEntityCable) {
+        this.tileEntityCable = tileEntityCable;
+    }
+
+    @Override
+    public long acceptEnergyFromNetwork(EnumFacing side, long voltage, long amperage) {
+        List<RoutePath> paths = getPaths();
+        long amperesUsed = 0;
+        for(RoutePath routePath : paths) {
+            if(routePath.totalLoss >= voltage)
+                continue; //do not emit if loss is too high
+            if(voltage > routePath.minVoltage || amperage > routePath.minAmperage) {
+                //if voltage or amperage is too big, burn cables down and break
+                routePath.burnCablesInPath(tileEntityCable.getPipeWorld(), voltage, amperage);
+                break;
+            }
+            amperesUsed += dispatchEnergyToNode(routePath.destination,
+                voltage - routePath.totalLoss, amperage - amperesUsed);
+            if(amperesUsed == amperage)
+                break; //do not continue if all amperes are exhausted
+        }
+        return amperesUsed;
+    }
+
+    private long dispatchEnergyToNode(BlockPos nodePos, long voltage, long amperage) {
+        long amperesUsed = 0L;
+        //use pooled mutable to avoid creating new objects every tick
+        World world = tileEntityCable.getPipeWorld();
+        PooledMutableBlockPos blockPos = PooledMutableBlockPos.retain();
+        for(EnumFacing facing : EnumFacing.VALUES) {
+            blockPos.setPos(nodePos).move(facing);
+            //do not allow cables to load chunks
+            if(!world.isBlockLoaded(nodePos)) continue;
+            TileEntity tileEntity = world.getTileEntity(blockPos);
+            if(tileEntity == null || tileEntityCable.getPipeBlock().getPipeTileEntity(tileEntity) != null) continue;
+            IEnergyContainer energyContainer = tileEntity.getCapability(GregtechCapabilities.CAPABILITY_ENERGY_CONTAINER, null);
+            if(energyContainer == null) continue;
+            amperesUsed += energyContainer.acceptEnergyFromNetwork(facing.getOpposite(), voltage, amperage - amperesUsed);
+            if(amperesUsed == amperage)
+                break;
+        }
+        blockPos.release();
+        return amperesUsed;
+    }
+
+    @Override
+    public long getInputAmperage() {
+        return tileEntityCable.getNodeData().amperage;
+    }
+
+    @Override
+    public long getInputVoltage() {
+        return tileEntityCable.getNodeData().voltage;
+    }
+
+    @Override
+    public long getEnergyCapacity() {
+        return getInputVoltage() * getInputAmperage();
+    }
+
+    @Override
+    public long addEnergy(long energyToAdd) {
+        //just a fallback case if somebody will call this method
+        return acceptEnergyFromNetwork(EnumFacing.UP,
+            energyToAdd / getInputVoltage(),
+            energyToAdd / getInputAmperage()) * getInputVoltage();
+    }
+
+    @Override
+    public boolean outputsEnergy(EnumFacing side) {
+        return true;
+    }
+
+    @Override
+    public boolean inputsEnergy(EnumFacing side) {
+        return true;
+    }
+
+    @Override
+    public long getEnergyStored() {
+        return 0;
+    }
+
+    private void recomputePaths(EnergyNet energyNet) {
+        this.lastCachedUpdate = energyNet.getLastUpdate();
+        this.pathsCache = energyNet.computePatches(tileEntityCable.getPipePos());
+    }
+
+    private List<RoutePath> getPaths() {
+        EnergyNet energyNet = getEnergyNet();
+        if(energyNet == null) {
+            return Collections.emptyList();
+        }
+        if(pathsCache == null || energyNet.getLastUpdate() > lastCachedUpdate) {
+            recomputePaths(energyNet);
+        }
+        return pathsCache;
+    }
+
+    private EnergyNet getEnergyNet() {
+        EnergyNet currentEnergyNet = this.currentEnergyNet.get();
+        if(currentEnergyNet != null && currentEnergyNet.isValid() &&
+            currentEnergyNet.containsNode(tileEntityCable.getPipePos()))
+            return currentEnergyNet; //return current net if it is still valid
+        WorldENet worldENet = (WorldENet) tileEntityCable.getPipeBlock().getWorldPipeNet(tileEntityCable.getPipeWorld());
+        currentEnergyNet = worldENet.getNetFromPos(tileEntityCable.getPipePos());
+        if(currentEnergyNet != null) {
+            this.currentEnergyNet = new WeakReference<>(currentEnergyNet);
+        }
+        return currentEnergyNet;
+    }
+
+    @Override
+    public boolean isOneProbeHidden() {
+        return true;
+    }
+}
