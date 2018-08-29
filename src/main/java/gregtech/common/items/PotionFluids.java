@@ -1,5 +1,6 @@
 package gregtech.common.items;
 
+import com.google.common.base.Preconditions;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 import gregtech.api.GTValues;
@@ -52,14 +53,17 @@ public class PotionFluids {
                 registryName.getResourcePath().equals("empty")) continue;
 
             PotionType potion = ForgeRegistries.POTION_TYPES.getValue(registryName);
+            Preconditions.checkNotNull(potion);
             Fluid potionFluid;
-
             if(potion != PotionTypes.WATER) {
                 String fluidName = String.format("potion.%s.%s", registryName.getResourceDomain(), registryName.getResourcePath());
-
-                potionFluid = new Fluid(fluidName, AUTO_GENERATED_FLUID_TEXTURE, AUTO_GENERATED_FLUID_TEXTURE);
+                potionFluid = new Fluid(fluidName, AUTO_GENERATED_FLUID_TEXTURE, AUTO_GENERATED_FLUID_TEXTURE) {
+                    @Override
+                    public String getUnlocalizedName() {
+                        return potion.getNamePrefixed("potion.effect.");
+                    }
+                };
                 potionFluid.setColor(GTUtility.convertRGBtoOpaqueRGBA_MC(PotionUtils.getPotionColor(potion)));
-                potionFluid.setUnlocalizedName(potion.getNamePrefixed("effect."));
 
                 FluidRegistry.registerFluid(potionFluid);
                 FluidRegistry.addBucketForFluid(potionFluid);
@@ -103,7 +107,7 @@ public class PotionFluids {
         @Override
         public FluidStack getFluid() {
             PotionType potionType = PotionUtils.getPotionFromItem(container);
-            if(potionType == null || potionType == PotionTypes.EMPTY)
+            if(potionType == PotionTypes.EMPTY)
                 return null;
             Fluid fluid = getFluidForPotion(potionType);
             //because some mods are dumb enough to register potion types after block registry event

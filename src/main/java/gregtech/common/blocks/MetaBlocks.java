@@ -156,6 +156,7 @@ public class MetaBlocks {
             }
         }
         createCableBlock(MarkerMaterials.Tier.Superconductor, new WireProperties(Integer.MAX_VALUE, 4, 0));
+        createFluidPipeBlock(Materials.Wood, new FluidPipeProperties(10, 310, 10, false, false));
         registerTileEntity();
     }
 

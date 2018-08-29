@@ -154,6 +154,22 @@ public class MaterialMetaItem extends StandardMetaItem {
         }
     }
 
+    public Material getMaterial(ItemStack itemStack) {
+        int damage = itemStack.getItemDamage();
+        if (damage < this.metaItemOffset) {
+            return Material.MATERIAL_REGISTRY.getObjectById(damage % 1000);
+        }
+        return null;
+    }
+
+    public OrePrefix getOrePrefix(ItemStack itemStack) {
+        int damage = itemStack.getItemDamage();
+        if (damage < this.metaItemOffset) {
+            return this.orePrefixes[(damage / 1000)];
+        }
+        return null;
+    }
+
     @Override
     public int getItemBurnTime(ItemStack itemStack) {
         int damage = itemStack.getItemDamage();

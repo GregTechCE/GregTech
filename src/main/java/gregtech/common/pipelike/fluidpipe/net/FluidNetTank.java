@@ -1,10 +1,9 @@
 package gregtech.common.pipelike.fluidpipe.net;
 
 import com.google.common.base.Preconditions;
+import gregtech.common.pipelike.fluidpipe.FluidPipeProperties;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
-
-import javax.annotation.Nullable;
 
 public class FluidNetTank extends FluidTank {
 
@@ -13,11 +12,6 @@ public class FluidNetTank extends FluidTank {
     public FluidNetTank(FluidPipeNet handle) {
         super(0);
         this.handle = handle;
-    }
-
-    @Override
-    public boolean canFillFluidType(FluidStack fluid) {
-        return handle.getNodeData().maxFluidTemperature >= fluid.getFluid().getTemperature();
     }
 
     private int getMaxThroughput() {
@@ -29,7 +23,23 @@ public class FluidNetTank extends FluidTank {
         Preconditions.checkNotNull(resource, "resource");
         FluidStack copyStack = resource.copy();
         copyStack.amount = Math.min(copyStack.amount, getMaxThroughput());
-        return super.fill(copyStack, doFill);
+        FluidPipeProperties properties = handle.getNodeData();
+        boolean fakeFilled = false;
+        if(copyStack.getFluid().isGaseous(copyStack) && !properties.gasProof) {
+            if(doFill) {
+                //only fire leaking in real fill event
+                this.handle.markNodesAsLeaking(false);
+            }
+            fakeFilled = true;
+        }
+        if(copyStack.getFluid().getTemperature(copyStack) > properties.maxFluidTemperature) {
+            if(doFill) {
+                //only fire burning in real fill event
+                this.handle.markNodesAsLeaking(true);
+            }
+            fakeFilled = true;
+        }
+        return fakeFilled ? copyStack.amount : super.fill(copyStack, doFill);
     }
 
     @Override

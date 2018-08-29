@@ -1,6 +1,8 @@
 package gregtech.common.pipelike.fluidpipe.tile;
 
 import gregtech.api.pipenet.tile.TileEntityPipeBase;
+import gregtech.common.pipelike.fluidpipe.LeakableFluidPipeTile;
+import gregtech.common.pipelike.fluidpipe.BlockFluidPipe;
 import gregtech.common.pipelike.fluidpipe.FluidPipeProperties;
 import gregtech.common.pipelike.fluidpipe.FluidPipeType;
 import net.minecraft.util.EnumFacing;
@@ -10,7 +12,7 @@ import net.minecraftforge.fluids.capability.IFluidHandler;
 
 import javax.annotation.Nullable;
 
-public class TileEntityFluidPipe extends TileEntityPipeBase<FluidPipeType, FluidPipeProperties> {
+public class TileEntityFluidPipe extends TileEntityPipeBase<FluidPipeType, FluidPipeProperties> implements LeakableFluidPipeTile {
 
     private IFluidHandler fluidHandler;
 
@@ -33,5 +35,17 @@ public class TileEntityFluidPipe extends TileEntityPipeBase<FluidPipeType, Fluid
             return CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY.cast(getFluidHandler());
         }
         return super.getCapability(capability, facing);
+    }
+
+    @Override
+    public void markAsBurning() {
+        getWorld().setBlockState(getPos(), getBlockState().withProperty(BlockFluidPipe.IS_MELTING, true));
+        getWorld().scheduleUpdate(getPos(), getPipeBlock(), 60 + world.rand.nextInt(80));
+    }
+
+    @Override
+    public void markAsLeaking() {
+        getWorld().setBlockState(getPos(), getBlockState().withProperty(BlockFluidPipe.IS_GAS_LEAKING, true));
+        getWorld().scheduleUpdate(getPos(), getPipeBlock(), 80 + world.rand.nextInt(120));
     }
 }

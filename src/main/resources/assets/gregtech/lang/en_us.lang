@@ -2895,9 +2895,17 @@ gregtech.multiblock.turbine.low_rotor_durability=WARNING: Rotor Durability below
 gregtech.multiblock.large_boiler.temperature=Temperature: %s / %s C
 gregtech.multiblock.large_boiler.steam_output=Steam Output: %s mb/t
 
-gregtech.command.usage=Usage: /gregtech <sub_command>
+gregtech.command.usage=Usage: /gregtech <worldgen/util>
 gregtech.command.worldgen.usage=Usage: /gregtech worldgen <reload>
 gregtech.command.worldgen.reload.usage=Usage: /gregtech worldgen reload
 gregtech.command.worldgen.reload.success=Worldgen successfully reloaded from config.
 gregtech.command.worldgen.reload.failed=Worldgen reload failed. Check console for errors.
-
+gregtech.command.util.usage=Usage: /gregtech util <hand>
+gregtech.command.util.hand.usage=Usage: /gregtech util hand
+gregtech.command.util.hand.item_id=Item: %s (Metadata: %d)
+gregtech.command.util.hand.electric=Electric Info: %d / %d EU - Tier: %d; Is Battery: %s
+gregtech.command.util.hand.fluid=Fluid Info: %s %d / %d mb; Can Fill: %s; Can Drain: %s
+gregtech.command.util.hand.material_meta_item=Ore Prefix: %s; Material: %s
+gregtech.command.util.hand.tool_stats=Tool Stats Class: %s
+gregtech.command.util.hand.meta_item=Meta Item Name: %s
+gregtech.command.util.hand.not_a_player=This command is only usable by a player.

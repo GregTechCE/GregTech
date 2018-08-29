@@ -201,12 +201,7 @@ public enum OrePrefix {
     pipeSmall("Small Pipes", M, null, MaterialIconType.pipeSmall, ENABLE_UNIFICATION, null),
     pipeMedium("Medium Pipes", M * 3, null, MaterialIconType.pipeMedium, ENABLE_UNIFICATION, null),
     pipeLarge("Large pipes", M * 6, null, MaterialIconType.pipeLarge, ENABLE_UNIFICATION, null),
-    pipeHuge("Huge Pipes", M * 12, null, MaterialIconType.pipeHuge, ENABLE_UNIFICATION, null),
-    pipeRestrictiveTiny("Tiny Restrictive Pipes", M / 2, null, null, ENABLE_UNIFICATION, null),
-    pipeRestrictiveSmall("Small Restrictive Pipes", M, null, null, ENABLE_UNIFICATION, null),
-    pipeRestrictiveMedium("Medium Restrictive Pipes", M * 3, null, null, ENABLE_UNIFICATION, null),
-    pipeRestrictiveLarge("Large Restrictive Pipes", M * 6, null, null, ENABLE_UNIFICATION, null),
-    pipeRestrictiveHuge("Huge Restrictive Pipes", M * 12, null, null, ENABLE_UNIFICATION, null),
+
     pipe("Pipes", -1, null, null, DISALLOW_RECYCLING, null),
 
     wireGtHex("Hex wires", M * 8, null, null, ENABLE_UNIFICATION, null),
@@ -359,12 +354,6 @@ public enum OrePrefix {
         block.ignoredMaterials.add(Materials.NetherQuartz);
         block.ignoredMaterials.add(Materials.Ice);
         block.ignoredMaterials.add(Materials.Netherrack);
-
-        pipeRestrictiveTiny.addSecondaryMaterial(new MaterialStack(Materials.Steel, ring.materialAmount));
-        pipeRestrictiveSmall.addSecondaryMaterial(new MaterialStack(Materials.Steel, ring.materialAmount * 2));
-        pipeRestrictiveMedium.addSecondaryMaterial(new MaterialStack(Materials.Steel, ring.materialAmount * 3));
-        pipeRestrictiveLarge.addSecondaryMaterial(new MaterialStack(Materials.Steel, ring.materialAmount * 4));
-        pipeRestrictiveHuge.addSecondaryMaterial(new MaterialStack(Materials.Steel, ring.materialAmount * 5));
 
         cableGtHex.addSecondaryMaterial(new MaterialStack(Materials.Rubber, dustSmall.materialAmount * 4));
         cableGtOctal.addSecondaryMaterial(new MaterialStack(Materials.Rubber, dustSmall.materialAmount * 3));

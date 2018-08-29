@@ -1,6 +1,5 @@
-package gregtech.common.command;
+package gregtech.common.command.worldgen;
 
-import gregtech.common.command.worldgen.CommandWorldgenReload;
 import net.minecraft.command.ICommandSender;
 import net.minecraftforge.server.command.CommandTreeBase;
 

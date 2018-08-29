@@ -41,6 +41,7 @@ public abstract class PipeMultiPart<PipeType extends Enum<PipeType> & IPipeType<
     protected int activeConnections;
     protected Cuboid6 centerBox;
     protected List<Cuboid6> sidedConnections = new ArrayList<>();
+
     //set to true when part is being replaced with modified version of self
     //used to skip pipe net adding and removing code while replacing part
     protected boolean isBeingReplaced = false;

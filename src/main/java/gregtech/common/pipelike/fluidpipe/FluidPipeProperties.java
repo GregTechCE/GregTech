@@ -7,12 +7,14 @@ public class FluidPipeProperties {
     public final int capacity;
     public final int maxFluidTemperature;
     public final int throughput;
+    public final boolean gasProof;
     public final boolean opaque;
 
-    public FluidPipeProperties(int capacity, int maxFluidTemperature, int throughput, boolean opaque) {
+    public FluidPipeProperties(int capacity, int maxFluidTemperature, int throughput, boolean gasProof, boolean opaque) {
         this.capacity = capacity;
         this.maxFluidTemperature = maxFluidTemperature;
         this.throughput = throughput;
+        this.gasProof = gasProof;
         this.opaque = opaque;
     }
 

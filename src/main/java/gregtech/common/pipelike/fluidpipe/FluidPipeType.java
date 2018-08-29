@@ -8,8 +8,7 @@ public enum FluidPipeType implements IPipeType<FluidPipeProperties> {
     TINY_OPAQUE("tiny_opaque", 0.2f, 1, OrePrefix.pipeTiny, true),
     SMALL_OPAQUE("small_opaque", 0.4f, 2, OrePrefix.pipeSmall, true),
     MEDIUM_OPAQUE("medium_opaque", 0.6f, 3, OrePrefix.pipeMedium, true),
-    LARGE_OPAQUE("large_opaque", 0.8f, 4, OrePrefix.pipeLarge, true),
-    HUGE_OPAQUE("huge_opaque", 1.0f, 5, OrePrefix.pipeHuge, true);
+    LARGE_OPAQUE("large_opaque", 0.8f, 4, OrePrefix.pipeLarge, true);
 
     public final String name;
     public final float thickness;
@@ -46,7 +45,7 @@ public enum FluidPipeType implements IPipeType<FluidPipeProperties> {
         return new FluidPipeProperties(
             baseProperties.capacity * capacityMultiplier,
             baseProperties.maxFluidTemperature,
-            baseProperties.throughput, opaque);
+            baseProperties.throughput, baseProperties.gasProof, opaque);
     }
 
     @Override

@@ -101,11 +101,10 @@ public class MetaItem1 extends MaterialMetaItem {
         SHAPE_EXTRUDER_CELL = addItem(354, "shape.extruder.cell");
         SHAPE_EXTRUDER_INGOT = addItem(355, "shape.extruder.ingot");
         SHAPE_EXTRUDER_WIRE = addItem(356, "shape.extruder.wire");
-        SHAPE_EXTRUDER_PIPE_TINY = addItem(358, "shape.extruder.pipe.tiny").setInvisible();
-        SHAPE_EXTRUDER_PIPE_SMALL = addItem(359, "shape.extruder.pipe.small").setInvisible();
-        SHAPE_EXTRUDER_PIPE_MEDIUM = addItem(360, "shape.extruder.pipe.medium").setInvisible();
-        SHAPE_EXTRUDER_PIPE_LARGE = addItem(361, "shape.extruder.pipe.large").setInvisible();
-        SHAPE_EXTRUDER_PIPE_HUGE = addItem(362, "shape.extruder.pipe.huge").setInvisible();
+        SHAPE_EXTRUDER_PIPE_TINY = addItem(358, "shape.extruder.pipe.tiny");
+        SHAPE_EXTRUDER_PIPE_SMALL = addItem(359, "shape.extruder.pipe.small");
+        SHAPE_EXTRUDER_PIPE_MEDIUM = addItem(360, "shape.extruder.pipe.medium");
+        SHAPE_EXTRUDER_PIPE_LARGE = addItem(361, "shape.extruder.pipe.large");
         SHAPE_EXTRUDER_BLOCK = addItem(363, "shape.extruder.block");
         SHAPE_EXTRUDER_SWORD = addItem(364, "shape.extruder.sword");
         SHAPE_EXTRUDER_PICKAXE = addItem(365, "shape.extruder.pickaxe");
@@ -241,10 +240,7 @@ public class MetaItem1 extends MaterialMetaItem {
         FLUID_FILTER = addItem(628, "fluidfilter").setInvisible();
 
         DYNAMITE = addItem(629, "dynamite").addStats(new DynamiteBehaviour()).setMaxStackSize(16);
-
-        SMALL_BRONZE_PIPE = addItem(625, "pipe.small.bronze").setUnificationData(OrePrefix.pipeSmall, Materials.Bronze);
-        SMALL_STEEL_PIPE = addItem(626, "pipe.small.steel").setUnificationData(OrePrefix.pipeSmall, Materials.Steel);
-
+        
         CONVEYOR_MODULE_LV = addItem(630, "conveyor.module.lv");
         CONVEYOR_MODULE_MV = addItem(631, "conveyor.module.mv");
         CONVEYOR_MODULE_HV = addItem(632, "conveyor.module.hv");

@@ -137,11 +137,15 @@ public class FluidPipeRenderer implements ICCBlockRenderer, IItemRenderer, IMode
 
     public void renderPipeBlock(Material material, FluidPipeType pipeType, int insulationColor, CCRenderState state, IVertexOperation[] pipeline, int connectMask) {
         MaterialIconSet iconSet = material.materialIconSet;
-        int pipeColor = GTUtility.convertRGBtoOpaqueRGBA_CL(material.materialRGB);
-        insulationColor = GTUtility.convertRGBtoOpaqueRGBA_CL(insulationColor);
+        int pipeColor;
+        if(insulationColor == IPipeTile.DEFAULT_INSULATION_COLOR) {
+            pipeColor = ColourRGBA.multiply(GTUtility.convertRGBtoOpaqueRGBA_CL(material.materialRGB),
+                GTUtility.convertRGBtoOpaqueRGBA_CL(insulationColor));
+        } else {
+            pipeColor = GTUtility.convertRGBtoOpaqueRGBA_CL(material.materialRGB);
+        }
         float thickness = pipeType.getThickness();
-
-        ColourMultiplier multiplier = new ColourMultiplier(ColourRGBA.multiply(pipeColor, insulationColor));
+        ColourMultiplier multiplier = new ColourMultiplier(pipeColor);
         IVertexOperation[] pipeConnectSide = ArrayUtils.addAll(pipeline, new IconTransformation(pipeEndTextures.get(iconSet)), multiplier);
         IVertexOperation[] pipeSide = ArrayUtils.addAll(pipeline, new IconTransformation(pipeSideTextures.get(iconSet)), multiplier);
 
@@ -158,15 +162,15 @@ public class FluidPipeRenderer implements ICCBlockRenderer, IItemRenderer, IMode
             }
         }
 
-        renderCableCube(connectMask, state, pipeSide, pipeConnectSide, EnumFacing.DOWN, thickness);
-        renderCableCube(connectMask, state, pipeSide, pipeConnectSide, EnumFacing.UP, thickness);
-        renderCableCube(connectMask, state, pipeSide, pipeConnectSide, EnumFacing.WEST, thickness);
-        renderCableCube(connectMask, state, pipeSide, pipeConnectSide, EnumFacing.EAST, thickness);
-        renderCableCube(connectMask, state, pipeSide, pipeConnectSide, EnumFacing.NORTH, thickness);
-        renderCableCube(connectMask, state, pipeSide, pipeConnectSide, EnumFacing.SOUTH, thickness);
+        renderPipeCube(connectMask, state, pipeSide, pipeConnectSide, EnumFacing.DOWN, thickness);
+        renderPipeCube(connectMask, state, pipeSide, pipeConnectSide, EnumFacing.UP, thickness);
+        renderPipeCube(connectMask, state, pipeSide, pipeConnectSide, EnumFacing.WEST, thickness);
+        renderPipeCube(connectMask, state, pipeSide, pipeConnectSide, EnumFacing.EAST, thickness);
+        renderPipeCube(connectMask, state, pipeSide, pipeConnectSide, EnumFacing.NORTH, thickness);
+        renderPipeCube(connectMask, state, pipeSide, pipeConnectSide, EnumFacing.SOUTH, thickness);
     }
 
-    private static void renderCableCube(int connections, CCRenderState renderState, IVertexOperation[] pipeline, IVertexOperation[] pipeConnectSide, EnumFacing side, float thickness) {
+    private static void renderPipeCube(int connections, CCRenderState renderState, IVertexOperation[] pipeline, IVertexOperation[] pipeConnectSide, EnumFacing side, float thickness) {
         if((connections & 1 << side.getIndex()) > 0) {
             boolean renderFrontSide = (connections & 1 << (6 + side.getIndex())) > 0;
             Cuboid6 cuboid6 = BlockFluidPipe.getSideBox(side, thickness);

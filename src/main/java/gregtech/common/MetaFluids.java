@@ -57,59 +57,59 @@ public class MetaFluids {
         fluidSprites.add(AUTO_GENERATED_FLUID_TEXTURE);
 
         //TODO TWEAK VALUES
-        registerFluid(Materials.Air, FluidType.GAS, 295, true);
-        registerFluid(Materials.Oxygen, FluidType.LIQUID, 295, true);
-        registerFluid(Materials.Hydrogen, FluidType.LIQUID, 295, true);
-        registerFluid(Materials.Deuterium, FluidType.LIQUID, 295, true);
-        registerFluid(Materials.Tritium, FluidType.LIQUID, 295, true);
-        registerFluid(Materials.Helium, FluidType.LIQUID, 295, true);
-        registerFluid(Materials.Argon, FluidType.LIQUID, 295, true);
-        registerFluid(Materials.Radon, FluidType.LIQUID, 295, true);
-        registerFluid(Materials.Fluorine, FluidType.LIQUID, 53, true);
+        registerFluid(Materials.Air, FluidType.GAS, 300, true);
+        registerFluid(Materials.Oxygen, FluidType.GAS, 300, true);
+        registerFluid(Materials.Hydrogen, FluidType.GAS, 300, true);
+        registerFluid(Materials.Deuterium, FluidType.GAS, 300, true);
+        registerFluid(Materials.Tritium, FluidType.GAS, 300, true);
+        registerFluid(Materials.Helium, FluidType.GAS, 300, true);
+        registerFluid(Materials.Argon, FluidType.GAS, 300, true);
+        registerFluid(Materials.Radon, FluidType.GAS, 300, true);
+        registerFluid(Materials.Fluorine, FluidType.GAS, 253, true);
         registerFluid(Materials.TitaniumTetrachloride, FluidType.LIQUID, 2200, true);
-        registerFluid(Materials.Helium3, FluidType.LIQUID, 295, true);
-        registerFluid(Materials.Methane, FluidType.LIQUID, 295, true);
-        registerFluid(Materials.Nitrogen, FluidType.LIQUID, 295, true);
-        registerFluid(Materials.NitrogenDioxide, FluidType.LIQUID, 295, true);
-        registerFluid(Materials.Steam, FluidType.GAS, 295, true);
+        registerFluid(Materials.Helium3, FluidType.GAS, 300, true);
+        registerFluid(Materials.Methane, FluidType.GAS, 300, true);
+        registerFluid(Materials.Nitrogen, FluidType.GAS, 300, true);
+        registerFluid(Materials.NitrogenDioxide, FluidType.GAS, 300, true);
+        registerFluid(Materials.Steam, FluidType.GAS, 380, true);
 
-        registerFluid(Materials.OilHeavy, FluidType.LIQUID, 295, true);
-        registerFluid(Materials.OilMedium, FluidType.LIQUID, 295, true);
-        registerFluid(Materials.OilLight, FluidType.LIQUID, 295, true);
+        registerFluid(Materials.OilHeavy, FluidType.LIQUID, 300, true);
+        registerFluid(Materials.OilMedium, FluidType.LIQUID, 300, true);
+        registerFluid(Materials.OilLight, FluidType.LIQUID, 300, true);
 
-        registerFluid(Materials.HydrogenSulfide, FluidType.GAS, 295, true);
-        registerFluid(Materials.SulfuricGas, FluidType.GAS, 295, true);
-        registerFluid(Materials.Gas, FluidType.GAS, 295, true);
+        registerFluid(Materials.HydrogenSulfide, FluidType.GAS, 300, true);
+        registerFluid(Materials.SulfuricGas, FluidType.GAS, 300, true);
+        registerFluid(Materials.Gas, FluidType.GAS, 300, true);
 
-        registerFluid(Materials.SulfuricNaphtha, FluidType.LIQUID, 295, true);
-        registerFluid(Materials.SulfuricLightFuel, FluidType.LIQUID, 295, true);
-        registerFluid(Materials.SulfuricHeavyFuel, FluidType.LIQUID, 295, true);
-        registerFluid(Materials.Naphtha, FluidType.LIQUID, 295, true);
-        registerFluid(Materials.LightFuel, FluidType.LIQUID, 295, true);
-        registerFluid(Materials.HeavyFuel, FluidType.LIQUID, 295, true);
-        registerFluid(Materials.LPG, FluidType.LIQUID, 295, true);
-        registerFluid(Materials.CrackedLightFuel, FluidType.LIQUID, 295, true);
-        registerFluid(Materials.CrackedHeavyFuel, FluidType.LIQUID, 295, true);
+        registerFluid(Materials.SulfuricNaphtha, FluidType.LIQUID, 300, true);
+        registerFluid(Materials.SulfuricLightFuel, FluidType.LIQUID, 300, true);
+        registerFluid(Materials.SulfuricHeavyFuel, FluidType.LIQUID, 300, true);
+        registerFluid(Materials.Naphtha, FluidType.LIQUID, 300, true);
+        registerFluid(Materials.LightFuel, FluidType.LIQUID, 300, true);
+        registerFluid(Materials.HeavyFuel, FluidType.LIQUID, 300, true);
+        registerFluid(Materials.LPG, FluidType.LIQUID, 300, true);
+        registerFluid(Materials.CrackedLightFuel, FluidType.LIQUID, 300, true);
+        registerFluid(Materials.CrackedHeavyFuel, FluidType.LIQUID, 300, true);
 
-        registerFluid(Materials.UUAmplifier, FluidType.LIQUID, 295, true);
-        registerFluid(Materials.Chlorine, FluidType.GAS, 295, true);
-        registerFluid(Materials.Mercury, FluidType.LIQUID, 295, true);
-        registerFluid(Materials.NitroFuel, FluidType.LIQUID, 295, true);
-        registerFluid(Materials.SodiumPersulfate, FluidType.LIQUID, 295, true);
-        registerFluid(Materials.Glyceryl, FluidType.LIQUID, 295, true);
+        registerFluid(Materials.UUAmplifier, FluidType.LIQUID, 300, true);
+        registerFluid(Materials.Chlorine, FluidType.GAS, 300, true);
+        registerFluid(Materials.Mercury, FluidType.LIQUID, 300, true);
+        registerFluid(Materials.NitroFuel, FluidType.LIQUID, 300, true);
+        registerFluid(Materials.SodiumPersulfate, FluidType.LIQUID, 300, true);
+        registerFluid(Materials.Glyceryl, FluidType.LIQUID, 300, true);
 
-        registerFluid(Materials.Lubricant, FluidType.LIQUID, 295, true);
-        registerFluid(Materials.Creosote, FluidType.LIQUID, 295, true);
-        registerFluid(Materials.SeedOil, FluidType.LIQUID, 295, true);
-        registerFluid(Materials.Oil, FluidType.LIQUID, 295, true);
-        registerFluid(Materials.Fuel, FluidType.LIQUID, 295, true);
-        registerFluid(Materials.Honey, FluidType.LIQUID, 295, true);
-        registerFluid(Materials.Biomass, FluidType.LIQUID, 295, true);
-        registerFluid(Materials.Ethanol, FluidType.LIQUID, 295, true);
-        registerFluid(Materials.SulfuricAcid, FluidType.LIQUID, 295, true);
+        registerFluid(Materials.Lubricant, FluidType.LIQUID, 300, true);
+        registerFluid(Materials.Creosote, FluidType.LIQUID, 300, true);
+        registerFluid(Materials.SeedOil, FluidType.LIQUID, 300, true);
+        registerFluid(Materials.Oil, FluidType.LIQUID, 300, true);
+        registerFluid(Materials.Fuel, FluidType.LIQUID, 300, true);
+        registerFluid(Materials.Honey, FluidType.LIQUID, 300, true);
+        registerFluid(Materials.Biomass, FluidType.LIQUID, 300, true);
+        registerFluid(Materials.Ethanol, FluidType.LIQUID, 300, true);
+        registerFluid(Materials.SulfuricAcid, FluidType.LIQUID, 300, true);
         registerFluid(Materials.Milk, FluidType.LIQUID, 290, true);
-        registerFluid(Materials.McGuffium239, FluidType.LIQUID, 295, true);
-        registerFluid(Materials.Glue, FluidType.LIQUID, 295, true);
+        registerFluid(Materials.McGuffium239, FluidType.LIQUID, 300, true);
+        registerFluid(Materials.Glue, FluidType.LIQUID, 300, true);
 
         for (Material material : Material.MATERIAL_REGISTRY) {
             if (!(material instanceof FluidMaterial)) continue;

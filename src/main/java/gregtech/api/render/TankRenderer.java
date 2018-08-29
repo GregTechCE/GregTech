@@ -49,8 +49,12 @@ public class TankRenderer implements IIconRegister {
         TextureAtlasSprite fluidSprite = null;
 
         if(fluidStack != null) {
-            double fluidLevel = fluidStack.amount / (capacity * 1.0) * 0.99;
-            fluidCuboid = new Cuboid6(0.01, 0.01, 0.01, 0.99, fluidLevel, 0.99);
+            double fluidLevel = fluidStack.amount / (capacity * 1.0) * 0.98;
+            if(fluidStack.getFluid().isGaseous(fluidStack)) {
+                fluidCuboid = new Cuboid6(0.01, 0.99 - fluidLevel, 0.01, 0.99, 0.99, 0.99);
+            } else {
+                fluidCuboid = new Cuboid6(0.01, 0.01, 0.01, 0.99, 0.01 + fluidLevel, 0.99);
+            }
             ColourMultiplier multiplier = new ColourMultiplier(GTUtility.convertRGBtoOpaqueRGBA_CL(fluidStack.getFluid().getColor(fluidStack)));
             fluidPipeline = new IVertexOperation[] {multiplier};
             fluidSprite = TextureUtils.getTexture(fluidStack.getFluid().getStill(fluidStack));

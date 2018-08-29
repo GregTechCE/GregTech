@@ -418,7 +418,7 @@ public class ToolRecipeHandler {
     }
 
     public static void processFileHead(OrePrefix toolPrefix, SolidMaterial solidMaterial) {
-        processSimpleToolHead(toolPrefix, solidMaterial, MetaItems.FILE, " I ", " I ", "  h");
+        processSimpleToolHead(toolPrefix, solidMaterial, MetaItems.FILE, " I ", " I ", " fh");
         if(solidMaterial instanceof IngotMaterial) {
             SolidMaterial handleMaterial = solidMaterial.handleMaterial == null ? Materials.Wood : solidMaterial.handleMaterial;
             ModHandler.addShapedRecipe(String.format("file_%s", solidMaterial),

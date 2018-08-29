@@ -60,7 +60,6 @@ public final class MetaItems {
     public static MetaItem<?>.MetaValueItem SHAPE_EXTRUDER_PIPE_SMALL;
     public static MetaItem<?>.MetaValueItem SHAPE_EXTRUDER_PIPE_MEDIUM;
     public static MetaItem<?>.MetaValueItem SHAPE_EXTRUDER_PIPE_LARGE;
-    public static MetaItem<?>.MetaValueItem SHAPE_EXTRUDER_PIPE_HUGE;
     public static MetaItem<?>.MetaValueItem SHAPE_EXTRUDER_BLOCK;
     public static MetaItem<?>.MetaValueItem SHAPE_EXTRUDER_SWORD;
     public static MetaItem<?>.MetaValueItem SHAPE_EXTRUDER_PICKAXE;
@@ -333,9 +332,6 @@ public final class MetaItems {
     public static MetaItem<?>.MetaValueItem[] DYE_ONLY_ITEMS = new MetaItem.MetaValueItem[16];
 
     public static MetaItem<?>.MetaValueItem[] SPRAY_CAN_DYES = new MetaItem.MetaValueItem[16];
-
-    public static MetaItem<?>.MetaValueItem SMALL_BRONZE_PIPE;
-    public static MetaItem<?>.MetaValueItem SMALL_STEEL_PIPE;
 
     public static MetaItem<?>.MetaValueItem RUBBER_DROP;
 

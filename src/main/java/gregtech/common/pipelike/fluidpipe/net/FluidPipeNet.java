@@ -1,15 +1,22 @@
 package gregtech.common.pipelike.fluidpipe.net;
 
+import codechicken.multipart.TileMultipart;
+import gregtech.api.GTValues;
 import gregtech.api.pipenet.MonolithicPipeNet;
 import gregtech.api.pipenet.Node;
 import gregtech.api.pipenet.PipeNet;
 import gregtech.api.pipenet.WorldPipeNet;
+import gregtech.common.pipelike.fluidpipe.LeakableFluidPipeTile;
 import gregtech.common.pipelike.fluidpipe.FluidPipeProperties;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
+import net.minecraftforge.fml.common.Loader;
 
+import java.util.ArrayList;
 import java.util.Map;
 
 public class FluidPipeNet extends MonolithicPipeNet<FluidPipeProperties> {
@@ -27,21 +34,48 @@ public class FluidPipeNet extends MonolithicPipeNet<FluidPipeProperties> {
     public int getMaxThroughput() {
         if(fluidNetTank.getCapacity() == 0)
             return 0;
-        int maxThroughput = nodeData.throughput;
-        float fillPercentage = fluidNetTank.getFluidAmount() / fluidNetTank.getCapacity();
-        if(fillPercentage < 0.25) {
-            //if filled less than 1/4, use 1/4 input rate
-            return (int) (maxThroughput * 0.25f);
-        } else if(fillPercentage < 0.5f) {
-            //if filled less than 1/2, use 1/2 input rate
-            return (int) (maxThroughput * 0.5f);
-        } else if(fillPercentage < 0.75f) {
-            //if filled less than 3/4, use 3/4 input rate
-            return (int) (maxThroughput * 0.75);
-        } else {
-            //otherwise, use full input rate
-            return maxThroughput;
+        return nodeData.throughput;
+    }
+
+    public void markNodesAsLeaking(boolean markAsBurningInstead) {
+        World world = worldData.getWorld();
+        int nodesAmount = 3 + world.rand.nextInt(5);
+        ArrayList<BlockPos> allNodes = new ArrayList<>(this.allNodes.keySet());
+        for(int i = 0; i < nodesAmount; i++) {
+            BlockPos nodePos = allNodes.get(world.rand.nextInt(allNodes.size()));
+            allNodes.remove(nodePos);
+            LeakableFluidPipeTile tile = getPipeTile(world, nodePos);
+            if(tile != null) {
+                if(markAsBurningInstead) {
+                    tile.markAsBurning();
+                } else {
+                    tile.markAsLeaking();
+                }
+            }
+            if(allNodes.isEmpty()) {
+                //no more nodes left, break
+                break;
+            }
         }
+    }
+
+    private static LeakableFluidPipeTile getPipeTile(World world, BlockPos pos) {
+        TileEntity tileEntity = world.getTileEntity(pos);
+        if (tileEntity instanceof LeakableFluidPipeTile) {
+            return (LeakableFluidPipeTile) tileEntity;
+        } else if (Loader.isModLoaded(GTValues.MODID_FMP)) {
+            return getMultipartPipeTile(tileEntity);
+        }
+        return null;
+    }
+
+    private static LeakableFluidPipeTile getMultipartPipeTile(TileEntity tileEntity) {
+        if(tileEntity instanceof TileMultipart) {
+            return (LeakableFluidPipeTile) ((TileMultipart) tileEntity).jPartList().stream()
+                .filter(part -> part instanceof LeakableFluidPipeTile)
+                .findFirst().orElse(null);
+        }
+        return null;
     }
 
     @Override
@@ -99,6 +133,7 @@ public class FluidPipeNet extends MonolithicPipeNet<FluidPipeProperties> {
         tagCompound.setInteger("capacity", nodeData.capacity);
         tagCompound.setInteger("max_temperature", nodeData.maxFluidTemperature);
         tagCompound.setInteger("throughput", nodeData.throughput);
+        tagCompound.setBoolean("gas_proof", nodeData.gasProof);
         tagCompound.setBoolean("opaque", nodeData.opaque);
     }
 
@@ -107,8 +142,9 @@ public class FluidPipeNet extends MonolithicPipeNet<FluidPipeProperties> {
         int capacity = tagCompound.getInteger("capacity");
         int maxTemperature = tagCompound.getInteger("max_temperature");
         int throughput = tagCompound.getInteger("throughput");
+        boolean gasProof = tagCompound.getBoolean("gas_proof");
         boolean opaque = tagCompound.getBoolean("opaque");
-        return new FluidPipeProperties(capacity, maxTemperature, throughput, opaque);
+        return new FluidPipeProperties(capacity, maxTemperature, throughput, gasProof, opaque);
     }
 
 }

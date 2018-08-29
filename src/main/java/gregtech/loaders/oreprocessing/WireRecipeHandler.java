@@ -143,7 +143,7 @@ public class WireRecipeHandler {
     }
 
     public static boolean isPaperInsulatedCable(IngotMaterial material) {
-        return GTUtility.getTierByVoltage(material.cableProperties.voltage) <= 1;
+        return material.cableProperties != null && GTUtility.getTierByVoltage(material.cableProperties.voltage) <= 1;
     }
 
     private static int getVoltageMultiplier(Material material) {

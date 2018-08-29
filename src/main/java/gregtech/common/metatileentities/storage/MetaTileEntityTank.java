@@ -67,6 +67,7 @@ public class MetaTileEntityTank extends MetaTileEntity {
         if(itemStack.hasKey("Fluid", NBT.TAG_COMPOUND)) {
             FluidStack fluidStack = FluidStack.loadFluidStackFromNBT(itemStack.getCompoundTag("Fluid"));
             fluidTank.setFluid(fluidStack);
+            fluidTank.onContentsChanged();
         }
     }
 
