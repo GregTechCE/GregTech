@@ -183,11 +183,11 @@ public class Recipe {
 		return outputs;
 	}
 
-	public List<ItemStack> getResultItemOutputs(Random random) {
+	public List<ItemStack> getResultItemOutputs(Random random, int byproductChanceMultiplier) {
         ArrayList<ItemStack> outputs = new ArrayList<>(GTUtility.copyStackList(getOutputs()));
         TObjectIntMap<ItemStack> chancedOutputsMap = getChancedOutputs();
 	    for(ItemStack chancedOutput : chancedOutputsMap.keySet()) {
-	        int outputChance = chancedOutputsMap.get(chancedOutput);
+	        int outputChance = chancedOutputsMap.get(chancedOutput) * byproductChanceMultiplier;
 	        if(random.nextInt(Recipe.getMaxChancedValue()) <= outputChance)
 	            outputs.add(chancedOutput.copy());
         }

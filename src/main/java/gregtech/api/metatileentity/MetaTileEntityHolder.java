@@ -2,6 +2,7 @@ package gregtech.api.metatileentity;
 
 import com.google.common.base.Preconditions;
 import gregtech.api.GregTechAPI;
+import gregtech.api.block.machines.BlockMachine;
 import gregtech.api.gui.IUIHolder;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
@@ -13,6 +14,7 @@ import net.minecraft.network.PacketBuffer;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.Constants.NBT;
 
@@ -40,15 +42,25 @@ public class MetaTileEntityHolder extends TickableTileEntityBase implements IUIH
         this.metaTileEntity = sampleMetaTileEntity.createMetaTileEntity(this);
         this.metaTileEntity.holder = this;
         if(hasWorld() && !getWorld().isRemote) {
+            updateBlockOpacity();
             writeCustomData(-100000, buffer -> {
                 buffer.writeString(metaTileEntity.metaTileEntityId);
                 metaTileEntity.writeInitialSyncData(buffer);
             });
             //just to update neighbours so cables and other things will work properly
+
             world.neighborChanged(getPos(), getBlockType(), getPos());
             markDirty();
         }
         return metaTileEntity;
+    }
+
+    private void updateBlockOpacity() {
+        IBlockState currentState = world.getBlockState(getPos());
+        boolean isMetaTileEntityOpaque = metaTileEntity.isOpaqueCube();
+        if(currentState.getValue(BlockMachine.OPAQUE) != isMetaTileEntityOpaque) {
+            world.setBlockState(getPos(), currentState.withProperty(BlockMachine.OPAQUE, isMetaTileEntityOpaque));
+        }
     }
 
     public void scheduleChunkForRenderUpdate() {
@@ -216,5 +228,10 @@ public class MetaTileEntityHolder extends TickableTileEntityBase implements IUIH
         byte[] updateData = tag.getByteArray("data");
         ByteBuf backedBuffer = Unpooled.copiedBuffer(updateData);
         receiveInitialSyncData(new PacketBuffer(backedBuffer));
+    }
+
+    @Override
+    public boolean shouldRefresh(World world, BlockPos pos, IBlockState oldState, IBlockState newSate) {
+        return false; //MetaTileEntityHolder should never refresh
     }
 }

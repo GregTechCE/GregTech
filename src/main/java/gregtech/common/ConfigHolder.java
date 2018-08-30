@@ -45,6 +45,10 @@ public class ConfigHolder {
     @Config.RequiresMcRestart
     public static boolean disableFlintTools = false;
 
+    @Config.Comment("If true, insufficient energy supply will reset recipe progress to zero. If false, progress will slowly go back (with 2x speed)")
+    @Config.RequiresWorldRestart
+    public static boolean insufficientEnergySupplyWipesRecipeProgress = false;
+
     @Config.Comment("Whether to use modPriorities setting in config for prioritizing ore dictionary item registrations. " +
         "By default, GTCE will sort ore dictionary registrations alphabetically comparing their owner ModIDs.")
     public static boolean useCustomModPriorities = false;

@@ -109,7 +109,7 @@ public class ToolUtility {
             Collections.singletonList(itemStack), Collections.emptyList());
         if(recipe != null && !recipe.getOutputs().isEmpty()) {
             drops.clear();
-            for(ItemStack outputStack : recipe.getResultItemOutputs(random)) {
+            for(ItemStack outputStack : recipe.getResultItemOutputs(random, 1)) {
                 outputStack = outputStack.copy();
                 if(OreDictUnifier.getPrefix(outputStack) == OrePrefix.crushed) {
                     //for hammer drops, we multiply crushed ores output by 1 sometimes

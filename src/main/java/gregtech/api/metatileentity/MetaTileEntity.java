@@ -306,6 +306,14 @@ public abstract class MetaTileEntity {
     }
 
     /**
+     * Whether this tile entity represents completely opaque cube
+     * @return true if machine is opaque
+     */
+    public boolean isOpaqueCube() {
+        return true;
+    }
+
+    /**
      * Called to obtain list of AxisAlignedBB used for collision testing, highlight rendering
      * and ray tracing this meta tile entity's block in world
      * @return list of collision boxes

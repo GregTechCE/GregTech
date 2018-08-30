@@ -16,6 +16,8 @@ import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
+import net.minecraft.block.properties.PropertyBool;
+import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.particle.ParticleManager;
@@ -52,6 +54,9 @@ public class BlockMachine extends Block implements ITileEntityProvider {
     private static final Cuboid6[] EMPTY_COLLISION_BOX = new Cuboid6[] {Cuboid6.full};
     private static final IUnlistedProperty<String> HARVEST_TOOL = new UnlistedStringProperty("harvest_tool");
     private static final IUnlistedProperty<Integer> HARVEST_LEVEL = new UnlistedIntegerProperty("harvest_level");
+    //used for rendering purposes of non-opaque machines like chests and tanks
+    public static final PropertyBool OPAQUE = PropertyBool.create("opaque");
+
     private static final ThreadLocal<Boolean> bypassActualState = ThreadLocal.withInitial(() -> false);
 
     public BlockMachine() {
@@ -62,6 +67,7 @@ public class BlockMachine extends Block implements ITileEntityProvider {
         setResistance(6.0f);
         setUnlocalizedName("unnamed");
         setHarvestLevel("wrench", 1);
+        setDefaultState(getDefaultState().withProperty(OPAQUE, true));
         setLightOpacity(255); //because isOpaqueCube() returns false
     }
 
@@ -92,7 +98,17 @@ public class BlockMachine extends Block implements ITileEntityProvider {
 
     @Override
     protected BlockStateContainer createBlockState() {
-        return new ExtendedBlockState(this, new IProperty[0], new IUnlistedProperty[] {HARVEST_TOOL, HARVEST_LEVEL});
+        return new ExtendedBlockState(this, new IProperty[] {OPAQUE}, new IUnlistedProperty[] {HARVEST_TOOL, HARVEST_LEVEL});
+    }
+
+    @Override
+    public IBlockState getStateFromMeta(int meta) {
+        return getDefaultState().withProperty(OPAQUE, meta % 2 == 0);
+    }
+
+    @Override
+    public int getMetaFromState(IBlockState state) {
+        return state.getValue(OPAQUE) ? 0 : 1;
     }
 
     public static MetaTileEntity getMetaTileEntity(IBlockAccess blockAccess, BlockPos pos) {
@@ -269,21 +285,6 @@ public class BlockMachine extends Block implements ITileEntityProvider {
     }
 
     @Override
-    public boolean canSilkHarvest(World world, BlockPos pos, IBlockState state, EntityPlayer player) {
-        return false;
-    }
-
-    @Override
-    public boolean isNormalCube(IBlockState state) {
-        return true;
-    }
-
-    @Override
-    public boolean canProvidePower(IBlockState state) {
-        return true;
-    }
-
-    @Override
     public boolean hasComparatorInputOverride(IBlockState state) {
         return true;
     }
@@ -308,12 +309,18 @@ public class BlockMachine extends Block implements ITileEntityProvider {
 
     @Override
     public boolean isOpaqueCube(IBlockState state) {
-        return false;
+        return state.getValue(OPAQUE);
     }
 
     @Override
     public boolean isFullCube(IBlockState state) {
-        return false;
+        return state.getValue(OPAQUE);
+    }
+
+    @Override
+    public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face) {
+        //TODO give MetaTileEntities better control for their face shapes rendering & behaviour
+        return state.getValue(OPAQUE) ? BlockFaceShape.SOLID : BlockFaceShape.UNDEFINED;
     }
 
     @Override

@@ -10,6 +10,7 @@ import gregtech.api.recipes.Recipe;
 import gregtech.api.recipes.RecipeMap;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.XSTR;
+import gregtech.common.ConfigHolder;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -76,6 +77,14 @@ public abstract class RecipeMapWorkableHandler extends MTETrait implements IWork
                     //only set hasNotEnoughEnergy if this recipe is consuming recipe
                     //generators always have enough energy
                     this.hasNotEnoughEnergy = true;
+                    //if current progress value is greater than 2, decrement it by 2
+                    if(progressTime >= 2) {
+                        if(ConfigHolder.insufficientEnergySupplyWipesRecipeProgress) {
+                            this.progressTime = 1;
+                        } else {
+                            this.progressTime = Math.max(1, progressTime - 2);
+                        }
+                    }
                 }
             }
         }
@@ -153,7 +162,13 @@ public abstract class RecipeMapWorkableHandler extends MTETrait implements IWork
         setMaxProgress(resultOverclock[1]);
         this.recipeEUt = resultOverclock[0];
         this.fluidOutputs = GTUtility.copyFluidList(recipe.getFluidOutputs());
-        this.itemOutputs = GTUtility.copyStackList(recipe.getResultItemOutputs(random));
+        int byproductChanceMultiplier = 1;
+        int tier = GTUtility.getTierByVoltage(getMaxVoltage());
+        int recipeTier = GTUtility.getTierByVoltage(recipe.getEUt());
+        if(tier > GTValues.LV && tier > recipeTier) {
+            byproductChanceMultiplier = 1 << (tier - recipeTier);
+        }
+        this.itemOutputs = GTUtility.copyStackList(recipe.getResultItemOutputs(random,byproductChanceMultiplier));
         if(this.wasActiveAndNeedsUpdate) {
             this.wasActiveAndNeedsUpdate = false;
         } else {

@@ -8,6 +8,7 @@ import crafttweaker.mc1120.item.MCItemStack;
 import crafttweaker.mc1120.liquid.MCLiquidStack;
 import gregtech.api.recipes.Recipe;
 import gregtech.api.recipes.RecipeMap;
+import stanhebben.zenscript.annotations.Optional;
 import stanhebben.zenscript.annotations.ZenClass;
 import stanhebben.zenscript.annotations.ZenGetter;
 import stanhebben.zenscript.annotations.ZenMethod;
@@ -44,8 +45,8 @@ public class CTRecipe {
     }
 
     @ZenMethod
-    public List<IItemStack> getResultItemOutputs(long randomSeed) {
-        return this.backingRecipe.getResultItemOutputs(new Random(randomSeed)).stream()
+    public List<IItemStack> getResultItemOutputs(@Optional(valueLong = -1) long randomSeed, @Optional(valueLong = 1) int byproductChanceMultiplier) {
+        return this.backingRecipe.getResultItemOutputs(randomSeed == -1L ? new Random() : new Random(randomSeed), byproductChanceMultiplier).stream()
             .map(MCItemStack::new)
             .collect(Collectors.toList());
     }
