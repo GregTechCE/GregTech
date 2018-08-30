@@ -5,10 +5,10 @@ import gregtech.api.unification.ore.OrePrefix;
 
 public enum FluidPipeType implements IPipeType<FluidPipeProperties> {
 
-    TINY_OPAQUE("tiny_opaque", 0.2f, 1, OrePrefix.pipeTiny, true),
-    SMALL_OPAQUE("small_opaque", 0.4f, 2, OrePrefix.pipeSmall, true),
-    MEDIUM_OPAQUE("medium_opaque", 0.6f, 3, OrePrefix.pipeMedium, true),
-    LARGE_OPAQUE("large_opaque", 0.8f, 4, OrePrefix.pipeLarge, true);
+    TINY_OPAQUE("tiny", 0.2f, 1, OrePrefix.pipeTiny, true),
+    SMALL_OPAQUE("small", 0.4f, 2, OrePrefix.pipeSmall, true),
+    MEDIUM_OPAQUE("medium", 0.6f, 3, OrePrefix.pipeMedium, true),
+    LARGE_OPAQUE("large", 0.8f, 4, OrePrefix.pipeLarge, true);
 
     public final String name;
     public final float thickness;
@@ -43,9 +43,9 @@ public enum FluidPipeType implements IPipeType<FluidPipeProperties> {
     @Override
     public FluidPipeProperties modifyProperties(FluidPipeProperties baseProperties) {
         return new FluidPipeProperties(
-            baseProperties.capacity * capacityMultiplier,
             baseProperties.maxFluidTemperature,
-            baseProperties.throughput, baseProperties.gasProof, opaque);
+            baseProperties.throughput * capacityMultiplier,
+            baseProperties.gasProof);
     }
 
     @Override

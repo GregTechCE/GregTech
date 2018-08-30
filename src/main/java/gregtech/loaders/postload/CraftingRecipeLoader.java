@@ -11,6 +11,7 @@ import gregtech.common.ConfigHolder;
 import gregtech.common.blocks.MetaBlocks;
 import gregtech.common.blocks.wood.BlockGregLog.LogVariant;
 import gregtech.common.items.MetaItems;
+import gregtech.common.pipelike.fluidpipe.FluidPipeType;
 import net.minecraft.block.BlockPlanks.EnumType;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -41,6 +42,9 @@ public class CraftingRecipeLoader {
 
         ModHandler.addShapedRecipe("torch_sulfur", new ItemStack(Blocks.TORCH, 2), "C", "S", 'C', new UnificationEntry(OrePrefix.dust, Materials.Sulfur), 'S', new UnificationEntry(OrePrefix.stick, Materials.Wood));
         ModHandler.addShapedRecipe("torch_phosphor", new ItemStack(Blocks.TORCH, 6), "C", "S", 'C', new UnificationEntry(OrePrefix.dust, Materials.Phosphorus), 'S', new UnificationEntry(OrePrefix.stick, Materials.Wood));
+
+        ModHandler.addShapedRecipe("small_wooden_pipe", MetaBlocks.FLUID_PIPES.get(Materials.Wood).getItem(FluidPipeType.SMALL_OPAQUE), "XXX", "r s", "XXX", 'X', new UnificationEntry(OrePrefix.plank, Materials.Wood));
+        ModHandler.addShapedRecipe("medium_wooden_pipe", MetaBlocks.FLUID_PIPES.get(Materials.Wood).getItem(FluidPipeType.MEDIUM_OPAQUE), "XXX", "s r", "XXX", 'X', new UnificationEntry(OrePrefix.plank, Materials.Wood));
 
         ModHandler.addShapedRecipe("piston_bronze", new ItemStack(Blocks.PISTON, 1), "WWW", "CBC", "CRC", 'W', new UnificationEntry(OrePrefix.plank, Materials.Wood), 'C', OrePrefix.stoneCobble, 'R', new UnificationEntry(OrePrefix.dust, Materials.Redstone), 'B', new UnificationEntry(OrePrefix.ingot, Materials.Bronze));
         ModHandler.addShapedRecipe("piston_aluminium", new ItemStack(Blocks.PISTON, 1), "WWW", "CBC", "CRC", 'W', new UnificationEntry(OrePrefix.plank, Materials.Wood), 'C', OrePrefix.stoneCobble, 'R', new UnificationEntry(OrePrefix.dust, Materials.Redstone), 'B', new UnificationEntry(OrePrefix.ingot, Materials.Aluminium));

@@ -82,7 +82,7 @@ public class FluidPipeNet extends MonolithicPipeNet<FluidPipeProperties> {
     protected void onConnectionsUpdate() {
         super.onConnectionsUpdate();
         //monolithic net always contains exactly one kind of nodes, so this is always safe
-        int newTankCapacity = nodeData.capacity * allNodes.size();
+        int newTankCapacity = nodeData.throughput * allNodes.size();
         fluidNetTank.updateTankCapacity(newTankCapacity);
     }
 
@@ -99,8 +99,8 @@ public class FluidPipeNet extends MonolithicPipeNet<FluidPipeProperties> {
             } else {
                 //otherwise, it is donating of some nodes to our net in result of split
                 //so, we should estabilish equal amount of fluid in networks
-                int firstNetCapacity = getAllNodes().size() * getNodeData().capacity;
-                int secondNetCapacity = parentNet.getAllNodes().size() * parentNet.getNodeData().capacity;
+                int firstNetCapacity = getAllNodes().size() * getNodeData().throughput;
+                int secondNetCapacity = parentNet.getAllNodes().size() * parentNet.getNodeData().throughput;
                 int totalFluidAmount = getFluidNetTank().getFluidAmount() + parentFluid.amount;
                 int fluidAmount1 = totalFluidAmount * firstNetCapacity / (firstNetCapacity + secondNetCapacity);
                 int fluidAmount2 = totalFluidAmount - fluidAmount1;
@@ -130,21 +130,17 @@ public class FluidPipeNet extends MonolithicPipeNet<FluidPipeProperties> {
 
     @Override
     protected void writeNodeData(FluidPipeProperties nodeData, NBTTagCompound tagCompound) {
-        tagCompound.setInteger("capacity", nodeData.capacity);
         tagCompound.setInteger("max_temperature", nodeData.maxFluidTemperature);
         tagCompound.setInteger("throughput", nodeData.throughput);
         tagCompound.setBoolean("gas_proof", nodeData.gasProof);
-        tagCompound.setBoolean("opaque", nodeData.opaque);
     }
 
     @Override
     protected FluidPipeProperties readNodeData(NBTTagCompound tagCompound) {
-        int capacity = tagCompound.getInteger("capacity");
         int maxTemperature = tagCompound.getInteger("max_temperature");
         int throughput = tagCompound.getInteger("throughput");
         boolean gasProof = tagCompound.getBoolean("gas_proof");
-        boolean opaque = tagCompound.getBoolean("opaque");
-        return new FluidPipeProperties(capacity, maxTemperature, throughput, gasProof, opaque);
+        return new FluidPipeProperties(maxTemperature, throughput, gasProof);
     }
 
 }
