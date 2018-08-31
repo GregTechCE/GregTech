@@ -891,8 +891,11 @@ public class MachineRecipeLoader {
         }
 
         if(!ignoreArcSmelting) {
+            List<ItemStack> resultList = dustMaterials.stream().map(MachineRecipeLoader::getArcSmeltingResult).collect(Collectors.toList());
+            resultList.removeIf(ItemStack::isEmpty);
+            if(resultList.isEmpty()) return;
             RecipeBuilder<?> arcFurnaceRecipeBuilder = RecipeMaps.ARC_FURNACE_RECIPES.recipeBuilder()
-                .outputs(dustMaterials.stream().map(MachineRecipeLoader::getArcSmeltingResult).collect(Collectors.toList()))
+                .outputs(resultList)
                 .duration((int) Math.max(1L, firstStack.amount * 60 / M))
                 .EUt(32 * voltageMultiplier);
             inputSupplier.accept(arcFurnaceRecipeBuilder);
