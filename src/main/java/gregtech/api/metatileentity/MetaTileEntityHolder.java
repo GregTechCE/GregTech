@@ -48,7 +48,7 @@ public class MetaTileEntityHolder extends TickableTileEntityBase implements IUIH
                 metaTileEntity.writeInitialSyncData(buffer);
             });
             //just to update neighbours so cables and other things will work properly
-
+            world.checkLight(getPos());
             world.neighborChanged(getPos(), getBlockType(), getPos());
             markDirty();
         }
@@ -135,6 +135,7 @@ public class MetaTileEntityHolder extends TickableTileEntityBase implements IUIH
             setMetaTileEntity(GregTechAPI.META_TILE_ENTITY_REGISTRY.getObject(metaTileEntityName));
             this.metaTileEntity.receiveInitialSyncData(buf);
             scheduleChunkForRenderUpdate();
+            world.checkLight(getPos());
         }
     }
 

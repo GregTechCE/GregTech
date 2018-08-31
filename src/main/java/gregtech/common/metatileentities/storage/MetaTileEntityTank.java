@@ -36,6 +36,7 @@ public class MetaTileEntityTank extends MetaTileEntity {
     private final int tankSize;
     private final SolidMaterial material;
     private SyncFluidTank fluidTank;
+    private int oldLightValue = 0;
 
     public MetaTileEntityTank(String metaTileEntityId, SolidMaterial material, int tankSize) {
         super(metaTileEntityId);
@@ -47,6 +48,25 @@ public class MetaTileEntityTank extends MetaTileEntity {
     @Override
     public MetaTileEntity createMetaTileEntity(MetaTileEntityHolder holder) {
         return new MetaTileEntityTank(metaTileEntityId, material, tankSize);
+    }
+
+    @Override
+    public int getLightValue() {
+        FluidStack fluidStack = fluidTank.getFluid();
+        if(fluidStack == null) {
+            return 0;
+        }
+        return fluidStack.getFluid().getLuminosity(fluidStack);
+    }
+
+    @Override
+    public int getLightOpacity() {
+        return 1; //let light pass trough us entirely
+    }
+
+    @Override
+    public boolean isOpaqueCube() {
+        return false;
     }
 
     @Override
@@ -119,6 +139,11 @@ public class MetaTileEntityTank extends MetaTileEntity {
                 } catch (IOException ignored) {}
             }
             fluidTank.setFluid(fluidStack);
+            int newLightValue = getLightValue();
+            if(oldLightValue != newLightValue) {
+                MetaTileEntityTank.this.oldLightValue = newLightValue;
+                getWorld().checkLight(getPos());
+            }
         }
     }
 
@@ -214,6 +239,11 @@ public class MetaTileEntityTank extends MetaTileEntity {
         @Override
         protected void onContentsChanged() {
             FluidStack newFluid = getFluid();
+            int newLightValue = getLightValue();
+            if(oldLightValue != newLightValue) {
+                MetaTileEntityTank.this.oldLightValue = newLightValue;
+                getWorld().checkLight(getPos());
+            }
             writeCustomData(-200, buf -> {
                 buf.writeBoolean(newFluid != null);
                 if(newFluid != null) {

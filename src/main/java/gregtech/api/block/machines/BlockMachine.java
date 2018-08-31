@@ -68,7 +68,6 @@ public class BlockMachine extends Block implements ITileEntityProvider {
         setUnlocalizedName("unnamed");
         setHarvestLevel("wrench", 1);
         setDefaultState(getDefaultState().withProperty(OPAQUE, true));
-        setLightOpacity(255); //because isOpaqueCube() returns false
     }
 
     @Nullable
@@ -352,6 +351,18 @@ public class BlockMachine extends Block implements ITileEntityProvider {
         } finally {
             bypassActualState.set(false);
         }
+    }
+
+    @Override
+    public int getLightValue(IBlockState state, IBlockAccess world, BlockPos pos) {
+        MetaTileEntity metaTileEntity = getMetaTileEntity(world, pos);
+        return metaTileEntity == null ? 0 : metaTileEntity.getLightValue();
+    }
+
+    @Override
+    public int getLightOpacity(IBlockState state, IBlockAccess world, BlockPos pos) {
+        MetaTileEntity metaTileEntity = getMetaTileEntity(world, pos);
+        return metaTileEntity == null ? 255 : metaTileEntity.getLightOpacity();
     }
 
     @Override

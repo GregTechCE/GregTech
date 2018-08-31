@@ -313,6 +313,14 @@ public abstract class MetaTileEntity {
         return true;
     }
 
+    public int getLightValue() {
+        return 0;
+    }
+
+    public int getLightOpacity() {
+        return 255;
+    }
+
     /**
      * Called to obtain list of AxisAlignedBB used for collision testing, highlight rendering
      * and ray tracing this meta tile entity's block in world

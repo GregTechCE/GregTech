@@ -50,6 +50,16 @@ public class MetaTileEntityChest extends MetaTileEntity {
     }
 
     @Override
+    public int getLightOpacity() {
+        return 1;
+    }
+
+    @Override
+    public boolean isOpaqueCube() {
+        return false;
+    }
+
+    @Override
     public String getHarvestTool() {
         return material.toString().contains("wood") ? "axe" : "pickaxe";
     }

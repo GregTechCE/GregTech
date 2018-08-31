@@ -66,10 +66,7 @@ public class TankRenderer implements IIconRegister {
                 .translate(renderSide.getFrontOffsetX(), renderSide.getFrontOffsetY(), renderSide.getFrontOffsetZ()),
                 basePipeline, renderSide.getOpposite(), Cuboid6.full, sideSprite); //for rendering sides from inside too
             if(fluidStack != null) {
-                int lastBrightness = renderState.brightness;
-                renderState.brightness = 0xF000F0;
                 Textures.renderFace(renderState, translation, fluidPipeline, renderSide, fluidCuboid, fluidSprite);
-                renderState.brightness = lastBrightness;
             }
         }
     }
