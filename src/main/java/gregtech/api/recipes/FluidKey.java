@@ -8,11 +8,11 @@ import java.util.Objects;
 
 public class FluidKey {
 
-    public final Fluid fluid;
+    public final String fluid;
     public final NBTTagCompound tag;
 
     public FluidKey(FluidStack fluidStack) {
-        this.fluid = fluidStack.getFluid();
+        this.fluid = fluidStack.getFluid().getName();
         this.tag = fluidStack.tag;
     }
 
@@ -33,7 +33,7 @@ public class FluidKey {
     @Override
     public String toString() {
         return "FluidKey{" +
-            "fluid=" + fluid.getName() +
+            "fluid=" + fluid +
             ", tag=" + tag +
             '}';
     }
