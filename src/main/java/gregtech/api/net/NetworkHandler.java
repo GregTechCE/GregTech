@@ -23,6 +23,7 @@ import net.minecraftforge.fml.common.network.internal.FMLProxyPacket;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class NetworkHandler {
@@ -78,21 +79,50 @@ public class NetworkHandler {
         channel = NetworkRegistry.INSTANCE.newEventDrivenChannel(GTValues.MODID);
         channel.register(new NetworkHandler());
 
+        PacketEncoder<PacketUIWidgetUpdate> widgetUpdateEncoder =  (packet, buf) -> {
+            buf.writeInt(packet.updateData.readableBytes());
+            buf.writeBytes(packet.updateData);
+            buf.writeInt(packet.windowId);
+            buf.writeInt(packet.widgetId);
+        };
+
+        PacketDecoder<PacketUIWidgetUpdate> widgetUpdateDecoder =  (buf) -> {
+            ByteBuf directSliceBuffer = buf.readBytes(buf.readInt());
+            ByteBuf copiedDataBuffer = Unpooled.copiedBuffer(directSliceBuffer);
+            directSliceBuffer.release();
+            return new PacketUIWidgetUpdate(
+                buf.readInt(),
+                buf.readInt(),
+                new PacketBuffer(copiedDataBuffer));
+        };
+
         registerPacket(1, PacketUIOpen.class, new PacketCodec<>(
             (packet, buf) -> {
                 buf.writeInt(packet.serializedHolder.readableBytes());
                 buf.writeBytes(packet.serializedHolder);
                 buf.writeInt(packet.uiFactoryId);
                 buf.writeInt(packet.windowId);
+                buf.writeInt(packet.initialWidgetUpdates.size());
+                for(PacketUIWidgetUpdate widgetUpdate : packet.initialWidgetUpdates) {
+                    widgetUpdateEncoder.encode(widgetUpdate, buf);
+                }
             },
             (buf) -> {
                 ByteBuf directSliceBuffer = buf.readBytes(buf.readInt());
                 ByteBuf copiedDataBuffer = Unpooled.copiedBuffer(directSliceBuffer);
                 directSliceBuffer.release();
+                int uiFactoryId = buf.readInt();
+                int windowId = buf.readInt();
+                ArrayList<PacketUIWidgetUpdate> initialWidgetUpdates = new ArrayList<>();
+                int initialWidgetUpdatesCount = buf.readInt();
+                for(int i = 0; i < initialWidgetUpdatesCount; i++) {
+                    initialWidgetUpdates.add(widgetUpdateDecoder.decode(buf));
+                }
                 return new PacketUIOpen(
-                    buf.readInt(),
+                    uiFactoryId,
                     new PacketBuffer(copiedDataBuffer),
-                    buf.readInt());
+                    windowId,
+                    initialWidgetUpdates);
             }
         ));
 
@@ -155,10 +185,11 @@ public class NetworkHandler {
             if(uiFactory == null) {
                 GTLog.logger.warn("Couldn't find UI Factory with id '{}'", packet.uiFactoryId);
             } else {
-                uiFactory.initClientUI(packet.serializedHolder, packet.windowId);
+                uiFactory.initClientUI(packet.serializedHolder, packet.windowId, packet.initialWidgetUpdates);
             }
         });
-        registerClientExecutor(PacketUIWidgetUpdate.class, (packet, handler) -> ModularUIGui.queuingWidgetUpdates.add(packet));
+        registerClientExecutor(PacketUIWidgetUpdate.class, (packet, handler) ->
+            ModularUIGui.addWidgetUpdate(packet));
     }
 
     public static <T extends Packet> void registerPacket(int packetId, Class<T> packetClass, PacketCodec<T> codec) {

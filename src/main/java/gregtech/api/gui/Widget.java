@@ -1,11 +1,7 @@
 package gregtech.api.gui;
 
-import gregtech.api.net.NetworkHandler;
-import gregtech.api.net.PacketUIClientAction;
-import gregtech.api.net.PacketUIWidgetUpdate;
+import gregtech.api.gui.widgets.WidgetUIAccess;
 import io.netty.buffer.Unpooled;
-import net.minecraft.client.entity.EntityPlayerSP;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.network.PacketBuffer;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -22,10 +18,16 @@ public abstract class Widget implements Comparable<Widget> {
     public static final int SLOT_DRAW_PRIORITY = 1000;
 
     protected ModularUI gui;
+    protected WidgetUIAccess uiAccess;
+
     public final int drawPriority;
 
     public Widget(int drawPriority) {
         this.drawPriority = drawPriority;
+    }
+
+    public void setUiAccess(WidgetUIAccess uiAccess) {
+        this.uiAccess = uiAccess;
     }
 
     public static boolean isMouseOver(int x, int y, int width, int height, int mouseX, int mouseY) {
@@ -113,11 +115,8 @@ public abstract class Widget implements Comparable<Widget> {
         PacketBuffer packetBuffer = new PacketBuffer(Unpooled.buffer());
         packetBuffer.writeInt(id);
         packetBufferWriter.accept(packetBuffer);
-        int widgetId = gui.guiWidgets.inverse().get(this);
-        if(gui.entityPlayer instanceof EntityPlayerMP) {
-            int currentWindowId = gui.entityPlayer.openContainer.windowId;
-            PacketUIWidgetUpdate widgetUpdate = new PacketUIWidgetUpdate(currentWindowId, widgetId, packetBuffer);
-            NetworkHandler.channel.sendTo(NetworkHandler.packet2proxy(widgetUpdate), (EntityPlayerMP) gui.entityPlayer);
+        if(uiAccess != null) {
+            uiAccess.writeUpdateInfo(this, packetBuffer);
         }
     }
 
@@ -127,11 +126,8 @@ public abstract class Widget implements Comparable<Widget> {
         PacketBuffer packetBuffer = new PacketBuffer(Unpooled.buffer());
         packetBuffer.writeInt(id);
         packetBufferWriter.accept(packetBuffer);
-        int widgetId = gui.guiWidgets.inverse().get(this);
-        if(gui.entityPlayer instanceof EntityPlayerSP) {
-            int currentWindowId = gui.entityPlayer.openContainer.windowId;
-            PacketUIClientAction widgetUpdate = new PacketUIClientAction(currentWindowId, widgetId, packetBuffer);
-            NetworkHandler.channel.sendToServer(NetworkHandler.packet2proxy(widgetUpdate));
+        if(uiAccess != null) {
+            uiAccess.writeClientAction(this, packetBuffer);
         }
     }
 

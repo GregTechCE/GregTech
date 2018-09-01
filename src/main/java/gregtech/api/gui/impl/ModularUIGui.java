@@ -7,12 +7,20 @@ import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.GlStateManager;
 
 import java.io.IOException;
-import java.util.ArrayDeque;
-import java.util.Queue;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ModularUIGui extends GuiContainer {
 
-    public static Queue<PacketUIWidgetUpdate> queuingWidgetUpdates = new ArrayDeque<>();
+    //we don't need CopyOnWriteArrayList here because list access is guarded by lock
+    private static List<PacketUIWidgetUpdate> queuingWidgetUpdates = new ArrayList<>();
+    private static final Object widgetUpdatesLock = new Object();
+
+    public static void addWidgetUpdate(PacketUIWidgetUpdate packet) {
+        synchronized (widgetUpdatesLock) {
+            queuingWidgetUpdates.add(packet);
+        }
+    }
 
     private final ModularUI modularUI;
 
@@ -40,11 +48,21 @@ public class ModularUIGui extends GuiContainer {
     }
 
     private void processWidgetPackets() {
-        PacketUIWidgetUpdate packet = queuingWidgetUpdates.poll();
-        if(packet != null && packet.windowId == inventorySlots.windowId) {
+        synchronized (widgetUpdatesLock) {
+            for(PacketUIWidgetUpdate packet : queuingWidgetUpdates) {
+               handleWidgetUpdate(packet);
+            }
+            queuingWidgetUpdates.clear();
+        }
+    }
+
+    public void handleWidgetUpdate(PacketUIWidgetUpdate packet) {
+        if(packet.windowId == inventorySlots.windowId) {
             Widget widget = modularUI.guiWidgets.get(packet.widgetId);
             int discriminator = packet.updateData.readInt();
-            if(widget != null) widget.readUpdateInfo(discriminator, packet.updateData);
+            if(widget != null) {
+                widget.readUpdateInfo(discriminator, packet.updateData);
+            }
         }
     }
 

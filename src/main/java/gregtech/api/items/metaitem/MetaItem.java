@@ -364,6 +364,9 @@ public abstract class MetaItem<T extends MetaItem<?>.MetaValueItem> extends Item
     public String getItemStackDisplayName(ItemStack stack) {
         if (stack.getItemDamage() >= metaItemOffset) {
             T item = getItem(stack);
+            if(item == null) {
+                return "unnamed";
+            }
             IFluidHandlerItem fluidHandlerItem = ItemHandlerHelper.copyStackWithSize(stack, 1)
                 .getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY, null);
             if(fluidHandlerItem != null) {
@@ -380,36 +383,35 @@ public abstract class MetaItem<T extends MetaItem<?>.MetaValueItem> extends Item
     @SideOnly(Side.CLIENT)
     public void addInformation(ItemStack itemStack, @Nullable World worldIn, List<String> lines, ITooltipFlag tooltipFlag) {
         T item = getItem(itemStack);
-        if (item != null) {
-            String unlocalizedTooltip = "metaitem." + item.unlocalizedName + ".tooltip";
-            if (I18n.hasKey(unlocalizedTooltip)) {
-                lines.addAll(Arrays.asList(I18n.format(unlocalizedTooltip).split("/n")));
-            }
+        if (item == null) return;
+        String unlocalizedTooltip = "metaitem." + item.unlocalizedName + ".tooltip";
+        if (I18n.hasKey(unlocalizedTooltip)) {
+            lines.addAll(Arrays.asList(I18n.format(unlocalizedTooltip).split("/n")));
+        }
 
-            IElectricItem electricItem = itemStack.getCapability(GregtechCapabilities.CAPABILITY_ELECTRIC_ITEM, null);
-            if (electricItem != null) {
-                lines.add(I18n.format("metaitem.generic.electric_item.tooltip",
-                    electricItem.discharge(Long.MAX_VALUE, Integer.MAX_VALUE, true, false, true),
-                    electricItem.getMaxCharge(),
-                    electricItem.getTier()));
-            }
+        IElectricItem electricItem = itemStack.getCapability(GregtechCapabilities.CAPABILITY_ELECTRIC_ITEM, null);
+        if (electricItem != null) {
+            lines.add(I18n.format("metaitem.generic.electric_item.tooltip",
+                electricItem.discharge(Long.MAX_VALUE, Integer.MAX_VALUE, true, false, true),
+                electricItem.getMaxCharge(),
+                electricItem.getTier()));
+        }
 
-            IFluidHandlerItem fluidHandler = ItemHandlerHelper.copyStackWithSize(itemStack, 1)
-                .getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY, null);
-            if (fluidHandler != null) {
-                IFluidTankProperties fluidTankProperties = fluidHandler.getTankProperties()[0];
-                FluidStack fluid = fluidTankProperties.getContents();
-                if (fluid != null) {
-                    lines.add(I18n.format("metaitem.generic.fluid_container.tooltip",
-                        fluid.amount,
-                        fluidTankProperties.getCapacity(),
-                        fluid.getLocalizedName()));
-                } else lines.add(I18n.format("metaitem.generic.fluid_container.tooltip_empty"));
-            }
+        IFluidHandlerItem fluidHandler = ItemHandlerHelper.copyStackWithSize(itemStack, 1)
+            .getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY, null);
+        if (fluidHandler != null) {
+            IFluidTankProperties fluidTankProperties = fluidHandler.getTankProperties()[0];
+            FluidStack fluid = fluidTankProperties.getContents();
+            if (fluid != null) {
+                lines.add(I18n.format("metaitem.generic.fluid_container.tooltip",
+                    fluid.amount,
+                    fluidTankProperties.getCapacity(),
+                    fluid.getLocalizedName()));
+            } else lines.add(I18n.format("metaitem.generic.fluid_container.tooltip_empty"));
+        }
 
-            for (IItemBehaviour behaviour : getBehaviours(itemStack)) {
-                behaviour.addInformation(itemStack, lines);
-            }
+        for (IItemBehaviour behaviour : getBehaviours(itemStack)) {
+            behaviour.addInformation(itemStack, lines);
         }
     }
 
