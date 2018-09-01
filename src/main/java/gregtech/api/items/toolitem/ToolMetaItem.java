@@ -90,18 +90,16 @@ public class ToolMetaItem<T extends ToolMetaItem<?>.MetaToolValueItem> extends M
     @Override
     @SideOnly(Side.CLIENT)
     protected int getColorForItemStack(ItemStack stack, int tintIndex) {
-        SolidMaterial primaryMaterial = getPrimaryMaterial(stack);
-        SolidMaterial handleMaterial = getHandleMaterial(stack);
-
+        T item = getItem(stack);
+        if(item == null) {
+            return 0xFFFFFF;
+        }
+        IToolStats toolStats = item.getToolStats();
         switch (tintIndex) {
-            case 0:
-                return handleMaterial != null ? handleMaterial.materialRGB : 0xFFFFFF;
-            case 1:
-                return 0xFFFFFF;
-            case 2:
-                return primaryMaterial != null ? primaryMaterial.materialRGB : 0xFFFFFF;
-            case 3:
-                return 0xFFFFFF;
+            case 0: return toolStats.getColor(false, stack);
+            case 1: return 0xFFFFFF;
+            case 2: return toolStats.getColor(true, stack);
+            case 3: return 0xFFFFFF;
         }
         return 0xFFFFFF;
     }
@@ -366,6 +364,7 @@ public class ToolMetaItem<T extends ToolMetaItem<?>.MetaToolValueItem> extends M
         ICapabilityProvider capabilityProvider = super.initCapabilities(stack, nbt);
         if(capabilityProvider != null && capabilityProvider.hasCapability(GregtechCapabilities.CAPABILITY_ELECTRIC_ITEM, null)) {
             IElectricItem electricItem = capabilityProvider.getCapability(GregtechCapabilities.CAPABILITY_ELECTRIC_ITEM, null);
+            //noinspection ConstantConditions
             electricItem.addChargeListener((itemStack, newCharge) -> {
                 int newDamage = (newCharge == 0 ? 16000 : 0) + itemStack.getItemDamage() % 16000;
                 if(newDamage != itemStack.getItemDamage()) {
@@ -396,6 +395,9 @@ public class ToolMetaItem<T extends ToolMetaItem<?>.MetaToolValueItem> extends M
     @Override
     public void addInformation(ItemStack itemStack, @Nullable World worldIn, List<String> lines, ITooltipFlag tooltipFlag) {
         T item = getItem(itemStack);
+        if(item == null) {
+            return;
+        }
         IToolStats toolStats = item.getToolStats();
         SolidMaterial primaryMaterial = getPrimaryMaterial(itemStack);
         SolidMaterial handleMaterial = getHandleMaterial(itemStack);
@@ -410,10 +412,12 @@ public class ToolMetaItem<T extends ToolMetaItem<?>.MetaToolValueItem> extends M
         if (handleMaterial != null) {
             lines.add(I18n.format("metaitem.tool.tooltip.handle_material", handleMaterial.getLocalizedName(), handleMaterial.harvestLevel));
         }
-        if (primaryMaterial != null) {
+        if (primaryMaterial != null && toolStats.showBasicAttributes()) {
             lines.add(I18n.format("metaitem.tool.tooltip.attack_damage", toolStats.getBaseDamage(itemStack) + primaryMaterial.harvestLevel));
             lines.add(I18n.format("metaitem.tool.tooltip.mining_speed", primaryMaterial.toolSpeed));
         }
+        toolStats.addInformation(itemStack, lines, tooltipFlag.isAdvanced());
+
         super.addInformation(itemStack, worldIn, lines, tooltipFlag);
     }
 

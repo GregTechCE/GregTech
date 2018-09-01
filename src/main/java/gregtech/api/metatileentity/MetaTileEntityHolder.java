@@ -27,6 +27,7 @@ import java.util.function.Consumer;
 public class MetaTileEntityHolder extends TickableTileEntityBase implements IUIHolder {
 
     private MetaTileEntity metaTileEntity;
+    private boolean needToUpdateLightning = false;
 
     public MetaTileEntity getMetaTileEntity() {
         return metaTileEntity;
@@ -48,7 +49,7 @@ public class MetaTileEntityHolder extends TickableTileEntityBase implements IUIH
                 metaTileEntity.writeInitialSyncData(buffer);
             });
             //just to update neighbours so cables and other things will work properly
-            world.checkLight(getPos());
+            this.needToUpdateLightning = true;
             world.neighborChanged(getPos(), getBlockType(), getPos());
             markDirty();
         }
@@ -116,6 +117,10 @@ public class MetaTileEntityHolder extends TickableTileEntityBase implements IUIH
         if(metaTileEntity != null) {
             metaTileEntity.update();
         }
+        if(this.needToUpdateLightning) {
+            getWorld().checkLight(getPos());
+            this.needToUpdateLightning = false;
+        }
         //increment only after current tick, so meta tile entities will get first tick as timer == 0
         //and update their settings which depend on getTimer() % N properly
         super.update();
@@ -135,7 +140,7 @@ public class MetaTileEntityHolder extends TickableTileEntityBase implements IUIH
             setMetaTileEntity(GregTechAPI.META_TILE_ENTITY_REGISTRY.getObject(metaTileEntityName));
             this.metaTileEntity.receiveInitialSyncData(buf);
             scheduleChunkForRenderUpdate();
-            world.checkLight(getPos());
+            this.needToUpdateLightning = true;
         }
     }
 
@@ -145,6 +150,7 @@ public class MetaTileEntityHolder extends TickableTileEntityBase implements IUIH
             setMetaTileEntity(GregTechAPI.META_TILE_ENTITY_REGISTRY.getObject(metaTileEntityName));
             this.metaTileEntity.receiveInitialSyncData(buffer);
             scheduleChunkForRenderUpdate();
+            this.needToUpdateLightning = true;
         } else if(metaTileEntity != null) {
             metaTileEntity.receiveCustomData(discriminator, buffer);
             scheduleChunkForRenderUpdate();
