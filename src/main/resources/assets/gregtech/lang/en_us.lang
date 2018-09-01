@@ -2865,7 +2865,8 @@ gregtech.cable.amperage=Amperage: §e%d
 gregtech.cable.loss_per_block=Loss per block: §c%d
 
 gregtech.fluid_pipe.throughput=Transfer: §e%d mb/t
-gregtech.fluid_pipe_max_temperature=Max Temperature: §c%dK
+gregtech.fluid_pipe.max_temperature=Max Temperature: §c%dK
+gregtech.fluid_pipe.non_gas_proof=Can't transfer gases.
 
 gregtech.multiblock.work_paused=Work Paused.
 gregtech.multiblock.running=Running perfectly.

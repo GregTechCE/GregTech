@@ -22,5 +22,6 @@ public class ItemBlockFluidPipe extends ItemBlockPipe<FluidPipeType, FluidPipePr
         FluidPipeProperties pipeProperties = blockPipe.getProperties(fluidPipeType);
         tooltip.add(I18n.format("gregtech.fluid_pipe.throughput", pipeProperties.throughput));
         tooltip.add(I18n.format("gregtech.fluid_pipe.max_temperature", pipeProperties.maxFluidTemperature));
+        if(!pipeProperties.gasProof) tooltip.add(I18n.format("gregtech.fluid_pipe.non_gas_proof"));
     }
 }

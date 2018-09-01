@@ -3,10 +3,14 @@ package gregtech.api.block.machines;
 import gregtech.api.GregTechAPI;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.TieredMetaTileEntity;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
@@ -28,6 +32,15 @@ public class MachineItemBlock extends ItemBlock {
     public String getUnlocalizedName(ItemStack stack) {
         MetaTileEntity metaTileEntity = getMetaTileEntity(stack);
         return metaTileEntity == null ? "unnamed" : metaTileEntity.getMetaName();
+    }
+
+    @Override
+    public boolean placeBlockAt(ItemStack stack, EntityPlayer player, World world, BlockPos pos, EnumFacing side, float hitX, float hitY, float hitZ, IBlockState newState) {
+        MetaTileEntity metaTileEntity = getMetaTileEntity(stack);
+        //prevent rendering glitch before meta tile entity sync to client, but after block placement
+        //set opaque property on the placing on block, instead during set of meta tile entity
+        return super.placeBlockAt(stack, player, world, pos, side, hitX, hitY, hitZ,
+            newState.withProperty(BlockMachine.OPAQUE, metaTileEntity != null && metaTileEntity.isOpaqueCube()));
     }
 
     @Override
