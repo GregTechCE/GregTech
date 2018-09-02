@@ -8,7 +8,6 @@ import net.minecraft.client.particle.ParticleManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.BlockRenderLayer;
-import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
@@ -21,9 +20,6 @@ public abstract class BuiltInRenderBlock extends Block {
     public BuiltInRenderBlock(Material materialIn) {
         super(materialIn);
     }
-
-    @Override
-    public abstract EnumBlockRenderType getRenderType(IBlockState state);
 
     @Override
     public BlockRenderLayer getBlockLayer() {
