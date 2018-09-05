@@ -1965,8 +1965,8 @@ gregtech.machine.magic_energy_converter.tooltip=电压输出: §a128 §7(§aMV§
 # Machines
 gregtech.machine.electric_furnace.lv.name=基础电炉
 gregtech.machine.electric_furnace.mv.name=高级电炉
-gregtech.machine.electric_furnace.hv.name=先进电炉 II
-gregtech.machine.electric_furnace.ev.name=先进电炉 III
+gregtech.machine.electric_furnace.hv.name=高级电炉 II
+gregtech.machine.electric_furnace.ev.name=高级电炉 III
 
 gregtech.machine.macerator.lv.name=基础研磨机
 gregtech.machine.macerator.mv.name=高级研磨机
@@ -1992,9 +1992,9 @@ gregtech.machine.arc_furnace.ev.name=高级电弧炉 III
 
 
 gregtech.machine.assembler.lv.name=基础组装机
-gregtech.machine.assembler.mv.name=高级装配机
-gregtech.machine.assembler.hv.name=高级装配机 II
-gregtech.machine.assembler.ev.name=高级装配机 III
+gregtech.machine.assembler.mv.name=高级组装机
+gregtech.machine.assembler.hv.name=高级组装机 II
+gregtech.machine.assembler.ev.name=高级组装机 III
 
 
 gregtech.machine.autoclave.tooltip=将粉末水合结晶，使其聚合成宝石
@@ -2026,8 +2026,8 @@ gregtech.machine.canner.ev.name=高级罐装机 III
 # TODO: 查找正确翻译
 gregtech.machine.centrifuge.lv.name=基础离心机
 gregtech.machine.centrifuge.mv.name=高级离心机
-gregtech.machine.centrifuge.hv.name=涡轮离心机
-gregtech.machine.centrifuge.ev.name=涡轮离心机II
+gregtech.machine.centrifuge.hv.name=高级离心机 II
+gregtech.machine.centrifuge.ev.name=高级离心机 III
 
 gregtech.machine.chemical_bath.tooltip=特制洗矿机-化学品中的矿石将它们分开
 
