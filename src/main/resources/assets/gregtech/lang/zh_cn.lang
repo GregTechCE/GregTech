@@ -1841,12 +1841,12 @@ gregtech.machine.titanium_chest.name=钛金箱
 gregtech.machine.tungstensteel_chest.name=钨钢箱
 
 # Tanks
-gregtech.machine.wooden_tank.name=木缸
-gregtech.machine.bronze_tank.name=青铜缸
-gregtech.machine.steel_tank.name=钢缸
-gregtech.machine.stainless_steel_tank.name=不锈钢缸
-gregtech.machine.titanium_tank.name=钛缸
-gregtech.machine.tungstensteel_tank.name=钨钢缸
+gregtech.machine.wooden_tank.name=木罐
+gregtech.machine.bronze_tank.name=青铜罐
+gregtech.machine.steel_tank.name=钢罐
+gregtech.machine.stainless_steel_tank.name=不锈钢罐
+gregtech.machine.titanium_tank.name=钛罐
+gregtech.machine.tungstensteel_tank.name=钨钢罐
 
 # Granite blocks
 tile.granite.black_granite.normal.name=黑花岗岩
