@@ -2038,27 +2038,27 @@ gregtech.machine.chemical_bath.ev.name=高级化学浸洗器 III
 
 gregtech.machine.chemical_reactor.tooltip=让化学品相互反应
 
-gregtech.machine.chemical_reactor.lv.name=基础化学反应器
-gregtech.machine.chemical_reactor.mv.name=先进的化学反应器
-gregtech.machine.chemical_reactor.hv.name=高级化学反应器II
-gregtech.machine.chemical_reactor.ev.name=高级化学反应器III
+gregtech.machine.chemical_reactor.lv.name=基础化学反应釜
+gregtech.machine.chemical_reactor.mv.name=高级化学反应釜
+gregtech.machine.chemical_reactor.hv.name=高级化学反应釜 II
+gregtech.machine.chemical_reactor.ev.name=高级化学反应釜 III
 
 gregtech.machine.compressor.lv.name=基础压缩机
 gregtech.machine.compressor.mv.name=高级压缩机
-gregtech.machine.compressor.hv.name=高级压缩机II
-gregtech.machine.compressor.ev.name=奇点压缩器
+gregtech.machine.compressor.hv.name=高级压缩机 II
+gregtech.machine.compressor.ev.name=高级压缩器 III
 
 gregtech.machine.cutter.lv.name=基础切割机
-gregtech.machine.cutter.mv.name=先进的切割机
-gregtech.machine.cutter.hv.name=先进的切割机II
-gregtech.machine.cutter.ev.name=先进的切割机III
+gregtech.machine.cutter.mv.name=高级切割机
+gregtech.machine.cutter.hv.name=高级切割机 II
+gregtech.machine.cutter.ev.name=高级切割机 III
 
 gregtech.machine.distillery.tooltip=蒸馏液体的大部分相关部分
 
 gregtech.machine.distillery.lv.name=基础酿酒厂
 gregtech.machine.distillery.mv.name=高级酿酒厂
-gregtech.machine.distillery.hv.name=高级酿酒厂II
-gregtech.machine.distillery.ev.name=高级酿酒厂III
+gregtech.machine.distillery.hv.name=高级酿酒厂 II
+gregtech.machine.distillery.ev.name=高级酿酒厂 III
 
 gregtech.machine.electrolyzer.lv.name=基础电解槽
 gregtech.machine.electrolyzer.mv.name=高级电解槽
@@ -2069,8 +2069,8 @@ gregtech.machine.electromagnetic_separator.tooltip=将磁性矿石与其余部�
 
 gregtech.machine.electromagnetic_separator.lv.name=基础电磁分离器
 gregtech.machine.electromagnetic_separator.mv.name=高级电磁分离器
-gregtech.machine.electromagnetic_separator.hv.name=高级电磁分离器II
-gregtech.machine.electromagnetic_separator.ev.name=高级电磁分离器III
+gregtech.machine.electromagnetic_separator.hv.name=高级电磁分离器 II
+gregtech.machine.electromagnetic_separator.ev.name=高级电磁分离器 III
 
 gregtech.machine.extractor.lv.name=基础提取器
 gregtech.machine.extractor.mv.name=高级提取器
