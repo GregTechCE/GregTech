@@ -522,7 +522,7 @@ metaitem.cover.screen.tooltip=显示数据
 metaitem.cover.crafting.name=工作台覆盖板
 metaitem.cover.crafting.tooltip=比木制工作台好
 metaitem.cover.drain.name=排水道
-metaitem.cover.drain.tooltip=吸收液体和收集雨水
+metaitem.cover.drain.tooltip=吸收流体和收集雨水
 metaitem.cover.shutter.name=扇板
 metaitem.cover.shutter.tooltip=放在容器一侧, 和机器控制板一起使用.
 
@@ -1549,7 +1549,7 @@ item.rubber.dustTiny=小撮橡胶浆
 item.rubber.dustSmall=小堆橡胶浆
 item.rubber.dust=橡胶浆
 item.rubber.nugget=橡胶粒
-item.rubber.plate=橡胶盘
+item.rubber.plate=橡胶板
 item.raw_rubber.dustTiny=小撮原橡胶浆
 item.raw_rubber.dustSmall=小堆原橡胶浆
 item.raw_rubber.dust=原橡胶浆
@@ -1648,7 +1648,7 @@ recipemap.assembler.name=组装机
 recipemap.press.name=打印机
 recipemap.macerator.name=研磨机
 recipemap.unpackager.name=解包器
-recipemap.fluid_canner.name=液体罐装机
+recipemap.fluid_canner.name=流体罐装机
 recipemap.plasma_arc_furnace.name=等离子电弧炉
 recipemap.arc_furnace.name=电弧炉
 recipemap.sifter.name=筛选器
@@ -1659,11 +1659,11 @@ recipemap.electromagnetic_separator.name=电磁选矿机
 recipemap.polarizer.name=两极磁化机
 recipemap.chemical_bath.name=化学浸洗器
 recipemap.brewer.name=酿造器
-recipemap.fluid_heater.name=液体加热器
+recipemap.fluid_heater.name=流体加热器
 recipemap.distillery.name=蒸馏室
 recipemap.fermenter.name=发酵槽
-recipemap.fluid_solidifier.name=液体固化机
-recipemap.fluid_extractor.name=液体提取机
+recipemap.fluid_solidifier.name=流体固化机
+recipemap.fluid_extractor.name=流体提取机
 recipemap.packager.name=打包器
 recipemap.fusion_reactor.name=聚变反应器
 recipemap.fusion_reactor.value=需求: %s EU
@@ -1693,7 +1693,7 @@ recipemap.gasturbinefuel.name=燃气轮机燃料
 recipemap.gasturbinefuel.value=燃料值: %s EU
 recipemap.thermalgeneratorfuel.name=热发电机燃料
 recipemap.thermalgeneratorfuel.value=燃料值: %s EU
-recipemap.semifluidboilerfuels.name=半液体锅炉燃料
+recipemap.semifluidboilerfuels.name=半流体锅炉燃料
 recipemap.semifluidboilerfuels.value=燃料值: %s EU
 recipemap.plasmageneratorfuels.name=等离子发生器燃料
 recipemap.plasmageneratorfuels.value=燃料值: %s EU
@@ -1703,7 +1703,7 @@ recipemap.smallnaquadahreactor.name=小型硅岩反应堆
 recipemap.smallnaquadahreactor.value=燃料值: %s EU
 recipemap.largenaquadahreactor.name=大型硅岩反应堆
 recipemap.largenaquadahreactor.value=燃料值: %s EU
-recipemap.fluidnaquadahreactor.name=液体硅岩反应器
+recipemap.fluidnaquadahreactor.name=流体硅岩反应器
 recipemap.fluidnaquadahreactor.value=燃料值: %s EU
 recipemap.forming_press.name=冲压机床
 recipemap.forge_hammer.name=锻造锤
@@ -1938,7 +1938,7 @@ gregtech.machine.steam_alloy_smelter_bronze.name=蒸汽合金冶炉
 gregtech.machine.steam_alloy_smelter_steel.name=高压蒸汽合金炉
 
 # Generators
-gregtech.machine.diesel_generator.tooltip=需要易燃液体
+gregtech.machine.diesel_generator.tooltip=需要易燃流体
 
 gregtech.machine.diesel_generator.lv.name=基础柴油发电机
 gregtech.machine.diesel_generator.mv.name=高级柴油发电机
@@ -2053,7 +2053,7 @@ gregtech.machine.cutter.mv.name=高级切割机
 gregtech.machine.cutter.hv.name=高级切割机 II
 gregtech.machine.cutter.ev.name=高级切割机 III
 
-gregtech.machine.distillery.tooltip=蒸馏液体的大部分相关部分
+gregtech.machine.distillery.tooltip=蒸馏流体的大部分相关部分
 
 gregtech.machine.distillery.lv.name=基础酿酒厂
 gregtech.machine.distillery.mv.name=高级酿酒厂
@@ -2091,31 +2091,31 @@ gregtech.machine.fermenter.mv.name=高级发酵罐
 gregtech.machine.fermenter.hv.name=高级发酵罐 II
 gregtech.machine.fermenter.ev.name=高级发酵罐 III
 
-gregtech.machine.fluid_canner.tooltip=将液体放入和放出容器
+gregtech.machine.fluid_canner.tooltip=将流体放入和放出容器
 
-gregtech.machine.fluid_canner.lv.name=基础液体罐装机
-gregtech.machine.fluid_canner.mv.name=高级液体罐装机
-gregtech.machine.fluid_canner.hv.name=高级液体罐装机 II
-gregtech.machine.fluid_canner.ev.name=高级液体罐装机 III
+gregtech.machine.fluid_canner.lv.name=基础流体罐装机
+gregtech.machine.fluid_canner.mv.name=高级流体罐装机
+gregtech.machine.fluid_canner.hv.name=高级流体罐装机 II
+gregtech.machine.fluid_canner.ev.name=高级流体罐装机 III
 
-gregtech.machine.fluid_extractor.tooltip=从物品中提取液体
+gregtech.machine.fluid_extractor.tooltip=从物品中提取流体
 
-gregtech.machine.fluid_extractor.lv.name=基础液体提取器
-gregtech.machine.fluid_extractor.mv.name=高级液体提取器
-gregtech.machine.fluid_extractor.hv.name=高级液体提取器 II
-gregtech.machine.fluid_extractor.ev.name=高级液体提取器 III
+gregtech.machine.fluid_extractor.lv.name=基础流体提取器
+gregtech.machine.fluid_extractor.mv.name=高级流体提取器
+gregtech.machine.fluid_extractor.hv.name=高级流体提取器 II
+gregtech.machine.fluid_extractor.ev.name=高级流体提取器 III
 
-gregtech.machine.fluid_heater.lv.name=基础液体加热器
-gregtech.machine.fluid_heater.mv.name=高级液体加热器
-gregtech.machine.fluid_heater.hv.name=高级液体加热器 II
-gregtech.machine.fluid_heater.ev.name=高级液体加热器 III
+gregtech.machine.fluid_heater.lv.name=基础流体加热器
+gregtech.machine.fluid_heater.mv.name=高级流体加热器
+gregtech.machine.fluid_heater.hv.name=高级流体加热器 II
+gregtech.machine.fluid_heater.ev.name=高级流体加热器 III
 
-gregtech.machine.fluid_solidifier.tooltip=冷却液体以形成固体
+gregtech.machine.fluid_solidifier.tooltip=冷却流体以形成固体
 
-gregtech.machine.fluid_solidifier.lv.name=基础液体固化机
-gregtech.machine.fluid_solidifier.mv.name=高级液体固化机
-gregtech.machine.fluid_solidifier.hv.name=高级液体固化机 II
-gregtech.machine.fluid_solidifier.ev.name=高级液体固化机 III
+gregtech.machine.fluid_solidifier.lv.name=基础流体固化机
+gregtech.machine.fluid_solidifier.mv.name=高级流体固化机
+gregtech.machine.fluid_solidifier.hv.name=高级流体固化机 II
+gregtech.machine.fluid_solidifier.ev.name=高级流体固化机 III
 
 gregtech.machine.forge_hammer.lv.name=基础锻造锤
 gregtech.machine.forge_hammer.mv.name=高级锻造锤
@@ -2675,7 +2675,7 @@ achievement.higherefficency=效率更高
 achievement.higherefficency.desc=生产氮等离子体
 achievement.advancing=前进
 achievement.advancing.desc=生产铕
-achievement.stargateliquid=液体星际之门材料
+achievement.stargateliquid=流体星际之门材料
 achievement.stargateliquid.desc=生产Naquadah
 achievement.tothelimit=追求极限
 achievement.tothelimit.desc=生产Americ
@@ -2806,7 +2806,7 @@ gregtech.machine.item_bus.export.zpm.name=输出总线 (ZPM)
 gregtech.machine.item_bus.export.uv.name=输出总线 (UV)
 gregtech.machine.item_bus.export.max.name=输出总线 (MAX)
 
-gregtech.machine.fluid_hatch.import.tooltip=用于为多方块结构输入液体
+gregtech.machine.fluid_hatch.import.tooltip=用于为多方块结构输入流体
 
 gregtech.machine.fluid_hatch.import.ulv.name=输入仓 (ULV)
 gregtech.machine.fluid_hatch.import.lv.name=输入仓 (LV)
@@ -2819,7 +2819,7 @@ gregtech.machine.fluid_hatch.import.zpm.name=输入仓 (ZPM)
 gregtech.machine.fluid_hatch.import.uv.name=输入仓 (UV)
 gregtech.machine.fluid_hatch.import.max.name=输入仓 (MAX)
 
-gregtech.machine.fluid_hatch.export.tooltip=用于为多方块结构输出液体
+gregtech.machine.fluid_hatch.export.tooltip=用于为多方块结构输出流体
 
 gregtech.machine.fluid_hatch.export.ulv.name=输出仓 (ULV)
 gregtech.machine.fluid_hatch.export.lv.name=输出仓 (LV)
@@ -2878,7 +2878,7 @@ gregtech.universal.tooltip.amperage_in_till=Amperage IN up to: §e%d
 gregtech.universal.tooltip.amperage_out=输出电流: §e%d
 gregtech.universal.tooltip.amperage_out_till=Amperage OUT up to: §e%d
 gregtech.universal.tooltip.item_storage_capacity=物品槽: %d
-gregtech.universal.tooltip.fluid_storage_capacity=液体容量: %d mb
+gregtech.universal.tooltip.fluid_storage_capacity=流体容量: %d mb
 
 gregtech.machine.fluid_tank.fluid=含有 %s mb %s
 
@@ -2890,12 +2890,12 @@ gregtech.recipe.amperage=电流(A): %d
 gregtech.recipe.not_consumed=不会在过程中消耗掉
 gregtech.recipe.chance=概率: %s%%
 gregtech.recipe.blast_furnace_temperature=温度: %dK
-gregtech.recipe.eu_to_start=需求能源: %dEU
+gregtech.recipe.eu_to_start=需求能源: %dE
 
-gregtech.fluid.click_to_fill=§7用一个空的液体容器点击来从罐中提取.
+gregtech.fluid.click_to_fill=§7用一个空的流体容器点击来从罐中提取.
 gregtech.fluid.click_to_fill.shift=§7(Shift-单击将使你手中所有容器充满)
 
-gregtech.fluid.click_to_empty=§7用一个满的液体容器点击来倒入罐中.
+gregtech.fluid.click_to_empty=§7用一个满的流体容器点击来倒入罐中.
 gregtech.fluid.click_to_empty.shift=§7(Shift-单击将清空你手中所有的容器)
 
 gregtech.fluid.empty=空的
@@ -2904,7 +2904,7 @@ gregtech.fluid.temperature=§7温度: %dK
 gregtech.fluid.state_gas=§7状态: 气态
 gregtech.fluid.state_liquid=§7状态: 液态
 gregtech.gui.fuel_amount=汽油总量:
-gregtech.gui.fluid_amount=液体总量:
+gregtech.gui.fluid_amount=流体总量:
 
 gregtech.cable.voltage=电压: §a%d §7(§a%s§7)
 gregtech.cable.amperage=电流: §e%d
@@ -2942,8 +2942,8 @@ gregtech.multiblock.cracker.cracking_fluid=裂化%s
 gregtech.multiblock.diesel_engine.lubricant_amount=Lubricant Amount: %sL
 gregtech.multiblock.diesel_engine.fuel_amount=燃料量: %sL (%s)
 gregtech.multiblock.diesel_engine.oxygen_amount=氧气量: %sL
-gregtech.multiblock.diesel_engine.oxygen_boosted=Oxygen boosted.
-gregtech.multiblock.diesel_engine.supply_oxygen_to_boost=Supply oxygen to boost.
+gregtech.multiblock.diesel_engine.oxygen_boosted=氧气催化.
+gregtech.multiblock.diesel_engine.supply_oxygen_to_boost=支持用氧气来催化.
 
 gregtech.multiblock.turbine.fuel_amount=燃料量: %sL (%s)
 gregtech.multiblock.turbine.rotor_speed=转子转速: %s / %s RPM
