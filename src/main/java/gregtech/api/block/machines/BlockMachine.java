@@ -83,6 +83,11 @@ public class BlockMachine extends Block implements ITileEntityProvider {
     }
 
     @Override
+    public boolean causesSuffocation(IBlockState state) {
+        return state.getValue(OPAQUE);
+    }
+
+    @Override
     public IBlockState getActualState(IBlockState state, IBlockAccess worldIn, BlockPos pos) {
         if(bypassActualState.get())
             return state;
@@ -111,8 +116,8 @@ public class BlockMachine extends Block implements ITileEntityProvider {
     }
 
     public static MetaTileEntity getMetaTileEntity(IBlockAccess blockAccess, BlockPos pos) {
-        MetaTileEntityHolder holder = (MetaTileEntityHolder) blockAccess.getTileEntity(pos);
-        return holder == null ? null : holder.getMetaTileEntity();
+        TileEntity holder = blockAccess.getTileEntity(pos);
+        return holder instanceof MetaTileEntityHolder ? ((MetaTileEntityHolder) holder).getMetaTileEntity() : null;
     }
 
     private Cuboid6[] getCollisionBox(IBlockAccess blockAccess, BlockPos pos) {
@@ -355,12 +360,14 @@ public class BlockMachine extends Block implements ITileEntityProvider {
 
     @Override
     public int getLightValue(IBlockState state, IBlockAccess world, BlockPos pos) {
+        //why mc is so fucking retarded to call this method on fucking NEIGHBOUR BLOCKS!
         MetaTileEntity metaTileEntity = getMetaTileEntity(world, pos);
         return metaTileEntity == null ? 0 : metaTileEntity.getLightValue();
     }
 
     @Override
     public int getLightOpacity(IBlockState state, IBlockAccess world, BlockPos pos) {
+        //why mc is so fucking retarded to call this method on fucking NEIGHBOUR BLOCKS!
         MetaTileEntity metaTileEntity = getMetaTileEntity(world, pos);
         return metaTileEntity == null ? 255 : metaTileEntity.getLightOpacity();
     }
