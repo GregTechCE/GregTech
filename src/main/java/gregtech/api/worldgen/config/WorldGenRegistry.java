@@ -93,13 +93,15 @@ public class WorldGenRegistry {
         oreVeinCache.clear();
         Path configPath = Loader.instance().getConfigDir().toPath().resolve(GTValues.MODID);
         Path worldgenRootPath = configPath.resolve("worldgen");
+        Path jarFileExtractLockOld = configPath.resolve(".worldgen_extracted");
         Path jarFileExtractLock = configPath.resolve("worldgen_extracted");
         if(!Files.exists(worldgenRootPath)) {
             Files.createDirectories(worldgenRootPath);
         }
         //attempt extraction if file extraction lock is absent or worldgen root directory is empty
-        if(!Files.exists(jarFileExtractLock) || !Files.list(worldgenRootPath).findFirst().isPresent()) {
-            if(!Files.exists(jarFileExtractLock)) {
+        // todo: "Old" is fugly.  Deprecate and/or replace with pattern-match on name
+        if((!Files.exists(jarFileExtractLock) && !Files.exists(jarFileExtractLockOld)) || !Files.list(worldgenRootPath).findFirst().isPresent()) {
+            if(!Files.exists(jarFileExtractLock) && !Files.exists(jarFileExtractLockOld)) {
                 //create extraction lock only if it doesn't exist
                 Files.createFile(jarFileExtractLock);
             }
