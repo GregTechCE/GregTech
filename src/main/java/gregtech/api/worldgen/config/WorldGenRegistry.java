@@ -93,7 +93,7 @@ public class WorldGenRegistry {
         oreVeinCache.clear();
         Path configPath = Loader.instance().getConfigDir().toPath().resolve(GTValues.MODID);
         Path worldgenRootPath = configPath.resolve("worldgen");
-        Path jarFileExtractLock = configPath.resolve(".worldgen_extracted");
+        Path jarFileExtractLock = configPath.resolve("worldgen_extracted");
         if(!Files.exists(worldgenRootPath)) {
             Files.createDirectories(worldgenRootPath);
         }
