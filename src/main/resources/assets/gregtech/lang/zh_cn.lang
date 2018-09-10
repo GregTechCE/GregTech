@@ -1959,9 +1959,10 @@ gregtech.machine.gas_turbine.hv.name=高级燃气轮机 II
 gregtech.machine.gas_turbine.ev.name=高级燃气轮机 III
 
 gregtech.machine.magic_energy_absorber.name=魔法能源吸收器
-gregtech.machine.magic_energy_absorber.tooltip=最大电压输出: §a2048 §7(§aEV§7)/nCollects energy from ender crystals in 64 blocks/nEach ender crystal adds 32 EU/t to output/nPlace Dragon Egg on top to amplify output/n/nWhen amplified:/nEach ender crystal adds 128 EU/t
+gregtech.machine.magic_energy_absorber.tooltip=最大电压输出: §a2048 §7(§aEV§7)/n从 64 方块内的末影水晶收集能源/n每个末影水晶贡献 32 EU/t 的输出/n将龙蛋放在上面增强输出/n/n当增强时: /n每个末影水晶贡献 128 EU/t
 gregtech.machine.magic_energy_converter.name=魔法能源转换器
-gregtech.machine.magic_energy_converter.tooltip=电压输出: §a128 §7(§aMV§7)/nCollects essentia from containers within 16 blocks/nConsumes 20 Potentia per second
+gregtech.machine.magic_energy_converter.tooltip=电压输出: §a128 §7(§aMV§7)/n从
+16 方块内的容器中收集要素/n消耗: 20 动力/s 
 
 # Machines
 gregtech.machine.electric_furnace.lv.name=基础电炉
