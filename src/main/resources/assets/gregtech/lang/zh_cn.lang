@@ -2865,18 +2865,9 @@ gregtech.cable.voltage=电压: §a%d §7(§a%s§7)
 gregtech.cable.amperage=电流: §e%d
 gregtech.cable.loss_per_block=线损: §c%d
 
-gregtech.item_pipe.normal=§6物品管道§7
-gregtech.item_pipe.capacity1=物品容量: §e%d§7 堆/ %d s
-gregtech.item_pipe.capacity2=物品容量: §e%d§7 堆/s
-gregtech.item_pipe.capacity3=物品容量: §e1§7 Stack/s
-gregtech.item_pipe.routing_value=路由值: §2%d§7
-
-gregtech.fluid_pipe.normal=§1流体管道§7
-gregtech.fluid_pipe.multiple=§1多重流体管道§7
-gregtech.fluid_pipe.capacity1=流速: §9%d§7 L/s
-gregtech.fluid_pipe.capacity2=流速: §9%d§7x§9%d§7 L/s
-gregtech.fluid_pipe.heat_limit=温度限制:  §c%s§7 K
-gregtech.fluid_pipe.gas_proof=§a防止漏气§7
+gregtech.fluid_pipe.throughput=速率: §e%d mb/t
+gregtech.fluid_pipe.max_temperature=最大温度: §c%dK
+gregtech.fluid_pipe.non_gas_proof=不能传输气体.
 
 gregtech.multiblock.work_paused=暂停.
 gregtech.multiblock.running=正常运行.
@@ -2914,3 +2905,12 @@ gregtech.command.worldgen.usage=用法: /gregtech worldgen <reload>
 gregtech.command.worldgen.reload.usage=用法: /gregtech worldgen reload
 gregtech.command.worldgen.reload.success=世界生成器从配置文件重新加载成功.
 gregtech.command.worldgen.reload.failed=世界生成器重新加载失败, 请于控制台查看错误.
+gregtech.command.util.usage=用法: /gregtech util <hand>
+gregtech.command.util.hand.usage=用法: /gregtech util hand
+gregtech.command.util.hand.item_id=物品: %s (元数据: %d)
+gregtech.command.util.hand.electric=电力信息: %d / %d EU - 等级: %d; 是电池: %s
+gregtech.command.util.hand.fluid=流体信息: %s %d / %d mb; 能够填充: %s; 能够排出: %s
+gregtech.command.util.hand.material_meta_item=矿物前缀: %s; 材料: %s
+gregtech.command.util.hand.tool_stats=工具状态类: %s
+gregtech.command.util.hand.meta_item=元物品名字: %s
+gregtech.command.util.hand.not_a_player=这条命令只能被玩家使用.
