@@ -9,8 +9,6 @@ death.attack.heat.player=%s被%s煮熟了.
 death.attack.crusher=%s被碾死了.
 
 gregtech.top.energy_stored=储存能量:
-gregtech.top.cable_average_amperage=平均电流(A/%st):
-gregtech.top.cable_average_voltage=平均电压(V/%st):
 gregtech.top.progress=进度:
 gregtech.top.working_disabled=机器停止运转
 
@@ -203,55 +201,11 @@ metaitem.spray.can.dyes.red.tooltip=满的
 metaitem.spray.can.dyes.black.name=喷雾罐(黑色)
 metaitem.spray.can.dyes.black.tooltip=满的
 
-metaitem.spray.can.dyes.used.white.name=喷雾罐 (白色)
-metaitem.spray.can.dyes.used.white.tooltip=用过的
-metaitem.spray.can.dyes.used.orange.name=喷雾罐 (橙色)
-metaitem.spray.can.dyes.used.orange.tooltip=用过的
-metaitem.spray.can.dyes.used.magenta.name=喷雾罐 (洋红色)
-metaitem.spray.can.dyes.used.magenta.tooltip=用过的
-metaitem.spray.can.dyes.used.light_blue.name=喷雾罐 (淡蓝色)
-metaitem.spray.can.dyes.used.light_blue.tooltip=用过的
-metaitem.spray.can.dyes.used.yellow.name=喷雾罐 (黄色)
-metaitem.spray.can.dyes.used.yellow.tooltip=用过的
-metaitem.spray.can.dyes.used.lime.name=喷雾罐 (绿黄色)
-metaitem.spray.can.dyes.used.lime.tooltip=用过的
-metaitem.spray.can.dyes.used.pink.name=喷雾罐 (粉红色)
-metaitem.spray.can.dyes.used.pink.tooltip=用过的
-metaitem.spray.can.dyes.used.gray.name=喷雾罐 (灰色)
-metaitem.spray.can.dyes.used.gray.tooltip=用过的
-metaitem.spray.can.dyes.used.silver.name=喷雾罐 (浅灰色)
-metaitem.spray.can.dyes.used.silver.tooltip=用过的
-metaitem.spray.can.dyes.used.cyan.name=喷雾罐 (青色)
-metaitem.spray.can.dyes.used.cyan.tooltip=用过的
-metaitem.spray.can.dyes.used.purple.name=喷雾罐 (紫色)
-metaitem.spray.can.dyes.used.purple.tooltip=用过的
-metaitem.spray.can.dyes.used.blue.name=喷雾罐 (蓝色)
-metaitem.spray.can.dyes.used.blue.tooltip=用过的
-metaitem.spray.can.dyes.used.brown.name=喷雾罐 (棕色)
-metaitem.spray.can.dyes.used.brown.tooltip=用过的
-metaitem.spray.can.dyes.used.green.name=喷雾罐 (绿色)
-metaitem.spray.can.dyes.used.green.tooltip=用过的
-metaitem.spray.can.dyes.used.red.name=喷雾罐 (红色)
-metaitem.spray.can.dyes.used.red.tooltip=用过的
-metaitem.spray.can.dyes.used.black.name=喷雾罐 (黑色)
-metaitem.spray.can.dyes.used.black.tooltip=用过的
-
 metaitem.tool.matches.name=火柴
 metaitem.tool.matchbox.name=火柴盒
-metaitem.tool.matchbox.used.tooltip=这不是一辆小汽车 :)
-metaitem.tool.matchbox.full.name=火柴盒(满)
-metaitem.tool.matchbox.full.tooltip=这不是一辆小汽车 :)
-
-metaitem.tool.lighter.invar.empty.name=打火机(空)
-metaitem.tool.lighter.invar.used.name=打火机
-metaitem.tool.lighter.invar.full.name=打火机(满)
-
-metaitem.tool.lighter.platinum.empty.name=铂打火机(空)
-metaitem.tool.lighter.platinum.empty.tooltip=上面印有一个著名的恶作剧大师
-metaitem.tool.lighter.platinum.used.name=铂打火机
-metaitem.tool.lighter.platinum.used.tooltip=上面印有一个著名的恶作剧大师
-metaitem.tool.lighter.platinum.full.name=铂打火机(满)
-metaitem.tool.lighter.platinum.full.tooltip=上面印有一个著名的恶作剧大师
+metaitem.tool.lighter.invar.name=打火机
+metaitem.tool.lighter.platinum.name=铂打火机
+metaitem.tool.lighter.platinum.tooltip=上面印有一个著名的恶作剧大师
 
 metaitem.ingot.iridiumalloy.name=铱合金锭
 metaitem.ingot.iridiumalloy.tooltip=用于制作铱板
@@ -446,6 +400,7 @@ metaitem.tool.datastick.tooltip=一个小容量的数据存储器
 metaitem.tool.dataorb.name=数据球
 metaitem.tool.dataorb.tooltip=一个超大容量的数据存储器
 metaitem.circuit.integrated.name=集成电路
+metaitem.circuit.integrated.tooltip=右击打开配置界面
 metaitem.circuit.integrated.gui=集成电路配置
 
 metaitem.circuit.primitive.name=NAND 芯片
@@ -557,6 +512,9 @@ metaitem.duct.tape.name=布莱恩科技航空专用强化胶带FAL84型
 metaitem.duct.tape.tooltip=如果用这个修不好, 那么多用几个.
 metaitem.mcguffium.239.name=麦高芬239
 metaitem.mcguffium.239.tooltip=42%% better than Phlebotnium
+
+metaitem.pipe.small.bronze.name=小型青铜管道
+metaitem.pipe.small.steel.name=小型钢管道
 
 metaitem.thermos_can.dark.coffee.name=黑咖啡
 metaitem.thermos_can.dark.coffee.tooltip=黑咖啡, 黑得深邃, 除此之外别无他物.
@@ -949,6 +907,7 @@ metaitem.tool.tooltip.handle_material=手柄材料: %s (%s lvl)
 metaitem.tool.tooltip.attack_damage=攻击伤害: %d
 metaitem.tool.tooltip.mining_speed=挖掘速度: %d
 metaitem.tool.tooltip.durability=耐久度: %d/%d
+metaitem.tool.tooltip.rotor.efficiency=转子效率: %d%%
 
 # %s is a localized material name
 item.material.oreprefix.oreBlackgranite=%s花岗岩
@@ -1101,9 +1060,6 @@ item.material.oreprefix.pipeRestrictiveSmall=小型加固%s管道
 item.material.oreprefix.pipeRestrictiveMedium=中等加固%s管道
 item.material.oreprefix.pipeRestrictiveLarge=大型加固%s管道
 item.material.oreprefix.pipeRestrictiveHuge=巨型加固%s管道
-item.material.oreprefix.pipeQuadruple=四重%s管道
-item.material.oreprefix.pipeNonuple=九重%s管道
-item.material.oreprefix.pipeSexdecuple=十六重%s管道
 item.material.oreprefix.pipe=%s管道
 item.material.oreprefix.wireGtHex=16x %s线
 item.material.oreprefix.wireGtTwelve=12x %s线
@@ -1458,7 +1414,6 @@ material.basic=基础
 material.good=优质
 material.advanced=高级
 material.data=数据
-# TODO: tranlate 'Elite'
 material.elite=Elite
 material.master=主要
 material.ultimate=终极
@@ -1961,8 +1916,7 @@ gregtech.machine.gas_turbine.ev.name=高级燃气轮机 III
 gregtech.machine.magic_energy_absorber.name=魔法能源吸收器
 gregtech.machine.magic_energy_absorber.tooltip=最大电压输出: §a2048 §7(§aEV§7)/n从 64 方块内的末影水晶收集能源/n每个末影水晶贡献 32 EU/t 的输出/n将龙蛋放在上面增强输出/n/n当增强时: /n每个末影水晶贡献 128 EU/t
 gregtech.machine.magic_energy_converter.name=魔法能源转换器
-gregtech.machine.magic_energy_converter.tooltip=电压输出: §a128 §7(§aMV§7)/n从
-16 方块内的容器中收集要素/n消耗: 20 动力/s 
+gregtech.machine.magic_energy_converter.tooltip=电压输出: §a128 §7(§aMV§7)/n从 16 方块内的容器中收集要素/n消耗: 20 动力/s 
 
 # Machines
 gregtech.machine.electric_furnace.lv.name=基础电炉
@@ -2025,7 +1979,6 @@ gregtech.machine.canner.mv.name=高级罐装机
 gregtech.machine.canner.hv.name=高级罐装机 II
 gregtech.machine.canner.ev.name=高级罐装机 III
 
-# TODO: 查找正确翻译
 gregtech.machine.centrifuge.lv.name=基础离心机
 gregtech.machine.centrifuge.mv.name=高级离心机
 gregtech.machine.centrifuge.hv.name=高级离心机 II
