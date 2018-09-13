@@ -9,7 +9,6 @@ import gregtech.api.util.GTControlledRegistry;
 import io.netty.buffer.Unpooled;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
-import net.minecraft.client.renderer.texture.Stitcher;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.network.PacketBuffer;
@@ -75,7 +74,6 @@ public abstract class UIFactory<E extends IUIHolder> {
         uiTemplate.initWidgets();
         ModularUIGui modularUIGui = new ModularUIGui(uiTemplate);
         modularUIGui.inventorySlots.windowId = windowId;
-        Stitcher
         for(PacketUIWidgetUpdate packet : initialWidgetUpdates) {
             modularUIGui.handleWidgetUpdate(packet);
         }
