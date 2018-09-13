@@ -2,7 +2,6 @@ death.attack.heat=%s被煮熟了.
 death.attack.frost=%s被冻死了.
 death.attack.electric=%s被电死了.
 death.attack.radiation=%s被辐射致死.
-
 death.attack.turbine=%s将他的头伸进了涡轮机里.
 death.attack.explosion=%s爆炸了.
 death.attack.explosion.player=%s被%s炸死了.
@@ -14,7 +13,6 @@ gregtech.top.progress=进度:
 gregtech.top.working_disabled=机器停止运转
 
 gregtech.multiblock.title=多方块结构
-
 gregtech.multiblock.primitive_blast_furnace.description=土高炉是一个在游戏前期用来炼钢的多方块结构.  尽管不是很快, 但却能为你游戏最开始提供钢.
 gregtech.multiblock.vacuum_freezer.description=真空冷冻机是一个用来将热态金属锭冷冻到常态金属锭的多方块结构. 然而, 它也能用来冷冻其他物质, 比如水.
 gregtech.multiblock.implosion_compressor.description=聚爆压缩机是一种多方块结构，使用炸药来将宝石粉压缩成相应的宝石.
@@ -209,17 +207,14 @@ metaitem.tool.lighter.invar.name=打火机
 metaitem.tool.lighter.platinum.name=铂打火机
 metaitem.tool.lighter.platinum.tooltip=上面印有一个著名的恶作剧大师
 
-
 metaitem.ingot.iridiumalloy.name=铱合金锭
 metaitem.ingot.iridiumalloy.tooltip=用于制作铱板
 
 metaitem.paper.printed.pages.name=打印页
 metaitem.paper.printed.pages.tooltip=用于制作书籍
-
 metaitem.paper.magic.empty.name=魔法纸(空白)
 metaitem.paper.magic.page.name=附魔书页(单张)
 metaitem.paper.magic.pages.name=附魔书页(多张)
-
 metaitem.paper.punch.card.empty.name=打孔卡(未打孔)
 metaitem.paper.punch.card.encoded.name=打孔卡(已打孔)
 
@@ -287,7 +282,6 @@ metaitem.energy.lapotronicorb2.name=兰波顿能量球簇
 metaitem.zpm.name=零点模块
 metaitem.zpm2.name=终极电池
 metaitem.zpm2.tooltip=充满它来赢得 Minecraft.  (可计算需多久可以充满, 手动滑稽)
-
 metaitem.electric.motor.lv.name=电动马达(LV)
 metaitem.electric.motor.mv.name=电动马达(MV)
 metaitem.electric.motor.hv.name=电动马达(HV)
