@@ -68,9 +68,11 @@ public class FoodStats implements IFoodBehavior {
 
     @Override
     public void onEaten(ItemStack itemStack, EntityPlayer player) {
-        for(RandomPotionEffect potionEffect : potionEffects) {
-            if (Math.random() * 100 > potionEffect.chance) {
-                player.addPotionEffect(GTUtility.copyPotionEffect(potionEffect.effect));
+        if (!player.world.isRemote) {
+            for(RandomPotionEffect potionEffect : potionEffects) {
+                if (Math.random() * 100 > potionEffect.chance) {
+                    player.addPotionEffect(GTUtility.copyPotionEffect(potionEffect.effect));
+                }
             }
         }
     }
