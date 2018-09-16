@@ -113,6 +113,7 @@ public class SimpleMachineMetaTileEntity extends WorkableTieredMetaTileEntity {
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public <T> T getCapability(Capability<T> capability, EnumFacing side) {
         FluidHandlerProxy sideOverride = side == null ? null : sidedTankOverrides[side.getIndex()];
         return (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY && sideOverride != null) ?

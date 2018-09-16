@@ -240,7 +240,7 @@ public abstract class SteamBoiler extends MetaTileEntity {
             .widget(new TankWidget(steamFluidTank, 69, 17, 11, 55)
                 .setBackgroundTexture(getGuiTexture("bar_%s_empty")))
 
-            .widget(new FluidContainerSlotWidget(this.importItems, 0, 43, 18)
+            .widget(new FluidContainerSlotWidget(this.importItems, 0, 43, 18, true)
                 .setBackgroundTexture(BRONZE_SLOT_BACKGROUND_TEXTURE, getGuiTexture("overlay_%s_in")))
             .widget(new SlotWidget(this.exportItems, 0, 43, 54, true, false)
                 .setBackgroundTexture(BRONZE_SLOT_BACKGROUND_TEXTURE, getGuiTexture("overlay_%s_out")))
