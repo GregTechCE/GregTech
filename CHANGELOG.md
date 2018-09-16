@@ -1,5 +1,17 @@
 ## Changelog
 
+### 0.5.9
+* Added Stones and Oils to Generation in Overworld/Nether (Rongm[a]rio)
+* Added Chinese Translation (Timozer)
+* Rename worldgen extract lock file to be twitch-import friendly (pyure)
+* Fixed pipe networks not updating connections on world load
+* Fixed potion effect from food being applied on both sides
+* Fixed pumps not accepting power from cables
+* Removed unnecessary concrete recipe
+* Fixed hard hammer not dropping 1 extra crushed ore
+* Fixed crafting recipes for gems that do not have plate variants
+* Other bugfixes
+
 ### 0.5.8
 * **Optimized cables and reworked pipes due to performance impact they had. Unfortunately these are not backwards compatible with previous ones, and it is better to remove all existing pipes and cables from the world to avoid possible world corruption**
 * Fixed multiblock info tooltip rendering
