@@ -102,6 +102,7 @@ public abstract class WorldPipeNet<NodeDataType, T extends PipeNet<NodeDataType>
             pipeNet.isValid = true;
             pipeNet.deserializeNBT(pNetTag);
         }
+        this.pipeNets.forEach(PipeNet::onConnectionsUpdate);
     }
 
     @Override
