@@ -354,6 +354,7 @@ public enum OrePrefix {
         block.ignoredMaterials.add(Materials.NetherQuartz);
         block.ignoredMaterials.add(Materials.Ice);
         block.ignoredMaterials.add(Materials.Netherrack);
+        block.ignoredMaterials.add(Materials.Concrete);
 
         cableGtHex.addSecondaryMaterial(new MaterialStack(Materials.Rubber, dustSmall.materialAmount * 4));
         cableGtOctal.addSecondaryMaterial(new MaterialStack(Materials.Rubber, dustSmall.materialAmount * 3));

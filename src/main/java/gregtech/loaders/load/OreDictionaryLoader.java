@@ -5,6 +5,9 @@ import gregtech.api.unification.material.MarkerMaterials;
 import gregtech.api.unification.material.Materials;
 import gregtech.api.unification.ore.OrePrefix;
 import gregtech.api.util.GTLog;
+import gregtech.common.blocks.BlockConcrete;
+import gregtech.common.blocks.MetaBlocks;
+import gregtech.common.blocks.StoneBlock;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -62,6 +65,7 @@ public class OreDictionaryLoader {
         OreDictUnifier.registerOre(new ItemStack(Blocks.ICE), OrePrefix.block, Materials.Ice);
         OreDictUnifier.registerOre(new ItemStack(Blocks.OBSIDIAN), OrePrefix.block, Materials.Obsidian);
         OreDictUnifier.registerOre(new ItemStack(Blocks.GLASS), OrePrefix.block, Materials.Glass);
+        OreDictUnifier.registerOre(MetaBlocks.CONCRETE.getItemVariant(BlockConcrete.ConcreteVariant.LIGHT_CONCRETE, StoneBlock.ChiselingVariant.NORMAL), OrePrefix.block, Materials.Concrete);
 
         OreDictUnifier.registerOre(new ItemStack(Blocks.STONE, 1, 1), OrePrefix.stone, Materials.GraniteBlack);
         OreDictUnifier.registerOre(new ItemStack(Blocks.STONE, 1, 2), OrePrefix.stone, Materials.GraniteBlack);
