@@ -68,8 +68,7 @@ public class ToolHardHammer extends ToolBase {
             block.getMaterial() == Material.GLASS ||
             block.getMaterial() == Material.ICE ||
             block.getMaterial() == Material.PACKED_ICE ||
-            RecipeMaps.FORGE_HAMMER_RECIPES.findRecipe(Long.MAX_VALUE,
-                Collections.singletonList(itemStack), Collections.emptyList()) != null;
+            RecipeMaps.FORGE_HAMMER_RECIPES.findRecipe(Long.MAX_VALUE, Collections.singletonList(itemStack), Collections.emptyList()) != null;
     }
 
     @Override
