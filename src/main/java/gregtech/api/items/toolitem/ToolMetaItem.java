@@ -416,9 +416,10 @@ public class ToolMetaItem<T extends ToolMetaItem<?>.MetaToolValueItem> extends M
             lines.add(I18n.format("metaitem.tool.tooltip.attack_damage", toolStats.getBaseDamage(itemStack) + primaryMaterial.harvestLevel));
             lines.add(I18n.format("metaitem.tool.tooltip.mining_speed", primaryMaterial.toolSpeed));
         }
-        toolStats.addInformation(itemStack, lines, tooltipFlag.isAdvanced());
 
         super.addInformation(itemStack, worldIn, lines, tooltipFlag);
+
+        toolStats.addInformation(itemStack, lines, tooltipFlag.isAdvanced());
     }
 
     @Override
