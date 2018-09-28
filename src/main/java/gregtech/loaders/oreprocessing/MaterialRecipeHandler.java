@@ -270,11 +270,6 @@ public class MaterialRecipeHandler {
                     .duration(20).EUt(16)
                     .buildAndRegister();
             }
-            if (material.hasFlag(GENERATE_PLATE)) {
-                ModHandler.addShapedRecipe(String.format("gem_to_plate_%s_%s", material, gemPrefix),
-                    stack, "h", "X",
-                    'X', new UnificationEntry(OrePrefix.gem, material));
-            }
         }
 
         if (!material.hasFlag(MatFlags.NO_WORKING)) {
