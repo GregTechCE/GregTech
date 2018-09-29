@@ -125,7 +125,7 @@ public enum OrePrefix {
     toolHeadHoe("Hoe Heads", M * 2, null, MaterialIconType.toolHeadHoe, ENABLE_UNIFICATION, isToolMaterial), // made of 2 Ingots.
     toolHeadSense("Sense Blades", M * 3, null, MaterialIconType.toolHeadSense, ENABLE_UNIFICATION, isToolMaterial), // made of 3 Ingots.
     toolHeadFile("File Heads", M * 2, null, MaterialIconType.toolHeadFile, ENABLE_UNIFICATION, isToolMaterial), // made of 2 Ingots.
-    toolHeadHammer("Hammer Heads", M * 6, null, MaterialIconType.toolHeadHammer, ENABLE_UNIFICATION, mat -> mat instanceof SolidMaterial && ((SolidMaterial) mat).toolDurability > 0), // made of 6 Ingots.
+    toolHeadHammer("Hammer Heads", M * 6, null, MaterialIconType.toolHeadHammer, ENABLE_UNIFICATION, isToolMaterial), // made of 6 Ingots.
     toolHeadPlow("Plow Heads", M * 4, null, MaterialIconType.toolHeadPlow, ENABLE_UNIFICATION, isToolMaterial), // made of 4 Ingots.
     toolHeadSaw("Saw Blades", M * 2, null, MaterialIconType.toolHeadSaw, ENABLE_UNIFICATION, isToolMaterial), // made of 2 Ingots.
     toolHeadBuzzSaw("Buzzsaw Blades", M * 4, null, MaterialIconType.toolHeadBuzzSaw, ENABLE_UNIFICATION, isToolMaterial), // made of 4 Ingots.
