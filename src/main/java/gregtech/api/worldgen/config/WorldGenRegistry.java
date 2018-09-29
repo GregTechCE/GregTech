@@ -99,7 +99,6 @@ public class WorldGenRegistry {
             Files.createDirectories(worldgenRootPath);
         }
         //attempt extraction if file extraction lock is absent or worldgen root directory is empty
-        // todo: "Old" is fugly.  Deprecate and/or replace with pattern-match on name
         if((!Files.exists(jarFileExtractLock) && !Files.exists(jarFileExtractLockOld)) || !Files.list(worldgenRootPath).findFirst().isPresent()) {
             if(!Files.exists(jarFileExtractLock)) {
                 //create extraction lock only if it doesn't exist

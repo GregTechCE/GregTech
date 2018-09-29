@@ -125,7 +125,7 @@ public enum OrePrefix {
     toolHeadHoe("Hoe Heads", M * 2, null, MaterialIconType.toolHeadHoe, ENABLE_UNIFICATION, isToolMaterial), // made of 2 Ingots.
     toolHeadSense("Sense Blades", M * 3, null, MaterialIconType.toolHeadSense, ENABLE_UNIFICATION, isToolMaterial), // made of 3 Ingots.
     toolHeadFile("File Heads", M * 2, null, MaterialIconType.toolHeadFile, ENABLE_UNIFICATION, isToolMaterial), // made of 2 Ingots.
-    toolHeadHammer("Hammer Heads", M * 6, null, MaterialIconType.toolHeadHammer, ENABLE_UNIFICATION, isToolMaterial), // made of 6 Ingots.
+    toolHeadHammer("Hammer Heads", M * 6, null, MaterialIconType.toolHeadHammer, ENABLE_UNIFICATION, mat -> mat instanceof SolidMaterial && ((SolidMaterial) mat).toolDurability > 0), // made of 6 Ingots.
     toolHeadPlow("Plow Heads", M * 4, null, MaterialIconType.toolHeadPlow, ENABLE_UNIFICATION, isToolMaterial), // made of 4 Ingots.
     toolHeadSaw("Saw Blades", M * 2, null, MaterialIconType.toolHeadSaw, ENABLE_UNIFICATION, isToolMaterial), // made of 2 Ingots.
     toolHeadBuzzSaw("Buzzsaw Blades", M * 4, null, MaterialIconType.toolHeadBuzzSaw, ENABLE_UNIFICATION, isToolMaterial), // made of 4 Ingots.
@@ -243,7 +243,7 @@ public enum OrePrefix {
     }
 
 	public static class Conditions {
-		public static Condition<Material> isToolMaterial = mat -> mat instanceof SolidMaterial && ((SolidMaterial) mat).toolDurability > 0;
+		public static Condition<Material> isToolMaterial = mat -> mat instanceof SolidMaterial && ((SolidMaterial) mat).toolDurability > 0 && !mat.hasFlag(NO_SMASHING);
 	}
 
     static {
@@ -298,63 +298,63 @@ public enum OrePrefix {
         armorBoots.defaultStackSize = 1;
         armor.defaultStackSize = 1;
 
-        gem.ignoredMaterials.add(Materials.Coal);
-        gem.ignoredMaterials.add(Materials.Charcoal);
-        gem.ignoredMaterials.add(Materials.NetherStar);
-        gem.ignoredMaterials.add(Materials.Diamond);
-        gem.ignoredMaterials.add(Materials.Emerald);
-        gem.ignoredMaterials.add(Materials.NetherQuartz);
-        gem.ignoredMaterials.add(Materials.EnderPearl);
-        gem.ignoredMaterials.add(Materials.EnderEye);
-        gem.ignoredMaterials.add(Materials.Flint);
-        gem.ignoredMaterials.add(Materials.Lapis);
-        dust.ignoredMaterials.add(Materials.Redstone);
-        dust.ignoredMaterials.add(Materials.Glowstone);
-        dust.ignoredMaterials.add(Materials.Gunpowder);
-        dust.ignoredMaterials.add(Materials.Sugar);
-        dust.ignoredMaterials.add(Materials.Blaze);
-        stick.ignoredMaterials.add(Materials.Wood);
-        stick.ignoredMaterials.add(Materials.Bone);
-        stick.ignoredMaterials.add(Materials.Blaze);
-        stick.ignoredMaterials.add(Materials.Paper);
-        ingot.ignoredMaterials.add(Materials.Iron);
-        ingot.ignoredMaterials.add(Materials.Gold);
-        ingot.ignoredMaterials.add(Materials.Wood);
-        ingot.ignoredMaterials.add(Materials.Paper);
-        nugget.ignoredMaterials.add(Materials.Wood);
-        nugget.ignoredMaterials.add(Materials.Gold);
-        nugget.ignoredMaterials.add(Materials.Paper);
-        nugget.ignoredMaterials.add(Materials.Iron);
-        plate.ignoredMaterials.add(Materials.Paper);
+        gem.setIgnored(Materials.Coal);
+        gem.setIgnored(Materials.Charcoal);
+        gem.setIgnored(Materials.NetherStar);
+        gem.setIgnored(Materials.Diamond);
+        gem.setIgnored(Materials.Emerald);
+        gem.setIgnored(Materials.NetherQuartz);
+        gem.setIgnored(Materials.EnderPearl);
+        gem.setIgnored(Materials.EnderEye);
+        gem.setIgnored(Materials.Flint);
+        gem.setIgnored(Materials.Lapis);
+        dust.setIgnored(Materials.Redstone);
+        dust.setIgnored(Materials.Glowstone);
+        dust.setIgnored(Materials.Gunpowder);
+        dust.setIgnored(Materials.Sugar);
+        dust.setIgnored(Materials.Blaze);
+        stick.setIgnored(Materials.Wood);
+        stick.setIgnored(Materials.Bone);
+        stick.setIgnored(Materials.Blaze);
+        stick.setIgnored(Materials.Paper);
+        ingot.setIgnored(Materials.Iron);
+        ingot.setIgnored(Materials.Gold);
+        ingot.setIgnored(Materials.Wood);
+        ingot.setIgnored(Materials.Paper);
+        nugget.setIgnored(Materials.Wood);
+        nugget.setIgnored(Materials.Gold);
+        nugget.setIgnored(Materials.Paper);
+        nugget.setIgnored(Materials.Iron);
+        plate.setIgnored(Materials.Paper);
 
-        bucket.ignoredMaterials.add(Materials.Lava);
-        bucket.ignoredMaterials.add(Materials.Milk);
-        bucket.ignoredMaterials.add(Materials.Water);
-        bottle.ignoredMaterials.add(Materials.Water);
-        bottle.ignoredMaterials.add(Materials.Milk);
-        block.ignoredMaterials.add(Materials.Iron);
-        block.ignoredMaterials.add(Materials.Gold);
-        block.ignoredMaterials.add(Materials.Lapis);
-        block.ignoredMaterials.add(Materials.Emerald);
-        block.ignoredMaterials.add(Materials.Redstone);
-        block.ignoredMaterials.add(Materials.Diamond);
-        block.ignoredMaterials.add(Materials.Coal);
-        block.ignoredMaterials.add(Materials.Glass);
-        block.ignoredMaterials.add(Materials.Marble);
-        block.ignoredMaterials.add(Materials.GraniteRed);
-        block.ignoredMaterials.add(Materials.Stone);
-        block.ignoredMaterials.add(Materials.Glowstone);
-        block.ignoredMaterials.add(Materials.Endstone);
-        block.ignoredMaterials.add(Materials.Wheat);
-        block.ignoredMaterials.add(Materials.Oilsands);
-        block.ignoredMaterials.add(Materials.Wood);
-        block.ignoredMaterials.add(Materials.RawRubber);
-        block.ignoredMaterials.add(Materials.Clay);
-        block.ignoredMaterials.add(Materials.Bone);
-        block.ignoredMaterials.add(Materials.NetherQuartz);
-        block.ignoredMaterials.add(Materials.Ice);
-        block.ignoredMaterials.add(Materials.Netherrack);
-        block.ignoredMaterials.add(Materials.Concrete);
+        bucket.setIgnored(Materials.Lava);
+        bucket.setIgnored(Materials.Milk);
+        bucket.setIgnored(Materials.Water);
+        bottle.setIgnored(Materials.Water);
+        bottle.setIgnored(Materials.Milk);
+        block.setIgnored(Materials.Iron);
+        block.setIgnored(Materials.Gold);
+        block.setIgnored(Materials.Lapis);
+        block.setIgnored(Materials.Emerald);
+        block.setIgnored(Materials.Redstone);
+        block.setIgnored(Materials.Diamond);
+        block.setIgnored(Materials.Coal);
+        block.setIgnored(Materials.Glass);
+        block.setIgnored(Materials.Marble);
+        block.setIgnored(Materials.GraniteRed);
+        block.setIgnored(Materials.Stone);
+        block.setIgnored(Materials.Glowstone);
+        block.setIgnored(Materials.Endstone);
+        block.setIgnored(Materials.Wheat);
+        block.setIgnored(Materials.Oilsands);
+        block.setIgnored(Materials.Wood);
+        block.setIgnored(Materials.RawRubber);
+        block.setIgnored(Materials.Clay);
+        block.setIgnored(Materials.Bone);
+        block.setIgnored(Materials.NetherQuartz);
+        block.setIgnored(Materials.Ice);
+        block.setIgnored(Materials.Netherrack);
+        block.setIgnored(Materials.Concrete);
 
         cableGtHex.addSecondaryMaterial(new MaterialStack(Materials.Rubber, dustSmall.materialAmount * 4));
         cableGtOctal.addSecondaryMaterial(new MaterialStack(Materials.Rubber, dustSmall.materialAmount * 3));

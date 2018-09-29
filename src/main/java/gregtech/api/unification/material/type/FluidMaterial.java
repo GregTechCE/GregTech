@@ -29,7 +29,7 @@ public class FluidMaterial extends Material {
          * Whenever system should generate fluid block for this fluid material
          * Renamed to GENERATE_FLUID_BLOCK to avoid confusion with dust blocks
          */
-        public static final long GENERATE_FLUID_BLOCK = GTUtility.createFlag(8);
+        public static final long GENERATE_FLUID_BLOCK = GTUtility.createFlag(44);
 
         /**
          * Add this flag to enable plasma generation for this material

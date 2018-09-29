@@ -76,12 +76,12 @@ public abstract class Material implements Comparable<Material> {
 		/**
 		 * Enables electrolyzer decomposition recipe generation
 		 */
-		public static final long DECOMPOSITION_BY_ELECTROLYZING = createFlag(0);
+		public static final long DECOMPOSITION_BY_ELECTROLYZING = createFlag(40);
 
 		/**
 		 * Enables centrifuge decomposition recipe generation
 		 */
-		public static final long DECOMPOSITION_BY_CENTRIFUGING = createFlag(1);
+		public static final long DECOMPOSITION_BY_CENTRIFUGING = createFlag(41);
 
         /**
          * Add to material if it has constantly burning aura
@@ -91,7 +91,7 @@ public abstract class Material implements Comparable<Material> {
 		/**
 		 * Add to material if it is some kind of flammable
 		 */
-		public static final long FLAMMABLE = createFlag(2);
+		public static final long FLAMMABLE = createFlag(42);
 
 		/**
 		 * Add to material if it is some kind of explosive
@@ -111,7 +111,7 @@ public abstract class Material implements Comparable<Material> {
         /**
          * Disables decomposition recipe generation for this material and all materials that has it as component
          */
-        public static final long DISABLE_DECOMPOSITION = createFlag(7);
+        public static final long DISABLE_DECOMPOSITION = createFlag(43);
 
         /**
          * Decomposition recipe requires hydrogen as additional input. Amount is equal to input amount
