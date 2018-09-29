@@ -202,7 +202,7 @@ public class MetaTileEntityLargeBoiler extends MultiblockWithDisplayBase {
             itemImportInventory, fluidImportInventory);
         if(dieselRecipe != null && dieselRecipe.matches(true,
             itemImportInventory, fluidImportInventory)) {
-            int fuelValue = dieselRecipe.getEUt() * dieselRecipe.getDuration() / 4;
+            int fuelValue = dieselRecipe.getEUt() * dieselRecipe.getDuration() / 128;
             return (int) Math.abs(fuelValue * boilerType.fuelConsumptionMultiplier);
         }
         Recipe denseFuelRecipe = RecipeMaps.SEMI_FLUID_GENERATOR_FUELS.findRecipe(GTValues.V[9],
