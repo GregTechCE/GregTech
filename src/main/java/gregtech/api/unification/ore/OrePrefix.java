@@ -68,10 +68,10 @@ public enum OrePrefix {
     ingot("Ingots", M, null, MaterialIconType.ingot, ENABLE_UNIFICATION | DISALLOW_RECYCLING, mat -> mat instanceof IngotMaterial), // A regular Ingot. Introduced by Eloraam
 
     gem("Gemstones", M, null, MaterialIconType.gem, ENABLE_UNIFICATION, mat -> mat instanceof GemMaterial), // A regular Gem worth one Dust. Introduced by Eloraam
-    gemChipped("Chipped Gemstones", M / 4, null, MaterialIconType.gemChipped, ENABLE_UNIFICATION, mat -> mat instanceof GemMaterial && gem.doGenerateItem(mat)), // A regular Gem worth one small Dust. Introduced by TerraFirmaCraft
-    gemFlawed("Flawed Gemstones", M / 2, null, MaterialIconType.gemFlawed, ENABLE_UNIFICATION, mat -> mat instanceof GemMaterial && gem.doGenerateItem(mat)), // A regular Gem worth two small Dusts. Introduced by TerraFirmaCraft
-    gemFlawless("Flawless Gemstones", M * 2, null, MaterialIconType.gemFlawless, ENABLE_UNIFICATION, mat -> mat instanceof GemMaterial && gem.doGenerateItem(mat)), // A regular Gem worth two Dusts. Introduced by TerraFirmaCraft
-    gemExquisite("Exquisite Gemstones", M * 4, null, MaterialIconType.gemExquisite, ENABLE_UNIFICATION, mat -> mat instanceof GemMaterial && gem.doGenerateItem(mat)), // A regular Gem worth four Dusts. Introduced by TerraFirmaCraft
+    gemChipped("Chipped Gemstones", M / 4, null, MaterialIconType.gemChipped, ENABLE_UNIFICATION, mat -> mat instanceof GemMaterial), // A regular Gem worth one small Dust. Introduced by TerraFirmaCraft
+    gemFlawed("Flawed Gemstones", M / 2, null, MaterialIconType.gemFlawed, ENABLE_UNIFICATION, mat -> mat instanceof GemMaterial), // A regular Gem worth two small Dusts. Introduced by TerraFirmaCraft
+    gemFlawless("Flawless Gemstones", M * 2, null, MaterialIconType.gemFlawless, ENABLE_UNIFICATION, mat -> mat instanceof GemMaterial), // A regular Gem worth two Dusts. Introduced by TerraFirmaCraft
+    gemExquisite("Exquisite Gemstones", M * 4, null, MaterialIconType.gemExquisite, ENABLE_UNIFICATION, mat -> mat instanceof GemMaterial), // A regular Gem worth four Dusts. Introduced by TerraFirmaCraft
 
     dustTiny("Tiny Dusts", M / 9, null, MaterialIconType.dustTiny, ENABLE_UNIFICATION | DISALLOW_RECYCLING, mat -> mat instanceof DustMaterial), // 1/9th of a Dust.
     dustSmall("Small Dusts", M / 4, null, MaterialIconType.dustSmall, ENABLE_UNIFICATION | DISALLOW_RECYCLING, mat -> mat instanceof DustMaterial), // 1/4th of a Dust.
@@ -298,16 +298,16 @@ public enum OrePrefix {
         armorBoots.defaultStackSize = 1;
         armor.defaultStackSize = 1;
 
-        gem.setIgnored(Materials.Coal);
-        gem.setIgnored(Materials.Charcoal);
-        gem.setIgnored(Materials.NetherStar);
         gem.setIgnored(Materials.Diamond);
         gem.setIgnored(Materials.Emerald);
-        gem.setIgnored(Materials.NetherQuartz);
-        gem.setIgnored(Materials.EnderPearl);
-        gem.setIgnored(Materials.EnderEye);
-        gem.setIgnored(Materials.Flint);
-        gem.setIgnored(Materials.Lapis);
+        excludeAllGems(Materials.Coal);
+        excludeAllGems(Materials.Charcoal);
+        excludeAllGems(Materials.NetherStar);
+        excludeAllGems(Materials.NetherQuartz);
+        excludeAllGems(Materials.EnderPearl);
+        excludeAllGems(Materials.EnderEye);
+        excludeAllGems(Materials.Flint);
+        excludeAllGems(Materials.Lapis);
         dust.setIgnored(Materials.Redstone);
         dust.setIgnored(Materials.Glowstone);
         dust.setIgnored(Materials.Gunpowder);
@@ -394,6 +394,14 @@ public enum OrePrefix {
         toolHeadDrill.addSecondaryMaterial(new MaterialStack(Materials.Steel, plate.materialAmount * 4));
         toolHeadChainsaw.addSecondaryMaterial(new MaterialStack(Materials.Steel, plate.materialAmount * 4 + ring.materialAmount * 2));
         toolHeadWrench.addSecondaryMaterial(new MaterialStack(Materials.Steel, ring.materialAmount + screw.materialAmount * 2));
+    }
+
+    private static void excludeAllGems(Material material) {
+        gem.setIgnored(material);
+        gemChipped.setIgnored(material);
+        gemFlawed.setIgnored(material);
+        gemFlawless.setIgnored(material);
+        gemExquisite.setIgnored(material);
     }
 
     @SafeVarargs
