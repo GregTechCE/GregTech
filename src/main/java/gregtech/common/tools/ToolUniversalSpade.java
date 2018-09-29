@@ -69,7 +69,7 @@ public class ToolUniversalSpade extends ToolBase {
 
     @Override
     public void onStatsAddedToTool(MetaValueItem item) {
-        item.addStats(new CrowbarBehaviour(2));
+        item.addStats(new CrowbarBehaviour(DamageValues.DAMAGE_FOR_UNIVERSAL_SPADE));
     }
 
 }

@@ -153,7 +153,7 @@ public class MaterialRecipeHandler {
                 OreDictUnifier.get(OrePrefix.dust, material), "X", "m", 'X', new UnificationEntry(ingotPrefix, material));
         }
 
-        if (!material.hasFlag(MatFlags.NO_SMASHING)) {
+        if (!material.hasFlag(MatFlags.NO_SMASHING) && material.toolDurability > 0) {
             ModHandler.addShapedRecipe(String.format("wrench_%s", material.toString()),
                 MetaItems.WRENCH.getStackForm(material, null),
                 "IhI", "III", " I ", 'I', new UnificationEntry(ingotPrefix, material));

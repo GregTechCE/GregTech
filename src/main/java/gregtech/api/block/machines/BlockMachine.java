@@ -11,6 +11,7 @@ import gregtech.api.metatileentity.MetaTileEntityHolder;
 import gregtech.api.render.MetaTileEntityRenderer;
 import gregtech.api.unification.stack.SimpleItemStack;
 import gregtech.api.util.GTUtility;
+import gregtech.common.tools.DamageValues;
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.SoundType;
@@ -227,9 +228,6 @@ public class BlockMachine extends Block implements ITileEntityProvider {
         metaTileEntity.getDrops(drops, harvesters.get());
     }
 
-    private static final int DAMAGE_FOR_SCREWDRIVER_CLICK = 40;
-    private static final int DAMAGE_FOR_WRENCH_CLICK = 60;
-
     @Override
     public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
         MetaTileEntity metaTileEntity = getMetaTileEntity(worldIn, pos);
@@ -238,15 +236,15 @@ public class BlockMachine extends Block implements ITileEntityProvider {
         if(!itemInHand.isEmpty()) {
             SimpleItemStack simpleItemStack = new SimpleItemStack(itemInHand);
             if(GregTechAPI.screwdriverList.contains(simpleItemStack)) {
-                if(GTUtility.doDamageItem(itemInHand, DAMAGE_FOR_SCREWDRIVER_CLICK, true) &&
+                if(GTUtility.doDamageItem(itemInHand, DamageValues.DAMAGE_FOR_SCREWDRIVER, true) &&
                     metaTileEntity.onScrewdriverClick(playerIn, hand, facing, hitX, hitY, hitZ)) {
-                    GTUtility.doDamageItem(itemInHand, DAMAGE_FOR_SCREWDRIVER_CLICK, false);
+                    GTUtility.doDamageItem(itemInHand, DamageValues.DAMAGE_FOR_SCREWDRIVER, false);
                     return true;
                 } else return false;
             } else if(GregTechAPI.wrenchList.contains(simpleItemStack)) {
-                if(GTUtility.doDamageItem(itemInHand, DAMAGE_FOR_WRENCH_CLICK, true) &&
+                if(GTUtility.doDamageItem(itemInHand, DamageValues.DAMAGE_FOR_WRENCH, true) &&
                     metaTileEntity.onWrenchClick(playerIn, hand, facing, hitX, hitY, hitZ)) {
-                    GTUtility.doDamageItem(itemInHand, DAMAGE_FOR_WRENCH_CLICK, false);
+                    GTUtility.doDamageItem(itemInHand, DamageValues.DAMAGE_FOR_WRENCH, false);
                     return true;
                 } else return false;
             }

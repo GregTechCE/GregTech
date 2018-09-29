@@ -30,7 +30,7 @@ public class ToolCrowbar extends ToolBase {
 
     @Override
     public void onStatsAddedToTool(MetaValueItem item) {
-        item.addStats(new CrowbarBehaviour(1));
+        item.addStats(new CrowbarBehaviour(DamageValues.DAMAGE_FOR_CROWBAR));
     }
 
     @Override

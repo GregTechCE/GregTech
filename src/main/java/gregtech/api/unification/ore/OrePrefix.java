@@ -300,6 +300,10 @@ public enum OrePrefix {
 
         gem.setIgnored(Materials.Diamond);
         gem.setIgnored(Materials.Emerald);
+        gemChipped.setIgnored(Materials.Lignite);
+        gemFlawed.setIgnored(Materials.Lignite);
+        gemFlawless.setIgnored(Materials.Lignite);
+        gemExquisite.setIgnored(Materials.Lignite);
         excludeAllGems(Materials.Coal);
         excludeAllGems(Materials.Charcoal);
         excludeAllGems(Materials.NetherStar);
