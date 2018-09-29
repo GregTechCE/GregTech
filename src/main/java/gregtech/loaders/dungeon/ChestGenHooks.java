@@ -1,4 +1,4 @@
-package gregtech.loaders.postload;
+package gregtech.loaders.dungeon;
 
 import com.google.common.collect.Lists;
 import net.minecraft.item.ItemStack;

@@ -1,4 +1,4 @@
-package gregtech.loaders.load;
+package gregtech.loaders.recipe;
 
 import gregtech.api.recipes.RecipeMaps;
 import gregtech.api.unification.material.Materials;

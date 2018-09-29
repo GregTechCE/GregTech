@@ -1,4 +1,4 @@
-package gregtech.loaders.postload;
+package gregtech.loaders.recipe;
 
 import gregtech.api.recipes.CountableIngredient;
 import gregtech.api.recipes.ModHandler;

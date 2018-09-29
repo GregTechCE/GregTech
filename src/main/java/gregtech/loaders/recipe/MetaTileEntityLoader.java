@@ -1,4 +1,4 @@
-package gregtech.loaders.load;
+package gregtech.loaders.recipe;
 
 import gregtech.api.GTValues;
 import gregtech.api.items.OreDictNames;
@@ -28,7 +28,7 @@ import static gregtech.common.blocks.BlockMultiblockCasing.MultiblockCasingType.
 import static gregtech.common.blocks.BlockTurbineCasing.TurbineCasingType.*;
 import static gregtech.common.blocks.BlockWarningSign.SignType.*;
 import static gregtech.common.blocks.BlockWireCoil.CoilType.*;
-import static gregtech.loaders.load.CraftingComponent.*;
+import static gregtech.loaders.recipe.CraftingComponent.*;
 
 public class MetaTileEntityLoader {
 

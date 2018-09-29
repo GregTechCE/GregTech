@@ -1,4 +1,4 @@
-package gregtech.loaders.postload;
+package gregtech.loaders.dungeon;
 
 import gregtech.api.unification.OreDictUnifier;
 import gregtech.api.unification.material.Materials;

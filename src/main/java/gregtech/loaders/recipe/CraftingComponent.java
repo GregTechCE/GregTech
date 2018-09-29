@@ -1,4 +1,4 @@
-package gregtech.loaders.load;
+package gregtech.loaders.recipe;
 
 import gregtech.api.items.OreDictNames;
 import gregtech.api.unification.material.MarkerMaterials;

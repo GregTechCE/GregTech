@@ -1,4 +1,4 @@
-package gregtech.loaders.postload;
+package gregtech.loaders;
 
 import gregtech.api.util.GTLog;
 

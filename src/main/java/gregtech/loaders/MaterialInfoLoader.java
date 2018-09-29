@@ -1,4 +1,4 @@
-package gregtech.loaders.preload;
+package gregtech.loaders;
 
 import gregtech.api.unification.OreDictUnifier;
 import gregtech.api.unification.material.Materials;
