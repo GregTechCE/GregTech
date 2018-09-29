@@ -1,13 +1,16 @@
 package gregtech.api.worldgen.config;
 
+import com.google.common.collect.Lists;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import gregtech.api.GTValues;
 import gregtech.api.util.GTLog;
+import gregtech.api.worldgen.filler.BlacklistedBlockFiller;
 import gregtech.api.worldgen.filler.IBlockFiller;
 import gregtech.api.worldgen.filler.SimpleBlockFiller;
 import gregtech.api.worldgen.generator.WorldGeneratorImpl;
 import gregtech.api.worldgen.shape.*;
+import net.minecraft.init.Blocks;
 import net.minecraft.world.WorldProvider;
 import net.minecraft.world.biome.Biome;
 import net.minecraftforge.common.MinecraftForge;
@@ -77,6 +80,7 @@ public class WorldGenRegistry {
         registerShapeGenerator("plate", PlateGenerator::new);
         registerShapeGenerator("single", SingleBlockGenerator::new);
         registerBlockFiller("simple", SimpleBlockFiller::new);
+        registerBlockFiller("ignore_bedrock", () -> new BlacklistedBlockFiller(Lists.newArrayList(Blocks.BEDROCK.getDefaultState())));
         WorldGeneratorImpl worldGenerator = new WorldGeneratorImpl();
         GameRegistry.registerWorldGenerator(worldGenerator, 1);
         MinecraftForge.ORE_GEN_BUS.register(worldGenerator);

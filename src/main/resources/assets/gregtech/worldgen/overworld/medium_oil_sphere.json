@@ -9,7 +9,7 @@
     "radius": [7, 9]
   },
   "filler": {
-    "type": "simple",
+    "type": "ignore_bedrock",
     "value": {
       "type": "weight_random",
       "values": [

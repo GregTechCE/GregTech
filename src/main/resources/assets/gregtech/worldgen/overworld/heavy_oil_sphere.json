@@ -9,14 +9,14 @@
     "radius": [4, 6]
   },
   "filler": {
-    "type": "simple",
+    "type": "ignore_bedrock",
     "value": {
       "type": "weight_random",
       "values": [
-		{
-		  "weight": 100,
-		  "value": "block:gregtech:fluid.oil_heavy"
-		}
+        {
+          "weight": 100,
+          "value": "block:gregtech:fluid.oil_heavy"
+        }
       ]
     }
   }

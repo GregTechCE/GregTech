@@ -9,19 +9,19 @@
     "radius": [12, 12]
   },
   "filler": {
-    "type": "simple",
+    "type": "ignore_bedrock",
     "value": {
       "type": "weight_random",
       "values": [
-		{
-		  "weight": 100,
-		  "value": {
-			"block": "gregtech:mineral",
-			"variant": "marble",
-			"chiseling_variant": "normal"
-		  }
-		}
-	  ]
-	}
-   }
+        {
+          "weight": 100,
+          "value": {
+            "block": "gregtech:mineral",
+            "variant": "marble",
+            "chiseling_variant": "normal"
+          }
+        }
+      ]
+    }
+  }
 }
