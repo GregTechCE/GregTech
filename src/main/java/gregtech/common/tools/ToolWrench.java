@@ -44,9 +44,4 @@ public class ToolWrench extends ToolBase {
     public void onStatsAddedToTool(MetaValueItem item) {
         item.addStats(new WrenchBehaviour(DamageValues.DAMAGE_FOR_WRENCH));
     }
-
-    @Override
-    public int getColor(boolean isToolHead, ItemStack stack) {
-        return super.getColor(isToolHead, stack);
-    }
 }

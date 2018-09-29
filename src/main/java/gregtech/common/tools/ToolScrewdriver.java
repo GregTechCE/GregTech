@@ -1,5 +1,7 @@
 package gregtech.common.tools;
 
+import gregtech.api.items.toolitem.ToolMetaItem;
+import gregtech.api.unification.material.type.SolidMaterial;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
@@ -36,4 +38,12 @@ public class ToolScrewdriver extends ToolBase {
             block.getMaterial() == Material.CIRCUITS;
     }
 
+    @Override
+    public int getColor(boolean isToolHead, ItemStack stack) {
+        SolidMaterial primaryMaterial = ToolMetaItem.getPrimaryMaterial(stack);
+        if (isToolHead) {
+            return primaryMaterial != null ? primaryMaterial.materialRGB : 0xFFFFFF;
+        }
+        return 0x0059c9;
+    }
 }
