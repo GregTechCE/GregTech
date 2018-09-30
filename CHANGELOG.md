@@ -1,5 +1,17 @@
 ## Changelog
 
+### 0.5.10
+* Fixed not colored wrenches and wrong crowbar overlay color
+* Rebalanced damage and durability values for tools
+* Fixed too long burn time for large boiler
+* Fixed worldgen replacing bedrock
+* Fixed crafted tools having 0 durability
+* Added emerald and diamond GT forms of gems
+* Removed rubber tools except soft hammer
+* Hoes now till coarse dirt too
+* Removed ambiguous gem + hammer -> gem recipes
+* Added 50% hammer tooltip
+
 ### 0.5.9
 * Added Stones and Oils to Generation in Overworld/Nether (Rongm[a]rio)
 * Added Chinese Translation (Timozer)
