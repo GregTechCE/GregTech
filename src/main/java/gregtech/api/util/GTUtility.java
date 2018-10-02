@@ -513,6 +513,59 @@ public class GTUtility {
         throw new IllegalArgumentException("Invalid weight");
     }
 
+    @Nullable
+    public static EnumFacing determineWrenchingSide(EnumFacing facing, float x, float y, float z) {
+        EnumFacing opposite = facing.getOpposite();
+        switch (facing) {
+            case DOWN:
+            case UP:
+                if (x < 0.25) {
+                    if (z < 0.25) return opposite;
+                    if (z > 0.75) return opposite;
+                    return EnumFacing.WEST;
+                }
+                if (x > 0.75) {
+                    if (z < 0.25) return opposite;
+                    if (z > 0.75) return opposite;
+                    return EnumFacing.EAST;
+                }
+                if (z < 0.25) return EnumFacing.NORTH;
+                if (z > 0.75) return EnumFacing.SOUTH;
+                return facing;
+            case NORTH:
+            case     SOUTH:
+                if (x < 0.25) {
+                    if (y < 0.25) return opposite;
+                    if (y > 0.75) return opposite;
+                    return EnumFacing.WEST;
+                }
+                if (x > 0.75) {
+                    if (y < 0.25) return opposite;
+                    if (y > 0.75) return opposite;
+                    return EnumFacing.EAST;
+                }
+                if (y < 0.25) return EnumFacing.DOWN;
+                if (y > 0.75) return EnumFacing.UP;
+                return facing;
+            case WEST:
+            case     EAST:
+                if (z < 0.25) {
+                    if (y < 0.25) return opposite;
+                    if (y > 0.75) return opposite;
+                    return EnumFacing.NORTH;
+                }
+                if (z > 0.75) {
+                    if (y < 0.25) return opposite;
+                    if (y > 0.75) return opposite;
+                    return EnumFacing.SOUTH;
+                }
+                if (y < 0.25) return EnumFacing.DOWN;
+                if (y > 0.75) return EnumFacing.UP;
+                return facing;
+        }
+        return null;
+    }
+
     /**
      * @return a list of itemstack linked with given item handler
      * modifications in list will reflect on item handler and wise-versa

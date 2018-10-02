@@ -251,9 +251,12 @@ public abstract class MetaTileEntity {
      */
     public boolean onWrenchClick(EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
         if(playerIn.isSneaking()) {
-            if(facing == getFrontFacing() || !isValidFrontFacing(facing))
+            EnumFacing side = GTUtility.determineWrenchingSide(facing, hitX, hitY, hitZ);
+            if(side == getFrontFacing() || !isValidFrontFacing(side))
                 return false;
-            setFrontFacing(facing);
+            if (side != null) {
+                setFrontFacing(side);
+            }
             return true;
         }
         return false;
