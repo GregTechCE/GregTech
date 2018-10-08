@@ -36,7 +36,7 @@ public abstract class WorldPipeNet<NodeDataType, T extends PipeNet<NodeDataType>
                 if(myPipeNet == null) {
                     myPipeNet = pipeNet;
                     myPipeNet.addNode(nodePos, node);
-                } else {
+                } else if(myPipeNet != pipeNet) {
                     myPipeNet.uniteNetworks(pipeNet);
                 }
             }
