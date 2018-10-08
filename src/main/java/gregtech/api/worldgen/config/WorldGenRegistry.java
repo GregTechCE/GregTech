@@ -3,10 +3,11 @@ package gregtech.api.worldgen.config;
 import com.google.common.collect.Lists;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import crafttweaker.annotations.ZenRegister;
 import gregtech.api.GTValues;
 import gregtech.api.util.GTLog;
 import gregtech.api.worldgen.filler.BlacklistedBlockFiller;
-import gregtech.api.worldgen.filler.IBlockFiller;
+import gregtech.api.worldgen.filler.BlockFiller;
 import gregtech.api.worldgen.filler.SimpleBlockFiller;
 import gregtech.api.worldgen.generator.WorldGeneratorImpl;
 import gregtech.api.worldgen.shape.*;
@@ -17,6 +18,8 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import org.apache.commons.io.IOUtils;
+import stanhebben.zenscript.annotations.ZenClass;
+import stanhebben.zenscript.annotations.ZenGetter;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -30,14 +33,16 @@ import java.util.Map.Entry;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
+@ZenClass("mods.gregtech.ore.WorldGenRegistry")
+@ZenRegister
 public class WorldGenRegistry {
 
     private static final JsonParser jsonParser = new JsonParser();
     public static final WorldGenRegistry INSTANCE = new WorldGenRegistry();
     private WorldGenRegistry() {}
 
-    private final Map<String, Supplier<IShapeGenerator>> shapeGeneratorRegistry = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
-    private final Map<String, Supplier<IBlockFiller>> blockFillerRegistry = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
+    private final Map<String, Supplier<ShapeGenerator>> shapeGeneratorRegistry = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
+    private final Map<String, Supplier<BlockFiller>> blockFillerRegistry = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
 
     private final List<OreDepositDefinition> registeredDefinitions = new ArrayList<>();
     private final Map<WorldProvider, WorldOreVeinCache> oreVeinCache = new WeakHashMap<>();
@@ -169,34 +174,39 @@ public class WorldGenRegistry {
         }
     }
 
-    public void registerShapeGenerator(String identifier, Supplier<IShapeGenerator> shapeGeneratorSupplier) {
+    public void registerShapeGenerator(String identifier, Supplier<ShapeGenerator> shapeGeneratorSupplier) {
         if(shapeGeneratorRegistry.containsKey(identifier))
             throw new IllegalArgumentException("Identifier already occupied:" + identifier);
         shapeGeneratorRegistry.put(identifier, shapeGeneratorSupplier);
     }
 
-    public void registerBlockFiller(String identifier, Supplier<IBlockFiller> blockFillerSupplier) {
+    public void registerBlockFiller(String identifier, Supplier<BlockFiller> blockFillerSupplier) {
         if(blockFillerRegistry.containsKey(identifier))
             throw new IllegalArgumentException("Identifier already occupied:" + identifier);
         blockFillerRegistry.put(identifier, blockFillerSupplier);
     }
 
-    public IShapeGenerator createShapeGenerator(JsonObject object) {
+    public ShapeGenerator createShapeGenerator(JsonObject object) {
         String identifier = object.get("type").getAsString();
         if(!shapeGeneratorRegistry.containsKey(identifier))
             throw new IllegalArgumentException("No shape generator found for type " + identifier);
-        IShapeGenerator shapeGenerator = shapeGeneratorRegistry.get(identifier).get();
+        ShapeGenerator shapeGenerator = shapeGeneratorRegistry.get(identifier).get();
         shapeGenerator.loadFromConfig(object);
         return shapeGenerator;
     }
 
-    public IBlockFiller createBlockFiller(JsonObject object) {
+    public BlockFiller createBlockFiller(JsonObject object) {
         String identifier = object.get("type").getAsString();
         if(!blockFillerRegistry.containsKey(identifier))
             throw new IllegalArgumentException("No block filler found for type " + identifier);
-        IBlockFiller blockFiller = blockFillerRegistry.get(identifier).get();
+        BlockFiller blockFiller = blockFillerRegistry.get(identifier).get();
         blockFiller.loadFromConfig(object);
         return blockFiller;
+    }
+
+    @ZenGetter("oreDeposits")
+    public static List<OreDepositDefinition> getOreDeposits() {
+        return Collections.unmodifiableList(INSTANCE.registeredDefinitions);
     }
 
 }

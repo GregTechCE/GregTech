@@ -1,23 +1,24 @@
 package gregtech.api.worldgen.shape;
 
-import codechicken.lib.vec.Vector3;
 import com.google.gson.JsonObject;
+import crafttweaker.annotations.ZenRegister;
 import gregtech.api.worldgen.config.OreConfigUtils;
 import gregtech.api.worldgen.generator.IBlockGeneratorAccess;
+import stanhebben.zenscript.annotations.ZenClass;
 
 import java.util.Random;
 
-public class EllipsoidGenerator implements IShapeGenerator {
-
-    private static final Vector3 xRotation = new Vector3(1, 0, 0);
-    private static final Vector3 yRotation = new Vector3(0, 1, 0);
-    private static final Vector3 zRotation = new Vector3(0, 0, 1);
+@ZenClass("mods.gregtech.ore.generator.EllipsoidGenerator")
+@ZenRegister
+public class EllipsoidGenerator extends ShapeGenerator {
 
     private int radiusMin;
     private int radiusMax;
 
     public EllipsoidGenerator() {
     }
+
+
 
     public EllipsoidGenerator(int radiusMin, int radiusMax) {
         this.radiusMin = radiusMin;
