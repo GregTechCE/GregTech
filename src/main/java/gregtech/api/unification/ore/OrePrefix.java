@@ -243,7 +243,7 @@ public enum OrePrefix {
     }
 
 	public static class Conditions {
-		public static Condition<Material> isToolMaterial = mat -> mat instanceof SolidMaterial && ((SolidMaterial) mat).toolDurability > 0 && !mat.hasFlag(NO_SMASHING);
+		public static Condition<Material> isToolMaterial = mat -> mat instanceof SolidMaterial && ((SolidMaterial) mat).toolDurability > 0;
 	}
 
     static {
@@ -300,18 +300,15 @@ public enum OrePrefix {
 
         gem.setIgnored(Materials.Diamond);
         gem.setIgnored(Materials.Emerald);
-        gemChipped.setIgnored(Materials.Lignite);
-        gemFlawed.setIgnored(Materials.Lignite);
-        gemFlawless.setIgnored(Materials.Lignite);
-        gemExquisite.setIgnored(Materials.Lignite);
-        excludeAllGems(Materials.Coal);
+        gem.setIgnored(Materials.Lapis);
+        gem.setIgnored(Materials.NetherQuartz);
+
         excludeAllGems(Materials.Charcoal);
         excludeAllGems(Materials.NetherStar);
-        excludeAllGems(Materials.NetherQuartz);
         excludeAllGems(Materials.EnderPearl);
         excludeAllGems(Materials.EnderEye);
         excludeAllGems(Materials.Flint);
-        excludeAllGems(Materials.Lapis);
+
         dust.setIgnored(Materials.Redstone);
         dust.setIgnored(Materials.Glowstone);
         dust.setIgnored(Materials.Gunpowder);
