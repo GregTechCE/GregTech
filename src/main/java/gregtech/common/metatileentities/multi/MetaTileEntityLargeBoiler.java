@@ -91,7 +91,7 @@ public class MetaTileEntityLargeBoiler extends MultiblockWithDisplayBase {
         }
     }
 
-    private final BoilerType boilerType;
+    public final BoilerType boilerType;
 
     private int currentTemperature;
     private int fuelBurnTicksLeft;

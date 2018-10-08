@@ -121,7 +121,8 @@ public class MultiblockInfoRecipeWrapper implements IRecipeWrapper, SceneRenderC
         GlStateManager.translate(size.x / 2.0f, size.y / 2.0f, size.z / 2.0f);
         GlStateManager.rotate(rotationY, 0.0f, 1.0f, 0.0f);
         GlStateManager.scale(1.5, 1.5, 1.5);
-        GlStateManager.translate(-size.x / 2.0f, -size.y / 2.0f, -size.z / 2.0f);
+        Vec3d translation = infoPage.getDisplayOffset();
+        GlStateManager.translate(-size.x / 2.0f + translation.x, -size.y / 2.0f + translation.y, -size.z / 2.0f + translation.z);
         GlStateManager.translate(-1.0f, -2.0f, 0.0f);
         if(layerIndex > 0) {
             GlStateManager.translate(0.0, -layerIndex, 0.0);

@@ -55,7 +55,7 @@ public class MetaTileEntityLargeTurbine extends RecipeMapMultiblockController {
         }
     }
 
-    private final TurbineType turbineType;
+    public final TurbineType turbineType;
 
     public MetaTileEntityLargeTurbine(String metaTileEntityId, TurbineType turbineType) {
         super(metaTileEntityId, turbineType.recipeMap);
@@ -196,7 +196,7 @@ public class MetaTileEntityLargeTurbine extends RecipeMapMultiblockController {
             MetaTileEntityRotorHolder rotorHolder = getAbilities(ABILITY_ROTOR_HOLDER).get(0);
             FluidStack inputFluid = recipe.getFluidInputs().get(0);
 
-            double fuelValue = Math.abs(recipe.getEUt()) * recipe.getDuration() / inputFluid.amount;
+            double fuelValue = Math.abs(recipe.getEUt()) * recipe.getDuration() / (inputFluid.amount * 1.0);
             double relativeRotorSpeed = rotorHolder.getRelativeRotorSpeed();
             double rotorEfficiency = rotorHolder.getRotorEfficiency();
 

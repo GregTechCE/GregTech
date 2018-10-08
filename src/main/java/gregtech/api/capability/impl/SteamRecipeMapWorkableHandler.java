@@ -154,6 +154,11 @@ public class SteamRecipeMapWorkableHandler extends RecipeMapWorkableHandler {
     }
 
     @Override
+    protected int[] calculateOverclock(int EUt, long voltage, long amperage, int duration, boolean consumeInputs) {
+        return super.calculateOverclock(EUt, voltage, amperage, duration, consumeInputs);
+    }
+
+    @Override
     protected long getEnergyStored() {
         return (long) Math.ceil(steamFluidTank.getFluidAmount() * conversionRate);
     }

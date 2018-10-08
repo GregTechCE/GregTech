@@ -2,7 +2,6 @@ package gregtech.common.render;
 
 import codechicken.lib.vec.Vector3;
 import gregtech.api.GregTechAPI;
-import gregtech.api.items.toolitem.ToolMetaItem;
 import gregtech.api.metatileentity.MetaTileEntityHolder;
 import gregtech.api.unification.stack.SimpleItemStack;
 import net.minecraft.block.material.Material;
@@ -37,30 +36,22 @@ public class WrenchOverlayRenderer {
         EntityPlayer player = event.getPlayer();
         World world = player.world;
         RayTraceResult target = event.getTarget();
+        if (target.typeOfHit != RayTraceResult.Type.BLOCK) {
+            return; //magically, draw block highlight is called not only for blocks (see forge issues)
+        }
         BlockPos pos = target.getBlockPos();
         IBlockState blockState = world.getBlockState(pos);
-        TileEntity te = world.getTileEntity(pos);
-
-        if (!(te instanceof MetaTileEntityHolder)) {
-            return;
-        }
-
+        TileEntity tileEntity = world.getTileEntity(pos);
         ItemStack heldItem = player.getHeldItem(EnumHand.MAIN_HAND);
-        if (!(heldItem.getItem() instanceof ToolMetaItem) || !GregTechAPI.wrenchList.contains(new SimpleItemStack(heldItem))) {
-            return;
+        if (!(tileEntity instanceof MetaTileEntityHolder) ||
+            !GregTechAPI.wrenchList.contains(new SimpleItemStack(heldItem))) {
+            return; //i really hate these short lines compared to long lines above
         }
-
-        if (target.typeOfHit != RayTraceResult.Type.BLOCK) {
-            return;
-        }
-
 
         EnumFacing facing = target.sideHit;
-
-
         GlStateManager.enableBlend();
         GlStateManager.tryBlendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
-        GlStateManager.glLineWidth(10.0F);
+        GlStateManager.glLineWidth(2.0F);
         GlStateManager.disableTexture2D();
         GlStateManager.depthMask(false);
 

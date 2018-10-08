@@ -238,18 +238,16 @@ public abstract class Material implements Comparable<Material> {
             !hasFlag(MatFlags.DECOMPOSITION_BY_CENTRIFUGING) &&
             !hasFlag(MatFlags.DECOMPOSITION_BY_ELECTROLYZING) &&
             !hasFlag(MatFlags.DISABLE_DECOMPOSITION)) {
-	        boolean onlyFluidMaterials = true;
 	        boolean onlyMetalMaterials = true;
 	        for(MaterialStack materialStack : materialComponents) {
 	            Material material = materialStack.material;
-	            onlyFluidMaterials &= material.getClass() == FluidMaterial.class;
-	            onlyMetalMaterials &= material.getClass() == IngotMaterial.class;
+	            onlyMetalMaterials &= material instanceof IngotMaterial;
             }
-            if(onlyFluidMaterials || onlyMetalMaterials) {
-	            //if we contain only fluids or only metals, then centrifuging will do it's job
+            //allow centrifuging of alloy materials only
+            if(onlyMetalMaterials) {
 	            materialGenerationFlags |= MatFlags.DECOMPOSITION_BY_CENTRIFUGING;
             } else {
-	            //otherwise, we use electrolyzing to break material into ions
+	            //otherwise, we use electrolyzing to break material into components
 	            materialGenerationFlags |= MatFlags.DECOMPOSITION_BY_ELECTROLYZING;
             }
         }

@@ -142,15 +142,18 @@ public abstract class RecipeMapWorkableHandler extends MTETrait implements IWork
         if(negativeEU)
             EUt = -EUt;
         if (EUt <= 16) {
-            int resultEUt = EUt * (1 << (tier - 1)) * (1 << (tier - 1));
-            int resultDuration = duration / (1 << (tier - 1));
+            int resultEUt = EUt * (1 << tier) * (1 << tier);
+            int resultDuration = duration / (1 << tier);
             return new int[] {negativeEU ? -resultEUt : resultEUt, resultDuration};
         } else {
             int resultEUt = EUt;
             int resultDuration = duration;
-            while (resultEUt <= GTValues.V[tier - 1] * amperage) {
+            //prevent efficiency gain for generators recipes
+            int durationMultiplier = negativeEU ? 4 : 2;
+            //do not overclock further if duration is already too small
+            while (resultDuration >= durationMultiplier && resultEUt <= GTValues.V[tier - 1] * amperage) {
                 resultEUt *= 4;
-                resultDuration /= 2;
+                resultDuration /= durationMultiplier;
             }
             return new int[] {negativeEU ? -resultEUt : resultEUt, resultDuration};
         }

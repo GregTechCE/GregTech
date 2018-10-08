@@ -24,7 +24,6 @@ public class ToolJackHammer extends ToolDrillLV {
         return enchantment.type.canEnchantItem(Items.IRON_PICKAXE);
     }
 
-
     @Override
     public int getToolDamagePerBlockBreak(ItemStack stack) {
         return 4;

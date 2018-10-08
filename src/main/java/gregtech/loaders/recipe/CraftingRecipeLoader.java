@@ -12,11 +12,15 @@ import gregtech.common.blocks.MetaBlocks;
 import gregtech.common.blocks.wood.BlockGregLog.LogVariant;
 import gregtech.common.items.MetaItems;
 import gregtech.common.pipelike.fluidpipe.FluidPipeType;
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockPlanks.EnumType;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.common.registry.ForgeRegistries;
+import net.minecraftforge.oredict.ShapedOreRecipe;
 
 public class CraftingRecipeLoader {
 
@@ -143,7 +147,12 @@ public class CraftingRecipeLoader {
             ModHandler.removeRecipeByName(new ResourceLocation("minecraft:sugar"));
             ModHandler.addShapedRecipe("paper_dust", OreDictUnifier.get(OrePrefix.dust, Materials.Paper, 2), "SSS", " m ", 'S', new ItemStack(Items.REEDS));
             ModHandler.addShapedRecipe("sugar", OreDictUnifier.get(OrePrefix.dust, Materials.Sugar, 1), "Sm ", 'S', new ItemStack(Items.REEDS));
-            ModHandler.addShapedRecipe("paper", OreDictUnifier.get(OrePrefix.plate, Materials.Paper, 2), " C ", "SSS", " C ", 'S', OreDictUnifier.get(OrePrefix.dust, Materials.Paper, 1), 'C', new ItemStack(Blocks.STONE_SLAB));
+            ItemStack resultStack = OreDictUnifier.get(OrePrefix.plate, Materials.Paper, 2);
+            Object[] paperRecipeIngredients = ModHandler.finalizeShapedRecipeInput(" C ", "SSS", " C ", 'S', OreDictUnifier.get(OrePrefix.dust, Materials.Paper, 1), 'C', new ItemStack(Blocks.STONE_SLAB));
+            IRecipe recipeDelegate = new ShapedOreRecipe(null, resultStack, paperRecipeIngredients).setMirrored(false);
+            IRecipe recipeWrapper = new ContainerRecipeWrapper(recipeDelegate,
+                stack -> Block.getBlockFromItem(stack.getItem()) == Blocks.STONE_SLAB).setRegistryName("paper");
+            ForgeRegistries.RECIPES.register(recipeWrapper);
         }
 
         if (ConfigHolder.vanillaRecipes.flintAndSteelRequireSteel) {

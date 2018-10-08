@@ -1,8 +1,15 @@
 package gregtech.common.tools;
 
+import gregtech.api.items.metaitem.MetaItem.MetaValueItem;
+import gregtech.common.items.behaviors.PlungerBehaviour;
 import net.minecraft.item.ItemStack;
 
 public class ToolPlunger extends ToolBase {
+
+    @Override
+    public void onStatsAddedToTool(MetaValueItem metaValueItem) {
+        metaValueItem.addStats(new PlungerBehaviour(DamageValues.DAMAGE_FOR_PLUNGER));
+    }
 
     @Override
     public int getToolDamagePerBlockBreak(ItemStack stack) {

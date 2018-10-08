@@ -9,6 +9,7 @@ import gregtech.api.capability.impl.FluidTankList;
 import gregtech.api.capability.impl.SteamRecipeMapWorkableHandler;
 import gregtech.api.gui.ModularUI;
 import gregtech.api.gui.resources.TextureArea;
+import gregtech.api.gui.widgets.ImageWidget;
 import gregtech.api.gui.widgets.LabelWidget;
 import gregtech.api.recipes.ModHandler;
 import gregtech.api.recipes.RecipeMap;
@@ -39,7 +40,7 @@ public abstract class SteamMetaTileEntity extends MetaTileEntity {
     public SteamMetaTileEntity(String metaTileEntityId, RecipeMap<?> recipeMap, OrientedOverlayRenderer renderer, boolean isHighPressure) {
         super(metaTileEntityId);
         this.workableHandler = new SteamRecipeMapWorkableHandler(this,
-            recipeMap, isHighPressure ? 32 : 16, steamFluidTank, 1.0);
+            recipeMap, isHighPressure ? 32 : 8, steamFluidTank, 1.0);
         this.isHighPressure = isHighPressure;
         this.renderer = renderer;
         BRONZE_BACKGROUND_TEXTURE = getFullGuiTexture("%s_gui");
@@ -113,6 +114,8 @@ public abstract class SteamMetaTileEntity extends MetaTileEntity {
     public ModularUI.Builder createUITemplate(EntityPlayer player) {
         return ModularUI.builder(BRONZE_BACKGROUND_TEXTURE, 176, 166)
             .widget(new LabelWidget(6, 6, getMetaFullName()))
+            .widget(new ImageWidget(79, 42, 18, 18, getFullGuiTexture("not_enough_steam_%s"))
+                .setPredicate(() -> workableHandler.isHasNotEnoughEnergy()))
             .bindPlayerInventory(player.inventory, BRONZE_SLOT_BACKGROUND_TEXTURE);
     }
 }
