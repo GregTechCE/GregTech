@@ -57,6 +57,7 @@ public class MultiblockInfoRecipeWrapper implements IRecipeWrapper, SceneRenderC
     public void getIngredients(IIngredients ingredients) {
         ItemStack itemStack = infoPage.getController().getStackForm();
         ingredients.setInput(ItemStack.class, itemStack);
+        ingredients.setOutput(ItemStack.class, itemStack);
     }
 
     public void setRecipeLayout(RecipeLayout layout) {

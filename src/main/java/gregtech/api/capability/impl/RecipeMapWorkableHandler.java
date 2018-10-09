@@ -136,14 +136,15 @@ public abstract class RecipeMapWorkableHandler extends MTETrait implements IWork
 
     protected int[] calculateOverclock(int EUt, long voltage, long amperage, int duration, boolean consumeInputs) {
         boolean negativeEU = EUt < 0;
-        int tier = GTUtility.getTierByVoltage(voltage);
+        int tier = getOverclockingTier(voltage);
         if(GTValues.V[tier] <= EUt || tier == 0)
             return new int[] {EUt, duration};
         if(negativeEU)
             EUt = -EUt;
         if (EUt <= 16) {
-            int resultEUt = EUt * (1 << tier) * (1 << tier);
-            int resultDuration = duration / (1 << tier);
+            int multiplier = tier - 1;
+            int resultEUt = EUt * (1 << multiplier) * (1 << multiplier);
+            int resultDuration = duration / (1 << multiplier);
             return new int[] {negativeEU ? -resultEUt : resultEUt, resultDuration};
         } else {
             int resultEUt = EUt;
@@ -157,6 +158,10 @@ public abstract class RecipeMapWorkableHandler extends MTETrait implements IWork
             }
             return new int[] {negativeEU ? -resultEUt : resultEUt, resultDuration};
         }
+    }
+
+    protected int getOverclockingTier(long voltage) {
+        return GTUtility.getTierByVoltage(voltage);
     }
 
     protected void setupRecipe(Recipe recipe) {

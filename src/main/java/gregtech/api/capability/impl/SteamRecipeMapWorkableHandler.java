@@ -1,5 +1,6 @@
 package gregtech.api.capability.impl;
 
+import gregtech.api.GTValues;
 import gregtech.api.damagesources.DamageSources;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.recipes.Recipe;
@@ -7,11 +8,13 @@ import gregtech.api.recipes.RecipeMap;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.EntitySelectors;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.WorldServer;
@@ -20,18 +23,18 @@ import net.minecraftforge.fluids.IFluidTank;
 public class SteamRecipeMapWorkableHandler extends RecipeMapWorkableHandler {
 
     private final IFluidTank steamFluidTank;
+    private final boolean isHighPressure;
     private final double conversionRate; //energy units per millibucket
-    private final long maxVoltage;
 
     private boolean needsVenting;
     private boolean ventingStuck;
     private EnumFacing ventingSide;
 
-    public SteamRecipeMapWorkableHandler(MetaTileEntity tileEntity, RecipeMap<?> recipeMap, long maxVoltage, IFluidTank steamFluidTank, double conversionRate) {
+    public SteamRecipeMapWorkableHandler(MetaTileEntity tileEntity, RecipeMap<?> recipeMap, boolean isHighPressure, IFluidTank steamFluidTank, double conversionRate) {
         super(tileEntity, recipeMap);
         this.steamFluidTank = steamFluidTank;
         this.conversionRate = conversionRate;
-        this.maxVoltage = maxVoltage;
+        this.isHighPressure = isHighPressure;
     }
 
     public boolean isVentingStuck() {
@@ -117,15 +120,16 @@ public class SteamRecipeMapWorkableHandler extends RecipeMapWorkableHandler {
                 .getEntitiesWithinAABB(EntityLivingBase.class, new AxisAlignedBB(ventingBlockPos), EntitySelectors.CAN_AI_TARGET)
                 .forEach(entity -> entity.attackEntityFrom(DamageSources.getHeatDamage(), 6.0f));
             WorldServer world = (WorldServer) metaTileEntity.getWorld();
-            world.spawnParticle(EnumParticleTypes.SMOKE_LARGE,
-                machinePos.getX() + 0.5 + ventingSide.getFrontOffsetX() * 0.6,
-                machinePos.getY() + 0.5 + ventingSide.getFrontOffsetY() * 0.6,
-                machinePos.getZ() + 0.5 + ventingSide.getFrontOffsetZ() * 0.6,
+            double posX = machinePos.getX() + 0.5 + ventingSide.getFrontOffsetX() * 0.6;
+            double posY = machinePos.getY() + 0.5 + ventingSide.getFrontOffsetY() * 0.6;
+            double posZ = machinePos.getZ() + 0.5 + ventingSide.getFrontOffsetZ() * 0.6;
+
+            world.spawnParticle(EnumParticleTypes.SMOKE_LARGE, posX, posY, posZ,
                 7 + world.rand.nextInt(3),
                 ventingSide.getFrontOffsetX() / 2.0,
                 ventingSide.getFrontOffsetY() / 2.0,
                 ventingSide.getFrontOffsetZ() / 2.0, 0.1);
-            //TODO some good sound for venting
+            world.playSound(null, posX, posY, posZ, SoundEvents.BLOCK_LAVA_EXTINGUISH, SoundCategory.BLOCKS, 1.0f, 1.0f);
             setNeedsVenting(false);
         } else if (!ventingStuck) {
             setVentingStuck(true);
@@ -177,7 +181,12 @@ public class SteamRecipeMapWorkableHandler extends RecipeMapWorkableHandler {
 
     @Override
     protected long getMaxVoltage() {
-        return maxVoltage;
+        return GTValues.V[GTValues.LV];
+    }
+
+    @Override
+    protected int getOverclockingTier(long voltage) {
+        return isHighPressure ? GTValues.MV : GTValues.LV;
     }
 
     @Override
