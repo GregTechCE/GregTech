@@ -48,7 +48,7 @@ public class MultiblockRecipeMapWorkable extends RecipeMapWorkableHandler {
     protected boolean drawEnergy(int recipeEUt) {
         long resultEnergy = getEnergyStored() - recipeEUt;
         if(resultEnergy >= 0L && resultEnergy <= getEnergyCapacity()) {
-            getEnergyContainer().addEnergy(-recipeEUt);
+            getEnergyContainer().changeEnergy(-recipeEUt);
             return true;
         } else return false;
     }

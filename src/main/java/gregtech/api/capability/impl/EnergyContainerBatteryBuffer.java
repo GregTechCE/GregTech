@@ -166,7 +166,7 @@ public class EnergyContainerBatteryBuffer extends MTETrait implements IEnergyCon
     }
 
     @Override
-    public long addEnergy(long energyToAdd) {
+    public long changeEnergy(long energyToAdd) {
         long inputVoltage = getInputVoltage();
         return acceptEnergyFromNetwork(null, inputVoltage, energyToAdd / inputVoltage) * inputVoltage;
     }

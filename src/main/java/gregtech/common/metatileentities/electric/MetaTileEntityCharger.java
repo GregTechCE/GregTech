@@ -50,7 +50,7 @@ public class MetaTileEntityCharger extends TieredMetaTileEntity {
                 }
             }
             if(energyUsedUp > 0) {
-                energyContainer.addEnergy(-energyUsedUp);
+                energyContainer.changeEnergy(-energyUsedUp);
             }
         }
     }

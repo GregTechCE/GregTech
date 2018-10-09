@@ -122,7 +122,7 @@ public class EnergyContainerHandler extends MTETrait implements IEnergyContainer
             long dischargedBy = electricItem.discharge(getEnergyCanBeInserted(), machineTier, false, true, false);
             if(dischargedBy == 0L) return;
             itemHandler.setStackInSlot(slotIndex, stackInSlot);
-            addEnergy(dischargedBy);
+            changeEnergy(dischargedBy);
         }
     }
 
@@ -191,7 +191,7 @@ public class EnergyContainerHandler extends MTETrait implements IEnergyContainer
     }
 
     @Override
-    public long addEnergy(long energyToAdd) {
+    public long changeEnergy(long energyToAdd) {
         long oldEnergyStored = getEnergyStored();
         long newEnergyStored = (maxCapacity - oldEnergyStored < energyToAdd) ? maxCapacity : (oldEnergyStored + energyToAdd);
         if(newEnergyStored < 0)

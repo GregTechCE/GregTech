@@ -209,7 +209,7 @@ public class MetaTileEntityPump extends TieredMetaTileEntity {
                 exportFluids.fill(drainStack, true);
                 fluidHandler.drain(drainStack.amount, true);
                 this.fluidSourceBlocks.remove(fluidBlockPos);
-                energyContainer.addEnergy(-GTValues.V[getTier()]);
+                energyContainer.changeEnergy(-GTValues.V[getTier()]);
             }
         }
     }

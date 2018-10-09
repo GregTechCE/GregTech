@@ -2260,11 +2260,17 @@ gregtech.machine.pump.lv.name=Basic Pump
 gregtech.machine.pump.mv.name=Advanced Pump
 gregtech.machine.pump.hv.name=Advanced Pump II
 gregtech.machine.pump.ev.name=Advanced Pump III
-gregtech.machine.pump.iv.name=Advanced Pump IV
-gregtech.machine.pump.luv.name=Advanced Pump V
-gregtech.machine.pump.zpm.name=Advanced Pump VI
-gregtech.machine.pump.uv.name=Advanced Pump VII
-gregtech.machine.pump.max.name=Advanced Pump VIII
+
+#Air Collectors
+gregtech.machine.air_collector.lv.name=Basic Air Collector
+gregtech.machine.air_collector.mv.name=Advanced Air Collector
+gregtech.machine.air_collector.hv.name=Advanced Air Collector II
+gregtech.machine.air_collector.ev.name=Atmosphere Collector III
+gregtech.machine.air_collector.description=Collects air from adjacent blocks
+
+#Tesla Coil
+gregtech.machine.tesla_coil.name=Tesla Coil
+gregtech.machine.tesla_coil.description=Damages all living entities within 7 blocks range/Consumes 2500 EU for 1 damage point\nInternal buffer Capacity: §e256k EU
 
 # General machinery
 gregtech.machine.basic.output_override.reset=Output filter: all tanks.

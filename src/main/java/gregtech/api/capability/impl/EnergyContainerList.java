@@ -30,10 +30,10 @@ public class EnergyContainerList implements IEnergyContainer.IEnergyContainerOve
     }
 
     @Override
-    public long addEnergy(long energyToAdd) {
+    public long changeEnergy(long energyToAdd) {
         long energyAdded = 0L;
         for(IEnergyContainer energyContainer : energyContainerList) {
-            energyAdded += energyContainer.addEnergy(energyToAdd - energyAdded);
+            energyAdded += energyContainer.changeEnergy(energyToAdd - energyAdded);
             if(energyAdded == energyToAdd) break;
         }
         return energyAdded;

@@ -147,7 +147,9 @@ public class MetaTileEntities {
     public static MetaTileEntityTank TUNGSTENSTEEL_TANK;
 
     //MISC MACHINES SECTION
-    public static MetaTileEntityPump[] PUMP = new MetaTileEntityPump[GTValues.V.length - 1];
+    public static MetaTileEntityPump[] PUMP = new MetaTileEntityPump[4];
+    public static MetaTileEntityAirCollector[] AIR_COLLECTOR = new MetaTileEntityAirCollector[4];
+    public static MetaTileEntityTeslaCoil TESLA_COIL;
 
     public static void init() {
         GTLog.logger.info("Registering MetaTileEntities");
@@ -465,11 +467,16 @@ public class MetaTileEntities {
         TITANIUM_TANK = GregTechAPI.registerMetaTileEntity(815, new MetaTileEntityTank("titanium_tank", Materials.Titanium, 32000));
         TUNGSTENSTEEL_TANK = GregTechAPI.registerMetaTileEntity(816, new MetaTileEntityTank("tungstensteel_tank", Materials.TungstenSteel, 48000));
 
-        for(int i = 1; i < GTValues.V.length; i++) {
+        for(int i = 1; i < 5; i++) {
             String voltageName = GTValues.VN[i].toLowerCase();
             PUMP[i - 1] = new MetaTileEntityPump("pump." + voltageName, i);
+            AIR_COLLECTOR[i - 1] = new MetaTileEntityAirCollector("air_collector." + voltageName, i);
             GregTechAPI.registerMetaTileEntity(900 + 10 * (i - 1), PUMP[i - 1]);
+            GregTechAPI.registerMetaTileEntity(950 + 10 * (i - 1), AIR_COLLECTOR[i - 1]);
         }
+
+        TESLA_COIL = new MetaTileEntityTeslaCoil("tesla_coil");
+        GregTechAPI.registerMetaTileEntity(1001, TESLA_COIL);
     }
 
 }

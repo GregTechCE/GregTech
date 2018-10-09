@@ -65,7 +65,7 @@ public class MetaTileEntityMagicEnergyConverter extends TieredMetaTileEntity {
                 }
             } else if (essentiaLeft > 0) {
                 --this.essentiaLeft;
-                energyContainer.addEnergy(energyToAdd);
+                energyContainer.changeEnergy(energyToAdd);
                 setActive(true);
             }
         }
