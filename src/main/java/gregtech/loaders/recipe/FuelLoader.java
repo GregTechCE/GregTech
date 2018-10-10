@@ -15,36 +15,36 @@ public class FuelLoader {
 
         //6400EU
         RecipeMaps.DIESEL_GENERATOR_FUELS.recipeBuilder()
-            .fluidInputs(Materials.BioFuel.getFluid(60))
-            .duration(12)
+            .fluidInputs(Materials.BioFuel.getFluid(240))
+            .duration(48)
             .EUt(-32)
             .buildAndRegister();
 
         //32000EU
         RecipeMaps.DIESEL_GENERATOR_FUELS.recipeBuilder()
-            .fluidInputs(Materials.SulfuricLightFuel.getFluid(12))
-            .duration(12)
+            .fluidInputs(Materials.SulfuricLightFuel.getFluid(48))
+            .duration(48)
             .EUt(-32)
             .buildAndRegister();
 
         //32000EU
         RecipeMaps.DIESEL_GENERATOR_FUELS.recipeBuilder()
-            .fluidInputs(Materials.SulfuricNaphtha.getFluid(12))
-            .duration(12)
+            .fluidInputs(Materials.SulfuricNaphtha.getFluid(48))
+            .duration(48)
             .EUt(-32)
             .buildAndRegister();
 
         //256000EU
         RecipeMaps.DIESEL_GENERATOR_FUELS.recipeBuilder()
-            .fluidInputs(Materials.SulfuricHeavyFuel.getFluid(12))
-            .duration(24)
+            .fluidInputs(Materials.SulfuricHeavyFuel.getFluid(48))
+            .duration(48)
             .EUt(-128)
             .buildAndRegister();
 
         //148000EU
         RecipeMaps.DIESEL_GENERATOR_FUELS.recipeBuilder()
-            .fluidInputs(Materials.Ethanol.getFluid(48))
-            .duration(14)
+            .fluidInputs(Materials.Ethanol.getFluid(120))
+            .duration(60)
             .EUt(-512)
             .buildAndRegister();
 
@@ -62,25 +62,18 @@ public class FuelLoader {
             .EUt(-32)
             .buildAndRegister();
 
-        //192000EU
-        RecipeMaps.DIESEL_GENERATOR_FUELS.recipeBuilder()
-            .fluidInputs(Materials.HeavyFuel.getFluid(13))
-            .duration(5)
-            .EUt(-512)
-            .buildAndRegister();
-
         //512000EU
         RecipeMaps.DIESEL_GENERATOR_FUELS.recipeBuilder()
-            .fluidInputs(Materials.NitroFuel.getFluid(12))
-            .duration(12)
+            .fluidInputs(Materials.NitroFuel.getFluid(24))
+            .duration(48)
             .EUt(-512)
             .buildAndRegister();
 
         //8 SteamUnit -> 5EU/t
         //52 SteamUnit -> 32EU/t
         RecipeMaps.STEAM_TURBINE_FUELS.recipeBuilder()
-            .fluidInputs(Materials.Steam.getFluid(624))
-            .duration(12)
+            .fluidInputs(Materials.Steam.getFluid(2500))
+            .duration(64)
             .EUt(-32)
             .buildAndRegister();
 
@@ -94,14 +87,14 @@ public class FuelLoader {
         //208000EU  // actually seems to produce 104000
         RecipeMaps.GAS_TURBINE_FUELS.recipeBuilder()
             .fluidInputs(Materials.Methane.getFluid(60))
-            .duration(49)
+            .duration(52)
             .EUt(-128)
             .buildAndRegister();
 
         //256000EU
         RecipeMaps.GAS_TURBINE_FUELS.recipeBuilder()
-            .fluidInputs(Materials.LPG.getFluid(12))
-            .duration(24)
+            .fluidInputs(Materials.LPG.getFluid(24))
+            .duration(48)
             .EUt(-128)
             .buildAndRegister();
 
