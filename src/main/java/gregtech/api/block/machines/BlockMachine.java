@@ -243,7 +243,7 @@ public class BlockMachine extends Block implements ITileEntityProvider {
                 } else return false;
             } else if(GregTechAPI.wrenchList.contains(simpleItemStack)) {
                 if(GTUtility.doDamageItem(itemInHand, DamageValues.DAMAGE_FOR_WRENCH, true) &&
-                    metaTileEntity.onWrenchClick(playerIn, hand, facing, hitX, hitY, hitZ)) {
+                    metaTileEntity.onWrenchClick(playerIn, hand, GTUtility.determineWrenchingSide(facing, hitX, hitY, hitZ), hitX, hitY, hitZ)) {
                     GTUtility.doDamageItem(itemInHand, DamageValues.DAMAGE_FOR_WRENCH, false);
                     return true;
                 } else return false;

@@ -213,11 +213,11 @@ public abstract class MetaTileEntity {
     }
 
     protected FluidTankList createImportFluidHandler() {
-        return new FluidTankList();
+        return new FluidTankList(false);
     }
 
     protected FluidTankList createExportFluidHandler() {
-        return new FluidTankList();
+        return new FluidTankList(false);
     }
 
     protected boolean openGUIOnRightClick() {
@@ -249,9 +249,8 @@ public abstract class MetaTileEntity {
      * Called when player clicks wrench on specific side of this meta tile entity
      * @return true if something happened, so wrench will get damaged and animation will be played
      */
-    public boolean onWrenchClick(EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+    public boolean onWrenchClick(EntityPlayer playerIn, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
         if(playerIn.isSneaking()) {
-            EnumFacing side = GTUtility.determineWrenchingSide(facing, hitX, hitY, hitZ);
             if(side == getFrontFacing() || !isValidFrontFacing(side))
                 return false;
             if (side != null) {
@@ -283,8 +282,12 @@ public abstract class MetaTileEntity {
 
     public void update() {
         for(MTETrait mteTrait : this.mteTraits) {
-            mteTrait.update();
+            if(shouldUpdate(mteTrait)) mteTrait.update();
         }
+    }
+
+    protected boolean shouldUpdate(MTETrait trait) {
+        return true;
     }
 
     public final ItemStack getStackForm(int amount) {
@@ -580,24 +583,22 @@ public abstract class MetaTileEntity {
     }
 
     public static boolean addItemsToItemHandler(IItemHandler handler, boolean simulate, NonNullList<ItemStack> items) {
-        boolean notAllInserted = false;
-        List<ItemStack> stacks = new ArrayList<>(items); //copy collection
-        for (ItemStack stack : stacks) {
-            notAllInserted |= !ItemHandlerHelper.insertItemStacked(handler, stack, simulate).isEmpty();
-            if (notAllInserted && simulate) return false;
+        boolean insertedAll = true;
+        for (ItemStack stack : items) {
+            insertedAll &= ItemHandlerHelper.insertItemStacked(handler, stack, simulate).isEmpty();
+            if (!insertedAll && simulate) return false;
         }
-        return !notAllInserted;
+        return insertedAll;
     }
 
     public static boolean addFluidsToFluidHandler(IFluidHandler handler, boolean simulate, List<FluidStack> items) {
-        boolean notAllInserted = false;
-        items = new ArrayList<>(items); //copy collection
+        boolean filledAll = true;
         for (FluidStack stack : items) {
             int filled = handler.fill(stack, !simulate);
-            notAllInserted |= !(filled == stack.amount);
-            if (notAllInserted && simulate) return false;
+            filledAll &= filled == stack.amount;
+            if (!filledAll && simulate) return false;
         }
-        return !notAllInserted;
+        return filledAll;
     }
 
     public final int getOutputRedstoneSignal(@Nullable EnumFacing side) {

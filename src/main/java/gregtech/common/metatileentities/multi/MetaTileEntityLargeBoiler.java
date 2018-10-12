@@ -6,6 +6,7 @@ import codechicken.lib.vec.Cuboid6;
 import codechicken.lib.vec.Matrix4;
 import gregtech.api.GTValues;
 import gregtech.api.capability.impl.FluidTankList;
+import gregtech.api.capability.impl.FuelRecipeMapWorkableHandler;
 import gregtech.api.capability.impl.ItemHandlerList;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.MetaTileEntityHolder;
@@ -15,8 +16,8 @@ import gregtech.api.multiblock.BlockPattern;
 import gregtech.api.multiblock.FactoryBlockPattern;
 import gregtech.api.multiblock.PatternMatchContext;
 import gregtech.api.recipes.ModHandler;
-import gregtech.api.recipes.Recipe;
 import gregtech.api.recipes.RecipeMaps;
+import gregtech.api.recipes.recipes.FuelRecipe;
 import gregtech.api.render.ICubeRenderer;
 import gregtech.api.render.SimpleCubeRenderer;
 import gregtech.api.render.Textures;
@@ -32,6 +33,7 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.IFluidTank;
 
 import java.util.Collections;
 import java.util.List;
@@ -39,28 +41,28 @@ import java.util.List;
 public class MetaTileEntityLargeBoiler extends MultiblockWithDisplayBase {
 
     public enum BoilerType {
-        BRONZE(600, 1.2f, 500,
+        BRONZE(600, 0.5f, 500,
             MetaBlocks.METAL_CASING.getState(MetalCasingType.BRONZE_BRICKS),
             MetaBlocks.BOILER_CASING.getState(BoilerCasingType.BRONZE_FIREBOX),
             MetaBlocks.BOILER_CASING.getState(BoilerCasingType.BRONZE_PIPE),
             Textures.BRONZE_PLATED_BRICKS,
             Textures.BRONZE_FIREBOX, Textures.BRONZE_FIREBOX_ACTIVE),
 
-        STEEL(900, 0.9f, 1000,
+        STEEL(900, 0.7f, 1000,
             MetaBlocks.METAL_CASING.getState(MetalCasingType.STEEL_SOLID),
             MetaBlocks.BOILER_CASING.getState(BoilerCasingType.STEEL_FIREBOX),
             MetaBlocks.BOILER_CASING.getState(BoilerCasingType.STEEL_PIPE),
             Textures.SOLID_STEEL_CASING,
             Textures.STEEL_FIREBOX, Textures.STEEL_FIREBOX_ACTIVE),
 
-        TITANIUM(1400, 0.7f, 2000,
+        TITANIUM(1400, 0.9f, 2000,
             MetaBlocks.METAL_CASING.getState(MetalCasingType.TITANIUM_STABLE),
             MetaBlocks.BOILER_CASING.getState(BoilerCasingType.TITANIUM_FIREBOX),
             MetaBlocks.BOILER_CASING.getState(BoilerCasingType.TITANIUM_PIPE),
             Textures.STABLE_TITANIUM_CASING,
             Textures.TITANIUM_FIREBOX, Textures.TITANIUM_FIREBOX_ACTIVE),
 
-        TUNGSTENSTEEL(2000, 0.5f, 4000,
+        TUNGSTENSTEEL(2000, 1.2f, 4000,
             MetaBlocks.METAL_CASING.getState(MetalCasingType.TUNGSTENSTEEL_ROBUST),
             MetaBlocks.BOILER_CASING.getState(BoilerCasingType.TUNGSTENSTEEL_FIREBOX),
             MetaBlocks.BOILER_CASING.getState(BoilerCasingType.TUNGSTENSTEEL_PIPE),
@@ -117,17 +119,17 @@ public class MetaTileEntityLargeBoiler extends MultiblockWithDisplayBase {
     @Override
     protected void formStructure(PatternMatchContext context) {
         super.formStructure(context);
-        this.fluidImportInventory = new FluidTankList(getAbilities(MultiblockAbility.IMPORT_FLUIDS));
+        this.fluidImportInventory = new FluidTankList(true, getAbilities(MultiblockAbility.IMPORT_FLUIDS));
         this.itemImportInventory = new ItemHandlerList(getAbilities(MultiblockAbility.IMPORT_ITEMS));
-        this.steamOutputTank = new FluidTankList(getAbilities(MultiblockAbility.EXPORT_FLUIDS));
+        this.steamOutputTank = new FluidTankList(true, getAbilities(MultiblockAbility.EXPORT_FLUIDS));
     }
 
     @Override
     public void invalidateStructure() {
         super.invalidateStructure();
-        this.fluidImportInventory = new FluidTankList();
+        this.fluidImportInventory = new FluidTankList(true);
         this.itemImportInventory = new ItemHandlerList(Collections.emptyList());
-        this.steamOutputTank = new FluidTankList();
+        this.steamOutputTank = new FluidTankList(true);
     }
 
     @Override
@@ -196,25 +198,33 @@ public class MetaTileEntityLargeBoiler extends MultiblockWithDisplayBase {
         }
     }
 
-    //TODO implement recipe caching for this thing
     private int setupRecipeAndConsumeInputs() {
-        Recipe dieselRecipe = RecipeMaps.DIESEL_GENERATOR_FUELS.findRecipe(GTValues.V[9],
-            itemImportInventory, fluidImportInventory);
-        if(dieselRecipe != null && dieselRecipe.matches(true,
-            itemImportInventory, fluidImportInventory)) {
-            int fuelValue = dieselRecipe.getEUt() * dieselRecipe.getDuration() / 128;
-            return (int) Math.abs(fuelValue * boilerType.fuelConsumptionMultiplier);
-        }
-        Recipe denseFuelRecipe = RecipeMaps.SEMI_FLUID_GENERATOR_FUELS.findRecipe(GTValues.V[9],
-            itemImportInventory, fluidImportInventory);
-        if(denseFuelRecipe != null && denseFuelRecipe.matches(true,
-            itemImportInventory, fluidImportInventory)) {
-            int fuelValue = denseFuelRecipe.getEUt() * denseFuelRecipe.getDuration() * 2;
-            return (int) Math.abs(fuelValue * boilerType.fuelConsumptionMultiplier);
+        for(IFluidTank fluidTank : fluidImportInventory.getFluidTanks()) {
+            FluidStack fuelStack = fluidTank.drain(Integer.MAX_VALUE, false);
+            FuelRecipe dieselRecipe = RecipeMaps.DIESEL_GENERATOR_FUELS.findRecipe(GTValues.V[9], fuelStack);
+            if(dieselRecipe != null) {
+                int fuelAmountToConsume = dieselRecipe.getRecipeFluid().amount;
+                if(fuelAmountToConsume > fuelStack.amount) {
+                    fluidTank.drain(fuelAmountToConsume, true);
+                    long recipeVoltage = FuelRecipeMapWorkableHandler.getTieredVoltage(dieselRecipe.getMinVoltage());
+                    int voltageMultiplier = (int) Math.max(1L, recipeVoltage / GTValues.V[GTValues.LV]);
+                    return (int) Math.abs(dieselRecipe.getDuration() / 2 * voltageMultiplier * boilerType.fuelConsumptionMultiplier);
+                } else continue;
+            }
+            FuelRecipe denseFuelRecipe = RecipeMaps.SEMI_FLUID_GENERATOR_FUELS.findRecipe(GTValues.V[9], fuelStack);
+            if(denseFuelRecipe != null) {
+                int fuelAmountToConsume = denseFuelRecipe.getRecipeFluid().amount;
+                if(fuelAmountToConsume > fuelStack.amount) {
+                    fluidTank.drain(fuelAmountToConsume, true);
+                    long recipeVoltage = FuelRecipeMapWorkableHandler.getTieredVoltage(denseFuelRecipe.getMinVoltage());
+                    int voltageMultiplier = (int) Math.max(1L, recipeVoltage / GTValues.V[GTValues.LV]);
+                    return (int) Math.abs(denseFuelRecipe.getDuration() * 4 * voltageMultiplier * boilerType.fuelConsumptionMultiplier);
+                }
+            }
         }
         for(int slotIndex = 0; slotIndex < itemImportInventory.getSlots(); slotIndex++) {
             ItemStack itemStack = itemImportInventory.getStackInSlot(slotIndex);
-            int fuelBurnValue = TileEntityFurnace.getItemBurnTime(itemStack) / 80;
+            int fuelBurnValue = TileEntityFurnace.getItemBurnTime(itemStack) / 40;
             if(fuelBurnValue > 0) {
                 itemStack.shrink(1);
                 itemImportInventory.setStackInSlot(slotIndex, itemStack);

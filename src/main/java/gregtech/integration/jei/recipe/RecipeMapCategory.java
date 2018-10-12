@@ -41,8 +41,8 @@ public class RecipeMapCategory implements IRecipeCategory<GTRecipeWrapper> {
         this.modularUI = recipeMap.createUITemplate(() -> 0.0,
             (importItems = new ItemStackHandler(recipeMap.getMaxInputs())),
             (exportItems = new ItemStackHandler(recipeMap.getMaxOutputs())),
-            (importFluids = new FluidTankList(importFluidTanks)),
-            (exportFluids = new FluidTankList(exportFluidTanks))
+            (importFluids = new FluidTankList(false, importFluidTanks)),
+            (exportFluids = new FluidTankList(false, exportFluidTanks))
             ).build(new BlankUIHolder(), Minecraft.getMinecraft().player);
         this.modularUI.isJEIHandled = true;
         this.modularUI.initWidgets();

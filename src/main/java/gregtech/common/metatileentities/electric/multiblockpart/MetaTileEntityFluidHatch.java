@@ -94,12 +94,12 @@ public class MetaTileEntityFluidHatch extends MetaTileEntityMultiblockPart imple
 
     @Override
     protected FluidTankList createImportFluidHandler() {
-        return isExportHatch ? new FluidTankList() : new FluidTankList(new FluidTank(getInventorySize()));
+        return isExportHatch ? new FluidTankList(false) : new FluidTankList(false, new FluidTank(getInventorySize()));
     }
 
     @Override
     protected FluidTankList createExportFluidHandler() {
-        return isExportHatch ? new FluidTankList(new FluidTank(getInventorySize())) : new FluidTankList();
+        return isExportHatch ? new FluidTankList(false, new FluidTank(getInventorySize())) : new FluidTankList(false);
     }
 
     @Override

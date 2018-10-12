@@ -113,7 +113,7 @@ public abstract class MetaTileEntityMultiblockPart extends MetaTileEntity implem
     }
 
     @Override
-    public void removeFromMultiblock(MultiblockControllerBase controllerBase) {
+    public void removeFromMultiBlock(MultiblockControllerBase controllerBase) {
         setController(null);
     }
 }

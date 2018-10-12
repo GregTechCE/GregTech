@@ -211,13 +211,13 @@ public abstract class SteamBoiler extends MetaTileEntity {
     protected FluidTankList createImportFluidHandler() {
         this.waterFluidTank = new FilteredFluidHandler(16000)
             .setFillPredicate(ModHandler::isWater);
-        return new FluidTankList(waterFluidTank);
+        return new FluidTankList(false, waterFluidTank);
     }
 
     @Override
     protected FluidTankList createExportFluidHandler() {
         this.steamFluidTank = new FluidTank(16000);
-        return new FluidTankList(steamFluidTank);
+        return new FluidTankList(false, steamFluidTank);
     }
 
     protected TextureArea getGuiTexture(String pathTemplate) {

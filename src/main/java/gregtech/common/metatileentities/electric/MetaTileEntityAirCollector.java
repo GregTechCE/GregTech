@@ -28,7 +28,7 @@ public class MetaTileEntityAirCollector extends TieredMetaTileEntity {
 
     @Override
     protected FluidTankList createExportFluidHandler() {
-        return new FluidTankList(new FluidTank(32000));
+        return new FluidTankList(false, new FluidTank(32000));
     }
 
     @Override

@@ -1,108 +1,49 @@
 package gregtech.loaders.recipe;
 
+import gregtech.api.GTValues;
 import gregtech.api.recipes.RecipeMaps;
+import gregtech.api.recipes.recipes.FuelRecipe;
 import gregtech.api.unification.material.Materials;
+import net.minecraftforge.fluids.FluidStack;
 
 public class FuelLoader {
 
     public static void registerFuels() {
-        //128000EU
-        RecipeMaps.DIESEL_GENERATOR_FUELS.recipeBuilder()
-            .fluidInputs(Materials.Fuel.getFluid(12))
-            .duration(48)
-            .EUt(-32)
-            .buildAndRegister();
+        //low-tier diesel generator fuels
+        registerDieselGeneratorFuel(Materials.BioFuel.getFluid(2), 1, GTValues.LV);
+        registerDieselGeneratorFuel(Materials.LightFuel.getFluid(1), 8, GTValues.LV);
+        registerDieselGeneratorFuel(Materials.Naphtha.getFluid(1), 8, GTValues.LV);
+        registerDieselGeneratorFuel(Materials.Fuel.getFluid(1), 4, GTValues.LV);
+        //high-tier diesel generator fuels
+        registerDieselGeneratorFuel(Materials.Ethanol.getFluid(2), 1, GTValues.HV);
+        registerDieselGeneratorFuel(Materials.NitroFuel.getFluid(1), 2, GTValues.HV);
+        //steam generator fuels TODO super-heated steam
+        registerSteamGeneratorFuel(Materials.Steam.getFluid(32), 1, GTValues.LV);
 
-        //6400EU
-        RecipeMaps.DIESEL_GENERATOR_FUELS.recipeBuilder()
-            .fluidInputs(Materials.BioFuel.getFluid(240))
-            .duration(48)
-            .EUt(-32)
-            .buildAndRegister();
+        //low-tier gas turbine fuels
+        registerGasGeneratorFuel(Materials.Hydrogen.getFluid(1), 1, GTValues.LV);
+        registerGasGeneratorFuel(Materials.Methane.getFluid(1), 2, GTValues.LV);
+        //high-tier gas turbine fuels
+        registerGasGeneratorFuel(Materials.LPG.getFluid(1), 3, GTValues.MV);
+        registerGasGeneratorFuel(Materials.NaturalGas.getFluid(1), 1, GTValues.MV);
 
-        //32000EU
-        RecipeMaps.DIESEL_GENERATOR_FUELS.recipeBuilder()
-            .fluidInputs(Materials.SulfuricLightFuel.getFluid(48))
-            .duration(48)
-            .EUt(-32)
-            .buildAndRegister();
+        //semi-fluid fuels, like creosote
+        registerSemiFluidGeneratorFuel(Materials.Creosote.getFluid(2), 1, GTValues.LV);
+    }
 
-        //32000EU
-        RecipeMaps.DIESEL_GENERATOR_FUELS.recipeBuilder()
-            .fluidInputs(Materials.SulfuricNaphtha.getFluid(48))
-            .duration(48)
-            .EUt(-32)
-            .buildAndRegister();
+    public static void registerDieselGeneratorFuel(FluidStack fuelStack, int duration, int tier) {
+        RecipeMaps.DIESEL_GENERATOR_FUELS.addRecipe(new FuelRecipe(fuelStack, duration, GTValues.V[tier]));
+    }
 
-        //256000EU
-        RecipeMaps.DIESEL_GENERATOR_FUELS.recipeBuilder()
-            .fluidInputs(Materials.SulfuricHeavyFuel.getFluid(48))
-            .duration(48)
-            .EUt(-128)
-            .buildAndRegister();
+    public static void registerSteamGeneratorFuel(FluidStack fuelStack, int duration, int tier) {
+        RecipeMaps.STEAM_TURBINE_FUELS.addRecipe(new FuelRecipe(fuelStack, duration, GTValues.V[tier]));
+    }
 
-        //148000EU
-        RecipeMaps.DIESEL_GENERATOR_FUELS.recipeBuilder()
-            .fluidInputs(Materials.Ethanol.getFluid(120))
-            .duration(60)
-            .EUt(-512)
-            .buildAndRegister();
+    public static void registerGasGeneratorFuel(FluidStack fuelStack, int duration, int tier) {
+        RecipeMaps.GAS_TURBINE_FUELS.addRecipe(new FuelRecipe(fuelStack, duration, GTValues.V[tier]));
+    }
 
-        //256000EU
-        RecipeMaps.DIESEL_GENERATOR_FUELS.recipeBuilder()
-            .fluidInputs(Materials.LightFuel.getFluid(12))
-            .duration(96)
-            .EUt(-32)
-            .buildAndRegister();
-
-        //256000EU
-        RecipeMaps.DIESEL_GENERATOR_FUELS.recipeBuilder()
-            .fluidInputs(Materials.Naphtha.getFluid(12))
-            .duration(96)
-            .EUt(-32)
-            .buildAndRegister();
-
-        //512000EU
-        RecipeMaps.DIESEL_GENERATOR_FUELS.recipeBuilder()
-            .fluidInputs(Materials.NitroFuel.getFluid(24))
-            .duration(48)
-            .EUt(-512)
-            .buildAndRegister();
-
-        //8 SteamUnit -> 5EU/t
-        //52 SteamUnit -> 32EU/t
-        RecipeMaps.STEAM_TURBINE_FUELS.recipeBuilder()
-            .fluidInputs(Materials.Steam.getFluid(2500))
-            .duration(64)
-            .EUt(-32)
-            .buildAndRegister();
-
-        //20000EU
-        RecipeMaps.GAS_TURBINE_FUELS.recipeBuilder()
-            .fluidInputs(Materials.Hydrogen.getFluid(120))
-            .duration(75)
-            .EUt(-32)
-            .buildAndRegister();
-
-        //208000EU  // actually seems to produce 104000
-        RecipeMaps.GAS_TURBINE_FUELS.recipeBuilder()
-            .fluidInputs(Materials.Methane.getFluid(60))
-            .duration(52)
-            .EUt(-128)
-            .buildAndRegister();
-
-        //256000EU
-        RecipeMaps.GAS_TURBINE_FUELS.recipeBuilder()
-            .fluidInputs(Materials.LPG.getFluid(24))
-            .duration(48)
-            .EUt(-128)
-            .buildAndRegister();
-
-        //9600EU // actually seems to produce 72000
-        RecipeMaps.GAS_TURBINE_FUELS.recipeBuilder()
-            .fluidInputs(Materials.NaturalGas.getFluid(120))
-            .duration(68)
-            .EUt(-128)
-            .buildAndRegister();
+    public static void registerSemiFluidGeneratorFuel(FluidStack fuelStack, int duration, int tier) {
+        RecipeMaps.SEMI_FLUID_GENERATOR_FUELS.addRecipe(new FuelRecipe(fuelStack, duration, GTValues.V[tier]));
     }
 }

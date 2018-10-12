@@ -20,18 +20,15 @@ import org.apache.commons.lang3.ArrayUtils;
 
 import java.util.*;
 import java.util.function.BiFunction;
-import java.util.function.BooleanSupplier;
 import java.util.function.Predicate;
 
 public abstract class MultiblockControllerBase extends MetaTileEntity {
 
     protected BlockPattern structurePattern;
-    protected BooleanSupplier validationPredicate;
 
     private final Map<MultiblockAbility<Object>, List<Object>> multiblockAbilities = new HashMap<>();
     private final List<IMultiblockPart> multiblockParts = new ArrayList<>();
     private boolean structureFormed;
-    private boolean validationSuccess;
 
     public MultiblockControllerBase(String metaTileEntityId) {
         super(metaTileEntityId);
@@ -40,7 +37,6 @@ public abstract class MultiblockControllerBase extends MetaTileEntity {
 
     protected void reinitializeStructurePattern() {
         this.structurePattern = createStructurePattern();
-        this.validationPredicate = getValidationPredicate();
     }
 
     @Override
@@ -68,8 +64,8 @@ public abstract class MultiblockControllerBase extends MetaTileEntity {
 
     public abstract ICubeRenderer getBaseTexture();
 
-    protected BooleanSupplier getValidationPredicate() {
-        return () -> true;
+    protected boolean checkStructureComponents(List<IMultiblockPart> parts, Map<MultiblockAbility<Object>, List<Object>> abilities) {
+        return true;
     }
 
     public static Predicate<BlockWorldState> tilePredicate(BiFunction<BlockWorldState, MetaTileEntity, Boolean> predicate) {
@@ -123,29 +119,24 @@ public abstract class MultiblockControllerBase extends MetaTileEntity {
     protected void checkStructurePattern() {
         EnumFacing facing = getFrontFacing().getOpposite();
         PatternMatchContext context = structurePattern.checkPatternAt(getWorld(), getPos(), facing);
-        if(context != null && structureFormed) {
-            boolean newValidationSuccess = validationPredicate.getAsBoolean();
-            if(validationSuccess != newValidationSuccess) {
-                this.validationSuccess = newValidationSuccess;
-                writeCustomData(-400, buf -> buf.writeBoolean(validationSuccess));
-            }
-        }
         if(context != null && !structureFormed) {
-            List<IMultiblockPart> partsFound = context.get("MultiblockParts", ArrayList::new);
-            this.multiblockParts.addAll(partsFound);
-            multiblockParts.forEach(part -> {
-                part.addToMultiBlock(this);
-                if(part instanceof IMultiblockAbilityPart<?>) {
-                    IMultiblockAbilityPart<Object> abilityPart = (IMultiblockAbilityPart<Object>) part;
-                    MultiblockAbility<Object> ability = abilityPart.getAbility();
-                    List<Object> abilityList = multiblockAbilities.computeIfAbsent(ability, k -> new ArrayList<>());
-                    abilityPart.registerAbilities(abilityList);
+            List<IMultiblockPart> parts = context.get("MultiblockParts", ArrayList::new);
+            Map<MultiblockAbility<Object>, List<Object>> abilities = new HashMap<>();
+            for(IMultiblockPart multiblockPart : parts) {
+                if(multiblockPart instanceof IMultiblockAbilityPart) {
+                    IMultiblockAbilityPart<Object> abilityPart = (IMultiblockAbilityPart<Object>) multiblockPart;
+                    List<Object> abilityInstancesList = abilities.computeIfAbsent(abilityPart.getAbility(), k -> new ArrayList<>());
+                    abilityPart.registerAbilities(abilityInstancesList);
                 }
-            });
-            this.structureFormed = true;
-            this.validationSuccess = validationPredicate.getAsBoolean();
-            writeCustomData(-400, buf -> buf.writeBoolean(validationSuccess));
-            formStructure(context);
+            }
+            if(checkStructureComponents(parts, abilities)) {
+                parts.forEach(part -> part.addToMultiBlock(this));
+                this.multiblockParts.addAll(parts);
+                this.multiblockAbilities.putAll(abilities);
+                this.structureFormed = true;
+                writeCustomData(-400, buf -> buf.writeBoolean(true));
+                formStructure(context);
+            }
         } else if(context == null && structureFormed) {
             invalidateStructure();
         }
@@ -155,16 +146,16 @@ public abstract class MultiblockControllerBase extends MetaTileEntity {
     }
 
     public void invalidateStructure() {
-        this.multiblockParts.forEach(part -> part.removeFromMultiblock(this));
+        this.multiblockParts.forEach(part -> part.removeFromMultiBlock(this));
         this.multiblockAbilities.clear();
         this.multiblockParts.clear();
         this.structureFormed = false;
-        this.validationSuccess = false;
         writeCustomData(-400, buf -> buf.writeBoolean(false));
     }
 
     @SuppressWarnings("unchecked")
     public <T> List<T> getAbilities(MultiblockAbility<T> ability) {
+        @SuppressWarnings("SuspiciousMethodCalls")
         List<T> rawList = (List<T>) multiblockAbilities.getOrDefault(ability, Collections.emptyList());
         return Collections.unmodifiableList(rawList);
     }
@@ -176,25 +167,25 @@ public abstract class MultiblockControllerBase extends MetaTileEntity {
     @Override
     public void writeInitialSyncData(PacketBuffer buf) {
         super.writeInitialSyncData(buf);
-        buf.writeBoolean(structureFormed && validationSuccess);
+        buf.writeBoolean(structureFormed);
     }
 
     @Override
     public void receiveInitialSyncData(PacketBuffer buf) {
         super.receiveInitialSyncData(buf);
-        this.structureFormed = this.validationSuccess = buf.readBoolean();
+        this.structureFormed = buf.readBoolean();
     }
 
     @Override
     public void receiveCustomData(int dataId, PacketBuffer buf) {
         super.receiveCustomData(dataId, buf);
         if(dataId == -400) {
-            this.structureFormed = this.validationSuccess = buf.readBoolean();
+            this.structureFormed = buf.readBoolean();
         }
     }
 
     public boolean isStructureFormed() {
-        return structureFormed && validationSuccess;
+        return structureFormed;
     }
 
 }

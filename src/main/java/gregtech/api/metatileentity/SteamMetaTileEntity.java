@@ -98,7 +98,7 @@ public abstract class SteamMetaTileEntity extends MetaTileEntity {
     public FluidTankList createImportFluidHandler() {
         this.steamFluidTank = new FilteredFluidHandler(getSteamCapacity())
             .setFillPredicate(ModHandler::isSteam);
-        return new FluidTankList(steamFluidTank);
+        return new FluidTankList(false, steamFluidTank);
     }
 
     public int getSteamCapacity() {

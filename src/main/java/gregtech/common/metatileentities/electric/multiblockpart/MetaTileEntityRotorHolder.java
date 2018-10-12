@@ -14,7 +14,7 @@ import gregtech.api.metatileentity.multiblock.IMultiblockAbilityPart;
 import gregtech.api.metatileentity.multiblock.MultiblockAbility;
 import gregtech.api.render.Textures;
 import gregtech.api.unification.material.type.SolidMaterial;
-import gregtech.common.metatileentities.multi.electric.MetaTileEntityLargeTurbine;
+import gregtech.common.metatileentities.multi.electric.generator.MetaTileEntityLargeTurbine;
 import gregtech.common.tools.ITurbineToolStats;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;

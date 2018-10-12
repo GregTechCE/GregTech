@@ -62,24 +62,24 @@ public abstract class WorkableTieredMetaTileEntity extends TieredMetaTileEntity 
 
     @Override
     protected FluidTankList createImportFluidHandler() {
-        if(workable == null) return new FluidTankList();
+        if(workable == null) return new FluidTankList(false);
         FilteredFluidHandler[] fluidImports = new FilteredFluidHandler[workable.recipeMap.getMaxFluidInputs()];
         for(int i = 0; i < fluidImports.length; i++) {
             FilteredFluidHandler filteredFluidHandler = new FilteredFluidHandler(getInputTankCapacity(i));
             filteredFluidHandler.setFillPredicate(this::canInputFluid);
             fluidImports[i] = filteredFluidHandler;
         }
-        return new FluidTankList(fluidImports);
+        return new FluidTankList(false, fluidImports);
     }
 
     @Override
     protected FluidTankList createExportFluidHandler() {
-        if(workable == null) return new FluidTankList();
+        if(workable == null) return new FluidTankList(false);
         FluidTank[] fluidExports = new FluidTank[workable.recipeMap.getMaxFluidOutputs()];
         for(int i = 0; i < fluidExports.length; i++) {
             fluidExports[i] = new FluidTank(getOutputTankCapacity(i));
         }
-        return new FluidTankList(fluidExports);
+        return new FluidTankList(false, fluidExports);
     }
 
     protected boolean canInputFluid(FluidStack inputFluid) {

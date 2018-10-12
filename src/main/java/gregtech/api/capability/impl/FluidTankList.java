@@ -21,19 +21,23 @@ public class FluidTankList implements IFluidHandler, IMultipleTankHandler, INBTS
 
     protected final List<IFluidTank> fluidTanks;
     protected IFluidTankProperties[] properties;
+    protected final boolean allowSameFluidFill;
 
-    public FluidTankList(IFluidTank... fluidTanks) {
+    public FluidTankList(boolean allowSameFluidFill, IFluidTank... fluidTanks) {
         this.fluidTanks = Arrays.asList(fluidTanks);
+        this.allowSameFluidFill = allowSameFluidFill;
     }
 
-    public FluidTankList(List<? extends IFluidTank> fluidTanks) {
+    public FluidTankList(boolean allowSameFluidFill, List<? extends IFluidTank> fluidTanks) {
         this.fluidTanks = new ArrayList<>(fluidTanks);
+        this.allowSameFluidFill = allowSameFluidFill;
     }
 
-    public FluidTankList(FluidTankList parent, IFluidTank... additionalTanks) {
+    public FluidTankList(boolean allowSameFluidFill, FluidTankList parent, IFluidTank... additionalTanks) {
         this.fluidTanks = new ArrayList<>();
         this.fluidTanks.addAll(parent.fluidTanks);
         this.fluidTanks.addAll(Arrays.asList(additionalTanks));
+        this.allowSameFluidFill = allowSameFluidFill;
     }
 
     public List<IFluidTank> getFluidTanks() {
@@ -70,39 +74,63 @@ public class FluidTankList implements IFluidHandler, IMultipleTankHandler, INBTS
 
     @Override
     public int fill(FluidStack resource, boolean doFill) {
-        if (resource == null || resource.amount <= 0)
+        if (resource == null || resource.amount <= 0) {
             return 0;
-        IFluidTank tankWithFluid = fluidTanks.stream()
-            .filter(tank -> resource.isFluidEqual(tank.getFluid()))
-            .findAny().orElseGet(() -> fluidTanks.stream()
-                .filter(tank -> tank.getFluidAmount() == 0)
-                .findFirst().orElse(null));
-        return tankWithFluid == null ? 0 : tankWithFluid.fill(resource, doFill);
+        }
+        return fillTanksImpl(resource.copy(), doFill);
+    }
+
+    //fills exactly one tank if multi-filling is not allowed
+    //and as much tanks as possible otherwise
+    //note that it will always try to fill tanks with same fluid first
+    private int fillTanksImpl(FluidStack resource, boolean doFill) {
+        int totalFilled = 0;
+        //first, try to fill tanks that already have same fluid type
+        for (IFluidTank handler : fluidTanks) {
+            if(resource.isFluidEqual(handler.getFluid())) {
+                int filledAmount = handler.fill(resource, doFill);
+                totalFilled += filledAmount;
+                resource.amount -= filledAmount;
+                //if filling multiple tanks is not allowed, or resource is empty, return now
+                if(!allowSameFluidFill || resource.amount == 0)
+                    return totalFilled;
+            }
+        }
+        //otherwise, try to fill empty tanks
+        for(IFluidTank handler : fluidTanks) {
+            if(handler.getFluidAmount() == 0) {
+                int filledAmount = handler.fill(resource, doFill);
+                totalFilled += filledAmount;
+                resource.amount -= filledAmount;
+                if(!allowSameFluidFill || resource.amount == 0)
+                    return totalFilled;
+            }
+        }
+        return totalFilled;
     }
 
     @Nullable
     @Override
     public FluidStack drain(FluidStack resource, boolean doDrain) {
-        if (resource == null || resource.amount <= 0)
+        if (resource == null || resource.amount <= 0) {
             return null;
-
+        }
         resource = resource.copy();
-
         FluidStack totalDrained = null;
         for (IFluidTank handler : fluidTanks) {
-            if(!resource.isFluidEqual(handler.getFluid()))
+            if (!resource.isFluidEqual(handler.getFluid())) {
                 continue;
-            FluidStack drain = handler.drain(resource.amount, doDrain);
-            if (drain != null) {
-                if (totalDrained == null)
-                    totalDrained = drain;
-                else
-                    totalDrained.amount += drain.amount;
-
-                resource.amount -= drain.amount;
-                if (resource.amount <= 0)
-                    break;
             }
+            FluidStack drain = handler.drain(resource.amount, doDrain);
+            if (drain == null) {
+                continue;
+            }
+            if (totalDrained == null) {
+                totalDrained = drain;
+            } else totalDrained.amount += drain.amount;
+
+            resource.amount -= drain.amount;
+            if (resource.amount == 0) break;
         }
         return totalDrained;
     }
@@ -110,29 +138,26 @@ public class FluidTankList implements IFluidHandler, IMultipleTankHandler, INBTS
     @Nullable
     @Override
     public FluidStack drain(int maxDrain, boolean doDrain) {
-        if (maxDrain == 0)
+        if (maxDrain == 0) {
             return null;
+        }
         FluidStack totalDrained = null;
         for (IFluidTank handler : fluidTanks) {
             if (totalDrained == null) {
                 totalDrained = handler.drain(maxDrain, doDrain);
-                if (totalDrained != null) {
+                if (totalDrained != null)
                     maxDrain -= totalDrained.amount;
-                }
             } else {
                 FluidStack copy = totalDrained.copy();
                 copy.amount = maxDrain;
-                if(!copy.isFluidEqual(handler.getFluid()))
-                    continue;
+                if (!copy.isFluidEqual(handler.getFluid())) continue;
                 FluidStack drain = handler.drain(copy.amount, doDrain);
                 if (drain != null) {
                     totalDrained.amount += drain.amount;
                     maxDrain -= drain.amount;
                 }
             }
-
-            if (maxDrain <= 0)
-                break;
+            if (maxDrain <= 0) break;
         }
         return totalDrained;
     }

@@ -640,22 +640,17 @@ public class RecipeMaps {
     @ZenProperty public static final RecipeMap<AmplifierRecipeBuilder> AMPLIFIERS = new RecipeMap<>("uuamplifier", 1, 1, 0, 0, 0, 0, 1, 1, 1, new AmplifierRecipeBuilder().EUt(32));
 
 
-    @ZenProperty public static final RecipeMapLiquidFuel DIESEL_GENERATOR_FUELS = new RecipeMapLiquidFuel("diesel_generator", 0, 0, 1, new SimpleRecipeBuilder());
+    @ZenProperty public static final FuelRecipeMap DIESEL_GENERATOR_FUELS = new FuelRecipeMap("diesel_generator");
 
 
-    @ZenProperty public static final RecipeMapLiquidFuel GAS_TURBINE_FUELS = new RecipeMapLiquidFuel("gas_turbine", 0, 0, 1, new SimpleRecipeBuilder());
+    @ZenProperty public static final FuelRecipeMap GAS_TURBINE_FUELS = new FuelRecipeMap("gas_turbine");
 
 
-    @ZenProperty public static final RecipeMapLiquidFuel STEAM_TURBINE_FUELS = new RecipeMapLiquidFuel("steam_turbine", 0, 0, 1, new SimpleRecipeBuilder());
+    @ZenProperty public static final FuelRecipeMap STEAM_TURBINE_FUELS = new FuelRecipeMap("steam_turbine");
 
+    @ZenProperty public static final FuelRecipeMap SEMI_FLUID_GENERATOR_FUELS = new FuelRecipeMap("semi_fluid_generator");
 
-    @ZenProperty public static final RecipeMapLiquidFuel THERMAL_GENERATOR_FUELS = new RecipeMapLiquidFuel("thermal_generator", 0, 1, 1, new SimpleRecipeBuilder());
-
-
-    @ZenProperty public static final RecipeMapLiquidFuel SEMI_FLUID_GENERATOR_FUELS = new RecipeMapLiquidFuel("semi_fluid_generator", 0, 0, 1, new SimpleRecipeBuilder());
-
-
-    @ZenProperty public static final RecipeMapLiquidFuel PLASMA_GENERATOR_FUELS = new RecipeMapLiquidFuel("plasma_generator", 0, 1, 1, new SimpleRecipeBuilder());
+    @ZenProperty public static final FuelRecipeMap PLASMA_GENERATOR_FUELS = new FuelRecipeMap("plasma_generator");
 
     /**
      * Create recipes via {@link gregtech.api.recipes.builders.PBFRecipeBuilder}

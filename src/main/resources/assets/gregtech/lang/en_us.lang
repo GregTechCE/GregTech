@@ -2863,6 +2863,7 @@ gregtech.fluid.click_to_fill.shift=§7(Shift-clicking will fill all containers i
 gregtech.fluid.click_to_empty=§7Click with a filled fluid container to empty in into tank.
 gregtech.fluid.click_to_empty.shift=§7(Shift-clicking will empty all containers in your hand)
 
+gregtech.fluid.plasma=%s Plasma
 gregtech.fluid.empty=Empty
 gregtech.fluid.amount=§7%,d/%,d
 gregtech.fluid.temperature=§7Temperature: %dK

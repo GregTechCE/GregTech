@@ -104,7 +104,7 @@ public class MetaTileEntityPump extends TieredMetaTileEntity {
 
     @Override
     protected FluidTankList createExportFluidHandler() {
-        return new FluidTankList(new FluidTank(16000 * Math.max(1, getTier())));
+        return new FluidTankList(false, new FluidTank(16000 * Math.max(1, getTier())));
     }
 
     @Override

@@ -5,6 +5,9 @@ import codechicken.lib.render.pipeline.IVertexOperation;
 import codechicken.lib.vec.Matrix4;
 import gregtech.api.GTValues;
 import gregtech.api.capability.impl.EnergyContainerHandler;
+import gregtech.api.capability.impl.FilteredFluidHandler;
+import gregtech.api.capability.impl.FluidTankList;
+import gregtech.api.capability.impl.FuelRecipeMapWorkableHandler;
 import gregtech.api.gui.GuiTextures;
 import gregtech.api.gui.ModularUI;
 import gregtech.api.gui.ModularUI.Builder;
@@ -12,7 +15,7 @@ import gregtech.api.gui.widgets.FluidContainerSlotWidget;
 import gregtech.api.gui.widgets.ImageWidget;
 import gregtech.api.gui.widgets.SlotWidget;
 import gregtech.api.gui.widgets.TankWidget;
-import gregtech.api.recipes.machines.RecipeMapLiquidFuel;
+import gregtech.api.recipes.machines.FuelRecipeMap;
 import gregtech.api.render.OrientedOverlayRenderer;
 import gregtech.api.render.Textures;
 import net.minecraft.client.resources.I18n;
@@ -21,23 +24,52 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.NonNullList;
 import net.minecraft.world.World;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.items.ItemStackHandler;
 
 import javax.annotation.Nullable;
 import java.util.List;
 
-public class SimpleGeneratorMetaTileEntity extends WorkableTieredMetaTileEntity {
+public class SimpleGeneratorMetaTileEntity extends TieredMetaTileEntity {
 
+    private FuelRecipeMapWorkableHandler workableHandler;
     private ItemStackHandler containerInventory;
+    private OrientedOverlayRenderer overlayRenderer;
 
-    public SimpleGeneratorMetaTileEntity(String metaTileEntityId, RecipeMapLiquidFuel recipeMap, OrientedOverlayRenderer renderer, int tier) {
-        super(metaTileEntityId, recipeMap, renderer, tier);
+    public SimpleGeneratorMetaTileEntity(String metaTileEntityId, FuelRecipeMap recipeMap, OrientedOverlayRenderer renderer, int tier) {
+        super(metaTileEntityId, tier);
+        this.workableHandler = new FuelRecipeMapWorkableHandler(this, recipeMap,
+            () -> energyContainer, () -> (IFluidHandler) importFluids.getTankAt(0), GTValues.V[tier]);
         this.containerInventory = new ItemStackHandler(2);
+        this.overlayRenderer = renderer;
+    }
+
+    @Override
+    protected FluidTankList createImportFluidHandler() {
+        return new FluidTankList(false, new FilteredFluidHandler(16000)
+            .setFillPredicate(this::canInputFluid));
+    }
+
+    private boolean canInputFluid(FluidStack fluid) {
+        return workableHandler.recipeMap.findRecipe(GTValues.V[getTier()], fluid) != null;
+    }
+
+    @Override
+    protected boolean isEnergyEmitter() {
+        return true;
+    }
+
+    @Override
+    protected void reinitializeEnergyContainer() {
+        super.reinitializeEnergyContainer();
+        ((EnergyContainerHandler) this.energyContainer).setSideOutputCondition(side -> side == getFrontFacing());
     }
 
     @Override
     public void renderMetaTileEntity(CCRenderState renderState, Matrix4 translation, IVertexOperation[] pipeline) {
         super.renderMetaTileEntity(renderState, translation, pipeline);
+        this.overlayRenderer.render(renderState, translation, pipeline, getFrontFacing(), workableHandler.isActive());
         Textures.ENERGY_OUT.renderSided(getFrontFacing(), renderState, translation, pipeline);
     }
 
@@ -69,19 +101,8 @@ public class SimpleGeneratorMetaTileEntity extends WorkableTieredMetaTileEntity 
     }
 
     @Override
-    protected boolean isEnergyEmitter() {
-        return true;
-    }
-
-    @Override
-    protected void reinitializeEnergyContainer() {
-        super.reinitializeEnergyContainer();
-        ((EnergyContainerHandler) this.energyContainer).setSideOutputCondition(side -> side == getFrontFacing());
-    }
-
-    @Override
     public MetaTileEntity createMetaTileEntity(MetaTileEntityHolder holder) {
-        return new SimpleGeneratorMetaTileEntity(metaTileEntityId, (RecipeMapLiquidFuel) workable.recipeMap, renderer, getTier());
+        return new SimpleGeneratorMetaTileEntity(metaTileEntityId, workableHandler.recipeMap, overlayRenderer, getTier());
     }
 
     protected ModularUI.Builder createGuiTemplate(EntityPlayer player) {

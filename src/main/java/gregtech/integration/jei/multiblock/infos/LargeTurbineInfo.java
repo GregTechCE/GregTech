@@ -4,7 +4,7 @@ import com.google.common.collect.Lists;
 import gregtech.api.GTValues;
 import gregtech.api.metatileentity.multiblock.MultiblockControllerBase;
 import gregtech.common.metatileentities.MetaTileEntities;
-import gregtech.common.metatileentities.multi.electric.MetaTileEntityLargeTurbine;
+import gregtech.common.metatileentities.multi.electric.generator.MetaTileEntityLargeTurbine;
 import gregtech.integration.jei.multiblock.MultiblockInfoPage;
 import gregtech.integration.jei.multiblock.MultiblockShapeInfo;
 import net.minecraft.client.resources.I18n;
@@ -38,7 +38,7 @@ public class LargeTurbineInfo extends MultiblockInfoPage {
                 .where('D', MetaTileEntities.ENERGY_OUTPUT_HATCH[GTValues.EV], EnumFacing.EAST)
                 .where('#', Blocks.AIR.getDefaultState())
                 .where('I', MetaTileEntities.FLUID_IMPORT_HATCH[GTValues.HV], EnumFacing.NORTH);
-        if(turbine.recipeMap.getMaxFluidOutputs() > 0) {
+        if(turbine.turbineType.hasOutputHatch) {
             shapeInfo.where('O', MetaTileEntities.FLUID_EXPORT_HATCH[GTValues.EV], EnumFacing.NORTH);
         } else {
             shapeInfo.where('O', turbine.turbineType.casingState);

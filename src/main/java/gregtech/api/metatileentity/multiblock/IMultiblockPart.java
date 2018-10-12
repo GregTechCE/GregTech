@@ -4,6 +4,6 @@ public interface IMultiblockPart {
 
     void addToMultiBlock(MultiblockControllerBase controllerBase);
 
-    void removeFromMultiblock(MultiblockControllerBase controllerBase);
+    void removeFromMultiBlock(MultiblockControllerBase controllerBase);
 
 }

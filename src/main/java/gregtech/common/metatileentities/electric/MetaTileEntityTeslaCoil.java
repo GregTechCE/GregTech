@@ -10,6 +10,7 @@ import gregtech.api.gui.ModularUI;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.MetaTileEntityHolder;
 import gregtech.api.render.Textures;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -36,6 +37,11 @@ public class MetaTileEntityTeslaCoil extends MetaTileEntity {
     @Override
     public void renderMetaTileEntity(CCRenderState renderState, Matrix4 translation, IVertexOperation[] pipeline) {
         Textures.TESLA_COIL.render(renderState, translation, pipeline);
+    }
+
+    @Override
+    public TextureAtlasSprite getParticleTexture() {
+        return Textures.TESLA_COIL.getParticleSprite();
     }
 
     @Override
