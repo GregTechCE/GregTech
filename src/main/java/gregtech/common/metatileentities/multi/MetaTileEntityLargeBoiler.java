@@ -201,6 +201,7 @@ public class MetaTileEntityLargeBoiler extends MultiblockWithDisplayBase {
     private int setupRecipeAndConsumeInputs() {
         for(IFluidTank fluidTank : fluidImportInventory.getFluidTanks()) {
             FluidStack fuelStack = fluidTank.drain(Integer.MAX_VALUE, false);
+            if(fuelStack == null) continue;
             FuelRecipe dieselRecipe = RecipeMaps.DIESEL_GENERATOR_FUELS.findRecipe(GTValues.V[9], fuelStack);
             if(dieselRecipe != null) {
                 int fuelAmountToConsume = dieselRecipe.getRecipeFluid().amount;

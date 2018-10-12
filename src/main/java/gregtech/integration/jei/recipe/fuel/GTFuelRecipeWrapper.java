@@ -10,7 +10,7 @@ import net.minecraftforge.fluids.FluidStack;
 
 public class GTFuelRecipeWrapper implements IRecipeWrapper {
 
-    private final FuelRecipe recipe;
+    public final FuelRecipe recipe;
 
     public GTFuelRecipeWrapper(FuelRecipe recipe) {
         this.recipe = recipe;
@@ -18,7 +18,7 @@ public class GTFuelRecipeWrapper implements IRecipeWrapper {
 
     @Override
     public void getIngredients(IIngredients ingredients) {
-        ingredients.setInput(FluidStack.class, recipe.getRecipeFluid().copy());
+        ingredients.setInput(FluidStack.class, recipe.getRecipeFluid());
     }
 
     @Override
@@ -27,6 +27,6 @@ public class GTFuelRecipeWrapper implements IRecipeWrapper {
         int duration = recipe.getDuration();
         minecraft.fontRenderer.drawString(I18n.format("gregtech.recipe.total", voltage * duration), 0, 70, 0x111111);
         minecraft.fontRenderer.drawString(I18n.format("gregtech.recipe.eu_inverted", voltage), 0, 80, 0x111111);
-        minecraft.fontRenderer.drawString(I18n.format("gregtech.recipe.duration", duration / 20.0), 0, 100, 0x111111);
+        minecraft.fontRenderer.drawString(I18n.format("gregtech.recipe.duration", duration / 20.0), 0, 90, 0x111111);
     }
 }

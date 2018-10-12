@@ -17,7 +17,7 @@ public class FuelRecipeMapCategory implements IRecipeCategory<GTFuelRecipeWrappe
 
     public FuelRecipeMapCategory(FuelRecipeMap recipeMap, IGuiHelper helper) {
         this.recipeMap = recipeMap;
-        this.background = helper.createDrawable(GuiTextures.BACKGROUND.imageLocation, 0, 0, 176, 112);
+        this.background = helper.createBlankDrawable(176, 110);
     }
 
     @Override
@@ -42,12 +42,14 @@ public class FuelRecipeMapCategory implements IRecipeCategory<GTFuelRecipeWrappe
 
     @Override
     public void setRecipe(IRecipeLayout recipeLayout, GTFuelRecipeWrapper recipeWrapper, IIngredients ingredients) {
-        recipeLayout.getFluidStacks().init(0, true, 34, 24, 15, 15, 100, false, null);
+        recipeLayout.getFluidStacks().init(0, true, 52, 24, 16, 16,
+           recipeWrapper.recipe.getRecipeFluid().amount, false, null);
+        recipeLayout.getFluidStacks().set(ingredients);
     }
 
     @Override
     public void drawExtras(Minecraft minecraft) {
-        GuiTextures.PROGRESS_BAR_ARROW.draw(77, 22, 20, 20);
-        GuiTextures.FLUID_SLOT.draw(33, 23, 16, 16);
+        GuiTextures.PROGRESS_BAR_ARROW.drawSubArea(77, 22, 20, 20, 0.0,0.0, 1.0, 0.5);
+        GuiTextures.FLUID_SLOT.draw(51, 23, 18, 18);
     }
 }

@@ -4,6 +4,7 @@ import gregtech.api.GTValues;
 import gregtech.api.GregTechAPI;
 import gregtech.api.capability.GregtechCapabilities;
 import gregtech.api.capability.IWorkable;
+import gregtech.api.capability.impl.FuelRecipeMapWorkableHandler;
 import gregtech.api.capability.impl.RecipeMapWorkableHandler;
 import gregtech.api.items.metaitem.MetaItem;
 import gregtech.api.metatileentity.MetaTileEntity;
@@ -72,6 +73,10 @@ public class GTJeiPlugin implements IModPlugin {
                 IWorkable workableCapability = metaTileEntity.getCapability(GregtechCapabilities.CAPABILITY_WORKABLE, null);
                 if(workableCapability instanceof RecipeMapWorkableHandler) {
                     RecipeMap<?> recipeMap = ((RecipeMapWorkableHandler) workableCapability).recipeMap;
+                    registry.addRecipeCatalyst(metaTileEntity.getStackForm(),
+                        GTValues.MODID + ":" + recipeMap.unlocalizedName);
+                } else if(workableCapability instanceof FuelRecipeMapWorkableHandler) {
+                    FuelRecipeMap recipeMap = ((FuelRecipeMapWorkableHandler) workableCapability).recipeMap;
                     registry.addRecipeCatalyst(metaTileEntity.getStackForm(),
                         GTValues.MODID + ":" + recipeMap.unlocalizedName);
                 }

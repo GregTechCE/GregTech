@@ -75,7 +75,7 @@ public class FuelRecipeMapWorkableHandler extends MTETrait implements IWorkable 
     }
 
     protected boolean shouldVoidExcessiveEnergy() {
-        return true;
+        return false;
     }
 
     private void tryAcquireNewRecipe() {

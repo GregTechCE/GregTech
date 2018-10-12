@@ -98,6 +98,7 @@ public class RecipeMapCategory implements IRecipeCategory<GTRecipeWrapper> {
                         tankWidget.width - tankWidget.fluidRenderOffset,
                         tankWidget.height - tankWidget.fluidRenderOffset,
                         fluidAmount, false, null);
+
                 } else if(exportFluids.getFluidTanks().contains(tankWidget.fluidTank)) {
                     int exportIndex = exportFluids.getFluidTanks().indexOf(tankWidget.fluidTank);
                     List<List<FluidStack>> inputsList = ingredients.getOutputs(FluidStack.class);
@@ -111,6 +112,7 @@ public class RecipeMapCategory implements IRecipeCategory<GTRecipeWrapper> {
                         tankWidget.width - tankWidget.fluidRenderOffset,
                         tankWidget.height - tankWidget.fluidRenderOffset,
                         fluidAmount, false, null);
+
                 }
             }
         }

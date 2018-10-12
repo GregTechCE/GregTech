@@ -34,6 +34,7 @@ public class FuelRecipeMap {
         return RECIPE_MAPS;
     }
 
+    @ZenMethod
     public void addRecipe(FuelRecipe fuelRecipe) {
         FluidKey fluidKey = new FluidKey(fuelRecipe.getRecipeFluid());
         if(recipeFluidMap.containsKey(fluidKey)) {
@@ -44,7 +45,18 @@ public class FuelRecipeMap {
         recipeList.add(fuelRecipe);
     }
 
+    @ZenMethod
+    public boolean removeRecipe(FuelRecipe recipe) {
+        if(recipeList.contains(recipe)) {
+            this.recipeList.remove(recipe);
+            this.recipeFluidMap.remove(new FluidKey(recipe.getRecipeFluid()));
+            return true;
+        }
+        return false;
+    }
+
     public FuelRecipe findRecipe(long maxVoltage, FluidStack inputFluid) {
+        if(inputFluid == null) return null;
         FluidKey fluidKey = new FluidKey(inputFluid);
         FuelRecipe fuelRecipe = recipeFluidMap.get(fluidKey);
         return fuelRecipe != null && fuelRecipe.matches(maxVoltage, inputFluid) ? fuelRecipe : null;

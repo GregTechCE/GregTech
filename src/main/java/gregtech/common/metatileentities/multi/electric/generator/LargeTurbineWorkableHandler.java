@@ -75,4 +75,8 @@ public class LargeTurbineWorkableHandler extends FuelRecipeMapWorkableHandler {
         }
     }
 
+    @Override
+    protected boolean shouldVoidExcessiveEnergy() {
+        return true;
+    }
 }
