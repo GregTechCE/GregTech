@@ -625,7 +625,7 @@ public class GTUtility {
         for (EntityEquipmentSlot slot : EntityEquipmentSlot.values()) {
             if (slot.getSlotType() == EntityEquipmentSlot.Type.ARMOR) {
                 ItemStack equipment = entity.getItemStackFromSlot(slot);
-                if (!equipment.isEmpty() && !suitParts.contains(new SimpleItemStack(equipment))) {
+                if (equipment.isEmpty() || !suitParts.contains(new SimpleItemStack(equipment))) {
                     return false;
                 }
             }

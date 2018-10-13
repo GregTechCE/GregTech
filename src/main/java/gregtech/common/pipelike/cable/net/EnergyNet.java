@@ -3,6 +3,7 @@ package gregtech.common.pipelike.cable.net;
 import gregtech.api.pipenet.Node;
 import gregtech.api.pipenet.PipeNet;
 import gregtech.api.pipenet.WorldPipeNet;
+import gregtech.api.util.PerTickLongCounter;
 import gregtech.common.pipelike.cable.WireProperties;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
@@ -13,8 +14,27 @@ import java.util.*;
 
 public class EnergyNet extends PipeNet<WireProperties> {
 
+    private final PerTickLongCounter currentAmperageCounter = new PerTickLongCounter(0L);
+    private final PerTickLongCounter currentMaxVoltageCounter = new PerTickLongCounter(0L);
+
     protected EnergyNet(WorldPipeNet<WireProperties, EnergyNet> world) {
         super(world);
+    }
+
+    public long getLastAmperage() {
+        return currentAmperageCounter.getLast(worldData.getWorld());
+    }
+
+    public long getLastMaxVoltage() {
+        return currentMaxVoltageCounter.getLast(worldData.getWorld());
+    }
+
+    public void incrementCurrentAmperage(long amperage, long voltage) {
+        currentAmperageCounter.increment(worldData.getWorld(), amperage);
+        long currentMaxVoltage = currentMaxVoltageCounter.get(worldData.getWorld());
+        if(voltage > currentMaxVoltage) {
+            currentMaxVoltageCounter.set(worldData.getWorld(), voltage);
+        }
     }
 
     public List<RoutePath> computePatches(BlockPos startPos) {

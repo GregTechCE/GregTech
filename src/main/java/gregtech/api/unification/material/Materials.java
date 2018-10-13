@@ -694,8 +694,8 @@ public class Materials {
         AnnealedCopper.setCableProperties(GTValues.V[2], 1, 1);
 
         Kanthal.setCableProperties(GTValues.V[3], 4, 3);
-        Gold.setCableProperties(GTValues.V[3], 3, 2);
-        Electrum.setCableProperties(GTValues.V[3], 2, 2);
+        Gold.setCableProperties(GTValues.V[3], 2, 2);
+        Electrum.setCableProperties(GTValues.V[3], 3, 2);
         Silver.setCableProperties(GTValues.V[3], 1, 1);
 
         Nichrome.setCableProperties(GTValues.V[4], 3, 4);

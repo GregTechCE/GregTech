@@ -33,20 +33,36 @@ public class CableEnergyContainer implements IEnergyContainer {
     public long acceptEnergyFromNetwork(EnumFacing side, long voltage, long amperage) {
         List<RoutePath> paths = getPaths();
         long amperesUsed = 0;
+        EnergyNet energyNet = getEnergyNet();
+        long lastAmperage = energyNet.getLastAmperage();
         for(RoutePath routePath : paths) {
             if(routePath.totalLoss >= voltage)
                 continue; //do not emit if loss is too high
-            if(voltage > routePath.minVoltage || amperage > routePath.minAmperage) {
-                //if voltage or amperage is too big, burn cables down and break
-                routePath.burnCablesInPath(tileEntityCable.getPipeWorld(), voltage, amperage);
-                break;
+            if(voltage > routePath.minVoltage ||
+                amperage > routePath.maxAmperage ||
+                lastAmperage > routePath.maxAmperage) {
+                burnAllPaths(paths, voltage, amperage, lastAmperage);
+                break; //break after burning all paths
             }
-            amperesUsed += dispatchEnergyToNode(routePath.destination,
+            long amperageAccepted = dispatchEnergyToNode(routePath.destination,
                 voltage - routePath.totalLoss, amperage - amperesUsed);
-            if(amperesUsed == amperage)
-                break; //do not continue if all amperes are exhausted
+            if(amperageAccepted > 0) {
+                amperesUsed += amperageAccepted;
+                if(amperesUsed == amperage) {
+                    break; //do not continue if all amperes are exhausted
+                }
+            }
         }
+        energyNet.incrementCurrentAmperage(amperage, voltage);
         return amperesUsed;
+    }
+
+    private void burnAllPaths(List<RoutePath> paths, long voltage, long amperage, long lastAmperage) {
+        for(RoutePath pathToBurn : paths) {
+            if(voltage > pathToBurn.minVoltage || amperage > pathToBurn.maxAmperage || lastAmperage > pathToBurn.maxAmperage) {
+                pathToBurn.burnCablesInPath(tileEntityCable.getPipeWorld(), voltage, Math.max(amperage, lastAmperage));
+            }
+        }
     }
 
     private long dispatchEnergyToNode(BlockPos nodePos, long voltage, long amperage) {
