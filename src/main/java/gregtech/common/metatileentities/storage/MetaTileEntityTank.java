@@ -139,11 +139,26 @@ public class MetaTileEntityTank extends MetaTileEntity {
                 } catch (IOException ignored) {}
             }
             fluidTank.setFluid(fluidStack);
-            int newLightValue = getLightValue();
-            if(oldLightValue != newLightValue) {
-                MetaTileEntityTank.this.oldLightValue = newLightValue;
-                getWorld().checkLight(getPos());
+            //update light on client side
+            updateLightValue();
+            getHolder().scheduleChunkForRenderUpdate();
+        } else if(dataId == -201) {
+            int newFluidAmount = buf.readInt();
+            FluidStack fluidStack = fluidTank.getFluid();
+            if(fluidStack != null) {
+                fluidStack.amount = newFluidAmount;
+                getHolder().scheduleChunkForRenderUpdate();
+                //update light on client side
+                updateLightValue();
             }
+        }
+    }
+
+    private void updateLightValue() {
+        int newLightValue = getLightValue();
+        if(oldLightValue != newLightValue) {
+            MetaTileEntityTank.this.oldLightValue = newLightValue;
+            getWorld().checkLight(getPos());
         }
     }
 
@@ -225,6 +240,8 @@ public class MetaTileEntityTank extends MetaTileEntity {
 
     private class SyncFluidTank extends FluidTank {
 
+        private FluidStack lastStack;
+
         public SyncFluidTank(int capacity) {
             super(capacity);
         }
@@ -239,19 +256,35 @@ public class MetaTileEntityTank extends MetaTileEntity {
         @Override
         protected void onContentsChanged() {
             FluidStack newFluid = getFluid();
-            int newLightValue = getLightValue();
-            if(oldLightValue != newLightValue) {
-                MetaTileEntityTank.this.oldLightValue = newLightValue;
-                getWorld().checkLight(getPos());
+            if(!getWorld().isRemote) {
+                onContentsChangedOnServer(newFluid);
             }
-            writeCustomData(-200, buf -> {
-                buf.writeBoolean(newFluid != null);
-                if(newFluid != null) {
-                    NBTTagCompound tagCompound = new NBTTagCompound();
-                    newFluid.writeToNBT(tagCompound);
-                    buf.writeCompoundTag(tagCompound);
-                }
-            });
+        }
+
+        private void onContentsChangedOnServer(FluidStack newFluid) {
+            //update lightning value on server-side
+            //clientside will update it with custom data packet
+            updateLightValue();
+
+            //send fluid amount/type change packet
+            if(newFluid != null && newFluid.isFluidEqual(lastStack)) {
+                //if fluid wasn't removed completely or changed, but just reduced/added amount
+                //compute new amount value and set it right back to the client
+                writeCustomData(-201, buf -> buf.writeInt(newFluid.amount));
+                this.lastStack.amount = newFluid.amount;
+            } else {
+                //otherwise, write full data dump of fluid
+                writeCustomData(-200, buf -> {
+                    buf.writeBoolean(newFluid != null);
+                    if(newFluid != null) {
+                        NBTTagCompound tagCompound = new NBTTagCompound();
+                        newFluid.writeToNBT(tagCompound);
+                        buf.writeCompoundTag(tagCompound);
+                    }
+                });
+                //and update last fluid reference
+                this.lastStack = newFluid == null ? null : newFluid.copy();
+            }
         }
 
     }

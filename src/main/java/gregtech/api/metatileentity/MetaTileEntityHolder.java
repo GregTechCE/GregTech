@@ -153,7 +153,6 @@ public class MetaTileEntityHolder extends TickableTileEntityBase implements IUIH
             this.needToUpdateLightning = true;
         } else if(metaTileEntity != null) {
             metaTileEntity.receiveCustomData(discriminator, buffer);
-            scheduleChunkForRenderUpdate();
         }
     }
 

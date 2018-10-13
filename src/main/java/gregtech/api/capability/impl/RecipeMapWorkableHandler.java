@@ -221,7 +221,6 @@ public abstract class RecipeMapWorkableHandler extends MTETrait implements IWork
         this.maxProgressTime = maxProgress;
         if(!metaTileEntity.getWorld().isRemote) {
             metaTileEntity.markDirty();
-            writeCustomData(0, buf -> buf.writeInt(maxProgress));
         }
     }
 
@@ -236,8 +235,8 @@ public abstract class RecipeMapWorkableHandler extends MTETrait implements IWork
 
     @Override
     public void increaseProgress(int progress) {
-        this.progressTime = Math.min(progressTime + progress, maxProgressTime);
         if(!metaTileEntity.getWorld().isRemote) {
+            this.progressTime = Math.min(progressTime + progress, maxProgressTime);
             metaTileEntity.markDirty();
         }
     }
@@ -271,9 +270,7 @@ public abstract class RecipeMapWorkableHandler extends MTETrait implements IWork
 
     @Override
     public void receiveCustomData(int dataId, PacketBuffer buf) {
-        if(dataId == 0) {
-            this.maxProgressTime = buf.readInt();
-        } else if(dataId == 1) {
+        if(dataId == 1) {
             this.isActive = buf.readBoolean();
             getMetaTileEntity().getHolder().scheduleChunkForRenderUpdate();
         }
@@ -281,13 +278,11 @@ public abstract class RecipeMapWorkableHandler extends MTETrait implements IWork
 
     @Override
     public void writeInitialData(PacketBuffer buf) {
-        buf.writeInt(this.maxProgressTime);
         buf.writeBoolean(this.isActive);
     }
 
     @Override
     public void receiveInitialData(PacketBuffer buf) {
-        this.maxProgressTime = buf.readInt();
         this.isActive = buf.readBoolean();
     }
 

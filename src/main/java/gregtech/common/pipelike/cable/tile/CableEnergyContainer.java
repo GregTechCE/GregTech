@@ -31,10 +31,15 @@ public class CableEnergyContainer implements IEnergyContainer {
 
     @Override
     public long acceptEnergyFromNetwork(EnumFacing side, long voltage, long amperage) {
+        EnergyNet energyNet = getEnergyNet();
+        if(energyNet == null) {
+            //it's just pointless to do anything below without proper
+            //energy net attached to our tile entity
+            return 0L;
+        }
+        long lastAmperage = energyNet.getLastAmperage();
         List<RoutePath> paths = getPaths();
         long amperesUsed = 0;
-        EnergyNet energyNet = getEnergyNet();
-        long lastAmperage = energyNet.getLastAmperage();
         for(RoutePath routePath : paths) {
             if(routePath.totalLoss >= voltage)
                 continue; //do not emit if loss is too high

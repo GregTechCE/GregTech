@@ -100,6 +100,11 @@ public class FuelRecipeMapWorkableHandler extends MTETrait implements IWorkable 
                 fuelTank.drain(fuelAmountToUse, true);
                 this.recipeDurationLeft = calculateRecipeDuration(currentRecipe);
                 this.recipeOutputVoltage = startRecipe(currentRecipe, fuelAmountToUse, recipeDurationLeft);
+                if(wasActiveAndNeedsUpdate) {
+                    this.wasActiveAndNeedsUpdate = false;
+                } else {
+                    setActive(true);
+                }
             }
         }
     }

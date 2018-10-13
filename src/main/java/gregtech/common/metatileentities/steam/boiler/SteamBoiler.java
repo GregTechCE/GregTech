@@ -57,6 +57,9 @@ public abstract class SteamBoiler extends MetaTileEntity {
     private boolean hasNoWater;
     private int timeBeforeCoolingDown;
 
+    private boolean isBurning;
+    private boolean wasBurningAndNeedsUpdate;
+
     public SteamBoiler(String metaTileEntityId, boolean isHighPressure, OrientedOverlayRenderer renderer, int baseSteamOutput) {
         super(metaTileEntityId);
         this.renderer = renderer;
@@ -86,7 +89,7 @@ public abstract class SteamBoiler extends MetaTileEntity {
     public void renderMetaTileEntity(CCRenderState renderState, Matrix4 translation, IVertexOperation[] pipeline) {
         IVertexOperation[] colouredPipeline = ArrayUtils.add(pipeline, new ColourMultiplier(GTUtility.convertRGBtoOpaqueRGBA_CL(getPaintingColorForRendering())));
         getBaseRenderer().render(renderState, translation, colouredPipeline);
-        renderer.render(renderState, translation, pipeline, getFrontFacing(), fuelBurnTimeLeft > 0);
+        renderer.render(renderState, translation, pipeline, getFrontFacing(), isBurning());
     }
 
     @Override
@@ -106,30 +109,26 @@ public abstract class SteamBoiler extends MetaTileEntity {
         this.fuelMaxBurnTime = data.getInteger("FuelMaxBurnTime");
         this.currentTemperature = data.getInteger("CurrentTemperature");
         this.hasNoWater = data.getBoolean("HasNoWater");
+        this.isBurning = fuelBurnTimeLeft > 0;
     }
 
     @Override
     public void writeInitialSyncData(PacketBuffer buf) {
         super.writeInitialSyncData(buf);
-        buf.writeInt(fuelBurnTimeLeft);
-        buf.writeInt(fuelMaxBurnTime);
-        buf.writeInt(currentTemperature);
+        buf.writeBoolean(isBurning);
     }
 
     @Override
     public void receiveInitialSyncData(PacketBuffer buf) {
         super.receiveInitialSyncData(buf);
-        this.fuelBurnTimeLeft = buf.readInt();
-        this.fuelMaxBurnTime = buf.readInt();
-        this.currentTemperature = buf.readInt();
+        this.isBurning = buf.readBoolean();
     }
 
     @Override
     public void receiveCustomData(int dataId, PacketBuffer buf) {
         super.receiveCustomData(dataId, buf);
         if(dataId == -100) {
-            this.fuelMaxBurnTime = buf.readInt();
-            this.fuelBurnTimeLeft = fuelMaxBurnTime;
+            this.isBurning = buf.readBoolean();
             getHolder().scheduleChunkForRenderUpdate();
         }
     }
@@ -138,7 +137,6 @@ public abstract class SteamBoiler extends MetaTileEntity {
         this.fuelMaxBurnTime = fuelMaxBurnTime;
         this.fuelBurnTimeLeft = fuelMaxBurnTime;
         if(!getWorld().isRemote) {
-            writeCustomData(-100, buffer -> buffer.writeInt(fuelMaxBurnTime));
             markDirty();
         }
     }
@@ -146,50 +144,82 @@ public abstract class SteamBoiler extends MetaTileEntity {
     @Override
     public void update() {
         super.update();
-        if(fuelMaxBurnTime > 0) {
-            if(getTimer() % 12 == 0) {
-                if(fuelBurnTimeLeft % 2 == 0 && currentTemperature < getMaxTemperate())
-                    currentTemperature++;
-                fuelBurnTimeLeft -= isHighPressure ? 2 : 1;
-                if(fuelBurnTimeLeft == 0) {
-                    this.fuelMaxBurnTime = 0;
-                    this.fuelBurnTimeLeft = 0;
-                    this.timeBeforeCoolingDown = 40;
-                    getHolder().scheduleChunkForRenderUpdate();
-                }
-            }
-        } else if(timeBeforeCoolingDown == 0) {
-            if(currentTemperature > 0 /*DEFAULT_TEMPERATURE*/)
-                currentTemperature--;
-        } else --timeBeforeCoolingDown;
-
         if(!getWorld().isRemote) {
-            if(getTimer() % 5 == 0) {
+            updateCurrentTemperature();
+            generateSteam();
+
+            if (getTimer() % 5 == 0) {
                 fillInternalTankFromFluidContainer(importItems, exportItems, 0, 0);
                 pushFluidsIntoNearbyHandlers(STEAM_PUSH_DIRECTIONS);
             }
-            if (currentTemperature >= 100 && getTimer() % getBoilingCycleLength() == 0) {
-                float additionalTempBonus = (currentTemperature - 100) / (getMaxTemperate() - 100.0f);
-                int fillAmount = baseSteamOutput + (int) (baseSteamOutput * additionalTempBonus);
-                boolean hasDrainedWater = waterFluidTank.drain(1, true) != null;
-                int filledSteam = 0;
-                if (hasDrainedWater) {
-                    filledSteam = steamFluidTank.fill(ModHandler.getSteam(fillAmount), true);
-                }
-                if(this.hasNoWater && hasDrainedWater) {
-                    getWorld().setBlockToAir(getPos());
-                    getWorld().createExplosion(null,
-                        getPos().getX() + 0.5, getPos().getY() + 0.5, getPos().getZ() + 0.5,
-                        1.0f + 1.5f * additionalTempBonus, true);
-                } else this.hasNoWater = !hasDrainedWater;
-                if(filledSteam == 0 && hasDrainedWater) {
-                    //todo sound of steam pressure
-                    steamFluidTank.drain(4000, true);
-                }
-            }
-            if(fuelMaxBurnTime <= 0) {
+
+            if (fuelMaxBurnTime <= 0) {
                 tryConsumeNewFuel();
+                if(fuelBurnTimeLeft > 0) {
+                    if(wasBurningAndNeedsUpdate) {
+                        this.wasBurningAndNeedsUpdate = false;
+                    } else setBurning(true);
+                }
             }
+
+            if(wasBurningAndNeedsUpdate) {
+                this.wasBurningAndNeedsUpdate = false;
+                setBurning(false);
+            }
+        }
+    }
+
+    private void updateCurrentTemperature() {
+        if (fuelMaxBurnTime > 0) {
+            if (getTimer() % 12 == 0) {
+                if (fuelBurnTimeLeft % 2 == 0 && currentTemperature < getMaxTemperate())
+                    currentTemperature++;
+                fuelBurnTimeLeft -= isHighPressure ? 2 : 1;
+                if (fuelBurnTimeLeft == 0) {
+                    this.fuelMaxBurnTime = 0;
+                    this.fuelBurnTimeLeft = 0;
+                    this.timeBeforeCoolingDown = 40;
+                    //boiler has no fuel now, so queue burning state update
+                    this.wasBurningAndNeedsUpdate = true;
+                }
+            }
+        } else if (timeBeforeCoolingDown == 0) {
+            if (currentTemperature > 0)
+                currentTemperature--;
+        } else --timeBeforeCoolingDown;
+    }
+
+    private void generateSteam() {
+        if (currentTemperature >= 100 && getTimer() % getBoilingCycleLength() == 0) {
+            float additionalTempBonus = (currentTemperature - 100) / (getMaxTemperate() - 100.0f);
+            int fillAmount = baseSteamOutput + (int) (baseSteamOutput * additionalTempBonus);
+            boolean hasDrainedWater = waterFluidTank.drain(1, true) != null;
+            int filledSteam = 0;
+            if (hasDrainedWater) {
+                filledSteam = steamFluidTank.fill(ModHandler.getSteam(fillAmount), true);
+            }
+            if (this.hasNoWater && hasDrainedWater) {
+                getWorld().setBlockToAir(getPos());
+                getWorld().createExplosion(null,
+                    getPos().getX() + 0.5, getPos().getY() + 0.5, getPos().getZ() + 0.5,
+                    1.0f + 1.5f * additionalTempBonus, true);
+            } else this.hasNoWater = !hasDrainedWater;
+            if (filledSteam == 0 && hasDrainedWater) {
+                //todo sound of steam pressure
+                steamFluidTank.drain(4000, true);
+            }
+        }
+    }
+
+    public boolean isBurning() {
+        return isBurning;
+    }
+
+    public void setBurning(boolean burning) {
+        isBurning = burning;
+        if(!getWorld().isRemote) {
+            markDirty();
+            writeCustomData(-100, buf -> buf.writeBoolean(burning));
         }
     }
 
