@@ -294,7 +294,7 @@ public class ToolRecipeHandler {
 
         RecipeMaps.EXTRUDER_RECIPES.recipeBuilder()
             .input(OrePrefix.ingot, solidMaterial, 3)
-            .notConsumable(MetaItems.SHAPE_EXTRUDER_AXE)
+            .notConsumable(MetaItems.SHAPE_EXTRUDER_HOE)
             .outputs(OreDictUnifier.get(toolPrefix, solidMaterial))
             .duration((int) solidMaterial.getMass() * 3)
             .EUt(8 * voltageMultiplier)

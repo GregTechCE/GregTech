@@ -134,6 +134,7 @@ public class MetaTileEntityLargeBoiler extends MultiblockWithDisplayBase {
         this.fluidImportInventory = new FluidTankList(true);
         this.itemImportInventory = new ItemHandlerList(Collections.emptyList());
         this.steamOutputTank = new FluidTankList(true);
+        this.currentTemperature = 0; //reset temperature
     }
 
     @Override

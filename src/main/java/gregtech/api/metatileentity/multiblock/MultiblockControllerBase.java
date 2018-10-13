@@ -121,6 +121,14 @@ public abstract class MultiblockControllerBase extends MetaTileEntity {
         PatternMatchContext context = structurePattern.checkPatternAt(getWorld(), getPos(), facing);
         if(context != null && !structureFormed) {
             List<IMultiblockPart> parts = context.get("MultiblockParts", ArrayList::new);
+            for(IMultiblockPart part : parts) {
+                if(part.isAttachedToMultiBlock()) {
+                    //disallow sharing of multiblock parts
+                    //if part is already attached to another multiblock,
+                    //stop here without attempting to register abilities
+                    return;
+                }
+            }
             Map<MultiblockAbility<Object>, List<Object>> abilities = new HashMap<>();
             for(IMultiblockPart multiblockPart : parts) {
                 if(multiblockPart instanceof IMultiblockAbilityPart) {
@@ -142,6 +150,8 @@ public abstract class MultiblockControllerBase extends MetaTileEntity {
         }
     }
 
+
+
     protected Object getPartAttachmentData(IMultiblockPart part) {
         return null;
     }
@@ -155,6 +165,14 @@ public abstract class MultiblockControllerBase extends MetaTileEntity {
         this.multiblockParts.clear();
         this.structureFormed = false;
         writeCustomData(-400, buf -> buf.writeBoolean(false));
+    }
+
+    @Override
+    public void onRemoval() {
+        super.onRemoval();
+        if(!getWorld().isRemote && structureFormed) {
+            this.multiblockParts.forEach(part -> part.removeFromMultiBlock(this));
+        }
     }
 
     @SuppressWarnings("unchecked")
