@@ -11,9 +11,9 @@ buildscript {
     }
 }
 
-plugins {
+/*plugins {
     id 'com.matthewprenger.cursegradle' version '1.1.0'
-}
+}*/
 
 apply plugin: 'net.minecraftforge.gradle.forge'
 
@@ -201,7 +201,7 @@ String getVersionFromJava(File file) {
     return "$major.$minor.$revision.$build"
 }
 
-curseforge {
+/*curseforge {
     if (!System.getenv('CURSE_API_KEY')) {
         return
     }
@@ -223,4 +223,4 @@ curseforge {
 
         addArtifact source
     }
-}
+}*/
