@@ -18,6 +18,7 @@ public abstract class MetaTileEntityMultiblockPart extends MetaTileEntity implem
     private final int tier;
     private BlockPos controllerPos;
     private MultiblockControllerBase controller;
+    protected boolean shouldRenderOverlay = true;
 
     public MetaTileEntityMultiblockPart(String metaTileEntityId, int tier) {
         super(metaTileEntityId);
@@ -69,6 +70,7 @@ public abstract class MetaTileEntityMultiblockPart extends MetaTileEntity implem
         buf.writeBoolean(controller != null);
         if(controller != null) {
             buf.writeBlockPos(controller.getPos());
+            buf.writeBoolean(shouldRenderOverlay);
         }
     }
 
@@ -78,6 +80,7 @@ public abstract class MetaTileEntityMultiblockPart extends MetaTileEntity implem
         if(buf.readBoolean()) {
             this.controllerPos = buf.readBlockPos();
             this.controller = null;
+            this.shouldRenderOverlay = buf.readBoolean();
         }
     }
 
@@ -88,32 +91,36 @@ public abstract class MetaTileEntityMultiblockPart extends MetaTileEntity implem
             if(buf.readBoolean()) {
                 this.controllerPos = buf.readBlockPos();
                 this.controller = null;
+                this.shouldRenderOverlay = buf.readBoolean();
             } else {
                 this.controllerPos = null;
                 this.controller = null;
+                this.shouldRenderOverlay = true;
             }
         }
     }
 
-    private void setController(MultiblockControllerBase controller1) {
+    private void setController(MultiblockControllerBase controller1, boolean shouldHideOverlay) {
         this.controller = controller1;
+        this.shouldRenderOverlay = controller1 == null || !shouldHideOverlay;
         if(!getWorld().isRemote) {
             writeCustomData(-100, writer -> {
                 writer.writeBoolean(controller != null);
                 if(controller != null) {
                     writer.writeBlockPos(controller.getPos());
+                    writer.writeBoolean(shouldRenderOverlay);
                 }
             });
         }
     }
 
     @Override
-    public void addToMultiBlock(MultiblockControllerBase controllerBase) {
-        setController(controllerBase);
+    public void addToMultiBlock(MultiblockControllerBase controllerBase, Object attachmentData) {
+        setController(controllerBase, attachmentData instanceof Boolean && (Boolean) attachmentData);
     }
 
     @Override
     public void removeFromMultiBlock(MultiblockControllerBase controllerBase) {
-        setController(null);
+        setController(null, false);
     }
 }

@@ -28,7 +28,7 @@ public class FuelLoader {
         registerGasGeneratorFuel(Materials.NaturalGas.getFluid(1), 1, GTValues.MV);
 
         //semi-fluid fuels, like creosote
-        registerSemiFluidGeneratorFuel(Materials.Creosote.getFluid(2), 1, GTValues.LV);
+        registerSemiFluidGeneratorFuel(Materials.Creosote.getFluid(8), 1, GTValues.LV);
     }
 
     public static void registerDieselGeneratorFuel(FluidStack fuelStack, int duration, int tier) {

@@ -16,6 +16,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
+import scala.actors.threadpool.Arrays;
 
 import java.util.List;
 
@@ -57,6 +58,6 @@ public class PlungerBehaviour implements IItemBehaviour {
 
     @Override
     public void addInformation(ItemStack itemStack, List<String> lines) {
-        lines.add(I18n.format("behavior.plunger.description"));
+        lines.addAll(Arrays.asList(I18n.format("behavior.plunger.description").split("/n")));
     }
 }

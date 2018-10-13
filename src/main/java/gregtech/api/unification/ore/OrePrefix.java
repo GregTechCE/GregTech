@@ -303,6 +303,7 @@ public enum OrePrefix {
         gem.setIgnored(Materials.Lapis);
         gem.setIgnored(Materials.NetherQuartz);
 
+        gem.setIgnored(Materials.Coal);
         excludeAllGems(Materials.Charcoal);
         excludeAllGems(Materials.NetherStar);
         excludeAllGems(Materials.EnderPearl);
