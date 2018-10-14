@@ -2,6 +2,7 @@ package gregtech.common.metatileentities.multi.electric;
 
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.MetaTileEntityHolder;
+import gregtech.api.metatileentity.multiblock.IMultiblockPart;
 import gregtech.api.metatileentity.multiblock.MultiblockAbility;
 import gregtech.api.metatileentity.multiblock.RecipeMapMultiblockController;
 import gregtech.api.multiblock.BlockPattern;
@@ -87,6 +88,7 @@ public class MetaTileEntityElectricBlastFurnace extends RecipeMapMultiblockContr
             .aisle("XXX", "CCC", "CCC", "XXX")
             .aisle("XXX", "C#C", "C#C", "XXX")
             .aisle("XSX", "CCC", "CCC", "XXX")
+            .setAmountAtLeast('X', 10)
             .where('S', selfPredicate())
             .where('X', statePredicate(getCasingState()).or(abilityPartPredicate(ALLOWED_ABILITIES)))
             .where('C', heatingCoilPredicate())
@@ -99,7 +101,7 @@ public class MetaTileEntityElectricBlastFurnace extends RecipeMapMultiblockContr
     }
 
     @Override
-    public ICubeRenderer getBaseTexture() {
+    public ICubeRenderer getBaseTexture(IMultiblockPart sourcePart) {
         return Textures.HEAT_PROOF_CASING;
     }
 

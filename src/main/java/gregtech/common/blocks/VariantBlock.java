@@ -21,8 +21,8 @@ import java.util.List;
 
 public class VariantBlock<T extends Enum<T> & IStringSerializable> extends Block {
 
-    private PropertyEnum<T> VARIANT;
-    private T[] VALUES;
+    protected PropertyEnum<T> VARIANT;
+    protected T[] VALUES;
 
     public VariantBlock(Material materialIn) {
         super(materialIn);
@@ -80,7 +80,7 @@ public class VariantBlock<T extends Enum<T> & IStringSerializable> extends Block
     @Override
     @SuppressWarnings("deprecation")
     public IBlockState getStateFromMeta(int meta) {
-        return getDefaultState().withProperty(VARIANT, VALUES[meta]);
+        return getDefaultState().withProperty(VARIANT, VALUES[meta % VALUES.length]);
     }
 
     @Override

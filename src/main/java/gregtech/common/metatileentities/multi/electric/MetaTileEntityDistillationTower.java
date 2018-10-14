@@ -2,6 +2,7 @@ package gregtech.common.metatileentities.multi.electric;
 
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.MetaTileEntityHolder;
+import gregtech.api.metatileentity.multiblock.IMultiblockPart;
 import gregtech.api.metatileentity.multiblock.MultiblockAbility;
 import gregtech.api.metatileentity.multiblock.RecipeMapMultiblockController;
 import gregtech.api.multiblock.BlockPattern;
@@ -50,6 +51,7 @@ public class MetaTileEntityDistillationTower extends RecipeMapMultiblockControll
             .aisle("YSY", "YZY", "YYY")
             .aisle("XXX", "X#X", "XXX").setRepeatable(4)
             .aisle("XXX", "XXX", "XXX")
+            .setAmountAtLeast('X', 12)
             .where('S', selfPredicate())
             .where('Z', abilityPartPredicate(MultiblockAbility.IMPORT_FLUIDS))
             .where('Y', statePredicate(getCasingState()).or(abilityPartPredicate(MultiblockAbility.EXPORT_ITEMS, MultiblockAbility.INPUT_ENERGY)))
@@ -59,7 +61,7 @@ public class MetaTileEntityDistillationTower extends RecipeMapMultiblockControll
     }
 
     @Override
-    public ICubeRenderer getBaseTexture() {
+    public ICubeRenderer getBaseTexture(IMultiblockPart sourcePart) {
         return Textures.CLEAN_STAINLESS_STEEL_CASING;
     }
 

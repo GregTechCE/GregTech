@@ -7,6 +7,7 @@ import gregtech.api.block.machines.BlockMachine;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.multiblock.IMultiblockPart;
 import gregtech.api.metatileentity.multiblock.MultiblockControllerBase;
+import gregtech.api.render.ICubeRenderer;
 import gregtech.api.render.Textures;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.network.PacketBuffer;
@@ -18,7 +19,6 @@ public abstract class MetaTileEntityMultiblockPart extends MetaTileEntity implem
     private final int tier;
     private BlockPos controllerPos;
     private MultiblockControllerBase controllerTile;
-    protected boolean shouldRenderOverlay = true;
 
     public MetaTileEntityMultiblockPart(String metaTileEntityId, int tier) {
         super(metaTileEntityId);
@@ -30,7 +30,7 @@ public abstract class MetaTileEntityMultiblockPart extends MetaTileEntity implem
     public TextureAtlasSprite getParticleTexture() {
         MultiblockControllerBase controller = getController();
         if(controller != null) {
-            return controller.getBaseTexture().getParticleSprite();
+            return controller.getBaseTexture(null).getParticleSprite();
         } else {
             return Textures.VOLTAGE_CASINGS[tier].getParticleSprite();
         }
@@ -38,12 +38,13 @@ public abstract class MetaTileEntityMultiblockPart extends MetaTileEntity implem
 
     @Override
     public void renderMetaTileEntity(CCRenderState renderState, Matrix4 translation, IVertexOperation[] pipeline) {
+        getBaseTexture().render(renderState, translation, pipeline);
+    }
+
+    @Override
+    public int getLightValue() {
         MultiblockControllerBase controller = getController();
-        if(controller != null) {
-            controller.getBaseTexture().render(renderState, translation, pipeline);
-        } else {
-            Textures.VOLTAGE_CASINGS[tier].render(renderState, translation, pipeline);
-        }
+        return controller == null ? 0 : controller.getLightValue(this);
     }
 
     public int getTier() {
@@ -65,6 +66,16 @@ public abstract class MetaTileEntityMultiblockPart extends MetaTileEntity implem
         return controllerTile;
     }
 
+    public ICubeRenderer getBaseTexture() {
+        MultiblockControllerBase controller = getController();
+        return controller == null ? Textures.VOLTAGE_CASINGS[tier] : controller.getBaseTexture(this);
+    }
+
+    public boolean shouldRenderOverlay() {
+        MultiblockControllerBase controller = getController();
+        return controller == null || controller.shouldRenderOverlay(this);
+    }
+
     @Override
     public boolean isValidFrontFacing(EnumFacing facing) {
         return true;
@@ -77,7 +88,6 @@ public abstract class MetaTileEntityMultiblockPart extends MetaTileEntity implem
         buf.writeBoolean(controller != null);
         if(controller != null) {
             buf.writeBlockPos(controller.getPos());
-            buf.writeBoolean(shouldRenderOverlay);
         }
     }
 
@@ -87,7 +97,6 @@ public abstract class MetaTileEntityMultiblockPart extends MetaTileEntity implem
         if(buf.readBoolean()) {
             this.controllerPos = buf.readBlockPos();
             this.controllerTile = null;
-            this.shouldRenderOverlay = buf.readBoolean();
         }
     }
 
@@ -98,24 +107,21 @@ public abstract class MetaTileEntityMultiblockPart extends MetaTileEntity implem
             if(buf.readBoolean()) {
                 this.controllerPos = buf.readBlockPos();
                 this.controllerTile = null;
-                this.shouldRenderOverlay = buf.readBoolean();
             } else {
                 this.controllerPos = null;
                 this.controllerTile = null;
-                this.shouldRenderOverlay = true;
             }
+            getHolder().scheduleChunkForRenderUpdate();
         }
     }
 
-    private void setController(MultiblockControllerBase controller1, boolean shouldHideOverlay) {
+    private void setController(MultiblockControllerBase controller1) {
         this.controllerTile = controller1;
-        this.shouldRenderOverlay = controller1 == null || !shouldHideOverlay;
         if(!getWorld().isRemote) {
             writeCustomData(-100, writer -> {
                 writer.writeBoolean(controllerTile != null);
                 if(controllerTile != null) {
                     writer.writeBlockPos(controllerTile.getPos());
-                    writer.writeBoolean(shouldRenderOverlay);
                 }
             });
         }
@@ -131,13 +137,13 @@ public abstract class MetaTileEntityMultiblockPart extends MetaTileEntity implem
     }
 
     @Override
-    public void addToMultiBlock(MultiblockControllerBase controllerBase, Object attachmentData) {
-        setController(controllerBase, attachmentData instanceof Boolean && (Boolean) attachmentData);
+    public void addToMultiBlock(MultiblockControllerBase controllerBase) {
+        setController(controllerBase);
     }
 
     @Override
     public void removeFromMultiBlock(MultiblockControllerBase controllerBase) {
-        setController(null, false);
+        setController(null);
     }
 
     @Override

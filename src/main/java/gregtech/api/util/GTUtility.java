@@ -14,6 +14,7 @@ import gregtech.api.unification.ore.OrePrefix;
 import gregtech.api.unification.stack.MaterialStack;
 import gregtech.api.unification.stack.SimpleItemStack;
 import gregtech.common.ConfigHolder;
+import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
@@ -729,6 +730,16 @@ public class GTUtility {
         FluidStack stack = fluidStack.copy();
         stack.amount = amount;
         return stack;
+    }
+
+    public static <T extends Comparable<T>> IBlockState[] getAllPropertyValues(IBlockState blockState, IProperty<T> property) {
+        Collection<T> allowedValues = property.getAllowedValues();
+        IBlockState[] resultArray = new IBlockState[allowedValues.size()];
+        int index = 0;
+        for(T propertyValue : allowedValues) {
+            resultArray[index++] = blockState.withProperty(property, propertyValue);
+        }
+        return resultArray;
     }
 
     public static <M, E extends M> E selectItemInList(int index, E replacement, List<? extends M> list, Class<E> minClass) {

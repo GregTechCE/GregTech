@@ -49,6 +49,7 @@ public class MetaTileEntityTransformer extends TieredMetaTileEntity {
     public void readFromNBT(NBTTagCompound data) {
         super.readFromNBT(data);
         this.isTransformUp = data.getBoolean("Inverted");
+        reinitializeEnergyContainer();
     }
 
     @Override

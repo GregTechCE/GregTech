@@ -2,6 +2,7 @@ package gregtech.common.metatileentities.multi.electric;
 
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.MetaTileEntityHolder;
+import gregtech.api.metatileentity.multiblock.IMultiblockPart;
 import gregtech.api.metatileentity.multiblock.MultiblockAbility;
 import gregtech.api.metatileentity.multiblock.RecipeMapMultiblockController;
 import gregtech.api.multiblock.BlockPattern;
@@ -39,6 +40,7 @@ public class MetaTileEntityPyrolyseOven extends RecipeMapMultiblockController {
             .aisle("CCC", "C#C", "CCC")
             .aisle("CCC", "C#C", "CCC")
             .aisle("XXX", "XSX", "XXX")
+            .setAmountAtLeast('X', 10)
             .where('S', selfPredicate())
             .where('X', statePredicate(getCasingState()).or(abilityPartPredicate(ALLOWED_ABILITIES)))
             .where('C', statePredicate(MetaBlocks.WIRE_COIL.getState(CoilType.CUPRONICKEL)))
@@ -47,7 +49,7 @@ public class MetaTileEntityPyrolyseOven extends RecipeMapMultiblockController {
     }
 
     @Override
-    public ICubeRenderer getBaseTexture() {
+    public ICubeRenderer getBaseTexture(IMultiblockPart sourcePart) {
         return Textures.VOLTAGE_CASINGS[0];
     }
 

@@ -1,15 +1,20 @@
 package gregtech.api.multiblock;
 
 import com.google.common.base.Joiner;
+import gregtech.api.multiblock.BlockPattern.RelativeDirection;
+import gregtech.api.util.IntRange;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.tuple.Pair;
 
 import java.lang.reflect.Array;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
 import java.util.function.Predicate;
 
-import gregtech.api.multiblock.BlockPattern.RelativeDirection;
 import static gregtech.api.multiblock.BlockPattern.RelativeDirection.*;
 
 public class FactoryBlockPattern {
@@ -17,6 +22,7 @@ public class FactoryBlockPattern {
     private static final Joiner COMMA_JOIN = Joiner.on(",");
     private final List<String[]> depth = new ArrayList<>();
     private final List<int[]> aisleRepetitions = new ArrayList<>();
+    private final Map<Character, IntRange> countLimits = new HashMap<>();
     private final Map<Character, Predicate<BlockWorldState>> symbolMap = new HashMap<>();
     private int aisleHeight;
     private int rowWidth;
@@ -99,6 +105,20 @@ public class FactoryBlockPattern {
         return setRepeatable(repeatCount, repeatCount);
     }
 
+    public FactoryBlockPattern setAmountLimit(char symbol, int minAmount, int maxLimit) {
+        this.symbolMap.put(symbol, null);
+        this.countLimits.put(symbol, new IntRange(minAmount, maxLimit));
+        return this;
+    }
+
+    public FactoryBlockPattern setAmountAtLeast(char symbol, int minValue) {
+        return setAmountLimit(symbol, minValue, Integer.MAX_VALUE);
+    }
+
+    public FactoryBlockPattern setAmountAtMost(char symbol, int maxValue) {
+        return setAmountLimit(symbol, 0, maxValue);
+    }
+
     public static FactoryBlockPattern start() {
         return new FactoryBlockPattern(RIGHT, UP, BACK);
     }
@@ -113,7 +133,7 @@ public class FactoryBlockPattern {
     }
 
     public BlockPattern build() {
-        return new BlockPattern(this.makePredicateArray(), structureDir, aisleRepetitions.toArray(new int[aisleRepetitions.size()][]));
+        return new BlockPattern(makePredicateArray(), makeCountLimitsList(), structureDir, aisleRepetitions.toArray(new int[aisleRepetitions.size()][]));
     }
 
     @SuppressWarnings("unchecked")
@@ -130,6 +150,15 @@ public class FactoryBlockPattern {
         }
 
         return predicate;
+    }
+
+    private List<Pair<Predicate<BlockWorldState>, IntRange>> makeCountLimitsList() {
+        List<Pair<Predicate<BlockWorldState>, IntRange>> array = new ArrayList<>(countLimits.size());
+        for(Entry<Character, IntRange> entry : this.countLimits.entrySet()) {
+            Predicate<BlockWorldState> predicate = this.symbolMap.get(entry.getKey());
+            array.add(Pair.of(predicate, entry.getValue()));
+        }
+        return array;
     }
 
     private void checkMissingPredicates() {

@@ -23,6 +23,7 @@ import net.minecraftforge.items.ItemStackHandler;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 public abstract class RecipeMapMultiblockController extends MultiblockWithDisplayBase {
 
@@ -127,7 +128,7 @@ public abstract class RecipeMapMultiblockController extends MultiblockWithDispla
     }
 
     @Override
-    protected boolean checkStructureComponents(List<IMultiblockPart> parts, Map<MultiblockAbility<Object>, List<Object>> abilities) {
+    protected boolean checkStructureComponents(Set<IMultiblockPart> parts, Map<MultiblockAbility<Object>, List<Object>> abilities) {
         //basically check minimal requirements for inputs count
         //noinspection SuspiciousMethodCalls
         int itemInputsCount = abilities.getOrDefault(MultiblockAbility.IMPORT_ITEMS, Collections.emptyList())

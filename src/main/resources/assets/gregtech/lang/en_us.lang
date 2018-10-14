@@ -1732,6 +1732,15 @@ tile.boiler_casing.bronze_pipe.name=Bronze Pipe Casing
 tile.boiler_casing.steel_pipe.name=Steel Pipe Casing
 tile.boiler_casing.titanium_pipe.name=Titanium Pipe Casing
 tile.boiler_casing.tungstensteel_pipe.name=Tungstensteel Pipe Casing
+
+#Legacy locales
+tile.boiler_casing.legacy_bronze_firebox.name=Legacy Block (Bronze Firebox Casing)
+tile.boiler_casing.legacy_steel_firebox.name=Legacy Block (Steel Firebox Casing)
+tile.boiler_casing.legacy_titanium_firebox.name=Legacy Block (Titanium Firebox Casing)
+tile.boiler_casing.legacy_tungstensteel_firebox.name=Legacy Block (Tungstensteel Firebox Casing)
+tile.boiler_casing.legacy=This block is legacy. Put it into the crafting grid to get a new one.
+
+#Firebox casing blocks
 tile.boiler_casing.bronze_firebox.name=Bronze Firebox Casing
 tile.boiler_casing.steel_firebox.name=Steel Firebox Casing
 tile.boiler_casing.titanium_firebox.name=Titanium Firebox Casing

@@ -20,6 +20,7 @@ import net.minecraftforge.fluids.capability.IFluidHandler;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 public abstract class FueledMultiblockController extends MultiblockWithDisplayBase {
 
@@ -88,7 +89,7 @@ public abstract class FueledMultiblockController extends MultiblockWithDisplayBa
     }
 
     @Override
-    protected boolean checkStructureComponents(List<IMultiblockPart> parts, Map<MultiblockAbility<Object>, List<Object>> abilities) {
+    protected boolean checkStructureComponents(Set<IMultiblockPart> parts, Map<MultiblockAbility<Object>, List<Object>> abilities) {
         //noinspection SuspiciousMethodCalls
         return abilities.containsKey(MultiblockAbility.IMPORT_FLUIDS) &&
             abilities.containsKey(MultiblockAbility.OUTPUT_ENERGY);

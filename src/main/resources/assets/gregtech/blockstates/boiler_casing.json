@@ -1,11 +1,9 @@
 {
   "forge_marker": 1,
   "defaults": {
-    "model": "minecraft:cube_bottom_top",
+    "model": "minecraft:cube_all",
     "textures": {
-      "bottom": "gregtech:blocks/rendering_error",
-      "top": "gregtech:blocks/rendering_error",
-      "side": "gregtech:blocks/rendering_error"
+      "all": "gregtech:blocks/rendering_error"
     }
   },
   "variants": {
@@ -34,32 +32,28 @@
           "all": "gregtech:blocks/casings/pipe/machine_casing_pipe_tungstensteel"
         }
       },
-      "bronze_firebox": {
+      "legacy_bronze_firebox": {
+        "model": "minecraft:cube_all",
         "textures": {
-          "bottom": "gregtech:blocks/casings/solid/machine_bronze_plated_bricks",
-          "top": "gregtech:blocks/casings/solid/machine_bronze_plated_bricks",
-          "side": "gregtech:blocks/casings/firebox/machine_casing_firebox_bronze"
+          "all": "gregtech:blocks/rendering_error"
         }
       },
-      "steel_firebox": {
+      "legacy_steel_firebox": {
+        "model": "minecraft:cube_all",
         "textures": {
-          "bottom": "gregtech:blocks/casings/solid/machine_casing_solid_steel",
-          "top": "gregtech:blocks/casings/solid/machine_casing_solid_steel",
-          "side": "gregtech:blocks/casings/firebox/machine_casing_firebox_steel"
+          "all": "gregtech:blocks/rendering_error"
         }
       },
-      "titanium_firebox": {
+      "legacy_titanium_firebox": {
+        "model": "minecraft:cube_all",
         "textures": {
-          "bottom": "gregtech:blocks/casings/solid/machine_casing_stable_titanium",
-          "top": "gregtech:blocks/casings/solid/machine_casing_stable_titanium",
-          "side": "gregtech:blocks/casings/firebox/machine_casing_firebox_titanium"
+          "all": "gregtech:blocks/rendering_error"
         }
       },
-      "tungstensteel_firebox": {
+      "legacy_tungstensteel_firebox": {
+        "model": "minecraft:cube_all",
         "textures": {
-          "bottom": "gregtech:blocks/casings/solid/machine_casing_robust_tungstensteel",
-          "top": "gregtech:blocks/casings/solid/machine_casing_robust_tungstensteel",
-          "side": "gregtech:blocks/casings/firebox/machine_casing_firebox_tungstensteel"
+          "all": "gregtech:blocks/rendering_error"
         }
       }
     }

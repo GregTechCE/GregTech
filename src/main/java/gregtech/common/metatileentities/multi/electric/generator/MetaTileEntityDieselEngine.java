@@ -4,6 +4,7 @@ import gregtech.api.GTValues;
 import gregtech.api.capability.impl.FuelRecipeMapWorkableHandler;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.MetaTileEntityHolder;
+import gregtech.api.metatileentity.multiblock.IMultiblockPart;
 import gregtech.api.metatileentity.multiblock.MultiblockAbility;
 import gregtech.api.multiblock.BlockPattern;
 import gregtech.api.multiblock.BlockWorldState;
@@ -91,7 +92,7 @@ public class MetaTileEntityDieselEngine extends FueledMultiblockController {
     }
 
     @Override
-    public ICubeRenderer getBaseTexture() {
+    public ICubeRenderer getBaseTexture(IMultiblockPart sourcePart) {
         return Textures.STABLE_TITANIUM_CASING;
     }
 

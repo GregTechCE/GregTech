@@ -18,7 +18,7 @@ public class FuelLoader {
         registerDieselGeneratorFuel(Materials.Ethanol.getFluid(2), 1, GTValues.HV);
         registerDieselGeneratorFuel(Materials.NitroFuel.getFluid(1), 2, GTValues.HV);
         //steam generator fuels TODO super-heated steam
-        registerSteamGeneratorFuel(Materials.Steam.getFluid(32), 1, GTValues.LV);
+        registerSteamGeneratorFuel(Materials.Steam.getFluid(54), 1, GTValues.LV);
 
         //low-tier gas turbine fuels
         registerGasGeneratorFuel(Materials.Hydrogen.getFluid(1), 1, GTValues.LV);

@@ -5,6 +5,7 @@ import gregtech.api.capability.impl.FluidTankList;
 import gregtech.api.capability.impl.FuelRecipeMapWorkableHandler;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.MetaTileEntityHolder;
+import gregtech.api.metatileentity.multiblock.IMultiblockPart;
 import gregtech.api.metatileentity.multiblock.MultiblockAbility;
 import gregtech.api.multiblock.BlockPattern;
 import gregtech.api.multiblock.FactoryBlockPattern;
@@ -156,7 +157,7 @@ public class MetaTileEntityLargeTurbine extends FueledMultiblockController {
     }
 
     @Override
-    public ICubeRenderer getBaseTexture() {
+    public ICubeRenderer getBaseTexture(IMultiblockPart sourcePart) {
         return turbineType.casingRenderer;
     }
 

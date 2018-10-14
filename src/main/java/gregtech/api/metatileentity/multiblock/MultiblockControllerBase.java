@@ -62,10 +62,23 @@ public abstract class MultiblockControllerBase extends MetaTileEntity {
      */
     protected abstract BlockPattern createStructurePattern();
 
-    public abstract ICubeRenderer getBaseTexture();
+    public abstract ICubeRenderer getBaseTexture(IMultiblockPart sourcePart);
 
-    protected boolean checkStructureComponents(List<IMultiblockPart> parts, Map<MultiblockAbility<Object>, List<Object>> abilities) {
+    public boolean shouldRenderOverlay(IMultiblockPart sourcePart) {
         return true;
+    }
+
+    public int getLightValue(IMultiblockPart sourcePart) {
+        return 0;
+    }
+
+    protected boolean checkStructureComponents(Set<IMultiblockPart> parts, Map<MultiblockAbility<Object>, List<Object>> abilities) {
+        return true;
+    }
+
+    @Override
+    public final int getLightValue() {
+        return getLightValue(null);
     }
 
     public static Predicate<BlockWorldState> tilePredicate(BiFunction<BlockWorldState, MetaTileEntity, Boolean> predicate) {
@@ -76,7 +89,7 @@ public abstract class MultiblockControllerBase extends MetaTileEntity {
             MetaTileEntity metaTileEntity = ((MetaTileEntityHolder) tileEntity).getMetaTileEntity();
             if(predicate.apply(blockWorldState, metaTileEntity)) {
                 if(metaTileEntity instanceof IMultiblockPart) {
-                    List<IMultiblockPart> partsFound = blockWorldState.getMatchContext().get("MultiblockParts", ArrayList::new);
+                    Set<IMultiblockPart> partsFound = blockWorldState.getMatchContext().get("MultiblockParts", HashSet::new);
                     partsFound.add((IMultiblockPart) metaTileEntity);
                 }
                 return true;
@@ -108,19 +121,19 @@ public abstract class MultiblockControllerBase extends MetaTileEntity {
 
     @Override
     public void renderMetaTileEntity(CCRenderState renderState, Matrix4 translation, IVertexOperation[] pipeline) {
-        getBaseTexture().render(renderState, translation, pipeline);
+        getBaseTexture(null).render(renderState, translation, pipeline);
     }
 
     @Override
     public TextureAtlasSprite getParticleTexture() {
-        return getBaseTexture().getParticleSprite();
+        return getBaseTexture(null).getParticleSprite();
     }
 
     protected void checkStructurePattern() {
         EnumFacing facing = getFrontFacing().getOpposite();
         PatternMatchContext context = structurePattern.checkPatternAt(getWorld(), getPos(), facing);
         if(context != null && !structureFormed) {
-            List<IMultiblockPart> parts = context.get("MultiblockParts", ArrayList::new);
+            Set<IMultiblockPart> parts = context.get("MultiblockParts", HashSet::new);
             for(IMultiblockPart part : parts) {
                 if(part.isAttachedToMultiBlock()) {
                     //disallow sharing of multiblock parts
@@ -138,7 +151,7 @@ public abstract class MultiblockControllerBase extends MetaTileEntity {
                 }
             }
             if(checkStructureComponents(parts, abilities)) {
-                parts.forEach(part -> part.addToMultiBlock(this, getPartAttachmentData(part)));
+                parts.forEach(part -> part.addToMultiBlock(this));
                 this.multiblockParts.addAll(parts);
                 this.multiblockAbilities.putAll(abilities);
                 this.structureFormed = true;
@@ -148,12 +161,6 @@ public abstract class MultiblockControllerBase extends MetaTileEntity {
         } else if(context == null && structureFormed) {
             invalidateStructure();
         }
-    }
-
-
-
-    protected Object getPartAttachmentData(IMultiblockPart part) {
-        return null;
     }
 
     protected void formStructure(PatternMatchContext context) {

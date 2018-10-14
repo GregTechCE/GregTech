@@ -65,6 +65,7 @@ public class MetaTileEntityHolder extends TickableTileEntityBase implements IUIH
     }
 
     public void scheduleChunkForRenderUpdate() {
+
         BlockPos pos = getPos();
         getWorld().markBlockRangeForRenderUpdate(
             pos.getX() - 1, pos.getY() - 1, pos.getZ() - 1,

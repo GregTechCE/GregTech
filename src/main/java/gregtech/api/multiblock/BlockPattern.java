@@ -1,21 +1,18 @@
 package gregtech.api.multiblock;
 
-import net.minecraft.block.BlockColored;
-import net.minecraft.init.Blocks;
-import net.minecraft.item.EnumDyeColor;
+import gregtech.api.util.IntRange;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockPos.MutableBlockPos;
 import net.minecraft.world.World;
 import org.apache.commons.lang3.ArrayUtils;
+import org.apache.commons.lang3.tuple.Pair;
 
-import java.util.*;
-import java.util.function.*;
+import java.util.List;
+import java.util.function.Function;
+import java.util.function.Predicate;
 
 public class BlockPattern {
-
-    //use this to debug structure placement
-    private static final boolean DEBUG_STRUCTURES = false;
 
     private final Predicate<BlockWorldState>[][][] blockMatches; //[z][y][x]
     private final int fingerLength; //z size
@@ -23,13 +20,15 @@ public class BlockPattern {
     private final int palmLength; //x size
     private final RelativeDirection[] structureDir;
     private final int[][] aisleRepetitions;
+    private final List<Pair<Predicate<BlockWorldState>, IntRange>> countMatches;
 
     private static final EnumFacing[] ALLOWED_FACINGS = EnumFacing.HORIZONTALS;
     // x, y, z, minZ, maxZ
     private int[] centerOffset = null;
 
-    public BlockPattern(Predicate<BlockWorldState>[][][] predicatesIn, RelativeDirection[] structureDir, int[][] aisleRepetitions) {
+    public BlockPattern(Predicate<BlockWorldState>[][][] predicatesIn, List<Pair<Predicate<BlockWorldState>, IntRange>> countMatches, RelativeDirection[] structureDir, int[][] aisleRepetitions) {
         this.blockMatches = predicatesIn;
+        this.countMatches = countMatches;
         this.fingerLength = predicatesIn.length;
 
         if (this.fingerLength > 0) {
@@ -83,45 +82,52 @@ public class BlockPattern {
         BlockWorldState worldState = new BlockWorldState();
         MutableBlockPos blockPos = new MutableBlockPos();
         PatternMatchContext matchContext = new PatternMatchContext();
+        int[] countMatchesCache = new int[countMatches.size()];
         boolean findFirstAisle = false;
         int minZ = -centerOffset[4];
         for (int c = 0, z = minZ++, r; c < this.fingerLength; c++) {
-
-            loop:for (r = 0; (findFirstAisle ? r < aisleRepetitions[c][1] : z <= -centerOffset[3]); r++) {//Checking repeatable slices
-
+            loop: for (r = 0; (findFirstAisle ? r < aisleRepetitions[c][1] : z <= -centerOffset[3]); r++) {//Checking repeatable slices
                 for (int b = 0, y = -centerOffset[1]; b < this.thumbLength; b++, y++) {//Checking single slice
                     for (int a = 0, x = -centerOffset[0]; a < this.palmLength; a++, x++) {
                         Predicate<BlockWorldState> predicate = this.blockMatches[c][b][a];
                         setActualRelativeOffset(blockPos, x, y, z, facing);
                         blockPos.setPos(blockPos.getX() + centerPos.getX(), blockPos.getY() + centerPos.getY(), blockPos.getZ() + centerPos.getZ());
-                        if(DEBUG_STRUCTURES) {
-                            EnumDyeColor dyeColor = EnumDyeColor.values()[new Random(predicate.hashCode()).nextInt(15)];
-                            world.setBlockState(blockPos, Blocks.WOOL.getDefaultState().withProperty(BlockColored.COLOR, dyeColor));
-                        } else {
-                            worldState.update(world, blockPos, matchContext);
-                            if (!predicate.test(worldState)) {
-                                if (findFirstAisle) {
-                                    if (r < aisleRepetitions[c][0]) {//retreat to see if the first aisle can start later
-                                        r = c = 0;
-                                        z = minZ++;
-                                        matchContext.reset();
-                                        findFirstAisle = false;
-                                    }
-                                } else {
-                                    z++;//continue searching for the first aisle
+                        worldState.update(world, blockPos, matchContext);
+
+                        worldState.update(world, blockPos, matchContext);
+                        if (!predicate.test(worldState)) {
+                            if (findFirstAisle) {
+                                if (r < aisleRepetitions[c][0]) {//retreat to see if the first aisle can start later
+                                    r = c = 0;
+                                    z = minZ++;
+                                    matchContext.reset();
+                                    findFirstAisle = false;
                                 }
-                                continue loop;
+                            } else {
+                                z++;//continue searching for the first aisle
+                            }
+                            continue loop;
+                        }
+
+                        for (int i = 0; i < countMatchesCache.length; i++) {
+                            if (countMatches.get(i).getLeft().test(worldState)) {
+                                countMatchesCache[i]++;
                             }
                         }
                     }
                 }
                 findFirstAisle = true;
                 z++;
-
             }
 
             if (r < aisleRepetitions[c][0]) {//Repetitions out of range
                 return null;
+            }
+        }
+        for(int i = 0; i < countMatchesCache.length; i++) {
+            IntRange intRange = countMatches.get(i).getRight();
+            if(!intRange.isInsideOf(countMatchesCache[i])) {
+                return null; //count matches didn't match
             }
         }
         return matchContext;
