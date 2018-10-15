@@ -12,6 +12,7 @@ import gregtech.api.util.GTUtility;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.PacketBuffer;
 import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.util.Constants.NBT;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidTankProperties;
@@ -239,7 +240,10 @@ public class FuelRecipeMapWorkableHandler extends MTETrait implements IWorkable 
 
     @Override
     public void deserializeNBT(NBTTagCompound compound) {
-        this.workingEnabled = compound.getBoolean("WorkEnabled");
+        if(!compound.hasKey("WorkEnabled", NBT.TAG_BYTE)) {
+            //change working mode only if there is a tag compound with it's value
+            this.workingEnabled = compound.getBoolean("WorkEnabled");
+        }
         this.recipeDurationLeft = compound.getInteger("RecipeDurationLeft");
         if(recipeDurationLeft > 0) {
             this.recipeOutputVoltage = compound.getLong("RecipeOutputVoltage");
