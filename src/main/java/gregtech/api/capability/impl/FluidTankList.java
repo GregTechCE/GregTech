@@ -1,6 +1,5 @@
 package gregtech.api.capability.impl;
 
-import com.google.common.collect.Lists;
 import gregtech.api.capability.IMultipleTankHandler;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
@@ -10,7 +9,6 @@ import net.minecraftforge.common.util.INBTSerializable;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.IFluidTank;
-import net.minecraftforge.fluids.capability.FluidTankPropertiesWrapper;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidTankProperties;
 
@@ -22,6 +20,7 @@ public class FluidTankList implements IFluidHandler, IMultipleTankHandler, INBTS
     protected final List<IFluidTank> fluidTanks;
     protected IFluidTankProperties[] properties;
     protected final boolean allowSameFluidFill;
+    private IFluidTankProperties[] fluidTankProperties;
 
     public FluidTankList(boolean allowSameFluidFill, IFluidTank... fluidTanks) {
         this.fluidTanks = Arrays.asList(fluidTanks);
@@ -61,15 +60,17 @@ public class FluidTankList implements IFluidHandler, IMultipleTankHandler, INBTS
 
     @Override
     public IFluidTankProperties[] getTankProperties() {
-        List<IFluidTankProperties> props = Lists.newArrayList();
-        for(IFluidTank fluidTank : fluidTanks) {
-            if(fluidTank instanceof FluidTank) {
-                props.add(new FluidTankPropertiesWrapper((FluidTank) fluidTank));
-            } else if(fluidTank instanceof IFluidHandler) {
-                props.addAll(Arrays.asList(((IFluidHandler) fluidTank).getTankProperties()));
+        if(fluidTankProperties == null) {
+            ArrayList<IFluidTankProperties> propertiesList = new ArrayList<>();
+            for(IFluidTank fluidTank : fluidTanks) {
+                if(fluidTank instanceof IFluidHandler) {
+                    IFluidHandler fluidHandler = (IFluidHandler) fluidTank;
+                    propertiesList.addAll(Arrays.asList(fluidHandler.getTankProperties()));
+                }
             }
+            this.fluidTankProperties = propertiesList.toArray(new IFluidTankProperties[0]);
         }
-        return props.toArray(new IFluidTankProperties[0]);
+        return fluidTankProperties;
     }
 
     @Override

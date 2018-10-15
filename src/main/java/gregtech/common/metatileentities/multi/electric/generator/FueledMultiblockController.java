@@ -49,7 +49,7 @@ public abstract class FueledMultiblockController extends MultiblockWithDisplayBa
                 textList.add(new TextComponentTranslation("gregtech.multiblock.work_paused"));
             } else if (workableHandler.isActive()) {
                 textList.add(new TextComponentTranslation("gregtech.multiblock.running"));
-                textList.add(new TextComponentTranslation("gregtech.multiblock.generation_eu", workableHandler.maxVoltage));
+                textList.add(new TextComponentTranslation("gregtech.multiblock.generation_eu", workableHandler.getRecipeOutputVoltage()));
             } else {
                 textList.add(new TextComponentTranslation("gregtech.multiblock.idling"));
             }

@@ -25,7 +25,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.NonNullList;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.items.ItemStackHandler;
 
 import javax.annotation.Nullable;
@@ -40,7 +39,7 @@ public class SimpleGeneratorMetaTileEntity extends TieredMetaTileEntity {
     public SimpleGeneratorMetaTileEntity(String metaTileEntityId, FuelRecipeMap recipeMap, OrientedOverlayRenderer renderer, int tier) {
         super(metaTileEntityId, tier);
         this.workableHandler = new FuelRecipeMapWorkableHandler(this, recipeMap,
-            () -> energyContainer, () -> (IFluidHandler) importFluids.getTankAt(0), GTValues.V[tier]);
+            () -> energyContainer, () -> importFluids, GTValues.V[tier]);
         this.containerInventory = new ItemStackHandler(2);
         this.overlayRenderer = renderer;
     }

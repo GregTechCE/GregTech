@@ -14,6 +14,7 @@ import net.minecraft.network.PacketBuffer;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.IFluidHandler;
+import net.minecraftforge.fluids.capability.IFluidTankProperties;
 
 import java.util.function.Supplier;
 
@@ -39,6 +40,10 @@ public class FuelRecipeMapWorkableHandler extends MTETrait implements IWorkable 
         this.energyContainer = energyContainer;
         this.fluidTank = fluidTank;
         this.maxVoltage = maxVoltage;
+    }
+
+    public long getRecipeOutputVoltage() {
+        return recipeOutputVoltage;
     }
 
     @Override
@@ -79,10 +84,28 @@ public class FuelRecipeMapWorkableHandler extends MTETrait implements IWorkable 
     }
 
     private void tryAcquireNewRecipe() {
+        IFluidHandler fluidTank = this.fluidTank.get();
+        for(IFluidTankProperties fluidTankProperties : fluidTank.getTankProperties()) {
+            FluidStack tankContents = fluidTankProperties.getContents();
+            if(tankContents == null ||
+                !fluidTankProperties.canDrainFluidType(tankContents))
+                continue; //fluid tank is empty or can't be drained, continue
+            //obtain maximum amount of fluid that can be drained from container
+            //changing returned contents that way is allowed, because getContents returns a copy of actual fluid stack
+            tankContents.amount = Integer.MAX_VALUE;
+            FluidStack drainStack = fluidTank.drain(tankContents, false);
+            if(drainStack != null) {
+                int fuelAmountUsed = tryAcquireNewRecipe(drainStack);
+                if(fuelAmountUsed > 0) {
+                    fluidTank.drain(fuelAmountUsed, true);
+                    break; //recipe is found and ready to use
+                }
+            }
+        }
+    }
+
+    private int tryAcquireNewRecipe(FluidStack fluidStack) {
         FuelRecipe currentRecipe;
-        IFluidHandler fuelTank = this.fluidTank.get();
-        FluidStack fluidStack = fuelTank.drain(Integer.MAX_VALUE, false);
-        if(fluidStack == null) return; //tank is empty; do not try to do anything
         if(previousRecipe != null && previousRecipe.matches(maxVoltage, fluidStack)) {
             //if previous recipe still matches inputs, try to use it
             currentRecipe = previousRecipe;
@@ -97,7 +120,6 @@ public class FuelRecipeMapWorkableHandler extends MTETrait implements IWorkable 
         if(currentRecipe != null && checkRecipe(currentRecipe)) {
             int fuelAmountToUse = calculateFuelAmount(currentRecipe);
             if(fluidStack.amount >= fuelAmountToUse) {
-                fuelTank.drain(fuelAmountToUse, true);
                 this.recipeDurationLeft = calculateRecipeDuration(currentRecipe);
                 this.recipeOutputVoltage = startRecipe(currentRecipe, fuelAmountToUse, recipeDurationLeft);
                 if(wasActiveAndNeedsUpdate) {
@@ -105,8 +127,10 @@ public class FuelRecipeMapWorkableHandler extends MTETrait implements IWorkable 
                 } else {
                     setActive(true);
                 }
+                return fuelAmountToUse;
             }
         }
+        return 0;
     }
 
     protected boolean checkRecipe(FuelRecipe recipe) {
