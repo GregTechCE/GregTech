@@ -3,6 +3,7 @@ package gregtech.api.capability.impl;
 import gregtech.api.GTValues;
 import gregtech.api.capability.GregtechCapabilities;
 import gregtech.api.capability.IEnergyContainer;
+import gregtech.api.capability.IMultipleTankHandler;
 import gregtech.api.capability.IWorkable;
 import gregtech.api.metatileentity.MTETrait;
 import gregtech.api.metatileentity.MetaTileEntity;
@@ -14,8 +15,7 @@ import net.minecraft.network.PacketBuffer;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.Constants.NBT;
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.capability.IFluidHandler;
-import net.minecraftforge.fluids.capability.IFluidTankProperties;
+import net.minecraftforge.fluids.IFluidTank;
 
 import java.util.function.Supplier;
 
@@ -25,7 +25,7 @@ public class FuelRecipeMapWorkableHandler extends MTETrait implements IWorkable 
     protected FuelRecipe previousRecipe;
 
     protected final Supplier<IEnergyContainer> energyContainer;
-    protected final Supplier<IFluidHandler> fluidTank;
+    protected final Supplier<IMultipleTankHandler> fluidTank;
     public final long maxVoltage;
 
     private int recipeDurationLeft;
@@ -35,7 +35,7 @@ public class FuelRecipeMapWorkableHandler extends MTETrait implements IWorkable 
     private boolean workingEnabled = true;
     private boolean wasActiveAndNeedsUpdate = false;
 
-    public FuelRecipeMapWorkableHandler(MetaTileEntity metaTileEntity, FuelRecipeMap recipeMap, Supplier<IEnergyContainer> energyContainer, Supplier<IFluidHandler> fluidTank, long maxVoltage) {
+    public FuelRecipeMapWorkableHandler(MetaTileEntity metaTileEntity, FuelRecipeMap recipeMap, Supplier<IEnergyContainer> energyContainer, Supplier<IMultipleTankHandler> fluidTank, long maxVoltage) {
         super(metaTileEntity);
         this.recipeMap = recipeMap;
         this.energyContainer = energyContainer;
@@ -85,18 +85,11 @@ public class FuelRecipeMapWorkableHandler extends MTETrait implements IWorkable 
     }
 
     private void tryAcquireNewRecipe() {
-        IFluidHandler fluidTank = this.fluidTank.get();
-        for(IFluidTankProperties fluidTankProperties : fluidTank.getTankProperties()) {
-            FluidStack tankContents = fluidTankProperties.getContents();
-            if(tankContents == null ||
-                !fluidTankProperties.canDrainFluidType(tankContents))
-                continue; //fluid tank is empty or can't be drained, continue
-            //obtain maximum amount of fluid that can be drained from container
-            //changing returned contents that way is allowed, because getContents returns a copy of actual fluid stack
-            tankContents.amount = Integer.MAX_VALUE;
-            FluidStack drainStack = fluidTank.drain(tankContents, false);
-            if(drainStack != null) {
-                int fuelAmountUsed = tryAcquireNewRecipe(drainStack);
+        IMultipleTankHandler fluidTanks = this.fluidTank.get();
+        for(IFluidTank fluidTank : fluidTanks) {
+            FluidStack tankContents = fluidTank.getFluid();
+            if(tankContents != null && tankContents.amount > 0) {
+                int fuelAmountUsed = tryAcquireNewRecipe(tankContents);
                 if(fuelAmountUsed > 0) {
                     fluidTank.drain(fuelAmountUsed, true);
                     break; //recipe is found and ready to use

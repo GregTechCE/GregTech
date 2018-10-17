@@ -404,11 +404,8 @@ public class GTUtility {
         for (int i = 0; i < handler.getSlots(); i++) {
             if (!handler.getStackInSlot(i).isEmpty()) {
                 NBTTagCompound stackTag = new NBTTagCompound();
-
                 stackTag.setInteger("Slot", i);
-
                 handler.getStackInSlot(i).writeToNBT(stackTag);
-
                 tagList.appendTag(stackTag);
             }
         }

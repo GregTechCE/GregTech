@@ -147,7 +147,7 @@ public class MetaTileEntityLargeTurbine extends FueledMultiblockController {
     }
 
     public MultiblockAbility[] getAllowedAbilities() {
-        return turbineType == TurbineType.STEAM ?
+        return turbineType.hasOutputHatch ?
             new MultiblockAbility[] {MultiblockAbility.IMPORT_FLUIDS, MultiblockAbility.EXPORT_FLUIDS} :
             new MultiblockAbility[] {MultiblockAbility.IMPORT_FLUIDS};
     }

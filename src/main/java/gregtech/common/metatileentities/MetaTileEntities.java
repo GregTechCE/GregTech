@@ -25,6 +25,8 @@ import gregtech.common.metatileentities.steam.boiler.SteamCoalBoiler;
 import gregtech.common.metatileentities.steam.boiler.SteamLavaBoiler;
 import gregtech.common.metatileentities.steam.boiler.SteamSolarBoiler;
 import gregtech.common.metatileentities.storage.MetaTileEntityChest;
+import gregtech.common.metatileentities.storage.MetaTileEntityQuantumChest;
+import gregtech.common.metatileentities.storage.MetaTileEntityQuantumTank;
 import gregtech.common.metatileentities.storage.MetaTileEntityTank;
 import net.minecraftforge.fml.common.Loader;
 
@@ -152,6 +154,8 @@ public class MetaTileEntities {
     public static MetaTileEntityPump[] PUMP = new MetaTileEntityPump[4];
     public static MetaTileEntityAirCollector[] AIR_COLLECTOR = new MetaTileEntityAirCollector[4];
     public static MetaTileEntityTeslaCoil TESLA_COIL;
+    public static MetaTileEntityQuantumChest[] QUANTUM_CHEST = new MetaTileEntityQuantumChest[4];
+    public static MetaTileEntityQuantumTank[] QUANTUM_TANK = new MetaTileEntityQuantumTank[4];
 
     public static void init() {
         GTLog.logger.info("Registering MetaTileEntities");
@@ -479,6 +483,14 @@ public class MetaTileEntities {
 
         TESLA_COIL = new MetaTileEntityTeslaCoil("tesla_coil");
         GregTechAPI.registerMetaTileEntity(1001, TESLA_COIL);
+
+        for(int i = 2; i < 6; i++) {
+            String voltageName = GTValues.VN[i].toLowerCase();
+            QUANTUM_CHEST[i - 2] = new MetaTileEntityQuantumChest("quantum_chest." + voltageName, i, 64 * 64000 * (i - 1));
+            QUANTUM_TANK[i - 2] = new MetaTileEntityQuantumTank("quantum_tank." + voltageName, i, 1000 * 64000 * (i - 1));
+            GregTechAPI.registerMetaTileEntity(1010 + (i - 2), QUANTUM_CHEST[i - 2]);
+            GregTechAPI.registerMetaTileEntity(1020 + (i - 2), QUANTUM_TANK[i - 2]);
+        }
     }
 
 }

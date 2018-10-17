@@ -1,6 +1,7 @@
 package gregtech.common.metatileentities.multi.electric.generator;
 
 import gregtech.api.capability.IEnergyContainer;
+import gregtech.api.capability.IMultipleTankHandler;
 import gregtech.api.capability.impl.FuelRecipeMapWorkableHandler;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.recipes.machines.FuelRecipeMap;
@@ -8,7 +9,6 @@ import gregtech.api.recipes.recipes.FuelRecipe;
 import gregtech.api.unification.material.Materials;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.capability.IFluidHandler;
 
 import java.util.function.Supplier;
 
@@ -19,7 +19,7 @@ public class DieselEngineWorkableHandler extends FuelRecipeMapWorkableHandler {
     private boolean isUsingOxygen = false;
 
     public DieselEngineWorkableHandler(MetaTileEntity metaTileEntity, FuelRecipeMap recipeMap,
-                                       Supplier<IEnergyContainer> energyContainer, Supplier<IFluidHandler> fluidTank, long maxVoltage) {
+                                       Supplier<IEnergyContainer> energyContainer, Supplier<IMultipleTankHandler> fluidTank, long maxVoltage) {
         super(metaTileEntity, recipeMap, energyContainer, fluidTank, maxVoltage);
     }
 
@@ -42,6 +42,7 @@ public class DieselEngineWorkableHandler extends FuelRecipeMapWorkableHandler {
         FluidStack oxygenStack = Materials.Oxygen.getFluid(2);
         FluidStack drainOxygenStack = fluidTank.get().drain(oxygenStack, false);
         this.isUsingOxygen = drainOxygenStack != null && drainOxygenStack.amount >= 2;
+        int result = super.calculateFuelAmount(currentRecipe) * (isUsingOxygen ? 2 : 1);
         return super.calculateFuelAmount(currentRecipe) * (isUsingOxygen ? 2 : 1);
     }
 

@@ -57,6 +57,10 @@ public class MetaTileEntityRotorHolder extends MetaTileEntityMultiblockPart impl
         this(metaTileEntityId, tier, (int) (NORMAL_MAXIMUM_SPEED * (tier + 1) * 0.2));
     }
 
+    public ItemStackHandler getRotorInventory() {
+        return rotorInventory;
+    }
+
     @Override
     public MetaTileEntity createMetaTileEntity(MetaTileEntityHolder holder) {
         return new MetaTileEntityRotorHolder(metaTileEntityId, getTier(), maxRotorSpeed);
@@ -177,7 +181,7 @@ public class MetaTileEntityRotorHolder extends MetaTileEntityMultiblockPart impl
     private void setRotorColor(int hasRotor1) {
         int lastHasRotor = rotorColor;
         this.rotorColor = hasRotor1;
-        if(rotorColor != lastHasRotor && !getWorld().isRemote) {
+        if(rotorColor != lastHasRotor && (getWorld() != null && !getWorld().isRemote)) {
             writeCustomData(-201, writer -> writer.writeInt(rotorColor));
             markDirty();
         }
@@ -188,8 +192,10 @@ public class MetaTileEntityRotorHolder extends MetaTileEntityMultiblockPart impl
         super.receiveCustomData(dataId, buf);
         if(dataId == -200) {
             this.isRotorLooping = buf.readBoolean();
+            getHolder().scheduleChunkForRenderUpdate();
         } else if(dataId == -201) {
             this.rotorColor = buf.readInt();
+            getHolder().scheduleChunkForRenderUpdate();
         }
     }
 

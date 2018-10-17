@@ -45,8 +45,8 @@ public class MetaTileEntityDieselEngine extends FueledMultiblockController {
     @Override
     protected void addDisplayText(List<ITextComponent> textList) {
         if(isStructureFormed()) {
-            FluidStack lubricantStack = importFluids.drain(Materials.Lubricant.getFluid(Integer.MAX_VALUE), false);
-            FluidStack oxygenStack = importFluids.drain(Materials.Oxygen.getFluid(Integer.MAX_VALUE), false);
+            FluidStack lubricantStack = importFluidHandler.drain(Materials.Lubricant.getFluid(Integer.MAX_VALUE), false);
+            FluidStack oxygenStack = importFluidHandler.drain(Materials.Oxygen.getFluid(Integer.MAX_VALUE), false);
             FluidStack fuelStack = ((DieselEngineWorkableHandler) workableHandler).getFuelStack();
             int lubricantAmount = lubricantStack == null ? 0 : lubricantStack.amount;
             int oxygenAmount = oxygenStack == null ? 0 : oxygenStack.amount;

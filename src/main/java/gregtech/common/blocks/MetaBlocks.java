@@ -17,6 +17,8 @@ import gregtech.api.unification.material.type.SolidMaterial;
 import gregtech.api.unification.ore.OrePrefix;
 import gregtech.api.unification.ore.StoneType;
 import gregtech.api.unification.ore.StoneTypes;
+import gregtech.common.blocks.foam.BlockFoam;
+import gregtech.common.blocks.foam.BlockPetrifiedFoam;
 import gregtech.common.blocks.modelfactories.BakedModelHandler;
 import gregtech.common.blocks.surfacerock.BlockSurfaceRock;
 import gregtech.common.blocks.surfacerock.BlockSurfaceRockFlooded;
@@ -84,6 +86,11 @@ public class MetaBlocks {
     public static BlockMineral MINERAL;
     public static BlockConcrete CONCRETE;
 
+    public static BlockFoam FOAM;
+    public static BlockFoam REINFORCED_FOAM;
+    public static BlockPetrifiedFoam PETRIFIED_FOAM;
+    public static BlockPetrifiedFoam REINFORCED_PETRIFIED_FOAM;
+
     public static BlockGregLog LOG;
     public static BlockGregLeaves LEAVES;
     public static BlockGregSapling SAPLING;
@@ -125,6 +132,15 @@ public class MetaBlocks {
 
         CONCRETE = new BlockConcrete();
         CONCRETE.setRegistryName("concrete");
+
+        FOAM = new BlockFoam(false);
+        FOAM.setRegistryName("foam");
+        REINFORCED_FOAM = new BlockFoam(true);
+        REINFORCED_FOAM.setRegistryName("reinforced_foam");
+        PETRIFIED_FOAM = new BlockPetrifiedFoam(false);
+        PETRIFIED_FOAM.setRegistryName("petrified_foam");
+        REINFORCED_PETRIFIED_FOAM = new BlockPetrifiedFoam(true);
+        REINFORCED_PETRIFIED_FOAM.setRegistryName("reinforced_petrified_foam");
 
         LOG = new BlockGregLog();
         LOG.setRegistryName("log");

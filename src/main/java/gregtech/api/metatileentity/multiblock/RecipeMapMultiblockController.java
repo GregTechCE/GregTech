@@ -38,11 +38,6 @@ public abstract class RecipeMapMultiblockController extends MultiblockWithDispla
         resetTileAbilities();
     }
 
-    @Override
-    protected boolean shouldSerializeInventories() {
-        return false; //as inventories are temporary
-    }
-
     public IEnergyContainer getEnergyContainer() {
         return energyContainer;
     }

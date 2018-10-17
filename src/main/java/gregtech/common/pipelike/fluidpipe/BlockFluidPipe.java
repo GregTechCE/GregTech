@@ -154,7 +154,7 @@ public class BlockFluidPipe extends BlockPipe<FluidPipeType, FluidPipeProperties
                 if (fluidTemperature >= 373) {
                     //100C, temperature of boiling water
                     if (!GTUtility.isWearingFullHeatHazmat(entityLiving)) {
-                        float damageAmount = (fluidTemperature - 273) / 2.0f;
+                        float damageAmount = (fluidTemperature - 363) / 2.0f;
                         entityLiving.attackEntityFrom(DamageSources.getHeatDamage(), damageAmount);
                     }
                 } else if(fluidTemperature <= 183) {

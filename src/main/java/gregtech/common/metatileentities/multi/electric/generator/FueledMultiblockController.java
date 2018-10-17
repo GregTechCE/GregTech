@@ -4,6 +4,7 @@ import codechicken.lib.render.CCRenderState;
 import codechicken.lib.render.pipeline.IVertexOperation;
 import codechicken.lib.vec.Matrix4;
 import gregtech.api.capability.IEnergyContainer;
+import gregtech.api.capability.IMultipleTankHandler;
 import gregtech.api.capability.impl.EnergyContainerList;
 import gregtech.api.capability.impl.FluidTankList;
 import gregtech.api.capability.impl.FuelRecipeMapWorkableHandler;
@@ -16,7 +17,6 @@ import gregtech.api.recipes.machines.FuelRecipeMap;
 import gregtech.api.render.Textures;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentTranslation;
-import net.minecraftforge.fluids.capability.IFluidHandler;
 
 import java.util.List;
 import java.util.Map;
@@ -27,7 +27,7 @@ public abstract class FueledMultiblockController extends MultiblockWithDisplayBa
     protected final FuelRecipeMap recipeMap;
     protected FuelRecipeMapWorkableHandler workableHandler;
     protected IEnergyContainer energyContainer;
-    protected IFluidHandler importFluidHandler;
+    protected IMultipleTankHandler importFluidHandler;
 
     public FueledMultiblockController(String metaTileEntityId, FuelRecipeMap recipeMap, long maxVoltage) {
         super(metaTileEntityId);
