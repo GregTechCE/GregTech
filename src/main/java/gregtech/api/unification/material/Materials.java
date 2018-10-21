@@ -720,15 +720,16 @@ public class Materials {
         NaquadahAlloy.setCableProperties(GTValues.V[8], 2, 4);
         Duranium.setCableProperties(GTValues.V[8], 1, 8);
 
-        Copper.setFluidPipeProperties(10, 1000, true);
-        Bronze.setFluidPipeProperties(20, 2000, true);
-        Steel.setFluidPipeProperties(40, 2500, true);
-        StainlessSteel.setFluidPipeProperties(60, 3000, true);
-        Titanium.setFluidPipeProperties(80, 5000, true);
-        TungstenSteel.setFluidPipeProperties(100, 7500, true);
+        Copper.setFluidPipeProperties(25, 1000, true);
+        Bronze.setFluidPipeProperties(35, 2000, true);
+        Steel.setFluidPipeProperties(50, 2500, true);
+        StainlessSteel.setFluidPipeProperties(100, 3000, true);
+        Titanium.setFluidPipeProperties(200, 5000, true);
+        TungstenSteel.setFluidPipeProperties(300, 7500, true);
 
         Plastic.setFluidPipeProperties(200, 350, true);
-        Polytetrafluoroethylene.setFluidPipeProperties(100, 600, true);
+        Polytetrafluoroethylene.setFluidPipeProperties(200, 600, true);
+      
     }
 
 }
