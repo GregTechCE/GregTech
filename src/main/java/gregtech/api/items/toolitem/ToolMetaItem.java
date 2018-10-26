@@ -335,7 +335,7 @@ public class ToolMetaItem<T extends ToolMetaItem<?>.MetaToolValueItem> extends M
     public boolean doDamageToItem(ItemStack stack, int vanillaDamage, boolean simulate) {
         IElectricItem capability = stack.getCapability(GregtechCapabilities.CAPABILITY_ELECTRIC_ITEM, null);
         if (capability == null) {
-            int newDamageValue = getInternalDamage(stack) + vanillaDamage;
+            int newDamageValue = getInternalDamage(stack) + vanillaDamage * 10;
             if(!simulate && !setInternalDamage(stack, newDamageValue)) {
                 stack.shrink(1);
             }
@@ -457,11 +457,6 @@ public class ToolMetaItem<T extends ToolMetaItem<?>.MetaToolValueItem> extends M
     }
 
     @Override
-    public boolean isBookEnchantable(ItemStack stack, ItemStack book) {
-        return super.isBookEnchantable(stack, book);
-    }
-
-    @Override
     public boolean canApplyAtEnchantingTable(ItemStack stack, Enchantment enchantment) {
         if(enchantment == Enchantments.MENDING ||
             enchantment == Enchantments.UNBREAKING)
@@ -479,7 +474,7 @@ public class ToolMetaItem<T extends ToolMetaItem<?>.MetaToolValueItem> extends M
         if (metaToolValueItem != null) {
             SolidMaterial toolMaterial = getPrimaryMaterial(itemStack);
             if (toolMaterial != null) {
-                return (int) (toolMaterial.toolDurability * metaToolValueItem.getToolStats().getMaxDurabilityMultiplier(itemStack));
+                return (int) (toolMaterial.toolDurability * metaToolValueItem.getToolStats().getMaxDurabilityMultiplier(itemStack) * 10);
             }
         }
         return 0;
