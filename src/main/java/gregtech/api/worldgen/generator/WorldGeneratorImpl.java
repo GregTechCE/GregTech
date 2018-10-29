@@ -40,14 +40,21 @@ public class WorldGeneratorImpl implements IWorldGenerator {
     @SubscribeEvent(priority = EventPriority.HIGH)
     public void onOreGenerate(OreGenEvent.GenerateMinable event) {
         EventType eventType = event.getType();
+        World world = event.getWorld();
         if(ConfigHolder.disableVanillaOres &&
-            ORE_EVENT_TYPES.contains(eventType)) {
+            ORE_EVENT_TYPES.contains(eventType) &&
+            canGenerateInWorld(world)) {
             event.setResult(Result.DENY);
         }
     }
 
     @Override
     public void generate(Random random, int chunkX, int chunkZ, World world, IChunkGenerator chunkGenerator, IChunkProvider chunkProvider) {
+    	
+    	//if the user has specified that gregtech not generate ores here, then do not generate them
+    	if(!canGenerateInWorld(world))
+    		return;
+    	
         int selfGridX = Math.floorDiv(chunkX, GRID_SIZE_X);
         int selfGridZ = Math.floorDiv(chunkZ, GRID_SIZE_Z);
         List<OreDepositDefinition> generatedOres = generateInternal(world, selfGridX, selfGridZ, chunkX, chunkZ);
@@ -90,6 +97,13 @@ public class WorldGeneratorImpl implements IWorldGenerator {
         }
     }
 
+    private boolean canGenerateInWorld(World world) {
+    	for(String str : ConfigHolder.oreGenDimensionIdBlackList)
+    		if( str.equalsIgnoreCase(Integer.toString(world.provider.getDimension())))
+    			return false;
+    	return true;
+    }
+    
     private List<OreDepositDefinition> generateInternal(World world, int selfGridX, int selfGridZ, int chunkX, int chunkZ) {
         List<OreDepositDefinition> allGeneratedOres = Collections.emptyList();
         int halfSizeX = (GRID_SIZE_X - 1) / 2;

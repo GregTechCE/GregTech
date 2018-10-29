@@ -53,6 +53,10 @@ public class ConfigHolder {
         "By default, GTCE will sort ore dictionary registrations alphabetically comparing their owner ModIDs.")
     public static boolean useCustomModPriorities = false;
 
+    @Config.Comment("Specifies a list of dimension ids where gregtech will not generate ores.")
+    @Config.RequiresMcRestart
+    public static String[] oreGenDimensionIdBlackList = new String[0];
+    
     @Config.Comment("Specifies priorities of mods in ore dictionary item registration. First ModID has highest priority, last - lowest. " +
         "Unspecified ModIDs follow standard sorting, but always have lower priority than last specified ModID.")
     @Config.RequiresMcRestart
