@@ -1,7 +1,6 @@
 package gregtech.api.unification.ore;
 
 import com.google.common.base.Preconditions;
-import gregtech.api.recipes.ModHandler;
 import gregtech.api.unification.material.MarkerMaterials;
 import gregtech.api.unification.material.MaterialIconType;
 import gregtech.api.unification.material.Materials;
@@ -191,14 +190,7 @@ public enum OrePrefix {
     paper("Papers", -1, null, null, DISALLOW_RECYCLING, null), // Used for Papers of any kind.
     dye("Dyes", -1, null, null, DISALLOW_RECYCLING, null), // Used for the 16 dyes. Introduced by Eloraam
     stainedClay("Stained Clays", -1, MarkerMaterials.Color.Colorless, null, SELF_REFERENCING | DISALLOW_RECYCLING, null), // Used for the 16 colors of Stained Clay. Introduced by Forge
-    armorHelmet("Helmets", M * 5, null, null, 0, null), // vanilly Helmet
-    armorChestplate("Chestplates", M * 8, null, null, 0, null), // vanilly Chestplate
-    armorLeggings("Leggings", M * 7, null, null, 0, null), // vanilly Pants
-    armorBoots("Boots", M * 4, null, null, 0, null), // vanilly Boots
-    armor("Armor Parts", -1, null, null, DISALLOW_RECYCLING, null),
-    frameGt("Frame Boxes", (long) (M * 1.375), null, null, ENABLE_UNIFICATION, material ->
-        (material instanceof IngotMaterial || ModHandler.isMaterialWood(material)) &&
-        material.hasFlag(GENERATE_ROD | GENERATE_PLATE)),
+    frameGt("Frame Boxes", (long) (M * 1.375), null, null, ENABLE_UNIFICATION, material -> material instanceof IngotMaterial && material.hasFlag(GENERATE_ROD | GENERATE_PLATE)),
 
     pipeTiny("Tiny Pipes", M / 2, null, MaterialIconType.pipeTiny, ENABLE_UNIFICATION, null),
     pipeSmall("Small Pipes", M, null, MaterialIconType.pipeSmall, ENABLE_UNIFICATION, null),
@@ -292,14 +284,7 @@ public enum OrePrefix {
         toolHoe.defaultStackSize = 1;
         toolShears.defaultStackSize = 1;
         tool.defaultStackSize = 1;
-
         record.defaultStackSize = 1;
-
-        armorHelmet.defaultStackSize = 1;
-        armorChestplate.defaultStackSize = 1;
-        armorLeggings.defaultStackSize = 1;
-        armorBoots.defaultStackSize = 1;
-        armor.defaultStackSize = 1;
 
         gem.setIgnored(Materials.Diamond);
         gem.setIgnored(Materials.Emerald);
@@ -500,7 +485,7 @@ public enum OrePrefix {
     }
 
     public boolean doGenerateItem(Material material) {
-        return !isSelfReferencing && generationCondition != null && materialIconType != null && !isIgnored(material) && generationCondition.isTrue(material);
+        return !isSelfReferencing && generationCondition != null && !isIgnored(material) && generationCondition.isTrue(material);
     }
 
     public boolean addProcessingHandler(IOreRegistrationHandler... processingHandler) {

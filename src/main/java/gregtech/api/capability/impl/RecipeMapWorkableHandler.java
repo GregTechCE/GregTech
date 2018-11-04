@@ -52,6 +52,22 @@ public abstract class RecipeMapWorkableHandler extends MTETrait implements IWork
     protected abstract boolean drawEnergy(int recipeEUt);
     protected abstract long getMaxVoltage();
 
+    protected IItemHandlerModifiable getInputInventory() {
+        return metaTileEntity.getImportItems();
+    }
+
+    protected IItemHandlerModifiable getOutputInventory() {
+        return metaTileEntity.getExportItems();
+    }
+
+    protected IMultipleTankHandler getInputTank() {
+        return metaTileEntity.getImportFluids();
+    }
+
+    protected IMultipleTankHandler getOutputTank() {
+        return metaTileEntity.getExportFluids();
+    }
+
     @Override
     public String getName() {
         return "RecipeMapWorkable";
@@ -92,13 +108,14 @@ public abstract class RecipeMapWorkableHandler extends MTETrait implements IWork
         if(progressTime == 0 && workingEnabled) {
             long maxVoltage = getMaxVoltage();
             Recipe currentRecipe;
-            if(previousRecipe != null && previousRecipe.matches(false,
-                metaTileEntity.getImportItems(), metaTileEntity.getImportFluids())) {
+            IItemHandlerModifiable importInventory = getInputInventory();
+            IMultipleTankHandler importFluids = getInputTank();
+            if(previousRecipe != null && previousRecipe.matches(false, importInventory, importFluids)) {
                 //if previous recipe still matches inputs, try to use it
                 currentRecipe = previousRecipe;
             } else {
                 //else, try searching new recipe for given inputs
-                currentRecipe = findRecipe(maxVoltage, metaTileEntity.getImportItems(), metaTileEntity.getImportFluids());
+                currentRecipe = findRecipe(maxVoltage, importInventory, importFluids);
                 //if we found recipe that can be buffered, buffer it
                 if(currentRecipe != null && currentRecipe.canBeBuffered()) {
                     this.previousRecipe = currentRecipe;
@@ -122,12 +139,16 @@ public abstract class RecipeMapWorkableHandler extends MTETrait implements IWork
     protected boolean setupAndConsumeRecipeInputs(Recipe recipe) {
         int[] resultOverclock = calculateOverclock(recipe.getEUt(), getMaxVoltage(), recipeMap.getAmperage(), recipe.getDuration(), false);
         int totalEUt = resultOverclock[0] * resultOverclock[1];
+        IItemHandlerModifiable importInventory = getInputInventory();
+        IItemHandlerModifiable exportInventory = getOutputInventory();
+        IMultipleTankHandler importFluids = getInputTank();
+        IMultipleTankHandler exportFluids = getOutputTank();
         return (totalEUt >= 0 ? getEnergyStored() >= (totalEUt > getEnergyCapacity() / 2 ? resultOverclock[0] : totalEUt) :
             (ignoreTooMuchEnergy() || getEnergyStored() - resultOverclock[0] <= getEnergyCapacity())) &&
-            (!recipe.needsEmptyOutput() || MetaTileEntity.isItemHandlerEmpty(metaTileEntity.getExportItems())) &&
-            MetaTileEntity.addItemsToItemHandler(metaTileEntity.getExportItems(), true, recipe.getOutputs()) &&
-            MetaTileEntity.addFluidsToFluidHandler(metaTileEntity.getExportFluids(), true, recipe.getFluidOutputs()) &&
-            recipe.matches(true, metaTileEntity.getImportItems(), metaTileEntity.getImportFluids());
+            (!recipe.needsEmptyOutput() || MetaTileEntity.isItemHandlerEmpty(exportInventory)) &&
+            MetaTileEntity.addItemsToItemHandler(exportInventory, true, recipe.getOutputs()) &&
+            MetaTileEntity.addFluidsToFluidHandler(exportFluids, true, recipe.getFluidOutputs()) &&
+            recipe.matches(true, importInventory, importFluids);
     }
 
     protected boolean ignoreTooMuchEnergy() {
@@ -175,7 +196,7 @@ public abstract class RecipeMapWorkableHandler extends MTETrait implements IWork
         if(tier > GTValues.LV && tier > recipeTier) {
             byproductChanceMultiplier = 1 << (tier - recipeTier);
         }
-        this.itemOutputs = GTUtility.copyStackList(recipe.getResultItemOutputs(random,byproductChanceMultiplier));
+        this.itemOutputs = GTUtility.copyStackList(recipe.getResultItemOutputs(random, byproductChanceMultiplier));
         if(this.wasActiveAndNeedsUpdate) {
             this.wasActiveAndNeedsUpdate = false;
         } else {
@@ -184,8 +205,8 @@ public abstract class RecipeMapWorkableHandler extends MTETrait implements IWork
     }
 
     protected void completeRecipe() {
-        MetaTileEntity.addItemsToItemHandler(metaTileEntity.getExportItems(), false, itemOutputs);
-        MetaTileEntity.addFluidsToFluidHandler(metaTileEntity.getExportFluids(), false, fluidOutputs);
+        MetaTileEntity.addItemsToItemHandler(getOutputInventory(), false, itemOutputs);
+        MetaTileEntity.addFluidsToFluidHandler(getOutputTank(), false, fluidOutputs);
         this.progressTime = 0;
         setMaxProgress(0);
         this.recipeEUt = 0;

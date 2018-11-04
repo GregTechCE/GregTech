@@ -1,8 +1,10 @@
 package gregtech.api.capability.impl;
 
 import gregtech.api.capability.IEnergyContainer;
+import gregtech.api.capability.IMultipleTankHandler;
 import gregtech.api.metatileentity.multiblock.RecipeMapMultiblockController;
 import gregtech.api.recipes.Recipe;
+import net.minecraftforge.items.IItemHandlerModifiable;
 
 public class MultiblockRecipeMapWorkable extends RecipeMapWorkableHandler {
 
@@ -22,6 +24,30 @@ public class MultiblockRecipeMapWorkable extends RecipeMapWorkableHandler {
     public IEnergyContainer getEnergyContainer() {
         RecipeMapMultiblockController controller = (RecipeMapMultiblockController) metaTileEntity;
         return controller.getEnergyContainer();
+    }
+
+    @Override
+    protected IItemHandlerModifiable getInputInventory() {
+        RecipeMapMultiblockController controller = (RecipeMapMultiblockController) metaTileEntity;
+        return controller.getInputInventory();
+    }
+
+    @Override
+    protected IItemHandlerModifiable getOutputInventory() {
+        RecipeMapMultiblockController controller = (RecipeMapMultiblockController) metaTileEntity;
+        return controller.getOutputInventory();
+    }
+
+    @Override
+    protected IMultipleTankHandler getInputTank() {
+        RecipeMapMultiblockController controller = (RecipeMapMultiblockController) metaTileEntity;
+        return controller.getInputFluidInventory();
+    }
+
+    @Override
+    protected IMultipleTankHandler getOutputTank() {
+        RecipeMapMultiblockController controller = (RecipeMapMultiblockController) metaTileEntity;
+        return controller.getOutputFluidInventory();
     }
 
     @Override

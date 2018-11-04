@@ -210,7 +210,7 @@ public abstract class Material implements Comparable<Material> {
 
 	@ZenMethod("hasFlagRaw")
 	public boolean hasFlag(long generationFlag) {
-		return (materialGenerationFlags & generationFlag) != 0;
+		return (materialGenerationFlags & generationFlag) >= generationFlag;
 	}
 
 	@ZenMethod

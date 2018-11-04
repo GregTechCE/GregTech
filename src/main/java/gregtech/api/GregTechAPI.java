@@ -23,7 +23,7 @@ public class GregTechAPI {
     public static BlockMachine MACHINE;
 
     public static final BaseCreativeTab TAB_GREGTECH =
-        new BaseCreativeTab(GTValues.MODID + ".main", () -> MetaItems.BATTERY_HULL_HV.getStackForm());
+        new BaseCreativeTab(GTValues.MODID + ".main", () -> MetaItems.BATTERY_HULL_HV.getStackForm(), true);
     public static final BaseCreativeTab TAB_GREGTECH_MATERIALS =
         new BaseCreativeTab(GTValues.MODID + ".materials", () -> OreDictUnifier.get(OrePrefix.ingot, Materials.Aluminium), true);
     public static final BaseCreativeTab TAB_GREGTECH_ORES =

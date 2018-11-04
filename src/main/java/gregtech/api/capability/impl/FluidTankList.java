@@ -187,7 +187,7 @@ public class FluidTankList implements IFluidHandler, IMultipleTankHandler, INBTS
     @Override
     public void deserializeNBT(NBTTagCompound nbt) {
         NBTTagList tanks = nbt.getTagList("Tanks", Constants.NBT.TAG_COMPOUND);
-        for (int i = 0; i < nbt.getInteger("TankAmount"); i++) {
+        for (int i = 0; i < Math.min(fluidTanks.size(), nbt.getInteger("TankAmount")); i++) {
             NBTBase nbtTag = tanks.get(i);
             IFluidTank fluidTank = fluidTanks.get(i);
             if(fluidTank instanceof FluidTank) {

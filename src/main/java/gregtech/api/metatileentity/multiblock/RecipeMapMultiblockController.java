@@ -3,21 +3,25 @@ package gregtech.api.metatileentity.multiblock;
 import codechicken.lib.render.CCRenderState;
 import codechicken.lib.render.pipeline.IVertexOperation;
 import codechicken.lib.vec.Matrix4;
+import com.google.common.collect.Lists;
 import gregtech.api.GTValues;
 import gregtech.api.capability.IEnergyContainer;
-import gregtech.api.capability.impl.*;
+import gregtech.api.capability.IMultipleTankHandler;
+import gregtech.api.capability.impl.EnergyContainerList;
+import gregtech.api.capability.impl.FluidTankList;
+import gregtech.api.capability.impl.ItemHandlerList;
+import gregtech.api.capability.impl.MultiblockRecipeMapWorkable;
 import gregtech.api.multiblock.PatternMatchContext;
 import gregtech.api.recipes.Recipe;
 import gregtech.api.recipes.RecipeMap;
 import gregtech.api.render.Textures;
 import gregtech.api.util.GTUtility;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.NonNullList;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.Style;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.items.IItemHandler;
+import net.minecraftforge.items.IItemHandlerModifiable;
 import net.minecraftforge.items.ItemStackHandler;
 
 import java.util.Collections;
@@ -29,6 +33,11 @@ public abstract class RecipeMapMultiblockController extends MultiblockWithDispla
 
     public final RecipeMap<?> recipeMap;
     protected MultiblockRecipeMapWorkable recipeMapWorkable;
+
+    protected IItemHandlerModifiable inputInventory;
+    protected IItemHandlerModifiable outputInventory;
+    protected IMultipleTankHandler inputFluidInventory;
+    protected IMultipleTankHandler outputFluidInventory;
     protected IEnergyContainer energyContainer;
 
     public RecipeMapMultiblockController(String metaTileEntityId, RecipeMap<?> recipeMap) {
@@ -40,6 +49,22 @@ public abstract class RecipeMapMultiblockController extends MultiblockWithDispla
 
     public IEnergyContainer getEnergyContainer() {
         return energyContainer;
+    }
+
+    public IItemHandlerModifiable getInputInventory() {
+        return inputInventory;
+    }
+
+    public IItemHandlerModifiable getOutputInventory() {
+        return outputInventory;
+    }
+
+    public IMultipleTankHandler getInputFluidInventory() {
+        return inputFluidInventory;
+    }
+
+    public IMultipleTankHandler getOutputFluidInventory() {
+        return outputFluidInventory;
     }
 
     /**
@@ -68,31 +93,19 @@ public abstract class RecipeMapMultiblockController extends MultiblockWithDispla
     }
 
     private void initializeAbilities() {
-        this.importItems = new ItemHandlerList(getAbilities(MultiblockAbility.IMPORT_ITEMS));
-        this.importFluids = new FluidTankList(true, getAbilities(MultiblockAbility.IMPORT_FLUIDS));
-        this.exportItems = new ItemHandlerList(getAbilities(MultiblockAbility.EXPORT_ITEMS));
-        this.exportFluids = new FluidTankList(true, getAbilities(MultiblockAbility.EXPORT_FLUIDS));
+        this.inputInventory = new ItemHandlerList(getAbilities(MultiblockAbility.IMPORT_ITEMS));
+        this.inputFluidInventory = new FluidTankList(true, getAbilities(MultiblockAbility.IMPORT_FLUIDS));
+        this.outputInventory = new ItemHandlerList(getAbilities(MultiblockAbility.EXPORT_ITEMS));
+        this.outputFluidInventory = new FluidTankList(true, getAbilities(MultiblockAbility.EXPORT_FLUIDS));
         this.energyContainer = new EnergyContainerList(getAbilities(MultiblockAbility.INPUT_ENERGY));
     }
 
     private void resetTileAbilities() {
-        this.importItems = new ItemStackHandler(0);
-        this.importFluids = new FluidTankList(true);
-        this.exportItems = new ItemStackHandler(0);
-        this.exportFluids = new FluidTankList(true);
-        this.energyContainer = null;
-    }
-
-    @Override
-    protected void initializeInventory() {
-        ItemStackHandler emptyInventory = new ItemStackHandler(0);
-        FluidTankList emptyFluidInventory = new FluidTankList(true);
-        this.itemInventory = new ItemHandlerProxy(emptyInventory, emptyInventory);
-        this.fluidInventory = new FluidHandlerProxy(emptyFluidInventory, emptyFluidInventory);
-    }
-
-    @Override
-    public void clearMachineInventory(NonNullList<ItemStack> itemBuffer) {
+        this.inputInventory = new ItemStackHandler(0);
+        this.inputFluidInventory = new FluidTankList(true);
+        this.outputInventory = new ItemStackHandler(0);
+        this.outputFluidInventory = new FluidTankList(true);
+        this.energyContainer = new EnergyContainerList(Lists.newArrayList());
     }
 
     @Override

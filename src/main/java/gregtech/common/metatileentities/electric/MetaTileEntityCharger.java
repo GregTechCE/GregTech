@@ -77,7 +77,13 @@ public class MetaTileEntityCharger extends TieredMetaTileEntity {
 
     @Override
     protected IItemHandlerModifiable createExportItemHandler() {
-        return getImportItems();
+        return new ItemStackHandler(0);
+    }
+
+    @Override
+    protected void initializeInventory() {
+        super.initializeInventory();
+        this.itemInventory = importItems;
     }
 
     @Override

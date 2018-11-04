@@ -156,8 +156,8 @@ public class MetaBlocks {
 
         createGeneratedBlock(material -> material instanceof DustMaterial &&
             !OrePrefix.block.isIgnored(material), MetaBlocks::createCompressedBlock);
-        createGeneratedBlock(material -> material instanceof SolidMaterial &&
-            !OrePrefix.frameGt.doGenerateItem(material), MetaBlocks::createFrameBlock);
+        createGeneratedBlock(material -> material instanceof IngotMaterial &&
+                OrePrefix.frameGt.doGenerateItem(material), MetaBlocks::createFrameBlock);
         createGeneratedBlock(material -> material instanceof IngotMaterial &&
             material.hasFlag(MatFlags.GENERATE_ORE), MetaBlocks::createSurfaceRockBlock);
 
@@ -179,10 +179,11 @@ public class MetaBlocks {
         }
         createCableBlock(MarkerMaterials.Tier.Superconductor, new WireProperties(Integer.MAX_VALUE, 4, 0));
         createFluidPipeBlock(Materials.Wood, new FluidPipeProperties(310, 20, false));
+        FRAMES.put(Materials.Wood, (BlockFrame) new BlockFrame(new Material[] {Materials.Wood}).setRegistryName("frame_wood"));
         registerTileEntity();
     }
 
-    private static void createGeneratedBlock(Predicate<Material> materialPredicate, BiConsumer<Material[], Integer> blockGenerator) {
+    private static int createGeneratedBlock(Predicate<Material> materialPredicate, BiConsumer<Material[], Integer> blockGenerator) {
         Material[] materialBuffer = new Material[16];
         Arrays.fill(materialBuffer, Materials._NULL);
         int currentGenerationIndex = 0;
@@ -199,6 +200,7 @@ public class MetaBlocks {
         if(materialBuffer[0] != Materials._NULL) {
             blockGenerator.accept(materialBuffer, currentGenerationIndex / 16);
         }
+        return (currentGenerationIndex / 16) + 1;
     }
 
     private static void createCableBlock(Material material, WireProperties wireProperties) {
