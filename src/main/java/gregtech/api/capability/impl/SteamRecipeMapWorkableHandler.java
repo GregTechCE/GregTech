@@ -89,6 +89,7 @@ public class SteamRecipeMapWorkableHandler extends RecipeMapWorkableHandler {
             this.needsVenting = buf.readBoolean();
         } else if(dataId == 3) {
             this.ventingSide = EnumFacing.VALUES[buf.readByte()];
+            getMetaTileEntity().getHolder().scheduleChunkForRenderUpdate();
         } else if(dataId == 4) {
             this.ventingStuck = buf.readBoolean();
         }
