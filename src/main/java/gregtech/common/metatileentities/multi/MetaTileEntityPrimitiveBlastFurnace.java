@@ -5,6 +5,7 @@ import codechicken.lib.render.pipeline.IVertexOperation;
 import codechicken.lib.texture.TextureUtils;
 import codechicken.lib.vec.Cuboid6;
 import codechicken.lib.vec.Matrix4;
+import gregtech.api.capability.impl.ItemHandlerProxy;
 import gregtech.api.gui.GuiTextures;
 import gregtech.api.gui.ModularUI;
 import gregtech.api.gui.widgets.ProgressWidget.MoveType;
@@ -206,6 +207,13 @@ public class MetaTileEntityPrimitiveBlastFurnace extends MultiblockControllerBas
             renderState.colour = 0xFFFFFFFF;
             Textures.renderFace(renderState, offset, new IVertexOperation[0], EnumFacing.UP, Cuboid6.full, sprite);
         }
+    }
+
+    @Override
+    protected void initializeInventory() {
+        super.initializeInventory();
+        ItemStackHandler emptyHandler = new ItemStackHandler(0);
+        this.itemInventory = new ItemHandlerProxy(emptyHandler, emptyHandler);
     }
 
     @Override

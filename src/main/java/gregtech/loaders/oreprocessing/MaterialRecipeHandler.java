@@ -325,10 +325,11 @@ public class MaterialRecipeHandler {
 
     public static void processFrame(OrePrefix framePrefix, SolidMaterial material) {
         if (material.hasFlag(GENERATE_PLATE | GENERATE_ROD)) {
+            boolean isWoodenFrame = ModHandler.isMaterialWood(material);
             ModHandler.addShapedRecipe(String.format("frame_%s", material),
                 OreDictUnifier.get(framePrefix, material, 4),
-                "PPP", "SSS", "SwS",
-                'P', new UnificationEntry(OrePrefix.plate, material),
+                "PPP", "SSS", isWoodenFrame ? "SsS" : "SwS",
+                'P', new UnificationEntry(isWoodenFrame ? OrePrefix.plank : OrePrefix.plate, material),
                 'S', new UnificationEntry(OrePrefix.stick, material));
         }
     }

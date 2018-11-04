@@ -11,7 +11,6 @@ import gregtech.api.pipenet.PipeNet;
 import gregtech.api.pipenet.WorldPipeNet;
 import gregtech.api.pipenet.tile.IPipeTile;
 import gregtech.api.unification.material.type.Material;
-import gregtech.common.pipelike.cable.tile.TileEntityCable;
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.SoundType;
@@ -180,10 +179,10 @@ public abstract class BlockPipe<PipeType extends Enum<PipeType> & IPipeType<Node
 
     @Override
     public boolean recolorBlock(World world, BlockPos pos, EnumFacing side, EnumDyeColor color) {
-        TileEntityCable tileEntityCable = (TileEntityCable) world.getTileEntity(pos);
-        if(tileEntityCable != null && world.getBlockState(pos).getValue(pipeVariantProperty).isPaintable() &&
-            tileEntityCable.getInsulationColor() != color.colorValue) {
-            tileEntityCable.setInsulationColor(color.colorValue);
+        IPipeTile<PipeType, NodeDataType> tileEntityPipe = (IPipeTile<PipeType, NodeDataType>) world.getTileEntity(pos);
+        if(tileEntityPipe != null && world.getBlockState(pos).getValue(pipeVariantProperty).isPaintable() &&
+            tileEntityPipe.getInsulationColor() != color.colorValue) {
+            tileEntityPipe.setInsulationColor(color.colorValue);
             return true;
         }
         return false;

@@ -4,6 +4,7 @@ import gregtech.api.unification.OreDictUnifier;
 import gregtech.api.unification.material.MarkerMaterials;
 import gregtech.api.unification.material.Materials;
 import gregtech.api.unification.ore.OrePrefix;
+import gregtech.api.unification.stack.UnificationEntry;
 import gregtech.api.util.GTLog;
 import gregtech.common.blocks.BlockConcrete;
 import gregtech.common.blocks.MetaBlocks;
@@ -25,6 +26,9 @@ public class OreDictionaryLoader {
         OreDictUnifier.registerOre(new ItemStack(Items.MILK_BUCKET), OrePrefix.bucket, Materials.Milk);
         OreDictUnifier.registerOre(new ItemStack(Items.GLASS_BOTTLE), OrePrefix.bottle, MarkerMaterials.Empty);
 
+        for(ItemStack woodPlateStack : OreDictUnifier.getAll(new UnificationEntry(OrePrefix.plate, Materials.Wood))) {
+            OreDictUnifier.registerOre(woodPlateStack, OrePrefix.plank, Materials.Wood);
+        }
         OreDictUnifier.registerOre(new ItemStack(Blocks.COAL_ORE), OrePrefix.ore, Materials.Coal);
         OreDictUnifier.registerOre(new ItemStack(Blocks.IRON_ORE), OrePrefix.ore, Materials.Iron);
         OreDictUnifier.registerOre(new ItemStack(Blocks.LAPIS_ORE), OrePrefix.ore, Materials.Lapis);

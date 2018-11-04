@@ -427,10 +427,13 @@ public abstract class MetaTileEntity {
     public void receiveCustomData(int dataId, PacketBuffer buf) {
         if(dataId == -1) {
             this.frontFacing = EnumFacing.VALUES[buf.readByte()];
+            getHolder().scheduleChunkForRenderUpdate();
         } else if(dataId == -2) {
             this.paintingColor = buf.readInt();
+            getHolder().scheduleChunkForRenderUpdate();
         } else if(dataId == -3) {
             this.sidedRedstoneOutput[buf.readByte()] = buf.readInt();
+            getHolder().scheduleChunkForRenderUpdate();
         } else if(dataId == -4) {
             String traitName = buf.readString(32767);
             MTETrait trait = mteTraits.stream()

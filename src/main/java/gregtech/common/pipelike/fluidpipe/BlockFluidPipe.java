@@ -28,6 +28,8 @@ import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.Random;
 
@@ -192,6 +194,7 @@ public class BlockFluidPipe extends BlockPipe<FluidPipeType, FluidPipeProperties
     }
 
     @Override
+    @SideOnly(Side.CLIENT)
     public EnumBlockRenderType getRenderType(IBlockState state) {
         return FluidPipeRenderer.BLOCK_RENDER_TYPE;
     }

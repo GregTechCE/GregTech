@@ -33,7 +33,7 @@ public class RecipeMaps {
         .setProgressBar(GuiTextures.PROGRESS_BAR_MACERATE, MoveType.HORIZONTAL);
 
 
-    @ZenProperty public static final RecipeMap<SimpleRecipeBuilder> ORE_WASHER_RECIPES = new RecipeMap<>("orewasher", 1, 1, 3, 3, 0, 1, 0, 0, 1, new SimpleRecipeBuilder().duration(400).EUt(16))
+    @ZenProperty public static final RecipeMap<SimpleRecipeBuilder> ORE_WASHER_RECIPES = new RecipeMap<>("orewasher", 1, 1, 1, 3, 0, 1, 0, 0, 1, new SimpleRecipeBuilder().duration(400).EUt(16))
         .setSlotOverlay(false, false, GuiTextures.CRUSHED_ORE_OVERLAY)
         .setSlotOverlay(true, false, GuiTextures.DUST_OVERLAY)
         .setProgressBar(GuiTextures.PROGRESS_BAR_BATH, MoveType.HORIZONTAL);

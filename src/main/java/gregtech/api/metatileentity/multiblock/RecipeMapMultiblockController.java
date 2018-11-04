@@ -80,6 +80,7 @@ public abstract class RecipeMapMultiblockController extends MultiblockWithDispla
         this.importFluids = new FluidTankList(true);
         this.exportItems = new ItemStackHandler(0);
         this.exportFluids = new FluidTankList(true);
+        this.energyContainer = null;
     }
 
     @Override
@@ -99,7 +100,7 @@ public abstract class RecipeMapMultiblockController extends MultiblockWithDispla
         super.addDisplayText(textList);
         if (isStructureFormed()) {
             IEnergyContainer energyContainer = recipeMapWorkable.getEnergyContainer();
-            if(energyContainer.getEnergyCapacity() > 0) {
+            if(energyContainer != null && energyContainer.getEnergyCapacity() > 0) {
                 long maxVoltage = energyContainer.getInputVoltage();
                 String voltageName = GTValues.VN[GTUtility.getTierByVoltage(maxVoltage)];
                 textList.add(new TextComponentTranslation("gregtech.multiblock.max_energy_per_tick", maxVoltage, voltageName));

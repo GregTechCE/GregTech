@@ -42,7 +42,6 @@ public class DieselEngineWorkableHandler extends FuelRecipeMapWorkableHandler {
         FluidStack oxygenStack = Materials.Oxygen.getFluid(2);
         FluidStack drainOxygenStack = fluidTank.get().drain(oxygenStack, false);
         this.isUsingOxygen = drainOxygenStack != null && drainOxygenStack.amount >= 2;
-        int result = super.calculateFuelAmount(currentRecipe) * (isUsingOxygen ? 2 : 1);
         return super.calculateFuelAmount(currentRecipe) * (isUsingOxygen ? 2 : 1);
     }
 
@@ -53,6 +52,10 @@ public class DieselEngineWorkableHandler extends FuelRecipeMapWorkableHandler {
             fluidTank.get().drain(lubricantStack, true);
             this.currentCycle = 0;
         } else this.currentCycle++;
+        if(isUsingOxygen) {
+            FluidStack oxygenStack = Materials.Oxygen.getFluid(2);
+            fluidTank.get().drain(oxygenStack, true);
+        }
         return maxVoltage * (isUsingOxygen ? 3 : 1);
     }
 

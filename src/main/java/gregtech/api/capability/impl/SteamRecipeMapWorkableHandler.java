@@ -159,6 +159,10 @@ public class SteamRecipeMapWorkableHandler extends RecipeMapWorkableHandler {
 
     @Override
     protected int[] calculateOverclock(int EUt, long voltage, long amperage, int duration, boolean consumeInputs) {
+        if(!isHighPressure) {
+            //disallow overclocking for low pressure bronze machines
+            return new int[] {EUt, duration};
+        }
         return super.calculateOverclock(EUt, voltage, amperage, duration, consumeInputs);
     }
 
@@ -182,11 +186,6 @@ public class SteamRecipeMapWorkableHandler extends RecipeMapWorkableHandler {
     @Override
     protected long getMaxVoltage() {
         return GTValues.V[GTValues.LV];
-    }
-
-    @Override
-    protected int getOverclockingTier(long voltage) {
-        return isHighPressure ? GTValues.MV : GTValues.LV;
     }
 
     @Override

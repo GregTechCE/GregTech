@@ -1,6 +1,7 @@
 package gregtech.api.unification.ore;
 
 import com.google.common.base.Preconditions;
+import gregtech.api.recipes.ModHandler;
 import gregtech.api.unification.material.MarkerMaterials;
 import gregtech.api.unification.material.MaterialIconType;
 import gregtech.api.unification.material.Materials;
@@ -195,7 +196,9 @@ public enum OrePrefix {
     armorLeggings("Leggings", M * 7, null, null, 0, null), // vanilly Pants
     armorBoots("Boots", M * 4, null, null, 0, null), // vanilly Boots
     armor("Armor Parts", -1, null, null, DISALLOW_RECYCLING, null),
-    frameGt("Frame Boxes", (long) (M * 1.375), null, null, ENABLE_UNIFICATION, material -> material instanceof IngotMaterial && material.hasFlag(GENERATE_ROD | GENERATE_PLATE)),
+    frameGt("Frame Boxes", (long) (M * 1.375), null, null, ENABLE_UNIFICATION, material ->
+        (material instanceof IngotMaterial || ModHandler.isMaterialWood(material)) &&
+        material.hasFlag(GENERATE_ROD | GENERATE_PLATE)),
 
     pipeTiny("Tiny Pipes", M / 2, null, MaterialIconType.pipeTiny, ENABLE_UNIFICATION, null),
     pipeSmall("Small Pipes", M, null, MaterialIconType.pipeSmall, ENABLE_UNIFICATION, null),
@@ -357,6 +360,7 @@ public enum OrePrefix {
         block.setIgnored(Materials.Ice);
         block.setIgnored(Materials.Netherrack);
         block.setIgnored(Materials.Concrete);
+        block.setIgnored(Materials.Blaze);
 
         cableGtHex.addSecondaryMaterial(new MaterialStack(Materials.Rubber, dustSmall.materialAmount * 4));
         cableGtOctal.addSecondaryMaterial(new MaterialStack(Materials.Rubber, dustSmall.materialAmount * 3));
