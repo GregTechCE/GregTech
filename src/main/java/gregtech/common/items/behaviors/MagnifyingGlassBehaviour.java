@@ -3,7 +3,7 @@ package gregtech.common.items.behaviors;
 import gregtech.api.items.metaitem.stats.IItemBehaviour;
 import gregtech.api.unification.material.type.Material;
 import gregtech.api.util.GTUtility;
-import gregtech.common.blocks.BlockSurfaceRock;
+import gregtech.common.blocks.surfacerock.BlockSurfaceRock;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;

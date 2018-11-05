@@ -76,12 +76,12 @@ public abstract class Material implements Comparable<Material> {
 		/**
 		 * Enables electrolyzer decomposition recipe generation
 		 */
-		public static final long DECOMPOSITION_BY_ELECTROLYZING = createFlag(0);
+		public static final long DECOMPOSITION_BY_ELECTROLYZING = createFlag(40);
 
 		/**
 		 * Enables centrifuge decomposition recipe generation
 		 */
-		public static final long DECOMPOSITION_BY_CENTRIFUGING = createFlag(1);
+		public static final long DECOMPOSITION_BY_CENTRIFUGING = createFlag(41);
 
         /**
          * Add to material if it has constantly burning aura
@@ -91,7 +91,7 @@ public abstract class Material implements Comparable<Material> {
 		/**
 		 * Add to material if it is some kind of flammable
 		 */
-		public static final long FLAMMABLE = createFlag(2);
+		public static final long FLAMMABLE = createFlag(42);
 
 		/**
 		 * Add to material if it is some kind of explosive
@@ -111,7 +111,7 @@ public abstract class Material implements Comparable<Material> {
         /**
          * Disables decomposition recipe generation for this material and all materials that has it as component
          */
-        public static final long DISABLE_DECOMPOSITION = createFlag(7);
+        public static final long DISABLE_DECOMPOSITION = createFlag(43);
 
         /**
          * Decomposition recipe requires hydrogen as additional input. Amount is equal to input amount
@@ -210,7 +210,7 @@ public abstract class Material implements Comparable<Material> {
 
 	@ZenMethod("hasFlagRaw")
 	public boolean hasFlag(long generationFlag) {
-		return (materialGenerationFlags & generationFlag) != 0;
+		return (materialGenerationFlags & generationFlag) >= generationFlag;
 	}
 
 	@ZenMethod
@@ -238,18 +238,16 @@ public abstract class Material implements Comparable<Material> {
             !hasFlag(MatFlags.DECOMPOSITION_BY_CENTRIFUGING) &&
             !hasFlag(MatFlags.DECOMPOSITION_BY_ELECTROLYZING) &&
             !hasFlag(MatFlags.DISABLE_DECOMPOSITION)) {
-	        boolean onlyFluidMaterials = true;
 	        boolean onlyMetalMaterials = true;
 	        for(MaterialStack materialStack : materialComponents) {
 	            Material material = materialStack.material;
-	            onlyFluidMaterials &= material.getClass() == FluidMaterial.class;
-	            onlyMetalMaterials &= material.getClass() == IngotMaterial.class;
+	            onlyMetalMaterials &= material instanceof IngotMaterial;
             }
-            if(onlyFluidMaterials || onlyMetalMaterials) {
-	            //if we contain only fluids or only metals, then centrifuging will do it's job
+            //allow centrifuging of alloy materials only
+            if(onlyMetalMaterials) {
 	            materialGenerationFlags |= MatFlags.DECOMPOSITION_BY_CENTRIFUGING;
             } else {
-	            //otherwise, we use electrolyzing to break material into ions
+	            //otherwise, we use electrolyzing to break material into components
 	            materialGenerationFlags |= MatFlags.DECOMPOSITION_BY_ELECTROLYZING;
             }
         }

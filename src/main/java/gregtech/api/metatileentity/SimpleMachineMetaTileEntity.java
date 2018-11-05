@@ -40,7 +40,12 @@ public class SimpleMachineMetaTileEntity extends WorkableTieredMetaTileEntity {
 
     public SimpleMachineMetaTileEntity(String metaTileEntityId, RecipeMap<?> recipeMap, OrientedOverlayRenderer renderer, int tier) {
         super(metaTileEntityId, recipeMap, renderer, tier);
-        this.chargerInventory = new ItemStackHandler(1);
+        this.chargerInventory = new ItemStackHandler(1) {
+            @Override
+            public int getSlotLimit(int slot) {
+                return 1;
+            }
+        };
     }
 
     @Override
@@ -113,6 +118,7 @@ public class SimpleMachineMetaTileEntity extends WorkableTieredMetaTileEntity {
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public <T> T getCapability(Capability<T> capability, EnumFacing side) {
         FluidHandlerProxy sideOverride = side == null ? null : sidedTankOverrides[side.getIndex()];
         return (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY && sideOverride != null) ?

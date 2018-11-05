@@ -65,10 +65,10 @@ public class MachineItemBlock extends ItemBlock {
                 tooltip.addAll(Arrays.asList(lines));
             }
         }
+        metaTileEntity.addInformation(stack, worldIn, tooltip, flagIn.isAdvanced());
 
         if(flagIn.isAdvanced()) {
             tooltip.add(String.format("MetaTileEntity Id: %s", metaTileEntity.metaTileEntityId));
         }
-        metaTileEntity.addInformation(stack, worldIn, tooltip, flagIn.isAdvanced());
     }
 }

@@ -16,6 +16,7 @@ import net.minecraftforge.fluids.FluidStack;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -73,6 +74,7 @@ public class GTRecipeWrapper implements IRecipeWrapper {
                 ItemNBTUtils.setInteger(chancedStack, "chance", outputChance);
                 recipeOutputs.add(chancedStack);
             }
+            recipeOutputs.sort(Comparator.comparing(stack -> ItemNBTUtils.getInteger(stack, "chance")));
             ingredients.setOutputs(ItemStack.class, recipeOutputs);
         }
         if(!recipe.getFluidOutputs().isEmpty()) {

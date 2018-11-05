@@ -1,15 +1,17 @@
 package gregtech.api.worldgen.shape;
 
-import codechicken.lib.vec.Vector3;
 import com.google.gson.JsonObject;
+import crafttweaker.annotations.ZenRegister;
 import gregtech.api.worldgen.config.OreConfigUtils;
 import gregtech.api.worldgen.generator.IBlockGeneratorAccess;
+import stanhebben.zenscript.annotations.ZenClass;
+import stanhebben.zenscript.annotations.ZenGetter;
 
 import java.util.Random;
 
-public class PlateGenerator implements IShapeGenerator {
-
-    private static final Vector3 zRotation = new Vector3(0, 0, 1);
+@ZenClass("mods.gregtech.ore.generator.PlateGenerator")
+@ZenRegister
+public class PlateGenerator extends ShapeGenerator {
 
     private int minLength;
     private int maxLength;
@@ -21,6 +23,46 @@ public class PlateGenerator implements IShapeGenerator {
     private float roofSharpness;
 
     public PlateGenerator() {
+    }
+
+    @ZenGetter("minLength")
+    public int getMinLength() {
+        return minLength;
+    }
+
+    @ZenGetter("maxLength")
+    public int getMaxLength() {
+        return maxLength;
+    }
+
+    @ZenGetter("minDepth")
+    public int getMinDepth() {
+        return minDepth;
+    }
+
+    @ZenGetter("maxDepth")
+    public int getMaxDepth() {
+        return maxDepth;
+    }
+
+    @ZenGetter("minHeight")
+    public int getMinHeight() {
+        return minHeight;
+    }
+
+    @ZenGetter("maxHeight")
+    public int getMaxHeight() {
+        return maxHeight;
+    }
+
+    @ZenGetter("floorSharpness")
+    public float getFloorSharpness() {
+        return floorSharpness;
+    }
+
+    @ZenGetter("rootSharpness")
+    public float getRoofSharpness() {
+        return roofSharpness;
     }
 
     @Override

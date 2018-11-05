@@ -52,8 +52,7 @@ public class DecompositionRecipeHandler {
         if (material.hasFlag(Material.MatFlags.DECOMPOSITION_BY_ELECTROLYZING)) {
             builder = RecipeMaps.ELECTROLYZER_RECIPES.recipeBuilder()
                 .duration((int) material.getProtons() * totalInputAmount * 8)
-                .EUt(getElectrolyzingVoltage(material.materialComponents.stream()
-                    .map(s -> s.material).collect(Collectors.toList())));
+                .EUt(getElectrolyzingVoltage(material));
         } else {
             builder = RecipeMaps.CENTRIFUGE_RECIPES.recipeBuilder()
                 .duration((int) material.getMass() * totalInputAmount * 2)
@@ -77,11 +76,16 @@ public class DecompositionRecipeHandler {
     }
 
     //todo think something better with this
-    private static int getElectrolyzingVoltage(List<Material> components) {
+    private static int getElectrolyzingVoltage(Material material) {
+        List<Material> components = material.materialComponents.stream()
+            .map(s -> s.material).collect(Collectors.toList());
         //titanium or tungsten-containing materials electrolyzing requires 1920
         if(components.contains(Materials.Tungsten) ||
             components.contains(Materials.Titanium))
             return 1920; //EV voltage (tungstate and scheelite electrolyzing)
+        if(material == Materials.Salt ||
+            material == Materials.RockSalt)
+            return 30; //LV voltage for salt electrolyzing (early way of getting sodium)
         //otherwise, use logic that requires at least 120 EU/t for electrolyzing
         return Math.min(4, components.size()) * 30;
     }

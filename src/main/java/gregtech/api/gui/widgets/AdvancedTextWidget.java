@@ -50,6 +50,8 @@ public class AdvancedTextWidget extends Widget {
             writeUpdateInfo(1, buffer -> {
                 buffer.writeInt(lastText.size());
                 for(ITextComponent textComponent : lastText) {
+
+
                     buffer.writeString(ITextComponent.Serializer.componentToJson(textComponent));
                 }
             });

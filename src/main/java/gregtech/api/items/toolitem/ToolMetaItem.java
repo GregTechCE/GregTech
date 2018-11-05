@@ -416,9 +416,10 @@ public class ToolMetaItem<T extends ToolMetaItem<?>.MetaToolValueItem> extends M
             lines.add(I18n.format("metaitem.tool.tooltip.attack_damage", toolStats.getBaseDamage(itemStack) + primaryMaterial.harvestLevel));
             lines.add(I18n.format("metaitem.tool.tooltip.mining_speed", primaryMaterial.toolSpeed));
         }
-        toolStats.addInformation(itemStack, lines, tooltipFlag.isAdvanced());
 
         super.addInformation(itemStack, worldIn, lines, tooltipFlag);
+
+        toolStats.addInformation(itemStack, lines, tooltipFlag.isAdvanced());
     }
 
     @Override
@@ -453,11 +454,6 @@ public class ToolMetaItem<T extends ToolMetaItem<?>.MetaToolValueItem> extends M
             return 11; //wood and stone has their default enchantability
         }
         return 10; //otherwise return lowest enchantability
-    }
-
-    @Override
-    public boolean isBookEnchantable(ItemStack stack, ItemStack book) {
-        return super.isBookEnchantable(stack, book);
     }
 
     @Override
@@ -533,13 +529,14 @@ public class ToolMetaItem<T extends ToolMetaItem<?>.MetaToolValueItem> extends M
         }
 
         @Override
-        public MetaValueItem addStats(IMetaItemStats... stats) {
+        public MetaToolValueItem addStats(IMetaItemStats... stats) {
             for(IMetaItemStats metaItemStats : stats) {
                 if(metaItemStats instanceof IToolStats) {
                     setToolStats((IToolStats) metaItemStats);
                 }
             }
-            return super.addStats(stats);
+            super.addStats(stats);
+            return this;
         }
 
         public MetaToolValueItem setToolStats(IToolStats toolStats) {

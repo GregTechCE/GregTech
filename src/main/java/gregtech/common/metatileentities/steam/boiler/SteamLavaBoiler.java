@@ -31,7 +31,7 @@ public class SteamLavaBoiler extends SteamBoiler {
         FluidTankList superHandler = super.createImportFluidHandler();
         this.lavaFluidTank = new FilteredFluidHandler(16000)
             .setFillPredicate(ModHandler::isLava);
-        return new FluidTankList(superHandler, lavaFluidTank);
+        return new FluidTankList(false, superHandler, lavaFluidTank);
 
     }
 

@@ -6,7 +6,7 @@ import net.minecraft.block.state.IBlockState;
 
 import java.util.function.Function;
 
-public class SimpleBlockFiller implements IBlockFiller {
+public class SimpleBlockFiller extends BlockFiller {
 
     private Function<IBlockState, IBlockState> blockStateFiller;
 

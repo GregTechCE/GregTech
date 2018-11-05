@@ -3,6 +3,7 @@ package gregtech.common.tools;
 import gregtech.api.recipes.RecipeMaps;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -22,7 +23,6 @@ public class ToolJackHammer extends ToolDrillLV {
     public boolean canApplyEnchantment(ItemStack stack, Enchantment enchantment) {
         return enchantment.type.canEnchantItem(Items.IRON_PICKAXE);
     }
-
 
     @Override
     public int getToolDamagePerBlockBreak(ItemStack stack) {
@@ -104,6 +104,11 @@ public class ToolJackHammer extends ToolDrillLV {
             }
         }
         return conversionsApplied;
+    }
+
+    @Override
+    public void addInformation(ItemStack stack, List<String> lines, boolean isAdvanced) {
+        lines.add(I18n.format("metaitem.tool.tooltip.hammer.extra_drop"));
     }
 
     private static BlockPos rotate(BlockPos origin, int x, int y, EnumFacing sideHit) {

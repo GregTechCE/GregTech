@@ -86,7 +86,7 @@ public class MetaTileEntityMagicEnergyAbsorber extends TieredMetaTileEntity {
             }
         }
         if(totalEnergyGeneration > 0) {
-            energyContainer.addEnergy(totalEnergyGeneration);
+            energyContainer.changeEnergy(totalEnergyGeneration);
         }
         setActive(totalEnergyGeneration > 0);
     }

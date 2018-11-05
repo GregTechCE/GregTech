@@ -63,6 +63,8 @@ public class Textures {
     public static SimpleCubeRenderer TUNGSTENSTEEL_FIREBOX = new SimpleCubeRenderer("casings/firebox/machine_casing_firebox_tungstensteel");
     public static SimpleCubeRenderer TUNGSTENSTEEL_FIREBOX_ACTIVE = new SimpleCubeRenderer("casings/firebox/machine_casing_firebox_tungstensteel_active");
 
+    public static SimpleSidedCubeRenderer TESLA_COIL = new SimpleSidedCubeRenderer("casings/tesla_coil");
+
     public static OrientedOverlayRenderer COAL_BOILER_OVERLAY = new OrientedOverlayRenderer("generators/boiler/coal", FRONT);
     public static OrientedOverlayRenderer LAVA_BOILER_OVERLAY = new OrientedOverlayRenderer("generators/boiler/lava", FRONT);
     public static OrientedOverlayRenderer SOLAR_BOILER_OVERLAY = new OrientedOverlayRenderer("generators/boiler/solar", TOP);
@@ -125,6 +127,7 @@ public class Textures {
     public static SimpleOverlayRenderer ITEM_OUTPUT_OVERLAY = new SimpleOverlayRenderer("machine/overlay_item_output");
     public static SimpleOverlayRenderer ROTOR_HOLDER_OVERLAY = new SimpleOverlayRenderer("machine/overlay_rotor_holder");
     public static SimpleOverlayRenderer ADV_PUMP_OVERLAY = new SimpleOverlayRenderer("machine/overlay_adv_pump");
+    public static SimpleOverlayRenderer FILTER_OVERLAY = new SimpleOverlayRenderer("machine/overlay_filter");
 
     public static SimpleOverlayRenderer ENERGY_OUT = new SimpleOverlayRenderer("machine/overlay_energy_out");
     public static SimpleOverlayRenderer ENERGY_IN = new SimpleOverlayRenderer("machine/overlay_energy_in");

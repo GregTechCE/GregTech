@@ -3,6 +3,7 @@ package gregtech.common.tools;
 import gregtech.api.recipes.RecipeMaps;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -68,12 +69,16 @@ public class ToolHardHammer extends ToolBase {
             block.getMaterial() == Material.GLASS ||
             block.getMaterial() == Material.ICE ||
             block.getMaterial() == Material.PACKED_ICE ||
-            RecipeMaps.FORGE_HAMMER_RECIPES.findRecipe(Long.MAX_VALUE,
-                Collections.singletonList(itemStack), Collections.emptyList()) != null;
+            RecipeMaps.FORGE_HAMMER_RECIPES.findRecipe(Long.MAX_VALUE, Collections.singletonList(itemStack), Collections.emptyList()) != null;
     }
 
     @Override
     public int convertBlockDrops(World world, BlockPos blockPos, IBlockState blockState, EntityPlayer harvester, List<ItemStack> drops, boolean recursive) {
         return ToolUtility.applyHammerDrops(world.rand, blockState, drops);
+    }
+
+    @Override
+    public void addInformation(ItemStack stack, List<String> lines, boolean isAdvanced) {
+        lines.add(I18n.format("metaitem.tool.tooltip.hammer.extra_drop"));
     }
 }

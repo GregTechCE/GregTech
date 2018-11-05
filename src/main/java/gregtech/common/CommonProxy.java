@@ -17,14 +17,14 @@ import gregtech.common.pipelike.cable.ItemBlockCable;
 import gregtech.common.items.MetaItems;
 import gregtech.common.items.PotionFluids;
 import gregtech.common.pipelike.fluidpipe.ItemBlockFluidPipe;
-import gregtech.loaders.load.FuelLoader;
-import gregtech.loaders.load.MetaTileEntityLoader;
-import gregtech.loaders.load.OreDictionaryLoader;
+import gregtech.loaders.recipe.FuelLoader;
+import gregtech.loaders.recipe.MetaTileEntityLoader;
+import gregtech.loaders.OreDictionaryLoader;
 import gregtech.loaders.oreprocessing.RecipeHandlerList;
 import gregtech.loaders.oreprocessing.ToolRecipeHandler;
-import gregtech.loaders.postload.CraftingRecipeLoader;
-import gregtech.loaders.postload.MachineRecipeLoader;
-import gregtech.loaders.preload.MaterialInfoLoader;
+import gregtech.loaders.recipe.CraftingRecipeLoader;
+import gregtech.loaders.recipe.MachineRecipeLoader;
+import gregtech.loaders.MaterialInfoLoader;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.enchantment.Enchantment;
@@ -58,6 +58,7 @@ public class CommonProxy {
         registry.register(MACHINE);
 
         registry.register(BOILER_CASING);
+        registry.register(BOILER_FIREBOX_CASING);
         registry.register(METAL_CASING);
         registry.register(TURBINE_CASING);
         registry.register(MACHINE_CASING);
@@ -76,6 +77,7 @@ public class CommonProxy {
         FLUID_PIPES.values().forEach(registry::register);
         COMPRESSED.values().stream().distinct().forEach(registry::register);
         SURFACE_ROCKS.values().stream().distinct().forEach(registry::register);
+        FLOODED_SURFACE_ROCKS.values().stream().distinct().forEach(registry::register);
         FRAMES.values().stream().distinct().forEach(registry::register);
         ORES.forEach(registry::register);
         FLUID_BLOCKS.forEach(registry::register);
@@ -95,6 +97,7 @@ public class CommonProxy {
 
         registry.register(createItemBlock(MACHINE, MachineItemBlock::new));
         registry.register(createItemBlock(BOILER_CASING, VariantItemBlock::new));
+        registry.register(createItemBlock(BOILER_FIREBOX_CASING, VariantItemBlock::new));
         registry.register(createItemBlock(METAL_CASING, VariantItemBlock::new));
         registry.register(createItemBlock(TURBINE_CASING, VariantItemBlock::new));
         registry.register(createItemBlock(MACHINE_CASING, VariantItemBlock::new));

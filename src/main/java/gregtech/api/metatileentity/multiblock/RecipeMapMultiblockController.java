@@ -3,30 +3,41 @@ package gregtech.api.metatileentity.multiblock;
 import codechicken.lib.render.CCRenderState;
 import codechicken.lib.render.pipeline.IVertexOperation;
 import codechicken.lib.vec.Matrix4;
+import com.google.common.collect.Lists;
 import gregtech.api.GTValues;
 import gregtech.api.capability.IEnergyContainer;
-import gregtech.api.capability.impl.*;
+import gregtech.api.capability.IMultipleTankHandler;
+import gregtech.api.capability.impl.EnergyContainerList;
+import gregtech.api.capability.impl.FluidTankList;
+import gregtech.api.capability.impl.ItemHandlerList;
+import gregtech.api.capability.impl.MultiblockRecipeMapWorkable;
 import gregtech.api.multiblock.PatternMatchContext;
 import gregtech.api.recipes.Recipe;
 import gregtech.api.recipes.RecipeMap;
 import gregtech.api.render.Textures;
 import gregtech.api.util.GTUtility;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.NonNullList;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.Style;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.items.IItemHandler;
+import net.minecraftforge.items.IItemHandlerModifiable;
 import net.minecraftforge.items.ItemStackHandler;
 
+import java.util.Collections;
 import java.util.List;
-import java.util.function.BooleanSupplier;
+import java.util.Map;
+import java.util.Set;
 
 public abstract class RecipeMapMultiblockController extends MultiblockWithDisplayBase {
 
     public final RecipeMap<?> recipeMap;
     protected MultiblockRecipeMapWorkable recipeMapWorkable;
+
+    protected IItemHandlerModifiable inputInventory;
+    protected IItemHandlerModifiable outputInventory;
+    protected IMultipleTankHandler inputFluidInventory;
+    protected IMultipleTankHandler outputFluidInventory;
     protected IEnergyContainer energyContainer;
 
     public RecipeMapMultiblockController(String metaTileEntityId, RecipeMap<?> recipeMap) {
@@ -36,20 +47,24 @@ public abstract class RecipeMapMultiblockController extends MultiblockWithDispla
         resetTileAbilities();
     }
 
-    @Override
-    protected boolean shouldSerializeInventories() {
-        return false; //as inventories are temporary
-    }
-
     public IEnergyContainer getEnergyContainer() {
         return energyContainer;
     }
 
-    /**
-     * @return true if multiblock uses energy emitter hatches, false otherwise
-     */
-    protected boolean shouldUseEnergyOutputs() {
-        return false;
+    public IItemHandlerModifiable getInputInventory() {
+        return inputInventory;
+    }
+
+    public IItemHandlerModifiable getOutputInventory() {
+        return outputInventory;
+    }
+
+    public IMultipleTankHandler getInputFluidInventory() {
+        return inputFluidInventory;
+    }
+
+    public IMultipleTankHandler getOutputFluidInventory() {
+        return outputFluidInventory;
     }
 
     /**
@@ -78,41 +93,28 @@ public abstract class RecipeMapMultiblockController extends MultiblockWithDispla
     }
 
     private void initializeAbilities() {
-        this.importItems = new ItemHandlerList(getAbilities(MultiblockAbility.IMPORT_ITEMS));
-        this.importFluids = new FluidTankList(getAbilities(MultiblockAbility.IMPORT_FLUIDS));
-        this.exportItems = new ItemHandlerList(getAbilities(MultiblockAbility.EXPORT_ITEMS));
-        this.exportFluids = new FluidTankList(getAbilities(MultiblockAbility.EXPORT_FLUIDS));
-        this.energyContainer = new EnergyContainerList(getAbilities(shouldUseEnergyOutputs() ?
-            MultiblockAbility.OUTPUT_ENERGY : MultiblockAbility.INPUT_ENERGY));
+        this.inputInventory = new ItemHandlerList(getAbilities(MultiblockAbility.IMPORT_ITEMS));
+        this.inputFluidInventory = new FluidTankList(true, getAbilities(MultiblockAbility.IMPORT_FLUIDS));
+        this.outputInventory = new ItemHandlerList(getAbilities(MultiblockAbility.EXPORT_ITEMS));
+        this.outputFluidInventory = new FluidTankList(true, getAbilities(MultiblockAbility.EXPORT_FLUIDS));
+        this.energyContainer = new EnergyContainerList(getAbilities(MultiblockAbility.INPUT_ENERGY));
     }
 
     private void resetTileAbilities() {
-        this.importItems = new ItemStackHandler(0);
-        this.importFluids = new FluidTankList();
-        this.exportItems = new ItemStackHandler(0);
-        this.exportFluids = new FluidTankList();
-    }
-
-    @Override
-    protected void initializeInventory() {
-        ItemStackHandler emptyInventory = new ItemStackHandler(0);
-        FluidTankList emptyFluidInventory = new FluidTankList();
-        this.itemInventory = new ItemHandlerProxy(emptyInventory, emptyInventory);
-        this.fluidInventory = new FluidHandlerProxy(emptyFluidInventory, emptyFluidInventory);
-    }
-
-    @Override
-    public void clearMachineInventory(NonNullList<ItemStack> itemBuffer) {
+        this.inputInventory = new ItemStackHandler(0);
+        this.inputFluidInventory = new FluidTankList(true);
+        this.outputInventory = new ItemStackHandler(0);
+        this.outputFluidInventory = new FluidTankList(true);
+        this.energyContainer = new EnergyContainerList(Lists.newArrayList());
     }
 
     @Override
     protected void addDisplayText(List<ITextComponent> textList) {
         super.addDisplayText(textList);
         if (isStructureFormed()) {
-            boolean isGenerator = shouldUseEnergyOutputs();
             IEnergyContainer energyContainer = recipeMapWorkable.getEnergyContainer();
-            if(!isGenerator && energyContainer.getEnergyCapacity() > 0) {
-                long maxVoltage = shouldUseEnergyOutputs() ? energyContainer.getOutputVoltage() : energyContainer.getInputVoltage();
+            if(energyContainer != null && energyContainer.getEnergyCapacity() > 0) {
+                long maxVoltage = energyContainer.getInputVoltage();
                 String voltageName = GTValues.VN[GTUtility.getTierByVoltage(maxVoltage)];
                 textList.add(new TextComponentTranslation("gregtech.multiblock.max_energy_per_tick", maxVoltage, voltageName));
             }
@@ -122,16 +124,8 @@ public abstract class RecipeMapMultiblockController extends MultiblockWithDispla
 
             } else if (recipeMapWorkable.isActive()) {
                 textList.add(new TextComponentTranslation("gregtech.multiblock.running"));
-                if (!isGenerator) {
-                    //show current progress for standard multiblocks
-                    int currentProgress = (int) (recipeMapWorkable.getProgressPercent() * 100);
-                    textList.add(new TextComponentTranslation("gregtech.multiblock.progress", currentProgress));
-                } else {
-                    //for generators, show generated EU/t instead
-                    int recipeEUt = -recipeMapWorkable.getRecipeEUt();
-                    textList.add(new TextComponentTranslation("gregtech.multiblock.generation_eu", recipeEUt));
-                }
-
+                int currentProgress = (int) (recipeMapWorkable.getProgressPercent() * 100);
+                textList.add(new TextComponentTranslation("gregtech.multiblock.progress", currentProgress));
             } else {
                 textList.add(new TextComponentTranslation("gregtech.multiblock.idling"));
             }
@@ -143,15 +137,17 @@ public abstract class RecipeMapMultiblockController extends MultiblockWithDispla
     }
 
     @Override
-    protected BooleanSupplier getValidationPredicate() {
-        return () -> {
-            //basically check minimal requirements for inputs count
-            int itemInputsCount = getAbilities(MultiblockAbility.IMPORT_ITEMS)
-                .stream().mapToInt(IItemHandler::getSlots).sum();
-            int fluidInputsCount = getAbilities(MultiblockAbility.IMPORT_FLUIDS).size();
-            return itemInputsCount >= recipeMap.getMinInputs() &&
-                fluidInputsCount >= recipeMap.getMinFluidInputs();
-        };
+    protected boolean checkStructureComponents(Set<IMultiblockPart> parts, Map<MultiblockAbility<Object>, List<Object>> abilities) {
+        //basically check minimal requirements for inputs count
+        //noinspection SuspiciousMethodCalls
+        int itemInputsCount = abilities.getOrDefault(MultiblockAbility.IMPORT_ITEMS, Collections.emptyList())
+            .stream().map(it -> (IItemHandler) it).mapToInt(IItemHandler::getSlots).sum();
+        //noinspection SuspiciousMethodCalls
+        int fluidInputsCount = abilities.getOrDefault(MultiblockAbility.IMPORT_FLUIDS, Collections.emptyList()).size();
+        //noinspection SuspiciousMethodCalls
+        return itemInputsCount >= recipeMap.getMinInputs() &&
+            fluidInputsCount >= recipeMap.getMinFluidInputs() &&
+            abilities.containsKey(MultiblockAbility.INPUT_ENERGY);
     }
 
     @Override

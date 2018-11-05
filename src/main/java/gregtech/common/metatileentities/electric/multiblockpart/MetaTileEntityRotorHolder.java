@@ -14,7 +14,7 @@ import gregtech.api.metatileentity.multiblock.IMultiblockAbilityPart;
 import gregtech.api.metatileentity.multiblock.MultiblockAbility;
 import gregtech.api.render.Textures;
 import gregtech.api.unification.material.type.SolidMaterial;
-import gregtech.common.metatileentities.multi.electric.MetaTileEntityLargeTurbine;
+import gregtech.common.metatileentities.multi.electric.generator.MetaTileEntityLargeTurbine;
 import gregtech.common.tools.ITurbineToolStats;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
@@ -55,6 +55,10 @@ public class MetaTileEntityRotorHolder extends MetaTileEntityMultiblockPart impl
 
     public MetaTileEntityRotorHolder(String metaTileEntityId, int tier) {
         this(metaTileEntityId, tier, (int) (NORMAL_MAXIMUM_SPEED * (tier + 1) * 0.2));
+    }
+
+    public ItemStackHandler getRotorInventory() {
+        return rotorInventory;
     }
 
     @Override
@@ -177,7 +181,7 @@ public class MetaTileEntityRotorHolder extends MetaTileEntityMultiblockPart impl
     private void setRotorColor(int hasRotor1) {
         int lastHasRotor = rotorColor;
         this.rotorColor = hasRotor1;
-        if(rotorColor != lastHasRotor && !getWorld().isRemote) {
+        if(rotorColor != lastHasRotor && (getWorld() != null && !getWorld().isRemote)) {
             writeCustomData(-201, writer -> writer.writeInt(rotorColor));
             markDirty();
         }
@@ -188,8 +192,10 @@ public class MetaTileEntityRotorHolder extends MetaTileEntityMultiblockPart impl
         super.receiveCustomData(dataId, buf);
         if(dataId == -200) {
             this.isRotorLooping = buf.readBoolean();
+            getHolder().scheduleChunkForRenderUpdate();
         } else if(dataId == -201) {
             this.rotorColor = buf.readInt();
+            getHolder().scheduleChunkForRenderUpdate();
         }
     }
 
@@ -239,7 +245,7 @@ public class MetaTileEntityRotorHolder extends MetaTileEntityMultiblockPart impl
     @Override
     protected ModularUI createUI(EntityPlayer entityPlayer) {
         return ModularUI.defaultBuilder()
-            .label(6, 6, getMetaName())
+            .label(6, 6, getMetaFullName())
             .slot(rotorInventory, 0, 79, 36, GuiTextures.SLOT, GuiTextures.TURBINE_OVERLAY)
             .bindPlayerInventory(entityPlayer.inventory)
             .build(getHolder(), entityPlayer);

@@ -14,6 +14,7 @@ import gregtech.api.unification.ore.OrePrefix;
 import gregtech.api.unification.stack.MaterialStack;
 import gregtech.api.unification.stack.SimpleItemStack;
 import gregtech.common.ConfigHolder;
+import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
@@ -403,11 +404,8 @@ public class GTUtility {
         for (int i = 0; i < handler.getSlots(); i++) {
             if (!handler.getStackInSlot(i).isEmpty()) {
                 NBTTagCompound stackTag = new NBTTagCompound();
-
                 stackTag.setInteger("Slot", i);
-
                 handler.getStackInSlot(i).writeToNBT(stackTag);
-
                 tagList.appendTag(stackTag);
             }
         }
@@ -458,10 +456,11 @@ public class GTUtility {
     public static byte getTierByVoltage(long voltage) {
         byte tier = 0;
         while (++tier < V.length) {
-            if (voltage == V[tier])
+            if (voltage == V[tier]) {
                 return tier;
-            else if(voltage < V[tier])
+            } else if (voltage < V[tier]) {
                 return (byte) Math.max(0, tier - 1);
+            }
         }
         return tier;
     }
@@ -511,6 +510,59 @@ public class GTUtility {
                 return i;
         }
         throw new IllegalArgumentException("Invalid weight");
+    }
+
+    @Nullable
+    public static EnumFacing determineWrenchingSide(EnumFacing facing, float x, float y, float z) {
+        EnumFacing opposite = facing.getOpposite();
+        switch (facing) {
+            case DOWN:
+            case UP:
+                if (x < 0.25) {
+                    if (z < 0.25) return opposite;
+                    if (z > 0.75) return opposite;
+                    return EnumFacing.WEST;
+                }
+                if (x > 0.75) {
+                    if (z < 0.25) return opposite;
+                    if (z > 0.75) return opposite;
+                    return EnumFacing.EAST;
+                }
+                if (z < 0.25) return EnumFacing.NORTH;
+                if (z > 0.75) return EnumFacing.SOUTH;
+                return facing;
+            case NORTH:
+            case     SOUTH:
+                if (x < 0.25) {
+                    if (y < 0.25) return opposite;
+                    if (y > 0.75) return opposite;
+                    return EnumFacing.WEST;
+                }
+                if (x > 0.75) {
+                    if (y < 0.25) return opposite;
+                    if (y > 0.75) return opposite;
+                    return EnumFacing.EAST;
+                }
+                if (y < 0.25) return EnumFacing.DOWN;
+                if (y > 0.75) return EnumFacing.UP;
+                return facing;
+            case WEST:
+            case     EAST:
+                if (z < 0.25) {
+                    if (y < 0.25) return opposite;
+                    if (y > 0.75) return opposite;
+                    return EnumFacing.NORTH;
+                }
+                if (z > 0.75) {
+                    if (y < 0.25) return opposite;
+                    if (y > 0.75) return opposite;
+                    return EnumFacing.SOUTH;
+                }
+                if (y < 0.25) return EnumFacing.DOWN;
+                if (y > 0.75) return EnumFacing.UP;
+                return facing;
+        }
+        return null;
     }
 
     /**
@@ -571,7 +623,7 @@ public class GTUtility {
         for (EntityEquipmentSlot slot : EntityEquipmentSlot.values()) {
             if (slot.getSlotType() == EntityEquipmentSlot.Type.ARMOR) {
                 ItemStack equipment = entity.getItemStackFromSlot(slot);
-                if (!equipment.isEmpty() && !suitParts.contains(new SimpleItemStack(equipment))) {
+                if (equipment.isEmpty() || !suitParts.contains(new SimpleItemStack(equipment))) {
                     return false;
                 }
             }
@@ -675,6 +727,16 @@ public class GTUtility {
         FluidStack stack = fluidStack.copy();
         stack.amount = amount;
         return stack;
+    }
+
+    public static <T extends Comparable<T>> IBlockState[] getAllPropertyValues(IBlockState blockState, IProperty<T> property) {
+        Collection<T> allowedValues = property.getAllowedValues();
+        IBlockState[] resultArray = new IBlockState[allowedValues.size()];
+        int index = 0;
+        for(T propertyValue : allowedValues) {
+            resultArray[index++] = blockState.withProperty(property, propertyValue);
+        }
+        return resultArray;
     }
 
     public static <M, E extends M> E selectItemInList(int index, E replacement, List<? extends M> list, Class<E> minClass) {

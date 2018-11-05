@@ -42,7 +42,6 @@ public class ToolWrench extends ToolBase {
 
     @Override
     public void onStatsAddedToTool(MetaValueItem item) {
-        item.addStats(new WrenchBehaviour(1));
+        item.addStats(new WrenchBehaviour(DamageValues.DAMAGE_FOR_WRENCH));
     }
-
 }

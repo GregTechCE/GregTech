@@ -1,8 +1,6 @@
 package gregtech.api.capability;
 
 import net.minecraft.util.EnumFacing;
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.capabilities.CapabilityInject;
 
 import java.math.BigInteger;
 
@@ -58,7 +56,15 @@ public interface IEnergyContainer {
         return false;
     }
 
-    long addEnergy(long energyToAdd);
+    long changeEnergy(long differenceAmount);
+
+    default long addEnergy(long energyToAdd) {
+        return changeEnergy(energyToAdd);
+    }
+
+    default long removeEnergy(long energyToRemove) {
+        return changeEnergy(-energyToRemove);
+    }
 
     default boolean canUse(long energy) {
         return getEnergyStored()  >= energy;

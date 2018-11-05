@@ -3,8 +3,10 @@ package gregtech.api.worldgen.generator;
 import gregtech.api.unification.material.type.IngotMaterial;
 import gregtech.api.worldgen.config.OreDepositDefinition;
 import gregtech.common.ConfigHolder;
-import gregtech.common.blocks.BlockSurfaceRock;
+import gregtech.common.blocks.surfacerock.BlockSurfaceRock;
 import gregtech.common.blocks.MetaBlocks;
+import gregtech.common.blocks.surfacerock.BlockSurfaceRockFlooded;
+import net.minecraft.block.material.Material;
 import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.EnumFacing;
@@ -71,9 +73,19 @@ public class WorldGeneratorImpl implements IWorldGenerator {
                 if(blockState.getBlockFaceShape(world, topBlockPos, EnumFacing.UP) != BlockFaceShape.SOLID ||
                     !blockState.isOpaqueCube() || !blockState.isFullBlock())
                     continue;
-                BlockSurfaceRock blockSurfaceRock = MetaBlocks.SURFACE_ROCKS.get(material);
-                IBlockState statePlace = blockSurfaceRock.getDefaultState().withProperty(blockSurfaceRock.materialProperty, material);
-                world.setBlockState(topBlockPos.up(), statePlace, 16);
+                BlockPos surfaceRockPos = topBlockPos.up();
+                IBlockState blockStateReplaced = world.getBlockState(surfaceRockPos);
+
+                boolean isFloodedBlock = blockStateReplaced.getMaterial() == Material.WATER;
+                IBlockState stoneBlockState;
+                if(!isFloodedBlock) {
+                    BlockSurfaceRock blockSurfaceRock = MetaBlocks.SURFACE_ROCKS.get(material);
+                    stoneBlockState = blockSurfaceRock.getDefaultState().withProperty(blockSurfaceRock.materialProperty, material);
+                } else {
+                    BlockSurfaceRockFlooded blockSurfaceRock = MetaBlocks.FLOODED_SURFACE_ROCKS.get(material);
+                    stoneBlockState = blockSurfaceRock.getDefaultState().withProperty(blockSurfaceRock.materialProperty, material);
+                }
+                world.setBlockState(surfaceRockPos, stoneBlockState, 16);
             }
         }
     }

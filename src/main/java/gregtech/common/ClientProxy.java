@@ -8,8 +8,9 @@ package gregtech.common;
 import codechicken.lib.texture.TextureUtils;
 import gregtech.api.render.MetaTileEntityRenderer;
 import gregtech.common.blocks.*;
+import gregtech.common.blocks.surfacerock.BlockSurfaceRock;
+import gregtech.common.blocks.surfacerock.BlockSurfaceRockFlooded;
 import gregtech.common.items.MetaItems;
-import gregtech.common.pipelike.fluidpipe.FluidPipeType;
 import gregtech.common.render.CableRenderer;
 import gregtech.common.render.FluidPipeRenderer;
 import gregtech.common.render.StoneRenderer;
@@ -19,6 +20,7 @@ import net.minecraft.client.renderer.color.IItemColor;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.biome.BiomeColorHelper;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -53,8 +55,20 @@ public class ClientProxy extends CommonProxy {
     public static final IItemColor ORE_ITEM_COLOR = (stack, tintIndex) ->
         tintIndex == 1 ? ((BlockOre) ((ItemBlock) stack.getItem()).getBlock()).material.materialRGB : 0xFFFFFF;
 
-    public static final IBlockColor SURFACE_ROCK_COLOR = (IBlockState state, IBlockAccess worldIn, BlockPos pos, int tintIndex) ->
-        state.getValue(((BlockSurfaceRock) state.getBlock()).materialProperty).materialRGB;
+    public static final IBlockColor SURFACE_ROCK_COLOR = (IBlockState state, IBlockAccess worldIn, BlockPos pos, int tintIndex) -> {
+        if(tintIndex == 1) {
+            if(state.getBlock() instanceof BlockSurfaceRock) {
+                BlockSurfaceRock surfaceRock = (BlockSurfaceRock) state.getBlock();
+                return state.getValue(surfaceRock.materialProperty).materialRGB;
+            } else if(state.getBlock() instanceof BlockSurfaceRockFlooded) {
+                BlockSurfaceRockFlooded surfaceRock = (BlockSurfaceRockFlooded) state.getBlock();
+                return state.getValue(surfaceRock.materialProperty).materialRGB;
+            } else return 0xFFFFFF;
+        } else {
+            //flooded surface rock water variant
+            return BiomeColorHelper.getWaterColorAtPos(worldIn, pos);
+        }
+    };
 
     public void onPreLoad() {
         super.onPreLoad();

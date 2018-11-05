@@ -11,6 +11,7 @@ import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.MetaTileEntityHolder;
 import gregtech.api.metatileentity.multiblock.IMultiblockAbilityPart;
 import gregtech.api.metatileentity.multiblock.MultiblockAbility;
+import gregtech.api.render.SimpleOverlayRenderer;
 import gregtech.api.render.Textures;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
@@ -43,7 +44,10 @@ public class MetaTileEntityEnergyHatch extends MetaTileEntityMultiblockPart impl
     @Override
     public void renderMetaTileEntity(CCRenderState renderState, Matrix4 translation, IVertexOperation[] pipeline) {
         super.renderMetaTileEntity(renderState, translation, pipeline);
-        (isExportHatch ? Textures.ENERGY_OUT_MULTI : Textures.ENERGY_IN_MULTI).renderSided(getFrontFacing(), renderState, translation, pipeline);
+        if(shouldRenderOverlay()) {
+            SimpleOverlayRenderer renderer = isExportHatch ? Textures.ENERGY_OUT_MULTI : Textures.ENERGY_IN_MULTI;
+            renderer.renderSided(getFrontFacing(), renderState, translation, pipeline);
+        }
     }
 
     @Override

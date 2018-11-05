@@ -28,6 +28,8 @@ import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.Random;
 
@@ -154,7 +156,7 @@ public class BlockFluidPipe extends BlockPipe<FluidPipeType, FluidPipeProperties
                 if (fluidTemperature >= 373) {
                     //100C, temperature of boiling water
                     if (!GTUtility.isWearingFullHeatHazmat(entityLiving)) {
-                        float damageAmount = (fluidTemperature - 273) / 2.0f;
+                        float damageAmount = (fluidTemperature - 363) / 2.0f;
                         entityLiving.attackEntityFrom(DamageSources.getHeatDamage(), damageAmount);
                     }
                 } else if(fluidTemperature <= 183) {
@@ -192,6 +194,7 @@ public class BlockFluidPipe extends BlockPipe<FluidPipeType, FluidPipeProperties
     }
 
     @Override
+    @SideOnly(Side.CLIENT)
     public EnumBlockRenderType getRenderType(IBlockState state) {
         return FluidPipeRenderer.BLOCK_RENDER_TYPE;
     }

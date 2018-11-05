@@ -2,6 +2,7 @@ package gregtech.common.metatileentities.multi.electric;
 
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.MetaTileEntityHolder;
+import gregtech.api.metatileentity.multiblock.IMultiblockPart;
 import gregtech.api.metatileentity.multiblock.MultiblockAbility;
 import gregtech.api.metatileentity.multiblock.RecipeMapMultiblockController;
 import gregtech.api.multiblock.BlockPattern;
@@ -37,6 +38,7 @@ public class MetaTileEntityVacuumFreezer extends RecipeMapMultiblockController {
             .aisle("XXX", "XXX", "XXX")
             .aisle("XXX", "X#X", "XXX")
             .aisle("XXX", "XSX", "XXX")
+            .setAmountAtLeast('X', 20)
             .where('S', selfPredicate())
             .where('X', statePredicate(getCasingState()).or(abilityPartPredicate(ALLOWED_ABILITIES)))
             .where('#', blockPredicate(Blocks.AIR))
@@ -44,7 +46,7 @@ public class MetaTileEntityVacuumFreezer extends RecipeMapMultiblockController {
     }
 
     @Override
-    public ICubeRenderer getBaseTexture() {
+    public ICubeRenderer getBaseTexture(IMultiblockPart sourcePart) {
         return Textures.FROST_PROOF_CASING;
     }
 

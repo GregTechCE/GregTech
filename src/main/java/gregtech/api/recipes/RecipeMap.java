@@ -60,14 +60,13 @@ public class RecipeMap<R extends RecipeBuilder<R>> {
 	private MoveType moveType;
 
     private final Map<FluidKey, Collection<Recipe>> recipeFluidMap = new HashMap<>();
-    private final Collection<Recipe> recipeList;
+    private final Collection<Recipe> recipeList = new ArrayList<>();
 
 	public RecipeMap(String unlocalizedName,
                      int minInputs, int maxInputs, int minOutputs, int maxOutputs,
                      int minFluidInputs, int maxFluidInputs, int minFluidOutputs, int maxFluidOutputs,
                      int amperage, R defaultRecipe) {
         this.unlocalizedName = unlocalizedName;
-		this.recipeList = new HashSet<>();
 		this.amperage = amperage;
 		this.slotOverlays = new TByteObjectHashMap<>();
 		this.progressBarTexture = GuiTextures.PROGRESS_BAR_ARROW;

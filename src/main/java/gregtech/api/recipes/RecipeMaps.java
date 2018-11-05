@@ -33,7 +33,7 @@ public class RecipeMaps {
         .setProgressBar(GuiTextures.PROGRESS_BAR_MACERATE, MoveType.HORIZONTAL);
 
 
-    @ZenProperty public static final RecipeMap<SimpleRecipeBuilder> ORE_WASHER_RECIPES = new RecipeMap<>("orewasher", 1, 1, 3, 3, 0, 1, 0, 0, 1, new SimpleRecipeBuilder().duration(400).EUt(16))
+    @ZenProperty public static final RecipeMap<SimpleRecipeBuilder> ORE_WASHER_RECIPES = new RecipeMap<>("orewasher", 1, 1, 1, 3, 0, 1, 0, 0, 1, new SimpleRecipeBuilder().duration(400).EUt(16))
         .setSlotOverlay(false, false, GuiTextures.CRUSHED_ORE_OVERLAY)
         .setSlotOverlay(true, false, GuiTextures.DUST_OVERLAY)
         .setProgressBar(GuiTextures.PROGRESS_BAR_BATH, MoveType.HORIZONTAL);
@@ -60,7 +60,7 @@ public class RecipeMaps {
         .setProgressBar(GuiTextures.PROGRESS_BAR_CIRCUIT, MoveType.HORIZONTAL);
 
 
-    @ZenProperty public static final RecipeMap<SimpleRecipeBuilder> FORMING_PRESS_RECIPES = new RecipeMapFormingPress("forming_press", 2, 2, 1, 1, 0, 0, 0, 0, 1, new SimpleRecipeBuilder())
+    @ZenProperty public static final RecipeMap<SimpleRecipeBuilder> FORMING_PRESS_RECIPES = new RecipeMapFormingPress("forming_press", 2, 6, 1, 1, 0, 0, 0, 0, 1, new SimpleRecipeBuilder())
         .setSlotOverlay(false, false, false, GuiTextures.PRESS_OVERLAY_1)
         .setSlotOverlay(false, false, true, GuiTextures.PRESS_OVERLAY_2)
         .setSlotOverlay(true, false, GuiTextures.PRESS_OVERLAY_3)
@@ -397,7 +397,7 @@ public class RecipeMaps {
      * </pre>
      */
 
-    @ZenProperty public static final RecipeMap<ImplosionRecipeBuilder> IMPLOSION_RECIPES = new RecipeMap<>("implosion_compressor", 1, 2, 1, 2, 0, 0, 0, 0, 1, new ImplosionRecipeBuilder().duration(20).EUt(30));
+    @ZenProperty public static final RecipeMap<ImplosionRecipeBuilder> IMPLOSION_RECIPES = new RecipeMap<>("implosion_compressor", 2, 3, 1, 2, 0, 0, 0, 0, 1, new ImplosionRecipeBuilder().duration(20).EUt(30));
 
     /**
      * Example:
@@ -640,22 +640,17 @@ public class RecipeMaps {
     @ZenProperty public static final RecipeMap<AmplifierRecipeBuilder> AMPLIFIERS = new RecipeMap<>("uuamplifier", 1, 1, 0, 0, 0, 0, 1, 1, 1, new AmplifierRecipeBuilder().EUt(32));
 
 
-    @ZenProperty public static final RecipeMapLiquidFuel DIESEL_GENERATOR_FUELS = new RecipeMapLiquidFuel("diesel_generator", 0, 0, 1, new SimpleRecipeBuilder());
+    @ZenProperty public static final FuelRecipeMap DIESEL_GENERATOR_FUELS = new FuelRecipeMap("diesel_generator");
 
 
-    @ZenProperty public static final RecipeMapLiquidFuel GAS_TURBINE_FUELS = new RecipeMapLiquidFuel("gas_turbine", 0, 0, 1, new SimpleRecipeBuilder());
+    @ZenProperty public static final FuelRecipeMap GAS_TURBINE_FUELS = new FuelRecipeMap("gas_turbine");
 
 
-    @ZenProperty public static final RecipeMapLiquidFuel STEAM_TURBINE_FUELS = new RecipeMapLiquidFuel("steam_turbine", 0, 0, 1, new SimpleRecipeBuilder());
+    @ZenProperty public static final FuelRecipeMap STEAM_TURBINE_FUELS = new FuelRecipeMap("steam_turbine");
 
+    @ZenProperty public static final FuelRecipeMap SEMI_FLUID_GENERATOR_FUELS = new FuelRecipeMap("semi_fluid_generator");
 
-    @ZenProperty public static final RecipeMapLiquidFuel THERMAL_GENERATOR_FUELS = new RecipeMapLiquidFuel("thermal_generator", 0, 1, 1, new SimpleRecipeBuilder());
-
-
-    @ZenProperty public static final RecipeMapLiquidFuel SEMI_FLUID_GENERATOR_FUELS = new RecipeMapLiquidFuel("semi_fluid_generator", 0, 0, 1, new SimpleRecipeBuilder());
-
-
-    @ZenProperty public static final RecipeMapLiquidFuel PLASMA_GENERATOR_FUELS = new RecipeMapLiquidFuel("plasma_generator", 0, 1, 1, new SimpleRecipeBuilder());
+    @ZenProperty public static final FuelRecipeMap PLASMA_GENERATOR_FUELS = new FuelRecipeMap("plasma_generator");
 
     /**
      * Create recipes via {@link gregtech.api.recipes.builders.PBFRecipeBuilder}

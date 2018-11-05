@@ -17,7 +17,11 @@ import gregtech.api.unification.material.type.SolidMaterial;
 import gregtech.api.unification.ore.OrePrefix;
 import gregtech.api.unification.ore.StoneType;
 import gregtech.api.unification.ore.StoneTypes;
+import gregtech.common.blocks.foam.BlockFoam;
+import gregtech.common.blocks.foam.BlockPetrifiedFoam;
 import gregtech.common.blocks.modelfactories.BakedModelHandler;
+import gregtech.common.blocks.surfacerock.BlockSurfaceRock;
+import gregtech.common.blocks.surfacerock.BlockSurfaceRockFlooded;
 import gregtech.common.blocks.tileentity.TileEntityCrusherBlade;
 import gregtech.common.blocks.wood.BlockGregLeaves;
 import gregtech.common.blocks.wood.BlockGregLog;
@@ -70,6 +74,7 @@ public class MetaBlocks {
     public static BlockMachine MACHINE;
 
     public static BlockBoilerCasing BOILER_CASING;
+    public static BlockFireboxCasing BOILER_FIREBOX_CASING;
     public static BlockMetalCasing METAL_CASING;
     public static BlockTurbineCasing TURBINE_CASING;
     public static BlockMachineCasing MACHINE_CASING;
@@ -81,6 +86,11 @@ public class MetaBlocks {
     public static BlockMineral MINERAL;
     public static BlockConcrete CONCRETE;
 
+    public static BlockFoam FOAM;
+    public static BlockFoam REINFORCED_FOAM;
+    public static BlockPetrifiedFoam PETRIFIED_FOAM;
+    public static BlockPetrifiedFoam REINFORCED_PETRIFIED_FOAM;
+
     public static BlockGregLog LOG;
     public static BlockGregLeaves LEAVES;
     public static BlockGregSapling SAPLING;
@@ -89,9 +99,10 @@ public class MetaBlocks {
 
     public static Map<Material, BlockCable> CABLES = new HashMap<>();
     public static Map<Material, BlockFluidPipe> FLUID_PIPES = new HashMap<>();
-    public static HashMap<DustMaterial, BlockCompressed> COMPRESSED = new HashMap<>();
-    public static HashMap<IngotMaterial, BlockSurfaceRock> SURFACE_ROCKS = new HashMap<>();
-    public static HashMap<SolidMaterial, BlockFrame> FRAMES = new HashMap<>();
+    public static Map<DustMaterial, BlockCompressed> COMPRESSED = new HashMap<>();
+    public static Map<IngotMaterial, BlockSurfaceRock> SURFACE_ROCKS = new HashMap<>();
+    public static Map<IngotMaterial, BlockSurfaceRockFlooded> FLOODED_SURFACE_ROCKS = new HashMap<>();
+    public static Map<SolidMaterial, BlockFrame> FRAMES = new HashMap<>();
     public static Collection<BlockOre> ORES = new HashSet<>();
     public static Collection<BlockFluidBase> FLUID_BLOCKS = new HashSet<>();
 
@@ -100,6 +111,8 @@ public class MetaBlocks {
         MACHINE.setRegistryName("machine");
         BOILER_CASING = new BlockBoilerCasing();
         BOILER_CASING.setRegistryName("boiler_casing");
+        BOILER_FIREBOX_CASING = new BlockFireboxCasing();
+        BOILER_FIREBOX_CASING.setRegistryName("boiler_firebox_casing");
         METAL_CASING = new BlockMetalCasing();
         METAL_CASING.setRegistryName("metal_casing");
         TURBINE_CASING = new BlockTurbineCasing();
@@ -120,6 +133,15 @@ public class MetaBlocks {
         CONCRETE = new BlockConcrete();
         CONCRETE.setRegistryName("concrete");
 
+        FOAM = new BlockFoam(false);
+        FOAM.setRegistryName("foam");
+        REINFORCED_FOAM = new BlockFoam(true);
+        REINFORCED_FOAM.setRegistryName("reinforced_foam");
+        PETRIFIED_FOAM = new BlockPetrifiedFoam(false);
+        PETRIFIED_FOAM.setRegistryName("petrified_foam");
+        REINFORCED_PETRIFIED_FOAM = new BlockPetrifiedFoam(true);
+        REINFORCED_PETRIFIED_FOAM.setRegistryName("reinforced_petrified_foam");
+
         LOG = new BlockGregLog();
         LOG.setRegistryName("log");
         LEAVES = new BlockGregLeaves();
@@ -135,7 +157,7 @@ public class MetaBlocks {
         createGeneratedBlock(material -> material instanceof DustMaterial &&
             !OrePrefix.block.isIgnored(material), MetaBlocks::createCompressedBlock);
         createGeneratedBlock(material -> material instanceof IngotMaterial &&
-            !OrePrefix.frameGt.doGenerateItem(material), MetaBlocks::createFrameBlock);
+                OrePrefix.frameGt.doGenerateItem(material), MetaBlocks::createFrameBlock);
         createGeneratedBlock(material -> material instanceof IngotMaterial &&
             material.hasFlag(MatFlags.GENERATE_ORE), MetaBlocks::createSurfaceRockBlock);
 
@@ -157,10 +179,11 @@ public class MetaBlocks {
         }
         createCableBlock(MarkerMaterials.Tier.Superconductor, new WireProperties(Integer.MAX_VALUE, 4, 0));
         createFluidPipeBlock(Materials.Wood, new FluidPipeProperties(310, 20, false));
+        FRAMES.put(Materials.Wood, (BlockFrame) new BlockFrame(new Material[] {Materials.Wood}).setRegistryName("frame_wood"));
         registerTileEntity();
     }
 
-    private static void createGeneratedBlock(Predicate<Material> materialPredicate, BiConsumer<Material[], Integer> blockGenerator) {
+    private static int createGeneratedBlock(Predicate<Material> materialPredicate, BiConsumer<Material[], Integer> blockGenerator) {
         Material[] materialBuffer = new Material[16];
         Arrays.fill(materialBuffer, Materials._NULL);
         int currentGenerationIndex = 0;
@@ -177,6 +200,7 @@ public class MetaBlocks {
         if(materialBuffer[0] != Materials._NULL) {
             blockGenerator.accept(materialBuffer, currentGenerationIndex / 16);
         }
+        return (currentGenerationIndex / 16) + 1;
     }
 
     private static void createCableBlock(Material material, WireProperties wireProperties) {
@@ -193,10 +217,13 @@ public class MetaBlocks {
 
     private static void createSurfaceRockBlock(Material[] materials, int index) {
         BlockSurfaceRock block = new BlockSurfaceRock(materials);
+        BlockSurfaceRockFlooded floodedBlock = new BlockSurfaceRockFlooded(materials);
         block.setRegistryName("surface_rock_" + index);
+        floodedBlock.setRegistryName("surface_rock_flooded_" + index);
         for (Material material : materials) {
-            if (material instanceof DustMaterial) {
+            if (material instanceof IngotMaterial) {
                 SURFACE_ROCKS.put((IngotMaterial) material, block);
+                FLOODED_SURFACE_ROCKS.put((IngotMaterial) material, floodedBlock);
             }
         }
     }
@@ -258,6 +285,7 @@ public class MetaBlocks {
     public static void registerItemModels() {
         ModelLoader.setCustomMeshDefinition(Item.getItemFromBlock(MACHINE), stack -> MetaTileEntityRenderer.MODEL_LOCATION);
         registerItemModel(BOILER_CASING);
+        registerItemModel(BOILER_FIREBOX_CASING);
         registerItemModel(METAL_CASING);
         registerItemModel(TURBINE_CASING);
         registerItemModel(MACHINE_CASING);
@@ -332,7 +360,8 @@ public class MetaBlocks {
 
         FLUID_BLOCKS.forEach(modelHandler::addFluidBlock);
 
-        SURFACE_ROCKS.values().forEach(block -> modelHandler.addBuiltInBlock(block, "stone"));
+        SURFACE_ROCKS.values().stream().distinct().forEach(block -> modelHandler.addBuiltInBlock(block, "stone"));
+        FLOODED_SURFACE_ROCKS.values().stream().distinct().forEach(block -> modelHandler.addBuiltInBlock(block, "stone"));
 
         modelHandler.addBuiltInBlock(CRUSHER_BLADE, "iron_block");
         Item.getItemFromBlock(CRUSHER_BLADE).setTileEntityItemStackRenderer(new TileEntityRenderBaseItem<>(TileEntityCrusherBlade.class));
@@ -357,6 +386,8 @@ public class MetaBlocks {
         });
 
         MetaBlocks.SURFACE_ROCKS.values().stream().distinct().forEach(block ->
+            Minecraft.getMinecraft().getBlockColors().registerBlockColorHandler(SURFACE_ROCK_COLOR, block));
+        MetaBlocks.FLOODED_SURFACE_ROCKS.values().stream().distinct().forEach(block ->
             Minecraft.getMinecraft().getBlockColors().registerBlockColorHandler(SURFACE_ROCK_COLOR, block));
     }
 

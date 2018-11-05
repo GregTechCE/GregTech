@@ -15,6 +15,7 @@ import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.MetaTileEntityHolder;
 import gregtech.api.metatileentity.multiblock.IMultiblockAbilityPart;
 import gregtech.api.metatileentity.multiblock.MultiblockAbility;
+import gregtech.api.render.SimpleOverlayRenderer;
 import gregtech.api.render.Textures;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
@@ -85,7 +86,10 @@ public class MetaTileEntityFluidHatch extends MetaTileEntityMultiblockPart imple
     @Override
     public void renderMetaTileEntity(CCRenderState renderState, Matrix4 translation, IVertexOperation[] pipeline) {
         super.renderMetaTileEntity(renderState, translation, pipeline);
-        (isExportHatch ? Textures.PIPE_OUT_OVERLAY : Textures.PIPE_IN_OVERLAY).renderSided(getFrontFacing(), renderState, translation, pipeline);
+        if(shouldRenderOverlay()) {
+            SimpleOverlayRenderer renderer = isExportHatch ? Textures.PIPE_OUT_OVERLAY : Textures.PIPE_IN_OVERLAY;
+            renderer.renderSided(getFrontFacing(), renderState, translation, pipeline);
+        }
     }
 
     private int getInventorySize() {
@@ -94,12 +98,12 @@ public class MetaTileEntityFluidHatch extends MetaTileEntityMultiblockPart imple
 
     @Override
     protected FluidTankList createImportFluidHandler() {
-        return isExportHatch ? new FluidTankList() : new FluidTankList(new FluidTank(getInventorySize()));
+        return isExportHatch ? new FluidTankList(false) : new FluidTankList(false, new FluidTank(getInventorySize()));
     }
 
     @Override
     protected FluidTankList createExportFluidHandler() {
-        return isExportHatch ? new FluidTankList(new FluidTank(getInventorySize())) : new FluidTankList();
+        return isExportHatch ? new FluidTankList(false, new FluidTank(getInventorySize())) : new FluidTankList(false);
     }
 
     @Override
@@ -118,7 +122,7 @@ public class MetaTileEntityFluidHatch extends MetaTileEntityMultiblockPart imple
             .build(getHolder(), entityPlayer);
     }
 
-    public static ModularUI.Builder createTankUI(IFluidTank fluidTank, IItemHandlerModifiable containerInventory, String title, EntityPlayer entityPlayer) {
+    public ModularUI.Builder createTankUI(IFluidTank fluidTank, IItemHandlerModifiable containerInventory, String title, EntityPlayer entityPlayer) {
         Builder builder = ModularUI.defaultBuilder();
         builder.image(7, 16, 81, 55, GuiTextures.DISPLAY);
         TankWidget tankWidget = new TankWidget(fluidTank, 69, 52, 18, 18)
@@ -128,7 +132,7 @@ public class MetaTileEntityFluidHatch extends MetaTileEntityMultiblockPart imple
         builder.dynamicLabel(11, 30, tankWidget::getFormattedFluidAmount, 0xFFFFFF);
         builder.dynamicLabel(11, 40, tankWidget::getFluidLocalizedName, 0xFFFFFF);
         return builder.label(6, 6, title)
-            .widget(new FluidContainerSlotWidget(containerInventory, 0, 90, 17)
+            .widget(new FluidContainerSlotWidget(containerInventory, 0, 90, 17, !isExportHatch)
                 .setBackgroundTexture(GuiTextures.SLOT, GuiTextures.IN_SLOT_OVERLAY))
             .widget(new ImageWidget(91, 36, 14, 15, GuiTextures.TANK_ICON))
             .widget(new SlotWidget(containerInventory, 1, 90, 54, true, false)

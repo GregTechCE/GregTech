@@ -17,12 +17,16 @@ import gregtech.common.metatileentities.multi.MetaTileEntityLargeBoiler;
 import gregtech.common.metatileentities.multi.MetaTileEntityLargeBoiler.BoilerType;
 import gregtech.common.metatileentities.multi.MetaTileEntityPrimitiveBlastFurnace;
 import gregtech.common.metatileentities.multi.electric.*;
-import gregtech.common.metatileentities.multi.electric.MetaTileEntityLargeTurbine.TurbineType;
+import gregtech.common.metatileentities.multi.electric.generator.MetaTileEntityDieselEngine;
+import gregtech.common.metatileentities.multi.electric.generator.MetaTileEntityLargeTurbine;
+import gregtech.common.metatileentities.multi.electric.generator.MetaTileEntityLargeTurbine.TurbineType;
 import gregtech.common.metatileentities.steam.*;
 import gregtech.common.metatileentities.steam.boiler.SteamCoalBoiler;
 import gregtech.common.metatileentities.steam.boiler.SteamLavaBoiler;
 import gregtech.common.metatileentities.steam.boiler.SteamSolarBoiler;
 import gregtech.common.metatileentities.storage.MetaTileEntityChest;
+import gregtech.common.metatileentities.storage.MetaTileEntityQuantumChest;
+import gregtech.common.metatileentities.storage.MetaTileEntityQuantumTank;
 import gregtech.common.metatileentities.storage.MetaTileEntityTank;
 import net.minecraftforge.fml.common.Loader;
 
@@ -147,7 +151,11 @@ public class MetaTileEntities {
     public static MetaTileEntityTank TUNGSTENSTEEL_TANK;
 
     //MISC MACHINES SECTION
-    public static MetaTileEntityPump[] PUMP = new MetaTileEntityPump[GTValues.V.length - 1];
+    public static MetaTileEntityPump[] PUMP = new MetaTileEntityPump[4];
+    public static MetaTileEntityAirCollector[] AIR_COLLECTOR = new MetaTileEntityAirCollector[4];
+    public static MetaTileEntityTeslaCoil TESLA_COIL;
+    public static MetaTileEntityQuantumChest[] QUANTUM_CHEST = new MetaTileEntityQuantumChest[4];
+    public static MetaTileEntityQuantumTank[] QUANTUM_TANK = new MetaTileEntityQuantumTank[4];
 
     public static void init() {
         GTLog.logger.info("Registering MetaTileEntities");
@@ -465,10 +473,23 @@ public class MetaTileEntities {
         TITANIUM_TANK = GregTechAPI.registerMetaTileEntity(815, new MetaTileEntityTank("titanium_tank", Materials.Titanium, 32000));
         TUNGSTENSTEEL_TANK = GregTechAPI.registerMetaTileEntity(816, new MetaTileEntityTank("tungstensteel_tank", Materials.TungstenSteel, 48000));
 
-        for(int i = 1; i < GTValues.V.length; i++) {
+        for(int i = 1; i < 5; i++) {
             String voltageName = GTValues.VN[i].toLowerCase();
             PUMP[i - 1] = new MetaTileEntityPump("pump." + voltageName, i);
+            AIR_COLLECTOR[i - 1] = new MetaTileEntityAirCollector("air_collector." + voltageName, i);
             GregTechAPI.registerMetaTileEntity(900 + 10 * (i - 1), PUMP[i - 1]);
+            GregTechAPI.registerMetaTileEntity(950 + 10 * (i - 1), AIR_COLLECTOR[i - 1]);
+        }
+
+        TESLA_COIL = new MetaTileEntityTeslaCoil("tesla_coil");
+        GregTechAPI.registerMetaTileEntity(1001, TESLA_COIL);
+
+        for(int i = 2; i < 6; i++) {
+            String voltageName = GTValues.VN[i].toLowerCase();
+            QUANTUM_CHEST[i - 2] = new MetaTileEntityQuantumChest("quantum_chest." + voltageName, i, 64 * 64000 * (i - 1));
+            QUANTUM_TANK[i - 2] = new MetaTileEntityQuantumTank("quantum_tank." + voltageName, i, 1000 * 64000 * (i - 1));
+            GregTechAPI.registerMetaTileEntity(1010 + (i - 2), QUANTUM_CHEST[i - 2]);
+            GregTechAPI.registerMetaTileEntity(1020 + (i - 2), QUANTUM_TANK[i - 2]);
         }
     }
 

@@ -11,13 +11,13 @@ public class WorldFluidPipeNet extends WorldPipeNet<FluidPipeProperties, FluidPi
     private static final String DATA_ID = "gregtech.fluid_pipe_net";
 
     public static WorldFluidPipeNet getWorldPipeNet(World world) {
-        WorldFluidPipeNet eNetWorldData = (WorldFluidPipeNet) world.loadData(WorldFluidPipeNet.class, DATA_ID);
-        if(eNetWorldData == null) {
-            eNetWorldData = new WorldFluidPipeNet(DATA_ID);
-            world.setData(DATA_ID, eNetWorldData);
+        WorldFluidPipeNet netWorldData = (WorldFluidPipeNet) world.loadData(WorldFluidPipeNet.class, DATA_ID);
+        if(netWorldData == null) {
+            netWorldData = new WorldFluidPipeNet(DATA_ID);
+            world.setData(DATA_ID, netWorldData);
         }
-        eNetWorldData.world = world;
-        return eNetWorldData;
+        netWorldData.world = world;
+        return netWorldData;
     }
 
     public WorldFluidPipeNet(String name) {

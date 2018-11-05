@@ -2,6 +2,7 @@ package gregtech.integration.jei.multiblock;
 
 import com.google.common.collect.Lists;
 import gregtech.api.GTValues;
+import gregtech.common.metatileentities.MetaTileEntities;
 import gregtech.integration.jei.multiblock.infos.*;
 import mezz.jei.api.IJeiHelpers;
 import mezz.jei.api.IModRegistry;
@@ -28,7 +29,16 @@ public class MultiblockInfoCategory implements IRecipeCategory<MultiblockInfoRec
             new MultiblockInfoRecipeWrapper(new PyrolyzeOvenInfo()),
             new MultiblockInfoRecipeWrapper(new CrackerUnitInfo()),
             new MultiblockInfoRecipeWrapper(new DieselEngineInfo()),
-            new MultiblockInfoRecipeWrapper(new DistillationTowerInfo())
+            new MultiblockInfoRecipeWrapper(new DistillationTowerInfo()),
+            new MultiblockInfoRecipeWrapper(new ElectricBlastFurnaceInfo()),
+            new MultiblockInfoRecipeWrapper(new MultiSmelterInfo()),
+            new MultiblockInfoRecipeWrapper(new LargeBoilerInfo(MetaTileEntities.LARGE_BRONZE_BOILER)),
+            new MultiblockInfoRecipeWrapper(new LargeBoilerInfo(MetaTileEntities.LARGE_STEEL_BOILER)),
+            new MultiblockInfoRecipeWrapper(new LargeBoilerInfo(MetaTileEntities.LARGE_TITANIUM_BOILER)),
+            new MultiblockInfoRecipeWrapper(new LargeBoilerInfo(MetaTileEntities.LARGE_TUNGSTENSTEEL_BOILER)),
+            new MultiblockInfoRecipeWrapper(new LargeTurbineInfo(MetaTileEntities.LARGE_STEAM_TURBINE)),
+            new MultiblockInfoRecipeWrapper(new LargeTurbineInfo(MetaTileEntities.LARGE_GAS_TURBINE)),
+            new MultiblockInfoRecipeWrapper(new LargeTurbineInfo(MetaTileEntities.LARGE_PLASMA_TURBINE))
         ), "gregtech:multiblock_info");
     }
 

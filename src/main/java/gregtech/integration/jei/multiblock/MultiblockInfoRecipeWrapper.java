@@ -57,6 +57,7 @@ public class MultiblockInfoRecipeWrapper implements IRecipeWrapper, SceneRenderC
     public void getIngredients(IIngredients ingredients) {
         ItemStack itemStack = infoPage.getController().getStackForm();
         ingredients.setInput(ItemStack.class, itemStack);
+        ingredients.setOutput(ItemStack.class, itemStack);
     }
 
     public void setRecipeLayout(RecipeLayout layout) {
@@ -121,7 +122,8 @@ public class MultiblockInfoRecipeWrapper implements IRecipeWrapper, SceneRenderC
         GlStateManager.translate(size.x / 2.0f, size.y / 2.0f, size.z / 2.0f);
         GlStateManager.rotate(rotationY, 0.0f, 1.0f, 0.0f);
         GlStateManager.scale(1.5, 1.5, 1.5);
-        GlStateManager.translate(-size.x / 2.0f, -size.y / 2.0f, -size.z / 2.0f);
+        Vec3d translation = infoPage.getDisplayOffset();
+        GlStateManager.translate(-size.x / 2.0f + translation.x, -size.y / 2.0f + translation.y, -size.z / 2.0f + translation.z);
         GlStateManager.translate(-1.0f, -2.0f, 0.0f);
         if(layerIndex > 0) {
             GlStateManager.translate(0.0, -layerIndex, 0.0);
@@ -142,9 +144,11 @@ public class MultiblockInfoRecipeWrapper implements IRecipeWrapper, SceneRenderC
 
         this.tooltipBlockStack = null;
         BlockPos pos = renderer.getLastHitBlock();
-        boolean leftClickHeld = Mouse.isButtonDown(0);
+        boolean leftClickHeldAndInsideView = Mouse.isButtonDown(0) &&
+            mouseX >= 0 && mouseY >= scenePosY &&
+            mouseX < recipeWidth && mouseY < (scenePosY + sceneHeight);
 
-        if(!leftClickHeld && pos != null && !renderer.world.isAirBlock(pos)) {
+        if(!leftClickHeldAndInsideView && pos != null && !renderer.world.isAirBlock(pos)) {
             IBlockState blockState = renderer.world.getBlockState(pos);
             RayTraceResult result = new RayTraceResult(Vec3d.ZERO, EnumFacing.WEST, pos);
             ItemStack itemStack = blockState.getBlock().getPickBlock(blockState, result, renderer.world, pos, minecraft.player);
@@ -153,7 +157,7 @@ public class MultiblockInfoRecipeWrapper implements IRecipeWrapper, SceneRenderC
             }
         }
 
-        if(leftClickHeld) {
+        if(leftClickHeldAndInsideView) {
             int mouseDeltaX = mouseX - lastMouseX;
             this.rotationY += mouseDeltaX * 2.0f;
         }

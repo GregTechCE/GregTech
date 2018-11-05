@@ -68,10 +68,10 @@ public enum OrePrefix {
     ingot("Ingots", M, null, MaterialIconType.ingot, ENABLE_UNIFICATION | DISALLOW_RECYCLING, mat -> mat instanceof IngotMaterial), // A regular Ingot. Introduced by Eloraam
 
     gem("Gemstones", M, null, MaterialIconType.gem, ENABLE_UNIFICATION, mat -> mat instanceof GemMaterial), // A regular Gem worth one Dust. Introduced by Eloraam
-    gemChipped("Chipped Gemstones", M / 4, null, MaterialIconType.gemChipped, ENABLE_UNIFICATION, mat -> mat instanceof GemMaterial && gem.doGenerateItem(mat)), // A regular Gem worth one small Dust. Introduced by TerraFirmaCraft
-    gemFlawed("Flawed Gemstones", M / 2, null, MaterialIconType.gemFlawed, ENABLE_UNIFICATION, mat -> mat instanceof GemMaterial && gem.doGenerateItem(mat)), // A regular Gem worth two small Dusts. Introduced by TerraFirmaCraft
-    gemFlawless("Flawless Gemstones", M * 2, null, MaterialIconType.gemFlawless, ENABLE_UNIFICATION, mat -> mat instanceof GemMaterial && gem.doGenerateItem(mat)), // A regular Gem worth two Dusts. Introduced by TerraFirmaCraft
-    gemExquisite("Exquisite Gemstones", M * 4, null, MaterialIconType.gemExquisite, ENABLE_UNIFICATION, mat -> mat instanceof GemMaterial && gem.doGenerateItem(mat)), // A regular Gem worth four Dusts. Introduced by TerraFirmaCraft
+    gemChipped("Chipped Gemstones", M / 4, null, MaterialIconType.gemChipped, ENABLE_UNIFICATION, mat -> mat instanceof GemMaterial), // A regular Gem worth one small Dust. Introduced by TerraFirmaCraft
+    gemFlawed("Flawed Gemstones", M / 2, null, MaterialIconType.gemFlawed, ENABLE_UNIFICATION, mat -> mat instanceof GemMaterial), // A regular Gem worth two small Dusts. Introduced by TerraFirmaCraft
+    gemFlawless("Flawless Gemstones", M * 2, null, MaterialIconType.gemFlawless, ENABLE_UNIFICATION, mat -> mat instanceof GemMaterial), // A regular Gem worth two Dusts. Introduced by TerraFirmaCraft
+    gemExquisite("Exquisite Gemstones", M * 4, null, MaterialIconType.gemExquisite, ENABLE_UNIFICATION, mat -> mat instanceof GemMaterial), // A regular Gem worth four Dusts. Introduced by TerraFirmaCraft
 
     dustTiny("Tiny Dusts", M / 9, null, MaterialIconType.dustTiny, ENABLE_UNIFICATION | DISALLOW_RECYCLING, mat -> mat instanceof DustMaterial), // 1/9th of a Dust.
     dustSmall("Small Dusts", M / 4, null, MaterialIconType.dustSmall, ENABLE_UNIFICATION | DISALLOW_RECYCLING, mat -> mat instanceof DustMaterial), // 1/4th of a Dust.
@@ -190,11 +190,6 @@ public enum OrePrefix {
     paper("Papers", -1, null, null, DISALLOW_RECYCLING, null), // Used for Papers of any kind.
     dye("Dyes", -1, null, null, DISALLOW_RECYCLING, null), // Used for the 16 dyes. Introduced by Eloraam
     stainedClay("Stained Clays", -1, MarkerMaterials.Color.Colorless, null, SELF_REFERENCING | DISALLOW_RECYCLING, null), // Used for the 16 colors of Stained Clay. Introduced by Forge
-    armorHelmet("Helmets", M * 5, null, null, 0, null), // vanilly Helmet
-    armorChestplate("Chestplates", M * 8, null, null, 0, null), // vanilly Chestplate
-    armorLeggings("Leggings", M * 7, null, null, 0, null), // vanilly Pants
-    armorBoots("Boots", M * 4, null, null, 0, null), // vanilly Boots
-    armor("Armor Parts", -1, null, null, DISALLOW_RECYCLING, null),
     frameGt("Frame Boxes", (long) (M * 1.375), null, null, ENABLE_UNIFICATION, material -> material instanceof IngotMaterial && material.hasFlag(GENERATE_ROD | GENERATE_PLATE)),
 
     pipeTiny("Tiny Pipes", M / 2, null, MaterialIconType.pipeTiny, ENABLE_UNIFICATION, null),
@@ -289,71 +284,68 @@ public enum OrePrefix {
         toolHoe.defaultStackSize = 1;
         toolShears.defaultStackSize = 1;
         tool.defaultStackSize = 1;
-
         record.defaultStackSize = 1;
 
-        armorHelmet.defaultStackSize = 1;
-        armorChestplate.defaultStackSize = 1;
-        armorLeggings.defaultStackSize = 1;
-        armorBoots.defaultStackSize = 1;
-        armor.defaultStackSize = 1;
+        gem.setIgnored(Materials.Diamond);
+        gem.setIgnored(Materials.Emerald);
+        gem.setIgnored(Materials.Lapis);
+        gem.setIgnored(Materials.NetherQuartz);
 
-        gem.ignoredMaterials.add(Materials.Coal);
-        gem.ignoredMaterials.add(Materials.Charcoal);
-        gem.ignoredMaterials.add(Materials.NetherStar);
-        gem.ignoredMaterials.add(Materials.Diamond);
-        gem.ignoredMaterials.add(Materials.Emerald);
-        gem.ignoredMaterials.add(Materials.NetherQuartz);
-        gem.ignoredMaterials.add(Materials.EnderPearl);
-        gem.ignoredMaterials.add(Materials.EnderEye);
-        gem.ignoredMaterials.add(Materials.Flint);
-        gem.ignoredMaterials.add(Materials.Lapis);
-        dust.ignoredMaterials.add(Materials.Redstone);
-        dust.ignoredMaterials.add(Materials.Glowstone);
-        dust.ignoredMaterials.add(Materials.Gunpowder);
-        dust.ignoredMaterials.add(Materials.Sugar);
-        dust.ignoredMaterials.add(Materials.Blaze);
-        stick.ignoredMaterials.add(Materials.Wood);
-        stick.ignoredMaterials.add(Materials.Bone);
-        stick.ignoredMaterials.add(Materials.Blaze);
-        stick.ignoredMaterials.add(Materials.Paper);
-        ingot.ignoredMaterials.add(Materials.Iron);
-        ingot.ignoredMaterials.add(Materials.Gold);
-        ingot.ignoredMaterials.add(Materials.Wood);
-        ingot.ignoredMaterials.add(Materials.Paper);
-        nugget.ignoredMaterials.add(Materials.Wood);
-        nugget.ignoredMaterials.add(Materials.Gold);
-        nugget.ignoredMaterials.add(Materials.Paper);
-        nugget.ignoredMaterials.add(Materials.Iron);
-        plate.ignoredMaterials.add(Materials.Paper);
+        gem.setIgnored(Materials.Coal);
+        excludeAllGems(Materials.Charcoal);
+        excludeAllGems(Materials.NetherStar);
+        excludeAllGems(Materials.EnderPearl);
+        excludeAllGems(Materials.EnderEye);
+        excludeAllGems(Materials.Flint);
 
-        bucket.ignoredMaterials.add(Materials.Lava);
-        bucket.ignoredMaterials.add(Materials.Milk);
-        bucket.ignoredMaterials.add(Materials.Water);
-        bottle.ignoredMaterials.add(Materials.Water);
-        bottle.ignoredMaterials.add(Materials.Milk);
-        block.ignoredMaterials.add(Materials.Iron);
-        block.ignoredMaterials.add(Materials.Gold);
-        block.ignoredMaterials.add(Materials.Lapis);
-        block.ignoredMaterials.add(Materials.Emerald);
-        block.ignoredMaterials.add(Materials.Redstone);
-        block.ignoredMaterials.add(Materials.Diamond);
-        block.ignoredMaterials.add(Materials.Coal);
-        block.ignoredMaterials.add(Materials.Glass);
-        block.ignoredMaterials.add(Materials.Marble);
-        block.ignoredMaterials.add(Materials.GraniteRed);
-        block.ignoredMaterials.add(Materials.Stone);
-        block.ignoredMaterials.add(Materials.Glowstone);
-        block.ignoredMaterials.add(Materials.Endstone);
-        block.ignoredMaterials.add(Materials.Wheat);
-        block.ignoredMaterials.add(Materials.Oilsands);
-        block.ignoredMaterials.add(Materials.Wood);
-        block.ignoredMaterials.add(Materials.RawRubber);
-        block.ignoredMaterials.add(Materials.Clay);
-        block.ignoredMaterials.add(Materials.Bone);
-        block.ignoredMaterials.add(Materials.NetherQuartz);
-        block.ignoredMaterials.add(Materials.Ice);
-        block.ignoredMaterials.add(Materials.Netherrack);
+        dust.setIgnored(Materials.Redstone);
+        dust.setIgnored(Materials.Glowstone);
+        dust.setIgnored(Materials.Gunpowder);
+        dust.setIgnored(Materials.Sugar);
+        dust.setIgnored(Materials.Blaze);
+        stick.setIgnored(Materials.Wood);
+        stick.setIgnored(Materials.Bone);
+        stick.setIgnored(Materials.Blaze);
+        stick.setIgnored(Materials.Paper);
+        ingot.setIgnored(Materials.Iron);
+        ingot.setIgnored(Materials.Gold);
+        ingot.setIgnored(Materials.Wood);
+        ingot.setIgnored(Materials.Paper);
+        nugget.setIgnored(Materials.Wood);
+        nugget.setIgnored(Materials.Gold);
+        nugget.setIgnored(Materials.Paper);
+        nugget.setIgnored(Materials.Iron);
+        plate.setIgnored(Materials.Paper);
+
+        bucket.setIgnored(Materials.Lava);
+        bucket.setIgnored(Materials.Milk);
+        bucket.setIgnored(Materials.Water);
+        bottle.setIgnored(Materials.Water);
+        bottle.setIgnored(Materials.Milk);
+        block.setIgnored(Materials.Iron);
+        block.setIgnored(Materials.Gold);
+        block.setIgnored(Materials.Lapis);
+        block.setIgnored(Materials.Emerald);
+        block.setIgnored(Materials.Redstone);
+        block.setIgnored(Materials.Diamond);
+        block.setIgnored(Materials.Coal);
+        block.setIgnored(Materials.Glass);
+        block.setIgnored(Materials.Marble);
+        block.setIgnored(Materials.GraniteRed);
+        block.setIgnored(Materials.Stone);
+        block.setIgnored(Materials.Glowstone);
+        block.setIgnored(Materials.Endstone);
+        block.setIgnored(Materials.Wheat);
+        block.setIgnored(Materials.Oilsands);
+        block.setIgnored(Materials.Wood);
+        block.setIgnored(Materials.RawRubber);
+        block.setIgnored(Materials.Clay);
+        block.setIgnored(Materials.Bone);
+        block.setIgnored(Materials.NetherQuartz);
+        block.setIgnored(Materials.Ice);
+        block.setIgnored(Materials.Netherrack);
+        block.setIgnored(Materials.Concrete);
+        block.setIgnored(Materials.Blaze);
 
         cableGtHex.addSecondaryMaterial(new MaterialStack(Materials.Rubber, dustSmall.materialAmount * 4));
         cableGtOctal.addSecondaryMaterial(new MaterialStack(Materials.Rubber, dustSmall.materialAmount * 3));
@@ -393,6 +385,14 @@ public enum OrePrefix {
         toolHeadDrill.addSecondaryMaterial(new MaterialStack(Materials.Steel, plate.materialAmount * 4));
         toolHeadChainsaw.addSecondaryMaterial(new MaterialStack(Materials.Steel, plate.materialAmount * 4 + ring.materialAmount * 2));
         toolHeadWrench.addSecondaryMaterial(new MaterialStack(Materials.Steel, ring.materialAmount + screw.materialAmount * 2));
+    }
+
+    private static void excludeAllGems(Material material) {
+        gem.setIgnored(material);
+        gemChipped.setIgnored(material);
+        gemFlawed.setIgnored(material);
+        gemFlawless.setIgnored(material);
+        gemExquisite.setIgnored(material);
     }
 
     @SafeVarargs
@@ -485,7 +485,7 @@ public enum OrePrefix {
     }
 
     public boolean doGenerateItem(Material material) {
-        return !isSelfReferencing && generationCondition != null && materialIconType != null && !isIgnored(material) && generationCondition.isTrue(material);
+        return !isSelfReferencing && generationCondition != null && !isIgnored(material) && generationCondition.isTrue(material);
     }
 
     public boolean addProcessingHandler(IOreRegistrationHandler... processingHandler) {

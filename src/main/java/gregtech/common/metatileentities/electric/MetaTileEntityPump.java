@@ -104,7 +104,7 @@ public class MetaTileEntityPump extends TieredMetaTileEntity {
 
     @Override
     protected FluidTankList createExportFluidHandler() {
-        return new FluidTankList(new FluidTank(16000 * Math.max(1, getTier())));
+        return new FluidTankList(false, new FluidTank(16000 * Math.max(1, getTier())));
     }
 
     @Override
@@ -124,7 +124,7 @@ public class MetaTileEntityPump extends TieredMetaTileEntity {
 
     @Override
     public <T> T getCapability(Capability<T> capability, EnumFacing side) {
-        return (side == null || side.getAxis() == Axis.Y) ? null : super.getCapability(capability, side);
+        return (side == null || side.getAxis() != Axis.Y) ? super.getCapability(capability, side) : null;
     }
 
     @Override
@@ -138,7 +138,7 @@ public class MetaTileEntityPump extends TieredMetaTileEntity {
         builder.dynamicLabel(11, 30, tankWidget::getFormattedFluidAmount, 0xFFFFFF);
         builder.dynamicLabel(11, 40, tankWidget::getFluidLocalizedName, 0xFFFFFF);
         return builder.label(6, 6, getMetaFullName())
-            .widget(new FluidContainerSlotWidget(importItems, 0, 90, 17)
+            .widget(new FluidContainerSlotWidget(importItems, 0, 90, 17, false)
                 .setBackgroundTexture(GuiTextures.SLOT, GuiTextures.IN_SLOT_OVERLAY))
             .widget(new ImageWidget(91, 36, 14, 15, GuiTextures.TANK_ICON))
             .widget(new SlotWidget(exportItems, 0, 90, 54, true, false)
@@ -209,7 +209,7 @@ public class MetaTileEntityPump extends TieredMetaTileEntity {
                 exportFluids.fill(drainStack, true);
                 fluidHandler.drain(drainStack.amount, true);
                 this.fluidSourceBlocks.remove(fluidBlockPos);
-                energyContainer.addEnergy(-GTValues.V[getTier()]);
+                energyContainer.changeEnergy(-GTValues.V[getTier()]);
             }
         }
     }

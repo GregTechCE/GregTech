@@ -282,32 +282,33 @@ public abstract class RecipeBuilder<R extends RecipeBuilder<R>> {
 	public abstract ValidationResult<Recipe> build();
 
 	protected EnumValidationResult validate() {
-
 		if (recipeMap == null) {
 			GTLog.logger.error("RecipeMap cannot be null", new IllegalArgumentException());
 			recipeStatus = EnumValidationResult.INVALID;
 		}
 
-        if (!GTUtility.isBetweenInclusive(recipeMap.getMinInputs(), recipeMap.getMaxInputs(), inputs.size())){
-            GTLog.logger.error("Invalid amount of recipe inputs. Actual: {}. Should be between {} and {} inclusive.", inputs.size(), recipeMap.getMinInputs(), recipeMap.getMaxInputs());
-            GTLog.logger.error("Stacktrace:", new IllegalArgumentException());
-			recipeStatus = EnumValidationResult.INVALID;
-		}
-		if (!GTUtility.isBetweenInclusive(recipeMap.getMinOutputs(), recipeMap.getMaxOutputs(), outputs.size() + chancedOutputs.size())){
-            GTLog.logger.error("Invalid amount of recipe outputs. Actual: {}. Should be between {} and {} inclusive.", outputs.size() + chancedOutputs.size(), recipeMap.getMinOutputs(), recipeMap.getMaxOutputs());
-            GTLog.logger.error("Stacktrace:", new IllegalArgumentException());
-            recipeStatus = EnumValidationResult.INVALID;
-		}
-		if (!GTUtility.isBetweenInclusive(recipeMap.getMinFluidInputs(), recipeMap.getMaxFluidInputs(), fluidInputs.size())){
-            GTLog.logger.error("Invalid amount of recipe fluid inputs. Actual: {}. Should be between {} and {} inclusive.", fluidInputs.size(), recipeMap.getMinFluidInputs(), recipeMap.getMaxFluidInputs());
-            GTLog.logger.error("Stacktrace:", new IllegalArgumentException());
-            recipeStatus = EnumValidationResult.INVALID;
-		}
-		if (!GTUtility.isBetweenInclusive(recipeMap.getMinFluidOutputs(), recipeMap.getMaxFluidOutputs(), fluidOutputs.size())){
-            GTLog.logger.error("Invalid amount of recipe fluid outputs. Actual: {}. Should be between {} and {} inclusive.", fluidOutputs.size(), recipeMap.getMinFluidOutputs(), recipeMap.getMaxFluidOutputs());
-            GTLog.logger.error("Stacktrace:", new IllegalArgumentException());
-            recipeStatus = EnumValidationResult.INVALID;
-		}
+		if(canBeBuffered) { //only check if recipe can be buffered
+            if (!GTUtility.isBetweenInclusive(recipeMap.getMinInputs(), recipeMap.getMaxInputs(), inputs.size())){
+                GTLog.logger.error("Invalid amount of recipe inputs. Actual: {}. Should be between {} and {} inclusive.", inputs.size(), recipeMap.getMinInputs(), recipeMap.getMaxInputs());
+                GTLog.logger.error("Stacktrace:", new IllegalArgumentException());
+                recipeStatus = EnumValidationResult.INVALID;
+            }
+            if (!GTUtility.isBetweenInclusive(recipeMap.getMinOutputs(), recipeMap.getMaxOutputs(), outputs.size() + chancedOutputs.size())){
+                GTLog.logger.error("Invalid amount of recipe outputs. Actual: {}. Should be between {} and {} inclusive.", outputs.size() + chancedOutputs.size(), recipeMap.getMinOutputs(), recipeMap.getMaxOutputs());
+                GTLog.logger.error("Stacktrace:", new IllegalArgumentException());
+                recipeStatus = EnumValidationResult.INVALID;
+            }
+            if (!GTUtility.isBetweenInclusive(recipeMap.getMinFluidInputs(), recipeMap.getMaxFluidInputs(), fluidInputs.size())){
+                GTLog.logger.error("Invalid amount of recipe fluid inputs. Actual: {}. Should be between {} and {} inclusive.", fluidInputs.size(), recipeMap.getMinFluidInputs(), recipeMap.getMaxFluidInputs());
+                GTLog.logger.error("Stacktrace:", new IllegalArgumentException());
+                recipeStatus = EnumValidationResult.INVALID;
+            }
+            if (!GTUtility.isBetweenInclusive(recipeMap.getMinFluidOutputs(), recipeMap.getMaxFluidOutputs(), fluidOutputs.size())){
+                GTLog.logger.error("Invalid amount of recipe fluid outputs. Actual: {}. Should be between {} and {} inclusive.", fluidOutputs.size(), recipeMap.getMinFluidOutputs(), recipeMap.getMaxFluidOutputs());
+                GTLog.logger.error("Stacktrace:", new IllegalArgumentException());
+                recipeStatus = EnumValidationResult.INVALID;
+            }
+        }
 
         if (EUt == 0){
             GTLog.logger.error("EU/t cannot be equal to 0", new IllegalArgumentException());

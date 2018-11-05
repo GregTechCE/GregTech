@@ -11,14 +11,14 @@ public class BaseCreativeTab extends CreativeTabs {
     private final boolean hasSearchBar;
     private final Supplier<ItemStack> iconSupplier;
 
-    public BaseCreativeTab(String TabName, Supplier<ItemStack> IconSupplier) {
-        this(TabName, IconSupplier, false);
+    public BaseCreativeTab(String tabName, Supplier<ItemStack> iconSupplier) {
+        this(tabName, iconSupplier, false);
     }
 
-    public BaseCreativeTab(String TabName, Supplier<ItemStack> IconSupplier, boolean HasSearchBar) {
+    public BaseCreativeTab(String TabName, Supplier<ItemStack> iconSupplier, boolean hasSearchBar) {
         super(TabName);
-        this.iconSupplier = IconSupplier;
-        this.hasSearchBar = HasSearchBar;
+        this.iconSupplier = iconSupplier;
+        this.hasSearchBar = hasSearchBar;
 
         if (hasSearchBar)
             setBackgroundImageName("item_search.png");

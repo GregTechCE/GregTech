@@ -28,13 +28,13 @@ public class SteamMacerator extends SteamMetaTileEntity {
     public SteamMacerator(String metaTileEntityId, boolean isHighPressure) {
         super(metaTileEntityId, RecipeMaps.MACERATOR_RECIPES, Textures.MACERATOR_OVERLAY, isHighPressure);
         this.workableHandler = new SimpleMaceratorRecipeMapWorkableHandler(this,
-            workableHandler.recipeMap, isHighPressure ? 32 : 16, steamFluidTank, 1.0);
+            workableHandler.recipeMap, isHighPressure, steamFluidTank, 1.0);
     }
 
     private static class SimpleMaceratorRecipeMapWorkableHandler extends SteamRecipeMapWorkableHandler {
 
-        public SimpleMaceratorRecipeMapWorkableHandler(MetaTileEntity tileEntity, RecipeMap<?> recipeMap, long maxVoltage, IFluidTank steamFluidTank, double conversionRate) {
-            super(tileEntity, recipeMap, maxVoltage, steamFluidTank, conversionRate);
+        public SimpleMaceratorRecipeMapWorkableHandler(MetaTileEntity tileEntity, RecipeMap<?> recipeMap, boolean isHighPressure, IFluidTank steamFluidTank, double conversionRate) {
+            super(tileEntity, recipeMap, isHighPressure, steamFluidTank, conversionRate);
         }
 
         @Override

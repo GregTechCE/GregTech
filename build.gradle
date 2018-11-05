@@ -175,7 +175,6 @@ task ciWriteBuildNumber doLast {
 String getVersionFromJava(File file) {
     String major = "0"
     String minor = "0"
-    String revision = "0"
 
     String prefix = "public static final int"
     file.eachLine { String s ->
@@ -187,18 +186,17 @@ String getVersionFromJava(File file) {
 
             if (pts[0] == "MAJOR") major = pts[pts.length - 1]
             else if (pts[0] == "MINOR") minor = pts[pts.length - 1]
-            else if (pts[0] == "REVISION") revision = pts[pts.length - 1]
         }
     }
 
     def branchName = System.getenv("CI_COMMIT_REF_NAME")
-    if (branchName != "master") {
-        return "$major.$minor.$revision.0-$branchName"
+    if (branchName != null && branchName != "master") {
+        return "$major.$minor.0-$branchName"
     }
 
     String build = System.getenv("BUILD_NUMBER") ?: 0
 
-    return "$major.$minor.$revision.$build"
+    return "$major.$minor.$build"
 }
 
 curseforge {

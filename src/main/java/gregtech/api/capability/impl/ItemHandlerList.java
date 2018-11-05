@@ -22,10 +22,14 @@ public class ItemHandlerList implements IItemHandlerModifiable {
     public ItemHandlerList(List<? extends IItemHandler> itemHandlerList) {
         int currentSlotIndex = 0;
         for(IItemHandler itemHandler : itemHandlerList) {
+            if(baseIndexOffset.containsKey(itemHandler)) {
+                throw new IllegalArgumentException("Attempted to add item handler " + itemHandler + " twice");
+            }
             baseIndexOffset.put(itemHandler, currentSlotIndex);
             int slotsCount = itemHandler.getSlots();
-            for(int slotIndex = 0; slotIndex < slotsCount; slotIndex++)
+            for(int slotIndex = 0; slotIndex < slotsCount; slotIndex++) {
                 handlerBySlotIndex.put(currentSlotIndex + slotIndex, itemHandler);
+            }
             currentSlotIndex += slotsCount;
         }
     }
@@ -47,6 +51,7 @@ public class ItemHandlerList implements IItemHandlerModifiable {
     @Override
     public ItemStack getStackInSlot(int slot) {
         IItemHandler itemHandler = handlerBySlotIndex.get(slot);
+        int realSlot = slot - baseIndexOffset.get(itemHandler);
         return itemHandler.getStackInSlot(slot - baseIndexOffset.get(itemHandler));
     }
 

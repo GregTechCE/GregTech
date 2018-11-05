@@ -103,17 +103,18 @@ public class ToolUtility {
     }
 
     public static int applyHammerDrops(Random random, IBlockState blockState, List<ItemStack> drops) {
-        ItemStack itemStack = new ItemStack(blockState.getBlock(), 1,
-            blockState.getBlock().getMetaFromState(blockState));
-        Recipe recipe = RecipeMaps.FORGE_HAMMER_RECIPES.findRecipe(Long.MAX_VALUE,
-            Collections.singletonList(itemStack), Collections.emptyList());
+        ItemStack itemStack = new ItemStack(blockState.getBlock(), 1, blockState.getBlock().getMetaFromState(blockState));
+        Recipe recipe = RecipeMaps.FORGE_HAMMER_RECIPES.findRecipe(Long.MAX_VALUE, Collections.singletonList(itemStack), Collections.emptyList());
+
         if(recipe != null && !recipe.getOutputs().isEmpty()) {
             drops.clear();
             for(ItemStack outputStack : recipe.getResultItemOutputs(random, 1)) {
                 outputStack = outputStack.copy();
                 if(OreDictUnifier.getPrefix(outputStack) == OrePrefix.crushed) {
                     //for hammer drops, we multiply crushed ores output by 1 sometimes
-                    outputStack.grow(random.nextInt(1));
+                    if (random.nextBoolean()) {
+                        outputStack.grow(1);
+                    }
                 }
                 drops.add(outputStack);
             }

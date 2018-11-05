@@ -41,8 +41,8 @@ public class RecipeMapCategory implements IRecipeCategory<GTRecipeWrapper> {
         this.modularUI = recipeMap.createUITemplate(() -> 0.0,
             (importItems = new ItemStackHandler(recipeMap.getMaxInputs())),
             (exportItems = new ItemStackHandler(recipeMap.getMaxOutputs())),
-            (importFluids = new FluidTankList(importFluidTanks)),
-            (exportFluids = new FluidTankList(exportFluidTanks))
+            (importFluids = new FluidTankList(false, importFluidTanks)),
+            (exportFluids = new FluidTankList(false, exportFluidTanks))
             ).build(new BlankUIHolder(), Minecraft.getMinecraft().player);
         this.modularUI.isJEIHandled = true;
         this.modularUI.initWidgets();
@@ -98,6 +98,7 @@ public class RecipeMapCategory implements IRecipeCategory<GTRecipeWrapper> {
                         tankWidget.width - tankWidget.fluidRenderOffset,
                         tankWidget.height - tankWidget.fluidRenderOffset,
                         fluidAmount, false, null);
+
                 } else if(exportFluids.getFluidTanks().contains(tankWidget.fluidTank)) {
                     int exportIndex = exportFluids.getFluidTanks().indexOf(tankWidget.fluidTank);
                     List<List<FluidStack>> inputsList = ingredients.getOutputs(FluidStack.class);
@@ -111,6 +112,7 @@ public class RecipeMapCategory implements IRecipeCategory<GTRecipeWrapper> {
                         tankWidget.width - tankWidget.fluidRenderOffset,
                         tankWidget.height - tankWidget.fluidRenderOffset,
                         fluidAmount, false, null);
+
                 }
             }
         }

@@ -318,7 +318,7 @@ public class ModHandler {
         return skip;
     }
 
-    private static Object[] finalizeShapedRecipeInput(Object... recipe) {
+    public static Object[] finalizeShapedRecipeInput(Object... recipe) {
         for (byte i = 0; i < recipe.length; i++) {
             if (recipe[i] instanceof MetaItem.MetaValueItem) {
                 recipe[i] = ((MetaItem<?>.MetaValueItem) recipe[i]).getStackForm();

@@ -42,9 +42,10 @@ public class HoeBehaviour implements IItemBehaviour {
                                 .withProperty(BlockDirt.VARIANT, BlockDirt.DirtType.COARSE_DIRT));
                         return ActionResult.newResult(EnumActionResult.SUCCESS, stack);
                     }
-                } else if (blockState.getBlock() != Blocks.DIRT ||
-                        blockState.getValue(BlockDirt.VARIANT) == BlockDirt.DirtType.DIRT) {
-                    if(GTUtility.doDamageItem(stack, this.cost, false)) {
+                } else if (blockState.getBlock() == Blocks.GRASS
+                    || blockState.getValue(BlockDirt.VARIANT) == BlockDirt.DirtType.DIRT
+                    || blockState.getValue(BlockDirt.VARIANT) == BlockDirt.DirtType.COARSE_DIRT) {
+                    if (GTUtility.doDamageItem(stack, this.cost, false)) {
                         world.playSound(null, blockPos, SoundEvents.ITEM_HOE_TILL, SoundCategory.PLAYERS, 1.0F, 1.0F);
                         world.setBlockState(blockPos, Blocks.FARMLAND.getDefaultState());
                         return ActionResult.newResult(EnumActionResult.SUCCESS, stack);

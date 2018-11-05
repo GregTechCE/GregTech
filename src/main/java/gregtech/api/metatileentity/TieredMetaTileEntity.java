@@ -38,6 +38,13 @@ public abstract class TieredMetaTileEntity extends MetaTileEntity {
             tierVoltage * 32L, tierVoltage, getMaxInputOutputAmperage());
     }
 
+    @Override
+    public int getComparatorValue() {
+        long energyStored = energyContainer.getEnergyStored();
+        long energyCapacity = energyContainer.getEnergyCapacity();
+        return energyCapacity == 0L ? 0 : (int) ((energyStored * 1.0) / energyCapacity * 15.0);
+    }
+
     @SideOnly(Side.CLIENT)
     private SimpleSidedCubeRenderer getBaseRenderer() {
         return Textures.VOLTAGE_CASINGS[tier];

@@ -7,6 +7,7 @@ import gregtech.api.block.machines.BlockMachine;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.multiblock.IMultiblockPart;
 import gregtech.api.metatileentity.multiblock.MultiblockControllerBase;
+import gregtech.api.render.ICubeRenderer;
 import gregtech.api.render.Textures;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.network.PacketBuffer;
@@ -17,7 +18,7 @@ public abstract class MetaTileEntityMultiblockPart extends MetaTileEntity implem
 
     private final int tier;
     private BlockPos controllerPos;
-    private MultiblockControllerBase controller;
+    private MultiblockControllerBase controllerTile;
 
     public MetaTileEntityMultiblockPart(String metaTileEntityId, int tier) {
         super(metaTileEntityId);
@@ -29,7 +30,7 @@ public abstract class MetaTileEntityMultiblockPart extends MetaTileEntity implem
     public TextureAtlasSprite getParticleTexture() {
         MultiblockControllerBase controller = getController();
         if(controller != null) {
-            return controller.getBaseTexture().getParticleSprite();
+            return controller.getBaseTexture(null).getParticleSprite();
         } else {
             return Textures.VOLTAGE_CASINGS[tier].getParticleSprite();
         }
@@ -37,12 +38,13 @@ public abstract class MetaTileEntityMultiblockPart extends MetaTileEntity implem
 
     @Override
     public void renderMetaTileEntity(CCRenderState renderState, Matrix4 translation, IVertexOperation[] pipeline) {
+        getBaseTexture().render(renderState, translation, pipeline);
+    }
+
+    @Override
+    public int getLightValue() {
         MultiblockControllerBase controller = getController();
-        if(controller != null) {
-            controller.getBaseTexture().render(renderState, translation, pipeline);
-        } else {
-            Textures.VOLTAGE_CASINGS[tier].render(renderState, translation, pipeline);
-        }
+        return controller == null ? 0 : controller.getLightValue(this);
     }
 
     public int getTier() {
@@ -51,11 +53,27 @@ public abstract class MetaTileEntityMultiblockPart extends MetaTileEntity implem
 
     public MultiblockControllerBase getController() {
         if(getWorld() != null && getWorld().isRemote) { //check this only clientside
-            if(controller == null && controllerPos != null) {
-                this.controller = (MultiblockControllerBase) BlockMachine.getMetaTileEntity(getWorld(), controllerPos);
+            if(controllerTile == null && controllerPos != null) {
+                this.controllerTile = (MultiblockControllerBase) BlockMachine.getMetaTileEntity(getWorld(), controllerPos);
             }
         }
-        return controller;
+        if(controllerTile != null && (controllerTile.getHolder() == null ||
+            controllerTile.getHolder().isInvalid() || !(getWorld().isRemote || controllerTile.getMultiblockParts().contains(this)))) {
+            //tile can become invalid for many reasons, and can also forgot to remove us once we aren't in structure anymore
+            //so check it here to prevent bugs with dangling controller reference and wrong texture
+            this.controllerTile = null;
+        }
+        return controllerTile;
+    }
+
+    public ICubeRenderer getBaseTexture() {
+        MultiblockControllerBase controller = getController();
+        return controller == null ? Textures.VOLTAGE_CASINGS[tier] : controller.getBaseTexture(this);
+    }
+
+    public boolean shouldRenderOverlay() {
+        MultiblockControllerBase controller = getController();
+        return controller == null || controller.shouldRenderOverlay(this);
     }
 
     @Override
@@ -66,6 +84,7 @@ public abstract class MetaTileEntityMultiblockPart extends MetaTileEntity implem
     @Override
     public void writeInitialSyncData(PacketBuffer buf) {
         super.writeInitialSyncData(buf);
+        MultiblockControllerBase controller = getController();
         buf.writeBoolean(controller != null);
         if(controller != null) {
             buf.writeBlockPos(controller.getPos());
@@ -77,7 +96,7 @@ public abstract class MetaTileEntityMultiblockPart extends MetaTileEntity implem
         super.receiveInitialSyncData(buf);
         if(buf.readBoolean()) {
             this.controllerPos = buf.readBlockPos();
-            this.controller = null;
+            this.controllerTile = null;
         }
     }
 
@@ -87,23 +106,33 @@ public abstract class MetaTileEntityMultiblockPart extends MetaTileEntity implem
         if(dataId == -100) {
             if(buf.readBoolean()) {
                 this.controllerPos = buf.readBlockPos();
-                this.controller = null;
+                this.controllerTile = null;
             } else {
                 this.controllerPos = null;
-                this.controller = null;
+                this.controllerTile = null;
             }
+            getHolder().scheduleChunkForRenderUpdate();
         }
     }
 
     private void setController(MultiblockControllerBase controller1) {
-        this.controller = controller1;
+        this.controllerTile = controller1;
         if(!getWorld().isRemote) {
             writeCustomData(-100, writer -> {
-                writer.writeBoolean(controller != null);
-                if(controller != null) {
-                    writer.writeBlockPos(controller.getPos());
+                writer.writeBoolean(controllerTile != null);
+                if(controllerTile != null) {
+                    writer.writeBlockPos(controllerTile.getPos());
                 }
             });
+        }
+    }
+
+    @Override
+    public void onRemoval() {
+        super.onRemoval();
+        MultiblockControllerBase controller = getController();
+        if(!getWorld().isRemote && controller != null) {
+            controller.invalidateStructure();
         }
     }
 
@@ -113,7 +142,12 @@ public abstract class MetaTileEntityMultiblockPart extends MetaTileEntity implem
     }
 
     @Override
-    public void removeFromMultiblock(MultiblockControllerBase controllerBase) {
+    public void removeFromMultiBlock(MultiblockControllerBase controllerBase) {
         setController(null);
+    }
+
+    @Override
+    public boolean isAttachedToMultiBlock() {
+        return getController() != null;
     }
 }

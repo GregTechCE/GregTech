@@ -28,7 +28,7 @@ import gregtech.common.metatileentities.MetaTileEntities;
 import gregtech.common.multipart.GTMultipartFactory;
 import gregtech.common.worldgen.WorldGenRubberTree;
 import gregtech.integration.theoneprobe.TheOneProbeCompatibility;
-import gregtech.loaders.postload.DungeonLootLoader;
+import gregtech.loaders.dungeon.DungeonLootLoader;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fml.common.*;
 import net.minecraftforge.fml.common.Optional.Method;
