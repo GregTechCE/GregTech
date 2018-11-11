@@ -448,10 +448,10 @@ metaitem.component.sawblade.diamond.name=Diamond Sawblade
 metaitem.component.grinder.diamond.name=Diamond Grinding Head
 metaitem.component.grinder.tungsten.name=Tungsten Grinding Head
 
-metaitem.quantumeye.tooltip=Quantum Eye
-metaitem.quantumeye.name=Improved Ender Eye
-metaitem.quantumstar.tooltip=Quantum Star
-metaitem.quantumstar.name=Improved Nether Star
+metaitem.quantumeye.name=Quantum Eye
+metaitem.quantumeye.tooltip=Improved Ender Eye
+metaitem.quantumstar.name=Quantum Star
+metaitem.quantumstar.tooltip=Improved Nether Star
 metaitem.gravistar.name=Gravi Star
 metaitem.gravistar.tooltip=Ultimate Nether Star
 
@@ -2274,7 +2274,7 @@ gregtech.machine.quantum_chest.iv.name=Black Hole-Quantum Chest III
 
 #Quantum tanks
 gregtech.machine.quantum_tank.tooltip=Compact place to store all your fluids.
-gregtech.machine.quantum_chest.capacity=Fluid Capacity: %d mb
+gregtech.machine.quantum_tank.capacity=Fluid Capacity: %d mb
 
 gregtech.machine.quantum_tank.mv.name=Basic Quantum Tank
 gregtech.machine.quantum_tank.hv.name=Advanced Quantum Tank
