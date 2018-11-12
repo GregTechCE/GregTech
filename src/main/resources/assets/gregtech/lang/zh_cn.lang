@@ -1746,7 +1746,7 @@ tile.boiler_casing.titanium_firebox.name=钛燃烧室
 tile.boiler_casing.tungstensteel_firebox.name=钨钢燃烧室
 
 # Metal casing blocks
-tile.metal_casing.primitive_bricks.name=耐火砖
+tile.metal_casing.primitive_bricks.name=耐火砖块
 tile.metal_casing.bronze_bricks.name=青铜机械方块
 tile.metal_casing.invar_heatproof.name=隔热机械方块
 tile.metal_casing.aluminium_frostproof.name=防冻机械方块
