@@ -4,6 +4,8 @@ import codechicken.lib.render.CCRenderState;
 import codechicken.lib.render.pipeline.IVertexOperation;
 import codechicken.lib.vec.Matrix4;
 import codechicken.lib.vec.Vector3;
+import gregtech.api.capability.impl.FilteredFluidHandler;
+import gregtech.api.capability.impl.FluidTankList;
 import gregtech.api.gui.GuiTextures;
 import gregtech.api.gui.ModularUI;
 import gregtech.api.gui.ModularUI.Builder;
@@ -13,6 +15,7 @@ import gregtech.api.gui.widgets.SlotWidget;
 import gregtech.api.gui.widgets.TankWidget;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.MetaTileEntityHolder;
+import gregtech.api.recipes.ModHandler;
 import gregtech.api.render.Textures;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.resources.I18n;
@@ -46,6 +49,7 @@ public class MetaTileEntityQuantumTank extends MetaTileEntity {
         this.tier = tier;
         this.maxFluidCapacity = maxFluidCapacity;
         this.containerInventory = new ItemStackHandler(2);
+        this.fluidTank = new FluidTank(maxFluidCapacity);
         initializeInventory();
     }
 
@@ -71,7 +75,6 @@ public class MetaTileEntityQuantumTank extends MetaTileEntity {
     @Override
     protected void initializeInventory() {
         super.initializeInventory();
-        this.fluidTank = new FluidTank(maxFluidCapacity);
         this.fluidInventory = fluidTank;
     }
 
@@ -104,6 +107,16 @@ public class MetaTileEntityQuantumTank extends MetaTileEntity {
     @Override
     public MetaTileEntity createMetaTileEntity(MetaTileEntityHolder holder) {
         return new MetaTileEntityQuantumTank(metaTileEntityId, tier, maxFluidCapacity);
+    }
+    
+    @Override
+    protected FluidTankList createImportFluidHandler() {
+        return new FluidTankList(false, fluidTank);
+    }
+
+    @Override
+    protected FluidTankList createExportFluidHandler() {
+        return new FluidTankList(false, fluidTank);
     }
 
     @Override
