@@ -1110,32 +1110,32 @@ public class MachineRecipeLoader {
     //TODO move more stuff here and do it automatically
     private static void registerPlanksCuttingRecipes() {
         RecipeMaps.ASSEMBLER_RECIPES.recipeBuilder()
-            .inputs(new ItemStack(Blocks.PLANKS, 1, EnumType.OAK.getMetadata()))
+            .inputs(new ItemStack(Blocks.PLANKS, 6, EnumType.OAK.getMetadata()))
             .outputs(new ItemStack(Items.OAK_DOOR, 3))
             .duration(600).EUt(4).circuitMeta(6)
             .buildAndRegister();
         RecipeMaps.ASSEMBLER_RECIPES.recipeBuilder()
-            .inputs(new ItemStack(Blocks.PLANKS, 1, EnumType.SPRUCE.getMetadata()))
+            .inputs(new ItemStack(Blocks.PLANKS, 6, EnumType.SPRUCE.getMetadata()))
             .outputs(new ItemStack(Items.SPRUCE_DOOR, 3))
             .duration(600).EUt(4).circuitMeta(6)
             .buildAndRegister();
         RecipeMaps.ASSEMBLER_RECIPES.recipeBuilder()
-            .inputs(new ItemStack(Blocks.PLANKS, 1, EnumType.BIRCH.getMetadata()))
+            .inputs(new ItemStack(Blocks.PLANKS, 6, EnumType.BIRCH.getMetadata()))
             .outputs(new ItemStack(Items.BIRCH_DOOR, 3))
             .duration(600).EUt(4).circuitMeta(6)
             .buildAndRegister();
         RecipeMaps.ASSEMBLER_RECIPES.recipeBuilder()
-            .inputs(new ItemStack(Blocks.PLANKS, 1, EnumType.JUNGLE.getMetadata()))
+            .inputs(new ItemStack(Blocks.PLANKS, 6, EnumType.JUNGLE.getMetadata()))
             .outputs(new ItemStack(Items.JUNGLE_DOOR, 3))
             .duration(600).EUt(4).circuitMeta(6)
             .buildAndRegister();
         RecipeMaps.ASSEMBLER_RECIPES.recipeBuilder()
-            .inputs(new ItemStack(Blocks.PLANKS, 1, EnumType.ACACIA.getMetadata()))
+            .inputs(new ItemStack(Blocks.PLANKS, 6, EnumType.ACACIA.getMetadata()))
             .outputs(new ItemStack(Items.ACACIA_DOOR, 3))
             .duration(600).EUt(4).circuitMeta(6)
             .buildAndRegister();
         RecipeMaps.ASSEMBLER_RECIPES.recipeBuilder()
-            .inputs(new ItemStack(Blocks.PLANKS, 1, EnumType.DARK_OAK.getMetadata()))
+            .inputs(new ItemStack(Blocks.PLANKS, 6, EnumType.DARK_OAK.getMetadata()))
             .outputs(new ItemStack(Items.DARK_OAK_DOOR, 3))
             .duration(600).EUt(4).circuitMeta(6)
             .buildAndRegister();

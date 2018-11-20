@@ -15,13 +15,13 @@ import static gregtech.api.GTValues.W;
 public class MaterialInfoLoader {
     
     public static void init() {
-        OreDictUnifier.registerOre(new ItemStack(Items.IRON_DOOR, 1), new ItemMaterialInfo(new MaterialStack(Materials.Iron, 21772800L)));
-        OreDictUnifier.registerOre(new ItemStack(Items.ACACIA_DOOR, 1, 32767), new ItemMaterialInfo(new MaterialStack(Materials.Wood, 21772800L)));
-        OreDictUnifier.registerOre(new ItemStack(Items.BIRCH_DOOR, 1, 32767), new ItemMaterialInfo(new MaterialStack(Materials.Wood, 21772800L)));
-        OreDictUnifier.registerOre(new ItemStack(Items.JUNGLE_DOOR, 1, 32767), new ItemMaterialInfo(new MaterialStack(Materials.Wood, 21772800L)));
-        OreDictUnifier.registerOre(new ItemStack(Items.OAK_DOOR, 1, 32767), new ItemMaterialInfo(new MaterialStack(Materials.Wood, 21772800L)));
-        OreDictUnifier.registerOre(new ItemStack(Items.SPRUCE_DOOR, 1, 32767), new ItemMaterialInfo(new MaterialStack(Materials.Wood, 21772800L)));
-        OreDictUnifier.registerOre(new ItemStack(Items.DARK_OAK_DOOR, 1, 32767), new ItemMaterialInfo(new MaterialStack(Materials.Wood, 21772800L)));
+        OreDictUnifier.registerOre(new ItemStack(Items.IRON_DOOR, 1), new ItemMaterialInfo(new MaterialStack(Materials.Iron, 7257600L)));
+        OreDictUnifier.registerOre(new ItemStack(Items.ACACIA_DOOR, 1, 32767), new ItemMaterialInfo(new MaterialStack(Materials.Wood, 7257600L)));
+        OreDictUnifier.registerOre(new ItemStack(Items.BIRCH_DOOR, 1, 32767), new ItemMaterialInfo(new MaterialStack(Materials.Wood, 7257600L)));
+        OreDictUnifier.registerOre(new ItemStack(Items.JUNGLE_DOOR, 1, 32767), new ItemMaterialInfo(new MaterialStack(Materials.Wood, 7257600L)));
+        OreDictUnifier.registerOre(new ItemStack(Items.OAK_DOOR, 1, 32767), new ItemMaterialInfo(new MaterialStack(Materials.Wood, 7257600L)));
+        OreDictUnifier.registerOre(new ItemStack(Items.SPRUCE_DOOR, 1, 32767), new ItemMaterialInfo(new MaterialStack(Materials.Wood, 7257600L)));
+        OreDictUnifier.registerOre(new ItemStack(Items.DARK_OAK_DOOR, 1, 32767), new ItemMaterialInfo(new MaterialStack(Materials.Wood, 7257600L)));
 
         OreDictUnifier.registerOre(new ItemStack(Blocks.QUARTZ_BLOCK, 1, W), new ItemMaterialInfo(new MaterialStack(Materials.NetherQuartz, 14515200L)));
         OreDictUnifier.registerOre(new ItemStack(Items.WHEAT, 1, W), new ItemMaterialInfo(new MaterialStack(Materials.Wheat, M)));
