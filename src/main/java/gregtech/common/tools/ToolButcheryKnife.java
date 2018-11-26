@@ -43,7 +43,7 @@ public class ToolButcheryKnife extends ToolBase {
 
     @Override
     public List<EnchantmentData> getEnchantments(ItemStack stack) {
-        return Lists.newArrayList(new EnchantmentData(Enchantments.SHARPNESS, 2));
+        return Lists.newArrayList(new EnchantmentData(Enchantments.LOOTING, 1));
     }
 
 }
