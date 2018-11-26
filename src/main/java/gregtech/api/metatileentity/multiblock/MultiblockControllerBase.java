@@ -115,6 +115,10 @@ public abstract class MultiblockControllerBase extends MetaTileEntity {
         return blockWorldState -> ArrayUtils.contains(block, blockWorldState.getBlockState().getBlock());
     }
 
+    public static Predicate<BlockWorldState> isAirPredicate() {
+        return blockWorldState -> blockWorldState.getBlockState().getBlock().isAir(blockWorldState.getBlockState(), blockWorldState.getWorld(), blockWorldState.getPos());
+    }
+
     public IPatternCenterPredicate selfPredicate() {
         return BlockWorldState.wrap(tilePredicate((state, tile) -> tile.metaTileEntityId.equals(metaTileEntityId)));
     }

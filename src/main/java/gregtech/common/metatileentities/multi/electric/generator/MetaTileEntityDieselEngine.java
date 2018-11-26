@@ -18,7 +18,6 @@ import gregtech.common.blocks.BlockMultiblockCasing.MultiblockCasingType;
 import gregtech.common.blocks.BlockTurbineCasing.TurbineCasingType;
 import gregtech.common.blocks.MetaBlocks;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.init.Blocks;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraftforge.fluids.FluidStack;
@@ -67,7 +66,7 @@ public class MetaTileEntityDieselEngine extends FueledMultiblockController {
             if(blockWorldState.getBlockState() != blockState)
                 return false;
             IBlockState offsetState = blockWorldState.getOffsetState(getFrontFacing());
-            return offsetState.getBlock() == Blocks.AIR;
+            return offsetState.getBlock().isAir(offsetState, null, null);
         };
     }
 

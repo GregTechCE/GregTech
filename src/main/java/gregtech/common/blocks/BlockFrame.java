@@ -64,7 +64,7 @@ public final class BlockFrame extends DelayedStateBlock {
         MutableBlockPos blockPos = new MutableBlockPos(pos);
         for(int i = 0; i < 32; i++) {
             IBlockState stateHere = worldIn.getBlockState(blockPos);
-            if(stateHere.getBlock() == Blocks.AIR) {
+            if(stateHere.getBlock().isAir(stateHere, worldIn, pos)) {
                 worldIn.setBlockState(blockPos, blockState);
                 if(!playerIn.capabilities.isCreativeMode)
                     stackInHand.shrink(1);
