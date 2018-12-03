@@ -68,4 +68,7 @@ public class BlockWorldState {
         return world.getBlockState(this.pos.offset(face));
     }
 
+    public World getWorld() {
+        return world;
+    }
 }

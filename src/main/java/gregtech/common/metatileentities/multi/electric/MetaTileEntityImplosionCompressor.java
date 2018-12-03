@@ -13,7 +13,6 @@ import gregtech.api.render.Textures;
 import gregtech.common.blocks.BlockMetalCasing.MetalCasingType;
 import gregtech.common.blocks.MetaBlocks;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.init.Blocks;
 
 public class MetaTileEntityImplosionCompressor extends RecipeMapMultiblockController {
 
@@ -39,7 +38,7 @@ public class MetaTileEntityImplosionCompressor extends RecipeMapMultiblockContro
             .setAmountAtLeast('X', 10)
             .where('S', selfPredicate())
             .where('X', statePredicate(getCasingState()).or(abilityPartPredicate(ALLOWED_ABILITIES)))
-            .where('#', blockPredicate(Blocks.AIR))
+            .where('#', isAirPredicate())
             .build();
     }
 

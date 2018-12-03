@@ -18,7 +18,6 @@ import gregtech.common.blocks.BlockWireCoil;
 import gregtech.common.blocks.BlockWireCoil.CoilType;
 import gregtech.common.blocks.MetaBlocks;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.init.Blocks;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentTranslation;
 
@@ -92,7 +91,7 @@ public class MetaTileEntityElectricBlastFurnace extends RecipeMapMultiblockContr
             .where('S', selfPredicate())
             .where('X', statePredicate(getCasingState()).or(abilityPartPredicate(ALLOWED_ABILITIES)))
             .where('C', heatingCoilPredicate())
-            .where('#', blockPredicate(Blocks.AIR))
+            .where('#', isAirPredicate())
             .build();
     }
 

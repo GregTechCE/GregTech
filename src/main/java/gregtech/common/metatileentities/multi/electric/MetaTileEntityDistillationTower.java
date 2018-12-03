@@ -13,7 +13,6 @@ import gregtech.api.render.Textures;
 import gregtech.common.blocks.BlockMetalCasing.MetalCasingType;
 import gregtech.common.blocks.MetaBlocks;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.init.Blocks;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraftforge.fluids.FluidStack;
@@ -56,7 +55,7 @@ public class MetaTileEntityDistillationTower extends RecipeMapMultiblockControll
             .where('Z', abilityPartPredicate(MultiblockAbility.IMPORT_FLUIDS))
             .where('Y', statePredicate(getCasingState()).or(abilityPartPredicate(MultiblockAbility.EXPORT_ITEMS, MultiblockAbility.INPUT_ENERGY)))
             .where('X', statePredicate(getCasingState()).or(abilityPartPredicate(MultiblockAbility.EXPORT_FLUIDS)))
-            .where('#', blockPredicate(Blocks.AIR))
+            .where('#', isAirPredicate())
             .build();
     }
 

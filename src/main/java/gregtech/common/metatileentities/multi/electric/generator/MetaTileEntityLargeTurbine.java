@@ -18,7 +18,6 @@ import gregtech.common.blocks.BlockTurbineCasing.TurbineCasingType;
 import gregtech.common.blocks.MetaBlocks;
 import gregtech.common.metatileentities.electric.multiblockpart.MetaTileEntityRotorHolder;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.init.Blocks;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.Style;
 import net.minecraft.util.text.TextComponentTranslation;
@@ -138,7 +137,7 @@ public class MetaTileEntityLargeTurbine extends FueledMultiblockController {
             .aisle("CHHC", "R##D", "CHHC")
             .aisle("CCCC", "CSHC", "CCCC")
             .where('S', selfPredicate())
-            .where('#', blockPredicate(Blocks.AIR))
+            .where('#', isAirPredicate())
             .where('C', statePredicate(getCasingState()))
             .where('H', statePredicate(getCasingState()).or(abilityPartPredicate(getAllowedAbilities())))
             .where('R', abilityPartPredicate(ABILITY_ROTOR_HOLDER))

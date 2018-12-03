@@ -28,7 +28,6 @@ import gregtech.common.blocks.MetaBlocks;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -241,7 +240,7 @@ public class MetaTileEntityPrimitiveBlastFurnace extends MultiblockControllerBas
             .aisle("XXX", "X#X", "X#X", "X#X")
             .aisle("XXX", "XYX", "XXX", "XXX")
             .where('X', statePredicate(getCasingState()))
-            .where('#', blockPredicate(Blocks.AIR))
+            .where('#', isAirPredicate())
             .where('Y', selfPredicate())
             .build();
     }
