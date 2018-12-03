@@ -66,7 +66,7 @@ public class MetaTileEntityDieselEngine extends FueledMultiblockController {
             if(blockWorldState.getBlockState() != blockState)
                 return false;
             IBlockState offsetState = blockWorldState.getOffsetState(getFrontFacing());
-            return offsetState.getBlock().isAir(offsetState, null, null);
+            return offsetState.getBlock().isAir(offsetState, blockWorldState.getWorld(), blockWorldState.getPos());
         };
     }
 
