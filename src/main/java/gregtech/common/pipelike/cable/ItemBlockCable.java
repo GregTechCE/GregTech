@@ -4,10 +4,10 @@ import gregtech.api.GTValues;
 import gregtech.api.pipenet.block.BlockPipe;
 import gregtech.api.pipenet.block.ItemBlockPipe;
 import gregtech.api.util.GTUtility;
-import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -26,8 +26,8 @@ public class ItemBlockCable extends ItemBlockPipe<Insulation, WireProperties> {
         Insulation insulation = blockPipe.getPipeType(stack);
         WireProperties wireProperties = blockPipe.getProperties(insulation);
         String voltageName = GTValues.VN[GTUtility.getTierByVoltage(wireProperties.voltage)];
-        tooltip.add(I18n.format("gregtech.cable.voltage", wireProperties.voltage, voltageName));
-        tooltip.add(I18n.format("gregtech.cable.amperage", wireProperties.amperage));
-        tooltip.add(I18n.format("gregtech.cable.loss_per_block", wireProperties.lossPerBlock));
+        tooltip.add(I18n.translateToLocalFormatted("gregtech.cable.voltage", wireProperties.voltage, voltageName));
+        tooltip.add(I18n.translateToLocalFormatted("gregtech.cable.amperage", wireProperties.amperage));
+        tooltip.add(I18n.translateToLocalFormatted("gregtech.cable.loss_per_block", wireProperties.lossPerBlock));
     }
 }

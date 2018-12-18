@@ -28,7 +28,6 @@ public class OreItemBlock extends ItemBlock {
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
     public String getItemStackDisplayName(ItemStack stack) {
         IBlockState blockState = getBlockState(stack);
         StoneType stoneType = blockState.getValue(block.STONE_TYPE);

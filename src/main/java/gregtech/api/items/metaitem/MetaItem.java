@@ -22,7 +22,6 @@ import gregtech.api.unification.stack.ItemMaterialInfo;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.ModelBakery;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
-import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
@@ -34,6 +33,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.World;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
@@ -360,7 +360,6 @@ public abstract class MetaItem<T extends MetaItem<?>.MetaValueItem> extends Item
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
     public String getItemStackDisplayName(ItemStack stack) {
         if (stack.getItemDamage() >= metaItemOffset) {
             T item = getItem(stack);
@@ -372,26 +371,25 @@ public abstract class MetaItem<T extends MetaItem<?>.MetaValueItem> extends Item
             if(fluidHandlerItem != null) {
                 FluidStack fluidInside = fluidHandlerItem.drain(Integer.MAX_VALUE, false);
                 String name = fluidInside == null ? "metaitem.fluid_cell.empty" : fluidInside.getUnlocalizedName();
-                return I18n.format("metaitem." + item.unlocalizedName + ".name", I18n.format(name));
+                return I18n.translateToLocalFormatted("metaitem." + item.unlocalizedName + ".name", I18n.translateToLocal(name));
             }
-            return I18n.format("metaitem." + item.unlocalizedName + ".name");
+            return I18n.translateToLocal("metaitem." + item.unlocalizedName + ".name");
         }
         return super.getItemStackDisplayName(stack);
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
     public void addInformation(ItemStack itemStack, @Nullable World worldIn, List<String> lines, ITooltipFlag tooltipFlag) {
         T item = getItem(itemStack);
         if (item == null) return;
         String unlocalizedTooltip = "metaitem." + item.unlocalizedName + ".tooltip";
-        if (I18n.hasKey(unlocalizedTooltip)) {
-            lines.addAll(Arrays.asList(I18n.format(unlocalizedTooltip).split("/n")));
+        if (I18n.canTranslate(unlocalizedTooltip)) {
+            lines.addAll(Arrays.asList(I18n.translateToLocal(unlocalizedTooltip).split("/n")));
         }
 
         IElectricItem electricItem = itemStack.getCapability(GregtechCapabilities.CAPABILITY_ELECTRIC_ITEM, null);
         if (electricItem != null) {
-            lines.add(I18n.format("metaitem.generic.electric_item.tooltip",
+            lines.add(I18n.translateToLocalFormatted("metaitem.generic.electric_item.tooltip",
                 electricItem.discharge(Long.MAX_VALUE, Integer.MAX_VALUE, true, false, true),
                 electricItem.getMaxCharge(),
                 electricItem.getTier()));
@@ -403,11 +401,11 @@ public abstract class MetaItem<T extends MetaItem<?>.MetaValueItem> extends Item
             IFluidTankProperties fluidTankProperties = fluidHandler.getTankProperties()[0];
             FluidStack fluid = fluidTankProperties.getContents();
             if (fluid != null) {
-                lines.add(I18n.format("metaitem.generic.fluid_container.tooltip",
+                lines.add(I18n.translateToLocalFormatted("metaitem.generic.fluid_container.tooltip",
                     fluid.amount,
                     fluidTankProperties.getCapacity(),
                     fluid.getLocalizedName()));
-            } else lines.add(I18n.format("metaitem.generic.fluid_container.tooltip_empty"));
+            } else lines.add(I18n.translateToLocal("metaitem.generic.fluid_container.tooltip_empty"));
         }
 
         for (IItemBehaviour behaviour : getBehaviours(itemStack)) {

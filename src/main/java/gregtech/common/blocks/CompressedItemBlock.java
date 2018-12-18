@@ -29,7 +29,6 @@ public class CompressedItemBlock extends ItemBlock {
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
     public String getItemStackDisplayName(ItemStack stack) {
         Material material = getBlockState(stack).getValue(block.variantProperty);
         return OrePrefix.block.getLocalNameForItem(material);

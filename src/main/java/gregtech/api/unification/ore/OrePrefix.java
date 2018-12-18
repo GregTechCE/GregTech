@@ -8,9 +8,9 @@ import gregtech.api.unification.material.type.*;
 import gregtech.api.unification.stack.MaterialStack;
 import gregtech.api.util.Condition;
 import gregtech.api.util.GTUtility;
-import net.minecraft.client.resources.I18n;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.text.translation.I18n;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import org.apache.commons.lang3.Validate;
@@ -543,13 +543,12 @@ public enum OrePrefix {
         currentProcessingPrefix.set(null);
     }
 
-    @SideOnly(Side.CLIENT)
     public String getLocalNameForItem(Material material) {
         String specfiedUnlocalized = "item." + material.toString() + "." + this.name();
-        if (I18n.hasKey(specfiedUnlocalized)) return I18n.format(specfiedUnlocalized);
+        if (I18n.canTranslate(specfiedUnlocalized)) return I18n.translateToLocal(specfiedUnlocalized);
         String unlocalized = "item.material.oreprefix." + this.name();
         String matLocalized = material.getLocalizedName();
-        String formatted = I18n.format(unlocalized, matLocalized);
+        String formatted = I18n.translateToLocalFormatted(unlocalized, matLocalized);
         return formatted.equals(unlocalized) ? matLocalized : formatted;
     }
 

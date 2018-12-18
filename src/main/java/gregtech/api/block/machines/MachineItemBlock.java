@@ -4,13 +4,13 @@ import gregtech.api.GregTechAPI;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.TieredMetaTileEntity;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
@@ -50,8 +50,8 @@ public class MachineItemBlock extends ItemBlock {
 
         //item specific tooltip like: gregtech.machine.lathe.lv.tooltip
         String tooltipLocale = metaTileEntity.getMetaName() + ".tooltip";
-        if (I18n.hasKey(tooltipLocale)) {
-            String[] lines = I18n.format(tooltipLocale).split("/n");
+        if (I18n.canTranslate(tooltipLocale)) {
+            String[] lines = I18n.translateToLocal(tooltipLocale).split("/n");
             tooltip.addAll(Arrays.asList(lines));
         }
 
@@ -60,8 +60,8 @@ public class MachineItemBlock extends ItemBlock {
             String tierlessTooltipLocale = ((TieredMetaTileEntity) metaTileEntity).getTierlessTooltipKey();
             //only add tierless tooltip if it's key is not equal to normal tooltip key (i.e if machine name has dot in it's name)
             //case when it's not true would be any machine extending from TieredMetaTileEntity but having only one tier
-            if (!tooltipLocale.equals(tierlessTooltipLocale) && I18n.hasKey(tierlessTooltipLocale)) {
-                String[] lines = I18n.format(tierlessTooltipLocale).split("/n");
+            if (!tooltipLocale.equals(tierlessTooltipLocale) && I18n.canTranslate(tierlessTooltipLocale)) {
+                String[] lines = I18n.translateToLocal(tierlessTooltipLocale).split("/n");
                 tooltip.addAll(Arrays.asList(lines));
             }
         }

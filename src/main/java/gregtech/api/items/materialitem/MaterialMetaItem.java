@@ -92,7 +92,6 @@ public class MaterialMetaItem extends StandardMetaItem {
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
     public String getItemStackDisplayName(ItemStack itemStack) {
         if(itemStack.getItemDamage() < metaItemOffset) {
             if (!generatedItems.contains((short) itemStack.getItemDamage())) {
