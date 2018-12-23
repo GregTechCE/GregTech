@@ -136,7 +136,7 @@ public class EnergyContainerHandler extends MTETrait implements IEnergyContainer
     @Override
     public long acceptEnergyFromNetwork(EnumFacing side, long voltage, long amperage) {
         long canAccept = getEnergyCapacity() - getEnergyStored();
-        if(side == null || inputsEnergy(side)) {
+        if(voltage > 0L && amperage > 0L && (side == null || inputsEnergy(side))) {
             if(voltage > getInputVoltage()) {
                 BlockPos pos = metaTileEntity.getPos();
                 metaTileEntity.getWorld().setBlockToAir(pos);
