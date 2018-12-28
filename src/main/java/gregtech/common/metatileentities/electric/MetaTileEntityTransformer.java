@@ -90,10 +90,10 @@ public class MetaTileEntityTransformer extends TieredMetaTileEntity {
         long tierVoltage = GTValues.V[getTier()];
         if(isTransformUp) {
             //storage = 1 amp high; input = tier / 4; amperage = 4; output = tier; amperage = 1
-            this.energyContainer = new EnergyContainerHandler(this, tierVoltage * 4L, tierVoltage / 4, 4, tierVoltage, 1);
+            this.energyContainer = new EnergyContainerHandler(this, tierVoltage * 8L, tierVoltage / 4, 4, tierVoltage, 1);
         } else {
             //storage = 1 amp high; input = tier; amperage = 1; output = tier / 4; amperage = 4
-            this.energyContainer = new EnergyContainerHandler(this, tierVoltage * 4L, tierVoltage, 1, tierVoltage / 4, 4);
+            this.energyContainer = new EnergyContainerHandler(this, tierVoltage * 8L, tierVoltage, 1, tierVoltage / 4, 4);
         }
         ((EnergyContainerHandler) this.energyContainer).setSideInputCondition(s -> s == getFrontFacing());
         ((EnergyContainerHandler) this.energyContainer).setSideOutputCondition(s -> s == getFrontFacing().getOpposite());

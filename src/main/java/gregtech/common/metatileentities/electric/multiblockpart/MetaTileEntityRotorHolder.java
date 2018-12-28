@@ -53,8 +53,8 @@ public class MetaTileEntityRotorHolder extends MetaTileEntityMultiblockPart impl
         this.rotorInventory = new InventoryRotorHolder();
     }
 
-    public MetaTileEntityRotorHolder(String metaTileEntityId, int tier) {
-        this(metaTileEntityId, tier, (int) (NORMAL_MAXIMUM_SPEED * (tier + 1) * 0.2));
+    public MetaTileEntityRotorHolder(String metaTileEntityId, int tier, float speedMultiplier) {
+        this(metaTileEntityId, tier, (int) (NORMAL_MAXIMUM_SPEED * speedMultiplier));
     }
 
     public ItemStackHandler getRotorInventory() {
@@ -83,7 +83,7 @@ public class MetaTileEntityRotorHolder extends MetaTileEntityMultiblockPart impl
         if(currentRotorSpeed < maxRotorSpeed && isControllerActive) {
             incrementSpeed(1);
         } else if(currentRotorSpeed > 0 && !isControllerActive) {
-            incrementSpeed(-1);
+            incrementSpeed(-3);
         }
     }
 

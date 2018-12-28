@@ -142,7 +142,7 @@ public class CraftingRecipeLoader {
         ModHandler.addShapelessRecipe("powder_charcoal", new ItemStack(Items.GUNPOWDER, 6), new UnificationEntry(OrePrefix.dust, Materials.Charcoal), new UnificationEntry(OrePrefix.dust, Materials.Charcoal), new UnificationEntry(OrePrefix.dust, Materials.Charcoal), new UnificationEntry(OrePrefix.dust, Materials.Sulfur), new UnificationEntry(OrePrefix.dust, Materials.Saltpeter), new UnificationEntry(OrePrefix.dust, Materials.Saltpeter));
         ModHandler.addShapelessRecipe("powder_carbon", new ItemStack(Items.GUNPOWDER, 6), new UnificationEntry(OrePrefix.dust, Materials.Carbon), new UnificationEntry(OrePrefix.dust, Materials.Carbon), new UnificationEntry(OrePrefix.dust, Materials.Carbon), new UnificationEntry(OrePrefix.dust, Materials.Sulfur), new UnificationEntry(OrePrefix.dust, Materials.Saltpeter), new UnificationEntry(OrePrefix.dust, Materials.Saltpeter));
 
-        ModHandler.addShapedRecipe("magnifying_glass", MetaItems.MAGNIFYING_GLASS.getStackForm(1), "PGh", "Xf ", 'X', new UnificationEntry(OrePrefix.stick, Materials.Steel), 'P', new UnificationEntry(OrePrefix.ring, Materials.Steel), 'G', new UnificationEntry(OrePrefix.lens, Materials.Glass));
+        ModHandler.addShapedRecipe("magnifying_glass", MetaItems.MAGNIFYING_GLASS.getStackForm(1), "PGh", "Xf ", 'X', new UnificationEntry(OrePrefix.stick, Materials.Steel), 'P', new UnificationEntry(OrePrefix.ring, Materials.Steel), 'G', new UnificationEntry(OrePrefix.blockGlass));
 
         if (ConfigHolder.vanillaRecipes.nerfPaperCrafting) {
             ModHandler.removeRecipeByName(new ResourceLocation("minecraft:paper"));

@@ -159,6 +159,7 @@ public class MetaTileEntityPrimitiveBlastFurnace extends MultiblockControllerBas
         super.receiveCustomData(dataId, buf);
         if(dataId == -100) {
             this.isActive = buf.readBoolean();
+            getHolder().scheduleChunkForRenderUpdate();
         }
     }
 

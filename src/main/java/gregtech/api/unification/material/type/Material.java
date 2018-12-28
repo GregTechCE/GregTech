@@ -4,6 +4,7 @@ import com.google.common.base.CaseFormat;
 import com.google.common.collect.ImmutableList;
 import crafttweaker.annotations.ZenRegister;
 import gregtech.api.unification.Element;
+import gregtech.api.unification.material.IMaterialHandler;
 import gregtech.api.unification.material.MaterialIconSet;
 import gregtech.api.unification.stack.MaterialStack;
 import gregtech.api.util.GTControlledRegistry;
@@ -16,6 +17,8 @@ import stanhebben.zenscript.annotations.*;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.AbstractMap.SimpleEntry;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.TreeMap;
@@ -27,7 +30,17 @@ import static gregtech.api.util.GTUtility.createFlag;
 @ZenRegister
 public abstract class Material implements Comparable<Material> {
 
-	public static GTControlledRegistry<Material> MATERIAL_REGISTRY = new GTControlledRegistry<>(1000, false);
+	public static final GTControlledRegistry<Material> MATERIAL_REGISTRY = new GTControlledRegistry<>(1000, false);
+	private static final List<IMaterialHandler> materialHandlers = new ArrayList<>();
+
+	public static void registerMaterialHandler(IMaterialHandler materialHandler) {
+	    materialHandlers.add(materialHandler);
+    }
+
+
+	public static void runMaterialHandlers() {
+	    materialHandlers.forEach(IMaterialHandler::onMaterialsInit);
+    }
 
 	public static void freezeRegistry() {
         GTLog.logger.info("Freezing material registry...");

@@ -58,6 +58,10 @@ public class ConfigHolder {
     @Config.RequiresMcRestart
     public static String[] modPriorities = new String[0];
 
+    @Config.Comment("Setting this to true makes GTCE ignore error and invalid recipes that would otherwise cause crash. Default to true.")
+    @Config.RequiresMcRestart
+    public static boolean ignoreErrorOrInvalidRecipes = true;
+
     @Config.Comment("Category that contains configs for changing vanilla recipes")
     @Config.RequiresMcRestart
     public static VanillaRecipes vanillaRecipes = new VanillaRecipes();

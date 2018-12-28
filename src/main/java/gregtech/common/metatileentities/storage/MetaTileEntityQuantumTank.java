@@ -4,7 +4,6 @@ import codechicken.lib.render.CCRenderState;
 import codechicken.lib.render.pipeline.IVertexOperation;
 import codechicken.lib.vec.Matrix4;
 import codechicken.lib.vec.Vector3;
-import gregtech.api.capability.impl.FilteredFluidHandler;
 import gregtech.api.capability.impl.FluidTankList;
 import gregtech.api.gui.GuiTextures;
 import gregtech.api.gui.ModularUI;
@@ -15,8 +14,8 @@ import gregtech.api.gui.widgets.SlotWidget;
 import gregtech.api.gui.widgets.TankWidget;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.MetaTileEntityHolder;
-import gregtech.api.recipes.ModHandler;
 import gregtech.api.render.Textures;
+import gregtech.api.util.WatchedFluidTank;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
@@ -24,8 +23,10 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.NonNullList;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandlerItem;
@@ -49,8 +50,29 @@ public class MetaTileEntityQuantumTank extends MetaTileEntity {
         this.tier = tier;
         this.maxFluidCapacity = maxFluidCapacity;
         this.containerInventory = new ItemStackHandler(2);
-        this.fluidTank = new FluidTank(maxFluidCapacity);
         initializeInventory();
+    }
+
+    @Override
+    protected void initializeInventory() {
+        super.initializeInventory();
+        this.fluidTank = new WatchedFluidTank(maxFluidCapacity) {
+            @Override
+            protected void onFluidChanged(FluidStack newFluidStack, FluidStack oldFluidStack) {
+                updateComparatorValue(true);
+            }
+        };
+        this.fluidInventory = fluidTank;
+        updateComparatorValue(true);
+    }
+
+    @Override
+    public int getComparatorValue() {
+        FluidTank fluidTank = this.fluidTank;
+        int fluidAmount = fluidTank.getFluidAmount();
+        int maxCapacity = fluidTank.getCapacity();
+        float f = fluidAmount / (maxCapacity * 1.0f);
+        return MathHelper.floor(f * 14.0f) + (fluidAmount > 0 ? 1 : 0);
     }
 
     @Override
@@ -70,12 +92,6 @@ public class MetaTileEntityQuantumTank extends MetaTileEntity {
                 }
             }
         }
-    }
-
-    @Override
-    protected void initializeInventory() {
-        super.initializeInventory();
-        this.fluidInventory = fluidTank;
     }
 
     @Override

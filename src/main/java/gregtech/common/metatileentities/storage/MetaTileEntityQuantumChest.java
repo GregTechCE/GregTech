@@ -19,6 +19,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextComponentTranslation;
@@ -66,6 +67,12 @@ public class MetaTileEntityQuantumChest extends MetaTileEntity {
     }
 
     @Override
+    public int getComparatorValue() {
+        float f = itemsStoredInside / (maxStoredItems * 1.0f);
+        return MathHelper.floor(f * 14.0f) + (itemsStoredInside > 0 ? 1 : 0);
+    }
+
+    @Override
     public void update() {
         super.update();
         if(!getWorld().isRemote) {
@@ -79,6 +86,7 @@ public class MetaTileEntityQuantumChest extends MetaTileEntity {
                     inputStack.shrink(amountOfItemsToInsert);
                     importItems.setStackInSlot(0, inputStack);
                     this.itemsStoredInside += amountOfItemsToInsert;
+                    updateComparatorValue(true);
                     markDirty();
                 }
             }
@@ -95,6 +103,7 @@ public class MetaTileEntityQuantumChest extends MetaTileEntity {
                     if(this.itemsStoredInside == 0) {
                         this.itemStack = ItemStack.EMPTY;
                     }
+                    updateComparatorValue(true);
                     markDirty();
                 }
             }

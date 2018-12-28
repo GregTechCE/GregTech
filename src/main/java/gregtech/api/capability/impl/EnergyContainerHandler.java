@@ -89,6 +89,9 @@ public class EnergyContainerHandler extends MTETrait implements IEnergyContainer
         this.energyStored = energyStored;
         if(!metaTileEntity.getWorld().isRemote) {
             metaTileEntity.markDirty();
+            if(metaTileEntity instanceof IEnergyChangeListener) {
+                ((IEnergyChangeListener) metaTileEntity).onEnergyChanged(this);
+            }
         }
     }
 
@@ -199,5 +202,9 @@ public class EnergyContainerHandler extends MTETrait implements IEnergyContainer
     @Override
     public long getInputVoltage() {
         return this.maxInputVoltage;
+    }
+
+    public interface IEnergyChangeListener {
+        void onEnergyChanged(IEnergyContainer container);
     }
 }

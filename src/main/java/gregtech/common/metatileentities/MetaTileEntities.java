@@ -113,7 +113,7 @@ public class MetaTileEntities {
     public static MetaTileEntityFluidHatch[] FLUID_EXPORT_HATCH = new MetaTileEntityFluidHatch[GTValues.V.length];
     public static MetaTileEntityEnergyHatch[] ENERGY_INPUT_HATCH = new MetaTileEntityEnergyHatch[GTValues.V.length];
     public static MetaTileEntityEnergyHatch[] ENERGY_OUTPUT_HATCH = new MetaTileEntityEnergyHatch[GTValues.V.length];
-    public static MetaTileEntityRotorHolder[] ROTOR_HOLDER = new MetaTileEntityRotorHolder[GTValues.V.length];
+    public static MetaTileEntityRotorHolder[] ROTOR_HOLDER = new MetaTileEntityRotorHolder[3]; //HV, LuV, MAX
 
     //MULTIBLOCKS SECTION
     public static MetaTileEntityPrimitiveBlastFurnace PRIMITIVE_BLAST_FURNACE;
@@ -448,7 +448,6 @@ public class MetaTileEntities {
             FLUID_EXPORT_HATCH[i] = new MetaTileEntityFluidHatch("fluid_hatch.export." + voltageName, i, true);
             ENERGY_INPUT_HATCH[i] = new MetaTileEntityEnergyHatch("energy_hatch.input." + voltageName, i, false);
             ENERGY_OUTPUT_HATCH[i] = new MetaTileEntityEnergyHatch("energy_hatch.output." + voltageName, i, true);
-            ROTOR_HOLDER[i] = new MetaTileEntityRotorHolder("rotor_holder." + voltageName, i);
 
             GregTechAPI.registerMetaTileEntity(700 + 10 * i, ITEM_IMPORT_BUS[i]);
             GregTechAPI.registerMetaTileEntity(700 + 10 * i + 1, ITEM_EXPORT_BUS[i]);
@@ -456,8 +455,11 @@ public class MetaTileEntities {
             GregTechAPI.registerMetaTileEntity(700 + 10 * i + 3, FLUID_EXPORT_HATCH[i]);
             GregTechAPI.registerMetaTileEntity(700 + 10 * i + 4, ENERGY_INPUT_HATCH[i]);
             GregTechAPI.registerMetaTileEntity(700 + 10 * i + 5, ENERGY_OUTPUT_HATCH[i]);
-            GregTechAPI.registerMetaTileEntity(700 + 10 * i + 6, ROTOR_HOLDER[i]);
         }
+
+        ROTOR_HOLDER[0] = new MetaTileEntityRotorHolder("rotor_holder.hv", GTValues.HV, 1.0f);
+        ROTOR_HOLDER[1] = new MetaTileEntityRotorHolder("rotor_holder.iv", GTValues.LuV, 1.21f);
+        ROTOR_HOLDER[2] = new MetaTileEntityRotorHolder("rotor_holder.max", GTValues.MAX, 1.48f);
 
         WOODEN_CHEST = GregTechAPI.registerMetaTileEntity(801, new MetaTileEntityChest("wooden_chest", Materials.Wood, 27));
         BRONZE_CHEST = GregTechAPI.registerMetaTileEntity(802, new MetaTileEntityChest("bronze_chest", Materials.Bronze, 36));

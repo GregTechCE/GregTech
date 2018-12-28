@@ -11,6 +11,7 @@ import gregtech.api.render.Textures;
 import gregtech.api.unification.material.type.Material.MatFlags;
 import gregtech.api.unification.material.type.SolidMaterial;
 import gregtech.api.util.GTUtility;
+import gregtech.api.util.WatchedFluidTank;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
@@ -19,6 +20,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants.NBT;
 import net.minecraftforge.fluids.FluidStack;
@@ -79,6 +81,7 @@ public class MetaTileEntityTank extends MetaTileEntity {
         super.initializeInventory();
         this.fluidTank = new SyncFluidTank(tankSize);
         this.fluidInventory = fluidTank;
+        updateComparatorValue(true);
     }
 
     @Override
@@ -163,6 +166,15 @@ public class MetaTileEntityTank extends MetaTileEntity {
     }
 
     @Override
+    public int getComparatorValue() {
+        FluidTank fluidTank = this.fluidTank;
+        int fluidAmount = fluidTank.getFluidAmount();
+        int maxCapacity = fluidTank.getCapacity();
+        float f = fluidAmount / (maxCapacity * 1.0f);
+        return MathHelper.floor(f * 14.0f) + (fluidAmount > 0 ? 1 : 0);
+    }
+
+    @Override
     public boolean onRightClick(EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
        return getWorld().isRemote || FluidUtil.interactWithFluidHandler(playerIn, hand, fluidTank);
     }
@@ -238,9 +250,8 @@ public class MetaTileEntityTank extends MetaTileEntity {
         return false; //handled manually
     }
 
-    private class SyncFluidTank extends FluidTank {
+    private class SyncFluidTank extends WatchedFluidTank {
 
-        private FluidStack lastStack;
 
         public SyncFluidTank(int capacity) {
             super(capacity);
@@ -254,24 +265,23 @@ public class MetaTileEntityTank extends MetaTileEntity {
         }
 
         @Override
-        protected void onContentsChanged() {
-            FluidStack newFluid = getFluid();
-            if(!getWorld().isRemote) {
-                onContentsChangedOnServer(newFluid);
+        protected void onFluidChanged(FluidStack newFluidStack, FluidStack oldFluidStack) {
+            updateComparatorValue(true);
+            if(getWorld() != null && !getWorld().isRemote) {
+                onContentsChangedOnServer(newFluidStack, oldFluidStack);
             }
         }
 
-        private void onContentsChangedOnServer(FluidStack newFluid) {
+        private void onContentsChangedOnServer(FluidStack newFluid, FluidStack oldFluidStack) {
             //update lightning value on server-side
             //clientside will update it with custom data packet
             updateLightValue();
 
             //send fluid amount/type change packet
-            if(newFluid != null && newFluid.isFluidEqual(lastStack)) {
+            if(newFluid != null && newFluid.isFluidEqual(oldFluidStack)) {
                 //if fluid wasn't removed completely or changed, but just reduced/added amount
                 //compute new amount value and set it right back to the client
                 writeCustomData(-201, buf -> buf.writeInt(newFluid.amount));
-                this.lastStack.amount = newFluid.amount;
             } else {
                 //otherwise, write full data dump of fluid
                 writeCustomData(-200, buf -> {
@@ -282,8 +292,6 @@ public class MetaTileEntityTank extends MetaTileEntity {
                         buf.writeCompoundTag(tagCompound);
                     }
                 });
-                //and update last fluid reference
-                this.lastStack = newFluid == null ? null : newFluid.copy();
             }
         }
 

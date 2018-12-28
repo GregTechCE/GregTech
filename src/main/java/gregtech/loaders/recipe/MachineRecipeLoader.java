@@ -161,7 +161,6 @@ public class MachineRecipeLoader {
             RecipeMaps.ASSEMBLER_RECIPES.recipeBuilder().duration(800).EUt(16).inputs(new ItemStack(Blocks.LIGHT_WEIGHTED_PRESSURE_PLATE, 1, OreDictionary.WILDCARD_VALUE)).input(OrePrefix.plate, material, 1).fluidInputs(material.getFluid(144 * multiplier / 2)).outputs(MetaItems.COVER_ITEM_DETECTOR.getStackForm()).buildAndRegister();
         }
 
-
         RecipeMaps.LASER_ENGRAVER_RECIPES.recipeBuilder()
             .input(OrePrefix.foil, Materials.Copper)
             .notConsumable(OrePrefix.craftingLens, MarkerMaterials.Color.Red)

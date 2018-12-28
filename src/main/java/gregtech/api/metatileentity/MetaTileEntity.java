@@ -67,7 +67,8 @@ public abstract class MetaTileEntity {
     protected EnumFacing frontFacing = EnumFacing.NORTH;
     protected int paintingColor = 0xFFFFFF;
 
-    protected int[] sidedRedstoneOutput = new int[6];
+    private int[] sidedRedstoneOutput = new int[6];
+    private int cachedComparatorValue;
 
     public MetaTileEntity(String metaTileEntityId) {
         this.metaTileEntityId = metaTileEntityId;
@@ -280,6 +281,24 @@ public abstract class MetaTileEntity {
         return 0;
     }
 
+    public final int getCachedComparatorValue() {
+        return cachedComparatorValue;
+    }
+
+    public void onPostNBTLoad() {
+        updateComparatorValue(false);
+    }
+
+    public void updateComparatorValue(boolean update) {
+        int newComparatorValue = getComparatorValue();
+        if(cachedComparatorValue != newComparatorValue) {
+            this.cachedComparatorValue = newComparatorValue;
+            if(update && getWorld() != null && !getWorld().isRemote) {
+                holder.notifyBlockUpdate();
+            }
+        }
+    }
+
     public void update() {
         for(MTETrait mteTrait : this.mteTraits) {
             if(shouldUpdate(mteTrait)) mteTrait.update();
@@ -398,9 +417,6 @@ public abstract class MetaTileEntity {
     public void writeInitialSyncData(PacketBuffer buf) {
         buf.writeByte(this.frontFacing.getIndex());
         buf.writeInt(this.paintingColor);
-        for (EnumFacing side : EnumFacing.VALUES) {
-            buf.writeInt(sidedRedstoneOutput[side.getIndex()]);
-        }
         buf.writeShort(mteTraits.size());
         for(MTETrait trait : mteTraits) {
             buf.writeString(trait.getName());
@@ -411,9 +427,6 @@ public abstract class MetaTileEntity {
     public void receiveInitialSyncData(PacketBuffer buf) {
         this.frontFacing = EnumFacing.VALUES[buf.readByte()];
         this.paintingColor = buf.readInt();
-        for (EnumFacing side : EnumFacing.VALUES) {
-            this.sidedRedstoneOutput[side.getIndex()] = buf.readInt();
-        }
         int amountOfTraits = buf.readShort();
         for(int i = 0; i < amountOfTraits; i++) {
             String traitName = buf.readString(32767);
@@ -430,9 +443,6 @@ public abstract class MetaTileEntity {
             getHolder().scheduleChunkForRenderUpdate();
         } else if(dataId == -2) {
             this.paintingColor = buf.readInt();
-            getHolder().scheduleChunkForRenderUpdate();
-        } else if(dataId == -3) {
-            this.sidedRedstoneOutput[buf.readByte()] = buf.readInt();
             getHolder().scheduleChunkForRenderUpdate();
         } else if(dataId == -4) {
             String traitName = buf.readString(32767);
@@ -614,10 +624,6 @@ public abstract class MetaTileEntity {
         this.sidedRedstoneOutput[side.getIndex()] = strength;
         if (getWorld() != null && !getWorld().isRemote) {
             markDirty();
-            writeCustomData(-3, buf -> {
-                buf.writeByte(side.getIndex());
-                buf.writeInt(strength);
-            });
         }
     }
 

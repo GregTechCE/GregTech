@@ -75,7 +75,7 @@ public class ToolRecipeHandler {
                 String recipeName = String.format("%s_%s_%s",
                     toolItems[i].unlocalizedName, battery.unlocalizedName, solidMaterial);
 
-                ModHandler.addShapedRecipe(recipeName, drillStack,
+                ModHandler.addShapedIngredientAwareRecipe(recipeName, drillStack,
                     "SXd", "GMG", "PBP",
                     'X', new UnificationEntry(toolPrefix, solidMaterial),
                     'M', motorItems[i].getStackForm(),
@@ -161,13 +161,13 @@ public class ToolRecipeHandler {
             for (MetaValueItem batteryItem : batteryItems[0]) {
                 ItemStack batteryStack = batteryItem.getStackForm();
                 long maxCharge = batteryStack.getCapability(GregtechCapabilities.CAPABILITY_ELECTRIC_ITEM, null).getMaxCharge();
-                ModHandler.addShapedRecipe(String.format("soldering_iron_lv_%s_%s", material.toString(), batteryItem.unlocalizedName),
+                ModHandler.addShapedIngredientAwareRecipe(String.format("soldering_iron_lv_%s_%s", material.toString(), batteryItem.unlocalizedName),
                     MetaItems.SOLDERING_IRON_LV.getMaxChargeOverrideStack(material, Materials.Rubber, maxCharge),
                     "LBf", "Sd ", "P  ",
                     'B', new UnificationEntry(OrePrefix.bolt, material),
                     'P', new UnificationEntry(OrePrefix.plate, material),
                     'S', new UnificationEntry(OrePrefix.stick, Materials.Iron),
-                    'L', MetaItems.BATTERY_RE_LV_LITHIUM.getStackForm());
+                    'L', batteryStack);
             }
 
             ModHandler.addShapedRecipe(String.format("wire_cutter_%s", material.toString()),
@@ -191,7 +191,7 @@ public class ToolRecipeHandler {
         for(MetaValueItem batteryItem : batteryItems[2]) {
             ItemStack batteryStack = batteryItem.getStackForm();
             long maxCharge = batteryStack.getCapability(GregtechCapabilities.CAPABILITY_ELECTRIC_ITEM, null).getMaxCharge();
-            ModHandler.addShapedRecipe(String.format("jack_hammer_%s_%s", batteryItem.unlocalizedName, material.toString()),
+            ModHandler.addShapedIngredientAwareRecipe(String.format("jack_hammer_%s_%s", batteryItem.unlocalizedName, material.toString()),
                 MetaItems.JACKHAMMER.getMaxChargeOverrideStack(material, null, maxCharge),
                 "SXd", "PRP", "MPB",
                 'X', new UnificationEntry(OrePrefix.stickLong, material),

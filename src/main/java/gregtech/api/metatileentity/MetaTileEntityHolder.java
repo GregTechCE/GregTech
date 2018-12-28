@@ -65,11 +65,14 @@ public class MetaTileEntityHolder extends TickableTileEntityBase implements IUIH
     }
 
     public void scheduleChunkForRenderUpdate() {
-
         BlockPos pos = getPos();
         getWorld().markBlockRangeForRenderUpdate(
             pos.getX() - 1, pos.getY() - 1, pos.getZ() - 1,
             pos.getX() + 1, pos.getY() + 1, pos.getZ() + 1);
+    }
+
+    public void notifyBlockUpdate() {
+        getWorld().notifyNeighborsOfStateChange(pos, getBlockType(), false);
     }
 
     @Override
@@ -83,6 +86,7 @@ public class MetaTileEntityHolder extends TickableTileEntityBase implements IUIH
                 this.metaTileEntity = sampleMetaTileEntity.createMetaTileEntity(this);
                 this.metaTileEntity.holder = this;
                 this.metaTileEntity.readFromNBT(metaTileEntityData);
+                this.metaTileEntity.onPostNBTLoad();
             }
         }
     }

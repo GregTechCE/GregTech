@@ -10,6 +10,7 @@ import gregtech.api.unification.material.type.FluidMaterial;
 import gregtech.common.MetaFluids;
 import gregtech.common.metatileentities.electric.multiblockpart.MetaTileEntityRotorHolder;
 import gregtech.common.metatileentities.multi.electric.generator.MetaTileEntityLargeTurbine.TurbineType;
+import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.fluids.FluidStack;
 
 import java.util.function.Supplier;
@@ -25,6 +26,22 @@ public class LargeTurbineWorkableHandler extends FuelRecipeMapWorkableHandler {
     public LargeTurbineWorkableHandler(MetaTileEntityLargeTurbine metaTileEntity, FuelRecipeMap recipeMap, Supplier<IEnergyContainer> energyContainer, Supplier<IMultipleTankHandler> fluidTank, long maxVoltage) {
         super(metaTileEntity, recipeMap, energyContainer, fluidTank, maxVoltage);
         this.largeTurbine = metaTileEntity;
+    }
+
+    @Override
+    public void update() {
+        super.update();
+        MetaTileEntityRotorHolder rotorHolder = largeTurbine.getAbilities(MetaTileEntityLargeTurbine.ABILITY_ROTOR_HOLDER).get(0);
+        //if the rotor is spinning and is not broken generate energy every tick,
+        //recipes only affect rotor speed delta per tick and output fluid generation,
+        //they do not add energy to the turbine directly
+        double relativeRotorSpeed = rotorHolder.getRelativeRotorSpeed();
+        int damageToBeApplied = (int) (BASE_ROTOR_DAMAGE * relativeRotorSpeed) + 1;
+        if(rotorHolder.getCurrentRotorSpeed() > 0 && rotorHolder.applyDamageToRotor(damageToBeApplied, false)) {
+            double rotorEfficiency = rotorHolder.getRotorEfficiency();
+            double totalEnergyOutput = (BASE_EU_OUTPUT + EU_OUTPUT_BONUS * rotorEfficiency) * (relativeRotorSpeed * relativeRotorSpeed);
+            energyContainer.get().addEnergy(MathHelper.ceil(totalEnergyOutput));
+        }
     }
 
     public FluidStack getFuelStack() {
@@ -50,14 +67,8 @@ public class LargeTurbineWorkableHandler extends FuelRecipeMapWorkableHandler {
 
     @Override
     protected long startRecipe(FuelRecipe currentRecipe, int fuelAmountUsed, int recipeDuration) {
-        MetaTileEntityRotorHolder rotorHolder = largeTurbine.getAbilities(MetaTileEntityLargeTurbine.ABILITY_ROTOR_HOLDER).get(0);
-        double relativeRotorSpeed = rotorHolder.getRelativeRotorSpeed();
-        double rotorEfficiency = rotorHolder.getRotorEfficiency();
-        double totalEnergyOutput = BASE_EU_OUTPUT + EU_OUTPUT_BONUS * rotorEfficiency;
-        int damageToBeApplied = (int) (BASE_ROTOR_DAMAGE * relativeRotorSpeed) + 1;
-        rotorHolder.applyDamageToRotor(damageToBeApplied, true);
         addOutputFluids(currentRecipe, fuelAmountUsed);
-        return (int) Math.floor(totalEnergyOutput * relativeRotorSpeed * relativeRotorSpeed);
+        return 0L; //energy is added each tick while the rotor speed is >0 RPM
     }
 
     private void addOutputFluids(FuelRecipe currentRecipe, int fuelAmountUsed) {

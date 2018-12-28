@@ -15,6 +15,7 @@ import gregtech.api.unification.material.type.Material;
 import gregtech.api.unification.material.type.SolidMaterial;
 import gregtech.api.unification.stack.SimpleItemStack;
 import gregtech.api.util.GTUtility;
+import gregtech.api.util.ShapedOreIngredientAwareRecipe;
 import gregtech.common.ConfigHolder;
 import gregtech.common.items.MetaItems;
 import net.minecraft.block.state.IBlockState;
@@ -145,64 +146,17 @@ public class ToolMetaItem<T extends ToolMetaItem<?>.MetaToolValueItem> extends M
         return true;
     }
 
-    public void onToolCreated(EntityPlayer entityPlayer, ItemStack toolStack, IInventory ingredients) {
-        chargeToolFromComponents(toolStack, ingredients);
-        saveToolComponents(toolStack, ingredients);
-        NBTTagCompound tagCompound = toolStack.getTagCompound();
-        tagCompound.setUniqueId("Creator", entityPlayer.getPersistentID());
-        tagCompound.setLong("RandomKey", entityPlayer.getRNG().nextLong());
-
-        T metaToolValueItem = getItem(toolStack);
+    @Override
+    public void onCreated(ItemStack stack, World worldIn, EntityPlayer playerIn) {
+        T metaToolValueItem = getItem(stack);
         if(metaToolValueItem != null) {
             IToolStats toolStats = metaToolValueItem.getToolStats();
-            toolStats.onToolCrafted(toolStack, entityPlayer);
+            toolStats.onToolCrafted(stack, playerIn);
         }
-    }
-
-    private static void chargeToolFromComponents(ItemStack toolStack, IInventory ingredients) {
-        IElectricItem electricItem = toolStack.getCapability(GregtechCapabilities.CAPABILITY_ELECTRIC_ITEM, null);
-        if(electricItem != null && electricItem.getMaxCharge() > 0L) {
-            long maxCharge = electricItem.charge(Long.MAX_VALUE, Integer.MAX_VALUE, true, true);
-            for (int slotIndex = 0; slotIndex < ingredients.getSizeInventory(); slotIndex++) {
-                ItemStack stackInSlot = ingredients.getStackInSlot(slotIndex);
-                IElectricItem batteryItem = stackInSlot.getCapability(GregtechCapabilities.CAPABILITY_ELECTRIC_ITEM, null);
-                if (batteryItem != null && batteryItem.canProvideChargeExternally() && maxCharge > 0L) {
-                    long discharged = batteryItem.discharge(maxCharge, Integer.MAX_VALUE, true, true, false);
-                    maxCharge -= electricItem.charge(discharged, Integer.MAX_VALUE, true, false);
-                    if (discharged > 0L) ingredients.setInventorySlotContents(slotIndex, stackInSlot);
-                    if (maxCharge == 0L) break;
-                }
-            }
-        }
-    }
-
-    private static void saveToolComponents(ItemStack toolStack, IInventory ingredients) {
-        NBTTagList componentList = new NBTTagList();
-        for(int slotIndex = 0; slotIndex < ingredients.getSizeInventory(); slotIndex++) {
-            ItemStack stackInSlot = ingredients.getStackInSlot(slotIndex).copy();
-            stackInSlot.setCount(1);
-            //only save items that are not tools and don't have container items (to avoid dupes)
-            if(!stackInSlot.isEmpty() && !(stackInSlot.getItem() instanceof ToolMetaItem<?>) &&
-                stackInSlot.getItem().getContainerItem(stackInSlot).isEmpty()) {
-                NBTTagCompound stackTag = new NBTTagCompound();
-                stackInSlot.writeToNBT(stackTag);
-                componentList.appendTag(stackTag);
-            }
-        }
-        toolStack.setTagInfo("CraftingComponents", componentList);
     }
 
     public static List<ItemStack> getToolComponents(ItemStack toolStack) {
-        NBTTagCompound tagCompound = toolStack.getTagCompound();
-        if(tagCompound == null || !tagCompound.hasKey("CraftingComponents", NBT.TAG_LIST))
-            return Collections.emptyList();
-        ArrayList<ItemStack> stacks = new ArrayList<>();
-        NBTTagList componentList = tagCompound.getTagList("CraftingComponents", NBT.TAG_COMPOUND);
-        for(int index = 0; index < componentList.tagCount(); index++) {
-            NBTTagCompound stackTag = componentList.getCompoundTagAt(index);
-            stacks.add(new ItemStack(stackTag));
-        }
-        return stacks;
+        return ShapedOreIngredientAwareRecipe.getCraftingComponents(toolStack);
     }
 
     @Override

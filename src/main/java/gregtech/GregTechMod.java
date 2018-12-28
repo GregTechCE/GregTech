@@ -12,6 +12,7 @@ import gregtech.api.recipes.RecipeMap;
 import gregtech.api.unification.OreDictUnifier;
 import gregtech.api.unification.material.Materials;
 import gregtech.api.unification.material.type.Material;
+import gregtech.api.util.AnnotatedMaterialHandlerLoader;
 import gregtech.api.util.GTLog;
 import gregtech.api.worldgen.config.WorldGenRegistry;
 import gregtech.common.CommonProxy;
@@ -29,6 +30,7 @@ import gregtech.common.multipart.GTMultipartFactory;
 import gregtech.common.worldgen.WorldGenRubberTree;
 import gregtech.integration.theoneprobe.TheOneProbeCompatibility;
 import gregtech.loaders.dungeon.DungeonLootLoader;
+import net.minecraftforge.classloading.FMLForgePlugin;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fml.common.*;
 import net.minecraftforge.fml.common.Optional.Method;
@@ -69,8 +71,13 @@ public class GregTechMod {
         PlayerInventoryUIFactory.INSTANCE.init();
         SimpleCapabilityManager.init();
         OreDictUnifier.init();
-        Materials.register();
 
+        //first, register primary materials and run material handlers
+        Materials.register();
+        AnnotatedMaterialHandlerLoader.discoverAndLoadAnnotatedMaterialHandlers(event.getAsmData());
+        Material.runMaterialHandlers();
+
+        //then, run CraftTweaker early material registration scripts
         if(Loader.isModLoaded(GTValues.MODID_CT)) {
             GTLog.logger.info("Running early CraftTweaker initialization scripts...");
             runEarlyCraftTweakerScripts();
@@ -93,8 +100,18 @@ public class GregTechMod {
         gregtechproxy.onLoad();
 
         if (RecipeMap.isFoundInvalidRecipe()) {
-            GTLog.logger.fatal("Seems like invalid recipe was found. Loading will not continue.");
-            throw new LoaderException("Found at least one invalid recipe. Please read the log above for more details.");
+            GTLog.logger.fatal("Seems like invalid recipe was found.");
+            //crash if config setting is set to false, or we are in deobfuscated environment
+            if(!ConfigHolder.ignoreErrorOrInvalidRecipes || !FMLForgePlugin.RUNTIME_DEOBF) {
+                GTLog.logger.fatal("Loading cannot continue. Either fix or report invalid recipes, or enable ignoreErrorOrInvalidRecipes in the config as a temporary solution");
+                throw new LoaderException("Found at least one invalid recipe. Please read the log above for more details.");
+            } else {
+                GTLog.logger.fatal("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+                GTLog.logger.fatal("Ignoring invalid recipes and continuing loading");
+                GTLog.logger.fatal("Some things may lack recipes or have invalid ones, proceed at your own risk");
+                GTLog.logger.fatal("Report to GTCE github to get more help and fix the problem");
+                GTLog.logger.fatal("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+            }
         }
 
         if(Loader.isModLoaded(GTValues.MODID_FMP)) {
