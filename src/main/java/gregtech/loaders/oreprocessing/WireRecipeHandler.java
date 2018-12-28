@@ -25,6 +25,7 @@ public class WireRecipeHandler {
         OrePrefix.wireGtSingle.addProcessingHandler(IngotMaterial.class, WireRecipeHandler::processWireSingle);
         for(OrePrefix wirePrefix : WIRE_DOUBLING_ORDER) {
             wirePrefix.addProcessingHandler(IngotMaterial.class, WireRecipeHandler::generateWireRecipe);
+            wirePrefix.addProcessingHandler(Material.class, WireRecipeHandler::generateWireCombiningRecipe);
         }
     }
 
@@ -116,7 +117,10 @@ public class WireRecipeHandler {
                 .duration(100).EUt(8)
                 .buildAndRegister();
         }
+    }
 
+    public static void generateWireCombiningRecipe(OrePrefix wirePrefix, Material material) {
+        OrePrefix cablePrefix = OrePrefix.valueOf("cable" + wirePrefix.name().substring(4));
         int wireIndex = ArrayUtils.indexOf(WIRE_DOUBLING_ORDER, wirePrefix);
 
         if(wireIndex < WIRE_DOUBLING_ORDER.length - 1) {

@@ -1,5 +1,7 @@
 package gregtech.common.blocks;
 
+import gregtech.api.unification.material.Materials;
+import gregtech.api.unification.material.type.IngotMaterial;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -50,15 +52,15 @@ public class BlockWireCoil extends VariantBlock<BlockWireCoil.CoilType> {
 
     public enum CoilType implements IStringSerializable {
 
-        CUPRONICKEL("cupronickel", 1800, 1, 1),
-        KANTHAL("kanthal", 2700, 2, 1),
-        NICHROME("nichrome", 3600, 4, 1),
-        TUNGSTENSTEEL("tungstensteel", 4500, 8, 1),
-        HSS_G("hss_g", 5400, 8, 2),
-        NAQUADAH("naquadah", 7200, 16, 1),
-        NAQUADAH_ALLOY("naquadah_alloy", 8600, 16, 2),
-        SUPERCONDUCTOR("superconductor", 9001, 16, 4),
-        FUSION_COIL("fusion_coil", 9700, 16, 8);
+        CUPRONICKEL("cupronickel", 1800, 1, 1, Materials.Cupronickel),
+        KANTHAL("kanthal", 2700, 2, 1, Materials.Kanthal),
+        NICHROME("nichrome", 3600, 4, 1, Materials.Nichrome),
+        TUNGSTENSTEEL("tungstensteel", 4500, 8, 1, Materials.TungstenSteel),
+        HSS_G("hss_g", 5400, 8, 2, Materials.HSSG),
+        NAQUADAH("naquadah", 7200, 16, 1, Materials.Naquadah),
+        NAQUADAH_ALLOY("naquadah_alloy", 8600, 16, 2, Materials.NaquadahAlloy),
+        SUPERCONDUCTOR("superconductor", 9001, 16, 4, null),
+        FUSION_COIL("fusion_coil", 9700, 16, 8, null);
 
         private final String name;
         //electric blast furnace properties
@@ -66,12 +68,14 @@ public class BlockWireCoil extends VariantBlock<BlockWireCoil.CoilType> {
         //multi smelter properties
         private final int level;
         private final int energyDiscount;
+        private final IngotMaterial material;
 
-        CoilType(String name, int coilTemperature, int level, int energyDiscount) {
+        CoilType(String name, int coilTemperature, int level, int energyDiscount, IngotMaterial material) {
             this.name = name;
             this.coilTemperature = coilTemperature;
             this.level = level;
             this.energyDiscount = energyDiscount;
+            this.material = material;
         }
 
         @Override
@@ -89,6 +93,10 @@ public class BlockWireCoil extends VariantBlock<BlockWireCoil.CoilType> {
 
         public int getEnergyDiscount() {
             return energyDiscount;
+        }
+
+        public IngotMaterial getMaterial() {
+            return material;
         }
     }
 }

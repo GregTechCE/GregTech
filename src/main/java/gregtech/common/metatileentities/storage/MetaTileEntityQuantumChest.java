@@ -71,9 +71,7 @@ public class MetaTileEntityQuantumChest extends MetaTileEntity {
         if(!getWorld().isRemote) {
             if(itemsStoredInside < maxStoredItems) {
                 ItemStack inputStack = importItems.getStackInSlot(0);
-                if(!inputStack.isEmpty() && (itemStack.isEmpty() || (
-                        ItemStack.areItemsEqual(itemStack, inputStack) &&
-                        ItemStack.areItemStackTagsEqual(itemStack, inputStack)))) {
+                if(!inputStack.isEmpty() && (itemStack.isEmpty() || areItemStackIdentical(itemStack, inputStack))) {
                     int amountOfItemsToInsert = (int) Math.min(inputStack.getCount(), maxStoredItems - itemsStoredInside);
                     if(this.itemsStoredInside == 0L || itemStack.isEmpty()) {
                         this.itemStack = GTUtility.copyAmount(1, inputStack);
@@ -87,7 +85,7 @@ public class MetaTileEntityQuantumChest extends MetaTileEntity {
             if(itemsStoredInside > 0 && !itemStack.isEmpty()) {
                 ItemStack outputStack = exportItems.getStackInSlot(0);
                 int maxStackSize = itemStack.getMaxStackSize();
-                if(outputStack.isEmpty() || outputStack.getCount() < maxStackSize) {
+                if(outputStack.isEmpty() || (areItemStackIdentical(itemStack, outputStack) && outputStack.getCount() < maxStackSize)) {
                     int amountOfItemsToRemove = (int) Math.min(maxStackSize - outputStack.getCount(), itemsStoredInside);
                     if(outputStack.isEmpty()) {
                         outputStack = GTUtility.copyAmount(amountOfItemsToRemove, itemStack);
@@ -101,6 +99,11 @@ public class MetaTileEntityQuantumChest extends MetaTileEntity {
                 }
             }
         }
+    }
+
+    private static boolean areItemStackIdentical(ItemStack first, ItemStack second) {
+        return ItemStack.areItemsEqual(first, second) &&
+            ItemStack.areItemStackTagsEqual(first, second);
     }
 
     protected void addDisplayInformation(List<ITextComponent> textList) {

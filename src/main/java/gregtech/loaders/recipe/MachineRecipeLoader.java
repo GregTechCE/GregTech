@@ -16,6 +16,7 @@ import gregtech.api.unification.material.type.Material.MatFlags;
 import gregtech.api.unification.ore.OrePrefix;
 import gregtech.api.unification.stack.ItemMaterialInfo;
 import gregtech.api.unification.stack.MaterialStack;
+import gregtech.api.unification.stack.UnificationEntry;
 import gregtech.api.util.GTLog;
 import gregtech.api.util.GTUtility;
 import gregtech.common.ConfigHolder;
@@ -595,13 +596,14 @@ public class MachineRecipeLoader {
         RecipeMaps.ASSEMBLER_RECIPES.recipeBuilder().EUt(16).input(OrePrefix.plate, Materials.Osmium, 8).outputs(MetaBlocks.MACHINE_CASING.getItemVariant(MachineCasingType.UV)).circuitMeta(8).duration(50).buildAndRegister();
         RecipeMaps.ASSEMBLER_RECIPES.recipeBuilder().EUt(16).input(OrePrefix.plate, Materials.Darmstadtium, 8).outputs(MetaBlocks.MACHINE_CASING.getItemVariant(MachineCasingType.MAX)).circuitMeta(8).duration(50).buildAndRegister();
 
-        RecipeMaps.ASSEMBLER_RECIPES.recipeBuilder().EUt(16).input(OrePrefix.wireGtDouble, Materials.Cupronickel, 8).outputs(MetaBlocks.WIRE_COIL.getItemVariant(CoilType.CUPRONICKEL)).circuitMeta(8).duration(50).buildAndRegister();
-        RecipeMaps.ASSEMBLER_RECIPES.recipeBuilder().EUt(16).input(OrePrefix.wireGtDouble, Materials.Kanthal, 8).outputs(MetaBlocks.WIRE_COIL.getItemVariant(CoilType.KANTHAL)).circuitMeta(8).duration(50).buildAndRegister();
-        RecipeMaps.ASSEMBLER_RECIPES.recipeBuilder().EUt(16).input(OrePrefix.wireGtDouble, Materials.Nichrome, 8).outputs(MetaBlocks.WIRE_COIL.getItemVariant(CoilType.NICHROME)).circuitMeta(8).duration(50).buildAndRegister();
-        RecipeMaps.ASSEMBLER_RECIPES.recipeBuilder().EUt(16).input(OrePrefix.wireGtDouble, Materials.TungstenSteel, 8).outputs(MetaBlocks.WIRE_COIL.getItemVariant(CoilType.TUNGSTENSTEEL)).circuitMeta(8).duration(50).buildAndRegister();
-        RecipeMaps.ASSEMBLER_RECIPES.recipeBuilder().EUt(16).input(OrePrefix.wireGtDouble, Materials.HSSG, 8).outputs(MetaBlocks.WIRE_COIL.getItemVariant(CoilType.HSS_G)).circuitMeta(8).duration(50).buildAndRegister();
-        RecipeMaps.ASSEMBLER_RECIPES.recipeBuilder().EUt(16).input(OrePrefix.wireGtDouble, Materials.Naquadah, 8).outputs(MetaBlocks.WIRE_COIL.getItemVariant(CoilType.NAQUADAH)).circuitMeta(8).duration(50).buildAndRegister();
-        RecipeMaps.ASSEMBLER_RECIPES.recipeBuilder().EUt(16).input(OrePrefix.wireGtDouble, Materials.NaquadahAlloy, 8).outputs(MetaBlocks.WIRE_COIL.getItemVariant(CoilType.NAQUADAH_ALLOY)).circuitMeta(8).duration(50).buildAndRegister();
+        for(CoilType coilType : CoilType.values()) {
+            if(coilType.getMaterial() == null) continue;
+            ItemStack outputStack = MetaBlocks.WIRE_COIL.getItemVariant(coilType);
+            UnificationEntry input = new UnificationEntry(OrePrefix.wireGtDouble, coilType.getMaterial());
+            RecipeMaps.ASSEMBLER_RECIPES.recipeBuilder().EUt(16).input(input.orePrefix, input.material, 8).outputs(outputStack).circuitMeta(8).duration(50).buildAndRegister();
+            ModHandler.addShapedRecipe(String.format("heating_coil_%s", coilType.getName()), outputStack, "XXX", "XwX", "XXX", 'X', input);
+            OreDictUnifier.registerOre(outputStack, new ItemMaterialInfo(new MaterialStack(coilType.getMaterial(), OrePrefix.wireGtDouble.materialAmount * 8)));
+        }
         RecipeMaps.ASSEMBLER_RECIPES.recipeBuilder().EUt(16).input(OrePrefix.wireGtDouble, MarkerMaterials.Tier.Superconductor, 8).outputs(MetaBlocks.WIRE_COIL.getItemVariant(CoilType.SUPERCONDUCTOR)).circuitMeta(8).duration(50).buildAndRegister();
 
         RecipeMaps.ASSEMBLER_RECIPES.recipeBuilder().EUt(16).input(OrePrefix.plate, Materials.Invar, 6).input(OrePrefix.frameGt, Materials.Invar, 1).outputs(MetaBlocks.METAL_CASING.getItemVariant(MetalCasingType.INVAR_HEATPROOF, 3)).duration(50).buildAndRegister();
