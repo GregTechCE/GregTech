@@ -7,8 +7,6 @@ import java.util.List;
 
 public abstract class MultiblockInfoPage {
 
-    public final Vec3d displayOffset = getDisplayOffset();
-
     public abstract MultiblockControllerBase getController();
 
     public Vec3d getDisplayOffset() {
