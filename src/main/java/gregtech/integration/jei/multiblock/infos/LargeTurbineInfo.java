@@ -36,7 +36,7 @@ public class LargeTurbineInfo extends MultiblockInfoPage {
     @Override
     public List<MultiblockShapeInfo> getMatchingShapes() {
         MetaTileEntityHolder holder = new MetaTileEntityHolder();
-        holder.setMetaTileEntity(MetaTileEntities.ROTOR_HOLDER[GTValues.EV]);
+        holder.setMetaTileEntity(MetaTileEntities.ROTOR_HOLDER[2]);
         holder.getMetaTileEntity().setFrontFacing(EnumFacing.WEST);
         ItemStack rotorStack = MetaItems.TURBINE.getStackForm(Materials.Darmstadtium, null);
         ((MetaTileEntityRotorHolder) holder.getMetaTileEntity()).getRotorInventory().setStackInSlot(0, rotorStack);
