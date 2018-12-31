@@ -42,7 +42,6 @@ import net.minecraftforge.fluids.IFluidTank;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 public class MetaTileEntityLargeBoiler extends MultiblockWithDisplayBase {
 
@@ -358,7 +357,7 @@ public class MetaTileEntityLargeBoiler extends MultiblockWithDisplayBase {
     }
 
     @Override
-    protected boolean checkStructureComponents(Set<IMultiblockPart> parts, Map<MultiblockAbility<Object>, List<Object>> abilities) {
+    protected boolean checkStructureComponents(List<IMultiblockPart> parts, Map<MultiblockAbility<Object>, List<Object>> abilities) {
         //noinspection SuspiciousMethodCalls
         int importFluidsSize = abilities.getOrDefault(MultiblockAbility.IMPORT_FLUIDS, Collections.emptyList()).size();
         //noinspection SuspiciousMethodCalls

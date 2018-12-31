@@ -72,7 +72,7 @@ public abstract class MultiblockControllerBase extends MetaTileEntity {
         return 0;
     }
 
-    protected boolean checkStructureComponents(Set<IMultiblockPart> parts, Map<MultiblockAbility<Object>, List<Object>> abilities) {
+    protected boolean checkStructureComponents(List<IMultiblockPart> parts, Map<MultiblockAbility<Object>, List<Object>> abilities) {
         return true;
     }
 
@@ -137,7 +137,9 @@ public abstract class MultiblockControllerBase extends MetaTileEntity {
         EnumFacing facing = getFrontFacing().getOpposite();
         PatternMatchContext context = structurePattern.checkPatternAt(getWorld(), getPos(), facing);
         if(context != null && !structureFormed) {
-            Set<IMultiblockPart> parts = context.get("MultiblockParts", HashSet::new);
+            Set<IMultiblockPart> rawPartsSet = context.get("MultiblockParts", HashSet::new);
+            ArrayList<IMultiblockPart> parts = new ArrayList<>(rawPartsSet);
+            parts.sort(Comparator.comparing(it -> ((MetaTileEntity) it).getPos().hashCode()));
             for(IMultiblockPart part : parts) {
                 if(part.isAttachedToMultiBlock()) {
                     //disallow sharing of multiblock parts
