@@ -44,7 +44,7 @@ public class MetaTileEntityHolder extends TickableTileEntityBase implements IUIH
         this.metaTileEntity.holder = this;
         if(hasWorld() && !getWorld().isRemote) {
             updateBlockOpacity();
-            writeCustomData(-100000, buffer -> {
+            writeCustomData(-1, buffer -> {
                 buffer.writeString(metaTileEntity.metaTileEntityId);
                 metaTileEntity.writeInitialSyncData(buffer);
             });
@@ -105,16 +105,15 @@ public class MetaTileEntityHolder extends TickableTileEntityBase implements IUIH
 
     @Override
     public boolean hasCapability(Capability<?> capability, @Nullable EnumFacing facing) {
-        return (metaTileEntity != null && metaTileEntity.hasCapability(capability, facing)) ||
-            super.hasCapability(capability, facing);
+        Object metaTileEntityValue = metaTileEntity == null ? null : metaTileEntity.getCoverCapability(capability, facing);
+        return metaTileEntityValue != null || super.hasCapability(capability, facing);
     }
 
     @Nullable
     @Override
     public <T> T getCapability(Capability<T> capability, @Nullable EnumFacing facing) {
-        if(metaTileEntity != null && metaTileEntity.hasCapability(capability, facing))
-            return metaTileEntity.getCapability(capability, facing);
-        return super.getCapability(capability, facing);
+        T metaTileEntityValue = metaTileEntity == null ? null : metaTileEntity.getCoverCapability(capability, facing);
+        return metaTileEntityValue != null ? metaTileEntityValue : super.getCapability(capability, facing);
     }
 
     @Override
@@ -150,7 +149,7 @@ public class MetaTileEntityHolder extends TickableTileEntityBase implements IUIH
     }
 
     public void receiveCustomData(int discriminator, PacketBuffer buffer) {
-        if(discriminator == -100000) {
+        if(discriminator == -1) {
             String metaTileEntityName = buffer.readString(Short.MAX_VALUE);
             setMetaTileEntity(GregTechAPI.META_TILE_ENTITY_REGISTRY.getObject(metaTileEntityName));
             this.metaTileEntity.receiveInitialSyncData(buffer);

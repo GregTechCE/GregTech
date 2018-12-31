@@ -161,7 +161,7 @@ public abstract class MultiblockControllerBase extends MetaTileEntity {
                 this.multiblockParts.addAll(parts);
                 this.multiblockAbilities.putAll(abilities);
                 this.structureFormed = true;
-                writeCustomData(-400, buf -> buf.writeBoolean(true));
+                writeCustomData(400, buf -> buf.writeBoolean(true));
                 formStructure(context);
             }
         } else if(context == null && structureFormed) {
@@ -177,7 +177,7 @@ public abstract class MultiblockControllerBase extends MetaTileEntity {
         this.multiblockAbilities.clear();
         this.multiblockParts.clear();
         this.structureFormed = false;
-        writeCustomData(-400, buf -> buf.writeBoolean(false));
+        writeCustomData(400, buf -> buf.writeBoolean(false));
     }
 
     @Override
@@ -214,7 +214,7 @@ public abstract class MultiblockControllerBase extends MetaTileEntity {
     @Override
     public void receiveCustomData(int dataId, PacketBuffer buf) {
         super.receiveCustomData(dataId, buf);
-        if(dataId == -400) {
+        if(dataId == 400) {
             this.structureFormed = buf.readBoolean();
         }
     }

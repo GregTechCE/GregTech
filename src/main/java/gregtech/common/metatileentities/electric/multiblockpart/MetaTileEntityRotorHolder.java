@@ -173,7 +173,7 @@ public class MetaTileEntityRotorHolder extends MetaTileEntityMultiblockPart impl
        this.currentRotorSpeed = MathHelper.clamp(currentRotorSpeed + incrementSpeed, 0, maxRotorSpeed);
        this.isRotorLooping = currentRotorSpeed > 0;
        if(isRotorLooping != lastIsLooping && !getWorld().isRemote) {
-           writeCustomData(-200, writer -> writer.writeBoolean(isRotorLooping));
+           writeCustomData(200, writer -> writer.writeBoolean(isRotorLooping));
            markDirty();
        }
     }
@@ -182,7 +182,7 @@ public class MetaTileEntityRotorHolder extends MetaTileEntityMultiblockPart impl
         int lastHasRotor = rotorColor;
         this.rotorColor = hasRotor1;
         if(rotorColor != lastHasRotor && (getWorld() != null && !getWorld().isRemote)) {
-            writeCustomData(-201, writer -> writer.writeInt(rotorColor));
+            writeCustomData(201, writer -> writer.writeInt(rotorColor));
             markDirty();
         }
     }
@@ -190,10 +190,10 @@ public class MetaTileEntityRotorHolder extends MetaTileEntityMultiblockPart impl
     @Override
     public void receiveCustomData(int dataId, PacketBuffer buf) {
         super.receiveCustomData(dataId, buf);
-        if(dataId == -200) {
+        if(dataId == 200) {
             this.isRotorLooping = buf.readBoolean();
             getHolder().scheduleChunkForRenderUpdate();
-        } else if(dataId == -201) {
+        } else if(dataId == 201) {
             this.rotorColor = buf.readInt();
             getHolder().scheduleChunkForRenderUpdate();
         }
@@ -269,7 +269,7 @@ public class MetaTileEntityRotorHolder extends MetaTileEntityMultiblockPart impl
     }
 
     @Override
-    public void onLeftClick(EntityPlayer player) {
+    public void onLeftClick(EntityPlayer player, EnumFacing facing, float hitX, float hitY, float hitZ) {
         onRotorHolderInteract(player);
     }
 

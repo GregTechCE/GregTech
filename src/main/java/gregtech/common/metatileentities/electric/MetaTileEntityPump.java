@@ -97,7 +97,7 @@ public class MetaTileEntityPump extends TieredMetaTileEntity {
     @Override
     public void receiveCustomData(int dataId, PacketBuffer buf) {
         super.receiveCustomData(dataId, buf);
-        if(dataId == -200) {
+        if(dataId == 200) {
             this.pumpHeadY = buf.readInt();
         }
     }
@@ -115,11 +115,6 @@ public class MetaTileEntityPump extends TieredMetaTileEntity {
     @Override
     protected IItemHandlerModifiable createExportItemHandler() {
         return new ItemStackHandler(1);
-    }
-
-    @Override
-    public boolean hasCapability(Capability<?> capability, EnumFacing side) {
-        return (side == null || side.getAxis() != Axis.Y) && super.hasCapability(capability, side);
     }
 
     @Override
@@ -183,7 +178,7 @@ public class MetaTileEntityPump extends TieredMetaTileEntity {
         } else if(fluidSourceBlocks.isEmpty()) {
             if(getTimer() % 20 == 0 && pumpHeadY < 50) {
                 this.pumpHeadY++;
-                writeCustomData(-200, b -> b.writeInt(pumpHeadY));
+                writeCustomData(200, b -> b.writeInt(pumpHeadY));
                 markDirty();
                 //schedule queue rebuild because we changed our position and no fluid is available
                 this.initializedQueue = false;

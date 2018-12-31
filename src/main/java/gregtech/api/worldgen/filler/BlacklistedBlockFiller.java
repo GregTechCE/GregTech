@@ -1,5 +1,6 @@
 package gregtech.api.worldgen.filler;
 
+import com.google.common.collect.Lists;
 import com.google.gson.JsonObject;
 import crafttweaker.annotations.ZenRegister;
 import crafttweaker.api.minecraft.CraftTweakerMC;
@@ -55,5 +56,10 @@ public class BlacklistedBlockFiller extends BlockFiller {
             }
         }
         return blockStateFiller.apply(currentState);
+    }
+
+    @Override
+    public List<Function<IBlockState, IBlockState>> getAllPossibleStates() {
+        return Lists.newArrayList(blockStateFiller);
     }
 }
