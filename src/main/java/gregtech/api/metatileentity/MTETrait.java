@@ -1,6 +1,5 @@
 package gregtech.api.metatileentity;
 
-import com.google.common.base.Preconditions;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.EnumFacing;
@@ -55,17 +54,7 @@ public abstract class MTETrait {
     }
 
     public final void writeCustomData(int id, Consumer<PacketBuffer> writer) {
-        Preconditions.checkElementIndex(id, 100, "Only 0-100 sync ids allowed");
-        metaTileEntity.writeCustomData(-4, buffer -> {
-            buffer.writeString(getName());
-            buffer.writeInt(id);
-            writer.accept(buffer);
-        });
-    }
-
-    final void readSyncData(PacketBuffer buffer) {
-        int internalId = buffer.readInt();
-        receiveCustomData(internalId, buffer);
+        metaTileEntity.writeTraitData(this, id, writer);
     }
 
 }

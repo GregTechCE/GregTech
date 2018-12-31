@@ -6,24 +6,29 @@ import codechicken.lib.render.pipeline.IVertexOperation;
 import codechicken.lib.texture.TextureUtils;
 import codechicken.lib.vec.Cuboid6;
 import codechicken.lib.vec.Matrix4;
+import codechicken.lib.vec.Rotation;
+import codechicken.lib.vec.Vector3;
 import com.google.common.base.Preconditions;
 import gregtech.api.GregTechAPI;
 import gregtech.api.capability.impl.FluidHandlerProxy;
 import gregtech.api.capability.impl.FluidTankList;
 import gregtech.api.capability.impl.ItemHandlerProxy;
+import gregtech.api.cover.CoverBehavior;
+import gregtech.api.cover.CoverDefinition;
 import gregtech.api.gui.ModularUI;
 import gregtech.api.render.Textures;
 import gregtech.api.util.GTUtility;
+import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumHand;
-import net.minecraft.util.NonNullList;
+import net.minecraft.util.*;
+import net.minecraft.util.EnumFacing.Axis;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
@@ -70,6 +75,8 @@ public abstract class MetaTileEntity {
     private int[] sidedRedstoneOutput = new int[6];
     private int cachedComparatorValue;
 
+    private CoverBehavior[] coverBehaviors = new CoverBehavior[6];
+
     public MetaTileEntity(String metaTileEntityId) {
         this.metaTileEntityId = metaTileEntityId;
         initializeInventory();
@@ -100,8 +107,9 @@ public abstract class MetaTileEntity {
     }
 
     public void markDirty() {
-        if(holder != null)
+        if(holder != null) {
             holder.markDirty();
+        }
     }
 
     public long getTimer() {
@@ -150,6 +158,36 @@ public abstract class MetaTileEntity {
         for(EnumFacing face : EnumFacing.VALUES) {
             Textures.renderFace(renderState, translation, renderPipeline, face, Cuboid6.full, atlasSprite);
         }
+    }
+
+    @SideOnly(Side.CLIENT)
+    public final void renderCovers(CCRenderState renderState, Matrix4 translation, IVertexOperation[] pipeline) {
+        double coverPlateThickness = getCoverPlateThickness();
+        for(EnumFacing sideFacing : EnumFacing.values()) {
+            CoverBehavior coverBehavior = coverBehaviors[sideFacing.getIndex()];
+            if(coverBehavior == null) continue;
+            Cuboid6 plateBox = getCoverPlateBox(sideFacing, coverPlateThickness);
+            double coverOffset = getCoverOffset(sideFacing);
+            if(coverPlateThickness > 0) {
+                //render cover plate for cover
+                //to prevent Z-fighting between cover plates
+                plateBox.expand(coverOffset);
+                TextureAtlasSprite casingSide = coverBehavior.getPlateSprite();
+                for(EnumFacing coverPlateSide : EnumFacing.VALUES) {
+                    Textures.renderFace(renderState, translation, pipeline, coverPlateSide, plateBox, casingSide);
+                }
+                plateBox.expand(-coverOffset);
+            }
+            plateBox.expand(coverOffset * 10.0);
+            coverBehavior.renderCover(renderState, translation, pipeline, plateBox);
+        }
+    }
+
+    private static double getCoverOffset(EnumFacing side) {
+        EnumFacing.Axis axis = side.getAxis();
+        double sideMultiplier = axis == Axis.Y ? 3 :
+            (axis == Axis.X ? 2 : 1);
+        return sideMultiplier * 1e-5;
     }
 
     @SideOnly(Side.CLIENT)
@@ -232,6 +270,33 @@ public abstract class MetaTileEntity {
      */
     protected abstract ModularUI createUI(EntityPlayer entityPlayer);
 
+    public final void onCoverLeftClick(EntityPlayer playerIn, EnumFacing facing, float hitX, float hitY, float hitZ) {
+        CoverBehavior coverBehavior = getCoverAtSide(facing);
+        if(coverBehavior == null || !coverBehavior.onLeftClick(playerIn, hitX, hitY, hitZ)) {
+            onLeftClick(playerIn, facing, hitX, hitY, hitZ);
+        }
+    }
+
+    public final boolean onCoverRightClick(EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+        CoverBehavior coverBehavior = getCoverAtSide(facing);
+        EnumActionResult coverResult = coverBehavior == null ? EnumActionResult.PASS :
+            coverBehavior.onRightClick(playerIn, hand, hitX, hitY, hitZ);
+        if(coverResult != EnumActionResult.PASS) {
+            return coverResult == EnumActionResult.PASS;
+        }
+        return onRightClick(playerIn, hand, facing, hitX, hitY, hitZ);
+    }
+
+    public final boolean onCoverScrewdriverClick(EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+        CoverBehavior coverBehavior = getCoverAtSide(facing);
+        EnumActionResult coverResult = coverBehavior == null ? EnumActionResult.PASS :
+            coverBehavior.onScrewdriverClick(playerIn, hand, hitX, hitY, hitZ);
+        if(coverResult != EnumActionResult.PASS) {
+            return coverResult == EnumActionResult.PASS;
+        }
+        return onRightClick(playerIn, hand, facing, hitX, hitY, hitZ);
+    }
+
     /**
      * Called when player clicks on specific side of this meta tile entity
      * @return true if something happened, so animation will be played
@@ -270,11 +335,101 @@ public abstract class MetaTileEntity {
         return false;
     }
 
-    public void onLeftClick(EntityPlayer player) {
+    public void onLeftClick(EntityPlayer player, EnumFacing facing, float hitX, float hitY, float hitZ) {
+    }
+
+    @Nullable
+    public final CoverBehavior getCoverAtSide(EnumFacing side) {
+        return coverBehaviors[side.getIndex()];
+    }
+
+    public final boolean placeCoverOnSide(EnumFacing side, ItemStack itemStack, CoverDefinition coverDefinition) {
+        Preconditions.checkNotNull(side, "side");
+        Preconditions.checkNotNull(coverDefinition, "coverDefinition");
+        CoverBehavior coverBehavior = coverDefinition.createCoverBehavior(this, side);
+        if(!canPlaceCoverOnSide(side) || !coverBehavior.canAttach()) {
+            return false;
+        }
+        if(coverBehaviors[side.getIndex()] != null) {
+            removeCover(side);
+        }
+        this.coverBehaviors[side.getIndex()] = coverBehavior;
+        coverBehavior.onAttached(itemStack);
+        writeCustomData(-5, buffer -> {
+            buffer.writeByte(side.getIndex());
+            buffer.writeString(coverDefinition.getCoverId().toString());
+            coverBehavior.writeInitialSyncData(buffer);
+        });
+        return true;
+    }
+
+    public final boolean removeCover(EnumFacing side) {
+        Preconditions.checkNotNull(side, "side");
+        CoverBehavior coverBehavior = getCoverAtSide(side);
+        if(coverBehavior == null) {
+            return false;
+        }
+        List<ItemStack> drops = coverBehavior.getDrops();
+        coverBehavior.onRemoved();
+        this.coverBehaviors[side.getIndex()] = null;
+        for(ItemStack dropStack : drops) {
+            Block.spawnAsEntity(getWorld(), getPos(), dropStack);
+        }
+        writeCustomData(-6, buffer -> buffer.writeByte(side.getIndex()));
+        return true;
+    }
+
+    public boolean canPlaceCoverOnSide(EnumFacing side) {
+        if(side == getFrontFacing()) {
+            //covers cannot be placed on this side
+            return false;
+        }
+        //noinspection RedundantIfStatement
+        if(!checkCoverCollision(side, getCollisionBox(), getCoverPlateThickness())) {
+            //cover collision box overlaps with meta tile entity collision box
+            return false;
+        }
+        return true;
+    }
+
+    private static boolean checkCoverCollision(EnumFacing side, Cuboid6[] collisionBox, double plateThickness) {
+        if(plateThickness > 0.0) {
+            Cuboid6 coverPlateBox = getCoverPlateBox(side, plateThickness);
+            for(Cuboid6 collisionCuboid : collisionBox) {
+                if(collisionCuboid.intersects(coverPlateBox)) {
+                    //collision box intersects with machine bounding box -
+                    //cover cannot be placed on this side
+                    return false;
+                }
+            }
+            return true;
+        }
+        return true;
+    }
+
+    private static Cuboid6 getCoverPlateBox(EnumFacing side, double plateThickness) {
+        Cuboid6 coverPlateBox = new Cuboid6(0.0, 0.0, 0.0, 1.0, plateThickness, 1.0);
+        coverPlateBox.apply(Rotation.sideOrientation(side.getIndex(), 0).at(Vector3.center));
+        return coverPlateBox;
+    }
+
+    /**
+     * @return the cover plate thickness. It is used to render cover's base plate
+     * if this meta tile entity is not full block length, and also
+     * to check whatever cover placement is possible on specified side,
+     * because cover cannot be placed if collision boxes of machine and it's plate overlap
+     * If zero, it is excepted that machine is full block and plate doesn't need to be rendered
+     */
+    public double getCoverPlateThickness() {
+        return 0.0;
     }
 
     public boolean canConnectRedstone(@Nullable EnumFacing side) {
         return false;
+    }
+
+    public final int getInputRedstoneSignal(EnumFacing side) {
+        return getWorld().getStrongPower(getPos().offset(side));
     }
 
     public int getComparatorValue() {
@@ -301,7 +456,14 @@ public abstract class MetaTileEntity {
 
     public void update() {
         for(MTETrait mteTrait : this.mteTraits) {
-            if(shouldUpdate(mteTrait)) mteTrait.update();
+            if(shouldUpdate(mteTrait)) {
+                mteTrait.update();
+            }
+        }
+        for(CoverBehavior coverBehavior : coverBehaviors) {
+            if(coverBehavior instanceof ITickable) {
+                ((ITickable) coverBehavior).update();
+            }
         }
     }
 
@@ -369,51 +531,6 @@ public abstract class MetaTileEntity {
         return 1;
     }
 
-    /**
-     * @return true if this meta tile entity should serialze it's export and import inventories
-     * Useful when you use your own unified inventory and don't need these dummies to be saved
-     */
-    protected boolean shouldSerializeInventories() {
-        return true;
-    }
-
-    public NBTTagCompound writeToNBT(NBTTagCompound data) {
-        data.setInteger("FrontFacing", frontFacing.getIndex());
-        data.setInteger("PaintingColor", paintingColor);
-
-        if(shouldSerializeInventories()) {
-            GTUtility.writeItems(importItems, "ImportInventory", data);
-            GTUtility.writeItems(exportItems, "ExportInventory", data);
-
-            data.setTag("ImportFluidInventory", importFluids.serializeNBT());
-            data.setTag("ExportFluidInventory", exportFluids.serializeNBT());
-        }
-
-        for(MTETrait mteTrait : this.mteTraits) {
-            data.setTag(mteTrait.getName(), mteTrait.serializeNBT());
-        }
-
-        return data;
-    }
-
-    public void readFromNBT(NBTTagCompound data) {
-        this.frontFacing = EnumFacing.VALUES[data.getInteger("FrontFacing")];
-        this.paintingColor = data.getInteger("PaintingColor");
-
-        if(shouldSerializeInventories()) {
-            GTUtility.readItems(importItems, "ImportInventory", data);
-            GTUtility.readItems(exportItems, "ExportInventory", data);
-
-            importFluids.deserializeNBT(data.getCompoundTag("ImportFluidInventory"));
-            exportFluids.deserializeNBT(data.getCompoundTag("ExportFluidInventory"));
-        }
-
-        for(MTETrait mteTrait : this.mteTraits) {
-            NBTTagCompound traitCompound = data.getCompoundTag(mteTrait.getName());
-            mteTrait.deserializeNBT(traitCompound);
-        }
-    }
-
     public void writeInitialSyncData(PacketBuffer buf) {
         buf.writeByte(this.frontFacing.getIndex());
         buf.writeInt(this.paintingColor);
@@ -421,6 +538,15 @@ public abstract class MetaTileEntity {
         for(MTETrait trait : mteTraits) {
             buf.writeString(trait.getName());
             trait.writeInitialData(buf);
+        }
+        for(EnumFacing coverSide : EnumFacing.VALUES) {
+            CoverBehavior coverBehavior = getCoverAtSide(coverSide);
+            buf.writeBoolean(coverBehavior != null);
+            if(coverBehavior != null) {
+                ResourceLocation coverId = coverBehavior.getCoverDefinition().getCoverId();
+                buf.writeString(coverId.toString());
+                coverBehavior.writeInitialSyncData(buf);
+            }
         }
     }
 
@@ -435,35 +561,75 @@ public abstract class MetaTileEntity {
                 .findAny().orElseThrow(() -> new IllegalArgumentException("Invalid trait name: " + traitName));
             trait.receiveInitialData(buf);
         }
+        for(EnumFacing coverSide : EnumFacing.VALUES) {
+            if(buf.readBoolean()) {
+                ResourceLocation coverId = new ResourceLocation(buf.readString(Short.MAX_VALUE));
+                CoverDefinition coverDefinition = CoverDefinition.getCoverById(coverId);
+                CoverBehavior coverBehavior = coverDefinition.createCoverBehavior(this, coverSide);
+                coverBehavior.readInitialSyncData(buf);
+                this.coverBehaviors[coverSide.getIndex()] = coverBehavior;
+            }
+        }
+    }
+
+    public void writeTraitData(MTETrait trait, int internalId, Consumer<PacketBuffer> dataWriter) {
+        writeCustomData(-4, buffer -> {
+            buffer.writeString(trait.getName());
+            buffer.writeVarInt(internalId);
+            dataWriter.accept(buffer);
+        }) ;
+    }
+
+    public void writeCoverData(CoverBehavior cover, int internalId, Consumer<PacketBuffer> dataWriter) {
+        writeCustomData(-7, buffer -> {
+            buffer.writeByte(cover.attachedSide.getIndex());
+            buffer.writeVarInt(internalId);
+            dataWriter.accept(buffer);
+        });
     }
 
     public void receiveCustomData(int dataId, PacketBuffer buf) {
-        if(dataId == -1) {
+        if (dataId == -2) {
             this.frontFacing = EnumFacing.VALUES[buf.readByte()];
             getHolder().scheduleChunkForRenderUpdate();
-        } else if(dataId == -2) {
+        } else if (dataId == -3) {
             this.paintingColor = buf.readInt();
             getHolder().scheduleChunkForRenderUpdate();
-        } else if(dataId == -4) {
+        } else if (dataId == -4) {
             String traitName = buf.readString(32767);
-            MTETrait trait = mteTraits.stream()
-                .filter(otherTrait -> otherTrait.getName().equals(traitName))
-                .findAny().orElseThrow(() -> new IllegalArgumentException("Invalid trait name: " + traitName));
-            trait.readSyncData(buf);
+            MTETrait trait = mteTraits.stream().filter(otherTrait -> otherTrait.getName().equals(traitName)).findAny().get();
+            int internalId = buf.readVarInt();
+            trait.receiveCustomData(internalId, buf);
+        } else if (dataId == -5) {
+            //cover placement event
+            EnumFacing placementSide = EnumFacing.VALUES[buf.readByte()];
+            ResourceLocation coverId = new ResourceLocation(buf.readString(Short.MAX_VALUE));
+            CoverDefinition coverDefinition = CoverDefinition.getCoverById(coverId);
+            CoverBehavior coverBehavior = coverDefinition.createCoverBehavior(this, placementSide);
+            this.coverBehaviors[placementSide.getIndex()] = coverBehavior;
+            coverBehavior.readInitialSyncData(buf);
+            getHolder().scheduleChunkForRenderUpdate();
+        } else if (dataId == -6) {
+            //cover removed event
+            EnumFacing placementSide = EnumFacing.VALUES[buf.readByte()];
+            this.coverBehaviors[placementSide.getIndex()] = null;
+            getHolder().scheduleChunkForRenderUpdate();
+        } else if (dataId == -7) {
+            //cover custom data received
+            EnumFacing coverSide = EnumFacing.VALUES[buf.readByte()];
+            CoverBehavior coverBehavior = getCoverAtSide(coverSide);
+            int internalId = buf.readVarInt();
+            coverBehavior.readUpdateData(internalId, buf);
         }
     }
 
-    public boolean hasCapability(Capability<?> capability, EnumFacing side) {
-        if((capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY &&
-            getFluidInventory().getTankProperties().length > 0) ||
-            (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY &&
-            getItemInventory().getSlots() > 0))
-            return true;
-        for(MTETrait mteTrait : this.mteTraits) {
-            if(mteTrait.getImplementingCapability() == capability)
-                return true;
+    public final <T> T getCoverCapability(Capability<T> capability, EnumFacing side) {
+        CoverBehavior coverBehavior = side == null ? null : getCoverAtSide(side);
+        T originalCapability = getCapability(capability, side);
+        if(coverBehavior != null) {
+            return coverBehavior.getCapability(capability, originalCapability);
         }
-        return false;
+        return originalCapability;
     }
 
     public <T> T getCapability(Capability<T> capability, EnumFacing side) {
@@ -632,7 +798,7 @@ public abstract class MetaTileEntity {
         this.frontFacing = frontFacing;
         if (getWorld() != null && !getWorld().isRemote) {
             markDirty();
-            writeCustomData(-1, buf -> buf.writeByte(frontFacing.getIndex()));
+            writeCustomData(-2, buf -> buf.writeByte(frontFacing.getIndex()));
             mteTraits.forEach(trait -> trait.onFrontFacingSet(frontFacing));
         }
     }
@@ -641,7 +807,7 @@ public abstract class MetaTileEntity {
         this.paintingColor = paintingColor;
         if (getWorld() != null && !getWorld().isRemote) {
             markDirty();
-            writeCustomData(-2, buf -> buf.writeInt(paintingColor));
+            writeCustomData(-3, buf -> buf.writeInt(paintingColor));
         }
     }
 
@@ -649,9 +815,75 @@ public abstract class MetaTileEntity {
         return facing != EnumFacing.UP && facing != EnumFacing.DOWN;
     }
 
-    public final int getInputRedstoneSignal(EnumFacing side) {
-        return getWorld().getStrongPower(getPos().offset(side));
+    /**
+     * @return true if this meta tile entity should serialize it's export and import inventories
+     * Useful when you use your own unified inventory and don't need these dummies to be saved
+     */
+    protected boolean shouldSerializeInventories() {
+        return true;
     }
+
+    public NBTTagCompound writeToNBT(NBTTagCompound data) {
+        data.setInteger("FrontFacing", frontFacing.getIndex());
+        data.setInteger("PaintingColor", paintingColor);
+
+        if(shouldSerializeInventories()) {
+            GTUtility.writeItems(importItems, "ImportInventory", data);
+            GTUtility.writeItems(exportItems, "ExportInventory", data);
+
+            data.setTag("ImportFluidInventory", importFluids.serializeNBT());
+            data.setTag("ExportFluidInventory", exportFluids.serializeNBT());
+        }
+
+        for(MTETrait mteTrait : this.mteTraits) {
+            data.setTag(mteTrait.getName(), mteTrait.serializeNBT());
+        }
+
+        NBTTagList coversList = new NBTTagList();
+        for(EnumFacing coverSide : EnumFacing.VALUES) {
+            NBTTagCompound tagCompound = new NBTTagCompound();
+            CoverBehavior coverBehavior = coverBehaviors[coverSide.getIndex()];
+            if(coverBehavior != null) {
+                ResourceLocation coverId = coverBehavior.getCoverDefinition().getCoverId();
+                tagCompound.setString("CoverId", coverId.toString());
+                coverBehavior.writeToNBT(tagCompound);
+            }
+            coversList.set(coverSide.getIndex(), tagCompound);
+        }
+        data.setTag("Covers", coversList);
+        return data;
+    }
+
+    public void readFromNBT(NBTTagCompound data) {
+        this.frontFacing = EnumFacing.VALUES[data.getInteger("FrontFacing")];
+        this.paintingColor = data.getInteger("PaintingColor");
+
+        if(shouldSerializeInventories()) {
+            GTUtility.readItems(importItems, "ImportInventory", data);
+            GTUtility.readItems(exportItems, "ExportInventory", data);
+
+            importFluids.deserializeNBT(data.getCompoundTag("ImportFluidInventory"));
+            exportFluids.deserializeNBT(data.getCompoundTag("ExportFluidInventory"));
+        }
+
+        for(MTETrait mteTrait : this.mteTraits) {
+            NBTTagCompound traitCompound = data.getCompoundTag(mteTrait.getName());
+            mteTrait.deserializeNBT(traitCompound);
+        }
+
+        NBTTagList coversList = data.getTagList("Covers", NBT.TAG_COMPOUND);
+        for(EnumFacing coverSide : EnumFacing.VALUES) {
+            NBTTagCompound tagCompound = coversList.getCompoundTagAt(coverSide.getIndex());
+            if(tagCompound.hasKey("CoverId", NBT.TAG_COMPOUND)) {
+                ResourceLocation coverId = new ResourceLocation(tagCompound.getString("CoverId"));
+                CoverDefinition coverDefinition = CoverDefinition.getCoverById(coverId);
+                CoverBehavior coverBehavior = coverDefinition.createCoverBehavior(this, coverSide);
+                coverBehavior.readFromNBT(tagCompound);
+                this.coverBehaviors[coverSide.getIndex()] = coverBehavior;
+            }
+        }
+    }
+
 
     public void clearMachineInventory(NonNullList<ItemStack> itemBuffer) {
         clearInventory(itemBuffer, importItems);

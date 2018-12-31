@@ -157,7 +157,7 @@ public class MetaTileEntityPrimitiveBlastFurnace extends MultiblockControllerBas
     @Override
     public void receiveCustomData(int dataId, PacketBuffer buf) {
         super.receiveCustomData(dataId, buf);
-        if(dataId == -100) {
+        if(dataId == 100) {
             this.isActive = buf.readBoolean();
             getHolder().scheduleChunkForRenderUpdate();
         }
@@ -166,7 +166,7 @@ public class MetaTileEntityPrimitiveBlastFurnace extends MultiblockControllerBas
     public void setActive(boolean active) {
         this.isActive = active;
         if(!getWorld().isRemote) {
-            writeCustomData(-100, b -> b.writeBoolean(isActive));
+            writeCustomData(100, b -> b.writeBoolean(isActive));
         }
     }
 

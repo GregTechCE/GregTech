@@ -90,6 +90,15 @@ public class WorldGeneratorImpl implements IWorldGenerator {
         }
     }
 
+    public static List<OreDepositDefinition> getGeneratedVeinsAt(World world, BlockPos blockPos) {
+        int chunkX = blockPos.getX() >> 4;
+        int chunkZ = blockPos.getZ() >> 4;
+        int selfGridX = Math.floorDiv(chunkX, GRID_SIZE_X);
+        int selfGridZ = Math.floorDiv(chunkZ, GRID_SIZE_Z);
+        CachedGridEntry cachedGridEntry = CachedGridEntry.getOrCreateEntry(world, selfGridX, selfGridZ);
+        return cachedGridEntry.getGeneratedVeins();
+    }
+
     private List<OreDepositDefinition> generateInternal(World world, int selfGridX, int selfGridZ, int chunkX, int chunkZ) {
         List<OreDepositDefinition> allGeneratedOres = Collections.emptyList();
         int halfSizeX = (GRID_SIZE_X - 1) / 2;

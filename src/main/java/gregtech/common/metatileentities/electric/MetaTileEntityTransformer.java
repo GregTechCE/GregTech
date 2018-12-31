@@ -67,7 +67,7 @@ public class MetaTileEntityTransformer extends TieredMetaTileEntity {
     @Override
     public void receiveCustomData(int dataId, PacketBuffer buf) {
         super.receiveCustomData(dataId, buf);
-        if(dataId == -100) {
+        if(dataId == 100) {
             this.isTransformUp = buf.readBoolean();
         }
     }
@@ -80,7 +80,7 @@ public class MetaTileEntityTransformer extends TieredMetaTileEntity {
         isTransformUp = inverted;
         if(!getWorld().isRemote) {
             reinitializeEnergyContainer();
-            writeCustomData(-100, b -> b.writeBoolean(isTransformUp));
+            writeCustomData(100, b -> b.writeBoolean(isTransformUp));
             markDirty();
         }
     }

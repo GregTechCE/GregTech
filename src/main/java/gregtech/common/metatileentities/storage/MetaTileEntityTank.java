@@ -133,7 +133,7 @@ public class MetaTileEntityTank extends MetaTileEntity {
     @Override
     public void receiveCustomData(int dataId, PacketBuffer buf) {
         super.receiveCustomData(dataId, buf);
-        if(dataId == -200) {
+        if(dataId == 200) {
             FluidStack fluidStack = null;
             if(buf.readBoolean()) {
                 try {
@@ -145,7 +145,7 @@ public class MetaTileEntityTank extends MetaTileEntity {
             //update light on client side
             updateLightValue();
             getHolder().scheduleChunkForRenderUpdate();
-        } else if(dataId == -201) {
+        } else if(dataId == 201) {
             int newFluidAmount = buf.readInt();
             FluidStack fluidStack = fluidTank.getFluid();
             if(fluidStack != null) {
@@ -281,10 +281,10 @@ public class MetaTileEntityTank extends MetaTileEntity {
             if(newFluid != null && newFluid.isFluidEqual(oldFluidStack)) {
                 //if fluid wasn't removed completely or changed, but just reduced/added amount
                 //compute new amount value and set it right back to the client
-                writeCustomData(-201, buf -> buf.writeInt(newFluid.amount));
+                writeCustomData(201, buf -> buf.writeInt(newFluid.amount));
             } else {
                 //otherwise, write full data dump of fluid
-                writeCustomData(-200, buf -> {
+                writeCustomData(200, buf -> {
                     buf.writeBoolean(newFluid != null);
                     if(newFluid != null) {
                         NBTTagCompound tagCompound = new NBTTagCompound();

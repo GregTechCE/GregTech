@@ -103,7 +103,7 @@ public abstract class MetaTileEntityMultiblockPart extends MetaTileEntity implem
     @Override
     public void receiveCustomData(int dataId, PacketBuffer buf) {
         super.receiveCustomData(dataId, buf);
-        if(dataId == -100) {
+        if(dataId == 100) {
             if(buf.readBoolean()) {
                 this.controllerPos = buf.readBlockPos();
                 this.controllerTile = null;
@@ -118,7 +118,7 @@ public abstract class MetaTileEntityMultiblockPart extends MetaTileEntity implem
     private void setController(MultiblockControllerBase controller1) {
         this.controllerTile = controller1;
         if(!getWorld().isRemote) {
-            writeCustomData(-100, writer -> {
+            writeCustomData(100, writer -> {
                 writer.writeBoolean(controllerTile != null);
                 if(controllerTile != null) {
                     writer.writeBlockPos(controllerTile.getPos());

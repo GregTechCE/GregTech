@@ -39,6 +39,7 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
+import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.common.property.ExtendedBlockState;
 import net.minecraftforge.common.property.IExtendedBlockState;
 import net.minecraftforge.common.property.IUnlistedProperty;
@@ -207,6 +208,9 @@ public class BlockMachine extends Block implements ITileEntityProvider {
             for(ItemStack itemStack : inventoryContents) {
                 Block.spawnAsEntity(worldIn, pos, itemStack);
             }
+            for(EnumFacing placementSide : EnumFacing.VALUES) {
+                metaTileEntity.removeCover(placementSide);
+            }
             metaTileEntity.onRemoval();
         }
         super.breakBlock(worldIn, pos, state);
@@ -237,7 +241,7 @@ public class BlockMachine extends Block implements ITileEntityProvider {
             SimpleItemStack simpleItemStack = new SimpleItemStack(itemInHand);
             if(GregTechAPI.screwdriverList.contains(simpleItemStack)) {
                 if(GTUtility.doDamageItem(itemInHand, DamageValues.DAMAGE_FOR_SCREWDRIVER, true) &&
-                    metaTileEntity.onScrewdriverClick(playerIn, hand, facing, hitX, hitY, hitZ)) {
+                    metaTileEntity.onCoverScrewdriverClick(playerIn, hand, facing, hitX, hitY, hitZ)) {
                     GTUtility.doDamageItem(itemInHand, DamageValues.DAMAGE_FOR_SCREWDRIVER, false);
                     return true;
                 } else return false;
@@ -247,16 +251,32 @@ public class BlockMachine extends Block implements ITileEntityProvider {
                     GTUtility.doDamageItem(itemInHand, DamageValues.DAMAGE_FOR_WRENCH, false);
                     return true;
                 } else return false;
+            } else if(GregTechAPI.crowbarList.contains(simpleItemStack)) {
+                if(metaTileEntity.getCoverAtSide(facing) != null) {
+                    if(GTUtility.doDamageItem(itemInHand, DamageValues.DAMAGE_FOR_CROWBAR, true) &&
+                        metaTileEntity.removeCover(facing)) {
+                        GTUtility.doDamageItem(itemInHand, DamageValues.DAMAGE_FOR_WRENCH, false);
+                        return true;
+                    } else return false;
+                }
             }
         }
-        return metaTileEntity.onRightClick(playerIn, hand, facing, hitX, hitY, hitZ);
+        return metaTileEntity.onCoverRightClick(playerIn, hand, facing, hitX, hitY, hitZ);
     }
 
     @Override
     public void onBlockClicked(World worldIn, BlockPos pos, EntityPlayer playerIn) {
         MetaTileEntity metaTileEntity = getMetaTileEntity(worldIn, pos);
         if(metaTileEntity == null) return;
-        metaTileEntity.onLeftClick(playerIn);
+        double reachDist = playerIn.getEntityAttribute(EntityPlayer.REACH_DISTANCE).getAttributeValue();
+        RayTraceResult rayTraceResult = ForgeHooks.rayTraceEyes(playerIn, reachDist + 1);
+        if(rayTraceResult != null) {
+            Vec3d hitVec = rayTraceResult.hitVec;
+            float hitX = (float)(hitVec.x - pos.getX());
+            float hitY = (float)(hitVec.y - pos.getY());
+            float hitZ = (float)(hitVec.z - pos.getZ());
+            metaTileEntity.onCoverLeftClick(playerIn, rayTraceResult.sideHit, hitX, hitY, hitZ);
+        }
     }
 
     @Override

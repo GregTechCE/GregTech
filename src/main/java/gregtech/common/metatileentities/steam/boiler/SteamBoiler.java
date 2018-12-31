@@ -127,7 +127,7 @@ public abstract class SteamBoiler extends MetaTileEntity {
     @Override
     public void receiveCustomData(int dataId, PacketBuffer buf) {
         super.receiveCustomData(dataId, buf);
-        if(dataId == -100) {
+        if(dataId == 100) {
             this.isBurning = buf.readBoolean();
             getHolder().scheduleChunkForRenderUpdate();
         }
@@ -216,10 +216,10 @@ public abstract class SteamBoiler extends MetaTileEntity {
     }
 
     public void setBurning(boolean burning) {
-        isBurning = burning;
+        this.isBurning = burning;
         if(!getWorld().isRemote) {
             markDirty();
-            writeCustomData(-100, buf -> buf.writeBoolean(burning));
+            writeCustomData(100, buf -> buf.writeBoolean(burning));
         }
     }
 

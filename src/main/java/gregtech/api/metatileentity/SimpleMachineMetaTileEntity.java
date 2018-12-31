@@ -111,13 +111,6 @@ public class SimpleMachineMetaTileEntity extends WorkableTieredMetaTileEntity {
     }
 
     @Override
-    public boolean hasCapability(Capability<?> capability, EnumFacing side) {
-        FluidHandlerProxy sideOverride = side == null ? null : sidedTankOverrides[side.getIndex()];
-        return (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY && sideOverride != null) ||
-            super.hasCapability(capability, side);
-    }
-
-    @Override
     @SuppressWarnings("unchecked")
     public <T> T getCapability(Capability<T> capability, EnumFacing side) {
         FluidHandlerProxy sideOverride = side == null ? null : sidedTankOverrides[side.getIndex()];
@@ -180,13 +173,13 @@ public class SimpleMachineMetaTileEntity extends WorkableTieredMetaTileEntity {
     @Override
     public void receiveCustomData(int dataId, PacketBuffer buf) {
         super.receiveCustomData(dataId, buf);
-        if(dataId == - 100) {
+        if(dataId == 100) {
             this.outputFacing = EnumFacing.VALUES[buf.readByte()];
             getHolder().scheduleChunkForRenderUpdate();
-        } else if(dataId == -101) {
+        } else if(dataId == 101) {
             this.autoOutputItems = buf.readBoolean();
             getHolder().scheduleChunkForRenderUpdate();
-        } else if(dataId == -102) {
+        } else if(dataId == 102) {
             this.autoOutputFluids = buf.readBoolean();
             getHolder().scheduleChunkForRenderUpdate();
         }
@@ -202,7 +195,7 @@ public class SimpleMachineMetaTileEntity extends WorkableTieredMetaTileEntity {
     public void setOutputFacing(EnumFacing outputFacing) {
         this.outputFacing = outputFacing;
         if(!getWorld().isRemote) {
-            writeCustomData(-100, buf -> buf.writeByte(outputFacing.getIndex()));
+            writeCustomData(100, buf -> buf.writeByte(outputFacing.getIndex()));
             markDirty();
         }
     }
@@ -210,7 +203,7 @@ public class SimpleMachineMetaTileEntity extends WorkableTieredMetaTileEntity {
     public void setAutoOutputItems(boolean autoOutputItems) {
         this.autoOutputItems = autoOutputItems;
         if(!getWorld().isRemote) {
-            writeCustomData(-101, buf -> buf.writeBoolean(autoOutputItems));
+            writeCustomData(101, buf -> buf.writeBoolean(autoOutputItems));
             markDirty();
         }
     }
@@ -218,7 +211,7 @@ public class SimpleMachineMetaTileEntity extends WorkableTieredMetaTileEntity {
     public void setAutoOutputFluids(boolean autoOutputFluids) {
         this.autoOutputFluids = autoOutputFluids;
         if(!getWorld().isRemote) {
-            writeCustomData(-102, buf -> buf.writeBoolean(autoOutputFluids));
+            writeCustomData(102, buf -> buf.writeBoolean(autoOutputFluids));
             markDirty();
         }
     }

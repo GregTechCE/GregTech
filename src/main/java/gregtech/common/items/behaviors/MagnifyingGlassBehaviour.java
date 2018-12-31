@@ -12,6 +12,7 @@ import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.Style;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.util.text.TextFormatting;
@@ -43,10 +44,13 @@ public class MagnifyingGlassBehaviour implements IItemBehaviour {
             }
             BlockSurfaceRock block = (BlockSurfaceRock) blockState.getBlock();
             Material rockMaterial = blockState.getValue(block.materialProperty);
-            player.sendStatusMessage(new TextComponentTranslation("behavior.magnifying_glass.inspect",
-                new TextComponentTranslation(rockMaterial.getUnlocalizedName())).setStyle(new Style().setColor(TextFormatting.GOLD)), true);
+            player.sendMessage(new TextComponentTranslation("behavior.magnifying_glass.inspect.primary", getNameForMaterial(rockMaterial)));
             return EnumActionResult.SUCCESS;
         }
         return EnumActionResult.PASS;
+    }
+
+    private static ITextComponent getNameForMaterial(Material material) {
+        return new TextComponentTranslation(material.getUnlocalizedName()).setStyle(new Style().setColor(TextFormatting.GOLD));
     }
 }

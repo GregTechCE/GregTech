@@ -1,9 +1,11 @@
 package gregtech.api.worldgen.filler;
 
+import com.google.common.collect.Lists;
 import com.google.gson.JsonObject;
 import gregtech.api.worldgen.config.OreConfigUtils;
 import net.minecraft.block.state.IBlockState;
 
+import java.util.List;
 import java.util.function.Function;
 
 public class SimpleBlockFiller extends BlockFiller {
@@ -27,4 +29,8 @@ public class SimpleBlockFiller extends BlockFiller {
         return blockStateFiller.apply(currentState);
     }
 
+    @Override
+    public List<Function<IBlockState, IBlockState>> getAllPossibleStates() {
+        return Lists.newArrayList(blockStateFiller);
+    }
 }

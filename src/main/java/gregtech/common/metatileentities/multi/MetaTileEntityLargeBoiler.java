@@ -290,7 +290,7 @@ public class MetaTileEntityLargeBoiler extends MultiblockWithDisplayBase {
             if(isStructureFormed()) {
                 replaceFireboxAsActive(active);
             }
-            writeCustomData(-100, buf -> buf.writeBoolean(isActive));
+            writeCustomData(100, buf -> buf.writeBoolean(isActive));
             markDirty();
         }
     }
@@ -329,7 +329,7 @@ public class MetaTileEntityLargeBoiler extends MultiblockWithDisplayBase {
     @Override
     public void receiveCustomData(int dataId, PacketBuffer buf) {
         super.receiveCustomData(dataId, buf);
-        if(dataId == -100) {
+        if(dataId == 100) {
             this.isActive = buf.readBoolean();
         }
     }

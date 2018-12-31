@@ -88,7 +88,7 @@ public class MetaTileEntityMagicEnergyConverter extends TieredMetaTileEntity {
         if(this.isActive != isActive) {
             this.isActive = isActive;
             if(!getWorld().isRemote) {
-                writeCustomData(-100, w -> w.writeBoolean(isActive));
+                writeCustomData(100, w -> w.writeBoolean(isActive));
             }
         }
     }
@@ -96,7 +96,7 @@ public class MetaTileEntityMagicEnergyConverter extends TieredMetaTileEntity {
     @Override
     public void receiveCustomData(int dataId, PacketBuffer buf) {
         super.receiveCustomData(dataId, buf);
-        if(dataId == -100) {
+        if(dataId == 100) {
             this.isActive = buf.readBoolean();
         }
     }
