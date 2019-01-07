@@ -8,7 +8,11 @@ public class BlankUIHolder implements IUIHolder {
     }
 
     @Override
-    public void markAsDirty() {
+    public boolean isRemote() {
+        return false;
+    }
 
+    @Override
+    public void markAsDirty() {
     }
 }

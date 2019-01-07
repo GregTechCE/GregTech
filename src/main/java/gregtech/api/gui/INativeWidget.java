@@ -14,6 +14,8 @@ public interface INativeWidget {
 
     ItemStack VANILLA_LOGIC = new ItemStack(Items.AIR);
 
+    void setEnabled(boolean isEnabled);
+
     /**
      * You should return MC slot handle instance you created earlier
      * @return MC slot

@@ -27,7 +27,7 @@ public class DynamicLabelWidget extends Widget {
     }
 
     public DynamicLabelWidget(int xPosition, int yPosition, Supplier<String> text, int color) {
-        super(SLOT_DRAW_PRIORITY + 500);
+        super();
         this.xPosition = xPosition;
         this.yPosition = yPosition;
         this.textSupplier = text;

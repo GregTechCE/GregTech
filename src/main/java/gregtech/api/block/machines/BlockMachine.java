@@ -294,7 +294,7 @@ public class BlockMachine extends Block implements ITileEntityProvider {
     @Override
     public int getComparatorInputOverride(IBlockState blockState, World worldIn, BlockPos pos) {
         MetaTileEntity metaTileEntity = getMetaTileEntity(worldIn, pos);
-        return metaTileEntity == null ? 0 : metaTileEntity.getComparatorValue();
+        return metaTileEntity == null ? 0 : metaTileEntity.getCachedComparatorValue();
     }
 
     protected ThreadLocal<MetaTileEntity> tileEntities = new ThreadLocal<>();
@@ -311,7 +311,6 @@ public class BlockMachine extends Block implements ITileEntityProvider {
         return true;
     }
 
-    @SuppressWarnings("unchecked")
     @Nullable
     @Override
     public MetaTileEntityHolder createNewTileEntity(@Nullable World worldIn, int meta) {
@@ -397,7 +396,7 @@ public class BlockMachine extends Block implements ITileEntityProvider {
 
     @Override
     public void getSubBlocks(CreativeTabs tab, NonNullList<ItemStack> items) {
-        for (String metaTileEntityId : GregTechAPI.META_TILE_ENTITY_REGISTRY.getKeys()) {
+        for (ResourceLocation metaTileEntityId : GregTechAPI.META_TILE_ENTITY_REGISTRY.getKeys()) {
             int metaId = GregTechAPI.META_TILE_ENTITY_REGISTRY.getIdByObjectName(metaTileEntityId);
             items.add(new ItemStack(this, 1, metaId));
         }

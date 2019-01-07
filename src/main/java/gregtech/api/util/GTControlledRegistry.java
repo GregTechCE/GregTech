@@ -5,27 +5,22 @@ import com.google.common.collect.HashBiMap;
 import net.minecraft.util.IntIdentityHashBiMap;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.registry.RegistrySimple;
-import net.minecraftforge.fml.common.Loader;
-import net.minecraftforge.fml.common.ModContainer;
+import net.minecraftforge.registries.GameData;
 
 import javax.annotation.Nullable;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
 // this class should extend RegistryNamespaced but due to
 // ForgeGradle bug (https://github.com/MinecraftForge/ForgeGradle/issues/498) it gives compile errors in CI environment
-public class GTControlledRegistry<T> extends RegistrySimple<String, T> {
+public class GTControlledRegistry<K, V> extends RegistrySimple<K, V> {
 
-    private HashMap<String, String> modRegistryTracking = new HashMap<>();
     private boolean frozen = false;
     private final int maxId;
-    private boolean allowDirectRegistrations;
 
-    public GTControlledRegistry(int maxId, boolean allowDirectRegistrations) {
+    public GTControlledRegistry(int maxId) {
         this.maxId = maxId;
-        this.allowDirectRegistrations = allowDirectRegistrations;
-        this.inverseObjectRegistry = ((BiMap<String, T>)this.registryObjects).inverse();
+        this.inverseObjectRegistry = ((BiMap<K, V>)this.registryObjects).inverse();
     }
 
     public boolean isFrozen() {
@@ -39,13 +34,18 @@ public class GTControlledRegistry<T> extends RegistrySimple<String, T> {
         this.frozen = true;
     }
 
-    public void register(int id, String key, T value) {
+    public void register(int id, K key, V value) {
         if(id < 0 || id >= maxId) {
             throw new IndexOutOfBoundsException("Id is out of range: " + id);
         }
-        putObjectInternal(key, value);
+        if(key instanceof ResourceLocation) {
+            //check ResourceLocation key and log warning if it differs from the active ModID
+            key = (K) GameData.checkPrefix(key.toString());
+        }
 
-        T objectWithId = getObjectById(id);
+        super.putObject(key, value);
+
+        V objectWithId = getObjectById(id);
         if(objectWithId != null) {
             throw new IllegalArgumentException(String.format("Tried to reassign id %d to %s (%s), but it is already assigned to %s (%s)!",
                 id, value, key, objectWithId, getNameForObject(objectWithId)));
@@ -54,76 +54,45 @@ public class GTControlledRegistry<T> extends RegistrySimple<String, T> {
     }
 
     @Override
-    public void putObject(String key, T value) {
-       if(!allowDirectRegistrations) {
-           throw new IllegalStateException("Direct registrations are prohibited for this registry. Use #register(id, key, value)");
-       }
-       putObjectInternal(key, value);
+    public void putObject(K key, V value) {
+       throw new UnsupportedOperationException("Use #register(int, String, T)");
     }
 
-    private void putObjectInternal(String key, T value) {
-        ModContainer activeMod = Loader.instance().activeModContainer();
-        if(activeMod == null) {
-            throw new IllegalThreadStateException("Tried to access registry outside mod context!");
-        }
-        if(frozen) {
-            throw new IllegalStateException(String.format("Mod %s tried to register entry %s when registry was already in frozen state!",
-                activeMod.getModId(), key));
-        }
-        if(modRegistryTracking.containsKey(key)) {
-            throw new IllegalArgumentException(String.format("Mod %s tries to overwrite registry entry %s, registered by mod %s!",
-                activeMod.getModId(), key, modRegistryTracking.get(key)));
-        }
-        modRegistryTracking.put(key, activeMod.getModId());
-        super.putObject(key, value);
-    }
-
-    public ResourceLocation getFullNameForObject(T value) {
-        String key = getNameForObject(value);
-        String modId = modRegistryTracking.get(key);
-        return new ResourceLocation(modId, key);
-    }
-
-    public int getIdByObjectName(String key) {
-        T valueWithKey = getObject(key);
+    public int getIdByObjectName(K key) {
+        V valueWithKey = getObject(key);
         return valueWithKey == null ? 0 : getIDForObject(valueWithKey);
-    }
-
-    public String getNameForObjectId(int id) {
-        T valueWithKey = getObjectById(id);
-        return valueWithKey == null ? null : getNameForObject(valueWithKey);
     }
 
 //     =================== RegistryNamespaced stuff ===================
 
-    protected final IntIdentityHashBiMap<T> underlyingIntegerMap = new IntIdentityHashBiMap<>(256);
-    protected final Map<T, String> inverseObjectRegistry;
+    protected final IntIdentityHashBiMap<V> underlyingIntegerMap = new IntIdentityHashBiMap<>(256);
+    protected final Map<V, K> inverseObjectRegistry;
 
     @Override
-    protected Map<String, T> createUnderlyingMap()
+    protected Map<K, V> createUnderlyingMap()
     {
         return HashBiMap.create();
     }
 
     @Nullable
-    public String getNameForObject(T value)
+    public K getNameForObject(V value)
     {
         return this.inverseObjectRegistry.get(value);
     }
 
-    public int getIDForObject(@Nullable T value)
+    public int getIDForObject(@Nullable V value)
     {
         return this.underlyingIntegerMap.getId(value);
     }
 
     @Nullable
-    public T getObjectById(int id)
+    public V getObjectById(int id)
     {
         return this.underlyingIntegerMap.get(id);
     }
 
     @Override
-    public Iterator<T> iterator()
+    public Iterator<V> iterator()
     {
         return this.underlyingIntegerMap.iterator();
     }

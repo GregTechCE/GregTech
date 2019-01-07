@@ -4,6 +4,7 @@ import codechicken.lib.CodeChickenLib;
 import crafttweaker.CraftTweakerAPI;
 import gregtech.api.GTValues;
 import gregtech.api.capability.SimpleCapabilityManager;
+import gregtech.api.cover.CoverBehaviorUIFactory;
 import gregtech.api.items.gui.PlayerInventoryUIFactory;
 import gregtech.api.metatileentity.MetaTileEntityUIFactory;
 import gregtech.api.model.ResourcePackHook;
@@ -24,6 +25,7 @@ import gregtech.common.blocks.modelfactories.BlockCompressedFactory;
 import gregtech.common.blocks.modelfactories.BlockFrameFactory;
 import gregtech.common.blocks.modelfactories.BlockOreFactory;
 import gregtech.common.command.GregTechCommand;
+import gregtech.common.covers.CoverBehaviors;
 import gregtech.common.items.MetaItems;
 import gregtech.common.metatileentities.MetaTileEntities;
 import gregtech.common.multipart.GTMultipartFactory;
@@ -60,7 +62,7 @@ public class GregTechMod {
     public static GregTechMod instance;
 
     @SidedProxy(modId = GTValues.MODID, clientSide = "gregtech.common.ClientProxy", serverSide = "gregtech.common.CommonProxy")
-    public static CommonProxy gregtechproxy;
+    public static CommonProxy proxy;
 
     @Mod.EventHandler
     public void onPreInit(FMLPreInitializationEvent event) {
@@ -69,6 +71,7 @@ public class GregTechMod {
         NetworkHandler.init();
         MetaTileEntityUIFactory.INSTANCE.init();
         PlayerInventoryUIFactory.INSTANCE.init();
+        CoverBehaviorUIFactory.INSTANCE.init();
         SimpleCapabilityManager.init();
         OreDictUnifier.init();
 
@@ -92,12 +95,12 @@ public class GregTechMod {
         MetaTileEntities.init();
         MetaEntities.init();
 
-        gregtechproxy.onPreLoad();
+        proxy.onPreLoad();
     }
 
     @Mod.EventHandler
     public void onInit(FMLInitializationEvent event) {
-        gregtechproxy.onLoad();
+        proxy.onLoad();
 
         if (RecipeMap.isFoundInvalidRecipe()) {
             GTLog.logger.fatal("Seems like invalid recipe was found.");
@@ -129,6 +132,7 @@ public class GregTechMod {
             GameRegistry.registerWorldGenerator(new WorldGenRubberTree(), 10000);
         }
 
+        CoverBehaviors.init();
         DungeonLootLoader.init();
     }
 
@@ -144,7 +148,7 @@ public class GregTechMod {
 
     @Mod.EventHandler
     public void onPostInit(FMLPostInitializationEvent event) {
-        gregtechproxy.onPostLoad();
+        proxy.onPostLoad();
     }
 
     @Mod.EventHandler

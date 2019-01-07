@@ -14,6 +14,7 @@ import gregtech.common.blocks.BlockMetalCasing;
 import gregtech.common.blocks.BlockWireCoil.CoilType;
 import gregtech.common.blocks.MetaBlocks;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.util.ResourceLocation;
 
 public class MetaTileEntityCrackingUnit extends RecipeMapMultiblockController {
 
@@ -22,7 +23,7 @@ public class MetaTileEntityCrackingUnit extends RecipeMapMultiblockController {
         MultiblockAbility.INPUT_ENERGY
     };
 
-    public MetaTileEntityCrackingUnit(String metaTileEntityId) {
+    public MetaTileEntityCrackingUnit(ResourceLocation metaTileEntityId) {
         super(metaTileEntityId, RecipeMaps.CRACKING_RECIPES);
     }
 

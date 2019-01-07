@@ -19,6 +19,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
 
@@ -29,7 +30,7 @@ public class MetaTileEntityTransformer extends TieredMetaTileEntity {
 
     private boolean isTransformUp;
 
-    public MetaTileEntityTransformer(String metaTileEntityId, int tier) {
+    public MetaTileEntityTransformer(ResourceLocation metaTileEntityId, int tier) {
         super(metaTileEntityId, tier);
     }
 

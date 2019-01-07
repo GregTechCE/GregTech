@@ -54,7 +54,7 @@ public abstract class MetaTileEntity {
 
     public static final Cuboid6[] FULL_CUBE_COLLISION = new Cuboid6[] {Cuboid6.full};
 
-    public final String metaTileEntityId;
+    public final ResourceLocation metaTileEntityId;
     MetaTileEntityHolder holder;
 
     protected IItemHandlerModifiable importItems;
@@ -77,7 +77,7 @@ public abstract class MetaTileEntity {
 
     private CoverBehavior[] coverBehaviors = new CoverBehavior[6];
 
-    public MetaTileEntity(String metaTileEntityId) {
+    public MetaTileEntity(ResourceLocation metaTileEntityId) {
         this.metaTileEntityId = metaTileEntityId;
         initializeInventory();
     }
@@ -223,11 +223,11 @@ public abstract class MetaTileEntity {
     }
 
     public final String getMetaName() {
-        return "gregtech.machine." + metaTileEntityId;
+        return String.format("%s.machine.%s", metaTileEntityId.getResourceDomain(), metaTileEntityId.getResourcePath());
     }
 
     public final String getMetaFullName() {
-        return "gregtech.machine." + metaTileEntityId + ".name";
+        return getMetaName() + ".name";
     }
 
     /**
@@ -282,7 +282,7 @@ public abstract class MetaTileEntity {
         EnumActionResult coverResult = coverBehavior == null ? EnumActionResult.PASS :
             coverBehavior.onRightClick(playerIn, hand, hitX, hitY, hitZ);
         if(coverResult != EnumActionResult.PASS) {
-            return coverResult == EnumActionResult.PASS;
+            return coverResult == EnumActionResult.SUCCESS;
         }
         return onRightClick(playerIn, hand, facing, hitX, hitY, hitZ);
     }
@@ -292,7 +292,7 @@ public abstract class MetaTileEntity {
         EnumActionResult coverResult = coverBehavior == null ? EnumActionResult.PASS :
             coverBehavior.onScrewdriverClick(playerIn, hand, hitX, hitY, hitZ);
         if(coverResult != EnumActionResult.PASS) {
-            return coverResult == EnumActionResult.PASS;
+            return coverResult == EnumActionResult.SUCCESS;
         }
         return onRightClick(playerIn, hand, facing, hitX, hitY, hitZ);
     }
@@ -619,7 +619,9 @@ public abstract class MetaTileEntity {
             EnumFacing coverSide = EnumFacing.VALUES[buf.readByte()];
             CoverBehavior coverBehavior = getCoverAtSide(coverSide);
             int internalId = buf.readVarInt();
-            coverBehavior.readUpdateData(internalId, buf);
+            if(coverBehavior != null) {
+                coverBehavior.readUpdateData(internalId, buf);
+            }
         }
     }
 
@@ -642,7 +644,6 @@ public abstract class MetaTileEntity {
         }
         for(MTETrait mteTrait : this.mteTraits) {
             if(mteTrait.getImplementingCapability() == capability)
-                //noinspection unchecked
                 return (T) mteTrait;
         }
         return null;
@@ -699,41 +700,36 @@ public abstract class MetaTileEntity {
     public void pushItemsIntoNearbyHandlers(EnumFacing... allowedFaces) {
         for(EnumFacing nearbyFacing : allowedFaces) {
             TileEntity tileEntity = getWorld().getTileEntity(getPos().offset(nearbyFacing));
-            if(tileEntity == null) continue;
-            IItemHandler itemHandler = tileEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, nearbyFacing.getOpposite());
-            if(itemHandler == null) continue;
-            for(int slotIndex = 0; slotIndex < exportItems.getSlots(); slotIndex++) {
-                ItemStack stackInSlot = exportItems.getStackInSlot(slotIndex);
-                if(stackInSlot.isEmpty()) continue;
-                for(int hisSlotIndex = 0; hisSlotIndex < itemHandler.getSlots(); hisSlotIndex++) {
-                    ItemStack remainingStack = itemHandler.insertItem(hisSlotIndex, stackInSlot, false);
-                    if(remainingStack != stackInSlot) {
-                        stackInSlot = remainingStack;
-                        exportItems.setStackInSlot(slotIndex, remainingStack);
-                    }
-                    if(remainingStack.isEmpty()) break;
-                }
+            IItemHandler itemHandler = tileEntity == null ? null : tileEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, nearbyFacing.getOpposite());
+            if(itemHandler == null) {
+                continue;
             }
+            moveInventoryItems(exportItems, itemHandler);
         }
     }
 
     public void pullItemsFromNearbyHandlers(EnumFacing... allowedFaces) {
         for(EnumFacing nearbyFacing : allowedFaces) {
             TileEntity tileEntity = getWorld().getTileEntity(getPos().offset(nearbyFacing));
-            if(tileEntity == null) continue;
-            IItemHandler itemHandler = tileEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, nearbyFacing.getOpposite());
-            if(itemHandler == null) continue;
-            for(int slotIndex = 0; slotIndex < itemHandler.getSlots(); slotIndex++) {
-                ItemStack stackInSlot = itemHandler.extractItem(slotIndex, itemHandler.getSlotLimit(slotIndex), true);
-                if(stackInSlot.isEmpty()) continue;
-                for(int hisSlotIndex = 0; hisSlotIndex < importItems.getSlots(); hisSlotIndex++) {
-                    ItemStack remainingStack = importItems.insertItem(hisSlotIndex, stackInSlot, true);
-                    if(remainingStack != stackInSlot) {
-                        ItemStack actualStack = itemHandler.extractItem(slotIndex, stackInSlot.getCount() - remainingStack.getCount(), false);
-                        stackInSlot = importItems.insertItem(hisSlotIndex, actualStack, false);
-                    }
-                    if(stackInSlot.isEmpty()) break;
-                }
+            IItemHandler itemHandler = tileEntity == null ? null : tileEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, nearbyFacing.getOpposite());
+            if(itemHandler == null) {
+                continue;
+            }
+            moveInventoryItems(itemHandler, importItems);
+        }
+    }
+
+    protected static void moveInventoryItems(IItemHandler sourceInventory, IItemHandler targetInventory) {
+        for(int srcIndex = 0; srcIndex < sourceInventory.getSlots(); srcIndex++) {
+            ItemStack sourceStack = sourceInventory.extractItem(srcIndex, Integer.MAX_VALUE, true);
+            if(sourceStack.isEmpty()) {
+                continue;
+            }
+            ItemStack remainder = ItemHandlerHelper.insertItemStacked(targetInventory, sourceStack, true);
+            int amountToInsert = sourceStack.getCount() - remainder.getCount();
+            if(amountToInsert > 0) {
+                sourceStack = sourceInventory.extractItem(srcIndex, amountToInsert, false);
+                ItemHandlerHelper.insertItemStacked(targetInventory, sourceStack, false);
             }
         }
     }
@@ -841,14 +837,15 @@ public abstract class MetaTileEntity {
 
         NBTTagList coversList = new NBTTagList();
         for(EnumFacing coverSide : EnumFacing.VALUES) {
-            NBTTagCompound tagCompound = new NBTTagCompound();
             CoverBehavior coverBehavior = coverBehaviors[coverSide.getIndex()];
             if(coverBehavior != null) {
+                NBTTagCompound tagCompound = new NBTTagCompound();
                 ResourceLocation coverId = coverBehavior.getCoverDefinition().getCoverId();
                 tagCompound.setString("CoverId", coverId.toString());
+                tagCompound.setByte("Side", (byte) coverSide.getIndex());
                 coverBehavior.writeToNBT(tagCompound);
+                coversList.appendTag(tagCompound);
             }
-            coversList.set(coverSide.getIndex(), tagCompound);
         }
         data.setTag("Covers", coversList);
         return data;
@@ -872,9 +869,10 @@ public abstract class MetaTileEntity {
         }
 
         NBTTagList coversList = data.getTagList("Covers", NBT.TAG_COMPOUND);
-        for(EnumFacing coverSide : EnumFacing.VALUES) {
-            NBTTagCompound tagCompound = coversList.getCompoundTagAt(coverSide.getIndex());
-            if(tagCompound.hasKey("CoverId", NBT.TAG_COMPOUND)) {
+        for(int index = 0; index < coversList.tagCount(); index++) {
+            NBTTagCompound tagCompound = coversList.getCompoundTagAt(index);
+            if(tagCompound.hasKey("CoverId", NBT.TAG_STRING)) {
+                EnumFacing coverSide = EnumFacing.VALUES[tagCompound.getByte("Side")];
                 ResourceLocation coverId = new ResourceLocation(tagCompound.getString("CoverId"));
                 CoverDefinition coverDefinition = CoverDefinition.getCoverById(coverId);
                 CoverBehavior coverBehavior = coverDefinition.createCoverBehavior(this, coverSide);
@@ -890,7 +888,7 @@ public abstract class MetaTileEntity {
         clearInventory(itemBuffer, exportItems);
     }
 
-    protected static void clearInventory(NonNullList<ItemStack> itemBuffer, IItemHandlerModifiable inventory) {
+    public static void clearInventory(NonNullList<ItemStack> itemBuffer, IItemHandlerModifiable inventory) {
         for(int i = 0; i < inventory.getSlots(); i++) {
             ItemStack stackInSlot = inventory.getStackInSlot(i);
             if(!stackInSlot.isEmpty()) {

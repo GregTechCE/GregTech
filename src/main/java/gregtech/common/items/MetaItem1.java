@@ -15,10 +15,7 @@ import gregtech.api.unification.ore.OrePrefix;
 import gregtech.api.unification.stack.ItemMaterialInfo;
 import gregtech.api.unification.stack.MaterialStack;
 import gregtech.api.util.RandomPotionEffect;
-import gregtech.common.items.behaviors.ColorSprayBehaviour;
-import gregtech.common.items.behaviors.DynamiteBehaviour;
-import gregtech.common.items.behaviors.IntCircuitBehaviour;
-import gregtech.common.items.behaviors.LighterBehaviour;
+import gregtech.common.items.behaviors.*;
 import net.minecraft.block.BlockCauldron;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.resources.I18n;
@@ -330,7 +327,8 @@ public class MetaItem1 extends MaterialMetaItem {
         UPGRADE_MUFFLER = addItem(727, "upgrade.muffler");
         UPGRADE_LOCK = addItem(728, "upgrade.lock");
 
-        COMPONENT_FILTER = addItem(729, "component.filter").setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.Zinc, OrePrefix.foil.materialAmount * 16L))).addOreDict(OreDictNames.craftingFilter).setInvisible();
+        ITEM_FILTER = addItem(729, "item_filter");
+        ORE_DICTIONARY_FILTER = addItem(102, "ore_dictionary_filter");
 
         COVER_CONTROLLER = addItem(730, "cover.controller").setInvisible();
         COVER_ACTIVITY_DETECTOR = addItem(731, "cover.activity.detector").setInvisible();
@@ -638,16 +636,6 @@ public class MetaItem1 extends MaterialMetaItem {
             .outputs(UPGRADE_LOCK.getStackForm())
             .duration(6400)
             .EUt(16)
-            .buildAndRegister();
-
-        // Misc
-        RecipeMaps.ASSEMBLER_RECIPES.recipeBuilder()
-            .input(OrePrefix.plate, Materials.Aluminium, 2)
-            .input(OrePrefix.foil, Materials.Zinc, 16)
-            .fluidInputs(Materials.Plastic.getFluid(144))
-            .outputs(COMPONENT_FILTER.getStackForm())
-            .duration(1600)
-            .EUt(32)
             .buildAndRegister();
 
         RecipeMaps.ASSEMBLER_RECIPES.recipeBuilder()

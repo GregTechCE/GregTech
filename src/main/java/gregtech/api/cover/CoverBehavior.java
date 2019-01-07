@@ -134,6 +134,11 @@ public abstract class CoverBehavior implements IUIHolder {
     }
 
     @Override
+    public boolean isRemote() {
+        return metaTileEntity.getHolder().isRemote();
+    }
+
+    @Override
     public final void markAsDirty() {
         metaTileEntity.markDirty();
     }

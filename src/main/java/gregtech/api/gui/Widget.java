@@ -1,11 +1,17 @@
 package gregtech.api.gui;
 
 import gregtech.api.gui.widgets.WidgetUIAccess;
-import io.netty.buffer.Unpooled;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.audio.PositionedSoundRecord;
+import net.minecraft.init.SoundEvents;
+import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketBuffer;
+import net.minecraftforge.fml.client.config.GuiUtils;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import java.util.Collections;
+import java.util.List;
 import java.util.function.Consumer;
 
 /**
@@ -13,17 +19,21 @@ import java.util.function.Consumer;
  * It can draw, perform actions, react to key press and mouse
  * It's information is also synced to client
  */
-public abstract class Widget implements Comparable<Widget> {
-
-    public static final int SLOT_DRAW_PRIORITY = 1000;
+public abstract class Widget {
 
     protected ModularUI gui;
+    protected SizeProvider sizes;
     protected WidgetUIAccess uiAccess;
 
-    public final int drawPriority;
+    public Widget() {
+    }
 
-    public Widget(int drawPriority) {
-        this.drawPriority = drawPriority;
+    public void setGui(ModularUI gui) {
+        this.gui = gui;
+    }
+
+    public void setSizes(SizeProvider sizes) {
+        this.sizes = sizes;
     }
 
     public void setUiAccess(WidgetUIAccess uiAccess) {
@@ -35,7 +45,7 @@ public abstract class Widget implements Comparable<Widget> {
     }
 
     /**
-     * Called on both sides to freezeRegistry widget data
+     * Called on both sides to initialize widget data
      */
     public void initWidget() {
     }
@@ -107,33 +117,37 @@ public abstract class Widget implements Comparable<Widget> {
     public void handleClientAction(int id, PacketBuffer buffer) {
     }
 
+    public List<INativeWidget> getNativeWidgets() {
+        if(this instanceof INativeWidget) {
+            return Collections.singletonList((INativeWidget) this);
+        }
+        return Collections.emptyList();
+    }
+
     /**
      * Writes data to be sent to client's {@link #readUpdateInfo}
      */
     protected final void writeUpdateInfo(int id, Consumer<PacketBuffer> packetBufferWriter) {
-        if(gui.isJEIHandled) return; //do not send packets on jei guis
-        PacketBuffer packetBuffer = new PacketBuffer(Unpooled.buffer());
-        packetBuffer.writeInt(id);
-        packetBufferWriter.accept(packetBuffer);
-        if(uiAccess != null) {
-            uiAccess.writeUpdateInfo(this, packetBuffer);
+        if(uiAccess != null && gui != null) {
+            uiAccess.writeUpdateInfo(this, id, packetBufferWriter);
         }
     }
 
     @SideOnly(Side.CLIENT)
     protected final void writeClientAction(int id, Consumer<PacketBuffer> packetBufferWriter) {
-        if(gui.isJEIHandled) return; //do not send packets on jei guis
-        PacketBuffer packetBuffer = new PacketBuffer(Unpooled.buffer());
-        packetBuffer.writeInt(id);
-        packetBufferWriter.accept(packetBuffer);
         if(uiAccess != null) {
-            uiAccess.writeClientAction(this, packetBuffer);
+            uiAccess.writeClientAction(this, id, packetBufferWriter);
         }
     }
 
-    @Override
-    public int compareTo(Widget widget) {
-        return Integer.compare(drawPriority, widget.drawPriority);
+    protected void drawHoveringText(ItemStack itemStack, List<String> tooltip, int mouseX, int mouseY) {
+        Minecraft mc = Minecraft.getMinecraft();
+        GuiUtils.drawHoveringText(itemStack, tooltip,  mouseX, mouseY,
+            sizes.getScreenWidth() - sizes.getGuiLeft(),
+            sizes.getScreenHeight() - sizes.getGuiTop(), -1, mc.fontRenderer);
     }
 
+    protected void playButtonClickSound() {
+        Minecraft.getMinecraft().getSoundHandler().playSound(PositionedSoundRecord.getMasterRecord(SoundEvents.UI_BUTTON_CLICK, 1.0F));
+    }
 }

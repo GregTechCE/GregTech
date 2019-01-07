@@ -14,6 +14,7 @@ import gregtech.common.blocks.BlockMachineCasing.MachineCasingType;
 import gregtech.common.blocks.BlockWireCoil.CoilType;
 import gregtech.common.blocks.MetaBlocks;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.util.ResourceLocation;
 
 public class MetaTileEntityPyrolyseOven extends RecipeMapMultiblockController {
 
@@ -23,7 +24,7 @@ public class MetaTileEntityPyrolyseOven extends RecipeMapMultiblockController {
         MultiblockAbility.INPUT_ENERGY
     };
 
-    public MetaTileEntityPyrolyseOven(String metaTileEntityId) {
+    public MetaTileEntityPyrolyseOven(ResourceLocation metaTileEntityId) {
         super(metaTileEntityId, RecipeMaps.PYROLYSE_RECIPES);
     }
 

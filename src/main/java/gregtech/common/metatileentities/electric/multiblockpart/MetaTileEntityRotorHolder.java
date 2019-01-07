@@ -26,6 +26,7 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumFacing.Axis;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.NonNullList;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.items.ItemStackHandler;
@@ -46,14 +47,14 @@ public class MetaTileEntityRotorHolder extends MetaTileEntityMultiblockPart impl
     private int rotorColor = -1;
     private boolean frontFaceFree;
 
-    public MetaTileEntityRotorHolder(String metaTileEntityId, int tier, int maxSpeed) {
+    public MetaTileEntityRotorHolder(ResourceLocation metaTileEntityId, int tier, int maxSpeed) {
         super(metaTileEntityId, tier);
         this.maxRotorSpeed = maxSpeed;
         this.currentRotorSpeed = 0;
         this.rotorInventory = new InventoryRotorHolder();
     }
 
-    public MetaTileEntityRotorHolder(String metaTileEntityId, int tier, float speedMultiplier) {
+    public MetaTileEntityRotorHolder(ResourceLocation metaTileEntityId, int tier, float speedMultiplier) {
         this(metaTileEntityId, tier, (int) (NORMAL_MAXIMUM_SPEED * speedMultiplier));
     }
 

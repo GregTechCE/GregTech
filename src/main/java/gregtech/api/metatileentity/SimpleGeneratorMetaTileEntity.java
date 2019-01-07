@@ -23,6 +23,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.NonNullList;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.items.ItemStackHandler;
@@ -36,7 +37,7 @@ public class SimpleGeneratorMetaTileEntity extends TieredMetaTileEntity {
     private ItemStackHandler containerInventory;
     private OrientedOverlayRenderer overlayRenderer;
 
-    public SimpleGeneratorMetaTileEntity(String metaTileEntityId, FuelRecipeMap recipeMap, OrientedOverlayRenderer renderer, int tier) {
+    public SimpleGeneratorMetaTileEntity(ResourceLocation metaTileEntityId, FuelRecipeMap recipeMap, OrientedOverlayRenderer renderer, int tier) {
         super(metaTileEntityId, tier);
         this.workableHandler = new FuelRecipeMapWorkableHandler(this, recipeMap,
             () -> energyContainer, () -> importFluids, GTValues.V[tier]);

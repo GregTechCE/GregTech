@@ -16,6 +16,7 @@ import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.PacketBuffer;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import org.apache.commons.lang3.ArrayUtils;
@@ -27,7 +28,7 @@ public class MetaTileEntityMagicEnergyConverter extends TieredMetaTileEntity {
     private int essentiaLeft = 0;
     private boolean isActive = false;
 
-    public MetaTileEntityMagicEnergyConverter(String metaTileEntityId) {
+    public MetaTileEntityMagicEnergyConverter(ResourceLocation metaTileEntityId) {
         super(metaTileEntityId, GTValues.MV);
     }
 

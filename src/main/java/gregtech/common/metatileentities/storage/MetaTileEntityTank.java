@@ -20,6 +20,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants.NBT;
@@ -40,7 +41,7 @@ public class MetaTileEntityTank extends MetaTileEntity {
     private SyncFluidTank fluidTank;
     private int oldLightValue = 0;
 
-    public MetaTileEntityTank(String metaTileEntityId, SolidMaterial material, int tankSize) {
+    public MetaTileEntityTank(ResourceLocation metaTileEntityId, SolidMaterial material, int tankSize) {
         super(metaTileEntityId);
         this.tankSize = tankSize;
         this.material = material;

@@ -31,30 +31,6 @@
         "textures": {
           "all": "gregtech:blocks/casings/pipe/machine_casing_pipe_tungstensteel"
         }
-      },
-      "legacy_bronze_firebox": {
-        "model": "minecraft:cube_all",
-        "textures": {
-          "all": "gregtech:blocks/rendering_error"
-        }
-      },
-      "legacy_steel_firebox": {
-        "model": "minecraft:cube_all",
-        "textures": {
-          "all": "gregtech:blocks/rendering_error"
-        }
-      },
-      "legacy_titanium_firebox": {
-        "model": "minecraft:cube_all",
-        "textures": {
-          "all": "gregtech:blocks/rendering_error"
-        }
-      },
-      "legacy_tungstensteel_firebox": {
-        "model": "minecraft:cube_all",
-        "textures": {
-          "all": "gregtech:blocks/rendering_error"
-        }
       }
     }
   }

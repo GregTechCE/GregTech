@@ -329,21 +329,21 @@ metaitem.fluidfilter.tooltip=Set with Fluid Container to only accept one Fluid T
 
 #TODO replace numbers with placeholders
 metaitem.conveyor.module.lv.name=Conveyor Module (LV)
-metaitem.conveyor.module.lv.tooltip=1 Stack every 20 secs (as Cover)
+metaitem.conveyor.module.lv.tooltip=8 Items every second (as Cover)
 metaitem.conveyor.module.mv.name=Conveyor Module (MV)
-metaitem.conveyor.module.mv.tooltip=1 Stack every 5 secs (as Cover)
+metaitem.conveyor.module.mv.tooltip=24 Items every second (as Cover)
 metaitem.conveyor.module.hv.name=Conveyor Module (HV)
-metaitem.conveyor.module.hv.tooltip=1 Stack every 1 sec (as Cover)
+metaitem.conveyor.module.hv.tooltip=64 Items every second (as Cover)
 metaitem.conveyor.module.ev.name=Conveyor Module (EV)
-metaitem.conveyor.module.ev.tooltip=1 Stack every 1/5 sec (as Cover)
+metaitem.conveyor.module.ev.tooltip=3 Stacks every second (as Cover)
 metaitem.conveyor.module.iv.name=Conveyor Module (IV)
-metaitem.conveyor.module.iv.tooltip=1 Stack every 1/20 sec (as Cover)
+metaitem.conveyor.module.iv.tooltip=8 Stacks every second (as Cover)
 metaitem.conveyor.module.luv.name=Conveyor Module (LuV)
-metaitem.conveyor.module.luv.tooltip=1 Stack every 1/20 sec (as Cover)
+metaitem.conveyor.module.luv.tooltip=16 Stacks every second (as Cover)
 metaitem.conveyor.module.zpm.name=Conveyor Module (ZPM)
-metaitem.conveyor.module.zpm.tooltip=1 Stack every 1/20 sec (as Cover)
+metaitem.conveyor.module.zpm.tooltip=16 Stacks every second (as Cover)
 metaitem.conveyor.module.uv.name=Conveyor Module (UV)
-metaitem.conveyor.module.uv.tooltip=1 Stack every 1/20 sec (as Cover)
+metaitem.conveyor.module.uv.tooltip=16 Stacks every second (as Cover)
 
 metaitem.electric.piston.lv.name=Electric Piston (LV)
 metaitem.electric.piston.mv.name=Electric Piston (MV)
@@ -460,7 +460,8 @@ metaitem.upgrade.muffler.tooltip=Makes Machines silent
 metaitem.upgrade.lock.name=Lock Upgrade
 metaitem.upgrade.lock.tooltip=Protects your Machines
 
-metaitem.component.filter.name=Item Filter
+metaitem.item_filter.name=Item Filter
+metaitem.ore_dictionary_filter.name=Ore Dictionary Filter
 
 metaitem.cover.controller.name=Machine Controller
 metaitem.cover.controller.tooltip=Turns Machines ON/OFF
@@ -912,6 +913,15 @@ metaitem.tool.tooltip.mining_speed=Mining speed: %d
 metaitem.tool.tooltip.durability=Durability: %d/%d
 metaitem.tool.tooltip.rotor.efficiency=Rotor Efficiency: %d%%
 metaitem.tool.tooltip.hammer.extra_drop=Has 50%% chance to drop 1 more crushed ore
+
+cover.conveyor.title=Conveyor Cover Settings (%s)
+cover.conveyor.transfer_rate=%s items/sec
+cover.conveyor.mode.export=Mode: Export
+cover.conveyor.mode.import=Mode: Import
+cover.conveyor.item_filter.title=Item Filter
+cover.conveyor.ore_dictionary.title=Ore Dictionary Name
+cover.conveyor.ore_dictionary.title2=(use * for wildcard)
+
 
 # %s is a localized material name
 item.material.oreprefix.oreBlackgranite=Granite %s Ore
@@ -1733,13 +1743,6 @@ tile.boiler_casing.steel_pipe.name=Steel Pipe Casing
 tile.boiler_casing.titanium_pipe.name=Titanium Pipe Casing
 tile.boiler_casing.tungstensteel_pipe.name=Tungstensteel Pipe Casing
 
-#Legacy locales
-tile.boiler_casing.legacy_bronze_firebox.name=Legacy Block (Bronze Firebox Casing)
-tile.boiler_casing.legacy_steel_firebox.name=Legacy Block (Steel Firebox Casing)
-tile.boiler_casing.legacy_titanium_firebox.name=Legacy Block (Titanium Firebox Casing)
-tile.boiler_casing.legacy_tungstensteel_firebox.name=Legacy Block (Tungstensteel Firebox Casing)
-tile.boiler_casing.legacy=This block is legacy. Put it into the crafting grid to get a new one.
-
 #Firebox casing blocks
 tile.boiler_casing.bronze_firebox.name=Bronze Firebox Casing
 tile.boiler_casing.steel_firebox.name=Steel Firebox Casing
@@ -1792,6 +1795,9 @@ tile.multiblock_casing.grate.name=Grate Machine Casing
 tile.multiblock_casing.assembler.name=Assembler Machine Casing
 tile.multiblock_casing.fusion.name=Fusion Machine Casing
 tile.multiblock_casing.fusion_mk2.name=Fusion Machine Casing MK II
+
+#Machine general things
+gregtech.machine.tooltip.added_by=§c§oAdded by: %s
 
 # Chests
 gregtech.machine.wooden_chest.name=Wooden Chest
@@ -2891,6 +2897,9 @@ gregtech.fluid.state_gas=§7State: Gaseous
 gregtech.fluid.state_liquid=§7State: Liquid
 gregtech.gui.fuel_amount=Fuel Amount:
 gregtech.gui.fluid_amount=Fluid Amount:
+
+gregtech.item_filter.empty_item=Empty (No Item)
+gregtech.item_filter.footer=§eClick with item to override
 
 gregtech.cable.voltage=Voltage: §a%d §7(§a%s§7)
 gregtech.cable.amperage=Amperage: §e%d

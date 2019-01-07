@@ -13,6 +13,7 @@ import gregtech.api.render.SimpleSidedCubeRenderer.RenderSide;
 import gregtech.api.render.Textures;
 import gregtech.api.util.GTUtility;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -25,7 +26,7 @@ public abstract class TieredMetaTileEntity extends MetaTileEntity implements IEn
     private final int tier;
     protected IEnergyContainer energyContainer;
 
-    public TieredMetaTileEntity(String metaTileEntityId, int tier) {
+    public TieredMetaTileEntity(ResourceLocation metaTileEntityId, int tier) {
         super(metaTileEntityId);
         this.tier = tier;
         reinitializeEnergyContainer();
@@ -106,7 +107,17 @@ public abstract class TieredMetaTileEntity extends MetaTileEntity implements IEn
     public final String getTierlessTooltipKey() {
         String metaName = getMetaName();
         int lastIndexOfDot = metaName.lastIndexOf('.');
-        String subName = lastIndexOfDot == -1 ? metaName : metaName.substring(0, lastIndexOfDot);
-        return subName + ".tooltip";
+        String voltageName = lastIndexOfDot == -1 ? null : metaName.substring(lastIndexOfDot + 1);
+        if(isVoltageName(voltageName)) {
+            return metaName.substring(0, lastIndexOfDot);
+        }
+        return metaName;
+    }
+
+    private static boolean isVoltageName(String string) {
+        for(String voltageName : GTValues.VN) {
+            if(voltageName.equalsIgnoreCase(string)) return true;
+        }
+        return false;
     }
 }

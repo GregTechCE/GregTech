@@ -16,7 +16,6 @@ import net.minecraft.util.SoundEvent;
 import net.minecraftforge.fluids.*;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
-import net.minecraftforge.fml.client.config.GuiUtils;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.input.Keyboard;
@@ -45,7 +44,7 @@ public class TankWidget extends Widget {
     private int lastTankCapacity;
 
     public TankWidget(IFluidTank fluidTank, int x, int y, int width, int height) {
-        super(SLOT_DRAW_PRIORITY + 100);
+        super();
         this.fluidTank = fluidTank;
         this.x = x;
         this.y = y;
@@ -149,7 +148,7 @@ public class TankWidget extends Widget {
                 tooltips.add(I18n.format("gregtech.fluid.click_to_empty"));
                 tooltips.add(I18n.format("gregtech.fluid.click_to_empty.shift"));
             }
-            GuiUtils.drawHoveringText(tooltips, mouseX, mouseY, gui.width, gui.height, -1, Minecraft.getMinecraft().fontRenderer);
+            drawHoveringText(ItemStack.EMPTY, tooltips, mouseX, mouseY);
             GlStateManager.color(1.0f, 1.0f, 1.0f);
         }
     }
@@ -273,13 +272,14 @@ public class TankWidget extends Widget {
     @Override
     @SideOnly(Side.CLIENT)
     public void mouseClicked(int mouseX, int mouseY, int button) {
-        if(!isMouseOver(x, y, width, height, mouseX, mouseY))
-            return;
-        ItemStack currentStack = gui.entityPlayer.inventory.getItemStack();
-        if(button == 0 && (allowClickEmptying || allowClickFilling) &&
-            currentStack.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY, null)) {
-            boolean isShiftKeyDown = Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) || Keyboard.isKeyDown(Keyboard.KEY_RSHIFT);
-            writeClientAction(1, writer -> writer.writeBoolean(isShiftKeyDown));
+        if(isMouseOver(x, y, width, height, mouseX, mouseY)) {
+            ItemStack currentStack = gui.entityPlayer.inventory.getItemStack();
+            if (button == 0 && (allowClickEmptying || allowClickFilling) &&
+                currentStack.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY, null)) {
+                boolean isShiftKeyDown = Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) || Keyboard.isKeyDown(Keyboard.KEY_RSHIFT);
+                writeClientAction(1, writer -> writer.writeBoolean(isShiftKeyDown));
+                playButtonClickSound();
+            }
         }
     }
 }

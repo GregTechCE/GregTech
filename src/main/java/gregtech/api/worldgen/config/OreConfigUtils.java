@@ -160,8 +160,9 @@ public class OreConfigUtils {
             return stoneState -> {
                 StoneType stoneType = StoneType.computeStoneType(stoneState);
                 //use stone as fallback stone type for ore type defining
-                if(stoneType == StoneTypes._NULL)
+                if(stoneType == null) {
                     stoneType = StoneTypes.STONE;
+                }
                 //if given stone type block doesn't exist, fallback to first existing
                 if(!blockStateMap.containsKey(stoneType))
                     stoneType = blockStateMap.keySet().iterator().next();
@@ -214,18 +215,16 @@ public class OreConfigUtils {
             if(stoneTypeDefinition.isJsonNull()) continue;
             stateByStoneType.put(stoneType, createBlockStateFiller(stoneTypeDefinition));
         }
-        JsonElement defaultElement = object.get("default");
-        if(!defaultElement.isJsonNull()) {
-            Function<IBlockState, IBlockState> defaultFiller = createBlockStateFiller(defaultElement);
-            stateByStoneType.put(StoneTypes._NULL, defaultFiller);
-        } else {
-            //if no default element is defined, define it as air to avoid issues
-            stateByStoneType.put(StoneTypes._NULL, state -> Blocks.AIR.getDefaultState());
-        }
         return state -> {
             StoneType stoneType = StoneType.computeStoneType(state);
-            if(!stateByStoneType.containsKey(stoneType))
-                stoneType = StoneTypes._NULL;
+            if(stoneType == null || !stateByStoneType.containsKey(stoneType)) {
+                //fallback to stone, if stone is not here, then to the first registered type
+                if(stateByStoneType.containsKey(StoneTypes.STONE)) {
+                   return stateByStoneType.get(StoneTypes.STONE).apply(state);
+                }
+                //otherwise, select first specified block
+                return stateByStoneType.values().iterator().next().apply(state);
+            }
             return stateByStoneType.get(stoneType).apply(state);
         };
     }

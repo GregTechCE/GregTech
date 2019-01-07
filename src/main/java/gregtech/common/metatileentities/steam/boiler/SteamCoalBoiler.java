@@ -11,6 +11,7 @@ import gregtech.api.render.Textures;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntityFurnace;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.items.IItemHandlerModifiable;
 import net.minecraftforge.items.ItemStackHandler;
 
@@ -18,7 +19,7 @@ import javax.annotation.Nonnull;
 
 public class SteamCoalBoiler extends SteamBoiler {
 
-    public SteamCoalBoiler(String metaTileEntityId, boolean isHighPressure) {
+    public SteamCoalBoiler(ResourceLocation metaTileEntityId, boolean isHighPressure) {
         super(metaTileEntityId, isHighPressure, Textures.COAL_BOILER_OVERLAY, 150);
 }
 

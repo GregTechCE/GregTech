@@ -12,6 +12,7 @@ import gregtech.api.render.Textures;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 
 public abstract class MetaTileEntityMultiblockPart extends MetaTileEntity implements IMultiblockPart {
@@ -20,7 +21,7 @@ public abstract class MetaTileEntityMultiblockPart extends MetaTileEntity implem
     private BlockPos controllerPos;
     private MultiblockControllerBase controllerTile;
 
-    public MetaTileEntityMultiblockPart(String metaTileEntityId, int tier) {
+    public MetaTileEntityMultiblockPart(ResourceLocation metaTileEntityId, int tier) {
         super(metaTileEntityId);
         this.tier = tier;
         initializeInventory();

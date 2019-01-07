@@ -119,20 +119,22 @@ public class Textures {
     public static OrientedOverlayRenderer GAS_TURBINE_OVERLAY = new OrientedOverlayRenderer("generators/gas_turbine", SIDE);
     public static OrientedOverlayRenderer STEAM_TURBINE_OVERLAY = new OrientedOverlayRenderer("generators/steam_turbine", SIDE);
 
-    public static SimpleOverlayRenderer SCREEN = new SimpleOverlayRenderer("machine/overlay_screen");
+    public static SimpleOverlayRenderer SCREEN = new SimpleOverlayRenderer("overlay/machine/overlay_screen");
 
-    public static SimpleOverlayRenderer PIPE_OUT_OVERLAY = new SimpleOverlayRenderer("machine/overlay_pipe_out");
-    public static SimpleOverlayRenderer PIPE_IN_OVERLAY = new SimpleOverlayRenderer("machine/overlay_pipe_in");
-    public static SimpleOverlayRenderer FLUID_OUTPUT_OVERLAY = new SimpleOverlayRenderer("machine/overlay_fluid_output");
-    public static SimpleOverlayRenderer ITEM_OUTPUT_OVERLAY = new SimpleOverlayRenderer("machine/overlay_item_output");
-    public static SimpleOverlayRenderer ROTOR_HOLDER_OVERLAY = new SimpleOverlayRenderer("machine/overlay_rotor_holder");
-    public static SimpleOverlayRenderer ADV_PUMP_OVERLAY = new SimpleOverlayRenderer("machine/overlay_adv_pump");
-    public static SimpleOverlayRenderer FILTER_OVERLAY = new SimpleOverlayRenderer("machine/overlay_filter");
+    public static SimpleOverlayRenderer PIPE_OUT_OVERLAY = new SimpleOverlayRenderer("overlay/machine/overlay_pipe_out");
+    public static SimpleOverlayRenderer PIPE_IN_OVERLAY = new SimpleOverlayRenderer("overlay/machine/overlay_pipe_in");
+    public static SimpleOverlayRenderer FLUID_OUTPUT_OVERLAY = new SimpleOverlayRenderer("overlay/machine/overlay_fluid_output");
+    public static SimpleOverlayRenderer ITEM_OUTPUT_OVERLAY = new SimpleOverlayRenderer("overlay/machine/overlay_item_output");
+    public static SimpleOverlayRenderer ROTOR_HOLDER_OVERLAY = new SimpleOverlayRenderer("overlay/machine/overlay_rotor_holder");
+    public static SimpleOverlayRenderer ADV_PUMP_OVERLAY = new SimpleOverlayRenderer("overlay/machine/overlay_adv_pump");
+    public static SimpleOverlayRenderer FILTER_OVERLAY = new SimpleOverlayRenderer("overlay/machine/overlay_filter");
 
-    public static SimpleOverlayRenderer ENERGY_OUT = new SimpleOverlayRenderer("machine/overlay_energy_out");
-    public static SimpleOverlayRenderer ENERGY_IN = new SimpleOverlayRenderer("machine/overlay_energy_in");
-    public static SimpleOverlayRenderer ENERGY_OUT_MULTI = new SimpleOverlayRenderer("machine/overlay_energy_out_multi");
-    public static SimpleOverlayRenderer ENERGY_IN_MULTI = new SimpleOverlayRenderer("machine/overlay_energy_in_multi");
+    public static SimpleOverlayRenderer ENERGY_OUT = new SimpleOverlayRenderer("overlay/machine/overlay_energy_out");
+    public static SimpleOverlayRenderer ENERGY_IN = new SimpleOverlayRenderer("overlay/machine/overlay_energy_in");
+    public static SimpleOverlayRenderer ENERGY_OUT_MULTI = new SimpleOverlayRenderer("overlay/machine/overlay_energy_out_multi");
+    public static SimpleOverlayRenderer ENERGY_IN_MULTI = new SimpleOverlayRenderer("overlay/machine/overlay_energy_in_multi");
+
+    public static SimpleOverlayRenderer CONVEYOR_OVERLAY = new SimpleOverlayRenderer("cover/overlay_conveyor");
 
     static {
         for(int i = 0; i < VOLTAGE_CASINGS.length; i++) {

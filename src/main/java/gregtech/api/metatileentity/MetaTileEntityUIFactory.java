@@ -1,10 +1,12 @@
 package gregtech.api.metatileentity;
 
+import gregtech.api.GTValues;
 import gregtech.api.gui.ModularUI;
 import gregtech.api.gui.UIFactory;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.network.PacketBuffer;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -17,7 +19,7 @@ public class MetaTileEntityUIFactory extends UIFactory<MetaTileEntityHolder> {
     private MetaTileEntityUIFactory() {}
 
     public void init() {
-        UIFactory.FACTORY_REGISTRY.register(0, "meta_tile_entity_factory", this);
+        UIFactory.FACTORY_REGISTRY.register(0, new ResourceLocation(GTValues.MODID, "meta_tile_entity_factory"), this);
     }
 
     @Override

@@ -13,6 +13,7 @@ import gregtech.api.render.Textures;
 import gregtech.common.blocks.BlockMetalCasing.MetalCasingType;
 import gregtech.common.blocks.MetaBlocks;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.util.ResourceLocation;
 
 public class MetaTileEntityImplosionCompressor extends RecipeMapMultiblockController {
 
@@ -20,7 +21,7 @@ public class MetaTileEntityImplosionCompressor extends RecipeMapMultiblockContro
         MultiblockAbility.IMPORT_ITEMS, MultiblockAbility.EXPORT_ITEMS, MultiblockAbility.INPUT_ENERGY
     };
 
-    public MetaTileEntityImplosionCompressor(String metaTileEntityId) {
+    public MetaTileEntityImplosionCompressor(ResourceLocation metaTileEntityId) {
         super(metaTileEntityId, RecipeMaps.IMPLOSION_RECIPES);
     }
 

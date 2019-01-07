@@ -13,6 +13,7 @@ import gregtech.api.render.Textures;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.AxisAlignedBB;
 
 import java.util.List;
@@ -23,7 +24,7 @@ public class MetaTileEntityTeslaCoil extends MetaTileEntity {
 
     private IEnergyContainer energyContainer;
 
-    public MetaTileEntityTeslaCoil(String metaTileEntityId) {
+    public MetaTileEntityTeslaCoil(ResourceLocation metaTileEntityId) {
         super(metaTileEntityId);
         this.energyContainer = new EnergyContainerHandler(this,
             256000L, Long.MAX_VALUE, Long.MAX_VALUE, 0L, 0L);

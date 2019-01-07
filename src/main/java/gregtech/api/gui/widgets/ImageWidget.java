@@ -20,7 +20,7 @@ public class ImageWidget extends Widget {
     private boolean isVisible = true;
 
     public ImageWidget(int xPosition, int yPosition, int width, int height) {
-        super(SLOT_DRAW_PRIORITY + 100);
+        super();
         this.xPosition = xPosition;
         this.yPosition = yPosition;
         this.width = width;
@@ -28,7 +28,7 @@ public class ImageWidget extends Widget {
     }
 
     public ImageWidget(int xPosition, int yPosition, int width, int height, TextureArea area) {
-        super(SLOT_DRAW_PRIORITY + 100);
+        super();
         this.xPosition = xPosition;
         this.yPosition = yPosition;
         this.width = width;

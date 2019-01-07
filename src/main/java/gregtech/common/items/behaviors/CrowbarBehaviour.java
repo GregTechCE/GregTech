@@ -1,6 +1,8 @@
 package gregtech.common.items.behaviors;
 
+import gregtech.api.block.machines.BlockMachine;
 import gregtech.api.items.metaitem.stats.IItemBehaviour;
+import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.util.GTUtility;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockRailBase;
@@ -24,40 +26,63 @@ public class CrowbarBehaviour implements IItemBehaviour {
     @Override
     public EnumActionResult onItemUseFirst(EntityPlayer player, World world, BlockPos blockPos, EnumFacing side, float hitX, float hitY, float hitZ, EnumHand hand) {
         ItemStack stack = player.getHeldItem(hand);
-
-        if (!world.isAirBlock(blockPos) && !world.isRemote) {
-            IBlockState blockState = world.getBlockState(blockPos);
-            if (blockState.getBlock() instanceof BlockRailBase) {
-                if (player.isSneaking()) {
-                    if (world.canMineBlockBody(player, blockPos)) {
-                        if (blockState.getBlock().canHarvestBlock(world, blockPos, player)) {
-                            if (GTUtility.doDamageItem(stack, cost / 2, false)) {
-                                for (ItemStack drops : blockState.getBlock().getDrops(world, blockPos, blockState, 0)) {
-                                    Block.spawnAsEntity(world, blockPos, drops);
-                                }
-                                blockState.getBlock().onBlockDestroyedByPlayer(world, blockPos, blockState);
-                                blockState.getBlock().onBlockHarvested(world, blockPos, blockState, player);
-                                blockState.getBlock().breakBlock(world, blockPos, blockState);
-                                world.setBlockToAir(blockPos);
-                                return EnumActionResult.SUCCESS;
-                            }
-                        }
+        IBlockState blockState = world.getBlockState(blockPos);
+        if (GTUtility.doDamageItem(stack, cost, true)) {
+            if(blockState.getBlock() instanceof BlockRailBase) {
+                if(world.isRemote) {
+                    //always return success on client side
+                    return EnumActionResult.SUCCESS;
+                } else if(player.isSneaking()) {
+                    if(tryBreakRailBlock(blockState, world, blockPos, player)) {
+                        GTUtility.doDamageItem(stack, cost, false);
+                        return EnumActionResult.SUCCESS;
                     }
+                    return EnumActionResult.FAIL;
                 } else {
-                    if (GTUtility.doDamageItem(stack, cost, false)) {
-                        BlockRailBase blockRailBase = (BlockRailBase) blockState.getBlock();
-                        int rotation = blockState.getValue(blockRailBase.getShapeProperty()).ordinal() + 1;
-                        if (rotation >= BlockRailBase.EnumRailDirection.values().length) {
-                            rotation = 0;
-                        }
-                        if (world.setBlockState(blockPos, blockState.withProperty(blockRailBase.getShapeProperty(), BlockRailBase.EnumRailDirection.values()[rotation]))) {
-                            return EnumActionResult.SUCCESS;
-                        }
-                        return EnumActionResult.FAIL;
+                    if(tryRotateRailBlock(blockState, world, blockPos)) {
+                        GTUtility.doDamageItem(stack, cost, false);
+                        return EnumActionResult.SUCCESS;
                     }
+                    return EnumActionResult.FAIL;
                 }
+            }
+            MetaTileEntity metaTileEntity = BlockMachine.getMetaTileEntity(world, blockPos);
+            if(metaTileEntity != null && metaTileEntity.getCoverAtSide(side) != null) {
+                if(world.isRemote) {
+                    //always return success on client side
+                    return EnumActionResult.SUCCESS;
+                }
+                boolean result = metaTileEntity.removeCover(side);
+                GTUtility.doDamageItem(stack, cost, false);
+                return result ? EnumActionResult.SUCCESS : EnumActionResult.PASS;
             }
         }
         return EnumActionResult.PASS;
     }
+
+    private boolean tryBreakRailBlock(IBlockState blockState, World world, BlockPos blockPos, EntityPlayer player) {
+        if (world.canMineBlockBody(player, blockPos) && blockState.getBlock().canHarvestBlock(world, blockPos, player)) {
+            for (ItemStack drops : blockState.getBlock().getDrops(world, blockPos, blockState, 0)) {
+                Block.spawnAsEntity(world, blockPos, drops);
+            }
+            blockState.getBlock().onBlockDestroyedByPlayer(world, blockPos, blockState);
+            blockState.getBlock().onBlockHarvested(world, blockPos, blockState, player);
+            blockState.getBlock().breakBlock(world, blockPos, blockState);
+            world.setBlockToAir(blockPos);
+            return true;
+        }
+        return false;
+    }
+
+    private boolean tryRotateRailBlock(IBlockState blockState, World world, BlockPos blockPos) {
+        BlockRailBase blockRailBase = (BlockRailBase) blockState.getBlock();
+        int rotation = blockState.getValue(blockRailBase.getShapeProperty()).ordinal() + 1;
+        if (rotation >= BlockRailBase.EnumRailDirection.values().length) {
+            rotation = 0;
+        }
+        return world.setBlockState(blockPos, blockState.withProperty(blockRailBase.getShapeProperty(),
+            BlockRailBase.EnumRailDirection.values()[rotation]));
+    }
+
+
 }

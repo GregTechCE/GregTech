@@ -239,7 +239,8 @@ public final class MetaItems {
     public static MetaItem<?>.MetaValueItem UPGRADE_MUFFLER;
     public static MetaItem<?>.MetaValueItem UPGRADE_LOCK;
 
-    public static MetaItem<?>.MetaValueItem COMPONENT_FILTER;
+    public static MetaItem<?>.MetaValueItem ITEM_FILTER;
+    public static MetaItem<?>.MetaValueItem ORE_DICTIONARY_FILTER;
 
     public static MetaItem<?>.MetaValueItem COVER_CONTROLLER;
     public static MetaItem<?>.MetaValueItem COVER_ACTIVITY_DETECTOR;

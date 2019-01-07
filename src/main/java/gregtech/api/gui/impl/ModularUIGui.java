@@ -35,9 +35,10 @@ public class ModularUIGui extends GuiContainer {
 
     @Override
     public void initGui() {
-        xSize = modularUI.width;
-        ySize = modularUI.height;
+        this.xSize = modularUI.getWidth();
+        this.ySize = modularUI.getHeight();
         super.initGui();
+        this.modularUI.updateScreenSize(width, height);
     }
 
     @Override
@@ -59,9 +60,9 @@ public class ModularUIGui extends GuiContainer {
     public void handleWidgetUpdate(PacketUIWidgetUpdate packet) {
         if(packet.windowId == inventorySlots.windowId) {
             Widget widget = modularUI.guiWidgets.get(packet.widgetId);
-            int discriminator = packet.updateData.readInt();
+            int updateId = packet.updateData.readVarInt();
             if(widget != null) {
-                widget.readUpdateInfo(discriminator, packet.updateData);
+                widget.readUpdateInfo(updateId, packet.updateData);
             }
         }
     }
@@ -76,13 +77,12 @@ public class ModularUIGui extends GuiContainer {
     @Override
     //for foreground gl state is already translated
     protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
-        modularUI.guiWidgets.values().stream().sorted()
-            .forEach(widget -> {
-                GlStateManager.pushMatrix();
-                GlStateManager.color(1.0f, 1.0f, 1.0f);
-                widget.drawInForeground(mouseX - guiLeft, mouseY - guiTop);
-                GlStateManager.popMatrix();
-            });
+        modularUI.guiWidgets.values().forEach(widget -> {
+            GlStateManager.pushMatrix();
+            GlStateManager.color(1.0f, 1.0f, 1.0f);
+            widget.drawInForeground(mouseX - guiLeft, mouseY - guiTop);
+            GlStateManager.popMatrix();
+        });
     }
 
     @Override
@@ -91,13 +91,12 @@ public class ModularUIGui extends GuiContainer {
         GlStateManager.pushMatrix();
         GlStateManager.translate(guiLeft, guiTop, 0.0);
         modularUI.backgroundPath.draw(0, 0, xSize, ySize);
-        modularUI.guiWidgets.values().stream().sorted()
-                .forEach(widget -> {
-                    GlStateManager.pushMatrix();
-                    GlStateManager.color(1.0f, 1.0f, 1.0f);
-                    widget.drawInBackground(mouseX - guiLeft, mouseY - guiTop);
-                    GlStateManager.popMatrix();
-                });
+        modularUI.guiWidgets.values().forEach(widget -> {
+            GlStateManager.pushMatrix();
+            GlStateManager.color(1.0f, 1.0f, 1.0f);
+            widget.drawInBackground(mouseX - guiLeft, mouseY - guiTop);
+            GlStateManager.popMatrix();
+        });
         GlStateManager.popMatrix();
     }
 

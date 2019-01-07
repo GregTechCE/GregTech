@@ -6,9 +6,6 @@ import codechicken.lib.render.pipeline.ColourMultiplier;
 import codechicken.lib.render.pipeline.IVertexOperation;
 import codechicken.lib.vec.Cuboid6;
 import codechicken.lib.vec.Matrix4;
-import codechicken.lib.vec.Rotation;
-import codechicken.lib.vec.Vector3;
-import gregtech.api.GTValues;
 import gregtech.api.gui.GuiTextures;
 import gregtech.api.gui.ModularUI;
 import gregtech.api.gui.ModularUI.Builder;
@@ -22,11 +19,12 @@ import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumFacing;
 import net.minecraft.util.NonNullList;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.items.ItemHandlerHelper;
 import net.minecraftforge.items.ItemStackHandler;
 import org.apache.commons.lang3.ArrayUtils;
 
@@ -41,7 +39,7 @@ public class MetaTileEntityChest extends MetaTileEntity {
     private final int inventorySize;
     private ItemStackHandler inventory;
 
-    public MetaTileEntityChest(String metaTileEntityId, SolidMaterial material, int inventorySize) {
+    public MetaTileEntityChest(ResourceLocation metaTileEntityId, SolidMaterial material, int inventorySize) {
         super(metaTileEntityId);
         this.material = material;
         this.inventorySize = inventorySize;
@@ -89,7 +87,7 @@ public class MetaTileEntityChest extends MetaTileEntity {
 
     @Override
     public int getComparatorValue() {
-        return GTUtility.calcRedstoneFromItemHandler(inventory);
+        return ItemHandlerHelper.calcRedstoneFromInventory(inventory);
     }
 
     @Override
@@ -120,13 +118,6 @@ public class MetaTileEntityChest extends MetaTileEntity {
                 GTUtility.convertRGBtoOpaqueRGBA_CL(getPaintingColorForRendering())));
             Textures.METAL_CHEST.render(renderState, translation, ArrayUtils.add(pipeline, multiplier), getFrontFacing());
         }
-        Cuboid6 myBounds = new Cuboid6(0.0, 0.0 / 16.0, 0.0, 1.0, 1.0 / 16.0, 8 / 16.0);
-        myBounds.apply(Rotation.sideOrientation(EnumFacing.SOUTH.getIndex(), 0).at(Vector3.center));
-        Textures.VOLTAGE_CASINGS[GTValues.LV].render(renderState, translation, pipeline, myBounds);
-
-        Cuboid6 myBounds1 = new Cuboid6(0.0, 0.0 / 16.0, 0.0, 1.0, 1.0 / 16.0, 8 / 16.0);
-        myBounds1.apply(Rotation.sideOrientation(EnumFacing.WEST.getIndex(), 0).at(Vector3.center));
-        Textures.VOLTAGE_CASINGS[GTValues.LV].render(renderState, translation, pipeline, myBounds1);
     }
 
     @Override

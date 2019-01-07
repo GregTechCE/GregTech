@@ -7,6 +7,7 @@ import net.minecraft.item.EnumDyeColor;
 
 public class MarkerMaterials {
 
+    @SuppressWarnings("ResultOfMethodCallIgnored")
     public static void register() {
         Color.Colorless.toString();
         Tier.Primitive.toString();

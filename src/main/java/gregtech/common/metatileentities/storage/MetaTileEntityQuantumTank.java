@@ -23,6 +23,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.NonNullList;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
@@ -45,7 +46,7 @@ public class MetaTileEntityQuantumTank extends MetaTileEntity {
     private FluidTank fluidTank;
     private final ItemStackHandler containerInventory;
 
-    public MetaTileEntityQuantumTank(String metaTileEntityId, int tier, int maxFluidCapacity) {
+    public MetaTileEntityQuantumTank(ResourceLocation metaTileEntityId, int tier, int maxFluidCapacity) {
         super(metaTileEntityId);
         this.tier = tier;
         this.maxFluidCapacity = maxFluidCapacity;

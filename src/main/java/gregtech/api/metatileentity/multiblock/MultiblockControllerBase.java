@@ -16,6 +16,7 @@ import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.ResourceLocation;
 import org.apache.commons.lang3.ArrayUtils;
 
 import java.util.*;
@@ -30,7 +31,7 @@ public abstract class MultiblockControllerBase extends MetaTileEntity {
     private final List<IMultiblockPart> multiblockParts = new ArrayList<>();
     private boolean structureFormed;
 
-    public MultiblockControllerBase(String metaTileEntityId) {
+    public MultiblockControllerBase(ResourceLocation metaTileEntityId) {
         super(metaTileEntityId);
         reinitializeStructurePattern();
     }

@@ -11,6 +11,7 @@ import gregtech.api.metatileentity.TieredMetaTileEntity;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.items.IItemHandlerModifiable;
 import net.minecraftforge.items.ItemStackHandler;
@@ -23,7 +24,7 @@ public class MetaTileEntityCharger extends TieredMetaTileEntity {
 
     private final int inventorySize;
 
-    public MetaTileEntityCharger(String metaTileEntityId, int tier, int inventorySize) {
+    public MetaTileEntityCharger(ResourceLocation metaTileEntityId, int tier, int inventorySize) {
         super(metaTileEntityId, tier);
         this.inventorySize = inventorySize;
         initializeInventory();

@@ -7,7 +7,7 @@ import gregtech.api.capability.impl.EnergyContainerHandler;
 import gregtech.api.capability.impl.FluidHandlerProxy;
 import gregtech.api.gui.GuiTextures;
 import gregtech.api.gui.ModularUI;
-import gregtech.api.gui.widgets.ButtonWidget;
+import gregtech.api.gui.widgets.ToggleButtonWidget;
 import gregtech.api.gui.widgets.DischargerSlotWidget;
 import gregtech.api.gui.widgets.ImageWidget;
 import gregtech.api.gui.widgets.LabelWidget;
@@ -21,6 +21,7 @@ import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.NonNullList;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
@@ -38,7 +39,7 @@ public class SimpleMachineMetaTileEntity extends WorkableTieredMetaTileEntity {
     private boolean autoOutputItems;
     private boolean autoOutputFluids;
 
-    public SimpleMachineMetaTileEntity(String metaTileEntityId, RecipeMap<?> recipeMap, OrientedOverlayRenderer renderer, int tier) {
+    public SimpleMachineMetaTileEntity(ResourceLocation metaTileEntityId, RecipeMap<?> recipeMap, OrientedOverlayRenderer renderer, int tier) {
         super(metaTileEntityId, recipeMap, renderer, tier);
         this.chargerInventory = new ItemStackHandler(1) {
             @Override
@@ -274,12 +275,12 @@ public class SimpleMachineMetaTileEntity extends WorkableTieredMetaTileEntity {
 
         int buttonStartX = 7;
         if(exportItems.getSlots() > 0) {
-            builder.widget(new ButtonWidget(buttonStartX, 62, 18, 18,
+            builder.widget(new ToggleButtonWidget(buttonStartX, 62, 18, 18,
                 GuiTextures.BUTTON_ITEM_OUTPUT, this::isAutoOutputItems, this::setAutoOutputItems));
             buttonStartX += 18;
         }
         if(exportFluids.getTanks() > 0) {
-            builder.widget(new ButtonWidget(buttonStartX, 62, 18, 18,
+            builder.widget(new ToggleButtonWidget(buttonStartX, 62, 18, 18,
                 GuiTextures.BUTTON_FLUID_OUTPUT, this::isAutoOutputFluids, this::setAutoOutputFluids));
         }
         return builder;

@@ -16,7 +16,6 @@ import gregtech.api.unification.material.type.Material;
 import gregtech.api.unification.material.type.SolidMaterial;
 import gregtech.api.unification.ore.OrePrefix;
 import gregtech.api.unification.ore.StoneType;
-import gregtech.api.unification.ore.StoneTypes;
 import gregtech.common.blocks.foam.BlockFoam;
 import gregtech.common.blocks.foam.BlockPetrifiedFoam;
 import gregtech.common.blocks.modelfactories.BakedModelHandler;
@@ -58,6 +57,7 @@ import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import org.apache.commons.lang3.ArrayUtils;
 
 import java.util.*;
 import java.util.Map.Entry;
@@ -250,18 +250,22 @@ public class MetaBlocks {
 
     private static void createOreBlock(DustMaterial material) {
         StoneType[] stoneTypeBuffer = new StoneType[16];
-        Arrays.fill(stoneTypeBuffer, StoneTypes._NULL);
         int generationIndex = 0;
         for (StoneType stoneType : StoneType.STONE_TYPE_REGISTRY) {
             int id = StoneType.STONE_TYPE_REGISTRY.getIDForObject(stoneType), index = id / 16;
             if (index > generationIndex) {
-                createOreBlock(material, stoneTypeBuffer, generationIndex);
-                Arrays.fill(stoneTypeBuffer, StoneTypes._NULL);
+                createOreBlock(material, copyNotNull(stoneTypeBuffer), generationIndex);
+                Arrays.fill(stoneTypeBuffer, null);
             }
             stoneTypeBuffer[id % 16] = stoneType;
             generationIndex = index;
         }
-        createOreBlock(material, stoneTypeBuffer, generationIndex);
+        createOreBlock(material, copyNotNull(stoneTypeBuffer), generationIndex);
+    }
+
+    private static <T> T[] copyNotNull(T[] src) {
+        int nullIndex = ArrayUtils.indexOf(src, null);
+        return Arrays.copyOfRange(src, 0, nullIndex == -1 ? src.length : nullIndex);
     }
 
     private static void createOreBlock(DustMaterial material, StoneType[] stoneTypes, int index) {
@@ -414,7 +418,7 @@ public class MetaBlocks {
         for(BlockOre blockOre : ORES) {
             DustMaterial material = blockOre.material;
             for(StoneType stoneType : blockOre.STONE_TYPE.getAllowedValues()) {
-                if(stoneType == StoneTypes._NULL) continue;
+                if(stoneType == null) continue;
                 ItemStack normalStack = blockOre.getItem(blockOre.getDefaultState()
                     .withProperty(blockOre.STONE_TYPE, stoneType));
                 OreDictUnifier.registerOre(normalStack, stoneType.processingPrefix, material);

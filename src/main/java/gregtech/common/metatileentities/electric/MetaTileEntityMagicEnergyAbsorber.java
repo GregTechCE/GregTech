@@ -25,6 +25,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EntitySelectors;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.WorldProviderEnd;
@@ -43,7 +44,7 @@ public class MetaTileEntityMagicEnergyAbsorber extends TieredMetaTileEntity {
     private boolean hasDragonEggAmplifier = false;
     private boolean isActive = false;
 
-    public MetaTileEntityMagicEnergyAbsorber(String metaTileEntityId) {
+    public MetaTileEntityMagicEnergyAbsorber(ResourceLocation metaTileEntityId) {
         super(metaTileEntityId, GTValues.EV);
     }
 

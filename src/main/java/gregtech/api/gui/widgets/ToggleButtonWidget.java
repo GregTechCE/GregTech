@@ -1,6 +1,9 @@
 package gregtech.api.gui.widgets;
 
+import com.google.common.base.Preconditions;
+import gregtech.api.gui.GuiTextures;
 import gregtech.api.gui.Widget;
+import gregtech.api.gui.resources.SizedTextureArea;
 import gregtech.api.gui.resources.TextureArea;
 import gregtech.api.util.function.BooleanConsumer;
 import net.minecraft.network.PacketBuffer;
@@ -9,7 +12,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.function.BooleanSupplier;
 
-public class ButtonWidget extends Widget {
+public class ToggleButtonWidget extends Widget {
 
     protected int xPosition;
     protected int yPosition;
@@ -17,11 +20,16 @@ public class ButtonWidget extends Widget {
     protected TextureArea buttonTexture;
     private BooleanSupplier isPressedCondition;
     private BooleanConsumer setPressedExecutor;
-    private boolean isPressed;
+    protected boolean isPressed;
 
-    public ButtonWidget(int xPosition, int yPosition, int width, int height, TextureArea buttonTexture,
-                        BooleanSupplier isPressedCondition, BooleanConsumer setPressedExecutor) {
-        super(Widget.SLOT_DRAW_PRIORITY + 100);
+    public ToggleButtonWidget(int xPosition, int yPosition, int width, int height, BooleanSupplier isPressedCondition, BooleanConsumer setPressedExecutor) {
+        this(xPosition, yPosition, width, height, GuiTextures.VANILLA_BUTTON, isPressedCondition, setPressedExecutor);
+    }
+
+    public ToggleButtonWidget(int xPosition, int yPosition, int width, int height, TextureArea buttonTexture,
+                              BooleanSupplier isPressedCondition, BooleanConsumer setPressedExecutor) {
+        super();
+        Preconditions.checkNotNull(buttonTexture, "texture");
         this.xPosition = xPosition;
         this.yPosition = yPosition;
         this.width = width;
@@ -31,13 +39,19 @@ public class ButtonWidget extends Widget {
         this.setPressedExecutor = setPressedExecutor;
     }
 
+    public ToggleButtonWidget setButtonTexture(TextureArea texture) {
+        Preconditions.checkNotNull(texture, "texture");
+        this.buttonTexture = texture;
+        return this;
+    }
+
     @Override
     @SideOnly(Side.CLIENT)
     public void drawInBackground(int mouseX, int mouseY) {
-        if(!this.isPressed) {
-            buttonTexture.drawSubArea(xPosition, yPosition, width, height, 0.0, 0.0, 1.0, 0.5);
+        if(buttonTexture instanceof SizedTextureArea) {
+            ((SizedTextureArea) buttonTexture).drawHorizontalCutSubArea(xPosition, yPosition, width, height, isPressed ? 0.5 : 0.0, 0.5);
         } else {
-            buttonTexture.drawSubArea(xPosition, yPosition, width, height, 0.0, 0.5, 1.0, 0.5);
+            buttonTexture.drawSubArea(xPosition, yPosition, width, height, 0.0, isPressed ? 0.5 : 0.0, 1.0, 0.5);
         }
     }
 
@@ -62,9 +76,10 @@ public class ButtonWidget extends Widget {
     @SideOnly(Side.CLIENT)
     public void mouseClicked(int mouseX, int mouseY, int button) {
         super.mouseClicked(mouseX, mouseY, button);
-        if(mouseX >= xPosition && mouseY >= yPosition &&
-            xPosition + width >= mouseX && yPosition + height >= mouseY) {
-            writeClientAction(1, buf -> buf.writeBoolean(!isPressed));
+        if(isMouseOver(xPosition, yPosition, width, height, mouseX, mouseY)) {
+            this.isPressed = !this.isPressed;
+            writeClientAction(1, buf -> buf.writeBoolean(isPressed));
+            playButtonClickSound();
         }
     }
 
@@ -74,7 +89,6 @@ public class ButtonWidget extends Widget {
         super.handleClientAction(id, buffer);
         if(id == 1) {
             this.isPressed = buffer.readBoolean();
-            writeUpdateInfo(1, buf -> buf.writeBoolean(isPressed));
             setPressedExecutor.apply(isPressed);
         }
     }

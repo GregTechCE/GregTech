@@ -7,14 +7,10 @@
   "logoFile": "/assets/gregtech/textures/gt_logo_long.png",
   "url": "https://minecraft.curseforge.com/projects/gregtechce",
   "authorList": [
-      "Gregorius Techneticies",
-      "Exidex",
       "Archengius",
-      "Techlone",
-      "Quantum64",
-      "Alkalus",
+      "Exidex",
       "SuperCoder79"
   ],
-  "credits": "GregoriusT for making GregTech, Archengius for porting GT5U to 1.10, and the amazing members of the GT community who made this possible :D",
+  "credits": "GregoriusT for making GregTech and textures, various GT community members for help in development.",
   "dependencies": ["codechickenlib"]
 }]

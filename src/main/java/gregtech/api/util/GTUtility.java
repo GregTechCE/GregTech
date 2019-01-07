@@ -39,7 +39,6 @@ import net.minecraft.util.NonNullList;
 import net.minecraft.util.Tuple;
 import net.minecraft.util.WeightedRandom;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.common.BiomeDictionary;
@@ -55,7 +54,6 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.IItemHandlerModifiable;
 
-import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.awt.*;
 import java.lang.reflect.Field;
@@ -63,8 +61,8 @@ import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.math.BigInteger;
-import java.util.*;
 import java.util.List;
+import java.util.*;
 import java.util.Map.Entry;
 import java.util.function.Predicate;
 
@@ -663,20 +661,6 @@ public class GTUtility {
             return true;
         }
         return false;
-    }
-
-    public static int calcRedstoneFromItemHandler(@Nonnull IItemHandler itemHandler) {
-        int i = 0;
-        float f = 0.0F;
-        for (int j = 0; j < itemHandler.getSlots(); ++j) {
-            ItemStack itemstack = itemHandler.getStackInSlot(j);
-            if (!itemstack.isEmpty()) {
-                f += (float) itemstack.getCount() / (float) Math.min(itemHandler.getSlotLimit(j), itemstack.getMaxStackSize());
-                ++i;
-            }
-        }
-        f = f / (float) itemHandler.getSlots();
-        return MathHelper.floor(f * 14.0F) + (i > 0 ? 1 : 0);
     }
 
     public static <T> boolean iterableContains(Iterable<T> list, Predicate<T> predicate) {

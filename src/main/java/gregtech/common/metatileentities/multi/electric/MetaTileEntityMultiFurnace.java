@@ -20,6 +20,7 @@ import gregtech.common.blocks.BlockWireCoil.CoilType;
 import gregtech.common.blocks.MetaBlocks;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraftforge.items.IItemHandlerModifiable;
@@ -37,7 +38,7 @@ public class MetaTileEntityMultiFurnace extends RecipeMapMultiblockController {
     protected int heatingCoilLevel;
     protected int heatingCoilDiscount;
 
-    public MetaTileEntityMultiFurnace(String metaTileEntityId) {
+    public MetaTileEntityMultiFurnace(ResourceLocation metaTileEntityId) {
         super(metaTileEntityId, RecipeMaps.FURNACE_RECIPES);
         this.recipeMapWorkable = new MultiFurnaceWorkable(this);
     }

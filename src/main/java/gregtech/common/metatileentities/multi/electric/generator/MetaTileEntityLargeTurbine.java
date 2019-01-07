@@ -18,6 +18,7 @@ import gregtech.common.blocks.BlockTurbineCasing.TurbineCasingType;
 import gregtech.common.blocks.MetaBlocks;
 import gregtech.common.metatileentities.electric.multiblockpart.MetaTileEntityRotorHolder;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.Style;
 import net.minecraft.util.text.TextComponentTranslation;
@@ -54,7 +55,7 @@ public class MetaTileEntityLargeTurbine extends FueledMultiblockController {
     public final TurbineType turbineType;
     public IFluidHandler exportFluidHandler;
 
-    public MetaTileEntityLargeTurbine(String metaTileEntityId, TurbineType turbineType) {
+    public MetaTileEntityLargeTurbine(ResourceLocation metaTileEntityId, TurbineType turbineType) {
         super(metaTileEntityId, turbineType.recipeMap, GTValues.V[4]);
         this.turbineType = turbineType;
         reinitializeStructurePattern();

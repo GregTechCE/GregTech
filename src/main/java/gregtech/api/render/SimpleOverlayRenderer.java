@@ -28,7 +28,7 @@ public class SimpleOverlayRenderer implements IIconRegister {
     @Override
     @SideOnly(Side.CLIENT)
     public void registerIcons(TextureMap textureMap) {
-        this.sprite = textureMap.registerSprite(new ResourceLocation(GTValues.MODID, "blocks/overlay/" + basePath));
+        this.sprite = textureMap.registerSprite(new ResourceLocation(GTValues.MODID, "blocks/" + basePath));
     }
 
     public void renderSided(EnumFacing side, Cuboid6 bounds, CCRenderState renderState, IVertexOperation[] pipeline, Matrix4 translation) {

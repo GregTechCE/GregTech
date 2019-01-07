@@ -16,6 +16,7 @@ import gregtech.api.render.Textures;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
@@ -26,7 +27,7 @@ public class MetaTileEntityEnergyHatch extends MetaTileEntityMultiblockPart impl
     private final boolean isExportHatch;
     private final IEnergyContainer energyContainer;
 
-    public MetaTileEntityEnergyHatch(String metaTileEntityId, int tier, boolean isExportHatch) {
+    public MetaTileEntityEnergyHatch(ResourceLocation metaTileEntityId, int tier, boolean isExportHatch) {
         super(metaTileEntityId, tier);
         this.isExportHatch = isExportHatch;
         if(isExportHatch) {

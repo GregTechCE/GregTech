@@ -8,8 +8,6 @@ import gregtech.api.unification.ore.OrePrefix;
 import gregtech.api.unification.stack.UnificationEntry;
 import gregtech.api.util.GTLog;
 import gregtech.common.ConfigHolder;
-import gregtech.common.blocks.BlockBoilerCasing.BoilerCasingType;
-import gregtech.common.blocks.BlockFireboxCasing.FireboxCasingType;
 import gregtech.common.blocks.MetaBlocks;
 import gregtech.common.blocks.wood.BlockGregLog.LogVariant;
 import gregtech.common.items.MetaItems;
@@ -31,12 +29,6 @@ public class CraftingRecipeLoader {
     }
 
     private static void loadCraftingRecipes() {
-        //TODO cleanup in next major update
-        ModHandler.addShapelessRecipe("convert_bronze_firebox", MetaBlocks.BOILER_FIREBOX_CASING.getItemVariant(FireboxCasingType.BRONZE_FIREBOX), MetaBlocks.BOILER_CASING.getItemVariant(BoilerCasingType.__LEGACY_BRONZE_FIREBOX));
-        ModHandler.addShapelessRecipe("convert_steel_firebox", MetaBlocks.BOILER_FIREBOX_CASING.getItemVariant(FireboxCasingType.STEEL_FIREBOX), MetaBlocks.BOILER_CASING.getItemVariant(BoilerCasingType.__LEGACY_STEEL_FIREBOX));
-        ModHandler.addShapelessRecipe("convert_titanium_firebox", MetaBlocks.BOILER_FIREBOX_CASING.getItemVariant(FireboxCasingType.TITANIUM_FIREBOX), MetaBlocks.BOILER_CASING.getItemVariant(BoilerCasingType.__LEGACY_TITANIUM_FIREBOX));
-        ModHandler.addShapelessRecipe("convert_tungstensteel_firebox", MetaBlocks.BOILER_FIREBOX_CASING.getItemVariant(FireboxCasingType.TUNGSTENSTEEL_FIREBOX), MetaBlocks.BOILER_CASING.getItemVariant(BoilerCasingType.__LEGACY_TUNGSTENSTEEL_FIREBOX));
-
         ModHandler.addSmeltingRecipe(new UnificationEntry(OrePrefix.nugget, Materials.Iron), OreDictUnifier.get(OrePrefix.nugget, Materials.WroughtIron));
         ModHandler.addShapedRecipe("primitive_circuit", MetaItems.CIRCUIT_PRIMITIVE.getStackForm(), "SR", "RT", 'S', new UnificationEntry(OrePrefix.plate, Materials.Steel), 'R', new UnificationEntry(OrePrefix.wireGtSingle, Materials.RedAlloy), 'T', new UnificationEntry(OrePrefix.wireGtSingle, Materials.Tin));
         ModHandler.addShapedRecipe("basic_circuit", MetaItems.CIRCUIT_BASIC.getStackForm(), "XXX", "NPN", "XXX", 'P', new UnificationEntry(OrePrefix.plate, Materials.Steel), 'N', new UnificationEntry(OrePrefix.circuit, Tier.Primitive), 'X', new UnificationEntry(OrePrefix.cableGtSingle, Materials.Copper));

@@ -4,6 +4,8 @@ public interface IUIHolder {
 
     boolean isValid();
 
+    boolean isRemote();
+
     void markAsDirty();
 
 }

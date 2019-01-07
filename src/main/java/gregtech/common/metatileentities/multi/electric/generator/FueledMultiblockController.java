@@ -15,6 +15,7 @@ import gregtech.api.metatileentity.multiblock.MultiblockWithDisplayBase;
 import gregtech.api.multiblock.PatternMatchContext;
 import gregtech.api.recipes.machines.FuelRecipeMap;
 import gregtech.api.render.Textures;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentTranslation;
 
@@ -28,7 +29,7 @@ public abstract class FueledMultiblockController extends MultiblockWithDisplayBa
     protected IEnergyContainer energyContainer;
     protected IMultipleTankHandler importFluidHandler;
 
-    public FueledMultiblockController(String metaTileEntityId, FuelRecipeMap recipeMap, long maxVoltage) {
+    public FueledMultiblockController(ResourceLocation metaTileEntityId, FuelRecipeMap recipeMap, long maxVoltage) {
         super(metaTileEntityId);
         this.recipeMap = recipeMap;
         this.workableHandler = createWorkable(maxVoltage);

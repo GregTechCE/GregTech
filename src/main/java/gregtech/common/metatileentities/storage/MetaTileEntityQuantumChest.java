@@ -19,6 +19,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentString;
@@ -41,7 +42,7 @@ public class MetaTileEntityQuantumChest extends MetaTileEntity {
     private ItemStack itemStack = ItemStack.EMPTY;
     private long itemsStoredInside = 0L;
 
-    public MetaTileEntityQuantumChest(String metaTileEntityId, int tier, long maxStoredItems) {
+    public MetaTileEntityQuantumChest(ResourceLocation metaTileEntityId, int tier, long maxStoredItems) {
         super(metaTileEntityId);
         this.tier = tier;
         this.maxStoredItems = maxStoredItems;

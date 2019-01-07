@@ -20,7 +20,7 @@ public class SceneRenderWidget extends Widget {
     public SceneRenderWidget(int posX, int posY, int width, int height, Map<BlockPos, BlockInfo> renderedBlocks) {
         //we have to be drawn last because we don't restore modelview matrix completely -
         //we just revert it to identity state, while ContainerModularUI does translation to guiLeft; guiTop
-        super(Integer.MAX_VALUE);
+        super();
         this.worldSceneRenderer = new WorldSceneRenderer(renderedBlocks);
         this.posX = posX;
         this.posY = posY;
@@ -31,8 +31,8 @@ public class SceneRenderWidget extends Widget {
     @Override
     public void drawInForeground(int mouseX, int mouseY) {
         ScaledResolution resolution = new ScaledResolution(Minecraft.getMinecraft());
-        int cornerX = (resolution.getScaledWidth() - gui.width) / 2;
-        int cornerY = (resolution.getScaledHeight() - gui.height) / 2;
-        //worldSceneRenderer.render(cornerX + posX, cornerY + posY, width, height);
+        int cornerX = (resolution.getScaledWidth() - gui.getWidth()) / 2;
+        int cornerY = (resolution.getScaledHeight() - gui.getHeight()) / 2;
+        worldSceneRenderer.render(cornerX + posX, cornerY + posY, width, height, 0xFFFFFF);
     }
 }

@@ -25,6 +25,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumFacing.Axis;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
@@ -54,7 +55,7 @@ public class MetaTileEntityPump extends TieredMetaTileEntity {
     private boolean initializedQueue = false;
     private int pumpHeadY;
 
-    public MetaTileEntityPump(String metaTileEntityId, int tier) {
+    public MetaTileEntityPump(ResourceLocation metaTileEntityId, int tier) {
         super(metaTileEntityId, tier);
     }
 

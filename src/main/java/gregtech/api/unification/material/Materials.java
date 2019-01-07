@@ -9,19 +9,16 @@ import net.minecraft.init.Enchantments;
 
 import static com.google.common.collect.ImmutableList.of;
 import static gregtech.api.unification.material.type.DustMaterial.MatFlags.*;
-import static gregtech.api.unification.material.type.FluidMaterial.MatFlags.GENERATE_FLUID_BLOCK;
-import static gregtech.api.unification.material.type.FluidMaterial.MatFlags.GENERATE_PLASMA;
-import static gregtech.api.unification.material.type.FluidMaterial.MatFlags.STATE_GAS;
+import static gregtech.api.unification.material.type.FluidMaterial.MatFlags.*;
 import static gregtech.api.unification.material.type.GemMaterial.MatFlags.*;
-import static gregtech.api.unification.material.type.Material.MatFlags.*;
 import static gregtech.api.unification.material.type.IngotMaterial.MatFlags.*;
+import static gregtech.api.unification.material.type.Material.MatFlags.*;
 import static gregtech.api.unification.material.type.SolidMaterial.MatFlags.*;
 
 @SuppressWarnings("WeakerAccess")
 public class Materials {
 
     public static void register() {
-        Materials.Aluminium.toString();
         MarkerMaterials.register();
     }
 
@@ -729,7 +726,6 @@ public class Materials {
 
         Plastic.setFluidPipeProperties(200, 350, true);
         Polytetrafluoroethylene.setFluidPipeProperties(200, 600, true);
-      
     }
 
 }

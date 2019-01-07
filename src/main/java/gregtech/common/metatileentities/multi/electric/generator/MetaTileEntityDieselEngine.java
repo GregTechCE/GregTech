@@ -18,6 +18,7 @@ import gregtech.common.blocks.BlockMultiblockCasing.MultiblockCasingType;
 import gregtech.common.blocks.BlockTurbineCasing.TurbineCasingType;
 import gregtech.common.blocks.MetaBlocks;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraftforge.fluids.FluidStack;
@@ -27,7 +28,7 @@ import java.util.function.Predicate;
 
 public class MetaTileEntityDieselEngine extends FueledMultiblockController {
 
-    public MetaTileEntityDieselEngine(String metaTileEntityId) {
+    public MetaTileEntityDieselEngine(ResourceLocation metaTileEntityId) {
         super(metaTileEntityId, RecipeMaps.DIESEL_GENERATOR_FUELS, GTValues.V[4]);
     }
 

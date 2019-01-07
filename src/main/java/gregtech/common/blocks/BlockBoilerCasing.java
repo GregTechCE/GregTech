@@ -43,20 +43,12 @@ public class BlockBoilerCasing extends VariantBlock<BlockBoilerCasing.BoilerCasi
         }
     }
 
-    //TODO cleanup in next major update
-    @SuppressWarnings("DeprecatedIsStillUsed")
     public enum BoilerCasingType implements IStringSerializable {
 
         BRONZE_PIPE("bronze_pipe"),
         STEEL_PIPE("steel_pipe"),
         TITANIUM_PIPE("titanium_pipe"),
-        TUNGSTENSTEEL_PIPE("tungstensteel_pipe"),
-
-        //TODO cleanup in next major update
-        @Deprecated __LEGACY_BRONZE_FIREBOX("legacy_bronze_firebox"),
-        @Deprecated __LEGACY_STEEL_FIREBOX("legacy_steel_firebox"),
-        @Deprecated __LEGACY_TITANIUM_FIREBOX("legacy_titanium_firebox"),
-        @Deprecated __LEGACY_TUNGSTENSTEEL_FIREBOX("legacy_tungstensteel_firebox");
+        TUNGSTENSTEEL_PIPE("tungstensteel_pipe");
 
         private final String name;
 

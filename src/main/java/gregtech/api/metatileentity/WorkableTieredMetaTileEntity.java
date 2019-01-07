@@ -12,6 +12,7 @@ import gregtech.api.recipes.RecipeMap;
 import gregtech.api.render.OrientedOverlayRenderer;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
@@ -29,7 +30,7 @@ public abstract class WorkableTieredMetaTileEntity extends TieredMetaTileEntity 
     protected final EnergyRecipeMapWorkableHandler workable;
     protected final OrientedOverlayRenderer renderer;
 
-    public WorkableTieredMetaTileEntity(String metaTileEntityId, RecipeMap<?> recipeMap, OrientedOverlayRenderer renderer, int tier) {
+    public WorkableTieredMetaTileEntity(ResourceLocation metaTileEntityId, RecipeMap<?> recipeMap, OrientedOverlayRenderer renderer, int tier) {
         super(metaTileEntityId, tier);
         this.renderer = renderer;
         this.workable = new EnergyRecipeMapWorkableHandler(this, recipeMap, () -> energyContainer);

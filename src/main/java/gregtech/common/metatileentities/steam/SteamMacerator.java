@@ -18,6 +18,7 @@ import gregtech.api.unification.OreDictUnifier;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.Ingredient;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.IFluidTank;
 import net.minecraftforge.items.IItemHandlerModifiable;
 import net.minecraftforge.items.ItemStackHandler;
@@ -25,7 +26,7 @@ import net.minecraftforge.oredict.OreIngredient;
 
 public class SteamMacerator extends SteamMetaTileEntity {
 
-    public SteamMacerator(String metaTileEntityId, boolean isHighPressure) {
+    public SteamMacerator(ResourceLocation metaTileEntityId, boolean isHighPressure) {
         super(metaTileEntityId, RecipeMaps.MACERATOR_RECIPES, Textures.MACERATOR_OVERLAY, isHighPressure);
         this.workableHandler = new SimpleMaceratorRecipeMapWorkableHandler(this,
             workableHandler.recipeMap, isHighPressure, steamFluidTank, 1.0);

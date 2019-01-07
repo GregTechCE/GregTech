@@ -80,41 +80,41 @@ public class NetworkHandler {
         channel.register(new NetworkHandler());
 
         PacketEncoder<PacketUIWidgetUpdate> widgetUpdateEncoder =  (packet, buf) -> {
-            buf.writeInt(packet.updateData.readableBytes());
+            buf.writeVarInt(packet.updateData.readableBytes());
             buf.writeBytes(packet.updateData);
-            buf.writeInt(packet.windowId);
-            buf.writeInt(packet.widgetId);
+            buf.writeVarInt(packet.windowId);
+            buf.writeVarInt(packet.widgetId);
         };
 
         PacketDecoder<PacketUIWidgetUpdate> widgetUpdateDecoder =  (buf) -> {
-            ByteBuf directSliceBuffer = buf.readBytes(buf.readInt());
+            ByteBuf directSliceBuffer = buf.readBytes(buf.readVarInt());
             ByteBuf copiedDataBuffer = Unpooled.copiedBuffer(directSliceBuffer);
             directSliceBuffer.release();
             return new PacketUIWidgetUpdate(
-                buf.readInt(),
-                buf.readInt(),
+                buf.readVarInt(),
+                buf.readVarInt(),
                 new PacketBuffer(copiedDataBuffer));
         };
 
         registerPacket(1, PacketUIOpen.class, new PacketCodec<>(
             (packet, buf) -> {
-                buf.writeInt(packet.serializedHolder.readableBytes());
+                buf.writeVarInt(packet.serializedHolder.readableBytes());
                 buf.writeBytes(packet.serializedHolder);
-                buf.writeInt(packet.uiFactoryId);
-                buf.writeInt(packet.windowId);
-                buf.writeInt(packet.initialWidgetUpdates.size());
+                buf.writeVarInt(packet.uiFactoryId);
+                buf.writeVarInt(packet.windowId);
+                buf.writeVarInt(packet.initialWidgetUpdates.size());
                 for(PacketUIWidgetUpdate widgetUpdate : packet.initialWidgetUpdates) {
                     widgetUpdateEncoder.encode(widgetUpdate, buf);
                 }
             },
             (buf) -> {
-                ByteBuf directSliceBuffer = buf.readBytes(buf.readInt());
+                ByteBuf directSliceBuffer = buf.readBytes(buf.readVarInt());
                 ByteBuf copiedDataBuffer = Unpooled.copiedBuffer(directSliceBuffer);
                 directSliceBuffer.release();
-                int uiFactoryId = buf.readInt();
-                int windowId = buf.readInt();
+                int uiFactoryId = buf.readVarInt();
+                int windowId = buf.readVarInt();
                 ArrayList<PacketUIWidgetUpdate> initialWidgetUpdates = new ArrayList<>();
-                int initialWidgetUpdatesCount = buf.readInt();
+                int initialWidgetUpdatesCount = buf.readVarInt();
                 for(int i = 0; i < initialWidgetUpdatesCount; i++) {
                     initialWidgetUpdates.add(widgetUpdateDecoder.decode(buf));
                 }
@@ -128,36 +128,36 @@ public class NetworkHandler {
 
         registerPacket(2, PacketUIWidgetUpdate.class, new PacketCodec<>(
             (packet, buf) -> {
-                buf.writeInt(packet.updateData.readableBytes());
+                buf.writeVarInt(packet.updateData.readableBytes());
                 buf.writeBytes(packet.updateData);
-                buf.writeInt(packet.windowId);
-                buf.writeInt(packet.widgetId);
+                buf.writeVarInt(packet.windowId);
+                buf.writeVarInt(packet.widgetId);
             },
             (buf) -> {
-                ByteBuf directSliceBuffer = buf.readBytes(buf.readInt());
+                ByteBuf directSliceBuffer = buf.readBytes(buf.readVarInt());
                 ByteBuf copiedDataBuffer = Unpooled.copiedBuffer(directSliceBuffer);
                 directSliceBuffer.release();
                 return new PacketUIWidgetUpdate(
-                    buf.readInt(),
-                    buf.readInt(),
+                    buf.readVarInt(),
+                    buf.readVarInt(),
                     new PacketBuffer(copiedDataBuffer));
             }
         ));
 
         registerPacket(3, PacketUIClientAction.class, new PacketCodec<>(
             (packet, buf) -> {
-                buf.writeInt(packet.updateData.readableBytes());
+                buf.writeVarInt(packet.updateData.readableBytes());
                 buf.writeBytes(packet.updateData);
-                buf.writeInt(packet.windowId);
-                buf.writeInt(packet.widgetId);
+                buf.writeVarInt(packet.windowId);
+                buf.writeVarInt(packet.widgetId);
             },
             (buf) -> {
-                ByteBuf directSliceBuffer = buf.readBytes(buf.readInt());
+                ByteBuf directSliceBuffer = buf.readBytes(buf.readVarInt());
                 ByteBuf copiedDataBuffer = Unpooled.copiedBuffer(directSliceBuffer);
                 directSliceBuffer.release();
                 return new PacketUIClientAction(
-                    buf.readInt(),
-                    buf.readInt(),
+                    buf.readVarInt(),
+                    buf.readVarInt(),
                     new PacketBuffer(copiedDataBuffer));
             }
         ));
@@ -168,7 +168,7 @@ public class NetworkHandler {
                 openContainer.windowId == packet.windowId) {
                 ModularUI modularUI = ((ModularUIContainer) openContainer).getModularUI();
                 PacketBuffer buffer = packet.updateData;
-                modularUI.guiWidgets.get(packet.widgetId).handleClientAction(buffer.readInt(), buffer);
+                modularUI.guiWidgets.get(packet.widgetId).handleClientAction(buffer.readVarInt(), buffer);
             }
         });
 
@@ -210,7 +210,7 @@ public class NetworkHandler {
     public static FMLProxyPacket packet2proxy(Packet packet) {
         PacketCodec<Packet> codec = (PacketCodec<Packet>) codecMap.get(packet.getClass());
         PacketBuffer buf = new PacketBuffer(Unpooled.buffer());
-        buf.writeInt(packetMap.getId(packet.getClass()));
+        buf.writeVarInt(packetMap.getId(packet.getClass()));
         codec.encoder.encode(packet, buf);
         return new FMLProxyPacket(buf, GTValues.MODID);
     }
@@ -218,7 +218,7 @@ public class NetworkHandler {
     @SuppressWarnings("unchecked")
     public static Packet proxy2packet(FMLProxyPacket packet) {
         PacketBuffer payload = (PacketBuffer) packet.payload();
-        Class<Packet> packetClass = (Class<Packet>) packetMap.get(payload.readInt());
+        Class<Packet> packetClass = (Class<Packet>) packetMap.get(payload.readVarInt());
         PacketCodec<Packet> codec = (PacketCodec<Packet>) codecMap.get(packetClass);
         return codec.decoder.decode(payload);
     }

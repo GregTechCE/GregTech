@@ -22,20 +22,21 @@ import java.util.function.Supplier;
  * To open and create ModularUI, see {@link UIFactory}
  *
  */
-public final class ModularUI {
+public final class ModularUI implements SizeProvider {
 
     public final ImmutableBiMap<Integer, Widget> guiWidgets;
 
     public final TextureArea backgroundPath;
-    public final int width, height;
+    private int screenWidth, screenHeight;
+    private final int width, height;
+
+    public boolean isJEIHandled;
 
     /**
      * UIHolder of this modular UI
-     * Can be tile entity in world impl or item impl
      */
     public final IUIHolder holder;
     public final EntityPlayer entityPlayer;
-    public boolean isJEIHandled;
 
     public ModularUI(ImmutableBiMap<Integer, Widget> guiWidgets, TextureArea backgroundPath, int width, int height, IUIHolder holder, EntityPlayer entityPlayer) {
         this.guiWidgets = guiWidgets;
@@ -46,9 +47,15 @@ public final class ModularUI {
         this.entityPlayer = entityPlayer;
     }
 
+    public void updateScreenSize(int screenWidth, int screenHeight) {
+        this.screenWidth = screenWidth;
+        this.screenHeight = screenHeight;
+    }
+
     public void initWidgets() {
         guiWidgets.values().forEach(widget -> {
-            widget.gui = this;
+            widget.setGui(this);
+            widget.setSizes(this);
             widget.initWidget();
         });
     }
@@ -57,12 +64,36 @@ public final class ModularUI {
         return new Builder(GuiTextures.BACKGROUND, 176, 166);
     }
 
+    public static Builder borderedBuilder() {
+        return new Builder(GuiTextures.BORDERED_BACKGROUND, 195, 136);
+    }
+
     public static Builder extendedBuilder() {
         return new Builder(GuiTextures.BACKGROUND_EXTENDED, 176, 216);
     }
 
     public static Builder builder(TextureArea background, int width, int height) {
         return new Builder(background, width, height);
+    }
+
+    @Override
+    public int getScreenWidth() {
+        return screenWidth;
+    }
+
+    @Override
+    public int getScreenHeight() {
+        return screenHeight;
+    }
+
+    @Override
+    public int getWidth() {
+        return width;
+    }
+
+    @Override
+    public int getHeight() {
+        return height;
     }
 
     /**
@@ -93,7 +124,7 @@ public final class ModularUI {
         }
 
         public Builder label(int x, int y, String localizationKey, int color) {
-            return widget(new LabelWidget(x, y, localizationKey, color));
+            return widget(new LabelWidget(x, y, localizationKey, color, new Object[0]));
         }
 
         public Builder image(int x, int y, int width, int height, TextureArea area) {
