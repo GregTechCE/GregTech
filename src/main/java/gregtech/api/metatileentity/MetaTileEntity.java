@@ -1,5 +1,7 @@
 package gregtech.api.metatileentity;
 
+import codechicken.lib.raytracer.CuboidRayTraceResult;
+import codechicken.lib.raytracer.IndexedCuboid6;
 import codechicken.lib.render.CCRenderState;
 import codechicken.lib.render.pipeline.ColourMultiplier;
 import codechicken.lib.render.pipeline.IVertexOperation;
@@ -10,11 +12,13 @@ import codechicken.lib.vec.Rotation;
 import codechicken.lib.vec.Vector3;
 import com.google.common.base.Preconditions;
 import gregtech.api.GregTechAPI;
+import gregtech.api.capability.GregtechCapabilities;
 import gregtech.api.capability.impl.FluidHandlerProxy;
 import gregtech.api.capability.impl.FluidTankList;
 import gregtech.api.capability.impl.ItemHandlerProxy;
 import gregtech.api.cover.CoverBehavior;
 import gregtech.api.cover.CoverDefinition;
+import gregtech.api.cover.ICoverable;
 import gregtech.api.gui.ModularUI;
 import gregtech.api.render.Textures;
 import gregtech.api.util.GTUtility;
@@ -50,10 +54,9 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.function.Consumer;
 
-public abstract class MetaTileEntity {
+public abstract class MetaTileEntity implements ICoverable {
 
-    public static final Cuboid6[] FULL_CUBE_COLLISION = new Cuboid6[] {Cuboid6.full};
-
+    public static final IndexedCuboid6 FULL_CUBE_COLLISION = new IndexedCuboid6(null, Cuboid6.full);
     public final ResourceLocation metaTileEntityId;
     MetaTileEntityHolder holder;
 
@@ -384,15 +387,17 @@ public abstract class MetaTileEntity {
             //covers cannot be placed on this side
             return false;
         }
+        ArrayList<IndexedCuboid6> collisionList = new ArrayList<>();
+        addCollisionBoundingBox(collisionList);
         //noinspection RedundantIfStatement
-        if(!checkCoverCollision(side, getCollisionBox(), getCoverPlateThickness())) {
+        if(!checkCoverCollision(side, collisionList, getCoverPlateThickness())) {
             //cover collision box overlaps with meta tile entity collision box
             return false;
         }
         return true;
     }
 
-    private static boolean checkCoverCollision(EnumFacing side, Cuboid6[] collisionBox, double plateThickness) {
+    private static boolean checkCoverCollision(EnumFacing side, List<IndexedCuboid6> collisionBox, double plateThickness) {
         if(plateThickness > 0.0) {
             Cuboid6 coverPlateBox = getCoverPlateBox(side, plateThickness);
             for(Cuboid6 collisionCuboid : collisionBox) {
@@ -411,6 +416,20 @@ public abstract class MetaTileEntity {
         Cuboid6 coverPlateBox = new Cuboid6(0.0, 0.0, 0.0, 1.0, plateThickness, 1.0);
         coverPlateBox.apply(Rotation.sideOrientation(side.getIndex(), 0).at(Vector3.center));
         return coverPlateBox;
+    }
+
+    public void addCoverCollisionBoundingBox(List<IndexedCuboid6> collisionList) {
+        double plateThickness = getCoverPlateThickness();
+        if(plateThickness > 0.0) {
+            for(EnumFacing side : EnumFacing.VALUES) {
+                double coverOffset = getCoverOffset(side);
+                if(getCoverAtSide(side) != null) {
+                    Cuboid6 coverBox = getCoverPlateBox(side, plateThickness);
+                    coverBox.expand(coverOffset);
+                    collisionList.add(new IndexedCuboid6(side, coverBox));
+                }
+            }
+        }
     }
 
     /**
@@ -492,6 +511,24 @@ public abstract class MetaTileEntity {
     public void getDrops(NonNullList<ItemStack> dropsList, @Nullable EntityPlayer harvester) {
     }
 
+    public ItemStack getPickItem(CuboidRayTraceResult result, EntityPlayer player) {
+        IndexedCuboid6 hitCuboid = result.cuboid6;
+        if(hitCuboid.data instanceof EnumFacing) {
+            //data instanceof EnumFacing -> Cover plate hit
+            CoverBehavior behavior = getCoverAtSide((EnumFacing) hitCuboid.data);
+            return behavior == null ? ItemStack.EMPTY : behavior.getCoverDefinition().getDropItemStack();
+        } else if(hitCuboid.data == null) {
+            //data is null -> MetaTileEntity hull hit
+            CoverBehavior behavior = getCoverAtSide(result.sideHit);
+            if(behavior != null) {
+                return behavior.getCoverDefinition().getDropItemStack();
+            }
+            return getStackForm();
+        } else {
+            return ItemStack.EMPTY;
+        }
+    }
+
     /**
      * Whether this tile entity represents completely opaque cube
      * @return true if machine is opaque
@@ -511,10 +548,9 @@ public abstract class MetaTileEntity {
     /**
      * Called to obtain list of AxisAlignedBB used for collision testing, highlight rendering
      * and ray tracing this meta tile entity's block in world
-     * @return list of collision boxes
      */
-    public Cuboid6[] getCollisionBox() {
-        return FULL_CUBE_COLLISION;
+    public void addCollisionBoundingBox(List<IndexedCuboid6> collisionList) {
+        collisionList.add(FULL_CUBE_COLLISION);
     }
 
     /**
@@ -626,15 +662,19 @@ public abstract class MetaTileEntity {
     }
 
     public final <T> T getCoverCapability(Capability<T> capability, EnumFacing side) {
+        boolean isCoverable = capability == GregtechCapabilities.CAPABILITY_COVERABLE;
         CoverBehavior coverBehavior = side == null ? null : getCoverAtSide(side);
         T originalCapability = getCapability(capability, side);
-        if(coverBehavior != null) {
+        if(coverBehavior != null && !isCoverable) {
             return coverBehavior.getCapability(capability, originalCapability);
         }
         return originalCapability;
     }
 
     public <T> T getCapability(Capability<T> capability, EnumFacing side) {
+        if(capability == GregtechCapabilities.CAPABILITY_COVERABLE) {
+            return GregtechCapabilities.CAPABILITY_COVERABLE.cast(this);
+        }
         if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY &&
             getFluidInventory().getTankProperties().length > 0) {
             return CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY.cast(getFluidInventory());
@@ -882,6 +922,10 @@ public abstract class MetaTileEntity {
         }
     }
 
+    @Override
+    public boolean isValid() {
+        return getHolder() != null && getHolder().isValid();
+    }
 
     public void clearMachineInventory(NonNullList<ItemStack> itemBuffer) {
         clearInventory(itemBuffer, importItems);

@@ -331,7 +331,7 @@ metaitem.fluidfilter.tooltip=Set with Fluid Container to only accept one Fluid T
 metaitem.conveyor.module.lv.name=Conveyor Module (LV)
 metaitem.conveyor.module.lv.tooltip=8 Items every second (as Cover)
 metaitem.conveyor.module.mv.name=Conveyor Module (MV)
-metaitem.conveyor.module.mv.tooltip=24 Items every second (as Cover)
+metaitem.conveyor.module.mv.tooltip=32 Items every second (as Cover)
 metaitem.conveyor.module.hv.name=Conveyor Module (HV)
 metaitem.conveyor.module.hv.tooltip=64 Items every second (as Cover)
 metaitem.conveyor.module.ev.name=Conveyor Module (EV)
@@ -355,21 +355,21 @@ metaitem.electric.piston.zpm.name=Electric Piston (ZPM)
 metaitem.electric.piston.uv.name=Electric Piston (UV)
 
 metaitem.robot.arm.lv.name=Robot Arm (LV)
-metaitem.robot.arm.lv.tooltip=Inserts into specific Slots (as Cover)
+metaitem.robot.arm.lv.tooltip=Inserts at specified rates (as Cover)
 metaitem.robot.arm.mv.name=Robot Arm (MV)
-metaitem.robot.arm.mv.tooltip=Inserts into specific Slots (as Cover)
+metaitem.robot.arm.mv.tooltip=Inserts at specified rates (as Cover)
 metaitem.robot.arm.hv.name=Robot Arm (HV)
-metaitem.robot.arm.hv.tooltip=Inserts into specific Slots (as Cover)
+metaitem.robot.arm.hv.tooltip=Inserts at specified rates (as Cover)
 metaitem.robot.arm.ev.name=Robot Arm (EV)
-metaitem.robot.arm.ev.tooltip=Inserts into specific Slots (as Cover)
+metaitem.robot.arm.ev.tooltip=Inserts at specified rates (as Cover)
 metaitem.robot.arm.iv.name=Robot Arm (IV)
-metaitem.robot.arm.iv.tooltip=Inserts into specific Slots (as Cover)
+metaitem.robot.arm.iv.tooltip=Inserts at specified rates (as Cover)
 metaitem.robot.arm.luv.name=Robot Arm (LuV)
-metaitem.robot.arm.luv.tooltip=Inserts into specific Slots (as Cover)
+metaitem.robot.arm.luv.tooltip=Inserts at specified rates (as Cover)
 metaitem.robot.arm.zpm.name=Robot Arm (ZPM)
-metaitem.robot.arm.zpm.tooltip=Inserts into specific Slots (as Cover)
+metaitem.robot.arm.zpm.tooltip=Inserts at specified rates (as Cover)
 metaitem.robot.arm.uv.name=Robot Arm (UV)
-metaitem.robot.arm.uv.tooltip=Inserts into specific Slots (as Cover)
+metaitem.robot.arm.uv.tooltip=Inserts at specified rates (as Cover)
 
 metaitem.field.generator.lv.name=Field Generator (LV)
 metaitem.field.generator.mv.name=Field Generator (MV)
@@ -922,6 +922,11 @@ cover.conveyor.item_filter.title=Item Filter
 cover.conveyor.ore_dictionary.title=Ore Dictionary Name
 cover.conveyor.ore_dictionary.title2=(use * for wildcard)
 
+cover.robotic_arm.title=Robotic Arm Settings (%s)
+cover.robotic_arm.transfer_mode.transfer_any=Transfer Any
+cover.robotic_arm.transfer_mode.transfer_exact=Supply Exact
+cover.robotic_arm.transfer_mode.keep_exact=Keep Exact
+cover.robotic_arm.transfer_mode.description=§eTransfer Any§r - in this mode, cover will transfer as much items matching it's filter as possible./n§eSupply Exact§r - in this mode, cover will supply items in portions specified in item filter slots (or transfer rate for ore dictionary filter). If amount of items is less than portion size, items won't be moved./n§eKeep Exact§r - in this mode, cover will keep specified amount of items in the destination inventory, supplying additional amount of items if required./n§7Tip: left/right click on filter slots to change item amount,  use shift clicking to change amount faster.
 
 # %s is a localized material name
 item.material.oreprefix.oreBlackgranite=Granite %s Ore

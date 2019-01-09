@@ -1,13 +1,13 @@
 package gregtech.api.cover;
 
 import gregtech.api.GTValues;
+import gregtech.api.capability.GregtechCapabilities;
 import gregtech.api.gui.ModularUI;
 import gregtech.api.gui.UIFactory;
-import gregtech.api.metatileentity.MetaTileEntity;
-import gregtech.api.metatileentity.MetaTileEntityHolder;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.network.PacketBuffer;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
@@ -30,17 +30,17 @@ public class CoverBehaviorUIFactory extends UIFactory<CoverBehavior> {
     protected CoverBehavior readHolderFromSyncData(PacketBuffer syncData) {
         BlockPos blockPos = syncData.readBlockPos();
         EnumFacing attachedSide = EnumFacing.VALUES[syncData.readByte()];
-        MetaTileEntityHolder holder = (MetaTileEntityHolder) Minecraft.getMinecraft().world.getTileEntity(blockPos);
-        if (holder != null) {
-            MetaTileEntity metaTileEntity = holder.getMetaTileEntity();
-            return metaTileEntity.getCoverAtSide(attachedSide);
+        TileEntity tileEntity = Minecraft.getMinecraft().world.getTileEntity(blockPos);
+        ICoverable coverable = tileEntity == null ? null : tileEntity.getCapability(GregtechCapabilities.CAPABILITY_COVERABLE, null);
+        if (coverable != null) {
+            return coverable.getCoverAtSide(attachedSide);
         }
         return null;
     }
 
     @Override
     protected void writeHolderToSyncData(PacketBuffer syncData, CoverBehavior holder) {
-        syncData.writeBlockPos(holder.metaTileEntity.getPos());
+        syncData.writeBlockPos(holder.coverHolder.getPos());
         syncData.writeByte(holder.attachedSide.ordinal());
     }
 }

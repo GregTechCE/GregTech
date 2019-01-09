@@ -50,6 +50,7 @@ public class AbstractWidgetGroup extends Widget {
         this.isInitialized = true;
         for(Widget widget : widgets) {
             widget.setGui(gui);
+            widget.setSizes(sizes);
             widget.initWidget();
         }
     }

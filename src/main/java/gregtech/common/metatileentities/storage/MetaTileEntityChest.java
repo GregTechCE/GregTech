@@ -1,6 +1,7 @@
 package gregtech.common.metatileentities.storage;
 
 import codechicken.lib.colour.ColourRGBA;
+import codechicken.lib.raytracer.IndexedCuboid6;
 import codechicken.lib.render.CCRenderState;
 import codechicken.lib.render.pipeline.ColourMultiplier;
 import codechicken.lib.render.pipeline.IVertexOperation;
@@ -33,7 +34,7 @@ import java.util.List;
 
 public class MetaTileEntityChest extends MetaTileEntity {
 
-    private static final Cuboid6[] CHEST_COLLISION = new Cuboid6[] {new Cuboid6(1 / 16.0, 0 / 16.0, 1 / 16.0, 15 / 16.0, 14 / 16.0, 15 / 16.0)};
+    private static final IndexedCuboid6 CHEST_COLLISION = new IndexedCuboid6(null, new Cuboid6(1 / 16.0, 0 / 16.0, 1 / 16.0, 15 / 16.0, 14 / 16.0, 15 / 16.0));
 
     private final SolidMaterial material;
     private final int inventorySize;
@@ -67,8 +68,8 @@ public class MetaTileEntityChest extends MetaTileEntity {
     }
 
     @Override
-    public Cuboid6[] getCollisionBox() {
-        return CHEST_COLLISION;
+    public void addCollisionBoundingBox(List<IndexedCuboid6> collisionList) {
+        collisionList.add(CHEST_COLLISION);
     }
 
     @Override

@@ -64,45 +64,16 @@ import java.math.BigInteger;
 import java.util.List;
 import java.util.*;
 import java.util.Map.Entry;
+import java.util.function.Function;
 import java.util.function.Predicate;
 
 import static gregtech.api.GTValues.V;
 
 public class GTUtility {
 
-    public static int gcd(int a, int b) {
-        if (a == 0 || b == 0) throw new ArithmeticException("div by 0");
-        if (a < 0) a = -a;
-        if (b < 0) b = -b;
-        while (true) {
-            if (0 == (a %= b)) return b;
-            if (0 == (b %= a)) return a;
-        }
-    }
-
-    public static int lcm(int a, int b) {
-        return a / gcd(a, b) * b;
-    }
-
-    @Nullable
-    public static EnumFacing getRelativeDirection(BlockPos from, BlockPos to) {
-        int dx = to.getX() - from.getX();
-        int dy = to.getY() - from.getY();
-        int dz = to.getZ() - from.getZ();
-        if (dx == 0) {
-            if (dy == 0) {
-                return dz > 0 ? EnumFacing.NORTH : EnumFacing.SOUTH;
-            } else if (dz == 0) {
-                return dy > 0 ? EnumFacing.UP : EnumFacing.DOWN;
-            }
-        } else if (dy == 0 && dz == 0) {
-            return dx > 0 ? EnumFacing.EAST : EnumFacing.WEST;
-        }
-        return null;
-    }
-
     public static BigInteger LONG_MAX = BigInteger.valueOf(Long.MAX_VALUE);
     public static BigInteger LONG_MIN = BigInteger.valueOf(Long.MIN_VALUE);
+
     public static long castToLong(BigInteger value) {
         return value.compareTo(LONG_MAX) >= 0 ? Long.MAX_VALUE : value.compareTo(LONG_MIN) <= 0 ? Long.MIN_VALUE : value.longValue();
     }
@@ -146,6 +117,14 @@ public class GTUtility {
         BigInteger result = BigInteger.ZERO;
         for (int i = 0; i <= p; i++) {
             result = result.add(BigInteger.valueOf(values[i]));
+        }
+        return result;
+    }
+
+    public static  <T> String[] mapToString(T[] array, Function<T, String> mapper) {
+        String[] result = new String[array.length];
+        for(int i = 0; i < array.length; i++) {
+            result[i] = mapper.apply(array[i]);
         }
         return result;
     }

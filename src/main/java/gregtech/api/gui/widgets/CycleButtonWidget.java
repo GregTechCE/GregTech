@@ -8,11 +8,14 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.resources.I18n;
+import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import scala.actors.threadpool.Arrays;
 
+import java.util.List;
 import java.util.function.IntConsumer;
 import java.util.function.IntSupplier;
 
@@ -27,6 +30,9 @@ public class CycleButtonWidget extends Widget {
     private IntSupplier currentOptionSupplier;
     private IntConsumer setOptionExecutor;
     protected int currentOption;
+    protected String tooltipHoverString;
+    protected long hoverStartTime = -1L;
+    protected boolean isMouseHovered;
 
     public CycleButtonWidget(int xPosition, int yPosition, int width, int height, String[] optionNames, IntSupplier currentOptionSupplier, IntConsumer setOptionExecutor) {
         super();
@@ -37,6 +43,11 @@ public class CycleButtonWidget extends Widget {
         this.optionNames = optionNames;
         this.currentOptionSupplier = currentOptionSupplier;
         this.setOptionExecutor = setOptionExecutor;
+    }
+
+    public CycleButtonWidget setTooltipHoverString(String hoverString) {
+        this.tooltipHoverString = hoverString;
+        return this;
     }
 
     public CycleButtonWidget setButtonTexture(TextureArea texture) {
@@ -63,6 +74,25 @@ public class CycleButtonWidget extends Widget {
             xPosition + width / 2 - fontRenderer.getStringWidth(text) / 2,
             yPosition + height / 2 - fontRenderer.FONT_HEIGHT / 2, textColor);
         GlStateManager.color(1.0f, 1.0f, 1.0f);
+    }
+
+    @Override
+    public void drawInForeground(int mouseX, int mouseY) {
+        boolean isHovered = isMouseOver(xPosition, yPosition, width, height, mouseX, mouseY);
+        boolean wasHovered = isMouseHovered;
+        if(isHovered && !wasHovered) {
+            this.isMouseHovered = true;
+            this.hoverStartTime = System.currentTimeMillis();
+        } else if(!isHovered && wasHovered) {
+            this.isMouseHovered = false;
+            this.hoverStartTime = 0L;
+        } else if(isHovered) {
+            long timeSinceHover = System.currentTimeMillis() - hoverStartTime;
+            if(timeSinceHover > 1000L && tooltipHoverString != null) {
+                List<String> hoverList = Arrays.asList(I18n.format(tooltipHoverString).split("/n"));
+                drawHoveringText(ItemStack.EMPTY, hoverList, 300, mouseX, mouseY);
+            }
+        }
     }
 
     @Override

@@ -2,9 +2,12 @@ package gregtech.api.block.machines;
 
 import codechicken.lib.block.property.unlisted.UnlistedIntegerProperty;
 import codechicken.lib.block.property.unlisted.UnlistedStringProperty;
+import codechicken.lib.raytracer.CuboidRayTraceResult;
+import codechicken.lib.raytracer.IndexedCuboid6;
 import codechicken.lib.raytracer.RayTracer;
 import codechicken.lib.render.particle.CustomParticleHandler;
 import codechicken.lib.vec.Cuboid6;
+import com.google.common.collect.Lists;
 import gregtech.api.GregTechAPI;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.MetaTileEntityHolder;
@@ -47,13 +50,14 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nullable;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 @SuppressWarnings("deprecation")
 public class BlockMachine extends Block implements ITileEntityProvider {
 
-    private static final Cuboid6[] EMPTY_COLLISION_BOX = new Cuboid6[] {Cuboid6.full};
+    private static final List<IndexedCuboid6> EMPTY_COLLISION_BOX = Lists.newArrayList(new IndexedCuboid6(null, Cuboid6.full));
     private static final IUnlistedProperty<String> HARVEST_TOOL = new UnlistedStringProperty("harvest_tool");
     private static final IUnlistedProperty<Integer> HARVEST_LEVEL = new UnlistedIntegerProperty("harvest_level");
     //used for rendering purposes of non-opaque machines like chests and tanks
@@ -122,11 +126,14 @@ public class BlockMachine extends Block implements ITileEntityProvider {
         return holder instanceof MetaTileEntityHolder ? ((MetaTileEntityHolder) holder).getMetaTileEntity() : null;
     }
 
-    private Cuboid6[] getCollisionBox(IBlockAccess blockAccess, BlockPos pos) {
+    private List<IndexedCuboid6> getCollisionBox(IBlockAccess blockAccess, BlockPos pos) {
         MetaTileEntity metaTileEntity = getMetaTileEntity(blockAccess, pos);
         if(metaTileEntity == null)
             return EMPTY_COLLISION_BOX;
-        return metaTileEntity.getCollisionBox();
+        ArrayList<IndexedCuboid6> collisionList = new ArrayList<>();
+        metaTileEntity.addCollisionBoundingBox(collisionList);
+        metaTileEntity.addCoverCollisionBoundingBox(collisionList);
+        return collisionList;
     }
 
     @Override
@@ -134,8 +141,10 @@ public class BlockMachine extends Block implements ITileEntityProvider {
         MetaTileEntity metaTileEntity = getMetaTileEntity(world, pos);
         if(metaTileEntity == null)
             return ItemStack.EMPTY;
-        return new ItemStack(Item.getItemFromBlock(this), 1,
-            GregTechAPI.META_TILE_ENTITY_REGISTRY.getIdByObjectName(metaTileEntity.metaTileEntityId));
+        if(target instanceof CuboidRayTraceResult) {
+            return metaTileEntity.getPickItem((CuboidRayTraceResult) target, player);
+        }
+        return ItemStack.EMPTY;
     }
 
     @Override

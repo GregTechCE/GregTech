@@ -2,7 +2,6 @@ package gregtech.api.cover;
 
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
-import gregtech.api.metatileentity.MetaTileEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
@@ -27,10 +26,10 @@ public final class CoverDefinition extends IForgeRegistryEntry.Impl {
     }
 
     private final ResourceLocation coverId;
-    private final BiFunction<MetaTileEntity, EnumFacing, CoverBehavior> behaviorCreator;
+    private final BiFunction<ICoverable, EnumFacing, CoverBehavior> behaviorCreator;
     private final ItemStack dropItemStack;
 
-    public CoverDefinition(ResourceLocation coverId, BiFunction<MetaTileEntity, EnumFacing, CoverBehavior> behaviorCreator, ItemStack dropItemStack) {
+    public CoverDefinition(ResourceLocation coverId, BiFunction<ICoverable, EnumFacing, CoverBehavior> behaviorCreator, ItemStack dropItemStack) {
         this.coverId = coverId;
         this.behaviorCreator = behaviorCreator;
         this.dropItemStack = dropItemStack.copy();
@@ -44,7 +43,7 @@ public final class CoverDefinition extends IForgeRegistryEntry.Impl {
         return dropItemStack.copy();
     }
 
-    public CoverBehavior createCoverBehavior(MetaTileEntity metaTileEntity, EnumFacing side) {
+    public CoverBehavior createCoverBehavior(ICoverable metaTileEntity, EnumFacing side) {
         CoverBehavior coverBehavior = behaviorCreator.apply(metaTileEntity, side);
         coverBehavior.setCoverDefinition(this);
         return coverBehavior;

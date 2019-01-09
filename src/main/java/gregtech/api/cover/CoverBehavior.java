@@ -8,7 +8,6 @@ import codechicken.lib.vec.Matrix4;
 import com.google.common.collect.Lists;
 import gregtech.api.GTValues;
 import gregtech.api.gui.IUIHolder;
-import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.render.SimpleSidedCubeRenderer.RenderSide;
 import gregtech.api.render.Textures;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
@@ -36,11 +35,11 @@ import java.util.function.Consumer;
 public abstract class CoverBehavior implements IUIHolder {
 
     private CoverDefinition coverDefinition;
-    public final MetaTileEntity metaTileEntity;
+    public final ICoverable coverHolder;
     public final EnumFacing attachedSide;
 
-    public CoverBehavior(MetaTileEntity metaTileEntity, EnumFacing attachedSide) {
-        this.metaTileEntity = metaTileEntity;
+    public CoverBehavior(ICoverable coverHolder, EnumFacing attachedSide) {
+        this.coverHolder = coverHolder;
         this.attachedSide = attachedSide;
     }
 
@@ -68,7 +67,7 @@ public abstract class CoverBehavior implements IUIHolder {
     }
 
     public final void writeUpdateData(int id, Consumer<PacketBuffer> writer) {
-        metaTileEntity.writeCoverData(this, id, writer);
+        coverHolder.writeCoverData(this, id, writer);
     }
 
     /**
@@ -130,16 +129,16 @@ public abstract class CoverBehavior implements IUIHolder {
 
     @Override
     public final boolean isValid() {
-        return metaTileEntity.getCoverAtSide(attachedSide) == this;
+        return coverHolder.isValid() && coverHolder.getCoverAtSide(attachedSide) == this;
     }
 
     @Override
     public boolean isRemote() {
-        return metaTileEntity.getHolder().isRemote();
+        return coverHolder.getWorld().isRemote;
     }
 
     @Override
     public final void markAsDirty() {
-        metaTileEntity.markDirty();
+        coverHolder.markDirty();
     }
 }

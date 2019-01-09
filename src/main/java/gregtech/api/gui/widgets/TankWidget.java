@@ -148,7 +148,7 @@ public class TankWidget extends Widget {
                 tooltips.add(I18n.format("gregtech.fluid.click_to_empty"));
                 tooltips.add(I18n.format("gregtech.fluid.click_to_empty.shift"));
             }
-            drawHoveringText(ItemStack.EMPTY, tooltips, mouseX, mouseY);
+            drawHoveringText(ItemStack.EMPTY, tooltips, 300, mouseX, mouseY);
             GlStateManager.color(1.0f, 1.0f, 1.0f);
         }
     }

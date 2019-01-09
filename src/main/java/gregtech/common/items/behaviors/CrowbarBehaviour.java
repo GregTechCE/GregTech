@@ -1,14 +1,15 @@
 package gregtech.common.items.behaviors;
 
-import gregtech.api.block.machines.BlockMachine;
+import gregtech.api.capability.GregtechCapabilities;
+import gregtech.api.cover.ICoverable;
 import gregtech.api.items.metaitem.stats.IItemBehaviour;
-import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.util.GTUtility;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockRailBase;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
@@ -46,13 +47,14 @@ public class CrowbarBehaviour implements IItemBehaviour {
                     return EnumActionResult.FAIL;
                 }
             }
-            MetaTileEntity metaTileEntity = BlockMachine.getMetaTileEntity(world, blockPos);
-            if(metaTileEntity != null && metaTileEntity.getCoverAtSide(side) != null) {
+            TileEntity tileEntity = world.getTileEntity(blockPos);
+            ICoverable coverable = tileEntity == null ? null : tileEntity.getCapability(GregtechCapabilities.CAPABILITY_COVERABLE, null);
+            if(coverable != null && coverable.getCoverAtSide(side) != null) {
                 if(world.isRemote) {
                     //always return success on client side
                     return EnumActionResult.SUCCESS;
                 }
-                boolean result = metaTileEntity.removeCover(side);
+                boolean result = coverable.removeCover(side);
                 GTUtility.doDamageItem(stack, cost, false);
                 return result ? EnumActionResult.SUCCESS : EnumActionResult.PASS;
             }

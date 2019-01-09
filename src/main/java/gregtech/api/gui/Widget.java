@@ -140,13 +140,15 @@ public abstract class Widget {
         }
     }
 
-    protected void drawHoveringText(ItemStack itemStack, List<String> tooltip, int mouseX, int mouseY) {
+    @SideOnly(Side.CLIENT)
+    protected void drawHoveringText(ItemStack itemStack, List<String> tooltip, int maxTextWidth, int mouseX, int mouseY) {
         Minecraft mc = Minecraft.getMinecraft();
         GuiUtils.drawHoveringText(itemStack, tooltip,  mouseX, mouseY,
             sizes.getScreenWidth() - sizes.getGuiLeft(),
-            sizes.getScreenHeight() - sizes.getGuiTop(), -1, mc.fontRenderer);
+            sizes.getScreenHeight() - sizes.getGuiTop(), maxTextWidth, mc.fontRenderer);
     }
 
+    @SideOnly(Side.CLIENT)
     protected void playButtonClickSound() {
         Minecraft.getMinecraft().getSoundHandler().playSound(PositionedSoundRecord.getMasterRecord(SoundEvents.UI_BUTTON_CLICK, 1.0F));
     }

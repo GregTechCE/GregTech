@@ -1,5 +1,6 @@
 package gregtech.api.render;
 
+import codechicken.lib.raytracer.IndexedCuboid6;
 import codechicken.lib.render.BlockRenderer;
 import codechicken.lib.render.CCRenderState;
 import codechicken.lib.render.block.BlockRenderingRegistry;
@@ -49,10 +50,7 @@ import javax.annotation.Nonnull;
 import javax.vecmath.Matrix4f;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 public class MetaTileEntityRenderer implements ICCBlockRenderer, IItemRenderer, IModelParticleProvider {
 
@@ -117,7 +115,7 @@ public class MetaTileEntityRenderer implements ICCBlockRenderer, IItemRenderer, 
         renderState.lightMatrix.locate(world, pos);
         IVertexOperation[] pipeline = new IVertexOperation[] {renderState.lightMatrix};
         Matrix4 translation = new Matrix4().translate(pos.getX(), pos.getY(), pos.getZ());
-        metaTileEntity.renderMetaTileEntity(renderState, translation, pipeline);
+        metaTileEntity.renderMetaTileEntity(renderState, translation.copy(), pipeline);
         metaTileEntity.renderCovers(renderState, translation, pipeline);
         return true;
     }
@@ -142,13 +140,16 @@ public class MetaTileEntityRenderer implements ICCBlockRenderer, IItemRenderer, 
 
     @Override
     public void renderBrightness(IBlockState state, float brightness) {
-        renderItem(new ItemStack(state.getBlock()), TransformType.NONE);
     }
 
     @Override
     public void handleRenderBlockDamage(IBlockAccess world, BlockPos pos, IBlockState state, TextureAtlasSprite sprite, BufferBuilder buffer) {
         MetaTileEntity metaTileEntity = BlockMachine.getMetaTileEntity(world, pos);
-        Cuboid6[] boundingBox = metaTileEntity == null ? new Cuboid6[0] : metaTileEntity.getCollisionBox();
+        ArrayList<IndexedCuboid6> boundingBox = new ArrayList<>();
+        if(metaTileEntity != null) {
+            metaTileEntity.addCollisionBoundingBox(boundingBox);
+            metaTileEntity.addCoverCollisionBoundingBox(boundingBox);
+        }
         CCRenderState renderState = CCRenderState.instance();
         renderState.reset();
         renderState.bind(buffer);
