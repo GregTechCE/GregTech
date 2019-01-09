@@ -51,8 +51,8 @@ public final class BlockCompressed extends DelayedStateBlock {
     @Override
     public int getHarvestLevel(IBlockState state) {
         Material material = state.getValue(variantProperty);
-        if(material instanceof SolidMaterial) {
-            return ((SolidMaterial) material).harvestLevel;
+        if(material instanceof DustMaterial) {
+            return ((DustMaterial) material).harvestLevel;
         }
         return 0;
     }
