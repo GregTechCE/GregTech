@@ -136,6 +136,7 @@ public class Textures {
 
     public static SimpleOverlayRenderer CONVEYOR_OVERLAY = new SimpleOverlayRenderer("cover/overlay_conveyor");
     public static SimpleOverlayRenderer ARM_OVERLAY = new SimpleOverlayRenderer("cover/overlay_arm");
+    public static SimpleOverlayRenderer PUMP_OVERLAY = new SimpleOverlayRenderer("overlay/machine/overlay_pump");
 
     static {
         for(int i = 0; i < VOLTAGE_CASINGS.length; i++) {

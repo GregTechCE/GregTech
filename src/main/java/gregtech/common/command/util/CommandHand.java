@@ -46,7 +46,7 @@ public class CommandHand extends CommandBase {
             IFluidHandlerItem fluidHandlerItem = stackInHand.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY, null);
             if(electricItem != null) {
                 player.sendMessage(new TextComponentTranslation("gregtech.command.util.hand.electric",
-                    electricItem.discharge(Long.MAX_VALUE, Integer.MAX_VALUE, true, false, true),
+                    electricItem.getCharge(),
                     electricItem.getMaxCharge(),
                     electricItem.getTier(),
                     Boolean.toString(electricItem.canProvideChargeExternally())));

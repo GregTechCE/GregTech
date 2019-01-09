@@ -133,8 +133,8 @@ public abstract class MetaItem<T extends MetaItem<?>.MetaValueItem> extends Item
 
     protected int getModelIndex(short metaItemKey, ItemStack itemStack) {
         IElectricItem electricItem = itemStack.getCapability(GregtechCapabilities.CAPABILITY_ELECTRIC_ITEM, null);
-        long itemCharge = electricItem.discharge(Long.MAX_VALUE, Integer.MAX_VALUE, true, false, true);
-        return (int) Math.min(((itemCharge / (electricItem.getMaxCharge() * 1.0)) * 7), 7);
+        //noinspection ConstantConditions
+        return (int) Math.min(((electricItem.getCharge() / (electricItem.getMaxCharge() * 1.0)) * 7), 7);
     }
 
     @SideOnly(Side.CLIENT)
@@ -241,7 +241,7 @@ public abstract class MetaItem<T extends MetaItem<?>.MetaValueItem> extends Item
         if (metaValueItem == null) {
             return 64;
         }
-        return metaValueItem.getMaxStackSize();
+        return metaValueItem.getMaxStackSize(stack);
     }
 
     @Override
@@ -392,7 +392,7 @@ public abstract class MetaItem<T extends MetaItem<?>.MetaValueItem> extends Item
         IElectricItem electricItem = itemStack.getCapability(GregtechCapabilities.CAPABILITY_ELECTRIC_ITEM, null);
         if (electricItem != null) {
             lines.add(I18n.format("metaitem.generic.electric_item.tooltip",
-                electricItem.discharge(Long.MAX_VALUE, Integer.MAX_VALUE, true, false, true),
+                electricItem.getCharge(),
                 electricItem.getMaxCharge(),
                 electricItem.getTier()));
         }
@@ -476,6 +476,7 @@ public abstract class MetaItem<T extends MetaItem<?>.MetaValueItem> extends Item
         private IItemUseManager useManager;
         private ItemUIFactory uiManager;
         private IItemDurabilityManager durabilityManager;
+        private IItemMaxStackSizeProvider stackSizeProvider;
 
         private int burnValue = 0;
         private boolean visible = true;
@@ -558,6 +559,8 @@ public abstract class MetaItem<T extends MetaItem<?>.MetaValueItem> extends Item
                     this.useManager = new FoodUseManager((IFoodBehavior) metaItemStats);
                 if (metaItemStats instanceof ItemUIFactory)
                     this.uiManager = (ItemUIFactory) metaItemStats;
+                if(metaItemStats instanceof IItemMaxStackSizeProvider)
+                    this.stackSizeProvider = (IItemMaxStackSizeProvider) metaItemStats;
                 if (metaItemStats instanceof IItemBehaviour)
                     this.behaviours.add((IItemBehaviour) metaItemStats);
                 this.allStats.add(metaItemStats);
@@ -596,8 +599,8 @@ public abstract class MetaItem<T extends MetaItem<?>.MetaValueItem> extends Item
             return burnValue;
         }
 
-        public int getMaxStackSize() {
-            return maxStackSize;
+        public int getMaxStackSize(ItemStack stack) {
+            return stackSizeProvider == null ? maxStackSize : stackSizeProvider.getMaxStackSize(stack, maxStackSize);
         }
 
         public boolean isVisible() {

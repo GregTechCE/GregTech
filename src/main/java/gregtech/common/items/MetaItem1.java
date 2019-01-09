@@ -114,26 +114,16 @@ public class MetaItem1 extends MaterialMetaItem {
         SHAPE_EXTRUDER_GEAR = addItem(372, "shape.extruder.gear");
         SHAPE_EXTRUDER_BOTTLE = addItem(373, "shape.extruder.bottle");
 
-        SHAPE_SLICER_FLAT = addItem(398, "shape.slicer.flat").setInvisible();
-        SHAPE_SLICER_STRIPES = addItem(399, "shape.slicer.stripes").setInvisible();
-
-        FUEL_CAN_PLASTIC_EMPTY = addItem(400, "fuel.can.plastic.empty")
-            .setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.Plastic, OrePrefix.plate.materialAmount)))
-            .setInvisible();
-        FUEL_CAN_PLASTIC_FILLED = addItem(401, "fuel.can.plastic.filled")
-            .setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.Plastic, OrePrefix.plate.materialAmount)))
-            .setInvisible();
-
         SPRAY_EMPTY = addItem(402, "spray.empty")
             .setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.Tin, OrePrefix.plate.materialAmount * 2L), new MaterialStack(Materials.Redstone, OrePrefix.dust.materialAmount)));
 
         LARGE_FLUID_CELL_STEEL = addItem(405, "large_fluid_cell.steel")
-            .addStats(new FluidStats(16000, Integer.MAX_VALUE, Integer.MAX_VALUE, true))
+            .addStats(new FluidStats(16000, Integer.MIN_VALUE, Integer.MAX_VALUE, true))
             .setMaxStackSize(16)
             .setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.Steel, OrePrefix.plate.materialAmount * 2L + 2L * OrePrefix.ring.materialAmount)));
 
         LARGE_FLUID_CELL_TUNGSTEN_STEEL = addItem(406, "large_fluid_cell.tungstensteel")
-            .addStats(new FluidStats(64000, Integer.MAX_VALUE, Integer.MAX_VALUE, true))
+            .addStats(new FluidStats(64000, Integer.MIN_VALUE, Integer.MAX_VALUE, true))
             .setMaxStackSize(16)
             .setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.TungstenSteel, OrePrefix.plate.materialAmount * 2L + 2L * OrePrefix.ring.materialAmount)));
 
@@ -234,7 +224,7 @@ public class MetaItem1 extends MaterialMetaItem {
 
         RUBBER_DROP = addItem(627, "rubber_drop").setBurnValue(200);
 
-        FLUID_FILTER = addItem(628, "fluidfilter").setInvisible();
+        FLUID_FILTER = addItem(628, "fluid_filter");
 
         DYNAMITE = addItem(629, "dynamite").addStats(new DynamiteBehaviour()).setMaxStackSize(16);
         
@@ -354,8 +344,6 @@ public class MetaItem1 extends MaterialMetaItem {
         COVER_SOLARPANEL_ZPM = addItem(758, "cover.solar.panel.zpm").setInvisible();
         COVER_SOLARPANEL_UV = addItem(759, "cover.solar.panel.uv").setInvisible();
 
-        //TOOL_CHEAT = addItem(761, "tool.cheat").addStats(new ElectricStats(-2000000000, -1));
-
         FLUID_CELL = addItem(762, "fluid_cell").addStats(new FluidStats(1000, Integer.MIN_VALUE, Integer.MAX_VALUE, false));
 
         DUCT_TAPE = addItem(764, "duct.tape").addOreDict(OreDictNames.craftingDuctTape).setInvisible();
@@ -380,37 +368,32 @@ public class MetaItem1 extends MaterialMetaItem {
         RecipeMaps.ASSEMBLER_RECIPES.recipeBuilder()
             .input(OrePrefix.plate, Materials.Steel).input(OrePrefix.ring, Materials.Steel, 2)
             .outputs(LARGE_FLUID_CELL_STEEL.getStackForm())
-            .duration(100)
-            .EUt(64)
+            .circuitMeta(1).duration(100).EUt(64)
             .buildAndRegister();
 
         RecipeMaps.ASSEMBLER_RECIPES.recipeBuilder()
             .input(OrePrefix.plate, Materials.TungstenSteel).input(OrePrefix.ring, Materials.TungstenSteel, 2)
             .outputs(LARGE_FLUID_CELL_TUNGSTEN_STEEL.getStackForm())
-            .duration(200)
-            .EUt(256)
+            .circuitMeta(1).duration(200).EUt(256)
             .buildAndRegister();
 
         // Matches/lighters recipes
         RecipeMaps.ASSEMBLER_RECIPES.recipeBuilder()
             .input(OrePrefix.stick, Materials.Wood).input(OrePrefix.dustSmall, Materials.Phosphorus)
             .outputs(TOOL_MATCHES.getStackForm())
-            .duration(16)
-            .EUt(16)
+            .duration(16).EUt(16)
             .buildAndRegister();
 
         RecipeMaps.ASSEMBLER_RECIPES.recipeBuilder()
             .input(OrePrefix.stick, Materials.Wood).input(OrePrefix.dustSmall, Materials.Phosphor)
             .outputs(TOOL_MATCHES.getStackForm())
-            .duration(16)
-            .EUt(16)
+            .duration(16).EUt(16)
             .buildAndRegister();
 
         RecipeMaps.ASSEMBLER_RECIPES.recipeBuilder()
             .input(OrePrefix.stick, Materials.Wood, 4).input(OrePrefix.dust, Materials.Phosphorus)
             .outputs(TOOL_MATCHES.getStackForm(4))
-            .duration(64)
-            .EUt(16)
+            .duration(64).EUt(16)
             .buildAndRegister();
 
         RecipeMaps.ASSEMBLER_RECIPES.recipeBuilder()

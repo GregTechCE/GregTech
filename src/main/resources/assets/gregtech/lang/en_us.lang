@@ -294,40 +294,29 @@ metaitem.electric.motor.luv.name=Electric Motor (LuV)
 metaitem.electric.motor.zpm.name=Electric Motor (ZPM)
 metaitem.electric.motor.uv.name=Electric Motor (UV)
 
-#TODO replace numbers with placeholders
 metaitem.electric.pump.lv.name=Electric Pump (LV)
-metaitem.electric.pump.lv.tooltip=640 L/sec (as Cover)
+metaitem.electric.pump.lv.tooltip=640 mb/sec (as Cover)
 metaitem.electric.pump.mv.name=Electric Pump (MV)
-metaitem.electric.pump.mv.tooltip=2560 L/sec (as Cover)
+metaitem.electric.pump.mv.tooltip=2560 mb/sec (as Cover)
 metaitem.electric.pump.hv.name=Electric Pump (HV)
-metaitem.electric.pump.hv.tooltip=10240 L/sec (as Cover)
+metaitem.electric.pump.hv.tooltip=10240 mb/sec (as Cover)
 metaitem.electric.pump.ev.name=Electric Pump (EV)
-metaitem.electric.pump.ev.tooltip=40.960 L/sec (as Cover)
+metaitem.electric.pump.ev.tooltip=40,960 mb/sec (as Cover)
 metaitem.electric.pump.iv.name=Electric Pump (IV)
-metaitem.electric.pump.iv.tooltip=163.840 L/sec (as Cover)
+metaitem.electric.pump.iv.tooltip=163,840 mb/sec (as Cover)
 metaitem.electric.pump.luv.name=Electric Pump (LuV)
-metaitem.electric.pump.luv.tooltip=655.360 L/sec (as Cover)
+metaitem.electric.pump.luv.tooltip=655,360 mb/sec (as Cover)
 metaitem.electric.pump.zpm.name=Electric Pump (ZPM)
-metaitem.electric.pump.zpm.tooltip=2.621.440 L/sec (as Cover)
+metaitem.electric.pump.zpm.tooltip=655,360 mb/sec (as Cover)
 metaitem.electric.pump.uv.name=Electric Pump (UV)
-metaitem.electric.pump.uv.tooltip=10.485.760 L/sec (as Cover)
+metaitem.electric.pump.uv.tooltip=655,360 mb/sec (as Cover)
 
-#TODO replace numbers with placeholders
 metaitem.fluidregulator.lv.name=Fluid Regulator (LV)
-metaitem.fluidregulator.lv.tooltip=Configuable up to 640 L/sec (as Cover)
 metaitem.fluidregulator.mv.name=Fluid Regulator (MV)
-metaitem.fluidregulator.mv.tooltip=Configuable up to 2560 L/sec (as Cover)
 metaitem.fluidregulator.hv.name=Fluid Regulator (HV)
-metaitem.fluidregulator.hv.tooltip=Configuable up to 10240 L/sec (as Cover)
 metaitem.fluidregulator.ev.name=Fluid Regulator (EV)
-metaitem.fluidregulator.ev.tooltip=Configuable up to 40960 L/sec (as Cover)
 metaitem.fluidregulator.iv.name=Fluid Regulator (IV)
-metaitem.fluidregulator.iv.tooltip=Configuable up to 163840 L/sec (as Cover)
 
-metaitem.fluidfilter.name=Fluid Filter
-metaitem.fluidfilter.tooltip=Set with Fluid Container to only accept one Fluid Type
-
-#TODO replace numbers with placeholders
 metaitem.conveyor.module.lv.name=Conveyor Module (LV)
 metaitem.conveyor.module.lv.tooltip=8 Items every second (as Cover)
 metaitem.conveyor.module.mv.name=Conveyor Module (MV)
@@ -462,6 +451,7 @@ metaitem.upgrade.lock.tooltip=Protects your Machines
 
 metaitem.item_filter.name=Item Filter
 metaitem.ore_dictionary_filter.name=Ore Dictionary Filter
+metaitem.fluid_filter.name=Fluid Filter
 
 metaitem.cover.controller.name=Machine Controller
 metaitem.cover.controller.tooltip=Turns Machines ON/OFF
@@ -927,6 +917,12 @@ cover.robotic_arm.transfer_mode.transfer_any=Transfer Any
 cover.robotic_arm.transfer_mode.transfer_exact=Supply Exact
 cover.robotic_arm.transfer_mode.keep_exact=Keep Exact
 cover.robotic_arm.transfer_mode.description=§eTransfer Any§r - in this mode, cover will transfer as much items matching it's filter as possible./n§eSupply Exact§r - in this mode, cover will supply items in portions specified in item filter slots (or transfer rate for ore dictionary filter). If amount of items is less than portion size, items won't be moved./n§eKeep Exact§r - in this mode, cover will keep specified amount of items in the destination inventory, supplying additional amount of items if required./n§7Tip: left/right click on filter slots to change item amount,  use shift clicking to change amount faster.
+
+cover.pump.title=Pump Cover Settings (%s)
+cover.pump.transfer_rate=%s mb/s
+cover.pump.mode.export=Mode: Export
+cover.pump.mode.import=Mode: Import
+cover.pump.fluid_filter.title=Fluid Filter
 
 # %s is a localized material name
 item.material.oreprefix.oreBlackgranite=Granite %s Ore

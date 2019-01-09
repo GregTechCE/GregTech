@@ -24,7 +24,8 @@ public abstract class WatchedFluidTank extends FluidTank {
         FluidStack newFluidStack = getFluid();
         if(hasFluidChanged(newFluidStack, oldFluidStack)) {
             onFluidChanged(newFluidStack, oldFluidStack);
-            if(oldFluidStack != null && oldFluidStack.isFluidEqual(oldFluidStack)) {
+            if(oldFluidStack != null && oldFluidStack.isFluidEqual(newFluidStack)) {
+                //noinspection ConstantConditions
                 oldFluidStack.amount = newFluidStack.amount;
             } else {
                 this.oldFluidStack = newFluidStack == null ? null : newFluidStack.copy();

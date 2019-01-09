@@ -43,7 +43,7 @@ import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
 @Mod(modid = GTValues.MODID,
-     name = "GregTech",
+     name = "GregTech Community Edition",
      acceptedMinecraftVersions = "[1.12,1.13)",
      dependencies = "required:forge@[14.23.3.2702,);" + CodeChickenLib.MOD_VERSION_DEP + "after:forestry;after:forgemultipartcbe;after:jei@[4.8.6,);after:crafttweaker;")
 public class GregTechMod {

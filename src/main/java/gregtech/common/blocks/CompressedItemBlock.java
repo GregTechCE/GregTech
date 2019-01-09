@@ -10,11 +10,11 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class CompressedItemBlock extends ItemBlock {
 
-    public final BlockCompressed block;
+    public final BlockCompressed compressedBlock;
 
-    public CompressedItemBlock(BlockCompressed block) {
-        super(block);
-        this.block = block;
+    public CompressedItemBlock(BlockCompressed compressedBlock) {
+        super(compressedBlock);
+        this.compressedBlock = compressedBlock;
         setHasSubtypes(true);
     }
 
@@ -25,13 +25,13 @@ public class CompressedItemBlock extends ItemBlock {
 
     @SuppressWarnings("deprecation")
     public IBlockState getBlockState(ItemStack stack) {
-        return block.getStateFromMeta(getMetadata(stack.getItemDamage()));
+        return compressedBlock.getStateFromMeta(getMetadata(stack.getItemDamage()));
     }
 
     @Override
     @SideOnly(Side.CLIENT)
     public String getItemStackDisplayName(ItemStack stack) {
-        Material material = getBlockState(stack).getValue(block.variantProperty);
+        Material material = getBlockState(stack).getValue(compressedBlock.variantProperty);
         return OrePrefix.block.getLocalNameForItem(material);
     }
 

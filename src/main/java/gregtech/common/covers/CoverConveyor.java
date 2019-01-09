@@ -55,6 +55,7 @@ public class CoverConveyor extends CoverBehavior implements CoverWithUI, ITickab
         this.tier = tier;
         this.maxItemTransferRate = itemsPerSecond;
         this.transferRate = maxItemTransferRate;
+        this.itemsLeftToTransferLastSecond = transferRate;
         this.conveyorMode = ConveyorMode.IMPORT;
         this.filterTypeInventory = new FilterItemStackHandler();
         this.filterMode = FilterMode.NONE;
@@ -164,15 +165,17 @@ public class CoverConveyor extends CoverBehavior implements CoverWithUI, ITickab
             }
             if(amountToInsert > 0) {
                 sourceStack = sourceInventory.extractItem(srcIndex, amountToInsert, simulate);
-                if(!simulate) {
-                    ItemHandlerHelper.insertItemStacked(targetInventory, sourceStack, false);
+                if(!sourceStack.isEmpty()) {
+                    if(!simulate) {
+                        ItemHandlerHelper.insertItemStacked(targetInventory, sourceStack, false);
+                    }
+                    itemsLeftToTransfer -= sourceStack.getCount();
+                    itemsTransfer[transferSlotIndex] += sourceStack.getCount();
+                    if(itemTypesLeftToTransfer != null) {
+                        itemTypesLeftToTransfer[transferSlotIndex] -= sourceStack.getCount();
+                    }
+                    if(itemsLeftToTransfer == 0) break;
                 }
-                itemsLeftToTransfer -= sourceStack.getCount();
-                itemsTransfer[transferSlotIndex] += sourceStack.getCount();
-                if(itemTypesLeftToTransfer != null) {
-                    itemTypesLeftToTransfer[transferSlotIndex] -= sourceStack.getCount();
-                }
-                if(itemsLeftToTransfer == 0) break;
             }
         }
         return itemsTransfer;

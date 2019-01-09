@@ -6,10 +6,8 @@ import codechicken.lib.render.CCRenderState;
 import codechicken.lib.render.pipeline.ColourMultiplier;
 import codechicken.lib.render.pipeline.IVertexOperation;
 import codechicken.lib.texture.TextureUtils;
-import codechicken.lib.vec.Cuboid6;
-import codechicken.lib.vec.Matrix4;
 import codechicken.lib.vec.Rotation;
-import codechicken.lib.vec.Vector3;
+import codechicken.lib.vec.*;
 import com.google.common.base.Preconditions;
 import gregtech.api.GregTechAPI;
 import gregtech.api.capability.GregtechCapabilities;
@@ -43,6 +41,7 @@ import net.minecraftforge.fluids.FluidUtil;
 import net.minecraftforge.fluids.IFluidTank;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
+import net.minecraftforge.fluids.capability.IFluidTankProperties;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.*;
@@ -56,6 +55,7 @@ import java.util.function.Consumer;
 
 public abstract class MetaTileEntity implements ICoverable {
 
+    private static final Transformation REVERSE_ROTATION = new Rotation(Math.PI, new Vector3(0.0, 1.0, 0.0)).at(Vector3.center);
     public static final IndexedCuboid6 FULL_CUBE_COLLISION = new IndexedCuboid6(null, Cuboid6.full);
     public final ResourceLocation metaTileEntityId;
     MetaTileEntityHolder holder;
@@ -182,7 +182,15 @@ public abstract class MetaTileEntity implements ICoverable {
                 plateBox.expand(-coverOffset);
             }
             plateBox.expand(coverOffset * 10.0);
-            coverBehavior.renderCover(renderState, translation, pipeline, plateBox);
+            coverBehavior.renderCover(renderState, translation.copy(), pipeline, plateBox);
+            if(coverPlateThickness == 0.0 && !isOpaqueCube()) {
+                //machine is full block, but still not opaque - render cover on the back side too
+                plateBox.expand(-coverOffset * 20.0);
+                Matrix4 backTranslation = translation.copy();
+                REVERSE_ROTATION.apply(backTranslation);
+                backTranslation.translate(-sideFacing.getFrontOffsetX(), -sideFacing.getFrontOffsetY(), -sideFacing.getFrontOffsetZ());
+                coverBehavior.renderCover(renderState, backTranslation, pipeline, plateBox);
+            }
         }
     }
 
@@ -479,9 +487,11 @@ public abstract class MetaTileEntity implements ICoverable {
                 mteTrait.update();
             }
         }
-        for(CoverBehavior coverBehavior : coverBehaviors) {
-            if(coverBehavior instanceof ITickable) {
-                ((ITickable) coverBehavior).update();
+        if(!getWorld().isRemote) {
+            for(CoverBehavior coverBehavior : coverBehaviors) {
+                if(coverBehavior instanceof ITickable) {
+                    ((ITickable) coverBehavior).update();
+                }
             }
         }
     }
@@ -776,15 +786,19 @@ public abstract class MetaTileEntity implements ICoverable {
 
     public void pullFluidsFromNearbyHandlers(EnumFacing... allowedFaces) {
         for(EnumFacing nearbyFacing : allowedFaces) {
-            IFluidHandler fluidHandler = FluidUtil.getFluidHandler(getWorld(),
-                getPos().offset(nearbyFacing), nearbyFacing.getOpposite());
+            IFluidHandler fluidHandler = FluidUtil.getFluidHandler(getWorld(), getPos().offset(nearbyFacing), nearbyFacing.getOpposite());
             if(fluidHandler == null) continue;
-            FluidStack fluidStack = fluidHandler.drain(Integer.MAX_VALUE, false);
-            if(fluidStack == null || fluidStack.amount == 0) continue;
-            int canInsertAmount = importFluids.fill(fluidStack, false);
-            if(canInsertAmount > 0) {
-                fluidStack = fluidHandler.drain(canInsertAmount, true);
-                importFluids.fill(fluidStack, true);
+            for(IFluidTankProperties tankProperties : fluidHandler.getTankProperties()) {
+                FluidStack currentFluid = tankProperties.getContents();
+                if(currentFluid == null || currentFluid.amount == 0) continue;
+                currentFluid.amount = Integer.MAX_VALUE;
+                FluidStack fluidStack = fluidHandler.drain(currentFluid, false);
+                if(fluidStack == null || fluidStack.amount == 0) continue;
+                int canInsertAmount = importFluids.fill(fluidStack, false);
+                if(canInsertAmount > 0) {
+                    fluidStack = fluidHandler.drain(canInsertAmount, true);
+                    importFluids.fill(fluidStack, true);
+                }
             }
         }
     }

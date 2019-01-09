@@ -71,12 +71,6 @@ public final class MetaItems {
     public static MetaItem<?>.MetaValueItem SHAPE_EXTRUDER_GEAR;
     public static MetaItem<?>.MetaValueItem SHAPE_EXTRUDER_BOTTLE;
 
-    public static MetaItem<?>.MetaValueItem SHAPE_SLICER_FLAT;
-    public static MetaItem<?>.MetaValueItem SHAPE_SLICER_STRIPES;
-
-    public static MetaItem<?>.MetaValueItem FUEL_CAN_PLASTIC_EMPTY;
-    public static MetaItem<?>.MetaValueItem FUEL_CAN_PLASTIC_FILLED;
-
     public static MetaItem<?>.MetaValueItem SPRAY_EMPTY;
 
     public static MetaItem<?>.MetaValueItem LARGE_FLUID_CELL_STEEL;
@@ -283,51 +277,6 @@ public final class MetaItems {
     public static MetaItem<?>.MetaValueItem DYE_INDIGO;
 
     public static MetaItem<?>.MetaValueItem PLANT_BALL;
-
-    public static MetaItem<?>.MetaValueItem PLANK_OAK;
-    public static MetaItem<?>.MetaValueItem PLANK_SPRUCE;
-    public static MetaItem<?>.MetaValueItem PLANK_BIRCH;
-    public static MetaItem<?>.MetaValueItem PLANK_JUNGLE;
-    public static MetaItem<?>.MetaValueItem PLANK_ACACIA;
-    public static MetaItem<?>.MetaValueItem PLANK_DARKOAK;
-
-    public static MetaItem<?>.MetaValueItem CROP_DROP_PLUMBILIA;
-    public static MetaItem<?>.MetaValueItem CROP_DROP_ARGENTIA;
-    public static MetaItem<?>.MetaValueItem CROP_DROP_INDIGO;
-    public static MetaItem<?>.MetaValueItem CROP_DROP_FERRU;
-    public static MetaItem<?>.MetaValueItem CROP_DROP_AURELIA;
-    public static MetaItem<?>.MetaValueItem CROP_DROP_TEALEAF;
-
-    public static MetaItem<?>.MetaValueItem CROP_DROP_OIL_BERRY;
-    public static MetaItem<?>.MetaValueItem CROP_DROP_BOBS_YER_UNCLE_RANKS;
-    public static MetaItem<?>.MetaValueItem CROP_DROP_UUM_BERRY;
-    public static MetaItem<?>.MetaValueItem CROP_DROP_UUA_BERRY;
-
-    public static MetaItem<?>.MetaValueItem CROP_DROP_MILK_WART;
-
-    public static MetaItem<?>.MetaValueItem CROP_DROP_COPPON;
-    public static MetaItem<?>.MetaValueItem CROP_DROP_TINE;
-    public static MetaItem<?>.MetaValueItem CROP_DROP_BAUXITE;
-    public static MetaItem<?>.MetaValueItem CROP_DROP_ILMENITE;
-    public static MetaItem<?>.MetaValueItem CROP_DROP_PITCHBLENDE;
-    public static MetaItem<?>.MetaValueItem CROP_DROP_URANINITE;
-    public static MetaItem<?>.MetaValueItem CROP_DROP_THORIUM;
-    public static MetaItem<?>.MetaValueItem CROP_DROP_NICKEL;
-    public static MetaItem<?>.MetaValueItem CROP_DROP_ZINC;
-    public static MetaItem<?>.MetaValueItem CROP_DROP_MANGANESE;
-    public static MetaItem<?>.MetaValueItem CROP_DROP_SCHEELITE;
-    public static MetaItem<?>.MetaValueItem CROP_DROP_PLATINUM;
-    public static MetaItem<?>.MetaValueItem CROP_DROP_IRIDIUM;
-    public static MetaItem<?>.MetaValueItem CROP_DROP_OSMIUM;
-    public static MetaItem<?>.MetaValueItem CROP_DROP_NAQUADAH;
-
-    public static MetaItem<?>.MetaValueItem CROP_DROP_CHILLY;
-    public static MetaItem<?>.MetaValueItem CROP_DROP_LEMON;
-    public static MetaItem<?>.MetaValueItem CROP_DROP_TOMATO;
-    public static MetaItem<?>.MetaValueItem CROP_DROP_MTOMATO;
-    public static MetaItem<?>.MetaValueItem CROP_DROP_GRAPES;
-    public static MetaItem<?>.MetaValueItem CROP_DROP_ONION;
-    public static MetaItem<?>.MetaValueItem CROP_DROP_CUCUMBER;
 
     public static MetaItem<?>.MetaValueItem[] DYE_ONLY_ITEMS = new MetaItem.MetaValueItem[16];
 

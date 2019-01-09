@@ -10,11 +10,11 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class FrameItemBlock extends ItemBlock {
 
-    private BlockFrame block;
+    private BlockFrame frameBlock;
 
     public FrameItemBlock(BlockFrame block) {
         super(block);
-        this.block = block;
+        this.frameBlock = block;
         setHasSubtypes(true);
     }
 
@@ -25,13 +25,13 @@ public class FrameItemBlock extends ItemBlock {
 
     @SuppressWarnings("deprecation")
     protected IBlockState getBlockState(ItemStack stack) {
-        return block.getStateFromMeta(getMetadata(stack.getItemDamage()));
+        return frameBlock.getStateFromMeta(getMetadata(stack.getItemDamage()));
     }
 
     @Override
     @SideOnly(Side.CLIENT)
     public String getItemStackDisplayName(ItemStack stack) {
-        Material material = getBlockState(stack).getValue(block.variantProperty);
+        Material material = getBlockState(stack).getValue(frameBlock.variantProperty);
         return OrePrefix.frameGt.getLocalNameForItem(material);
     }
 

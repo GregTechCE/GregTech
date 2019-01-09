@@ -117,11 +117,11 @@ public class TankWidget extends Widget {
                 fontRenderer.drawStringWithShadow(s, x + 1 + width - 2 - fontRenderer.getStringWidth(s), y + (height / 3) + 3, 0xFFFFFF);
             }
             GlStateManager.enableBlend();
+            GlStateManager.color(1.0f, 1.0f, 1.0f);
         }
         if(overlayTexture != null) {
             overlayTexture.draw(x, y, width, height);
         }
-
     }
 
     @Override

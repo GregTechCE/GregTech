@@ -182,7 +182,7 @@ public class CommonProxy {
         //handle material blocks burn value
         if(stack.getItem() instanceof CompressedItemBlock) {
             CompressedItemBlock itemBlock = (CompressedItemBlock) stack.getItem();
-            Material material = itemBlock.getBlockState(stack).getValue(itemBlock.block.variantProperty);
+            Material material = itemBlock.getBlockState(stack).getValue(itemBlock.compressedBlock.variantProperty);
             if(material instanceof DustMaterial &&
                 ((DustMaterial) material).burnTime > 0) {
                 //compute burn value for block prefix, taking amount of material in block into account
