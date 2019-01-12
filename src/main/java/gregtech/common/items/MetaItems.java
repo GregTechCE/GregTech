@@ -83,13 +83,6 @@ public final class MetaItems {
 
     public static MetaItem<?>.MetaValueItem INGOT_IRIDIUM_ALLOY;
 
-    public static MetaItem<?>.MetaValueItem SCHEMATIC;
-    public static MetaItem<?>.MetaValueItem SCHEMATIC_CRAFTING;
-    public static MetaItem<?>.MetaValueItem SCHEMATIC_1X1;
-    public static MetaItem<?>.MetaValueItem SCHEMATIC_2X2;
-    public static MetaItem<?>.MetaValueItem SCHEMATIC_3X3;
-    public static MetaItem<?>.MetaValueItem SCHEMATIC_DUST;
-
     public static MetaItem<?>.MetaValueItem BATTERY_HULL_LV;
     public static MetaItem<?>.MetaValueItem BATTERY_HULL_MV;
     public static MetaItem<?>.MetaValueItem BATTERY_HULL_HV;
@@ -249,19 +242,9 @@ public final class MetaItems {
 
     public static MetaItem<?>.MetaValueItem COVER_SHUTTER;
 
-    public static MetaItem<?>.MetaValueItem COVER_SOLARPANEL;
-    public static MetaItem<?>.MetaValueItem COVER_SOLARPANEL_8V;
-    public static MetaItem<?>.MetaValueItem COVER_SOLARPANEL_LV;
-    public static MetaItem<?>.MetaValueItem COVER_SOLARPANEL_MV;
-    public static MetaItem<?>.MetaValueItem COVER_SOLARPANEL_HV;
-    public static MetaItem<?>.MetaValueItem COVER_SOLARPANEL_EV;
-    public static MetaItem<?>.MetaValueItem COVER_SOLARPANEL_IV;
-    public static MetaItem<?>.MetaValueItem COVER_SOLARPANEL_LUV;
-    public static MetaItem<?>.MetaValueItem COVER_SOLARPANEL_ZPM;
-    public static MetaItem<?>.MetaValueItem COVER_SOLARPANEL_UV;
-
-    public static MetaItem<?>.MetaValueItem DUCT_TAPE;
-    public static MetaItem<?>.MetaValueItem MCGUFFIUM_239;
+    public static MetaItem<?>.MetaValueItem COVER_SOLAR_PANEL;
+    public static MetaItem<?>.MetaValueItem COVER_SOLAR_PANEL_ULV;
+    public static MetaItem<?>.MetaValueItem COVER_SOLAR_PANEL_LV;
 
     public static MetaItem<?>.MetaValueItem INTEGRATED_CIRCUIT;
 

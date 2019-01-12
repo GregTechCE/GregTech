@@ -14,6 +14,11 @@ public class ToolSword extends ToolBase {
     }
 
     @Override
+    public float getAttackSpeed(ItemStack stack) {
+        return -2.3f;
+    }
+
+    @Override
     public int getToolDamagePerBlockBreak(ItemStack stack) {
         return 2;
     }

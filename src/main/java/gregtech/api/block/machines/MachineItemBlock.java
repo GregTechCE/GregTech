@@ -10,10 +10,12 @@ import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.ModContainer;
 
@@ -45,6 +47,13 @@ public class MachineItemBlock extends ItemBlock {
         //set opaque property on the placing on block, instead during set of meta tile entity
         return super.placeBlockAt(stack, player, world, pos, side, hitX, hitY, hitZ,
             newState.withProperty(BlockMachine.OPAQUE, metaTileEntity != null && metaTileEntity.isOpaqueCube()));
+    }
+
+    @Nullable
+    @Override
+    public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable NBTTagCompound nbt) {
+        MetaTileEntity metaTileEntity = getMetaTileEntity(stack);
+        return metaTileEntity == null ? null : metaTileEntity.initItemStackCapabilities(stack);
     }
 
     @Override

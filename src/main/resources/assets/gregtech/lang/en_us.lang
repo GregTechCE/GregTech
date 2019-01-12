@@ -450,8 +450,11 @@ metaitem.upgrade.lock.name=Lock Upgrade
 metaitem.upgrade.lock.tooltip=Protects your Machines
 
 metaitem.item_filter.name=Item Filter
+metaitem.item_filter.tooltip=Filters item extract and insert (as Cover)/nCan be used as a Conveyor upgrade
 metaitem.ore_dictionary_filter.name=Ore Dictionary Filter
+metaitem.ore_dictionary_filter.tooltip=Filters item extract and insert with ore dictionary (as Cover)/nCan be used as a Conveyor upgrade
 metaitem.fluid_filter.name=Fluid Filter
+metaitem.fluid_filter.tooltip=Filters fluid fill and drain (as Cover)/nCan be used as a Pump upgrade
 
 metaitem.cover.controller.name=Machine Controller
 metaitem.cover.controller.tooltip=Turns Machines ON/OFF
@@ -469,11 +472,9 @@ metaitem.cover.player.detector.tooltip=Gives out close Players as Redstone
 metaitem.cover.screen.name=Computer Monitor
 metaitem.cover.screen.tooltip=Displays Data
 metaitem.cover.crafting.name=Crafting Table Cover
-metaitem.cover.crafting.tooltip=Better than a wooden Workbench
-metaitem.cover.drain.name=Drain
-metaitem.cover.drain.tooltip=Absorbs Fluids and collects Rain
+metaitem.cover.crafting.tooltip=Advanced workbench on the machine's side
 metaitem.cover.shutter.name=Shutter Module
-metaitem.cover.shutter.tooltip=Blocks Inventory/Tank Side. Usage together with Machine Controller.
+metaitem.cover.shutter.tooltip=Blocks side of machine from any interactions
 
 metaitem.cover.solar.panel.name=Solar Panel
 metaitem.cover.solar.panel.tooltip=May the Sun be with you
@@ -481,31 +482,14 @@ metaitem.cover.solar.panel.ulv.name=Solar Panel (8V)
 metaitem.cover.solar.panel.ulv.tooltip=8 Volt Solar Panel
 metaitem.cover.solar.panel.lv.name=Solar Panel (LV)
 metaitem.cover.solar.panel.lv.tooltip=Low Voltage Solar Panel
-metaitem.cover.solar.panel.mv.name=Solar Panel (MV)
-metaitem.cover.solar.panel.mv.tooltip=Medium Voltage Solar Panel
-metaitem.cover.solar.panel.hv.name=Solar Panel (HV)
-metaitem.cover.solar.panel.hv.tooltip=High Voltage Solar Panel
-metaitem.cover.solar.panel.ev.name=Solar Panel (EV)
-metaitem.cover.solar.panel.ev.tooltip=Extreme Solar Panel
-metaitem.cover.solar.panel.iv.name=Solar Panel (IV)
-metaitem.cover.solar.panel.iv.tooltip=Insane Solar Panel
-metaitem.cover.solar.panel.luv.name=Solar Panel (LuV)
-metaitem.cover.solar.panel.luv.tooltip=Ludicrous Solar Panel
-metaitem.cover.solar.panel.zpm.name=Solar Panel (ZPM)
-metaitem.cover.solar.panel.zpm.tooltip=ZPM Voltage Solar Panel
-metaitem.cover.solar.panel.uv.name=Solar Panel (UV)
-metaitem.cover.solar.panel.uv.tooltip=Ultimate Solar Panel
 
 metaitem.tool.cheat.name=Debug Scanner
 metaitem.tool.cheat.tooltip=Also an Infinite Energy Source
 metaitem.tool.scanner.name=Portable Scanner
 metaitem.tool.scanner.tooltip=Tricorder
 
-metaitem.nc.sensorkit.name=GregTech Sensor Kit
 metaitem.duct.tape.name=BrainTech Aerospace Advanced Reinforced Duct Tape FAL-84
 metaitem.duct.tape.tooltip=If you can't fix it with this, use more of it!
-metaitem.mcguffium.239.name=Mc Guffium 239
-metaitem.mcguffium.239.tooltip=42%% better than Phlebotnium
 
 metaitem.pipe.small.bronze.name=Small Bronze Pipe
 metaitem.pipe.small.steel.name=Small Steel Pipe
@@ -903,6 +887,18 @@ metaitem.tool.tooltip.mining_speed=Mining speed: %d
 metaitem.tool.tooltip.durability=Durability: %d/%d
 metaitem.tool.tooltip.rotor.efficiency=Rotor Efficiency: %d%%
 metaitem.tool.tooltip.hammer.extra_drop=Has 50%% chance to drop 1 more crushed ore
+
+cover.ore_dictionary_filter.title=Ore Dictionary Filter
+cover.ore_dictionary_filter.title1=Ore Dictionary Name
+cover.ore_dictionary_filter.title2=(use * for wildcard)
+
+cover.fluid_filter.title=Fluid Filter
+cover.fluid_filter.mode.filter_fill=Filter Fill
+cover.fluid_filter.mode.filter_drain=Filter Drain
+
+cover.item_filter.title=Item Filter
+cover.filter.mode.filter_insert=Filter Insert
+cover.filter.mode.filter_extract=Filter Extract
 
 cover.conveyor.title=Conveyor Cover Settings (%s)
 cover.conveyor.transfer_rate=%s items/sec
@@ -2297,7 +2293,7 @@ gregtech.machine.air_collector.description=Collects air from adjacent blocks
 
 #Tesla Coil
 gregtech.machine.tesla_coil.name=Tesla Coil
-gregtech.machine.tesla_coil.description=Damages all living entities within 7 blocks range/Consumes 2500 EU for 1 damage point\nInternal buffer Capacity: §e256k EU
+gregtech.machine.tesla_coil.description=Damages all living entities within 7 blocks range/nConsumes 2500 EU for 1 damage point/nInternal buffer Capacity: §e256k EU
 
 # General machinery
 gregtech.machine.basic.output_override.reset=Output filter: all tanks.

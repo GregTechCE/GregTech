@@ -38,9 +38,15 @@ public class SimpleMachineMetaTileEntity extends WorkableTieredMetaTileEntity {
     private FluidHandlerProxy[] sidedTankOverrides = new FluidHandlerProxy[6];
     private boolean autoOutputItems;
     private boolean autoOutputFluids;
+    private boolean hasFrontFacing;
 
     public SimpleMachineMetaTileEntity(ResourceLocation metaTileEntityId, RecipeMap<?> recipeMap, OrientedOverlayRenderer renderer, int tier) {
+        this(metaTileEntityId, recipeMap, renderer, tier, true);
+    }
+
+    public SimpleMachineMetaTileEntity(ResourceLocation metaTileEntityId, RecipeMap<?> recipeMap, OrientedOverlayRenderer renderer, int tier, boolean hasFrontFacing) {
         super(metaTileEntityId, recipeMap, renderer, tier);
+        this.hasFrontFacing = hasFrontFacing;
         this.chargerInventory = new ItemStackHandler(1) {
             @Override
             public int getSlotLimit(int slot) {
@@ -51,7 +57,12 @@ public class SimpleMachineMetaTileEntity extends WorkableTieredMetaTileEntity {
 
     @Override
     public MetaTileEntity createMetaTileEntity(MetaTileEntityHolder holder) {
-        return new SimpleMachineMetaTileEntity(metaTileEntityId, workable.recipeMap, renderer, getTier());
+        return new SimpleMachineMetaTileEntity(metaTileEntityId, workable.recipeMap, renderer, getTier(), hasFrontFacing);
+    }
+
+    @Override
+    public boolean hasFrontFacing() {
+        return hasFrontFacing;
     }
 
     @Override

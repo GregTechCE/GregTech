@@ -38,7 +38,7 @@ public class ToolButcheryKnife extends ToolBase {
 
     @Override
     public float getAttackSpeed(ItemStack stack) {
-        return 0.1f;
+        return -3.5f;
     }
 
     @Override

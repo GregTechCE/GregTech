@@ -11,6 +11,7 @@ import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.recipes.RecipeMap;
 import gregtech.api.recipes.RecipeMaps;
 import gregtech.api.recipes.machines.FuelRecipeMap;
+import gregtech.common.blocks.MetaBlocks;
 import gregtech.common.items.MetaItems;
 import gregtech.common.metatileentities.MetaTileEntities;
 import gregtech.integration.jei.multiblock.MultiblockInfoCategory;
@@ -18,13 +19,14 @@ import gregtech.integration.jei.recipe.GTRecipeWrapper;
 import gregtech.integration.jei.recipe.RecipeMapCategory;
 import gregtech.integration.jei.recipe.fuel.FuelRecipeMapCategory;
 import gregtech.integration.jei.recipe.fuel.GTFuelRecipeWrapper;
-import gregtech.integration.jei.utils.MetaItemSubtype;
+import gregtech.integration.jei.utils.MetadataAwareFluidHandlerSubtype;
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.IModRegistry;
 import mezz.jei.api.ISubtypeRegistry;
 import mezz.jei.api.JEIPlugin;
 import mezz.jei.api.recipe.IRecipeCategoryRegistration;
 import mezz.jei.api.recipe.VanillaRecipeCategoryUid;
+import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
 
 import java.util.List;
@@ -35,10 +37,11 @@ public class GTJeiPlugin implements IModPlugin {
 
     @Override
     public void registerItemSubtypes(ISubtypeRegistry subtypeRegistry) {
-        MetaItemSubtype metaItemSubtype = new MetaItemSubtype();
+        MetadataAwareFluidHandlerSubtype subtype = new MetadataAwareFluidHandlerSubtype();
         for(MetaItem<?> metaItem : MetaItems.ITEMS) {
-            subtypeRegistry.registerSubtypeInterpreter(metaItem, metaItemSubtype);
+            subtypeRegistry.registerSubtypeInterpreter(metaItem, subtype);
         }
+        subtypeRegistry.registerSubtypeInterpreter(Item.getItemFromBlock(MetaBlocks.MACHINE), subtype);
     }
 
     @Override

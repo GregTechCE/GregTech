@@ -5,6 +5,7 @@ import gregtech.api.gui.Widget;
 import gregtech.api.net.PacketUIWidgetUpdate;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.GlStateManager;
+import org.lwjgl.input.Keyboard;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -35,10 +36,17 @@ public class ModularUIGui extends GuiContainer {
 
     @Override
     public void initGui() {
+        Keyboard.enableRepeatEvents(true);
         this.xSize = modularUI.getWidth();
         this.ySize = modularUI.getHeight();
         super.initGui();
         this.modularUI.updateScreenSize(width, height);
+    }
+
+    @Override
+    public void onGuiClosed() {
+        super.onGuiClosed();
+        Keyboard.enableRepeatEvents(false);
     }
 
     @Override
@@ -120,8 +128,12 @@ public class ModularUIGui extends GuiContainer {
 
     @Override
     protected void keyTyped(char typedChar, int keyCode) throws IOException {
-        super.keyTyped(typedChar, keyCode);
         modularUI.guiWidgets.values().forEach(widget -> widget.keyTyped(typedChar, keyCode));
+        if(mc.gameSettings.keyBindInventory.isActiveAndMatches(keyCode)) {
+            //prevent shitty logic of closing container when E is pressed
+            return;
+        }
+        super.keyTyped(typedChar, keyCode);
     }
 
 }

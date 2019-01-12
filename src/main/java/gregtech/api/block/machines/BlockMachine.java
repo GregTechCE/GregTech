@@ -166,7 +166,8 @@ public class BlockMachine extends Block implements ITileEntityProvider {
         MetaTileEntity metaTileEntity = getMetaTileEntity(world, pos);
         if(metaTileEntity == null ||
             !metaTileEntity.isValidFrontFacing(axis) ||
-            metaTileEntity.getFrontFacing() == axis)
+            metaTileEntity.getFrontFacing() == axis ||
+            !metaTileEntity.hasFrontFacing())
             return false;
         metaTileEntity.setFrontFacing(axis);
         return true;
@@ -176,7 +177,7 @@ public class BlockMachine extends Block implements ITileEntityProvider {
     @Override
     public EnumFacing[] getValidRotations(World world, BlockPos pos) {
         MetaTileEntity metaTileEntity = getMetaTileEntity(world, pos);
-        if(metaTileEntity == null) return null;
+        if(metaTileEntity == null || !metaTileEntity.hasFrontFacing()) return null;
         return Arrays.stream(EnumFacing.VALUES)
             .filter(metaTileEntity::isValidFrontFacing)
             .toArray(EnumFacing[]::new);

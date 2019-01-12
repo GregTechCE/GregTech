@@ -34,6 +34,7 @@ import net.minecraft.util.EnumFacing.Axis;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.common.util.Constants.NBT;
 import net.minecraftforge.fluids.FluidActionResult;
 import net.minecraftforge.fluids.FluidStack;
@@ -55,7 +56,8 @@ import java.util.function.Consumer;
 
 public abstract class MetaTileEntity implements ICoverable {
 
-    private static final Transformation REVERSE_ROTATION = new Rotation(Math.PI, new Vector3(0.0, 1.0, 0.0)).at(Vector3.center);
+    private static final Transformation REVERSE_HORIZONTAL_ROTATION = new Rotation(Math.PI, new Vector3(0.0, 1.0, 0.0)).at(Vector3.center);
+    private static final Transformation REVERSE_VERTICAL_ROTATION = new Rotation(Math.PI, new Vector3(1.0, 0.0, 0.0)).at(Vector3.center);
     public static final IndexedCuboid6 FULL_CUBE_COLLISION = new IndexedCuboid6(null, Cuboid6.full);
     public final ResourceLocation metaTileEntityId;
     MetaTileEntityHolder holder;
@@ -157,7 +159,7 @@ public abstract class MetaTileEntity implements ICoverable {
     @SideOnly(Side.CLIENT)
     public void renderMetaTileEntity(CCRenderState renderState, Matrix4 translation, IVertexOperation[] pipeline) {
         TextureAtlasSprite atlasSprite = TextureUtils.getMissingSprite();
-        IVertexOperation[] renderPipeline = ArrayUtils.add(pipeline, new ColourMultiplier(getPaintingColorForRendering()));
+        IVertexOperation[] renderPipeline = ArrayUtils.add(pipeline, new ColourMultiplier(GTUtility.convertRGBtoOpaqueRGBA_CL(getPaintingColorForRendering())));
         for(EnumFacing face : EnumFacing.VALUES) {
             Textures.renderFace(renderState, translation, renderPipeline, face, Cuboid6.full, atlasSprite);
         }
@@ -174,10 +176,12 @@ public abstract class MetaTileEntity implements ICoverable {
             if(coverPlateThickness > 0) {
                 //render cover plate for cover
                 //to prevent Z-fighting between cover plates
+                IVertexOperation[] coloredPipeline = ArrayUtils.add(pipeline,
+                    new ColourMultiplier(GTUtility.convertRGBtoOpaqueRGBA_CL(getPaintingColor())));
                 plateBox.expand(coverOffset);
                 TextureAtlasSprite casingSide = coverBehavior.getPlateSprite();
                 for(EnumFacing coverPlateSide : EnumFacing.VALUES) {
-                    Textures.renderFace(renderState, translation, pipeline, coverPlateSide, plateBox, casingSide);
+                    Textures.renderFace(renderState, translation, coloredPipeline, coverPlateSide, plateBox, casingSide);
                 }
                 plateBox.expand(-coverOffset);
             }
@@ -185,9 +189,13 @@ public abstract class MetaTileEntity implements ICoverable {
             coverBehavior.renderCover(renderState, translation.copy(), pipeline, plateBox);
             if(coverPlateThickness == 0.0 && !isOpaqueCube()) {
                 //machine is full block, but still not opaque - render cover on the back side too
-                plateBox.expand(-coverOffset * 20.0);
+                plateBox.expand(-coverOffset * -20.0);
                 Matrix4 backTranslation = translation.copy();
-                REVERSE_ROTATION.apply(backTranslation);
+                if(sideFacing.getAxis().isVertical()) {
+                    REVERSE_VERTICAL_ROTATION.apply(backTranslation);
+                } else {
+                    REVERSE_HORIZONTAL_ROTATION.apply(backTranslation);
+                }
                 backTranslation.translate(-sideFacing.getFrontOffsetX(), -sideFacing.getFrontOffsetY(), -sideFacing.getFrontOffsetZ());
                 coverBehavior.renderCover(renderState, backTranslation, pipeline, plateBox);
             }
@@ -218,7 +226,7 @@ public abstract class MetaTileEntity implements ICoverable {
      */
     public void initFromItemStackData(NBTTagCompound itemStack) {
         if(itemStack.hasKey("PaintingColor", NBT.TAG_INT)) {
-            this.paintingColor = itemStack.getInteger("PaintingColor");
+            setPaintingColor(itemStack.getInteger("PaintingColor"));
         }
     }
 
@@ -231,6 +239,10 @@ public abstract class MetaTileEntity implements ICoverable {
         if(this.paintingColor != 0xFFFFFFFF) { //for machines to stack
             itemStack.setInteger("PaintingColor", this.paintingColor);
         }
+    }
+
+    public ICapabilityProvider initItemStackCapabilities(ItemStack itemStack) {
+        return null;
     }
 
     public final String getMetaName() {
@@ -328,7 +340,7 @@ public abstract class MetaTileEntity implements ICoverable {
      */
     public boolean onWrenchClick(EntityPlayer playerIn, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
         if(playerIn.isSneaking()) {
-            if(side == getFrontFacing() || !isValidFrontFacing(side))
+            if(side == getFrontFacing() || !isValidFrontFacing(side) || !hasFrontFacing())
                 return false;
             if (side != null) {
                 setFrontFacing(side);
@@ -371,6 +383,10 @@ public abstract class MetaTileEntity implements ICoverable {
             buffer.writeString(coverDefinition.getCoverId().toString());
             coverBehavior.writeInitialSyncData(buffer);
         });
+        if(getHolder() != null) {
+            getHolder().notifyBlockUpdate();
+            getHolder().markDirty();
+        }
         return true;
     }
 
@@ -387,11 +403,15 @@ public abstract class MetaTileEntity implements ICoverable {
             Block.spawnAsEntity(getWorld(), getPos(), dropStack);
         }
         writeCustomData(-6, buffer -> buffer.writeByte(side.getIndex()));
+        if(getHolder() != null) {
+            getHolder().notifyBlockUpdate();
+            getHolder().markDirty();
+        }
         return true;
     }
 
     public boolean canPlaceCoverOnSide(EnumFacing side) {
-        if(side == getFrontFacing()) {
+        if(hasFrontFacing() && side == getFrontFacing()) {
             //covers cannot be placed on this side
             return false;
         }
@@ -839,6 +859,7 @@ public abstract class MetaTileEntity implements ICoverable {
         Preconditions.checkNotNull(side, "side");
         this.sidedRedstoneOutput[side.getIndex()] = strength;
         if (getWorld() != null && !getWorld().isRemote) {
+            getHolder().notifyBlockUpdate();
             markDirty();
         }
     }
@@ -847,6 +868,7 @@ public abstract class MetaTileEntity implements ICoverable {
         Preconditions.checkNotNull(frontFacing, "frontFacing");
         this.frontFacing = frontFacing;
         if (getWorld() != null && !getWorld().isRemote) {
+            getHolder().notifyBlockUpdate();
             markDirty();
             writeCustomData(-2, buf -> buf.writeByte(frontFacing.getIndex()));
             mteTraits.forEach(trait -> trait.onFrontFacingSet(frontFacing));
@@ -856,6 +878,7 @@ public abstract class MetaTileEntity implements ICoverable {
     public void setPaintingColor(int paintingColor) {
         this.paintingColor = paintingColor;
         if (getWorld() != null && !getWorld().isRemote) {
+            getHolder().notifyBlockUpdate();
             markDirty();
             writeCustomData(-3, buf -> buf.writeInt(paintingColor));
         }
@@ -863,6 +886,10 @@ public abstract class MetaTileEntity implements ICoverable {
 
     public boolean isValidFrontFacing(EnumFacing facing) {
         return facing != EnumFacing.UP && facing != EnumFacing.DOWN;
+    }
+
+    public boolean hasFrontFacing() {
+        return true;
     }
 
     /**

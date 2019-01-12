@@ -160,7 +160,7 @@ public interface IToolStats {
      * @return attack speed of weapon
      */
     default float getAttackSpeed(ItemStack stack) {
-        return 1.0f;
+        return -2.8f;
     }
 
     default int getColor(boolean isToolHead, ItemStack stack) {

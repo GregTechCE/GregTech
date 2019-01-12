@@ -23,10 +23,12 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
+import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.common.util.Constants.NBT;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.FluidUtil;
+import net.minecraftforge.fluids.capability.templates.FluidHandlerItemStack;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -78,6 +80,11 @@ public class MetaTileEntityTank extends MetaTileEntity {
     }
 
     @Override
+    public boolean hasFrontFacing() {
+        return false;
+    }
+
+    @Override
     protected void initializeInventory() {
         super.initializeInventory();
         this.fluidTank = new SyncFluidTank(tankSize);
@@ -88,8 +95,8 @@ public class MetaTileEntityTank extends MetaTileEntity {
     @Override
     public void initFromItemStackData(NBTTagCompound itemStack) {
         super.initFromItemStackData(itemStack);
-        if(itemStack.hasKey("Fluid", NBT.TAG_COMPOUND)) {
-            FluidStack fluidStack = FluidStack.loadFluidStackFromNBT(itemStack.getCompoundTag("Fluid"));
+        if(itemStack.hasKey(FluidHandlerItemStack.FLUID_NBT_KEY, NBT.TAG_COMPOUND)) {
+            FluidStack fluidStack = FluidStack.loadFluidStackFromNBT(itemStack.getCompoundTag(FluidHandlerItemStack.FLUID_NBT_KEY));
             fluidTank.setFluid(fluidStack);
             fluidTank.onContentsChanged();
         }
@@ -102,8 +109,13 @@ public class MetaTileEntityTank extends MetaTileEntity {
         if(fluidStack != null && fluidStack.amount > 0) {
             NBTTagCompound tagCompound = new NBTTagCompound();
             fluidStack.writeToNBT(tagCompound);
-            itemStack.setTag("Fluid", tagCompound);
+            itemStack.setTag(FluidHandlerItemStack.FLUID_NBT_KEY, tagCompound);
         }
+    }
+
+    @Override
+    public ICapabilityProvider initItemStackCapabilities(ItemStack itemStack) {
+        return new FluidHandlerItemStack(itemStack, tankSize);
     }
 
     @Override

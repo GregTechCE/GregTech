@@ -57,12 +57,12 @@ public class CoverRoboticArm extends CoverConveyor {
                 return;
             }
             int[] itemsTransferLimits = new int[filterMode.maxMatchSlots];
-            if(filterMode == FilterMode.ITEM_FILTER) {
+            if(filterMode == FilterType.ITEM_FILTER) {
                 for(int i = 0; i < itemsTransferLimits.length; i++) {
                     ItemStack filterStack = itemFilterSlots.getStackInSlot(i);
                     itemsTransferLimits[i] = filterStack.getCount();
                 }
-            } else if(filterMode == FilterMode.ORE_DICTIONARY_FILTER) {
+            } else if(filterMode == FilterType.ORE_DICTIONARY_FILTER) {
                 itemsTransferLimits[0] = transferRate;
             } else {
                 itemsTransferLimits[0] = transferRate;
@@ -84,12 +84,12 @@ public class CoverRoboticArm extends CoverConveyor {
             }
             int[] currentItemAmount = doCountDestinationInventoryItems(itemHandler, myItemHandler);
             int[] keepItemAmount = new int[currentItemAmount.length];
-            if(filterMode == FilterMode.ITEM_FILTER) {
+            if(filterMode == FilterType.ITEM_FILTER) {
                 for(int i = 0; i < keepItemAmount.length; i++) {
                     ItemStack filterStack = itemFilterSlots.getStackInSlot(i);
                     keepItemAmount[i] = filterStack.getCount();
                 }
-            } else if(filterMode == FilterMode.ORE_DICTIONARY_FILTER) {
+            } else if(filterMode == FilterType.ORE_DICTIONARY_FILTER) {
                 keepItemAmount[0] = transferRate;
             } else {
                 keepItemAmount[0] = transferRate;
@@ -122,7 +122,7 @@ public class CoverRoboticArm extends CoverConveyor {
     @Override
     protected void onFilterModeUpdated() {
         super.onFilterModeUpdated();
-        if(filterMode == FilterMode.NONE) {
+        if(filterMode == FilterType.NONE) {
             setTransferMode(TransferMode.TRANSFER_ANY);
         }
     }
@@ -134,7 +134,7 @@ public class CoverRoboticArm extends CoverConveyor {
 
     @Override
     protected ModularUI buildUI(Builder builder, EntityPlayer player) {
-        ServerWidgetGroup filterGroup = new ServerWidgetGroup(() -> filterMode != FilterMode.NONE);
+        ServerWidgetGroup filterGroup = new ServerWidgetGroup(() -> filterMode != FilterType.NONE);
         filterGroup.addWidget(new CycleButtonWidget(91, 45, 75, 20,
             GTUtility.mapToString(TransferMode.values(), it -> it.localeName),
             () -> transferMode.ordinal(), (newMode) -> setTransferMode(TransferMode.values()[newMode]))

@@ -18,7 +18,6 @@ public class ToolAxe extends ToolBase {
         return enchantment.type.canEnchantItem(Items.IRON_AXE);
     }
 
-
     @Override
     public int getToolDamagePerBlockBreak(ItemStack stack) {
         return 1;
@@ -42,6 +41,11 @@ public class ToolAxe extends ToolBase {
     @Override
     public float getDigSpeedMultiplier(ItemStack stack) {
         return 2.0F;
+    }
+
+    @Override
+    public float getAttackSpeed(ItemStack stack) {
+        return -2.6f;
     }
 
     @Override

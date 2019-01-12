@@ -1,6 +1,7 @@
 package gregtech.common.metatileentities.electric;
 
 import codechicken.lib.render.CCRenderState;
+import codechicken.lib.render.pipeline.ColourMultiplier;
 import codechicken.lib.render.pipeline.IVertexOperation;
 import codechicken.lib.vec.Matrix4;
 import gregtech.api.capability.IEnergyContainer;
@@ -10,11 +11,13 @@ import gregtech.api.gui.ModularUI;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.MetaTileEntityHolder;
 import gregtech.api.render.Textures;
+import gregtech.api.util.GTUtility;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.AxisAlignedBB;
+import org.apache.commons.lang3.ArrayUtils;
 
 import java.util.List;
 
@@ -37,7 +40,8 @@ public class MetaTileEntityTeslaCoil extends MetaTileEntity {
 
     @Override
     public void renderMetaTileEntity(CCRenderState renderState, Matrix4 translation, IVertexOperation[] pipeline) {
-        Textures.TESLA_COIL.render(renderState, translation, pipeline);
+        Textures.TESLA_COIL.render(renderState, translation, ArrayUtils.add(pipeline,
+            new ColourMultiplier(GTUtility.convertRGBtoOpaqueRGBA_CL(getPaintingColorForRendering()))));
     }
 
     @Override
@@ -68,6 +72,11 @@ public class MetaTileEntityTeslaCoil extends MetaTileEntity {
 
     protected double getDamageRadius() {
         return 6.0;
+    }
+
+    @Override
+    public boolean hasFrontFacing() {
+        return false;
     }
 
     @Override
