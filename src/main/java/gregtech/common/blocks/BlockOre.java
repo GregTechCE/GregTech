@@ -2,7 +2,6 @@ package gregtech.common.blocks;
 
 import gregtech.api.GregTechAPI;
 import gregtech.api.unification.material.type.DustMaterial;
-import gregtech.api.unification.material.type.SolidMaterial;
 import gregtech.api.unification.ore.StoneType;
 import gregtech.api.util.IBlockOre;
 import gregtech.common.blocks.properties.PropertyStoneType;

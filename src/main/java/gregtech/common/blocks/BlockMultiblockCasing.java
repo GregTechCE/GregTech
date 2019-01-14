@@ -25,7 +25,6 @@ public class BlockMultiblockCasing extends VariantBlock<BlockMultiblockCasing.Mu
         return false;
     }
 
-
     public enum MultiblockCasingType implements IStringSerializable {
 
         ENGINE_INTAKE_CASING("engine_intake"),

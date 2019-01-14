@@ -8,7 +8,7 @@
   "key": {
     "C": {
       "type": "gregtech:metaitem",
-      "name": "cover.solar.panel.lv"
+      "name": "cover.solar.panel.ulv"
     },
     "A": {
       "type": "forge:ore_dict",

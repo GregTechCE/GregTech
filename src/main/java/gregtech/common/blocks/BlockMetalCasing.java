@@ -25,7 +25,6 @@ public class BlockMetalCasing extends VariantBlock<BlockMetalCasing.MetalCasingT
         return false;
     }
 
-
     public enum MetalCasingType implements IStringSerializable {
 
         BRONZE_BRICKS("bronze_bricks"),

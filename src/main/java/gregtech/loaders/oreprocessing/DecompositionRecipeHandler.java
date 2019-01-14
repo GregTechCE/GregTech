@@ -21,8 +21,13 @@ import static gregtech.api.unification.material.type.Material.MatFlags.DISABLE_D
 
 public class DecompositionRecipeHandler {
 
-    public static void register() {
-        OrePrefix.dust.addProcessingHandler(FluidMaterial.class, DecompositionRecipeHandler::processDecomposition);
+    public static void runRecipeGeneration() {
+        for(Material material : Material.MATERIAL_REGISTRY) {
+            if(material instanceof FluidMaterial) {
+                OrePrefix prefix = material instanceof DustMaterial ? OrePrefix.dust : null;
+                processDecomposition(prefix, (FluidMaterial) material);
+            }
+        }
     }
 
     public static void processDecomposition(OrePrefix decomposePrefix, FluidMaterial material) {

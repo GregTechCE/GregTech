@@ -27,6 +27,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.particle.ParticleManager;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLiving.SpawnPlacementType;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumDyeColor;
@@ -119,6 +120,11 @@ public class BlockMachine extends Block implements ITileEntityProvider {
     @Override
     public int getMetaFromState(IBlockState state) {
         return state.getValue(OPAQUE) ? 0 : 1;
+    }
+
+    @Override
+    public boolean canCreatureSpawn(IBlockState state, IBlockAccess world, BlockPos pos, SpawnPlacementType type) {
+        return false;
     }
 
     public static MetaTileEntity getMetaTileEntity(IBlockAccess blockAccess, BlockPos pos) {

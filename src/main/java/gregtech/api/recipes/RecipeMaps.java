@@ -337,7 +337,7 @@ public class RecipeMaps {
      * </pre>
      */
 
-    @ZenProperty public static final RecipeMap<SimpleRecipeBuilder> CENTRIFUGE_RECIPES = new RecipeMap<>("centrifuge", 0, 1, 0, 6, 0, 1, 0, 3, 1, new SimpleRecipeBuilder().EUt(5))
+    @ZenProperty public static final RecipeMap<SimpleRecipeBuilder> CENTRIFUGE_RECIPES = new RecipeMapGroupOutput("centrifuge", 0, 1, 0, 6, 0, 1, 0, 6, 1, new SimpleRecipeBuilder().EUt(5))
         .setSlotOverlay(false, false, true, GuiTextures.EXTRACTOR_OVERLAY)
         .setSlotOverlay(false, true, true, GuiTextures.DARK_CANISTER_OVERLAY)
         .setProgressBar(GuiTextures.PROGRESS_BAR_EXTRACT, MoveType.HORIZONTAL);
@@ -365,7 +365,7 @@ public class RecipeMaps {
      * </pre>
      */
 
-    @ZenProperty public static final RecipeMap<SimpleRecipeBuilder> ELECTROLYZER_RECIPES = new RecipeMap<>("electrolyzer", 0, 1, 0, 6, 0, 1, 0, 3, 1, new SimpleRecipeBuilder())
+    @ZenProperty public static final RecipeMap<SimpleRecipeBuilder> ELECTROLYZER_RECIPES = new RecipeMapGroupOutput("electrolyzer", 0, 1, 0, 6, 0, 1, 0, 6, 1, new SimpleRecipeBuilder())
         .setSlotOverlay(false, false, true, GuiTextures.CHARGER_OVERLAY)
         .setSlotOverlay(false, true, true, GuiTextures.DARK_CANISTER_OVERLAY)
         .setProgressBar(GuiTextures.PROGRESS_BAR_EXTRACT, MoveType.HORIZONTAL);

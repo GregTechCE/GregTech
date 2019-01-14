@@ -56,8 +56,8 @@ public class RecipeMap<R extends RecipeBuilder<R>> {
 	private final int minFluidOutputs, maxFluidOutputs;
 	private final int amperage;
 	private final TByteObjectMap<TextureArea> slotOverlays;
-	private TextureArea progressBarTexture;
-	private MoveType moveType;
+	protected TextureArea progressBarTexture;
+	protected MoveType moveType;
 
     private final Map<FluidKey, Collection<Recipe>> recipeFluidMap = new HashMap<>();
     private final Collection<Recipe> recipeList = new ArrayList<>();
@@ -229,7 +229,11 @@ public class RecipeMap<R extends RecipeBuilder<R>> {
 		return null;
 	}
 
-	//this DOES NOT addFlag machine control widgets or binds player inventory
+    public ModularUI.Builder createJeiUITemplate(IItemHandlerModifiable importItems, IItemHandlerModifiable exportItems, FluidTankList importFluids, FluidTankList exportFluids) {
+	    return createUITemplate(() -> 0.0, importItems, exportItems, importFluids, exportFluids);
+    }
+
+	//this DOES NOT include machine control widgets or binds player inventory
 	public ModularUI.Builder createUITemplate(DoubleSupplier progressSupplier, IItemHandlerModifiable importItems, IItemHandlerModifiable exportItems, FluidTankList importFluids, FluidTankList exportFluids) {
         ModularUI.Builder builder = ModularUI.defaultBuilder();
         builder.widget(new ProgressWidget(progressSupplier, 77, 22, 20, 20, progressBarTexture, moveType));
@@ -238,7 +242,7 @@ public class RecipeMap<R extends RecipeBuilder<R>> {
         return builder;
     }
 
-    private void addInventorySlotGroup(ModularUI.Builder builder, IItemHandlerModifiable itemHandler, FluidTankList fluidHandler, boolean isOutputs) {
+    protected void addInventorySlotGroup(ModularUI.Builder builder, IItemHandlerModifiable itemHandler, FluidTankList fluidHandler, boolean isOutputs) {
         int itemInputsCount = itemHandler.getSlots();
         int fluidInputsCount = fluidHandler.getTanks();
         boolean invertFluids = false;
@@ -256,20 +260,24 @@ public class RecipeMap<R extends RecipeBuilder<R>> {
         for(int i = 0; i < itemSlotsToDown; i++) {
             for (int j = 0; j < itemSlotsToLeft; j++) {
                 int slotIndex = i * itemSlotsToLeft + j;
-                addSlot(builder, startInputsX + 18 * j, startInputsY + 18 * i, slotIndex, itemHandler, fluidHandler, invertFluids, isOutputs);
+                int x = startInputsX + 18 * j;
+                int y = startInputsY + 18 * i;
+                addSlot(builder, x, y, slotIndex, itemHandler, fluidHandler, invertFluids, isOutputs);
             }
         }
         if(fluidInputsCount > 0 || invertFluids) {
-            if(itemSlotsToDown >= fluidInputsCount) {
+            if(itemSlotsToDown >= fluidInputsCount && itemSlotsToLeft < 3) {
                 int startSpecX = isOutputs ? startInputsX + itemSlotsToLeft * 18 : startInputsX - 18;
                 for(int i = 0; i < fluidInputsCount; i++) {
-                    addSlot(builder, startSpecX, startInputsY + 18 * i, i, itemHandler, fluidHandler, !invertFluids, isOutputs);
+                    int y = startInputsY + 18 * i;
+                    addSlot(builder, startSpecX, y, i, itemHandler, fluidHandler, !invertFluids, isOutputs);
                 }
             } else {
                 int startSpecY = startInputsY + itemSlotsToDown * 18;
-                int offsetX = isOutputs ? 0 : 18;
                 for(int i = 0; i < fluidInputsCount; i++) {
-                    addSlot(builder, startInputsX - offsetX + 18 * i, startSpecY, i, itemHandler, fluidHandler, !invertFluids, isOutputs);
+                    int x = isOutputs ? startInputsX + 18 * (i % 3) : startInputsX + itemSlotsToLeft * 18 - 18 - 18 * (i % 3);
+                    int y = startSpecY + (i / 3) * 18;
+                    addSlot(builder, x, y, i, itemHandler, fluidHandler, !invertFluids, isOutputs);
                 }
             }
         }
@@ -287,7 +295,7 @@ public class RecipeMap<R extends RecipeBuilder<R>> {
         }
     }
 
-    private TextureArea[] getOverlaysForSlot(boolean isOutput, boolean isFluid, boolean isLast) {
+    protected TextureArea[] getOverlaysForSlot(boolean isOutput, boolean isFluid, boolean isLast) {
 	    TextureArea base = isFluid ? GuiTextures.FLUID_SLOT : GuiTextures.SLOT;
 	    if(!isOutput && !isFluid && isLast && recipeBuilderSample instanceof IntCircuitRecipeBuilder) {
 	        //automatically add int circuit overlay to last item input slot
@@ -300,7 +308,7 @@ public class RecipeMap<R extends RecipeBuilder<R>> {
         return new TextureArea[] {base};
     }
 
-    private static int[] determineSlotsGrid(int itemInputsCount) {
+    protected static int[] determineSlotsGrid(int itemInputsCount) {
         int itemSlotsToLeft = 0;
         int itemSlotsToDown = 0;
         double sqrt = Math.sqrt(itemInputsCount);

@@ -38,7 +38,7 @@ public class RecipeMapCategory implements IRecipeCategory<GTRecipeWrapper> {
         FluidTank[] exportFluidTanks = new FluidTank[recipeMap.getMaxFluidOutputs()];
         for(int i = 0; i < exportFluidTanks.length; i++)
             exportFluidTanks[i] = new FluidTank(16000);
-        this.modularUI = recipeMap.createUITemplate(() -> 0.0,
+        this.modularUI = recipeMap.createJeiUITemplate(
             (importItems = new ItemStackHandler(recipeMap.getMaxInputs())),
             (exportItems = new ItemStackHandler(recipeMap.getMaxOutputs())),
             (importFluids = new FluidTankList(false, importFluidTanks)),

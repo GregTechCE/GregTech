@@ -52,9 +52,13 @@ public class MaterialStack {
     @ZenMethod
     public String toString() {
         String string = "";
-        if(material.materialComponents.size() > 1) {
+        if(material.chemicalFormula.isEmpty()) {
+            string += "?";
+        } else if(material.materialComponents.size() > 1) {
             string += '(' + material.chemicalFormula + ')';
-        } else string += material.chemicalFormula;
+        } else {
+            string += material.chemicalFormula;
+        }
         if(amount > 1) {
             string += SmallDigits.toSmallDownNumbers(Long.toString(amount));
         }

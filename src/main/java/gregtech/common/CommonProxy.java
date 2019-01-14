@@ -1,30 +1,34 @@
 package gregtech.common;
 
+import com.mojang.realmsclient.gui.ChatFormatting;
 import gregtech.api.GTValues;
 import gregtech.api.block.machines.MachineItemBlock;
 import gregtech.api.enchants.EnchantmentEnderDamage;
 import gregtech.api.enchants.EnchantmentRadioactivity;
 import gregtech.api.items.metaitem.MetaItem;
+import gregtech.api.unification.OreDictUnifier;
 import gregtech.api.unification.material.type.DustMaterial;
 import gregtech.api.unification.material.type.Material;
 import gregtech.api.unification.ore.OrePrefix;
+import gregtech.api.unification.stack.UnificationEntry;
 import gregtech.api.util.GTLog;
 import gregtech.common.blocks.*;
 import gregtech.common.blocks.wood.BlockGregLeaves;
 import gregtech.common.blocks.wood.BlockGregLog;
 import gregtech.common.blocks.wood.BlockGregSapling;
-import gregtech.common.pipelike.cable.ItemBlockCable;
 import gregtech.common.items.MetaItems;
 import gregtech.common.items.PotionFluids;
+import gregtech.common.pipelike.cable.ItemBlockCable;
 import gregtech.common.pipelike.fluidpipe.ItemBlockFluidPipe;
-import gregtech.loaders.recipe.FuelLoader;
-import gregtech.loaders.recipe.MetaTileEntityLoader;
+import gregtech.loaders.MaterialInfoLoader;
 import gregtech.loaders.OreDictionaryLoader;
+import gregtech.loaders.oreprocessing.DecompositionRecipeHandler;
 import gregtech.loaders.oreprocessing.RecipeHandlerList;
 import gregtech.loaders.oreprocessing.ToolRecipeHandler;
 import gregtech.loaders.recipe.CraftingRecipeLoader;
+import gregtech.loaders.recipe.FuelLoader;
 import gregtech.loaders.recipe.MachineRecipeLoader;
-import gregtech.loaders.MaterialInfoLoader;
+import gregtech.loaders.recipe.MetaTileEntityLoader;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.enchantment.Enchantment;
@@ -34,6 +38,7 @@ import net.minecraft.item.ItemMultiTexture;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraftforge.event.RegistryEvent;
+import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.event.furnace.FurnaceFuelBurnTimeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
@@ -167,6 +172,7 @@ public class CommonProxy {
     public static void registerRecipesLowest(RegistryEvent.Register<IRecipe> event) {
         GTLog.logger.info("Running late material handlers...");
         OrePrefix.runMaterialHandlers();
+        DecompositionRecipeHandler.runRecipeGeneration();
     }
 
     @SubscribeEvent
@@ -188,6 +194,17 @@ public class CommonProxy {
                 //compute burn value for block prefix, taking amount of material in block into account
                 double materialUnitsInBlock = OrePrefix.block.getMaterialAmount(material) / (GTValues.M * 1.0);
                 event.setBurnTime((int) (materialUnitsInBlock * ((DustMaterial) material).burnTime));
+            }
+        }
+    }
+
+    @SubscribeEvent
+    public static void addMaterialFormulaHandler(ItemTooltipEvent event) {
+        ItemStack itemStack = event.getItemStack();
+        if(!(itemStack.getItem() instanceof ItemBlock)) {
+            UnificationEntry unificationEntry = OreDictUnifier.getUnificationEntry(itemStack);
+            if(unificationEntry != null && unificationEntry.material != null && !unificationEntry.material.chemicalFormula.isEmpty()) {
+                event.getToolTip().add(1, ChatFormatting.GRAY.toString() + unificationEntry.material.chemicalFormula);
             }
         }
     }

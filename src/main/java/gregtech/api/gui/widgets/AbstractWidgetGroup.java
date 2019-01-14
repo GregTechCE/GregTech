@@ -24,6 +24,10 @@ public class AbstractWidgetGroup extends Widget {
         widgets.stream().flatMap(it -> it.getNativeWidgets().stream()).forEach(it -> it.setEnabled(visible));
     }
 
+    public boolean isVisible() {
+        return isVisible;
+    }
+
     protected void addWidget(Widget widget) {
         if(isInitialized) {
             throw new IllegalStateException("Cannot add widgets after initialization!");

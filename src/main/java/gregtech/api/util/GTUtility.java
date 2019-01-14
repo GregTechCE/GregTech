@@ -141,7 +141,6 @@ public class GTUtility {
                 type = ((Class<?>) type).getGenericSuperclass();
             }
         }
-
         return (Class<T>) ((ParameterizedType) type).getActualTypeArguments()[index];
     }
 

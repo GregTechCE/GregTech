@@ -25,7 +25,6 @@ public class BlockTurbineCasing extends VariantBlock<BlockTurbineCasing.TurbineC
         return false;
     }
 
-
     public enum TurbineCasingType implements IStringSerializable {
 
         BRONZE_GEARBOX("bronze_gearbox"),
