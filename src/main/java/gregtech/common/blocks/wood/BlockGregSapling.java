@@ -17,9 +17,12 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraft.world.gen.feature.*;
+import net.minecraft.world.gen.feature.WorldGenBigTree;
+import net.minecraft.world.gen.feature.WorldGenTrees;
+import net.minecraft.world.gen.feature.WorldGenerator;
 import net.minecraftforge.common.EnumPlantType;
 import net.minecraftforge.common.IPlantable;
+import net.minecraftforge.event.terraingen.TerrainGen;
 
 import java.util.Random;
 
@@ -110,6 +113,7 @@ public class BlockGregSapling extends BlockBush implements IGrowable, IPlantable
     }
 
     public void generateTree(World worldIn, BlockPos pos, IBlockState state, Random rand) {
+        if (!TerrainGen.saplingGrowTree(worldIn, rand, pos)) return;
         WorldGenerator worldgenerator;
         IBlockState logState = MetaBlocks.LOG.getDefaultState()
             .withProperty(BlockGregLog.VARIANT, LogVariant.RUBBER_WOOD)
