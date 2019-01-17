@@ -8,6 +8,7 @@ import gregtech.api.gui.Widget;
 import gregtech.api.gui.widgets.SlotWidget;
 import gregtech.api.gui.widgets.TankWidget;
 import gregtech.api.recipes.RecipeMap;
+import gregtech.api.util.watch.WatchedItemStackHandler;
 import mezz.jei.api.IGuiHelper;
 import mezz.jei.api.gui.IDrawable;
 import mezz.jei.api.gui.IGuiFluidStackGroup;
@@ -39,8 +40,8 @@ public class RecipeMapCategory implements IRecipeCategory<GTRecipeWrapper> {
         for(int i = 0; i < exportFluidTanks.length; i++)
             exportFluidTanks[i] = new FluidTank(16000);
         this.modularUI = recipeMap.createJeiUITemplate(
-            (importItems = new ItemStackHandler(recipeMap.getMaxInputs())),
-            (exportItems = new ItemStackHandler(recipeMap.getMaxOutputs())),
+            (importItems = new WatchedItemStackHandler(recipeMap.getMaxInputs())),
+            (exportItems = new WatchedItemStackHandler(recipeMap.getMaxOutputs())),
             (importFluids = new FluidTankList(false, importFluidTanks)),
             (exportFluids = new FluidTankList(false, exportFluidTanks))
             ).build(new BlankUIHolder(), Minecraft.getMinecraft().player);

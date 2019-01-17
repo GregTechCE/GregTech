@@ -15,13 +15,13 @@ import gregtech.api.recipes.RecipeMap;
 import gregtech.api.recipes.RecipeMaps;
 import gregtech.api.render.Textures;
 import gregtech.api.unification.OreDictUnifier;
+import gregtech.api.util.watch.WatchedItemStackHandler;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.IFluidTank;
 import net.minecraftforge.items.IItemHandlerModifiable;
-import net.minecraftforge.items.ItemStackHandler;
 import net.minecraftforge.oredict.OreIngredient;
 
 public class SteamMacerator extends SteamMetaTileEntity {
@@ -81,12 +81,12 @@ public class SteamMacerator extends SteamMetaTileEntity {
 
     @Override
     public IItemHandlerModifiable createImportItemHandler() {
-        return new ItemStackHandler(1);
+        return new WatchedItemStackHandler(1);
     }
 
     @Override
     public IItemHandlerModifiable createExportItemHandler() {
-        return new ItemStackHandler(1);
+        return new WatchedItemStackHandler(1);
     }
 
     @Override

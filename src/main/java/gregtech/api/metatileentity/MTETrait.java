@@ -57,4 +57,6 @@ public abstract class MTETrait {
         metaTileEntity.writeTraitData(this, id, writer);
     }
 
+    public void onContentChanged() {}
+
 }

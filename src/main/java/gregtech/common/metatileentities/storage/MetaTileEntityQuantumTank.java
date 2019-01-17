@@ -17,7 +17,8 @@ import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.MetaTileEntityHolder;
 import gregtech.api.render.Textures;
 import gregtech.api.util.GTUtility;
-import gregtech.api.util.WatchedFluidTank;
+import gregtech.api.util.watch.WatchedFluidTank;
+import gregtech.api.util.watch.WatchedItemStackHandler;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
@@ -29,7 +30,6 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandlerItem;
@@ -53,19 +53,14 @@ public class MetaTileEntityQuantumTank extends MetaTileEntity {
         super(metaTileEntityId);
         this.tier = tier;
         this.maxFluidCapacity = maxFluidCapacity;
-        this.containerInventory = new ItemStackHandler(2);
+        this.containerInventory = new WatchedItemStackHandler(2);
         initializeInventory();
     }
 
     @Override
     protected void initializeInventory() {
         super.initializeInventory();
-        this.fluidTank = new WatchedFluidTank(maxFluidCapacity) {
-            @Override
-            protected void onFluidChanged(FluidStack newFluidStack, FluidStack oldFluidStack) {
-                updateComparatorValue(true);
-            }
-        };
+        this.fluidTank = new WatchedFluidTank(maxFluidCapacity).setOnFluidChanged((stack1, stack2) -> updateComparatorValue(true));
         this.fluidInventory = fluidTank;
         updateComparatorValue(true);
     }

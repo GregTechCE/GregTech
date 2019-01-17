@@ -15,6 +15,7 @@ import gregtech.api.gui.widgets.*;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.render.Textures;
 import gregtech.api.util.GTUtility;
+import gregtech.api.util.watch.WatchedItemStackHandler;
 import gregtech.common.items.MetaItems;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
@@ -59,7 +60,7 @@ public class CoverConveyor extends CoverBehavior implements CoverWithUI, ITickab
         this.filterTypeInventory = new FilterItemStackHandler();
         this.filterMode = FilterType.NONE;
         this.oreDictionaryFilter = "";
-        this.itemFilterSlots = new ItemStackHandler(9) {
+        this.itemFilterSlots = new WatchedItemStackHandler(9) {
             @Override
             public int getSlotLimit(int slot) {
                 return 1;

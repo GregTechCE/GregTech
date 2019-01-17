@@ -13,6 +13,7 @@ import gregtech.api.gui.ModularUI;
 import gregtech.api.gui.widgets.*;
 import gregtech.api.render.Textures;
 import gregtech.api.util.GTUtility;
+import gregtech.api.util.watch.WatchedItemStackHandler;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
@@ -37,7 +38,7 @@ public class CoverItemFilter extends CoverBehavior implements CoverWithUI {
 
     public CoverItemFilter(ICoverable coverHolder, EnumFacing attachedSide) {
         super(coverHolder, attachedSide);
-        this.itemFilterSlots = new ItemStackHandler(9) {
+        this.itemFilterSlots = new WatchedItemStackHandler(9) {
             @Override
             public int getSlotLimit(int slot) {
                 return 1;

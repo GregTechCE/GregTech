@@ -5,9 +5,9 @@ import gregtech.api.metatileentity.MetaTileEntityHolder;
 import gregtech.api.metatileentity.SimpleMachineMetaTileEntity;
 import gregtech.api.recipes.RecipeMap;
 import gregtech.api.render.OrientedOverlayRenderer;
+import gregtech.api.util.watch.WatchedItemStackHandler;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.items.IItemHandlerModifiable;
-import net.minecraftforge.items.ItemStackHandler;
 
 public class MetaTileEntityMacerator extends SimpleMachineMetaTileEntity {
 
@@ -23,7 +23,7 @@ public class MetaTileEntityMacerator extends SimpleMachineMetaTileEntity {
         return new SimpleMachineMetaTileEntity(metaTileEntityId, workable.recipeMap, renderer, getTier()) {
             @Override
             protected IItemHandlerModifiable createExportItemHandler() {
-                return new ItemStackHandler(outputAmount);
+                return new WatchedItemStackHandler(outputAmount);
             }
         };
     }

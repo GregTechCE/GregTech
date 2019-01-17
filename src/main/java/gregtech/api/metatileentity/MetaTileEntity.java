@@ -20,6 +20,8 @@ import gregtech.api.cover.ICoverable;
 import gregtech.api.gui.ModularUI;
 import gregtech.api.render.Textures;
 import gregtech.api.util.GTUtility;
+import gregtech.api.util.watch.WatchedItemStackHandler;
+import gregtech.api.util.watch.WatchedItemStackHandlerWrapper;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.entity.player.EntityPlayer;
@@ -45,7 +47,10 @@ import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidTankProperties;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import net.minecraftforge.items.*;
+import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.items.IItemHandler;
+import net.minecraftforge.items.IItemHandlerModifiable;
+import net.minecraftforge.items.ItemHandlerHelper;
 import org.apache.commons.lang3.ArrayUtils;
 
 import javax.annotation.Nullable;
@@ -62,10 +67,10 @@ public abstract class MetaTileEntity implements ICoverable {
     public final ResourceLocation metaTileEntityId;
     MetaTileEntityHolder holder;
 
-    protected IItemHandlerModifiable importItems;
-    protected IItemHandlerModifiable exportItems;
+    protected WatchedItemStackHandler importItems;
+    protected WatchedItemStackHandler exportItems;
 
-    protected IItemHandler itemInventory;
+    protected WatchedItemStackHandler itemInventory;
 
     protected FluidTankList importFluids;
     protected FluidTankList exportFluids;
@@ -88,17 +93,38 @@ public abstract class MetaTileEntity implements ICoverable {
     }
 
     protected void initializeInventory() {
-        this.importItems = createImportItemHandler();
-        this.exportItems = createExportItemHandler();
-        this.itemInventory = new ItemHandlerProxy(importItems, exportItems);
+        IItemHandlerModifiable importItems = createImportItemHandler();
+        IItemHandlerModifiable exportItems = createExportItemHandler();
+        this.itemInventory = new WatchedItemStackHandlerWrapper(new ItemHandlerProxy(importItems, exportItems));
+
+        if (importItems instanceof WatchedItemStackHandler)
+            this.importItems = (WatchedItemStackHandler) importItems;
+        else
+            this.importItems = new WatchedItemStackHandlerWrapper(importItems);
+
+        if (exportItems instanceof WatchedItemStackHandler)
+            this.exportItems = (WatchedItemStackHandler) exportItems;
+        else
+            this.exportItems = new WatchedItemStackHandlerWrapper(exportItems);
+
+        this.importItems.setOnItemChanged(this::onContentChanged);
+        this.exportItems.setOnItemChanged(this::onContentChanged);
 
         this.importFluids = createImportFluidHandler();
+        this.importFluids.setOnContentChanged(() -> onContentChanged(null));
         this.exportFluids = createExportFluidHandler();
+        this.exportFluids.setOnContentChanged(() -> onContentChanged(null));
         this.fluidInventory = new FluidHandlerProxy(importFluids, exportFluids);
     }
 
     public MetaTileEntityHolder getHolder() {
         return holder;
+    }
+
+    public void onContentChanged(Object object) {
+        for(MTETrait mteTrait : this.mteTraits) {
+            mteTrait.onContentChanged();
+        }
     }
 
     public abstract MetaTileEntity createMetaTileEntity(MetaTileEntityHolder holder);
@@ -267,11 +293,11 @@ public abstract class MetaTileEntity implements ICoverable {
     }
 
     protected IItemHandlerModifiable createImportItemHandler() {
-        return new ItemStackHandler(0);
+        return new WatchedItemStackHandler(0);
     }
 
     protected IItemHandlerModifiable createExportItemHandler() {
-        return new ItemStackHandler(0);
+        return new WatchedItemStackHandler(0);
     }
 
     protected FluidTankList createImportFluidHandler() {
@@ -999,7 +1025,7 @@ public abstract class MetaTileEntity implements ICoverable {
         return paintingColor;
     }
 
-    public IItemHandler getItemInventory() {
+    public WatchedItemStackHandler getItemInventory() {
         return itemInventory;
     }
 
@@ -1007,11 +1033,11 @@ public abstract class MetaTileEntity implements ICoverable {
         return fluidInventory;
     }
 
-    public IItemHandlerModifiable getImportItems() {
+    public WatchedItemStackHandler getImportItems() {
         return importItems;
     }
 
-    public IItemHandlerModifiable getExportItems() {
+    public WatchedItemStackHandler getExportItems() {
         return exportItems;
     }
 

@@ -105,6 +105,14 @@ public abstract class RecipeMapWorkableHandler extends MTETrait implements IWork
             }
         }
 
+        if (wasActiveAndNeedsUpdate) {
+            this.wasActiveAndNeedsUpdate = false;
+            setActive(false);
+        }
+    }
+
+    @Override
+    public void onContentChanged() {
         if(progressTime == 0 && workingEnabled) {
             long maxVoltage = getMaxVoltage();
             Recipe currentRecipe;
@@ -124,11 +132,6 @@ public abstract class RecipeMapWorkableHandler extends MTETrait implements IWork
             if(currentRecipe != null && setupAndConsumeRecipeInputs(currentRecipe)) {
                 setupRecipe(currentRecipe);
             }
-        }
-
-        if (wasActiveAndNeedsUpdate) {
-            this.wasActiveAndNeedsUpdate = false;
-            setActive(false);
         }
     }
 
@@ -214,6 +217,7 @@ public abstract class RecipeMapWorkableHandler extends MTETrait implements IWork
         this.itemOutputs = null;
         this.hasNotEnoughEnergy = false;
         this.wasActiveAndNeedsUpdate = true;
+        onContentChanged();
     }
 
     public double getProgressPercent() {

@@ -9,10 +9,10 @@ import gregtech.api.metatileentity.MetaTileEntityHolder;
 import gregtech.api.metatileentity.SteamMetaTileEntity;
 import gregtech.api.recipes.RecipeMaps;
 import gregtech.api.render.Textures;
+import gregtech.api.util.watch.WatchedItemStackHandler;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.items.IItemHandlerModifiable;
-import net.minecraftforge.items.ItemStackHandler;
 
 public class SteamHammer extends SteamMetaTileEntity {
 
@@ -27,12 +27,12 @@ public class SteamHammer extends SteamMetaTileEntity {
 
     @Override
     public IItemHandlerModifiable createImportItemHandler() {
-        return new ItemStackHandler(1);
+        return new WatchedItemStackHandler(1);
     }
 
     @Override
     public IItemHandlerModifiable createExportItemHandler() {
-        return new ItemStackHandler(1);
+        return new WatchedItemStackHandler(1);
     }
 
     @Override

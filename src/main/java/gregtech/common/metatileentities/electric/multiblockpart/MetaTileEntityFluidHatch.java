@@ -17,6 +17,7 @@ import gregtech.api.metatileentity.multiblock.IMultiblockAbilityPart;
 import gregtech.api.metatileentity.multiblock.MultiblockAbility;
 import gregtech.api.render.SimpleOverlayRenderer;
 import gregtech.api.render.Textures;
+import gregtech.api.util.watch.WatchedItemStackHandler;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -41,7 +42,7 @@ public class MetaTileEntityFluidHatch extends MetaTileEntityMultiblockPart imple
 
     public MetaTileEntityFluidHatch(ResourceLocation metaTileEntityId, int tier, boolean isExportHatch) {
         super(metaTileEntityId, tier);
-        this.containerInventory = new ItemStackHandler(2);
+        this.containerInventory = new WatchedItemStackHandler(2);
         this.isExportHatch = isExportHatch;
         initializeInventory();
     }

@@ -40,6 +40,7 @@ public abstract class TieredMetaTileEntity extends MetaTileEntity implements IEn
         } else this.energyContainer = EnergyContainerHandler.receiverContainer(this,
             tierVoltage * 32L, tierVoltage, getMaxInputOutputAmperage());
         updateComparatorValue(true);
+        onContentChanged(null);
     }
 
     @Override

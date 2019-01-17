@@ -1,16 +1,16 @@
 package gregtech.api.capability.impl;
 
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.items.IItemHandler;
+import net.minecraftforge.items.IItemHandlerModifiable;
 
 import javax.annotation.Nonnull;
 
-public class ItemHandlerProxy implements IItemHandler {
+public class ItemHandlerProxy implements IItemHandlerModifiable {
 
-    private IItemHandler insertHandler;
-    private IItemHandler extractHandler;
+    private IItemHandlerModifiable insertHandler;
+    private IItemHandlerModifiable extractHandler;
 
-    public ItemHandlerProxy(IItemHandler insertHandler, IItemHandler extractHandler) {
+    public ItemHandlerProxy(IItemHandlerModifiable insertHandler, IItemHandlerModifiable extractHandler) {
         this.insertHandler = insertHandler;
         this.extractHandler = extractHandler;
     }
@@ -41,5 +41,13 @@ public class ItemHandlerProxy implements IItemHandler {
     @Override
     public int getSlotLimit(int slot) {
         return slot < insertHandler.getSlots() ? insertHandler.getSlotLimit(slot) : extractHandler.getSlotLimit(slot - insertHandler.getSlots());
+    }
+
+    @Override
+    public void setStackInSlot(int slot, @Nonnull ItemStack stack) {
+        if (slot < insertHandler.getSlots())
+            insertHandler.setStackInSlot(slot, stack);
+        else
+            extractHandler.setStackInSlot(slot - insertHandler.getSlots(), stack);
     }
 }

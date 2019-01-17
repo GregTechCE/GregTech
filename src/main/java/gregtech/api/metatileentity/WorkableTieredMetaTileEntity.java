@@ -10,6 +10,8 @@ import gregtech.api.capability.impl.FluidTankList;
 import gregtech.api.recipes.Recipe;
 import gregtech.api.recipes.RecipeMap;
 import gregtech.api.render.OrientedOverlayRenderer;
+import gregtech.api.util.watch.WatchedFluidTank;
+import gregtech.api.util.watch.WatchedItemStackHandler;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
@@ -18,7 +20,6 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.IFluidTank;
 import net.minecraftforge.items.IItemHandlerModifiable;
-import net.minecraftforge.items.ItemStackHandler;
 
 import javax.annotation.Nullable;
 import java.util.HashSet;
@@ -51,14 +52,14 @@ public abstract class WorkableTieredMetaTileEntity extends TieredMetaTileEntity 
 
     @Override
     protected IItemHandlerModifiable createImportItemHandler() {
-        if(workable == null) return new ItemStackHandler(0);
-        return new ItemStackHandler(workable.recipeMap.getMaxInputs());
+        if(workable == null) return new WatchedItemStackHandler(0);
+        return new WatchedItemStackHandler(workable.recipeMap.getMaxInputs());
     }
 
     @Override
     protected IItemHandlerModifiable createExportItemHandler() {
-        if(workable == null) return new ItemStackHandler(0);
-        return new ItemStackHandler(workable.recipeMap.getMaxOutputs());
+        if(workable == null) return new WatchedItemStackHandler(0);
+        return new WatchedItemStackHandler(workable.recipeMap.getMaxOutputs());
     }
 
     @Override
@@ -67,6 +68,7 @@ public abstract class WorkableTieredMetaTileEntity extends TieredMetaTileEntity 
         FilteredFluidHandler[] fluidImports = new FilteredFluidHandler[workable.recipeMap.getMaxFluidInputs()];
         for(int i = 0; i < fluidImports.length; i++) {
             FilteredFluidHandler filteredFluidHandler = new FilteredFluidHandler(getInputTankCapacity(i));
+            filteredFluidHandler.setOnFluidChanged((newFluid, oldFluid) -> onContentChanged(newFluid));
             filteredFluidHandler.setFillPredicate(this::canInputFluid);
             fluidImports[i] = filteredFluidHandler;
         }
@@ -78,7 +80,7 @@ public abstract class WorkableTieredMetaTileEntity extends TieredMetaTileEntity 
         if(workable == null) return new FluidTankList(false);
         FluidTank[] fluidExports = new FluidTank[workable.recipeMap.getMaxFluidOutputs()];
         for(int i = 0; i < fluidExports.length; i++) {
-            fluidExports[i] = new FluidTank(getOutputTankCapacity(i));
+            fluidExports[i] = new WatchedFluidTank(getOutputTankCapacity(i)).setOnFluidChanged((newFluid, oldFluid) -> onContentChanged(newFluid));
         }
         return new FluidTankList(false, fluidExports);
     }

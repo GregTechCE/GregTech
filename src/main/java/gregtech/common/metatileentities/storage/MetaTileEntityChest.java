@@ -15,6 +15,7 @@ import gregtech.api.metatileentity.MetaTileEntityHolder;
 import gregtech.api.render.Textures;
 import gregtech.api.unification.material.type.SolidMaterial;
 import gregtech.api.util.GTUtility;
+import gregtech.api.util.watch.WatchedItemStackHandler;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
@@ -75,14 +76,8 @@ public class MetaTileEntityChest extends MetaTileEntity {
     @Override
     protected void initializeInventory() {
         super.initializeInventory();
-        this.inventory = new ItemStackHandler(inventorySize) {
-            @Override
-            protected void onContentsChanged(int slot) {
-                super.onContentsChanged(slot);
-                updateComparatorValue(true);
-            }
-        };
-        this.itemInventory = inventory;
+        this.inventory = new WatchedItemStackHandler(inventorySize).setOnItemChanged(itemStack -> updateComparatorValue(true));
+        this.itemInventory = (WatchedItemStackHandler) inventory;
         updateComparatorValue(true);
     }
 

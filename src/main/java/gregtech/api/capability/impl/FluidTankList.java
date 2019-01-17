@@ -1,6 +1,7 @@
 package gregtech.api.capability.impl;
 
 import gregtech.api.capability.IMultipleTankHandler;
+import gregtech.api.util.watch.WatchedFluidHandler;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -15,7 +16,7 @@ import net.minecraftforge.fluids.capability.IFluidTankProperties;
 import javax.annotation.Nullable;
 import java.util.*;
 
-public class FluidTankList implements IFluidHandler, IMultipleTankHandler, INBTSerializable<NBTTagCompound> {
+public class FluidTankList extends WatchedFluidHandler implements IFluidHandler, IMultipleTankHandler, INBTSerializable<NBTTagCompound> {
 
     protected final List<IFluidTank> fluidTanks;
     protected IFluidTankProperties[] properties;
@@ -107,6 +108,8 @@ public class FluidTankList implements IFluidHandler, IMultipleTankHandler, INBTS
                     return totalFilled;
             }
         }
+        if (totalFilled > 0)
+            onContentChanged();
         return totalFilled;
     }
 
@@ -133,6 +136,8 @@ public class FluidTankList implements IFluidHandler, IMultipleTankHandler, INBTS
             resource.amount -= drain.amount;
             if (resource.amount == 0) break;
         }
+        if (totalDrained != null)
+            onContentChanged();
         return totalDrained;
     }
 
@@ -160,6 +165,8 @@ public class FluidTankList implements IFluidHandler, IMultipleTankHandler, INBTS
             }
             if (maxDrain <= 0) break;
         }
+        if (totalDrained != null)
+            onContentChanged();
         return totalDrained;
     }
 

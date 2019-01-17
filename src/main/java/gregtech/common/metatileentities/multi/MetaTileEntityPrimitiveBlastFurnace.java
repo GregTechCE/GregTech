@@ -23,6 +23,8 @@ import gregtech.api.render.Textures;
 import gregtech.api.unification.OreDictUnifier;
 import gregtech.api.unification.material.Materials;
 import gregtech.api.unification.ore.OrePrefix;
+import gregtech.api.util.watch.WatchedItemStackHandler;
+import gregtech.api.util.watch.WatchedItemStackHandlerWrapper;
 import gregtech.common.blocks.BlockMetalCasing.MetalCasingType;
 import gregtech.common.blocks.MetaBlocks;
 import net.minecraft.block.state.IBlockState;
@@ -213,13 +215,13 @@ public class MetaTileEntityPrimitiveBlastFurnace extends MultiblockControllerBas
     @Override
     protected void initializeInventory() {
         super.initializeInventory();
-        ItemStackHandler emptyHandler = new ItemStackHandler(0);
-        this.itemInventory = new ItemHandlerProxy(emptyHandler, emptyHandler);
+        ItemStackHandler emptyHandler = new WatchedItemStackHandler(0);
+        this.itemInventory =new WatchedItemStackHandlerWrapper(new ItemHandlerProxy(emptyHandler, emptyHandler));
     }
 
     @Override
     protected IItemHandlerModifiable createImportItemHandler() {
-        return new ItemStackHandler(2) {
+        return new WatchedItemStackHandler(2) {
             @Nonnull
             @Override
             public ItemStack insertItem(int slot, @Nonnull ItemStack stack, boolean simulate) {
@@ -232,7 +234,7 @@ public class MetaTileEntityPrimitiveBlastFurnace extends MultiblockControllerBas
 
     @Override
     protected IItemHandlerModifiable createExportItemHandler() {
-        return new ItemStackHandler(2);
+        return new WatchedItemStackHandler(2);
     }
 
     @Override

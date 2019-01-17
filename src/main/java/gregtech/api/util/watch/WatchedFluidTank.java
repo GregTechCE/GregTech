@@ -1,13 +1,15 @@
-package gregtech.api.util;
+package gregtech.api.util.watch;
 
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
 
 import javax.annotation.Nullable;
+import java.util.function.BiConsumer;
 
-public abstract class WatchedFluidTank extends FluidTank {
+public class WatchedFluidTank extends FluidTank {
 
     private FluidStack oldFluidStack;
+    private BiConsumer<FluidStack, FluidStack> onFluidChanged;
 
     public WatchedFluidTank(int capacity) {
         super(capacity);
@@ -19,11 +21,21 @@ public abstract class WatchedFluidTank extends FluidTank {
         this.oldFluidStack = fluidStack == null ? null : fluidStack.copy();
     }
 
+    public BiConsumer<FluidStack, FluidStack> getOnFluidChanged() {
+        return onFluidChanged;
+    }
+
+    public WatchedFluidTank setOnFluidChanged(BiConsumer<FluidStack, FluidStack> onFluidChanged) {
+        this.onFluidChanged = onFluidChanged;
+        return this;
+    }
+
     @Override
     public final void onContentsChanged() {
         FluidStack newFluidStack = getFluid();
         if(hasFluidChanged(newFluidStack, oldFluidStack)) {
-            onFluidChanged(newFluidStack, oldFluidStack);
+            if (getOnFluidChanged() != null)
+                getOnFluidChanged().accept(newFluidStack, oldFluidStack);
             if(oldFluidStack != null && oldFluidStack.isFluidEqual(newFluidStack)) {
                 //noinspection ConstantConditions
                 oldFluidStack.amount = newFluidStack.amount;
@@ -43,7 +55,5 @@ public abstract class WatchedFluidTank extends FluidTank {
             return !newFluid.isFluidEqual(oldFluid) || newFluid.amount != oldFluid.amount;
         }
     }
-
-    protected abstract void onFluidChanged(FluidStack newFluidStack, FluidStack oldFluidStack);
 
 }

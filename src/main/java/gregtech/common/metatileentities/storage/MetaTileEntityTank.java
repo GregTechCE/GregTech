@@ -11,7 +11,7 @@ import gregtech.api.render.Textures;
 import gregtech.api.unification.material.type.Material.MatFlags;
 import gregtech.api.unification.material.type.SolidMaterial;
 import gregtech.api.util.GTUtility;
-import gregtech.api.util.WatchedFluidTank;
+import gregtech.api.util.watch.WatchedFluidTank;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
@@ -268,6 +268,7 @@ public class MetaTileEntityTank extends MetaTileEntity {
 
         public SyncFluidTank(int capacity) {
             super(capacity);
+            setOnFluidChanged(this::onFluidChanged);
         }
 
         @Override
@@ -277,7 +278,6 @@ public class MetaTileEntityTank extends MetaTileEntity {
                 fluid.getFluid().getTemperature() <= 325;
         }
 
-        @Override
         protected void onFluidChanged(FluidStack newFluidStack, FluidStack oldFluidStack) {
             updateComparatorValue(true);
             if(getWorld() != null && !getWorld().isRemote) {

@@ -18,6 +18,7 @@ import gregtech.api.gui.widgets.TankWidget;
 import gregtech.api.recipes.machines.FuelRecipeMap;
 import gregtech.api.render.OrientedOverlayRenderer;
 import gregtech.api.render.Textures;
+import gregtech.api.util.watch.WatchedItemStackHandler;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -41,7 +42,7 @@ public class SimpleGeneratorMetaTileEntity extends TieredMetaTileEntity {
         super(metaTileEntityId, tier);
         this.workableHandler = new FuelRecipeMapWorkableHandler(this, recipeMap,
             () -> energyContainer, () -> importFluids, GTValues.V[tier]);
-        this.containerInventory = new ItemStackHandler(2);
+        this.containerInventory = new WatchedItemStackHandler(2);
         this.overlayRenderer = renderer;
     }
 
