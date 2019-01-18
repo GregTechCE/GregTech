@@ -607,7 +607,6 @@ public abstract class MetaTileEntity implements ICoverable {
         }
         for(EnumFacing coverSide : EnumFacing.VALUES) {
             CoverBehavior coverBehavior = getCoverAtSide(coverSide);
-            buf.writeBoolean(coverBehavior != null);
             if(coverBehavior != null) {
                 int coverId = CoverDefinition.getNetworkIdForCover(coverBehavior.getCoverDefinition());
                 buf.writeVarInt(coverId);
