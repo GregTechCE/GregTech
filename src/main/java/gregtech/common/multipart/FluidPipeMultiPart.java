@@ -8,11 +8,10 @@ import codechicken.lib.vec.Translation;
 import codechicken.lib.vec.Vector3;
 import codechicken.multipart.IRandomDisplayTickPart;
 import codechicken.multipart.TileMultipart;
-import gregtech.api.capability.GregtechCapabilities;
-import gregtech.common.pipelike.fluidpipe.LeakableFluidPipeTile;
 import gregtech.common.pipelike.fluidpipe.BlockFluidPipe;
 import gregtech.common.pipelike.fluidpipe.FluidPipeProperties;
 import gregtech.common.pipelike.fluidpipe.FluidPipeType;
+import gregtech.common.pipelike.fluidpipe.LeakableFluidPipeTile;
 import gregtech.common.pipelike.fluidpipe.tile.FluidPipeFluidHandler;
 import gregtech.common.render.FluidPipeRenderer;
 import net.minecraft.block.state.IBlockState;
@@ -172,7 +171,7 @@ public class FluidPipeMultiPart extends PipeMultiPart<FluidPipeType, FluidPipePr
 
     @Override
     public boolean hasCapability(Capability capability, EnumFacing facing) {
-        return capability == GregtechCapabilities.CAPABILITY_ENERGY_CONTAINER;
+        return capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY;
     }
 
     @SuppressWarnings("unchecked")
