@@ -158,7 +158,7 @@ public class TankWidget extends Widget {
         FluidStack fluidStack = fluidTank.getFluid();
         if(fluidTank.getCapacity() != lastTankCapacity) {
             this.lastTankCapacity = fluidTank.getCapacity();
-            writeUpdateInfo(0, buffer -> buffer.writeInt(lastTankCapacity));
+            writeUpdateInfo(0, buffer -> buffer.writeVarInt(lastTankCapacity));
         }
         if(fluidStack == null && lastFluidInTank != null) {
             this.lastFluidInTank = null;
@@ -170,7 +170,7 @@ public class TankWidget extends Widget {
                 writeUpdateInfo(2, buffer -> buffer.writeCompoundTag(fluidStackTag));
             } else if(fluidStack.amount != lastFluidInTank.amount) {
                 this.lastFluidInTank.amount = fluidStack.amount;
-                writeUpdateInfo(3, buffer -> buffer.writeInt(lastFluidInTank.amount));
+                writeUpdateInfo(3, buffer -> buffer.writeVarInt(lastFluidInTank.amount));
             }
         }
     }
@@ -178,7 +178,7 @@ public class TankWidget extends Widget {
     @Override
     public void readUpdateInfo(int id, PacketBuffer buffer) {
         if(id == 0) {
-            this.lastTankCapacity = buffer.readInt();
+            this.lastTankCapacity = buffer.readVarInt();
         } else if(id == 1) {
             this.lastFluidInTank = null;
         } else if(id == 2) {
@@ -190,12 +190,12 @@ public class TankWidget extends Widget {
             }
             this.lastFluidInTank = FluidStack.loadFluidStackFromNBT(fluidStackTag);
         } else if(id == 3 && lastFluidInTank != null) {
-            this.lastFluidInTank.amount = buffer.readInt();
+            this.lastFluidInTank.amount = buffer.readVarInt();
         }
 
         if(id == 4) {
             ItemStack currentStack = gui.entityPlayer.inventory.getItemStack();
-            int newStackSize = buffer.readInt();
+            int newStackSize = buffer.readVarInt();
             currentStack.setCount(newStackSize);
             gui.entityPlayer.inventory.setItemStack(currentStack);
         }
@@ -208,7 +208,7 @@ public class TankWidget extends Widget {
             boolean isShiftKeyDown = buffer.readBoolean();
             int clickResult = tryClickContainer(isShiftKeyDown);
             if(clickResult >= 0) {
-                writeUpdateInfo(4, buf -> buf.writeInt(clickResult));
+                writeUpdateInfo(4, buf -> buf.writeVarInt(clickResult));
             }
         }
     }

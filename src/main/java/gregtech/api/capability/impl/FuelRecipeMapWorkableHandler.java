@@ -53,6 +53,11 @@ public class FuelRecipeMapWorkableHandler extends MTETrait implements IWorkable 
     }
 
     @Override
+    public int getNetworkID() {
+        return 2;
+    }
+
+    @Override
     public Capability<?> getImplementingCapability() {
         return GregtechCapabilities.CAPABILITY_WORKABLE;
     }

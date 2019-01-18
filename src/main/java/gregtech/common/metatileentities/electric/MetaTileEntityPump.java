@@ -91,20 +91,20 @@ public class MetaTileEntityPump extends TieredMetaTileEntity {
     @Override
     public void writeInitialSyncData(PacketBuffer buf) {
         super.writeInitialSyncData(buf);
-        buf.writeInt(pumpHeadY);
+        buf.writeVarInt(pumpHeadY);
     }
 
     @Override
     public void receiveInitialSyncData(PacketBuffer buf) {
         super.receiveInitialSyncData(buf);
-        this.pumpHeadY = buf.readInt();
+        this.pumpHeadY = buf.readVarInt();
     }
 
     @Override
     public void receiveCustomData(int dataId, PacketBuffer buf) {
         super.receiveCustomData(dataId, buf);
         if(dataId == 200) {
-            this.pumpHeadY = buf.readInt();
+            this.pumpHeadY = buf.readVarInt();
         }
     }
 
@@ -184,7 +184,7 @@ public class MetaTileEntityPump extends TieredMetaTileEntity {
         } else if(fluidSourceBlocks.isEmpty()) {
             if(getTimer() % 20 == 0 && pumpHeadY < 50) {
                 this.pumpHeadY++;
-                writeCustomData(200, b -> b.writeInt(pumpHeadY));
+                writeCustomData(200, b -> b.writeVarInt(pumpHeadY));
                 markDirty();
                 //schedule queue rebuild because we changed our position and no fluid is available
                 this.initializedQueue = false;

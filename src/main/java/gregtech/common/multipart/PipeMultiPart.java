@@ -304,8 +304,8 @@ public abstract class PipeMultiPart<PipeType extends Enum<PipeType> & IPipeType<
         packet.writeString(Block.REGISTRY.getNameForObject(pipeBlock).toString());
         packet.writeEnum(pipeType);
         packet.writeInt(insulationColor);
-        packet.writeInt(activeConnections);
-        packet.writeInt(blockedConnections);
+        packet.writeVarInt(activeConnections);
+        packet.writeVarInt(blockedConnections);
     }
 
     @Override
@@ -315,8 +315,8 @@ public abstract class PipeMultiPart<PipeType extends Enum<PipeType> & IPipeType<
         this.pipeBlock = (BlockPipe<PipeType, NodeDataType, ?>) Block.REGISTRY.getObject(pipeBlockName);
         this.pipeType = packet.readEnum(pipeBlock.getPipeTypeClass());
         this.insulationColor = packet.readInt();
-        this.activeConnections = packet.readInt();
-        this.blockedConnections = packet.readInt();
+        this.activeConnections = packet.readVarInt();
+        this.blockedConnections = packet.readVarInt();
         this.reinitializeShape();
     }
 

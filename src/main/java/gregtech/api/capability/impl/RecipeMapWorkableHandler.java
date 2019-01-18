@@ -74,6 +74,11 @@ public abstract class RecipeMapWorkableHandler extends MTETrait implements IWork
     }
 
     @Override
+    public int getNetworkID() {
+        return 3;
+    }
+
+    @Override
     public Capability<?> getImplementingCapability() {
         return GregtechCapabilities.CAPABILITY_WORKABLE;
     }

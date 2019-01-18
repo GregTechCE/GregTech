@@ -62,6 +62,11 @@ public class EnergyContainerHandler extends MTETrait implements IEnergyContainer
         return "EnergyContainer";
     }
 
+    @Override
+    public int getNetworkID() {
+        return 2;
+    }
+
     @Nullable
     @Override
     public Capability<?> getImplementingCapability() {

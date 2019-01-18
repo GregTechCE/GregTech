@@ -48,7 +48,7 @@ public class MetaTileEntityHolder extends TickableTileEntityBase implements IUIH
         if(hasWorld() && !getWorld().isRemote) {
             updateBlockOpacity();
             writeCustomData(-1, buffer -> {
-                buffer.writeString(metaTileEntity.metaTileEntityId.toString());
+                buffer.writeVarInt(GregTechAPI.META_TILE_ENTITY_REGISTRY.getIdByObjectName(metaTileEntity.metaTileEntityId));
                 metaTileEntity.writeInitialSyncData(buffer);
             });
             //just to update neighbours so cables and other things will work properly
@@ -169,15 +169,15 @@ public class MetaTileEntityHolder extends TickableTileEntityBase implements IUIH
     public void writeInitialSyncData(PacketBuffer buf) {
         if(metaTileEntity != null) {
             buf.writeBoolean(true);
-            buf.writeString(metaTileEntity.metaTileEntityId.toString());
+            buf.writeVarInt(GregTechAPI.META_TILE_ENTITY_REGISTRY.getIdByObjectName(metaTileEntity.metaTileEntityId));
             metaTileEntity.writeInitialSyncData(buf);
         } else buf.writeBoolean(false);
     }
 
     public void receiveInitialSyncData(PacketBuffer buf) {
         if(buf.readBoolean()) {
-            ResourceLocation metaTileEntityName = new ResourceLocation(buf.readString(Short.MAX_VALUE));
-            setMetaTileEntity(GregTechAPI.META_TILE_ENTITY_REGISTRY.getObject(metaTileEntityName));
+            int metaTileEntityId = buf.readVarInt();
+            setMetaTileEntity(GregTechAPI.META_TILE_ENTITY_REGISTRY.getObjectById(metaTileEntityId));
             this.metaTileEntity.receiveInitialSyncData(buf);
             scheduleChunkForRenderUpdate();
             this.needToUpdateLightning = true;
@@ -186,8 +186,8 @@ public class MetaTileEntityHolder extends TickableTileEntityBase implements IUIH
 
     public void receiveCustomData(int discriminator, PacketBuffer buffer) {
         if(discriminator == -1) {
-            ResourceLocation metaTileEntityName = new ResourceLocation(buffer.readString(Short.MAX_VALUE));
-            setMetaTileEntity(GregTechAPI.META_TILE_ENTITY_REGISTRY.getObject(metaTileEntityName));
+            int metaTileEntityId = buffer.readVarInt();
+            setMetaTileEntity(GregTechAPI.META_TILE_ENTITY_REGISTRY.getObjectById(metaTileEntityId));
             this.metaTileEntity.receiveInitialSyncData(buffer);
             scheduleChunkForRenderUpdate();
             this.needToUpdateLightning = true;
@@ -239,23 +239,23 @@ public class MetaTileEntityHolder extends TickableTileEntityBase implements IUIH
         NBTTagList tagList = new NBTTagList();
         for(UpdateEntry updateEntry : updateEntries) {
             NBTTagCompound entryTag = new NBTTagCompound();
-            entryTag.setInteger("id", updateEntry.discriminator);
-            entryTag.setByteArray("data", updateEntry.updateData);
+            entryTag.setInteger("i", updateEntry.discriminator);
+            entryTag.setByteArray("d", updateEntry.updateData);
             tagList.appendTag(entryTag);
         }
-        updateEntries.clear();
-        updateTag.setTag("data", tagList);
+        this.updateEntries.clear();
+        updateTag.setTag("d", tagList);
         return new SPacketUpdateTileEntity(getPos(), 0, updateTag);
     }
 
     @Override
     public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity pkt) {
         NBTTagCompound updateTag = pkt.getNbtCompound();
-        NBTTagList tagList = updateTag.getTagList("data", NBT.TAG_COMPOUND);
+        NBTTagList tagList = updateTag.getTagList("d", NBT.TAG_COMPOUND);
         for(int i = 0; i < tagList.tagCount(); i++) {
             NBTTagCompound entryTag = tagList.getCompoundTagAt(i);
-            int discriminator = entryTag.getInteger("id");
-            byte[] updateData = entryTag.getByteArray("data");
+            int discriminator = entryTag.getInteger("i");
+            byte[] updateData = entryTag.getByteArray("d");
             ByteBuf backedBuffer = Unpooled.copiedBuffer(updateData);
             receiveCustomData(discriminator, new PacketBuffer(backedBuffer));
         }
@@ -270,13 +270,13 @@ public class MetaTileEntityHolder extends TickableTileEntityBase implements IUIH
         ByteBuf backedBuffer = Unpooled.buffer();
         writeInitialSyncData(new PacketBuffer(backedBuffer));
         byte[] updateData = Arrays.copyOfRange(backedBuffer.array(), 0, backedBuffer.writerIndex());
-        updateTag.setByteArray("data", updateData);
+        updateTag.setByteArray("d", updateData);
         return updateTag;
     }
 
     @Override
     public void handleUpdateTag(NBTTagCompound tag) {
-        byte[] updateData = tag.getByteArray("data");
+        byte[] updateData = tag.getByteArray("d");
         ByteBuf backedBuffer = Unpooled.copiedBuffer(updateData);
         receiveInitialSyncData(new PacketBuffer(backedBuffer));
     }

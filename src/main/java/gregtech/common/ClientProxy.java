@@ -6,7 +6,10 @@
 package gregtech.common;
 
 import codechicken.lib.texture.TextureUtils;
+import com.mojang.realmsclient.gui.ChatFormatting;
 import gregtech.api.render.MetaTileEntityRenderer;
+import gregtech.api.unification.OreDictUnifier;
+import gregtech.api.unification.stack.UnificationEntry;
 import gregtech.common.blocks.*;
 import gregtech.common.blocks.surfacerock.BlockSurfaceRock;
 import gregtech.common.blocks.surfacerock.BlockSurfaceRockFlooded;
@@ -18,10 +21,12 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.color.IBlockColor;
 import net.minecraft.client.renderer.color.IItemColor;
 import net.minecraft.item.ItemBlock;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.biome.BiomeColorHelper;
 import net.minecraftforge.client.event.ModelRegistryEvent;
+import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
@@ -102,6 +107,17 @@ public class ClientProxy extends CommonProxy {
         MetaBlocks.registerStateMappers();
         MetaBlocks.registerItemModels();
         MetaItems.registerModels();
+    }
+
+    @SubscribeEvent
+    public static void addMaterialFormulaHandler(ItemTooltipEvent event) {
+        ItemStack itemStack = event.getItemStack();
+        if(!(itemStack.getItem() instanceof ItemBlock)) {
+            UnificationEntry unificationEntry = OreDictUnifier.getUnificationEntry(itemStack);
+            if(unificationEntry != null && unificationEntry.material != null && !unificationEntry.material.chemicalFormula.isEmpty()) {
+                event.getToolTip().add(1, ChatFormatting.GRAY.toString() + unificationEntry.material.chemicalFormula);
+            }
+        }
     }
 
 }

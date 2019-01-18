@@ -110,11 +110,11 @@ public abstract class WorkableTieredMetaTileEntity extends TieredMetaTileEntity 
     }
 
     protected int getInputTankCapacity(int index) {
-        return 16000;
+        return 64000;
     }
 
     protected int getOutputTankCapacity(int index) {
-        return 16000;
+        return 32000;
     }
 
     @Override

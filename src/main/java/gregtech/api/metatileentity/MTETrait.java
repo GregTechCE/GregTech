@@ -23,6 +23,8 @@ public abstract class MTETrait {
 
     public abstract String getName();
 
+    public abstract int getNetworkID();
+
     /**
      * Returns a capability that this trait is implementing
      * May return null to indicate that this trait does not implement any capability

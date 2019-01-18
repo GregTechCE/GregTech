@@ -1,7 +1,6 @@
 package gregtech.api.cover;
 
-import com.google.common.collect.BiMap;
-import com.google.common.collect.HashBiMap;
+import gregtech.api.util.GTControlledRegistry;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
@@ -11,18 +10,22 @@ import java.util.function.BiFunction;
 
 public final class CoverDefinition extends IForgeRegistryEntry.Impl {
 
-    public static BiMap<ResourceLocation, CoverDefinition> registry = HashBiMap.create();
+    public static GTControlledRegistry<ResourceLocation, CoverDefinition> registry = new GTControlledRegistry<>(Integer.MAX_VALUE);
 
     public static CoverDefinition getCoverById(ResourceLocation id) {
-        return registry.get(id);
+        return registry.getObject(id);
     }
 
-    public static void registerCover(CoverDefinition coverDefinition) {
-        if(registry.containsKey(coverDefinition.coverId) ||
-            registry.containsValue(coverDefinition)) {
-            throw new IllegalArgumentException("Id is already occupied: " + coverDefinition.coverId);
-        }
-        registry.put(coverDefinition.coverId, coverDefinition);
+    public static CoverDefinition getCoverByNetworkId(int networkId) {
+        return registry.getObjectById(networkId);
+    }
+
+    public static int getNetworkIdForCover(CoverDefinition definition) {
+        return registry.getIDForObject(definition);
+    }
+
+    public static void registerCover(int id, CoverDefinition coverDefinition) {
+        registry.register(id, coverDefinition.coverId, coverDefinition);
     }
 
     private final ResourceLocation coverId;

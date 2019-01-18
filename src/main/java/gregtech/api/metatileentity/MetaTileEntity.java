@@ -380,7 +380,7 @@ public abstract class MetaTileEntity implements ICoverable {
         coverBehavior.onAttached(itemStack);
         writeCustomData(-5, buffer -> {
             buffer.writeByte(side.getIndex());
-            buffer.writeString(coverDefinition.getCoverId().toString());
+            buffer.writeVarInt(CoverDefinition.getNetworkIdForCover(coverDefinition));
             coverBehavior.writeInitialSyncData(buffer);
         });
         if(getHolder() != null) {
@@ -602,16 +602,18 @@ public abstract class MetaTileEntity implements ICoverable {
         buf.writeInt(this.paintingColor);
         buf.writeShort(mteTraits.size());
         for(MTETrait trait : mteTraits) {
-            buf.writeString(trait.getName());
+            buf.writeVarInt(trait.getNetworkID());
             trait.writeInitialData(buf);
         }
         for(EnumFacing coverSide : EnumFacing.VALUES) {
             CoverBehavior coverBehavior = getCoverAtSide(coverSide);
             buf.writeBoolean(coverBehavior != null);
             if(coverBehavior != null) {
-                ResourceLocation coverId = coverBehavior.getCoverDefinition().getCoverId();
-                buf.writeString(coverId.toString());
+                int coverId = CoverDefinition.getNetworkIdForCover(coverBehavior.getCoverDefinition());
+                buf.writeVarInt(coverId);
                 coverBehavior.writeInitialSyncData(buf);
+            } else {
+                buf.writeVarInt(-1);
             }
         }
     }
@@ -621,16 +623,14 @@ public abstract class MetaTileEntity implements ICoverable {
         this.paintingColor = buf.readInt();
         int amountOfTraits = buf.readShort();
         for(int i = 0; i < amountOfTraits; i++) {
-            String traitName = buf.readString(32767);
-            MTETrait trait = mteTraits.stream()
-                .filter(otherTrait -> otherTrait.getName().equals(traitName))
-                .findAny().orElseThrow(() -> new IllegalArgumentException("Invalid trait name: " + traitName));
+            int traitNetworkId = buf.readVarInt();
+            MTETrait trait = mteTraits.stream().filter(otherTrait -> otherTrait.getNetworkID() == traitNetworkId).findAny().get();
             trait.receiveInitialData(buf);
         }
         for(EnumFacing coverSide : EnumFacing.VALUES) {
-            if(buf.readBoolean()) {
-                ResourceLocation coverId = new ResourceLocation(buf.readString(Short.MAX_VALUE));
-                CoverDefinition coverDefinition = CoverDefinition.getCoverById(coverId);
+            int coverId = buf.readVarInt();
+            if(coverId != -1) {
+                CoverDefinition coverDefinition = CoverDefinition.getCoverByNetworkId(coverId);
                 CoverBehavior coverBehavior = coverDefinition.createCoverBehavior(this, coverSide);
                 coverBehavior.readInitialSyncData(buf);
                 this.coverBehaviors[coverSide.getIndex()] = coverBehavior;
@@ -640,7 +640,7 @@ public abstract class MetaTileEntity implements ICoverable {
 
     public void writeTraitData(MTETrait trait, int internalId, Consumer<PacketBuffer> dataWriter) {
         writeCustomData(-4, buffer -> {
-            buffer.writeString(trait.getName());
+            buffer.writeVarInt(trait.getNetworkID());
             buffer.writeVarInt(internalId);
             dataWriter.accept(buffer);
         }) ;
@@ -662,15 +662,15 @@ public abstract class MetaTileEntity implements ICoverable {
             this.paintingColor = buf.readInt();
             getHolder().scheduleChunkForRenderUpdate();
         } else if (dataId == -4) {
-            String traitName = buf.readString(32767);
-            MTETrait trait = mteTraits.stream().filter(otherTrait -> otherTrait.getName().equals(traitName)).findAny().get();
+            int traitNetworkId = buf.readVarInt();
+            MTETrait trait = mteTraits.stream().filter(otherTrait -> otherTrait.getNetworkID() == traitNetworkId).findAny().get();
             int internalId = buf.readVarInt();
             trait.receiveCustomData(internalId, buf);
         } else if (dataId == -5) {
             //cover placement event
             EnumFacing placementSide = EnumFacing.VALUES[buf.readByte()];
-            ResourceLocation coverId = new ResourceLocation(buf.readString(Short.MAX_VALUE));
-            CoverDefinition coverDefinition = CoverDefinition.getCoverById(coverId);
+            int coverId = buf.readVarInt();
+            CoverDefinition coverDefinition = CoverDefinition.getCoverByNetworkId(coverId);
             CoverBehavior coverBehavior = coverDefinition.createCoverBehavior(this, placementSide);
             this.coverBehaviors[placementSide.getIndex()] = coverBehavior;
             coverBehavior.readInitialSyncData(buf);

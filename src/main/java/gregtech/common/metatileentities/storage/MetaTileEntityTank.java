@@ -159,7 +159,7 @@ public class MetaTileEntityTank extends MetaTileEntity {
             updateLightValue();
             getHolder().scheduleChunkForRenderUpdate();
         } else if(dataId == 201) {
-            int newFluidAmount = buf.readInt();
+            int newFluidAmount = buf.readVarInt();
             FluidStack fluidStack = fluidTank.getFluid();
             if(fluidStack != null) {
                 fluidStack.amount = newFluidAmount;
@@ -294,7 +294,7 @@ public class MetaTileEntityTank extends MetaTileEntity {
             if(newFluid != null && newFluid.isFluidEqual(oldFluidStack)) {
                 //if fluid wasn't removed completely or changed, but just reduced/added amount
                 //compute new amount value and set it right back to the client
-                writeCustomData(201, buf -> buf.writeInt(newFluid.amount));
+                writeCustomData(201, buf -> buf.writeVarInt(newFluid.amount));
             } else {
                 //otherwise, write full data dump of fluid
                 writeCustomData(200, buf -> {

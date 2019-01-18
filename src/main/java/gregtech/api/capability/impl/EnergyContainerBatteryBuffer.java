@@ -209,6 +209,11 @@ public class EnergyContainerBatteryBuffer extends MTETrait implements IEnergyCon
         return "BatteryEnergyContainer";
     }
 
+    @Override
+    public int getNetworkID() {
+        return 1;
+    }
+
     @Nullable
     @Override
     public Capability<?> getImplementingCapability() {
