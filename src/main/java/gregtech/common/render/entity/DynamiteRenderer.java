@@ -10,16 +10,13 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
-public class DynamiteRenderer extends RenderSnowball<DynamiteEntity>
-{
+public class DynamiteRenderer extends RenderSnowball<DynamiteEntity> {
 
-    public DynamiteRenderer(RenderManager renderManagerIn, RenderItem itemRendererIn)
-    {
+    public DynamiteRenderer(RenderManager renderManagerIn, RenderItem itemRendererIn) {
         super(renderManagerIn, MetaItems.DYNAMITE.getMetaItem(), itemRendererIn);
     }
 
-    public ItemStack getStackToRender(DynamiteEntity entityIn)
-    {
+    public ItemStack getStackToRender(DynamiteEntity entityIn) {
         return MetaItems.DYNAMITE.getStackForm();
     }
 }

@@ -159,7 +159,7 @@ public abstract class PipeNet<NodeDataType> implements INBTSerializable<NBTTagCo
                 HashMap<BlockPos, Node<NodeDataType>> offsetConnectedBlocks = findAllConnectedBlocks(offsetPos);
                 //if in the result of remarking offset node has separated from main network,
                 //and it is also separated from current cable too, form new network for it
-                if(!offsetConnectedBlocks.equals(allNodes) && !offsetConnectedBlocks.equals(selfConnectedBlocks)) {
+                if(!offsetConnectedBlocks.equals(selfConnectedBlocks)) {
                     allNodes.keySet().removeAll(offsetConnectedBlocks.keySet());
                     PipeNet<NodeDataType> offsetPipeNet = worldData.createNetInstance();
                     offsetPipeNet.transferNodeData(offsetConnectedBlocks, this);
