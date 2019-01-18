@@ -72,8 +72,8 @@ public class CraftingRecipeLoader {
             ModHandler.addShapedRecipe("iron_door", new ItemStack(Items.IRON_DOOR, 3), "XX ", "XXh", "XX ", 'X', new UnificationEntry(OrePrefix.plate, Materials.Iron));
             ModHandler.removeRecipeByName(new ResourceLocation("minecraft:iron_door"));
 
-            ModHandler.addShapedRecipe("iron_trapdor", new ItemStack(Blocks.IRON_TRAPDOOR), "XX ", "XXh", 'X', new UnificationEntry(OrePrefix.plate, Materials.Iron));
-            ModHandler.removeRecipeByName(new ResourceLocation("minecraft:iron_trapdor"));
+            ModHandler.addShapedRecipe("iron_trapdoor", new ItemStack(Blocks.IRON_TRAPDOOR), "XX ", "XXh", 'X', new UnificationEntry(OrePrefix.plate, Materials.Iron));
+            ModHandler.removeRecipeByName(new ResourceLocation("minecraft:iron_trapdoor"));
 
             ModHandler.addShapedRecipe("cauldron", new ItemStack(Items.CAULDRON), "X X", "XhX", "XXX", 'X', new UnificationEntry(OrePrefix.plate, Materials.Iron));
             ModHandler.removeRecipeByName(new ResourceLocation("minecraft:cauldron"));
