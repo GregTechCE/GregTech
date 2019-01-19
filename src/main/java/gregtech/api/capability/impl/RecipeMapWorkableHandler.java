@@ -30,6 +30,9 @@ public abstract class RecipeMapWorkableHandler extends MTETrait implements IWork
     public final RecipeMap<?> recipeMap;
     protected Recipe previousRecipe;
 
+    protected List<ItemStack> lastFailedItem;
+    protected List<FluidStack> lastFailedFluid;
+
     protected int progressTime;
     protected int maxProgressTime;
     protected int recipeEUt;
@@ -74,11 +77,6 @@ public abstract class RecipeMapWorkableHandler extends MTETrait implements IWork
     }
 
     @Override
-    public int getNetworkID() {
-        return 3;
-    }
-
-    @Override
     public Capability<?> getImplementingCapability() {
         return GregtechCapabilities.CAPABILITY_WORKABLE;
     }
@@ -110,24 +108,42 @@ public abstract class RecipeMapWorkableHandler extends MTETrait implements IWork
             }
         }
 
+        boolean isHit = true;
         if(progressTime == 0 && workingEnabled) {
             long maxVoltage = getMaxVoltage();
-            Recipe currentRecipe;
+            Recipe currentRecipe = null;
             IItemHandlerModifiable importInventory = getInputInventory();
             IMultipleTankHandler importFluids = getInputTank();
             if(previousRecipe != null && previousRecipe.matches(false, importInventory, importFluids)) {
                 //if previous recipe still matches inputs, try to use it
                 currentRecipe = previousRecipe;
             } else {
-                //else, try searching new recipe for given inputs
-                currentRecipe = findRecipe(maxVoltage, importInventory, importFluids);
-                //if we found recipe that can be buffered, buffer it
-                if(currentRecipe != null && currentRecipe.canBeBuffered()) {
-                    this.previousRecipe = currentRecipe;
+                // firstly, check if match the failed recipe
+                if (!isLastFailedRecipeMatch(importInventory, importFluids)) {
+                    isHit = false;
+                    //else, try searching new recipe for given inputs
+                    currentRecipe = findRecipe(maxVoltage, importInventory, importFluids);
+                    //if we found recipe that can be buffered, buffer it
+                    if (currentRecipe != null && currentRecipe.canBeBuffered()) {
+                        this.previousRecipe = currentRecipe;
+                    }
                 }
             }
             if(currentRecipe != null && setupAndConsumeRecipeInputs(currentRecipe)) {
                 setupRecipe(currentRecipe);
+            }
+
+            if (currentRecipe == null && !isHit) {
+                List<ItemStack> itemStacks = GTUtility.itemHandlerToList(importInventory);
+                lastFailedItem = new ArrayList<>(itemStacks.size());
+                for (ItemStack item : itemStacks) {
+                    lastFailedItem.add(item.copy());
+                }
+                List<FluidStack> fluidStacks = GTUtility.fluidHandlerToList(importFluids);
+                lastFailedFluid = new ArrayList<>(fluidStacks.size());
+                for (FluidStack fluid : fluidStacks) {
+                    lastFailedFluid.add(fluid == null ? null : fluid.copy());
+                }
             }
         }
 
@@ -354,6 +370,51 @@ public abstract class RecipeMapWorkableHandler extends MTETrait implements IWork
                 this.fluidOutputs.add(FluidStack.loadFluidStackFromNBT(fluidOutputsList.getCompoundTagAt(i)));
             }
         }
+    }
+
+    /**
+     * check if match the last failed recipe
+     * @param importInventory
+     * @param importFluids
+     * @return
+     */
+    private boolean isLastFailedRecipeMatch(IItemHandlerModifiable importInventory, IMultipleTankHandler importFluids) {
+        // Because it will be called frequently, I will not use lambda & stream
+        // actually, the "items" object can be reuse
+        if (lastFailedFluid == null || lastFailedItem == null) {
+            return false;
+        }
+        List<ItemStack> items = GTUtility.itemHandlerToList(importInventory);
+        List<FluidStack> fluids = GTUtility.fluidHandlerToList(importFluids);
+
+        if (items.size() != lastFailedItem.size() || fluids.size() != lastFailedFluid.size()) {
+            return false;
+        }
+
+        for (int i = 0; i < lastFailedItem.size(); i++) {
+            ItemStack failedItem = lastFailedItem.get(i);
+            ItemStack item = items.get(i);
+            // TODO may be there was a mistake, I'm not familiar with ItemStack as well as modding :).
+            if ((item.getCount() != failedItem.getCount())
+                || (!(ItemStack.areItemStacksEqual(item, failedItem) && ItemStack.areItemStackTagsEqual(item, failedItem)))) {
+                return false;
+            }
+        }
+        for (int i = 0; i < lastFailedFluid.size(); i++) {
+            FluidStack failedFluid = lastFailedFluid.get(i);
+            FluidStack fluid = fluids.get(i);
+            if (fluid == null && failedFluid == null) {
+                continue;
+            }
+            if (fluid == null || failedFluid == null) {
+                return false;
+            }
+            if ((fluid.amount != failedFluid.amount)
+                || (!fluid.isFluidEqual(failedFluid))) {
+                return false;
+            }
+        }
+        return true;
     }
 
 }
