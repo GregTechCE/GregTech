@@ -55,7 +55,7 @@ public class CoverConveyor extends CoverBehavior implements CoverWithUI, ITickab
         this.maxItemTransferRate = itemsPerSecond;
         this.transferRate = maxItemTransferRate;
         this.itemsLeftToTransferLastSecond = transferRate;
-        this.conveyorMode = ConveyorMode.IMPORT;
+        this.conveyorMode = ConveyorMode.EXPORT;
         this.filterTypeInventory = new FilterItemStackHandler();
         this.filterMode = FilterType.NONE;
         this.oreDictionaryFilter = "";

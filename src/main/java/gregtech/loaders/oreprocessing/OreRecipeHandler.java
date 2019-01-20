@@ -32,7 +32,6 @@ public class OreRecipeHandler {
         OrePrefix.crystalline.addProcessingHandler(SolidMaterial.class, OreRecipeHandler::processCrystallizedPurified);
         OrePrefix.dustImpure.addProcessingHandler(DustMaterial.class, OreRecipeHandler::processDirtyDust);
         OrePrefix.dustPure.addProcessingHandler(DustMaterial.class, OreRecipeHandler::processPureDust);
-
     }
 
 

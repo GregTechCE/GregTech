@@ -56,7 +56,7 @@ public class CoverPump extends CoverBehavior implements CoverWithUI, ITickable {
         this.maxFluidTransferRate = mbPerTick;
         this.transferRate = mbPerTick;
         this.fluidLeftToTransferLastSecond = transferRate;
-        this.pumpMode = PumpMode.IMPORT;
+        this.pumpMode = PumpMode.EXPORT;
         this.isFilterInstalled = false;
         this.fluidFilterSlots = new FluidStack[9];
         this.filterTypeInventory = new FilterTypeInventory();
@@ -79,7 +79,7 @@ public class CoverPump extends CoverBehavior implements CoverWithUI, ITickable {
     @Override
     public void update() {
         long timer = coverHolder.getTimer();
-        if(timer % 5 == 0 && fluidLeftToTransferLastSecond > 0) {
+        if(fluidLeftToTransferLastSecond > 0) {
             this.fluidLeftToTransferLastSecond -= doTransferFluids(fluidLeftToTransferLastSecond);
         }
         if(timer % 20 == 0) {

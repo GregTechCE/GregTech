@@ -82,14 +82,6 @@ public class MaterialInfoLoader {
         OreDictUnifier.registerOre(new ItemStack(Blocks.FURNACE, 1, W), new ItemMaterialInfo(new MaterialStack(Materials.Stone, 29030400L)));
         OreDictUnifier.registerOre(new ItemStack(Blocks.STONEBRICK, 1, W), new ItemMaterialInfo(new MaterialStack(Materials.Stone, M)));
 
-        OreDictUnifier.registerOre(new ItemStack(Blocks.STONE, 1, 0), new ItemMaterialInfo(new MaterialStack(Materials.Stone, M)));
-        OreDictUnifier.registerOre(new ItemStack(Blocks.STONE, 1, 1), new ItemMaterialInfo(new MaterialStack(Materials.GraniteBlack, M)));
-        OreDictUnifier.registerOre(new ItemStack(Blocks.STONE, 1, 2), new ItemMaterialInfo(new MaterialStack(Materials.GraniteBlack, M)));
-        OreDictUnifier.registerOre(new ItemStack(Blocks.STONE, 1, 5), new ItemMaterialInfo(new MaterialStack(Materials.Diorite, M)));
-        OreDictUnifier.registerOre(new ItemStack(Blocks.STONE, 1, 6), new ItemMaterialInfo(new MaterialStack(Materials.Diorite, M)));
-        OreDictUnifier.registerOre(new ItemStack(Blocks.STONE, 1, 3), new ItemMaterialInfo(new MaterialStack(Materials.Andesite, M)));
-        OreDictUnifier.registerOre(new ItemStack(Blocks.STONE, 1, 4), new ItemMaterialInfo(new MaterialStack(Materials.Andesite, M)));
-
         OreDictUnifier.registerOre(new ItemStack(Blocks.COBBLESTONE, 1, W), new ItemMaterialInfo(new MaterialStack(Materials.Stone, M)));
         OreDictUnifier.registerOre(new ItemStack(Blocks.MOSSY_COBBLESTONE, 1, W), new ItemMaterialInfo(new MaterialStack(Materials.Stone, M)));
         OreDictUnifier.registerOre(new ItemStack(Blocks.STONE_BUTTON, 1, W), new ItemMaterialInfo(new MaterialStack(Materials.Stone, M)));

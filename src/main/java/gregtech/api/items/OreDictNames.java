@@ -15,8 +15,6 @@ public enum OreDictNames {
     craftingDuctTape,
     craftingGrinder,
     craftingPiston,
-    craftingPump,
-    craftingFilter,
 
     craftingIronFurnace,
     craftingLensBlack,

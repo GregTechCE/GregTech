@@ -67,6 +67,8 @@ public class MetaTileEntityQuantumTank extends MetaTileEntity {
             }
         };
         this.fluidInventory = fluidTank;
+        this.importFluids = new FluidTankList(false, fluidTank);
+        this.exportFluids = new FluidTankList(false, fluidTank);
         updateComparatorValue(true);
     }
 

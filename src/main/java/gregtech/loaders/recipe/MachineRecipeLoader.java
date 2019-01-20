@@ -53,9 +53,7 @@ import java.util.stream.Collectors;
 
 import static gregtech.api.GTValues.L;
 import static gregtech.api.GTValues.M;
-import static gregtech.common.items.MetaItems.FLUID_FILTER;
-import static gregtech.common.items.MetaItems.ITEM_FILTER;
-import static gregtech.common.items.MetaItems.ORE_DICTIONARY_FILTER;
+import static gregtech.common.items.MetaItems.*;
 
 public class MachineRecipeLoader {
 
@@ -836,12 +834,6 @@ public class MachineRecipeLoader {
             .input(OrePrefix.stone, Materials.GraniteRed)
             .outputs(OreDictUnifier.get(OrePrefix.dust, Materials.GraniteRed, 1))
             .chancedOutput(OreDictUnifier.get(OrePrefix.dustSmall, Materials.Uranium, 1), 100)
-            .buildAndRegister();
-
-        RecipeMaps.MACERATOR_RECIPES.recipeBuilder()
-            .input(OrePrefix.stone, Materials.GraniteRed)
-            .outputs(OreDictUnifier.get(OrePrefix.dust, Materials.GraniteRed, 1))
-            .chancedOutput(OreDictUnifier.get(OrePrefix.dustSmall, Materials.Stone, 1), 100)
             .buildAndRegister();
 
         RecipeMaps.MACERATOR_RECIPES.recipeBuilder()
