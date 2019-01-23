@@ -74,7 +74,7 @@ public class ToolHardHammer extends ToolBase {
 
     @Override
     public int convertBlockDrops(World world, BlockPos blockPos, IBlockState blockState, EntityPlayer harvester, List<ItemStack> drops, boolean recursive) {
-        return ToolUtility.applyHammerDrops(world.rand, blockState, drops);
+        return ToolUtility.applyHammerDrops(world.rand, blockState, drops, true);
     }
 
     @Override

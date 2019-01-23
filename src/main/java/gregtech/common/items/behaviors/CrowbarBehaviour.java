@@ -49,12 +49,13 @@ public class CrowbarBehaviour implements IItemBehaviour {
             }
             TileEntity tileEntity = world.getTileEntity(blockPos);
             ICoverable coverable = tileEntity == null ? null : tileEntity.getCapability(GregtechCapabilities.CAPABILITY_COVERABLE, null);
-            if(coverable != null && coverable.getCoverAtSide(side) != null) {
+            EnumFacing coverSide = coverable == null ? null : ICoverable.rayTraceCoverableSide(coverable, player);
+            if(coverSide != null && coverable.getCoverAtSide(coverSide) != null) {
                 if(world.isRemote) {
                     //always return success on client side
                     return EnumActionResult.SUCCESS;
                 }
-                boolean result = coverable.removeCover(side);
+                boolean result = coverable.removeCover(coverSide);
                 GTUtility.doDamageItem(stack, cost, false);
                 return result ? EnumActionResult.SUCCESS : EnumActionResult.PASS;
             }

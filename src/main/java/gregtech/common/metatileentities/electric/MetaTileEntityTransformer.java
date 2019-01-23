@@ -1,5 +1,6 @@
 package gregtech.common.metatileentities.electric;
 
+import codechicken.lib.raytracer.CuboidRayTraceResult;
 import codechicken.lib.render.CCRenderState;
 import codechicken.lib.render.pipeline.IVertexOperation;
 import codechicken.lib.vec.Matrix4;
@@ -118,7 +119,7 @@ public class MetaTileEntityTransformer extends TieredMetaTileEntity {
     }
 
     @Override
-    public boolean onRightClick(EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+    public boolean onRightClick(EntityPlayer playerIn, EnumHand hand, EnumFacing facing, CuboidRayTraceResult hitResult) {
         ItemStack itemStack = playerIn.getHeldItem(hand);
         if(!itemStack.isEmpty() && GregTechAPI.softHammerList.contains(new SimpleItemStack(itemStack))) {
             if(getWorld().isRemote)

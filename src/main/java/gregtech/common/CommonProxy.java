@@ -34,8 +34,11 @@ import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemMultiTexture;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
+import net.minecraftforge.common.config.Config.Type;
+import net.minecraftforge.common.config.ConfigManager;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.event.furnace.FurnaceFuelBurnTimeEvent;
+import net.minecraftforge.fml.client.event.ConfigChangedEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -57,6 +60,8 @@ public class CommonProxy {
         PotionFluids.initPotionFluids();
 
         registry.register(MACHINE);
+        registry.register(CABLE);
+        registry.register(FLUID_PIPE);
 
         registry.register(BOILER_CASING);
         registry.register(BOILER_FIREBOX_CASING);
@@ -74,8 +79,6 @@ public class CommonProxy {
         registry.register(SAPLING);
         registry.register(CRUSHER_BLADE);
 
-        CABLES.values().forEach(registry::register);
-        FLUID_PIPES.values().forEach(registry::register);
         COMPRESSED.values().stream().distinct().forEach(registry::register);
         SURFACE_ROCKS.values().stream().distinct().forEach(registry::register);
         FLOODED_SURFACE_ROCKS.values().stream().distinct().forEach(registry::register);
@@ -97,6 +100,9 @@ public class CommonProxy {
         ToolRecipeHandler.initializeMetaItems();
 
         registry.register(createItemBlock(MACHINE, MachineItemBlock::new));
+        registry.register(createItemBlock(CABLE, ItemBlockCable::new));
+        registry.register(createItemBlock(FLUID_PIPE, ItemBlockFluidPipe::new));
+
         registry.register(createItemBlock(BOILER_CASING, VariantItemBlock::new));
         registry.register(createItemBlock(BOILER_FIREBOX_CASING, VariantItemBlock::new));
         registry.register(createItemBlock(METAL_CASING, VariantItemBlock::new));
@@ -113,12 +119,6 @@ public class CommonProxy {
         registry.register(createMultiTexItemBlock(SAPLING, state -> state.getValue(BlockGregSapling.VARIANT).getName()));
         registry.register(createItemBlock(CRUSHER_BLADE, ItemBlock::new));
 
-        CABLES.values().stream()
-            .map(block -> createItemBlock(block, ItemBlockCable::new))
-            .forEach(registry::register);
-        FLUID_PIPES.values().stream()
-            .map(block -> createItemBlock(block, ItemBlockFluidPipe::new))
-            .forEach(registry::register);
         COMPRESSED.values()
             .stream().distinct()
             .map(block -> createItemBlock(block, CompressedItemBlock::new))
@@ -172,6 +172,19 @@ public class CommonProxy {
     }
 
     @SubscribeEvent
+    public static void registerEnchantments(RegistryEvent.Register<Enchantment> event) {
+        EnchantmentEnderDamage.INSTANCE.register(event);
+        EnchantmentRadioactivity.INSTANCE.register(event);
+    }
+
+    @SubscribeEvent
+    public static void syncConfigValues(ConfigChangedEvent.OnConfigChangedEvent event) {
+        if(event.getModID().equals(GTValues.MODID)) {
+            ConfigManager.sync(GTValues.MODID, Type.INSTANCE);
+        }
+    }
+
+    @SubscribeEvent
     public static void modifyFuelBurnTime(FurnaceFuelBurnTimeEvent event) {
         ItemStack stack = event.getItemStack();
         Block block = Block.getBlockFromItem(stack.getItem());
@@ -208,12 +221,6 @@ public class CommonProxy {
         ItemBlock itemBlock = producer.apply(block);
         itemBlock.setRegistryName(block.getRegistryName());
         return itemBlock;
-    }
-
-    @SubscribeEvent
-    public void registerEnchantments(RegistryEvent.Register<Enchantment> event) {
-        EnchantmentEnderDamage.INSTANCE.register(event);
-        EnchantmentRadioactivity.INSTANCE.register(event);
     }
 
     public void onPreLoad() {

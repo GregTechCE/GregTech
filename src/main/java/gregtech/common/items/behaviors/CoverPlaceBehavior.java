@@ -28,12 +28,13 @@ public class CoverPlaceBehavior implements IItemBehaviour {
         if(coverable == null) {
             return EnumActionResult.PASS;
         }
-        if(coverable.getCoverAtSide(side) != null || !coverable.canPlaceCoverOnSide(side)) {
+        EnumFacing coverSide = ICoverable.rayTraceCoverableSide(coverable, player);
+        if(coverable.getCoverAtSide(coverSide) != null || !coverable.canPlaceCoverOnSide(coverSide)) {
             return EnumActionResult.PASS;
         }
         if(!world.isRemote) {
             ItemStack itemStack = player.getHeldItem(hand);
-            boolean result = coverable.placeCoverOnSide(side, itemStack, coverDefinition);
+            boolean result = coverable.placeCoverOnSide(coverSide, itemStack, coverDefinition);
             if (result && !player.capabilities.isCreativeMode) {
                 itemStack.shrink(1);
             }

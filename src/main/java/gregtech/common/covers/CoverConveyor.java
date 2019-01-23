@@ -1,5 +1,6 @@
 package gregtech.common.covers;
 
+import codechicken.lib.raytracer.CuboidRayTraceResult;
 import codechicken.lib.render.CCRenderState;
 import codechicken.lib.render.pipeline.IVertexOperation;
 import codechicken.lib.vec.Cuboid6;
@@ -219,7 +220,7 @@ public class CoverConveyor extends CoverBehavior implements CoverWithUI, ITickab
     }
 
     @Override
-    public EnumActionResult onScrewdriverClick(EntityPlayer playerIn, EnumHand hand, float hitX, float hitY, float hitZ) {
+    public EnumActionResult onScrewdriverClick(EntityPlayer playerIn, EnumHand hand, CuboidRayTraceResult hitResult) {
         if(!coverHolder.getWorld().isRemote) {
             openUI((EntityPlayerMP) playerIn);
         }

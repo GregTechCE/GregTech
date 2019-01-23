@@ -129,7 +129,6 @@ public abstract class RecipeMapWorkableHandler extends MTETrait implements IWork
             } else if(checkRecipeInputsDirty(importInventory, importFluids) || forceRecipeRecheck) {
                 this.forceRecipeRecheck = false;
                 //else, try searching new recipe for given inputs
-                System.out.println("FindRecipe call");
                 currentRecipe = findRecipe(maxVoltage, importInventory, importFluids);
                 //if we found recipe that can be buffered, buffer it
                 if (currentRecipe != null && currentRecipe.canBeBuffered()) {

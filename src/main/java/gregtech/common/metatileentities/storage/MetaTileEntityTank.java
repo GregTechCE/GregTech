@@ -1,6 +1,7 @@
 package gregtech.common.metatileentities.storage;
 
 import codechicken.lib.colour.ColourRGBA;
+import codechicken.lib.raytracer.CuboidRayTraceResult;
 import codechicken.lib.render.CCRenderState;
 import codechicken.lib.render.pipeline.IVertexOperation;
 import codechicken.lib.vec.Matrix4;
@@ -188,7 +189,7 @@ public class MetaTileEntityTank extends MetaTileEntity {
     }
 
     @Override
-    public boolean onRightClick(EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+    public boolean onRightClick(EntityPlayer playerIn, EnumHand hand, EnumFacing facing, CuboidRayTraceResult hitResult) {
        return getWorld().isRemote || FluidUtil.interactWithFluidHandler(playerIn, hand, fluidTank);
     }
 

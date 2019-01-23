@@ -11,6 +11,7 @@ import codechicken.lib.render.pipeline.ColourMultiplier;
 import codechicken.lib.render.pipeline.IVertexOperation;
 import codechicken.lib.texture.TextureUtils;
 import codechicken.lib.vec.Cuboid6;
+import codechicken.lib.vec.Matrix4;
 import codechicken.lib.vec.Translation;
 import codechicken.lib.vec.Vector3;
 import codechicken.lib.vec.uv.IconTransformation;
@@ -23,10 +24,9 @@ import gregtech.api.util.GTLog;
 import gregtech.api.util.GTUtility;
 import gregtech.common.blocks.MetaBlocks;
 import gregtech.common.pipelike.cable.BlockCable;
+import gregtech.common.pipelike.cable.Insulation;
 import gregtech.common.pipelike.cable.ItemBlockCable;
 import gregtech.common.pipelike.cable.WireProperties;
-import gregtech.common.pipelike.cable.Insulation;
-import gregtech.common.pipelike.cable.tile.TileEntityCable;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
@@ -36,7 +36,6 @@ import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
-import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
@@ -76,7 +75,7 @@ public class CableRenderer implements ICCBlockRenderer, IItemRenderer, IModelPar
         BlockRenderingRegistry.registerRenderer(BLOCK_RENDER_TYPE, INSTANCE);
         MinecraftForge.EVENT_BUS.register(INSTANCE);
         TextureUtils.addIconRegister(INSTANCE::registerIcons);
-        for(Material material : MetaBlocks.CABLES.keySet()) {
+        for(Material material : MetaBlocks.CABLE.getEnabledMaterials()) {
             MaterialIconSet iconSet = material.materialIconSet;
             INSTANCE.generatedSets.add(iconSet);
         }
@@ -108,8 +107,8 @@ public class CableRenderer implements ICCBlockRenderer, IItemRenderer, IModelPar
         renderState.reset();
         renderState.startDrawing(GL11.GL_QUADS, DefaultVertexFormats.ITEM);
         BlockCable blockCable = (BlockCable) ((ItemBlockCable) stack.getItem()).getBlock();
-        Insulation insulation = blockCable.getPipeType(stack);
-        Material material = blockCable.material;
+        Insulation insulation = blockCable.getItemPipeType(stack);
+        Material material = blockCable.getItemMaterial(stack);
         renderCableBlock(material, insulation, IPipeTile.DEFAULT_INSULATION_COLOR, renderState, new IVertexOperation[0],
             1 << EnumFacing.SOUTH.getIndex() | 1 << EnumFacing.NORTH.getIndex() |
                 1 << (6 + EnumFacing.SOUTH.getIndex()) | 1 << (6 + EnumFacing.NORTH.getIndex()));
@@ -130,11 +129,10 @@ public class CableRenderer implements ICCBlockRenderer, IItemRenderer, IModelPar
         if(tileEntityCable == null) return false;
         int paintingColor = tileEntityCable.getInsulationColor();
         int connectedSidesMask = blockCable.getActualConnections(tileEntityCable, world);
-
-        Insulation insulation = state.getValue(blockCable.pipeVariantProperty);
-        Material material = blockCable.material;
-
+        Insulation insulation = tileEntityCable.getPipeType();
+        Material material = tileEntityCable.getPipeMaterial();
         renderCableBlock(material, insulation, paintingColor, renderState, pipeline, connectedSidesMask);
+        tileEntityCable.getCoverableImplementation().renderCovers(renderState, new Matrix4().translate(pos.getX(), pos.getY(), pos.getZ()), new IVertexOperation[0]);
         return true;
     }
 
@@ -271,8 +269,9 @@ public class CableRenderer implements ICCBlockRenderer, IItemRenderer, IModelPar
     @Override
     public Set<TextureAtlasSprite> getDestroyEffects(IBlockState state, IBlockAccess world, BlockPos pos) {
         BlockCable blockCable = (BlockCable) state.getBlock();
-        Insulation insulation = state.getValue(blockCable.pipeVariantProperty);
-        Material material = ((BlockCable) state.getBlock()).material;
+        IPipeTile<Insulation, WireProperties> cableTile = blockCable.getPipeTileEntity(world, pos);
+        Insulation insulation = cableTile.getPipeType();
+        Material material = cableTile.getPipeMaterial();
         return Collections.singleton(insulation.insulationLevel > -1 ? insulationTextures[5] : wireTextures.get(material.materialIconSet));
     }
 }

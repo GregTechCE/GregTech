@@ -75,10 +75,11 @@ public abstract class PipeNet<NodeDataType> implements INBTSerializable<NBTTagCo
         if(wasBlocked == isBlocked) {
             return;
         }
+        setBlocked(selfNode, facing, isBlocked);
+
         BlockPos offsetPos = nodePos.offset(facing);
         //noinspection unchecked
         PipeNet<NodeDataType> pipeNetAtOffset = worldData.getNetFromPos(offsetPos);
-
         if (pipeNetAtOffset == null) {
             //if there is no any pipe net at this side,
             //updating blocked status of it won't change anything in any net
@@ -114,8 +115,6 @@ public abstract class PipeNet<NodeDataType> implements INBTSerializable<NBTTagCo
                 uniteNetworks(pipeNetAtOffset);
             }
         }
-        //update result block status before updating & marking
-        setBlocked(selfNode, facing, isBlocked);
         onConnectionsUpdate();
         worldData.markDirty();
     }

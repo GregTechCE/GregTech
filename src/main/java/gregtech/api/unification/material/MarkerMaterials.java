@@ -5,6 +5,8 @@ import gregtech.api.unification.material.type.MarkerMaterial;
 import gregtech.api.unification.material.type.Material;
 import net.minecraft.item.EnumDyeColor;
 
+import static com.google.common.collect.ImmutableList.of;
+
 public class MarkerMaterials {
 
     @SuppressWarnings("ResultOfMethodCallIgnored")
@@ -92,7 +94,7 @@ public class MarkerMaterials {
         public static Material Elite = new MarkerMaterial("elite");
         public static Material Master = new MarkerMaterial("master");
         public static Material Ultimate = new MarkerMaterial("ultimate");
-        public static Material Superconductor = new MarkerMaterial("superconductor");
+        public static Material Superconductor = new Material(354, "superconductor", 0xFFFFFF, MaterialIconSet.NONE, of(), 0L, null) {};
         public static Material Data = new MarkerMaterial("data");
     }
 

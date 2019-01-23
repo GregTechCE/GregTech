@@ -1,35 +1,57 @@
 package gregtech.common.pipelike.cable;
 
+import com.google.common.base.Preconditions;
 import gregtech.api.capability.GregtechCapabilities;
 import gregtech.api.capability.IEnergyContainer;
 import gregtech.api.damagesources.DamageSources;
 import gregtech.api.pipenet.block.BlockPipe;
+import gregtech.api.pipenet.tile.TileEntityPipeBase;
 import gregtech.api.unification.material.type.Material;
 import gregtech.api.util.GTUtility;
 import gregtech.common.pipelike.cable.net.EnergyNet;
 import gregtech.common.pipelike.cable.net.WorldENet;
 import gregtech.common.pipelike.cable.tile.TileEntityCable;
+import gregtech.common.pipelike.cable.tile.TileEntityCableTickable;
 import gregtech.common.render.CableRenderer;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import javax.annotation.Nullable;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Map;
+import java.util.TreeMap;
 
 public class BlockCable extends BlockPipe<Insulation, WireProperties, WorldENet> implements ITileEntityProvider {
 
-    public BlockCable(Material material, WireProperties cableProperties) {
-        super(material, cableProperties);
+    private final Map<Material, WireProperties> enabledMaterials = new TreeMap<>();
+
+    public BlockCable() {
         setHarvestLevel("cutter", 1);
+    }
+
+    public void addCableMaterial(Material material, WireProperties wireProperties) {
+        Preconditions.checkNotNull(material, "material");
+        Preconditions.checkNotNull(wireProperties, "wireProperties");
+        Preconditions.checkArgument(Material.MATERIAL_REGISTRY.getNameForObject(material) != null,"material is not registered");
+        this.enabledMaterials.put(material, wireProperties);
+    }
+
+    public Collection<Material> getEnabledMaterials() {
+        return Collections.unmodifiableSet(enabledMaterials.keySet());
     }
 
     @Override
@@ -38,8 +60,22 @@ public class BlockCable extends BlockPipe<Insulation, WireProperties, WorldENet>
     }
 
     @Override
+    protected WireProperties createProperties(Insulation insulation, Material material) {
+        return insulation.modifyProperties(enabledMaterials.get(material));
+    }
+
+    @Override
     public WorldENet getWorldPipeNet(World world) {
         return WorldENet.getWorldENet(world);
+    }
+
+    @Override
+    public void getSubBlocks(CreativeTabs itemIn, NonNullList<ItemStack> items) {
+        for (Material material : enabledMaterials.keySet()) {
+            for (Insulation insulation : Insulation.values()) {
+                items.add(getItem(insulation, material));
+            }
+        }
     }
 
     @Override
@@ -59,25 +95,10 @@ public class BlockCable extends BlockPipe<Insulation, WireProperties, WorldENet>
         return activeNodeConnections;
     }
 
-    /*@Override
-    public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
-        if(!worldIn.isRemote) {
-            EnergyNet energyNet = getWorldPipeNet(worldIn).getNetFromPos(pos);
-            playerIn.sendMessage(new TextComponentString("Energy Net: " + energyNet));
-            if(energyNet != null) {
-                playerIn.sendMessage(new TextComponentString("Current Max Voltage: " + energyNet.getLastMaxVoltage()));
-                playerIn.sendMessage(new TextComponentString("Current Total Amperage: " + energyNet.getLastAmperage()));
-                playerIn.sendMessage(new TextComponentString("All Nodes: " + energyNet.getAllNodes().keySet()));
-                playerIn.sendMessage(new TextComponentString("Active Nodes: " +
-                    energyNet.getAllNodes().entrySet().stream().filter(entry -> entry.getValue().isActive).map(Entry::getKey).collect(Collectors.toList())));
-            }
-        }
-        return false;
-    }*/
-
     @Override
     public void onEntityCollidedWithBlock(World worldIn, BlockPos pos, IBlockState state, Entity entityIn) {
-        if(!worldIn.isRemote && state.getValue(pipeVariantProperty).insulationLevel == -1 && entityIn instanceof EntityLivingBase) {
+        Insulation insulation = getPipeTileEntity(worldIn, pos).getPipeType();
+        if(!worldIn.isRemote && insulation.insulationLevel == -1 && entityIn instanceof EntityLivingBase) {
             EntityLivingBase entityLiving = (EntityLivingBase) entityIn;
             EnergyNet energyNet = getWorldPipeNet(worldIn).getNetFromPos(pos);
             if(energyNet != null && !GTUtility.isWearingFullElectroHazmat(entityLiving)) {
@@ -97,9 +118,13 @@ public class BlockCable extends BlockPipe<Insulation, WireProperties, WorldENet>
         return CableRenderer.BLOCK_RENDER_TYPE;
     }
 
-    @Nullable
     @Override
-    public TileEntity createNewTileEntity(World worldIn, int meta) {
-        return new TileEntityCable();
+    public BlockRenderLayer getBlockLayer() {
+        return BlockRenderLayer.CUTOUT;
+    }
+
+    @Override
+    public TileEntityPipeBase<Insulation, WireProperties> createNewTileEntity(boolean supportsTicking) {
+        return supportsTicking ? new TileEntityCableTickable() : new TileEntityCable();
     }
 }

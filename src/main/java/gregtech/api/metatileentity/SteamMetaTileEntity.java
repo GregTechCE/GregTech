@@ -1,5 +1,6 @@
 package gregtech.api.metatileentity;
 
+import codechicken.lib.raytracer.CuboidRayTraceResult;
 import codechicken.lib.render.CCRenderState;
 import codechicken.lib.render.pipeline.ColourMultiplier;
 import codechicken.lib.render.pipeline.IVertexOperation;
@@ -66,7 +67,7 @@ public abstract class SteamMetaTileEntity extends MetaTileEntity {
     }
 
     @Override
-    public boolean onWrenchClick(EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+    public boolean onWrenchClick(EntityPlayer playerIn, EnumHand hand, EnumFacing facing, CuboidRayTraceResult hitResult) {
         if(!playerIn.isSneaking()) {
             EnumFacing currentVentingSide = workableHandler.getVentingSide();
             if(currentVentingSide == facing ||
@@ -74,7 +75,7 @@ public abstract class SteamMetaTileEntity extends MetaTileEntity {
             workableHandler.setVentingSide(facing);
             return true;
         }
-        return super.onWrenchClick(playerIn, hand, facing, hitX, hitY, hitZ);
+        return super.onWrenchClick(playerIn, hand, facing, hitResult);
     }
 
     @Override

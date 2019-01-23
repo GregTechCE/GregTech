@@ -1,5 +1,6 @@
 package gregtech.common.metatileentities.electric.multiblockpart;
 
+import codechicken.lib.raytracer.CuboidRayTraceResult;
 import codechicken.lib.render.CCRenderState;
 import codechicken.lib.render.pipeline.IVertexOperation;
 import codechicken.lib.vec.Matrix4;
@@ -253,24 +254,24 @@ public class MetaTileEntityRotorHolder extends MetaTileEntityMultiblockPart impl
     }
 
     @Override
-    public boolean onRightClick(EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+    public boolean onRightClick(EntityPlayer playerIn, EnumHand hand, EnumFacing facing, CuboidRayTraceResult hitResult) {
         return onRotorHolderInteract(playerIn) ||
-            super.onRightClick(playerIn, hand, facing, hitX, hitY, hitZ);
+            super.onRightClick(playerIn, hand, facing, hitResult);
     }
 
     @Override
-    public boolean onWrenchClick(EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+    public boolean onWrenchClick(EntityPlayer playerIn, EnumHand hand, EnumFacing facing, CuboidRayTraceResult hitResult) {
         return onRotorHolderInteract(playerIn) ||
-            super.onWrenchClick(playerIn, hand, facing, hitX, hitY, hitZ);
+            super.onWrenchClick(playerIn, hand, facing, hitResult);
     }
 
     @Override
-    public boolean onScrewdriverClick(EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+    public boolean onScrewdriverClick(EntityPlayer playerIn, EnumHand hand, EnumFacing facing, CuboidRayTraceResult hitResult) {
         return onRotorHolderInteract(playerIn);
     }
 
     @Override
-    public void onLeftClick(EntityPlayer player, EnumFacing facing, float hitX, float hitY, float hitZ) {
+    public void onLeftClick(EntityPlayer player, EnumFacing facing, CuboidRayTraceResult hitResult) {
         onRotorHolderInteract(player);
     }
 

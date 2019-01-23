@@ -1,5 +1,6 @@
 package gregtech.common.covers;
 
+import codechicken.lib.raytracer.CuboidRayTraceResult;
 import codechicken.lib.render.CCRenderState;
 import codechicken.lib.render.pipeline.IVertexOperation;
 import codechicken.lib.vec.Cuboid6;
@@ -26,6 +27,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.*;
+import net.minecraft.util.math.BlockPos.PooledMutableBlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.Constants.NBT;
@@ -37,6 +39,7 @@ import net.minecraftforge.items.ItemStackHandler;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.util.function.Predicate;
 
 public class CoverPump extends CoverBehavior implements CoverWithUI, ITickable {
 
@@ -49,6 +52,7 @@ public class CoverPump extends CoverBehavior implements CoverWithUI, ITickable {
     protected FluidStack[] fluidFilterSlots;
     protected int fluidLeftToTransferLastSecond;
     private CoverableFluidHandlerWrapper fluidHandlerWrapper;
+    private Predicate<FluidStack> fluidFilter = this::checkInputFluid;
 
     public CoverPump(ICoverable coverHolder, EnumFacing attachedSide, int tier, int mbPerTick) {
         super(coverHolder, attachedSide);
@@ -88,7 +92,10 @@ public class CoverPump extends CoverBehavior implements CoverWithUI, ITickable {
     }
 
     protected int doTransferFluids(int transferLimit) {
-        TileEntity tileEntity = coverHolder.getWorld().getTileEntity(coverHolder.getPos().offset(attachedSide));
+        PooledMutableBlockPos blockPos = PooledMutableBlockPos.retain();
+        blockPos.setPos(coverHolder.getPos()).move(attachedSide);
+        TileEntity tileEntity = coverHolder.getWorld().getTileEntity(blockPos);
+        blockPos.release();
         IFluidHandler fluidHandler = tileEntity == null ? null : tileEntity.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, attachedSide.getOpposite());
         IFluidHandler myFluidHandler = coverHolder.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, attachedSide);
         if(fluidHandler == null || myFluidHandler == null) {
@@ -99,18 +106,18 @@ public class CoverPump extends CoverBehavior implements CoverWithUI, ITickable {
 
     protected int doTransferFluidsInternal(IFluidHandler myFluidHandler, IFluidHandler fluidHandler, int transferLimit) {
         if(pumpMode == PumpMode.IMPORT) {
-            return moveHandlerFluids(fluidHandler, myFluidHandler, transferLimit);
+            return moveHandlerFluids(fluidHandler, myFluidHandler, transferLimit, fluidFilter);
         } else if(pumpMode == PumpMode.EXPORT) {
-            return moveHandlerFluids(myFluidHandler, fluidHandler, transferLimit);
+            return moveHandlerFluids(myFluidHandler, fluidHandler, transferLimit, fluidFilter);
         }
         return 0;
     }
 
-    protected int moveHandlerFluids(IFluidHandler sourceHandler, IFluidHandler destHandler, int transferLimit) {
+    public static int moveHandlerFluids(IFluidHandler sourceHandler, IFluidHandler destHandler, int transferLimit, Predicate<FluidStack> fluidFilter) {
         int fluidLeftToTransfer = transferLimit;
         for(IFluidTankProperties tankProperties : sourceHandler.getTankProperties()) {
             FluidStack currentFluid = tankProperties.getContents();
-            if (currentFluid == null || currentFluid.amount == 0 || !checkInputFluid(currentFluid)) continue;
+            if (currentFluid == null || currentFluid.amount == 0 || !fluidFilter.test(currentFluid)) continue;
             currentFluid.amount = fluidLeftToTransfer;
             FluidStack fluidStack = sourceHandler.drain(currentFluid, false);
             if (fluidStack == null || fluidStack.amount == 0) continue;
@@ -173,7 +180,7 @@ public class CoverPump extends CoverBehavior implements CoverWithUI, ITickable {
     }
 
     @Override
-    public EnumActionResult onScrewdriverClick(EntityPlayer playerIn, EnumHand hand, float hitX, float hitY, float hitZ) {
+    public EnumActionResult onScrewdriverClick(EntityPlayer playerIn, EnumHand hand, CuboidRayTraceResult hitResult) {
         if(!coverHolder.getWorld().isRemote) {
             openUI((EntityPlayerMP) playerIn);
         }

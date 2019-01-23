@@ -47,8 +47,8 @@ public class CraftingRecipeLoader {
         ModHandler.addShapedRecipe("torch_sulfur", new ItemStack(Blocks.TORCH, 2), "C", "S", 'C', new UnificationEntry(OrePrefix.dust, Materials.Sulfur), 'S', new UnificationEntry(OrePrefix.stick, Materials.Wood));
         ModHandler.addShapedRecipe("torch_phosphor", new ItemStack(Blocks.TORCH, 6), "C", "S", 'C', new UnificationEntry(OrePrefix.dust, Materials.Phosphorus), 'S', new UnificationEntry(OrePrefix.stick, Materials.Wood));
 
-        ModHandler.addShapedRecipe("small_wooden_pipe", MetaBlocks.FLUID_PIPES.get(Materials.Wood).getItem(FluidPipeType.SMALL_OPAQUE), "XXX", "r s", "XXX", 'X', new UnificationEntry(OrePrefix.plank, Materials.Wood));
-        ModHandler.addShapedRecipe("medium_wooden_pipe", MetaBlocks.FLUID_PIPES.get(Materials.Wood).getItem(FluidPipeType.MEDIUM_OPAQUE), "XXX", "s r", "XXX", 'X', new UnificationEntry(OrePrefix.plank, Materials.Wood));
+        ModHandler.addShapedRecipe("small_wooden_pipe", MetaBlocks.FLUID_PIPE.getItem(FluidPipeType.SMALL_OPAQUE, Materials.Wood), "XXX", "r s", "XXX", 'X', new UnificationEntry(OrePrefix.plank, Materials.Wood));
+        ModHandler.addShapedRecipe("medium_wooden_pipe", MetaBlocks.FLUID_PIPE.getItem(FluidPipeType.MEDIUM_OPAQUE, Materials.Wood), "XXX", "s r", "XXX", 'X', new UnificationEntry(OrePrefix.plank, Materials.Wood));
 
         ModHandler.addShapedRecipe("piston_bronze", new ItemStack(Blocks.PISTON, 1), "WWW", "CBC", "CRC", 'W', new UnificationEntry(OrePrefix.plank, Materials.Wood), 'C', OrePrefix.stoneCobble, 'R', new UnificationEntry(OrePrefix.dust, Materials.Redstone), 'B', new UnificationEntry(OrePrefix.ingot, Materials.Bronze));
         ModHandler.addShapedRecipe("piston_aluminium", new ItemStack(Blocks.PISTON, 1), "WWW", "CBC", "CRC", 'W', new UnificationEntry(OrePrefix.plank, Materials.Wood), 'C', OrePrefix.stoneCobble, 'R', new UnificationEntry(OrePrefix.dust, Materials.Redstone), 'B', new UnificationEntry(OrePrefix.ingot, Materials.Aluminium));

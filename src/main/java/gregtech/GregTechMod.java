@@ -101,7 +101,6 @@ public class GregTechMod {
     @Mod.EventHandler
     public void onInit(FMLInitializationEvent event) {
         proxy.onLoad();
-
         if (RecipeMap.isFoundInvalidRecipe()) {
             GTLog.logger.fatal("Seems like invalid recipe was found.");
             //crash if config setting is set to false, or we are in deobfuscated environment
@@ -152,7 +151,8 @@ public class GregTechMod {
     }
 
     @Mod.EventHandler
-    public void serverLoad(FMLServerStartingEvent event) {
+    public void onServerLoad(FMLServerStartingEvent event) {
         event.registerServerCommand(new GregTechCommand());
     }
+
 }

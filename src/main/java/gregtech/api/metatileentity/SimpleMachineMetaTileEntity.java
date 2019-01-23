@@ -1,5 +1,6 @@
 package gregtech.api.metatileentity;
 
+import codechicken.lib.raytracer.CuboidRayTraceResult;
 import codechicken.lib.render.CCRenderState;
 import codechicken.lib.render.pipeline.IVertexOperation;
 import codechicken.lib.vec.Matrix4;
@@ -66,7 +67,7 @@ public class SimpleMachineMetaTileEntity extends WorkableTieredMetaTileEntity {
     }
 
     @Override
-    public boolean onWrenchClick(EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+    public boolean onWrenchClick(EntityPlayer playerIn, EnumHand hand, EnumFacing facing, CuboidRayTraceResult hitResult) {
         if(!playerIn.isSneaking()) {
             EnumFacing currentOutputSide = getOutputFacing();
             if(currentOutputSide == facing ||
@@ -74,7 +75,7 @@ public class SimpleMachineMetaTileEntity extends WorkableTieredMetaTileEntity {
             setOutputFacing(facing);
             return true;
         }
-        return super.onWrenchClick(playerIn, hand, facing, hitX, hitY, hitZ);
+        return super.onWrenchClick(playerIn, hand, facing, hitResult);
     }
 
     @Override
@@ -256,7 +257,7 @@ public class SimpleMachineMetaTileEntity extends WorkableTieredMetaTileEntity {
     }
 
     @Override
-    public boolean onScrewdriverClick(EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+    public boolean onScrewdriverClick(EntityPlayer playerIn, EnumHand hand, EnumFacing facing, CuboidRayTraceResult hitResult) {
         if(exportFluids.getTanks() == 0)
             return false; //do not do anything with machines that don't output fluids
         if(getWorld().isRemote)

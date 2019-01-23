@@ -29,7 +29,6 @@ public enum FluidPipeType implements IPipeType<FluidPipeProperties> {
         return name;
     }
 
-
     @Override
     public float getThickness() {
         return thickness;

@@ -1,24 +1,40 @@
 package gregtech.common.multipart;
 
+import gregtech.api.pipenet.tile.IPipeTile;
 import gregtech.common.pipelike.fluidpipe.FluidPipeProperties;
 import gregtech.common.pipelike.fluidpipe.FluidPipeType;
 import gregtech.common.pipelike.fluidpipe.tile.TileEntityFluidPipeActive;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.tileentity.TileEntity;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.ResourceLocation;
 
 public class FluidPipeActiveMultiPart extends FluidPipeMultiPart implements ITickable {
 
+    private boolean isActivePart = false;
+
     FluidPipeActiveMultiPart() {
     }
 
-    public FluidPipeActiveMultiPart(PipeMultiPart<FluidPipeType, FluidPipeProperties> sourceTile) {
+    public FluidPipeActiveMultiPart(IPipeTile<FluidPipeType, FluidPipeProperties> sourceTile) {
         super(sourceTile);
     }
 
-    public FluidPipeActiveMultiPart(IBlockState blockState, TileEntity tile) {
-        super(blockState, tile);
+    public boolean isActivePart() {
+        return isActivePart;
+    }
+
+    @Override
+    public void transferDataFrom(IPipeTile<FluidPipeType, FluidPipeProperties> sourceTile) {
+        super.transferDataFrom(sourceTile);
+        if(sourceTile instanceof TileEntityFluidPipeActive) {
+            setActivePart(((TileEntityFluidPipeActive) sourceTile).isActive());
+        } else if(sourceTile instanceof FluidPipeActiveMultiPart) {
+            setActivePart(((FluidPipeActiveMultiPart) sourceTile).isActivePart());
+        }
+    }
+
+    public void setActivePart(boolean activePart) {
+        isActivePart = activePart;
     }
 
     @Override
@@ -28,6 +44,26 @@ public class FluidPipeActiveMultiPart extends FluidPipeMultiPart implements ITic
 
     @Override
     public void update() {
-        TileEntityFluidPipeActive.pushFluidsFromTank(this, getFluidHandler());
+        getCoverableImplementation().update();
+        if(isActivePart) {
+            TileEntityFluidPipeActive.pushFluidsFromTank(this);
+        }
+    }
+
+    @Override
+    public boolean supportsTicking() {
+        return true;
+    }
+
+    @Override
+    public void save(NBTTagCompound tag) {
+        super.save(tag);
+        tag.setBoolean("ActiveNode", isActivePart);
+    }
+
+    @Override
+    public void load(NBTTagCompound tag) {
+        super.load(tag);
+        this.isActivePart = tag.getBoolean("ActiveNode");
     }
 }

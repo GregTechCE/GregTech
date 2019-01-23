@@ -6,8 +6,8 @@ import codechicken.lib.render.CCRenderState;
 import codechicken.lib.render.pipeline.ColourMultiplier;
 import codechicken.lib.render.pipeline.IVertexOperation;
 import codechicken.lib.texture.TextureUtils;
-import codechicken.lib.vec.Rotation;
-import codechicken.lib.vec.*;
+import codechicken.lib.vec.Cuboid6;
+import codechicken.lib.vec.Matrix4;
 import com.google.common.base.Preconditions;
 import gregtech.api.GregTechAPI;
 import gregtech.api.capability.GregtechCapabilities;
@@ -30,8 +30,8 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.*;
-import net.minecraft.util.EnumFacing.Axis;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.BlockPos.PooledMutableBlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
@@ -56,8 +56,6 @@ import java.util.function.Consumer;
 
 public abstract class MetaTileEntity implements ICoverable {
 
-    private static final Transformation REVERSE_HORIZONTAL_ROTATION = new Rotation(Math.PI, new Vector3(0.0, 1.0, 0.0)).at(Vector3.center);
-    private static final Transformation REVERSE_VERTICAL_ROTATION = new Rotation(Math.PI, new Vector3(1.0, 0.0, 0.0)).at(Vector3.center);
     public static final IndexedCuboid6 FULL_CUBE_COLLISION = new IndexedCuboid6(null, Cuboid6.full);
     public final ResourceLocation metaTileEntityId;
     MetaTileEntityHolder holder;
@@ -166,50 +164,6 @@ public abstract class MetaTileEntity implements ICoverable {
     }
 
     @SideOnly(Side.CLIENT)
-    public final void renderCovers(CCRenderState renderState, Matrix4 translation, IVertexOperation[] pipeline) {
-        double coverPlateThickness = getCoverPlateThickness();
-        for(EnumFacing sideFacing : EnumFacing.values()) {
-            CoverBehavior coverBehavior = coverBehaviors[sideFacing.getIndex()];
-            if(coverBehavior == null) continue;
-            Cuboid6 plateBox = getCoverPlateBox(sideFacing, coverPlateThickness);
-            double coverOffset = getCoverOffset(sideFacing);
-            if(coverPlateThickness > 0) {
-                //render cover plate for cover
-                //to prevent Z-fighting between cover plates
-                IVertexOperation[] coloredPipeline = ArrayUtils.add(pipeline,
-                    new ColourMultiplier(GTUtility.convertRGBtoOpaqueRGBA_CL(getPaintingColor())));
-                plateBox.expand(coverOffset);
-                TextureAtlasSprite casingSide = coverBehavior.getPlateSprite();
-                for(EnumFacing coverPlateSide : EnumFacing.VALUES) {
-                    Textures.renderFace(renderState, translation, coloredPipeline, coverPlateSide, plateBox, casingSide);
-                }
-                plateBox.expand(-coverOffset);
-            }
-            plateBox.expand(coverOffset * 10.0);
-            coverBehavior.renderCover(renderState, translation.copy(), pipeline, plateBox);
-            if(coverPlateThickness == 0.0 && !isOpaqueCube()) {
-                //machine is full block, but still not opaque - render cover on the back side too
-                plateBox.expand(-coverOffset * -20.0);
-                Matrix4 backTranslation = translation.copy();
-                if(sideFacing.getAxis().isVertical()) {
-                    REVERSE_VERTICAL_ROTATION.apply(backTranslation);
-                } else {
-                    REVERSE_HORIZONTAL_ROTATION.apply(backTranslation);
-                }
-                backTranslation.translate(-sideFacing.getFrontOffsetX(), -sideFacing.getFrontOffsetY(), -sideFacing.getFrontOffsetZ());
-                coverBehavior.renderCover(renderState, backTranslation, pipeline, plateBox);
-            }
-        }
-    }
-
-    private static double getCoverOffset(EnumFacing side) {
-        EnumFacing.Axis axis = side.getAxis();
-        double sideMultiplier = axis == Axis.Y ? 3 :
-            (axis == Axis.X ? 2 : 1);
-        return sideMultiplier * 1e-5;
-    }
-
-    @SideOnly(Side.CLIENT)
     public int getPaintingColorForRendering() {
         if(getWorld() == null && renderContextStack != null) {
             NBTTagCompound tagCompound = renderContextStack.getTagCompound();
@@ -293,38 +247,41 @@ public abstract class MetaTileEntity implements ICoverable {
      */
     protected abstract ModularUI createUI(EntityPlayer entityPlayer);
 
-    public final void onCoverLeftClick(EntityPlayer playerIn, EnumFacing facing, float hitX, float hitY, float hitZ) {
-        CoverBehavior coverBehavior = getCoverAtSide(facing);
-        if(coverBehavior == null || !coverBehavior.onLeftClick(playerIn, hitX, hitY, hitZ)) {
-            onLeftClick(playerIn, facing, hitX, hitY, hitZ);
+    public final void onCoverLeftClick(EntityPlayer playerIn, CuboidRayTraceResult result) {
+        EnumFacing coverSide = ICoverable.traceCoverSide(result);
+        CoverBehavior coverBehavior = coverSide == null ? null : getCoverAtSide(coverSide);
+        if(coverBehavior == null || !coverBehavior.onLeftClick(playerIn, result)) {
+            onLeftClick(playerIn, result.sideHit, result);
         }
     }
 
-    public final boolean onCoverRightClick(EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
-        CoverBehavior coverBehavior = getCoverAtSide(facing);
+    public final boolean onCoverRightClick(EntityPlayer playerIn, EnumHand hand, CuboidRayTraceResult result) {
+        EnumFacing coverSide = ICoverable.traceCoverSide(result);
+        CoverBehavior coverBehavior = coverSide == null ? null : getCoverAtSide(coverSide);
         EnumActionResult coverResult = coverBehavior == null ? EnumActionResult.PASS :
-            coverBehavior.onRightClick(playerIn, hand, hitX, hitY, hitZ);
+            coverBehavior.onRightClick(playerIn, hand, result);
         if(coverResult != EnumActionResult.PASS) {
             return coverResult == EnumActionResult.SUCCESS;
         }
-        return onRightClick(playerIn, hand, facing, hitX, hitY, hitZ);
+        return onRightClick(playerIn, hand, result.sideHit, result);
     }
 
-    public final boolean onCoverScrewdriverClick(EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
-        CoverBehavior coverBehavior = getCoverAtSide(facing);
+    public final boolean onCoverScrewdriverClick(EntityPlayer playerIn, EnumHand hand, CuboidRayTraceResult result) {
+        EnumFacing coverSide = ICoverable.traceCoverSide(result);
+        CoverBehavior coverBehavior = coverSide == null ? null : getCoverAtSide(coverSide);
         EnumActionResult coverResult = coverBehavior == null ? EnumActionResult.PASS :
-            coverBehavior.onScrewdriverClick(playerIn, hand, hitX, hitY, hitZ);
+            coverBehavior.onScrewdriverClick(playerIn, hand, result);
         if(coverResult != EnumActionResult.PASS) {
             return coverResult == EnumActionResult.SUCCESS;
         }
-        return onRightClick(playerIn, hand, facing, hitX, hitY, hitZ);
+        return onRightClick(playerIn, hand, result.sideHit, result);
     }
 
     /**
      * Called when player clicks on specific side of this meta tile entity
      * @return true if something happened, so animation will be played
      */
-    public boolean onRightClick(EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+    public boolean onRightClick(EntityPlayer playerIn, EnumHand hand, EnumFacing facing, CuboidRayTraceResult hitResult) {
         if(!playerIn.isSneaking() && openGUIOnRightClick()) {
             if(getWorld() != null && !getWorld().isRemote) {
                 MetaTileEntityUIFactory.INSTANCE.openUI(getHolder(), (EntityPlayerMP) playerIn);
@@ -338,7 +295,7 @@ public abstract class MetaTileEntity implements ICoverable {
      * Called when player clicks wrench on specific side of this meta tile entity
      * @return true if something happened, so wrench will get damaged and animation will be played
      */
-    public boolean onWrenchClick(EntityPlayer playerIn, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
+    public boolean onWrenchClick(EntityPlayer playerIn, EnumHand hand, EnumFacing side, CuboidRayTraceResult hitResult) {
         if(playerIn.isSneaking()) {
             if(side == getFrontFacing() || !isValidFrontFacing(side) || !hasFrontFacing())
                 return false;
@@ -354,11 +311,11 @@ public abstract class MetaTileEntity implements ICoverable {
      * Called when player clicks screwdriver on specific side of this meta tile entity
      * @return true if something happened, so screwdriver will get damaged and animation will be played
      */
-    public boolean onScrewdriverClick(EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+    public boolean onScrewdriverClick(EntityPlayer playerIn, EnumHand hand, EnumFacing facing, CuboidRayTraceResult hitResult) {
         return false;
     }
 
-    public void onLeftClick(EntityPlayer player, EnumFacing facing, float hitX, float hitY, float hitZ) {
+    public void onLeftClick(EntityPlayer player, EnumFacing facing, CuboidRayTraceResult hitResult) {
     }
 
     @Nullable
@@ -410,6 +367,16 @@ public abstract class MetaTileEntity implements ICoverable {
         return true;
     }
 
+    public final void dropAllCovers() {
+        for(EnumFacing coverSide : EnumFacing.VALUES) {
+            CoverBehavior coverBehavior = coverBehaviors[coverSide.getIndex()];
+            if(coverBehavior == null) continue;
+            List<ItemStack> drops = coverBehavior.getDrops();
+            for (ItemStack dropStack : drops) {
+                Block.spawnAsEntity(getWorld(), getPos(), dropStack);
+            }
+        }
+    }
     public boolean canPlaceCoverOnSide(EnumFacing side) {
         if(hasFrontFacing() && side == getFrontFacing()) {
             //covers cannot be placed on this side
@@ -418,46 +385,11 @@ public abstract class MetaTileEntity implements ICoverable {
         ArrayList<IndexedCuboid6> collisionList = new ArrayList<>();
         addCollisionBoundingBox(collisionList);
         //noinspection RedundantIfStatement
-        if(!checkCoverCollision(side, collisionList, getCoverPlateThickness())) {
+        if(!ICoverable.checkCoverCollision(side, collisionList, getCoverPlateThickness())) {
             //cover collision box overlaps with meta tile entity collision box
             return false;
         }
         return true;
-    }
-
-    private static boolean checkCoverCollision(EnumFacing side, List<IndexedCuboid6> collisionBox, double plateThickness) {
-        if(plateThickness > 0.0) {
-            Cuboid6 coverPlateBox = getCoverPlateBox(side, plateThickness);
-            for(Cuboid6 collisionCuboid : collisionBox) {
-                if(collisionCuboid.intersects(coverPlateBox)) {
-                    //collision box intersects with machine bounding box -
-                    //cover cannot be placed on this side
-                    return false;
-                }
-            }
-            return true;
-        }
-        return true;
-    }
-
-    private static Cuboid6 getCoverPlateBox(EnumFacing side, double plateThickness) {
-        Cuboid6 coverPlateBox = new Cuboid6(0.0, 0.0, 0.0, 1.0, plateThickness, 1.0);
-        coverPlateBox.apply(Rotation.sideOrientation(side.getIndex(), 0).at(Vector3.center));
-        return coverPlateBox;
-    }
-
-    public void addCoverCollisionBoundingBox(List<IndexedCuboid6> collisionList) {
-        double plateThickness = getCoverPlateThickness();
-        if(plateThickness > 0.0) {
-            for(EnumFacing side : EnumFacing.VALUES) {
-                double coverOffset = getCoverOffset(side);
-                if(getCoverAtSide(side) != null) {
-                    Cuboid6 coverBox = getCoverPlateBox(side, plateThickness);
-                    coverBox.expand(coverOffset);
-                    collisionList.add(new IndexedCuboid6(side, coverBox));
-                }
-            }
-        }
     }
 
     /**
@@ -467,8 +399,14 @@ public abstract class MetaTileEntity implements ICoverable {
      * because cover cannot be placed if collision boxes of machine and it's plate overlap
      * If zero, it is excepted that machine is full block and plate doesn't need to be rendered
      */
+    @Override
     public double getCoverPlateThickness() {
         return 0.0;
+    }
+
+    @Override
+    public boolean shouldRenderBackSide() {
+        return !isOpaqueCube();
     }
 
     public boolean canConnectRedstone(@Nullable EnumFacing side) {
@@ -751,9 +689,10 @@ public abstract class MetaTileEntity implements ICoverable {
     }
 
     public void pushFluidsIntoNearbyHandlers(EnumFacing... allowedFaces) {
+        PooledMutableBlockPos blockPos = PooledMutableBlockPos.retain();
         for(EnumFacing nearbyFacing : allowedFaces) {
-            IFluidHandler fluidHandler = FluidUtil.getFluidHandler(getWorld(),
-                getPos().offset(nearbyFacing), nearbyFacing.getOpposite());
+            blockPos.setPos(getPos()).move(nearbyFacing);
+            IFluidHandler fluidHandler = FluidUtil.getFluidHandler(getWorld(), blockPos, nearbyFacing.getOpposite());
             if(fluidHandler == null) continue;
             for(int tankIndex = 0; tankIndex < exportFluids.getTanks(); tankIndex++) {
                 IFluidTank tank = exportFluids.getTankAt(tankIndex);
@@ -764,28 +703,35 @@ public abstract class MetaTileEntity implements ICoverable {
                 }
             }
         }
+        blockPos.release();
     }
 
     public void pushItemsIntoNearbyHandlers(EnumFacing... allowedFaces) {
+        PooledMutableBlockPos blockPos = PooledMutableBlockPos.retain();
         for(EnumFacing nearbyFacing : allowedFaces) {
-            TileEntity tileEntity = getWorld().getTileEntity(getPos().offset(nearbyFacing));
+            blockPos.setPos(getPos()).move(nearbyFacing);
+            TileEntity tileEntity = getWorld().getTileEntity(blockPos);
             IItemHandler itemHandler = tileEntity == null ? null : tileEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, nearbyFacing.getOpposite());
             if(itemHandler == null) {
                 continue;
             }
             moveInventoryItems(exportItems, itemHandler);
         }
+        blockPos.release();
     }
 
     public void pullItemsFromNearbyHandlers(EnumFacing... allowedFaces) {
+        PooledMutableBlockPos blockPos = PooledMutableBlockPos.retain();
         for(EnumFacing nearbyFacing : allowedFaces) {
-            TileEntity tileEntity = getWorld().getTileEntity(getPos().offset(nearbyFacing));
+            blockPos.setPos(getPos()).move(nearbyFacing);
+            TileEntity tileEntity = getWorld().getTileEntity(blockPos);
             IItemHandler itemHandler = tileEntity == null ? null : tileEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, nearbyFacing.getOpposite());
             if(itemHandler == null) {
                 continue;
             }
             moveInventoryItems(itemHandler, importItems);
         }
+        blockPos.release();
     }
 
     protected static void moveInventoryItems(IItemHandler sourceInventory, IItemHandler targetInventory) {
@@ -804,8 +750,10 @@ public abstract class MetaTileEntity implements ICoverable {
     }
 
     public void pullFluidsFromNearbyHandlers(EnumFacing... allowedFaces) {
+        PooledMutableBlockPos blockPos = PooledMutableBlockPos.retain();
         for(EnumFacing nearbyFacing : allowedFaces) {
-            IFluidHandler fluidHandler = FluidUtil.getFluidHandler(getWorld(), getPos().offset(nearbyFacing), nearbyFacing.getOpposite());
+            blockPos.setPos(getPos()).move(nearbyFacing);
+            IFluidHandler fluidHandler = FluidUtil.getFluidHandler(getWorld(), blockPos, nearbyFacing.getOpposite());
             if(fluidHandler == null) continue;
             for(IFluidTankProperties tankProperties : fluidHandler.getTankProperties()) {
                 FluidStack currentFluid = tankProperties.getContents();
@@ -820,6 +768,7 @@ public abstract class MetaTileEntity implements ICoverable {
                 }
             }
         }
+        blockPos.release();
     }
 
     public static boolean isItemHandlerEmpty(IItemHandler handler) {
@@ -994,6 +943,7 @@ public abstract class MetaTileEntity implements ICoverable {
         return frontFacing;
     }
 
+    @Override
     public int getPaintingColor() {
         return paintingColor;
     }

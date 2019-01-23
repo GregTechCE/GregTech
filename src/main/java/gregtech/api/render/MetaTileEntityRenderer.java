@@ -148,7 +148,7 @@ public class MetaTileEntityRenderer implements ICCBlockRenderer, IItemRenderer, 
         ArrayList<IndexedCuboid6> boundingBox = new ArrayList<>();
         if(metaTileEntity != null) {
             metaTileEntity.addCollisionBoundingBox(boundingBox);
-            metaTileEntity.addCoverCollisionBoundingBox(boundingBox);
+            metaTileEntity.addCoverCollisionBoundingBox(boundingBox, false);
         }
         CCRenderState renderState = CCRenderState.instance();
         renderState.reset();

@@ -181,7 +181,8 @@ public class MetaTileEntityPump extends TieredMetaTileEntity {
                 }
             }
 
-        } else if(fluidSourceBlocks.isEmpty()) {
+        }
+        if(fluidSourceBlocks.isEmpty()) {
             if(getTimer() % 20 == 0 && pumpHeadY < 50) {
                 this.pumpHeadY++;
                 writeCustomData(200, b -> b.writeVarInt(pumpHeadY));

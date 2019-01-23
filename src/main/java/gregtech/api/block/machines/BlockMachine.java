@@ -43,7 +43,6 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
-import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.common.property.ExtendedBlockState;
 import net.minecraftforge.common.property.IExtendedBlockState;
 import net.minecraftforge.common.property.IUnlistedProperty;
@@ -138,7 +137,7 @@ public class BlockMachine extends Block implements ITileEntityProvider {
             return EMPTY_COLLISION_BOX;
         ArrayList<IndexedCuboid6> collisionList = new ArrayList<>();
         metaTileEntity.addCollisionBoundingBox(collisionList);
-        metaTileEntity.addCoverCollisionBoundingBox(collisionList);
+        metaTileEntity.addCoverCollisionBoundingBox(collisionList, false);
         return collisionList;
     }
 
@@ -224,9 +223,7 @@ public class BlockMachine extends Block implements ITileEntityProvider {
             for(ItemStack itemStack : inventoryContents) {
                 Block.spawnAsEntity(worldIn, pos, itemStack);
             }
-            for(EnumFacing placementSide : EnumFacing.VALUES) {
-                metaTileEntity.removeCover(placementSide);
-            }
+            metaTileEntity.dropAllCovers();
             metaTileEntity.onRemoval();
         }
         super.breakBlock(worldIn, pos, state);
@@ -253,45 +250,33 @@ public class BlockMachine extends Block implements ITileEntityProvider {
         MetaTileEntity metaTileEntity = getMetaTileEntity(worldIn, pos);
         if(metaTileEntity == null) return false;
         ItemStack itemInHand = playerIn.getHeldItem(hand);
+        CuboidRayTraceResult rayTraceResult = (CuboidRayTraceResult) RayTracer.retraceBlock(worldIn, playerIn, pos);
         if(!itemInHand.isEmpty()) {
             SimpleItemStack simpleItemStack = new SimpleItemStack(itemInHand);
             if(GregTechAPI.screwdriverList.contains(simpleItemStack)) {
                 if(GTUtility.doDamageItem(itemInHand, DamageValues.DAMAGE_FOR_SCREWDRIVER, true) &&
-                    metaTileEntity.onCoverScrewdriverClick(playerIn, hand, facing, hitX, hitY, hitZ)) {
+                    metaTileEntity.onCoverScrewdriverClick(playerIn, hand, rayTraceResult)) {
                     GTUtility.doDamageItem(itemInHand, DamageValues.DAMAGE_FOR_SCREWDRIVER, false);
                     return true;
                 } else return false;
             } else if(GregTechAPI.wrenchList.contains(simpleItemStack)) {
                 if(GTUtility.doDamageItem(itemInHand, DamageValues.DAMAGE_FOR_WRENCH, true) &&
-                    metaTileEntity.onWrenchClick(playerIn, hand, GTUtility.determineWrenchingSide(facing, hitX, hitY, hitZ), hitX, hitY, hitZ)) {
+                    metaTileEntity.onWrenchClick(playerIn, hand, GTUtility.determineWrenchingSide(facing, hitX, hitY, hitZ), rayTraceResult)) {
                     GTUtility.doDamageItem(itemInHand, DamageValues.DAMAGE_FOR_WRENCH, false);
                     return true;
                 } else return false;
-            } else if(GregTechAPI.crowbarList.contains(simpleItemStack)) {
-                if(metaTileEntity.getCoverAtSide(facing) != null) {
-                    if(GTUtility.doDamageItem(itemInHand, DamageValues.DAMAGE_FOR_CROWBAR, true) &&
-                        metaTileEntity.removeCover(facing)) {
-                        GTUtility.doDamageItem(itemInHand, DamageValues.DAMAGE_FOR_WRENCH, false);
-                        return true;
-                    } else return false;
-                }
             }
         }
-        return metaTileEntity.onCoverRightClick(playerIn, hand, facing, hitX, hitY, hitZ);
+        return metaTileEntity.onCoverRightClick(playerIn, hand, rayTraceResult);
     }
 
     @Override
     public void onBlockClicked(World worldIn, BlockPos pos, EntityPlayer playerIn) {
         MetaTileEntity metaTileEntity = getMetaTileEntity(worldIn, pos);
         if(metaTileEntity == null) return;
-        double reachDist = playerIn.getEntityAttribute(EntityPlayer.REACH_DISTANCE).getAttributeValue();
-        RayTraceResult rayTraceResult = ForgeHooks.rayTraceEyes(playerIn, reachDist + 1);
+        CuboidRayTraceResult rayTraceResult = (CuboidRayTraceResult) RayTracer.retraceBlock(worldIn, playerIn, pos);
         if(rayTraceResult != null) {
-            Vec3d hitVec = rayTraceResult.hitVec;
-            float hitX = (float)(hitVec.x - pos.getX());
-            float hitY = (float)(hitVec.y - pos.getY());
-            float hitZ = (float)(hitVec.z - pos.getZ());
-            metaTileEntity.onCoverLeftClick(playerIn, rayTraceResult.sideHit, hitX, hitY, hitZ);
+            metaTileEntity.onCoverLeftClick(playerIn, rayTraceResult);
         }
     }
 

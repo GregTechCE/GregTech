@@ -84,7 +84,7 @@ public class ToolJackHammer extends ToolDrillLV {
 
     @Override
     public int convertBlockDrops(World world, BlockPos centerPos, IBlockState blockState, EntityPlayer harvester, List<ItemStack> drops, boolean recursive) {
-        int conversionsApplied = ToolUtility.applyHammerDrops(world.rand, blockState, drops);
+        int conversionsApplied = ToolUtility.applyHammerDrops(world.rand, blockState, drops, false);
         if (recursive)
             //on recursive calls, do not try to break multiple blocks
             return conversionsApplied;

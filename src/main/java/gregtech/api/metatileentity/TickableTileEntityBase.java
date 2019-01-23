@@ -1,9 +1,8 @@
 package gregtech.api.metatileentity;
 
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ITickable;
 
-public abstract class TickableTileEntityBase extends TileEntity implements ITickable {
+public abstract class TickableTileEntityBase extends SyncedTileEntityBase implements ITickable {
 
     private long timer = 0L;
 
