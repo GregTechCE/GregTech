@@ -442,10 +442,10 @@ metaitem.component.sawblade.diamond.name=钻石锯片
 metaitem.component.grinder.diamond.name=钻石研磨头
 metaitem.component.grinder.tungsten.name=钨研磨头
 
-metaitem.quantumeye.tooltip=量子之眼
-metaitem.quantumeye.name=改良的末影之眼
-metaitem.quantumstar.tooltip=量子之星
-metaitem.quantumstar.name=改良的下界之星
+metaitem.quantumeye.name=量子之眼
+metaitem.quantumeye.tooltip=改良的末影之眼
+metaitem.quantumstar.name=量子之星
+metaitem.quantumstar.tooltip=改良的下界之星
 metaitem.gravistar.name=重力之星
 metaitem.gravistar.tooltip=终极下界之星
 
