@@ -16,7 +16,7 @@ gregtech.multiblock.title=多方块结构
 gregtech.multiblock.primitive_blast_furnace.description=土高炉是一个在游戏前期用来炼钢的多方块结构.  尽管不是很快, 但却能为你游戏最开始提供钢.
 gregtech.multiblock.vacuum_freezer.description=真空冷冻机是一个用来将热态金属锭冷冻到常态金属锭的多方块结构. 然而, 它也能用来冷冻其他物质, 比如水.
 gregtech.multiblock.implosion_compressor.description=聚爆压缩机是一种多方块结构，使用炸药来将宝石粉压缩成相应的宝石.
-gregtech.multiblock.pyrolyze_oven.description=热解炉是一种多方块结构，用于将原木变成木炭和杂酚油，或者是灰和重油. 
+gregtech.multiblock.pyrolyze_oven.description=热解炉是一种多方块结构，用于将原木变成木炭和杂酚油，或者是灰烬和重油. 
 gregtech.multiblock.cracker.description=石油裂化机是一种多方块结构，用于将轻质和重质燃料转裂化. 
 gregtech.multiblock.diesel_engine.description=内燃机是一种多方块结构，可用来产生 EV 电力. 
 gregtech.multiblock.distillation_tower.description=蒸馏塔是一种多方块结构，用于蒸馏各种类型的油及其副产品. 
@@ -29,8 +29,8 @@ metaitem.generic.fluid_container.tooltip=%d/%dL %s
 metaitem.generic.fluid_container.tooltip_empty=空的
 metaitem.generic.electric_item.tooltip=%d/%d EU - 等级§e%d
 metaitem.int_circuit.configuration=配置: %d
-item.invalid.name=无效的物品
-fluid.empty=空的
+item.invalid.name=无效物品
+fluid.empty=空
 
 metaitem.credit.copper.name=铜币
 metaitem.credit.copper.tooltip=0.125 币值
@@ -400,7 +400,7 @@ metaitem.circuit.integrated.name=编程电路
 metaitem.circuit.integrated.tooltip=右击打开配置界面
 metaitem.circuit.integrated.gui=编程电路配置
 
-metaitem.circuit.primitive.name=储存芯片
+metaitem.circuit.primitive.name=NAND芯片
 metaitem.circuit.primitive.tooltip=一个非常小的电路
 metaitem.circuit.basic.name=基础电子电路
 metaitem.circuit.basic.tooltip=一个基础的电路
@@ -862,7 +862,7 @@ metaitem.tool.file.name=%s锉
 metaitem.tool.crowbar.name=%s撬棍
 metaitem.tool.crowbar.tooltip=卸下覆盖版并且旋转铁轨
 metaitem.tool.screwdriver.name=%s螺丝刀
-metaitem.tool.screwdriver.tooltip=/n右击机器的一面来增加输出槽的过滤设置/n当设置了过滤之后, 只有符合相应槽过滤设置的流体允许在此面输出/n右击机器的面来设置
+metaitem.tool.screwdriver.tooltip=/n右击机器的一面来调整输出槽的过滤设置/n当设置了过滤之后, 只有符合相应槽过滤设置的流体允许在此面输出/n右击机器的面来设置
 metaitem.tool.mortar.name=%s研钵
 metaitem.tool.wire_cutter.name=%s剪线钳
 metaitem.tool.scoop.name=%s捕虫网
@@ -899,7 +899,7 @@ metaitem.tool.buzzsaw.tooltip=并不适用于采集方块
 metaitem.tool.screwdriver.lv.name=%s螺丝刀(LV)
 metaitem.tool.screwdriver.lv.tooltip=调整覆盖板和机器
 metaitem.tool.soldering_iron.lv.name=%s电烙铁(LV)
-metaitem.tool.soldering_iron.lv.tooltip=修复损坏的电路. 需要消耗1万EU并在背包中准备焊接材料. 
+metaitem.tool.soldering_iron.lv.tooltip=修复损坏的电路. 需要消耗1万EU且应在背包中准备焊接材料. 
 metaitem.tool.turbine.name=%s涡轮转子
 metaitem.tool.turbine.tooltip=大型涡轮使用的涡轮转子
 metaitem.tool.magnifying_glass.name=%s放大镜
@@ -926,8 +926,8 @@ cover.filter.mode.filter_extract=过滤输出
 
 cover.conveyor.title=传送带覆盖版设置(%s)
 cover.conveyor.transfer_rate=%s 物品/秒
-cover.conveyor.mode.export=模式: 输出
-cover.conveyor.mode.import=模式: 输入
+cover.conveyor.mode.export=模式: 过滤输出
+cover.conveyor.mode.import=模式: 过滤输入
 cover.conveyor.item_filter.title=物品过滤
 cover.conveyor.ore_dictionary.title=矿辞名
 cover.conveyor.ore_dictionary.title2=(*可作通配符)
@@ -935,13 +935,13 @@ cover.conveyor.ore_dictionary.title2=(*可作通配符)
 cover.robotic_arm.title=机械臂设置(%s)
 cover.robotic_arm.transfer_mode.transfer_any=任意传输
 cover.robotic_arm.transfer_mode.transfer_exact=精确补给
-cover.robotic_arm.transfer_mode.keep_exact=保存补给
-cover.robotic_arm.transfer_mode.description=§e任意传输§r - 在此模式下, 覆盖版将尽可能传输一切符合过滤设置的物品./n§e精确补给§r - 在此模式下, 覆盖版将过滤设置中指定的物品分等份的传输(在矿物词典过滤模式则改变传输速率). 如果物品的数量小于指定一份的数量, 物品将不会被传输./n§e保存补给§r - 在此模式下, 覆盖版将保持目标容器中指定物品的数量, 需要物品时则传输相应量的物品./n§7小提示: 左/右击过滤槽可以调整物品数量, 在同时 Shift 可以更快调整.
+cover.robotic_arm.transfer_mode.keep_exact=保持补给
+cover.robotic_arm.transfer_mode.description=§e任意传输§r - 在此模式下, 覆盖版将尽可能传输一切符合过滤设置的物品./n§e精确补给§r - 在此模式下, 覆盖版会将过滤设置中指定的物品分等份的传输(在矿物词典过滤模式则改变传输速率). 如果物品的数量小于指定一份的数量, 物品将不会被传输./n§e保持补给§r - 在此模式下, 覆盖版将保持目标容器中指定物品的数量, 需要物品时则传输相应量的物品./n§7小提示: 左/右击过滤槽可以调整物品数量, 在同时按住 Shift 可以更快调整.
 
 cover.pump.title=泵覆盖版设置(%s)
 cover.pump.transfer_rate=%s 升/秒
-cover.pump.mode.export=模式: 输出
-cover.pump.mode.import=模式: 输入
+cover.pump.mode.export=模式: 过滤输出
+cover.pump.mode.import=模式: 过滤输入
 cover.pump.fluid_filter.title=流体过滤
 
 # %s is a localized material name
@@ -1725,7 +1725,7 @@ tile.gt.sapling.rubber_wood.name=橡胶树苗
 metaitem.rubber_drop.name=橡胶
 metaitem.plant_ball.name=植物球
 metaitem.tool_parts_box.name=零件箱
-metaitem.tool_parts_box.tooltip=包含一些工具部件/n右击取出
+metaitem.tool_parts_box.tooltip=盛装一些工具部件/n右击取出
 
 tile.surface_rock.name=表层岩石
 
