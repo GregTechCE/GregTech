@@ -17,7 +17,7 @@ import java.util.function.Supplier;
 
 public class LargeTurbineWorkableHandler extends FuelRecipeMapWorkableHandler {
 
-    private static final int BASE_ROTOR_DAMAGE = 2;
+    private static final int BASE_ROTOR_DAMAGE = 1;
     private static final int BASE_EU_OUTPUT = 2048;
     private static final int EU_OUTPUT_BONUS = 6144;
 
@@ -36,7 +36,7 @@ public class LargeTurbineWorkableHandler extends FuelRecipeMapWorkableHandler {
         //recipes only affect rotor speed delta per tick and output fluid generation,
         //they do not add energy to the turbine directly
         double relativeRotorSpeed = rotorHolder.getRelativeRotorSpeed();
-        int damageToBeApplied = (int) (BASE_ROTOR_DAMAGE * relativeRotorSpeed) + 1;
+        int damageToBeApplied = (int) Math.round(BASE_ROTOR_DAMAGE * relativeRotorSpeed) + 1;
         if(rotorHolder.getCurrentRotorSpeed() > 0 && rotorHolder.applyDamageToRotor(damageToBeApplied, false)) {
             double rotorEfficiency = rotorHolder.getRotorEfficiency();
             double totalEnergyOutput = (BASE_EU_OUTPUT + EU_OUTPUT_BONUS * rotorEfficiency) * (relativeRotorSpeed * relativeRotorSpeed);
@@ -54,7 +54,7 @@ public class LargeTurbineWorkableHandler extends FuelRecipeMapWorkableHandler {
     @Override
     public boolean checkRecipe(FuelRecipe recipe) {
         MetaTileEntityRotorHolder rotorHolder = largeTurbine.getAbilities(MetaTileEntityLargeTurbine.ABILITY_ROTOR_HOLDER).get(0);
-        int damageToBeApplied = (int) (BASE_ROTOR_DAMAGE * rotorHolder.getRelativeRotorSpeed()) + 1;
+        int damageToBeApplied = (int) Math.round(BASE_ROTOR_DAMAGE * rotorHolder.getRelativeRotorSpeed()) + 1;
         return rotorHolder.applyDamageToRotor(damageToBeApplied, true);
     }
 

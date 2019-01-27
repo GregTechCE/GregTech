@@ -179,7 +179,6 @@ public class ModHandler {
             RecipeMap.setFoundInvalidRecipe(true);
         }
         if (skip) return;
-
         FurnaceRecipes recipes = FurnaceRecipes.instance();
 
         if(recipes.getSmeltingResult(input).isEmpty()) {

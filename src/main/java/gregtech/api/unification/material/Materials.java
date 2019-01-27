@@ -426,7 +426,7 @@ public class Materials {
 
         SteelMagnetic.setSmeltingInto(Steel);
         IronMagnetic.setArcSmeltingInto(Steel);
-        IronMagnetic.setMaceratingInto(Steel);;
+        IronMagnetic.setMaceratingInto(Steel);
 
         IronMagnetic.setSmeltingInto(Iron);
         IronMagnetic.setArcSmeltingInto(WroughtIron);
