@@ -43,13 +43,13 @@ public class FluidPipeNet extends MonolithicPipeNet<FluidPipeProperties> {
         return nodeData.throughput;
     }
 
-    public void markNodesAsLeaking(boolean markAsBurningInstead) {
+    public void destroyNetwork(boolean isLeaking, boolean isBurning) {
         World world = worldData.getWorld();
         ((WorldFluidPipeNet) (Object) worldData).removePipeNet(this);
         for(BlockPos nodePos : allNodes.keySet()) {
             TileEntity tileEntity = world.getTileEntity(nodePos);
             if (tileEntity instanceof TileEntityFluidPipe) {
-                if (markAsBurningInstead) {
+                if (isBurning) {
                     world.setBlockState(nodePos, Blocks.FIRE.getDefaultState());
                 } else {
                     world.setBlockToAir(nodePos);
@@ -61,16 +61,19 @@ public class FluidPipeNet extends MonolithicPipeNet<FluidPipeProperties> {
                 }
             }
             Random random = world.rand;
-            if (markAsBurningInstead) {
+            if (isBurning) {
                 TileEntityFluidPipe.spawnParticles(world, nodePos, EnumFacing.UP,
                     EnumParticleTypes.FLAME, 3 + random.nextInt(2), random);
                 if (random.nextInt(4) == 0) {
                     TileEntityFluidPipe.setNeighboursToFire(world, nodePos);
                 }
-            } else if (world.rand.nextInt(7) == 0) {
-                world.createExplosion(null,
-                    nodePos.getX() + 0.5, nodePos.getY() + 0.5, nodePos.getZ() + 0.5,
-                    1.0f + world.rand.nextFloat(), false);
+            }
+            if(isLeaking) {
+                if (world.rand.nextInt(isBurning ? 3 : 7) == 0) {
+                    world.createExplosion(null,
+                        nodePos.getX() + 0.5, nodePos.getY() + 0.5, nodePos.getZ() + 0.5,
+                        1.0f + world.rand.nextFloat(), false);
+                }
             }
         }
     }
