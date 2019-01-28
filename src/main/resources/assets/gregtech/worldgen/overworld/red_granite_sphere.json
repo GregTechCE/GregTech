@@ -1,12 +1,13 @@
 {
   "weight": 90,
-  "density": 0.8,
+  "priority": 100,
+  "density": 1.0,
   "max_height": 128,
   "min_height": 10,
 
   "generator": {
-    "type": "sphere",
-    "radius": [12, 12]
+    "type": "ellipsoid",
+    "radius": [20, 40]
   },
   "filler": {
     "type": "ignore_bedrock",

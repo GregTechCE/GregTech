@@ -5,6 +5,7 @@ import net.minecraft.world.World;
 public class PerTickIntCounter {
 
     private final int defaultValue;
+
     private long lastUpdatedWorldTime;
 
     private int lastValue;

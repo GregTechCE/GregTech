@@ -17,7 +17,7 @@ public class ToolTurbineRotor extends ToolBase implements ITurbineToolStats {
 
     @Override
     public float getMaxDurabilityMultiplier(ItemStack stack) {
-        return 6.0f;
+        return 250.0f;
     }
 
     @Override

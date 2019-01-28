@@ -1,12 +1,14 @@
 {
-  "weight": 40,
+  "weight": 65,
   "density": 1.0,
   "max_height": 60,
   "min_height": 10,
 
   "generator": {
-    "type": "sphere",
-    "radius": [7, 10]
+    "type": "plate",
+    "length": [10, 16],
+    "depth": [10, 16],
+    "height": [4, 8]
   },
   "filler": {
     "type": "ignore_bedrock",
@@ -15,7 +17,7 @@
       "values": [
         {
           "weight": 100,
-          "value": "block:gregtech:fluid.oil_heavy"
+          "value": "block:gregtech:fluid.natural_gas"
         }
       ]
     }
