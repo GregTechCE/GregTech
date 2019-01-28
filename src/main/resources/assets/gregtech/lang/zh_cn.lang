@@ -10,25 +10,25 @@ death.attack.crusher=%s被碾死了.
 
 gregtech.top.energy_stored=储存能量:
 gregtech.top.progress=进度:
-gregtech.top.working_disabled=机器停止运转
+gregtech.top.working_disabled=工作暂停
 
 gregtech.multiblock.title=多方块结构
-gregtech.multiblock.primitive_blast_furnace.description=土高炉是一个在游戏前期用来炼钢的多方块结构.  尽管不是很快, 但却能为你游戏最开始提供钢.
-gregtech.multiblock.vacuum_freezer.description=真空冷冻机是一个用来将热态金属锭冷冻到常态金属锭的多方块结构. 然而, 它也能用来冷冻其他物质, 比如水.
-gregtech.multiblock.implosion_compressor.description=聚爆压缩机是一种多方块结构，使用炸药来将宝石粉压缩成相应的宝石.
-gregtech.multiblock.pyrolyze_oven.description=热解炉是一种多方块结构，用于将原木变成木炭和杂酚油，或者是灰烬和重油. 
-gregtech.multiblock.cracker.description=石油裂化机是一种多方块结构，用于将轻质和重质燃料转裂化. 
-gregtech.multiblock.diesel_engine.description=内燃机是一种多方块结构，可用来产生 EV 电力. 
-gregtech.multiblock.distillation_tower.description=蒸馏塔是一种多方块结构，用于蒸馏各种类型的油及其副产品. 
-gregtech.multiblock.electric_blast_furnace.description=工业高炉是一种多方块结构, 用来熔炼合金、熔化金属或冶炼矿石. 用于获取高级的合金和金属, 例如铝、不锈钢、钛和硅岩合金
-gregtech.multiblock.multi_smelter.description=工业熔炉是一种多方块结构, 用于一次性烧制大量物品. 不同级别的线圈会提供速度增幅和能量效率增幅. 每次烧制数量为 16, 且可以使用高等级的线圈增加烧制数量. 
-gregtech.multiblock.large_boiler.description=大型锅炉是一种使用水和能源产生蒸汽的多方块结构. 通常使用固体燃料和高密度流体作为大型锅炉的能源. 等级不同仅会影响产生蒸汽的数量. 
+gregtech.multiblock.primitive_blast_furnace.description=土高炉是一种用来在游戏前期生产钢的多方块结构. 尽管它不是很快, 却能为你的发展提供钢.
+gregtech.multiblock.vacuum_freezer.description=真空冷冻机是一种主要用于将热金属锭冷却至普通金属锭的多方块结构. 但是, 它也能冷却其他东西, 比如水.
+gregtech.multiblock.implosion_compressor.description=聚爆压缩机是一种使用爆炸物将宝石粉压缩为相应宝石的多方块结构.
+gregtech.multiblock.pyrolyze_oven.description=热解炉是一种用于将原木处理为木炭、杂酚油、灰烬或重油的多方块结构.
+gregtech.multiblock.cracker.description=石油裂化机是一种用于将轻燃料和重燃料裂解为相应裂化物的多方块结构.
+gregtech.multiblock.diesel_engine.description=内燃机是一种像柴油发电机一样燃烧燃料产生EV电能的多方块结构.
+gregtech.multiblock.distillation_tower.description=蒸馏塔是一种用于蒸馏不同石油及其副产品的多方块结构.
+gregtech.multiblock.electric_blast_furnace.description=工业高炉是一种用来熔炼合金、熔化金属或冶炼矿石的多方块结构. 也可用于获取高级的合金和金属, 例如铝、不锈钢、钛或硅岩合金.
+gregtech.multiblock.multi_smelter.description=工业熔炉是一种用于一次性烧制大量物品的多方块结构. 不同级别的线圈会提供速度增幅和能量效率增幅. 每次烧制数量为 16 , 且可以使用高等级的线圈增加烧制数量. 
+gregtech.multiblock.large_boiler.description=大型锅炉是一种使用水和能源产生蒸汽的多方块结构. 通常使用固体燃料和高密度流体作为大型锅炉的能源. 不同等级的锅炉只是产生蒸汽的数量不同. 
 gregtech.multiblock.large_turbine.description=大型涡轮是一种使用蒸汽、燃气或等离子体转动涡轮转子来发电的多方块结构. 转子效率和转子转速影响能量的输出.
-metaitem.dust.tooltip.purify=扔进装满水的炼药锅进行清洗
-metaitem.generic.fluid_container.tooltip=%d/%dL %s
-metaitem.generic.fluid_container.tooltip_empty=空的
+metaitem.dust.tooltip.purify=扔进盛有水的炼药锅进行清洗
+metaitem.generic.fluid_container.tooltip=%d/%d升 %s
+metaitem.generic.fluid_container.tooltip_empty=空
 metaitem.generic.electric_item.tooltip=%d/%d EU - 等级§e%d
-metaitem.int_circuit.configuration=配置: %d
+metaitem.int_circuit.configuration=配置: == %d
 item.invalid.name=无效物品
 fluid.empty=空
 
@@ -46,7 +46,7 @@ metaitem.credit.osmium.name=锇币
 metaitem.credit.osmium.tooltip=4096 币值
 metaitem.credit.naquadah.name=硅岩币
 metaitem.credit.naquadah.tooltip=32768 币值
-metaitem.credit.darmstadtium.name=中子素币
+metaitem.credit.darmstadtium.name=币
 metaitem.credit.darmstadtium.tooltip=262144 币值
 
 metaitem.coin.gold.ancient.name=上古金币
@@ -226,13 +226,13 @@ metaitem.schematic.tooltip=空
 metaitem.schematic.crafting.name=原理图(合成)
 metaitem.schematic.crafting.tooltip=按编辑好的配方合成
 metaitem.schematic.1by1.name=原理图(1x1)
-metaitem.schematic.1by1.tooltip=将 1 个物品按照 1x1 的方式合成(在打包器内使用)
+metaitem.schematic.1by1.tooltip=将 1 个物品按照 1x1 的方式合成(在打包机内使用)
 metaitem.schematic.2by2.name=原理图(2x2)
-metaitem.schematic.2by2.tooltip=将 4 个物品按照 2x2 的方式合成(在打包器内使用)
+metaitem.schematic.2by2.tooltip=将 4 个物品按照 2x2 的方式合成(在打包机内使用)
 metaitem.schematic.3by3.name=原理图(3x3)
-metaitem.schematic.3by3.tooltip=将 9 个物品按照 3x3 的方式合成(在打包器内使用)
+metaitem.schematic.3by3.tooltip=将 9 个物品按照 3x3 的方式合成(在打包机内使用)
 metaitem.schematic.dust.name=原理图(粉末)
-metaitem.schematic.dust.tooltip=合并粉末(在打包器内使用)
+metaitem.schematic.dust.tooltip=合并粉末(在打包机内使用)
 
 metaitem.battery.hull.lv.name=小型电池外壳
 metaitem.battery.hull.lv.tooltip=一个空的 LV 电池外壳
@@ -295,32 +295,32 @@ metaitem.electric.motor.zpm.name=电动马达(ZPM)
 metaitem.electric.motor.uv.name=电动马达(UV)
 
 metaitem.electric.pump.lv.name=电动泵(LV)
-metaitem.electric.pump.lv.tooltip=640升/秒(作覆盖版时)
+metaitem.electric.pump.lv.tooltip=640 升/秒(作覆盖版时)
 metaitem.electric.pump.mv.name=电动泵(MV)
-metaitem.electric.pump.mv.tooltip=2560升/秒(作覆盖版时)
+metaitem.electric.pump.mv.tooltip=2560 升/秒(作覆盖版时)
 metaitem.electric.pump.hv.name=电动泵(HV)
-metaitem.electric.pump.hv.tooltip=10240升/秒(作覆盖版时)
+metaitem.electric.pump.hv.tooltip=10240 升/秒(作覆盖版时)
 metaitem.electric.pump.ev.name=电动泵(EV)
-metaitem.electric.pump.ev.tooltip=40,960升/秒(作覆盖版时)
+metaitem.electric.pump.ev.tooltip=40960 升/秒(作覆盖版时)
 metaitem.electric.pump.iv.name=电动泵(IV)
-metaitem.electric.pump.iv.tooltip=163840升/秒(作覆盖版时)
+metaitem.electric.pump.iv.tooltip=163840 升/秒(作覆盖版时)
 metaitem.electric.pump.luv.name=电动泵(LuV)
-metaitem.electric.pump.luv.tooltip=655360升/秒(作覆盖版时)
+metaitem.electric.pump.luv.tooltip=655360 升/秒(作覆盖版时)
 metaitem.electric.pump.zpm.name=电动泵(ZPM)
-metaitem.electric.pump.zpm.tooltip=2621440升/秒(作覆盖版时)
+metaitem.electric.pump.zpm.tooltip=2621440 升/秒(作覆盖版时)
 metaitem.electric.pump.uv.name=电动泵(UV)
-metaitem.electric.pump.uv.tooltip=10485760升/秒(作覆盖版时)
+metaitem.electric.pump.uv.tooltip=10485760 升/秒(作覆盖版时)
 
 metaitem.fluidregulator.lv.name=流体校准器(LV)
-metaitem.fluidregulator.lv.tooltip=可以调节为至多 640升/秒(作覆盖版时)/n 每次右击/螺丝刀右击/Shift+螺丝刀右击/n 可以调整流速1/16/256升/秒
+metaitem.fluidregulator.lv.tooltip=可以调节为至多 640 升/秒(作覆盖版时)/n 每次右击/螺丝刀右击/Shift+螺丝刀右击/n 可以调整流速1/16/256升/秒
 metaitem.fluidregulator.mv.name=流体校准器(MV)
-metaitem.fluidregulator.mv.tooltip=可以调节为至多 2560升/秒(作覆盖版时)/n 每次右击/螺丝刀右击/Shift+螺丝刀右击/n 可以调整流速1/16/256升/秒
+metaitem.fluidregulator.mv.tooltip=可以调节为至多 2560 升/秒(作覆盖版时)/n 每次右击/螺丝刀右击/Shift+螺丝刀右击/n 可以调整流速1/16/256升/秒
 metaitem.fluidregulator.hv.name=流体校准器(HV)
-metaitem.fluidregulator.hv.tooltip=可以调节为至多 10240升/秒(作覆盖版时)/n 每次右击/螺丝刀右击/Shift+螺丝刀右击/n 可以调整流速1/16/256升/秒
+metaitem.fluidregulator.hv.tooltip=可以调节为至多 10240 升/秒(作覆盖版时)/n 每次右击/螺丝刀右击/Shift+螺丝刀右击/n 可以调整流速1/16/256升/秒
 metaitem.fluidregulator.ev.name=流体校准器(EV)
-metaitem.fluidregulator.ev.tooltip=可以调节为至多 40960升/秒(作覆盖版时)/n 每次右击/螺丝刀右击/Shift+螺丝刀右击/n 可以调整流速1/16/256升/秒
+metaitem.fluidregulator.ev.tooltip=可以调节为至多 40960 升/秒(作覆盖版时)/n 每次右击/螺丝刀右击/Shift+螺丝刀右击/n 可以调整流速1/16/256升/秒
 metaitem.fluidregulator.iv.name=流体校准器(IV)
-metaitem.fluidregulator.iv.tooltip=可以调节为至多 163840升/秒(作覆盖版时)/n 每次右击/螺丝刀右击/Shift+螺丝刀右击/n 可以调整流速1/16/256升/秒
+metaitem.fluidregulator.iv.tooltip=可以调节为至多 163840 升/秒(作覆盖版时)/n 每次右击/螺丝刀右击/Shift+螺丝刀右击/n 可以调整流速1/16/256升/秒
 
 metaitem.conveyor.module.lv.name=传送带(LV)
 metaitem.conveyor.module.lv.tooltip=每 20 秒传输 1 组物品(作覆盖版时)
@@ -457,7 +457,7 @@ metaitem.upgrade.lock.tooltip=保护你的机器
 metaitem.item_filter.name=物品过滤器
 metaitem.item_filter.tooltip=过滤物品的输入/输出(作覆盖版时)/n亦可用于升级传送带覆盖版
 metaitem.ore_dictionary_filter.name=矿物辞典过滤器
-metaitem.ore_dictionary_filter.tooltip=以矿物辞典过滤物品的输入/输出(作覆盖版时)/n亦可用升级传送带覆盖版
+metaitem.ore_dictionary_filter.tooltip=以矿物辞典过滤物品的输入/输出(作覆盖版时)/n亦可用于升级传送带覆盖版
 metaitem.fluid_filter.name=流体过滤器
 metaitem.fluid_filter.tooltip=过滤流体的输入/输出(作覆盖版时)/n亦可用于升级泵覆盖版
 
@@ -507,7 +507,7 @@ metaitem.cover.solar.panel.uv.tooltip=UV 太阳能覆盖板
 metaitem.tool.cheat.name=调试扫描仪
 metaitem.tool.cheat.tooltip=同样也是一个无限的能量源
 metaitem.tool.scanner.name=便携式扫描仪
-metaitem.tool.scanner.tooltip=手持
+metaitem.tool.scanner.tooltip=三录仪
 
 metaitem.nc.sensorkit.name=GT 传感器
 metaitem.duct.tape.name=布莱恩科技航空专用强化胶带FAL84型
@@ -936,7 +936,7 @@ cover.robotic_arm.title=机械臂设置(%s)
 cover.robotic_arm.transfer_mode.transfer_any=任意传输
 cover.robotic_arm.transfer_mode.transfer_exact=精确补给
 cover.robotic_arm.transfer_mode.keep_exact=保持补给
-cover.robotic_arm.transfer_mode.description=§e任意传输§r - 在此模式下, 覆盖版将尽可能传输一切符合过滤设置的物品./n§e精确补给§r - 在此模式下, 覆盖版会将过滤设置中指定的物品分等份的传输(在矿物词典过滤模式则改变传输速率). 如果物品的数量小于指定一份的数量, 物品将不会被传输./n§e保持补给§r - 在此模式下, 覆盖版将保持目标容器中指定物品的数量, 需要物品时则传输相应量的物品./n§7小提示: 左/右击过滤槽可以调整物品数量, 在同时按住 Shift 可以更快调整.
+cover.robotic_arm.transfer_mode.description=§e任意传输§r - 在此模式下, 覆盖版将尽可能传输一切符合过滤设置的物品./n§e精确补给§r - 在此模式下, 覆盖版会将过滤设置中指定的物品分等份的传输(在矿物词典过滤模式则改变传输速率)./n 如果物品的数量小于指定一份的数量, 物品将不会被传输./n§e保持补给§r - 在此模式下, 覆盖版将保持目标容器中指定物品的数量, 需要物品时则传输相应量的物品./n§7小提示: 左/右击过滤槽可以调整物品数量, 在同时按住 Shift 可以更快调整.
 
 cover.pump.title=泵覆盖版设置(%s)
 cover.pump.transfer_rate=%s 升/秒
@@ -1955,9 +1955,9 @@ gregtech.machine.gas_turbine.hv.name=涡轮燃气轮机
 gregtech.machine.gas_turbine.ev.name=涡轮燃气轮机 II
 
 gregtech.machine.magic_energy_absorber.name=魔法能源吸收器
-gregtech.machine.magic_energy_absorber.tooltip=最大输出电压: §a2048 §7(§aEV§7)/n从 64 格内的末影水晶收集能源/n每个末影水晶增加 32 EU/t 的输出/n将龙蛋放在上面放大输出/n/n此时: 每个末影水晶增加 128 EU/t
+gregtech.machine.magic_energy_absorber.tooltip=最大输出电压: §a2048 §7(§aEV§7)/n从 64 格内的末影水晶收集能源/n每个末影水晶增加 32 EU/t 的输出/n将龙蛋放在上面放大输出/n此时: 每个末影水晶增加 128 EU/t
 gregtech.machine.magic_energy_converter.name=魔法能源转换器
-gregtech.machine.magic_energy_converter.tooltip=输出电压: §a128 §7(§aMV§7)/n从 16 格内的容器中收集要素/n每秒消耗20点能量要素
+gregtech.machine.magic_energy_converter.tooltip=输出电压: §a128 §7(§aMV§7)/n从 16 格内的容器中收集要素/n每秒消耗 20 点能量要素
 
 # Machines
 gregtech.machine.electric_furnace.lv.name=基础电炉
@@ -2263,9 +2263,9 @@ gregtech.machine.battery_buffer.max.16.name=上限压电池箱
 # Transformers
 gregtech.machine.transformer.tooltip_tool_usage=用软锤右击以反转(默认降压)
 gregtech.machine.transformer.tooltip_transform_down=降压: 
-gregtech.machine.transformer.message_transform_down=降压, 输入: %dV%dA, 输出: %dV%dA
+gregtech.machine.transformer.message_transform_down=降压, 输入: %d V %d A, 输出: %d V %d A
 gregtech.machine.transformer.tooltip_transform_up=升压: 
-gregtech.machine.transformer.message_transform_up=升压, 输入: %dV%dA, 输出: %dV%dA
+gregtech.machine.transformer.message_transform_up=升压, 输入: %d V %d A, 输出: %d V %d A
 
 gregtech.machine.transformer.lv.name=低压变压器
 gregtech.machine.transformer.mv.name=中压变压器
@@ -2291,7 +2291,7 @@ gregtech.machine.charger.max.name=上限压充电箱
 
 # Pumps
 gregtech.machine.pump.tooltip_range=工作范围: %dx%d
-gregtech.machine.pump.tooltip_speed=每 %d刻抽取一次
+gregtech.machine.pump.tooltip_speed=每 %d 刻抽取一次
 
 gregtech.machine.pump.lv.name=基础泵
 gregtech.machine.pump.mv.name=进阶泵
@@ -2305,7 +2305,7 @@ gregtech.machine.pump.max.name=进阶泵 VIII
 
 #Quantum chests
 gregtech.machine.quantum_chest.tooltip=比JABBA好
-gregtech.machine.quantum_chest.capacity=物品储量: %d个
+gregtech.machine.quantum_chest.capacity=物品储量: %d 个
 gregtech.machine.quantum_chest.items_stored=现存物品数量:
 
 gregtech.machine.quantum_chest.mv.name=基础量子箱
@@ -2315,7 +2315,7 @@ gregtech.machine.quantum_chest.iv.name=黑洞量子箱 III
 
 #Quantum tanks
 gregtech.machine.quantum_tank.tooltip=储存你全部流体的简洁渠道
-gregtech.machine.quantum_tank.capacity=流体储量: %d升
+gregtech.machine.quantum_tank.capacity=流体储量: %d 升
 
 gregtech.machine.quantum_tank.mv.name=基础量子缸
 gregtech.machine.quantum_tank.hv.name=进阶量子缸
@@ -2797,7 +2797,7 @@ behaviour.paintspray.brown.tooltip=可以将物体染成棕色
 behaviour.paintspray.green.tooltip=可以将物体染成绿色
 behaviour.paintspray.red.tooltip=可以将物体染成红色
 behaviour.paintspray.black.tooltip=可以将物体染成黑色
-behaviour.paintspray.uses=剩余次数: %d
+behaviour.paintspray.uses=剩余次数: %d 次
 behaviour.prospecting=适用于探矿
 
 # Multiblock machine controllers
@@ -2929,12 +2929,12 @@ gregtech.machine.fluid_tank.fluid=含有 %s 升%s
 gregtech.recipe.total=总耗电: %d EU
 gregtech.recipe.eu=消耗功率: %d EU/t
 gregtech.recipe.eu_inverted=产能: %d EU/t
-gregtech.recipe.duration=耗时: %.1f s
+gregtech.recipe.duration=耗时: %.1f 秒
 gregtech.recipe.amperage=电流: %d
 gregtech.recipe.not_consumed=不在加工时消耗
 gregtech.recipe.chance=出产概率: %s%%
-gregtech.recipe.blast_furnace_temperature=温度: %dK
-gregtech.recipe.eu_to_start=启动: %dE
+gregtech.recipe.blast_furnace_temperature=温度: %d K
+gregtech.recipe.eu_to_start=启动耗电: %d EU
 
 gregtech.fluid.click_to_fill=§7手持空的流体容器点击储罐以取走流体.
 gregtech.fluid.click_to_fill.shift=§7(Shift+单击将装满所有手持容器)
@@ -2959,7 +2959,7 @@ gregtech.cable.amperage=电流: §e%d
 gregtech.cable.loss_per_block=线损: §c%d
 
 gregtech.fluid_pipe.throughput=传输速率: §e%d 升/刻
-gregtech.fluid_pipe.max_temperature=温度上限: §c%dK
+gregtech.fluid_pipe.max_temperature=温度上限: §c%d K
 gregtech.fluid_pipe.non_gas_proof=不能传输气体.
 
 gregtech.multiblock.work_paused=暂停.
@@ -2972,25 +2972,25 @@ gregtech.multiblock.validation_failed=输入仓/输出仓数量无效.
 gregtech.multiblock.max_energy_per_tick=最大功率: %s EU/t (%s)
 gregtech.multiblock.generation_eu=输出功率: %s EU/t
 
-gregtech.multiblock.blast_furnace.max_temperature=最大温度: %sK
+gregtech.multiblock.blast_furnace.max_temperature=最大温度: %s K
 gregtech.multiblock.multi_furnace.heating_coil_level=加热线圈等级: %s
 gregtech.multiblock.multi_furnace.heating_coil_discount=加热线圈增幅: %sx
 gregtech.multiblock.distillation_tower.distilling_fluid=正在蒸馏%s
 gregtech.multiblock.cracker.cracking_fluid=正在裂化%s
 
-gregtech.multiblock.diesel_engine.lubricant_amount=润滑油量: %sL
-gregtech.multiblock.diesel_engine.fuel_amount=燃料量: %sL (%s)
-gregtech.multiblock.diesel_engine.oxygen_amount=氧气量: %sL
+gregtech.multiblock.diesel_engine.lubricant_amount=润滑油量: %s 升
+gregtech.multiblock.diesel_engine.fuel_amount=燃料量: %s 升 (%s)
+gregtech.multiblock.diesel_engine.oxygen_amount=氧气量: %s 升
 gregtech.multiblock.diesel_engine.oxygen_boosted=氧气增幅中.
 gregtech.multiblock.diesel_engine.supply_oxygen_to_boost=提供氧气来增幅.
 
-gregtech.multiblock.turbine.fuel_amount=燃料量: %sL (%s)
-gregtech.multiblock.turbine.rotor_speed=转子转速: %s / %s RPM
+gregtech.multiblock.turbine.fuel_amount=燃料量: %s 升 (%s)
+gregtech.multiblock.turbine.rotor_speed=转子转速: %s / %s 转/分
 gregtech.multiblock.turbine.rotor_efficiency=转子效率: %s%%
 gregtech.multiblock.turbine.rotor_durability=转子耐久度: %s%%
 gregtech.multiblock.turbine.low_rotor_durability=警告: 转子耐久度低于%s%% (%s%%)
 
-gregtech.multiblock.large_boiler.temperature=温度: %s / %s C
+gregtech.multiblock.large_boiler.temperature=温度: %s / %s 摄氏度
 gregtech.multiblock.large_boiler.steam_output=蒸汽输出: %s 升/刻
 
 gregtech.command.usage=用法: /gregtech <worldgen/util>
