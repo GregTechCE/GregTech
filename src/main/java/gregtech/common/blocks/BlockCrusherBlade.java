@@ -39,7 +39,7 @@ public class BlockCrusherBlade extends Block implements ITileEntityProvider {
 
     public BlockCrusherBlade() {
         super(Material.IRON);
-        setUnlocalizedName("crusher_blade");
+        setUnlocalizedName("gt.crusher_blade");
         setCreativeTab(GregTechAPI.TAB_GREGTECH);
         setHarvestLevel("pickaxe", 2);
         setHardness(3.0f);

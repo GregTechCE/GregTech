@@ -4,6 +4,7 @@ import gregtech.api.items.materialitem.MaterialMetaItem;
 import gregtech.api.items.metaitem.MetaItem;
 import gregtech.api.items.toolitem.ToolHarvestListener;
 import gregtech.api.items.toolitem.ToolMetaItem;
+import net.minecraft.item.EnumDyeColor;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -250,6 +251,8 @@ public final class MetaItems {
 
     public static MetaItem<?>.MetaValueItem FLUID_CELL;
 
+    public static MetaItem<?>.MetaValueItem FOAM_SPRAYER;
+
     public static MetaItem<?>.MetaValueItem GELLED_TOLUENE;
 
     public static MetaItem<?>.MetaValueItem BOTTLE_PURPLE_DRINK;
@@ -261,9 +264,8 @@ public final class MetaItems {
 
     public static MetaItem<?>.MetaValueItem PLANT_BALL;
 
-    public static MetaItem<?>.MetaValueItem[] DYE_ONLY_ITEMS = new MetaItem.MetaValueItem[16];
-
-    public static MetaItem<?>.MetaValueItem[] SPRAY_CAN_DYES = new MetaItem.MetaValueItem[16];
+    public static MetaItem<?>.MetaValueItem[] DYE_ONLY_ITEMS = new MetaItem.MetaValueItem[EnumDyeColor.values().length];
+    public static MetaItem<?>.MetaValueItem[] SPRAY_CAN_DYES = new MetaItem.MetaValueItem[EnumDyeColor.values().length];
 
     public static MetaItem<?>.MetaValueItem RUBBER_DROP;
 

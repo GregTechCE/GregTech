@@ -163,11 +163,8 @@ public interface IToolStats {
         return -2.8f;
     }
 
-    default int getColor(boolean isToolHead, ItemStack stack) {
-        SolidMaterial primaryMaterial = ToolMetaItem.getPrimaryMaterial(stack);
-        SolidMaterial handleMaterial = ToolMetaItem.getHandleMaterial(stack);
-        return isToolHead
-            ? primaryMaterial != null ? primaryMaterial.materialRGB : 0xFFFFFF
-            : handleMaterial != null ? handleMaterial.materialRGB : 0xFFFFFF;
+    default int getColor(ItemStack stack, int tintIndex) {
+        SolidMaterial primaryMaterial = ToolMetaItem.getToolMaterial(stack);
+        return tintIndex % 2 == 1 ? primaryMaterial.materialRGB : 0xFFFFFF;
     }
 }

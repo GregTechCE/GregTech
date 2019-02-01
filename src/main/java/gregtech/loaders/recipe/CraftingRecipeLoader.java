@@ -1,5 +1,7 @@
 package gregtech.loaders.recipe;
 
+import com.google.common.base.CaseFormat;
+import gregtech.api.GTValues;
 import gregtech.api.recipes.ModHandler;
 import gregtech.api.unification.OreDictUnifier;
 import gregtech.api.unification.material.MarkerMaterials.Tier;
@@ -13,9 +15,11 @@ import gregtech.common.blocks.wood.BlockGregLog.LogVariant;
 import gregtech.common.items.MetaItems;
 import gregtech.common.pipelike.fluidpipe.FluidPipeType;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockColored;
 import net.minecraft.block.BlockPlanks.EnumType;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
+import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.util.ResourceLocation;
@@ -136,6 +140,8 @@ public class CraftingRecipeLoader {
 
         ModHandler.addShapedRecipe("magnifying_glass", MetaItems.MAGNIFYING_GLASS.getStackForm(1), "PGh", "Xf ", 'X', new UnificationEntry(OrePrefix.stick, Materials.Steel), 'P', new UnificationEntry(OrePrefix.ring, Materials.Steel), 'G', new UnificationEntry(OrePrefix.blockGlass));
 
+        MetaBlocks.FRAMES.values().forEach(CraftingRecipeLoader::registerColoringRecipes);
+
         if (ConfigHolder.vanillaRecipes.nerfPaperCrafting) {
             ModHandler.removeRecipeByName(new ResourceLocation("minecraft:paper"));
             ModHandler.removeRecipeByName(new ResourceLocation("minecraft:sugar"));
@@ -154,6 +160,15 @@ public class CraftingRecipeLoader {
             ModHandler.removeRecipeByName(new ResourceLocation("minecraft:flint_and_steel"));
         }
 
+    }
+
+    private static void registerColoringRecipes(BlockColored block) {
+        for(EnumDyeColor dyeColor : EnumDyeColor.values()) {
+            String colorName = CaseFormat.LOWER_UNDERSCORE.to(CaseFormat.UPPER_CAMEL, dyeColor.getName());
+            String recipeName = String.format("%s_color_%s", block.getRegistryName().getResourcePath(), colorName);
+            ModHandler.addShapedRecipe(recipeName, new ItemStack(block, 8, dyeColor.getMetadata()), "XXX", "XDX", "XXX",
+                'X', new ItemStack(block, 1, GTValues.W), 'D', "dye" + colorName);
+        }
     }
 
 }

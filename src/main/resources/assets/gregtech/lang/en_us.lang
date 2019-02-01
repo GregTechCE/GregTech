@@ -1189,6 +1189,7 @@ material.endstone=Endstone
 material.netherrack=Netherrack
 material.toluene=Toluene
 material.drilling_fluid=Drilling Fluid
+material.construction_foam=Construction Foam
 material.epichlorhydrin=Epichlorohydrin
 material.nitric_acid=Nitric Acid
 material.nitration_mixture=Nitration Mixture
@@ -1684,15 +1685,21 @@ behavior.plunger.description=Right click on machine to clear 1000 mb out of it's
 enchantment.damage.endermen=Disjunction
 enchantment.damage.radioactivity=Radioactivity
 
-# Rubber stuff
-tile.crusher_blade.name=Crusher Blade
+tile.gt.foam.name=Foam
+tile.gt.reinforced_foam.name=Reinforced Foam
+tile.gt.petrified_foam.name=Petrified Foam
+tile.gt.reinforced_stone.name=Reinforced Stone
+tile.gt.crusher_blade.name=Crusher Blade
 tile.gt.log.rubber_wood.name=Rubber Wood
 tile.gt.leaves.rubber_wood.name=Rubber Tree Leaves
 tile.gt.sapling.rubber_wood.name=Rubber Tree Sapling
+
 metaitem.rubber_drop.name=Rubber
 metaitem.plant_ball.name=Plant Ball
 metaitem.tool_parts_box.name=Tool Parts Box
-metaitem.tool_parts_box.tooltip=Contains some tool parts/nRight click to extract parts
+metaitem.tool_parts_box.tooltip=Contains some tool parts/nRight click to open
+metaitem.foam_sprayer.name=Foam Sprayer
+metaitem.foam_sprayer.tooltip=Sprays Construction Foam/nRight click on a frame to foam connected frames/nUse iron metal to create reinforced stone/nFoam can be colored
 
 tile.surface_rock.name=Surface Rock
 

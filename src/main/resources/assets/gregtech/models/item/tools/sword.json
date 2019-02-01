@@ -1,9 +1,7 @@
 {
   "parent": "item/handheld",
   "textures": {
-    "layer0": "gregtech:items/tools/handle_sword",
-    "layer1": "gregtech:items/tools/handle_sword_overlay",
-    "layer2": "gregtech:items/tools/head_sword",
-    "layer3": "gregtech:items/void"
+    "layer0": "gregtech:items/tools/sword_base",
+    "layer1": "gregtech:items/tools/sword"
   }
 }

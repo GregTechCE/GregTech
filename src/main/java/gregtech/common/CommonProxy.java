@@ -63,6 +63,10 @@ public class CommonProxy {
         registry.register(CABLE);
         registry.register(FLUID_PIPE);
 
+        registry.register(FOAM);
+        registry.register(REINFORCED_FOAM);
+        registry.register(PETRIFIED_FOAM);
+        registry.register(REINFORCED_PETRIFIED_FOAM);
         registry.register(BOILER_CASING);
         registry.register(BOILER_FIREBOX_CASING);
         registry.register(METAL_CASING);

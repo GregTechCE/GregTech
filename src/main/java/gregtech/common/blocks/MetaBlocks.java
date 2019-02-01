@@ -46,6 +46,8 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.renderer.block.statemap.DefaultStateMapper;
+import net.minecraft.client.renderer.block.statemap.IStateMapper;
+import net.minecraft.client.renderer.block.statemap.StateMapperBase;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -65,6 +67,7 @@ import java.util.function.BiConsumer;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
+import static gregtech.api.unification.material.type.SolidMaterial.MatFlags.GENERATE_FRAME;
 import static gregtech.common.ClientProxy.*;
 
 public class MetaBlocks {
@@ -161,14 +164,17 @@ public class MetaBlocks {
         createGeneratedBlock(material -> material instanceof DustMaterial &&
             !OrePrefix.block.isIgnored(material), MetaBlocks::createCompressedBlock);
         createGeneratedBlock(material -> material instanceof IngotMaterial &&
-                OrePrefix.frameGt.doGenerateItem(material), MetaBlocks::createFrameBlock);
-        createGeneratedBlock(material -> material instanceof IngotMaterial &&
             material.hasFlag(MatFlags.GENERATE_ORE), MetaBlocks::createSurfaceRockBlock);
 
         for (Material material : Material.MATERIAL_REGISTRY) {
             if (material instanceof DustMaterial &&
                 material.hasFlag(DustMaterial.MatFlags.GENERATE_ORE)) {
                 createOreBlock((DustMaterial) material);
+            }
+            if(material instanceof SolidMaterial && material.hasFlag(GENERATE_FRAME)) {
+                BlockFrame blockFrame = new BlockFrame((SolidMaterial) material);
+                blockFrame.setRegistryName("frame_" + material.toString());
+                FRAMES.put((SolidMaterial) material, blockFrame);
             }
             if(material instanceof IngotMaterial) {
                 IngotMaterial metalMaterial = (IngotMaterial) material;
@@ -182,7 +188,6 @@ public class MetaBlocks {
         }
         FLUID_PIPE.addPipeMaterial(Materials.Wood, new FluidPipeProperties(310, 20, false));
         CABLE.addCableMaterial(MarkerMaterials.Tier.Superconductor, new WireProperties(Integer.MAX_VALUE, 4, 0));
-        FRAMES.put(Materials.Wood, (BlockFrame) new BlockFrame(new Material[] {Materials.Wood}).setRegistryName("frame_wood"));
         registerTileEntity();
     }
 
@@ -225,16 +230,6 @@ public class MetaBlocks {
         for (Material material : materials) {
             if (material instanceof DustMaterial) {
                 COMPRESSED.put((DustMaterial) material, block);
-            }
-        }
-    }
-
-    private static void createFrameBlock(Material[] materials, int index) {
-        BlockFrame block = new BlockFrame(materials);
-        block.setRegistryName("frame_" + index);
-        for (Material material : materials) {
-            if (material instanceof SolidMaterial) {
-                FRAMES.put((SolidMaterial) material, block);
             }
         }
     }
@@ -293,12 +288,12 @@ public class MetaBlocks {
         registerItemModel(GRANITE);
         registerItemModel(MINERAL);
         registerItemModel(CONCRETE);
-        registerItemModel(LOG, ImmutableMap.of(BlockGregLog.LOG_AXIS, EnumAxis.Y));
+        registerItemModelWithOverride(LOG, ImmutableMap.of(BlockGregLog.LOG_AXIS, EnumAxis.Y));
         registerItemModel(LEAVES);
         registerItemModel(SAPLING);
 
         COMPRESSED.values().stream().distinct().forEach(MetaBlocks::registerItemModel);
-        FRAMES.values().stream().distinct().forEach(MetaBlocks::registerItemModel);
+        FRAMES.values().forEach(it -> registerItemModelWithFilteredProperties(it));
         ORES.stream().distinct().forEach(MetaBlocks::registerItemModel);
     }
 
@@ -314,7 +309,23 @@ public class MetaBlocks {
     }
 
     @SideOnly(Side.CLIENT)
-    private static void registerItemModel(Block block, Map<IProperty<?>, Comparable<?>> stateOverrides) {
+    private static void registerItemModelWithFilteredProperties(Block block, IProperty<?>... filteredProperties) {
+        for (IBlockState state : block.getBlockState().getValidStates()) {
+            HashMap<IProperty<?>, Comparable<?>> stringProperties = new HashMap<>();
+            for(IProperty<?> property : filteredProperties) {
+                stringProperties.put(property, state.getValue(property));
+            }
+            //noinspection ConstantConditions
+            ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(block),
+                block.getMetaFromState(state),
+                new ModelResourceLocation(block.getRegistryName(),
+                    statePropertiesToString(stringProperties)));
+        }
+    }
+
+
+    @SideOnly(Side.CLIENT)
+    private static void registerItemModelWithOverride(Block block, Map<IProperty<?>, Comparable<?>> stateOverrides) {
         for (IBlockState state : block.getBlockState().getValidStates()) {
             HashMap<IProperty<?>, Comparable<?>> stringProperties = new HashMap<>(state.getProperties());
             stringProperties.putAll(stateOverrides);
@@ -346,12 +357,21 @@ public class MetaBlocks {
                 return FluidPipeRenderer.MODEL_LOCATION;
             }
         });
+        IStateMapper normalStateMapper = new StateMapperBase() {
+            @Override
+            protected ModelResourceLocation getModelResourceLocation(IBlockState state) {
+                return new ModelResourceLocation(Block.REGISTRY.getNameForObject(state.getBlock()), "normal");
+            }
+        };
+        ModelLoader.setCustomStateMapper(FOAM, normalStateMapper);
+        ModelLoader.setCustomStateMapper(REINFORCED_FOAM, normalStateMapper);
+        ModelLoader.setCustomStateMapper(PETRIFIED_FOAM, normalStateMapper);
+        ModelLoader.setCustomStateMapper(REINFORCED_PETRIFIED_FOAM, normalStateMapper);
+        FRAMES.values().forEach(it -> ModelLoader.setCustomStateMapper(it, normalStateMapper));
 
         BakedModelHandler modelHandler = new BakedModelHandler();
         MinecraftForge.EVENT_BUS.register(modelHandler);
-
         FLUID_BLOCKS.forEach(modelHandler::addFluidBlock);
-
         SURFACE_ROCKS.values().stream().distinct().forEach(block -> modelHandler.addBuiltInBlock(block, "stone"));
         FLOODED_SURFACE_ROCKS.values().stream().distinct().forEach(block -> modelHandler.addBuiltInBlock(block, "stone"));
 
@@ -362,12 +382,15 @@ public class MetaBlocks {
 
     @SideOnly(Side.CLIENT)
     public static void registerColors() {
+        Minecraft.getMinecraft().getBlockColors().registerBlockColorHandler(
+            FOAM_BLOCK_COLOR, FOAM, REINFORCED_FOAM, PETRIFIED_FOAM, REINFORCED_PETRIFIED_FOAM);
+
         MetaBlocks.COMPRESSED.values().stream().distinct().forEach(block -> {
             Minecraft.getMinecraft().getBlockColors().registerBlockColorHandler(COMPRESSED_BLOCK_COLOR, block);
             Minecraft.getMinecraft().getItemColors().registerItemColorHandler(COMPRESSED_ITEM_COLOR, block);
         });
 
-        MetaBlocks.FRAMES.values().stream().distinct().forEach(block -> {
+        MetaBlocks.FRAMES.values().forEach(block -> {
             Minecraft.getMinecraft().getBlockColors().registerBlockColorHandler(FRAME_BLOCK_COLOR, block);
             Minecraft.getMinecraft().getItemColors().registerItemColorHandler(FRAME_ITEM_COLOR, block);
         });
@@ -399,7 +422,7 @@ public class MetaBlocks {
         for(Entry<SolidMaterial, BlockFrame> entry : FRAMES.entrySet()) {
             SolidMaterial material = entry.getKey();
             BlockFrame block = entry.getValue();
-            ItemStack itemStack = block.getItem(material);
+            ItemStack itemStack = new ItemStack(block, 1, GTValues.W);
             OreDictUnifier.registerOre(itemStack, OrePrefix.frameGt, material);
         }
 

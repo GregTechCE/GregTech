@@ -1,9 +1,7 @@
 {
   "parent": "item/handheld",
   "textures": {
-    "layer0": "gregtech:items/void",
-    "layer1": "gregtech:items/tools/butcheryknife_overlay",
-	  "layer2": "gregtech:items/tools/butcheryknife",
-	  "layer3": "gregtech:items/void"
+    "layer0": "gregtech:items/tools/butchery_knife_base",
+	  "layer1": "gregtech:items/tools/butchery_knife"
   }
 }

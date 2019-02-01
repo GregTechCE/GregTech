@@ -2,14 +2,15 @@
   "forge_marker": 1,
   "defaults": {
     "uvlock": true,
-    "model": "gregtech:tinted_cube_top",
+    "model": "gregtech:tinted_cube_column",
     "textures": {
-      "all": "missingno"
+      "side": "$TEXTURE$",
+      "end": "$TEXTURE_TOP$"
     }
   },
   "variants": {
-      "variant": {
-        $VARIANTS$
-      }
+    "normal": [
+      {}
+    ]
   }
 }

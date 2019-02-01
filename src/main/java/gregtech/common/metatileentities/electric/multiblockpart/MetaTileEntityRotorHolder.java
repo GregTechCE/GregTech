@@ -310,7 +310,7 @@ public class MetaTileEntityRotorHolder extends MetaTileEntityMultiblockPart impl
             ItemStack itemStack = getStackInSlot(0);
             if(itemStack.isEmpty() || !(itemStack.getItem() instanceof ToolMetaItem))
                 return -1;
-            SolidMaterial material = ToolMetaItem.getPrimaryMaterial(itemStack);
+            SolidMaterial material = ToolMetaItem.getToolMaterial(itemStack);
             return material == null ? -1 : material.materialRGB;
         }
 

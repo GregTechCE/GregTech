@@ -8,6 +8,7 @@ import gregtech.api.recipes.ModHandler;
 import gregtech.api.unification.OreDictUnifier;
 import gregtech.api.unification.material.Materials;
 import gregtech.api.unification.material.type.IngotMaterial;
+import gregtech.api.unification.material.type.SolidMaterial;
 import gregtech.api.unification.ore.OrePrefix;
 import gregtech.api.unification.stack.UnificationEntry;
 import gregtech.common.ConfigHolder;
@@ -15,6 +16,8 @@ import gregtech.common.tools.*;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
+
+import java.util.function.Function;
 
 import static gregtech.common.items.MetaItems.*;
 
@@ -99,7 +102,7 @@ public class MetaTool extends ToolMetaItem<ToolMetaItem<?>.MetaToolValueItem> {
     }
 
     public void registerRecipes() {
-        ModHandler.addShapedRecipe("mortar_flint", MORTAR.getStackForm(Materials.Flint, null),
+        ModHandler.addShapedRecipe("mortar_flint", MORTAR.getStackForm(Materials.Flint),
             " I ", "SIS", "SSS",
             'I', new ItemStack(Items.FLINT, 1),
             'S', OrePrefix.stone);
@@ -110,10 +113,23 @@ public class MetaTool extends ToolMetaItem<ToolMetaItem<?>.MetaToolValueItem> {
 
         for (IngotMaterial material : mortarMaterials) {
             ModHandler.addShapedRecipe("mortar_" + material.toString(),
-                MORTAR.getStackForm(material, null),
+                MORTAR.getStackForm(material),
                 " I ", "SIS", "SSS",
                 'I', new UnificationEntry(OrePrefix.ingot, material),
                 'S', OrePrefix.stone);
+        }
+
+        SolidMaterial[] softHammerMaterials = new SolidMaterial[] {
+            Materials.Wood, Materials.Rubber, Materials.Plastic, Materials.Polytetrafluoroethylene
+        };
+        for(int i = 0; i < softHammerMaterials.length; i++) {
+            SolidMaterial solidMaterial = softHammerMaterials[i];
+            ItemStack itemStack = MetaItems.SOFT_HAMMER.getStackForm();
+            MetaItems.SOFT_HAMMER.setToolData(itemStack, solidMaterial, 128 * (1 << i), 1, 4.0f, 1.0f);
+            ModHandler.addShapedRecipe(String.format("soft_hammer_%s", solidMaterial.toString()), itemStack,
+                "XX ", "XXS", "XX ",
+                'X', new UnificationEntry(OrePrefix.ingot, solidMaterial),
+                'S', new UnificationEntry(OrePrefix.stick, Materials.Wood));
         }
 
         ModHandler.addShapelessRecipe("clay_to_dust", OreDictUnifier.get(OrePrefix.dust, Materials.Clay, 1),
@@ -138,32 +154,35 @@ public class MetaTool extends ToolMetaItem<ToolMetaItem<?>.MetaToolValueItem> {
     }
 
     private void registerFlintToolRecipes() {
-        ModHandler.addShapedRecipe("sword_flint", SWORD.getStackForm(Materials.Flint, Materials.Wood),
+        Function<ToolMetaItem.MetaToolValueItem, ItemStack> toolDataApplier = item ->
+            item.setToolData(item.getStackForm(), Materials.Flint, 55, 1, 6.0f, 1.0f);
+        //FLINT 6.0f, 55
+        ModHandler.addShapedRecipe("sword_flint", toolDataApplier.apply(SWORD),
             "F", "F", "S",
             'S', new UnificationEntry(OrePrefix.stick, Materials.Wood),
             'F', new ItemStack(Items.FLINT, 1));
 
-        ModHandler.addShapedRecipe("pickaxe_flint", PICKAXE.getStackForm(Materials.Flint, Materials.Wood),
+        ModHandler.addShapedRecipe("pickaxe_flint", toolDataApplier.apply(PICKAXE),
             "FFF", " S ", " S ",
             'S', new UnificationEntry(OrePrefix.stick, Materials.Wood),
             'F', new ItemStack(Items.FLINT, 1));
 
-        ModHandler.addShapedRecipe("shovel_flint", SHOVEL.getStackForm(Materials.Flint, Materials.Wood),
+        ModHandler.addShapedRecipe("shovel_flint", toolDataApplier.apply(SHOVEL),
             "F", "S", "S",
             'S', new UnificationEntry(OrePrefix.stick, Materials.Wood),
             'F', new ItemStack(Items.FLINT, 1));
 
-        ModHandler.addMirroredShapedRecipe("axe_flint", AXE.getStackForm(Materials.Flint, Materials.Wood),
+        ModHandler.addMirroredShapedRecipe("axe_flint", toolDataApplier.apply(AXE),
             "FF", "FS", " S",
             'S', new UnificationEntry(OrePrefix.stick, Materials.Wood),
             'F', new ItemStack(Items.FLINT, 1));
 
-        ModHandler.addMirroredShapedRecipe("hoe_flint", HOE.getStackForm(Materials.Flint, Materials.Wood),
+        ModHandler.addMirroredShapedRecipe("hoe_flint", toolDataApplier.apply(HOE),
             "FF", " S", " S",
             'S', new UnificationEntry(OrePrefix.stick, Materials.Wood),
             'F', new ItemStack(Items.FLINT, 1));
 
-        ModHandler.addShapedRecipe("knife_flint", KNIFE.getStackForm(Materials.Flint, null),
+        ModHandler.addShapedRecipe("knife_flint", toolDataApplier.apply(KNIFE),
             "F", "S",
             'S', new UnificationEntry(OrePrefix.stick, Materials.Wood),
             'F', new ItemStack(Items.FLINT, 1));

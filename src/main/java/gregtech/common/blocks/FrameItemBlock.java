@@ -24,14 +24,14 @@ public class FrameItemBlock extends ItemBlock {
     }
 
     @SuppressWarnings("deprecation")
-    protected IBlockState getBlockState(ItemStack stack) {
+    public IBlockState getBlockState(ItemStack stack) {
         return frameBlock.getStateFromMeta(getMetadata(stack.getItemDamage()));
     }
 
     @Override
     @SideOnly(Side.CLIENT)
     public String getItemStackDisplayName(ItemStack stack) {
-        Material material = getBlockState(stack).getValue(frameBlock.variantProperty);
+        Material material = frameBlock.frameMaterial;
         return OrePrefix.frameGt.getLocalNameForItem(material);
     }
 

@@ -15,6 +15,7 @@ import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.SoundCategory;
@@ -32,9 +33,11 @@ public class BlockFoam extends BlockColored {
 
     public BlockFoam(boolean isReinforced) {
         super(Material.SAND);
+        setUnlocalizedName(isReinforced ? "gt.reinforced_foam" : "gt.foam");
         setSoundType(SoundType.SNOW);
         setResistance(0.3f);
         setHardness(0.5f);
+        setLightOpacity(0);
         setTickRandomly(true);
         setCreativeTab(GregTechAPI.TAB_GREGTECH);
         this.isReinforced = isReinforced;
@@ -46,7 +49,8 @@ public class BlockFoam extends BlockColored {
         if(!stackInHand.isEmpty() && OreDictUnifier.getOreDictionaryNames(stackInHand).contains("sand")) {
             worldIn.setBlockState(pos, getPetrifiedBlock(state));
             worldIn.playSound(playerIn, pos, SoundEvents.BLOCK_SAND_PLACE, SoundCategory.BLOCKS, 1.0f, 1.0f);
-            stackInHand.shrink(1);
+            if(!playerIn.capabilities.isCreativeMode)
+                stackInHand.shrink(1);
             return true;
         }
         return false;
@@ -54,7 +58,8 @@ public class BlockFoam extends BlockColored {
 
     @Override
     public void randomTick(World worldIn, BlockPos pos, IBlockState state, Random random) {
-        if(random.nextInt(3) == 0) {
+        int lightLevel = (worldIn.canSeeSky(pos) && worldIn.isDaytime()) ? 16 : worldIn.getLight(pos);
+        if(random.nextInt(20 - lightLevel) == 0) {
             worldIn.setBlockState(pos, getPetrifiedBlock(state));
         }
     }
@@ -62,21 +67,6 @@ public class BlockFoam extends BlockColored {
     private IBlockState getPetrifiedBlock(IBlockState state) {
         Block block = isReinforced ? MetaBlocks.REINFORCED_PETRIFIED_FOAM : MetaBlocks.PETRIFIED_FOAM;
         return block.getDefaultState().withProperty(COLOR, state.getValue(COLOR));
-    }
-
-    @Override
-    public boolean isOpaqueCube(IBlockState state) {
-        return false;
-    }
-
-    @Override
-    public boolean isFullCube(IBlockState state) {
-        return false;
-    }
-
-    @Override
-    public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face) {
-        return BlockFaceShape.UNDEFINED;
     }
 
     @Override
@@ -93,5 +83,26 @@ public class BlockFoam extends BlockColored {
     @Override
     public Item getItemDropped(IBlockState state, Random rand, int fortune) {
         return Items.AIR;
+    }
+
+    @Override
+    public BlockRenderLayer getBlockLayer() {
+        return BlockRenderLayer.CUTOUT_MIPPED;
+    }
+
+    @Override
+    public boolean isOpaqueCube(IBlockState state) {
+        return false;
+    }
+
+
+    @Override
+    public boolean isFullCube(IBlockState state) {
+        return false;
+    }
+
+    @Override
+    public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face) {
+        return BlockFaceShape.UNDEFINED;
     }
 }

@@ -61,8 +61,8 @@ import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.math.BigInteger;
-import java.util.List;
 import java.util.*;
+import java.util.List;
 import java.util.Map.Entry;
 import java.util.function.Function;
 import java.util.function.Predicate;
@@ -169,6 +169,13 @@ public class GTUtility {
 
         double min = Collections.min(distances.keySet());
         return distances.get(min);
+    }
+
+    public static int multiplyColor(int c1, int c2) {
+        int r = (((c1 >>> 16) * (c2 >>> 16)) & 0xFF00) << 16;
+        int g = (((c1 >> 8 & 0xFF) * (c2 >> 8 & 0xFF)) & 0xFF00) << 8;
+        int b = ((c1 & 0xFF) * (c2 & 0xFF)) & 0xFF00;
+        return r | g | b;
     }
 
     //just because CCL uses a different color format

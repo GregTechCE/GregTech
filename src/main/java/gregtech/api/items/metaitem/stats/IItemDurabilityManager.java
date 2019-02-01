@@ -8,4 +8,5 @@ public interface IItemDurabilityManager extends IMetaItemStats {
 
     double getDurabilityForDisplay(ItemStack itemStack);
 
+    int getRGBDurabilityForDisplay(ItemStack itemStack);
 }

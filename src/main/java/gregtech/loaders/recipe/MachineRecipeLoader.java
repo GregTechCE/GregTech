@@ -1,5 +1,6 @@
 package gregtech.loaders.recipe;
 
+import com.google.common.base.CaseFormat;
 import gregtech.api.recipes.CountableIngredient;
 import gregtech.api.recipes.ModHandler;
 import gregtech.api.recipes.RecipeBuilder;
@@ -282,10 +283,19 @@ public class MachineRecipeLoader {
                 .buildAndRegister();
         }
 
-        RecipeMaps.MIXER_RECIPES.recipeBuilder().duration(20).EUt(16).input(OrePrefix.dust, Materials.Clay, 1).input(OrePrefix.dust, Materials.Stone, 3).fluidInputs(Materials.Water.getFluid(500)).fluidOutputs(Materials.Concrete.getFluid(576)).buildAndRegister();
         RecipeMaps.MIXER_RECIPES.recipeBuilder().duration(100).EUt(8).inputs(new ItemStack(Blocks.BROWN_MUSHROOM), new ItemStack(Items.SPIDER_EYE)).input(OrePrefix.dust, Materials.Sugar, 1).outputs(new ItemStack(Items.FERMENTED_SPIDER_EYE)).buildAndRegister();
+        RecipeMaps.MIXER_RECIPES.recipeBuilder().duration(20).EUt(16).input(OrePrefix.dust, Materials.Clay, 1).input(OrePrefix.dust, Materials.Stone, 3).fluidInputs(Materials.Water.getFluid(500)).fluidOutputs(Materials.Concrete.getFluid(576)).buildAndRegister();
         RecipeMaps.MIXER_RECIPES.recipeBuilder().duration(16).EUt(16).fluidInputs(Materials.LightFuel.getFluid(5000), Materials.HeavyFuel.getFluid(1000)).fluidOutputs(Materials.Fuel.getFluid(6000)).buildAndRegister();
         RecipeMaps.MIXER_RECIPES.recipeBuilder().duration(64).EUt(16).input(OrePrefix.dust, Materials.Stone, 1).fluidInputs(Materials.Lubricant.getFluid(20), ModHandler.getWater(1000)).fluidOutputs(Materials.DrillingFluid.getFluid(5000)).buildAndRegister();
+
+        RecipeMaps.MIXER_RECIPES.recipeBuilder()
+            .duration(64).EUt(16)
+            .fluidInputs(Materials.Water.getFluid(1000))
+            .input("sand", 2)
+            .input(OrePrefix.dust, Materials.Stone, 6)
+            .input(OrePrefix.dust, Materials.Flint)
+            .fluidOutputs(Materials.ConstructionFoam.getFluid(1000))
+            .buildAndRegister();
 
         RecipeMaps.FLUID_CANNER_RECIPES.recipeBuilder().duration(100).EUt(30).inputs(MetaItems.BATTERY_HULL_LV.getStackForm()).fluidInputs(Materials.Mercury.getFluid(1000)).outputs(MetaItems.BATTERY_SU_LV_MERCURY.getChargedStack(Long.MAX_VALUE)).buildAndRegister();
         RecipeMaps.FLUID_CANNER_RECIPES.recipeBuilder().duration(200).EUt(30).inputs(MetaItems.BATTERY_HULL_MV.getStackForm()).fluidInputs(Materials.Mercury.getFluid(4000)).outputs(MetaItems.BATTERY_SU_MV_MERCURY.getChargedStack(Long.MAX_VALUE)).buildAndRegister();
@@ -711,39 +721,15 @@ public class MachineRecipeLoader {
         RecipeMaps.CENTRIFUGE_RECIPES.recipeBuilder().duration(80).EUt(80).fluidInputs(Materials.Lava.getFluid(100)).chancedOutput(OreDictUnifier.get(OrePrefix.nugget,Materials.Tantalum,1), 250).chancedOutput(OreDictUnifier.get(OrePrefix.nugget,Materials.Gold,1), 250).chancedOutput(OreDictUnifier.get(OrePrefix.nugget,Materials.Tin,1), 1000).chancedOutput(OreDictUnifier.get(OrePrefix.dustSmall,Materials.Tungstate,1), 250).chancedOutput(OreDictUnifier.get(OrePrefix.nugget,Materials.Copper,1), 2000).chancedOutput(OreDictUnifier.get(OrePrefix.nugget,Materials.Silver,1), 250).buildAndRegister();
         RecipeMaps.CENTRIFUGE_RECIPES.recipeBuilder().duration(64).EUt(20).input(OrePrefix.dust, Materials.RareEarth, 1).chancedOutput(OreDictUnifier.get(OrePrefix.dustSmall,Materials.Cadmium,1), 2500).chancedOutput(OreDictUnifier.get(OrePrefix.dustSmall,Materials.Neodymium,1), 2500).chancedOutput(OreDictUnifier.get(OrePrefix.dustSmall,Materials.Caesium,1), 2500).chancedOutput(OreDictUnifier.get(OrePrefix.dustSmall,Materials.Cerium,1), 2500).chancedOutput(OreDictUnifier.get(OrePrefix.dustSmall,Materials.Yttrium,1), 2500).chancedOutput(OreDictUnifier.get(OrePrefix.dustSmall,Materials.Lanthanum,1), 2500).buildAndRegister();
 
-        RecipeMaps.EXTRACTOR_RECIPES.recipeBuilder().duration(20).inputs(new ItemStack(Items.DYE, 1, EnumDyeColor.WHITE.getDyeDamage())).outputs(MetaItems.DYE_ONLY_ITEMS[EnumDyeColor.WHITE.getMetadata()].getStackForm()).buildAndRegister();
-        RecipeMaps.EXTRACTOR_RECIPES.recipeBuilder().duration(20).inputs(new ItemStack(Items.DYE, 1, EnumDyeColor.ORANGE.getDyeDamage())).outputs(MetaItems.DYE_ONLY_ITEMS[EnumDyeColor.ORANGE.getMetadata()].getStackForm()).buildAndRegister();
-        RecipeMaps.EXTRACTOR_RECIPES.recipeBuilder().duration(20).inputs(new ItemStack(Items.DYE, 1, EnumDyeColor.MAGENTA.getDyeDamage())).outputs(MetaItems.DYE_ONLY_ITEMS[EnumDyeColor.MAGENTA.getMetadata()].getStackForm()).buildAndRegister();
-        RecipeMaps.EXTRACTOR_RECIPES.recipeBuilder().duration(20).inputs(new ItemStack(Items.DYE, 1, EnumDyeColor.LIGHT_BLUE.getDyeDamage())).outputs(MetaItems.DYE_ONLY_ITEMS[EnumDyeColor.LIGHT_BLUE.getMetadata()].getStackForm()).buildAndRegister();
-        RecipeMaps.EXTRACTOR_RECIPES.recipeBuilder().duration(20).inputs(new ItemStack(Items.DYE, 1, EnumDyeColor.YELLOW.getDyeDamage())).outputs(MetaItems.DYE_ONLY_ITEMS[EnumDyeColor.YELLOW.getMetadata()].getStackForm()).buildAndRegister();
-        RecipeMaps.EXTRACTOR_RECIPES.recipeBuilder().duration(20).inputs(new ItemStack(Items.DYE, 1, EnumDyeColor.LIME.getDyeDamage())).outputs(MetaItems.DYE_ONLY_ITEMS[EnumDyeColor.LIME.getMetadata()].getStackForm()).buildAndRegister();
-        RecipeMaps.EXTRACTOR_RECIPES.recipeBuilder().duration(20).inputs(new ItemStack(Items.DYE, 1, EnumDyeColor.PINK.getDyeDamage())).outputs(MetaItems.DYE_ONLY_ITEMS[EnumDyeColor.PINK.getMetadata()].getStackForm()).buildAndRegister();
-        RecipeMaps.EXTRACTOR_RECIPES.recipeBuilder().duration(20).inputs(new ItemStack(Items.DYE, 1, EnumDyeColor.GRAY.getDyeDamage())).outputs(MetaItems.DYE_ONLY_ITEMS[EnumDyeColor.GRAY.getMetadata()].getStackForm()).buildAndRegister();
-        RecipeMaps.EXTRACTOR_RECIPES.recipeBuilder().duration(20).inputs(new ItemStack(Items.DYE, 1, EnumDyeColor.SILVER.getDyeDamage())).outputs(MetaItems.DYE_ONLY_ITEMS[EnumDyeColor.SILVER.getMetadata()].getStackForm()).buildAndRegister();
-        RecipeMaps.EXTRACTOR_RECIPES.recipeBuilder().duration(20).inputs(new ItemStack(Items.DYE, 1, EnumDyeColor.CYAN.getDyeDamage())).outputs(MetaItems.DYE_ONLY_ITEMS[EnumDyeColor.CYAN.getMetadata()].getStackForm()).buildAndRegister();
-        RecipeMaps.EXTRACTOR_RECIPES.recipeBuilder().duration(20).inputs(new ItemStack(Items.DYE, 1, EnumDyeColor.PURPLE.getDyeDamage())).outputs(MetaItems.DYE_ONLY_ITEMS[EnumDyeColor.PURPLE.getMetadata()].getStackForm()).buildAndRegister();
-        RecipeMaps.EXTRACTOR_RECIPES.recipeBuilder().duration(20).inputs(new ItemStack(Items.DYE, 1, EnumDyeColor.BLUE.getDyeDamage())).outputs(MetaItems.DYE_ONLY_ITEMS[EnumDyeColor.BLUE.getMetadata()].getStackForm()).buildAndRegister();
-        RecipeMaps.EXTRACTOR_RECIPES.recipeBuilder().duration(20).inputs(new ItemStack(Items.DYE, 1, EnumDyeColor.BROWN.getDyeDamage())).outputs(MetaItems.DYE_ONLY_ITEMS[EnumDyeColor.BROWN.getMetadata()].getStackForm()).buildAndRegister();
-        RecipeMaps.EXTRACTOR_RECIPES.recipeBuilder().duration(20).inputs(new ItemStack(Items.DYE, 1, EnumDyeColor.GREEN.getDyeDamage())).outputs(MetaItems.DYE_ONLY_ITEMS[EnumDyeColor.GREEN.getMetadata()].getStackForm()).buildAndRegister();
-        RecipeMaps.EXTRACTOR_RECIPES.recipeBuilder().duration(20).inputs(new ItemStack(Items.DYE, 1, EnumDyeColor.RED.getDyeDamage())).outputs(MetaItems.DYE_ONLY_ITEMS[EnumDyeColor.RED.getMetadata()].getStackForm()).buildAndRegister();
-        RecipeMaps.EXTRACTOR_RECIPES.recipeBuilder().duration(20).inputs(new ItemStack(Items.DYE, 1, EnumDyeColor.BLACK.getDyeDamage())).outputs(MetaItems.DYE_ONLY_ITEMS[EnumDyeColor.BLACK.getMetadata()].getStackForm()).buildAndRegister();
-
-        RecipeMaps.ASSEMBLER_RECIPES.recipeBuilder().EUt(4).duration(20).inputs(MetaItems.DYE_ONLY_ITEMS[EnumDyeColor.WHITE.getMetadata()].getStackForm(), MetaItems.SPRAY_EMPTY.getStackForm()).outputs(MetaItems.SPRAY_CAN_DYES[EnumDyeColor.WHITE.getMetadata()].getStackForm()).buildAndRegister();
-        RecipeMaps.ASSEMBLER_RECIPES.recipeBuilder().EUt(4).duration(20).inputs(MetaItems.DYE_ONLY_ITEMS[EnumDyeColor.ORANGE.getMetadata()].getStackForm(), MetaItems.SPRAY_EMPTY.getStackForm()).outputs(MetaItems.SPRAY_CAN_DYES[EnumDyeColor.ORANGE.getMetadata()].getStackForm()).buildAndRegister();
-        RecipeMaps.ASSEMBLER_RECIPES.recipeBuilder().EUt(4).duration(20).inputs(MetaItems.DYE_ONLY_ITEMS[EnumDyeColor.MAGENTA.getMetadata()].getStackForm(), MetaItems.SPRAY_EMPTY.getStackForm()).outputs(MetaItems.SPRAY_CAN_DYES[EnumDyeColor.MAGENTA.getMetadata()].getStackForm()).buildAndRegister();
-        RecipeMaps.ASSEMBLER_RECIPES.recipeBuilder().EUt(4).duration(20).inputs(MetaItems.DYE_ONLY_ITEMS[EnumDyeColor.LIGHT_BLUE.getMetadata()].getStackForm(), MetaItems.SPRAY_EMPTY.getStackForm()).outputs(MetaItems.SPRAY_CAN_DYES[EnumDyeColor.LIGHT_BLUE.getMetadata()].getStackForm()).buildAndRegister();
-        RecipeMaps.ASSEMBLER_RECIPES.recipeBuilder().EUt(4).duration(20).inputs(MetaItems.DYE_ONLY_ITEMS[EnumDyeColor.YELLOW.getMetadata()].getStackForm(), MetaItems.SPRAY_EMPTY.getStackForm()).outputs(MetaItems.SPRAY_CAN_DYES[EnumDyeColor.YELLOW.getMetadata()].getStackForm()).buildAndRegister();
-        RecipeMaps.ASSEMBLER_RECIPES.recipeBuilder().EUt(4).duration(20).inputs(MetaItems.DYE_ONLY_ITEMS[EnumDyeColor.LIME.getMetadata()].getStackForm(), MetaItems.SPRAY_EMPTY.getStackForm()).outputs(MetaItems.SPRAY_CAN_DYES[EnumDyeColor.LIME.getMetadata()].getStackForm()).buildAndRegister();
-        RecipeMaps.ASSEMBLER_RECIPES.recipeBuilder().EUt(4).duration(20).inputs(MetaItems.DYE_ONLY_ITEMS[EnumDyeColor.PINK.getMetadata()].getStackForm(), MetaItems.SPRAY_EMPTY.getStackForm()).outputs(MetaItems.SPRAY_CAN_DYES[EnumDyeColor.PINK.getMetadata()].getStackForm()).buildAndRegister();
-        RecipeMaps.ASSEMBLER_RECIPES.recipeBuilder().EUt(4).duration(20).inputs(MetaItems.DYE_ONLY_ITEMS[EnumDyeColor.GRAY.getMetadata()].getStackForm(), MetaItems.SPRAY_EMPTY.getStackForm()).outputs(MetaItems.SPRAY_CAN_DYES[EnumDyeColor.GRAY.getMetadata()].getStackForm()).buildAndRegister();
-        RecipeMaps.ASSEMBLER_RECIPES.recipeBuilder().EUt(4).duration(20).inputs(MetaItems.DYE_ONLY_ITEMS[EnumDyeColor.SILVER.getMetadata()].getStackForm(), MetaItems.SPRAY_EMPTY.getStackForm()).outputs(MetaItems.SPRAY_CAN_DYES[EnumDyeColor.SILVER.getMetadata()].getStackForm()).buildAndRegister();
-        RecipeMaps.ASSEMBLER_RECIPES.recipeBuilder().EUt(4).duration(20).inputs(MetaItems.DYE_ONLY_ITEMS[EnumDyeColor.CYAN.getMetadata()].getStackForm(), MetaItems.SPRAY_EMPTY.getStackForm()).outputs(MetaItems.SPRAY_CAN_DYES[EnumDyeColor.CYAN.getMetadata()].getStackForm()).buildAndRegister();
-        RecipeMaps.ASSEMBLER_RECIPES.recipeBuilder().EUt(4).duration(20).inputs(MetaItems.DYE_ONLY_ITEMS[EnumDyeColor.PURPLE.getMetadata()].getStackForm(), MetaItems.SPRAY_EMPTY.getStackForm()).outputs(MetaItems.SPRAY_CAN_DYES[EnumDyeColor.PURPLE.getMetadata()].getStackForm()).buildAndRegister();
-        RecipeMaps.ASSEMBLER_RECIPES.recipeBuilder().EUt(4).duration(20).inputs(MetaItems.DYE_ONLY_ITEMS[EnumDyeColor.BLUE.getMetadata()].getStackForm(), MetaItems.SPRAY_EMPTY.getStackForm()).outputs(MetaItems.SPRAY_CAN_DYES[EnumDyeColor.BLUE.getMetadata()].getStackForm()).buildAndRegister();
-        RecipeMaps.ASSEMBLER_RECIPES.recipeBuilder().EUt(4).duration(20).inputs(MetaItems.DYE_ONLY_ITEMS[EnumDyeColor.BROWN.getMetadata()].getStackForm(), MetaItems.SPRAY_EMPTY.getStackForm()).outputs(MetaItems.SPRAY_CAN_DYES[EnumDyeColor.BROWN.getMetadata()].getStackForm()).buildAndRegister();
-        RecipeMaps.ASSEMBLER_RECIPES.recipeBuilder().EUt(4).duration(20).inputs(MetaItems.DYE_ONLY_ITEMS[EnumDyeColor.GREEN.getMetadata()].getStackForm(), MetaItems.SPRAY_EMPTY.getStackForm()).outputs(MetaItems.SPRAY_CAN_DYES[EnumDyeColor.GREEN.getMetadata()].getStackForm()).buildAndRegister();
-        RecipeMaps.ASSEMBLER_RECIPES.recipeBuilder().EUt(4).duration(20).inputs(MetaItems.DYE_ONLY_ITEMS[EnumDyeColor.RED.getMetadata()].getStackForm(), MetaItems.SPRAY_EMPTY.getStackForm()).outputs(MetaItems.SPRAY_CAN_DYES[EnumDyeColor.RED.getMetadata()].getStackForm()).buildAndRegister();
-        RecipeMaps.ASSEMBLER_RECIPES.recipeBuilder().EUt(4).duration(20).inputs(MetaItems.DYE_ONLY_ITEMS[EnumDyeColor.BLACK.getMetadata()].getStackForm(), MetaItems.SPRAY_EMPTY.getStackForm()).outputs(MetaItems.SPRAY_CAN_DYES[EnumDyeColor.BLACK.getMetadata()].getStackForm()).buildAndRegister();
+        for(EnumDyeColor dyeColor : EnumDyeColor.values()) {
+            String colorName = CaseFormat.LOWER_UNDERSCORE.to(CaseFormat.UPPER_CAMEL, dyeColor.getName());
+            RecipeMaps.ASSEMBLER_RECIPES.recipeBuilder()
+                .inputs(MetaItems.SPRAY_EMPTY.getStackForm())
+                .input("dye" + colorName, 1)
+                .outputs(MetaItems.SPRAY_CAN_DYES[dyeColor.getMetadata()].getStackForm())
+                .EUt(8).duration(200)
+                .buildAndRegister();
+        }
 
         RecipeMaps.EXTRUDER_RECIPES.recipeBuilder()
             .input(OrePrefix.plate, Materials.Iron, 2)

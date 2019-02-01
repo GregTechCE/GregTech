@@ -355,7 +355,7 @@ public class PartsRecipeHandler {
         RecipeMaps.ASSEMBLER_RECIPES.recipeBuilder()
             .input(OrePrefix.turbineBlade, material, 8)
             .input(OrePrefix.stickLong, Materials.Titanium)
-            .outputs(MetaItems.TURBINE.getStackForm(material, null))
+            .outputs(MetaItems.TURBINE.getStackForm(material))
             .duration(320)
             .EUt(400)
             .buildAndRegister();

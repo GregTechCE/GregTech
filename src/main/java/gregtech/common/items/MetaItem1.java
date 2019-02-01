@@ -127,8 +127,9 @@ public class MetaItem1 extends MaterialMetaItem {
             .setMaxStackSize(16)
             .setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.TungstenSteel, OrePrefix.plate.materialAmount * 2L + 2L * OrePrefix.ring.materialAmount)));
 
-        for (byte i = 0; i < 16; i = (byte) (i + 1)) {
-            SPRAY_CAN_DYES[i] = addItem(430 + 2 * i, "spray.can.dyes." + EnumDyeColor.byMetadata(i).getName()).setMaxStackSize(1);
+        for (int i = 0; i < EnumDyeColor.values().length; i++) {
+            EnumDyeColor dyeColor = EnumDyeColor.values()[i];
+            SPRAY_CAN_DYES[i] = addItem(430 + 2 * i, "spray.can.dyes." + dyeColor.getName()).setMaxStackSize(1);
             ColorSprayBehaviour behaviour = new ColorSprayBehaviour(SPRAY_EMPTY.getStackForm(), 512, i);
             SPRAY_CAN_DYES[i].addStats(behaviour);
         }
@@ -320,6 +321,7 @@ public class MetaItem1 extends MaterialMetaItem {
 
         FLUID_CELL = addItem(762, "fluid_cell").addStats(new FluidStats(1000, Integer.MIN_VALUE, Integer.MAX_VALUE, false));
         INTEGRATED_CIRCUIT = addItem(766, "circuit.integrated").addStats(new IntCircuitBehaviour());
+        FOAM_SPRAYER = addItem(746, "foam_sprayer").addStats(new FoamSprayerBehavior());
     }
 
     public void registerRecipes() {
@@ -332,7 +334,7 @@ public class MetaItem1 extends MaterialMetaItem {
         RecipeMaps.ASSEMBLER_RECIPES.recipeBuilder()
             .input(OrePrefix.dust, Materials.Redstone).input(OrePrefix.plate, Materials.Tin, 2)
             .outputs(SPRAY_EMPTY.getStackForm())
-            .duration(800).EUt(1)
+            .duration(200).EUt(8)
             .buildAndRegister();
 
         RecipeMaps.ASSEMBLER_RECIPES.recipeBuilder()
@@ -347,6 +349,14 @@ public class MetaItem1 extends MaterialMetaItem {
             .input(OrePrefix.ring, Materials.TungstenSteel, 8)
             .outputs(LARGE_FLUID_CELL_TUNGSTEN_STEEL.getStackForm())
             .circuitMeta(1).duration(200).EUt(256)
+            .buildAndRegister();
+
+        RecipeMaps.ASSEMBLER_RECIPES.recipeBuilder()
+            .input(OrePrefix.plate, Materials.Tin, 6)
+            .inputs(SPRAY_EMPTY.getStackForm())
+            .input(OrePrefix.paneGlass.name(), 1)
+            .outputs(FOAM_SPRAYER.getStackForm())
+            .duration(200).EUt(8)
             .buildAndRegister();
 
         // Matches/lighters recipes

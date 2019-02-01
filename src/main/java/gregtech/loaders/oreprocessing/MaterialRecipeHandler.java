@@ -155,7 +155,7 @@ public class MaterialRecipeHandler {
 
         if (!material.hasFlag(MatFlags.NO_SMASHING) && material.toolDurability > 0) {
             ModHandler.addShapedRecipe(String.format("wrench_%s", material.toString()),
-                MetaItems.WRENCH.getStackForm(material, null),
+                MetaItems.WRENCH.getStackForm(material),
                 "IhI", "III", " I ", 'I', new UnificationEntry(ingotPrefix, material));
         }
 
