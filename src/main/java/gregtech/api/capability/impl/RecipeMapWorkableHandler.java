@@ -245,18 +245,23 @@ public abstract class RecipeMapWorkableHandler extends MTETrait implements IWork
         setMaxProgress(resultOverclock[1]);
         this.recipeEUt = resultOverclock[0];
         this.fluidOutputs = GTUtility.copyFluidList(recipe.getFluidOutputs());
-        int byproductChanceMultiplier = 1;
-        int tier = GTUtility.getTierByVoltage(getMaxVoltage());
-        int recipeTier = GTUtility.getTierByVoltage(recipe.getEUt());
-        if (tier > GTValues.LV && tier > recipeTier) {
-            byproductChanceMultiplier = 1 << (tier - recipeTier);
-        }
+        int byproductChanceMultiplier = getByproductChanceMultiplier(recipe);
         this.itemOutputs = GTUtility.copyStackList(recipe.getResultItemOutputs(random, byproductChanceMultiplier));
         if (this.wasActiveAndNeedsUpdate) {
             this.wasActiveAndNeedsUpdate = false;
         } else {
             this.setActive(true);
         }
+    }
+
+    protected int getByproductChanceMultiplier(Recipe recipe) {
+        int byproductChanceMultiplier = 1;
+        int tier = GTUtility.getTierByVoltage(getMaxVoltage());
+        int recipeTier = GTUtility.getTierByVoltage(recipe.getEUt());
+        if (tier > GTValues.LV && tier > recipeTier) {
+            byproductChanceMultiplier = 1 << (tier - recipeTier);
+        }
+        return byproductChanceMultiplier;
     }
 
     protected void completeRecipe() {

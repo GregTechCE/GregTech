@@ -370,9 +370,6 @@ public enum OrePrefix {
         oreEndstone.addSecondaryMaterial(new MaterialStack(Materials.Endstone, dust.materialAmount));
         oreEnd.addSecondaryMaterial(new MaterialStack(Materials.Endstone, dust.materialAmount));
 
-        oreMarble.addSecondaryMaterial(new MaterialStack(Materials.Marble, dust.materialAmount));
-        oreBasalt.addSecondaryMaterial(new MaterialStack(Materials.Basalt, dust.materialAmount));
-
         oreDense.addSecondaryMaterial(new MaterialStack(Materials.Stone, dust.materialAmount));
         orePoor.addSecondaryMaterial(new MaterialStack(Materials.Stone, dust.materialAmount * 2));
         oreSmall.addSecondaryMaterial(new MaterialStack(Materials.Stone, dust.materialAmount * 2));
