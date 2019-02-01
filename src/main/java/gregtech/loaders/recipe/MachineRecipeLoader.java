@@ -30,6 +30,7 @@ import gregtech.common.blocks.BlockMultiblockCasing.MultiblockCasingType;
 import gregtech.common.blocks.BlockTurbineCasing.TurbineCasingType;
 import gregtech.common.blocks.BlockWireCoil.CoilType;
 import gregtech.common.blocks.MetaBlocks;
+import gregtech.common.blocks.StoneBlock;
 import gregtech.common.blocks.StoneBlock.ChiselingVariant;
 import gregtech.common.items.MetaItems;
 import gregtech.common.metatileentities.MetaTileEntities;
@@ -39,6 +40,7 @@ import net.minecraft.init.Items;
 import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
+import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Tuple;
 import net.minecraftforge.oredict.OreDictionary;
@@ -284,9 +286,10 @@ public class MachineRecipeLoader {
         }
 
         RecipeMaps.MIXER_RECIPES.recipeBuilder().duration(100).EUt(8).inputs(new ItemStack(Blocks.BROWN_MUSHROOM), new ItemStack(Items.SPIDER_EYE)).input(OrePrefix.dust, Materials.Sugar, 1).outputs(new ItemStack(Items.FERMENTED_SPIDER_EYE)).buildAndRegister();
-        RecipeMaps.MIXER_RECIPES.recipeBuilder().duration(20).EUt(16).input(OrePrefix.dust, Materials.Clay, 1).input(OrePrefix.dust, Materials.Stone, 3).fluidInputs(Materials.Water.getFluid(500)).fluidOutputs(Materials.Concrete.getFluid(576)).buildAndRegister();
         RecipeMaps.MIXER_RECIPES.recipeBuilder().duration(16).EUt(16).fluidInputs(Materials.LightFuel.getFluid(5000), Materials.HeavyFuel.getFluid(1000)).fluidOutputs(Materials.Fuel.getFluid(6000)).buildAndRegister();
         RecipeMaps.MIXER_RECIPES.recipeBuilder().duration(64).EUt(16).input(OrePrefix.dust, Materials.Stone, 1).fluidInputs(Materials.Lubricant.getFluid(20), ModHandler.getWater(1000)).fluidOutputs(Materials.DrillingFluid.getFluid(5000)).buildAndRegister();
+        RecipeMaps.MIXER_RECIPES.recipeBuilder().duration(20).EUt(16).input(OrePrefix.dust, Materials.Clay, 1).input(OrePrefix.dust, Materials.Stone, 3).fluidInputs(Materials.Water.getFluid(500)).fluidOutputs(Materials.Concrete.getFluid(576)).buildAndRegister();
+        RecipeMaps.MIXER_RECIPES.recipeBuilder().duration(12).EUt(4).inputs(MetaBlocks.CONCRETE.getItemVariant(ConcreteVariant.LIGHT_CONCRETE, ChiselingVariant.NORMAL)).fluidInputs(Materials.Water.getFluid(144)).outputs(MetaBlocks.CONCRETE.getItemVariant(ConcreteVariant.DARK_CONCRETE, ChiselingVariant.NORMAL)).buildAndRegister();
 
         RecipeMaps.MIXER_RECIPES.recipeBuilder()
             .duration(64).EUt(16)
@@ -297,6 +300,19 @@ public class MachineRecipeLoader {
             .fluidOutputs(Materials.ConstructionFoam.getFluid(1000))
             .buildAndRegister();
 
+        //decorative blocks: normal variant -> brick variant
+        registerBrickRecipe(MetaBlocks.CONCRETE, ConcreteVariant.LIGHT_CONCRETE, ConcreteVariant.LIGHT_BRICKS);
+        registerBrickRecipe(MetaBlocks.CONCRETE, ConcreteVariant.DARK_CONCRETE, ConcreteVariant.DARK_CONCRETE);
+        registerBrickRecipe(MetaBlocks.GRANITE, GraniteVariant.BLACK_GRANITE, GraniteVariant.BLACK_GRANITE_BRICKS);
+        registerBrickRecipe(MetaBlocks.GRANITE, GraniteVariant.RED_GRANITE, GraniteVariant.RED_GRANITE_BRICKS);
+        registerBrickRecipe(MetaBlocks.MINERAL, MineralVariant.MARBLE, MineralVariant.MARBLE_BRICKS);
+        registerBrickRecipe(MetaBlocks.MINERAL, MineralVariant.BASALT, MineralVariant.BASALT_BRICKS);
+
+        //decorative blocks: normal chiseling -> different chiseling
+        registerChiselingRecipes(MetaBlocks.CONCRETE);
+        registerChiselingRecipes(MetaBlocks.GRANITE);
+        registerChiselingRecipes(MetaBlocks.MINERAL);
+       
         RecipeMaps.FLUID_CANNER_RECIPES.recipeBuilder().duration(100).EUt(30).inputs(MetaItems.BATTERY_HULL_LV.getStackForm()).fluidInputs(Materials.Mercury.getFluid(1000)).outputs(MetaItems.BATTERY_SU_LV_MERCURY.getChargedStack(Long.MAX_VALUE)).buildAndRegister();
         RecipeMaps.FLUID_CANNER_RECIPES.recipeBuilder().duration(200).EUt(30).inputs(MetaItems.BATTERY_HULL_MV.getStackForm()).fluidInputs(Materials.Mercury.getFluid(4000)).outputs(MetaItems.BATTERY_SU_MV_MERCURY.getChargedStack(Long.MAX_VALUE)).buildAndRegister();
         RecipeMaps.FLUID_CANNER_RECIPES.recipeBuilder().duration(400).EUt(30).inputs(MetaItems.BATTERY_HULL_HV.getStackForm()).fluidInputs(Materials.Mercury.getFluid(16000)).outputs(MetaItems.BATTERY_SU_HV_MERCURY.getChargedStack(Long.MAX_VALUE)).buildAndRegister();
@@ -309,15 +325,6 @@ public class MachineRecipeLoader {
         RecipeMaps.FLUID_SOLIDFICATION_RECIPES.recipeBuilder().duration(512).EUt(4).notConsumable(MetaItems.SHAPE_MOLD_BLOCK.getStackForm()).fluidInputs(Materials.Water.getFluid(1000)).outputs(new ItemStack(Blocks.SNOW)).buildAndRegister();
         RecipeMaps.FLUID_SOLIDFICATION_RECIPES.recipeBuilder().duration(512).EUt(4).notConsumable(MetaItems.SHAPE_MOLD_BLOCK.getStackForm()).fluidInputs(ModHandler.getDistilledWater(1000)).outputs(new ItemStack(Blocks.SNOW)).buildAndRegister();
         RecipeMaps.FLUID_SOLIDFICATION_RECIPES.recipeBuilder().duration(1024).EUt(16).notConsumable(MetaItems.SHAPE_MOLD_BLOCK.getStackForm()).fluidInputs(Materials.Lava.getFluid(1000)).outputs(new ItemStack(Blocks.OBSIDIAN)).buildAndRegister();
-
-        RecipeMaps.MIXER_RECIPES.recipeBuilder().duration(12).EUt(4).inputs(MetaBlocks.CONCRETE.getItemVariant(ConcreteVariant.LIGHT_CONCRETE, ChiselingVariant.NORMAL)).fluidInputs(Materials.Water.getFluid(144)).outputs(MetaBlocks.CONCRETE.getItemVariant(ConcreteVariant.DARK_CONCRETE, ChiselingVariant.NORMAL)).buildAndRegister();
-
-        ModHandler.addSmeltingRecipe(MetaBlocks.CONCRETE.getItemVariant(ConcreteVariant.LIGHT_CONCRETE, ChiselingVariant.NORMAL), MetaBlocks.CONCRETE.getItemVariant(ConcreteVariant.LIGHT_BRICKS, ChiselingVariant.NORMAL));
-        ModHandler.addSmeltingRecipe(MetaBlocks.CONCRETE.getItemVariant(ConcreteVariant.DARK_CONCRETE, ChiselingVariant.NORMAL), MetaBlocks.CONCRETE.getItemVariant(ConcreteVariant.DARK_BRICKS, ChiselingVariant.NORMAL));
-        ModHandler.addSmeltingRecipe(MetaBlocks.GRANITE.getItemVariant(GraniteVariant.BLACK_GRANITE, ChiselingVariant.NORMAL), MetaBlocks.GRANITE.getItemVariant(GraniteVariant.BLACK_GRANITE_BRICKS, ChiselingVariant.NORMAL));
-        ModHandler.addSmeltingRecipe(MetaBlocks.GRANITE.getItemVariant(GraniteVariant.RED_GRANITE, ChiselingVariant.NORMAL), MetaBlocks.GRANITE.getItemVariant(GraniteVariant.RED_GRANITE_BRICKS, ChiselingVariant.NORMAL));
-        ModHandler.addSmeltingRecipe(MetaBlocks.MINERAL.getItemVariant(MineralVariant.BASALT, ChiselingVariant.NORMAL), MetaBlocks.MINERAL.getItemVariant(MineralVariant.BASALT_BRICKS, ChiselingVariant.NORMAL));
-        ModHandler.addSmeltingRecipe(MetaBlocks.MINERAL.getItemVariant(MineralVariant.MARBLE, ChiselingVariant.NORMAL), MetaBlocks.MINERAL.getItemVariant(MineralVariant.MARBLE_BRICKS, ChiselingVariant.NORMAL));
 
         RecipeMaps.FLUID_SOLIDFICATION_RECIPES.recipeBuilder().duration(12).EUt(4).notConsumable(MetaItems.SHAPE_MOLD_BLOCK.getStackForm()).fluidInputs(Materials.Glowstone.getFluid(576)).outputs(new ItemStack(Blocks.GLOWSTONE)).buildAndRegister();
         RecipeMaps.FLUID_SOLIDFICATION_RECIPES.recipeBuilder().duration(12).EUt(4).notConsumable(MetaItems.SHAPE_MOLD_BLOCK.getStackForm()).fluidInputs(Materials.Glass.getFluid(144)).outputs(new ItemStack(Blocks.GLASS)).buildAndRegister();
@@ -1112,6 +1119,36 @@ public class MachineRecipeLoader {
         }
 
         registerPlanksCuttingRecipes();
+    }
+
+    private static <T extends Enum<T> & IStringSerializable> void registerBrickRecipe(StoneBlock<T> stoneBlock, T normalVariant, T brickVariant) {
+        ModHandler.addShapedRecipe(stoneBlock.getRegistryName().getResourceDomain() + "_" + normalVariant + "_bricks",
+            stoneBlock.getItemVariant(brickVariant, ChiselingVariant.NORMAL, 4),
+            "XX", "XX", 'X',
+            stoneBlock.getItemVariant(normalVariant, ChiselingVariant.NORMAL));
+    }
+    
+    private static <T extends Enum<T> & IStringSerializable> void registerChiselingRecipes(StoneBlock<T> stoneBlock) {
+        for(T variant : stoneBlock.getVariantValues()) {
+            boolean isBricksVariant = variant.getName().endsWith("_bricks");
+            if(!isBricksVariant) {
+                ModHandler.addSmeltingRecipe(stoneBlock.getItemVariant(variant, ChiselingVariant.CRACKED), stoneBlock.getItemVariant(variant, ChiselingVariant.NORMAL));
+                RecipeMaps.FORGE_HAMMER_RECIPES.recipeBuilder().duration(12).EUt(4)
+                    .inputs(stoneBlock.getItemVariant(variant, ChiselingVariant.NORMAL))
+                    .outputs(stoneBlock.getItemVariant(variant, ChiselingVariant.CRACKED))
+                    .buildAndRegister();
+            } else {
+                ModHandler.addSmeltingRecipe(stoneBlock.getItemVariant(variant, ChiselingVariant.NORMAL), stoneBlock.getItemVariant(variant, ChiselingVariant.CRACKED));
+            }
+            RecipeMaps.MIXER_RECIPES.recipeBuilder().duration(12).EUt(4)
+                .inputs(stoneBlock.getItemVariant(variant, !isBricksVariant ? ChiselingVariant.CRACKED : ChiselingVariant.NORMAL))
+                .fluidInputs(Materials.Water.getFluid(144))
+                .outputs(stoneBlock.getItemVariant(variant, ChiselingVariant.MOSSY))
+                .buildAndRegister();
+            ModHandler.addShapelessRecipe(stoneBlock.getRegistryName().getResourcePath() + "_chiseling_" + variant,
+                stoneBlock.getItemVariant(variant, ChiselingVariant.CHISELED),
+                stoneBlock.getItemVariant(variant, ChiselingVariant.NORMAL));
+        }
     }
 
     //TODO move more stuff here and do it automatically
