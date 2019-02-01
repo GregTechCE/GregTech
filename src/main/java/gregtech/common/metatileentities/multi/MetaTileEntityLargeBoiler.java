@@ -49,28 +49,28 @@ public class MetaTileEntityLargeBoiler extends MultiblockWithDisplayBase {
     private static final int CONSUMPTION_MULTIPLIER = 100;
 
     public enum BoilerType {
-        BRONZE(600, 1.0f, 500,
+        BRONZE(800, 1.0f, 500,
             MetaBlocks.METAL_CASING.getState(MetalCasingType.BRONZE_BRICKS),
             MetaBlocks.BOILER_FIREBOX_CASING.getState(FireboxCasingType.BRONZE_FIREBOX),
             MetaBlocks.BOILER_CASING.getState(BoilerCasingType.BRONZE_PIPE),
             Textures.BRONZE_PLATED_BRICKS,
             Textures.BRONZE_FIREBOX, Textures.BRONZE_FIREBOX_ACTIVE),
 
-        STEEL(900, 1.2f, 1000,
+        STEEL(1200, 1.2f, 800,
             MetaBlocks.METAL_CASING.getState(MetalCasingType.STEEL_SOLID),
             MetaBlocks.BOILER_FIREBOX_CASING.getState(FireboxCasingType.STEEL_FIREBOX),
             MetaBlocks.BOILER_CASING.getState(BoilerCasingType.STEEL_PIPE),
             Textures.SOLID_STEEL_CASING,
             Textures.STEEL_FIREBOX, Textures.STEEL_FIREBOX_ACTIVE),
 
-        TITANIUM(1400, 1.6f, 2000,
+        TITANIUM(1700, 1.6f, 2000,
             MetaBlocks.METAL_CASING.getState(MetalCasingType.TITANIUM_STABLE),
             MetaBlocks.BOILER_FIREBOX_CASING.getState(FireboxCasingType.TITANIUM_FIREBOX),
             MetaBlocks.BOILER_CASING.getState(BoilerCasingType.TITANIUM_PIPE),
             Textures.STABLE_TITANIUM_CASING,
             Textures.TITANIUM_FIREBOX, Textures.TITANIUM_FIREBOX_ACTIVE),
 
-        TUNGSTENSTEEL(2400, 2.4f, 4000,
+        TUNGSTENSTEEL(2500, 2.4f, 4000,
             MetaBlocks.METAL_CASING.getState(MetalCasingType.TUNGSTENSTEEL_ROBUST),
             MetaBlocks.BOILER_FIREBOX_CASING.getState(FireboxCasingType.TUNGSTENSTEEL_FIREBOX),
             MetaBlocks.BOILER_CASING.getState(BoilerCasingType.TUNGSTENSTEEL_PIPE),

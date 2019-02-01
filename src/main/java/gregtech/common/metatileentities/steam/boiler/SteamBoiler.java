@@ -20,11 +20,13 @@ import gregtech.api.util.GTUtility;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.SoundCategory;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fml.relauncher.Side;
@@ -192,8 +194,7 @@ public abstract class SteamBoiler extends MetaTileEntity {
 
     private void generateSteam() {
         if (currentTemperature >= 100 && getTimer() % getBoilingCycleLength() == 0) {
-            float additionalTempBonus = (currentTemperature - 100) / (getMaxTemperate() - 100.0f);
-            int fillAmount = baseSteamOutput + (int) (baseSteamOutput * additionalTempBonus);
+            int fillAmount = (int) (baseSteamOutput * (currentTemperature / (getMaxTemperate() * 1.0)));
             boolean hasDrainedWater = waterFluidTank.drain(1, true) != null;
             int filledSteam = 0;
             if (hasDrainedWater) {
@@ -203,10 +204,11 @@ public abstract class SteamBoiler extends MetaTileEntity {
                 getWorld().setBlockToAir(getPos());
                 getWorld().createExplosion(null,
                     getPos().getX() + 0.5, getPos().getY() + 0.5, getPos().getZ() + 0.5,
-                    1.0f + 1.5f * additionalTempBonus, true);
+                    2.0f, true);
             } else this.hasNoWater = !hasDrainedWater;
             if (filledSteam == 0 && hasDrainedWater) {
-                //todo sound of steam pressure
+                getWorld().playSound(null, getPos().getX() + 0.5, getPos().getY() + 0.5, getPos().getZ() + 0.5,
+                    SoundEvents.BLOCK_LAVA_EXTINGUISH, SoundCategory.BLOCKS, 1.0f, 1.0f);
                 steamFluidTank.drain(4000, true);
             }
         }
