@@ -436,14 +436,11 @@ public class Materials {
         Copper.setArcSmeltingInto(AnnealedCopper);
 
         Tetrahedrite.setDirectSmelting(Copper);
-        Chalcopyrite.setDirectSmelting(Copper);
         Malachite.setDirectSmelting(Copper);
         Pentlandite.setDirectSmelting(Nickel);
         Sphalerite.setDirectSmelting(Zinc);
         Pyrite.setDirectSmelting(Iron);
         Magnetite.setDirectSmelting(Iron);
-        BasalticMineralSand.setDirectSmelting(Iron);
-        GraniticMineralSand.setDirectSmelting(Iron);
         YellowLimonite.setDirectSmelting(Iron);
         BrownLimonite.setDirectSmelting(Iron);
         BandedIron.setDirectSmelting(Iron);
