@@ -281,7 +281,7 @@ public class ToolRecipeHandler {
             .input(OrePrefix.ingot, solidMaterial, 3)
             .notConsumable(MetaItems.SHAPE_EXTRUDER_AXE)
             .outputs(OreDictUnifier.get(toolPrefix, solidMaterial))
-            .duration((int) solidMaterial.getMass() * 3)
+            .duration((int) solidMaterial.getAverageMass() * 3)
             .EUt(8 * voltageMultiplier)
             .buildAndRegister();
 
@@ -296,7 +296,7 @@ public class ToolRecipeHandler {
             .input(OrePrefix.ingot, solidMaterial, 3)
             .notConsumable(MetaItems.SHAPE_EXTRUDER_HOE)
             .outputs(OreDictUnifier.get(toolPrefix, solidMaterial))
-            .duration((int) solidMaterial.getMass() * 3)
+            .duration((int) solidMaterial.getAverageMass() * 3)
             .EUt(8 * voltageMultiplier)
             .buildAndRegister();
     }
@@ -310,7 +310,7 @@ public class ToolRecipeHandler {
             .input(OrePrefix.ingot, solidMaterial, 3)
             .notConsumable(MetaItems.SHAPE_EXTRUDER_PICKAXE)
             .outputs(OreDictUnifier.get(toolPrefix, solidMaterial))
-            .duration((int) solidMaterial.getMass() * 3)
+            .duration((int) solidMaterial.getAverageMass() * 3)
             .EUt(8 * voltageMultiplier)
             .buildAndRegister();
 
@@ -329,7 +329,7 @@ public class ToolRecipeHandler {
             .input(OrePrefix.ingot, solidMaterial, 2)
             .notConsumable(MetaItems.SHAPE_EXTRUDER_SAW)
             .outputs(OreDictUnifier.get(OrePrefix.toolHeadSaw, solidMaterial))
-            .duration((int) solidMaterial.getMass() * 2)
+            .duration((int) solidMaterial.getAverageMass() * 2)
             .EUt(8 * voltageMultiplier)
             .buildAndRegister();
     }
@@ -347,7 +347,7 @@ public class ToolRecipeHandler {
             .input(OrePrefix.ingot, solidMaterial)
             .notConsumable(MetaItems.SHAPE_EXTRUDER_SHOVEL)
             .outputs(OreDictUnifier.get(toolPrefix, solidMaterial))
-            .duration((int) solidMaterial.getMass())
+            .duration((int) solidMaterial.getAverageMass())
             .EUt(8 * voltageMultiplier)
             .buildAndRegister();
     }
@@ -361,7 +361,7 @@ public class ToolRecipeHandler {
             .input(OrePrefix.ingot, solidMaterial, 2)
             .notConsumable(MetaItems.SHAPE_EXTRUDER_SWORD)
             .outputs(OreDictUnifier.get(toolPrefix, solidMaterial))
-            .duration((int) solidMaterial.getMass() * 2)
+            .duration((int) solidMaterial.getAverageMass() * 2)
             .EUt(8 * voltageMultiplier)
             .buildAndRegister();
     }
@@ -392,7 +392,7 @@ public class ToolRecipeHandler {
                 .input(OrePrefix.ingot, solidMaterial, 6)
                 .notConsumable(MetaItems.SHAPE_EXTRUDER_HAMMER)
                 .outputs(OreDictUnifier.get(toolPrefix, solidMaterial))
-                .duration((int) solidMaterial.getMass() * 6)
+                .duration((int) solidMaterial.getAverageMass() * 6)
                 .EUt(8 * voltageMultiplier)
                 .buildAndRegister();
         }
@@ -415,7 +415,7 @@ public class ToolRecipeHandler {
             .input(OrePrefix.ingot, solidMaterial, 2)
             .notConsumable(MetaItems.SHAPE_EXTRUDER_FILE)
             .outputs(OreDictUnifier.get(toolPrefix, solidMaterial))
-            .duration((int) solidMaterial.getMass() * 2)
+            .duration((int) solidMaterial.getAverageMass() * 2)
             .EUt(8 * voltageMultiplier)
             .buildAndRegister();
 

@@ -34,26 +34,26 @@ public class SteamCoalBoiler extends SteamBoiler {
         if(fuelInSlot.isEmpty()) return;
         int burnTime = TileEntityFurnace.getItemBurnTime(fuelInSlot);
         if(burnTime <= 0) return;
-        importItems.extractItem(1, 1, false);
+        importItems.extractItem(0, 1, false);
         ItemStack remainderAsh = ModHandler.getBurningFuelRemainder(getWorld().rand, fuelInSlot);
         if(!remainderAsh.isEmpty()) { //we don't care if we can't insert ash - it's chanced anyway
-            exportItems.insertItem(1, remainderAsh, false);
+            exportItems.insertItem(0, remainderAsh, false);
         }
         setFuelMaxBurnTime(burnTime);
     }
 
     @Override
     public IItemHandlerModifiable createExportItemHandler() {
-        return new ItemStackHandler(2);
+        return new ItemStackHandler(1);
     }
 
     @Override
     public IItemHandlerModifiable createImportItemHandler() {
-        return new ItemStackHandler(2) {
+        return new ItemStackHandler(1) {
             @Nonnull
             @Override
             public ItemStack insertItem(int slot, @Nonnull ItemStack stack, boolean simulate) {
-                if(slot == 1 && TileEntityFurnace.getItemBurnTime(stack) <= 0)
+                if(TileEntityFurnace.getItemBurnTime(stack) <= 0)
                     return stack;
                 return super.insertItem(slot, stack, simulate);
             }

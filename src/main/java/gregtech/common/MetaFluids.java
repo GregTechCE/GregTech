@@ -154,6 +154,7 @@ public class MetaFluids {
             }
         };
         fluid.setTemperature(temp);
+        System.out.println(GTUtility.convertRGBtoOpaqueRGBA_MC(material.materialRGB) + " " + Integer.parseUnsignedInt("ff" + Integer.toString(material.materialRGB, 16), 16));
         fluid.setColor(GTUtility.convertRGBtoOpaqueRGBA_MC(material.materialRGB));
         setFluidProperties(fluid, type, material);
         FluidRegistry.registerFluid(fluid);

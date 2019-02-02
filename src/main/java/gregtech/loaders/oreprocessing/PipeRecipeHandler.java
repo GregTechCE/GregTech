@@ -25,7 +25,7 @@ public class PipeRecipeHandler {
             .input(OrePrefix.ingot, material, 3)
             .notConsumable(MetaItems.SHAPE_EXTRUDER_PIPE_TINY)
             .outputs(GTUtility.copyAmount(4, OreDictUnifier.get(pipePrefix, material)))
-            .duration((int) (material.getMass() * 4))
+            .duration((int) (material.getAverageMass() * 4))
             .EUt(6 * getVoltageMultiplier(material))
             .buildAndRegister();
     }
@@ -36,7 +36,7 @@ public class PipeRecipeHandler {
             .input(OrePrefix.ingot, material, 3)
             .notConsumable(MetaItems.SHAPE_EXTRUDER_PIPE_SMALL)
             .outputs(GTUtility.copyAmount(2, pipeStack))
-            .duration((int) (material.getMass() * 2))
+            .duration((int) (material.getAverageMass() * 2))
             .EUt(6 * getVoltageMultiplier(material))
             .buildAndRegister();
 
@@ -51,7 +51,7 @@ public class PipeRecipeHandler {
             .input(OrePrefix.ingot, material, 3)
             .notConsumable(MetaItems.SHAPE_EXTRUDER_PIPE_MEDIUM)
             .outputs(pipeStack)
-            .duration((int) material.getMass())
+            .duration((int) material.getAverageMass())
             .EUt(6 * getVoltageMultiplier(material))
             .buildAndRegister();
 
@@ -65,7 +65,7 @@ public class PipeRecipeHandler {
             .input(OrePrefix.ingot, material, 6)
             .notConsumable(MetaItems.SHAPE_EXTRUDER_PIPE_LARGE)
             .outputs(OreDictUnifier.get(pipePrefix, material))
-            .duration((int) material.getMass())
+            .duration((int) material.getAverageMass())
             .EUt(6 * getVoltageMultiplier(material))
             .buildAndRegister();
     }

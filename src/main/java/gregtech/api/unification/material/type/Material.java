@@ -23,7 +23,6 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.TreeMap;
 
-import static gregtech.api.GTValues.M;
 import static gregtech.api.util.GTUtility.createFlag;
 
 @ZenClass("mods.gregtech.material.Material")
@@ -279,47 +278,53 @@ public abstract class Material implements Comparable<Material> {
 	public long getProtons() {
 		if (element != null)
 			return element.getProtons();
-		if (materialComponents.size() <= 0)
+		if (materialComponents.isEmpty())
 			return Element.Tc.getProtons();
-		long totalProtons = 0, totalAmount = 0;
+		long totalProtons = 0;
 		for (MaterialStack material : materialComponents) {
-			totalAmount += material.amount;
 			totalProtons += material.amount * material.material.getProtons();
 		}
-		return (getDensity() * totalProtons) / (totalAmount * M);
+		return totalProtons;
 	}
 
 	@ZenGetter("neutrons")
 	public long getNeutrons() {
 		if (element != null)
 			return element.getNeutrons();
-		if (materialComponents.size() <= 0)
+		if (materialComponents.isEmpty())
 			return Element.Tc.getNeutrons();
-		long totalProtons = 0, totalAmount = 0;
+		long totalNeutrons = 0;
 		for (MaterialStack material : materialComponents) {
-			totalAmount += material.amount;
-			totalProtons += material.amount * material.material.getNeutrons();
+			totalNeutrons += material.amount * material.material.getNeutrons();
 		}
-		return (getDensity() * totalProtons) / (totalAmount * M);
+		return totalNeutrons;
 	}
 
-	@ZenGetter("mass")
-	public long getMass() {
-		if (element != null)
-			return element.getMass();
-		if (materialComponents.size() <= 0)
-			return Element.Tc.getMass();
-		long totalProtons = 0, totalAmount = 0;
-		for (MaterialStack material : materialComponents) {
-			totalAmount += material.amount;
-			totalProtons += material.amount * material.material.getMass();
-		}
-		return (getDensity() * totalProtons) / (totalAmount * M);
-	}
+    @ZenGetter("mass")
+    public long getMass() {
+        if (element != null)
+            return element.getMass();
+        if (materialComponents.isEmpty())
+            return Element.Tc.getMass();
+        long totalMass = 0;
+        for (MaterialStack material : materialComponents) {
+            totalMass += material.amount * material.material.getMass();
+        }
+        return totalMass;
+    }
 
-	@ZenGetter("density")
-	public long getDensity() {
-		return M;
+	@ZenGetter("averageMass")
+	public long getAverageMass() {
+        if (element != null)
+            return element.getMass();
+        if (materialComponents.size() <= 0)
+            return Element.Tc.getMass();
+        long totalMass = 0, totalAmount = 0;
+        for (MaterialStack material : materialComponents) {
+            totalAmount += material.amount;
+            totalMass += material.amount * material.material.getMass();
+        }
+        return totalMass / totalAmount;
 	}
 
 	@ZenGetter("camelCaseString")

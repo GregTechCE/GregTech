@@ -99,7 +99,7 @@ public class DustMaterial extends FluidMaterial {
      * Material to which smelting of this material ore will result
      */
     @ZenProperty
-    public SolidMaterial directSmelting;
+    public IngotMaterial directSmelting;
 
     /**
      * Material in which this material's ore should be washed to give additional output
@@ -147,7 +147,7 @@ public class DustMaterial extends FluidMaterial {
         this.oreByProducts.addAll(Arrays.asList(byProducts));
     }
 
-    public void setDirectSmelting(SolidMaterial directSmelting) {
+    public void setDirectSmelting(IngotMaterial directSmelting) {
         this.directSmelting = directSmelting;
     }
 

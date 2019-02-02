@@ -70,7 +70,6 @@ public abstract class SolidMaterial extends DustMaterial {
         super(metaItemSubId, name, materialRGB, materialIconSet, harvestLevel, materialComponents, materialGenerationFlags, element);
         this.toolSpeed = toolSpeed;
         this.toolDurability = toolDurability;
-        this.directSmelting = this;
     }
 
     @Override

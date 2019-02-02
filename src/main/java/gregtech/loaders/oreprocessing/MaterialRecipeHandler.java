@@ -83,7 +83,7 @@ public class MaterialRecipeHandler {
                     ModHandler.addSmeltingRecipe(new UnificationEntry(dustPrefix, metalMaterial), ingotStack);
                     ModHandler.addSmeltingRecipe(new UnificationEntry(OrePrefix.dustTiny, metalMaterial), nuggetStack);
                 } else {
-                    int duration = Math.max(1, (int) (material.getMass() * metalMaterial.blastFurnaceTemperature / 50L));
+                    int duration = Math.max(1, (int) (material.getAverageMass() * metalMaterial.blastFurnaceTemperature / 50L));
                     ModHandler.removeFurnaceSmelting(new UnificationEntry(OrePrefix.ingot, metalMaterial));
 
                     RecipeMaps.BLAST_RECIPES.recipeBuilder()
@@ -122,9 +122,6 @@ public class MaterialRecipeHandler {
                 .outputs(OreDictUnifier.get(OrePrefix.plate, material))
                 .buildAndRegister();
         }
-
-        //dust gains same amount of material as normal dust
-        OreRecipeHandler.processMetalSmelting(dustPrefix, material, 9, 9);
     }
 
     public static void processSmallDust(OrePrefix orePrefix,DustMaterial material) {
@@ -169,7 +166,7 @@ public class MaterialRecipeHandler {
                     .input(ingotPrefix, material)
                     .notConsumable(MetaItems.SHAPE_EXTRUDER_ROD)
                     .outputs(OreDictUnifier.get(OrePrefix.stick, material, 2))
-                    .duration((int) material.getMass() * 2)
+                    .duration((int) material.getAverageMass() * 2)
                     .EUt(6 * getVoltageMultiplier(material))
                     .buildAndRegister();
             }
@@ -200,13 +197,13 @@ public class MaterialRecipeHandler {
                 .circuitMeta(0)
                 .input(ingotPrefix, material)
                 .outputs(plateStack)
-                .EUt(24).duration((int) (material.getMass()))
+                .EUt(24).duration((int) (material.getAverageMass()))
                 .buildAndRegister();
 
             RecipeMaps.FORGE_HAMMER_RECIPES.recipeBuilder()
                 .input(ingotPrefix, material, 3)
                 .outputs(GTUtility.copyAmount(2, plateStack))
-                .EUt(16).duration((int) (material.getMass() * 2))
+                .EUt(16).duration((int) (material.getAverageMass() * 2))
                 .buildAndRegister();
 
             int voltageMultiplier = getVoltageMultiplier(material);
@@ -214,7 +211,7 @@ public class MaterialRecipeHandler {
                 .input(ingotPrefix, material)
                 .notConsumable(MetaItems.SHAPE_EXTRUDER_PLATE)
                 .outputs(OreDictUnifier.get(OrePrefix.plate, material))
-                .duration((int) material.getMass())
+                .duration((int) material.getAverageMass())
                 .EUt(8 * voltageMultiplier)
                 .buildAndRegister();
 
@@ -222,7 +219,7 @@ public class MaterialRecipeHandler {
                 .input(ingotPrefix, material, 2)
                 .notConsumable(MetaItems.SHAPE_MOLD_PLATE)
                 .outputs(OreDictUnifier.get(OrePrefix.plate, material))
-                .duration((int) material.getMass() * 2)
+                .duration((int) material.getAverageMass() * 2)
                 .EUt(2 * voltageMultiplier)
                 .buildAndRegister();
 
@@ -235,14 +232,14 @@ public class MaterialRecipeHandler {
                     .input(ingotPrefix, material, 9)
                     .outputs(denseStack)
                     .circuitMeta(5)
-                    .EUt(96).duration((int) (material.getMass() * 9))
+                    .EUt(96).duration((int) (material.getAverageMass() * 9))
                     .buildAndRegister();
 
                 RecipeMaps.BENDER_RECIPES.recipeBuilder()
                     .input(OrePrefix.plate, material, 9)
                     .outputs(denseStack)
                     .circuitMeta(5)
-                    .EUt(96).duration((int) (material.getMass() * 2))
+                    .EUt(96).duration((int) (material.getAverageMass() * 2))
                     .buildAndRegister();
             }
         }
@@ -275,7 +272,7 @@ public class MaterialRecipeHandler {
                 .input(gemPrefix, material)
                 .outputs(OreDictUnifier.get(OrePrefix.stickLong, material, (int) (materialAmount / (M * 2))),
                     OreDictUnifier.getDust(material, materialAmount % (M * 2)))
-                .duration((int) material.getMass())
+                .duration((int) material.getAverageMass())
                 .EUt(16)
                 .buildAndRegister();
         } else if (materialAmount >= M && material.hasFlag(SolidMaterial.MatFlags.GENERATE_ROD)) {
@@ -285,7 +282,7 @@ public class MaterialRecipeHandler {
                 RecipeMaps.LATHE_RECIPES.recipeBuilder()
                     .input(gemPrefix, material)
                     .outputs(gemStick, gemDust)
-                    .duration((int) material.getMass())
+                    .duration((int) material.getAverageMass())
                     .EUt(16)
                     .buildAndRegister();
             }
@@ -307,7 +304,7 @@ public class MaterialRecipeHandler {
                     .notConsumable(MetaItems.SHAPE_MOLD_NUGGET)
                     .fluidInputs(material.getFluid(L))
                     .outputs(OreDictUnifier.get(orePrefix, material, 9))
-                    .duration((int) material.getMass())
+                    .duration((int) material.getAverageMass())
                     .EUt(8)
                     .buildAndRegister();
             }
@@ -342,7 +339,7 @@ public class MaterialRecipeHandler {
                 .notConsumable(MetaItems.SHAPE_MOLD_BLOCK)
                 .fluidInputs(material.getFluid((int) (materialAmount * L / M)))
                 .outputs(blockStack)
-                .duration((int) material.getMass()).EUt(8)
+                .duration((int) material.getAverageMass()).EUt(8)
                 .buildAndRegister();
         }
 
@@ -351,7 +348,7 @@ public class MaterialRecipeHandler {
             RecipeMaps.CUTTER_RECIPES.recipeBuilder()
                 .input(blockPrefix, material)
                 .outputs(GTUtility.copyAmount((int) (materialAmount / M), plateStack))
-                .duration((int) (material.getMass() * 8L)).EUt(30)
+                .duration((int) (material.getAverageMass() * 8L)).EUt(30)
                 .buildAndRegister();
         }
 

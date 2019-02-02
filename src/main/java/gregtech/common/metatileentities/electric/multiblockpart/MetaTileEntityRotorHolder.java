@@ -154,6 +154,10 @@ public class MetaTileEntityRotorHolder extends MetaTileEntityMultiblockPart impl
         return rotorInventory.getRotorEfficiency();
     }
 
+    public boolean hasRotorInInventory() {
+        return !rotorInventory.getStackInSlot(0).isEmpty();
+    }
+
     public boolean applyDamageToRotor(int damageAmount, boolean simulate) {
         return rotorInventory.applyDamageToRotor(damageAmount, simulate);
     }

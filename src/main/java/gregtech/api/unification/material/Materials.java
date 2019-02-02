@@ -188,7 +188,7 @@ public class Materials {
     public static DustMaterial Ilmenite = new DustMaterial(121, "ilmenite", 0x463732, MaterialIconSet.ROUGH, 3, of(new MaterialStack(Iron, 1), new MaterialStack(Titanium, 1), new MaterialStack(Oxygen, 3)), GENERATE_ORE | DISABLE_DECOMPOSITION);
     public static GemMaterial Rutile = new GemMaterial(122, "rutile", 0xD40D5C, MaterialIconSet.GEM_HORIZONTAL, 2, of(new MaterialStack(Titanium, 1), new MaterialStack(Oxygen, 2)), STD_GEM | DISABLE_DECOMPOSITION);
     public static DustMaterial Bauxite = new DustMaterial(123, "bauxite", 0xC86400, MaterialIconSet.ROUGH, 1, of(new MaterialStack(Rutile, 2), new MaterialStack(Aluminium, 16), new MaterialStack(Hydrogen, 10), new MaterialStack(Oxygen, 11)), GENERATE_ORE);
-    public static FluidMaterial TitaniumTetrachloride = new FluidMaterial(124, "titanium_tetrachloride", 0xD40D5C, MaterialIconSet.FLUID, of(new MaterialStack(Titanium, 1), new MaterialStack(Carbon, 2), new MaterialStack(Chlorine, 2)), 0);
+    public static FluidMaterial TitaniumTetrachloride = new FluidMaterial(124, "titanium_tetrachloride", 0xD40D5C, MaterialIconSet.FLUID, of(new MaterialStack(Titanium, 1), new MaterialStack(Carbon, 2), new MaterialStack(Chlorine, 2)), DISABLE_DECOMPOSITION);
     public static DustMaterial MagnesiumChloride = new DustMaterial(125, "magnesium_chloride", 0xD40D5C, MaterialIconSet.ROUGH, 2, of(new MaterialStack(Magnesium, 1), new MaterialStack(Chlorine, 2)), 0);
     public static IngotMaterial Invar = new IngotMaterial(126, "invar", 0xB4B478, MaterialIconSet.METALLIC, 2, of(new MaterialStack(Iron, 2), new MaterialStack(Nickel, 1)), EXT2_METAL | MORTAR_GRINDABLE | GENERATE_RING | GENERATE_FRAME, 6.0F, 256);
     public static IngotMaterial Kanthal = new IngotMaterial(127, "kanthal", 0xC2D2DF, MaterialIconSet.METALLIC, 2, of(new MaterialStack(Iron, 1), new MaterialStack(Aluminium, 1), new MaterialStack(Chrome, 1)), EXT_METAL, null, 1800);
@@ -441,6 +441,7 @@ public class Materials {
         Pentlandite.setDirectSmelting(Nickel);
         Sphalerite.setDirectSmelting(Zinc);
         Pyrite.setDirectSmelting(Iron);
+        Magnetite.setDirectSmelting(Iron);
         BasalticMineralSand.setDirectSmelting(Iron);
         GraniticMineralSand.setDirectSmelting(Iron);
         YellowLimonite.setDirectSmelting(Iron);
@@ -504,39 +505,6 @@ public class Materials {
         Coal.setBurnTime(1600); //default coal burn time in vanilla
         Charcoal.setBurnTime(1600); //default coal burn time in vanilla
         Lignite.setBurnTime(1200); //2/3 of burn time of coal
-
-        Vinteum.addEnchantmentForTools(Enchantments.FORTUNE, 1);
-
-        EnderPearl.addEnchantmentForTools(Enchantments.SILK_TOUCH, 1);
-        NetherStar.addEnchantmentForTools(Enchantments.SILK_TOUCH, 1);
-
-        BlackBronze.addEnchantmentForTools(Enchantments.SMITE, 2);
-        Gold.addEnchantmentForTools(Enchantments.SMITE, 3);
-        RoseGold.addEnchantmentForTools(Enchantments.SMITE, 4);
-        Platinum.addEnchantmentForTools(Enchantments.SMITE, 5);
-
-        Lead.addEnchantmentForTools(Enchantments.BANE_OF_ARTHROPODS, 2);
-        Nickel.addEnchantmentForTools(Enchantments.BANE_OF_ARTHROPODS, 2);
-        Invar.addEnchantmentForTools(Enchantments.BANE_OF_ARTHROPODS, 3);
-        Antimony.addEnchantmentForTools(Enchantments.BANE_OF_ARTHROPODS, 3);
-        BatteryAlloy.addEnchantmentForTools(Enchantments.BANE_OF_ARTHROPODS, 4);
-        Bismuth.addEnchantmentForTools(Enchantments.BANE_OF_ARTHROPODS, 4);
-        BismuthBronze.addEnchantmentForTools(Enchantments.BANE_OF_ARTHROPODS, 5);
-
-        Iron.addEnchantmentForTools(Enchantments.SHARPNESS, 1);
-        Bronze.addEnchantmentForTools(Enchantments.SHARPNESS, 1);
-        Brass.addEnchantmentForTools(Enchantments.SHARPNESS, 2);
-        Steel.addEnchantmentForTools(Enchantments.SHARPNESS, 2);
-        WroughtIron.addEnchantmentForTools(Enchantments.SHARPNESS, 2);
-        StainlessSteel.addEnchantmentForTools(Enchantments.SHARPNESS, 3);
-        BlackSteel.addEnchantmentForTools(Enchantments.SHARPNESS, 4);
-        RedSteel.addEnchantmentForTools(Enchantments.SHARPNESS, 4);
-        BlueSteel.addEnchantmentForTools(Enchantments.SHARPNESS, 5);
-        DamascusSteel.addEnchantmentForTools(Enchantments.SHARPNESS, 5);
-        TungstenCarbide.addEnchantmentForTools(Enchantments.SHARPNESS, 5);
-        HSSE.addEnchantmentForTools(Enchantments.SHARPNESS, 5);
-        HSSG.addEnchantmentForTools(Enchantments.SHARPNESS, 4);
-        HSSS.addEnchantmentForTools(Enchantments.SHARPNESS, 5);
 
         Chalcopyrite.addOreByProducts(Pyrite, Cobalt, Cadmium, Gold);
         Sphalerite.addOreByProducts(GarnetYellow, Cadmium, Gallium, Zinc);
@@ -672,6 +640,26 @@ public class Materials {
         RockSalt.addOreByProducts(Salt);
         Andesite.addOreByProducts(Basalt);
         Diorite.addOreByProducts(NetherQuartz);
+
+        Vinteum.addEnchantmentForTools(Enchantments.FORTUNE, 1);
+        BlackBronze.addEnchantmentForTools(Enchantments.SMITE, 2);
+        RoseGold.addEnchantmentForTools(Enchantments.SMITE, 4);
+        Invar.addEnchantmentForTools(Enchantments.BANE_OF_ARTHROPODS, 3);
+        BismuthBronze.addEnchantmentForTools(Enchantments.BANE_OF_ARTHROPODS, 5);
+        Iron.addEnchantmentForTools(Enchantments.SHARPNESS, 1);
+        Bronze.addEnchantmentForTools(Enchantments.SHARPNESS, 1);
+        Brass.addEnchantmentForTools(Enchantments.SHARPNESS, 2);
+        Steel.addEnchantmentForTools(Enchantments.SHARPNESS, 2);
+        WroughtIron.addEnchantmentForTools(Enchantments.SHARPNESS, 2);
+        StainlessSteel.addEnchantmentForTools(Enchantments.SHARPNESS, 3);
+        BlackSteel.addEnchantmentForTools(Enchantments.SHARPNESS, 4);
+        RedSteel.addEnchantmentForTools(Enchantments.SHARPNESS, 4);
+        BlueSteel.addEnchantmentForTools(Enchantments.SHARPNESS, 5);
+        DamascusSteel.addEnchantmentForTools(Enchantments.SHARPNESS, 5);
+        TungstenCarbide.addEnchantmentForTools(Enchantments.SHARPNESS, 5);
+        HSSE.addEnchantmentForTools(Enchantments.SHARPNESS, 5);
+        HSSG.addEnchantmentForTools(Enchantments.SHARPNESS, 4);
+        HSSS.addEnchantmentForTools(Enchantments.SHARPNESS, 5);
 
         RedAlloy.setCableProperties(GTValues.V[0], 1, 0);
         Tin.setCableProperties(GTValues.V[1], 1, 1);

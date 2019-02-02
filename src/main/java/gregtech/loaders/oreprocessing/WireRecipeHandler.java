@@ -42,14 +42,14 @@ public class WireRecipeHandler {
             .input(OrePrefix.ingot, material)
             .notConsumable(MetaItems.SHAPE_EXTRUDER_WIRE)
             .outputs(OreDictUnifier.get(OrePrefix.wireGtSingle, material, 2))
-            .duration((int) material.getMass() * 2)
+            .duration((int) material.getAverageMass() * 2)
             .EUt(6 * getVoltageMultiplier(material))
             .buildAndRegister();
 
         RecipeMaps.WIREMILL_RECIPES.recipeBuilder()
             .input(OrePrefix.ingot, material)
             .outputs(OreDictUnifier.get(OrePrefix.wireGtSingle, material, 2))
-            .duration((int) material.getMass())
+            .duration((int) material.getAverageMass())
             .EUt(getVoltageMultiplier(material))
             .buildAndRegister();
 

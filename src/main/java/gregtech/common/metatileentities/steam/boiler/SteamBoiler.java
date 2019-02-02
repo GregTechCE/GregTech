@@ -31,6 +31,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.items.ItemStackHandler;
 import org.apache.commons.lang3.ArrayUtils;
 
 import javax.annotation.Nullable;
@@ -62,6 +63,7 @@ public abstract class SteamBoiler extends MetaTileEntity {
 
     private boolean isBurning;
     private boolean wasBurningAndNeedsUpdate;
+    private ItemStackHandler containerInventory;
 
     public SteamBoiler(ResourceLocation metaTileEntityId, boolean isHighPressure, OrientedOverlayRenderer renderer, int baseSteamOutput) {
         super(metaTileEntityId);
@@ -71,6 +73,7 @@ public abstract class SteamBoiler extends MetaTileEntity {
         BRONZE_BACKGROUND_TEXTURE = getGuiTexture("%s_gui");
         BRONZE_SLOT_BACKGROUND_TEXTURE = getGuiTexture("slot_%s");
         SLOT_FURNACE_BACKGROUND = getGuiTexture("slot_%s_furnace_background");
+        this.containerInventory = new ItemStackHandler(2);
     }
 
     @SideOnly(Side.CLIENT)
@@ -102,6 +105,7 @@ public abstract class SteamBoiler extends MetaTileEntity {
         data.setInteger("FuelMaxBurnTime", fuelMaxBurnTime);
         data.setInteger("CurrentTemperature", currentTemperature);
         data.setBoolean("HasNoWater", hasNoWater);
+        data.setTag("ContainerInventory", containerInventory.serializeNBT());
         return data;
     }
 
@@ -112,6 +116,7 @@ public abstract class SteamBoiler extends MetaTileEntity {
         this.fuelMaxBurnTime = data.getInteger("FuelMaxBurnTime");
         this.currentTemperature = data.getInteger("CurrentTemperature");
         this.hasNoWater = data.getBoolean("HasNoWater");
+        this.containerInventory.deserializeNBT(data.getCompoundTag("ContainerInventory"));
         this.isBurning = fuelBurnTimeLeft > 0;
     }
 
@@ -152,7 +157,7 @@ public abstract class SteamBoiler extends MetaTileEntity {
             generateSteam();
 
             if (getTimer() % 5 == 0) {
-                fillInternalTankFromFluidContainer(importItems, exportItems, 0, 0);
+                fillInternalTankFromFluidContainer(containerInventory, containerInventory, 0, 1);
                 pushFluidsIntoNearbyHandlers(STEAM_PUSH_DIRECTIONS);
             }
 
@@ -242,8 +247,7 @@ public abstract class SteamBoiler extends MetaTileEntity {
 
     @Override
     protected FluidTankList createImportFluidHandler() {
-        this.waterFluidTank = new FilteredFluidHandler(16000)
-            .setFillPredicate(ModHandler::isWater);
+        this.waterFluidTank = new FilteredFluidHandler(16000).setFillPredicate(ModHandler::isWater);
         return new FluidTankList(false, waterFluidTank);
     }
 
@@ -273,9 +277,9 @@ public abstract class SteamBoiler extends MetaTileEntity {
             .widget(new TankWidget(steamFluidTank, 69, 17, 11, 55)
                 .setBackgroundTexture(getGuiTexture("bar_%s_empty")))
 
-            .widget(new FluidContainerSlotWidget(this.importItems, 0, 43, 18, true)
+            .widget(new FluidContainerSlotWidget(containerInventory, 0, 43, 18, true)
                 .setBackgroundTexture(BRONZE_SLOT_BACKGROUND_TEXTURE, getGuiTexture("overlay_%s_in")))
-            .widget(new SlotWidget(this.exportItems, 0, 43, 54, true, false)
+            .widget(new SlotWidget(containerInventory, 1, 43, 54, true, false)
                 .setBackgroundTexture(BRONZE_SLOT_BACKGROUND_TEXTURE, getGuiTexture("overlay_%s_out")))
             .widget(new ImageWidget(42, 35, 18, 18)
                 .setImage(getGuiTexture("overlay_%s_fluid_container")))
