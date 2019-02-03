@@ -194,7 +194,6 @@ public class GTUtility {
         int b = (colorValue & 0xFF);
         //noinspection NumericOverflow
         return 0xFF << 24 | (r & 0xFF) << 16 | (g & 0xFF) << 8 | (b & 0xFF);
-        //return Integer.parseUnsignedInt("ff" + Integer.toString(colorValue, 16), 16);
     }
 
     public static void setItem(ItemStack itemStack, ItemStack newStack) {
