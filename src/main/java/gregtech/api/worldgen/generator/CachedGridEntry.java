@@ -74,6 +74,9 @@ public class CachedGridEntry implements IBlockGeneratorAccess {
         BlockPos blockPos = new BlockPos(gridX * gridSizeX + gridSizeX / 2, world.getActualHeight(), gridZ * gridSizeZ + gridSizeZ / 2);
         Biome currentBiome = world.getBiomeProvider().getBiome(blockPos);
         this.cachedDepositMap = new ArrayList<>(WorldGenRegistry.INSTANCE.getCachedBiomeVeins(world.provider, currentBiome));
+        //SOLUTION: STORE PRIMER FLAG IN EACH FLAG AND CHECK CHUNK EXISTENCE WHEN GENERATING ORE
+        //USE PRIMER CHUNK FOR GETTING HEIGHT MAP
+        //CAN ALSO BE USEFUL FOR SOMETHING ELSE
         this.maxHeight = world.getActualHeight();
         this.generatedVeins = triggerVeinsGeneration();
     }

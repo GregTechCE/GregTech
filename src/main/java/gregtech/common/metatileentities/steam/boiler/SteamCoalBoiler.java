@@ -30,7 +30,7 @@ public class SteamCoalBoiler extends SteamBoiler {
 
     @Override
     protected void tryConsumeNewFuel() {
-        ItemStack fuelInSlot = importItems.extractItem(1, 1, true);
+        ItemStack fuelInSlot = importItems.extractItem(0, 1, true);
         if(fuelInSlot.isEmpty()) return;
         int burnTime = TileEntityFurnace.getItemBurnTime(fuelInSlot);
         if(burnTime <= 0) return;

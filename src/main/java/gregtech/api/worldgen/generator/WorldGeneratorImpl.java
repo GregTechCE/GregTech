@@ -54,8 +54,7 @@ public class WorldGeneratorImpl implements IWorldGenerator {
 
         //if we didn't generate anything, or surface rocks disabled, or it is a flat world,
         //do not generate them at all
-        if (generatedOres.isEmpty() ||
-            !ConfigHolder.enableOreVeinSurfaceRocks ||
+        if (generatedOres.isEmpty() || !ConfigHolder.enableOreVeinSurfaceRocks ||
             world.getWorldType() == WorldType.FLAT)
             return;
 
