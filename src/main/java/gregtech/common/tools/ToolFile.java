@@ -28,9 +28,4 @@ public class ToolFile extends ToolBase {
             block.getMaterial() == Material.CIRCUITS;
     }
 
-    @Override
-    public boolean hasMaterialHandle() {
-        return true;
-    }
-
 }

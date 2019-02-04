@@ -1,5 +1,21 @@
 ## Changelog
 
+### 1.5.15
+* Change amount of crushed ore obtained from different ores
+* Nerfed smelting of compound dust to nuggets (yet by smelting all dust from 1 ore block you will get 1 or 2 ingots for forge hammer/macerator)
+* Removed smelting of crushed ore
+* Jackhammer no longer behaves like hammer on blocks
+* Buffed hammer durability for block mining and dig speed
+
+### 1.5.14
+* Hotfix for crash with coal boilers
+
+### 1.5.13
+* Added foam blocks and reinforced stone (colorable)
+* Rework frames so they act like scaffolds and are paintable now
+* Added foam sprayer for placing them
+* Fixed some minor bugs and issues
+
 ### 1.5.12
 * Fixed server side crash. Closes #510.
 * Refactored meta tile entity sync to use less data and be faster.

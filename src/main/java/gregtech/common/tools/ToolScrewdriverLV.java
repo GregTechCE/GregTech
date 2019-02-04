@@ -9,8 +9,4 @@ public class ToolScrewdriverLV extends ToolScrewdriver {
         return 2;
     }
 
-    @Override
-    public boolean hasMaterialHandle() {
-        return true;
-    }
 }

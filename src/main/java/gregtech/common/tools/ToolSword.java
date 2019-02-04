@@ -55,8 +55,4 @@ public class ToolSword extends ToolBase {
             block.getMaterial() == Material.SPONGE;
     }
 
-    @Override
-    public boolean hasMaterialHandle() {
-        return true;
-    }
 }

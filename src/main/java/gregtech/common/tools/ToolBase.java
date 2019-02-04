@@ -9,11 +9,6 @@ import net.minecraft.util.ResourceLocation;
 public abstract class ToolBase implements IToolStats {
 
     @Override
-    public boolean hasMaterialHandle() {
-        return false;
-    }
-
-    @Override
     public boolean isMinableBlock(IBlockState block, ItemStack stack) {
         return false;
     }

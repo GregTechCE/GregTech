@@ -322,7 +322,7 @@ public abstract class Material implements Comparable<Material> {
         long totalMass = 0, totalAmount = 0;
         for (MaterialStack material : materialComponents) {
             totalAmount += material.amount;
-            totalMass += material.amount * material.material.getMass();
+            totalMass += material.amount * material.material.getAverageMass();
         }
         return totalMass / totalAmount;
 	}

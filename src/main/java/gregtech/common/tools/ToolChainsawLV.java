@@ -31,11 +31,6 @@ public class ToolChainsawLV extends ToolSaw {
     }
 
     @Override
-    public boolean hasMaterialHandle() {
-        return true;
-    }
-
-    @Override
     public int convertBlockDrops(World world, BlockPos blockPos, IBlockState blockState, EntityPlayer harvester, List<ItemStack> drops, boolean recursive) {
         int superResult = super.convertBlockDrops(world, blockPos, blockState, harvester, drops, recursive);
         if(superResult > 0) {

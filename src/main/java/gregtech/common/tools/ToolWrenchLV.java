@@ -14,8 +14,4 @@ public class ToolWrenchLV extends ToolWrench {
         return 2.0F;
     }
 
-    @Override
-    public boolean hasMaterialHandle() {
-        return true;
-    }
 }

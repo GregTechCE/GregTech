@@ -76,7 +76,10 @@ public class CachedGridEntry implements IBlockGeneratorAccess {
         this.cachedDepositMap = new ArrayList<>(WorldGenRegistry.INSTANCE.getCachedBiomeVeins(world.provider, currentBiome));
         //SOLUTION: STORE PRIMER FLAG IN EACH FLAG AND CHECK CHUNK EXISTENCE WHEN GENERATING ORE
         //USE PRIMER CHUNK FOR GETTING HEIGHT MAP
-        //CAN ALSO BE USEFUL FOR SOMETHING ELSE
+        //CAN ALSO BE USEFUL FOR SOMETHING ELSE,
+        //LIKE STORING GENERATED VEINS IN CHUNK rOR SURFACE ROCK ANALYZING
+        //AND STORING OIL SPRING HEIGHT
+        //TODO OIL SPRINGS AND ALSO INCREASED CHANCE OF OIL IN DRY SAND BIOMES (BIOME DICTIONARY)
         this.maxHeight = world.getActualHeight();
         this.generatedVeins = triggerVeinsGeneration();
     }

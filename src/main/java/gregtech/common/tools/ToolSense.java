@@ -30,11 +30,6 @@ public class ToolSense extends ToolBase {
     }
 
     @Override
-    public boolean hasMaterialHandle() {
-        return true;
-    }
-
-    @Override
     public int convertBlockDrops(World world, BlockPos blockPos, IBlockState blockState, EntityPlayer harvester, List<ItemStack> drops, boolean recursive) {
         return ToolUtility.applyMultiBreak(world, blockPos, harvester, this, 3);
     }

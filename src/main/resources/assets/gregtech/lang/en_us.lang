@@ -830,7 +830,7 @@ metaitem.tool.hoe.name=%s Hoe
 metaitem.tool.saw.name=%s Saw
 metaitem.tool.saw.tooltip=Can also harvest Ice
 metaitem.tool.hard_hammer.name=%s Hammer
-metaitem.tool.hard_hammer.tooltip=Crushes Ores instead of harvesting them
+metaitem.tool.hard_hammer.tooltip=Crushes ores instead of harvesting them
 metaitem.tool.soft_hammer.name=%s Soft Hammer
 metaitem.tool.wrench.name=%s Wrench
 metaitem.tool.wrench.tooltip=Hold left click to dismantle machines
@@ -886,7 +886,7 @@ metaitem.tool.tooltip.attack_damage=Attack damage: %d
 metaitem.tool.tooltip.mining_speed=Mining speed: %d
 metaitem.tool.tooltip.durability=Durability: %d/%d
 metaitem.tool.tooltip.rotor.efficiency=Rotor Efficiency: %d%%
-metaitem.tool.tooltip.hammer.extra_drop=Has 50%% chance to drop 1 more crushed ore
+metaitem.tool.tooltip.hammer.extra_drop=Has a chance to drop double crushed ores
 
 cover.ore_dictionary_filter.title=Ore Dictionary Filter
 cover.ore_dictionary_filter.title1=Ore Dictionary Name

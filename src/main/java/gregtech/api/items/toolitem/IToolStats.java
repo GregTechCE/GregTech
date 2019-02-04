@@ -90,8 +90,6 @@ public interface IToolStats {
 
     boolean canApplyEnchantment(ItemStack stack, Enchantment enchantment);
 
-    boolean hasMaterialHandle();
-
     /**
      * block.getHarvestTool(metaData) can return the following Values for example.
      * "axe", "pickaxe", "sword", "shovel", "hoe", "grafter", "saw", "wrench", "crowbar", "file", "hammer", "plow", "plunger", "scoop", "screwdriver", "sense", "scythe", "softhammer", "cutter", "plasmatorch"

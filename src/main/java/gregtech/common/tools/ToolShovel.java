@@ -40,9 +40,4 @@ public class ToolShovel extends ToolBase {
             block.getMaterial() == Material.CLAY;
     }
 
-    @Override
-    public boolean hasMaterialHandle() {
-        return true;
-    }
-
 }

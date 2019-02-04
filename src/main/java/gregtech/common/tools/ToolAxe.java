@@ -56,11 +56,6 @@ public class ToolAxe extends ToolBase {
     }
 
     @Override
-    public boolean hasMaterialHandle() {
-        return true;
-    }
-
-    @Override
     public int convertBlockDrops(World world, BlockPos blockPos, IBlockState blockState, EntityPlayer harvester, List<ItemStack> drops, boolean recursive) {
         return ToolUtility.applyTimberAxe(world, blockPos, blockState, harvester, drops);
     }

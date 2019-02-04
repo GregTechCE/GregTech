@@ -30,8 +30,4 @@ public class ToolHoe extends ToolBase {
         item.addStats(new HoeBehaviour(DamageValues.DAMAGE_FOR_HOE));
     }
 
-    @Override
-    public boolean hasMaterialHandle() {
-        return true;
-    }
 }
