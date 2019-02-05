@@ -9,22 +9,21 @@ import stanhebben.zenscript.annotations.ZenMethod;
 
 import javax.annotation.Nullable;
 import java.util.List;
-import java.util.function.Function;
 
-@ZenClass("mods.gregtech.ore.filter.BlockFiller")
+@ZenClass("mods.gregtech.ore.filler.BlockFiller")
 @ZenRegister
 public abstract class BlockFiller {
 
     public abstract void loadFromConfig(JsonObject object);
 
-    public abstract IBlockState getStateForGeneration(@Nullable IBlockState currentState, int x, int y, int z);
+    public abstract IBlockState apply(@Nullable IBlockState currentState, int x, int y, int z);
 
-    public abstract List<Function<IBlockState, IBlockState>> getAllPossibleStates();
+    public abstract List<FillerEntry> getAllPossibleStates();
 
-    @ZenMethod("getStateForGeneration")
+    @ZenMethod("apply")
     public crafttweaker.api.block.IBlockState ctGetStateForGeneration(crafttweaker.api.block.IBlockState currentState, int x, int y, int z) {
         IBlockState mcBlockState = CraftTweakerMC.getBlockState(currentState);
-        return CraftTweakerMC.getBlockState(getStateForGeneration(mcBlockState, x, y, z));
+        return CraftTweakerMC.getBlockState(apply(mcBlockState, x, y, z));
     }
 
 }

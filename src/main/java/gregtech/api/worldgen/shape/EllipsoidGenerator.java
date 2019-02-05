@@ -3,7 +3,6 @@ package gregtech.api.worldgen.shape;
 import com.google.gson.JsonObject;
 import crafttweaker.annotations.ZenRegister;
 import gregtech.api.worldgen.config.OreConfigUtils;
-import gregtech.api.worldgen.generator.IBlockGeneratorAccess;
 import stanhebben.zenscript.annotations.ZenClass;
 
 import java.util.Random;

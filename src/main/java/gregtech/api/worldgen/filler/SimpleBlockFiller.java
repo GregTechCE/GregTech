@@ -1,36 +1,35 @@
 package gregtech.api.worldgen.filler;
 
-import com.google.common.collect.Lists;
 import com.google.gson.JsonObject;
-import gregtech.api.worldgen.config.OreConfigUtils;
+import gregtech.api.worldgen.config.FillerConfigUtils;
 import net.minecraft.block.state.IBlockState;
 
+import java.util.Collections;
 import java.util.List;
-import java.util.function.Function;
 
 public class SimpleBlockFiller extends BlockFiller {
 
-    private Function<IBlockState, IBlockState> blockStateFiller;
+    private FillerEntry fillerEntry;
 
     public SimpleBlockFiller() {
     }
 
-    public SimpleBlockFiller(Function<IBlockState, IBlockState> blockStateFiller) {
-        this.blockStateFiller = blockStateFiller;
+    public SimpleBlockFiller(FillerEntry blockStateFiller) {
+        this.fillerEntry = blockStateFiller;
     }
 
     @Override
     public void loadFromConfig(JsonObject object) {
-        this.blockStateFiller = OreConfigUtils.createBlockStateFiller(object.get("value"));
+        this.fillerEntry = FillerConfigUtils.createBlockStateFiller(object.get("value"));
     }
 
     @Override
-    public IBlockState getStateForGeneration(IBlockState currentState, int x, int y, int z) {
-        return blockStateFiller.apply(currentState);
+    public IBlockState apply(IBlockState currentState, int x, int y, int z) {
+        return fillerEntry.apply(currentState);
     }
 
     @Override
-    public List<Function<IBlockState, IBlockState>> getAllPossibleStates() {
-        return Lists.newArrayList(blockStateFiller);
+    public List<FillerEntry> getAllPossibleStates() {
+        return Collections.singletonList(fillerEntry);
     }
 }

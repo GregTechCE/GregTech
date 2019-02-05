@@ -2,7 +2,6 @@ package gregtech.api.worldgen.shape;
 
 import com.google.gson.JsonObject;
 import crafttweaker.annotations.ZenRegister;
-import gregtech.api.worldgen.generator.IBlockGeneratorAccess;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos.MutableBlockPos;
 import org.apache.commons.lang3.ArrayUtils;

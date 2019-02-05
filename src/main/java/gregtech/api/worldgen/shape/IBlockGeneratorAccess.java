@@ -1,4 +1,4 @@
-package gregtech.api.worldgen.generator;
+package gregtech.api.worldgen.shape;
 
 public interface IBlockGeneratorAccess {
 

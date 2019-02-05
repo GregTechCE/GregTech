@@ -4,10 +4,11 @@
   "density": 1.0,
   "max_height": 128,
   "min_height": 10,
+  "count_as_vein": false,
 
   "generator": {
-    "type": "ellipsoid",
-    "radius": [20, 40]
+    "type": "sphere",
+    "radius": [10, 20]
   },
   "filler": {
     "type": "ignore_bedrock",

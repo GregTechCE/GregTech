@@ -1,14 +1,23 @@
 {
-  "weight": 65,
+  "weight": 40,
   "density": 1.0,
-  "max_height": 60,
+  "max_height": 40,
   "min_height": 10,
+  "priority": -100,
+  "count_as_vein": false,
+  "generation_predicate": "any",
 
+  "biome_modifier": {
+    "type": "biome_dictionary",
+    "water": 10,
+    "hot": 10,
+    "sandy": 20
+  },
   "generator": {
     "type": "plate",
-    "length": [10, 16],
-    "depth": [10, 16],
-    "height": [4, 8]
+    "length": [20, 36],
+    "depth": [20, 36],
+    "height": [5, 10]
   },
   "filler": {
     "type": "ignore_bedrock",

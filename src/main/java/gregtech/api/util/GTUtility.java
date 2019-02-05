@@ -480,7 +480,7 @@ public class GTUtility {
         return result;
     }
 
-    public static <T> int getRandomItem(Random random, List<Entry<Integer, T>> randomList, int size) {
+    public static <T> int getRandomItem(Random random, List<? extends Entry<Integer, T>> randomList, int size) {
         if(randomList.isEmpty())
             return -1;
         int[] baseOffsets = new int[size];

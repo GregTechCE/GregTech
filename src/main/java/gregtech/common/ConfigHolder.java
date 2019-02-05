@@ -13,13 +13,10 @@ public class ConfigHolder {
     public static boolean increaseDungeonLoot = true;
 
     @Config.Comment("Specifies min amount of veins in section")
-    public static int minVeinsInSection = 3;
+    public static int minVeinsInSection = 0;
 
     @Config.Comment("Specifies additional random amount of veins in section")
     public static int additionalVeinsInSection = 2;
-
-    @Config.Comment("True to enable surface rocks indicating vein under them")
-    public static boolean enableOreVeinSurfaceRocks = true;
 
     @Config.Comment("Whether to disable vanilla ores generation in world. Default is false.")
     public static boolean disableVanillaOres = false;
