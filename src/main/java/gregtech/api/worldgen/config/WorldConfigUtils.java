@@ -82,7 +82,6 @@ public class WorldConfigUtils {
                     Biome biome = GameRegistry.findRegistry(Biome.class).getValue(biomeName);
                     if (biome == null)
                         throw new IllegalArgumentException("Couldn't find biome with name " + biomeName);
-                    //TODO configurable not only weight but height limits
                     backedMap.put(biome, elementEntry.getValue().getAsInt());
                 }
                 return biome -> backedMap.getOrDefault(biome, 0);

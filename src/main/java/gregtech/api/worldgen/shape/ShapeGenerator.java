@@ -8,6 +8,7 @@ import crafttweaker.api.world.IBlockPos;
 import crafttweaker.api.world.IWorld;
 import gregtech.api.GTValues;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Vec3i;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.Optional.Method;
 import stanhebben.zenscript.annotations.ZenClass;
@@ -23,6 +24,8 @@ public abstract class ShapeGenerator {
      * Loads shape generator configuration from the config
      */
     public abstract void loadFromConfig(JsonObject object);
+
+    public abstract Vec3i getMaxSize();
 
     /**
      * Generates shape with the given generator access

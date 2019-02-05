@@ -3,6 +3,7 @@ package gregtech.api.worldgen.shape;
 import com.google.gson.JsonObject;
 import crafttweaker.annotations.ZenRegister;
 import gregtech.api.worldgen.config.OreConfigUtils;
+import net.minecraft.util.math.Vec3i;
 import stanhebben.zenscript.annotations.ZenClass;
 import stanhebben.zenscript.annotations.ZenGetter;
 
@@ -38,6 +39,11 @@ public class SphereGenerator extends ShapeGenerator {
         int[] data = OreConfigUtils.getIntRange(object.get("radius"));
         this.radiusMin = data[0];
         this.radiusMax = data[1];
+    }
+
+    @Override
+    public Vec3i getMaxSize() {
+        return new Vec3i(radiusMax * 2, radiusMax * 2, radiusMax * 2);
     }
 
     @Override

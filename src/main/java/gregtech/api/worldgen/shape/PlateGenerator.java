@@ -3,6 +3,7 @@ package gregtech.api.worldgen.shape;
 import com.google.gson.JsonObject;
 import crafttweaker.annotations.ZenRegister;
 import gregtech.api.worldgen.config.OreConfigUtils;
+import net.minecraft.util.math.Vec3i;
 import stanhebben.zenscript.annotations.ZenClass;
 import stanhebben.zenscript.annotations.ZenGetter;
 
@@ -84,10 +85,17 @@ public class PlateGenerator extends ShapeGenerator {
     }
 
     @Override
+    public Vec3i getMaxSize() {
+        int xzSize = Math.max(maxLength, maxDepth);
+        return new Vec3i(xzSize * 2, maxDepth * 2, xzSize * 2);
+    }
+
+    @Override
     public void generate(Random gridRandom, IBlockGeneratorAccess relativeBlockAccess) {
         int length = (minLength >= maxLength ? minLength : gridRandom.nextInt(maxLength - minLength)) / 2;
         int depth = (minDepth >= maxDepth ? minDepth : gridRandom.nextInt(maxDepth - minDepth)) / 2;
         int height = (minHeight >= maxHeight ? minHeight : gridRandom.nextInt(maxHeight - minHeight)) / 2;
+        boolean rotate = gridRandom.nextBoolean();
         for(int x = -length; x <= length; x++) {
             for(int z = -depth; z <= depth; z++) {
                 boolean hasFloorSub = floorSharpness > gridRandom.nextFloat();
@@ -98,7 +106,7 @@ public class PlateGenerator extends ShapeGenerator {
                     } else hasRoofSub = false;
                     if(hasFloorSub && y == -height)
                         continue;
-                    relativeBlockAccess.generateBlock(x, y, z);
+                    relativeBlockAccess.generateBlock(rotate ? z : x, y, rotate ? x : z);
                 }
             }
         }

@@ -212,8 +212,9 @@ public class CachedGridEntry implements GridEntryInfo, IBlockGeneratorAccess, IB
         int gridSizeX = WorldGeneratorImpl.GRID_SIZE_X * 16;
         int gridSizeZ = WorldGeneratorImpl.GRID_SIZE_Z * 16;
         this.veinCenterX = gridX * gridSizeX + gridRandom.nextInt(gridSizeX);
-        int maximumHeight = Math.min(masterEntry.getMaxBottomHeight(), definition.getHeightLimit()[1]);
-        int minimumHeight = Math.max(3, definition.getHeightLimit()[0]);
+        int topHeightOffset = currentOreVein.getShapeGenerator().getMaxSize().getY() / 2 + 4;
+        int maximumHeight = Math.min(masterEntry.getMaxBottomHeight(), currentOreVein.getHeightLimit()[1] - topHeightOffset);
+        int minimumHeight = Math.max(3, currentOreVein.getHeightLimit()[0]);
         if(minimumHeight >= maximumHeight) {
             return;
         }

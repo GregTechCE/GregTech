@@ -4,6 +4,7 @@ import com.google.gson.JsonObject;
 import crafttweaker.annotations.ZenRegister;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos.MutableBlockPos;
+import net.minecraft.util.math.Vec3i;
 import org.apache.commons.lang3.ArrayUtils;
 import stanhebben.zenscript.annotations.ZenClass;
 import stanhebben.zenscript.annotations.ZenGetter;
@@ -33,6 +34,11 @@ public class SingleBlockGenerator extends ShapeGenerator {
         if(object.has("blocks_count")) {
             this.blocksCount = object.get("blocks_count").getAsInt();
         } else this.blocksCount = 1;
+    }
+
+    @Override
+    public Vec3i getMaxSize() {
+        return new Vec3i(blocksCount, blocksCount, blocksCount);
     }
 
     @Override
