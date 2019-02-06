@@ -1,5 +1,5 @@
 {
-  "weight": 40,
+  "weight": 25,
   "density": 1.0,
   "max_height": 40,
   "min_height": 10,
@@ -9,9 +9,7 @@
 
   "biome_modifier": {
     "type": "biome_dictionary",
-    "water": 10,
-    "hot": 10,
-    "sandy": 20
+    "sandy": 5
   },
   "generator": {
     "type": "plate",

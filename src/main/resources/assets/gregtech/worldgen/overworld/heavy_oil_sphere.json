@@ -1,5 +1,5 @@
 {
-  "weight": 45,
+  "weight": 25,
   "density": 1.0,
   "max_height": 40,
   "min_height": 10,
@@ -8,17 +8,16 @@
   "generation_predicate": "any",
 
   "vein_populator": {
-    "type": "fluid_spring"
+    "type": "fluid_spring",
+    "chance": 0.40
   },
   "biome_modifier": {
     "type": "biome_dictionary",
-    "water": 10,
-    "hot": 10,
-    "sandy": 20
+    "sandy": 5
   },
   "generator": {
     "type": "sphere",
-    "radius": [7, 10]
+    "radius": [8, 12]
   },
   "filler": {
     "type": "ignore_bedrock",

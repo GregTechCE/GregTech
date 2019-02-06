@@ -61,8 +61,6 @@ import static gregtech.common.items.MetaItems.*;
 public class MachineRecipeLoader {
 
     private static final MaterialStack[][] alloySmelterList = {
-        {new MaterialStack(Materials.Tetrahedrite, 3L), new MaterialStack(Materials.Tin, 1), new MaterialStack(Materials.Bronze, 3L)},
-        {new MaterialStack(Materials.Tetrahedrite, 3L), new MaterialStack(Materials.Zinc, 1), new MaterialStack(Materials.Brass, 3L)},
         {new MaterialStack(Materials.Copper, 3L), new MaterialStack(Materials.Tin, 1), new MaterialStack(Materials.Bronze, 4L)},
         {new MaterialStack(Materials.Copper, 3L), new MaterialStack(Materials.Zinc, 1), new MaterialStack(Materials.Brass, 4L)},
         {new MaterialStack(Materials.Copper, 1), new MaterialStack(Materials.Nickel, 1), new MaterialStack(Materials.Cupronickel, 2L)},

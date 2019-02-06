@@ -13,30 +13,35 @@ import java.util.Random;
 public class FluidSpringPopulator implements VeinBufferPopulator {
 
     private IBlockState fluidState;
+    private float springGenerationChance;
 
     public FluidSpringPopulator() {
     }
 
-    public FluidSpringPopulator(IBlockState fluidState) {
+    public FluidSpringPopulator(IBlockState fluidState, float springGenerationChance) {
         this.fluidState = fluidState;
+        this.springGenerationChance = springGenerationChance;
     }
 
     @Override
     public void loadFromConfig(JsonObject object) {
+        this.springGenerationChance = object.get("chance").getAsFloat();
     }
 
     @Override
     public void populateBlockBuffer(OreDepositDefinition definition, Random random, GridEntryInfo gridEntryInfo, IBlockModifierAccess modifier) {
-        int groundLevel = gridEntryInfo.getTerrainHeight();
-        int springUndergroundHeight = groundLevel - gridEntryInfo.getCenterPos(definition).getY();
-        int springHeight = springUndergroundHeight + 6 + random.nextInt(3);
-        for(int i = 1; i <= springHeight; i++) {
-            modifier.setBlock(0, i, 0, 0);
-            if(i <= springUndergroundHeight) {
-                modifier.setBlock(1, i, 0, 0);
-                modifier.setBlock(-1, i, 0, 0);
-                modifier.setBlock(0, i, 1, 0);
-                modifier.setBlock(0, i, -1, 0);
+        if(random.nextFloat() <= springGenerationChance) {
+            int groundLevel = gridEntryInfo.getTerrainHeight();
+            int springUndergroundHeight = groundLevel - gridEntryInfo.getCenterPos(definition).getY();
+            int springHeight = springUndergroundHeight + 6 + random.nextInt(3);
+            for(int i = 1; i <= springHeight; i++) {
+                modifier.setBlock(0, i, 0, 0);
+                if(i <= springUndergroundHeight) {
+                    modifier.setBlock(1, i, 0, 0);
+                    modifier.setBlock(-1, i, 0, 0);
+                    modifier.setBlock(0, i, 1, 0);
+                    modifier.setBlock(0, i, -1, 0);
+                }
             }
         }
     }

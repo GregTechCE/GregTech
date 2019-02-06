@@ -29,7 +29,6 @@ import gregtech.common.metatileentities.storage.MetaTileEntityQuantumChest;
 import gregtech.common.metatileentities.storage.MetaTileEntityQuantumTank;
 import gregtech.common.metatileentities.storage.MetaTileEntityTank;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fml.common.Loader;
 
 @SuppressWarnings("WeakerAccess")
 public class MetaTileEntities {
@@ -105,7 +104,6 @@ public class MetaTileEntities {
     public static SimpleGeneratorMetaTileEntity[] STEAM_TURBINE = new SimpleGeneratorMetaTileEntity[4];
     public static SimpleGeneratorMetaTileEntity[] GAS_TURBINE = new SimpleGeneratorMetaTileEntity[4];
     public static MetaTileEntityMagicEnergyAbsorber MAGIC_ENERGY_ABSORBER;
-    public static MetaTileEntityMagicEnergyConverter MAGIC_ENERGY_CONVERTER;
 
     //MULTIBLOCK PARTS SECTION
     public static MetaTileEntityItemBus[] ITEM_IMPORT_BUS = new MetaTileEntityItemBus[GTValues.V.length];
@@ -395,9 +393,6 @@ public class MetaTileEntities {
         GAS_TURBINE[2] = GregTechAPI.registerMetaTileEntity(492, new SimpleGeneratorMetaTileEntity(gregtechId("gas_turbine.hv"), RecipeMaps.GAS_TURBINE_FUELS, Textures.GAS_TURBINE_OVERLAY, 3));
 
         MAGIC_ENERGY_ABSORBER = GregTechAPI.registerMetaTileEntity(493, new MetaTileEntityMagicEnergyAbsorber(gregtechId("magic_energy_absorber")));
-        if(Loader.isModLoaded("thaumcraft")) {
-            MAGIC_ENERGY_CONVERTER = GregTechAPI.registerMetaTileEntity(494, new MetaTileEntityMagicEnergyConverter(gregtechId("magic_energy_converter")));
-        }
 
         for(int i = 0; i < HULL.length; i++) {
             MetaTileEntityHull metaTileEntity = new MetaTileEntityHull(gregtechId("hull." + GTValues.VN[i].toLowerCase()), i);

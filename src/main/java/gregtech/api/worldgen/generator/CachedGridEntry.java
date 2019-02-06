@@ -62,7 +62,7 @@ public class CachedGridEntry implements GridEntryInfo, IBlockGeneratorAccess, IB
         new BlockPos(15, 0, 15)
     };
 
-    private final XSTR gridRandom;
+    private final Random gridRandom;
     private final int gridX;
     private final int gridZ;
     private List<Entry<Integer, OreDepositDefinition>> cachedDepositMap;
@@ -76,8 +76,8 @@ public class CachedGridEntry implements GridEntryInfo, IBlockGeneratorAccess, IB
     public CachedGridEntry(World world, int gridX, int gridZ, int primerChunkX, int primerChunkZ) {
         this.gridX = gridX;
         this.gridZ = gridZ;
-        long gridRandomSeed = Objects.hash(gridX, gridZ) ^ world.getSeed();
-        this.gridRandom = new XSTR(gridRandomSeed);
+        long worldSeed = world.getSeed();
+        this.gridRandom = new XSTR(31 * 31 * gridX + gridZ * 31 + Long.hashCode(worldSeed));
 
         int gridSizeX = WorldGeneratorImpl.GRID_SIZE_X * 16;
         int gridSizeZ = WorldGeneratorImpl.GRID_SIZE_Z * 16;
@@ -211,16 +211,16 @@ public class CachedGridEntry implements GridEntryInfo, IBlockGeneratorAccess, IB
         this.currentOreVein = definition;
         int gridSizeX = WorldGeneratorImpl.GRID_SIZE_X * 16;
         int gridSizeZ = WorldGeneratorImpl.GRID_SIZE_Z * 16;
-        this.veinCenterX = gridX * gridSizeX + gridRandom.nextInt(gridSizeX);
         int topHeightOffset = currentOreVein.getShapeGenerator().getMaxSize().getY() / 2 + 4;
         int maximumHeight = Math.min(masterEntry.getMaxBottomHeight(), currentOreVein.getHeightLimit()[1] - topHeightOffset);
         int minimumHeight = Math.max(3, currentOreVein.getHeightLimit()[0]);
         if(minimumHeight >= maximumHeight) {
             return;
         }
+        this.veinCenterX = gridX * gridSizeX + gridRandom.nextInt(gridSizeX);
         this.veinCenterY = minimumHeight + gridRandom.nextInt(maximumHeight - minimumHeight);
         this.veinCenterZ = gridZ * gridSizeZ + gridRandom.nextInt(gridSizeZ);
-        this.currentOreVein.getShapeGenerator().generate(new XSTR(gridRandom.getSeed()), this);
+        this.currentOreVein.getShapeGenerator().generate(gridRandom, this);
         this.veinGeneratedMap.put(definition, new BlockPos(veinCenterX, veinCenterY, veinCenterZ));
         IVeinPopulator veinPopulator = currentOreVein.getVeinPopulator();
         if(veinPopulator instanceof VeinBufferPopulator) {
@@ -262,13 +262,15 @@ public class CachedGridEntry implements GridEntryInfo, IBlockGeneratorAccess, IB
         int chunkZ = worldZ >> 4;
         int localX = worldX - chunkX * 16;
         int localZ = worldZ - chunkZ * 16;
-        long chunkKey = (long) chunkX << 32 | chunkZ & 0xFFFFFFFFL;
-        ChunkDataEntry dataEntry = dataByChunkPos.get(chunkKey);
-        if(dataEntry == null) {
-            dataEntry = new ChunkDataEntry(chunkX, chunkZ);
-            dataByChunkPos.put(chunkKey, dataEntry);
+        if(worldY > 0) {
+            long chunkKey = (long) chunkX << 32 | chunkZ & 0xFFFFFFFFL;
+            ChunkDataEntry dataEntry = dataByChunkPos.get(chunkKey);
+            if(dataEntry == null) {
+                dataEntry = new ChunkDataEntry(chunkX, chunkZ);
+                dataByChunkPos.put(chunkKey, dataEntry);
+            }
+            dataEntry.setBlock(localX, worldY, localZ, definition, index);
         }
-        dataEntry.setBlock(localX, worldY, localZ, definition, index);
     }
 
 
@@ -309,7 +311,6 @@ public class CachedGridEntry implements GridEntryInfo, IBlockGeneratorAccess, IB
                     int blockY = (short) (xyzValue >> 16);
                     int index = (int) blockIndex;
                     blockPos.setPos(chunkX * 16 + blockX, blockY, chunkZ * 16 + blockZ);
-                    long placeStart = System.currentTimeMillis();
                     IBlockState currentState = world.getBlockState(blockPos);
                     IBlockState newState;
                     if(index == 0) {

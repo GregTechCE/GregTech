@@ -9,7 +9,6 @@ import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.recipes.Recipe;
 import gregtech.api.recipes.RecipeMap;
 import gregtech.api.util.GTUtility;
-import gregtech.api.util.XSTR;
 import gregtech.common.ConfigHolder;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -41,7 +40,7 @@ public abstract class RecipeMapWorkableHandler extends MTETrait implements IWork
     protected int recipeEUt;
     protected List<FluidStack> fluidOutputs;
     protected NonNullList<ItemStack> itemOutputs;
-    protected final Random random = new XSTR();
+    protected final Random random = new Random();
 
     private boolean isActive;
     private boolean workingEnabled = true;
