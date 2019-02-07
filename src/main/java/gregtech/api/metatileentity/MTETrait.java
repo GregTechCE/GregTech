@@ -59,4 +59,9 @@ public abstract class MTETrait {
         metaTileEntity.writeTraitData(this, id, writer);
     }
 
+    protected static final class TraitNetworkIds {
+        public static final int TRAIT_ID_ENERGY_CONTAINER = 1;
+        public static final int TRAIT_ID_WORKABLE = 2;
+    }
+
 }

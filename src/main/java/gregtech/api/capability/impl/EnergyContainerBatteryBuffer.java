@@ -211,7 +211,7 @@ public class EnergyContainerBatteryBuffer extends MTETrait implements IEnergyCon
 
     @Override
     public int getNetworkID() {
-        return 1;
+        return TraitNetworkIds.TRAIT_ID_ENERGY_CONTAINER;
     }
 
     @Nullable

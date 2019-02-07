@@ -54,7 +54,7 @@ public class FuelRecipeMapWorkableHandler extends MTETrait implements IWorkable 
 
     @Override
     public int getNetworkID() {
-        return 2;
+        return TraitNetworkIds.TRAIT_ID_WORKABLE;
     }
 
     @Override

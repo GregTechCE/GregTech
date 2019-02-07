@@ -83,7 +83,7 @@ public abstract class RecipeMapWorkableHandler extends MTETrait implements IWork
 
     @Override
     public int getNetworkID() {
-        return 3;
+        return TraitNetworkIds.TRAIT_ID_WORKABLE;
     }
 
     @Override

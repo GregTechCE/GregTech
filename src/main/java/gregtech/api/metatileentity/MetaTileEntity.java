@@ -216,7 +216,20 @@ public abstract class MetaTileEntity implements ICoverable {
      * @param trait trait object to add
      */
     void addMetaTileEntityTrait(MTETrait trait) {
-        mteTraits.removeIf(otherTrait -> otherTrait.getName().equals(trait.getName()));
+        mteTraits.removeIf(otherTrait -> {
+            if(trait.getName().equals(trait.getName())) {
+                return true;
+            }
+            if(otherTrait.getImplementingCapability() == trait.getImplementingCapability()) {
+                String message = "Trait %s is incompatible with trait %s, as they both provide the same capability";
+                throw new IllegalArgumentException(String.format(message, trait, otherTrait));
+            }
+            if(otherTrait.getNetworkID() == trait.getNetworkID()) {
+                String message = "Trait %s is incompatible with trait %s, as they both use same network id %d";
+                throw new IllegalArgumentException(String.format(message, trait, otherTrait, trait.getNetworkID()));
+            }
+            return false;
+        });
         this.mteTraits.add(trait);
     }
 
