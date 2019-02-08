@@ -166,7 +166,7 @@ public abstract class MetaItem<T extends MetaItem<?>.MetaValueItem> extends Item
             return metaValueItem.getDurabilityManager().showsDurabilityBar(stack);
         }
         IElectricItem electricItem = stack.getCapability(GregtechCapabilities.CAPABILITY_ELECTRIC_ITEM, null);
-        return electricItem != null && electricItem.getCharge() > 0L;
+        return electricItem != null && (stack.getMaxStackSize() == 1 || electricItem.getCharge() > 0L);
     }
 
     @Override

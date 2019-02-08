@@ -280,11 +280,14 @@ metaitem.battery.re.hv.lithium.tooltip=Reusable
 metaitem.battery.re.hv.sodium.name=Large Sodium Battery
 metaitem.battery.re.hv.sodium.tooltip=Reusable
 
+metaitem.energy_crystal.name=Energy Crystal
+metaitem.lapotron_crystal.name=Lapotron Crystal
 metaitem.energy.lapotronicorb.name=Lapotronic Energy Orb
 metaitem.energy.lapotronicorb2.name=Lapotronic Energy Orb Cluster
 metaitem.zpm.name=Zero Point Module
 metaitem.zpm2.name=Ultimate Battery
 metaitem.zpm2.tooltip=Fill this to win minecraft
+
 metaitem.electric.motor.lv.name=Electric Motor (LV)
 metaitem.electric.motor.mv.name=Electric Motor (MV)
 metaitem.electric.motor.hv.name=Electric Motor (HV)
@@ -1700,6 +1703,7 @@ metaitem.tool_parts_box.name=Tool Parts Box
 metaitem.tool_parts_box.tooltip=Contains some tool parts/nRight click to open
 metaitem.foam_sprayer.name=Foam Sprayer
 metaitem.foam_sprayer.tooltip=Sprays Construction Foam/nRight click on a frame to foam connected frames/nUse iron metal to create reinforced stone/nFoam can be colored
+metaitem.energium_dust.name=Energium Dust
 
 tile.surface_rock.name=Surface Rock
 

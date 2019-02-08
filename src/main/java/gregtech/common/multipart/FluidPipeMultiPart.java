@@ -11,6 +11,7 @@ import gregtech.common.pipelike.fluidpipe.FluidPipeProperties;
 import gregtech.common.pipelike.fluidpipe.FluidPipeType;
 import gregtech.common.pipelike.fluidpipe.tile.FluidPipeFluidHandler;
 import gregtech.common.render.FluidPipeRenderer;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
@@ -93,4 +94,9 @@ public class FluidPipeMultiPart extends PipeMultiPart<FluidPipeType, FluidPipePr
         return false;
     }
 
+    @Override
+    @SideOnly(Side.CLIENT)
+    public TextureAtlasSprite getParticleTexture() {
+        return FluidPipeRenderer.INSTANCE.getParticleTexture(this);
+    }
 }

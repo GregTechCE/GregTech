@@ -74,7 +74,6 @@ public class GTJeiPlugin implements IModPlugin {
 
         for(ResourceLocation metaTileEntityId : GregTechAPI.META_TILE_ENTITY_REGISTRY.getKeys()) {
             MetaTileEntity metaTileEntity = GregTechAPI.META_TILE_ENTITY_REGISTRY.getObject(metaTileEntityId);
-            //noinspection ConstantConditions
             if(metaTileEntity.getCapability(GregtechCapabilities.CAPABILITY_WORKABLE, null) != null) {
                 IWorkable workableCapability = metaTileEntity.getCapability(GregtechCapabilities.CAPABILITY_WORKABLE, null);
                 if(workableCapability instanceof RecipeMapWorkableHandler) {

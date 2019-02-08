@@ -13,6 +13,7 @@ import gregtech.common.pipelike.fluidpipe.tile.TileEntityFluidPipe;
 import gregtech.common.pipelike.fluidpipe.tile.TileEntityFluidPipeActive;
 import gregtech.common.render.FluidPipeRenderer;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -157,5 +158,11 @@ public class BlockFluidPipe extends BlockPipe<FluidPipeType, FluidPipeProperties
     @Override
     public BlockRenderLayer getBlockLayer() {
         return BlockRenderLayer.CUTOUT;
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    protected TextureAtlasSprite getParticleTexture(World world, BlockPos blockPos) {
+        return FluidPipeRenderer.INSTANCE.getParticleTexture((TileEntityFluidPipe) world.getTileEntity(blockPos));
     }
 }

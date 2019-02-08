@@ -37,6 +37,7 @@ public class CraftingRecipeLoader {
         ModHandler.addShapedRecipe("primitive_circuit", MetaItems.CIRCUIT_PRIMITIVE.getStackForm(), "SR", "RT", 'S', new UnificationEntry(OrePrefix.plate, Materials.Steel), 'R', new UnificationEntry(OrePrefix.wireGtSingle, Materials.RedAlloy), 'T', new UnificationEntry(OrePrefix.wireGtSingle, Materials.Tin));
         ModHandler.addShapedRecipe("basic_circuit", MetaItems.CIRCUIT_BASIC.getStackForm(), "XXX", "NPN", "XXX", 'P', new UnificationEntry(OrePrefix.plate, Materials.Steel), 'N', new UnificationEntry(OrePrefix.circuit, Tier.Primitive), 'X', new UnificationEntry(OrePrefix.cableGtSingle, Materials.Copper));
         ModHandler.addShapelessRecipe("integrated_circuit", MetaItems.INTEGRATED_CIRCUIT.getStackForm(), MetaItems.CIRCUIT_BASIC.getStackForm());
+        ModHandler.addShapedEnergyTransferRecipe("lapotron_crystal", MetaItems.LAPOTRON_CRYSTAL.getStackForm(), "XCX", "XEX", "XCX", 'X', new UnificationEntry(OrePrefix.plate, Materials.Lapis), 'C', new UnificationEntry(OrePrefix.circuit, Tier.Advanced), 'E', MetaItems.ENERGY_CRYSTAL.getStackForm());
 
         ModHandler.addShapelessRecipe("rubber_wood_planks", new ItemStack(Blocks.PLANKS, 4, EnumType.JUNGLE.getMetadata()), new ItemStack(MetaBlocks.LOG, 1, LogVariant.RUBBER_WOOD.ordinal()));
         ModHandler.addShapelessRecipe("chum_on_stick", MetaItems.FOOD_CHUM_ON_STICK.getStackForm(), new UnificationEntry(OrePrefix.stick, Materials.Wood), MetaItems.FOOD_CHUM);

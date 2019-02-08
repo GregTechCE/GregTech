@@ -1,6 +1,8 @@
 package gregtech.api.net;
 
+import codechicken.lib.vec.Vector3;
 import gregtech.api.GTValues;
+import gregtech.api.block.ICustomParticleBlock;
 import gregtech.api.gui.ModularUI;
 import gregtech.api.gui.UIFactory;
 import gregtech.api.gui.impl.ModularUIContainer;
@@ -8,17 +10,23 @@ import gregtech.api.gui.impl.ModularUIGui;
 import gregtech.api.util.GTLog;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.network.NetHandlerPlayClient;
+import net.minecraft.client.particle.ParticleManager;
 import net.minecraft.inventory.Container;
 import net.minecraft.network.INetHandler;
 import net.minecraft.network.NetHandlerPlayServer;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.IntIdentityHashBiMap;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.network.FMLEventChannel;
 import net.minecraftforge.fml.common.network.FMLNetworkEvent;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
+import net.minecraftforge.fml.common.network.NetworkRegistry.TargetPoint;
 import net.minecraftforge.fml.common.network.internal.FMLProxyPacket;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -162,6 +170,19 @@ public class NetworkHandler {
             }
         ));
 
+        registerPacket(4, PacketBlockParticle.class, new PacketCodec<>(
+            (packet, buf) -> {
+                buf.writeBlockPos(packet.blockPos);
+                buf.writeFloat((float) packet.entityPos.x);
+                buf.writeFloat((float) packet.entityPos.y);
+                buf.writeFloat((float) packet.entityPos.z);
+                buf.writeVarInt(packet.particlesAmount);
+                },
+            (buf) -> new PacketBlockParticle(buf.readBlockPos(),
+                new Vector3(buf.readFloat(), buf.readFloat(), buf.readFloat()),
+                buf.readVarInt())
+        ));
+
         registerServerExecutor(PacketUIClientAction.class, (packet, handler) -> {
             Container openContainer = handler.player.openContainer;
             if(openContainer instanceof ModularUIContainer &&
@@ -190,6 +211,13 @@ public class NetworkHandler {
         });
         registerClientExecutor(PacketUIWidgetUpdate.class, (packet, handler) ->
             ModularUIGui.addWidgetUpdate(packet));
+
+        registerClientExecutor(PacketBlockParticle.class, (packet, handler) -> {
+            World world = Minecraft.getMinecraft().world;
+            IBlockState blockState = world.getBlockState(packet.blockPos);
+            ParticleManager particleManager = Minecraft.getMinecraft().effectRenderer;
+            ((ICustomParticleBlock) blockState.getBlock()).handleCustomParticle(world, packet.blockPos, particleManager, packet.entityPos, packet.particlesAmount);
+        });
     }
 
     public static <T extends Packet> void registerPacket(int packetId, Class<T> packetClass, PacketCodec<T> codec) {
@@ -221,6 +249,10 @@ public class NetworkHandler {
         Class<Packet> packetClass = (Class<Packet>) packetMap.get(payload.readVarInt());
         PacketCodec<Packet> codec = (PacketCodec<Packet>) codecMap.get(packetClass);
         return codec.decoder.decode(payload);
+    }
+
+    public static TargetPoint blockPoint(World world, BlockPos blockPos) {
+        return new TargetPoint(world.provider.getDimension(), blockPos.getX() + 0.5, blockPos.getY() + 0.5, blockPos.getZ() + 0.5, 128.0);
     }
 
     @SubscribeEvent

@@ -214,11 +214,10 @@ public class MachineRecipeLoader {
             .EUt(480)
             .buildAndRegister();
         RecipeMaps.LASER_ENGRAVER_RECIPES.recipeBuilder()
-            .input(OrePrefix.plate, Materials.Lazurite, 15)
-            .notConsumable(OrePrefix.craftingLens, MarkerMaterials.Color.Cyan)
+            .inputs(MetaItems.LAPOTRON_CRYSTAL.getStackForm())
+            .notConsumable(OrePrefix.craftingLens, MarkerMaterials.Color.Blue)
             .outputs(MetaItems.CIRCUIT_PARTS_CRYSTAL_CHIP_MASTER.getStackForm())
-            .duration(256)
-            .EUt(480)
+            .duration(256).EUt(480)
             .buildAndRegister();
 
         RecipeMaps.LASER_ENGRAVER_RECIPES.recipeBuilder()
@@ -296,6 +295,27 @@ public class MachineRecipeLoader {
             .input(OrePrefix.dust, Materials.Stone, 6)
             .input(OrePrefix.dust, Materials.Flint)
             .fluidOutputs(Materials.ConstructionFoam.getFluid(1000))
+            .buildAndRegister();
+
+        RecipeMaps.MIXER_RECIPES.recipeBuilder()
+            .duration(1200).EUt(16)
+            .input(OrePrefix.dust, Materials.Ruby, 9)
+            .input(OrePrefix.dust, Materials.Redstone, 9)
+            .outputs(MetaItems.ENERGIUM_DUST.getStackForm(9))
+            .buildAndRegister();
+
+        RecipeMaps.AUTOCLAVE_RECIPES.recipeBuilder()
+            .inputs(MetaItems.ENERGIUM_DUST.getStackForm(9))
+            .fluidInputs(Materials.Water.getFluid(1800))
+            .outputs(MetaItems.ENERGY_CRYSTAL.getStackForm())
+            .duration(2000).EUt(120)
+            .buildAndRegister();
+
+        RecipeMaps.AUTOCLAVE_RECIPES.recipeBuilder()
+            .inputs(MetaItems.ENERGIUM_DUST.getStackForm(9))
+            .fluidInputs(ModHandler.getDistilledWater(1800))
+            .outputs(MetaItems.ENERGY_CRYSTAL.getStackForm())
+            .duration(1500).EUt(120)
             .buildAndRegister();
 
         //decorative blocks: normal variant -> brick variant
@@ -908,7 +928,7 @@ public class MachineRecipeLoader {
             RecipeBuilder<?> arcFurnaceRecipeBuilder = RecipeMaps.ARC_FURNACE_RECIPES.recipeBuilder()
                 .outputs(resultList)
                 .duration((int) Math.max(1L, firstStack.amount * 60 / M))
-                .EUt(32 * voltageMultiplier);
+                .EUt(30 * voltageMultiplier);
             inputSupplier.accept(arcFurnaceRecipeBuilder);
             arcFurnaceRecipeBuilder.buildAndRegister();
         }

@@ -313,7 +313,36 @@ public abstract class Material implements Comparable<Material> {
         return totalMass;
     }
 
-	@ZenGetter("averageMass")
+    @ZenGetter("averageProtons")
+    public long getAverageProtons() {
+        if (element != null)
+            return element.getProtons();
+        if (materialComponents.isEmpty())
+            return Element.Tc.getProtons();
+        long totalProtons = 0, totalAmount = 0;
+        for (MaterialStack material : materialComponents) {
+            totalAmount += material.amount;
+            totalProtons += material.amount * material.material.getAverageProtons();
+        }
+        return totalProtons / totalAmount;
+    }
+
+    @ZenGetter("averageNeutrons")
+    public long getAverageNeutrons() {
+        if (element != null)
+            return element.getNeutrons();
+        if (materialComponents.isEmpty())
+            return Element.Tc.getNeutrons();
+        long totalNeutrons = 0, totalAmount = 0;
+        for (MaterialStack material : materialComponents) {
+            totalAmount += material.amount;
+            totalNeutrons += material.amount * material.material.getAverageNeutrons();
+        }
+        return totalNeutrons / totalAmount;
+    }
+
+
+    @ZenGetter("averageMass")
 	public long getAverageMass() {
         if (element != null)
             return element.getMass();
@@ -327,7 +356,7 @@ public abstract class Material implements Comparable<Material> {
         return totalMass / totalAmount;
 	}
 
-	@ZenGetter("camelCaseString")
+	@ZenGetter("camelCaseName")
 	public String toCamelCaseString() {
 		return CaseFormat.LOWER_UNDERSCORE.to(CaseFormat.UPPER_CAMEL, toString());
 	}

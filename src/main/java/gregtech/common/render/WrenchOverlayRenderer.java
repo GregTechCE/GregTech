@@ -150,65 +150,6 @@ public class WrenchOverlayRenderer {
             startLine(buffer, bottomLeft.copy().add(shiftVert));
             endLine(buffer, bottomRight.copy().add(shiftVert));
 
-
-              // X at top
-//            startLine(buffer, topLeft.copy().add(0.25, 0, 0));
-//            endLine(buffer, topRight.copy().add(-0.25, -0.25, 0));
-//
-//            startLine(buffer, topRight.copy().add(-0.25, 0, 0));
-//            endLine(buffer, topLeft.copy().add(0.25, -0.25, 0));
-//
-//            // X at bottom
-//            startLine(buffer, bottomLeft.copy().add(0.25, 0, 0));
-//            endLine(buffer, bottomRight.copy().add(-0.25, 0.25, 0));
-//
-//            startLine(buffer, bottomRight.copy().add(-0.25, 0, 0));
-//            endLine(buffer, bottomLeft.copy().add(0.25, 0.25, 0));
-//
-//            // X at left
-//            startLine(buffer, topLeft.copy().add(0, -0.25, 0));
-//            endLine(buffer, bottomLeft.copy().add(0.25, 0.25, 0));
-//
-//            startLine(buffer, topLeft.copy().add(0.25, -0.25, 0));
-//            endLine(buffer, bottomLeft.copy().add(0, 0.25, 0));
-//
-//            // X at right
-//            startLine(buffer, topRight.copy().add(0, -0.25, 0));
-//            endLine(buffer, bottomRight.copy().add(-0.25, 0.25, 0));
-//
-//            startLine(buffer, topRight.copy().add(-0.25, -0.25, 0));
-//            endLine(buffer, bottomRight.copy().add(0, 0.25, 0));
-
-
-
-//            // X at top right
-//            startLine(buffer, topRight.copy().add(0, 0, 0));
-//            endLine(buffer, topRight.copy().add(-0.25, -0.25, 0));
-//
-//            startLine(buffer, topRight.copy().add(-0.25, 0, 0));
-//            endLine(buffer, topRight.copy().add(0, -0.25, 0));
-//
-//            // X at bottom right
-//            startLine(buffer, bottomRight.copy().add(0, 0, 0));
-//            endLine(buffer, bottomRight.copy().add(-0.25, 0.25, 0));
-//
-//            startLine(buffer, bottomRight.copy().add(-0.25, 0, 0));
-//            endLine(buffer, bottomRight.copy().add(0, 0.25, 0));
-//
-//            // X at bottom left
-//            startLine(buffer, bottomLeft.copy().add(0, 0, 0));
-//            endLine(buffer, bottomLeft.copy().add(0.25, 0.25, 0));
-//
-//            startLine(buffer, bottomLeft.copy().add(0.25, 0, 0));
-//            endLine(buffer, bottomLeft.copy().add(0, 0.25, 0));
-//
-//            // X at top left
-//            startLine(buffer, topLeft.copy().add(0, 0, 0));
-//            endLine(buffer, topLeft.copy().add(0.25, -0.25, 0));
-//
-//            startLine(buffer, topLeft.copy().add(0.25, 0, 0));
-//            endLine(buffer, topLeft.copy().add(0, -0.25, 0));
-
             tessellator.draw();
         }
 
@@ -227,12 +168,9 @@ public class WrenchOverlayRenderer {
         buffer.pos(vec.x, vec.y, vec.z).color(0, 0, 0, 0.5F).endVertex();
     }
 
-    public static EnumFacing getRotation(IBlockState state)
-    {
-        for (IProperty<?> prop : state.getProperties().keySet())
-        {
-            if ((prop.getName().equals("facing") || prop.getName().equals("rotation")) && prop.getValueClass() == EnumFacing.class)
-            {
+    public static EnumFacing getRotation(IBlockState state) {
+        for (IProperty<?> prop : state.getProperties().keySet()) {
+            if ((prop.getName().equals("facing") || prop.getName().equals("rotation")) && prop.getValueClass() == EnumFacing.class) {
                 return (EnumFacing) state.getValue(prop);
             }
         }

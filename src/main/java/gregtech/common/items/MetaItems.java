@@ -104,6 +104,8 @@ public final class MetaItems {
     public static MetaItem<?>.MetaValueItem BATTERY_RE_HV_CADMIUM;
     public static MetaItem<?>.MetaValueItem BATTERY_RE_HV_LITHIUM;
     public static MetaItem<?>.MetaValueItem BATTERY_RE_HV_SODIUM;
+    public static MetaItem<?>.MetaValueItem ENERGY_CRYSTAL;
+    public static MetaItem<?>.MetaValueItem LAPOTRON_CRYSTAL;
 
     public static MetaItem<?>.MetaValueItem ENERGY_LAPOTRONIC_ORB;
     public static MetaItem<?>.MetaValueItem ENERGY_LAPOTRONIC_ORB2;
@@ -261,13 +263,13 @@ public final class MetaItems {
     public static MetaItem<?>.MetaValueItem FOOD_CHUM_ON_STICK;
 
     public static MetaItem<?>.MetaValueItem DYE_INDIGO;
-
     public static MetaItem<?>.MetaValueItem PLANT_BALL;
+    public static MetaItem<?>.MetaValueItem RUBBER_DROP;
+    public static MetaItem<?>.MetaValueItem TOOL_PARTS_BOX;
+    public static MetaItem<?>.MetaValueItem ENERGIUM_DUST;
 
     public static MetaItem<?>.MetaValueItem[] DYE_ONLY_ITEMS = new MetaItem.MetaValueItem[EnumDyeColor.values().length];
     public static MetaItem<?>.MetaValueItem[] SPRAY_CAN_DYES = new MetaItem.MetaValueItem[EnumDyeColor.values().length];
-
-    public static MetaItem<?>.MetaValueItem RUBBER_DROP;
 
     public static ToolMetaItem<?>.MetaToolValueItem SWORD;
     public static ToolMetaItem<?>.MetaToolValueItem PICKAXE;
@@ -306,7 +308,6 @@ public final class MetaItems {
     public static ToolMetaItem<?>.MetaToolValueItem SOLDERING_IRON_LV;
     public static ToolMetaItem<?>.MetaToolValueItem TURBINE;
     public static ToolMetaItem<?>.MetaToolValueItem MAGNIFYING_GLASS;
-    public static MetaItem<?>.MetaValueItem TOOL_PARTS_BOX;
 
     public static void init() {
         MinecraftForge.EVENT_BUS.register(new ToolHarvestListener());

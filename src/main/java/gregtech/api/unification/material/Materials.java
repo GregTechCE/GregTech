@@ -159,7 +159,7 @@ public class Materials {
     public static GemMaterial BlueTopaz = new GemMaterial(92, "blue_topaz", 0x0000FF, MaterialIconSet.GEM_HORIZONTAL, 3, of(new MaterialStack(Aluminium, 2), new MaterialStack(Silicon, 1), new MaterialStack(Fluorine, 2), new MaterialStack(Hydrogen, 2), new MaterialStack(Oxygen, 6)), STD_GEM | NO_SMASHING | NO_SMELTING | HIGH_SIFTER_OUTPUT, 7.0F, 256);
     public static DustMaterial Bone = new DustMaterial(93, "bone", 0xFFFFFF, MaterialIconSet.ROUGH, 1, of(new MaterialStack(Calcium, 1)), 0);
     public static IngotMaterial Brass = new IngotMaterial(94, "brass", 0xFFB400, MaterialIconSet.METALLIC, 1, of(new MaterialStack(Zinc, 1), new MaterialStack(Copper, 3)), EXT2_METAL | MORTAR_GRINDABLE | GENERATE_RING, 7.0F, 128);
-    public static IngotMaterial Bronze = new IngotMaterial(95, "bronze", 0xFF8000, MaterialIconSet.METALLIC, 2, of(new MaterialStack(Tin, 1), new MaterialStack(Copper, 3)), EXT2_METAL | MORTAR_GRINDABLE | GENERATE_RING | GENERATE_ROTOR | GENERATE_FRAME, 6.0F, 192);
+    public static IngotMaterial Bronze = new IngotMaterial(95, "bronze", 0xFF8000, MaterialIconSet.DULL, 2, of(new MaterialStack(Tin, 1), new MaterialStack(Copper, 3)), EXT2_METAL | MORTAR_GRINDABLE | GENERATE_RING | GENERATE_ROTOR | GENERATE_FRAME, 6.0F, 192);
     public static DustMaterial BrownLimonite = new DustMaterial(96, "brown_limonite", 0xC86400, MaterialIconSet.METALLIC, 1, of(new MaterialStack(Iron, 1), new MaterialStack(Hydrogen, 1), new MaterialStack(Oxygen, 2)), GENERATE_ORE);
     public static DustMaterial Calcite = new DustMaterial(97, "calcite", 0xFAE6DC, MaterialIconSet.DULL, 1, of(new MaterialStack(Calcium, 1), new MaterialStack(Carbon, 1), new MaterialStack(Oxygen, 3)), GENERATE_ORE);
     public static DustMaterial Cassiterite = new DustMaterial(98, "cassiterite", 0xDCDCDC, MaterialIconSet.METALLIC, 1, of(new MaterialStack(Tin, 1), new MaterialStack(Oxygen, 2)), GENERATE_ORE);
@@ -290,7 +290,7 @@ public class Materials {
     public static GemMaterial Amethyst = new GemMaterial(214, "amethyst", 0xD232D2, MaterialIconSet.RUBY, 3, of(new MaterialStack(SiliconDioxide, 4), new MaterialStack(Iron, 1)), STD_GEM | NO_SMASHING | NO_SMELTING | HIGH_SIFTER_OUTPUT, 7.0F, 256);
     public static DustMaterial Redstone = new DustMaterial(215, "redstone", 0xC80000, MaterialIconSet.ROUGH, 2, of(new MaterialStack(Silicon, 1), new MaterialStack(Pyrite, 5), new MaterialStack(Ruby, 1), new MaterialStack(Mercury, 3)), GENERATE_PLATE | GENERATE_ORE | NO_SMASHING | SMELT_INTO_FLUID);
     public static GemMaterial Lapis = new GemMaterial(216, "lapis", 0x4646DC, MaterialIconSet.LAPIS, 1, of(new MaterialStack(Lazurite, 12), new MaterialStack(Sodalite, 2), new MaterialStack(Pyrite, 1), new MaterialStack(Calcite, 1)), STD_GEM | NO_SMASHING | NO_SMELTING | CRYSTALLISABLE | NO_WORKING | DECOMPOSITION_BY_ELECTROLYZING);
-    public static DustMaterial Blaze = new DustMaterial(217, "blaze", 0xFFC800, MaterialIconSet.POWDER, 1, of(new MaterialStack(DarkAsh, 1), new MaterialStack(Sulfur, 1)), NO_SMELTING | SMELT_INTO_FLUID | MORTAR_GRINDABLE | BURNING);
+    public static DustMaterial Blaze = new DustMaterial(217, "blaze", 0xFFC800, MaterialIconSet.DULL, 1, of(new MaterialStack(DarkAsh, 1), new MaterialStack(Sulfur, 1)), NO_SMELTING | SMELT_INTO_FLUID | MORTAR_GRINDABLE | BURNING);
     public static GemMaterial EnderPearl = new GemMaterial(218, "ender_pearl", 0x6CDCC8, MaterialIconSet.GEM_VERTICAL, 1, of(new MaterialStack(Beryllium, 1), new MaterialStack(Potassium, 4), new MaterialStack(Nitrogen, 5)), GENERATE_PLATE | GENERATE_LENSE | NO_SMASHING | NO_SMELTING);
     public static GemMaterial EnderEye = new GemMaterial(219, "ender_eye", 0x66FF66, MaterialIconSet.GEM_VERTICAL, 1, of(new MaterialStack(EnderPearl, 1), new MaterialStack(Blaze, 1)), GENERATE_PLATE | GENERATE_LENSE | NO_SMASHING | NO_SMELTING);
     public static RoughSolidMaterial Flint = new RoughSolidMaterial(220, "flint", 0x002040, MaterialIconSet.FLINT, 1, of(new MaterialStack(SiliconDioxide, 1)), NO_SMASHING | MORTAR_GRINDABLE, () -> OrePrefix.gem);
@@ -391,7 +391,7 @@ public class Materials {
     public static FluidMaterial Milk = new FluidMaterial(339, "milk", 0xFEFEFE, MaterialIconSet.FINE, of(), 0);
     public static FluidMaterial Honey = new FluidMaterial(341, "honey", 0xD2C800, MaterialIconSet.FLUID, of(), 0);
     public static DustMaterial Cocoa = new DustMaterial(343, "cocoa", 0xBE5F00, MaterialIconSet.ROUGH, 0, of(), 0);
-    public static DustMaterial Wheat = new DustMaterial(345, "wheat", 0xFFFFC4, MaterialIconSet.POWDER, 0, of(), 0);
+    public static DustMaterial Wheat = new DustMaterial(345, "wheat", 0xFFFFC4, MaterialIconSet.FINE, 0, of(), 0);
 
     static {
         for (DustMaterial dustMaterial : new DustMaterial[]{Bastnasite, Monazite}) {

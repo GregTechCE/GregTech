@@ -15,6 +15,7 @@ import gregtech.common.pipelike.cable.tile.TileEntityCableTickable;
 import gregtech.common.render.CableRenderer;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -126,5 +127,11 @@ public class BlockCable extends BlockPipe<Insulation, WireProperties, WorldENet>
     @Override
     public TileEntityPipeBase<Insulation, WireProperties> createNewTileEntity(boolean supportsTicking) {
         return supportsTicking ? new TileEntityCableTickable() : new TileEntityCable();
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    protected TextureAtlasSprite getParticleTexture(World world, BlockPos blockPos) {
+        return CableRenderer.INSTANCE.getParticleTexture((TileEntityCable) world.getTileEntity(blockPos));
     }
 }

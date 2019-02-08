@@ -21,6 +21,7 @@ import gregtech.api.gui.ModularUI;
 import gregtech.api.render.Textures;
 import gregtech.api.util.GTUtility;
 import net.minecraft.block.Block;
+import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -217,7 +218,7 @@ public abstract class MetaTileEntity implements ICoverable {
      */
     void addMetaTileEntityTrait(MTETrait trait) {
         mteTraits.removeIf(otherTrait -> {
-            if(trait.getName().equals(trait.getName())) {
+            if(trait.getName().equals(otherTrait.getName())) {
                 return true;
             }
             if(otherTrait.getImplementingCapability() == trait.getImplementingCapability()) {
@@ -535,6 +536,13 @@ public abstract class MetaTileEntity implements ICoverable {
     }
 
     /**
+     * Retrieves face shape on the current side of this meta tile entity
+     */
+    public BlockFaceShape getFaceShape(EnumFacing side) {
+        return isOpaqueCube() ? BlockFaceShape.SOLID : BlockFaceShape.UNDEFINED;
+    }
+
+    /**
      * @return tool required to dismantle this meta tile entity properly
      */
     public String getHarvestTool() {
@@ -639,6 +647,13 @@ public abstract class MetaTileEntity implements ICoverable {
                 coverBehavior.readUpdateData(internalId, buf);
             }
         }
+    }
+
+    public BlockFaceShape getCoverFaceShape(EnumFacing side) {
+        if(getCoverAtSide(side) != null) {
+            return BlockFaceShape.SOLID; //covers are always solid
+        }
+        return getFaceShape(side);
     }
 
     public final <T> T getCoverCapability(Capability<T> capability, EnumFacing side) {

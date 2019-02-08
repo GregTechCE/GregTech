@@ -1,7 +1,9 @@
 package gregtech.common.items;
 
 import com.google.common.base.CaseFormat;
+import gregtech.api.GTValues;
 import gregtech.api.items.materialitem.MaterialMetaItem;
+import gregtech.api.items.metaitem.ElectricStats;
 import gregtech.api.items.metaitem.FoodStats;
 import gregtech.api.recipes.CountableIngredient;
 import gregtech.api.recipes.RecipeMaps;
@@ -40,6 +42,9 @@ public class MetaItem2 extends MaterialMetaItem {
         FOOD_CHUM = addItem(210, "food.chum").addStats(new FoodStats(5, 0.2F, false, true, null, new RandomPotionEffect(MobEffects.ABSORPTION, 1000, 4, 100), new RandomPotionEffect(MobEffects.REGENERATION, 300, 1, 80)));
         FOOD_CHUM_ON_STICK = addItem(211, "food.chum.on.stick").addStats(new FoodStats(5, 0.2F, false, true, new ItemStack(Items.STICK), new RandomPotionEffect(MobEffects.ABSORPTION, 1000, 4, 100), new RandomPotionEffect(MobEffects.REGENERATION, 300, 1, 80)));
 
+        ENERGY_CRYSTAL = addItem(212, "energy_crystal").addStats(ElectricStats.createRechargeableBattery(1000000L, GTValues.HV)).setModelAmount(8).setMaxStackSize(1);
+        LAPOTRON_CRYSTAL = addItem(213, "lapotron_crystal").addStats(ElectricStats.createRechargeableBattery(4000000L, GTValues.EV)).setModelAmount(8).setMaxStackSize(1);
+
         DYE_INDIGO = addItem(410, "dye.indigo").addOreDict("dyeBlue").setInvisible();
         for (int i = 0; i < EnumDyeColor.values().length; i++) {
             EnumDyeColor dyeColor = EnumDyeColor.values()[i];
@@ -49,6 +54,7 @@ public class MetaItem2 extends MaterialMetaItem {
 
         PLANT_BALL = addItem(570, "plant_ball").setBurnValue(75);
         TOOL_PARTS_BOX = addItem(571, "tool_parts_box").addStats(new ToolPartsBoxBehavior());
+        ENERGIUM_DUST = addItem(572, "energium_dust");
     }
 
     public void registerRecipes() {

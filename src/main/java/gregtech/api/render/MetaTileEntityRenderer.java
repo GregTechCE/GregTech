@@ -6,7 +6,6 @@ import codechicken.lib.render.CCRenderState;
 import codechicken.lib.render.block.BlockRenderingRegistry;
 import codechicken.lib.render.block.ICCBlockRenderer;
 import codechicken.lib.render.item.IItemRenderer;
-import codechicken.lib.render.particle.IModelParticleProvider;
 import codechicken.lib.render.pipeline.IVertexOperation;
 import codechicken.lib.texture.TextureUtils;
 import codechicken.lib.vec.Cuboid6;
@@ -35,7 +34,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.client.event.ModelBakeEvent;
@@ -46,15 +44,16 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import org.apache.commons.lang3.tuple.Pair;
 import org.lwjgl.opengl.GL11;
 
-import javax.annotation.Nonnull;
 import javax.vecmath.Matrix4f;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
-public class MetaTileEntityRenderer implements ICCBlockRenderer, IItemRenderer, IModelParticleProvider {
+public class MetaTileEntityRenderer implements ICCBlockRenderer, IItemRenderer {
 
-    public static ModelResourceLocation MODEL_LOCATION = new ModelResourceLocation(new ResourceLocation(GTValues.MODID, "meta_tile_entity"), "normal");
+    public static ModelResourceLocation MODEL_LOCATION = new ModelResourceLocation(new ResourceLocation(GTValues.MODID, "machine"), "normal");
     public static MetaTileEntityRenderer INSTANCE = new MetaTileEntityRenderer();
     public static EnumBlockRenderType BLOCK_RENDER_TYPE;
     public static Map<TransformType, TRSRTransformation> BLOCK_TRANSFORMS = new HashMap<>();
@@ -159,28 +158,13 @@ public class MetaTileEntityRenderer implements ICCBlockRenderer, IItemRenderer, 
         }
     }
 
-    @Override
-    public Set<TextureAtlasSprite> getHitEffects(@Nonnull RayTraceResult traceResult, IBlockState state, IBlockAccess world, BlockPos pos) {
+    public TextureAtlasSprite getParticleTexture(IBlockAccess world, BlockPos pos) {
         MetaTileEntity metaTileEntity = BlockMachine.getMetaTileEntity(world, pos);
-        TextureAtlasSprite textureAtlasSprite;
         if(metaTileEntity == null) {
-            textureAtlasSprite = TextureUtils.getMissingSprite();
+            return TextureUtils.getMissingSprite();
         } else {
-            textureAtlasSprite = metaTileEntity.getParticleTexture();
+            return metaTileEntity.getParticleTexture();
         }
-        return Collections.singleton(textureAtlasSprite);
-    }
-
-    @Override
-    public Set<TextureAtlasSprite> getDestroyEffects(IBlockState state, IBlockAccess world, BlockPos pos) {
-        MetaTileEntity metaTileEntity = BlockMachine.getMetaTileEntity(world, pos);
-        TextureAtlasSprite textureAtlasSprite;
-        if(metaTileEntity == null) {
-            textureAtlasSprite = TextureUtils.getMissingSprite();
-        } else {
-            textureAtlasSprite = metaTileEntity.getParticleTexture();
-        }
-        return Collections.singleton(textureAtlasSprite);
     }
 
     @Override

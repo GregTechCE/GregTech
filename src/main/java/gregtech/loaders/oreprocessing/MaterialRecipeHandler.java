@@ -53,17 +53,16 @@ public class MaterialRecipeHandler {
                     .input(dustPrefix, material)
                     .fluidInputs(Materials.Water.getFluid(200))
                     .chancedOutput(gemStack, 7000)
-                    .duration(2000)
-                    .EUt(24)
+                    .duration(2000).EUt(24)
                     .buildAndRegister();
 
                 RecipeMaps.AUTOCLAVE_RECIPES.recipeBuilder()
                     .input(dustPrefix, material)
                     .fluidInputs(ModHandler.getDistilledWater(200))
                     .chancedOutput(gemStack, 9000)
-                    .duration(1500)
-                    .EUt(24)
+                    .duration(1500).EUt(24)
                     .buildAndRegister();
+
             } else if (!material.hasFlag(Material.MatFlags.EXPLOSIVE) && !material.hasFlag(Material.MatFlags.FLAMMABLE)) {
                 RecipeMaps.IMPLOSION_RECIPES.recipeBuilder()
                     .input(dustPrefix, material, 4)

@@ -417,7 +417,7 @@ public class ToolMetaItem<T extends ToolMetaItem<?>.MetaToolValueItem> extends M
                 materialDurability = toolMaterial.toolDurability;
             }
             float multiplier = toolStats.getMaxDurabilityMultiplier(itemStack);
-            return (int) (materialDurability * multiplier);
+            return (int) (materialDurability * 10 * multiplier);
         }
         return 0;
     }

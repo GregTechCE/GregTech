@@ -5,10 +5,10 @@ import codechicken.lib.block.property.unlisted.UnlistedStringProperty;
 import codechicken.lib.raytracer.CuboidRayTraceResult;
 import codechicken.lib.raytracer.IndexedCuboid6;
 import codechicken.lib.raytracer.RayTracer;
-import codechicken.lib.render.particle.CustomParticleHandler;
 import codechicken.lib.vec.Cuboid6;
 import com.google.common.collect.Lists;
 import gregtech.api.GregTechAPI;
+import gregtech.api.block.BlockCustomParticle;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.MetaTileEntityHolder;
 import gregtech.api.render.MetaTileEntityRenderer;
@@ -24,7 +24,7 @@ import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.particle.ParticleManager;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving.SpawnPlacementType;
@@ -42,7 +42,6 @@ import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.property.ExtendedBlockState;
 import net.minecraftforge.common.property.IExtendedBlockState;
 import net.minecraftforge.common.property.IUnlistedProperty;
@@ -55,15 +54,13 @@ import java.util.Arrays;
 import java.util.List;
 
 @SuppressWarnings("deprecation")
-public class BlockMachine extends Block implements ITileEntityProvider {
+public class BlockMachine extends BlockCustomParticle implements ITileEntityProvider {
 
     private static final List<IndexedCuboid6> EMPTY_COLLISION_BOX = Lists.newArrayList(new IndexedCuboid6(null, Cuboid6.full));
     private static final IUnlistedProperty<String> HARVEST_TOOL = new UnlistedStringProperty("harvest_tool");
     private static final IUnlistedProperty<Integer> HARVEST_LEVEL = new UnlistedIntegerProperty("harvest_level");
     //used for rendering purposes of non-opaque machines like chests and tanks
     public static final PropertyBool OPAQUE = PropertyBool.create("opaque");
-
-    private static final ThreadLocal<Boolean> bypassActualState = ThreadLocal.withInitial(() -> false);
 
     public BlockMachine() {
         super(Material.IRON);
@@ -84,6 +81,7 @@ public class BlockMachine extends Block implements ITileEntityProvider {
 
     @Override
     public int getHarvestLevel(IBlockState state) {
+
         Integer value = ((IExtendedBlockState) state).getValue(HARVEST_LEVEL);
         return value == null ? 0 : value; //safety check for mods who don't handle state properly
     }
@@ -95,8 +93,6 @@ public class BlockMachine extends Block implements ITileEntityProvider {
 
     @Override
     public IBlockState getActualState(IBlockState state, IBlockAccess worldIn, BlockPos pos) {
-        if(bypassActualState.get())
-            return state;
         MetaTileEntity metaTileEntity = getMetaTileEntity(worldIn, pos);
         if(metaTileEntity == null)
             return state;
@@ -341,39 +337,8 @@ public class BlockMachine extends Block implements ITileEntityProvider {
 
     @Override
     public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face) {
-        //TODO give MetaTileEntities better control for their face shapes rendering & behaviour
-        return state.getValue(OPAQUE) ? BlockFaceShape.SOLID : BlockFaceShape.UNDEFINED;
-    }
-
-    @Override
-    public boolean addLandingEffects(IBlockState state, WorldServer worldObj, BlockPos blockPosition, IBlockState iblockstate, EntityLivingBase entity, int numberOfParticles) {
-        try {
-            bypassActualState.set(true);
-            return CustomParticleHandler.handleLandingEffects(worldObj, blockPosition, entity, numberOfParticles);
-        } finally {
-            bypassActualState.set(false);
-        }
-    }
-
-    @Override
-    @SideOnly(Side.CLIENT)
-    public boolean addHitEffects(IBlockState state, World worldObj, RayTraceResult target, ParticleManager manager) {
-        try {
-            bypassActualState.set(true);
-            return CustomParticleHandler.handleHitEffects(state, worldObj, target, manager);
-        } finally {
-            bypassActualState.set(false);
-        }
-    }
-
-    @Override
-    public boolean addDestroyEffects(World world, BlockPos pos, ParticleManager manager) {
-        try {
-            bypassActualState.set(true);
-            return CustomParticleHandler.handleDestroyEffects(world, pos, manager);
-        } finally {
-            bypassActualState.set(false);
-        }
+        MetaTileEntity metaTileEntity = getMetaTileEntity(worldIn, pos);
+        return metaTileEntity == null ? BlockFaceShape.SOLID : metaTileEntity.getCoverFaceShape(face);
     }
 
     @Override
@@ -391,15 +356,16 @@ public class BlockMachine extends Block implements ITileEntityProvider {
     }
 
     @Override
-    public boolean addRunningEffects(IBlockState state, World world, BlockPos pos, Entity entity) {
-        return true;
-    }
-
-    @Override
     public void getSubBlocks(CreativeTabs tab, NonNullList<ItemStack> items) {
         for (ResourceLocation metaTileEntityId : GregTechAPI.META_TILE_ENTITY_REGISTRY.getKeys()) {
             int metaId = GregTechAPI.META_TILE_ENTITY_REGISTRY.getIdByObjectName(metaTileEntityId);
             items.add(new ItemStack(this, 1, metaId));
         }
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    protected TextureAtlasSprite getParticleTexture(World world, BlockPos blockPos) {
+        return MetaTileEntityRenderer.INSTANCE.getParticleTexture(world, blockPos);
     }
 }

@@ -7,7 +7,6 @@ import codechicken.lib.render.CCRenderState;
 import codechicken.lib.render.block.BlockRenderingRegistry;
 import codechicken.lib.render.block.ICCBlockRenderer;
 import codechicken.lib.render.item.IItemRenderer;
-import codechicken.lib.render.particle.IModelParticleProvider;
 import codechicken.lib.render.pipeline.ColourMultiplier;
 import codechicken.lib.render.pipeline.IVertexOperation;
 import codechicken.lib.texture.TextureUtils;
@@ -42,7 +41,6 @@ import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.client.event.ModelBakeEvent;
@@ -54,13 +52,15 @@ import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.tuple.Pair;
 import org.lwjgl.opengl.GL11;
 
-import javax.annotation.Nonnull;
 import javax.vecmath.Matrix4f;
-import java.util.*;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
 import static gregtech.api.render.MetaTileEntityRenderer.BLOCK_TRANSFORMS;
 
-public class FluidPipeRenderer implements ICCBlockRenderer, IItemRenderer, IModelParticleProvider {
+public class FluidPipeRenderer implements ICCBlockRenderer, IItemRenderer {
 
     public static ModelResourceLocation MODEL_LOCATION = new ModelResourceLocation(new ResourceLocation(GTValues.MODID, "fluid_pipe"), "normal");
     public static FluidPipeRenderer INSTANCE = new FluidPipeRenderer();
@@ -256,14 +256,11 @@ public class FluidPipeRenderer implements ICCBlockRenderer, IItemRenderer, IMode
         return true;
     }
 
-    @Override
-    public Set<TextureAtlasSprite> getHitEffects(@Nonnull RayTraceResult traceResult, IBlockState state, IBlockAccess world, BlockPos pos) {
-        return getDestroyEffects(state, world, pos);
-    }
-
-    @Override
-    public Set<TextureAtlasSprite> getDestroyEffects(IBlockState state, IBlockAccess world, BlockPos pos) {
-        Material material = ((BlockFluidPipe) state.getBlock()).getPipeTileEntity(world, pos).getPipeMaterial();
-        return Collections.singleton(pipeSideTextures.get(material.materialIconSet));
+    public TextureAtlasSprite getParticleTexture(IPipeTile<FluidPipeType, FluidPipeProperties> tileEntity) {
+        if(tileEntity == null) {
+            return TextureUtils.getMissingSprite();
+        }
+        Material material = tileEntity.getPipeMaterial();
+        return pipeSideTextures.get(material.materialIconSet);
     }
 }

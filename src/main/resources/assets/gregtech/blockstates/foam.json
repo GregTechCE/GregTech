@@ -8,8 +8,6 @@
     }
   },
   "variants": {
-    "normal": [
-      {}
-    ]
+    "normal": [{}]
   }
 }

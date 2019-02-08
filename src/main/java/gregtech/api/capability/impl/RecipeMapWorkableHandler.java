@@ -93,55 +93,62 @@ public abstract class RecipeMapWorkableHandler extends MTETrait implements IWork
 
     @Override
     public void update() {
-        if (getMetaTileEntity().getWorld().isRemote)
-            return;
-        if (progressTime > 0 && workingEnabled) {
-            boolean drawEnergy = drawEnergy(recipeEUt);
-            if (drawEnergy || (recipeEUt < 0 && ignoreTooMuchEnergy())) {
-                if (++progressTime >= maxProgressTime) {
-                    completeRecipe();
+        if (!getMetaTileEntity().getWorld().isRemote) {
+            if(workingEnabled) {
+                if(progressTime > 0) {
+                    updateRecipeProgress();
                 }
-            } else {
-                if (recipeEUt > 0) {
-                    //only set hasNotEnoughEnergy if this recipe is consuming recipe
-                    //generators always have enough energy
-                    this.hasNotEnoughEnergy = true;
-                    //if current progress value is greater than 2, decrement it by 2
-                    if (progressTime >= 2) {
-                        if (ConfigHolder.insufficientEnergySupplyWipesRecipeProgress) {
-                            this.progressTime = 1;
-                        } else {
-                            this.progressTime = Math.max(1, progressTime - 2);
-                        }
-                    }
+                if(progressTime == 0) {
+                    trySearchNewRecipe();
                 }
+            }
+            if (wasActiveAndNeedsUpdate) {
+                this.wasActiveAndNeedsUpdate = false;
+                setActive(false);
             }
         }
-        if (progressTime == 0 && workingEnabled) {
-            long maxVoltage = getMaxVoltage();
-            Recipe currentRecipe = null;
-            IItemHandlerModifiable importInventory = getInputInventory();
-            IMultipleTankHandler importFluids = getInputTank();
-            if (previousRecipe != null && previousRecipe.matches(false, importInventory, importFluids)) {
-                //if previous recipe still matches inputs, try to use it
-                currentRecipe = previousRecipe;
-            } else if(checkRecipeInputsDirty(importInventory, importFluids) || forceRecipeRecheck) {
-                this.forceRecipeRecheck = false;
-                //else, try searching new recipe for given inputs
-                currentRecipe = findRecipe(maxVoltage, importInventory, importFluids);
-                //if we found recipe that can be buffered, buffer it
-                if (currentRecipe != null && currentRecipe.canBeBuffered()) {
-                    this.previousRecipe = currentRecipe;
-                }
-            }
-            if (currentRecipe != null && setupAndConsumeRecipeInputs(currentRecipe)) {
-                setupRecipe(currentRecipe);
-            }
-        }
+    }
 
-        if (wasActiveAndNeedsUpdate) {
-            this.wasActiveAndNeedsUpdate = false;
-            setActive(false);
+    private void updateRecipeProgress() {
+        boolean drawEnergy = drawEnergy(recipeEUt);
+        if (drawEnergy || (recipeEUt < 0 && ignoreTooMuchEnergy())) {
+            if (++progressTime >= maxProgressTime) {
+                completeRecipe();
+            }
+        } else if (recipeEUt > 0) {
+            //only set hasNotEnoughEnergy if this recipe is consuming recipe
+            //generators always have enough energy
+            this.hasNotEnoughEnergy = true;
+            //if current progress value is greater than 2, decrement it by 2
+            if (progressTime >= 2) {
+                if (ConfigHolder.insufficientEnergySupplyWipesRecipeProgress) {
+                    this.progressTime = 1;
+                } else {
+                    this.progressTime = Math.max(1, progressTime - 2);
+                }
+            }
+        }
+    }
+
+    private void trySearchNewRecipe() {
+        long maxVoltage = getMaxVoltage();
+        Recipe currentRecipe = null;
+        IItemHandlerModifiable importInventory = getInputInventory();
+        IMultipleTankHandler importFluids = getInputTank();
+        if (previousRecipe != null && previousRecipe.matches(false, importInventory, importFluids)) {
+            //if previous recipe still matches inputs, try to use it
+            currentRecipe = previousRecipe;
+        } else if (checkRecipeInputsDirty(importInventory, importFluids) || forceRecipeRecheck) {
+            this.forceRecipeRecheck = false;
+            //else, try searching new recipe for given inputs
+            currentRecipe = findRecipe(maxVoltage, importInventory, importFluids);
+            //if we found recipe that can be buffered, buffer it
+            if (currentRecipe != null && currentRecipe.canBeBuffered()) {
+                this.previousRecipe = currentRecipe;
+            }
+        }
+        if (currentRecipe != null && setupAndConsumeRecipeInputs(currentRecipe)) {
+            setupRecipe(currentRecipe);
         }
     }
 

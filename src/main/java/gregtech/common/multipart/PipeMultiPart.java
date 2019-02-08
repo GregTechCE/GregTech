@@ -24,9 +24,11 @@ import gregtech.api.pipenet.tile.PipeCoverableImplementation;
 import gregtech.api.unification.material.type.Material;
 import gregtech.api.unification.stack.SimpleItemStack;
 import gregtech.api.util.GTUtility;
+import gregtech.api.util.ParticleHandlerUtil;
 import gregtech.common.tools.DamageValues;
 import io.netty.buffer.Unpooled;
 import net.minecraft.block.Block;
+import net.minecraft.client.particle.ParticleManager;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -584,4 +586,16 @@ public abstract class PipeMultiPart<PipeType extends Enum<PipeType> & IPipeType<
         }
     }
 
+    @SideOnly(Side.CLIENT)
+    public abstract TextureAtlasSprite getParticleTexture();
+
+    @Override
+    public void addHitEffects(CuboidRayTraceResult hit, ParticleManager manager) {
+        ParticleHandlerUtil.addHitEffects(world(), hit, getParticleTexture(), manager);
+    }
+
+    @Override
+    public void addDestroyEffects(CuboidRayTraceResult hit, ParticleManager manager) {
+        ParticleHandlerUtil.addBlockDestroyEffects(world(), hit, getParticleTexture(), manager);
+    }
 }

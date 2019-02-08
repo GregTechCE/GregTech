@@ -12,6 +12,7 @@ import gregtech.common.pipelike.cable.Insulation;
 import gregtech.common.pipelike.cable.WireProperties;
 import gregtech.common.pipelike.cable.tile.CableEnergyContainer;
 import gregtech.common.render.CableRenderer;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
@@ -74,5 +75,11 @@ public class CableMultiPart extends PipeMultiPart<Insulation, WireProperties> {
             return true;
         }
         return false;
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public TextureAtlasSprite getParticleTexture() {
+        return CableRenderer.INSTANCE.getParticleTexture(this);
     }
 }

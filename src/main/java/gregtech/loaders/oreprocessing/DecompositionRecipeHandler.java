@@ -56,12 +56,12 @@ public class DecompositionRecipeHandler {
         RecipeBuilder builder;
         if (material.hasFlag(Material.MatFlags.DECOMPOSITION_BY_ELECTROLYZING)) {
             builder = RecipeMaps.ELECTROLYZER_RECIPES.recipeBuilder()
-                .duration((int) material.getProtons() * totalInputAmount * 8)
+                .duration((int) material.getAverageProtons() * totalInputAmount * 8)
                 .EUt(getElectrolyzingVoltage(material.materialComponents.stream()
                     .map(s -> s.material).collect(Collectors.toList())));
         } else {
             builder = RecipeMaps.CENTRIFUGE_RECIPES.recipeBuilder()
-                .duration((int) material.getMass() * totalInputAmount * 2)
+                .duration((int) material.getAverageMass() * totalInputAmount * 2)
                 .EUt(30);
         }
         builder.outputs(outputs);
