@@ -12,6 +12,7 @@ import gregtech.common.blocks.StoneBlock;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.oredict.OreDictionary;
 
 import static gregtech.api.GTValues.W;
 
@@ -19,6 +20,12 @@ public class OreDictionaryLoader {
 
     public static void init() {
         GTLog.logger.info("Registering OreDict entries.");
+
+        OreDictionary.registerOre("fuelCoke", OreDictUnifier.get(OrePrefix.gem, Materials.Coke));
+        OreDictionary.registerOre("blockFuelCoke", OreDictUnifier.get(OrePrefix.block, Materials.Coke));
+
+        OreDictUnifier.registerOre(new ItemStack(Blocks.CLAY), OrePrefix.block, Materials.Clay);
+        OreDictUnifier.registerOre(new ItemStack(Blocks.BRICK_BLOCK), OrePrefix.block, Materials.Brick);
 
         OreDictUnifier.registerOre(new ItemStack(Items.BUCKET), OrePrefix.bucket, MarkerMaterials.Empty);
         OreDictUnifier.registerOre(new ItemStack(Items.WATER_BUCKET), OrePrefix.bucket, Materials.Water);
@@ -29,6 +36,7 @@ public class OreDictionaryLoader {
         for(ItemStack woodPlateStack : OreDictUnifier.getAll(new UnificationEntry(OrePrefix.plate, Materials.Wood))) {
             OreDictUnifier.registerOre(woodPlateStack, OrePrefix.plank, Materials.Wood);
         }
+
         OreDictUnifier.registerOre(new ItemStack(Blocks.COAL_ORE), OrePrefix.ore, Materials.Coal);
         OreDictUnifier.registerOre(new ItemStack(Blocks.IRON_ORE), OrePrefix.ore, Materials.Iron);
         OreDictUnifier.registerOre(new ItemStack(Blocks.LAPIS_ORE), OrePrefix.ore, Materials.Lapis);

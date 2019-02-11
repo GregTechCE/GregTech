@@ -1,7 +1,6 @@
 package gregtech.api.capability;
 
 import gregtech.api.cover.ICoverable;
-import gregtech.api.metatileentity.multiblock.IMultiblockPart;
 import gregtech.api.worldgen.generator.GTWorldGenCapability;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.util.EnumFacing;
@@ -34,7 +33,6 @@ public class SimpleCapabilityManager {
         registerCapabilityWithNoDefault(IEnergyContainer.class);
         registerCapabilityWithNoDefault(IElectricItem.class);
         registerCapabilityWithNoDefault(IWorkable.class);
-        registerCapabilityWithNoDefault(IMultiblockPart.class);
         registerCapabilityWithNoDefault(ICoverable.class);
         //internal capabilities
         CapabilityManager.INSTANCE.register(GTWorldGenCapability.class, GTWorldGenCapability.STORAGE, GTWorldGenCapability.FACTORY);

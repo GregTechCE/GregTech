@@ -34,8 +34,15 @@ public final class MetaItems {
     public static MetaItem<?>.MetaValueItem MINECART_WHEELS_IRON;
     public static MetaItem<?>.MetaValueItem MINECART_WHEELS_STEEL;
 
-    public static MetaItem<?>.MetaValueItem SHAPE_EMPTY;
+    public static MetaItem<?>.MetaValueItem COMPRESSED_CLAY;
+    public static MetaItem<?>.MetaValueItem COMPRESSED_FIRECLAY;
+    public static MetaItem<?>.MetaValueItem FIRECLAY_BRICK;
+    public static MetaItem<?>.MetaValueItem COKE_OVEN_BRICK;
 
+    public static MetaItem<?>.MetaValueItem WOODEN_FORM_EMPTY;
+    public static MetaItem<?>.MetaValueItem WOODEN_FORM_BRICK;
+
+    public static MetaItem<?>.MetaValueItem SHAPE_EMPTY;
     public static MetaItem<?>.MetaValueItem SHAPE_MOLD_PLATE;
     public static MetaItem<?>.MetaValueItem SHAPE_MOLD_GEAR;
     public static MetaItem<?>.MetaValueItem SHAPE_MOLD_CREDIT;

@@ -34,8 +34,15 @@ public class MetaItem2 extends MaterialMetaItem {
 
     @Override
     public void registerSubItems() {
+        GELLED_TOLUENE = addItem(10, "gelled_toluene");
 
-        GELLED_TOLUENE = addItem(10, "gelled_toluene").setInvisible();
+        WOODEN_FORM_EMPTY = addItem(11, "wooden_form.empty");
+        WOODEN_FORM_BRICK = addItem(12, "wooden_form.brick");
+
+        COMPRESSED_CLAY = addItem(13, "compressed.clay");
+        COMPRESSED_FIRECLAY = addItem(14, "compressed.fireclay");
+        FIRECLAY_BRICK = addItem(15, "brick.fireclay");
+        COKE_OVEN_BRICK = addItem(16, "brick.coke");
 
         BOTTLE_PURPLE_DRINK = addItem(100, "bottle.purple.drink").addStats(new FoodStats(8, 0.2F, true, true, new ItemStack(Items.GLASS_BOTTLE), new RandomPotionEffect(MobEffects.HASTE, 800, 1, 90)));
 

@@ -32,12 +32,7 @@ public abstract class MetaTileEntityMultiblockPart extends MetaTileEntity implem
 
     @Override
     public TextureAtlasSprite getParticleTexture() {
-        MultiblockControllerBase controller = getController();
-        if(controller != null) {
-            return controller.getBaseTexture(null).getParticleSprite();
-        } else {
-            return Textures.VOLTAGE_CASINGS[tier].getParticleSprite();
-        }
+        return getBaseTexture().getParticleSprite();
     }
 
     @Override

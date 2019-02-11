@@ -5,6 +5,7 @@ import gregtech.api.gui.GuiTextures;
 import gregtech.api.gui.widgets.ProgressWidget.MoveType;
 import gregtech.api.recipes.builders.*;
 import gregtech.api.recipes.machines.*;
+import gregtech.api.recipes.recipes.CokeOvenRecipe;
 import gregtech.api.recipes.recipes.PrimitiveBlastFurnaceRecipe;
 import stanhebben.zenscript.annotations.ZenClass;
 import stanhebben.zenscript.annotations.ZenMethod;
@@ -652,15 +653,18 @@ public class RecipeMaps {
 
     @ZenProperty public static final FuelRecipeMap PLASMA_GENERATOR_FUELS = new FuelRecipeMap("plasma_generator");
 
-    /**
-     * Create recipes via {@link gregtech.api.recipes.builders.PBFRecipeBuilder}
-     */
     @ZenProperty public static final List<PrimitiveBlastFurnaceRecipe> PRIMITIVE_BLAST_FURNACE_RECIPES = new CopyOnWriteArrayList<>();
 
+    @ZenProperty public static final List<CokeOvenRecipe> COKE_OVEN_RECIPES = new CopyOnWriteArrayList<>();
+
     @ZenMethod
-    @Deprecated
     public static List<PrimitiveBlastFurnaceRecipe> getPrimitiveBlastFurnaceRecipes() {
         return PRIMITIVE_BLAST_FURNACE_RECIPES;
+    }
+
+    @ZenMethod
+    public static List<CokeOvenRecipe> getCokeOvenRecipes() {
+        return COKE_OVEN_RECIPES;
     }
 
 }

@@ -26,16 +26,16 @@ public class DieselEngineInfo extends MultiblockInfoPage {
     @Override
     public List<MultiblockShapeInfo> getMatchingShapes() {
         MultiblockShapeInfo shapeInfo = MultiblockShapeInfo.builder()
-            .aisle("HHH", "HEH", "HHH")
+            .aisle("AAA", "ACA", "AAA")
             .aisle("HHH", "HGH", "HHH")
             .aisle("HHH", "FGH", "HHH")
-            .aisle("AAA", "ACA", "AAA")
+            .aisle("HHH", "HEH", "HHH")
             .where('H', MetaBlocks.METAL_CASING.getState(MetalCasingType.TITANIUM_STABLE))
             .where('G', MetaBlocks.TURBINE_CASING.getState(BlockTurbineCasing.TurbineCasingType.TITANIUM_GEARBOX))
             .where('A', MetaBlocks.MUTLIBLOCK_CASING.getState(BlockMultiblockCasing.MultiblockCasingType.ENGINE_INTAKE_CASING))
-            .where('C', MetaTileEntities.DIESEL_ENGINE, EnumFacing.SOUTH)
+            .where('C', MetaTileEntities.DIESEL_ENGINE, EnumFacing.NORTH)
             .where('F', MetaTileEntities.FLUID_IMPORT_HATCH[GTValues.EV], EnumFacing.WEST)
-            .where('E', MetaTileEntities.ENERGY_OUTPUT_HATCH[GTValues.EV], EnumFacing.NORTH)
+            .where('E', MetaTileEntities.ENERGY_OUTPUT_HATCH[GTValues.EV], EnumFacing.SOUTH)
             .where('#', Blocks.AIR.getDefaultState())
             .build();
         return Lists.newArrayList(shapeInfo);

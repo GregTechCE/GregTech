@@ -340,6 +340,7 @@ public enum OrePrefix {
         block.setIgnored(Materials.Wood);
         block.setIgnored(Materials.RawRubber);
         block.setIgnored(Materials.Clay);
+        block.setIgnored(Materials.Brick);
         block.setIgnored(Materials.Bone);
         block.setIgnored(Materials.NetherQuartz);
         block.setIgnored(Materials.Ice);
@@ -458,7 +459,9 @@ public enum OrePrefix {
         if(this == block) {
             //glowstone and nether quartz blocks use 4 gems (dusts)
             if(material == Materials.Glowstone ||
-                material == Materials.NetherQuartz)
+                material == Materials.NetherQuartz ||
+                material == Materials.Brick ||
+                material == Materials.Clay)
                 return M * 4;
             //glass, ice and obsidian gain only one dust
             else if(material == Materials.Glass ||

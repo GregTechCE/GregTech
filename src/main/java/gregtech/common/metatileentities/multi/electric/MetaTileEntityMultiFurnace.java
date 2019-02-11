@@ -60,7 +60,7 @@ public class MetaTileEntityMultiFurnace extends RecipeMapMultiblockController {
     @Override
     protected void formStructure(PatternMatchContext context) {
         super.formStructure(context);
-        CoilType coilType = context.get("CoilType", CoilType.CUPRONICKEL);
+        CoilType coilType = context.getOrDefault("CoilType", CoilType.CUPRONICKEL);
         this.heatingCoilLevel = coilType.getLevel();
         this.heatingCoilDiscount = coilType.getEnergyDiscount();
     }
@@ -78,8 +78,9 @@ public class MetaTileEntityMultiFurnace extends RecipeMapMultiblockController {
             .aisle("XXX", "CCC", "XXX")
             .aisle("XXX", "C#C", "XXX")
             .aisle("XSX", "CCC", "XXX")
-            .setAmountAtLeast('X', 10)
+            .setAmountAtLeast('L', 10)
             .where('S', selfPredicate())
+            .where('L', statePredicate(getCasingState()))
             .where('X', statePredicate(getCasingState()).or(abilityPartPredicate(ALLOWED_ABILITIES)))
             .where('C', MetaTileEntityElectricBlastFurnace.heatingCoilPredicate())
             .where('#', isAirPredicate())

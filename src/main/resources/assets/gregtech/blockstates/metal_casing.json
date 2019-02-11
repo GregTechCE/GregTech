@@ -10,9 +10,14 @@
           "all": "gregtech:blocks/casings/solid/machine_bronze_plated_bricks"
         }
       },
-	  "primitive_bricks": {
+      "primitive_bricks": {
         "textures": {
           "all": "gregtech:blocks/casings/solid/machine_primitive_bricks"
+        }
+      },
+      "coke_bricks": {
+        "textures": {
+          "all": "gregtech:blocks/casings/solid/machine_coke_bricks"
         }
       },
       "invar_heatproof": {

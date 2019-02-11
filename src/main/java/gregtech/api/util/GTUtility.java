@@ -351,7 +351,7 @@ public class GTUtility {
         int textHeight = fontRenderer.FONT_HEIGHT;
         GlStateManager.pushMatrix();
         GlStateManager.scale(sizeMultiplier, sizeMultiplier, 0.0);
-        GlStateManager.translate(-textWidth * sizeMultiplier / 2, -textHeight * sizeMultiplier / 2, 0);
+        GlStateManager.translate(-textWidth * sizeMultiplier / 2.0, -textHeight * sizeMultiplier / 2.0, 0);
         fontRenderer.drawString(string, x, y, color);
         GlStateManager.popMatrix();
     }

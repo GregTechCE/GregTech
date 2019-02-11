@@ -38,10 +38,6 @@ public class ConfigHolder {
     @Config.RequiresMcRestart
     public static boolean harderMachineHulls = false;
 
-    @Config.Comment("Flint tools (pickaxe, shovel, axe, sword, hoe) recipes will be disabled. Default is false.")
-    @Config.RequiresMcRestart
-    public static boolean disableFlintTools = false;
-
     @Config.Comment("If true, insufficient energy supply will reset recipe progress to zero. If false, progress will slowly go back (with 2x speed)")
     @Config.RequiresWorldRestart
     public static boolean insufficientEnergySupplyWipesRecipeProgress = false;

@@ -92,7 +92,7 @@ public abstract class MultiblockControllerBase extends MetaTileEntity {
             MetaTileEntity metaTileEntity = ((MetaTileEntityHolder) tileEntity).getMetaTileEntity();
             if(predicate.apply(blockWorldState, metaTileEntity)) {
                 if(metaTileEntity instanceof IMultiblockPart) {
-                    Set<IMultiblockPart> partsFound = blockWorldState.getMatchContext().get("MultiblockParts", HashSet::new);
+                    Set<IMultiblockPart> partsFound = blockWorldState.getMatchContext().getOrCreate("MultiblockParts", HashSet::new);
                     partsFound.add((IMultiblockPart) metaTileEntity);
                 }
                 return true;
@@ -126,6 +126,16 @@ public abstract class MultiblockControllerBase extends MetaTileEntity {
         return BlockWorldState.wrap(tilePredicate((state, tile) -> tile.metaTileEntityId.equals(metaTileEntityId)));
     }
 
+    public Predicate<BlockWorldState> countMatch(String key, Predicate<BlockWorldState> original) {
+        return blockWorldState -> {
+            if(original.test(blockWorldState)) {
+                blockWorldState.getLayerContext().increment(key, 1);
+                return true;
+            }
+            return false;
+        };
+    }
+
     @Override
     public void renderMetaTileEntity(CCRenderState renderState, Matrix4 translation, IVertexOperation[] pipeline) {
         getBaseTexture(null).render(renderState, translation, ArrayUtils.add(pipeline, new ColourMultiplier(GTUtility.convertRGBtoOpaqueRGBA_CL(getPaintingColorForRendering()))));
@@ -140,7 +150,7 @@ public abstract class MultiblockControllerBase extends MetaTileEntity {
         EnumFacing facing = getFrontFacing().getOpposite();
         PatternMatchContext context = structurePattern.checkPatternAt(getWorld(), getPos(), facing);
         if(context != null && !structureFormed) {
-            Set<IMultiblockPart> rawPartsSet = context.get("MultiblockParts", HashSet::new);
+            Set<IMultiblockPart> rawPartsSet = context.getOrCreate("MultiblockParts", HashSet::new);
             ArrayList<IMultiblockPart> parts = new ArrayList<>(rawPartsSet);
             parts.sort(Comparator.comparing(it -> ((MetaTileEntity) it).getPos().hashCode()));
             for(IMultiblockPart part : parts) {

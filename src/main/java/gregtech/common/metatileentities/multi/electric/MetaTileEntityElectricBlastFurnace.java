@@ -55,7 +55,7 @@ public class MetaTileEntityElectricBlastFurnace extends RecipeMapMultiblockContr
     @Override
     protected void formStructure(PatternMatchContext context) {
         super.formStructure(context);
-        this.blastFurnaceTemperature = context.get("CoilType", CoilType.CUPRONICKEL).getCoilTemperature();
+        this.blastFurnaceTemperature = context.getOrDefault("CoilType", CoilType.CUPRONICKEL).getCoilTemperature();
     }
 
     @Override
@@ -77,7 +77,7 @@ public class MetaTileEntityElectricBlastFurnace extends RecipeMapMultiblockContr
                 return false;
             BlockWireCoil blockWireCoil = (BlockWireCoil) blockState.getBlock();
             CoilType coilType = blockWireCoil.getState(blockState);
-            CoilType currentCoilType = blockWorldState.getMatchContext().get("CoilType", coilType);
+            CoilType currentCoilType = blockWorldState.getMatchContext().getOrPut("CoilType", coilType);
             return currentCoilType.getName().equals(coilType.getName());
         };
     }
@@ -88,8 +88,9 @@ public class MetaTileEntityElectricBlastFurnace extends RecipeMapMultiblockContr
             .aisle("XXX", "CCC", "CCC", "XXX")
             .aisle("XXX", "C#C", "C#C", "XXX")
             .aisle("XSX", "CCC", "CCC", "XXX")
-            .setAmountAtLeast('X', 10)
+            .setAmountAtLeast('L', 10)
             .where('S', selfPredicate())
+            .where('L', statePredicate(getCasingState()))
             .where('X', statePredicate(getCasingState()).or(abilityPartPredicate(ALLOWED_ABILITIES)))
             .where('C', heatingCoilPredicate())
             .where('#', isAirPredicate())

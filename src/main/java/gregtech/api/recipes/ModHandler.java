@@ -148,6 +148,9 @@ public class ModHandler {
             } else if(materialStack.material == Materials.Lignite) {
                 remainder = OreDictUnifier.get(OrePrefix.dust, Materials.DarkAsh);
                 remainderChance = 0.35f;
+            } else if(materialStack.material == Materials.Coke) {
+                remainder = OreDictUnifier.get(OrePrefix.dust, Materials.Ash);
+                remainderChance = 0.5f;
             } else return ItemStack.EMPTY;
         }
         return random.nextFloat() <= remainderChance ? remainder : ItemStack.EMPTY;

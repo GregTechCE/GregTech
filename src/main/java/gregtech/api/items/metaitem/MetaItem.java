@@ -196,6 +196,9 @@ public abstract class MetaItem<T extends MetaItem<?>.MetaValueItem> extends Item
     public final T addItem(int metaValue, String unlocalizedName) {
         Validate.inclusiveBetween(0, Short.MAX_VALUE - 1, metaValue + metaItemOffset, "MetaItem ID should be in range from 0 to Short.MAX_VALUE-1");
         T metaValueItem = constructMetaValueItem((short) metaValue, unlocalizedName);
+        if(metaItems.containsKey((short) metaValue)) {
+            throw new IllegalArgumentException("MetaID is already occupied: " + metaValue);
+        }
         metaItems.put((short) metaValue, metaValueItem);
         names.put(unlocalizedName, metaValueItem);
         return metaValueItem;

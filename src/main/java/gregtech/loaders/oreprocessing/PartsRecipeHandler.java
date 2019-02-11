@@ -299,14 +299,6 @@ public class PartsRecipeHandler {
                 .EUt(16)
                 .buildAndRegister();
         }
-
-        if (material.hasFlag(IngotMaterial.MatFlags.GENERATE_FINE_WIRE)) {
-            RecipeMaps.WIREMILL_RECIPES.recipeBuilder()
-                .input(OrePrefix.stick, material)
-                .outputs(OreDictUnifier.get(OrePrefix.wireFine, material, 4))
-                .duration(50).EUt(4)
-                .buildAndRegister();
-        }
     }
 
     public static void processLongStick(OrePrefix longStickPrefix, DustMaterial material) {

@@ -247,6 +247,9 @@ public class BlockMachine extends BlockCustomParticle implements ITileEntityProv
         if(metaTileEntity == null) return false;
         ItemStack itemInHand = playerIn.getHeldItem(hand);
         CuboidRayTraceResult rayTraceResult = (CuboidRayTraceResult) RayTracer.retraceBlock(worldIn, playerIn, pos);
+        if(rayTraceResult == null) {
+            return false;
+        }
         if(!itemInHand.isEmpty()) {
             SimpleItemStack simpleItemStack = new SimpleItemStack(itemInHand);
             if(GregTechAPI.screwdriverList.contains(simpleItemStack)) {

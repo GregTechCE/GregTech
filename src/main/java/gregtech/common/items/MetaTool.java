@@ -5,15 +5,12 @@ import gregtech.api.items.ToolDictNames;
 import gregtech.api.items.metaitem.ElectricStats;
 import gregtech.api.items.toolitem.ToolMetaItem;
 import gregtech.api.recipes.ModHandler;
-import gregtech.api.unification.OreDictUnifier;
 import gregtech.api.unification.material.Materials;
 import gregtech.api.unification.material.type.IngotMaterial;
 import gregtech.api.unification.material.type.SolidMaterial;
 import gregtech.api.unification.ore.OrePrefix;
 import gregtech.api.unification.stack.UnificationEntry;
-import gregtech.common.ConfigHolder;
 import gregtech.common.tools.*;
-import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 
@@ -102,11 +99,6 @@ public class MetaTool extends ToolMetaItem<ToolMetaItem<?>.MetaToolValueItem> {
     }
 
     public void registerRecipes() {
-        ModHandler.addShapedRecipe("mortar_flint", MORTAR.getStackForm(Materials.Flint),
-            " I ", "SIS", "SSS",
-            'I', new ItemStack(Items.FLINT, 1),
-            'S', OrePrefix.stone);
-
         IngotMaterial[] mortarMaterials = new IngotMaterial[] {Materials.Bronze, Materials.Iron,
             Materials.Steel, Materials.DamascusSteel, Materials.WroughtIron, Materials.RedSteel,
             Materials.BlackSteel, Materials.BlueSteel};
@@ -132,31 +124,18 @@ public class MetaTool extends ToolMetaItem<ToolMetaItem<?>.MetaToolValueItem> {
                 'S', new UnificationEntry(OrePrefix.stick, Materials.Wood));
         }
 
-        ModHandler.addShapelessRecipe("clay_to_dust", OreDictUnifier.get(OrePrefix.dust, Materials.Clay, 1),
-            ToolDictNames.craftingToolMortar,
-            new ItemStack(Blocks.CLAY, 1));
-
-        ModHandler.addShapelessRecipe("wheat_to_dust", OreDictUnifier.get(OrePrefix.dust, Materials.Wheat, 1),
-            ToolDictNames.craftingToolMortar,
-            new ItemStack(Items.WHEAT, 1));
-
-        ModHandler.addShapelessRecipe("gravel_to_flint", new ItemStack(Items.FLINT, 1),
-            ToolDictNames.craftingToolMortar,
-            new ItemStack(Blocks.GRAVEL, 1));
-
-        ModHandler.addShapelessRecipe("blaze_rod_to_powder", new ItemStack(Items.BLAZE_POWDER, 2),
-            ToolDictNames.craftingToolMortar,
-            new ItemStack(Items.BLAZE_ROD, 1));
-
-        if(!ConfigHolder.disableFlintTools) {
-            registerFlintToolRecipes();
-        }
+        registerFlintToolRecipes();
     }
 
     private void registerFlintToolRecipes() {
         Function<ToolMetaItem.MetaToolValueItem, ItemStack> toolDataApplier = item ->
             item.setToolData(item.getStackForm(), Materials.Flint, 55, 1, 6.0f, 1.0f);
         //FLINT 6.0f, 55
+        ModHandler.addShapedRecipe("mortar_flint", toolDataApplier.apply(MORTAR),
+            " I ", "SIS", "SSS",
+            'I', new ItemStack(Items.FLINT, 1),
+            'S', OrePrefix.stone);
+
         ModHandler.addShapedRecipe("sword_flint", toolDataApplier.apply(SWORD),
             "F", "F", "S",
             'S', new UnificationEntry(OrePrefix.stick, Materials.Wood),

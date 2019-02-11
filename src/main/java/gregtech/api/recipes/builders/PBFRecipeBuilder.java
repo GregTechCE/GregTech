@@ -6,9 +6,9 @@ import crafttweaker.api.item.IItemStack;
 import crafttweaker.api.minecraft.CraftTweakerMC;
 import gregtech.api.GTValues;
 import gregtech.api.recipes.CountableIngredient;
+import gregtech.api.recipes.RecipeMaps;
 import gregtech.api.recipes.crafttweaker.CTRecipeBuilder.CraftTweakerIngredientWrapper;
 import gregtech.api.recipes.recipes.PrimitiveBlastFurnaceRecipe;
-import gregtech.api.recipes.RecipeMaps;
 import gregtech.api.unification.material.type.Material;
 import gregtech.api.unification.ore.OrePrefix;
 import gregtech.api.util.EnumValidationResult;
@@ -16,9 +16,7 @@ import gregtech.api.util.GTLog;
 import gregtech.api.util.ValidationResult;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.Ingredient;
-import net.minecraftforge.common.crafting.CompoundIngredient;
 import net.minecraftforge.fml.common.Optional.Method;
-import net.minecraftforge.oredict.OreIngredient;
 import stanhebben.zenscript.annotations.ZenClass;
 import stanhebben.zenscript.annotations.ZenMethod;
 
@@ -96,7 +94,7 @@ public class PBFRecipeBuilder {
 		}
 
 		if (fuelAmount <= 0) {
-			GTLog.logger.error("Research Time cannot be less or equal to 0", new IllegalArgumentException());
+			GTLog.logger.error("FuelAmount cannot be less or equal to 0", new IllegalArgumentException());
 			result = EnumValidationResult.INVALID;
 		}
 		if (duration <= 0) {

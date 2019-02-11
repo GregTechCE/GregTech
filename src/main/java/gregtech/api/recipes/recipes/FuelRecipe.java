@@ -16,9 +16,7 @@ import stanhebben.zenscript.annotations.ZenMethod;
 public class FuelRecipe {
 
     private final FluidStack recipeFluid;
-
     private final int duration;
-
     private final long minVoltage;
 
     public FuelRecipe(FluidStack recipeFluid, int duration, long minVoltage) {
