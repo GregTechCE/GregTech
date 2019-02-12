@@ -1,28 +1,21 @@
 package gregtech.common.blocks;
 
 import gregtech.api.GregTechAPI;
-import gregtech.api.unification.material.Materials;
-import gregtech.api.unification.material.type.GemMaterial;
-import gregtech.api.unification.material.type.Material;
-import gregtech.api.unification.material.type.IngotMaterial;
+import gregtech.api.recipes.ModHandler;
 import gregtech.api.unification.material.type.SolidMaterial;
-import gregtech.common.blocks.properties.PropertyMaterial;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockColored;
 import net.minecraft.block.SoundType;
-import net.minecraft.block.material.MapColor;
+import net.minecraft.block.material.EnumPushReaction;
 import net.minecraft.block.state.BlockFaceShape;
-import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving.SpawnPlacementType;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
-import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockPos.MutableBlockPos;
@@ -30,28 +23,32 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
-import javax.annotation.Nullable;
+import java.util.HashSet;
+import java.util.Stack;
 
-public final class BlockFrame extends DelayedStateBlock {
+public final class BlockFrame extends BlockColored {
 
     private static final AxisAlignedBB COLLISION_BOX = new AxisAlignedBB(0.05, 0.0, 0.05, 0.95, 1.0, 0.95);
-    public final PropertyMaterial variantProperty;
+    private static final int SCAFFOLD_PILLAR_RADIUS_SQ = 10;
+    public final SolidMaterial frameMaterial;
 
-    public BlockFrame(Material[] materials) {
-        super(net.minecraft.block.material.Material.IRON);
+    public BlockFrame(SolidMaterial material) {
+        super(ModHandler.isMaterialWood(material) ?
+            net.minecraft.block.material.Material.WOOD :
+            net.minecraft.block.material.Material.IRON);
+        this.frameMaterial = material;
         setUnlocalizedName("frame");
-        setHardness(2.0f);
-        setResistance(10.0f);
+        setHardness(3.0f);
+        setResistance(6.0f);
+        setHarvestLevel(ModHandler.isMaterialWood(material) ? "axe" : "pickaxe", 1);
+        setSoundType(ModHandler.isMaterialWood(material) ? SoundType.WOOD : SoundType.METAL);
         setCreativeTab(GregTechAPI.TAB_GREGTECH_MATERIALS);
-        this.variantProperty = PropertyMaterial.create("variant", materials);
-        initBlockState();
     }
 
     @Override
     public boolean canCreatureSpawn(IBlockState state, IBlockAccess world, BlockPos pos, SpawnPlacementType type) {
         return false;
     }
-
 
     @Override
     public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
@@ -64,31 +61,83 @@ public final class BlockFrame extends DelayedStateBlock {
         MutableBlockPos blockPos = new MutableBlockPos(pos);
         for(int i = 0; i < 32; i++) {
             IBlockState stateHere = worldIn.getBlockState(blockPos);
-            if(stateHere.getBlock().isAir(stateHere, worldIn, pos)) {
+            if(stateHere == state) {
+                blockPos.move(EnumFacing.UP);
+                continue;
+            }
+            if(canPlaceBlockAt(worldIn, blockPos)) {
                 worldIn.setBlockState(blockPos, blockState);
                 if(!playerIn.capabilities.isCreativeMode)
                     stackInHand.shrink(1);
                 return true;
-            } else if(stateHere != state) {
+            } else {
                 return false;
             }
-            blockPos.move(EnumFacing.UP);
         }
         return false;
     }
 
+    protected boolean canBlockStay(World worldIn, BlockPos pos) {
+        MutableBlockPos currentPos = new MutableBlockPos(pos);
+        currentPos.move(EnumFacing.DOWN);
+        IBlockState downState = worldIn.getBlockState(currentPos);
+        if(downState.getBlock() instanceof BlockFrame) {
+            if (canFrameSupportVertical(worldIn, currentPos)) {
+                return true;
+            }
+        } else if(downState.getBlockFaceShape(worldIn, currentPos, EnumFacing.UP) == BlockFaceShape.SOLID) {
+            return true;
+        }
+        currentPos.move(EnumFacing.UP);
+        HashSet<BlockPos> observedSet = new HashSet<>();
+        Stack<EnumFacing> moveStack = new Stack<>();
+        main: while(true) {
+            for(EnumFacing facing : EnumFacing.HORIZONTALS) {
+                currentPos.move(facing);
+                IBlockState blockStateHere = worldIn.getBlockState(currentPos);
+                //if there is node, and it can connect with previous node, add it to list, and set previous node as current
+                if(blockStateHere.getBlock() instanceof BlockFrame && currentPos.distanceSq(pos) <= SCAFFOLD_PILLAR_RADIUS_SQ  && !observedSet.contains(currentPos)) {
+                    observedSet.add(currentPos.toImmutable());
+                    currentPos.move(EnumFacing.DOWN);
+                    downState = worldIn.getBlockState(currentPos);
+                    if(downState.getBlock() instanceof BlockFrame) {
+                        if(canFrameSupportVertical(worldIn, currentPos)) {
+                            return true;
+                        }
+                    } else if(downState.getBlockFaceShape(worldIn, currentPos, EnumFacing.UP) == BlockFaceShape.SOLID) {
+                        return true;
+                    }
+                    currentPos.move(EnumFacing.UP);
+                    moveStack.push(facing.getOpposite());
+                    continue main;
+                } else currentPos.move(facing.getOpposite());
+            }
+            if(!moveStack.isEmpty()) {
+                currentPos.move(moveStack.pop());
+            } else break;
+        }
+        return false;
+    }
+
+    private boolean canFrameSupportVertical(World worldIn, BlockPos framePos) {
+        MutableBlockPos blockPos = new MutableBlockPos(framePos);
+        do {
+            blockPos.move(EnumFacing.DOWN);
+            IBlockState blockState = worldIn.getBlockState(blockPos);
+            if(!(blockState.getBlock() instanceof BlockFrame)) {
+                return blockState.getBlockFaceShape(worldIn, blockPos, EnumFacing.UP) == BlockFaceShape.SOLID;
+            }
+        } while (true);
+    }
+
     @Override
     public boolean canPlaceBlockAt(World worldIn, BlockPos pos) {
-        IBlockState downState = worldIn.getBlockState(pos.down());
-        return super.canPlaceBlockAt(worldIn, pos) && (downState.isSideSolid(worldIn, pos, EnumFacing.UP) ||
-            downState.getBlockFaceShape(worldIn, pos.down(), EnumFacing.UP) == BlockFaceShape.SOLID);
+        return super.canPlaceBlockAt(worldIn, pos) && canBlockStay(worldIn, pos);
     }
 
     @Override
     public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos) {
-        IBlockState downState = worldIn.getBlockState(pos.down());
-        if (!downState.isSideSolid(worldIn, pos, EnumFacing.UP) &&
-            downState.getBlockFaceShape(worldIn, pos.down(), EnumFacing.UP) != BlockFaceShape.SOLID) {
+        if (!canBlockStay(worldIn, pos)) {
             this.dropBlockAsItem(worldIn, pos, state, 0);
             worldIn.setBlockToAir(pos);
         }
@@ -111,97 +160,13 @@ public final class BlockFrame extends DelayedStateBlock {
     }
 
     @Override
+    public EnumPushReaction getMobilityFlag(IBlockState state) {
+        return EnumPushReaction.DESTROY;
+    }
+
+    @Override
     public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, IBlockAccess worldIn, BlockPos pos) {
         return COLLISION_BOX;
-    }
-
-    @Override
-    public int damageDropped(IBlockState state) {
-        return getMetaFromState(state);
-    }
-
-    @Override
-    public String getHarvestTool(IBlockState state) {
-        Material material = state.getValue(variantProperty);
-        if(material instanceof SolidMaterial) {
-            return material.toString().contains("wood") ? "axe" : "pickaxe";
-        }
-        return "pickaxe";
-    }
-
-    @Override
-    public int getHarvestLevel(IBlockState state) {
-        Material material = state.getValue(variantProperty);
-        if(material instanceof SolidMaterial) {
-            return ((SolidMaterial) material).harvestLevel;
-        }
-        return 0;
-    }
-
-    @Override
-    @SuppressWarnings("deprecation")
-    public IBlockState getStateFromMeta(int meta) {
-        Material material = variantProperty.getAllowedValues().get(meta);
-        return getDefaultState().withProperty(variantProperty, material);
-    }
-
-    @Override
-    public int getMetaFromState(IBlockState state) {
-        Material material = state.getValue(variantProperty);
-        return variantProperty.getAllowedValues().indexOf(material);
-    }
-
-    @Override
-    protected BlockStateContainer createStateContainer() {
-        return new BlockStateContainer(this, variantProperty);
-    }
-
-    public ItemStack getItem(Material material) {
-        return getItem(getDefaultState().withProperty(variantProperty, material));
-    }
-
-    public ItemStack getItem(IBlockState blockState) {
-        return new ItemStack(this, 1, getMetaFromState(blockState));
-    }
-
-    @Override
-    public void getSubBlocks(CreativeTabs tab, NonNullList<ItemStack> list) {
-    	blockState.getValidStates().stream()
-    		.filter(blockState -> blockState.getValue(variantProperty) != Materials._NULL)
-    		.forEach(blockState -> list.add(getItem(blockState)));
-    }
-
-    @Override
-    @SuppressWarnings("deprecation")
-    public net.minecraft.block.material.Material getMaterial(IBlockState state) {
-        Material material = state.getValue(variantProperty);
-        if(material instanceof GemMaterial) {
-            return net.minecraft.block.material.Material.ROCK;
-        } else if(material instanceof IngotMaterial) {
-            return net.minecraft.block.material.Material.IRON;
-        } else if(material.toString().contains("wood")) {
-            return net.minecraft.block.material.Material.WOOD;
-        }
-        return net.minecraft.block.material.Material.ROCK;
-    }
-
-    @Override
-    @SuppressWarnings("deprecation")
-    public MapColor getMapColor(IBlockState state, IBlockAccess worldIn, BlockPos pos) {
-        return getMaterial(state).getMaterialMapColor();
-    }
-
-    @Override
-    public SoundType getSoundType(IBlockState state, World world, BlockPos pos, @Nullable Entity entity) {
-        Material material = state.getValue(variantProperty);
-        if(material instanceof GemMaterial) {
-            return SoundType.STONE;
-        } else if(material instanceof IngotMaterial) {
-            return SoundType.METAL;
-        } else if(material.toString().contains("wood")) {
-            return SoundType.WOOD;
-        }
-        return SoundType.STONE;
     }
 
     @Override
@@ -217,6 +182,11 @@ public final class BlockFrame extends DelayedStateBlock {
     @Override
     public boolean isFullBlock(IBlockState state) {
         return false;
+    }
+
+    @Override
+    public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face) {
+        return face == EnumFacing.UP || face == EnumFacing.DOWN ? BlockFaceShape.SOLID : BlockFaceShape.UNDEFINED;
     }
 
     @Override

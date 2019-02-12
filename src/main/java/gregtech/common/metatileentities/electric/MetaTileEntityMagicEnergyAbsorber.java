@@ -25,6 +25,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EntitySelectors;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.WorldProviderEnd;
@@ -43,7 +44,7 @@ public class MetaTileEntityMagicEnergyAbsorber extends TieredMetaTileEntity {
     private boolean hasDragonEggAmplifier = false;
     private boolean isActive = false;
 
-    public MetaTileEntityMagicEnergyAbsorber(String metaTileEntityId) {
+    public MetaTileEntityMagicEnergyAbsorber(ResourceLocation metaTileEntityId) {
         super(metaTileEntityId, GTValues.EV);
     }
 
@@ -95,7 +96,7 @@ public class MetaTileEntityMagicEnergyAbsorber extends TieredMetaTileEntity {
         if(this.isActive != isActive) {
             this.isActive = isActive;
             if(!getWorld().isRemote) {
-                writeCustomData(-100, w -> w.writeBoolean(isActive));
+                writeCustomData(100, w -> w.writeBoolean(isActive));
             }
         }
     }
@@ -103,7 +104,7 @@ public class MetaTileEntityMagicEnergyAbsorber extends TieredMetaTileEntity {
     @Override
     public void receiveCustomData(int dataId, PacketBuffer buf) {
         super.receiveCustomData(dataId, buf);
-        if(dataId == -100) {
+        if(dataId == 100) {
             this.isActive = buf.readBoolean();
         }
     }

@@ -7,18 +7,23 @@ import net.minecraft.block.state.IBlockState;
 import stanhebben.zenscript.annotations.ZenClass;
 import stanhebben.zenscript.annotations.ZenMethod;
 
-@ZenClass("mods.gregtech.ore.filter.BlockFiller")
+import javax.annotation.Nullable;
+import java.util.List;
+
+@ZenClass("mods.gregtech.ore.filler.BlockFiller")
 @ZenRegister
 public abstract class BlockFiller {
 
     public abstract void loadFromConfig(JsonObject object);
 
-    public abstract IBlockState getStateForGeneration(IBlockState currentState, int x, int y, int z);
+    public abstract IBlockState apply(@Nullable IBlockState currentState, int x, int y, int z);
 
-    @ZenMethod("getStateForGeneration")
+    public abstract List<FillerEntry> getAllPossibleStates();
+
+    @ZenMethod("apply")
     public crafttweaker.api.block.IBlockState ctGetStateForGeneration(crafttweaker.api.block.IBlockState currentState, int x, int y, int z) {
         IBlockState mcBlockState = CraftTweakerMC.getBlockState(currentState);
-        return CraftTweakerMC.getBlockState(getStateForGeneration(mcBlockState, x, y, z));
+        return CraftTweakerMC.getBlockState(apply(mcBlockState, x, y, z));
     }
 
 }

@@ -24,16 +24,16 @@ public class DistillationTowerInfo extends MultiblockInfoPage {
     @Override
     public List<MultiblockShapeInfo> getMatchingShapes() {
         MultiblockShapeInfo shapeInfo = MultiblockShapeInfo.builder()
-            .aisle("XSX", "XXX", "XXX", "XXX", "XXX", "XXX")
-            .aisle("XFB", "X#X", "X#X", "X#X", "X#X" ,"XXX")
-            .aisle("XEX", "XXX", "XHX", "XXX", "XXX", "XXX")
-            .where('X', MetaBlocks.METAL_CASING.getState(MetalCasingType.STAINLESS_CLEAN))
-            .where('S', MetaTileEntities.DISTILLATION_TOWER, EnumFacing.NORTH)
+            .aisle("EXX", "XXX", "XXX", "XXX", "XXX", "XXX")
+            .aisle("SFX", "X#X", "X#X", "X#X", "X#X" ,"XXX")
+            .aisle("IXX", "HXX", "HXX", "HXX", "HXX", "HXX")
             .where('#', Blocks.AIR.getDefaultState())
+            .where('X', MetaBlocks.METAL_CASING.getState(MetalCasingType.STAINLESS_CLEAN))
+            .where('S', MetaTileEntities.DISTILLATION_TOWER, EnumFacing.WEST)
+            .where('E', MetaTileEntities.ENERGY_INPUT_HATCH[GTValues.EV], EnumFacing.WEST)
+            .where('I', MetaTileEntities.ITEM_EXPORT_BUS[GTValues.EV], EnumFacing.WEST)
             .where('F', MetaTileEntities.FLUID_IMPORT_HATCH[GTValues.EV], EnumFacing.DOWN)
-            .where('E', MetaTileEntities.ENERGY_INPUT_HATCH[GTValues.EV], EnumFacing.SOUTH)
-            .where('H', MetaTileEntities.FLUID_EXPORT_HATCH[GTValues.EV], EnumFacing.SOUTH)
-            .where('B', MetaTileEntities.ITEM_EXPORT_BUS[GTValues.EV], EnumFacing.EAST)
+            .where('H', MetaTileEntities.FLUID_EXPORT_HATCH[GTValues.EV], EnumFacing.WEST)
             .build();
         return Lists.newArrayList(shapeInfo);
     }

@@ -6,18 +6,24 @@ import gregtech.api.pipenet.MonolithicPipeNet;
 import gregtech.api.pipenet.Node;
 import gregtech.api.pipenet.PipeNet;
 import gregtech.api.pipenet.WorldPipeNet;
-import gregtech.common.pipelike.fluidpipe.LeakableFluidPipeTile;
+import gregtech.api.pipenet.tile.IPipeTile;
+import gregtech.common.multipart.FluidPipeMultiPart;
 import gregtech.common.pipelike.fluidpipe.FluidPipeProperties;
+import gregtech.common.pipelike.fluidpipe.FluidPipeType;
+import gregtech.common.pipelike.fluidpipe.tile.TileEntityFluidPipe;
+import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fml.common.Loader;
 
-import java.util.ArrayList;
 import java.util.Map;
+import java.util.Random;
 
 public class FluidPipeNet extends MonolithicPipeNet<FluidPipeProperties> {
 
@@ -37,42 +43,45 @@ public class FluidPipeNet extends MonolithicPipeNet<FluidPipeProperties> {
         return nodeData.throughput;
     }
 
-    public void markNodesAsLeaking(boolean markAsBurningInstead) {
+    public void destroyNetwork(boolean isLeaking, boolean isBurning) {
         World world = worldData.getWorld();
-        int nodesAmount = 3 + world.rand.nextInt(5);
-        ArrayList<BlockPos> allNodes = new ArrayList<>(this.allNodes.keySet());
-        for(int i = 0; i < nodesAmount; i++) {
-            BlockPos nodePos = allNodes.get(world.rand.nextInt(allNodes.size()));
-            allNodes.remove(nodePos);
-            LeakableFluidPipeTile tile = getPipeTile(world, nodePos);
-            if(tile != null) {
-                if(markAsBurningInstead) {
-                    tile.markAsBurning();
+        ((WorldFluidPipeNet) (Object) worldData).removePipeNet(this);
+        for(BlockPos nodePos : allNodes.keySet()) {
+            TileEntity tileEntity = world.getTileEntity(nodePos);
+            if (tileEntity instanceof TileEntityFluidPipe) {
+                if (isBurning) {
+                    world.setBlockState(nodePos, Blocks.FIRE.getDefaultState());
                 } else {
-                    tile.markAsLeaking();
+                    world.setBlockToAir(nodePos);
+                }
+            } else if (Loader.isModLoaded(GTValues.MODID_FMP)) {
+                if (tileEntity instanceof TileMultipart) {
+                    FluidPipeMultiPart part = (FluidPipeMultiPart) getMultipartPipeTile(tileEntity);
+                    if (part != null) ((TileMultipart) tileEntity).remPart(part);
                 }
             }
-            if(allNodes.isEmpty()) {
-                //no more nodes left, break
-                break;
+            Random random = world.rand;
+            if (isBurning) {
+                TileEntityFluidPipe.spawnParticles(world, nodePos, EnumFacing.UP,
+                    EnumParticleTypes.FLAME, 3 + random.nextInt(2), random);
+                if (random.nextInt(4) == 0) {
+                    TileEntityFluidPipe.setNeighboursToFire(world, nodePos);
+                }
+            }
+            if(isLeaking) {
+                if (world.rand.nextInt(isBurning ? 3 : 7) == 0) {
+                    world.createExplosion(null,
+                        nodePos.getX() + 0.5, nodePos.getY() + 0.5, nodePos.getZ() + 0.5,
+                        1.0f + world.rand.nextFloat(), false);
+                }
             }
         }
     }
 
-    private static LeakableFluidPipeTile getPipeTile(World world, BlockPos pos) {
-        TileEntity tileEntity = world.getTileEntity(pos);
-        if (tileEntity instanceof LeakableFluidPipeTile) {
-            return (LeakableFluidPipeTile) tileEntity;
-        } else if (Loader.isModLoaded(GTValues.MODID_FMP)) {
-            return getMultipartPipeTile(tileEntity);
-        }
-        return null;
-    }
-
-    private static LeakableFluidPipeTile getMultipartPipeTile(TileEntity tileEntity) {
+    private static IPipeTile<FluidPipeType, FluidPipeProperties> getMultipartPipeTile(TileEntity tileEntity) {
         if(tileEntity instanceof TileMultipart) {
-            return (LeakableFluidPipeTile) ((TileMultipart) tileEntity).jPartList().stream()
-                .filter(part -> part instanceof LeakableFluidPipeTile)
+            return (IPipeTile<FluidPipeType, FluidPipeProperties>) ((TileMultipart) tileEntity).jPartList().stream()
+                .filter(part -> part instanceof IPipeTile)
                 .findFirst().orElse(null);
         }
         return null;

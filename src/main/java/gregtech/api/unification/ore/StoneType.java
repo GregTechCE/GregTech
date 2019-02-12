@@ -24,7 +24,7 @@ public class StoneType implements Comparable<StoneType> {
     public Condition<IBlockState> condition;
     public SoundType soundType = SoundType.STONE;
 
-    public static final GTControlledRegistry<StoneType> STONE_TYPE_REGISTRY = new GTControlledRegistry<>(128, true);
+    public static final GTControlledRegistry<String, StoneType> STONE_TYPE_REGISTRY = new GTControlledRegistry<>(128);
 
     /**
      * @param processingPrefix  Prefix of the ores with this stone type
@@ -68,29 +68,24 @@ public class StoneType implements Comparable<StoneType> {
     /**
      * @param processingPrefix  Prefix of the ores with this stone type
      * @param stoneMaterial     Material of this type of stone
-     * @param special           Bitmask. 0x1 if the ore block is unbreakable;
+     * @param flags           Bitmask. 0x1 if the ore block is unbreakable;
      *                                   0x2 if the ore block can fall like a sand block.
      * @param particleTexture   Texture of the particle
      * @param stone             Basic block of this stone type
      * @param conditions        Whether the ores with this stone type can generate with such BlockState
      */
     @SafeVarargs
-    public StoneType(int id, String name, OrePrefix processingPrefix, DustMaterial stoneMaterial, String harvestTool, int special, String particleTexture, Supplier<IBlockState> stone, Condition<IBlockState>... conditions) {
+    public StoneType(int id, String name, OrePrefix processingPrefix, DustMaterial stoneMaterial, String harvestTool, int flags, String particleTexture, Supplier<IBlockState> stone, Condition<IBlockState>... conditions) {
         this.name = name;
         this.processingPrefix = processingPrefix;
         this.stoneMaterial = stoneMaterial;
         this.harvestTool = harvestTool;
-        this.unbreakable = (special & 0x1) != 0;
-        this.falling = (special & 0x2) != 0;
+        this.unbreakable = (flags & 0x1) != 0;
+        this.falling = (flags & 0x2) != 0;
         this.particleTexture = particleTexture;
         this.stone = stone;
-        if (id > -1) {
-            STONE_TYPE_REGISTRY.register(id, name, this);
-            this.condition = new Condition.Or<>(conditions);
-        } else {
-            STONE_TYPE_REGISTRY.putObject(name, this);
-            this.condition = state -> false;
-        }
+        STONE_TYPE_REGISTRY.register(id, name, this);
+        this.condition = new Condition.Or<>(conditions);
     }
 
     public StoneType setTextureForDownFacing(String baseTexture) {
@@ -149,15 +144,16 @@ public class StoneType implements Comparable<StoneType> {
 
     public static void init() {
         //noinspection ResultOfMethodCallIgnored
-        StoneTypes._NULL.toString();
+        StoneTypes.STONE.toString();
         StoneType.STONE_TYPE_REGISTRY.freezeRegistry();
     }
 
     public static StoneType computeStoneType(IBlockState blockState) {
+        //TODO ADD HOOK HERE FOR MATCHING BLOCKS WITH STONE TYPES
         for (StoneType stoneType : STONE_TYPE_REGISTRY) {
             if (stoneType.condition.isTrue(blockState)) return stoneType;
         }
-        return StoneTypes._NULL;
+        return null;
     }
 
 }

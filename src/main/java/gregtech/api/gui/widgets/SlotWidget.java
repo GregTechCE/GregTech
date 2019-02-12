@@ -17,6 +17,7 @@ import javax.annotation.Nonnull;
 public class SlotWidget extends Widget implements INativeWidget {
 
     protected Slot slotReference;
+    protected boolean isEnabled = true;
 
     public final IItemHandlerModifiable itemHandler;
 
@@ -31,13 +32,18 @@ public class SlotWidget extends Widget implements INativeWidget {
     protected TextureArea[] backgroundTexture;
 
     public SlotWidget(IItemHandlerModifiable itemHandler, int slotIndex, int xPosition, int yPosition, boolean canTakeItems, boolean canPutItems) {
-        super(Widget.SLOT_DRAW_PRIORITY);
+        super();
         this.itemHandler = itemHandler;
         this.slotIndex = slotIndex;
         this.xPosition = xPosition;
         this.yPosition = yPosition;
         this.canTakeItems = canTakeItems;
         this.canPutItems = canPutItems;
+    }
+
+    @Override
+    public void setEnabled(boolean enabled) {
+        isEnabled = enabled;
     }
 
     @Override
@@ -63,11 +69,11 @@ public class SlotWidget extends Widget implements INativeWidget {
     }
 
     public boolean canPutStack(ItemStack stack) {
-        return canPutItems;
+        return isEnabled && canPutItems;
     }
 
     public boolean canTakeStack(EntityPlayer player) {
-        return canTakeItems;
+        return isEnabled && canTakeItems;
     }
 
     @Override
@@ -76,16 +82,16 @@ public class SlotWidget extends Widget implements INativeWidget {
     }
 
     public boolean isEnabled() {
-        return true;
-    }
-
-    public void onSlotChanged() {
-        gui.holder.markAsDirty();
+        return isEnabled;
     }
 
     @Override
     public boolean canMergeSlot(ItemStack stack) {
-        return true;
+        return isEnabled;
+    }
+
+    public void onSlotChanged() {
+        gui.holder.markAsDirty();
     }
 
     @Override
@@ -127,7 +133,7 @@ public class SlotWidget extends Widget implements INativeWidget {
     @Override
     @SideOnly(Side.CLIENT)
     public void drawInBackground(int mouseX, int mouseY) {
-        if(backgroundTexture != null) {
+        if(isEnabled && backgroundTexture != null) {
             for(TextureArea backgroundTexture : this.backgroundTexture) {
                 backgroundTexture.draw(this.xPosition - 1, this.yPosition - 1, 18, 18);
             }

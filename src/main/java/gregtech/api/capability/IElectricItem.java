@@ -1,8 +1,6 @@
 package gregtech.api.capability;
 
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.capabilities.CapabilityInject;
 
 import java.util.function.BiConsumer;
 
@@ -59,13 +57,20 @@ public interface IElectricItem {
     long getMaxCharge();
 
     /**
+     * Determine the current charge for the specified item
+     * @return current charge level in EU
+     */
+    long getCharge();
+
+    /**
      * Determine if the specified electric item has at least a specific amount of EU.
-     * BatPacks are not taken into account.
      *
      * @param amount minimum amount of energy required
      * @return true if there's enough energy
      */
-    boolean canUse(long amount);
+    default boolean canUse(long amount) {
+        return discharge(amount, Integer.MAX_VALUE, true, false, true) == amount;
+    }
 
     /**
      * Get the tier of the specified item.

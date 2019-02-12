@@ -1,7 +1,6 @@
 package gregtech.api.recipes.builders;
 
 import com.google.common.collect.ImmutableMap;
-import gregtech.api.recipes.CountableIngredient;
 import gregtech.api.recipes.Recipe;
 import gregtech.api.recipes.RecipeBuilder;
 import gregtech.api.recipes.RecipeMap;
@@ -9,6 +8,7 @@ import gregtech.api.util.EnumValidationResult;
 import gregtech.api.util.GTLog;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.ValidationResult;
+import gregtech.common.items.MetaItems;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -55,22 +55,12 @@ public class ImplosionRecipeBuilder extends RecipeBuilder<ImplosionRecipeBuilder
 
     @Override
     public void buildAndRegister() {
-        int gunpowder = explosivesAmount * 2;
-        int dynamite = explosivesAmount * 4;
-        int TNT = Math.max(1, explosivesAmount / 2);
-        int ITNT = Math.max(1, explosivesAmount / 4);
-
-        CountableIngredient input = inputs.get(0);
-        if (gunpowder < 65) {
-//				recipeMap.addRecipe(this.copy().inputs(input, ItemList.Block_Powderbarrel.get(gunpowder)).build());
+        int dynamiteAmount = explosivesAmount * 4;
+        int tntAmount = Math.max(1, explosivesAmount / 2);
+        if (dynamiteAmount <= 16) {
+				recipeMap.addRecipe(this.copy().inputs(MetaItems.DYNAMITE.getStackForm(dynamiteAmount)).build());
         }
-        if (dynamite < 17) {
-//				recipeMap.addRecipe(this.copy().inputs(input, ModHandler.IC2.getIC2Item(ItemName.dynamite, dynamite)).build());
-        }
-        recipeMap.addRecipe(this.copy()
-            .inputs(new ItemStack(Blocks.TNT, TNT))
-            .build());
-//			recipeMap.addRecipe(this.copy().inputs(input, ModHandler.IC2.getIC2Item(BlockName.te, TeBlock.itnt, ITNT)).build());
+        recipeMap.addRecipe(this.copy().inputs(new ItemStack(Blocks.TNT, tntAmount)).build());
     }
 
     public ValidationResult<Recipe> build() {

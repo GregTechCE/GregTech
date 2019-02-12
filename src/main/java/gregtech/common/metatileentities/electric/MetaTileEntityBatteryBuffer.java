@@ -11,10 +11,12 @@ import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.MetaTileEntityHolder;
 import gregtech.api.metatileentity.TieredMetaTileEntity;
 import gregtech.api.render.Textures;
+import gregtech.api.util.PipelineUtil;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.items.IItemHandlerModifiable;
 import net.minecraftforge.items.ItemStackHandler;
@@ -27,7 +29,7 @@ public class MetaTileEntityBatteryBuffer extends TieredMetaTileEntity {
 
     private final int inventorySize;
 
-    public MetaTileEntityBatteryBuffer(String metaTileEntityId, int tier, int inventorySize) {
+    public MetaTileEntityBatteryBuffer(ResourceLocation metaTileEntityId, int tier, int inventorySize) {
         super(metaTileEntityId, tier);
         this.inventorySize = inventorySize;
         initializeInventory();
@@ -42,7 +44,7 @@ public class MetaTileEntityBatteryBuffer extends TieredMetaTileEntity {
     @Override
     public void renderMetaTileEntity(CCRenderState renderState, Matrix4 translation, IVertexOperation[] pipeline) {
         super.renderMetaTileEntity(renderState, translation, pipeline);
-        Textures.ENERGY_OUT.renderSided(getFrontFacing(), renderState, translation, pipeline);
+        Textures.ENERGY_OUT.renderSided(getFrontFacing(), renderState, translation, PipelineUtil.color(pipeline, GTValues.VC[getTier()]));
     }
 
     @Override

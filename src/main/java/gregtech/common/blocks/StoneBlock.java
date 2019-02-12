@@ -12,6 +12,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.NonNullList;
 
+import java.util.Arrays;
+
 public class StoneBlock<T extends Enum<T> & IStringSerializable> extends Block {
 
     private static PropertyEnum<ChiselingVariant> CHISELING_VARIANT = PropertyEnum.create("chiseling", ChiselingVariant.class);
@@ -38,6 +40,10 @@ public class StoneBlock<T extends Enum<T> & IStringSerializable> extends Block {
         return getMetaFromState(state);
     }
 
+    public T[] getVariantValues() {
+        return Arrays.copyOf(VALUES, VALUES.length);
+    }
+
     public T getVariant(IBlockState blockState) {
         return blockState.getValue(VARIANT);
     }
@@ -51,7 +57,11 @@ public class StoneBlock<T extends Enum<T> & IStringSerializable> extends Block {
     }
 
     public ItemStack getItemVariant(T variant, ChiselingVariant chiselingVariant) {
-        return new ItemStack(this, 1, chiselingVariant.ordinal() * 4 + variant.ordinal());
+        return getItemVariant(variant, chiselingVariant, 1);
+    }
+
+    public ItemStack getItemVariant(T variant, ChiselingVariant chiselingVariant, int amount) {
+        return new ItemStack(this, amount, chiselingVariant.ordinal() * 4 + variant.ordinal());
     }
 
     @Override

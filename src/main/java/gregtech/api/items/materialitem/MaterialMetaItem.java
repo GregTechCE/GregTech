@@ -145,12 +145,7 @@ public class MaterialMetaItem extends StandardMetaItem {
             Material material = Material.MATERIAL_REGISTRY.getObjectById(damage % 1000);
             OrePrefix prefix = this.orePrefixes[(damage / 1000)];
             if(material == null) return;
-            lines.add(material.chemicalFormula);
             addMaterialTooltip(itemStack, prefix, material, lines, tooltipFlag);
-            if(tooltipFlag.isAdvanced()) {
-                lines.add("IconType: " + prefix.materialIconType);
-                lines.add("IconSet: " + material.materialIconSet);
-            }
         }
     }
 

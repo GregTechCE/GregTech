@@ -1,9 +1,7 @@
 package gregtech.common.tools;
 
-import gregtech.api.recipes.RecipeMaps;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.resources.I18n;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -14,7 +12,6 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-import java.util.Collections;
 import java.util.List;
 
 public class ToolJackHammer extends ToolDrillLV {
@@ -67,28 +64,16 @@ public class ToolJackHammer extends ToolDrillLV {
     @Override
     public boolean isMinableBlock(IBlockState block, ItemStack stack) {
         String tool = block.getBlock().getHarvestTool(block);
-        ItemStack itemStack = new ItemStack(block.getBlock(), 1, block.getBlock().getMetaFromState(block));
         return (tool != null && (tool.equals("hammer") || tool.equals("pickaxe"))) ||
             block.getMaterial() == Material.ROCK ||
             block.getMaterial() == Material.GLASS ||
             block.getMaterial() == Material.ICE ||
-            block.getMaterial() == Material.PACKED_ICE ||
-            RecipeMaps.FORGE_HAMMER_RECIPES.findRecipe(Long.MAX_VALUE,
-                Collections.singletonList(itemStack), Collections.emptyList()) != null;
-    }
-
-    @Override
-    public boolean allowRecursiveConversion() {
-        return true;
+            block.getMaterial() == Material.PACKED_ICE;
     }
 
     @Override
     public int convertBlockDrops(World world, BlockPos centerPos, IBlockState blockState, EntityPlayer harvester, List<ItemStack> drops, boolean recursive) {
-        int conversionsApplied = ToolUtility.applyHammerDrops(world.rand, blockState, drops);
-        if (recursive)
-            //on recursive calls, do not try to break multiple blocks
-            return conversionsApplied;
-
+        int conversionsApplied = 0;
         EnumFacing sideHit = ToolUtility.getSideHit(world, centerPos, harvester);
         ItemStack selfStack = harvester.getHeldItem(EnumHand.MAIN_HAND);
         for (int x = -1; x < 2; x++) {
@@ -104,11 +89,6 @@ public class ToolJackHammer extends ToolDrillLV {
             }
         }
         return conversionsApplied;
-    }
-
-    @Override
-    public void addInformation(ItemStack stack, List<String> lines, boolean isAdvanced) {
-        lines.add(I18n.format("metaitem.tool.tooltip.hammer.extra_drop"));
     }
 
     private static BlockPos rotate(BlockPos origin, int x, int y, EnumFacing sideHit) {

@@ -13,6 +13,8 @@ import gregtech.api.unification.stack.MaterialStack;
 import gregtech.api.unification.stack.UnificationEntry;
 import gregtech.api.util.DummyContainer;
 import gregtech.api.util.GTLog;
+import gregtech.api.util.ShapedOreEnergyTransferRecipe;
+import gregtech.api.util.ShapedOreIngredientAwareRecipe;
 import gregtech.api.util.world.DummyWorld;
 import gregtech.common.MetaFluids;
 import net.minecraft.block.Block;
@@ -146,6 +148,9 @@ public class ModHandler {
             } else if(materialStack.material == Materials.Lignite) {
                 remainder = OreDictUnifier.get(OrePrefix.dust, Materials.DarkAsh);
                 remainderChance = 0.35f;
+            } else if(materialStack.material == Materials.Coke) {
+                remainder = OreDictUnifier.get(OrePrefix.dust, Materials.Ash);
+                remainderChance = 0.5f;
             } else return ItemStack.EMPTY;
         }
         return random.nextFloat() <= remainderChance ? remainder : ItemStack.EMPTY;
@@ -178,7 +183,6 @@ public class ModHandler {
             RecipeMap.setFoundInvalidRecipe(true);
         }
         if (skip) return;
-
         FurnaceRecipes recipes = FurnaceRecipes.instance();
 
         if(recipes.getSmeltingResult(input).isEmpty()) {
@@ -281,6 +285,44 @@ public class ModHandler {
         }
 
         IRecipe shapedOreRecipe = new ShapedOreRecipe(null, result.copy(), finalizeShapedRecipeInput(recipe))
+            .setMirrored(false) //make all recipes not mirrored by default
+            .setRegistryName(regName);
+        ForgeRegistries.RECIPES.register(shapedOreRecipe);
+    }
+
+    public static void addShapedEnergyTransferRecipe(String regName, ItemStack result, Object... recipe) {
+        boolean skip = false;
+        if (result.isEmpty()) {
+            GTLog.logger.error("Result cannot be an empty ItemStack. Recipe: {}", regName);
+            GTLog.logger.error("Stacktrace:", new IllegalArgumentException());
+            skip = true;
+        }
+        skip |= validateRecipe(regName, recipe);
+        if (skip) {
+            RecipeMap.setFoundInvalidRecipe(true);
+            return;
+        }
+
+        IRecipe shapedOreRecipe = new ShapedOreEnergyTransferRecipe(null, result.copy(), finalizeShapedRecipeInput(recipe))
+            .setMirrored(false) //make all recipes not mirrored by default
+            .setRegistryName(regName);
+        ForgeRegistries.RECIPES.register(shapedOreRecipe);
+    }
+
+    public static void addShapedIngredientAwareRecipe(String regName, ItemStack result, Object... recipe) {
+        boolean skip = false;
+        if (result.isEmpty()) {
+            GTLog.logger.error("Result cannot be an empty ItemStack. Recipe: {}", regName);
+            GTLog.logger.error("Stacktrace:", new IllegalArgumentException());
+            skip = true;
+        }
+        skip |= validateRecipe(regName, recipe);
+        if (skip) {
+            RecipeMap.setFoundInvalidRecipe(true);
+            return;
+        }
+
+        IRecipe shapedOreRecipe = new ShapedOreIngredientAwareRecipe(null, result.copy(), finalizeShapedRecipeInput(recipe))
             .setMirrored(false) //make all recipes not mirrored by default
             .setRegistryName(regName);
         ForgeRegistries.RECIPES.register(shapedOreRecipe);

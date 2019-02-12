@@ -62,6 +62,11 @@ public class EnergyContainerHandler extends MTETrait implements IEnergyContainer
         return "EnergyContainer";
     }
 
+    @Override
+    public int getNetworkID() {
+        return TraitNetworkIds.TRAIT_ID_ENERGY_CONTAINER;
+    }
+
     @Nullable
     @Override
     public Capability<?> getImplementingCapability() {
@@ -89,6 +94,9 @@ public class EnergyContainerHandler extends MTETrait implements IEnergyContainer
         this.energyStored = energyStored;
         if(!metaTileEntity.getWorld().isRemote) {
             metaTileEntity.markDirty();
+            if(metaTileEntity instanceof IEnergyChangeListener) {
+                ((IEnergyChangeListener) metaTileEntity).onEnergyChanged(this);
+            }
         }
     }
 
@@ -136,7 +144,7 @@ public class EnergyContainerHandler extends MTETrait implements IEnergyContainer
     @Override
     public long acceptEnergyFromNetwork(EnumFacing side, long voltage, long amperage) {
         long canAccept = getEnergyCapacity() - getEnergyStored();
-        if(side == null || inputsEnergy(side)) {
+        if(voltage > 0L && amperage > 0L && (side == null || inputsEnergy(side))) {
             if(voltage > getInputVoltage()) {
                 BlockPos pos = metaTileEntity.getPos();
                 metaTileEntity.getWorld().setBlockToAir(pos);
@@ -199,5 +207,9 @@ public class EnergyContainerHandler extends MTETrait implements IEnergyContainer
     @Override
     public long getInputVoltage() {
         return this.maxInputVoltage;
+    }
+
+    public interface IEnergyChangeListener {
+        void onEnergyChanged(IEnergyContainer container);
     }
 }

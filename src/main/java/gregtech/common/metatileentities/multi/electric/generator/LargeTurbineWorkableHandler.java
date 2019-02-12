@@ -10,21 +10,40 @@ import gregtech.api.unification.material.type.FluidMaterial;
 import gregtech.common.MetaFluids;
 import gregtech.common.metatileentities.electric.multiblockpart.MetaTileEntityRotorHolder;
 import gregtech.common.metatileentities.multi.electric.generator.MetaTileEntityLargeTurbine.TurbineType;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.fluids.FluidStack;
 
 import java.util.function.Supplier;
 
 public class LargeTurbineWorkableHandler extends FuelRecipeMapWorkableHandler {
 
-    private static final int BASE_ROTOR_DAMAGE = 2;
+    private static final int CYCLE_LENGTH = 80;
+    private static final int BASE_ROTOR_DAMAGE = 11;
     private static final int BASE_EU_OUTPUT = 2048;
     private static final int EU_OUTPUT_BONUS = 6144;
 
     private MetaTileEntityLargeTurbine largeTurbine;
+    private int rotorCycleLength = 0;
 
     public LargeTurbineWorkableHandler(MetaTileEntityLargeTurbine metaTileEntity, FuelRecipeMap recipeMap, Supplier<IEnergyContainer> energyContainer, Supplier<IMultipleTankHandler> fluidTank, long maxVoltage) {
         super(metaTileEntity, recipeMap, energyContainer, fluidTank, maxVoltage);
         this.largeTurbine = metaTileEntity;
+    }
+
+    @Override
+    public void update() {
+        super.update();
+        MetaTileEntityRotorHolder rotorHolder = largeTurbine.getAbilities(MetaTileEntityLargeTurbine.ABILITY_ROTOR_HOLDER).get(0);
+        //if the rotor is spinning and is not broken generate energy every tick,
+        //recipes only affect rotor speed delta per tick and output fluid generation,
+        //they do not add energy to the turbine directly
+        double relativeRotorSpeed = rotorHolder.getRelativeRotorSpeed();
+        if(rotorHolder.getCurrentRotorSpeed() > 0 && rotorHolder.hasRotorInInventory()) {
+            double rotorEfficiency = rotorHolder.getRotorEfficiency();
+            double totalEnergyOutput = (BASE_EU_OUTPUT + EU_OUTPUT_BONUS * rotorEfficiency) * (relativeRotorSpeed * relativeRotorSpeed);
+            energyContainer.get().addEnergy(MathHelper.ceil(totalEnergyOutput));
+        }
     }
 
     public FluidStack getFuelStack() {
@@ -37,8 +56,12 @@ public class LargeTurbineWorkableHandler extends FuelRecipeMapWorkableHandler {
     @Override
     public boolean checkRecipe(FuelRecipe recipe) {
         MetaTileEntityRotorHolder rotorHolder = largeTurbine.getAbilities(MetaTileEntityLargeTurbine.ABILITY_ROTOR_HOLDER).get(0);
-        int damageToBeApplied = (int) (BASE_ROTOR_DAMAGE * rotorHolder.getRelativeRotorSpeed()) + 1;
-        return rotorHolder.applyDamageToRotor(damageToBeApplied, true);
+        if(++rotorCycleLength >= CYCLE_LENGTH) {
+            this.rotorCycleLength = 0;
+            int damageToBeApplied = (int) Math.round(BASE_ROTOR_DAMAGE * rotorHolder.getRelativeRotorSpeed()) + 1;
+            rotorHolder.applyDamageToRotor(damageToBeApplied, true);
+        }
+        return true;
     }
 
     @Override
@@ -50,14 +73,8 @@ public class LargeTurbineWorkableHandler extends FuelRecipeMapWorkableHandler {
 
     @Override
     protected long startRecipe(FuelRecipe currentRecipe, int fuelAmountUsed, int recipeDuration) {
-        MetaTileEntityRotorHolder rotorHolder = largeTurbine.getAbilities(MetaTileEntityLargeTurbine.ABILITY_ROTOR_HOLDER).get(0);
-        double relativeRotorSpeed = rotorHolder.getRelativeRotorSpeed();
-        double rotorEfficiency = rotorHolder.getRotorEfficiency();
-        double totalEnergyOutput = BASE_EU_OUTPUT + EU_OUTPUT_BONUS * rotorEfficiency;
-        int damageToBeApplied = (int) (BASE_ROTOR_DAMAGE * relativeRotorSpeed) + 1;
-        rotorHolder.applyDamageToRotor(damageToBeApplied, true);
         addOutputFluids(currentRecipe, fuelAmountUsed);
-        return (int) Math.floor(totalEnergyOutput * relativeRotorSpeed * relativeRotorSpeed);
+        return 0L; //energy is added each tick while the rotor speed is >0 RPM
     }
 
     private void addOutputFluids(FuelRecipe currentRecipe, int fuelAmountUsed) {
@@ -73,6 +90,19 @@ public class LargeTurbineWorkableHandler extends FuelRecipeMapWorkableHandler {
                 largeTurbine.exportFluidHandler.fill(material.getFluid(fuelAmountUsed), true);
             }
         }
+    }
+
+    @Override
+    public NBTTagCompound serializeNBT() {
+        NBTTagCompound tagCompound = super.serializeNBT();
+        tagCompound.setInteger("CycleLength", rotorCycleLength);
+        return tagCompound;
+    }
+
+    @Override
+    public void deserializeNBT(NBTTagCompound compound) {
+        super.deserializeNBT(compound);
+        this.rotorCycleLength = compound.getInteger("CycleLength");
     }
 
     @Override

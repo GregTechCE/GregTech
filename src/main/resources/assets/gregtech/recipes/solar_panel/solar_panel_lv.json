@@ -1,0 +1,21 @@
+{
+  "type": "gregtech:metaitem_shaped",
+  "pattern": [
+    "CCC",
+    "CAC",
+    "CCC"
+  ],
+  "key": {
+    "C": {
+      "type": "gregtech:metaitem",
+      "name": "cover.solar.panel.ulv"
+    },
+    "A": {
+      "type": "forge:ore_dict",
+      "ore": "circuitGood"
+    }
+  },
+  "result": {
+    "name": "cover.solar.panel.lv"
+  }
+}

@@ -1,8 +1,6 @@
 package gregtech.common.pipelike.fluidpipe.net;
 
 import gregtech.api.pipenet.WorldPipeNet;
-import gregtech.common.pipelike.cable.WireProperties;
-import gregtech.common.pipelike.cable.net.EnergyNet;
 import gregtech.common.pipelike.fluidpipe.FluidPipeProperties;
 import net.minecraft.world.World;
 
@@ -22,6 +20,11 @@ public class WorldFluidPipeNet extends WorldPipeNet<FluidPipeProperties, FluidPi
 
     public WorldFluidPipeNet(String name) {
         super(name);
+    }
+
+    @Override
+    protected void removePipeNet(FluidPipeNet pipeNet) {
+        super.removePipeNet(pipeNet);
     }
 
     @Override

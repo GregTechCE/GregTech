@@ -21,8 +21,13 @@ import static gregtech.api.unification.material.type.Material.MatFlags.DISABLE_D
 
 public class DecompositionRecipeHandler {
 
-    public static void register() {
-        OrePrefix.dust.addProcessingHandler(FluidMaterial.class, DecompositionRecipeHandler::processDecomposition);
+    public static void runRecipeGeneration() {
+        for(Material material : Material.MATERIAL_REGISTRY) {
+            if(material instanceof FluidMaterial) {
+                OrePrefix prefix = material instanceof DustMaterial ? OrePrefix.dust : null;
+                processDecomposition(prefix, (FluidMaterial) material);
+            }
+        }
     }
 
     public static void processDecomposition(OrePrefix decomposePrefix, FluidMaterial material) {
@@ -31,7 +36,7 @@ public class DecompositionRecipeHandler {
                 !material.hasFlag(Material.MatFlags.DECOMPOSITION_BY_CENTRIFUGING)) ||
             //disable decomposition if explicitly disabled for this material or for one of it's components
             material.hasFlag(DISABLE_DECOMPOSITION)) return;
-        
+
         ArrayList<ItemStack> outputs = new ArrayList<>();
         ArrayList<FluidStack> fluidOutputs = new ArrayList<>();
         int totalInputAmount = 0;
@@ -51,23 +56,24 @@ public class DecompositionRecipeHandler {
         RecipeBuilder builder;
         if (material.hasFlag(Material.MatFlags.DECOMPOSITION_BY_ELECTROLYZING)) {
             builder = RecipeMaps.ELECTROLYZER_RECIPES.recipeBuilder()
-                .duration((int) material.getProtons() * totalInputAmount * 8)
-                .EUt(getElectrolyzingVoltage(material));
+                .duration((int) material.getAverageProtons() * totalInputAmount * 8)
+                .EUt(getElectrolyzingVoltage(material.materialComponents.stream()
+                    .map(s -> s.material).collect(Collectors.toList())));
         } else {
             builder = RecipeMaps.CENTRIFUGE_RECIPES.recipeBuilder()
-                .duration((int) material.getMass() * totalInputAmount * 2)
+                .duration((int) material.getAverageMass() * totalInputAmount * 2)
                 .EUt(30);
         }
         builder.outputs(outputs);
         builder.fluidOutputs(fluidOutputs);
 
         //finish builder
-        if (decomposePrefix == OrePrefix.dust) {
+        if (decomposePrefix != null) {
             builder.input(decomposePrefix, material, totalInputAmount);
         } else {
             builder.fluidInputs(material.getFluid(1000 * totalInputAmount));
         }
-        if(material.hasFlag(DECOMPOSITION_REQUIRES_HYDROGEN)) {
+        if (material.hasFlag(DECOMPOSITION_REQUIRES_HYDROGEN)) {
             builder.fluidInputs(Materials.Hydrogen.getFluid(1000 * totalInputAmount));
         }
 
@@ -76,18 +82,13 @@ public class DecompositionRecipeHandler {
     }
 
     //todo think something better with this
-    private static int getElectrolyzingVoltage(Material material) {
-        List<Material> components = material.materialComponents.stream()
-            .map(s -> s.material).collect(Collectors.toList());
+    private static int getElectrolyzingVoltage(List<Material> components) {
         //titanium or tungsten-containing materials electrolyzing requires 1920
-        if(components.contains(Materials.Tungsten) ||
+        if (components.contains(Materials.Tungsten) ||
             components.contains(Materials.Titanium))
             return 1920; //EV voltage (tungstate and scheelite electrolyzing)
-        if(material == Materials.Salt ||
-            material == Materials.RockSalt)
-            return 30; //LV voltage for salt electrolyzing (early way of getting sodium)
         //otherwise, use logic that requires at least 120 EU/t for electrolyzing
         return Math.min(4, components.size()) * 30;
     }
-    
+
 }

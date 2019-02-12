@@ -1,5 +1,6 @@
 package gregtech.common.metatileentities.electric;
 
+import codechicken.lib.raytracer.CuboidRayTraceResult;
 import codechicken.lib.render.CCRenderState;
 import codechicken.lib.render.pipeline.IVertexOperation;
 import codechicken.lib.vec.Matrix4;
@@ -12,6 +13,7 @@ import gregtech.api.metatileentity.MetaTileEntityHolder;
 import gregtech.api.metatileentity.TieredMetaTileEntity;
 import gregtech.api.render.Textures;
 import gregtech.api.unification.stack.SimpleItemStack;
+import gregtech.api.util.PipelineUtil;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -19,6 +21,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
 
@@ -29,7 +32,7 @@ public class MetaTileEntityTransformer extends TieredMetaTileEntity {
 
     private boolean isTransformUp;
 
-    public MetaTileEntityTransformer(String metaTileEntityId, int tier) {
+    public MetaTileEntityTransformer(ResourceLocation metaTileEntityId, int tier) {
         super(metaTileEntityId, tier);
     }
 
@@ -67,7 +70,7 @@ public class MetaTileEntityTransformer extends TieredMetaTileEntity {
     @Override
     public void receiveCustomData(int dataId, PacketBuffer buf) {
         super.receiveCustomData(dataId, buf);
-        if(dataId == -100) {
+        if(dataId == 100) {
             this.isTransformUp = buf.readBoolean();
         }
     }
@@ -80,7 +83,7 @@ public class MetaTileEntityTransformer extends TieredMetaTileEntity {
         isTransformUp = inverted;
         if(!getWorld().isRemote) {
             reinitializeEnergyContainer();
-            writeCustomData(-100, b -> b.writeBoolean(isTransformUp));
+            writeCustomData(100, b -> b.writeBoolean(isTransformUp));
             markDirty();
         }
     }
@@ -90,10 +93,10 @@ public class MetaTileEntityTransformer extends TieredMetaTileEntity {
         long tierVoltage = GTValues.V[getTier()];
         if(isTransformUp) {
             //storage = 1 amp high; input = tier / 4; amperage = 4; output = tier; amperage = 1
-            this.energyContainer = new EnergyContainerHandler(this, tierVoltage * 4L, tierVoltage / 4, 4, tierVoltage, 1);
+            this.energyContainer = new EnergyContainerHandler(this, tierVoltage * 8L, tierVoltage / 4, 4, tierVoltage, 1);
         } else {
             //storage = 1 amp high; input = tier; amperage = 1; output = tier / 4; amperage = 4
-            this.energyContainer = new EnergyContainerHandler(this, tierVoltage * 4L, tierVoltage, 1, tierVoltage / 4, 4);
+            this.energyContainer = new EnergyContainerHandler(this, tierVoltage * 8L, tierVoltage, 1, tierVoltage / 4, 4);
         }
         ((EnergyContainerHandler) this.energyContainer).setSideInputCondition(s -> s == getFrontFacing());
         ((EnergyContainerHandler) this.energyContainer).setSideOutputCondition(s -> s == getFrontFacing().getOpposite());
@@ -103,11 +106,11 @@ public class MetaTileEntityTransformer extends TieredMetaTileEntity {
     public void renderMetaTileEntity(CCRenderState renderState, Matrix4 translation, IVertexOperation[] pipeline) {
         super.renderMetaTileEntity(renderState, translation, pipeline);
         if(isTransformUp) {
-            Textures.ENERGY_OUT_MULTI.renderSided(getFrontFacing(), renderState, translation, pipeline);
-            Textures.ENERGY_IN.renderSided(getFrontFacing().getOpposite(), renderState, translation, pipeline);
+            Textures.ENERGY_OUT_MULTI.renderSided(getFrontFacing(), renderState, translation, PipelineUtil.color(pipeline, GTValues.VC[getTier() - 1]));
+            Textures.ENERGY_IN.renderSided(getFrontFacing().getOpposite(), renderState, translation, PipelineUtil.color(pipeline, GTValues.VC[getTier()]));
         } else {
-            Textures.ENERGY_IN_MULTI.renderSided(getFrontFacing(), renderState, translation, pipeline);
-            Textures.ENERGY_OUT.renderSided(getFrontFacing().getOpposite(), renderState, translation, pipeline);
+            Textures.ENERGY_IN_MULTI.renderSided(getFrontFacing(), renderState, translation, PipelineUtil.color(pipeline, GTValues.VC[getTier()]));
+            Textures.ENERGY_OUT.renderSided(getFrontFacing().getOpposite(), renderState, translation, PipelineUtil.color(pipeline, GTValues.VC[getTier() - 1]));
         }
     }
 
@@ -117,7 +120,7 @@ public class MetaTileEntityTransformer extends TieredMetaTileEntity {
     }
 
     @Override
-    public boolean onRightClick(EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+    public boolean onRightClick(EntityPlayer playerIn, EnumHand hand, EnumFacing facing, CuboidRayTraceResult hitResult) {
         ItemStack itemStack = playerIn.getHeldItem(hand);
         if(!itemStack.isEmpty() && GregTechAPI.softHammerList.contains(new SimpleItemStack(itemStack))) {
             if(getWorld().isRemote)

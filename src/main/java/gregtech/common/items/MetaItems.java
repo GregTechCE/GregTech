@@ -2,9 +2,9 @@ package gregtech.common.items;
 
 import gregtech.api.items.materialitem.MaterialMetaItem;
 import gregtech.api.items.metaitem.MetaItem;
-import gregtech.api.items.toolitem.ToolCraftingListener;
 import gregtech.api.items.toolitem.ToolHarvestListener;
 import gregtech.api.items.toolitem.ToolMetaItem;
+import net.minecraft.item.EnumDyeColor;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -34,8 +34,15 @@ public final class MetaItems {
     public static MetaItem<?>.MetaValueItem MINECART_WHEELS_IRON;
     public static MetaItem<?>.MetaValueItem MINECART_WHEELS_STEEL;
 
-    public static MetaItem<?>.MetaValueItem SHAPE_EMPTY;
+    public static MetaItem<?>.MetaValueItem COMPRESSED_CLAY;
+    public static MetaItem<?>.MetaValueItem COMPRESSED_FIRECLAY;
+    public static MetaItem<?>.MetaValueItem FIRECLAY_BRICK;
+    public static MetaItem<?>.MetaValueItem COKE_OVEN_BRICK;
 
+    public static MetaItem<?>.MetaValueItem WOODEN_FORM_EMPTY;
+    public static MetaItem<?>.MetaValueItem WOODEN_FORM_BRICK;
+
+    public static MetaItem<?>.MetaValueItem SHAPE_EMPTY;
     public static MetaItem<?>.MetaValueItem SHAPE_MOLD_PLATE;
     public static MetaItem<?>.MetaValueItem SHAPE_MOLD_GEAR;
     public static MetaItem<?>.MetaValueItem SHAPE_MOLD_CREDIT;
@@ -72,12 +79,6 @@ public final class MetaItems {
     public static MetaItem<?>.MetaValueItem SHAPE_EXTRUDER_GEAR;
     public static MetaItem<?>.MetaValueItem SHAPE_EXTRUDER_BOTTLE;
 
-    public static MetaItem<?>.MetaValueItem SHAPE_SLICER_FLAT;
-    public static MetaItem<?>.MetaValueItem SHAPE_SLICER_STRIPES;
-
-    public static MetaItem<?>.MetaValueItem FUEL_CAN_PLASTIC_EMPTY;
-    public static MetaItem<?>.MetaValueItem FUEL_CAN_PLASTIC_FILLED;
-
     public static MetaItem<?>.MetaValueItem SPRAY_EMPTY;
 
     public static MetaItem<?>.MetaValueItem LARGE_FLUID_CELL_STEEL;
@@ -89,13 +90,6 @@ public final class MetaItems {
     public static MetaItem<?>.MetaValueItem TOOL_LIGHTER_PLATINUM;
 
     public static MetaItem<?>.MetaValueItem INGOT_IRIDIUM_ALLOY;
-
-    public static MetaItem<?>.MetaValueItem SCHEMATIC;
-    public static MetaItem<?>.MetaValueItem SCHEMATIC_CRAFTING;
-    public static MetaItem<?>.MetaValueItem SCHEMATIC_1X1;
-    public static MetaItem<?>.MetaValueItem SCHEMATIC_2X2;
-    public static MetaItem<?>.MetaValueItem SCHEMATIC_3X3;
-    public static MetaItem<?>.MetaValueItem SCHEMATIC_DUST;
 
     public static MetaItem<?>.MetaValueItem BATTERY_HULL_LV;
     public static MetaItem<?>.MetaValueItem BATTERY_HULL_MV;
@@ -117,6 +111,8 @@ public final class MetaItems {
     public static MetaItem<?>.MetaValueItem BATTERY_RE_HV_CADMIUM;
     public static MetaItem<?>.MetaValueItem BATTERY_RE_HV_LITHIUM;
     public static MetaItem<?>.MetaValueItem BATTERY_RE_HV_SODIUM;
+    public static MetaItem<?>.MetaValueItem ENERGY_CRYSTAL;
+    public static MetaItem<?>.MetaValueItem LAPOTRON_CRYSTAL;
 
     public static MetaItem<?>.MetaValueItem ENERGY_LAPOTRONIC_ORB;
     public static MetaItem<?>.MetaValueItem ENERGY_LAPOTRONIC_ORB2;
@@ -240,7 +236,8 @@ public final class MetaItems {
     public static MetaItem<?>.MetaValueItem UPGRADE_MUFFLER;
     public static MetaItem<?>.MetaValueItem UPGRADE_LOCK;
 
-    public static MetaItem<?>.MetaValueItem COMPONENT_FILTER;
+    public static MetaItem<?>.MetaValueItem ITEM_FILTER;
+    public static MetaItem<?>.MetaValueItem ORE_DICTIONARY_FILTER;
 
     public static MetaItem<?>.MetaValueItem COVER_CONTROLLER;
     public static MetaItem<?>.MetaValueItem COVER_ACTIVITY_DETECTOR;
@@ -255,23 +252,15 @@ public final class MetaItems {
 
     public static MetaItem<?>.MetaValueItem COVER_SHUTTER;
 
-    public static MetaItem<?>.MetaValueItem COVER_SOLARPANEL;
-    public static MetaItem<?>.MetaValueItem COVER_SOLARPANEL_8V;
-    public static MetaItem<?>.MetaValueItem COVER_SOLARPANEL_LV;
-    public static MetaItem<?>.MetaValueItem COVER_SOLARPANEL_MV;
-    public static MetaItem<?>.MetaValueItem COVER_SOLARPANEL_HV;
-    public static MetaItem<?>.MetaValueItem COVER_SOLARPANEL_EV;
-    public static MetaItem<?>.MetaValueItem COVER_SOLARPANEL_IV;
-    public static MetaItem<?>.MetaValueItem COVER_SOLARPANEL_LUV;
-    public static MetaItem<?>.MetaValueItem COVER_SOLARPANEL_ZPM;
-    public static MetaItem<?>.MetaValueItem COVER_SOLARPANEL_UV;
-
-    public static MetaItem<?>.MetaValueItem DUCT_TAPE;
-    public static MetaItem<?>.MetaValueItem MCGUFFIUM_239;
+    public static MetaItem<?>.MetaValueItem COVER_SOLAR_PANEL;
+    public static MetaItem<?>.MetaValueItem COVER_SOLAR_PANEL_ULV;
+    public static MetaItem<?>.MetaValueItem COVER_SOLAR_PANEL_LV;
 
     public static MetaItem<?>.MetaValueItem INTEGRATED_CIRCUIT;
 
     public static MetaItem<?>.MetaValueItem FLUID_CELL;
+
+    public static MetaItem<?>.MetaValueItem FOAM_SPRAYER;
 
     public static MetaItem<?>.MetaValueItem GELLED_TOLUENE;
 
@@ -281,59 +270,13 @@ public final class MetaItems {
     public static MetaItem<?>.MetaValueItem FOOD_CHUM_ON_STICK;
 
     public static MetaItem<?>.MetaValueItem DYE_INDIGO;
-
     public static MetaItem<?>.MetaValueItem PLANT_BALL;
-
-    public static MetaItem<?>.MetaValueItem PLANK_OAK;
-    public static MetaItem<?>.MetaValueItem PLANK_SPRUCE;
-    public static MetaItem<?>.MetaValueItem PLANK_BIRCH;
-    public static MetaItem<?>.MetaValueItem PLANK_JUNGLE;
-    public static MetaItem<?>.MetaValueItem PLANK_ACACIA;
-    public static MetaItem<?>.MetaValueItem PLANK_DARKOAK;
-
-    public static MetaItem<?>.MetaValueItem CROP_DROP_PLUMBILIA;
-    public static MetaItem<?>.MetaValueItem CROP_DROP_ARGENTIA;
-    public static MetaItem<?>.MetaValueItem CROP_DROP_INDIGO;
-    public static MetaItem<?>.MetaValueItem CROP_DROP_FERRU;
-    public static MetaItem<?>.MetaValueItem CROP_DROP_AURELIA;
-    public static MetaItem<?>.MetaValueItem CROP_DROP_TEALEAF;
-
-    public static MetaItem<?>.MetaValueItem CROP_DROP_OIL_BERRY;
-    public static MetaItem<?>.MetaValueItem CROP_DROP_BOBS_YER_UNCLE_RANKS;
-    public static MetaItem<?>.MetaValueItem CROP_DROP_UUM_BERRY;
-    public static MetaItem<?>.MetaValueItem CROP_DROP_UUA_BERRY;
-
-    public static MetaItem<?>.MetaValueItem CROP_DROP_MILK_WART;
-
-    public static MetaItem<?>.MetaValueItem CROP_DROP_COPPON;
-    public static MetaItem<?>.MetaValueItem CROP_DROP_TINE;
-    public static MetaItem<?>.MetaValueItem CROP_DROP_BAUXITE;
-    public static MetaItem<?>.MetaValueItem CROP_DROP_ILMENITE;
-    public static MetaItem<?>.MetaValueItem CROP_DROP_PITCHBLENDE;
-    public static MetaItem<?>.MetaValueItem CROP_DROP_URANINITE;
-    public static MetaItem<?>.MetaValueItem CROP_DROP_THORIUM;
-    public static MetaItem<?>.MetaValueItem CROP_DROP_NICKEL;
-    public static MetaItem<?>.MetaValueItem CROP_DROP_ZINC;
-    public static MetaItem<?>.MetaValueItem CROP_DROP_MANGANESE;
-    public static MetaItem<?>.MetaValueItem CROP_DROP_SCHEELITE;
-    public static MetaItem<?>.MetaValueItem CROP_DROP_PLATINUM;
-    public static MetaItem<?>.MetaValueItem CROP_DROP_IRIDIUM;
-    public static MetaItem<?>.MetaValueItem CROP_DROP_OSMIUM;
-    public static MetaItem<?>.MetaValueItem CROP_DROP_NAQUADAH;
-
-    public static MetaItem<?>.MetaValueItem CROP_DROP_CHILLY;
-    public static MetaItem<?>.MetaValueItem CROP_DROP_LEMON;
-    public static MetaItem<?>.MetaValueItem CROP_DROP_TOMATO;
-    public static MetaItem<?>.MetaValueItem CROP_DROP_MTOMATO;
-    public static MetaItem<?>.MetaValueItem CROP_DROP_GRAPES;
-    public static MetaItem<?>.MetaValueItem CROP_DROP_ONION;
-    public static MetaItem<?>.MetaValueItem CROP_DROP_CUCUMBER;
-
-    public static MetaItem<?>.MetaValueItem[] DYE_ONLY_ITEMS = new MetaItem.MetaValueItem[16];
-
-    public static MetaItem<?>.MetaValueItem[] SPRAY_CAN_DYES = new MetaItem.MetaValueItem[16];
-
     public static MetaItem<?>.MetaValueItem RUBBER_DROP;
+    public static MetaItem<?>.MetaValueItem TOOL_PARTS_BOX;
+    public static MetaItem<?>.MetaValueItem ENERGIUM_DUST;
+
+    public static MetaItem<?>.MetaValueItem[] DYE_ONLY_ITEMS = new MetaItem.MetaValueItem[EnumDyeColor.values().length];
+    public static MetaItem<?>.MetaValueItem[] SPRAY_CAN_DYES = new MetaItem.MetaValueItem[EnumDyeColor.values().length];
 
     public static ToolMetaItem<?>.MetaToolValueItem SWORD;
     public static ToolMetaItem<?>.MetaToolValueItem PICKAXE;
@@ -372,11 +315,9 @@ public final class MetaItems {
     public static ToolMetaItem<?>.MetaToolValueItem SOLDERING_IRON_LV;
     public static ToolMetaItem<?>.MetaToolValueItem TURBINE;
     public static ToolMetaItem<?>.MetaToolValueItem MAGNIFYING_GLASS;
-    public static MetaItem<?>.MetaValueItem TOOL_PARTS_BOX;
 
     public static void init() {
         MinecraftForge.EVENT_BUS.register(new ToolHarvestListener());
-        MinecraftForge.EVENT_BUS.register(new ToolCraftingListener());
         MetaItem1 first = new MetaItem1();
         first.setRegistryName("meta_item_1");
         MetaItem2 second = new MetaItem2();

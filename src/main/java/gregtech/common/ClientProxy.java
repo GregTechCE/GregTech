@@ -6,7 +6,11 @@
 package gregtech.common;
 
 import codechicken.lib.texture.TextureUtils;
+import com.mojang.realmsclient.gui.ChatFormatting;
 import gregtech.api.render.MetaTileEntityRenderer;
+import gregtech.api.unification.OreDictUnifier;
+import gregtech.api.unification.material.type.Material;
+import gregtech.api.unification.stack.UnificationEntry;
 import gregtech.common.blocks.*;
 import gregtech.common.blocks.surfacerock.BlockSurfaceRock;
 import gregtech.common.blocks.surfacerock.BlockSurfaceRockFlooded;
@@ -14,14 +18,18 @@ import gregtech.common.items.MetaItems;
 import gregtech.common.render.CableRenderer;
 import gregtech.common.render.FluidPipeRenderer;
 import gregtech.common.render.StoneRenderer;
+import net.minecraft.block.BlockColored;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.color.IBlockColor;
 import net.minecraft.client.renderer.color.IItemColor;
+import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.ItemBlock;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.biome.BiomeColorHelper;
 import net.minecraftforge.client.event.ModelRegistryEvent;
+import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
@@ -40,13 +48,17 @@ public class ClientProxy extends CommonProxy {
         return state.getValue(block.variantProperty).materialRGB;
     };
 
-    public static final IBlockColor FRAME_BLOCK_COLOR = (IBlockState state, IBlockAccess worldIn, BlockPos pos, int tintIndex) ->
-        state.getValue(((BlockFrame) state.getBlock()).variantProperty).materialRGB;
+    public static final IBlockColor FRAME_BLOCK_COLOR = (IBlockState state, IBlockAccess worldIn, BlockPos pos, int tintIndex) -> {
+        Material material = ((BlockFrame) state.getBlock()).frameMaterial;
+        EnumDyeColor dyeColor = state.getValue(BlockColored.COLOR);
+        return dyeColor == EnumDyeColor.WHITE ? material.materialRGB : dyeColor.colorValue;
+    };
 
     public static final IItemColor FRAME_ITEM_COLOR = (stack, tintIndex) -> {
-        BlockFrame block = (BlockFrame) ((ItemBlock) stack.getItem()).getBlock();
-        IBlockState state = block.getStateFromMeta(stack.getItemDamage());
-        return state.getValue(block.variantProperty).materialRGB;
+        IBlockState frameState = ((FrameItemBlock) stack.getItem()).getBlockState(stack);
+        BlockFrame block = (BlockFrame) frameState.getBlock();
+        EnumDyeColor dyeColor = frameState.getValue(BlockColored.COLOR);
+        return dyeColor == EnumDyeColor.WHITE ? block.frameMaterial.materialRGB : dyeColor.colorValue;
     };
 
     public static final IBlockColor ORE_BLOCK_COLOR = (IBlockState state, IBlockAccess worldIn, BlockPos pos, int tintIndex) ->
@@ -54,6 +66,9 @@ public class ClientProxy extends CommonProxy {
 
     public static final IItemColor ORE_ITEM_COLOR = (stack, tintIndex) ->
         tintIndex == 1 ? ((BlockOre) ((ItemBlock) stack.getItem()).getBlock()).material.materialRGB : 0xFFFFFF;
+
+    public static final IBlockColor FOAM_BLOCK_COLOR = (IBlockState state, IBlockAccess worldIn, BlockPos pos, int tintIndex) ->
+        state.getValue(BlockColored.COLOR).colorValue;
 
     public static final IBlockColor SURFACE_ROCK_COLOR = (IBlockState state, IBlockAccess worldIn, BlockPos pos, int tintIndex) -> {
         if(tintIndex == 1) {
@@ -102,6 +117,20 @@ public class ClientProxy extends CommonProxy {
         MetaBlocks.registerStateMappers();
         MetaBlocks.registerItemModels();
         MetaItems.registerModels();
+    }
+
+    @SubscribeEvent
+    public static void addMaterialFormulaHandler(ItemTooltipEvent event) {
+        ItemStack itemStack = event.getItemStack();
+        if(!(itemStack.getItem() instanceof ItemBlock)) {
+            UnificationEntry unificationEntry = OreDictUnifier.getUnificationEntry(itemStack);
+            if(unificationEntry != null && unificationEntry.material != null) {
+                String formula = unificationEntry.material.chemicalFormula;
+                if(formula != null && !formula.isEmpty() && !formula.equals("?")) {
+                    event.getToolTip().add(1, ChatFormatting.GRAY.toString() + unificationEntry.material.chemicalFormula);
+                }
+            }
+        }
     }
 
 }

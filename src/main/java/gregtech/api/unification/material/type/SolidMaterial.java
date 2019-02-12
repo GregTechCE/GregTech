@@ -30,11 +30,8 @@ public abstract class SolidMaterial extends DustMaterial {
         public static final long GENERATE_ROD = createFlag(20);
         public static final long GENERATE_GEAR = createFlag(21);
         public static final long GENERATE_LONG_ROD = createFlag(22);
-
-        /**
-         * If this Material is grindable with a simple Mortar
-         */
         public static final long MORTAR_GRINDABLE = createFlag(24);
+        public static final long GENERATE_FRAME = createFlag(45);
 
         static {
             Material.MatFlags.registerMaterialFlagsHolder(MatFlags.class, SolidMaterial.class);
@@ -63,13 +60,6 @@ public abstract class SolidMaterial extends DustMaterial {
     public final List<EnchantmentData> toolEnchantments = new ArrayList<>();
 
     /**
-     * Material specified here will be required as handle to make tool
-     * from this material
-     */
-    @ZenProperty
-    public SolidMaterial handleMaterial;
-
-    /**
      * Macerating any item of this material will result material
      * specified in this field
      */
@@ -80,7 +70,6 @@ public abstract class SolidMaterial extends DustMaterial {
         super(metaItemSubId, name, materialRGB, materialIconSet, harvestLevel, materialComponents, materialGenerationFlags, element);
         this.toolSpeed = toolSpeed;
         this.toolDurability = toolDurability;
-        this.directSmelting = this;
     }
 
     @Override

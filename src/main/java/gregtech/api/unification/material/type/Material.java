@@ -4,6 +4,7 @@ import com.google.common.base.CaseFormat;
 import com.google.common.collect.ImmutableList;
 import crafttweaker.annotations.ZenRegister;
 import gregtech.api.unification.Element;
+import gregtech.api.unification.material.IMaterialHandler;
 import gregtech.api.unification.material.MaterialIconSet;
 import gregtech.api.unification.stack.MaterialStack;
 import gregtech.api.util.GTControlledRegistry;
@@ -16,18 +17,29 @@ import stanhebben.zenscript.annotations.*;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.AbstractMap.SimpleEntry;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.TreeMap;
 
-import static gregtech.api.GTValues.M;
 import static gregtech.api.util.GTUtility.createFlag;
 
 @ZenClass("mods.gregtech.material.Material")
 @ZenRegister
 public abstract class Material implements Comparable<Material> {
 
-	public static GTControlledRegistry<Material> MATERIAL_REGISTRY = new GTControlledRegistry<>(1000, false);
+	public static final GTControlledRegistry<String, Material> MATERIAL_REGISTRY = new GTControlledRegistry<>(1000);
+	private static final List<IMaterialHandler> materialHandlers = new ArrayList<>();
+
+	public static void registerMaterialHandler(IMaterialHandler materialHandler) {
+	    materialHandlers.add(materialHandler);
+    }
+
+
+	public static void runMaterialHandlers() {
+	    materialHandlers.forEach(IMaterialHandler::onMaterialsInit);
+    }
 
 	public static void freezeRegistry() {
         GTLog.logger.info("Freezing material registry...");
@@ -266,50 +278,85 @@ public abstract class Material implements Comparable<Material> {
 	public long getProtons() {
 		if (element != null)
 			return element.getProtons();
-		if (materialComponents.size() <= 0)
+		if (materialComponents.isEmpty())
 			return Element.Tc.getProtons();
-		long totalProtons = 0, totalAmount = 0;
+		long totalProtons = 0;
 		for (MaterialStack material : materialComponents) {
-			totalAmount += material.amount;
 			totalProtons += material.amount * material.material.getProtons();
 		}
-		return (getDensity() * totalProtons) / (totalAmount * M);
+		return totalProtons;
 	}
 
 	@ZenGetter("neutrons")
 	public long getNeutrons() {
 		if (element != null)
 			return element.getNeutrons();
-		if (materialComponents.size() <= 0)
+		if (materialComponents.isEmpty())
 			return Element.Tc.getNeutrons();
-		long totalProtons = 0, totalAmount = 0;
+		long totalNeutrons = 0;
 		for (MaterialStack material : materialComponents) {
-			totalAmount += material.amount;
-			totalProtons += material.amount * material.material.getNeutrons();
+			totalNeutrons += material.amount * material.material.getNeutrons();
 		}
-		return (getDensity() * totalProtons) / (totalAmount * M);
+		return totalNeutrons;
 	}
 
-	@ZenGetter("mass")
-	public long getMass() {
-		if (element != null)
-			return element.getMass();
-		if (materialComponents.size() <= 0)
-			return Element.Tc.getMass();
-		long totalProtons = 0, totalAmount = 0;
-		for (MaterialStack material : materialComponents) {
-			totalAmount += material.amount;
-			totalProtons += material.amount * material.material.getMass();
-		}
-		return (getDensity() * totalProtons) / (totalAmount * M);
+    @ZenGetter("mass")
+    public long getMass() {
+        if (element != null)
+            return element.getMass();
+        if (materialComponents.isEmpty())
+            return Element.Tc.getMass();
+        long totalMass = 0;
+        for (MaterialStack material : materialComponents) {
+            totalMass += material.amount * material.material.getMass();
+        }
+        return totalMass;
+    }
+
+    @ZenGetter("averageProtons")
+    public long getAverageProtons() {
+        if (element != null)
+            return element.getProtons();
+        if (materialComponents.isEmpty())
+            return Element.Tc.getProtons();
+        long totalProtons = 0, totalAmount = 0;
+        for (MaterialStack material : materialComponents) {
+            totalAmount += material.amount;
+            totalProtons += material.amount * material.material.getAverageProtons();
+        }
+        return totalProtons / totalAmount;
+    }
+
+    @ZenGetter("averageNeutrons")
+    public long getAverageNeutrons() {
+        if (element != null)
+            return element.getNeutrons();
+        if (materialComponents.isEmpty())
+            return Element.Tc.getNeutrons();
+        long totalNeutrons = 0, totalAmount = 0;
+        for (MaterialStack material : materialComponents) {
+            totalAmount += material.amount;
+            totalNeutrons += material.amount * material.material.getAverageNeutrons();
+        }
+        return totalNeutrons / totalAmount;
+    }
+
+
+    @ZenGetter("averageMass")
+	public long getAverageMass() {
+        if (element != null)
+            return element.getMass();
+        if (materialComponents.size() <= 0)
+            return Element.Tc.getMass();
+        long totalMass = 0, totalAmount = 0;
+        for (MaterialStack material : materialComponents) {
+            totalAmount += material.amount;
+            totalMass += material.amount * material.material.getAverageMass();
+        }
+        return totalMass / totalAmount;
 	}
 
-	@ZenGetter("density")
-	public long getDensity() {
-		return M;
-	}
-
-	@ZenGetter("camelCaseString")
+	@ZenGetter("camelCaseName")
 	public String toCamelCaseString() {
 		return CaseFormat.LOWER_UNDERSCORE.to(CaseFormat.UPPER_CAMEL, toString());
 	}

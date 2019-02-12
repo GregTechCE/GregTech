@@ -1,5 +1,9 @@
 package gregtech.integration.jei.multiblock;
 
+import codechicken.lib.raytracer.CuboidRayTraceResult;
+import codechicken.lib.raytracer.IndexedCuboid6;
+import codechicken.lib.vec.Cuboid6;
+import codechicken.lib.vec.Vector3;
 import gregtech.api.render.scene.SceneRenderCallback;
 import gregtech.api.render.scene.WorldSceneRenderer;
 import gregtech.api.util.BlockInfo;
@@ -16,11 +20,13 @@ import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.client.util.ITooltipFlag.TooltipFlags;
+import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.text.TextFormatting;
+import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 
 import javax.vecmath.Vector3f;
@@ -38,7 +44,9 @@ public class MultiblockInfoRecipeWrapper implements IRecipeWrapper, SceneRenderC
     private int layerIndex = -1;
     private int currentRendererPage = 0;
     private int lastMouseX;
-    private float rotationY = -45.0f;
+    private int lastMouseY;
+    private float rotationYaw;
+    private float rotationPitch;
 
     private GuiButton buttonPreviousPattern;
     private GuiButton buttonNextPattern;
@@ -64,7 +72,7 @@ public class MultiblockInfoRecipeWrapper implements IRecipeWrapper, SceneRenderC
         this.recipeLayout = layout;
         IDrawable border = layout.getRecipeCategory().getBackground();
         this.buttons.clear();
-        this.nextLayerButton = new GuiButton(0, border.getWidth() - 30, 70, 20, 20, "L:A");
+        this.nextLayerButton = new GuiButton(0, border.getWidth() - 30, 70, 20, 20, "");
         this.buttonPreviousPattern = new GuiButton(0, 10, border.getHeight() - 30, 20, 20, "<");
         this.buttonNextPattern = new GuiButton(0, border.getWidth() - 30, border.getHeight() - 30, 20, 20, ">");
         this.buttons.put(nextLayerButton, this::toggleNextLayer);
@@ -75,6 +83,10 @@ public class MultiblockInfoRecipeWrapper implements IRecipeWrapper, SceneRenderC
         this.buttonNextPattern.visible = !isPagesDisabled;
         this.buttonPreviousPattern.enabled = false;
         this.buttonNextPattern.enabled = sceneRenders.length > 1;
+        this.rotationYaw = -45.0f;
+        this.rotationPitch = 0.0f;
+        this.currentRendererPage = 0;
+        setNextLayer(-1);
     }
 
     public WorldSceneRenderer getCurrentRenderer() {
@@ -87,12 +99,17 @@ public class MultiblockInfoRecipeWrapper implements IRecipeWrapper, SceneRenderC
 
     private void toggleNextLayer() {
         WorldSceneRenderer renderer = getCurrentRenderer();
-        int height = (int) renderer.getSize().getY();
+        int height = (int) renderer.getSize().getY() - 1;
         if(++this.layerIndex > height) {
             //if current layer index is more than max height, reset it
             //to display all layers
             this.layerIndex = -1;
         }
+        setNextLayer(layerIndex);
+    }
+
+    private void setNextLayer(int newLayer) {
+        this.layerIndex = newLayer;
         this.nextLayerButton.displayString = "L:" + (layerIndex == -1 ? "A" : Integer.toString(layerIndex + 1));
     }
 
@@ -118,25 +135,27 @@ public class MultiblockInfoRecipeWrapper implements IRecipeWrapper, SceneRenderC
     @Override
     public void preRenderScene(WorldSceneRenderer renderer) {
         Vector3f size = renderer.getSize();
-        int layerIndex = getLayerIndex();
+
+        GlStateManager.scale(2.0, 2.0, 2.0);
+        GlStateManager.translate(-1.0f, -2.5f, 0.0f);
+
         GlStateManager.translate(size.x / 2.0f, size.y / 2.0f, size.z / 2.0f);
-        GlStateManager.rotate(rotationY, 0.0f, 1.0f, 0.0f);
-        GlStateManager.scale(1.5, 1.5, 1.5);
-        Vec3d translation = infoPage.getDisplayOffset();
-        GlStateManager.translate(-size.x / 2.0f + translation.x, -size.y / 2.0f + translation.y, -size.z / 2.0f + translation.z);
-        GlStateManager.translate(-1.0f, -2.0f, 0.0f);
-        if(layerIndex > 0) {
-            GlStateManager.translate(0.0, -layerIndex, 0.0);
+        GlStateManager.rotate(rotationYaw, 0.0f, 1.0f, 0.0f);
+        GlStateManager.rotate(rotationPitch, 0.0f, 0.0f, 1.0f);
+        GlStateManager.translate(-size.x / 2.0f, -size.y / 2.0f, -size.z / 2.0f);
+
+        if(layerIndex >= 0) {
+            GlStateManager.translate(0.0, -layerIndex + 1, 0.0);
         }
     }
 
     @Override
     public void drawInfo(Minecraft minecraft, int recipeWidth, int recipeHeight, int mouseX, int mouseY) {
         WorldSceneRenderer renderer = getCurrentRenderer();
-        int scenePosY = 40;
-        int sceneHeight = recipeWidth - 40;
-        renderer.render(recipeLayout.getPosX(), recipeLayout.getPosY() + scenePosY,
-            recipeWidth, sceneHeight, 0xC6C6C6);
+        int scenePosY = 0;
+        //noinspection UnnecessaryLocalVariable,SuspiciousNameCombination
+        int sceneHeight = recipeWidth;
+        renderer.render(recipeLayout.getPosX(), recipeLayout.getPosY() + scenePosY, recipeWidth, sceneHeight, 0xC6C6C6);
         drawText(minecraft, recipeWidth);
         for(GuiButton button : buttons.keySet()) {
             button.drawButton(minecraft, mouseX, mouseY, 0.0f);
@@ -147,10 +166,11 @@ public class MultiblockInfoRecipeWrapper implements IRecipeWrapper, SceneRenderC
         boolean leftClickHeldAndInsideView = Mouse.isButtonDown(0) &&
             mouseX >= 0 && mouseY >= scenePosY &&
             mouseX < recipeWidth && mouseY < (scenePosY + sceneHeight);
+        boolean isHoldingShift = Keyboard.isKeyDown(Keyboard.KEY_LSHIFT);
 
         if(!leftClickHeldAndInsideView && pos != null && !renderer.world.isAirBlock(pos)) {
             IBlockState blockState = renderer.world.getBlockState(pos);
-            RayTraceResult result = new RayTraceResult(Vec3d.ZERO, EnumFacing.WEST, pos);
+            RayTraceResult result = new CuboidRayTraceResult(new Vector3(0.5, 0.5, 0.5).add(pos), pos, EnumFacing.UP, new IndexedCuboid6(null, Cuboid6.full), 1.0);
             ItemStack itemStack = blockState.getBlock().getPickBlock(blockState, result, renderer.world, pos, minecraft.player);
             if(itemStack != null && !itemStack.isEmpty()) {
                 this.tooltipBlockStack = itemStack;
@@ -158,11 +178,17 @@ public class MultiblockInfoRecipeWrapper implements IRecipeWrapper, SceneRenderC
         }
 
         if(leftClickHeldAndInsideView) {
-            int mouseDeltaX = mouseX - lastMouseX;
-            this.rotationY += mouseDeltaX * 2.0f;
+            if(isHoldingShift) {
+                int mouseDeltaY = mouseY - lastMouseY;
+                this.rotationPitch += mouseDeltaY * 2.0f;
+            } else {
+                int mouseDeltaX = mouseX - lastMouseX;
+                this.rotationYaw += mouseDeltaX * 2.0f;
+            }
         }
 
         this.lastMouseX = mouseX;
+        this.lastMouseY = mouseY;
     }
 
     private void drawText(Minecraft minecraft, int recipeWidth) {
@@ -178,6 +204,7 @@ public class MultiblockInfoRecipeWrapper implements IRecipeWrapper, SceneRenderC
             int y = 8 + i * fontRenderer.FONT_HEIGHT;
             fontRenderer.drawString(lineText, x, y, 0x333333);
         }
+        GlStateManager.color(1.0f, 1.0f, 1.0f);
     }
 
     @Override
@@ -196,7 +223,16 @@ public class MultiblockInfoRecipeWrapper implements IRecipeWrapper, SceneRenderC
         if(tooltipBlockStack != null && !tooltipBlockStack.isEmpty() && !Mouse.isButtonDown(0)) {
             Minecraft minecraft = Minecraft.getMinecraft();
             ITooltipFlag flag = minecraft.gameSettings.advancedItemTooltips ? TooltipFlags.ADVANCED : TooltipFlags.NORMAL;
-            return tooltipBlockStack.getTooltip(minecraft.player, flag);
+            List<String> tooltip = tooltipBlockStack.getTooltip(minecraft.player, flag);
+            EnumRarity rarity = tooltipBlockStack.getRarity();
+            for (int k = 0; k < tooltip.size(); ++k) {
+                if (k == 0) {
+                    tooltip.set(k, rarity.rarityColor + tooltip.get(k));
+                } else {
+                    tooltip.set(k, TextFormatting.GRAY + tooltip.get(k));
+                }
+            }
+            return tooltip;
         }
         return Collections.emptyList();
     }

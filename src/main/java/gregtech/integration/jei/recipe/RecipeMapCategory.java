@@ -38,15 +38,14 @@ public class RecipeMapCategory implements IRecipeCategory<GTRecipeWrapper> {
         FluidTank[] exportFluidTanks = new FluidTank[recipeMap.getMaxFluidOutputs()];
         for(int i = 0; i < exportFluidTanks.length; i++)
             exportFluidTanks[i] = new FluidTank(16000);
-        this.modularUI = recipeMap.createUITemplate(() -> 0.0,
+        this.modularUI = recipeMap.createJeiUITemplate(
             (importItems = new ItemStackHandler(recipeMap.getMaxInputs())),
             (exportItems = new ItemStackHandler(recipeMap.getMaxOutputs())),
             (importFluids = new FluidTankList(false, importFluidTanks)),
             (exportFluids = new FluidTankList(false, exportFluidTanks))
             ).build(new BlankUIHolder(), Minecraft.getMinecraft().player);
-        this.modularUI.isJEIHandled = true;
         this.modularUI.initWidgets();
-        this.backgroundDrawable = guiHelper.createBlankDrawable(modularUI.width, modularUI.height * 2 / 3);
+        this.backgroundDrawable = guiHelper.createBlankDrawable(modularUI.getWidth(), modularUI.getHeight() * 2 / 3);
     }
 
     @Override

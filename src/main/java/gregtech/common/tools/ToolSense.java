@@ -13,7 +13,7 @@ public class ToolSense extends ToolBase {
 
     @Override
     public float getBaseDamage(ItemStack stack) {
-        return 4.0F;
+        return 5.0F;
     }
 
     @Override
@@ -27,11 +27,6 @@ public class ToolSense extends ToolBase {
         return (tool != null && (tool.equals("sense") || tool.equals("scythe"))) ||
                 block.getMaterial() == Material.PLANTS ||
                 block.getMaterial() == Material.LEAVES;
-    }
-
-    @Override
-    public boolean hasMaterialHandle() {
-        return true;
     }
 
     @Override

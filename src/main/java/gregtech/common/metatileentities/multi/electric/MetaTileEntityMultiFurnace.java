@@ -20,6 +20,7 @@ import gregtech.common.blocks.BlockWireCoil.CoilType;
 import gregtech.common.blocks.MetaBlocks;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraftforge.items.IItemHandlerModifiable;
@@ -37,7 +38,7 @@ public class MetaTileEntityMultiFurnace extends RecipeMapMultiblockController {
     protected int heatingCoilLevel;
     protected int heatingCoilDiscount;
 
-    public MetaTileEntityMultiFurnace(String metaTileEntityId) {
+    public MetaTileEntityMultiFurnace(ResourceLocation metaTileEntityId) {
         super(metaTileEntityId, RecipeMaps.FURNACE_RECIPES);
         this.recipeMapWorkable = new MultiFurnaceWorkable(this);
     }
@@ -59,7 +60,7 @@ public class MetaTileEntityMultiFurnace extends RecipeMapMultiblockController {
     @Override
     protected void formStructure(PatternMatchContext context) {
         super.formStructure(context);
-        CoilType coilType = context.get("CoilType", CoilType.CUPRONICKEL);
+        CoilType coilType = context.getOrDefault("CoilType", CoilType.CUPRONICKEL);
         this.heatingCoilLevel = coilType.getLevel();
         this.heatingCoilDiscount = coilType.getEnergyDiscount();
     }
@@ -77,8 +78,9 @@ public class MetaTileEntityMultiFurnace extends RecipeMapMultiblockController {
             .aisle("XXX", "CCC", "XXX")
             .aisle("XXX", "C#C", "XXX")
             .aisle("XSX", "CCC", "XXX")
-            .setAmountAtLeast('X', 10)
+            .setAmountAtLeast('L', 10)
             .where('S', selfPredicate())
+            .where('L', statePredicate(getCasingState()))
             .where('X', statePredicate(getCasingState()).or(abilityPartPredicate(ALLOWED_ABILITIES)))
             .where('C', MetaTileEntityElectricBlastFurnace.heatingCoilPredicate())
             .where('#', isAirPredicate())

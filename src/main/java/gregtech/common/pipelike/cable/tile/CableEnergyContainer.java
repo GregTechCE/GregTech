@@ -33,8 +33,6 @@ public class CableEnergyContainer implements IEnergyContainer {
     public long acceptEnergyFromNetwork(EnumFacing side, long voltage, long amperage) {
         EnergyNet energyNet = getEnergyNet();
         if(energyNet == null) {
-            //it's just pointless to do anything below without proper
-            //energy net attached to our tile entity
             return 0L;
         }
         long lastAmperage = energyNet.getLastAmperage();

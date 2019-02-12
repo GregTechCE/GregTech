@@ -16,7 +16,7 @@ public class BlockMetalCasing extends VariantBlock<BlockMetalCasing.MetalCasingT
         setHardness(5.0f);
         setResistance(10.0f);
         setSoundType(SoundType.METAL);
-        setHarvestLevel("wrench", 2);
+        setHarvestLevel("pickaxe", 2);
         setDefaultState(getState(MetalCasingType.BRONZE_BRICKS));
     }
 
@@ -24,7 +24,6 @@ public class BlockMetalCasing extends VariantBlock<BlockMetalCasing.MetalCasingT
     public boolean canCreatureSpawn(IBlockState state, IBlockAccess world, BlockPos pos, SpawnPlacementType type) {
         return false;
     }
-
 
     public enum MetalCasingType implements IStringSerializable {
 
@@ -35,7 +34,8 @@ public class BlockMetalCasing extends VariantBlock<BlockMetalCasing.MetalCasingT
         STEEL_SOLID("steel_solid"),
         STAINLESS_CLEAN("stainless_clean"),
         TITANIUM_STABLE("titanium_stable"),
-        TUNGSTENSTEEL_ROBUST("tungstensteel_robust");
+        TUNGSTENSTEEL_ROBUST("tungstensteel_robust"),
+        COKE_BRICKS("coke_bricks");
 
         private final String name;
 

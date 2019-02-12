@@ -1,5 +1,6 @@
 package gregtech.common.metatileentities.electric.multiblockpart;
 
+import codechicken.lib.raytracer.CuboidRayTraceResult;
 import codechicken.lib.render.CCRenderState;
 import codechicken.lib.render.pipeline.IVertexOperation;
 import codechicken.lib.vec.Matrix4;
@@ -26,6 +27,7 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumFacing.Axis;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.NonNullList;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.items.ItemStackHandler;
@@ -46,15 +48,15 @@ public class MetaTileEntityRotorHolder extends MetaTileEntityMultiblockPart impl
     private int rotorColor = -1;
     private boolean frontFaceFree;
 
-    public MetaTileEntityRotorHolder(String metaTileEntityId, int tier, int maxSpeed) {
+    public MetaTileEntityRotorHolder(ResourceLocation metaTileEntityId, int tier, int maxSpeed) {
         super(metaTileEntityId, tier);
         this.maxRotorSpeed = maxSpeed;
         this.currentRotorSpeed = 0;
         this.rotorInventory = new InventoryRotorHolder();
     }
 
-    public MetaTileEntityRotorHolder(String metaTileEntityId, int tier) {
-        this(metaTileEntityId, tier, (int) (NORMAL_MAXIMUM_SPEED * (tier + 1) * 0.2));
+    public MetaTileEntityRotorHolder(ResourceLocation metaTileEntityId, int tier, float speedMultiplier) {
+        this(metaTileEntityId, tier, (int) (NORMAL_MAXIMUM_SPEED * speedMultiplier));
     }
 
     public ItemStackHandler getRotorInventory() {
@@ -83,7 +85,7 @@ public class MetaTileEntityRotorHolder extends MetaTileEntityMultiblockPart impl
         if(currentRotorSpeed < maxRotorSpeed && isControllerActive) {
             incrementSpeed(1);
         } else if(currentRotorSpeed > 0 && !isControllerActive) {
-            incrementSpeed(-1);
+            incrementSpeed(-3);
         }
     }
 
@@ -152,6 +154,10 @@ public class MetaTileEntityRotorHolder extends MetaTileEntityMultiblockPart impl
         return rotorInventory.getRotorEfficiency();
     }
 
+    public boolean hasRotorInInventory() {
+        return !rotorInventory.getStackInSlot(0).isEmpty();
+    }
+
     public boolean applyDamageToRotor(int damageAmount, boolean simulate) {
         return rotorInventory.applyDamageToRotor(damageAmount, simulate);
     }
@@ -173,7 +179,7 @@ public class MetaTileEntityRotorHolder extends MetaTileEntityMultiblockPart impl
        this.currentRotorSpeed = MathHelper.clamp(currentRotorSpeed + incrementSpeed, 0, maxRotorSpeed);
        this.isRotorLooping = currentRotorSpeed > 0;
        if(isRotorLooping != lastIsLooping && !getWorld().isRemote) {
-           writeCustomData(-200, writer -> writer.writeBoolean(isRotorLooping));
+           writeCustomData(200, writer -> writer.writeBoolean(isRotorLooping));
            markDirty();
        }
     }
@@ -182,7 +188,7 @@ public class MetaTileEntityRotorHolder extends MetaTileEntityMultiblockPart impl
         int lastHasRotor = rotorColor;
         this.rotorColor = hasRotor1;
         if(rotorColor != lastHasRotor && (getWorld() != null && !getWorld().isRemote)) {
-            writeCustomData(-201, writer -> writer.writeInt(rotorColor));
+            writeCustomData(201, writer -> writer.writeInt(rotorColor));
             markDirty();
         }
     }
@@ -190,10 +196,10 @@ public class MetaTileEntityRotorHolder extends MetaTileEntityMultiblockPart impl
     @Override
     public void receiveCustomData(int dataId, PacketBuffer buf) {
         super.receiveCustomData(dataId, buf);
-        if(dataId == -200) {
+        if(dataId == 200) {
             this.isRotorLooping = buf.readBoolean();
             getHolder().scheduleChunkForRenderUpdate();
-        } else if(dataId == -201) {
+        } else if(dataId == 201) {
             this.rotorColor = buf.readInt();
             getHolder().scheduleChunkForRenderUpdate();
         }
@@ -252,24 +258,24 @@ public class MetaTileEntityRotorHolder extends MetaTileEntityMultiblockPart impl
     }
 
     @Override
-    public boolean onRightClick(EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+    public boolean onRightClick(EntityPlayer playerIn, EnumHand hand, EnumFacing facing, CuboidRayTraceResult hitResult) {
         return onRotorHolderInteract(playerIn) ||
-            super.onRightClick(playerIn, hand, facing, hitX, hitY, hitZ);
+            super.onRightClick(playerIn, hand, facing, hitResult);
     }
 
     @Override
-    public boolean onWrenchClick(EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+    public boolean onWrenchClick(EntityPlayer playerIn, EnumHand hand, EnumFacing facing, CuboidRayTraceResult hitResult) {
         return onRotorHolderInteract(playerIn) ||
-            super.onWrenchClick(playerIn, hand, facing, hitX, hitY, hitZ);
+            super.onWrenchClick(playerIn, hand, facing, hitResult);
     }
 
     @Override
-    public boolean onScrewdriverClick(EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+    public boolean onScrewdriverClick(EntityPlayer playerIn, EnumHand hand, EnumFacing facing, CuboidRayTraceResult hitResult) {
         return onRotorHolderInteract(playerIn);
     }
 
     @Override
-    public void onLeftClick(EntityPlayer player) {
+    public void onLeftClick(EntityPlayer player, EnumFacing facing, CuboidRayTraceResult hitResult) {
         onRotorHolderInteract(player);
     }
 
@@ -308,7 +314,7 @@ public class MetaTileEntityRotorHolder extends MetaTileEntityMultiblockPart impl
             ItemStack itemStack = getStackInSlot(0);
             if(itemStack.isEmpty() || !(itemStack.getItem() instanceof ToolMetaItem))
                 return -1;
-            SolidMaterial material = ToolMetaItem.getPrimaryMaterial(itemStack);
+            SolidMaterial material = ToolMetaItem.getToolMaterial(itemStack);
             return material == null ? -1 : material.materialRGB;
         }
 

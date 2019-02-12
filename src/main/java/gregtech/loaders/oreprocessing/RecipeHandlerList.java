@@ -10,7 +10,6 @@ public class RecipeHandlerList {
         PipeRecipeHandler.register();
         ToolRecipeHandler.register();
         PolarizingRecipeHandler.register();
-        DecompositionRecipeHandler.register();
         RecyclingRecipeHandler.register();
     }
 

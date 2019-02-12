@@ -10,6 +10,9 @@ import gregtech.api.worldgen.filler.BlacklistedBlockFiller;
 import gregtech.api.worldgen.filler.BlockFiller;
 import gregtech.api.worldgen.filler.SimpleBlockFiller;
 import gregtech.api.worldgen.generator.WorldGeneratorImpl;
+import gregtech.api.worldgen.populator.FluidSpringPopulator;
+import gregtech.api.worldgen.populator.IVeinPopulator;
+import gregtech.api.worldgen.populator.SurfaceRockPopulator;
 import gregtech.api.worldgen.shape.*;
 import net.minecraft.init.Blocks;
 import net.minecraft.world.WorldProvider;
@@ -43,6 +46,7 @@ public class WorldGenRegistry {
 
     private final Map<String, Supplier<ShapeGenerator>> shapeGeneratorRegistry = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
     private final Map<String, Supplier<BlockFiller>> blockFillerRegistry = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
+    private final Map<String, Supplier<IVeinPopulator>> veinPopulatorRegistry = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
 
     private final List<OreDepositDefinition> registeredDefinitions = new ArrayList<>();
     private final Map<WorldProvider, WorldOreVeinCache> oreVeinCache = new WeakHashMap<>();
@@ -54,7 +58,6 @@ public class WorldGenRegistry {
         public WorldOreVeinCache(WorldProvider worldProvider) {
             this.worldVeins = registeredDefinitions.stream()
                 .filter(definition -> definition.getDimensionFilter().test(worldProvider))
-                .sorted(Collections.reverseOrder(Comparator.comparing(OreDepositDefinition::getPriority)))
                 .collect(Collectors.toList());
         }
 
@@ -86,6 +89,9 @@ public class WorldGenRegistry {
         registerShapeGenerator("single", SingleBlockGenerator::new);
         registerBlockFiller("simple", SimpleBlockFiller::new);
         registerBlockFiller("ignore_bedrock", () -> new BlacklistedBlockFiller(Lists.newArrayList(Blocks.BEDROCK.getDefaultState())));
+        registerVeinPopulator("surface_rock", SurfaceRockPopulator::new);
+        registerVeinPopulator("fluid_spring", FluidSpringPopulator::new);
+
         WorldGeneratorImpl worldGenerator = new WorldGeneratorImpl();
         GameRegistry.registerWorldGenerator(worldGenerator, 1);
         MinecraftForge.ORE_GEN_BUS.register(worldGenerator);
@@ -186,6 +192,12 @@ public class WorldGenRegistry {
         blockFillerRegistry.put(identifier, blockFillerSupplier);
     }
 
+    public void registerVeinPopulator(String identifier, Supplier<IVeinPopulator> veinPopulatorSupplier) {
+        if(veinPopulatorRegistry.containsKey(identifier))
+            throw new IllegalArgumentException("Identifier already occupied:" + identifier);
+        veinPopulatorRegistry.put(identifier, veinPopulatorSupplier);
+    }
+
     public ShapeGenerator createShapeGenerator(JsonObject object) {
         String identifier = object.get("type").getAsString();
         if(!shapeGeneratorRegistry.containsKey(identifier))
@@ -202,6 +214,15 @@ public class WorldGenRegistry {
         BlockFiller blockFiller = blockFillerRegistry.get(identifier).get();
         blockFiller.loadFromConfig(object);
         return blockFiller;
+    }
+
+    public IVeinPopulator createVeinPopulator(JsonObject object) {
+        String identifier = object.get("type").getAsString();
+        if(!veinPopulatorRegistry.containsKey(identifier))
+            throw new IllegalArgumentException("No vein populator found for type " + identifier);
+        IVeinPopulator veinPopulator = veinPopulatorRegistry.get(identifier).get();
+        veinPopulator.loadFromConfig(object);
+        return veinPopulator;
     }
 
     @ZenGetter("oreDeposits")

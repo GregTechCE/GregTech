@@ -30,7 +30,7 @@ public class PolarizingRecipeHandler {
                 .buildAndRegister();
 
             ModHandler.addSmeltingRecipe(new UnificationEntry(polarizingPrefix, material.magneticMaterial),
-                OreDictUnifier.get(polarizingPrefix, material.magneticMaterial)); //de-magnetizing
+                OreDictUnifier.get(polarizingPrefix, material)); //de-magnetizing
         }
     }
 

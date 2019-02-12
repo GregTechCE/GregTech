@@ -7,10 +7,10 @@
     }
   },
   "variants": {
-	"stage": {
-	  "0": {},
-	  "1": {}
-	},
+    "stage": {
+      "0": {},
+      "1": {}
+    },
     "variant": {
       "rubber_wood": {
         "textures": {

@@ -2,9 +2,8 @@ package gregtech.common.items.behaviors;
 
 import gregtech.api.gui.GuiTextures;
 import gregtech.api.gui.ModularUI;
-import gregtech.api.gui.widgets.ButtonWidget;
+import gregtech.api.gui.widgets.ClickButtonWidget;
 import gregtech.api.gui.widgets.DynamicLabelWidget;
-import gregtech.api.gui.widgets.LabelWidget;
 import gregtech.api.items.gui.ItemUIFactory;
 import gregtech.api.items.gui.PlayerInventoryHolder;
 import gregtech.api.items.metaitem.stats.IItemBehaviour;
@@ -43,14 +42,10 @@ public class IntCircuitBehaviour implements IItemBehaviour, ItemUIFactory {
         return ModularUI.builder(GuiTextures.BACKGROUND_SMALL, 176, 60)
             .label(9, 8, "metaitem.circuit.integrated.gui")
             .widget(new DynamicLabelWidget(82, 30, () -> Integer.toString(IntCircuitIngredient.getCircuitConfiguration(holder.getCurrentItem())), 0x404040))
-            .widget(new ButtonWidget(15, 24, 20, 20, GuiTextures.VANILLA_BUTTON, () -> false, pressed -> adjustConfiguration(holder, -5)))
-            .widget(new ButtonWidget(50, 24, 20, 20, GuiTextures.VANILLA_BUTTON, () -> false, pressed -> adjustConfiguration(holder, -1)))
-            .widget(new ButtonWidget(104, 24, 20, 20, GuiTextures.VANILLA_BUTTON, () -> false, pressed -> adjustConfiguration(holder, +1)))
-            .widget(new ButtonWidget(141, 24, 20, 20, GuiTextures.VANILLA_BUTTON, () -> false, pressed -> adjustConfiguration(holder, +5)))
-            .widget(new LabelWidget(19, 30, "-5", 0xFFFFFF))
-            .widget(new LabelWidget(55, 30, "-1", 0xFFFFFF))
-            .widget(new LabelWidget(109, 30, "+1", 0xFFFFFF))
-            .widget(new LabelWidget(145, 30, "+5", 0xFFFFFF))
+            .widget(new ClickButtonWidget(15, 24, 20, 20, "-5", data -> adjustConfiguration(holder, -5)))
+            .widget(new ClickButtonWidget(50, 24, 20, 20, "-1", data -> adjustConfiguration(holder, -1)))
+            .widget(new ClickButtonWidget(104, 24, 20, 20, "+1", data -> adjustConfiguration(holder, +1)))
+            .widget(new ClickButtonWidget(141, 24, 20, 20, "+5", data -> adjustConfiguration(holder, +5)))
             .build(holder, entityPlayer);
     }
 

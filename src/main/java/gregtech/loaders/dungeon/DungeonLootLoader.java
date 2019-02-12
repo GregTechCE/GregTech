@@ -83,7 +83,6 @@ public class DungeonLootLoader {
         ChestGenHooks.addItem(LootTableList.CHESTS_ABANDONED_MINESHAFT, OreDictUnifier.get(OrePrefix.toolHeadPickaxe, Materials.DamascusSteel, 1), 1, 4, 1);
         ChestGenHooks.addItem(LootTableList.CHESTS_ABANDONED_MINESHAFT, OreDictUnifier.get(OrePrefix.toolHeadShovel, Materials.DamascusSteel, 1), 1, 4, 1);
 
-        ChestGenHooks.addItem(LootTableList.CHESTS_VILLAGE_BLACKSMITH, MetaItems.MCGUFFIUM_239.getStackForm(), 1, 1, 1);
         ChestGenHooks.addItem(LootTableList.CHESTS_VILLAGE_BLACKSMITH, OreDictUnifier.get(OrePrefix.dust, Materials.Chrome, 1), 1, 4, 3);
         ChestGenHooks.addItem(LootTableList.CHESTS_VILLAGE_BLACKSMITH, OreDictUnifier.get(OrePrefix.dust, Materials.Neodymium, 1), 2, 8, 3);
         ChestGenHooks.addItem(LootTableList.CHESTS_VILLAGE_BLACKSMITH, OreDictUnifier.get(OrePrefix.ingot, Materials.Manganese, 1), 2, 8, 6);
@@ -92,7 +91,6 @@ public class DungeonLootLoader {
         ChestGenHooks.addItem(LootTableList.CHESTS_VILLAGE_BLACKSMITH, OreDictUnifier.get(OrePrefix.ingot, Materials.Brass, 1), 4, 12, 6);
         ChestGenHooks.addItem(LootTableList.CHESTS_VILLAGE_BLACKSMITH, OreDictUnifier.get(OrePrefix.ingot, Materials.DamascusSteel, 1), 4, 12, 1);
 
-        ChestGenHooks.addItem(LootTableList.CHESTS_STRONGHOLD_CROSSING, MetaItems.MCGUFFIUM_239.getStackForm(), 1, 1, 8);
         ChestGenHooks.addItem(LootTableList.CHESTS_STRONGHOLD_CORRIDOR, OreDictUnifier.get(OrePrefix.toolHeadSword, Materials.DamascusSteel, 1), 1, 4, 4);
         ChestGenHooks.addItem(LootTableList.CHESTS_STRONGHOLD_CORRIDOR, OreDictUnifier.get(OrePrefix.toolHeadAxe, Materials.DamascusSteel, 1), 1, 4, 4);
     }

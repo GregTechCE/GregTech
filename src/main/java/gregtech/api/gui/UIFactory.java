@@ -12,6 +12,7 @@ import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.network.PacketBuffer;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.event.entity.player.PlayerContainerEvent;
@@ -28,7 +29,7 @@ import java.util.List;
  */
 public abstract class UIFactory<E extends IUIHolder> {
 
-    public static final GTControlledRegistry<UIFactory<?>> FACTORY_REGISTRY = new GTControlledRegistry<>(Short.MAX_VALUE, false);
+    public static final GTControlledRegistry<ResourceLocation, UIFactory<?>> FACTORY_REGISTRY = new GTControlledRegistry<>(Short.MAX_VALUE);
 
     public final void openUI(E holder, EntityPlayerMP player) {
         if (player instanceof FakePlayer) {

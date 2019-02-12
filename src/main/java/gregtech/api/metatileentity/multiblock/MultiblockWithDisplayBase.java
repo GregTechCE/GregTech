@@ -4,6 +4,7 @@ import gregtech.api.gui.GuiTextures;
 import gregtech.api.gui.ModularUI;
 import gregtech.api.gui.widgets.AdvancedTextWidget;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.Style;
 import net.minecraft.util.text.TextComponentTranslation;
@@ -13,7 +14,7 @@ import java.util.List;
 
 public abstract class MultiblockWithDisplayBase extends MultiblockControllerBase {
 
-    public MultiblockWithDisplayBase(String metaTileEntityId) {
+    public MultiblockWithDisplayBase(ResourceLocation metaTileEntityId) {
         super(metaTileEntityId);
     }
 

@@ -8,6 +8,7 @@ import gregtech.api.net.NetworkHandler;
 import gregtech.api.net.PacketUIClientAction;
 import gregtech.api.net.PacketUIWidgetUpdate;
 import gregtech.api.util.GTUtility;
+import io.netty.buffer.Unpooled;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -17,6 +18,7 @@ import net.minecraft.network.PacketBuffer;
 
 import java.util.*;
 import java.util.Map.Entry;
+import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 public class ModularUIContainer extends Container implements WidgetUIAccess {
@@ -31,8 +33,7 @@ public class ModularUIContainer extends Container implements WidgetUIAccess {
         this.modularUI = modularUI;
         modularUI.guiWidgets.values().forEach(widget -> widget.setUiAccess(this));
         modularUI.guiWidgets.values().stream()
-                .filter(widget -> widget instanceof INativeWidget)
-                .map(widget -> ((INativeWidget) widget))
+                .flatMap(widget -> widget.getNativeWidgets().stream())
                 .forEach(nativeWidget -> {
                     Slot slot = nativeWidget.allocateSlotHandle();
                     slotMap.put(slot, nativeWidget);
@@ -118,19 +119,25 @@ public class ModularUIContainer extends Container implements WidgetUIAccess {
     }
 
     @Override
-    public void writeClientAction(Widget widget, PacketBuffer payload) {
+    public void writeClientAction(Widget widget, int updateId, Consumer<PacketBuffer> payloadWriter) {
         int widgetId = modularUI.guiWidgets.inverse().get(widget);
+        PacketBuffer packetBuffer = new PacketBuffer(Unpooled.buffer());
+        packetBuffer.writeVarInt(updateId);
+        payloadWriter.accept(packetBuffer);
         if(modularUI.entityPlayer instanceof EntityPlayerSP) {
-            PacketUIClientAction widgetUpdate = new PacketUIClientAction(windowId, widgetId, payload);
+            PacketUIClientAction widgetUpdate = new PacketUIClientAction(windowId, widgetId, packetBuffer);
             NetworkHandler.channel.sendToServer(NetworkHandler.packet2proxy(widgetUpdate));
         }
     }
 
     @Override
-    public void writeUpdateInfo(Widget widget, PacketBuffer payload) {
+    public void writeUpdateInfo(Widget widget, int updateId, Consumer<PacketBuffer> payloadWriter) {
         int widgetId = modularUI.guiWidgets.inverse().get(widget);
+        PacketBuffer packetBuffer = new PacketBuffer(Unpooled.buffer());
+        packetBuffer.writeVarInt(updateId);
+        payloadWriter.accept(packetBuffer);
         if(modularUI.entityPlayer instanceof EntityPlayerMP) {
-            PacketUIWidgetUpdate widgetUpdate = new PacketUIWidgetUpdate(windowId, widgetId, payload);
+            PacketUIWidgetUpdate widgetUpdate = new PacketUIWidgetUpdate(windowId, widgetId, packetBuffer);
             if(!accumulateWidgetUpdateData) {
                 NetworkHandler.channel.sendTo(NetworkHandler.packet2proxy(widgetUpdate), (EntityPlayerMP) modularUI.entityPlayer);
             } else {

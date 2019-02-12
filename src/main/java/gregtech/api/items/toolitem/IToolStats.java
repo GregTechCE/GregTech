@@ -90,8 +90,6 @@ public interface IToolStats {
 
     boolean canApplyEnchantment(ItemStack stack, Enchantment enchantment);
 
-    boolean hasMaterialHandle();
-
     /**
      * block.getHarvestTool(metaData) can return the following Values for example.
      * "axe", "pickaxe", "sword", "shovel", "hoe", "grafter", "saw", "wrench", "crowbar", "file", "hammer", "plow", "plunger", "scoop", "screwdriver", "sense", "scythe", "softhammer", "cutter", "plasmatorch"
@@ -160,14 +158,11 @@ public interface IToolStats {
      * @return attack speed of weapon
      */
     default float getAttackSpeed(ItemStack stack) {
-        return 1.0f;
+        return -2.8f;
     }
 
-    default int getColor(boolean isToolHead, ItemStack stack) {
-        SolidMaterial primaryMaterial = ToolMetaItem.getPrimaryMaterial(stack);
-        SolidMaterial handleMaterial = ToolMetaItem.getHandleMaterial(stack);
-        return isToolHead
-            ? primaryMaterial != null ? primaryMaterial.materialRGB : 0xFFFFFF
-            : handleMaterial != null ? handleMaterial.materialRGB : 0xFFFFFF;
+    default int getColor(ItemStack stack, int tintIndex) {
+        SolidMaterial primaryMaterial = ToolMetaItem.getToolMaterial(stack);
+        return tintIndex % 2 == 1 ? primaryMaterial.materialRGB : 0xFFFFFF;
     }
 }

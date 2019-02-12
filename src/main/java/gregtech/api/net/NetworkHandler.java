@@ -1,6 +1,8 @@
 package gregtech.api.net;
 
+import codechicken.lib.vec.Vector3;
 import gregtech.api.GTValues;
+import gregtech.api.block.ICustomParticleBlock;
 import gregtech.api.gui.ModularUI;
 import gregtech.api.gui.UIFactory;
 import gregtech.api.gui.impl.ModularUIContainer;
@@ -8,17 +10,23 @@ import gregtech.api.gui.impl.ModularUIGui;
 import gregtech.api.util.GTLog;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.network.NetHandlerPlayClient;
+import net.minecraft.client.particle.ParticleManager;
 import net.minecraft.inventory.Container;
 import net.minecraft.network.INetHandler;
 import net.minecraft.network.NetHandlerPlayServer;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.IntIdentityHashBiMap;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.network.FMLEventChannel;
 import net.minecraftforge.fml.common.network.FMLNetworkEvent;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
+import net.minecraftforge.fml.common.network.NetworkRegistry.TargetPoint;
 import net.minecraftforge.fml.common.network.internal.FMLProxyPacket;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -80,41 +88,41 @@ public class NetworkHandler {
         channel.register(new NetworkHandler());
 
         PacketEncoder<PacketUIWidgetUpdate> widgetUpdateEncoder =  (packet, buf) -> {
-            buf.writeInt(packet.updateData.readableBytes());
+            buf.writeVarInt(packet.updateData.readableBytes());
             buf.writeBytes(packet.updateData);
-            buf.writeInt(packet.windowId);
-            buf.writeInt(packet.widgetId);
+            buf.writeVarInt(packet.windowId);
+            buf.writeVarInt(packet.widgetId);
         };
 
         PacketDecoder<PacketUIWidgetUpdate> widgetUpdateDecoder =  (buf) -> {
-            ByteBuf directSliceBuffer = buf.readBytes(buf.readInt());
+            ByteBuf directSliceBuffer = buf.readBytes(buf.readVarInt());
             ByteBuf copiedDataBuffer = Unpooled.copiedBuffer(directSliceBuffer);
             directSliceBuffer.release();
             return new PacketUIWidgetUpdate(
-                buf.readInt(),
-                buf.readInt(),
+                buf.readVarInt(),
+                buf.readVarInt(),
                 new PacketBuffer(copiedDataBuffer));
         };
 
         registerPacket(1, PacketUIOpen.class, new PacketCodec<>(
             (packet, buf) -> {
-                buf.writeInt(packet.serializedHolder.readableBytes());
+                buf.writeVarInt(packet.serializedHolder.readableBytes());
                 buf.writeBytes(packet.serializedHolder);
-                buf.writeInt(packet.uiFactoryId);
-                buf.writeInt(packet.windowId);
-                buf.writeInt(packet.initialWidgetUpdates.size());
+                buf.writeVarInt(packet.uiFactoryId);
+                buf.writeVarInt(packet.windowId);
+                buf.writeVarInt(packet.initialWidgetUpdates.size());
                 for(PacketUIWidgetUpdate widgetUpdate : packet.initialWidgetUpdates) {
                     widgetUpdateEncoder.encode(widgetUpdate, buf);
                 }
             },
             (buf) -> {
-                ByteBuf directSliceBuffer = buf.readBytes(buf.readInt());
+                ByteBuf directSliceBuffer = buf.readBytes(buf.readVarInt());
                 ByteBuf copiedDataBuffer = Unpooled.copiedBuffer(directSliceBuffer);
                 directSliceBuffer.release();
-                int uiFactoryId = buf.readInt();
-                int windowId = buf.readInt();
+                int uiFactoryId = buf.readVarInt();
+                int windowId = buf.readVarInt();
                 ArrayList<PacketUIWidgetUpdate> initialWidgetUpdates = new ArrayList<>();
-                int initialWidgetUpdatesCount = buf.readInt();
+                int initialWidgetUpdatesCount = buf.readVarInt();
                 for(int i = 0; i < initialWidgetUpdatesCount; i++) {
                     initialWidgetUpdates.add(widgetUpdateDecoder.decode(buf));
                 }
@@ -128,38 +136,51 @@ public class NetworkHandler {
 
         registerPacket(2, PacketUIWidgetUpdate.class, new PacketCodec<>(
             (packet, buf) -> {
-                buf.writeInt(packet.updateData.readableBytes());
+                buf.writeVarInt(packet.updateData.readableBytes());
                 buf.writeBytes(packet.updateData);
-                buf.writeInt(packet.windowId);
-                buf.writeInt(packet.widgetId);
+                buf.writeVarInt(packet.windowId);
+                buf.writeVarInt(packet.widgetId);
             },
             (buf) -> {
-                ByteBuf directSliceBuffer = buf.readBytes(buf.readInt());
+                ByteBuf directSliceBuffer = buf.readBytes(buf.readVarInt());
                 ByteBuf copiedDataBuffer = Unpooled.copiedBuffer(directSliceBuffer);
                 directSliceBuffer.release();
                 return new PacketUIWidgetUpdate(
-                    buf.readInt(),
-                    buf.readInt(),
+                    buf.readVarInt(),
+                    buf.readVarInt(),
                     new PacketBuffer(copiedDataBuffer));
             }
         ));
 
         registerPacket(3, PacketUIClientAction.class, new PacketCodec<>(
             (packet, buf) -> {
-                buf.writeInt(packet.updateData.readableBytes());
+                buf.writeVarInt(packet.updateData.readableBytes());
                 buf.writeBytes(packet.updateData);
-                buf.writeInt(packet.windowId);
-                buf.writeInt(packet.widgetId);
+                buf.writeVarInt(packet.windowId);
+                buf.writeVarInt(packet.widgetId);
             },
             (buf) -> {
-                ByteBuf directSliceBuffer = buf.readBytes(buf.readInt());
+                ByteBuf directSliceBuffer = buf.readBytes(buf.readVarInt());
                 ByteBuf copiedDataBuffer = Unpooled.copiedBuffer(directSliceBuffer);
                 directSliceBuffer.release();
                 return new PacketUIClientAction(
-                    buf.readInt(),
-                    buf.readInt(),
+                    buf.readVarInt(),
+                    buf.readVarInt(),
                     new PacketBuffer(copiedDataBuffer));
             }
+        ));
+
+        registerPacket(4, PacketBlockParticle.class, new PacketCodec<>(
+            (packet, buf) -> {
+                buf.writeBlockPos(packet.blockPos);
+                buf.writeFloat((float) packet.entityPos.x);
+                buf.writeFloat((float) packet.entityPos.y);
+                buf.writeFloat((float) packet.entityPos.z);
+                buf.writeVarInt(packet.particlesAmount);
+                },
+            (buf) -> new PacketBlockParticle(buf.readBlockPos(),
+                new Vector3(buf.readFloat(), buf.readFloat(), buf.readFloat()),
+                buf.readVarInt())
         ));
 
         registerServerExecutor(PacketUIClientAction.class, (packet, handler) -> {
@@ -168,7 +189,7 @@ public class NetworkHandler {
                 openContainer.windowId == packet.windowId) {
                 ModularUI modularUI = ((ModularUIContainer) openContainer).getModularUI();
                 PacketBuffer buffer = packet.updateData;
-                modularUI.guiWidgets.get(packet.widgetId).handleClientAction(buffer.readInt(), buffer);
+                modularUI.guiWidgets.get(packet.widgetId).handleClientAction(buffer.readVarInt(), buffer);
             }
         });
 
@@ -190,6 +211,13 @@ public class NetworkHandler {
         });
         registerClientExecutor(PacketUIWidgetUpdate.class, (packet, handler) ->
             ModularUIGui.addWidgetUpdate(packet));
+
+        registerClientExecutor(PacketBlockParticle.class, (packet, handler) -> {
+            World world = Minecraft.getMinecraft().world;
+            IBlockState blockState = world.getBlockState(packet.blockPos);
+            ParticleManager particleManager = Minecraft.getMinecraft().effectRenderer;
+            ((ICustomParticleBlock) blockState.getBlock()).handleCustomParticle(world, packet.blockPos, particleManager, packet.entityPos, packet.particlesAmount);
+        });
     }
 
     public static <T extends Packet> void registerPacket(int packetId, Class<T> packetClass, PacketCodec<T> codec) {
@@ -210,7 +238,7 @@ public class NetworkHandler {
     public static FMLProxyPacket packet2proxy(Packet packet) {
         PacketCodec<Packet> codec = (PacketCodec<Packet>) codecMap.get(packet.getClass());
         PacketBuffer buf = new PacketBuffer(Unpooled.buffer());
-        buf.writeInt(packetMap.getId(packet.getClass()));
+        buf.writeVarInt(packetMap.getId(packet.getClass()));
         codec.encoder.encode(packet, buf);
         return new FMLProxyPacket(buf, GTValues.MODID);
     }
@@ -218,9 +246,13 @@ public class NetworkHandler {
     @SuppressWarnings("unchecked")
     public static Packet proxy2packet(FMLProxyPacket packet) {
         PacketBuffer payload = (PacketBuffer) packet.payload();
-        Class<Packet> packetClass = (Class<Packet>) packetMap.get(payload.readInt());
+        Class<Packet> packetClass = (Class<Packet>) packetMap.get(payload.readVarInt());
         PacketCodec<Packet> codec = (PacketCodec<Packet>) codecMap.get(packetClass);
         return codec.decoder.decode(payload);
+    }
+
+    public static TargetPoint blockPoint(World world, BlockPos blockPos) {
+        return new TargetPoint(world.provider.getDimension(), blockPos.getX() + 0.5, blockPos.getY() + 0.5, blockPos.getZ() + 0.5, 128.0);
     }
 
     @SubscribeEvent

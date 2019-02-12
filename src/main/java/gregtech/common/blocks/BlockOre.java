@@ -2,9 +2,7 @@ package gregtech.common.blocks;
 
 import gregtech.api.GregTechAPI;
 import gregtech.api.unification.material.type.DustMaterial;
-import gregtech.api.unification.material.type.SolidMaterial;
 import gregtech.api.unification.ore.StoneType;
-import gregtech.api.unification.ore.StoneTypes;
 import gregtech.api.util.IBlockOre;
 import gregtech.common.blocks.properties.PropertyStoneType;
 import net.minecraft.block.Block;
@@ -49,8 +47,9 @@ public class BlockOre extends BlockFalling implements IBlockOre {
     @Override
     public Material getMaterial(IBlockState state) {
         String harvestTool = getHarvestTool(state);
-        if(harvestTool != null && harvestTool.equals("shovel"))
+        if(harvestTool != null && harvestTool.equals("shovel")) {
             return Material.GROUND;
+        }
         return Material.ROCK;
     }
 
@@ -85,8 +84,8 @@ public class BlockOre extends BlockFalling implements IBlockOre {
     @Override
     public int getHarvestLevel(IBlockState state) {
         StoneType stoneType = state.getValue(STONE_TYPE);
-        if (material instanceof SolidMaterial) {
-            int toolQuality = ((SolidMaterial) material).harvestLevel;
+        if (material instanceof DustMaterial) {
+            int toolQuality = ((DustMaterial) material).harvestLevel;
             return Math.max(stoneType.stoneMaterial.harvestLevel, toolQuality > 1 ? toolQuality - 1 : toolQuality);
         }
         return 1;
@@ -122,9 +121,7 @@ public class BlockOre extends BlockFalling implements IBlockOre {
 
     @Override
     public void getSubBlocks(CreativeTabs tab, NonNullList<ItemStack> list) {
-        blockState.getValidStates().stream()
-            .filter(blockState -> blockState.getValue(STONE_TYPE) != StoneTypes._NULL)
-            .forEach(blockState -> list.add(getItem(blockState)));
+        blockState.getValidStates().forEach(blockState -> list.add(getItem(blockState)));
     }
 
     @Override

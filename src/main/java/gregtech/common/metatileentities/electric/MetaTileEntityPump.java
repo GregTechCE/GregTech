@@ -1,6 +1,7 @@
 package gregtech.common.metatileentities.electric;
 
 import codechicken.lib.render.CCRenderState;
+import codechicken.lib.render.pipeline.ColourMultiplier;
 import codechicken.lib.render.pipeline.IVertexOperation;
 import codechicken.lib.vec.Cuboid6;
 import codechicken.lib.vec.Matrix4;
@@ -17,6 +18,7 @@ import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.MetaTileEntityHolder;
 import gregtech.api.metatileentity.TieredMetaTileEntity;
 import gregtech.api.render.Textures;
+import gregtech.api.util.GTUtility;
 import net.minecraft.block.BlockLiquid;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.resources.I18n;
@@ -25,6 +27,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumFacing.Axis;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
@@ -37,6 +40,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.IItemHandlerModifiable;
 import net.minecraftforge.items.ItemStackHandler;
+import org.apache.commons.lang3.ArrayUtils;
 
 import javax.annotation.Nullable;
 import java.util.ArrayDeque;
@@ -54,7 +58,7 @@ public class MetaTileEntityPump extends TieredMetaTileEntity {
     private boolean initializedQueue = false;
     private int pumpHeadY;
 
-    public MetaTileEntityPump(String metaTileEntityId, int tier) {
+    public MetaTileEntityPump(ResourceLocation metaTileEntityId, int tier) {
         super(metaTileEntityId, tier);
     }
 
@@ -67,11 +71,13 @@ public class MetaTileEntityPump extends TieredMetaTileEntity {
     @SideOnly(Side.CLIENT)
     public void renderMetaTileEntity(CCRenderState renderState, Matrix4 translation, IVertexOperation[] pipeline) {
         super.renderMetaTileEntity(renderState, translation, pipeline);
+        ColourMultiplier multiplier = new ColourMultiplier(GTUtility.convertRGBtoOpaqueRGBA_CL(getPaintingColorForRendering()));
+        IVertexOperation[] coloredPipeline = ArrayUtils.add(pipeline, multiplier);
         for(EnumFacing renderSide : EnumFacing.HORIZONTALS) {
             if(renderSide == getFrontFacing()) {
                 Textures.PIPE_OUT_OVERLAY.renderSided(renderSide, renderState, translation, pipeline);
             } else {
-                Textures.ADV_PUMP_OVERLAY.renderSided(renderSide, renderState, translation, pipeline);
+                Textures.ADV_PUMP_OVERLAY.renderSided(renderSide, renderState, translation, coloredPipeline);
             }
         }
         Textures.SCREEN.renderSided(EnumFacing.UP, renderState, translation, pipeline);
@@ -85,20 +91,20 @@ public class MetaTileEntityPump extends TieredMetaTileEntity {
     @Override
     public void writeInitialSyncData(PacketBuffer buf) {
         super.writeInitialSyncData(buf);
-        buf.writeInt(pumpHeadY);
+        buf.writeVarInt(pumpHeadY);
     }
 
     @Override
     public void receiveInitialSyncData(PacketBuffer buf) {
         super.receiveInitialSyncData(buf);
-        this.pumpHeadY = buf.readInt();
+        this.pumpHeadY = buf.readVarInt();
     }
 
     @Override
     public void receiveCustomData(int dataId, PacketBuffer buf) {
         super.receiveCustomData(dataId, buf);
-        if(dataId == -200) {
-            this.pumpHeadY = buf.readInt();
+        if(dataId == 200) {
+            this.pumpHeadY = buf.readVarInt();
         }
     }
 
@@ -115,11 +121,6 @@ public class MetaTileEntityPump extends TieredMetaTileEntity {
     @Override
     protected IItemHandlerModifiable createExportItemHandler() {
         return new ItemStackHandler(1);
-    }
-
-    @Override
-    public boolean hasCapability(Capability<?> capability, EnumFacing side) {
-        return (side == null || side.getAxis() != Axis.Y) && super.hasCapability(capability, side);
     }
 
     @Override
@@ -180,10 +181,11 @@ public class MetaTileEntityPump extends TieredMetaTileEntity {
                 }
             }
 
-        } else if(fluidSourceBlocks.isEmpty()) {
+        }
+        if(fluidSourceBlocks.isEmpty()) {
             if(getTimer() % 20 == 0 && pumpHeadY < 50) {
                 this.pumpHeadY++;
-                writeCustomData(-200, b -> b.writeInt(pumpHeadY));
+                writeCustomData(200, b -> b.writeVarInt(pumpHeadY));
                 markDirty();
                 //schedule queue rebuild because we changed our position and no fluid is available
                 this.initializedQueue = false;

@@ -5,6 +5,7 @@ import gregtech.api.gui.GuiTextures;
 import gregtech.api.gui.widgets.ProgressWidget.MoveType;
 import gregtech.api.recipes.builders.*;
 import gregtech.api.recipes.machines.*;
+import gregtech.api.recipes.recipes.CokeOvenRecipe;
 import gregtech.api.recipes.recipes.PrimitiveBlastFurnaceRecipe;
 import stanhebben.zenscript.annotations.ZenClass;
 import stanhebben.zenscript.annotations.ZenMethod;
@@ -27,7 +28,7 @@ public class RecipeMaps {
         .setProgressBar(GuiTextures.PROGRESS_BAR_EXTRACT, MoveType.HORIZONTAL);
 
 
-    @ZenProperty public static final RecipeMap<SimpleRecipeBuilder> MACERATOR_RECIPES = new RecipeMap<>("macerator", 1, 1, 1, 4, 0, 0, 0, 0, 1, new SimpleRecipeBuilder().duration(400).EUt(2))
+    @ZenProperty public static final RecipeMap<SimpleRecipeBuilder> MACERATOR_RECIPES = new RecipeMap<>("macerator", 1, 1, 1, 3, 0, 0, 0, 0, 1, new SimpleRecipeBuilder().duration(150).EUt(8))
         .setSlotOverlay(false, false, GuiTextures.CRUSHED_ORE_OVERLAY)
         .setSlotOverlay(true, false, GuiTextures.DUST_OVERLAY)
         .setProgressBar(GuiTextures.PROGRESS_BAR_MACERATE, MoveType.HORIZONTAL);
@@ -55,7 +56,7 @@ public class RecipeMaps {
         .setProgressBar(GuiTextures.PROGRESS_BAR_ARROW, MoveType.HORIZONTAL);
 
 
-    @ZenProperty public static final RecipeMap<IntCircuitRecipeBuilder> ASSEMBLER_RECIPES = new RecipeMap<>("assembler", 1, 3, 1, 1, 0, 1, 0, 0, 1, new AssemblerRecipeBuilder())
+    @ZenProperty public static final RecipeMap<IntCircuitRecipeBuilder> ASSEMBLER_RECIPES = new RecipeMap<>("assembler", 1, 9, 1, 1, 0, 1, 0, 0, 1, new AssemblerRecipeBuilder())
         .setSlotOverlay(false, false, GuiTextures.CIRCUIT_OVERLAY)
         .setProgressBar(GuiTextures.PROGRESS_BAR_CIRCUIT, MoveType.HORIZONTAL);
 
@@ -337,7 +338,7 @@ public class RecipeMaps {
      * </pre>
      */
 
-    @ZenProperty public static final RecipeMap<SimpleRecipeBuilder> CENTRIFUGE_RECIPES = new RecipeMap<>("centrifuge", 0, 1, 0, 6, 0, 1, 0, 3, 1, new SimpleRecipeBuilder().EUt(5))
+    @ZenProperty public static final RecipeMap<SimpleRecipeBuilder> CENTRIFUGE_RECIPES = new RecipeMapGroupOutput("centrifuge", 0, 1, 0, 6, 0, 1, 0, 6, 1, new SimpleRecipeBuilder().EUt(5))
         .setSlotOverlay(false, false, true, GuiTextures.EXTRACTOR_OVERLAY)
         .setSlotOverlay(false, true, true, GuiTextures.DARK_CANISTER_OVERLAY)
         .setProgressBar(GuiTextures.PROGRESS_BAR_EXTRACT, MoveType.HORIZONTAL);
@@ -365,7 +366,7 @@ public class RecipeMaps {
      * </pre>
      */
 
-    @ZenProperty public static final RecipeMap<SimpleRecipeBuilder> ELECTROLYZER_RECIPES = new RecipeMap<>("electrolyzer", 0, 1, 0, 6, 0, 1, 0, 3, 1, new SimpleRecipeBuilder())
+    @ZenProperty public static final RecipeMap<SimpleRecipeBuilder> ELECTROLYZER_RECIPES = new RecipeMapGroupOutput("electrolyzer", 0, 1, 0, 6, 0, 1, 0, 6, 1, new SimpleRecipeBuilder())
         .setSlotOverlay(false, false, true, GuiTextures.CHARGER_OVERLAY)
         .setSlotOverlay(false, true, true, GuiTextures.DARK_CANISTER_OVERLAY)
         .setProgressBar(GuiTextures.PROGRESS_BAR_EXTRACT, MoveType.HORIZONTAL);
@@ -652,15 +653,18 @@ public class RecipeMaps {
 
     @ZenProperty public static final FuelRecipeMap PLASMA_GENERATOR_FUELS = new FuelRecipeMap("plasma_generator");
 
-    /**
-     * Create recipes via {@link gregtech.api.recipes.builders.PBFRecipeBuilder}
-     */
     @ZenProperty public static final List<PrimitiveBlastFurnaceRecipe> PRIMITIVE_BLAST_FURNACE_RECIPES = new CopyOnWriteArrayList<>();
 
+    @ZenProperty public static final List<CokeOvenRecipe> COKE_OVEN_RECIPES = new CopyOnWriteArrayList<>();
+
     @ZenMethod
-    @Deprecated
     public static List<PrimitiveBlastFurnaceRecipe> getPrimitiveBlastFurnaceRecipes() {
         return PRIMITIVE_BLAST_FURNACE_RECIPES;
+    }
+
+    @ZenMethod
+    public static List<CokeOvenRecipe> getCokeOvenRecipes() {
+        return COKE_OVEN_RECIPES;
     }
 
 }

@@ -1,6 +1,8 @@
 package gregtech.api.multiblock;
 
 import com.google.common.base.Joiner;
+import gnu.trove.map.TIntObjectMap;
+import gnu.trove.map.hash.TIntObjectHashMap;
 import gregtech.api.multiblock.BlockPattern.RelativeDirection;
 import gregtech.api.util.IntRange;
 import org.apache.commons.lang3.ArrayUtils;
@@ -24,6 +26,8 @@ public class FactoryBlockPattern {
     private final List<int[]> aisleRepetitions = new ArrayList<>();
     private final Map<Character, IntRange> countLimits = new HashMap<>();
     private final Map<Character, Predicate<BlockWorldState>> symbolMap = new HashMap<>();
+    private final TIntObjectMap<Predicate<PatternMatchContext>> layerValidators = new TIntObjectHashMap<>();
+    private final List<Predicate<PatternMatchContext>> contextValidators = new ArrayList<>();
     private int aisleHeight;
     private int rowWidth;
     private RelativeDirection[] structureDir = new RelativeDirection[3];
@@ -132,8 +136,28 @@ public class FactoryBlockPattern {
         return this;
     }
 
+    /**
+     * Adds predicate to be run after multiblock checking to validate
+     * pattern matching context before succeeding match sequence
+     */
+    public FactoryBlockPattern validateContext(Predicate<PatternMatchContext> validator) {
+        this.contextValidators.add(validator);
+        return this;
+    }
+
+    /**
+     * Adds predicate to validate given layer using given validator
+     * Given context is layer-local and can be accessed via {@link BlockWorldState#getLayerContext()}
+     */
+    public FactoryBlockPattern validateLayer(int layerIndex, Predicate<PatternMatchContext> layerValidator) {
+        this.layerValidators.put(layerIndex, layerValidator);
+        return this;
+    }
+
     public BlockPattern build() {
-        return new BlockPattern(makePredicateArray(), makeCountLimitsList(), structureDir, aisleRepetitions.toArray(new int[aisleRepetitions.size()][]));
+        return new BlockPattern(makePredicateArray(), makeCountLimitsList(),
+            layerValidators, contextValidators,
+            structureDir, aisleRepetitions.toArray(new int[aisleRepetitions.size()][]));
     }
 
     @SuppressWarnings("unchecked")

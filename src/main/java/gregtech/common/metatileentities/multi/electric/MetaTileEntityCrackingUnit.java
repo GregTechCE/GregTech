@@ -14,6 +14,7 @@ import gregtech.common.blocks.BlockMetalCasing;
 import gregtech.common.blocks.BlockWireCoil.CoilType;
 import gregtech.common.blocks.MetaBlocks;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.util.ResourceLocation;
 
 public class MetaTileEntityCrackingUnit extends RecipeMapMultiblockController {
 
@@ -22,7 +23,7 @@ public class MetaTileEntityCrackingUnit extends RecipeMapMultiblockController {
         MultiblockAbility.INPUT_ENERGY
     };
 
-    public MetaTileEntityCrackingUnit(String metaTileEntityId) {
+    public MetaTileEntityCrackingUnit(ResourceLocation metaTileEntityId) {
         super(metaTileEntityId, RecipeMaps.CRACKING_RECIPES);
     }
 
@@ -37,8 +38,9 @@ public class MetaTileEntityCrackingUnit extends RecipeMapMultiblockController {
             .aisle("HCHCH", "HCHCH", "HCHCH")
             .aisle("HCHCH", "H###H", "HCHCH")
             .aisle("HCHCH", "HCOCH", "HCHCH")
-            .setAmountAtLeast('H', 20)
+            .setAmountAtLeast('L', 20)
             .where('O', selfPredicate())
+            .where('L', statePredicate(getCasingState()))
             .where('H', statePredicate(getCasingState()).or(abilityPartPredicate(ALLOWED_ABILITIES)))
             .where('#', isAirPredicate())
             .where('C', statePredicate(getCoilState()))

@@ -7,11 +7,11 @@ import codechicken.lib.render.CCRenderState;
 import codechicken.lib.render.block.BlockRenderingRegistry;
 import codechicken.lib.render.block.ICCBlockRenderer;
 import codechicken.lib.render.item.IItemRenderer;
-import codechicken.lib.render.particle.IModelParticleProvider;
 import codechicken.lib.render.pipeline.ColourMultiplier;
 import codechicken.lib.render.pipeline.IVertexOperation;
 import codechicken.lib.texture.TextureUtils;
 import codechicken.lib.vec.Cuboid6;
+import codechicken.lib.vec.Matrix4;
 import codechicken.lib.vec.Translation;
 import codechicken.lib.vec.Vector3;
 import codechicken.lib.vec.uv.IconTransformation;
@@ -41,7 +41,6 @@ import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.client.event.ModelBakeEvent;
@@ -53,13 +52,15 @@ import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.tuple.Pair;
 import org.lwjgl.opengl.GL11;
 
-import javax.annotation.Nonnull;
 import javax.vecmath.Matrix4f;
-import java.util.*;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
 import static gregtech.api.render.MetaTileEntityRenderer.BLOCK_TRANSFORMS;
 
-public class FluidPipeRenderer implements ICCBlockRenderer, IItemRenderer, IModelParticleProvider {
+public class FluidPipeRenderer implements ICCBlockRenderer, IItemRenderer {
 
     public static ModelResourceLocation MODEL_LOCATION = new ModelResourceLocation(new ResourceLocation(GTValues.MODID, "fluid_pipe"), "normal");
     public static FluidPipeRenderer INSTANCE = new FluidPipeRenderer();
@@ -75,7 +76,7 @@ public class FluidPipeRenderer implements ICCBlockRenderer, IItemRenderer, IMode
         BlockRenderingRegistry.registerRenderer(BLOCK_RENDER_TYPE, INSTANCE);
         MinecraftForge.EVENT_BUS.register(INSTANCE);
         TextureUtils.addIconRegister(INSTANCE::registerIcons);
-        for(Material material : MetaBlocks.FLUID_PIPES.keySet()) {
+        for(Material material : MetaBlocks.FLUID_PIPE.getEnabledMaterials()) {
             MaterialIconSet iconSet = material.materialIconSet;
             INSTANCE.generatedSets.add(iconSet);
         }
@@ -105,8 +106,8 @@ public class FluidPipeRenderer implements ICCBlockRenderer, IItemRenderer, IMode
         renderState.reset();
         renderState.startDrawing(GL11.GL_QUADS, DefaultVertexFormats.ITEM);
         BlockFluidPipe blockFluidPipe = (BlockFluidPipe) ((ItemBlockFluidPipe) stack.getItem()).getBlock();
-        FluidPipeType pipeType = blockFluidPipe.getPipeType(stack);
-        Material material = blockFluidPipe.material;
+        FluidPipeType pipeType = blockFluidPipe.getItemPipeType(stack);
+        Material material = blockFluidPipe.getItemMaterial(stack);
         renderPipeBlock(material, pipeType, IPipeTile.DEFAULT_INSULATION_COLOR, renderState, new IVertexOperation[0],
             1 << EnumFacing.SOUTH.getIndex() | 1 << EnumFacing.NORTH.getIndex() |
                 1 << (6 + EnumFacing.SOUTH.getIndex()) | 1 << (6 + EnumFacing.NORTH.getIndex()));
@@ -127,11 +128,10 @@ public class FluidPipeRenderer implements ICCBlockRenderer, IItemRenderer, IMode
         if(tileEntityCable == null) return false;
         int paintingColor = tileEntityCable.getInsulationColor();
         int connectedSidesMask = blockFluidPipe.getActualConnections(tileEntityCable, world);
-
-        FluidPipeType fluidPipeType = state.getValue(blockFluidPipe.pipeVariantProperty);
-        Material material = blockFluidPipe.material;
-
+        FluidPipeType fluidPipeType = tileEntityCable.getPipeType();
+        Material material = tileEntityCable.getPipeMaterial();
         renderPipeBlock(material, fluidPipeType, paintingColor, renderState, pipeline, connectedSidesMask);
+        tileEntityCable.getCoverableImplementation().renderCovers(renderState, new Matrix4().translate(pos.getX(), pos.getY(), pos.getZ()), new IVertexOperation[0]);
         return true;
     }
 
@@ -256,14 +256,11 @@ public class FluidPipeRenderer implements ICCBlockRenderer, IItemRenderer, IMode
         return true;
     }
 
-    @Override
-    public Set<TextureAtlasSprite> getHitEffects(@Nonnull RayTraceResult traceResult, IBlockState state, IBlockAccess world, BlockPos pos) {
-        return getDestroyEffects(state, world, pos);
-    }
-
-    @Override
-    public Set<TextureAtlasSprite> getDestroyEffects(IBlockState state, IBlockAccess world, BlockPos pos) {
-        Material material = ((BlockFluidPipe) state.getBlock()).material;
-        return Collections.singleton(pipeSideTextures.get(material.materialIconSet));
+    public TextureAtlasSprite getParticleTexture(IPipeTile<FluidPipeType, FluidPipeProperties> tileEntity) {
+        if(tileEntity == null) {
+            return TextureUtils.getMissingSprite();
+        }
+        Material material = tileEntity.getPipeMaterial();
+        return pipeSideTextures.get(material.materialIconSet);
     }
 }

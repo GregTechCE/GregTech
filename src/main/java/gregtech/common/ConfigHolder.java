@@ -13,13 +13,10 @@ public class ConfigHolder {
     public static boolean increaseDungeonLoot = true;
 
     @Config.Comment("Specifies min amount of veins in section")
-    public static int minVeinsInSection = 3;
+    public static int minVeinsInSection = 0;
 
     @Config.Comment("Specifies additional random amount of veins in section")
     public static int additionalVeinsInSection = 2;
-
-    @Config.Comment("True to enable surface rocks indicating vein under them")
-    public static boolean enableOreVeinSurfaceRocks = true;
 
     @Config.Comment("Whether to disable vanilla ores generation in world. Default is false.")
     public static boolean disableVanillaOres = false;
@@ -41,10 +38,6 @@ public class ConfigHolder {
     @Config.RequiresMcRestart
     public static boolean harderMachineHulls = false;
 
-    @Config.Comment("Flint tools (pickaxe, shovel, axe, sword, hoe) recipes will be disabled. Default is false.")
-    @Config.RequiresMcRestart
-    public static boolean disableFlintTools = false;
-
     @Config.Comment("If true, insufficient energy supply will reset recipe progress to zero. If false, progress will slowly go back (with 2x speed)")
     @Config.RequiresWorldRestart
     public static boolean insufficientEnergySupplyWipesRecipeProgress = false;
@@ -57,6 +50,10 @@ public class ConfigHolder {
         "Unspecified ModIDs follow standard sorting, but always have lower priority than last specified ModID.")
     @Config.RequiresMcRestart
     public static String[] modPriorities = new String[0];
+
+    @Config.Comment("Setting this to true makes GTCE ignore error and invalid recipes that would otherwise cause crash. Default to true.")
+    @Config.RequiresMcRestart
+    public static boolean ignoreErrorOrInvalidRecipes = true;
 
     @Config.Comment("Category that contains configs for changing vanilla recipes")
     @Config.RequiresMcRestart

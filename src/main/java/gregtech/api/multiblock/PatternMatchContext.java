@@ -1,6 +1,7 @@
 package gregtech.api.multiblock;
 
 import java.util.HashMap;
+import java.util.Map;
 import java.util.function.Supplier;
 
 /**
@@ -9,7 +10,7 @@ import java.util.function.Supplier;
  */
 public class PatternMatchContext {
 
-    private HashMap<String, Object> data = new HashMap<>();
+    private Map<String, Object> data = new HashMap<>();
 
     public void reset() {
         this.data.clear();
@@ -19,12 +20,24 @@ public class PatternMatchContext {
         this.data.put(key, value);
     }
 
+    public int getInt(String key) {
+        return data.containsKey(key) ? (int) data.get(key) : 0;
+    }
+
+    public void increment(String key, int value) {
+        set(key, getOrDefault(key, 0) + value);
+    }
+
+    public <T> T getOrDefault(String key, T defaultValue) {
+        return (T) data.getOrDefault(key, defaultValue);
+    }
+
     @SuppressWarnings("unchecked")
     public <T> T get(String key) {
         return (T) data.get(key);
     }
 
-    public <T> T get(String key, Supplier<T> creator) {
+    public <T> T getOrCreate(String key, Supplier<T> creator) {
         T result = get(key);
         if(result == null) {
             result = creator.get();
@@ -33,7 +46,7 @@ public class PatternMatchContext {
         return result;
     }
 
-    public <T> T get(String key, T initialValue) {
+    public <T> T getOrPut(String key, T initialValue) {
         T result = get(key);
         if(result == null) {
             result = initialValue;

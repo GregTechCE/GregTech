@@ -14,6 +14,11 @@ public class ToolSword extends ToolBase {
     }
 
     @Override
+    public float getAttackSpeed(ItemStack stack) {
+        return -2.3f;
+    }
+
+    @Override
     public int getToolDamagePerBlockBreak(ItemStack stack) {
         return 2;
     }
@@ -50,8 +55,4 @@ public class ToolSword extends ToolBase {
             block.getMaterial() == Material.SPONGE;
     }
 
-    @Override
-    public boolean hasMaterialHandle() {
-        return true;
-    }
 }

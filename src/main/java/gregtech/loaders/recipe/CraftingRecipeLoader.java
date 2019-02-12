@@ -1,5 +1,7 @@
 package gregtech.loaders.recipe;
 
+import com.google.common.base.CaseFormat;
+import gregtech.api.GTValues;
 import gregtech.api.recipes.ModHandler;
 import gregtech.api.unification.OreDictUnifier;
 import gregtech.api.unification.material.MarkerMaterials.Tier;
@@ -8,16 +10,16 @@ import gregtech.api.unification.ore.OrePrefix;
 import gregtech.api.unification.stack.UnificationEntry;
 import gregtech.api.util.GTLog;
 import gregtech.common.ConfigHolder;
-import gregtech.common.blocks.BlockBoilerCasing.BoilerCasingType;
-import gregtech.common.blocks.BlockFireboxCasing.FireboxCasingType;
 import gregtech.common.blocks.MetaBlocks;
 import gregtech.common.blocks.wood.BlockGregLog.LogVariant;
 import gregtech.common.items.MetaItems;
 import gregtech.common.pipelike.fluidpipe.FluidPipeType;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockColored;
 import net.minecraft.block.BlockPlanks.EnumType;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
+import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.util.ResourceLocation;
@@ -31,16 +33,26 @@ public class CraftingRecipeLoader {
     }
 
     private static void loadCraftingRecipes() {
-        //TODO cleanup in next major update
-        ModHandler.addShapelessRecipe("convert_bronze_firebox", MetaBlocks.BOILER_FIREBOX_CASING.getItemVariant(FireboxCasingType.BRONZE_FIREBOX), MetaBlocks.BOILER_CASING.getItemVariant(BoilerCasingType.__LEGACY_BRONZE_FIREBOX));
-        ModHandler.addShapelessRecipe("convert_steel_firebox", MetaBlocks.BOILER_FIREBOX_CASING.getItemVariant(FireboxCasingType.STEEL_FIREBOX), MetaBlocks.BOILER_CASING.getItemVariant(BoilerCasingType.__LEGACY_STEEL_FIREBOX));
-        ModHandler.addShapelessRecipe("convert_titanium_firebox", MetaBlocks.BOILER_FIREBOX_CASING.getItemVariant(FireboxCasingType.TITANIUM_FIREBOX), MetaBlocks.BOILER_CASING.getItemVariant(BoilerCasingType.__LEGACY_TITANIUM_FIREBOX));
-        ModHandler.addShapelessRecipe("convert_tungstensteel_firebox", MetaBlocks.BOILER_FIREBOX_CASING.getItemVariant(FireboxCasingType.TUNGSTENSTEEL_FIREBOX), MetaBlocks.BOILER_CASING.getItemVariant(BoilerCasingType.__LEGACY_TUNGSTENSTEEL_FIREBOX));
+        ModHandler.addShapelessRecipe("clay_block_to_dust", OreDictUnifier.get(OrePrefix.dust, Materials.Clay), 'm', Blocks.CLAY);
+        ModHandler.addShapelessRecipe("clay_ball_to_dust", OreDictUnifier.get(OrePrefix.dustSmall, Materials.Clay), 'm', Items.CLAY_BALL);
+        ModHandler.addShapelessRecipe("brick_block_to_dust", OreDictUnifier.get(OrePrefix.dust, Materials.Brick), 'm', Blocks.BRICK_BLOCK);
+        ModHandler.addShapelessRecipe("brick_to_dust", OreDictUnifier.get(OrePrefix.dustSmall, Materials.Brick), 'm', Items.BRICK);
+        ModHandler.addShapelessRecipe("wheat_to_dust", OreDictUnifier.get(OrePrefix.dust, Materials.Wheat, 1), 'm', Items.WHEAT);
+        ModHandler.addShapelessRecipe("gravel_to_flint", new ItemStack(Items.FLINT, 1), 'm', Blocks.GRAVEL);
+        ModHandler.addShapelessRecipe("blaze_rod_to_powder", new ItemStack(Items.BLAZE_POWDER, 3), 'm', Items.BLAZE_ROD);
+
+        ModHandler.addShapedRecipe("plank_to_wooden_shape", MetaItems.WOODEN_FORM_EMPTY.getStackForm(), "   ", " X ", "s  ", 'X', new UnificationEntry(OrePrefix.plank, Materials.Wood));
+        ModHandler.addShapedRecipe("wooden_shape_brick", MetaItems.WOODEN_FORM_BRICK.getStackForm(), "k ", " X", 'X', MetaItems.WOODEN_FORM_EMPTY.getStackForm());
+        ModHandler.addShapedRecipe("compressed_clay", MetaItems.COMPRESSED_CLAY.getStackForm(8), "XXX", "XYX", "XXX", 'Y', MetaItems.WOODEN_FORM_BRICK.getStackForm(), 'X', Items.CLAY_BALL);
+        ModHandler.addShapelessRecipe("fireclay_dust", OreDictUnifier.get(OrePrefix.dust, Materials.Fireclay, 2), new UnificationEntry(OrePrefix.dust, Materials.Brick), new UnificationEntry(OrePrefix.dust, Materials.Clay));
+        ModHandler.addSmeltingRecipe(MetaItems.COMPRESSED_CLAY.getStackForm(), MetaItems.COKE_OVEN_BRICK.getStackForm());
+        ModHandler.addSmeltingRecipe(MetaItems.COMPRESSED_FIRECLAY.getStackForm(), MetaItems.FIRECLAY_BRICK.getStackForm());
 
         ModHandler.addSmeltingRecipe(new UnificationEntry(OrePrefix.nugget, Materials.Iron), OreDictUnifier.get(OrePrefix.nugget, Materials.WroughtIron));
         ModHandler.addShapedRecipe("primitive_circuit", MetaItems.CIRCUIT_PRIMITIVE.getStackForm(), "SR", "RT", 'S', new UnificationEntry(OrePrefix.plate, Materials.Steel), 'R', new UnificationEntry(OrePrefix.wireGtSingle, Materials.RedAlloy), 'T', new UnificationEntry(OrePrefix.wireGtSingle, Materials.Tin));
         ModHandler.addShapedRecipe("basic_circuit", MetaItems.CIRCUIT_BASIC.getStackForm(), "XXX", "NPN", "XXX", 'P', new UnificationEntry(OrePrefix.plate, Materials.Steel), 'N', new UnificationEntry(OrePrefix.circuit, Tier.Primitive), 'X', new UnificationEntry(OrePrefix.cableGtSingle, Materials.Copper));
         ModHandler.addShapelessRecipe("integrated_circuit", MetaItems.INTEGRATED_CIRCUIT.getStackForm(), MetaItems.CIRCUIT_BASIC.getStackForm());
+        ModHandler.addShapedEnergyTransferRecipe("lapotron_crystal", MetaItems.LAPOTRON_CRYSTAL.getStackForm(), "XCX", "XEX", "XCX", 'X', new UnificationEntry(OrePrefix.plate, Materials.Lapis), 'C', new UnificationEntry(OrePrefix.circuit, Tier.Advanced), 'E', MetaItems.ENERGY_CRYSTAL.getStackForm());
 
         ModHandler.addShapelessRecipe("rubber_wood_planks", new ItemStack(Blocks.PLANKS, 4, EnumType.JUNGLE.getMetadata()), new ItemStack(MetaBlocks.LOG, 1, LogVariant.RUBBER_WOOD.ordinal()));
         ModHandler.addShapelessRecipe("chum_on_stick", MetaItems.FOOD_CHUM_ON_STICK.getStackForm(), new UnificationEntry(OrePrefix.stick, Materials.Wood), MetaItems.FOOD_CHUM);
@@ -55,8 +67,8 @@ public class CraftingRecipeLoader {
         ModHandler.addShapedRecipe("torch_sulfur", new ItemStack(Blocks.TORCH, 2), "C", "S", 'C', new UnificationEntry(OrePrefix.dust, Materials.Sulfur), 'S', new UnificationEntry(OrePrefix.stick, Materials.Wood));
         ModHandler.addShapedRecipe("torch_phosphor", new ItemStack(Blocks.TORCH, 6), "C", "S", 'C', new UnificationEntry(OrePrefix.dust, Materials.Phosphorus), 'S', new UnificationEntry(OrePrefix.stick, Materials.Wood));
 
-        ModHandler.addShapedRecipe("small_wooden_pipe", MetaBlocks.FLUID_PIPES.get(Materials.Wood).getItem(FluidPipeType.SMALL_OPAQUE), "XXX", "r s", "XXX", 'X', new UnificationEntry(OrePrefix.plank, Materials.Wood));
-        ModHandler.addShapedRecipe("medium_wooden_pipe", MetaBlocks.FLUID_PIPES.get(Materials.Wood).getItem(FluidPipeType.MEDIUM_OPAQUE), "XXX", "s r", "XXX", 'X', new UnificationEntry(OrePrefix.plank, Materials.Wood));
+        ModHandler.addShapedRecipe("small_wooden_pipe", MetaBlocks.FLUID_PIPE.getItem(FluidPipeType.SMALL_OPAQUE, Materials.Wood), "XXX", "r s", "XXX", 'X', new UnificationEntry(OrePrefix.plank, Materials.Wood));
+        ModHandler.addShapedRecipe("medium_wooden_pipe", MetaBlocks.FLUID_PIPE.getItem(FluidPipeType.MEDIUM_OPAQUE, Materials.Wood), "XXX", "s r", "XXX", 'X', new UnificationEntry(OrePrefix.plank, Materials.Wood));
 
         ModHandler.addShapedRecipe("piston_bronze", new ItemStack(Blocks.PISTON, 1), "WWW", "CBC", "CRC", 'W', new UnificationEntry(OrePrefix.plank, Materials.Wood), 'C', OrePrefix.stoneCobble, 'R', new UnificationEntry(OrePrefix.dust, Materials.Redstone), 'B', new UnificationEntry(OrePrefix.ingot, Materials.Bronze));
         ModHandler.addShapedRecipe("piston_aluminium", new ItemStack(Blocks.PISTON, 1), "WWW", "CBC", "CRC", 'W', new UnificationEntry(OrePrefix.plank, Materials.Wood), 'C', OrePrefix.stoneCobble, 'R', new UnificationEntry(OrePrefix.dust, Materials.Redstone), 'B', new UnificationEntry(OrePrefix.ingot, Materials.Aluminium));
@@ -80,8 +92,8 @@ public class CraftingRecipeLoader {
             ModHandler.addShapedRecipe("iron_door", new ItemStack(Items.IRON_DOOR, 3), "XX ", "XXh", "XX ", 'X', new UnificationEntry(OrePrefix.plate, Materials.Iron));
             ModHandler.removeRecipeByName(new ResourceLocation("minecraft:iron_door"));
 
-            ModHandler.addShapedRecipe("iron_trapdor", new ItemStack(Blocks.IRON_TRAPDOOR), "XX ", "XXh", 'X', new UnificationEntry(OrePrefix.plate, Materials.Iron));
-            ModHandler.removeRecipeByName(new ResourceLocation("minecraft:iron_trapdor"));
+            ModHandler.addShapedRecipe("iron_trapdoor", new ItemStack(Blocks.IRON_TRAPDOOR), "XX ", "XXh", 'X', new UnificationEntry(OrePrefix.plate, Materials.Iron));
+            ModHandler.removeRecipeByName(new ResourceLocation("minecraft:iron_trapdoor"));
 
             ModHandler.addShapedRecipe("cauldron", new ItemStack(Items.CAULDRON), "X X", "XhX", "XXX", 'X', new UnificationEntry(OrePrefix.plate, Materials.Iron));
             ModHandler.removeRecipeByName(new ResourceLocation("minecraft:cauldron"));
@@ -106,9 +118,7 @@ public class CraftingRecipeLoader {
 
         ModHandler.addShapelessRecipe("dust_electrum", OreDictUnifier.get(OrePrefix.dust, Materials.Electrum, 2), new UnificationEntry(OrePrefix.dust, Materials.Silver), new UnificationEntry(OrePrefix.dust, Materials.Gold));
         ModHandler.addShapelessRecipe("dust_brass", OreDictUnifier.get(OrePrefix.dust, Materials.Brass, 4), new UnificationEntry(OrePrefix.dust, Materials.Copper), new UnificationEntry(OrePrefix.dust, Materials.Copper), new UnificationEntry(OrePrefix.dust, Materials.Copper), new UnificationEntry(OrePrefix.dust, Materials.Zinc));
-        ModHandler.addShapelessRecipe("dust_brass_tetrahedrite", OreDictUnifier.get(OrePrefix.dust, Materials.Brass, 3), new UnificationEntry(OrePrefix.dust, Materials.Tetrahedrite), new UnificationEntry(OrePrefix.dust, Materials.Tetrahedrite), new UnificationEntry(OrePrefix.dust, Materials.Tetrahedrite), new UnificationEntry(OrePrefix.dust, Materials.Zinc));
         ModHandler.addShapelessRecipe("dust_bronze", OreDictUnifier.get(OrePrefix.dust, Materials.Bronze, 4), new UnificationEntry(OrePrefix.dust, Materials.Copper), new UnificationEntry(OrePrefix.dust, Materials.Copper), new UnificationEntry(OrePrefix.dust, Materials.Copper), new UnificationEntry(OrePrefix.dust, Materials.Tin));
-        ModHandler.addShapelessRecipe("dust_bronze_tetrahedrite", OreDictUnifier.get(OrePrefix.dust, Materials.Bronze, 3), new UnificationEntry(OrePrefix.dust, Materials.Tetrahedrite), new UnificationEntry(OrePrefix.dust, Materials.Tetrahedrite), new UnificationEntry(OrePrefix.dust, Materials.Tetrahedrite), new UnificationEntry(OrePrefix.dust, Materials.Tin));
         ModHandler.addShapelessRecipe("dust_invar", OreDictUnifier.get(OrePrefix.dust, Materials.Invar, 3), new UnificationEntry(OrePrefix.dust, Materials.Iron), new UnificationEntry(OrePrefix.dust, Materials.Iron), new UnificationEntry(OrePrefix.dust, Materials.Nickel));
         ModHandler.addShapelessRecipe("dust_cupronickel", OreDictUnifier.get(OrePrefix.dust, Materials.Cupronickel, 2), new UnificationEntry(OrePrefix.dust, Materials.Nickel), new UnificationEntry(OrePrefix.dust, Materials.Copper));
         ModHandler.addShapelessRecipe("dust_nichrome", OreDictUnifier.get(OrePrefix.dust, Materials.Nichrome, 5), new UnificationEntry(OrePrefix.dust, Materials.Nickel), new UnificationEntry(OrePrefix.dust, Materials.Nickel), new UnificationEntry(OrePrefix.dust, Materials.Nickel), new UnificationEntry(OrePrefix.dust, Materials.Nickel), new UnificationEntry(OrePrefix.dust, Materials.Chrome));
@@ -142,7 +152,9 @@ public class CraftingRecipeLoader {
         ModHandler.addShapelessRecipe("powder_charcoal", new ItemStack(Items.GUNPOWDER, 6), new UnificationEntry(OrePrefix.dust, Materials.Charcoal), new UnificationEntry(OrePrefix.dust, Materials.Charcoal), new UnificationEntry(OrePrefix.dust, Materials.Charcoal), new UnificationEntry(OrePrefix.dust, Materials.Sulfur), new UnificationEntry(OrePrefix.dust, Materials.Saltpeter), new UnificationEntry(OrePrefix.dust, Materials.Saltpeter));
         ModHandler.addShapelessRecipe("powder_carbon", new ItemStack(Items.GUNPOWDER, 6), new UnificationEntry(OrePrefix.dust, Materials.Carbon), new UnificationEntry(OrePrefix.dust, Materials.Carbon), new UnificationEntry(OrePrefix.dust, Materials.Carbon), new UnificationEntry(OrePrefix.dust, Materials.Sulfur), new UnificationEntry(OrePrefix.dust, Materials.Saltpeter), new UnificationEntry(OrePrefix.dust, Materials.Saltpeter));
 
-        ModHandler.addShapedRecipe("magnifying_glass", MetaItems.MAGNIFYING_GLASS.getStackForm(1), "PGh", "Xf ", 'X', new UnificationEntry(OrePrefix.stick, Materials.Steel), 'P', new UnificationEntry(OrePrefix.ring, Materials.Steel), 'G', new UnificationEntry(OrePrefix.lens, Materials.Glass));
+        ModHandler.addShapedRecipe("magnifying_glass", MetaItems.MAGNIFYING_GLASS.getStackForm(1), "PGh", "Xf ", 'X', new UnificationEntry(OrePrefix.stick, Materials.Steel), 'P', new UnificationEntry(OrePrefix.ring, Materials.Steel), 'G', new UnificationEntry(OrePrefix.blockGlass));
+
+        MetaBlocks.FRAMES.values().forEach(CraftingRecipeLoader::registerColoringRecipes);
 
         if (ConfigHolder.vanillaRecipes.nerfPaperCrafting) {
             ModHandler.removeRecipeByName(new ResourceLocation("minecraft:paper"));
@@ -162,6 +174,15 @@ public class CraftingRecipeLoader {
             ModHandler.removeRecipeByName(new ResourceLocation("minecraft:flint_and_steel"));
         }
 
+    }
+
+    private static void registerColoringRecipes(BlockColored block) {
+        for(EnumDyeColor dyeColor : EnumDyeColor.values()) {
+            String colorName = CaseFormat.LOWER_UNDERSCORE.to(CaseFormat.UPPER_CAMEL, dyeColor.getName());
+            String recipeName = String.format("%s_color_%s", block.getRegistryName().getResourcePath(), colorName);
+            ModHandler.addShapedRecipe(recipeName, new ItemStack(block, 8, dyeColor.getMetadata()), "XXX", "XDX", "XXX",
+                'X', new ItemStack(block, 1, GTValues.W), 'D', "dye" + colorName);
+        }
     }
 
 }

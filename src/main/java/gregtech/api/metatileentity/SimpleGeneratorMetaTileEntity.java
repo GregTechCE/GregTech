@@ -18,11 +18,13 @@ import gregtech.api.gui.widgets.TankWidget;
 import gregtech.api.recipes.machines.FuelRecipeMap;
 import gregtech.api.render.OrientedOverlayRenderer;
 import gregtech.api.render.Textures;
+import gregtech.api.util.PipelineUtil;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.NonNullList;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.items.ItemStackHandler;
@@ -36,7 +38,7 @@ public class SimpleGeneratorMetaTileEntity extends TieredMetaTileEntity {
     private ItemStackHandler containerInventory;
     private OrientedOverlayRenderer overlayRenderer;
 
-    public SimpleGeneratorMetaTileEntity(String metaTileEntityId, FuelRecipeMap recipeMap, OrientedOverlayRenderer renderer, int tier) {
+    public SimpleGeneratorMetaTileEntity(ResourceLocation metaTileEntityId, FuelRecipeMap recipeMap, OrientedOverlayRenderer renderer, int tier) {
         super(metaTileEntityId, tier);
         this.workableHandler = new FuelRecipeMapWorkableHandler(this, recipeMap,
             () -> energyContainer, () -> importFluids, GTValues.V[tier]);
@@ -69,7 +71,7 @@ public class SimpleGeneratorMetaTileEntity extends TieredMetaTileEntity {
     public void renderMetaTileEntity(CCRenderState renderState, Matrix4 translation, IVertexOperation[] pipeline) {
         super.renderMetaTileEntity(renderState, translation, pipeline);
         this.overlayRenderer.render(renderState, translation, pipeline, getFrontFacing(), workableHandler.isActive());
-        Textures.ENERGY_OUT.renderSided(getFrontFacing(), renderState, translation, pipeline);
+        Textures.ENERGY_OUT.renderSided(getFrontFacing(), renderState, translation, PipelineUtil.color(pipeline, GTValues.VC[getTier()]));
     }
 
     @Override

@@ -1,6 +1,7 @@
 package gregtech.api.metatileentity.multiblock;
 
 import codechicken.lib.render.CCRenderState;
+import codechicken.lib.render.pipeline.ColourMultiplier;
 import codechicken.lib.render.pipeline.IVertexOperation;
 import codechicken.lib.vec.Matrix4;
 import gregtech.api.metatileentity.MetaTileEntity;
@@ -10,12 +11,14 @@ import gregtech.api.multiblock.BlockWorldState;
 import gregtech.api.multiblock.IPatternCenterPredicate;
 import gregtech.api.multiblock.PatternMatchContext;
 import gregtech.api.render.ICubeRenderer;
+import gregtech.api.util.GTUtility;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.ResourceLocation;
 import org.apache.commons.lang3.ArrayUtils;
 
 import java.util.*;
@@ -30,7 +33,7 @@ public abstract class MultiblockControllerBase extends MetaTileEntity {
     private final List<IMultiblockPart> multiblockParts = new ArrayList<>();
     private boolean structureFormed;
 
-    public MultiblockControllerBase(String metaTileEntityId) {
+    public MultiblockControllerBase(ResourceLocation metaTileEntityId) {
         super(metaTileEntityId);
         reinitializeStructurePattern();
     }
@@ -72,7 +75,7 @@ public abstract class MultiblockControllerBase extends MetaTileEntity {
         return 0;
     }
 
-    protected boolean checkStructureComponents(Set<IMultiblockPart> parts, Map<MultiblockAbility<Object>, List<Object>> abilities) {
+    protected boolean checkStructureComponents(List<IMultiblockPart> parts, Map<MultiblockAbility<Object>, List<Object>> abilities) {
         return true;
     }
 
@@ -89,7 +92,7 @@ public abstract class MultiblockControllerBase extends MetaTileEntity {
             MetaTileEntity metaTileEntity = ((MetaTileEntityHolder) tileEntity).getMetaTileEntity();
             if(predicate.apply(blockWorldState, metaTileEntity)) {
                 if(metaTileEntity instanceof IMultiblockPart) {
-                    Set<IMultiblockPart> partsFound = blockWorldState.getMatchContext().get("MultiblockParts", HashSet::new);
+                    Set<IMultiblockPart> partsFound = blockWorldState.getMatchContext().getOrCreate("MultiblockParts", HashSet::new);
                     partsFound.add((IMultiblockPart) metaTileEntity);
                 }
                 return true;
@@ -123,9 +126,19 @@ public abstract class MultiblockControllerBase extends MetaTileEntity {
         return BlockWorldState.wrap(tilePredicate((state, tile) -> tile.metaTileEntityId.equals(metaTileEntityId)));
     }
 
+    public Predicate<BlockWorldState> countMatch(String key, Predicate<BlockWorldState> original) {
+        return blockWorldState -> {
+            if(original.test(blockWorldState)) {
+                blockWorldState.getLayerContext().increment(key, 1);
+                return true;
+            }
+            return false;
+        };
+    }
+
     @Override
     public void renderMetaTileEntity(CCRenderState renderState, Matrix4 translation, IVertexOperation[] pipeline) {
-        getBaseTexture(null).render(renderState, translation, pipeline);
+        getBaseTexture(null).render(renderState, translation, ArrayUtils.add(pipeline, new ColourMultiplier(GTUtility.convertRGBtoOpaqueRGBA_CL(getPaintingColorForRendering()))));
     }
 
     @Override
@@ -137,7 +150,9 @@ public abstract class MultiblockControllerBase extends MetaTileEntity {
         EnumFacing facing = getFrontFacing().getOpposite();
         PatternMatchContext context = structurePattern.checkPatternAt(getWorld(), getPos(), facing);
         if(context != null && !structureFormed) {
-            Set<IMultiblockPart> parts = context.get("MultiblockParts", HashSet::new);
+            Set<IMultiblockPart> rawPartsSet = context.getOrCreate("MultiblockParts", HashSet::new);
+            ArrayList<IMultiblockPart> parts = new ArrayList<>(rawPartsSet);
+            parts.sort(Comparator.comparing(it -> ((MetaTileEntity) it).getPos().hashCode()));
             for(IMultiblockPart part : parts) {
                 if(part.isAttachedToMultiBlock()) {
                     //disallow sharing of multiblock parts
@@ -159,7 +174,7 @@ public abstract class MultiblockControllerBase extends MetaTileEntity {
                 this.multiblockParts.addAll(parts);
                 this.multiblockAbilities.putAll(abilities);
                 this.structureFormed = true;
-                writeCustomData(-400, buf -> buf.writeBoolean(true));
+                writeCustomData(400, buf -> buf.writeBoolean(true));
                 formStructure(context);
             }
         } else if(context == null && structureFormed) {
@@ -175,7 +190,7 @@ public abstract class MultiblockControllerBase extends MetaTileEntity {
         this.multiblockAbilities.clear();
         this.multiblockParts.clear();
         this.structureFormed = false;
-        writeCustomData(-400, buf -> buf.writeBoolean(false));
+        writeCustomData(400, buf -> buf.writeBoolean(false));
     }
 
     @Override
@@ -212,7 +227,7 @@ public abstract class MultiblockControllerBase extends MetaTileEntity {
     @Override
     public void receiveCustomData(int dataId, PacketBuffer buf) {
         super.receiveCustomData(dataId, buf);
-        if(dataId == -400) {
+        if(dataId == 400) {
             this.structureFormed = buf.readBoolean();
         }
     }

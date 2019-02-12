@@ -22,6 +22,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.NonNullList;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidTank;
@@ -38,7 +39,7 @@ public class MetaTileEntityFluidHatch extends MetaTileEntityMultiblockPart imple
     private ItemStackHandler containerInventory;
     private boolean isExportHatch;
 
-    public MetaTileEntityFluidHatch(String metaTileEntityId, int tier, boolean isExportHatch) {
+    public MetaTileEntityFluidHatch(ResourceLocation metaTileEntityId, int tier, boolean isExportHatch) {
         super(metaTileEntityId, tier);
         this.containerInventory = new ItemStackHandler(2);
         this.isExportHatch = isExportHatch;

@@ -1,12 +1,14 @@
 {
   "weight": 120,
-  "density": 0.7,
+  "priority": 100,
+  "density": 1.0,
   "max_height": 128,
   "min_height": 10,
+  "count_as_vein": false,
 
   "generator": {
     "type": "sphere",
-    "radius": [12, 12]
+    "radius": [10, 20]
   },
   "filler": {
     "type": "ignore_bedrock",

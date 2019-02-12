@@ -17,12 +17,12 @@ public class ToolTurbineRotor extends ToolBase implements ITurbineToolStats {
 
     @Override
     public float getMaxDurabilityMultiplier(ItemStack stack) {
-        return 6.0f;
+        return 250.0f;
     }
 
     @Override
     public double getRotorEfficiency(ItemStack itemStack) {
-        SolidMaterial primaryMaterial = ToolMetaItem.getPrimaryMaterial(itemStack);
+        SolidMaterial primaryMaterial = ToolMetaItem.getToolMaterial(itemStack);
         return primaryMaterial == null ? 0.1 : primaryMaterial.toolSpeed / 24.0f;
     }
 

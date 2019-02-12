@@ -1,6 +1,7 @@
 package gregtech.common.metatileentities.storage;
 
 import codechicken.lib.colour.ColourRGBA;
+import codechicken.lib.raytracer.IndexedCuboid6;
 import codechicken.lib.render.CCRenderState;
 import codechicken.lib.render.pipeline.ColourMultiplier;
 import codechicken.lib.render.pipeline.IVertexOperation;
@@ -20,9 +21,11 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.NonNullList;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.items.ItemHandlerHelper;
 import net.minecraftforge.items.ItemStackHandler;
 import org.apache.commons.lang3.ArrayUtils;
 
@@ -31,13 +34,13 @@ import java.util.List;
 
 public class MetaTileEntityChest extends MetaTileEntity {
 
-    private static final Cuboid6[] CHEST_COLLISION = new Cuboid6[] {new Cuboid6(1 / 16.0, 0 / 16.0, 1 / 16.0, 15 / 16.0, 14 / 16.0, 15 / 16.0)};
+    private static final IndexedCuboid6 CHEST_COLLISION = new IndexedCuboid6(null, new Cuboid6(1 / 16.0, 0 / 16.0, 1 / 16.0, 15 / 16.0, 14 / 16.0, 15 / 16.0));
 
     private final SolidMaterial material;
     private final int inventorySize;
     private ItemStackHandler inventory;
 
-    public MetaTileEntityChest(String metaTileEntityId, SolidMaterial material, int inventorySize) {
+    public MetaTileEntityChest(ResourceLocation metaTileEntityId, SolidMaterial material, int inventorySize) {
         super(metaTileEntityId);
         this.material = material;
         this.inventorySize = inventorySize;
@@ -65,15 +68,27 @@ public class MetaTileEntityChest extends MetaTileEntity {
     }
 
     @Override
-    public Cuboid6[] getCollisionBox() {
-        return CHEST_COLLISION;
+    public void addCollisionBoundingBox(List<IndexedCuboid6> collisionList) {
+        collisionList.add(CHEST_COLLISION);
     }
 
     @Override
     protected void initializeInventory() {
         super.initializeInventory();
-        this.inventory = new ItemStackHandler(inventorySize);
+        this.inventory = new ItemStackHandler(inventorySize) {
+            @Override
+            protected void onContentsChanged(int slot) {
+                super.onContentsChanged(slot);
+                updateComparatorValue(true);
+            }
+        };
         this.itemInventory = inventory;
+        updateComparatorValue(true);
+    }
+
+    @Override
+    public int getComparatorValue() {
+        return ItemHandlerHelper.calcRedstoneFromInventory(inventory);
     }
 
     @Override
@@ -86,6 +101,11 @@ public class MetaTileEntityChest extends MetaTileEntity {
     public TextureAtlasSprite getParticleTexture() {
         return material.toString().contains("wood") ? Textures.WOODEN_CHEST.getParticleTexture() :
             Textures.METAL_CHEST.getParticleTexture();
+    }
+
+    @Override
+    public double getCoverPlateThickness() {
+        return 1.0 / 16.0; //1/16th of the block size
     }
 
     @Override

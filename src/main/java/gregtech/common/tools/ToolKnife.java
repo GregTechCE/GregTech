@@ -19,7 +19,7 @@ public class ToolKnife extends ToolSword {
 
     @Override
     public float getAttackSpeed(ItemStack stack) {
-        return 3.0f; //3x faster than sword attack
+        return -0.7f; //3x faster than sword attack
     }
 
     @Override

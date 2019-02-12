@@ -25,16 +25,16 @@ public class CrackerUnitInfo extends MultiblockInfoPage {
     @Override
     public List<MultiblockShapeInfo> getMatchingShapes() {
         MultiblockShapeInfo shapeInfo = MultiblockShapeInfo.builder()
-            .aisle("XCXCX", "FCECX", "XCXCX")
-            .aisle("XCXCX", "X###H", "XCXCX")
-            .aisle("XCXCX", "FCSCX", "XCXCX")
-            .where('S', MetaTileEntities.CRACKER, EnumFacing.SOUTH)
+            .aisle("XCXCX", "XCSCF", "XCXCX")
+            .aisle("XCXCX", "H###X", "XCXCX")
+            .aisle("XCXCX", "XCECF", "XCXCX")
+            .where('S', MetaTileEntities.CRACKER, EnumFacing.NORTH)
             .where('X', MetaBlocks.METAL_CASING.getState(BlockMetalCasing.MetalCasingType.STAINLESS_CLEAN))
-            .where('C',MetaBlocks.WIRE_COIL.getState(BlockWireCoil.CoilType.CUPRONICKEL))
+            .where('C', MetaBlocks.WIRE_COIL.getState(BlockWireCoil.CoilType.CUPRONICKEL))
             .where('#', Blocks.AIR.getDefaultState())
-            .where('F', MetaTileEntities.FLUID_IMPORT_HATCH[GTValues.HV], EnumFacing.WEST)
-            .where('E', MetaTileEntities.ENERGY_INPUT_HATCH[GTValues.HV], EnumFacing.NORTH)
-            .where('H', MetaTileEntities.FLUID_EXPORT_HATCH[GTValues.HV], EnumFacing.EAST)
+            .where('F', MetaTileEntities.FLUID_IMPORT_HATCH[GTValues.HV], EnumFacing.EAST)
+            .where('E', MetaTileEntities.ENERGY_INPUT_HATCH[GTValues.HV], EnumFacing.SOUTH)
+            .where('H', MetaTileEntities.FLUID_EXPORT_HATCH[GTValues.HV], EnumFacing.WEST)
             .build();
         return Lists.newArrayList(shapeInfo);
     }

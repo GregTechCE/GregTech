@@ -18,7 +18,6 @@ public class ToolAxe extends ToolBase {
         return enchantment.type.canEnchantItem(Items.IRON_AXE);
     }
 
-
     @Override
     public int getToolDamagePerBlockBreak(ItemStack stack) {
         return 1;
@@ -45,15 +44,15 @@ public class ToolAxe extends ToolBase {
     }
 
     @Override
+    public float getAttackSpeed(ItemStack stack) {
+        return -2.6f;
+    }
+
+    @Override
     public boolean isMinableBlock(IBlockState block, ItemStack stack) {
         String tool = block.getBlock().getHarvestTool(block);
         return (tool != null && tool.equals("axe")) ||
             block.getMaterial() == Material.WOOD;
-    }
-
-    @Override
-    public boolean hasMaterialHandle() {
-        return true;
     }
 
     @Override

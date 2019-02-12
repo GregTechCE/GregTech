@@ -22,7 +22,6 @@ public class ToolHardHammer extends ToolBase {
         return enchantment.type.canEnchantItem(Items.IRON_PICKAXE);
     }
 
-
     @Override
     public float getNormalDamageBonus(EntityLivingBase entity, ItemStack stack, EntityLivingBase attacker) {
         String name = entity.getClass().getName();
@@ -37,7 +36,7 @@ public class ToolHardHammer extends ToolBase {
 
     @Override
     public int getToolDamagePerDropConversion(ItemStack stack) {
-        return 2;
+        return 0;
     }
 
     @Override
@@ -47,17 +46,22 @@ public class ToolHardHammer extends ToolBase {
 
     @Override
     public float getBaseDamage(ItemStack stack) {
-        return 3.0F;
+        return 4.0F;
+    }
+
+    @Override
+    public float getMaxDurabilityMultiplier(ItemStack stack) {
+        return 2.0f;
     }
 
     @Override
     public float getDigSpeedMultiplier(ItemStack stack) {
-        return 0.75F;
+        return 1.5f;
     }
 
     @Override
-    public boolean hasMaterialHandle() {
-        return true;
+    public float getAttackSpeed(ItemStack stack) {
+        return -3.0f;
     }
 
     @Override

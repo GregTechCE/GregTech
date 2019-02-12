@@ -29,7 +29,7 @@ public class AdvancedTextWidget extends Widget {
     private int color;
 
     public AdvancedTextWidget(int xPosition, int yPosition, Consumer<List<ITextComponent>> text, int color) {
-        super(SLOT_DRAW_PRIORITY + 500);
+        super();
         this.xPosition = xPosition;
         this.yPosition = yPosition;
         this.textSupplier = text;
@@ -48,10 +48,8 @@ public class AdvancedTextWidget extends Widget {
         if(!lastText.equals(textBuffer)) {
             this.lastText = textBuffer;
             writeUpdateInfo(1, buffer -> {
-                buffer.writeInt(lastText.size());
+                buffer.writeVarInt(lastText.size());
                 for(ITextComponent textComponent : lastText) {
-
-
                     buffer.writeString(ITextComponent.Serializer.componentToJson(textComponent));
                 }
             });
@@ -62,7 +60,7 @@ public class AdvancedTextWidget extends Widget {
     public void readUpdateInfo(int id, PacketBuffer buffer) {
         if(id == 1) {
             this.lastText.clear();
-            int count = buffer.readInt();
+            int count = buffer.readVarInt();
             for(int i = 0; i < count; i++) {
                 String jsonText = buffer.readString(32767);
                 this.lastText.add(ITextComponent.Serializer.jsonToComponent(jsonText));

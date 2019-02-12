@@ -8,8 +8,9 @@ import gregtech.api.GTValues;
 import gregtech.api.unification.material.type.DustMaterial.MatFlags;
 import gregtech.api.unification.material.type.IngotMaterial;
 import gregtech.api.unification.ore.StoneType;
-import gregtech.api.unification.ore.StoneTypes;
 import gregtech.api.worldgen.filler.BlockFiller;
+import gregtech.api.worldgen.populator.IVeinPopulator;
+import gregtech.api.worldgen.populator.SurfaceRockPopulator;
 import gregtech.api.worldgen.shape.ShapeGenerator;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.world.WorldProvider;
@@ -30,19 +31,20 @@ public class OreDepositDefinition {
 
     public static final Function<Biome, Integer> NO_BIOME_INFLUENCE = biome -> 0;
     public static final Predicate<WorldProvider> PREDICATE_SURFACE_WORLD = WorldProvider::isSurfaceWorld;
-    public static final Predicate<IBlockState> PREDICATE_STONE_TYPE = state -> StoneType.computeStoneType(state) != StoneTypes._NULL;
+    public static final Predicate<IBlockState> PREDICATE_STONE_TYPE = state -> StoneType.computeStoneType(state) != null;
 
     private final String depositName;
 
-    private int priority = 0;
     private int weight;
+    private int priority;
     private float density;
     private int[] heightLimit = new int[] {Integer.MIN_VALUE, Integer.MAX_VALUE};
-    private IngotMaterial surfaceStoneMaterial;
+    private boolean countAsVein = true;
 
     private Function<Biome, Integer> biomeWeightModifier = NO_BIOME_INFLUENCE;
     private Predicate<WorldProvider> dimensionFilter = PREDICATE_SURFACE_WORLD;
     private Predicate<IBlockState> generationPredicate = PREDICATE_STONE_TYPE;
+    private IVeinPopulator veinPopulator;
 
     private BlockFiller blockFiller;
     private ShapeGenerator shapeGenerator;
@@ -52,11 +54,14 @@ public class OreDepositDefinition {
     }
 
     public void initializeFromConfig(JsonObject configRoot) {
+        this.weight = configRoot.get("weight").getAsInt();
+        this.density = configRoot.get("density").getAsFloat();
         if(configRoot.has("priority")) {
             this.priority = configRoot.get("priority").getAsInt();
         }
-        this.weight = configRoot.get("weight").getAsInt();
-        this.density = configRoot.get("density").getAsFloat();
+        if(configRoot.has("count_as_vein")) {
+            this.countAsVein = configRoot.get("count_as_vein").getAsBoolean();
+        }
         if(configRoot.has("min_height")) {
             this.heightLimit[0] = configRoot.get("min_height").getAsInt();
         }
@@ -64,19 +69,25 @@ public class OreDepositDefinition {
             this.heightLimit[1] = configRoot.get("max_height").getAsInt();
         }
         if(configRoot.has("biome_modifier")) {
-            this.biomeWeightModifier = OreConfigUtils.createBiomeWeightModifier(configRoot.get("biome_modifier"));
+            this.biomeWeightModifier = WorldConfigUtils.createBiomeWeightModifier(configRoot.get("biome_modifier"));
         }
         if(configRoot.has("dimension_filter")) {
-            this.dimensionFilter = OreConfigUtils.createWorldPredicate(configRoot.get("dimension_filter"));
+            this.dimensionFilter = WorldConfigUtils.createWorldPredicate(configRoot.get("dimension_filter"));
         }
         if(configRoot.has("generation_predicate")) {
-            this.generationPredicate = OreConfigUtils.createBlockStatePredicate(configRoot.get("generation_predicate"));
+            this.generationPredicate = PredicateConfigUtils.createBlockStatePredicate(configRoot.get("generation_predicate"));
         }
+        //legacy surface rock specifier support
         if(configRoot.has("surface_stone_material")) {
-            this.surfaceStoneMaterial = (IngotMaterial) OreConfigUtils.getMaterialByName(configRoot.get("surface_stone_material").getAsString());
+            IngotMaterial surfaceStoneMaterial = (IngotMaterial) OreConfigUtils.getMaterialByName(configRoot.get("surface_stone_material").getAsString());
             if(!surfaceStoneMaterial.hasFlag(MatFlags.GENERATE_ORE)) {
                 throw new IllegalArgumentException("Material " + surfaceStoneMaterial + " doesn't have surface rock variant");
             }
+            this.veinPopulator = new SurfaceRockPopulator(surfaceStoneMaterial);
+        }
+        if(configRoot.has("vein_populator")) {
+            JsonObject object = configRoot.get("vein_populator").getAsJsonObject();
+            this.veinPopulator = WorldGenRegistry.INSTANCE.createVeinPopulator(object);
         }
         this.blockFiller = WorldGenRegistry.INSTANCE.createBlockFiller(configRoot.get("filler").getAsJsonObject());
         this.shapeGenerator = WorldGenRegistry.INSTANCE.createShapeGenerator(configRoot.get("generator").getAsJsonObject());
@@ -85,11 +96,6 @@ public class OreDepositDefinition {
     @ZenGetter("depositName")
     public String getDepositName() {
         return depositName;
-    }
-
-    @ZenGetter("priority")
-    public int getPriority() {
-        return priority;
     }
 
     @ZenGetter("weight")
@@ -102,9 +108,14 @@ public class OreDepositDefinition {
         return density;
     }
 
-    @ZenGetter("surfaceRockMaterial")
-    public IngotMaterial getSurfaceStoneMaterial() {
-        return surfaceStoneMaterial;
+    @ZenGetter("priority")
+    public int getPriority() {
+        return priority;
+    }
+
+    @ZenGetter("isVein")
+    public boolean isVein() {
+        return countAsVein;
     }
 
     @ZenMethod
@@ -137,6 +148,10 @@ public class OreDepositDefinition {
 
     public Predicate<IBlockState> getGenerationPredicate() {
         return generationPredicate;
+    }
+
+    public IVeinPopulator getVeinPopulator() {
+        return veinPopulator;
     }
 
     @ZenMethod("getBiomeWeightModifier")

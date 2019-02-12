@@ -16,6 +16,7 @@ import gregtech.api.recipes.Recipe;
 import gregtech.api.recipes.RecipeMap;
 import gregtech.api.render.Textures;
 import gregtech.api.util.GTUtility;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.Style;
 import net.minecraft.util.text.TextComponentTranslation;
@@ -27,7 +28,6 @@ import net.minecraftforge.items.ItemStackHandler;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 public abstract class RecipeMapMultiblockController extends MultiblockWithDisplayBase {
 
@@ -40,7 +40,7 @@ public abstract class RecipeMapMultiblockController extends MultiblockWithDispla
     protected IMultipleTankHandler outputFluidInventory;
     protected IEnergyContainer energyContainer;
 
-    public RecipeMapMultiblockController(String metaTileEntityId, RecipeMap<?> recipeMap) {
+    public RecipeMapMultiblockController(ResourceLocation metaTileEntityId, RecipeMap<?> recipeMap) {
         super(metaTileEntityId);
         this.recipeMap = recipeMap;
         this.recipeMapWorkable = new MultiblockRecipeMapWorkable(this);
@@ -94,9 +94,9 @@ public abstract class RecipeMapMultiblockController extends MultiblockWithDispla
 
     private void initializeAbilities() {
         this.inputInventory = new ItemHandlerList(getAbilities(MultiblockAbility.IMPORT_ITEMS));
-        this.inputFluidInventory = new FluidTankList(true, getAbilities(MultiblockAbility.IMPORT_FLUIDS));
+        this.inputFluidInventory = new FluidTankList(allowSameFluidFillForOutputs(), getAbilities(MultiblockAbility.IMPORT_FLUIDS));
         this.outputInventory = new ItemHandlerList(getAbilities(MultiblockAbility.EXPORT_ITEMS));
-        this.outputFluidInventory = new FluidTankList(true, getAbilities(MultiblockAbility.EXPORT_FLUIDS));
+        this.outputFluidInventory = new FluidTankList(allowSameFluidFillForOutputs(), getAbilities(MultiblockAbility.EXPORT_FLUIDS));
         this.energyContainer = new EnergyContainerList(getAbilities(MultiblockAbility.INPUT_ENERGY));
     }
 
@@ -106,6 +106,10 @@ public abstract class RecipeMapMultiblockController extends MultiblockWithDispla
         this.outputInventory = new ItemStackHandler(0);
         this.outputFluidInventory = new FluidTankList(true);
         this.energyContainer = new EnergyContainerList(Lists.newArrayList());
+    }
+
+    protected boolean allowSameFluidFillForOutputs() {
+        return true;
     }
 
     @Override
@@ -137,7 +141,7 @@ public abstract class RecipeMapMultiblockController extends MultiblockWithDispla
     }
 
     @Override
-    protected boolean checkStructureComponents(Set<IMultiblockPart> parts, Map<MultiblockAbility<Object>, List<Object>> abilities) {
+    protected boolean checkStructureComponents(List<IMultiblockPart> parts, Map<MultiblockAbility<Object>, List<Object>> abilities) {
         //basically check minimal requirements for inputs count
         //noinspection SuspiciousMethodCalls
         int itemInputsCount = abilities.getOrDefault(MultiblockAbility.IMPORT_ITEMS, Collections.emptyList())

@@ -18,22 +18,28 @@ public class BlockWorldState {
     private TileEntity tileEntity;
     private boolean tileEntityInitialized;
     private PatternMatchContext matchContext;
+    private PatternMatchContext layerContext;
 
     public static IPatternCenterPredicate wrap(Predicate<BlockWorldState> predicate) {
         return predicate::test;
     }
 
-    public void update(World worldIn, BlockPos posIn, PatternMatchContext matchContext) {
+    public void update(World worldIn, BlockPos posIn, PatternMatchContext matchContext, PatternMatchContext layerContext) {
         this.world = worldIn;
         this.pos = posIn;
         this.state = null;
         this.tileEntity = null;
         this.tileEntityInitialized = false;
         this.matchContext = matchContext;
+        this.layerContext = layerContext;
     }
 
     public PatternMatchContext getMatchContext() {
         return matchContext;
+    }
+
+    public PatternMatchContext getLayerContext() {
+        return layerContext;
     }
 
     public IBlockState getBlockState() {

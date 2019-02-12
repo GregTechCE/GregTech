@@ -1,13 +1,11 @@
 package gregtech.api.recipes.machines;
 
 import gregtech.api.recipes.Recipe;
-import gregtech.api.recipes.RecipeBuilder;
 import gregtech.api.recipes.RecipeMap;
 import gregtech.api.recipes.builders.SimpleRecipeBuilder;
 import gregtech.api.util.GTUtility;
 import gregtech.common.items.MetaItems;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fluids.FluidStack;
 
 import javax.annotation.Nullable;
@@ -51,25 +49,6 @@ public class RecipeMapFormingPress extends RecipeMap<SimpleRecipeBuilder> {
                     .build().getResult();
             }
             return null;
-        }
-        for (ItemStack mold : inputs) {
-            if (MetaItems.SCHEMATIC_CRAFTING.getStackForm().isItemEqual(mold)) {
-                NBTTagCompound tag = mold.getTagCompound();
-                if (tag == null) tag = new NBTTagCompound();
-                if (!tag.hasKey("credit_security_id")) tag.setLong("credit_security_id", System.nanoTime());
-                mold.setTagCompound(tag);
-
-                RecipeBuilder<?> builder = this.recipeBuilder()
-                    .fromRecipe(recipe)
-                    .cannotBeBuffered();
-
-                List<ItemStack> outputs = builder.getOutputs();
-                ItemStack stack = outputs.get(0);
-                stack.setTagCompound(tag);
-                outputs.set(0, stack);
-
-                return builder.build().getResult();
-            }
         }
         return recipe;
     }

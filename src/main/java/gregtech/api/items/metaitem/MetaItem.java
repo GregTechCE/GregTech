@@ -34,6 +34,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
@@ -56,7 +57,7 @@ import java.util.*;
 /**
  * MetaItem is item that can have up to Short.MAX_VALUE items inside one id.
  * These items even can be edible, have custom behaviours, be electric or act like fluid containers!
- * They can also have different burn time, plus be handheld, oredicted, no-unificated or invisible!
+ * They can also have different burn time, plus be handheld, oredicted or invisible!
  * They also can be reactor components.
  *
  * You can also extend this class and occupy some of it's MetaData, and just pass an meta offset in constructor, and everything will work properly.
@@ -117,7 +118,7 @@ public abstract class MetaItem<T extends MetaItem<?>.MetaValueItem> extends Item
         ModelLoader.setCustomMeshDefinition(this, itemStack -> {
             short itemDamage = formatRawItemDamage((short) itemStack.getItemDamage());
             if(specialItemsModels.containsKey(itemDamage)) {
-                int modelIndex = getModelIndex((short) (itemDamage - metaItemOffset), itemStack);
+                int modelIndex = getModelIndex(itemStack);
                 return specialItemsModels.get(itemDamage)[modelIndex];
             }
             if(metaItemsModels.containsKey(itemDamage)) {
@@ -131,14 +132,24 @@ public abstract class MetaItem<T extends MetaItem<?>.MetaValueItem> extends Item
         return "metaitems/" + metaValueItem.unlocalizedName;
     }
 
-    protected int getModelIndex(short metaItemKey, ItemStack itemStack) {
+    protected int getModelIndex(ItemStack itemStack) {
+        T metaValueItem = getItem(itemStack);
+        if(metaValueItem != null && metaValueItem.getModelIndexProvider() != null) {
+            return metaValueItem.getModelIndexProvider().getModelIndex(itemStack);
+        }
         IElectricItem electricItem = itemStack.getCapability(GregtechCapabilities.CAPABILITY_ELECTRIC_ITEM, null);
-        long itemCharge = electricItem.discharge(Long.MAX_VALUE, Integer.MAX_VALUE, true, false, true);
-        return (int) Math.min(((itemCharge / (electricItem.getMaxCharge() * 1.0)) * 7), 7);
+        if(electricItem != null) {
+            return (int) Math.min(((electricItem.getCharge() / (electricItem.getMaxCharge() * 1.0)) * 7), 7);
+        }
+        return 0;
     }
 
     @SideOnly(Side.CLIENT)
     protected int getColorForItemStack(ItemStack stack, int tintIndex) {
+        T metaValueItem = getItem(stack);
+        if(metaValueItem != null && metaValueItem.getColorProvider() != null) {
+            return metaValueItem.getColorProvider().getItemStackColor(stack, tintIndex);
+        }
         IFluidHandlerItem fluidContainerItem = ItemHandlerHelper.copyStackWithSize(stack, 1)
             .getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY, null);
         if(tintIndex == 0 && fluidContainerItem != null) {
@@ -148,11 +159,46 @@ public abstract class MetaItem<T extends MetaItem<?>.MetaValueItem> extends Item
         return 0xFFFFFF;
     }
 
+    @Override
+    public boolean showDurabilityBar(ItemStack stack) {
+        T metaValueItem = getItem(stack);
+        if(metaValueItem != null && metaValueItem.getDurabilityManager() != null) {
+            return metaValueItem.getDurabilityManager().showsDurabilityBar(stack);
+        }
+        IElectricItem electricItem = stack.getCapability(GregtechCapabilities.CAPABILITY_ELECTRIC_ITEM, null);
+        return electricItem != null && (stack.getMaxStackSize() == 1 || electricItem.getCharge() > 0L);
+    }
+
+    @Override
+    public double getDurabilityForDisplay(ItemStack stack) {
+        T metaValueItem = getItem(stack);
+        if(metaValueItem != null && metaValueItem.getDurabilityManager() != null) {
+            return metaValueItem.getDurabilityManager().getDurabilityForDisplay(stack);
+        }
+        IElectricItem electricItem = stack.getCapability(GregtechCapabilities.CAPABILITY_ELECTRIC_ITEM, null);
+        if(electricItem != null) {
+            return 1.0 - electricItem.getCharge() / (1.0 * electricItem.getMaxCharge());
+        }
+        return 0.0;
+    }
+
+    @Override
+    public int getRGBDurabilityForDisplay(ItemStack stack) {
+        T metaValueItem = getItem(stack);
+        if(metaValueItem != null && metaValueItem.getDurabilityManager() != null) {
+            return metaValueItem.getDurabilityManager().getRGBDurabilityForDisplay(stack);
+        }
+        return MathHelper.hsvToRGB(0.33f, 1.0f, 1.0f);
+    }
+
     protected abstract T constructMetaValueItem(short metaValue, String unlocalizedName);
 
     public final T addItem(int metaValue, String unlocalizedName) {
         Validate.inclusiveBetween(0, Short.MAX_VALUE - 1, metaValue + metaItemOffset, "MetaItem ID should be in range from 0 to Short.MAX_VALUE-1");
         T metaValueItem = constructMetaValueItem((short) metaValue, unlocalizedName);
+        if(metaItems.containsKey((short) metaValue)) {
+            throw new IllegalArgumentException("MetaID is already occupied: " + metaValue);
+        }
         metaItems.put((short) metaValue, metaValueItem);
         names.put(unlocalizedName, metaValueItem);
         return metaValueItem;
@@ -219,14 +265,6 @@ public abstract class MetaItem<T extends MetaItem<?>.MetaValueItem> extends Item
         return metaValueItem.getUseManager();
     }
 
-    private IItemDurabilityManager getDurabilityManager(ItemStack itemStack) {
-        T metaValueItem = getItem(itemStack);
-        if (metaValueItem == null) {
-            return null;
-        }
-        return metaValueItem.getDurabilityManager();
-    }
-
     public List<IItemBehaviour> getBehaviours(ItemStack itemStack) {
         T metaValueItem = getItem(itemStack);
         if (metaValueItem == null) {
@@ -241,7 +279,7 @@ public abstract class MetaItem<T extends MetaItem<?>.MetaValueItem> extends Item
         if (metaValueItem == null) {
             return 64;
         }
-        return metaValueItem.getMaxStackSize();
+        return metaValueItem.getMaxStackSize(stack);
     }
 
     @Override
@@ -392,7 +430,7 @@ public abstract class MetaItem<T extends MetaItem<?>.MetaValueItem> extends Item
         IElectricItem electricItem = itemStack.getCapability(GregtechCapabilities.CAPABILITY_ELECTRIC_ITEM, null);
         if (electricItem != null) {
             lines.add(I18n.format("metaitem.generic.electric_item.tooltip",
-                electricItem.discharge(Long.MAX_VALUE, Integer.MAX_VALUE, true, false, true),
+                electricItem.getCharge(),
                 electricItem.getMaxCharge(),
                 electricItem.getTier()));
         }
@@ -449,7 +487,6 @@ public abstract class MetaItem<T extends MetaItem<?>.MetaValueItem> extends Item
                     subItems.add(fluidContainer.getContainer());
                 }
             }
-
         }
     }
 
@@ -476,6 +513,9 @@ public abstract class MetaItem<T extends MetaItem<?>.MetaValueItem> extends Item
         private IItemUseManager useManager;
         private ItemUIFactory uiManager;
         private IItemDurabilityManager durabilityManager;
+        private IItemMaxStackSizeProvider stackSizeProvider;
+        private IItemColorProvider colorProvider;
+        private IItemModelIndexProvider modelIndexProvider;
 
         private int burnValue = 0;
         private boolean visible = true;
@@ -558,6 +598,12 @@ public abstract class MetaItem<T extends MetaItem<?>.MetaValueItem> extends Item
                     this.useManager = new FoodUseManager((IFoodBehavior) metaItemStats);
                 if (metaItemStats instanceof ItemUIFactory)
                     this.uiManager = (ItemUIFactory) metaItemStats;
+                if(metaItemStats instanceof IItemMaxStackSizeProvider)
+                    this.stackSizeProvider = (IItemMaxStackSizeProvider) metaItemStats;
+                if(metaItemStats instanceof IItemColorProvider)
+                    this.colorProvider = (IItemColorProvider) metaItemStats;
+                if(metaItemStats instanceof IItemModelIndexProvider)
+                    this.modelIndexProvider = (IItemModelIndexProvider) metaItemStats;
                 if (metaItemStats instanceof IItemBehaviour)
                     this.behaviours.add((IItemBehaviour) metaItemStats);
                 this.allStats.add(metaItemStats);
@@ -592,12 +638,20 @@ public abstract class MetaItem<T extends MetaItem<?>.MetaValueItem> extends Item
             return uiManager;
         }
 
+        public IItemColorProvider getColorProvider() {
+            return colorProvider;
+        }
+
+        public IItemModelIndexProvider getModelIndexProvider() {
+            return modelIndexProvider;
+        }
+
         public int getBurnValue() {
             return burnValue;
         }
 
-        public int getMaxStackSize() {
-            return maxStackSize;
+        public int getMaxStackSize(ItemStack stack) {
+            return stackSizeProvider == null ? maxStackSize : stackSizeProvider.getMaxStackSize(stack, maxStackSize);
         }
 
         public boolean isVisible() {

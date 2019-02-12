@@ -12,18 +12,23 @@ import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.recipe.IRecipeCategory;
 import mezz.jei.gui.recipes.RecipeLayout;
 import net.minecraft.client.resources.I18n;
+import net.minecraft.util.ResourceLocation;
 
 public class MultiblockInfoCategory implements IRecipeCategory<MultiblockInfoRecipeWrapper> {
 
     private final IDrawable background;
+    private final IDrawable icon;
 
     public MultiblockInfoCategory(IJeiHelpers helpers) {
         this.background = helpers.getGuiHelper().createBlankDrawable(176, 166);
+        ResourceLocation iconLocation = new ResourceLocation(GTValues.MODID, "textures/gui/icon/coke_oven.png");
+        this.icon = helpers.getGuiHelper().createDrawable(iconLocation, 0, 0, 16, 16, 16, 16);
     }
 
     public static void registerRecipes(IModRegistry registry) {
         registry.addRecipes(Lists.newArrayList(
             new MultiblockInfoRecipeWrapper(new PrimitiveBlastFurnaceInfo()),
+            new MultiblockInfoRecipeWrapper(new CokeOvenInfo()),
             new MultiblockInfoRecipeWrapper(new VacuumFreezerInfo()),
             new MultiblockInfoRecipeWrapper(new ImplosionCompressorInfo()),
             new MultiblockInfoRecipeWrapper(new PyrolyzeOvenInfo()),
@@ -60,6 +65,11 @@ public class MultiblockInfoCategory implements IRecipeCategory<MultiblockInfoRec
     @Override
     public IDrawable getBackground() {
         return background;
+    }
+
+    @Override
+    public IDrawable getIcon() {
+        return icon;
     }
 
     @Override

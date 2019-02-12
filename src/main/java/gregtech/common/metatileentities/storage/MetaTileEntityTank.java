@@ -1,6 +1,7 @@
 package gregtech.common.metatileentities.storage;
 
 import codechicken.lib.colour.ColourRGBA;
+import codechicken.lib.raytracer.CuboidRayTraceResult;
 import codechicken.lib.render.CCRenderState;
 import codechicken.lib.render.pipeline.IVertexOperation;
 import codechicken.lib.vec.Matrix4;
@@ -11,6 +12,7 @@ import gregtech.api.render.Textures;
 import gregtech.api.unification.material.type.Material.MatFlags;
 import gregtech.api.unification.material.type.SolidMaterial;
 import gregtech.api.util.GTUtility;
+import gregtech.api.util.WatchedFluidTank;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
@@ -19,11 +21,15 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
+import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.common.util.Constants.NBT;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.FluidUtil;
+import net.minecraftforge.fluids.capability.templates.FluidHandlerItemStack;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -38,7 +44,7 @@ public class MetaTileEntityTank extends MetaTileEntity {
     private SyncFluidTank fluidTank;
     private int oldLightValue = 0;
 
-    public MetaTileEntityTank(String metaTileEntityId, SolidMaterial material, int tankSize) {
+    public MetaTileEntityTank(ResourceLocation metaTileEntityId, SolidMaterial material, int tankSize) {
         super(metaTileEntityId);
         this.tankSize = tankSize;
         this.material = material;
@@ -75,17 +81,23 @@ public class MetaTileEntityTank extends MetaTileEntity {
     }
 
     @Override
+    public boolean hasFrontFacing() {
+        return false;
+    }
+
+    @Override
     protected void initializeInventory() {
         super.initializeInventory();
         this.fluidTank = new SyncFluidTank(tankSize);
         this.fluidInventory = fluidTank;
+        updateComparatorValue(true);
     }
 
     @Override
     public void initFromItemStackData(NBTTagCompound itemStack) {
         super.initFromItemStackData(itemStack);
-        if(itemStack.hasKey("Fluid", NBT.TAG_COMPOUND)) {
-            FluidStack fluidStack = FluidStack.loadFluidStackFromNBT(itemStack.getCompoundTag("Fluid"));
+        if(itemStack.hasKey(FluidHandlerItemStack.FLUID_NBT_KEY, NBT.TAG_COMPOUND)) {
+            FluidStack fluidStack = FluidStack.loadFluidStackFromNBT(itemStack.getCompoundTag(FluidHandlerItemStack.FLUID_NBT_KEY));
             fluidTank.setFluid(fluidStack);
             fluidTank.onContentsChanged();
         }
@@ -98,8 +110,13 @@ public class MetaTileEntityTank extends MetaTileEntity {
         if(fluidStack != null && fluidStack.amount > 0) {
             NBTTagCompound tagCompound = new NBTTagCompound();
             fluidStack.writeToNBT(tagCompound);
-            itemStack.setTag("Fluid", tagCompound);
+            itemStack.setTag(FluidHandlerItemStack.FLUID_NBT_KEY, tagCompound);
         }
+    }
+
+    @Override
+    public ICapabilityProvider initItemStackCapabilities(ItemStack itemStack) {
+        return new FluidHandlerItemStack(itemStack, tankSize);
     }
 
     @Override
@@ -130,7 +147,7 @@ public class MetaTileEntityTank extends MetaTileEntity {
     @Override
     public void receiveCustomData(int dataId, PacketBuffer buf) {
         super.receiveCustomData(dataId, buf);
-        if(dataId == -200) {
+        if(dataId == 200) {
             FluidStack fluidStack = null;
             if(buf.readBoolean()) {
                 try {
@@ -142,8 +159,8 @@ public class MetaTileEntityTank extends MetaTileEntity {
             //update light on client side
             updateLightValue();
             getHolder().scheduleChunkForRenderUpdate();
-        } else if(dataId == -201) {
-            int newFluidAmount = buf.readInt();
+        } else if(dataId == 201) {
+            int newFluidAmount = buf.readVarInt();
             FluidStack fluidStack = fluidTank.getFluid();
             if(fluidStack != null) {
                 fluidStack.amount = newFluidAmount;
@@ -163,7 +180,16 @@ public class MetaTileEntityTank extends MetaTileEntity {
     }
 
     @Override
-    public boolean onRightClick(EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+    public int getComparatorValue() {
+        FluidTank fluidTank = this.fluidTank;
+        int fluidAmount = fluidTank.getFluidAmount();
+        int maxCapacity = fluidTank.getCapacity();
+        float f = fluidAmount / (maxCapacity * 1.0f);
+        return MathHelper.floor(f * 14.0f) + (fluidAmount > 0 ? 1 : 0);
+    }
+
+    @Override
+    public boolean onRightClick(EntityPlayer playerIn, EnumHand hand, EnumFacing facing, CuboidRayTraceResult hitResult) {
        return getWorld().isRemote || FluidUtil.interactWithFluidHandler(playerIn, hand, fluidTank);
     }
 
@@ -238,9 +264,8 @@ public class MetaTileEntityTank extends MetaTileEntity {
         return false; //handled manually
     }
 
-    private class SyncFluidTank extends FluidTank {
+    private class SyncFluidTank extends WatchedFluidTank {
 
-        private FluidStack lastStack;
 
         public SyncFluidTank(int capacity) {
             super(capacity);
@@ -254,27 +279,26 @@ public class MetaTileEntityTank extends MetaTileEntity {
         }
 
         @Override
-        protected void onContentsChanged() {
-            FluidStack newFluid = getFluid();
-            if(!getWorld().isRemote) {
-                onContentsChangedOnServer(newFluid);
+        protected void onFluidChanged(FluidStack newFluidStack, FluidStack oldFluidStack) {
+            updateComparatorValue(true);
+            if(getWorld() != null && !getWorld().isRemote) {
+                onContentsChangedOnServer(newFluidStack, oldFluidStack);
             }
         }
 
-        private void onContentsChangedOnServer(FluidStack newFluid) {
+        private void onContentsChangedOnServer(FluidStack newFluid, FluidStack oldFluidStack) {
             //update lightning value on server-side
             //clientside will update it with custom data packet
             updateLightValue();
 
             //send fluid amount/type change packet
-            if(newFluid != null && newFluid.isFluidEqual(lastStack)) {
+            if(newFluid != null && newFluid.isFluidEqual(oldFluidStack)) {
                 //if fluid wasn't removed completely or changed, but just reduced/added amount
                 //compute new amount value and set it right back to the client
-                writeCustomData(-201, buf -> buf.writeInt(newFluid.amount));
-                this.lastStack.amount = newFluid.amount;
+                writeCustomData(201, buf -> buf.writeVarInt(newFluid.amount));
             } else {
                 //otherwise, write full data dump of fluid
-                writeCustomData(-200, buf -> {
+                writeCustomData(200, buf -> {
                     buf.writeBoolean(newFluid != null);
                     if(newFluid != null) {
                         NBTTagCompound tagCompound = new NBTTagCompound();
@@ -282,8 +306,6 @@ public class MetaTileEntityTank extends MetaTileEntity {
                         buf.writeCompoundTag(tagCompound);
                     }
                 });
-                //and update last fluid reference
-                this.lastStack = newFluid == null ? null : newFluid.copy();
             }
         }
 

@@ -273,8 +273,8 @@ public class WorldSceneRenderer {
     
     public class TrackedDummyWorld extends DummyWorld {
 
-        private final Vector3f minPos = new Vector3f();
-        private final Vector3f maxPos = new Vector3f();
+        private final Vector3f minPos = new Vector3f(Integer.MAX_VALUE, Integer.MAX_VALUE, Integer.MAX_VALUE);
+        private final Vector3f maxPos = new Vector3f(Integer.MIN_VALUE, Integer.MIN_VALUE, Integer.MIN_VALUE);
         
         @Override
         public boolean setBlockState(BlockPos pos, IBlockState newState, int flags) {
@@ -301,9 +301,9 @@ public class WorldSceneRenderer {
 
         public Vector3f getSize() {
             Vector3f result = new Vector3f();
-            result.setX(maxPos.getX() - minPos.getX());
-            result.setY(maxPos.getY() - minPos.getY());
-            result.setZ(maxPos.getZ() - minPos.getZ());
+            result.setX(maxPos.getX() - minPos.getX() + 1);
+            result.setY(maxPos.getY() - minPos.getY() + 1);
+            result.setZ(maxPos.getZ() - minPos.getZ() + 1);
             return result;
         }
 

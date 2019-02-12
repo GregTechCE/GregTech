@@ -7,23 +7,26 @@ import codechicken.lib.vec.Matrix4;
 import gregtech.api.GTValues;
 import gregtech.api.capability.IEnergyContainer;
 import gregtech.api.capability.impl.EnergyContainerHandler;
+import gregtech.api.capability.impl.EnergyContainerHandler.IEnergyChangeListener;
 import gregtech.api.render.SimpleSidedCubeRenderer;
 import gregtech.api.render.SimpleSidedCubeRenderer.RenderSide;
 import gregtech.api.render.Textures;
 import gregtech.api.util.GTUtility;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import org.apache.commons.lang3.ArrayUtils;
 
 import javax.annotation.Nonnull;
 
-public abstract class TieredMetaTileEntity extends MetaTileEntity {
+public abstract class TieredMetaTileEntity extends MetaTileEntity implements IEnergyChangeListener {
 
     private final int tier;
     protected IEnergyContainer energyContainer;
 
-    public TieredMetaTileEntity(String metaTileEntityId, int tier) {
+    public TieredMetaTileEntity(ResourceLocation metaTileEntityId, int tier) {
         super(metaTileEntityId);
         this.tier = tier;
         reinitializeEnergyContainer();
@@ -36,13 +39,20 @@ public abstract class TieredMetaTileEntity extends MetaTileEntity {
                 tierVoltage * 32L, tierVoltage, getMaxInputOutputAmperage());
         } else this.energyContainer = EnergyContainerHandler.receiverContainer(this,
             tierVoltage * 32L, tierVoltage, getMaxInputOutputAmperage());
+        updateComparatorValue(true);
     }
 
     @Override
     public int getComparatorValue() {
         long energyStored = energyContainer.getEnergyStored();
         long energyCapacity = energyContainer.getEnergyCapacity();
-        return energyCapacity == 0L ? 0 : (int) ((energyStored * 1.0) / energyCapacity * 15.0);
+        float f = energyCapacity == 0L ? 0.0f : energyStored / (energyCapacity * 1.0f);
+        return MathHelper.floor(f * 14.0f) + (energyStored > 0 ? 1 : 0);
+    }
+
+    @Override
+    public void onEnergyChanged(IEnergyContainer container) {
+        updateComparatorValue(true);
     }
 
     @SideOnly(Side.CLIENT)
@@ -97,7 +107,17 @@ public abstract class TieredMetaTileEntity extends MetaTileEntity {
     public final String getTierlessTooltipKey() {
         String metaName = getMetaName();
         int lastIndexOfDot = metaName.lastIndexOf('.');
-        String subName = lastIndexOfDot == -1 ? metaName : metaName.substring(0, lastIndexOfDot);
-        return subName + ".tooltip";
+        String voltageName = lastIndexOfDot == -1 ? null : metaName.substring(lastIndexOfDot + 1);
+        if(isVoltageName(voltageName)) {
+            return metaName.substring(0, lastIndexOfDot);
+        }
+        return metaName;
+    }
+
+    private static boolean isVoltageName(String string) {
+        for(String voltageName : GTValues.VN) {
+            if(voltageName.equalsIgnoreCase(string)) return true;
+        }
+        return false;
     }
 }

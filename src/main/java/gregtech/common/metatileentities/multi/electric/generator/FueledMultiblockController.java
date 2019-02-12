@@ -15,12 +15,12 @@ import gregtech.api.metatileentity.multiblock.MultiblockWithDisplayBase;
 import gregtech.api.multiblock.PatternMatchContext;
 import gregtech.api.recipes.machines.FuelRecipeMap;
 import gregtech.api.render.Textures;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentTranslation;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 public abstract class FueledMultiblockController extends MultiblockWithDisplayBase {
 
@@ -29,7 +29,7 @@ public abstract class FueledMultiblockController extends MultiblockWithDisplayBa
     protected IEnergyContainer energyContainer;
     protected IMultipleTankHandler importFluidHandler;
 
-    public FueledMultiblockController(String metaTileEntityId, FuelRecipeMap recipeMap, long maxVoltage) {
+    public FueledMultiblockController(ResourceLocation metaTileEntityId, FuelRecipeMap recipeMap, long maxVoltage) {
         super(metaTileEntityId);
         this.recipeMap = recipeMap;
         this.workableHandler = createWorkable(maxVoltage);
@@ -89,7 +89,7 @@ public abstract class FueledMultiblockController extends MultiblockWithDisplayBa
     }
 
     @Override
-    protected boolean checkStructureComponents(Set<IMultiblockPart> parts, Map<MultiblockAbility<Object>, List<Object>> abilities) {
+    protected boolean checkStructureComponents(List<IMultiblockPart> parts, Map<MultiblockAbility<Object>, List<Object>> abilities) {
         //noinspection SuspiciousMethodCalls
         return abilities.containsKey(MultiblockAbility.IMPORT_FLUIDS) &&
             abilities.containsKey(MultiblockAbility.OUTPUT_ENERGY);

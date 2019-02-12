@@ -20,14 +20,18 @@ import gregtech.api.util.GTUtility;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.SoundCategory;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.items.ItemStackHandler;
 import org.apache.commons.lang3.ArrayUtils;
 
 import javax.annotation.Nullable;
@@ -59,8 +63,9 @@ public abstract class SteamBoiler extends MetaTileEntity {
 
     private boolean isBurning;
     private boolean wasBurningAndNeedsUpdate;
+    private ItemStackHandler containerInventory;
 
-    public SteamBoiler(String metaTileEntityId, boolean isHighPressure, OrientedOverlayRenderer renderer, int baseSteamOutput) {
+    public SteamBoiler(ResourceLocation metaTileEntityId, boolean isHighPressure, OrientedOverlayRenderer renderer, int baseSteamOutput) {
         super(metaTileEntityId);
         this.renderer = renderer;
         this.isHighPressure = isHighPressure;
@@ -68,6 +73,7 @@ public abstract class SteamBoiler extends MetaTileEntity {
         BRONZE_BACKGROUND_TEXTURE = getGuiTexture("%s_gui");
         BRONZE_SLOT_BACKGROUND_TEXTURE = getGuiTexture("slot_%s");
         SLOT_FURNACE_BACKGROUND = getGuiTexture("slot_%s_furnace_background");
+        this.containerInventory = new ItemStackHandler(2);
     }
 
     @SideOnly(Side.CLIENT)
@@ -99,6 +105,7 @@ public abstract class SteamBoiler extends MetaTileEntity {
         data.setInteger("FuelMaxBurnTime", fuelMaxBurnTime);
         data.setInteger("CurrentTemperature", currentTemperature);
         data.setBoolean("HasNoWater", hasNoWater);
+        data.setTag("ContainerInventory", containerInventory.serializeNBT());
         return data;
     }
 
@@ -109,6 +116,7 @@ public abstract class SteamBoiler extends MetaTileEntity {
         this.fuelMaxBurnTime = data.getInteger("FuelMaxBurnTime");
         this.currentTemperature = data.getInteger("CurrentTemperature");
         this.hasNoWater = data.getBoolean("HasNoWater");
+        this.containerInventory.deserializeNBT(data.getCompoundTag("ContainerInventory"));
         this.isBurning = fuelBurnTimeLeft > 0;
     }
 
@@ -127,7 +135,7 @@ public abstract class SteamBoiler extends MetaTileEntity {
     @Override
     public void receiveCustomData(int dataId, PacketBuffer buf) {
         super.receiveCustomData(dataId, buf);
-        if(dataId == -100) {
+        if(dataId == 100) {
             this.isBurning = buf.readBoolean();
             getHolder().scheduleChunkForRenderUpdate();
         }
@@ -149,7 +157,7 @@ public abstract class SteamBoiler extends MetaTileEntity {
             generateSteam();
 
             if (getTimer() % 5 == 0) {
-                fillInternalTankFromFluidContainer(importItems, exportItems, 0, 0);
+                fillInternalTankFromFluidContainer(containerInventory, containerInventory, 0, 1);
                 pushFluidsIntoNearbyHandlers(STEAM_PUSH_DIRECTIONS);
             }
 
@@ -191,8 +199,7 @@ public abstract class SteamBoiler extends MetaTileEntity {
 
     private void generateSteam() {
         if (currentTemperature >= 100 && getTimer() % getBoilingCycleLength() == 0) {
-            float additionalTempBonus = (currentTemperature - 100) / (getMaxTemperate() - 100.0f);
-            int fillAmount = baseSteamOutput + (int) (baseSteamOutput * additionalTempBonus);
+            int fillAmount = (int) (baseSteamOutput * (currentTemperature / (getMaxTemperate() * 1.0)));
             boolean hasDrainedWater = waterFluidTank.drain(1, true) != null;
             int filledSteam = 0;
             if (hasDrainedWater) {
@@ -202,10 +209,11 @@ public abstract class SteamBoiler extends MetaTileEntity {
                 getWorld().setBlockToAir(getPos());
                 getWorld().createExplosion(null,
                     getPos().getX() + 0.5, getPos().getY() + 0.5, getPos().getZ() + 0.5,
-                    1.0f + 1.5f * additionalTempBonus, true);
+                    2.0f, true);
             } else this.hasNoWater = !hasDrainedWater;
             if (filledSteam == 0 && hasDrainedWater) {
-                //todo sound of steam pressure
+                getWorld().playSound(null, getPos().getX() + 0.5, getPos().getY() + 0.5, getPos().getZ() + 0.5,
+                    SoundEvents.BLOCK_LAVA_EXTINGUISH, SoundCategory.BLOCKS, 1.0f, 1.0f);
                 steamFluidTank.drain(4000, true);
             }
         }
@@ -216,10 +224,10 @@ public abstract class SteamBoiler extends MetaTileEntity {
     }
 
     public void setBurning(boolean burning) {
-        isBurning = burning;
+        this.isBurning = burning;
         if(!getWorld().isRemote) {
             markDirty();
-            writeCustomData(-100, buf -> buf.writeBoolean(burning));
+            writeCustomData(100, buf -> buf.writeBoolean(burning));
         }
     }
 
@@ -239,8 +247,7 @@ public abstract class SteamBoiler extends MetaTileEntity {
 
     @Override
     protected FluidTankList createImportFluidHandler() {
-        this.waterFluidTank = new FilteredFluidHandler(16000)
-            .setFillPredicate(ModHandler::isWater);
+        this.waterFluidTank = new FilteredFluidHandler(16000).setFillPredicate(ModHandler::isWater);
         return new FluidTankList(false, waterFluidTank);
     }
 
@@ -270,9 +277,9 @@ public abstract class SteamBoiler extends MetaTileEntity {
             .widget(new TankWidget(steamFluidTank, 69, 17, 11, 55)
                 .setBackgroundTexture(getGuiTexture("bar_%s_empty")))
 
-            .widget(new FluidContainerSlotWidget(this.importItems, 0, 43, 18, true)
+            .widget(new FluidContainerSlotWidget(containerInventory, 0, 43, 18, true)
                 .setBackgroundTexture(BRONZE_SLOT_BACKGROUND_TEXTURE, getGuiTexture("overlay_%s_in")))
-            .widget(new SlotWidget(this.exportItems, 0, 43, 54, true, false)
+            .widget(new SlotWidget(containerInventory, 1, 43, 54, true, false)
                 .setBackgroundTexture(BRONZE_SLOT_BACKGROUND_TEXTURE, getGuiTexture("overlay_%s_out")))
             .widget(new ImageWidget(42, 35, 18, 18)
                 .setImage(getGuiTexture("overlay_%s_fluid_container")))

@@ -18,6 +18,7 @@ import gregtech.common.blocks.BlockWireCoil;
 import gregtech.common.blocks.BlockWireCoil.CoilType;
 import gregtech.common.blocks.MetaBlocks;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentTranslation;
 
@@ -34,7 +35,7 @@ public class MetaTileEntityElectricBlastFurnace extends RecipeMapMultiblockContr
 
     private int blastFurnaceTemperature;
 
-    public MetaTileEntityElectricBlastFurnace(String metaTileEntityId) {
+    public MetaTileEntityElectricBlastFurnace(ResourceLocation metaTileEntityId) {
         super(metaTileEntityId, RecipeMaps.BLAST_RECIPES);
     }
 
@@ -54,7 +55,7 @@ public class MetaTileEntityElectricBlastFurnace extends RecipeMapMultiblockContr
     @Override
     protected void formStructure(PatternMatchContext context) {
         super.formStructure(context);
-        this.blastFurnaceTemperature = context.get("CoilType", CoilType.CUPRONICKEL).getCoilTemperature();
+        this.blastFurnaceTemperature = context.getOrDefault("CoilType", CoilType.CUPRONICKEL).getCoilTemperature();
     }
 
     @Override
@@ -76,7 +77,7 @@ public class MetaTileEntityElectricBlastFurnace extends RecipeMapMultiblockContr
                 return false;
             BlockWireCoil blockWireCoil = (BlockWireCoil) blockState.getBlock();
             CoilType coilType = blockWireCoil.getState(blockState);
-            CoilType currentCoilType = blockWorldState.getMatchContext().get("CoilType", coilType);
+            CoilType currentCoilType = blockWorldState.getMatchContext().getOrPut("CoilType", coilType);
             return currentCoilType.getName().equals(coilType.getName());
         };
     }
@@ -87,8 +88,9 @@ public class MetaTileEntityElectricBlastFurnace extends RecipeMapMultiblockContr
             .aisle("XXX", "CCC", "CCC", "XXX")
             .aisle("XXX", "C#C", "C#C", "XXX")
             .aisle("XSX", "CCC", "CCC", "XXX")
-            .setAmountAtLeast('X', 10)
+            .setAmountAtLeast('L', 10)
             .where('S', selfPredicate())
+            .where('L', statePredicate(getCasingState()))
             .where('X', statePredicate(getCasingState()).or(abilityPartPredicate(ALLOWED_ABILITIES)))
             .where('C', heatingCoilPredicate())
             .where('#', isAirPredicate())

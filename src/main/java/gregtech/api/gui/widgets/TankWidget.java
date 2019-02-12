@@ -16,7 +16,6 @@ import net.minecraft.util.SoundEvent;
 import net.minecraftforge.fluids.*;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
-import net.minecraftforge.fml.client.config.GuiUtils;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.input.Keyboard;
@@ -45,7 +44,7 @@ public class TankWidget extends Widget {
     private int lastTankCapacity;
 
     public TankWidget(IFluidTank fluidTank, int x, int y, int width, int height) {
-        super(SLOT_DRAW_PRIORITY + 100);
+        super();
         this.fluidTank = fluidTank;
         this.x = x;
         this.y = y;
@@ -118,11 +117,11 @@ public class TankWidget extends Widget {
                 fontRenderer.drawStringWithShadow(s, x + 1 + width - 2 - fontRenderer.getStringWidth(s), y + (height / 3) + 3, 0xFFFFFF);
             }
             GlStateManager.enableBlend();
+            GlStateManager.color(1.0f, 1.0f, 1.0f);
         }
         if(overlayTexture != null) {
             overlayTexture.draw(x, y, width, height);
         }
-
     }
 
     @Override
@@ -149,7 +148,7 @@ public class TankWidget extends Widget {
                 tooltips.add(I18n.format("gregtech.fluid.click_to_empty"));
                 tooltips.add(I18n.format("gregtech.fluid.click_to_empty.shift"));
             }
-            GuiUtils.drawHoveringText(tooltips, mouseX, mouseY, gui.width, gui.height, -1, Minecraft.getMinecraft().fontRenderer);
+            drawHoveringText(ItemStack.EMPTY, tooltips, 300, mouseX, mouseY);
             GlStateManager.color(1.0f, 1.0f, 1.0f);
         }
     }
@@ -159,7 +158,7 @@ public class TankWidget extends Widget {
         FluidStack fluidStack = fluidTank.getFluid();
         if(fluidTank.getCapacity() != lastTankCapacity) {
             this.lastTankCapacity = fluidTank.getCapacity();
-            writeUpdateInfo(0, buffer -> buffer.writeInt(lastTankCapacity));
+            writeUpdateInfo(0, buffer -> buffer.writeVarInt(lastTankCapacity));
         }
         if(fluidStack == null && lastFluidInTank != null) {
             this.lastFluidInTank = null;
@@ -171,7 +170,7 @@ public class TankWidget extends Widget {
                 writeUpdateInfo(2, buffer -> buffer.writeCompoundTag(fluidStackTag));
             } else if(fluidStack.amount != lastFluidInTank.amount) {
                 this.lastFluidInTank.amount = fluidStack.amount;
-                writeUpdateInfo(3, buffer -> buffer.writeInt(lastFluidInTank.amount));
+                writeUpdateInfo(3, buffer -> buffer.writeVarInt(lastFluidInTank.amount));
             }
         }
     }
@@ -179,7 +178,7 @@ public class TankWidget extends Widget {
     @Override
     public void readUpdateInfo(int id, PacketBuffer buffer) {
         if(id == 0) {
-            this.lastTankCapacity = buffer.readInt();
+            this.lastTankCapacity = buffer.readVarInt();
         } else if(id == 1) {
             this.lastFluidInTank = null;
         } else if(id == 2) {
@@ -191,12 +190,12 @@ public class TankWidget extends Widget {
             }
             this.lastFluidInTank = FluidStack.loadFluidStackFromNBT(fluidStackTag);
         } else if(id == 3 && lastFluidInTank != null) {
-            this.lastFluidInTank.amount = buffer.readInt();
+            this.lastFluidInTank.amount = buffer.readVarInt();
         }
 
         if(id == 4) {
             ItemStack currentStack = gui.entityPlayer.inventory.getItemStack();
-            int newStackSize = buffer.readInt();
+            int newStackSize = buffer.readVarInt();
             currentStack.setCount(newStackSize);
             gui.entityPlayer.inventory.setItemStack(currentStack);
         }
@@ -209,7 +208,7 @@ public class TankWidget extends Widget {
             boolean isShiftKeyDown = buffer.readBoolean();
             int clickResult = tryClickContainer(isShiftKeyDown);
             if(clickResult >= 0) {
-                writeUpdateInfo(4, buf -> buf.writeInt(clickResult));
+                writeUpdateInfo(4, buf -> buf.writeVarInt(clickResult));
             }
         }
     }
@@ -273,13 +272,14 @@ public class TankWidget extends Widget {
     @Override
     @SideOnly(Side.CLIENT)
     public void mouseClicked(int mouseX, int mouseY, int button) {
-        if(!isMouseOver(x, y, width, height, mouseX, mouseY))
-            return;
-        ItemStack currentStack = gui.entityPlayer.inventory.getItemStack();
-        if(button == 0 && (allowClickEmptying || allowClickFilling) &&
-            currentStack.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY, null)) {
-            boolean isShiftKeyDown = Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) || Keyboard.isKeyDown(Keyboard.KEY_RSHIFT);
-            writeClientAction(1, writer -> writer.writeBoolean(isShiftKeyDown));
+        if(isMouseOver(x, y, width, height, mouseX, mouseY)) {
+            ItemStack currentStack = gui.entityPlayer.inventory.getItemStack();
+            if (button == 0 && (allowClickEmptying || allowClickFilling) &&
+                currentStack.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY, null)) {
+                boolean isShiftKeyDown = Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) || Keyboard.isKeyDown(Keyboard.KEY_RSHIFT);
+                writeClientAction(1, writer -> writer.writeBoolean(isShiftKeyDown));
+                playButtonClickSound();
+            }
         }
     }
 }

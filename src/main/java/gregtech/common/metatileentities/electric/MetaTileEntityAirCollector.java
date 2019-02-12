@@ -13,11 +13,12 @@ import gregtech.api.render.Textures;
 import gregtech.api.unification.material.Materials;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.FluidTank;
 
 public class MetaTileEntityAirCollector extends TieredMetaTileEntity {
 
-    public MetaTileEntityAirCollector(String metaTileEntityId, int tier) {
+    public MetaTileEntityAirCollector(ResourceLocation metaTileEntityId, int tier) {
         super(metaTileEntityId, tier);
     }
 

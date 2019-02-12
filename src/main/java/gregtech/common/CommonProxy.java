@@ -13,18 +13,19 @@ import gregtech.common.blocks.*;
 import gregtech.common.blocks.wood.BlockGregLeaves;
 import gregtech.common.blocks.wood.BlockGregLog;
 import gregtech.common.blocks.wood.BlockGregSapling;
-import gregtech.common.pipelike.cable.ItemBlockCable;
 import gregtech.common.items.MetaItems;
 import gregtech.common.items.PotionFluids;
+import gregtech.common.pipelike.cable.ItemBlockCable;
 import gregtech.common.pipelike.fluidpipe.ItemBlockFluidPipe;
-import gregtech.loaders.recipe.FuelLoader;
-import gregtech.loaders.recipe.MetaTileEntityLoader;
+import gregtech.loaders.MaterialInfoLoader;
 import gregtech.loaders.OreDictionaryLoader;
+import gregtech.loaders.oreprocessing.DecompositionRecipeHandler;
 import gregtech.loaders.oreprocessing.RecipeHandlerList;
 import gregtech.loaders.oreprocessing.ToolRecipeHandler;
 import gregtech.loaders.recipe.CraftingRecipeLoader;
+import gregtech.loaders.recipe.FuelLoader;
 import gregtech.loaders.recipe.MachineRecipeLoader;
-import gregtech.loaders.MaterialInfoLoader;
+import gregtech.loaders.recipe.MetaTileEntityLoader;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.enchantment.Enchantment;
@@ -33,8 +34,11 @@ import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemMultiTexture;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
+import net.minecraftforge.common.config.Config.Type;
+import net.minecraftforge.common.config.ConfigManager;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.event.furnace.FurnaceFuelBurnTimeEvent;
+import net.minecraftforge.fml.client.event.ConfigChangedEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -56,7 +60,13 @@ public class CommonProxy {
         PotionFluids.initPotionFluids();
 
         registry.register(MACHINE);
+        registry.register(CABLE);
+        registry.register(FLUID_PIPE);
 
+        registry.register(FOAM);
+        registry.register(REINFORCED_FOAM);
+        registry.register(PETRIFIED_FOAM);
+        registry.register(REINFORCED_PETRIFIED_FOAM);
         registry.register(BOILER_CASING);
         registry.register(BOILER_FIREBOX_CASING);
         registry.register(METAL_CASING);
@@ -73,8 +83,6 @@ public class CommonProxy {
         registry.register(SAPLING);
         registry.register(CRUSHER_BLADE);
 
-        CABLES.values().forEach(registry::register);
-        FLUID_PIPES.values().forEach(registry::register);
         COMPRESSED.values().stream().distinct().forEach(registry::register);
         SURFACE_ROCKS.values().stream().distinct().forEach(registry::register);
         FLOODED_SURFACE_ROCKS.values().stream().distinct().forEach(registry::register);
@@ -96,6 +104,9 @@ public class CommonProxy {
         ToolRecipeHandler.initializeMetaItems();
 
         registry.register(createItemBlock(MACHINE, MachineItemBlock::new));
+        registry.register(createItemBlock(CABLE, ItemBlockCable::new));
+        registry.register(createItemBlock(FLUID_PIPE, ItemBlockFluidPipe::new));
+
         registry.register(createItemBlock(BOILER_CASING, VariantItemBlock::new));
         registry.register(createItemBlock(BOILER_FIREBOX_CASING, VariantItemBlock::new));
         registry.register(createItemBlock(METAL_CASING, VariantItemBlock::new));
@@ -112,12 +123,6 @@ public class CommonProxy {
         registry.register(createMultiTexItemBlock(SAPLING, state -> state.getValue(BlockGregSapling.VARIANT).getName()));
         registry.register(createItemBlock(CRUSHER_BLADE, ItemBlock::new));
 
-        CABLES.values().stream()
-            .map(block -> createItemBlock(block, ItemBlockCable::new))
-            .forEach(registry::register);
-        FLUID_PIPES.values().stream()
-            .map(block -> createItemBlock(block, ItemBlockFluidPipe::new))
-            .forEach(registry::register);
         COMPRESSED.values()
             .stream().distinct()
             .map(block -> createItemBlock(block, CompressedItemBlock::new))
@@ -167,6 +172,20 @@ public class CommonProxy {
     public static void registerRecipesLowest(RegistryEvent.Register<IRecipe> event) {
         GTLog.logger.info("Running late material handlers...");
         OrePrefix.runMaterialHandlers();
+        DecompositionRecipeHandler.runRecipeGeneration();
+    }
+
+    @SubscribeEvent
+    public static void registerEnchantments(RegistryEvent.Register<Enchantment> event) {
+        EnchantmentEnderDamage.INSTANCE.register(event);
+        EnchantmentRadioactivity.INSTANCE.register(event);
+    }
+
+    @SubscribeEvent
+    public static void syncConfigValues(ConfigChangedEvent.OnConfigChangedEvent event) {
+        if(event.getModID().equals(GTValues.MODID)) {
+            ConfigManager.sync(GTValues.MODID, Type.INSTANCE);
+        }
     }
 
     @SubscribeEvent
@@ -182,7 +201,7 @@ public class CommonProxy {
         //handle material blocks burn value
         if(stack.getItem() instanceof CompressedItemBlock) {
             CompressedItemBlock itemBlock = (CompressedItemBlock) stack.getItem();
-            Material material = itemBlock.getBlockState(stack).getValue(itemBlock.block.variantProperty);
+            Material material = itemBlock.getBlockState(stack).getValue(itemBlock.compressedBlock.variantProperty);
             if(material instanceof DustMaterial &&
                 ((DustMaterial) material).burnTime > 0) {
                 //compute burn value for block prefix, taking amount of material in block into account
@@ -206,12 +225,6 @@ public class CommonProxy {
         ItemBlock itemBlock = producer.apply(block);
         itemBlock.setRegistryName(block.getRegistryName());
         return itemBlock;
-    }
-
-    @SubscribeEvent
-    public void registerEnchantments(RegistryEvent.Register<Enchantment> event) {
-        EnchantmentEnderDamage.INSTANCE.register(event);
-        EnchantmentRadioactivity.INSTANCE.register(event);
     }
 
     public void onPreLoad() {

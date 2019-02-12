@@ -111,10 +111,8 @@ public class ToolUtility {
             for(ItemStack outputStack : recipe.getResultItemOutputs(random, 1)) {
                 outputStack = outputStack.copy();
                 if(OreDictUnifier.getPrefix(outputStack) == OrePrefix.crushed) {
-                    //for hammer drops, we multiply crushed ores output by 1 sometimes
-                    if (random.nextBoolean()) {
-                        outputStack.grow(1);
-                    }
+                    int growAmount = Math.round(outputStack.getCount() * random.nextFloat());
+                    outputStack.grow(growAmount);
                 }
                 drops.add(outputStack);
             }

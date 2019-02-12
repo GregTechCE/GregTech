@@ -13,6 +13,7 @@ import gregtech.api.render.Textures;
 import gregtech.common.blocks.BlockMetalCasing.MetalCasingType;
 import gregtech.common.blocks.MetaBlocks;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.util.ResourceLocation;
 
 public class MetaTileEntityVacuumFreezer extends RecipeMapMultiblockController {
 
@@ -22,7 +23,7 @@ public class MetaTileEntityVacuumFreezer extends RecipeMapMultiblockController {
         MultiblockAbility.INPUT_ENERGY
     };
 
-    public MetaTileEntityVacuumFreezer(String metaTileEntityId) {
+    public MetaTileEntityVacuumFreezer(ResourceLocation metaTileEntityId) {
         super(metaTileEntityId, RecipeMaps.VACUUM_RECIPES);
     }
 
@@ -37,8 +38,9 @@ public class MetaTileEntityVacuumFreezer extends RecipeMapMultiblockController {
             .aisle("XXX", "XXX", "XXX")
             .aisle("XXX", "X#X", "XXX")
             .aisle("XXX", "XSX", "XXX")
-            .setAmountAtLeast('X', 20)
+            .setAmountAtLeast('L', 20)
             .where('S', selfPredicate())
+            .where('L', statePredicate(getCasingState()))
             .where('X', statePredicate(getCasingState()).or(abilityPartPredicate(ALLOWED_ABILITIES)))
             .where('#', isAirPredicate())
             .build();

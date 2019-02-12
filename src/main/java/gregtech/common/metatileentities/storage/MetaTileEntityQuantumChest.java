@@ -1,6 +1,7 @@
 package gregtech.common.metatileentities.storage;
 
 import codechicken.lib.render.CCRenderState;
+import codechicken.lib.render.pipeline.ColourMultiplier;
 import codechicken.lib.render.pipeline.IVertexOperation;
 import codechicken.lib.vec.Matrix4;
 import codechicken.lib.vec.Vector3;
@@ -19,6 +20,8 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextComponentTranslation;
@@ -26,6 +29,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants.NBT;
 import net.minecraftforge.items.IItemHandlerModifiable;
 import net.minecraftforge.items.ItemStackHandler;
+import org.apache.commons.lang3.ArrayUtils;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -40,7 +44,7 @@ public class MetaTileEntityQuantumChest extends MetaTileEntity {
     private ItemStack itemStack = ItemStack.EMPTY;
     private long itemsStoredInside = 0L;
 
-    public MetaTileEntityQuantumChest(String metaTileEntityId, int tier, long maxStoredItems) {
+    public MetaTileEntityQuantumChest(ResourceLocation metaTileEntityId, int tier, long maxStoredItems) {
         super(metaTileEntityId);
         this.tier = tier;
         this.maxStoredItems = maxStoredItems;
@@ -53,7 +57,8 @@ public class MetaTileEntityQuantumChest extends MetaTileEntity {
 
     @Override
     public void renderMetaTileEntity(CCRenderState renderState, Matrix4 translation, IVertexOperation[] pipeline) {
-        Textures.VOLTAGE_CASINGS[tier].render(renderState, translation, pipeline);
+        Textures.VOLTAGE_CASINGS[tier].render(renderState, translation, ArrayUtils.add(pipeline,
+            new ColourMultiplier(GTUtility.convertRGBtoOpaqueRGBA_CL(getPaintingColorForRendering()))));
         translation.translate(0.5, 0.001, 0.5);
         translation.rotate(Math.toRadians(rotations[getFrontFacing().getIndex() - 2]), new Vector3(0.0, 1.0, 0.0));
         translation.translate(-0.5, 0.0, -0.5);
@@ -66,14 +71,18 @@ public class MetaTileEntityQuantumChest extends MetaTileEntity {
     }
 
     @Override
+    public int getComparatorValue() {
+        float f = itemsStoredInside / (maxStoredItems * 1.0f);
+        return MathHelper.floor(f * 14.0f) + (itemsStoredInside > 0 ? 1 : 0);
+    }
+
+    @Override
     public void update() {
         super.update();
         if(!getWorld().isRemote) {
             if(itemsStoredInside < maxStoredItems) {
                 ItemStack inputStack = importItems.getStackInSlot(0);
-                if(!inputStack.isEmpty() && (itemStack.isEmpty() || (
-                        ItemStack.areItemsEqual(itemStack, inputStack) &&
-                        ItemStack.areItemStackTagsEqual(itemStack, inputStack)))) {
+                if(!inputStack.isEmpty() && (itemStack.isEmpty() || areItemStackIdentical(itemStack, inputStack))) {
                     int amountOfItemsToInsert = (int) Math.min(inputStack.getCount(), maxStoredItems - itemsStoredInside);
                     if(this.itemsStoredInside == 0L || itemStack.isEmpty()) {
                         this.itemStack = GTUtility.copyAmount(1, inputStack);
@@ -81,13 +90,14 @@ public class MetaTileEntityQuantumChest extends MetaTileEntity {
                     inputStack.shrink(amountOfItemsToInsert);
                     importItems.setStackInSlot(0, inputStack);
                     this.itemsStoredInside += amountOfItemsToInsert;
+                    updateComparatorValue(true);
                     markDirty();
                 }
             }
             if(itemsStoredInside > 0 && !itemStack.isEmpty()) {
                 ItemStack outputStack = exportItems.getStackInSlot(0);
                 int maxStackSize = itemStack.getMaxStackSize();
-                if(outputStack.isEmpty() || outputStack.getCount() < maxStackSize) {
+                if(outputStack.isEmpty() || (areItemStackIdentical(itemStack, outputStack) && outputStack.getCount() < maxStackSize)) {
                     int amountOfItemsToRemove = (int) Math.min(maxStackSize - outputStack.getCount(), itemsStoredInside);
                     if(outputStack.isEmpty()) {
                         outputStack = GTUtility.copyAmount(amountOfItemsToRemove, itemStack);
@@ -97,10 +107,16 @@ public class MetaTileEntityQuantumChest extends MetaTileEntity {
                     if(this.itemsStoredInside == 0) {
                         this.itemStack = ItemStack.EMPTY;
                     }
+                    updateComparatorValue(true);
                     markDirty();
                 }
             }
         }
+    }
+
+    private static boolean areItemStackIdentical(ItemStack first, ItemStack second) {
+        return ItemStack.areItemsEqual(first, second) &&
+            ItemStack.areItemStackTagsEqual(first, second);
     }
 
     protected void addDisplayInformation(List<ITextComponent> textList) {
@@ -123,6 +139,11 @@ public class MetaTileEntityQuantumChest extends MetaTileEntity {
     @Override
     protected IItemHandlerModifiable createExportItemHandler() {
         return new ItemStackHandler(1);
+    }
+
+    @Override
+    public boolean hasFrontFacing() {
+        return false;
     }
 
     @Override

@@ -27,11 +27,6 @@ public class ToolSoftHammer extends ToolBase {
     }
 
     @Override
-    public boolean hasMaterialHandle() {
-        return true;
-    }
-
-    @Override
     public void onStatsAddedToTool(MetaValueItem item) {
         item.addStats(new SoftHammerBehaviour(DamageValues.DAMAGE_FOR_SOFT_HAMMER));
     }

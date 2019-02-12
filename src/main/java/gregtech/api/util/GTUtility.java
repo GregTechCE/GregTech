@@ -64,45 +64,16 @@ import java.math.BigInteger;
 import java.util.*;
 import java.util.List;
 import java.util.Map.Entry;
+import java.util.function.Function;
 import java.util.function.Predicate;
 
 import static gregtech.api.GTValues.V;
 
 public class GTUtility {
 
-    public static int gcd(int a, int b) {
-        if (a == 0 || b == 0) throw new ArithmeticException("div by 0");
-        if (a < 0) a = -a;
-        if (b < 0) b = -b;
-        while (true) {
-            if (0 == (a %= b)) return b;
-            if (0 == (b %= a)) return a;
-        }
-    }
-
-    public static int lcm(int a, int b) {
-        return a / gcd(a, b) * b;
-    }
-
-    @Nullable
-    public static EnumFacing getRelativeDirection(BlockPos from, BlockPos to) {
-        int dx = to.getX() - from.getX();
-        int dy = to.getY() - from.getY();
-        int dz = to.getZ() - from.getZ();
-        if (dx == 0) {
-            if (dy == 0) {
-                return dz > 0 ? EnumFacing.NORTH : EnumFacing.SOUTH;
-            } else if (dz == 0) {
-                return dy > 0 ? EnumFacing.UP : EnumFacing.DOWN;
-            }
-        } else if (dy == 0 && dz == 0) {
-            return dx > 0 ? EnumFacing.EAST : EnumFacing.WEST;
-        }
-        return null;
-    }
-
     public static BigInteger LONG_MAX = BigInteger.valueOf(Long.MAX_VALUE);
     public static BigInteger LONG_MIN = BigInteger.valueOf(Long.MIN_VALUE);
+
     public static long castToLong(BigInteger value) {
         return value.compareTo(LONG_MAX) >= 0 ? Long.MAX_VALUE : value.compareTo(LONG_MIN) <= 0 ? Long.MIN_VALUE : value.longValue();
     }
@@ -150,6 +121,14 @@ public class GTUtility {
         return result;
     }
 
+    public static  <T> String[] mapToString(T[] array, Function<T, String> mapper) {
+        String[] result = new String[array.length];
+        for(int i = 0; i < array.length; i++) {
+            result[i] = mapper.apply(array[i]);
+        }
+        return result;
+    }
+
     //magic is here
     @SuppressWarnings("unchecked")
     public static <T, R> Class<T> getActualTypeParameter(Class<? extends R> thisClass, Class<R> declaringClass, int index) {
@@ -162,7 +141,6 @@ public class GTUtility {
                 type = ((Class<?>) type).getGenericSuperclass();
             }
         }
-
         return (Class<T>) ((ParameterizedType) type).getActualTypeArguments()[index];
     }
 
@@ -193,6 +171,13 @@ public class GTUtility {
         return distances.get(min);
     }
 
+    public static int multiplyColor(int c1, int c2) {
+        int r = (((c1 >>> 16) * (c2 >>> 16)) & 0xFF00) << 16;
+        int g = (((c1 >> 8 & 0xFF) * (c2 >> 8 & 0xFF)) & 0xFF00) << 8;
+        int b = ((c1 & 0xFF) * (c2 & 0xFF)) & 0xFF00;
+        return r | g | b;
+    }
+
     //just because CCL uses a different color format
     //0xRRGGBBAA
     public static int convertRGBtoOpaqueRGBA_CL(int colorValue) {
@@ -204,7 +189,11 @@ public class GTUtility {
 
     //0xAARRGGBB
     public static int convertRGBtoOpaqueRGBA_MC(int colorValue) {
-        return Integer.parseUnsignedInt("ff" + Integer.toString(colorValue, 16), 16);
+        int r = (colorValue >> 16) & 0xFF;
+        int g = (colorValue >> 8) & 0xFF;
+        int b = (colorValue & 0xFF);
+        //noinspection NumericOverflow
+        return 0xFF << 24 | (r & 0xFF) << 16 | (g & 0xFF) << 8 | (b & 0xFF);
     }
 
     public static void setItem(ItemStack itemStack, ItemStack newStack) {
@@ -362,7 +351,7 @@ public class GTUtility {
         int textHeight = fontRenderer.FONT_HEIGHT;
         GlStateManager.pushMatrix();
         GlStateManager.scale(sizeMultiplier, sizeMultiplier, 0.0);
-        GlStateManager.translate(-textWidth * sizeMultiplier / 2, -textHeight * sizeMultiplier / 2, 0);
+        GlStateManager.translate(-textWidth * sizeMultiplier / 2.0, -textHeight * sizeMultiplier / 2.0, 0);
         fontRenderer.drawString(string, x, y, color);
         GlStateManager.popMatrix();
     }
@@ -491,7 +480,7 @@ public class GTUtility {
         return result;
     }
 
-    public static <T> int getRandomItem(Random random, List<Entry<Integer, T>> randomList, int size) {
+    public static <T> int getRandomItem(Random random, List<? extends Entry<Integer, T>> randomList, int size) {
         if(randomList.isEmpty())
             return -1;
         int[] baseOffsets = new int[size];

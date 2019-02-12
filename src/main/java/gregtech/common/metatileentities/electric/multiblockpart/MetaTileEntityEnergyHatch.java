@@ -13,9 +13,11 @@ import gregtech.api.metatileentity.multiblock.IMultiblockAbilityPart;
 import gregtech.api.metatileentity.multiblock.MultiblockAbility;
 import gregtech.api.render.SimpleOverlayRenderer;
 import gregtech.api.render.Textures;
+import gregtech.api.util.PipelineUtil;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
@@ -26,7 +28,7 @@ public class MetaTileEntityEnergyHatch extends MetaTileEntityMultiblockPart impl
     private final boolean isExportHatch;
     private final IEnergyContainer energyContainer;
 
-    public MetaTileEntityEnergyHatch(String metaTileEntityId, int tier, boolean isExportHatch) {
+    public MetaTileEntityEnergyHatch(ResourceLocation metaTileEntityId, int tier, boolean isExportHatch) {
         super(metaTileEntityId, tier);
         this.isExportHatch = isExportHatch;
         if(isExportHatch) {
@@ -46,7 +48,7 @@ public class MetaTileEntityEnergyHatch extends MetaTileEntityMultiblockPart impl
         super.renderMetaTileEntity(renderState, translation, pipeline);
         if(shouldRenderOverlay()) {
             SimpleOverlayRenderer renderer = isExportHatch ? Textures.ENERGY_OUT_MULTI : Textures.ENERGY_IN_MULTI;
-            renderer.renderSided(getFrontFacing(), renderState, translation, pipeline);
+            renderer.renderSided(getFrontFacing(), renderState, translation, PipelineUtil.color(pipeline, GTValues.VC[getTier()]));
         }
     }
 

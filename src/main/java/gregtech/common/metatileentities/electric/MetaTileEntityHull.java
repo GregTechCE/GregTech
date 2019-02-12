@@ -1,5 +1,6 @@
 package gregtech.common.metatileentities.electric;
 
+import codechicken.lib.raytracer.CuboidRayTraceResult;
 import codechicken.lib.render.CCRenderState;
 import codechicken.lib.render.pipeline.IVertexOperation;
 import codechicken.lib.vec.Matrix4;
@@ -9,11 +10,13 @@ import gregtech.api.gui.ModularUI;
 import gregtech.api.metatileentity.MetaTileEntityHolder;
 import gregtech.api.metatileentity.TieredMetaTileEntity;
 import gregtech.api.render.Textures;
+import gregtech.api.util.PipelineUtil;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
@@ -21,7 +24,7 @@ import java.util.List;
 
 public class MetaTileEntityHull extends TieredMetaTileEntity {
 
-    public MetaTileEntityHull(String metaTileEntityId, int tier) {
+    public MetaTileEntityHull(ResourceLocation metaTileEntityId, int tier) {
         super(metaTileEntityId, tier);
     }
 
@@ -40,7 +43,7 @@ public class MetaTileEntityHull extends TieredMetaTileEntity {
     @Override
     public void renderMetaTileEntity(CCRenderState renderState, Matrix4 translation, IVertexOperation[] pipeline) {
         super.renderMetaTileEntity(renderState, translation, pipeline);
-        Textures.ENERGY_OUT.renderSided(getFrontFacing(), renderState, translation, pipeline);
+        Textures.ENERGY_OUT.renderSided(getFrontFacing(), renderState, translation, PipelineUtil.color(pipeline, GTValues.VC[getTier()]));
     }
 
     @Override
@@ -49,7 +52,7 @@ public class MetaTileEntityHull extends TieredMetaTileEntity {
     }
 
     @Override
-    public boolean onRightClick(EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+    public boolean onRightClick(EntityPlayer playerIn, EnumHand hand, EnumFacing facing, CuboidRayTraceResult hitResult) {
         return false;
     }
 

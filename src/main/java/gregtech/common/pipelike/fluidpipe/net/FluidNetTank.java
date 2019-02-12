@@ -1,6 +1,7 @@
 package gregtech.common.pipelike.fluidpipe.net;
 
 import com.google.common.base.Preconditions;
+import gregtech.api.util.PerTickIntCounter;
 import gregtech.common.pipelike.fluidpipe.FluidPipeProperties;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
@@ -8,6 +9,7 @@ import net.minecraftforge.fluids.FluidTank;
 public class FluidNetTank extends FluidTank {
 
     private final FluidPipeNet handle;
+    private final PerTickIntCounter drainedThisTick = new PerTickIntCounter(0);
 
     public FluidNetTank(FluidPipeNet handle) {
         super(0);
@@ -24,36 +26,43 @@ public class FluidNetTank extends FluidTank {
         FluidStack copyStack = resource.copy();
         copyStack.amount = Math.min(copyStack.amount, getMaxThroughput());
         FluidPipeProperties properties = handle.getNodeData();
-        boolean fakeFilled = false;
-        if(copyStack.getFluid().isGaseous(copyStack) && !properties.gasProof) {
-            if(doFill) {
-                //only fire leaking in real fill event
-                this.handle.markNodesAsLeaking(false);
-            }
-            fakeFilled = true;
+        boolean isLeakingPipe = copyStack.getFluid().isGaseous(copyStack) && !properties.gasProof;
+        boolean isBurningPipe = copyStack.getFluid().getTemperature(copyStack) > properties.maxFluidTemperature;
+        if(isLeakingPipe || isBurningPipe) {
+            handle.destroyNetwork(isLeakingPipe, isBurningPipe);
+            return copyStack.amount;
         }
-        if(copyStack.getFluid().getTemperature(copyStack) > properties.maxFluidTemperature) {
-            if(doFill) {
-                //only fire burning in real fill event
-                this.handle.markNodesAsLeaking(true);
-            }
-            fakeFilled = true;
-        }
-        return fakeFilled ? copyStack.amount : super.fill(copyStack, doFill);
+        return super.fill(copyStack, doFill);
     }
 
     @Override
     public FluidStack drain(FluidStack resource, boolean doDrain) {
-        Preconditions.checkNotNull(resource, "resource");
-        FluidStack copyStack = resource.copy();
-        copyStack.amount = Math.min(copyStack.amount, getMaxThroughput());
-        return super.drain(copyStack, doDrain);
+        if(resource == null) {
+            return null;
+        }
+        int maxDrainLeftThisTick = getMaxThroughput() - drainedThisTick.get(handle.getWorldData());
+        int originalAmount = resource.amount;
+        resource.amount = Math.min(originalAmount, maxDrainLeftThisTick);
+        FluidStack resultDrained = super.drain(resource, doDrain);
+        resource.amount = originalAmount;
+        if(resultDrained != null && doDrain) {
+            drainedThisTick.increment(handle.getWorldData(), resultDrained.amount);
+        }
+        return resultDrained;
     }
 
     @Override
     public FluidStack drain(int maxDrain, boolean doDrain) {
-        maxDrain = Math.min(maxDrain, getMaxThroughput());
-        return super.drain(maxDrain, doDrain);
+        int maxDrainLeftThisTick = getMaxThroughput() - drainedThisTick.get(handle.getWorldData());
+        maxDrain = Math.min(maxDrain, maxDrainLeftThisTick);
+        if(maxDrain == 0) {
+            return null;
+        }
+        FluidStack resultDrained = super.drain(maxDrain, doDrain);
+        if(resultDrained != null && doDrain) {
+            drainedThisTick.increment(handle.getWorldData(), resultDrained.amount);
+        }
+        return resultDrained;
     }
 
     public void updateTankCapacity(int newTankCapacity) {

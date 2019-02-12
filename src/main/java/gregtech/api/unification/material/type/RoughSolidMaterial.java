@@ -5,21 +5,23 @@ import gregtech.api.unification.material.MaterialIconSet;
 import gregtech.api.unification.ore.OrePrefix;
 import gregtech.api.unification.stack.MaterialStack;
 
+import java.util.function.Supplier;
+
 public class RoughSolidMaterial extends SolidMaterial {
 
-    private final OrePrefix solidPrefix;
+    //use Supplier to avoid directly referencing and resolving OrePrefix too early,
+    //which leads to class initialization deadlock and probably crash during OrePrefix initialization
+    //instead, we use lazy-computing OrePrefix solid form supplier
+    public final Supplier<OrePrefix> solidFormSupplier;
 
-    public RoughSolidMaterial(int metaItemSubId, String name, int materialRGB, MaterialIconSet materialIconSet, int harvestLevel, ImmutableList<MaterialStack> materialComponents, long materialGenerationFlags, float toolSpeed, int toolDurability, OrePrefix solidPrefix) {
+    public RoughSolidMaterial(int metaItemSubId, String name, int materialRGB, MaterialIconSet materialIconSet, int harvestLevel, ImmutableList<MaterialStack> materialComponents, long materialGenerationFlags, float toolSpeed, int toolDurability, Supplier<OrePrefix> solidFormSupplier) {
         super(metaItemSubId, name, materialRGB, materialIconSet, harvestLevel, materialComponents, materialGenerationFlags, null, toolSpeed, toolDurability);
-        this.solidPrefix = solidPrefix;
+        this.solidFormSupplier = solidFormSupplier;
     }
 
-    public RoughSolidMaterial(int metaItemSubId, String name, int materialRGB, MaterialIconSet materialIconSet, int harvestLevel, ImmutableList<MaterialStack> materialComponents, long materialGenerationFlags, OrePrefix solidPrefix) {
+    public RoughSolidMaterial(int metaItemSubId, String name, int materialRGB, MaterialIconSet materialIconSet, int harvestLevel, ImmutableList<MaterialStack> materialComponents, long materialGenerationFlags, Supplier<OrePrefix> solidFormSupplier) {
         super(metaItemSubId, name, materialRGB, materialIconSet, harvestLevel, materialComponents, materialGenerationFlags, null, 0, 0);
-        this.solidPrefix = solidPrefix;
+        this.solidFormSupplier = solidFormSupplier;
     }
 
-    public OrePrefix getSolidForm() {
-        return solidPrefix;
-    }
 }

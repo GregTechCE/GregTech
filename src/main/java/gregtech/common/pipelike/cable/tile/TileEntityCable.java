@@ -3,16 +3,9 @@ package gregtech.common.pipelike.cable.tile;
 import gregtech.api.capability.GregtechCapabilities;
 import gregtech.api.capability.IEnergyContainer;
 import gregtech.api.pipenet.tile.TileEntityPipeBase;
-import gregtech.common.pipelike.cable.*;
-import gregtech.common.pipelike.cable.net.WorldENet;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.network.NetworkManager;
-import net.minecraft.network.play.server.SPacketUpdateTileEntity;
-import net.minecraft.tileentity.TileEntity;
+import gregtech.common.pipelike.cable.Insulation;
+import gregtech.common.pipelike.cable.WireProperties;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
 
 import javax.annotation.Nullable;
@@ -29,17 +22,22 @@ public class TileEntityCable extends TileEntityPipeBase<Insulation, WireProperti
     }
 
     @Override
-    public boolean hasCapability(Capability<?> capability, @Nullable EnumFacing facing) {
-        return capability == GregtechCapabilities.CAPABILITY_ENERGY_CONTAINER || super.hasCapability(capability, facing);
+    public Class<Insulation> getPipeTypeClass() {
+        return Insulation.class;
+    }
+
+    @Override
+    public boolean supportsTicking() {
+        return false;
     }
 
     @Nullable
     @Override
-    public <T> T getCapability(Capability<T> capability, @Nullable EnumFacing facing) {
+    public <T> T getCapabilityInternal(Capability<T> capability, @Nullable EnumFacing facing) {
         if(capability == GregtechCapabilities.CAPABILITY_ENERGY_CONTAINER) {
             return GregtechCapabilities.CAPABILITY_ENERGY_CONTAINER.cast(getEnergyContainer());
         }
-        return super.getCapability(capability, facing);
+        return super.getCapabilityInternal(capability, facing);
     }
 
 }

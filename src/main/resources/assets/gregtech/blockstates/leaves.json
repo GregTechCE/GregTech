@@ -7,14 +7,14 @@
     }
   },
   "variants": {
-	"check_decay": {
-	  "false": {},
-	  "true": {}
-	},
-	"decayable": {
-	  "false": {},
-	  "true": {}
-	},
+    "check_decay": {
+      "false": {},
+      "true": {}
+    },
+    "decayable": {
+      "false": {},
+      "true": {}
+    },
     "variant": {
       "rubber_wood": {
         "textures": {

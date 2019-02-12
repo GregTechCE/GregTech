@@ -1,6 +1,5 @@
 package gregtech.api.metatileentity;
 
-import com.google.common.base.Preconditions;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.EnumFacing;
@@ -23,6 +22,8 @@ public abstract class MTETrait {
     }
 
     public abstract String getName();
+
+    public abstract int getNetworkID();
 
     /**
      * Returns a capability that this trait is implementing
@@ -55,17 +56,12 @@ public abstract class MTETrait {
     }
 
     public final void writeCustomData(int id, Consumer<PacketBuffer> writer) {
-        Preconditions.checkElementIndex(id, 100, "Only 0-100 sync ids allowed");
-        metaTileEntity.writeCustomData(-4, buffer -> {
-            buffer.writeString(getName());
-            buffer.writeInt(id);
-            writer.accept(buffer);
-        });
+        metaTileEntity.writeTraitData(this, id, writer);
     }
 
-    final void readSyncData(PacketBuffer buffer) {
-        int internalId = buffer.readInt();
-        receiveCustomData(internalId, buffer);
+    protected static final class TraitNetworkIds {
+        public static final int TRAIT_ID_ENERGY_CONTAINER = 1;
+        public static final int TRAIT_ID_WORKABLE = 2;
     }
 
 }

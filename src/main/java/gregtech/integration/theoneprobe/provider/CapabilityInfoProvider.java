@@ -23,13 +23,13 @@ public abstract class CapabilityInfoProvider<T> implements IProbeInfoProvider {
 
     @Override
     public void addProbeInfo(ProbeMode mode, IProbeInfo probeInfo, EntityPlayer player, World world, IBlockState blockState, IProbeHitData data) {
-        if(blockState.getBlock().hasTileEntity(blockState)) {
+        if (blockState.getBlock().hasTileEntity(blockState)) {
             EnumFacing sideHit = data.getSideHit();
             TileEntity tileEntity = world.getTileEntity(data.getPos());
-            if(tileEntity == null) return;
+            if (tileEntity == null) return;
             Capability<T> capability = getCapability();
             T resultCapability = tileEntity.getCapability(capability, sideHit);
-            if(resultCapability != null && allowDisplaying(resultCapability)) {
+            if (resultCapability != null && allowDisplaying(resultCapability)) {
                 addProbeInfo(resultCapability, probeInfo, tileEntity, sideHit);
             }
         }

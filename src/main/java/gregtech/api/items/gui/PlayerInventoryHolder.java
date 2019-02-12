@@ -31,6 +31,11 @@ public class PlayerInventoryHolder implements IUIHolder {
             "Current Item should implement ItemUIFactory");
     }
 
+    public static void openHandItemUI(EntityPlayer player, EnumHand hand) {
+        PlayerInventoryHolder holder = new PlayerInventoryHolder(player, hand);
+        holder.openUI();
+    }
+
     /*package-local*/ ModularUI createUI(EntityPlayer entityPlayer) {
         ItemUIFactory uiFactory = (ItemUIFactory) sampleItem.getItem();
         return uiFactory.createUI(this, entityPlayer);
@@ -44,6 +49,11 @@ public class PlayerInventoryHolder implements IUIHolder {
     public boolean isValid() {
         ItemStack itemStack = player.getHeldItem(hand);
         return ItemStack.areItemsEqual(sampleItem, itemStack);
+    }
+
+    @Override
+    public boolean isRemote() {
+        return player.getEntityWorld().isRemote;
     }
 
     public ItemStack getCurrentItem() {

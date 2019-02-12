@@ -179,7 +179,7 @@ public class SteamRecipeMapWorkableHandler extends RecipeMapWorkableHandler {
 
     @Override
     protected boolean drawEnergy(int recipeEUt) {
-        int resultDraw = (int) Math.floor(recipeEUt / conversionRate);
+        int resultDraw = (int) Math.ceil(recipeEUt / conversionRate);
         return resultDraw >= 0 && steamFluidTank.getFluidAmount() >= resultDraw &&
             steamFluidTank.drain(resultDraw, true) != null;
     }

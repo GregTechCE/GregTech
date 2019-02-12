@@ -14,6 +14,7 @@ import gregtech.api.render.Textures;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.items.IItemHandlerModifiable;
@@ -28,7 +29,7 @@ public class MetaTileEntityItemBus extends MetaTileEntityMultiblockPart implemen
 
     private final boolean isExportHatch;
 
-    public MetaTileEntityItemBus(String metaTileEntityId, int tier, boolean isExportHatch) {
+    public MetaTileEntityItemBus(ResourceLocation metaTileEntityId, int tier, boolean isExportHatch) {
         super(metaTileEntityId, tier);
         this.isExportHatch = isExportHatch;
         initializeInventory();

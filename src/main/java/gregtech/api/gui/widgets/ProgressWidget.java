@@ -23,7 +23,7 @@ public class ProgressWidget extends Widget {
     private double lastProgressValue;
 
     public ProgressWidget(DoubleSupplier progressSupplier, int x, int y, int width, int height) {
-        super(SLOT_DRAW_PRIORITY + 200);
+        super();
         this.progressSupplier = progressSupplier;
         this.x = x;
         this.y = y;
@@ -32,7 +32,7 @@ public class ProgressWidget extends Widget {
     }
 
     public ProgressWidget(DoubleSupplier progressSupplier, int x, int y, int width, int height, TextureArea fullImage, MoveType moveType) {
-        super(SLOT_DRAW_PRIORITY + 200);
+        super();
         this.progressSupplier = progressSupplier;
         this.x = x;
         this.y = y;

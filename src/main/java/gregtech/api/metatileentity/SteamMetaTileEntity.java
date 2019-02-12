@@ -1,5 +1,6 @@
 package gregtech.api.metatileentity;
 
+import codechicken.lib.raytracer.CuboidRayTraceResult;
 import codechicken.lib.render.CCRenderState;
 import codechicken.lib.render.pipeline.ColourMultiplier;
 import codechicken.lib.render.pipeline.IVertexOperation;
@@ -22,6 +23,7 @@ import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -37,7 +39,7 @@ public abstract class SteamMetaTileEntity extends MetaTileEntity {
     protected SteamRecipeMapWorkableHandler workableHandler;
     protected FluidTank steamFluidTank;
 
-    public SteamMetaTileEntity(String metaTileEntityId, RecipeMap<?> recipeMap, OrientedOverlayRenderer renderer, boolean isHighPressure) {
+    public SteamMetaTileEntity(ResourceLocation metaTileEntityId, RecipeMap<?> recipeMap, OrientedOverlayRenderer renderer, boolean isHighPressure) {
         super(metaTileEntityId);
         this.workableHandler = new SteamRecipeMapWorkableHandler(this,
             recipeMap, isHighPressure, steamFluidTank, 1.0);
@@ -65,7 +67,7 @@ public abstract class SteamMetaTileEntity extends MetaTileEntity {
     }
 
     @Override
-    public boolean onWrenchClick(EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+    public boolean onWrenchClick(EntityPlayer playerIn, EnumHand hand, EnumFacing facing, CuboidRayTraceResult hitResult) {
         if(!playerIn.isSneaking()) {
             EnumFacing currentVentingSide = workableHandler.getVentingSide();
             if(currentVentingSide == facing ||
@@ -73,7 +75,7 @@ public abstract class SteamMetaTileEntity extends MetaTileEntity {
             workableHandler.setVentingSide(facing);
             return true;
         }
-        return super.onWrenchClick(playerIn, hand, facing, hitX, hitY, hitZ);
+        return super.onWrenchClick(playerIn, hand, facing, hitResult);
     }
 
     @Override

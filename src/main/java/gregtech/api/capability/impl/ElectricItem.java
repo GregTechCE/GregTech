@@ -45,6 +45,7 @@ public class ElectricItem implements IElectricItem, ICapabilityProvider {
         if (!itemStack.hasTagCompound()) {
             itemStack.setTagCompound(new NBTTagCompound());
         }
+        //noinspection ConstantConditions
         itemStack.getTagCompound().setLong("Charge", change);
         listeners.forEach(l -> l.accept(itemStack, change));
     }
@@ -53,6 +54,7 @@ public class ElectricItem implements IElectricItem, ICapabilityProvider {
         if (!itemStack.hasTagCompound()) {
             itemStack.setTagCompound(new NBTTagCompound());
         }
+        //noinspection ConstantConditions
         itemStack.getTagCompound().setLong("MaxCharge", maxCharge);
     }
 
@@ -66,7 +68,7 @@ public class ElectricItem implements IElectricItem, ICapabilityProvider {
         return maxCharge;
     }
 
-    protected long getCharge() {
+    public long getCharge() {
         NBTTagCompound tagCompound = itemStack.getTagCompound();
         if(tagCompound == null)
             return 0;
@@ -82,6 +84,9 @@ public class ElectricItem implements IElectricItem, ICapabilityProvider {
 
     @Override
     public long charge(long amount, int chargerTier, boolean ignoreTransferLimit, boolean simulate) {
+        if (itemStack.getCount() != 1) {
+            return 0L;
+        }
         if ((chargeable || amount == Long.MAX_VALUE) && (chargerTier == Integer.MAX_VALUE || tier >= chargerTier) && getMaxCharge() > 0) {
             long canReceive = maxCharge - getCharge();
             if (!ignoreTransferLimit) {
@@ -98,7 +103,10 @@ public class ElectricItem implements IElectricItem, ICapabilityProvider {
 
     @Override
     public long discharge(long amount, int chargerTier, boolean ignoreTransferLimit, boolean externally, boolean simulate) {
-        if ((dischargeable || !externally || amount == Long.MAX_VALUE) && (chargerTier == Integer.MAX_VALUE || chargerTier >= tier) && getMaxCharge() > 0) {
+        if (itemStack.getCount() != 1) {
+            return 0L;
+        }
+        if ((dischargeable || !externally || amount == Long.MAX_VALUE) && (chargerTier >= tier) && getMaxCharge() > 0) {
             if (!ignoreTransferLimit) {
                 amount = Math.min(amount, GTValues.V[tier]);
             }
@@ -113,11 +121,6 @@ public class ElectricItem implements IElectricItem, ICapabilityProvider {
     }
 
     @Override
-    public boolean canUse(long amount) {
-        return getMaxCharge() > 0L && getCharge() >= amount;
-    }
-
-    @Override
     public int getTier() {
         return tier;
     }
@@ -129,7 +132,6 @@ public class ElectricItem implements IElectricItem, ICapabilityProvider {
 
     @Nullable
     @Override
-    @SuppressWarnings("unchecked")
     public <T> T getCapability(@Nonnull Capability<T> capability, @Nullable EnumFacing facing) {
         return capability == GregtechCapabilities.CAPABILITY_ELECTRIC_ITEM ? (T) this : null;
     }

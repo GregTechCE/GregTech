@@ -49,17 +49,22 @@ public class GTValues {
     public static final int MAX = 9;
 
     /**
-     * The short Names for the Voltages
+     * The short names for the voltages
      */
     public static final String[] VN = new String[]{"ULV", "LV", "MV", "HV", "EV", "IV", "LuV", "ZPM", "UV", "MAX"};
 
     /**
-     * The long Names for the Voltages
+     * Color values for the voltages
+     */
+    public static final int[] VC = new int[]{0xDCDCDC, 0xDCDCDC, 0xFF6400, 0xFFFF1E, 0x808080, 0xF0F0F5, 0xF0F0F5, 0xF0F0F5, 0xF0F0F5, 0xF0F0F5};
+
+    /**
+     * The long names for the voltages
      */
     public static final String[] VOLTAGE_NAMES = new String[]{"Ultra Low Voltage", "Low Voltage", "Medium Voltage", "High Voltage", "Extreme Voltage", "Insane Voltage", "Ludicrous Voltage", "ZPM Voltage", "Ultimate Voltage", "Maximum Voltage"};
 
     /**
-     * MOD ID Strings, since they are very common Parameters.
+     * ModID strings, since they are quite common parameters
      */
     public static final String MODID = "gregtech",
             MODID_RC = "railcraft",

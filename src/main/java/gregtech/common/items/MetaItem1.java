@@ -15,10 +15,7 @@ import gregtech.api.unification.ore.OrePrefix;
 import gregtech.api.unification.stack.ItemMaterialInfo;
 import gregtech.api.unification.stack.MaterialStack;
 import gregtech.api.util.RandomPotionEffect;
-import gregtech.common.items.behaviors.ColorSprayBehaviour;
-import gregtech.common.items.behaviors.DynamiteBehaviour;
-import gregtech.common.items.behaviors.IntCircuitBehaviour;
-import gregtech.common.items.behaviors.LighterBehaviour;
+import gregtech.common.items.behaviors.*;
 import net.minecraft.block.BlockCauldron;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.resources.I18n;
@@ -117,31 +114,22 @@ public class MetaItem1 extends MaterialMetaItem {
         SHAPE_EXTRUDER_GEAR = addItem(372, "shape.extruder.gear");
         SHAPE_EXTRUDER_BOTTLE = addItem(373, "shape.extruder.bottle");
 
-        SHAPE_SLICER_FLAT = addItem(398, "shape.slicer.flat").setInvisible();
-        SHAPE_SLICER_STRIPES = addItem(399, "shape.slicer.stripes").setInvisible();
-
-        FUEL_CAN_PLASTIC_EMPTY = addItem(400, "fuel.can.plastic.empty")
-            .setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.Plastic, OrePrefix.plate.materialAmount)))
-            .setInvisible();
-        FUEL_CAN_PLASTIC_FILLED = addItem(401, "fuel.can.plastic.filled")
-            .setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.Plastic, OrePrefix.plate.materialAmount)))
-            .setInvisible();
-
         SPRAY_EMPTY = addItem(402, "spray.empty")
             .setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.Tin, OrePrefix.plate.materialAmount * 2L), new MaterialStack(Materials.Redstone, OrePrefix.dust.materialAmount)));
 
         LARGE_FLUID_CELL_STEEL = addItem(405, "large_fluid_cell.steel")
-            .addStats(new FluidStats(16000, Integer.MAX_VALUE, Integer.MAX_VALUE, true))
+            .addStats(new FluidStats(64000, Integer.MIN_VALUE, Integer.MAX_VALUE, true))
             .setMaxStackSize(16)
             .setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.Steel, OrePrefix.plate.materialAmount * 2L + 2L * OrePrefix.ring.materialAmount)));
 
         LARGE_FLUID_CELL_TUNGSTEN_STEEL = addItem(406, "large_fluid_cell.tungstensteel")
-            .addStats(new FluidStats(64000, Integer.MAX_VALUE, Integer.MAX_VALUE, true))
+            .addStats(new FluidStats(256000, Integer.MIN_VALUE, Integer.MAX_VALUE, true))
             .setMaxStackSize(16)
             .setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.TungstenSteel, OrePrefix.plate.materialAmount * 2L + 2L * OrePrefix.ring.materialAmount)));
 
-        for (byte i = 0; i < 16; i = (byte) (i + 1)) {
-            SPRAY_CAN_DYES[i] = addItem(430 + 2 * i, "spray.can.dyes." + EnumDyeColor.byMetadata(i).getName()).setMaxStackSize(1);
+        for (int i = 0; i < EnumDyeColor.values().length; i++) {
+            EnumDyeColor dyeColor = EnumDyeColor.values()[i];
+            SPRAY_CAN_DYES[i] = addItem(430 + 2 * i, "spray.can.dyes." + dyeColor.getName()).setMaxStackSize(1);
             ColorSprayBehaviour behaviour = new ColorSprayBehaviour(SPRAY_EMPTY.getStackForm(), 512, i);
             SPRAY_CAN_DYES[i].addStats(behaviour);
         }
@@ -158,25 +146,6 @@ public class MetaItem1 extends MaterialMetaItem {
             .addStats(new LighterBehaviour(100)).setMaxStackSize(1);
 
         INGOT_IRIDIUM_ALLOY = addItem(480, "ingot.iridiumalloy").setInvisible();
-
-        SCHEMATIC = addItem(490, "schematic")
-            .setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.StainlessSteel, 7257600L)))
-            .setInvisible();
-        SCHEMATIC_CRAFTING = addItem(491, "schematic.crafting")
-            .setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.StainlessSteel, 7257600L)))
-            .setInvisible();
-        SCHEMATIC_1X1 = addItem(495, "schematic.1by1")
-            .setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.StainlessSteel, 7257600L)))
-            .setInvisible();
-        SCHEMATIC_2X2 = addItem(496, "schematic.2by2")
-            .setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.StainlessSteel, 7257600L)))
-            .setInvisible();
-        SCHEMATIC_3X3 = addItem(497, "schematic.3by3")
-            .setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.StainlessSteel, 7257600L)))
-            .setInvisible();
-        SCHEMATIC_DUST = addItem(498, "schematic.dust")
-            .setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.StainlessSteel, 7257600L)))
-            .setInvisible();
 
         BATTERY_HULL_LV = addItem(500, "battery.hull.lv").setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.BatteryAlloy, OrePrefix.plate.materialAmount)));
         BATTERY_HULL_MV = addItem(501, "battery.hull.hv").setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.BatteryAlloy, OrePrefix.plate.materialAmount * 3L)));
@@ -237,7 +206,7 @@ public class MetaItem1 extends MaterialMetaItem {
 
         RUBBER_DROP = addItem(627, "rubber_drop").setBurnValue(200);
 
-        FLUID_FILTER = addItem(628, "fluidfilter").setInvisible();
+        FLUID_FILTER = addItem(628, "fluid_filter");
 
         DYNAMITE = addItem(629, "dynamite").addStats(new DynamiteBehaviour()).setMaxStackSize(16);
         
@@ -330,7 +299,8 @@ public class MetaItem1 extends MaterialMetaItem {
         UPGRADE_MUFFLER = addItem(727, "upgrade.muffler");
         UPGRADE_LOCK = addItem(728, "upgrade.lock");
 
-        COMPONENT_FILTER = addItem(729, "component.filter").setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.Zinc, OrePrefix.foil.materialAmount * 16L))).addOreDict(OreDictNames.craftingFilter).setInvisible();
+        ITEM_FILTER = addItem(729, "item_filter");
+        ORE_DICTIONARY_FILTER = addItem(102, "ore_dictionary_filter");
 
         COVER_CONTROLLER = addItem(730, "cover.controller").setInvisible();
         COVER_ACTIVITY_DETECTOR = addItem(731, "cover.activity.detector").setInvisible();
@@ -343,27 +313,15 @@ public class MetaItem1 extends MaterialMetaItem {
         COVER_CRAFTING = addItem(744, "cover.crafting").setInvisible();
         COVER_DRAIN = addItem(745, "cover.drain").setInvisible();
 
-        COVER_SHUTTER = addItem(749, "cover.shutter").setInvisible();
+        COVER_SHUTTER = addItem(749, "cover.shutter");
 
-        COVER_SOLARPANEL = addItem(750, "cover.solar.panel").setInvisible();
-        COVER_SOLARPANEL_8V = addItem(751, "cover.solar.panel.ulv").setInvisible();
-        COVER_SOLARPANEL_LV = addItem(752, "cover.solar.panel.lv").setInvisible();
-        COVER_SOLARPANEL_MV = addItem(753, "cover.solar.panel.mv").setInvisible();
-        COVER_SOLARPANEL_HV = addItem(754, "cover.solar.panel.hv").setInvisible();
-        COVER_SOLARPANEL_EV = addItem(755, "cover.solar.panel.ev").setInvisible();
-        COVER_SOLARPANEL_IV = addItem(756, "cover.solar.panel.iv").setInvisible();
-        COVER_SOLARPANEL_LUV = addItem(757, "cover.solar.panel.luv").setInvisible();
-        COVER_SOLARPANEL_ZPM = addItem(758, "cover.solar.panel.zpm").setInvisible();
-        COVER_SOLARPANEL_UV = addItem(759, "cover.solar.panel.uv").setInvisible();
-
-        //TOOL_CHEAT = addItem(761, "tool.cheat").addStats(new ElectricStats(-2000000000, -1));
+        COVER_SOLAR_PANEL = addItem(750, "cover.solar.panel");
+        COVER_SOLAR_PANEL_ULV = addItem(751, "cover.solar.panel.ulv");
+        COVER_SOLAR_PANEL_LV = addItem(752, "cover.solar.panel.lv");
 
         FLUID_CELL = addItem(762, "fluid_cell").addStats(new FluidStats(1000, Integer.MIN_VALUE, Integer.MAX_VALUE, false));
-
-        DUCT_TAPE = addItem(764, "duct.tape").addOreDict(OreDictNames.craftingDuctTape).setInvisible();
-        MCGUFFIUM_239 = addItem(765, "mcguffium.239");
-
         INTEGRATED_CIRCUIT = addItem(766, "circuit.integrated").addStats(new IntCircuitBehaviour());
+        FOAM_SPRAYER = addItem(746, "foam_sprayer").addStats(new FoamSprayerBehavior());
     }
 
     public void registerRecipes() {
@@ -376,43 +334,48 @@ public class MetaItem1 extends MaterialMetaItem {
         RecipeMaps.ASSEMBLER_RECIPES.recipeBuilder()
             .input(OrePrefix.dust, Materials.Redstone).input(OrePrefix.plate, Materials.Tin, 2)
             .outputs(SPRAY_EMPTY.getStackForm())
-            .duration(800).EUt(1)
+            .duration(200).EUt(8)
             .buildAndRegister();
 
         RecipeMaps.ASSEMBLER_RECIPES.recipeBuilder()
-            .input(OrePrefix.plate, Materials.Steel).input(OrePrefix.ring, Materials.Steel, 2)
+            .input(OrePrefix.plateDense, Materials.Steel, 2)
+            .input(OrePrefix.ring, Materials.Steel, 8)
             .outputs(LARGE_FLUID_CELL_STEEL.getStackForm())
-            .duration(100)
-            .EUt(64)
+            .circuitMeta(1).duration(100).EUt(64)
             .buildAndRegister();
 
         RecipeMaps.ASSEMBLER_RECIPES.recipeBuilder()
-            .input(OrePrefix.plate, Materials.TungstenSteel).input(OrePrefix.ring, Materials.TungstenSteel, 2)
+            .input(OrePrefix.plateDense, Materials.TungstenSteel, 2)
+            .input(OrePrefix.ring, Materials.TungstenSteel, 8)
             .outputs(LARGE_FLUID_CELL_TUNGSTEN_STEEL.getStackForm())
-            .duration(200)
-            .EUt(256)
+            .circuitMeta(1).duration(200).EUt(256)
+            .buildAndRegister();
+
+        RecipeMaps.ASSEMBLER_RECIPES.recipeBuilder()
+            .input(OrePrefix.plate, Materials.Tin, 6)
+            .inputs(SPRAY_EMPTY.getStackForm())
+            .input(OrePrefix.paneGlass.name(), 1)
+            .outputs(FOAM_SPRAYER.getStackForm())
+            .duration(200).EUt(8)
             .buildAndRegister();
 
         // Matches/lighters recipes
         RecipeMaps.ASSEMBLER_RECIPES.recipeBuilder()
             .input(OrePrefix.stick, Materials.Wood).input(OrePrefix.dustSmall, Materials.Phosphorus)
             .outputs(TOOL_MATCHES.getStackForm())
-            .duration(16)
-            .EUt(16)
+            .duration(16).EUt(16)
             .buildAndRegister();
 
         RecipeMaps.ASSEMBLER_RECIPES.recipeBuilder()
             .input(OrePrefix.stick, Materials.Wood).input(OrePrefix.dustSmall, Materials.Phosphor)
             .outputs(TOOL_MATCHES.getStackForm())
-            .duration(16)
-            .EUt(16)
+            .duration(16).EUt(16)
             .buildAndRegister();
 
         RecipeMaps.ASSEMBLER_RECIPES.recipeBuilder()
             .input(OrePrefix.stick, Materials.Wood, 4).input(OrePrefix.dust, Materials.Phosphorus)
             .outputs(TOOL_MATCHES.getStackForm(4))
-            .duration(64)
-            .EUt(16)
+            .duration(64).EUt(16)
             .buildAndRegister();
 
         RecipeMaps.ASSEMBLER_RECIPES.recipeBuilder()
@@ -564,21 +527,21 @@ public class MetaItem1 extends MaterialMetaItem {
 
         RecipeMaps.CANNER_RECIPES.recipeBuilder()
             .inputs(BATTERY_HULL_HV.getStackForm())
-            .input(OrePrefix.dust, Materials.Cadmium, 32)
+            .input(OrePrefix.dust, Materials.Cadmium, 16)
             .outputs(BATTERY_RE_HV_CADMIUM.getStackForm())
             .duration(1600)
             .EUt(2)
             .buildAndRegister();
         RecipeMaps.CANNER_RECIPES.recipeBuilder()
             .inputs(BATTERY_HULL_HV.getStackForm())
-            .input(OrePrefix.dust, Materials.Lithium, 32)
+            .input(OrePrefix.dust, Materials.Lithium, 16)
             .outputs(BATTERY_RE_HV_LITHIUM.getStackForm())
             .duration(1600)
             .EUt(2)
             .buildAndRegister();
         RecipeMaps.CANNER_RECIPES.recipeBuilder()
             .inputs(BATTERY_HULL_HV.getStackForm())
-            .input(OrePrefix.dust, Materials.Sodium, 32)
+            .input(OrePrefix.dust, Materials.Sodium, 16)
             .outputs(BATTERY_RE_HV_SODIUM.getStackForm())
             .duration(1600)
             .EUt(2)
@@ -638,23 +601,6 @@ public class MetaItem1 extends MaterialMetaItem {
             .outputs(UPGRADE_LOCK.getStackForm())
             .duration(6400)
             .EUt(16)
-            .buildAndRegister();
-
-        // Misc
-        RecipeMaps.ASSEMBLER_RECIPES.recipeBuilder()
-            .input(OrePrefix.plate, Materials.Aluminium, 2)
-            .input(OrePrefix.foil, Materials.Zinc, 16)
-            .fluidInputs(Materials.Plastic.getFluid(144))
-            .outputs(COMPONENT_FILTER.getStackForm())
-            .duration(1600)
-            .EUt(32)
-            .buildAndRegister();
-
-        RecipeMaps.ASSEMBLER_RECIPES.recipeBuilder()
-            .input(OrePrefix.circuit, MarkerMaterials.Tier.Good, 4).input(OrePrefix.plate, Materials.StainlessSteel, 2)
-            .outputs(SCHEMATIC.getStackForm())
-            .duration(3200)
-            .EUt(4)
             .buildAndRegister();
 
         RecipeMaps.ASSEMBLER_RECIPES.recipeBuilder()

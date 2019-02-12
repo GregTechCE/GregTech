@@ -52,14 +52,22 @@ public class EnergyContainerBatteryBuffer extends MTETrait implements IEnergyCon
                 ItemStack batteryStack = inventory.getStackInSlot(i);
                 IElectricItem electricItem = getBatteryContainer(batteryStack);
                 if (electricItem == null) continue;
-                if(electricItem.charge(voltage, getTier(), true, true) == voltage) {
-                    electricItem.charge(voltage, getTier(), true, false);
+                if(chargeOrDischargeItem(electricItem, voltage, getTier(), true)) {
+                    chargeOrDischargeItem(electricItem, voltage, getTier(), false);
                     inventory.setStackInSlot(i, batteryStack);
                     if(--amperage == 0) break;
                 }
             }
         }
         return initialAmperage - amperage;
+    }
+
+    private static boolean chargeOrDischargeItem(IElectricItem electricItem, long voltage, int tier, boolean simulate) {
+        if(voltage > 0) {
+            return electricItem.charge(voltage, tier, true, simulate) == voltage;
+        } else {
+            return electricItem.discharge(-voltage, tier, true, true, simulate) == -voltage;
+        }
     }
 
     @Override
@@ -168,7 +176,7 @@ public class EnergyContainerBatteryBuffer extends MTETrait implements IEnergyCon
     @Override
     public long changeEnergy(long energyToAdd) {
         long inputVoltage = getInputVoltage();
-        return acceptEnergyFromNetwork(null, inputVoltage, energyToAdd / inputVoltage) * inputVoltage;
+        return acceptEnergyFromNetwork(null, energyToAdd > 0 ? inputVoltage : -inputVoltage, Math.abs(energyToAdd) / inputVoltage) * inputVoltage;
     }
 
     @Override
@@ -199,6 +207,11 @@ public class EnergyContainerBatteryBuffer extends MTETrait implements IEnergyCon
     @Override
     public String getName() {
         return "BatteryEnergyContainer";
+    }
+
+    @Override
+    public int getNetworkID() {
+        return TraitNetworkIds.TRAIT_ID_ENERGY_CONTAINER;
     }
 
     @Nullable

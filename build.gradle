@@ -55,10 +55,6 @@ repositories {
         url = "http://maven.tterrag.com/"
     }
     maven {
-        name = "CurseForge"
-        url = "https://minecraft.curseforge.com/api/maven/"
-    }
-    maven {
         name = "ChickenBones maven"
         url = "http://chickenbones.net/maven/"
     }
@@ -91,10 +87,7 @@ dependencies {
     deobfCompile "CraftTweaker2:CraftTweaker2-MC${strippedVersion}-Main:${config.crafttweaker.version}"
     deobfCompile "mezz.jei:jei_${config.minecraft.version}:${config.jei.version}:api"
     deobfCompile "mcjty.theoneprobe:TheOneProbe-${shortVersion}:${shortVersion}-${config.top.version}"
-
-    deobfCompile "baubles:Baubles:${shortVersion}:${config.baubles.version}"
     deobfCompile "cofh:ThermalDynamics:${config.minecraft.version}-${config.thermaldynamics.version}:deobf"
-    deobfCompile "thaumcraft:Thaumcraft:${config.minecraft.version}:${config.thaumcraft.version}"
 
 }
 
@@ -175,6 +168,7 @@ task ciWriteBuildNumber doLast {
 String getVersionFromJava(File file) {
     String major = "0"
     String minor = "0"
+    String revision = "0"
 
     String prefix = "public static final int"
     file.eachLine { String s ->
@@ -186,17 +180,18 @@ String getVersionFromJava(File file) {
 
             if (pts[0] == "MAJOR") major = pts[pts.length - 1]
             else if (pts[0] == "MINOR") minor = pts[pts.length - 1]
+            else if (pts[0] == "REVISION") revision = pts[pts.length - 1]
         }
     }
 
     def branchName = System.getenv("CI_COMMIT_REF_NAME")
     if (branchName != null && branchName != "master") {
-        return "$major.$minor.0-$branchName"
+        return "$major.$minor.$revision-$branchName"
     }
 
     String build = System.getenv("BUILD_NUMBER") ?: 0
 
-    return "$major.$minor.$build"
+    return "$major.$minor.$revision.$build"
 }
 
 curseforge {

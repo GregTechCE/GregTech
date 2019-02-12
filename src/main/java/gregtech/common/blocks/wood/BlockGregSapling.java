@@ -4,6 +4,7 @@ import gregtech.api.GregTechAPI;
 import gregtech.common.blocks.MetaBlocks;
 import gregtech.common.blocks.wood.BlockGregLog.LogVariant;
 import net.minecraft.block.*;
+import net.minecraft.block.BlockLog.EnumAxis;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.properties.PropertyInteger;
 import net.minecraft.block.state.BlockStateContainer;
@@ -16,9 +17,12 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraft.world.gen.feature.*;
+import net.minecraft.world.gen.feature.WorldGenBigTree;
+import net.minecraft.world.gen.feature.WorldGenTrees;
+import net.minecraft.world.gen.feature.WorldGenerator;
 import net.minecraftforge.common.EnumPlantType;
 import net.minecraftforge.common.IPlantable;
+import net.minecraftforge.event.terraingen.TerrainGen;
 
 import java.util.Random;
 
@@ -109,16 +113,46 @@ public class BlockGregSapling extends BlockBush implements IGrowable, IPlantable
     }
 
     public void generateTree(World worldIn, BlockPos pos, IBlockState state, Random rand) {
-        WorldGenerator worldgenerator = new WorldGenTrees(true, 6,
-            MetaBlocks.LOG.getDefaultState()
-                .withProperty(BlockGregLog.VARIANT, LogVariant.RUBBER_WOOD)
-                .withProperty(BlockGregLog.NATURAL, true),
-            MetaBlocks.LEAVES.getDefaultState()
-                .withProperty(BlockGregLog.VARIANT, LogVariant.RUBBER_WOOD),
-            false);
+        if (!TerrainGen.saplingGrowTree(worldIn, rand, pos)) return;
+        WorldGenerator worldgenerator;
+        IBlockState logState = MetaBlocks.LOG.getDefaultState()
+            .withProperty(BlockGregLog.VARIANT, LogVariant.RUBBER_WOOD)
+            .withProperty(BlockGregLog.NATURAL, true);
+        IBlockState leavesState = MetaBlocks.LEAVES.getDefaultState()
+            .withProperty(BlockGregLeaves.VARIANT, LogVariant.RUBBER_WOOD);
+        if(rand.nextInt(10) == 0) {
+            worldgenerator = new WorldGenBigTreeCustom(true, logState, leavesState.withProperty(BlockGregLeaves.CHECK_DECAY, false), BlockGregLog.LOG_AXIS);
+        } else {
+            worldgenerator = new WorldGenTrees(true, 6, logState, leavesState, false);
+        }
         worldIn.setBlockState(pos, Blocks.AIR.getDefaultState(), 4);
         if (!worldgenerator.generate(worldIn, rand, pos)) {
             worldIn.setBlockState(pos, state, 4);
+        }
+    }
+
+    public static class WorldGenBigTreeCustom extends WorldGenBigTree {
+
+        private final IBlockState logBlock;
+        private final IBlockState leavesBlock;
+        private final PropertyEnum<EnumAxis> logAxisProperty;
+
+        public WorldGenBigTreeCustom(boolean notify, IBlockState logBlock, IBlockState leavesBlock, PropertyEnum<EnumAxis> logAxisProperty) {
+            super(notify);
+            this.logBlock = logBlock;
+            this.leavesBlock = leavesBlock;
+            this.logAxisProperty = logAxisProperty;
+        }
+
+        @Override
+        protected void setBlockAndNotifyAdequately(World worldIn, BlockPos pos, IBlockState state) {
+            if(state.getBlock() instanceof BlockLeaves) {
+                state = leavesBlock;
+            } else if(state.getBlock() instanceof BlockLog) {
+                EnumAxis rotation = state.getValue(BlockLog.LOG_AXIS);
+                state = logBlock.withProperty(logAxisProperty, rotation);
+            }
+            super.setBlockAndNotifyAdequately(worldIn, pos, state);
         }
     }
 

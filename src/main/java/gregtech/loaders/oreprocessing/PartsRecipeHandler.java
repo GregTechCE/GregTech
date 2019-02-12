@@ -77,7 +77,7 @@ public class PartsRecipeHandler {
         RecipeMaps.LATHE_RECIPES.recipeBuilder()
             .input(OrePrefix.bolt, material)
             .outputs(screwStack)
-            .duration((int) Math.max(1, material.getMass() / 8L)).EUt(4)
+            .duration((int) Math.max(1, material.getAverageMass() / 8L)).EUt(4)
             .buildAndRegister();
 
         ModHandler.addShapedRecipe(String.format("screw_%s", material.toString()),
@@ -90,7 +90,7 @@ public class PartsRecipeHandler {
         RecipeMaps.BENDER_RECIPES.recipeBuilder()
             .input(OrePrefix.plate, material)
             .outputs(GTUtility.copyAmount(4, foilStack))
-            .duration((int) material.getMass()).EUt(24)
+            .duration((int) material.getAverageMass()).EUt(24)
             .circuitMeta(0)
             .buildAndRegister();
     }
@@ -110,7 +110,7 @@ public class PartsRecipeHandler {
                 .input(OrePrefix.ingot, material, 4)
                 .notConsumable(MetaItems.SHAPE_EXTRUDER_GEAR)
                 .outputs(OreDictUnifier.get(gearPrefix, material))
-                .duration((int) material.getMass() * 5)
+                .duration((int) material.getAverageMass() * 5)
                 .EUt(8 * voltageMultiplier)
                 .buildAndRegister();
 
@@ -118,7 +118,7 @@ public class PartsRecipeHandler {
                 .input(OrePrefix.ingot, material, 8)
                 .notConsumable(MetaItems.SHAPE_MOLD_GEAR)
                 .outputs(OreDictUnifier.get(gearPrefix, material))
-                .duration((int) material.getMass() * 10)
+                .duration((int) material.getAverageMass() * 10)
                 .EUt(2 * voltageMultiplier)
                 .buildAndRegister();
         }
@@ -152,7 +152,7 @@ public class PartsRecipeHandler {
         RecipeMaps.LATHE_RECIPES.recipeBuilder()
             .input(OrePrefix.plate, material)
             .outputs(stack, OreDictUnifier.get(OrePrefix.dustSmall, material))
-            .duration((int) (material.getMass() / 2L))
+            .duration((int) (material.getAverageMass() / 2L))
             .EUt(16)
             .buildAndRegister();
 
@@ -195,7 +195,7 @@ public class PartsRecipeHandler {
             .input(OrePrefix.plate, material, 9)
             .circuitMeta(2)
             .outputs(OreDictUnifier.get(orePrefix, material))
-            .duration((int) Math.max(material.getMass() * 9L, 1L))
+            .duration((int) Math.max(material.getAverageMass() * 9L, 1L))
             .EUt(96)
             .buildAndRegister();
     }
@@ -205,7 +205,7 @@ public class PartsRecipeHandler {
             .input(OrePrefix.ingot, material)
             .notConsumable(MetaItems.SHAPE_EXTRUDER_RING)
             .outputs(OreDictUnifier.get(ringPrefix, material, 4))
-            .duration((int) material.getMass() * 2)
+            .duration((int) material.getAverageMass() * 2)
             .EUt(6 * getVoltageMultiplier(material))
             .buildAndRegister();
 
@@ -261,7 +261,7 @@ public class PartsRecipeHandler {
                 .input(OrePrefix.ingot, material)
                 .notConsumable(MetaItems.SHAPE_EXTRUDER_ROD)
                 .outputs(OreDictUnifier.get(OrePrefix.stick, material, 2))
-                .duration((int) material.getMass() * 2)
+                .duration((int) material.getAverageMass() * 2)
                 .EUt(6 * getVoltageMultiplier(material))
                 .buildAndRegister();
         }
@@ -272,7 +272,7 @@ public class PartsRecipeHandler {
                     CountableIngredient.from(OrePrefix.ingot, material))
                 .outputs(OreDictUnifier.get(stickPrefix, material), OreDictUnifier.get(OrePrefix.dustSmall,
                     ((SolidMaterial) material).macerateInto, 2))
-                .duration((int) Math.max(material.getMass() * 5L, 1L))
+                .duration((int) Math.max(material.getAverageMass() * 5L, 1L))
                 .EUt(16)
                 .buildAndRegister();
         }
@@ -282,7 +282,7 @@ public class PartsRecipeHandler {
             RecipeMaps.CUTTER_RECIPES.recipeBuilder()
                 .input(stickPrefix, material)
                 .outputs(GTUtility.copyAmount(4, boltStack))
-                .duration((int) Math.max(material.getMass() * 2L, 1L)).EUt(4)
+                .duration((int) Math.max(material.getAverageMass() * 2L, 1L)).EUt(4)
                 .buildAndRegister();
 
             ModHandler.addShapedRecipe(String.format("bolt_saw_%s", material.toString()),
@@ -295,16 +295,8 @@ public class PartsRecipeHandler {
             RecipeMaps.FORGE_HAMMER_RECIPES.recipeBuilder()
                 .input(stickPrefix, material, 2)
                 .outputs(OreDictUnifier.get(OrePrefix.stickLong, material))
-                .duration((int) Math.max(material.getMass(), 1L))
+                .duration((int) Math.max(material.getAverageMass(), 1L))
                 .EUt(16)
-                .buildAndRegister();
-        }
-
-        if (material.hasFlag(IngotMaterial.MatFlags.GENERATE_FINE_WIRE)) {
-            RecipeMaps.WIREMILL_RECIPES.recipeBuilder()
-                .input(OrePrefix.stick, material)
-                .outputs(OreDictUnifier.get(OrePrefix.wireFine, material, 4))
-                .duration(50).EUt(4)
                 .buildAndRegister();
         }
     }
@@ -316,7 +308,7 @@ public class PartsRecipeHandler {
             RecipeMaps.CUTTER_RECIPES.recipeBuilder()
                 .input(longStickPrefix, material)
                 .outputs(GTUtility.copyAmount(2, stickStack))
-                .duration((int) Math.max(material.getMass(), 1L)).EUt(4)
+                .duration((int) Math.max(material.getAverageMass(), 1L)).EUt(4)
                 .buildAndRegister();
 
             ModHandler.addShapedRecipe(String.format("stick_long_%s", material.toString()),
@@ -355,7 +347,7 @@ public class PartsRecipeHandler {
         RecipeMaps.ASSEMBLER_RECIPES.recipeBuilder()
             .input(OrePrefix.turbineBlade, material, 8)
             .input(OrePrefix.stickLong, Materials.Titanium)
-            .outputs(MetaItems.TURBINE.getStackForm(material, null))
+            .outputs(MetaItems.TURBINE.getStackForm(material))
             .duration(320)
             .EUt(400)
             .buildAndRegister();

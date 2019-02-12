@@ -33,9 +33,4 @@ public class ToolPickaxe extends ToolBase {
             block.getMaterial() == Material.GLASS;
     }
 
-    @Override
-    public boolean hasMaterialHandle() {
-        return true;
-    }
-
 }

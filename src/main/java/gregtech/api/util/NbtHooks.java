@@ -1,8 +1,9 @@
 package gregtech.api.util;
 
-import net.minecraft.enchantment.Enchantment;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.*;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
+import net.minecraft.nbt.NBTTagString;
 import net.minecraft.util.text.TextFormatting;
 
 public class NbtHooks {
@@ -50,31 +51,5 @@ public class NbtHooks {
     public static String getBookAuthor(ItemStack stack) {
         NBTTagCompound compound = GTUtility.getOrCreateNbtCompound(stack);
         return compound.getString("author");
-    }
-
-    public static void addEnchantment(ItemStack stack, Enchantment enchantment, int level) {
-        NBTTagCompound compound = GTUtility.getOrCreateNbtCompound(stack), tEnchantmentTag;
-        if (!compound.hasKey("ench", 9)) compound.setTag("ench", new NBTTagList());
-        NBTTagList tagList = compound.getTagList("ench", 10);
-
-        boolean temp = true;
-
-        for (int i = 0; i < tagList.tagCount(); i++) {
-            tEnchantmentTag = tagList.getCompoundTagAt(i);
-            if (tEnchantmentTag.getShort("id") == Enchantment.getEnchantmentID(enchantment)) {
-                tEnchantmentTag.setShort("id", (short) Enchantment.getEnchantmentID(enchantment));
-                tEnchantmentTag.setShort("lvl", (byte) level);
-                temp = false;
-                break;
-            }
-        }
-
-        if (temp) {
-            tEnchantmentTag = new NBTTagCompound();
-            tEnchantmentTag.setShort("id", (short) Enchantment.getEnchantmentID(enchantment));
-            tEnchantmentTag.setShort("lvl", (byte) level);
-            tagList.appendTag(tEnchantmentTag);
-        }
-        stack.setTagCompound(compound);
     }
 }
