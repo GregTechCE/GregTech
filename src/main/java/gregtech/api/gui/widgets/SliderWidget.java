@@ -108,7 +108,7 @@ public class SliderWidget extends Widget {
     }
 
     @Override
-    public void mouseDragged(int mouseX, int mouseY, int button, long timeDragged) {
+    public boolean mouseDragged(int mouseX, int mouseY, int button, long timeDragged) {
         if (this.isMouseDown) {
             this.sliderPosition = (float) (mouseX - (this.xPosition + 4)) / (float) (this.width - 8);
 
@@ -122,11 +122,13 @@ public class SliderWidget extends Widget {
 
             this.displayString = this.getDisplayString();
             writeClientAction(1, buffer -> buffer.writeFloat(sliderPosition));
+            return true;
         }
+        return false;
     }
 
     @Override
-    public void mouseClicked(int mouseX, int mouseY, int button) {
+    public boolean mouseClicked(int mouseX, int mouseY, int button) {
         if (isMouseOver(xPosition, yPosition, width, height, mouseX, mouseY)) {
             this.sliderPosition = (float) (mouseX - (this.xPosition + 4)) / (float) (this.width - 8);
 
@@ -139,12 +141,15 @@ public class SliderWidget extends Widget {
             }
             this.displayString = this.getDisplayString();
             this.isMouseDown = true;
+            return true;
         }
+        return false;
     }
 
     @Override
-    public void mouseReleased(int mouseX, int mouseY, int button) {
+    public boolean mouseReleased(int mouseX, int mouseY, int button) {
         this.isMouseDown = false;
+        return false;
     }
 
     @Override

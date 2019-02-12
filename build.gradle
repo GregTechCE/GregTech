@@ -88,7 +88,6 @@ dependencies {
     deobfCompile "mezz.jei:jei_${config.minecraft.version}:${config.jei.version}:api"
     deobfCompile "mcjty.theoneprobe:TheOneProbe-${shortVersion}:${shortVersion}-${config.top.version}"
     deobfCompile "cofh:ThermalDynamics:${config.minecraft.version}-${config.thermaldynamics.version}:deobf"
-
 }
 
 sourceCompatibility = "1.8"
@@ -207,11 +206,11 @@ curseforge {
         releaseType = 'beta'
 
         relations {
-            requiredLibrary 'codechicken-lib-1-8'
-            optionalLibrary 'forge-multipart-cbe'
-            optionalLibrary 'crafttweaker'
-            optionalLibrary 'jei'
-            optionalLibrary 'the-one-probe'
+            requiredDependency 'codechicken-lib-1-8'
+            optionalDependency 'forge-multipart-cbe'
+            optionalDependency 'crafttweaker'
+            optionalDependency 'jei'
+            optionalDependency 'the-one-probe'
         }
 
         addArtifact source

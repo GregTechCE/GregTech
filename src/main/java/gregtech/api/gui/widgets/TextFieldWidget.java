@@ -46,15 +46,13 @@ public class TextFieldWidget extends Widget {
     }
 
     @Override
-    public void mouseClicked(int mouseX, int mouseY, int button) {
-        super.mouseClicked(mouseX, mouseY, button);
-        this.textField.mouseClicked(mouseX, mouseY, button);
+    public boolean mouseClicked(int mouseX, int mouseY, int button) {
+        return this.textField.mouseClicked(mouseX, mouseY, button);
     }
 
     @Override
-    public void keyTyped(char charTyped, int keyCode) {
-        super.keyTyped(charTyped, keyCode);
-        this.textField.textboxKeyTyped(charTyped, keyCode);
+    public boolean keyTyped(char charTyped, int keyCode) {
+        return this.textField.textboxKeyTyped(charTyped, keyCode);
     }
 
     @Override

@@ -60,8 +60,7 @@ public class ClickButtonWidget extends Widget {
     }
 
     @Override
-    public void mouseClicked(int mouseX, int mouseY, int button) {
-        super.mouseClicked(mouseX, mouseY, button);
+    public boolean mouseClicked(int mouseX, int mouseY, int button) {
         if(isMouseOver(xPosition, yPosition, width, height, mouseX, mouseY)) {
             boolean isShiftClick = Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) || Keyboard.isKeyDown(Keyboard.KEY_RSHIFT);
             boolean isCtrlClick = Keyboard.isKeyDown(Keyboard.KEY_LCONTROL) || Keyboard.isKeyDown(Keyboard.KEY_RCONTROL);
@@ -70,7 +69,9 @@ public class ClickButtonWidget extends Widget {
                 buffer.writeBoolean(isCtrlClick);
             });
             playButtonClickSound();
+            return true;
         }
+        return false;
     }
 
     @Override

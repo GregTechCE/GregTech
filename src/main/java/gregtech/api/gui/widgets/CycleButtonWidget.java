@@ -114,13 +114,15 @@ public class CycleButtonWidget extends Widget {
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void mouseClicked(int mouseX, int mouseY, int button) {
+    public boolean mouseClicked(int mouseX, int mouseY, int button) {
         super.mouseClicked(mouseX, mouseY, button);
         if(isMouseOver(xPosition, yPosition, width, height, mouseX, mouseY)) {
             this.currentOption = (currentOption + 1) % optionNames.length;
             writeClientAction(1, buf -> buf.writeVarInt(currentOption));
             playButtonClickSound();
+            return true;
         }
+        return false;
     }
 
 

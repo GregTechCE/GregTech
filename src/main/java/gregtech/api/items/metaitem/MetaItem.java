@@ -454,6 +454,25 @@ public abstract class MetaItem<T extends MetaItem<?>.MetaValueItem> extends Item
     }
 
     @Override
+    public boolean hasContainerItem(ItemStack itemStack) {
+        T item = getItem(itemStack);
+        if (item == null) {
+            return false;
+        }
+        return item.getContainerItemProvider() != null;
+    }
+
+    @Override
+    public ItemStack getContainerItem(ItemStack itemStack) {
+        T item = getItem(itemStack);
+        if (item == null) {
+            return ItemStack.EMPTY;
+        }
+        IItemContainerItemProvider provider = item.getContainerItemProvider();
+        return provider == null ? ItemStack.EMPTY : provider.getContainerItem(itemStack);
+    }
+
+    @Override
     public CreativeTabs[] getCreativeTabs() {
         return new CreativeTabs[] {GregTechAPI.TAB_GREGTECH, GregTechAPI.TAB_GREGTECH_MATERIALS};
     }
@@ -516,6 +535,7 @@ public abstract class MetaItem<T extends MetaItem<?>.MetaValueItem> extends Item
         private IItemMaxStackSizeProvider stackSizeProvider;
         private IItemColorProvider colorProvider;
         private IItemModelIndexProvider modelIndexProvider;
+        private IItemContainerItemProvider containerItemProvider;
 
         private int burnValue = 0;
         private boolean visible = true;
@@ -604,6 +624,8 @@ public abstract class MetaItem<T extends MetaItem<?>.MetaValueItem> extends Item
                     this.colorProvider = (IItemColorProvider) metaItemStats;
                 if(metaItemStats instanceof IItemModelIndexProvider)
                     this.modelIndexProvider = (IItemModelIndexProvider) metaItemStats;
+                if(metaItemStats instanceof IItemContainerItemProvider)
+                    this.containerItemProvider = (IItemContainerItemProvider) metaItemStats;
                 if (metaItemStats instanceof IItemBehaviour)
                     this.behaviours.add((IItemBehaviour) metaItemStats);
                 this.allStats.add(metaItemStats);
@@ -638,12 +660,19 @@ public abstract class MetaItem<T extends MetaItem<?>.MetaValueItem> extends Item
             return uiManager;
         }
 
+        @Nullable
         public IItemColorProvider getColorProvider() {
             return colorProvider;
         }
 
+        @Nullable
         public IItemModelIndexProvider getModelIndexProvider() {
             return modelIndexProvider;
+        }
+
+        @Nullable
+        public IItemContainerItemProvider getContainerItemProvider() {
+            return containerItemProvider;
         }
 
         public int getBurnValue() {

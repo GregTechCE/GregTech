@@ -104,39 +104,51 @@ public class AbstractWidgetGroup extends Widget {
     }
 
     @Override
-    public void mouseClicked(int mouseX, int mouseY, int button) {
+    public boolean mouseClicked(int mouseX, int mouseY, int button) {
         for(Widget widget : widgets) {
             if(isWidgetClickable(widget)) {
-                widget.mouseClicked(mouseX, mouseY, button);
+                if(widget.mouseClicked(mouseX, mouseY, button)) {
+                    return true;
+                }
             }
         }
+        return false;
     }
 
     @Override
-    public void mouseDragged(int mouseX, int mouseY, int button, long timeDragged) {
+    public boolean mouseDragged(int mouseX, int mouseY, int button, long timeDragged) {
         for(Widget widget : widgets) {
             if(isWidgetClickable(widget)) {
-                widget.mouseDragged(mouseX, mouseY, button, timeDragged);
+                if(widget.mouseDragged(mouseX, mouseY, button, timeDragged)) {
+                    return true;
+                }
             }
         }
+        return false;
     }
 
     @Override
-    public void mouseReleased(int mouseX, int mouseY, int button) {
+    public boolean mouseReleased(int mouseX, int mouseY, int button) {
         for(Widget widget : widgets) {
             if(isWidgetClickable(widget)) {
-                widget.mouseReleased(mouseX, mouseY, mouseX);
+                if(widget.mouseReleased(mouseX, mouseY, mouseX)) {
+                    return true;
+                }
             }
         }
+        return false;
     }
 
     @Override
-    public void keyTyped(char charTyped, int keyCode) {
+    public boolean keyTyped(char charTyped, int keyCode) {
         for(Widget widget : widgets) {
             if(isWidgetClickable(widget)) {
-                widget.keyTyped(charTyped, keyCode);
+                if(widget.keyTyped(charTyped, keyCode)) {
+                    return true;
+                }
             }
         }
+        return false;
     }
 
     @Override
