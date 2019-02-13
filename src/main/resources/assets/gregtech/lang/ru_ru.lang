@@ -1,0 +1,2675 @@
+death.attack.heat=%s был cварен заживо.
+death.attack.frost=%s исследовал криогенику.
+death.attack.electric=%s был шокирован.
+death.attack.radiation=%s теперь светится от радости.
+death.attack.turbine=%s заглянул в турбину.
+death.attack.explosion=%s взорвался.
+death.attack.explosion.player=%s взорвался при помощи %s.
+death.attack.heat.player=%s был сварен живым %s.
+death.attack.crusher=%s был измельчен в фарш.
+
+gregtech.top.energy_stored=Энергия:
+gregtech.top.progress=Прогресс:
+gregtech.top.working_disabled=Работа запрещена
+
+gregtech.multiblock.title=Шаблон мультиблочной структуры
+gregtech.multiblock.primitive_blast_furnace.description=Примитивная доменная печь (ПДП) - является многоблочной конструкцией, используемой для варки стали на ранней стадии игры. Хотя она и не очень быстра, он обеспечит вас сталью для ваших первых нужд.
+gregtech.multiblock.coke_oven.description=Коксовая печь - это многоблочная структура, используемая для получения кокосового угля и креозота на ранней стадии игры. Не требует топлива и имеет внутренний бак на 32 ведра креозота. Доступ к инвентарю можно получить через люк коксовой печи.
+gregtech.multiblock.vacuum_freezer.description=Вакуумный морозильник - представляет собой многоблочную конструкцию, в основном используемую для заморозки горячих слитков в обычные слитки. Тем не менее, он также может заморозить другие вещества, к примеру воду.
+gregtech.multiblock.implosion_compressor.description=Детонационный компрессор - это многоблочная структура, в которой используются взрывчатые вещества для превращения пыли в соответствующие камни.
+gregtech.multiblock.pyrolyze_oven.description=Пиролизная печь - представляет собой многоблочную конструкцию, используемую для превращения бревен в древесный уголь и креозотовое масло или золу и тяжелое масло.
+gregtech.multiblock.cracker.description=Крекинговая установка - это многоблочная структура, используемая для высокотемпературной переработка нефти и её фракций с целью получения, продуктов меньшей молекулярной массы.
+gregtech.multiblock.diesel_engine.description=Дизельный двигатель - представляет собой многоблочную конструкцию, которая действует как дизельный генератор для электромобилей.
+gregtech.multiblock.distillation_tower.description=Ректификационная колонна - представляет собой многоблочную конструкцию, используемую для перегонки различных типов нефти и некоторых их побочных продуктов.
+gregtech.multiblock.electric_blast_furnace.description=Электрическая доменная печь (ЭДП) - это многоблочная конструкция, используемая для выплавки сплавов, приготовления металлов и переработки руд. Она необходима для получения высокоуровневых сплавов и металлов, таких как алюминий, нержавеющая сталь и титан, сплав наквада.
+gregtech.multiblock.multi_smelter.description=Плавильная печь - это многоблочная структура, используемая для плавки большого количества изделий одновременно. Различные уровни катушек обеспечивают повышение скорости и повышение энергоэффективности. 16 изделий может быть выплавленно за одну операцию, и может быть умножено с использованием катушек более высокого уровня.
+gregtech.multiblock.large_boiler.description=Большой котел - представляет собой мультиблок, которые генерируют пар из источника энергии и воды. Обычно либо твердое топливо, либо горючая жидкость высокой плотности действует как источник энергии для большого котла. Уровни отличаются только количеством вырабатываемого пара.
+gregtech.multiblock.large_turbine.description=Большие турбины - это мультиблоки, которые вырабатывают энергию из пара, газов и плазмы, вращая ротор турбины. Выход энергии зависит от КПД ротора и текущей скорости турбины.
+metaitem.dust.tooltip.purify=Бросьте в котел, чтобы получить чистую пыль
+metaitem.generic.fluid_container.tooltip=%d/%dЛ %s
+metaitem.generic.fluid_container.tooltip_empty=Пусто
+metaitem.generic.electric_item.tooltip=%d/%d ЭЕ - Уровень §e%d
+metaitem.int_circuit.configuration=Конфигурация: %d
+item.invalid.name=Недопустимый предмет
+fluid.empty=Пусто
+
+metaitem.credit.copper.name=Медный кредит
+metaitem.credit.copper.tooltip=0, 125 кредитов
+metaitem.credit.cupronickel.name=Купроникелевый кредит
+metaitem.credit.cupronickel.tooltip=1 кредит
+metaitem.credit.silver.name=Серебряный кредит
+metaitem.credit.silver.tooltip=8 кредитов
+metaitem.credit.gold.name=Золотой кредит
+metaitem.credit.gold.tooltip=64 кредита
+metaitem.credit.platinum.name=Платиновый кредит
+metaitem.credit.platinum.tooltip=512 кредитов
+metaitem.credit.osmium.name=Осмиевый кредит
+metaitem.credit.osmium.tooltip=4096 кредитов
+metaitem.credit.naquadah.name=Наквадовый кредит
+metaitem.credit.naquadah.tooltip=32768 кредитов
+metaitem.credit.darmstadtium.name=Дармштадтиевый кредит
+metaitem.credit.darmstadtium.tooltip=262144 кредит
+
+metaitem.coin.gold.ancient.name=Древняя золотая монета
+metaitem.coin.gold.ancient.tooltip=Найдено в древних руинах
+metaitem.coin.doge.name=Догкоин
+metaitem.coin.doge.tooltip=Ничего себе много монетка, и как они делают эту криптовалюту, ни разу в шахте такого не встречал
+metaitem.coin.chocolate.name=Шоколадная монета
+metaitem.coin.chocolate.tooltip=Завернуто в золото
+
+metaitem.minecart.wheels.iron.name=Железная колесная пара
+metaitem.minecart.wheels.iron.tooltip=Чтобы возить вещи
+metaitem.minecart.wheels.steel.name=Стальная колесная пара
+metaitem.minecart.wheels.steel.tooltip=Чтобы возить вещи
+
+metaitem.shape.empty.name=Пустая форма
+metaitem.shape.empty.tooltip=Сырье для изготовления пресс-форм и форм
+
+metaitem.dynamite.name=Динамит
+
+metaitem.shape.mold.plate.name=Форма (Пластина)
+metaitem.shape.mold.plate.tooltip=Форма для изготовления пластин
+metaitem.shape.mold.casing.name=Форма (Корпус)
+metaitem.shape.mold.casing.tooltip=Форма для изготовления оболочек
+metaitem.shape.mold.gear.name=Форма (Шестерня)
+metaitem.shape.mold.gear.tooltip=Форма для изготовления зубчатых колес
+metaitem.shape.mold.credit.name=Форма (Чеканка)
+metaitem.shape.mold.credit.tooltip=Форма для изготовления монет (не теряйте!)
+metaitem.shape.mold.bottle.name=Форма (Бутылка)
+metaitem.shape.mold.bottle.tooltip=Форма для изготовления бутылок
+metaitem.shape.mold.ingot.name=Форма (Слиток)
+metaitem.shape.mold.ingot.tooltip=Форма для изготовления слитков
+metaitem.shape.mold.ball.name=Форма (Шар)
+metaitem.shape.mold.ball.tooltip=Форма для изготовления шариков
+metaitem.shape.mold.block.name=Форма (Блок)
+metaitem.shape.mold.block.tooltip=Форма для изготовления блоков
+metaitem.shape.mold.nugget.name=Форма (Самородки)
+metaitem.shape.mold.nugget.tooltip=Форма для изготовления самородков
+metaitem.shape.mold.bun.name=Форма (Булочки)
+metaitem.shape.mold.bun.tooltip=Форма для формовки булочек
+metaitem.shape.mold.bread.name=Форма (Хлеб)
+metaitem.shape.mold.bread.tooltip=Форма для формования хлеба
+metaitem.shape.mold.baguette.name=Форма (Багет)
+metaitem.shape.mold.baguette.tooltip=Форма для формования багетов
+metaitem.shape.mold.cylinder.name=Форма (Цилиндр)
+metaitem.shape.mold.cylinder.tooltip=Форма для формирования цилиндров
+metaitem.shape.mold.anvil.name=Форма (Наковальня)
+metaitem.shape.mold.anvil.tooltip=Форма для формирования наковален
+metaitem.shape.mold.name.name=Форма (Имя)
+metaitem.shape.mold.name.tooltip=Форма для наименования предметов (переименуйте форму с помощью наковальни)
+metaitem.shape.mold.gear.small.name=Форма (Малая шестерня)
+metaitem.shape.mold.gear.small.tooltip=Форма для изготовления маленьких зубчатых колес
+
+metaitem.shape.extruder.plate.name=Форма экструдера (Плита)
+metaitem.shape.extruder.plate.tooltip=Форма экструдера для изготовления тарелок
+metaitem.shape.extruder.rod.name=Форма экструдера (Стержень)
+metaitem.shape.extruder.rod.tooltip=Форма экструдера для изготовления стержней
+metaitem.shape.extruder.bolt.name=Форма экструдера (Болт)
+metaitem.shape.extruder.bolt.tooltip=Форма экструдера для изготовления болтов
+metaitem.shape.extruder.ring.name=Форма экструдера (Кольцо)
+metaitem.shape.extruder.ring.tooltip=Форма экструдера для изготовления колец
+metaitem.shape.extruder.cell.name=Форма экструдера (Ячейка)
+metaitem.shape.extruder.cell.tooltip=Форма экструдера для изготовления клеток
+metaitem.shape.extruder.ingot.name=Форма экструдера (Слиток)
+metaitem.shape.extruder.ingot.tooltip=Форма экструдера, подожди, мы не можем просто использовать печь?
+metaitem.shape.extruder.wire.name=Форма экструдера (Проволока)
+metaitem.shape.extruder.wire.tooltip=Форма экструдера для изготовления проводов
+metaitem.shape.extruder.casing.name=Форма экструдера (Корпус)
+metaitem.shape.extruder.casing.tooltip=Форма экструдера для изготовления оболочек
+metaitem.shape.extruder.pipe.tiny.name=Форма экструдера (Крошечная труба)
+metaitem.shape.extruder.pipe.tiny.tooltip=Форма экструдера для изготовления крошечных труб
+metaitem.shape.extruder.pipe.small.name=Форма экструдера (Малая труба)
+metaitem.shape.extruder.pipe.small.tooltip=Форма экструдера для изготовления небольших труб
+metaitem.shape.extruder.pipe.medium.name=Форма экструдера (Нормальная труба)
+metaitem.shape.extruder.pipe.medium.tooltip=Форма экструдера для изготовления труб
+metaitem.shape.extruder.pipe.large.name=Форма экструдера (Большая труба)
+metaitem.shape.extruder.pipe.large.tooltip=Форма экструдера для изготовления больших труб
+metaitem.shape.extruder.pipe.huge.name=Форма экструдера (Огромная труба)
+metaitem.shape.extruder.pipe.huge.tooltip=Форма экструдера для изготовления полных блочных труб
+metaitem.shape.extruder.block.name=Форма экструдера (Блок)
+metaitem.shape.extruder.block.tooltip=Форма экструдера для изготовления блоков
+metaitem.shape.extruder.sword.name=Форма экструдера (Клинок меча)
+metaitem.shape.extruder.sword.tooltip=Форма экструдера для изготовления мечей
+metaitem.shape.extruder.pickaxe.name=Форма экструдера (Кайло)
+metaitem.shape.extruder.pickaxe.tooltip=Форма экструдера для изготовления кирок
+metaitem.shape.extruder.shovel.name=Форма экструдера (Лопата)
+metaitem.shape.extruder.shovel.tooltip=Форма экструдера для изготовления лопаты
+metaitem.shape.extruder.axe.name=Форма экструдера (Топорище)
+metaitem.shape.extruder.axe.tooltip=Форма экструдера для изготовления осей
+metaitem.shape.extruder.hoe.name=Форма экструдера (Мотыга)
+metaitem.shape.extruder.hoe.tooltip=Форма экструдера для изготовления мотыг
+metaitem.shape.extruder.hammer.name=Форма экструдера (Боек молота)
+metaitem.shape.extruder.hammer.tooltip=Форма экструдера для изготовления молотков
+metaitem.shape.extruder.file.name=Форма экструдера (Напильник)
+metaitem.shape.extruder.file.tooltip=Форма экструдера для изготовления файлов
+metaitem.shape.extruder.saw.name=Форма экструдера (Пильный диск)
+metaitem.shape.extruder.saw.tooltip=Форма экструдера для изготовления пил
+metaitem.shape.extruder.gear.name=Форма экструдера (Шестерня)
+metaitem.shape.extruder.gear.tooltip=Форма экструдера для изготовления зубчатых колес
+metaitem.shape.extruder.bottle.name=Форма экструдера (Бутылка)
+metaitem.shape.extruder.bottle.tooltip=Форма экструдера для изготовления бутылок
+
+metaitem.shape.slicer.flat.name=Лезвие слайсера (Плоское)
+metaitem.shape.slicer.flat.tooltip=Лезвие слайсера для резки плоских кусков
+metaitem.shape.slicer.stripes.name=Лезвие слайсера (Полосы)
+metaitem.shape.slicer.stripes.tooltip=Лезвие слайсера для резки полос
+
+metaitem.fuel.can.plastic.empty.name=Пустая пластиковая канистра
+metaitem.fuel.can.plastic.empty.tooltip=Используется для хранения топлива
+metaitem.fuel.can.plastic.filled.name=Пластиковая канистра
+metaitem.fuel.can.plastic.filled.tooltip=Хорошо горит в дизельных генераторах
+
+metaitem.spray.empty.name=Баллончик (Пустой)
+metaitem.spray.empty.tooltip=Может быть наполнен спреями разных цветов
+
+metaitem.thermos_can.empty.name=Пустой термос
+metaitem.thermos_can.empty.tooltip=Держит горячие вещи горячими и холодные вещи холодными
+
+metaitem.plant.ball.name=Комок биомассы
+
+metaitem.fluid_cell.empty=Пустая
+metaitem.fluid_cell.name=%s капсула
+metaitem.large_fluid_cell.steel.name=%s стальная капсула
+metaitem.large_fluid_cell.tungstensteel.name=%s вольфрамовая капсула
+
+metaitem.spray.can.dyes.white.name=Аэрозоль (Белый)
+metaitem.spray.can.dyes.white.tooltip=Может окрасить в Белый
+metaitem.spray.can.dyes.orange.name=Аэрозоль (Оранжевый)
+metaitem.spray.can.dyes.orange.tooltip=Может окрасить в Оранжевый
+metaitem.spray.can.dyes.magenta.name=Аэрозоль (Пурпурный)
+metaitem.spray.can.dyes.magenta.tooltip=Может окрасить в Пурпурный
+metaitem.spray.can.dyes.light_blue.name=Аэрозоль (Голубой)
+metaitem.spray.can.dyes.light_blue.tooltip=Может окрасить в Голубой
+metaitem.spray.can.dyes.yellow.name=Аэрозоль (Желтый)
+metaitem.spray.can.dyes.yellow.tooltip=Может окрасить в Желтый
+metaitem.spray.can.dyes.lime.name=Аэрозоль (Лаймовый)
+metaitem.spray.can.dyes.lime.tooltip=Может окрасить в Лаймовый
+metaitem.spray.can.dyes.pink.name=Аэрозоль (Розовый)
+metaitem.spray.can.dyes.pink.tooltip=Может окрасить в Розовый
+metaitem.spray.can.dyes.gray.name=Аэрозоль (Серый)
+metaitem.spray.can.dyes.gray.tooltip=Может окрасить в Серый
+metaitem.spray.can.dyes.silver.name=Аэрозоль (Светло серый)
+metaitem.spray.can.dyes.silver.tooltip=Может окрасить в Светло серый
+metaitem.spray.can.dyes.cyan.name=Аэрозоль (Бирюзовый)
+metaitem.spray.can.dyes.cyan.tooltip=Может окрасить в Бирюзовый
+metaitem.spray.can.dyes.purple.name=Аэрозоль (Фиолетовый)
+metaitem.spray.can.dyes.purple.tooltip=Может окрасить в Фиолетовый
+metaitem.spray.can.dyes.blue.name=Аэрозоль (Синий)
+metaitem.spray.can.dyes.blue.tooltip=Может окрасить в Синий
+metaitem.spray.can.dyes.brown.name=Аэрозоль (Коричневый)
+metaitem.spray.can.dyes.brown.tooltip=Может окрасить в Коричневый
+metaitem.spray.can.dyes.green.name=Аэрозоль (Зеленый)
+metaitem.spray.can.dyes.green.tooltip=Может окрасить в Зеленый
+metaitem.spray.can.dyes.red.name=Аэрозоль (Красный)
+metaitem.spray.can.dyes.red.tooltip=Может окрасить в Красный
+metaitem.spray.can.dyes.black.name=Аэрозоль (Черный)
+metaitem.spray.can.dyes.black.tooltip=Может окрасить в Черный
+
+metaitem.tool.matches.name=Спичка
+metaitem.tool.matchbox.name=Коробок спичек
+metaitem.tool.lighter.invar.name=Зажигалка
+metaitem.tool.lighter.platinum.name=Платиновая зажигалка
+metaitem.tool.lighter.platinum.tooltip=На ней выгравирован известный шутник
+
+metaitem.ingot.iridiumalloy.name=Слиток иридиевого сплава
+metaitem.ingot.iridiumalloy.tooltip=Используется для изготовления иридиевых пластин
+
+metaitem.paper.printed.pages.name=Печатные страницы
+metaitem.paper.printed.pages.tooltip=Используется для написания книг
+metaitem.paper.magic.empty.name=Волшебная бумага
+metaitem.paper.magic.page.name=Зачарованная страница
+metaitem.paper.magic.pages.name=Зачарованные страницы
+metaitem.paper.punch.card.empty.name=Перфокарты
+metaitem.paper.punch.card.encoded.name=Перфокарта
+
+metaitem.battery.hull.lv.name=Маленький корпус батареи
+metaitem.battery.hull.lv.tooltip=Пустой LV корпус батареи
+metaitem.battery.hull.hv.name=Средний корпус батареи
+metaitem.battery.hull.hv.tooltip=Пустой MV корпус батареи
+metaitem.battery.hull.mv.name=Большой корпус батареи
+metaitem.battery.hull.mv.tooltip=Пустой HV корпус батареи
+
+metaitem.battery.re.ulv.tantalum.name=Танталовый конденсатор
+metaitem.battery.re.ulv.tantalum.tooltip=Многоразовый
+
+metaitem.battery.su.lv.sulfuricacid.name=Маленькая кислотная батарея
+metaitem.battery.su.lv.sulfuricacid.tooltip=Одноразовая
+metaitem.battery.su.lv.mercury.name=Маленькая ртутная батарея
+metaitem.battery.su.lv.mercury.tooltip=Одноразовая
+
+metaitem.battery.re.lv.cadmium.name=Маленькая кадмиевая батарея
+metaitem.battery.re.lv.cadmium.tooltip=Многоразовый
+metaitem.battery.re.lv.lithium.name=Маленькая литиевая батарея
+metaitem.battery.re.lv.lithium.tooltip=Многоразовый
+metaitem.battery.re.lv.sodium.name=Маленькая натриевая батарея
+metaitem.battery.re.lv.sodium.tooltip=Многоразовый
+
+metaitem.battery.su.mv.sulfuricacid.name=Средняя кислотная батарея
+metaitem.battery.su.mv.sulfuricacid.tooltip=Одноразовый
+metaitem.battery.su.mv.mercury.name=Средняя ртутная батарея
+metaitem.battery.su.mv.mercury.tooltip=Одноразовый
+
+metaitem.battery.re.mv.cadmium.name=Средняя кадмиевая батарея
+metaitem.battery.re.mv.cadmium.tooltip=Многоразовый
+metaitem.battery.re.mv.lithium.name=Средняя литиевая батарея
+metaitem.battery.re.mv.lithium.tooltip=Многоразовый
+metaitem.battery.re.mv.sodium.name=Средняя натриевая батарея
+metaitem.battery.re.mv.sodium.tooltip=Многоразовый
+
+metaitem.battery.su.hv.sulfuricacid.name=Большая кислотная батарея
+metaitem.battery.su.hv.sulfuricacid.tooltip=Одноразовый
+metaitem.battery.su.hv.mercury.name=Большая ртутная батарея
+metaitem.battery.su.hv.mercury.tooltip=Одноразовый
+
+metaitem.battery.re.hv.cadmium.name=Большая кадмиевая батарея
+metaitem.battery.re.hv.cadmium.tooltip=Многоразовый
+metaitem.battery.re.hv.lithium.name=Большая литиевая батарея
+metaitem.battery.re.hv.lithium.tooltip=Многоразовый
+metaitem.battery.re.hv.sodium.name=Большая натриевая батарея
+metaitem.battery.re.hv.sodium.tooltip=Многоразовый
+
+metaitem.energy_crystal.name=Энергетический кристалл
+metaitem.lapotron_crystal.name=Лапотронный кристалл
+metaitem.energy.lapotronicorb.name=Лапотронная энергетическая сфера
+metaitem.energy.lapotronicorb2.name=Кластер лапотронных энергетических сфер
+metaitem.zpm.name=Модуль нулевой точки
+metaitem.zpm2.name=Предельная батарея
+metaitem.zpm2.tooltip=Заполни это, чтобы пройти minecraft
+
+metaitem.electric.motor.lv.name=Электрический двигатель (LV)
+metaitem.electric.motor.mv.name=Электрический двигатель (MV)
+metaitem.electric.motor.hv.name=Электрический двигатель (HV)
+metaitem.electric.motor.ev.name=Электрический двигатель (EV)
+metaitem.electric.motor.iv.name=Электрический двигатель (IV)
+metaitem.electric.motor.luv.name=Электрический двигатель (LuV)
+metaitem.electric.motor.zpm.name=Электрический двигатель (ZPM)
+metaitem.electric.motor.uv.name=Электрический двигатель (UV)
+
+metaitem.electric.pump.lv.name=Электрическая помпа (LV)
+metaitem.electric.pump.lv.tooltip=640 Л/сек (как улучшение)
+metaitem.electric.pump.mv.name=Электрическая помпа (MV)
+metaitem.electric.pump.mv.tooltip=2560 Л/сек (как улучшение)
+metaitem.electric.pump.hv.name=Электрическая помпа (HV)
+metaitem.electric.pump.hv.tooltip=10240 Л/сек (как улучшение)
+metaitem.electric.pump.ev.name=Электрическая помпа (EV)
+metaitem.electric.pump.ev.tooltip=40.960 Л/сек (как улучшение)
+metaitem.electric.pump.iv.name=Электрическая помпа (IV)
+metaitem.electric.pump.iv.tooltip=163.840 Л/сек (как улучшение)
+metaitem.electric.pump.luv.name=Электрическая помпа (LuV)
+metaitem.electric.pump.luv.tooltip=655.360 Л/сек (как улучшение)
+metaitem.electric.pump.zpm.name=Электрическая помпа (ZPM)
+metaitem.electric.pump.zpm.tooltip=2.621.440 Л/сек (как улучшение)
+metaitem.electric.pump.uv.name=Электрическая помпа (UV)
+metaitem.electric.pump.uv.tooltip=10.485.760 Л/сек (как улучшение)
+
+metaitem.fluidregulator.lv.name=Жидкостный регулятор (LV)
+metaitem.fluidregulator.mv.name=Жидкостный регулятор (MV)
+metaitem.fluidregulator.hv.name=Жидкостный регулятор (HV)
+metaitem.fluidregulator.ev.name=Жидкостный регулятор (EV)
+metaitem.fluidregulator.iv.name=Жидкостный регулятор (IV)
+
+metaitem.conveyor.module.lv.name=Конвейерный модуль (LV)
+metaitem.conveyor.module.lv.tooltip=1 Стэк каждые 20 сек (как улучшение)
+metaitem.conveyor.module.mv.name=Конвейерный модуль (MV)
+metaitem.conveyor.module.mv.tooltip=1 Стэк каждые 5 сек (как улучшение)
+metaitem.conveyor.module.hv.name=Конвейерный модуль (HV)
+metaitem.conveyor.module.hv.tooltip=1 Стэк каждые 1 сек (как улучшение)
+metaitem.conveyor.module.ev.name=Конвейерный модуль (EV)
+metaitem.conveyor.module.ev.tooltip=1 Стэк каждые 1/5 сек (как улучшение)
+metaitem.conveyor.module.iv.name=Конвейерный модуль (IV)
+metaitem.conveyor.module.iv.tooltip=1 Стэк каждые 1/20 сек (как улучшение)
+metaitem.conveyor.module.luv.name=Конвейерный модуль (LuV)
+metaitem.conveyor.module.luv.tooltip=1 Стэк каждые 1/20 сек (как улучшение)
+metaitem.conveyor.module.zpm.name=Конвейерный модуль (ZPM)
+metaitem.conveyor.module.zpm.tooltip=1 Стэк каждые 1/20 сек (как улучшение)
+metaitem.conveyor.module.uv.name=Конвейерный модуль (UV)
+metaitem.conveyor.module.uv.tooltip=1 Стэк каждые 1/20 сек (как улучшение)
+
+metaitem.electric.piston.lv.name=Электрический поршень (LV)
+metaitem.electric.piston.mv.name=Электрический поршень (MV)
+metaitem.electric.piston.hv.name=Электрический поршень (HV)
+metaitem.electric.piston.ev.name=Электрический поршень (EV)
+metaitem.electric.piston.iv.name=Электрический поршень (IV)
+metaitem.electric.piston.luv.name=Электрический поршень (LuV)
+metaitem.electric.piston.zpm.name=Электрический поршень (ZPM)
+metaitem.electric.piston.uv.name=Электрический поршень (UV)
+
+metaitem.robot.arm.lv.name=Роботизированный манипулятор (LV)
+metaitem.robot.arm.lv.tooltip=Помещает в определенный слот (как улучшение)
+metaitem.robot.arm.mv.name=Роботизированный манипулятор (MV)
+metaitem.robot.arm.mv.tooltip=Помещает в определенный слот (как улучшение)
+metaitem.robot.arm.hv.name=Роботизированный манипулятор (HV)
+metaitem.robot.arm.hv.tooltip=Помещает в определенный слот (как улучшение)
+metaitem.robot.arm.ev.name=Роботизированный манипулятор (EV)
+metaitem.robot.arm.ev.tooltip=Помещает в определенный слот (как улучшение)
+metaitem.robot.arm.iv.name=Роботизированный манипулятор (IV)
+metaitem.robot.arm.iv.tooltip=Помещает в определенный слот (как улучшение)
+metaitem.robot.arm.luv.name=Роботизированный манипулятор (LuV)
+metaitem.robot.arm.luv.tooltip=Помещает в определенный слот (как улучшение)
+metaitem.robot.arm.zpm.name=Роботизированный манипулятор (ZPM)
+metaitem.robot.arm.zpm.tooltip=Помещает в определенный слот (как улучшение)
+metaitem.robot.arm.uv.name=Роботизированный манипулятор (UV)
+metaitem.robot.arm.uv.tooltip=Помещает в определенный слот (как улучшение)
+
+metaitem.field.generator.lv.name=Генератор поля (LV)
+metaitem.field.generator.mv.name=Генератор поля (MV)
+metaitem.field.generator.hv.name=Генератор поля (HV)
+metaitem.field.generator.ev.name=Генератор поля (EV)
+metaitem.field.generator.iv.name=Генератор поля (IV)
+metaitem.field.generator.luv.name=Генератор поля (LuV)
+metaitem.field.generator.zpm.name=Генератор поля (ZPM)
+metaitem.field.generator.uv.name=Генератор поля (UV)
+
+metaitem.emitter.lv.name=Эмиттер (LV)
+metaitem.emitter.mv.name=Эмиттер (MV)
+metaitem.emitter.hv.name=Эмиттер (HV)
+metaitem.emitter.ev.name=Эмиттер (EV)
+metaitem.emitter.iv.name=Эмиттер (IV)
+metaitem.emitter.luv.name=Эмиттер (LuV)
+metaitem.emitter.zpm.name=Эмиттер (ZPM)
+metaitem.emitter.uv.name=Эмиттер (UV)
+
+metaitem.sensor.lv.name=Сенсор (LV)
+metaitem.sensor.mv.name=Сенсор (MV)
+metaitem.sensor.hv.name=Сенсор (HV)
+metaitem.sensor.ev.name=Сенсор (EV)
+metaitem.sensor.iv.name=Сенсор (IV)
+metaitem.sensor.luv.name=Сенсор (LuV)
+metaitem.sensor.zpm.name=Сенсор (ZPM)
+metaitem.sensor.uv.name=Сенсор (UV)
+
+metaitem.tool.datastick.name=Флешка
+metaitem.tool.datastick.tooltip=Хранение малого объема данных
+metaitem.tool.dataorb.name=Сфера данных
+metaitem.tool.dataorb.tooltip=Хранение большого объема данных
+metaitem.circuit.integrated.name=Интегральная схема
+metaitem.circuit.integrated.tooltip=Щелкните правой кнопкой мыши, чтобы открыть графический интерфейс настройки
+metaitem.circuit.integrated.gui=Конфигурация интегральной схемы
+
+metaitem.circuit.primitive.name=NAND чип
+metaitem.circuit.primitive.tooltip=Очень простая микросхема
+metaitem.circuit.basic.name=Базовый чип
+metaitem.circuit.basic.tooltip=Основная электронная микросхема
+metaitem.circuit.good.name=Хороший чип
+metaitem.circuit.good.tooltip=Хорошая электронная микросхема
+metaitem.circuit.advanced.name=Усовершенствованный чип
+metaitem.circuit.advanced.tooltip=Усовершенствованная электронная микросхема
+metaitem.circuit.data.name=Чип памяти
+metaitem.circuit.data.tooltip=Чип для хранения данных
+metaitem.circuit.elite.name=Процессор
+metaitem.circuit.elite.tooltip=Микросхема управления данными
+metaitem.circuit.master.name=Процессор (HV)
+metaitem.circuit.master.tooltip=Микросхема управления данными высокого напряжения
+
+metaitem.circuit.board.basic.name=Простая печатная плата
+metaitem.circuit.board.basic.tooltip=Простая плата
+metaitem.circuit.board.advanced.name=Усовершенствованная печатная плата
+metaitem.circuit.board.advanced.tooltip=Улучшенная плата
+metaitem.circuit.board.elite.name=Процессорная плата
+metaitem.circuit.board.elite.tooltip=Процессорная плата
+metaitem.circuit.parts.crystal.chip.elite.name=Гравированный кристалл
+metaitem.circuit.parts.crystal.chip.elite.tooltip=Необходим для цепей
+metaitem.circuit.parts.crystal.chip.master.name=Гравированный лапотрон
+metaitem.circuit.parts.crystal.chip.master.tooltip=Необходим для цепей
+metaitem.circuit.parts.advanced.name=Передовые детали чипа
+metaitem.circuit.parts.advanced.tooltip=Передовые детали чипа
+metaitem.circuit.parts.wiring.basic.name=Луженая плата среднего напряжения
+metaitem.circuit.parts.wiring.basic.tooltip=Часть печатных плат
+metaitem.circuit.parts.wiring.advanced.name=Луженая плата высоковольтная
+metaitem.circuit.parts.wiring.advanced.tooltip=Часть печатных плат
+metaitem.circuit.parts.wiring.elite.name=Луженая плата  экстремального напряжения
+metaitem.circuit.parts.wiring.elite.tooltip=Часть печатных плат
+metaitem.empty.board.basic.name=Пустая печатная плата
+metaitem.empty.board.basic.tooltip=Часть платы
+metaitem.empty.board.elite.name=Пустая плата процессора
+metaitem.empty.board.elite.tooltip=Часть платы процессора
+
+metaitem.component.sawblade.diamond.name=Алмазный пильный диск
+metaitem.component.grinder.diamond.name=Алмазная шлифовальная головка
+metaitem.component.grinder.tungsten.name=Вольфрамовая шлифовальная головка
+
+metaitem.quantumeye.tooltip=Квантовый глаз
+metaitem.quantumeye.name=Улучшенный глаз энда
+metaitem.quantumstar.tooltip=Квантовая звезда
+metaitem.quantumstar.name=Улучшенная звезда края
+metaitem.gravistar.name=Гравитационная звезда
+metaitem.gravistar.tooltip=Предельная звезда края
+
+metaitem.upgrade.muffler.name=Глушитель (улучшение)
+metaitem.upgrade.muffler.tooltip=Заставляет машины молчать
+metaitem.upgrade.lock.name=Замок (улучшение)
+metaitem.upgrade.lock.tooltip=Защищает ваши машины
+
+metaitem.item_filter.name=Предметный фильтр
+metaitem.item_filter.tooltip=Фильтрует помещаемые и извлекаемые предметы (улучшение)/nМожет использоваться как обновление конвейера
+metaitem.ore_dictionary_filter.name=Предметный фильтр (словарь руд)
+metaitem.ore_dictionary_filter.tooltip=Фильтрует помещаемые и извлекаемые предметы по словарю руд (улучшение)/nМожет использоваться как обновление конвейера
+metaitem.fluid_filter.name=Жидкостный фильтр
+metaitem.fluid_filter.tooltip=Фильтрует помещаемые и извлекаемые жидкости (улучшение)/nМожет использоваться как обновление насоса
+
+metaitem.cover.controller.name=Контроллер машины
+metaitem.cover.controller.tooltip=Управление работой машины
+metaitem.cover.activity.detector.name=Детектор активности
+metaitem.cover.activity.detector.tooltip=Выдает сигнал красного камня
+metaitem.cover.fluid.detector.name=Детектор жидкости
+metaitem.cover.fluid.detector.tooltip=Выдает сигнал красного камня по заполнению
+metaitem.cover.item.detector.name=Детектор предметов
+metaitem.cover.item.detector.tooltip=Выдает сигнал красного камня по заполнению
+metaitem.cover.energy.detector.name=Детектор энергии
+metaitem.cover.energy.detector.tooltip=Выдает сигнал красного камня по заполнению
+metaitem.cover.player.detector.name=Детектор игрока
+metaitem.cover.player.detector.tooltip=Выдает сигнал красного камня
+
+metaitem.cover.screen.name=Компьютерный монитор
+metaitem.cover.screen.tooltip=Отображает данные
+metaitem.cover.crafting.name=Верстак (улучшение)
+metaitem.cover.crafting.tooltip=Лучше, чем деревянный верстак
+metaitem.cover.shutter.name=Затвор
+metaitem.cover.shutter.tooltip=Инвентарь/Резервуар. Используйте вместе с контроллером машины.
+
+metaitem.cover.solar.panel.name=Солнечная панель
+metaitem.cover.solar.panel.tooltip=Прибудет солнце с тобой
+metaitem.cover.solar.panel.ulv.name=Солнечная панель (ULV)
+metaitem.cover.solar.panel.ulv.tooltip=Солнечная панель очень низкого напряжения
+metaitem.cover.solar.panel.lv.name=Солнечная панель (LV)
+metaitem.cover.solar.panel.lv.tooltip=Солнечная панель низкого напряжения
+
+metaitem.tool.cheat.name=Отладочный сканер
+metaitem.tool.cheat.tooltip=Также бесконечный источник энергии
+metaitem.tool.scanner.name=Портативный сканер
+metaitem.tool.scanner.tooltip=Трикодер
+
+metaitem.duct.tape.name=Авиационно-космическая совершенствованная армированная клейкая лента ФАЛ-84
+metaitem.duct.tape.tooltip=Если вы не можете это исправить, используйте еще больше!
+
+metaitem.gelled_toluene.name=Гелеобразный толуол
+metaitem.gelled_toluene.tooltip=Сырое взрывчатое вещество
+
+metaitem.bottle.purple.drink.name=Фиолетовый напиток
+metaitem.bottle.purple.drink.tooltip=Как насчет лимонада. Или ледяного чая? Я получил пурпурный напиток!
+
+metaitem.food.chum.name=Chum
+metaitem.food.chum.tooltip=Chum is Fum!
+metaitem.food.chum.on.stick.name=Chum on a Stick
+metaitem.food.chum.on.stick.tooltip=Don't forget to try our Chum-balaya
+
+metaitem.dye.indigo.name=Фиолетовый краситель
+metaitem.dye.indigo.tooltip=Фиолетовый краситель
+
+metaitem.dye.white.name=Белый краситель
+metaitem.dye.orange.name=Оранжевый краситель
+metaitem.dye.magenta.name=Пурпурный краситель
+metaitem.dye.light_blue.name=Голубой краситель
+metaitem.dye.yellow.name=Желтый краситель
+metaitem.dye.lime.name=Лаймовый краситель
+metaitem.dye.pink.name=Розовый краситель
+metaitem.dye.gray.name=Серый краситель
+metaitem.dye.silver.name=SiLVer краситель
+metaitem.dye.cyan.name=Бирюзовый краситель
+metaitem.dye.purple.name=Фиолетовый краситель
+metaitem.dye.blue.name=Синий краситель
+metaitem.dye.brown.name=Коричневый краситель
+metaitem.dye.green.name=Зеленый краситель
+metaitem.dye.red.name=Красный краситель
+metaitem.dye.black.name=Черный краситель
+
+metaitem.sfmixture.name=Основа супер топлива
+metaitem.sfmixture.tooltip=Сырье
+metaitem.msfmixture.name=Основа магического супер топлива
+metaitem.msfmixture.tooltip=Сырье
+
+metaitem.rubber_drop.name=Резина
+metaitem.plant_ball.name=Комок биомассы
+metaitem.tool_parts_box.name=Ящик для инструментов
+metaitem.tool_parts_box.tooltip=Для хранения инструментов/nЩелкните правой кнопкой, чтобы открыть
+metaitem.foam_sprayer.name=Пенный распылитель
+metaitem.foam_sprayer.tooltip=Распыляет строительную пену/nЩелкните правой кнопкой, чтобы запенить соединенные рамки./nИспользуйте металл для создания армированного бетона/nПена может быть цветной
+metaitem.energium_dust.name=Энергетическая пыль
+metaitem.compressed.fireclay.name=Сжатая шамотная глина
+metaitem.compressed.clay.name=Сжатая глина
+metaitem.brick.fireclay.name=Кирпич из шамотной глины
+metaitem.brick.coke.name=Кирпич коксовой печи
+metaitem.wooden_form.empty.name=Пустая деревянная форма
+metaitem.wooden_form.brick.name=Деревянная форма для кирпича
+
+metaitem.tool.sword.name=%s меч
+metaitem.tool.pickaxe.name=%s кирка
+metaitem.tool.shovel.name=%s лопата
+metaitem.tool.axe.name=%s топор
+metaitem.tool.hoe.name=%s мотыга
+metaitem.tool.saw.name=%s пила
+metaitem.tool.saw.tooltip=Может также добывать лед
+metaitem.tool.hard_hammer.name=%s молот
+metaitem.tool.hard_hammer.tooltip=Раздавливает руды, а не собирает их
+metaitem.tool.soft_hammer.name=%s мягкий молот
+metaitem.tool.wrench.name=%s ключ
+metaitem.tool.wrench.tooltip=Удерживайте левую кнопку, чтобы демонтировать машины
+metaitem.tool.file.name=%s напильник
+metaitem.tool.crowbar.name=%s лом
+metaitem.tool.crowbar.tooltip=Снимает крышки и вращает рельсы
+metaitem.tool.screwdriver.name=%s отвертка
+metaitem.tool.screwdriver.tooltip=/nЩелкните правой кнопкой на стороне машины, чтобы увеличить индекс фильтра выходного бака./nКогда установлен фильтр выходного бака, на этой стороне разрешено выводить только жидкости с указанным индексом бака.
+metaitem.tool.mortar.name=%s ступа
+metaitem.tool.wire_cutter.name=%s кусачки
+metaitem.tool.scoop.name=%s совок
+metaitem.tool.branch_cutter.name=%s секатор
+metaitem.tool.universal_spade.name=%s универсальная лопата
+metaitem.tool.knife.name=%s нож
+metaitem.tool.butchery_knife.name=%s нож-топорик мясника
+metaitem.tool.butchery_knife.tooltip=Имеет низкую скорость атаки
+metaitem.tool.sense.name=%s коса
+metaitem.tool.sense.tooltip=Подойдет для заготовки сена любимому коню
+metaitem.tool.plow.name=%s плуг
+metaitem.tool.plow.tooltip=Используется для избавления от снега
+metaitem.tool.plunger.name=%s вантуз
+metaitem.tool.rolling_pin.name=%s скалка
+metaitem.tool.drill.lv.name=%s дрель (LV)
+metaitem.tool.drill.mv.name=%s дрель (MV)
+metaitem.tool.drill.hv.name=%s дрель (HV)
+metaitem.tool.chainsaw.lv.name=%s пила (LV)
+metaitem.tool.chainsaw.lv.tooltip=Можно также собирать лед
+metaitem.tool.chainsaw.mv.name=%s пила (MV)
+metaitem.tool.chainsaw.mv.tooltip=Можно также собирать лед
+metaitem.tool.chainsaw.hv.name=%s пила (HV)
+metaitem.tool.chainsaw.hv.tooltip=Можно также собирать лед
+metaitem.tool.wrench.lv.name=%s ключ (LV)
+metaitem.tool.wrench.lv.tooltip=Удерживайте левую кнопку, чтобы демонтировать машины
+metaitem.tool.wrench.mv.name=%s ключ (MV)
+metaitem.tool.wrench.mv.tooltip=Удерживайте левую кнопку, чтобы демонтировать машины
+metaitem.tool.wrench.hv.name=%s ключ (HV)
+metaitem.tool.wrench.hv.tooltip=Удерживайте левую кнопку, чтобы демонтировать машины
+metaitem.tool.jackhammer.name=%s перфоратор (HV)
+metaitem.tool.jackhammer.tooltip=Разбивает скалы на куски
+metaitem.tool.buzzsaw.name=%s циркулярная пила (LV)
+metaitem.tool.buzzsaw.tooltip=Не подходит для уборки блоков
+metaitem.tool.screwdriver.lv.name=%s отвертка (LV)
+metaitem.tool.screwdriver.lv.tooltip=Регулирует покрытия и машины
+metaitem.tool.soldering_iron.lv.name=%s паяльник (LV)
+metaitem.tool.soldering_iron.lv.tooltip=Служит для починки сгоревших схем. Необходим припой в инвентаре и 10kEU
+metaitem.tool.turbine.name=%s ротор турбины
+metaitem.tool.turbine.tooltip=Турбинные роторы для вашей электростанции
+metaitem.tool.magnifying_glass.name=%s увеличительное стекло
+
+metaitem.tool.tooltip.primary_material=Первичный материал: %s (%s ур.)
+metaitem.tool.tooltip.handle_material=Материал ручки: %s (%s ур.)
+metaitem.tool.tooltip.attack_damage=Наносимый урон: %d
+metaitem.tool.tooltip.mining_speed=Скорость добычи: %d
+metaitem.tool.tooltip.durability=Прочность: %d/%d
+metaitem.tool.tooltip.rotor.efficiency=Эффективность ротора: %d%%
+metaitem.tool.tooltip.hammer.extra_drop=Имеет 50%% шанс добыть еще 1 дробленую руду
+
+cover.ore_dictionary_filter.title=Фильтр по словарю руд
+cover.ore_dictionary_filter.title1=Название по словарю руд
+cover.ore_dictionary_filter.title2=(используйте * как подстановочный знак)
+
+cover.fluid_filter.title=Жидкостный фильтр
+cover.fluid_filter.mode.filter_fill=Фильтрирует при наполнении
+cover.fluid_filter.mode.filter_drain=Фильтрирует при сливе
+
+cover.item_filter.title=Предиетный фильтр
+cover.filter.mode.filter_insert=Фильтрирует помещаемые предметы
+cover.filter.mode.filter_extract=Фильтрирует извлекаемые предметы
+
+cover.conveyor.title=Настройки покрытия конвейера (%s)
+cover.conveyor.transfer_rate=%s предметов/сек.
+cover.conveyor.mode.export=Режим: Экспорт
+cover.conveyor.mode.import=Режим: Импорт
+cover.conveyor.item_filter.title=Фильтр предметов
+cover.conveyor.ore_dictionary.title=Название по словарю руд
+cover.conveyor.ore_dictionary.title2=(используйте * как подстановочный знак)
+
+cover.robotic_arm.title=Настройки роботизированной руки (%s)
+cover.robotic_arm.transfer_mode.transfer_any=Перемещение любых предметов
+cover.robotic_arm.transfer_mode.transfer_exact=Точное перемещение
+cover.robotic_arm.transfer_mode.keep_exact=Фиксированя точность
+cover.robotic_arm.transfer_mode.description=§eПеремещение любых предметов§r - в этом режиме улучшение будет передавать как можно больше предметов, соответствующих фильтру./n§eТочное перемещение§r - в этом режиме улучшение будет поставлять предметы порциями, указанными в слотах фильтра предметов (или скоростью передачи для фильтра словаря руды). Если количество предметов меньше размера порции, предметы не будут перемещены ./n§eФиксированя точность§r - в этом режиме обложка сохранит указанное количество предметов в целевом инвентаре, предоставляя дополнительное количество предметов, если это необходимо./n§7Подсказка: щелкните левой или правой кнопкой мыши на слотах фильтра, чтобы изменить количество предметов, используйте Shift, чтобы изменять количество быстрее.
+
+cover.pump.title=Настройки покртия насоса (%s)
+cover.pump.transfer_rate=%s мВ/сек.
+cover.pump.mode.export=Режим: Экспорт
+cover.pump.mode.import=Режим: Импорт
+cover.pump.fluid_filter.title=Жидкостный фильтр
+
+# %s is a localized material name
+item.material.oreprefix.oreBlackgranite=%s (Черногранитная руда)
+item.material.oreprefix.oreRedgranite=%s (Красногранитная руда)
+item.material.oreprefix.oreMarble=%s (Мраморная руда)
+item.material.oreprefix.oreBasalt=%s (Базальтовая руда)
+item.material.oreprefix.oreSand=%s (Песчаная руда)
+item.material.oreprefix.oreGravel=%s (Гравийная руда)
+item.material.oreprefix.oreNetherrack=%s (Адскокаменная руда)
+item.material.oreprefix.oreNether=%s (Адская руда)
+item.material.oreprefix.oreDense=%s (Плотная руда)
+item.material.oreprefix.oreRich=%s (Богатая руда)
+item.material.oreprefix.oreNormal=%s (Нормальная руда)
+item.material.oreprefix.oreSmall=%s (Маленькая руда)
+item.material.oreprefix.orePoor=%s (Бедная руда)
+item.material.oreprefix.oreEndstone=%s (Руда камня края)
+item.material.oreprefix.oreEnd=%s (Руда края)
+item.material.oreprefix.ore=%s (Руда)
+item.material.oreprefix.crushedCentrifuged=%s (Центрифугированная руда)
+item.material.oreprefix.crushedPurified=%s (Очищенная руда)
+item.material.oreprefix.crushed=%s (Дробленная руда)
+item.material.oreprefix.shard=
+item.material.oreprefix.clump=
+item.material.oreprefix.reduced=
+item.material.oreprefix.crystalline=
+item.material.oreprefix.cleanGravel=
+item.material.oreprefix.dirtyGravel=
+item.material.oreprefix.ingotQuintuple=%s (Пятикратный слиток)
+item.material.oreprefix.ingotQuadruple=%s (Четверной слиток)
+item.material.oreprefix.ingotTriple=%s (Тройной слиток)
+item.material.oreprefix.ingotDouble=%s (Двойной слиток)
+item.material.oreprefix.ingotHot=%s (Горячий слиток)
+item.material.oreprefix.ingot=%s (Cлиток)
+item.material.oreprefix.gem=%s
+item.material.oreprefix.gemChipped=%s (Осколок)
+item.material.oreprefix.gemFlawed=%s (Необработанный)
+item.material.oreprefix.gemFlawless=%s (Безупречный)
+item.material.oreprefix.gemExquisite=%s (Изысканный)
+item.material.oreprefix.dustTiny=%s (Крохотная кучка пыли)
+item.material.oreprefix.dustSmall=%s (Маленькая кучка пыли)
+item.material.oreprefix.dustImpure=%s (Грязная кучка пыли)
+item.material.oreprefix.dustRefined=%s (Просеяная кучка пыли)
+item.material.oreprefix.dustPure=%s (Очищенная кучка пыли)
+item.material.oreprefix.dust=%s (Пыль)
+item.material.oreprefix.nugget=%s (Самородок)
+item.material.oreprefix.plateAlloy=
+item.material.oreprefix.plateDense=%s (Плотная пластина)
+item.material.oreprefix.plateQuintuple=%s (Пятикратная пластина)
+item.material.oreprefix.plateQuadruple=%s (Четверная пластина)
+item.material.oreprefix.plateTriple=%s (Тройная пластина)
+item.material.oreprefix.plateDouble=%s (Двойная пластина)
+item.material.oreprefix.plate=%s (Пластина)
+item.material.oreprefix.foil=%s (Фольга)
+item.material.oreprefix.stickLong=%s (Стержень)
+item.material.oreprefix.stick=%s (Прут)
+item.material.oreprefix.round=%s (Диск)
+item.material.oreprefix.bolt=%s (Болт)
+item.material.oreprefix.comb=%s (Соты)
+item.material.oreprefix.screw=%s (Винт)
+item.material.oreprefix.ring=%s (Кольцо)
+item.material.oreprefix.springSmall=%s (Маленькая пружина)
+item.material.oreprefix.spring=%s (Пружина)
+item.material.oreprefix.wireFine=%s (Хороший провод)
+item.material.oreprefix.rotor=%s (Ротор)
+item.material.oreprefix.gearSmall=%s (Маленькая шестерня)
+item.material.oreprefix.gear=%s (Шестерня)
+item.material.oreprefix.lens=%s (Линза)
+item.material.oreprefix.cellPlasma=%s (Плазменная ячейка)
+item.material.oreprefix.cell=%s (Ячейка)
+item.material.oreprefix.bucket=%s (Ведро)
+item.material.oreprefix.bottle=%s (Бутылка)
+item.material.oreprefix.capsule=%s (Капсула)
+item.material.oreprefix.crystal=%s (Кристалл)
+item.material.oreprefix.toolHeadSword=%s (Клинок меча)
+item.material.oreprefix.toolHeadPickaxe=%s (Кайло)
+item.material.oreprefix.toolHeadShovel=%s (Лопата)
+item.material.oreprefix.toolHeadUniversalSpade=%s (Наконечник универсальной лопаты)
+item.material.oreprefix.toolHeadAxe=%s (Топорище)
+item.material.oreprefix.toolHeadHoe=%s (Лезвие мотыги)
+item.material.oreprefix.toolHeadSense=%s (Лезвие косы)
+item.material.oreprefix.toolHeadFile=%s (Напильник)
+item.material.oreprefix.toolHeadHammer=%s (Боек молота)
+item.material.oreprefix.toolHeadPlow=%s (Лезвие плуга)
+item.material.oreprefix.toolHeadSaw=%s (Лезвие пилы)
+item.material.oreprefix.toolHeadBuzzSaw=%s (Диск пилы)
+item.material.oreprefix.toolHeadScrewdriver=%s (Наконечник отвертки)
+item.material.oreprefix.toolHeadDrill=%s (Сверло)
+item.material.oreprefix.toolHeadChainsaw=%s (Цепная пила)
+item.material.oreprefix.toolHeadWrench=%s (Торцевая головка ключа)
+item.material.oreprefix.turbineBlade=%s (Лопасть турбины)
+item.material.oreprefix.toolSword=%s (Меч)
+item.material.oreprefix.toolPickaxe=%s (Кирка)
+item.material.oreprefix.toolShovel=%s (Лопата)
+item.material.oreprefix.toolAxe=%s (Топор)
+item.material.oreprefix.toolHoe=%s (Мотыга)
+item.material.oreprefix.toolShears=%s (Ножницы)
+item.material.oreprefix.tool=
+item.material.oreprefix.compressedCobblestone=
+item.material.oreprefix.compressedStone=
+item.material.oreprefix.compressedDirt=
+item.material.oreprefix.compressedGravel=
+item.material.oreprefix.compressedSand=
+item.material.oreprefix.compressed=Сжатый %s
+item.material.oreprefix.glass=
+item.material.oreprefix.paneGlass=
+item.material.oreprefix.blockGlass=
+item.material.oreprefix.blockWool=
+item.material.oreprefix.block=Блок %s
+item.material.oreprefix.craftingTool=
+item.material.oreprefix.crafting=
+item.material.oreprefix.log=
+item.material.oreprefix.slab=
+item.material.oreprefix.stair=
+item.material.oreprefix.fence=
+item.material.oreprefix.plank=
+item.material.oreprefix.treeSapling=
+item.material.oreprefix.treeLeaves=
+item.material.oreprefix.tree=
+item.material.oreprefix.stoneCobble=
+item.material.oreprefix.stoneSmooth=
+item.material.oreprefix.stoneMossyBricks=
+item.material.oreprefix.stoneMossy=
+item.material.oreprefix.stoneBricks=
+item.material.oreprefix.stoneCracked=
+item.material.oreprefix.stoneChiseled=
+item.material.oreprefix.stone=
+item.material.oreprefix.cobblestone=
+item.material.oreprefix.rock=
+item.material.oreprefix.record=
+item.material.oreprefix.rubble=
+item.material.oreprefix.scraps=
+item.material.oreprefix.scrap=
+item.material.oreprefix.book=
+item.material.oreprefix.paper=
+item.material.oreprefix.dye=
+item.material.oreprefix.stainedClay=
+item.material.oreprefix.armorHelmet=
+item.material.oreprefix.armorChestplate=
+item.material.oreprefix.armorLeggings=
+item.material.oreprefix.armorBoots=
+item.material.oreprefix.armor=
+item.material.oreprefix.frameGt=%s (Каркас)
+item.material.oreprefix.pipeTiny=Трубка %s
+item.material.oreprefix.pipeSmall=Маленькая труба %s
+item.material.oreprefix.pipeMedium=Средняя труба %s
+item.material.oreprefix.pipeLarge=Большая труба %s
+item.material.oreprefix.pipeHuge=Огромная труба %s
+item.material.oreprefix.pipeRestrictiveTiny=Ограничительная трубка %s
+item.material.oreprefix.pipeRestrictiveSmall=Маленькая ограничительная труба %s
+item.material.oreprefix.pipeRestrictiveMedium=Средняя ограничительная труба %s
+item.material.oreprefix.pipeRestrictiveLarge=Большая ограничительная труба %s
+item.material.oreprefix.pipeRestrictiveHuge=Огромная ограничительная труба %s
+item.material.oreprefix.pipe=Труба %s
+item.material.oreprefix.wireGtHex=%s 16х провод
+item.material.oreprefix.wireGtTwelve=%s 12х провод
+item.material.oreprefix.wireGtOctal=%s 8х провод
+item.material.oreprefix.wireGtQuadruple=%s 4х провод
+item.material.oreprefix.wireGtDouble=%s 2х провод
+item.material.oreprefix.wireGtSingle=%s 1х провод
+item.material.oreprefix.cableGtHex=%s 16х кабель
+item.material.oreprefix.cableGtTwelve=1%s 2х кабель
+item.material.oreprefix.cableGtOctal=%s 8х кабель
+item.material.oreprefix.cableGtQuadruple=%s 4х кабель
+item.material.oreprefix.cableGtDouble=%s 2х кабель
+item.material.oreprefix.cableGtSingle=%s 1х кабель
+
+material.aluminium=Алюминий
+material.americium=Америций
+material.antimony=Сурьма
+material.argon=Аргон
+material.arsenic=Мышьяк
+material.barium=Барий
+material.beryllium=Бериллий
+material.bismuth=Висмут
+material.boron=Бор
+material.caesium=Цезий
+material.calcium=Кальций
+material.carbon=Углерод
+material.cadmium=Кадмий
+material.cerium=Церий
+material.chlorine=Хлор
+material.chrome=Хром
+material.cobalt=Кобальт
+material.copper=Медь
+material.deuterium=Дейтерий
+material.dysprosium=Диспрозий
+material.erbium=Эрбий
+material.europium=Европий
+material.fluorine=Фтор
+material.gadolinium=Гадолиний
+material.gallium=Галлий
+material.gold=Золото
+material.holmium=Гольмий
+material.hydrogen=Водород
+material.helium=Гелий
+material.helium3=Гелий-3
+material.indium=Индий
+material.iridium=Иридий
+material.iron=Железо
+material.lanthanum=Лантан
+material.lead=Свинец
+material.lithium=Литий
+material.lutetium=Лютеций
+material.magnesium=Магний
+material.manganese=Марганец
+material.mercury=Ртуть
+material.molybdenum=Молибден
+material.neodymium=Неодим
+material.darmstadtium=Дармстадтиум
+material.nickel=Никель
+material.niobium=Ниобий
+material.nitrogen=Азот
+material.osmium=Осмий
+material.oxygen=Кислород
+material.palladium=Палладий
+material.phosphorus=Фосфор
+material.platinum=Платина
+material.plutonium=Плутоний-244
+material.plutonium241=Плутоний-241
+material.potassium=Калий
+material.praseodymium=Празеодим
+material.promethium=Прометий
+material.radon=Радон
+material.rubidium=Рубидий
+material.samarium=Самарий
+material.scandium=Скандий
+material.silicon=Кремний
+material.silver=Серебро
+material.sodium=Натрий
+material.strontium=Стронций
+material.sulfur=Сера
+material.tantalum=Тантал
+material.tellurium=Теллур
+material.terbium=Тербий
+material.thorium=Торий
+material.thulium=Тулий
+material.tin=Олово
+material.titanium=Титан
+material.tritium=Тритий
+material.tungsten=Вольфрам
+material.uranium=Уран-238
+material.uranium235=Уран-235
+material.vanadium=Ванадий
+material.ytterbium=Иттербий
+material.yttrium=Иттрий
+material.zinc=Цинк
+
+material.construction_foam=Строительная пена
+material.bio_fuel=Биотопливного
+material.biomass=Биомасса
+material.creosote=Креозот
+material.ethanol=Этанол
+material.fuel=Дизель
+material.glue=Клей
+material.gunpowder=Порох
+material.lubricant=Смазка
+material.mc_guffium239=Мк.Гуффий-239
+material.oil=Масло
+material.oilsands=Нефтеносный песок
+material.paper=Бумага
+material.rare_earth=Редкая земля
+material.seed_oil=Масло из семян
+material.stone=Камень
+material.lava=Лава
+material.glowstone=Светокамень
+material.nether_star=Звезда ада
+material.endstone=Камень края
+material.netherrack=Адский камень
+material.toluene=Толуол
+material.drilling_fluid=Буровая жидкость
+material.construction_foam=Строительная пена
+material.epichlorhydrin=Эпихлоргидрин
+material.nitric_acid=Азотная кислота
+material.nitration_mixture=Нитратная смесь
+material.fireclay=Шамотная глина
+material.brick=Кирпич
+material.coke=Коксовый уголь
+
+material.methane=Метан
+material.carbon_dioxide=Двуокись углерода
+material.noble_gases=Благородный газ
+material.air=Воздух
+material.liquid_air=Жидкий воздух
+material.almandine=Альмандин
+material.andradite=Андрадит
+material.annealed_copper=Отожженная медь
+material.asbestos=Асбест
+material.ash=Зола
+material.banded_iron=Кованое железо
+material.battery_alloy=Аккумуляторный сплав
+material.blue_topaz=Синий топаз
+material.bone=Кость
+material.brass=Латунь
+material.bronze=Бронза
+material.brown_limonite=Коричневый лимонит
+material.calcite=Кальцит
+material.cassiterite=Касситерит
+material.cassiterite_sand=Касситеритовый песок
+material.chalcopyrite=Халькопирит
+material.charcoal=Древесный уголь
+material.chromite=Хромит
+material.chromium_dioxide=Диоксид хрома
+material.cinnabar=Киноварь
+material.water=Вода
+material.steam=Пар
+material.clay=Глина
+material.coal=Уголь
+material.cobaltite=Кобальтит
+material.cooperite=Шелдонит
+material.cupronickel=Мельхиор
+material.dark_ash=Темный пепел
+material.diamond=Алмаз
+material.electrum=Электрум
+material.emerald=Изумруд
+material.galena=Галена
+material.garnierite=Гарниерит
+material.glyceryl=Глицерил тринитрат
+material.green_sapphire=Зеленый сапфир
+material.grossular=Гроссуляр
+material.holy_water=Святая вода
+material.ice=Лед
+material.ilmenite=Ильменит
+material.rutile=Рутил
+material.bauxite=Боксит
+material.titanium_tetrachloride=Тетрахлорид титана
+material.magnesium_chloride=Хлорид магния
+material.invar=Инвар
+material.kanthal=Кантал
+material.lazurite=Лазурит
+material.magnalium=Магналий
+material.magnesite=Магнезит
+material.magnetite=Магнетит
+material.molybdenite=Молибденит
+material.nichrome=Нихром
+material.niobium_nitride=Нитрид ниобия
+material.niobium_titanium=Ниобий-титан
+material.nitro_carbon=Нитро-углерод
+material.nitrogen_dioxide=Диоксид азота
+material.obsidian=Обсидиан
+material.phosphate=Фосфат
+material.pig_iron=Чугун
+material.plastic=Полиэтилен
+material.epoxid=Эпоксид
+material.silicone=Полисилоксан
+material.polycaprolactam=Поликапролактам
+material.polytetrafluoroethylene=Политетрафторэтилен
+material.powellite=Повеллит
+material.pumice=Пемза
+material.pyrite=Пирит
+material.pyrolusite=Пиролюзит
+material.pyrope=Пироп
+material.rock_salt=Каменная соль
+material.rubber=Резина
+material.raw_rubber=Необработанная резина
+material.ruby=Рубин
+material.salt=Соль
+material.saltpeter=Селитра
+material.sapphire=Сапфир
+material.scheelite=Шеелит
+material.silicon_dioxide=Диоксид кремния
+material.snow=Снег
+material.sodalite=Содалит
+material.sodium_persulfate=Персульфат натрия
+material.sodium_sulfide=Сульфид натрия
+material.hydrogen_sulfide=Сероводород
+
+material.oil_heavy=Тяжелый газойль
+material.oil_medium=Средний газойль
+material.oil_light=Легкий газойль
+material.natural_gas=Природный газ
+material.sulfuric_gas=Серный газ
+material.gas=Нефтяной газ
+material.sulfuric_naphtha=Серная нафта
+material.sulfuric_light_fuel=Серное легкое топливо
+material.sulfuric_heavy_fuel=Серное тяжелое топливо
+material.naphtha=Нафта
+material.light_fuel=Легкое топливо
+material.heavy_fuel=Тяжелое топливо
+material.lpg=Сжиженный углеводородный газ
+material.cracked_light_fuel=Катализированное легкое топливо
+material.cracked_heavy_fuel=Катализированное тяжелое топливо
+
+material.soldering_alloy=Припой
+material.spessartine=Спасерит
+material.sphalerite=Сфалерит
+material.stainless_steel=Нержавеющая сталь
+material.steel=Сталь
+material.stibnite=Стибнит
+material.sulfuric_acid=Серная кислота
+material.tanzanite=Танзанит
+material.tetrahedrite=Тетраэдрит
+material.tin_alloy=Оловянный сплав
+material.topaz=Топаз
+material.tungstate=Вольфрамат
+material.ultimet=Ультимет
+material.uraninite=Уранинит
+material.uvarovite=Уваровит
+material.vanadium_gallium=Ванадий-Галлий
+material.wood=Дерево
+material.wrought_iron=Кованое железо
+material.wulfenite=Вульфенит
+material.yellow_limonite=Желтый лимонит
+material.yttrium_barium_cuprate=Купрат иттрий-барийя
+material.nether_quartz=Адский кварц
+material.certus_quartz=Истинный кварц
+material.quartzite=Кварцит
+material.graphite=Графит
+material.graphene=Графен
+material.jasper=Джаспер
+material.osmiridium=Осмистый иридий
+
+material.wood_sealed=Обработанная древесина
+material.glass=Стекло
+material.perlite=Перлит
+material.borax=Бура
+material.lignite=Бурый уголь
+material.olivine=Оливин
+material.opal=Опал
+material.amethyst=Аметист
+material.redstone=Редстоун
+material.lapis=Лазурит
+material.blaze=Огненный
+material.ender_pearl=Жемчуг края
+material.ender_eye=Око края
+material.flint=Кремень
+material.diatomite=Диатомовый пелит
+material.volcanic_ash=Вулканический пепел
+material.niter=Селитра
+material.pyrotheum=Пиротеум
+material.hydrated_coal=Гидратированный уголь
+material.apatite=Апатит
+material.sterling_silver=Серебро 925 пробы
+material.rose_gold=Розовое золото
+material.black_bronze=Черная бронза
+material.bismuth_bronze=Висмут бронза
+material.black_steel=Черная сталь
+material.red_steel=Красная сталь
+material.blue_steel=Голубая сталь
+material.damascus_steel=Дамасская сталь
+material.tungsten_steel=Вольфрамовая сталь
+material.nitro_fuel=Нитро дизель
+material.red_alloy=Красный сплав
+material.cobalt_brass=Кобальтовая латунь
+material.phosphor=Люминофор
+material.basalt=Базальт
+material.andesite=Андезит
+material.diorite=Диорит
+material.garnet_red=Красный гранат
+material.garnet_yellow=Желтый гранат
+material.marble=Мрамор
+material.sugar=Сахар
+material.vinteum=Винтеум
+material.redrock=Красная скала
+material.potassium_feldspar=Калиевый полевой шпат
+material.biotite=Биотит
+material.granite_black=Черный гранит
+material.granite_red=Красный гранит
+material.chrysotile=Хризотит
+material.realgar=Реальгар
+material.vanadium_magnetite=Ванадий магнетит
+material.basaltic_mineral_sand=Базальтовый минеральный песок
+material.granitic_mineral_sand=Гранитный минеральный песок
+material.garnet_sand=Гранатовый песок
+material.quartz_sand=Кварцевый песок
+material.bastnasite=Бастназит
+material.pentlandite=Пентландит
+material.spodumene=Сподумен
+material.pollucite=Поллуцит
+material.tantalite=Танталит
+material.lepidolite=Лепидолит
+material.glauconite=Глауконит
+material.glauconite_sand=Глауконитовый песок
+material.vermiculite=Вермикулит
+material.bentonite=Бентонит
+material.fullers_earth=Древняя земля
+material.pitchblende=Уранинит
+material.monazite=Монацит
+material.malachite=Малахит
+material.mirabilite=Мирабилит
+material.mica=Слюда
+material.trona=Трона
+material.barite=Барит
+material.gypsum=Гипс
+material.alunite=Алунит
+material.dolomite=Доломит
+material.wollastonite=Волластонита
+material.zeolite=Цеолит
+material.kyanite=Ционит
+material.kaolinite=Каолинит
+material.talc=Тальк
+material.soapstone=Мыльный камень
+material.concrete=Бетон
+material.iron_magnetic=Магнитное железо
+material.steel_magnetic=Магнитная сталь
+material.neodymium_magnetic=Магнитный неодим
+material.tungsten_carbide=Карбид вольфрама
+material.vanadium_steel=Ванадиевая сталь
+material.hssg=HSS-G
+material.hsse=HSS-E
+material.hsss=HSS-S
+
+material.any_copper=ЛюбаяМедь
+material.any_bronze=ЛюбаяБронза
+material.any_iron=ЛюбоеЖелезо
+
+material.primitive=Примитивный
+material.basic=Основной
+material.good=Хороший
+material.advanced=Продвинутый
+material.data=Данные
+material.elite=Элитный
+material.master=Мастер
+material.ultimate=Конечный
+material.superconductor=Сверхпроводник
+material.infinite=Бесконечность
+
+material.uuamplifier=UU-усилитель
+material.uumatter=UU-материя
+
+material.naquadah=Наквада
+material.naquadah_alloy=Сплав наквада
+material.naquadah_enriched=Обогащенная наквада
+material.naquadria=Наквадрия
+material.tritanium=Тританий
+material.duranium=Дураний
+
+material.cheese=Сыр
+material.chili=Чили
+material.chocolate=Шоколад
+material.meat_raw=Сырое мясо
+material.meat_cooked=Приготовленное мясо
+material.milk=Молоко
+material.honey=Мед
+material.cocoa=Какао
+material.coffee=Кофе
+material.wheat=Пшеница
+
+item.gunpowder.dustTiny=Крошечная куча пороха
+item.gunpowder.dustSmall=Маленькая кучка пороха
+item.paper.dustTiny=Крошечная куча целюлозы
+item.paper.dustSmall=Маленькая кучка целюлозы
+item.paper.dust=Целюлоза
+item.rare_earth.dustTiny=Крошечная кучка редкой земли
+item.rare_earth.dustSmall=Маленькая кучка редкой земли
+item.rare_earth.dust=Редкая земля
+item.ash.dustTiny=Крошечная кучка пепла
+item.ash.dustSmall=Маленькая кучка пепла
+item.ash.dust=Пепел
+item.bone.dustTiny=Крошечная кучка костной муки
+item.bone.dustSmall=Маленькая кучка костной муки
+item.bone.dust=Костная мука
+item.cassiterite_sand.crushedCentrifuged=Центрифугированный касситеритовый песок
+item.cassiterite_sand.crushedPurified=Очищеный касситеритовый песок
+item.cassiterite_sand.crushed=Ground касситеритовый песок
+item.cassiterite_sand.dustTiny=Крошечная кучка касситеритовый песок
+item.cassiterite_sand.dustSmall=Маленькая кучка касситеритовый песок
+item.cassiterite_sand.dustImpure=Грязная кучка касситеритовый песок
+item.cassiterite_sand.dustPure=Очищеный кучка касситеритовый песок
+item.cassiterite_sand.dust=Касситеритовый песок
+item.dark_ash.dustTiny=Крошечная кучка темного пепла
+item.dark_ash.dustSmall=Маленькая кучка темного пепла
+item.dark_ash.dust=Темный пепел
+item.ice.dustTiny=Крошечная кучка колотого льда
+item.ice.dustSmall=Маленькая кучка колотого льда
+item.ice.dust=Колотый лед
+item.plastic.dustTiny=Крошечная кучка полиэтиленовых волокон
+item.plastic.dustSmall=Маленькая кучка полиэтиленовых волокон
+item.plastic.dust=Полиэтиленовое волокно
+item.plastic.plate=Лист полиэтилена
+item.epoxid.ingot=Эпоксидная плитка
+item.epoxid.dustTiny=Крошечная кучка эпоксидных волокон
+item.epoxid.dustSmall=Маленькая кучка эпоксидных волокон
+item.epoxid.dust=Эпоксидные волокна
+item.epoxid.nugget=Эпоксидный осколок
+item.epoxid.plateDense=Плотный эпоксидный лист
+item.epoxid.plate=Эпоксидный лист
+item.epoxid.foil=Тонкий эпоксидный лист
+item.silicone.dustTiny=Крошечная кучка полисилоксановых волокон
+item.silicone.dustSmall=Маленькая кучка полисилоксановых волокон
+item.silicone.dust=Полисилоксановое волокно
+item.silicone.plate=Полисилоксановый лист
+item.polycaprolactam.dustTiny=Крошечная кучка поликапролактамовых волокон
+item.polycaprolactam.dustSmall=Маленькая кучка поликапролактамовых волокон
+item.polycaprolactam.dust=Поликапролактамовое волокон
+item.polycaprolactam.plateDense=Плотный лист поликапролактама
+item.polycaprolactam.plate=Поликапролактамовый лист
+item.polytetrafluoroethylene.dustTiny=Крошечная кучка политетрафторэтилена
+item.polytetrafluoroethylene.dustSmall=Маленькая кучка политетрафторэтилена
+item.polytetrafluoroethylene.dust=Политетрафторэтиленовое волокно
+item.polytetrafluoroethylene.plateDense=Плотный политетрафторэтиленовый лист
+item.polytetrafluoroethylene.plate=Лист политетрафторэтилена
+item.rock_salt.dustTiny=Крошечная кучка каменной соли
+item.rock_salt.dustSmall=Маленькая кучка каменной соли
+item.rock_salt.dustImpure=Грязная кучка каменной соли
+item.rock_salt.dustPure=Очищеный кучка каменной соли
+item.rock_salt.dust=Каменная соль
+item.rubber.ingot=Резиновая планка
+item.rubber.dustTiny=Крошечная кучка резиновой массы
+item.rubber.dustSmall=Маленькая кучка резиновой массы
+item.rubber.dust=Резиновая масса
+item.rubber.nugget=Резиновый кусочек
+item.rubber.plate=Резиновый лист
+item.raw_rubber.dustTiny=Крошечная кучка сырой резиновой массы
+item.raw_rubber.dustSmall=Маленькая кучка сырой резиновой массы
+item.raw_rubber.dust=Сырая резиновая масса
+item.salt.dustTiny=Крошечная кучка соли
+item.salt.dustSmall=Маленькая кучка соли
+item.salt.dustImpure=Грязная кучка соли
+item.salt.dustPure=Очищеный кучка соли
+item.salt.dust=Соль
+item.wood.dustTiny=Крошечная кучка древесных опилок
+item.wood.dustSmall=Маленькая кучка древесных опилок
+item.wood.dust=Древесные опилки
+item.wood.plate=Деревянная доска
+item.wood.stickLong=Длинная деревянная палка
+item.wood.bolt=Короткая деревянная палка
+item.wood_sealed.dustTiny=Крошечная кучка запечатанных древесных опилок
+item.wood_sealed.dustSmall=Маленькая кучка запечатанных древесных опилок
+item.wood_sealed.dust=Запечатаные древесные опилки
+item.wood_sealed.plate=Запечатанная деревянная доска
+item.glass.gem=Стеклянный кристалл
+item.glass.gemChipped=Хрусталь
+item.glass.gemFlawed=Хрустальное стекло
+item.glass.gemFlawless=Безупречный хрусталь
+item.glass.gemExquisite=Изысканный хрусталь
+item.glass.plate=Стеклянная панель
+item.blaze.dustTiny=Крошечная кучка огенного порошка
+item.blaze.dustSmall=Маленькая кучка огенного порошка
+item.volcanic_ash.dustTiny=Крошечная кучка вулканического пепла
+item.volcanic_ash.dustSmall=Маленькая кучка вулканического пепла
+item.volcanic_ash.dust=Вулканический пепел
+item.sugar.dustTiny=Крошечная кучка сахара
+item.sugar.dustSmall=Маленькая кучка сахара
+item.basaltic_mineral_sand.dustTiny=Крошечная кучка Базальтового минерального песка
+item.basaltic_mineral_sand.dustSmall=Маленькая кучка Базальтового минерального песка
+item.basaltic_mineral_sand.dust=Базальтовый минеральный песок
+item.granitic_mineral_sand.dustTiny=Крошечная кучка гранитного минерального песка
+item.granitic_mineral_sand.dustSmall=Маленькая кучка гранитного минерального песка
+item.granitic_mineral_sand.dust=Гранитный минеральный песок
+item.garnet_sand.dustTiny=Крошечная кучка гранитного песка
+item.garnet_sand.dustSmall=Маленькая кучка гранитного песка
+item.garnet_sand.dust=Гранитный песок
+item.quartz_sand.dustTiny=Крошечная кучка кварцевого песка
+item.quartz_sand.dustSmall=Маленькая кучка кварцевого песка
+item.quartz_sand.dust=Кварцевый песок
+item.glauconite_sand.dustTiny=Крошечная кучка глауконитового песка
+item.glauconite_sand.dustSmall=Маленькая кучка глауконитового песка
+item.glauconite_sand.dust=Глауконитовый песок
+item.vermiculite.dustTiny=Крошечная кучка вермикулита
+item.vermiculite.dustSmall=Маленькая кучка вермикулита
+item.vermiculite.dust=Вермикулит
+item.bentonite.crushedCentrifuged=Центрифугированный бентонит
+item.bentonite.crushedPurified=Очищеный бентонит
+item.bentonite.crushed=Дробленный бентонит
+item.bentonite.dustTiny=Крошечная кучка бентонита
+item.bentonite.dustSmall=Маленькая кучка бентонита
+item.bentonite.dustImpure=Грязная кучка бентонита
+item.bentonite.dustPure=Очищеный кучка бентонита
+item.bentonite.dust=Бентонит
+item.fullers_earth.dustTiny=Крошечная кучка странной земли
+item.fullers_earth.dustSmall=Маленькая кучка странной земли
+item.fullers_earth.dust=Странная земля
+item.pitchblende.crushedCentrifuged=Центрифугированный уранинит
+item.pitchblende.crushedPurified=Очищеный уранит
+item.pitchblende.crushed=Дробленный уранит
+item.pitchblende.dustTiny=Крошечная кучка уранит
+item.pitchblende.dustSmall=Маленькая кучка уранит
+item.pitchblende.dustImpure=Грязная кучка уранит
+item.pitchblende.dustPure=Очищеный кучка уранит
+item.pitchblende.dust=Уранит
+item.kaolinite.dustTiny=Крошечная кучка каолинита
+item.kaolinite.dustSmall=Маленькая кучка каолинита
+item.kaolinite.dust=каолинит
+item.talc.crushedCentrifuged=Центрифугированный талька
+item.talc.crushedPurified=Очищеный талька
+item.talc.crushed=Дробленный тальк
+item.talc.dustTiny=Крошечная кучка талька
+item.talc.dustSmall=Маленькая кучка талька
+item.talc.dustImpure=Грязная кучка талька
+item.talc.dustPure=Очищеный кучка талька
+item.talc.dust=Тальк
+item.wheat.dustTiny=Крошечная кучка муки
+item.wheat.dustSmall=Маленькая кучка муки
+item.wheat.dust=Мука
+
+recipemap.orewasher.name=Рудопромывщик
+recipemap.thermal_centrifuge.name=Термальная центрифуга
+recipemap.extractor.name=Экстрактор
+recipemap.recycler.name=Переработчик
+recipemap.furnace.name=Печь
+recipemap.microwave.name=СВЧ
+recipemap.scanner.name=Сканер
+recipemap.rockbreaker.name=Разрушитель породы
+recipemap.byproductlist.name=Список побочных продуктов руды
+recipemap.replicator.name=Репликатор
+recipemap.assemblyline.name=Сборочная линия
+recipemap.assembler.name=Сборщик
+recipemap.press.name=Формовочный пресс
+recipemap.macerator.name=Пульверизатор
+recipemap.unpackager.name=Распаковщик
+recipemap.fluid_canner.name=Жикостная консервная машина
+recipemap.plasma_arc_furnace.name=Плазменная дуговая печь
+recipemap.arc_furnace.name=Дуговая печь
+recipemap.sifter.name=Просеиватель
+recipemap.laser_engraver.name=Прецизионный лазерный гравер
+recipemap.mixer.name=Смеситель
+recipemap.autoclave.name=Автоклав
+recipemap.electromagnetic_separator.name=Электромагнитный сепаратор
+recipemap.polarizer.name=Электромагнитный поляризатор
+recipemap.chemical_bath.name=Химическая ванна
+recipemap.brewer.name=Пивоваренная машина
+recipemap.fluid_heater.name=Нагреватель жидкости
+recipemap.distillery.name=Дистиллятор
+recipemap.fermenter.name=Ферментер
+recipemap.fluid_solidifier.name=Жидкостный отвердитель
+recipemap.fluid_extractor.name=Жидкостный экстрактор
+recipemap.packager.name=Упаковщик
+recipemap.fusion_reactor.name=Термоядерный реактор
+recipemap.fusion_reactor.value=Запуск: %s ЭЕ
+recipemap.centrifuge.name=Центрифуга
+recipemap.electrolyzer.name=Электролизер
+recipemap.blast_furnace.name=Доменная печь
+recipemap.blast_furnace.value=Теплоемкость: %s K
+recipemap.implosion_compressor.name=Детонационный компрессор
+recipemap.vacuum_freezer.name=Вакуумный морозильник
+recipemap.chemical_reactor.name=Химический реактор
+recipemap.distillation_tower.name=Дистилляционная башня
+recipemap.cracker.name=Крекинговый завод
+recipemap.pyro.name=Пиролизная печь
+recipemap.wiremill.name=Волочильный станок
+recipemap.metal_bender.name=Гибочный станок
+recipemap.alloy_smelter.name=Плавильня
+recipemap.canner.name=Консервная машина
+recipemap.lathe.name=Токарный станок
+recipemap.cutting_saw.name=Резочная машина
+recipemap.slicer.name=Слайсер
+recipemap.extruder.name=Экструдер
+recipemap.hammer.name=Молот
+recipemap.uuamplifier.name=Усилитель мощности UU
+recipemap.dieselgeneratorfuel.name=Топливо дизельного генератора
+recipemap.dieselgeneratorfuel.value=Энергоемкость топлива: %s ЭЕ
+recipemap.gasturbinefuel.name=Топливо газовой турбины
+recipemap.gasturbinefuel.value=Энергоемкость топлива: %s ЭЕ
+recipemap.thermalgeneratorfuel.name=Топливо термального генератора
+recipemap.semifluidboilerfuels.name=Топливо полужидкостого котла
+recipemap.plasmageneratorfuels.name=Топливо плазменного генератора
+recipemap.magicfuels.name=Магическое топливо
+recipemap.magicfuels.value=Энергоемкость топлива: %s ЭЕ
+recipemap.forming_press.name=Формовочный пресс
+recipemap.forge_hammer.name=Кузнечный молот
+recipemap.compressor.name=Компрессор
+recipemap.packer.name=Упаковщик
+recipemap.unpacker.name=Распаковщик
+recipemap.diesel_generator.name=Дизельный генератор
+recipemap.gas_turbine.name=Газовая турбина
+recipemap.steam_turbine.name=Паровая турбина
+recipemap.semi_fluid_generator.name=Полужидкое топливо
+
+behavior.magnifying_glass.description=Нажмите на поверхность камня, чтобы осмотреть его
+behavior.magnifying_glass.inspect=Этот камень содержит %s
+behaviour.hoe=Может до грязи
+behaviour.soft_hammer=Нажмите на машину, чтобы разрешить/запретить ее работу
+behaviour.lighter.tooltip=Может поджечь предметы
+behaviour.lighter.uses=Осталось использований: %d
+behavior.plunger.description=Щелкните правой кнопкой мыши на машине, чтобы очистить 1000 мВ из его выходного бака./nкрадитесь, чтобы очистить 1000 мВ от входного бака машины./nОчистка входного бака работает только на машинах GTCE!
+
+enchantment.damage.endermen=Дизъюнкция
+enchantment.damage.radioactivity=Радиоактивность
+
+tile.gt.foam.name=Пена
+tile.gt.reinforced_foam.name=Усиленная пена
+tile.gt.petrified_foam.name=Окаменелая пена
+tile.gt.reinforced_stone.name=Армированный камень
+tile.gt.crusher_blade.name=Лезвие дробилки
+tile.gt.log.rubber_wood.name=Каучуковое дерево
+tile.gt.leaves.rubber_wood.name=Листья каучукового дерева
+tile.gt.sapling.rubber_wood.name=Саженец каучукового дерева
+
+tile.surface_rock.name=Поверхность камня
+
+tile.casing.ulv=Корпус машины (ULV)
+tile.casing.lv=Корпус машины (LV)
+tile.casing.mv=Корпус машины (MV)
+tile.casing.hv=Корпус машины (HV)
+tile.casing.ev=Корпус машины (EV)
+tile.casing.iv=Корпус машины (IV)
+
+fluid.distilled_water=Дистиллированная вода
+
+# Проволочные блоки
+tile.wire_coil.tooltip_ebf=Когда используется в §aэлектрической доменной печи§7:
+tile.wire_coil.tooltip_heat=  Базовая тепловая мощность: §e%dK
+tile.wire_coil.tooltip_smelter=Когда используется в §aмульти плавильном заводе§7:
+tile.wire_coil.tooltip_level=  Уровень: §e%d
+tile.wire_coil.tooltip_discount=  Энергетическая скидка: §a%dx
+
+tile.wire_coil.cupronickel.name=Купроникелевая катушка
+tile.wire_coil.kanthal.name=Канталовая катушка
+tile.wire_coil.nichrome.name=Нихромовая катушка
+tile.wire_coil.tungstensteel.name=Вольфрамовая катушка
+tile.wire_coil.hss_g.name=Катушка HSS-G стали
+tile.wire_coil.naquadah.name=Катушка из наквада
+tile.wire_coil.naquadah_alloy.name=Катушка из сплава наквада
+tile.wire_coil.superconductor.name=Сверхпроводящяя катушка
+tile.wire_coil.fusion_coil.name=Катушка термоядерного реактора
+
+# Блоки предупреждающих знаков
+tile.warning_sign.yellow_stripes.name=Блок желтых полос
+tile.warning_sign.small_yellow_stripes.name=Блок желтых полос
+tile.warning_sign.radioactive_hazard.name=Блок знака радиоактивной опасности
+tile.warning_sign.bio_hazard.name=Знак био опасности
+tile.warning_sign.explosion_hazard.name=Знак опасности взрыва
+tile.warning_sign.fire_hazard.name=Блок знака пожарной опасности
+tile.warning_sign.acid_hazard.name=Кислотный знак опасности
+tile.warning_sign.magic_hazard.name=Знак опасности магии
+tile.warning_sign.frost_hazard.name=Знак опасности от замерзания
+tile.warning_sign.noise_hazard.name=Блок знака опасности шума
+
+# Блоки корпуса котла
+tile.boiler_casing.bronze_pipe.name=Бронзовый кожух трубы
+tile.boiler_casing.steel_pipe.name=Стальной кожух трубы
+tile.boiler_casing.titanium_pipe.name=Титановый кожух трубы
+tile.boiler_casing.tungstensteel_pipe.name=Вольфрамовый кожух трубы
+
+# Блоки кожуха топки
+tile.boiler_casing.bronze_firebox.name=Бронзовый корпус топки
+tile.boiler_casing.steel_firebox.name=Стальной корпус топки
+tile.boiler_casing.titanium_firebox.name=Титановый корпус топки
+tile.boiler_casing.tungstensteel_firebox.name=Вольфрамовый корпус топки
+
+# Металлические корпусные блоки
+tile.metal_casing.primitive_bricks.name=Примитивные кирпич
+tile.metal_casing.coke_bricks.name=Кирпич коксовой печи
+tile.metal_casing.bronze_bricks.name=Бронзовый корпус машины
+tile.metal_casing.invar_heatproof.name=Жаропрочный корпус машины
+tile.metal_casing.aluminium_frostproof.name=Морозостойкий корпус машины
+tile.metal_casing.steel_solid.name=Цельный стальной корпус машины
+tile.metal_casing.stainless_clean.name=Чистый корпус из нержавейки
+tile.metal_casing.titanium_stable.name=Стабильный титановый корпус машины
+tile.metal_casing.tungstensteel_robust.name=Крепкий вольфрамовый корпус машины
+
+# Блоки корпуса машины
+tile.machine_casing.ultra_low_voltage.name=Корпус машины (ULV)
+tile.machine_casing.low_voltage.name=Корпус машины (LV)
+tile.machine_casing.medium_voltage.name=Корпус машины (MV)
+tile.machine_casing.high_voltage.name=Корпус машины (HV)
+tile.machine_casing.extreme_voltage.name=Корпус машины (EV)
+tile.machine_casing.insane_voltage.name=Корпус машины (IV)
+tile.machine_casing.ludicrous_voltage.name=Корпус машины (LuV)
+tile.machine_casing.zero_point_module.name=Корпус машины (ZPM)
+tile.machine_casing.ultra_voltage.name=Корпус машины (UV)
+tile.machine_casing.maximum_voltage.name=Корпус машины (Макс.)
+
+tile.machine_casing.bronze_hull.name=Бронзовый корпус
+tile.machine_casing.bronze_hull.tooltip=Для вашей первой паровой машины
+tile.machine_casing.bronze_bricks_hull.name=Кирпичный бронзовый корпус
+tile.machine_casing.bronze_bricks_hull.tooltip=Для вашей первой паровой машины
+tile.machine_casing.steel_hull.name=Стальной корпус
+tile.machine_casing.steel_hull.tooltip=Для улучшения паровой машины
+tile.machine_casing.steel_bricks_hull.name=Кирпичный стальной корпус
+tile.machine_casing.steel_bricks_hull.tooltip=Для улучшения паровой машины
+
+# Блоки турбинных корпусов
+tile.turbine_casing.bronze_gearbox.name=Бронзовый корпус редуктора
+tile.turbine_casing.steel_gearbox.name=Стальной корпус редуктора
+tile.turbine_casing.titanium_gearbox.name=Титановый корпус редуктора
+tile.turbine_casing.steel_turbine_casing.name=Стальной корпус турбины
+tile.turbine_casing.titanium_turbine_casing.name=Титановый корпус турбины
+tile.turbine_casing.stainless_turbine_casing.name=Нержавеющий корпус турбины
+tile.turbine_casing.tungstensteel_turbine_casing.name=Вольфрамовый корпус турбины
+
+# Многоблочные корпусные блоки
+tile.multiblock_casing.engine_intake.name=Кожух двигателя
+tile.multiblock_casing.grate.name=Колосниковая решетка машины
+tile.multiblock_casing.assembler.name=Сборочный корпус машины
+tile.multiblock_casing.fusion.name=Корпус термоядерного агрегата
+tile.multiblock_casing.fusion_mk2.name=Корпус термоядерного агрегата MK II
+
+# Machine general things
+gregtech.machine.tooltip.added_by=§c§oДобавлено: %s
+
+# Сундуки
+gregtech.machine.wooden_chest.name=Деревянный сундук
+gregtech.machine.bronze_chest.name=Бронзовый сундук
+gregtech.machine.steel_chest.name=Стальной сундук
+gregtech.machine.stainless_steel_chest.name=Снудук из нержавейки
+gregtech.machine.titanium_chest.name=Титановый сундук
+gregtech.machine.tungstensteel_chest.name=Вольфрамовый сундук
+
+# Резервуары
+gregtech.machine.wooden_tank.name=Деревянный резервуар
+gregtech.machine.bronze_tank.name=Бронзовый резервуар
+gregtech.machine.steel_tank.name=Стальной резервуар
+gregtech.machine.stainless_steel_tank.name=Резервуар из нержавейки
+gregtech.machine.titanium_tank.name=Титановый резервуар
+gregtech.machine.tungstensteel_tank.name=Вольфрамовый резервуар
+
+# Гранитные блоки
+tile.granite.black_granite.normal.name=Черный гранит
+tile.granite.black_granite.cracked.name=Черный гранитный булыжник
+tile.granite.black_granite.mossy.name=Замшелый черный гранитный булыжник
+tile.granite.black_granite.chiseled.name=Точеный черный гранит
+tile.granite.black_granite_bricks.normal.name=Черный гранитный кирпич
+tile.granite.black_granite_bricks.cracked.name=Потресканый черный гранитный кирпич
+tile.granite.black_granite_bricks.mossy.name=Замшелый черный гранитный кирпич
+tile.granite.black_granite_bricks.chiseled.name=Точеный черный гранитный кирпич
+
+tile.granite.red_granite.normal.name=Красный гранит
+tile.granite.red_granite.cracked.name=Красный гранитный булыжник
+tile.granite.red_granite.mossy.name=Замшелый красный гранитный булыжник
+tile.granite.red_granite.chiseled.name=Точеный красный гранит
+tile.granite.red_granite_bricks.normal.name=Красный гранитный кирпич
+tile.granite.red_granite_bricks.cracked.name=Потресканый красный гранитный кирпич
+tile.granite.red_granite_bricks.mossy.name=Замшелый красный гранитный кирпич
+tile.granite.red_granite_bricks.chiseled.name=Точеный красный гранитный кирпич
+
+# Минеральные блоки
+tile.mineral.marble.normal.name=Мрамор
+tile.mineral.marble.cracked.name=Мраморный булыжник
+tile.mineral.marble.mossy.name=Замшелый мрамор булыжник
+tile.mineral.marble.chiseled.name=Точеный мрамор
+tile.mineral.marble_bricks.normal.name=Мраморный кирпич
+tile.mineral.marble_bricks.cracked.name=Потресканый мрамор кирпич
+tile.mineral.marble_bricks.mossy.name=Замшелый мрамор кирпич
+tile.mineral.marble_bricks.chiseled.name=Точеный мрамор кирпич
+
+tile.mineral.basalt.normal.name=Базальт
+tile.mineral.basalt.cracked.name=Базальтовый булыжник
+tile.mineral.basalt.mossy.name=Замшелый базальтовый булыжник
+tile.mineral.basalt.chiseled.name=Точеный базальт
+tile.mineral.basalt_bricks.normal.name=Базальт кирпич
+tile.mineral.basalt_bricks.cracked.name=Потресканый базальтовый кирпич
+tile.mineral.basalt_bricks.mossy.name=Замшелый базальтовый кирпич
+tile.mineral.basalt_bricks.chiseled.name=Точеный базальтовый кирпич
+
+# Бетонные блоки
+tile.concrete.light_concrete.normal.name=Легкий бетон
+tile.concrete.light_concrete.cracked.name=Светлый бетонный булыжник
+tile.concrete.light_concrete.mossy.name=Замшлый светлый бетонный булыжник
+tile.concrete.light_concrete.chiseled.name=Точеный светлый бетонный булыжник
+tile.concrete.light_bricks.normal.name=Кирпичи светлго бетона
+tile.concrete.light_bricks.cracked.name=Потресканые кирпичи светлго бетона
+tile.concrete.light_bricks.mossy.name=Замшелые кирпичи светлого бетона
+tile.concrete.light_bricks.chiseled.name=Точеные кирпичи светлого бетона
+
+tile.concrete.dark_concrete.normal.name=Темный бетон
+tile.concrete.dark_concrete.cracked.name=Темный бетонный булыжник
+tile.concrete.dark_concrete.mossy.name=Замшлый темный бетонный булыжник
+tile.concrete.dark_concrete.chiseled.name=Точеный темный бетонный булыжник
+tile.concrete.dark_bricks.normal.name=Кирпичи темного бетона
+tile.concrete.dark_bricks.cracked.name=Потресканые кирпичи темного бетона
+tile.concrete.dark_bricks.mossy.name=Замшелые кирпичи темного бетона
+tile.concrete.dark_bricks.chiseled.name=Точеные кирпичи темного бетона
+
+# Паровой machines
+gregtech.machine.steam_boiler.tooltip_produces=Производит %dмВ пара в %d тик
+
+gregtech.machine.steam_boiler_coal_bronze.name=Маленький паровой угольный котел
+gregtech.machine.steam_boiler_coal_bronze.tooltip=Ранний способ получить энергию пара
+gregtech.machine.steam_boiler_coal_steel.name=Паровой угольный котел высокого давления
+gregtech.machine.steam_boiler_coal_steel.tooltip=Быстрее, чем маленький паровой угольный котел
+gregtech.machine.steam_boiler_solar_bronze.name=Паровой солнечный котел
+gregtech.machine.steam_boiler_solar_bronze.tooltip=Пар энергии солнца
+gregtech.machine.steam_boiler_lava_bronze.name=Маленький паровой лавовый котел
+gregtech.machine.steam_boiler_lava_bronze.tooltip=Котел работает на лаве
+gregtech.machine.steam_boiler_lava_steel.name=Паровой лавовый котел высокого давления
+gregtech.machine.steam_boiler_lava_steel.tooltip=Быстрее, чем маленький паровой лавовый котел
+
+gregtech.machine.steam_extractor_bronze.name=Паровой экстрактор
+gregtech.machine.steam_extractor_bronze.tooltip=Экстракция вашей первой резины
+gregtech.machine.steam_extractor_steel.name=Паровой экстрактор высокого давления
+gregtech.machine.steam_extractor_steel.tooltip=Экстракция вашей первой резины
+gregtech.machine.steam_macerator_bronze.name=Паровой дробитель
+gregtech.machine.steam_macerator_bronze.tooltip=Дробит ваши руды
+gregtech.machine.steam_macerator_steel.name=Паровой дробитель высокого давления
+gregtech.machine.steam_macerator_steel.tooltip=Дробит ваши руды
+gregtech.machine.steam_compressor_bronze.name=Паровой компрессор
+gregtech.machine.steam_compressor_steel.name=Паровой компрессор высокого давления
+gregtech.machine.steam_hammer_bronze.name=Паровой кузнечный молот
+gregtech.machine.steam_hammer_steel.name=Паровой кузнечный молот высокого давления
+gregtech.machine.steam_furnace_bronze.name=Паровая печь
+gregtech.machine.steam_furnace_bronze.tooltip=Выплавка при помощи пара
+gregtech.machine.steam_furnace_steel.name=Паровая печь высокого давления
+gregtech.machine.steam_furnace_steel.tooltip=Плавка с паром под давлением
+gregtech.machine.steam_alloy_smelter_bronze.name=Паровая плавильня
+gregtech.machine.steam_alloy_smelter_steel.name=Паровая плавильня высокого давления
+
+# Генераторы
+gregtech.machine.diesel_generator.tooltip=Требует легковоспламеняющихся жидкостей
+
+gregtech.machine.diesel_generator.lv.name=Базовый дизельный генератор
+gregtech.machine.diesel_generator.mv.name=Улучшеный дизельный генератор
+gregtech.machine.diesel_generator.hv.name=Турбодизельный генератор
+gregtech.machine.diesel_generator.ev.name=Турбодизельный генератор II
+
+gregtech.machine.steam_turbine.lv.name=Базовая паровая турбина
+gregtech.machine.steam_turbine.mv.name=Улучшеная паровая турбина
+gregtech.machine.steam_turbine.hv.name=Турбопаровая турбина
+gregtech.machine.steam_turbine.ev.name=Турбопаровая турбина II
+
+gregtech.machine.gas_turbine.tooltip=Требуются легковоспламеняющиеся газы
+
+gregtech.machine.gas_turbine.lv.name=Базовая газовая турбина
+gregtech.machine.gas_turbine.mv.name=Улучшеная газовая турбина
+gregtech.machine.gas_turbine.hv.name=Турбогазовая турбина
+gregtech.machine.gas_turbine.ev.name=Турбогазовая турбина II
+
+gregtech.machine.magic_energy_absorber.name=Поглотитель магической энергии
+gregtech.machine.magic_energy_absorber.tooltip=Максимальное напряжение: §a2048 §7(§aEV§7)/nСобирает энергию от эндерных кристаллов в 64 блоках/nКаждый кристалл эндера добавляет 32 ЭЕ/т к выходу/nПоместите яйцо дракона сверху, чтобы усилить вывод/n/nКогда усилено:/nКаждый эндер кристалл добавляет 128 ЭЕ/т
+gregtech.machine.magic_energy_converter.name=Конвертер магической энергии
+gregtech.machine.magic_energy_converter.tooltip=Выходное напряжение: §a128 §7(§aMV§7)/nСобирает эссенции из контейнеров в пределах 16 блоков/nПотребляет 20 энергии через второй
+
+# Machines
+gregtech.machine.electric_furnace.lv.name=Базовая электрическая печь
+gregtech.machine.electric_furnace.mv.name=Улучшеная электрическая печь
+gregtech.machine.electric_furnace.hv.name=Улучшеная электрическая печь II
+gregtech.machine.electric_furnace.ev.name=Улучшеная электрическая печь III
+
+gregtech.machine.macerator.lv.name=Базовый дробитель
+gregtech.machine.macerator.mv.name=Улучшеный дробитель
+gregtech.machine.macerator.hv.name=Универсальный дробитель
+gregtech.machine.macerator.ev.name=Универсальный распылитель
+
+gregtech.machine.alloy_smelter.lv.name=Базовая плавильня
+gregtech.machine.alloy_smelter.mv.name=Улучшеная плавильня
+gregtech.machine.alloy_smelter.hv.name=Улучшеная плавильня II
+gregtech.machine.alloy_smelter.ev.name=Улучшеная плавильня III
+
+
+gregtech.machine.amplifab.lv.name=Базовый фабрикатор
+gregtech.machine.amplifab.mv.name=Улучшеный фабрикатор
+gregtech.machine.amplifab.hv.name=Улучшеный фабрикатор II
+gregtech.machine.amplifab.ev.name=Улучшеный фабрикатор III
+
+
+gregtech.machine.arc_furnace.lv.name=Базовая дуговая печь
+gregtech.machine.arc_furnace.mv.name=Улучшеная дуговая печь
+gregtech.machine.arc_furnace.hv.name=Улучшеная дуговая печь II
+gregtech.machine.arc_furnace.ev.name=Улучшеная дуговая печь III
+
+
+gregtech.machine.assembler.lv.name=Базовая сборочная машина
+gregtech.machine.assembler.mv.name=Улучшеная сборочная машина
+gregtech.machine.assembler.hv.name=Улучшеная сборочная машина II
+gregtech.machine.assembler.ev.name=Улучшеная сборочная машина III
+
+
+gregtech.machine.autoclave.tooltip=Кристаллизирует ваши пыли
+
+gregtech.machine.autoclave.lv.name=Базовый автоклав
+gregtech.machine.autoclave.mv.name=Улучшеный автоклав
+gregtech.machine.autoclave.hv.name=Улучшеный автоклав II
+gregtech.machine.autoclave.ev.name=Улучшеный автоклав III
+
+gregtech.machine.bender.tooltip=Производит пластины более эффективно
+
+gregtech.machine.bender.lv.name=Базовый гибочный станок
+gregtech.machine.bender.mv.name=Улучшеный гибочный станок
+gregtech.machine.bender.hv.name=Улучшеный гибочный станок II
+gregtech.machine.bender.ev.name=Улучшеный гибочный станок III
+
+gregtech.machine.brewery.tooltip=Варим ваши напитки
+
+gregtech.machine.brewery.lv.name=Базовая пивоварня
+gregtech.machine.brewery.mv.name=Улучшеная пивоварня
+gregtech.machine.brewery.hv.name=Улучшеная пивоварня II
+gregtech.machine.brewery.ev.name=Улучшеная пивоварня III
+
+gregtech.machine.canner.lv.name=Базовая консервная машина
+gregtech.machine.canner.mv.name=Улучшеная консервная машина
+gregtech.machine.canner.hv.name=Улучшеная консервная машина II
+gregtech.machine.canner.ev.name=Улучшеная консервная машина III
+
+gregtech.machine.centrifuge.lv.name=Базовая центрифуга
+gregtech.machine.centrifuge.mv.name=Улучшеная центрифуга
+gregtech.machine.centrifuge.hv.name=Турбо центрифуга
+gregtech.machine.centrifuge.ev.name=Турбо центрифуга II
+
+gregtech.machine.chemical_bath.tooltip=Промывка руд в химикатах для их разделения
+
+gregtech.machine.chemical_bath.lv.name=Базовая химическая ванна
+gregtech.machine.chemical_bath.mv.name=Улучшеная химическая ванна
+gregtech.machine.chemical_bath.hv.name=Улучшеная химическая ванна II
+gregtech.machine.chemical_bath.ev.name=Улучшеная химическая ванна III
+
+gregtech.machine.chemical_reactor.tooltip=Позволяет химикатам реагировать друг с другом
+
+gregtech.machine.chemical_reactor.lv.name=Базовый химический реактор
+gregtech.machine.chemical_reactor.mv.name=Улучшеный химический реактор
+gregtech.machine.chemical_reactor.hv.name=Улучшеный химический реактор II
+gregtech.machine.chemical_reactor.ev.name=Улучшеный химический реактор III
+
+gregtech.machine.compressor.lv.name=Базовый компрессор
+gregtech.machine.compressor.mv.name=Улучшеный компрессор
+gregtech.machine.compressor.hv.name=Улучшеный компрессор II
+gregtech.machine.compressor.ev.name=Сингулярный компрессор
+
+gregtech.machine.cutter.lv.name=Базовая резочная машина
+gregtech.machine.cutter.mv.name=Улучшеная резочная машина
+gregtech.machine.cutter.hv.name=Улучшеная резочная машина II
+gregtech.machine.cutter.ev.name=Улучшеная резочная машина III
+
+gregtech.machine.distillery.tooltip=Дистилляция наиболее важных частей жидкостей
+
+gregtech.machine.distillery.lv.name=Базовый дистиллятор
+gregtech.machine.distillery.mv.name=Улучшеный дистиллятор
+gregtech.machine.distillery.hv.name=Улучшеный дистиллятор II
+gregtech.machine.distillery.ev.name=Улучшеный дистиллятор III
+
+gregtech.machine.electrolyzer.lv.name=Базовый электролизер
+gregtech.machine.electrolyzer.mv.name=Улучшеный электролизер
+gregtech.machine.electrolyzer.hv.name=Улучшеный электролизер II
+gregtech.machine.electrolyzer.ev.name=Молекулярный электролизер E-4908
+
+gregtech.machine.electromagnetic_separator.tooltip=Отделение магнитных руд от остальных
+
+gregtech.machine.electromagnetic_separator.lv.name=Базовый электромагнитный сепаратор
+gregtech.machine.electromagnetic_separator.mv.name=Улучшеный электромагнитный сепаратор
+gregtech.machine.electromagnetic_separator.hv.name=Улучшеный электромагнитный сепаратор II
+gregtech.machine.electromagnetic_separator.ev.name=Улучшеный электромагнитный сепаратор III
+
+gregtech.machine.extractor.lv.name=Базовый экстрактор
+gregtech.machine.extractor.mv.name=Улучшеный экстрактор
+gregtech.machine.extractor.hv.name=Улучшеный экстрактор II
+gregtech.machine.extractor.ev.name=Вакуумный экстрактор
+
+gregtech.machine.extruder.tooltip=Универсальный станок для металлообработки
+
+gregtech.machine.extruder.lv.name=Базовый экструдер
+gregtech.machine.extruder.mv.name=Улучшеный экструдер
+gregtech.machine.extruder.hv.name=Улучшеный экструдер II
+gregtech.machine.extruder.ev.name=Улучшеный экструдер III
+
+gregtech.machine.fermenter.tooltip=Ферментирует жидкости
+
+gregtech.machine.fermenter.lv.name=Базовый ферментер
+gregtech.machine.fermenter.mv.name=Улучшеный ферментер
+gregtech.machine.fermenter.hv.name=Улучшеный ферментер II
+gregtech.machine.fermenter.ev.name=Улучшеный ферментер III
+
+gregtech.machine.fluid_canner.tooltip=Заправляет жидкости в и из контейнеров
+
+gregtech.machine.fluid_canner.lv.name=Базовый разливочный аппарат
+gregtech.machine.fluid_canner.mv.name=Улучшенный разливочный аппарат
+gregtech.machine.fluid_canner.hv.name=Быстрый разливочный аппарат
+gregtech.machine.fluid_canner.ev.name=Турбо разливочный аппарат
+
+gregtech.machine.fluid_extractor.tooltip=Извлечение жидкости из предметов
+
+gregtech.machine.fluid_extractor.lv.name=Базовый жидкостный экстрактор
+gregtech.machine.fluid_extractor.mv.name=Улучшеный жидкостный экстрактор
+gregtech.machine.fluid_extractor.hv.name=Улучшеный жидкостный экстрактор II
+gregtech.machine.fluid_extractor.ev.name=Улучшеный жидкостный экстрактор III
+
+gregtech.machine.fluid_heater.lv.name=Базовый жидкостный нагреватель
+gregtech.machine.fluid_heater.mv.name=Улучшеный жидкостный нагреватель
+gregtech.machine.fluid_heater.hv.name=Улучшеный жидкостный нагреватель II
+gregtech.machine.fluid_heater.ev.name=Улучшеный жидкостный нагреватель III
+
+gregtech.machine.fluid_solidifier.tooltip=Охлаждает жидкости, образуя твердые вещества
+
+gregtech.machine.fluid_solidifier.lv.name=Базовый жидкостный отвердитель
+gregtech.machine.fluid_solidifier.mv.name=Улучшеный жидкостный отвердитель
+gregtech.machine.fluid_solidifier.hv.name=Улучшеный жидкостный отвердитель II
+gregtech.machine.fluid_solidifier.ev.name=Улучшеный жидкостный отвердитель III
+
+gregtech.machine.forge_hammer.lv.name=Базовый кузнечный молот
+gregtech.machine.forge_hammer.mv.name=Улучшеная кузнечный молот
+gregtech.machine.forge_hammer.hv.name=Улучшен кузнечный молот II
+gregtech.machine.forge_hammer.ev.name=Улучшен кузнечный молот III
+
+gregtech.machine.forming_press.lv.name=Базовый формовочный пресс
+gregtech.machine.forming_press.mv.name=Улучшеный формовочный пресс
+gregtech.machine.forming_press.hv.name=Улучшеный формовочный пресс II
+gregtech.machine.forming_press.ev.name=Улучшеный формовочный пресс III
+
+gregtech.machine.lathe.tooltip=Производит прутья более эффективно
+
+gregtech.machine.lathe.lv.name=Базовый токарный станок
+gregtech.machine.lathe.mv.name=Улучшеный токарный станок
+gregtech.machine.lathe.hv.name=Улучшеный токарный станок II
+gregtech.machine.lathe.ev.name=Улучшеный токарный станок III
+
+gregtech.machine.microwave.lv.name=Базовая СВЧ
+gregtech.machine.microwave.mv.name=Улучшеная СВЧ
+gregtech.machine.microwave.hv.name=Улучшеная СВЧ II
+gregtech.machine.microwave.ev.name=Улучшеная СВЧ III
+
+gregtech.machine.mixer.lv.name=Базовый смеситель
+gregtech.machine.mixer.mv.name=Улучшеный смеситель
+gregtech.machine.mixer.hv.name=Улучшеный смеситель II
+gregtech.machine.mixer.ev.name=Улучшеный смеситель III
+
+gregtech.machine.ore_washer.tooltip=Мытье ваших руд, чтобы получить побочные продукты
+
+gregtech.machine.ore_washer.lv.name=Базовый рудоперерабатывающий агрегат
+gregtech.machine.ore_washer.mv.name=Улучшеный рудоперерабатывающий агрегат
+gregtech.machine.ore_washer.hv.name=Улучшеный рудоперерабатывающий агрегат II
+gregtech.machine.ore_washer.ev.name=Улучшеный рудоперерабатывающий агрегат III
+
+gregtech.machine.packer.lv.name=Базовый упаковщик
+gregtech.machine.packer.mv.name=Улучшеный упаковщик
+gregtech.machine.packer.hv.name=Улучшеный упаковщик II
+gregtech.machine.packer.ev.name=Улучшеный упаковщик III
+
+gregtech.machine.unpacker.lv.name=Базовый распаковщик
+gregtech.machine.unpacker.mv.name=Улучшеный распаковщик
+gregtech.machine.unpacker.hv.name=Улучшеный распаковщик II
+gregtech.machine.unpacker.ev.name=Улучшеный распаковщик III
+
+gregtech.machine.plasma_arc_furnace.lv.name=Базовая плазменная дуговая печь
+gregtech.machine.plasma_arc_furnace.mv.name=Улучшеная плазменная дуговая печь
+gregtech.machine.plasma_arc_furnace.hv.name=Улучшеная плазменная дуговая печь II
+gregtech.machine.plasma_arc_furnace.ev.name=Улучшеная плазменная дуговая печь III
+
+gregtech.machine.polarizer.tooltip=Биполяризация ваших магнитов
+
+gregtech.machine.polarizer.lv.name=Базовый поляризатор
+gregtech.machine.polarizer.mv.name=Улучшеный поляризатор
+gregtech.machine.polarizer.hv.name=Улучшеный поляризатор II
+gregtech.machine.polarizer.ev.name=Улучшеный поляризатор III
+
+gregtech.machine.laser_engraver.lv.name=Базовый прецизионный лазерный гравер
+gregtech.machine.laser_engraver.mv.name=Улучшеный прецизионный лазерный гравер
+gregtech.machine.laser_engraver.hv.name=Улучшеный прецизионный лазерный гравер II
+gregtech.machine.laser_engraver.ev.name=Улучшеный прецизионный лазерный гравер III
+
+gregtech.machine.sifter.tooltip=Сохраняйте спокойствие и продолжайте просеивать
+
+gregtech.machine.sifter.lv.name=Базовая просеивающая машина
+gregtech.machine.sifter.mv.name=Улучшеная просеивающая машина
+gregtech.machine.sifter.hv.name=Улучшеная просеивающая машина II
+gregtech.machine.sifter.ev.name=Улучшеная просеивающая машина III
+
+gregtech.machine.thermal_centrifuge.tooltip=Точнее отделять руды
+
+gregtech.machine.thermal_centrifuge.lv.name=Базовая термальная центрифуга
+gregtech.machine.thermal_centrifuge.mv.name=Улучшеная термальная центрифуга
+gregtech.machine.thermal_centrifuge.hv.name=Улучшеная термальная центрифуга II
+gregtech.machine.thermal_centrifuge.ev.name=Улучшеная термальная центрифуга III
+
+gregtech.machine.wiremill.tooltip=Производит провода более эффективно
+
+gregtech.machine.wiremill.lv.name=Базовый волочильный стан
+gregtech.machine.wiremill.mv.name=Улучшеный волочильный стан
+gregtech.machine.wiremill.hv.name=Улучшеный волочильный стан II
+gregtech.machine.wiremill.ev.name=Улучшеный волочильный стан III
+
+# Корпуса машин
+gregtech.machine.hull.tooltip=§fВам просто нужно §5В§dо§4о§cб§eр§aа§bж§3е§7н§1и§5е§f, чтобы использовать это
+
+gregtech.machine.hull.ulv.name=Корпус машины (ULV)
+gregtech.machine.hull.lv.name=Корпус машины (LV)
+gregtech.machine.hull.mv.name=Корпус машины (MV)
+gregtech.machine.hull.hv.name=Корпус машины (HV)
+gregtech.machine.hull.ev.name=Корпус машины (EV)
+gregtech.machine.hull.iv.name=Корпус машины (IV)
+gregtech.machine.hull.luv.name=Корпус машины (LuV)
+gregtech.machine.hull.zpm.name=Корпус машины (ZPM)
+gregtech.machine.hull.uv.name=Корпус машины (UV)
+gregtech.machine.hull.max.name=Корпус машины (Макс.)
+
+# Батарейные буферы
+gregtech.machine.battery_buffer.ulv.1.name=Батарейный буфер (1 ячейка ULV)
+gregtech.machine.battery_buffer.ulv.4.name=Батарейный буфер (4 ячейки ULV)
+gregtech.machine.battery_buffer.ulv.9.name=Батарейный буфер (9 ячеек ULV)
+gregtech.machine.battery_buffer.ulv.16.name=Батарейный буфер (16 ячеек ULV)
+
+gregtech.machine.battery_buffer.lv.1.name=Батарейный буфер (1 ячека LV)
+gregtech.machine.battery_buffer.lv.4.name=Батарейный буфер (4 ячейки LV)
+gregtech.machine.battery_buffer.lv.9.name=Батарейный буфер (9 ячеек LV)
+gregtech.machine.battery_buffer.lv.16.name=Батарейный буфер (16 ячеек LV)
+
+gregtech.machine.battery_buffer.mv.1.name=Батарейный буфер (1 ячейка MV)
+gregtech.machine.battery_buffer.mv.4.name=СБатарейный буфер (4 ячеек MV)
+gregtech.machine.battery_buffer.mv.9.name=Батарейный буфер (9 ячеек MV)
+gregtech.machine.battery_buffer.mv.16.name=Батарейный буфер (16 ячеек MV)
+
+gregtech.machine.battery_buffer.hv.1.name=Батарейный буфер (1 ячейка HV)
+gregtech.machine.battery_buffer.hv.4.name=Батарейный буфер (4 ячейки HV)
+gregtech.machine.battery_buffer.hv.9.name=Батарейный буфер (9 ячеек HV)
+gregtech.machine.battery_buffer.hv.16.name=Батарейный буфер (16 ячеек HV)
+
+gregtech.machine.battery_buffer.ev.1.name=Батарейный буфер (1 ячейка EV)
+gregtech.machine.battery_buffer.ev.4.name=Батарейный буфер (4 ячейки EV)
+gregtech.machine.battery_buffer.ev.9.name=Батарейный буфер (9 ячеек EV)
+gregtech.machine.battery_buffer.ev.16.name=Батарейный буфер (16 ячеек EV)
+
+gregtech.machine.battery_buffer.iv.1.name=Батарейный буфер (1 ячейка IV)
+gregtech.machine.battery_buffer.iv.4.name=Батарейный буфер (4 ячейки IV)
+gregtech.machine.battery_buffer.iv.9.name=Батарейный буфер (9 ячеек IV)
+gregtech.machine.battery_buffer.iv.16.name=Батарейный буфер (16 ячеек IV)
+
+gregtech.machine.battery_buffer.luv.1.name=Батарейный буфер (1 ячейка LuV)
+gregtech.machine.battery_buffer.luv.4.name=Батарейный буфер (4 ячейки LuV)
+gregtech.machine.battery_buffer.luv.9.name=Батарейный буфер (9 ячеек LuV)
+gregtech.machine.battery_buffer.luv.16.name=Батарейный буфер (16 ячеек LuV)
+
+gregtech.machine.battery_buffer.zpm.1.name=Батарейный буфер (1 ячейка ZPM)
+gregtech.machine.battery_buffer.zpm.4.name=Батарейный буфер (4 ячейки ZPM)
+gregtech.machine.battery_buffer.zpm.9.name=Батарейный буфер (9 ячеек ZPM)
+gregtech.machine.battery_buffer.zpm.16.name=НБатарейный буфер (16 ячеек ZPM)
+
+gregtech.machine.battery_buffer.uv.1.name=Батарейный буфер (1 ячейка UV)
+gregtech.machine.battery_buffer.uv.4.name=Батарейный буфер (4 ячейки UV)
+gregtech.machine.battery_buffer.uv.9.name=Батарейный буфер (9 ячеек UV)
+gregtech.machine.battery_buffer.uv.16.name=Батарейный буфер (16 ячеек UV)
+
+gregtech.machine.battery_buffer.max.1.name=Батарейный буфер (1 ячейка Макс.)
+gregtech.machine.battery_buffer.max.4.name=Батарейный буфер (4 ячейки Макс.)
+gregtech.machine.battery_buffer.max.9.name=Батарейный буфер (9 ячеек Макс.)
+gregtech.machine.battery_buffer.max.16.name=Батарейный буфер (16 ячеек Макс.)
+
+# Трансформаторы
+gregtech.machine.transformer.tooltip_tool_usage=Используйте мягкий молот, чтобы инвертировать (По умолчанию понижающий режим)
+gregtech.machine.transformer.tooltip_transform_down=Понижающий режим:
+gregtech.machine.transformer.message_transform_down=Понижает напряжение, вход: %dВ %d А, выход: %dВ %d А
+gregtech.machine.transformer.tooltip_transform_up=Повышающий режим:
+gregtech.machine.transformer.message_transform_up=Повышает напряжение, вход: %dВ %d А, выход: %dВ %d А
+
+gregtech.machine.transformer.lv.name=Трансформатор низкого напряжения
+gregtech.machine.transformer.mv.name=Трансформатор среднего напряжения
+gregtech.machine.transformer.hv.name=Трансформатор высокого напряжения
+gregtech.machine.transformer.ev.name=Трансформатор экстремального напряжения
+gregtech.machine.transformer.iv.name=Трансформатор безумного напряжения
+gregtech.machine.transformer.luv.name=Трансформатор абсурдного напряжения
+gregtech.machine.transformer.zpm.name=Трансформатор напряжение модуля нулевой точки
+gregtech.machine.transformer.uv.name=Трансформатор предельного напряжения
+gregtech.machine.transformer.max.name=Трансформатор максимального напряжения
+
+# Зарядники
+gregtech.machine.charger.ulv.name=Зарядное устройство очень низкого напряжения
+gregtech.machine.charger.lv.name=Зарядное устройство низкого напряжения
+gregtech.machine.charger.mv.name=Зарядное устройство среднего напряжения
+gregtech.machine.charger.hv.name=Зарядное устройство высокого напряжения
+gregtech.machine.charger.ev.name=Зарядное устройство экстремального напряжения
+gregtech.machine.charger.iv.name=Зарядное устройство безумного напряжения
+gregtech.machine.charger.luv.name=Зарядное устройство абсурдного напряжения
+gregtech.machine.charger.zpm.name=Зарядное устройство напряжения модуля нулевой точки
+gregtech.machine.charger.uv.name=Зарядное устройство предельного напряжения
+gregtech.machine.charger.max.name=Зарядное устройство максимального напряжения
+
+# Насосы
+gregtech.machine.pump.tooltip_range=Зона действия: %dx%d
+gregtech.machine.pump.tooltip_speed=Откачивает жидкость каждый %d тик
+
+gregtech.machine.pump.lv.name=Базовый насос
+gregtech.machine.pump.mv.name=Улучшеный насос
+gregtech.machine.pump.hv.name=Улучшеный насос II
+gregtech.machine.pump.ev.name=Улучшеный насос III
+
+# Квантовые сундуки
+gregtech.machine.quantum_chest.tooltip=Лучше чем JABBA.
+gregtech.machine.quantum_chest.capacity=Вместительность: %d предметов
+gregtech.machine.quantum_chest.items_stored=Содержит предметов:
+
+gregtech.machine.quantum_chest.mv.name=Базовый квантовый сундук
+gregtech.machine.quantum_chest.hv.name=Улучшеный квантовый сундук
+gregtech.machine.quantum_chest.ev.name=Улучшеный квантовый сундук II
+gregtech.machine.quantum_chest.iv.name=Квантовый сундук на черной дыре
+
+# Квантовые резервуар
+gregtech.machine.quantum_tank.tooltip=Компактное место для хранения всех ваших жидкостей.
+gregtech.machine.quantum_tank.capacity=Объем жидкости: %d мВ
+
+gregtech.machine.quantum_tank.mv.name=Базовый квантовый резервуар
+gregtech.machine.quantum_tank.hv.name=Улучшеный квантовый резервуар
+gregtech.machine.quantum_tank.ev.name=Улучшеный квантовый резервуар II
+gregtech.machine.quantum_tank.iv.name=Квантовый резервуар на черной дыре
+
+# Воздухосборники
+gregtech.machine.air_collector.lv.name=Базовый воздухосборник
+gregtech.machine.air_collector.mv.name=Улучшеный воздухосборник
+gregtech.machine.air_collector.hv.name=Улучшеный воздухосборник II
+gregtech.machine.air_collector.ev.name=Атмосферный коллектор
+gregtech.machine.air_collector.description=Собирает воздух из соседних блоков
+
+# Катушка Тесла
+gregtech.machine.tesla_coil.name=Катушка Тесла
+gregtech.machine.tesla_coil.description=Наносит урон всем живым существам в радиусе 7 блоков и потребляет 2500EU за 1 очко урона\nЕмкость внутреннего буфера: §e256k ЭЕ
+
+# Общая техника
+gregtech.machine.basic.output_override.reset=Выходной фильтр: все резервуары.
+gregtech.machine.basic.output_override.set=Выходной фильтр: резервуар #%s.
+
+# Достижение руды
+achievement.Naquadah=Найти наквада руду
+achievement.Naquadah.desc=Высота: 10-60, Шанс: 10, Край
+achievement.NaquadahEnriched=Найти обогащенный наквада руду
+achievement.NaquadahEnriched.desc=Высота: 10-60, Шанс: 10, Край
+achievement.Lignite=Найти лигнит уголь
+achievement.Lignite.desc=Высота: 50-130, Шанс: 160, Мир
+achievement.Coal=Найти каменный уголь
+achievement.Coal.desc=Высота: 50-130, Шанс: 160, Мир
+achievement.Magnetite=Найти магнетитовую руду
+achievement.Magnetite.desc=Высота: 50-120, Шанс: 160, Мир/Ад
+achievement.Iron=Найти железную руду
+achievement.Iron.desc=Высота: 50-120, Шанс: 160, Мир/Ад
+achievement.VanadiumMagnetite=Найти ванадий-магнетитную руду
+achievement.VanadiumMagnetite.desc=Высота: 50-120, Шанс: 160, Мир/Ад
+achievement.Gold=Найти золотую руду
+achievement.Gold.desc=Высота: 60-80, Шанс: 160, Мир
+achievement.BrownLimonite=Найти руду коричневого лимонита
+achievement.BrownLimonite.desc=Высота: 10-40, Шанс: 120, Мир/Ад
+achievement.YellowLimonite=Найти руду желтого лимонита
+achievement.YellowLimonite.desc=Высота: 10-40, Шанс: 120, Мир/Ад
+achievement.BandedIron=Найти руду кованого железа
+achievement.BandedIron.desc=Высота: 10-40, Шанс: 120, Мир/Ад
+achievement.Malachite=Найти малахитовую руду
+achievement.Malachite.desc=Высота: 10-40, Шанс: 120, Мир/Ад
+achievement.Tin=Найти оловянную руду
+achievement.Tin.desc=Высота: 40-120, Шанс: 50, Мир/Край
+achievement.Cassiterite=Найти касситеритовую руду
+achievement.Cassiterite.desc=Высота: 40-120, Шанс: 50, Мир/Край
+achievement.Tetrahedrite=Найти тетраэдритовую руду
+achievement.Tetrahedrite.desc=Высота: 80-120, Шанс: 70, Мир/Ад
+achievement.Copper=Найти медную руду
+achievement.Copper.desc=Высота: 80-120, Шанс: 70, Мир/Ад
+achievement.Stibnite=Найти стибнитовую руду
+achievement.Stibnite.desc=Высота: 80-120, Шанс: 70, Мир/Ад
+achievement.NetherQuartz=Найти адский кварц
+achievement.NetherQuartz.desc=Высота: 40-80, Шанс: 80, Ад
+achievement.Sulfur=Найти серную руду
+achievement.Sulfur.desc=Высота: 5-20, Шанс: 100, Ад
+achievement.Pyrite=Найти пиритовую руду
+achievement.Pyrite.desc=Высота: 5-20, Шанс: 100, Ад
+achievement.Sphalerite=Найти сфалеритовую руду
+achievement.Sphalerite.desc=Высота: 5-20, Шанс: 100, Ад
+achievement.Chalcopyrite=Найти халькопиритовую руду
+achievement.Chalcopyrite.desc=Высота: 10-30, Шанс: 80, Мир/Ад
+achievement.Bauxite=Найти бокситовую руду
+achievement.Bauxite.desc=Высота: 50-90, Шанс: 80, Мир
+achievement.Aluminium=Найти алюминиевую руду
+achievement.Aluminium.desc=Высота: 50-90, Шанс: 80, Мир
+achievement.Ilmenite=Найти ильменитовую руду
+achievement.Ilmenite.desc=Высота: 50-90, Шанс: 80, Мир
+achievement.RockSalt=Найти каменную соль
+achievement.RockSalt.desc=Высота: 50-60, Шанс: 50, Мир
+achievement.Salt=Найти солевую руду
+achievement.Salt.desc=Высота: 50-60, Шанс: 50, Мир
+achievement.Lepidolite=Найти лепидолитовую руду
+achievement.Lepidolite.desc=Высота: 50-60, Шанс: 50, Мир
+achievement.Spodumene=Найти сподуменовую руду
+achievement.Spodumene.desc=Высота: 50-60, Шанс: 50, Мир
+achievement.Redstone=Найти красную пыль
+achievement.Redstone.desc=Высота: 10-40, Шанс: 60, Мир/Ад
+achievement.Ruby=Найти рубины
+achievement.Ruby.desc=Высота: 10-40, Шанс: 60, Мир/Ад
+achievement.Cinnabar=Найти киноварь
+achievement.Cinnabar.desc=Высота: 10-40, Шанс: 60, Мир/Ад
+achievement.Soapstone=Найти мыльный камень
+achievement.Soapstone.desc=Высота: 10-40, Шанс: 40, Мир
+achievement.Talc=Найти тальковую руду
+achievement.Talc.desc=Высота: 10-40, Шанс: 40, Мир
+achievement.Glauconite=Найти глауконитовую руду
+achievement.Glauconite.desc=Высота: 10-40, Шанс: 40, Мир
+achievement.Pentlandite=Найти пентландитовую руду
+achievement.Pentlandite.desc=Высота: 10-40, Шанс: 40, Мир
+achievement.Garnierite=Найти гранит
+achievement.Garnierite.desc=Высота: 10-40, Шанс: 40, Мир/Ад/End
+achievement.Nickel=Найти никелевую руду
+achievement.Nickel.desc=Высота: 10-40, Шанс: 40, Мир/Ад/End
+achievement.Cobaltite=Найти кобальтовую руду
+achievement.Cobaltite.desc=Высота: 10-40, Шанс: 40, Мир/Ад/End
+achievement.Cooperite=Найти куперитовую руду
+achievement.Cooperite.desc=Высота: 40-50, Шанс: 5, Мир/Край
+achievement.Palladium=Найти паладиевую руду
+achievement.Palladium.desc=Высота: 40-50, Шанс: 5, Мир/Край
+achievement.Platinum=Найти платиновую руду
+achievement.Platinum.desc=Высота: 40-50, Шанс: 5, Мир/Край
+achievement.Iridium=Найти иридиевую руду
+achievement.Iridium.desc=Высота: 40-50, Шанс: 5, Мир/Край
+achievement.уранит=Найти уранинитовую руду
+achievement.уранит.desc=Высота: 10-40, Шанс: 40, Мир
+achievement.Uraninite=Найти урановую руду
+achievement.Uraninite.desc=Высота: 10-40, Шанс: 40, Мир
+achievement.Uranium=Найти ураниевую руду
+achievement.Uranium.desc=Высота: 20-30, Шанс: 20, Мир
+achievement.Bastnasite=Найти бастназитовую руду
+achievement.Bastnasite.desc=Высота: 20-40, Шанс: 30, Мир
+achievement.Monazite=Найти монацитовую руду
+achievement.Monazite.desc=Высота: 20-40, Шанс: 30, Мир
+achievement.Neodymium=Найти неодимовую руду
+achievement.Neodymium.desc=Высота: 20-40, Шанс: 30, Мир
+achievement.Wulfenite=Найти вульфенитовую руду
+achievement.Wulfenite.desc=Высота: 20-50, Шанс: 5, Мир/Край
+achievement.Molybdenite=Найти молибденитовую руду
+achievement.Molybdenite.desc=Высота: 20-50, Шанс: 5, Мир/Край
+achievement.Molybdenum=Найти молибденовую руду
+achievement.Molybdenum.desc=Высота: 20-50, Шанс: 5, Мир/Край
+achievement.Powellite=Найти повеллитовую руду
+achievement.Powellite.desc=Высота: 20-50, Шанс: 5, Мир/Край
+achievement.Scheelite=Найти шеелитовую руду
+achievement.Scheelite.desc=Высота: 20-50, Шанс: 10, Мир/Край
+achievement.Tungstate=Найти вольфраматовую руду
+achievement.Tungstate.desc=Высота: 20-50, Шанс: 10, Мир/Край
+achievement.Lithium=Найти литиевую руду
+achievement.Lithium.desc=Высота: 20-50, Шанс: 10, Мир/Край
+achievement.Almandine=Найти альмандиновую руду
+achievement.Almandine.desc=Высота: 10-40, Шанс: 60, Мир
+achievement.Pyrope=Найти пироповую руду
+achievement.Pyrope.desc=Высота: 10-40, Шанс: 60, Мир
+achievement.Sapphire=Найти сапфиры
+achievement.Sapphire.desc=Высота: 10-40, Шанс: 60, Мир
+achievement.GreenSapphire=Найти зеленые сапфиры
+achievement.GreenSapphire.desc=Высота: 10-40, Шанс: 60, Мир
+achievement.Grossular=Найти гроссуляровую руду
+achievement.Grossular.desc=Высота: 20-30, Шанс: 20, Мир/Край
+achievement.Spessartine=Найти спессартиновую руду
+achievement.Spessartine.desc=Высота: 20-30, Шанс: 20, Мир/Край
+achievement.Pyrolusite=Найти пиролюзитовую руду
+achievement.Pyrolusite.desc=Высота: 20-30, Шанс: 20, Мир/Край
+achievement.Tantalite=Найти танталитовую руду
+achievement.Tantalite.desc=Высота: 20-30, Шанс: 20, Мир/Край
+achievement.Quartzite=Найти кварцитную руду
+achievement.Quartzite.desc=Высота: 40-80, Шанс: 60, Мир
+achievement.Barite=Найти баритовую руду
+achievement.Barite.desc=Высота: 40-80, Шанс: 60, Мир
+achievement.CertusQuartz=Найти истенный кварц
+achievement.CertusQuartz.desc=Высота: 40-80, Шанс: 60, Мир
+achievement.Graphite=Найти графитную руду
+achievement.Graphite.desc=Высота: 5-20, Шанс: 40, Мир
+achievement.Diamond=Найти алмазы
+achievement.Diamond.desc=Высота: 5-20, Шанс: 40, Мир
+achievement.Bentonite=Найти бентонитовую руду
+achievement.Bentonite.desc=Высота: 10-40, Шанс: 60, Мир/Край
+achievement.Magnesite=Найти магнезитовую руду
+achievement.Magnesite.desc=Высота: 10-40, Шанс: 60, Мир/Край
+achievement.Olivine=Найти оливины
+achievement.Olivine.desc=Высота: 10-40, Шанс: 60, Мир/Край
+achievement.Apatite=Найти апатитную руду
+achievement.Apatite.desc=Высота: 40-60, Шанс: 60, Мир
+achievement.Phosphorus=Найти фосфорную руду
+achievement.Phosphorus.desc=Высота: 40-60, Шанс: 60, Мир
+achievement.Phosphate=Найти фосфатную руду
+achievement.Phosphate.desc=Высота: 40-60, Шанс: 60, Мир
+achievement.Galena=Найти галенитовую руду
+achievement.Galena.desc=Высота: 30-60, Шанс: 40, Мир
+achievement.Silver=Найти серебрянную руду
+achievement.Silver.desc=Высота: 30-60, Шанс: 40, Мир
+achievement.Lead=Найти свинцовую руду
+achievement.Lead.desc=Высота: 30-60, Шанс: 40, Мир
+achievement.Lazurite=Найти лазурит
+achievement.Lazurite.desc=Высота: 20-50, Шанс: 40, Мир/Край
+achievement.Sodalite=Найти содалит
+achievement.Sodalite.desc=Высота: 20-50, Шанс: 40, Мир/Край
+achievement.Lapis=Найти ляпис
+achievement.Lapis.desc=Высота: 20-50, Шанс: 40, Мир/Край
+achievement.Calcite=Найти кальцитовую руду
+achievement.Calcite.desc=Высота: 20-50, Шанс: 40, Мир/Край
+achievement.Beryllium=Найти бериллиевую руду
+achievement.Beryllium.desc=Высота: 5-30, Шанс: 30, Мир/Край
+achievement.Emerald=Найти изумруд
+achievement.Emerald.desc=Высота: 5-30, Шанс: 30, Мир/Край
+achievement.Thorium=Найти ториевую руду
+achievement.Thorium.desc=Высота: 5-30, Шанс: 30, Мир/Край
+achievement.Oilsands=Найти нефтеносный песок
+achievement.Oilsands.desc=Высота: 50-80, Шанс: 80, Мир
+
+achievement.flintpick=Первые инструменты
+achievement.flintpick.desc=Создайте кремень
+achievement.crops=Сельское хозяйство
+achievement.crops.desc=Ремесленные культуры
+achievement.havestlead=Урожай свинца
+achievement.havestlead.desc=Получите листья свинца
+achievement.havestcopper=Урожай меди
+achievement.havestcopper.desc=Получить медное волокно
+achievement.havesttin=Harvest Tin
+achievement.havesttin.desc=Get Tine Twig
+achievement.havestoil=Harvest Oil
+achievement.havestoil.desc=Get Oilberrys
+achievement.havestiron=Harvest Iron
+achievement.havestiron.desc=Get Ferru Leafs
+achievement.havestgold=Harvest Gold
+achievement.havestgold.desc=Get Aurelia Leafs
+achievement.havestsilver=Harvest Silver
+achievement.havestsilver.desc=Get Argentia Leafs
+achievement.havestemeralds=Harvest Emeralds
+achievement.havestemeralds.desc=Get Bobs yer uncle Berries
+achievement.tools=Больше инструментов
+achievement.tools.desc=Создайте молота
+achievement.driltime=Время перфоратора!
+achievement.driltime.desc=Создать пероратор (LV)
+achievement.brrrr=Вжжжжж...
+achievement.brrrr.desc=Создайте бензопилы (LV)
+achievement.highpowerdrill=Дрель высокой мощности
+achievement.highpowerdrill.desc=Создать пероратор (HV)
+achievement.hammertime=Время молотка
+achievement.hammertime.desc=Создайте отбойного молотка
+achievement.repair=Ремонт
+achievement.repair.desc=Создайте дизассемблера
+achievement.unitool=Универсальный инструмент
+achievement.unitool.desc=Создайте универсальной лопаты
+achievement.recycling=Переработка отходов
+achievement.recycling.desc=Создайте дуговаую печь
+achievement.crushed=Раздавленный
+achievement.crushed.desc=Разбейте руду молотком
+achievement.cleandust=Чистый
+achievement.cleandust.desc=Промойте пыль в котле
+achievement.washing=Стирка
+achievement.washing.desc=Получить очищенную измельченную руду
+achievement.spinit=Покрутите
+achievement.spinit.desc=Получить центрифугированную руду
+achievement.newfuel=Новое топливо
+achievement.newfuel.desc=Создание ториевого топливного элемента
+achievement.newmetal=Новый металл
+achievement.newmetal.desc=Сделать лютеций из ториевых топливных элементов
+achievement.reflect=Отражение
+achievement.reflect.desc=Создание иридиевого нейтронного отражателя
+achievement.bronze=Бронза
+achievement.bronze.desc=Создайте бронзовую пыль
+achievement.simplyeco=Просто экология
+achievement.simplyeco.desc=Создание солнечного котла
+achievement.firststeam=Первый пар
+achievement.firststeam.desc=Создание бронзового котла
+achievement.alloysmelter=Литейный завод
+achievement.alloysmelter.desc=Создание паровой плавильни
+achievement.macerator=Измельчитель
+achievement.macerator.desc=Создайте паровой дробитель
+achievement.extract=Экстракт
+achievement.extract.desc=Создание парового экстрактора
+achievement.smallparts=Маленькие части
+achievement.smallparts.desc=Создайте NAND схему
+achievement.bettercircuits=Лучшие схемы
+achievement.bettercircuits.desc=Получите хорошую схему
+achievement.stepforward=Шаг вперед
+achievement.stepforward.desc=Создать продвинутую плату
+achievement.energyflow=Поток энергии
+achievement.energyflow.desc=Получить плату потока энергии
+achievement.orbs=Шары
+achievement.orbs.desc=Получите лапотронный шар энергии
+achievement.thatspower=Это сила
+achievement.thatspower.desc=Получите энергетический кластер лапотроннов
+achievement.datasaving=Сохранение данных
+achievement.datasaving.desc=Получить сферу данных
+achievement.superbuffer=Супербуфер
+achievement.superbuffer.desc=Создание супербуфера LV
+achievement.newstorage=Новое хранилище
+achievement.newstorage.desc=Изготовить квантовый сундук
+achievement.whereistheocean=Где океан?
+achievement.whereistheocean.desc=Построить квантовый танк
+achievement.luck=Реальная удача
+achievement.luck.desc=Найти модуль нулевой точки в храме джунглей
+achievement.steel=Сталь
+achievement.steel.desc=Производство стали в примитивной доменной печи
+achievement.highpressure=Высокое давление
+achievement.highpressure.desc=Создание котла высокого давления
+achievement.extremepressure=Экстремальное давление
+achievement.extremepressure.desc=Запустите большой котел
+achievement.cheapermac=Дешевле, чем дробитель
+achievement.cheapermac.desc=Создание кузнечного молота LV
+achievement.complexalloys=Сложные сплавы
+achievement.complexalloys.desc=Произведите слиток синей стали
+achievement.magneticiron=Магнитное железо
+achievement.magneticiron.desc=Создание магнитного железного прута с 4 красными камнями
+achievement.lvmotor=Электродвигатель
+achievement.lvmotor.desc=Создайте двигатель низкого напряжение
+achievement.pumpcover=Насос
+achievement.pumpcover.desc=Создайте низковольтовый насос
+achievement.closeit=Закрой его!
+achievement.closeit.desc=Получить крышку затвора
+achievement.slurp=Чавканье
+achievement.slurp.desc=Создание усовершенствованного насоса II
+achievement.transport=Транспорт
+achievement.transport.desc=Создание конвейера низкого напряжения
+achievement.manipulation=Манипуляция
+achievement.manipulation.desc=Получить контроллер машины
+achievement.buffer=Буфер
+achievement.buffer.desc=Создание батарейный буфер LV
+achievement.complexmachines=Сложные машины
+achievement.complexmachines.desc=Создание робота-манипулятора LV
+achievement.avengers=Мстители собирают
+achievement.avengers.desc=Создание ассемблера LV
+achievement.filterregulate=Фильтровать и регулировать
+achievement.filterregulate.desc=Получить фильтр предметов
+achievement.steampower=Сила пара
+achievement.steampower.desc=Создание базовой паровой турбины
+achievement.batterys=Батареи
+achievement.batterys.desc=Создать батарейный буфер
+achievement.badweather=Плохая погода
+achievement.badweather.desc=Забудьте построить крышу над вашими машинами
+achievement.electricproblems=Горе-электрик
+achievement.electricproblems.desc=Потеря машины из-за перенапряжения
+achievement.ebf=Электрическая доменная печь
+achievement.ebf.desc=Создание электрической доменной печи
+achievement.energyhatch=Вам нужно три из них
+achievement.energyhatch.desc=Создание энергетического люка LV
+achievement.gtaluminium=Алюминий
+achievement.gtaluminium.desc=Изготовить алюминиевый слиток
+achievement.highpowersmelt=Мощный плавильный завод
+achievement.highpowersmelt.desc=Создать мультипечку
+achievement.oilplant=НПЗ
+achievement.oilplant.desc=Запустите нефтеперабатывающий завод
+achievement.factory=Фабрика
+achievement.factory.desc=Создание конвеерного производства
+achievement.upgradeebf=Обновите свой энергоуровень
+achievement.upgradeebf.desc=Создание энергетического люка MV
+achievement.maintainance=Техническое обслуживание
+achievement.maintainance.desc=Исправить все проблемы с техническим обслуживанием в машине
+achievement.upgrade=Обновите свои катушки (уровень I)
+achievement.upgrade.desc=Создание канталовой нагревательной катушки
+achievement.titan=Титан
+achievement.titan.desc=Изготовить титановый слиток
+achievement.magic=Магия?
+achievement.magic.desc=Создание конвертера магической энергии LV
+achievement.highmage=Высший маг
+achievement.highmage.desc=Создайте поглотитель магической энергии HV
+achievement.artificaldia=Искусственный алмаз
+achievement.artificaldia.desc=Производство промышленного алмаза в взрывном компрессоре
+achievement.muchsteam=Так много в пара
+achievement.muchsteam.desc=Запустите большую турбину
+achievement.efficientsteam=Эффективный пар
+achievement.efficientsteam.desc=Используйте перегретый пар в большой турбине
+achievement.upgrade2=Обновите свои Катушки (уровень II)
+achievement.upgrade2.desc=Создание нихромовой нагревательной катушки
+achievement.tungsten=Вольфрам
+achievement.tungsten.desc=Охладить горячий вольфрамовый слиток
+achievement.osmium=Осмий
+achievement.osmium.desc=Охладить горячий осмиевый слиток
+achievement.hightech=Хайтек
+achievement.hightech.desc=Создание генератора поля низкого напряжения
+achievement.amplifier=Усилитель мощности
+achievement.amplifier.desc=Создание генератор материи
+achievement.scanning=Сканирование
+achievement.scanning.desc=Завершить сканирование элемента
+achievement.alienpower=Мощь пришельцев
+achievement.alienpower.desc=Создайте генератор наквада Мк I
+achievement.universal=Универсальный
+achievement.universal.desc=Создание массового фабрикатора
+achievement.replication=Копирование
+achievement.replication.desc=Создание репликатора
+achievement.tungstensteel=Вольфрамовая сталь
+achievement.tungstensteel.desc=Охладить горячий слиток из вольфрамовой стали
+achievement.upgrade3=Обновите свои катушки (уровень III)
+achievement.upgrade3.desc=Создание вольфрамовой нагревательной катушки
+achievement.hssg=HSS-G
+achievement.hssg.desc=Охладите горячий слиток HSS-G стали
+achievement.upgrade4=Обновите свои катушки (уровень IV)
+achievement.upgrade4.desc=Создание HSS-G нагревательной катушки
+achievement.stargatematerial=Материал звездных врат
+achievement.stargatematerial.desc=Охладите горячий слиток наквада
+achievement.conducting=Проводимость
+achievement.conducting.desc=Создание сверхпроводящей катушки
+achievement.fusion=Сплавление
+achievement.fusion.desc=Произвести гелиевую плазму
+achievement.higherefficency=Более высокая эффективность
+achievement.higherefficency.desc=Производить азотную плазму
+achievement.advancing=Еще лучше
+achievement.advancing.desc=Производим европий
+achievement.stargateliquid=Жидкий метал звездных врат
+achievement.stargateliquid.desc=Произвести наквада
+achievement.tothelimit=Стремление к пределу
+achievement.tothelimit.desc=Производим америций
+achievement.fullefficiency=Полная эффективность
+achievement.fullefficiency.desc=Создать плазменный генератор III
+achievement.upgrade5=Обновите свои катушки (уровень V)
+achievement.upgrade5.desc=Создание наквада нагревательной катушки
+achievement.alienmetallurgy=Чужая металлургия
+achievement.alienmetallurgy.desc=Охладите горячий слиток сплава наквада
+achievement.over9000=Более 9000!
+achievement.over9000.desc=Изготовить нагревательную катушку из сплава наквада
+achievement.finalpreparations=Заключительные приготовления
+achievement.finalpreparations.desc=Охладить горячий слиток наквадарии
+achievement.denseaspossible=Как можно плотнее
+achievement.denseaspossible.desc=Произвести нейтроний
+achievement.whatnow=Что теперь?
+achievement.whatnow.desc=Создайте лучшую батарейку
+
+# Креативные вкладки
+itemGroup.gregtech.main=Главная (GTCE)
+itemGroup.gregtech.materials=Материалы (GTCE)
+itemGroup.gregtech.ores=Руды (GTCE)
+
+for.bees.species.clay=Глина
+for.bees.species.slimeball=Сгусток слизи
+for.bees.species.peat=Торфяной
+for.bees.species.stickyresin=Липкая смола
+for.bees.species.coal=Каменный уголь
+for.bees.species.oil=Нефть
+for.bees.species.redstone=Красный камень
+for.bees.species.lapis=Ляпис
+for.bees.species.certus=Истинный кварц
+for.bees.species.ruby=Рубин
+for.bees.species.sapphire=Сапфир
+for.bees.species.diamond=Алмаз
+for.bees.species.olivine=Оливин
+for.bees.species.emerald=Изумруд
+for.bees.species.copper=Медь
+for.bees.species.tin=Олово
+for.bees.species.lead=Свинец
+for.bees.species.iron=Железо
+for.bees.species.steel=Сталь
+for.bees.species.nickel=Никель
+for.bees.species.zinc=Цинк
+for.bees.species.silver=Серебро
+for.bees.species.gold=Золото
+for.bees.species.aluminium=Алюминий
+for.bees.species.titanium=Титан
+for.bees.species.chrome=Хром
+for.bees.species.manganese=Марганец
+for.bees.species.tungsten=Вольфрам
+for.bees.species.platinum=Платина
+for.bees.species.iridium=Иридий
+for.bees.species.uranium=Уран
+for.bees.species.plutonium=Плутоний
+for.bees.species.naquadah=Наквада
+
+behaviour.scoop=Ловит бабочек на левый клик
+behaviour.softhammer=Активирует и деактивирует машины
+behaviour.wrench=Повернет блок по правому клику
+behaviour.boor.by=от %s
+behaviour.paintspray.white.tooltip=Может окрасить штуки в белый
+behaviour.paintspray.orange.tooltip=Может окрасить штуки в оранжевый
+behaviour.paintspray.magenta.tooltip=Может окрасить штуки в малиновый
+behaviour.paintspray.lightBlue.tooltip=Может окрасить штуки в светло-синий
+behaviour.paintspray.yellow.tooltip=Может окрасить штуки в желтый
+behaviour.paintspray.lime.tooltip=Может окрасить штуки в лаймовый
+behaviour.paintspray.pink.tooltip=Может окрасить штуки в розовый
+behaviour.paintspray.gray.tooltip=Может окрасить штуки в серый
+behaviour.paintspray.silver.tooltip=Может окрасить штуки в серебрянный
+behaviour.paintspray.cyan.tooltip=Может окрасить штуки в бирюзовый
+behaviour.paintspray.purple.tooltip=Может окрасить штуки в пурпурный
+behaviour.paintspray.blue.tooltip=Может окрасить штуки в синий
+behaviour.paintspray.brown.tooltip=Может окрасить штуки в коричневый
+behaviour.paintspray.green.tooltip=Может окрасить штуки в зеленый
+behaviour.paintspray.red.tooltip=Может окрасить штуки в красный
+behaviour.paintspray.black.tooltip=Может окрасить штуки в черный
+behaviour.paintspray.uses=Остальное использований: %d
+behaviour.prospecting=Используется для поиска
+
+# Многоблочные контроллеры машин
+gregtech.machine.primitive_blast_furnace.bronze.name=Примитивная доменная печь
+gregtech.machine.electric_blast_furnace.name=Электрическая доменная печь
+gregtech.machine.vacuum_freezer.name=Вакуумный морозильник
+gregtech.machine.implosion_compressor.name=Детонационный компрессор
+gregtech.machine.pyrolyse_oven.name=Пиролизная печь
+gregtech.machine.distillation_tower.name=Ратификацонная колонна
+gregtech.machine.multi_furnace.name=Мульти плавильный завод
+gregtech.machine.cracker.name=Крекинговый завод
+gregtech.machine.coke_oven.name=Коксовая печь
+gregtech.machine.coke_oven_hatch.name=Люк коксовой печи
+gregtech.machine.coke_oven_hatch.tooltip=Позволяет автоматизировать доступ к коксовой печи
+
+gregtech.machine.diesel_engine.name=Дизельный двигатель
+gregtech.machine.large_turbine.steam.name=Большая паровая турбина
+gregtech.machine.large_turbine.gas.name=Большая газовая турбина
+gregtech.machine.large_turbine.plasma.name=Большая плазменная турбина
+
+gregtech.machine.large_boiler.bronze.name=Большой бронзовый котел
+gregtech.machine.large_boiler.steel.name=Большой стальной котел
+gregtech.machine.large_boiler.titanium.name=Большой титановый котел
+gregtech.machine.large_boiler.tungstensteel.name=Большой котел из вольфрамовой стали
+
+# Многоблочные подсказки
+gregtech.machine.primitive_blast_furnace.bronze.tooltip=Структура: 3x3x4 (ДxШxВ) Вся структура сделана из примитивных кирпичей (32 в целом)./nПервый слой площадью 3x3./nВторой, третий и четвертый слои являются полыми, без среднего блока./nЭтот блок идет по середине любой стороны во втором слое./nСтороны доменных печей могут быть общими, если на стороне нет контроллера./n
+
+# Многоблочные детали машин
+gregtech.machine.item_bus.import.tooltip=Загружает предметы в агрегат
+
+gregtech.machine.item_bus.import.ulv.name=Входной люк (ULV)
+gregtech.machine.item_bus.import.lv.name=Входной люк (LV)
+gregtech.machine.item_bus.import.mv.name=Входной люк (MV)
+gregtech.machine.item_bus.import.hv.name=Входной люк (HV)
+gregtech.machine.item_bus.import.ev.name=Входной люк (EV)
+gregtech.machine.item_bus.import.iv.name=Входной люк (IV)
+gregtech.machine.item_bus.import.luv.name=Входной люк (LuV)
+gregtech.machine.item_bus.import.zpm.name=Входной люк (ZPM)
+gregtech.machine.item_bus.import.uv.name=Входной люк (UV)
+gregtech.machine.item_bus.import.max.name=Входной люк (Макс.)
+
+gregtech.machine.item_bus.export.tooltip=Выдает готовые предметы из агрегата
+
+gregtech.machine.item_bus.export.ulv.name=Выходной люк (ULV)
+gregtech.machine.item_bus.export.lv.name=Выходной люк (LV)
+gregtech.machine.item_bus.export.mv.name=Выходной люк (MV)
+gregtech.machine.item_bus.export.hv.name=Выходной люк (HV)
+gregtech.machine.item_bus.export.ev.name=Выходной люк (EV)
+gregtech.machine.item_bus.export.iv.name=Выходной люк IV)
+gregtech.machine.item_bus.export.luv.name=Выходной люк (LuV)
+gregtech.machine.item_bus.export.zpm.name=Выходной люк (ZPM)
+gregtech.machine.item_bus.export.uv.name=Выходной люк (UV)
+gregtech.machine.item_bus.export.max.name=Выходной люк (Макс.)
+
+gregtech.machine.fluid_hatch.import.tooltip=Для подачи жидкости в агрегат
+
+gregtech.machine.fluid_hatch.import.ulv.name=Входной шлюз (ULV)
+gregtech.machine.fluid_hatch.import.lv.name=Входной шлюз (LV)
+gregtech.machine.fluid_hatch.import.mv.name=Входной шлюз (MV)
+gregtech.machine.fluid_hatch.import.hv.name=Входной шлюз (HV)
+gregtech.machine.fluid_hatch.import.ev.name=Входной шлюз (EV)
+gregtech.machine.fluid_hatch.import.iv.name=Входной шлюз (IV)
+gregtech.machine.fluid_hatch.import.luv.name=Входной шлюз (LuV)
+gregtech.machine.fluid_hatch.import.zpm.name=Входной шлюз (ZPM)
+gregtech.machine.fluid_hatch.import.uv.name=Входной шлюз (UV)
+gregtech.machine.fluid_hatch.import.max.name=Входной шлюз (Макс.)
+
+gregtech.machine.fluid_hatch.export.tooltip=Для слива жидкости из агрегата
+
+gregtech.machine.fluid_hatch.export.ulv.name=Выходной шлюз (ULV)
+gregtech.machine.fluid_hatch.export.lv.name=Выходной шлюз (LV)
+gregtech.machine.fluid_hatch.export.mv.name=Выходной шлюз (MV)
+gregtech.machine.fluid_hatch.export.hv.name=Выходной шлюз (HV)
+gregtech.machine.fluid_hatch.export.ev.name=Выходной шлюз (EV)
+gregtech.machine.fluid_hatch.export.iv.name=Выходной шлюз (IV)
+gregtech.machine.fluid_hatch.export.luv.name=Выходной шлюз (LuV)
+gregtech.machine.fluid_hatch.export.zpm.name=Выходной шлюз (ZPM)
+gregtech.machine.fluid_hatch.export.uv.name=Выходной шлюз (UV)
+gregtech.machine.fluid_hatch.export.max.name=Выходной шлюз (Макс.)
+
+gregtech.machine.energy_hatch.input.tooltip=Разъем для подключения кабелей к агрегату
+
+gregtech.machine.energy_hatch.input.ulv.name=Энергетический входной разъем (ULV)
+gregtech.machine.energy_hatch.input.lv.name=Энергетический входной разъем (LV)
+gregtech.machine.energy_hatch.input.mv.name=Энергетический входной разъем (MV)
+gregtech.machine.energy_hatch.input.hv.name=Энергетический входной разъем (HV)
+gregtech.machine.energy_hatch.input.ev.name=Энергетический входной разъем (EV)
+gregtech.machine.energy_hatch.input.iv.name=Энергетический входной разъем (IV)
+gregtech.machine.energy_hatch.input.luv.name=Энергетический входной разъем (LuV)
+gregtech.machine.energy_hatch.input.zpm.name=Энергетический входной разъем (ZPM)
+gregtech.machine.energy_hatch.input.uv.name=Энергетический входной разъем (UV)
+gregtech.machine.energy_hatch.input.max.name=Энергетический входной разъем (Макс.)
+
+gregtech.machine.energy_hatch.output.ulv.name=Энергетический выходной разъем (ULV)
+gregtech.machine.energy_hatch.output.lv.name=Энергетический выходной разъем (LV)
+gregtech.machine.energy_hatch.output.mv.name=Энергетический выходной разъем (MV)
+gregtech.machine.energy_hatch.output.hv.name=Энергетический выходной разъем (HV)
+gregtech.machine.energy_hatch.output.ev.name=Энергетический выходной разъем (EV)
+gregtech.machine.energy_hatch.output.iv.name=Энергетический выходной разъем (IV)
+gregtech.machine.energy_hatch.output.luv.name=Энергетический выходной разъем (LuV)
+gregtech.machine.energy_hatch.output.zpm.name=Энергетический выходной разъем (ZPM)
+gregtech.machine.energy_hatch.output.uv.name=Энергетический выходной разъем (UV)
+gregtech.machine.energy_hatch.output.max.name=Энергетический выходной разъем (Макс.)
+
+gregtech.machine.rotor_holder.tooltip=Держатель ротора для агрегатов/nДержит ротор на месте, чтобы он не улетел
+
+gregtech.machine.rotor_holder.ulv.name=Держатель ротора (ULV)
+gregtech.machine.rotor_holder.lv.name=Держатель ротора (LV)
+gregtech.machine.rotor_holder.mv.name=Держатель ротора (MV)
+gregtech.machine.rotor_holder.hv.name=Держатель ротора (HV)
+gregtech.machine.rotor_holder.ev.name=Держатель ротора (EV)
+gregtech.machine.rotor_holder.iv.name=Держатель ротора (IV)
+gregtech.machine.rotor_holder.luv.name=Держатель ротора (LuV)
+gregtech.machine.rotor_holder.zpm.name=Держатель ротора (ZPM)
+gregtech.machine.rotor_holder.uv.name=Держатель ротора (UV)
+gregtech.machine.rotor_holder.max.name=Держатель ротора (Макс.)
+
+# Универсальные подсказки
+gregtech.universal.tooltip.voltage_in=Потребляемое напряжение: §a%d §7(§a%s§7)
+gregtech.universal.tooltip.voltage_out=Выдаваемое напряжение: §a%d §7(§a%s§7)
+gregtech.universal.tooltip.energy_storage_capacity=Внутренняя энергетическая емкость: §9%d
+gregtech.universal.tooltip.amperage_in=Сила потребляемого тока: §e%d
+gregtech.universal.tooltip.amperage_in_till=Потребляемый ток до: §e%d
+gregtech.universal.tooltip.amperage_out=Сила генерируемого тока: §e%d
+gregtech.universal.tooltip.amperage_out_till=Генерирует ток до: §e%d
+gregtech.universal.tooltip.item_storage_capacity=Предметные слоты: %d
+gregtech.universal.tooltip.fluid_storage_capacity=Объем жидкости: %d Л
+
+gregtech.machine.fluid_tank.fluid=Содержит %s мВ %s
+
+gregtech.recipe.total=Всего: %d ЭЕ
+gregtech.recipe.eu=Потребление: %d ЭЕ/т
+gregtech.recipe.eu_inverted=Производительность: %d ЭЕ/т
+gregtech.recipe.duration=Длительность: %.1f сек.
+gregtech.recipe.amperage=Сила тока: %d
+gregtech.recipe.not_consumed=Не потребляется в процессе
+gregtech.recipe.chance=Шанс: %s%%
+gregtech.recipe.blast_furnace_temperature=Температура: %dK
+gregtech.recipe.eu_to_start=Энергия для начала: %dЭЕ
+
+gregtech.fluid.click_to_fill=§7Нажмите с пустым контейнером для жидкости, чтобы заполнить его из бака.
+gregtech.fluid.click_to_fill.shift=§7(Shift-нажатие заполнит все контейнеры в вашей руке)
+
+gregtech.fluid.click_to_empty=§7Нажмите с заполненным контейнером для жидкости, чтобы опустошить в бак.
+gregtech.fluid.click_to_empty.shift=§7(Shift-нажатие опустошит все контейнеры в вашей руке)
+
+gregtech.fluid.plasma=%s плазма
+gregtech.fluid.empty=пустой
+gregtech.fluid.amount=§7%,d/%,d
+gregtech.fluid.temperature=§7Температура: %dK
+gregtech.fluid.state_gas=§7Состояние: газообразный
+gregtech.fluid.state_liquid=§7Состояние: жидкость
+gregtech.gui.fuel_amount=Количество топлива:
+gregtech.gui.fluid_amount=Количество жидкости:
+
+gregtech.item_filter.empty_item=Пусто (нет предмета)
+gregtech.item_filter.footer=§eНажмите с элементом, чтобы переопределить
+
+gregtech.cable.voltage=Вольтаж: §a%d §7(§a%s§7)
+gregtech.cable.amperage=Сила тока: §e%d
+gregtech.cable.loss_per_block=Потеря за блок: §c%d
+
+gregtech.fluid_pipe.throughput=Пропускная способность: §e%d мВ/т
+gregtech.fluid_pipe.max_temperature=Максимальная температура: §c%dK
+gregtech.fluid_pipe.non_gas_proof=Не может переносить газы.
+
+gregtech.multiblock.work_paused=Работа приостановлена.
+gregtech.multiblock.running=Работает отлично.
+gregtech.multiblock.idling=Холостой ход.
+gregtech.multiblock.not_enough_energy=HVИМLuVИЕ: машине нужно больше энергии.
+gregtech.multiblock.progress=Прогресс: %s%%
+gregtech.multiblock.invalid_structure=Неверная структура.
+gregtech.multiblock.validation_failed=Неверное количество входов/выходов.
+gregtech.multiblock.max_energy_per_tick=Максимум ЭЕ/т: %s (%s)
+gregtech.multiblock.generation_eu=Outputting: %s ЭЕ/т
+
+gregtech.multiblock.blast_furnace.max_temperature=Максимальная температура: %sK
+gregtech.multiblock.multi_furnace.heating_coil_level=Уровень нагревательной катушки: %s
+gregtech.multiblock.multi_furnace.heating_coil_discount=ЭЕ усиление нагревательной катушки: %sx
+gregtech.multiblock.distillation_tower.distilling_fluid=Дистилляция %s
+gregtech.multiblock.cracker.cracking_fluid=Крекинг %s
+
+gregtech.multiblock.diesel_engine.lubricant_amount=Количество смазки: %sЛ
+gregtech.multiblock.diesel_engine.fuel_amount=Количество топлива: %sЛ (%s)
+gregtech.multiblock.diesel_engine.oxygen_amount=Количество кислорода: %sЛ
+gregtech.multiblock.diesel_engine.oxygen_boosted=Кислород добавлен.
+gregtech.multiblock.diesel_engine.supply_oxygen_to_boost=Принимает кислород для улучшения.
+
+gregtech.multiblock.turbine.fuel_amount=Количество топлива: %sЛ (%s)
+gregtech.multiblock.turbine.rotor_speed=Скорость ротора: %s / %s об/мин
+gregtech.multiblock.turbine.rotor_efficiency=Эффективность ротора: %s%%
+gregtech.multiblock.turbine.rotor_durability=Прочность ротора: %s%%
+gregtech.multiblock.turbine.low_rotor_durability=HVИМLuVИЕ: Прочность ротора ниже %s%% (%s%%)
+
+gregtech.multiblock.large_boiler.temperature=Температура: %s / %s C
+gregtech.multiblock.large_boiler.steam_output=Выход пара: %s мВ/т
+
+gregtech.command.usage=Применение: /gregtech <worldgen/util>
+gregtech.command.worldgen.usage=Применение: /gregtech worldgen <reload>
+gregtech.command.worldgen.reload.usage=Применение: /gregtech worldgen reload
+gregtech.command.worldgen.reload.success=Гнереатор мира успешно перезагрузился из конфига.
+gregtech.command.worldgen.reload.failed=Гнереатор мира оборвался с ошибкой. Проверьте консоль на наличие ошибок.
+gregtech.command.util.usage=Применение: /gregtech util <hand>
+gregtech.command.util.hand.usage=Применение: /gregtech util hand
+gregtech.command.util.hand.item_id=Предмет: %s (Метаданные: %d)
+gregtech.command.util.hand.electric=Электрическая информация: %d / %d ЭЕ - уровень: %d; Батарея: %s
+gregtech.command.util.hand.fluid=Fluid Info: %s %d / %d mb; Can Fill: %s; Can Drain: %s
+gregtech.command.util.hand.material_meta_item=Префикс руды: %s; Материал: %s
+gregtech.command.util.hand.tool_stats=Класс инструмента: %s
+gregtech.command.util.hand.meta_item=Название мета-предмета: %s
+gregtech.command.util.hand.not_a_player=Эта команда может использоваться только игроком.
+
+# Fixes
+fluid.tile.water=Вода
+fluid.tile.lava=Лава
