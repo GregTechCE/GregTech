@@ -5,6 +5,7 @@ import gregtech.api.GTValues;
 import gregtech.api.items.materialitem.MaterialMetaItem;
 import gregtech.api.items.metaitem.ElectricStats;
 import gregtech.api.items.metaitem.FoodStats;
+import gregtech.api.items.metaitem.stats.IItemContainerItemProvider;
 import gregtech.api.recipes.CountableIngredient;
 import gregtech.api.recipes.RecipeMaps;
 import gregtech.api.unification.OreDictUnifier;
@@ -36,8 +37,9 @@ public class MetaItem2 extends MaterialMetaItem {
     public void registerSubItems() {
         GELLED_TOLUENE = addItem(10, "gelled_toluene");
 
-        WOODEN_FORM_EMPTY = addItem(11, "wooden_form.empty");
-        WOODEN_FORM_BRICK = addItem(12, "wooden_form.brick");
+        IItemContainerItemProvider selfContainerItemProvider = itemStack -> itemStack;
+        WOODEN_FORM_EMPTY = addItem(11, "wooden_form.empty").addStats(selfContainerItemProvider);
+        WOODEN_FORM_BRICK = addItem(12, "wooden_form.brick").addStats(selfContainerItemProvider);
 
         COMPRESSED_CLAY = addItem(13, "compressed.clay");
         COMPRESSED_FIRECLAY = addItem(14, "compressed.fireclay");
@@ -65,7 +67,6 @@ public class MetaItem2 extends MaterialMetaItem {
     }
 
     public void registerRecipes() {
-
         // Dyes recipes
         RecipeMaps.EXTRACTOR_RECIPES.recipeBuilder()
             .inputs(new ItemStack(Blocks.RED_FLOWER, 1, 0))

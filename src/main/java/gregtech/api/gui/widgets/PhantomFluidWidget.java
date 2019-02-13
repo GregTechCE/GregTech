@@ -92,10 +92,12 @@ public class PhantomFluidWidget extends Widget {
     }
 
     @Override
-    public void mouseClicked(int mouseX, int mouseY, int button) {
+    public boolean mouseClicked(int mouseX, int mouseY, int button) {
         if(isMouseOver(xPosition, yPosition, width, height, mouseX, mouseY)) {
             writeClientAction(1, buffer -> {});
+            return true;
         }
+        return false;
     }
 
     @Override

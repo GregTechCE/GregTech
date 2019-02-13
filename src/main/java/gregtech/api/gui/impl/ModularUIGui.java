@@ -110,30 +110,34 @@ public class ModularUIGui extends GuiContainer {
 
     @Override
     protected void mouseClicked(int mouseX, int mouseY, int mouseButton) throws IOException {
-        super.mouseClicked(mouseX, mouseY, mouseButton);
-        modularUI.guiWidgets.values().forEach(widget -> widget.mouseClicked(mouseX - guiLeft, mouseY - guiTop, mouseButton));
+        boolean result = modularUI.guiWidgets.values().stream().anyMatch(widget -> widget.mouseClicked(mouseX - guiLeft, mouseY - guiTop, mouseButton));
+        if(!result) {
+            super.mouseClicked(mouseX, mouseY, mouseButton);
+        }
     }
 
     @Override
     protected void mouseClickMove(int mouseX, int mouseY, int clickedMouseButton, long timeSinceLastClick) {
-        super.mouseClickMove(mouseX, mouseY, clickedMouseButton, timeSinceLastClick);
-        modularUI.guiWidgets.values().forEach(widget -> widget.mouseDragged(mouseX - guiLeft, mouseY - guiTop, clickedMouseButton, timeSinceLastClick));
+        boolean result = modularUI.guiWidgets.values().stream().anyMatch(widget -> widget.mouseDragged(mouseX - guiLeft, mouseY - guiTop, clickedMouseButton, timeSinceLastClick));
+        if(!result) {
+            super.mouseClickMove(mouseX, mouseY, clickedMouseButton, timeSinceLastClick);
+        }
     }
 
     @Override
     protected void mouseReleased(int mouseX, int mouseY, int state) {
-        super.mouseReleased(mouseX, mouseY, state);
-        modularUI.guiWidgets.values().forEach(widget -> widget.mouseReleased(mouseX - guiLeft, mouseY - guiTop, state));
+        boolean result = modularUI.guiWidgets.values().stream().anyMatch(widget -> widget.mouseReleased(mouseX - guiLeft, mouseY - guiTop, state));
+        if(!result) {
+            super.mouseReleased(mouseX, mouseY, state);
+        }
     }
 
     @Override
     protected void keyTyped(char typedChar, int keyCode) throws IOException {
-        modularUI.guiWidgets.values().forEach(widget -> widget.keyTyped(typedChar, keyCode));
-        if(mc.gameSettings.keyBindInventory.isActiveAndMatches(keyCode)) {
-            //prevent shitty logic of closing container when E is pressed
-            return;
+        boolean result = modularUI.guiWidgets.values().stream().anyMatch(widget -> widget.keyTyped(typedChar, keyCode));
+        if(!result) {
+            super.keyTyped(typedChar, keyCode);
         }
-        super.keyTyped(typedChar, keyCode);
     }
 
 }

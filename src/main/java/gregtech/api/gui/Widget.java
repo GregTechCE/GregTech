@@ -84,28 +84,32 @@ public abstract class Widget {
      * Called when mouse is clicked in GUI
      */
     @SideOnly(Side.CLIENT)
-    public void mouseClicked(int mouseX, int mouseY, int button) {
+    public boolean mouseClicked(int mouseX, int mouseY, int button) {
+        return false;
     }
 
     /**
      * Called when mouse is pressed and hold down in GUI
      */
     @SideOnly(Side.CLIENT)
-    public void mouseDragged(int mouseX, int mouseY, int button, long timeDragged) {
+    public boolean mouseDragged(int mouseX, int mouseY, int button, long timeDragged) {
+        return false;
     }
 
     /**
      * Called when mouse is released in GUI
      */
     @SideOnly(Side.CLIENT)
-    public void mouseReleased(int mouseX, int mouseY, int button) {
+    public boolean mouseReleased(int mouseX, int mouseY, int button) {
+        return false;
     }
 
     /**
      * Called when key is typed in GUI
      */
     @SideOnly(Side.CLIENT)
-    public void keyTyped(char charTyped, int keyCode) {
+    public boolean keyTyped(char charTyped, int keyCode) {
+        return false;
     }
     /**
      * Read data received from server's {@link #writeUpdateInfo}

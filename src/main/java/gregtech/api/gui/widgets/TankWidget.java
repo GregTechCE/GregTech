@@ -271,7 +271,7 @@ public class TankWidget extends Widget {
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void mouseClicked(int mouseX, int mouseY, int button) {
+    public boolean mouseClicked(int mouseX, int mouseY, int button) {
         if(isMouseOver(x, y, width, height, mouseX, mouseY)) {
             ItemStack currentStack = gui.entityPlayer.inventory.getItemStack();
             if (button == 0 && (allowClickEmptying || allowClickFilling) &&
@@ -279,7 +279,9 @@ public class TankWidget extends Widget {
                 boolean isShiftKeyDown = Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) || Keyboard.isKeyDown(Keyboard.KEY_RSHIFT);
                 writeClientAction(1, writer -> writer.writeBoolean(isShiftKeyDown));
                 playButtonClickSound();
+                return true;
             }
         }
+        return false;
     }
 }

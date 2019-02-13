@@ -55,7 +55,7 @@ public class TabGroup extends AbstractWidgetGroup {
     }
 
     @Override
-    public void mouseClicked(int mouseX, int mouseY, int button) {
+    public boolean mouseClicked(int mouseX, int mouseY, int button) {
         super.mouseClicked(mouseX, mouseY, button);
         Tuple<ITabInfo, int[]> tabOnMouse = getTabOnMouse(mouseX, mouseY);
         if(tabOnMouse != null) {
@@ -66,8 +66,10 @@ public class TabGroup extends AbstractWidgetGroup {
                 this.tabWidgets.get(tabIndex).setVisible(true);
                 this.selectedTabIndex = tabIndex;
                 Minecraft.getMinecraft().getSoundHandler().playSound(PositionedSoundRecord.getMasterRecord(SoundEvents.UI_BUTTON_CLICK, 1.0F));
+                return true;
             }
         }
+        return false;
     }
 
     private Tuple<ITabInfo, int[]> getTabOnMouse(int mouseX, int mouseY) {

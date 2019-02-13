@@ -74,13 +74,15 @@ public class ToggleButtonWidget extends Widget {
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void mouseClicked(int mouseX, int mouseY, int button) {
+    public boolean mouseClicked(int mouseX, int mouseY, int button) {
         super.mouseClicked(mouseX, mouseY, button);
         if(isMouseOver(xPosition, yPosition, width, height, mouseX, mouseY)) {
             this.isPressed = !this.isPressed;
             writeClientAction(1, buf -> buf.writeBoolean(isPressed));
             playButtonClickSound();
+            return true;
         }
+        return false;
     }
 
 
