@@ -12,6 +12,7 @@ import gregtech.api.worldgen.filler.SimpleBlockFiller;
 import gregtech.api.worldgen.generator.WorldGeneratorImpl;
 import gregtech.api.worldgen.populator.FluidSpringPopulator;
 import gregtech.api.worldgen.populator.IVeinPopulator;
+import gregtech.api.worldgen.populator.SurfaceBlockPopulator;
 import gregtech.api.worldgen.populator.SurfaceRockPopulator;
 import gregtech.api.worldgen.shape.*;
 import net.minecraft.init.Blocks;
@@ -91,6 +92,7 @@ public class WorldGenRegistry {
         registerBlockFiller("ignore_bedrock", () -> new BlacklistedBlockFiller(Lists.newArrayList(Blocks.BEDROCK.getDefaultState())));
         registerVeinPopulator("surface_rock", SurfaceRockPopulator::new);
         registerVeinPopulator("fluid_spring", FluidSpringPopulator::new);
+        registerVeinPopulator("surface_block", SurfaceBlockPopulator::new);
 
         WorldGeneratorImpl worldGenerator = new WorldGeneratorImpl();
         GameRegistry.registerWorldGenerator(worldGenerator, 1);

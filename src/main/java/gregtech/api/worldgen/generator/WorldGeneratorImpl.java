@@ -20,7 +20,7 @@ import static net.minecraftforge.event.terraingen.OreGenEvent.GenerateMinable.Ev
 public class WorldGeneratorImpl implements IWorldGenerator {
 
     private static final List<EventType> ORE_EVENT_TYPES = Arrays.asList(
-        COAL, DIAMOND, GOLD, IRON, LAPIS, REDSTONE, QUARTZ, DIORITE, GRANITE, ANDESITE, EMERALD);
+        COAL, DIAMOND, GOLD, IRON, LAPIS, REDSTONE, QUARTZ, EMERALD);
     public static final int GRID_SIZE_X = 3;
     public static final int GRID_SIZE_Z = 3;
 

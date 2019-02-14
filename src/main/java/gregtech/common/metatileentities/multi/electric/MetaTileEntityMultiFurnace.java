@@ -108,7 +108,6 @@ public class MetaTileEntityMultiFurnace extends RecipeMapMultiblockController {
             int maxItemsLimit = 16 * heatingCoilLevel;
             ArrayList<CountableIngredient> recipeInputs = new ArrayList<>();
             ArrayList<ItemStack> recipeOutputs = new ArrayList<>();
-
             for(int index = 0; index < inputs.getSlots(); index++) {
                 ItemStack stackInSlot = inputs.getStackInSlot(index);
                 if(stackInSlot.isEmpty())
@@ -116,12 +115,10 @@ public class MetaTileEntityMultiFurnace extends RecipeMapMultiblockController {
                 Recipe matchingRecipe = recipeMap.findRecipe(maxVoltage,
                     Collections.singletonList(stackInSlot), Collections.emptyList());
                 CountableIngredient inputIngredient = matchingRecipe == null ? null : matchingRecipe.getInputs().get(0);
-
                 if(inputIngredient != null && (maxItemsLimit - currentItemsEngaged) >= inputIngredient.getCount()) {
                     ItemStack outputStack = matchingRecipe.getOutputs().get(0).copy();
                     int overclockAmount = Math.min(stackInSlot.getCount() / inputIngredient.getCount(),
                         (maxItemsLimit - currentItemsEngaged) / inputIngredient.getCount());
-
                     recipeInputs.add(new CountableIngredient(inputIngredient.getIngredient(),
                         inputIngredient.getCount() * overclockAmount));
                     if(!outputStack.isEmpty()) {
