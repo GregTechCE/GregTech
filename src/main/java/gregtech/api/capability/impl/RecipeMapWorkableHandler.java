@@ -138,13 +138,16 @@ public abstract class RecipeMapWorkableHandler extends MTETrait implements IWork
         if (previousRecipe != null && previousRecipe.matches(false, importInventory, importFluids)) {
             //if previous recipe still matches inputs, try to use it
             currentRecipe = previousRecipe;
-        } else if (checkRecipeInputsDirty(importInventory, importFluids) || forceRecipeRecheck) {
-            this.forceRecipeRecheck = false;
-            //else, try searching new recipe for given inputs
-            currentRecipe = findRecipe(maxVoltage, importInventory, importFluids);
-            //if we found recipe that can be buffered, buffer it
-            if (currentRecipe != null && currentRecipe.canBeBuffered()) {
-                this.previousRecipe = currentRecipe;
+        } else {
+            boolean dirty = checkRecipeInputsDirty(importInventory, importFluids);
+            if (dirty || forceRecipeRecheck) {
+                this.forceRecipeRecheck = false;
+                //else, try searching new recipe for given inputs
+                currentRecipe = findRecipe(maxVoltage, importInventory, importFluids);
+                //if we found recipe that can be buffered, buffer it
+                if (currentRecipe != null && currentRecipe.canBeBuffered()) {
+                    this.previousRecipe = currentRecipe;
+                }
             }
         }
         if (currentRecipe != null && setupAndConsumeRecipeInputs(currentRecipe)) {
@@ -280,6 +283,9 @@ public abstract class RecipeMapWorkableHandler extends MTETrait implements IWork
         this.itemOutputs = null;
         this.hasNotEnoughEnergy = false;
         this.wasActiveAndNeedsUpdate = true;
+        //force recipe recheck because inputs could have changed since last time
+        //we checked them before starting our recipe, especially if recipe took long time
+        this.forceRecipeRecheck = true;
     }
 
     public double getProgressPercent() {
