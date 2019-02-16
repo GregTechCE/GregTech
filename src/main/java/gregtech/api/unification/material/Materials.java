@@ -330,7 +330,8 @@ public class Materials {
     public static FluidMaterial Biomass = new FluidMaterial(315, "biomass", 0x00FF00, MaterialIconSet.FLUID, of(), 0);
     public static FluidMaterial BioFuel = new FluidMaterial(314, "bio_fuel", 0xFF8000, MaterialIconSet.FLUID, of(), 0);
     public static FluidMaterial FermentedBiomass = new FluidMaterial(402, "fermented_biomass", 4147981, MaterialIconSet.FLUID, of(), 0);
-    public static FluidMaterial BioDiesel = new FluidMaterial(941, "bio_diesel", 12806415, MaterialIconSet.FLUID, of(), 0);
+    public static FluidMaterial RawGrowthMedium = new FluidMaterial(462, "raw_growth_medium", 10777425, MaterialIconSet.FLUID, ImmutableList.of(), 0);
+    public static FluidMaterial SterilizedGrowthMedium = new FluidMaterial(463, "sterilized_growth_medium", 11306862, MaterialIconSet.FLUID, ImmutableList.of(), 0);
 
     public static FluidMaterial Creosote = new FluidMaterial(316, "creosote", 0x804000, MaterialIconSet.FLUID, of(), 0);
     public static FluidMaterial Ethanol = new FluidMaterial(317, "ethanol", 0xFF8000, MaterialIconSet.FLUID, of(), 0);
@@ -392,6 +393,8 @@ public class Materials {
     public static FluidMaterial LightFuel = new FluidMaterial(175, "light_fuel", 0xFFFF00, MaterialIconSet.FLUID, of(), 0);
     public static FluidMaterial HeavyFuel = new FluidMaterial(176, "heavy_fuel", 0xFFFF00, MaterialIconSet.FLUID, of(), 0);
     public static FluidMaterial LPG = new FluidMaterial(177, "lpg", 0xFFFF00, MaterialIconSet.FLUID, of(), 0);
+    public static FluidMaterial CrackedLightFuel = new FluidMaterial(464, "cracked_light_fuel", 0xFFFF00, MaterialIconSet.FLUID, of(), 0);
+    public static FluidMaterial CrackedHeavyFuel = new FluidMaterial(465, "cracked_heavy_fuel", 0xFFFF00, MaterialIconSet.FLUID, of(), 0);
     public static FluidMaterial Toluene = new FluidMaterial(350, "toluene", 0xFFFFFF, MaterialIconSet.FLUID, of(), 0);
 
     /**
