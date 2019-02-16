@@ -6,7 +6,7 @@ import gregtech.api.recipes.recipes.FuelRecipe;
 import gregtech.api.unification.material.Materials;
 import net.minecraftforge.fluids.FluidStack;
 
-public class FuelLoader {
+public class FuelRecipes {
 
     public static void registerFuels() {
         //low-tier diesel generator fuels

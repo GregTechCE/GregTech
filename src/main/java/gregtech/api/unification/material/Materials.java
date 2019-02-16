@@ -1,5 +1,6 @@
 package gregtech.api.unification.material;
 
+import com.google.common.collect.ImmutableList;
 import gregtech.api.GTValues;
 import gregtech.api.unification.Element;
 import gregtech.api.unification.material.type.*;
@@ -258,7 +259,7 @@ public class Materials {
     public static IngotMaterial IndiumGalliumPhosphide = new IngotMaterial(421, "indium_gallium_phosphide", 8220052, MaterialIconSet.DULL, 1, of(new MaterialStack(Materials.Indium, 1), new MaterialStack(Materials.Gallium, 1), new MaterialStack(Materials.Phosphorus, 1)), DECOMPOSITION_BY_CENTRIFUGING | GENERATE_PLATE);
     public static DustMaterial FerriteMixture = new DustMaterial(423, "ferrite_mixture", 9803157, MaterialIconSet.METALLIC, 1, of(new MaterialStack(Materials.Nickel, 1), new MaterialStack(Materials.Zinc, 1), new MaterialStack(Materials.Iron, 4)), DISABLE_DECOMPOSITION);
     public static IngotMaterial NickelZincFerrite = new IngotMaterial(424, "nickel_zinc_ferrite", 3092271, MaterialIconSet.METALLIC, 0, of(new MaterialStack(Materials.Nickel, 1), new MaterialStack(Materials.Zinc, 1), new MaterialStack(Materials.Iron, 4), new MaterialStack(Materials.Oxygen, 8)), EXT_METAL, null, 1500);
-    public static FluidMaterial LeadZincSolution = new FluidMaterial(426, "lead_zinc_solution", 3213570, MaterialIconSet.FLUID, of(new MaterialStack(Materials.Lead, 1), new MaterialStack(Materials.Silver, 1), new MaterialStack(Materials.Zinc, 1), new MaterialStack(Materials.Sulfur, 3), new MaterialStack(Materials.Water, 1)), 0);
+    public static FluidMaterial LeadZincSolution = new FluidMaterial(426, "lead_zinc_solution", 3213570, MaterialIconSet.FLUID, of(new MaterialStack(Materials.Lead, 1), new MaterialStack(Materials.Silver, 1), new MaterialStack(Materials.Zinc, 1), new MaterialStack(Materials.Sulfur, 3), new MaterialStack(Materials.Water, 1)), DECOMPOSITION_BY_CENTRIFUGING);
     public static FluidMaterial Tetrafluoroethylene = new FluidMaterial(427, "tetrafluoroethylene", 6776679, MaterialIconSet.GAS, of(new MaterialStack(Materials.Carbon, 2), new MaterialStack(Materials.Fluorine, 4)), STATE_GAS);
     public static FluidMaterial Chloromethane = new FluidMaterial(450, "chloromethane", 10301057, MaterialIconSet.GAS, of(new MaterialStack(Materials.Carbon, 1), new MaterialStack(Materials.Hydrogen, 3), new MaterialStack(Materials.Chlorine, 1)), STATE_GAS);
     public static FluidMaterial AllylChloride = new FluidMaterial(451, "allyl_chloride", 7450250, MaterialIconSet.FLUID, of(new MaterialStack(Materials.Carbon, 3), new MaterialStack(Materials.Hydrogen, 5), new MaterialStack(Materials.Chlorine, 1)), 0);
@@ -323,6 +324,7 @@ public class Materials {
     public static FluidMaterial WoodGas = new FluidMaterial(370, "wood_gas", 11642225, MaterialIconSet.GAS, of(), STATE_GAS | DISABLE_DECOMPOSITION);
     public static FluidMaterial WoodVinegar = new FluidMaterial(371, "wood_vinegar", 10832655, MaterialIconSet.FLUID, of(), 0);
     public static FluidMaterial WoodTar = new FluidMaterial(372, "wood_tar", 2957592, MaterialIconSet.FLUID, of(), 0);
+    public static FluidMaterial CharcoalByproducts = new FluidMaterial(461, "charcoal_byproducts", 6701095,MaterialIconSet.FLUID, ImmutableList.of(), FluidMaterial.MatFlags.GENERATE_FLUID_BLOCK | Material.MatFlags.DISABLE_DECOMPOSITION);
 
     public static FluidMaterial BioGas = new FluidMaterial(449, "biogas", 4279313, MaterialIconSet.GAS, of(), STATE_GAS);
     public static FluidMaterial Biomass = new FluidMaterial(315, "biomass", 0x00FF00, MaterialIconSet.FLUID, of(), 0);

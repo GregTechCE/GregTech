@@ -8,23 +8,23 @@
   "key": {
     "M": {
       "type": "gregtech:metaitem",
-      "name": "electric.motor.iv"
+      "name": "electric.motor.hv"
     },
     "O": {
       "type": "forge:ore_dict",
-      "ore": "ringPaper"
+      "ore": "ringSiliconeRubber"
     },
     "X": {
       "type": "forge:ore_dict",
-      "ore": "rotorTungstenSteel"
+      "ore": "rotorSteel"
     },
     "S": {
       "type": "forge:ore_dict",
-      "ore": "screwTungstenSteel"
+      "ore": "screwSteel"
     },
     "W": {
       "type": "forge:ore_dict",
-      "ore": "cableGtSingleTungsten"
+      "ore": "cableGtSingleGold"
     },
     "P": {
       "type": "forge:ore_dict",
@@ -40,6 +40,6 @@
     }
   },
   "result": {
-    "name": "electric.pump.iv"
+    "name": "electric.pump.hv"
   }
 }
