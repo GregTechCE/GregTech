@@ -1,5 +1,14 @@
 ## Changelog
 
+### 1.5.18
+* Fix certain crashes with invalid pipe items and pipe placement in MP. Closes #576. Closes #573.
+* Make biome_dictionary raise error on invalid tags and upper case them automatically. Closes #575.
+* Fix frame recipes. Closes #571.
+* Fixed wrong output in UI of turbines. Closes #574.
+* Fixed large turbines not loosing rotor speed while working disabled.
+* Disabled electrolyzing of uranium compound ores.
+* Fixed high pressure machines not overclocking recipes.
+
 ### 1.5.15
 * Change amount of crushed ore obtained from different ores
 * Nerfed smelting of compound dust to nuggets (yet by smelting all dust from 1 ore block you will get 1 or 2 ingots for forge hammer/macerator)
