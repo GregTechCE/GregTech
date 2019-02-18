@@ -54,7 +54,7 @@ public class FluidPipeNet extends MonolithicPipeNet<FluidPipeProperties> {
                 } else {
                     world.setBlockToAir(nodePos);
                 }
-            } else if (Loader.isModLoaded(GTValues.MODID_FMP)) {
+            } else if (GTValues.isModLoaded(GTValues.MODID_FMP)) {
                 if (tileEntity instanceof TileMultipart) {
                     FluidPipeMultiPart part = (FluidPipeMultiPart) getMultipartPipeTile(tileEntity);
                     if (part != null) ((TileMultipart) tileEntity).remPart(part);

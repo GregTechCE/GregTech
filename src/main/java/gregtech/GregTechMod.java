@@ -81,7 +81,7 @@ public class GregTechMod {
         Material.runMaterialHandlers();
 
         //then, run CraftTweaker early material registration scripts
-        if(Loader.isModLoaded(GTValues.MODID_CT)) {
+        if(GTValues.isModLoaded(GTValues.MODID_CT)) {
             GTLog.logger.info("Running early CraftTweaker initialization scripts...");
             runEarlyCraftTweakerScripts();
         }
@@ -116,12 +116,12 @@ public class GregTechMod {
             }
         }
 
-        if(Loader.isModLoaded(GTValues.MODID_FMP)) {
+        if(GTValues.isModLoaded(GTValues.MODID_FMP)) {
             GTLog.logger.info("ForgeMultiPart found. Enabling integration...");
             registerForgeMultipartCompat();
         }
 
-        if(Loader.isModLoaded(GTValues.MODID_TOP)) {
+        if(GTValues.isModLoaded(GTValues.MODID_TOP)) {
             GTLog.logger.info("TheOneProbe found. Enabling integration...");
             TheOneProbeCompatibility.registerCompatibility();
         }

@@ -51,7 +51,7 @@ public class DebugPipeNetInfoProvider implements IProbeInfoProvider {
                 if(blockPipe instanceof BlockFluidPipe) {
                     if(pipeTile instanceof TileEntityFluidPipeActive) {
                         probeInfo.text("tile active: " + ((TileEntityFluidPipeActive) pipeTile).isActive());
-                    } else if(Loader.isModLoaded(GTValues.MODID_FMP) && pipeTile instanceof FluidPipeActiveMultiPart) {
+                    } else if(GTValues.isModLoaded(GTValues.MODID_FMP) && pipeTile instanceof FluidPipeActiveMultiPart) {
                         probeInfo.text("tile active: " + ((FluidPipeActiveMultiPart) pipeTile).isActivePart());
                     }
                 }
@@ -62,7 +62,7 @@ public class DebugPipeNetInfoProvider implements IProbeInfoProvider {
     private IPipeTile<?, ?> getAnyPipeTile(TileEntity tileEntity) {
         if(tileEntity instanceof IPipeTile) {
             return (IPipeTile<?, ?>) tileEntity;
-        } else if(Loader.isModLoaded(GTValues.MODID_FMP) &&
+        } else if(GTValues.isModLoaded(GTValues.MODID_FMP) &&
             tileEntity instanceof TileMultipart) {
             return (IPipeTile<?, ?>) ((TileMultipart) tileEntity).jPartList().stream()
                 .filter(part -> part instanceof IPipeTile)

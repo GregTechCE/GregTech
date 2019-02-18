@@ -7,6 +7,7 @@ import gregtech.api.pipenet.tile.IPipeTile;
 import gregtech.api.pipenet.tile.TileEntityPipeBase;
 import gregtech.api.unification.material.type.Material;
 import gregtech.api.util.GTUtility;
+import gregtech.common.pipelike.cable.WireProperties;
 import gregtech.common.pipelike.fluidpipe.net.FluidPipeNet;
 import gregtech.common.pipelike.fluidpipe.net.WorldFluidPipeNet;
 import gregtech.common.pipelike.fluidpipe.tile.TileEntityFluidPipe;
@@ -69,6 +70,11 @@ public class BlockFluidPipe extends BlockPipe<FluidPipeType, FluidPipeProperties
     @Override
     protected FluidPipeProperties createProperties(FluidPipeType fluidPipeType, Material material) {
         return fluidPipeType.modifyProperties(enabledMaterials.get(material));
+    }
+
+    @Override
+    protected FluidPipeProperties getFallbackType() {
+        return enabledMaterials.values().iterator().next();
     }
 
     @Override

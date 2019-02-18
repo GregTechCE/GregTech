@@ -108,9 +108,11 @@ public class FluidPipeRenderer implements ICCBlockRenderer, IItemRenderer {
         BlockFluidPipe blockFluidPipe = (BlockFluidPipe) ((ItemBlockFluidPipe) stack.getItem()).getBlock();
         FluidPipeType pipeType = blockFluidPipe.getItemPipeType(stack);
         Material material = blockFluidPipe.getItemMaterial(stack);
-        renderPipeBlock(material, pipeType, IPipeTile.DEFAULT_INSULATION_COLOR, renderState, new IVertexOperation[0],
-            1 << EnumFacing.SOUTH.getIndex() | 1 << EnumFacing.NORTH.getIndex() |
-                1 << (6 + EnumFacing.SOUTH.getIndex()) | 1 << (6 + EnumFacing.NORTH.getIndex()));
+        if(pipeType != null && material != null) {
+            renderPipeBlock(material, pipeType, IPipeTile.DEFAULT_INSULATION_COLOR, renderState, new IVertexOperation[0],
+                1 << EnumFacing.SOUTH.getIndex() | 1 << EnumFacing.NORTH.getIndex() |
+                    1 << (6 + EnumFacing.SOUTH.getIndex()) | 1 << (6 + EnumFacing.NORTH.getIndex()));
+        }
         renderState.draw();
         GlStateManager.disableBlend();
     }
@@ -125,13 +127,17 @@ public class FluidPipeRenderer implements ICCBlockRenderer, IItemRenderer {
 
         BlockFluidPipe blockFluidPipe = (BlockFluidPipe) state.getBlock();
         IPipeTile<FluidPipeType, FluidPipeProperties> tileEntityCable = blockFluidPipe.getPipeTileEntity(world, pos);
-        if(tileEntityCable == null) return false;
+        if(tileEntityCable == null) {
+            return false;
+        }
         int paintingColor = tileEntityCable.getInsulationColor();
         int connectedSidesMask = blockFluidPipe.getActualConnections(tileEntityCable, world);
         FluidPipeType fluidPipeType = tileEntityCable.getPipeType();
         Material material = tileEntityCable.getPipeMaterial();
-        renderPipeBlock(material, fluidPipeType, paintingColor, renderState, pipeline, connectedSidesMask);
-        tileEntityCable.getCoverableImplementation().renderCovers(renderState, new Matrix4().translate(pos.getX(), pos.getY(), pos.getZ()), new IVertexOperation[0]);
+        if(fluidPipeType != null && material != null) {
+            renderPipeBlock(material, fluidPipeType, paintingColor, renderState, pipeline, connectedSidesMask);
+            tileEntityCable.getCoverableImplementation().renderCovers(renderState, new Matrix4().translate(pos.getX(), pos.getY(), pos.getZ()), new IVertexOperation[0]);
+        }
         return true;
     }
 
@@ -195,7 +201,6 @@ public class FluidPipeRenderer implements ICCBlockRenderer, IItemRenderer {
 
     @Override
     public void renderBrightness(IBlockState state, float brightness) {
-        renderItem(new ItemStack(state.getBlock(), 1, state.getBlock().getMetaFromState(state)), TransformType.FIXED);
     }
 
     @Override
@@ -206,8 +211,14 @@ public class FluidPipeRenderer implements ICCBlockRenderer, IItemRenderer {
         renderState.setPipeline(new Vector3(new Vec3d(pos)).translation(), new IconTransformation(sprite));
         BlockFluidPipe blockFluidPipe = (BlockFluidPipe) state.getBlock();
         IPipeTile<FluidPipeType, FluidPipeProperties> tileEntityPipe = blockFluidPipe.getPipeTileEntity(world, pos);
-        if(tileEntityPipe == null) return;
-        float thickness = tileEntityPipe.getPipeType().getThickness();
+        if(tileEntityPipe == null) {
+            return;
+        }
+        FluidPipeType fluidPipeType = tileEntityPipe.getPipeType();
+        if(fluidPipeType == null) {
+            return;
+        }
+        float thickness = fluidPipeType.getThickness();
         int connectedSidesMask = blockFluidPipe.getActualConnections(tileEntityPipe, world);
         Cuboid6 baseBox = BlockFluidPipe.getSideBox(null, thickness);
         BlockRenderer.renderCuboid(renderState, baseBox, 0);
@@ -261,6 +272,9 @@ public class FluidPipeRenderer implements ICCBlockRenderer, IItemRenderer {
             return TextureUtils.getMissingSprite();
         }
         Material material = tileEntity.getPipeMaterial();
+        if(material == null) {
+            return TextureUtils.getMissingSprite();
+        }
         return pipeSideTextures.get(material.materialIconSet);
     }
 }
