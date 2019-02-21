@@ -20,7 +20,7 @@ import net.minecraft.world.World;
 
 import java.util.Random;
 
-public class BlockGregLog extends BlockLog {
+public class   BlockGregLog extends BlockLog {
 
     public static final PropertyEnum<LogVariant> VARIANT = PropertyEnum.create("variant", LogVariant.class);
     public static final PropertyBool NATURAL = PropertyBool.create("natural");
@@ -37,13 +37,17 @@ public class BlockGregLog extends BlockLog {
     @Override
     public void getSubBlocks(CreativeTabs itemIn, NonNullList<ItemStack> items) {
         for(LogVariant logVariant : LogVariant.values()) {
-            items.add(new ItemStack(this, 1, logVariant.ordinal()));
+            items.add(getItem(logVariant));
         }
     }
 
     @Override
     protected BlockStateContainer createBlockState() {
         return new BlockStateContainer(this, VARIANT, LOG_AXIS, NATURAL);
+    }
+
+    public ItemStack getItem(LogVariant variant) {
+        return new ItemStack(this, 1, variant.ordinal() * 2);
     }
 
     @Override
@@ -70,8 +74,8 @@ public class BlockGregLog extends BlockLog {
     @Override
     public int getMetaFromState(IBlockState state) {
         return state.getValue(LOG_AXIS).ordinal() * 4 +
-            state.getValue(VARIANT).ordinal() +
-            (state.getValue(NATURAL) ? 2 : 0);
+            state.getValue(VARIANT).ordinal() * 2 +
+            (state.getValue(NATURAL) ? 1 : 0);
     }
 
     @Override

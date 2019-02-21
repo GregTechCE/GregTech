@@ -1,7 +1,6 @@
 {
   "weight": 70,
   "density": 0.4,
-  "max_height": 80,
   "min_height": 40,
 
   "generator": {
@@ -21,9 +20,13 @@
           "weight": 25,
           "value": "ore:barite"
         },
-		{
+        {
           "weight": 30,
           "value": "ore:certus_quartz"
+        },
+        {
+          "weight": 30,
+          "value": "ore:tennantite"
         }
       ]
     }

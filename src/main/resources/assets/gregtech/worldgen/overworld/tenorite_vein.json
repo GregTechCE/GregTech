@@ -1,13 +1,13 @@
 {
-  "weight": 25,
-  "density": 0.4,
-  "max_height": 50,
-  "min_height": 20,
-  "surface_stone_material": "lithium",
+  "weight": 80,
+  "density": 0.3,
+  "max_height": 30,
+  "min_height": 10,
+  "surface_stone_material": "copper",
 
   "generator": {
     "type": "ellipsoid",
-    "radius": [13, 13]
+    "radius": [17, 18]
   },
   "filler": {
     "type": "simple",
@@ -16,15 +16,15 @@
       "values": [
         {
           "weight": 60,
-          "value": "ore:scheelite"
+          "value": "ore:tenorite"
         },
         {
           "weight": 20,
-          "value": "ore:tungstate"
+          "value": "ore:copper"
         },
-		{
+        {
           "weight": 20,
-          "value": "ore:lithium"
+          "value": "ore:cuprite"
         }
       ]
     }

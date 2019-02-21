@@ -2,7 +2,6 @@
   "weight": 120,
   "priority": 100,
   "density": 1.0,
-  "max_height": 128,
   "min_height": 10,
   "count_as_vein": false,
 
