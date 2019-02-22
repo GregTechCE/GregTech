@@ -42,7 +42,8 @@ public class PropertyMaterial extends PropertyHelper<Material> {
 
 	@Override
 	public String getName(Material material) {
-		return material.toString();
+	    String name = material.toString();
+		return name == null ? "unnamed" : name;
 	}
 
 	@Override

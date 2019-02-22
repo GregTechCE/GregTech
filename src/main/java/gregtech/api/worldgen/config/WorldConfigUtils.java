@@ -90,7 +90,10 @@ public class WorldConfigUtils {
                 HashMap<Type, Integer> backedMap = new HashMap<>();
                 for (Entry<String, JsonElement> elementEntry : object.entrySet()) {
                     if (elementEntry.getKey().equals("type")) continue; //skip type
-                    Type type = GTUtility.getBiomeTypeTagByName(elementEntry.getKey());
+                    String tagName = elementEntry.getKey().toUpperCase();
+                    Type type = GTUtility.getBiomeTypeTagByName(tagName);
+                    if(type == null)
+                        throw new IllegalArgumentException("Couldn't find biome dictionary tag " + tagName);
                     backedMap.put(type, elementEntry.getValue().getAsInt());
                 }
                 return biome -> {

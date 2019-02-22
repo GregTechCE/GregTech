@@ -36,7 +36,7 @@ public class MetaTileEntityImplosionCompressor extends RecipeMapMultiblockContro
             .aisle("XXX", "XXX", "XXX")
             .aisle("XXX", "X#X", "XXX")
             .aisle("XXX", "XSX", "XXX")
-            .setAmountAtLeast('L', 10)
+            .setAmountAtLeast('L', 14)
             .where('S', selfPredicate())
             .where('L', statePredicate(getCasingState()))
             .where('X', statePredicate(getCasingState()).or(abilityPartPredicate(ALLOWED_ABILITIES)))

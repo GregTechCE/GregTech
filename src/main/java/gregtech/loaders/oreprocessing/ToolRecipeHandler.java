@@ -371,18 +371,16 @@ public class ToolRecipeHandler {
     }
 
     public static void processHammerHead(OrePrefix toolPrefix, SolidMaterial solidMaterial) {
-        if(!solidMaterial.hasFlag(NO_WORKING)) {
+        if (!solidMaterial.hasFlag(NO_WORKING)) {
             processSimpleToolHead(toolPrefix, solidMaterial, MetaItems.HARD_HAMMER, "II ", "IIh", "II ");
         }
-        if(solidMaterial instanceof IngotMaterial) {
-            SolidMaterial handleMaterial = Materials.Wood;
-            if(!solidMaterial.hasFlag(NO_WORKING)) {
-                ModHandler.addShapedRecipe(String.format("hammer_%s", solidMaterial.toString()),
-                    MetaItems.HARD_HAMMER.getStackForm(solidMaterial),
-                    "XX ", "XXS", "XX ",
-                    'X', new UnificationEntry(OrePrefix.ingot, solidMaterial),
-                    'S', new UnificationEntry(OrePrefix.stick, handleMaterial));
-            }
+        SolidMaterial handleMaterial = Materials.Wood;
+        if (!solidMaterial.hasFlag(NO_WORKING)) {
+            ModHandler.addShapedRecipe(String.format("hammer_%s", solidMaterial.toString()),
+                MetaItems.HARD_HAMMER.getStackForm(solidMaterial),
+                "XX ", "XXS", "XX ",
+                'X', new UnificationEntry(OrePrefix.ingot, solidMaterial),
+                'S', new UnificationEntry(OrePrefix.stick, handleMaterial));
         }
 
         if (!solidMaterial.hasFlag(DustMaterial.MatFlags.NO_SMASHING)) {

@@ -422,8 +422,10 @@ public class MetaBlocks {
         for(Entry<SolidMaterial, BlockFrame> entry : FRAMES.entrySet()) {
             SolidMaterial material = entry.getKey();
             BlockFrame block = entry.getValue();
-            ItemStack itemStack = new ItemStack(block, 1, GTValues.W);
-            OreDictUnifier.registerOre(itemStack, OrePrefix.frameGt, material);
+            for(int i = 0; i < 16; i++) {
+                ItemStack itemStack = new ItemStack(block, 1, i);
+                OreDictUnifier.registerOre(itemStack, OrePrefix.frameGt, material);
+            }
         }
 
         for(BlockOre blockOre : ORES) {

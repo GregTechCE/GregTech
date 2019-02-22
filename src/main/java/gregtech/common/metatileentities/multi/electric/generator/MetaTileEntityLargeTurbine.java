@@ -94,7 +94,7 @@ public class MetaTileEntityLargeTurbine extends FueledMultiblockController {
      * @return true if structure formed, workable is active and front face is free
      */
     public boolean isActive() {
-        return isTurbineFaceFree() && workableHandler.isActive();
+        return isTurbineFaceFree() && workableHandler.isActive() && workableHandler.isWorkingEnabled();
     }
 
     /**

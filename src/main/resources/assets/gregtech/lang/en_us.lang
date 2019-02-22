@@ -906,6 +906,12 @@ material.nitration_mixture=Nitration Mixture
 material.fireclay=Fireclay
 material.brick=Brick
 material.coke=Coke
+material.tenorite=Tenorite
+material.cuprite=Cuprite
+material.bornite=Bornite
+material.chalcocite=Chalcocite
+material.enargite=Enargite
+material.tennantite=Tennantite
 
 material.methane=Methane
 material.carbon_dioxide=Carbon Dioxide

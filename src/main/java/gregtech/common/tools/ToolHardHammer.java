@@ -41,7 +41,7 @@ public class ToolHardHammer extends ToolBase {
 
     @Override
     public int getToolDamagePerContainerCraft(ItemStack stack) {
-        return 4;
+        return 2;
     }
 
     @Override

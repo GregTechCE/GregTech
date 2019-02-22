@@ -607,7 +607,7 @@ public class ModHandler {
         Preconditions.checkNotNull(input);
         Preconditions.checkNotNull(output);
         Preconditions.checkArgument(duration > 0, "Duration should be positive!");
-//        if(Loader.isModLoaded("railcraft")) {
+//        if(GTValues.isModLoaded("railcraft")) {
 //            addRCFurnaceRecipeInternal(input, output, duration);
 //        }
     }

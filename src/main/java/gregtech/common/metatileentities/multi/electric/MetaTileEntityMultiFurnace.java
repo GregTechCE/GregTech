@@ -78,7 +78,7 @@ public class MetaTileEntityMultiFurnace extends RecipeMapMultiblockController {
             .aisle("XXX", "CCC", "XXX")
             .aisle("XXX", "C#C", "XXX")
             .aisle("XSX", "CCC", "XXX")
-            .setAmountAtLeast('L', 10)
+            .setAmountAtLeast('L', 9)
             .where('S', selfPredicate())
             .where('L', statePredicate(getCasingState()))
             .where('X', statePredicate(getCasingState()).or(abilityPartPredicate(ALLOWED_ABILITIES)))

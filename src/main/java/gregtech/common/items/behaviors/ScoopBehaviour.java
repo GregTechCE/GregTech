@@ -26,7 +26,7 @@ public class ScoopBehaviour implements IItemBehaviour {
 
     @Override
     public boolean onLeftClickEntity(ItemStack itemStack, EntityPlayer player, Entity entity) {
-        return Loader.isModLoaded(GTValues.MODID_FR) && processButterflyCatch(itemStack, player, entity);
+        return GTValues.isModLoaded(GTValues.MODID_FR) && processButterflyCatch(itemStack, player, entity);
     }
 
     @Method(modid = GTValues.MODID_FR)

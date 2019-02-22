@@ -34,15 +34,9 @@ public class LargeTurbineWorkableHandler extends FuelRecipeMapWorkableHandler {
     @Override
     public void update() {
         super.update();
-        MetaTileEntityRotorHolder rotorHolder = largeTurbine.getAbilities(MetaTileEntityLargeTurbine.ABILITY_ROTOR_HOLDER).get(0);
-        //if the rotor is spinning and is not broken generate energy every tick,
-        //recipes only affect rotor speed delta per tick and output fluid generation,
-        //they do not add energy to the turbine directly
-        double relativeRotorSpeed = rotorHolder.getRelativeRotorSpeed();
-        if(rotorHolder.getCurrentRotorSpeed() > 0 && rotorHolder.hasRotorInInventory()) {
-            double rotorEfficiency = rotorHolder.getRotorEfficiency();
-            double totalEnergyOutput = (BASE_EU_OUTPUT + EU_OUTPUT_BONUS * rotorEfficiency) * (relativeRotorSpeed * relativeRotorSpeed);
-            energyContainer.get().addEnergy(MathHelper.ceil(totalEnergyOutput));
+        long totalEnergyOutput = getRecipeOutputVoltage();
+        if(totalEnergyOutput > 0) {
+            energyContainer.get().addEnergy(totalEnergyOutput);
         }
     }
 
@@ -90,6 +84,18 @@ public class LargeTurbineWorkableHandler extends FuelRecipeMapWorkableHandler {
                 largeTurbine.exportFluidHandler.fill(material.getFluid(fuelAmountUsed), true);
             }
         }
+    }
+
+    @Override
+    public long getRecipeOutputVoltage() {
+        MetaTileEntityRotorHolder rotorHolder = largeTurbine.getAbilities(MetaTileEntityLargeTurbine.ABILITY_ROTOR_HOLDER).get(0);
+        double relativeRotorSpeed = rotorHolder.getRelativeRotorSpeed();
+        if (rotorHolder.getCurrentRotorSpeed() > 0 && rotorHolder.hasRotorInInventory()) {
+            double rotorEfficiency = rotorHolder.getRotorEfficiency();
+            double totalEnergyOutput = (BASE_EU_OUTPUT + EU_OUTPUT_BONUS * rotorEfficiency) * (relativeRotorSpeed * relativeRotorSpeed);
+            return MathHelper.ceil(totalEnergyOutput);
+        }
+        return 0L;
     }
 
     @Override

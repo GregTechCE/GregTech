@@ -91,7 +91,9 @@ public class MetaTileEntityRenderer implements ICCBlockRenderer, IItemRenderer {
     @Override
     public void renderItem(ItemStack stack, TransformType transformType) {
         MetaTileEntity metaTileEntity = MachineItemBlock.getMetaTileEntity(stack);
-        if(metaTileEntity == null) return;
+        if(metaTileEntity == null) {
+            return;
+        }
         GlStateManager.enableBlend();
         CCRenderState renderState = CCRenderState.instance();
         renderState.reset();
@@ -106,8 +108,9 @@ public class MetaTileEntityRenderer implements ICCBlockRenderer, IItemRenderer {
     @Override
     public boolean renderBlock(IBlockAccess world, BlockPos pos, IBlockState state, BufferBuilder buffer) {
         MetaTileEntity metaTileEntity = BlockMachine.getMetaTileEntity(world, pos);
-        if(metaTileEntity == null)
+        if(metaTileEntity == null) {
             return false;
+        }
         CCRenderState renderState = CCRenderState.instance();
         renderState.reset();
         renderState.bind(buffer);
