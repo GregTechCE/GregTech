@@ -8,11 +8,14 @@ import gregtech.api.GTValues;
 import gregtech.api.unification.material.type.DustMaterial.MatFlags;
 import gregtech.api.unification.material.type.IngotMaterial;
 import gregtech.api.unification.ore.StoneType;
+import gregtech.api.util.WorldBlockPredicate;
 import gregtech.api.worldgen.filler.BlockFiller;
 import gregtech.api.worldgen.populator.IVeinPopulator;
 import gregtech.api.worldgen.populator.SurfaceRockPopulator;
 import gregtech.api.worldgen.shape.ShapeGenerator;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.WorldProvider;
 import net.minecraft.world.biome.Biome;
 import net.minecraftforge.common.DimensionManager;
@@ -31,7 +34,7 @@ public class OreDepositDefinition {
 
     public static final Function<Biome, Integer> NO_BIOME_INFLUENCE = biome -> 0;
     public static final Predicate<WorldProvider> PREDICATE_SURFACE_WORLD = WorldProvider::isSurfaceWorld;
-    public static final Predicate<IBlockState> PREDICATE_STONE_TYPE = state -> StoneType.computeStoneType(state) != null;
+    public static final WorldBlockPredicate PREDICATE_STONE_TYPE = (state, world, pos) -> StoneType.computeStoneType(state, world, pos) != null;
 
     private final String depositName;
 
@@ -43,7 +46,7 @@ public class OreDepositDefinition {
 
     private Function<Biome, Integer> biomeWeightModifier = NO_BIOME_INFLUENCE;
     private Predicate<WorldProvider> dimensionFilter = PREDICATE_SURFACE_WORLD;
-    private Predicate<IBlockState> generationPredicate = PREDICATE_STONE_TYPE;
+    private WorldBlockPredicate generationPredicate = PREDICATE_STONE_TYPE;
     private IVeinPopulator veinPopulator;
 
     private BlockFiller blockFiller;
@@ -146,7 +149,7 @@ public class OreDepositDefinition {
         return dimensionFilter;
     }
 
-    public Predicate<IBlockState> getGenerationPredicate() {
+    public WorldBlockPredicate getGenerationPredicate() {
         return generationPredicate;
     }
 
@@ -171,9 +174,9 @@ public class OreDepositDefinition {
 
     @ZenMethod("canGenerateIn")
     @Method(modid = GTValues.MODID_CT)
-    public boolean ctCanGenerateIn(crafttweaker.api.block.IBlockState blockState) {
+    public boolean ctCanGenerateIn(crafttweaker.api.block.IBlockState blockState, crafttweaker.api.world.IBlockAccess blockAccess, crafttweaker.api.world.IBlockPos blockPos) {
         IBlockState mcBlockState = CraftTweakerMC.getBlockState(blockState);
-        return getGenerationPredicate().test(mcBlockState);
+        return getGenerationPredicate().test(mcBlockState, (IBlockAccess) blockAccess.getInternal(), (BlockPos) blockPos.getInternal());
     }
 
     @ZenGetter("filter")

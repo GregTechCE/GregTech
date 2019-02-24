@@ -240,7 +240,7 @@ public class MetaTileEntityLargeBoiler extends MultiblockWithDisplayBase {
                     fluidTank.drain(fuelAmountToConsume, true);
                     long recipeVoltage = FuelRecipeMapWorkableHandler.getTieredVoltage(dieselRecipe.getMinVoltage());
                     int voltageMultiplier = (int) Math.max(1L, recipeVoltage / GTValues.V[GTValues.LV]);
-                    return (int) Math.floor(dieselRecipe.getDuration() * CONSUMPTION_MULTIPLIER / 4 * voltageMultiplier);
+                    return (int) Math.floor(dieselRecipe.getDuration() * CONSUMPTION_MULTIPLIER / 2 * voltageMultiplier);
                 } else continue;
             }
             FuelRecipe denseFuelRecipe = RecipeMaps.SEMI_FLUID_GENERATOR_FUELS.findRecipe(GTValues.V[9], fuelStack);

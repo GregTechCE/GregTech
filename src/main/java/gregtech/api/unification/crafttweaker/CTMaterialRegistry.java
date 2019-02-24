@@ -47,19 +47,19 @@ public class CTMaterialRegistry {
     }
 
     @ZenMethod
-    public static GemMaterial createGemMaterial(int metaItemSubId, String name, int color, String iconSet, int harvestLevel, @Optional MaterialStack[] materialComponents, @Optional float toolSpeed, @Optional int toolDurability) {
+    public static GemMaterial createGemMaterial(int metaItemSubId, String name, int color, String iconSet, int harvestLevel, @Optional MaterialStack[] materialComponents, @Optional float toolSpeed, @Optional float attackDamage, @Optional int toolDurability) {
         return new GemMaterial(metaItemSubId, name, color,
             MaterialIconSet.getByName(iconSet), harvestLevel,
             validateComponentList(materialComponents), 0, null,
-            Math.max(0.0f, toolSpeed), Math.max(0, toolDurability));
+            Math.max(0.0f, toolSpeed), Math.max(0.0f, attackDamage), Math.max(0, toolDurability));
     }
 
     @ZenMethod
-    public static IngotMaterial createIngotMaterial(int metaItemSubId, String name, int color, String iconSet, int harvestLevel, @Optional MaterialStack[] materialComponents, @Optional float toolSpeed, @Optional int toolDurability, @Optional int blastFurnaceTemperature) {
+    public static IngotMaterial createIngotMaterial(int metaItemSubId, String name, int color, String iconSet, int harvestLevel, @Optional MaterialStack[] materialComponents, @Optional float toolSpeed, @Optional float attackDamage, @Optional int toolDurability, @Optional int blastFurnaceTemperature) {
         return new IngotMaterial(metaItemSubId, name, color,
             MaterialIconSet.getByName(iconSet), harvestLevel,
             validateComponentList(materialComponents), 0, null,
-            Math.max(0.0f, toolSpeed), Math.max(0, toolDurability), blastFurnaceTemperature);
+            Math.max(0.0f, toolSpeed), Math.max(0.0f, attackDamage), Math.max(0, toolDurability), blastFurnaceTemperature);
     }
 
 }

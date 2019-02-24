@@ -2,10 +2,8 @@ package gregtech.common.items;
 
 import gregtech.api.items.materialitem.MaterialMetaItem;
 import gregtech.api.items.metaitem.MetaItem;
-import gregtech.api.items.toolitem.ToolHarvestListener;
 import gregtech.api.items.toolitem.ToolMetaItem;
 import net.minecraft.item.EnumDyeColor;
-import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -317,7 +315,6 @@ public final class MetaItems {
     public static ToolMetaItem<?>.MetaToolValueItem MAGNIFYING_GLASS;
 
     public static void init() {
-        MinecraftForge.EVENT_BUS.register(new ToolHarvestListener());
         MetaItem1 first = new MetaItem1();
         first.setRegistryName("meta_item_1");
         MetaItem2 second = new MetaItem2();

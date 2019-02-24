@@ -8,6 +8,7 @@ import gregtech.api.enchants.EnchantmentData;
 import gregtech.api.items.IDamagableItem;
 import gregtech.api.items.ToolDictNames;
 import gregtech.api.items.metaitem.MetaItem;
+import gregtech.api.items.metaitem.stats.IItemContainerItemProvider;
 import gregtech.api.items.metaitem.stats.IMetaItemStats;
 import gregtech.api.unification.material.MaterialIconSet;
 import gregtech.api.unification.material.Materials;
@@ -22,6 +23,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.enchantment.Enchantment;
+import net.minecraft.enchantment.EnchantmentDurability;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -144,11 +146,6 @@ public class ToolMetaItem<T extends ToolMetaItem<?>.MetaToolValueItem> extends M
     }
 
     @Override
-    public boolean hasContainerItem(ItemStack stack) {
-        return true;
-    }
-
-    @Override
     public void onCreated(ItemStack stack, World worldIn, EntityPlayer playerIn) {
         T metaToolValueItem = getItem(stack);
         if (metaToolValueItem != null) {
@@ -162,15 +159,27 @@ public class ToolMetaItem<T extends ToolMetaItem<?>.MetaToolValueItem> extends M
     }
 
     @Override
+    public boolean hasContainerItem(ItemStack stack) {
+        return true;
+    }
+
+    @Override
     public ItemStack getContainerItem(ItemStack stack) {
         stack = stack.copy();
         stack.setCount(1);
         T metaToolValueItem = getItem(stack);
-        if (metaToolValueItem != null && metaToolValueItem.toolStats != null) {
-            IToolStats toolStats = metaToolValueItem.toolStats;
-            int toolDamagePerCraft = toolStats.getToolDamagePerContainerCraft(stack);
-            boolean canApplyDamage = doDamageToItem(stack, toolDamagePerCraft, false);
-            if (!canApplyDamage) return stack;
+        if(metaToolValueItem != null) {
+            IItemContainerItemProvider containerItemProvider = metaToolValueItem.getContainerItemProvider();
+            if(containerItemProvider != null) {
+                return containerItemProvider.getContainerItem(stack);
+            }
+
+            if (metaToolValueItem.toolStats != null) {
+                IToolStats toolStats = metaToolValueItem.toolStats;
+                int toolDamagePerCraft = toolStats.getToolDamagePerContainerCraft(stack);
+                boolean canApplyDamage = doDamageToItem(stack, toolDamagePerCraft, false);
+                if (!canApplyDamage) return stack;
+            }
         }
         return stack;
     }
@@ -216,7 +225,15 @@ public class ToolMetaItem<T extends ToolMetaItem<?>.MetaToolValueItem> extends M
 
     @Override
     public int getHarvestLevel(ItemStack stack, String toolClass, EntityPlayer player, IBlockState blockState) {
-        return getHarvestLevel(stack);
+        T metaToolValueItem = getItem(stack);
+        if(metaToolValueItem == null) {
+            return -1;
+        }
+        IToolStats toolStats = metaToolValueItem.getToolStats();
+        if(isUsable(stack, toolStats.getToolDamagePerBlockBreak(stack)) && toolStats.isMinableBlock(blockState, stack)) {
+            return getHarvestLevel(stack);
+        }
+        return -1;
     }
 
     @Override
@@ -280,11 +297,13 @@ public class ToolMetaItem<T extends ToolMetaItem<?>.MetaToolValueItem> extends M
     public boolean doDamageToItem(ItemStack stack, int vanillaDamage, boolean simulate) {
         IElectricItem capability = stack.getCapability(GregtechCapabilities.CAPABILITY_ELECTRIC_ITEM, null);
         if (capability == null) {
-            int newDamageValue = getInternalDamage(stack) + vanillaDamage * 10;
+            int resultDamage = calculateToolDamage(stack, new Random(), vanillaDamage);
+            int newDamageValue = getInternalDamage(stack) + resultDamage * 10;
+
             if (!simulate && !setInternalDamage(stack, newDamageValue)) {
                 stack.shrink(1);
             }
-            //non-electric tools are always damagable, and just break in case
+            //non-electric tools are always damageable, and just break in case
             //they don't have enough durability left
             return true;
         } else {
@@ -302,6 +321,25 @@ public class ToolMetaItem<T extends ToolMetaItem<?>.MetaToolValueItem> extends M
             }
             return true;
         }
+    }
+
+    public int regainItemDurability(ItemStack itemStack, int maxDurabilityRegain) {
+        int resultRegain = maxDurabilityRegain * 10;
+        int toolDamage = getInternalDamage(itemStack);
+        int durabilityRegained = Math.min(toolDamage, resultRegain);
+        setInternalDamage(itemStack, toolDamage - durabilityRegained);
+        return (int) Math.ceil(durabilityRegained / 10.0);
+    }
+
+    private static int calculateToolDamage(ItemStack itemStack, Random random, int amount) {
+        int level = EnchantmentHelper.getEnchantmentLevel(Enchantments.UNBREAKING, itemStack);
+        int damageNegated = 0;
+        for (int k = 0; level > 0 && k < amount; ++k) {
+            if (EnchantmentDurability.negateDamage(itemStack, level, random)) {
+                ++damageNegated;
+            }
+        }
+        return Math.max(0, amount - damageNegated);
     }
 
     @Override
@@ -393,9 +431,6 @@ public class ToolMetaItem<T extends ToolMetaItem<?>.MetaToolValueItem> extends M
 
     @Override
     public boolean canApplyAtEnchantingTable(ItemStack stack, Enchantment enchantment) {
-        if (enchantment == Enchantments.MENDING ||
-            enchantment == Enchantments.UNBREAKING)
-            return false; //disallow applying of unbreaking and mending
         T metaToolValueItem = getItem(stack);
         if (metaToolValueItem != null && metaToolValueItem.toolStats != null) {
             return metaToolValueItem.toolStats.canApplyEnchantment(stack, enchantment);
@@ -470,7 +505,7 @@ public class ToolMetaItem<T extends ToolMetaItem<?>.MetaToolValueItem> extends M
             } else if (toolTag != null && toolTag.hasKey("HarvestLevel")) {
                 attackDamage = toolTag.getInteger("HarvestLevel");
             } else if (toolMaterial != null) {
-                attackDamage = toolMaterial.harvestLevel;
+                attackDamage = toolMaterial.toolAttackDamage;
             }
             float baseAttackDamage = toolStats.getBaseDamage(itemStack);
             return baseAttackDamage + attackDamage;
@@ -672,6 +707,7 @@ public class ToolMetaItem<T extends ToolMetaItem<?>.MetaToolValueItem> extends M
                     enchantments.put(enchantmentData.enchantment, enchantmentData.level);
                 }
             }
+            enchantments.keySet().removeIf(enchantment -> !enchantment.canApply(itemStack));
             return enchantments;
         }
 

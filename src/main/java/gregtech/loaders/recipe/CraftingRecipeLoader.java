@@ -14,6 +14,7 @@ import gregtech.common.blocks.MetaBlocks;
 import gregtech.common.blocks.wood.BlockGregLog.LogVariant;
 import gregtech.common.items.MetaItems;
 import gregtech.common.pipelike.fluidpipe.FluidPipeType;
+import mezz.jei.plugins.vanilla.crafting.ShapedRecipesWrapper;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockColored;
 import net.minecraft.block.BlockPlanks.EnumType;
@@ -40,6 +41,10 @@ public class CraftingRecipeLoader {
         ModHandler.addShapelessRecipe("wheat_to_dust", OreDictUnifier.get(OrePrefix.dust, Materials.Wheat, 1), 'm', Items.WHEAT);
         ModHandler.addShapelessRecipe("gravel_to_flint", new ItemStack(Items.FLINT, 1), 'm', Blocks.GRAVEL);
         ModHandler.addShapelessRecipe("blaze_rod_to_powder", new ItemStack(Items.BLAZE_POWDER, 3), 'm', Items.BLAZE_ROD);
+
+        ModHandler.addShapedRecipe("item_filter", MetaItems.ITEM_FILTER.getStackForm(), "XXX", "XYX", "XXX", 'X', new UnificationEntry(OrePrefix.foil, Materials.Zinc), 'Y', new UnificationEntry(OrePrefix.plate, Materials.Steel));
+        ModHandler.addShapedRecipe("fluid_filter", MetaItems.FLUID_FILTER.getStackForm(), "XXX", "XYX", "XXX", 'X', new UnificationEntry(OrePrefix.foil, Materials.Zinc), 'Y', new UnificationEntry(OrePrefix.plate, Materials.Lapis));
+        ModHandler.addShapedRecipe("ore_dictionary_filter", MetaItems.ORE_DICTIONARY_FILTER.getStackForm(), "XXX", "XYX", "XXX", 'X', new UnificationEntry(OrePrefix.foil, Materials.Zinc), 'Y', new UnificationEntry(OrePrefix.plate, Materials.Olivine));
 
         ModHandler.addShapedRecipe("plank_to_wooden_shape", MetaItems.WOODEN_FORM_EMPTY.getStackForm(), "   ", " X ", "s  ", 'X', new UnificationEntry(OrePrefix.plank, Materials.Wood));
         ModHandler.addShapedRecipe("wooden_shape_brick", MetaItems.WOODEN_FORM_BRICK.getStackForm(), "k ", " X", 'X', MetaItems.WOODEN_FORM_EMPTY.getStackForm());
@@ -161,12 +166,11 @@ public class CraftingRecipeLoader {
             ModHandler.removeRecipeByName(new ResourceLocation("minecraft:sugar"));
             ModHandler.addShapedRecipe("paper_dust", OreDictUnifier.get(OrePrefix.dust, Materials.Paper, 2), "SSS", " m ", 'S', new ItemStack(Items.REEDS));
             ModHandler.addShapedRecipe("sugar", OreDictUnifier.get(OrePrefix.dust, Materials.Sugar, 1), "Sm ", 'S', new ItemStack(Items.REEDS));
-            ItemStack resultStack = OreDictUnifier.get(OrePrefix.plate, Materials.Paper, 2);
+            ItemStack paperStack = OreDictUnifier.get(OrePrefix.plate, Materials.Paper, 2);
             Object[] paperRecipeIngredients = ModHandler.finalizeShapedRecipeInput(" C ", "SSS", " C ", 'S', OreDictUnifier.get(OrePrefix.dust, Materials.Paper, 1), 'C', new ItemStack(Blocks.STONE_SLAB));
-            IRecipe recipeDelegate = new ShapedOreRecipe(null, resultStack, paperRecipeIngredients).setMirrored(false);
-            IRecipe recipeWrapper = new ContainerRecipeWrapper(recipeDelegate,
-                stack -> Block.getBlockFromItem(stack.getItem()) == Blocks.STONE_SLAB).setRegistryName("paper");
-            ForgeRegistries.RECIPES.register(recipeWrapper);
+            ForgeRegistries.RECIPES.register(new CustomItemReturnShapedOreRecipeRecipe(null, paperStack,
+                stack -> Block.getBlockFromItem(stack.getItem()) == Blocks.STONE_SLAB, paperRecipeIngredients)
+                .setMirrored(false).setRegistryName("paper"));
         }
 
         if (ConfigHolder.vanillaRecipes.flintAndSteelRequireSteel) {

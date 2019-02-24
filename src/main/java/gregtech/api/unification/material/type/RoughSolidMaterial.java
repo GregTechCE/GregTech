@@ -14,13 +14,13 @@ public class RoughSolidMaterial extends SolidMaterial {
     //instead, we use lazy-computing OrePrefix solid form supplier
     public final Supplier<OrePrefix> solidFormSupplier;
 
-    public RoughSolidMaterial(int metaItemSubId, String name, int materialRGB, MaterialIconSet materialIconSet, int harvestLevel, ImmutableList<MaterialStack> materialComponents, long materialGenerationFlags, float toolSpeed, int toolDurability, Supplier<OrePrefix> solidFormSupplier) {
-        super(metaItemSubId, name, materialRGB, materialIconSet, harvestLevel, materialComponents, materialGenerationFlags, null, toolSpeed, toolDurability);
+    public RoughSolidMaterial(int metaItemSubId, String name, int materialRGB, MaterialIconSet materialIconSet, int harvestLevel, ImmutableList<MaterialStack> materialComponents, long materialGenerationFlags, float toolSpeed, float attackDamage, int toolDurability, Supplier<OrePrefix> solidFormSupplier) {
+        super(metaItemSubId, name, materialRGB, materialIconSet, harvestLevel, materialComponents, materialGenerationFlags, null, toolSpeed, attackDamage, toolDurability);
         this.solidFormSupplier = solidFormSupplier;
     }
 
     public RoughSolidMaterial(int metaItemSubId, String name, int materialRGB, MaterialIconSet materialIconSet, int harvestLevel, ImmutableList<MaterialStack> materialComponents, long materialGenerationFlags, Supplier<OrePrefix> solidFormSupplier) {
-        super(metaItemSubId, name, materialRGB, materialIconSet, harvestLevel, materialComponents, materialGenerationFlags, null, 0, 0);
+        super(metaItemSubId, name, materialRGB, materialIconSet, harvestLevel, materialComponents, materialGenerationFlags, null, 0, 0, 0);
         this.solidFormSupplier = solidFormSupplier;
     }
 

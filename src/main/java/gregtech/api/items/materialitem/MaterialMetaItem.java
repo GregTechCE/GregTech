@@ -82,6 +82,7 @@ public class MaterialMetaItem extends StandardMetaItem {
     protected int getColorForItemStack(ItemStack stack, int tintIndex) {
         if (tintIndex == 0 && stack.getMetadata() < metaItemOffset) {
             Material material = Material.MATERIAL_REGISTRY.getObjectById(stack.getMetadata() % 1000);
+            if(material == null) return 0xFFFFFF;
             return material.materialRGB;
         }
         return super.getColorForItemStack(stack, tintIndex);
@@ -95,14 +96,21 @@ public class MaterialMetaItem extends StandardMetaItem {
     @SideOnly(Side.CLIENT)
     public String getItemStackDisplayName(ItemStack itemStack) {
         if(itemStack.getItemDamage() < metaItemOffset) {
-            if (!generatedItems.contains((short) itemStack.getItemDamage())) {
-                return "";
-            }
             Material material = Material.MATERIAL_REGISTRY.getObjectById(itemStack.getItemDamage() % 1000);
             OrePrefix prefix = orePrefixes[itemStack.getItemDamage() / 1000];
+            if(material == null || prefix == null) return "";
             return prefix.getLocalNameForItem(material);
         }
         return super.getItemStackDisplayName(itemStack);
+    }
+
+    @Override
+    public int getItemStackLimit(ItemStack stack) {
+        if(stack.getItemDamage() < metaItemOffset) {
+            OrePrefix prefix = orePrefixes[stack.getItemDamage() / 1000];
+            return prefix.maxStackSize;
+        }
+        return super.getItemStackLimit(stack);
     }
 
     @Override

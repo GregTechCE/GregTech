@@ -368,27 +368,6 @@ public class MachineRecipeLoader {
         RecipeMaps.ASSEMBLER_RECIPES.recipeBuilder().duration(1800).EUt(1920).input(OrePrefix.dust, Materials.NetherStar, 1).input(OrePrefix.circuit, MarkerMaterials.Tier.Elite, 4).fluidInputs(Materials.Osmium.getFluid(2304)).outputs(MetaItems.FIELD_GENERATOR_EV.getStackForm()).buildAndRegister();
         RecipeMaps.ASSEMBLER_RECIPES.recipeBuilder().duration(1800).EUt(7680).inputs(MetaItems.QUANTUM_STAR.getStackForm()).input(OrePrefix.circuit, MarkerMaterials.Tier.Master, 4).fluidInputs(Materials.Osmium.getFluid(4608)).outputs(MetaItems.FIELD_GENERATOR_IV.getStackForm()).buildAndRegister();
 
-        RecipeMaps.ASSEMBLER_RECIPES.recipeBuilder()
-            .input(OrePrefix.plate, Materials.Aluminium, 2)
-            .input(OrePrefix.foil, Materials.Zinc, 16)
-            .fluidInputs(Materials.Plastic.getFluid(144))
-            .outputs(ITEM_FILTER.getStackForm())
-            .duration(100).EUt(32).buildAndRegister();
-
-        RecipeMaps.ASSEMBLER_RECIPES.recipeBuilder()
-            .input(OrePrefix.plate, Materials.Emerald, 2)
-            .input(OrePrefix.foil, Materials.Zinc, 16)
-            .fluidInputs(Materials.Plastic.getFluid(144))
-            .outputs(ORE_DICTIONARY_FILTER.getStackForm())
-            .duration(100).EUt(32).buildAndRegister();
-
-        RecipeMaps.ASSEMBLER_RECIPES.recipeBuilder()
-            .input(OrePrefix.plate, Materials.Lapis, 2)
-            .input(OrePrefix.foil, Materials.Zinc, 16)
-            .fluidInputs(Materials.Plastic.getFluid(144))
-            .outputs(FLUID_FILTER.getStackForm())
-            .duration(100).EUt(32).buildAndRegister();
-
         RecipeMaps.ASSEMBLER_RECIPES.recipeBuilder().duration(480).EUt(240).input(OrePrefix.dust, Materials.Graphite, 8).input(OrePrefix.foil, Materials.Silicon, 1).fluidInputs(Materials.Glue.getFluid(250)).outputs(OreDictUnifier.get(OrePrefix.dustSmall,Materials.Graphene,1)).buildAndRegister();
 
         RecipeMaps.CENTRIFUGE_RECIPES.recipeBuilder().duration(1600).EUt(8).fluidInputs(Materials.Air.getFluid(10000)).fluidOutputs(Materials.Nitrogen.getFluid(3900), Materials.Oxygen.getFluid(1000)).buildAndRegister();

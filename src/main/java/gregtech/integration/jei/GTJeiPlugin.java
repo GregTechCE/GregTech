@@ -19,16 +19,16 @@ import gregtech.integration.jei.recipe.GTRecipeWrapper;
 import gregtech.integration.jei.recipe.RecipeMapCategory;
 import gregtech.integration.jei.recipe.fuel.FuelRecipeMapCategory;
 import gregtech.integration.jei.recipe.fuel.GTFuelRecipeWrapper;
+import gregtech.integration.jei.utils.CustomItemReturnRecipeWrapper;
 import gregtech.integration.jei.utils.MetadataAwareFluidHandlerSubtype;
-import mezz.jei.api.IModPlugin;
-import mezz.jei.api.IModRegistry;
-import mezz.jei.api.ISubtypeRegistry;
-import mezz.jei.api.JEIPlugin;
+import gregtech.loaders.recipe.CustomItemReturnShapedOreRecipeRecipe;
+import mezz.jei.api.*;
 import mezz.jei.api.recipe.IRecipeCategoryRegistration;
 import mezz.jei.api.recipe.VanillaRecipeCategoryUid;
 import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
 
+import javax.annotation.Nonnull;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -57,7 +57,12 @@ public class GTJeiPlugin implements IModPlugin {
 
     @Override
     public void register(IModRegistry registry) {
+        IJeiHelpers jeiHelpers = registry.getJeiHelpers();
+
         MultiblockInfoCategory.registerRecipes(registry);
+
+        registry.handleRecipes(CustomItemReturnShapedOreRecipeRecipe.class, recipe -> new CustomItemReturnRecipeWrapper(jeiHelpers, recipe), VanillaRecipeCategoryUid.CRAFTING);
+
         for(RecipeMap<?> recipeMap : RecipeMap.getRecipeMaps()) {
             List<GTRecipeWrapper> recipesList = recipeMap.getRecipeList()
                 .stream().filter(recipe -> !recipe.isHidden() && recipe.hasValidInputsForDisplay())
@@ -65,6 +70,7 @@ public class GTJeiPlugin implements IModPlugin {
                 .collect(Collectors.toList());
             registry.addRecipes(recipesList, GTValues.MODID + ":" + recipeMap.unlocalizedName);
         }
+
         for(FuelRecipeMap fuelRecipeMap : FuelRecipeMap.getRecipeMaps()) {
             List<GTFuelRecipeWrapper> recipeList = fuelRecipeMap.getRecipeList().stream()
                 .map(GTFuelRecipeWrapper::new)
@@ -74,22 +80,25 @@ public class GTJeiPlugin implements IModPlugin {
 
         for(ResourceLocation metaTileEntityId : GregTechAPI.META_TILE_ENTITY_REGISTRY.getKeys()) {
             MetaTileEntity metaTileEntity = GregTechAPI.META_TILE_ENTITY_REGISTRY.getObject(metaTileEntityId);
+            //noinspection ConstantConditions
             if(metaTileEntity.getCapability(GregtechCapabilities.CAPABILITY_WORKABLE, null) != null) {
                 IWorkable workableCapability = metaTileEntity.getCapability(GregtechCapabilities.CAPABILITY_WORKABLE, null);
+
                 if(workableCapability instanceof RecipeMapWorkableHandler) {
                     RecipeMap<?> recipeMap = ((RecipeMapWorkableHandler) workableCapability).recipeMap;
-                    registry.addRecipeCatalyst(metaTileEntity.getStackForm(),
-                        GTValues.MODID + ":" + recipeMap.unlocalizedName);
+                    registry.addRecipeCatalyst(metaTileEntity.getStackForm(), GTValues.MODID + ":" + recipeMap.unlocalizedName);
+
                 } else if(workableCapability instanceof FuelRecipeMapWorkableHandler) {
                     FuelRecipeMap recipeMap = ((FuelRecipeMapWorkableHandler) workableCapability).recipeMap;
-                    registry.addRecipeCatalyst(metaTileEntity.getStackForm(),
-                        GTValues.MODID + ":" + recipeMap.unlocalizedName);
+                    registry.addRecipeCatalyst(metaTileEntity.getStackForm(), GTValues.MODID + ":" + recipeMap.unlocalizedName);
                 }
             }
         }
+
         for(MetaTileEntity breweryTile : MetaTileEntities.BREWERY) {
             registry.addRecipeCatalyst(breweryTile.getStackForm(), VanillaRecipeCategoryUid.BREWING);
         }
+
         String semiFluidMapId = GTValues.MODID + ":" + RecipeMaps.SEMI_FLUID_GENERATOR_FUELS.getUnlocalizedName();
         registry.addRecipeCatalyst(MetaTileEntities.LARGE_BRONZE_BOILER.getStackForm(), semiFluidMapId);
         registry.addRecipeCatalyst(MetaTileEntities.LARGE_STEEL_BOILER.getStackForm(), semiFluidMapId);

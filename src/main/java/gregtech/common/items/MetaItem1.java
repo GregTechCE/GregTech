@@ -635,7 +635,6 @@ public class MetaItem1 extends MaterialMetaItem {
             .buildAndRegister();
     }
 
-
     @Override
     public boolean onEntityItemUpdate(EntityItem itemEntity) {
         int damage = itemEntity.getItem().getMetadata();
@@ -645,9 +644,6 @@ public class MetaItem1 extends MaterialMetaItem {
         OrePrefix prefix = this.orePrefixes[(damage / 1000)];
         if (!purifyMap.containsKey(prefix))
             return false;
-        int posX = MathHelper.floor(itemEntity.posX);
-        int posY = MathHelper.floor(itemEntity.posY);
-        int posZ = MathHelper.floor(itemEntity.posZ);
         BlockPos blockPos = new BlockPos(itemEntity);
         IBlockState blockState = itemEntity.getEntityWorld().getBlockState(blockPos);
         int waterLevel = blockState.getBlock() instanceof BlockCauldron ?
