@@ -41,7 +41,6 @@ import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.Optional.Method;
 
 import javax.annotation.Nullable;
@@ -139,9 +138,11 @@ public abstract class BlockPipe<PipeType extends Enum<PipeType> & IPipeType<Node
 
     @Override
     public void updateTick(World worldIn, BlockPos pos, IBlockState state, Random rand) {
-        boolean isActiveNode = getActiveNodeConnections(worldIn, pos) > 0;
         IPipeTile<PipeType, NodeDataType> pipeTile = getPipeTileEntity(worldIn, pos);
         if(pipeTile != null) {
+            int activeConnections = getActiveNodeConnections(worldIn, pos);
+            activeConnections |= ~pipeTile.getBlockedConnections(); //remove blocked connections
+            boolean isActiveNode = activeConnections > 0;
             getWorldPipeNet(worldIn).addNode(pos, createProperties(pipeTile), 0, 0, isActiveNode);
             onActiveModeChange(worldIn, pos, isActiveNode, true);
         }
@@ -157,9 +158,16 @@ public abstract class BlockPipe<PipeType extends Enum<PipeType> & IPipeType<Node
 
     @Override
     public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos) {
-        boolean isActiveNodeNow = getActiveNodeConnections(worldIn, pos) > 0;
+        updateActiveNodeStatus(worldIn, pos);
+    }
+
+    public void updateActiveNodeStatus(World worldIn, BlockPos pos) {
         PipeNet<NodeDataType> pipeNet = getWorldPipeNet(worldIn).getNetFromPos(pos);
-        if(pipeNet != null) {
+        IPipeTile<PipeType, NodeDataType> pipeTile = getPipeTileEntity(worldIn, pos);
+        if(pipeNet != null && pipeTile != null) {
+            int activeConnections = getActiveNodeConnections(worldIn, pos);
+            activeConnections &= ~pipeTile.getBlockedConnections(); //remove blocked connections
+            boolean isActiveNodeNow = activeConnections > 0;
             boolean modeChanged = pipeNet.markNodeAsActive(pos, isActiveNodeNow);
             if(modeChanged) {
                 onActiveModeChange(worldIn, pos, isActiveNodeNow, false);

@@ -334,8 +334,7 @@ public abstract class PipeMultiPart<PipeType extends Enum<PipeType> & IPipeType<
             this.updateActualConnections();
             this.isBeingReplaced = false;
             if (!world().isRemote) {
-                getPipeBlock().getWorldPipeNet(world()).addNode(pos(), getNodeData(), getMark(), getBlockedConnections(),
-                    pipeBlock.getActiveNodeConnections(world(), pos()) > 0);
+                getPipeBlock().getWorldPipeNet(world()).addNode(pos(), getNodeData(), getMark(), getBlockedConnections(), pipeBlock.getActiveNodeConnections(world(), pos()) > 0);
             }
         }
         reinitializeShape();
@@ -379,9 +378,6 @@ public abstract class PipeMultiPart<PipeType extends Enum<PipeType> & IPipeType<
 
     @Override
     public void onRemoved() {
-        if (!this.isBeingReplaced) {
-            this.isBeingReplaced = false;
-        }
         if (!this.isBeingReplaced && !world().isRemote) {
             pipeBlock.getWorldPipeNet(world()).removeNode(pos());
             getCoverableImplementation().dropAllCovers();
@@ -396,25 +392,29 @@ public abstract class PipeMultiPart<PipeType extends Enum<PipeType> & IPipeType<
     }
 
     @Override
+    public void onNeighborChanged() {
+        scheduleTick(1);
+    }
+
+    @Override
     public void scheduledTick() {
         updateBlockedConnections();
         updateActualConnections();
         if (!world().isRemote) {
             getWriteStream().writeByte(1);
+            updateActiveNodeStatus();
         }
     }
 
-    @Override
-    public void onNeighborChanged() {
-        scheduleTick(1);
-        if (!world().isRemote) {
-            boolean isActiveNode = pipeBlock.getActiveNodeConnections(world(), pos()) > 0;
-            PipeNet<NodeDataType> pipeNet = pipeBlock.getWorldPipeNet(world()).getNetFromPos(pos());
-            if (pipeNet != null) {
-                boolean changed = pipeNet.markNodeAsActive(pos(), isActiveNode);
-                if (changed) {
-                    onModeChange(isActiveNode);
-                }
+    public void updateActiveNodeStatus() {
+        int activeConnections = pipeBlock.getActiveNodeConnections(world(), pos());
+        activeConnections &= ~getBlockedConnections();
+        boolean isActiveNode = activeConnections > 0;
+        PipeNet<NodeDataType> pipeNet = pipeBlock.getWorldPipeNet(world()).getNetFromPos(pos());
+        if (pipeNet != null) {
+            boolean changed = pipeNet.markNodeAsActive(pos(), isActiveNode);
+            if (changed) {
+                onModeChange(isActiveNode);
             }
         }
     }
@@ -556,9 +556,11 @@ public abstract class PipeMultiPart<PipeType extends Enum<PipeType> & IPipeType<
     @Override
     public void notifyBlockUpdate() {
         tile().notifyTileChange();
+        updateActiveNodeStatus();
         updateActualConnections();
         if (!world().isRemote) {
             getWriteStream().writeByte(1);
+            updateActiveNodeStatus();
         }
     }
 

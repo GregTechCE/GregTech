@@ -1,7 +1,5 @@
 package gregtech.common.pipelike.fluidpipe.tile;
 
-import codechicken.multipart.TileMultipart;
-import gregtech.api.GTValues;
 import gregtech.api.pipenet.tile.IPipeTile;
 import gregtech.common.covers.CoverPump;
 import net.minecraft.nbt.NBTTagCompound;
@@ -12,7 +10,6 @@ import net.minecraft.util.math.BlockPos.PooledMutableBlockPos;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
-import net.minecraftforge.fml.common.Loader;
 
 import java.util.function.Predicate;
 
@@ -57,14 +54,21 @@ public class TileEntityFluidPipeActive extends TileEntityFluidPipe implements IT
 
     public static void pushFluidsFromTank(IPipeTile<?, ?> pipeTile) {
         PooledMutableBlockPos blockPos = PooledMutableBlockPos.retain();
+        int blockedConnections = pipeTile.getBlockedConnections();
         for(EnumFacing side : EnumFacing.VALUES) {
+            if((blockedConnections & 1 << side.getIndex()) > 0) {
+                continue; //do not dispatch energy to blocked sides
+            }
             blockPos.setPos(pipeTile.getPipePos()).move(side);
+            if(pipeTile.getPipeWorld().isBlockLoaded(blockPos)) {
+                continue; //do not allow cables to load chunks
+            }
             TileEntity tileEntity = pipeTile.getPipeWorld().getTileEntity(blockPos);
-            if(tileEntity instanceof TileEntityFluidPipe ||
-                (GTValues.isModLoaded(GTValues.MODID_FMP) && tileEntity instanceof TileMultipart))
-                continue;
+            if(tileEntity == null || pipeTile.getPipeBlock().getPipeTileEntity(tileEntity) != null) {
+                continue; //do not emit into multiparts or other fluid pipes
+            }
             IFluidHandler sourceHandler = pipeTile.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, side);
-            IFluidHandler receiverHandler = tileEntity == null ? null : tileEntity.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, side.getOpposite());
+            IFluidHandler receiverHandler = tileEntity.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, side.getOpposite());
             if(sourceHandler == null || receiverHandler == null) {
                 continue;
             }

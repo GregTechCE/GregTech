@@ -1,12 +1,12 @@
 package gregtech.common.pipelike.cable.tile;
 
 import gregtech.api.capability.GregtechCapabilities;
+import gregtech.api.capability.IEnergyContainer;
 import gregtech.api.pipenet.tile.IPipeTile;
 import gregtech.common.pipelike.cable.Insulation;
 import gregtech.common.pipelike.cable.WireProperties;
-import gregtech.common.pipelike.cable.net.RoutePath;
-import gregtech.api.capability.IEnergyContainer;
 import gregtech.common.pipelike.cable.net.EnergyNet;
+import gregtech.common.pipelike.cable.net.RoutePath;
 import gregtech.common.pipelike.cable.net.WorldENet;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
@@ -47,7 +47,9 @@ public class CableEnergyContainer implements IEnergyContainer {
                 burnAllPaths(paths, voltage, amperage, lastAmperage);
                 break; //break after burning all paths
             }
-            long amperageAccepted = dispatchEnergyToNode(routePath.destination,
+            BlockPos destinationPos = routePath.destination;
+            int blockedConnections = energyNet.getAllNodes().get(destinationPos).blockedConnections;
+            long amperageAccepted = dispatchEnergyToNode(destinationPos, blockedConnections,
                 voltage - routePath.totalLoss, amperage - amperesUsed);
             if(amperageAccepted > 0) {
                 amperesUsed += amperageAccepted;
@@ -68,17 +70,23 @@ public class CableEnergyContainer implements IEnergyContainer {
         }
     }
 
-    private long dispatchEnergyToNode(BlockPos nodePos, long voltage, long amperage) {
+    private long dispatchEnergyToNode(BlockPos nodePos, int nodeBlockedConnections, long voltage, long amperage) {
         long amperesUsed = 0L;
         //use pooled mutable to avoid creating new objects every tick
         World world = tileEntityCable.getPipeWorld();
         PooledMutableBlockPos blockPos = PooledMutableBlockPos.retain();
         for(EnumFacing facing : EnumFacing.VALUES) {
+            if((nodeBlockedConnections & 1 << facing.getIndex()) > 0) {
+                continue; //do not dispatch energy to blocked sides
+            }
             blockPos.setPos(nodePos).move(facing);
-            //do not allow cables to load chunks
-            if(!world.isBlockLoaded(nodePos)) continue;
+            if(!world.isBlockLoaded(nodePos)) {
+                continue; //do not allow cables to load chunks
+            }
             TileEntity tileEntity = world.getTileEntity(blockPos);
-            if(tileEntity == null || tileEntityCable.getPipeBlock().getPipeTileEntity(tileEntity) != null) continue;
+            if(tileEntity == null || tileEntityCable.getPipeBlock().getPipeTileEntity(tileEntity) != null) {
+                continue; //do not emit into other cable tile entities
+            }
             IEnergyContainer energyContainer = tileEntity.getCapability(GregtechCapabilities.CAPABILITY_ENERGY_CONTAINER, null);
             if(energyContainer == null) continue;
             amperesUsed += energyContainer.acceptEnergyFromNetwork(facing.getOpposite(), voltage, amperage - amperesUsed);
