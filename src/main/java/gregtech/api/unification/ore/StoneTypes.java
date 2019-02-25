@@ -22,15 +22,15 @@ public class StoneTypes {
         () -> Blocks.STONE.getDefaultState().withProperty(BlockStone.VARIANT, EnumType.STONE),
         state -> state.getBlock() instanceof BlockStone && state.getValue(BlockStone.VARIANT) == BlockStone.EnumType.STONE);
 
-    public static StoneType GRANITE = new StoneType(1, "granite", new ResourceLocation("blocks/granite"), SoundType.STONE, OrePrefix.ore, Materials.GraniteBlack, "pickaxe", 0,
+    public static StoneType GRANITE = new StoneType(1, "granite", new ResourceLocation("blocks/stone_granite"), SoundType.STONE, OrePrefix.ore, Materials.GraniteBlack, "pickaxe", 0,
         () -> Blocks.STONE.getDefaultState().withProperty(BlockStone.VARIANT, EnumType.GRANITE),
         state -> state.getBlock() instanceof BlockStone && state.getValue(BlockStone.VARIANT) == EnumType.GRANITE);
 
-    public static StoneType DIORITE = new StoneType(2, "diorite", new ResourceLocation("blocks/diorite"), SoundType.STONE, OrePrefix.ore, Materials.Diorite, "pickaxe", 0,
+    public static StoneType DIORITE = new StoneType(2, "diorite", new ResourceLocation("blocks/stone_diorite"), SoundType.STONE, OrePrefix.ore, Materials.Diorite, "pickaxe", 0,
         () -> Blocks.STONE.getDefaultState().withProperty(BlockStone.VARIANT, EnumType.DIORITE),
         state -> state.getBlock() instanceof BlockStone && state.getValue(BlockStone.VARIANT) == EnumType.DIORITE);
 
-    public static StoneType ANDESITE = new StoneType(3, "andesite", new ResourceLocation("blocks/andesite"), SoundType.STONE, OrePrefix.ore, Materials.Andesite, "pickaxe", 0,
+    public static StoneType ANDESITE = new StoneType(3, "andesite", new ResourceLocation("blocks/stone_andesite"), SoundType.STONE, OrePrefix.ore, Materials.Andesite, "pickaxe", 0,
         () -> Blocks.STONE.getDefaultState().withProperty(BlockStone.VARIANT, BlockStone.EnumType.ANDESITE),
         state -> state.getBlock() instanceof BlockStone && state.getValue(BlockStone.VARIANT) == EnumType.ANDESITE);
 
@@ -70,7 +70,7 @@ public class StoneTypes {
         () -> MetaBlocks.MINERAL.withVariant(MineralVariant.MARBLE, ChiselingVariant.NORMAL),
         state -> state.getBlock() instanceof BlockMineral && ((BlockMineral) state.getBlock()).getVariant(state) == MineralVariant.MARBLE);
 
-    public static StoneType BASALT = new StoneType(13, "basalt", new ResourceLocation(GTValues.MODID, "blocks/stones/marble/basalt_stone"), SoundType.STONE, OrePrefix.oreBasalt, Materials.Basalt, "pickaxe", 0,
+    public static StoneType BASALT = new StoneType(13, "basalt", new ResourceLocation(GTValues.MODID, "blocks/stones/basalt/basalt_stone"), SoundType.STONE, OrePrefix.oreBasalt, Materials.Basalt, "pickaxe", 0,
         () -> MetaBlocks.MINERAL.withVariant(MineralVariant.BASALT, ChiselingVariant.NORMAL),
         state -> state.getBlock() instanceof BlockMineral && ((BlockMineral) state.getBlock()).getVariant(state) == MineralVariant.BASALT);
 }

@@ -1,5 +1,22 @@
 ## Changelog
 
+### 1.5.21
+* Fix paper crafting recipes not showing in JEI.
+* Fix wrong container item return with wooden form crafting.
+* Fixed wiremill fine wire recipe missing.
+* Fix tools harvesting not respecting block's harvest tool type.
+* Made filter recipes simpler and more accessible in early game.
+* Probably fix pipe crash without FMP installed.
+* Fallback to StoneTypes.STONE for ore generation replaceable blocks.
+* Rework StoneTypes to better fit above change. Cleanup OrePrefix.
+* Fix OrePrefix maxStackSize not applying to material items.
+* Do not apply incompatible material enchantments to tools.
+* Allow to use sodalite and lapis in enchantment table.
+* Refactor tool properties of most materials.
+* Added vinteum as a dungeon loot to some places.
+* Added unbreaking/mending enchantments support for tools.
+* Fixed enchantment glint not being rendered on tools.
+
 ### 1.5.18
 * Fix certain crashes with invalid pipe items and pipe placement in MP. Closes #576. Closes #573.
 * Make biome_dictionary raise error on invalid tags and upper case them automatically. Closes #575.

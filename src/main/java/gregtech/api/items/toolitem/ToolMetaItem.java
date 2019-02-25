@@ -102,11 +102,6 @@ public class ToolMetaItem<T extends ToolMetaItem<?>.MetaToolValueItem> extends M
     }
 
     @Override
-    public boolean hasEffect(ItemStack stack) {
-        return false;
-    }
-
-    @Override
     public boolean doesSneakBypassUse(ItemStack stack, IBlockAccess world, BlockPos pos, EntityPlayer player) {
         return true; //required for machine wrenching
     }

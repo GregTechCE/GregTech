@@ -9,16 +9,20 @@ import gregtech.api.unification.stack.UnificationEntry;
 import gregtech.api.util.GTLog;
 import gregtech.api.util.SlotDelegate;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.ContainerEnchantment;
+import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.client.event.GuiOpenEvent;
 import net.minecraftforge.event.entity.player.PlayerContainerEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 @EventBusSubscriber(modid = GTValues.MODID)
 public class EnchantmentTableTweaks {
@@ -29,10 +33,12 @@ public class EnchantmentTableTweaks {
     }
 
     @SubscribeEvent
+    @SideOnly(Side.CLIENT)
     public static void onGuiOpen(GuiOpenEvent event) {
         if(event.getGui() instanceof GuiContainer) {
             GuiContainer guiContainer = (GuiContainer) event.getGui();
-            onContainerOpen(Minecraft.getMinecraft().player, guiContainer.inventorySlots);
+            EntityPlayerSP playerSP = Minecraft.getMinecraft().player;
+            onContainerOpen(playerSP, guiContainer.inventorySlots);
         }
     }
 
@@ -41,14 +47,26 @@ public class EnchantmentTableTweaks {
             //wrap in try-catch because such kind of tweaks is subject to breaking
             //don't let it crash game if some mod borked it
             try {
-                int index = EnchantmentLapisSlot.ENCHANTMENT_LAPIS_SLOT_INDEX;
-                Slot previousLapisSlot = container.inventorySlots.get(index);
-                EnchantmentLapisSlot resultSlot = new EnchantmentLapisSlot(previousLapisSlot);
-                container.inventorySlots.set(index, resultSlot);
+                int index = getEnchantmentSlotIndex((ContainerEnchantment) container);
+                if(index != -1) {
+                    Slot previousLapisSlot = container.inventorySlots.get(index);
+                    EnchantmentLapisSlot resultSlot = new EnchantmentLapisSlot(previousLapisSlot);
+                    resultSlot.slotNumber = previousLapisSlot.slotNumber;
+                    container.inventorySlots.set(index, resultSlot);
+                }
             } catch (Throwable exception) {
                 GTLog.logger.warn("Failed to replace enchantment container slot", exception);
             }
         }
+    }
+
+    private static int getEnchantmentSlotIndex(ContainerEnchantment container) {
+        IInventory inventory = container.tableInventory;
+        for(int i = 0; i < container.inventorySlots.size(); i++) {
+            Slot slot = container.inventorySlots.get(i);
+            if(slot.isHere(inventory, EnchantmentLapisSlot.ENCHANTMENT_LAPIS_SLOT_INDEX)) return i;
+        }
+        return -1;
     }
 
     private static boolean isValidForEnchantment(ItemStack itemStack) {
