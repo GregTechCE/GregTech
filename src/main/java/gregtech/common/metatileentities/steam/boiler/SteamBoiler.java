@@ -185,7 +185,6 @@ public abstract class SteamBoiler extends MetaTileEntity {
                 fuelBurnTimeLeft -= isHighPressure ? 2 : 1;
                 if (fuelBurnTimeLeft == 0) {
                     this.fuelMaxBurnTime = 0;
-                    this.fuelBurnTimeLeft = 0;
                     this.timeBeforeCoolingDown = 40;
                     //boiler has no fuel now, so queue burning state update
                     this.wasBurningAndNeedsUpdate = true;

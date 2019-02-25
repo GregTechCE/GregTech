@@ -315,9 +315,9 @@ public class CachedGridEntry implements GridEntryInfo, IBlockGeneratorAccess, IB
                     IBlockState newState;
                     if(index == 0) {
                         //it's primary ore block
-                        if(!definition.getGenerationPredicate().test(currentState))
+                        if(!definition.getGenerationPredicate().test(currentState, world, blockPos))
                             continue; //do not generate if predicate didn't match
-                        newState = definition.getBlockFiller().apply(currentState, blockX, blockY, blockZ);
+                        newState = definition.getBlockFiller().apply(currentState, world, blockPos, blockX, blockY, blockZ);
                     } else {
                         //it's populator-generated block with index
                         VeinBufferPopulator populator = (VeinBufferPopulator) definition.getVeinPopulator();

@@ -33,12 +33,6 @@ public class OreDictionaryLoader {
         OreDictUnifier.registerOre(new ItemStack(Blocks.HARDENED_CLAY, 1, W), new ItemMaterialInfo(new MaterialStack(Materials.Clay, M * 4)));
         OreDictUnifier.registerOre(new ItemStack(Blocks.STAINED_HARDENED_CLAY, 1, W), new ItemMaterialInfo(new MaterialStack(Materials.Clay, M * 4)));
 
-        OreDictUnifier.registerOre(new ItemStack(Items.BUCKET), OrePrefix.bucket, MarkerMaterials.Empty);
-        OreDictUnifier.registerOre(new ItemStack(Items.WATER_BUCKET), OrePrefix.bucket, Materials.Water);
-        OreDictUnifier.registerOre(new ItemStack(Items.LAVA_BUCKET), OrePrefix.bucket, Materials.Lava);
-        OreDictUnifier.registerOre(new ItemStack(Items.MILK_BUCKET), OrePrefix.bucket, Materials.Milk);
-        OreDictUnifier.registerOre(new ItemStack(Items.GLASS_BOTTLE), OrePrefix.bottle, MarkerMaterials.Empty);
-
         for(ItemStack woodPlateStack : OreDictUnifier.getAll(new UnificationEntry(OrePrefix.plate, Materials.Wood))) {
             OreDictUnifier.registerOre(woodPlateStack, OrePrefix.plank, Materials.Wood);
         }

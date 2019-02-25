@@ -73,7 +73,7 @@ public class MetaTileEntityFluidHatch extends MetaTileEntityMultiblockPart imple
     @Override
     public void update() {
         super.update();
-        if(!getWorld().isRemote && getTimer() % 5 == 0) {
+        if(!getWorld().isRemote) {
             if(isExportHatch) {
                 fillContainerFromInternalTank(containerInventory, containerInventory, 0, 1);
                 pushFluidsIntoNearbyHandlers(getFrontFacing());

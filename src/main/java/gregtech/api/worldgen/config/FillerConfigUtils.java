@@ -10,17 +10,19 @@ import com.google.gson.JsonPrimitive;
 import gregtech.api.unification.ore.StoneType;
 import gregtech.api.unification.ore.StoneTypes;
 import gregtech.api.util.GTUtility;
+import gregtech.api.util.WorldBlockPredicate;
 import gregtech.api.util.XSTR;
 import gregtech.api.worldgen.filler.FillerEntry;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.*;
-import java.util.function.Predicate;
 
 public class FillerConfigUtils {
 
@@ -76,22 +78,22 @@ public class FillerConfigUtils {
     private static FillerEntry createStateMatchFiller(JsonObject object) {
         JsonArray valuesArray = object.get("values").getAsJsonArray();
         JsonElement defaultElement = object.get("default");
-        ArrayList<Pair<Predicate<IBlockState>, FillerEntry>> matchers = new ArrayList<>();
+        ArrayList<Pair<WorldBlockPredicate, FillerEntry>> matchers = new ArrayList<>();
 
         for(JsonElement valueDefinition : valuesArray) {
             Preconditions.checkArgument(valueDefinition.isJsonObject(), "Found invalid value definition: %s", valueDefinition.toString());
             JsonObject valueObject = valueDefinition.getAsJsonObject();
-            Predicate<IBlockState> predicate = PredicateConfigUtils.createBlockStatePredicate(valueObject.get("predicate"));
+            WorldBlockPredicate predicate = PredicateConfigUtils.createBlockStatePredicate(valueObject.get("predicate"));
             FillerEntry filler = createBlockStateFiller(valueObject.get("value"));
             matchers.add(Pair.of(predicate, filler));
         }
 
         if(!defaultElement.isJsonNull()) {
             FillerEntry filler = createBlockStateFiller(defaultElement);
-            Predicate<IBlockState> predicate = state -> true;
+            WorldBlockPredicate predicate = (state, world, pos) -> true;
             matchers.add(Pair.of(predicate, filler));
         } else {
-            Predicate<IBlockState> predicate = state -> true;
+            WorldBlockPredicate predicate = (state, world, pos) -> true;
             FillerEntry fillerEntry = matchers.iterator().next().getRight();
             matchers.add(Pair.of(predicate, fillerEntry));
         }
@@ -126,8 +128,8 @@ public class FillerConfigUtils {
         }
 
         @Override
-        public IBlockState apply(IBlockState source) {
-            StoneType stoneType = StoneType.computeStoneType(source);
+        public IBlockState apply(IBlockState source, IBlockAccess blockAccess, BlockPos blockPos) {
+            StoneType stoneType = StoneType.computeStoneType(source, blockAccess, blockPos);
             return blockStateMap.get(stoneType == null ? defaultValue : stoneType);
         }
 
@@ -144,15 +146,15 @@ public class FillerConfigUtils {
 
     private static class BlockStateMatcherEntry implements FillerEntry {
 
-        private final List<Pair<Predicate<IBlockState>, FillerEntry>> matchers;
+        private final List<Pair<WorldBlockPredicate, FillerEntry>> matchers;
         private final ImmutableList<FillerEntry> subEntries;
         private final ImmutableList<IBlockState> blockStates;
 
-        public BlockStateMatcherEntry(List<Pair<Predicate<IBlockState>, FillerEntry>> matchers) {
+        public BlockStateMatcherEntry(List<Pair<WorldBlockPredicate, FillerEntry>> matchers) {
             this.matchers = matchers;
             ImmutableList.Builder<FillerEntry> entryBuilder = ImmutableList.builder();
             ImmutableList.Builder<IBlockState> stateBuilder = ImmutableList.builder();
-            for(Pair<Predicate<IBlockState>, FillerEntry> matcher : matchers) {
+            for(Pair<WorldBlockPredicate, FillerEntry> matcher : matchers) {
                 entryBuilder.add(matcher.getRight());
                 stateBuilder.addAll(matcher.getRight().getPossibleResults());
             }
@@ -161,10 +163,10 @@ public class FillerConfigUtils {
         }
 
         @Override
-        public IBlockState apply(IBlockState source) {
-            for(Pair<Predicate<IBlockState>, FillerEntry> matcher : matchers) {
-                if(matcher.getLeft().test(source)) {
-                    return matcher.getRight().apply(source);
+        public IBlockState apply(IBlockState source, IBlockAccess blockAccess, BlockPos blockPos) {
+            for(Pair<WorldBlockPredicate, FillerEntry> matcher : matchers) {
+                if(matcher.getLeft().test(source, blockAccess, blockPos)) {
+                    return matcher.getRight().apply(source, blockAccess, blockPos);
                 }
             }
             return Blocks.AIR.getDefaultState();
@@ -201,10 +203,10 @@ public class FillerConfigUtils {
         }
 
         @Override
-        public IBlockState apply(IBlockState source) {
+        public IBlockState apply(IBlockState source, IBlockAccess blockAccess, BlockPos blockPos) {
             int functionIndex = GTUtility.getRandomItem(blockStateRandom, randomList, randomList.size());
             FillerEntry randomFunction = randomList.get(functionIndex).getValue();
-            return randomFunction.apply(source);
+            return randomFunction.apply(source, blockAccess, blockPos);
         }
 
         @Override

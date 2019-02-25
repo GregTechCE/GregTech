@@ -4,6 +4,7 @@ import codechicken.lib.raytracer.CuboidRayTraceResult;
 import codechicken.lib.raytracer.IndexedCuboid6;
 import codechicken.lib.raytracer.RayTracer;
 import codechicken.lib.vec.Cuboid6;
+import codechicken.multipart.TMultiPart;
 import codechicken.multipart.TileMultipart;
 import gregtech.api.GTValues;
 import gregtech.api.GregTechAPI;
@@ -41,6 +42,7 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.Loader;
+import net.minecraftforge.fml.common.Optional.Method;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
@@ -314,14 +316,20 @@ public abstract class BlockPipe<PipeType extends Enum<PipeType> & IPipeType<Node
         return null;
     }
 
+    @Method(modid = GTValues.MODID_FMP)
     private IPipeTile<PipeType, NodeDataType> tryGetMultipartTile(TileEntity tileEntityAtPos) {
         if(tileEntityAtPos instanceof TileMultipart) {
             TileMultipart tileMultipart = (TileMultipart) tileEntityAtPos;
-            //noinspection unchecked
-            return (IPipeTile<PipeType, NodeDataType>) tileMultipart.jPartList().stream()
-                .filter(part -> part instanceof IPipeTile)
-                .filter(part -> isThisPipeBlock(((IPipeTile) part).getPipeBlock()))
-                .findFirst().orElse(null);
+            List<TMultiPart> partList = tileMultipart.jPartList();
+            for (TMultiPart multiPart : partList) {
+                if(multiPart instanceof IPipeTile) {
+                    IPipeTile<?, ?> pipePart = (IPipeTile<?, ?>) multiPart;
+                    if(isThisPipeBlock(pipePart.getPipeBlock())) {
+                        //noinspection unchecked
+                        return (IPipeTile<PipeType, NodeDataType>) pipePart;
+                    }
+                }
+            }
         }
         return null;
     }

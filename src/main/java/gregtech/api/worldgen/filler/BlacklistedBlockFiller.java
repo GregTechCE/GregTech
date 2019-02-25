@@ -6,6 +6,8 @@ import crafttweaker.api.minecraft.CraftTweakerMC;
 import gregtech.api.GTValues;
 import gregtech.api.worldgen.config.FillerConfigUtils;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.fml.common.Optional.Method;
 import stanhebben.zenscript.annotations.ZenClass;
 import stanhebben.zenscript.annotations.ZenGetter;
@@ -48,13 +50,13 @@ public class BlacklistedBlockFiller extends BlockFiller {
     }
 
     @Override
-    public IBlockState apply(IBlockState currentState, int x, int y, int z) {
+    public IBlockState apply(IBlockState currentState, IBlockAccess blockAccess, BlockPos blockPos, int relativeX, int relativeY, int relativeZ) {
         for (IBlockState blockState : blacklist) {
             if (blockState == currentState) {
                 return currentState;
             }
         }
-        return blockStateFiller.apply(currentState);
+        return blockStateFiller.apply(currentState, blockAccess, blockPos);
     }
 
     @Override

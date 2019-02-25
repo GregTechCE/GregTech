@@ -99,8 +99,14 @@ public class PartsRecipeHandler {
         ItemStack fineWireStack = OreDictUnifier.get(fineWirePrefix, material);
         ModHandler.addShapelessRecipe(String.format("fine_wire_%s", material.toString()),
             fineWireStack, 'x', new UnificationEntry(OrePrefix.foil, material));
+        if(material.cableProperties != null) {
+            RecipeMaps.WIREMILL_RECIPES.recipeBuilder()
+                .input(OrePrefix.wireGtSingle, material)
+                .outputs(OreDictUnifier.get(OrePrefix.wireFine, material, 4))
+                .duration(200).EUt(8)
+                .buildAndRegister();
+        }
     }
-
 
     public static void processGear(OrePrefix gearPrefix, SolidMaterial material) {
         ItemStack stack = OreDictUnifier.get(gearPrefix, material);
@@ -223,16 +229,6 @@ public class PartsRecipeHandler {
                 .input(OrePrefix.wireGtSingle, material)
                 .outputs(OreDictUnifier.get(OrePrefix.springSmall, material, 2))
                 .duration(100).EUt(8)
-                .buildAndRegister();
-        }
-    }
-
-    public static void processWireFine(OrePrefix wirePrefix, IngotMaterial material) {
-        if(material.cableProperties != null) {
-            RecipeMaps.WIREMILL_RECIPES.recipeBuilder()
-                .input(OrePrefix.wireGtSingle, material)
-                .outputs(OreDictUnifier.get(OrePrefix.wireFine, material, 4))
-                .duration(200).EUt(8)
                 .buildAndRegister();
         }
     }

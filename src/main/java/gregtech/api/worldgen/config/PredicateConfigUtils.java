@@ -6,6 +6,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
 import gregtech.api.unification.ore.StoneType;
+import gregtech.api.util.WorldBlockPredicate;
 import net.minecraft.block.Block;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.state.IBlockState;
@@ -41,31 +42,31 @@ public class PredicateConfigUtils {
         return blockState;
     }
 
-    private static Predicate<IBlockState>  createSimpleStatePredicate(String stringDeclaration) {
+    private static WorldBlockPredicate createSimpleStatePredicate(String stringDeclaration) {
         if(stringDeclaration.equals("any")) {
-            return state -> true;
+            return (state, world, pos) -> true;
         } else if(stringDeclaration.equals("stone_type")) {
-            return state -> StoneType.computeStoneType(state) != null;
+            return (state, world, pos) -> StoneType.computeStoneType(state, world, pos) != null;
 
         } else if(stringDeclaration.startsWith("stone_type:")) {
             String typeName = stringDeclaration.substring(11);
-            return state -> {
-                StoneType stoneType = StoneType.computeStoneType(state);
+            return (state, world, pos) -> {
+                StoneType stoneType = StoneType.computeStoneType(state, world, pos);
                 return stoneType != null && stoneType.name.equalsIgnoreCase(typeName);
             };
         } else if(stringDeclaration.startsWith("block:")) {
             Block block = OreConfigUtils.getBlockByName(stringDeclaration.substring(6));
-            return state -> state.getBlock() == block;
+            return (state, world, pos) -> state.getBlock() == block;
         } else if(stringDeclaration.startsWith("ore_dict:")) {
             String oreDictName = stringDeclaration.substring(9);
             List<IBlockState> allMatching = OreConfigUtils.getOreDictBlocks(oreDictName);
-            return allMatching::contains;
+            return (state, world, pos) -> allMatching.contains(state);
         } else {
             throw new IllegalArgumentException("Unknown string block state predicate: " + stringDeclaration);
         }
     }
 
-    public static Predicate<IBlockState> createBlockStatePredicate(JsonElement element) {
+    public static WorldBlockPredicate createBlockStatePredicate(JsonElement element) {
         if(element instanceof JsonPrimitive) {
             String stringDeclaration = element.getAsString();
             return createSimpleStatePredicate(stringDeclaration);
@@ -73,14 +74,15 @@ public class PredicateConfigUtils {
             JsonObject object = element.getAsJsonObject();
             if(!object.has("block"))
                 throw new IllegalArgumentException("Block state predicate missing required block key!");
-            return parseBlockStatePropertyPredicate(object);
+            Predicate<IBlockState> predicate = parseBlockStatePropertyPredicate(object);
+            return (state, world, pos) -> predicate.test(state);
         } else if(element instanceof JsonArray) {
             JsonArray array = element.getAsJsonArray();
-            ArrayList<Predicate<IBlockState>> allPredicates = new ArrayList<>();
+            ArrayList<WorldBlockPredicate> allPredicates = new ArrayList<>();
             for(JsonElement arrayElement : array) {
                 allPredicates.add(createBlockStatePredicate(arrayElement));
             }
-            return state -> allPredicates.stream().anyMatch(p -> p.test(state));
+            return (state, world, pos) -> allPredicates.stream().anyMatch(p -> p.test(state, world, pos));
         } else {
             throw new IllegalArgumentException("Unsupported block state variant predicate type: " + element);
         }

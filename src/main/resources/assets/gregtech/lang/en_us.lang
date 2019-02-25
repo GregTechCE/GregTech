@@ -590,8 +590,7 @@ metaitem.tool.turbine.name=%s Turbine Rotor
 metaitem.tool.turbine.tooltip=Turbine Rotors for your power station
 metaitem.tool.magnifying_glass.name=%s Magnifying Glass
 
-metaitem.tool.tooltip.primary_material=Primary material: %s (%s lvl)
-metaitem.tool.tooltip.handle_material=Handle material: %s (%s lvl)
+metaitem.tool.tooltip.primary_material=Material: %s (%s lvl)
 metaitem.tool.tooltip.attack_damage=Attack damage: %d
 metaitem.tool.tooltip.mining_speed=Mining speed: %d
 metaitem.tool.tooltip.durability=Durability: %d/%d

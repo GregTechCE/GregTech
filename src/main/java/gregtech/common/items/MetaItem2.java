@@ -197,16 +197,4 @@ public class MetaItem2 extends MaterialMetaItem {
             .EUt(2)
             .buildAndRegister();
     }
-
-    @Override
-    public final ItemStack getContainerItem(ItemStack stack) {
-        int damage = stack.getItemDamage();
-        if (damage < metaItemOffset) {
-            return ItemStack.EMPTY;
-        }
-        if (damage < metaItemOffset + 200) {
-            return new ItemStack(Items.GLASS_BOTTLE);
-        }
-        return ItemStack.EMPTY;
-    }
 }

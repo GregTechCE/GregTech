@@ -612,22 +612,31 @@ public abstract class MetaItem<T extends MetaItem<?>.MetaValueItem> extends Item
             for (IMetaItemStats metaItemStats : stats) {
                 if (metaItemStats instanceof IItemDurabilityManager)
                     this.durabilityManager = (IItemDurabilityManager) metaItemStats;
+
                 if (metaItemStats instanceof IItemUseManager)
                     this.useManager = (IItemUseManager) metaItemStats;
+
                 if (metaItemStats instanceof IFoodBehavior)
                     this.useManager = new FoodUseManager((IFoodBehavior) metaItemStats);
+
                 if (metaItemStats instanceof ItemUIFactory)
                     this.uiManager = (ItemUIFactory) metaItemStats;
+
                 if(metaItemStats instanceof IItemMaxStackSizeProvider)
                     this.stackSizeProvider = (IItemMaxStackSizeProvider) metaItemStats;
+
                 if(metaItemStats instanceof IItemColorProvider)
                     this.colorProvider = (IItemColorProvider) metaItemStats;
+
                 if(metaItemStats instanceof IItemModelIndexProvider)
                     this.modelIndexProvider = (IItemModelIndexProvider) metaItemStats;
+
                 if(metaItemStats instanceof IItemContainerItemProvider)
                     this.containerItemProvider = (IItemContainerItemProvider) metaItemStats;
+
                 if (metaItemStats instanceof IItemBehaviour)
                     this.behaviours.add((IItemBehaviour) metaItemStats);
+
                 this.allStats.add(metaItemStats);
             }
             return this;
