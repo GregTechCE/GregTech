@@ -590,8 +590,7 @@ metaitem.tool.turbine.name=%s ротор турбины
 metaitem.tool.turbine.tooltip=Турбинные роторы для вашей электростанции
 metaitem.tool.magnifying_glass.name=%s увеличительное стекло
 
-metaitem.tool.tooltip.primary_material=Первичный материал: %s (%s ур.)
-metaitem.tool.tooltip.handle_material=Материал ручки: %s (%s ур.)
+metaitem.tool.tooltip.primary_material=Материал: %s (%s ур.)
 metaitem.tool.tooltip.attack_damage=Наносимый урон: %d
 metaitem.tool.tooltip.mining_speed=Скорость добычи: %d
 metaitem.tool.tooltip.durability=Прочность: %d/%d
