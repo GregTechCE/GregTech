@@ -13,6 +13,8 @@ buildscript {
 
 plugins {
     id 'com.matthewprenger.cursegradle' version '1.1.0'
+    id 'maven-publish'
+    id "com.jfrog.bintray" version "1.8.4"
 }
 
 apply plugin: 'net.minecraftforge.gradle.forge'
@@ -214,5 +216,34 @@ curseforge {
         }
 
         addArtifact source
+    }
+}
+
+publishing {
+    publications {
+        GTCEPublication(MavenPublication) {
+            groupId = project.group
+            artifactId = project.archivesBaseName
+            version = mod_version
+            artifact jar
+            artifact source
+        }
+    }
+}
+
+bintray {
+    user = project.hasProperty('bintrayUser') ? project.property('bintrayUser') : System.getenv('BINTRAY_USER')
+    key = project.hasProperty('bintrayApiKey') ? project.property('bintrayApiKey') : System.getenv('BINTRAY_API_KEY')
+    publications = ['GTCEPublication']
+    pkg {
+        repo = 'gregtechce'
+        name = 'GregTech'
+        userOrg = project.hasProperty('bintrayUser') ? project.property('bintrayUser') : System.getenv('BINTRAY_USER')
+        licenses = ['LGPL-3.0']
+        vcsUrl = 'https://github.com/GregTechCE/GregTech.git'
+        version {
+            name = mod_version
+            released = new Date()
+        }
     }
 }

@@ -38,7 +38,7 @@ build:
 
 production:
   stage: deploy
-  script: ./gradlew curseforge
+  script: ./gradlew curseforge && ./gradlew bintrayUpload
   when: manual
   only:
   - master
