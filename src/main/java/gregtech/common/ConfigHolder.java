@@ -82,9 +82,6 @@ public class ConfigHolder {
         @Config.Comment("Require a knife for bowl crafting instead of only plank? Default is true.")
         public boolean bowlRequireKnife = true;
 
-        @Config.Comment("Require steel wheels to craft minecarts? Default is true.")
-        public boolean harderMinecarts = true;
-
     }
 
 }

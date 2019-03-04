@@ -26,7 +26,6 @@ import net.minecraft.init.MobEffects;
 import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
 
 import java.util.HashMap;
 import java.util.List;
@@ -72,9 +71,6 @@ public class MetaItem1 extends MaterialMetaItem {
         COIN_CHOCOLATE = addItem(10, "coin.chocolate")
             .setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.Gold, OrePrefix.foil.materialAmount)))
             .addStats(new FoodStats(1, 0.1F, false, true, OreDictUnifier.get(OrePrefix.foil, Materials.Gold), new RandomPotionEffect(MobEffects.SPEED, 200, 1, 10)));
-
-        MINECART_WHEELS_IRON = addItem(100, "minecart.wheels.iron");
-        MINECART_WHEELS_STEEL = addItem(101, "minecart.wheels.steel");
 
         SHAPE_EMPTY = addItem(300, "shape.empty");
 
@@ -198,12 +194,6 @@ public class MetaItem1 extends MaterialMetaItem {
         ELECTRIC_PUMP_ZPM = addItem(616, "electric.pump.zpm");
         ELECTRIC_PUMP_UV = addItem(617, "electric.pump.uv");
 
-        FLUID_REGULATOR_LV = addItem(620, "fluidregulator.lv");
-        FLUID_REGULATOR_MV = addItem(621, "fluidregulator.mv");
-        FLUID_REGULATOR_HV = addItem(622, "fluidregulator.hv");
-        FLUID_REGULATOR_EV = addItem(623, "fluidregulator.ev");
-        FLUID_REGULATOR_IV = addItem(624, "fluidregulator.iv");
-
         RUBBER_DROP = addItem(627, "rubber_drop").setBurnValue(200);
 
         FLUID_FILTER = addItem(628, "fluid_filter");
@@ -296,9 +286,6 @@ public class MetaItem1 extends MaterialMetaItem {
         QUANTUM_STAR = addItem(725, "quantumstar");
         GRAVI_STAR = addItem(726, "gravistar");
 
-        UPGRADE_MUFFLER = addItem(727, "upgrade.muffler");
-        UPGRADE_LOCK = addItem(728, "upgrade.lock");
-
         ITEM_FILTER = addItem(729, "item_filter");
         ORE_DICTIONARY_FILTER = addItem(102, "ore_dictionary_filter");
 
@@ -307,7 +294,6 @@ public class MetaItem1 extends MaterialMetaItem {
         COVER_FLUID_DETECTOR = addItem(732, "cover.fluid.detector").setInvisible();
         COVER_ITEM_DETECTOR = addItem(733, "cover.item.detector").setInvisible();
         COVER_ENERGY_DETECTOR = addItem(734, "cover.energy.detector").setInvisible();
-        COVER_PLAYER_DETECTOR = addItem(735, "cover.player.detector").setInvisible();
 
         COVER_SCREEN = addItem(740, "cover.screen").setInvisible();
         COVER_CRAFTING = addItem(744, "cover.crafting").setInvisible();
@@ -485,154 +471,65 @@ public class MetaItem1 extends MaterialMetaItem {
             .inputs(BATTERY_HULL_LV.getStackForm())
             .input(OrePrefix.dust, Materials.Cadmium, 2)
             .outputs(BATTERY_RE_LV_CADMIUM.getStackForm())
-            .duration(100)
-            .EUt(2)
+            .duration(100).EUt(2)
             .buildAndRegister();
+
         RecipeMaps.CANNER_RECIPES.recipeBuilder()
             .inputs(BATTERY_HULL_LV.getStackForm())
             .input(OrePrefix.dust, Materials.Lithium, 2)
             .outputs(BATTERY_RE_LV_LITHIUM.getStackForm())
-            .duration(100)
-            .EUt(2)
+            .duration(100).EUt(2)
             .buildAndRegister();
+
         RecipeMaps.CANNER_RECIPES.recipeBuilder()
             .inputs(BATTERY_HULL_LV.getStackForm())
             .input(OrePrefix.dust, Materials.Sodium, 2)
             .outputs(BATTERY_RE_LV_SODIUM.getStackForm())
-            .duration(100)
-            .EUt(2)
+            .duration(100).EUt(2)
             .buildAndRegister();
 
         RecipeMaps.CANNER_RECIPES.recipeBuilder()
             .inputs(BATTERY_HULL_MV.getStackForm())
             .input(OrePrefix.dust, Materials.Cadmium, 8)
             .outputs(BATTERY_RE_MV_CADMIUM.getStackForm())
-            .duration(400)
-            .EUt(2)
+            .duration(400).EUt(2)
             .buildAndRegister();
+
         RecipeMaps.CANNER_RECIPES.recipeBuilder()
             .inputs(BATTERY_HULL_MV.getStackForm())
             .input(OrePrefix.dust, Materials.Lithium, 8)
             .outputs(BATTERY_RE_MV_LITHIUM.getStackForm())
-            .duration(400)
-            .EUt(2)
+            .duration(400).EUt(2)
             .buildAndRegister();
+
         RecipeMaps.CANNER_RECIPES.recipeBuilder()
             .inputs(BATTERY_HULL_MV.getStackForm())
             .input(OrePrefix.dust, Materials.Sodium, 8)
             .outputs(BATTERY_RE_MV_SODIUM.getStackForm())
-            .duration(400)
-            .EUt(2)
+            .duration(400).EUt(2)
             .buildAndRegister();
 
         RecipeMaps.CANNER_RECIPES.recipeBuilder()
             .inputs(BATTERY_HULL_HV.getStackForm())
             .input(OrePrefix.dust, Materials.Cadmium, 16)
             .outputs(BATTERY_RE_HV_CADMIUM.getStackForm())
-            .duration(1600)
-            .EUt(2)
+            .duration(1600).EUt(2)
             .buildAndRegister();
+
         RecipeMaps.CANNER_RECIPES.recipeBuilder()
             .inputs(BATTERY_HULL_HV.getStackForm())
             .input(OrePrefix.dust, Materials.Lithium, 16)
             .outputs(BATTERY_RE_HV_LITHIUM.getStackForm())
-            .duration(1600)
-            .EUt(2)
+            .duration(1600).EUt(2)
             .buildAndRegister();
+
         RecipeMaps.CANNER_RECIPES.recipeBuilder()
             .inputs(BATTERY_HULL_HV.getStackForm())
             .input(OrePrefix.dust, Materials.Sodium, 16)
             .outputs(BATTERY_RE_HV_SODIUM.getStackForm())
-            .duration(1600)
-            .EUt(2)
+            .duration(1600).EUt(2)
             .buildAndRegister();
 
-        // Upgrades recipes
-        RecipeMaps.ASSEMBLER_RECIPES.recipeBuilder()
-            .input(OrePrefix.plate, Materials.Aluminium).input(OrePrefix.dust, Materials.Plastic, 2)
-            .outputs(UPGRADE_MUFFLER.getStackForm())
-            .duration(1600)
-            .EUt(2)
-            .buildAndRegister();
-        RecipeMaps.ASSEMBLER_RECIPES.recipeBuilder()
-            .input(OrePrefix.plate, Materials.Aluminium).input(OrePrefix.dust, Materials.Wood, 2)
-            .outputs(UPGRADE_MUFFLER.getStackForm())
-            .duration(1600)
-            .EUt(2)
-            .buildAndRegister();
-        RecipeMaps.ASSEMBLER_RECIPES.recipeBuilder()
-            .input(OrePrefix.plate, Materials.Iron).input(OrePrefix.dust, Materials.Plastic, 2)
-            .outputs(UPGRADE_MUFFLER.getStackForm())
-            .duration(1600)
-            .EUt(2)
-            .buildAndRegister();
-        RecipeMaps.ASSEMBLER_RECIPES.recipeBuilder()
-            .input(OrePrefix.plate, Materials.Iron).input(OrePrefix.dust, Materials.Wood, 2)
-            .outputs(UPGRADE_MUFFLER.getStackForm())
-            .duration(1600)
-            .EUt(2)
-            .buildAndRegister();
-        RecipeMaps.ASSEMBLER_RECIPES.recipeBuilder()
-            .input(OrePrefix.plate, Materials.WroughtIron).input(OrePrefix.dust, Materials.Plastic, 2)
-            .outputs(UPGRADE_MUFFLER.getStackForm())
-            .duration(1600)
-            .EUt(2)
-            .buildAndRegister();
-        RecipeMaps.ASSEMBLER_RECIPES.recipeBuilder()
-            .input(OrePrefix.plate, Materials.WroughtIron).input(OrePrefix.dust, Materials.Wood, 2)
-            .outputs(UPGRADE_MUFFLER.getStackForm())
-            .duration(1600)
-            .EUt(2)
-            .buildAndRegister();
-        RecipeMaps.ASSEMBLER_RECIPES.recipeBuilder()
-            .input(OrePrefix.plate, Materials.Aluminium).input(OrePrefix.plate, Materials.Iridium)
-            .outputs(UPGRADE_LOCK.getStackForm())
-            .duration(6400)
-            .EUt(16)
-            .buildAndRegister();
-        RecipeMaps.ASSEMBLER_RECIPES.recipeBuilder()
-            .input(OrePrefix.plate, Materials.Iron).input(OrePrefix.plate, Materials.Iridium)
-            .outputs(UPGRADE_LOCK.getStackForm())
-            .duration(6400)
-            .EUt(16)
-            .buildAndRegister();
-        RecipeMaps.ASSEMBLER_RECIPES.recipeBuilder()
-            .input(OrePrefix.plate, Materials.WroughtIron).input(OrePrefix.plate, Materials.Iridium)
-            .outputs(UPGRADE_LOCK.getStackForm())
-            .duration(6400)
-            .EUt(16)
-            .buildAndRegister();
-
-        RecipeMaps.ASSEMBLER_RECIPES.recipeBuilder()
-            .inputs(ELECTRIC_PUMP_LV.getStackForm()).input(OrePrefix.circuit, MarkerMaterials.Tier.Basic, 2)
-            .outputs(FLUID_REGULATOR_LV.getStackForm())
-            .duration(800)
-            .EUt(4)
-            .buildAndRegister();
-        RecipeMaps.ASSEMBLER_RECIPES.recipeBuilder()
-            .inputs(ELECTRIC_PUMP_MV.getStackForm()).input(OrePrefix.circuit, MarkerMaterials.Tier.Good, 2)
-            .outputs(FLUID_REGULATOR_MV.getStackForm())
-            .duration(800)
-            .EUt(8)
-            .buildAndRegister();
-        RecipeMaps.ASSEMBLER_RECIPES.recipeBuilder()
-            .inputs(ELECTRIC_PUMP_HV.getStackForm()).input(OrePrefix.circuit, MarkerMaterials.Tier.Advanced, 2)
-            .outputs(FLUID_REGULATOR_HV.getStackForm())
-            .duration(800)
-            .EUt(16)
-            .buildAndRegister();
-        RecipeMaps.ASSEMBLER_RECIPES.recipeBuilder()
-            .inputs(ELECTRIC_PUMP_EV.getStackForm()).input(OrePrefix.circuit, MarkerMaterials.Tier.Elite, 2)
-            .outputs(FLUID_REGULATOR_EV.getStackForm())
-            .duration(800)
-            .EUt(32)
-            .buildAndRegister();
-        RecipeMaps.ASSEMBLER_RECIPES.recipeBuilder()
-            .inputs(ELECTRIC_PUMP_IV.getStackForm()).input(OrePrefix.circuit, MarkerMaterials.Tier.Master, 2)
-            .outputs(FLUID_REGULATOR_IV.getStackForm())
-            .duration(800)
-            .EUt(64)
-            .buildAndRegister();
     }
 
     @Override

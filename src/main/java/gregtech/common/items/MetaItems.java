@@ -29,9 +29,6 @@ public final class MetaItems {
     public static MetaItem<?>.MetaValueItem COIN_DOGE;
     public static MetaItem<?>.MetaValueItem COIN_CHOCOLATE;
 
-    public static MetaItem<?>.MetaValueItem MINECART_WHEELS_IRON;
-    public static MetaItem<?>.MetaValueItem MINECART_WHEELS_STEEL;
-
     public static MetaItem<?>.MetaValueItem COMPRESSED_CLAY;
     public static MetaItem<?>.MetaValueItem COMPRESSED_FIRECLAY;
     public static MetaItem<?>.MetaValueItem FIRECLAY_BRICK;
@@ -135,12 +132,6 @@ public final class MetaItems {
     public static MetaItem<?>.MetaValueItem ELECTRIC_PUMP_ZPM;
     public static MetaItem<?>.MetaValueItem ELECTRIC_PUMP_UV;
 
-    public static MetaItem<?>.MetaValueItem FLUID_REGULATOR_LV;
-    public static MetaItem<?>.MetaValueItem FLUID_REGULATOR_MV;
-    public static MetaItem<?>.MetaValueItem FLUID_REGULATOR_HV;
-    public static MetaItem<?>.MetaValueItem FLUID_REGULATOR_EV;
-    public static MetaItem<?>.MetaValueItem FLUID_REGULATOR_IV;
-
     public static MetaItem<?>.MetaValueItem FLUID_FILTER;
 
     public static MetaItem<?>.MetaValueItem DYNAMITE;
@@ -210,6 +201,8 @@ public final class MetaItems {
     public static MetaItem<?>.MetaValueItem CIRCUIT_MASTER;
     public static MetaItem<?>.MetaValueItem CIRCUIT_ULTIMATE;
 
+    public static MetaItem<?>.MetaValueItem EMPTY_BOARD_BASIC;
+    public static MetaItem<?>.MetaValueItem EMPTY_BOARD_ELITE;
     public static MetaItem<?>.MetaValueItem CIRCUIT_BOARD_BASIC;
     public static MetaItem<?>.MetaValueItem CIRCUIT_BOARD_ADVANCED;
     public static MetaItem<?>.MetaValueItem CIRCUIT_BOARD_ELITE;
@@ -220,9 +213,6 @@ public final class MetaItems {
     public static MetaItem<?>.MetaValueItem CIRCUIT_PARTS_WIRING_ADVANCED;
     public static MetaItem<?>.MetaValueItem CIRCUIT_PARTS_WIRING_ELITE;
 
-    public static MetaItem<?>.MetaValueItem EMPTY_BOARD_BASIC;
-    public static MetaItem<?>.MetaValueItem EMPTY_BOARD_ELITE;
-
     public static MetaItem<?>.MetaValueItem COMPONENT_SAW_BLADE_DIAMOND;
     public static MetaItem<?>.MetaValueItem COMPONENT_GRINDER_DIAMOND;
     public static MetaItem<?>.MetaValueItem COMPONENT_GRINDER_TUNGSTEN;
@@ -230,9 +220,6 @@ public final class MetaItems {
     public static MetaItem<?>.MetaValueItem QUANTUM_EYE;
     public static MetaItem<?>.MetaValueItem QUANTUM_STAR;
     public static MetaItem<?>.MetaValueItem GRAVI_STAR;
-
-    public static MetaItem<?>.MetaValueItem UPGRADE_MUFFLER;
-    public static MetaItem<?>.MetaValueItem UPGRADE_LOCK;
 
     public static MetaItem<?>.MetaValueItem ITEM_FILTER;
     public static MetaItem<?>.MetaValueItem ORE_DICTIONARY_FILTER;
@@ -242,7 +229,6 @@ public final class MetaItems {
     public static MetaItem<?>.MetaValueItem COVER_FLUID_DETECTOR;
     public static MetaItem<?>.MetaValueItem COVER_ITEM_DETECTOR;
     public static MetaItem<?>.MetaValueItem COVER_ENERGY_DETECTOR;
-    public static MetaItem<?>.MetaValueItem COVER_PLAYER_DETECTOR;
 
     public static MetaItem<?>.MetaValueItem COVER_SCREEN;
     public static MetaItem<?>.MetaValueItem COVER_CRAFTING;
