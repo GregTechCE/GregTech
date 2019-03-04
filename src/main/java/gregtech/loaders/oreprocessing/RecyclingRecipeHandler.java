@@ -4,7 +4,7 @@ import gregtech.api.unification.material.type.DustMaterial;
 import gregtech.api.unification.material.type.IngotMaterial;
 import gregtech.api.unification.ore.OrePrefix;
 import gregtech.api.unification.stack.MaterialStack;
-import gregtech.loaders.recipe.MachineRecipeLoader;
+import gregtech.loaders.recipe.RecyclingRecipes;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -50,7 +50,7 @@ public class RecyclingRecipeHandler {
         //if arc smelting gives different material, allow it
         boolean ignoreArcSmelting = IGNORE_ARC_SMELTING.contains(thingPrefix) && !(
             material instanceof IngotMaterial && ((IngotMaterial) material).arcSmeltInto != material);
-        MachineRecipeLoader.registerArcRecyclingRecipe(builder -> builder.input(thingPrefix, material), materialStacks, ignoreArcSmelting);
+        RecyclingRecipes.registerArcRecyclingRecipe(builder -> builder.input(thingPrefix, material), materialStacks, ignoreArcSmelting);
     }
 
 }

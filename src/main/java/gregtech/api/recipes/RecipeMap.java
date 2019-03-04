@@ -334,6 +334,7 @@ public class RecipeMap<R extends RecipeBuilder<R>> {
 
     @ZenMethod("findRecipe")
     @Method(modid = GTValues.MODID_CT)
+    @Nullable
     public CTRecipe ctFindRecipe(long maxVoltage, IItemStack[] itemInputs, ILiquidStack[] fluidInputs) {
 	    List<ItemStack> mcItemInputs = itemInputs == null ? Collections.emptyList() :
             Arrays.stream(itemInputs)

@@ -23,7 +23,7 @@ import gregtech.loaders.oreprocessing.DecompositionRecipeHandler;
 import gregtech.loaders.oreprocessing.RecipeHandlerList;
 import gregtech.loaders.oreprocessing.ToolRecipeHandler;
 import gregtech.loaders.recipe.CraftingRecipeLoader;
-import gregtech.loaders.recipe.FuelLoader;
+import gregtech.loaders.recipe.FuelRecipes;
 import gregtech.loaders.recipe.MachineRecipeLoader;
 import gregtech.loaders.recipe.MetaTileEntityLoader;
 import net.minecraft.block.Block;
@@ -151,7 +151,6 @@ public class CommonProxy {
 
         MetaItems.registerRecipes();
         MachineRecipeLoader.init();
-        FuelLoader.registerFuels();
         CraftingRecipeLoader.init();
         MetaTileEntityLoader.init();
         RecipeHandlerList.register();

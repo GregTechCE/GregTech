@@ -12,7 +12,7 @@
     },
     "O": {
       "type": "forge:ore_dict",
-      "ore": "ringPaper"
+      "ore": "ringSiliconeRubber"
     },
     "X": {
       "type": "forge:ore_dict",
