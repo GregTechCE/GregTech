@@ -43,6 +43,7 @@ import java.util.function.Predicate;
 
 public class CoverPump extends CoverBehavior implements CoverWithUI, ITickable {
 
+    public static final Predicate<FluidStack> ALWAYS_TRUE = fluidStack -> true;
     public final int tier;
     public final int maxFluidTransferRate;
     protected int transferRate;

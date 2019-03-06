@@ -9,6 +9,7 @@ import gregtech.api.items.metaitem.stats.IItemContainerItemProvider;
 import gregtech.api.recipes.CountableIngredient;
 import gregtech.api.recipes.RecipeMaps;
 import gregtech.api.unification.OreDictUnifier;
+import gregtech.api.unification.material.MarkerMaterials.Tier;
 import gregtech.api.unification.material.Materials;
 import gregtech.api.unification.ore.OrePrefix;
 import gregtech.api.util.RandomPotionEffect;
@@ -48,9 +49,6 @@ public class MetaItem2 extends MaterialMetaItem {
 
         BOTTLE_PURPLE_DRINK = addItem(100, "bottle.purple.drink").addStats(new FoodStats(8, 0.2F, true, true, new ItemStack(Items.GLASS_BOTTLE), new RandomPotionEffect(MobEffects.HASTE, 800, 1, 90)));
 
-        FOOD_CHUM = addItem(210, "food.chum").addStats(new FoodStats(5, 0.2F, false, true, null, new RandomPotionEffect(MobEffects.ABSORPTION, 1000, 4, 100), new RandomPotionEffect(MobEffects.REGENERATION, 300, 1, 80)));
-        FOOD_CHUM_ON_STICK = addItem(211, "food.chum.on.stick").addStats(new FoodStats(5, 0.2F, false, true, new ItemStack(Items.STICK), new RandomPotionEffect(MobEffects.ABSORPTION, 1000, 4, 100), new RandomPotionEffect(MobEffects.REGENERATION, 300, 1, 80)));
-
         ENERGY_CRYSTAL = addItem(212, "energy_crystal").addStats(ElectricStats.createRechargeableBattery(1000000L, GTValues.HV)).setModelAmount(8).setMaxStackSize(1);
         LAPOTRON_CRYSTAL = addItem(213, "lapotron_crystal").addStats(ElectricStats.createRechargeableBattery(4000000L, GTValues.EV)).setModelAmount(8).setMaxStackSize(1);
 
@@ -64,6 +62,95 @@ public class MetaItem2 extends MaterialMetaItem {
         PLANT_BALL = addItem(570, "plant_ball").setBurnValue(75);
         TOOL_PARTS_BOX = addItem(571, "tool_parts_box").addStats(new ToolPartsBoxBehavior());
         ENERGIUM_DUST = addItem(572, "energium_dust");
+
+        CARBON_FIBERS = addItem(504, "carbon.fibers");
+        CARBON_MESH = addItem(505, "carbon.mesh");
+        CARBON_PLATE = addItem(506, "carbon.plate");
+        INGOT_MIXED_METAL = addItem(432, "ingot.mixed_metal");
+        ADVANCED_ALLOY_PLATE = addItem(433, "plate.advanced_alloy");
+        INGOT_IRIDIUM_ALLOY = addItem(434, "ingot.iridium_alloy");
+        PLATE_IRIDIUM_ALLOY = addItem(435, "plate.iridium_alloy");
+        NEUTRON_REFLECTOR = addItem(436, "neutron_reflector");
+
+        SILICON_BOULE = addItem(439, "boule.silicon");
+        GLOWSTONE_BOULE = addItem(437, "boule.glowstone");
+        NAQUADAH_BOULE = addItem(438, "boule.naquadah");
+        SILICON_WAFER = addItem(440, "wafer.silicon");
+        GLOWSTONE_WAFER = addItem(441, "wafer.glowstone");
+        NAQUADAH_WAFER = addItem(442, "wafer.naquadah");
+
+        COATED_BOARD = addItem(443, "board.coated");
+        EPOXY_BOARD = addItem(444, "board.epoxy");
+        FIBER_BOARD = addItem(445, "board.fiber_reinforced");
+        MULTILAYER_FIBER_BOARD = addItem(446, "board.multilayer.fiber_reinforced");
+        PHENOLIC_BOARD = addItem(447, "board.phenolic");
+        PLASTIC_BOARD = addItem(448, "board.plastic");
+        WETWARE_BOARD = addItem(449, "board.wetware");
+        
+        VACUUM_TUBE = addItem(450, "circuit.vacuum_tube").setUnificationData(OrePrefix.circuit, Tier.Primitive);
+        DIODE = addItem(451, "component.diode");
+        CAPACITOR = addItem(452, "component.capacitor");
+        GLASS_FIBER = addItem(453, "component.glass.fiber");
+        GLASS_TUBE = addItem(454, "component.glass.tube");
+        RESISTOR = addItem(455, "component.resistor");
+        SMALL_COIL = addItem(456, "component.small_coil");
+        SMD_DIODE = addItem(457, "component.smd.diode");
+        SMD_CAPACITOR = addItem(458, "component.smd.capacitor");
+        SMD_RESISTOR = addItem(459, "component.smd.resistor");
+        SMD_TRANSISTOR = addItem(460, "component.smd.transistor");
+        TRANSISTOR = addItem(461, "component.transistor");
+
+        ADVANCED_SYSTEM_ON_CHIP_WAFER = addItem(462, "wafer.advanced_system_on_chip");
+        INTEGRATED_LOGIC_CIRCUIT_WAFER = addItem(463, "wafer.integrated_logic_circuit");
+        CENTRAL_PROCESSING_UNIT_WAFER = addItem(464, "wafer.central_processing_unit");
+        HIGH_POWER_INTEGRATED_CIRCUIT_WAFER = addItem(465, "wafer.high_power_integrated_circuit");
+        NAND_MEMORY_CHIP_WAFER = addItem(466, "wafer.nand_memory_chip");
+        NANO_CENTRAL_PROCESSING_UNIT_WAFER = addItem(467, "wafer.nano_central_processing_unit");
+        NOR_MEMORY_CHIP_WAFER = addItem(468, "wafer.nor_memory_chip");
+        POWER_INTEGRATED_CIRCUIT_WAFER = addItem(469, "wafer.power_integrated_circuit");
+        QBIT_CENTRAL_PROCESSING_UNIT_WAFER = addItem(470, "wafer.qbit_central_processing_unit");
+        RANDOM_ACCESS_MEMORY_WAFER = addItem(471, "wafer.random_access_memory");
+        SYSTEM_ON_CHIP_WAFER = addItem(472, "wafer.system_on_chip");
+
+        CRYSTAL_CENTRAL_PROCESSING_UNIT = addItem(474, "crystal.central_processing_unit");
+        CRYSTAL_SYSTEM_ON_CHIP = addItem(475, "crystal.system_on_chip");
+        ADVANCED_SYSTEM_ON_CHIP = addItem(476, "plate.advanced_system_on_chip");
+        INTEGRATED_LOGIC_CIRCUIT = addItem(477, "plate.integrated_logic_circuit");
+        CENTRAL_PROCESSING_UNIT = addItem(478, "plate.central_processing_unit");
+        HIGH_POWER_INTEGRATED_CIRCUIT = addItem(479, "plate.high_power_integrated_circuit");
+        NAND_MEMORY_CHIP = addItem(480, "plate.nand_memory_chip");
+        NANO_CENTRAL_PROCESSING_UNIT = addItem(481, "plate.nano_central_processing_unit");
+        NOR_MEMORY_CHIP = addItem(482, "plate.nor_memory_chip");
+        POWER_INTEGRATED_CIRCUIT = addItem(483, "plate.power_integrated_circuit");
+        QBIT_CENTRAL_PROCESSING_UNIT = addItem(484, "plate.qbit_central_processing_unit");
+        RANDOM_ACCESS_MEMORY = addItem(485, "plate.random_access_memory");
+        SYSTEM_ON_CHIP = addItem(486, "plate.system_on_chip");
+
+        BASIC_CIRCUIT_LV = addItem(487, "circuit.basic").setUnificationData(OrePrefix.circuit, Tier.Basic);
+        BASIC_ELECTRONIC_CIRCUIT_LV = addItem(488, "circuit.basic_electronic").setUnificationData(OrePrefix.circuit, Tier.Basic);
+        ADVANCED_CIRCUIT_PARTS_LV = addItem(507, "circuit.advanced_parts").setUnificationData(OrePrefix.circuit, Tier.Basic);
+
+        GOOD_INTEGRATED_CIRCUIT_MV = addItem(489, "circuit.good").setUnificationData(OrePrefix.circuit, Tier.Good);
+        ADVANCED_CIRCUIT_MV = addItem(490, "circuit.advanced").setUnificationData(OrePrefix.circuit, Tier.Good);
+
+        PROCESSOR_ASSEMBLY_HV = addItem(491, "circuit.processor_assembly").setUnificationData(OrePrefix.circuit, Tier.Advanced);
+        NANO_PROCESSOR_HV = addItem(492, "circuit.nano_processor").setUnificationData(OrePrefix.circuit, Tier.Advanced);
+
+        NANO_PROCESSOR_ASSEMBLY_EV = addItem(493, "circuit.nano_processor_assembly").setUnificationData(OrePrefix.circuit, Tier.Extreme);
+        QUANTUM_PROCESSOR_EV = addItem(494, "circuit.quantum_processor").setUnificationData(OrePrefix.circuit, Tier.Extreme);
+
+        DATA_CONTROL_CIRCUIT_IV = addItem(495, "circuit.data_control").setUnificationData(OrePrefix.circuit, Tier.Elite);
+        CRYSTAL_PROCESSOR_IV = addItem(496, "circuit.crystal_processor").setUnificationData(OrePrefix.circuit, Tier.Elite);
+
+        ENERGY_FLOW_CIRCUIT_LUV = addItem(497, "circuit.energy_flow").setUnificationData(OrePrefix.circuit, Tier.Master);
+        WETWARE_PROCESSOR_LUV = addItem(498, "circuit.wetware_processor").setUnificationData(OrePrefix.circuit, Tier.Master);
+
+        WETWARE_PROCESSOR_ASSEMBLY_ZPM = addItem(499, "circuit.wetware_assembly").setUnificationData(OrePrefix.circuit, Tier.Ultimate);
+        WETWARE_SUPER_COMPUTER_UV = addItem(500, "circuit.wetware_super_computer").setUnificationData(OrePrefix.circuit, Tier.Superconductor);
+        WETWARE_MAINFRAME_MAX = addItem(501, "circuit.wetware_mainframe").setUnificationData(OrePrefix.circuit, Tier.Infinite);
+
+        ENGRAVED_CRYSTAL_CHIP = addItem(502, "engraved.crystal_chip");
+        ENGRAVED_LAPOTRON_CHIP = addItem(503, "engraved.lapotron_chip");
     }
 
     public void registerRecipes() {

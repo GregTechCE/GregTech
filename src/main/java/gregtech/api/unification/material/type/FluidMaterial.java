@@ -60,7 +60,7 @@ public class FluidMaterial extends Material {
     @Nullable
     private Fluid materialPlasma;
 
-    private int fluidTemperature = 295;
+    private int fluidTemperature = 300;
 
     public FluidMaterial(int metaItemSubId, String name, int materialRGB, MaterialIconSet materialIconSet, ImmutableList<MaterialStack> materialComponents, long materialGenerationFlags, Element element) {
         super(metaItemSubId, name, materialRGB, materialIconSet, materialComponents, materialGenerationFlags, element);
@@ -118,9 +118,10 @@ public class FluidMaterial extends Material {
     }
 
     @ZenSetter("fluidTemperature")
-    public void setFluidTemperature(int fluidTemperature) {
+    public FluidMaterial setFluidTemperature(int fluidTemperature) {
         Preconditions.checkArgument(fluidTemperature > 0, "Invalid temperature");
         this.fluidTemperature = fluidTemperature;
+        return this;
     }
 
     @ZenGetter("fluidTemperature")

@@ -84,7 +84,18 @@ public final class MetaItems {
     public static MetaItem<?>.MetaValueItem TOOL_LIGHTER_INVAR;
     public static MetaItem<?>.MetaValueItem TOOL_LIGHTER_PLATINUM;
 
+    public static MetaItem<?>.MetaValueItem INGOT_MIXED_METAL;
+    public static MetaItem<?>.MetaValueItem ADVANCED_ALLOY_PLATE;
+
     public static MetaItem<?>.MetaValueItem INGOT_IRIDIUM_ALLOY;
+    public static MetaItem<?>.MetaValueItem PLATE_IRIDIUM_ALLOY;
+
+    public static MetaItem<?>.MetaValueItem CARBON_FIBERS;
+    public static MetaItem<?>.MetaValueItem CARBON_MESH;
+    public static MetaItem<?>.MetaValueItem CARBON_PLATE;
+    public static MetaItem<?>.MetaValueItem GLASS_FIBER;
+
+    public static MetaItem<?>.MetaValueItem NEUTRON_REFLECTOR;
 
     public static MetaItem<?>.MetaValueItem BATTERY_HULL_LV;
     public static MetaItem<?>.MetaValueItem BATTERY_HULL_MV;
@@ -192,26 +203,78 @@ public final class MetaItems {
 
     public static MetaItem<?>.MetaValueItem TOOL_DATA_STICK;
     public static MetaItem<?>.MetaValueItem TOOL_DATA_ORB;
-    public static MetaItem<?>.MetaValueItem CIRCUIT_PRIMITIVE;
-    public static MetaItem<?>.MetaValueItem CIRCUIT_BASIC;
-    public static MetaItem<?>.MetaValueItem CIRCUIT_GOOD;
-    public static MetaItem<?>.MetaValueItem CIRCUIT_ADVANCED;
-    public static MetaItem<?>.MetaValueItem CIRCUIT_DATA;
-    public static MetaItem<?>.MetaValueItem CIRCUIT_ELITE;
-    public static MetaItem<?>.MetaValueItem CIRCUIT_MASTER;
-    public static MetaItem<?>.MetaValueItem CIRCUIT_ULTIMATE;
 
-    public static MetaItem<?>.MetaValueItem EMPTY_BOARD_BASIC;
-    public static MetaItem<?>.MetaValueItem EMPTY_BOARD_ELITE;
-    public static MetaItem<?>.MetaValueItem CIRCUIT_BOARD_BASIC;
-    public static MetaItem<?>.MetaValueItem CIRCUIT_BOARD_ADVANCED;
-    public static MetaItem<?>.MetaValueItem CIRCUIT_BOARD_ELITE;
-    public static MetaItem<?>.MetaValueItem CIRCUIT_PARTS_CRYSTAL_CHIP_ELITE;
-    public static MetaItem<?>.MetaValueItem CIRCUIT_PARTS_CRYSTAL_CHIP_MASTER;
-    public static MetaItem<?>.MetaValueItem CIRCUIT_PARTS_ADVANCED;
-    public static MetaItem<?>.MetaValueItem CIRCUIT_PARTS_WIRING_BASIC;
-    public static MetaItem<?>.MetaValueItem CIRCUIT_PARTS_WIRING_ADVANCED;
-    public static MetaItem<?>.MetaValueItem CIRCUIT_PARTS_WIRING_ELITE;
+    public static MetaItem<?>.MetaValueItem GLOWSTONE_BOULE;
+    public static MetaItem<?>.MetaValueItem NAQUADAH_BOULE;
+    public static MetaItem<?>.MetaValueItem SILICON_BOULE;
+    public static MetaItem<?>.MetaValueItem SILICON_WAFER;
+    public static MetaItem<?>.MetaValueItem GLOWSTONE_WAFER;
+    public static MetaItem<?>.MetaValueItem NAQUADAH_WAFER;
+
+    public static MetaItem<?>.MetaValueItem ADVANCED_SYSTEM_ON_CHIP_WAFER;
+    public static MetaItem<?>.MetaValueItem INTEGRATED_LOGIC_CIRCUIT_WAFER;
+    public static MetaItem<?>.MetaValueItem CENTRAL_PROCESSING_UNIT_WAFER;
+    public static MetaItem<?>.MetaValueItem HIGH_POWER_INTEGRATED_CIRCUIT_WAFER;
+    public static MetaItem<?>.MetaValueItem NAND_MEMORY_CHIP_WAFER;
+    public static MetaItem<?>.MetaValueItem NANO_CENTRAL_PROCESSING_UNIT_WAFER;
+    public static MetaItem<?>.MetaValueItem NOR_MEMORY_CHIP_WAFER;
+    public static MetaItem<?>.MetaValueItem POWER_INTEGRATED_CIRCUIT_WAFER;
+    public static MetaItem<?>.MetaValueItem QBIT_CENTRAL_PROCESSING_UNIT_WAFER;
+    public static MetaItem<?>.MetaValueItem RANDOM_ACCESS_MEMORY_WAFER;
+    public static MetaItem<?>.MetaValueItem SYSTEM_ON_CHIP_WAFER;
+    public static MetaItem<?>.MetaValueItem ENGRAVED_CRYSTAL_CHIP;
+    public static MetaItem<?>.MetaValueItem ENGRAVED_LAPOTRON_CHIP;
+
+    public static MetaItem<?>.MetaValueItem ADVANCED_SYSTEM_ON_CHIP;
+    public static MetaItem<?>.MetaValueItem INTEGRATED_LOGIC_CIRCUIT;
+    public static MetaItem<?>.MetaValueItem CENTRAL_PROCESSING_UNIT;
+    public static MetaItem<?>.MetaValueItem HIGH_POWER_INTEGRATED_CIRCUIT;
+    public static MetaItem<?>.MetaValueItem NAND_MEMORY_CHIP;
+    public static MetaItem<?>.MetaValueItem NANO_CENTRAL_PROCESSING_UNIT;
+    public static MetaItem<?>.MetaValueItem NOR_MEMORY_CHIP;
+    public static MetaItem<?>.MetaValueItem POWER_INTEGRATED_CIRCUIT;
+    public static MetaItem<?>.MetaValueItem QBIT_CENTRAL_PROCESSING_UNIT;
+    public static MetaItem<?>.MetaValueItem RANDOM_ACCESS_MEMORY;
+    public static MetaItem<?>.MetaValueItem SYSTEM_ON_CHIP;
+    public static MetaItem<?>.MetaValueItem CRYSTAL_CENTRAL_PROCESSING_UNIT;
+    public static MetaItem<?>.MetaValueItem CRYSTAL_SYSTEM_ON_CHIP;
+
+    public static MetaItem<?>.MetaValueItem COATED_BOARD;
+    public static MetaItem<?>.MetaValueItem EPOXY_BOARD;
+    public static MetaItem<?>.MetaValueItem FIBER_BOARD;
+    public static MetaItem<?>.MetaValueItem MULTILAYER_FIBER_BOARD;
+    public static MetaItem<?>.MetaValueItem PHENOLIC_BOARD;
+    public static MetaItem<?>.MetaValueItem PLASTIC_BOARD;
+    public static MetaItem<?>.MetaValueItem WETWARE_BOARD;
+
+    public static MetaItem<?>.MetaValueItem VACUUM_TUBE;
+    public static MetaItem<?>.MetaValueItem GLASS_TUBE;
+    public static MetaItem<?>.MetaValueItem RESISTOR;
+    public static MetaItem<?>.MetaValueItem DIODE;
+    public static MetaItem<?>.MetaValueItem CAPACITOR;
+    public static MetaItem<?>.MetaValueItem SMALL_COIL;
+    public static MetaItem<?>.MetaValueItem SMD_CAPACITOR;
+    public static MetaItem<?>.MetaValueItem SMD_DIODE;
+    public static MetaItem<?>.MetaValueItem SMD_RESISTOR;
+    public static MetaItem<?>.MetaValueItem SMD_TRANSISTOR;
+    public static MetaItem<?>.MetaValueItem TRANSISTOR;
+
+    public static MetaItem<?>.MetaValueItem BASIC_CIRCUIT_LV;
+    public static MetaItem<?>.MetaValueItem BASIC_ELECTRONIC_CIRCUIT_LV;
+    public static MetaItem<?>.MetaValueItem ADVANCED_CIRCUIT_PARTS_LV;
+    public static MetaItem<?>.MetaValueItem GOOD_INTEGRATED_CIRCUIT_MV;
+    public static MetaItem<?>.MetaValueItem ADVANCED_CIRCUIT_MV;
+    public static MetaItem<?>.MetaValueItem PROCESSOR_ASSEMBLY_HV;
+    public static MetaItem<?>.MetaValueItem NANO_PROCESSOR_HV;
+    public static MetaItem<?>.MetaValueItem NANO_PROCESSOR_ASSEMBLY_EV;
+    public static MetaItem<?>.MetaValueItem QUANTUM_PROCESSOR_EV;
+    public static MetaItem<?>.MetaValueItem DATA_CONTROL_CIRCUIT_IV;
+    public static MetaItem<?>.MetaValueItem CRYSTAL_PROCESSOR_IV;
+    public static MetaItem<?>.MetaValueItem ENERGY_FLOW_CIRCUIT_LUV;
+    public static MetaItem<?>.MetaValueItem WETWARE_PROCESSOR_LUV;
+    public static MetaItem<?>.MetaValueItem WETWARE_PROCESSOR_ASSEMBLY_ZPM;
+    public static MetaItem<?>.MetaValueItem WETWARE_SUPER_COMPUTER_UV;
+    public static MetaItem<?>.MetaValueItem WETWARE_MAINFRAME_MAX;
 
     public static MetaItem<?>.MetaValueItem COMPONENT_SAW_BLADE_DIAMOND;
     public static MetaItem<?>.MetaValueItem COMPONENT_GRINDER_DIAMOND;
@@ -249,9 +312,6 @@ public final class MetaItems {
     public static MetaItem<?>.MetaValueItem GELLED_TOLUENE;
 
     public static MetaItem<?>.MetaValueItem BOTTLE_PURPLE_DRINK;
-
-    public static MetaItem<?>.MetaValueItem FOOD_CHUM;
-    public static MetaItem<?>.MetaValueItem FOOD_CHUM_ON_STICK;
 
     public static MetaItem<?>.MetaValueItem DYE_INDIGO;
     public static MetaItem<?>.MetaValueItem PLANT_BALL;

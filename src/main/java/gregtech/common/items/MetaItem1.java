@@ -139,9 +139,7 @@ public class MetaItem1 extends MaterialMetaItem {
             .addStats(new LighterBehaviour(100)).setMaxStackSize(1);
         TOOL_LIGHTER_PLATINUM = addItem(477, "tool.lighter.platinum")
             .setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.Platinum, GTValues.L * 2)))
-            .addStats(new LighterBehaviour(100)).setMaxStackSize(1);
-
-        INGOT_IRIDIUM_ALLOY = addItem(480, "ingot.iridiumalloy").setInvisible();
+            .addStats(new LighterBehaviour(1000)).setMaxStackSize(1);
 
         BATTERY_HULL_LV = addItem(500, "battery.hull.lv").setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.BatteryAlloy, OrePrefix.plate.materialAmount)));
         BATTERY_HULL_MV = addItem(501, "battery.hull.hv").setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.BatteryAlloy, OrePrefix.plate.materialAmount * 3L)));
@@ -254,29 +252,8 @@ public class MetaItem1 extends MaterialMetaItem {
         SENSOR_ZPM = addItem(696, "sensor.zpm");
         SENSOR_UV = addItem(697, "sensor.uv");
 
-        TOOL_DATA_STICK = addItem(708, "tool.datastick").setUnificationData(OrePrefix.circuit, MarkerMaterials.Tier.Data);
-        TOOL_DATA_ORB = addItem(707, "tool.dataorb").setUnificationData(OrePrefix.circuit, MarkerMaterials.Tier.Ultimate);
-
-        CIRCUIT_PRIMITIVE = addItem(700, "circuit.primitive").setUnificationData(OrePrefix.circuit, MarkerMaterials.Tier.Primitive);
-        CIRCUIT_BASIC = addItem(701, "circuit.basic").setUnificationData(OrePrefix.circuit, MarkerMaterials.Tier.Basic);
-        CIRCUIT_GOOD = addItem(702, "circuit.good").setUnificationData(OrePrefix.circuit, MarkerMaterials.Tier.Good);
-        CIRCUIT_ADVANCED = addItem(703, "circuit.advanced").setUnificationData(OrePrefix.circuit, MarkerMaterials.Tier.Advanced);
-        CIRCUIT_DATA = addItem(704, "circuit.data").setUnificationData(OrePrefix.circuit, MarkerMaterials.Tier.Data);
-        CIRCUIT_ELITE = addItem(705, "circuit.elite").setUnificationData(OrePrefix.circuit, MarkerMaterials.Tier.Elite);
-        CIRCUIT_MASTER = addItem(706, "circuit.master").setUnificationData(OrePrefix.circuit, MarkerMaterials.Tier.Master);
-        CIRCUIT_ULTIMATE = TOOL_DATA_ORB;
-
-        CIRCUIT_BOARD_BASIC = addItem(710, "circuit.board.basic");
-        CIRCUIT_BOARD_ADVANCED = addItem(711, "circuit.board.advanced");
-        CIRCUIT_BOARD_ELITE = addItem(712, "circuit.board.elite");
-        CIRCUIT_PARTS_CRYSTAL_CHIP_ELITE = addItem(713, "circuit.parts.crystal.chip.elite");
-        CIRCUIT_PARTS_CRYSTAL_CHIP_MASTER = addItem(714, "circuit.parts.crystal.chip.master");
-        CIRCUIT_PARTS_ADVANCED = addItem(715, "circuit.parts.advanced");
-        CIRCUIT_PARTS_WIRING_BASIC = addItem(716, "circuit.parts.wiring.basic");
-        CIRCUIT_PARTS_WIRING_ADVANCED = addItem(717, "circuit.parts.wiring.advanced");
-        CIRCUIT_PARTS_WIRING_ELITE = addItem(718, "circuit.parts.wiring.elite");
-        EMPTY_BOARD_BASIC = addItem(719, "empty.board.basic");
-        EMPTY_BOARD_ELITE = addItem(720, "empty.board.elite");
+        TOOL_DATA_STICK = addItem(708, "tool.datastick");
+        TOOL_DATA_ORB = addItem(707, "tool.dataorb");
 
         COMPONENT_SAW_BLADE_DIAMOND = addItem(721, "component.sawblade.diamond").addOreDict(OreDictNames.craftingDiamondBlade);
         COMPONENT_GRINDER_DIAMOND = addItem(722, "component.grinder.diamond").addOreDict(OreDictNames.craftingGrinder);

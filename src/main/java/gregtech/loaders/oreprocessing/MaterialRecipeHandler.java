@@ -1,7 +1,10 @@
 package gregtech.loaders.oreprocessing;
 
 import gregtech.api.recipes.ModHandler;
+import gregtech.api.recipes.RecipeBuilder;
 import gregtech.api.recipes.RecipeMaps;
+import gregtech.api.recipes.builders.BlastRecipeBuilder;
+import gregtech.api.recipes.ingredients.IntCircuitIngredient;
 import gregtech.api.unification.OreDictUnifier;
 import gregtech.api.unification.material.Materials;
 import gregtech.api.unification.material.type.*;
@@ -12,9 +15,7 @@ import gregtech.api.util.GTUtility;
 import gregtech.common.items.MetaItems;
 import net.minecraft.item.ItemStack;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 import static gregtech.api.GTValues.L;
 import static gregtech.api.GTValues.M;
@@ -26,6 +27,8 @@ public class MaterialRecipeHandler {
 
     private static final List<OrePrefix> GEM_ORDER = Arrays.asList(
         OrePrefix.gemChipped, OrePrefix.gemFlawed, OrePrefix.gem, OrePrefix.gemFlawless, OrePrefix.gemExquisite);
+
+    private static final Set<IngotMaterial> circuitRequiringMaterials = new HashSet<>();
 
     public static void register() {
         OrePrefix.ingot.addProcessingHandler(IngotMaterial.class, MaterialRecipeHandler::processIngot);
@@ -41,6 +44,12 @@ public class MaterialRecipeHandler {
         for(OrePrefix orePrefix : GEM_ORDER) {
             orePrefix.addProcessingHandler(GemMaterial.class, MaterialRecipeHandler::processGem);
         }
+
+        setMaterialRequiresCircuit(Materials.Silicon);
+    }
+
+    public static void setMaterialRequiresCircuit(IngotMaterial material) {
+        circuitRequiringMaterials.add(material);
     }
 
     public static void processDust(OrePrefix dustPrefix, DustMaterial material) {
@@ -85,20 +94,26 @@ public class MaterialRecipeHandler {
                     int duration = Math.max(1, (int) (material.getAverageMass() * metalMaterial.blastFurnaceTemperature / 50L));
                     ModHandler.removeFurnaceSmelting(new UnificationEntry(OrePrefix.ingot, metalMaterial));
 
-                    RecipeMaps.BLAST_RECIPES.recipeBuilder()
+                    BlastRecipeBuilder ingotSmeltingBuilder = RecipeMaps.BLAST_RECIPES.recipeBuilder()
                         .input(dustPrefix, material)
                         .outputs(ingotStack)
-                        .duration(duration).EUt(120)
                         .blastFurnaceTemp(metalMaterial.blastFurnaceTemperature)
-                        .buildAndRegister();
+                        .duration(duration).EUt(120);
+                    if(circuitRequiringMaterials.contains(material)) {
+                        ingotSmeltingBuilder.inputs(IntCircuitIngredient.getIntegratedCircuit(0));
+                    }
+                    ingotSmeltingBuilder.buildAndRegister();
 
                     if (!hasHotIngot) {
-                        RecipeMaps.BLAST_RECIPES.recipeBuilder()
+                        BlastRecipeBuilder nuggetSmeltingBuilder = RecipeMaps.BLAST_RECIPES.recipeBuilder()
                             .input(OrePrefix.dustTiny, material)
                             .outputs(nuggetStack)
-                            .duration(Math.max(1, duration / 9)).EUt(120)
                             .blastFurnaceTemp(metalMaterial.blastFurnaceTemperature)
-                            .buildAndRegister();
+                            .duration(Math.max(1, duration / 9)).EUt(120);
+                        if (circuitRequiringMaterials.contains(material)) {
+                            nuggetSmeltingBuilder.inputs(IntCircuitIngredient.getIntegratedCircuit(0));
+                        }
+                        nuggetSmeltingBuilder.buildAndRegister();
                     }
 
                     if (hasHotIngot) {
@@ -121,6 +136,13 @@ public class MaterialRecipeHandler {
                 .outputs(OreDictUnifier.get(OrePrefix.plate, material))
                 .buildAndRegister();
         }
+    }
+
+    private static RecipeBuilder<?> addCircuitToBuilderIfNecessary(RecipeBuilder<?> builder, IngotMaterial material) {
+        if(circuitRequiringMaterials.contains(material)) {
+            builder.inputs(IntCircuitIngredient.getIntegratedCircuit(0));
+        }
+        return builder;
     }
 
     public static void processSmallDust(OrePrefix orePrefix,DustMaterial material) {

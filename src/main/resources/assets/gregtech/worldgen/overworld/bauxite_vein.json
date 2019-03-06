@@ -21,9 +21,13 @@
           "weight": 30,
           "value": "ore:aluminium"
         },
-		{
-          "weight": 10,
+        {
+          "weight": 15,
           "value": "ore:ilmenite"
+        },
+        {
+          "weight": 3,
+          "value": "ore:rutile"
         }
       ]
     }

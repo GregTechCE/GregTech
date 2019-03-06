@@ -221,6 +221,7 @@ public abstract class RecipeMapWorkableHandler extends MTETrait implements IWork
 
     protected int[] calculateOverclock(int EUt, long voltage, long amperage, int duration, boolean consumeInputs) {
         boolean negativeEU = EUt < 0;
+        EUt *= amperage; //EUt consumed is multiplied by recipe map amperage
         int tier = getOverclockingTier(voltage);
         if (GTValues.V[tier] <= EUt || tier == 0)
             return new int[]{EUt, duration};

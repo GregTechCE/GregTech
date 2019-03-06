@@ -1,5 +1,24 @@
 ## Changelog
 
+### 1.6.0
+* Merge GA chemistry into master.
+* New circuits inspired by GA.
+* Fix machine's auto outputting ignoring filtering covers (and covers installed in general)
+* Tweak electrolyzing voltages a bit.
+* Make Ilmenite a bit more valuable source of rutile.
+* Change amount of noble gases compounds a bit and add radon.
+* Increased rotor durability and efficiency for all rotors. Increased rotor cost a bit.
+* Increased base pump speed a bit.
+* Increased chests capacities.
+* Made Tesla Coil drop player-kill requiring loot.
+* Fix some machines not stacking after being broken down.
+* Fix turbine blades dupe.
+* Remove granites spheres from nether.
+* Fix noble gases not using centrifuge for decomposition.
+* Fixed disjunction crash.
+* Fixed wrong overclocking on multi-amperage input machines.
+* Fixed wrong light matrix usage on machine covers.
+
 ### 1.5.21
 * Fix paper crafting recipes not showing in JEI.
 * Fix wrong container item return with wooden form crafting.

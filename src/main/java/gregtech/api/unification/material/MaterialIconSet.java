@@ -24,7 +24,6 @@ public enum MaterialIconSet {
     FLINT,
     RUBY,
     LAPIS,
-    POWDER,
     FLUID,
     GAS,
     LIGNITE,

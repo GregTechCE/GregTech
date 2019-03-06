@@ -20,6 +20,7 @@ import gregtech.api.cover.ICoverable;
 import gregtech.api.gui.ModularUI;
 import gregtech.api.render.Textures;
 import gregtech.api.util.GTUtility;
+import gregtech.common.covers.CoverPump;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
@@ -40,10 +41,8 @@ import net.minecraftforge.common.util.Constants.NBT;
 import net.minecraftforge.fluids.FluidActionResult;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidUtil;
-import net.minecraftforge.fluids.IFluidTank;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
-import net.minecraftforge.fluids.capability.IFluidTankProperties;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.*;
@@ -57,6 +56,7 @@ import java.util.function.Consumer;
 
 public abstract class MetaTileEntity implements ICoverable {
 
+    public static final int DEFAULT_PAINTING_COLOR = 0xFFFFFF;
     public static final IndexedCuboid6 FULL_CUBE_COLLISION = new IndexedCuboid6(null, Cuboid6.full);
     public final ResourceLocation metaTileEntityId;
     MetaTileEntityHolder holder;
@@ -74,7 +74,7 @@ public abstract class MetaTileEntity implements ICoverable {
     protected List<MTETrait> mteTraits = new ArrayList<>();
 
     protected EnumFacing frontFacing = EnumFacing.NORTH;
-    protected int paintingColor = 0xFFFFFF;
+    protected int paintingColor = DEFAULT_PAINTING_COLOR;
 
     private int[] sidedRedstoneOutput = new int[6];
     private int cachedComparatorValue;
@@ -191,7 +191,7 @@ public abstract class MetaTileEntity implements ICoverable {
      * @param itemStack itemstack from which this MTE is being placed
      */
     public void writeItemStackData(NBTTagCompound itemStack) {
-        if(this.paintingColor != 0xFFFFFFFF) { //for machines to stack
+        if(this.paintingColor != DEFAULT_PAINTING_COLOR) { //for machines to stack
             itemStack.setInteger("PaintingColor", this.paintingColor);
         }
     }
@@ -720,16 +720,36 @@ public abstract class MetaTileEntity implements ICoverable {
         PooledMutableBlockPos blockPos = PooledMutableBlockPos.retain();
         for(EnumFacing nearbyFacing : allowedFaces) {
             blockPos.setPos(getPos()).move(nearbyFacing);
-            IFluidHandler fluidHandler = FluidUtil.getFluidHandler(getWorld(), blockPos, nearbyFacing.getOpposite());
-            if(fluidHandler == null) continue;
-            for(int tankIndex = 0; tankIndex < exportFluids.getTanks(); tankIndex++) {
-                IFluidTank tank = exportFluids.getTankAt(tankIndex);
-                FluidStack fluidStack = tank.getFluid();
-                if(fluidStack != null && fluidHandler.fill(fluidStack, false) != 0) {
-                    int filledAmount = fluidHandler.fill(fluidStack, true);
-                    tank.drain(filledAmount, true);
-                }
+            TileEntity tileEntity = getWorld().getTileEntity(blockPos);
+            if(tileEntity == null) {
+                continue;
             }
+            IFluidHandler fluidHandler = tileEntity.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, nearbyFacing.getOpposite());
+            //use getCoverCapability so fluid tank index filtering and fluid filtering covers will work properly
+            IFluidHandler myFluidHandler = getCoverCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, nearbyFacing);
+            if(fluidHandler == null || myFluidHandler == null) {
+                continue;
+            }
+            CoverPump.moveHandlerFluids(myFluidHandler, fluidHandler, Integer.MAX_VALUE, CoverPump.ALWAYS_TRUE);
+        }
+        blockPos.release();
+    }
+
+    public void pullFluidsFromNearbyHandlers(EnumFacing... allowedFaces) {
+        PooledMutableBlockPos blockPos = PooledMutableBlockPos.retain();
+        for(EnumFacing nearbyFacing : allowedFaces) {
+            blockPos.setPos(getPos()).move(nearbyFacing);
+            TileEntity tileEntity = getWorld().getTileEntity(blockPos);
+            if(tileEntity == null) {
+                continue;
+            }
+            IFluidHandler fluidHandler = tileEntity.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, nearbyFacing.getOpposite());
+            //use getCoverCapability so fluid tank index filtering and fluid filtering covers will work properly
+            IFluidHandler myFluidHandler = getCoverCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, nearbyFacing);
+            if(fluidHandler == null || myFluidHandler == null) {
+                continue;
+            }
+            CoverPump.moveHandlerFluids(fluidHandler, myFluidHandler, Integer.MAX_VALUE, CoverPump.ALWAYS_TRUE);
         }
         blockPos.release();
     }
@@ -739,11 +759,16 @@ public abstract class MetaTileEntity implements ICoverable {
         for(EnumFacing nearbyFacing : allowedFaces) {
             blockPos.setPos(getPos()).move(nearbyFacing);
             TileEntity tileEntity = getWorld().getTileEntity(blockPos);
-            IItemHandler itemHandler = tileEntity == null ? null : tileEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, nearbyFacing.getOpposite());
+            if(tileEntity == null) {
+                continue;
+            }
+            IItemHandler itemHandler = tileEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, nearbyFacing.getOpposite());
+            //use getCoverCapability so item/ore dictionary filter covers will work properly
+            IItemHandler myItemHandler = getCoverCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, nearbyFacing);
             if(itemHandler == null) {
                 continue;
             }
-            moveInventoryItems(exportItems, itemHandler);
+            moveInventoryItems(myItemHandler, itemHandler);
         }
         blockPos.release();
     }
@@ -753,11 +778,16 @@ public abstract class MetaTileEntity implements ICoverable {
         for(EnumFacing nearbyFacing : allowedFaces) {
             blockPos.setPos(getPos()).move(nearbyFacing);
             TileEntity tileEntity = getWorld().getTileEntity(blockPos);
-            IItemHandler itemHandler = tileEntity == null ? null : tileEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, nearbyFacing.getOpposite());
+            if(tileEntity == null) {
+                continue;
+            }
+            IItemHandler itemHandler = tileEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, nearbyFacing.getOpposite());
+            //use getCoverCapability so item/ore dictionary filter covers will work properly
+            IItemHandler myItemHandler = getCoverCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, nearbyFacing);
             if(itemHandler == null) {
                 continue;
             }
-            moveInventoryItems(itemHandler, importItems);
+            moveInventoryItems(itemHandler, myItemHandler);
         }
         blockPos.release();
     }
@@ -775,28 +805,6 @@ public abstract class MetaTileEntity implements ICoverable {
                 ItemHandlerHelper.insertItemStacked(targetInventory, sourceStack, false);
             }
         }
-    }
-
-    public void pullFluidsFromNearbyHandlers(EnumFacing... allowedFaces) {
-        PooledMutableBlockPos blockPos = PooledMutableBlockPos.retain();
-        for(EnumFacing nearbyFacing : allowedFaces) {
-            blockPos.setPos(getPos()).move(nearbyFacing);
-            IFluidHandler fluidHandler = FluidUtil.getFluidHandler(getWorld(), blockPos, nearbyFacing.getOpposite());
-            if(fluidHandler == null) continue;
-            for(IFluidTankProperties tankProperties : fluidHandler.getTankProperties()) {
-                FluidStack currentFluid = tankProperties.getContents();
-                if(currentFluid == null || currentFluid.amount == 0) continue;
-                currentFluid.amount = Integer.MAX_VALUE;
-                FluidStack fluidStack = fluidHandler.drain(currentFluid, false);
-                if(fluidStack == null || fluidStack.amount == 0) continue;
-                int canInsertAmount = importFluids.fill(fluidStack, false);
-                if(canInsertAmount > 0) {
-                    fluidStack = fluidHandler.drain(canInsertAmount, true);
-                    importFluids.fill(fluidStack, true);
-                }
-            }
-        }
-        blockPos.release();
     }
 
     public static boolean isItemHandlerEmpty(IItemHandler handler) {

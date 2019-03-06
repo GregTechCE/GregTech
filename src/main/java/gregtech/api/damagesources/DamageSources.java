@@ -42,6 +42,10 @@ public class DamageSources {
         return CRUSHER;
     }
 
+    public static DamageSource causeElectricDamage(EntityLivingBase damager) {
+        return new EntityDamageSource(ELECTRIC.getDamageType(), damager).setDamageBypassesArmor();
+    }
+
     public static DamageSource causeCombatDamage(String type, EntityLivingBase damager) {
         return new EntityDamageSource(type, damager);
     }

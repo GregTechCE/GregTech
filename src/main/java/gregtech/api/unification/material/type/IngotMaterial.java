@@ -112,6 +112,8 @@ public class IngotMaterial extends SolidMaterial {
         super.initializeMaterial();
         if(blastFurnaceTemperature > 0) {
             setFluidTemperature(blastFurnaceTemperature);
+        } else {
+            setFluidTemperature(1273);
         }
     }
 

@@ -10,20 +10,18 @@ public class FuelRecipes {
 
     public static void registerFuels() {
         //low-tier diesel generator fuels
-        registerDieselGeneratorFuel(Materials.BioFuel.getFluid(4), 1, GTValues.LV);
-        registerDieselGeneratorFuel(Materials.LightFuel.getFluid(1), 8, GTValues.LV);
         registerDieselGeneratorFuel(Materials.Naphtha.getFluid(1), 8, GTValues.LV);
-        registerDieselGeneratorFuel(Materials.Fuel.getFluid(1), 4, GTValues.LV);
         registerDieselGeneratorFuel(Materials.Oil.getFluid(2), 1, GTValues.LV);
         registerDieselGeneratorFuel(Materials.SulfuricLightFuel.getFluid(4), 5, GTValues.LV);
         registerDieselGeneratorFuel(Materials.Methanol.getFluid(8), 21, GTValues.LV);
-
-        //high-tier diesel generator fuels
-        registerDieselGeneratorFuel(Materials.Ethanol.getFluid(2), 1, GTValues.HV);
-        registerDieselGeneratorFuel(Materials.NitroFuel.getFluid(1), 2, GTValues.HV);
+        registerDieselGeneratorFuel(Materials.Ethanol.getFluid(1), 6, GTValues.LV);
+        registerDieselGeneratorFuel(Materials.BioDiesel.getFluid(1), 8, GTValues.LV);
+        registerDieselGeneratorFuel(Materials.LightFuel.getFluid(1), 10, GTValues.LV);
+        registerDieselGeneratorFuel(Materials.Fuel.getFluid(1), 15, GTValues.LV);
+        registerDieselGeneratorFuel(Materials.NitroFuel.getFluid(2), 45, GTValues.LV);
 
         //steam generator fuels
-        registerSteamGeneratorFuel(Materials.Steam.getFluid(54), 1, GTValues.LV);
+        registerSteamGeneratorFuel(Materials.Steam.getFluid(60), 1, GTValues.LV);
 
         //low-tier gas turbine fuels
         registerGasGeneratorFuel(Materials.Hydrogen.getFluid(1), 1, GTValues.LV);
@@ -35,7 +33,6 @@ public class FuelRecipes {
         registerGasGeneratorFuel(Materials.WoodGas.getFluid(8), 6, GTValues.LV);
         registerGasGeneratorFuel(Materials.SulfuricGas.getFluid(32), 25, GTValues.LV);
         registerGasGeneratorFuel(Materials.SulfuricNaphtha.getFluid(4), 5, GTValues.LV);
-        registerGasGeneratorFuel(Materials.BioGas.getFluid(4), 45, GTValues.LV);
         registerGasGeneratorFuel(Materials.Methane.getFluid(4), 14, GTValues.LV);
         registerGasGeneratorFuel(Materials.Ethylene.getFluid(1), 4, GTValues.LV);
         registerGasGeneratorFuel(Materials.Gas.getFluid(1), 5, GTValues.LV);

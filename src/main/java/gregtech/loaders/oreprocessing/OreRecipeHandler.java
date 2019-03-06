@@ -285,7 +285,7 @@ public class OreRecipeHandler {
                 .buildAndRegister();
         }
 
-        FluidMaterial byproduct = GTUtility.selectItemInList(0, material, material.oreByProducts, FluidMaterial.class);
+        FluidMaterial byproduct = GTUtility.selectItemInList(2, material, material.oreByProducts, FluidMaterial.class);
 
         RecipeBuilder builder = RecipeMaps.CENTRIFUGE_RECIPES.recipeBuilder()
             .input(dustPrefix, material)

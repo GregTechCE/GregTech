@@ -42,7 +42,6 @@ public class TankRenderer implements IIconRegister {
     }
 
     public void render(CCRenderState renderState, Matrix4 translation, int baseColor, IVertexOperation[] pipeline, int capacity, FluidStack fluidStack) {
-
         IVertexOperation[] basePipeline = ArrayUtils.add(pipeline, new ColourMultiplier(baseColor));
         Cuboid6 fluidCuboid = null;
         IVertexOperation[] fluidPipeline = null;

@@ -385,7 +385,7 @@ public class RecipeMaps {
      * </pre>
      */
 
-    @ZenProperty public static final RecipeMap<BlastRecipeBuilder> BLAST_RECIPES = new RecipeMap<>("blast_furnace", 1, 2, 1, 2, 0, 1, 0, 1, 1, new BlastRecipeBuilder());
+    @ZenProperty public static final RecipeMap<BlastRecipeBuilder> BLAST_RECIPES = new RecipeMap<>("blast_furnace", 1, 3, 1, 2, 0, 1, 0, 1, 1, new BlastRecipeBuilder());
 
     /**
      * Example:
@@ -472,7 +472,7 @@ public class RecipeMaps {
      * </pre>
      */
 
-    @ZenProperty public static final RecipeMap<CrackingRecipeBuilder> CRACKING_RECIPES = new RecipeMap<>("cracker", 0, 0, 0, 0, 1, 2, 1, 2, 1, new CrackingRecipeBuilder().notOptimized());
+    @ZenProperty public static final RecipeMap<SimpleRecipeBuilder> CRACKING_RECIPES = new RecipeMap<>("cracker", 0, 0, 0, 0, 2, 2, 1, 2, 1, new SimpleRecipeBuilder().notOptimized());
 
     /**
      * Example:

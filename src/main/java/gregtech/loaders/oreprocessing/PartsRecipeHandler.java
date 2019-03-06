@@ -45,7 +45,6 @@ public class PartsRecipeHandler {
         OrePrefix.ring.addProcessingHandler(IngotMaterial.class, PartsRecipeHandler::processRing);
         OrePrefix.springSmall.addProcessingHandler(IngotMaterial.class, PartsRecipeHandler::processSpringSmall);
     }
-    
 
     public static void processBolt(OrePrefix boltPrefix, IngotMaterial material) {
         ItemStack boltStack = OreDictUnifier.get(boltPrefix, material);
@@ -350,15 +349,9 @@ public class PartsRecipeHandler {
 
         ModHandler.addShapedRecipe(String.format("turbine_blade_%s", material),
             OreDictUnifier.get(toolPrefix, material),
-            "fPd", "SPS", " P ",
+            "PPP", "SPS", "fPd",
             'P', new UnificationEntry(OrePrefix.plate, material),
             'S', new UnificationEntry(OrePrefix.screw, material));
-    }
-
-
-    private static boolean doesMaterialUseNormalFurnace(Material material) {
-        return !(material instanceof IngotMaterial) ||
-            ((IngotMaterial) material).blastFurnaceTemperature <= 0;
     }
 
     private static int getVoltageMultiplier(Material material) {

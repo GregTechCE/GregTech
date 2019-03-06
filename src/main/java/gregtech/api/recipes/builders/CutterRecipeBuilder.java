@@ -41,7 +41,7 @@ public class CutterRecipeBuilder extends RecipeBuilder<CutterRecipeBuilder> {
                 .duration(duration * 2).build());
             recipeMap.addRecipe(this.copy()
                 .fluidInputs(ModHandler.getDistilledWater(Math.max(3, Math.min(750, duration * EUt / 426))))
-                .duration(duration * 2).build());
+                .duration((int) (duration * 1.3)).build());
             recipeMap.addRecipe(this.copy()
                 .fluidInputs(Materials.Lubricant.getFluid(Math.max(1, Math.min(250, duration * EUt / 1280))))
                 .duration(Math.max(1, duration / 2)).build());

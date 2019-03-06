@@ -39,24 +39,7 @@ public enum CraftingComponent {
     BETTER_CIRCUIT {
         @Override
         Object getIngredient(int tier) {
-            switch (tier + 1) {
-                case 0:
-                    return new UnificationEntry(OrePrefix.circuit, MarkerMaterials.Tier.Primitive);
-                case 1:
-                    return new UnificationEntry(OrePrefix.circuit, MarkerMaterials.Tier.Basic);
-                case 2:
-                    return new UnificationEntry(OrePrefix.circuit, MarkerMaterials.Tier.Good);
-                case 3:
-                    return new UnificationEntry(OrePrefix.circuit, MarkerMaterials.Tier.Advanced);
-                case 4:
-                    return new UnificationEntry(OrePrefix.circuit, MarkerMaterials.Tier.Elite);
-                case 5:
-                    return new UnificationEntry(OrePrefix.circuit, MarkerMaterials.Tier.Master);
-                case 6:
-                    return new UnificationEntry(OrePrefix.circuit, MarkerMaterials.Tier.Ultimate);
-                default:
-                    return new UnificationEntry(OrePrefix.circuit, MarkerMaterials.Tier.Superconductor);
-            }
+            return CIRCUIT.getIngredient(tier + 1);
         }
     },
     PUMP {

@@ -18,7 +18,7 @@ import java.util.function.Supplier;
 
 public class LargeTurbineWorkableHandler extends FuelRecipeMapWorkableHandler {
 
-    private static final int CYCLE_LENGTH = 80;
+    private static final int CYCLE_LENGTH = 230;
     private static final int BASE_ROTOR_DAMAGE = 11;
     private static final int BASE_EU_OUTPUT = 2048;
     private static final int EU_OUTPUT_BONUS = 6144;

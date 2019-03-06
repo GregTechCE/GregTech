@@ -12,7 +12,7 @@
     },
     "A": {
       "type": "forge:ore_dict",
-      "ore": "plateAlloyAdvanced"
+      "ore": "plateTungsten"
     },
     "I": {
       "type": "forge:ore_dict",
@@ -20,6 +20,6 @@
     }
   },
   "result": {
-    "name": "ingot.iridiumalloy"
+    "name": "ingot.iridium_alloy"
   }
 }
