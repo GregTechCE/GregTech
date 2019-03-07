@@ -344,11 +344,19 @@ public class MaterialRecipeHandler {
     public static void processFrame(OrePrefix framePrefix, SolidMaterial material) {
         if (material.hasFlag(GENERATE_PLATE | GENERATE_ROD)) {
             boolean isWoodenFrame = ModHandler.isMaterialWood(material);
-            ModHandler.addShapedRecipe(String.format("frame_%s", material),
-                OreDictUnifier.get(framePrefix, material, 4),
+            ItemStack frameStack = OreDictUnifier.get(framePrefix, material, 4);
+            ModHandler.addShapedRecipe(String.format("frame_%s", material), frameStack,
                 "PPP", "SSS", isWoodenFrame ? "SsS" : "SwS",
                 'P', new UnificationEntry(isWoodenFrame ? OrePrefix.plank : OrePrefix.plate, material),
                 'S', new UnificationEntry(OrePrefix.stick, material));
+
+            RecipeMaps.ASSEMBLER_RECIPES.recipeBuilder()
+                .input(OrePrefix.plate, material, 3)
+                .input(OrePrefix.stick, material, 5)
+                .circuitMeta(1)
+                .outputs(frameStack)
+                .EUt(8).duration(200)
+                .buildAndRegister();
         }
     }
 

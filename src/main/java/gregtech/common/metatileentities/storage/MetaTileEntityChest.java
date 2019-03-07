@@ -12,22 +12,26 @@ import gregtech.api.gui.ModularUI;
 import gregtech.api.gui.ModularUI.Builder;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.MetaTileEntityHolder;
+import gregtech.api.recipes.ModHandler;
 import gregtech.api.render.Textures;
 import gregtech.api.unification.material.type.SolidMaterial;
 import gregtech.api.util.GTUtility;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.SoundCategory;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.ItemHandlerHelper;
 import net.minecraftforge.items.ItemStackHandler;
-import org.apache.commons.lang3.ArrayUtils;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -37,19 +41,99 @@ public class MetaTileEntityChest extends MetaTileEntity {
     private static final IndexedCuboid6 CHEST_COLLISION = new IndexedCuboid6(null, new Cuboid6(1 / 16.0, 0 / 16.0, 1 / 16.0, 15 / 16.0, 14 / 16.0, 15 / 16.0));
 
     private final SolidMaterial material;
-    private final int inventorySize;
+    private final int rowSize;
+    private final int amountOfRows;
     private ItemStackHandler inventory;
 
-    public MetaTileEntityChest(ResourceLocation metaTileEntityId, SolidMaterial material, int inventorySize) {
+    private float lidAngle;
+    private float prevLidAngle;
+    private int numPlayersUsing;
+
+    public MetaTileEntityChest(ResourceLocation metaTileEntityId, SolidMaterial material, int rowSize, int amountOfRows) {
         super(metaTileEntityId);
         this.material = material;
-        this.inventorySize = inventorySize;
+        this.rowSize = rowSize;
+        this.amountOfRows = amountOfRows;
         initializeInventory();
     }
 
     @Override
     public MetaTileEntity createMetaTileEntity(MetaTileEntityHolder holder) {
-        return new MetaTileEntityChest(metaTileEntityId, material, inventorySize);
+        return new MetaTileEntityChest(metaTileEntityId, material, rowSize, amountOfRows);
+    }
+
+    @Override
+    public void update() {
+        super.update();
+        BlockPos blockPos = getPos();
+        this.prevLidAngle = this.lidAngle;
+
+        if (this.numPlayersUsing > 0 && this.lidAngle == 0.0F) {
+            double soundX = blockPos.getX() + 0.5;
+            double soundZ = blockPos.getZ() + 0.5;
+            double soundY = blockPos.getY() + 0.5;
+            getWorld().playSound(null, soundX, soundY, soundZ, SoundEvents.BLOCK_CHEST_OPEN, SoundCategory.BLOCKS, 0.5F, getWorld().rand.nextFloat() * 0.1F + 0.9F);
+        }
+
+        if (numPlayersUsing == 0 && this.lidAngle > 0.0F || this.numPlayersUsing > 0 && this.lidAngle < 1.0F) {
+            float currentValue = this.lidAngle;
+
+            if (this.numPlayersUsing > 0) {
+                this.lidAngle += 0.1F;
+            } else {
+                this.lidAngle -= 0.1F;
+            }
+
+            if (this.lidAngle > 1.0F) {
+                this.lidAngle = 1.0F;
+            } else if (this.lidAngle < 0.0F) {
+                this.lidAngle = 0.0F;
+            }
+
+            if (this.lidAngle < 0.5F && currentValue >= 0.5F) {
+                double soundX = blockPos.getX() + 0.5;
+                double soundZ = blockPos.getZ() + 0.5;
+                double soundY = blockPos.getY() + 0.5;
+                getWorld().playSound(null, soundX, soundY, soundZ, SoundEvents.BLOCK_CHEST_CLOSE, SoundCategory.BLOCKS, 0.5F, getWorld().rand.nextFloat() * 0.1F + 0.9F);
+            }
+        }
+    }
+
+    private void onContainerOpen(EntityPlayer player) {
+        if (!player.isSpectator()) {
+            if (this.numPlayersUsing < 0) {
+                this.numPlayersUsing = 0;
+            }
+            ++this.numPlayersUsing;
+            writeCustomData(100, buffer -> buffer.writeVarInt(numPlayersUsing));
+        }
+    }
+
+    private void onContainerClose(EntityPlayer player) {
+        if (!player.isSpectator()) {
+            --this.numPlayersUsing;
+            writeCustomData(100, buffer -> buffer.writeVarInt(numPlayersUsing));
+        }
+    }
+
+    @Override
+    public void writeInitialSyncData(PacketBuffer buf) {
+        super.writeInitialSyncData(buf);
+        buf.writeVarInt(numPlayersUsing);
+    }
+
+    @Override
+    public void receiveInitialSyncData(PacketBuffer buf) {
+        super.receiveInitialSyncData(buf);
+        this.numPlayersUsing = buf.readVarInt();
+    }
+
+    @Override
+    public void receiveCustomData(int dataId, PacketBuffer buf) {
+        super.receiveCustomData(dataId, buf);
+        if(dataId == 100) {
+            this.numPlayersUsing = buf.readVarInt();
+        }
     }
 
     @Override
@@ -63,8 +147,13 @@ public class MetaTileEntityChest extends MetaTileEntity {
     }
 
     @Override
+    public boolean requiresDynamicRendering() {
+        return true;
+    }
+
+    @Override
     public String getHarvestTool() {
-        return material.toString().contains("wood") ? "axe" : "pickaxe";
+        return ModHandler.isMaterialWood(material) ? "axe" : "pickaxe";
     }
 
     @Override
@@ -75,7 +164,7 @@ public class MetaTileEntityChest extends MetaTileEntity {
     @Override
     protected void initializeInventory() {
         super.initializeInventory();
-        this.inventory = new ItemStackHandler(inventorySize) {
+        this.inventory = new ItemStackHandler(rowSize * amountOfRows) {
             @Override
             protected void onContentsChanged(int slot) {
                 super.onContentsChanged(slot);
@@ -99,7 +188,7 @@ public class MetaTileEntityChest extends MetaTileEntity {
     @Override
     @SideOnly(Side.CLIENT)
     public TextureAtlasSprite getParticleTexture() {
-        return material.toString().contains("wood") ? Textures.WOODEN_CHEST.getParticleTexture() :
+        return ModHandler.isMaterialWood(material) ? Textures.WOODEN_CHEST.getParticleTexture() :
             Textures.METAL_CHEST.getParticleTexture();
     }
 
@@ -110,26 +199,42 @@ public class MetaTileEntityChest extends MetaTileEntity {
 
     @Override
     public void renderMetaTileEntity(CCRenderState renderState, Matrix4 translation, IVertexOperation[] pipeline) {
-        if(material.toString().contains("wood")) {
+    }
+
+    @Override
+    public void renderMetaTileEntityDynamic(CCRenderState renderState, Matrix4 translation, IVertexOperation[] pipeline, float partialTicks) {
+        float angle = prevLidAngle + (lidAngle - prevLidAngle) * partialTicks;
+        angle = 1.0f - (1.0f - angle) * (1.0f - angle) * (1.0f - angle);
+        float resultLidAngle = angle * 90.0f;
+        if(ModHandler.isMaterialWood(material)) {
             ColourMultiplier multiplier = new ColourMultiplier(GTUtility.convertRGBtoOpaqueRGBA_CL(getPaintingColorForRendering()));
-            Textures.WOODEN_CHEST.render(renderState, translation, ArrayUtils.add(pipeline, multiplier), getFrontFacing());
+            Textures.WOODEN_CHEST.render(renderState, translation, new IVertexOperation[] {multiplier}, getFrontFacing(), resultLidAngle);
         } else {
             ColourMultiplier multiplier = new ColourMultiplier(ColourRGBA.multiply(
                 GTUtility.convertRGBtoOpaqueRGBA_CL(material.materialRGB),
                 GTUtility.convertRGBtoOpaqueRGBA_CL(getPaintingColorForRendering())));
-            Textures.METAL_CHEST.render(renderState, translation, ArrayUtils.add(pipeline, multiplier), getFrontFacing());
+            Textures.METAL_CHEST.render(renderState, translation, new IVertexOperation[] {multiplier}, getFrontFacing(), resultLidAngle);
         }
     }
 
     @Override
     protected ModularUI createUI(EntityPlayer entityPlayer) {
-        Builder builder = ModularUI.builder(GuiTextures.BACKGROUND, 176,
-            18 + inventorySize * 2 + 94)
+        Builder builder = ModularUI.builder(GuiTextures.BACKGROUND,
+            14 + rowSize * 18,
+            18 + 18 * amountOfRows + 94)
             .label(5, 5, getMetaFullName());
-        for(int i = 0; i < inventorySize; i++) {
-            builder.slot(inventory, i, 8 + (i % 9) * 18, 18 + (i / 9) * 18, GuiTextures.SLOT);
+        for(int y = 0; y < amountOfRows; y++) {
+            for(int x = 0; x < rowSize; x++) {
+                int index = y * rowSize + x;
+                builder.slot(inventory, index, 8 + x * 18, 18 + y * 18, GuiTextures.SLOT);
+            }
         }
-        builder.bindPlayerInventory(entityPlayer.inventory, 18 + inventorySize * 2 + 12);
+        int startX = (14 + rowSize * 18 - 162) / 2;
+        builder.bindPlayerInventory(entityPlayer.inventory, GuiTextures.SLOT, startX, 18 + 18 * amountOfRows + 12);
+        if(!getWorld().isRemote) {
+            builder.bindOpenListener(() -> onContainerOpen(entityPlayer));
+            builder.bindCloseListener(() -> onContainerClose(entityPlayer));
+        }
         return builder.build(getHolder(), entityPlayer);
     }
 
@@ -153,6 +258,6 @@ public class MetaTileEntityChest extends MetaTileEntity {
 
     @Override
     public void addInformation(ItemStack stack, @Nullable World player, List<String> tooltip, boolean advanced) {
-        tooltip.add(I18n.format("gregtech.universal.tooltip.item_storage_capacity", inventorySize));
+        tooltip.add(I18n.format("gregtech.universal.tooltip.item_storage_capacity", rowSize * amountOfRows));
     }
 }

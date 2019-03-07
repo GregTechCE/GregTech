@@ -2,6 +2,7 @@ package gregtech.api.gui;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableBiMap;
+import com.google.common.collect.ImmutableList;
 import gregtech.api.gui.resources.TextureArea;
 import gregtech.api.gui.widgets.*;
 import gregtech.api.gui.widgets.ProgressWidget.MoveType;
@@ -30,6 +31,9 @@ public final class ModularUI implements SizeProvider {
     private int screenWidth, screenHeight;
     private final int width, height;
 
+    private final ImmutableList<Runnable> uiOpenCallback;
+    private final ImmutableList<Runnable> uiCloseCallback;
+
     public boolean isJEIHandled;
 
     /**
@@ -38,8 +42,10 @@ public final class ModularUI implements SizeProvider {
     public final IUIHolder holder;
     public final EntityPlayer entityPlayer;
 
-    public ModularUI(ImmutableBiMap<Integer, Widget> guiWidgets, TextureArea backgroundPath, int width, int height, IUIHolder holder, EntityPlayer entityPlayer) {
+    public ModularUI(ImmutableBiMap<Integer, Widget> guiWidgets, ImmutableList<Runnable> openListeners, ImmutableList<Runnable> closeListeners, TextureArea backgroundPath, int width, int height, IUIHolder holder, EntityPlayer entityPlayer) {
         this.guiWidgets = guiWidgets;
+        this.uiOpenCallback = openListeners;
+        this.uiCloseCallback = closeListeners;
         this.backgroundPath = backgroundPath;
         this.width = width;
         this.height = height;
@@ -58,6 +64,14 @@ public final class ModularUI implements SizeProvider {
             widget.setSizes(this);
             widget.initWidget();
         });
+    }
+
+    public void triggerOpenListeners() {
+        uiOpenCallback.forEach(Runnable::run);
+    }
+
+    public void triggerCloseListeners() {
+        uiCloseCallback.forEach(Runnable::run);
     }
 
     public static Builder defaultBuilder() {
@@ -102,6 +116,8 @@ public final class ModularUI implements SizeProvider {
     public static class Builder {
 
         private ImmutableBiMap.Builder<Integer, Widget> widgets = ImmutableBiMap.builder();
+        private ImmutableList.Builder<Runnable> openListeners = ImmutableList.builder();
+        private ImmutableList.Builder<Runnable> closeListeners = ImmutableList.builder();
         private TextureArea background;
         private int width, height;
         private int nextFreeWidgetId = 0;
@@ -195,8 +211,18 @@ public final class ModularUI implements SizeProvider {
             return this;
         }
 
+        public Builder bindOpenListener(Runnable onContainerOpen) {
+            this.openListeners.add(onContainerOpen);
+            return this;
+        }
+
+        public Builder bindCloseListener(Runnable onContainerClose) {
+            this.closeListeners.add(onContainerClose);
+            return this;
+        }
+
         public ModularUI build(IUIHolder holder, EntityPlayer player) {
-            return new ModularUI(widgets.build(), background, width, height, holder, player);
+            return new ModularUI(widgets.build(), openListeners.build(), closeListeners.build(), background, width, height, holder, player);
         }
 
     }

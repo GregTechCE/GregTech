@@ -212,4 +212,20 @@ public class MetaTileEntityHolder extends TickableTileEntityBase implements IUIH
     public boolean shouldRefresh(World world, BlockPos pos, IBlockState oldState, IBlockState newSate) {
         return oldState.getBlock() != newSate.getBlock(); //MetaTileEntityHolder should never refresh (until block changes)
     }
+
+    @Override
+    public boolean shouldRenderInPass(int pass) {
+        return metaTileEntity != null && metaTileEntity.requiresDynamicRendering() &&
+            metaTileEntity.shouldRenderInPass(pass);
+    }
+
+    @Override
+    public boolean canRenderBreaking() {
+        return false;
+    }
+
+    @Override
+    public boolean hasFastRenderer() {
+        return true;
+    }
 }

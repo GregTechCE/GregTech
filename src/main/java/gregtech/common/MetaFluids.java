@@ -190,7 +190,6 @@ public class MetaFluids {
         }
 
         fluidToMaterialMappings.put(fluid.getName(), material);
-        System.out.println(materialName + " " + fluid);
         return fluid;
     }
 

@@ -8,6 +8,7 @@ import codechicken.lib.vec.Matrix4;
 import gregtech.api.gui.ModularUI;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.MetaTileEntityHolder;
+import gregtech.api.recipes.ModHandler;
 import gregtech.api.render.Textures;
 import gregtech.api.unification.material.type.Material.MatFlags;
 import gregtech.api.unification.material.type.SolidMaterial;
@@ -77,7 +78,7 @@ public class MetaTileEntityTank extends MetaTileEntity {
 
     @Override
     public String getHarvestTool() {
-        return material.toString().contains("wood") ? "axe" : "pickaxe";
+        return ModHandler.isMaterialWood(material) ? "axe" : "pickaxe";
     }
 
     @Override
@@ -196,7 +197,7 @@ public class MetaTileEntityTank extends MetaTileEntity {
     @Override
     @SideOnly(Side.CLIENT)
     public TextureAtlasSprite getParticleTexture() {
-        return material.toString().contains("wood") ?
+        return ModHandler.isMaterialWood(material) ?
             Textures.WOODEN_TANK.getParticleTexture() :
             Textures.METAL_TANK.getParticleTexture();
     }
@@ -204,7 +205,7 @@ public class MetaTileEntityTank extends MetaTileEntity {
     @Override
     public void renderMetaTileEntity(CCRenderState renderState, Matrix4 translation, IVertexOperation[] pipeline) {
         FluidStack fluidStack = getFluidForRendering();
-        if(material.toString().contains("wood")) {
+        if(ModHandler.isMaterialWood(material)) {
             Textures.WOODEN_TANK.render(renderState, translation, GTUtility.convertRGBtoOpaqueRGBA_CL(getPaintingColorForRendering()), pipeline, tankSize, fluidStack);
         } else {
             int baseColor = ColourRGBA.multiply(
@@ -273,7 +274,7 @@ public class MetaTileEntityTank extends MetaTileEntity {
 
         @Override
         public boolean canFillFluidType(FluidStack fluid) {
-            return !material.toString().contains("wood") &&
+            return !ModHandler.isMaterialWood(material) &&
                 !material.hasFlag(MatFlags.FLAMMABLE) ||
                 fluid.getFluid().getTemperature() <= 325;
         }
