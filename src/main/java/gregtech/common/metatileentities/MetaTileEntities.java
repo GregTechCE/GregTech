@@ -66,8 +66,8 @@ public class MetaTileEntities {
     public static SimpleMachineMetaTileEntity[] ALLOY_SMELTER = new SimpleMachineMetaTileEntity[4];
     public static SimpleMachineMetaTileEntity[] AMPLIFABRICATOR = new SimpleMachineMetaTileEntity[4];
     public static SimpleMachineMetaTileEntity[] ARC_FURNACE = new SimpleMachineMetaTileEntity[4];
-    public static SimpleMachineMetaTileEntity[] ASSEMBLER = new SimpleMachineMetaTileEntity[4];
-    public static SimpleMachineMetaTileEntity[] AUTOCLAVE = new SimpleMachineMetaTileEntity[4];
+    public static SimpleMachineMetaTileEntity[] ASSEMBLER = new SimpleMachineMetaTileEntity[5];
+    public static SimpleMachineMetaTileEntity[] AUTOCLAVE = new SimpleMachineMetaTileEntity[5];
     public static SimpleMachineMetaTileEntity[] BENDER = new SimpleMachineMetaTileEntity[4];
     public static SimpleMachineMetaTileEntity[] BREWERY = new SimpleMachineMetaTileEntity[4];
     public static SimpleMachineMetaTileEntity[] CANNER = new SimpleMachineMetaTileEntity[4];
@@ -80,7 +80,7 @@ public class MetaTileEntities {
     public static SimpleMachineMetaTileEntity[] ELECTROLYZER = new SimpleMachineMetaTileEntity[4];
     public static SimpleMachineMetaTileEntity[] ELECTROMAGNETIC_SEPARATOR = new SimpleMachineMetaTileEntity[4];
     public static SimpleMachineMetaTileEntity[] EXTRACTOR = new SimpleMachineMetaTileEntity[4];
-    public static SimpleMachineMetaTileEntity[] EXTRUDER = new SimpleMachineMetaTileEntity[4];
+    public static SimpleMachineMetaTileEntity[] EXTRUDER = new SimpleMachineMetaTileEntity[3];
     public static SimpleMachineMetaTileEntity[] FERMENTER = new SimpleMachineMetaTileEntity[4];
     public static SimpleMachineMetaTileEntity[] FLUID_CANNER = new SimpleMachineMetaTileEntity[4];
     public static SimpleMachineMetaTileEntity[] FLUID_EXTRACTOR = new SimpleMachineMetaTileEntity[4];
@@ -96,7 +96,7 @@ public class MetaTileEntities {
     public static SimpleMachineMetaTileEntity[] UNPACKER = new SimpleMachineMetaTileEntity[4];
     public static SimpleMachineMetaTileEntity[] PLASMA_ARC_FURNACE = new SimpleMachineMetaTileEntity[4];
     public static SimpleMachineMetaTileEntity[] POLARIZER = new SimpleMachineMetaTileEntity[4];
-    public static SimpleMachineMetaTileEntity[] LASER_ENGRAVER = new SimpleMachineMetaTileEntity[4];
+    public static SimpleMachineMetaTileEntity[] LASER_ENGRAVER = new SimpleMachineMetaTileEntity[5];
     public static SimpleMachineMetaTileEntity[] SIFTER = new SimpleMachineMetaTileEntity[4];
     public static SimpleMachineMetaTileEntity[] THERMAL_CENTRIFUGE = new SimpleMachineMetaTileEntity[4];
     public static SimpleMachineMetaTileEntity[] WIREMILL = new SimpleMachineMetaTileEntity[4];
@@ -218,11 +218,13 @@ public class MetaTileEntities {
         ASSEMBLER[1] = GregTechAPI.registerMetaTileEntity(101, new SimpleMachineMetaTileEntity(gregtechId("assembler.mv"), RecipeMaps.ASSEMBLER_RECIPES, Textures.ASSEMBLER_OVERLAY, 2));
         ASSEMBLER[2] = GregTechAPI.registerMetaTileEntity(102, new SimpleMachineMetaTileEntity(gregtechId("assembler.hv"), RecipeMaps.ASSEMBLER_RECIPES, Textures.ASSEMBLER_OVERLAY, 3));
         ASSEMBLER[3] = GregTechAPI.registerMetaTileEntity(103, new SimpleMachineMetaTileEntity(gregtechId("assembler.ev"), RecipeMaps.ASSEMBLER_RECIPES, Textures.ASSEMBLER_OVERLAY, 4));
+        ASSEMBLER[4] = GregTechAPI.registerMetaTileEntity(104, new SimpleMachineMetaTileEntity(gregtechId("assembler.iv"), RecipeMaps.ASSEMBLER_RECIPES, Textures.ASSEMBLER_OVERLAY, 5));
 
         AUTOCLAVE[0] = GregTechAPI.registerMetaTileEntity(110, new SimpleMachineMetaTileEntity(gregtechId("autoclave.lv"), RecipeMaps.AUTOCLAVE_RECIPES, Textures.AUTOCLAVE_OVERLAY, 1, false));
         AUTOCLAVE[1] = GregTechAPI.registerMetaTileEntity(111, new SimpleMachineMetaTileEntity(gregtechId("autoclave.mv"), RecipeMaps.AUTOCLAVE_RECIPES, Textures.AUTOCLAVE_OVERLAY, 2, false));
         AUTOCLAVE[2] = GregTechAPI.registerMetaTileEntity(112, new SimpleMachineMetaTileEntity(gregtechId("autoclave.hv"), RecipeMaps.AUTOCLAVE_RECIPES, Textures.AUTOCLAVE_OVERLAY, 3, false));
         AUTOCLAVE[3] = GregTechAPI.registerMetaTileEntity(113, new SimpleMachineMetaTileEntity(gregtechId("autoclave.ev"), RecipeMaps.AUTOCLAVE_RECIPES, Textures.AUTOCLAVE_OVERLAY, 4, false));
+        AUTOCLAVE[4] = GregTechAPI.registerMetaTileEntity(114, new SimpleMachineMetaTileEntity(gregtechId("autoclave.iv"), RecipeMaps.AUTOCLAVE_RECIPES, Textures.AUTOCLAVE_OVERLAY, 5, false));
 
         BENDER[0] = GregTechAPI.registerMetaTileEntity(120, new SimpleMachineMetaTileEntity(gregtechId("bender.lv"), RecipeMaps.BENDER_RECIPES, Textures.BENDER_OVERLAY, 1));
         BENDER[1] = GregTechAPI.registerMetaTileEntity(121, new SimpleMachineMetaTileEntity(gregtechId("bender.mv"), RecipeMaps.BENDER_RECIPES, Textures.BENDER_OVERLAY, 2));
@@ -284,10 +286,9 @@ public class MetaTileEntities {
         EXTRACTOR[2] = GregTechAPI.registerMetaTileEntity(262, new SimpleMachineMetaTileEntity(gregtechId("extractor.hv"), RecipeMaps.EXTRACTOR_RECIPES, Textures.EXTRACTOR_OVERLAY, 3));
         EXTRACTOR[3] = GregTechAPI.registerMetaTileEntity(263, new SimpleMachineMetaTileEntity(gregtechId("extractor.ev"), RecipeMaps.EXTRACTOR_RECIPES, Textures.EXTRACTOR_OVERLAY, 4));
 
-        EXTRUDER[0] = GregTechAPI.registerMetaTileEntity(270, new SimpleMachineMetaTileEntity(gregtechId("extruder.lv"), RecipeMaps.EXTRUDER_RECIPES, Textures.EXTRUDER_OVERLAY, 1));
-        EXTRUDER[1] = GregTechAPI.registerMetaTileEntity(271, new SimpleMachineMetaTileEntity(gregtechId("extruder.mv"), RecipeMaps.EXTRUDER_RECIPES, Textures.EXTRUDER_OVERLAY, 2));
-        EXTRUDER[2] = GregTechAPI.registerMetaTileEntity(272, new SimpleMachineMetaTileEntity(gregtechId("extruder.hv"), RecipeMaps.EXTRUDER_RECIPES, Textures.EXTRUDER_OVERLAY, 3));
-        EXTRUDER[3] = GregTechAPI.registerMetaTileEntity(273, new SimpleMachineMetaTileEntity(gregtechId("extruder.ev"), RecipeMaps.EXTRUDER_RECIPES, Textures.EXTRUDER_OVERLAY, 4));
+        EXTRUDER[0] = GregTechAPI.registerMetaTileEntity(271, new SimpleMachineMetaTileEntity(gregtechId("extruder.mv"), RecipeMaps.EXTRUDER_RECIPES, Textures.EXTRUDER_OVERLAY, 2));
+        EXTRUDER[1] = GregTechAPI.registerMetaTileEntity(272, new SimpleMachineMetaTileEntity(gregtechId("extruder.hv"), RecipeMaps.EXTRUDER_RECIPES, Textures.EXTRUDER_OVERLAY, 3));
+        EXTRUDER[2] = GregTechAPI.registerMetaTileEntity(273, new SimpleMachineMetaTileEntity(gregtechId("extruder.ev"), RecipeMaps.EXTRUDER_RECIPES, Textures.EXTRUDER_OVERLAY, 4));
 
         FERMENTER[0] = GregTechAPI.registerMetaTileEntity(280, new SimpleMachineMetaTileEntity(gregtechId("fermenter.lv"), RecipeMaps.FERMENTING_RECIPES, Textures.FERMENTER_OVERLAY, 1));
         FERMENTER[1] = GregTechAPI.registerMetaTileEntity(281, new SimpleMachineMetaTileEntity(gregtechId("fermenter.mv"), RecipeMaps.FERMENTING_RECIPES, Textures.FERMENTER_OVERLAY, 2));
@@ -368,6 +369,7 @@ public class MetaTileEntities {
         LASER_ENGRAVER[1] = GregTechAPI.registerMetaTileEntity(431, new SimpleMachineMetaTileEntity(gregtechId("laser_engraver.mv"), RecipeMaps.LASER_ENGRAVER_RECIPES, Textures.LASER_ENGRAVER_OVERLAY, 2));
         LASER_ENGRAVER[2] = GregTechAPI.registerMetaTileEntity(432, new SimpleMachineMetaTileEntity(gregtechId("laser_engraver.hv"), RecipeMaps.LASER_ENGRAVER_RECIPES, Textures.LASER_ENGRAVER_OVERLAY, 3));
         LASER_ENGRAVER[3] = GregTechAPI.registerMetaTileEntity(433, new SimpleMachineMetaTileEntity(gregtechId("laser_engraver.ev"), RecipeMaps.LASER_ENGRAVER_RECIPES, Textures.LASER_ENGRAVER_OVERLAY, 4));
+        LASER_ENGRAVER[4] = GregTechAPI.registerMetaTileEntity(434, new SimpleMachineMetaTileEntity(gregtechId("laser_engraver.iv"), RecipeMaps.LASER_ENGRAVER_RECIPES, Textures.LASER_ENGRAVER_OVERLAY, 5));
 
         SIFTER[0] = GregTechAPI.registerMetaTileEntity(450, new SimpleMachineMetaTileEntity(gregtechId("sifter.lv"), RecipeMaps.SIFTER_RECIPES, Textures.SIFTER_OVERLAY, 1));
         SIFTER[1] = GregTechAPI.registerMetaTileEntity(451, new SimpleMachineMetaTileEntity(gregtechId("sifter.mv"), RecipeMaps.SIFTER_RECIPES, Textures.SIFTER_OVERLAY, 2));
@@ -461,8 +463,8 @@ public class MetaTileEntities {
         }
 
         ROTOR_HOLDER[0] = GregTechAPI.registerMetaTileEntity(817, new MetaTileEntityRotorHolder(gregtechId("rotor_holder.hv"), GTValues.HV, 1.0f));
-        ROTOR_HOLDER[1] = GregTechAPI.registerMetaTileEntity(818, new MetaTileEntityRotorHolder(gregtechId("rotor_holder.iv"), GTValues.LuV, 1.21f));
-        ROTOR_HOLDER[2] = GregTechAPI.registerMetaTileEntity(819, new MetaTileEntityRotorHolder(gregtechId("rotor_holder.max"), GTValues.MAX, 1.48f));
+        ROTOR_HOLDER[1] = GregTechAPI.registerMetaTileEntity(818, new MetaTileEntityRotorHolder(gregtechId("rotor_holder.luv"), GTValues.LuV, 1.15f));
+        ROTOR_HOLDER[2] = GregTechAPI.registerMetaTileEntity(819, new MetaTileEntityRotorHolder(gregtechId("rotor_holder.max"), GTValues.MAX, 1.25f));
 
         WOODEN_CHEST = GregTechAPI.registerMetaTileEntity(801, new MetaTileEntityChest(gregtechId("wooden_chest"), Materials.Wood, 27));
         BRONZE_CHEST = GregTechAPI.registerMetaTileEntity(802, new MetaTileEntityChest(gregtechId("bronze_chest"), Materials.Bronze, 45));
