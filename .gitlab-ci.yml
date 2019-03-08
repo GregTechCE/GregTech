@@ -41,6 +41,6 @@ production:
   script: ./gradlew curseforge && ./gradlew bintrayUpload
   when: on_success
   only:
-    - tags
     refs:
       - master
+      - tags
