@@ -16,13 +16,13 @@ increment_build_number:
     TOKEN: ${CI_PIPELINE_IID_TOKEN}
     GITLAB_URL: "https://gitlab.com"
   before_script:
-  - apk add --update curl jq
+    - apk add --update curl jq
   script:
-  - "VAR=$(curl -s -f  --header \"PRIVATE-TOKEN: ${TOKEN}\" \"${GITLAB_URL}/api/v4/projects/${CI_PROJECT_ID}/variables/${VAR_NAME}\" | jq  -r '.value' ) "
-  - let VAR=VAR+1
-  - "curl -s -f --request PUT --header \"PRIVATE-TOKEN: ${TOKEN}\" \"${GITLAB_URL}/api/v4/projects/${CI_PROJECT_ID}/variables/${VAR_NAME}\" --form \"value=${VAR}\" "
+    - "VAR=$(curl -s -f  --header \"PRIVATE-TOKEN: ${TOKEN}\" \"${GITLAB_URL}/api/v4/projects/${CI_PROJECT_ID}/variables/${VAR_NAME}\" | jq  -r '.value' ) "
+    - let VAR=VAR+1
+    - "curl -s -f --request PUT --header \"PRIVATE-TOKEN: ${TOKEN}\" \"${GITLAB_URL}/api/v4/projects/${CI_PROJECT_ID}/variables/${VAR_NAME}\" --form \"value=${VAR}\" "
   only:
-  - master
+    - master
 
 build:
   stage: build
@@ -33,12 +33,14 @@ build:
     - ./gradlew build
   artifacts:
     paths:
-    - build/libs/*.jar
+      - build/libs/*.jar
     expire_in: 1 month
 
 production:
   stage: deploy
   script: ./gradlew curseforge && ./gradlew bintrayUpload
-  when: manual
+  when: on_success
   only:
-  - master
+    - tags
+    refs:
+      - master
