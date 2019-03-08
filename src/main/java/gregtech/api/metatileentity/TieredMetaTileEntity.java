@@ -19,9 +19,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import org.apache.commons.lang3.ArrayUtils;
 
-import javax.annotation.Nonnull;
-
-public abstract class TieredMetaTileEntity extends MetaTileEntity implements IEnergyChangeListener {
+public abstract class TieredMetaTileEntity extends MetaTileEntity implements IEnergyChangeListener, ITieredMetaTileEntity {
 
     private final int tier;
     protected IEnergyContainer energyContainer;
@@ -76,6 +74,7 @@ public abstract class TieredMetaTileEntity extends MetaTileEntity implements IEn
      * Tier of machine determines it's input voltage, storage and generation rate
      * @return tier of this machine
      */
+    @Override
     public int getTier() {
         return tier;
     }
@@ -98,26 +97,4 @@ public abstract class TieredMetaTileEntity extends MetaTileEntity implements IEn
         return false;
     }
 
-    /**
-     * Returns tier less tooltip key
-     * It is generated from getMetaName by removing last part (like: ".lv") and adding ".tooltip" part
-     * @return tier less tooltip key
-     */
-    @Nonnull
-    public final String getTierlessTooltipKey() {
-        String metaName = getMetaName();
-        int lastIndexOfDot = metaName.lastIndexOf('.');
-        String voltageName = lastIndexOfDot == -1 ? null : metaName.substring(lastIndexOfDot + 1);
-        if(isVoltageName(voltageName)) {
-            return metaName.substring(0, lastIndexOfDot);
-        }
-        return metaName;
-    }
-
-    private static boolean isVoltageName(String string) {
-        for(String voltageName : GTValues.VN) {
-            if(voltageName.equalsIgnoreCase(string)) return true;
-        }
-        return false;
-    }
 }

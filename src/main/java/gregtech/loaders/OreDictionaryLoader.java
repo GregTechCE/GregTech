@@ -1,7 +1,6 @@
 package gregtech.loaders;
 
 import gregtech.api.unification.OreDictUnifier;
-import gregtech.api.unification.material.MarkerMaterials;
 import gregtech.api.unification.material.Materials;
 import gregtech.api.unification.ore.OrePrefix;
 import gregtech.api.unification.stack.ItemMaterialInfo;
@@ -29,7 +28,8 @@ public class OreDictionaryLoader {
 
         OreDictUnifier.registerOre(new ItemStack(Blocks.CLAY), OrePrefix.block, Materials.Clay);
         OreDictUnifier.registerOre(new ItemStack(Blocks.BRICK_BLOCK), OrePrefix.block, Materials.Brick);
-        OreDictUnifier.registerOre(new ItemStack(Items.CLAY_BALL, 1, W), OrePrefix.ingot, Materials.Clay);
+        OreDictUnifier.registerOre(new ItemStack(Items.CLAY_BALL), OrePrefix.ingot, Materials.Clay);
+        OreDictUnifier.registerOre(new ItemStack(Items.FLINT), OrePrefix.gem, Materials.Flint);
         OreDictUnifier.registerOre(new ItemStack(Blocks.HARDENED_CLAY, 1, W), new ItemMaterialInfo(new MaterialStack(Materials.Clay, M * 4)));
         OreDictUnifier.registerOre(new ItemStack(Blocks.STAINED_HARDENED_CLAY, 1, W), new ItemMaterialInfo(new MaterialStack(Materials.Clay, M * 4)));
 

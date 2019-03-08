@@ -14,6 +14,7 @@ import gregtech.api.unification.material.Materials;
 import gregtech.api.unification.ore.OrePrefix;
 import gregtech.api.util.RandomPotionEffect;
 import gregtech.common.items.behaviors.ToolPartsBoxBehavior;
+import gregtech.common.items.behaviors.TurbineRotorBehavior;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.init.MobEffects;
@@ -151,6 +152,8 @@ public class MetaItem2 extends MaterialMetaItem {
 
         ENGRAVED_CRYSTAL_CHIP = addItem(502, "engraved.crystal_chip");
         ENGRAVED_LAPOTRON_CHIP = addItem(503, "engraved.lapotron_chip");
+
+        TURBINE_ROTOR = addItem(508, "turbine_rotor").addStats(new TurbineRotorBehavior());
     }
 
     public void registerRecipes() {

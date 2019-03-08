@@ -125,16 +125,8 @@ public interface IToolStats {
      * This lets you modify the Drop List, when this type of Tool has been used.
      * Allows special behaviors like timber axe, leaves cutting, etc
      */
-    default int convertBlockDrops(World world, BlockPos blockPos, IBlockState blockState, EntityPlayer harvester, List<ItemStack> drops, boolean recursive) {
+    default int convertBlockDrops(World world, BlockPos blockPos, IBlockState blockState, EntityPlayer harvester, List<ItemStack> drops, boolean recursive, ItemStack toolStack) {
         return 0; //do not convert anything by default
-    }
-
-    /**
-     * Whether to show basic attributes in addInformation (i.e mining speed and attack damage) call for this tool type.
-     * Returning false will hide these attributes from displaying in tool tooltip.
-     */
-    default boolean showBasicAttributes() {
-        return true;
     }
 
     default void addInformation(ItemStack stack, List<String> lines, boolean isAdvanced) {

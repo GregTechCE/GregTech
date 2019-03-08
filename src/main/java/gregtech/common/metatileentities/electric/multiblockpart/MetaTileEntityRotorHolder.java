@@ -7,16 +7,14 @@ import codechicken.lib.vec.Matrix4;
 import gregtech.api.damagesources.DamageSources;
 import gregtech.api.gui.GuiTextures;
 import gregtech.api.gui.ModularUI;
-import gregtech.api.items.toolitem.ToolMetaItem;
-import gregtech.api.items.toolitem.ToolMetaItem.MetaToolValueItem;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.MetaTileEntityHolder;
 import gregtech.api.metatileentity.multiblock.IMultiblockAbilityPart;
 import gregtech.api.metatileentity.multiblock.MultiblockAbility;
 import gregtech.api.render.Textures;
-import gregtech.api.unification.material.type.SolidMaterial;
+import gregtech.api.unification.material.type.IngotMaterial;
+import gregtech.common.items.behaviors.TurbineRotorBehavior;
 import gregtech.common.metatileentities.multi.electric.generator.MetaTileEntityLargeTurbine;
-import gregtech.common.tools.ITurbineToolStats;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -112,6 +110,9 @@ public class MetaTileEntityRotorHolder extends MetaTileEntityMultiblockPart impl
     }
 
     private boolean onRotorHolderInteract(EntityPlayer player) {
+        if(player.capabilities.isCreativeMode) {
+            return false;
+        }
         if(!getWorld().isRemote && isRotorLooping) {
             double relativeSpeed = getRelativeRotorSpeed();
             float damageApplied = (float) (DAMAGE_PER_INTERACT * relativeSpeed);
@@ -312,53 +313,61 @@ public class MetaTileEntityRotorHolder extends MetaTileEntityMultiblockPart impl
 
         private int getRotorColor() {
             ItemStack itemStack = getStackInSlot(0);
-            if(itemStack.isEmpty() || !(itemStack.getItem() instanceof ToolMetaItem))
+            if(itemStack.isEmpty()) {
                 return -1;
-            SolidMaterial material = ToolMetaItem.getToolMaterial(itemStack);
-            return material == null ? -1 : material.materialRGB;
+            }
+            TurbineRotorBehavior behavior = TurbineRotorBehavior.getInstanceFor(itemStack);
+            if(behavior == null) {
+                return -1;
+            }
+            IngotMaterial material = behavior.getPartMaterial(itemStack);
+            return material.materialRGB;
         }
 
         public double getRotorEfficiency() {
             ItemStack itemStack = getStackInSlot(0);
-            if(itemStack.isEmpty() || !(itemStack.getItem() instanceof ToolMetaItem))
+            if(itemStack.isEmpty()) {
                 return 0.0;
-            ToolMetaItem<?> metaTool = (ToolMetaItem<?>) itemStack.getItem();
-            MetaToolValueItem toolType = metaTool.getItem(itemStack);
-            if(!(toolType.getToolStats() instanceof ITurbineToolStats))
-                return 0.0;
-            ITurbineToolStats turbineToolStats = (ITurbineToolStats) toolType.getToolStats();
-            return turbineToolStats.getRotorEfficiency(itemStack);
+            }
+            TurbineRotorBehavior turbineRotorBehavior = TurbineRotorBehavior.getInstanceFor(itemStack);
+            if(turbineRotorBehavior != null) {
+                return turbineRotorBehavior.getRotorEfficiency(itemStack);
+            }
+            return 0.0;
         }
 
         public double getRotorDamagePercentage() {
             ItemStack itemStack = getStackInSlot(0);
-            if(itemStack.isEmpty() || !(itemStack.getItem() instanceof ToolMetaItem))
+            if(itemStack.isEmpty()) {
                 return 0.0;
-            ToolMetaItem<?> metaTool = (ToolMetaItem<?>) itemStack.getItem();
-            return metaTool.getInternalDamage(itemStack) / (metaTool.getMaxInternalDamage(itemStack) * 1.0);
+            }
+            TurbineRotorBehavior turbineRotorBehavior = TurbineRotorBehavior.getInstanceFor(itemStack);
+            if(turbineRotorBehavior != null) {
+                return turbineRotorBehavior.getPartDamage(itemStack) / (turbineRotorBehavior.getPartMaxDurability(itemStack) * 1.0);
+            }
+            return 0.0;
         }
 
         public boolean applyDamageToRotor(int damageAmount, boolean simulate) {
             ItemStack itemStack = getStackInSlot(0);
-            if(itemStack.isEmpty() || !(itemStack.getItem() instanceof ToolMetaItem))
+            if(itemStack.isEmpty()) {
                 return false;
-            ToolMetaItem<?> metaTool = (ToolMetaItem<?>) itemStack.getItem();
-            boolean value = metaTool.doDamageToItem(itemStack, damageAmount, simulate);
-            if(!simulate && value) {
-                setStackInSlot(0, itemStack);
             }
-            return value;
+            TurbineRotorBehavior turbineRotorBehavior = TurbineRotorBehavior.getInstanceFor(itemStack);
+            if(turbineRotorBehavior != null) {
+                if(!simulate) {
+                    turbineRotorBehavior.applyRotorDamage(itemStack, damageAmount);
+                }
+                return true;
+            }
+            return false;
         }
 
         @Nonnull
         @Override
         public ItemStack insertItem(int slot, @Nonnull ItemStack stack, boolean simulate) {
-            if(stack.getItem() instanceof ToolMetaItem) {
-                ToolMetaItem<?> metaTool = (ToolMetaItem<?>) stack.getItem();
-                MetaToolValueItem toolType = metaTool.getItem(stack);
-                if(toolType.getToolStats() instanceof ITurbineToolStats) {
-                    return super.insertItem(slot, stack, simulate);
-                }
+            if(TurbineRotorBehavior.getInstanceFor(stack) != null) {
+                return super.insertItem(slot, stack, simulate);
             }
             return stack;
         }

@@ -158,18 +158,6 @@ public class ToolRecipeHandler {
         }
 
         if (material.hasFlag(GENERATE_PLATE | GENERATE_ROD | GENERATE_BOLT_SCREW) && material.toolDurability > 0) {
-            for (MetaValueItem batteryItem : batteryItems[0]) {
-                ItemStack batteryStack = batteryItem.getStackForm();
-                long maxCharge = batteryStack.getCapability(GregtechCapabilities.CAPABILITY_ELECTRIC_ITEM, null).getMaxCharge();
-                ModHandler.addShapedIngredientAwareRecipe(String.format("soldering_iron_lv_%s_%s", material.toString(), batteryItem.unlocalizedName),
-                    MetaItems.SOLDERING_IRON_LV.getMaxChargeOverrideStack(material, maxCharge),
-                    "LBf", "Sd ", "P  ",
-                    'B', new UnificationEntry(OrePrefix.bolt, material),
-                    'P', new UnificationEntry(OrePrefix.plate, material),
-                    'S', new UnificationEntry(OrePrefix.stick, Materials.Iron),
-                    'L', batteryStack);
-            }
-
             ModHandler.addShapedRecipe(String.format("wire_cutter_%s", material.toString()),
                 MetaItems.WIRE_CUTTER.getStackForm(material),
                 "PfP", "hPd", "STS",

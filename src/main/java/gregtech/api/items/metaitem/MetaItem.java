@@ -406,14 +406,18 @@ public abstract class MetaItem<T extends MetaItem<?>.MetaValueItem> extends Item
             if(item == null) {
                 return "unnamed";
             }
+            String unlocalizedName = String.format("metaitem.%s.name", item.unlocalizedName);
+            if(item.getNameProvider() != null) {
+                return item.getNameProvider().getItemStackDisplayName(stack, unlocalizedName);
+            }
             IFluidHandlerItem fluidHandlerItem = ItemHandlerHelper.copyStackWithSize(stack, 1)
                 .getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY, null);
             if(fluidHandlerItem != null) {
                 FluidStack fluidInside = fluidHandlerItem.drain(Integer.MAX_VALUE, false);
                 String name = fluidInside == null ? "metaitem.fluid_cell.empty" : fluidInside.getUnlocalizedName();
-                return I18n.format("metaitem." + item.unlocalizedName + ".name", I18n.format(name));
+                return I18n.format(unlocalizedName, I18n.format(name));
             }
-            return I18n.format("metaitem." + item.unlocalizedName + ".name");
+            return I18n.format(unlocalizedName);
         }
         return super.getItemStackDisplayName(stack);
     }
@@ -537,6 +541,7 @@ public abstract class MetaItem<T extends MetaItem<?>.MetaValueItem> extends Item
         private IItemColorProvider colorProvider;
         private IItemModelIndexProvider modelIndexProvider;
         private IItemContainerItemProvider containerItemProvider;
+        private IItemNameProvider nameProvider;
 
         private int burnValue = 0;
         private boolean visible = true;
@@ -632,6 +637,9 @@ public abstract class MetaItem<T extends MetaItem<?>.MetaValueItem> extends Item
                 if(metaItemStats instanceof IItemModelIndexProvider)
                     this.modelIndexProvider = (IItemModelIndexProvider) metaItemStats;
 
+                if(metaItemStats instanceof IItemNameProvider)
+                    this.nameProvider = (IItemNameProvider) metaItemStats;
+
                 if(metaItemStats instanceof IItemContainerItemProvider)
                     this.containerItemProvider = (IItemContainerItemProvider) metaItemStats;
 
@@ -673,6 +681,11 @@ public abstract class MetaItem<T extends MetaItem<?>.MetaValueItem> extends Item
         @Nullable
         public IItemColorProvider getColorProvider() {
             return colorProvider;
+        }
+
+        @Nullable
+        public IItemNameProvider getNameProvider() {
+            return nameProvider;
         }
 
         @Nullable

@@ -16,12 +16,9 @@ import stanhebben.zenscript.annotations.*;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
+import java.util.*;
 import java.util.AbstractMap.SimpleEntry;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
 import java.util.Map.Entry;
-import java.util.TreeMap;
 
 import static gregtech.api.util.GTUtility.createFlag;
 
@@ -227,7 +224,7 @@ public abstract class Material implements Comparable<Material> {
 
 	@ZenMethod
 	public void addFlags(String... flagNames) {
-        addFlag(convertMaterialFlags(getClass(), flagNames));
+	    addFlag(convertMaterialFlags(getClass(), flagNames));
     }
 
     public static long convertMaterialFlags(Class<? extends Material> materialClass, String... flagNames) {

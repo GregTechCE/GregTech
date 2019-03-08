@@ -45,7 +45,6 @@ public class FluidMaterial extends Material {
         static {
             Material.MatFlags.registerMaterialFlagsHolder(MatFlags.class, FluidMaterial.class);
         }
-
     }
 
     /**

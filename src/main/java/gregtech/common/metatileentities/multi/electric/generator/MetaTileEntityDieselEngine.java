@@ -29,7 +29,7 @@ import java.util.function.Predicate;
 public class MetaTileEntityDieselEngine extends FueledMultiblockController {
 
     public MetaTileEntityDieselEngine(ResourceLocation metaTileEntityId) {
-        super(metaTileEntityId, RecipeMaps.DIESEL_GENERATOR_FUELS, GTValues.V[4]);
+        super(metaTileEntityId, RecipeMaps.DIESEL_GENERATOR_FUELS, GTValues.V[GTValues.EV]);
     }
 
     @Override

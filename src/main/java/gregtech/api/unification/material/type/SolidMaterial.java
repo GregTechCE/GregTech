@@ -36,7 +36,6 @@ public abstract class SolidMaterial extends DustMaterial {
         static {
             Material.MatFlags.registerMaterialFlagsHolder(MatFlags.class, SolidMaterial.class);
         }
-
     }
 
     /**

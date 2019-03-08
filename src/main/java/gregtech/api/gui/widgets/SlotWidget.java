@@ -30,6 +30,7 @@ public class SlotWidget extends Widget implements INativeWidget {
     protected boolean isPlayerInventory;
 
     protected TextureArea[] backgroundTexture;
+    protected Runnable changeListener;
 
     public SlotWidget(IItemHandlerModifiable itemHandler, int slotIndex, int xPosition, int yPosition, boolean canTakeItems, boolean canPutItems) {
         super();
@@ -39,6 +40,11 @@ public class SlotWidget extends Widget implements INativeWidget {
         this.yPosition = yPosition;
         this.canTakeItems = canTakeItems;
         this.canPutItems = canPutItems;
+    }
+
+    public SlotWidget setChangeListener(Runnable changeListener) {
+        this.changeListener = changeListener;
+        return this;
     }
 
     @Override
@@ -116,6 +122,14 @@ public class SlotWidget extends Widget implements INativeWidget {
             @Override
             public boolean canTakeStack(EntityPlayer playerIn) {
                 return SlotWidget.this.canTakeStack(playerIn) && super.canTakeStack(playerIn);
+            }
+
+            @Override
+            public void putStack(@Nonnull ItemStack stack) {
+                super.putStack(stack);
+                if(changeListener != null) {
+                    changeListener.run();
+                }
             }
 
             @Override

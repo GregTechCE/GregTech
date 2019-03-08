@@ -2,8 +2,8 @@ package gregtech.api.block.machines;
 
 import gregtech.api.GTValues;
 import gregtech.api.GregTechAPI;
+import gregtech.api.metatileentity.ITieredMetaTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
-import gregtech.api.metatileentity.TieredMetaTileEntity;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
@@ -69,8 +69,8 @@ public class MachineItemBlock extends ItemBlock {
         }
 
         //tier less tooltip for a electric machine like: gregtech.machine.lathe.tooltip
-        if (metaTileEntity instanceof TieredMetaTileEntity) {
-            String tierlessTooltipLocale = ((TieredMetaTileEntity) metaTileEntity).getTierlessTooltipKey();
+        if (metaTileEntity instanceof ITieredMetaTileEntity) {
+            String tierlessTooltipLocale = ((ITieredMetaTileEntity) metaTileEntity).getTierlessTooltipKey();
             //only add tierless tooltip if it's key is not equal to normal tooltip key (i.e if machine name has dot in it's name)
             //case when it's not true would be any machine extending from TieredMetaTileEntity but having only one tier
             if (!tooltipLocale.equals(tierlessTooltipLocale) && I18n.hasKey(tierlessTooltipLocale)) {

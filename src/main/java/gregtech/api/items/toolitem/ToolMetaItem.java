@@ -319,11 +319,10 @@ public class ToolMetaItem<T extends ToolMetaItem<?>.MetaToolValueItem> extends M
     }
 
     public int regainItemDurability(ItemStack itemStack, int maxDurabilityRegain) {
-        int resultRegain = maxDurabilityRegain * 10;
         int toolDamage = getInternalDamage(itemStack);
-        int durabilityRegained = Math.min(toolDamage, resultRegain);
+        int durabilityRegained = Math.min(toolDamage, maxDurabilityRegain);
         setInternalDamage(itemStack, toolDamage - durabilityRegained);
-        return (int) Math.ceil(durabilityRegained / 10.0);
+        return durabilityRegained;
     }
 
     private static int calculateToolDamage(ItemStack itemStack, Random random, int amount) {
@@ -379,15 +378,12 @@ public class ToolMetaItem<T extends ToolMetaItem<?>.MetaToolValueItem> extends M
         IToolStats toolStats = item.getToolStats();
         SolidMaterial primaryMaterial = getToolMaterial(itemStack);
         int maxInternalDamage = getMaxInternalDamage(itemStack);
-
         if (maxInternalDamage > 0) {
             lines.add(I18n.format("metaitem.tool.tooltip.durability", maxInternalDamage - getInternalDamage(itemStack), maxInternalDamage));
         }
         lines.add(I18n.format("metaitem.tool.tooltip.primary_material", primaryMaterial.getLocalizedName(), getHarvestLevel(itemStack)));
-        if (toolStats.showBasicAttributes()) {
-            lines.add(I18n.format("metaitem.tool.tooltip.attack_damage", toolStats.getBaseDamage(itemStack) + primaryMaterial.harvestLevel));
-            lines.add(I18n.format("metaitem.tool.tooltip.mining_speed", getToolDigSpeed(itemStack)));
-        }
+        lines.add(I18n.format("metaitem.tool.tooltip.attack_damage", toolStats.getBaseDamage(itemStack) + primaryMaterial.harvestLevel));
+        lines.add(I18n.format("metaitem.tool.tooltip.mining_speed", getToolDigSpeed(itemStack)));
         super.addInformation(itemStack, worldIn, lines, tooltipFlag);
         toolStats.addInformation(itemStack, lines, tooltipFlag.isAdvanced());
     }
@@ -523,12 +519,16 @@ public class ToolMetaItem<T extends ToolMetaItem<?>.MetaToolValueItem> extends M
         return getInternalDamage(itemStack) < getMaxInternalDamage(itemStack);
     }
 
-    protected static NBTTagCompound getToolStatsTag(ItemStack itemStack) {
+    public static NBTTagCompound getToolStatsTag(ItemStack itemStack) {
         return itemStack.getSubCompound("GT.ToolStats");
     }
 
-    protected static NBTTagCompound getOrCreateToolStatsTag(ItemStack itemStack) {
+    public static NBTTagCompound getOrCreateToolStatsTag(ItemStack itemStack) {
         return itemStack.getOrCreateSubCompound("GT.ToolStats");
+    }
+
+    public static void setToolStatsTag(ItemStack itemStack, NBTTagCompound tagCompound) {
+        itemStack.setTagInfo("GT.ToolStats", tagCompound);
     }
 
     public static SolidMaterial getToolMaterial(ItemStack itemStack) {
@@ -554,6 +554,7 @@ public class ToolMetaItem<T extends ToolMetaItem<?>.MetaToolValueItem> extends M
     public class MetaToolValueItem extends MetaValueItem {
 
         protected IToolStats toolStats;
+        protected double amountOfMaterialToRepair;
 
         private MetaToolValueItem(int metaValue, String unlocalizedName) {
             super(metaValue, unlocalizedName);
@@ -568,6 +569,11 @@ public class ToolMetaItem<T extends ToolMetaItem<?>.MetaToolValueItem> extends M
                 }
             }
             super.addStats(stats);
+            return this;
+        }
+
+        public MetaToolValueItem setFullRepairCost(double amountOfMaterialToRepair) {
+            this.amountOfMaterialToRepair = amountOfMaterialToRepair;
             return this;
         }
 
@@ -601,6 +607,10 @@ public class ToolMetaItem<T extends ToolMetaItem<?>.MetaToolValueItem> extends M
                 throw new IllegalStateException("Someone forgot to assign toolStats to MetaToolValueItem.");
             }
             return toolStats;
+        }
+
+        public double getAmountOfMaterialToRepair(ItemStack toolStack) {
+            return amountOfMaterialToRepair;
         }
 
         @Override

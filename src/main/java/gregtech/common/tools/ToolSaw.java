@@ -46,7 +46,7 @@ public class ToolSaw extends ToolBase {
     }
 
     @Override
-    public int convertBlockDrops(World world, BlockPos blockPos, IBlockState blockState, EntityPlayer harvester, List<ItemStack> drops, boolean recursive) {
+    public int convertBlockDrops(World world, BlockPos blockPos, IBlockState blockState, EntityPlayer harvester, List<ItemStack> drops, boolean recursive, ItemStack toolStack) {
         int shearableResult = ToolUtility.applyShearable(world, blockPos, blockState, drops, harvester);
         if(shearableResult > 0) {
             //if shearing was successful, then just return it's result

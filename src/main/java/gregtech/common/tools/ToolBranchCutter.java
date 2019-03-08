@@ -33,7 +33,7 @@ public class ToolBranchCutter extends ToolBase {
     }
 
     @Override
-    public int convertBlockDrops(World world, BlockPos blockPos, IBlockState blockState, EntityPlayer harvester, List<ItemStack> drops, boolean recursive) {
+    public int convertBlockDrops(World world, BlockPos blockPos, IBlockState blockState, EntityPlayer harvester, List<ItemStack> drops, boolean recursive, ItemStack toolStack) {
         if (blockState.getBlock().isLeaves(blockState, world, blockPos)) {
             drops.clear(); //clear previous drops to avoid possible issues
             NonNullList<ItemStack> dropsNonNull = NonNullList.create();

@@ -130,6 +130,9 @@ public class IngotMaterial extends SolidMaterial {
         if((generationBits & GENERATE_SMALL_GEAR) > 0) {
             generationBits |= GENERATE_PLATE;
         }
+        if((generationBits & GENERATE_FINE_WIRE) > 0) {
+            generationBits |= GENERATE_FOIL;
+        }
         if((generationBits & GENERATE_FOIL) > 0) {
             generationBits |= GENERATE_PLATE;
         }

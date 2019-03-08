@@ -61,7 +61,6 @@ public class DustMaterial extends FluidMaterial {
         static {
             Material.MatFlags.registerMaterialFlagsHolder(MatFlags.class, DustMaterial.class);
         }
-
     }
 
 

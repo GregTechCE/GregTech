@@ -322,6 +322,8 @@ public final class MetaItems {
     public static MetaItem<?>.MetaValueItem[] DYE_ONLY_ITEMS = new MetaItem.MetaValueItem[EnumDyeColor.values().length];
     public static MetaItem<?>.MetaValueItem[] SPRAY_CAN_DYES = new MetaItem.MetaValueItem[EnumDyeColor.values().length];
 
+    public static MetaItem<?>.MetaValueItem TURBINE_ROTOR;
+
     public static ToolMetaItem<?>.MetaToolValueItem SWORD;
     public static ToolMetaItem<?>.MetaToolValueItem PICKAXE;
     public static ToolMetaItem<?>.MetaToolValueItem SHOVEL;
@@ -356,8 +358,6 @@ public final class MetaItems {
     public static ToolMetaItem<?>.MetaToolValueItem JACKHAMMER;
     public static ToolMetaItem<?>.MetaToolValueItem BUZZSAW;
     public static ToolMetaItem<?>.MetaToolValueItem SCREWDRIVER_LV;
-    public static ToolMetaItem<?>.MetaToolValueItem SOLDERING_IRON_LV;
-    public static ToolMetaItem<?>.MetaToolValueItem TURBINE;
     public static ToolMetaItem<?>.MetaToolValueItem MAGNIFYING_GLASS;
 
     public static void init() {

@@ -72,7 +72,7 @@ public class ToolJackHammer extends ToolDrillLV {
     }
 
     @Override
-    public int convertBlockDrops(World world, BlockPos centerPos, IBlockState blockState, EntityPlayer harvester, List<ItemStack> drops, boolean recursive) {
+    public int convertBlockDrops(World world, BlockPos centerPos, IBlockState blockState, EntityPlayer harvester, List<ItemStack> drops, boolean recursive, ItemStack toolStack) {
         int conversionsApplied = 0;
         EnumFacing sideHit = ToolUtility.getSideHit(world, centerPos, harvester);
         ItemStack selfStack = harvester.getHeldItem(EnumHand.MAIN_HAND);

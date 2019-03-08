@@ -13,6 +13,7 @@ import gregtech.api.gui.widgets.FluidContainerSlotWidget;
 import gregtech.api.gui.widgets.ImageWidget;
 import gregtech.api.gui.widgets.SlotWidget;
 import gregtech.api.gui.widgets.TankWidget;
+import gregtech.api.metatileentity.ITieredMetaTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.MetaTileEntityHolder;
 import gregtech.api.render.Textures;
@@ -36,11 +37,10 @@ import net.minecraftforge.fluids.capability.IFluidHandlerItem;
 import net.minecraftforge.items.ItemStackHandler;
 import org.apache.commons.lang3.ArrayUtils;
 
-import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.List;
 
-public class MetaTileEntityQuantumTank extends MetaTileEntity {
+public class MetaTileEntityQuantumTank extends MetaTileEntity implements ITieredMetaTileEntity {
 
     private static final double[] rotations = new double[] {180.0, 0.0, -90.0, 90.0};
 
@@ -55,6 +55,11 @@ public class MetaTileEntityQuantumTank extends MetaTileEntity {
         this.maxFluidCapacity = maxFluidCapacity;
         this.containerInventory = new ItemStackHandler(2);
         initializeInventory();
+    }
+
+    @Override
+    public int getTier() {
+        return tier;
     }
 
     @Override
@@ -164,7 +169,6 @@ public class MetaTileEntityQuantumTank extends MetaTileEntity {
     @Override
     public void addInformation(ItemStack stack, @Nullable World player, List<String> tooltip, boolean advanced) {
         super.addInformation(stack, player, tooltip, advanced);
-        tooltip.add(I18n.format(getTierlessTooltipKey()));
         tooltip.add(I18n.format("gregtech.machine.quantum_tank.capacity", maxFluidCapacity));
     }
 
@@ -186,13 +190,5 @@ public class MetaTileEntityQuantumTank extends MetaTileEntity {
                 .setBackgroundTexture(GuiTextures.SLOT, GuiTextures.OUT_SLOT_OVERLAY))
             .bindPlayerInventory(entityPlayer.inventory)
             .build(getHolder(), entityPlayer);
-    }
-
-    @Nonnull
-    public final String getTierlessTooltipKey() {
-        String metaName = getMetaName();
-        int lastIndexOfDot = metaName.lastIndexOf('.');
-        String subName = lastIndexOfDot == -1 ? metaName : metaName.substring(0, lastIndexOfDot);
-        return subName + ".tooltip";
     }
 }

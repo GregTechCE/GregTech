@@ -20,11 +20,11 @@ public class LargeTurbineWorkableHandler extends FuelRecipeMapWorkableHandler {
 
     private static final int CYCLE_LENGTH = 230;
     private static final int BASE_ROTOR_DAMAGE = 11;
-    private static final int BASE_EU_OUTPUT = 2048;
-    private static final int EU_OUTPUT_BONUS = 6144;
+    private static final int BASE_EU_OUTPUT = 8192;
+    private static final int EU_OUTPUT_BONUS = 8192;
 
     private MetaTileEntityLargeTurbine largeTurbine;
-    private int rotorCycleLength = 0;
+    private int rotorCycleLength = CYCLE_LENGTH;
 
     public LargeTurbineWorkableHandler(MetaTileEntityLargeTurbine metaTileEntity, FuelRecipeMap recipeMap, Supplier<IEnergyContainer> energyContainer, Supplier<IMultipleTankHandler> fluidTank, long maxVoltage) {
         super(metaTileEntity, recipeMap, energyContainer, fluidTank, maxVoltage);
@@ -51,9 +51,11 @@ public class LargeTurbineWorkableHandler extends FuelRecipeMapWorkableHandler {
     public boolean checkRecipe(FuelRecipe recipe) {
         MetaTileEntityRotorHolder rotorHolder = largeTurbine.getAbilities(MetaTileEntityLargeTurbine.ABILITY_ROTOR_HOLDER).get(0);
         if(++rotorCycleLength >= CYCLE_LENGTH) {
-            this.rotorCycleLength = 0;
             int damageToBeApplied = (int) Math.round(BASE_ROTOR_DAMAGE * rotorHolder.getRelativeRotorSpeed()) + 1;
-            rotorHolder.applyDamageToRotor(damageToBeApplied, true);
+            if(rotorHolder.applyDamageToRotor(damageToBeApplied, false)) {
+                this.rotorCycleLength = 0;
+                return true;
+            } else return false;
         }
         return true;
     }

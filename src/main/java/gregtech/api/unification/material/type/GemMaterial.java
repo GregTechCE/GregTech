@@ -5,15 +5,12 @@ import gregtech.api.unification.Element;
 import gregtech.api.unification.material.MaterialIconSet;
 import gregtech.api.unification.stack.MaterialStack;
 
+import static gregtech.api.unification.material.type.DustMaterial.MatFlags.GENERATE_PLATE;
 import static gregtech.api.util.GTUtility.createFlag;
 
 public class GemMaterial extends SolidMaterial {
 
     public static final class MatFlags {
-
-        static {
-            Material.MatFlags.registerMaterialFlagsHolder(MatFlags.class, GemMaterial.class);
-        }
 
         /**
          * If this material is crystallisable
@@ -24,6 +21,9 @@ public class GemMaterial extends SolidMaterial {
 
         public static final long HIGH_SIFTER_OUTPUT = createFlag(38);
 
+        static {
+            Material.MatFlags.registerMaterialFlagsHolder(MatFlags.class, GemMaterial.class);
+        }
     }
 
     public GemMaterial(int metaItemSubId, String name, int materialRGB, MaterialIconSet materialIconSet, int harvestLevel, ImmutableList<MaterialStack> materialComponents, long materialGenerationFlags, Element element, float toolSpeed, float attackDamage, int toolDurability) {
@@ -38,7 +38,12 @@ public class GemMaterial extends SolidMaterial {
         super(metaItemSubId, name, materialRGB, materialIconSet, harvestLevel, materialComponents, materialGenerationFlags, null, 0, 0, 0);
     }
 
-
-
+    @Override
+    protected long verifyMaterialBits(long generationBits) {
+        if((generationBits & MatFlags.GENERATE_LENSE) > 0) {
+            generationBits |= GENERATE_PLATE;
+        }
+        return super.verifyMaterialBits(generationBits);
+    }
 }
 

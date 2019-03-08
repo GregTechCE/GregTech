@@ -1,5 +1,14 @@
 ## Changelog
 
+### 1.6.2
+* Reworked chests. Re-implemented visuals, increased capacities.
+* Added machine recipes for metal frames.
+* Added surface block populator for custom indicators support for ores.
+* Buff rotor efficiencies a bit more. Reworked rotor items.
+* Implemented fortune support for hard hammers.
+* Implemented anvil tool repairing.
+* Fix many issues related to previous major beta version release.
+
 ### 1.6.0
 * Merge GA chemistry into master.
 * New circuits inspired by GA.

@@ -647,8 +647,8 @@ metaitem.tool.screwdriver.lv.name=%s Screwdriver (LV)
 metaitem.tool.screwdriver.lv.tooltip=Adjusts Covers and Machines
 metaitem.tool.soldering_iron.lv.name=%s Soldering Iron (LV)
 metaitem.tool.soldering_iron.lv.tooltip=Fixes burned out Circuits. Needs soldering materials in inventory and 10kEU
-metaitem.tool.turbine.name=%s Turbine Rotor
-metaitem.tool.turbine.tooltip=Turbine Rotors for your power station
+metaitem.turbine_rotor.name=%s Turbine Rotor
+metaitem.turbine_rotor.tooltip=Turbine Rotors for your power station
 metaitem.tool.magnifying_glass.name=%s Magnifying Glass
 
 metaitem.tool.tooltip.primary_material=Material: %s (%s lvl)
