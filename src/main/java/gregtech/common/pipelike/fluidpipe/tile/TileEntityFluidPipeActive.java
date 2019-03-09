@@ -60,7 +60,7 @@ public class TileEntityFluidPipeActive extends TileEntityFluidPipe implements IT
                 continue; //do not dispatch energy to blocked sides
             }
             blockPos.setPos(pipeTile.getPipePos()).move(side);
-            if(pipeTile.getPipeWorld().isBlockLoaded(blockPos)) {
+            if(!pipeTile.getPipeWorld().isBlockLoaded(blockPos)) {
                 continue; //do not allow cables to load chunks
             }
             TileEntity tileEntity = pipeTile.getPipeWorld().getTileEntity(blockPos);
