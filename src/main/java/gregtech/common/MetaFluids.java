@@ -83,6 +83,7 @@ public class MetaFluids {
         //alternative names for forestry fluids
         setAlternativeFluidName(Materials.Ethanol, FluidType.NORMAL, "bio.ethanol");
         setAlternativeFluidName(Materials.Honey, FluidType.NORMAL, "for.honey");
+        setAlternativeFluidName(Materials.SeedOil, FluidType.NORMAL, "seed.oil");
 
         setDefaultTexture(Materials.Air, FluidType.NORMAL);
         setDefaultTexture(Materials.Oxygen, FluidType.NORMAL);
