@@ -49,8 +49,10 @@ public abstract class TieredMetaTileEntity extends MetaTileEntity implements IEn
     }
 
     @Override
-    public void onEnergyChanged(IEnergyContainer container) {
-        updateComparatorValue(true);
+    public void onEnergyChanged(IEnergyContainer container, boolean isInitialChange) {
+        if(!isInitialChange) {
+            updateComparatorValue(true);
+        }
     }
 
     @SideOnly(Side.CLIENT)

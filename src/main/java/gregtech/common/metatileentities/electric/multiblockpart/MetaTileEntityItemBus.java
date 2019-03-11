@@ -5,6 +5,8 @@ import codechicken.lib.render.pipeline.IVertexOperation;
 import codechicken.lib.vec.Matrix4;
 import gregtech.api.gui.GuiTextures;
 import gregtech.api.gui.ModularUI;
+import gregtech.api.gui.ModularUI.Builder;
+import gregtech.api.gui.widgets.SlotWidget;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.MetaTileEntityHolder;
 import gregtech.api.metatileentity.multiblock.IMultiblockAbilityPart;
@@ -25,8 +27,7 @@ import java.util.List;
 
 public class MetaTileEntityItemBus extends MetaTileEntityMultiblockPart implements IMultiblockAbilityPart<IItemHandlerModifiable> {
 
-    private static final int[] INVENTORY_SIZES = {1, 4, 9, 16};
-
+    private static final int[] INVENTORY_SIZES = {1, 4, 9, 16, 25, 36, 49};
     private final boolean isExportHatch;
 
     public MetaTileEntityItemBus(ResourceLocation metaTileEntityId, int tier, boolean isExportHatch) {
@@ -87,13 +88,20 @@ public class MetaTileEntityItemBus extends MetaTileEntityMultiblockPart implemen
 
     @Override
     protected ModularUI createUI(EntityPlayer entityPlayer) {
-        return ModularUI.defaultBuilder()
-            .label(6, 6, getMetaFullName())
-            .squareOfSlots(isExportHatch ? exportItems : importItems, 0, getInventorySize(),
-                true, !isExportHatch,
-                GuiTextures.SLOT, isExportHatch ? GuiTextures.ARROW_OUTPUT_OVERLAY : GuiTextures.ARROW_INPUT_OVERLAY)
-            .bindPlayerInventory(entityPlayer.inventory)
-            .build(getHolder(), entityPlayer);
+        int rowSize = (int) Math.sqrt(getInventorySize());
+        Builder builder = ModularUI.builder(GuiTextures.BACKGROUND, 176,
+            18 + 18 * rowSize + 94)
+            .label(10, 5, getMetaFullName());
+
+        for (int y = 0; y < rowSize; y++) {
+            for (int x = 0; x < rowSize; x++) {
+                int index = y * rowSize + x;
+                builder.widget(new SlotWidget(isExportHatch ? exportItems : importItems, index, 89 - rowSize * 9 + x * 18, 18 + y * 18, true, !isExportHatch)
+                    .setBackgroundTexture(GuiTextures.SLOT));
+            }
+        }
+        builder.bindPlayerInventory(entityPlayer.inventory, GuiTextures.SLOT, 8, 18 + 18 * rowSize + 12);
+        return builder.build(getHolder(), entityPlayer);
     }
 
     @Override

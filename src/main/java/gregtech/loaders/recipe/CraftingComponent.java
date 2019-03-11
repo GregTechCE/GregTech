@@ -36,12 +36,6 @@ public enum CraftingComponent {
             }
         }
     },
-    BETTER_CIRCUIT {
-        @Override
-        Object getIngredient(int tier) {
-            return CIRCUIT.getIngredient(tier + 1);
-        }
-    },
     PUMP {
         @Override
         Object getIngredient(int tier) {

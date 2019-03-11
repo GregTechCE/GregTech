@@ -63,7 +63,11 @@ public class MetaTileEntityAirCollector extends TieredMetaTileEntity {
         super.renderMetaTileEntity(renderState, translation, pipeline);
         EnumFacing frontFacing = getFrontFacing();
         for(EnumFacing side : EnumFacing.VALUES) {
-            Textures.FILTER_OVERLAY.renderSided(side, renderState, translation, pipeline);
+            if(side.getAxis().isHorizontal()) {
+                Textures.AIR_VENT_OVERLAY.renderSided(side, renderState, translation, pipeline);
+            } else {
+                Textures.FILTER_OVERLAY.renderSided(side, renderState, translation, pipeline);
+            }
         }
         Textures.PIPE_OUT_OVERLAY.renderSided(frontFacing, renderState, translation, pipeline);
     }

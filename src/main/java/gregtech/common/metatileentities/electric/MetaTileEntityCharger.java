@@ -5,6 +5,8 @@ import gregtech.api.capability.GregtechCapabilities;
 import gregtech.api.capability.IElectricItem;
 import gregtech.api.gui.GuiTextures;
 import gregtech.api.gui.ModularUI;
+import gregtech.api.gui.ModularUI.Builder;
+import gregtech.api.gui.widgets.SlotWidget;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.MetaTileEntityHolder;
 import gregtech.api.metatileentity.TieredMetaTileEntity;
@@ -89,11 +91,20 @@ public class MetaTileEntityCharger extends TieredMetaTileEntity {
 
     @Override
     protected ModularUI createUI(EntityPlayer entityPlayer) {
-        return ModularUI.defaultBuilder()
-            .label(6, 6, getMetaFullName())
-            .squareOfSlots(importItems, 0, inventorySize, true, true, GuiTextures.SLOT, GuiTextures.CHARGER_OVERLAY)
-            .bindPlayerInventory(entityPlayer.inventory)
-            .build(getHolder(), entityPlayer);
+        int rowSize = (int) Math.sqrt(inventorySize);
+        Builder builder = ModularUI.builder(GuiTextures.BACKGROUND, 176,
+            18 + 18 * rowSize + 94)
+            .label(10, 5, getMetaFullName());
+
+        for (int y = 0; y < rowSize; y++) {
+            for (int x = 0; x < rowSize; x++) {
+                int index = y * rowSize + x;
+                builder.widget(new SlotWidget(importItems, index, 89 - rowSize * 9 + x * 18, 18 + y * 18, true, true)
+                    .setBackgroundTexture(GuiTextures.SLOT, GuiTextures.CHARGER_OVERLAY));
+            }
+        }
+        builder.bindPlayerInventory(entityPlayer.inventory, GuiTextures.SLOT, 8, 18 + 18 * rowSize + 12);
+        return builder.build(getHolder(), entityPlayer);
     }
 
     @Override

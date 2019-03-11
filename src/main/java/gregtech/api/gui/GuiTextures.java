@@ -32,7 +32,6 @@ public class GuiTextures {
     public static final TextureArea TANK_ICON = TextureArea.fullImage("textures/gui/base/tank_icon.png");
 
     //WIDGET UI RELATED
-    public static final TextureArea SLIDER_BACKGROUND_ROW = TextureArea.fullImage("textures/gui/widget/slider_background_row.png");
     public static final TextureArea SLIDER_BACKGROUND = TextureArea.fullImage("textures/gui/widget/slider_background.png");
     public static final TextureArea SLIDER_ICON = TextureArea.fullImage("textures/gui/widget/slider.png");
 

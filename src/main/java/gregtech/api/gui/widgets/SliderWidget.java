@@ -42,7 +42,6 @@ public class SliderWidget extends Widget {
     public boolean isMouseDown;
 
     public SliderWidget(String name, int xPosition, int yPosition, int width, int height, float min, float max, float currentValue, FloatConsumer responder) {
-        super();
         Preconditions.checkNotNull(responder, "responder");
         Preconditions.checkNotNull(name, "name");
         this.xPosition = xPosition;

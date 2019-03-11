@@ -40,7 +40,7 @@ public class MetaItem2 extends MaterialMetaItem {
         GELLED_TOLUENE = addItem(10, "gelled_toluene");
 
         IItemContainerItemProvider selfContainerItemProvider = itemStack -> itemStack;
-        WOODEN_FORM_EMPTY = addItem(11, "wooden_form.empty").addStats(selfContainerItemProvider);
+        WOODEN_FORM_EMPTY = addItem(11, "wooden_form.empty");
         WOODEN_FORM_BRICK = addItem(12, "wooden_form.brick").addStats(selfContainerItemProvider);
 
         COMPRESSED_CLAY = addItem(13, "compressed.clay");

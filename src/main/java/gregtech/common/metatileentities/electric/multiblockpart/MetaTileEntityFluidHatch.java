@@ -35,7 +35,7 @@ import java.util.List;
 
 public class MetaTileEntityFluidHatch extends MetaTileEntityMultiblockPart implements IMultiblockAbilityPart<IFluidTank> {
 
-    private static final int[] INVENTORY_SIZES = {8000, 12000, 16000, 32000, 48000, 64000, 96000, 128000};
+    private static final int[] INVENTORY_SIZES = {8000, 16000, 32000, 64000, 128000, 256000, 512000};
     private ItemStackHandler containerInventory;
     private boolean isExportHatch;
 

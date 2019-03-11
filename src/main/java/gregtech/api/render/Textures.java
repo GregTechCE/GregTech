@@ -147,6 +147,10 @@ public class Textures {
     public static SimpleOverlayRenderer ARM_OVERLAY = new SimpleOverlayRenderer("cover/overlay_arm");
     public static SimpleOverlayRenderer PUMP_OVERLAY = new SimpleOverlayRenderer("overlay/machine/overlay_pump");
 
+    public static SimpleOverlayRenderer AIR_VENT_OVERLAY = new SimpleOverlayRenderer("overlay/machine/overlay_air_vent");
+    public static SimpleOverlayRenderer BLOWER_OVERLAY = new SimpleOverlayRenderer("overlay/machine/overlay_blower");
+    public static SimpleOverlayRenderer BLOWER_ACTIVE_OVERLAY = new SimpleOverlayRenderer("overlay/machine/overlay_blower_active");
+
     static {
         for(int i = 0; i < VOLTAGE_CASINGS.length; i++) {
             String voltageName = GTValues.VN[i].toLowerCase();

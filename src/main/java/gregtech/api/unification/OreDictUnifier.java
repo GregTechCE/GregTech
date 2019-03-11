@@ -1,7 +1,6 @@
 package gregtech.api.unification;
 
 import com.google.common.base.CaseFormat;
-import com.google.common.base.Function;
 import com.google.common.base.Joiner;
 import gregtech.api.unification.material.type.DustMaterial;
 import gregtech.api.unification.material.type.IngotMaterial;
@@ -22,6 +21,7 @@ import javax.annotation.Nullable;
 import java.util.AbstractMap.SimpleEntry;
 import java.util.*;
 import java.util.Map.Entry;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import static gregtech.api.GTValues.M;
@@ -37,8 +37,8 @@ public class OreDictUnifier {
     private static final Map<UnificationEntry, ArrayList<SimpleItemStack>> stackUnificationItems = new HashMap<>();
     private static final Map<SimpleItemStack, Set<String>> stackOreDictName = new WildcardAwareHashMap<>();
 
+    @Nullable
     private static Comparator<SimpleItemStack> stackComparator;
-
 
     public static Comparator<SimpleItemStack> getSimpleItemStackComparator() {
         if(stackComparator == null) {
@@ -46,6 +46,7 @@ public class OreDictUnifier {
                 List<String> modPriorities = Arrays.asList(ConfigHolder.modPriorities);
                 stackComparator = Collections.reverseOrder(new CustomModPriorityComparator(modPriorities));
             } else {
+                //noinspection ConstantConditions
                 Function<SimpleItemStack, String> modIdExtractor = stack -> stack.item.getRegistryName().getResourceDomain();
                 stackComparator = Comparator.comparing(modIdExtractor);
             }
@@ -139,12 +140,16 @@ public class OreDictUnifier {
         //finally register item
         if(orePrefix != null && (material != null || orePrefix.isSelfReferencing)) {
             UnificationEntry unificationEntry = new UnificationEntry(orePrefix, material);
-            stackUnificationInfo.put(simpleItemStack, unificationEntry);
             stackUnificationItems.computeIfAbsent(unificationEntry, p -> new ArrayList<>()).add(simpleItemStack);
-            if(!(material instanceof MarkerMaterial)) {
-                //trigger processOreRegistration only for real materials
-                orePrefix.processOreRegistration(material);
+            //only assign real OrePrefix to items in our registry
+            //in reality this way is incorrect because one item can contain multiple unification entries, and current system
+            //doesn't support that
+            //TODO re-design to support multiple unification entries on one material
+            if (!stackUnificationInfo.containsKey(simpleItemStack) &&
+                unificationEntry.orePrefix.generationCondition != null) {
+                stackUnificationInfo.put(simpleItemStack, unificationEntry);
             }
+            orePrefix.processOreRegistration(material);
         }
     }
 

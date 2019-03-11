@@ -151,6 +151,7 @@ public class CoverPump extends CoverBehavior implements CoverWithUI, ITickable {
     public ModularUI createUI(EntityPlayer player) {
         WidgetGroup primaryGroup = new WidgetGroup();
         primaryGroup.addWidget(new LabelWidget(10, 5, "cover.pump.title", GTValues.VN[tier]));
+
         primaryGroup.addWidget(new ClickButtonWidget(10, 20, 20, 20, "-10", data -> adjustTransferRate(data.isShiftClick ? -100 : -10)));
         primaryGroup.addWidget(new ClickButtonWidget(146, 20, 20, 20, "+10", data -> adjustTransferRate(data.isShiftClick ? +100 : +10)));
         primaryGroup.addWidget(new ClickButtonWidget(30, 20, 20, 20, "-1", data -> adjustTransferRate(data.isShiftClick ? -5 : -1)));

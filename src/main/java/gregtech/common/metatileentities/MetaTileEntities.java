@@ -155,6 +155,7 @@ public class MetaTileEntities {
     //MISC MACHINES SECTION
     public static MetaTileEntityPump[] PUMP = new MetaTileEntityPump[4];
     public static MetaTileEntityAirCollector[] AIR_COLLECTOR = new MetaTileEntityAirCollector[4];
+    public static MetaTileEntityItemCollector[] ITEM_COLLECTOR = new MetaTileEntityItemCollector[4];
     public static MetaTileEntityTeslaCoil TESLA_COIL;
     public static MetaTileEntityQuantumChest[] QUANTUM_CHEST = new MetaTileEntityQuantumChest[4];
     public static MetaTileEntityQuantumTank[] QUANTUM_TANK = new MetaTileEntityQuantumTank[4];
@@ -398,6 +399,11 @@ public class MetaTileEntities {
         GAS_TURBINE[2] = GregTechAPI.registerMetaTileEntity(492, new SimpleGeneratorMetaTileEntity(gregtechId("gas_turbine.hv"), RecipeMaps.GAS_TURBINE_FUELS, Textures.GAS_TURBINE_OVERLAY, 3));
 
         MAGIC_ENERGY_ABSORBER = GregTechAPI.registerMetaTileEntity(493, new MetaTileEntityMagicEnergyAbsorber(gregtechId("magic_energy_absorber")));
+
+        ITEM_COLLECTOR[0] = GregTechAPI.registerMetaTileEntity(494, new MetaTileEntityItemCollector(gregtechId("item_collector.lv"), 1, 4));
+        ITEM_COLLECTOR[1] = GregTechAPI.registerMetaTileEntity(495, new MetaTileEntityItemCollector(gregtechId("item_collector.mv"), 2, 8));
+        ITEM_COLLECTOR[2] = GregTechAPI.registerMetaTileEntity(496, new MetaTileEntityItemCollector(gregtechId("item_collector.hv"), 3, 12));
+        ITEM_COLLECTOR[3] = GregTechAPI.registerMetaTileEntity(497, new MetaTileEntityItemCollector(gregtechId("item_collector.ev"), 4, 16));
 
         for(int i = 0; i < HULL.length; i++) {
             MetaTileEntityHull metaTileEntity = new MetaTileEntityHull(gregtechId("hull." + GTValues.VN[i].toLowerCase()), i);

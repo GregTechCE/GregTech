@@ -2158,6 +2158,14 @@ gregtech.machine.pump.mv.name=Advanced Pump
 gregtech.machine.pump.hv.name=Advanced Pump II
 gregtech.machine.pump.ev.name=Advanced Pump III
 
+gregtech.machine.item_collector.lv.name=Basic Item Collector
+gregtech.machine.item_collector.mv.name=Advanced Item Collector
+gregtech.machine.item_collector.hv.name=Advanced Item Collector II
+gregtech.machine.item_collector.ev.name=Advanced Item Collector III
+
+gregtech.machine.item_collector.collect_range=Collection Area: %dx%d
+gregtech.machine.item_collector.gui.collect_range=Collect in %s blocks
+
 #Quantum chests
 gregtech.machine.quantum_chest.tooltip=Better than JABBA.
 gregtech.machine.quantum_chest.capacity=Item Capacity: %d items

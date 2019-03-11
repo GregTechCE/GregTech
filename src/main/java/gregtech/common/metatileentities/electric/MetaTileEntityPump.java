@@ -51,7 +51,7 @@ public class MetaTileEntityPump extends TieredMetaTileEntity {
 
     private static final Cuboid6 PIPE_CUBOID = new Cuboid6(4 / 16.0, 0.0, 4 / 16.0, 12 / 16.0, 1.0, 12 / 16.0);
     private static final int MAX_PUMP_RANGE = 32;
-    private static final int PUMP_SPEED_BASE = 50;
+    private static final int PUMP_SPEED_BASE = 40;
 
     private Deque<BlockPos> fluidSourceBlocks = new ArrayDeque<>();
     private Deque<BlockPos> blocksToCheck = new ArrayDeque<>();
