@@ -141,9 +141,9 @@ public abstract class BlockPipe<PipeType extends Enum<PipeType> & IPipeType<Node
         IPipeTile<PipeType, NodeDataType> pipeTile = getPipeTileEntity(worldIn, pos);
         if(pipeTile != null) {
             int activeConnections = getActiveNodeConnections(worldIn, pos);
-            activeConnections |= ~pipeTile.getBlockedConnections(); //remove blocked connections
+            activeConnections &= ~pipeTile.getBlockedConnections(); //remove blocked connections
             boolean isActiveNode = activeConnections > 0;
-            getWorldPipeNet(worldIn).addNode(pos, createProperties(pipeTile), 0, 0, isActiveNode);
+            getWorldPipeNet(worldIn).addNode(pos, createProperties(pipeTile), 0, pipeTile.getBlockedConnections(), isActiveNode);
             onActiveModeChange(worldIn, pos, isActiveNode, true);
         }
     }

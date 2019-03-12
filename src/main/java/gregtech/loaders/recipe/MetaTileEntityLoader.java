@@ -13,6 +13,7 @@ import gregtech.api.unification.stack.UnificationEntry;
 import gregtech.common.ConfigHolder;
 import gregtech.common.blocks.BlockMetalCasing.MetalCasingType;
 import gregtech.common.blocks.BlockMultiblockCasing.MultiblockCasingType;
+import gregtech.common.blocks.BlockWireCoil.CoilType;
 import gregtech.common.blocks.MetaBlocks;
 import gregtech.common.items.MetaItems;
 import gregtech.common.metatileentities.MetaTileEntities;
@@ -29,7 +30,7 @@ import static gregtech.common.blocks.BlockMultiblockCasing.MultiblockCasingType.
 import static gregtech.common.blocks.BlockMultiblockCasing.MultiblockCasingType.GRATE_CASING;
 import static gregtech.common.blocks.BlockTurbineCasing.TurbineCasingType.*;
 import static gregtech.common.blocks.BlockWarningSign.SignType.*;
-import static gregtech.common.blocks.BlockWireCoil.CoilType.*;
+import static gregtech.common.blocks.BlockWireCoil.CoilType.CUPRONICKEL;
 import static gregtech.loaders.recipe.CraftingComponent.*;
 
 public class MetaTileEntityLoader {
@@ -70,21 +71,20 @@ public class MetaTileEntityLoader {
         ModHandler.addShapedRecipe("casing_titanium_firebox", MetaBlocks.BOILER_FIREBOX_CASING.getItemVariant(TITANIUM_FIREBOX, 3), "PSP", "SFS", "PSP", 'P', new UnificationEntry(OrePrefix.plate, Materials.Titanium), 'F', new UnificationEntry(OrePrefix.frameGt, Materials.Titanium), 'S', new UnificationEntry(OrePrefix.stick, Materials.Titanium));
         ModHandler.addShapedRecipe("casing_tungstensteel_firebox", MetaBlocks.BOILER_FIREBOX_CASING.getItemVariant(TUNGSTENSTEEL_FIREBOX, 3), "PSP", "SFS", "PSP", 'P', new UnificationEntry(OrePrefix.plate, Materials.TungstenSteel), 'F', new UnificationEntry(OrePrefix.frameGt, Materials.TungstenSteel), 'S', new UnificationEntry(OrePrefix.stick, Materials.TungstenSteel));
 
+        for(CoilType coilType : CoilType.values()) {
+            if(coilType.getMaterial() != null) {
+                ItemStack outputStack = MetaBlocks.WIRE_COIL.getItemVariant(coilType);
+                ModHandler.addShapedRecipe(String.format("heating_coil_%s", coilType.getName()), outputStack, "XXX", "XwX", "XXX", 'X',
+                    new UnificationEntry(OrePrefix.wireGtDouble, coilType.getMaterial()));
+            }
+        }
+
         ModHandler.addShapedRecipe("casing_bronze_gearbox", MetaBlocks.TURBINE_CASING.getItemVariant(BRONZE_GEARBOX, 3), "PhP", "GFG", "PwP", 'P', new UnificationEntry(OrePrefix.plate, Materials.Bronze), 'F', new UnificationEntry(OrePrefix.frameGt, Materials.Bronze), 'G', new UnificationEntry(OrePrefix.gear, Materials.Bronze));
         ModHandler.addShapedRecipe("casing_steel_gearbox", MetaBlocks.TURBINE_CASING.getItemVariant(STEEL_GEARBOX, 3), "PhP", "GFG", "PwP", 'P', new UnificationEntry(OrePrefix.plate, Materials.Steel), 'F', new UnificationEntry(OrePrefix.frameGt, Materials.Steel), 'G', new UnificationEntry(OrePrefix.gear, Materials.Steel));
         ModHandler.addShapedRecipe("casing_titanium_gearbox", MetaBlocks.TURBINE_CASING.getItemVariant(TITANIUM_GEARBOX, 3), "PhP", "GFG", "PwP", 'P', new UnificationEntry(OrePrefix.plate, Materials.Steel), 'F', new UnificationEntry(OrePrefix.frameGt, Materials.Titanium), 'G', new UnificationEntry(OrePrefix.gear, Materials.Titanium));
 
         ModHandler.addShapedRecipe("casing_grate_casing", MetaBlocks.MUTLIBLOCK_CASING.getItemVariant(GRATE_CASING, 3), "PVP", "PFP", "PMP", 'P', new ItemStack(Blocks.IRON_BARS, 1), 'F', new UnificationEntry(OrePrefix.frameGt, Materials.Steel), 'M', MetaItems.ELECTRIC_MOTOR_MV, 'V', new UnificationEntry(OrePrefix.rotor, Materials.Steel));
         ModHandler.addShapedRecipe("casing_assembler_casing", MetaBlocks.MUTLIBLOCK_CASING.getItemVariant(ASSEMBLER_CASING, 3), "PVP", "PFP", "PMP", 'P', new UnificationEntry(OrePrefix.circuit, MarkerMaterials.Tier.Elite), 'F', new UnificationEntry(OrePrefix.frameGt, Materials.TungstenSteel), 'M', MetaItems.ELECTRIC_MOTOR_IV, 'V', new UnificationEntry(OrePrefix.circuit, MarkerMaterials.Tier.Elite));
-
-        ModHandler.addShapedRecipe("wire_coil_cupronickel", MetaBlocks.WIRE_COIL.getItemVariant(CUPRONICKEL), "PPP", "PwP", "PPP", 'P', new UnificationEntry(OrePrefix.wireGtDouble, Materials.Cupronickel));
-        ModHandler.addShapedRecipe("wire_coil_kanthal", MetaBlocks.WIRE_COIL.getItemVariant(KANTHAL), "PPP", "PwP", "PPP", 'P', new UnificationEntry(OrePrefix.wireGtDouble, Materials.Kanthal));
-        ModHandler.addShapedRecipe("wire_coil_nichrome", MetaBlocks.WIRE_COIL.getItemVariant(NICHROME), "PPP", "PwP", "PPP", 'P', new UnificationEntry(OrePrefix.wireGtDouble, Materials.Nichrome));
-        ModHandler.addShapedRecipe("wire_coil_tungstensteel", MetaBlocks.WIRE_COIL.getItemVariant(TUNGSTENSTEEL), "PPP", "PwP", "PPP", 'P', new UnificationEntry(OrePrefix.wireGtDouble, Materials.TungstenSteel));
-        ModHandler.addShapedRecipe("wire_coil_hss_g", MetaBlocks.WIRE_COIL.getItemVariant(HSS_G), "PPP", "PwP", "PPP", 'P', new UnificationEntry(OrePrefix.wireGtDouble, Materials.HSSG));
-        ModHandler.addShapedRecipe("wire_coil_naquadah", MetaBlocks.WIRE_COIL.getItemVariant(NAQUADAH), "PPP", "PwP", "PPP", 'P', new UnificationEntry(OrePrefix.wireGtDouble, Materials.Naquadah));
-        ModHandler.addShapedRecipe("wire_coil_naquadah_alloy", MetaBlocks.WIRE_COIL.getItemVariant(NAQUADAH_ALLOY), "PPP", "PwP", "PPP", 'P', new UnificationEntry(OrePrefix.wireGtDouble, Materials.NaquadahAlloy));
-        ModHandler.addShapedRecipe("wire_coil_superconductor", MetaBlocks.WIRE_COIL.getItemVariant(SUPERCONDUCTOR), "PPP", "PwP", "PPP", 'P', new UnificationEntry(OrePrefix.wireGtDouble, MarkerMaterials.Tier.Superconductor));
 
         ModHandler.addShapedRecipe("warning_sign_yellow_stripes", MetaBlocks.WARNING_SIGN.getItemVariant(YELLOW_STRIPES), "Y  ", " M ", "  B", 'M', MetaBlocks.METAL_CASING.getItemVariant(STEEL_SOLID), 'Y', "dyeYellow", 'B', "dyeBlack");
         ModHandler.addShapedRecipe("warning_sign_small_yellow_stripes", MetaBlocks.WARNING_SIGN.getItemVariant(SMALL_YELLOW_STRIPES), "  Y", " M ", "B  ", 'M', MetaBlocks.METAL_CASING.getItemVariant(STEEL_SOLID), 'Y', "dyeYellow", 'B', "dyeBlack");
@@ -318,10 +318,10 @@ public class MetaTileEntityLoader {
         ModHandler.addShapedRecipe("large_gas_turbine", MetaTileEntities.LARGE_GAS_TURBINE.getStackForm(), "PSP", "SAS", "CSC", 'S', new UnificationEntry(OrePrefix.gear, Materials.StainlessSteel), 'P', new UnificationEntry(OrePrefix.circuit, MarkerMaterials.Tier.Extreme), 'A', MetaTileEntities.HULL[GTValues.EV].getStackForm(), 'C', MetaBlocks.METAL_CASING.getItemVariant(STAINLESS_CLEAN));
         ModHandler.addShapedRecipe("large_plasma_turbine", MetaTileEntities.LARGE_PLASMA_TURBINE.getStackForm(), "PSP", "SAS", "CSC", 'S', new UnificationEntry(OrePrefix.gear, Materials.TungstenSteel), 'P', new UnificationEntry(OrePrefix.circuit, MarkerMaterials.Tier.Elite), 'A', MetaTileEntities.HULL[GTValues.UV].getStackForm(), 'C', MetaBlocks.METAL_CASING.getItemVariant(TUNGSTENSTEEL_ROBUST));
 
-        ModHandler.addShapedRecipe("large_bronze_boiler", MetaTileEntities.LARGE_BRONZE_BOILER.getStackForm(), "PSP", "SAS", "PSP", 'P', new UnificationEntry(OrePrefix.cableGtSingle, Materials.Tin), 'S', new UnificationEntry(OrePrefix.circuit, MarkerMaterials.Tier.Basic), 'A', MetaBlocks.BOILER_FIREBOX_CASING.getItemVariant(BRONZE_FIREBOX));
-        ModHandler.addShapedRecipe("large_steel_boiler", MetaTileEntities.LARGE_STEEL_BOILER.getStackForm(), "PSP", "SAS", "PSP", 'P', new UnificationEntry(OrePrefix.cableGtSingle, Materials.Copper), 'S', new UnificationEntry(OrePrefix.circuit, MarkerMaterials.Tier.Advanced), 'A', MetaBlocks.BOILER_FIREBOX_CASING.getItemVariant(STEEL_FIREBOX));
-        ModHandler.addShapedRecipe("large_titanium_boiler", MetaTileEntities.LARGE_TITANIUM_BOILER.getStackForm(), "PSP", "SAS", "PSP", 'P', new UnificationEntry(OrePrefix.cableGtSingle, Materials.Gold), 'S', new UnificationEntry(OrePrefix.circuit, MarkerMaterials.Tier.Extreme), 'A', MetaBlocks.BOILER_FIREBOX_CASING.getItemVariant(TITANIUM_FIREBOX));
-        ModHandler.addShapedRecipe("large_tungstensteel_boiler", MetaTileEntities.LARGE_TUNGSTENSTEEL_BOILER.getStackForm(), "PSP", "SAS", "PSP", 'P', new UnificationEntry(OrePrefix.cableGtSingle, Materials.Aluminium), 'S', new UnificationEntry(OrePrefix.circuit, MarkerMaterials.Tier.Elite), 'A', MetaBlocks.BOILER_FIREBOX_CASING.getItemVariant(TUNGSTENSTEEL_FIREBOX));
+        ModHandler.addShapedRecipe("large_bronze_boiler", MetaTileEntities.LARGE_BRONZE_BOILER.getStackForm(), "PSP", "SAS", "PSP", 'P', new UnificationEntry(OrePrefix.cableGtSingle, Materials.Tin), 'S', new UnificationEntry(OrePrefix.circuit, MarkerMaterials.Tier.Basic), 'A', MetaBlocks.METAL_CASING.getItemVariant(BRONZE_BRICKS));
+        ModHandler.addShapedRecipe("large_steel_boiler", MetaTileEntities.LARGE_STEEL_BOILER.getStackForm(), "PSP", "SAS", "PSP", 'P', new UnificationEntry(OrePrefix.cableGtSingle, Materials.Copper), 'S', new UnificationEntry(OrePrefix.circuit, MarkerMaterials.Tier.Advanced), 'A', MetaBlocks.METAL_CASING.getItemVariant(STEEL_SOLID));
+        ModHandler.addShapedRecipe("large_titanium_boiler", MetaTileEntities.LARGE_TITANIUM_BOILER.getStackForm(), "PSP", "SAS", "PSP", 'P', new UnificationEntry(OrePrefix.cableGtSingle, Materials.Gold), 'S', new UnificationEntry(OrePrefix.circuit, MarkerMaterials.Tier.Extreme), 'A', MetaBlocks.METAL_CASING.getItemVariant(TITANIUM_STABLE));
+        ModHandler.addShapedRecipe("large_tungstensteel_boiler", MetaTileEntities.LARGE_TUNGSTENSTEEL_BOILER.getStackForm(), "PSP", "SAS", "PSP", 'P', new UnificationEntry(OrePrefix.cableGtSingle, Materials.Aluminium), 'S', new UnificationEntry(OrePrefix.circuit, MarkerMaterials.Tier.Elite), 'A', MetaBlocks.METAL_CASING.getItemVariant(TUNGSTENSTEEL_ROBUST));
 
 
         // GENERATORS

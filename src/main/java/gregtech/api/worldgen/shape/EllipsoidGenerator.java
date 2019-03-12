@@ -39,9 +39,9 @@ public class EllipsoidGenerator extends ShapeGenerator {
 
     @Override
     public void generate(Random gridRandom, IBlockGeneratorAccess blockAccess) {
-        int a = radiusMin >= radiusMax ? radiusMin : (gridRandom.nextInt(radiusMax - radiusMin) + radiusMin);
-        int b = radiusMin >= radiusMax ? radiusMin / 2 : (gridRandom.nextInt(radiusMax - radiusMin) + radiusMin) / 2;
-        int c = radiusMin >= radiusMax ? radiusMin : (gridRandom.nextInt(radiusMax - radiusMin) + radiusMin);
+        int a = radiusMin == radiusMax ? radiusMax : (gridRandom.nextInt(radiusMax - radiusMin) + radiusMin);
+        int b = radiusMin == radiusMax ? radiusMax / 2 : (gridRandom.nextInt(radiusMax - radiusMin) + radiusMin) / 2;
+        int c = radiusMin == radiusMax ? radiusMax : (gridRandom.nextInt(radiusMax - radiusMin) + radiusMin);
         int ab2 = a * a * b * b, ac2 = a * a * c * c, bc2 = b * b * c * c, abc2 = ab2 * c * c;
 
         int max = Math.max(a, Math.max(b, c));

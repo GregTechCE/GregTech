@@ -92,9 +92,9 @@ public class PlateGenerator extends ShapeGenerator {
 
     @Override
     public void generate(Random gridRandom, IBlockGeneratorAccess relativeBlockAccess) {
-        int length = (minLength >= maxLength ? minLength : gridRandom.nextInt(maxLength - minLength)) / 2;
-        int depth = (minDepth >= maxDepth ? minDepth : gridRandom.nextInt(maxDepth - minDepth)) / 2;
-        int height = (minHeight >= maxHeight ? minHeight : gridRandom.nextInt(maxHeight - minHeight)) / 2;
+        int length = (minLength == maxLength ? maxLength : minLength + gridRandom.nextInt(maxLength - minLength)) / 2;
+        int depth = (minDepth == maxDepth ? maxDepth : minDepth + gridRandom.nextInt(maxDepth - minDepth)) / 2;
+        int height = (minHeight == maxHeight ? maxHeight : minHeight + gridRandom.nextInt(maxHeight - minHeight)) / 2;
         boolean rotate = gridRandom.nextBoolean();
         for(int x = -length; x <= length; x++) {
             for(int z = -depth; z <= depth; z++) {

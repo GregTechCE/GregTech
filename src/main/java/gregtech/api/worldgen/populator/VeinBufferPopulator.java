@@ -10,7 +10,7 @@ import java.util.Random;
 
 public interface VeinBufferPopulator extends IVeinPopulator {
 
-    void populateBlockBuffer(OreDepositDefinition definition, Random random, GridEntryInfo gridEntryInfo, IBlockModifierAccess modifier);
+    void populateBlockBuffer(Random random, GridEntryInfo gridEntryInfo, IBlockModifierAccess modifier, OreDepositDefinition depositDefinition);
 
-    IBlockState getBlockByIndex(World world, OreDepositDefinition definition, BlockPos pos, int index);
+    IBlockState getBlockByIndex(World world, BlockPos pos, int index);
 }

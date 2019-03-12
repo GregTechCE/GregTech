@@ -73,7 +73,6 @@ public abstract class PipeMultiPart<PipeType extends Enum<PipeType> & IPipeType<
     protected PipeMultiPart() {
     }
 
-    @SuppressWarnings("CopyConstructorMissesField")
     public PipeMultiPart(IPipeTile<PipeType, NodeDataType> sourceTile) {
         //this constructor is used for data transfer
         //when some nodes becomes active and changes itself to become tickable

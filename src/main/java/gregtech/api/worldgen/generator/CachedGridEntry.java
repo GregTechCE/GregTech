@@ -224,7 +224,7 @@ public class CachedGridEntry implements GridEntryInfo, IBlockGeneratorAccess, IB
         this.veinGeneratedMap.put(definition, new BlockPos(veinCenterX, veinCenterY, veinCenterZ));
         IVeinPopulator veinPopulator = currentOreVein.getVeinPopulator();
         if(veinPopulator instanceof VeinBufferPopulator) {
-            ((VeinBufferPopulator) veinPopulator).populateBlockBuffer(currentOreVein, gridRandom, this, this);
+            ((VeinBufferPopulator) veinPopulator).populateBlockBuffer(gridRandom, this, this, currentOreVein);
         }
         this.currentOreVein = null;
     }
@@ -321,7 +321,7 @@ public class CachedGridEntry implements GridEntryInfo, IBlockGeneratorAccess, IB
                     } else {
                         //it's populator-generated block with index
                         VeinBufferPopulator populator = (VeinBufferPopulator) definition.getVeinPopulator();
-                        newState = populator.getBlockByIndex(world, definition, blockPos, index - 1);
+                        newState = populator.getBlockByIndex(world, blockPos, index - 1);
                     }
                     //set flags as 16 to avoid observer updates loading neighbour chunks
                     world.setBlockState(blockPos, newState, 16);

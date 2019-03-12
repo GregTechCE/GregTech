@@ -94,6 +94,10 @@ public class OreDepositDefinition {
         }
         this.blockFiller = WorldGenRegistry.INSTANCE.createBlockFiller(configRoot.get("filler").getAsJsonObject());
         this.shapeGenerator = WorldGenRegistry.INSTANCE.createShapeGenerator(configRoot.get("generator").getAsJsonObject());
+
+        if(veinPopulator != null) {
+            veinPopulator.initializeForVein(this);
+        }
     }
 
     @ZenGetter("depositName")

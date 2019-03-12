@@ -28,7 +28,7 @@
     },
     "P": {
       "type": "forge:ore_dict",
-      "ore": "pipeSmallBronze"
+      "ore": "pipeMediumTitanium"
     },
     "d": {
       "type": "forge:ore_dict",

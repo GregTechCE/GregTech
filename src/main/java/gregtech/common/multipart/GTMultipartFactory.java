@@ -22,7 +22,6 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.Constants.NBT;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -79,15 +78,7 @@ public final class GTMultipartFactory implements IDynamicPartFactory, IPartConve
 
     @Override
     public TMultiPart createPartServer(ResourceLocation identifier, NBTTagCompound compound) {
-        TMultiPart resultPart = createPart(identifier);
-        //TODO remove in the net major update
-        //prevents creation of invalid parts if material tag is missing
-        if(resultPart instanceof PipeMultiPart) {
-            if(!compound.hasKey("PipeMaterial", NBT.TAG_STRING)) {
-                return null;
-            }
-        }
-        return resultPart;
+        return createPart(identifier);
     }
 
     @Override

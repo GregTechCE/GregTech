@@ -1,9 +1,9 @@
 package gregtech.common.blocks;
 
+import gregtech.api.unification.material.MarkerMaterials.Tier;
 import gregtech.api.unification.material.Materials;
-import gregtech.api.unification.material.type.IngotMaterial;
+import gregtech.api.unification.material.type.Material;
 import net.minecraft.block.SoundType;
-import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
@@ -20,7 +20,7 @@ import java.util.List;
 public class BlockWireCoil extends VariantBlock<BlockWireCoil.CoilType> {
 
     public BlockWireCoil() {
-        super(Material.IRON);
+        super(net.minecraft.block.material.Material.IRON);
         setUnlocalizedName("wire_coil");
         setHardness(5.0f);
         setResistance(10.0f);
@@ -59,7 +59,7 @@ public class BlockWireCoil extends VariantBlock<BlockWireCoil.CoilType> {
         HSS_G("hss_g", 5400, 8, 2, Materials.HSSG),
         NAQUADAH("naquadah", 7200, 16, 1, Materials.Naquadah),
         NAQUADAH_ALLOY("naquadah_alloy", 8600, 16, 2, Materials.NaquadahAlloy),
-        SUPERCONDUCTOR("superconductor", 9001, 16, 4, null),
+        SUPERCONDUCTOR("superconductor", 9001, 16, 4, Tier.Superconductor),
         FUSION_COIL("fusion_coil", 9700, 16, 8, null);
 
         private final String name;
@@ -68,9 +68,9 @@ public class BlockWireCoil extends VariantBlock<BlockWireCoil.CoilType> {
         //multi smelter properties
         private final int level;
         private final int energyDiscount;
-        private final IngotMaterial material;
+        private final Material material;
 
-        CoilType(String name, int coilTemperature, int level, int energyDiscount, IngotMaterial material) {
+        CoilType(String name, int coilTemperature, int level, int energyDiscount, Material material) {
             this.name = name;
             this.coilTemperature = coilTemperature;
             this.level = level;
@@ -95,7 +95,7 @@ public class BlockWireCoil extends VariantBlock<BlockWireCoil.CoilType> {
             return energyDiscount;
         }
 
-        public IngotMaterial getMaterial() {
+        public Material getMaterial() {
             return material;
         }
     }

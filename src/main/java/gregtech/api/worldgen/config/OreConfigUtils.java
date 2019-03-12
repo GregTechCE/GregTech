@@ -1,17 +1,14 @@
 package gregtech.api.worldgen.config;
 
-import com.google.common.base.Optional;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import com.google.gson.JsonPrimitive;
 import gregtech.api.unification.material.type.DustMaterial;
 import gregtech.api.unification.material.type.Material;
 import gregtech.api.unification.ore.StoneType;
 import gregtech.common.blocks.BlockOre;
 import gregtech.common.blocks.MetaBlocks;
 import net.minecraft.block.Block;
-import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
@@ -23,7 +20,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 public class OreConfigUtils {
@@ -92,13 +88,13 @@ public class OreConfigUtils {
     public static int[] getIntRange(JsonElement element) {
         if(element.isJsonArray()) {
             JsonArray dataArray = element.getAsJsonArray();
-            int min = dataArray.get(0).getAsInt();
             int max = dataArray.get(1).getAsInt();
+            int min = Math.min(max, dataArray.get(0).getAsInt());
             return new int[] {min, max};
         } else if(element.isJsonObject()) {
             JsonObject dataObject = element.getAsJsonObject();
-            int min = dataObject.get("min").getAsInt();
             int max = dataObject.get("max").getAsInt();
+            int min = Math.min(max, dataObject.get("min").getAsInt());
             return new int[] {min, max};
         } else if(element.isJsonPrimitive()) {
             int size = element.getAsInt();

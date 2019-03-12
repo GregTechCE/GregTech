@@ -42,6 +42,10 @@ public class SurfaceRockPopulator implements VeinChunkPopulator {
     }
 
     @Override
+    public void initializeForVein(OreDepositDefinition definition) {
+    }
+
+    @Override
     public void populateChunk(World world, int chunkX, int chunkZ, Random random, OreDepositDefinition definition, GridEntryInfo gridEntryInfo) {
         if(world.getWorldType() != WorldType.FLAT) {
             int stonesCount = random.nextInt(2);

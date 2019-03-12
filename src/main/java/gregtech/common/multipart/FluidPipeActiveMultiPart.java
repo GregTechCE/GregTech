@@ -10,7 +10,7 @@ import net.minecraft.util.ResourceLocation;
 
 public class FluidPipeActiveMultiPart extends FluidPipeMultiPart implements ITickable {
 
-    private boolean isActivePart = false;
+    private boolean isActivePart;
 
     FluidPipeActiveMultiPart() {
     }
@@ -34,7 +34,7 @@ public class FluidPipeActiveMultiPart extends FluidPipeMultiPart implements ITic
     }
 
     public void setActivePart(boolean activePart) {
-        isActivePart = activePart;
+        this.isActivePart = activePart;
     }
 
     @Override

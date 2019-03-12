@@ -2,6 +2,7 @@ package gregtech.loaders.recipe;
 
 import gregtech.api.items.OreDictNames;
 import gregtech.api.unification.material.MarkerMaterials;
+import gregtech.api.unification.material.MarkerMaterials.Tier;
 import gregtech.api.unification.material.Materials;
 import gregtech.api.unification.ore.OrePrefix;
 import gregtech.api.unification.stack.UnificationEntry;
@@ -13,26 +14,29 @@ import net.minecraft.item.ItemStack;
 import static gregtech.api.GTValues.W;
 
 public enum CraftingComponent {
+
     CIRCUIT {
         @Override
         Object getIngredient(int tier) {
             switch (tier) {
                 case 0:
-                    return new UnificationEntry(OrePrefix.circuit, MarkerMaterials.Tier.Primitive);
+                    return new UnificationEntry(OrePrefix.circuit, Tier.Primitive);
                 case 1:
-                    return new UnificationEntry(OrePrefix.circuit, MarkerMaterials.Tier.Basic);
+                    return new UnificationEntry(OrePrefix.circuit, Tier.Basic);
                 case 2:
-                    return new UnificationEntry(OrePrefix.circuit, MarkerMaterials.Tier.Good);
+                    return new UnificationEntry(OrePrefix.circuit, Tier.Good);
                 case 3:
-                    return new UnificationEntry(OrePrefix.circuit, MarkerMaterials.Tier.Advanced);
+                    return new UnificationEntry(OrePrefix.circuit, Tier.Advanced);
                 case 4:
-                    return new UnificationEntry(OrePrefix.circuit, MarkerMaterials.Tier.Elite);
+                    return new UnificationEntry(OrePrefix.circuit, Tier.Extreme);
                 case 5:
-                    return new UnificationEntry(OrePrefix.circuit, MarkerMaterials.Tier.Master);
+                    return new UnificationEntry(OrePrefix.circuit, Tier.Elite);
                 case 6:
-                    return new UnificationEntry(OrePrefix.circuit, MarkerMaterials.Tier.Ultimate);
+                    return new UnificationEntry(OrePrefix.circuit, Tier.Master);
+                case 7:
+                    return new UnificationEntry(OrePrefix.circuit, Tier.Ultimate);
                 default:
-                    return new UnificationEntry(OrePrefix.circuit, MarkerMaterials.Tier.Superconductor);
+                    return new UnificationEntry(OrePrefix.circuit, Tier.Infinite);
             }
         }
     },

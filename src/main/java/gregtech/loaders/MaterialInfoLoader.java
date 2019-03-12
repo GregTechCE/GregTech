@@ -2,9 +2,12 @@ package gregtech.loaders;
 
 import gregtech.api.unification.OreDictUnifier;
 import gregtech.api.unification.material.Materials;
+import gregtech.api.unification.material.type.DustMaterial;
 import gregtech.api.unification.ore.OrePrefix;
 import gregtech.api.unification.stack.ItemMaterialInfo;
 import gregtech.api.unification.stack.MaterialStack;
+import gregtech.common.blocks.BlockWireCoil.CoilType;
+import gregtech.common.blocks.MetaBlocks;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -15,6 +18,12 @@ import static gregtech.api.GTValues.W;
 public class MaterialInfoLoader {
     
     public static void init() {
+        for(CoilType coilType : CoilType.values()) {
+            if(coilType.getMaterial() instanceof DustMaterial) {
+                ItemStack outputStack = MetaBlocks.WIRE_COIL.getItemVariant(coilType);
+                OreDictUnifier.registerOre(outputStack, new ItemMaterialInfo(new MaterialStack(coilType.getMaterial(), OrePrefix.wireGtDouble.materialAmount * 8)));
+            }
+        }
         OreDictUnifier.registerOre(new ItemStack(Items.IRON_DOOR, 1), new ItemMaterialInfo(new MaterialStack(Materials.Iron, M * 2)));
         OreDictUnifier.registerOre(new ItemStack(Items.ACACIA_DOOR, 1), new ItemMaterialInfo(new MaterialStack(Materials.Wood, M * 2)));
         OreDictUnifier.registerOre(new ItemStack(Items.BIRCH_DOOR, 1), new ItemMaterialInfo(new MaterialStack(Materials.Wood, M * 2)));

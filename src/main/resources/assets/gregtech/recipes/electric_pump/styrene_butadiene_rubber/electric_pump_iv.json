@@ -28,7 +28,7 @@
     },
     "P": {
       "type": "forge:ore_dict",
-      "ore": "pipeSmallBronze"
+      "ore": "pipeMediumTungstenSteel"
     },
     "d": {
       "type": "forge:ore_dict",
