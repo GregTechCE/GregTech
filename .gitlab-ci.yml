@@ -42,5 +42,4 @@ production:
   when: on_success
   only:
     refs:
-      - master
       - tags
