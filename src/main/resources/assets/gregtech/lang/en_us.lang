@@ -2656,7 +2656,7 @@ gregtech.machine.multi_furnace.name=Multi Smelter
 gregtech.machine.cracker.name=Cracker Unit
 gregtech.machine.coke_oven.name=Coke Oven
 gregtech.machine.coke_oven_hatch.name=Coke Oven Hatch
-gregtech.machine.coke_oven_hatch.tooltip=Allows automation access to coke oven
+gregtech.machine.coke_oven_hatch.tooltip=Allows automation access to coke oven. Must be centered on coke oven side.
 
 gregtech.machine.diesel_engine.name=Diesel Engine
 gregtech.machine.large_turbine.steam.name=Large Steam Turbine
