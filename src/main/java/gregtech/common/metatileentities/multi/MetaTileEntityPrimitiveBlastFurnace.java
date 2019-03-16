@@ -43,6 +43,8 @@ import net.minecraftforge.items.ItemStackHandler;
 
 import javax.annotation.Nonnull;
 
+import static gregtech.api.GTValues.M;
+
 public class MetaTileEntityPrimitiveBlastFurnace extends MultiblockControllerBase {
 
     private int maxProgressDuration;
@@ -216,6 +218,8 @@ public class MetaTileEntityPrimitiveBlastFurnace extends MultiblockControllerBas
             return 2;
         }
         MaterialStack materialStack = OreDictUnifier.getMaterial(fuelType);
+        if(materialStack == null) return 0;
+        if(materialStack.amount != M) return 0;
         if(materialStack.material == Materials.Coal ||
             materialStack.material == Materials.Charcoal) {
             return 1;
