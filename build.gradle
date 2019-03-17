@@ -152,7 +152,7 @@ idea {
 
 task ciWriteBuildNumber doLast {
     def file = file("src/main/java/gregtech/GregTechVersion.java")
-    def bn = System.getenv("BUILD_NUMBER") ?: 0
+    def bn = getBuildNumber()
     def outfile = ""
     def ln = "\n" //Linux line endings because we're on git!
 
@@ -164,6 +164,18 @@ task ciWriteBuildNumber doLast {
         outfile += (s + ln)
     }
     file.write(outfile)
+}
+
+String getBuildNumber() {
+    def stdout = new ByteArrayOutputStream()
+    exec {
+        workingDir '.'
+        standardOutput = stdout
+
+        executable "git"
+        args = ["rev-list", "--no-merges", "--count", "c795901d796fba8ce8d3cb87d0172c59f56f3c9b..HEAD"]
+    }
+    return stdout.toString().trim()
 }
 
 String getVersionFromJava(File file) {
@@ -190,7 +202,7 @@ String getVersionFromJava(File file) {
         return "$major.$minor.$revision-$branchName"
     }
 
-    String build = System.getenv("BUILD_NUMBER") ?: 0
+    String build = getBuildNumber()
 
     return "$major.$minor.$revision.$build"
 }
@@ -235,10 +247,11 @@ bintray {
     user = project.hasProperty('bintrayUser') ? project.property('bintrayUser') : System.getenv('BINTRAY_USER')
     key = project.hasProperty('bintrayApiKey') ? project.property('bintrayApiKey') : System.getenv('BINTRAY_API_KEY')
     publications = ['GTCEPublication']
+    publish = true
     pkg {
-        repo = 'gregtechce'
-        name = 'GregTech'
-        userOrg = project.hasProperty('bintrayUser') ? project.property('bintrayUser') : System.getenv('BINTRAY_USER')
+        repo = 'dev'
+        name = 'GregTechCE'
+        userOrg = 'gregtech'
         licenses = ['LGPL-3.0']
         vcsUrl = 'https://github.com/GregTechCE/GregTech.git'
         version {
