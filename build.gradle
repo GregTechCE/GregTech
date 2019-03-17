@@ -1,3 +1,5 @@
+import org.ajoberstar.grgit.Grgit
+
 buildscript {
     repositories {
         jcenter()
@@ -15,6 +17,7 @@ plugins {
     id 'com.matthewprenger.cursegradle' version '1.1.0'
     id 'maven-publish'
     id "com.jfrog.bintray" version "1.8.4"
+    id "org.ajoberstar.grgit" version "2.2.0"
 }
 
 apply plugin: 'net.minecraftforge.gradle.forge'
@@ -167,15 +170,12 @@ task ciWriteBuildNumber doLast {
 }
 
 String getBuildNumber() {
-    def stdout = new ByteArrayOutputStream()
-    exec {
-        workingDir '.'
-        standardOutput = stdout
-
-        executable "git"
-        args = ["rev-list", "--no-merges", "--count", "c795901d796fba8ce8d3cb87d0172c59f56f3c9b..HEAD"]
+    def grgit = Grgit.open(dir: '.')
+    def commits = grgit.log {
+        range('c795901d796fba8ce8d3cb87d0172c59f56f3c9b', 'HEAD')
     }
-    return stdout.toString().trim()
+
+    return commits.size()
 }
 
 String getVersionFromJava(File file) {
