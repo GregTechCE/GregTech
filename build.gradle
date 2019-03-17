@@ -240,7 +240,7 @@ publishing {
         GTCEPublication(MavenPublication) {
             groupId = project.group
             artifactId = project.archivesBaseName
-            version = mod_version
+            version = project.version
             artifact jar
             artifact source
         }
@@ -259,7 +259,7 @@ bintray {
         licenses = ['LGPL-3.0']
         vcsUrl = 'https://github.com/GregTechCE/GregTech.git'
         version {
-            name = mod_version
+            name = project.version
             released = new Date()
         }
     }
