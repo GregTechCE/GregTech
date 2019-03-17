@@ -201,9 +201,9 @@ String getVersionFromJava(File file) {
         }
     }
 
-    def branchName = System.getenv("CI_COMMIT_REF_NAME")
-    if (branchName != null && branchName != "master") {
-        return "$major.$minor.$revision-$branchName"
+    def branchNameOrTag = System.getenv("CI_COMMIT_REF_NAME")
+    if (branchNameOrTag != null && (!branchNameOrTag.startsWith('v') || branchNameOrTag != "master")) {
+        return "$major.$minor.$revision-$branchNameOrTag"
     }
 
     String build = getBuildNumber()
