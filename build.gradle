@@ -213,6 +213,7 @@ String getVersionFromJava(File file) {
 
 curseforge {
     if (!System.getenv('CURSE_API_KEY')) {
+        println 'Skipping curseforge task as there is no api key in the environment'
         return
     }
 
@@ -248,8 +249,16 @@ publishing {
 }
 
 bintray {
-    user = project.hasProperty('bintrayUser') ? project.property('bintrayUser') : System.getenv('BINTRAY_USER')
-    key = project.hasProperty('bintrayApiKey') ? project.property('bintrayApiKey') : System.getenv('BINTRAY_API_KEY')
+    def bintrayUser = project.hasProperty('bintrayUser') ? project.property('bintrayUser') : System.getenv('BINTRAY_USER')
+    def bintrayApiKey = project.hasProperty('bintrayApiKey') ? project.property('bintrayApiKey') : System.getenv('BINTRAY_API_KEY')
+    
+    if (!bintrayUser || !bintrayApiKey) {
+        println 'Skipping bintrayUpload task as there is no api key or user in the environment'
+        return
+    }
+    
+    user = bintrayUser
+    key = bintrayApiKey
     publications = ['GTCEPublication']
     publish = true
     pkg {

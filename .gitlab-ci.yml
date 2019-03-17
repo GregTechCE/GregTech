@@ -22,7 +22,7 @@ build:
 
 production:
   stage: deploy
-  script: ./gradlew curseforge bintrayUpload --info
+  script: ./gradlew curseforge bintrayUpload
   when: on_success
   only:
     refs:
