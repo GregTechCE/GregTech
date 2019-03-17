@@ -74,53 +74,6 @@ public class GTUtility {
     public static BigInteger LONG_MAX = BigInteger.valueOf(Long.MAX_VALUE);
     public static BigInteger LONG_MIN = BigInteger.valueOf(Long.MIN_VALUE);
 
-    public static long castToLong(BigInteger value) {
-        return value.compareTo(LONG_MAX) >= 0 ? Long.MAX_VALUE : value.compareTo(LONG_MIN) <= 0 ? Long.MIN_VALUE : value.longValue();
-    }
-
-    public static long castedSum(long... values) {
-        if (values.length == 0) return 0L;
-        if (values.length == 1) return values[0];
-        int p = 0;
-        // try combine the values first, in order not to use BigInteger so frequently.
-        for (int i = 1; i < values.length; i++) {
-            if (values[i] == 0L) continue;
-            if ((values[i] > 0 && Long.MAX_VALUE - values[p] >= values[i])
-                || (values[i] < 0 && Long.MIN_VALUE - values[i] <= values[p])) {
-                values[p] += values[i];
-            } else {
-                values[++p] = values[i];
-            }
-        }
-        if (p == 0) return values[0];
-        BigInteger result = BigInteger.ZERO;
-        for (int i = 0; i <= p; i++) {
-            result = result.add(BigInteger.valueOf(values[i]));
-        }
-        return castToLong(result);
-    }
-
-    public static BigInteger sum(long... values) {
-        if (values.length == 0) return BigInteger.ZERO;
-        if (values.length == 1) return BigInteger.valueOf(values[0]);
-        int p = 0;
-        // try combine the values first in order not to use BigInteger so frequently.
-        for (int i = 1; i < values.length; i++) {
-            if (values[i] == 0L) continue;
-            if ((values[i] > 0 && Long.MAX_VALUE - values[p] >= values[i])
-                || (values[i] < 0 && Long.MIN_VALUE - values[i] <= values[p])) {
-                values[p] += values[i];
-            } else {
-                values[++p] = values[i];
-            }
-        }
-        BigInteger result = BigInteger.ZERO;
-        for (int i = 0; i <= p; i++) {
-            result = result.add(BigInteger.valueOf(values[i]));
-        }
-        return result;
-    }
-
     public static  <T> String[] mapToString(T[] array, Function<T, String> mapper) {
         String[] result = new String[array.length];
         for(int i = 0; i < array.length; i++) {
@@ -171,13 +124,6 @@ public class GTUtility {
         return distances.get(min);
     }
 
-    public static int multiplyColor(int c1, int c2) {
-        int r = (((c1 >>> 16) * (c2 >>> 16)) & 0xFF00) << 16;
-        int g = (((c1 >> 8 & 0xFF) * (c2 >> 8 & 0xFF)) & 0xFF00) << 8;
-        int b = ((c1 & 0xFF) * (c2 & 0xFF)) & 0xFF00;
-        return r | g | b;
-    }
-
     //just because CCL uses a different color format
     //0xRRGGBBAA
     public static int convertRGBtoOpaqueRGBA_CL(int colorValue) {
@@ -192,7 +138,6 @@ public class GTUtility {
         int r = (colorValue >> 16) & 0xFF;
         int g = (colorValue >> 8) & 0xFF;
         int b = (colorValue & 0xFF);
-        //noinspection NumericOverflow
         return 0xFF << 24 | (r & 0xFF) << 16 | (g & 0xFF) << 8 | (b & 0xFF);
     }
 

@@ -202,7 +202,7 @@ public class Materials {
     public static DustMaterial SiliconDioxide = new DustMaterial(159, "silicon_dioxide", 0xC8C8C8, MaterialIconSet.QUARTZ, 1, of(new MaterialStack(Silicon, 1), new MaterialStack(Oxygen, 2)), NO_SMASHING | NO_SMELTING | CRYSTALLISABLE);
     public static GemMaterial Sodalite = new GemMaterial(161, "sodalite", 0x1414FF, MaterialIconSet.LAPIS, 1, of(new MaterialStack(Aluminium, 3), new MaterialStack(Silicon, 3), new MaterialStack(Sodium, 4), new MaterialStack(Chlorine, 1)), GENERATE_ORE | GENERATE_PLATE | GENERATE_ROD | NO_SMASHING | NO_SMELTING | CRYSTALLISABLE | GENERATE_ROD | DECOMPOSITION_BY_ELECTROLYZING);
     public static FluidMaterial SodiumPersulfate = new FluidMaterial(162, "sodium_persulfate", 0xFFFFFF, MaterialIconSet.FLUID, of(new MaterialStack(Sodium, 1), new MaterialStack(Sulfur, 1), new MaterialStack(Oxygen, 4)), 0);
-    public static FluidMaterial SodiumSulfide = new FluidMaterial(163, "sodium_sulfide", 0xAAAA00, MaterialIconSet.FLUID, of(new MaterialStack(Sodium, 2), new MaterialStack(Sulfur, 1)), 0);
+    public static DustMaterial SodiumSulfide = new DustMaterial(163, "sodium_sulfide", 0xAAAA00, MaterialIconSet.DULL, 1, of(new MaterialStack(Sodium, 2), new MaterialStack(Sulfur, 1)), 0);
     public static FluidMaterial HydrogenSulfide = new FluidMaterial(164, "hydrogen_sulfide", 0xFFFFFF, MaterialIconSet.FLUID, of(new MaterialStack(Hydrogen, 2), new MaterialStack(Sulfur, 1)), 0);
     public static FluidMaterial Steam = new FluidMaterial(346, "steam", 0xFFFFFF, MaterialIconSet.GAS, of(new MaterialStack(Hydrogen, 2), new MaterialStack(Oxygen, 1)), NO_RECYCLING | GENERATE_FLUID_BLOCK).setFluidTemperature(380);
     public static FluidMaterial Epichlorhydrin = new FluidMaterial(349, "epichlorhydrin", 0xFFFFFF, MaterialIconSet.FLUID, of(new MaterialStack(Carbon, 3), new MaterialStack(Hydrogen, 5), new MaterialStack(Chlorine, 1), new MaterialStack(Oxygen, 1)), 0);
@@ -275,13 +275,6 @@ public class Materials {
     public static FluidMaterial Chloromethane = new FluidMaterial(450, "chloromethane", 10301057, MaterialIconSet.GAS, of(new MaterialStack(Materials.Carbon, 1), new MaterialStack(Materials.Hydrogen, 3), new MaterialStack(Materials.Chlorine, 1)), STATE_GAS);
     public static FluidMaterial AllylChloride = new FluidMaterial(451, "allyl_chloride", 7450250, MaterialIconSet.FLUID, of(new MaterialStack(Materials.Carbon, 3), new MaterialStack(Materials.Hydrogen, 5), new MaterialStack(Materials.Chlorine, 1)), 0);
     public static FluidMaterial Isoprene = new FluidMaterial(452, "isoprene", 1907997, MaterialIconSet.FLUID, of(new MaterialStack(Materials.Carbon, 5), new MaterialStack(Materials.Hydrogen, 8)), 0);
-    public static DustMaterial Massicot = new DustMaterial(453, "massicot", 8943149, MaterialIconSet.SAND, 1, of(new MaterialStack(Materials.Lead, 1), new MaterialStack(Materials.Oxygen, 1)), 0);
-    public static DustMaterial AntimonyTrioxide = new DustMaterial(454, "antimony_trioxide", 8092544, MaterialIconSet.SAND, 1, of(new MaterialStack(Materials.Antimony, 2), new MaterialStack(Materials.Oxygen, 3)), 0);
-    public static DustMaterial Zincite = new DustMaterial(455, "zincite", 8947843, MaterialIconSet.SAND, 1, of(new MaterialStack(Materials.Zinc, 1), new MaterialStack(Materials.Oxygen, 1)), 0);
-    public static DustMaterial CobaltOxide = new DustMaterial(456, "cobalt_oxide", 3556352, MaterialIconSet.SAND, 1, of(new MaterialStack(Materials.Cobalt, 1), new MaterialStack(Materials.Oxygen, 1)), 0);
-    public static DustMaterial ArsenicTrioxide = new DustMaterial(457, "arsenic_trioxide", 15856113, MaterialIconSet.ROUGH, 1, of(new MaterialStack(Materials.Arsenic, 2), new MaterialStack(Materials.Oxygen, 3)), 0);
-    public static DustMaterial CupricOxide = new DustMaterial(458, "cupric_oxide", 526344, MaterialIconSet.SAND, 1, of(new MaterialStack(Materials.Copper, 1), new MaterialStack(Materials.Oxygen, 1)), 0);
-    public static DustMaterial Ferrosilite = new DustMaterial(459, "ferrosilite", 5256470, MaterialIconSet.SAND, 1, of(new MaterialStack(Materials.Iron, 1), new MaterialStack(Materials.Silicon, 1), new MaterialStack(Materials.Oxygen, 3)), 0);
     public static DustMaterial Magnesia = new DustMaterial(460, "magnesia", 8943736, MaterialIconSet.SAND, 1, of(new MaterialStack(Materials.Magnesium, 1), new MaterialStack(Materials.Oxygen, 1)), 0);
 
     /**
@@ -536,7 +529,7 @@ public class Materials {
         for (DustMaterial dustMaterial : new DustMaterial[]{Iron, PigIron, WroughtIron, BrownLimonite}) {
             dustMaterial.addFlag(BLAST_FURNACE_CALCITE_TRIPLE);
         }
-        for (DustMaterial dustMaterial : new DustMaterial[]{Gold, Silver, Osmium, Platinum, Cooperite, Chalcopyrite}) {
+        for (DustMaterial dustMaterial : new DustMaterial[]{Gold, Silver, Osmium, Platinum, Cooperite, Chalcopyrite, Bornite}) {
             dustMaterial.washedIn = Mercury;
         }
         for (DustMaterial dustMaterial : new DustMaterial[]{Zinc, Nickel, Copper, Cobalt, Cobaltite, Tetrahedrite, Sphalerite}) {
@@ -633,6 +626,13 @@ public class Materials {
         Charcoal.setBurnTime(1600); //default coal burn time in vanilla
         Lignite.setBurnTime(1200); //2/3 of burn time of coal
         Coke.setBurnTime(3200); //2x burn time of coal
+
+        Tenorite.addOreByProducts(Iron, Manganese, Malachite);
+        Bornite.addOreByProducts(Pyrite, Cobalt, Cadmium, Gold);
+        Chalcocite.addOreByProducts(Sulfur, Lead, Silver);
+        Cuprite.addOreByProducts(Iron, Antimony, Malachite);
+        Enargite.addOreByProducts(Pyrite, Zinc, Quartzite);
+        Tennantite.addOreByProducts(Iron, Antimony, Zinc);
 
         Chalcopyrite.addOreByProducts(Pyrite, Cobalt, Cadmium, Gold);
         Sphalerite.addOreByProducts(GarnetYellow, Cadmium, Gallium, Zinc);

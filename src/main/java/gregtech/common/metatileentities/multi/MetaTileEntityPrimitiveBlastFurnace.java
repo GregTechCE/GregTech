@@ -5,6 +5,7 @@ import codechicken.lib.render.pipeline.IVertexOperation;
 import codechicken.lib.texture.TextureUtils;
 import codechicken.lib.vec.Cuboid6;
 import codechicken.lib.vec.Matrix4;
+import gregtech.api.GTValues;
 import gregtech.api.capability.impl.ItemHandlerProxy;
 import gregtech.api.gui.GuiTextures;
 import gregtech.api.gui.ModularUI;
@@ -48,6 +49,7 @@ public class MetaTileEntityPrimitiveBlastFurnace extends MultiblockControllerBas
     private int maxProgressDuration;
     private int currentProgress;
     private NonNullList<ItemStack> outputsList;
+    private int fuelUnitsLeft;
     private boolean isActive;
     private boolean wasActiveAndNeedUpdate;
 
@@ -111,15 +113,23 @@ public class MetaTileEntityPrimitiveBlastFurnace extends MultiblockControllerBas
     private boolean tryPickNewRecipe() {
         ItemStack inputStack = importItems.getStackInSlot(0);
         ItemStack fuelStack = importItems.getStackInSlot(1);
-        if(inputStack.isEmpty() || fuelStack.isEmpty()) {
+        if(inputStack.isEmpty() || (fuelStack.isEmpty() && fuelUnitsLeft == 0)) {
             return false;
         }
         int fuelUnitsPerItem = getFuelUnits(fuelStack);
-        int totalFuelUnits = fuelUnitsPerItem * fuelStack.getCount();
+        int totalFuelUnits = fuelUnitsLeft + fuelUnitsPerItem * fuelStack.getCount();
         PrimitiveBlastFurnaceRecipe currentRecipe = getOrRefreshRecipe(inputStack);
         if (currentRecipe != null && setupRecipe(inputStack, totalFuelUnits, currentRecipe)) {
             inputStack.shrink(currentRecipe.getInput().getCount());
-            fuelStack.shrink(Math.max(1, currentRecipe.getFuelAmount() / fuelUnitsPerItem));
+            int fuelUnitsToConsume = currentRecipe.getFuelAmount();
+            int remainderConsumed = Math.min(fuelUnitsToConsume, fuelUnitsLeft);
+            fuelUnitsToConsume -= remainderConsumed;
+
+            int fuelItemsToConsume = (int) Math.ceil(fuelUnitsToConsume / (fuelUnitsPerItem * 1.0));
+            int remainderAdded = fuelItemsToConsume * fuelUnitsPerItem - fuelUnitsToConsume;
+
+            this.fuelUnitsLeft += (remainderAdded - remainderConsumed);
+            fuelStack.shrink(fuelItemsToConsume);
             this.maxProgressDuration = currentRecipe.getDuration();
             this.currentProgress = 0;
             NonNullList<ItemStack> outputs = NonNullList.create();
@@ -137,6 +147,7 @@ public class MetaTileEntityPrimitiveBlastFurnace extends MultiblockControllerBas
         super.writeToNBT(data);
         data.setBoolean("Active", isActive);
         data.setBoolean("WasActive", wasActiveAndNeedUpdate);
+        data.setInteger("FuelUnitsLeft", fuelUnitsLeft);
         data.setInteger("MaxProgress", maxProgressDuration);
         if(maxProgressDuration > 0) {
             data.setInteger("Progress", currentProgress);
@@ -154,6 +165,7 @@ public class MetaTileEntityPrimitiveBlastFurnace extends MultiblockControllerBas
         super.readFromNBT(data);
         this.isActive = data.getBoolean("Active");
         this.wasActiveAndNeedUpdate = data.getBoolean("WasActive");
+        this.fuelUnitsLeft = data.getInteger("FuelUnitsLeft");
         this.maxProgressDuration = data.getInteger("MaxProgress");
         if(maxProgressDuration > 0) {
             this.currentProgress = data.getInteger("Progress");
@@ -212,16 +224,19 @@ public class MetaTileEntityPrimitiveBlastFurnace extends MultiblockControllerBas
         if(fuelType.isEmpty()) {
             return 0;
         }
+        MaterialStack materialStack = OreDictUnifier.getMaterial(fuelType);
+        if(materialStack != null && materialStack.amount >= GTValues.M) {
+            int materialAmount = (int) (materialStack.amount / GTValues.M);
+            if(materialStack.material == Materials.Coal || materialStack.material == Materials.Charcoal) {
+                return materialAmount;
+            } else if(materialStack.material == Materials.Coke) {
+                return 2 * materialAmount;
+            }
+        }
         if(OreDictUnifier.getOreDictionaryNames(fuelType).contains("fuelCoke")) {
             return 2;
         }
-        MaterialStack materialStack = OreDictUnifier.getMaterial(fuelType);
-        if(materialStack.material == Materials.Coal ||
-            materialStack.material == Materials.Charcoal) {
-            return 1;
-        } else if(materialStack.material == Materials.Coke) {
-            return 2;
-        } else return 0;
+        return 0;
     }
 
     protected IBlockState getCasingState() {

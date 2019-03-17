@@ -1,49 +1,15 @@
 package gregtech.api.capability;
 
+import gregtech.api.metatileentity.MetaTileEntity;
+import gregtech.common.ConfigHolder;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.WorldServer;
 
-import java.math.BigInteger;
-
-import static gregtech.api.util.GTUtility.castToLong;
+import static gregtech.api.util.GTUtility.getTierByVoltage;
 
 public interface IEnergyContainer {
-
-    /**
-     * Use this in case of overflow
-     */
-    interface IEnergyContainerOverflowSafe extends IEnergyContainer {
-
-        @Override
-        BigInteger getEnergyStoredActual();
-
-        @Override
-        BigInteger getEnergyCapacityActual();
-
-        @Override
-        default long getEnergyStored() {
-            return castToLong(getEnergyStoredActual());
-        }
-
-        @Override
-        default long getEnergyCapacity() {
-            return castToLong(getEnergyCapacityActual());
-        }
-
-        @Override
-        default boolean canUse(long energy) {
-            return getEnergyStoredActual().compareTo(BigInteger.valueOf(energy)) >= 0;
-        }
-
-        @Override
-        default long getEnergyCanBeInserted() {
-            return castToLong(getEnergyCapacityActual().subtract(getEnergyStoredActual()));
-        }
-
-        @Override
-        default boolean isSummationOverflowSafe() {
-            return false;
-        }
-    }
 
     /**
      * @return amount of used amperes. 0 if not accepted anything.
@@ -66,37 +32,19 @@ public interface IEnergyContainer {
         return changeEnergy(-energyToRemove);
     }
 
-    default boolean canUse(long energy) {
-        return getEnergyStored()  >= energy;
-    }
-
     default long getEnergyCanBeInserted() {
         return getEnergyCapacity() - getEnergyStored();
     }
 
     /**
-     * Gets the stored electric energy, casted to {@link Long#MAX_VALUE} if overflowed
+     * Gets the stored electric energy
      */
     long getEnergyStored();
 
     /**
-     * Gets the largest electric energy capacity, casted to {@link Long#MAX_VALUE} if overflowed
+     * Gets the largest electric energy capacity
      */
     long getEnergyCapacity();
-
-    /**
-     * Gets the actual stored electric energy, in case of overflow
-     */
-    default BigInteger getEnergyStoredActual() {
-        return BigInteger.valueOf(getEnergyStored());
-    }
-
-    /**
-     * Gets the largest electric energy capacity, in case of overflow
-     */
-    default BigInteger getEnergyCapacityActual() {
-        return BigInteger.valueOf(getEnergyCapacity());
-    }
 
     /**
      * Gets the amount of energy packets per tick.
@@ -123,15 +71,24 @@ public interface IEnergyContainer {
      */
     long getInputVoltage();
 
-    /**
-     * Return true if this container won't overflow when computing {@link #getEnergyStored()} or {@link #getEnergyCapacity()}
-     */
-    default boolean isSummationOverflowSafe() {
-        return true;
-    }
-
     default boolean isOneProbeHidden() {
         return false;
     }
 
+    static void doOvervoltageExplosion(MetaTileEntity metaTileEntity, long voltage) {
+        BlockPos pos = metaTileEntity.getPos();
+        metaTileEntity.getWorld().setBlockToAir(pos);
+        if(!metaTileEntity.getWorld().isRemote) {
+            double posX = pos.getX() + 0.5;
+            double posY = pos.getY() + 0.5;
+            double posZ = pos.getZ() + 0.5;
+            ((WorldServer) metaTileEntity.getWorld()).spawnParticle(EnumParticleTypes.SMOKE_LARGE, posX, posY, posZ,
+                10, 0.2, 0.2, 0.2, 0.0);
+
+            if (ConfigHolder.doExplosions) {
+                metaTileEntity.getWorld().createExplosion(null, posX, posY, posZ,
+                    getTierByVoltage(voltage), true);
+            }
+        }
+    }
 }

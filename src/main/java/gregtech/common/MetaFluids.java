@@ -177,7 +177,9 @@ public class MetaFluids {
             ResourceLocation textureLocation = fluidTextureMap.getOrDefault(Pair.of(material, fluidType), AUTO_GENERATED_FLUID_TEXTURE);
             fluid = new MaterialFluid(fluidName, material, fluidState, textureLocation);
             fluid.setTemperature(temperature);
-            fluid.setColor(GTUtility.convertRGBtoOpaqueRGBA_MC(material.materialRGB));
+            if(textureLocation == AUTO_GENERATED_FLUID_TEXTURE) {
+                fluid.setColor(GTUtility.convertRGBtoOpaqueRGBA_MC(material.materialRGB));
+            }
             setStateProperties(fluid, fluidState);
             FluidRegistry.registerFluid(fluid);
         }

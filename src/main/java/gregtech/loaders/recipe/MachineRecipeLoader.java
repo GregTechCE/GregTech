@@ -2,6 +2,7 @@ package gregtech.loaders.recipe;
 
 import com.google.common.base.CaseFormat;
 import gregtech.api.GTValues;
+import gregtech.api.recipes.CountableIngredient;
 import gregtech.api.recipes.ModHandler;
 import gregtech.api.recipes.RecipeMaps;
 import gregtech.api.recipes.builders.CokeOvenRecipeBuilder;
@@ -164,9 +165,9 @@ public class MachineRecipeLoader {
 
     private static void registerCircuitRecipes() {
         //Wafer blast furnace recipes
-        RecipeMaps.BLAST_RECIPES.recipeBuilder().duration(9000).EUt(120).input(OrePrefix.dust, Materials.Silicon, 32).input(OrePrefix.dustTiny, Materials.Gallium).inputs(IntCircuitIngredient.getIntegratedCircuit(1)).outputs(MetaItems.SILICON_BOULE.getStackForm()).blastFurnaceTemp(1784).buildAndRegister();
-        RecipeMaps.BLAST_RECIPES.recipeBuilder().duration(12000).EUt(480).input(OrePrefix.dust, Materials.Silicon, 64).input(OrePrefix.dust, Materials.Glowstone, 8).inputs(IntCircuitIngredient.getIntegratedCircuit(1)).fluidInputs(Materials.Nitrogen.getFluid(8000)).outputs(MetaItems.GLOWSTONE_BOULE.getStackForm()).blastFurnaceTemp(2484).buildAndRegister();
-        RecipeMaps.BLAST_RECIPES.recipeBuilder().duration(1500).EUt(1920).input(OrePrefix.block, Materials.Silicon, 9).input(OrePrefix.ingot, Materials.Naquadah).inputs(IntCircuitIngredient.getIntegratedCircuit(1)).fluidInputs(Materials.Argon.getFluid(8000)).outputs(MetaItems.NAQUADAH_BOULE.getStackForm()).blastFurnaceTemp(5400).buildAndRegister();
+        RecipeMaps.BLAST_RECIPES.recipeBuilder().duration(9000).EUt(120).input(OrePrefix.dust, Materials.Silicon, 32).input(OrePrefix.dustTiny, Materials.Gallium).inputs(CountableIngredient.from(IntCircuitIngredient.getIntegratedCircuit(1), 0)).outputs(MetaItems.SILICON_BOULE.getStackForm()).blastFurnaceTemp(1784).buildAndRegister();
+        RecipeMaps.BLAST_RECIPES.recipeBuilder().duration(12000).EUt(480).input(OrePrefix.dust, Materials.Silicon, 64).input(OrePrefix.dust, Materials.Glowstone, 8).inputs(CountableIngredient.from(IntCircuitIngredient.getIntegratedCircuit(1), 0)).fluidInputs(Materials.Nitrogen.getFluid(8000)).outputs(MetaItems.GLOWSTONE_BOULE.getStackForm()).blastFurnaceTemp(2484).buildAndRegister();
+        RecipeMaps.BLAST_RECIPES.recipeBuilder().duration(1500).EUt(1920).input(OrePrefix.block, Materials.Silicon, 9).input(OrePrefix.ingot, Materials.Naquadah).inputs(CountableIngredient.from(IntCircuitIngredient.getIntegratedCircuit(1), 0)).fluidInputs(Materials.Argon.getFluid(8000)).outputs(MetaItems.NAQUADAH_BOULE.getStackForm()).blastFurnaceTemp(5400).buildAndRegister();
 
         //Wafer engraving recipes
         RecipeMaps.LASER_ENGRAVER_RECIPES.recipeBuilder().duration(900).EUt(120).inputs(MetaItems.SILICON_WAFER.getStackForm()).notConsumable(OrePrefix.craftingLens, Color.Red).outputs(MetaItems.INTEGRATED_LOGIC_CIRCUIT_WAFER.getStackForm()).buildAndRegister();
@@ -195,7 +196,7 @@ public class MachineRecipeLoader {
 
         //Wafer chemical refining recipes
         RecipeMaps.CHEMICAL_RECIPES.recipeBuilder().duration(1200).EUt(1920).inputs(MetaItems.POWER_INTEGRATED_CIRCUIT_WAFER.getStackForm()).input(OrePrefix.dust, Materials.IndiumGalliumPhosphide, 2).fluidInputs(Materials.RedAlloy.getFluid(288)).outputs(MetaItems.HIGH_POWER_INTEGRATED_CIRCUIT_WAFER.getStackForm()).buildAndRegister();
-        RecipeMaps.CHEMICAL_RECIPES.recipeBuilder().duration(400).EUt(1920).inputs(MetaItems.CENTRAL_PROCESSING_UNIT_WAFER.getStackForm(), MetaItems.CARBON_FIBERS.getStackForm(16)).fluidInputs(Materials.Glowstone.getFluid(576)).outputs(MetaItems.NANO_CENTRAL_PROCESSING_UNIT_WAFER.getStackForm()).buildAndRegister();
+        RecipeMaps.CHEMICAL_RECIPES.recipeBuilder().duration(400).EUt(480).inputs(MetaItems.CENTRAL_PROCESSING_UNIT_WAFER.getStackForm(), MetaItems.CARBON_FIBERS.getStackForm(16)).fluidInputs(Materials.Glowstone.getFluid(576)).outputs(MetaItems.NANO_CENTRAL_PROCESSING_UNIT_WAFER.getStackForm()).buildAndRegister();
         RecipeMaps.CHEMICAL_RECIPES.recipeBuilder().duration(400).EUt(1920).inputs(MetaItems.NANO_CENTRAL_PROCESSING_UNIT_WAFER.getStackForm(), MetaItems.QUANTUM_EYE.getStackForm(2)).fluidInputs(Materials.GalliumArsenide.getFluid(288)).outputs(MetaItems.QBIT_CENTRAL_PROCESSING_UNIT_WAFER.getStackForm()).buildAndRegister();
         RecipeMaps.CHEMICAL_RECIPES.recipeBuilder().duration(600).EUt(1920).inputs(MetaItems.NANO_CENTRAL_PROCESSING_UNIT_WAFER.getStackForm()).input(OrePrefix.dust, Materials.IndiumGalliumPhosphide).fluidInputs(Materials.Radon.getFluid(50)).outputs(MetaItems.QBIT_CENTRAL_PROCESSING_UNIT_WAFER.getStackForm()).buildAndRegister();
 
@@ -208,7 +209,7 @@ public class MachineRecipeLoader {
         RecipeMaps.CUTTER_RECIPES.recipeBuilder().duration(600).EUt(48).inputs(MetaItems.SYSTEM_ON_CHIP_WAFER.getStackForm()).outputs(MetaItems.SYSTEM_ON_CHIP.getStackForm(6)).buildAndRegister();
         RecipeMaps.CUTTER_RECIPES.recipeBuilder().duration(600).EUt(48).inputs(MetaItems.RANDOM_ACCESS_MEMORY_WAFER.getStackForm()).outputs(MetaItems.RANDOM_ACCESS_MEMORY.getStackForm(32)).buildAndRegister();
         RecipeMaps.CUTTER_RECIPES.recipeBuilder().duration(600).EUt(48).inputs(MetaItems.QBIT_CENTRAL_PROCESSING_UNIT_WAFER.getStackForm()).outputs(MetaItems.QBIT_CENTRAL_PROCESSING_UNIT.getStackForm(5)).buildAndRegister();
-        RecipeMaps.CUTTER_RECIPES.recipeBuilder().duration(600).EUt(48).inputs(MetaItems.POWER_INTEGRATED_CIRCUIT_WAFER.getStackForm()).outputs(MetaItems.POWER_INTEGRATED_CIRCUIT_WAFER.getStackForm(4)).buildAndRegister();
+        RecipeMaps.CUTTER_RECIPES.recipeBuilder().duration(600).EUt(48).inputs(MetaItems.POWER_INTEGRATED_CIRCUIT_WAFER.getStackForm()).outputs(MetaItems.POWER_INTEGRATED_CIRCUIT.getStackForm(4)).buildAndRegister();
         RecipeMaps.CUTTER_RECIPES.recipeBuilder().duration(600).EUt(48).inputs(MetaItems.HIGH_POWER_INTEGRATED_CIRCUIT_WAFER.getStackForm()).outputs(MetaItems.HIGH_POWER_INTEGRATED_CIRCUIT.getStackForm(2)).buildAndRegister();
         RecipeMaps.CUTTER_RECIPES.recipeBuilder().duration(600).EUt(48).inputs(MetaItems.NOR_MEMORY_CHIP_WAFER.getStackForm()).outputs(MetaItems.NOR_MEMORY_CHIP.getStackForm(16)).buildAndRegister();
         RecipeMaps.CUTTER_RECIPES.recipeBuilder().duration(600).EUt(48).inputs(MetaItems.NAND_MEMORY_CHIP_WAFER.getStackForm()).outputs(MetaItems.NAND_MEMORY_CHIP.getStackForm(32)).buildAndRegister();

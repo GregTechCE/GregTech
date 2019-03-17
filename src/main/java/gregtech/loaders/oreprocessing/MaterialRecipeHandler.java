@@ -1,7 +1,7 @@
 package gregtech.loaders.oreprocessing;
 
+import gregtech.api.recipes.CountableIngredient;
 import gregtech.api.recipes.ModHandler;
-import gregtech.api.recipes.RecipeBuilder;
 import gregtech.api.recipes.RecipeMaps;
 import gregtech.api.recipes.builders.BlastRecipeBuilder;
 import gregtech.api.recipes.ingredients.IntCircuitIngredient;
@@ -138,13 +138,6 @@ public class MaterialRecipeHandler {
         }
     }
 
-    private static RecipeBuilder<?> addCircuitToBuilderIfNecessary(RecipeBuilder<?> builder, IngotMaterial material) {
-        if(circuitRequiringMaterials.contains(material)) {
-            builder.inputs(IntCircuitIngredient.getIntegratedCircuit(0));
-        }
-        return builder;
-    }
-
     public static void processSmallDust(OrePrefix orePrefix,DustMaterial material) {
         ItemStack smallDustStack = OreDictUnifier.get(orePrefix, material);
         ItemStack dustStack = OreDictUnifier.get(OrePrefix.dust, material);
@@ -153,6 +146,16 @@ public class MaterialRecipeHandler {
             GTUtility.copyAmount(4, smallDustStack), "  ", " X", 'X', new UnificationEntry(OrePrefix.dust, material));
         ModHandler.addShapedRecipe(String.format("small_dust_assembling_%s", material.toString()),
             dustStack, "XX", "XX", 'X', new UnificationEntry(orePrefix, material));
+
+        RecipeMaps.PACKER_RECIPES.recipeBuilder().input(orePrefix, material, 4)
+            .inputs(CountableIngredient.from(IntCircuitIngredient.getIntegratedCircuit(2), 0))
+            .outputs(dustStack)
+            .buildAndRegister();
+
+        RecipeMaps.UNPACKER_RECIPES.recipeBuilder().input(OrePrefix.dust, material)
+            .inputs(CountableIngredient.from(IntCircuitIngredient.getIntegratedCircuit(2), 0))
+            .outputs(GTUtility.copyAmount(4, smallDustStack))
+            .buildAndRegister();
     }
 
     public static void processTinyDust(OrePrefix orePrefix, DustMaterial material) {
@@ -163,6 +166,16 @@ public class MaterialRecipeHandler {
             GTUtility.copyAmount(9, tinyDustStack), "X ", "  ", 'X', new UnificationEntry(OrePrefix.dust, material));
         ModHandler.addShapedRecipe(String.format("tiny_dust_assembling_%s", material.toString()),
             dustStack, "XXX", "XXX", "XXX", 'X', new UnificationEntry(orePrefix, material));
+
+        RecipeMaps.PACKER_RECIPES.recipeBuilder().input(orePrefix, material, 9)
+            .inputs(CountableIngredient.from(IntCircuitIngredient.getIntegratedCircuit(1), 0))
+            .outputs(dustStack)
+            .buildAndRegister();
+
+        RecipeMaps.UNPACKER_RECIPES.recipeBuilder().input(OrePrefix.dust, material)
+            .inputs(CountableIngredient.from(IntCircuitIngredient.getIntegratedCircuit(1), 0))
+            .outputs(GTUtility.copyAmount(9, tinyDustStack))
+            .buildAndRegister();
     }
 
     public static void processIngot(OrePrefix ingotPrefix, IngotMaterial material) {
@@ -320,6 +333,16 @@ public class MaterialRecipeHandler {
             ModHandler.addShapedRecipe(String.format("nugget_assembling_%s", material.toString()),
                 ingotStack, "XXX", "XXX", "XXX", 'X', new UnificationEntry(orePrefix, material));
 
+            RecipeMaps.UNPACKER_RECIPES.recipeBuilder().input(OrePrefix.ingot, material)
+                .inputs(CountableIngredient.from(IntCircuitIngredient.getIntegratedCircuit(1), 0))
+                .outputs(GTUtility.copyAmount(9, nuggetStack))
+                .buildAndRegister();
+
+            RecipeMaps.PACKER_RECIPES.recipeBuilder().input(orePrefix, material, 9)
+                .inputs(CountableIngredient.from(IntCircuitIngredient.getIntegratedCircuit(1), 0))
+                .outputs(ingotStack)
+                .buildAndRegister();
+
             if(material.shouldGenerateFluid()) {
                 RecipeMaps.FLUID_SOLIDFICATION_RECIPES.recipeBuilder()
                     .notConsumable(MetaItems.SHAPE_MOLD_NUGGET)
@@ -329,8 +352,6 @@ public class MaterialRecipeHandler {
                     .EUt(8)
                     .buildAndRegister();
             }
-
-
         } else if (material instanceof GemMaterial) {
             ItemStack gemStack = OreDictUnifier.get(OrePrefix.gem, material);
 

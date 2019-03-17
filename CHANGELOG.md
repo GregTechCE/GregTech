@@ -1,5 +1,18 @@
 ## Changelog
 
+### 1.6.3
+* Added item collectors. They collect items in configurable range.
+* Fixed boule recipes consuming integrated circuits. Closes #648.
+* Fixed NanoCPU wafer recipe wrong voltage. Closes #642.
+* Fixed power wafer duplication. Closes #639.
+* Fixed sodium sulfide recipes. Closes #638.
+* Added smoke to overvoltage. Closes #635.
+* Added rubber recipes for low-voltage cables. Closes #644.
+* Added nugget/dust recipes to packer/unpacker.
+* Fixed lumber axe not working. Closes #636.
+* Made Primitive Blast Furnace properly handle all types of fuel and use remainder. Closes #647.
+* Bump version & update changelog.
+
 ### 1.6.2
 * Reworked chests. Re-implemented visuals, increased capacities.
 * Added machine recipes for metal frames.

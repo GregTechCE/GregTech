@@ -200,6 +200,13 @@ public enum OrePrefix {
         toolHeadChainsaw.maxStackSize = 16;
         toolHeadWrench.maxStackSize = 16;
 
+        craftingLens.setMarkerPrefix(true);
+        dye.setMarkerPrefix(true);
+        batterySingleUse.setMarkerPrefix(true);
+        battery.setMarkerPrefix(true);
+        circuit.setMarkerPrefix(true);
+        chipset.setMarkerPrefix(true);
+
         gem.setIgnored(Materials.Diamond);
         gem.setIgnored(Materials.Emerald);
         gem.setIgnored(Materials.Lapis);
@@ -311,6 +318,7 @@ public enum OrePrefix {
     private final List<IOreRegistrationHandler> oreProcessingHandlers = new ArrayList<>();
     private final Set<Material> ignoredMaterials = new HashSet<>();
     private final Set<Material> generatedMaterials = new HashSet<>();
+    private boolean isMarkerPrefix = false;
 
     public byte maxStackSize = 64;
     public final List<MaterialStack> secondaryMaterials = new ArrayList<>();
@@ -334,6 +342,10 @@ public enum OrePrefix {
     public void addSecondaryMaterial(MaterialStack secondaryMaterial) {
         Preconditions.checkNotNull(secondaryMaterial, "secondaryMaterial");
         secondaryMaterials.add(secondaryMaterial);
+    }
+
+    public void setMarkerPrefix(boolean isMarkerPrefix) {
+        this.isMarkerPrefix = isMarkerPrefix;
     }
 
     public long getMaterialAmount(Material material) {
@@ -442,4 +454,7 @@ public enum OrePrefix {
         ignoredMaterials.add(material);
     }
 
+    public boolean isMarkerPrefix() {
+        return isMarkerPrefix;
+    }
 }

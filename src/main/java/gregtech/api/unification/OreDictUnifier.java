@@ -141,12 +141,7 @@ public class OreDictUnifier {
         if(orePrefix != null && (material != null || orePrefix.isSelfReferencing)) {
             UnificationEntry unificationEntry = new UnificationEntry(orePrefix, material);
             stackUnificationItems.computeIfAbsent(unificationEntry, p -> new ArrayList<>()).add(simpleItemStack);
-            //only assign real OrePrefix to items in our registry
-            //in reality this way is incorrect because one item can contain multiple unification entries, and current system
-            //doesn't support that
-            //TODO re-design to support multiple unification entries on one material
-            if (!stackUnificationInfo.containsKey(simpleItemStack) &&
-                unificationEntry.orePrefix.generationCondition != null) {
+            if (!unificationEntry.orePrefix.isMarkerPrefix()) {
                 stackUnificationInfo.put(simpleItemStack, unificationEntry);
             }
             orePrefix.processOreRegistration(material);

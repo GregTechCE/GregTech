@@ -6,12 +6,10 @@ import gregtech.api.capability.IEnergyContainer;
 import gregtech.api.metatileentity.MTETrait;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.util.GTUtility;
-import gregtech.common.ConfigHolder;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.items.IItemHandlerModifiable;
 
@@ -151,11 +149,7 @@ public class EnergyContainerHandler extends MTETrait implements IEnergyContainer
         long canAccept = getEnergyCapacity() - getEnergyStored();
         if(voltage > 0L && amperage > 0L && (side == null || inputsEnergy(side))) {
             if(voltage > getInputVoltage()) {
-                BlockPos pos = metaTileEntity.getPos();
-                metaTileEntity.getWorld().setBlockToAir(pos);
-                if(ConfigHolder.doExplosions) {
-                    metaTileEntity.getWorld().createExplosion(null, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, GTUtility.getTierByVoltage(voltage), true);
-                }
+                IEnergyContainer.doOvervoltageExplosion(metaTileEntity, voltage);
                 return Math.min(amperage, getInputAmperage());
             }
             if(canAccept >= voltage) {
