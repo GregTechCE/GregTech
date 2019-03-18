@@ -55,6 +55,10 @@ public class ConfigHolder {
     @Config.RequiresMcRestart
     public static boolean ignoreErrorOrInvalidRecipes = true;
 
+    @Config.Comment("Setting this to false causes GTCE to not register additional methane recipes for foods in the centrifuge.")
+    @Config.RequiresMcRestart
+    public static boolean addFoodMethaneRecipes = true;    
+    
     @Config.Comment("Category that contains configs for changing vanilla recipes")
     @Config.RequiresMcRestart
     public static VanillaRecipes vanillaRecipes = new VanillaRecipes();
