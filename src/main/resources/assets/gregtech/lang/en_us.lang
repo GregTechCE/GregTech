@@ -471,7 +471,7 @@ metaitem.circuit.wetware_processor.name=Wetware Processor
 metaitem.circuit.wetware_processor.tooltip=You have a feeling like it's watching you
 metaitem.circuit.wetware_assembly.name=Wetware Assembly
 metaitem.circuit.wetware_assembly.tooltip=Can run Minecraft
-metaitem.circuit.wetware_super_computer.name=Wetware supercomputer
+metaitem.circuit.wetware_super_computer.name=Wetware Supercomputer
 metaitem.circuit.wetware_mainframe.name=Wetware Mainframe
 
 metaitem.carbon.fibers.name=Raw Carbon Fibers
