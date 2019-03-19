@@ -1,12 +1,5 @@
-// Decompiled by Jad v1.5.8g. Copyright 2001 Pavel Kouznetsov.
-// Jad home page: http://www.kpdus.com/jad.html
-// Decompiler options: packimports(3) 
-// Source File Name:   ClientProxy.java
-
 package gregtech.common;
 
-import codechicken.lib.reflect.ObfMapping;
-import codechicken.lib.reflect.ReflectionManager;
 import codechicken.lib.texture.TextureUtils;
 import com.mojang.authlib.minecraft.MinecraftProfileTexture.Type;
 import com.mojang.realmsclient.gui.ChatFormatting;
@@ -41,6 +34,7 @@ import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.client.event.RenderPlayerEvent;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -60,8 +54,6 @@ import java.util.UUID;
 @Mod.EventBusSubscriber(Side.CLIENT)
 public class ClientProxy extends CommonProxy {
 
-    private static final ObfMapping PLAYER_INFO_MAPPING = new ObfMapping("net/minecraft/client/entity/AbstractClientPlayer", "playerInfo");
-    private static final ObfMapping PLAYER_TEXTURES_MAPPING = new ObfMapping("net/minecraft/client/network/NetworkPlayerInfo", "playerTextures");
     private static final ResourceLocation GREGTECH_CAPE_TEXTURE = new ResourceLocation(GTValues.MODID, "textures/gregtechcape.png");
 
     public static final IBlockColor COMPRESSED_BLOCK_COLOR = (IBlockState state, IBlockAccess worldIn, BlockPos pos, int tintIndex) ->
@@ -216,8 +208,8 @@ public class ClientProxy extends CommonProxy {
     public static void onPlayerRender(RenderPlayerEvent.Pre event) {
         AbstractClientPlayer clientPlayer = (AbstractClientPlayer) event.getEntityPlayer();
         if(capeHoldersUUIDs.contains(clientPlayer.getUniqueID()) && clientPlayer.hasPlayerInfo() && clientPlayer.getLocationCape() == null) {
-            NetworkPlayerInfo playerInfo = ReflectionManager.getField(PLAYER_INFO_MAPPING, clientPlayer, NetworkPlayerInfo.class);
-            Map<Type, ResourceLocation> playerTextures = ReflectionManager.getField(PLAYER_TEXTURES_MAPPING, playerInfo, null);
+            NetworkPlayerInfo playerInfo = ObfuscationReflectionHelper.getPrivateValue(AbstractClientPlayer.class, clientPlayer, 0);
+            Map<Type, ResourceLocation> playerTextures = ObfuscationReflectionHelper.getPrivateValue(NetworkPlayerInfo.class, playerInfo, 1);
             playerTextures.put(Type.CAPE, GREGTECH_CAPE_TEXTURE);
         }
     }
