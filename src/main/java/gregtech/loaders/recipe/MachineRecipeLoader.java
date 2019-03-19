@@ -399,19 +399,21 @@ public class MachineRecipeLoader {
         RecipeMaps.CENTRIFUGE_RECIPES.recipeBuilder().duration(144).EUt(5).inputs(new ItemStack(Items.NETHER_WART)).fluidOutputs(Materials.Methane.getFluid(18)).buildAndRegister();
         RecipeMaps.CENTRIFUGE_RECIPES.recipeBuilder().duration(144).EUt(5).inputs(new ItemStack(Blocks.BROWN_MUSHROOM)).fluidOutputs(Materials.Methane.getFluid(18)).buildAndRegister();
         RecipeMaps.CENTRIFUGE_RECIPES.recipeBuilder().duration(144).EUt(5).inputs(new ItemStack(Blocks.RED_MUSHROOM)).fluidOutputs(Materials.Methane.getFluid(18)).buildAndRegister();
-        for(Item item : ForgeRegistries.ITEMS.getValuesCollection()) {
-            if(item instanceof ItemFood) {
-                ItemFood itemFood = (ItemFood) item;
-                Collection<ItemStack> subItems = ModHandler.getAllSubItems(new ItemStack(item, 1, GTValues.W));
-                for(ItemStack itemStack : subItems) {
-                    int healAmount = itemFood.getHealAmount(itemStack);
-                    float saturationModifier = itemFood.getSaturationModifier(itemStack);
-                    if(healAmount > 0) {
-                        FluidStack outputStack = Materials.Methane.getFluid(Math.round(9 * healAmount * (1.0f + saturationModifier)));
-                        RecipeMaps.CENTRIFUGE_RECIPES.recipeBuilder().duration(144).EUt(5).inputs(itemStack).fluidOutputs(outputStack).buildAndRegister();
-                    }
-                }
-            }
+        if (ConfigHolder.addFoodMethaneRecipes) {
+	        for(Item item : ForgeRegistries.ITEMS.getValuesCollection()) {
+	            if(item instanceof ItemFood) {
+	                ItemFood itemFood = (ItemFood) item;
+	                Collection<ItemStack> subItems = ModHandler.getAllSubItems(new ItemStack(item, 1, GTValues.W));
+	                for(ItemStack itemStack : subItems) {
+	                    int healAmount = itemFood.getHealAmount(itemStack);
+	                    float saturationModifier = itemFood.getSaturationModifier(itemStack);
+	                    if(healAmount > 0) {
+	                        FluidStack outputStack = Materials.Methane.getFluid(Math.round(9 * healAmount * (1.0f + saturationModifier)));
+	                        RecipeMaps.CENTRIFUGE_RECIPES.recipeBuilder().duration(144).EUt(5).inputs(itemStack).fluidOutputs(outputStack).buildAndRegister();
+	                    }
+	                }
+	            }
+	        }
         }
     }
 

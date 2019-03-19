@@ -1,3 +1,5 @@
+import org.ajoberstar.grgit.Grgit
+
 buildscript {
     repositories {
         jcenter()
@@ -15,6 +17,7 @@ plugins {
     id 'com.matthewprenger.cursegradle' version '1.1.0'
     id 'maven-publish'
     id "com.jfrog.bintray" version "1.8.4"
+    id "org.ajoberstar.grgit" version "2.2.0"
 }
 
 apply plugin: 'net.minecraftforge.gradle.forge'
@@ -51,6 +54,10 @@ repositories {
     maven { //JEI
         name = "Progwml6 maven"
         url = "http://dvs1.progwml6.com/files/maven/"
+    }
+    maven { //JEI fallback
+        name = "ModMaven"
+        url = "modmaven.k-4u.nl"
     }
     maven {
         name = "tterrag maven"
@@ -152,7 +159,7 @@ idea {
 
 task ciWriteBuildNumber doLast {
     def file = file("src/main/java/gregtech/GregTechVersion.java")
-    def bn = System.getenv("BUILD_NUMBER") ?: 0
+    def bn = getBuildNumber()
     def outfile = ""
     def ln = "\n" //Linux line endings because we're on git!
 
@@ -164,6 +171,15 @@ task ciWriteBuildNumber doLast {
         outfile += (s + ln)
     }
     file.write(outfile)
+}
+
+String getBuildNumber() {
+    def grgit = Grgit.open(dir: '.')
+    def commits = grgit.log {
+        range('c795901d796fba8ce8d3cb87d0172c59f56f3c9b', 'HEAD')
+    }
+
+    return commits.size()
 }
 
 String getVersionFromJava(File file) {
@@ -185,18 +201,19 @@ String getVersionFromJava(File file) {
         }
     }
 
-    def branchName = System.getenv("CI_COMMIT_REF_NAME")
-    if (branchName != null && branchName != "master") {
-        return "$major.$minor.$revision-$branchName"
+    def branchNameOrTag = System.getenv("CI_COMMIT_REF_NAME")
+    if (branchNameOrTag != null && !branchNameOrTag.startsWith('v') && branchNameOrTag != "master") {
+        return "$major.$minor.$revision-$branchNameOrTag"
     }
 
-    String build = System.getenv("BUILD_NUMBER") ?: 0
+    String build = getBuildNumber()
 
     return "$major.$minor.$revision.$build"
 }
 
 curseforge {
     if (!System.getenv('CURSE_API_KEY')) {
+        println 'Skipping curseforge task as there is no api key in the environment'
         return
     }
 
@@ -224,7 +241,7 @@ publishing {
         GTCEPublication(MavenPublication) {
             groupId = project.group
             artifactId = project.archivesBaseName
-            version = mod_version
+            version = project.version
             artifact jar
             artifact source
         }
@@ -232,17 +249,26 @@ publishing {
 }
 
 bintray {
-    user = project.hasProperty('bintrayUser') ? project.property('bintrayUser') : System.getenv('BINTRAY_USER')
-    key = project.hasProperty('bintrayApiKey') ? project.property('bintrayApiKey') : System.getenv('BINTRAY_API_KEY')
+    def bintrayUser = project.hasProperty('bintrayUser') ? project.property('bintrayUser') : System.getenv('BINTRAY_USER')
+    def bintrayApiKey = project.hasProperty('bintrayApiKey') ? project.property('bintrayApiKey') : System.getenv('BINTRAY_API_KEY')
+    
+    if (!bintrayUser || !bintrayApiKey) {
+        println 'Skipping bintrayUpload task as there is no api key or user in the environment'
+        return
+    }
+    
+    user = bintrayUser
+    key = bintrayApiKey
     publications = ['GTCEPublication']
+    publish = true
     pkg {
-        repo = 'gregtechce'
-        name = 'GregTech'
-        userOrg = project.hasProperty('bintrayUser') ? project.property('bintrayUser') : System.getenv('BINTRAY_USER')
+        repo = 'dev'
+        name = 'GregTechCE'
+        userOrg = 'gregtech'
         licenses = ['LGPL-3.0']
         vcsUrl = 'https://github.com/GregTechCE/GregTech.git'
         version {
-            name = mod_version
+            name = project.version
             released = new Date()
         }
     }
