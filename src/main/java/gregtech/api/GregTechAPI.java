@@ -45,9 +45,7 @@ public class GregTechAPI {
             screwdriverList = new HashSet<>(),
             wrenchList = new HashSet<>(),
             softHammerList = new HashSet<>(),
-            hardHammerList = new HashSet<>(),
-            solderingToolList = new HashSet<>(),
-            solderingMetalList = new HashSet<>();
+            hardHammerList = new HashSet<>();
 
     /**
      * The List of Hazmat Armors
