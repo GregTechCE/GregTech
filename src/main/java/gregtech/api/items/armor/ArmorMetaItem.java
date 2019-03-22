@@ -41,32 +41,55 @@ public class ArmorMetaItem extends MetaItem<ArmorMetaValueItem> implements ISpec
 
     @Override
     public void onArmorTick(World world, EntityPlayer player, ItemStack itemStack) {
-        super.onArmorTick(world, player, itemStack);
+        ArmorMetaValueItem metaValueItem = getItem(itemStack);
+        IArmorLogic armorLogic = metaValueItem == null ? null : metaValueItem.getArmorLogic();
+        if(armorLogic != null) {
+            armorLogic.onArmorTick(world, player, itemStack);
+        }
     }
 
     @Override
     public void renderHelmetOverlay(ItemStack stack, EntityPlayer player, ScaledResolution resolution, float partialTicks) {
-        super.renderHelmetOverlay(stack, player, resolution, partialTicks);
+        ArmorMetaValueItem metaValueItem = getItem(stack);
+        IArmorLogic armorLogic = metaValueItem == null ? null : metaValueItem.getArmorLogic();
+        if(armorLogic != null) {
+            armorLogic.renderHelmetOverlay(stack, player, resolution, partialTicks);
+        }
     }
 
     @Override
     public ArmorProperties getProperties(EntityLivingBase player, @Nonnull ItemStack armor, DamageSource source, double damage, int slot) {
-        return null;
+        ArmorMetaValueItem metaValueItem = getItem(armor);
+        IArmorLogic armorLogic = metaValueItem == null ? null : metaValueItem.getArmorLogic();
+        if(armorLogic != null) {
+            return armorLogic.getArmorProperties(player, armor, source, damage, EntityEquipmentSlot.values()[slot]);
+        }
+        return new ArmorProperties(0, 0.0, 0);
     }
 
     @Override
     public int getArmorDisplay(EntityPlayer player, @Nonnull ItemStack armor, int slot) {
+        ArmorMetaValueItem metaValueItem = getItem(armor);
+        IArmorLogic armorLogic = metaValueItem == null ? null : metaValueItem.getArmorLogic();
+        if(armorLogic != null) {
+            armorLogic.getArmorDisplay(player, armor, EntityEquipmentSlot.values()[slot]);
+        }
         return 0;
     }
 
     @Override
     public void damageArmor(EntityLivingBase entity, @Nonnull ItemStack stack, DamageSource source, int damage, int slot) {
-
+        ArmorMetaValueItem metaValueItem = getItem(stack);
+        IArmorLogic armorLogic = metaValueItem == null ? null : metaValueItem.getArmorLogic();
+        if(armorLogic != null) {
+            armorLogic.damageArmor(entity, stack, source, damage, EntityEquipmentSlot.values()[slot]);
+        }
     }
 
     public class ArmorMetaValueItem extends MetaItem<?>.MetaValueItem {
 
         private EntityEquipmentSlot equipmentSlot;
+        private IArmorLogic armorLogic;
 
         public ArmorMetaValueItem(int metaValue, String unlocalizedName) {
             super(metaValue, unlocalizedName);
@@ -76,8 +99,17 @@ public class ArmorMetaItem extends MetaItem<ArmorMetaValueItem> implements ISpec
             return equipmentSlot;
         }
 
+        public IArmorLogic getArmorLogic() {
+            return armorLogic;
+        }
+
         public ArmorMetaValueItem setEquipmentSlot(EntityEquipmentSlot equipmentSlot) {
             this.equipmentSlot = equipmentSlot;
+            return this;
+        }
+
+        public ArmorMetaValueItem setArmorLogic(IArmorLogic armorLogic) {
+            this.armorLogic = armorLogic;
             return this;
         }
     }

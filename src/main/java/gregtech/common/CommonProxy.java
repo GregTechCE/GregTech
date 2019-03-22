@@ -3,7 +3,6 @@ package gregtech.common;
 import gregtech.api.GTValues;
 import gregtech.api.block.machines.MachineItemBlock;
 import gregtech.api.enchants.EnchantmentEnderDamage;
-import gregtech.api.enchants.EnchantmentRadioactivity;
 import gregtech.api.items.metaitem.MetaItem;
 import gregtech.api.unification.material.type.DustMaterial;
 import gregtech.api.unification.material.type.Material;
@@ -23,7 +22,6 @@ import gregtech.loaders.oreprocessing.DecompositionRecipeHandler;
 import gregtech.loaders.oreprocessing.RecipeHandlerList;
 import gregtech.loaders.oreprocessing.ToolRecipeHandler;
 import gregtech.loaders.recipe.CraftingRecipeLoader;
-import gregtech.loaders.recipe.FuelRecipes;
 import gregtech.loaders.recipe.MachineRecipeLoader;
 import gregtech.loaders.recipe.MetaTileEntityLoader;
 import net.minecraft.block.Block;
@@ -177,7 +175,6 @@ public class CommonProxy {
     @SubscribeEvent
     public static void registerEnchantments(RegistryEvent.Register<Enchantment> event) {
         EnchantmentEnderDamage.INSTANCE.register(event);
-        EnchantmentRadioactivity.INSTANCE.register(event);
     }
 
     @SubscribeEvent
