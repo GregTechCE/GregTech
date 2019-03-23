@@ -130,7 +130,7 @@ public class Materials {
     public static DustMaterial Andradite = new DustMaterial(86, "andradite", 0x967800, MaterialIconSet.GEM_VERTICAL, 1, of(new MaterialStack(Calcium, 3), new MaterialStack(Iron, 2), new MaterialStack(Silicon, 3), new MaterialStack(Oxygen, 12)), 0);
     public static IngotMaterial AnnealedCopper = new IngotMaterial(87, "annealed_copper", 0xFF7814, MaterialIconSet.SHINY, 2, of(new MaterialStack(Copper, 1)), EXT2_METAL | MORTAR_GRINDABLE);
     public static DustMaterial Asbestos = new DustMaterial(88, "asbestos", 0xE6E6E6, MaterialIconSet.SAND, 1, of(new MaterialStack(Magnesium, 3), new MaterialStack(Silicon, 2), new MaterialStack(Hydrogen, 4), new MaterialStack(Oxygen, 9)), 0);
-    public static DustMaterial Ash = new DustMaterial(89, "ash", 0x969696, MaterialIconSet.SAND, 1, of(new MaterialStack(Carbon, 1)), 0);
+    public static DustMaterial Ash = new DustMaterial(89, "ash", 0x969696, MaterialIconSet.SAND, 1, of(new MaterialStack(Carbon, 1)), DISABLE_DECOMPOSITION);
     public static DustMaterial BandedIron = new DustMaterial(90, "banded_iron", 0x915A5A, MaterialIconSet.DULL, 2, of(new MaterialStack(Iron, 2), new MaterialStack(Oxygen, 3)), GENERATE_ORE);
     public static IngotMaterial BatteryAlloy = new IngotMaterial(91, "battery_alloy", 0x9C7CA0, MaterialIconSet.DULL, 1, of(new MaterialStack(Lead, 4), new MaterialStack(Antimony, 1)), EXT_METAL);
     public static GemMaterial BlueTopaz = new GemMaterial(92, "blue_topaz", 0x0000FF, MaterialIconSet.GEM_HORIZONTAL, 3, of(new MaterialStack(Aluminium, 2), new MaterialStack(Silicon, 1), new MaterialStack(Fluorine, 2), new MaterialStack(Hydrogen, 2), new MaterialStack(Oxygen, 6)), STD_GEM | NO_SMASHING | NO_SMELTING | HIGH_SIFTER_OUTPUT, 7.0F, 3.0f, 256);
