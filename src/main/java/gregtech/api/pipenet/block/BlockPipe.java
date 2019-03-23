@@ -214,6 +214,9 @@ public abstract class BlockPipe<PipeType extends Enum<PipeType> & IPipeType<Node
             return false;
         }
         CuboidRayTraceResult rayTraceResult = (CuboidRayTraceResult) RayTracer.retraceBlock(worldIn, playerIn, pos);
+        if(rayTraceResult == null) {
+            return false;
+        }
         EnumFacing coverSide = ICoverable.traceCoverSide(rayTraceResult);
         if(coverSide == null) {
             return false;

@@ -885,7 +885,6 @@ public class MachineRecipeLoader {
         RecipeMaps.FLUID_EXTRACTION_RECIPES.recipeBuilder().duration(128).EUt(4).inputs(new ItemStack(Items.COAL, 1, 1)).chancedOutput(OreDictUnifier.get(OrePrefix.dust,Materials.Ash,1), 1000).fluidOutputs(Materials.Creosote.getFluid(100)).buildAndRegister();
         RecipeMaps.FLUID_EXTRACTION_RECIPES.recipeBuilder().duration(16).EUt(4).input(OrePrefix.dust, Materials.Wood, 1).chancedOutput(MetaItems.PLANT_BALL.getStackForm(), 100).fluidOutputs(Materials.Creosote.getFluid(5)).buildAndRegister();
         RecipeMaps.FLUID_EXTRACTION_RECIPES.recipeBuilder().duration(32).EUt(4).input(OrePrefix.dust, Materials.HydratedCoal, 1).outputs(OreDictUnifier.get(OrePrefix.dust,Materials.Coal,1)).fluidOutputs(Materials.Water.getFluid(100)).buildAndRegister();
-        RecipeMaps.FLUID_EXTRACTION_RECIPES.recipeBuilder().duration(64).EUt(64).input(OrePrefix.dust, Materials.Monazite, 1).fluidOutputs(Materials.Helium.getFluid(200)).buildAndRegister();
         RecipeMaps.FLUID_EXTRACTION_RECIPES.recipeBuilder().duration(32).EUt(4).inputs(new ItemStack(Items.SNOWBALL)).fluidOutputs(Materials.Water.getFluid(250)).buildAndRegister();
         RecipeMaps.FLUID_EXTRACTION_RECIPES.recipeBuilder().duration(128).EUt(4).inputs(new ItemStack(Blocks.SNOW)).fluidOutputs(Materials.Water.getFluid(1000)).buildAndRegister();
 
