@@ -2,7 +2,7 @@ package gregtech.integration.jei;
 
 import gregtech.api.GTValues;
 import gregtech.api.GregTechAPI;
-import gregtech.api.capability.GregtechCapabilities;
+import gregtech.api.capability.GregtechTileCapabilities;
 import gregtech.api.capability.IWorkable;
 import gregtech.api.capability.impl.FuelRecipeMapWorkableHandler;
 import gregtech.api.capability.impl.RecipeMapWorkableHandler;
@@ -28,7 +28,6 @@ import mezz.jei.api.recipe.VanillaRecipeCategoryUid;
 import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
 
-import javax.annotation.Nonnull;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -81,8 +80,8 @@ public class GTJeiPlugin implements IModPlugin {
         for(ResourceLocation metaTileEntityId : GregTechAPI.META_TILE_ENTITY_REGISTRY.getKeys()) {
             MetaTileEntity metaTileEntity = GregTechAPI.META_TILE_ENTITY_REGISTRY.getObject(metaTileEntityId);
             //noinspection ConstantConditions
-            if(metaTileEntity.getCapability(GregtechCapabilities.CAPABILITY_WORKABLE, null) != null) {
-                IWorkable workableCapability = metaTileEntity.getCapability(GregtechCapabilities.CAPABILITY_WORKABLE, null);
+            if(metaTileEntity.getCapability(GregtechTileCapabilities.CAPABILITY_WORKABLE, null) != null) {
+                IWorkable workableCapability = metaTileEntity.getCapability(GregtechTileCapabilities.CAPABILITY_WORKABLE, null);
 
                 if(workableCapability instanceof RecipeMapWorkableHandler) {
                     RecipeMap<?> recipeMap = ((RecipeMapWorkableHandler) workableCapability).recipeMap;

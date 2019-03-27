@@ -27,7 +27,7 @@ public class SlotWidget extends Widget implements INativeWidget {
 
     protected boolean canTakeItems;
     protected boolean canPutItems;
-    protected boolean isPlayerInventory;
+    protected SlotLocationInfo locationInfo = new SlotLocationInfo(false, false);
 
     protected TextureArea[] backgroundTexture;
     protected Runnable changeListener;
@@ -69,9 +69,14 @@ public class SlotWidget extends Widget implements INativeWidget {
         return this;
     }
 
-    public SlotWidget markAsPlayerInventory() {
-        this.isPlayerInventory = true;
+    public SlotWidget setLocationInfo(boolean isPlayerInventory, boolean isHotbarSlot) {
+        this.locationInfo = new SlotLocationInfo(isPlayerInventory, isHotbarSlot);
         return this;
+    }
+
+    @Override
+    public SlotLocationInfo getSlotLocationInfo() {
+        return locationInfo;
     }
 
     public boolean canPutStack(ItemStack stack) {
@@ -80,11 +85,6 @@ public class SlotWidget extends Widget implements INativeWidget {
 
     public boolean canTakeStack(EntityPlayer player) {
         return isEnabled && canTakeItems;
-    }
-
-    @Override
-    public boolean isPlayerInventorySlot() {
-        return isPlayerInventory;
     }
 
     public boolean isEnabled() {

@@ -75,7 +75,7 @@ public class MetaTileEntityChest extends MetaTileEntity {
             getWorld().playSound(null, soundX, soundY, soundZ, SoundEvents.BLOCK_CHEST_OPEN, SoundCategory.BLOCKS, 0.5F, getWorld().rand.nextFloat() * 0.1F + 0.9F);
         }
 
-        if (numPlayersUsing == 0 && this.lidAngle > 0.0F || this.numPlayersUsing > 0 && this.lidAngle < 1.0F) {
+        if ((numPlayersUsing == 0 && this.lidAngle > 0.0F) || (this.numPlayersUsing > 0 && this.lidAngle < 1.0F)) {
             float currentValue = this.lidAngle;
 
             if (this.numPlayersUsing > 0) {
@@ -223,6 +223,7 @@ public class MetaTileEntityChest extends MetaTileEntity {
             14 + rowSize * 18,
             18 + 18 * amountOfRows + 94)
             .label(5, 5, getMetaFullName());
+        builder.setInventorySizeInfo(rowSize, amountOfRows);
         for(int y = 0; y < amountOfRows; y++) {
             for(int x = 0; x < rowSize; x++) {
                 int index = y * rowSize + x;

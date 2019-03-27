@@ -1,13 +1,6 @@
 package gregtech.api.capability;
 
-import gregtech.api.metatileentity.MetaTileEntity;
-import gregtech.common.ConfigHolder;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumParticleTypes;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.WorldServer;
-
-import static gregtech.api.util.GTUtility.getTierByVoltage;
 
 public interface IEnergyContainer {
 
@@ -75,20 +68,4 @@ public interface IEnergyContainer {
         return false;
     }
 
-    static void doOvervoltageExplosion(MetaTileEntity metaTileEntity, long voltage) {
-        BlockPos pos = metaTileEntity.getPos();
-        metaTileEntity.getWorld().setBlockToAir(pos);
-        if(!metaTileEntity.getWorld().isRemote) {
-            double posX = pos.getX() + 0.5;
-            double posY = pos.getY() + 0.5;
-            double posZ = pos.getZ() + 0.5;
-            ((WorldServer) metaTileEntity.getWorld()).spawnParticle(EnumParticleTypes.SMOKE_LARGE, posX, posY, posZ,
-                10, 0.2, 0.2, 0.2, 0.0);
-
-            if (ConfigHolder.doExplosions) {
-                metaTileEntity.getWorld().createExplosion(null, posX, posY, posZ,
-                    getTierByVoltage(voltage), true);
-            }
-        }
-    }
 }

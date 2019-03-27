@@ -2,12 +2,18 @@ package gregtech.api.gui.impl;
 
 import gregtech.api.gui.INativeWidget;
 import gregtech.api.gui.ModularUI;
+import gregtech.api.gui.ModularUI.ContainerSizeInfo;
 import gregtech.api.gui.Widget;
 import gregtech.api.gui.widgets.WidgetUIAccess;
 import gregtech.api.net.NetworkHandler;
 import gregtech.api.net.PacketUIClientAction;
 import gregtech.api.net.PacketUIWidgetUpdate;
 import gregtech.api.util.GTUtility;
+import invtweaks.api.container.ChestContainer;
+import invtweaks.api.container.ChestContainer.IsLargeCallback;
+import invtweaks.api.container.ChestContainer.RowSizeCallback;
+import invtweaks.api.container.ContainerSection;
+import invtweaks.api.container.ContainerSectionCallback;
 import io.netty.buffer.Unpooled;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.entity.player.EntityPlayer;
@@ -18,12 +24,14 @@ import net.minecraft.inventory.IContainerListener;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketBuffer;
+import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.*;
 import java.util.Map.Entry;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
+@ChestContainer
 public class ModularUIContainer extends Container implements WidgetUIAccess {
 
     private final HashMap<Slot, INativeWidget> slotMap = new HashMap<>();
@@ -46,6 +54,49 @@ public class ModularUIContainer extends Container implements WidgetUIAccess {
 
     public ModularUI getModularUI() {
         return modularUI;
+    }
+
+    @ContainerSectionCallback
+    public Map<ContainerSection, List<Slot>> getContainerSections() {
+        HashMap<ContainerSection, List<Slot>> result = new HashMap<>();
+
+        List<Slot> containerSlots = slotMap.entrySet().stream()
+            .filter(it -> !it.getValue().getSlotLocationInfo().isPlayerInventory)
+            .map(Entry::getKey)
+            .collect(Collectors.toList());
+
+        List<Pair<Slot, Boolean>> inventorySlots = slotMap.entrySet().stream()
+            .filter(it -> !it.getValue().getSlotLocationInfo().isPlayerInventory)
+            .map(it -> Pair.of(it.getKey(), it.getValue().getSlotLocationInfo().isHotbarSlot))
+            .collect(Collectors.toList());
+
+        result.put(ContainerSection.CHEST, containerSlots);
+
+        result.put(ContainerSection.INVENTORY, inventorySlots.stream()
+            .map(Entry::getKey)
+            .collect(Collectors.toList()));
+
+        result.put(ContainerSection.INVENTORY_NOT_HOTBAR, inventorySlots.stream()
+            .filter(it -> !it.getRight()).map(Entry::getKey)
+            .collect(Collectors.toList()));
+
+        result.put(ContainerSection.INVENTORY_HOTBAR, inventorySlots.stream()
+            .filter(Pair::getRight).map(Entry::getKey)
+            .collect(Collectors.toList()));
+
+        return result;
+    }
+
+    @RowSizeCallback
+    public int getInventoryRowSize() {
+        ContainerSizeInfo sizeInfo = modularUI.getContainerSlotsSizeInfo();
+        return sizeInfo == null ? 9 : sizeInfo.rowSize;
+    }
+
+    @IsLargeCallback
+    public boolean isLargeInventory() {
+        ContainerSizeInfo sizeInfo = modularUI.getContainerSlotsSizeInfo();
+        return sizeInfo != null && sizeInfo.columns > 0;
     }
 
     @Override
@@ -89,10 +140,10 @@ public class ModularUIContainer extends Container implements WidgetUIAccess {
         }
         ItemStack remainingStack = slot.getStack();
         boolean mergedStack;
-        if(slotMap.get(slot).isPlayerInventorySlot()) {
+        if(slotMap.get(slot).getSlotLocationInfo().isPlayerInventory) {
             //if we clicked on player inventory slot, move to container inventory, inverting indexes
             List<Slot> containerSlots = slotMap.entrySet().stream()
-                .filter(s -> !s.getValue().isPlayerInventorySlot())
+                .filter(s -> !s.getValue().getSlotLocationInfo().isPlayerInventory)
                 .map(Entry::getKey)
                 .sorted(Comparator.comparing(s -> s.slotNumber))
                 .collect(Collectors.toList());
@@ -100,7 +151,7 @@ public class ModularUIContainer extends Container implements WidgetUIAccess {
         } else {
             //if we clicked on a container inventory, move to player inventory
             List<Slot> inventorySlots = slotMap.entrySet().stream()
-                .filter(s -> s.getValue().isPlayerInventorySlot())
+                .filter(s -> s.getValue().getSlotLocationInfo().isPlayerInventory)
                 .map(Entry::getKey)
                 .sorted(Collections.reverseOrder(Comparator.comparing(s -> s.slotNumber)))
                 .collect(Collectors.toList());

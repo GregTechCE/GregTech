@@ -1,6 +1,6 @@
 package gregtech.integration.theoneprobe.provider;
 
-import gregtech.api.capability.GregtechCapabilities;
+import gregtech.api.capability.GregtechTileCapabilities;
 import gregtech.api.capability.IWorkable;
 import mcjty.theoneprobe.api.ElementAlignment;
 import mcjty.theoneprobe.api.IProbeInfo;
@@ -13,7 +13,7 @@ public class WorkableInfoProvider extends CapabilityInfoProvider<IWorkable> {
 
     @Override
     protected Capability<IWorkable> getCapability() {
-        return GregtechCapabilities.CAPABILITY_WORKABLE;
+        return GregtechTileCapabilities.CAPABILITY_WORKABLE;
     }
 
     @Override

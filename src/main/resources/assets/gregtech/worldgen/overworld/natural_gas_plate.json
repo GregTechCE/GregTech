@@ -24,7 +24,7 @@
       "values": [
         {
           "weight": 100,
-          "value": "block:gregtech:fluid.natural_gas"
+          "value": "fluid:natural_gas"
         }
       ]
     }

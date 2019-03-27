@@ -61,7 +61,7 @@ public class DecompositionRecipeHandler {
                     .map(s -> s.material).collect(Collectors.toList())));
         } else {
             builder = RecipeMaps.CENTRIFUGE_RECIPES.recipeBuilder()
-                .duration((int) material.getAverageMass() * totalInputAmount * 2)
+                .duration((int) Math.ceil(material.getAverageMass() * totalInputAmount * 1.5))
                 .EUt(30);
         }
         builder.outputs(outputs);

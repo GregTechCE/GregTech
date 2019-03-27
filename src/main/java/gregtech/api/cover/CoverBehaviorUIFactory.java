@@ -1,7 +1,7 @@
 package gregtech.api.cover;
 
 import gregtech.api.GTValues;
-import gregtech.api.capability.GregtechCapabilities;
+import gregtech.api.capability.GregtechTileCapabilities;
 import gregtech.api.gui.ModularUI;
 import gregtech.api.gui.UIFactory;
 import net.minecraft.client.Minecraft;
@@ -31,7 +31,7 @@ public class CoverBehaviorUIFactory extends UIFactory<CoverBehavior> {
         BlockPos blockPos = syncData.readBlockPos();
         EnumFacing attachedSide = EnumFacing.VALUES[syncData.readByte()];
         TileEntity tileEntity = Minecraft.getMinecraft().world.getTileEntity(blockPos);
-        ICoverable coverable = tileEntity == null ? null : tileEntity.getCapability(GregtechCapabilities.CAPABILITY_COVERABLE, null);
+        ICoverable coverable = tileEntity == null ? null : tileEntity.getCapability(GregtechTileCapabilities.CAPABILITY_COVERABLE, null);
         if (coverable != null) {
             return coverable.getCoverAtSide(attachedSide);
         }

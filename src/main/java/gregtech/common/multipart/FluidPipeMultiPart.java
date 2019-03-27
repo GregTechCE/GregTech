@@ -84,10 +84,12 @@ public class FluidPipeMultiPart extends PipeMultiPart<FluidPipeType, FluidPipePr
     public boolean renderStatic(Vector3 pos, BlockRenderLayer layer, CCRenderState ccrs) {
         if (MinecraftForgeClient.getRenderLayer() == BlockRenderLayer.CUTOUT) {
             TileMultipart tileMultipart = tile();
-            ccrs.setBrightness(tileMultipart.getWorld(), tileMultipart.getPos());
+            int brightness = tileMultipart.getWorld().getBlockState(tileMultipart.getPos()).getPackedLightmapCoords(tileMultipart.getWorld(), tileMultipart.getPos());
+            ccrs.brightness = brightness;
             FluidPipeRenderer.INSTANCE.renderPipeBlock(getPipeMaterial(), getPipeType(), getInsulationColor(), ccrs,
                 new IVertexOperation[]{new Translation(pos)},
                 activeConnections & ~getBlockedConnections());
+            ccrs.brightness = brightness;
             getCoverableImplementation().renderCovers(ccrs, new Matrix4().translate(pos), new IVertexOperation[0]);
             return true;
         }

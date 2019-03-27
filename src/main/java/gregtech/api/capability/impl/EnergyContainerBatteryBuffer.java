@@ -8,6 +8,7 @@ import gregtech.api.capability.IElectricItem;
 import gregtech.api.capability.IEnergyContainer;
 import gregtech.api.metatileentity.MTETrait;
 import gregtech.api.metatileentity.MetaTileEntity;
+import gregtech.api.util.GTUtility;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
@@ -30,7 +31,7 @@ public class EnergyContainerBatteryBuffer extends MTETrait implements IEnergyCon
         long initialAmperage = amperage;
         if(side == null || inputsEnergy(side)) {
             if (voltage > getInputVoltage()) {
-                IEnergyContainer.doOvervoltageExplosion(metaTileEntity, voltage);
+                GTUtility.doOvervoltageExplosion(metaTileEntity, voltage);
                 return Math.min(amperage, getInputAmperage());
             }
             IItemHandlerModifiable inventory = getInventory();

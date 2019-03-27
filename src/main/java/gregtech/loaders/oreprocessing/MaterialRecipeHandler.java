@@ -56,20 +56,21 @@ public class MaterialRecipeHandler {
         if (material instanceof GemMaterial) {
             ItemStack gemStack = OreDictUnifier.get(OrePrefix.gem, material);
             ItemStack tinyDarkAshStack = OreDictUnifier.get(OrePrefix.dustTiny, Materials.DarkAsh);
+
             if (material.hasFlag(GemMaterial.MatFlags.CRYSTALLISABLE)) {
 
                 RecipeMaps.AUTOCLAVE_RECIPES.recipeBuilder()
                     .input(dustPrefix, material)
                     .fluidInputs(Materials.Water.getFluid(200))
                     .chancedOutput(gemStack, 7000)
-                    .duration(2000).EUt(24)
+                    .duration(1600).EUt(24)
                     .buildAndRegister();
 
                 RecipeMaps.AUTOCLAVE_RECIPES.recipeBuilder()
                     .input(dustPrefix, material)
                     .fluidInputs(ModHandler.getDistilledWater(200))
                     .chancedOutput(gemStack, 9000)
-                    .duration(1500).EUt(24)
+                    .duration(1200).EUt(24)
                     .buildAndRegister();
 
             } else if (!material.hasFlag(Material.MatFlags.EXPLOSIVE) && !material.hasFlag(Material.MatFlags.FLAMMABLE)) {
@@ -79,6 +80,7 @@ public class MaterialRecipeHandler {
                     .explosivesAmount(4)
                     .buildAndRegister();
             }
+
         } else if (material instanceof IngotMaterial) {
             IngotMaterial metalMaterial = (IngotMaterial) material;
             if(!material.hasFlag(Material.MatFlags.FLAMMABLE | MatFlags.NO_SMELTING)) {

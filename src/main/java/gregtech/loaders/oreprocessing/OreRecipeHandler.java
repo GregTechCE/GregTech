@@ -77,7 +77,7 @@ public class OreRecipeHandler {
         } else {
             ingotStack = OreDictUnifier.get(OrePrefix.dust, smeltingMaterial);
         }
-        ingotStack.setCount(ingotStack.getCount() * material.smeltingMultiplier);
+        ingotStack.setCount(ingotStack.getCount() * material.oreMultiplier);
         crushedStack.setCount(crushedStack.getCount() * material.oreMultiplier);
 
         if (!crushedStack.isEmpty()) {

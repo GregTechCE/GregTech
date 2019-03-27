@@ -1,10 +1,7 @@
 package gregtech.api.capability.impl;
 
 import gregtech.api.GTValues;
-import gregtech.api.capability.GregtechCapabilities;
-import gregtech.api.capability.IEnergyContainer;
-import gregtech.api.capability.IMultipleTankHandler;
-import gregtech.api.capability.IWorkable;
+import gregtech.api.capability.*;
 import gregtech.api.metatileentity.MTETrait;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.recipes.machines.FuelRecipeMap;
@@ -59,7 +56,7 @@ public class FuelRecipeMapWorkableHandler extends MTETrait implements IWorkable 
 
     @Override
     public Capability<?> getImplementingCapability() {
-        return GregtechCapabilities.CAPABILITY_WORKABLE;
+        return GregtechTileCapabilities.CAPABILITY_WORKABLE;
     }
 
     @Override

@@ -1,6 +1,6 @@
 package gregtech.common.items.behaviors;
 
-import gregtech.api.capability.GregtechCapabilities;
+import gregtech.api.capability.GregtechTileCapabilities;
 import gregtech.api.cover.ICoverable;
 import gregtech.api.items.metaitem.stats.IItemBehaviour;
 import gregtech.api.util.GTUtility;
@@ -48,7 +48,7 @@ public class CrowbarBehaviour implements IItemBehaviour {
                 }
             }
             TileEntity tileEntity = world.getTileEntity(blockPos);
-            ICoverable coverable = tileEntity == null ? null : tileEntity.getCapability(GregtechCapabilities.CAPABILITY_COVERABLE, null);
+            ICoverable coverable = tileEntity == null ? null : tileEntity.getCapability(GregtechTileCapabilities.CAPABILITY_COVERABLE, null);
             EnumFacing coverSide = coverable == null ? null : ICoverable.rayTraceCoverableSide(coverable, player);
             if(coverSide != null && coverable.getCoverAtSide(coverSide) != null) {
                 if(world.isRemote) {

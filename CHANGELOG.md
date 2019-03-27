@@ -1,16 +1,28 @@
 ## Changelog
 
+### 1.6.5
+* Buff large boilers (a bit).
+* Fix boilers burning container-dependent fuels like firestone from Railcraft.
+* Fix ray tracing null exception.
+* Fixed indium gallium phosphate crafting.
+* Removed monazite -> helium recipe.
+* Made autoclave a bit faster in crystallization.
+* Reworked pipe texture locations a bit.
+* Fixed fluid references in oregen.
+* Fixed pipe burning crash.
+* InventoryTweaks compatibility.
+
 ### 1.6.3
 * Added item collectors. They collect items in configurable range.
-* Fixed boule recipes consuming integrated circuits. Closes #648.
-* Fixed NanoCPU wafer recipe wrong voltage. Closes #642.
-* Fixed power wafer duplication. Closes #639.
-* Fixed sodium sulfide recipes. Closes #638.
-* Added smoke to overvoltage. Closes #635.
-* Added rubber recipes for low-voltage cables. Closes #644.
+* Fixed boule recipes consuming integrated circuits.
+* Fixed NanoCPU wafer recipe wrong voltage.
+* Fixed power wafer duplication.
+* Fixed sodium sulfide recipes.
+* Added smoke to overvoltage.
+* Added rubber recipes for low-voltage cables.
 * Added nugget/dust recipes to packer/unpacker.
-* Fixed lumber axe not working. Closes #636.
-* Made Primitive Blast Furnace properly handle all types of fuel and use remainder. Closes #647.
+* Fixed lumber axe not working.
+* Made Primitive Blast Furnace properly handle all types of fuel and use remainder.
 * Bump version & update changelog.
 
 ### 1.6.2

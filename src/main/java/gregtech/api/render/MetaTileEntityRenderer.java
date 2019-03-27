@@ -117,10 +117,14 @@ public class MetaTileEntityRenderer implements ICCBlockRenderer, IItemRenderer {
         CCRenderState renderState = CCRenderState.instance();
         renderState.reset();
         renderState.bind(buffer);
-        renderState.lightMatrix.locate(world, pos);
+        int brightness = world.getBlockState(pos).getPackedLightmapCoords(world, pos);
         IVertexOperation[] pipeline = new IVertexOperation[] {renderState.lightMatrix};
         Matrix4 translation = new Matrix4().translate(pos.getX(), pos.getY(), pos.getZ());
+        renderState.lightMatrix.locate(world, pos);
+        renderState.brightness = brightness;
         metaTileEntity.renderMetaTileEntity(renderState, translation.copy(), pipeline);
+
+        renderState.brightness = brightness;
         metaTileEntity.renderCovers(renderState, translation, new IVertexOperation[0]);
         return true;
     }

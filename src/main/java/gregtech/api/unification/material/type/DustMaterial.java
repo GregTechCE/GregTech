@@ -83,12 +83,6 @@ public class DustMaterial extends FluidMaterial {
     public int byProductMultiplier = 1;
 
     /**
-     * Smelting item amount multiplier during vanilla item smelting
-     */
-    @ZenProperty
-    public int smeltingMultiplier = 1;
-
-    /**
      * Tool level needed to harvest block of this material
      */
     @ZenProperty
@@ -157,10 +151,6 @@ public class DustMaterial extends FluidMaterial {
 
     public void setOreMultiplier(int oreMultiplier) {
         this.oreMultiplier = oreMultiplier;
-    }
-
-    public void setSmeltingMultiplier(int smeltingMultiplier) {
-        this.smeltingMultiplier = smeltingMultiplier;
     }
 
     public void setByProductMultiplier(int byProductMultiplier) {

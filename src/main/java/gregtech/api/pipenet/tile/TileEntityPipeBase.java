@@ -1,19 +1,22 @@
 package gregtech.api.pipenet.tile;
 
-import gregtech.api.capability.GregtechCapabilities;
+import gregtech.api.capability.GregtechTileCapabilities;
 import gregtech.api.cover.CoverBehavior;
 import gregtech.api.metatileentity.SyncedTileEntityBase;
 import gregtech.api.pipenet.block.BlockPipe;
 import gregtech.api.pipenet.block.IPipeType;
 import gregtech.api.unification.material.type.Material;
+import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.util.Constants.NBT;
 
 import javax.annotation.Nullable;
 import java.util.function.Consumer;
@@ -25,6 +28,7 @@ public abstract class TileEntityPipeBase<PipeType extends Enum<PipeType> & IPipe
     protected final PipeCoverableImplementation coverableImplementation = new PipeCoverableImplementation(this);
     private NodeDataType cachedNodeData;
     private Material pipeMaterial;
+    private BlockPipe<PipeType, NodeDataType, ?> pipeBlock;
     private PipeType pipeType = getPipeTypeClass().getEnumConstants()[0];
     private boolean isBeingConverted;
 
@@ -96,8 +100,12 @@ public abstract class TileEntityPipeBase<PipeType extends Enum<PipeType> & IPipe
 
     @Override
     public BlockPipe<PipeType, NodeDataType, ?> getPipeBlock() {
-        //noinspection unchecked
-        return (BlockPipe<PipeType, NodeDataType, ?>) getBlockState().getBlock();
+        if(pipeBlock == null) {
+            Block block = getBlockState().getBlock();
+            //noinspection unchecked
+            this.pipeBlock = block instanceof BlockPipe ? (BlockPipe<PipeType, NodeDataType, ?>) block : null;
+        }
+        return pipeBlock;
     }
 
     @Override
@@ -156,8 +164,8 @@ public abstract class TileEntityPipeBase<PipeType extends Enum<PipeType> & IPipe
     }
 
     public <T> T getCapabilityInternal(Capability<T> capability, @Nullable EnumFacing facing) {
-        if(capability == GregtechCapabilities.CAPABILITY_COVERABLE) {
-            return GregtechCapabilities.CAPABILITY_COVERABLE.cast(getCoverableImplementation());
+        if(capability == GregtechTileCapabilities.CAPABILITY_COVERABLE) {
+            return GregtechTileCapabilities.CAPABILITY_COVERABLE.cast(getCoverableImplementation());
         }
         return super.getCapability(capability, facing);
     }
@@ -165,7 +173,7 @@ public abstract class TileEntityPipeBase<PipeType extends Enum<PipeType> & IPipe
     @Nullable
     @Override
     public final <T> T getCapability(Capability<T> capability, @Nullable EnumFacing facing) {
-        boolean isCoverable = capability == GregtechCapabilities.CAPABILITY_COVERABLE;
+        boolean isCoverable = capability == GregtechTileCapabilities.CAPABILITY_COVERABLE;
         CoverBehavior coverBehavior = facing == null ? null : coverableImplementation.getCoverAtSide(facing);
         T defaultValue = getCapabilityInternal(capability, facing);
         if(coverBehavior != null && !isCoverable) {
@@ -182,6 +190,11 @@ public abstract class TileEntityPipeBase<PipeType extends Enum<PipeType> & IPipe
     @Override
     public NBTTagCompound writeToNBT(NBTTagCompound compound) {
         super.writeToNBT(compound);
+        BlockPipe<PipeType, NodeDataType, ?> pipeBlock = getPipeBlock();
+        if(pipeBlock != null) {
+            //noinspection ConstantConditions
+            compound.setString("PipeBlock", pipeBlock.getRegistryName().toString());
+        }
         compound.setInteger("PipeType", pipeType.ordinal());
         compound.setString("PipeMaterial", pipeMaterial.toString());
         compound.setInteger("BlockedConnections", blockedConnections);
@@ -193,6 +206,11 @@ public abstract class TileEntityPipeBase<PipeType extends Enum<PipeType> & IPipe
     @Override
     public void readFromNBT(NBTTagCompound compound) {
         super.readFromNBT(compound);
+        if(compound.hasKey("PipeBlock", NBT.TAG_STRING)) {
+            Block block = Block.REGISTRY.getObject(new ResourceLocation(compound.getString("PipeBlock")));
+            //noinspection unchecked
+            this.pipeBlock = block instanceof BlockPipe ? (BlockPipe<PipeType, NodeDataType, ?>) block : null;
+        }
         this.pipeType = getPipeTypeClass().getEnumConstants()[compound.getInteger("PipeType")];
         this.pipeMaterial = Material.MATERIAL_REGISTRY.getObject(compound.getString("PipeMaterial"));
         this.blockedConnections = compound.getInteger("BlockedConnections");

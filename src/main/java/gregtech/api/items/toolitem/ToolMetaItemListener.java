@@ -16,6 +16,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Enchantments;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.event.AnvilUpdateEvent;
 import net.minecraftforge.event.entity.player.PlayerPickupXpEvent;
 import net.minecraftforge.event.world.BlockEvent;
@@ -61,7 +62,7 @@ public class ToolMetaItemListener {
             double materialForFullRepair = toolValueItem.getAmountOfMaterialToRepair(firstStack);
             int durabilityPerUnit = (int) Math.ceil(toolMetaItem.getMaxInternalDamage(firstStack) / materialForFullRepair);
             int materialUnitsRequired = Math.min(secondStack.getCount(), (int) Math.ceil(toolDamage * materialForFullRepair));
-            int repairCost = Math.max(2, toolMaterial.harvestLevel) * materialUnitsRequired;
+            int repairCost = (MathHelper.clamp(toolMaterial.harvestLevel, 2, 3) - 1) * materialUnitsRequired;
 
             if(toolDamage > 0.0 && materialUnitsRequired > 0 && unificationEntry != null &&
                 unificationEntry.material == toolMaterial && unificationEntry.orePrefix == solidPrefix) {

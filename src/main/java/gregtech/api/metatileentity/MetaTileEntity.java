@@ -10,7 +10,7 @@ import codechicken.lib.vec.Cuboid6;
 import codechicken.lib.vec.Matrix4;
 import com.google.common.base.Preconditions;
 import gregtech.api.GregTechAPI;
-import gregtech.api.capability.GregtechCapabilities;
+import gregtech.api.capability.GregtechTileCapabilities;
 import gregtech.api.capability.impl.FluidHandlerProxy;
 import gregtech.api.capability.impl.FluidTankList;
 import gregtech.api.capability.impl.ItemHandlerProxy;
@@ -675,7 +675,7 @@ public abstract class MetaTileEntity implements ICoverable {
     }
 
     public final <T> T getCoverCapability(Capability<T> capability, EnumFacing side) {
-        boolean isCoverable = capability == GregtechCapabilities.CAPABILITY_COVERABLE;
+        boolean isCoverable = capability == GregtechTileCapabilities.CAPABILITY_COVERABLE;
         CoverBehavior coverBehavior = side == null ? null : getCoverAtSide(side);
         T originalCapability = getCapability(capability, side);
         if(coverBehavior != null && !isCoverable) {
@@ -685,8 +685,8 @@ public abstract class MetaTileEntity implements ICoverable {
     }
 
     public <T> T getCapability(Capability<T> capability, EnumFacing side) {
-        if(capability == GregtechCapabilities.CAPABILITY_COVERABLE) {
-            return GregtechCapabilities.CAPABILITY_COVERABLE.cast(this);
+        if(capability == GregtechTileCapabilities.CAPABILITY_COVERABLE) {
+            return GregtechTileCapabilities.CAPABILITY_COVERABLE.cast(this);
         }
         if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY &&
             getFluidInventory().getTankProperties().length > 0) {

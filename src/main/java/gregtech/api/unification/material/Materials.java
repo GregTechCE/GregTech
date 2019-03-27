@@ -578,48 +578,55 @@ public class Materials {
         Magnesite.setDirectSmelting(Magnesium);
         Molybdenite.setDirectSmelting(Molybdenum);
 
-        Salt.setOreMultiplier(2);
-        Salt.setSmeltingMultiplier(2);
-        RockSalt.setOreMultiplier(2);
-        RockSalt.setSmeltingMultiplier(2);
+        Salt.setOreMultiplier(3);
+        RockSalt.setOreMultiplier(3);
+        Lepidolite.setOreMultiplier(5);
+
+        Spodumene.setOreMultiplier(2);
+        Spessartine.setOreMultiplier(2);
+        Soapstone.setOreMultiplier(3);
+
+        Almandine.setOreMultiplier(6);
+        Grossular.setOreMultiplier(6);
+        Bentonite.setOreMultiplier(7);
+        Pyrope.setOreMultiplier(4);
+
+        GarnetYellow.setOreMultiplier(4);
+        GarnetRed.setOreMultiplier(4);
+        Olivine.setOreMultiplier(2);
+        Topaz.setOreMultiplier(2);
+
+        Bastnasite.setOreMultiplier(2);
+        Tennantite.setOreMultiplier(2);
+        Enargite.setOreMultiplier(2);
+        Tantalite.setOreMultiplier(2);
+        Tanzanite.setOreMultiplier(2);
+        Pitchblende.setOreMultiplier(2);
 
         Scheelite.setOreMultiplier(2);
         Tungstate.setOreMultiplier(2);
         Ilmenite.setOreMultiplier(3);
+        Bauxite.setOreMultiplier(3);
 
         Cassiterite.setOreMultiplier(2);
-        Cassiterite.setSmeltingMultiplier(2);
         CassiteriteSand.setOreMultiplier(2);
-        CassiteriteSand.setSmeltingMultiplier(2);
         NetherQuartz.setOreMultiplier(2);
-        NetherQuartz.setSmeltingMultiplier(2);
         CertusQuartz.setOreMultiplier(2);
-        CertusQuartz.setSmeltingMultiplier(2);
+        Quartzite.setOreMultiplier(2);
 
         Phosphor.setOreMultiplier(3);
-        Phosphor.setSmeltingMultiplier(3);
         Saltpeter.setOreMultiplier(4);
-        Saltpeter.setSmeltingMultiplier(4);
-        Apatite.setOreMultiplier(4);
-        Apatite.setSmeltingMultiplier(4);
+        Apatite.setOreMultiplier(5);
         Apatite.setByProductMultiplier(2);
-
-        Redstone.setOreMultiplier(5);
-        Redstone.setSmeltingMultiplier(5);
-        Glowstone.setOreMultiplier(5);
-        Glowstone.setSmeltingMultiplier(5);
+        Redstone.setOreMultiplier(6);
 
         Lapis.setOreMultiplier(6);
-        Lapis.setSmeltingMultiplier(6);
         Lapis.setByProductMultiplier(4);
         Sodalite.setOreMultiplier(6);
-        Sodalite.setSmeltingMultiplier(6);
         Sodalite.setByProductMultiplier(4);
         Lazurite.setOreMultiplier(6);
-        Lazurite.setSmeltingMultiplier(6);
         Lazurite.setByProductMultiplier(4);
         Monazite.setOreMultiplier(8);
-        Monazite.setSmeltingMultiplier(8);
         Monazite.setByProductMultiplier(2);
 
         Coal.setBurnTime(1600); //default coal burn time in vanilla
@@ -694,7 +701,7 @@ public class Materials {
         GreenSapphire.addOreByProducts(Aluminium, Sapphire);
         Platinum.addOreByProducts(Nickel, Iridium);
         Emerald.addOreByProducts(Beryllium, Aluminium);
-        Olivine.addOreByProducts(Pyrope, Magnesium);
+        Olivine.addOreByProducts(Pyrope, Magnesium, Manganese);
         Chrome.addOreByProducts(Iron, Magnesium);
         Chromite.addOreByProducts(Iron, Magnesium);
         Tetrahedrite.addOreByProducts(Antimony, Zinc);
@@ -708,6 +715,8 @@ public class Materials {
         Sodalite.addOreByProducts(Lazurite, Lapis);
         Spodumene.addOreByProducts(Aluminium, Lithium);
         Ruby.addOreByProducts(Chrome, GarnetRed);
+        Redstone.addOreByProducts(Cinnabar, Pyrite);
+        Cinnabar.addOreByProducts(Ruby);
         Phosphor.addOreByProducts(Apatite, Phosphate);
         Iridium.addOreByProducts(Platinum, Osmium);
         Pyrope.addOreByProducts(GarnetRed, Magnesium);
@@ -764,13 +773,11 @@ public class Materials {
         Vinteum.addOreByProducts(Vinteum);
         Lithium.addOreByProducts(Lithium);
         Silicon.addOreByProducts(SiliconDioxide);
-        Salt.addOreByProducts(RockSalt);
-        RockSalt.addOreByProducts(Salt);
+        Salt.addOreByProducts(RockSalt, Borax);
+        RockSalt.addOreByProducts(Salt, Borax);
         Andesite.addOreByProducts(Basalt);
         Diorite.addOreByProducts(NetherQuartz);
-        Materials.Salt.addOreByProducts(Materials.Borax);
-        Materials.RockSalt.addOreByProducts(Materials.Borax);
-        Materials.Lepidolite.addOreByProducts(Materials.Boron);
+        Lepidolite.addOreByProducts(Boron);
 
         Vinteum.addEnchantmentForTools(Enchantments.FORTUNE, 2);
         BlackBronze.addEnchantmentForTools(Enchantments.SMITE, 2);

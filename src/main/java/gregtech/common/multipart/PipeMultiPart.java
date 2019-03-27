@@ -12,7 +12,7 @@ import codechicken.lib.vec.uv.IconTransformation;
 import codechicken.multipart.*;
 import com.google.common.collect.Lists;
 import gregtech.api.GregTechAPI;
-import gregtech.api.capability.GregtechCapabilities;
+import gregtech.api.capability.GregtechTileCapabilities;
 import gregtech.api.cover.CoverBehavior;
 import gregtech.api.cover.ICoverable;
 import gregtech.api.pipenet.PipeNet;
@@ -205,8 +205,8 @@ public abstract class PipeMultiPart<PipeType extends Enum<PipeType> & IPipeType<
 
     @Override
     public <T> T getCapabilityInternal(Capability<T> capability, EnumFacing side) {
-        if (capability == GregtechCapabilities.CAPABILITY_COVERABLE) {
-            return GregtechCapabilities.CAPABILITY_COVERABLE.cast(getCoverableImplementation());
+        if (capability == GregtechTileCapabilities.CAPABILITY_COVERABLE) {
+            return GregtechTileCapabilities.CAPABILITY_COVERABLE.cast(getCoverableImplementation());
         }
         return null;
     }
@@ -214,7 +214,7 @@ public abstract class PipeMultiPart<PipeType extends Enum<PipeType> & IPipeType<
     @Nullable
     @Override
     public final <T> T getCapability(@Nonnull Capability<T> capability, @Nullable EnumFacing facing) {
-        boolean isCoverable = capability == GregtechCapabilities.CAPABILITY_COVERABLE;
+        boolean isCoverable = capability == GregtechTileCapabilities.CAPABILITY_COVERABLE;
         CoverBehavior coverBehavior = facing == null ? null : getCoverableImplementation().getCoverAtSide(facing);
         T defaultValue = getCapabilityInternal(capability, facing);
         if (!isCoverable && facing != null) {
