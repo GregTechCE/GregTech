@@ -96,7 +96,7 @@ public class ModularUIContainer extends Container implements WidgetUIAccess {
     @IsLargeCallback
     public boolean isLargeInventory() {
         ContainerSizeInfo sizeInfo = modularUI.getContainerSlotsSizeInfo();
-        return sizeInfo != null && sizeInfo.columns > 0;
+        return sizeInfo != null && sizeInfo.columns > 4;
     }
 
     @Override
