@@ -2800,6 +2800,7 @@ gregtech.fluid.state_gas=§7State: Gaseous
 gregtech.fluid.state_liquid=§7State: Liquid
 gregtech.gui.fuel_amount=Fuel Amount:
 gregtech.gui.fluid_amount=Fluid Amount:
+gregtech.gui.sort=Sort
 
 gregtech.item_filter.empty_item=Empty (No Item)
 gregtech.item_filter.footer=§eClick with item to override

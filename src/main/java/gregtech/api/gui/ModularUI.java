@@ -11,7 +11,6 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraftforge.items.IItemHandlerModifiable;
 import net.minecraftforge.items.wrapper.PlayerMainInvWrapper;
 
-import javax.annotation.Nullable;
 import java.util.function.DoubleSupplier;
 import java.util.function.Supplier;
 
@@ -31,9 +30,6 @@ public final class ModularUI implements SizeProvider {
     public final TextureArea backgroundPath;
     private int screenWidth, screenHeight;
     private final int width, height;
-    @Nullable
-    private final ContainerSizeInfo sizeInfo;
-
     private final ImmutableList<Runnable> uiOpenCallback;
     private final ImmutableList<Runnable> uiCloseCallback;
 
@@ -45,14 +41,13 @@ public final class ModularUI implements SizeProvider {
     public final IUIHolder holder;
     public final EntityPlayer entityPlayer;
 
-    public ModularUI(ImmutableBiMap<Integer, Widget> guiWidgets, ImmutableList<Runnable> openListeners, ImmutableList<Runnable> closeListeners, TextureArea backgroundPath, int width, int height, ContainerSizeInfo sizeInfo, IUIHolder holder, EntityPlayer entityPlayer) {
+    public ModularUI(ImmutableBiMap<Integer, Widget> guiWidgets, ImmutableList<Runnable> openListeners, ImmutableList<Runnable> closeListeners, TextureArea backgroundPath, int width, int height, IUIHolder holder, EntityPlayer entityPlayer) {
         this.guiWidgets = guiWidgets;
         this.uiOpenCallback = openListeners;
         this.uiCloseCallback = closeListeners;
         this.backgroundPath = backgroundPath;
         this.width = width;
         this.height = height;
-        this.sizeInfo = sizeInfo;
         this.holder = holder;
         this.entityPlayer = entityPlayer;
     }
@@ -115,26 +110,6 @@ public final class ModularUI implements SizeProvider {
     }
 
     /**
-     * @return slot size info for container, may be null for non-chest-alike containers
-     * and is null for most machine containers
-     * Used primarily for sorting capabilities
-     */
-    @Nullable
-    public ContainerSizeInfo getContainerSlotsSizeInfo() {
-        return sizeInfo;
-    }
-
-    public static class ContainerSizeInfo {
-        public final int rowSize;
-        public final int columns;
-
-        public ContainerSizeInfo(int rowSize, int columns) {
-            this.rowSize = rowSize;
-            this.columns = columns;
-        }
-    }
-
-    /**
      * Simple builder for  ModularUI objects
      */
     public static class Builder {
@@ -144,7 +119,6 @@ public final class ModularUI implements SizeProvider {
         private ImmutableList.Builder<Runnable> closeListeners = ImmutableList.builder();
         private TextureArea background;
         private int width, height;
-        private ContainerSizeInfo sizeInfo;
         private int nextFreeWidgetId = 0;
 
         public Builder(TextureArea background, int width, int height) {
@@ -218,11 +192,6 @@ public final class ModularUI implements SizeProvider {
             return this;
         }
 
-        public Builder setInventorySizeInfo(int rowSize, int columns) {
-            this.sizeInfo = new ContainerSizeInfo(rowSize, columns);
-            return this;
-        }
-
         public Builder bindOpenListener(Runnable onContainerOpen) {
             this.openListeners.add(onContainerOpen);
             return this;
@@ -234,7 +203,7 @@ public final class ModularUI implements SizeProvider {
         }
 
         public ModularUI build(IUIHolder holder, EntityPlayer player) {
-            return new ModularUI(widgets.build(), openListeners.build(), closeListeners.build(), background, width, height, sizeInfo, holder, player);
+            return new ModularUI(widgets.build(), openListeners.build(), closeListeners.build(), background, width, height, holder, player);
         }
     }
 
