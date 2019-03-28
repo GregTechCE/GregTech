@@ -86,8 +86,6 @@ String shortVersion = mcVersion.substring(0, mcVersion.lastIndexOf('.'))
 String strippedVersion = shortVersion.replace(".", "") + "0"
 
 dependencies {
-    compile sourceSets.api.output
-    
     deobfCompile("net.sengir.forestry:forestry_${config.minecraft.version}:${config.forestry.version}") {
         transitive = false
     }
@@ -149,11 +147,12 @@ task dev(type: Jar) {
 }
 
 task energyApi(type: Jar) {
-    from(zipTree(jar.outputs.files.singleFile)) {
-        include "gregtech/api/capability/IElectricItem.class"
-        include "gregtech/api/capability/IEnergyContainer.class"
-        include "gregtech/api/capability/GregtechCapabilities.class"
-    }
+    from(sourceSets.main.allSource)
+    from(sourceSets.main.output)
+    include "gregtech/api/capability/IElectricItem.*"
+    include "gregtech/api/capability/IEnergyContainer.*"
+    include "gregtech/api/capability/GregtechCapabilities.*"
+
     classifier = 'energy-api'
 }
 
