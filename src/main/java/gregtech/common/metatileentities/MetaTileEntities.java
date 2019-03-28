@@ -400,10 +400,10 @@ public class MetaTileEntities {
 
         MAGIC_ENERGY_ABSORBER = GregTechAPI.registerMetaTileEntity(493, new MetaTileEntityMagicEnergyAbsorber(gregtechId("magic_energy_absorber")));
 
-        ITEM_COLLECTOR[0] = GregTechAPI.registerMetaTileEntity(494, new MetaTileEntityItemCollector(gregtechId("item_collector.lv"), 1, 4));
-        ITEM_COLLECTOR[1] = GregTechAPI.registerMetaTileEntity(495, new MetaTileEntityItemCollector(gregtechId("item_collector.mv"), 2, 8));
-        ITEM_COLLECTOR[2] = GregTechAPI.registerMetaTileEntity(496, new MetaTileEntityItemCollector(gregtechId("item_collector.hv"), 3, 12));
-        ITEM_COLLECTOR[3] = GregTechAPI.registerMetaTileEntity(497, new MetaTileEntityItemCollector(gregtechId("item_collector.ev"), 4, 16));
+        ITEM_COLLECTOR[0] = GregTechAPI.registerMetaTileEntity(494, new MetaTileEntityItemCollector(gregtechId("item_collector.lv"), 1, 8));
+        ITEM_COLLECTOR[1] = GregTechAPI.registerMetaTileEntity(495, new MetaTileEntityItemCollector(gregtechId("item_collector.mv"), 2, 16));
+        ITEM_COLLECTOR[2] = GregTechAPI.registerMetaTileEntity(496, new MetaTileEntityItemCollector(gregtechId("item_collector.hv"), 3, 32));
+        ITEM_COLLECTOR[3] = GregTechAPI.registerMetaTileEntity(497, new MetaTileEntityItemCollector(gregtechId("item_collector.ev"), 4, 64));
 
         for(int i = 0; i < HULL.length; i++) {
             MetaTileEntityHull metaTileEntity = new MetaTileEntityHull(gregtechId("hull." + GTValues.VN[i].toLowerCase()), i);

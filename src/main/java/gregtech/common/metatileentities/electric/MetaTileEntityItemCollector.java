@@ -42,9 +42,9 @@ import java.util.List;
 
 public class MetaTileEntityItemCollector extends TieredMetaTileEntity implements IEnergyChangeListener {
 
-    private static final int[] INVENTORY_SIZES = {1, 4, 9, 16, 25};
+    private static final int[] INVENTORY_SIZES = {4, 9, 16, 25, 25};
     private static final double MOTION_MULTIPLIER = 0.04;
-    private static final int EU_PER_ITEM_MOVE = 4;
+    private static final int EU_PER_ITEM_MOVE = 2;
 
     private final int maxItemSuckingRange;
     private int itemSuckingRange;
@@ -98,7 +98,10 @@ public class MetaTileEntityItemCollector extends TieredMetaTileEntity implements
     @Override
     public void receiveCustomData(int dataId, PacketBuffer buf) {
         super.receiveCustomData(dataId, buf);
-        if(dataId == 100) hasElectricCharge = buf.readBoolean();
+        if(dataId == 100) {
+            hasElectricCharge = buf.readBoolean();
+            getHolder().scheduleChunkForRenderUpdate();
+        }
     }
 
     @Override
@@ -121,8 +124,8 @@ public class MetaTileEntityItemCollector extends TieredMetaTileEntity implements
                 if(distance >= 0.7) {
                     double directionX = distanceX / distance;
                     double directionZ = distanceZ / distance;
-                    entityItem.motionX = directionX * MOTION_MULTIPLIER * (getTier() - 1);
-                    entityItem.motionZ = directionZ * MOTION_MULTIPLIER * (getTier() - 1);
+                    entityItem.motionX = directionX * MOTION_MULTIPLIER * getTier();
+                    entityItem.motionZ = directionZ * MOTION_MULTIPLIER * getTier();
                     entityItem.velocityChanged = true;
                     itemEntitiesSucked++;
                 } else {
