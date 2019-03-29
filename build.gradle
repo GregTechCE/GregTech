@@ -57,7 +57,7 @@ repositories {
     }
     maven { //JEI fallback
         name = "ModMaven"
-        url = "modmaven.k-4u.nl"
+        url = "http://modmaven.k-4u.nl"
     }
     maven {
         name = "tterrag maven"
