@@ -11,6 +11,7 @@ import gregtech.api.unification.material.type.SolidMaterial;
 import gregtech.api.unification.ore.OrePrefix;
 import gregtech.api.unification.stack.UnificationEntry;
 import gregtech.common.tools.*;
+import net.minecraft.init.Enchantments;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 
@@ -208,13 +209,25 @@ public class MetaTool extends ToolMetaItem<ToolMetaItem<?>.MetaToolValueItem> {
                 'S', new UnificationEntry(OrePrefix.stick, Materials.Wood));
         }
 
+        Function<ToolMetaItem.MetaToolValueItem, ItemStack> woodenToolDataApplier = item ->
+            item.setToolData(item.getStackForm(), Materials.Wood, 55, 1, 4.0f, 1.0f);
+
+        ModHandler.addShapedRecipe("soft_hammer_wooden", woodenToolDataApplier.apply(MetaItems.SOFT_HAMMER),
+            "XX ", "XXS", "XX ",
+            'X', new UnificationEntry(OrePrefix.plank, Materials.Wood),
+            'S', new UnificationEntry(OrePrefix.stick, Materials.Wood));
+
         registerFlintToolRecipes();
     }
 
     private void registerFlintToolRecipes() {
-        Function<ToolMetaItem.MetaToolValueItem, ItemStack> toolDataApplier = item ->
-            item.setToolData(item.getStackForm(), Materials.Flint, 55, 1, 6.0f, 1.0f);
-        //FLINT 6.0f, 55
+        Function<ToolMetaItem.MetaToolValueItem, ItemStack> toolDataApplier = item -> {
+            ItemStack itemStack = item.setToolData(item.getStackForm(), Materials.Flint, 80, 1, 6.0f, 2.0f);
+            if(itemStack.getItem().canApplyAtEnchantingTable(itemStack, Enchantments.FIRE_ASPECT)) {
+                itemStack.addEnchantment(Enchantments.FIRE_ASPECT, 2);
+            }
+            return itemStack;
+        };
         ModHandler.addShapedRecipe("mortar_flint", toolDataApplier.apply(MORTAR),
             " I ", "SIS", "SSS",
             'I', new ItemStack(Items.FLINT, 1),

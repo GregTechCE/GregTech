@@ -129,29 +129,27 @@ public interface ICoverable {
         if(result == null || result.typeOfHit != Type.BLOCK) {
             return null;
         }
-        if(result instanceof CuboidRayTraceResult) {
-            CuboidRayTraceResult rayTraceResult = (CuboidRayTraceResult) result;
-            if(rayTraceResult.cuboid6.data == null) {
-                return rayTraceResult.sideHit;
-            } else if(rayTraceResult.cuboid6.data instanceof EnumFacing) {
-                return (EnumFacing) rayTraceResult.cuboid6.data;
-            } else return null; //unknown hit type, return null
-        }
-        //normal collision ray trace, return side hit
-        return result.sideHit;
+        return traceCoverSide(result);
     }
 
     static EnumFacing traceCoverSide(RayTraceResult result) {
         if(result instanceof CuboidRayTraceResult) {
             CuboidRayTraceResult rayTraceResult = (CuboidRayTraceResult) result;
             if(rayTraceResult.cuboid6.data == null) {
-                return rayTraceResult.sideHit;
+                return determineHullCoverSide(result);
             } else if(rayTraceResult.cuboid6.data instanceof EnumFacing) {
                 return (EnumFacing) rayTraceResult.cuboid6.data;
             } else return null; //unknown hit type, return null
         }
         //normal collision ray trace, return side hit
-        return result.sideHit;
+        return determineHullCoverSide(result);
+    }
+
+    static EnumFacing determineHullCoverSide(RayTraceResult result) {
+        return GTUtility.determineWrenchingSide(result.sideHit,
+            (float) (result.hitVec.x - result.getBlockPos().getX()),
+            (float) (result.hitVec.y - result.getBlockPos().getY()),
+            (float) (result.hitVec.z - result.getBlockPos().getZ()));
     }
 
     static Cuboid6 getCoverPlateBox(EnumFacing side, double plateThickness, boolean offsetSide) {

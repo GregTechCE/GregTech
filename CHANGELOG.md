@@ -1,5 +1,17 @@
 ## Changelog
 
+### 1.6.8
+* Fix silicon consuming integrated circuits + some other recipes.
+* Allow taking fluids from inputs via containers.
+* Changed lathe again to give 2 rods instead of long one.
+* Re-textured pipes to look better.
+* Re-design side hit calculation so covers are accessible in the similar to wrench manner.
+* Fixed wooden tanks being able to hold hot fluids as items.
+* Added wooden soft hammer.
+* Increased stats of flint & added Fire Aspect II to flint tools.
+* Fixed some cable duplication issues.
+* Fix duplicate decomposition recipe for liquid air.
+
 ### 1.6.5
 * Buff large boilers (a bit).
 * Fix boilers burning container-dependent fuels like firestone from Railcraft.

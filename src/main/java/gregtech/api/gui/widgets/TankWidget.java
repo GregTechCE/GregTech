@@ -77,7 +77,7 @@ public class TankWidget extends Widget {
         return this;
     }
 
-    public TankWidget setContainerIO(boolean allowClickContainerFilling, boolean allowClickContainerEmptying) {
+    public TankWidget setContainerClicking(boolean allowClickContainerFilling, boolean allowClickContainerEmptying) {
         if(!(fluidTank instanceof IFluidHandler))
             throw new IllegalStateException("Container IO is only supported for fluid tanks that implement IFluidHandler");
         this.allowClickFilling = allowClickContainerFilling;

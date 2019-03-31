@@ -291,7 +291,7 @@ public class RecipeMap<R extends RecipeBuilder<R>> {
             builder.widget(new TankWidget(fluidHandler.getTankAt(slotIndex), x - 1, y - 1, 18, 18)
                 .setAlwaysShowFull(true)
                 .setBackgroundTexture(getOverlaysForSlot(isOutputs, true, slotIndex == fluidHandler.getTanks() - 1))
-                .setContainerIO(isOutputs, !isOutputs));
+                .setContainerClicking(true, !isOutputs));
         }
     }
 

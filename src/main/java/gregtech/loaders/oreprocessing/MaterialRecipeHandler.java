@@ -102,7 +102,7 @@ public class MaterialRecipeHandler {
                         .blastFurnaceTemp(metalMaterial.blastFurnaceTemperature)
                         .duration(duration).EUt(120);
                     if(circuitRequiringMaterials.contains(material)) {
-                        ingotSmeltingBuilder.inputs(IntCircuitIngredient.getIntegratedCircuit(0));
+                        ingotSmeltingBuilder.inputs(new CountableIngredient(new IntCircuitIngredient(0), 0));
                     }
                     ingotSmeltingBuilder.buildAndRegister();
 
@@ -150,12 +150,12 @@ public class MaterialRecipeHandler {
             dustStack, "XX", "XX", 'X', new UnificationEntry(orePrefix, material));
 
         RecipeMaps.PACKER_RECIPES.recipeBuilder().input(orePrefix, material, 4)
-            .inputs(CountableIngredient.from(IntCircuitIngredient.getIntegratedCircuit(2), 0))
+            .inputs(new CountableIngredient(new IntCircuitIngredient(2), 0))
             .outputs(dustStack)
             .buildAndRegister();
 
         RecipeMaps.UNPACKER_RECIPES.recipeBuilder().input(OrePrefix.dust, material)
-            .inputs(CountableIngredient.from(IntCircuitIngredient.getIntegratedCircuit(2), 0))
+            .inputs(new CountableIngredient(new IntCircuitIngredient(2), 0))
             .outputs(GTUtility.copyAmount(4, smallDustStack))
             .buildAndRegister();
     }
@@ -170,12 +170,12 @@ public class MaterialRecipeHandler {
             dustStack, "XXX", "XXX", "XXX", 'X', new UnificationEntry(orePrefix, material));
 
         RecipeMaps.PACKER_RECIPES.recipeBuilder().input(orePrefix, material, 9)
-            .inputs(CountableIngredient.from(IntCircuitIngredient.getIntegratedCircuit(1), 0))
+            .inputs(new CountableIngredient(new IntCircuitIngredient(1), 0))
             .outputs(dustStack)
             .buildAndRegister();
 
         RecipeMaps.UNPACKER_RECIPES.recipeBuilder().input(OrePrefix.dust, material)
-            .inputs(CountableIngredient.from(IntCircuitIngredient.getIntegratedCircuit(1), 0))
+            .inputs(new CountableIngredient(new IntCircuitIngredient(1), 0))
             .outputs(GTUtility.copyAmount(9, tinyDustStack))
             .buildAndRegister();
     }
@@ -302,27 +302,6 @@ public class MaterialRecipeHandler {
                 .duration(20).EUt(16)
                 .buildAndRegister();
         }
-
-        if (material.hasFlag(SolidMaterial.MatFlags.GENERATE_LONG_ROD) && materialAmount >= M * 2) {
-            RecipeMaps.LATHE_RECIPES.recipeBuilder()
-                .input(gemPrefix, material)
-                .outputs(OreDictUnifier.get(OrePrefix.stickLong, material, (int) (materialAmount / (M * 2))),
-                    OreDictUnifier.getDust(material, materialAmount % (M * 2)))
-                .duration((int) material.getAverageMass())
-                .EUt(16)
-                .buildAndRegister();
-        } else if (materialAmount >= M && material.hasFlag(SolidMaterial.MatFlags.GENERATE_ROD)) {
-            ItemStack gemStick = OreDictUnifier.get(OrePrefix.stick, material, (int) (materialAmount / M));
-            ItemStack gemDust = OreDictUnifier.getDust(material, materialAmount % M);
-            if (!gemStick.isEmpty() && !gemDust.isEmpty()) {
-                RecipeMaps.LATHE_RECIPES.recipeBuilder()
-                    .input(gemPrefix, material)
-                    .outputs(gemStick, gemDust)
-                    .duration((int) material.getAverageMass())
-                    .EUt(16)
-                    .buildAndRegister();
-            }
-        }
     }
 
     public static void processNugget(OrePrefix orePrefix, SolidMaterial material) {
@@ -336,12 +315,12 @@ public class MaterialRecipeHandler {
                 ingotStack, "XXX", "XXX", "XXX", 'X', new UnificationEntry(orePrefix, material));
 
             RecipeMaps.UNPACKER_RECIPES.recipeBuilder().input(OrePrefix.ingot, material)
-                .inputs(CountableIngredient.from(IntCircuitIngredient.getIntegratedCircuit(1), 0))
+                .inputs(new CountableIngredient(new IntCircuitIngredient(1), 0))
                 .outputs(GTUtility.copyAmount(9, nuggetStack))
                 .buildAndRegister();
 
             RecipeMaps.PACKER_RECIPES.recipeBuilder().input(orePrefix, material, 9)
-                .inputs(CountableIngredient.from(IntCircuitIngredient.getIntegratedCircuit(1), 0))
+                .inputs(new CountableIngredient(new IntCircuitIngredient(1), 0))
                 .outputs(ingotStack)
                 .buildAndRegister();
 

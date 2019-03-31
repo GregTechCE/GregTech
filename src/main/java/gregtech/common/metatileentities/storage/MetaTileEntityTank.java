@@ -117,7 +117,12 @@ public class MetaTileEntityTank extends MetaTileEntity {
 
     @Override
     public ICapabilityProvider initItemStackCapabilities(ItemStack itemStack) {
-        return new FluidHandlerItemStack(itemStack, tankSize);
+        return new FluidHandlerItemStack(itemStack, tankSize) {
+            @Override
+            public boolean canFillFluidType(FluidStack fluid) {
+                return MetaTileEntityTank.this.canFillFluidType(fluid);
+            }
+        };
     }
 
     @Override
@@ -260,6 +265,12 @@ public class MetaTileEntityTank extends MetaTileEntity {
         ((FluidTank) this.fluidInventory).readFromNBT(data.getCompoundTag("FluidInventory"));
     }
 
+    protected boolean canFillFluidType(FluidStack fluid) {
+        return !ModHandler.isMaterialWood(material) &&
+            !material.hasFlag(MatFlags.FLAMMABLE) ||
+            fluid.getFluid().getTemperature(fluid) <= 325;
+    }
+
     @Override
     protected boolean shouldSerializeInventories() {
         return false; //handled manually
@@ -274,9 +285,7 @@ public class MetaTileEntityTank extends MetaTileEntity {
 
         @Override
         public boolean canFillFluidType(FluidStack fluid) {
-            return !ModHandler.isMaterialWood(material) &&
-                !material.hasFlag(MatFlags.FLAMMABLE) ||
-                fluid.getFluid().getTemperature() <= 325;
+            return MetaTileEntityTank.this.canFillFluidType(fluid);
         }
 
         @Override

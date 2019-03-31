@@ -83,7 +83,7 @@ public class RecipeMapGroupOutput extends RecipeMap<SimpleRecipeBuilder> {
                 widgetGroup.addWidget(new TankWidget(fluidHandler.getTankAt(slotIndex), x - 1, y - 1, 18, 18)
                     .setAlwaysShowFull(true)
                     .setBackgroundTexture(getOverlaysForSlot(true, true, false))
-                    .setContainerIO(true, false));
+                    .setContainerClicking(true, false));
             }
         }
         return widgetGroup;

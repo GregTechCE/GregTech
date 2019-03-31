@@ -266,6 +266,14 @@ public class PartsRecipeHandler {
                 .buildAndRegister();
         }
 
+        if (material instanceof GemMaterial || material instanceof IngotMaterial) {
+            RecipeMaps.LATHE_RECIPES.recipeBuilder()
+                .input(material instanceof GemMaterial ? OrePrefix.gem : OrePrefix.ingot, material)
+                .outputs(OreDictUnifier.get(OrePrefix.stick, material, 2))
+                .duration((int) Math.max(material.getAverageMass() * 5L, 1L)).EUt(16)
+                .buildAndRegister();
+        }
+
         if (material.hasFlag(GENERATE_BOLT_SCREW)) {
             ItemStack boltStack = OreDictUnifier.get(OrePrefix.bolt, material);
             RecipeMaps.CUTTER_RECIPES.recipeBuilder()
@@ -318,14 +326,6 @@ public class PartsRecipeHandler {
         ModHandler.addShapedRecipe(String.format("stick_long_stick_%s", material.toString()), stack,
             "ShS",
             'S', new UnificationEntry(OrePrefix.stick, material));
-
-        if (material instanceof GemMaterial || material instanceof IngotMaterial) {
-            RecipeMaps.LATHE_RECIPES.recipeBuilder()
-                .input(material instanceof GemMaterial ? OrePrefix.gem : OrePrefix.ingot, material)
-                .outputs(stack)
-                .duration((int) Math.max(material.getAverageMass() * 5L, 1L)).EUt(16)
-                .buildAndRegister();
-        }
 
         RecipeMaps.FORGE_HAMMER_RECIPES.recipeBuilder()
             .input(OrePrefix.stick, material, 2)
