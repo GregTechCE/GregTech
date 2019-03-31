@@ -49,31 +49,31 @@ configurations {
 repositories {
     maven {
         name = "ic2, forestry"
-        url = "http://maven.ic2.player.to/"
+        url = "https://maven.ic2.player.to/"
     }
     maven { //JEI
         name = "Progwml6 maven"
-        url = "http://dvs1.progwml6.com/files/maven/"
+        url = "https://dvs1.progwml6.com/files/maven/"
     }
     maven { //JEI fallback
         name = "ModMaven"
-        url = "http://modmaven.k-4u.nl"
+        url = "https://modmaven.k-4u.nl"
     }
     maven {
         name = "tterrag maven"
-        url = "http://maven.tterrag.com/"
+        url = "https://maven.tterrag.com/"
     }
     maven {
         name = "ChickenBones maven"
-        url = "http://chickenbones.net/maven/"
+        url = "https://chickenbones.net/maven/"
     }
     maven {
         name = "CoFH Maven"
-        url = "http://maven.covers1624.net"
+        url = "https://maven.covers1624.net"
     }
     maven {
         name = "tehnut maven"
-        url = "http://tehnut.info/maven/"
+        url = "https://tehnut.info/maven/"
     }
     maven {
         name = "CraftTweaker Maven"
