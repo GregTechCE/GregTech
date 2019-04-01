@@ -117,7 +117,12 @@ public class MetaTileEntityItemCollector extends TieredMetaTileEntity implements
             List<EntityItem> itemsInRange = getWorld().getEntitiesWithinAABB(EntityItem.class, areaBoundingBox);
             int maxItemEntitiesSucked = (int) (energyContainer.getEnergyStored() / EU_PER_ITEM_MOVE);
             int itemEntitiesSucked = 0;
+
             for(EntityItem entityItem : itemsInRange) {
+                if(itemEntitiesSucked >= maxItemEntitiesSucked) {
+                    break;
+                }
+
                 double distanceX = (areaCenterPos.getX() + 0.5) - entityItem.posX;
                 double distanceZ = (areaCenterPos.getZ() + 0.5) - entityItem.posZ;
                 double distance = MathHelper.sqrt(distanceX * distanceX + distanceZ * distanceZ);
@@ -139,14 +144,13 @@ public class MetaTileEntityItemCollector extends TieredMetaTileEntity implements
                         itemEntitiesSucked++;
                     }
                 }
-                if(itemEntitiesSucked >= maxItemEntitiesSucked) {
-                    break;
-                }
             }
+
             if(itemEntitiesSucked > 0) {
                 long totalEnergy = itemEntitiesSucked * EU_PER_ITEM_MOVE;
                 energyContainer.addEnergy(-totalEnergy);
             }
+
             if(getTimer() % 5 == 0) {
                 pushItemsIntoNearbyHandlers(getFrontFacing());
             }

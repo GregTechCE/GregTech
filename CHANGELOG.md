@@ -1,5 +1,9 @@
 ## Changelog
 
+### 1.6.9
+* Fix large boiler not using solid fuel.
+* Fix collectors collecting items without energy.
+
 ### 1.6.8
 * Fix silicon consuming integrated circuits + some other recipes.
 * Allow taking fluids from inputs via containers.

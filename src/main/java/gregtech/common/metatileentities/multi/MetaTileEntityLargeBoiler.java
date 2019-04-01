@@ -235,7 +235,7 @@ public class MetaTileEntityLargeBoiler extends MultiblockWithDisplayBase {
                 continue; //ignore empty tanks and water
             FuelRecipe dieselRecipe = RecipeMaps.DIESEL_GENERATOR_FUELS.findRecipe(GTValues.V[9], fuelStack);
             if(dieselRecipe != null) {
-                int fuelAmountToConsume = (int) (dieselRecipe.getRecipeFluid().amount * CONSUMPTION_MULTIPLIER * boilerType.fuelConsumptionMultiplier);
+                int fuelAmountToConsume = (int) Math.ceil(dieselRecipe.getRecipeFluid().amount * CONSUMPTION_MULTIPLIER * boilerType.fuelConsumptionMultiplier);
                 if(fuelStack.amount >= fuelAmountToConsume) {
                     fluidTank.drain(fuelAmountToConsume, true);
                     long recipeVoltage = FuelRecipeMapWorkableHandler.getTieredVoltage(dieselRecipe.getMinVoltage());
@@ -245,7 +245,7 @@ public class MetaTileEntityLargeBoiler extends MultiblockWithDisplayBase {
             }
             FuelRecipe denseFuelRecipe = RecipeMaps.SEMI_FLUID_GENERATOR_FUELS.findRecipe(GTValues.V[9], fuelStack);
             if(denseFuelRecipe != null) {
-                int fuelAmountToConsume = (int) (denseFuelRecipe.getRecipeFluid().amount * CONSUMPTION_MULTIPLIER * boilerType.fuelConsumptionMultiplier);
+                int fuelAmountToConsume = (int) Math.ceil(denseFuelRecipe.getRecipeFluid().amount * CONSUMPTION_MULTIPLIER * boilerType.fuelConsumptionMultiplier);
                 if(fuelStack.amount >= fuelAmountToConsume) {
                     fluidTank.drain(fuelAmountToConsume, true);
                     long recipeVoltage = FuelRecipeMapWorkableHandler.getTieredVoltage(denseFuelRecipe.getMinVoltage());
@@ -263,8 +263,8 @@ public class MetaTileEntityLargeBoiler extends MultiblockWithDisplayBase {
                     itemImportInventory.setStackInSlot(slotIndex, containerItem);
                 } else {
                     itemStack.shrink(1);
+                    itemImportInventory.setStackInSlot(slotIndex, itemStack);
                 }
-                itemImportInventory.setStackInSlot(slotIndex, itemStack);
                 return fuelBurnValue;
             }
         }
