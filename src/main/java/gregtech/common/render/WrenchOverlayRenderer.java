@@ -81,8 +81,10 @@ public class WrenchOverlayRenderer {
             return true;
         if(itemStack.getItem() instanceof MetaItem) {
             MetaItem<?> metaItem = (MetaItem<?>) itemStack.getItem();
-            List<IItemBehaviour> behaviourList = metaItem.getItem(itemStack).getBehaviours();
-            return behaviourList.stream().anyMatch(it -> it instanceof CoverPlaceBehavior);
+            if (metaItem.getItem(itemStack) != null) {
+                List<IItemBehaviour> behaviourList = metaItem.getItem(itemStack).getBehaviours();
+                return behaviourList.stream().anyMatch(it -> it instanceof CoverPlaceBehavior);
+            }
         }
         return false;
     }
