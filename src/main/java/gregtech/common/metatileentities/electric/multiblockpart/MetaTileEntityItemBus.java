@@ -44,8 +44,8 @@ public class MetaTileEntityItemBus extends MetaTileEntityMultiblockPart implemen
     @Override
     public void update() {
         super.update();
-        if(!getWorld().isRemote && getTimer() % 5 == 0) {
-            if(isExportHatch) {
+        if (!getWorld().isRemote && getTimer() % 5 == 0) {
+            if (isExportHatch) {
                 pushItemsIntoNearbyHandlers(getFrontFacing());
             } else {
                 pullItemsFromNearbyHandlers(getFrontFacing());
@@ -56,7 +56,7 @@ public class MetaTileEntityItemBus extends MetaTileEntityMultiblockPart implemen
     @Override
     public void renderMetaTileEntity(CCRenderState renderState, Matrix4 translation, IVertexOperation[] pipeline) {
         super.renderMetaTileEntity(renderState, translation, pipeline);
-        if(shouldRenderOverlay()) {
+        if (shouldRenderOverlay()) {
             SimpleOverlayRenderer renderer = isExportHatch ? Textures.PIPE_OUT_OVERLAY : Textures.PIPE_IN_OVERLAY;
             renderer.renderSided(getFrontFacing(), renderState, translation, pipeline);
         }

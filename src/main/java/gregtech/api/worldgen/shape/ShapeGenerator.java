@@ -29,7 +29,8 @@ public abstract class ShapeGenerator {
 
     /**
      * Generates shape with the given generator access
-     * @param gridRandom random instance to use for generation
+     *
+     * @param gridRandom          random instance to use for generation
      * @param relativeBlockAccess block access
      */
     public abstract void generate(Random gridRandom, IBlockGeneratorAccess relativeBlockAccess);

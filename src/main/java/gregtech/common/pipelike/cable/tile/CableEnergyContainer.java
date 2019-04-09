@@ -32,16 +32,16 @@ public class CableEnergyContainer implements IEnergyContainer {
     @Override
     public long acceptEnergyFromNetwork(EnumFacing side, long voltage, long amperage) {
         EnergyNet energyNet = getEnergyNet();
-        if(energyNet == null) {
+        if (energyNet == null) {
             return 0L;
         }
         long lastAmperage = energyNet.getLastAmperage();
         List<RoutePath> paths = getPaths();
         long amperesUsed = 0;
-        for(RoutePath routePath : paths) {
-            if(routePath.totalLoss >= voltage)
+        for (RoutePath routePath : paths) {
+            if (routePath.totalLoss >= voltage)
                 continue; //do not emit if loss is too high
-            if(voltage > routePath.minVoltage ||
+            if (voltage > routePath.minVoltage ||
                 amperage > routePath.maxAmperage ||
                 lastAmperage > routePath.maxAmperage) {
                 burnAllPaths(paths, voltage, amperage, lastAmperage);
@@ -51,9 +51,9 @@ public class CableEnergyContainer implements IEnergyContainer {
             int blockedConnections = energyNet.getAllNodes().get(destinationPos).blockedConnections;
             long amperageAccepted = dispatchEnergyToNode(destinationPos, blockedConnections,
                 voltage - routePath.totalLoss, amperage - amperesUsed);
-            if(amperageAccepted > 0) {
+            if (amperageAccepted > 0) {
                 amperesUsed += amperageAccepted;
-                if(amperesUsed == amperage) {
+                if (amperesUsed == amperage) {
                     break; //do not continue if all amperes are exhausted
                 }
             }
@@ -63,8 +63,8 @@ public class CableEnergyContainer implements IEnergyContainer {
     }
 
     private void burnAllPaths(List<RoutePath> paths, long voltage, long amperage, long lastAmperage) {
-        for(RoutePath pathToBurn : paths) {
-            if(voltage > pathToBurn.minVoltage || amperage > pathToBurn.maxAmperage || lastAmperage > pathToBurn.maxAmperage) {
+        for (RoutePath pathToBurn : paths) {
+            if (voltage > pathToBurn.minVoltage || amperage > pathToBurn.maxAmperage || lastAmperage > pathToBurn.maxAmperage) {
                 pathToBurn.burnCablesInPath(tileEntityCable.getPipeWorld(), voltage, Math.max(amperage, lastAmperage));
             }
         }
@@ -75,22 +75,22 @@ public class CableEnergyContainer implements IEnergyContainer {
         //use pooled mutable to avoid creating new objects every tick
         World world = tileEntityCable.getPipeWorld();
         PooledMutableBlockPos blockPos = PooledMutableBlockPos.retain();
-        for(EnumFacing facing : EnumFacing.VALUES) {
-            if((nodeBlockedConnections & 1 << facing.getIndex()) > 0) {
+        for (EnumFacing facing : EnumFacing.VALUES) {
+            if ((nodeBlockedConnections & 1 << facing.getIndex()) > 0) {
                 continue; //do not dispatch energy to blocked sides
             }
             blockPos.setPos(nodePos).move(facing);
-            if(!world.isBlockLoaded(nodePos)) {
+            if (!world.isBlockLoaded(nodePos)) {
                 continue; //do not allow cables to load chunks
             }
             TileEntity tileEntity = world.getTileEntity(blockPos);
-            if(tileEntity == null || tileEntityCable.getPipeBlock().getPipeTileEntity(tileEntity) != null) {
+            if (tileEntity == null || tileEntityCable.getPipeBlock().getPipeTileEntity(tileEntity) != null) {
                 continue; //do not emit into other cable tile entities
             }
             IEnergyContainer energyContainer = tileEntity.getCapability(GregtechCapabilities.CAPABILITY_ENERGY_CONTAINER, null);
-            if(energyContainer == null) continue;
+            if (energyContainer == null) continue;
             amperesUsed += energyContainer.acceptEnergyFromNetwork(facing.getOpposite(), voltage, amperage - amperesUsed);
-            if(amperesUsed == amperage)
+            if (amperesUsed == amperage)
                 break;
         }
         blockPos.release();
@@ -142,10 +142,10 @@ public class CableEnergyContainer implements IEnergyContainer {
 
     private List<RoutePath> getPaths() {
         EnergyNet energyNet = getEnergyNet();
-        if(energyNet == null) {
+        if (energyNet == null) {
             return Collections.emptyList();
         }
-        if(pathsCache == null || energyNet.getLastUpdate() > lastCachedUpdate) {
+        if (pathsCache == null || energyNet.getLastUpdate() > lastCachedUpdate) {
             recomputePaths(energyNet);
         }
         return pathsCache;
@@ -153,12 +153,12 @@ public class CableEnergyContainer implements IEnergyContainer {
 
     private EnergyNet getEnergyNet() {
         EnergyNet currentEnergyNet = this.currentEnergyNet.get();
-        if(currentEnergyNet != null && currentEnergyNet.isValid() &&
+        if (currentEnergyNet != null && currentEnergyNet.isValid() &&
             currentEnergyNet.containsNode(tileEntityCable.getPipePos()))
             return currentEnergyNet; //return current net if it is still valid
         WorldENet worldENet = (WorldENet) tileEntityCable.getPipeBlock().getWorldPipeNet(tileEntityCable.getPipeWorld());
         currentEnergyNet = worldENet.getNetFromPos(tileEntityCable.getPipePos());
-        if(currentEnergyNet != null) {
+        if (currentEnergyNet != null) {
             this.currentEnergyNet = new WeakReference<>(currentEnergyNet);
         }
         return currentEnergyNet;

@@ -64,18 +64,19 @@ public class BlockPattern {
     }
 
     private void initializeCenterOffsets() {
-        loop: for (int x = 0; x < this.palmLength; x++) {
+        loop:
+        for (int x = 0; x < this.palmLength; x++) {
             for (int y = 0; y < this.thumbLength; y++) {
                 for (int z = 0, minZ = 0, maxZ = 0; z < this.fingerLength; minZ += aisleRepetitions[z][0], maxZ += aisleRepetitions[z][1], z++) {
                     Predicate<BlockWorldState> predicate = this.blockMatches[z][y][x];
-                    if(predicate instanceof IPatternCenterPredicate) {
+                    if (predicate instanceof IPatternCenterPredicate) {
                         centerOffset = new int[]{x, y, z, minZ, maxZ};
                         break loop;
                     }
                 }
             }
         }
-        if(centerOffset == null) {
+        if (centerOffset == null) {
             throw new IllegalArgumentException("Didn't found center predicate");
         }
     }
@@ -103,7 +104,8 @@ public class BlockPattern {
         //Checking aisles
         for (int c = 0, z = minZ++, r; c < this.fingerLength; c++) {
             //Checking repeatable slices
-            loop: for (r = 0; (findFirstAisle ? r < aisleRepetitions[c][1] : z <= -centerOffset[3]); r++) {
+            loop:
+            for (r = 0; (findFirstAisle ? r < aisleRepetitions[c][1] : z <= -centerOffset[3]); r++) {
                 //Checking single slice
                 this.layerContext.reset();
 
@@ -139,7 +141,7 @@ public class BlockPattern {
 
                 //Check layer-local matcher predicate
                 Predicate<PatternMatchContext> layerPredicate = layerMatchers.get(c);
-                if(layerPredicate != null && !layerPredicate.test(layerContext)) {
+                if (layerPredicate != null && !layerPredicate.test(layerContext)) {
                     return null;
                 }
             }
@@ -150,16 +152,16 @@ public class BlockPattern {
         }
 
         //Check count matches amount
-        for(int i = 0; i < countMatchesCache.length; i++) {
+        for (int i = 0; i < countMatchesCache.length; i++) {
             IntRange intRange = countMatches[i].getRight();
-            if(!intRange.isInsideOf(countMatchesCache[i])) {
+            if (!intRange.isInsideOf(countMatchesCache[i])) {
                 return null; //count matches didn't match
             }
         }
 
         //Check general match predicates
-        for(Predicate<PatternMatchContext> validator : validators) {
-            if(!validator.test(matchContext)) {
+        for (Predicate<PatternMatchContext> validator : validators) {
+            if (!validator.test(matchContext)) {
                 return null;
             }
         }
@@ -173,12 +175,24 @@ public class BlockPattern {
         int[] c0 = new int[]{x, y, z}, c1 = new int[3];
         for (int i = 0; i < 3; i++) {
             switch (structureDir[i].getActualFacing(facing)) {
-                case UP: c1[1] = c0[i]; break;
-                case DOWN: c1[1] = -c0[i]; break;
-                case WEST: c1[0] = -c0[i]; break;
-                case EAST: c1[0] = c0[i]; break;
-                case NORTH: c1[2] = -c0[i]; break;
-                case SOUTH: c1[2] = c0[i]; break;
+                case UP:
+                    c1[1] = c0[i];
+                    break;
+                case DOWN:
+                    c1[1] = -c0[i];
+                    break;
+                case WEST:
+                    c1[0] = -c0[i];
+                    break;
+                case EAST:
+                    c1[0] = c0[i];
+                    break;
+                case NORTH:
+                    c1[2] = -c0[i];
+                    break;
+                case SOUTH:
+                    c1[2] = c0[i];
+                    break;
             }
         }
         return pos.setPos(c1[0], c1[1], c1[2]);

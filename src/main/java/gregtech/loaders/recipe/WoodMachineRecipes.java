@@ -1,17 +1,13 @@
 package gregtech.loaders.recipe;
 
-import gregtech.api.GTValues;
 import gregtech.api.recipes.ModHandler;
-import gregtech.api.recipes.RecipeMap;
 import gregtech.api.recipes.RecipeMaps;
 import gregtech.api.unification.OreDictUnifier;
 import gregtech.api.unification.material.Materials;
 import gregtech.api.unification.ore.OrePrefix;
-import gregtech.api.util.GTLog;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.world.DummyWorld;
 import gregtech.common.ConfigHolder;
-import net.minecraft.block.BlockPlanks.EnumType;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -72,7 +68,7 @@ public class WoodMachineRecipes {
     }
 
     private static void processLogOreDictionary() {
-        List<ItemStack> allWoodLogs =  OreDictionary.getOres("logWood").stream()
+        List<ItemStack> allWoodLogs = OreDictionary.getOres("logWood").stream()
             .flatMap(stack -> ModHandler.getAllSubItems(stack).stream())
             .collect(Collectors.toList());
 
@@ -104,7 +100,29 @@ public class WoodMachineRecipes {
                 .outputs(GTUtility.copyAmount((int) (originalOutput * 1.5), plankStack), OreDictUnifier.get(OrePrefix.dust, Materials.Wood, 2))
                 .duration(200).EUt(8)
                 .buildAndRegister();
-            registerPlanksCuttingRecipes(plankStack);
+
+            ItemStack doorStack = ModHandler.getRecipeOutput(DummyWorld.INSTANCE,
+                plankStack, plankStack, null,
+                plankStack, plankStack, null,
+                plankStack, plankStack, null).getRight();
+
+            if (!doorStack.isEmpty()) {
+                RecipeMaps.ASSEMBLER_RECIPES.recipeBuilder()
+                    .inputs(GTUtility.copyAmount(6, plankStack))
+                    .outputs(doorStack)
+                    .duration(600).EUt(4).circuitMeta(6)
+                    .buildAndRegister();
+            }
+
+            ItemStack slabStack = ModHandler.getRecipeOutput(DummyWorld.INSTANCE, plankStack, plankStack, plankStack).getRight();
+
+            if (!slabStack.isEmpty()) {
+                RecipeMaps.CUTTER_RECIPES.recipeBuilder()
+                    .inputs(GTUtility.copyAmount(3, plankStack))
+                    .outputs(slabStack)
+                    .duration(200).EUt(8)
+                    .buildAndRegister();
+            }
         }
     }
 
@@ -190,29 +208,5 @@ public class WoodMachineRecipes {
             .fluidOutputs(Materials.CharcoalByproducts.getFluid(4000))
             .duration(320).EUt(96)
             .buildAndRegister();
-    }
-
-    private static void registerPlanksCuttingRecipes(ItemStack plankStack) {
-        ItemStack doorStack = ModHandler.getRecipeOutput(DummyWorld.INSTANCE,
-            plankStack, plankStack, null,
-            plankStack, plankStack, null,
-            plankStack, plankStack, null).getRight();
-        if(!doorStack.isEmpty()) {
-            RecipeMaps.ASSEMBLER_RECIPES.recipeBuilder()
-                .inputs(GTUtility.copyAmount(6, plankStack))
-                .outputs(doorStack)
-                .duration(600).EUt(4).circuitMeta(6)
-                .buildAndRegister();
-        }
-
-        ItemStack slabStack = ModHandler.getRecipeOutput(DummyWorld.INSTANCE,
-            plankStack, plankStack, plankStack).getRight();
-        if(!plankStack.isEmpty()) {
-            RecipeMaps.CUTTER_RECIPES.recipeBuilder()
-                .inputs(GTUtility.copyAmount(3, plankStack))
-                .outputs(slabStack)
-                .duration(200).EUt(8)
-                .buildAndRegister();
-        }
     }
 }

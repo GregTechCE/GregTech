@@ -90,7 +90,8 @@ public class FluidPipeMultiPart extends PipeMultiPart<FluidPipeType, FluidPipePr
                 new IVertexOperation[]{new Translation(pos)},
                 activeConnections & ~getBlockedConnections());
             ccrs.brightness = brightness;
-            getCoverableImplementation().renderCovers(ccrs, new Matrix4().translate(pos), new IVertexOperation[0]);
+            ccrs.lightMatrix.locate(world(), pos());
+            getCoverableImplementation().renderCovers(ccrs, new Matrix4().translate(pos), ccrs.lightMatrix, brightness);
             return true;
         }
         return false;

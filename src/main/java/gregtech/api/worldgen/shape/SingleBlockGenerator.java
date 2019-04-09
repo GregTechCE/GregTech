@@ -55,7 +55,7 @@ public class SingleBlockGenerator extends ShapeGenerator {
         MutableBlockPos relativePos = new MutableBlockPos();
         int blocksCount = minBlocksCount == maxBlocksCount ? maxBlocksCount : minBlocksCount + gridRandom.nextInt(maxBlocksCount - minBlocksCount);
         EnumFacing prevDirection = null;
-        for(int i = 0; i < blocksCount; i++) {
+        for (int i = 0; i < blocksCount; i++) {
             EnumFacing[] allowedFacings = ArrayUtils.removeElement(EnumFacing.VALUES, prevDirection);
             prevDirection = allowedFacings[gridRandom.nextInt(allowedFacings.length)];
             relativePos.offset(prevDirection);

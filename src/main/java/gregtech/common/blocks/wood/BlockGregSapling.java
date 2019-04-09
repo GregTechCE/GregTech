@@ -120,7 +120,7 @@ public class BlockGregSapling extends BlockBush implements IGrowable, IPlantable
             .withProperty(BlockGregLog.NATURAL, true);
         IBlockState leavesState = MetaBlocks.LEAVES.getDefaultState()
             .withProperty(BlockGregLeaves.VARIANT, LogVariant.RUBBER_WOOD);
-        if(rand.nextInt(10) == 0) {
+        if (rand.nextInt(10) == 0) {
             worldgenerator = new WorldGenBigTreeCustom(true, logState, leavesState.withProperty(BlockGregLeaves.CHECK_DECAY, false), BlockGregLog.LOG_AXIS);
         } else {
             worldgenerator = new WorldGenTrees(true, 6, logState, leavesState, false);
@@ -146,9 +146,9 @@ public class BlockGregSapling extends BlockBush implements IGrowable, IPlantable
 
         @Override
         protected void setBlockAndNotifyAdequately(World worldIn, BlockPos pos, IBlockState state) {
-            if(state.getBlock() instanceof BlockLeaves) {
+            if (state.getBlock() instanceof BlockLeaves) {
                 state = leavesBlock;
-            } else if(state.getBlock() instanceof BlockLog) {
+            } else if (state.getBlock() instanceof BlockLog) {
                 EnumAxis rotation = state.getValue(BlockLog.LOG_AXIS);
                 state = logBlock.withProperty(logAxisProperty, rotation);
             }

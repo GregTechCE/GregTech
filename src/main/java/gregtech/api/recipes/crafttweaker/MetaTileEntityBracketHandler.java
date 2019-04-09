@@ -39,7 +39,7 @@ public class MetaTileEntityBracketHandler implements IBracketHandler {
         String[] resultSplit = new String[]{GTValues.MODID, toSplit};
         int i = toSplit.indexOf(':');
         if (i >= 0) {
-            resultSplit[1] = toSplit.substring(i + 1, toSplit.length());
+            resultSplit[1] = toSplit.substring(i + 1);
             if (i > 1) {
                 resultSplit[0] = toSplit.substring(0, i);
             }
@@ -53,7 +53,7 @@ public class MetaTileEntityBracketHandler implements IBracketHandler {
         if (!tokens.get(0).getValue().equalsIgnoreCase("meta_tile_entity")) return null;
         if (!tokens.get(1).getValue().equals(":")) return null;
         StringBuilder nameBuilder = new StringBuilder();
-        for(int i = 2; i < tokens.size(); i++) {
+        for (int i = 2; i < tokens.size(); i++) {
             nameBuilder.append(tokens.get(i).getValue());
         }
         return position -> new ExpressionCallStatic(position, environment, method,

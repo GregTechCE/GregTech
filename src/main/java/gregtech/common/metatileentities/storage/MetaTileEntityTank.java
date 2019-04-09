@@ -60,7 +60,7 @@ public class MetaTileEntityTank extends MetaTileEntity {
     @Override
     public int getLightValue() {
         FluidStack fluidStack = fluidTank.getFluid();
-        if(fluidStack == null) {
+        if (fluidStack == null) {
             return 0;
         }
         return fluidStack.getFluid().getLuminosity(fluidStack);
@@ -91,13 +91,13 @@ public class MetaTileEntityTank extends MetaTileEntity {
         super.initializeInventory();
         this.fluidTank = new SyncFluidTank(tankSize);
         this.fluidInventory = fluidTank;
-        updateComparatorValue(true);
+        updateComparatorValue();
     }
 
     @Override
     public void initFromItemStackData(NBTTagCompound itemStack) {
         super.initFromItemStackData(itemStack);
-        if(itemStack.hasKey(FluidHandlerItemStack.FLUID_NBT_KEY, NBT.TAG_COMPOUND)) {
+        if (itemStack.hasKey(FluidHandlerItemStack.FLUID_NBT_KEY, NBT.TAG_COMPOUND)) {
             FluidStack fluidStack = FluidStack.loadFluidStackFromNBT(itemStack.getCompoundTag(FluidHandlerItemStack.FLUID_NBT_KEY));
             fluidTank.setFluid(fluidStack);
             fluidTank.onContentsChanged();
@@ -108,7 +108,7 @@ public class MetaTileEntityTank extends MetaTileEntity {
     public void writeItemStackData(NBTTagCompound itemStack) {
         super.writeItemStackData(itemStack);
         FluidStack fluidStack = fluidTank.getFluid();
-        if(fluidStack != null && fluidStack.amount > 0) {
+        if (fluidStack != null && fluidStack.amount > 0) {
             NBTTagCompound tagCompound = new NBTTagCompound();
             fluidStack.writeToNBT(tagCompound);
             itemStack.setTag(FluidHandlerItemStack.FLUID_NBT_KEY, tagCompound);
@@ -130,7 +130,7 @@ public class MetaTileEntityTank extends MetaTileEntity {
         super.writeInitialSyncData(buf);
         FluidStack fluidStack = fluidTank.getFluid();
         buf.writeBoolean(fluidStack != null);
-        if(fluidStack != null) {
+        if (fluidStack != null) {
             NBTTagCompound tagCompound = new NBTTagCompound();
             fluidStack.writeToNBT(tagCompound);
             buf.writeCompoundTag(tagCompound);
@@ -141,11 +141,12 @@ public class MetaTileEntityTank extends MetaTileEntity {
     public void receiveInitialSyncData(PacketBuffer buf) {
         super.receiveInitialSyncData(buf);
         FluidStack fluidStack = null;
-        if(buf.readBoolean()) {
+        if (buf.readBoolean()) {
             try {
                 NBTTagCompound tagCompound = buf.readCompoundTag();
                 fluidStack = FluidStack.loadFluidStackFromNBT(tagCompound);
-            } catch (IOException ignored) {}
+            } catch (IOException ignored) {
+            }
         }
         fluidTank.setFluid(fluidStack);
     }
@@ -153,22 +154,23 @@ public class MetaTileEntityTank extends MetaTileEntity {
     @Override
     public void receiveCustomData(int dataId, PacketBuffer buf) {
         super.receiveCustomData(dataId, buf);
-        if(dataId == 200) {
+        if (dataId == 200) {
             FluidStack fluidStack = null;
-            if(buf.readBoolean()) {
+            if (buf.readBoolean()) {
                 try {
                     NBTTagCompound tagCompound = buf.readCompoundTag();
                     fluidStack = FluidStack.loadFluidStackFromNBT(tagCompound);
-                } catch (IOException ignored) {}
+                } catch (IOException ignored) {
+                }
             }
             fluidTank.setFluid(fluidStack);
             //update light on client side
             updateLightValue();
             getHolder().scheduleChunkForRenderUpdate();
-        } else if(dataId == 201) {
+        } else if (dataId == 201) {
             int newFluidAmount = buf.readVarInt();
             FluidStack fluidStack = fluidTank.getFluid();
-            if(fluidStack != null) {
+            if (fluidStack != null) {
                 fluidStack.amount = newFluidAmount;
                 getHolder().scheduleChunkForRenderUpdate();
                 //update light on client side
@@ -179,14 +181,14 @@ public class MetaTileEntityTank extends MetaTileEntity {
 
     private void updateLightValue() {
         int newLightValue = getLightValue();
-        if(oldLightValue != newLightValue) {
+        if (oldLightValue != newLightValue) {
             MetaTileEntityTank.this.oldLightValue = newLightValue;
             getWorld().checkLight(getPos());
         }
     }
 
     @Override
-    public int getComparatorValue() {
+    public int getActualComparatorValue() {
         FluidTank fluidTank = this.fluidTank;
         int fluidAmount = fluidTank.getFluidAmount();
         int maxCapacity = fluidTank.getCapacity();
@@ -196,7 +198,7 @@ public class MetaTileEntityTank extends MetaTileEntity {
 
     @Override
     public boolean onRightClick(EntityPlayer playerIn, EnumHand hand, EnumFacing facing, CuboidRayTraceResult hitResult) {
-       return getWorld().isRemote || FluidUtil.interactWithFluidHandler(playerIn, hand, fluidTank);
+        return getWorld().isRemote || FluidUtil.interactWithFluidHandler(playerIn, hand, fluidTank);
     }
 
     @Override
@@ -210,7 +212,7 @@ public class MetaTileEntityTank extends MetaTileEntity {
     @Override
     public void renderMetaTileEntity(CCRenderState renderState, Matrix4 translation, IVertexOperation[] pipeline) {
         FluidStack fluidStack = getFluidForRendering();
-        if(ModHandler.isMaterialWood(material)) {
+        if (ModHandler.isMaterialWood(material)) {
             Textures.WOODEN_TANK.render(renderState, translation, GTUtility.convertRGBtoOpaqueRGBA_CL(getPaintingColorForRendering()), pipeline, tankSize, fluidStack);
         } else {
             int baseColor = ColourRGBA.multiply(
@@ -222,9 +224,9 @@ public class MetaTileEntityTank extends MetaTileEntity {
 
     @SideOnly(Side.CLIENT)
     private FluidStack getFluidForRendering() {
-        if(getWorld() == null && renderContextStack != null) {
+        if (getWorld() == null && renderContextStack != null) {
             NBTTagCompound tagCompound = renderContextStack.getTagCompound();
-            if(tagCompound != null && tagCompound.hasKey("Fluid", NBT.TAG_COMPOUND)) {
+            if (tagCompound != null && tagCompound.hasKey("Fluid", NBT.TAG_COMPOUND)) {
                 return FluidStack.loadFluidStackFromNBT(tagCompound.getCompoundTag("Fluid"));
             }
             return null;
@@ -238,9 +240,9 @@ public class MetaTileEntityTank extends MetaTileEntity {
         tooltip.add(I18n.format("gregtech.universal.tooltip.fluid_storage_capacity", tankSize));
 
         NBTTagCompound tagCompound = stack.getTagCompound();
-        if(tagCompound != null && tagCompound.hasKey("Fluid", NBT.TAG_COMPOUND)) {
+        if (tagCompound != null && tagCompound.hasKey("Fluid", NBT.TAG_COMPOUND)) {
             FluidStack fluidStack = FluidStack.loadFluidStackFromNBT(tagCompound.getCompoundTag("Fluid"));
-            if(fluidStack == null)
+            if (fluidStack == null)
                 return;
             tooltip.add(I18n.format("gregtech.machine.fluid_tank.fluid",
                 fluidStack.amount, I18n.format(fluidStack.getUnlocalizedName())));
@@ -290,8 +292,8 @@ public class MetaTileEntityTank extends MetaTileEntity {
 
         @Override
         protected void onFluidChanged(FluidStack newFluidStack, FluidStack oldFluidStack) {
-            updateComparatorValue(true);
-            if(getWorld() != null && !getWorld().isRemote) {
+            updateComparatorValue();
+            if (getWorld() != null && !getWorld().isRemote) {
                 onContentsChangedOnServer(newFluidStack, oldFluidStack);
             }
         }
@@ -302,7 +304,7 @@ public class MetaTileEntityTank extends MetaTileEntity {
             updateLightValue();
 
             //send fluid amount/type change packet
-            if(newFluid != null && newFluid.isFluidEqual(oldFluidStack)) {
+            if (newFluid != null && newFluid.isFluidEqual(oldFluidStack)) {
                 //if fluid wasn't removed completely or changed, but just reduced/added amount
                 //compute new amount value and set it right back to the client
                 writeCustomData(201, buf -> buf.writeVarInt(newFluid.amount));
@@ -310,7 +312,7 @@ public class MetaTileEntityTank extends MetaTileEntity {
                 //otherwise, write full data dump of fluid
                 writeCustomData(200, buf -> {
                     buf.writeBoolean(newFluid != null);
-                    if(newFluid != null) {
+                    if (newFluid != null) {
                         NBTTagCompound tagCompound = new NBTTagCompound();
                         newFluid.writeToNBT(tagCompound);
                         buf.writeCompoundTag(tagCompound);

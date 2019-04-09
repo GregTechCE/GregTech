@@ -34,9 +34,9 @@ public class SurfaceRockPopulator implements VeinChunkPopulator {
     @Override
     public void loadFromConfig(JsonObject object) {
         DustMaterial material = OreConfigUtils.getMaterialByName(object.get("material").getAsString());
-        if(!(material instanceof IngotMaterial))
+        if (!(material instanceof IngotMaterial))
             throw new IllegalArgumentException("Only metal materials are supported for surface rocks");
-        if(!material.hasFlag(MatFlags.GENERATE_ORE))
+        if (!material.hasFlag(MatFlags.GENERATE_ORE))
             throw new IllegalArgumentException("Only materials with ore can have surface rocks");
         this.material = (IngotMaterial) material;
     }
@@ -47,7 +47,7 @@ public class SurfaceRockPopulator implements VeinChunkPopulator {
 
     @Override
     public void populateChunk(World world, int chunkX, int chunkZ, Random random, OreDepositDefinition definition, GridEntryInfo gridEntryInfo) {
-        if(world.getWorldType() != WorldType.FLAT) {
+        if (world.getWorldType() != WorldType.FLAT) {
             int stonesCount = random.nextInt(2);
             for (int i = 0; i < stonesCount; i++) {
                 int randomX = chunkX * 16 + random.nextInt(16);

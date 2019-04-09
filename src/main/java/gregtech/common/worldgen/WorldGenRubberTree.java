@@ -21,14 +21,14 @@ public class WorldGenRubberTree implements IWorldGenerator {
 
     @Override
     public void generate(Random random, int chunkX, int chunkZ, World world, IChunkGenerator chunkGenerator, IChunkProvider chunkProvider) {
-        if(world.getWorldType() == WorldType.FLAT ||
+        if (world.getWorldType() == WorldType.FLAT ||
             !world.provider.isSurfaceWorld()) {
             return; //do not generate in flat worlds, or in non-surface worlds
         }
         BlockPos randomPos = new BlockPos(chunkX * 16 + 8, 0, chunkZ * 16 + 8);
         Biome biome = world.getBiome(randomPos);
 
-        if(BiomeDictionary.hasType(biome, Type.COLD) ||
+        if (BiomeDictionary.hasType(biome, Type.COLD) ||
             BiomeDictionary.hasType(biome, Type.HOT) ||
             BiomeDictionary.hasType(biome, Type.DRY) ||
             BiomeDictionary.hasType(biome, Type.DEAD) ||
@@ -36,15 +36,15 @@ public class WorldGenRubberTree implements IWorldGenerator {
             return; //do not generate in inappropriate biomes
 
         int rubberTreeChance = 6;
-        if(BiomeDictionary.hasType(biome, Type.SWAMP) ||
+        if (BiomeDictionary.hasType(biome, Type.SWAMP) ||
             BiomeDictionary.hasType(biome, Type.WET))
             rubberTreeChance /= 2; //double chance of spawning in swamp or wet biomes
 
-        if(world.provider.isSurfaceWorld() && random.nextInt(rubberTreeChance) == 0) {
+        if (world.provider.isSurfaceWorld() && random.nextInt(rubberTreeChance) == 0) {
             randomPos = world.getTopSolidOrLiquidBlock(randomPos).down();
             IBlockState solidBlockState = world.getBlockState(randomPos);
             BlockGregSapling sapling = MetaBlocks.SAPLING;
-            if(solidBlockState.getBlock().canSustainPlant(solidBlockState, world, randomPos, EnumFacing.UP, sapling)) {
+            if (solidBlockState.getBlock().canSustainPlant(solidBlockState, world, randomPos, EnumFacing.UP, sapling)) {
                 BlockPos abovePos = randomPos.up();
                 IBlockState saplingState = sapling.getDefaultState()
                     .withProperty(BlockGregSapling.VARIANT, LogVariant.RUBBER_WOOD);

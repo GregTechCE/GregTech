@@ -174,7 +174,7 @@ public class AssemblyLineRecipeLoader {
                 OreDictUnifier.get(OrePrefix.cableGtSingle, Materials.YttriumBariumCuprate, 4))
             .fluidInputs(Materials.SolderingAlloy.getFluid(L),
                 Materials.Lubricant.getFluid(250))
-            .output( MetaItems.ELECTRIC_PISTON_LUV.getStackForm())
+            .output(MetaItems.ELECTRIC_PISTON_LUV.getStackForm())
             .duration(600)
             .EUt(6000)
             .buildAndRegister();

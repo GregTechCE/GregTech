@@ -5,7 +5,7 @@ import codechicken.lib.render.pipeline.IVertexOperation;
 import codechicken.lib.vec.Matrix4;
 import gregtech.api.GTValues;
 import gregtech.api.capability.impl.FluidTankList;
-import gregtech.api.capability.impl.FuelRecipeMapWorkableHandler;
+import gregtech.api.capability.impl.FuelRecipeLogic;
 import gregtech.api.capability.impl.ItemHandlerList;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.MetaTileEntityHolder;
@@ -148,21 +148,21 @@ public class MetaTileEntityLargeBoiler extends MultiblockWithDisplayBase {
     @Override
     public void onRemoval() {
         super.onRemoval();
-        if(!getWorld().isRemote && isStructureFormed()) {
+        if (!getWorld().isRemote && isStructureFormed()) {
             replaceFireboxAsActive(false);
         }
     }
 
     @Override
     protected void addDisplayText(List<ITextComponent> textList) {
-        if(isStructureFormed()) {
+        if (isStructureFormed()) {
             textList.add(new TextComponentTranslation("gregtech.multiblock.large_boiler.temperature",
                 currentTemperature, boilerType.maxTemperature));
             int steamOutput = 0;
-            if(currentTemperature >= 100) {
+            if (currentTemperature >= 100) {
                 double outputMultiplier = currentTemperature / (boilerType.maxTemperature * 1.0);
                 steamOutput = (int) (boilerType.baseSteamOutput * outputMultiplier);
-                if(fluidImportInventory.drain(ModHandler.getWater(1), false) == null &&
+                if (fluidImportInventory.drain(ModHandler.getWater(1), false) == null &&
                     fluidImportInventory.drain(ModHandler.getDistilledWater(1), false) == null) {
                     steamOutput = 0;
                 }
@@ -175,33 +175,33 @@ public class MetaTileEntityLargeBoiler extends MultiblockWithDisplayBase {
 
     @Override
     protected void updateFormedValid() {
-        if(fuelBurnTicksLeft > 0) {
+        if (fuelBurnTicksLeft > 0) {
             --this.fuelBurnTicksLeft;
-            if(this.currentTemperature < boilerType.maxTemperature && getTimer() % 20 == 0) {
+            if (this.currentTemperature < boilerType.maxTemperature && getTimer() % 20 == 0) {
                 this.currentTemperature++;
             }
-            if(fuelBurnTicksLeft == 0) {
+            if (fuelBurnTicksLeft == 0) {
                 this.wasActiveAndNeedsUpdate = true;
             }
-        } else if(currentTemperature > 0 && getTimer() % 20 == 0) {
+        } else if (currentTemperature > 0 && getTimer() % 20 == 0) {
             --this.currentTemperature;
         }
 
-        if(currentTemperature >= 100) {
+        if (currentTemperature >= 100) {
             boolean doWaterDrain = getTimer() % 20 == 0;
             FluidStack drainedWater = fluidImportInventory.drain(ModHandler.getWater(1), doWaterDrain);
-            if(drainedWater == null || drainedWater.amount == 0) {
+            if (drainedWater == null || drainedWater.amount == 0) {
                 drainedWater = fluidImportInventory.drain(ModHandler.getDistilledWater(1), doWaterDrain);
             }
-            if(drainedWater != null && drainedWater.amount > 0) {
-                if(currentTemperature > 100 && hasNoWater) {
+            if (drainedWater != null && drainedWater.amount > 0) {
+                if (currentTemperature > 100 && hasNoWater) {
                     float explosionPower = currentTemperature / 100.0f * 2.0f;
                     getWorld().setBlockToAir(getPos());
                     getWorld().createExplosion(null, getPos().getX() + 0.5, getPos().getY() + 0.5, getPos().getZ() + 0.5,
                         explosionPower, true);
                 }
                 this.hasNoWater = false;
-                if(currentTemperature >= 100) {
+                if (currentTemperature >= 100) {
                     double outputMultiplier = currentTemperature / (boilerType.maxTemperature * 1.0);
                     FluidStack steamStack = ModHandler.getSteam((int) (boilerType.baseSteamOutput * outputMultiplier));
                     steamOutputTank.fill(steamStack, true);
@@ -211,11 +211,11 @@ public class MetaTileEntityLargeBoiler extends MultiblockWithDisplayBase {
             }
         }
 
-        if(fuelBurnTicksLeft == 0) {
+        if (fuelBurnTicksLeft == 0) {
             int fuelMaxBurnTime = setupRecipeAndConsumeInputs();
-            if(fuelMaxBurnTime > 0) {
+            if (fuelMaxBurnTime > 0) {
                 this.fuelBurnTicksLeft = fuelMaxBurnTime;
-                if(wasActiveAndNeedsUpdate) {
+                if (wasActiveAndNeedsUpdate) {
                     this.wasActiveAndNeedsUpdate = false;
                 } else setActive(true);
                 markDirty();
@@ -229,36 +229,36 @@ public class MetaTileEntityLargeBoiler extends MultiblockWithDisplayBase {
     }
 
     private int setupRecipeAndConsumeInputs() {
-        for(IFluidTank fluidTank : fluidImportInventory.getFluidTanks()) {
+        for (IFluidTank fluidTank : fluidImportInventory.getFluidTanks()) {
             FluidStack fuelStack = fluidTank.drain(Integer.MAX_VALUE, false);
-            if(fuelStack == null || fuelStack.getFluid() == FluidRegistry.WATER)
+            if (fuelStack == null || fuelStack.getFluid() == FluidRegistry.WATER)
                 continue; //ignore empty tanks and water
             FuelRecipe dieselRecipe = RecipeMaps.DIESEL_GENERATOR_FUELS.findRecipe(GTValues.V[9], fuelStack);
-            if(dieselRecipe != null) {
+            if (dieselRecipe != null) {
                 int fuelAmountToConsume = (int) Math.ceil(dieselRecipe.getRecipeFluid().amount * CONSUMPTION_MULTIPLIER * boilerType.fuelConsumptionMultiplier);
-                if(fuelStack.amount >= fuelAmountToConsume) {
+                if (fuelStack.amount >= fuelAmountToConsume) {
                     fluidTank.drain(fuelAmountToConsume, true);
-                    long recipeVoltage = FuelRecipeMapWorkableHandler.getTieredVoltage(dieselRecipe.getMinVoltage());
+                    long recipeVoltage = FuelRecipeLogic.getTieredVoltage(dieselRecipe.getMinVoltage());
                     int voltageMultiplier = (int) Math.max(1L, recipeVoltage / GTValues.V[GTValues.LV]);
                     return (int) Math.ceil(dieselRecipe.getDuration() * CONSUMPTION_MULTIPLIER / 2.0 * voltageMultiplier);
                 } else continue;
             }
             FuelRecipe denseFuelRecipe = RecipeMaps.SEMI_FLUID_GENERATOR_FUELS.findRecipe(GTValues.V[9], fuelStack);
-            if(denseFuelRecipe != null) {
+            if (denseFuelRecipe != null) {
                 int fuelAmountToConsume = (int) Math.ceil(denseFuelRecipe.getRecipeFluid().amount * CONSUMPTION_MULTIPLIER * boilerType.fuelConsumptionMultiplier);
-                if(fuelStack.amount >= fuelAmountToConsume) {
+                if (fuelStack.amount >= fuelAmountToConsume) {
                     fluidTank.drain(fuelAmountToConsume, true);
-                    long recipeVoltage = FuelRecipeMapWorkableHandler.getTieredVoltage(denseFuelRecipe.getMinVoltage());
+                    long recipeVoltage = FuelRecipeLogic.getTieredVoltage(denseFuelRecipe.getMinVoltage());
                     int voltageMultiplier = (int) Math.max(1L, recipeVoltage / GTValues.V[GTValues.LV]);
                     return (int) Math.ceil(denseFuelRecipe.getDuration() * CONSUMPTION_MULTIPLIER * 2 * voltageMultiplier);
                 }
             }
         }
-        for(int slotIndex = 0; slotIndex < itemImportInventory.getSlots(); slotIndex++) {
+        for (int slotIndex = 0; slotIndex < itemImportInventory.getSlots(); slotIndex++) {
             ItemStack itemStack = itemImportInventory.getStackInSlot(slotIndex);
             int fuelBurnValue = (int) Math.ceil(TileEntityFurnace.getItemBurnTime(itemStack) / (50.0 * boilerType.fuelConsumptionMultiplier));
-            if(fuelBurnValue > 0) {
-                if(itemStack.getCount() == 1) {
+            if (fuelBurnValue > 0) {
+                if (itemStack.getCount() == 1) {
                     ItemStack containerItem = itemStack.getItem().getContainerItem(itemStack);
                     itemImportInventory.setStackInSlot(slotIndex, containerItem);
                 } else {
@@ -291,8 +291,8 @@ public class MetaTileEntityLargeBoiler extends MultiblockWithDisplayBase {
 
     private void setActive(boolean active) {
         this.isActive = active;
-        if(!getWorld().isRemote) {
-            if(isStructureFormed()) {
+        if (!getWorld().isRemote) {
+            if (isStructureFormed()) {
                 replaceFireboxAsActive(active);
             }
             writeCustomData(100, buf -> buf.writeBoolean(isActive));
@@ -302,11 +302,11 @@ public class MetaTileEntityLargeBoiler extends MultiblockWithDisplayBase {
 
     private void replaceFireboxAsActive(boolean isActive) {
         BlockPos centerPos = getPos().offset(getFrontFacing().getOpposite()).down();
-        for(int x = -1; x <= 1; x++) {
-            for(int z = -1; z <= 1; z++) {
+        for (int x = -1; x <= 1; x++) {
+            for (int z = -1; z <= 1; z++) {
                 BlockPos blockPos = centerPos.add(x, 0, z);
                 IBlockState blockState = getWorld().getBlockState(blockPos);
-                if(blockState.getBlock() instanceof BlockFireboxCasing) {
+                if (blockState.getBlock() instanceof BlockFireboxCasing) {
                     blockState = blockState.withProperty(BlockFireboxCasing.ACTIVE, isActive);
                     getWorld().setBlockState(blockPos, blockState);
                 }
@@ -334,7 +334,7 @@ public class MetaTileEntityLargeBoiler extends MultiblockWithDisplayBase {
     @Override
     public void receiveCustomData(int dataId, PacketBuffer buf) {
         super.receiveCustomData(dataId, buf);
-        if(dataId == 100) {
+        if (dataId == 100) {
             this.isActive = buf.readBoolean();
         }
     }
@@ -369,7 +369,7 @@ public class MetaTileEntityLargeBoiler extends MultiblockWithDisplayBase {
         //noinspection SuspiciousMethodCalls
         return importFluidsSize >= 1 && (importFluidsSize >= 2 ||
             abilities.containsKey(MultiblockAbility.IMPORT_ITEMS)) &&
-                abilities.containsKey(MultiblockAbility.EXPORT_FLUIDS);
+            abilities.containsKey(MultiblockAbility.EXPORT_FLUIDS);
     }
 
     private boolean isFireboxPart(IMultiblockPart sourcePart) {
@@ -378,7 +378,7 @@ public class MetaTileEntityLargeBoiler extends MultiblockWithDisplayBase {
 
     @Override
     public ICubeRenderer getBaseTexture(IMultiblockPart sourcePart) {
-        if(sourcePart != null && isFireboxPart(sourcePart)) {
+        if (sourcePart != null && isFireboxPart(sourcePart)) {
             return isActive ? boilerType.firefoxActiveRenderer : boilerType.fireboxIdleRenderer;
         }
         return boilerType.solidCasingRenderer;

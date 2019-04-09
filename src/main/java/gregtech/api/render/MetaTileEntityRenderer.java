@@ -69,10 +69,10 @@ public class MetaTileEntityRenderer implements ICCBlockRenderer, IItemRenderer {
     public static void postInit() {
         try {
 
-            try(IResource resource = Minecraft.getMinecraft().getResourceManager().getResource(new ResourceLocation("models/block/block.json"))) {
+            try (IResource resource = Minecraft.getMinecraft().getResourceManager().getResource(new ResourceLocation("models/block/block.json"))) {
                 InputStreamReader reader = new InputStreamReader(resource.getInputStream());
                 ModelBlock modelBlock = ModelBlock.deserialize(reader);
-                for(TransformType transformType : TransformType.values()) {
+                for (TransformType transformType : TransformType.values()) {
                     ItemTransformVec3f vec3f = modelBlock.getAllTransforms().getTransform(transformType);
                     BLOCK_TRANSFORMS.put(transformType, new TRSRTransformation(vec3f));
                 }
@@ -91,7 +91,7 @@ public class MetaTileEntityRenderer implements ICCBlockRenderer, IItemRenderer {
     @Override
     public void renderItem(ItemStack stack, TransformType transformType) {
         MetaTileEntity metaTileEntity = MachineItemBlock.getMetaTileEntity(stack);
-        if(metaTileEntity == null) {
+        if (metaTileEntity == null) {
             return;
         }
         GlStateManager.enableBlend();
@@ -100,7 +100,7 @@ public class MetaTileEntityRenderer implements ICCBlockRenderer, IItemRenderer {
         renderState.startDrawing(GL11.GL_QUADS, DefaultVertexFormats.ITEM);
         metaTileEntity.setRenderContextStack(stack);
         metaTileEntity.renderMetaTileEntity(renderState, new Matrix4(), new IVertexOperation[0]);
-        if(metaTileEntity.requiresDynamicRendering()) {
+        if (metaTileEntity.requiresDynamicRendering()) {
             metaTileEntity.renderMetaTileEntityDynamic(renderState, new Matrix4(), new IVertexOperation[0], 0.0f);
         }
         metaTileEntity.setRenderContextStack(null);
@@ -111,27 +111,25 @@ public class MetaTileEntityRenderer implements ICCBlockRenderer, IItemRenderer {
     @Override
     public boolean renderBlock(IBlockAccess world, BlockPos pos, IBlockState state, BufferBuilder buffer) {
         MetaTileEntity metaTileEntity = BlockMachine.getMetaTileEntity(world, pos);
-        if(metaTileEntity == null) {
+        if (metaTileEntity == null) {
             return false;
         }
         CCRenderState renderState = CCRenderState.instance();
         renderState.reset();
         renderState.bind(buffer);
         int brightness = world.getBlockState(pos).getPackedLightmapCoords(world, pos);
-        IVertexOperation[] pipeline = new IVertexOperation[] {renderState.lightMatrix};
+        IVertexOperation[] pipeline = new IVertexOperation[]{renderState.lightMatrix};
         Matrix4 translation = new Matrix4().translate(pos.getX(), pos.getY(), pos.getZ());
         renderState.lightMatrix.locate(world, pos);
-        renderState.brightness = brightness;
         metaTileEntity.renderMetaTileEntity(renderState, translation.copy(), pipeline);
-
         renderState.brightness = brightness;
-        metaTileEntity.renderCovers(renderState, translation, new IVertexOperation[0]);
+        metaTileEntity.renderCovers(renderState, translation, renderState.lightMatrix, brightness);
         return true;
     }
 
     @Override
     public Pair<? extends IBakedModel, Matrix4f> handlePerspective(TransformType cameraTransformType) {
-        if(BLOCK_TRANSFORMS.containsKey(cameraTransformType)) {
+        if (BLOCK_TRANSFORMS.containsKey(cameraTransformType)) {
             return Pair.of(this, BLOCK_TRANSFORMS.get(cameraTransformType).getMatrix());
         }
         return Pair.of(this, null);
@@ -155,7 +153,7 @@ public class MetaTileEntityRenderer implements ICCBlockRenderer, IItemRenderer {
     public void handleRenderBlockDamage(IBlockAccess world, BlockPos pos, IBlockState state, TextureAtlasSprite sprite, BufferBuilder buffer) {
         MetaTileEntity metaTileEntity = BlockMachine.getMetaTileEntity(world, pos);
         ArrayList<IndexedCuboid6> boundingBox = new ArrayList<>();
-        if(metaTileEntity != null) {
+        if (metaTileEntity != null) {
             metaTileEntity.addCollisionBoundingBox(boundingBox);
             metaTileEntity.addCoverCollisionBoundingBox(boundingBox, false);
         }
@@ -163,14 +161,14 @@ public class MetaTileEntityRenderer implements ICCBlockRenderer, IItemRenderer {
         renderState.reset();
         renderState.bind(buffer);
         renderState.setPipeline(new Vector3(new Vec3d(pos)).translation(), new IconTransformation(sprite));
-        for(Cuboid6 cuboid : boundingBox) {
+        for (Cuboid6 cuboid : boundingBox) {
             BlockRenderer.renderCuboid(renderState, cuboid, 0);
         }
     }
 
     public TextureAtlasSprite getParticleTexture(IBlockAccess world, BlockPos pos) {
         MetaTileEntity metaTileEntity = BlockMachine.getMetaTileEntity(world, pos);
-        if(metaTileEntity == null) {
+        if (metaTileEntity == null) {
             return TextureUtils.getMissingSprite();
         } else {
             return metaTileEntity.getParticleTexture();

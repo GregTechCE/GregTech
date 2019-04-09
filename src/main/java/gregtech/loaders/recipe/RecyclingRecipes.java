@@ -28,7 +28,7 @@ public class RecyclingRecipes {
     }
 
     private static void initializeArcRecyclingRecipes() {
-        for(Entry<ItemStack, ItemMaterialInfo> entry : OreDictUnifier.getAllItemInfos()) {
+        for (Entry<ItemStack, ItemMaterialInfo> entry : OreDictUnifier.getAllItemInfos()) {
             ItemStack itemStack = entry.getKey();
             ItemMaterialInfo materialInfo = entry.getValue();
             ArrayList<MaterialStack> materialStacks = new ArrayList<>();
@@ -43,11 +43,11 @@ public class RecyclingRecipes {
             .filter(stack -> stack.material instanceof DustMaterial)
             .filter(stack -> stack.amount >= M / 9) //do only materials which have at least one nugget
             .collect(Collectors.toList());
-        if(dustMaterials.isEmpty()) return;
+        if (dustMaterials.isEmpty()) return;
         MaterialStack firstStack = dustMaterials.get(0);
         DustMaterial dustMaterial = (DustMaterial) firstStack.material;
         int voltageMultiplier = 1;
-        if(dustMaterial instanceof IngotMaterial) {
+        if (dustMaterial instanceof IngotMaterial) {
             int blastFurnaceTemperature = ((IngotMaterial) dustMaterial).blastFurnaceTemperature;
             voltageMultiplier = blastFurnaceTemperature == 0 ? 1 : blastFurnaceTemperature > 2000 ? 16 : 4;
         } else {
@@ -63,7 +63,7 @@ public class RecyclingRecipes {
         inputSupplier.accept(maceratorRecipeBuilder);
         maceratorRecipeBuilder.buildAndRegister();
 
-        if(dustMaterial.shouldGenerateFluid()) {
+        if (dustMaterial.shouldGenerateFluid()) {
             RecipeBuilder<?> fluidExtractorRecipeBuilder = RecipeMaps.FLUID_EXTRACTION_RECIPES.recipeBuilder()
                 .fluidOutputs(dustMaterial.getFluid((int) (firstStack.amount * L / M)))
                 .duration((int) Math.max(1L, firstStack.amount * 80 / M))
@@ -72,10 +72,10 @@ public class RecyclingRecipes {
             fluidExtractorRecipeBuilder.buildAndRegister();
         }
 
-        if(!ignoreArcSmelting) {
+        if (!ignoreArcSmelting) {
             List<ItemStack> resultList = dustMaterials.stream().map(RecyclingRecipes::getArcSmeltingResult).collect(Collectors.toList());
             resultList.removeIf(ItemStack::isEmpty);
-            if(resultList.isEmpty()) return;
+            if (resultList.isEmpty()) return;
             RecipeBuilder<?> arcFurnaceRecipeBuilder = RecipeMaps.ARC_FURNACE_RECIPES.recipeBuilder()
                 .outputs(resultList)
                 .duration((int) Math.max(1L, firstStack.amount * 60 / M))
@@ -88,21 +88,21 @@ public class RecyclingRecipes {
     private static ItemStack getArcSmeltingResult(MaterialStack materialStack) {
         DustMaterial material = (DustMaterial) materialStack.material;
         long materialAmount = materialStack.amount;
-        if(material.hasFlag(MatFlags.FLAMMABLE)) {
+        if (material.hasFlag(MatFlags.FLAMMABLE)) {
             return OreDictUnifier.getDust(Materials.Ash, materialAmount);
-        } else if(material instanceof GemMaterial) {
-            if(materialStack.material.materialComponents.stream()
+        } else if (material instanceof GemMaterial) {
+            if (materialStack.material.materialComponents.stream()
                 .anyMatch(stack -> stack.material == Materials.Oxygen)) {
                 return OreDictUnifier.getDust(Materials.Ash, materialAmount);
             }
-            if(materialStack.material.materialComponents.stream()
+            if (materialStack.material.materialComponents.stream()
                 .anyMatch(stack -> stack.material == Materials.Carbon)) {
                 return OreDictUnifier.getDust(Materials.Carbon, materialAmount);
             }
             return OreDictUnifier.getDust(Materials.DarkAsh, materialAmount);
-        } else if(material instanceof IngotMaterial) {
+        } else if (material instanceof IngotMaterial) {
             IngotMaterial ingotMaterial = (IngotMaterial) material;
-            if(ingotMaterial.arcSmeltInto != null)
+            if (ingotMaterial.arcSmeltInto != null)
                 ingotMaterial = ingotMaterial.arcSmeltInto;
             return OreDictUnifier.getIngot(ingotMaterial, materialAmount);
         } else {

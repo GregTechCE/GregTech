@@ -46,10 +46,10 @@ public class BlockFoam extends BlockColored {
     @Override
     public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
         ItemStack stackInHand = playerIn.getHeldItem(hand);
-        if(!stackInHand.isEmpty() && OreDictUnifier.getOreDictionaryNames(stackInHand).contains("sand")) {
+        if (!stackInHand.isEmpty() && OreDictUnifier.getOreDictionaryNames(stackInHand).contains("sand")) {
             worldIn.setBlockState(pos, getPetrifiedBlock(state));
             worldIn.playSound(playerIn, pos, SoundEvents.BLOCK_SAND_PLACE, SoundCategory.BLOCKS, 1.0f, 1.0f);
-            if(!playerIn.capabilities.isCreativeMode)
+            if (!playerIn.capabilities.isCreativeMode)
                 stackInHand.shrink(1);
             return true;
         }
@@ -59,7 +59,7 @@ public class BlockFoam extends BlockColored {
     @Override
     public void randomTick(World worldIn, BlockPos pos, IBlockState state, Random random) {
         int lightLevel = (worldIn.canSeeSky(pos) && worldIn.isDaytime()) ? 16 : worldIn.getLight(pos);
-        if(random.nextInt(20 - lightLevel) == 0) {
+        if (random.nextInt(20 - lightLevel) == 0) {
             worldIn.setBlockState(pos, getPetrifiedBlock(state));
         }
     }

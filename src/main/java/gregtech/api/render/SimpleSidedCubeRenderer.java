@@ -22,9 +22,9 @@ public class SimpleSidedCubeRenderer implements ICubeRenderer, IIconRegister {
         TOP, BOTTOM, SIDE;
 
         public static RenderSide bySide(EnumFacing side) {
-            if(side == EnumFacing.UP) {
+            if (side == EnumFacing.UP) {
                 return TOP;
-            } else if(side == EnumFacing.DOWN) {
+            } else if (side == EnumFacing.DOWN) {
                 return BOTTOM;
             } else return SIDE;
         }
@@ -44,7 +44,7 @@ public class SimpleSidedCubeRenderer implements ICubeRenderer, IIconRegister {
     @SideOnly(Side.CLIENT)
     public void registerIcons(TextureMap textureMap) {
         this.sprites = new HashMap<>();
-        for(RenderSide overlayFace : RenderSide.values()) {
+        for (RenderSide overlayFace : RenderSide.values()) {
             String faceName = overlayFace.name().toLowerCase();
             ResourceLocation resourceLocation = new ResourceLocation(GTValues.MODID, String.format("blocks/%s/%s", basePath, faceName));
             sprites.put(overlayFace, textureMap.registerSprite(resourceLocation));
@@ -65,7 +65,7 @@ public class SimpleSidedCubeRenderer implements ICubeRenderer, IIconRegister {
     @Override
     @SideOnly(Side.CLIENT)
     public void render(CCRenderState renderState, Matrix4 translation, IVertexOperation[] pipeline, Cuboid6 bounds) {
-        for(EnumFacing renderSide : EnumFacing.VALUES) {
+        for (EnumFacing renderSide : EnumFacing.VALUES) {
             RenderSide overlayFace = RenderSide.bySide(renderSide);
             TextureAtlasSprite renderSprite = sprites.get(overlayFace);
             Textures.renderFace(renderState, translation, pipeline, renderSide, bounds, renderSprite);

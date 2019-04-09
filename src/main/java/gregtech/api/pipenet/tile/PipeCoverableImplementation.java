@@ -20,6 +20,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.Constants.NBT;
 
+import javax.annotation.Nullable;
 import java.util.List;
 import java.util.function.Consumer;
 
@@ -27,15 +28,16 @@ public class PipeCoverableImplementation implements ICoverable {
 
     private final IPipeTile<?, ?> holder;
     private final CoverBehavior[] coverBehaviors = new CoverBehavior[6];
+    private int[] sidedRedstoneInput = new int[6];
 
     public PipeCoverableImplementation(IPipeTile<?, ?> holder) {
         this.holder = holder;
     }
 
     public void transferDataTo(PipeCoverableImplementation destImpl) {
-        for(EnumFacing coverSide : EnumFacing.VALUES) {
+        for (EnumFacing coverSide : EnumFacing.VALUES) {
             CoverBehavior behavior = coverBehaviors[coverSide.getIndex()];
-            if(behavior == null) continue;
+            if (behavior == null) continue;
             NBTTagCompound tagCompound = new NBTTagCompound();
             behavior.writeToNBT(tagCompound);
             CoverBehavior newBehavior = behavior.getCoverDefinition().createCoverBehavior(destImpl, coverSide);
@@ -53,7 +55,7 @@ public class PipeCoverableImplementation implements ICoverable {
         }
         //if cover requires ticking and we're not tickable, update ourselves and redirect call to new tickable tile entity
         boolean requiresTicking = coverBehavior instanceof ITickable;
-        if(requiresTicking && !holder.supportsTicking()) {
+        if (requiresTicking && !holder.supportsTicking()) {
             IPipeTile<?, ?> newHolderTile = holder.setSupportsTicking();
             return newHolderTile.getCoverableImplementation().placeCoverOnSide(side, itemStack, coverDefinition);
         }
@@ -91,14 +93,64 @@ public class PipeCoverableImplementation implements ICoverable {
     }
 
     public final void dropAllCovers() {
-        for(EnumFacing coverSide : EnumFacing.VALUES) {
+        for (EnumFacing coverSide : EnumFacing.VALUES) {
             CoverBehavior coverBehavior = coverBehaviors[coverSide.getIndex()];
-            if(coverBehavior == null) continue;
+            if (coverBehavior == null) continue;
             List<ItemStack> drops = coverBehavior.getDrops();
+            coverBehavior.onRemoved();
             for (ItemStack dropStack : drops) {
                 Block.spawnAsEntity(getWorld(), getPos(), dropStack);
             }
         }
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public ItemStack getStackForm() {
+        BlockPipe pipeBlock = holder.getPipeBlock();
+        return pipeBlock.getDropItem(holder);
+    }
+
+    public void onLoad() {
+        for (EnumFacing side : EnumFacing.VALUES) {
+            this.sidedRedstoneInput[side.getIndex()] = getRedstonePower(this, side);
+        }
+    }
+
+    @Override
+    public final int getInputRedstoneSignal(EnumFacing side, boolean ignoreCover) {
+        if(!ignoreCover && getCoverAtSide(side) != null) {
+            return 0; //covers block input redstone signal for machine
+        }
+        return sidedRedstoneInput[side.getIndex()];
+    }
+
+    public void updateInputRedstoneSignals() {
+        for (EnumFacing side : EnumFacing.VALUES) {
+            int redstoneValue = getRedstonePower(this, side);
+            int currentValue = sidedRedstoneInput[side.getIndex()];
+            if(redstoneValue != currentValue) {
+                this.sidedRedstoneInput[side.getIndex()] = redstoneValue;
+                CoverBehavior coverBehavior = getCoverAtSide(side);
+                if(coverBehavior != null) {
+                    coverBehavior.onRedstoneInputSignalChange(redstoneValue);
+                }
+            }
+        }
+    }
+
+    private static int getRedstonePower(ICoverable coverable, EnumFacing side) {
+        return coverable.getWorld().getRedstonePower(coverable.getPos().offset(side), side);
+    }
+
+    @Override
+    public void notifyBlockUpdate() {
+        holder.notifyBlockUpdate();
+    }
+
+    @Override
+    public void scheduleRenderUpdate() {
+        holder.markAsDirty();
     }
 
     @Override
@@ -124,16 +176,51 @@ public class PipeCoverableImplementation implements ICoverable {
     @Override
     public boolean canPlaceCoverOnSide(EnumFacing side) {
         List<IndexedCuboid6> pipeBox = Lists.newArrayList(new IndexedCuboid6(null, BlockPipe.getSideBox(null, holder.getPipeType().getThickness())));
-        if(!ICoverable.checkCoverCollision(side, pipeBox, getCoverPlateThickness())) {
+        if (!ICoverable.checkCoverCollision(side, pipeBox, getCoverPlateThickness())) {
             return false;
         }
         return holder.canPlaceCoverOnSide(side);
     }
 
+    public boolean canConnectRedstone(@Nullable EnumFacing side) {
+        if(side == null) {
+            return canConnectRedstoneOnAnySide();
+        }
+        CoverBehavior behavior = getCoverAtSide(side);
+        return behavior != null && behavior.canConnectRedstone();
+    }
+
+    public boolean canConnectRedstoneOnAnySide() {
+        for(EnumFacing side : EnumFacing.VALUES) {
+            CoverBehavior behavior = getCoverAtSide(side);
+            if(behavior != null && behavior.canConnectRedstone()) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public int getOutputRedstoneSignal(@Nullable EnumFacing side) {
+        if(side == null) {
+            return getHighestOutputRedstoneSignal();
+        }
+        CoverBehavior behavior = getCoverAtSide(side);
+        return behavior == null ? 0 : behavior.getRedstoneSignalOutput();
+    }
+
+    public int getHighestOutputRedstoneSignal() {
+        int highestSignal = 0;
+        for(EnumFacing side : EnumFacing.VALUES) {
+            CoverBehavior behavior = getCoverAtSide(side);
+            highestSignal = Math.max(highestSignal, behavior.getRedstoneSignalOutput());
+        }
+        return highestSignal;
+    }
+
     public void update() {
-        if(!getWorld().isRemote) {
-            for(CoverBehavior coverBehavior : coverBehaviors) {
-                if(coverBehavior instanceof ITickable) {
+        if (!getWorld().isRemote) {
+            for (CoverBehavior coverBehavior : coverBehaviors) {
+                if (coverBehavior instanceof ITickable) {
                     ((ITickable) coverBehavior).update();
                 }
             }
@@ -150,9 +237,9 @@ public class PipeCoverableImplementation implements ICoverable {
     }
 
     public void writeInitialSyncData(PacketBuffer buf) {
-        for(EnumFacing coverSide : EnumFacing.VALUES) {
+        for (EnumFacing coverSide : EnumFacing.VALUES) {
             CoverBehavior coverBehavior = getCoverAtSide(coverSide);
-            if(coverBehavior != null) {
+            if (coverBehavior != null) {
                 int coverId = CoverDefinition.getNetworkIdForCover(coverBehavior.getCoverDefinition());
                 buf.writeVarInt(coverId);
                 coverBehavior.writeInitialSyncData(buf);
@@ -163,9 +250,9 @@ public class PipeCoverableImplementation implements ICoverable {
     }
 
     public void readInitialSyncData(PacketBuffer buf) {
-        for(EnumFacing coverSide : EnumFacing.VALUES) {
+        for (EnumFacing coverSide : EnumFacing.VALUES) {
             int coverId = buf.readVarInt();
-            if(coverId != -1) {
+            if (coverId != -1) {
                 CoverDefinition coverDefinition = CoverDefinition.getCoverByNetworkId(coverId);
                 CoverBehavior coverBehavior = coverDefinition.createCoverBehavior(this, coverSide);
                 coverBehavior.readInitialSyncData(buf);
@@ -198,7 +285,7 @@ public class PipeCoverableImplementation implements ICoverable {
             EnumFacing coverSide = EnumFacing.VALUES[buf.readByte()];
             CoverBehavior coverBehavior = getCoverAtSide(coverSide);
             int internalId = buf.readVarInt();
-            if(coverBehavior != null) {
+            if (coverBehavior != null) {
                 coverBehavior.readUpdateData(internalId, buf);
             }
         }
@@ -206,9 +293,9 @@ public class PipeCoverableImplementation implements ICoverable {
 
     public void writeToNBT(NBTTagCompound data) {
         NBTTagList coversList = new NBTTagList();
-        for(EnumFacing coverSide : EnumFacing.VALUES) {
+        for (EnumFacing coverSide : EnumFacing.VALUES) {
             CoverBehavior coverBehavior = coverBehaviors[coverSide.getIndex()];
-            if(coverBehavior != null) {
+            if (coverBehavior != null) {
                 NBTTagCompound tagCompound = new NBTTagCompound();
                 ResourceLocation coverId = coverBehavior.getCoverDefinition().getCoverId();
                 tagCompound.setString("CoverId", coverId.toString());
@@ -222,9 +309,9 @@ public class PipeCoverableImplementation implements ICoverable {
 
     public void readFromNBT(NBTTagCompound data) {
         NBTTagList coversList = data.getTagList("Covers", NBT.TAG_COMPOUND);
-        for(int index = 0; index < coversList.tagCount(); index++) {
+        for (int index = 0; index < coversList.tagCount(); index++) {
             NBTTagCompound tagCompound = coversList.getCompoundTagAt(index);
-            if(tagCompound.hasKey("CoverId", NBT.TAG_STRING)) {
+            if (tagCompound.hasKey("CoverId", NBT.TAG_STRING)) {
                 EnumFacing coverSide = EnumFacing.VALUES[tagCompound.getByte("Side")];
                 ResourceLocation coverId = new ResourceLocation(tagCompound.getString("CoverId"));
                 CoverDefinition coverDefinition = CoverDefinition.getCoverById(coverId);

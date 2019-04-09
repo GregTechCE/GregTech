@@ -15,7 +15,9 @@ import net.minecraft.util.math.BlockPos;
 public class CoverBehaviorUIFactory extends UIFactory<CoverBehavior> {
 
     public static final CoverBehaviorUIFactory INSTANCE = new CoverBehaviorUIFactory();
-    private CoverBehaviorUIFactory() {}
+
+    private CoverBehaviorUIFactory() {
+    }
 
     public void init() {
         UIFactory.FACTORY_REGISTRY.register(2, new ResourceLocation(GTValues.MODID, "cover_behavior_factory"), this);

@@ -40,20 +40,20 @@ public class MetaTileEntityCharger extends TieredMetaTileEntity {
     @Override
     public void update() {
         super.update();
-        if(!getWorld().isRemote && energyContainer.getEnergyStored() > 0) {
+        if (!getWorld().isRemote && energyContainer.getEnergyStored() > 0) {
             long inputVoltage = Math.min(energyContainer.getInputVoltage(), energyContainer.getEnergyStored());
             long energyUsedUp = 0L;
-            for(int i = 0; i < importItems.getSlots(); i++) {
+            for (int i = 0; i < importItems.getSlots(); i++) {
                 ItemStack batteryStack = importItems.getStackInSlot(i);
                 IElectricItem electricItem = batteryStack.getCapability(GregtechCapabilities.CAPABILITY_ELECTRIC_ITEM, null);
-                if(electricItem != null && electricItem.charge(inputVoltage, getTier(), false, true) > 0) {
+                if (electricItem != null && electricItem.charge(inputVoltage, getTier(), false, true) > 0) {
                     energyUsedUp += electricItem.charge(inputVoltage, getTier(), false, false);
                     importItems.setStackInSlot(i, batteryStack);
-                    if(energyUsedUp >= energyContainer.getEnergyStored()) break;
+                    if (energyUsedUp >= energyContainer.getEnergyStored()) break;
                 }
             }
-            if(energyUsedUp > 0) {
-                energyContainer.changeEnergy(-energyUsedUp);
+            if (energyUsedUp > 0) {
+                energyContainer.addEnergy(energyUsedUp);
             }
         }
     }
@@ -65,7 +65,7 @@ public class MetaTileEntityCharger extends TieredMetaTileEntity {
             @Override
             public ItemStack insertItem(int slot, @Nonnull ItemStack stack, boolean simulate) {
                 IElectricItem electricItem = stack.getCapability(GregtechCapabilities.CAPABILITY_ELECTRIC_ITEM, null);
-                if(electricItem == null || electricItem.getTier() != getTier() ||
+                if (electricItem == null || electricItem.getTier() != getTier() ||
                     electricItem.charge(Long.MAX_VALUE, getTier(), false, true) == 0)
                     return stack; //why do i write these comments? because this line is too short while line above is long
                 return super.insertItem(slot, stack, simulate);

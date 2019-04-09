@@ -17,9 +17,9 @@ public class SortingButtonWidget extends ClickButtonWidget {
 
     @Override
     public boolean mouseClicked(int mouseX, int mouseY, int button) {
-        if(!super.mouseClicked(mouseX, mouseY, button)) {
+        if (!super.mouseClicked(mouseX, mouseY, button)) {
             int sortButton = getInvTweaksSortCode();
-            if(sortButton < 0 && button == 100 + sortButton) {
+            if (sortButton < 0 && button == 100 + sortButton) {
                 triggerButton();
                 return true;
             }
@@ -30,9 +30,9 @@ public class SortingButtonWidget extends ClickButtonWidget {
 
     @Override
     public boolean keyTyped(char charTyped, int keyCode) {
-        if(!super.keyTyped(charTyped, keyCode)) {
+        if (!super.keyTyped(charTyped, keyCode)) {
             int sortButton = getInvTweaksSortCode();
-            if(sortButton > 0 && keyCode == sortButton) {
+            if (sortButton > 0 && keyCode == sortButton) {
                 triggerButton();
                 return true;
             }
@@ -42,15 +42,15 @@ public class SortingButtonWidget extends ClickButtonWidget {
     }
 
     private static int getInvTweaksSortCode() {
-        if(!inventoryTweaksChecked) {
+        if (!inventoryTweaksChecked) {
             inventoryTweaksChecked = true;
             inventoryTweaksPresent = Loader.isModLoaded("inventorytweaks");
         }
-        if(!inventoryTweaksPresent) {
+        if (!inventoryTweaksPresent) {
             return 0;
         }
         try {
-            if(sortKeyBinding == null) {
+            if (sortKeyBinding == null) {
                 Class<?> proxyClass = Class.forName("invtweaks.forge.ClientProxy");
                 sortKeyBinding = (KeyBinding) proxyClass.getField("KEYBINDING_SORT").get(null);
             }

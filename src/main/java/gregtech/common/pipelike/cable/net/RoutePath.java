@@ -23,7 +23,7 @@ public class RoutePath {
         RoutePath newPath = new RoutePath();
         newPath.path = new HashMap<>(path);
         newPath.destination = destination;
-        for(WireProperties wireProperties : path.values()) {
+        for (WireProperties wireProperties : path.values()) {
             newPath.maxAmperage = Math.min(newPath.maxAmperage, wireProperties.amperage);
             newPath.minVoltage = Math.min(newPath.minVoltage, wireProperties.voltage);
             newPath.totalLoss += wireProperties.lossPerBlock;
@@ -32,15 +32,15 @@ public class RoutePath {
     }
 
     public boolean burnCablesInPath(World world, long voltage, long amperage) {
-        for(BlockPos blockPos : path.keySet()) {
+        for (BlockPos blockPos : path.keySet()) {
             WireProperties wireProperties = path.get(blockPos);
-            if(voltage > wireProperties.voltage || amperage > wireProperties.amperage) {
+            if (voltage > wireProperties.voltage || amperage > wireProperties.amperage) {
                 TileEntity tileEntity = world.getTileEntity(blockPos);
-                if(tileEntity instanceof TileEntityCable) {
+                if (tileEntity instanceof TileEntityCable) {
                     world.setBlockToAir(blockPos);
                     world.setBlockState(blockPos, Blocks.FIRE.getDefaultState());
 
-                    if(!world.isRemote) {
+                    if (!world.isRemote) {
                         ((WorldServer) world).spawnParticle(EnumParticleTypes.SMOKE_LARGE,
                             blockPos.getX() + 0.5, blockPos.getY() + 0.5, blockPos.getZ() + 0.5,
                             5 + world.rand.nextInt(3), 0.0, 0.0, 0.0, 0.1);

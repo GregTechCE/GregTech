@@ -31,7 +31,7 @@ public class ColorSprayBehaviour extends AbstractUsableBehaviour {
         if (!player.canPlayerEdit(pos, side, stack)) {
             return EnumActionResult.FAIL;
         }
-        if(!tryPaintBlock(world, pos, side)) {
+        if (!tryPaintBlock(world, pos, side)) {
             return EnumActionResult.PASS;
         }
         useItemDurability(player, hand, stack, empty.copy());

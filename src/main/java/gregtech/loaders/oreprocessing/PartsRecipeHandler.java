@@ -98,7 +98,7 @@ public class PartsRecipeHandler {
         ItemStack fineWireStack = OreDictUnifier.get(fineWirePrefix, material);
         ModHandler.addShapelessRecipe(String.format("fine_wire_%s", material.toString()),
             fineWireStack, 'x', new UnificationEntry(OrePrefix.foil, material));
-        if(material.cableProperties != null) {
+        if (material.cableProperties != null) {
             RecipeMaps.WIREMILL_RECIPES.recipeBuilder()
                 .input(OrePrefix.wireGtSingle, material)
                 .outputs(OreDictUnifier.get(OrePrefix.wireFine, material, 4))
@@ -144,7 +144,7 @@ public class PartsRecipeHandler {
                 .buildAndRegister();
         }
 
-        if(material.hasFlag(GENERATE_PLATE | GENERATE_ROD)) {
+        if (material.hasFlag(GENERATE_PLATE | GENERATE_ROD)) {
             if (gearPrefix == OrePrefix.gearSmall) {
                 ModHandler.addShapedRecipe(String.format("small_gear_%s", material), stack,
                     "h ", " P", 'P', new UnificationEntry(OrePrefix.plate, material));
@@ -192,7 +192,7 @@ public class PartsRecipeHandler {
     }
 
     public static void processCompressed(OrePrefix compressed, SolidMaterial material) {
-        if(!material.hasFlag(MatFlags.GENERATE_PLATE)) return;
+        if (!material.hasFlag(MatFlags.GENERATE_PLATE)) return;
         ItemStack compressedStack = OreDictUnifier.get(compressed, material);
         RecipeMaps.IMPLOSION_RECIPES.recipeBuilder()
             .input(OrePrefix.plank, material, 2)
@@ -229,7 +229,7 @@ public class PartsRecipeHandler {
     }
 
     public static void processSpringSmall(OrePrefix springPrefix, IngotMaterial material) {
-        if(material.cableProperties != null) {
+        if (material.cableProperties != null) {
             RecipeMaps.BENDER_RECIPES.recipeBuilder()
                 .input(OrePrefix.wireGtSingle, material)
                 .outputs(OreDictUnifier.get(OrePrefix.springSmall, material, 2))

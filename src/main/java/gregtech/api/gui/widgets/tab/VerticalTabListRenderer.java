@@ -20,7 +20,7 @@ public class VerticalTabListRenderer extends TabListRenderer {
         boolean isLeftLine = verticalLocation == HorizontalLocation.LEFT;
         int tabXPosition = isLeftLine ? (0 - TAB_HEIGHT + TAB_Y_OFFSET) : (guiWidth - TAB_Y_OFFSET);
         int currentYPosition = 0;
-        for(int tabIndex = 0; tabIndex < tabInfos.size(); tabIndex++) {
+        for (int tabIndex = 0; tabIndex < tabInfos.size(); tabIndex++) {
             boolean isTabSelected = tabIndex == selectedTabIndex;
             boolean isTabFirst = tabIndex == 0;
             TextureArea tabTexture = getTabTexture(isTabSelected, isTabFirst, isLeftLine, startTop);
@@ -31,7 +31,7 @@ public class VerticalTabListRenderer extends TabListRenderer {
     }
 
     private static TextureArea getTabTexture(boolean isTabSelected, boolean isTabFirst, boolean isLeftSide, boolean startTop) {
-        if(isLeftSide) {
+        if (isLeftSide) {
             return LeftTextures.getTabTexture(isTabFirst, startTop, isTabSelected);
         } else return RightTextures.getTabTexture(isTabFirst, startTop, isTabSelected);
     }
@@ -63,7 +63,7 @@ public class VerticalTabListRenderer extends TabListRenderer {
 
         private static final TextureArea endTabInactiveTexture = TABS_LEFT_TEXTURE.getSubArea(0.0, 2.0 / 3.0, 0.5, 1.0 / 3.0);
         private static final TextureArea endTabActiveTexture = TABS_LEFT_TEXTURE.getSubArea(0.5, 2.0 / 3.0, 0.5, 1.0 / 3.0);
-        
+
         private static TextureArea getTabTexture(boolean isTabFirst, boolean startTop, boolean isTabSelected) {
             return isTabFirst ? (startTop ? (isTabSelected ? startTabActiveTexture : startTabInactiveTexture) :
                 (isTabSelected ? endTabActiveTexture : endTabInactiveTexture)) :

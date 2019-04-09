@@ -10,6 +10,7 @@ import gregtech.api.gui.ModularUI.Builder;
 import gregtech.api.gui.widgets.CycleButtonWidget;
 import gregtech.api.gui.widgets.ServerWidgetGroup;
 import gregtech.api.render.Textures;
+import gregtech.api.unification.stack.ItemAndMetadata;
 import gregtech.api.util.GTUtility;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -20,20 +21,23 @@ import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 
-import java.util.Arrays;
+import java.util.Iterator;
+import java.util.Map;
 import java.util.function.Consumer;
 
 public class CoverRoboticArm extends CoverConveyor {
 
     protected TransferMode transferMode;
+    protected boolean transferSameItemsOnly;
 
     public CoverRoboticArm(ICoverable coverable, EnumFacing attachedSide, int tier, int itemsPerSecond) {
         super(coverable, attachedSide, tier, itemsPerSecond);
         this.transferMode = TransferMode.TRANSFER_ANY;
+        this.transferSameItemsOnly = true;
         this.itemFilterSlots = new ItemStackHandler(9) {
             @Override
             public int getSlotLimit(int slot) {
-                return maxItemTransferRate;
+                return 64;
             }
         };
     }
@@ -45,70 +49,81 @@ public class CoverRoboticArm extends CoverConveyor {
 
     @Override
     public void update() {
-        this.transferMode.executor.accept(this);
+        if(isWorkingAllowed) {
+            this.transferMode.executor.accept(this);
+        }
     }
 
     protected void doTransferExact() {
-        if(coverHolder.getTimer() % 20 == 0L) {
+        if (coverHolder.getTimer() % 20 == 0L) {
             TileEntity tileEntity = coverHolder.getWorld().getTileEntity(coverHolder.getPos().offset(attachedSide));
             IItemHandler itemHandler = tileEntity == null ? null : tileEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, attachedSide.getOpposite());
             IItemHandler myItemHandler = coverHolder.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, attachedSide);
-            if(itemHandler == null || myItemHandler == null) {
+            if (itemHandler == null || myItemHandler == null) {
                 return;
             }
+            Map<ItemAndMetadata, ItemInfo> sourceItemAmount = doCountSourceInventoryItemsByType(itemHandler, myItemHandler);
             int[] itemsTransferLimits = new int[filterMode.maxMatchSlots];
-            if(filterMode == FilterType.ITEM_FILTER) {
-                for(int i = 0; i < itemsTransferLimits.length; i++) {
+            if (filterMode == FilterType.ITEM_FILTER) {
+                for (int i = 0; i < itemsTransferLimits.length; i++) {
                     ItemStack filterStack = itemFilterSlots.getStackInSlot(i);
-                    itemsTransferLimits[i] = filterStack.getCount();
+                    itemsTransferLimits[i] = Math.min(filterStack.getCount(), transferRate);
                 }
-            } else if(filterMode == FilterType.ORE_DICTIONARY_FILTER) {
-                itemsTransferLimits[0] = transferRate;
+            } else if (filterMode == FilterType.ORE_DICTIONARY_FILTER) {
+                itemsTransferLimits[0] = Math.min(transferRate, 64);
             } else {
-                itemsTransferLimits[0] = transferRate;
+                itemsTransferLimits[0] = Math.min(transferRate, 64);
             }
-            int[] itemsTransferred = doTransferItemsInternal(itemHandler, myItemHandler, transferRate, itemsTransferLimits, true);
-            if(Arrays.equals(itemsTransferLimits, itemsTransferred)) {
-                doTransferItemsInternal(itemHandler, myItemHandler, transferRate, itemsTransferLimits, false);
+            Iterator<ItemAndMetadata> iterator = sourceItemAmount.keySet().iterator();
+            while(iterator.hasNext()) {
+                ItemAndMetadata key = iterator.next();
+                ItemInfo sourceInfo = sourceItemAmount.get(key);
+                int itemAmount = sourceInfo.totalCount;
+                int itemToMoveAmount = itemsTransferLimits[sourceInfo.filterSlot];
+                if(itemAmount >= itemToMoveAmount) {
+                    sourceInfo.totalCount = itemToMoveAmount;
+                } else {
+                    iterator.remove();
+                }
+            }
+            for(ItemInfo itemInfo : sourceItemAmount.values()) {
+                doTransferItemsExact(itemHandler, myItemHandler, itemInfo);
             }
         }
     }
 
     private void doKeepExact() {
-        if(coverHolder.getTimer() % 20 == 0L) {
+        if (coverHolder.getTimer() % 20 == 0L) {
             TileEntity tileEntity = coverHolder.getWorld().getTileEntity(coverHolder.getPos().offset(attachedSide));
             IItemHandler itemHandler = tileEntity == null ? null : tileEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, attachedSide.getOpposite());
             IItemHandler myItemHandler = coverHolder.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, attachedSide);
-            if(itemHandler == null || myItemHandler == null) {
+            if (itemHandler == null || myItemHandler == null) {
                 return;
             }
-            int[] currentItemAmount = doCountDestinationInventoryItems(itemHandler, myItemHandler);
+            int[] currentItemAmount = doCountDestinationInventoryItemsByMatchIndex(itemHandler, myItemHandler);
             int[] keepItemAmount = new int[currentItemAmount.length];
-            if(filterMode == FilterType.ITEM_FILTER) {
-                for(int i = 0; i < keepItemAmount.length; i++) {
+            if (filterMode == FilterType.ITEM_FILTER) {
+                for (int i = 0; i < keepItemAmount.length; i++) {
                     ItemStack filterStack = itemFilterSlots.getStackInSlot(i);
                     keepItemAmount[i] = filterStack.getCount();
                 }
-            } else if(filterMode == FilterType.ORE_DICTIONARY_FILTER) {
+            } else if (filterMode == FilterType.ORE_DICTIONARY_FILTER) {
                 keepItemAmount[0] = transferRate;
             } else {
                 keepItemAmount[0] = transferRate;
             }
-            int[] itemsToMove = calculateItemsToMove(currentItemAmount, keepItemAmount);
-            int[] itemsTransferred = doTransferItemsInternal(itemHandler, myItemHandler, transferRate, itemsToMove, true);
-            if(Arrays.equals(itemsToMove, itemsTransferred)) {
-                doTransferItemsInternal(itemHandler, myItemHandler, transferRate, itemsToMove, false);
-            }
+            int[] itemsToMove = calculateItemsToMove(currentItemAmount, keepItemAmount, transferRate);
+            doTransferItemsInternal(itemHandler, myItemHandler, transferRate, itemsToMove);
         }
     }
 
-    private static int[] calculateItemsToMove(int[] currentItemAmount, int[] keepItemAmount) {
+    private static int[] calculateItemsToMove(int[] currentItemAmount, int[] keepItemAmount, int maxItemsToMove) {
         int[] resultAmount = new int[currentItemAmount.length];
-        for(int i = 0; i < resultAmount.length; i++) {
+        for (int i = 0; i < resultAmount.length; i++) {
             int currentAmount = currentItemAmount[i];
             int minAmount = keepItemAmount[i];
-            if(minAmount > currentAmount) {
-                resultAmount[i] = minAmount - currentAmount;
+            if (minAmount > currentAmount) {
+                resultAmount[i] = Math.max(minAmount - currentAmount, maxItemsToMove);
             }
         }
         return resultAmount;
@@ -122,7 +137,7 @@ public class CoverRoboticArm extends CoverConveyor {
     @Override
     protected void onFilterModeUpdated() {
         super.onFilterModeUpdated();
-        if(filterMode == FilterType.NONE) {
+        if (filterMode == FilterType.NONE) {
             setTransferMode(TransferMode.TRANSFER_ANY);
         }
     }

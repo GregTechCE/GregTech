@@ -27,15 +27,15 @@ public class GTWorldGenCapability {
 
     public void readFromNBT(NBTTagCompound tagCompound) {
         this.maxHeight = tagCompound.getInteger("H");
-        if(tagCompound.hasKey("BH")) {
+        if (tagCompound.hasKey("BH")) {
             this.maxBottomHeight = maxHeight;
         } else this.maxBottomHeight = maxHeight;
     }
 
     public NBTTagCompound writeToNBT() {
         NBTTagCompound tagCompound = new NBTTagCompound();
-        if(maxHeight != 0) tagCompound.setInteger("H", maxHeight);
-        if(maxBottomHeight != maxHeight) tagCompound.setInteger("BH", maxBottomHeight);
+        if (maxHeight != 0) tagCompound.setInteger("H", maxHeight);
+        if (maxBottomHeight != maxHeight) tagCompound.setInteger("BH", maxBottomHeight);
         return tagCompound;
     }
 
@@ -88,7 +88,7 @@ public class GTWorldGenCapability {
         @Nullable
         @Override
         public <T> T getCapability(@Nonnull Capability<T> capability, @Nullable EnumFacing facing) {
-            if(capability == CAPABILITY) {
+            if (capability == CAPABILITY) {
                 return CAPABILITY.cast(capabilityInstance);
             }
             return null;

@@ -1,29 +1,24 @@
 package gregtech.api.gui.widgets;
 
 import gregtech.api.gui.INativeWidget;
+import gregtech.api.gui.IPositionedRectangularWidget;
 import gregtech.api.gui.Widget;
 import gregtech.api.gui.resources.TextureArea;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.ClickType;
-import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.IItemHandlerModifiable;
 import net.minecraftforge.items.SlotItemHandler;
 
 import javax.annotation.Nonnull;
 
-public class SlotWidget extends Widget implements INativeWidget {
+public class SlotWidget extends Widget implements INativeWidget, IPositionedRectangularWidget {
 
-    protected Slot slotReference;
+    protected SlotItemHandler slotReference;
     protected boolean isEnabled = true;
-
-    public final IItemHandlerModifiable itemHandler;
-
-    public final int slotIndex;
-    public final int xPosition;
-    public final int yPosition;
 
     protected boolean canTakeItems;
     protected boolean canPutItems;
@@ -33,13 +28,29 @@ public class SlotWidget extends Widget implements INativeWidget {
     protected Runnable changeListener;
 
     public SlotWidget(IItemHandlerModifiable itemHandler, int slotIndex, int xPosition, int yPosition, boolean canTakeItems, boolean canPutItems) {
-        super();
-        this.itemHandler = itemHandler;
-        this.slotIndex = slotIndex;
-        this.xPosition = xPosition;
-        this.yPosition = yPosition;
         this.canTakeItems = canTakeItems;
         this.canPutItems = canPutItems;
+        this.slotReference = new WidgetSlotDelegate(itemHandler, slotIndex, xPosition, yPosition);
+    }
+
+    @Override
+    public int getXPosition() {
+        return slotReference.xPos;
+    }
+
+    @Override
+    public int getYPosition() {
+        return slotReference.yPos;
+    }
+
+    @Override
+    public int getWidth() {
+        return 16;
+    }
+
+    @Override
+    public int getHeight() {
+        return 16;
     }
 
     public SlotWidget setChangeListener(Runnable changeListener) {
@@ -106,51 +117,52 @@ public class SlotWidget extends Widget implements INativeWidget {
     }
 
     @Override
-    public final Slot allocateSlotHandle() {
-       return slotReference;
-    }
-
-    @Override
-    public void initWidget() {
-        this.slotReference = new SlotItemHandler(itemHandler, slotIndex, xPosition, yPosition) {
-
-            @Override
-            public boolean isItemValid(@Nonnull ItemStack stack) {
-                return SlotWidget.this.canPutStack(stack) && super.isItemValid(stack);
-            }
-
-            @Override
-            public boolean canTakeStack(EntityPlayer playerIn) {
-                return SlotWidget.this.canTakeStack(playerIn) && super.canTakeStack(playerIn);
-            }
-
-            @Override
-            public void putStack(@Nonnull ItemStack stack) {
-                super.putStack(stack);
-                if(changeListener != null) {
-                    changeListener.run();
-                }
-            }
-
-            @Override
-            public void onSlotChanged() {
-                SlotWidget.this.onSlotChanged();
-            }
-
-            @Override
-            public boolean isEnabled() {
-                return SlotWidget.this.isEnabled();
-            }
-        };
+    public final SlotItemHandler getHandle() {
+        return slotReference;
     }
 
     @Override
     @SideOnly(Side.CLIENT)
     public void drawInBackground(int mouseX, int mouseY) {
-        if(isEnabled && backgroundTexture != null) {
-            for(TextureArea backgroundTexture : this.backgroundTexture) {
-                backgroundTexture.draw(this.xPosition - 1, this.yPosition - 1, 18, 18);
+        if (isEnabled && backgroundTexture != null) {
+            for (TextureArea backgroundTexture : this.backgroundTexture) {
+                backgroundTexture.draw(getXPosition() - 1, getYPosition() - 1, getWidth() + 2, getHeight() + 2);
             }
+        }
+    }
+
+    protected class WidgetSlotDelegate extends SlotItemHandler {
+
+        public WidgetSlotDelegate(IItemHandler itemHandler, int index, int xPosition, int yPosition) {
+            super(itemHandler, index, xPosition, yPosition);
+        }
+
+        @Override
+        public boolean isItemValid(@Nonnull ItemStack stack) {
+            return SlotWidget.this.canPutStack(stack) && super.isItemValid(stack);
+        }
+
+        @Override
+        public boolean canTakeStack(EntityPlayer playerIn) {
+            return SlotWidget.this.canTakeStack(playerIn) && super.canTakeStack(playerIn);
+        }
+
+        @Override
+        public void putStack(@Nonnull ItemStack stack) {
+            super.putStack(stack);
+            if (changeListener != null) {
+                changeListener.run();
+            }
+        }
+
+        @Override
+        public void onSlotChanged() {
+            SlotWidget.this.onSlotChanged();
+        }
+
+        @Override
+        public boolean isEnabled() {
+            return SlotWidget.this.isEnabled();
         }
     }
 

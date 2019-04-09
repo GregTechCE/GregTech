@@ -25,6 +25,7 @@ import java.util.List;
 /**
  * Implement and register to {@link #FACTORY_REGISTRY} to be able to create and open ModularUI's
  * createUITemplate should return equal gui both on server and client side, or sync will break!
+ *
  * @param <E> UI holder type
  */
 public abstract class UIFactory<E extends IUIHolder> {
@@ -75,7 +76,7 @@ public abstract class UIFactory<E extends IUIHolder> {
         uiTemplate.initWidgets();
         ModularUIGui modularUIGui = new ModularUIGui(uiTemplate);
         modularUIGui.inventorySlots.windowId = windowId;
-        for(PacketUIWidgetUpdate packet : initialWidgetUpdates) {
+        for (PacketUIWidgetUpdate packet : initialWidgetUpdates) {
             modularUIGui.handleWidgetUpdate(packet);
         }
         minecraft.addScheduledTask(() -> {
@@ -88,6 +89,7 @@ public abstract class UIFactory<E extends IUIHolder> {
 
     @SideOnly(Side.CLIENT)
     protected abstract E readHolderFromSyncData(PacketBuffer syncData);
+
     protected abstract void writeHolderToSyncData(PacketBuffer syncData, E holder);
 
 }

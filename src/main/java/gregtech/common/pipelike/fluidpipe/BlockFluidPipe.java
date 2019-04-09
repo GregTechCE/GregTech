@@ -6,7 +6,6 @@ import gregtech.api.pipenet.block.BlockPipe;
 import gregtech.api.pipenet.tile.IPipeTile;
 import gregtech.api.pipenet.tile.TileEntityPipeBase;
 import gregtech.api.unification.material.type.Material;
-import gregtech.api.util.GTUtility;
 import gregtech.common.pipelike.fluidpipe.net.FluidPipeNet;
 import gregtech.common.pipelike.fluidpipe.net.WorldFluidPipeNet;
 import gregtech.common.pipelike.fluidpipe.tile.TileEntityFluidPipe;
@@ -48,7 +47,7 @@ public class BlockFluidPipe extends BlockPipe<FluidPipeType, FluidPipeProperties
     public void addPipeMaterial(Material material, FluidPipeProperties fluidPipeProperties) {
         Preconditions.checkNotNull(material, "material");
         Preconditions.checkNotNull(fluidPipeProperties, "fluidPipeProperties");
-        Preconditions.checkArgument(Material.MATERIAL_REGISTRY.getNameForObject(material) != null,"material is not registered");
+        Preconditions.checkArgument(Material.MATERIAL_REGISTRY.getNameForObject(material) != null, "material is not registered");
         this.enabledMaterials.put(material, fluidPipeProperties);
     }
 
@@ -121,16 +120,14 @@ public class BlockFluidPipe extends BlockPipe<FluidPipeType, FluidPipeProperties
                 int fluidTemperature = fluidStack.getFluid().getTemperature(fluidStack);
                 if (fluidTemperature >= 373) {
                     //100C, temperature of boiling water
-                    if (!GTUtility.isWearingFullHeatHazmat(entityLiving)) {
-                        float damageAmount = (fluidTemperature - 363) / 2.0f;
-                        entityLiving.attackEntityFrom(DamageSources.getHeatDamage(), damageAmount);
-                    }
+                    float damageAmount = (fluidTemperature - 363) / 2.0f;
+                    entityLiving.attackEntityFrom(DamageSources.getHeatDamage(), damageAmount);
+
                 } else if (fluidTemperature <= 183) {
                     //-90C, temperature of freezing of many gases
-                    if (!GTUtility.isWearingFullFrostHazmat(entityLiving)) {
-                        float damageAmount = fluidTemperature / 2.0f;
-                        entityLiving.attackEntityFrom(DamageSources.getFrostDamage(), damageAmount);
-                    }
+                    float damageAmount = fluidTemperature / 2.0f;
+                    entityLiving.attackEntityFrom(DamageSources.getFrostDamage(), damageAmount);
+
                 }
             }
         }

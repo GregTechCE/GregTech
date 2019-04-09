@@ -31,7 +31,7 @@ public class ShapedOreEnergyTransferRecipe extends ShapedOreRecipe {
 
     public static void chargeStackFromComponents(ItemStack toolStack, IInventory ingredients) {
         IElectricItem electricItem = toolStack.getCapability(GregtechCapabilities.CAPABILITY_ELECTRIC_ITEM, null);
-        if(electricItem != null && electricItem.getMaxCharge() > 0L) {
+        if (electricItem != null && electricItem.getMaxCharge() > 0L) {
             long maxCharge = electricItem.charge(Long.MAX_VALUE, Integer.MAX_VALUE, true, true);
             for (int slotIndex = 0; slotIndex < ingredients.getSizeInventory(); slotIndex++) {
                 ItemStack stackInSlot = ingredients.getStackInSlot(slotIndex);

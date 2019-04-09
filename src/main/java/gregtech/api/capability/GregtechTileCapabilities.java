@@ -12,4 +12,7 @@ public class GregtechTileCapabilities {
     @CapabilityInject(ICoverable.class)
     public static Capability<ICoverable> CAPABILITY_COVERABLE = null;
 
+    @CapabilityInject(IControllable.class)
+    public static Capability<IControllable> CAPABILITY_CONTROLLABLE = null;
+
 }

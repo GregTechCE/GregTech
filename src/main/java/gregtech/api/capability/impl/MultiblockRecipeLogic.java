@@ -6,10 +6,10 @@ import gregtech.api.metatileentity.multiblock.RecipeMapMultiblockController;
 import gregtech.api.recipes.Recipe;
 import net.minecraftforge.items.IItemHandlerModifiable;
 
-public class MultiblockRecipeMapWorkable extends RecipeMapWorkableHandler {
+public class MultiblockRecipeLogic extends AbstractRecipeLogic {
 
 
-    public MultiblockRecipeMapWorkable(RecipeMapMultiblockController tileEntity) {
+    public MultiblockRecipeLogic(RecipeMapMultiblockController tileEntity) {
         super(tileEntity, tileEntity.recipeMap);
     }
 
@@ -53,7 +53,7 @@ public class MultiblockRecipeMapWorkable extends RecipeMapWorkableHandler {
     @Override
     protected boolean setupAndConsumeRecipeInputs(Recipe recipe) {
         RecipeMapMultiblockController controller = (RecipeMapMultiblockController) metaTileEntity;
-        if(controller.checkRecipe(recipe, false) &&
+        if (controller.checkRecipe(recipe, false) &&
             super.setupAndConsumeRecipeInputs(recipe)) {
             controller.checkRecipe(recipe, true);
             return true;
@@ -73,7 +73,7 @@ public class MultiblockRecipeMapWorkable extends RecipeMapWorkableHandler {
     @Override
     protected boolean drawEnergy(int recipeEUt) {
         long resultEnergy = getEnergyStored() - recipeEUt;
-        if(resultEnergy >= 0L && resultEnergy <= getEnergyCapacity()) {
+        if (resultEnergy >= 0L && resultEnergy <= getEnergyCapacity()) {
             getEnergyContainer().changeEnergy(-recipeEUt);
             return true;
         } else return false;

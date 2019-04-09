@@ -39,7 +39,7 @@ public class PatternMatchContext {
 
     public <T> T getOrCreate(String key, Supplier<T> creator) {
         T result = get(key);
-        if(result == null) {
+        if (result == null) {
             result = creator.get();
             set(key, result);
         }
@@ -48,7 +48,7 @@ public class PatternMatchContext {
 
     public <T> T getOrPut(String key, T initialValue) {
         T result = get(key);
-        if(result == null) {
+        if (result == null) {
             result = initialValue;
             set(key, result);
         }

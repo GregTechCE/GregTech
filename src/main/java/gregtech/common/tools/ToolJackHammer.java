@@ -93,10 +93,14 @@ public class ToolJackHammer extends ToolDrillLV {
 
     private static BlockPos rotate(BlockPos origin, int x, int y, EnumFacing sideHit) {
         switch (sideHit.getAxis()) {
-            case X: return origin.add(0, y, x);
-            case Z: return origin.add(x, y, 0);
-            case Y: return origin.add(x, 0, y);
-            default: throw new IllegalArgumentException("Unknown axis");
+            case X:
+                return origin.add(0, y, x);
+            case Z:
+                return origin.add(x, y, 0);
+            case Y:
+                return origin.add(x, 0, y);
+            default:
+                throw new IllegalArgumentException("Unknown axis");
         }
     }
 }

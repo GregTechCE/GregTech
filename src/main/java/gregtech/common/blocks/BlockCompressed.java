@@ -40,9 +40,9 @@ public final class BlockCompressed extends DelayedStateBlock {
     @Override
     public String getHarvestTool(IBlockState state) {
         Material material = state.getValue(variantProperty);
-        if(material instanceof SolidMaterial) {
+        if (material instanceof SolidMaterial) {
             return "pickaxe";
-        } else if(material instanceof DustMaterial) {
+        } else if (material instanceof DustMaterial) {
             return "shovel";
         }
         return "pickaxe";
@@ -51,7 +51,7 @@ public final class BlockCompressed extends DelayedStateBlock {
     @Override
     public int getHarvestLevel(IBlockState state) {
         Material material = state.getValue(variantProperty);
-        if(material instanceof DustMaterial) {
+        if (material instanceof DustMaterial) {
             return ((DustMaterial) material).harvestLevel;
         }
         return 0;
@@ -86,20 +86,20 @@ public final class BlockCompressed extends DelayedStateBlock {
 
     @Override
     public void getSubBlocks(CreativeTabs tab, NonNullList<ItemStack> list) {
-    	blockState.getValidStates().stream()
-    		.filter(blockState -> blockState.getValue(variantProperty) != Materials._NULL)
-    		.forEach(blockState -> list.add(getItem(blockState)));
+        blockState.getValidStates().stream()
+            .filter(blockState -> blockState.getValue(variantProperty) != Materials._NULL)
+            .forEach(blockState -> list.add(getItem(blockState)));
     }
 
     @Override
     @SuppressWarnings("deprecation")
     public net.minecraft.block.material.Material getMaterial(IBlockState state) {
         Material material = state.getValue(variantProperty);
-        if(material instanceof GemMaterial) {
+        if (material instanceof GemMaterial) {
             return net.minecraft.block.material.Material.ROCK;
-        } else if(material instanceof IngotMaterial) {
+        } else if (material instanceof IngotMaterial) {
             return net.minecraft.block.material.Material.IRON;
-        } else if(material instanceof DustMaterial) {
+        } else if (material instanceof DustMaterial) {
             return net.minecraft.block.material.Material.SAND;
         }
         return net.minecraft.block.material.Material.ROCK;
@@ -114,11 +114,11 @@ public final class BlockCompressed extends DelayedStateBlock {
     @Override
     public SoundType getSoundType(IBlockState state, World world, BlockPos pos, @Nullable Entity entity) {
         Material material = state.getValue(variantProperty);
-        if(material instanceof GemMaterial) {
+        if (material instanceof GemMaterial) {
             return SoundType.STONE;
-        } else if(material instanceof IngotMaterial) {
+        } else if (material instanceof IngotMaterial) {
             return SoundType.METAL;
-        } else if(material instanceof DustMaterial) {
+        } else if (material instanceof DustMaterial) {
             return SoundType.SAND;
         }
         return SoundType.STONE;

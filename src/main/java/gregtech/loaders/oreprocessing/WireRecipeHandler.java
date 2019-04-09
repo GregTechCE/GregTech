@@ -23,13 +23,13 @@ public class WireRecipeHandler {
 
     public static void register() {
         OrePrefix.wireGtSingle.addProcessingHandler(IngotMaterial.class, WireRecipeHandler::processWireSingle);
-        for(OrePrefix wirePrefix : WIRE_DOUBLING_ORDER) {
+        for (OrePrefix wirePrefix : WIRE_DOUBLING_ORDER) {
             wirePrefix.addProcessingHandler(IngotMaterial.class, WireRecipeHandler::generateWireRecipe);
             wirePrefix.addProcessingHandler(Material.class, WireRecipeHandler::generateWireCombiningRecipe);
         }
     }
 
-    private static final OrePrefix[] WIRE_DOUBLING_ORDER = new OrePrefix[] {
+    private static final OrePrefix[] WIRE_DOUBLING_ORDER = new OrePrefix[]{
         OrePrefix.wireGtSingle, OrePrefix.wireGtDouble, OrePrefix.wireGtQuadruple, OrePrefix.wireGtOctal, OrePrefix.wireGtHex
     };
 
@@ -101,18 +101,17 @@ public class WireRecipeHandler {
     }
 
 
-
     public static void generateWireCombiningRecipe(OrePrefix wirePrefix, Material material) {
         int wireIndex = ArrayUtils.indexOf(WIRE_DOUBLING_ORDER, wirePrefix);
 
-        if(wireIndex < WIRE_DOUBLING_ORDER.length - 1) {
+        if (wireIndex < WIRE_DOUBLING_ORDER.length - 1) {
             ModHandler.addShapelessRecipe(String.format("%s_wire_%s_doubling", material, wirePrefix),
                 OreDictUnifier.get(WIRE_DOUBLING_ORDER[wireIndex + 1], material),
                 new UnificationEntry(wirePrefix, material),
                 new UnificationEntry(wirePrefix, material));
         }
 
-        if(wireIndex > 0) {
+        if (wireIndex > 0) {
             ModHandler.addShapelessRecipe(String.format("%s_wire_%s_splitting", material, wirePrefix),
                 OreDictUnifier.get(WIRE_DOUBLING_ORDER[wireIndex - 1], material, 2),
                 new UnificationEntry(wirePrefix, material));

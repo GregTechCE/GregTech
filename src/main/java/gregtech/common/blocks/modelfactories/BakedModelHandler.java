@@ -5,8 +5,11 @@ import gregtech.api.render.MetaTileEntityRenderer;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.ItemMeshDefinition;
-import net.minecraft.client.renderer.block.model.*;
+import net.minecraft.client.renderer.block.model.BakedQuad;
+import net.minecraft.client.renderer.block.model.IBakedModel;
 import net.minecraft.client.renderer.block.model.ItemCameraTransforms.TransformType;
+import net.minecraft.client.renderer.block.model.ItemOverrideList;
+import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.renderer.block.statemap.StateMapperBase;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
@@ -51,7 +54,7 @@ public class BakedModelHandler {
         this.builtInBlocks.add(new Tuple<>(block, particleTexture));
         ModelLoader.setCustomStateMapper(block, SIMPLE_STATE_MAPPER);
         Item itemFromBlock = Item.getItemFromBlock(block);
-        if(itemFromBlock != Items.AIR) {
+        if (itemFromBlock != Items.AIR) {
             ModelLoader.setCustomMeshDefinition(itemFromBlock, SIMPLE_MESH_DEFINITION);
         }
     }
@@ -63,14 +66,14 @@ public class BakedModelHandler {
 
     @SubscribeEvent
     public void onModelsBake(ModelBakeEvent event) {
-        for(BlockFluidBase fluidBlock : fluidBlocks) {
+        for (BlockFluidBase fluidBlock : fluidBlocks) {
             Fluid fluid = ObfuscationReflectionHelper.getPrivateValue(BlockFluidBase.class, fluidBlock, "definedFluid");
             ModelFluid modelFluid = new ModelFluid(fluid);
             IBakedModel bakedModel = modelFluid.bake(modelFluid.getDefaultState(), DefaultVertexFormats.ITEM, TextureUtils::getTexture);
             ModelResourceLocation resourceLocation = getSimpleModelLocation(fluidBlock);
             event.getModelRegistry().putObject(resourceLocation, bakedModel);
         }
-        for(Tuple<Block, String> tuple : builtInBlocks) {
+        for (Tuple<Block, String> tuple : builtInBlocks) {
             ModelResourceLocation resourceLocation = getSimpleModelLocation(tuple.getFirst());
             ModelBuiltInRenderer bakedModel = new ModelBuiltInRenderer(tuple.getSecond());
             event.getModelRegistry().putObject(resourceLocation, bakedModel);
@@ -117,7 +120,7 @@ public class BakedModelHandler {
 
         @Override
         public Pair<? extends IBakedModel, Matrix4f> handlePerspective(TransformType cameraTransformType) {
-            if(MetaTileEntityRenderer.BLOCK_TRANSFORMS.containsKey(cameraTransformType)) {
+            if (MetaTileEntityRenderer.BLOCK_TRANSFORMS.containsKey(cameraTransformType)) {
                 return Pair.of(this, MetaTileEntityRenderer.BLOCK_TRANSFORMS.get(cameraTransformType).getMatrix());
             }
             return Pair.of(this, null);

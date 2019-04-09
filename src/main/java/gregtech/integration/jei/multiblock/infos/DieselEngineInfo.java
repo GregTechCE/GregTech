@@ -43,7 +43,7 @@ public class DieselEngineInfo extends MultiblockInfoPage {
 
     @Override
     public String[] getDescription() {
-        return new String[] {I18n.format("gregtech.multiblock.diesel_engine.description")};
+        return new String[]{I18n.format("gregtech.multiblock.diesel_engine.description")};
     }
 
 }

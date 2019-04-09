@@ -1,13 +1,12 @@
 package gregtech.common.crafting;
 
+import com.google.gson.JsonObject;
 import gregtech.api.items.metaitem.MetaItem;
 import gregtech.common.items.MetaItems;
 import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.util.JsonUtils;
 import net.minecraftforge.common.crafting.IIngredientFactory;
 import net.minecraftforge.common.crafting.JsonContext;
-
-import com.google.gson.JsonObject;
 
 public class MetaItemIngredientFactory implements IIngredientFactory {
     @Override

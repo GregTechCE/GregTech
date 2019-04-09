@@ -21,12 +21,17 @@ public class TileEntityCrusherBladeRenderer extends TileEntityRendererBase<TileE
 
         IBlockState blockState = tileEntity.getBlockState();
         switch (blockState.getValue(BlockCrusherBlade.AXIS)) {
-            case Y: break;
-            case X: translation.rotate(Math.toRadians(90.0), Rotation.axes[3]); break;
-            case Z: translation.rotate(Math.toRadians(90.0), Rotation.axes[5]); break;
+            case Y:
+                break;
+            case X:
+                translation.rotate(Math.toRadians(90.0), Rotation.axes[3]);
+                break;
+            case Z:
+                translation.rotate(Math.toRadians(90.0), Rotation.axes[5]);
+                break;
         }
 
-        if(blockState.getValue(BlockCrusherBlade.ACTIVE)) {
+        if (blockState.getValue(BlockCrusherBlade.ACTIVE)) {
             long currentWorldTime = tileEntity.hasWorld() ? tileEntity.getWorld().getTotalWorldTime() : 0;
             translation.rotate(Math.toRadians(currentWorldTime * 12.0 % 180), Rotation.axes[1]);
         }
@@ -36,8 +41,8 @@ public class TileEntityCrusherBladeRenderer extends TileEntityRendererBase<TileE
         TextureAtlasSprite ironBlockTexture = TextureUtils.getBlockTexture("iron_block");
         IVertexOperation[] operations = {};
 
-        for(Cuboid6 cuboid6 : BlockCrusherBlade.basicModel) {
-            for(EnumFacing renderSide : EnumFacing.VALUES) {
+        for (Cuboid6 cuboid6 : BlockCrusherBlade.basicModel) {
+            for (EnumFacing renderSide : EnumFacing.VALUES) {
                 Textures.renderFace(renderState, translation, operations, renderSide, cuboid6, ironBlockTexture);
             }
         }

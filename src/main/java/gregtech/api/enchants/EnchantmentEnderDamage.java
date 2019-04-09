@@ -19,7 +19,7 @@ public class EnchantmentEnderDamage extends Enchantment {
     public static final EnchantmentEnderDamage INSTANCE = new EnchantmentEnderDamage();
 
     private EnchantmentEnderDamage() {
-        super(Rarity.UNCOMMON, EnumEnchantmentType.WEAPON, new EntityEquipmentSlot[] {EntityEquipmentSlot.MAINHAND});
+        super(Rarity.UNCOMMON, EnumEnchantmentType.WEAPON, new EntityEquipmentSlot[]{EntityEquipmentSlot.MAINHAND});
     }
 
     public void register(RegistryEvent.Register<Enchantment> event) {

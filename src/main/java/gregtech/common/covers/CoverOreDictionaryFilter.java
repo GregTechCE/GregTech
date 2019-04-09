@@ -62,7 +62,7 @@ public class CoverOreDictionaryFilter extends CoverBehavior implements CoverWith
 
     @Override
     public EnumActionResult onScrewdriverClick(EntityPlayer playerIn, EnumHand hand, CuboidRayTraceResult hitResult) {
-        if(!playerIn.world.isRemote) {
+        if (!playerIn.world.isRemote) {
             openUI((EntityPlayerMP) playerIn);
         }
         return EnumActionResult.SUCCESS;
@@ -106,9 +106,9 @@ public class CoverOreDictionaryFilter extends CoverBehavior implements CoverWith
 
     @Override
     public <T> T getCapability(Capability<T> capability, T defaultValue) {
-        if(capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
+        if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
             IItemHandler delegate = (IItemHandler) defaultValue;
-            if(itemHandler == null || itemHandler.delegate != delegate) {
+            if (itemHandler == null || itemHandler.delegate != delegate) {
                 this.itemHandler = new ItemHandlerOreDictFilteredImpl(delegate);
             }
             return CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.cast(itemHandler);
@@ -159,10 +159,10 @@ public class CoverOreDictionaryFilter extends CoverBehavior implements CoverWith
                 return ItemStack.EMPTY;
             }
             ItemStack result = super.extractItem(slot, amount, true);
-            if(oreDictionaryFilterMatch(getOreDictName(), result) == -1) {
+            if (oreDictionaryFilterMatch(getOreDictName(), result) == -1) {
                 return ItemStack.EMPTY;
             }
-            if(!simulate) {
+            if (!simulate) {
                 super.extractItem(slot, amount, false);
             }
             return result;
@@ -174,19 +174,19 @@ public class CoverOreDictionaryFilter extends CoverBehavior implements CoverWith
     }
 
     public static int oreDictionaryFilterMatch(String oreDictionaryFilter, ItemStack itemStack) {
-        if(oreDictionaryFilter.isEmpty()) {
+        if (oreDictionaryFilter.isEmpty()) {
             return -1;
         }
         boolean startWildcard = oreDictionaryFilter.charAt(0) == '*';
         boolean endWildcard = oreDictionaryFilter.charAt(oreDictionaryFilter.length() - 1) == '*';
-        if(startWildcard) {
+        if (startWildcard) {
             oreDictionaryFilter = oreDictionaryFilter.substring(1);
         }
-        if(endWildcard) {
+        if (endWildcard) {
             oreDictionaryFilter = oreDictionaryFilter.substring(0, oreDictionaryFilter.length() - 1);
         }
-        for(String stackOreName : OreDictUnifier.getOreDictionaryNames(itemStack)) {
-            if(areOreDictNamesEqual(startWildcard, endWildcard, oreDictionaryFilter, stackOreName)) {
+        for (String stackOreName : OreDictUnifier.getOreDictionaryNames(itemStack)) {
+            if (areOreDictNamesEqual(startWildcard, endWildcard, oreDictionaryFilter, stackOreName)) {
                 return 0;
             }
         }
@@ -194,11 +194,11 @@ public class CoverOreDictionaryFilter extends CoverBehavior implements CoverWith
     }
 
     private static boolean areOreDictNamesEqual(boolean startWildcard, boolean endWildcard, String oreDictName, String stackOreName) {
-        if(startWildcard && endWildcard) {
+        if (startWildcard && endWildcard) {
             return stackOreName.contains(oreDictName);
-        } else if(startWildcard) {
+        } else if (startWildcard) {
             return stackOreName.endsWith(oreDictName);
-        } else if(endWildcard) {
+        } else if (endWildcard) {
             return stackOreName.startsWith(oreDictName);
         } else {
             return stackOreName.equals(oreDictName);

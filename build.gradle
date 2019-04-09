@@ -152,8 +152,9 @@ task energyApi(type: Jar) {
     include "gregtech/api/capability/IElectricItem.*"
     include "gregtech/api/capability/IEnergyContainer.*"
     include "gregtech/api/capability/GregtechCapabilities.*"
+    include "gregtech/api/capability/tool/*"
 
-    classifier = 'energy-api'
+    classifier = 'api'
 }
 
 artifacts {

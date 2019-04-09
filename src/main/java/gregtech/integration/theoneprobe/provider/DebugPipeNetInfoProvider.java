@@ -19,7 +19,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.common.Loader;
 
 import java.util.Map;
 
@@ -31,13 +30,13 @@ public class DebugPipeNetInfoProvider implements IProbeInfoProvider {
 
     @Override
     public void addProbeInfo(ProbeMode mode, IProbeInfo probeInfo, EntityPlayer player, World world, IBlockState blockState, IProbeHitData data) {
-        if(mode == ProbeMode.DEBUG && ConfigHolder.debug) {
+        if (mode == ProbeMode.DEBUG && ConfigHolder.debug) {
             TileEntity tileEntity = world.getTileEntity(data.getPos());
             IPipeTile<?, ?> pipeTile = tileEntity == null ? null : getAnyPipeTile(tileEntity);
-            if(pipeTile != null) {
+            if (pipeTile != null) {
                 BlockPipe<?, ?, ?> blockPipe = pipeTile.getPipeBlock();
                 PipeNet<?> pipeNet = blockPipe.getWorldPipeNet(world).getNetFromPos(data.getPos());
-                if(pipeNet != null) {
+                if (pipeNet != null) {
                     probeInfo.text("Net: " + pipeNet.hashCode());
                     probeInfo.text("Node Info: ");
                     StringBuilder builder = new StringBuilder();
@@ -48,10 +47,10 @@ public class DebugPipeNetInfoProvider implements IProbeInfoProvider {
                         .append(", blocked: ").append(node.blockedConnections).append("}");
                     probeInfo.text(builder.toString());
                 }
-                if(blockPipe instanceof BlockFluidPipe) {
-                    if(pipeTile instanceof TileEntityFluidPipeActive) {
+                if (blockPipe instanceof BlockFluidPipe) {
+                    if (pipeTile instanceof TileEntityFluidPipeActive) {
                         probeInfo.text("tile active: " + ((TileEntityFluidPipeActive) pipeTile).isActive());
-                    } else if(GTValues.isModLoaded(GTValues.MODID_FMP) && pipeTile instanceof FluidPipeActiveMultiPart) {
+                    } else if (GTValues.isModLoaded(GTValues.MODID_FMP) && pipeTile instanceof FluidPipeActiveMultiPart) {
                         probeInfo.text("tile active: " + ((FluidPipeActiveMultiPart) pipeTile).isActivePart());
                     }
                 }
@@ -60,9 +59,9 @@ public class DebugPipeNetInfoProvider implements IProbeInfoProvider {
     }
 
     private IPipeTile<?, ?> getAnyPipeTile(TileEntity tileEntity) {
-        if(tileEntity instanceof IPipeTile) {
+        if (tileEntity instanceof IPipeTile) {
             return (IPipeTile<?, ?>) tileEntity;
-        } else if(GTValues.isModLoaded(GTValues.MODID_FMP) &&
+        } else if (GTValues.isModLoaded(GTValues.MODID_FMP) &&
             tileEntity instanceof TileMultipart) {
             return (IPipeTile<?, ?>) ((TileMultipart) tileEntity).jPartList().stream()
                 .filter(part -> part instanceof IPipeTile)

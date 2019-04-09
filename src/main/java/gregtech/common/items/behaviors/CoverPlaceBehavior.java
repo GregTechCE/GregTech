@@ -25,14 +25,14 @@ public class CoverPlaceBehavior implements IItemBehaviour {
     public EnumActionResult onItemUseFirst(EntityPlayer player, World world, BlockPos pos, EnumFacing side, float hitX, float hitY, float hitZ, EnumHand hand) {
         TileEntity tileEntity = world.getTileEntity(pos);
         ICoverable coverable = tileEntity == null ? null : tileEntity.getCapability(GregtechTileCapabilities.CAPABILITY_COVERABLE, null);
-        if(coverable == null) {
+        if (coverable == null) {
             return EnumActionResult.PASS;
         }
         EnumFacing coverSide = ICoverable.rayTraceCoverableSide(coverable, player);
-        if(coverable.getCoverAtSide(coverSide) != null || !coverable.canPlaceCoverOnSide(coverSide)) {
+        if (coverable.getCoverAtSide(coverSide) != null || !coverable.canPlaceCoverOnSide(coverSide)) {
             return EnumActionResult.PASS;
         }
-        if(!world.isRemote) {
+        if (!world.isRemote) {
             ItemStack itemStack = player.getHeldItem(hand);
             boolean result = coverable.placeCoverOnSide(coverSide, itemStack, coverDefinition);
             if (result && !player.capabilities.isCreativeMode) {

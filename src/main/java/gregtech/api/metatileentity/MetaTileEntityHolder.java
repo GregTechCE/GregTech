@@ -39,7 +39,7 @@ public class MetaTileEntityHolder extends TickableTileEntityBase implements IUIH
         Preconditions.checkNotNull(sampleMetaTileEntity, "metaTileEntity");
         this.metaTileEntity = sampleMetaTileEntity.createMetaTileEntity(this);
         this.metaTileEntity.holder = this;
-        if(hasWorld() && !getWorld().isRemote) {
+        if (hasWorld() && !getWorld().isRemote) {
             updateBlockOpacity();
             writeCustomData(-1, buffer -> {
                 buffer.writeVarInt(GregTechAPI.META_TILE_ENTITY_REGISTRY.getIdByObjectName(metaTileEntity.metaTileEntityId));
@@ -56,7 +56,7 @@ public class MetaTileEntityHolder extends TickableTileEntityBase implements IUIH
     private void updateBlockOpacity() {
         IBlockState currentState = world.getBlockState(getPos());
         boolean isMetaTileEntityOpaque = metaTileEntity.isOpaqueCube();
-        if(currentState.getValue(BlockMachine.OPAQUE) != isMetaTileEntityOpaque) {
+        if (currentState.getValue(BlockMachine.OPAQUE) != isMetaTileEntityOpaque) {
             world.setBlockState(getPos(), currentState.withProperty(BlockMachine.OPAQUE, isMetaTileEntityOpaque));
         }
     }
@@ -75,10 +75,10 @@ public class MetaTileEntityHolder extends TickableTileEntityBase implements IUIH
     @Override
     public void readFromNBT(NBTTagCompound compound) {
         super.readFromNBT(compound);
-        if(compound.hasKey("MetaId", NBT.TAG_STRING)) {
+        if (compound.hasKey("MetaId", NBT.TAG_STRING)) {
             String metaTileEntityIdRaw = compound.getString("MetaId");
             ResourceLocation metaTileEntityId;
-            if(metaTileEntityIdRaw.indexOf(':') == -1) {
+            if (metaTileEntityIdRaw.indexOf(':') == -1) {
                 metaTileEntityId = convertMetaTileEntityId(metaTileEntityIdRaw);
             } else {
                 metaTileEntityId = new ResourceLocation(metaTileEntityIdRaw);
@@ -89,7 +89,6 @@ public class MetaTileEntityHolder extends TickableTileEntityBase implements IUIH
                 this.metaTileEntity = sampleMetaTileEntity.createMetaTileEntity(this);
                 this.metaTileEntity.holder = this;
                 this.metaTileEntity.readFromNBT(metaTileEntityData);
-                this.metaTileEntity.onPostNBTLoad();
             } else {
                 GTLog.logger.error("Failed to load MetaTileEntity with invalid ID " + metaTileEntityIdRaw);
             }
@@ -101,19 +100,19 @@ public class MetaTileEntityHolder extends TickableTileEntityBase implements IUIH
     private static ResourceLocation convertMetaTileEntityId(String metaTileEntityIdOld) {
         ResourceLocation gregtechId = new ResourceLocation(GTValues.MODID, metaTileEntityIdOld);
         GTControlledRegistry<ResourceLocation, MetaTileEntity> registry = GregTechAPI.META_TILE_ENTITY_REGISTRY;
-        if(registry.containsKey(gregtechId)) {
+        if (registry.containsKey(gregtechId)) {
             return gregtechId; //remap to gregtech meta tile entities first
         }
         //try to lookup by different registry IDs
-        if(registeredModIDs == null) {
+        if (registeredModIDs == null) {
             registeredModIDs = registry.getKeys().stream()
                 .map(ResourceLocation::getResourceDomain)
                 .distinct().collect(Collectors.toList());
             registeredModIDs.remove(GTValues.MODID);
         }
-        for(String registryModId : registeredModIDs) {
+        for (String registryModId : registeredModIDs) {
             ResourceLocation probableId = new ResourceLocation(registryModId, metaTileEntityIdOld);
-            if(registry.containsKey(probableId)) {
+            if (registry.containsKey(probableId)) {
                 return probableId;
             }
         }
@@ -124,7 +123,7 @@ public class MetaTileEntityHolder extends TickableTileEntityBase implements IUIH
     @Override
     public NBTTagCompound writeToNBT(NBTTagCompound compound) {
         super.writeToNBT(compound);
-        if(metaTileEntity != null) {
+        if (metaTileEntity != null) {
             compound.setString("MetaId", metaTileEntity.metaTileEntityId.toString());
             NBTTagCompound metaTileEntityData = new NBTTagCompound();
             metaTileEntity.writeToNBT(metaTileEntityData);
@@ -148,10 +147,10 @@ public class MetaTileEntityHolder extends TickableTileEntityBase implements IUIH
 
     @Override
     public void update() {
-        if(metaTileEntity != null) {
+        if (metaTileEntity != null) {
             metaTileEntity.update();
         }
-        if(this.needToUpdateLightning) {
+        if (this.needToUpdateLightning) {
             getWorld().checkLight(getPos());
             this.needToUpdateLightning = false;
         }
@@ -162,7 +161,7 @@ public class MetaTileEntityHolder extends TickableTileEntityBase implements IUIH
 
     @Override
     public void writeInitialSyncData(PacketBuffer buf) {
-        if(metaTileEntity != null) {
+        if (metaTileEntity != null) {
             buf.writeBoolean(true);
             buf.writeVarInt(GregTechAPI.META_TILE_ENTITY_REGISTRY.getIdByObjectName(metaTileEntity.metaTileEntityId));
             metaTileEntity.writeInitialSyncData(buf);
@@ -171,7 +170,7 @@ public class MetaTileEntityHolder extends TickableTileEntityBase implements IUIH
 
     @Override
     public void receiveInitialSyncData(PacketBuffer buf) {
-        if(buf.readBoolean()) {
+        if (buf.readBoolean()) {
             int metaTileEntityId = buf.readVarInt();
             setMetaTileEntity(GregTechAPI.META_TILE_ENTITY_REGISTRY.getObjectById(metaTileEntityId));
             this.metaTileEntity.receiveInitialSyncData(buf);
@@ -182,13 +181,13 @@ public class MetaTileEntityHolder extends TickableTileEntityBase implements IUIH
 
     @Override
     public void receiveCustomData(int discriminator, PacketBuffer buffer) {
-        if(discriminator == -1) {
+        if (discriminator == -1) {
             int metaTileEntityId = buffer.readVarInt();
             setMetaTileEntity(GregTechAPI.META_TILE_ENTITY_REGISTRY.getObjectById(metaTileEntityId));
             this.metaTileEntity.receiveInitialSyncData(buffer);
             scheduleChunkForRenderUpdate();
             this.needToUpdateLightning = true;
-        } else if(metaTileEntity != null) {
+        } else if (metaTileEntity != null) {
             metaTileEntity.receiveCustomData(discriminator, buffer);
         }
     }
@@ -206,6 +205,22 @@ public class MetaTileEntityHolder extends TickableTileEntityBase implements IUIH
     @Override
     public void markAsDirty() {
         markDirty();
+    }
+
+    @Override
+    public void onLoad() {
+        super.onLoad();
+        if(metaTileEntity != null) {
+            metaTileEntity.onLoad();
+        }
+    }
+
+    @Override
+    public void onChunkUnload() {
+        super.onChunkUnload();
+        if(metaTileEntity != null) {
+            metaTileEntity.onUnload();
+        }
     }
 
     @Override

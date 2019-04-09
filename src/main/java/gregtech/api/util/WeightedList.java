@@ -1,10 +1,6 @@
 package gregtech.api.util;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class WeightedList<T extends IWeighted> {
@@ -12,7 +8,8 @@ public class WeightedList<T extends IWeighted> {
     protected ArrayList<T> list = new ArrayList<>();
     private int totalWeight = 0;
 
-    public WeightedList() {}
+    public WeightedList() {
+    }
 
     public WeightedList(Collection<? extends T> objects) {
         objects.forEach(this::add);
@@ -46,7 +43,8 @@ public class WeightedList<T extends IWeighted> {
 
     public static class WeightedWrapperList<T> extends WeightedList<IWeighted.Wrapper<T>> {
 
-        public WeightedWrapperList() {}
+        public WeightedWrapperList() {
+        }
 
         public WeightedWrapperList(Map<? extends T, Integer> map) {
             map.forEach(this::add);

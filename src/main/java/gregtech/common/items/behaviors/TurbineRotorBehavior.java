@@ -16,16 +16,16 @@ public class TurbineRotorBehavior extends AbstractMaterialPartBehavior implement
     private static final int TOOL_DURABILITY_MULTIPLIER = 100;
 
     public static TurbineRotorBehavior getInstanceFor(ItemStack itemStack) {
-        if(!(itemStack.getItem() instanceof MetaItem)) {
+        if (!(itemStack.getItem() instanceof MetaItem)) {
             return null;
         }
         MetaItem<?> metaItem = (MetaItem<?>) itemStack.getItem();
         MetaValueItem valueItem = metaItem.getItem(itemStack);
-        if(valueItem == null) {
+        if (valueItem == null) {
             return null;
         }
         IItemDurabilityManager durabilityManager = valueItem.getDurabilityManager();
-        if(!(durabilityManager instanceof TurbineRotorBehavior)) {
+        if (!(durabilityManager instanceof TurbineRotorBehavior)) {
             return null;
         }
         return (TurbineRotorBehavior) durabilityManager;
@@ -45,7 +45,7 @@ public class TurbineRotorBehavior extends AbstractMaterialPartBehavior implement
     public void applyRotorDamage(ItemStack itemStack, int damageApplied) {
         int rotorDurability = getPartMaxDurability(itemStack);
         int resultDamage = getPartDamage(itemStack) + damageApplied;
-        if(resultDamage >= rotorDurability) {
+        if (resultDamage >= rotorDurability) {
             itemStack.shrink(1);
         } else {
             setPartDamage(itemStack, resultDamage);

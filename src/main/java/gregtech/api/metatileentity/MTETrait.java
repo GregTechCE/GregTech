@@ -5,7 +5,6 @@ import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.capabilities.Capability;
 
-import javax.annotation.Nullable;
 import java.util.function.Consumer;
 
 public abstract class MTETrait {
@@ -25,13 +24,7 @@ public abstract class MTETrait {
 
     public abstract int getNetworkID();
 
-    /**
-     * Returns a capability that this trait is implementing
-     * May return null to indicate that this trait does not implement any capability
-     * if you return any capability here, you should implement it's interface
-     * @return implemented capability
-     */
-    public abstract @Nullable Capability<?> getImplementingCapability();
+    public abstract <T> T getCapability(Capability<T> capability);
 
     public void onFrontFacingSet(EnumFacing newFrontFacing) {
     }

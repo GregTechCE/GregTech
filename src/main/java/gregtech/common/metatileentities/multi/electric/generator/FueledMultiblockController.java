@@ -7,7 +7,7 @@ import gregtech.api.capability.IEnergyContainer;
 import gregtech.api.capability.IMultipleTankHandler;
 import gregtech.api.capability.impl.EnergyContainerList;
 import gregtech.api.capability.impl.FluidTankList;
-import gregtech.api.capability.impl.FuelRecipeMapWorkableHandler;
+import gregtech.api.capability.impl.FuelRecipeLogic;
 import gregtech.api.metatileentity.MTETrait;
 import gregtech.api.metatileentity.multiblock.IMultiblockPart;
 import gregtech.api.metatileentity.multiblock.MultiblockAbility;
@@ -25,7 +25,7 @@ import java.util.Map;
 public abstract class FueledMultiblockController extends MultiblockWithDisplayBase {
 
     protected final FuelRecipeMap recipeMap;
-    protected FuelRecipeMapWorkableHandler workableHandler;
+    protected FuelRecipeLogic workableHandler;
     protected IEnergyContainer energyContainer;
     protected IMultipleTankHandler importFluidHandler;
 
@@ -35,8 +35,8 @@ public abstract class FueledMultiblockController extends MultiblockWithDisplayBa
         this.workableHandler = createWorkable(maxVoltage);
     }
 
-    protected FuelRecipeMapWorkableHandler createWorkable(long maxVoltage) {
-        return new FuelRecipeMapWorkableHandler(this, recipeMap,
+    protected FuelRecipeLogic createWorkable(long maxVoltage) {
+        return new FuelRecipeLogic(this, recipeMap,
             () -> energyContainer,
             () -> importFluidHandler, maxVoltage);
     }
@@ -85,7 +85,7 @@ public abstract class FueledMultiblockController extends MultiblockWithDisplayBa
 
     @Override
     protected boolean shouldUpdate(MTETrait trait) {
-        return !(trait instanceof FuelRecipeMapWorkableHandler);
+        return !(trait instanceof FuelRecipeLogic);
     }
 
     @Override

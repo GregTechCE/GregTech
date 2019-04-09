@@ -33,7 +33,7 @@ public class ToolChainsawLV extends ToolSaw {
     @Override
     public int convertBlockDrops(World world, BlockPos blockPos, IBlockState blockState, EntityPlayer harvester, List<ItemStack> drops, boolean recursive, ItemStack toolStack) {
         int superResult = super.convertBlockDrops(world, blockPos, blockState, harvester, drops, recursive, toolStack);
-        if(superResult > 0) {
+        if (superResult > 0) {
             //we already harvested block and converted blocks in saw class
             return superResult;
         }

@@ -56,13 +56,13 @@ public class MultiblockShapeInfo {
 
         private BlockInfo[][][] bakeArray() {
             BlockInfo[][][] blockInfos = new BlockInfo[shape.size()][][];
-            for(int i = 0; i < blockInfos.length; i++) {
+            for (int i = 0; i < blockInfos.length; i++) {
                 String[] aisleEntry = shape.get(i);
                 BlockInfo[][] aisleData = new BlockInfo[aisleEntry.length][];
-                for(int j = 0; j < aisleData.length; j++) {
+                for (int j = 0; j < aisleData.length; j++) {
                     String columnEntry = aisleEntry[j];
                     BlockInfo[] columnData = new BlockInfo[columnEntry.length()];
-                    for(int k = 0; k < columnData.length; k++) {
+                    for (int k = 0; k < columnData.length; k++) {
                         columnData[k] = symbolMap.getOrDefault(columnEntry.charAt(k), BlockInfo.EMPTY);
                     }
                     aisleData[j] = columnData;

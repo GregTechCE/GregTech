@@ -8,9 +8,9 @@ public class SmallDigits {
 
     public static String toSmallUpNumbers(String string) {
         char[] charArray = string.toCharArray();
-        for(int i = 0; i < charArray.length; i++) {
+        for (int i = 0; i < charArray.length; i++) {
             int relativeIndex = charArray[i] - NUMBER_BASE;
-            if(relativeIndex >= 0 && relativeIndex <= 9) {
+            if (relativeIndex >= 0 && relativeIndex <= 9) {
                 int newChar = SMALL_UP_NUMBER_BASE + relativeIndex;
                 charArray[i] = (char) newChar;
             }
@@ -20,9 +20,9 @@ public class SmallDigits {
 
     public static String toSmallDownNumbers(String string) {
         char[] charArray = string.toCharArray();
-        for(int i = 0; i < charArray.length; i++) {
+        for (int i = 0; i < charArray.length; i++) {
             int relativeIndex = charArray[i] - NUMBER_BASE;
-            if(relativeIndex >= 0 && relativeIndex <= 9) {
+            if (relativeIndex >= 0 && relativeIndex <= 9) {
                 int newChar = SMALL_DOWN_NUMBER_BASE + relativeIndex;
                 charArray[i] = (char) newChar;
             }

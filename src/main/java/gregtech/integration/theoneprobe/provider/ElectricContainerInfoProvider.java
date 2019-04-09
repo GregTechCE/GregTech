@@ -31,7 +31,7 @@ public class ElectricContainerInfoProvider extends CapabilityInfoProvider<IEnerg
     protected void addProbeInfo(IEnergyContainer capability, IProbeInfo probeInfo, TileEntity tileEntity, EnumFacing sideHit) {
         long energyStored = capability.getEnergyStored();
         long maxStorage = capability.getEnergyCapacity();
-        if(maxStorage == 0) return; //do not add empty max storage progress bar
+        if (maxStorage == 0) return; //do not add empty max storage progress bar
         IProbeInfo horizontalPane = probeInfo.horizontal(probeInfo.defaultLayoutStyle().alignment(ElementAlignment.ALIGN_CENTER));
         String additionalSpacing = tileEntity.hasCapability(GregtechTileCapabilities.CAPABILITY_WORKABLE, sideHit) ? "   " : "";
         horizontalPane.text(TextStyleClass.INFO + "{*gregtech.top.energy_stored*} " + additionalSpacing);

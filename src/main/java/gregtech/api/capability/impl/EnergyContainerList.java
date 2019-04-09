@@ -26,9 +26,9 @@ public class EnergyContainerList implements IEnergyContainer {
     @Override
     public long changeEnergy(long energyToAdd) {
         long energyAdded = 0L;
-        for(IEnergyContainer energyContainer : energyContainerList) {
+        for (IEnergyContainer energyContainer : energyContainerList) {
             energyAdded += energyContainer.changeEnergy(energyToAdd - energyAdded);
-            if(energyAdded == energyToAdd) break;
+            if (energyAdded == energyToAdd) break;
         }
         return energyAdded;
     }

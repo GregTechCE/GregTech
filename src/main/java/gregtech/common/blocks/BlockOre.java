@@ -47,7 +47,7 @@ public class BlockOre extends BlockFalling implements IBlockOre {
     @Override
     public Material getMaterial(IBlockState state) {
         String harvestTool = getHarvestTool(state);
-        if(harvestTool != null && harvestTool.equals("shovel")) {
+        if (harvestTool != null && harvestTool.equals("shovel")) {
             return Material.GROUND;
         }
         return Material.ROCK;
@@ -85,7 +85,7 @@ public class BlockOre extends BlockFalling implements IBlockOre {
     public int getHarvestLevel(IBlockState state) {
         StoneType stoneType = state.getValue(STONE_TYPE);
         if (material instanceof DustMaterial) {
-            int toolQuality = ((DustMaterial) material).harvestLevel;
+            int toolQuality = material.harvestLevel;
             return Math.max(stoneType.stoneMaterial.harvestLevel, toolQuality > 1 ? toolQuality - 1 : toolQuality);
         }
         return 1;

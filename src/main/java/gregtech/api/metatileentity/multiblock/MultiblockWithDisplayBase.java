@@ -24,7 +24,7 @@ public abstract class MultiblockWithDisplayBase extends MultiblockControllerBase
      * to use translation, use TextComponentTranslation
      */
     protected void addDisplayText(List<ITextComponent> textList) {
-        if(!isStructureFormed()) {
+        if (!isStructureFormed()) {
             textList.add(new TextComponentTranslation("gregtech.multiblock.invalid_structure")
                 .setStyle(new Style().setColor(TextFormatting.RED)));
         }

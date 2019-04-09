@@ -22,13 +22,13 @@ public class OrientedOverlayRenderer implements IIconRegister {
         FRONT, BACK, TOP, BOTTOM, SIDE;
 
         public static OverlayFace bySide(EnumFacing side, EnumFacing frontFacing) {
-            if(side == frontFacing) {
+            if (side == frontFacing) {
                 return FRONT;
-            } else if(side.getOpposite() == frontFacing) {
+            } else if (side.getOpposite() == frontFacing) {
                 return BACK;
-            } else if(side == EnumFacing.UP) {
+            } else if (side == EnumFacing.UP) {
                 return TOP;
-            } else if(side == EnumFacing.DOWN) {
+            } else if (side == EnumFacing.DOWN) {
                 return BOTTOM;
             } else return SIDE;
         }
@@ -66,9 +66,9 @@ public class OrientedOverlayRenderer implements IIconRegister {
     @SideOnly(Side.CLIENT)
     public void registerIcons(TextureMap textureMap) {
         this.sprites = new HashMap<>();
-        for(OverlayFace overlayFace : faces) {
+        for (OverlayFace overlayFace : faces) {
             String faceName = overlayFace.name().toLowerCase();
-            ResourceLocation normalLocation = new ResourceLocation(GTValues.MODID,String.format("blocks/%s/overlay_%s", basePath, faceName));
+            ResourceLocation normalLocation = new ResourceLocation(GTValues.MODID, String.format("blocks/%s/overlay_%s", basePath, faceName));
             ResourceLocation activeLocation = new ResourceLocation(GTValues.MODID, String.format("blocks/%s/overlay_%s_active", basePath, faceName));
             TextureAtlasSprite normalSprite = textureMap.registerSprite(normalLocation);
             TextureAtlasSprite activeSprite = textureMap.registerSprite(activeLocation);
@@ -77,9 +77,9 @@ public class OrientedOverlayRenderer implements IIconRegister {
     }
 
     public void render(CCRenderState renderState, Matrix4 translation, IVertexOperation[] ops, Cuboid6 bounds, EnumFacing frontFacing, boolean isActive) {
-        for(EnumFacing renderSide : EnumFacing.VALUES) {
+        for (EnumFacing renderSide : EnumFacing.VALUES) {
             OverlayFace overlayFace = OverlayFace.bySide(renderSide, frontFacing);
-            if(sprites.containsKey(overlayFace)) {
+            if (sprites.containsKey(overlayFace)) {
                 TextureAtlasSprite renderSprite = sprites.get(overlayFace).getSprite(isActive);
                 Textures.renderFace(renderState, translation, ops, renderSide, bounds, renderSprite);
             }

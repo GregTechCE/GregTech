@@ -33,7 +33,7 @@ public class BlockGregLeaves extends BlockLeaves {
         setUnlocalizedName("gt.leaves");
         this.setCreativeTab(GregTechAPI.TAB_GREGTECH);
         this.leavesFancy = true;
-   }
+    }
 
     @Override
     public EnumType getWoodType(int meta) {

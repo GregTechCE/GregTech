@@ -30,7 +30,7 @@ public class IntCircuitBehaviour implements IItemBehaviour, ItemUIFactory {
     @Override
     public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand) {
         ItemStack heldItem = player.getHeldItem(hand);
-        if(!world.isRemote) {
+        if (!world.isRemote) {
             PlayerInventoryHolder holder = new PlayerInventoryHolder(player, hand);
             holder.openUI();
         }

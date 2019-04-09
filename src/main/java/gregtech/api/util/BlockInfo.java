@@ -45,7 +45,7 @@ public class BlockInfo {
 
     public void apply(World world, BlockPos pos) {
         world.setBlockState(pos, blockState);
-        if(tileEntity != null) {
+        if (tileEntity != null) {
             world.setTileEntity(pos, tileEntity);
         }
     }

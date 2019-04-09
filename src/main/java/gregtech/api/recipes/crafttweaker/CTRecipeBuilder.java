@@ -19,7 +19,7 @@ import java.util.stream.Collectors;
 @ZenClass("mods.gregtech.recipe.RecipeBuilder")
 @ZenRegister
 public class CTRecipeBuilder {
-    
+
     private final RecipeBuilder<?> backingBuilder;
 
     public CTRecipeBuilder(RecipeBuilder<?> backingBuilder) {
@@ -110,7 +110,7 @@ public class CTRecipeBuilder {
     @ZenMethod
     public CTRecipeBuilder property(String key, int value) {
         boolean applied = this.backingBuilder.applyProperty(key, value);
-        if(!applied) {
+        if (!applied) {
             throw new IllegalArgumentException("Property " +
                 key + " cannot be applied to recipe type " +
                 backingBuilder.getClass().getSimpleName());

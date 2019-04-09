@@ -35,7 +35,7 @@ public class MetaTileEntityAirCollector extends TieredMetaTileEntity {
     @Override
     public void update() {
         super.update();
-        if(!getWorld().isRemote) {
+        if (!getWorld().isRemote) {
             long energyToConsume = GTValues.V[getTier()];
             if (checkOpenSides() && getTimer() % 20 == 0L && energyContainer.getEnergyStored() >= energyToConsume) {
                 int fluidAmount = 500 * (1 << getTier());
@@ -50,9 +50,9 @@ public class MetaTileEntityAirCollector extends TieredMetaTileEntity {
 
     private boolean checkOpenSides() {
         EnumFacing frontFacing = getFrontFacing();
-        for(EnumFacing side : EnumFacing.VALUES) {
-            if(side == frontFacing) continue;
-            if(getWorld().isAirBlock(getPos().offset(side)))
+        for (EnumFacing side : EnumFacing.VALUES) {
+            if (side == frontFacing) continue;
+            if (getWorld().isAirBlock(getPos().offset(side)))
                 return true;
         }
         return false;
@@ -62,8 +62,8 @@ public class MetaTileEntityAirCollector extends TieredMetaTileEntity {
     public void renderMetaTileEntity(CCRenderState renderState, Matrix4 translation, IVertexOperation[] pipeline) {
         super.renderMetaTileEntity(renderState, translation, pipeline);
         EnumFacing frontFacing = getFrontFacing();
-        for(EnumFacing side : EnumFacing.VALUES) {
-            if(side.getAxis().isHorizontal()) {
+        for (EnumFacing side : EnumFacing.VALUES) {
+            if (side.getAxis().isHorizontal()) {
                 Textures.AIR_VENT_OVERLAY.renderSided(side, renderState, translation, pipeline);
             } else {
                 Textures.FILTER_OVERLAY.renderSided(side, renderState, translation, pipeline);

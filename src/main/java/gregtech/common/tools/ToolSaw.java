@@ -48,18 +48,18 @@ public class ToolSaw extends ToolBase {
     @Override
     public int convertBlockDrops(World world, BlockPos blockPos, IBlockState blockState, EntityPlayer harvester, List<ItemStack> drops, boolean recursive, ItemStack toolStack) {
         int shearableResult = ToolUtility.applyShearable(world, blockPos, blockState, drops, harvester);
-        if(shearableResult > 0) {
+        if (shearableResult > 0) {
             //if shearing was successful, then just return it's result
             return shearableResult;
         }
-        if(blockState.getMaterial() == Material.PACKED_ICE || blockState.getMaterial() == Material.ICE) {
+        if (blockState.getMaterial() == Material.PACKED_ICE || blockState.getMaterial() == Material.ICE) {
             int stackMetadata = blockState.getBlock().getMetaFromState(blockState);
             ItemStack dropStack = new ItemStack(blockState.getBlock(), 1, stackMetadata);
-            if(!dropStack.isEmpty()) {
+            if (!dropStack.isEmpty()) {
                 world.setBlockToAir(blockPos); //because ice sets water
                 //do not set damage for non-subtype items
                 //good example here would be frosted ice
-                if(!dropStack.getItem().getHasSubtypes())
+                if (!dropStack.getItem().getHasSubtypes())
                     dropStack.setItemDamage(0);
                 //only add drop stack if actual block has item form
                 drops.clear();
@@ -69,8 +69,6 @@ public class ToolSaw extends ToolBase {
         }
         return 0;
     }
-
-
 
 
 }

@@ -25,7 +25,7 @@ public class DistillationTowerInfo extends MultiblockInfoPage {
     public List<MultiblockShapeInfo> getMatchingShapes() {
         MultiblockShapeInfo shapeInfo = MultiblockShapeInfo.builder()
             .aisle("EXX", "XXX", "XXX", "XXX", "XXX", "XXX")
-            .aisle("SFX", "X#X", "X#X", "X#X", "X#X" ,"XXX")
+            .aisle("SFX", "X#X", "X#X", "X#X", "X#X", "XXX")
             .aisle("IXX", "HXX", "HXX", "HXX", "HXX", "HXX")
             .where('#', Blocks.AIR.getDefaultState())
             .where('X', MetaBlocks.METAL_CASING.getState(MetalCasingType.STAINLESS_CLEAN))
@@ -40,7 +40,7 @@ public class DistillationTowerInfo extends MultiblockInfoPage {
 
     @Override
     public String[] getDescription() {
-        return new String[] {I18n.format("gregtech.multiblock.distillation_tower.description")};
+        return new String[]{I18n.format("gregtech.multiblock.distillation_tower.description")};
     }
 
 }

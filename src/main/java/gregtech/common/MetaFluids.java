@@ -55,7 +55,7 @@ public class MetaFluids {
             return stateFunction.apply(fluidMaterial);
         }
     }
-    
+
     public enum FluidState {
         LIQUID(null), GAS(null), PLASMA("gregtech.fluid.plasma");
 
@@ -65,9 +65,9 @@ public class MetaFluids {
             this.prefixLocale = prefixLocale;
         }
     }
-    
+
     public static void registerSprites(TextureMap textureMap) {
-        for(ResourceLocation spriteLocation : fluidSprites) {
+        for (ResourceLocation spriteLocation : fluidSprites) {
             textureMap.registerSprite(spriteLocation);
         }
     }
@@ -148,12 +148,12 @@ public class MetaFluids {
             }
         }
     }
-    
+
     private static void setDefaultTexture(FluidMaterial material, FluidType fluidType) {
         ResourceLocation resourceLocation = new ResourceLocation(GTValues.MODID, "blocks/fluids/fluid." + material.toString());
         setMaterialFluidTexture(material, fluidType, resourceLocation);
     }
-    
+
     private static void setMaterialFluidTexture(FluidMaterial material, FluidType fluidType, ResourceLocation textureLocation) {
         fluidTextureMap.put(Pair.of(material, fluidType), textureLocation);
         fluidSprites.add(textureLocation);
@@ -167,17 +167,17 @@ public class MetaFluids {
         String materialName = material.toString();
         String fluidName = fluidType.getFluidName(material);
         Fluid fluid = FluidRegistry.getFluid(fluidName);
-        if(fluid == null && alternativeFluidNames.containsKey(fluidName)) {
+        if (fluid == null && alternativeFluidNames.containsKey(fluidName)) {
             String altName = alternativeFluidNames.get(fluidName);
             fluid = FluidRegistry.getFluid(altName);
         }
 
-        if(fluid == null) {
+        if (fluid == null) {
             FluidState fluidState = fluidType.getFluidState(material);
             ResourceLocation textureLocation = fluidTextureMap.getOrDefault(Pair.of(material, fluidType), AUTO_GENERATED_FLUID_TEXTURE);
             fluid = new MaterialFluid(fluidName, material, fluidState, textureLocation);
             fluid.setTemperature(temperature);
-            if(textureLocation == AUTO_GENERATED_FLUID_TEXTURE) {
+            if (textureLocation == AUTO_GENERATED_FLUID_TEXTURE) {
                 fluid.setColor(GTUtility.convertRGBtoOpaqueRGBA_MC(material.materialRGB));
             }
             setStateProperties(fluid, fluidState);
@@ -186,7 +186,7 @@ public class MetaFluids {
 
         FluidRegistry.addBucketForFluid(fluid);
 
-        if(material.hasFlag(MatFlags.GENERATE_FLUID_BLOCK) && fluid.getBlock() == null) {
+        if (material.hasFlag(MatFlags.GENERATE_FLUID_BLOCK) && fluid.getBlock() == null) {
             BlockFluidBase fluidBlock = new BlockFluidClassic(fluid, net.minecraft.block.material.Material.WATER);
             fluidBlock.setRegistryName("fluid." + materialName);
             MetaBlocks.FLUID_BLOCKS.add(fluidBlock);
@@ -201,7 +201,7 @@ public class MetaFluids {
     }
 
     private static void setStateProperties(Fluid fluid, FluidState fluidState) {
-        switch(fluidState) {
+        switch (fluidState) {
             case LIQUID:
                 fluid.setGaseous(false);
                 fluid.setViscosity(1000);

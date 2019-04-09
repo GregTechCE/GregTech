@@ -73,8 +73,8 @@ public class MetaTileEntityPump extends TieredMetaTileEntity {
         super.renderMetaTileEntity(renderState, translation, pipeline);
         ColourMultiplier multiplier = new ColourMultiplier(GTUtility.convertRGBtoOpaqueRGBA_CL(getPaintingColorForRendering()));
         IVertexOperation[] coloredPipeline = ArrayUtils.add(pipeline, multiplier);
-        for(EnumFacing renderSide : EnumFacing.HORIZONTALS) {
-            if(renderSide == getFrontFacing()) {
+        for (EnumFacing renderSide : EnumFacing.HORIZONTALS) {
+            if (renderSide == getFrontFacing()) {
                 Textures.PIPE_OUT_OVERLAY.renderSided(renderSide, renderState, translation, pipeline);
             } else {
                 Textures.ADV_PUMP_OVERLAY.renderSided(renderSide, renderState, translation, coloredPipeline);
@@ -82,7 +82,7 @@ public class MetaTileEntityPump extends TieredMetaTileEntity {
         }
         Textures.SCREEN.renderSided(EnumFacing.UP, renderState, translation, pipeline);
         Textures.PIPE_IN_OVERLAY.renderSided(EnumFacing.DOWN, renderState, translation, pipeline);
-        for(int i = 0; i < pumpHeadY; i++) {
+        for (int i = 0; i < pumpHeadY; i++) {
             translation.translate(0.0, -1.0, 0.0);
             Textures.SOLID_STEEL_CASING.render(renderState, translation, pipeline, PIPE_CUBOID);
         }
@@ -103,7 +103,7 @@ public class MetaTileEntityPump extends TieredMetaTileEntity {
     @Override
     public void receiveCustomData(int dataId, PacketBuffer buf) {
         super.receiveCustomData(dataId, buf);
-        if(dataId == 200) {
+        if (dataId == 200) {
             this.pumpHeadY = buf.readVarInt();
         }
     }
@@ -158,32 +158,32 @@ public class MetaTileEntityPump extends TieredMetaTileEntity {
 
     private void updateQueueState() {
         BlockPos selfPos = getPos().down(pumpHeadY);
-        if(!blocksToCheck.isEmpty()) {
+        if (!blocksToCheck.isEmpty()) {
             BlockPos checkPos = this.blocksToCheck.poll();
             IBlockState blockHere = getWorld().getBlockState(checkPos);
             boolean shouldCheckNeighbours = isStraightInPumpRange(checkPos);
-            if(blockHere.getBlock() instanceof BlockLiquid ||
+            if (blockHere.getBlock() instanceof BlockLiquid ||
                 blockHere.getBlock() instanceof IFluidBlock) {
                 IFluidHandler fluidHandler = FluidUtil.getFluidHandler(getWorld(), checkPos, null);
                 FluidStack drainStack = fluidHandler.drain(Integer.MAX_VALUE, false);
-                if(drainStack != null && drainStack.amount > 0) {
+                if (drainStack != null && drainStack.amount > 0) {
                     this.fluidSourceBlocks.add(checkPos);
                 }
                 shouldCheckNeighbours = true;
             }
 
-            if(shouldCheckNeighbours) {
-                for(EnumFacing facing : EnumFacing.VALUES) {
+            if (shouldCheckNeighbours) {
+                for (EnumFacing facing : EnumFacing.VALUES) {
                     BlockPos offsetPos = checkPos.offset(facing);
-                    if(offsetPos.distanceSq(selfPos) > MAX_PUMP_RANGE * MAX_PUMP_RANGE)
+                    if (offsetPos.distanceSq(selfPos) > MAX_PUMP_RANGE * MAX_PUMP_RANGE)
                         continue; //do not add blocks outside bounds
                     this.blocksToCheck.add(offsetPos);
                 }
             }
 
         }
-        if(fluidSourceBlocks.isEmpty()) {
-            if(getTimer() % 20 == 0 && pumpHeadY < 50) {
+        if (fluidSourceBlocks.isEmpty()) {
+            if (getTimer() % 20 == 0 && pumpHeadY < 50) {
                 this.pumpHeadY++;
                 writeCustomData(200, b -> b.writeVarInt(pumpHeadY));
                 markDirty();
@@ -191,7 +191,7 @@ public class MetaTileEntityPump extends TieredMetaTileEntity {
                 this.initializedQueue = false;
             }
 
-            if(!initializedQueue || getTimer() % 6000 == 0) {
+            if (!initializedQueue || getTimer() % 6000 == 0) {
                 this.initializedQueue = true;
                 //just add ourselves to check list and see how this will go
                 this.blocksToCheck.add(selfPos);
@@ -201,13 +201,13 @@ public class MetaTileEntityPump extends TieredMetaTileEntity {
 
     private void tryPumpFirstBlock() {
         BlockPos fluidBlockPos = fluidSourceBlocks.poll();
-        if(fluidBlockPos == null) return;
+        if (fluidBlockPos == null) return;
         IBlockState blockHere = getWorld().getBlockState(fluidBlockPos);
-        if(blockHere.getBlock() instanceof BlockLiquid ||
+        if (blockHere.getBlock() instanceof BlockLiquid ||
             blockHere.getBlock() instanceof IFluidBlock) {
             IFluidHandler fluidHandler = FluidUtil.getFluidHandler(getWorld(), fluidBlockPos, null);
             FluidStack drainStack = fluidHandler.drain(Integer.MAX_VALUE, false);
-            if(drainStack != null && exportFluids.fill(drainStack, false) == drainStack.amount) {
+            if (drainStack != null && exportFluids.fill(drainStack, false) == drainStack.amount) {
                 exportFluids.fill(drainStack, true);
                 fluidHandler.drain(drainStack.amount, true);
                 this.fluidSourceBlocks.remove(fluidBlockPos);
@@ -219,23 +219,23 @@ public class MetaTileEntityPump extends TieredMetaTileEntity {
     @Override
     public void update() {
         super.update();
-        if(getWorld().isRemote) {
+        if (getWorld().isRemote) {
             return;
         }
         //do not do anything without enough energy supplied
-        if(energyContainer.getEnergyStored() < GTValues.V[getTier()] * 4) {
+        if (energyContainer.getEnergyStored() < GTValues.V[getTier()] * 4) {
             return;
         }
         pushFluidsIntoNearbyHandlers(getFrontFacing());
         fillContainerFromInternalTank(importItems, exportItems, 0, 0);
         updateQueueState();
-        if(getTimer() % getPumpingCycleLength() == 0 && !fluidSourceBlocks.isEmpty() &&
+        if (getTimer() % getPumpingCycleLength() == 0 && !fluidSourceBlocks.isEmpty() &&
             energyContainer.getEnergyStored() >= GTValues.V[getTier()]) {
             tryPumpFirstBlock();
         }
     }
 
-    private int getPumpingCycleLength(){
+    private int getPumpingCycleLength() {
         return PUMP_SPEED_BASE / Math.max(1, getTier());
     }
 

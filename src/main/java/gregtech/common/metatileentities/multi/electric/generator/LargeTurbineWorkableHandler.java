@@ -2,7 +2,7 @@ package gregtech.common.metatileentities.multi.electric.generator;
 
 import gregtech.api.capability.IEnergyContainer;
 import gregtech.api.capability.IMultipleTankHandler;
-import gregtech.api.capability.impl.FuelRecipeMapWorkableHandler;
+import gregtech.api.capability.impl.FuelRecipeLogic;
 import gregtech.api.recipes.machines.FuelRecipeMap;
 import gregtech.api.recipes.recipes.FuelRecipe;
 import gregtech.api.unification.material.Materials;
@@ -16,7 +16,7 @@ import net.minecraftforge.fluids.FluidStack;
 
 import java.util.function.Supplier;
 
-public class LargeTurbineWorkableHandler extends FuelRecipeMapWorkableHandler {
+public class LargeTurbineWorkableHandler extends FuelRecipeLogic {
 
     private static final int CYCLE_LENGTH = 230;
     private static final int BASE_ROTOR_DAMAGE = 11;
@@ -35,13 +35,13 @@ public class LargeTurbineWorkableHandler extends FuelRecipeMapWorkableHandler {
     public void update() {
         super.update();
         long totalEnergyOutput = getRecipeOutputVoltage();
-        if(totalEnergyOutput > 0) {
+        if (totalEnergyOutput > 0) {
             energyContainer.get().addEnergy(totalEnergyOutput);
         }
     }
 
     public FluidStack getFuelStack() {
-        if(previousRecipe == null)
+        if (previousRecipe == null)
             return null;
         FluidStack fuelStack = previousRecipe.getRecipeFluid();
         return fluidTank.get().drain(new FluidStack(fuelStack.getFluid(), Integer.MAX_VALUE), false);
@@ -50,9 +50,9 @@ public class LargeTurbineWorkableHandler extends FuelRecipeMapWorkableHandler {
     @Override
     public boolean checkRecipe(FuelRecipe recipe) {
         MetaTileEntityRotorHolder rotorHolder = largeTurbine.getAbilities(MetaTileEntityLargeTurbine.ABILITY_ROTOR_HOLDER).get(0);
-        if(++rotorCycleLength >= CYCLE_LENGTH) {
+        if (++rotorCycleLength >= CYCLE_LENGTH) {
             int damageToBeApplied = (int) Math.round(BASE_ROTOR_DAMAGE * rotorHolder.getRelativeRotorSpeed()) + 1;
-            if(rotorHolder.applyDamageToRotor(damageToBeApplied, false)) {
+            if (rotorHolder.applyDamageToRotor(damageToBeApplied, false)) {
                 this.rotorCycleLength = 0;
                 return true;
             } else return false;
@@ -74,15 +74,15 @@ public class LargeTurbineWorkableHandler extends FuelRecipeMapWorkableHandler {
     }
 
     private void addOutputFluids(FuelRecipe currentRecipe, int fuelAmountUsed) {
-        if(largeTurbine.turbineType == TurbineType.STEAM) {
+        if (largeTurbine.turbineType == TurbineType.STEAM) {
             int waterFluidAmount = fuelAmountUsed / 15;
-            if(waterFluidAmount > 0) {
+            if (waterFluidAmount > 0) {
                 FluidStack waterStack = Materials.Water.getFluid(waterFluidAmount);
                 largeTurbine.exportFluidHandler.fill(waterStack, true);
             }
-        } else if(largeTurbine.turbineType == TurbineType.PLASMA) {
+        } else if (largeTurbine.turbineType == TurbineType.PLASMA) {
             FluidMaterial material = MetaFluids.getMaterialFromFluid(currentRecipe.getRecipeFluid().getFluid());
-            if(material != null) {
+            if (material != null) {
                 largeTurbine.exportFluidHandler.fill(material.getFluid(fuelAmountUsed), true);
             }
         }

@@ -31,11 +31,11 @@ public class RecyclingRecipeHandler {
 
     public static void register() {
         //registers universal maceration recipes for specified ore prefixes
-        for(OrePrefix orePrefix : OrePrefix.values()) {
-            if(CRUSHING_PREFIXES.stream().anyMatch(object -> {
-                if(object instanceof OrePrefix)
+        for (OrePrefix orePrefix : OrePrefix.values()) {
+            if (CRUSHING_PREFIXES.stream().anyMatch(object -> {
+                if (object instanceof OrePrefix)
                     return object == orePrefix;
-                else if(object instanceof Predicate)
+                else if (object instanceof Predicate)
                     return ((Predicate<OrePrefix>) object).test(orePrefix);
                 else return false;
             })) orePrefix.addProcessingHandler(DustMaterial.class, RecyclingRecipeHandler::processCrushing);

@@ -16,29 +16,29 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 @Mod.EventBusSubscriber
 public class EventHandlers {
 
-	@SubscribeEvent
-	public static void onEndermanTeleportEvent(EnderTeleportEvent event) {
-		if (event.getEntity() instanceof EntityEnderman && event.getEntityLiving()
-				.getActivePotionEffect(MobEffects.WEAKNESS) != null) {
-			event.setCanceled(true);
-		}
-	}
+    @SubscribeEvent
+    public static void onEndermanTeleportEvent(EnderTeleportEvent event) {
+        if (event.getEntity() instanceof EntityEnderman && event.getEntityLiving()
+            .getActivePotionEffect(MobEffects.WEAKNESS) != null) {
+            event.setCanceled(true);
+        }
+    }
 
-	@SubscribeEvent
-	public static void onPlayerInteraction(PlayerInteractEvent.RightClickBlock event) {
-		ItemStack stack = event.getItemStack();
-		if (!stack.isEmpty() && stack.getItem() == Items.FLINT_AND_STEEL) {
-			if (!event.getWorld().isRemote
-                    && !event.getEntityPlayer().capabilities.isCreativeMode
-                    && event.getWorld().rand.nextInt(100) >= ConfigHolder.flintChanceToCreateFire) {
-				stack.damageItem(1, event.getEntityPlayer());
-				if (stack.getItemDamage() >= stack.getMaxDamage()) {
+    @SubscribeEvent
+    public static void onPlayerInteraction(PlayerInteractEvent.RightClickBlock event) {
+        ItemStack stack = event.getItemStack();
+        if (!stack.isEmpty() && stack.getItem() == Items.FLINT_AND_STEEL) {
+            if (!event.getWorld().isRemote
+                && !event.getEntityPlayer().capabilities.isCreativeMode
+                && event.getWorld().rand.nextInt(100) >= ConfigHolder.flintChanceToCreateFire) {
+                stack.damageItem(1, event.getEntityPlayer());
+                if (stack.getItemDamage() >= stack.getMaxDamage()) {
                     stack.shrink(1);
                 }
-				event.setCanceled(true);
-			}
-		}
-	}
+                event.setCanceled(true);
+            }
+        }
+    }
 
     @SubscribeEvent
     public void onConfigChangedEvent(ConfigChangedEvent.OnConfigChangedEvent event) {

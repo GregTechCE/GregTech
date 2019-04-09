@@ -1,7 +1,7 @@
 package gregtech.common.metatileentities.multi.electric;
 
 import gregtech.api.capability.IMultipleTankHandler;
-import gregtech.api.capability.impl.MultiblockRecipeMapWorkable;
+import gregtech.api.capability.impl.MultiblockRecipeLogic;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.MetaTileEntityHolder;
 import gregtech.api.metatileentity.multiblock.IMultiblockPart;
@@ -50,7 +50,7 @@ public class MetaTileEntityMultiFurnace extends RecipeMapMultiblockController {
 
     @Override
     protected void addDisplayText(List<ITextComponent> textList) {
-        if(isStructureFormed()) {
+        if (isStructureFormed()) {
             textList.add(new TextComponentTranslation("gregtech.multiblock.multi_furnace.heating_coil_level", heatingCoilLevel));
             textList.add(new TextComponentTranslation("gregtech.multiblock.multi_furnace.heating_coil_discount", heatingCoilDiscount));
         }
@@ -96,7 +96,7 @@ public class MetaTileEntityMultiFurnace extends RecipeMapMultiblockController {
         return Textures.HEAT_PROOF_CASING;
     }
 
-    protected class MultiFurnaceWorkable extends MultiblockRecipeMapWorkable {
+    protected class MultiFurnaceWorkable extends MultiblockRecipeLogic {
 
         public MultiFurnaceWorkable(RecipeMapMultiblockController tileEntity) {
             super(tileEntity);
@@ -108,27 +108,27 @@ public class MetaTileEntityMultiFurnace extends RecipeMapMultiblockController {
             int maxItemsLimit = 16 * heatingCoilLevel;
             ArrayList<CountableIngredient> recipeInputs = new ArrayList<>();
             ArrayList<ItemStack> recipeOutputs = new ArrayList<>();
-            for(int index = 0; index < inputs.getSlots(); index++) {
+            for (int index = 0; index < inputs.getSlots(); index++) {
                 ItemStack stackInSlot = inputs.getStackInSlot(index);
-                if(stackInSlot.isEmpty())
+                if (stackInSlot.isEmpty())
                     continue;
                 Recipe matchingRecipe = recipeMap.findRecipe(maxVoltage,
                     Collections.singletonList(stackInSlot), Collections.emptyList());
                 CountableIngredient inputIngredient = matchingRecipe == null ? null : matchingRecipe.getInputs().get(0);
-                if(inputIngredient != null && (maxItemsLimit - currentItemsEngaged) >= inputIngredient.getCount()) {
+                if (inputIngredient != null && (maxItemsLimit - currentItemsEngaged) >= inputIngredient.getCount()) {
                     ItemStack outputStack = matchingRecipe.getOutputs().get(0).copy();
                     int overclockAmount = Math.min(stackInSlot.getCount() / inputIngredient.getCount(),
                         (maxItemsLimit - currentItemsEngaged) / inputIngredient.getCount());
                     recipeInputs.add(new CountableIngredient(inputIngredient.getIngredient(),
                         inputIngredient.getCount() * overclockAmount));
-                    if(!outputStack.isEmpty()) {
+                    if (!outputStack.isEmpty()) {
                         outputStack.setCount(outputStack.getCount() * overclockAmount);
                         recipeOutputs.add(outputStack);
                     }
                     currentItemsEngaged += inputIngredient.getCount() * overclockAmount;
                 }
 
-                if(currentItemsEngaged >= maxItemsLimit) break;
+                if (currentItemsEngaged >= maxItemsLimit) break;
             }
             return recipeInputs.isEmpty() ? null : recipeMap.recipeBuilder()
                 .inputsIngredients(recipeInputs)

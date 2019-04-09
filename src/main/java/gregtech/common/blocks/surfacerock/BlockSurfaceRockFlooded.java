@@ -89,7 +89,7 @@ public class BlockSurfaceRockFlooded extends BlockLiquid {
                 IBlockState blockState = worldIn.getBlockState(offsetPos);
                 if (!isBlockBlockedForFlow(blockState) &&
                     (blockState.getMaterial() != this.blockMaterial ||
-                    blockState.getValue(LEVEL) > 0)) {
+                        blockState.getValue(LEVEL) > 0)) {
                     if (!isBlockBlockedForFlow(worldIn.getBlockState(offsetPos.down()))) {
                         return distance;
                     }
@@ -140,7 +140,7 @@ public class BlockSurfaceRockFlooded extends BlockLiquid {
 
     @Override
     protected BlockStateContainer createBlockState() {
-        if(materialProperty == null)
+        if (materialProperty == null)
             return new BlockStateContainer(this, LEVEL);
         return new BlockStateContainer(this, materialProperty, LEVEL);
     }
@@ -172,7 +172,7 @@ public class BlockSurfaceRockFlooded extends BlockLiquid {
 
     private ItemStack getDropStack(IBlockState state, int amount) {
         Material material = state.getValue(materialProperty);
-        if(material instanceof IngotMaterial && ((IngotMaterial) material).blastFurnaceTemperature == 0)
+        if (material instanceof IngotMaterial && ((IngotMaterial) material).blastFurnaceTemperature == 0)
             return OreDictUnifier.get(OrePrefix.nugget, material, amount);
         return OreDictUnifier.get(OrePrefix.dustTiny, material, amount);
     }
@@ -184,7 +184,7 @@ public class BlockSurfaceRockFlooded extends BlockLiquid {
 
     @Override
     public void getDrops(NonNullList<ItemStack> drops, IBlockAccess world, BlockPos pos, IBlockState state, int fortune) {
-        Random rand = world instanceof World ? ((World)world).rand : RANDOM;
+        Random rand = world instanceof World ? ((World) world).rand : RANDOM;
         int amount = 1 + rand.nextInt(fortune == 0 ? 1 : fortune);
         drops.add(getDropStack(state, amount));
     }
@@ -199,7 +199,7 @@ public class BlockSurfaceRockFlooded extends BlockLiquid {
     public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos) {
         super.neighborChanged(state, worldIn, pos, blockIn, fromPos);
         if (fromPos.up().equals(pos)) {
-            if(worldIn.getBlockState(fromPos).getBlockFaceShape(worldIn, fromPos, EnumFacing.UP) != BlockFaceShape.SOLID) {
+            if (worldIn.getBlockState(fromPos).getBlockFaceShape(worldIn, fromPos, EnumFacing.UP) != BlockFaceShape.SOLID) {
                 //remove current block and replace it with water block
                 worldIn.destroyBlock(pos, true);
                 worldIn.setBlockState(pos, Blocks.WATER.getDefaultState().withProperty(LEVEL, state.getValue(LEVEL)));

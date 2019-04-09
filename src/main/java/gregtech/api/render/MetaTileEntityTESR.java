@@ -13,7 +13,7 @@ public class MetaTileEntityTESR extends FastTESR<MetaTileEntityHolder> {
     @Override
     public void renderTileEntityFast(MetaTileEntityHolder te, double x, double y, double z, float partialTicks, int destroyStage, float partial, BufferBuilder buffer) {
         MetaTileEntity metaTileEntity = te.getMetaTileEntity();
-        if(metaTileEntity != null && metaTileEntity.requiresDynamicRendering()) {
+        if (metaTileEntity != null && metaTileEntity.requiresDynamicRendering()) {
             CCRenderState renderState = CCRenderState.instance();
             renderState.reset();
             renderState.bind(buffer);

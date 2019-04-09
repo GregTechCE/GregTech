@@ -6,11 +6,11 @@ import gregtech.api.recipes.RecipeMap;
 
 import java.util.function.Supplier;
 
-public class EnergyRecipeMapWorkableHandler extends RecipeMapWorkableHandler {
+public class RecipeLogicEnergy extends AbstractRecipeLogic {
 
     private final Supplier<IEnergyContainer> energyContainer;
 
-    public EnergyRecipeMapWorkableHandler(MetaTileEntity tileEntity, RecipeMap<?> recipeMap, Supplier<IEnergyContainer> energyContainer) {
+    public RecipeLogicEnergy(MetaTileEntity tileEntity, RecipeMap<?> recipeMap, Supplier<IEnergyContainer> energyContainer) {
         super(tileEntity, recipeMap);
         this.energyContainer = energyContainer;
     }
@@ -28,7 +28,7 @@ public class EnergyRecipeMapWorkableHandler extends RecipeMapWorkableHandler {
     @Override
     protected boolean drawEnergy(int recipeEUt) {
         long resultEnergy = getEnergyStored() - recipeEUt;
-        if(resultEnergy >= 0L && resultEnergy <= getEnergyCapacity()) {
+        if (resultEnergy >= 0L && resultEnergy <= getEnergyCapacity()) {
             energyContainer.get().changeEnergy(-recipeEUt);
             return true;
         } else return false;

@@ -30,9 +30,9 @@ public abstract class MonolithicPipeNet<NodeDataType> extends PipeNet<NodeDataTy
 
     @Override
     protected void addNode(BlockPos nodePos, Node<NodeDataType> node) {
-        if(nodeData == null) {
+        if (nodeData == null) {
             this.nodeData = node.data;
-        } else if(!nodeData.equals(node.data)) {
+        } else if (!nodeData.equals(node.data)) {
             throw new IllegalArgumentException("Attempted to add node with different type to monolithic net!");
         }
         super.addNode(nodePos, node);
@@ -40,7 +40,7 @@ public abstract class MonolithicPipeNet<NodeDataType> extends PipeNet<NodeDataTy
 
     @Override
     protected void transferNodeData(Map<BlockPos, Node<NodeDataType>> transferredNodes, PipeNet<NodeDataType> parentNet) {
-        if(nodeData == null && !transferredNodes.isEmpty()) {
+        if (nodeData == null && !transferredNodes.isEmpty()) {
             this.nodeData = transferredNodes.values().iterator().next().data;
         }
         super.transferNodeData(transferredNodes, parentNet);

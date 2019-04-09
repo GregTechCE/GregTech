@@ -126,7 +126,7 @@ public class DustMaterial extends FluidMaterial {
     @Override
     protected void initializeMaterial() {
         super.initializeMaterial();
-        if(shouldGenerateFluid()) {
+        if (shouldGenerateFluid()) {
             setFluidTemperature(1200); //default value for dusts
         }
     }

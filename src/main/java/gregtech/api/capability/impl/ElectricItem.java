@@ -61,18 +61,18 @@ public class ElectricItem implements IElectricItem, ICapabilityProvider {
     @Override
     public long getMaxCharge() {
         NBTTagCompound tagCompound = itemStack.getTagCompound();
-        if(tagCompound == null)
+        if (tagCompound == null)
             return maxCharge;
-        if(tagCompound.hasKey("MaxCharge", NBT.TAG_LONG))
+        if (tagCompound.hasKey("MaxCharge", NBT.TAG_LONG))
             return tagCompound.getLong("MaxCharge");
         return maxCharge;
     }
 
     public long getCharge() {
         NBTTagCompound tagCompound = itemStack.getTagCompound();
-        if(tagCompound == null)
+        if (tagCompound == null)
             return 0;
-        if(tagCompound.getBoolean("Infinite"))
+        if (tagCompound.getBoolean("Infinite"))
             return getMaxCharge();
         return tagCompound.getLong("Charge");
     }

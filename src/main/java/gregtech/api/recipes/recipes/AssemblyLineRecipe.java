@@ -53,7 +53,7 @@ public class AssemblyLineRecipe {
         return duration;
     }
 
-public int getEUt() {
-return EUt;
-}
+    public int getEUt() {
+        return EUt;
+    }
 }

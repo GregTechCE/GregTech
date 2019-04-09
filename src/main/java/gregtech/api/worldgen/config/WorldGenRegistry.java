@@ -43,7 +43,9 @@ public class WorldGenRegistry {
 
     private static final JsonParser jsonParser = new JsonParser();
     public static final WorldGenRegistry INSTANCE = new WorldGenRegistry();
-    private WorldGenRegistry() {}
+
+    private WorldGenRegistry() {
+    }
 
     private final Map<String, Supplier<ShapeGenerator>> shapeGeneratorRegistry = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
     private final Map<String, Supplier<BlockFiller>> blockFillerRegistry = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
@@ -63,7 +65,7 @@ public class WorldGenRegistry {
         }
 
         private List<Entry<Integer, OreDepositDefinition>> getBiomeEntry(Biome biome) {
-            if(biomeVeins.containsKey(biome))
+            if (biomeVeins.containsKey(biome))
                 return biomeVeins.get(biome);
             List<Entry<Integer, OreDepositDefinition>> result = worldVeins.stream()
                 .map(vein -> new SimpleEntry<>(vein.getWeight() + vein.getBiomeWeightModifier().apply(biome), vein))
@@ -75,7 +77,7 @@ public class WorldGenRegistry {
     }
 
     public List<Entry<Integer, OreDepositDefinition>> getCachedBiomeVeins(WorldProvider provider, Biome biome) {
-        if(oreVeinCache.containsKey(provider))
+        if (oreVeinCache.containsKey(provider))
             return oreVeinCache.get(provider).getBiomeEntry(biome);
         WorldOreVeinCache worldOreVeinCache = new WorldOreVeinCache(provider);
         oreVeinCache.put(provider, worldOreVeinCache);
@@ -112,12 +114,12 @@ public class WorldGenRegistry {
         Path worldgenRootPath = configPath.resolve("worldgen");
         Path jarFileExtractLockOld = configPath.resolve(".worldgen_extracted");
         Path jarFileExtractLock = configPath.resolve("worldgen_extracted");
-        if(!Files.exists(worldgenRootPath)) {
+        if (!Files.exists(worldgenRootPath)) {
             Files.createDirectories(worldgenRootPath);
         }
         //attempt extraction if file extraction lock is absent or worldgen root directory is empty
-        if((!Files.exists(jarFileExtractLock) && !Files.exists(jarFileExtractLockOld)) || !Files.list(worldgenRootPath).findFirst().isPresent()) {
-            if(!Files.exists(jarFileExtractLock)) {
+        if ((!Files.exists(jarFileExtractLock) && !Files.exists(jarFileExtractLockOld)) || !Files.list(worldgenRootPath).findFirst().isPresent()) {
+            if (!Files.exists(jarFileExtractLock)) {
                 //create extraction lock only if it doesn't exist
                 Files.createFile(jarFileExtractLock);
             }
@@ -128,10 +130,10 @@ public class WorldGenRegistry {
             .filter(path -> Files.isRegularFile(path))
             .collect(Collectors.toList());
 
-        for(Path worldgenDefinition : worldgenFiles) {
+        for (Path worldgenDefinition : worldgenFiles) {
             String depositName = worldgenRootPath.relativize(worldgenDefinition).toString();
             try {
-                try(InputStream fileStream = Files.newInputStream(worldgenDefinition)) {
+                try (InputStream fileStream = Files.newInputStream(worldgenDefinition)) {
                     InputStreamReader streamReader = new InputStreamReader(fileStream);
                     JsonObject element = jsonParser.parse(streamReader).getAsJsonObject();
                     OreDepositDefinition deposit = new OreDepositDefinition(depositName);
@@ -152,10 +154,10 @@ public class WorldGenRegistry {
         try {
             URI sampleUri = WorldGenRegistry.class.getResource("/assets/gregtech/.gtassetsroot").toURI();
             Path worldgenJarRootPath;
-            if(sampleUri.getScheme().equals("jar") || sampleUri.getScheme().equals("zip")) {
+            if (sampleUri.getScheme().equals("jar") || sampleUri.getScheme().equals("zip")) {
                 zipFileSystem = FileSystems.newFileSystem(sampleUri, Collections.emptyMap());
                 worldgenJarRootPath = zipFileSystem.getPath("/assets/gregtech/worldgen");
-            } else if(sampleUri.getScheme().equals("file")) {
+            } else if (sampleUri.getScheme().equals("file")) {
                 worldgenJarRootPath = Paths.get(WorldGenRegistry.class.getResource("/assets/gregtech/worldgen").toURI());
             } else {
                 throw new IllegalStateException("Unable to locate absolute path to worldgen root directory: " + sampleUri);
@@ -165,7 +167,7 @@ public class WorldGenRegistry {
             List<Path> jarFiles = Files.walk(worldgenJarRootPath)
                 .filter(jarFile -> Files.isRegularFile(jarFile))
                 .collect(Collectors.toList());
-            for(Path jarFile : jarFiles) {
+            for (Path jarFile : jarFiles) {
                 Path worldgenPath = worldgenRootPath.resolve(worldgenJarRootPath.relativize(jarFile).toString());
                 Files.createDirectories(worldgenPath.getParent());
                 Files.copy(jarFile, worldgenPath, StandardCopyOption.REPLACE_EXISTING);
@@ -175,7 +177,7 @@ public class WorldGenRegistry {
             //this is impossible, since getResource always returns valid URI
             throw new RuntimeException(impossible);
         } finally {
-            if(zipFileSystem != null) {
+            if (zipFileSystem != null) {
                 //close zip file system to avoid issues
                 IOUtils.closeQuietly(zipFileSystem);
             }
@@ -183,26 +185,26 @@ public class WorldGenRegistry {
     }
 
     public void registerShapeGenerator(String identifier, Supplier<ShapeGenerator> shapeGeneratorSupplier) {
-        if(shapeGeneratorRegistry.containsKey(identifier))
+        if (shapeGeneratorRegistry.containsKey(identifier))
             throw new IllegalArgumentException("Identifier already occupied:" + identifier);
         shapeGeneratorRegistry.put(identifier, shapeGeneratorSupplier);
     }
 
     public void registerBlockFiller(String identifier, Supplier<BlockFiller> blockFillerSupplier) {
-        if(blockFillerRegistry.containsKey(identifier))
+        if (blockFillerRegistry.containsKey(identifier))
             throw new IllegalArgumentException("Identifier already occupied:" + identifier);
         blockFillerRegistry.put(identifier, blockFillerSupplier);
     }
 
     public void registerVeinPopulator(String identifier, Supplier<IVeinPopulator> veinPopulatorSupplier) {
-        if(veinPopulatorRegistry.containsKey(identifier))
+        if (veinPopulatorRegistry.containsKey(identifier))
             throw new IllegalArgumentException("Identifier already occupied:" + identifier);
         veinPopulatorRegistry.put(identifier, veinPopulatorSupplier);
     }
 
     public ShapeGenerator createShapeGenerator(JsonObject object) {
         String identifier = object.get("type").getAsString();
-        if(!shapeGeneratorRegistry.containsKey(identifier))
+        if (!shapeGeneratorRegistry.containsKey(identifier))
             throw new IllegalArgumentException("No shape generator found for type " + identifier);
         ShapeGenerator shapeGenerator = shapeGeneratorRegistry.get(identifier).get();
         shapeGenerator.loadFromConfig(object);
@@ -211,7 +213,7 @@ public class WorldGenRegistry {
 
     public BlockFiller createBlockFiller(JsonObject object) {
         String identifier = object.get("type").getAsString();
-        if(!blockFillerRegistry.containsKey(identifier))
+        if (!blockFillerRegistry.containsKey(identifier))
             throw new IllegalArgumentException("No block filler found for type " + identifier);
         BlockFiller blockFiller = blockFillerRegistry.get(identifier).get();
         blockFiller.loadFromConfig(object);
@@ -220,7 +222,7 @@ public class WorldGenRegistry {
 
     public IVeinPopulator createVeinPopulator(JsonObject object) {
         String identifier = object.get("type").getAsString();
-        if(!veinPopulatorRegistry.containsKey(identifier))
+        if (!veinPopulatorRegistry.containsKey(identifier))
             throw new IllegalArgumentException("No vein populator found for type " + identifier);
         IVeinPopulator veinPopulator = veinPopulatorRegistry.get(identifier).get();
         veinPopulator.loadFromConfig(object);

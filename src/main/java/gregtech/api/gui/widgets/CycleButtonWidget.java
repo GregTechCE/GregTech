@@ -1,29 +1,27 @@
 package gregtech.api.gui.widgets;
 
 import gregtech.api.gui.GuiTextures;
-import gregtech.api.gui.Widget;
 import gregtech.api.gui.resources.SizedTextureArea;
 import gregtech.api.gui.resources.TextureArea;
+import gregtech.api.util.GTUtility;
+import gregtech.api.util.function.BooleanConsumer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketBuffer;
+import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.function.IntConsumer;
-import java.util.function.IntSupplier;
+import java.util.function.*;
 
-public class CycleButtonWidget extends Widget {
+public class CycleButtonWidget extends AbstractPositionedRectangleWidget {
 
-    protected int xPosition;
-    protected int yPosition;
-    protected int width, height;
     protected TextureArea buttonTexture = GuiTextures.VANILLA_BUTTON.getSubArea(0.0, 0.0, 1.0, 0.5);
     private String[] optionNames;
     private int textColor = 0xFFFFFF;
@@ -35,14 +33,25 @@ public class CycleButtonWidget extends Widget {
     protected boolean isMouseHovered;
 
     public CycleButtonWidget(int xPosition, int yPosition, int width, int height, String[] optionNames, IntSupplier currentOptionSupplier, IntConsumer setOptionExecutor) {
-        super();
-        this.xPosition = xPosition;
-        this.yPosition = yPosition;
-        this.width = width;
-        this.height = height;
+        super(xPosition, yPosition, width, height);
         this.optionNames = optionNames;
         this.currentOptionSupplier = currentOptionSupplier;
         this.setOptionExecutor = setOptionExecutor;
+    }
+
+    public <T extends Enum<T> & IStringSerializable> CycleButtonWidget(int xPosition, int yPosition, int width, int height, Class<T> enumClass, Supplier<T> supplier, Consumer<T> updater) {
+        super(xPosition, yPosition, width, height);
+        T[] enumConstantPool = enumClass.getEnumConstants();
+        this.optionNames = GTUtility.mapToString(enumConstantPool, it -> ((IStringSerializable) it).getName());
+        this.currentOptionSupplier = () -> supplier.get().ordinal();
+        this.setOptionExecutor = (newIndex) -> updater.accept(enumConstantPool[newIndex]);
+    }
+
+    public CycleButtonWidget(int xPosition, int yPosition, int width, int height, BooleanSupplier supplier, BooleanConsumer updater, String... optionNames) {
+        super(xPosition, yPosition, width, height);
+        this.optionNames = optionNames;
+        this.currentOptionSupplier = () -> supplier.getAsBoolean() ? 1 : 0;
+        this.setOptionExecutor = (value) -> updater.apply(value >= 1);
     }
 
     public CycleButtonWidget setTooltipHoverString(String hoverString) {
@@ -63,7 +72,7 @@ public class CycleButtonWidget extends Widget {
     @Override
     @SideOnly(Side.CLIENT)
     public void drawInBackground(int mouseX, int mouseY) {
-        if(buttonTexture instanceof SizedTextureArea) {
+        if (buttonTexture instanceof SizedTextureArea) {
             ((SizedTextureArea) buttonTexture).drawHorizontalCutSubArea(xPosition, yPosition, width, height, 0.0, 1.0);
         } else {
             buttonTexture.drawSubArea(xPosition, yPosition, width, height, 0.0, 0.0, 1.0, 1.0);
@@ -80,15 +89,15 @@ public class CycleButtonWidget extends Widget {
     public void drawInForeground(int mouseX, int mouseY) {
         boolean isHovered = isMouseOver(xPosition, yPosition, width, height, mouseX, mouseY);
         boolean wasHovered = isMouseHovered;
-        if(isHovered && !wasHovered) {
+        if (isHovered && !wasHovered) {
             this.isMouseHovered = true;
             this.hoverStartTime = System.currentTimeMillis();
-        } else if(!isHovered && wasHovered) {
+        } else if (!isHovered && wasHovered) {
             this.isMouseHovered = false;
             this.hoverStartTime = 0L;
-        } else if(isHovered) {
+        } else if (isHovered) {
             long timeSinceHover = System.currentTimeMillis() - hoverStartTime;
-            if(timeSinceHover > 1000L && tooltipHoverString != null) {
+            if (timeSinceHover > 1000L && tooltipHoverString != null) {
                 List<String> hoverList = Arrays.asList(I18n.format(tooltipHoverString).split("/n"));
                 drawHoveringText(ItemStack.EMPTY, hoverList, 300, mouseX, mouseY);
             }
@@ -98,7 +107,7 @@ public class CycleButtonWidget extends Widget {
     @Override
     public void detectAndSendChanges() {
         super.detectAndSendChanges();
-        if(currentOptionSupplier.getAsInt() != currentOption) {
+        if (currentOptionSupplier.getAsInt() != currentOption) {
             this.currentOption = currentOptionSupplier.getAsInt();
             writeUpdateInfo(1, buf -> buf.writeVarInt(currentOption));
         }
@@ -107,7 +116,7 @@ public class CycleButtonWidget extends Widget {
     @Override
     public void readUpdateInfo(int id, PacketBuffer buffer) {
         super.readUpdateInfo(id, buffer);
-        if(id == 1) {
+        if (id == 1) {
             this.currentOption = buffer.readVarInt();
         }
     }
@@ -116,7 +125,7 @@ public class CycleButtonWidget extends Widget {
     @SideOnly(Side.CLIENT)
     public boolean mouseClicked(int mouseX, int mouseY, int button) {
         super.mouseClicked(mouseX, mouseY, button);
-        if(isMouseOver(xPosition, yPosition, width, height, mouseX, mouseY)) {
+        if (isMouseOver(xPosition, yPosition, width, height, mouseX, mouseY)) {
             this.currentOption = (currentOption + 1) % optionNames.length;
             writeClientAction(1, buf -> buf.writeVarInt(currentOption));
             playButtonClickSound();
@@ -129,7 +138,7 @@ public class CycleButtonWidget extends Widget {
     @Override
     public void handleClientAction(int id, PacketBuffer buffer) {
         super.handleClientAction(id, buffer);
-        if(id == 1) {
+        if (id == 1) {
             this.currentOption = MathHelper.clamp(buffer.readVarInt(), 0, optionNames.length);
             setOptionExecutor.accept(currentOption);
         }

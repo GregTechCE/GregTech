@@ -1,12 +1,12 @@
 package gregtech.common.render;
 
 import codechicken.lib.vec.Vector3;
-import gregtech.api.GregTechAPI;
+import gregtech.api.capability.GregtechCapabilities;
 import gregtech.api.items.metaitem.MetaItem;
 import gregtech.api.items.metaitem.stats.IItemBehaviour;
 import gregtech.api.metatileentity.MetaTileEntityHolder;
-import gregtech.api.unification.stack.SimpleItemStack;
 import gregtech.common.items.behaviors.CoverPlaceBehavior;
+import gregtech.common.items.behaviors.CrowbarBehaviour;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
@@ -49,7 +49,7 @@ public class WrenchOverlayRenderer {
         TileEntity tileEntity = world.getTileEntity(pos);
         ItemStack heldItem = player.getHeldItem(EnumHand.MAIN_HAND);
 
-        if(tileEntity instanceof MetaTileEntityHolder && shouldDrawOverlayForItem(heldItem)) {
+        if (tileEntity instanceof MetaTileEntityHolder && shouldDrawOverlayForItem(heldItem)) {
             EnumFacing facing = target.sideHit;
             GlStateManager.enableBlend();
             GlStateManager.tryBlendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
@@ -75,14 +75,19 @@ public class WrenchOverlayRenderer {
     }
 
     private static boolean shouldDrawOverlayForItem(ItemStack itemStack) {
-        SimpleItemStack simpleHeldItem = new SimpleItemStack(itemStack);
-        if(GregTechAPI.wrenchList.contains(simpleHeldItem) ||
-            GregTechAPI.screwdriverList.contains(simpleHeldItem))
+        if(itemStack.hasCapability(GregtechCapabilities.CAPABILITY_WRENCH, null) ||
+            itemStack.hasCapability(GregtechCapabilities.CAPABILITY_SCREWDRIVER, null)) {
             return true;
-        if(itemStack.getItem() instanceof MetaItem) {
+        }
+        if (itemStack.getItem() instanceof MetaItem) {
             MetaItem<?> metaItem = (MetaItem<?>) itemStack.getItem();
-            List<IItemBehaviour> behaviourList = metaItem.getItem(itemStack).getBehaviours();
-            return behaviourList.stream().anyMatch(it -> it instanceof CoverPlaceBehavior);
+            MetaItem<?>.MetaValueItem valueItem = metaItem.getItem(itemStack);
+            if (valueItem != null) {
+                List<IItemBehaviour> behaviourList = valueItem.getBehaviours();
+                return behaviourList.stream().anyMatch(it ->
+                    it instanceof CoverPlaceBehavior ||
+                    it instanceof CrowbarBehaviour);
+            }
         }
         return false;
     }

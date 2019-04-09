@@ -5,7 +5,7 @@ import com.google.common.collect.Multimap;
 import gregtech.api.capability.GregtechCapabilities;
 import gregtech.api.capability.IElectricItem;
 import gregtech.api.enchants.EnchantmentData;
-import gregtech.api.items.IDamagableItem;
+import gregtech.api.items.IToolItem;
 import gregtech.api.items.ToolDictNames;
 import gregtech.api.items.metaitem.MetaItem;
 import gregtech.api.items.metaitem.stats.IItemContainerItemProvider;
@@ -14,7 +14,6 @@ import gregtech.api.unification.material.MaterialIconSet;
 import gregtech.api.unification.material.Materials;
 import gregtech.api.unification.material.type.Material;
 import gregtech.api.unification.material.type.SolidMaterial;
-import gregtech.api.unification.stack.SimpleItemStack;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.ShapedOreIngredientAwareRecipe;
 import gregtech.common.ConfigHolder;
@@ -64,7 +63,7 @@ import java.util.*;
  * @see IToolStats
  * @see MetaItem
  */
-public class ToolMetaItem<T extends ToolMetaItem<?>.MetaToolValueItem> extends MetaItem<T> implements IDamagableItem {
+public class ToolMetaItem<T extends ToolMetaItem<?>.MetaToolValueItem> extends MetaItem<T> implements IToolItem {
 
     public ToolMetaItem() {
         super((short) 0);
@@ -94,7 +93,7 @@ public class ToolMetaItem<T extends ToolMetaItem<?>.MetaToolValueItem> extends M
         if (item == null) {
             return 0xFFFFFF;
         }
-        if(item.getColorProvider() != null) {
+        if (item.getColorProvider() != null) {
             return item.getColorProvider().getItemStackColor(stack, tintIndex);
         }
         IToolStats toolStats = item.getToolStats();
@@ -109,18 +108,18 @@ public class ToolMetaItem<T extends ToolMetaItem<?>.MetaToolValueItem> extends M
     @Override
     public boolean showDurabilityBar(ItemStack stack) {
         T item = getItem(stack);
-        if(item != null && item.getDurabilityManager() != null) {
+        if (item != null && item.getDurabilityManager() != null) {
             return item.getDurabilityManager().showsDurabilityBar(stack);
         }
         //don't show durability if item is not electric and it's damage is zero
         return stack.hasCapability(GregtechCapabilities.CAPABILITY_ELECTRIC_ITEM, null) ||
-            getInternalDamage(stack) != 0;
+            getItemDamage(stack) != 0;
     }
 
     @Override
     public double getDurabilityForDisplay(ItemStack stack) {
         T item = getItem(stack);
-        if(item != null && item.getDurabilityManager() != null) {
+        if (item != null && item.getDurabilityManager() != null) {
             return item.getDurabilityManager().getDurabilityForDisplay(stack);
         }
         //if itemstack has electric charge ability, show electric charge percentage
@@ -130,13 +129,13 @@ public class ToolMetaItem<T extends ToolMetaItem<?>.MetaToolValueItem> extends M
             return 1.0 - (electricItem.getCharge() / (electricItem.getMaxCharge() * 1.0));
         }
         //otherwise, show actual durability percentage
-        return getInternalDamage(stack) / (getMaxInternalDamage(stack) * 1.0);
+        return getItemDamage(stack) / (getMaxItemDamage(stack) * 1.0);
     }
 
     @Override
     public int getRGBDurabilityForDisplay(ItemStack stack) {
         //always color durability bar as item internal damage
-        double internalDamage = getInternalDamage(stack) / (getMaxInternalDamage(stack) * 1.0);
+        double internalDamage = getItemDamage(stack) / (getMaxItemDamage(stack) * 1.0);
         return MathHelper.hsvToRGB(Math.max(0.0F, (float) (1.0 - internalDamage)) / 3.0F, 1.0F, 1.0F);
     }
 
@@ -163,16 +162,16 @@ public class ToolMetaItem<T extends ToolMetaItem<?>.MetaToolValueItem> extends M
         stack = stack.copy();
         stack.setCount(1);
         T metaToolValueItem = getItem(stack);
-        if(metaToolValueItem != null) {
+        if (metaToolValueItem != null) {
             IItemContainerItemProvider containerItemProvider = metaToolValueItem.getContainerItemProvider();
-            if(containerItemProvider != null) {
+            if (containerItemProvider != null) {
                 return containerItemProvider.getContainerItem(stack);
             }
 
             if (metaToolValueItem.toolStats != null) {
                 IToolStats toolStats = metaToolValueItem.toolStats;
                 int toolDamagePerCraft = toolStats.getToolDamagePerContainerCraft(stack);
-                boolean canApplyDamage = doDamageToItem(stack, toolDamagePerCraft, false);
+                boolean canApplyDamage = damageItem(stack, toolDamagePerCraft, false);
                 if (!canApplyDamage) return stack;
             }
         }
@@ -185,7 +184,7 @@ public class ToolMetaItem<T extends ToolMetaItem<?>.MetaToolValueItem> extends M
         if (metaToolValueItem != null) {
             IToolStats toolStats = metaToolValueItem.getToolStats();
             if (toolStats.isMinableBlock(state, stack)) {
-                doDamageToItem(stack, toolStats.getToolDamagePerBlockBreak(stack), false);
+                damageItem(stack, toolStats.getToolDamagePerBlockBreak(stack), false);
                 ResourceLocation mineSound = toolStats.getUseSound(stack);
                 if (mineSound != null) {
                     SoundEvent soundEvent = SoundEvent.REGISTRY.getObject(mineSound);
@@ -221,11 +220,11 @@ public class ToolMetaItem<T extends ToolMetaItem<?>.MetaToolValueItem> extends M
     @Override
     public int getHarvestLevel(ItemStack stack, String toolClass, EntityPlayer player, IBlockState blockState) {
         T metaToolValueItem = getItem(stack);
-        if(metaToolValueItem == null) {
+        if (metaToolValueItem == null) {
             return -1;
         }
         IToolStats toolStats = metaToolValueItem.getToolStats();
-        if(isUsable(stack, toolStats.getToolDamagePerBlockBreak(stack)) && toolStats.isMinableBlock(blockState, stack)) {
+        if (isUsable(stack, toolStats.getToolDamagePerBlockBreak(stack)) && toolStats.isMinableBlock(blockState, stack)) {
             return getHarvestLevel(stack);
         }
         return -1;
@@ -268,7 +267,7 @@ public class ToolMetaItem<T extends ToolMetaItem<?>.MetaToolValueItem> extends M
         T metaValueItem = getItem(stack);
         if (metaValueItem != null) {
             IToolStats toolStats = metaValueItem.getToolStats();
-            if (!doDamageToItem(stack, toolStats.getToolDamagePerEntityAttack(stack), false)) {
+            if (!damageItem(stack, toolStats.getToolDamagePerEntityAttack(stack), false)) {
                 return true;
             }
             ResourceLocation hitSound = toolStats.getUseSound(stack);
@@ -289,11 +288,11 @@ public class ToolMetaItem<T extends ToolMetaItem<?>.MetaToolValueItem> extends M
     }
 
     @Override
-    public boolean doDamageToItem(ItemStack stack, int vanillaDamage, boolean simulate) {
+    public boolean damageItem(ItemStack stack, int vanillaDamage, boolean simulate) {
         IElectricItem capability = stack.getCapability(GregtechCapabilities.CAPABILITY_ELECTRIC_ITEM, null);
         if (capability == null) {
             int resultDamage = calculateToolDamage(stack, new Random(), vanillaDamage);
-            int newDamageValue = getInternalDamage(stack) + resultDamage * 10;
+            int newDamageValue = getItemDamage(stack) + resultDamage * 10;
 
             if (!simulate && !setInternalDamage(stack, newDamageValue)) {
                 stack.shrink(1);
@@ -309,7 +308,7 @@ public class ToolMetaItem<T extends ToolMetaItem<?>.MetaToolValueItem> extends M
                 return false;
             }
             capability.discharge(energyAmount, capability.getTier(), true, false, simulate);
-            int newDamageValue = getInternalDamage(stack) + vanillaDamage;
+            int newDamageValue = getItemDamage(stack) + vanillaDamage;
             if (!simulate && !setInternalDamage(stack, newDamageValue)) {
                 GTUtility.setItem(stack, MetaItems.TOOL_PARTS_BOX.getStackForm());
                 stack.removeSubCompound("GT.ToolStats");
@@ -319,7 +318,7 @@ public class ToolMetaItem<T extends ToolMetaItem<?>.MetaToolValueItem> extends M
     }
 
     public int regainItemDurability(ItemStack itemStack, int maxDurabilityRegain) {
-        int toolDamage = getInternalDamage(itemStack);
+        int toolDamage = getItemDamage(itemStack);
         int durabilityRegained = Math.min(toolDamage, maxDurabilityRegain);
         setInternalDamage(itemStack, toolDamage - durabilityRegained);
         return durabilityRegained;
@@ -377,9 +376,9 @@ public class ToolMetaItem<T extends ToolMetaItem<?>.MetaToolValueItem> extends M
         }
         IToolStats toolStats = item.getToolStats();
         SolidMaterial primaryMaterial = getToolMaterial(itemStack);
-        int maxInternalDamage = getMaxInternalDamage(itemStack);
+        int maxInternalDamage = getMaxItemDamage(itemStack);
         if (maxInternalDamage > 0) {
-            lines.add(I18n.format("metaitem.tool.tooltip.durability", maxInternalDamage - getInternalDamage(itemStack), maxInternalDamage));
+            lines.add(I18n.format("metaitem.tool.tooltip.durability", maxInternalDamage - getItemDamage(itemStack), maxInternalDamage));
         }
         lines.add(I18n.format("metaitem.tool.tooltip.primary_material", primaryMaterial.getLocalizedName(), getHarvestLevel(itemStack)));
         lines.add(I18n.format("metaitem.tool.tooltip.attack_damage", toolStats.getBaseDamage(itemStack) + primaryMaterial.harvestLevel));
@@ -430,7 +429,7 @@ public class ToolMetaItem<T extends ToolMetaItem<?>.MetaToolValueItem> extends M
     }
 
     @Override
-    public int getMaxInternalDamage(ItemStack itemStack) {
+    public int getMaxItemDamage(ItemStack itemStack) {
         T metaToolValueItem = getItem(itemStack);
         if (metaToolValueItem != null) {
             NBTTagCompound toolTag = getToolStatsTag(itemStack);
@@ -505,7 +504,7 @@ public class ToolMetaItem<T extends ToolMetaItem<?>.MetaToolValueItem> extends M
     }
 
     @Override
-    public int getInternalDamage(ItemStack itemStack) {
+    public int getItemDamage(ItemStack itemStack) {
         NBTTagCompound statsTag = getToolStatsTag(itemStack);
         if (statsTag == null || !statsTag.hasKey("Damage", Constants.NBT.TAG_INT)) {
             return 0;
@@ -516,7 +515,7 @@ public class ToolMetaItem<T extends ToolMetaItem<?>.MetaToolValueItem> extends M
     private boolean setInternalDamage(ItemStack itemStack, int damage) {
         NBTTagCompound statsTag = getOrCreateToolStatsTag(itemStack);
         statsTag.setInteger("Damage", damage);
-        return getInternalDamage(itemStack) < getMaxInternalDamage(itemStack);
+        return getItemDamage(itemStack) < getMaxItemDamage(itemStack);
     }
 
     public static NBTTagCompound getToolStatsTag(ItemStack itemStack) {
@@ -596,12 +595,6 @@ public class ToolMetaItem<T extends ToolMetaItem<?>.MetaToolValueItem> extends M
             return this;
         }
 
-        public MetaToolValueItem addToList(Collection<SimpleItemStack> toolList) {
-            Validate.notNull(toolList, "Cannot add to null list.");
-            toolList.add(new SimpleItemStack(this.getStackForm(1)));
-            return this;
-        }
-
         public IToolStats getToolStats() {
             if (toolStats == null) {
                 throw new IllegalStateException("Someone forgot to assign toolStats to MetaToolValueItem.");
@@ -666,16 +659,16 @@ public class ToolMetaItem<T extends ToolMetaItem<?>.MetaToolValueItem> extends M
             ArrayList<SolidMaterial> materials = new ArrayList<>();
             toolNBT.setString("PrimaryMaterial", toolMaterial.toString());
             materials.add(toolMaterial);
-            if(maxDurability > -1) {
+            if (maxDurability > -1) {
                 toolNBT.setInteger("MaxDurability", maxDurability);
             }
-            if(harvestLevel > -1) {
+            if (harvestLevel > -1) {
                 toolNBT.setInteger("HarvestLevel", harvestLevel);
             }
-            if(digSpeed > -1.0f) {
+            if (digSpeed > -1.0f) {
                 toolNBT.setFloat("DigSpeed", digSpeed);
             }
-            if(attackDamage > -1.0f) {
+            if (attackDamage > -1.0f) {
                 toolNBT.setFloat("AttackDamage", attackDamage);
             }
             NBTTagCompound nbtTag = stack.getTagCompound();

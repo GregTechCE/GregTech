@@ -39,21 +39,21 @@ public class OreRecipeHandler {
     private static void processMetalSmelting(OrePrefix crushedPrefix, DustMaterial material) {
         DustMaterial smeltingMaterial = material.directSmelting == null ? material : material.directSmelting;
         int amountOfNuggets = (int) Math.floor(9.0 * getPercentOfComponentInMaterial(material, smeltingMaterial));
-        if(smeltingMaterial instanceof IngotMaterial) {
+        if (smeltingMaterial instanceof IngotMaterial) {
             ItemStack ingotStack;
-            if(amountOfNuggets == 9) {
+            if (amountOfNuggets == 9) {
                 ingotStack = OreDictUnifier.get(OrePrefix.ingot, smeltingMaterial);
             } else {
                 ingotStack = OreDictUnifier.get(OrePrefix.nugget, smeltingMaterial, amountOfNuggets);
             }
-            if(!ingotStack.isEmpty() && doesMaterialUseNormalFurnace(smeltingMaterial)) {
+            if (!ingotStack.isEmpty() && doesMaterialUseNormalFurnace(smeltingMaterial)) {
                 ModHandler.addSmeltingRecipe(new UnificationEntry(crushedPrefix, material), ingotStack);
             }
         }
     }
 
     private static double getPercentOfComponentInMaterial(Material material, Material materialToFind) {
-        if(material == materialToFind) {
+        if (material == materialToFind) {
             return 1.0;
         }
         double amountOfComponents = material.materialComponents.stream()
@@ -70,9 +70,9 @@ public class OreRecipeHandler {
         ItemStack ingotStack;
         DustMaterial smeltingMaterial = material.directSmelting == null ? material : material.directSmelting;
         double amountOfCrushedOre = material.oreMultiplier / getPercentOfComponentInMaterial(material, smeltingMaterial);
-        if(smeltingMaterial instanceof IngotMaterial) {
+        if (smeltingMaterial instanceof IngotMaterial) {
             ingotStack = OreDictUnifier.get(OrePrefix.ingot, smeltingMaterial);
-        } else if(smeltingMaterial instanceof GemMaterial) {
+        } else if (smeltingMaterial instanceof GemMaterial) {
             ingotStack = OreDictUnifier.get(OrePrefix.gem, smeltingMaterial);
         } else {
             ingotStack = OreDictUnifier.get(OrePrefix.dust, smeltingMaterial);
@@ -92,8 +92,8 @@ public class OreRecipeHandler {
                 .outputs(GTUtility.copyAmount((int) Math.round(amountOfCrushedOre * 2), crushedStack))
                 .chancedOutput(byproductStack, 1400)
                 .duration(200).EUt(12);
-            for(MaterialStack secondaryMaterial : orePrefix.secondaryMaterials) {
-                if(secondaryMaterial.material instanceof DustMaterial) {
+            for (MaterialStack secondaryMaterial : orePrefix.secondaryMaterials) {
+                if (secondaryMaterial.material instanceof DustMaterial) {
                     ItemStack dustStack = OreDictUnifier.getDust(secondaryMaterial);
                     builder.chancedOutput(dustStack, 6700);
                 }

@@ -15,8 +15,6 @@ import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.items.IItemHandlerModifiable;
 
-import javax.annotation.Nullable;
-
 public class EnergyContainerBatteryBuffer extends MTETrait implements IEnergyContainer {
 
     private final int tier;
@@ -29,7 +27,7 @@ public class EnergyContainerBatteryBuffer extends MTETrait implements IEnergyCon
     @Override
     public long acceptEnergyFromNetwork(EnumFacing side, long voltage, long amperage) {
         long initialAmperage = amperage;
-        if(side == null || inputsEnergy(side)) {
+        if (side == null || inputsEnergy(side)) {
             if (voltage > getInputVoltage()) {
                 GTUtility.doOvervoltageExplosion(metaTileEntity, voltage);
                 return Math.min(amperage, getInputAmperage());
@@ -39,10 +37,10 @@ public class EnergyContainerBatteryBuffer extends MTETrait implements IEnergyCon
                 ItemStack batteryStack = inventory.getStackInSlot(i);
                 IElectricItem electricItem = getBatteryContainer(batteryStack);
                 if (electricItem == null) continue;
-                if(chargeOrDischargeItem(electricItem, voltage, getTier(), true)) {
+                if (chargeOrDischargeItem(electricItem, voltage, getTier(), true)) {
                     chargeOrDischargeItem(electricItem, voltage, getTier(), false);
                     inventory.setStackInSlot(i, batteryStack);
-                    if(--amperage == 0) break;
+                    if (--amperage == 0) break;
                 }
             }
         }
@@ -50,7 +48,7 @@ public class EnergyContainerBatteryBuffer extends MTETrait implements IEnergyCon
     }
 
     private static boolean chargeOrDischargeItem(IElectricItem electricItem, long voltage, int tier, boolean simulate) {
-        if(voltage > 0) {
+        if (voltage > 0) {
             return electricItem.charge(voltage, tier, true, simulate) == voltage;
         } else {
             return electricItem.discharge(-voltage, tier, true, true, simulate) == -voltage;
@@ -59,14 +57,14 @@ public class EnergyContainerBatteryBuffer extends MTETrait implements IEnergyCon
 
     @Override
     public void update() {
-        if(!metaTileEntity.getWorld().isRemote) {
+        if (!metaTileEntity.getWorld().isRemote) {
             EnumFacing outFacing = metaTileEntity.getFrontFacing();
             TileEntity tileEntity = metaTileEntity.getWorld().getTileEntity
                 (metaTileEntity.getPos().offset(outFacing));
-            if(tileEntity == null) return;
+            if (tileEntity == null) return;
             IEnergyContainer energyContainer = tileEntity.getCapability(
                 GregtechCapabilities.CAPABILITY_ENERGY_CONTAINER, outFacing.getOpposite());
-            if(energyContainer == null) return;
+            if (energyContainer == null) return;
             IItemHandlerModifiable inventory = getInventory();
             long voltage = getOutputVoltage();
             long maxAmperage = 0L;
@@ -75,21 +73,21 @@ public class EnergyContainerBatteryBuffer extends MTETrait implements IEnergyCon
                 ItemStack batteryStack = inventory.getStackInSlot(i);
                 IElectricItem electricItem = getBatteryContainer(batteryStack);
                 if (electricItem == null) continue;
-                if(electricItem.discharge(voltage, getTier(), true, true, true) == voltage) {
+                if (electricItem.discharge(voltage, getTier(), true, true, true) == voltage) {
                     slotsList.add(i);
                     maxAmperage++;
                 }
             }
-            if(maxAmperage == 0) return;
+            if (maxAmperage == 0) return;
             long amperageUsed = energyContainer.acceptEnergyFromNetwork(outFacing.getOpposite(), voltage, maxAmperage);
-            if(amperageUsed == 0) return;
+            if (amperageUsed == 0) return;
             for (int i : slotsList.toArray()) {
                 ItemStack batteryStack = inventory.getStackInSlot(i);
                 IElectricItem electricItem = getBatteryContainer(batteryStack);
                 if (electricItem == null) continue;
                 electricItem.discharge(voltage, getTier(), true, true, false);
                 inventory.setStackInSlot(i, batteryStack);
-                if(--amperageUsed == 0) break;
+                if (--amperageUsed == 0) break;
             }
         }
     }
@@ -182,10 +180,12 @@ public class EnergyContainerBatteryBuffer extends MTETrait implements IEnergyCon
         return TraitNetworkIds.TRAIT_ID_ENERGY_CONTAINER;
     }
 
-    @Nullable
     @Override
-    public Capability<?> getImplementingCapability() {
-        return GregtechCapabilities.CAPABILITY_ENERGY_CONTAINER;
+    public <T> T getCapability(Capability<T> capability) {
+        if(capability == GregtechCapabilities.CAPABILITY_ENERGY_CONTAINER) {
+            return GregtechCapabilities.CAPABILITY_ENERGY_CONTAINER.cast(this);
+        }
+        return null;
     }
 
     protected IItemHandlerModifiable getInventory() {

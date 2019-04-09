@@ -7,7 +7,7 @@ import gregtech.api.GTValues;
 import gregtech.api.capability.impl.EnergyContainerHandler;
 import gregtech.api.capability.impl.FilteredFluidHandler;
 import gregtech.api.capability.impl.FluidTankList;
-import gregtech.api.capability.impl.FuelRecipeMapWorkableHandler;
+import gregtech.api.capability.impl.FuelRecipeLogic;
 import gregtech.api.gui.GuiTextures;
 import gregtech.api.gui.ModularUI;
 import gregtech.api.gui.ModularUI.Builder;
@@ -34,13 +34,13 @@ import java.util.List;
 
 public class SimpleGeneratorMetaTileEntity extends TieredMetaTileEntity {
 
-    private FuelRecipeMapWorkableHandler workableHandler;
+    private FuelRecipeLogic workableHandler;
     private ItemStackHandler containerInventory;
     private OrientedOverlayRenderer overlayRenderer;
 
     public SimpleGeneratorMetaTileEntity(ResourceLocation metaTileEntityId, FuelRecipeMap recipeMap, OrientedOverlayRenderer renderer, int tier) {
         super(metaTileEntityId, tier);
-        this.workableHandler = new FuelRecipeMapWorkableHandler(this, recipeMap,
+        this.workableHandler = new FuelRecipeLogic(this, recipeMap,
             () -> energyContainer, () -> importFluids, GTValues.V[tier]);
         this.containerInventory = new ItemStackHandler(2);
         this.overlayRenderer = renderer;
@@ -96,7 +96,7 @@ public class SimpleGeneratorMetaTileEntity extends TieredMetaTileEntity {
     @Override
     public void update() {
         super.update();
-        if(!getWorld().isRemote && getTimer() % 5 == 0) {
+        if (!getWorld().isRemote && getTimer() % 5 == 0) {
             fillInternalTankFromFluidContainer(containerInventory, containerInventory, 0, 1);
         }
     }

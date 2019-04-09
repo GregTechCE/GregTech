@@ -23,14 +23,14 @@ public class SteamSolarBoiler extends SteamBoiler {
 
     protected boolean checkCanSeeSun() {
         BlockPos blockPos = getPos().up();
-        if(!getWorld().canBlockSeeSky(blockPos))
+        if (!getWorld().canBlockSeeSky(blockPos))
             return false;
         return !getWorld().isRaining() && getWorld().isDaytime();
     }
 
     @Override
     protected void tryConsumeNewFuel() {
-        if(checkCanSeeSun()) {
+        if (checkCanSeeSun()) {
             setFuelMaxBurnTime(5);
         }
     }
