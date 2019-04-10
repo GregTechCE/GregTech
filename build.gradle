@@ -49,15 +49,11 @@ configurations {
 repositories {
     maven {
         name = "ic2, forestry"
-        url = "https://maven.ic2.player.to/"
+        url = "http://maven.ic2.player.to/"
     }
     maven { //JEI
         name = "Progwml6 maven"
         url = "https://dvs1.progwml6.com/files/maven/"
-    }
-    maven { //JEI fallback
-        name = "ModMaven"
-        url = "https://modmaven.k-4u.nl"
     }
     maven {
         name = "tterrag maven"
@@ -69,7 +65,7 @@ repositories {
     }
     maven {
         name = "CoFH Maven"
-        url = "https://maven.covers1624.net"
+        url = "https://maven.covers1624.net/"
     }
     maven {
         name = "tehnut maven"
