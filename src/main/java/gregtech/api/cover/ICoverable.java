@@ -1,6 +1,5 @@
 package gregtech.api.cover;
 
-import codechicken.lib.lighting.LightMatrix;
 import codechicken.lib.raytracer.CuboidRayTraceResult;
 import codechicken.lib.raytracer.IndexedCuboid6;
 import codechicken.lib.raytracer.RayTracer;
@@ -69,10 +68,11 @@ public interface ICoverable {
     void scheduleRenderUpdate();
 
     @SideOnly(Side.CLIENT)
-    default void renderCovers(CCRenderState renderState, Matrix4 translation, LightMatrix lightMatrix, int brightness) {
+    default void renderCovers(CCRenderState renderState, Matrix4 translation) {
+        renderState.lightMatrix.locate(getWorld(), getPos());
         double coverPlateThickness = getCoverPlateThickness();
         IVertexOperation[] platePipeline = new IVertexOperation[] {new ColourMultiplier(GTUtility.convertRGBtoOpaqueRGBA_CL(getPaintingColor()))};
-        IVertexOperation[] coverPipeline = new IVertexOperation[] {lightMatrix};
+        IVertexOperation[] coverPipeline = new IVertexOperation[] {renderState.lightMatrix};
 
         for (EnumFacing sideFacing : EnumFacing.values()) {
             CoverBehavior coverBehavior = getCoverAtSide(sideFacing);
@@ -81,8 +81,7 @@ public interface ICoverable {
             double coverOffset = getCoverOffset(sideFacing);
 
             if (coverPlateThickness > 0) {
-                renderState.brightness = brightness;
-                renderState.colour = 0xFFFFFFFF;
+                renderState.preRenderWorld(getWorld(), getPos());
                 //render cover plate for cover
                 //to prevent Z-fighting between cover plates
                 plateBox.expand(coverOffset);

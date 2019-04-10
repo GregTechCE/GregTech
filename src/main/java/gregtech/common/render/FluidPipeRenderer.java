@@ -124,7 +124,6 @@ public class FluidPipeRenderer implements ICCBlockRenderer, IItemRenderer {
         renderState.bind(buffer);
         IVertexOperation[] pipeline = {new Translation(pos)};
 
-        int brightness = world.getBlockState(pos).getPackedLightmapCoords(world, pos);
         BlockFluidPipe blockFluidPipe = (BlockFluidPipe) state.getBlock();
         IPipeTile<FluidPipeType, FluidPipeProperties> tileEntityCable = blockFluidPipe.getPipeTileEntity(world, pos);
 
@@ -138,11 +137,8 @@ public class FluidPipeRenderer implements ICCBlockRenderer, IItemRenderer {
         Material material = tileEntityCable.getPipeMaterial();
 
         if (fluidPipeType != null && material != null) {
-            renderState.brightness = brightness;
             renderPipeBlock(material, fluidPipeType, paintingColor, renderState, pipeline, connectedSidesMask);
-            renderState.brightness = brightness;
-            renderState.lightMatrix.locate(world, pos);
-            tileEntityCable.getCoverableImplementation().renderCovers(renderState, new Matrix4().translate(pos.getX(), pos.getY(), pos.getZ()), renderState.lightMatrix, brightness);
+            tileEntityCable.getCoverableImplementation().renderCovers(renderState, new Matrix4().translate(pos.getX(), pos.getY(), pos.getZ()));
         }
         return true;
     }

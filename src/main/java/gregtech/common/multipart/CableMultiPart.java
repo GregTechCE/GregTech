@@ -5,7 +5,6 @@ import codechicken.lib.render.pipeline.IVertexOperation;
 import codechicken.lib.vec.Matrix4;
 import codechicken.lib.vec.Translation;
 import codechicken.lib.vec.Vector3;
-import codechicken.multipart.TileMultipart;
 import gregtech.api.capability.GregtechCapabilities;
 import gregtech.api.pipenet.tile.IPipeTile;
 import gregtech.common.pipelike.cable.Insulation;
@@ -66,15 +65,10 @@ public class CableMultiPart extends PipeMultiPart<Insulation, WireProperties> {
     @SideOnly(Side.CLIENT)
     public boolean renderStatic(Vector3 pos, BlockRenderLayer layer, CCRenderState ccrs) {
         if (MinecraftForgeClient.getRenderLayer() == BlockRenderLayer.CUTOUT) {
-            TileMultipart tileMultipart = tile();
-            int brightness = tileMultipart.getWorld().getBlockState(tileMultipart.getPos()).getPackedLightmapCoords(tileMultipart.getWorld(), tileMultipart.getPos());
-            ccrs.brightness = brightness;
             CableRenderer.INSTANCE.renderCableBlock(getPipeMaterial(), getPipeType(), getInsulationColor(), ccrs,
                 new IVertexOperation[]{new Translation(pos)},
                 activeConnections & ~getBlockedConnections());
-            ccrs.brightness = brightness;
-            ccrs.lightMatrix.locate(world(), pos());
-            getCoverableImplementation().renderCovers(ccrs, new Matrix4().translate(pos), ccrs.lightMatrix, brightness);
+            getCoverableImplementation().renderCovers(ccrs, new Matrix4().translate(pos));
             return true;
         }
         return false;

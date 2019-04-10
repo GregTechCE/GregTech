@@ -115,18 +115,14 @@ public class CableRenderer implements ICCBlockRenderer, IItemRenderer {
 
         BlockCable blockCable = (BlockCable) state.getBlock();
         IPipeTile<Insulation, WireProperties> tileEntityCable = blockCable.getPipeTileEntity(world, pos);
-        int brightness = world.getBlockState(pos).getPackedLightmapCoords(world, pos);
         if (tileEntityCable == null) return false;
         int paintingColor = tileEntityCable.getInsulationColor();
         int connectedSidesMask = blockCable.getActualConnections(tileEntityCable, world);
         Insulation insulation = tileEntityCable.getPipeType();
         Material material = tileEntityCable.getPipeMaterial();
         if (insulation != null && material != null) {
-            renderState.brightness = brightness;
             renderCableBlock(material, insulation, paintingColor, renderState, pipeline, connectedSidesMask);
-            renderState.lightMatrix.locate(world, pos);
-            renderState.brightness = brightness;
-            tileEntityCable.getCoverableImplementation().renderCovers(renderState, new Matrix4().translate(pos.getX(), pos.getY(), pos.getZ()), renderState.lightMatrix, brightness);
+            tileEntityCable.getCoverableImplementation().renderCovers(renderState, new Matrix4().translate(pos.getX(), pos.getY(), pos.getZ()));
         }
         return true;
     }

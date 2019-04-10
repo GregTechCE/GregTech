@@ -105,7 +105,7 @@ public class CoverMachineController extends CoverBehavior implements CoverWithUI
 
     @Override
     public EnumActionResult onScrewdriverClick(EntityPlayer playerIn, EnumHand hand, CuboidRayTraceResult hitResult) {
-        if(playerIn instanceof EntityPlayerMP) {
+        if (!coverHolder.getWorld().isRemote) {
             openUI((EntityPlayerMP) playerIn);
         }
         return EnumActionResult.SUCCESS;

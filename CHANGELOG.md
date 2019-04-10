@@ -8,6 +8,7 @@
 * Added machine controller cover to control covers and machines with redstone.
 * Added recipes for gravel and sand in forge hammer.
 * Added validate/invalidate hooks for meta tile entities.
+* Added turbine blade Recipes in the Assembling Machine.
 * Fixed weird item movement when affected by >1 item collectors.
 * Fixed pipes not being synced to other players on placement.
 * Fixed crash with wrench overlay.
@@ -20,6 +21,7 @@
 * Added wooden pipe recipes.
 * Fix batteries not recharging in machines.
 * Fix covers not dropping their inventory contents when removed (e.g filter upgrades)
+* Fix weird pump behavior on deep fluid sources.
 
 ### 1.6.9
 * Fix large boiler not using solid fuel.

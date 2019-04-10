@@ -344,8 +344,15 @@ public class PartsRecipeHandler {
             .input(OrePrefix.turbineBlade, material, 8)
             .input(OrePrefix.stickLong, Materials.Titanium)
             .outputs(rotorStack)
-            .duration(320)
-            .EUt(400)
+            .duration(200).EUt(400)
+            .buildAndRegister();
+
+        RecipeMaps.ASSEMBLER_RECIPES.recipeBuilder()
+            .input(OrePrefix.plate, material, 5)
+            .input(OrePrefix.screw, material, 2)
+            .outputs(OreDictUnifier.get(toolPrefix, material))
+            .duration(20).EUt(256)
+            .circuitMeta(10)
             .buildAndRegister();
 
         ModHandler.addShapedRecipe(String.format("turbine_blade_%s", material),
