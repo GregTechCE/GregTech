@@ -55,10 +55,6 @@ repositories {
         name = "Progwml6 maven"
         url = "https://dvs1.progwml6.com/files/maven/"
     }
-    maven { //JEI fallback
-        name = "ModMaven"
-        url = "https://modmaven.k-4u.nl"
-    }
     maven {
         name = "tterrag maven"
         url = "https://maven.tterrag.com/"
