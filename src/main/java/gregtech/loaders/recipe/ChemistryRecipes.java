@@ -275,25 +275,25 @@ public class ChemistryRecipes {
             RecipeMaps.MIXER_RECIPES.recipeBuilder().duration(128).EUt(4).input(OrePrefix.dust, dust).fluidInputs(Materials.SeedOil.getFluid(750)).fluidOutputs(Materials.Lubricant.getFluid(750)).buildAndRegister();
         }
 
-        RecipeMaps.BREWING_RECIPES.recipeBuilder().duration(2880).EUt(3).inputs(MetaItems.PLANT_BALL.getStackForm()).fluidInputs(Materials.Honey.getFluid(180)).fluidOutputs(Materials.Biomass.getFluid(270)).buildAndRegister();
-        RecipeMaps.BREWING_RECIPES.recipeBuilder().duration(1200).EUt(3).input("treeSapling", 1).fluidInputs(Materials.Honey.getFluid(100)).fluidOutputs(Materials.Biomass.getFluid(150)).buildAndRegister();
-        RecipeMaps.BREWING_RECIPES.recipeBuilder().duration(320).EUt(3).inputs(new ItemStack(Items.POTATO)).fluidInputs(Materials.Honey.getFluid(20)).fluidOutputs(Materials.Biomass.getFluid(30)).buildAndRegister();
-        RecipeMaps.BREWING_RECIPES.recipeBuilder().duration(320).EUt(3).inputs(new ItemStack(Items.CARROT)).fluidInputs(Materials.Honey.getFluid(20)).fluidOutputs(Materials.Biomass.getFluid(30)).buildAndRegister();
-        RecipeMaps.BREWING_RECIPES.recipeBuilder().duration(320).EUt(3).inputs(new ItemStack(Blocks.CACTUS)).fluidInputs(Materials.Honey.getFluid(20)).fluidOutputs(Materials.Biomass.getFluid(30)).buildAndRegister();
-        RecipeMaps.BREWING_RECIPES.recipeBuilder().duration(320).EUt(3).inputs(new ItemStack(Items.REEDS)).fluidInputs(Materials.Honey.getFluid(20)).fluidOutputs(Materials.Biomass.getFluid(30)).buildAndRegister();
-        RecipeMaps.BREWING_RECIPES.recipeBuilder().duration(320).EUt(3).inputs(new ItemStack(Blocks.BROWN_MUSHROOM)).fluidInputs(Materials.Honey.getFluid(20)).fluidOutputs(Materials.Biomass.getFluid(30)).buildAndRegister();
-        RecipeMaps.BREWING_RECIPES.recipeBuilder().duration(320).EUt(3).inputs(new ItemStack(Blocks.RED_MUSHROOM)).fluidInputs(Materials.Honey.getFluid(20)).fluidOutputs(Materials.Biomass.getFluid(30)).buildAndRegister();
-        RecipeMaps.BREWING_RECIPES.recipeBuilder().duration(320).EUt(3).inputs(new ItemStack(Items.BEETROOT)).fluidInputs(Materials.Honey.getFluid(20)).fluidOutputs(Materials.Biomass.getFluid(30)).buildAndRegister();
+        RecipeMaps.BREWING_RECIPES.recipeBuilder().duration(1440).EUt(3).inputs(MetaItems.PLANT_BALL.getStackForm()).fluidInputs(Materials.Honey.getFluid(180)).fluidOutputs(Materials.Biomass.getFluid(270)).buildAndRegister();
+        RecipeMaps.BREWING_RECIPES.recipeBuilder().duration(600).EUt(3).input("treeSapling", 1).fluidInputs(Materials.Honey.getFluid(100)).fluidOutputs(Materials.Biomass.getFluid(150)).buildAndRegister();
+        RecipeMaps.BREWING_RECIPES.recipeBuilder().duration(160).EUt(3).inputs(new ItemStack(Items.POTATO)).fluidInputs(Materials.Honey.getFluid(20)).fluidOutputs(Materials.Biomass.getFluid(30)).buildAndRegister();
+        RecipeMaps.BREWING_RECIPES.recipeBuilder().duration(160).EUt(3).inputs(new ItemStack(Items.CARROT)).fluidInputs(Materials.Honey.getFluid(20)).fluidOutputs(Materials.Biomass.getFluid(30)).buildAndRegister();
+        RecipeMaps.BREWING_RECIPES.recipeBuilder().duration(160).EUt(3).inputs(new ItemStack(Blocks.CACTUS)).fluidInputs(Materials.Honey.getFluid(20)).fluidOutputs(Materials.Biomass.getFluid(30)).buildAndRegister();
+        RecipeMaps.BREWING_RECIPES.recipeBuilder().duration(160).EUt(3).inputs(new ItemStack(Items.REEDS)).fluidInputs(Materials.Honey.getFluid(20)).fluidOutputs(Materials.Biomass.getFluid(30)).buildAndRegister();
+        RecipeMaps.BREWING_RECIPES.recipeBuilder().duration(160).EUt(3).inputs(new ItemStack(Blocks.BROWN_MUSHROOM)).fluidInputs(Materials.Honey.getFluid(20)).fluidOutputs(Materials.Biomass.getFluid(30)).buildAndRegister();
+        RecipeMaps.BREWING_RECIPES.recipeBuilder().duration(160).EUt(3).inputs(new ItemStack(Blocks.RED_MUSHROOM)).fluidInputs(Materials.Honey.getFluid(20)).fluidOutputs(Materials.Biomass.getFluid(30)).buildAndRegister();
+        RecipeMaps.BREWING_RECIPES.recipeBuilder().duration(160).EUt(3).inputs(new ItemStack(Items.BEETROOT)).fluidInputs(Materials.Honey.getFluid(20)).fluidOutputs(Materials.Biomass.getFluid(30)).buildAndRegister();
 
-        RecipeMaps.BREWING_RECIPES.recipeBuilder().duration(2880).EUt(3).inputs(MetaItems.PLANT_BALL.getStackForm()).fluidInputs(Materials.Juice.getFluid(180)).fluidOutputs(Materials.Biomass.getFluid(270)).buildAndRegister();
-        RecipeMaps.BREWING_RECIPES.recipeBuilder().duration(1200).EUt(3).input("treeSapling", 1).fluidInputs(Materials.Juice.getFluid(100)).fluidOutputs(Materials.Biomass.getFluid(150)).buildAndRegister();
-        RecipeMaps.BREWING_RECIPES.recipeBuilder().duration(320).EUt(3).inputs(new ItemStack(Items.POTATO)).fluidInputs(Materials.Juice.getFluid(20)).fluidOutputs(Materials.Biomass.getFluid(30)).buildAndRegister();
-        RecipeMaps.BREWING_RECIPES.recipeBuilder().duration(320).EUt(3).inputs(new ItemStack(Items.CARROT)).fluidInputs(Materials.Juice.getFluid(20)).fluidOutputs(Materials.Biomass.getFluid(30)).buildAndRegister();
-        RecipeMaps.BREWING_RECIPES.recipeBuilder().duration(320).EUt(3).inputs(new ItemStack(Blocks.CACTUS)).fluidInputs(Materials.Juice.getFluid(20)).fluidOutputs(Materials.Biomass.getFluid(30)).buildAndRegister();
-        RecipeMaps.BREWING_RECIPES.recipeBuilder().duration(320).EUt(3).inputs(new ItemStack(Items.REEDS)).fluidInputs(Materials.Juice.getFluid(20)).fluidOutputs(Materials.Biomass.getFluid(30)).buildAndRegister();
-        RecipeMaps.BREWING_RECIPES.recipeBuilder().duration(320).EUt(3).inputs(new ItemStack(Blocks.BROWN_MUSHROOM)).fluidInputs(Materials.Juice.getFluid(20)).fluidOutputs(Materials.Biomass.getFluid(30)).buildAndRegister();
-        RecipeMaps.BREWING_RECIPES.recipeBuilder().duration(320).EUt(3).inputs(new ItemStack(Blocks.RED_MUSHROOM)).fluidInputs(Materials.Juice.getFluid(20)).fluidOutputs(Materials.Biomass.getFluid(30)).buildAndRegister();
-        RecipeMaps.BREWING_RECIPES.recipeBuilder().duration(320).EUt(3).inputs(new ItemStack(Items.BEETROOT)).fluidInputs(Materials.Juice.getFluid(20)).fluidOutputs(Materials.Biomass.getFluid(30)).buildAndRegister();
+        RecipeMaps.BREWING_RECIPES.recipeBuilder().duration(1440).EUt(3).inputs(MetaItems.PLANT_BALL.getStackForm()).fluidInputs(Materials.Juice.getFluid(180)).fluidOutputs(Materials.Biomass.getFluid(270)).buildAndRegister();
+        RecipeMaps.BREWING_RECIPES.recipeBuilder().duration(600).EUt(3).input("treeSapling", 1).fluidInputs(Materials.Juice.getFluid(100)).fluidOutputs(Materials.Biomass.getFluid(150)).buildAndRegister();
+        RecipeMaps.BREWING_RECIPES.recipeBuilder().duration(160).EUt(3).inputs(new ItemStack(Items.POTATO)).fluidInputs(Materials.Juice.getFluid(20)).fluidOutputs(Materials.Biomass.getFluid(30)).buildAndRegister();
+        RecipeMaps.BREWING_RECIPES.recipeBuilder().duration(160).EUt(3).inputs(new ItemStack(Items.CARROT)).fluidInputs(Materials.Juice.getFluid(20)).fluidOutputs(Materials.Biomass.getFluid(30)).buildAndRegister();
+        RecipeMaps.BREWING_RECIPES.recipeBuilder().duration(160).EUt(3).inputs(new ItemStack(Blocks.CACTUS)).fluidInputs(Materials.Juice.getFluid(20)).fluidOutputs(Materials.Biomass.getFluid(30)).buildAndRegister();
+        RecipeMaps.BREWING_RECIPES.recipeBuilder().duration(160).EUt(3).inputs(new ItemStack(Items.REEDS)).fluidInputs(Materials.Juice.getFluid(20)).fluidOutputs(Materials.Biomass.getFluid(30)).buildAndRegister();
+        RecipeMaps.BREWING_RECIPES.recipeBuilder().duration(160).EUt(3).inputs(new ItemStack(Blocks.BROWN_MUSHROOM)).fluidInputs(Materials.Juice.getFluid(20)).fluidOutputs(Materials.Biomass.getFluid(30)).buildAndRegister();
+        RecipeMaps.BREWING_RECIPES.recipeBuilder().duration(160).EUt(3).inputs(new ItemStack(Blocks.RED_MUSHROOM)).fluidInputs(Materials.Juice.getFluid(20)).fluidOutputs(Materials.Biomass.getFluid(30)).buildAndRegister();
+        RecipeMaps.BREWING_RECIPES.recipeBuilder().duration(160).EUt(3).inputs(new ItemStack(Items.BEETROOT)).fluidInputs(Materials.Juice.getFluid(20)).fluidOutputs(Materials.Biomass.getFluid(30)).buildAndRegister();
 
         RecipeMaps.CHEMICAL_RECIPES.recipeBuilder().duration(1200).EUt(120).fluidInputs(Materials.SulfuricAcid.getFluid(1000), Materials.Ethanol.getFluid(1000)).fluidOutputs(Materials.Ethylene.getFluid(1000), Materials.DilutedSulfuricAcid.getFluid(1000)).buildAndRegister();
     }
