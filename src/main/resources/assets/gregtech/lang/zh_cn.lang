@@ -2303,6 +2303,20 @@ gregtech.machine.pump.zpm.name=进阶泵 VI
 gregtech.machine.pump.uv.name=进阶泵 VII
 gregtech.machine.pump.max.name=进阶泵 VIII
 
+# Flood gates
+gregtech.machine.flood_gate.tooltip_range=工作范围: %dx%d
+gregtech.machine.flood_gate.tooltip_speed=每 %d 刻排放一次
+
+gregtech.machine.flood_gate.lv.name=基础液闸
+gregtech.machine.flood_gate.mv.name=进阶液闸
+gregtech.machine.flood_gate.hv.name=进阶液闸 II
+gregtech.machine.flood_gate.ev.name=进阶液闸 III
+gregtech.machine.flood_gate.iv.name=进阶液闸 IV
+gregtech.machine.flood_gate.luv.name=进阶液闸 V
+gregtech.machine.flood_gate.zpm.name=进阶液闸 VI
+gregtech.machine.flood_gate.uv.name=进阶液闸 VII
+gregtech.machine.flood_gate.max.name=进阶液闸 VIII
+
 #Quantum chests
 gregtech.machine.quantum_chest.tooltip=比JABBA好
 gregtech.machine.quantum_chest.capacity=物品储量: %d 个

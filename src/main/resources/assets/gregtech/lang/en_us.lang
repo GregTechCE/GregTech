@@ -2172,6 +2172,15 @@ gregtech.machine.pump.mv.name=Advanced Pump
 gregtech.machine.pump.hv.name=Advanced Pump II
 gregtech.machine.pump.ev.name=Advanced Pump III
 
+# Flood gates
+gregtech.machine.flood_gate.tooltip_range=Placing Area: %dx%d
+gregtech.machine.flood_gate.tooltip_speed=Place Fluid every %d ticks
+
+gregtech.machine.flood_gate.lv.name=Basic Flood Gate
+gregtech.machine.flood_gate.mv.name=Advanced Flood Gate
+gregtech.machine.flood_gate.hv.name=Advanced Flood Gate II
+gregtech.machine.flood_gate.ev.name=Advanced Flood Gate III
+
 gregtech.machine.item_collector.lv.name=Basic Item Collector
 gregtech.machine.item_collector.mv.name=Advanced Item Collector
 gregtech.machine.item_collector.hv.name=Advanced Item Collector II

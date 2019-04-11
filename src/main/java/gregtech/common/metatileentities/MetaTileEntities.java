@@ -154,6 +154,7 @@ public class MetaTileEntities {
 
     //MISC MACHINES SECTION
     public static MetaTileEntityPump[] PUMP = new MetaTileEntityPump[4];
+    public static MetaTileEntityFloodGate[] FLOOD_GATE = new MetaTileEntityFloodGate[4];
     public static MetaTileEntityAirCollector[] AIR_COLLECTOR = new MetaTileEntityAirCollector[4];
     public static MetaTileEntityItemCollector[] ITEM_COLLECTOR = new MetaTileEntityItemCollector[4];
     public static MetaTileEntityTeslaCoil TESLA_COIL;
@@ -487,8 +488,10 @@ public class MetaTileEntities {
         for (int i = 1; i < 5; i++) {
             String voltageName = GTValues.VN[i].toLowerCase();
             PUMP[i - 1] = new MetaTileEntityPump(gregtechId("pump." + voltageName), i);
+            FLOOD_GATE[i - 1] = new MetaTileEntityFloodGate(gregtechId("flood_gate." + voltageName), i);
             AIR_COLLECTOR[i - 1] = new MetaTileEntityAirCollector(gregtechId("air_collector." + voltageName), i);
             GregTechAPI.registerMetaTileEntity(900 + 10 * (i - 1), PUMP[i - 1]);
+            GregTechAPI.registerMetaTileEntity(1030 + 10 * (i - 1), FLOOD_GATE[i - 1]);
             GregTechAPI.registerMetaTileEntity(950 + 10 * (i - 1), AIR_COLLECTOR[i - 1]);
         }
 
