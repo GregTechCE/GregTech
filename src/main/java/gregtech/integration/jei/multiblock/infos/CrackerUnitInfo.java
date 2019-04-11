@@ -41,7 +41,7 @@ public class CrackerUnitInfo extends MultiblockInfoPage {
 
     @Override
     public String[] getDescription() {
-        return new String[] {I18n.format("gregtech.multiblock.cracker.description")};
+        return new String[]{I18n.format("gregtech.multiblock.cracker.description")};
     }
 
 }

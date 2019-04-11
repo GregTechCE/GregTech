@@ -1,7 +1,6 @@
 package gregtech.api.gui.widgets;
 
 import gregtech.api.gui.GuiTextures;
-import gregtech.api.gui.Widget;
 import gregtech.api.gui.resources.SizedTextureArea;
 import gregtech.api.gui.resources.TextureArea;
 import net.minecraft.client.Minecraft;
@@ -13,22 +12,15 @@ import org.lwjgl.input.Keyboard;
 
 import java.util.function.Consumer;
 
-public class ClickButtonWidget extends Widget {
+public class ClickButtonWidget extends AbstractPositionedRectangleWidget {
 
-    protected int xPosition;
-    protected int yPosition;
-    protected int width, height;
     protected TextureArea buttonTexture = GuiTextures.VANILLA_BUTTON.getSubArea(0.0, 0.0, 1.0, 0.5);
     protected String displayText;
     protected int textColor = 0xFFFFFF;
     protected Consumer<ClickData> onPressCallback;
 
     public ClickButtonWidget(int xPosition, int yPosition, int width, int height, String displayText, Consumer<ClickData> onPressed) {
-        super();
-        this.xPosition = xPosition;
-        this.yPosition = yPosition;
-        this.width = width;
-        this.height = height;
+        super(xPosition, yPosition, width, height);
         this.displayText = displayText;
         this.onPressCallback = onPressed;
     }
@@ -46,7 +38,7 @@ public class ClickButtonWidget extends Widget {
     @Override
     public void drawInBackground(int mouseX, int mouseY) {
         super.drawInBackground(mouseX, mouseY);
-        if(buttonTexture instanceof SizedTextureArea) {
+        if (buttonTexture instanceof SizedTextureArea) {
             ((SizedTextureArea) buttonTexture).drawHorizontalCutSubArea(xPosition, yPosition, width, height, 0.0, 1.0);
         } else {
             buttonTexture.drawSubArea(xPosition, yPosition, width, height, 0.0, 0.0, 1.0, 1.0);
@@ -61,7 +53,7 @@ public class ClickButtonWidget extends Widget {
 
     @Override
     public boolean mouseClicked(int mouseX, int mouseY, int button) {
-        if(isMouseOver(xPosition, yPosition, width, height, mouseX, mouseY)) {
+        if (isMouseOver(xPosition, yPosition, width, height, mouseX, mouseY)) {
             triggerButton();
             return true;
         }
@@ -81,7 +73,7 @@ public class ClickButtonWidget extends Widget {
     @Override
     public void handleClientAction(int id, PacketBuffer buffer) {
         super.handleClientAction(id, buffer);
-        if(id == 1) {
+        if (id == 1) {
             boolean isShiftClick = buffer.readBoolean();
             boolean isCtrlClick = buffer.readBoolean();
             onPressCallback.accept(new ClickData(isShiftClick, isCtrlClick));

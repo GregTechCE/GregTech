@@ -20,7 +20,7 @@ public class GTControlledRegistry<K, V> extends RegistrySimple<K, V> {
 
     public GTControlledRegistry(int maxId) {
         this.maxId = maxId;
-        this.inverseObjectRegistry = ((BiMap<K, V>)this.registryObjects).inverse();
+        this.inverseObjectRegistry = ((BiMap<K, V>) this.registryObjects).inverse();
     }
 
     public boolean isFrozen() {
@@ -28,17 +28,17 @@ public class GTControlledRegistry<K, V> extends RegistrySimple<K, V> {
     }
 
     public void freezeRegistry() {
-        if(frozen) {
+        if (frozen) {
             throw new IllegalStateException("Registry is already frozen!");
         }
         this.frozen = true;
     }
 
     public void register(int id, K key, V value) {
-        if(id < 0 || id >= maxId) {
+        if (id < 0 || id >= maxId) {
             throw new IndexOutOfBoundsException("Id is out of range: " + id);
         }
-        if(key instanceof ResourceLocation) {
+        if (key instanceof ResourceLocation) {
             //check ResourceLocation key and log warning if it differs from the active ModID
             key = (K) GameData.checkPrefix(key.toString());
         }
@@ -46,7 +46,7 @@ public class GTControlledRegistry<K, V> extends RegistrySimple<K, V> {
         super.putObject(key, value);
 
         V objectWithId = getObjectById(id);
-        if(objectWithId != null) {
+        if (objectWithId != null) {
             throw new IllegalArgumentException(String.format("Tried to reassign id %d to %s (%s), but it is already assigned to %s (%s)!",
                 id, value, key, objectWithId, getNameForObject(objectWithId)));
         }
@@ -55,7 +55,7 @@ public class GTControlledRegistry<K, V> extends RegistrySimple<K, V> {
 
     @Override
     public void putObject(K key, V value) {
-       throw new UnsupportedOperationException("Use #register(int, String, T)");
+        throw new UnsupportedOperationException("Use #register(int, String, T)");
     }
 
     public int getIdByObjectName(K key) {
@@ -69,31 +69,26 @@ public class GTControlledRegistry<K, V> extends RegistrySimple<K, V> {
     protected final Map<V, K> inverseObjectRegistry;
 
     @Override
-    protected Map<K, V> createUnderlyingMap()
-    {
+    protected Map<K, V> createUnderlyingMap() {
         return HashBiMap.create();
     }
 
     @Nullable
-    public K getNameForObject(V value)
-    {
+    public K getNameForObject(V value) {
         return this.inverseObjectRegistry.get(value);
     }
 
-    public int getIDForObject(@Nullable V value)
-    {
+    public int getIDForObject(@Nullable V value) {
         return this.underlyingIntegerMap.getId(value);
     }
 
     @Nullable
-    public V getObjectById(int id)
-    {
+    public V getObjectById(int id) {
         return this.underlyingIntegerMap.get(id);
     }
 
     @Override
-    public Iterator<V> iterator()
-    {
+    public Iterator<V> iterator() {
         return this.underlyingIntegerMap.iterator();
     }
 }

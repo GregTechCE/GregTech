@@ -48,7 +48,7 @@ public class ToggleButtonWidget extends Widget {
     @Override
     @SideOnly(Side.CLIENT)
     public void drawInBackground(int mouseX, int mouseY) {
-        if(buttonTexture instanceof SizedTextureArea) {
+        if (buttonTexture instanceof SizedTextureArea) {
             ((SizedTextureArea) buttonTexture).drawHorizontalCutSubArea(xPosition, yPosition, width, height, isPressed ? 0.5 : 0.0, 0.5);
         } else {
             buttonTexture.drawSubArea(xPosition, yPosition, width, height, 0.0, isPressed ? 0.5 : 0.0, 1.0, 0.5);
@@ -58,7 +58,7 @@ public class ToggleButtonWidget extends Widget {
     @Override
     public void detectAndSendChanges() {
         super.detectAndSendChanges();
-        if(isPressedCondition.getAsBoolean() != isPressed) {
+        if (isPressedCondition.getAsBoolean() != isPressed) {
             this.isPressed = isPressedCondition.getAsBoolean();
             writeUpdateInfo(1, buf -> buf.writeBoolean(isPressed));
         }
@@ -67,7 +67,7 @@ public class ToggleButtonWidget extends Widget {
     @Override
     public void readUpdateInfo(int id, PacketBuffer buffer) {
         super.readUpdateInfo(id, buffer);
-        if(id == 1) {
+        if (id == 1) {
             this.isPressed = buffer.readBoolean();
         }
     }
@@ -76,7 +76,7 @@ public class ToggleButtonWidget extends Widget {
     @SideOnly(Side.CLIENT)
     public boolean mouseClicked(int mouseX, int mouseY, int button) {
         super.mouseClicked(mouseX, mouseY, button);
-        if(isMouseOver(xPosition, yPosition, width, height, mouseX, mouseY)) {
+        if (isMouseOver(xPosition, yPosition, width, height, mouseX, mouseY)) {
             this.isPressed = !this.isPressed;
             writeClientAction(1, buf -> buf.writeBoolean(isPressed));
             playButtonClickSound();
@@ -89,7 +89,7 @@ public class ToggleButtonWidget extends Widget {
     @Override
     public void handleClientAction(int id, PacketBuffer buffer) {
         super.handleClientAction(id, buffer);
-        if(id == 1) {
+        if (id == 1) {
             this.isPressed = buffer.readBoolean();
             setPressedExecutor.apply(isPressed);
         }

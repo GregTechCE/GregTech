@@ -65,7 +65,7 @@ public class BlockWorldState {
     }
 
     public IBlockState getOffsetState(EnumFacing face) {
-        if(pos instanceof MutableBlockPos) {
+        if (pos instanceof MutableBlockPos) {
             ((MutableBlockPos) pos).move(face);
             IBlockState blockState = world.getBlockState(pos);
             ((MutableBlockPos) pos).move(face.getOpposite());

@@ -47,7 +47,7 @@ public class BlockCable extends BlockPipe<Insulation, WireProperties, WorldENet>
     public void addCableMaterial(Material material, WireProperties wireProperties) {
         Preconditions.checkNotNull(material, "material");
         Preconditions.checkNotNull(wireProperties, "wireProperties");
-        Preconditions.checkArgument(Material.MATERIAL_REGISTRY.getNameForObject(material) != null,"material is not registered");
+        Preconditions.checkArgument(Material.MATERIAL_REGISTRY.getNameForObject(material) != null, "material is not registered");
         this.enabledMaterials.put(material, wireProperties);
     }
 
@@ -87,14 +87,14 @@ public class BlockCable extends BlockPipe<Insulation, WireProperties, WorldENet>
     @Override
     public int getActiveNodeConnections(IBlockAccess world, BlockPos nodePos) {
         int activeNodeConnections = 0;
-        for(EnumFacing side : EnumFacing.VALUES) {
+        for (EnumFacing side : EnumFacing.VALUES) {
             BlockPos offsetPos = nodePos.offset(side);
             TileEntity tileEntity = world.getTileEntity(offsetPos);
             //do not connect to null cables and ignore cables
-            if(tileEntity == null || getPipeTileEntity(tileEntity) != null) continue;
+            if (tileEntity == null || getPipeTileEntity(tileEntity) != null) continue;
             EnumFacing opposite = side.getOpposite();
             IEnergyContainer energyContainer = tileEntity.getCapability(GregtechCapabilities.CAPABILITY_ENERGY_CONTAINER, opposite);
-            if(energyContainer != null) {
+            if (energyContainer != null) {
                 activeNodeConnections |= 1 << side.getIndex();
             }
         }
@@ -104,13 +104,13 @@ public class BlockCable extends BlockPipe<Insulation, WireProperties, WorldENet>
     @Override
     public void onEntityCollidedWithBlock(World worldIn, BlockPos pos, IBlockState state, Entity entityIn) {
         Insulation insulation = getPipeTileEntity(worldIn, pos).getPipeType();
-        if(!worldIn.isRemote && insulation.insulationLevel == -1 && entityIn instanceof EntityLivingBase) {
+        if (!worldIn.isRemote && insulation.insulationLevel == -1 && entityIn instanceof EntityLivingBase) {
             EntityLivingBase entityLiving = (EntityLivingBase) entityIn;
             EnergyNet energyNet = getWorldPipeNet(worldIn).getNetFromPos(pos);
-            if(energyNet != null && !GTUtility.isWearingFullElectroHazmat(entityLiving)) {
+            if (energyNet != null) {
                 long voltage = energyNet.getLastMaxVoltage();
                 long amperage = energyNet.getLastAmperage();
-                if(voltage > 0L && amperage > 0L) {
+                if (voltage > 0L && amperage > 0L) {
                     float damageAmount = (GTUtility.getTierByVoltage(voltage) + 1) * amperage * 4;
                     entityLiving.attackEntityFrom(DamageSources.getElectricDamage(), damageAmount);
                 }

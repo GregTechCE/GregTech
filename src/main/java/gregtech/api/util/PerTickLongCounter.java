@@ -19,8 +19,8 @@ public class PerTickLongCounter {
 
     private void checkValueState(World world) {
         long currentWorldTime = world.getTotalWorldTime();
-        if(currentWorldTime != lastUpdatedWorldTime) {
-            if(currentWorldTime == lastUpdatedWorldTime + 1) {
+        if (currentWorldTime != lastUpdatedWorldTime) {
+            if (currentWorldTime == lastUpdatedWorldTime + 1) {
                 //last updated time is 1 tick ago, so we can move current value to last
                 //before resetting it to default value
                 this.lastValue = currentValue;

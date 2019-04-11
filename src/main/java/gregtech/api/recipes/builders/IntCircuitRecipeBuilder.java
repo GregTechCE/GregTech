@@ -29,7 +29,7 @@ public class IntCircuitRecipeBuilder extends RecipeBuilder<IntCircuitRecipeBuild
 
     @Override
     public boolean applyProperty(String key, Object value) {
-        if(key.equals("circuit") && value instanceof Number) {
+        if (key.equals("circuit") && value instanceof Number) {
             this.circuitMeta = ((Number) value).intValue();
             return true;
         }

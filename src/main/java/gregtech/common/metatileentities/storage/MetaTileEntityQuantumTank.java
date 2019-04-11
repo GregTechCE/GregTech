@@ -42,7 +42,7 @@ import java.util.List;
 
 public class MetaTileEntityQuantumTank extends MetaTileEntity implements ITieredMetaTileEntity {
 
-    private static final double[] rotations = new double[] {180.0, 0.0, -90.0, 90.0};
+    private static final double[] rotations = new double[]{180.0, 0.0, -90.0, 90.0};
 
     private final int tier;
     private final int maxFluidCapacity;
@@ -68,17 +68,17 @@ public class MetaTileEntityQuantumTank extends MetaTileEntity implements ITiered
         this.fluidTank = new WatchedFluidTank(maxFluidCapacity) {
             @Override
             protected void onFluidChanged(FluidStack newFluidStack, FluidStack oldFluidStack) {
-                updateComparatorValue(true);
+                updateComparatorValue();
             }
         };
         this.fluidInventory = fluidTank;
         this.importFluids = new FluidTankList(false, fluidTank);
         this.exportFluids = new FluidTankList(false, fluidTank);
-        updateComparatorValue(true);
+        updateComparatorValue();
     }
 
     @Override
-    public int getComparatorValue() {
+    public int getActualComparatorValue() {
         FluidTank fluidTank = this.fluidTank;
         int fluidAmount = fluidTank.getFluidAmount();
         int maxCapacity = fluidTank.getCapacity();
@@ -89,12 +89,12 @@ public class MetaTileEntityQuantumTank extends MetaTileEntity implements ITiered
     @Override
     public void update() {
         super.update();
-        if(!getWorld().isRemote && getTimer() % 5 == 0) {
+        if (!getWorld().isRemote && getTimer() % 5 == 0) {
             ItemStack itemStack = containerInventory.getStackInSlot(0);
             Capability<IFluidHandlerItem> capability = CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY;
-            if(!itemStack.isEmpty() && itemStack.hasCapability(capability, null)) {
+            if (!itemStack.isEmpty() && itemStack.hasCapability(capability, null)) {
                 //if we can't drain anything, try filling container. Otherwise, drain it into the quantum chest tank
-                if(itemStack.getCapability(capability, null).drain(Integer.MAX_VALUE, false) == null) {
+                if (itemStack.getCapability(capability, null).drain(Integer.MAX_VALUE, false) == null) {
                     fillContainerFromInternalTank(containerInventory, containerInventory, 0, 1);
                     pushFluidsIntoNearbyHandlers(getFrontFacing());
                 } else {
@@ -135,7 +135,7 @@ public class MetaTileEntityQuantumTank extends MetaTileEntity implements ITiered
     public MetaTileEntity createMetaTileEntity(MetaTileEntityHolder holder) {
         return new MetaTileEntityQuantumTank(metaTileEntityId, tier, maxFluidCapacity);
     }
-    
+
     @Override
     protected FluidTankList createImportFluidHandler() {
         return new FluidTankList(false, fluidTank);

@@ -197,7 +197,7 @@ public class MetaItem1 extends MaterialMetaItem {
         FLUID_FILTER = addItem(628, "fluid_filter");
 
         DYNAMITE = addItem(629, "dynamite").addStats(new DynamiteBehaviour()).setMaxStackSize(16);
-        
+
         CONVEYOR_MODULE_LV = addItem(630, "conveyor.module.lv");
         CONVEYOR_MODULE_MV = addItem(631, "conveyor.module.mv");
         CONVEYOR_MODULE_HV = addItem(632, "conveyor.module.hv");
@@ -265,8 +265,8 @@ public class MetaItem1 extends MaterialMetaItem {
 
         ITEM_FILTER = addItem(729, "item_filter");
         ORE_DICTIONARY_FILTER = addItem(102, "ore_dictionary_filter");
+        COVER_MACHINE_CONTROLLER = addItem(730, "cover.controller");
 
-        COVER_CONTROLLER = addItem(730, "cover.controller").setInvisible();
         COVER_ACTIVITY_DETECTOR = addItem(731, "cover.activity.detector").setInvisible();
         COVER_FLUID_DETECTOR = addItem(732, "cover.fluid.detector").setInvisible();
         COVER_ITEM_DETECTOR = addItem(733, "cover.item.detector").setInvisible();
@@ -522,7 +522,7 @@ public class MetaItem1 extends MaterialMetaItem {
         IBlockState blockState = itemEntity.getEntityWorld().getBlockState(blockPos);
         int waterLevel = blockState.getBlock() instanceof BlockCauldron ?
             blockState.getValue(BlockCauldron.LEVEL) : 0;
-        if(waterLevel == 0)
+        if (waterLevel == 0)
             return false;
         itemEntity.getEntityWorld().setBlockState(blockPos,
             blockState.withProperty(BlockCauldron.LEVEL, waterLevel - 1));

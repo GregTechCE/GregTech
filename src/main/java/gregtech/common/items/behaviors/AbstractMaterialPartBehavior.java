@@ -1,6 +1,9 @@
 package gregtech.common.items.behaviors;
 
-import gregtech.api.items.metaitem.stats.*;
+import gregtech.api.items.metaitem.stats.IItemBehaviour;
+import gregtech.api.items.metaitem.stats.IItemColorProvider;
+import gregtech.api.items.metaitem.stats.IItemDurabilityManager;
+import gregtech.api.items.metaitem.stats.IItemNameProvider;
 import gregtech.api.unification.material.Materials;
 import gregtech.api.unification.material.type.IngotMaterial;
 import gregtech.api.unification.material.type.Material;
@@ -27,12 +30,12 @@ public abstract class AbstractMaterialPartBehavior implements IItemBehaviour, II
     public IngotMaterial getPartMaterial(ItemStack itemStack) {
         NBTTagCompound compound = getPartStatsTag(itemStack);
         IngotMaterial defaultMaterial = Materials.Darmstadtium;
-        if(compound == null || !compound.hasKey("Material", NBT.TAG_STRING)) {
+        if (compound == null || !compound.hasKey("Material", NBT.TAG_STRING)) {
             return defaultMaterial;
         }
         String materialName = compound.getString("Material");
         Material material = Material.MATERIAL_REGISTRY.getObject(materialName);
-        if(!(material instanceof IngotMaterial)) {
+        if (!(material instanceof IngotMaterial)) {
             return defaultMaterial;
         }
         return (IngotMaterial) material;
@@ -47,7 +50,7 @@ public abstract class AbstractMaterialPartBehavior implements IItemBehaviour, II
 
     public int getPartDamage(ItemStack itemStack) {
         NBTTagCompound compound = getPartStatsTag(itemStack);
-        if(compound == null || !compound.hasKey("Damage", NBT.TAG_ANY_NUMERIC)) {
+        if (compound == null || !compound.hasKey("Damage", NBT.TAG_ANY_NUMERIC)) {
             return 0;
         }
         return compound.getInteger("Damage");

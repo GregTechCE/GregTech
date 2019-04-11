@@ -33,15 +33,15 @@ public class ToolUtility {
     }
 
     public static int applyTimberAxe(World world, BlockPos blockPos, IBlockState blockState, EntityPlayer harvester, List<ItemStack> drops) {
-        if(harvester.isSneaking() ||
+        if (harvester.isSneaking() ||
             !GTUtility.isBlockOrePrefixed(world, blockPos, blockState, OrePrefix.log, drops))
             return 0; //do not try to convert while shift-clicking or non-log blocks
         MutableBlockPos mutableBlockPos = new MutableBlockPos(blockPos);
         int destroyedAmount = 0;
-        while(true) {
+        while (true) {
             mutableBlockPos.move(EnumFacing.UP);
             IBlockState targetState = world.getBlockState(mutableBlockPos);
-            if(targetState != blockState ||
+            if (targetState != blockState ||
                 !world.isBlockModifiable(harvester, mutableBlockPos) ||
                 !((EntityPlayerMP) harvester).interactionManager.tryHarvestBlock(mutableBlockPos))
                 return destroyedAmount;
@@ -50,13 +50,13 @@ public class ToolUtility {
     }
 
     public static int applyShearable(World world, BlockPos blockPos, IBlockState blockState, List<ItemStack> drops, EntityPlayer harvester) {
-        if(blockState.getBlock() instanceof IShearable) {
+        if (blockState.getBlock() instanceof IShearable) {
             IShearable shearable = (IShearable) blockState.getBlock();
             ItemStack selfStack = harvester.getHeldItem(EnumHand.MAIN_HAND);
             //because fucking minecraft removes block before that
             world.setBlockState(blockPos, blockState, 0);
             try {
-                if(shearable.isShearable(selfStack, world, blockPos)) {
+                if (shearable.isShearable(selfStack, world, blockPos)) {
                     drops.clear();
                     int fortuneLevel = EnchantmentHelper.getEnchantmentLevel(Enchantments.FORTUNE, selfStack);
                     drops.addAll(shearable.onSheared(selfStack, world, blockPos, fortuneLevel));
@@ -66,12 +66,12 @@ public class ToolUtility {
                 //also make sure that we removed block
                 world.setBlockToAir(blockPos);
             }
-        } else if(blockState.getMaterial() == Material.LEAVES) {
+        } else if (blockState.getMaterial() == Material.LEAVES) {
             int stackMetadata = blockState.getBlock().getMetaFromState(blockState);
             ItemStack dropStack = new ItemStack(blockState.getBlock(), 1, stackMetadata);
-            if(!dropStack.isEmpty()) {
+            if (!dropStack.isEmpty()) {
                 //do not set damage for non-subtype items
-                if(!dropStack.getItem().getHasSubtypes())
+                if (!dropStack.getItem().getHasSubtypes())
                     dropStack.setItemDamage(0);
                 //only add drop stack if actual block has item form
                 drops.clear();
@@ -88,10 +88,10 @@ public class ToolUtility {
         for (int i = -size; i <= size; i++) {
             for (int j = -size; j <= size; j++) {
                 for (int k = -size; k <= size; k++) {
-                    if(i == 0 && j == 0 && k == 0)
+                    if (i == 0 && j == 0 && k == 0)
                         continue;
                     BlockPos block = blockPos.add(i, j, k);
-                    if(!self.isMinableBlock(world.getBlockState(block), selfStack) ||
+                    if (!self.isMinableBlock(world.getBlockState(block), selfStack) ||
                         !world.canMineBlockBody(harvester, block) ||
                         !((EntityPlayerMP) harvester).interactionManager.tryHarvestBlock(block))
                         continue;
@@ -106,13 +106,13 @@ public class ToolUtility {
         ItemStack itemStack = new ItemStack(blockState.getBlock(), 1, blockState.getBlock().getMetaFromState(blockState));
         Recipe recipe = RecipeMaps.FORGE_HAMMER_RECIPES.findRecipe(Long.MAX_VALUE, Collections.singletonList(itemStack), Collections.emptyList());
 
-        if(recipe != null && !recipe.getOutputs().isEmpty()) {
+        if (recipe != null && !recipe.getOutputs().isEmpty()) {
             drops.clear();
-            for(ItemStack outputStack : recipe.getResultItemOutputs(random, 1)) {
+            for (ItemStack outputStack : recipe.getResultItemOutputs(random, 1)) {
                 outputStack = outputStack.copy();
-                if(OreDictUnifier.getPrefix(outputStack) == OrePrefix.crushed) {
+                if (OreDictUnifier.getPrefix(outputStack) == OrePrefix.crushed) {
                     int growAmount = Math.round(outputStack.getCount() * random.nextFloat());
-                    if(fortuneLevel > 0) {
+                    if (fortuneLevel > 0) {
                         int i = Math.max(0, random.nextInt(fortuneLevel + 2) - 1);
                         growAmount += outputStack.getCount() * i;
                     }
@@ -124,7 +124,6 @@ public class ToolUtility {
         }
         return 0;
     }
-
 
 
 }

@@ -88,11 +88,11 @@ public class ClientProxy extends CommonProxy {
         state.getValue(BlockColored.COLOR).colorValue;
 
     public static final IBlockColor SURFACE_ROCK_COLOR = (IBlockState state, IBlockAccess worldIn, BlockPos pos, int tintIndex) -> {
-        if(tintIndex == 1) {
-            if(state.getBlock() instanceof BlockSurfaceRock) {
+        if (tintIndex == 1) {
+            if (state.getBlock() instanceof BlockSurfaceRock) {
                 BlockSurfaceRock surfaceRock = (BlockSurfaceRock) state.getBlock();
                 return state.getValue(surfaceRock.materialProperty).materialRGB;
-            } else if(state.getBlock() instanceof BlockSurfaceRockFlooded) {
+            } else if (state.getBlock() instanceof BlockSurfaceRockFlooded) {
                 BlockSurfaceRockFlooded surfaceRock = (BlockSurfaceRockFlooded) state.getBlock();
                 return state.getValue(surfaceRock.materialProperty).materialRGB;
             } else return 0xFFFFFF;
@@ -140,11 +140,11 @@ public class ClientProxy extends CommonProxy {
     @SubscribeEvent
     public static void addMaterialFormulaHandler(ItemTooltipEvent event) {
         ItemStack itemStack = event.getItemStack();
-        if(!(itemStack.getItem() instanceof ItemBlock)) {
+        if (!(itemStack.getItem() instanceof ItemBlock)) {
             UnificationEntry unificationEntry = OreDictUnifier.getUnificationEntry(itemStack);
-            if(unificationEntry != null && unificationEntry.material != null) {
+            if (unificationEntry != null && unificationEntry.material != null) {
                 String formula = unificationEntry.material.chemicalFormula;
-                if(formula != null && !formula.isEmpty() && !formula.equals("?")) {
+                if (formula != null && !formula.isEmpty() && !formula.equals("?")) {
                     event.getToolTip().add(1, ChatFormatting.GRAY.toString() + unificationEntry.material.chemicalFormula);
                 }
             }
@@ -207,7 +207,7 @@ public class ClientProxy extends CommonProxy {
     @SubscribeEvent
     public static void onPlayerRender(RenderPlayerEvent.Pre event) {
         AbstractClientPlayer clientPlayer = (AbstractClientPlayer) event.getEntityPlayer();
-        if(capeHoldersUUIDs.contains(clientPlayer.getUniqueID()) && clientPlayer.hasPlayerInfo() && clientPlayer.getLocationCape() == null) {
+        if (capeHoldersUUIDs.contains(clientPlayer.getUniqueID()) && clientPlayer.hasPlayerInfo() && clientPlayer.getLocationCape() == null) {
             NetworkPlayerInfo playerInfo = ObfuscationReflectionHelper.getPrivateValue(AbstractClientPlayer.class, clientPlayer, 0);
             Map<Type, ResourceLocation> playerTextures = ObfuscationReflectionHelper.getPrivateValue(NetworkPlayerInfo.class, playerInfo, 1);
             playerTextures.put(Type.CAPE, GREGTECH_CAPE_TEXTURE);

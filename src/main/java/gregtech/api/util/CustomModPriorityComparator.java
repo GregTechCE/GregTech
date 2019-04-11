@@ -1,12 +1,12 @@
 package gregtech.api.util;
 
-import gregtech.api.unification.stack.SimpleItemStack;
+import gregtech.api.unification.stack.ItemAndMetadata;
 
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
-public class CustomModPriorityComparator implements Comparator<SimpleItemStack> {
+public class CustomModPriorityComparator implements Comparator<ItemAndMetadata> {
 
     private final List<String> modPriorityList;
 
@@ -15,7 +15,7 @@ public class CustomModPriorityComparator implements Comparator<SimpleItemStack> 
     }
 
     @Override
-    public int compare(SimpleItemStack first, SimpleItemStack second) {
+    public int compare(ItemAndMetadata first, ItemAndMetadata second) {
         String firstModId = first.item.getRegistryName().getResourceDomain();
         String secondModId = second.item.getRegistryName().getResourceDomain();
         int firstModIndex = modPriorityList.indexOf(firstModId);

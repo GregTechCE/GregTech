@@ -20,7 +20,7 @@ public class HorizontalTabListRenderer extends TabListRenderer {
         boolean isTopLine = verticalLocation == VerticalLocation.TOP;
         int tabYPosition = isTopLine ? (0 - TAB_HEIGHT + TAB_Y_OFFSET) : (guiHeight - TAB_Y_OFFSET);
         int currentXOffset = 0;
-        for(int tabIndex = 0; tabIndex < tabInfos.size(); tabIndex++) {
+        for (int tabIndex = 0; tabIndex < tabInfos.size(); tabIndex++) {
             boolean isTabSelected = tabIndex == selectedTabIndex;
             boolean isTabFirst = tabIndex == 0;
             TextureArea tabTexture = getTabTexture(isTabSelected, isTabFirst, isTopLine, startLeft);
@@ -30,7 +30,7 @@ public class HorizontalTabListRenderer extends TabListRenderer {
     }
 
     private static TextureArea getTabTexture(boolean isTabSelected, boolean isTabFirst, boolean isTopLine, boolean startLeft) {
-        if(isTopLine) {
+        if (isTopLine) {
             return TopTextures.getTabTexture(isTabFirst, startLeft, isTabSelected);
         } else return BottomTextures.getTabTexture(isTabFirst, startLeft, isTabSelected);
     }

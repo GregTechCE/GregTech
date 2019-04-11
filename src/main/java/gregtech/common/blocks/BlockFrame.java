@@ -53,21 +53,21 @@ public final class BlockFrame extends BlockColored {
     @Override
     public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
         ItemStack stackInHand = playerIn.getHeldItem(hand);
-        if(stackInHand.isEmpty() || !(stackInHand.getItem() instanceof FrameItemBlock))
+        if (stackInHand.isEmpty() || !(stackInHand.getItem() instanceof FrameItemBlock))
             return false;
         IBlockState blockState = ((FrameItemBlock) stackInHand.getItem()).getBlockState(stackInHand);
-        if(blockState != worldIn.getBlockState(pos))
+        if (blockState != worldIn.getBlockState(pos))
             return false;
         MutableBlockPos blockPos = new MutableBlockPos(pos);
-        for(int i = 0; i < 32; i++) {
+        for (int i = 0; i < 32; i++) {
             IBlockState stateHere = worldIn.getBlockState(blockPos);
-            if(stateHere == state) {
+            if (stateHere == state) {
                 blockPos.move(EnumFacing.UP);
                 continue;
             }
-            if(canPlaceBlockAt(worldIn, blockPos)) {
+            if (canPlaceBlockAt(worldIn, blockPos)) {
                 worldIn.setBlockState(blockPos, blockState);
-                if(!playerIn.capabilities.isCreativeMode)
+                if (!playerIn.capabilities.isCreativeMode)
                     stackInHand.shrink(1);
                 return true;
             } else {
@@ -81,30 +81,31 @@ public final class BlockFrame extends BlockColored {
         MutableBlockPos currentPos = new MutableBlockPos(pos);
         currentPos.move(EnumFacing.DOWN);
         IBlockState downState = worldIn.getBlockState(currentPos);
-        if(downState.getBlock() instanceof BlockFrame) {
+        if (downState.getBlock() instanceof BlockFrame) {
             if (canFrameSupportVertical(worldIn, currentPos)) {
                 return true;
             }
-        } else if(downState.getBlockFaceShape(worldIn, currentPos, EnumFacing.UP) == BlockFaceShape.SOLID) {
+        } else if (downState.getBlockFaceShape(worldIn, currentPos, EnumFacing.UP) == BlockFaceShape.SOLID) {
             return true;
         }
         currentPos.move(EnumFacing.UP);
         HashSet<BlockPos> observedSet = new HashSet<>();
         Stack<EnumFacing> moveStack = new Stack<>();
-        main: while(true) {
-            for(EnumFacing facing : EnumFacing.HORIZONTALS) {
+        main:
+        while (true) {
+            for (EnumFacing facing : EnumFacing.HORIZONTALS) {
                 currentPos.move(facing);
                 IBlockState blockStateHere = worldIn.getBlockState(currentPos);
                 //if there is node, and it can connect with previous node, add it to list, and set previous node as current
-                if(blockStateHere.getBlock() instanceof BlockFrame && currentPos.distanceSq(pos) <= SCAFFOLD_PILLAR_RADIUS_SQ  && !observedSet.contains(currentPos)) {
+                if (blockStateHere.getBlock() instanceof BlockFrame && currentPos.distanceSq(pos) <= SCAFFOLD_PILLAR_RADIUS_SQ && !observedSet.contains(currentPos)) {
                     observedSet.add(currentPos.toImmutable());
                     currentPos.move(EnumFacing.DOWN);
                     downState = worldIn.getBlockState(currentPos);
-                    if(downState.getBlock() instanceof BlockFrame) {
-                        if(canFrameSupportVertical(worldIn, currentPos)) {
+                    if (downState.getBlock() instanceof BlockFrame) {
+                        if (canFrameSupportVertical(worldIn, currentPos)) {
                             return true;
                         }
-                    } else if(downState.getBlockFaceShape(worldIn, currentPos, EnumFacing.UP) == BlockFaceShape.SOLID) {
+                    } else if (downState.getBlockFaceShape(worldIn, currentPos, EnumFacing.UP) == BlockFaceShape.SOLID) {
                         return true;
                     }
                     currentPos.move(EnumFacing.UP);
@@ -112,7 +113,7 @@ public final class BlockFrame extends BlockColored {
                     continue main;
                 } else currentPos.move(facing.getOpposite());
             }
-            if(!moveStack.isEmpty()) {
+            if (!moveStack.isEmpty()) {
                 currentPos.move(moveStack.pop());
             } else break;
         }
@@ -124,7 +125,7 @@ public final class BlockFrame extends BlockColored {
         do {
             blockPos.move(EnumFacing.DOWN);
             IBlockState blockState = worldIn.getBlockState(blockPos);
-            if(!(blockState.getBlock() instanceof BlockFrame)) {
+            if (!(blockState.getBlock() instanceof BlockFrame)) {
                 return blockState.getBlockFaceShape(worldIn, blockPos, EnumFacing.UP) == BlockFaceShape.SOLID;
             }
         } while (true);
@@ -154,7 +155,7 @@ public final class BlockFrame extends BlockColored {
         if (entityIn.isSneaking() && entityIn.motionY < 0.0D) {
             entityIn.motionY = 0.0D;
         }
-        if(entityIn.collidedHorizontally) {
+        if (entityIn.collidedHorizontally) {
             entityIn.motionY = 0.2;
         }
     }

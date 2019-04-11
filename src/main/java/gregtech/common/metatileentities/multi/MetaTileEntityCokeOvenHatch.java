@@ -46,10 +46,10 @@ public class MetaTileEntityCokeOvenHatch extends MetaTileEntityMultiblockPart {
     @Override
     public void update() {
         super.update();
-        if(!getWorld().isRemote && getTimer() % 5 == 0L && isAttachedToMultiBlock()) {
+        if (!getWorld().isRemote && getTimer() % 5 == 0L && isAttachedToMultiBlock()) {
             TileEntity tileEntity = getWorld().getTileEntity(getPos().offset(getFrontFacing()));
             IFluidHandler fluidHandler = tileEntity == null ? null : tileEntity.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, getFrontFacing().getOpposite());
-            if(fluidHandler != null) {
+            if (fluidHandler != null) {
                 CoverPump.moveHandlerFluids(fluidInventory, fluidHandler, Integer.MAX_VALUE, ALWAYS_TRUE);
             }
         }

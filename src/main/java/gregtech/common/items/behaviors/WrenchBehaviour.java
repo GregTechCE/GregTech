@@ -28,7 +28,7 @@ public class WrenchBehaviour implements IItemBehaviour {
         if (!world.isRemote && !world.isAirBlock(pos)) {
             ItemStack stack = player.getHeldItem(hand);
             TileEntity tileEntity = world.getTileEntity(pos);
-            if(tileEntity instanceof MetaTileEntityHolder)
+            if (tileEntity instanceof MetaTileEntityHolder)
                 //machines handle wrench click manually
                 return EnumActionResult.PASS;
             if (world.getBlockState(pos).getBlock().rotateBlock(world, pos, side)) {

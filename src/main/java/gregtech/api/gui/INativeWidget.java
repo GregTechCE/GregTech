@@ -18,9 +18,10 @@ public interface INativeWidget {
 
     /**
      * You should return MC slot handle instance you created earlier
+     *
      * @return MC slot
      */
-    Slot allocateSlotHandle();
+    Slot getHandle();
 
     /**
      * @return true if this slot belongs to player inventory

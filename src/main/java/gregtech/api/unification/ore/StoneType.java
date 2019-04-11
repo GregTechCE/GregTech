@@ -68,8 +68,8 @@ public class StoneType implements Comparable<StoneType> {
     public static StoneType computeStoneType(IBlockState blockState, IBlockAccess world, BlockPos blockPos) {
         //TODO ADD CONFIG HOOK HERE FOR MATCHING BLOCKS WITH STONE TYPES
         for (StoneType stoneType : STONE_TYPE_REGISTRY) {
-            if(blockState.getBlock().isReplaceableOreGen(blockState, world, blockPos, stoneType.predicate))
-            return stoneType;
+            if (blockState.getBlock().isReplaceableOreGen(blockState, world, blockPos, stoneType.predicate))
+                return stoneType;
         }
         return null;
     }

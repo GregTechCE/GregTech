@@ -75,21 +75,21 @@ public class MetaTileEntityChest extends MetaTileEntity {
         BlockPos blockPos = getPos();
         this.prevLidAngle = this.lidAngle;
 
-        if(!getWorld().isRemote && this.numPlayersUsing != 0 && getTimer() % 200 == 0) {
+        if (!getWorld().isRemote && this.numPlayersUsing != 0 && getTimer() % 200 == 0) {
             int lastPlayersUsing = numPlayersUsing;
             this.numPlayersUsing = 0;
             AxisAlignedBB box = new AxisAlignedBB(getPos()).expand(10.0, 10.0, 10.0);
             List<EntityPlayerMP> entities = getWorld().getEntitiesWithinAABB(EntityPlayerMP.class, box);
-            for(EntityPlayerMP player : entities) {
-                if(player.openContainer instanceof ModularUIContainer) {
+            for (EntityPlayerMP player : entities) {
+                if (player.openContainer instanceof ModularUIContainer) {
                     ModularUI modularUI = ((ModularUIContainer) player.openContainer).getModularUI();
-                    if(modularUI.holder instanceof MetaTileEntityHolder &&
+                    if (modularUI.holder instanceof MetaTileEntityHolder &&
                         ((MetaTileEntityHolder) modularUI.holder).getMetaTileEntity() == this) {
                         this.numPlayersUsing++;
                     }
                 }
             }
-            if(lastPlayersUsing != numPlayersUsing) {
+            if (lastPlayersUsing != numPlayersUsing) {
                 updateNumPlayersUsing();
             }
         }
@@ -161,7 +161,7 @@ public class MetaTileEntityChest extends MetaTileEntity {
     @Override
     public void receiveCustomData(int dataId, PacketBuffer buf) {
         super.receiveCustomData(dataId, buf);
-        if(dataId == 100) {
+        if (dataId == 100) {
             this.numPlayersUsing = buf.readVarInt();
         }
     }
@@ -198,15 +198,15 @@ public class MetaTileEntityChest extends MetaTileEntity {
             @Override
             protected void onContentsChanged(int slot) {
                 super.onContentsChanged(slot);
-                updateComparatorValue(true);
+                updateComparatorValue();
             }
         };
         this.itemInventory = inventory;
-        updateComparatorValue(true);
+        updateComparatorValue();
     }
 
     @Override
-    public int getComparatorValue() {
+    public int getActualComparatorValue() {
         return ItemHandlerHelper.calcRedstoneFromInventory(inventory);
     }
 
@@ -236,14 +236,14 @@ public class MetaTileEntityChest extends MetaTileEntity {
         float angle = prevLidAngle + (lidAngle - prevLidAngle) * partialTicks;
         angle = 1.0f - (1.0f - angle) * (1.0f - angle) * (1.0f - angle);
         float resultLidAngle = angle * 90.0f;
-        if(ModHandler.isMaterialWood(material)) {
+        if (ModHandler.isMaterialWood(material)) {
             ColourMultiplier multiplier = new ColourMultiplier(GTUtility.convertRGBtoOpaqueRGBA_CL(getPaintingColorForRendering()));
-            Textures.WOODEN_CHEST.render(renderState, translation, new IVertexOperation[] {multiplier}, getFrontFacing(), resultLidAngle);
+            Textures.WOODEN_CHEST.render(renderState, translation, new IVertexOperation[]{multiplier}, getFrontFacing(), resultLidAngle);
         } else {
             ColourMultiplier multiplier = new ColourMultiplier(ColourRGBA.multiply(
                 GTUtility.convertRGBtoOpaqueRGBA_CL(material.materialRGB),
                 GTUtility.convertRGBtoOpaqueRGBA_CL(getPaintingColorForRendering())));
-            Textures.METAL_CHEST.render(renderState, translation, new IVertexOperation[] {multiplier}, getFrontFacing(), resultLidAngle);
+            Textures.METAL_CHEST.render(renderState, translation, new IVertexOperation[]{multiplier}, getFrontFacing(), resultLidAngle);
         }
     }
 
@@ -256,15 +256,15 @@ public class MetaTileEntityChest extends MetaTileEntity {
         builder.widget(new SortingButtonWidget(111, 4, 60, 10, "gregtech.gui.sort",
             (info) -> sortInventorySlotContents(inventory)));
 
-        for(int y = 0; y < amountOfRows; y++) {
-            for(int x = 0; x < rowSize; x++) {
+        for (int y = 0; y < amountOfRows; y++) {
+            for (int x = 0; x < rowSize; x++) {
                 int index = y * rowSize + x;
                 builder.slot(inventory, index, 8 + x * 18, 18 + y * 18, GuiTextures.SLOT);
             }
         }
         int startX = (14 + rowSize * 18 - 162) / 2;
         builder.bindPlayerInventory(entityPlayer.inventory, GuiTextures.SLOT, startX, 18 + 18 * amountOfRows + 12);
-        if(!getWorld().isRemote) {
+        if (!getWorld().isRemote) {
             builder.bindOpenListener(() -> onContainerOpen(entityPlayer));
             builder.bindCloseListener(() -> onContainerClose(entityPlayer));
         }
@@ -273,15 +273,15 @@ public class MetaTileEntityChest extends MetaTileEntity {
 
     private static void sortInventorySlotContents(IItemHandlerModifiable inventory) {
         //stack item stacks with equal items and compounds
-        for(int i = 0; i < inventory.getSlots(); i++) {
-            for(int j = i + 1; j < inventory.getSlots(); j++) {
+        for (int i = 0; i < inventory.getSlots(); i++) {
+            for (int j = i + 1; j < inventory.getSlots(); j++) {
                 ItemStack stack1 = inventory.getStackInSlot(i);
                 ItemStack stack2 = inventory.getStackInSlot(j);
-                if(!stack1.isEmpty() && ItemStack.areItemsEqual(stack1, stack2) &&
+                if (!stack1.isEmpty() && ItemStack.areItemsEqual(stack1, stack2) &&
                     ItemStack.areItemStackTagsEqual(stack1, stack2)) {
                     int maxStackSize = Math.min(stack1.getMaxStackSize(), inventory.getSlotLimit(i));
                     int itemsCanAccept = Math.min(stack2.getCount(), maxStackSize - Math.min(stack1.getCount(), maxStackSize));
-                    if(itemsCanAccept > 0) {
+                    if (itemsCanAccept > 0) {
                         stack1.grow(itemsCanAccept);
                         stack2.shrink(itemsCanAccept);
                     }
@@ -290,15 +290,15 @@ public class MetaTileEntityChest extends MetaTileEntity {
         }
         //create itemstack pairs and sort them out by attributes
         ArrayList<ItemStack> inventoryContents = new ArrayList<>();
-        for(int i = 0; i < inventory.getSlots(); i++) {
+        for (int i = 0; i < inventory.getSlots(); i++) {
             ItemStack itemStack = inventory.getStackInSlot(i);
-            if(!itemStack.isEmpty()) {
+            if (!itemStack.isEmpty()) {
                 inventory.setStackInSlot(i, ItemStack.EMPTY);
                 inventoryContents.add(itemStack);
             }
         }
         inventoryContents.sort(MetaTileEntityChest::compareItemStacks);
-        for(int i = 0; i < inventoryContents.size(); i++) {
+        for (int i = 0; i < inventoryContents.size(); i++) {
             inventory.setStackInSlot(i, inventoryContents.get(i));
         }
     }
@@ -315,19 +315,19 @@ public class MetaTileEntityChest extends MetaTileEntity {
         int firstItemId = Item.REGISTRY.getIDForObject(stack1.getItem());
         int secondItemId = Item.REGISTRY.getIDForObject(stack2.getItem());
         int result = Integer.compare(firstItemId, secondItemId);
-        if(result != 0) {
+        if (result != 0) {
             return result;
         }
         result = Integer.compare(stack1.getItemDamage(), stack2.getItemDamage());
-        if(result != 0) {
+        if (result != 0) {
             return result;
         }
-        if(stack1.hasTagCompound() != stack2.hasTagCompound()) {
+        if (stack1.hasTagCompound() != stack2.hasTagCompound()) {
             return stack1.hasTagCompound() ? 1 : -1;
         }
-        if(stack1.hasTagCompound() && !stack1.getTagCompound().equals(stack2.getTagCompound())) {
+        if (stack1.hasTagCompound() && !stack1.getTagCompound().equals(stack2.getTagCompound())) {
             result = -Integer.compare(stack1.getTagCompound().hashCode(), stack2.getTagCompound().hashCode());
-            if(result != 0) {
+            if (result != 0) {
                 return result;
             }
         }

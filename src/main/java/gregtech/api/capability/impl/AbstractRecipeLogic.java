@@ -26,7 +26,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
-public abstract class RecipeMapWorkableHandler extends MTETrait implements IWorkable {
+public abstract class AbstractRecipeLogic extends MTETrait implements IWorkable {
 
     public final RecipeMap<?> recipeMap;
 
@@ -47,7 +47,7 @@ public abstract class RecipeMapWorkableHandler extends MTETrait implements IWork
     private boolean hasNotEnoughEnergy;
     private boolean wasActiveAndNeedsUpdate;
 
-    public RecipeMapWorkableHandler(MetaTileEntity tileEntity, RecipeMap<?> recipeMap) {
+    public AbstractRecipeLogic(MetaTileEntity tileEntity, RecipeMap<?> recipeMap) {
         super(tileEntity);
         this.recipeMap = recipeMap;
     }
@@ -87,18 +87,23 @@ public abstract class RecipeMapWorkableHandler extends MTETrait implements IWork
     }
 
     @Override
-    public Capability<?> getImplementingCapability() {
-        return GregtechTileCapabilities.CAPABILITY_WORKABLE;
+    public <T> T getCapability(Capability<T> capability) {
+        if(capability == GregtechTileCapabilities.CAPABILITY_WORKABLE) {
+            return GregtechTileCapabilities.CAPABILITY_WORKABLE.cast(this);
+        } else if(capability == GregtechTileCapabilities.CAPABILITY_CONTROLLABLE) {
+            return GregtechTileCapabilities.CAPABILITY_CONTROLLABLE.cast(this);
+        }
+        return null;
     }
 
     @Override
     public void update() {
         if (!getMetaTileEntity().getWorld().isRemote) {
-            if(workingEnabled) {
-                if(progressTime > 0) {
+            if (workingEnabled) {
+                if (progressTime > 0) {
                     updateRecipeProgress();
                 }
-                if(progressTime == 0) {
+                if (progressTime == 0) {
                     trySearchNewRecipe();
                 }
             }
@@ -187,7 +192,7 @@ public abstract class RecipeMapWorkableHandler extends MTETrait implements IWork
         for (int i = 0; i < lastFluidInputs.length; i++) {
             FluidStack currentStack = fluidInputs.getTankAt(i).getFluid();
             FluidStack lastStack = lastFluidInputs[i];
-            if((currentStack == null && lastStack != null) ||
+            if ((currentStack == null && lastStack != null) ||
                 (currentStack != null && !currentStack.isFluidEqual(lastStack))) {
                 this.lastFluidInputs[i] = currentStack == null ? null : currentStack.copy();
                 shouldRecheckRecipe = true;
@@ -318,26 +323,12 @@ public abstract class RecipeMapWorkableHandler extends MTETrait implements IWork
         }
     }
 
-    @Override
-    public void setActive(boolean active) {
+    private void setActive(boolean active) {
         this.isActive = active;
         if (!metaTileEntity.getWorld().isRemote) {
             metaTileEntity.markDirty();
             writeCustomData(1, buf -> buf.writeBoolean(active));
         }
-    }
-
-    @Override
-    public void increaseProgress(int progress) {
-        if (!metaTileEntity.getWorld().isRemote) {
-            this.progressTime = Math.min(progressTime + progress, maxProgressTime);
-            metaTileEntity.markDirty();
-        }
-    }
-
-    @Override
-    public boolean hasWorkToDo() {
-        return progressTime > 0;
     }
 
     @Override

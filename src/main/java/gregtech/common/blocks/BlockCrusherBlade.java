@@ -27,8 +27,8 @@ import javax.annotation.Nullable;
 
 public class BlockCrusherBlade extends Block implements ITileEntityProvider {
 
-    public static final Cuboid6[] basicModel = new Cuboid6[] {
-        new Cuboid6( 6 / 16.0, 0.0, 6 / 16.0, 10 / 16.0, 1.0, 10 / 16.0), //rod
+    public static final Cuboid6[] basicModel = new Cuboid6[]{
+        new Cuboid6(6 / 16.0, 0.0, 6 / 16.0, 10 / 16.0, 1.0, 10 / 16.0), //rod
         new Cuboid6(2.0 / 16.0, 6 / 16.0, 2.0 / 16.0, 14.0 / 16.0, 10 / 16.0, 14.0 / 16.0),
         new Cuboid6(2.0 / 16.0, 0 / 16.0, 2.0 / 16.0, 14.0 / 16.0, 2 / 16.0, 14.0 / 16.0),
         new Cuboid6(2.0 / 16.0, 14 / 16.0, 2.0 / 16.0, 14.0 / 16.0, 16 / 16.0, 14.0 / 16.0)
@@ -100,7 +100,7 @@ public class BlockCrusherBlade extends Block implements ITileEntityProvider {
 
     @Override
     public void onEntityCollidedWithBlock(World worldIn, BlockPos pos, IBlockState state, Entity entityIn) {
-        if(state.getValue(ACTIVE)) {
+        if (state.getValue(ACTIVE)) {
             entityIn.attackEntityFrom(DamageSources.getCrusherDamage(), 5.0f);
             entityIn.motionY *= 0.04;
         }

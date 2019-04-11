@@ -5,28 +5,29 @@ import net.minecraftforge.common.property.IUnlistedProperty;
 
 public final class UnlistedBlockAccess implements IUnlistedProperty<IBlockAccess> {
 
-	public static UnlistedBlockAccess BLOCK_ACCESS = new UnlistedBlockAccess();
+    public static UnlistedBlockAccess BLOCK_ACCESS = new UnlistedBlockAccess();
 
-	private UnlistedBlockAccess() {}
+    private UnlistedBlockAccess() {
+    }
 
-	@Override
-	public String getName() {
-		return "dimension";
-	}
+    @Override
+    public String getName() {
+        return "dimension";
+    }
 
-	@Override
-	public boolean isValid(IBlockAccess value) {
-		return true;
-	}
+    @Override
+    public boolean isValid(IBlockAccess value) {
+        return true;
+    }
 
-	@Override
-	public Class<IBlockAccess> getType() {
-		return IBlockAccess.class;
-	}
+    @Override
+    public Class<IBlockAccess> getType() {
+        return IBlockAccess.class;
+    }
 
-	@Override
-	public String valueToString(IBlockAccess value) {
-		return "";
-	}
+    @Override
+    public String valueToString(IBlockAccess value) {
+        return "";
+    }
 
 }

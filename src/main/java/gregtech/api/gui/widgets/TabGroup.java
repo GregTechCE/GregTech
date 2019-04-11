@@ -14,7 +14,10 @@ import net.minecraft.client.audio.PositionedSoundRecord;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.util.Tuple;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.function.Supplier;
 
 public class TabGroup extends AbstractWidgetGroup {
@@ -46,7 +49,7 @@ public class TabGroup extends AbstractWidgetGroup {
     public void drawInForeground(int mouseX, int mouseY) {
         super.drawInForeground(mouseX, mouseY);
         Tuple<ITabInfo, int[]> tabOnMouse = getTabOnMouse(mouseX, mouseY);
-        if(tabOnMouse != null) {
+        if (tabOnMouse != null) {
             int[] tabSizes = tabOnMouse.getSecond();
             ITabInfo tabInfo = tabOnMouse.getFirst();
             boolean isSelected = tabInfos.get(selectedTabIndex) == tabInfo;
@@ -58,10 +61,10 @@ public class TabGroup extends AbstractWidgetGroup {
     public boolean mouseClicked(int mouseX, int mouseY, int button) {
         super.mouseClicked(mouseX, mouseY, button);
         Tuple<ITabInfo, int[]> tabOnMouse = getTabOnMouse(mouseX, mouseY);
-        if(tabOnMouse != null) {
+        if (tabOnMouse != null) {
             ITabInfo tabInfo = tabOnMouse.getFirst();
             int tabIndex = tabInfos.indexOf(tabInfo);
-            if(selectedTabIndex != tabIndex) {
+            if (selectedTabIndex != tabIndex) {
                 this.tabWidgets.get(selectedTabIndex).setVisible(false);
                 this.tabWidgets.get(tabIndex).setVisible(true);
                 this.selectedTabIndex = tabIndex;
@@ -73,10 +76,10 @@ public class TabGroup extends AbstractWidgetGroup {
     }
 
     private Tuple<ITabInfo, int[]> getTabOnMouse(int mouseX, int mouseY) {
-        for(int tabIndex = 0; tabIndex < tabInfos.size(); tabIndex++) {
+        for (int tabIndex = 0; tabIndex < tabInfos.size(); tabIndex++) {
             ITabInfo tabInfo = tabInfos.get(tabIndex);
             int[] tabSizes = tabListRenderer.getTabPos(tabIndex, sizes.getWidth(), sizes.getHeight());
-            if(isMouseOverTab(mouseX, mouseY, tabSizes)) {
+            if (isMouseOverTab(mouseX, mouseY, tabSizes)) {
                 return new Tuple<>(tabInfo, tabSizes);
             }
         }

@@ -30,27 +30,27 @@ public class PBFRecipeBuilder {
     private int duration = -1;
     private int fuelAmount = -1;
 
-	private PBFRecipeBuilder() {
-	}
+    private PBFRecipeBuilder() {
+    }
 
-	@ZenMethod
-	public static PBFRecipeBuilder start() {
-		return new PBFRecipeBuilder();
-	}
+    @ZenMethod
+    public static PBFRecipeBuilder start() {
+        return new PBFRecipeBuilder();
+    }
 
     public PBFRecipeBuilder input(Ingredient input, int amount) {
         this.input = new CountableIngredient(input, amount);
         return this;
-	}
+    }
 
-	public PBFRecipeBuilder input(ItemStack itemStack) {
-	    this.input = CountableIngredient.from(itemStack);
-	    return this;
+    public PBFRecipeBuilder input(ItemStack itemStack) {
+        this.input = CountableIngredient.from(itemStack);
+        return this;
     }
 
     public PBFRecipeBuilder input(OrePrefix orePrefix, Material material) {
-	    this.input = CountableIngredient.from(orePrefix, material);
-	    return this;
+        this.input = CountableIngredient.from(orePrefix, material);
+        return this;
     }
 
     public PBFRecipeBuilder input(OrePrefix orePrefix, Material material, int amount) {
@@ -76,55 +76,55 @@ public class PBFRecipeBuilder {
     }
 
     public ValidationResult<PrimitiveBlastFurnaceRecipe> build() {
-		return ValidationResult.newResult(validate(),
-				new PrimitiveBlastFurnaceRecipe(input, output, duration, fuelAmount));
-	}
+        return ValidationResult.newResult(validate(),
+            new PrimitiveBlastFurnaceRecipe(input, output, duration, fuelAmount));
+    }
 
-	protected EnumValidationResult validate() {
-		EnumValidationResult result = EnumValidationResult.VALID;
+    protected EnumValidationResult validate() {
+        EnumValidationResult result = EnumValidationResult.VALID;
 
-		if(input == null) {
+        if (input == null) {
             GTLog.logger.error("Input Ingredient cannot be null", new IllegalArgumentException());
             result = EnumValidationResult.INVALID;
         }
 
-		if (output == null || output.isEmpty()) {
-			GTLog.logger.error("Output ItemStack cannot be null or empty", new IllegalArgumentException());
-			result = EnumValidationResult.INVALID;
-		}
+        if (output == null || output.isEmpty()) {
+            GTLog.logger.error("Output ItemStack cannot be null or empty", new IllegalArgumentException());
+            result = EnumValidationResult.INVALID;
+        }
 
-		if (fuelAmount <= 0) {
-			GTLog.logger.error("FuelAmount cannot be less or equal to 0", new IllegalArgumentException());
-			result = EnumValidationResult.INVALID;
-		}
-		if (duration <= 0) {
-			GTLog.logger.error("Duration cannot be less or equal to 0", new IllegalArgumentException());
-			result = EnumValidationResult.INVALID;
-		}
+        if (fuelAmount <= 0) {
+            GTLog.logger.error("FuelAmount cannot be less or equal to 0", new IllegalArgumentException());
+            result = EnumValidationResult.INVALID;
+        }
+        if (duration <= 0) {
+            GTLog.logger.error("Duration cannot be less or equal to 0", new IllegalArgumentException());
+            result = EnumValidationResult.INVALID;
+        }
 
-		return result;
-	}
+        return result;
+    }
 
-	@ZenMethod
-	public void buildAndRegister() {
-		ValidationResult<PrimitiveBlastFurnaceRecipe> result = build();
+    @ZenMethod
+    public void buildAndRegister() {
+        ValidationResult<PrimitiveBlastFurnaceRecipe> result = build();
 
-		if (result.getType() == EnumValidationResult.VALID) {
+        if (result.getType() == EnumValidationResult.VALID) {
             PrimitiveBlastFurnaceRecipe recipe = result.getResult();
             RecipeMaps.PRIMITIVE_BLAST_FURNACE_RECIPES.add(recipe);
-		}
-	}
+        }
+    }
 
-	@ZenMethod
+    @ZenMethod
     @Method(modid = GTValues.MODID_CT)
     public PBFRecipeBuilder input(IIngredient ingredient) {
-	    return input(new CraftTweakerIngredientWrapper(ingredient), ingredient.getAmount());
+        return input(new CraftTweakerIngredientWrapper(ingredient), ingredient.getAmount());
     }
 
     @ZenMethod
     @Method(modid = GTValues.MODID_CT)
     public PBFRecipeBuilder output(IItemStack itemStack) {
-	    return output(CraftTweakerMC.getItemStack(itemStack));
+        return output(CraftTweakerMC.getItemStack(itemStack));
     }
 
 }

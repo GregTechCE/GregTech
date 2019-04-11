@@ -2,7 +2,6 @@ package gregtech.api.gui.widgets;
 
 import com.google.common.base.Preconditions;
 import gregtech.api.gui.GuiTextures;
-import gregtech.api.gui.Widget;
 import gregtech.api.gui.resources.TextureArea;
 import gregtech.api.util.function.FloatConsumer;
 import net.minecraft.client.Minecraft;
@@ -16,13 +15,9 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.function.BiFunction;
 
-public class SliderWidget extends Widget {
+public class SliderWidget extends AbstractPositionedRectangleWidget {
 
     public static final BiFunction<String, Float, String> DEFAULT_TEXT_SUPPLIER = (name, value) -> I18n.format(name, value.intValue());
-
-    protected int xPosition;
-    protected int yPosition;
-    protected int width, height;
 
     private int sliderWidth = 8;
     private TextureArea backgroundArea = GuiTextures.SLIDER_BACKGROUND;
@@ -42,12 +37,9 @@ public class SliderWidget extends Widget {
     public boolean isMouseDown;
 
     public SliderWidget(String name, int xPosition, int yPosition, int width, int height, float min, float max, float currentValue, FloatConsumer responder) {
+        super(xPosition, yPosition, width, height);
         Preconditions.checkNotNull(responder, "responder");
         Preconditions.checkNotNull(name, "name");
-        this.xPosition = xPosition;
-        this.yPosition = yPosition;
-        this.width = width;
-        this.height = height;
         this.min = min;
         this.max = max;
         this.name = name;
@@ -79,7 +71,7 @@ public class SliderWidget extends Widget {
 
     @Override
     public void detectAndSendChanges() {
-        if(!isPositionSent) {
+        if (!isPositionSent) {
             writeUpdateInfo(1, buffer -> buffer.writeFloat(sliderPosition));
             this.isPositionSent = true;
         }
@@ -95,7 +87,7 @@ public class SliderWidget extends Widget {
 
     @Override
     public void drawInBackground(int mouseX, int mouseY) {
-        if(backgroundArea != null) {
+        if (backgroundArea != null) {
             backgroundArea.draw(xPosition, yPosition, width, height);
         }
         sliderIcon.draw(xPosition + (int) (this.sliderPosition * (float) (this.width - 8)), yPosition, sliderWidth, height);
@@ -153,7 +145,7 @@ public class SliderWidget extends Widget {
 
     @Override
     public void handleClientAction(int id, PacketBuffer buffer) {
-        if(id == 1) {
+        if (id == 1) {
             this.sliderPosition = buffer.readFloat();
             this.sliderPosition = MathHelper.clamp(sliderPosition, 0.0f, 1.0f);
             this.responder.apply(getSliderValue());
@@ -162,7 +154,7 @@ public class SliderWidget extends Widget {
 
     @Override
     public void readUpdateInfo(int id, PacketBuffer buffer) {
-        if(id == 1) {
+        if (id == 1) {
             this.sliderPosition = buffer.readFloat();
             this.sliderPosition = MathHelper.clamp(sliderPosition, 0.0f, 1.0f);
             this.displayString = getDisplayString();

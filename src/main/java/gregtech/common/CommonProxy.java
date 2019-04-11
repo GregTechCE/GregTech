@@ -179,7 +179,7 @@ public class CommonProxy {
 
     @SubscribeEvent
     public static void syncConfigValues(ConfigChangedEvent.OnConfigChangedEvent event) {
-        if(event.getModID().equals(GTValues.MODID)) {
+        if (event.getModID().equals(GTValues.MODID)) {
             ConfigManager.sync(GTValues.MODID, Type.INSTANCE);
         }
     }
@@ -189,16 +189,16 @@ public class CommonProxy {
         ItemStack stack = event.getItemStack();
         Block block = Block.getBlockFromItem(stack.getItem());
         //handle sapling and log burn rates
-        if(block == MetaBlocks.LOG) {
+        if (block == MetaBlocks.LOG) {
             event.setBurnTime(300);
-        } else if(block == MetaBlocks.SAPLING) {
+        } else if (block == MetaBlocks.SAPLING) {
             event.setBurnTime(100);
         }
         //handle material blocks burn value
-        if(stack.getItem() instanceof CompressedItemBlock) {
+        if (stack.getItem() instanceof CompressedItemBlock) {
             CompressedItemBlock itemBlock = (CompressedItemBlock) stack.getItem();
             Material material = itemBlock.getBlockState(stack).getValue(itemBlock.compressedBlock.variantProperty);
-            if(material instanceof DustMaterial &&
+            if (material instanceof DustMaterial &&
                 ((DustMaterial) material).burnTime > 0) {
                 //compute burn value for block prefix, taking amount of material in block into account
                 double materialUnitsInBlock = OrePrefix.block.getMaterialAmount(material) / (GTValues.M * 1.0);

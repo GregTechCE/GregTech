@@ -6,6 +6,8 @@ import codechicken.lib.render.pipeline.IVertexOperation;
 import codechicken.lib.vec.Cuboid6;
 import codechicken.lib.vec.Matrix4;
 import gregtech.api.GTValues;
+import gregtech.api.capability.GregtechTileCapabilities;
+import gregtech.api.capability.IControllable;
 import gregtech.api.capability.impl.FluidHandlerDelegate;
 import gregtech.api.cover.CoverBehavior;
 import gregtech.api.cover.CoverWithUI;
@@ -41,7 +43,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.function.Predicate;
 
-public class CoverPump extends CoverBehavior implements CoverWithUI, ITickable {
+public class CoverPump extends CoverBehavior implements CoverWithUI, ITickable, IControllable {
 
     public static final Predicate<FluidStack> ALWAYS_TRUE = fluidStack -> true;
     public final int tier;
@@ -54,6 +56,7 @@ public class CoverPump extends CoverBehavior implements CoverWithUI, ITickable {
     protected int fluidLeftToTransferLastSecond;
     private CoverableFluidHandlerWrapper fluidHandlerWrapper;
     private Predicate<FluidStack> fluidFilter = this::checkInputFluid;
+    protected boolean isWorkingAllowed = true;
 
     public CoverPump(ICoverable coverHolder, EnumFacing attachedSide, int tier, int mbPerTick) {
         super(coverHolder, attachedSide);
@@ -84,10 +87,10 @@ public class CoverPump extends CoverBehavior implements CoverWithUI, ITickable {
     @Override
     public void update() {
         long timer = coverHolder.getTimer();
-        if(fluidLeftToTransferLastSecond > 0) {
+        if (isWorkingAllowed && fluidLeftToTransferLastSecond > 0) {
             this.fluidLeftToTransferLastSecond -= doTransferFluids(fluidLeftToTransferLastSecond);
         }
-        if(timer % 20 == 0) {
+        if (timer % 20 == 0) {
             this.fluidLeftToTransferLastSecond = transferRate;
         }
     }
@@ -99,16 +102,16 @@ public class CoverPump extends CoverBehavior implements CoverWithUI, ITickable {
         blockPos.release();
         IFluidHandler fluidHandler = tileEntity == null ? null : tileEntity.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, attachedSide.getOpposite());
         IFluidHandler myFluidHandler = coverHolder.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, attachedSide);
-        if(fluidHandler == null || myFluidHandler == null) {
+        if (fluidHandler == null || myFluidHandler == null) {
             return 0;
         }
         return doTransferFluidsInternal(myFluidHandler, fluidHandler, transferLimit);
     }
 
     protected int doTransferFluidsInternal(IFluidHandler myFluidHandler, IFluidHandler fluidHandler, int transferLimit) {
-        if(pumpMode == PumpMode.IMPORT) {
+        if (pumpMode == PumpMode.IMPORT) {
             return moveHandlerFluids(fluidHandler, myFluidHandler, transferLimit, fluidFilter);
-        } else if(pumpMode == PumpMode.EXPORT) {
+        } else if (pumpMode == PumpMode.EXPORT) {
             return moveHandlerFluids(myFluidHandler, fluidHandler, transferLimit, fluidFilter);
         }
         return 0;
@@ -116,7 +119,7 @@ public class CoverPump extends CoverBehavior implements CoverWithUI, ITickable {
 
     public static int moveHandlerFluids(IFluidHandler sourceHandler, IFluidHandler destHandler, int transferLimit, Predicate<FluidStack> fluidFilter) {
         int fluidLeftToTransfer = transferLimit;
-        for(IFluidTankProperties tankProperties : sourceHandler.getTankProperties()) {
+        for (IFluidTankProperties tankProperties : sourceHandler.getTankProperties()) {
             FluidStack currentFluid = tankProperties.getContents();
             if (currentFluid == null || currentFluid.amount == 0 || !fluidFilter.test(currentFluid)) continue;
             currentFluid.amount = fluidLeftToTransfer;
@@ -125,10 +128,10 @@ public class CoverPump extends CoverBehavior implements CoverWithUI, ITickable {
             int canInsertAmount = destHandler.fill(fluidStack, false);
             if (canInsertAmount > 0) {
                 fluidStack = sourceHandler.drain(canInsertAmount, true);
-                if(fluidStack != null && fluidStack.amount > 0) {
+                if (fluidStack != null && fluidStack.amount > 0) {
                     destHandler.fill(fluidStack, true);
                     fluidLeftToTransfer -= fluidStack.amount;
-                    if(fluidLeftToTransfer == 0) break;
+                    if (fluidLeftToTransfer == 0) break;
                 }
             }
         }
@@ -136,7 +139,7 @@ public class CoverPump extends CoverBehavior implements CoverWithUI, ITickable {
     }
 
     protected boolean checkInputFluid(FluidStack fluidStack) {
-        if(!isFilterInstalled) {
+        if (!isFilterInstalled) {
             return true;
         }
         for (FluidStack filterStack : fluidFilterSlots) {
@@ -167,7 +170,7 @@ public class CoverPump extends CoverBehavior implements CoverWithUI, ITickable {
             .setBackgroundTexture(GuiTextures.SLOT, GuiTextures.FILTER_SLOT_OVERLAY));
 
         ServerWidgetGroup fluidFilterGroup = new ServerWidgetGroup(() -> isFilterInstalled);
-        for(int i = 0; i < 9; i++) {
+        for (int i = 0; i < 9; i++) {
             int slotIndex = i;
             fluidFilterGroup.addWidget(new PhantomFluidWidget(10 + 18 * (i % 3), 106 + 18 * (i / 3), 18, 18,
                 () -> fluidFilterSlots[slotIndex], (newFluid) -> fluidFilterSlots[slotIndex] = newFluid)
@@ -183,7 +186,7 @@ public class CoverPump extends CoverBehavior implements CoverWithUI, ITickable {
 
     @Override
     public EnumActionResult onScrewdriverClick(EntityPlayer playerIn, EnumHand hand, CuboidRayTraceResult hitResult) {
-        if(!coverHolder.getWorld().isRemote) {
+        if (!coverHolder.getWorld().isRemote) {
             openUI((EntityPlayerMP) playerIn);
         }
         return EnumActionResult.SUCCESS;
@@ -198,7 +201,7 @@ public class CoverPump extends CoverBehavior implements CoverWithUI, ITickable {
     public void onRemoved() {
         NonNullList<ItemStack> drops = NonNullList.create();
         MetaTileEntity.clearInventory(drops, filterTypeInventory);
-        for(ItemStack itemStack : drops) {
+        for (ItemStack itemStack : drops) {
             Block.spawnAsEntity(coverHolder.getWorld(), coverHolder.getPos(), itemStack);
         }
     }
@@ -210,14 +213,27 @@ public class CoverPump extends CoverBehavior implements CoverWithUI, ITickable {
 
     @Override
     public <T> T getCapability(Capability<T> capability, T defaultValue) {
-        if(capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) {
+        if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) {
             IFluidHandler delegate = (IFluidHandler) defaultValue;
-            if(fluidHandlerWrapper == null || fluidHandlerWrapper.delegate != delegate) {
+            if (fluidHandlerWrapper == null || fluidHandlerWrapper.delegate != delegate) {
                 this.fluidHandlerWrapper = new CoverableFluidHandlerWrapper(delegate);
             }
             return CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY.cast(fluidHandlerWrapper);
         }
+        if(capability == GregtechTileCapabilities.CAPABILITY_CONTROLLABLE) {
+            return GregtechTileCapabilities.CAPABILITY_CONTROLLABLE.cast(this);
+        }
         return defaultValue;
+    }
+
+    @Override
+    public boolean isWorkingEnabled() {
+        return isWorkingAllowed;
+    }
+
+    @Override
+    public void setWorkingEnabled(boolean isActivationAllowed) {
+        this.isWorkingAllowed = isActivationAllowed;
     }
 
     @Override
@@ -225,11 +241,12 @@ public class CoverPump extends CoverBehavior implements CoverWithUI, ITickable {
         super.writeToNBT(tagCompound);
         tagCompound.setInteger("TransferRate", transferRate);
         tagCompound.setInteger("PumpMode", pumpMode.ordinal());
+        tagCompound.setBoolean("WorkingAllowed", isWorkingAllowed);
         tagCompound.setTag("FilterTypeInventory", filterTypeInventory.serializeNBT());
         NBTTagList filterSlots = new NBTTagList();
-        for(int i = 0; i < fluidFilterSlots.length; i++) {
+        for (int i = 0; i < fluidFilterSlots.length; i++) {
             FluidStack fluidStack = fluidFilterSlots[i];
-            if(fluidStack != null) {
+            if (fluidStack != null) {
                 NBTTagCompound stackTag = new NBTTagCompound();
                 fluidStack.writeToNBT(stackTag);
                 stackTag.setInteger("Slot", i);
@@ -246,10 +263,13 @@ public class CoverPump extends CoverBehavior implements CoverWithUI, ITickable {
         this.pumpMode = PumpMode.values()[tagCompound.getInteger("PumpMode")];
         this.filterTypeInventory.deserializeNBT(tagCompound.getCompoundTag("FilterTypeInventory"));
         NBTTagList filterSlots = tagCompound.getTagList("FluidFilter", NBT.TAG_COMPOUND);
-        for(NBTBase nbtBase : filterSlots) {
+        for (NBTBase nbtBase : filterSlots) {
             NBTTagCompound stackTag = (NBTTagCompound) nbtBase;
             FluidStack fluidStack = FluidStack.loadFluidStackFromNBT(stackTag);
             this.fluidFilterSlots[stackTag.getInteger("Slot")] = fluidStack;
+        }
+        if(tagCompound.hasKey("WorkingAllowed")) {
+            this.isWorkingAllowed = tagCompound.getBoolean("WorkingAllowed");
         }
     }
 
@@ -263,7 +283,7 @@ public class CoverPump extends CoverBehavior implements CoverWithUI, ITickable {
         @Nonnull
         @Override
         public ItemStack insertItem(int slot, @Nonnull ItemStack stack, boolean simulate) {
-            if(!isFilterStack(stack)) {
+            if (!isFilterStack(stack)) {
                 return stack;
             }
             return super.insertItem(slot, stack, simulate);
@@ -304,10 +324,10 @@ public class CoverPump extends CoverBehavior implements CoverWithUI, ITickable {
 
         @Override
         public int fill(FluidStack resource, boolean doFill) {
-            if(pumpMode == PumpMode.EXPORT) {
+            if (pumpMode == PumpMode.EXPORT) {
                 return 0;
             }
-            if(isFilterInstalled && !checkInputFluid(resource)) {
+            if (isFilterInstalled && !checkInputFluid(resource)) {
                 return 0;
             }
             return super.fill(resource, doFill);
@@ -316,10 +336,10 @@ public class CoverPump extends CoverBehavior implements CoverWithUI, ITickable {
         @Nullable
         @Override
         public FluidStack drain(FluidStack resource, boolean doDrain) {
-            if(pumpMode == PumpMode.IMPORT) {
+            if (pumpMode == PumpMode.IMPORT) {
                 return null;
             }
-            if(isFilterInstalled && !checkInputFluid(resource)) {
+            if (isFilterInstalled && !checkInputFluid(resource)) {
                 return null;
             }
             return super.drain(resource, doDrain);
@@ -328,14 +348,14 @@ public class CoverPump extends CoverBehavior implements CoverWithUI, ITickable {
         @Nullable
         @Override
         public FluidStack drain(int maxDrain, boolean doDrain) {
-            if(pumpMode == PumpMode.IMPORT) {
+            if (pumpMode == PumpMode.IMPORT) {
                 return null;
             }
             FluidStack result = super.drain(maxDrain, false);
-            if(isFilterInstalled && !checkInputFluid(result)) {
+            if (isFilterInstalled && !checkInputFluid(result)) {
                 return null;
             }
-            if(doDrain) {
+            if (doDrain) {
                 super.drain(maxDrain, true);
             }
             return result;

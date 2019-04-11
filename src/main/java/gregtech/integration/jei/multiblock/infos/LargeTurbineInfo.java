@@ -44,16 +44,16 @@ public class LargeTurbineInfo extends MultiblockInfoPage {
         TurbineRotorBehavior.getInstanceFor(rotorStack).setPartMaterial(rotorStack, Materials.Darmstadtium);
         ((MetaTileEntityRotorHolder) holder.getMetaTileEntity()).getRotorInventory().setStackInSlot(0, rotorStack);
         MultiblockShapeInfo.Builder shapeInfo = MultiblockShapeInfo.builder()
-                .aisle("CCCC", "CIOC", "CCCC")
-                .aisle("CCCC", "R##D", "CCCC")
-                .aisle("CCCC", "CSCC", "CCCC")
-                .where('S', turbine, EnumFacing.SOUTH)
-                .where('C', turbine.turbineType.casingState)
-                .where('R', new BlockInfo(MetaBlocks.MACHINE.getDefaultState(), holder))
-                .where('D', MetaTileEntities.ENERGY_OUTPUT_HATCH[GTValues.EV], EnumFacing.EAST)
-                .where('#', Blocks.AIR.getDefaultState())
-                .where('I', MetaTileEntities.FLUID_IMPORT_HATCH[GTValues.HV], EnumFacing.NORTH);
-        if(turbine.turbineType.hasOutputHatch) {
+            .aisle("CCCC", "CIOC", "CCCC")
+            .aisle("CCCC", "R##D", "CCCC")
+            .aisle("CCCC", "CSCC", "CCCC")
+            .where('S', turbine, EnumFacing.SOUTH)
+            .where('C', turbine.turbineType.casingState)
+            .where('R', new BlockInfo(MetaBlocks.MACHINE.getDefaultState(), holder))
+            .where('D', MetaTileEntities.ENERGY_OUTPUT_HATCH[GTValues.EV], EnumFacing.EAST)
+            .where('#', Blocks.AIR.getDefaultState())
+            .where('I', MetaTileEntities.FLUID_IMPORT_HATCH[GTValues.HV], EnumFacing.NORTH);
+        if (turbine.turbineType.hasOutputHatch) {
             shapeInfo.where('O', MetaTileEntities.FLUID_EXPORT_HATCH[GTValues.EV], EnumFacing.NORTH);
         } else {
             shapeInfo.where('O', turbine.turbineType.casingState);
@@ -63,7 +63,7 @@ public class LargeTurbineInfo extends MultiblockInfoPage {
 
     @Override
     public String[] getDescription() {
-        return new String[] {I18n.format("gregtech.multiblock.large_turbine.description")};
+        return new String[]{I18n.format("gregtech.multiblock.large_turbine.description")};
     }
 
 }

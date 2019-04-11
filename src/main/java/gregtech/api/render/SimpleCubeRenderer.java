@@ -50,7 +50,7 @@ public class SimpleCubeRenderer implements ICubeRenderer, IIconRegister {
     @Override
     @SideOnly(Side.CLIENT)
     public void render(CCRenderState renderState, Matrix4 translation, IVertexOperation[] pipeline, Cuboid6 bounds) {
-        for(EnumFacing side : EnumFacing.values()) {
+        for (EnumFacing side : EnumFacing.values()) {
             renderSided(side, translation, bounds, renderState, pipeline);
         }
     }

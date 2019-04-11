@@ -4,7 +4,7 @@ import codechicken.lib.render.CCRenderState;
 import codechicken.lib.render.pipeline.IVertexOperation;
 import codechicken.lib.vec.Matrix4;
 import gregtech.api.GTValues;
-import gregtech.api.capability.impl.EnergyRecipeMapWorkableHandler;
+import gregtech.api.capability.impl.RecipeLogicEnergy;
 import gregtech.api.capability.impl.FilteredFluidHandler;
 import gregtech.api.capability.impl.FluidTankList;
 import gregtech.api.recipes.Recipe;
@@ -27,7 +27,7 @@ import java.util.Set;
 
 public abstract class WorkableTieredMetaTileEntity extends TieredMetaTileEntity {
 
-    protected final EnergyRecipeMapWorkableHandler workable;
+    protected final RecipeLogicEnergy workable;
     protected final OrientedOverlayRenderer renderer;
 
     public WorkableTieredMetaTileEntity(ResourceLocation metaTileEntityId, RecipeMap<?> recipeMap, OrientedOverlayRenderer renderer, int tier) {
@@ -38,8 +38,8 @@ public abstract class WorkableTieredMetaTileEntity extends TieredMetaTileEntity 
         reinitializeEnergyContainer();
     }
 
-    protected EnergyRecipeMapWorkableHandler createWorkable(RecipeMap<?> recipeMap) {
-        return new EnergyRecipeMapWorkableHandler(this, recipeMap, () -> energyContainer);
+    protected RecipeLogicEnergy createWorkable(RecipeMap<?> recipeMap) {
+        return new RecipeLogicEnergy(this, recipeMap, () -> energyContainer);
     }
 
     @Override
@@ -55,21 +55,21 @@ public abstract class WorkableTieredMetaTileEntity extends TieredMetaTileEntity 
 
     @Override
     protected IItemHandlerModifiable createImportItemHandler() {
-        if(workable == null) return new ItemStackHandler(0);
+        if (workable == null) return new ItemStackHandler(0);
         return new ItemStackHandler(workable.recipeMap.getMaxInputs());
     }
 
     @Override
     protected IItemHandlerModifiable createExportItemHandler() {
-        if(workable == null) return new ItemStackHandler(0);
+        if (workable == null) return new ItemStackHandler(0);
         return new ItemStackHandler(workable.recipeMap.getMaxOutputs());
     }
 
     @Override
     protected FluidTankList createImportFluidHandler() {
-        if(workable == null) return new FluidTankList(false);
+        if (workable == null) return new FluidTankList(false);
         FilteredFluidHandler[] fluidImports = new FilteredFluidHandler[workable.recipeMap.getMaxFluidInputs()];
-        for(int i = 0; i < fluidImports.length; i++) {
+        for (int i = 0; i < fluidImports.length; i++) {
             FilteredFluidHandler filteredFluidHandler = new FilteredFluidHandler(getInputTankCapacity(i));
             filteredFluidHandler.setFillPredicate(this::canInputFluid);
             fluidImports[i] = filteredFluidHandler;
@@ -79,9 +79,9 @@ public abstract class WorkableTieredMetaTileEntity extends TieredMetaTileEntity 
 
     @Override
     protected FluidTankList createExportFluidHandler() {
-        if(workable == null) return new FluidTankList(false);
+        if (workable == null) return new FluidTankList(false);
         FluidTank[] fluidExports = new FluidTank[workable.recipeMap.getMaxFluidOutputs()];
-        for(int i = 0; i < fluidExports.length; i++) {
+        for (int i = 0; i < fluidExports.length; i++) {
             fluidExports[i] = new FluidTank(getOutputTankCapacity(i));
         }
         return new FluidTankList(false, fluidExports);
@@ -89,12 +89,12 @@ public abstract class WorkableTieredMetaTileEntity extends TieredMetaTileEntity 
 
     protected boolean canInputFluid(FluidStack inputFluid) {
         RecipeMap<?> recipeMap = workable.recipeMap;
-        if(recipeMap.canInputFluidForce(inputFluid.getFluid()))
+        if (recipeMap.canInputFluidForce(inputFluid.getFluid()))
             return true; //if recipe map forces input of given fluid, return true
         Set<Recipe> matchingRecipes = null;
-        for(IFluidTank fluidTank : importFluids) {
+        for (IFluidTank fluidTank : importFluids) {
             FluidStack fluidInTank = fluidTank.getFluid();
-            if(fluidInTank != null) {
+            if (fluidInTank != null) {
                 if (matchingRecipes == null) {
                     //if we didn't have a list of recipes with any fluids, obtain it from first tank with fluid
                     matchingRecipes = new HashSet<>(recipeMap.getRecipesForFluid(fluidInTank));
@@ -104,7 +104,7 @@ public abstract class WorkableTieredMetaTileEntity extends TieredMetaTileEntity 
                 }
             }
         }
-        if(matchingRecipes == null) {
+        if (matchingRecipes == null) {
             //if all tanks are empty, generally fluid can be inserted if there are recipes for it
             return !recipeMap.getRecipesForFluid(inputFluid).isEmpty();
         } else {

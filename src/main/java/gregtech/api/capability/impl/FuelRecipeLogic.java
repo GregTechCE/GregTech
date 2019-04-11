@@ -16,7 +16,7 @@ import net.minecraftforge.fluids.IFluidTank;
 
 import java.util.function.Supplier;
 
-public class FuelRecipeMapWorkableHandler extends MTETrait implements IWorkable {
+public class FuelRecipeLogic extends MTETrait implements IControllable {
 
     public final FuelRecipeMap recipeMap;
     protected FuelRecipe previousRecipe;
@@ -32,7 +32,7 @@ public class FuelRecipeMapWorkableHandler extends MTETrait implements IWorkable 
     private boolean workingEnabled = true;
     private boolean wasActiveAndNeedsUpdate = false;
 
-    public FuelRecipeMapWorkableHandler(MetaTileEntity metaTileEntity, FuelRecipeMap recipeMap, Supplier<IEnergyContainer> energyContainer, Supplier<IMultipleTankHandler> fluidTank, long maxVoltage) {
+    public FuelRecipeLogic(MetaTileEntity metaTileEntity, FuelRecipeMap recipeMap, Supplier<IEnergyContainer> energyContainer, Supplier<IMultipleTankHandler> fluidTank, long maxVoltage) {
         super(metaTileEntity);
         this.recipeMap = recipeMap;
         this.energyContainer = energyContainer;
@@ -55,28 +55,31 @@ public class FuelRecipeMapWorkableHandler extends MTETrait implements IWorkable 
     }
 
     @Override
-    public Capability<?> getImplementingCapability() {
-        return GregtechTileCapabilities.CAPABILITY_WORKABLE;
+    public <T> T getCapability(Capability<T> capability) {
+        if(capability == GregtechTileCapabilities.CAPABILITY_CONTROLLABLE) {
+            return GregtechTileCapabilities.CAPABILITY_CONTROLLABLE.cast(this);
+        }
+        return null;
     }
 
     @Override
     public void update() {
-        if(getMetaTileEntity().getWorld().isRemote) return;
-        if(workingEnabled) {
-            if(recipeDurationLeft > 0) {
-                if(energyContainer.get().getEnergyCanBeInserted() >=
+        if (getMetaTileEntity().getWorld().isRemote) return;
+        if (workingEnabled) {
+            if (recipeDurationLeft > 0) {
+                if (energyContainer.get().getEnergyCanBeInserted() >=
                     recipeOutputVoltage || shouldVoidExcessiveEnergy()) {
                     energyContainer.get().addEnergy(recipeOutputVoltage);
-                    if(--this.recipeDurationLeft == 0) {
+                    if (--this.recipeDurationLeft == 0) {
                         this.wasActiveAndNeedsUpdate = true;
                     }
                 }
             }
-            if(recipeDurationLeft == 0) {
+            if (recipeDurationLeft == 0) {
                 tryAcquireNewRecipe();
             }
         }
-        if(wasActiveAndNeedsUpdate) {
+        if (wasActiveAndNeedsUpdate) {
             setActive(false);
             this.wasActiveAndNeedsUpdate = false;
         }
@@ -88,11 +91,11 @@ public class FuelRecipeMapWorkableHandler extends MTETrait implements IWorkable 
 
     private void tryAcquireNewRecipe() {
         IMultipleTankHandler fluidTanks = this.fluidTank.get();
-        for(IFluidTank fluidTank : fluidTanks) {
+        for (IFluidTank fluidTank : fluidTanks) {
             FluidStack tankContents = fluidTank.getFluid();
-            if(tankContents != null && tankContents.amount > 0) {
+            if (tankContents != null && tankContents.amount > 0) {
                 int fuelAmountUsed = tryAcquireNewRecipe(tankContents);
-                if(fuelAmountUsed > 0) {
+                if (fuelAmountUsed > 0) {
                     fluidTank.drain(fuelAmountUsed, true);
                     break; //recipe is found and ready to use
                 }
@@ -100,25 +103,29 @@ public class FuelRecipeMapWorkableHandler extends MTETrait implements IWorkable 
         }
     }
 
+    public boolean isActive() {
+        return isActive;
+    }
+
     private int tryAcquireNewRecipe(FluidStack fluidStack) {
         FuelRecipe currentRecipe;
-        if(previousRecipe != null && previousRecipe.matches(maxVoltage, fluidStack)) {
+        if (previousRecipe != null && previousRecipe.matches(maxVoltage, fluidStack)) {
             //if previous recipe still matches inputs, try to use it
             currentRecipe = previousRecipe;
         } else {
             //else, try searching new recipe for given inputs
             currentRecipe = recipeMap.findRecipe(maxVoltage, fluidStack);
             //if we found recipe that can be buffered, buffer it
-            if(currentRecipe != null) {
+            if (currentRecipe != null) {
                 this.previousRecipe = currentRecipe;
             }
         }
-        if(currentRecipe != null && checkRecipe(currentRecipe)) {
+        if (currentRecipe != null && checkRecipe(currentRecipe)) {
             int fuelAmountToUse = calculateFuelAmount(currentRecipe);
-            if(fluidStack.amount >= fuelAmountToUse) {
+            if (fluidStack.amount >= fuelAmountToUse) {
                 this.recipeDurationLeft = calculateRecipeDuration(currentRecipe);
                 this.recipeOutputVoltage = startRecipe(currentRecipe, fuelAmountToUse, recipeDurationLeft);
-                if(wasActiveAndNeedsUpdate) {
+                if (wasActiveAndNeedsUpdate) {
                     this.wasActiveAndNeedsUpdate = false;
                 } else {
                     setActive(true);
@@ -143,6 +150,7 @@ public class FuelRecipeMapWorkableHandler extends MTETrait implements IWorkable 
 
     /**
      * Performs preparations for starting given recipe and determines it's output voltage
+     *
      * @return recipe's output voltage
      */
     protected long startRecipe(FuelRecipe currentRecipe, int fuelAmountUsed, int recipeDuration) {
@@ -157,41 +165,18 @@ public class FuelRecipeMapWorkableHandler extends MTETrait implements IWorkable 
         return GTValues.V[GTUtility.getTierByVoltage(voltage)];
     }
 
-    @Override
-    public void setActive(boolean active) {
+    private void setActive(boolean active) {
         this.isActive = active;
-        if(!metaTileEntity.getWorld().isRemote) {
+        if (!metaTileEntity.getWorld().isRemote) {
             metaTileEntity.markDirty();
             writeCustomData(1, buf -> buf.writeBoolean(active));
         }
     }
 
     @Override
-    public int getProgress() {
-        return 0; //throw new UnsupportedOperationException();
-    }
-
-    @Override
-    public int getMaxProgress() {
-        return 0; //throw new UnsupportedOperationException();
-    }
-
-    @Override
-    public void increaseProgress(int progress) {
-        //throw new UnsupportedOperationException();
-    }
-
-    @Override
-    public boolean hasWorkToDo() {
-        return isActive();
-    }
-
-    @Override
     public void setWorkingEnabled(boolean workingEnabled) {
         this.workingEnabled = workingEnabled;
-        if(!metaTileEntity.getWorld().isRemote) {
-            metaTileEntity.markDirty();
-        }
+        metaTileEntity.markDirty();
     }
 
     @Override
@@ -200,13 +185,8 @@ public class FuelRecipeMapWorkableHandler extends MTETrait implements IWorkable 
     }
 
     @Override
-    public boolean isActive() {
-        return isActive;
-    }
-
-    @Override
     public void receiveCustomData(int dataId, PacketBuffer buf) {
-        if(dataId == 1) {
+        if (dataId == 1) {
             this.isActive = buf.readBoolean();
             getMetaTileEntity().getHolder().scheduleChunkForRenderUpdate();
         }
@@ -227,7 +207,7 @@ public class FuelRecipeMapWorkableHandler extends MTETrait implements IWorkable 
         NBTTagCompound compound = new NBTTagCompound();
         compound.setBoolean("WorkEnabled", this.workingEnabled);
         compound.setInteger("RecipeDurationLeft", this.recipeDurationLeft);
-        if(recipeDurationLeft > 0) {
+        if (recipeDurationLeft > 0) {
             compound.setLong("RecipeOutputVoltage", this.recipeOutputVoltage);
         }
         return compound;
@@ -235,12 +215,12 @@ public class FuelRecipeMapWorkableHandler extends MTETrait implements IWorkable 
 
     @Override
     public void deserializeNBT(NBTTagCompound compound) {
-        if(!compound.hasKey("WorkEnabled", NBT.TAG_BYTE)) {
+        if (!compound.hasKey("WorkEnabled", NBT.TAG_BYTE)) {
             //change working mode only if there is a tag compound with it's value
             this.workingEnabled = compound.getBoolean("WorkEnabled");
         }
         this.recipeDurationLeft = compound.getInteger("RecipeDurationLeft");
-        if(recipeDurationLeft > 0) {
+        if (recipeDurationLeft > 0) {
             this.recipeOutputVoltage = compound.getLong("RecipeOutputVoltage");
         }
         this.isActive = recipeDurationLeft > 0;

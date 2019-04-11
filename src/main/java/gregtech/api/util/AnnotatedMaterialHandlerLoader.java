@@ -15,7 +15,7 @@ public class AnnotatedMaterialHandlerLoader {
     public static void discoverAndLoadAnnotatedMaterialHandlers(ASMDataTable asmDataTable) {
         Set<ASMData> annotations = asmDataTable.getAll(IMaterialHandler.RegisterMaterialHandler.class.getName());
         int materialHandlersRegistered = 0;
-        for(ASMData annotationData : annotations) {
+        for (ASMData annotationData : annotations) {
             String materialHandlerClassName = annotationData.getClassName();
             Class<?> materialHandlerClass;
             try {
@@ -30,16 +30,16 @@ public class AnnotatedMaterialHandlerLoader {
             Field instanceField = null;
             Constructor<?> constructor = null;
 
-            if(!IMaterialHandler.class.isAssignableFrom(materialHandlerClass)) {
+            if (!IMaterialHandler.class.isAssignableFrom(materialHandlerClass)) {
                 denyReason = "class does not implement IMaterialHandler";
-            } else if(Modifier.isAbstract(materialHandlerClass.getModifiers())) {
+            } else if (Modifier.isAbstract(materialHandlerClass.getModifiers())) {
                 denyReason = "class is abstract and cannot be initialized";
             }
             try {
                 instanceField = materialHandlerClass.getField("INSTANCE");
-                if(instanceField.getType() != materialHandlerClass) {
+                if (instanceField.getType() != materialHandlerClass) {
                     denyReason = "found INSTANCE field, but it's type is not the same as class type";
-                } else if(!Modifier.isStatic(instanceField.getModifiers())) {
+                } else if (!Modifier.isStatic(instanceField.getModifiers())) {
                     denyReason = "found INSTANCE field, but it's not static and cannot be used";
                 }
             } catch (NoSuchFieldException noSuchField) {
@@ -51,8 +51,8 @@ public class AnnotatedMaterialHandlerLoader {
             }
 
             IMaterialHandler materialHandler = null;
-            if(denyReason == null) {
-                if(instanceField != null) {
+            if (denyReason == null) {
+                if (instanceField != null) {
                     try {
                         materialHandler = (IMaterialHandler) instanceField.get(null);
                     } catch (ReflectiveOperationException exception) {
@@ -68,7 +68,7 @@ public class AnnotatedMaterialHandlerLoader {
                     }
                 }
             }
-            if(denyReason == null) {
+            if (denyReason == null) {
                 GTLog.logger.info("Registered material handler {}", materialHandler.getClass().getName());
                 Material.registerMaterialHandler(materialHandler);
                 materialHandlersRegistered++;

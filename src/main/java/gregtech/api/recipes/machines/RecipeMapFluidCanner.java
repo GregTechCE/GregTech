@@ -41,11 +41,11 @@ public class RecipeMapFluidCanner extends RecipeMap<SimpleRecipeBuilder> {
         // Make another copy to use for draining and filling
         ItemStack fluidHandlerItemStack = inputStack.copy();
         IFluidHandlerItem fluidHandlerItem = fluidHandlerItemStack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY, null);
-        if(fluidHandlerItem == null)
+        if (fluidHandlerItem == null)
             return null;
 
         FluidStack containerFluid = fluidHandlerItem.drain(Integer.MAX_VALUE, true);
-        if(containerFluid != null) {
+        if (containerFluid != null) {
             //if we actually drained something, then it's draining recipe
             return recipeBuilder()
                 .inputs(inputStack)
@@ -57,10 +57,10 @@ public class RecipeMapFluidCanner extends RecipeMap<SimpleRecipeBuilder> {
         }
 
         //if we didn't drain anything, try filling container
-        if(!fluidInputs.isEmpty() && fluidInputs.get(0) != null) {
+        if (!fluidInputs.isEmpty() && fluidInputs.get(0) != null) {
             FluidStack inputFluid = fluidInputs.get(0).copy();
             inputFluid.amount = fluidHandlerItem.fill(inputFluid, true);
-            if(inputFluid.amount > 0) {
+            if (inputFluid.amount > 0) {
                 return recipeBuilder()
                     .inputs(inputStack)
                     .fluidInputs(inputFluid)

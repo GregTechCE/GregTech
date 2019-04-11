@@ -34,8 +34,11 @@ import gregtech.integration.theoneprobe.TheOneProbeCompatibility;
 import gregtech.loaders.dungeon.DungeonLootLoader;
 import net.minecraftforge.classloading.FMLForgePlugin;
 import net.minecraftforge.fluids.FluidRegistry;
-import net.minecraftforge.fml.common.*;
+import net.minecraftforge.fml.common.FMLCommonHandler;
+import net.minecraftforge.fml.common.LoaderException;
+import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Optional.Method;
+import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
@@ -43,14 +46,14 @@ import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
 @Mod(modid = GTValues.MODID,
-     name = "GregTech Community Edition",
-     acceptedMinecraftVersions = "[1.12,1.13)",
-     dependencies = "required:forge@[14.23.3.2702,);" + CodeChickenLib.MOD_VERSION_DEP + "after:forestry;after:forgemultipartcbe;after:jei@[4.8.6,);after:crafttweaker;")
+    name = "GregTech Community Edition",
+    acceptedMinecraftVersions = "[1.12,1.13)",
+    dependencies = "required:forge@[14.23.3.2702,);" + CodeChickenLib.MOD_VERSION_DEP + "after:forestry;after:forgemultipartcbe;after:jei@[4.8.6,);after:crafttweaker;")
 public class GregTechMod {
 
     static {
         FluidRegistry.enableUniversalBucket();
-        if(FMLCommonHandler.instance().getSide().isClient()) {
+        if (FMLCommonHandler.instance().getSide().isClient()) {
             ResourcePackHook.init();
             BlockOreFactory.init();
             BlockCompressedFactory.init();
@@ -81,7 +84,7 @@ public class GregTechMod {
         Material.runMaterialHandlers();
 
         //then, run CraftTweaker early material registration scripts
-        if(GTValues.isModLoaded(GTValues.MODID_CT)) {
+        if (GTValues.isModLoaded(GTValues.MODID_CT)) {
             GTLog.logger.info("Running early CraftTweaker initialization scripts...");
             runEarlyCraftTweakerScripts();
         }
@@ -104,7 +107,7 @@ public class GregTechMod {
         if (RecipeMap.isFoundInvalidRecipe()) {
             GTLog.logger.fatal("Seems like invalid recipe was found.");
             //crash if config setting is set to false, or we are in deobfuscated environment
-            if(!ConfigHolder.ignoreErrorOrInvalidRecipes || !FMLForgePlugin.RUNTIME_DEOBF) {
+            if (!ConfigHolder.ignoreErrorOrInvalidRecipes || !FMLForgePlugin.RUNTIME_DEOBF) {
                 GTLog.logger.fatal("Loading cannot continue. Either fix or report invalid recipes, or enable ignoreErrorOrInvalidRecipes in the config as a temporary solution");
                 throw new LoaderException("Found at least one invalid recipe. Please read the log above for more details.");
             } else {
@@ -116,18 +119,18 @@ public class GregTechMod {
             }
         }
 
-        if(GTValues.isModLoaded(GTValues.MODID_FMP)) {
+        if (GTValues.isModLoaded(GTValues.MODID_FMP)) {
             GTLog.logger.info("ForgeMultiPart found. Enabling integration...");
             registerForgeMultipartCompat();
         }
 
-        if(GTValues.isModLoaded(GTValues.MODID_TOP)) {
+        if (GTValues.isModLoaded(GTValues.MODID_TOP)) {
             GTLog.logger.info("TheOneProbe found. Enabling integration...");
             TheOneProbeCompatibility.registerCompatibility();
         }
 
         WorldGenRegistry.INSTANCE.initializeRegistry();
-        if(!ConfigHolder.disableRubberTreeGeneration) {
+        if (!ConfigHolder.disableRubberTreeGeneration) {
             GameRegistry.registerWorldGenerator(new WorldGenRubberTree(), 10000);
         }
 

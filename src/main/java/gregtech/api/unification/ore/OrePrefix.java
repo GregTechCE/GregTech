@@ -146,17 +146,17 @@ public enum OrePrefix {
 
     /* Electric Components.
      *
-	 * usual Materials for this are:
-	 * Primitive (Tier 1)
-	 * Basic (Tier 2)
-	 * Good (Tier 3)
-	 * Advanced (Tier 4)
-	 * Data (Tier 5)
-	 * Elite (Tier 6)
-	 * Master (Tier 7)
-	 * Ultimate (Tier 8)
-	 * Infinite
-	 */
+     * usual Materials for this are:
+     * Primitive (Tier 1)
+     * Basic (Tier 2)
+     * Good (Tier 3)
+     * Advanced (Tier 4)
+     * Data (Tier 5)
+     * Elite (Tier 6)
+     * Master (Tier 7)
+     * Ultimate (Tier 8)
+     * Infinite
+     */
     batterySingleUse("Single Use Batteries", -1, null, null, DISALLOW_RECYCLING, null),
     battery("Reusable Batteries", -1, null, null, DISALLOW_RECYCLING, null), // Introduced by Calclavia
     circuit("Circuits", -1, null, null, ENABLE_UNIFICATION | DISALLOW_RECYCLING, null), // Introduced by Calclavia
@@ -169,9 +169,9 @@ public enum OrePrefix {
         public static final long DISALLOW_RECYCLING = GTUtility.createFlag(3);
     }
 
-	public static class Conditions {
-		public static Predicate<Material> isToolMaterial = mat -> mat instanceof SolidMaterial && ((SolidMaterial) mat).toolDurability > 0;
-	}
+    public static class Conditions {
+        public static Predicate<Material> isToolMaterial = mat -> mat instanceof SolidMaterial && ((SolidMaterial) mat).toolDurability > 0;
+    }
 
     static {
         ingotHot.heatDamage = 3.0F;
@@ -264,12 +264,6 @@ public enum OrePrefix {
         block.setIgnored(Materials.Concrete);
         block.setIgnored(Materials.Blaze);
 
-        cableGtHex.addSecondaryMaterial(new MaterialStack(Materials.Rubber, dustSmall.materialAmount * 4));
-        cableGtOctal.addSecondaryMaterial(new MaterialStack(Materials.Rubber, dustSmall.materialAmount * 3));
-        cableGtQuadruple.addSecondaryMaterial(new MaterialStack(Materials.Rubber, dustSmall.materialAmount * 2));
-        cableGtDouble.addSecondaryMaterial(new MaterialStack(Materials.Rubber, dustSmall.materialAmount));
-        cableGtSingle.addSecondaryMaterial(new MaterialStack(Materials.Rubber, dustSmall.materialAmount));
-
         ore.addSecondaryMaterial(new MaterialStack(Materials.Stone, dust.materialAmount));
         oreRedgranite.addSecondaryMaterial(new MaterialStack(Materials.GraniteRed, dust.materialAmount));
         oreBlackgranite.addSecondaryMaterial(new MaterialStack(Materials.GraniteBlack, dust.materialAmount));
@@ -302,18 +296,21 @@ public enum OrePrefix {
     public final boolean isRecyclingDisallowed;
     public final boolean isFluidContainer;
 
-    public final @Nullable Predicate<Material> generationCondition;
-    public final @Nullable MaterialIconType materialIconType;
+    public final @Nullable
+    Predicate<Material> generationCondition;
+    public final @Nullable
+    MaterialIconType materialIconType;
 
     public final long materialAmount;
 
     /**
      * Contains a default material type for self-referencing OrePrefix
      * For self-referencing prefixes, it is always guaranteed for it to be not null
-     *
+     * <p>
      * NOTE: Ore registrations with self-referencing OrePrefix still can occur with other materials
      */
-    public @Nullable Material materialType;
+    public @Nullable
+    Material materialType;
 
     private final List<IOreRegistrationHandler> oreProcessingHandlers = new ArrayList<>();
     private final Set<Material> ignoredMaterials = new HashSet<>();
@@ -333,8 +330,8 @@ public enum OrePrefix {
         this.isFluidContainer = (flags & FLUID_CONTAINER) != 0;
         this.materialIconType = materialIconType;
         this.generationCondition = condition;
-        if(isSelfReferencing) {
-            Preconditions.checkNotNull( material, "Material is null for self-referencing OrePrefix");
+        if (isSelfReferencing) {
+            Preconditions.checkNotNull(material, "Material is null for self-referencing OrePrefix");
             this.materialType = material;
         }
     }
@@ -349,15 +346,15 @@ public enum OrePrefix {
     }
 
     public long getMaterialAmount(Material material) {
-        if(this == block) {
+        if (this == block) {
             //glowstone and nether quartz blocks use 4 gems (dusts)
-            if(material == Materials.Glowstone ||
+            if (material == Materials.Glowstone ||
                 material == Materials.NetherQuartz ||
                 material == Materials.Brick ||
                 material == Materials.Clay)
                 return M * 4;
-            //glass, ice and obsidian gain only one dust
-            else if(material == Materials.Glass ||
+                //glass, ice and obsidian gain only one dust
+            else if (material == Materials.Glass ||
                 material == Materials.Ice ||
                 material == Materials.Obsidian)
                 return M;
@@ -389,7 +386,7 @@ public enum OrePrefix {
 
     public <T extends Material> void addProcessingHandler(Class<T> materialFilter, BiConsumer<OrePrefix, T> handler) {
         addProcessingHandler((orePrefix, material) -> {
-            if(materialFilter.isAssignableFrom(material.getClass())) {
+            if (materialFilter.isAssignableFrom(material.getClass())) {
                 //noinspection unchecked
                 handler.accept(orePrefix, (T) material);
             }
@@ -397,16 +394,16 @@ public enum OrePrefix {
     }
 
     public void processOreRegistration(@Nullable Material material) {
-        if(this.isSelfReferencing && material == null) {
+        if (this.isSelfReferencing && material == null) {
             material = materialType; //append default material for self-referencing OrePrefix
         }
-        if(material != null) {
+        if (material != null) {
             generatedMaterials.add(material);
         }
     }
 
     public static void runMaterialHandlers() {
-        for(OrePrefix orePrefix : values()) {
+        for (OrePrefix orePrefix : values()) {
             orePrefix.runGeneratedMaterialHandlers();
         }
     }
@@ -424,9 +421,9 @@ public enum OrePrefix {
 
     private void runGeneratedMaterialHandlers() {
         currentProcessingPrefix.set(this);
-        for(Material registeredMaterial : generatedMaterials) {
+        for (Material registeredMaterial : generatedMaterials) {
             currentMaterial.set(registeredMaterial);
-            for(IOreRegistrationHandler registrationHandler : oreProcessingHandlers) {
+            for (IOreRegistrationHandler registrationHandler : oreProcessingHandlers) {
                 registrationHandler.processMaterial(this, registeredMaterial);
             }
             currentMaterial.set(null);

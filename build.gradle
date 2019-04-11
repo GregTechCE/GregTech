@@ -53,15 +53,11 @@ repositories {
     }
     maven { //JEI
         name = "Progwml6 maven"
-        url = "http://dvs1.progwml6.com/files/maven/"
-    }
-    maven { //JEI fallback
-        name = "ModMaven"
-        url = "http://modmaven.k-4u.nl"
+        url = "https://dvs1.progwml6.com/files/maven/"
     }
     maven {
         name = "tterrag maven"
-        url = "http://maven.tterrag.com/"
+        url = "https://maven.tterrag.com/"
     }
     maven {
         name = "ChickenBones maven"
@@ -69,11 +65,11 @@ repositories {
     }
     maven {
         name = "CoFH Maven"
-        url = "http://maven.covers1624.net"
+        url = "https://maven.covers1624.net/"
     }
     maven {
         name = "tehnut maven"
-        url = "http://tehnut.info/maven/"
+        url = "https://tehnut.info/maven/"
     }
     maven {
         name = "CraftTweaker Maven"
@@ -152,8 +148,9 @@ task energyApi(type: Jar) {
     include "gregtech/api/capability/IElectricItem.*"
     include "gregtech/api/capability/IEnergyContainer.*"
     include "gregtech/api/capability/GregtechCapabilities.*"
+    include "gregtech/api/capability/tool/*"
 
-    classifier = 'energy-api'
+    classifier = 'api'
 }
 
 artifacts {

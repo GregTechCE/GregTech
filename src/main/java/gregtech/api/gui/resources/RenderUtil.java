@@ -36,9 +36,9 @@ public class RenderUtil {
     }
 
     public static int getFluidColor(FluidStack fluidStack) {
-        if(fluidStack.getFluid() == FluidRegistry.WATER)
+        if (fluidStack.getFluid() == FluidRegistry.WATER)
             return 0x3094CF;
-        else if(fluidStack.getFluid() == FluidRegistry.LAVA)
+        else if (fluidStack.getFluid() == FluidRegistry.LAVA)
             return 0xFFD700;
         return fluidStack.getFluid().getColor(fluidStack);
     }

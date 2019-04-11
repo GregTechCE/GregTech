@@ -41,5 +41,5 @@ public class BlockWarningSign extends VariantBlock<BlockWarningSign.SignType> {
         }
 
     }
-    
+
 }

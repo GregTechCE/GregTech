@@ -41,7 +41,7 @@ public class MaterialRecipeHandler {
         OrePrefix.dustSmall.addProcessingHandler(DustMaterial.class, MaterialRecipeHandler::processSmallDust);
         OrePrefix.dustTiny.addProcessingHandler(DustMaterial.class, MaterialRecipeHandler::processTinyDust);
 
-        for(OrePrefix orePrefix : GEM_ORDER) {
+        for (OrePrefix orePrefix : GEM_ORDER) {
             orePrefix.addProcessingHandler(GemMaterial.class, MaterialRecipeHandler::processGem);
         }
 
@@ -83,7 +83,7 @@ public class MaterialRecipeHandler {
 
         } else if (material instanceof IngotMaterial) {
             IngotMaterial metalMaterial = (IngotMaterial) material;
-            if(!material.hasFlag(Material.MatFlags.FLAMMABLE | MatFlags.NO_SMELTING)) {
+            if (!material.hasFlag(Material.MatFlags.FLAMMABLE | MatFlags.NO_SMELTING)) {
 
                 boolean hasHotIngot = OrePrefix.ingotHot.doGenerateItem(metalMaterial);
                 ItemStack ingotStack = OreDictUnifier.get(hasHotIngot ? OrePrefix.ingotHot : OrePrefix.ingot, metalMaterial);
@@ -101,8 +101,8 @@ public class MaterialRecipeHandler {
                         .outputs(ingotStack)
                         .blastFurnaceTemp(metalMaterial.blastFurnaceTemperature)
                         .duration(duration).EUt(120);
-                    if(circuitRequiringMaterials.contains(material)) {
-                        ingotSmeltingBuilder.inputs(IntCircuitIngredient.getIntegratedCircuit(0));
+                    if (circuitRequiringMaterials.contains(material)) {
+                        ingotSmeltingBuilder.inputs(new CountableIngredient(new IntCircuitIngredient(0), 0));
                     }
                     ingotSmeltingBuilder.buildAndRegister();
 
@@ -140,7 +140,7 @@ public class MaterialRecipeHandler {
         }
     }
 
-    public static void processSmallDust(OrePrefix orePrefix,DustMaterial material) {
+    public static void processSmallDust(OrePrefix orePrefix, DustMaterial material) {
         ItemStack smallDustStack = OreDictUnifier.get(orePrefix, material);
         ItemStack dustStack = OreDictUnifier.get(OrePrefix.dust, material);
 
@@ -150,12 +150,12 @@ public class MaterialRecipeHandler {
             dustStack, "XX", "XX", 'X', new UnificationEntry(orePrefix, material));
 
         RecipeMaps.PACKER_RECIPES.recipeBuilder().input(orePrefix, material, 4)
-            .inputs(CountableIngredient.from(IntCircuitIngredient.getIntegratedCircuit(2), 0))
+            .inputs(new CountableIngredient(new IntCircuitIngredient(2), 0))
             .outputs(dustStack)
             .buildAndRegister();
 
         RecipeMaps.UNPACKER_RECIPES.recipeBuilder().input(OrePrefix.dust, material)
-            .inputs(CountableIngredient.from(IntCircuitIngredient.getIntegratedCircuit(2), 0))
+            .inputs(new CountableIngredient(new IntCircuitIngredient(2), 0))
             .outputs(GTUtility.copyAmount(4, smallDustStack))
             .buildAndRegister();
     }
@@ -170,12 +170,12 @@ public class MaterialRecipeHandler {
             dustStack, "XXX", "XXX", "XXX", 'X', new UnificationEntry(orePrefix, material));
 
         RecipeMaps.PACKER_RECIPES.recipeBuilder().input(orePrefix, material, 9)
-            .inputs(CountableIngredient.from(IntCircuitIngredient.getIntegratedCircuit(1), 0))
+            .inputs(new CountableIngredient(new IntCircuitIngredient(1), 0))
             .outputs(dustStack)
             .buildAndRegister();
 
         RecipeMaps.UNPACKER_RECIPES.recipeBuilder().input(OrePrefix.dust, material)
-            .inputs(CountableIngredient.from(IntCircuitIngredient.getIntegratedCircuit(1), 0))
+            .inputs(new CountableIngredient(new IntCircuitIngredient(1), 0))
             .outputs(GTUtility.copyAmount(9, tinyDustStack))
             .buildAndRegister();
     }
@@ -192,12 +192,12 @@ public class MaterialRecipeHandler {
                 "IhI", "III", " I ", 'I', new UnificationEntry(ingotPrefix, material));
         }
 
-        if(material.hasFlag(GENERATE_ROD)) {
+        if (material.hasFlag(GENERATE_ROD)) {
             ModHandler.addShapedRecipe(String.format("stick_%s", material.toString()),
                 OreDictUnifier.get(OrePrefix.stick, material, 1),
                 "f ", " X",
                 'X', new UnificationEntry(ingotPrefix, material));
-            if(!material.hasFlag(NO_SMASHING)) {
+            if (!material.hasFlag(NO_SMASHING)) {
                 RecipeMaps.EXTRUDER_RECIPES.recipeBuilder()
                     .input(ingotPrefix, material)
                     .notConsumable(MetaItems.SHAPE_EXTRUDER_ROD)
@@ -208,7 +208,7 @@ public class MaterialRecipeHandler {
             }
         }
 
-        if(material.shouldGenerateFluid()) {
+        if (material.shouldGenerateFluid()) {
             RecipeMaps.FLUID_SOLIDFICATION_RECIPES.recipeBuilder()
                 .notConsumable(MetaItems.SHAPE_MOLD_INGOT)
                 .fluidInputs(material.getFluid(L))
@@ -217,7 +217,7 @@ public class MaterialRecipeHandler {
                 .buildAndRegister();
         }
 
-        if(material.hasFlag(NO_SMASHING)) {
+        if (material.hasFlag(NO_SMASHING)) {
             RecipeMaps.EXTRUDER_RECIPES.recipeBuilder()
                 .input(OrePrefix.dust, material)
                 .notConsumable(MetaItems.SHAPE_EXTRUDER_INGOT)
@@ -302,27 +302,6 @@ public class MaterialRecipeHandler {
                 .duration(20).EUt(16)
                 .buildAndRegister();
         }
-
-        if (material.hasFlag(SolidMaterial.MatFlags.GENERATE_LONG_ROD) && materialAmount >= M * 2) {
-            RecipeMaps.LATHE_RECIPES.recipeBuilder()
-                .input(gemPrefix, material)
-                .outputs(OreDictUnifier.get(OrePrefix.stickLong, material, (int) (materialAmount / (M * 2))),
-                    OreDictUnifier.getDust(material, materialAmount % (M * 2)))
-                .duration((int) material.getAverageMass())
-                .EUt(16)
-                .buildAndRegister();
-        } else if (materialAmount >= M && material.hasFlag(SolidMaterial.MatFlags.GENERATE_ROD)) {
-            ItemStack gemStick = OreDictUnifier.get(OrePrefix.stick, material, (int) (materialAmount / M));
-            ItemStack gemDust = OreDictUnifier.getDust(material, materialAmount % M);
-            if (!gemStick.isEmpty() && !gemDust.isEmpty()) {
-                RecipeMaps.LATHE_RECIPES.recipeBuilder()
-                    .input(gemPrefix, material)
-                    .outputs(gemStick, gemDust)
-                    .duration((int) material.getAverageMass())
-                    .EUt(16)
-                    .buildAndRegister();
-            }
-        }
     }
 
     public static void processNugget(OrePrefix orePrefix, SolidMaterial material) {
@@ -336,16 +315,16 @@ public class MaterialRecipeHandler {
                 ingotStack, "XXX", "XXX", "XXX", 'X', new UnificationEntry(orePrefix, material));
 
             RecipeMaps.UNPACKER_RECIPES.recipeBuilder().input(OrePrefix.ingot, material)
-                .inputs(CountableIngredient.from(IntCircuitIngredient.getIntegratedCircuit(1), 0))
+                .inputs(new CountableIngredient(new IntCircuitIngredient(1), 0))
                 .outputs(GTUtility.copyAmount(9, nuggetStack))
                 .buildAndRegister();
 
             RecipeMaps.PACKER_RECIPES.recipeBuilder().input(orePrefix, material, 9)
-                .inputs(CountableIngredient.from(IntCircuitIngredient.getIntegratedCircuit(1), 0))
+                .inputs(new CountableIngredient(new IntCircuitIngredient(1), 0))
                 .outputs(ingotStack)
                 .buildAndRegister();
 
-            if(material.shouldGenerateFluid()) {
+            if (material.shouldGenerateFluid()) {
                 RecipeMaps.FLUID_SOLIDFICATION_RECIPES.recipeBuilder()
                     .notConsumable(MetaItems.SHAPE_MOLD_NUGGET)
                     .fluidInputs(material.getFluid(L))
@@ -414,18 +393,18 @@ public class MaterialRecipeHandler {
         }
 
         ArrayList<Object> result = new ArrayList<>();
-        for(int index = 0; index < materialAmount / M; index++) {
+        for (int index = 0; index < materialAmount / M; index++) {
             result.add(blockEntry);
         }
         //do not allow hand crafting or uncrafting of blacklisted blocks
-        if(!material.hasFlag(EXCLUDE_BLOCK_CRAFTING_RECIPES)) {
+        if (!material.hasFlag(EXCLUDE_BLOCK_CRAFTING_RECIPES)) {
             ModHandler.addShapelessRecipe(String.format("block_compress_%s", material.toString()), blockStack, result.toArray());
 
             ModHandler.addShapelessRecipe(String.format("block_decompress_%s", material.toString()),
                 GTUtility.copyAmount((int) (materialAmount / M), OreDictUnifier.get(blockEntry)),
                 new UnificationEntry(blockPrefix, material));
 
-            if(material instanceof IngotMaterial) {
+            if (material instanceof IngotMaterial) {
                 int voltageMultiplier = getVoltageMultiplier(material);
                 RecipeMaps.EXTRUDER_RECIPES.recipeBuilder()
                     .input(OrePrefix.ingot, material, (int) (materialAmount / M))

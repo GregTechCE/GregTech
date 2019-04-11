@@ -62,18 +62,18 @@ public class MetaTileEntityPrimitiveBlastFurnace extends MultiblockControllerBas
 
     @Override
     protected void updateFormedValid() {
-        if(maxProgressDuration == 0) {
-            if(tryPickNewRecipe()) {
-                if(wasActiveAndNeedUpdate) {
+        if (maxProgressDuration == 0) {
+            if (tryPickNewRecipe()) {
+                if (wasActiveAndNeedUpdate) {
                     this.wasActiveAndNeedUpdate = false;
                 } else setActive(true);
             }
-        } else if(++currentProgress >= maxProgressDuration) {
+        } else if (++currentProgress >= maxProgressDuration) {
             finishCurrentRecipe();
             this.wasActiveAndNeedUpdate = true;
             return;
         }
-        if(wasActiveAndNeedUpdate) {
+        if (wasActiveAndNeedUpdate) {
             this.wasActiveAndNeedUpdate = false;
             setActive(false);
         }
@@ -113,7 +113,7 @@ public class MetaTileEntityPrimitiveBlastFurnace extends MultiblockControllerBas
     private boolean tryPickNewRecipe() {
         ItemStack inputStack = importItems.getStackInSlot(0);
         ItemStack fuelStack = importItems.getStackInSlot(1);
-        if(inputStack.isEmpty() || (fuelStack.isEmpty() && fuelUnitsLeft == 0)) {
+        if (inputStack.isEmpty() || (fuelStack.isEmpty() && fuelUnitsLeft == 0)) {
             return false;
         }
         int fuelUnitsPerItem = getFuelUnits(fuelStack);
@@ -149,10 +149,10 @@ public class MetaTileEntityPrimitiveBlastFurnace extends MultiblockControllerBas
         data.setBoolean("WasActive", wasActiveAndNeedUpdate);
         data.setInteger("FuelUnitsLeft", fuelUnitsLeft);
         data.setInteger("MaxProgress", maxProgressDuration);
-        if(maxProgressDuration > 0) {
+        if (maxProgressDuration > 0) {
             data.setInteger("Progress", currentProgress);
             NBTTagList itemOutputs = new NBTTagList();
-            for(ItemStack itemStack : outputsList) {
+            for (ItemStack itemStack : outputsList) {
                 itemOutputs.appendTag(itemStack.writeToNBT(new NBTTagCompound()));
             }
             data.setTag("Outputs", itemOutputs);
@@ -167,11 +167,11 @@ public class MetaTileEntityPrimitiveBlastFurnace extends MultiblockControllerBas
         this.wasActiveAndNeedUpdate = data.getBoolean("WasActive");
         this.fuelUnitsLeft = data.getInteger("FuelUnitsLeft");
         this.maxProgressDuration = data.getInteger("MaxProgress");
-        if(maxProgressDuration > 0) {
+        if (maxProgressDuration > 0) {
             this.currentProgress = data.getInteger("Progress");
             NBTTagList itemOutputs = data.getTagList("Outputs", NBT.TAG_COMPOUND);
             this.outputsList = NonNullList.create();
-            for(int i = 0; i < itemOutputs.tagCount(); i++) {
+            for (int i = 0; i < itemOutputs.tagCount(); i++) {
                 this.outputsList.add(new ItemStack(itemOutputs.getCompoundTagAt(i)));
             }
         }
@@ -192,7 +192,7 @@ public class MetaTileEntityPrimitiveBlastFurnace extends MultiblockControllerBas
     @Override
     public void receiveCustomData(int dataId, PacketBuffer buf) {
         super.receiveCustomData(dataId, buf);
-        if(dataId == 100) {
+        if (dataId == 100) {
             this.isActive = buf.readBoolean();
             getWorld().checkLight(getPos());
             getHolder().scheduleChunkForRenderUpdate();
@@ -201,7 +201,7 @@ public class MetaTileEntityPrimitiveBlastFurnace extends MultiblockControllerBas
 
     public void setActive(boolean active) {
         this.isActive = active;
-        if(!getWorld().isRemote) {
+        if (!getWorld().isRemote) {
             writeCustomData(100, b -> b.writeBoolean(isActive));
             getWorld().checkLight(getPos());
         }
@@ -221,19 +221,19 @@ public class MetaTileEntityPrimitiveBlastFurnace extends MultiblockControllerBas
     }
 
     protected int getFuelUnits(ItemStack fuelType) {
-        if(fuelType.isEmpty()) {
+        if (fuelType.isEmpty()) {
             return 0;
         }
         MaterialStack materialStack = OreDictUnifier.getMaterial(fuelType);
-        if(materialStack != null && materialStack.amount >= GTValues.M) {
+        if (materialStack != null && materialStack.amount >= GTValues.M) {
             int materialAmount = (int) (materialStack.amount / GTValues.M);
-            if(materialStack.material == Materials.Coal || materialStack.material == Materials.Charcoal) {
+            if (materialStack.material == Materials.Coal || materialStack.material == Materials.Charcoal) {
                 return materialAmount;
-            } else if(materialStack.material == Materials.Coke) {
+            } else if (materialStack.material == Materials.Coke) {
                 return 2 * materialAmount;
             }
         }
-        if(OreDictUnifier.getOreDictionaryNames(fuelType).contains("fuelCoke")) {
+        if (OreDictUnifier.getOreDictionaryNames(fuelType).contains("fuelCoke")) {
             return 2;
         }
         return 0;
@@ -252,7 +252,7 @@ public class MetaTileEntityPrimitiveBlastFurnace extends MultiblockControllerBas
     public void renderMetaTileEntity(CCRenderState renderState, Matrix4 translation, IVertexOperation[] pipeline) {
         super.renderMetaTileEntity(renderState, translation, pipeline);
         Textures.PRIMITIVE_BLAST_FURNACE_OVERLAY.render(renderState, translation, pipeline, getFrontFacing(), isActive());
-        if(isActive() && isStructureFormed()) {
+        if (isActive() && isStructureFormed()) {
             EnumFacing back = getFrontFacing().getOpposite();
             Matrix4 offset = translation.copy().translate(back.getFrontOffsetX(), -0.3, back.getFrontOffsetZ());
             TextureAtlasSprite sprite = TextureUtils.getBlockTexture("lava_still");
@@ -275,7 +275,7 @@ public class MetaTileEntityPrimitiveBlastFurnace extends MultiblockControllerBas
             @Nonnull
             @Override
             public ItemStack insertItem(int slot, @Nonnull ItemStack stack, boolean simulate) {
-                if(slot == 1 && getFuelUnits(stack) == 0)
+                if (slot == 1 && getFuelUnits(stack) == 0)
                     return stack;
                 return super.insertItem(slot, stack, simulate);
             }

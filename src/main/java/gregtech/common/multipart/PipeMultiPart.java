@@ -11,8 +11,9 @@ import codechicken.lib.vec.Vector3;
 import codechicken.lib.vec.uv.IconTransformation;
 import codechicken.multipart.*;
 import com.google.common.collect.Lists;
-import gregtech.api.GregTechAPI;
+import gregtech.api.capability.GregtechCapabilities;
 import gregtech.api.capability.GregtechTileCapabilities;
+import gregtech.api.capability.tool.IScrewdriverItem;
 import gregtech.api.cover.CoverBehavior;
 import gregtech.api.cover.ICoverable;
 import gregtech.api.pipenet.PipeNet;
@@ -22,8 +23,6 @@ import gregtech.api.pipenet.block.IPipeType;
 import gregtech.api.pipenet.tile.IPipeTile;
 import gregtech.api.pipenet.tile.PipeCoverableImplementation;
 import gregtech.api.unification.material.type.Material;
-import gregtech.api.unification.stack.SimpleItemStack;
-import gregtech.api.util.GTUtility;
 import gregtech.api.util.ParticleHandlerUtil;
 import gregtech.common.tools.DamageValues;
 import io.netty.buffer.Unpooled;
@@ -51,7 +50,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 
-public abstract class PipeMultiPart<PipeType extends Enum<PipeType> & IPipeType<NodeDataType>, NodeDataType> extends TMultiPart implements TNormalOcclusionPart, TPartialOcclusionPart, IPipeTile<PipeType, NodeDataType>, ICapabilityProvider {
+public abstract class PipeMultiPart<PipeType extends Enum<PipeType> & IPipeType<NodeDataType>, NodeDataType> extends TMultiPart implements TNormalOcclusionPart, TPartialOcclusionPart, IRedstonePart, IPipeTile<PipeType, NodeDataType>, ICapabilityProvider {
 
     private BlockPipe<PipeType, NodeDataType, ?> pipeBlock;
     private PipeType pipeType;
@@ -132,16 +131,6 @@ public abstract class PipeMultiPart<PipeType extends Enum<PipeType> & IPipeType<
     @Override
     public Material getPipeMaterial() {
         return material;
-    }
-
-    @Override
-    public void setPipeType(PipeType pipeType) {
-        this.pipeType = pipeType;
-    }
-
-    @Override
-    public void setPipeMaterial(Material pipeMaterial) {
-        this.material = pipeMaterial;
     }
 
     public void setConnectionBlocked(EnumFacing side, boolean blocked) {
@@ -230,6 +219,12 @@ public abstract class PipeMultiPart<PipeType extends Enum<PipeType> & IPipeType<
     @Override
     public final boolean hasCapability(@Nonnull Capability<?> capability, @Nullable EnumFacing facing) {
         return getCapability(capability, facing) != null;
+    }
+
+    @Override
+    public void onWorldJoin() {
+        super.onWorldJoin();
+        coverableImplementation.updateInputRedstoneSignals();
     }
 
     @Override
@@ -342,23 +337,24 @@ public abstract class PipeMultiPart<PipeType extends Enum<PipeType> & IPipeType<
     @Override
     public boolean activate(EntityPlayer player, CuboidRayTraceResult hit, ItemStack item, EnumHand hand) {
         EnumFacing coverSide = ICoverable.traceCoverSide(hit);
-        if (coverSide == null) {
-            return false;
-        }
-        CoverBehavior coverBehavior = getCoverableImplementation().getCoverAtSide(coverSide);
+        CoverBehavior coverBehavior = coverSide == null ? null : getCoverableImplementation().getCoverAtSide(coverSide);
+        ItemStack itemStack = player.getHeldItem(hand);
+
         if (coverBehavior == null) {
             return false;
         }
-        SimpleItemStack simpleItemStack = item.isEmpty() ? null : new SimpleItemStack(item);
-        if (simpleItemStack != null && GregTechAPI.screwdriverList.contains(simpleItemStack)) {
-            if (GTUtility.doDamageItem(item, DamageValues.DAMAGE_FOR_SCREWDRIVER, true) &&
-                coverBehavior.onScrewdriverClick(player, hand, hit) == EnumActionResult.SUCCESS) {
-                GTUtility.doDamageItem(item, DamageValues.DAMAGE_FOR_SCREWDRIVER, false);
+
+        if (itemStack.hasCapability(GregtechCapabilities.CAPABILITY_SCREWDRIVER, null)) {
+            IScrewdriverItem screwdriver = itemStack.getCapability(GregtechCapabilities.CAPABILITY_SCREWDRIVER, null);
+
+            if (screwdriver.damageItem(DamageValues.DAMAGE_FOR_SCREWDRIVER, true) && coverBehavior
+                .onScrewdriverClick(player, hand, hit) == EnumActionResult.SUCCESS) {
+                screwdriver.damageItem(DamageValues.DAMAGE_FOR_SCREWDRIVER, false);
                 return true;
-            } else {
-                return false;
             }
+            return false;
         }
+
         return coverBehavior.onRightClick(player, hand, hit) == EnumActionResult.SUCCESS;
     }
 
@@ -376,6 +372,23 @@ public abstract class PipeMultiPart<PipeType extends Enum<PipeType> & IPipeType<
     }
 
     @Override
+    public int strongPowerLevel(int side) {
+        return 0;
+    }
+
+    @Override
+    public int weakPowerLevel(int side) {
+        CoverBehavior coverBehavior = getCoverableImplementation().getCoverAtSide(EnumFacing.VALUES[side].getOpposite());
+        return coverBehavior == null ? 0 : coverBehavior.getRedstoneSignalOutput();
+    }
+
+    @Override
+    public boolean canConnectRedstone(int side) {
+        CoverBehavior coverBehavior = getCoverableImplementation().getCoverAtSide(EnumFacing.VALUES[side]);
+        return coverBehavior != null && coverBehavior.canConnectRedstone();
+    }
+
+    @Override
     public void onRemoved() {
         if (!this.isBeingReplaced && !world().isRemote) {
             pipeBlock.getWorldPipeNet(world()).removeNode(pos());
@@ -387,12 +400,14 @@ public abstract class PipeMultiPart<PipeType extends Enum<PipeType> & IPipeType<
     public void onPartChanged(TMultiPart part) {
         if (part != this) {
             scheduleTick(1);
+            coverableImplementation.updateInputRedstoneSignals();
         }
     }
 
     @Override
     public void onNeighborChanged() {
         scheduleTick(1);
+        coverableImplementation.updateInputRedstoneSignals();
     }
 
     @Override

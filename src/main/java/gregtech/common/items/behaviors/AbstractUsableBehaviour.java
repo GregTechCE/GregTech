@@ -17,9 +17,9 @@ public class AbstractUsableBehaviour implements IItemBehaviour {
 
     public boolean useItemDurability(EntityPlayer player, EnumHand hand, ItemStack stack, ItemStack replacementStack) {
         int usesLeft = getUsesLeft(stack);
-        if(!player.capabilities.isCreativeMode) {
-            if(--usesLeft <= 0) {
-                if(replacementStack.isEmpty()) {
+        if (!player.capabilities.isCreativeMode) {
+            if (--usesLeft <= 0) {
+                if (replacementStack.isEmpty()) {
                     //if replacement stack is empty, just shrink resulting stack
                     stack.shrink(1);
                 } else {
@@ -42,7 +42,7 @@ public class AbstractUsableBehaviour implements IItemBehaviour {
 
     public final void setUsesLeft(ItemStack itemStack, int usesLeft) {
         NBTTagCompound tagCompound = itemStack.getTagCompound();
-        if(tagCompound == null) {
+        if (tagCompound == null) {
             tagCompound = new NBTTagCompound();
             itemStack.setTagCompound(tagCompound);
         }

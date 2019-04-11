@@ -31,27 +31,27 @@ public class CokeOvenRecipeBuilder {
     private FluidStack fluidOutput;
     private int duration = -1;
 
-	private CokeOvenRecipeBuilder() {
-	}
+    private CokeOvenRecipeBuilder() {
+    }
 
-	@ZenMethod
-	public static CokeOvenRecipeBuilder start() {
-		return new CokeOvenRecipeBuilder();
-	}
+    @ZenMethod
+    public static CokeOvenRecipeBuilder start() {
+        return new CokeOvenRecipeBuilder();
+    }
 
     public CokeOvenRecipeBuilder input(Ingredient input, int amount) {
         this.input = new CountableIngredient(input, amount);
         return this;
-	}
+    }
 
-	public CokeOvenRecipeBuilder input(ItemStack itemStack) {
-	    this.input = CountableIngredient.from(itemStack);
-	    return this;
+    public CokeOvenRecipeBuilder input(ItemStack itemStack) {
+        this.input = CountableIngredient.from(itemStack);
+        return this;
     }
 
     public CokeOvenRecipeBuilder input(OrePrefix orePrefix, Material material) {
-	    this.input = CountableIngredient.from(orePrefix, material);
-	    return this;
+        this.input = CountableIngredient.from(orePrefix, material);
+        return this;
     }
 
     public CokeOvenRecipeBuilder input(OrePrefix orePrefix, Material material, int amount) {
@@ -71,67 +71,67 @@ public class CokeOvenRecipeBuilder {
     }
 
     public CokeOvenRecipeBuilder fluidOutput(FluidStack fluidOutput) {
-	    this.fluidOutput = fluidOutput;
-	    return this;
+        this.fluidOutput = fluidOutput;
+        return this;
     }
 
     public ValidationResult<CokeOvenRecipe> build() {
-		return ValidationResult.newResult(validate(),
-				new CokeOvenRecipe(input, output, fluidOutput, duration));
-	}
+        return ValidationResult.newResult(validate(),
+            new CokeOvenRecipe(input, output, fluidOutput, duration));
+    }
 
-	protected EnumValidationResult validate() {
-		EnumValidationResult result = EnumValidationResult.VALID;
+    protected EnumValidationResult validate() {
+        EnumValidationResult result = EnumValidationResult.VALID;
 
-		if(input == null) {
+        if (input == null) {
             GTLog.logger.error("Input Ingredient cannot be null", new IllegalArgumentException());
             result = EnumValidationResult.INVALID;
         }
 
-		if (output == null || output.isEmpty()) {
-			GTLog.logger.error("Output ItemStack cannot be null or empty", new IllegalArgumentException());
-			result = EnumValidationResult.INVALID;
-		}
-
-		if(fluidOutput == null || fluidOutput.amount == 0) {
-		    GTLog.logger.error("Output FluidStack cannot be null or empty", new IllegalArgumentException());
-		    result = EnumValidationResult.INVALID;
+        if (output == null || output.isEmpty()) {
+            GTLog.logger.error("Output ItemStack cannot be null or empty", new IllegalArgumentException());
+            result = EnumValidationResult.INVALID;
         }
 
-		if (duration <= 0) {
-			GTLog.logger.error("Duration cannot be less or equal to 0", new IllegalArgumentException());
-			result = EnumValidationResult.INVALID;
-		}
+        if (fluidOutput == null || fluidOutput.amount == 0) {
+            GTLog.logger.error("Output FluidStack cannot be null or empty", new IllegalArgumentException());
+            result = EnumValidationResult.INVALID;
+        }
 
-		return result;
-	}
+        if (duration <= 0) {
+            GTLog.logger.error("Duration cannot be less or equal to 0", new IllegalArgumentException());
+            result = EnumValidationResult.INVALID;
+        }
 
-	@ZenMethod
-	public void buildAndRegister() {
-		ValidationResult<CokeOvenRecipe> result = build();
+        return result;
+    }
 
-		if (result.getType() == EnumValidationResult.VALID) {
+    @ZenMethod
+    public void buildAndRegister() {
+        ValidationResult<CokeOvenRecipe> result = build();
+
+        if (result.getType() == EnumValidationResult.VALID) {
             CokeOvenRecipe recipe = result.getResult();
             RecipeMaps.COKE_OVEN_RECIPES.add(recipe);
-		}
-	}
+        }
+    }
 
-	@ZenMethod
+    @ZenMethod
     @Method(modid = GTValues.MODID_CT)
     public CokeOvenRecipeBuilder input(IIngredient ingredient) {
-	    return input(new CraftTweakerIngredientWrapper(ingredient), ingredient.getAmount());
+        return input(new CraftTweakerIngredientWrapper(ingredient), ingredient.getAmount());
     }
 
     @ZenMethod
     @Method(modid = GTValues.MODID_CT)
     public CokeOvenRecipeBuilder fluidOutput(ILiquidStack liquidStack) {
-	    return fluidOutput(CraftTweakerMC.getLiquidStack(liquidStack));
+        return fluidOutput(CraftTweakerMC.getLiquidStack(liquidStack));
     }
 
     @ZenMethod
     @Method(modid = GTValues.MODID_CT)
     public CokeOvenRecipeBuilder output(IItemStack itemStack) {
-	    return output(CraftTweakerMC.getItemStack(itemStack));
+        return output(CraftTweakerMC.getItemStack(itemStack));
     }
 
 }

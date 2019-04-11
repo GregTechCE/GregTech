@@ -38,9 +38,9 @@ public class MetaTileEntityDistillationTower extends RecipeMapMultiblockControll
 
     @Override
     protected void addDisplayText(List<ITextComponent> textList) {
-        if(isStructureFormed()) {
+        if (isStructureFormed()) {
             FluidStack stackInTank = importFluids.drain(Integer.MAX_VALUE, false);
-            if(stackInTank != null && stackInTank.amount > 0) {
+            if (stackInTank != null && stackInTank.amount > 0) {
                 TextComponentTranslation fluidName = new TextComponentTranslation(stackInTank.getFluid().getUnlocalizedName(stackInTank));
                 textList.add(new TextComponentTranslation("gregtech.multiblock.distillation_tower.distilling_fluid", fluidName));
             }

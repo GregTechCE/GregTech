@@ -73,7 +73,8 @@ import static gregtech.common.ClientProxy.*;
 
 public class MetaBlocks {
 
-    private MetaBlocks() {}
+    private MetaBlocks() {
+    }
 
     public static BlockMachine MACHINE;
     public static BlockCable CABLE;
@@ -172,17 +173,17 @@ public class MetaBlocks {
                 material.hasFlag(DustMaterial.MatFlags.GENERATE_ORE)) {
                 createOreBlock((DustMaterial) material);
             }
-            if(material instanceof SolidMaterial && material.hasFlag(GENERATE_FRAME)) {
+            if (material instanceof SolidMaterial && material.hasFlag(GENERATE_FRAME)) {
                 BlockFrame blockFrame = new BlockFrame((SolidMaterial) material);
                 blockFrame.setRegistryName("frame_" + material.toString());
                 FRAMES.put((SolidMaterial) material, blockFrame);
             }
-            if(material instanceof IngotMaterial) {
+            if (material instanceof IngotMaterial) {
                 IngotMaterial metalMaterial = (IngotMaterial) material;
-                if(metalMaterial.cableProperties != null) {
+                if (metalMaterial.cableProperties != null) {
                     CABLE.addCableMaterial(metalMaterial, metalMaterial.cableProperties);
                 }
-                if(metalMaterial.fluidPipeProperties != null) {
+                if (metalMaterial.fluidPipeProperties != null) {
                     FLUID_PIPE.addPipeMaterial(metalMaterial, metalMaterial.fluidPipeProperties);
                 }
             }
@@ -196,9 +197,9 @@ public class MetaBlocks {
         Material[] materialBuffer = new Material[16];
         Arrays.fill(materialBuffer, Materials._NULL);
         int currentGenerationIndex = 0;
-        for(Material material : Material.MATERIAL_REGISTRY) {
-            if(materialPredicate.test(material)) {
-                if(currentGenerationIndex > 0 && currentGenerationIndex % 16 == 0) {
+        for (Material material : Material.MATERIAL_REGISTRY) {
+            if (materialPredicate.test(material)) {
+                if (currentGenerationIndex > 0 && currentGenerationIndex % 16 == 0) {
                     blockGenerator.accept(materialBuffer, currentGenerationIndex / 16 - 1);
                     Arrays.fill(materialBuffer, Materials._NULL);
                 }
@@ -206,7 +207,7 @@ public class MetaBlocks {
                 currentGenerationIndex++;
             }
         }
-        if(materialBuffer[0] != Materials._NULL) {
+        if (materialBuffer[0] != Materials._NULL) {
             blockGenerator.accept(materialBuffer, currentGenerationIndex / 16);
         }
         return (currentGenerationIndex / 16) + 1;
@@ -313,7 +314,7 @@ public class MetaBlocks {
     private static void registerItemModelWithFilteredProperties(Block block, IProperty<?>... filteredProperties) {
         for (IBlockState state : block.getBlockState().getValidStates()) {
             HashMap<IProperty<?>, Comparable<?>> stringProperties = new HashMap<>();
-            for(IProperty<?> property : filteredProperties) {
+            for (IProperty<?> property : filteredProperties) {
                 stringProperties.put(property, state.getValue(property));
             }
             //noinspection ConstantConditions
@@ -414,39 +415,39 @@ public class MetaBlocks {
         OreDictUnifier.registerOre(new ItemStack(SAPLING, 1, GTValues.W), "treeSapling");
         GameRegistry.addSmelting(LOG, new ItemStack(Items.COAL, 1, 1), 0.15F);
 
-        for(Entry<DustMaterial, BlockCompressed> entry : COMPRESSED.entrySet()) {
+        for (Entry<DustMaterial, BlockCompressed> entry : COMPRESSED.entrySet()) {
             DustMaterial material = entry.getKey();
             BlockCompressed block = entry.getValue();
             ItemStack itemStack = block.getItem(material);
             OreDictUnifier.registerOre(itemStack, OrePrefix.block, material);
         }
 
-        for(Entry<SolidMaterial, BlockFrame> entry : FRAMES.entrySet()) {
+        for (Entry<SolidMaterial, BlockFrame> entry : FRAMES.entrySet()) {
             SolidMaterial material = entry.getKey();
             BlockFrame block = entry.getValue();
-            for(int i = 0; i < 16; i++) {
+            for (int i = 0; i < 16; i++) {
                 ItemStack itemStack = new ItemStack(block, 1, i);
                 OreDictUnifier.registerOre(itemStack, OrePrefix.frameGt, material);
             }
         }
 
-        for(BlockOre blockOre : ORES) {
+        for (BlockOre blockOre : ORES) {
             DustMaterial material = blockOre.material;
-            for(StoneType stoneType : blockOre.STONE_TYPE.getAllowedValues()) {
-                if(stoneType == null) continue;
+            for (StoneType stoneType : blockOre.STONE_TYPE.getAllowedValues()) {
+                if (stoneType == null) continue;
                 ItemStack normalStack = blockOre.getItem(blockOre.getDefaultState()
                     .withProperty(blockOre.STONE_TYPE, stoneType));
                 OreDictUnifier.registerOre(normalStack, stoneType.processingPrefix, material);
             }
         }
-        for(Material pipeMaterial : CABLE.getEnabledMaterials()) {
-            for(Insulation insulation : Insulation.values()) {
+        for (Material pipeMaterial : CABLE.getEnabledMaterials()) {
+            for (Insulation insulation : Insulation.values()) {
                 ItemStack itemStack = CABLE.getItem(insulation, pipeMaterial);
                 OreDictUnifier.registerOre(itemStack, insulation.getOrePrefix(), pipeMaterial);
             }
         }
-        for(Material pipeMaterial : FLUID_PIPE.getEnabledMaterials()) {
-            for(FluidPipeType fluidPipeType : FluidPipeType.values()) {
+        for (Material pipeMaterial : FLUID_PIPE.getEnabledMaterials()) {
+            for (FluidPipeType fluidPipeType : FluidPipeType.values()) {
                 ItemStack itemStack = FLUID_PIPE.getItem(fluidPipeType, pipeMaterial);
                 OreDictUnifier.registerOre(itemStack, fluidPipeType.getOrePrefix(), pipeMaterial);
             }

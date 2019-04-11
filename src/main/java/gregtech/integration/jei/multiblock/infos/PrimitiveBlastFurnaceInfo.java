@@ -35,7 +35,7 @@ public class PrimitiveBlastFurnaceInfo extends MultiblockInfoPage {
 
     @Override
     public String[] getDescription() {
-        return new String[] {I18n.format("gregtech.multiblock.primitive_blast_furnace.description")};
+        return new String[]{I18n.format("gregtech.multiblock.primitive_blast_furnace.description")};
     }
 
 }

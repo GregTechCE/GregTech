@@ -21,9 +21,8 @@ import java.util.function.Supplier;
  * Widgets and UI are both-sided, so widgets should equal on both sides
  * However widget data will sync, widgets themself, background, sizes and other important info will not
  * To open and create ModularUI, see {@link UIFactory}
- *
  */
-public final class ModularUI implements SizeProvider {
+public final class ModularUI implements ISizeProvider {
 
     public final ImmutableBiMap<Integer, Widget> guiWidgets;
 

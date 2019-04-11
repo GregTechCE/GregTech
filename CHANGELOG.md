@@ -1,5 +1,44 @@
 ## Changelog
 
+### 1.7.0
+* JEI now recognizes fluids in tanks as ingredients and can show their recipes.
+* You can now drag ghost items and fluids from JEI to item filters and fluid filters.
+* Allow inserting more items to "Keep Exact" mode than transfer rate of cover.
+* Rework "Transfer Exact" mode of robotic arm to make more sense - now it only transfers items of same type in one operation, allowing to use it for example to combine dusts in packager.
+* Added machine controller cover to control covers and machines with redstone.
+* Added recipes for gravel and sand in forge hammer.
+* Added validate/invalidate hooks for meta tile entities.
+* Added turbine blade Recipes in the Assembling Machine.
+* Fixed weird item movement when affected by >1 item collectors.
+* Fixed pipes not being synced to other players on placement.
+* Fixed crash with wrench overlay.
+* Fixed rubber trees not producing rubber after server restart.
+* Fixed dark cover lighting.
+* Fixed wrong macerator byproduct outputs.
+* Fixed error for slab recipe generation.
+* Fixed inability to use plunger when there is little fluid left in machine.
+* Fixed brewery consuming all items.
+* Added wooden pipe recipes.
+* Fix batteries not recharging in machines.
+* Fix covers not dropping their inventory contents when removed (e.g filter upgrades)
+* Fix weird pump behavior on deep fluid sources.
+
+### 1.6.9
+* Fix large boiler not using solid fuel.
+* Fix collectors collecting items without energy.
+
+### 1.6.8
+* Fix silicon consuming integrated circuits + some other recipes.
+* Allow taking fluids from inputs via containers.
+* Changed lathe again to give 2 rods instead of long one.
+* Re-textured pipes to look better.
+* Re-design side hit calculation so covers are accessible in the similar to wrench manner.
+* Fixed wooden tanks being able to hold hot fluids as items.
+* Added wooden soft hammer.
+* Increased stats of flint & added Fire Aspect II to flint tools.
+* Fixed some cable duplication issues.
+* Fix duplicate decomposition recipe for liquid air.
+
 ### 1.6.5
 * Buff large boilers (a bit).
 * Fix boilers burning container-dependent fuels like firestone from Railcraft.

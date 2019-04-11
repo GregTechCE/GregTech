@@ -57,7 +57,7 @@ public class RecipeMapGroupOutput extends RecipeMap<SimpleRecipeBuilder> {
         int itemSlotsToDown = inputSlotGrid[1];
         int startInputsX = 106;
         int startInputsY = 32 - (int) (itemSlotsToDown / 2.0 * 18);
-        for(int i = 0; i < itemSlotsToDown; i++) {
+        for (int i = 0; i < itemSlotsToDown; i++) {
             for (int j = 0; j < itemSlotsToLeft; j++) {
                 int slotIndex = i * itemSlotsToLeft + j;
                 int x = startInputsX + 18 * j;
@@ -75,7 +75,7 @@ public class RecipeMapGroupOutput extends RecipeMap<SimpleRecipeBuilder> {
         int itemSlotsToDown = inputSlotGrid[1];
         int startInputsX = 106;
         int startInputsY = 32 - (int) (itemSlotsToDown / 2.0 * 18);
-        for(int i = 0; i < itemSlotsToDown; i++) {
+        for (int i = 0; i < itemSlotsToDown; i++) {
             for (int j = 0; j < itemSlotsToLeft; j++) {
                 int slotIndex = i * itemSlotsToLeft + j;
                 int x = startInputsX + 18 * j;
@@ -83,7 +83,7 @@ public class RecipeMapGroupOutput extends RecipeMap<SimpleRecipeBuilder> {
                 widgetGroup.addWidget(new TankWidget(fluidHandler.getTankAt(slotIndex), x - 1, y - 1, 18, 18)
                     .setAlwaysShowFull(true)
                     .setBackgroundTexture(getOverlaysForSlot(true, true, false))
-                    .setContainerIO(true, false));
+                    .setContainerClicking(true, false));
             }
         }
         return widgetGroup;

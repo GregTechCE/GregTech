@@ -20,7 +20,7 @@ import net.minecraft.world.World;
 
 import java.util.Random;
 
-public class   BlockGregLog extends BlockLog {
+public class BlockGregLog extends BlockLog {
 
     public static final PropertyEnum<LogVariant> VARIANT = PropertyEnum.create("variant", LogVariant.class);
     public static final PropertyBool NATURAL = PropertyBool.create("natural");
@@ -36,7 +36,7 @@ public class   BlockGregLog extends BlockLog {
 
     @Override
     public void getSubBlocks(CreativeTabs itemIn, NonNullList<ItemStack> items) {
-        for(LogVariant logVariant : LogVariant.values()) {
+        for (LogVariant logVariant : LogVariant.values()) {
             items.add(getItem(logVariant));
         }
     }
@@ -53,22 +53,9 @@ public class   BlockGregLog extends BlockLog {
     @Override
     public IBlockState getStateFromMeta(int meta) {
         return getDefaultState()
-            .withProperty(LOG_AXIS, getAxis(meta))
-            .withProperty(VARIANT, LogVariant.values()[meta % 4 % 2 % LogVariant.values().length])
-            .withProperty(NATURAL, meta % 4 / 2 == 1);
-    }
-
-    private static EnumAxis getAxis(int meta) {
-        switch (meta & 12) {
-            case 0:
-                return EnumAxis.X;
-            case 4:
-                return EnumAxis.Y;
-            case 8:
-                return EnumAxis.Z;
-            default:
-                return EnumAxis.NONE;
-        }
+            .withProperty(LOG_AXIS, EnumAxis.values()[meta / 4 % 4])
+            .withProperty(VARIANT, LogVariant.values()[meta % 4 / 2 % LogVariant.values().length])
+            .withProperty(NATURAL, meta % 4 % 2 == 1);
     }
 
     @Override
@@ -92,8 +79,8 @@ public class   BlockGregLog extends BlockLog {
 
     @Override
     public void getDrops(NonNullList<ItemStack> drops, IBlockAccess world, BlockPos pos, IBlockState state, int fortune) {
-        Random rand = world instanceof World ? ((World)world).rand : RANDOM;
-        if(state.getValue(NATURAL)) {
+        Random rand = world instanceof World ? ((World) world).rand : RANDOM;
+        if (state.getValue(NATURAL)) {
             drops.add(MetaItems.RUBBER_DROP.getStackForm(1 + rand.nextInt(2)));
         }
         drops.add(new ItemStack(this, 1, state.getValue(VARIANT).ordinal()));

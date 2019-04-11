@@ -64,8 +64,8 @@ public class ToolRecipeHandler {
     }
 
     public static void processSimpleElectricToolHead(OrePrefix toolPrefix, SolidMaterial solidMaterial, MetaToolValueItem[] toolItems) {
-        for(int i = 0; i < toolItems.length; i++) {
-            for(MetaValueItem battery : batteryItems[i]) {
+        for (int i = 0; i < toolItems.length; i++) {
+            for (MetaValueItem battery : batteryItems[i]) {
                 ItemStack batteryStack = battery.getStackForm();
 
                 @SuppressWarnings("ConstantConditions")
@@ -176,7 +176,7 @@ public class ToolRecipeHandler {
 
     public static void processLongStick(OrePrefix orePrefix, IngotMaterial material) {
         if (material.toolDurability <= 0) return;
-        for(MetaValueItem batteryItem : batteryItems[2]) {
+        for (MetaValueItem batteryItem : batteryItems[2]) {
             ItemStack batteryStack = batteryItem.getStackForm();
             long maxCharge = batteryStack.getCapability(GregtechCapabilities.CAPABILITY_ELECTRIC_ITEM, null).getMaxCharge();
             ModHandler.addShapedIngredientAwareRecipe(String.format("jack_hammer_%s_%s", batteryItem.unlocalizedName, material.toString()),
@@ -192,7 +192,7 @@ public class ToolRecipeHandler {
     }
 
     public static void processDrillHead(OrePrefix drillHead, SolidMaterial solidMaterial) {
-        processSimpleElectricToolHead(drillHead, solidMaterial, new MetaToolValueItem[] {MetaItems.DRILL_LV, MetaItems.DRILL_MV, MetaItems.DRILL_HV});
+        processSimpleElectricToolHead(drillHead, solidMaterial, new MetaToolValueItem[]{MetaItems.DRILL_LV, MetaItems.DRILL_MV, MetaItems.DRILL_HV});
         ModHandler.addShapedRecipe(String.format("drill_head_%s", solidMaterial.toString()),
             OreDictUnifier.get(OrePrefix.toolHeadDrill, solidMaterial),
             "XSX", "XSX", "ShS",
@@ -201,7 +201,7 @@ public class ToolRecipeHandler {
     }
 
     public static void processChainSawHead(OrePrefix toolPrefix, SolidMaterial solidMaterial) {
-        processSimpleElectricToolHead(toolPrefix, solidMaterial, new MetaToolValueItem[] {MetaItems.CHAINSAW_LV, MetaItems.CHAINSAW_MV, MetaItems.CHAINSAW_HV});
+        processSimpleElectricToolHead(toolPrefix, solidMaterial, new MetaToolValueItem[]{MetaItems.CHAINSAW_LV, MetaItems.CHAINSAW_MV, MetaItems.CHAINSAW_HV});
         ModHandler.addShapedRecipe(String.format("chainsaw_head_%s", solidMaterial.toString()),
             OreDictUnifier.get(toolPrefix, solidMaterial),
             "SRS", "XhX", "SRS",
@@ -221,7 +221,7 @@ public class ToolRecipeHandler {
     }
 
     public static void processBuzzSawHead(OrePrefix toolPrefix, SolidMaterial solidMaterial) {
-        processSimpleElectricToolHead(toolPrefix, solidMaterial, new MetaToolValueItem[] {MetaItems.BUZZSAW});
+        processSimpleElectricToolHead(toolPrefix, solidMaterial, new MetaToolValueItem[]{MetaItems.BUZZSAW});
         ModHandler.addShapedRecipe(String.format("buzzsaw_head_%s", solidMaterial.toString()),
             OreDictUnifier.get(OrePrefix.toolHeadBuzzSaw, solidMaterial),
             "wXh", "X X", "fXx",
@@ -229,9 +229,9 @@ public class ToolRecipeHandler {
     }
 
     public static void processScrewdriverHead(OrePrefix toolPrefix, Material material) {
-        if(!(material instanceof SolidMaterial)) return;
+        if (!(material instanceof SolidMaterial)) return;
         SolidMaterial solidMaterial = (SolidMaterial) material;
-        processSimpleElectricToolHead(toolPrefix, solidMaterial, new MetaToolValueItem[] {MetaItems.SCREWDRIVER_LV});
+        processSimpleElectricToolHead(toolPrefix, solidMaterial, new MetaToolValueItem[]{MetaItems.SCREWDRIVER_LV});
         ModHandler.addShapedRecipe(String.format("screwdriver_head_%s", solidMaterial.toString()),
             OreDictUnifier.get(OrePrefix.toolHeadScrewdriver, solidMaterial),
             "fX", "Xh",
@@ -240,18 +240,18 @@ public class ToolRecipeHandler {
 
     public static void addSimpleToolRecipe(OrePrefix toolPrefix, SolidMaterial solidMaterial, MetaToolValueItem toolItem, UnificationEntry plate, UnificationEntry ingot, Object[] recipe) {
         ArrayList<Character> usedChars = new ArrayList<>();
-        for(Object object : recipe) {
-            if(!(object instanceof String))
+        for (Object object : recipe) {
+            if (!(object instanceof String))
                 continue;
             char[] chars = ((String) object).toCharArray();
-            for(char character : chars)
+            for (char character : chars)
                 usedChars.add(character);
         }
 
-        if(usedChars.contains('P')) {
+        if (usedChars.contains('P')) {
             recipe = ArrayUtils.addAll(recipe, 'P', plate);
         }
-        if(usedChars.contains('I')) {
+        if (usedChars.contains('I')) {
             recipe = ArrayUtils.addAll(recipe, 'I', ingot);
         }
 
@@ -386,7 +386,7 @@ public class ToolRecipeHandler {
 
     public static void processFileHead(OrePrefix toolPrefix, SolidMaterial solidMaterial) {
         processSimpleToolHead(toolPrefix, solidMaterial, MetaItems.FILE, " I ", " I ", " fh");
-        if(solidMaterial instanceof IngotMaterial) {
+        if (solidMaterial instanceof IngotMaterial) {
             SolidMaterial handleMaterial = Materials.Wood;
             ModHandler.addShapedRecipe(String.format("file_%s", solidMaterial),
                 MetaItems.FILE.getStackForm(solidMaterial),

@@ -19,7 +19,6 @@ public class EllipsoidGenerator extends ShapeGenerator {
     }
 
 
-
     public EllipsoidGenerator(int radiusMin, int radiusMax) {
         this.radiusMin = radiusMin;
         this.radiusMax = radiusMax;
@@ -47,10 +46,10 @@ public class EllipsoidGenerator extends ShapeGenerator {
         int max = Math.max(a, Math.max(b, c));
         for (int x = -max; x <= max; x++) {
             int xr = bc2 * x * x;
-            if(xr > abc2) continue;
+            if (xr > abc2) continue;
             for (int y = -max; y <= max; y++) {
                 int yr = xr + ac2 * y * y + ab2;
-                if(yr > abc2) continue;
+                if (yr > abc2) continue;
                 for (int z = -max; z <= max; z++) {
                     int zr = yr + ab2 * z * z;
                     if (zr > abc2) continue;

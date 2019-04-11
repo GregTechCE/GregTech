@@ -22,9 +22,9 @@ public abstract class WatchedFluidTank extends FluidTank {
     @Override
     public final void onContentsChanged() {
         FluidStack newFluidStack = getFluid();
-        if(hasFluidChanged(newFluidStack, oldFluidStack)) {
+        if (hasFluidChanged(newFluidStack, oldFluidStack)) {
             onFluidChanged(newFluidStack, oldFluidStack);
-            if(oldFluidStack != null && oldFluidStack.isFluidEqual(newFluidStack)) {
+            if (oldFluidStack != null && oldFluidStack.isFluidEqual(newFluidStack)) {
                 //noinspection ConstantConditions
                 oldFluidStack.amount = newFluidStack.amount;
             } else {
@@ -34,9 +34,9 @@ public abstract class WatchedFluidTank extends FluidTank {
     }
 
     private static boolean hasFluidChanged(FluidStack newFluid, FluidStack oldFluid) {
-        if(newFluid == null && oldFluid == null) {
+        if (newFluid == null && oldFluid == null) {
             return false; //both fluid stacks are null - no changes
-        } else if(newFluid == null || oldFluid == null) {
+        } else if (newFluid == null || oldFluid == null) {
             return true; //one of fluid stacks is null, and other is not - content changed
         } else {
             //both fluid stacks are not null - compare by fluid type and amount

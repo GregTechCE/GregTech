@@ -52,10 +52,10 @@ public class WorldSceneRenderer {
     private BlockPos lastHitBlock;
 
     public WorldSceneRenderer(Map<BlockPos, BlockInfo> renderedBlocks) {
-        for(Entry<BlockPos, BlockInfo> renderEntry : renderedBlocks.entrySet()) {
+        for (Entry<BlockPos, BlockInfo> renderEntry : renderedBlocks.entrySet()) {
             BlockPos pos = renderEntry.getKey();
             BlockInfo blockInfo = renderEntry.getValue();
-            if(blockInfo.getBlockState().getBlock() == Blocks.AIR)
+            if (blockInfo.getBlockState().getBlock() == Blocks.AIR)
                 continue; //do not render air blocks
             this.renderedBlocks.add(pos);
             blockInfo.apply(world, pos);
@@ -65,7 +65,7 @@ public class WorldSceneRenderer {
     public void setRenderCallback(SceneRenderCallback callback) {
         this.renderCallback = callback;
     }
-    
+
     public void setRenderFilter(Predicate<BlockPos> filter) {
         this.renderFilter = filter;
     }
@@ -86,7 +86,7 @@ public class WorldSceneRenderer {
      */
     public void render(int x, int y, int width, int height, int backgroundColor) {
         Vec2f mousePosition = setupCamera(x, y, width, height, backgroundColor);
-        if(renderCallback != null) {
+        if (renderCallback != null) {
             renderCallback.preRenderScene(this);
         }
         Minecraft minecraft = Minecraft.getMinecraft();
@@ -104,13 +104,13 @@ public class WorldSceneRenderer {
         }
         tessellator.draw();
 
-        if(mousePosition != null) {
+        if (mousePosition != null) {
             this.lastHitBlock = handleMouseHit(mousePosition);
         } else {
             this.lastHitBlock = null;
         }
 
-        if(lastHitBlock != null) {
+        if (lastHitBlock != null) {
             GlStateManager.disableTexture2D();
             CCRenderState renderState = CCRenderState.instance();
             renderState.startDrawing(GL11.GL_QUADS, DefaultVertexFormats.POSITION_COLOR, buffer);
@@ -118,7 +118,7 @@ public class WorldSceneRenderer {
             renderState.setPipeline(new Translation(lastHitBlock), multiplier);
             BlockFace blockFace = new BlockFace();
             renderState.setModel(blockFace);
-            for(EnumFacing renderSide : EnumFacing.VALUES) {
+            for (EnumFacing renderSide : EnumFacing.VALUES) {
                 float diffuse = LightUtil.diffuseLight(renderSide);
                 int color = (int) (255 * diffuse);
                 multiplier.colour = RenderUtil.packColor(color, color, color, 100);
@@ -179,21 +179,22 @@ public class WorldSceneRenderer {
         //System.out.println(String.format("%f %f %f %f", pixelDepth, posX, posY, posZ));
         //if we didn't hit anything, just return null
         //also return null if hit is too far from us
-        if(posY < -100.0f) {
+        if (posY < -100.0f) {
             return null; //stop execution at that point
         }
 
         BlockPos pos = new BlockPos(posX, posY, posZ);
-        if(world.isAirBlock(pos)) {
+        if (world.isAirBlock(pos)) {
             //if block is air, then search for nearest adjacent block
             //this can happen under extreme rotation angles
-            for(EnumFacing offset : EnumFacing.VALUES) {
+            for (EnumFacing offset : EnumFacing.VALUES) {
                 BlockPos relative = pos.offset(offset);
-                if(world.isAirBlock(relative)) continue;
-                pos = relative; break;
+                if (world.isAirBlock(relative)) continue;
+                pos = relative;
+                break;
             }
         }
-        if(world.isAirBlock(pos)) {
+        if (world.isAirBlock(pos)) {
             //if we didn't found any other block, return null
             return null;
         }
@@ -222,14 +223,14 @@ public class WorldSceneRenderer {
         int mouseY = Mouse.getY();
         Vec2f mousePosition = null;
         //compute mouse position only if inside viewport
-        if(mouseX >= windowX && mouseY >= windowY && mouseX - windowX < windowWidth && mouseY - windowY < windowHeight) {
+        if (mouseX >= windowX && mouseY >= windowY && mouseX - windowX < windowWidth && mouseY - windowY < windowHeight) {
             mousePosition = new Vec2f(mouseX, mouseY);
         }
 
         //setup viewport and clear GL buffers
         GlStateManager.viewport(windowX, windowY, windowWidth, windowHeight);
 
-        if(skyColor >= 0) {
+        if (skyColor >= 0) {
             GL11.glEnable(GL11.GL_SCISSOR_TEST);
             GL11.glScissor(windowX, windowY, windowWidth, windowHeight);
             RenderUtil.setGlClearColorFromInt(skyColor, 255);
@@ -270,15 +271,15 @@ public class WorldSceneRenderer {
         //reset attributes
         GlStateManager.popAttrib();
     }
-    
+
     public class TrackedDummyWorld extends DummyWorld {
 
         private final Vector3f minPos = new Vector3f(Integer.MAX_VALUE, Integer.MAX_VALUE, Integer.MAX_VALUE);
         private final Vector3f maxPos = new Vector3f(Integer.MIN_VALUE, Integer.MIN_VALUE, Integer.MIN_VALUE);
-        
+
         @Override
         public boolean setBlockState(BlockPos pos, IBlockState newState, int flags) {
-            if(newState.getBlock() == Blocks.AIR) {
+            if (newState.getBlock() == Blocks.AIR) {
                 renderedBlocks.remove(pos);
             } else {
                 renderedBlocks.add(pos);
@@ -294,7 +295,7 @@ public class WorldSceneRenderer {
 
         @Override
         public IBlockState getBlockState(BlockPos pos) {
-            if(renderFilter != null && !renderFilter.test(pos))
+            if (renderFilter != null && !renderFilter.test(pos))
                 return Blocks.AIR.getDefaultState(); //return air if not rendering this block
             return super.getBlockState(pos);
         }

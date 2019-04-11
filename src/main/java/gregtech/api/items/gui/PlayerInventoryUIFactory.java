@@ -22,7 +22,8 @@ public class PlayerInventoryUIFactory extends UIFactory<PlayerInventoryHolder> {
 
     public static final PlayerInventoryUIFactory INSTANCE = new PlayerInventoryUIFactory();
 
-    private PlayerInventoryUIFactory() {}
+    private PlayerInventoryUIFactory() {
+    }
 
     public void init() {
         UIFactory.FACTORY_REGISTRY.register(1, new ResourceLocation(GTValues.MODID, "player_inventory_factory"), this);

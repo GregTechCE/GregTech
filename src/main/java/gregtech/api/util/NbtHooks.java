@@ -12,7 +12,7 @@ public class NbtHooks {
         NBTTagCompound compound = GTUtility.getOrCreateNbtCompound(stack);
         NBTTagCompound displayTag = compound.getCompoundTag("display");
         NBTTagList loreList = new NBTTagList();
-        for(String descriptionLine : description) {
+        for (String descriptionLine : description) {
             loreList.appendTag(new NBTTagString(TextFormatting.WHITE + descriptionLine));
         }
         displayTag.setTag("Lore", loreList);

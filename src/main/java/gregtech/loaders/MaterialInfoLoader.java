@@ -16,10 +16,10 @@ import static gregtech.api.GTValues.M;
 import static gregtech.api.GTValues.W;
 
 public class MaterialInfoLoader {
-    
+
     public static void init() {
-        for(CoilType coilType : CoilType.values()) {
-            if(coilType.getMaterial() instanceof DustMaterial) {
+        for (CoilType coilType : CoilType.values()) {
+            if (coilType.getMaterial() instanceof DustMaterial) {
                 ItemStack outputStack = MetaBlocks.WIRE_COIL.getItemVariant(coilType);
                 OreDictUnifier.registerOre(outputStack, new ItemMaterialInfo(new MaterialStack(coilType.getMaterial(), OrePrefix.wireGtDouble.materialAmount * 8)));
             }
@@ -99,7 +99,7 @@ public class MaterialInfoLoader {
         OreDictUnifier.registerOre(new ItemStack(Items.GOLDEN_APPLE, 1, 0), new ItemMaterialInfo(new MaterialStack(Materials.Gold, OrePrefix.ingot.materialAmount * 8L)));
         OreDictUnifier.registerOre(new ItemStack(Items.MINECART, 1), new ItemMaterialInfo(new MaterialStack(Materials.Iron, M * 5)));
 
-        OreDictUnifier.registerOre(new ItemStack(Items.CAULDRON, 1), new ItemMaterialInfo(new MaterialStack(Materials.Iron,  M * 7)));
+        OreDictUnifier.registerOre(new ItemStack(Items.CAULDRON, 1), new ItemMaterialInfo(new MaterialStack(Materials.Iron, M * 7)));
         OreDictUnifier.registerOre(new ItemStack(Blocks.IRON_BARS, 8, W), new ItemMaterialInfo(new MaterialStack(Materials.Iron, OrePrefix.dustTiny.materialAmount * 24)));
 
         OreDictUnifier.registerOre(new ItemStack(Blocks.ANVIL, 1, 0), new ItemMaterialInfo(new MaterialStack(Materials.Iron, M * 31)));

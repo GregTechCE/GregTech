@@ -35,24 +35,24 @@ public class CommandHand extends CommandBase {
 
     @Override
     public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException {
-        if(sender instanceof EntityPlayerMP) {
+        if (sender instanceof EntityPlayerMP) {
             EntityPlayerMP player = (EntityPlayerMP) sender;
             ItemStack stackInHand = player.inventory.getCurrentItem();
-            if(stackInHand.isEmpty()) {
+            if (stackInHand.isEmpty()) {
                 throw new CommandException("gregtech.command.util.hand.no_item");
             }
             player.sendMessage(new TextComponentTranslation("gregtech.command.util.hand.item_id", stackInHand.getItem().getRegistryName(), stackInHand.getItemDamage()));
             IElectricItem electricItem = stackInHand.getCapability(GregtechCapabilities.CAPABILITY_ELECTRIC_ITEM, null);
             IFluidHandlerItem fluidHandlerItem = stackInHand.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY, null);
-            if(electricItem != null) {
+            if (electricItem != null) {
                 player.sendMessage(new TextComponentTranslation("gregtech.command.util.hand.electric",
                     electricItem.getCharge(),
                     electricItem.getMaxCharge(),
                     electricItem.getTier(),
                     Boolean.toString(electricItem.canProvideChargeExternally())));
             }
-            if(fluidHandlerItem != null) {
-                for(IFluidTankProperties properties : fluidHandlerItem.getTankProperties()) {
+            if (fluidHandlerItem != null) {
+                for (IFluidTankProperties properties : fluidHandlerItem.getTankProperties()) {
                     FluidStack contents = properties.getContents();
                     player.sendMessage(new TextComponentTranslation("gregtech.command.util.hand.fluid",
                         contents == null ? "empty" : contents.getFluid().getName(),
@@ -61,17 +61,17 @@ public class CommandHand extends CommandBase {
                         Boolean.toString(properties.canFill()), Boolean.toString(properties.canDrain())));
                 }
             }
-            if(stackInHand.getItem() instanceof MetaItem) {
+            if (stackInHand.getItem() instanceof MetaItem) {
                 MetaItem<?> metaItem = (MetaItem<?>) stackInHand.getItem();
                 MetaValueItem metaValueItem = metaItem.getItem(stackInHand);
-                if(metaValueItem == null) {
-                    if(metaItem instanceof MaterialMetaItem) {
+                if (metaValueItem == null) {
+                    if (metaItem instanceof MaterialMetaItem) {
                         Material material = ((MaterialMetaItem) metaItem).getMaterial(stackInHand);
                         OrePrefix orePrefix = ((MaterialMetaItem) metaItem).getOrePrefix(stackInHand);
                         player.sendMessage(new TextComponentTranslation("gregtech.command.util.hand.material_meta_item", orePrefix, material));
                     }
                 } else {
-                    if(metaValueItem instanceof ToolMetaItem.MetaToolValueItem) {
+                    if (metaValueItem instanceof ToolMetaItem.MetaToolValueItem) {
                         IToolStats toolStats = ((MetaToolValueItem) metaValueItem).getToolStats();
                         player.sendMessage(new TextComponentTranslation("gregtech.command.util.hand.tool_stats", toolStats.getClass().getName()));
                     }

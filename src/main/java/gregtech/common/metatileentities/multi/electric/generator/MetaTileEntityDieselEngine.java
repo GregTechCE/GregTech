@@ -1,7 +1,7 @@
 package gregtech.common.metatileentities.multi.electric.generator;
 
 import gregtech.api.GTValues;
-import gregtech.api.capability.impl.FuelRecipeMapWorkableHandler;
+import gregtech.api.capability.impl.FuelRecipeLogic;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.MetaTileEntityHolder;
 import gregtech.api.metatileentity.multiblock.IMultiblockPart;
@@ -33,7 +33,7 @@ public class MetaTileEntityDieselEngine extends FueledMultiblockController {
     }
 
     @Override
-    protected FuelRecipeMapWorkableHandler createWorkable(long maxVoltage) {
+    protected FuelRecipeLogic createWorkable(long maxVoltage) {
         return new DieselEngineWorkableHandler(this, recipeMap, () -> energyContainer, () -> importFluidHandler, maxVoltage);
     }
 
@@ -44,7 +44,7 @@ public class MetaTileEntityDieselEngine extends FueledMultiblockController {
 
     @Override
     protected void addDisplayText(List<ITextComponent> textList) {
-        if(isStructureFormed()) {
+        if (isStructureFormed()) {
             FluidStack lubricantStack = importFluidHandler.drain(Materials.Lubricant.getFluid(Integer.MAX_VALUE), false);
             FluidStack oxygenStack = importFluidHandler.drain(Materials.Oxygen.getFluid(Integer.MAX_VALUE), false);
             FluidStack fuelStack = ((DieselEngineWorkableHandler) workableHandler).getFuelStack();
@@ -64,7 +64,7 @@ public class MetaTileEntityDieselEngine extends FueledMultiblockController {
     protected Predicate<BlockWorldState> intakeCasingPredicate() {
         IBlockState blockState = MetaBlocks.MUTLIBLOCK_CASING.getState(MultiblockCasingType.ENGINE_INTAKE_CASING);
         return blockWorldState -> {
-            if(blockWorldState.getBlockState() != blockState)
+            if (blockWorldState.getBlockState() != blockState)
                 return false;
             IBlockState offsetState = blockWorldState.getOffsetState(getFrontFacing());
             return offsetState.getBlock().isAir(offsetState, blockWorldState.getWorld(), blockWorldState.getPos());

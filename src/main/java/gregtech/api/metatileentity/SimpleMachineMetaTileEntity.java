@@ -8,10 +8,10 @@ import gregtech.api.capability.impl.EnergyContainerHandler;
 import gregtech.api.capability.impl.FluidHandlerProxy;
 import gregtech.api.gui.GuiTextures;
 import gregtech.api.gui.ModularUI;
-import gregtech.api.gui.widgets.ToggleButtonWidget;
 import gregtech.api.gui.widgets.DischargerSlotWidget;
 import gregtech.api.gui.widgets.ImageWidget;
 import gregtech.api.gui.widgets.LabelWidget;
+import gregtech.api.gui.widgets.ToggleButtonWidget;
 import gregtech.api.recipes.RecipeMap;
 import gregtech.api.render.OrientedOverlayRenderer;
 import gregtech.api.render.Textures;
@@ -68,9 +68,9 @@ public class SimpleMachineMetaTileEntity extends WorkableTieredMetaTileEntity {
 
     @Override
     public boolean onWrenchClick(EntityPlayer playerIn, EnumHand hand, EnumFacing facing, CuboidRayTraceResult hitResult) {
-        if(!playerIn.isSneaking()) {
+        if (!playerIn.isSneaking()) {
             EnumFacing currentOutputSide = getOutputFacing();
-            if(currentOutputSide == facing ||
+            if (currentOutputSide == facing ||
                 getFrontFacing() == facing) return false;
             setOutputFacing(facing);
             return true;
@@ -82,12 +82,12 @@ public class SimpleMachineMetaTileEntity extends WorkableTieredMetaTileEntity {
     @SideOnly(Side.CLIENT)
     public void renderMetaTileEntity(CCRenderState renderState, Matrix4 translation, IVertexOperation[] pipeline) {
         super.renderMetaTileEntity(renderState, translation, pipeline);
-        if(outputFacing != null) {
+        if (outputFacing != null) {
             Textures.PIPE_OUT_OVERLAY.renderSided(outputFacing, renderState, translation, pipeline);
-            if(autoOutputItems) {
+            if (autoOutputItems) {
                 Textures.ITEM_OUTPUT_OVERLAY.renderSided(outputFacing, renderState, translation, pipeline);
             }
-            if(autoOutputFluids) {
+            if (autoOutputFluids) {
                 Textures.FLUID_OUTPUT_OVERLAY.renderSided(outputFacing, renderState, translation, pipeline);
             }
         }
@@ -96,14 +96,14 @@ public class SimpleMachineMetaTileEntity extends WorkableTieredMetaTileEntity {
     @Override
     public void update() {
         super.update();
-        if(!getWorld().isRemote) {
-            ((EnergyContainerHandler) this.energyContainer).dischargeEnergyContainers(chargerInventory, 0);
-            if(getTimer() % 5 == 0) {
+        if (!getWorld().isRemote) {
+            ((EnergyContainerHandler) this.energyContainer).dischargeOrRechargeEnergyContainers(chargerInventory, 0);
+            if (getTimer() % 5 == 0) {
                 EnumFacing outputFacing = getOutputFacing();
-                if(autoOutputFluids) {
+                if (autoOutputFluids) {
                     pushFluidsIntoNearbyHandlers(outputFacing);
                 }
-                if(autoOutputItems) {
+                if (autoOutputItems) {
                     pushItemsIntoNearbyHandlers(outputFacing);
                 }
             }
@@ -160,9 +160,9 @@ public class SimpleMachineMetaTileEntity extends WorkableTieredMetaTileEntity {
         this.autoOutputItems = data.getBoolean("AutoOutputItems");
         this.autoOutputFluids = data.getBoolean("AutoOutputFluids");
         int[] sidedTankOverrides = data.getIntArray("SidedTankOverride");
-        for(int i = 0; i < sidedTankOverrides.length; i++) {
+        for (int i = 0; i < sidedTankOverrides.length; i++) {
             int overrideValue = sidedTankOverrides[i];
-            if(overrideValue >= 0)
+            if (overrideValue >= 0)
                 setOutputOverride(EnumFacing.VALUES[i], overrideValue);
         }
     }
@@ -186,13 +186,13 @@ public class SimpleMachineMetaTileEntity extends WorkableTieredMetaTileEntity {
     @Override
     public void receiveCustomData(int dataId, PacketBuffer buf) {
         super.receiveCustomData(dataId, buf);
-        if(dataId == 100) {
+        if (dataId == 100) {
             this.outputFacing = EnumFacing.VALUES[buf.readByte()];
             getHolder().scheduleChunkForRenderUpdate();
-        } else if(dataId == 101) {
+        } else if (dataId == 101) {
             this.autoOutputItems = buf.readBoolean();
             getHolder().scheduleChunkForRenderUpdate();
-        } else if(dataId == 102) {
+        } else if (dataId == 102) {
             this.autoOutputFluids = buf.readBoolean();
             getHolder().scheduleChunkForRenderUpdate();
         }
@@ -207,7 +207,7 @@ public class SimpleMachineMetaTileEntity extends WorkableTieredMetaTileEntity {
 
     public void setOutputFacing(EnumFacing outputFacing) {
         this.outputFacing = outputFacing;
-        if(!getWorld().isRemote) {
+        if (!getWorld().isRemote) {
             writeCustomData(100, buf -> buf.writeByte(outputFacing.getIndex()));
             markDirty();
         }
@@ -215,7 +215,7 @@ public class SimpleMachineMetaTileEntity extends WorkableTieredMetaTileEntity {
 
     public void setAutoOutputItems(boolean autoOutputItems) {
         this.autoOutputItems = autoOutputItems;
-        if(!getWorld().isRemote) {
+        if (!getWorld().isRemote) {
             writeCustomData(101, buf -> buf.writeBoolean(autoOutputItems));
             markDirty();
         }
@@ -223,7 +223,7 @@ public class SimpleMachineMetaTileEntity extends WorkableTieredMetaTileEntity {
 
     public void setAutoOutputFluids(boolean autoOutputFluids) {
         this.autoOutputFluids = autoOutputFluids;
-        if(!getWorld().isRemote) {
+        if (!getWorld().isRemote) {
             writeCustomData(102, buf -> buf.writeBoolean(autoOutputFluids));
             markDirty();
         }
@@ -232,7 +232,7 @@ public class SimpleMachineMetaTileEntity extends WorkableTieredMetaTileEntity {
     @Override
     public void setFrontFacing(EnumFacing frontFacing) {
         super.setFrontFacing(frontFacing);
-        if(this.outputFacing == null) {
+        if (this.outputFacing == null) {
             //set initial output facing as opposite to front
             setOutputFacing(frontFacing.getOpposite());
         }
@@ -258,12 +258,12 @@ public class SimpleMachineMetaTileEntity extends WorkableTieredMetaTileEntity {
 
     @Override
     public boolean onScrewdriverClick(EntityPlayer playerIn, EnumHand hand, EnumFacing facing, CuboidRayTraceResult hitResult) {
-        if(exportFluids.getTanks() == 0)
+        if (exportFluids.getTanks() == 0)
             return false; //do not do anything with machines that don't output fluids
-        if(getWorld().isRemote)
+        if (getWorld().isRemote)
             return true; //on client just return true
         int overrideIndex = getOutputOverride(facing);
-        if(++overrideIndex >= exportFluids.getTanks()) {
+        if (++overrideIndex >= exportFluids.getTanks()) {
             playerIn.sendStatusMessage(new TextComponentTranslation(
                 "gregtech.machine.basic.output_override.reset"), true);
             setOutputOverride(facing, -1);
@@ -286,12 +286,12 @@ public class SimpleMachineMetaTileEntity extends WorkableTieredMetaTileEntity {
             .bindPlayerInventory(player.inventory);
 
         int buttonStartX = 7;
-        if(exportItems.getSlots() > 0) {
+        if (exportItems.getSlots() > 0) {
             builder.widget(new ToggleButtonWidget(buttonStartX, 62, 18, 18,
                 GuiTextures.BUTTON_ITEM_OUTPUT, this::isAutoOutputItems, this::setAutoOutputItems));
             buttonStartX += 18;
         }
-        if(exportFluids.getTanks() > 0) {
+        if (exportFluids.getTanks() > 0) {
             builder.widget(new ToggleButtonWidget(buttonStartX, 62, 18, 18,
                 GuiTextures.BUTTON_FLUID_OUTPUT, this::isAutoOutputFluids, this::setAutoOutputFluids));
         }

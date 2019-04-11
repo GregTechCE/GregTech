@@ -2,7 +2,7 @@ package gregtech.common.metatileentities.multi.electric.generator;
 
 import gregtech.api.capability.IEnergyContainer;
 import gregtech.api.capability.IMultipleTankHandler;
-import gregtech.api.capability.impl.FuelRecipeMapWorkableHandler;
+import gregtech.api.capability.impl.FuelRecipeLogic;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.recipes.machines.FuelRecipeMap;
 import gregtech.api.recipes.recipes.FuelRecipe;
@@ -12,7 +12,7 @@ import net.minecraftforge.fluids.FluidStack;
 
 import java.util.function.Supplier;
 
-public class DieselEngineWorkableHandler extends FuelRecipeMapWorkableHandler {
+public class DieselEngineWorkableHandler extends FuelRecipeLogic {
 
     private final int maxCycleLength = 20;
     private int currentCycle = 0;
@@ -24,7 +24,7 @@ public class DieselEngineWorkableHandler extends FuelRecipeMapWorkableHandler {
     }
 
     public FluidStack getFuelStack() {
-        if(previousRecipe == null)
+        if (previousRecipe == null)
             return null;
         FluidStack fuelStack = previousRecipe.getRecipeFluid();
         return fluidTank.get().drain(new FluidStack(fuelStack.getFluid(), Integer.MAX_VALUE), false);
@@ -47,12 +47,12 @@ public class DieselEngineWorkableHandler extends FuelRecipeMapWorkableHandler {
 
     @Override
     protected long startRecipe(FuelRecipe currentRecipe, int fuelAmountUsed, int recipeDuration) {
-        if(this.currentCycle >= maxCycleLength) {
+        if (this.currentCycle >= maxCycleLength) {
             FluidStack lubricantStack = Materials.Lubricant.getFluid(2);
             fluidTank.get().drain(lubricantStack, true);
             this.currentCycle = 0;
         } else this.currentCycle++;
-        if(isUsingOxygen) {
+        if (isUsingOxygen) {
             FluidStack oxygenStack = Materials.Oxygen.getFluid(2);
             fluidTank.get().drain(oxygenStack, true);
         }

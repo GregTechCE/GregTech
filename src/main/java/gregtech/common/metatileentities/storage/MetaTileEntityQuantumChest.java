@@ -37,7 +37,7 @@ import java.util.List;
 
 public class MetaTileEntityQuantumChest extends MetaTileEntity implements ITieredMetaTileEntity {
 
-    private static final double[] rotations = new double[] {180.0, 0.0, -90.0, 90.0};
+    private static final double[] rotations = new double[]{180.0, 0.0, -90.0, 90.0};
 
     private final int tier;
     private final long maxStoredItems;
@@ -76,7 +76,7 @@ public class MetaTileEntityQuantumChest extends MetaTileEntity implements ITiere
     }
 
     @Override
-    public int getComparatorValue() {
+    public int getActualComparatorValue() {
         float f = itemsStoredInside / (maxStoredItems * 1.0f);
         return MathHelper.floor(f * 14.0f) + (itemsStoredInside > 0 ? 1 : 0);
     }
@@ -84,35 +84,35 @@ public class MetaTileEntityQuantumChest extends MetaTileEntity implements ITiere
     @Override
     public void update() {
         super.update();
-        if(!getWorld().isRemote) {
-            if(itemsStoredInside < maxStoredItems) {
+        if (!getWorld().isRemote) {
+            if (itemsStoredInside < maxStoredItems) {
                 ItemStack inputStack = importItems.getStackInSlot(0);
-                if(!inputStack.isEmpty() && (itemStack.isEmpty() || areItemStackIdentical(itemStack, inputStack))) {
+                if (!inputStack.isEmpty() && (itemStack.isEmpty() || areItemStackIdentical(itemStack, inputStack))) {
                     int amountOfItemsToInsert = (int) Math.min(inputStack.getCount(), maxStoredItems - itemsStoredInside);
-                    if(this.itemsStoredInside == 0L || itemStack.isEmpty()) {
+                    if (this.itemsStoredInside == 0L || itemStack.isEmpty()) {
                         this.itemStack = GTUtility.copyAmount(1, inputStack);
                     }
                     inputStack.shrink(amountOfItemsToInsert);
                     importItems.setStackInSlot(0, inputStack);
                     this.itemsStoredInside += amountOfItemsToInsert;
-                    updateComparatorValue(true);
+                    updateComparatorValue();
                     markDirty();
                 }
             }
-            if(itemsStoredInside > 0 && !itemStack.isEmpty()) {
+            if (itemsStoredInside > 0 && !itemStack.isEmpty()) {
                 ItemStack outputStack = exportItems.getStackInSlot(0);
                 int maxStackSize = itemStack.getMaxStackSize();
-                if(outputStack.isEmpty() || (areItemStackIdentical(itemStack, outputStack) && outputStack.getCount() < maxStackSize)) {
+                if (outputStack.isEmpty() || (areItemStackIdentical(itemStack, outputStack) && outputStack.getCount() < maxStackSize)) {
                     int amountOfItemsToRemove = (int) Math.min(maxStackSize - outputStack.getCount(), itemsStoredInside);
-                    if(outputStack.isEmpty()) {
+                    if (outputStack.isEmpty()) {
                         outputStack = GTUtility.copyAmount(amountOfItemsToRemove, itemStack);
                     } else outputStack.grow(amountOfItemsToRemove);
                     exportItems.setStackInSlot(0, outputStack);
                     this.itemsStoredInside -= amountOfItemsToRemove;
-                    if(this.itemsStoredInside == 0) {
+                    if (this.itemsStoredInside == 0) {
                         this.itemStack = ItemStack.EMPTY;
                     }
-                    updateComparatorValue(true);
+                    updateComparatorValue();
                     markDirty();
                 }
             }
@@ -153,7 +153,7 @@ public class MetaTileEntityQuantumChest extends MetaTileEntity implements ITiere
     @Override
     public NBTTagCompound writeToNBT(NBTTagCompound data) {
         NBTTagCompound tagCompound = super.writeToNBT(data);
-        if(!itemStack.isEmpty() && itemsStoredInside > 0L) {
+        if (!itemStack.isEmpty() && itemsStoredInside > 0L) {
             tagCompound.setTag("ItemStack", itemStack.writeToNBT(new NBTTagCompound()));
             tagCompound.setLong("ItemAmount", itemsStoredInside);
         }
@@ -163,9 +163,9 @@ public class MetaTileEntityQuantumChest extends MetaTileEntity implements ITiere
     @Override
     public void readFromNBT(NBTTagCompound data) {
         super.readFromNBT(data);
-        if(data.hasKey("ItemStack", NBT.TAG_COMPOUND)) {
+        if (data.hasKey("ItemStack", NBT.TAG_COMPOUND)) {
             this.itemStack = new ItemStack(data.getCompoundTag("ItemStack"));
-            if(!itemStack.isEmpty()) {
+            if (!itemStack.isEmpty()) {
                 this.itemsStoredInside = data.getLong("ItemAmount");
             }
         }

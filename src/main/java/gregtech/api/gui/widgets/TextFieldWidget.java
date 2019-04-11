@@ -27,7 +27,7 @@ public class TextFieldWidget extends Widget {
 
     public TextFieldWidget(int xPosition, int yPosition, int width, int height, boolean enableBackground, Supplier<String> textSupplier, Consumer<String> textResponder) {
         super();
-        if(isClientSide()) {
+        if (isClientSide()) {
             FontRenderer fontRenderer = Minecraft.getMinecraft().fontRenderer;
             this.textField = new GuiTextField(0, fontRenderer, xPosition, yPosition, width, height);
             this.textField.setCanLoseFocus(true);
@@ -58,7 +58,7 @@ public class TextFieldWidget extends Widget {
     @Override
     public void detectAndSendChanges() {
         super.detectAndSendChanges();
-        if(!textSupplier.get().equals(currentString)) {
+        if (!textSupplier.get().equals(currentString)) {
             this.currentString = textSupplier.get();
             writeUpdateInfo(1, buffer -> buffer.writeString(currentString));
         }
@@ -67,14 +67,14 @@ public class TextFieldWidget extends Widget {
     @Override
     public void readUpdateInfo(int id, PacketBuffer buffer) {
         super.readUpdateInfo(id, buffer);
-        if(id == 1) {
+        if (id == 1) {
             this.currentString = buffer.readString(Short.MAX_VALUE);
             this.textField.setText(currentString);
         }
     }
 
     protected void onTextChanged(String newTextString) {
-        if(textValidator.test(newTextString)) {
+        if (textValidator.test(newTextString)) {
             writeClientAction(1, buffer -> buffer.writeString(newTextString));
         }
     }
@@ -82,10 +82,10 @@ public class TextFieldWidget extends Widget {
     @Override
     public void handleClientAction(int id, PacketBuffer buffer) {
         super.handleClientAction(id, buffer);
-        if(id == 1) {
+        if (id == 1) {
             String clientText = buffer.readString(Short.MAX_VALUE);
             clientText = clientText.substring(0, Math.min(clientText.length(), maxStringLength));
-            if(textValidator.test(clientText)) {
+            if (textValidator.test(clientText)) {
                 this.currentString = clientText;
                 this.textResponder.accept(clientText);
             }
@@ -93,7 +93,7 @@ public class TextFieldWidget extends Widget {
     }
 
     public TextFieldWidget setTextColor(int textColor) {
-        if(isClientSide()) {
+        if (isClientSide()) {
             this.textField.setTextColor(textColor);
         }
         return this;
@@ -101,7 +101,7 @@ public class TextFieldWidget extends Widget {
 
     public TextFieldWidget setMaxStringLength(int maxStringLength) {
         this.maxStringLength = maxStringLength;
-        if(isClientSide()) {
+        if (isClientSide()) {
             this.textField.setMaxStringLength(maxStringLength);
         }
         return this;
@@ -109,7 +109,7 @@ public class TextFieldWidget extends Widget {
 
     public TextFieldWidget setValidator(Predicate<String> validator) {
         this.textValidator = validator;
-        if(isClientSide()) {
+        if (isClientSide()) {
             this.textField.setValidator(validator::test);
         }
         return this;

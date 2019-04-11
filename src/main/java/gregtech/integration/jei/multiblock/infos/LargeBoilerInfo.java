@@ -44,7 +44,7 @@ public class LargeBoilerInfo extends MultiblockInfoPage {
 
     @Override
     public String[] getDescription() {
-        return new String[] {I18n.format("gregtech.multiblock.large_boiler.description")};
+        return new String[]{I18n.format("gregtech.multiblock.large_boiler.description")};
     }
 
 }

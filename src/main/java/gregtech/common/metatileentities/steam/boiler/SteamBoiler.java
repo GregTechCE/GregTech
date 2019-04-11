@@ -78,7 +78,7 @@ public abstract class SteamBoiler extends MetaTileEntity {
 
     @SideOnly(Side.CLIENT)
     private SimpleSidedCubeRenderer getBaseRenderer() {
-        if(isHighPressure) {
+        if (isHighPressure) {
             return Textures.STEAM_BRICKED_CASING_STEEL;
         } else {
             return Textures.STEAM_BRICKED_CASING_BRONZE;
@@ -135,7 +135,7 @@ public abstract class SteamBoiler extends MetaTileEntity {
     @Override
     public void receiveCustomData(int dataId, PacketBuffer buf) {
         super.receiveCustomData(dataId, buf);
-        if(dataId == 100) {
+        if (dataId == 100) {
             this.isBurning = buf.readBoolean();
             getHolder().scheduleChunkForRenderUpdate();
         }
@@ -144,7 +144,7 @@ public abstract class SteamBoiler extends MetaTileEntity {
     public void setFuelMaxBurnTime(int fuelMaxBurnTime) {
         this.fuelMaxBurnTime = fuelMaxBurnTime;
         this.fuelBurnTimeLeft = fuelMaxBurnTime;
-        if(!getWorld().isRemote) {
+        if (!getWorld().isRemote) {
             markDirty();
         }
     }
@@ -152,7 +152,7 @@ public abstract class SteamBoiler extends MetaTileEntity {
     @Override
     public void update() {
         super.update();
-        if(!getWorld().isRemote) {
+        if (!getWorld().isRemote) {
             updateCurrentTemperature();
             generateSteam();
 
@@ -163,14 +163,14 @@ public abstract class SteamBoiler extends MetaTileEntity {
 
             if (fuelMaxBurnTime <= 0) {
                 tryConsumeNewFuel();
-                if(fuelBurnTimeLeft > 0) {
-                    if(wasBurningAndNeedsUpdate) {
+                if (fuelBurnTimeLeft > 0) {
+                    if (wasBurningAndNeedsUpdate) {
                         this.wasBurningAndNeedsUpdate = false;
                     } else setBurning(true);
                 }
             }
 
-            if(wasBurningAndNeedsUpdate) {
+            if (wasBurningAndNeedsUpdate) {
                 this.wasBurningAndNeedsUpdate = false;
                 setBurning(false);
             }
@@ -224,7 +224,7 @@ public abstract class SteamBoiler extends MetaTileEntity {
 
     public void setBurning(boolean burning) {
         this.isBurning = burning;
-        if(!getWorld().isRemote) {
+        if (!getWorld().isRemote) {
             markDirty();
             writeCustomData(100, buf -> buf.writeBoolean(burning));
         }

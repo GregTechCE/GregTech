@@ -5,15 +5,16 @@ import codechicken.lib.render.CCRenderState;
 import codechicken.lib.render.pipeline.IVertexOperation;
 import codechicken.lib.vec.Matrix4;
 import gregtech.api.GTValues;
-import gregtech.api.GregTechAPI;
+import gregtech.api.capability.GregtechCapabilities;
 import gregtech.api.capability.impl.EnergyContainerHandler;
+import gregtech.api.capability.tool.ISoftHammerItem;
 import gregtech.api.gui.ModularUI;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.MetaTileEntityHolder;
 import gregtech.api.metatileentity.TieredMetaTileEntity;
 import gregtech.api.render.Textures;
-import gregtech.api.unification.stack.SimpleItemStack;
 import gregtech.api.util.PipelineUtil;
+import gregtech.common.tools.DamageValues;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -70,7 +71,7 @@ public class MetaTileEntityTransformer extends TieredMetaTileEntity {
     @Override
     public void receiveCustomData(int dataId, PacketBuffer buf) {
         super.receiveCustomData(dataId, buf);
-        if(dataId == 100) {
+        if (dataId == 100) {
             this.isTransformUp = buf.readBoolean();
         }
     }
@@ -81,7 +82,7 @@ public class MetaTileEntityTransformer extends TieredMetaTileEntity {
 
     public void setTransformUp(boolean inverted) {
         isTransformUp = inverted;
-        if(!getWorld().isRemote) {
+        if (!getWorld().isRemote) {
             reinitializeEnergyContainer();
             writeCustomData(100, b -> b.writeBoolean(isTransformUp));
             markDirty();
@@ -91,7 +92,7 @@ public class MetaTileEntityTransformer extends TieredMetaTileEntity {
     @Override
     protected void reinitializeEnergyContainer() {
         long tierVoltage = GTValues.V[getTier()];
-        if(isTransformUp) {
+        if (isTransformUp) {
             //storage = 1 amp high; input = tier / 4; amperage = 4; output = tier; amperage = 1
             this.energyContainer = new EnergyContainerHandler(this, tierVoltage * 8L, tierVoltage / 4, 4, tierVoltage, 1);
         } else {
@@ -105,7 +106,7 @@ public class MetaTileEntityTransformer extends TieredMetaTileEntity {
     @Override
     public void renderMetaTileEntity(CCRenderState renderState, Matrix4 translation, IVertexOperation[] pipeline) {
         super.renderMetaTileEntity(renderState, translation, pipeline);
-        if(isTransformUp) {
+        if (isTransformUp) {
             Textures.ENERGY_OUT_MULTI.renderSided(getFrontFacing(), renderState, translation, PipelineUtil.color(pipeline, GTValues.VC[getTier() - 1]));
             Textures.ENERGY_IN.renderSided(getFrontFacing().getOpposite(), renderState, translation, PipelineUtil.color(pipeline, GTValues.VC[getTier()]));
         } else {
@@ -122,14 +123,23 @@ public class MetaTileEntityTransformer extends TieredMetaTileEntity {
     @Override
     public boolean onRightClick(EntityPlayer playerIn, EnumHand hand, EnumFacing facing, CuboidRayTraceResult hitResult) {
         ItemStack itemStack = playerIn.getHeldItem(hand);
-        if(!itemStack.isEmpty() && GregTechAPI.softHammerList.contains(new SimpleItemStack(itemStack))) {
-            if(getWorld().isRemote)
+        if(!itemStack.isEmpty() && itemStack.hasCapability(GregtechCapabilities.CAPABILITY_MALLET, null)) {
+            ISoftHammerItem softHammerItem = itemStack.getCapability(GregtechCapabilities.CAPABILITY_MALLET, null);
+
+            if (getWorld().isRemote) {
                 return true;
-            if(isTransformUp) {
+            }
+
+            if(!softHammerItem.damageItem(DamageValues.DAMAGE_FOR_SOFT_HAMMER, false)) {
+                return false;
+            }
+
+            if (isTransformUp) {
                 setTransformUp(false);
                 playerIn.sendMessage(new TextComponentTranslation("gregtech.machine.transformer.message_transform_down",
                     energyContainer.getInputVoltage(), energyContainer.getInputAmperage(), energyContainer.getOutputVoltage(), energyContainer.getOutputAmperage()));
                 return true;
+
             } else {
                 setTransformUp(true);
                 playerIn.sendMessage(new TextComponentTranslation("gregtech.machine.transformer.message_transform_up",

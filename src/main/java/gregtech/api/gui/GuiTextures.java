@@ -107,5 +107,4 @@ public class GuiTextures {
     public static final TextureArea PROGRESS_BAR_WIREMILL = TextureArea.fullImage("textures/gui/progress_bar/progress_bar_wiremill.png");
 
 
-
 }

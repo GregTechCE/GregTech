@@ -16,7 +16,9 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class MetaTileEntityUIFactory extends UIFactory<MetaTileEntityHolder> {
 
     public static final MetaTileEntityUIFactory INSTANCE = new MetaTileEntityUIFactory();
-    private MetaTileEntityUIFactory() {}
+
+    private MetaTileEntityUIFactory() {
+    }
 
     public void init() {
         UIFactory.FACTORY_REGISTRY.register(0, new ResourceLocation(GTValues.MODID, "meta_tile_entity_factory"), this);

@@ -20,7 +20,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.fluids.IFluidTank;
 
-public class SteamRecipeMapWorkableHandler extends RecipeMapWorkableHandler {
+public class RecipeLogicSteam extends AbstractRecipeLogic {
 
     private final IFluidTank steamFluidTank;
     private final boolean isHighPressure;
@@ -30,7 +30,7 @@ public class SteamRecipeMapWorkableHandler extends RecipeMapWorkableHandler {
     private boolean ventingStuck;
     private EnumFacing ventingSide;
 
-    public SteamRecipeMapWorkableHandler(MetaTileEntity tileEntity, RecipeMap<?> recipeMap, boolean isHighPressure, IFluidTank steamFluidTank, double conversionRate) {
+    public RecipeLogicSteam(MetaTileEntity tileEntity, RecipeMap<?> recipeMap, boolean isHighPressure, IFluidTank steamFluidTank, double conversionRate) {
         super(tileEntity, recipeMap);
         this.steamFluidTank = steamFluidTank;
         this.conversionRate = conversionRate;
@@ -47,7 +47,7 @@ public class SteamRecipeMapWorkableHandler extends RecipeMapWorkableHandler {
 
     @Override
     public void onFrontFacingSet(EnumFacing newFrontFacing) {
-        if(ventingSide == null) {
+        if (ventingSide == null) {
             setVentingSide(newFrontFacing.getOpposite());
         }
     }
@@ -58,7 +58,7 @@ public class SteamRecipeMapWorkableHandler extends RecipeMapWorkableHandler {
 
     public void setVentingStuck(boolean ventingStuck) {
         this.ventingStuck = ventingStuck;
-        if(!metaTileEntity.getWorld().isRemote) {
+        if (!metaTileEntity.getWorld().isRemote) {
             metaTileEntity.markDirty();
             writeCustomData(4, buf -> buf.writeBoolean(ventingStuck));
         }
@@ -66,9 +66,9 @@ public class SteamRecipeMapWorkableHandler extends RecipeMapWorkableHandler {
 
     public void setNeedsVenting(boolean needsVenting) {
         this.needsVenting = needsVenting;
-        if(!needsVenting && ventingStuck)
+        if (!needsVenting && ventingStuck)
             setVentingStuck(false);
-        if(!metaTileEntity.getWorld().isRemote) {
+        if (!metaTileEntity.getWorld().isRemote) {
             metaTileEntity.markDirty();
             writeCustomData(2, buf -> buf.writeBoolean(needsVenting));
         }
@@ -76,7 +76,7 @@ public class SteamRecipeMapWorkableHandler extends RecipeMapWorkableHandler {
 
     public void setVentingSide(EnumFacing ventingSide) {
         this.ventingSide = ventingSide;
-        if(!metaTileEntity.getWorld().isRemote) {
+        if (!metaTileEntity.getWorld().isRemote) {
             metaTileEntity.markDirty();
             writeCustomData(3, buf -> buf.writeByte(ventingSide.getIndex()));
         }
@@ -85,12 +85,12 @@ public class SteamRecipeMapWorkableHandler extends RecipeMapWorkableHandler {
     @Override
     public void receiveCustomData(int dataId, PacketBuffer buf) {
         super.receiveCustomData(dataId, buf);
-        if(dataId == 2) {
+        if (dataId == 2) {
             this.needsVenting = buf.readBoolean();
-        } else if(dataId == 3) {
+        } else if (dataId == 3) {
             this.ventingSide = EnumFacing.VALUES[buf.readByte()];
             getMetaTileEntity().getHolder().scheduleChunkForRenderUpdate();
-        } else if(dataId == 4) {
+        } else if (dataId == 4) {
             this.ventingStuck = buf.readBoolean();
         }
     }
@@ -160,9 +160,9 @@ public class SteamRecipeMapWorkableHandler extends RecipeMapWorkableHandler {
 
     @Override
     protected int[] calculateOverclock(int EUt, long voltage, long amperage, int duration, boolean consumeInputs) {
-        if(!isHighPressure) {
+        if (!isHighPressure) {
             //disallow overclocking for low pressure bronze machines
-            return new int[] {EUt, duration};
+            return new int[]{EUt, duration};
         }
         return super.calculateOverclock(EUt, voltage, amperage, duration, consumeInputs);
     }

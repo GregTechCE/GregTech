@@ -52,7 +52,7 @@ public class ModHandler {
      */
     public static boolean isWater(FluidStack fluid) {
         return new FluidStack(FluidRegistry.WATER, 1).isFluidEqual(fluid)
-                || new FluidStack(MetaFluids.DISTILLED_WATER, 1).isFluidEqual(fluid);
+            || new FluidStack(MetaFluids.DISTILLED_WATER, 1).isFluidEqual(fluid);
     }
 
     /**
@@ -132,23 +132,23 @@ public class ModHandler {
     public static ItemStack getBurningFuelRemainder(Random random, ItemStack fuelStack) {
         float remainderChance;
         ItemStack remainder;
-        if(OreDictUnifier.getOreDictionaryNames(fuelStack).contains("fuelCoke")) {
+        if (OreDictUnifier.getOreDictionaryNames(fuelStack).contains("fuelCoke")) {
             remainder = OreDictUnifier.get(OrePrefix.dust, Materials.Ash);
             remainderChance = 0.5f;
         } else {
             MaterialStack materialStack = OreDictUnifier.getMaterial(fuelStack);
-            if(materialStack == null)
+            if (materialStack == null)
                 return ItemStack.EMPTY;
-            else if(materialStack.material == Materials.Charcoal) {
+            else if (materialStack.material == Materials.Charcoal) {
                 remainder = OreDictUnifier.get(OrePrefix.dust, Materials.Ash);
                 remainderChance = 0.3f;
-            } else if(materialStack.material == Materials.Coal) {
+            } else if (materialStack.material == Materials.Coal) {
                 remainder = OreDictUnifier.get(OrePrefix.dust, Materials.DarkAsh);
                 remainderChance = 0.35f;
-            } else if(materialStack.material == Materials.Lignite) {
+            } else if (materialStack.material == Materials.Lignite) {
                 remainder = OreDictUnifier.get(OrePrefix.dust, Materials.DarkAsh);
                 remainderChance = 0.35f;
-            } else if(materialStack.material == Materials.Coke) {
+            } else if (materialStack.material == Materials.Coke) {
                 remainder = OreDictUnifier.get(OrePrefix.dust, Materials.Ash);
                 remainderChance = 0.5f;
             } else return ItemStack.EMPTY;
@@ -162,7 +162,7 @@ public class ModHandler {
 
     public static void addSmeltingRecipe(UnificationEntry input, ItemStack output) {
         List<ItemStack> allStacks = OreDictUnifier.getAll(input);
-        for(ItemStack inputStack : allStacks) {
+        for (ItemStack inputStack : allStacks) {
             addSmeltingRecipe(inputStack, output);
         }
     }
@@ -185,7 +185,7 @@ public class ModHandler {
         if (skip) return;
         FurnaceRecipes recipes = FurnaceRecipes.instance();
 
-        if(recipes.getSmeltingResult(input).isEmpty()) {
+        if (recipes.getSmeltingResult(input).isEmpty()) {
             //register only if there is no recipe with duplicate input
             recipes.addSmeltingRecipe(input, output, 0.0f);
         }
@@ -348,7 +348,7 @@ public class ModHandler {
                     .collect(Collectors.joining(", ")));
             GTLog.logger.error("Stacktrace:", new IllegalArgumentException());
             skip = true;
-        } else if(ForgeRegistries.RECIPES.containsKey(new ResourceLocation(GTValues.MODID, regName))) {
+        } else if (ForgeRegistries.RECIPES.containsKey(new ResourceLocation(GTValues.MODID, regName))) {
             GTLog.logger.error("Tried to register recipe, {}, with duplicate key. Recipe: {}", regName,
                 Arrays.stream(recipe)
                     .map(Object::toString)
@@ -369,11 +369,11 @@ public class ModHandler {
             } else if (recipe[i] instanceof UnificationEntry) {
                 recipe[i] = recipe[i].toString();
             } else if (!(recipe[i] instanceof ItemStack
-                    || recipe[i] instanceof Item
-                    || recipe[i] instanceof Block
-                    || recipe[i] instanceof String
-                    || recipe[i] instanceof Character
-                    || recipe[i] instanceof Boolean)) {
+                || recipe[i] instanceof Item
+                || recipe[i] instanceof Block
+                || recipe[i] instanceof String
+                || recipe[i] instanceof Character
+                || recipe[i] instanceof Boolean)) {
                 throw new IllegalArgumentException(recipe.getClass().getSimpleName() + " type is not suitable for crafting input.");
             }
         }
@@ -391,7 +391,7 @@ public class ModHandler {
 
             for (char c : s.toString().toCharArray()) {
                 String toolName = getToolNameByCharacter(c);
-                if(toolName != null) {
+                if (toolName != null) {
                     recipeList.add(c);
                     recipeList.add(toolName);
                 }
@@ -423,16 +423,16 @@ public class ModHandler {
                 recipe[i] = ((Enum<?>) recipe[i]).name();
             } else if (recipe[i] instanceof UnificationEntry) {
                 recipe[i] = recipe[i].toString();
-            } else if(recipe[i] instanceof Character) {
+            } else if (recipe[i] instanceof Character) {
                 String toolName = getToolNameByCharacter((char) recipe[i]);
-                if(toolName == null) {
+                if (toolName == null) {
                     throw new IllegalArgumentException("Tool name is not found for char " + recipe[i]);
                 }
                 recipe[i] = toolName;
             } else if (!(recipe[i] instanceof ItemStack
-                    || recipe[i] instanceof Item
-                    || recipe[i] instanceof Block
-                    || recipe[i] instanceof String)) {
+                || recipe[i] instanceof Item
+                || recipe[i] instanceof Block
+                || recipe[i] instanceof String)) {
                 throw new IllegalArgumentException(recipe.getClass().getSimpleName() + " type is not suitable for crafting input.");
             }
         }
@@ -453,38 +453,55 @@ public class ModHandler {
         ForgeRegistries.RECIPES.register(shapelessRecipe);
     }
 
-    private @Nullable static String getToolNameByCharacter(char character) {
+    private @Nullable
+    static String getToolNameByCharacter(char character) {
         switch (character) {
-            case 'b': return ToolDictNames.craftingToolBlade.name();
-            case 'c': return ToolDictNames.craftingToolCrowbar.name();
-            case 'd': return ToolDictNames.craftingToolScrewdriver.name();
-            case 'f': return ToolDictNames.craftingToolFile.name();
-            case 'h': return ToolDictNames.craftingToolHardHammer.name();
-            case 'i': return ToolDictNames.craftingToolSolderingIron.name();
-            case 'j': return ToolDictNames.craftingToolSolderingMetal.name();
-            case 'k': return ToolDictNames.craftingToolKnife.name();
-            case 'm': return ToolDictNames.craftingToolMortar.name();
-            case 'p': return ToolDictNames.craftingToolDrawplate.name();
-            case 'r': return ToolDictNames.craftingToolSoftHammer.name();
-            case 's': return ToolDictNames.craftingToolSaw.name();
-            case 'w': return ToolDictNames.craftingToolWrench.name();
-            case 'x': return ToolDictNames.craftingToolWireCutter.name();
-            default: return null;
+            case 'b':
+                return ToolDictNames.craftingToolBlade.name();
+            case 'c':
+                return ToolDictNames.craftingToolCrowbar.name();
+            case 'd':
+                return ToolDictNames.craftingToolScrewdriver.name();
+            case 'f':
+                return ToolDictNames.craftingToolFile.name();
+            case 'h':
+                return ToolDictNames.craftingToolHardHammer.name();
+            case 'i':
+                return ToolDictNames.craftingToolSolderingIron.name();
+            case 'j':
+                return ToolDictNames.craftingToolSolderingMetal.name();
+            case 'k':
+                return ToolDictNames.craftingToolKnife.name();
+            case 'm':
+                return ToolDictNames.craftingToolMortar.name();
+            case 'p':
+                return ToolDictNames.craftingToolDrawplate.name();
+            case 'r':
+                return ToolDictNames.craftingToolSoftHammer.name();
+            case 's':
+                return ToolDictNames.craftingToolSaw.name();
+            case 'w':
+                return ToolDictNames.craftingToolWrench.name();
+            case 'x':
+                return ToolDictNames.craftingToolWireCutter.name();
+            default:
+                return null;
         }
     }
 
     public static Collection<ItemStack> getAllSubItems(ItemStack item) {
         //match subtypes only on wildcard damage value items
-        if(item.getItemDamage() != GTValues.W)
+        if (item.getItemDamage() != GTValues.W)
             return Collections.singleton(item);
         NonNullList<ItemStack> stackList = NonNullList.create();
         CreativeTabs[] visibleTags = item.getItem().getCreativeTabs();
-        for(CreativeTabs creativeTab : visibleTags) {
+        for (CreativeTabs creativeTab : visibleTags) {
             NonNullList<ItemStack> thisList = NonNullList.create();
             item.getItem().getSubItems(creativeTab, thisList);
-            loop: for(ItemStack newStack : thisList) {
-                for(ItemStack alreadyExists : stackList) {
-                    if(ItemStack.areItemStacksEqual(alreadyExists, newStack))
+            loop:
+            for (ItemStack newStack : thisList) {
+                for (ItemStack alreadyExists : stackList) {
+                    if (ItemStack.areItemStacksEqual(alreadyExists, newStack))
                         continue loop; //do not add equal item stacks
                 }
                 stackList.add(newStack);
@@ -500,7 +517,7 @@ public class ModHandler {
     public static boolean removeFurnaceSmelting(UnificationEntry input) {
         boolean result = false;
         List<ItemStack> allStacks = OreDictUnifier.getAll(input);
-        for(ItemStack inputStack : allStacks) {
+        for (ItemStack inputStack : allStacks) {
             result |= removeFurnaceSmelting(inputStack);
         }
         return result;
@@ -576,7 +593,7 @@ public class ModHandler {
 
         for (int i = 0; i < 9 && i < recipe.length; i++) {
             ItemStack recipeStack = recipe[i];
-            if(recipeStack != null && !recipeStack.isEmpty()) {
+            if (recipeStack != null && !recipeStack.isEmpty()) {
                 craftingGrid.setInventorySlotContents(i, recipeStack);
             }
         }
@@ -598,7 +615,7 @@ public class ModHandler {
 
     public static void addRCFurnaceRecipe(UnificationEntry input, ItemStack output, int duration) {
         List<ItemStack> allStacks = OreDictUnifier.getAll(input);
-        for(ItemStack inputStack : allStacks) {
+        for (ItemStack inputStack : allStacks) {
             addRCFurnaceRecipe(inputStack, output, duration);
         }
     }

@@ -2,7 +2,6 @@ package gregtech.common.pipelike.cable;
 
 import gregtech.api.pipenet.block.IPipeType;
 import gregtech.api.unification.ore.OrePrefix;
-import net.minecraft.util.IStringSerializable;
 
 public enum Insulation implements IPipeType<WireProperties> {
 
