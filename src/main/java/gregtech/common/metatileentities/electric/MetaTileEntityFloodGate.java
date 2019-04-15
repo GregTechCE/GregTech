@@ -17,6 +17,8 @@ import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.MetaTileEntityHolder;
 import gregtech.api.metatileentity.TieredMetaTileEntity;
 import gregtech.api.render.Textures;
+import gregtech.api.util.BlockPosQueue;
+import gregtech.api.util.BlockPosSet;
 import gregtech.api.util.GTUtility;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockLiquid;
@@ -38,8 +40,6 @@ import net.minecraftforge.items.ItemStackHandler;
 import org.apache.commons.lang3.ArrayUtils;
 
 import javax.annotation.Nullable;
-import java.util.ArrayDeque;
-import java.util.Deque;
 import java.util.List;
 
 public class MetaTileEntityFloodGate extends TieredMetaTileEntity {
@@ -48,16 +48,20 @@ public class MetaTileEntityFloodGate extends TieredMetaTileEntity {
     private static final int MAX_RANGE = 32;
     private static final int SPEED_BASE = 40;
 
-    private Deque<BlockPos> airBlocks;
-    private Deque<BlockPos> blocksToCheck;
+    private BlockPosQueue airBlocks;
+    private BlockPosQueue blocksToCheck;
+    private BlockPosSet checkedBlocks;
     private boolean initializedQueue;
+    private boolean isCompleted;
     private int headY;
 
     public MetaTileEntityFloodGate(ResourceLocation metaTileEntityId, int tier) {
         super(metaTileEntityId, tier);
-        this.airBlocks = new ArrayDeque<>();
-        this.blocksToCheck = new ArrayDeque<>();
+        this.airBlocks = new BlockPosQueue();
+        this.blocksToCheck = new BlockPosQueue();
+        this.checkedBlocks = new BlockPosSet();
         this.initializedQueue = false;
+        this.isCompleted = false;
         this.headY = 0;
     }
 
@@ -156,26 +160,31 @@ public class MetaTileEntityFloodGate extends TieredMetaTileEntity {
             IFluidHandler fluidHandler = FluidUtil.getFluidHandler(getWorld(), pos, null);
             FluidStack drainStack = null;
 
-            if (fluidHandler != null) {
+            if (fluidHandler != null)
                 drainStack = fluidHandler.drain(Integer.MAX_VALUE, false);
-            }
-            if (drainStack != null) {
+            if (drainStack != null)
                 return drainStack.amount < Fluid.BUCKET_VOLUME;
-            }
 
             return true;
         }
 
-        return false;
+        return getWorld().getBlockState(pos).getBlock().isReplaceable(getWorld(), pos);
     }
 
     private void moveHeadToBottom() {
         BlockPos selfPos = getPos();
+
+        blocksToCheck.setCenter(selfPos);
+        airBlocks.setCenter(selfPos);
+        checkedBlocks.setCenter(selfPos);
+
         int temp = 0;
         while(canPutAt(selfPos.down(temp + 1)))
             temp ++;
+        if(isFluid(selfPos.down(temp + 1)) && (!isCompleted))
+            temp ++;
 
-        if (headY != temp) {
+        if(headY != temp) {
             headY = temp;
             writeCustomData(200, b -> b.writeVarInt(headY));
             markDirty();
@@ -207,19 +216,21 @@ public class MetaTileEntityFloodGate extends TieredMetaTileEntity {
     private void updateQueueState() {
         BlockPos headPos = getPos().down(headY);
 
-        if(!blocksToCheck.isEmpty()) {
+        while(!blocksToCheck.isEmpty() && airBlocks.isEmpty()) {
             BlockPos checkPos = this.blocksToCheck.poll();
 
-            if(canPutAt(checkPos)) {
+            if(canPutAt(checkPos) || isFluid(checkPos)) {
                 for(EnumFacing facing : EnumFacing.HORIZONTALS) {
                     BlockPos offsetPos = checkPos.offset(facing);
-                    if(offsetPos.distanceSq(headPos) > MAX_RANGE * MAX_RANGE)
+                    if(offsetPos.distanceSq(headPos) > MAX_RANGE * MAX_RANGE || (!getWorld().isBlockLoaded(offsetPos)))
                         continue; //do not add blocks outside bounds
-                    if(canPutAt(offsetPos) && (!blocksToCheck.contains(offsetPos)))
+                    if((isFluid(offsetPos) || canPutAt(offsetPos)) && (!checkedBlocks.contains(offsetPos))) {
                         this.blocksToCheck.add(offsetPos);
+                        this.checkedBlocks.add(offsetPos);
+                    }
                 }
 
-                if(!airBlocks.contains(checkPos))
+                if(!airBlocks.contains(checkPos) && canPutAt(checkPos))
                     this.airBlocks.add(checkPos);
             }
         }
@@ -227,8 +238,10 @@ public class MetaTileEntityFloodGate extends TieredMetaTileEntity {
         if(airBlocks.isEmpty() && this.blocksToCheck.isEmpty()) {
             if(getTimer() % 20 == 0) {
                 moveHeadToBottom();
+                checkedBlocks.clear();
                 //schedule queue rebuild because we changed our position and no fluid is available
                 this.initializedQueue = false;
+                this.isCompleted = true;
             }
 
             if((!initializedQueue || getTimer() % 6000 == 0) && headY != 0) {
@@ -240,16 +253,16 @@ public class MetaTileEntityFloodGate extends TieredMetaTileEntity {
     }
 
     private void tryPutFirstBlock() {
-        BlockPos AirBlockPos = this.airBlocks.poll();
+        BlockPos putPos = this.airBlocks.poll();
 
-        if(AirBlockPos == null)
+        if(putPos == null)
             return;
 
-        if(canPutAt(AirBlockPos)) {
+        if(canPutAt(putPos) && getWorld().isBlockLoaded(putPos)) {
             FluidStack drainStack = importFluids.drain(Fluid.BUCKET_VOLUME, false);
             if(drainStack != null && drainStack.amount >= Fluid.BUCKET_VOLUME) {
                 // put fluid
-                if(FluidUtil.tryPlaceFluid(null, getWorld(), AirBlockPos, importFluids, drainStack)) {
+                if(FluidUtil.tryPlaceFluid(null, getWorld(), putPos, importFluids, drainStack)) {
                     this.energyContainer.changeEnergy(- GTValues.V[getTier()]);
                 }
             }
@@ -259,19 +272,23 @@ public class MetaTileEntityFloodGate extends TieredMetaTileEntity {
     @Override
     public void update() {
         super.update();
-        if(getWorld().isRemote) {
+
+        if(getWorld().isRemote)
             return;
-        }
-        //do not do anything without enough energy supplied
-        if(energyContainer.getEnergyStored() < GTValues.V[getTier()] * 4) {
-            return;
-        }
+
         fillInternalTankFromFluidContainer(importItems, exportItems, 0, 0);
 
+        if(energyContainer.getEnergyStored() < GTValues.V[getTier()] * 4)
+            return;
+        FluidStack fluidStack = importFluids.drain(Integer.MAX_VALUE, false);
+        if(fluidStack == null)
+            return;
+        if(fluidStack.amount < Fluid.BUCKET_VOLUME)
+            return;
+
         updateQueueState();
-        if(getTimer() % getCycleLength() == 0 && !airBlocks.isEmpty() && energyContainer.getEnergyStored() >= GTValues.V[getTier()]) {
+        if(getTimer() % getCycleLength() == 0 && !airBlocks.isEmpty() && energyContainer.getEnergyStored() >= GTValues.V[getTier()])
             tryPutFirstBlock();
-        }
     }
 
     private int getCycleLength(){

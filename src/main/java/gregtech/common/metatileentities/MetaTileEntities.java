@@ -491,19 +491,19 @@ public class MetaTileEntities {
             FLOOD_GATE[i - 1] = new MetaTileEntityFloodGate(gregtechId("flood_gate." + voltageName), i);
             AIR_COLLECTOR[i - 1] = new MetaTileEntityAirCollector(gregtechId("air_collector." + voltageName), i);
             GregTechAPI.registerMetaTileEntity(900 + 10 * (i - 1), PUMP[i - 1]);
-            GregTechAPI.registerMetaTileEntity(1030 + 10 * (i - 1), FLOOD_GATE[i - 1]);
-            GregTechAPI.registerMetaTileEntity(950 + 10 * (i - 1), AIR_COLLECTOR[i - 1]);
+            GregTechAPI.registerMetaTileEntity(950 + 10 * (i - 1), FLOOD_GATE[i - 1]);
+            GregTechAPI.registerMetaTileEntity(1000 + 10 * (i - 1), AIR_COLLECTOR[i - 1]);
         }
 
         TESLA_COIL = new MetaTileEntityTeslaCoil(gregtechId("tesla_coil"));
-        GregTechAPI.registerMetaTileEntity(1001, TESLA_COIL);
+        GregTechAPI.registerMetaTileEntity(1051, TESLA_COIL);
 
         for (int i = 2; i < 6; i++) {
             String voltageName = GTValues.VN[i].toLowerCase();
             QUANTUM_CHEST[i - 2] = new MetaTileEntityQuantumChest(gregtechId("quantum_chest." + voltageName), i, 64 * 64000 * (i - 1));
             QUANTUM_TANK[i - 2] = new MetaTileEntityQuantumTank(gregtechId("quantum_tank." + voltageName), i, 1000 * 64000 * (i - 1));
-            GregTechAPI.registerMetaTileEntity(1010 + (i - 2), QUANTUM_CHEST[i - 2]);
-            GregTechAPI.registerMetaTileEntity(1020 + (i - 2), QUANTUM_TANK[i - 2]);
+            GregTechAPI.registerMetaTileEntity(1060 + (i - 2), QUANTUM_CHEST[i - 2]);
+            GregTechAPI.registerMetaTileEntity(1070 + (i - 2), QUANTUM_TANK[i - 2]);
         }
     }
 
