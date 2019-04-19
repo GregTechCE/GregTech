@@ -166,11 +166,6 @@ public abstract class MetaTileEntity implements ICoverable {
     }
 
     @SideOnly(Side.CLIENT)
-    public void renderMetaTileEntityDynamic(CCRenderState renderState, Matrix4 translation, IVertexOperation[] pipeline, float partialTicks) {
-
-    }
-
-    @SideOnly(Side.CLIENT)
     public int getPaintingColorForRendering() {
         if (getWorld() == null && renderContextStack != null) {
             NBTTagCompound tagCompound = renderContextStack.getTagCompound();
@@ -267,16 +262,14 @@ public abstract class MetaTileEntity implements ICoverable {
     protected abstract ModularUI createUI(EntityPlayer entityPlayer);
 
     public final void onCoverLeftClick(EntityPlayer playerIn, CuboidRayTraceResult result) {
-        EnumFacing coverSide = ICoverable.traceCoverSide(result);
-        CoverBehavior coverBehavior = coverSide == null ? null : getCoverAtSide(coverSide);
+        CoverBehavior coverBehavior = getCoverAtSide(result.sideHit);
         if (coverBehavior == null || !coverBehavior.onLeftClick(playerIn, result)) {
             onLeftClick(playerIn, result.sideHit, result);
         }
     }
 
     public final boolean onCoverRightClick(EntityPlayer playerIn, EnumHand hand, CuboidRayTraceResult result) {
-        EnumFacing coverSide = ICoverable.traceCoverSide(result);
-        CoverBehavior coverBehavior = coverSide == null ? null : getCoverAtSide(coverSide);
+        CoverBehavior coverBehavior = getCoverAtSide(result.sideHit);
         EnumActionResult coverResult = coverBehavior == null ? EnumActionResult.PASS :
             coverBehavior.onRightClick(playerIn, hand, result);
         if (coverResult != EnumActionResult.PASS) {
@@ -567,20 +560,6 @@ public abstract class MetaTileEntity implements ICoverable {
      */
     public boolean isOpaqueCube() {
         return true;
-    }
-
-    /**
-     * Whether this tile entity should get it's {@link #renderMetaTileEntityDynamic(CCRenderState, Matrix4, IVertexOperation[], float)} called
-     * It will be called every render frame to render meta tile entity with fast TESR
-     *
-     * @return true if meta tile entity should use FastTESR
-     */
-    public boolean requiresDynamicRendering() {
-        return true;
-    }
-
-    public boolean shouldRenderInPass(int pass) {
-        return pass == 0;
     }
 
     public int getLightValue() {

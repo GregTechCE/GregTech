@@ -159,12 +159,12 @@ public class RecipeLogicSteam extends AbstractRecipeLogic {
     }
 
     @Override
-    protected int[] calculateOverclock(int EUt, long voltage, long amperage, int duration, boolean consumeInputs) {
+    protected int[] calculateOverclock(int EUt, long voltage, int duration, boolean consumeInputs) {
         if (!isHighPressure) {
             //disallow overclocking for low pressure bronze machines
             return new int[]{EUt, duration};
         }
-        return super.calculateOverclock(EUt, voltage, amperage, duration, consumeInputs);
+        return super.calculateOverclock(EUt, voltage, duration, consumeInputs);
     }
 
     @Override

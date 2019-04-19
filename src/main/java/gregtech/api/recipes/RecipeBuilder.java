@@ -207,7 +207,7 @@ public abstract class RecipeBuilder<R extends RecipeBuilder<R>> {
         return (R) this;
     }
 
-    public R chancedOutput(ItemStack stack, int chance) {
+    public R chancedOutput(ItemStack stack, int chance, int tierChanceBoost) {
         if (stack == null || stack.isEmpty()) {
             return (R) this;
         }

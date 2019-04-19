@@ -62,14 +62,14 @@ public class MaterialRecipeHandler {
                 RecipeMaps.AUTOCLAVE_RECIPES.recipeBuilder()
                     .input(dustPrefix, material)
                     .fluidInputs(Materials.Water.getFluid(200))
-                    .chancedOutput(gemStack, 7000)
+                    .chancedOutput(gemStack, 7000, 1000)
                     .duration(1600).EUt(24)
                     .buildAndRegister();
 
                 RecipeMaps.AUTOCLAVE_RECIPES.recipeBuilder()
                     .input(dustPrefix, material)
                     .fluidInputs(ModHandler.getDistilledWater(200))
-                    .chancedOutput(gemStack, 9000)
+                    .chancedOutput(gemStack, 8000, 1000)
                     .duration(1200).EUt(24)
                     .buildAndRegister();
 

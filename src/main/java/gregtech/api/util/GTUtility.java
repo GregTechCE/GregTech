@@ -8,30 +8,22 @@ import gregtech.api.capability.IMultipleTankHandler;
 import gregtech.api.items.IToolItem;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.unification.OreDictUnifier;
-import gregtech.api.unification.material.type.Material;
 import gregtech.api.unification.ore.OrePrefix;
-import gregtech.api.unification.stack.MaterialStack;
 import gregtech.common.ConfigHolder;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.resources.I18n;
-import net.minecraft.entity.ai.attributes.AttributeModifier;
-import net.minecraft.entity.ai.attributes.IAttribute;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.TextFormatting;
-import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.BiomeDictionary;
 import net.minecraftforge.common.ForgeHooks;
@@ -203,81 +195,13 @@ public class GTUtility {
         return merged;
     }
 
-    public static boolean isBlockOrePrefixed(IBlockAccess world, BlockPos pos, IBlockState blockState, OrePrefix targetPrefix, List<ItemStack> drops) {
+    public static boolean isBlockOrePrefixed(OrePrefix targetPrefix, List<ItemStack> drops) {
         for (ItemStack itemStack : drops) {
             OrePrefix orePrefix = OreDictUnifier.getPrefix(itemStack);
             if (orePrefix == targetPrefix)
                 return true;
         }
         return false;
-    }
-
-    public static long getBlockMaterialAmount(IBlockAccess world, BlockPos pos, IBlockState blockState, Material targetMaterial, List<ItemStack> drops) {
-        for (ItemStack itemStack : drops) {
-            MaterialStack materialStack = OreDictUnifier.getMaterial(itemStack);
-            if (materialStack != null && materialStack.material == targetMaterial)
-                return materialStack.amount;
-        }
-        return 0L;
-    }
-
-    /**
-     * Adds potion tooltip into given lines list
-     *
-     * @param potions potion effects to add to tooltip
-     * @param lines   description lines
-     */
-    @SideOnly(Side.CLIENT)
-    public static void addPotionTooltip(Iterable<PotionEffect> potions, List<String> lines) {
-        ArrayList<Tuple<String, AttributeModifier>> attributeLines = new ArrayList<>();
-
-        for (PotionEffect potionEffect : potions) {
-            String line = I18n.format(potionEffect.getEffectName());
-            Potion potion = potionEffect.getPotion();
-            Map<IAttribute, AttributeModifier> attributes = potionEffect.getPotion().getAttributeModifierMap();
-            if (!attributes.isEmpty()) {
-                for (Map.Entry<IAttribute, AttributeModifier> entry : attributes.entrySet()) {
-                    AttributeModifier modifier = entry.getValue();
-                    attributeLines.add(new Tuple<>(entry.getKey().getName(),
-                        new AttributeModifier(modifier.getName(),
-                            potion.getAttributeModifierAmount(potionEffect.getAmplifier(), modifier),
-                            modifier.getOperation())));
-                }
-            }
-            if (potionEffect.getAmplifier() > 0) {
-                line = line + " " + I18n.format("potion.potency." + potionEffect.getAmplifier());
-            }
-            if (potionEffect.getDuration() > 20) {
-                line = line + " (" + Potion.getPotionDurationString(potionEffect, 1.0f) + ")";
-            }
-            if (potion.isBadEffect()) {
-                lines.add(TextFormatting.RED + line);
-            } else {
-                lines.add(TextFormatting.BLUE + line);
-            }
-        }
-        if (!attributeLines.isEmpty()) {
-            lines.add("");
-            lines.add(TextFormatting.DARK_PURPLE + I18n.format("potion.whenDrank"));
-
-            for (Tuple<String, AttributeModifier> tuple : attributeLines) {
-                AttributeModifier modifier = tuple.getSecond();
-                double d0 = modifier.getAmount();
-                double d1;
-                if (modifier.getOperation() != 1 && modifier.getOperation() != 2) {
-                    d1 = modifier.getAmount();
-                } else {
-                    d1 = modifier.getAmount() * 100.0D;
-                }
-                if (d0 > 0.0D) {
-                    lines.add(TextFormatting.BLUE + I18n.format("attribute.modifier.plus." + modifier.getOperation(), ItemStack.DECIMALFORMAT.format(d1), I18n.format("attribute.name." + tuple.getFirst())));
-                } else if (d0 < 0.0D) {
-                    d1 = d1 * -1.0D;
-                    lines.add(TextFormatting.RED + I18n.format("attribute.modifier.take." + modifier.getOperation(), ItemStack.DECIMALFORMAT.format(d1), I18n.format("attribute.name." + tuple.getFirst())));
-                }
-            }
-
-        }
     }
 
     @SideOnly(Side.CLIENT)
@@ -299,6 +223,7 @@ public class GTUtility {
      *
      * @return if damage was applied successfully
      */
+    //TODO get rid of that
     public static boolean doDamageItem(ItemStack itemStack, int vanillaDamage, boolean simulate) {
         Item item = itemStack.getItem();
         if (item instanceof IToolItem) {
@@ -351,14 +276,6 @@ public class GTUtility {
                 }
             }
         }
-    }
-
-    public static boolean isStringValid(String aString) {
-        return aString != null && !aString.isEmpty();
-    }
-
-    public static boolean isBetweenExclusive(long start, long end, long value) {
-        return start < value && value < end;
     }
 
     public static boolean isBetweenInclusive(long start, long end, long value) {

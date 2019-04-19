@@ -40,10 +40,6 @@ public class ArcFurnaceRecipeBuilder extends RecipeBuilder<ArcFurnaceRecipeBuild
                     .EUt(this.EUt / 3)
                     .fluidInputs(material.getPlasma(plasmaAmount))
                     .fluidOutputs(material.getFluid(plasmaAmount));
-                this.getChancedOutputs().forEachEntry((key, val) -> {
-                    builder.chancedOutput(key, val);
-                    return true;
-                });
                 builder.buildAndRegister();
             }
         }

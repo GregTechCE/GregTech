@@ -15,12 +15,26 @@ public interface IEnergyContainer {
         return false;
     }
 
+    /**
+     * @param differenceAmount amount of energy to add (>0) or remove (<0)
+     * @return amount of energy added or removed
+     */
     long changeEnergy(long differenceAmount);
 
+    /**
+     * Adds specified amount of energy to this energy container
+     * @param energyToAdd amount of energy to add
+     * @return amount of energy added
+     */
     default long addEnergy(long energyToAdd) {
         return changeEnergy(energyToAdd);
     }
 
+    /**
+     * Removes specified amount of energy from this energy container
+     * @param energyToRemove amount of energy to remove
+     * @return amount of energy removed
+     */
     default long removeEnergy(long energyToRemove) {
         return changeEnergy(-energyToRemove);
     }

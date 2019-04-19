@@ -34,7 +34,7 @@ public class ToolUtility {
 
     public static int applyTimberAxe(World world, BlockPos blockPos, IBlockState blockState, EntityPlayer harvester, List<ItemStack> drops) {
         if (harvester.isSneaking() ||
-            !GTUtility.isBlockOrePrefixed(world, blockPos, blockState, OrePrefix.log, drops))
+            !GTUtility.isBlockOrePrefixed(OrePrefix.log, drops))
             return 0; //do not try to convert while shift-clicking or non-log blocks
         MutableBlockPos mutableBlockPos = new MutableBlockPos(blockPos);
         int destroyedAmount = 0;

@@ -206,7 +206,7 @@ public abstract class AbstractRecipeLogic extends MTETrait implements IWorkable 
     }
 
     protected boolean setupAndConsumeRecipeInputs(Recipe recipe) {
-        int[] resultOverclock = calculateOverclock(recipe.getEUt(), getMaxVoltage(), recipeMap.getAmperage(), recipe.getDuration(), false);
+        int[] resultOverclock = calculateOverclock(recipe.getEUt(), getMaxVoltage(), recipe.getDuration(), false);
         int totalEUt = resultOverclock[0] * resultOverclock[1];
         IItemHandlerModifiable importInventory = getInputInventory();
         IItemHandlerModifiable exportInventory = getOutputInventory();
@@ -224,9 +224,8 @@ public abstract class AbstractRecipeLogic extends MTETrait implements IWorkable 
         return false;
     }
 
-    protected int[] calculateOverclock(int EUt, long voltage, long amperage, int duration, boolean consumeInputs) {
+    protected int[] calculateOverclock(int EUt, long voltage, int duration, boolean consumeInputs) {
         boolean negativeEU = EUt < 0;
-        EUt *= amperage; //EUt consumed is multiplied by recipe map amperage
         int tier = getOverclockingTier(voltage);
         if (GTValues.V[tier] <= EUt || tier == 0)
             return new int[]{EUt, duration};
@@ -242,7 +241,7 @@ public abstract class AbstractRecipeLogic extends MTETrait implements IWorkable 
             double resultDuration = duration;
             double durationMultiplier = negativeEU ? 3.80 : 2.0;
             //do not overclock further if duration is already too small
-            while (resultDuration >= durationMultiplier && resultEUt <= GTValues.V[tier - 1] * amperage) {
+            while (resultDuration >= durationMultiplier && resultEUt <= GTValues.V[tier - 1]) {
                 resultEUt *= 4;
                 resultDuration /= durationMultiplier;
             }
@@ -255,7 +254,7 @@ public abstract class AbstractRecipeLogic extends MTETrait implements IWorkable 
     }
 
     protected void setupRecipe(Recipe recipe) {
-        int[] resultOverclock = calculateOverclock(recipe.getEUt(), getMaxVoltage(), recipeMap.getAmperage(), recipe.getDuration(), true);
+        int[] resultOverclock = calculateOverclock(recipe.getEUt(), getMaxVoltage(), recipe.getDuration(), true);
         this.progressTime = 1;
         setMaxProgress(resultOverclock[1]);
         this.recipeEUt = resultOverclock[0];

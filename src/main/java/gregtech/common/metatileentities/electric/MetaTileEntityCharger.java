@@ -65,10 +65,11 @@ public class MetaTileEntityCharger extends TieredMetaTileEntity {
             @Override
             public ItemStack insertItem(int slot, @Nonnull ItemStack stack, boolean simulate) {
                 IElectricItem electricItem = stack.getCapability(GregtechCapabilities.CAPABILITY_ELECTRIC_ITEM, null);
-                if (electricItem == null || electricItem.getTier() != getTier() ||
-                    electricItem.charge(Long.MAX_VALUE, getTier(), false, true) == 0)
-                    return stack; //why do i write these comments? because this line is too short while line above is long
-                return super.insertItem(slot, stack, simulate);
+                if(electricItem != null && getTier() >= electricItem.getTier() &&
+                    electricItem.charge(Long.MAX_VALUE, getTier(), true, true) > 0L) {
+                    return super.insertItem(slot, stack, simulate);
+                }
+                return stack;
             }
 
             @Override

@@ -54,7 +54,6 @@ public class RecipeMap<R extends RecipeBuilder<R>> {
     private final int minOutputs, maxOutputs;
     private final int minFluidInputs, maxFluidInputs;
     private final int minFluidOutputs, maxFluidOutputs;
-    private final int amperage;
     private final TByteObjectMap<TextureArea> slotOverlays;
     protected TextureArea progressBarTexture;
     protected MoveType moveType;
@@ -65,9 +64,8 @@ public class RecipeMap<R extends RecipeBuilder<R>> {
     public RecipeMap(String unlocalizedName,
                      int minInputs, int maxInputs, int minOutputs, int maxOutputs,
                      int minFluidInputs, int maxFluidInputs, int minFluidOutputs, int maxFluidOutputs,
-                     int amperage, R defaultRecipe) {
+                     R defaultRecipe) {
         this.unlocalizedName = unlocalizedName;
-        this.amperage = amperage;
         this.slotOverlays = new TByteObjectHashMap<>();
         this.progressBarTexture = GuiTextures.PROGRESS_BAR_ARROW;
         this.moveType = MoveType.HORIZONTAL;
@@ -212,7 +210,7 @@ public class RecipeMap<R extends RecipeBuilder<R>> {
             if (recipes == null) continue;
             for (Recipe tmpRecipe : recipes) {
                 if (tmpRecipe.matches(false, inputs, fluidInputs)) {
-                    return voltage * amperage >= tmpRecipe.getEUt() ? tmpRecipe : null;
+                    return voltage >= tmpRecipe.getEUt() ? tmpRecipe : null;
                 }
             }
         }
@@ -223,7 +221,7 @@ public class RecipeMap<R extends RecipeBuilder<R>> {
     private Recipe findByInputs(long voltage, List<ItemStack> inputs, List<FluidStack> fluidInputs) {
         for (Recipe recipe : recipeList) {
             if (recipe.matches(false, inputs, fluidInputs)) {
-                return voltage * amperage >= recipe.getEUt() ? recipe : null;
+                return voltage >= recipe.getEUt() ? recipe : null;
             }
         }
         return null;
@@ -415,11 +413,6 @@ public class RecipeMap<R extends RecipeBuilder<R>> {
     @ZenGetter("maxFluidOutputs")
     public int getMaxFluidOutputs() {
         return maxFluidOutputs;
-    }
-
-    @ZenGetter("amperage")
-    public int getAmperage() {
-        return amperage;
     }
 
     @Override
