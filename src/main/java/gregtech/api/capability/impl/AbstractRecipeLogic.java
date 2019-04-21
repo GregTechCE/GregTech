@@ -116,7 +116,7 @@ public abstract class AbstractRecipeLogic extends MTETrait implements IWorkable 
 
     private void updateRecipeProgress() {
         boolean drawEnergy = drawEnergy(recipeEUt);
-        if (drawEnergy || (recipeEUt < 0 && ignoreTooMuchEnergy())) {
+        if (drawEnergy || (recipeEUt < 0)) {
             if (++progressTime >= maxProgressTime) {
                 completeRecipe();
             }
@@ -213,15 +213,11 @@ public abstract class AbstractRecipeLogic extends MTETrait implements IWorkable 
         IMultipleTankHandler importFluids = getInputTank();
         IMultipleTankHandler exportFluids = getOutputTank();
         return (totalEUt >= 0 ? getEnergyStored() >= (totalEUt > getEnergyCapacity() / 2 ? resultOverclock[0] : totalEUt) :
-            (ignoreTooMuchEnergy() || getEnergyStored() - resultOverclock[0] <= getEnergyCapacity())) &&
+            (getEnergyStored() - resultOverclock[0] <= getEnergyCapacity())) &&
             (!recipe.needsEmptyOutput() || MetaTileEntity.isItemHandlerEmpty(exportInventory)) &&
             MetaTileEntity.addItemsToItemHandler(exportInventory, true, recipe.getOutputs()) &&
             MetaTileEntity.addFluidsToFluidHandler(exportFluids, true, recipe.getFluidOutputs()) &&
             recipe.matches(true, importInventory, importFluids);
-    }
-
-    protected boolean ignoreTooMuchEnergy() {
-        return false;
     }
 
     protected int[] calculateOverclock(int EUt, long voltage, int duration, boolean consumeInputs) {
@@ -239,13 +235,12 @@ public abstract class AbstractRecipeLogic extends MTETrait implements IWorkable 
         } else {
             int resultEUt = EUt;
             double resultDuration = duration;
-            double durationMultiplier = negativeEU ? 3.80 : 2.0;
             //do not overclock further if duration is already too small
-            while (resultDuration >= durationMultiplier && resultEUt <= GTValues.V[tier - 1]) {
+            while (resultDuration >= 3 && resultEUt <= GTValues.V[tier - 1]) {
                 resultEUt *= 4;
-                resultDuration /= durationMultiplier;
+                resultDuration /= 2.8;
             }
-            return new int[]{negativeEU ? -resultEUt : resultEUt, (int) Math.floor(resultDuration)};
+            return new int[]{negativeEU ? -resultEUt : resultEUt, (int) Math.ceil(resultDuration)};
         }
     }
 

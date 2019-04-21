@@ -314,7 +314,7 @@ public abstract class MetaTileEntity implements ICoverable {
             if (wrenchSide == getFrontFacing() || !isValidFrontFacing(wrenchSide) || !hasFrontFacing()) {
                 return false;
             }
-            if (wrenchSide != null) {
+            if (wrenchSide != null && !getWorld().isRemote) {
                 setFrontFacing(wrenchSide);
             }
             return true;
