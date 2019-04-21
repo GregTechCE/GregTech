@@ -1,7 +1,9 @@
 package gregtech.loaders;
 
 import gregtech.api.unification.OreDictUnifier;
+import gregtech.api.unification.material.MarkerMaterials.Color;
 import gregtech.api.unification.material.Materials;
+import gregtech.api.unification.material.type.Material;
 import gregtech.api.unification.ore.OrePrefix;
 import gregtech.api.unification.stack.ItemMaterialInfo;
 import gregtech.api.unification.stack.MaterialStack;
@@ -35,6 +37,11 @@ public class OreDictionaryLoader {
 
         for (ItemStack woodPlateStack : OreDictUnifier.getAll(new UnificationEntry(OrePrefix.plate, Materials.Wood))) {
             OreDictUnifier.registerOre(woodPlateStack, OrePrefix.plank, Materials.Wood);
+        }
+
+        for(Material material : new Material[] {Materials.Lapis, Materials.Lazurite, Materials.Sodalite}) {
+            OreDictUnifier.registerOre(OreDictUnifier.get(OrePrefix.gem, material), OrePrefix.dye, Color.Blue);
+            OreDictUnifier.registerOre(OreDictUnifier.get(OrePrefix.dust, material), OrePrefix.dye, Color.Blue);
         }
 
         OreDictUnifier.registerOre(new ItemStack(Blocks.COAL_ORE), OrePrefix.ore, Materials.Coal);

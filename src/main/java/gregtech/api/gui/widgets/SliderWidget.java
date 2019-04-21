@@ -45,7 +45,6 @@ public class SliderWidget extends AbstractPositionedRectangleWidget {
         this.name = name;
         this.responder = responder;
         this.sliderPosition = (currentValue - min) / (max - min);
-        this.displayString = getDisplayString();
     }
 
     public SliderWidget setSliderIcon(@Nonnull TextureArea sliderIcon) {
@@ -89,6 +88,9 @@ public class SliderWidget extends AbstractPositionedRectangleWidget {
     public void drawInBackground(int mouseX, int mouseY) {
         if (backgroundArea != null) {
             backgroundArea.draw(xPosition, yPosition, width, height);
+        }
+        if(displayString == null) {
+            this.displayString = getDisplayString();
         }
         sliderIcon.draw(xPosition + (int) (this.sliderPosition * (float) (this.width - 8)), yPosition, sliderWidth, height);
         FontRenderer fontRenderer = Minecraft.getMinecraft().fontRenderer;

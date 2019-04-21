@@ -430,16 +430,29 @@ public abstract class MetaTileEntity implements ICoverable {
     public void onLoad() {
         this.cachedComparatorValue = getActualComparatorValue();
         for (EnumFacing side : EnumFacing.VALUES) {
-            this.sidedRedstoneInput[side.getIndex()] = getRedstonePower(this, side);
+            this.sidedRedstoneInput[side.getIndex()] = GTUtility.getRedstonePower(getWorld(), getPos(), side);
         }
     }
 
     public void onUnload() {
     }
 
-    public boolean canConnectRedstone(@Nullable EnumFacing side) {
+    public final boolean canConnectRedstone(@Nullable EnumFacing side) {
+        //so far null side means either upwards or downwards redstone wire connection
+        //so check both top cover and bottom cover
+        if(side == null) {
+            return canConnectRedstone(EnumFacing.UP) ||
+                canConnectRedstone(EnumFacing.DOWN);
+        }
         CoverBehavior coverBehavior = getCoverAtSide(side);
-        return coverBehavior != null && coverBehavior.canConnectRedstone();
+        if(coverBehavior == null) {
+            return canMachineConnectRedstone(side);
+        }
+        return coverBehavior.canConnectRedstone();
+    }
+
+    protected boolean canMachineConnectRedstone(EnumFacing side) {
+        return false;
     }
 
     @Override
@@ -461,7 +474,7 @@ public abstract class MetaTileEntity implements ICoverable {
 
     public void updateInputRedstoneSignals() {
         for (EnumFacing side : EnumFacing.VALUES) {
-            int redstoneValue = getRedstonePower(this, side);
+            int redstoneValue = GTUtility.getRedstonePower(getWorld(), getPos(), side);
             int currentValue = sidedRedstoneInput[side.getIndex()];
             if(redstoneValue != currentValue) {
                 this.sidedRedstoneInput[side.getIndex()] = redstoneValue;
@@ -471,10 +484,6 @@ public abstract class MetaTileEntity implements ICoverable {
                 }
             }
         }
-    }
-
-    private static int getRedstonePower(MetaTileEntity metaTileEntity, EnumFacing side) {
-        return metaTileEntity.getWorld().getRedstonePower(metaTileEntity.getPos().offset(side), side);
     }
 
     public int getActualComparatorValue() {

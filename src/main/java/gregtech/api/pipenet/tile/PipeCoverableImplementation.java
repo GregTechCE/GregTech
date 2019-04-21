@@ -7,6 +7,7 @@ import gregtech.api.cover.CoverBehavior;
 import gregtech.api.cover.CoverDefinition;
 import gregtech.api.cover.ICoverable;
 import gregtech.api.pipenet.block.BlockPipe;
+import gregtech.api.util.GTUtility;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -113,7 +114,7 @@ public class PipeCoverableImplementation implements ICoverable {
 
     public void onLoad() {
         for (EnumFacing side : EnumFacing.VALUES) {
-            this.sidedRedstoneInput[side.getIndex()] = getRedstonePower(this, side);
+            this.sidedRedstoneInput[side.getIndex()] = GTUtility.getRedstonePower(getWorld(), getPos(), side);
         }
     }
 
@@ -127,7 +128,7 @@ public class PipeCoverableImplementation implements ICoverable {
 
     public void updateInputRedstoneSignals() {
         for (EnumFacing side : EnumFacing.VALUES) {
-            int redstoneValue = getRedstonePower(this, side);
+            int redstoneValue = GTUtility.getRedstonePower(getWorld(), getPos(), side);
             int currentValue = sidedRedstoneInput[side.getIndex()];
             if(redstoneValue != currentValue) {
                 this.sidedRedstoneInput[side.getIndex()] = redstoneValue;
@@ -137,10 +138,6 @@ public class PipeCoverableImplementation implements ICoverable {
                 }
             }
         }
-    }
-
-    private static int getRedstonePower(ICoverable coverable, EnumFacing side) {
-        return coverable.getWorld().getRedstonePower(coverable.getPos().offset(side), side);
     }
 
     @Override
@@ -183,21 +180,14 @@ public class PipeCoverableImplementation implements ICoverable {
     }
 
     public boolean canConnectRedstone(@Nullable EnumFacing side) {
+        //so far null side means either upwards or downwards redstone wire connection
+        //so check both top cover and bottom cover
         if(side == null) {
-            return canConnectRedstoneOnAnySide();
+            return canConnectRedstone(EnumFacing.UP) ||
+                canConnectRedstone(EnumFacing.DOWN);
         }
         CoverBehavior behavior = getCoverAtSide(side);
         return behavior != null && behavior.canConnectRedstone();
-    }
-
-    public boolean canConnectRedstoneOnAnySide() {
-        for(EnumFacing side : EnumFacing.VALUES) {
-            CoverBehavior behavior = getCoverAtSide(side);
-            if(behavior != null && behavior.canConnectRedstone()) {
-                return true;
-            }
-        }
-        return false;
     }
 
     public int getOutputRedstoneSignal(@Nullable EnumFacing side) {

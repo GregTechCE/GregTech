@@ -10,6 +10,7 @@ import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.unification.OreDictUnifier;
 import gregtech.api.unification.ore.OrePrefix;
 import gregtech.common.ConfigHolder;
+import net.minecraft.block.BlockRedstoneWire;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
@@ -24,6 +25,7 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.BiomeDictionary;
 import net.minecraftforge.common.ForgeHooks;
@@ -579,6 +581,21 @@ public class GTUtility {
                 metaTileEntity.getWorld().createExplosion(null, posX, posY, posZ,
                     getTierByVoltage(voltage), true);
             }
+        }
+    }
+
+    public static int getRedstonePower(World world, BlockPos blockPos, EnumFacing side) {
+        BlockPos offsetPos = blockPos.offset(side);
+        int worldPower = world.getRedstonePower(offsetPos, side);
+        if (worldPower >= 15) {
+            return worldPower;
+        } else {
+            IBlockState offsetState = world.getBlockState(offsetPos);
+            if(offsetState.getBlock() instanceof BlockRedstoneWire) {
+                int wirePower = offsetState.getValue(BlockRedstoneWire.POWER);
+                return Math.max(worldPower, wirePower);
+            }
+            return worldPower;
         }
     }
 }

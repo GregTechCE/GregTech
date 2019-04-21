@@ -129,7 +129,6 @@ public class MetaTileEntityTransformer extends TieredMetaTileEntity {
             if (getWorld().isRemote) {
                 return true;
             }
-
             if(!softHammerItem.damageItem(DamageValues.DAMAGE_FOR_SOFT_HAMMER, false)) {
                 return false;
             }
@@ -139,7 +138,6 @@ public class MetaTileEntityTransformer extends TieredMetaTileEntity {
                 playerIn.sendMessage(new TextComponentTranslation("gregtech.machine.transformer.message_transform_down",
                     energyContainer.getInputVoltage(), energyContainer.getInputAmperage(), energyContainer.getOutputVoltage(), energyContainer.getOutputAmperage()));
                 return true;
-
             } else {
                 setTransformUp(true);
                 playerIn.sendMessage(new TextComponentTranslation("gregtech.machine.transformer.message_transform_up",

@@ -611,7 +611,7 @@ metaitem.tool.file.name=%s File
 metaitem.tool.crowbar.name=%s Crowbar
 metaitem.tool.crowbar.tooltip=Dismounts covers and rotates rails
 metaitem.tool.screwdriver.name=%s Screwdriver
-metaitem.tool.screwdriver.tooltip=/nRight click on a machine side to increment/nit's output tank filter index/nWhen output tank filter is set up,/nonly fluids from specified tank index/nare allowed to be outputted on that side/nClick on cover to configure it
+metaitem.tool.screwdriver.tooltip=Click on cover to configure it
 metaitem.tool.mortar.name=%s Mortar
 metaitem.tool.wire_cutter.name=%s Wire Cutter
 metaitem.tool.scoop.name=%s Scoop
@@ -2219,8 +2219,8 @@ gregtech.machine.tesla_coil.name=Tesla Coil
 gregtech.machine.tesla_coil.description=Damages all living entities within 7 blocks range/nConsumes 2500 EU for 1 damage point/nInternal buffer Capacity: §e256k EU
 
 # General machinery
-gregtech.machine.basic.output_override.reset=Output filter: all tanks.
-gregtech.machine.basic.output_override.set=Output filter: tank #%s.
+gregtech.machine.basic.input_from_output_side.allow=Allow Input from Output Side
+gregtech.machine.basic.input_from_output_side.disallow=Disallow Input from Output Side
 
 # Achievement ores
 achievement.Naquadah=Find Naquadah Ore

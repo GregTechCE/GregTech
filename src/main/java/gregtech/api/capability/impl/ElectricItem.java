@@ -88,7 +88,7 @@ public class ElectricItem implements IElectricItem, ICapabilityProvider {
             return 0L;
         }
         if ((chargeable || amount == Long.MAX_VALUE) && (chargerTier >= tier)) {
-            long canReceive = maxCharge - getCharge();
+            long canReceive = getMaxCharge() - getCharge();
             if (!ignoreTransferLimit) {
                 amount = Math.min(amount, GTValues.V[tier]);
             }

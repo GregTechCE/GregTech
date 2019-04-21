@@ -246,7 +246,7 @@ public class MetaItem2 extends MaterialMetaItem {
         RecipeMaps.MACERATOR_RECIPES.recipeBuilder()
             .inputs(new ItemStack(Blocks.MELON_BLOCK, 1, 0))
             .outputs(new ItemStack(Items.MELON, 8, 0))
-            .chancedOutput(new ItemStack(Items.MELON_SEEDS, 1), 8000)
+            .chancedOutput(new ItemStack(Items.MELON_SEEDS, 1), 8000, 500)
             .duration(400)
             .EUt(2)
             .buildAndRegister();
@@ -281,8 +281,8 @@ public class MetaItem2 extends MaterialMetaItem {
 
         RecipeMaps.MACERATOR_RECIPES.recipeBuilder()
             .inputs(CountableIngredient.from("blockWool", 1))
-            .outputs(new ItemStack(Items.STRING, 2))
-            .chancedOutput(new ItemStack(Items.STRING, 1), 5000)
+            .outputs(new ItemStack(Items.STRING, 3))
+            .chancedOutput(new ItemStack(Items.STRING, 1), 2000, 800)
             .duration(400)
             .EUt(2)
             .buildAndRegister();
