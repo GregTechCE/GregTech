@@ -753,7 +753,7 @@ public class Materials {
         Redrock.addOreByProducts(Clay);
         Marble.addOreByProducts(Calcite);
         Clay.addOreByProducts(Clay);
-        Cassiterite.addOreByProducts(Tin);
+        Cassiterite.addOreByProducts(Tin, Bismuth);
         CassiteriteSand.addOreByProducts(Tin);
         GraniteBlack.addOreByProducts(Biotite);
         GraniteRed.addOreByProducts(PotassiumFeldspar);

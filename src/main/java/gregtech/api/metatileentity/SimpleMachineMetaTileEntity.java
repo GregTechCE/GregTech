@@ -293,21 +293,37 @@ public class SimpleMachineMetaTileEntity extends WorkableTieredMetaTileEntity {
                 .setPredicate(workable::isHasNotEnoughEnergy))
             .bindPlayerInventory(player.inventory);
 
-        int buttonStartX = 7;
+        int leftButtonStartX = 7;
+        int rightButtonStartX = 176 - 7 - 20;
+        if(workable.recipeMap instanceof RecipeMapWithConfigButton) {
+            leftButtonStartX += ((RecipeMapWithConfigButton) workable.recipeMap).getLeftButtonOffset();
+            rightButtonStartX -= ((RecipeMapWithConfigButton) workable.recipeMap).getRightButtonOffset();
+        }
+
         if (exportItems.getSlots() > 0) {
-            builder.widget(new ToggleButtonWidget(buttonStartX, 62, 18, 18,
+            builder.widget(new ToggleButtonWidget(leftButtonStartX, 62, 18, 18,
                 GuiTextures.BUTTON_ITEM_OUTPUT, this::isAutoOutputItems, this::setAutoOutputItems));
-            buttonStartX += 18;
+            leftButtonStartX += 18;
         }
         if (exportFluids.getTanks() > 0) {
-            builder.widget(new ToggleButtonWidget(buttonStartX, 62, 18, 18,
+            builder.widget(new ToggleButtonWidget(leftButtonStartX, 62, 18, 18,
                 GuiTextures.BUTTON_FLUID_OUTPUT, this::isAutoOutputFluids, this::setAutoOutputFluids));
         }
+
+        builder.widget(new ToggleButtonWidget(rightButtonStartX, 60, 20, 20,
+            GuiTextures.BUTTON_OVERCLOCK, workable::isAllowOverclocking, workable::setAllowOverclocking)
+            .setTooltipText("gregtech.gui.overclock"));
+
         return builder;
     }
 
     @Override
     protected ModularUI createUI(EntityPlayer entityPlayer) {
         return createGuiTemplate(entityPlayer).build(getHolder(), entityPlayer);
+    }
+
+    public interface RecipeMapWithConfigButton {
+        int getLeftButtonOffset();
+        int getRightButtonOffset();
     }
 }

@@ -84,8 +84,10 @@ public class CoverItemFilter extends CoverBehavior implements CoverWithUI {
         for (int i = 0; i < 9; i++) {
             itemFilterGroup.addWidget(new PhantomSlotWidget(itemFilterSlots, i, 10 + 18 * (i % 3), 46 + 18 * (i / 3)).setBackgroundTexture(GuiTextures.SLOT));
         }
-        itemFilterGroup.addWidget(new ToggleButtonWidget(74, 45, 20, 20, GuiTextures.BUTTON_FILTER_DAMAGE, () -> ignoreDamage, this::setIgnoreDamage));
-        itemFilterGroup.addWidget(new ToggleButtonWidget(99, 45, 20, 20, GuiTextures.BUTTON_FILTER_NBT, () -> ignoreNBT, this::setIgnoreNBT));
+        itemFilterGroup.addWidget(new ToggleButtonWidget(74, 45, 20, 20, GuiTextures.BUTTON_FILTER_DAMAGE,
+            () -> ignoreDamage, this::setIgnoreDamage).setTooltipText("cover.item_filter.ignore_damage"));
+        itemFilterGroup.addWidget(new ToggleButtonWidget(99, 45, 20, 20, GuiTextures.BUTTON_FILTER_NBT,
+            () -> ignoreNBT, this::setIgnoreNBT).setTooltipText("cover.item_filter.nbt_damage"));
 
         return ModularUI.builder(GuiTextures.BACKGROUND, 176, 128)
             .widget(itemFilterGroup)

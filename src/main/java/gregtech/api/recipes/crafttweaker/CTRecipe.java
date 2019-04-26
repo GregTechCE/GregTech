@@ -94,11 +94,6 @@ public class CTRecipe {
     }
 
     @ZenGetter
-    public boolean canBeBuffered() {
-        return this.backingRecipe.canBeBuffered();
-    }
-
-    @ZenGetter
     public boolean needsEmptyOutput() {
         return this.backingRecipe.needsEmptyOutput();
     }

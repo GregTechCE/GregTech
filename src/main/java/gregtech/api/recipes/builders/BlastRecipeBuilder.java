@@ -52,7 +52,7 @@ public class BlastRecipeBuilder extends RecipeBuilder<BlastRecipeBuilder> {
         return ValidationResult.newResult(finalizeAndValidate(),
             new Recipe(inputs, outputs, chancedOutputs, fluidInputs, fluidOutputs,
                 ImmutableMap.of("blast_furnace_temperature", blastFurnaceTemp),
-                duration, EUt, hidden, canBeBuffered, needsEmptyOutput));
+                duration, EUt, hidden, needsEmptyOutput));
     }
 
     @Override

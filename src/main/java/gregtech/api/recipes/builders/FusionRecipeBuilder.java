@@ -52,7 +52,7 @@ public class FusionRecipeBuilder extends RecipeBuilder<FusionRecipeBuilder> {
         return ValidationResult.newResult(finalizeAndValidate(),
             new Recipe(inputs, outputs, chancedOutputs, fluidInputs, fluidOutputs,
                 ImmutableMap.of("eu_to_start", EUToStart),
-                duration, EUt, hidden, canBeBuffered, needsEmptyOutput));
+                duration, EUt, hidden, needsEmptyOutput));
     }
 
     @Override

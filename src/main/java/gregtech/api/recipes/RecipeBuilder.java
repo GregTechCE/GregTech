@@ -34,14 +34,8 @@ public abstract class RecipeBuilder<R extends RecipeBuilder<R>> {
     protected List<FluidStack> fluidOutputs;
 
     protected int duration, EUt;
-
     protected boolean hidden = false;
-
-    protected boolean canBeBuffered = true;
-
     protected boolean needsEmptyOutput = false;
-
-    protected boolean optimized = true;
 
     protected EnumValidationResult recipeStatus = EnumValidationResult.VALID;
 
@@ -73,7 +67,6 @@ public abstract class RecipeBuilder<R extends RecipeBuilder<R>> {
         this.duration = recipe.getDuration();
         this.EUt = recipe.getEUt();
         this.hidden = recipe.isHidden();
-        this.canBeBuffered = recipe.canBeBuffered();
         this.needsEmptyOutput = recipe.needsEmptyOutput();
     }
 
@@ -96,9 +89,7 @@ public abstract class RecipeBuilder<R extends RecipeBuilder<R>> {
         this.duration = recipeBuilder.duration;
         this.EUt = recipeBuilder.EUt;
         this.hidden = recipeBuilder.hidden;
-        this.canBeBuffered = recipeBuilder.canBeBuffered;
         this.needsEmptyOutput = recipeBuilder.needsEmptyOutput;
-        this.optimized = recipeBuilder.optimized;
     }
 
     public boolean applyProperty(String key, Object value) {
@@ -238,16 +229,6 @@ public abstract class RecipeBuilder<R extends RecipeBuilder<R>> {
         return (R) this;
     }
 
-    public R cannotBeBuffered() {
-        this.canBeBuffered = false;
-        return (R) this;
-    }
-
-    public R notOptimized() {
-        this.optimized = false;
-        return (R) this;
-    }
-
     public R needsEmptyOutput() {
         this.needsEmptyOutput = true;
         return (R) this;
@@ -268,7 +249,6 @@ public abstract class RecipeBuilder<R extends RecipeBuilder<R>> {
         this.duration = recipe.getDuration();
         this.EUt = recipe.getEUt();
         this.hidden = recipe.isHidden();
-        this.canBeBuffered = recipe.canBeBuffered();
         this.needsEmptyOutput = recipe.needsEmptyOutput();
         return (R) this;
     }
@@ -287,27 +267,25 @@ public abstract class RecipeBuilder<R extends RecipeBuilder<R>> {
             recipeStatus = EnumValidationResult.INVALID;
         }
 
-        if (canBeBuffered) { //only check if recipe can be buffered
-            if (!GTUtility.isBetweenInclusive(recipeMap.getMinInputs(), recipeMap.getMaxInputs(), inputs.size())) {
-                GTLog.logger.error("Invalid amount of recipe inputs. Actual: {}. Should be between {} and {} inclusive.", inputs.size(), recipeMap.getMinInputs(), recipeMap.getMaxInputs());
-                GTLog.logger.error("Stacktrace:", new IllegalArgumentException());
-                recipeStatus = EnumValidationResult.INVALID;
-            }
-            if (!GTUtility.isBetweenInclusive(recipeMap.getMinOutputs(), recipeMap.getMaxOutputs(), outputs.size() + chancedOutputs.size())) {
-                GTLog.logger.error("Invalid amount of recipe outputs. Actual: {}. Should be between {} and {} inclusive.", outputs.size() + chancedOutputs.size(), recipeMap.getMinOutputs(), recipeMap.getMaxOutputs());
-                GTLog.logger.error("Stacktrace:", new IllegalArgumentException());
-                recipeStatus = EnumValidationResult.INVALID;
-            }
-            if (!GTUtility.isBetweenInclusive(recipeMap.getMinFluidInputs(), recipeMap.getMaxFluidInputs(), fluidInputs.size())) {
-                GTLog.logger.error("Invalid amount of recipe fluid inputs. Actual: {}. Should be between {} and {} inclusive.", fluidInputs.size(), recipeMap.getMinFluidInputs(), recipeMap.getMaxFluidInputs());
-                GTLog.logger.error("Stacktrace:", new IllegalArgumentException());
-                recipeStatus = EnumValidationResult.INVALID;
-            }
-            if (!GTUtility.isBetweenInclusive(recipeMap.getMinFluidOutputs(), recipeMap.getMaxFluidOutputs(), fluidOutputs.size())) {
-                GTLog.logger.error("Invalid amount of recipe fluid outputs. Actual: {}. Should be between {} and {} inclusive.", fluidOutputs.size(), recipeMap.getMinFluidOutputs(), recipeMap.getMaxFluidOutputs());
-                GTLog.logger.error("Stacktrace:", new IllegalArgumentException());
-                recipeStatus = EnumValidationResult.INVALID;
-            }
+        if (!GTUtility.isBetweenInclusive(recipeMap.getMinInputs(), recipeMap.getMaxInputs(), inputs.size())) {
+            GTLog.logger.error("Invalid amount of recipe inputs. Actual: {}. Should be between {} and {} inclusive.", inputs.size(), recipeMap.getMinInputs(), recipeMap.getMaxInputs());
+            GTLog.logger.error("Stacktrace:", new IllegalArgumentException());
+            recipeStatus = EnumValidationResult.INVALID;
+        }
+        if (!GTUtility.isBetweenInclusive(recipeMap.getMinOutputs(), recipeMap.getMaxOutputs(), outputs.size() + chancedOutputs.size())) {
+            GTLog.logger.error("Invalid amount of recipe outputs. Actual: {}. Should be between {} and {} inclusive.", outputs.size() + chancedOutputs.size(), recipeMap.getMinOutputs(), recipeMap.getMaxOutputs());
+            GTLog.logger.error("Stacktrace:", new IllegalArgumentException());
+            recipeStatus = EnumValidationResult.INVALID;
+        }
+        if (!GTUtility.isBetweenInclusive(recipeMap.getMinFluidInputs(), recipeMap.getMaxFluidInputs(), fluidInputs.size())) {
+            GTLog.logger.error("Invalid amount of recipe fluid inputs. Actual: {}. Should be between {} and {} inclusive.", fluidInputs.size(), recipeMap.getMinFluidInputs(), recipeMap.getMaxFluidInputs());
+            GTLog.logger.error("Stacktrace:", new IllegalArgumentException());
+            recipeStatus = EnumValidationResult.INVALID;
+        }
+        if (!GTUtility.isBetweenInclusive(recipeMap.getMinFluidOutputs(), recipeMap.getMaxFluidOutputs(), fluidOutputs.size())) {
+            GTLog.logger.error("Invalid amount of recipe fluid outputs. Actual: {}. Should be between {} and {} inclusive.", fluidOutputs.size(), recipeMap.getMinFluidOutputs(), recipeMap.getMaxFluidOutputs());
+            GTLog.logger.error("Stacktrace:", new IllegalArgumentException());
+            recipeStatus = EnumValidationResult.INVALID;
         }
 
         if (EUt == 0) {
@@ -368,9 +346,7 @@ public abstract class RecipeBuilder<R extends RecipeBuilder<R>> {
             .append("duration", duration)
             .append("EUt", EUt)
             .append("hidden", hidden)
-            .append("canBeBuffered", canBeBuffered)
             .append("needsEmptyOutput", needsEmptyOutput)
-            .append("optimized", optimized)
             .append("recipeStatus", recipeStatus)
             .toString();
     }

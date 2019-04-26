@@ -32,6 +32,7 @@ import net.minecraftforge.fml.common.Optional.Method;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.IItemHandlerModifiable;
+import stanhebben.zenscript.annotations.Optional;
 import stanhebben.zenscript.annotations.ZenClass;
 import stanhebben.zenscript.annotations.ZenGetter;
 import stanhebben.zenscript.annotations.ZenMethod;
@@ -173,8 +174,8 @@ public class RecipeMap<R extends RecipeBuilder<R>> {
     }
 
     @Nullable
-    public Recipe findRecipe(long voltage, IItemHandlerModifiable inputs, IMultipleTankHandler fluidInputs) {
-        return this.findRecipe(voltage, GTUtility.itemHandlerToList(inputs), GTUtility.fluidHandlerToList(fluidInputs));
+    public Recipe findRecipe(long voltage, IItemHandlerModifiable inputs, IMultipleTankHandler fluidInputs, int outputFluidTankCapacity) {
+        return this.findRecipe(voltage, GTUtility.itemHandlerToList(inputs), GTUtility.fluidHandlerToList(fluidInputs), outputFluidTankCapacity);
     }
 
     /**
@@ -183,10 +184,11 @@ public class RecipeMap<R extends RecipeBuilder<R>> {
      * @param voltage     Voltage of the Machine or Long.MAX_VALUE if it has no Voltage
      * @param inputs      the Item Inputs
      * @param fluidInputs the Fluid Inputs
+     * @param outputFluidTankCapacity minimal capacity of output fluid tank, used for fluid canner recipes for example
      * @return the Recipe it has found or null for no matching Recipe
      */
     @Nullable
-    public Recipe findRecipe(long voltage, List<ItemStack> inputs, List<FluidStack> fluidInputs) {
+    public Recipe findRecipe(long voltage, List<ItemStack> inputs, List<FluidStack> fluidInputs, int outputFluidTankCapacity) {
         if (recipeList.isEmpty())
             return null;
         if (minFluidInputs > 0 && GTUtility.amountOfNonNullElements(fluidInputs) < minFluidInputs) {
@@ -333,7 +335,7 @@ public class RecipeMap<R extends RecipeBuilder<R>> {
     @ZenMethod("findRecipe")
     @Method(modid = GTValues.MODID_CT)
     @Nullable
-    public CTRecipe ctFindRecipe(long maxVoltage, IItemStack[] itemInputs, ILiquidStack[] fluidInputs) {
+    public CTRecipe ctFindRecipe(long maxVoltage, IItemStack[] itemInputs, ILiquidStack[] fluidInputs, @Optional(valueLong = Integer.MAX_VALUE) int outputFluidTankCapacity) {
         List<ItemStack> mcItemInputs = itemInputs == null ? Collections.emptyList() :
             Arrays.stream(itemInputs)
                 .map(CraftTweakerMC::getItemStack)
@@ -342,7 +344,7 @@ public class RecipeMap<R extends RecipeBuilder<R>> {
             Arrays.stream(fluidInputs)
                 .map(CraftTweakerMC::getLiquidStack)
                 .collect(Collectors.toList());
-        Recipe backingRecipe = findRecipe(maxVoltage, mcItemInputs, mcFluidInputs);
+        Recipe backingRecipe = findRecipe(maxVoltage, mcItemInputs, mcFluidInputs, outputFluidTankCapacity);
         return backingRecipe == null ? null : new CTRecipe(this, backingRecipe);
     }
 

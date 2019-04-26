@@ -234,7 +234,7 @@ public class RecipeMaps {
      */
 
     @ZenProperty
-    public static final RecipeMap<SimpleRecipeBuilder> BREWING_RECIPES = new RecipeMapBrewer("brewer", 1, 1, 0, 0, 1, 1, 1, 1, 1, new SimpleRecipeBuilder().notOptimized().duration(128).EUt(4))
+    public static final RecipeMap<SimpleRecipeBuilder> BREWING_RECIPES = new RecipeMapBrewer("brewer", 1, 1, 0, 0, 1, 1, 1, 1, 1, new SimpleRecipeBuilder().duration(128).EUt(4))
         .setSlotOverlay(false, false, GuiTextures.BREWER_OVERLAY)
         .setProgressBar(GuiTextures.PROGRESS_BAR_ARROW_MULTIPLE, MoveType.HORIZONTAL);
 
@@ -284,7 +284,7 @@ public class RecipeMaps {
      */
 
     @ZenProperty
-    public static final RecipeMap<SimpleRecipeBuilder> FERMENTING_RECIPES = new RecipeMap<>("fermenter", 0, 0, 0, 0, 1, 1, 1, 1, new SimpleRecipeBuilder().notOptimized().EUt(2))
+    public static final RecipeMap<SimpleRecipeBuilder> FERMENTING_RECIPES = new RecipeMap<>("fermenter", 0, 0, 0, 0, 1, 1, 1, 1, new SimpleRecipeBuilder().EUt(2))
         .setProgressBar(GuiTextures.PROGRESS_BAR_ARROW, MoveType.HORIZONTAL);
 
     /**
@@ -491,7 +491,7 @@ public class RecipeMaps {
      */
 
     @ZenProperty
-    public static final RecipeMap<UniversalDistillationRecipeBuilder> DISTILLATION_RECIPES = new RecipeMap<>("distillation_tower", 0, 0, 0, 1, 1, 1, 1, 12, new UniversalDistillationRecipeBuilder().notOptimized());
+    public static final RecipeMap<UniversalDistillationRecipeBuilder> DISTILLATION_RECIPES = new RecipeMap<>("distillation_tower", 0, 0, 0, 1, 1, 1, 1, 12, new UniversalDistillationRecipeBuilder());
 
     /**
      * Example:
@@ -506,7 +506,7 @@ public class RecipeMaps {
      */
 
     @ZenProperty
-    public static final RecipeMap<SimpleRecipeBuilder> CRACKING_RECIPES = new RecipeMap<>("cracker", 0, 0, 0, 0, 2, 2, 1, 2, new SimpleRecipeBuilder().notOptimized());
+    public static final RecipeMap<SimpleRecipeBuilder> CRACKING_RECIPES = new RecipeMap<>("cracker", 0, 0, 0, 0, 2, 2, 1, 2, new SimpleRecipeBuilder());
 
     /**
      * Example:
@@ -524,7 +524,7 @@ public class RecipeMaps {
      */
 
     @ZenProperty
-    public static final RecipeMap<IntCircuitRecipeBuilder> PYROLYSE_RECIPES = new RecipeMap<>("pyro", 2, 2, 0, 1, 0, 1, 1, 1, new IntCircuitRecipeBuilder().notOptimized());
+    public static final RecipeMap<IntCircuitRecipeBuilder> PYROLYSE_RECIPES = new RecipeMap<>("pyro", 2, 2, 0, 1, 0, 1, 1, 1, new IntCircuitRecipeBuilder());
 
     /**
      * Example:

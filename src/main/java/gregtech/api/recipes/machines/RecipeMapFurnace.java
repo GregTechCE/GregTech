@@ -19,13 +19,12 @@ public class RecipeMapFurnace extends RecipeMap<SimpleRecipeBuilder> {
 
     @Override
     @Nullable
-    public Recipe findRecipe(long voltage, List<ItemStack> inputs, List<FluidStack> fluidInputs) {
-        Recipe normalRecipe = super.findRecipe(voltage, inputs, fluidInputs);
+    public Recipe findRecipe(long voltage, List<ItemStack> inputs, List<FluidStack> fluidInputs, int outputFluidTankCapacity) {
+        Recipe normalRecipe = super.findRecipe(voltage, inputs, fluidInputs, outputFluidTankCapacity);
         if (normalRecipe != null || inputs.size() == 0 || inputs.get(0).isEmpty())
             return normalRecipe;
         ItemStack output = ModHandler.getSmeltingOutput(inputs.get(0));
         return output.isEmpty() ? null : this.recipeBuilder()
-            .notOptimized()
             .inputs(GTUtility.copyAmount(1, inputs.get(0)))
             .outputs(output)
             .duration(128).EUt(4)

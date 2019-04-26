@@ -671,6 +671,10 @@ cover.fluid_filter.mode.filter_drain=Filter Drain
 cover.item_filter.title=Item Filter
 cover.filter.mode.filter_insert=Filter Insert
 cover.filter.mode.filter_extract=Filter Extract
+cover.item_filter.ignore_damage.enabled=Ignore Damage
+cover.item_filter.ignore_damage.disabled=Respect Damage
+cover.item_filter.ignore_nbt.enabled=Ignore NBT
+cover.item_filter.ignore_nbt.disabled=Respect NBT
 
 cover.conveyor.title=Conveyor Cover Settings (%s)
 cover.conveyor.transfer_rate=%s items/sec
@@ -1890,7 +1894,7 @@ gregtech.machine.bender.mv.name=Advanced Bending Machine
 gregtech.machine.bender.hv.name=Advanced Bending Machine II
 gregtech.machine.bender.ev.name=Advanced Bending Machine III
 
-gregtech.machine.brewery.tooltip=Brewing your Drinks
+gregtech.machine.brewery.tooltip=Compact and efficient potion brewing
 
 gregtech.machine.brewery.lv.name=Basic Brewery
 gregtech.machine.brewery.mv.name=Advanced Brewery
@@ -1969,7 +1973,7 @@ gregtech.machine.fermenter.mv.name=Advanced Fermenter
 gregtech.machine.fermenter.hv.name=Advanced Fermenter II
 gregtech.machine.fermenter.ev.name=Advanced Fermenter III
 
-gregtech.machine.fluid_canner.tooltip=Puts Fluids into and out of Containers
+gregtech.machine.fluid_canner.tooltip=Puts fluids into and out of fluid containers
 
 gregtech.machine.fluid_canner.lv.name=Basic Fluid Canner
 gregtech.machine.fluid_canner.mv.name=Advanced Fluid Canner
@@ -2824,6 +2828,10 @@ gregtech.fluid.state_gas=§7State: Gaseous
 gregtech.fluid.state_liquid=§7State: Liquid
 gregtech.gui.fuel_amount=Fuel Amount:
 gregtech.gui.fluid_amount=Fluid Amount:
+gregtech.gui.toggle_view.disabled=Toggle View (Fluids)
+gregtech.gui.toggle_view.enabled=Toggle View (Items)
+gregtech.gui.overclock.enabled=Allow Overclocking
+gregtech.gui.overclock.disabled=Disable Overclocking
 gregtech.gui.sort=Sort
 
 gregtech.item_filter.empty_item=Empty (No Item)

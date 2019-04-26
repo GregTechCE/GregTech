@@ -45,18 +45,6 @@ public class CTRecipeBuilder {
     }
 
     @ZenMethod
-    public CTRecipeBuilder cannotBeBuffered() {
-        this.backingBuilder.cannotBeBuffered();
-        return this;
-    }
-
-    @ZenMethod
-    public CTRecipeBuilder notOptimized() {
-        this.backingBuilder.notOptimized();
-        return this;
-    }
-
-    @ZenMethod
     public CTRecipeBuilder needsEmptyOutput() {
         this.backingBuilder.needsEmptyOutput();
         return this;

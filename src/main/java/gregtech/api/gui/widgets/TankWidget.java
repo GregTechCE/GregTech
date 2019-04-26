@@ -44,8 +44,6 @@ public class TankWidget extends AbstractPositionedRectangleWidget implements IIn
     public TankWidget(IFluidTank fluidTank, int x, int y, int width, int height) {
         super(x, y, width, height);
         this.fluidTank = fluidTank;
-        this.width = width;
-        this.height = height;
     }
 
     public TankWidget setHideTooltip(boolean hideTooltip) {

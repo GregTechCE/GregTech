@@ -41,19 +41,17 @@ public class MetaTileEntityCharger extends TieredMetaTileEntity {
     public void update() {
         super.update();
         if (!getWorld().isRemote && energyContainer.getEnergyStored() > 0) {
-            long inputVoltage = Math.min(energyContainer.getInputVoltage(), energyContainer.getEnergyStored());
-            long energyUsedUp = 0L;
             for (int i = 0; i < importItems.getSlots(); i++) {
                 ItemStack batteryStack = importItems.getStackInSlot(i);
                 IElectricItem electricItem = batteryStack.getCapability(GregtechCapabilities.CAPABILITY_ELECTRIC_ITEM, null);
-                if (electricItem != null && electricItem.charge(inputVoltage, getTier(), false, true) > 0) {
-                    energyUsedUp += electricItem.charge(inputVoltage, getTier(), false, false);
-                    importItems.setStackInSlot(i, batteryStack);
-                    if (energyUsedUp >= energyContainer.getEnergyStored()) break;
+                if (electricItem != null) {
+                    long inputVoltage = Math.min(energyContainer.getInputVoltage(), energyContainer.getEnergyStored());
+                    long energyUsed = electricItem.charge(inputVoltage, getTier(), false, false);
+                    if(energyUsed > 0L) {
+                        energyContainer.removeEnergy(energyUsed);
+                        importItems.setStackInSlot(i, batteryStack);
+                    }
                 }
-            }
-            if (energyUsedUp > 0) {
-                energyContainer.addEnergy(energyUsedUp);
             }
         }
     }
@@ -65,8 +63,7 @@ public class MetaTileEntityCharger extends TieredMetaTileEntity {
             @Override
             public ItemStack insertItem(int slot, @Nonnull ItemStack stack, boolean simulate) {
                 IElectricItem electricItem = stack.getCapability(GregtechCapabilities.CAPABILITY_ELECTRIC_ITEM, null);
-                if(electricItem != null && getTier() >= electricItem.getTier() &&
-                    electricItem.charge(Long.MAX_VALUE, getTier(), true, true) > 0L) {
+                if(electricItem != null && getTier() >= electricItem.getTier()) {
                     return super.insertItem(slot, stack, simulate);
                 }
                 return stack;
