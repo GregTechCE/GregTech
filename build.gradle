@@ -61,7 +61,7 @@ repositories {
     }
     maven {
         name = "ChickenBones maven"
-        url = "https://chickenbones.net/maven/"
+        url = "http://chickenbones.net/maven/"
     }
     maven {
         name = "CoFH Maven"
