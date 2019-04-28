@@ -60,12 +60,6 @@ public class Recipe {
     private final boolean hidden;
 
     /**
-     * If this Recipe can be stored inside a Machine in order to make Recipe searching more efficient
-     * by trying the previously used Recipe first. In case you have a Recipe Map overriding things
-     * and returning one time use Recipes, you have to set this to false.
-     */
-    private final boolean canBeBuffered;
-    /**
      * If this Recipe needs the Output Slots to be completely empty. Needed in case you have randomised Outputs
      */
     private final boolean needsEmptyOutput;
@@ -74,7 +68,7 @@ public class Recipe {
 
     public Recipe(List<CountableIngredient> inputs, List<ItemStack> outputs, TObjectIntMap<ItemStack> chancedOutputs,
                   List<FluidStack> fluidInputs, List<FluidStack> fluidOutputs,
-                  Map<String, Object> recipeProperties, int duration, int EUt, boolean hidden, boolean canBeBuffered, boolean needsEmptyOutput) {
+                  Map<String, Object> recipeProperties, int duration, int EUt, boolean hidden, boolean needsEmptyOutput) {
         this.recipeProperties = ImmutableMap.copyOf(recipeProperties);
         this.inputs = NonNullList.create();
         this.inputs.addAll(inputs);
@@ -86,7 +80,6 @@ public class Recipe {
         this.duration = duration;
         this.EUt = EUt;
         this.hidden = hidden;
-        this.canBeBuffered = canBeBuffered;
         this.needsEmptyOutput = needsEmptyOutput;
         //sort input elements in descending order (i.e not consumables inputs are last)
         this.inputs.sort(Comparator.comparing(CountableIngredient::getCount).reversed());
@@ -234,10 +227,6 @@ public class Recipe {
             hasValidInputs &= Arrays.stream(matchingItems).anyMatch(s -> !s.isEmpty());
         }
         return hasValidInputs;
-    }
-
-    public boolean canBeBuffered() {
-        return canBeBuffered;
     }
 
     public boolean needsEmptyOutput() {

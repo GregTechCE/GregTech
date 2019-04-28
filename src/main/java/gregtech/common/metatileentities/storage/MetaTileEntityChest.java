@@ -12,6 +12,7 @@ import gregtech.api.gui.ModularUI;
 import gregtech.api.gui.ModularUI.Builder;
 import gregtech.api.gui.impl.ModularUIContainer;
 import gregtech.api.gui.widgets.SortingButtonWidget;
+import gregtech.api.metatileentity.IFastRenderMetaTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.MetaTileEntityHolder;
 import gregtech.api.recipes.ModHandler;
@@ -43,7 +44,7 @@ import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MetaTileEntityChest extends MetaTileEntity {
+public class MetaTileEntityChest extends MetaTileEntity implements IFastRenderMetaTileEntity {
 
     private static final IndexedCuboid6 CHEST_COLLISION = new IndexedCuboid6(null, new Cuboid6(1 / 16.0, 0 / 16.0, 1 / 16.0, 15 / 16.0, 14 / 16.0, 15 / 16.0));
 
@@ -177,11 +178,6 @@ public class MetaTileEntityChest extends MetaTileEntity {
     }
 
     @Override
-    public boolean requiresDynamicRendering() {
-        return true;
-    }
-
-    @Override
     public String getHarvestTool() {
         return ModHandler.isMaterialWood(material) ? "axe" : "pickaxe";
     }
@@ -232,7 +228,7 @@ public class MetaTileEntityChest extends MetaTileEntity {
     }
 
     @Override
-    public void renderMetaTileEntityDynamic(CCRenderState renderState, Matrix4 translation, IVertexOperation[] pipeline, float partialTicks) {
+    public void renderMetaTileEntityFast(CCRenderState renderState, Matrix4 translation, float partialTicks) {
         float angle = prevLidAngle + (lidAngle - prevLidAngle) * partialTicks;
         angle = 1.0f - (1.0f - angle) * (1.0f - angle) * (1.0f - angle);
         float resultLidAngle = angle * 90.0f;
@@ -245,6 +241,11 @@ public class MetaTileEntityChest extends MetaTileEntity {
                 GTUtility.convertRGBtoOpaqueRGBA_CL(getPaintingColorForRendering())));
             Textures.METAL_CHEST.render(renderState, translation, new IVertexOperation[]{multiplier}, getFrontFacing(), resultLidAngle);
         }
+    }
+
+    @Override
+    public AxisAlignedBB getRenderBoundingBox() {
+        return new AxisAlignedBB(getPos().add(-1, -1, -1), getPos().add(2, 2, 2));
     }
 
     @Override

@@ -148,6 +148,11 @@ public class PartsRecipeHandler {
             if (gearPrefix == OrePrefix.gearSmall) {
                 ModHandler.addShapedRecipe(String.format("small_gear_%s", material), stack,
                     "h ", " P", 'P', new UnificationEntry(OrePrefix.plate, material));
+                RecipeMaps.FORGE_HAMMER_RECIPES.recipeBuilder()
+                    .input(OrePrefix.plate, material)
+                    .outputs(stack)
+                    .duration(60).EUt(6)
+                    .buildAndRegister();
             } else {
                 ModHandler.addShapedRecipe(String.format("gear_%s", material), stack,
                     "RPR", "PdP", "RPR",
@@ -270,7 +275,7 @@ public class PartsRecipeHandler {
             RecipeMaps.LATHE_RECIPES.recipeBuilder()
                 .input(material instanceof GemMaterial ? OrePrefix.gem : OrePrefix.ingot, material)
                 .outputs(OreDictUnifier.get(OrePrefix.stick, material, 2))
-                .duration((int) Math.max(material.getAverageMass() * 5L, 1L)).EUt(16)
+                .duration((int) Math.max(material.getAverageMass() * 2, 1)).EUt(16)
                 .buildAndRegister();
         }
 

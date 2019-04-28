@@ -34,7 +34,7 @@ public class ToolUtility {
 
     public static int applyTimberAxe(World world, BlockPos blockPos, IBlockState blockState, EntityPlayer harvester, List<ItemStack> drops) {
         if (harvester.isSneaking() ||
-            !GTUtility.isBlockOrePrefixed(world, blockPos, blockState, OrePrefix.log, drops))
+            !GTUtility.isBlockOrePrefixed(OrePrefix.log, drops))
             return 0; //do not try to convert while shift-clicking or non-log blocks
         MutableBlockPos mutableBlockPos = new MutableBlockPos(blockPos);
         int destroyedAmount = 0;
@@ -104,7 +104,7 @@ public class ToolUtility {
 
     public static int applyHammerDrops(Random random, IBlockState blockState, List<ItemStack> drops, int fortuneLevel) {
         ItemStack itemStack = new ItemStack(blockState.getBlock(), 1, blockState.getBlock().getMetaFromState(blockState));
-        Recipe recipe = RecipeMaps.FORGE_HAMMER_RECIPES.findRecipe(Long.MAX_VALUE, Collections.singletonList(itemStack), Collections.emptyList());
+        Recipe recipe = RecipeMaps.FORGE_HAMMER_RECIPES.findRecipe(Long.MAX_VALUE, Collections.singletonList(itemStack), Collections.emptyList(), 0);
 
         if (recipe != null && !recipe.getOutputs().isEmpty()) {
             drops.clear();

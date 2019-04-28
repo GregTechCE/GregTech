@@ -30,7 +30,7 @@ public class WoodMachineRecipes {
         RecipeMaps.MACERATOR_RECIPES.recipeBuilder()
             .input(OrePrefix.log, Materials.Wood)
             .outputs(OreDictUnifier.get(OrePrefix.dust, Materials.Wood, 6))
-            .chancedOutput(OreDictUnifier.get(OrePrefix.dust, Materials.Wood), 8000)
+            .chancedOutput(OreDictUnifier.get(OrePrefix.dust, Materials.Wood), 8000, 680)
             .buildAndRegister();
 
         RecipeMaps.LATHE_RECIPES.recipeBuilder()

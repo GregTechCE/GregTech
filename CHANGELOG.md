@@ -1,5 +1,39 @@
 ## Changelog
 
+### 1.7.1
+* Added block breakers with several tiers.
+* Refactor pump. Increase range and pump speed, made visuals better.
+* Refactored byproduct boost mechanic to fit better into game.
+* Adjust overclocking efficiency from 50% to 70%.
+* Remove output tank index filter mechanic (replaced by fluid filters for more precise control)
+* Add configuration circuit for NaOH production chain.
+* Allow using sodalite and lazurite for lapotron crystals.
+* Allow using sodalite and lazurite as blue dyes.
+* Remove amperage requirements for thermal centrifuge.
+* Fix wrong solar panel behavior on battery buffer.
+* Remove duplicate TiCl4 recipe.
+* Remove Radon requirements for some processing chains.
+* Allow recycling pipes.
+* Fix iron bars iron recycling loop.
+* Fix charge overrides not working.
+* Fix some redstone-related issues.
+* Disable electrolyzing of some materials.
+* Disallow input from output side. Can be configured with screwdriver.
+* Minor recipe searching and buffering refactor, fixes some issues related to fluid canner.
+* Allow toggling overclocking via GUI button for electrical machines.
+* Increase duration of some ore recycling chain processes because of increased overclock efficiency.
+* Made Lathe work as fast as extruder for rod production.
+* Add forge hammer recipe for small gears.
+* Made JackHammer use HV tier for charging.
+* Fix certain ore deposits not generating.
+* Fixed generators not showing in JEI as fuel recipe catalysts.
+* Added bismuth as cassiterite byproduct.
+* Fix JEI ingredient hovering not working on machine's fluid tanks.
+* Fixed fluid filter upgrade in pump not working properly.
+* Fixed rubber leaves and wood not burning.
+* Fixed certain issues with charger.
+* Change model in hand of rubber wood sapling to look like vanilla saplings.
+
 ### 1.7.0
 * JEI now recognizes fluids in tanks as ingredients and can show their recipes.
 * You can now drag ghost items and fluids from JEI to item filters and fluid filters.

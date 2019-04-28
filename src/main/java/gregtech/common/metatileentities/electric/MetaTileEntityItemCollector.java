@@ -97,13 +97,17 @@ public class MetaTileEntityItemCollector extends TieredMetaTileEntity {
     }
 
     @Override
+    protected boolean canMachineConnectRedstone(EnumFacing side) {
+        return true;
+    }
+
+    @Override
     public void update() {
         super.update();
 
         if(getWorld().isRemote) {
             return;
         }
-
         boolean isWorkingNow = energyContainer.getEnergyStored() >= getEnergyConsumedPerTick() && isBlockRedstonePowered();
 
         if (isWorkingNow) {

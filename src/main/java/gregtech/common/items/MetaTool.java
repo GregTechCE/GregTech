@@ -1,5 +1,6 @@
 package gregtech.common.items;
 
+import gregtech.api.GTValues;
 import gregtech.api.items.ToolDictNames;
 import gregtech.api.items.metaitem.ElectricStats;
 import gregtech.api.items.toolitem.ScrewdriverItemStat;
@@ -172,7 +173,7 @@ public class MetaTool extends ToolMetaItem<ToolMetaItem<?>.MetaToolValueItem> {
         JACKHAMMER = addItem(32, "tool.jackhammer").setToolStats(new ToolJackHammer())
             .setFullRepairCost(5)
             .addOreDict(ToolDictNames.craftingToolJackHammer)
-            .addStats(ElectricStats.createElectricItem(100000L, 1L));
+            .addStats(ElectricStats.createElectricItem(100000L, GTValues.HV));
 
         BUZZSAW = addItem(33, "tool.buzzsaw").setToolStats(new ToolBuzzSaw())
             .setFullRepairCost(4)

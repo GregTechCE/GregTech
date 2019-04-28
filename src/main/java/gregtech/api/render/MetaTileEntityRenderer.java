@@ -15,6 +15,8 @@ import codechicken.lib.vec.uv.IconTransformation;
 import gregtech.api.GTValues;
 import gregtech.api.block.machines.BlockMachine;
 import gregtech.api.block.machines.MachineItemBlock;
+import gregtech.api.metatileentity.IFastRenderMetaTileEntity;
+import gregtech.api.metatileentity.IRenderMetaTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.util.GTLog;
 import net.minecraft.block.state.IBlockState;
@@ -100,12 +102,16 @@ public class MetaTileEntityRenderer implements ICCBlockRenderer, IItemRenderer {
         renderState.startDrawing(GL11.GL_QUADS, DefaultVertexFormats.ITEM);
         metaTileEntity.setRenderContextStack(stack);
         metaTileEntity.renderMetaTileEntity(renderState, new Matrix4(), new IVertexOperation[0]);
-        if (metaTileEntity.requiresDynamicRendering()) {
-            metaTileEntity.renderMetaTileEntityDynamic(renderState, new Matrix4(), new IVertexOperation[0], 0.0f);
+        if(metaTileEntity instanceof IFastRenderMetaTileEntity) {
+            ((IFastRenderMetaTileEntity) metaTileEntity).renderMetaTileEntityFast(renderState, new Matrix4(), 0.0f);
         }
         metaTileEntity.setRenderContextStack(null);
         renderState.draw();
+        if(metaTileEntity instanceof IRenderMetaTileEntity) {
+            ((IRenderMetaTileEntity) metaTileEntity).renderMetaTileEntityDynamic(0.0, 0.0, 0.0, 0.0f);
+        }
         GlStateManager.disableBlend();
+
     }
 
     @Override

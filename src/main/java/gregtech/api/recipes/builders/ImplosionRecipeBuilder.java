@@ -66,7 +66,7 @@ public class ImplosionRecipeBuilder extends RecipeBuilder<ImplosionRecipeBuilder
     public ValidationResult<Recipe> build() {
         return ValidationResult.newResult(finalizeAndValidate(),
             new Recipe(inputs, outputs, chancedOutputs, fluidInputs, fluidOutputs,
-                ImmutableMap.of(), duration, EUt, hidden, canBeBuffered, needsEmptyOutput));
+                ImmutableMap.of(), duration, EUt, hidden, needsEmptyOutput));
     }
 
     @Override

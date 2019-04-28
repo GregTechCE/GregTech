@@ -49,6 +49,7 @@ import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.renderer.block.statemap.DefaultStateMapper;
 import net.minecraft.client.renderer.block.statemap.IStateMapper;
 import net.minecraft.client.renderer.block.statemap.StateMapperBase;
+import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -191,6 +192,11 @@ public class MetaBlocks {
         FLUID_PIPE.addPipeMaterial(Materials.Wood, new FluidPipeProperties(310, 20, false));
         CABLE.addCableMaterial(MarkerMaterials.Tier.Superconductor, new WireProperties(Integer.MAX_VALUE, 4, 0));
         registerTileEntity();
+
+        //not sure if that's a good place for that, but i don't want to make a dedicated method for that
+        //could possibly override block methods, but since these props don't depend on state why not just use nice and simple vanilla method
+        Blocks.FIRE.setFireInfo(LOG, 5, 5);
+        Blocks.FIRE.setFireInfo(LEAVES, 30, 60);
     }
 
     private static int createGeneratedBlock(Predicate<Material> materialPredicate, BiConsumer<Material[], Integer> blockGenerator) {

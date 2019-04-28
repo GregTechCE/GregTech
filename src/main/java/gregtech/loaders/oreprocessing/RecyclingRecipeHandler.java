@@ -23,7 +23,8 @@ public class RecyclingRecipeHandler {
         (Predicate<OrePrefix>) orePrefix -> orePrefix.name().startsWith("toolHead"),
         (Predicate<OrePrefix>) orePrefix -> orePrefix.name().startsWith("gem"),
         (Predicate<OrePrefix>) orePrefix -> orePrefix.name().startsWith("cableGt"),
-        (Predicate<OrePrefix>) orePrefix -> orePrefix.name().startsWith("wireGt")
+        (Predicate<OrePrefix>) orePrefix -> orePrefix.name().startsWith("wireGt"),
+        (Predicate<OrePrefix>) orePrefix -> orePrefix.name().startsWith("pipe")
     );
 
     private static final List<OrePrefix> IGNORE_ARC_SMELTING = Arrays.asList(

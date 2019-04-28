@@ -30,8 +30,8 @@ public class MetaTileEntityMacerator extends SimpleMachineMetaTileEntity {
             protected int getByproductChanceMultiplier(Recipe recipe) {
                 int byproductChanceMultiplier = 1;
                 int tier = GTUtility.getTierByVoltage(getMaxVoltage());
-                if (tier > GTValues.HV) {
-                    byproductChanceMultiplier = 1 << (tier - GTValues.HV);
+                if (tier > GTValues.MV) {
+                    byproductChanceMultiplier = 1 << (tier - GTValues.MV);
                 }
                 return byproductChanceMultiplier;
             }

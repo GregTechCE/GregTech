@@ -76,7 +76,9 @@ public class CoverMachineController extends CoverBehavior implements CoverWithUI
     private void cycleNextControllerMode() {
         List<ControllerMode> allowedModes = getAllowedModes();
         int nextIndex = allowedModes.indexOf(controllerMode) + 1;
-        setControllerMode(allowedModes.get(nextIndex % allowedModes.size()));
+        if(!allowedModes.isEmpty()) {
+            setControllerMode(allowedModes.get(nextIndex % allowedModes.size()));
+        }
     }
 
     public List<ControllerMode> getAllowedModes() {
@@ -124,8 +126,6 @@ public class CoverMachineController extends CoverBehavior implements CoverWithUI
                 .setBackgroundTexture(GuiTextures.SLOT))
             .widget(new CycleButtonWidget(10, 70, 75, 20, this::isInverted, this::setInverted,
                 "cover.machine_controller.normal", "cover.machine_controller.inverted"))
-
-
             .build(this, player);
     }
 

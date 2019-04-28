@@ -44,7 +44,7 @@ public abstract class WorkableTieredMetaTileEntity extends TieredMetaTileEntity 
 
     @Override
     protected long getMaxInputOutputAmperage() {
-        return workable == null ? 1L : workable.recipeMap.getAmperage();
+        return 2L;
     }
 
     @Override

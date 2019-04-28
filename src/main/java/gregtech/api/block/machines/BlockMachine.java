@@ -291,7 +291,7 @@ public class BlockMachine extends BlockCustomParticle implements ITileEntityProv
     @Override
     public boolean canConnectRedstone(IBlockState state, IBlockAccess world, BlockPos pos, @Nullable EnumFacing side) {
         MetaTileEntity metaTileEntity = getMetaTileEntity(world, pos);
-        return metaTileEntity != null && metaTileEntity.canConnectRedstone(side);
+        return metaTileEntity != null && metaTileEntity.canConnectRedstone(side == null ? null : side.getOpposite());
     }
 
     @Override
@@ -302,7 +302,7 @@ public class BlockMachine extends BlockCustomParticle implements ITileEntityProv
     @Override
     public int getWeakPower(IBlockState blockState, IBlockAccess blockAccess, BlockPos pos, EnumFacing side) {
         MetaTileEntity metaTileEntity = getMetaTileEntity(blockAccess, pos);
-        return metaTileEntity == null ? 0 : metaTileEntity.getOutputRedstoneSignal(side.getOpposite());
+        return metaTileEntity == null ? 0 : metaTileEntity.getOutputRedstoneSignal(side == null ? null : side.getOpposite());
     }
 
     @Override

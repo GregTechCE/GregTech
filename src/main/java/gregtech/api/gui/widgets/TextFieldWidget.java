@@ -1,5 +1,6 @@
 package gregtech.api.gui.widgets;
 
+import gregtech.api.gui.IPositionedRectangularWidget;
 import gregtech.api.gui.Widget;
 import gregtech.api.util.MCGuiUtil;
 import net.minecraft.client.Minecraft;
@@ -14,7 +15,7 @@ import java.util.function.Consumer;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 
-public class TextFieldWidget extends Widget {
+public class TextFieldWidget extends Widget implements IPositionedRectangularWidget {
 
     @SideOnly(Side.CLIENT)
     protected GuiTextField textField;
@@ -37,6 +38,26 @@ public class TextFieldWidget extends Widget {
         }
         this.textSupplier = textSupplier;
         this.textResponder = textResponder;
+    }
+
+    @Override
+    public int getXPosition() {
+        return textField.x;
+    }
+
+    @Override
+    public int getYPosition() {
+        return textField.y;
+    }
+
+    @Override
+    public int getWidth() {
+        return textField.width;
+    }
+
+    @Override
+    public int getHeight() {
+        return textField.height;
     }
 
     @Override

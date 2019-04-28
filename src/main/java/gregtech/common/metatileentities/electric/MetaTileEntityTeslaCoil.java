@@ -11,7 +11,7 @@ import gregtech.api.gui.ModularUI;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.MetaTileEntityHolder;
 import gregtech.api.render.Textures;
-import gregtech.api.util.GTFakePlayer;
+import gregtech.api.util.GregFakePlayer;
 import gregtech.api.util.GTUtility;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.entity.EntityLivingBase;
@@ -64,7 +64,7 @@ public class MetaTileEntityTeslaCoil extends MetaTileEntity {
             int damagedEntitiesCount = 0;
             if (damagePerEntity < 1) return; //too small amount of energy, just return
             for (EntityLivingBase entityLiving : entities) {
-                DamageSource damageSource = DamageSources.causeElectricDamage(GTFakePlayer.get((WorldServer) getWorld()));
+                DamageSource damageSource = DamageSources.causeElectricDamage(GregFakePlayer.get((WorldServer) getWorld()));
                 boolean damaged = entityLiving.attackEntityFrom(damageSource, damagePerEntity);
                 if (damaged) damagedEntitiesCount++;
             }
