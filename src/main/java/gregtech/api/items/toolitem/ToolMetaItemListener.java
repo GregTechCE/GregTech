@@ -9,7 +9,6 @@ import gregtech.api.unification.material.type.RoughSolidMaterial;
 import gregtech.api.unification.material.type.SolidMaterial;
 import gregtech.api.unification.ore.OrePrefix;
 import gregtech.api.unification.stack.UnificationEntry;
-import gregtech.api.util.GTUtility;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.item.EntityXPOrb;
 import net.minecraft.entity.player.EntityPlayer;
@@ -103,33 +102,13 @@ public class ToolMetaItemListener {
         ItemStack stackInHand = harvester.getHeldItem(EnumHand.MAIN_HAND);
         if (stackInHand.isEmpty() || !(stackInHand.getItem() instanceof ToolMetaItem<?>))
             return;
+
         ToolMetaItem<? extends MetaToolValueItem> toolMetaItem = (ToolMetaItem<?>) stackInHand.getItem();
-        MetaToolValueItem valueItem = toolMetaItem.getItem(stackInHand);
-        IToolStats toolStats = valueItem == null ? null : valueItem.getToolStats();
-        if (toolStats == null || !toolStats.isMinableBlock(event.getState(), stackInHand))
-            return;
         boolean isRecursiveCall = harvesting.get() == DUMMY_OBJECT;
-        if (isRecursiveCall && !toolStats.allowRecursiveConversion())
-            return; //do not call recursive if not allowed by tool stats explicitly
         if (!isRecursiveCall) {
             harvesting.set(DUMMY_OBJECT);
-        }
-        try {
-            int damageDealt = toolStats.convertBlockDrops(event.getWorld(), event.getPos(), event.getState(), harvester, drops, isRecursiveCall, stackInHand);
-            if (damageDealt > 0) {
-                event.setDropChance(1.0f);
-                boolean damagedTool = GTUtility.doDamageItem(stackInHand, damageDealt *
-                    toolStats.getToolDamagePerDropConversion(stackInHand), false);
-                if (!damagedTool) {
-                    //if we can't apply entire damage to tool, just break it
-                    stackInHand.shrink(1);
-                }
-            }
-        } finally {
-            if (!isRecursiveCall) {
-                //restore state only if non-recursive
-                harvesting.set(null);
-            }
+            toolMetaItem.onBlockDropsHarvested(stackInHand, event.getWorld(), event.getPos(), event.getState(), harvester, drops);
+            harvesting.set(null);
         }
     }
 

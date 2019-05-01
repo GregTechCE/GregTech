@@ -3,13 +3,12 @@ package gregtech.common.tools;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.enchantment.Enchantment;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-
-import java.util.List;
 
 public class ToolAxe extends ToolBase {
 
@@ -49,15 +48,16 @@ public class ToolAxe extends ToolBase {
     }
 
     @Override
-    public boolean isMinableBlock(IBlockState block, ItemStack stack) {
+    public boolean canMineBlock(IBlockState block, ItemStack stack) {
         String tool = block.getBlock().getHarvestTool(block);
         return (tool != null && tool.equals("axe")) ||
             block.getMaterial() == Material.WOOD;
     }
 
     @Override
-    public int convertBlockDrops(World world, BlockPos blockPos, IBlockState blockState, EntityPlayer harvester, List<ItemStack> drops, boolean recursive, ItemStack toolStack) {
-        return ToolUtility.applyTimberAxe(world, blockPos, blockState, harvester, drops);
+    public void onBlockDestroyed(ItemStack stack, World world, IBlockState state, BlockPos pos, EntityLivingBase entity) {
+        if(entity instanceof EntityPlayer && !world.isRemote) {
+            ToolUtility.applyTimberAxe(stack, world, pos, (EntityPlayer) entity, state);
+        }
     }
-
 }

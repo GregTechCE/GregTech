@@ -31,14 +31,9 @@ public class ToolChainsawLV extends ToolSaw {
     }
 
     @Override
-    public int convertBlockDrops(World world, BlockPos blockPos, IBlockState blockState, EntityPlayer harvester, List<ItemStack> drops, boolean recursive, ItemStack toolStack) {
-        int superResult = super.convertBlockDrops(world, blockPos, blockState, harvester, drops, recursive, toolStack);
-        if (superResult > 0) {
-            //we already harvested block and converted blocks in saw class
-            return superResult;
-        }
-        //if not, try to apply timber axe mechanic
-        return ToolUtility.applyTimberAxe(world, blockPos, blockState, harvester, drops);
+    public void convertBlockDrops(World world, BlockPos blockPos, IBlockState blockState, EntityPlayer player, List<ItemStack> dropList, ItemStack toolStack) {
+        super.convertBlockDrops(world, blockPos, blockState, player, dropList, toolStack);
+        ToolUtility.applyTimberAxe(toolStack, world, blockPos, player, blockState);
     }
 
 }

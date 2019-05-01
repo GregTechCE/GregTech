@@ -653,6 +653,15 @@ metaitem.turbine_rotor.name=%s Turbine Rotor
 metaitem.turbine_rotor.tooltip=Turbine Rotors for your power station
 metaitem.tool.magnifying_glass.name=%s Magnifying Glass
 
+metaitem.jack_hammer.mode.three_by_three=3x3 Panel
+metaitem.jack_hammer.mode.vertical_line=Vertical Line
+metaitem.jack_hammer.mode.horizontal_line=Horizontal Line
+metaitem.jack_hammer.mode.single_block=Single Block
+
+metaitem.behavior.mode_switch.tooltip=Shift Click to switch mode
+metaitem.behavior.mode_switch.mode_switched=§eMode Set to: %s
+metaitem.behavior.mode_switch.current_mode=Mode: %s
+
 metaitem.tool.tooltip.primary_material=Material: %s (%s lvl)
 metaitem.tool.tooltip.attack_damage=Attack damage: %d
 metaitem.tool.tooltip.mining_speed=Mining speed: %d

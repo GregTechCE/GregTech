@@ -18,5 +18,4 @@ public class ToolBuzzSaw extends ToolSaw {
     public float getBaseDamage(ItemStack stack) {
         return 1.0F;
     }
-
 }

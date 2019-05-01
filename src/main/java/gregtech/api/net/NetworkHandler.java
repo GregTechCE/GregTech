@@ -18,6 +18,7 @@ import net.minecraft.inventory.Container;
 import net.minecraft.network.INetHandler;
 import net.minecraft.network.NetHandlerPlayServer;
 import net.minecraft.network.PacketBuffer;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.IntIdentityHashBiMap;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -264,7 +265,13 @@ public class NetworkHandler {
         Packet packet = proxy2packet(event.getPacket());
         if (clientExecutors.containsKey(packet.getClass())) {
             PacketExecutor<Packet, NetHandlerPlayClient> executor = (PacketExecutor<Packet, NetHandlerPlayClient>) clientExecutors.get(packet.getClass());
-            executor.execute(packet, (NetHandlerPlayClient) event.getHandler());
+            NetHandlerPlayClient handler = (NetHandlerPlayClient) event.getHandler();
+            Minecraft minecraft = Minecraft.getMinecraft();
+            if(minecraft.isCallingFromMinecraftThread()) {
+                executor.execute(packet, handler);
+            } else {
+                minecraft.addScheduledTask(() -> executor.execute(packet, handler));
+            }
         }
     }
 
@@ -274,7 +281,13 @@ public class NetworkHandler {
         Packet packet = proxy2packet(event.getPacket());
         if (serverExecutors.containsKey(packet.getClass())) {
             PacketExecutor<Packet, NetHandlerPlayServer> executor = (PacketExecutor<Packet, NetHandlerPlayServer>) serverExecutors.get(packet.getClass());
-            executor.execute(packet, (NetHandlerPlayServer) event.getHandler());
+            NetHandlerPlayServer handler = (NetHandlerPlayServer) event.getHandler();
+            MinecraftServer minecraftServer = FMLCommonHandler.instance().getMinecraftServerInstance();
+            if(minecraftServer.isCallingFromMinecraftThread()) {
+                executor.execute(packet, handler);
+            } else {
+                minecraftServer.addScheduledTask(() -> executor.execute(packet, handler));
+            }
         }
     }
 }

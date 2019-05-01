@@ -40,7 +40,6 @@ public class ToolRecipeHandler {
         OrePrefix.toolHeadChainsaw.addProcessingHandler(SolidMaterial.class, ToolRecipeHandler::processChainSawHead);
         OrePrefix.toolHeadDrill.addProcessingHandler(SolidMaterial.class, ToolRecipeHandler::processDrillHead);
 
-        OrePrefix.toolHeadPlow.addProcessingHandler(SolidMaterial.class, ToolRecipeHandler::processPlowHead);
         OrePrefix.toolHeadSense.addProcessingHandler(SolidMaterial.class, ToolRecipeHandler::processSenseHead);
         OrePrefix.toolHeadWrench.addProcessingHandler(SolidMaterial.class, ToolRecipeHandler::processWrenchHead);
         OrePrefix.toolHeadBuzzSaw.addProcessingHandler(SolidMaterial.class, ToolRecipeHandler::processBuzzSawHead);
@@ -302,10 +301,6 @@ public class ToolRecipeHandler {
             .EUt(8 * voltageMultiplier)
             .buildAndRegister();
 
-    }
-
-    public static void processPlowHead(OrePrefix toolPrefix, SolidMaterial solidMaterial) {
-        processSimpleToolHead(toolPrefix, solidMaterial, MetaItems.PLOW, "PP", "PP", "hf");
     }
 
     public static void processSawHead(OrePrefix toolPrefix, SolidMaterial solidMaterial) {

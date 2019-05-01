@@ -24,7 +24,12 @@ public class ToolPickaxe extends ToolBase {
     }
 
     @Override
-    public boolean isMinableBlock(IBlockState block, ItemStack stack) {
+    public float getDigSpeedMultiplier(ItemStack stack) {
+        return 1.24f;
+    }
+
+    @Override
+    public boolean canMineBlock(IBlockState block, ItemStack stack) {
         String tool = block.getBlock().getHarvestTool(block);
         return (tool != null && tool.equals("pickaxe")) ||
             block.getMaterial() == Material.ROCK ||

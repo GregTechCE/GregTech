@@ -8,8 +8,8 @@ import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
 
 import java.util.Collections;
@@ -82,8 +82,6 @@ public interface IToolStats {
         return 1.0f;
     }
 
-    ResourceLocation getUseSound(ItemStack stack);
-
     default List<EnchantmentData> getEnchantments(ItemStack stack) {
         return Collections.emptyList();
     }
@@ -96,7 +94,7 @@ public interface IToolStats {
      *
      * @return If this is a minable Block. Tool Quality checks (like Diamond Tier or something) are separate from this check.
      */
-    boolean isMinableBlock(IBlockState block, ItemStack stack);
+    boolean canMineBlock(IBlockState block, ItemStack stack);
 
     /**
      * @return If this Tool can be used as an RC Crowbar.
@@ -112,21 +110,18 @@ public interface IToolStats {
         return false;
     }
 
-    /**
-     * @return true to allow recursive calling of convertBlockDrops on this tool
-     * this is useful when you have tool that breaks multiple block area in unusual way and need to break it
-     * and ALSO convert it's drops. In such cases, recursive parameter of convertBlockDrops will be set to true
-     */
-    default boolean allowRecursiveConversion() {
+    default List<BlockPos> getAOEBlocks(ItemStack itemStack, EntityPlayer player, RayTraceResult rayTraceResult) {
+        return Collections.emptyList();
+    }
+
+    default void onBlockDestroyed(ItemStack stack, World world, IBlockState state, BlockPos pos, EntityLivingBase entity) {
+    }
+
+    default boolean onBlockPreBreak(ItemStack stack, BlockPos blockPos, EntityPlayer player) {
         return false;
     }
 
-    /**
-     * This lets you modify the Drop List, when this type of Tool has been used.
-     * Allows special behaviors like timber axe, leaves cutting, etc
-     */
-    default int convertBlockDrops(World world, BlockPos blockPos, IBlockState blockState, EntityPlayer harvester, List<ItemStack> drops, boolean recursive, ItemStack toolStack) {
-        return 0; //do not convert anything by default
+    default void convertBlockDrops(World world, BlockPos blockPos, IBlockState blockState, EntityPlayer player, List<ItemStack> dropList, ItemStack toolStack) {
     }
 
     default void addInformation(ItemStack stack, List<String> lines, boolean isAdvanced) {

@@ -74,7 +74,7 @@ public class ElectricItem implements IElectricItem, ICapabilityProvider {
             return 0;
         if (tagCompound.getBoolean("Infinite"))
             return getMaxCharge();
-        return tagCompound.getLong("Charge");
+        return Math.min(tagCompound.getLong("Charge"), getMaxCharge());
     }
 
     @Override
@@ -87,7 +87,7 @@ public class ElectricItem implements IElectricItem, ICapabilityProvider {
         if (itemStack.getCount() != 1) {
             return 0L;
         }
-        if ((chargeable || amount == Long.MAX_VALUE) && (chargerTier >= tier)) {
+        if ((chargeable || amount == Long.MAX_VALUE) && (chargerTier >= tier) && amount > 0L) {
             long canReceive = getMaxCharge() - getCharge();
             if (!ignoreTransferLimit) {
                 amount = Math.min(amount, GTValues.V[tier]);
@@ -106,7 +106,7 @@ public class ElectricItem implements IElectricItem, ICapabilityProvider {
         if (itemStack.getCount() != 1) {
             return 0L;
         }
-        if ((canProvideEnergyExternally || !externally || amount == Long.MAX_VALUE) && (chargerTier >= tier)) {
+        if ((canProvideEnergyExternally || !externally || amount == Long.MAX_VALUE) && (chargerTier >= tier) && amount > 0L) {
             if (!ignoreTransferLimit) {
                 amount = Math.min(amount, GTValues.V[tier]);
             }

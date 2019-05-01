@@ -7,22 +7,27 @@ import gregtech.api.capability.IElectricItem;
 import gregtech.api.capability.IMultipleTankHandler;
 import gregtech.api.items.IToolItem;
 import gregtech.api.metatileentity.MetaTileEntity;
-import gregtech.api.unification.OreDictUnifier;
-import gregtech.api.unification.ore.OrePrefix;
 import gregtech.common.ConfigHolder;
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockRedstoneWire;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.network.play.client.CPacketPlayerDigging;
+import net.minecraft.network.play.client.CPacketPlayerDigging.Action;
+import net.minecraft.network.play.server.SPacketBlockChange;
 import net.minecraft.potion.PotionEffect;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -197,14 +202,54 @@ public class GTUtility {
         return merged;
     }
 
-    public static boolean isBlockOrePrefixed(OrePrefix targetPrefix, List<ItemStack> drops) {
-        for (ItemStack itemStack : drops) {
-            OrePrefix orePrefix = OreDictUnifier.getPrefix(itemStack);
-            if (orePrefix == targetPrefix)
-                return true;
+    public static boolean harvestBlock(World world, BlockPos pos, EntityPlayer player) {
+        IBlockState blockState = world.getBlockState(pos);
+        TileEntity tileEntity = world.getTileEntity(pos);
+
+        if(blockState.getBlock().isAir(blockState, world, pos)) {
+            return false;
         }
-        return false;
+
+        if(!blockState.getBlock().canHarvestBlock(world, pos, player)) {
+            return false;
+        }
+
+        int expToDrop = 0;
+        if(!world.isRemote) {
+            EntityPlayerMP playerMP = (EntityPlayerMP) player;
+            expToDrop = ForgeHooks.onBlockBreakEvent(world, playerMP.interactionManager.getGameType(), playerMP, pos);
+            if(expToDrop == -1) {
+                //notify client if block can't be removed because of BreakEvent cancelled on server side
+                playerMP.connection.sendPacket(new SPacketBlockChange(world, pos));
+                return false;
+            }
+        }
+
+        world.playEvent(player, 2001, pos, Block.getStateId(blockState));
+
+        boolean wasRemovedByPlayer = blockState.getBlock().removedByPlayer(blockState, world, pos, player, !player.capabilities.isCreativeMode);
+        if(wasRemovedByPlayer) {
+            blockState.getBlock().onBlockDestroyedByPlayer(world, pos, blockState);
+
+            if(!world.isRemote && !player.capabilities.isCreativeMode) {
+                ItemStack stackInHand = player.getHeldItemMainhand();
+                blockState.getBlock().harvestBlock(world, player, pos, blockState, tileEntity, stackInHand);
+                if(expToDrop > 0) {
+                    blockState.getBlock().dropXpOnBlockBreak(world, pos, expToDrop);
+                }
+            }
+        }
+
+        if(!world.isRemote) {
+            EntityPlayerMP playerMP = (EntityPlayerMP) player;
+            playerMP.connection.sendPacket(new SPacketBlockChange(world, pos));
+        } else {
+            Minecraft mc = Minecraft.getMinecraft();
+            mc.getConnection().sendPacket(new CPacketPlayerDigging(Action.START_DESTROY_BLOCK, pos, mc.objectMouseOver.sideHit));
+        }
+        return wasRemovedByPlayer;
     }
+
 
     @SideOnly(Side.CLIENT)
     public static void drawCenteredSizedText(int x, int y, String string, int color, double sizeMultiplier) {

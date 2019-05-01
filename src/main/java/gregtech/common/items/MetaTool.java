@@ -112,10 +112,6 @@ public class MetaTool extends ToolMetaItem<ToolMetaItem<?>.MetaToolValueItem> {
             .setFullRepairCost(3)
             .addOreDict(ToolDictNames.craftingToolBlade);
 
-        PLOW = addItem(20, "tool.plow").setToolStats(new ToolPlow())
-            .setFullRepairCost(4)
-            .addOreDict(ToolDictNames.craftingToolPlow);
-
         DRILL_LV = addItem(23, "tool.drill.lv").setToolStats(new ToolDrillLV())
             .setFullRepairCost(4)
             .addOreDict(ToolDictNames.craftingToolMiningDrill)

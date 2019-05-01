@@ -5,6 +5,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -34,7 +35,7 @@ public class ToolSaw extends ToolBase {
     }
 
     @Override
-    public boolean isMinableBlock(IBlockState block, ItemStack stack) {
+    public boolean canMineBlock(IBlockState block, ItemStack stack) {
         String tool = block.getBlock().getHarvestTool(block);
         return (tool != null && (tool.equals("axe") || tool.equals("saw"))) ||
             block.getMaterial() == Material.LEAVES ||
@@ -46,28 +47,21 @@ public class ToolSaw extends ToolBase {
     }
 
     @Override
-    public int convertBlockDrops(World world, BlockPos blockPos, IBlockState blockState, EntityPlayer harvester, List<ItemStack> drops, boolean recursive, ItemStack toolStack) {
-        int shearableResult = ToolUtility.applyShearable(world, blockPos, blockState, drops, harvester);
-        if (shearableResult > 0) {
-            //if shearing was successful, then just return it's result
-            return shearableResult;
+    public boolean onBlockPreBreak(ItemStack stack, BlockPos blockPos, EntityPlayer player) {
+        if (player.world.isRemote || player.capabilities.isCreativeMode) {
+            return false;
         }
+        return ToolUtility.applyShearBehavior(stack, blockPos, player);
+    }
+
+    @Override
+    public void convertBlockDrops(World world, BlockPos blockPos, IBlockState blockState, EntityPlayer player, List<ItemStack> dropList, ItemStack toolStack) {
         if (blockState.getMaterial() == Material.PACKED_ICE || blockState.getMaterial() == Material.ICE) {
-            int stackMetadata = blockState.getBlock().getMetaFromState(blockState);
-            ItemStack dropStack = new ItemStack(blockState.getBlock(), 1, stackMetadata);
-            if (!dropStack.isEmpty()) {
-                world.setBlockToAir(blockPos); //because ice sets water
-                //do not set damage for non-subtype items
-                //good example here would be frosted ice
-                if (!dropStack.getItem().getHasSubtypes())
-                    dropStack.setItemDamage(0);
-                //only add drop stack if actual block has item form
-                drops.clear();
-                drops.add(dropStack);
-                return 1;
-            }
+            Item item = Item.getItemFromBlock(blockState.getBlock());
+            ItemStack dropStack = new ItemStack(item, 1);
+            world.setBlockToAir(blockPos);
+            dropList.add(dropStack);
         }
-        return 0;
     }
 
 
