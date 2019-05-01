@@ -8,6 +8,7 @@ import gregtech.api.capability.impl.EnergyContainerHandler;
 import gregtech.api.capability.impl.FluidHandlerProxy;
 import gregtech.api.capability.impl.FluidTankList;
 import gregtech.api.capability.impl.ItemHandlerProxy;
+import gregtech.api.cover.ICoverable;
 import gregtech.api.gui.GuiTextures;
 import gregtech.api.gui.ModularUI;
 import gregtech.api.gui.widgets.DischargerSlotWidget;
@@ -130,7 +131,8 @@ public class SimpleMachineMetaTileEntity extends WorkableTieredMetaTileEntity {
 
     @Override
     public boolean onScrewdriverClick(EntityPlayer playerIn, EnumHand hand, EnumFacing facing, CuboidRayTraceResult hitResult) {
-        if(facing == getOutputFacing()) {
+        EnumFacing coverSide = ICoverable.traceCoverSide(hitResult);
+        if(coverSide == getOutputFacing()) {
             if(!getWorld().isRemote) {
                 if(allowInputFromOutputSide) {
                     setAllowInputFromOutputSide(false);
