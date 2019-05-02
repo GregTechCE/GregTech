@@ -3,12 +3,10 @@ package gregtech.common.tools;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.enchantment.Enchantment;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
 
 public class ToolAxe extends ToolBase {
 
@@ -55,9 +53,10 @@ public class ToolAxe extends ToolBase {
     }
 
     @Override
-    public void onBlockDestroyed(ItemStack stack, World world, IBlockState state, BlockPos pos, EntityLivingBase entity) {
-        if(entity instanceof EntityPlayer && !world.isRemote) {
-            ToolUtility.applyTimberAxe(stack, world, pos, (EntityPlayer) entity, state);
+    public boolean onBlockPreBreak(ItemStack stack, BlockPos blockPos, EntityPlayer player) {
+        if(!player.isSneaking()) {
+            return ToolUtility.applyTimberAxe(stack, player.world, blockPos, player);
         }
+        return false;
     }
 }

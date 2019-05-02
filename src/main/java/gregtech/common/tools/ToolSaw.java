@@ -63,6 +63,4 @@ public class ToolSaw extends ToolBase {
             dropList.add(dropStack);
         }
     }
-
-
 }

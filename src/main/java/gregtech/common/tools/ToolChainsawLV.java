@@ -1,12 +1,8 @@
 package gregtech.common.tools;
 
-import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
-
-import java.util.List;
 
 public class ToolChainsawLV extends ToolSaw {
 
@@ -31,9 +27,10 @@ public class ToolChainsawLV extends ToolSaw {
     }
 
     @Override
-    public void convertBlockDrops(World world, BlockPos blockPos, IBlockState blockState, EntityPlayer player, List<ItemStack> dropList, ItemStack toolStack) {
-        super.convertBlockDrops(world, blockPos, blockState, player, dropList, toolStack);
-        ToolUtility.applyTimberAxe(toolStack, world, blockPos, player, blockState);
+    public boolean onBlockPreBreak(ItemStack stack, BlockPos blockPos, EntityPlayer player) {
+        if(!player.isSneaking()) {
+            return ToolUtility.applyTimberAxe(stack, player.world, blockPos, player);
+        }
+        return false;
     }
-
 }

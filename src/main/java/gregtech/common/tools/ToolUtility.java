@@ -16,7 +16,6 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Enchantments;
 import net.minecraft.item.ItemStack;
-import net.minecraft.stats.StatList;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
@@ -34,11 +33,14 @@ public class ToolUtility {
         return result == null ? harvester.getHorizontalFacing() : result.sideHit;
     }
 
-    public static boolean applyTimberAxe(ItemStack itemStack, World world, BlockPos blockPos, EntityPlayer player, IBlockState blockState) {
-        if(!world.isRemote && TreeChopTask.isLogOrLeavesBlock(blockState)) {
-            EntityPlayerMP playerMP = (EntityPlayerMP) player;
-            TreeChopTask treeChopTask = new TreeChopTask(blockPos, world, playerMP, itemStack);
-            TaskScheduler.scheduleTask(world, treeChopTask);
+    public static boolean applyTimberAxe(ItemStack itemStack, World world, BlockPos blockPos, EntityPlayer player) {
+        IBlockState blockState = world.getBlockState(blockPos);
+        if(TreeChopTask.isLogOrLeavesBlock(blockState) == 1) {
+            if(!world.isRemote) {
+                EntityPlayerMP playerMP = (EntityPlayerMP) player;
+                TreeChopTask treeChopTask = new TreeChopTask(blockPos, world, playerMP, itemStack);
+                TaskScheduler.scheduleTask(world, treeChopTask);
+            }
             return true;
         }
         return false;
@@ -52,8 +54,7 @@ public class ToolUtility {
                 int fortuneLevel = EnchantmentHelper.getEnchantmentLevel(Enchantments.FORTUNE, itemStack);
                 List<ItemStack> drops = target.onSheared(itemStack, player.world, pos, fortuneLevel);
                 dropListOfItems(player.world, pos, drops);
-                player.addStat(StatList.getBlockStats(block));
-                player.world.setBlockState(pos, Blocks.AIR.getDefaultState(), 11);
+                         player.world.setBlockState(pos, Blocks.AIR.getDefaultState(), 11);
                 return true;
             }
         }
