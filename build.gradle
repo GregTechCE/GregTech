@@ -55,6 +55,10 @@ repositories {
         name = "Progwml6 maven"
         url = "https://dvs1.progwml6.com/files/maven/"
     }
+    maven { //JEI fallback
+        name = "ModMaven"
+        url = "http://modmaven.k-4u.nl"
+    }
     maven {
         name = "tterrag maven"
         url = "https://maven.tterrag.com/"
@@ -65,7 +69,7 @@ repositories {
     }
     maven {
         name = "CoFH Maven"
-        url = "https://maven.covers1624.net/"
+        url = "https://maven.covers1624.net"
     }
     maven {
         name = "tehnut maven"
@@ -148,9 +152,8 @@ task energyApi(type: Jar) {
     include "gregtech/api/capability/IElectricItem.*"
     include "gregtech/api/capability/IEnergyContainer.*"
     include "gregtech/api/capability/GregtechCapabilities.*"
-    include "gregtech/api/capability/tool/*"
 
-    classifier = 'api'
+    classifier = 'energy-api'
 }
 
 artifacts {
