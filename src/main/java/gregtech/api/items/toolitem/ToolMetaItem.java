@@ -2,6 +2,8 @@ package gregtech.api.items.toolitem;
 
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
+import forestry.api.arboriculture.IToolGrafter;
+import gregtech.api.GTValues;
 import gregtech.api.capability.GregtechCapabilities;
 import gregtech.api.capability.IElectricItem;
 import gregtech.api.enchants.EnchantmentData;
@@ -41,6 +43,7 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.common.util.Constants;
+import net.minecraftforge.fml.common.Optional.Interface;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.oredict.OreDictionary;
@@ -61,7 +64,8 @@ import java.util.*;
  * @see IToolStats
  * @see MetaItem
  */
-public class ToolMetaItem<T extends ToolMetaItem<?>.MetaToolValueItem> extends MetaItem<T> implements IToolItem, IAOEItem {
+@Interface(modid = GTValues.MODID_FR, iface = "forestry.api.arboriculture.IToolGrafter")
+public class ToolMetaItem<T extends ToolMetaItem<?>.MetaToolValueItem> extends MetaItem<T> implements IToolItem, IAOEItem, IToolGrafter {
 
     public ToolMetaItem() {
         super((short) 0);
@@ -184,6 +188,17 @@ public class ToolMetaItem<T extends ToolMetaItem<?>.MetaToolValueItem> extends M
             return toolStats.getAOEBlocks(itemStack, player, rayTraceResult);
         }
         return Collections.emptyList();
+    }
+
+    @Override
+    public float getSaplingModifier(ItemStack stack, World world, EntityPlayer player, BlockPos pos) {
+        T metaToolValueItem = getItem(stack);
+        if (metaToolValueItem != null) {
+            IToolStats toolStats = metaToolValueItem.getToolStats();
+            return toolStats.getSaplingModifier(stack, world, player, pos);
+
+        }
+        return 0.0f;
     }
 
     @Override
@@ -534,16 +549,12 @@ public class ToolMetaItem<T extends ToolMetaItem<?>.MetaToolValueItem> extends M
         return getItemDamage(itemStack) < getMaxItemDamage(itemStack);
     }
 
-    public static NBTTagCompound getToolStatsTag(ItemStack itemStack) {
+    private static NBTTagCompound getToolStatsTag(ItemStack itemStack) {
         return itemStack.getSubCompound("GT.ToolStats");
     }
 
-    public static NBTTagCompound getOrCreateToolStatsTag(ItemStack itemStack) {
+    private static NBTTagCompound getOrCreateToolStatsTag(ItemStack itemStack) {
         return itemStack.getOrCreateSubCompound("GT.ToolStats");
-    }
-
-    public static void setToolStatsTag(ItemStack itemStack, NBTTagCompound tagCompound) {
-        itemStack.setTagInfo("GT.ToolStats", tagCompound);
     }
 
     public static SolidMaterial getToolMaterial(ItemStack itemStack) {

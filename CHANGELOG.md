@@ -1,5 +1,10 @@
 ## Changelog
 
+### 1.8.0
+* Bug fixes and tool improvements
+* Nerfed large turbine to the ground so you will never use it again.
+* Some other improvements.
+
 ### 1.7.1
 * Added block breakers with several tiers.
 * Refactor pump. Increase range and pump speed, made visuals better.

@@ -140,8 +140,12 @@ public class FuelRecipeLogic extends MTETrait implements IControllable {
         return true;
     }
 
+    public long getMaxVoltage() {
+        return maxVoltage;
+    }
+
     protected int calculateFuelAmount(FuelRecipe currentRecipe) {
-        return currentRecipe.getRecipeFluid().amount * getVoltageMultiplier(maxVoltage, currentRecipe.getMinVoltage());
+        return currentRecipe.getRecipeFluid().amount * getVoltageMultiplier(getMaxVoltage(), currentRecipe.getMinVoltage());
     }
 
     protected int calculateRecipeDuration(FuelRecipe currentRecipe) {
@@ -158,7 +162,7 @@ public class FuelRecipeLogic extends MTETrait implements IControllable {
     }
 
     public static int getVoltageMultiplier(long maxVoltage, long minVoltage) {
-        return (int) (getTieredVoltage(maxVoltage) / getTieredVoltage(minVoltage));
+        return (int) (maxVoltage / minVoltage);
     }
 
     public static long getTieredVoltage(long voltage) {

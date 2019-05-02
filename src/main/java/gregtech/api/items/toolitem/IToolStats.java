@@ -103,11 +103,8 @@ public interface IToolStats {
         return false;
     }
 
-    /**
-     * @return If this Tool can be used as an FR Grafter.
-     */
-    default boolean isGrafter(ItemStack stack) {
-        return false;
+    default float getSaplingModifier(ItemStack stack, World world, EntityPlayer player, BlockPos pos) {
+        return 0.0f;
     }
 
     default List<BlockPos> getAOEBlocks(ItemStack itemStack, EntityPlayer player, RayTraceResult rayTraceResult) {

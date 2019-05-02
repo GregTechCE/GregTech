@@ -12,9 +12,9 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockPos.MutableBlockPos;
+import net.minecraft.util.math.Vec3i;
 import net.minecraft.world.World;
 
 import java.util.*;
@@ -23,7 +23,7 @@ public class TreeChopTask implements Task {
 
     private static final int MAX_BLOCKS_SEARCH_PER_TICK = 1024;
     private static final int MAX_BLOCKS_TO_SEARCH = 8192;
-    private final Stack<EnumFacing> moveStack = new Stack<>();
+    private final Stack<MultiFacing> moveStack = new Stack<>();
     private final MutableBlockPos currentPos = new MutableBlockPos();
     private final BlockPos startBlockPos;
     private final Set<BlockPos> visitedBlockPos = new HashSet<>();
@@ -122,9 +122,9 @@ public class TreeChopTask implements Task {
         main: while (blocksSearchedNow <= MAX_BLOCKS_SEARCH_PER_TICK) {
             //try to iterate neighbour blocks
             blocksSearchedNow++;
-            for (EnumFacing facing : EnumFacing.VALUES) {
+            for (MultiFacing facing : MultiFacing.VALUES) {
                 //move at facing
-                currentPos.move(facing);
+                facing.move(currentPos);
 
                 if(!visitedBlockPos.contains(currentPos)) {
                     IBlockState blockState = this.world.getBlockState(currentPos);
@@ -142,11 +142,11 @@ public class TreeChopTask implements Task {
                 }
 
                 //move back if it wasn't a tree block
-                currentPos.move(facing.getOpposite());
+                facing.getOpposite().move(currentPos);
             }
             //we didn't found any matching block in neighbours - move back
             if (!moveStack.isEmpty()) {
-                currentPos.move(moveStack.pop());
+                moveStack.pop().move(currentPos);
             } else break;
         }
         return validWoodBlocksFound > 0;
@@ -167,6 +167,54 @@ public class TreeChopTask implements Task {
             return 2;
         }
         return 0;
+    }
+
+    private enum MultiFacing {
+        DOWN(1, new Vec3i(0, -1, 0)),
+        UP(0, new Vec3i(0, 1, 0)),
+        NORTH(3, new Vec3i(0, 0, -1)),
+        SOUTH(2, new Vec3i(0, 0, 1)),
+        WEST(5, new Vec3i(-1, 0, 0)),
+        EAST(4, new Vec3i(1, 0, 0)),
+
+        NORTH_DOWN(11, new Vec3i(0, -1, -1)),
+        SOUTH_DOWN(10, new Vec3i(0, -1, 1)),
+        WEST_DOWN(13, new Vec3i(-1, -1, 0)),
+        EAST_DOWN(12, new Vec3i(1, -1, 0)),
+
+        NORTH_UP(7, new Vec3i(0, 1, -1)),
+        SOUTH_UP(6, new Vec3i(0, 1, 1)),
+        WEST_UP(9, new Vec3i(-1, 1, 0)),
+        EAST_UP(8, new Vec3i(1, 1, 0)),
+
+        NORTH_WEST_DOWN(21, new Vec3i(-1, -1, -1)),
+        NORTH_EAST_DOWN(20, new Vec3i(-1, -1, 1)),
+        SOUTH_WEST_DOWN(19, new Vec3i(-1, -1, 1)),
+        SOUTH_EAST_DOWN(18, new Vec3i(1, -1, 1)),
+
+        NORTH_WEST_UP(17, new Vec3i(-1, 1, -1)),
+        NORTH_EAST_UP(16, new Vec3i(1, 1, -1)),
+        SOUTH_WEST_UP(15, new Vec3i(1, 1, -1)),
+        SOUTH_EAST_UP(14, new Vec3i(1, 1, 1));
+
+        private final int oppositeIndex;
+        private final Vec3i direction;
+        private static final MultiFacing[] VALUES = values();
+
+        MultiFacing(int oppositeIndex, Vec3i direction) {
+            this.oppositeIndex = oppositeIndex;
+            this.direction = direction;
+        }
+
+        public void move(MutableBlockPos blockPos) {
+            blockPos.setPos(blockPos.getX() + direction.getX(),
+                blockPos.getY() + direction.getY(),
+                blockPos.getZ() + direction.getZ());
+        }
+
+        public MultiFacing getOpposite() {
+            return VALUES[oppositeIndex];
+        }
     }
 
 }

@@ -20,14 +20,14 @@ public class LargeTurbineWorkableHandler extends FuelRecipeLogic {
 
     private static final int CYCLE_LENGTH = 230;
     private static final int BASE_ROTOR_DAMAGE = 11;
-    private static final int BASE_EU_OUTPUT = 8192;
-    private static final int EU_OUTPUT_BONUS = 8192;
+    private static final int BASE_EU_OUTPUT = 2048;
+    private static final int EU_OUTPUT_BONUS = 6144;
 
     private MetaTileEntityLargeTurbine largeTurbine;
     private int rotorCycleLength = CYCLE_LENGTH;
 
-    public LargeTurbineWorkableHandler(MetaTileEntityLargeTurbine metaTileEntity, FuelRecipeMap recipeMap, Supplier<IEnergyContainer> energyContainer, Supplier<IMultipleTankHandler> fluidTank, long maxVoltage) {
-        super(metaTileEntity, recipeMap, energyContainer, fluidTank, maxVoltage);
+    public LargeTurbineWorkableHandler(MetaTileEntityLargeTurbine metaTileEntity, FuelRecipeMap recipeMap, Supplier<IEnergyContainer> energyContainer, Supplier<IMultipleTankHandler> fluidTank) {
+        super(metaTileEntity, recipeMap, energyContainer, fluidTank, 0L);
         this.largeTurbine = metaTileEntity;
     }
 
@@ -61,10 +61,14 @@ public class LargeTurbineWorkableHandler extends FuelRecipeLogic {
     }
 
     @Override
-    protected int calculateFuelAmount(FuelRecipe currentRecipe) {
+    public long getMaxVoltage() {
         MetaTileEntityRotorHolder rotorHolder = largeTurbine.getAbilities(MetaTileEntityLargeTurbine.ABILITY_ROTOR_HOLDER).get(0);
-        double relativeRotorSpeed = rotorHolder.getRelativeRotorSpeed();
-        return (int) Math.floor(super.calculateFuelAmount(currentRecipe) * (relativeRotorSpeed * relativeRotorSpeed));
+        if (rotorHolder.hasRotorInInventory()) {
+            double rotorEfficiency = rotorHolder.getRotorEfficiency();
+            double totalEnergyOutput = (BASE_EU_OUTPUT + EU_OUTPUT_BONUS * rotorEfficiency);
+            return MathHelper.ceil(totalEnergyOutput);
+        }
+        return BASE_EU_OUTPUT + EU_OUTPUT_BONUS;
     }
 
     @Override

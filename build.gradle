@@ -90,9 +90,8 @@ dependencies {
     deobfCompile "codechicken:CodeChickenLib:${config.minecraft.version}-${config.ccl.version}:deobf"
     deobfCompile "codechicken:ForgeMultipart:${config.minecraft.version}-${config.multipart.version}:deobf"
     deobfCompile "CraftTweaker2:CraftTweaker2-MC${strippedVersion}-Main:${config.crafttweaker.version}"
-    deobfCompile "mezz.jei:jei_${config.minecraft.version}:${config.jei.version}:api"
+    deobfCompile "mezz.jei:jei_${config.minecraft.version}:${config.jei.version}"
     deobfCompile "mcjty.theoneprobe:TheOneProbe-${shortVersion}:${shortVersion}-${config.top.version}"
-    deobfCompile "cofh:ThermalDynamics:${config.minecraft.version}-${config.thermaldynamics.version}:deobf"
 }
 
 sourceCompatibility = "1.8"
@@ -186,7 +185,6 @@ String getBuildNumber() {
     def commits = grgit.log {
         range('c795901d796fba8ce8d3cb87d0172c59f56f3c9b', 'HEAD')
     }
-
     return commits.size()
 }
 

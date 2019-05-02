@@ -39,7 +39,7 @@ public class ToolRenderHandler implements IResourceManagerReloadListener {
         ItemStack itemStack = mc.player.getHeldItem(EnumHand.MAIN_HAND);
         if(itemStack.getItem() instanceof IAOEItem) {
             RayTraceResult rayTraceResult = RayTracer.retrace(mc.player);
-            if(rayTraceResult.typeOfHit == Type.BLOCK) {
+            if(rayTraceResult != null && rayTraceResult.typeOfHit == Type.BLOCK) {
                 List<BlockPos> aoeBlocksToRender = ((IAOEItem) itemStack.getItem()).getAOEBlocks(itemStack, mc.player, rayTraceResult);
                 if(mc.playerController.isHittingBlock) {
                     int rawBreakProgress = (int) (mc.playerController.curBlockDamageMP * 10.0F) - 1;

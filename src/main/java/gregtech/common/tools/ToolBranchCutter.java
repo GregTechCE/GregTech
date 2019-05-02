@@ -2,7 +2,10 @@ package gregtech.common.tools;
 
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 
 public class ToolBranchCutter extends ToolBase {
 
@@ -22,13 +25,12 @@ public class ToolBranchCutter extends ToolBase {
     }
 
     @Override
-    public boolean isGrafter(ItemStack stack) {
-        return true;
+    public float getSaplingModifier(ItemStack stack, World world, EntityPlayer player, BlockPos pos) {
+        return 1.0f;
     }
 
     @Override
     public boolean canMineBlock(IBlockState block, ItemStack stack) {
-        String tool = block.getBlock().getHarvestTool(block);
-        return (tool != null && tool.equals("grafter")) || block.getMaterial() == Material.LEAVES;
+        return block.getMaterial() == Material.LEAVES;
     }
 }
