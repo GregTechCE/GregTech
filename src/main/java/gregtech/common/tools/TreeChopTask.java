@@ -46,6 +46,13 @@ public class TreeChopTask implements Task {
     @Override
     public boolean run() {
         ItemStack itemInMainHand = this.player.getHeldItemMainhand();
+
+        boolean isPlayerNear = player.world == world && currentPos.distanceSq(player.posX, currentPos.getY(), player.posZ) <= 1024;
+        boolean isPlayerConnected = player.connection.netManager.isChannelOpen() && isPlayerNear;
+        if (!isPlayerConnected || itemInMainHand.isEmpty() || !isItemEqual(itemInMainHand)) {
+            return false;
+        }
+
         ToolMetaItem<?> toolMetaItem = (ToolMetaItem<?>) itemStack.getItem();
         MetaToolValueItem toolValueItem = toolMetaItem.getItem(itemStack);
         if (toolValueItem == null) {
@@ -53,11 +60,6 @@ public class TreeChopTask implements Task {
         }
         IToolStats toolStats = toolValueItem.getToolStats();
         int damagePerBlockBreak = toolStats.getToolDamagePerBlockBreak(itemStack);
-        boolean isPlayerNear = player.world == world && currentPos.distanceSq(player.posX, currentPos.getY(), player.posZ) <= 1024;
-        boolean isPlayerConnected = player.connection.netManager.isChannelOpen() && isPlayerNear;
-        if (!isPlayerConnected || itemInMainHand.isEmpty() || !isItemEqual(itemInMainHand)) {
-            return false;
-        }
 
         if(!finishedSearchingBlocks) {
             this.finishedSearchingBlocks = !attemptSearchWoodBlocks() ||
