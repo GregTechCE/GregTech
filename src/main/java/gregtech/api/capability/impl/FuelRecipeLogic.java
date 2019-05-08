@@ -7,6 +7,7 @@ import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.recipes.machines.FuelRecipeMap;
 import gregtech.api.recipes.recipes.FuelRecipe;
 import gregtech.api.util.GTUtility;
+import gregtech.common.ConfigHolder;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.PacketBuffer;
 import net.minecraftforge.common.capabilities.Capability;
@@ -26,6 +27,7 @@ public class FuelRecipeLogic extends MTETrait implements IControllable {
     public final long maxVoltage;
 
     private int recipeDurationLeft;
+    private int recipeIdleTime;
     private long recipeOutputVoltage;
 
     private boolean isActive;
@@ -74,9 +76,11 @@ public class FuelRecipeLogic extends MTETrait implements IControllable {
                         this.wasActiveAndNeedsUpdate = true;
                     }
                 }
+                recipeIdleTime = ConfigHolder.maxIdleTime;
             }
-            if (recipeDurationLeft == 0) {
+            if (recipeDurationLeft == 0 && ++recipeIdleTime > ConfigHolder.maxIdleTime) {
                 tryAcquireNewRecipe();
+                recipeIdleTime = 0;
             }
         }
         if (wasActiveAndNeedsUpdate) {

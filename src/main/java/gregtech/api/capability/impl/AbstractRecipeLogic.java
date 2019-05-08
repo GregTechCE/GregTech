@@ -44,6 +44,7 @@ public abstract class AbstractRecipeLogic extends MTETrait implements IWorkable 
     protected NonNullList<ItemStack> itemOutputs;
     protected final Random random = new Random();
 
+    private int recipeIdleTime;
     private boolean isActive;
     private boolean workingEnabled = true;
     private boolean hasNotEnoughEnergy;
@@ -104,9 +105,11 @@ public abstract class AbstractRecipeLogic extends MTETrait implements IWorkable 
             if (workingEnabled) {
                 if (progressTime > 0) {
                     updateRecipeProgress();
+                    recipeIdleTime = ConfigHolder.maxIdleTime;
                 }
-                if (progressTime == 0) {
+                if (progressTime == 0 && ++recipeIdleTime > ConfigHolder.maxIdleTime) {
                     trySearchNewRecipe();
+                    recipeIdleTime = 0;
                 }
             }
             if (wasActiveAndNeedsUpdate) {
