@@ -58,7 +58,7 @@ public abstract class BlockCustomParticle extends Block implements ICustomPartic
     @Override
     @SideOnly(Side.CLIENT)
     public boolean addRunningEffects(IBlockState state, World world, BlockPos pos, Entity entity) {
-        if(world.isRemote) {
+        if (world.isRemote) {
             TextureAtlasSprite atlasSprite = getParticleTexture(world, pos);
             ParticleHandlerUtil.addBlockRunningEffects(world, entity, atlasSprite);
         }

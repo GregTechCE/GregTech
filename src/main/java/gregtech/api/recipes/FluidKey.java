@@ -1,7 +1,6 @@
 package gregtech.api.recipes;
 
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 
 import java.util.Objects;

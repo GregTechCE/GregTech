@@ -59,7 +59,7 @@ public class MachineItemBlock extends ItemBlock {
     @Override
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
         MetaTileEntity metaTileEntity = getMetaTileEntity(stack);
-        if(metaTileEntity == null) return;
+        if (metaTileEntity == null) return;
 
         //item specific tooltip like: gregtech.machine.lathe.lv.tooltip
         String tooltipLocale = metaTileEntity.getMetaName() + ".tooltip";
@@ -81,12 +81,12 @@ public class MachineItemBlock extends ItemBlock {
         metaTileEntity.addInformation(stack, worldIn, tooltip, flagIn.isAdvanced());
 
         ResourceLocation metaTileEntityId = metaTileEntity.metaTileEntityId;
-        if(!metaTileEntityId.getResourceDomain().equals(GTValues.MODID)) {
+        if (!metaTileEntityId.getResourceDomain().equals(GTValues.MODID)) {
             ModContainer modContainer = Loader.instance().getIndexedModList().get(metaTileEntityId.getResourceDomain());
             String modName = modContainer == null ? metaTileEntityId.getResourceDomain() : modContainer.getName();
             tooltip.add(I18n.format("gregtech.machine.tooltip.added_by", modName));
         }
-        if(flagIn.isAdvanced()) {
+        if (flagIn.isAdvanced()) {
             tooltip.add(String.format("MetaTileEntity Id: %s", metaTileEntity.metaTileEntityId.toString()));
         }
     }

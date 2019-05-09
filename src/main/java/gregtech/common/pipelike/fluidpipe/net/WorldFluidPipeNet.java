@@ -10,7 +10,7 @@ public class WorldFluidPipeNet extends WorldPipeNet<FluidPipeProperties, FluidPi
 
     public static WorldFluidPipeNet getWorldPipeNet(World world) {
         WorldFluidPipeNet netWorldData = (WorldFluidPipeNet) world.loadData(WorldFluidPipeNet.class, DATA_ID);
-        if(netWorldData == null) {
+        if (netWorldData == null) {
             netWorldData = new WorldFluidPipeNet(DATA_ID);
             world.setData(DATA_ID, netWorldData);
         }

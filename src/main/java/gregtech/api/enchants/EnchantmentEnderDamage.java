@@ -2,27 +2,29 @@ package gregtech.api.enchants;
 
 import gregtech.api.GTValues;
 import net.minecraft.enchantment.Enchantment;
-import net.minecraft.enchantment.EnchantmentDamage;
+import net.minecraft.enchantment.EnumEnchantmentType;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.boss.EntityDragon;
 import net.minecraft.entity.monster.EntityEnderman;
 import net.minecraft.init.MobEffects;
+import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.event.RegistryEvent;
 
-public class EnchantmentEnderDamage extends EnchantmentDamage {
+public class EnchantmentEnderDamage extends Enchantment {
 
     public static final EnchantmentEnderDamage INSTANCE = new EnchantmentEnderDamage();
 
     private EnchantmentEnderDamage() {
-        super(Rarity.UNCOMMON, 2);
+        super(Rarity.UNCOMMON, EnumEnchantmentType.WEAPON, new EntityEquipmentSlot[]{EntityEquipmentSlot.MAINHAND});
     }
 
     public void register(RegistryEvent.Register<Enchantment> event) {
         this.setRegistryName(new ResourceLocation(GTValues.MODID, "disjunction"));
+        setName("disjunction");
         event.getRegistry().register(this);
     }
 

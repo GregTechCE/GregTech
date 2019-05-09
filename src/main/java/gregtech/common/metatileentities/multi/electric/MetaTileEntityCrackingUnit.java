@@ -48,9 +48,15 @@ public class MetaTileEntityCrackingUnit extends RecipeMapMultiblockController {
     }
 
     @Override
-    public ICubeRenderer getBaseTexture(IMultiblockPart sourcePart) { return Textures.CLEAN_STAINLESS_STEEL_CASING; }
+    public ICubeRenderer getBaseTexture(IMultiblockPart sourcePart) {
+        return Textures.CLEAN_STAINLESS_STEEL_CASING;
+    }
 
-    protected IBlockState getCoilState() { return MetaBlocks.WIRE_COIL.getState(CoilType.CUPRONICKEL);}
+    protected IBlockState getCoilState() {
+        return MetaBlocks.WIRE_COIL.getState(CoilType.CUPRONICKEL);
+    }
 
-    protected IBlockState getCasingState() {  return MetaBlocks.METAL_CASING.getState(BlockMetalCasing.MetalCasingType.STAINLESS_CLEAN); }
+    protected IBlockState getCasingState() {
+        return MetaBlocks.METAL_CASING.getState(BlockMetalCasing.MetalCasingType.STAINLESS_CLEAN);
+    }
 }

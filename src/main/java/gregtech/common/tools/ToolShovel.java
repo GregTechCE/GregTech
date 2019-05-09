@@ -13,7 +13,6 @@ public class ToolShovel extends ToolBase {
         return enchantment.type.canEnchantItem(Items.IRON_SHOVEL);
     }
 
-
     @Override
     public int getToolDamagePerBlockBreak(ItemStack stack) {
         return 1;
@@ -30,7 +29,12 @@ public class ToolShovel extends ToolBase {
     }
 
     @Override
-    public boolean isMinableBlock(IBlockState block, ItemStack stack) {
+    public float getDigSpeedMultiplier(ItemStack stack) {
+        return 1.44f;
+    }
+
+    @Override
+    public boolean canMineBlock(IBlockState block, ItemStack stack) {
         String tool = block.getBlock().getHarvestTool(block);
         return (tool != null && tool.equals("shovel")) ||
             block.getMaterial() == Material.SAND ||

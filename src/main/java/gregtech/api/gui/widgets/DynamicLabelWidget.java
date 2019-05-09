@@ -1,6 +1,5 @@
 package gregtech.api.gui.widgets;
 
-import gregtech.api.gui.Widget;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraftforge.fml.relauncher.Side;
@@ -14,10 +13,7 @@ import java.util.function.Supplier;
  * Note that this DOESN'T DO SYNC and calls getter on client side only
  * if you're looking for server-side controlled text field, see {@link gregtech.api.gui.widgets.AdvancedTextWidget}
  */
-public class DynamicLabelWidget extends Widget {
-
-    protected int xPosition;
-    protected int yPosition;
+public class DynamicLabelWidget extends AbstractPositionedWidget {
 
     protected Supplier<String> textSupplier;
     private int color;
@@ -27,9 +23,7 @@ public class DynamicLabelWidget extends Widget {
     }
 
     public DynamicLabelWidget(int xPosition, int yPosition, Supplier<String> text, int color) {
-        super();
-        this.xPosition = xPosition;
-        this.yPosition = yPosition;
+        super(xPosition, yPosition);
         this.textSupplier = text;
         this.color = color;
     }
@@ -39,7 +33,7 @@ public class DynamicLabelWidget extends Widget {
     public void drawInForeground(int mouseX, int mouseY) {
         String[] split = textSupplier.get().split("\n");
         FontRenderer fontRenderer = Minecraft.getMinecraft().fontRenderer;
-        for(int i = 0; i < split.length; i++) {
+        for (int i = 0; i < split.length; i++) {
             fontRenderer.drawString(split[i], this.xPosition, this.yPosition + (i * (fontRenderer.FONT_HEIGHT + 2)), color);
         }
     }

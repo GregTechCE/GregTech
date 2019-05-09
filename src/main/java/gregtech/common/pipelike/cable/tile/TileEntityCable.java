@@ -15,7 +15,7 @@ public class TileEntityCable extends TileEntityPipeBase<Insulation, WireProperti
     private IEnergyContainer energyContainer;
 
     private IEnergyContainer getEnergyContainer() {
-        if(energyContainer == null) {
+        if (energyContainer == null) {
             energyContainer = new CableEnergyContainer(this);
         }
         return energyContainer;
@@ -34,7 +34,7 @@ public class TileEntityCable extends TileEntityPipeBase<Insulation, WireProperti
     @Nullable
     @Override
     public <T> T getCapabilityInternal(Capability<T> capability, @Nullable EnumFacing facing) {
-        if(capability == GregtechCapabilities.CAPABILITY_ENERGY_CONTAINER) {
+        if (capability == GregtechCapabilities.CAPABILITY_ENERGY_CONTAINER) {
             return GregtechCapabilities.CAPABILITY_ENERGY_CONTAINER.cast(getEnergyContainer());
         }
         return super.getCapabilityInternal(capability, facing);

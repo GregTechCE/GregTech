@@ -76,10 +76,10 @@ public class PlateGenerator extends ShapeGenerator {
         this.maxDepth = depth[1];
         this.minHeight = height[0];
         this.maxHeight = height[1];
-        if(object.has("floor_sharpness")) {
+        if (object.has("floor_sharpness")) {
             this.floorSharpness = object.get("floor_sharpness").getAsFloat();
         } else this.floorSharpness = 0.3f;
-        if(object.has("roof_sharpness")) {
+        if (object.has("roof_sharpness")) {
             this.roofSharpness = object.get("roof_sharpness").getAsFloat();
         } else this.roofSharpness = 0.7f;
     }
@@ -96,15 +96,15 @@ public class PlateGenerator extends ShapeGenerator {
         int depth = (minDepth == maxDepth ? maxDepth : minDepth + gridRandom.nextInt(maxDepth - minDepth)) / 2;
         int height = (minHeight == maxHeight ? maxHeight : minHeight + gridRandom.nextInt(maxHeight - minHeight)) / 2;
         boolean rotate = gridRandom.nextBoolean();
-        for(int x = -length; x <= length; x++) {
-            for(int z = -depth; z <= depth; z++) {
+        for (int x = -length; x <= length; x++) {
+            for (int z = -depth; z <= depth; z++) {
                 boolean hasFloorSub = floorSharpness > gridRandom.nextFloat();
                 boolean hasRoofSub = roofSharpness > gridRandom.nextFloat();
-                for(int y = -height; y <= height; y++) {
-                    if(hasRoofSub && (y == height || gridRandom.nextBoolean())) {
+                for (int y = -height; y <= height; y++) {
+                    if (hasRoofSub && (y == height || gridRandom.nextBoolean())) {
                         continue;
                     } else hasRoofSub = false;
-                    if(hasFloorSub && y == -height)
+                    if (hasFloorSub && y == -height)
                         continue;
                     relativeBlockAccess.generateBlock(rotate ? z : x, y, rotate ? x : z);
                 }

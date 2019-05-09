@@ -19,7 +19,7 @@ import java.util.stream.Collectors;
 @ZenClass("mods.gregtech.recipe.RecipeBuilder")
 @ZenRegister
 public class CTRecipeBuilder {
-    
+
     private final RecipeBuilder<?> backingBuilder;
 
     public CTRecipeBuilder(RecipeBuilder<?> backingBuilder) {
@@ -41,18 +41,6 @@ public class CTRecipeBuilder {
     @ZenMethod
     public CTRecipeBuilder hidden() {
         this.backingBuilder.hidden();
-        return this;
-    }
-
-    @ZenMethod
-    public CTRecipeBuilder cannotBeBuffered() {
-        this.backingBuilder.cannotBeBuffered();
-        return this;
-    }
-
-    @ZenMethod
-    public CTRecipeBuilder notOptimized() {
-        this.backingBuilder.notOptimized();
         return this;
     }
 
@@ -94,8 +82,8 @@ public class CTRecipeBuilder {
     }
 
     @ZenMethod
-    public CTRecipeBuilder chancedOutput(IIngredient ingredient, int chanceValue) {
-        this.backingBuilder.chancedOutput(CraftTweakerMC.getItemStack(ingredient.getItems().get(0)), chanceValue);
+    public CTRecipeBuilder chancedOutput(IItemStack outputStack, int chanceValue, int tierChanceBoost) {
+        this.backingBuilder.chancedOutput(CraftTweakerMC.getItemStack(outputStack), chanceValue, tierChanceBoost);
         return this;
     }
 
@@ -110,7 +98,7 @@ public class CTRecipeBuilder {
     @ZenMethod
     public CTRecipeBuilder property(String key, int value) {
         boolean applied = this.backingBuilder.applyProperty(key, value);
-        if(!applied) {
+        if (!applied) {
             throw new IllegalArgumentException("Property " +
                 key + " cannot be applied to recipe type " +
                 backingBuilder.getClass().getSimpleName());

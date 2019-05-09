@@ -5,7 +5,6 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.monster.EntityCreeper;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
-import net.minecraft.item.ItemFlintAndSteel;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
@@ -37,7 +36,7 @@ public class LighterBehaviour extends AbstractUsableBehaviour {
         if (!player.canPlayerEdit(pos, side, stack)) {
             return EnumActionResult.FAIL;
         }
-        if(!tryIgniteBlock(world, pos.offset(side))) {
+        if (!tryIgniteBlock(world, pos.offset(side))) {
             return EnumActionResult.PASS;
         }
         useItemDurability(player, hand, stack, ItemStack.EMPTY);
@@ -45,7 +44,7 @@ public class LighterBehaviour extends AbstractUsableBehaviour {
     }
 
     public boolean tryIgniteBlock(World world, BlockPos pos) {
-        if(world.isAirBlock(pos)) {
+        if (world.isAirBlock(pos)) {
             world.setBlockState(pos, Blocks.FIRE.getDefaultState());
             return true;
         }
@@ -55,7 +54,7 @@ public class LighterBehaviour extends AbstractUsableBehaviour {
     @Override
     public void addInformation(ItemStack itemStack, List<String> lines) {
         lines.add(I18n.format("behaviour.lighter.tooltip"));
-        if(totalUses > 1) {
+        if (totalUses > 1) {
             //do not add total uses amount for single-use items like matches
             int fuelAmount = getUsesLeft(itemStack);
             lines.add(I18n.format("behaviour.lighter.uses", fuelAmount));

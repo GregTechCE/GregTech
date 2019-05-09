@@ -17,11 +17,9 @@ import codechicken.lib.vec.uv.IconTransformation;
 import gregtech.api.GTValues;
 import gregtech.api.pipenet.tile.IPipeTile;
 import gregtech.api.unification.material.MaterialIconSet;
-import gregtech.api.unification.material.MaterialIconType;
 import gregtech.api.unification.material.type.Material;
 import gregtech.api.util.GTLog;
 import gregtech.api.util.GTUtility;
-import gregtech.common.blocks.MetaBlocks;
 import gregtech.common.pipelike.cable.BlockCable;
 import gregtech.common.pipelike.cable.Insulation;
 import gregtech.common.pipelike.cable.ItemBlockCable;
@@ -52,10 +50,6 @@ import org.apache.commons.lang3.tuple.Pair;
 import org.lwjgl.opengl.GL11;
 
 import javax.vecmath.Matrix4f;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
 
 import static gregtech.api.render.MetaTileEntityRenderer.BLOCK_TRANSFORMS;
 
@@ -67,29 +61,22 @@ public class CableRenderer implements ICCBlockRenderer, IItemRenderer {
     private static ThreadLocal<BlockFace> blockFaces = ThreadLocal.withInitial(BlockFace::new);
 
     private TextureAtlasSprite[] insulationTextures = new TextureAtlasSprite[6];
-    private Set<MaterialIconSet> generatedSets = new HashSet<>();
-    private Map<MaterialIconSet, TextureAtlasSprite> wireTextures = new HashMap<>();
+    private TextureAtlasSprite wireTexture;
 
     public static void preInit() {
         BLOCK_RENDER_TYPE = BlockRenderingRegistry.createRenderType("gt_cable");
         BlockRenderingRegistry.registerRenderer(BLOCK_RENDER_TYPE, INSTANCE);
         MinecraftForge.EVENT_BUS.register(INSTANCE);
         TextureUtils.addIconRegister(INSTANCE::registerIcons);
-        for(Material material : MetaBlocks.CABLE.getEnabledMaterials()) {
-            MaterialIconSet iconSet = material.materialIconSet;
-            INSTANCE.generatedSets.add(iconSet);
-        }
     }
 
     public void registerIcons(TextureMap map) {
         GTLog.logger.info("Registering cable textures.");
-        for(int i = 0; i < insulationTextures.length; i++) {
-            ResourceLocation location = new ResourceLocation(GTValues.MODID, "blocks/insulation/insulation_" + i);
+        ResourceLocation wireLocation = new ResourceLocation(GTValues.MODID, "blocks/cable/wire");
+        this.wireTexture = map.registerSprite(wireLocation);
+        for (int i = 0; i < insulationTextures.length; i++) {
+            ResourceLocation location = new ResourceLocation(GTValues.MODID, "blocks/cable/insulation_" + i);
             this.insulationTextures[i] = map.registerSprite(location);
-        }
-        for(MaterialIconSet iconSet : generatedSets) {
-            ResourceLocation location = MaterialIconType.wire.getBlockPath(iconSet);
-            this.wireTextures.put(iconSet, map.registerSprite(location));
         }
     }
 
@@ -109,7 +96,7 @@ public class CableRenderer implements ICCBlockRenderer, IItemRenderer {
         BlockCable blockCable = (BlockCable) ((ItemBlockCable) stack.getItem()).getBlock();
         Insulation insulation = blockCable.getItemPipeType(stack);
         Material material = blockCable.getItemMaterial(stack);
-        if(insulation != null && material != null) {
+        if (insulation != null && material != null) {
             renderCableBlock(material, insulation, IPipeTile.DEFAULT_INSULATION_COLOR, renderState, new IVertexOperation[0],
                 1 << EnumFacing.SOUTH.getIndex() | 1 << EnumFacing.NORTH.getIndex() |
                     1 << (6 + EnumFacing.SOUTH.getIndex()) | 1 << (6 + EnumFacing.NORTH.getIndex()));
@@ -128,14 +115,14 @@ public class CableRenderer implements ICCBlockRenderer, IItemRenderer {
 
         BlockCable blockCable = (BlockCable) state.getBlock();
         IPipeTile<Insulation, WireProperties> tileEntityCable = blockCable.getPipeTileEntity(world, pos);
-        if(tileEntityCable == null) return false;
+        if (tileEntityCable == null) return false;
         int paintingColor = tileEntityCable.getInsulationColor();
         int connectedSidesMask = blockCable.getActualConnections(tileEntityCable, world);
         Insulation insulation = tileEntityCable.getPipeType();
         Material material = tileEntityCable.getPipeMaterial();
-        if(insulation != null && material != null) {
+        if (insulation != null && material != null) {
             renderCableBlock(material, insulation, paintingColor, renderState, pipeline, connectedSidesMask);
-            tileEntityCable.getCoverableImplementation().renderCovers(renderState, new Matrix4().translate(pos.getX(), pos.getY(), pos.getZ()), new IVertexOperation[0]);
+            tileEntityCable.getCoverableImplementation().renderCovers(renderState, new Matrix4().translate(pos.getX(), pos.getY(), pos.getZ()));
         }
         return true;
     }
@@ -145,11 +132,11 @@ public class CableRenderer implements ICCBlockRenderer, IItemRenderer {
         int wireColor = GTUtility.convertRGBtoOpaqueRGBA_CL(material.materialRGB);
         float thickness = insulation1.thickness;
 
-        IVertexOperation[] wire = ArrayUtils.addAll(pipeline, new IconTransformation(wireTextures.get(iconSet)), new ColourMultiplier(wireColor));
+        IVertexOperation[] wire = ArrayUtils.addAll(pipeline, new IconTransformation(wireTexture), new ColourMultiplier(wireColor));
         IVertexOperation[] overlays = wire;
         IVertexOperation[] insulation = wire;
 
-        if(insulation1.insulationLevel != -1) {
+        if (insulation1.insulationLevel != -1) {
             int insulationColor = GTUtility.convertRGBtoOpaqueRGBA_CL(insulationColor1);
             ColourMultiplier multiplier = new ColourMultiplier(insulationColor);
             insulation = ArrayUtils.addAll(pipeline, new IconTransformation(insulationTextures[5]), multiplier);
@@ -157,10 +144,10 @@ public class CableRenderer implements ICCBlockRenderer, IItemRenderer {
         }
 
         Cuboid6 cuboid6 = BlockCable.getSideBox(null, thickness);
-        for(EnumFacing renderedSide : EnumFacing.VALUES) {
-            if((connectMask & 1 << renderedSide.getIndex()) == 0) {
+        for (EnumFacing renderedSide : EnumFacing.VALUES) {
+            if ((connectMask & 1 << renderedSide.getIndex()) == 0) {
                 int oppositeIndex = renderedSide.getOpposite().getIndex();
-                if((connectMask & 1 << oppositeIndex) > 0 && (connectMask & ~(1 << oppositeIndex)) == 0) {
+                if ((connectMask & 1 << oppositeIndex) > 0 && (connectMask & ~(1 << oppositeIndex)) == 0) {
                     //if there is something on opposite side, render overlay + wire
                     renderCableSide(state, wire, renderedSide, cuboid6);
                     renderCableSide(state, overlays, renderedSide, cuboid6);
@@ -179,16 +166,16 @@ public class CableRenderer implements ICCBlockRenderer, IItemRenderer {
     }
 
     private static void renderCableCube(int connections, CCRenderState renderState, IVertexOperation[] pipeline, IVertexOperation[] wire, IVertexOperation[] overlays, EnumFacing side, float thickness) {
-        if((connections & 1 << side.getIndex()) > 0) {
+        if ((connections & 1 << side.getIndex()) > 0) {
             boolean renderFrontSide = (connections & 1 << (6 + side.getIndex())) > 0;
             Cuboid6 cuboid6 = BlockCable.getSideBox(side, thickness);
-            for(EnumFacing renderedSide : EnumFacing.VALUES) {
-                if(renderedSide == side) {
-                    if(renderFrontSide) {
+            for (EnumFacing renderedSide : EnumFacing.VALUES) {
+                if (renderedSide == side) {
+                    if (renderFrontSide) {
                         renderCableSide(renderState, wire, renderedSide, cuboid6);
                         renderCableSide(renderState, overlays, renderedSide, cuboid6);
                     }
-                } else if(renderedSide != side.getOpposite()) {
+                } else if (renderedSide != side.getOpposite()) {
                     renderCableSide(renderState, pipeline, renderedSide, cuboid6);
                 }
             }
@@ -214,19 +201,19 @@ public class CableRenderer implements ICCBlockRenderer, IItemRenderer {
         renderState.setPipeline(new Vector3(new Vec3d(pos)).translation(), new IconTransformation(sprite));
         BlockCable blockCable = (BlockCable) state.getBlock();
         IPipeTile<Insulation, WireProperties> tileEntityCable = blockCable.getPipeTileEntity(world, pos);
-        if(tileEntityCable == null) {
+        if (tileEntityCable == null) {
             return;
         }
         Insulation insulation = tileEntityCable.getPipeType();
-        if(insulation == null) {
+        if (insulation == null) {
             return;
         }
         float thickness = insulation.getThickness();
         int connectedSidesMask = blockCable.getActualConnections(tileEntityCable, world);
         Cuboid6 baseBox = BlockCable.getSideBox(null, thickness);
         BlockRenderer.renderCuboid(renderState, baseBox, 0);
-        for(EnumFacing renderSide : EnumFacing.VALUES) {
-            if((connectedSidesMask & (1 << renderSide.getIndex())) > 0) {
+        for (EnumFacing renderSide : EnumFacing.VALUES) {
+            if ((connectedSidesMask & (1 << renderSide.getIndex())) > 0) {
                 Cuboid6 sideBox = BlockCable.getSideBox(renderSide, thickness);
                 BlockRenderer.renderCuboid(renderState, sideBox, 0);
             }
@@ -244,7 +231,7 @@ public class CableRenderer implements ICCBlockRenderer, IItemRenderer {
 
     @Override
     public Pair<? extends IBakedModel, Matrix4f> handlePerspective(TransformType cameraTransformType) {
-        if(BLOCK_TRANSFORMS.containsKey(cameraTransformType)) {
+        if (BLOCK_TRANSFORMS.containsKey(cameraTransformType)) {
             return Pair.of(this, BLOCK_TRANSFORMS.get(cameraTransformType).getMatrix());
         }
         return Pair.of(this, null);
@@ -271,14 +258,14 @@ public class CableRenderer implements ICCBlockRenderer, IItemRenderer {
     }
 
     public TextureAtlasSprite getParticleTexture(IPipeTile<Insulation, WireProperties> tileEntity) {
-        if(tileEntity == null) {
+        if (tileEntity == null) {
             return TextureUtils.getMissingSprite();
         }
         Material material = tileEntity.getPipeMaterial();
         Insulation insulation = tileEntity.getPipeType();
-        if(material == null || insulation == null) {
+        if (material == null || insulation == null) {
             return TextureUtils.getMissingSprite();
         }
-        return insulation.insulationLevel > -1 ? insulationTextures[5] : wireTextures.get(material.materialIconSet);
+        return insulation.insulationLevel > -1 ? insulationTextures[5] : wireTexture;
     }
 }

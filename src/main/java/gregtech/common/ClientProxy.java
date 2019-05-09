@@ -1,10 +1,12 @@
 package gregtech.common;
 
 import codechicken.lib.texture.TextureUtils;
+import codechicken.lib.util.ResourceUtils;
 import com.mojang.authlib.minecraft.MinecraftProfileTexture.Type;
 import com.mojang.realmsclient.gui.ChatFormatting;
 import gregtech.api.GTValues;
 import gregtech.api.render.MetaTileEntityRenderer;
+import gregtech.api.render.ToolRenderHandler;
 import gregtech.api.unification.OreDictUnifier;
 import gregtech.api.unification.material.type.Material;
 import gregtech.api.unification.stack.UnificationEntry;
@@ -32,6 +34,7 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.biome.BiomeColorHelper;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.client.event.RenderPlayerEvent;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
@@ -88,11 +91,11 @@ public class ClientProxy extends CommonProxy {
         state.getValue(BlockColored.COLOR).colorValue;
 
     public static final IBlockColor SURFACE_ROCK_COLOR = (IBlockState state, IBlockAccess worldIn, BlockPos pos, int tintIndex) -> {
-        if(tintIndex == 1) {
-            if(state.getBlock() instanceof BlockSurfaceRock) {
+        if (tintIndex == 1) {
+            if (state.getBlock() instanceof BlockSurfaceRock) {
                 BlockSurfaceRock surfaceRock = (BlockSurfaceRock) state.getBlock();
                 return state.getValue(surfaceRock.materialProperty).materialRGB;
-            } else if(state.getBlock() instanceof BlockSurfaceRockFlooded) {
+            } else if (state.getBlock() instanceof BlockSurfaceRockFlooded) {
                 BlockSurfaceRockFlooded surfaceRock = (BlockSurfaceRockFlooded) state.getBlock();
                 return state.getValue(surfaceRock.materialProperty).materialRGB;
             } else return 0xFFFFFF;
@@ -110,6 +113,7 @@ public class ClientProxy extends CommonProxy {
         StoneRenderer.preInit();
         MetaEntities.initRenderers();
         TextureUtils.addIconRegister(MetaFluids::registerSprites);
+        MinecraftForge.EVENT_BUS.register(ToolRenderHandler.INSTANCE);
     }
 
     @Override
@@ -122,6 +126,7 @@ public class ClientProxy extends CommonProxy {
     public void onPostLoad() {
         super.onPostLoad();
         MetaTileEntityRenderer.postInit();
+        ResourceUtils.registerReloadListener(ToolRenderHandler.INSTANCE);
         startCapeLoadingThread();
     }
 
@@ -140,11 +145,11 @@ public class ClientProxy extends CommonProxy {
     @SubscribeEvent
     public static void addMaterialFormulaHandler(ItemTooltipEvent event) {
         ItemStack itemStack = event.getItemStack();
-        if(!(itemStack.getItem() instanceof ItemBlock)) {
+        if (!(itemStack.getItem() instanceof ItemBlock)) {
             UnificationEntry unificationEntry = OreDictUnifier.getUnificationEntry(itemStack);
-            if(unificationEntry != null && unificationEntry.material != null) {
+            if (unificationEntry != null && unificationEntry.material != null) {
                 String formula = unificationEntry.material.chemicalFormula;
-                if(formula != null && !formula.isEmpty() && !formula.equals("?")) {
+                if (formula != null && !formula.isEmpty() && !formula.equals("?")) {
                     event.getToolTip().add(1, ChatFormatting.GRAY.toString() + unificationEntry.material.chemicalFormula);
                 }
             }
@@ -207,7 +212,7 @@ public class ClientProxy extends CommonProxy {
     @SubscribeEvent
     public static void onPlayerRender(RenderPlayerEvent.Pre event) {
         AbstractClientPlayer clientPlayer = (AbstractClientPlayer) event.getEntityPlayer();
-        if(capeHoldersUUIDs.contains(clientPlayer.getUniqueID()) && clientPlayer.hasPlayerInfo() && clientPlayer.getLocationCape() == null) {
+        if (capeHoldersUUIDs.contains(clientPlayer.getUniqueID()) && clientPlayer.hasPlayerInfo() && clientPlayer.getLocationCape() == null) {
             NetworkPlayerInfo playerInfo = ObfuscationReflectionHelper.getPrivateValue(AbstractClientPlayer.class, clientPlayer, 0);
             Map<Type, ResourceLocation> playerTextures = ObfuscationReflectionHelper.getPrivateValue(NetworkPlayerInfo.class, playerInfo, 1);
             playerTextures.put(Type.CAPE, GREGTECH_CAPE_TEXTURE);

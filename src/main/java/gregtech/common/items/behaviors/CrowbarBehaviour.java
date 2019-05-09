@@ -1,6 +1,6 @@
 package gregtech.common.items.behaviors;
 
-import gregtech.api.capability.GregtechCapabilities;
+import gregtech.api.capability.GregtechTileCapabilities;
 import gregtech.api.cover.ICoverable;
 import gregtech.api.items.metaitem.stats.IItemBehaviour;
 import gregtech.api.util.GTUtility;
@@ -29,18 +29,18 @@ public class CrowbarBehaviour implements IItemBehaviour {
         ItemStack stack = player.getHeldItem(hand);
         IBlockState blockState = world.getBlockState(blockPos);
         if (GTUtility.doDamageItem(stack, cost, true)) {
-            if(blockState.getBlock() instanceof BlockRailBase) {
-                if(world.isRemote) {
+            if (blockState.getBlock() instanceof BlockRailBase) {
+                if (world.isRemote) {
                     //always return success on client side
                     return EnumActionResult.SUCCESS;
-                } else if(player.isSneaking()) {
-                    if(tryBreakRailBlock(blockState, world, blockPos, player)) {
+                } else if (player.isSneaking()) {
+                    if (tryBreakRailBlock(blockState, world, blockPos, player)) {
                         GTUtility.doDamageItem(stack, cost, false);
                         return EnumActionResult.SUCCESS;
                     }
                     return EnumActionResult.FAIL;
                 } else {
-                    if(tryRotateRailBlock(blockState, world, blockPos)) {
+                    if (tryRotateRailBlock(blockState, world, blockPos)) {
                         GTUtility.doDamageItem(stack, cost, false);
                         return EnumActionResult.SUCCESS;
                     }
@@ -48,10 +48,10 @@ public class CrowbarBehaviour implements IItemBehaviour {
                 }
             }
             TileEntity tileEntity = world.getTileEntity(blockPos);
-            ICoverable coverable = tileEntity == null ? null : tileEntity.getCapability(GregtechCapabilities.CAPABILITY_COVERABLE, null);
+            ICoverable coverable = tileEntity == null ? null : tileEntity.getCapability(GregtechTileCapabilities.CAPABILITY_COVERABLE, null);
             EnumFacing coverSide = coverable == null ? null : ICoverable.rayTraceCoverableSide(coverable, player);
-            if(coverSide != null && coverable.getCoverAtSide(coverSide) != null) {
-                if(world.isRemote) {
+            if (coverSide != null && coverable.getCoverAtSide(coverSide) != null) {
+                if (world.isRemote) {
                     //always return success on client side
                     return EnumActionResult.SUCCESS;
                 }

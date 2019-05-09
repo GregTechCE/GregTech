@@ -49,10 +49,10 @@ public class TileEntityFluidPipe extends TileEntityPipeBase<FluidPipeType, Fluid
 
     public static void setNeighboursToFire(World world, BlockPos selfPos) {
         for (EnumFacing side : EnumFacing.VALUES) {
-            if(!random.nextBoolean()) continue;
+            if (!random.nextBoolean()) continue;
             BlockPos blockPos = selfPos.offset(side);
             IBlockState blockState = world.getBlockState(blockPos);
-            if(blockState.getBlock().isAir(blockState, world, blockPos) ||
+            if (blockState.getBlock().isAir(blockState, world, blockPos) ||
                 blockState.getBlock().isFlammable(world, blockPos, side.getOpposite())) {
                 world.setBlockState(blockPos, Blocks.FIRE.getDefaultState());
             }
@@ -60,7 +60,7 @@ public class TileEntityFluidPipe extends TileEntityPipeBase<FluidPipeType, Fluid
     }
 
     public static void spawnParticles(World worldIn, BlockPos pos, EnumFacing direction, EnumParticleTypes particleType, int particleCount, Random rand) {
-        for(int i = 0; i < particleCount; i++) {
+        for (int i = 0; i < particleCount; i++) {
             worldIn.spawnParticle(particleType,
                 pos.getX() + 0.5 - direction.getFrontOffsetX() / 1.8,
                 pos.getY() + 0.5 - direction.getFrontOffsetY() / 1.8,

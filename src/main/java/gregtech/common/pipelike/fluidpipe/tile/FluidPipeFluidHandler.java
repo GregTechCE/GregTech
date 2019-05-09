@@ -55,12 +55,12 @@ public class FluidPipeFluidHandler implements IFluidHandler {
 
     protected FluidPipeNet getFluidPipeNet() {
         FluidPipeNet currentPipeNet = this.currentPipeNet.get();
-        if(currentPipeNet != null && currentPipeNet.isValid() &&
+        if (currentPipeNet != null && currentPipeNet.isValid() &&
             currentPipeNet.containsNode(pipeTile.getPipePos()))
             return currentPipeNet; //if current net is valid and does contain position, return it
         WorldFluidPipeNet worldFluidPipeNet = (WorldFluidPipeNet) pipeTile.getPipeBlock().getWorldPipeNet(pipeTile.getPipeWorld());
         currentPipeNet = worldFluidPipeNet.getNetFromPos(pipeTile.getPipePos());
-        if(currentPipeNet != null) {
+        if (currentPipeNet != null) {
             this.currentPipeNet = new WeakReference<>(currentPipeNet);
         }
         return currentPipeNet;

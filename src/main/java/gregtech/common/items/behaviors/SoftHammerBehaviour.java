@@ -1,7 +1,7 @@
 package gregtech.common.items.behaviors;
 
-import gregtech.api.capability.GregtechCapabilities;
-import gregtech.api.capability.IWorkable;
+import gregtech.api.capability.GregtechTileCapabilities;
+import gregtech.api.capability.IControllable;
 import gregtech.api.items.metaitem.stats.IItemBehaviour;
 import gregtech.api.util.GTUtility;
 import net.minecraft.client.resources.I18n;
@@ -32,13 +32,13 @@ public class SoftHammerBehaviour implements IItemBehaviour {
         ItemStack stack = player.getHeldItem(hand);
 
         TileEntity tileEntity = world.getTileEntity(pos);
-        if(tileEntity != null) {
-            IWorkable workable = tileEntity.getCapability(GregtechCapabilities.CAPABILITY_WORKABLE, null);
-            if (workable != null) {
-                if (workable.isWorkingEnabled()) {
-                    workable.setWorkingEnabled(false);
+        if (tileEntity != null) {
+            IControllable controllable = tileEntity.getCapability(GregtechTileCapabilities.CAPABILITY_CONTROLLABLE, side);
+            if (controllable != null) {
+                if (controllable.isWorkingEnabled()) {
+                    controllable.setWorkingEnabled(false);
                 } else {
-                    workable.setWorkingEnabled(true);
+                    controllable.setWorkingEnabled(true);
                 }
                 GTUtility.doDamageItem(stack, cost, false);
                 return EnumActionResult.SUCCESS;

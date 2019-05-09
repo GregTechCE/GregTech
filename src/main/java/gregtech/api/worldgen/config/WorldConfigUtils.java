@@ -26,19 +26,19 @@ public class WorldConfigUtils {
         JsonArray predicateArray = element.getAsJsonArray();
         ArrayList<Predicate<WorldProvider>> allPredicates = new ArrayList<>();
 
-        for(JsonElement worldPredicate : predicateArray) {
+        for (JsonElement worldPredicate : predicateArray) {
             String stringValue = worldPredicate.getAsString();
-            if(stringValue.equals("is_surface_world")) {
+            if (stringValue.equals("is_surface_world")) {
                 allPredicates.add(WorldProvider::isSurfaceWorld);
                 continue;
-            } else if(stringValue.equals("is_nether")) {
+            } else if (stringValue.equals("is_nether")) {
                 allPredicates.add(WorldProvider::isNether);
                 continue;
             }
             Function<WorldProvider, String> stringSupplier;
-            if(stringValue.startsWith("dimension_id:")) {
+            if (stringValue.startsWith("dimension_id:")) {
                 String filterValue = stringValue.substring(13);
-                if(filterValue.indexOf(':') == -1) {
+                if (filterValue.indexOf(':') == -1) {
                     int dimensionId = Integer.parseInt(filterValue);
                     return provider -> provider.getDimension() == dimensionId;
                 } else {
@@ -48,14 +48,14 @@ public class WorldConfigUtils {
                     int maxDimensionId = indexOfExclusive == filterValue.length() ? Integer.MAX_VALUE : Integer.parseInt(filterValue.substring(indexOfExclusive));
                     return provider -> provider.getDimension() >= minDimensionId && provider.getDimension() <= maxDimensionId;
                 }
-            } else if(stringValue.startsWith("name:")) {
+            } else if (stringValue.startsWith("name:")) {
                 stringSupplier = provider -> provider.getDimensionType().getName();
                 stringValue = stringValue.substring(5);
-            } else if(stringValue.startsWith("provider_class:")) {
+            } else if (stringValue.startsWith("provider_class:")) {
                 stringSupplier = provider -> provider.getClass().getSimpleName();
                 stringValue = stringValue.substring(15);
             } else throw new IllegalArgumentException("Unknown world predicate: " + stringValue);
-            if(stringValue.startsWith("*")) {
+            if (stringValue.startsWith("*")) {
                 Pattern pattern = Pattern.compile(stringValue.substring(1));
                 return provider -> pattern.matcher(stringSupplier.apply(provider)).matches();
             } else {
@@ -92,7 +92,7 @@ public class WorldConfigUtils {
                     if (elementEntry.getKey().equals("type")) continue; //skip type
                     String tagName = elementEntry.getKey().toUpperCase();
                     Type type = GTUtility.getBiomeTypeTagByName(tagName);
-                    if(type == null)
+                    if (type == null)
                         throw new IllegalArgumentException("Couldn't find biome dictionary tag " + tagName);
                     backedMap.put(type, elementEntry.getValue().getAsInt());
                 }

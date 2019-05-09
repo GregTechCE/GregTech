@@ -42,7 +42,7 @@ public class MetaItemBracketHandler implements IBracketHandler {
         if (!tokens.get(0).getValue().equalsIgnoreCase("metaitem")) return null;
         if (!tokens.get(1).getValue().equals(":")) return null;
         StringBuilder nameBuilder = new StringBuilder();
-        for(int i = 2; i < tokens.size(); i++) {
+        for (int i = 2; i < tokens.size(); i++) {
             nameBuilder.append(tokens.get(i).getValue());
         }
         return position -> new ExpressionCallStatic(position, environment, method,

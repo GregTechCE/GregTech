@@ -5,9 +5,7 @@ import mezz.jei.api.IJeiHelpers;
 import mezz.jei.api.gui.IGuiItemStackGroup;
 import mezz.jei.api.gui.IRecipeLayout;
 import mezz.jei.api.ingredients.IIngredients;
-import mezz.jei.api.recipe.wrapper.ICraftingRecipeWrapper;
 import mezz.jei.api.recipe.wrapper.ICustomCraftingRecipeWrapper;
-import mezz.jei.api.recipe.wrapper.IShapedCraftingRecipeWrapper;
 import mezz.jei.gui.CraftingGridHelper;
 import mezz.jei.plugins.vanilla.crafting.ShapedOreRecipeWrapper;
 import mezz.jei.startup.ForgeModIdHelper;
@@ -18,7 +16,6 @@ import net.minecraft.client.resources.I18n;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TextFormatting;
-import net.minecraftforge.oredict.ShapedOreRecipe;
 
 import java.util.List;
 
@@ -70,8 +67,8 @@ public class CustomItemReturnRecipeWrapper extends ShapedOreRecipeWrapper implem
                 }
             }
 
-            if(slotIndex != craftOutputSlot) {
-                if(customRecipe.shouldItemReturn(ingredient)) {
+            if (slotIndex != craftOutputSlot) {
+                if (customRecipe.shouldItemReturn(ingredient)) {
                     tooltip.add(I18n.format("gregtech.recipe.not_consumed"));
                 }
             }

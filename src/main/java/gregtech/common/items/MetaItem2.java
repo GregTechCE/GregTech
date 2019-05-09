@@ -27,12 +27,12 @@ public class MetaItem2 extends MaterialMetaItem {
 
     public MetaItem2() {
         super(OrePrefix.toolHeadSword, OrePrefix.toolHeadPickaxe, OrePrefix.toolHeadShovel, OrePrefix.toolHeadAxe,
-                OrePrefix.toolHeadHoe, OrePrefix.toolHeadHammer, OrePrefix.toolHeadFile, OrePrefix.toolHeadSaw,
-                OrePrefix.toolHeadDrill, OrePrefix.toolHeadChainsaw, OrePrefix.toolHeadWrench, OrePrefix.toolHeadUniversalSpade,
-                OrePrefix.toolHeadSense, OrePrefix.toolHeadPlow,  OrePrefix.toolHeadBuzzSaw, OrePrefix.turbineBlade, 
-                OrePrefix.wireFine, OrePrefix.gearSmall, OrePrefix.rotor, OrePrefix.stickLong, OrePrefix.springSmall, OrePrefix.spring,
-                OrePrefix.gemChipped, OrePrefix.gemFlawed, OrePrefix.gemFlawless, OrePrefix.gemExquisite, OrePrefix.gear,
-                null, null, null, null, null);
+            OrePrefix.toolHeadHoe, OrePrefix.toolHeadHammer, OrePrefix.toolHeadFile, OrePrefix.toolHeadSaw,
+            OrePrefix.toolHeadDrill, OrePrefix.toolHeadChainsaw, OrePrefix.toolHeadWrench, OrePrefix.toolHeadUniversalSpade,
+            OrePrefix.toolHeadSense, null, OrePrefix.toolHeadBuzzSaw, OrePrefix.turbineBlade,
+            OrePrefix.wireFine, OrePrefix.gearSmall, OrePrefix.rotor, OrePrefix.stickLong, OrePrefix.springSmall, OrePrefix.spring,
+            OrePrefix.gemChipped, OrePrefix.gemFlawed, OrePrefix.gemFlawless, OrePrefix.gemExquisite, OrePrefix.gear,
+            null, null, null, null, null);
     }
 
     @Override
@@ -87,7 +87,7 @@ public class MetaItem2 extends MaterialMetaItem {
         PHENOLIC_BOARD = addItem(447, "board.phenolic");
         PLASTIC_BOARD = addItem(448, "board.plastic");
         WETWARE_BOARD = addItem(449, "board.wetware");
-        
+
         VACUUM_TUBE = addItem(450, "circuit.vacuum_tube").setUnificationData(OrePrefix.circuit, Tier.Primitive);
         DIODE = addItem(451, "component.diode");
         CAPACITOR = addItem(452, "component.capacitor");
@@ -246,7 +246,7 @@ public class MetaItem2 extends MaterialMetaItem {
         RecipeMaps.MACERATOR_RECIPES.recipeBuilder()
             .inputs(new ItemStack(Blocks.MELON_BLOCK, 1, 0))
             .outputs(new ItemStack(Items.MELON, 8, 0))
-            .chancedOutput(new ItemStack(Items.MELON_SEEDS, 1), 8000)
+            .chancedOutput(new ItemStack(Items.MELON_SEEDS, 1), 8000, 500)
             .duration(400)
             .EUt(2)
             .buildAndRegister();
@@ -281,8 +281,8 @@ public class MetaItem2 extends MaterialMetaItem {
 
         RecipeMaps.MACERATOR_RECIPES.recipeBuilder()
             .inputs(CountableIngredient.from("blockWool", 1))
-            .outputs(new ItemStack(Items.STRING, 2))
-            .chancedOutput(new ItemStack(Items.STRING, 1), 5000)
+            .outputs(new ItemStack(Items.STRING, 3))
+            .chancedOutput(new ItemStack(Items.STRING, 1), 2000, 800)
             .duration(400)
             .EUt(2)
             .buildAndRegister();

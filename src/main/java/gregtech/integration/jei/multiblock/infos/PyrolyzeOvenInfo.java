@@ -44,7 +44,7 @@ public class PyrolyzeOvenInfo extends MultiblockInfoPage {
 
     @Override
     public String[] getDescription() {
-        return new String[] {I18n.format("gregtech.multiblock.pyrolyze_oven.description")};
+        return new String[]{I18n.format("gregtech.multiblock.pyrolyze_oven.description")};
     }
 
 }

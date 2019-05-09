@@ -18,8 +18,8 @@ public class FluidIngredient implements Predicate<FluidStack> {
 
     @Override
     public boolean test(FluidStack fluidStack) {
-        for(FluidStack matchingStack : getMatchingStacks()) {
-            if(matchingStack.isFluidEqual(fluidStack))
+        for (FluidStack matchingStack : getMatchingStacks()) {
+            if (matchingStack.isFluidEqual(fluidStack))
                 return true;
         }
         return false;

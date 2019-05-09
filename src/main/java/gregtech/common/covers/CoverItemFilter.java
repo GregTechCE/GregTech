@@ -68,7 +68,7 @@ public class CoverItemFilter extends CoverBehavior implements CoverWithUI {
 
     @Override
     public EnumActionResult onScrewdriverClick(EntityPlayer playerIn, EnumHand hand, CuboidRayTraceResult hitResult) {
-        if(!playerIn.world.isRemote) {
+        if (!playerIn.world.isRemote) {
             openUI((EntityPlayerMP) playerIn);
         }
         return EnumActionResult.SUCCESS;
@@ -81,11 +81,13 @@ public class CoverItemFilter extends CoverBehavior implements CoverWithUI {
         itemFilterGroup.addWidget(new CycleButtonWidget(10, 20, 110, 20,
             GTUtility.mapToString(ItemFilterMode.values(), it -> it.localeName),
             () -> filterMode.ordinal(), (newMode) -> setFilterMode(ItemFilterMode.values()[newMode])));
-        for(int i = 0; i < 9; i++) {
+        for (int i = 0; i < 9; i++) {
             itemFilterGroup.addWidget(new PhantomSlotWidget(itemFilterSlots, i, 10 + 18 * (i % 3), 46 + 18 * (i / 3)).setBackgroundTexture(GuiTextures.SLOT));
         }
-        itemFilterGroup.addWidget(new ToggleButtonWidget(74, 45, 20, 20, GuiTextures.BUTTON_FILTER_DAMAGE, () -> ignoreDamage, this::setIgnoreDamage));
-        itemFilterGroup.addWidget(new ToggleButtonWidget(99, 45, 20, 20, GuiTextures.BUTTON_FILTER_NBT, () -> ignoreNBT, this::setIgnoreNBT));
+        itemFilterGroup.addWidget(new ToggleButtonWidget(74, 45, 20, 20, GuiTextures.BUTTON_FILTER_DAMAGE,
+            () -> ignoreDamage, this::setIgnoreDamage).setTooltipText("cover.item_filter.ignore_damage"));
+        itemFilterGroup.addWidget(new ToggleButtonWidget(99, 45, 20, 20, GuiTextures.BUTTON_FILTER_NBT,
+            () -> ignoreNBT, this::setIgnoreNBT).setTooltipText("cover.item_filter.nbt_damage"));
 
         return ModularUI.builder(GuiTextures.BACKGROUND, 176, 128)
             .widget(itemFilterGroup)
@@ -118,9 +120,9 @@ public class CoverItemFilter extends CoverBehavior implements CoverWithUI {
 
     @Override
     public <T> T getCapability(Capability<T> capability, T defaultValue) {
-        if(capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
+        if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
             IItemHandler delegate = (IItemHandler) defaultValue;
-            if(itemHandler == null || itemHandler.delegate != delegate) {
+            if (itemHandler == null || itemHandler.delegate != delegate) {
                 this.itemHandler = new ItemHandlerFilteredImpl(delegate);
             }
             return CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.cast(itemHandler);
@@ -181,10 +183,10 @@ public class CoverItemFilter extends CoverBehavior implements CoverWithUI {
                 return ItemStack.EMPTY;
             }
             ItemStack result = super.extractItem(slot, amount, true);
-            if(itemFilterMatch(getFilterSlots(), isIgnoreDamage(), isIgnoreNBT(), result) == -1) {
+            if (itemFilterMatch(getFilterSlots(), isIgnoreDamage(), isIgnoreNBT(), result) == -1) {
                 return ItemStack.EMPTY;
             }
-            if(!simulate) {
+            if (!simulate) {
                 super.extractItem(slot, amount, false);
             }
             return result;
@@ -200,9 +202,9 @@ public class CoverItemFilter extends CoverBehavior implements CoverWithUI {
     }
 
     public static int itemFilterMatch(IItemHandler filterSlots, boolean ignoreDamage, boolean ignoreNBTData, ItemStack itemStack) {
-        for(int i = 0; i < filterSlots.getSlots(); i++) {
+        for (int i = 0; i < filterSlots.getSlots(); i++) {
             ItemStack filterStack = filterSlots.getStackInSlot(i);
-            if(!filterStack.isEmpty() && areItemsEqual(ignoreDamage, ignoreNBTData, filterStack, itemStack)) {
+            if (!filterStack.isEmpty() && areItemsEqual(ignoreDamage, ignoreNBTData, filterStack, itemStack)) {
                 return i;
             }
         }
@@ -210,8 +212,8 @@ public class CoverItemFilter extends CoverBehavior implements CoverWithUI {
     }
 
     private static boolean areItemsEqual(boolean ignoreDamage, boolean ignoreNBTData, ItemStack filterStack, ItemStack itemStack) {
-        if(ignoreDamage) {
-            if(!filterStack.isItemEqualIgnoreDurability(itemStack)) {
+        if (ignoreDamage) {
+            if (!filterStack.isItemEqualIgnoreDurability(itemStack)) {
                 return false;
             }
         } else if (!filterStack.isItemEqual(itemStack)) {

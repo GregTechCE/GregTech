@@ -11,7 +11,7 @@ import gregtech.api.gui.ModularUI;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.MetaTileEntityHolder;
 import gregtech.api.render.Textures;
-import gregtech.api.util.GTFakePlayer;
+import gregtech.api.util.GregFakePlayer;
 import gregtech.api.util.GTUtility;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.entity.EntityLivingBase;
@@ -55,20 +55,20 @@ public class MetaTileEntityTeslaCoil extends MetaTileEntity {
     @Override
     public void update() {
         super.update();
-        if(!getWorld().isRemote && energyContainer.getEnergyStored() > 0L && getWorld().isBlockPowered(getPos()) && getTimer() % 20 == 0L) {
+        if (!getWorld().isRemote && energyContainer.getEnergyStored() > 0L && getWorld().isBlockPowered(getPos()) && getTimer() % 20 == 0L) {
             double damageRadius = getDamageRadius();
             List<EntityLivingBase> entities = getWorld().getEntitiesWithinAABB(EntityLivingBase.class, new AxisAlignedBB(getPos()).grow(damageRadius));
-            if(entities.isEmpty()) return; //no entities found, return
+            if (entities.isEmpty()) return; //no entities found, return
             long energyAmountPerEntity = energyContainer.getEnergyStored() / entities.size();
             int damagePerEntity = (int) (energyAmountPerEntity / ENERGY_PER_ONE_HEALTH_POINT_HIT);
             int damagedEntitiesCount = 0;
-            if(damagePerEntity < 1) return; //too small amount of energy, just return
-            for(EntityLivingBase entityLiving : entities) {
-                DamageSource damageSource = DamageSources.causeElectricDamage(GTFakePlayer.get((WorldServer) getWorld()));
+            if (damagePerEntity < 1) return; //too small amount of energy, just return
+            for (EntityLivingBase entityLiving : entities) {
+                DamageSource damageSource = DamageSources.causeElectricDamage(GregFakePlayer.get((WorldServer) getWorld()));
                 boolean damaged = entityLiving.attackEntityFrom(damageSource, damagePerEntity);
-                if(damaged) damagedEntitiesCount++;
+                if (damaged) damagedEntitiesCount++;
             }
-            if(damagedEntitiesCount > 0) {
+            if (damagedEntitiesCount > 0) {
                 energyContainer.removeEnergy(energyAmountPerEntity * damagedEntitiesCount);
             }
         }

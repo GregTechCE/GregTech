@@ -71,7 +71,6 @@ public class PipeRecipeHandler {
     }
 
 
-
     private static int getVoltageMultiplier(Material material) {
         return material instanceof IngotMaterial && ((IngotMaterial) material)
             .blastFurnaceTemperature >= 2800 ? 32 : 8;

@@ -22,7 +22,7 @@ public class ToolFile extends ToolBase {
     }
 
     @Override
-    public boolean isMinableBlock(IBlockState block, ItemStack stack) {
+    public boolean canMineBlock(IBlockState block, ItemStack stack) {
         String tool = block.getBlock().getHarvestTool(block);
         return (tool != null && tool.equals("file")) ||
             block.getMaterial() == Material.CIRCUITS;

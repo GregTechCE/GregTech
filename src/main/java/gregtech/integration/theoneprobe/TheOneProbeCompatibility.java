@@ -1,5 +1,6 @@
 package gregtech.integration.theoneprobe;
 
+import gregtech.integration.theoneprobe.provider.ControllableInfoProvider;
 import gregtech.integration.theoneprobe.provider.DebugPipeNetInfoProvider;
 import gregtech.integration.theoneprobe.provider.ElectricContainerInfoProvider;
 import gregtech.integration.theoneprobe.provider.WorkableInfoProvider;
@@ -12,6 +13,7 @@ public class TheOneProbeCompatibility {
         ITheOneProbe oneProbe = TheOneProbe.theOneProbeImp;
         oneProbe.registerProvider(new ElectricContainerInfoProvider());
         oneProbe.registerProvider(new WorkableInfoProvider());
+        oneProbe.registerProvider(new ControllableInfoProvider());
         oneProbe.registerProvider(new DebugPipeNetInfoProvider());
     }
 

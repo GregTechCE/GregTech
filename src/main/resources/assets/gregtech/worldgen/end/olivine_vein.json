@@ -22,13 +22,17 @@
           "weight": 30,
           "value": "ore:magnesite"
         },
-		{
+		    {
           "weight": 30,
           "value": "ore:olivine"
         },
-		{
+		    {
           "weight": 10,
           "value": "ore:glauconite"
+        },
+        {
+          "weight": 10,
+          "value": "ore:chromite"
         }
       ]
     }

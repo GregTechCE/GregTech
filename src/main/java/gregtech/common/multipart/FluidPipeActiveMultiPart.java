@@ -26,9 +26,9 @@ public class FluidPipeActiveMultiPart extends FluidPipeMultiPart implements ITic
     @Override
     public void transferDataFrom(IPipeTile<FluidPipeType, FluidPipeProperties> sourceTile) {
         super.transferDataFrom(sourceTile);
-        if(sourceTile instanceof TileEntityFluidPipeActive) {
+        if (sourceTile instanceof TileEntityFluidPipeActive) {
             setActivePart(((TileEntityFluidPipeActive) sourceTile).isActive());
-        } else if(sourceTile instanceof FluidPipeActiveMultiPart) {
+        } else if (sourceTile instanceof FluidPipeActiveMultiPart) {
             setActivePart(((FluidPipeActiveMultiPart) sourceTile).isActivePart());
         }
     }
@@ -45,7 +45,7 @@ public class FluidPipeActiveMultiPart extends FluidPipeMultiPart implements ITic
     @Override
     public void update() {
         getCoverableImplementation().update();
-        if(isActivePart) {
+        if (isActivePart) {
             TileEntityFluidPipeActive.pushFluidsFromTank(this);
         }
     }

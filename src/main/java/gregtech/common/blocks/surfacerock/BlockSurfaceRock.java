@@ -51,7 +51,7 @@ public class BlockSurfaceRock extends Block {
 
     @Override
     protected BlockStateContainer createBlockState() {
-        if(materialProperty == null)
+        if (materialProperty == null)
             return new BlockStateContainer(this);
         return new BlockStateContainer(this, materialProperty);
     }
@@ -67,7 +67,7 @@ public class BlockSurfaceRock extends Block {
     }
 
     public static Cuboid6 getShapeFromBlockPos(BlockPos blockPos) {
-        XSTR random = new XSTR(Arrays.hashCode(new int[] {blockPos.getX(), blockPos.getY(), blockPos.getZ(), 135}));
+        XSTR random = new XSTR(Arrays.hashCode(new int[]{blockPos.getX(), blockPos.getY(), blockPos.getZ(), 135}));
         int size = 4 + random.nextInt(2);
         boolean invertStart = random.nextBoolean();
         boolean moveStart = random.nextBoolean();
@@ -85,7 +85,7 @@ public class BlockSurfaceRock extends Block {
 
     private ItemStack getDropStack(IBlockState blockState, int amount) {
         Material material = blockState.getValue(materialProperty);
-        if(material instanceof IngotMaterial && ((IngotMaterial) material).blastFurnaceTemperature == 0)
+        if (material instanceof IngotMaterial && ((IngotMaterial) material).blastFurnaceTemperature == 0)
             return OreDictUnifier.get(OrePrefix.nugget, material, amount);
         return OreDictUnifier.get(OrePrefix.dustTiny, material, amount);
     }
@@ -97,7 +97,7 @@ public class BlockSurfaceRock extends Block {
 
     @Override
     public void getDrops(NonNullList<ItemStack> drops, IBlockAccess world, BlockPos pos, IBlockState state, int fortune) {
-        Random rand = world instanceof World ? ((World)world).rand : RANDOM;
+        Random rand = world instanceof World ? ((World) world).rand : RANDOM;
         int amount = 1 + rand.nextInt(fortune == 0 ? 1 : fortune);
         drops.add(getDropStack(state, amount));
     }
@@ -126,7 +126,7 @@ public class BlockSurfaceRock extends Block {
     @Override
     public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos) {
         if (fromPos.up().equals(pos)) {
-            if(worldIn.getBlockState(fromPos).getBlockFaceShape(worldIn, fromPos, EnumFacing.UP) != BlockFaceShape.SOLID) {
+            if (worldIn.getBlockState(fromPos).getBlockFaceShape(worldIn, fromPos, EnumFacing.UP) != BlockFaceShape.SOLID) {
                 worldIn.destroyBlock(pos, true);
             }
         }

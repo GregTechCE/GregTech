@@ -15,15 +15,15 @@
     "value": {
       "type": "weight_random",
       "values": [
-		{
+		  {
           "weight": 45,
-          "value": "ore:platinum"
+          "value": "ore:cooperite"
         },
-		{
+		  {
           "weight": 35,
           "value": "ore:palladium"
         },
-		{
+		  {
           "weight": 20,
           "value": "ore:iridium"
         }

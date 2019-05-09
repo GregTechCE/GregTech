@@ -21,16 +21,14 @@ import java.util.function.Supplier;
  * Widgets and UI are both-sided, so widgets should equal on both sides
  * However widget data will sync, widgets themself, background, sizes and other important info will not
  * To open and create ModularUI, see {@link UIFactory}
- *
  */
-public final class ModularUI implements SizeProvider {
+public final class ModularUI implements ISizeProvider {
 
     public final ImmutableBiMap<Integer, Widget> guiWidgets;
 
     public final TextureArea backgroundPath;
     private int screenWidth, screenHeight;
     private final int width, height;
-
     private final ImmutableList<Runnable> uiOpenCallback;
     private final ImmutableList<Runnable> uiCloseCallback;
 
@@ -178,7 +176,7 @@ public final class ModularUI implements SizeProvider {
                 for (int col = 0; col < 9; col++) {
                     this.widget(new SlotWidget(new PlayerMainInvWrapper(inventoryPlayer), col + (row + 1) * 9, x + col * 18, y + row * 18)
                         .setBackgroundTexture(imageLocation)
-                        .markAsPlayerInventory());
+                        .setLocationInfo(true, false));
                 }
             }
             return bindPlayerHotbar(inventoryPlayer, imageLocation, x, y + 58);
@@ -188,7 +186,7 @@ public final class ModularUI implements SizeProvider {
             for (int slot = 0; slot < 9; slot++) {
                 this.widget(new SlotWidget(new PlayerMainInvWrapper(inventoryPlayer), slot, x + slot * 18, y)
                     .setBackgroundTexture(imageLocation)
-                    .markAsPlayerInventory());
+                    .setLocationInfo(true, true));
             }
             return this;
         }
@@ -206,7 +204,6 @@ public final class ModularUI implements SizeProvider {
         public ModularUI build(IUIHolder holder, EntityPlayer player) {
             return new ModularUI(widgets.build(), openListeners.build(), closeListeners.build(), background, width, height, holder, player);
         }
-
     }
 
 }

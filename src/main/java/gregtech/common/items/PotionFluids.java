@@ -3,7 +3,6 @@ package gregtech.common.items;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
-import gregtech.api.GTValues;
 import gregtech.api.util.GTUtility;
 import gregtech.common.blocks.MetaBlocks;
 import net.minecraft.block.material.Material;
@@ -25,6 +24,7 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.fluids.*;
 import net.minecraftforge.fluids.capability.templates.FluidHandlerItemStackSimple;
+import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
 
@@ -36,6 +36,7 @@ import static gregtech.common.MetaFluids.AUTO_GENERATED_FLUID_TEXTURE;
 public class PotionFluids {
 
     private static final BiMap<ResourceLocation, Fluid> potionFluidMap = HashBiMap.create();
+    public static final int POTION_ITEM_FLUID_AMOUNT = 100;
 
     public static Fluid getFluidForPotion(PotionType potion) {
         return potionFluidMap.get(potion.getRegistryName());
@@ -48,14 +49,14 @@ public class PotionFluids {
 
     public static void initPotionFluids() {
         MinecraftForge.EVENT_BUS.register(new PotionFluids());
-        for(ResourceLocation registryName : ForgeRegistries.POTION_TYPES.getKeys()) {
-            if(registryName.getResourceDomain().equals("minecraft") &&
+        for (ResourceLocation registryName : ForgeRegistries.POTION_TYPES.getKeys()) {
+            if (registryName.getResourceDomain().equals("minecraft") &&
                 registryName.getResourcePath().equals("empty")) continue;
 
             PotionType potion = ForgeRegistries.POTION_TYPES.getValue(registryName);
             Preconditions.checkNotNull(potion);
             Fluid potionFluid;
-            if(potion != PotionTypes.WATER) {
+            if (potion != PotionTypes.WATER) {
                 String fluidName = String.format("potion.%s.%s", registryName.getResourceDomain(), registryName.getResourcePath());
                 potionFluid = new Fluid(fluidName, AUTO_GENERATED_FLUID_TEXTURE, AUTO_GENERATED_FLUID_TEXTURE) {
                     @Override
@@ -84,14 +85,14 @@ public class PotionFluids {
      * and transform into empty glass bottles
      * Also allows filing glass bottles with liquid potion to get potion item
      */
-    @SubscribeEvent
+    @SubscribeEvent(priority = EventPriority.HIGHEST)
     public void onCapabilityAttach(AttachCapabilitiesEvent<ItemStack> event) {
         ItemStack itemStack = event.getObject();
-        if(itemStack.getItem() instanceof ItemPotion) {
+        if (itemStack.getItem() instanceof ItemPotion) {
             ResourceLocation resourceLocation = new ResourceLocation("gregtech", "fluid_container");
             PotionItemFluidHandler fluidHandler = new PotionItemFluidHandler(itemStack);
             event.addCapability(resourceLocation, fluidHandler);
-        } else if(itemStack.getItem() instanceof ItemGlassBottle) {
+        } else if (itemStack.getItem() instanceof ItemGlassBottle) {
             ResourceLocation resourceLocation = new ResourceLocation("gregtech", "fluid_container");
             GlassBottleFluidHandler fluidHandler = new GlassBottleFluidHandler(itemStack);
             event.addCapability(resourceLocation, fluidHandler);
@@ -101,17 +102,17 @@ public class PotionFluids {
     private static class PotionItemFluidHandler extends FluidHandlerItemStackSimple {
 
         public PotionItemFluidHandler(@Nonnull ItemStack container) {
-            super(container, GTValues.L);
+            super(container, POTION_ITEM_FLUID_AMOUNT);
         }
 
         @Override
         public FluidStack getFluid() {
             PotionType potionType = PotionUtils.getPotionFromItem(container);
-            if(potionType == PotionTypes.EMPTY)
+            if (potionType == PotionTypes.EMPTY)
                 return null;
             Fluid fluid = getFluidForPotion(potionType);
             //because some mods are dumb enough to register potion types after block registry event
-            if(fluid == null)
+            if (fluid == null)
                 return null;
             return new FluidStack(fluid, capacity);
         }
@@ -136,7 +137,7 @@ public class PotionFluids {
     private static class GlassBottleFluidHandler extends FluidHandlerItemStackSimple {
 
         public GlassBottleFluidHandler(@Nonnull ItemStack container) {
-            super(container, GTValues.L);
+            super(container, POTION_ITEM_FLUID_AMOUNT);
         }
 
         @Nullable
@@ -148,7 +149,7 @@ public class PotionFluids {
         @Override
         protected void setFluid(FluidStack fluid) {
             PotionType potionType = getPotionForFluid(fluid.getFluid());
-            if(potionType != null && potionType != PotionTypes.EMPTY) {
+            if (potionType != null && potionType != PotionTypes.EMPTY) {
                 GTUtility.setItem(container, new ItemStack(Items.POTIONITEM));
                 PotionUtils.addPotionToItemStack(container, potionType);
             }
@@ -183,17 +184,15 @@ public class PotionFluids {
 
         @Override
         public void onEntityCollidedWithBlock(World worldIn, BlockPos pos, IBlockState state, Entity entityIn) {
-            if(!(entityIn instanceof EntityLivingBase) ||
+            if (!(entityIn instanceof EntityLivingBase) ||
                 worldIn.getTotalWorldTime() % 20 != 0) return;
             EntityLivingBase entity = (EntityLivingBase) entityIn;
-            for(PotionEffect potionEffect : potionType.getEffects()) {
-                if(!potionEffect.getPotion().isInstant()) {
-                    PotionEffect instantEffect = new PotionEffect(potionEffect.getPotion(),
-                        60, potionEffect.getAmplifier(), true, true);
+            for (PotionEffect potionEffect : potionType.getEffects()) {
+                if (!potionEffect.getPotion().isInstant()) {
+                    PotionEffect instantEffect = new PotionEffect(potionEffect.getPotion(), 60, potionEffect.getAmplifier(), true, true);
                     entity.addPotionEffect(instantEffect);
                 } else {
-                    potionEffect.getPotion().affectEntity(null, null,
-                        entity, potionEffect.getAmplifier(), 1.0);
+                    potionEffect.getPotion().affectEntity(null, null, entity, potionEffect.getAmplifier(), 1.0);
                 }
             }
         }

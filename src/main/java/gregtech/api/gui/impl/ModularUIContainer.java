@@ -36,12 +36,13 @@ public class ModularUIContainer extends Container implements WidgetUIAccess {
         this.modularUI = modularUI;
         modularUI.guiWidgets.values().forEach(widget -> widget.setUiAccess(this));
         modularUI.guiWidgets.values().stream()
-                .flatMap(widget -> widget.getNativeWidgets().stream())
-                .forEach(nativeWidget -> {
-                    Slot slot = nativeWidget.allocateSlotHandle();
-                    slotMap.put(slot, nativeWidget);
-                    addSlotToContainer(slot);
-                });
+            .flatMap(widget -> widget.getNativeWidgets().stream())
+            .forEach(nativeWidget -> {
+                Slot slot = nativeWidget.getHandle();
+                slotMap.put(slot, nativeWidget);
+                addSlotToContainer(slot);
+            });
+        modularUI.triggerOpenListeners();
     }
 
     public ModularUI getModularUI() {
@@ -58,7 +59,6 @@ public class ModularUIContainer extends Container implements WidgetUIAccess {
     public void addListener(IContainerListener listener) {
         super.addListener(listener);
         modularUI.guiWidgets.values().forEach(Widget::detectAndSendChanges);
-        modularUI.triggerOpenListeners();
     }
 
     @Override
@@ -72,7 +72,7 @@ public class ModularUIContainer extends Container implements WidgetUIAccess {
         if (slotId >= 0 && slotId < inventorySlots.size()) {
             Slot slot = getSlot(slotId);
             ItemStack result = slotMap.get(slot).slotClick(dragType, clickTypeIn, player);
-            if(result == INativeWidget.VANILLA_LOGIC) {
+            if (result == INativeWidget.VANILLA_LOGIC) {
                 return super.slotClick(slotId, dragType, clickTypeIn, player);
             }
             return result;
@@ -83,16 +83,16 @@ public class ModularUIContainer extends Container implements WidgetUIAccess {
     @Override
     public ItemStack transferStackInSlot(EntityPlayer player, int index) {
         Slot slot = inventorySlots.get(index);
-        if(slot == null || !slot.getHasStack()) {
+        if (slot == null || !slot.getHasStack()) {
             //return empty if we can't transfer it
             return ItemStack.EMPTY;
         }
         ItemStack remainingStack = slot.getStack();
         boolean mergedStack;
-        if(slotMap.get(slot).isPlayerInventorySlot()) {
+        if (slotMap.get(slot).getSlotLocationInfo().isPlayerInventory) {
             //if we clicked on player inventory slot, move to container inventory, inverting indexes
             List<Slot> containerSlots = slotMap.entrySet().stream()
-                .filter(s -> !s.getValue().isPlayerInventorySlot())
+                .filter(s -> !s.getValue().getSlotLocationInfo().isPlayerInventory)
                 .map(Entry::getKey)
                 .sorted(Comparator.comparing(s -> s.slotNumber))
                 .collect(Collectors.toList());
@@ -100,13 +100,13 @@ public class ModularUIContainer extends Container implements WidgetUIAccess {
         } else {
             //if we clicked on a container inventory, move to player inventory
             List<Slot> inventorySlots = slotMap.entrySet().stream()
-                .filter(s -> s.getValue().isPlayerInventorySlot())
+                .filter(s -> s.getValue().getSlotLocationInfo().isPlayerInventory)
                 .map(Entry::getKey)
                 .sorted(Collections.reverseOrder(Comparator.comparing(s -> s.slotNumber)))
                 .collect(Collectors.toList());
             mergedStack = GTUtility.mergeItemStack(remainingStack, inventorySlots);
         }
-        if(!mergedStack) {
+        if (!mergedStack) {
             return ItemStack.EMPTY; //if we didn't merge anything, return empty stack
         }
 
@@ -134,7 +134,7 @@ public class ModularUIContainer extends Container implements WidgetUIAccess {
         PacketBuffer packetBuffer = new PacketBuffer(Unpooled.buffer());
         packetBuffer.writeVarInt(updateId);
         payloadWriter.accept(packetBuffer);
-        if(modularUI.entityPlayer instanceof EntityPlayerSP) {
+        if (modularUI.entityPlayer instanceof EntityPlayerSP) {
             PacketUIClientAction widgetUpdate = new PacketUIClientAction(windowId, widgetId, packetBuffer);
             NetworkHandler.channel.sendToServer(NetworkHandler.packet2proxy(widgetUpdate));
         }
@@ -146,9 +146,9 @@ public class ModularUIContainer extends Container implements WidgetUIAccess {
         PacketBuffer packetBuffer = new PacketBuffer(Unpooled.buffer());
         packetBuffer.writeVarInt(updateId);
         payloadWriter.accept(packetBuffer);
-        if(modularUI.entityPlayer instanceof EntityPlayerMP) {
+        if (modularUI.entityPlayer instanceof EntityPlayerMP) {
             PacketUIWidgetUpdate widgetUpdate = new PacketUIWidgetUpdate(windowId, widgetId, packetBuffer);
-            if(!accumulateWidgetUpdateData) {
+            if (!accumulateWidgetUpdateData) {
                 NetworkHandler.channel.sendTo(NetworkHandler.packet2proxy(widgetUpdate), (EntityPlayerMP) modularUI.entityPlayer);
             } else {
                 accumulatedUpdates.add(widgetUpdate);

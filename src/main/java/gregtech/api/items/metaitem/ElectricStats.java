@@ -28,7 +28,7 @@ public class ElectricStats implements IMetaItemStats, IItemCapabilityProvider, I
     @Override
     public int getMaxStackSize(ItemStack itemStack, int defaultValue) {
         ElectricItem electricItem = (ElectricItem) itemStack.getCapability(GregtechCapabilities.CAPABILITY_ELECTRIC_ITEM, null);
-        if(electricItem == null || electricItem.getCharge() == 0) {
+        if (electricItem == null || electricItem.getCharge() == 0) {
             return defaultValue;
         }
         return 1;

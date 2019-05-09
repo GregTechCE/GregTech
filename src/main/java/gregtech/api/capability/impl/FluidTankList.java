@@ -60,10 +60,10 @@ public class FluidTankList implements IFluidHandler, IMultipleTankHandler, INBTS
 
     @Override
     public IFluidTankProperties[] getTankProperties() {
-        if(fluidTankProperties == null) {
+        if (fluidTankProperties == null) {
             ArrayList<IFluidTankProperties> propertiesList = new ArrayList<>();
-            for(IFluidTank fluidTank : fluidTanks) {
-                if(fluidTank instanceof IFluidHandler) {
+            for (IFluidTank fluidTank : fluidTanks) {
+                if (fluidTank instanceof IFluidHandler) {
                     IFluidHandler fluidHandler = (IFluidHandler) fluidTank;
                     propertiesList.addAll(Arrays.asList(fluidHandler.getTankProperties()));
                 }
@@ -88,22 +88,22 @@ public class FluidTankList implements IFluidHandler, IMultipleTankHandler, INBTS
         int totalFilled = 0;
         //first, try to fill tanks that already have same fluid type
         for (IFluidTank handler : fluidTanks) {
-            if(resource.isFluidEqual(handler.getFluid())) {
+            if (resource.isFluidEqual(handler.getFluid())) {
                 int filledAmount = handler.fill(resource, doFill);
                 totalFilled += filledAmount;
                 resource.amount -= filledAmount;
                 //if filling multiple tanks is not allowed, or resource is empty, return now
-                if(!allowSameFluidFill || resource.amount == 0)
+                if (!allowSameFluidFill || resource.amount == 0)
                     return totalFilled;
             }
         }
         //otherwise, try to fill empty tanks
-        for(IFluidTank handler : fluidTanks) {
-            if(handler.getFluidAmount() == 0) {
+        for (IFluidTank handler : fluidTanks) {
+            if (handler.getFluidAmount() == 0) {
                 int filledAmount = handler.fill(resource, doFill);
                 totalFilled += filledAmount;
                 resource.amount -= filledAmount;
-                if(!allowSameFluidFill || resource.amount == 0)
+                if (!allowSameFluidFill || resource.amount == 0)
                     return totalFilled;
             }
         }
@@ -172,9 +172,9 @@ public class FluidTankList implements IFluidHandler, IMultipleTankHandler, INBTS
         for (int i = 0; i < this.getTanks(); i++) {
             NBTBase writeTag;
             IFluidTank fluidTank = fluidTanks.get(i);
-            if(fluidTank instanceof FluidTank) {
+            if (fluidTank instanceof FluidTank) {
                 writeTag = ((FluidTank) fluidTank).writeToNBT(new NBTTagCompound());
-            } else if(fluidTank instanceof INBTSerializable) {
+            } else if (fluidTank instanceof INBTSerializable) {
                 writeTag = ((INBTSerializable) fluidTank).serializeNBT();
             } else writeTag = new NBTTagCompound();
 
@@ -190,9 +190,9 @@ public class FluidTankList implements IFluidHandler, IMultipleTankHandler, INBTS
         for (int i = 0; i < Math.min(fluidTanks.size(), nbt.getInteger("TankAmount")); i++) {
             NBTBase nbtTag = tanks.get(i);
             IFluidTank fluidTank = fluidTanks.get(i);
-            if(fluidTank instanceof FluidTank) {
+            if (fluidTank instanceof FluidTank) {
                 ((FluidTank) fluidTank).readFromNBT((NBTTagCompound) nbtTag);
-            } else if(fluidTank instanceof INBTSerializable) {
+            } else if (fluidTank instanceof INBTSerializable) {
                 ((INBTSerializable) fluidTank).deserializeNBT(nbtTag);
             }
         }

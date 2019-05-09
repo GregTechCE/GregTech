@@ -46,7 +46,7 @@ public class MetaTileEntityElectricBlastFurnace extends RecipeMapMultiblockContr
 
     @Override
     protected void addDisplayText(List<ITextComponent> textList) {
-        if(isStructureFormed()) {
+        if (isStructureFormed()) {
             textList.add(new TextComponentTranslation("gregtech.multiblock.blast_furnace.max_temperature", blastFurnaceTemperature));
         }
         super.addDisplayText(textList);
@@ -73,7 +73,7 @@ public class MetaTileEntityElectricBlastFurnace extends RecipeMapMultiblockContr
     public static Predicate<BlockWorldState> heatingCoilPredicate() {
         return blockWorldState -> {
             IBlockState blockState = blockWorldState.getBlockState();
-            if(!(blockState.getBlock() instanceof BlockWireCoil))
+            if (!(blockState.getBlock() instanceof BlockWireCoil))
                 return false;
             BlockWireCoil blockWireCoil = (BlockWireCoil) blockState.getBlock();
             CoilType coilType = blockWireCoil.getState(blockState);

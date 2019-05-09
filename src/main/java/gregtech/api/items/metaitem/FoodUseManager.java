@@ -22,7 +22,8 @@ public class FoodUseManager implements IItemBehaviour, IItemUseManager {
     }
 
     @Override
-    public void onItemUseStart(ItemStack stack, EntityPlayer player) {}
+    public void onItemUseStart(ItemStack stack, EntityPlayer player) {
+    }
 
     @Override
     public boolean canStartUsing(ItemStack stack, EntityPlayer player) {
@@ -40,10 +41,12 @@ public class FoodUseManager implements IItemBehaviour, IItemUseManager {
     }
 
     @Override
-    public void onItemUsingTick(ItemStack stack, EntityPlayer player, int count) {}
+    public void onItemUsingTick(ItemStack stack, EntityPlayer player, int count) {
+    }
 
     @Override
-    public void onPlayerStoppedItemUsing(ItemStack stack, EntityPlayer player, int timeLeft) {}
+    public void onPlayerStoppedItemUsing(ItemStack stack, EntityPlayer player, int timeLeft) {
+    }
 
     @Override
     public ItemStack onItemUseFinish(ItemStack stack, EntityPlayer player) {

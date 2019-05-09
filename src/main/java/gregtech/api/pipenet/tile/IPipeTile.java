@@ -33,11 +33,7 @@ public interface IPipeTile<PipeType extends Enum<PipeType> & IPipeType<NodeDataT
 
     int getBlockedConnections();
 
-    void setPipeType(PipeType pipeType);
-
     PipeType getPipeType();
-
-    void setPipeMaterial(Material pipeMaterial);
 
     Material getPipeMaterial();
 

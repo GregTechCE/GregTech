@@ -49,10 +49,10 @@ public class SphereGenerator extends ShapeGenerator {
     @Override
     public void generate(Random gridRandom, IBlockGeneratorAccess relativeBlockAccess) {
         int sphereRadius = radiusMin >= radiusMax ? radiusMin : radiusMin + gridRandom.nextInt(radiusMax - radiusMin);
-        for(int x = -sphereRadius; x <= sphereRadius; x++) {
-            for(int z = -sphereRadius; z <= sphereRadius; z++) {
-                for(int y = -sphereRadius; y <= sphereRadius; y++) {
-                    if(x * x + y * y + z * z > sphereRadius * sphereRadius)
+        for (int x = -sphereRadius; x <= sphereRadius; x++) {
+            for (int z = -sphereRadius; z <= sphereRadius; z++) {
+                for (int y = -sphereRadius; y <= sphereRadius; y++) {
+                    if (x * x + y * y + z * z > sphereRadius * sphereRadius)
                         continue;
                     relativeBlockAccess.generateBlock(x, y, z);
                 }

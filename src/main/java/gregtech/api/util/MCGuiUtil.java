@@ -11,9 +11,11 @@ public class MCGuiUtil {
             @Override
             public void setEntryValue(int id, boolean value) {
             }
+
             @Override
             public void setEntryValue(int id, float value) {
             }
+
             @Override
             public void setEntryValue(int id, String value) {
                 onChanged.accept(value);

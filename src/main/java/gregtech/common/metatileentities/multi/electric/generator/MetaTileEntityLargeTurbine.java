@@ -2,7 +2,7 @@ package gregtech.common.metatileentities.multi.electric.generator;
 
 import gregtech.api.GTValues;
 import gregtech.api.capability.impl.FluidTankList;
-import gregtech.api.capability.impl.FuelRecipeMapWorkableHandler;
+import gregtech.api.capability.impl.FuelRecipeLogic;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.MetaTileEntityHolder;
 import gregtech.api.metatileentity.multiblock.IMultiblockPart;
@@ -62,8 +62,8 @@ public class MetaTileEntityLargeTurbine extends FueledMultiblockController {
     }
 
     @Override
-    protected FuelRecipeMapWorkableHandler createWorkable(long maxVoltage) {
-        return new LargeTurbineWorkableHandler(this, recipeMap, () -> energyContainer, () -> importFluidHandler, maxVoltage);
+    protected FuelRecipeLogic createWorkable(long maxVoltage) {
+        return new LargeTurbineWorkableHandler(this, recipeMap, () -> energyContainer, () -> importFluidHandler);
     }
 
     @Override
@@ -73,7 +73,7 @@ public class MetaTileEntityLargeTurbine extends FueledMultiblockController {
 
     @Override
     protected void updateFormedValid() {
-        if(isTurbineFaceFree()) {
+        if (isTurbineFaceFree()) {
             super.updateFormedValid();
         }
     }
@@ -107,7 +107,7 @@ public class MetaTileEntityLargeTurbine extends FueledMultiblockController {
 
     @Override
     protected void addDisplayText(List<ITextComponent> textList) {
-        if(isStructureFormed()) {
+        if (isStructureFormed()) {
             MetaTileEntityRotorHolder rotorHolder = getAbilities(ABILITY_ROTOR_HOLDER).get(0);
             FluidStack fuelStack = ((LargeTurbineWorkableHandler) workableHandler).getFuelStack();
             int fuelAmount = fuelStack == null ? 0 : fuelStack.amount;
@@ -115,11 +115,11 @@ public class MetaTileEntityLargeTurbine extends FueledMultiblockController {
             ITextComponent fuelName = new TextComponentTranslation(fuelAmount == 0 ? "gregtech.fluid.empty" : fuelStack.getUnlocalizedName());
             textList.add(new TextComponentTranslation("gregtech.multiblock.turbine.fuel_amount", fuelAmount, fuelName));
 
-            if(rotorHolder.getRotorEfficiency() > 0.0) {
+            if (rotorHolder.getRotorEfficiency() > 0.0) {
                 textList.add(new TextComponentTranslation("gregtech.multiblock.turbine.rotor_speed", rotorHolder.getCurrentRotorSpeed(), rotorHolder.getMaxRotorSpeed()));
                 textList.add(new TextComponentTranslation("gregtech.multiblock.turbine.rotor_efficiency", (int) (rotorHolder.getRotorEfficiency() * 100)));
                 int rotorDurability = (int) (rotorHolder.getRotorDurability() * 100);
-                if(rotorDurability > MIN_DURABILITY_TO_WARN) {
+                if (rotorDurability > MIN_DURABILITY_TO_WARN) {
                     textList.add(new TextComponentTranslation("gregtech.multiblock.turbine.rotor_durability", rotorDurability));
                 } else {
                     textList.add(new TextComponentTranslation("gregtech.multiblock.turbine.low_rotor_durability",
@@ -134,22 +134,22 @@ public class MetaTileEntityLargeTurbine extends FueledMultiblockController {
     protected BlockPattern createStructurePattern() {
         return turbineType == null ? null :
             FactoryBlockPattern.start()
-            .aisle("CCCC", "CHHC", "CCCC")
-            .aisle("CHHC", "R##D", "CHHC")
-            .aisle("CCCC", "CSHC", "CCCC")
-            .where('S', selfPredicate())
-            .where('#', isAirPredicate())
-            .where('C', statePredicate(getCasingState()))
-            .where('H', statePredicate(getCasingState()).or(abilityPartPredicate(getAllowedAbilities())))
-            .where('R', abilityPartPredicate(ABILITY_ROTOR_HOLDER))
-            .where('D', abilityPartPredicate(MultiblockAbility.OUTPUT_ENERGY))
-            .build();
+                .aisle("CCCC", "CHHC", "CCCC")
+                .aisle("CHHC", "R##D", "CHHC")
+                .aisle("CCCC", "CSHC", "CCCC")
+                .where('S', selfPredicate())
+                .where('#', isAirPredicate())
+                .where('C', statePredicate(getCasingState()))
+                .where('H', statePredicate(getCasingState()).or(abilityPartPredicate(getAllowedAbilities())))
+                .where('R', abilityPartPredicate(ABILITY_ROTOR_HOLDER))
+                .where('D', abilityPartPredicate(MultiblockAbility.OUTPUT_ENERGY))
+                .build();
     }
 
     public MultiblockAbility[] getAllowedAbilities() {
         return turbineType.hasOutputHatch ?
-            new MultiblockAbility[] {MultiblockAbility.IMPORT_FLUIDS, MultiblockAbility.EXPORT_FLUIDS} :
-            new MultiblockAbility[] {MultiblockAbility.IMPORT_FLUIDS};
+            new MultiblockAbility[]{MultiblockAbility.IMPORT_FLUIDS, MultiblockAbility.EXPORT_FLUIDS} :
+            new MultiblockAbility[]{MultiblockAbility.IMPORT_FLUIDS};
     }
 
     public IBlockState getCasingState() {

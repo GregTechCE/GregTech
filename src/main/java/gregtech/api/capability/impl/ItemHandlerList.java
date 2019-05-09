@@ -21,13 +21,13 @@ public class ItemHandlerList implements IItemHandlerModifiable {
 
     public ItemHandlerList(List<? extends IItemHandler> itemHandlerList) {
         int currentSlotIndex = 0;
-        for(IItemHandler itemHandler : itemHandlerList) {
-            if(baseIndexOffset.containsKey(itemHandler)) {
+        for (IItemHandler itemHandler : itemHandlerList) {
+            if (baseIndexOffset.containsKey(itemHandler)) {
                 throw new IllegalArgumentException("Attempted to add item handler " + itemHandler + " twice");
             }
             baseIndexOffset.put(itemHandler, currentSlotIndex);
             int slotsCount = itemHandler.getSlots();
-            for(int slotIndex = 0; slotIndex < slotsCount; slotIndex++) {
+            for (int slotIndex = 0; slotIndex < slotsCount; slotIndex++) {
                 handlerBySlotIndex.put(currentSlotIndex + slotIndex, itemHandler);
             }
             currentSlotIndex += slotsCount;
@@ -42,7 +42,7 @@ public class ItemHandlerList implements IItemHandlerModifiable {
     @Override
     public void setStackInSlot(int slot, @Nonnull ItemStack stack) {
         IItemHandler itemHandler = handlerBySlotIndex.get(slot);
-        if(!(itemHandler instanceof IItemHandlerModifiable))
+        if (!(itemHandler instanceof IItemHandlerModifiable))
             throw new UnsupportedOperationException("Handler " + itemHandler + " does not support this method");
         ((IItemHandlerModifiable) itemHandler).setStackInSlot(slot - baseIndexOffset.get(itemHandler), stack);
     }

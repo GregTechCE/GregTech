@@ -18,7 +18,7 @@ public abstract class TileEntityRendererBase<T extends TileEntityBase> extends F
         CCRenderState renderState = CCRenderState.instance();
         renderState.reset();
         renderState.bind(buffer);
-        if(te.getWorld() != null) {
+        if (te.getWorld() != null) {
             renderState.setBrightness(te.getWorld(), te.getPos());
         }
         Matrix4 translation = new Matrix4().translate(x, y, z);

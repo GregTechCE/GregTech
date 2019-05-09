@@ -1,6 +1,5 @@
 package gregtech.common.entities;
 
-import net.minecraft.block.Block;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.projectile.EntityThrowable;
 import net.minecraft.init.Blocks;
@@ -63,7 +62,7 @@ public class DynamiteEntity extends EntityThrowable {
             world.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, this.posX, this.posY, this.posZ, -this.motionX * 0.05f, this.inGround ? 0.05f : -this.motionY * 0.05f, -this.motionZ * 0.05f);
         }
 
-        if(ticksUntilExplosion < 0 && !world.isRemote) {
+        if (ticksUntilExplosion < 0 && !world.isRemote) {
             world.createExplosion(this, this.posX, this.posY, this.posZ, 1, true);
             this.setDead();
             return;

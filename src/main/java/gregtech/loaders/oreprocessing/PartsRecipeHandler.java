@@ -1,6 +1,5 @@
 package gregtech.loaders.oreprocessing;
 
-import gregtech.api.recipes.CountableIngredient;
 import gregtech.api.recipes.ModHandler;
 import gregtech.api.recipes.RecipeMaps;
 import gregtech.api.unification.OreDictUnifier;
@@ -99,7 +98,7 @@ public class PartsRecipeHandler {
         ItemStack fineWireStack = OreDictUnifier.get(fineWirePrefix, material);
         ModHandler.addShapelessRecipe(String.format("fine_wire_%s", material.toString()),
             fineWireStack, 'x', new UnificationEntry(OrePrefix.foil, material));
-        if(material.cableProperties != null) {
+        if (material.cableProperties != null) {
             RecipeMaps.WIREMILL_RECIPES.recipeBuilder()
                 .input(OrePrefix.wireGtSingle, material)
                 .outputs(OreDictUnifier.get(OrePrefix.wireFine, material, 4))
@@ -145,10 +144,15 @@ public class PartsRecipeHandler {
                 .buildAndRegister();
         }
 
-        if(material.hasFlag(GENERATE_PLATE | GENERATE_ROD)) {
+        if (material.hasFlag(GENERATE_PLATE | GENERATE_ROD)) {
             if (gearPrefix == OrePrefix.gearSmall) {
                 ModHandler.addShapedRecipe(String.format("small_gear_%s", material), stack,
                     "h ", " P", 'P', new UnificationEntry(OrePrefix.plate, material));
+                RecipeMaps.FORGE_HAMMER_RECIPES.recipeBuilder()
+                    .input(OrePrefix.plate, material)
+                    .outputs(stack)
+                    .duration(60).EUt(6)
+                    .buildAndRegister();
             } else {
                 ModHandler.addShapedRecipe(String.format("gear_%s", material), stack,
                     "RPR", "PdP", "RPR",
@@ -193,7 +197,7 @@ public class PartsRecipeHandler {
     }
 
     public static void processCompressed(OrePrefix compressed, SolidMaterial material) {
-        if(!material.hasFlag(MatFlags.GENERATE_PLATE)) return;
+        if (!material.hasFlag(MatFlags.GENERATE_PLATE)) return;
         ItemStack compressedStack = OreDictUnifier.get(compressed, material);
         RecipeMaps.IMPLOSION_RECIPES.recipeBuilder()
             .input(OrePrefix.plank, material, 2)
@@ -230,7 +234,7 @@ public class PartsRecipeHandler {
     }
 
     public static void processSpringSmall(OrePrefix springPrefix, IngotMaterial material) {
-        if(material.cableProperties != null) {
+        if (material.cableProperties != null) {
             RecipeMaps.BENDER_RECIPES.recipeBuilder()
                 .input(OrePrefix.wireGtSingle, material)
                 .outputs(OreDictUnifier.get(OrePrefix.springSmall, material, 2))
@@ -257,7 +261,6 @@ public class PartsRecipeHandler {
     }
 
     public static void processStick(OrePrefix stickPrefix, DustMaterial material) {
-
         if (material instanceof IngotMaterial) {
             RecipeMaps.EXTRUDER_RECIPES.recipeBuilder()
                 .input(OrePrefix.ingot, material)
@@ -270,12 +273,9 @@ public class PartsRecipeHandler {
 
         if (material instanceof GemMaterial || material instanceof IngotMaterial) {
             RecipeMaps.LATHE_RECIPES.recipeBuilder()
-                .inputs(material instanceof GemMaterial ? CountableIngredient.from(OrePrefix.gem, material) :
-                    CountableIngredient.from(OrePrefix.ingot, material))
-                .outputs(OreDictUnifier.get(stickPrefix, material), OreDictUnifier.get(OrePrefix.dustSmall,
-                    ((SolidMaterial) material).macerateInto, 2))
-                .duration((int) Math.max(material.getAverageMass() * 5L, 1L))
-                .EUt(16)
+                .input(material instanceof GemMaterial ? OrePrefix.gem : OrePrefix.ingot, material)
+                .outputs(OreDictUnifier.get(OrePrefix.stick, material, 2))
+                .duration((int) Math.max(material.getAverageMass() * 2, 1)).EUt(16)
                 .buildAndRegister();
         }
 
@@ -292,57 +292,52 @@ public class PartsRecipeHandler {
                 "s ", " X",
                 'X', new UnificationEntry(OrePrefix.stick, material));
         }
-
-        if (!material.hasFlag(MatFlags.NO_SMASHING) && material.hasFlag(SolidMaterial.MatFlags.GENERATE_LONG_ROD)) {
-            RecipeMaps.FORGE_HAMMER_RECIPES.recipeBuilder()
-                .input(stickPrefix, material, 2)
-                .outputs(OreDictUnifier.get(OrePrefix.stickLong, material))
-                .duration((int) Math.max(material.getAverageMass(), 1L))
-                .EUt(16)
-                .buildAndRegister();
-        }
     }
 
     public static void processLongStick(OrePrefix longStickPrefix, DustMaterial material) {
         ItemStack stack = OreDictUnifier.get(longStickPrefix, material);
         ItemStack stickStack = OreDictUnifier.get(OrePrefix.stick, material);
-        if (!material.hasFlag(MatFlags.NO_WORKING)) {
-            RecipeMaps.CUTTER_RECIPES.recipeBuilder()
+
+        RecipeMaps.CUTTER_RECIPES.recipeBuilder()
+            .input(longStickPrefix, material)
+            .outputs(GTUtility.copyAmount(2, stickStack))
+            .duration((int) Math.max(material.getAverageMass(), 1L)).EUt(4)
+            .buildAndRegister();
+
+        ModHandler.addShapedRecipe(String.format("stick_long_%s", material.toString()),
+            GTUtility.copyAmount(2, stickStack),
+            "s", "X", 'X', new UnificationEntry(OrePrefix.stickLong, material));
+
+        ModHandler.addShapedRecipe(String.format("stick_long_gem_flawless_%s", material.toString()),
+            stickStack,
+            "sf",
+            "G ",
+            'G', new UnificationEntry(OrePrefix.gemFlawless, material));
+
+        ModHandler.addShapedRecipe(String.format("stick_long_gem_exquisite_%s", material.toString()),
+            GTUtility.copyAmount(2, stickStack),
+            "sf", "G ",
+            'G', new UnificationEntry(OrePrefix.gemExquisite, material));
+
+        if (material.hasFlag(GENERATE_SPRING)) {
+            RecipeMaps.BENDER_RECIPES.recipeBuilder()
                 .input(longStickPrefix, material)
-                .outputs(GTUtility.copyAmount(2, stickStack))
-                .duration((int) Math.max(material.getAverageMass(), 1L)).EUt(4)
+                .outputs(OreDictUnifier.get(OrePrefix.spring, material))
+                .circuitMeta(1)
+                .duration(200).EUt(16)
                 .buildAndRegister();
-
-            ModHandler.addShapedRecipe(String.format("stick_long_%s", material.toString()),
-                GTUtility.copyAmount(2, stickStack),
-                "s", "X", 'X', new UnificationEntry(OrePrefix.stickLong, material));
-
-            ModHandler.addShapedRecipe(String.format("stick_long_gem_flawless_%s", material.toString()),
-                stickStack,
-                "sf",
-                "G ",
-                'G', new UnificationEntry(OrePrefix.gemFlawless, material));
-
-            ModHandler.addShapedRecipe(String.format("stick_long_gem_exquisite_%s", material.toString()),
-                GTUtility.copyAmount(2, stickStack),
-                "sf", "G ",
-                'G', new UnificationEntry(OrePrefix.gemExquisite, material));
         }
 
-        if (!material.hasFlag(MatFlags.NO_SMASHING)) {
-            if (material.hasFlag(GENERATE_SPRING)) {
-                RecipeMaps.BENDER_RECIPES.recipeBuilder()
-                    .input(longStickPrefix, material)
-                    .outputs(OreDictUnifier.get(OrePrefix.spring, material))
-                    .circuitMeta(1)
-                    .duration(200).EUt(16)
-                    .buildAndRegister();
-            }
+        ModHandler.addShapedRecipe(String.format("stick_long_stick_%s", material.toString()), stack,
+            "ShS",
+            'S', new UnificationEntry(OrePrefix.stick, material));
 
-            ModHandler.addShapedRecipe(String.format("stick_long_stick_%s", material.toString()), stack,
-                "ShS",
-                'S', new UnificationEntry(OrePrefix.stick, material));
-        }
+        RecipeMaps.FORGE_HAMMER_RECIPES.recipeBuilder()
+            .input(OrePrefix.stick, material, 2)
+            .outputs(stack)
+            .duration((int) Math.max(material.getAverageMass(), 1L))
+            .EUt(16)
+            .buildAndRegister();
     }
 
     public static void processTurbine(OrePrefix toolPrefix, IngotMaterial material) {
@@ -354,8 +349,15 @@ public class PartsRecipeHandler {
             .input(OrePrefix.turbineBlade, material, 8)
             .input(OrePrefix.stickLong, Materials.Titanium)
             .outputs(rotorStack)
-            .duration(320)
-            .EUt(400)
+            .duration(200).EUt(400)
+            .buildAndRegister();
+
+        RecipeMaps.ASSEMBLER_RECIPES.recipeBuilder()
+            .input(OrePrefix.plate, material, 5)
+            .input(OrePrefix.screw, material, 2)
+            .outputs(OreDictUnifier.get(toolPrefix, material))
+            .duration(20).EUt(256)
+            .circuitMeta(10)
             .buildAndRegister();
 
         ModHandler.addShapedRecipe(String.format("turbine_blade_%s", material),

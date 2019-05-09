@@ -35,11 +35,11 @@ public class ShapedOreIngredientAwareRecipe extends ShapedOreEnergyTransferRecip
 
     public static void saveCraftingComponents(ItemStack toolStack, IInventory ingredients) {
         NBTTagList componentList = new NBTTagList();
-        for(int slotIndex = 0; slotIndex < ingredients.getSizeInventory(); slotIndex++) {
+        for (int slotIndex = 0; slotIndex < ingredients.getSizeInventory(); slotIndex++) {
             ItemStack stackInSlot = ingredients.getStackInSlot(slotIndex).copy();
             stackInSlot.setCount(1);
             //only save items that are not tools and don't have container items (to avoid dupes)
-            if(!stackInSlot.isEmpty() && !(stackInSlot.getItem() instanceof ToolMetaItem<?>) &&
+            if (!stackInSlot.isEmpty() && !(stackInSlot.getItem() instanceof ToolMetaItem<?>) &&
                 stackInSlot.getItem().getContainerItem(stackInSlot).isEmpty()) {
                 NBTTagCompound stackTag = new NBTTagCompound();
                 stackInSlot.writeToNBT(stackTag);
@@ -51,11 +51,11 @@ public class ShapedOreIngredientAwareRecipe extends ShapedOreEnergyTransferRecip
 
     public static List<ItemStack> getCraftingComponents(ItemStack toolStack) {
         NBTTagCompound tagCompound = toolStack.getTagCompound();
-        if(tagCompound == null || !tagCompound.hasKey("CraftingComponents", NBT.TAG_LIST))
+        if (tagCompound == null || !tagCompound.hasKey("CraftingComponents", NBT.TAG_LIST))
             return Collections.emptyList();
         ArrayList<ItemStack> stacks = new ArrayList<>();
         NBTTagList componentList = tagCompound.getTagList("CraftingComponents", NBT.TAG_COMPOUND);
-        for(int index = 0; index < componentList.tagCount(); index++) {
+        for (int index = 0; index < componentList.tagCount(); index++) {
             NBTTagCompound stackTag = componentList.getCompoundTagAt(index);
             stacks.add(new ItemStack(stackTag));
         }

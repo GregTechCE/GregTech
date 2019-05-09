@@ -40,11 +40,17 @@ public class FactoryBlockPattern {
         for (int i = 0; i < 3; i++) {
             switch (structureDir[i]) {
                 case UP:
-                case DOWN: flags |= 0x1; break;
+                case DOWN:
+                    flags |= 0x1;
+                    break;
                 case LEFT:
-                case RIGHT: flags |= 0x2; break;
+                case RIGHT:
+                    flags |= 0x2;
+                    break;
                 case FRONT:
-                case BACK: flags |= 0x4; break;
+                case BACK:
+                    flags |= 0x4;
+                    break;
             }
         }
         if (flags != 0x7) throw new IllegalArgumentException("Must have 3 different axes!");
@@ -77,7 +83,8 @@ public class FactoryBlockPattern {
                 }
 
                 this.depth.add(aisle);
-                if (minRepeat > maxRepeat) throw new IllegalArgumentException("Lower bound of repeat counting must smaller than upper bound!");
+                if (minRepeat > maxRepeat)
+                    throw new IllegalArgumentException("Lower bound of repeat counting must smaller than upper bound!");
                 aisleRepetitions.add(new int[]{minRepeat, maxRepeat});
                 return this;
             }
@@ -97,7 +104,8 @@ public class FactoryBlockPattern {
      * Set last aisle repeatable
      */
     public FactoryBlockPattern setRepeatable(int minRepeat, int maxRepeat) {
-        if (minRepeat > maxRepeat) throw new IllegalArgumentException("Lower bound of repeat counting must smaller than upper bound!");
+        if (minRepeat > maxRepeat)
+            throw new IllegalArgumentException("Lower bound of repeat counting must smaller than upper bound!");
         aisleRepetitions.set(aisleRepetitions.size() - 1, new int[]{minRepeat, maxRepeat});
         return this;
     }
@@ -178,7 +186,7 @@ public class FactoryBlockPattern {
 
     private List<Pair<Predicate<BlockWorldState>, IntRange>> makeCountLimitsList() {
         List<Pair<Predicate<BlockWorldState>, IntRange>> array = new ArrayList<>(countLimits.size());
-        for(Entry<Character, IntRange> entry : this.countLimits.entrySet()) {
+        for (Entry<Character, IntRange> entry : this.countLimits.entrySet()) {
             Predicate<BlockWorldState> predicate = this.symbolMap.get(entry.getKey());
             array.add(Pair.of(predicate, entry.getValue()));
         }

@@ -2,47 +2,37 @@ package gregtech.api.util;
 
 
 import com.google.common.collect.Lists;
-import gregtech.api.GregTechAPI;
 import gregtech.api.capability.GregtechCapabilities;
 import gregtech.api.capability.IElectricItem;
 import gregtech.api.capability.IMultipleTankHandler;
-import gregtech.api.damagesources.DamageSources;
-import gregtech.api.items.IDamagableItem;
-import gregtech.api.unification.OreDictUnifier;
-import gregtech.api.unification.material.type.Material;
-import gregtech.api.unification.ore.OrePrefix;
-import gregtech.api.unification.stack.MaterialStack;
-import gregtech.api.unification.stack.SimpleItemStack;
+import gregtech.api.items.IToolItem;
+import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.common.ConfigHolder;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockRedstoneWire;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.resources.I18n;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.EnumCreatureAttribute;
-import net.minecraft.entity.ai.attributes.AttributeModifier;
-import net.minecraft.entity.ai.attributes.IAttribute;
-import net.minecraft.init.MobEffects;
-import net.minecraft.inventory.EntityEquipmentSlot;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraft.potion.Potion;
+import net.minecraft.network.play.client.CPacketPlayerDigging;
+import net.minecraft.network.play.client.CPacketPlayerDigging.Action;
+import net.minecraft.network.play.server.SPacketBlockChange;
 import net.minecraft.potion.PotionEffect;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.NonNullList;
-import net.minecraft.util.Tuple;
-import net.minecraft.util.WeightedRandom;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.TextFormatting;
-import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.World;
+import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.BiomeDictionary;
-import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.fluids.FluidStack;
@@ -61,8 +51,8 @@ import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.math.BigInteger;
-import java.util.*;
 import java.util.List;
+import java.util.*;
 import java.util.Map.Entry;
 import java.util.function.Function;
 import java.util.function.Predicate;
@@ -74,9 +64,9 @@ public class GTUtility {
     public static BigInteger LONG_MAX = BigInteger.valueOf(Long.MAX_VALUE);
     public static BigInteger LONG_MIN = BigInteger.valueOf(Long.MIN_VALUE);
 
-    public static  <T> String[] mapToString(T[] array, Function<T, String> mapper) {
+    public static <T> String[] mapToString(T[] array, Function<T, String> mapper) {
         String[] result = new String[array.length];
-        for(int i = 0; i < array.length; i++) {
+        for (int i = 0; i < array.length; i++) {
             result[i] = mapper.apply(array[i]);
         }
         return result;
@@ -166,128 +156,100 @@ public class GTUtility {
      * If it's not possible to merge it fully, it will attempt to insert it into first empty slots
      */
     public static boolean mergeItemStack(ItemStack itemStack, List<Slot> slots) {
-        if(itemStack.isEmpty())
+        if (itemStack.isEmpty())
             return false; //if we are merging empty stack, return
 
         boolean merged = false;
         //iterate non-empty slots first
         //to try to insert stack into them
-        for(Slot slot : slots) {
-            if(!slot.isItemValid(itemStack))
+        for (Slot slot : slots) {
+            if (!slot.isItemValid(itemStack))
                 continue; //if itemstack cannot be placed into that slot, continue
             ItemStack stackInSlot = slot.getStack();
-            if(!ItemStack.areItemsEqual(itemStack, stackInSlot) ||
+            if (!ItemStack.areItemsEqual(itemStack, stackInSlot) ||
                 !ItemStack.areItemStackTagsEqual(itemStack, stackInSlot))
                 continue; //if itemstacks don't match, continue
             int slotMaxStackSize = Math.min(stackInSlot.getMaxStackSize(), slot.getItemStackLimit(stackInSlot));
             int amountToInsert = Math.min(itemStack.getCount(), slotMaxStackSize - stackInSlot.getCount());
-            if(amountToInsert == 0)
+            if (amountToInsert == 0)
                 continue; //if we can't insert anything, continue
             //shrink our stack, grow slot's stack and mark slot as changed
             stackInSlot.grow(amountToInsert);
             itemStack.shrink(amountToInsert);
             slot.onSlotChanged();
             merged = true;
-            if(itemStack.isEmpty())
+            if (itemStack.isEmpty())
                 return true; //if we inserted all items, return
         }
 
         //then try to insert itemstack into empty slots
         //breaking it into pieces if needed
-        for(Slot slot : slots) {
-            if(!slot.isItemValid(itemStack))
+        for (Slot slot : slots) {
+            if (!slot.isItemValid(itemStack))
                 continue; //if itemstack cannot be placed into that slot, continue
-            if(slot.getHasStack())
+            if (slot.getHasStack())
                 continue; //if slot contains something, continue
             int amountToInsert = Math.min(itemStack.getCount(), slot.getItemStackLimit(itemStack));
-            if(amountToInsert == 0)
+            if (amountToInsert == 0)
                 continue; //if we can't insert anything, continue
             //split our stack and put result in slot
             ItemStack stackInSlot = itemStack.splitStack(amountToInsert);
             slot.putStack(stackInSlot);
             merged = true;
-            if(itemStack.isEmpty())
+            if (itemStack.isEmpty())
                 return true; //if we inserted all items, return
         }
         return merged;
     }
 
-    public static boolean isBlockOrePrefixed(IBlockAccess world, BlockPos pos, IBlockState blockState, OrePrefix targetPrefix, List<ItemStack> drops) {
-        for(ItemStack itemStack : drops) {
-            OrePrefix orePrefix = OreDictUnifier.getPrefix(itemStack);
-            if(orePrefix == targetPrefix)
-                return true;
+    public static boolean harvestBlock(World world, BlockPos pos, EntityPlayer player) {
+        IBlockState blockState = world.getBlockState(pos);
+        TileEntity tileEntity = world.getTileEntity(pos);
+
+        if(blockState.getBlock().isAir(blockState, world, pos)) {
+            return false;
         }
-        return false;
-    }
 
-    public static long getBlockMaterialAmount(IBlockAccess world, BlockPos pos, IBlockState blockState, Material targetMaterial, List<ItemStack> drops) {
-        for(ItemStack itemStack : drops) {
-            MaterialStack materialStack = OreDictUnifier.getMaterial(itemStack);
-            if(materialStack != null && materialStack.material == targetMaterial)
-                return materialStack.amount;
+        if(!blockState.getBlock().canHarvestBlock(world, pos, player)) {
+            return false;
         }
-        return 0L;
-    }
 
-    /**
-     * Adds potion tooltip into given lines list
-     *
-     * @param potions potion effects to add to tooltip
-     * @param lines   description lines
-     */
-    @SideOnly(Side.CLIENT)
-    public static void addPotionTooltip(Iterable<PotionEffect> potions, List<String> lines) {
-        ArrayList<Tuple<String, AttributeModifier>> attributeLines = new ArrayList<>();
+        int expToDrop = 0;
+        if(!world.isRemote) {
+            EntityPlayerMP playerMP = (EntityPlayerMP) player;
+            expToDrop = ForgeHooks.onBlockBreakEvent(world, playerMP.interactionManager.getGameType(), playerMP, pos);
+            if(expToDrop == -1) {
+                //notify client if block can't be removed because of BreakEvent cancelled on server side
+                playerMP.connection.sendPacket(new SPacketBlockChange(world, pos));
+                return false;
+            }
+        }
 
-        for (PotionEffect potionEffect : potions) {
-            String line = I18n.format(potionEffect.getEffectName());
-            Potion potion = potionEffect.getPotion();
-            Map<IAttribute, AttributeModifier> attributes = potionEffect.getPotion().getAttributeModifierMap();
-            if (!attributes.isEmpty()) {
-                for (Map.Entry<IAttribute, AttributeModifier> entry : attributes.entrySet()) {
-                    AttributeModifier modifier = entry.getValue();
-                    attributeLines.add(new Tuple<>(entry.getKey().getName(),
-                            new AttributeModifier(modifier.getName(),
-                                    potion.getAttributeModifierAmount(potionEffect.getAmplifier(), modifier),
-                                    modifier.getOperation())));
+        world.playEvent(player, 2001, pos, Block.getStateId(blockState));
+
+        boolean wasRemovedByPlayer = blockState.getBlock().removedByPlayer(blockState, world, pos, player, !player.capabilities.isCreativeMode);
+        if(wasRemovedByPlayer) {
+            blockState.getBlock().onBlockDestroyedByPlayer(world, pos, blockState);
+
+            if(!world.isRemote && !player.capabilities.isCreativeMode) {
+                ItemStack stackInHand = player.getHeldItemMainhand();
+                blockState.getBlock().harvestBlock(world, player, pos, blockState, tileEntity, stackInHand);
+                if(expToDrop > 0) {
+                    blockState.getBlock().dropXpOnBlockBreak(world, pos, expToDrop);
                 }
             }
-            if (potionEffect.getAmplifier() > 0) {
-                line = line + " " + I18n.format("potion.potency." + potionEffect.getAmplifier());
-            }
-            if (potionEffect.getDuration() > 20) {
-                line = line + " (" + Potion.getPotionDurationString(potionEffect, 1.0f) + ")";
-            }
-            if (potion.isBadEffect()) {
-                lines.add(TextFormatting.RED + line);
-            } else {
-                lines.add(TextFormatting.BLUE + line);
-            }
         }
-        if (!attributeLines.isEmpty()) {
-            lines.add("");
-            lines.add(TextFormatting.DARK_PURPLE + I18n.format("potion.whenDrank"));
 
-            for (Tuple<String, AttributeModifier> tuple : attributeLines) {
-                AttributeModifier modifier = tuple.getSecond();
-                double d0 = modifier.getAmount();
-                double d1;
-                if (modifier.getOperation() != 1 && modifier.getOperation() != 2) {
-                    d1 = modifier.getAmount();
-                } else {
-                    d1 = modifier.getAmount() * 100.0D;
-                }
-                if (d0 > 0.0D) {
-                    lines.add(TextFormatting.BLUE + I18n.format("attribute.modifier.plus." + modifier.getOperation(), ItemStack.DECIMALFORMAT.format(d1), I18n.format("attribute.name." + tuple.getFirst())));
-                } else if (d0 < 0.0D) {
-                    d1 = d1 * -1.0D;
-                    lines.add(TextFormatting.RED + I18n.format("attribute.modifier.take." + modifier.getOperation(), ItemStack.DECIMALFORMAT.format(d1), I18n.format("attribute.name." + tuple.getFirst())));
-                }
-            }
-
+        if(!world.isRemote) {
+            EntityPlayerMP playerMP = (EntityPlayerMP) player;
+            playerMP.connection.sendPacket(new SPacketBlockChange(world, pos));
+        } else {
+            Minecraft mc = Minecraft.getMinecraft();
+            mc.getConnection().sendPacket(new CPacketPlayerDigging(Action.START_DESTROY_BLOCK, pos, mc.objectMouseOver.sideHit));
         }
+        return wasRemovedByPlayer;
     }
+
 
     @SideOnly(Side.CLIENT)
     public static void drawCenteredSizedText(int x, int y, String string, int color, double sizeMultiplier) {
@@ -305,14 +267,16 @@ public class GTUtility {
      * Applies specific amount of damage to item, either to durable items (which implement IDamagableItem)
      * or to electric items, which have capability IElectricItem
      * Damage amount is equal to EU amount used for electric items
+     *
      * @return if damage was applied successfully
      */
+    //TODO get rid of that
     public static boolean doDamageItem(ItemStack itemStack, int vanillaDamage, boolean simulate) {
         Item item = itemStack.getItem();
-        if (item instanceof IDamagableItem) {
+        if (item instanceof IToolItem) {
             //if item implements IDamagableItem, it manages it's own durability itself
-            IDamagableItem damagableItem = (IDamagableItem) item;
-            return damagableItem.doDamageToItem(itemStack, vanillaDamage, simulate);
+            IToolItem damagableItem = (IToolItem) item;
+            return damagableItem.damageItem(itemStack, vanillaDamage, simulate);
 
         } else if (itemStack.hasCapability(GregtechCapabilities.CAPABILITY_ELECTRIC_ITEM, null)) {
             //if we're using electric item, use default energy multiplier for textures
@@ -361,14 +325,6 @@ public class GTUtility {
         }
     }
 
-    public static boolean isStringValid(String aString) {
-        return aString != null && !aString.isEmpty();
-    }
-
-    public static boolean isBetweenExclusive(long start, long end, long value) {
-        return start < value && value < end;
-    }
-
     public static boolean isBetweenInclusive(long start, long end, long value) {
         return start <= value && value <= end;
     }
@@ -413,10 +369,10 @@ public class GTUtility {
             Field seedField = seedEntryClass.getDeclaredField("seed");
             seedField.setAccessible(true);
             List<WeightedRandom.Item> seedList = (List<WeightedRandom.Item>) seedListField.get(null);
-            for(WeightedRandom.Item seedEntryObject : seedList) {
+            for (WeightedRandom.Item seedEntryObject : seedList) {
                 ItemStack seedStack = (ItemStack) seedField.get(seedEntryObject);
                 int chanceValue = seedEntryObject.itemWeight;
-                if(!seedStack.isEmpty())
+                if (!seedStack.isEmpty())
                     result.add(new Tuple<>(seedStack, chanceValue));
             }
         } catch (ReflectiveOperationException exception) {
@@ -426,21 +382,21 @@ public class GTUtility {
     }
 
     public static <T> int getRandomItem(Random random, List<? extends Entry<Integer, T>> randomList, int size) {
-        if(randomList.isEmpty())
+        if (randomList.isEmpty())
             return -1;
         int[] baseOffsets = new int[size];
         int currentIndex = 0;
-        for(int i = 0; i < size; i++) {
+        for (int i = 0; i < size; i++) {
             Entry<Integer, T> entry = randomList.get(i);
-            if(entry.getKey() <= 0) {
+            if (entry.getKey() <= 0) {
                 throw new IllegalArgumentException("Invalid weight: " + entry.getKey());
             }
             currentIndex += entry.getKey();
             baseOffsets[i] = currentIndex;
         }
         int randomValue = random.nextInt(currentIndex);
-        for(int i = 0; i < size; i++) {
-            if(randomValue < baseOffsets[i])
+        for (int i = 0; i < size; i++) {
+            if (randomValue < baseOffsets[i])
                 return i;
         }
         throw new IllegalArgumentException("Invalid weight");
@@ -466,7 +422,7 @@ public class GTUtility {
                 if (z > 0.75) return EnumFacing.SOUTH;
                 return facing;
             case NORTH:
-            case     SOUTH:
+            case SOUTH:
                 if (x < 0.25) {
                     if (y < 0.25) return opposite;
                     if (y > 0.75) return opposite;
@@ -481,7 +437,7 @@ public class GTUtility {
                 if (y > 0.75) return EnumFacing.UP;
                 return facing;
             case WEST:
-            case     EAST:
+            case EAST:
                 if (z < 0.25) {
                     if (y < 0.25) return opposite;
                     if (y > 0.75) return opposite;
@@ -535,7 +491,7 @@ public class GTUtility {
             public FluidStack set(int index, FluidStack element) {
                 IFluidTank fluidTank = backedList.get(index);
                 FluidStack oldStack = fluidTank.getFluid();
-                if(!(fluidTank instanceof FluidTank))
+                if (!(fluidTank instanceof FluidTank))
                     return oldStack;
                 ((FluidTank) backedList.get(index)).setFluid(element);
                 return oldStack;
@@ -553,50 +509,6 @@ public class GTUtility {
         };
     }
 
-    public static boolean isWearingFullSuit(EntityLivingBase entity, Set<SimpleItemStack> suitParts) {
-        for (EntityEquipmentSlot slot : EntityEquipmentSlot.values()) {
-            if (slot.getSlotType() == EntityEquipmentSlot.Type.ARMOR) {
-                ItemStack equipment = entity.getItemStackFromSlot(slot);
-                if (equipment.isEmpty() || !suitParts.contains(new SimpleItemStack(equipment))) {
-                    return false;
-                }
-            }
-        }
-        return true;
-    }
-
-    public static boolean isWearingFullFrostHazmat(EntityLivingBase entity) {
-        return isWearingFullSuit(entity, GregTechAPI.frostHazmatList);
-    }
-
-    public static boolean isWearingFullHeatHazmat(EntityLivingBase entity) {
-        return isWearingFullSuit(entity, GregTechAPI.heatHazmatList);
-    }
-
-    public static boolean isWearingFullBioHazmat(EntityLivingBase entity) {
-        return isWearingFullSuit(entity, GregTechAPI.bioHazmatList);
-    }
-
-    public static boolean isWearingFullRadioHazmat(EntityLivingBase entity) {
-        return isWearingFullSuit(entity, GregTechAPI.radioHazmatList);
-    }
-
-    public static boolean isWearingFullElectroHazmat(EntityLivingBase entity) {
-        return isWearingFullSuit(entity, GregTechAPI.electroHazmatList);
-    }
-
-    public static boolean applyRadioactivity(EntityLivingBase entity, int level, int amountOfItems) {
-        if (level > 0 && entity.getCreatureAttribute() != EnumCreatureAttribute.UNDEAD && entity.getCreatureAttribute() != EnumCreatureAttribute.ARTHROPOD && !isWearingFullRadioHazmat(entity)) {
-            entity.addPotionEffect(new PotionEffect(MobEffects.SLOWNESS, level * 140 * amountOfItems));
-            entity.addPotionEffect(new PotionEffect(MobEffects.NAUSEA, level * 130 * amountOfItems));
-            entity.addPotionEffect(new PotionEffect(MobEffects.WEAKNESS, level * 150 * amountOfItems));
-            entity.addPotionEffect(new PotionEffect(MobEffects.HUNGER, level * 130 * amountOfItems));
-            entity.attackEntityFrom(DamageSources.getRadioactiveDamage(), level * 6 * amountOfItems);
-            return true;
-        }
-        return false;
-    }
-
     public static <T> boolean iterableContains(Iterable<T> list, Predicate<T> predicate) {
         for (T t : list) {
             if (predicate.test(t)) {
@@ -608,16 +520,16 @@ public class GTUtility {
 
     public static int amountOfNonNullElements(List<?> collection) {
         int amount = 0;
-        for(Object object : collection) {
-            if(object != null) amount++;
+        for (Object object : collection) {
+            if (object != null) amount++;
         }
         return amount;
     }
 
     public static int amountOfNonEmptyStacks(List<ItemStack> collection) {
         int amount = 0;
-        for(ItemStack object : collection) {
-            if(object != null && !object.isEmpty()) amount++;
+        for (ItemStack object : collection) {
+            if (object != null && !object.isEmpty()) amount++;
         }
         return amount;
     }
@@ -667,7 +579,7 @@ public class GTUtility {
         Collection<T> allowedValues = property.getAllowedValues();
         IBlockState[] resultArray = new IBlockState[allowedValues.size()];
         int index = 0;
-        for(T propertyValue : allowedValues) {
+        for (T propertyValue : allowedValues) {
             resultArray[index++] = blockState.withProperty(property, propertyValue);
         }
         return resultArray;
@@ -684,31 +596,51 @@ public class GTUtility {
             maybeResult = list.get(0);
         } else maybeResult = list.get(index);
 
-        if(minClass.isAssignableFrom(maybeResult.getClass())) {
+        if (minClass.isAssignableFrom(maybeResult.getClass())) {
             return minClass.cast(maybeResult);
         }
         return replacement;
     }
 
     public static <M> M getItem(List<? extends M> list, int index, M replacement) {
-        if(index >= 0 && index < list.size())
+        if (index >= 0 && index < list.size())
             return list.get(index);
         return replacement;
     }
 
-    /**
-     * This checks if the dimension is really a dimension and not another planet or something.
-     * Used for my teleporter.
-     */
-    public static boolean isRealDimension(int dimensionID) {
-        String clazzName = DimensionManager.getProvider(dimensionID).getClass().getName().toLowerCase();
-        if (clazzName.contains("mystcraft") || clazzName.contains("twilightforest") || clazzName.contains("rftools"))
-            return true;
-        return GregTechAPI.dimensionalList.contains(dimensionID);
+    public static long createFlag(int id) {
+        return 1L << id;
     }
 
-	public static long createFlag(int id) {
-		return 1L << id;
-	}
+    public static void doOvervoltageExplosion(MetaTileEntity metaTileEntity, long voltage) {
+        BlockPos pos = metaTileEntity.getPos();
+        metaTileEntity.getWorld().setBlockToAir(pos);
+        if (!metaTileEntity.getWorld().isRemote) {
+            double posX = pos.getX() + 0.5;
+            double posY = pos.getY() + 0.5;
+            double posZ = pos.getZ() + 0.5;
+            ((WorldServer) metaTileEntity.getWorld()).spawnParticle(EnumParticleTypes.SMOKE_LARGE, posX, posY, posZ,
+                10, 0.2, 0.2, 0.2, 0.0);
 
+            if (ConfigHolder.doExplosions) {
+                metaTileEntity.getWorld().createExplosion(null, posX, posY, posZ,
+                    getTierByVoltage(voltage), true);
+            }
+        }
+    }
+
+    public static int getRedstonePower(World world, BlockPos blockPos, EnumFacing side) {
+        BlockPos offsetPos = blockPos.offset(side);
+        int worldPower = world.getRedstonePower(offsetPos, side);
+        if (worldPower >= 15) {
+            return worldPower;
+        } else {
+            IBlockState offsetState = world.getBlockState(offsetPos);
+            if(offsetState.getBlock() instanceof BlockRedstoneWire) {
+                int wirePower = offsetState.getValue(BlockRedstoneWire.POWER);
+                return Math.max(worldPower, wirePower);
+            }
+            return worldPower;
+        }
+    }
 }

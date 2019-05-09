@@ -17,7 +17,7 @@ public class ServerWidgetGroup extends AbstractWidgetGroup {
     @Override
     public void detectAndSendChanges() {
         super.detectAndSendChanges();
-        if(lastIsVisible == null || isVisibleGetter.getAsBoolean() != lastIsVisible) {
+        if (lastIsVisible == null || isVisibleGetter.getAsBoolean() != lastIsVisible) {
             this.lastIsVisible = isVisibleGetter.getAsBoolean();
             writeUpdateInfo(2, buffer -> buffer.writeBoolean(lastIsVisible));
         }
@@ -26,7 +26,7 @@ public class ServerWidgetGroup extends AbstractWidgetGroup {
     @Override
     public void readUpdateInfo(int id, PacketBuffer buffer) {
         super.readUpdateInfo(id, buffer);
-        if(id == 2) {
+        if (id == 2) {
             setVisible(buffer.readBoolean());
         }
     }

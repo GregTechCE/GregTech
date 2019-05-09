@@ -100,7 +100,7 @@ public class MultiblockInfoRecipeWrapper implements IRecipeWrapper, SceneRenderC
     private void toggleNextLayer() {
         WorldSceneRenderer renderer = getCurrentRenderer();
         int height = (int) renderer.getSize().getY() - 1;
-        if(++this.layerIndex > height) {
+        if (++this.layerIndex > height) {
             //if current layer index is more than max height, reset it
             //to display all layers
             this.layerIndex = -1;
@@ -116,7 +116,7 @@ public class MultiblockInfoRecipeWrapper implements IRecipeWrapper, SceneRenderC
     private void switchRenderPage(int amount) {
         int maxIndex = sceneRenders.length - 1;
         int newIndex = Math.max(0, Math.min(currentRendererPage + amount, maxIndex));
-        if(currentRendererPage != newIndex) {
+        if (currentRendererPage != newIndex) {
             this.currentRendererPage = newIndex;
             this.buttonNextPattern.enabled = newIndex < maxIndex;
             this.buttonPreviousPattern.enabled = newIndex > 0;
@@ -124,7 +124,7 @@ public class MultiblockInfoRecipeWrapper implements IRecipeWrapper, SceneRenderC
     }
 
     private boolean shouldDisplayBlock(BlockPos pos) {
-        if(getLayerIndex() == -1)
+        if (getLayerIndex() == -1)
             return true;
         WorldSceneRenderer renderer = getCurrentRenderer();
         int minHeight = (int) renderer.world.getMinPos().getY();
@@ -144,7 +144,7 @@ public class MultiblockInfoRecipeWrapper implements IRecipeWrapper, SceneRenderC
         GlStateManager.rotate(rotationPitch, 0.0f, 0.0f, 1.0f);
         GlStateManager.translate(-size.x / 2.0f, -size.y / 2.0f, -size.z / 2.0f);
 
-        if(layerIndex >= 0) {
+        if (layerIndex >= 0) {
             GlStateManager.translate(0.0, -layerIndex + 1, 0.0);
         }
     }
@@ -157,7 +157,7 @@ public class MultiblockInfoRecipeWrapper implements IRecipeWrapper, SceneRenderC
         int sceneHeight = recipeWidth;
         renderer.render(recipeLayout.getPosX(), recipeLayout.getPosY() + scenePosY, recipeWidth, sceneHeight, 0xC6C6C6);
         drawText(minecraft, recipeWidth);
-        for(GuiButton button : buttons.keySet()) {
+        for (GuiButton button : buttons.keySet()) {
             button.drawButton(minecraft, mouseX, mouseY, 0.0f);
         }
 
@@ -168,17 +168,17 @@ public class MultiblockInfoRecipeWrapper implements IRecipeWrapper, SceneRenderC
             mouseX < recipeWidth && mouseY < (scenePosY + sceneHeight);
         boolean isHoldingShift = Keyboard.isKeyDown(Keyboard.KEY_LSHIFT);
 
-        if(!leftClickHeldAndInsideView && pos != null && !renderer.world.isAirBlock(pos)) {
+        if (!leftClickHeldAndInsideView && pos != null && !renderer.world.isAirBlock(pos)) {
             IBlockState blockState = renderer.world.getBlockState(pos);
             RayTraceResult result = new CuboidRayTraceResult(new Vector3(0.5, 0.5, 0.5).add(pos), pos, EnumFacing.UP, new IndexedCuboid6(null, Cuboid6.full), 1.0);
             ItemStack itemStack = blockState.getBlock().getPickBlock(blockState, result, renderer.world, pos, minecraft.player);
-            if(itemStack != null && !itemStack.isEmpty()) {
+            if (itemStack != null && !itemStack.isEmpty()) {
                 this.tooltipBlockStack = itemStack;
             }
         }
 
-        if(leftClickHeldAndInsideView) {
-            if(isHoldingShift) {
+        if (leftClickHeldAndInsideView) {
+            if (isHoldingShift) {
                 int mouseDeltaY = mouseY - lastMouseY;
                 this.rotationPitch += mouseDeltaY * 2.0f;
             } else {
@@ -198,7 +198,7 @@ public class MultiblockInfoRecipeWrapper implements IRecipeWrapper, SceneRenderC
         List<String> lines = Arrays.stream(infoPage.getDescription())
             .flatMap(s -> fontRenderer.listFormattedStringToWidth(s, recipeWidth).stream())
             .collect(Collectors.toList());
-        for(int i = 0; i < lines.size(); i++) {
+        for (int i = 0; i < lines.size(); i++) {
             String lineText = lines.get(i);
             int x = (recipeWidth - fontRenderer.getStringWidth(lineText)) / 2;
             int y = 8 + i * fontRenderer.FONT_HEIGHT;
@@ -209,8 +209,8 @@ public class MultiblockInfoRecipeWrapper implements IRecipeWrapper, SceneRenderC
 
     @Override
     public boolean handleClick(Minecraft minecraft, int mouseX, int mouseY, int mouseButton) {
-        for(Entry<GuiButton, Runnable> button : buttons.entrySet()) {
-            if(button.getKey().mousePressed(minecraft, mouseX, mouseY)) {
+        for (Entry<GuiButton, Runnable> button : buttons.entrySet()) {
+            if (button.getKey().mousePressed(minecraft, mouseX, mouseY)) {
                 button.getValue().run();
                 return true;
             }
@@ -220,7 +220,7 @@ public class MultiblockInfoRecipeWrapper implements IRecipeWrapper, SceneRenderC
 
     @Override
     public List<String> getTooltipStrings(int mouseX, int mouseY) {
-        if(tooltipBlockStack != null && !tooltipBlockStack.isEmpty() && !Mouse.isButtonDown(0)) {
+        if (tooltipBlockStack != null && !tooltipBlockStack.isEmpty() && !Mouse.isButtonDown(0)) {
             Minecraft minecraft = Minecraft.getMinecraft();
             ITooltipFlag flag = minecraft.gameSettings.advancedItemTooltips ? TooltipFlags.ADVANCED : TooltipFlags.NORMAL;
             List<String> tooltip = tooltipBlockStack.getTooltip(minecraft.player, flag);
@@ -240,11 +240,11 @@ public class MultiblockInfoRecipeWrapper implements IRecipeWrapper, SceneRenderC
     private WorldSceneRenderer initializeSceneRenderer(MultiblockShapeInfo shapeInfo) {
         Map<BlockPos, BlockInfo> blockMap = new HashMap<>();
         BlockInfo[][][] blocks = shapeInfo.getBlocks();
-        for(int z = 0; z < blocks.length; z++) {
+        for (int z = 0; z < blocks.length; z++) {
             BlockInfo[][] aisle = blocks[z];
-            for(int y = 0; y < aisle.length; y++) {
+            for (int y = 0; y < aisle.length; y++) {
                 BlockInfo[] column = aisle[y];
-                for(int x = 0; x < column.length; x++) {
+                for (int x = 0; x < column.length; x++) {
                     BlockPos blockPos = new BlockPos(x, y, z);
                     BlockInfo blockInfo = column[x];
                     blockMap.put(blockPos, blockInfo);

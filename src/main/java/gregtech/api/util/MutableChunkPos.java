@@ -8,7 +8,7 @@ public class MutableChunkPos extends ChunkPos {
     int x, z;
 
     public MutableChunkPos() {
-        super(0,0);
+        super(0, 0);
     }
 
     public MutableChunkPos(int x, int z) {
@@ -38,8 +38,7 @@ public class MutableChunkPos extends ChunkPos {
     }
 
     @Override
-    public int hashCode()
-    {
+    public int hashCode() {
         int i = 1664525 * x + 1013904223;
         int j = 1664525 * (z ^ -559038737) + 1013904223;
         return i ^ j;
@@ -50,15 +49,15 @@ public class MutableChunkPos extends ChunkPos {
         if (this == obj) return true;
         else if (!(obj instanceof ChunkPos)) return false;
         else {
-            ChunkPos chunkpos = (ChunkPos)obj;
+            ChunkPos chunkpos = (ChunkPos) obj;
             return this.x == chunkpos.x && this.z == chunkpos.z;
         }
     }
 
     @Override
     public double getDistanceSq(Entity entityIn) {
-        double d0 = (double)(x * 16 + 8);
-        double d1 = (double)(z * 16 + 8);
+        double d0 = (double) (x * 16 + 8);
+        double d1 = (double) (z * 16 + 8);
         double d2 = d0 - entityIn.posX;
         double d3 = d1 - entityIn.posZ;
         return d2 * d2 + d3 * d3;
@@ -90,8 +89,7 @@ public class MutableChunkPos extends ChunkPos {
     }
 
     @Override
-    public String toString()
-    {
+    public String toString() {
         return "[" + x + ", " + z + "]";
     }
 }

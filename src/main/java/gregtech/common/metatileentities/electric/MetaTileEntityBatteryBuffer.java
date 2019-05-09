@@ -65,7 +65,7 @@ public class MetaTileEntityBatteryBuffer extends TieredMetaTileEntity {
             @Nonnull
             @Override
             public ItemStack insertItem(int slot, @Nonnull ItemStack stack, boolean simulate) {
-                if(((EnergyContainerBatteryBuffer) energyContainer).getBatteryContainer(stack) == null)
+                if (((EnergyContainerBatteryBuffer) energyContainer).getBatteryContainer(stack) == null)
                     return stack; //do not allow to insert non-battery items
                 return super.insertItem(slot, stack, simulate);
             }

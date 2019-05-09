@@ -4,8 +4,6 @@ import codechicken.lib.render.CCRenderState;
 import codechicken.lib.render.pipeline.IVertexOperation;
 import codechicken.lib.vec.Matrix4;
 import gregtech.api.GTValues;
-import gregtech.api.capability.IEnergyContainer;
-import gregtech.api.capability.impl.EnergyContainerHandler.IEnergyChangeListener;
 import gregtech.api.gui.GuiTextures;
 import gregtech.api.gui.ModularUI;
 import gregtech.api.gui.ModularUI.Builder;
@@ -40,17 +38,17 @@ import net.minecraftforge.items.ItemStackHandler;
 import javax.annotation.Nullable;
 import java.util.List;
 
-public class MetaTileEntityItemCollector extends TieredMetaTileEntity implements IEnergyChangeListener {
+public class MetaTileEntityItemCollector extends TieredMetaTileEntity {
 
-    private static final int[] INVENTORY_SIZES = {1, 4, 9, 16, 25};
+    private static final int[] INVENTORY_SIZES = {4, 9, 16, 25, 25};
     private static final double MOTION_MULTIPLIER = 0.04;
-    private static final int EU_PER_ITEM_MOVE = 4;
+    private static final int BASE_EU_CONSUMPTION = 6;
 
     private final int maxItemSuckingRange;
     private int itemSuckingRange;
     private AxisAlignedBB areaBoundingBox;
     private BlockPos areaCenterPos;
-    private boolean hasElectricCharge;
+    private boolean isWorking;
 
     public MetaTileEntityItemCollector(ResourceLocation metaTileEntityId, int tier, int maxItemSuckingRange) {
         super(metaTileEntityId, tier);
@@ -67,86 +65,95 @@ public class MetaTileEntityItemCollector extends TieredMetaTileEntity implements
     @Override
     public void renderMetaTileEntity(CCRenderState renderState, Matrix4 translation, IVertexOperation[] pipeline) {
         super.renderMetaTileEntity(renderState, translation, pipeline);
-        SimpleOverlayRenderer renderer = hasElectricCharge ? Textures.BLOWER_ACTIVE_OVERLAY : Textures.BLOWER_OVERLAY;
+        SimpleOverlayRenderer renderer = isWorking ? Textures.BLOWER_ACTIVE_OVERLAY : Textures.BLOWER_OVERLAY;
         renderer.renderSided(EnumFacing.UP, renderState, translation, pipeline);
         Textures.AIR_VENT_OVERLAY.renderSided(EnumFacing.DOWN, renderState, translation, pipeline);
         Textures.PIPE_OUT_OVERLAY.renderSided(getFrontFacing(), renderState, translation, pipeline);
     }
 
-    @Override
-    public void onEnergyChanged(IEnergyContainer container, boolean isInitialChange) {
-        super.onEnergyChanged(container, isInitialChange);
-        boolean hasElectricChargeNow = container.getEnergyStored() >= EU_PER_ITEM_MOVE;
-        if(hasElectricCharge != hasElectricChargeNow) {
-            this.hasElectricCharge = hasElectricChargeNow;
-            if(!isInitialChange) writeCustomData(100, buffer -> buffer.writeBoolean(hasElectricChargeNow));
-        }
+    protected int getEnergyConsumedPerTick() {
+        return BASE_EU_CONSUMPTION * (1 << (getTier() - 1));
     }
 
     @Override
     public void writeInitialSyncData(PacketBuffer buf) {
         super.writeInitialSyncData(buf);
-        buf.writeBoolean(hasElectricCharge);
+        buf.writeBoolean(isWorking);
     }
 
     @Override
     public void receiveInitialSyncData(PacketBuffer buf) {
         super.receiveInitialSyncData(buf);
-        this.hasElectricCharge = buf.readBoolean();
+        this.isWorking = buf.readBoolean();
     }
 
     @Override
     public void receiveCustomData(int dataId, PacketBuffer buf) {
         super.receiveCustomData(dataId, buf);
-        if(dataId == 100) hasElectricCharge = buf.readBoolean();
+        if (dataId == 100) {
+            this.isWorking = buf.readBoolean();
+            getHolder().scheduleChunkForRenderUpdate();
+        }
+    }
+
+    @Override
+    protected boolean canMachineConnectRedstone(EnumFacing side) {
+        return true;
     }
 
     @Override
     public void update() {
         super.update();
-        if(!getWorld().isRemote) {
+
+        if(getWorld().isRemote) {
+            return;
+        }
+        boolean isWorkingNow = energyContainer.getEnergyStored() >= getEnergyConsumedPerTick() && isBlockRedstonePowered();
+
+        if (isWorkingNow) {
+            energyContainer.removeEnergy(getEnergyConsumedPerTick());
             BlockPos selfPos = getPos();
-            if(areaCenterPos == null || areaBoundingBox == null || areaCenterPos.getX() != selfPos.getX() ||
+            if (areaCenterPos == null || areaBoundingBox == null || areaCenterPos.getX() != selfPos.getX() ||
                 areaCenterPos.getZ() != selfPos.getZ() || areaCenterPos.getY() != selfPos.getY() + 1) {
                 this.areaCenterPos = selfPos.up();
                 this.areaBoundingBox = new AxisAlignedBB(areaCenterPos).grow(itemSuckingRange, 1.0, itemSuckingRange);
             }
-            List<EntityItem> itemsInRange = getWorld().getEntitiesWithinAABB(EntityItem.class, areaBoundingBox);
-            int maxItemEntitiesSucked = (int) (energyContainer.getEnergyStored() / EU_PER_ITEM_MOVE);
-            int itemEntitiesSucked = 0;
-            for(EntityItem entityItem : itemsInRange) {
-                double distanceX = (areaCenterPos.getX() + 0.5) - entityItem.posX;
-                double distanceZ = (areaCenterPos.getZ() + 0.5) - entityItem.posZ;
-                double distance = MathHelper.sqrt(distanceX * distanceX + distanceZ * distanceZ);
-                if(distance >= 0.7) {
+            moveItemsInEffectRange();
+        }
+
+        if(isWorkingNow != isWorking) {
+            this.isWorking = isWorkingNow;
+            writeCustomData(100, buffer -> buffer.writeBoolean(isWorkingNow));
+        }
+    }
+
+    protected void moveItemsInEffectRange() {
+        List<EntityItem> itemsInRange = getWorld().getEntitiesWithinAABB(EntityItem.class, areaBoundingBox);
+        for (EntityItem entityItem : itemsInRange) {
+            double distanceX = (areaCenterPos.getX() + 0.5) - entityItem.posX;
+            double distanceZ = (areaCenterPos.getZ() + 0.5) - entityItem.posZ;
+            double distance = MathHelper.sqrt(distanceX * distanceX + distanceZ * distanceZ);
+            if (distance >= 0.7) {
+                if(!entityItem.cannotPickup()) {
                     double directionX = distanceX / distance;
                     double directionZ = distanceZ / distance;
-                    entityItem.motionX = directionX * MOTION_MULTIPLIER * (getTier() - 1);
-                    entityItem.motionZ = directionZ * MOTION_MULTIPLIER * (getTier() - 1);
+                    entityItem.motionX = directionX * MOTION_MULTIPLIER * getTier();
+                    entityItem.motionZ = directionZ * MOTION_MULTIPLIER * getTier();
                     entityItem.velocityChanged = true;
-                    itemEntitiesSucked++;
-                } else {
-                    ItemStack itemStack = entityItem.getItem();
-                    ItemStack remainder = ItemHandlerHelper.insertItemStacked(exportItems, itemStack, false);
-                    if(remainder.isEmpty()) {
-                        entityItem.setDead();
-                        itemEntitiesSucked++;
-                    } else if(itemStack.getCount() > remainder.getCount()) {
-                        entityItem.setItem(remainder);
-                        itemEntitiesSucked++;
-                    }
+                    entityItem.setPickupDelay(1);
                 }
-                if(itemEntitiesSucked >= maxItemEntitiesSucked) {
-                    break;
+            } else {
+                ItemStack itemStack = entityItem.getItem();
+                ItemStack remainder = ItemHandlerHelper.insertItemStacked(exportItems, itemStack, false);
+                if (remainder.isEmpty()) {
+                    entityItem.setDead();
+                } else if (itemStack.getCount() > remainder.getCount()) {
+                    entityItem.setItem(remainder);
                 }
             }
-            if(itemEntitiesSucked > 0) {
-                long totalEnergy = itemEntitiesSucked * EU_PER_ITEM_MOVE;
-                energyContainer.addEnergy(-totalEnergy);
-            }
-            if(getTimer() % 5 == 0) {
-                pushItemsIntoNearbyHandlers(getFrontFacing());
-            }
+        }
+        if (getTimer() % 5 == 0) {
+            pushItemsIntoNearbyHandlers(getFrontFacing());
         }
     }
 
@@ -154,8 +161,10 @@ public class MetaTileEntityItemCollector extends TieredMetaTileEntity implements
     @SideOnly(Side.CLIENT)
     public void addInformation(ItemStack stack, @Nullable World player, List<String> tooltip, boolean advanced) {
         tooltip.add(I18n.format("gregtech.machine.item_collector.collect_range", maxItemSuckingRange, maxItemSuckingRange));
-        tooltip.add(I18n.format("gregtech.universal.tooltip.voltage_in", energyContainer.getInputVoltage(), GTValues.VN[getTier()]));
+        tooltip.add(I18n.format("gregtech.universal.tooltip.max_voltage_in", energyContainer.getInputVoltage(), GTValues.VN[getTier()]));
         tooltip.add(I18n.format("gregtech.universal.tooltip.energy_storage_capacity", energyContainer.getEnergyCapacity()));
+        tooltip.add(I18n.format("gregtech.machine.item_controller.tooltip.redstone"));
+        tooltip.add(I18n.format("gregtech.machine.item_controller.tooltip.consumption", getEnergyConsumedPerTick()));
     }
 
     @Override

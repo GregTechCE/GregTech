@@ -9,13 +9,13 @@ import gregtech.api.unification.material.type.RoughSolidMaterial;
 import gregtech.api.unification.material.type.SolidMaterial;
 import gregtech.api.unification.ore.OrePrefix;
 import gregtech.api.unification.stack.UnificationEntry;
-import gregtech.api.util.GTUtility;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.item.EntityXPOrb;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Enchantments;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.event.AnvilUpdateEvent;
 import net.minecraftforge.event.entity.player.PlayerPickupXpEvent;
 import net.minecraftforge.event.world.BlockEvent;
@@ -48,22 +48,22 @@ public class ToolMetaItemListener {
     public static void onAnvilChange(AnvilUpdateEvent event) {
         ItemStack firstStack = event.getLeft();
         ItemStack secondStack = event.getRight();
-        if(!firstStack.isEmpty() && !secondStack.isEmpty() && firstStack.getItem() instanceof ToolMetaItem) {
+        if (!firstStack.isEmpty() && !secondStack.isEmpty() && firstStack.getItem() instanceof ToolMetaItem) {
             ToolMetaItem<?> toolMetaItem = (ToolMetaItem<?>) firstStack.getItem();
             MetaToolValueItem toolValueItem = toolMetaItem.getItem(firstStack);
-            if(toolValueItem == null) {
+            if (toolValueItem == null) {
                 return;
             }
             SolidMaterial toolMaterial = ToolMetaItem.getToolMaterial(firstStack);
             OrePrefix solidPrefix = getSolidPrefix(toolMaterial);
             UnificationEntry unificationEntry = OreDictUnifier.getUnificationEntry(secondStack);
-            double toolDamage = toolMetaItem.getInternalDamage(firstStack) / (toolMetaItem.getMaxInternalDamage(firstStack) * 1.0);
+            double toolDamage = toolMetaItem.getItemDamage(firstStack) / (toolMetaItem.getMaxItemDamage(firstStack) * 1.0);
             double materialForFullRepair = toolValueItem.getAmountOfMaterialToRepair(firstStack);
-            int durabilityPerUnit = (int) Math.ceil(toolMetaItem.getMaxInternalDamage(firstStack) / materialForFullRepair);
+            int durabilityPerUnit = (int) Math.ceil(toolMetaItem.getMaxItemDamage(firstStack) / materialForFullRepair);
             int materialUnitsRequired = Math.min(secondStack.getCount(), (int) Math.ceil(toolDamage * materialForFullRepair));
-            int repairCost = Math.max(2, toolMaterial.harvestLevel) * materialUnitsRequired;
+            int repairCost = (MathHelper.clamp(toolMaterial.harvestLevel, 2, 3) - 1) * materialUnitsRequired;
 
-            if(toolDamage > 0.0 && materialUnitsRequired > 0 && unificationEntry != null &&
+            if (toolDamage > 0.0 && materialUnitsRequired > 0 && unificationEntry != null &&
                 unificationEntry.material == toolMaterial && unificationEntry.orePrefix == solidPrefix) {
                 int durabilityToRegain = durabilityPerUnit * materialUnitsRequired;
                 ItemStack resultStack = firstStack.copy();
@@ -78,9 +78,9 @@ public class ToolMetaItemListener {
     private static OrePrefix getSolidPrefix(SolidMaterial material) {
         if (material instanceof IngotMaterial) {
             return OrePrefix.ingot;
-        } else if(material instanceof GemMaterial) {
+        } else if (material instanceof GemMaterial) {
             return OrePrefix.gem;
-        } else if(material instanceof RoughSolidMaterial) {
+        } else if (material instanceof RoughSolidMaterial) {
             return ((RoughSolidMaterial) material).solidFormSupplier.get();
         } else return null;
     }
@@ -97,38 +97,18 @@ public class ToolMetaItemListener {
     public static void onHarvestDrops(BlockEvent.HarvestDropsEvent event) {
         EntityPlayer harvester = event.getHarvester();
         List<ItemStack> drops = event.getDrops();
-        if(harvester == null)
+        if (harvester == null)
             return;
         ItemStack stackInHand = harvester.getHeldItem(EnumHand.MAIN_HAND);
-        if(stackInHand.isEmpty() || !(stackInHand.getItem() instanceof ToolMetaItem<?>))
+        if (stackInHand.isEmpty() || !(stackInHand.getItem() instanceof ToolMetaItem<?>))
             return;
+
         ToolMetaItem<? extends MetaToolValueItem> toolMetaItem = (ToolMetaItem<?>) stackInHand.getItem();
-        MetaToolValueItem valueItem = toolMetaItem.getItem(stackInHand);
-        IToolStats toolStats = valueItem == null ? null : valueItem.getToolStats();
-        if(toolStats == null || !toolStats.isMinableBlock(event.getState(), stackInHand))
-            return;
         boolean isRecursiveCall = harvesting.get() == DUMMY_OBJECT;
-        if(isRecursiveCall && !toolStats.allowRecursiveConversion())
-            return; //do not call recursive if not allowed by tool stats explicitly
-        if(!isRecursiveCall) {
+        if (!isRecursiveCall) {
             harvesting.set(DUMMY_OBJECT);
-        }
-        try {
-            int damageDealt = toolStats.convertBlockDrops(event.getWorld(), event.getPos(), event.getState(), harvester, drops, isRecursiveCall, stackInHand);
-            if(damageDealt > 0) {
-                event.setDropChance(1.0f);
-                boolean damagedTool = GTUtility.doDamageItem(stackInHand, damageDealt *
-                    toolStats.getToolDamagePerDropConversion(stackInHand), false);
-                if(!damagedTool) {
-                    //if we can't apply entire damage to tool, just break it
-                    stackInHand.shrink(1);
-                }
-            }
-        } finally {
-            if(!isRecursiveCall) {
-                //restore state only if non-recursive
-                harvesting.set(null);
-            }
+            toolMetaItem.onBlockDropsHarvested(stackInHand, event.getWorld(), event.getPos(), event.getState(), harvester, drops);
+            harvesting.set(null);
         }
     }
 

@@ -1,5 +1,8 @@
 package gregtech.common.crafting;
 
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParseException;
 import gregtech.api.items.metaitem.MetaItem;
 import gregtech.common.items.MetaItems;
 import net.minecraft.item.ItemStack;
@@ -12,10 +15,6 @@ import net.minecraftforge.common.crafting.CraftingHelper;
 import net.minecraftforge.common.crafting.IRecipeFactory;
 import net.minecraftforge.common.crafting.JsonContext;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
-
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParseException;
 
 public class MetaItemShapelessRecipeFactory implements IRecipeFactory {
     @Override

@@ -17,10 +17,10 @@ public class IntCircuitIngredient extends Ingredient {
     }
 
     public static void setCircuitConfiguration(ItemStack itemStack, int configuration) {
-        if(!MetaItems.INTEGRATED_CIRCUIT.isItemEqual(itemStack))
+        if (!MetaItems.INTEGRATED_CIRCUIT.isItemEqual(itemStack))
             throw new IllegalArgumentException("Given item stack is not an integrated circuit!");
         NBTTagCompound tagCompound = itemStack.getTagCompound();
-        if(tagCompound == null) {
+        if (tagCompound == null) {
             tagCompound = new NBTTagCompound();
             itemStack.setTagCompound(tagCompound);
         }
@@ -28,7 +28,7 @@ public class IntCircuitIngredient extends Ingredient {
     }
 
     public static int getCircuitConfiguration(ItemStack itemStack) {
-        if(!MetaItems.INTEGRATED_CIRCUIT.isItemEqual(itemStack) ||
+        if (!MetaItems.INTEGRATED_CIRCUIT.isItemEqual(itemStack) ||
             !itemStack.hasTagCompound()) return 0;
         NBTTagCompound tagCompound = itemStack.getTagCompound();
         return tagCompound.getInteger("Configuration");
@@ -36,7 +36,7 @@ public class IntCircuitIngredient extends Ingredient {
 
     private static ItemStack[] gatherMatchingCircuits(int... matchingConfigurations) {
         ItemStack[] resultItems = new ItemStack[matchingConfigurations.length];
-        for(int i = 0; i < resultItems.length; i++) {
+        for (int i = 0; i < resultItems.length; i++) {
             resultItems[i] = getIntegratedCircuit(matchingConfigurations[i]);
         }
         return resultItems;

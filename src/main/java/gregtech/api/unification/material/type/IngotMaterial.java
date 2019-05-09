@@ -1,10 +1,10 @@
 package gregtech.api.unification.material.type;
 
 import com.google.common.collect.ImmutableList;
-import gregtech.common.pipelike.cable.WireProperties;
 import gregtech.api.unification.Element;
 import gregtech.api.unification.material.MaterialIconSet;
 import gregtech.api.unification.stack.MaterialStack;
+import gregtech.common.pipelike.cable.WireProperties;
 import gregtech.common.pipelike.fluidpipe.FluidPipeProperties;
 import stanhebben.zenscript.annotations.ZenMethod;
 
@@ -12,9 +12,9 @@ import javax.annotation.Nullable;
 
 import static gregtech.api.unification.material.type.DustMaterial.MatFlags.GENERATE_PLATE;
 import static gregtech.api.unification.material.type.DustMaterial.MatFlags.SMELT_INTO_FLUID;
-import static gregtech.api.util.GTUtility.createFlag;
 import static gregtech.api.unification.material.type.IngotMaterial.MatFlags.*;
 import static gregtech.api.unification.material.type.SolidMaterial.MatFlags.GENERATE_ROD;
+import static gregtech.api.util.GTUtility.createFlag;
 
 public class IngotMaterial extends SolidMaterial {
 
@@ -104,13 +104,13 @@ public class IngotMaterial extends SolidMaterial {
     }
 
     public IngotMaterial(int metaItemSubId, String name, int materialRGB, MaterialIconSet materialIconSet, int harvestLevel, ImmutableList<MaterialStack> materialComponents, long materialGenerationFlags) {
-        this(metaItemSubId, name, materialRGB, materialIconSet, harvestLevel, materialComponents, materialGenerationFlags, null, 0, 0, 0,0);
+        this(metaItemSubId, name, materialRGB, materialIconSet, harvestLevel, materialComponents, materialGenerationFlags, null, 0, 0, 0, 0);
     }
 
     @Override
     protected void initializeMaterial() {
         super.initializeMaterial();
-        if(blastFurnaceTemperature > 0) {
+        if (blastFurnaceTemperature > 0) {
             setFluidTemperature(blastFurnaceTemperature);
         } else {
             setFluidTemperature(1273);
@@ -119,27 +119,27 @@ public class IngotMaterial extends SolidMaterial {
 
     @Override
     protected long verifyMaterialBits(long generationBits) {
-        if((generationBits & GENERATE_DENSE) > 0) {
+        if ((generationBits & GENERATE_DENSE) > 0) {
             generationBits |= GENERATE_PLATE;
         }
-        if((generationBits & GENERATE_ROTOR) > 0) {
+        if ((generationBits & GENERATE_ROTOR) > 0) {
             generationBits |= GENERATE_BOLT_SCREW;
             generationBits |= GENERATE_RING;
             generationBits |= GENERATE_PLATE;
         }
-        if((generationBits & GENERATE_SMALL_GEAR) > 0) {
+        if ((generationBits & GENERATE_SMALL_GEAR) > 0) {
             generationBits |= GENERATE_PLATE;
         }
-        if((generationBits & GENERATE_FINE_WIRE) > 0) {
+        if ((generationBits & GENERATE_FINE_WIRE) > 0) {
             generationBits |= GENERATE_FOIL;
         }
-        if((generationBits & GENERATE_FOIL) > 0) {
+        if ((generationBits & GENERATE_FOIL) > 0) {
             generationBits |= GENERATE_PLATE;
         }
-        if((generationBits & GENERATE_RING) > 0) {
+        if ((generationBits & GENERATE_RING) > 0) {
             generationBits |= GENERATE_ROD;
         }
-        if((generationBits & GENERATE_BOLT_SCREW) > 0) {
+        if ((generationBits & GENERATE_BOLT_SCREW) > 0) {
             generationBits |= GENERATE_ROD;
         }
         return super.verifyMaterialBits(generationBits);

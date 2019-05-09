@@ -22,7 +22,7 @@ import java.util.function.Consumer;
 public abstract class Widget {
 
     protected ModularUI gui;
-    protected SizeProvider sizes;
+    protected ISizeProvider sizes;
     protected WidgetUIAccess uiAccess;
 
     public Widget() {
@@ -32,7 +32,7 @@ public abstract class Widget {
         this.gui = gui;
     }
 
-    public void setSizes(SizeProvider sizes) {
+    public void setSizes(ISizeProvider sizes) {
         this.sizes = sizes;
     }
 
@@ -64,7 +64,7 @@ public abstract class Widget {
 
     /**
      * Called each draw tick to draw this widget in GUI
-     *
+     * <p>
      * Note that current GL state is ALREADY translated to (guiLeft, guiTop, 0.0)!
      */
     @SideOnly(Side.CLIENT)
@@ -73,7 +73,7 @@ public abstract class Widget {
 
     /**
      * Called each draw tick to draw this widget in GUI
-     *
+     * <p>
      * Note that current GL state is ALREADY translated to (guiLeft, guiTop, 0.0)!
      */
     @SideOnly(Side.CLIENT)
@@ -111,6 +111,7 @@ public abstract class Widget {
     public boolean keyTyped(char charTyped, int keyCode) {
         return false;
     }
+
     /**
      * Read data received from server's {@link #writeUpdateInfo}
      */
@@ -122,7 +123,7 @@ public abstract class Widget {
     }
 
     public List<INativeWidget> getNativeWidgets() {
-        if(this instanceof INativeWidget) {
+        if (this instanceof INativeWidget) {
             return Collections.singletonList((INativeWidget) this);
         }
         return Collections.emptyList();
@@ -132,14 +133,14 @@ public abstract class Widget {
      * Writes data to be sent to client's {@link #readUpdateInfo}
      */
     protected final void writeUpdateInfo(int id, Consumer<PacketBuffer> packetBufferWriter) {
-        if(uiAccess != null && gui != null) {
+        if (uiAccess != null && gui != null) {
             uiAccess.writeUpdateInfo(this, id, packetBufferWriter);
         }
     }
 
     @SideOnly(Side.CLIENT)
     protected final void writeClientAction(int id, Consumer<PacketBuffer> packetBufferWriter) {
-        if(uiAccess != null) {
+        if (uiAccess != null) {
             uiAccess.writeClientAction(this, id, packetBufferWriter);
         }
     }
@@ -147,7 +148,7 @@ public abstract class Widget {
     @SideOnly(Side.CLIENT)
     protected void drawHoveringText(ItemStack itemStack, List<String> tooltip, int maxTextWidth, int mouseX, int mouseY) {
         Minecraft mc = Minecraft.getMinecraft();
-        GuiUtils.drawHoveringText(itemStack, tooltip,  mouseX, mouseY,
+        GuiUtils.drawHoveringText(itemStack, tooltip, mouseX, mouseY,
             sizes.getScreenWidth() - sizes.getGuiLeft(),
             sizes.getScreenHeight() - sizes.getGuiTop(), maxTextWidth, mc.fontRenderer);
     }

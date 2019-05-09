@@ -1,9 +1,12 @@
 package gregtech.common.items;
 
-import gregtech.api.GregTechAPI;
+import gregtech.api.GTValues;
 import gregtech.api.items.ToolDictNames;
 import gregtech.api.items.metaitem.ElectricStats;
+import gregtech.api.items.toolitem.ScrewdriverItemStat;
+import gregtech.api.items.toolitem.SoftMalletItemStat;
 import gregtech.api.items.toolitem.ToolMetaItem;
+import gregtech.api.items.toolitem.WrenchItemStat;
 import gregtech.api.recipes.ModHandler;
 import gregtech.api.unification.material.Materials;
 import gregtech.api.unification.material.type.IngotMaterial;
@@ -11,6 +14,7 @@ import gregtech.api.unification.material.type.SolidMaterial;
 import gregtech.api.unification.ore.OrePrefix;
 import gregtech.api.unification.stack.UnificationEntry;
 import gregtech.common.tools.*;
+import net.minecraft.init.Enchantments;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 
@@ -52,18 +56,17 @@ public class MetaTool extends ToolMetaItem<ToolMetaItem<?>.MetaToolValueItem> {
 
         HARD_HAMMER = addItem(6, "tool.hard_hammer").setToolStats(new ToolHardHammer())
             .setFullRepairCost(6)
-            .addOreDict(ToolDictNames.craftingToolHardHammer)
-            .addToList(GregTechAPI.hardHammerList);
+            .addOreDict(ToolDictNames.craftingToolHardHammer);
 
         SOFT_HAMMER = addItem(7, "tool.soft_hammer").setToolStats(new ToolSoftHammer())
             .setFullRepairCost(6)
             .addOreDict(ToolDictNames.craftingToolSoftHammer)
-            .addToList(GregTechAPI.softHammerList);
+            .addStats(new SoftMalletItemStat());
 
         WRENCH = addItem(8, "tool.wrench").setToolStats(new ToolWrench())
             .setFullRepairCost(6)
             .addOreDict(ToolDictNames.craftingToolWrench)
-            .addToList(GregTechAPI.wrenchList);
+            .addStats(new WrenchItemStat());
 
         FILE = addItem(9, "tool.file").setToolStats(new ToolFile())
             .setFullRepairCost(2)
@@ -71,13 +74,12 @@ public class MetaTool extends ToolMetaItem<ToolMetaItem<?>.MetaToolValueItem> {
 
         CROWBAR = addItem(10, "tool.crowbar").setToolStats(new ToolCrowbar())
             .setFullRepairCost(1.5)
-            .addOreDict(ToolDictNames.craftingToolCrowbar)
-            .addToList(GregTechAPI.crowbarList);
+            .addOreDict(ToolDictNames.craftingToolCrowbar);
 
         SCREWDRIVER = addItem(11, "tool.screwdriver").setToolStats(new ToolScrewdriver())
             .setFullRepairCost(1)
             .addOreDict(ToolDictNames.craftingToolScrewdriver)
-            .addToList(GregTechAPI.screwdriverList);
+            .addStats(new ScrewdriverItemStat());
 
         MORTAR = addItem(12, "tool.mortar").setToolStats(new ToolMortar())
             .addOreDict(ToolDictNames.craftingToolMortar);
@@ -96,8 +98,7 @@ public class MetaTool extends ToolMetaItem<ToolMetaItem<?>.MetaToolValueItem> {
 
         UNIVERSAL_SPADE = addItem(16, "tool.universal_spade").setToolStats(new ToolUniversalSpade())
             .setFullRepairCost(5)
-            .addOreDict(ToolDictNames.craftingToolBlade, ToolDictNames.craftingToolShovel, ToolDictNames.craftingToolCrowbar, ToolDictNames.craftingToolSaw)
-            .addToList(GregTechAPI.crowbarList);
+            .addOreDict(ToolDictNames.craftingToolBlade, ToolDictNames.craftingToolShovel, ToolDictNames.craftingToolCrowbar, ToolDictNames.craftingToolSaw);
 
         KNIFE = addItem(17, "tool.knife").setToolStats(new ToolKnife())
             .setFullRepairCost(1.5)
@@ -110,10 +111,6 @@ public class MetaTool extends ToolMetaItem<ToolMetaItem<?>.MetaToolValueItem> {
         SENSE = addItem(19, "tool.sense").setToolStats(new ToolSense())
             .setFullRepairCost(3)
             .addOreDict(ToolDictNames.craftingToolBlade);
-
-        PLOW = addItem(20, "tool.plow").setToolStats(new ToolPlow())
-            .setFullRepairCost(4)
-            .addOreDict(ToolDictNames.craftingToolPlow);
 
         DRILL_LV = addItem(23, "tool.drill.lv").setToolStats(new ToolDrillLV())
             .setFullRepairCost(4)
@@ -147,28 +144,32 @@ public class MetaTool extends ToolMetaItem<ToolMetaItem<?>.MetaToolValueItem> {
 
         WRENCH_LV = addItem(29, "tool.wrench.lv").setToolStats(new ToolWrenchLV())
             .setFullRepairCost(4)
-            .addOreDict(ToolDictNames.craftingToolWrench).addToList(GregTechAPI.wrenchList)
+            .addOreDict(ToolDictNames.craftingToolWrench)
+            .addStats(new WrenchItemStat())
             .addStats(ElectricStats.createElectricItem(100000L, 1L));
 
         WRENCH_MV = addItem(30, "tool.wrench.mv").setToolStats(new ToolWrenchMV())
             .setFullRepairCost(4)
-            .addOreDict(ToolDictNames.craftingToolWrench).addToList(GregTechAPI.wrenchList)
+            .addOreDict(ToolDictNames.craftingToolWrench)
+            .addStats(new WrenchItemStat())
             .addStats(ElectricStats.createElectricItem(400000L, 2L));
 
         WRENCH_HV = addItem(31, "tool.wrench.hv").setToolStats(new ToolWrenchHV())
             .setFullRepairCost(4)
-            .addOreDict(ToolDictNames.craftingToolWrench).addToList(GregTechAPI.wrenchList)
+            .addOreDict(ToolDictNames.craftingToolWrench)
+            .addStats(new WrenchItemStat())
             .addStats(ElectricStats.createElectricItem(1600000L, 3L));
 
         SCREWDRIVER_LV = addItem(34, "tool.screwdriver.lv").setToolStats(new ToolScrewdriverLV())
             .setFullRepairCost(1)
-            .addOreDict(ToolDictNames.craftingToolScrewdriver).addToList(GregTechAPI.screwdriverList)
+            .addOreDict(ToolDictNames.craftingToolScrewdriver)
+            .addStats(new ScrewdriverItemStat())
             .addStats(ElectricStats.createElectricItem(100000L, 1L));
 
         JACKHAMMER = addItem(32, "tool.jackhammer").setToolStats(new ToolJackHammer())
             .setFullRepairCost(5)
             .addOreDict(ToolDictNames.craftingToolJackHammer)
-            .addStats(ElectricStats.createElectricItem(100000L, 1L));
+            .addStats(ElectricStats.createElectricItem(100000L, GTValues.HV));
 
         BUZZSAW = addItem(33, "tool.buzzsaw").setToolStats(new ToolBuzzSaw())
             .setFullRepairCost(4)
@@ -183,7 +184,7 @@ public class MetaTool extends ToolMetaItem<ToolMetaItem<?>.MetaToolValueItem> {
     }
 
     public void registerRecipes() {
-        IngotMaterial[] mortarMaterials = new IngotMaterial[] {Materials.Bronze, Materials.Iron,
+        IngotMaterial[] mortarMaterials = new IngotMaterial[]{Materials.Bronze, Materials.Iron,
             Materials.Steel, Materials.DamascusSteel, Materials.WroughtIron, Materials.RedSteel,
             Materials.BlackSteel, Materials.BlueSteel};
 
@@ -195,10 +196,10 @@ public class MetaTool extends ToolMetaItem<ToolMetaItem<?>.MetaToolValueItem> {
                 'S', OrePrefix.stone);
         }
 
-        SolidMaterial[] softHammerMaterials = new SolidMaterial[] {
+        SolidMaterial[] softHammerMaterials = new SolidMaterial[]{
             Materials.Wood, Materials.Rubber, Materials.Plastic, Materials.Polytetrafluoroethylene
         };
-        for(int i = 0; i < softHammerMaterials.length; i++) {
+        for (int i = 0; i < softHammerMaterials.length; i++) {
             SolidMaterial solidMaterial = softHammerMaterials[i];
             ItemStack itemStack = MetaItems.SOFT_HAMMER.getStackForm();
             MetaItems.SOFT_HAMMER.setToolData(itemStack, solidMaterial, 128 * (1 << i), 1, 4.0f, 1.0f);
@@ -208,13 +209,25 @@ public class MetaTool extends ToolMetaItem<ToolMetaItem<?>.MetaToolValueItem> {
                 'S', new UnificationEntry(OrePrefix.stick, Materials.Wood));
         }
 
+        Function<ToolMetaItem.MetaToolValueItem, ItemStack> woodenToolDataApplier = item ->
+            item.setToolData(item.getStackForm(), Materials.Wood, 55, 1, 4.0f, 1.0f);
+
+        ModHandler.addShapedRecipe("soft_hammer_wooden", woodenToolDataApplier.apply(MetaItems.SOFT_HAMMER),
+            "XX ", "XXS", "XX ",
+            'X', new UnificationEntry(OrePrefix.plank, Materials.Wood),
+            'S', new UnificationEntry(OrePrefix.stick, Materials.Wood));
+
         registerFlintToolRecipes();
     }
 
     private void registerFlintToolRecipes() {
-        Function<ToolMetaItem.MetaToolValueItem, ItemStack> toolDataApplier = item ->
-            item.setToolData(item.getStackForm(), Materials.Flint, 55, 1, 6.0f, 1.0f);
-        //FLINT 6.0f, 55
+        Function<ToolMetaItem.MetaToolValueItem, ItemStack> toolDataApplier = item -> {
+            ItemStack itemStack = item.setToolData(item.getStackForm(), Materials.Flint, 80, 1, 6.0f, 2.0f);
+            if (itemStack.getItem().canApplyAtEnchantingTable(itemStack, Enchantments.FIRE_ASPECT)) {
+                itemStack.addEnchantment(Enchantments.FIRE_ASPECT, 2);
+            }
+            return itemStack;
+        };
         ModHandler.addShapedRecipe("mortar_flint", toolDataApplier.apply(MORTAR),
             " I ", "SIS", "SSS",
             'I', new ItemStack(Items.FLINT, 1),

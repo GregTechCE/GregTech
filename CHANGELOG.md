@@ -1,16 +1,106 @@
 ## Changelog
 
+### 1.8.0
+* Bug fixes and tool improvements
+* Nerfed large turbine to the ground so you will never use it again.
+* Some other improvements.
+
+### 1.7.1
+* Added block breakers with several tiers.
+* Refactor pump. Increase range and pump speed, made visuals better.
+* Refactored byproduct boost mechanic to fit better into game.
+* Adjust overclocking efficiency from 50% to 70%.
+* Remove output tank index filter mechanic (replaced by fluid filters for more precise control)
+* Add configuration circuit for NaOH production chain.
+* Allow using sodalite and lazurite for lapotron crystals.
+* Allow using sodalite and lazurite as blue dyes.
+* Remove amperage requirements for thermal centrifuge.
+* Fix wrong solar panel behavior on battery buffer.
+* Remove duplicate TiCl4 recipe.
+* Remove Radon requirements for some processing chains.
+* Allow recycling pipes.
+* Fix iron bars iron recycling loop.
+* Fix charge overrides not working.
+* Fix some redstone-related issues.
+* Disable electrolyzing of some materials.
+* Disallow input from output side. Can be configured with screwdriver.
+* Minor recipe searching and buffering refactor, fixes some issues related to fluid canner.
+* Allow toggling overclocking via GUI button for electrical machines.
+* Increase duration of some ore recycling chain processes because of increased overclock efficiency.
+* Made Lathe work as fast as extruder for rod production.
+* Add forge hammer recipe for small gears.
+* Made JackHammer use HV tier for charging.
+* Fix certain ore deposits not generating.
+* Fixed generators not showing in JEI as fuel recipe catalysts.
+* Added bismuth as cassiterite byproduct.
+* Fix JEI ingredient hovering not working on machine's fluid tanks.
+* Fixed fluid filter upgrade in pump not working properly.
+* Fixed rubber leaves and wood not burning.
+* Fixed certain issues with charger.
+* Change model in hand of rubber wood sapling to look like vanilla saplings.
+
+### 1.7.0
+* JEI now recognizes fluids in tanks as ingredients and can show their recipes.
+* You can now drag ghost items and fluids from JEI to item filters and fluid filters.
+* Allow inserting more items to "Keep Exact" mode than transfer rate of cover.
+* Rework "Transfer Exact" mode of robotic arm to make more sense - now it only transfers items of same type in one operation, allowing to use it for example to combine dusts in packager.
+* Added machine controller cover to control covers and machines with redstone.
+* Added recipes for gravel and sand in forge hammer.
+* Added validate/invalidate hooks for meta tile entities.
+* Added turbine blade Recipes in the Assembling Machine.
+* Fixed weird item movement when affected by >1 item collectors.
+* Fixed pipes not being synced to other players on placement.
+* Fixed crash with wrench overlay.
+* Fixed rubber trees not producing rubber after server restart.
+* Fixed dark cover lighting.
+* Fixed wrong macerator byproduct outputs.
+* Fixed error for slab recipe generation.
+* Fixed inability to use plunger when there is little fluid left in machine.
+* Fixed brewery consuming all items.
+* Added wooden pipe recipes.
+* Fix batteries not recharging in machines.
+* Fix covers not dropping their inventory contents when removed (e.g filter upgrades)
+* Fix weird pump behavior on deep fluid sources.
+
+### 1.6.9
+* Fix large boiler not using solid fuel.
+* Fix collectors collecting items without energy.
+
+### 1.6.8
+* Fix silicon consuming integrated circuits + some other recipes.
+* Allow taking fluids from inputs via containers.
+* Changed lathe again to give 2 rods instead of long one.
+* Re-textured pipes to look better.
+* Re-design side hit calculation so covers are accessible in the similar to wrench manner.
+* Fixed wooden tanks being able to hold hot fluids as items.
+* Added wooden soft hammer.
+* Increased stats of flint & added Fire Aspect II to flint tools.
+* Fixed some cable duplication issues.
+* Fix duplicate decomposition recipe for liquid air.
+
+### 1.6.5
+* Buff large boilers (a bit).
+* Fix boilers burning container-dependent fuels like firestone from Railcraft.
+* Fix ray tracing null exception.
+* Fixed indium gallium phosphate crafting.
+* Removed monazite -> helium recipe.
+* Made autoclave a bit faster in crystallization.
+* Reworked pipe texture locations a bit.
+* Fixed fluid references in oregen.
+* Fixed pipe burning crash.
+* InventoryTweaks compatibility.
+
 ### 1.6.3
 * Added item collectors. They collect items in configurable range.
-* Fixed boule recipes consuming integrated circuits. Closes #648.
-* Fixed NanoCPU wafer recipe wrong voltage. Closes #642.
-* Fixed power wafer duplication. Closes #639.
-* Fixed sodium sulfide recipes. Closes #638.
-* Added smoke to overvoltage. Closes #635.
-* Added rubber recipes for low-voltage cables. Closes #644.
+* Fixed boule recipes consuming integrated circuits.
+* Fixed NanoCPU wafer recipe wrong voltage.
+* Fixed power wafer duplication.
+* Fixed sodium sulfide recipes.
+* Added smoke to overvoltage.
+* Added rubber recipes for low-voltage cables.
 * Added nugget/dust recipes to packer/unpacker.
-* Fixed lumber axe not working. Closes #636.
-* Made Primitive Blast Furnace properly handle all types of fuel and use remainder. Closes #647.
+* Fixed lumber axe not working.
+* Made Primitive Blast Furnace properly handle all types of fuel and use remainder.
 * Bump version & update changelog.
 
 ### 1.6.2

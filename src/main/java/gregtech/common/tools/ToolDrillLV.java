@@ -35,7 +35,7 @@ public class ToolDrillLV extends ToolBase {
     }
 
     @Override
-    public boolean isMinableBlock(IBlockState block, ItemStack stack) {
+    public boolean canMineBlock(IBlockState block, ItemStack stack) {
         String tool = block.getBlock().getHarvestTool(block);
         return (tool != null && (tool.equals("pickaxe") || tool.equals("shovel"))) ||
             block.getMaterial() == Material.ROCK ||
@@ -48,5 +48,4 @@ public class ToolDrillLV extends ToolBase {
             block.getMaterial() == Material.CLAY ||
             block.getMaterial() == Material.GLASS;
     }
-
 }

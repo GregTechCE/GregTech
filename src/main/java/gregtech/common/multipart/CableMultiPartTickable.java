@@ -8,7 +8,8 @@ import net.minecraft.util.ResourceLocation;
 
 public class CableMultiPartTickable extends CableMultiPart implements ITickable {
 
-    CableMultiPartTickable() {}
+    CableMultiPartTickable() {
+    }
 
     public CableMultiPartTickable(IPipeTile<Insulation, WireProperties> sourceTile) {
         super(sourceTile);

@@ -10,7 +10,7 @@ public class WorldENet extends WorldPipeNet<WireProperties, EnergyNet> {
 
     public static WorldENet getWorldENet(World world) {
         WorldENet eNetWorldData = (WorldENet) world.loadData(WorldENet.class, DATA_ID);
-        if(eNetWorldData == null) {
+        if (eNetWorldData == null) {
             eNetWorldData = new WorldENet(DATA_ID);
             world.setData(DATA_ID, eNetWorldData);
         }
