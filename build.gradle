@@ -53,15 +53,11 @@ repositories {
     }
     maven { //JEI
         name = "Progwml6 maven"
-        url = "http://dvs1.progwml6.com/files/maven/"
-    }
-    maven { //JEI fallback
-        name = "ModMaven"
-        url = "modmaven.k-4u.nl"
+        url = "https://dvs1.progwml6.com/files/maven/"
     }
     maven {
         name = "tterrag maven"
-        url = "http://maven.tterrag.com/"
+        url = "https://maven.tterrag.com/"
     }
     maven {
         name = "ChickenBones maven"
@@ -69,11 +65,11 @@ repositories {
     }
     maven {
         name = "CoFH Maven"
-        url = "http://maven.covers1624.net"
+        url = "https://maven.covers1624.net/"
     }
     maven {
         name = "tehnut maven"
-        url = "http://tehnut.info/maven/"
+        url = "https://tehnut.info/maven/"
     }
     maven {
         name = "CraftTweaker Maven"
@@ -94,9 +90,8 @@ dependencies {
     deobfCompile "codechicken:CodeChickenLib:${config.minecraft.version}-${config.ccl.version}:deobf"
     deobfCompile "codechicken:ForgeMultipart:${config.minecraft.version}-${config.multipart.version}:deobf"
     deobfCompile "CraftTweaker2:CraftTweaker2-MC${strippedVersion}-Main:${config.crafttweaker.version}"
-    deobfCompile "mezz.jei:jei_${config.minecraft.version}:${config.jei.version}:api"
+    deobfCompile "mezz.jei:jei_${config.minecraft.version}:${config.jei.version}"
     deobfCompile "mcjty.theoneprobe:TheOneProbe-${shortVersion}:${shortVersion}-${config.top.version}"
-    deobfCompile "cofh:ThermalDynamics:${config.minecraft.version}-${config.thermaldynamics.version}:deobf"
 }
 
 sourceCompatibility = "1.8"
@@ -146,9 +141,21 @@ task dev(type: Jar) {
     classifier = 'dev'
 }
 
+task energyApi(type: Jar) {
+    from(sourceSets.main.allSource)
+    from(sourceSets.main.output)
+    include "gregtech/api/capability/IElectricItem.*"
+    include "gregtech/api/capability/IEnergyContainer.*"
+    include "gregtech/api/capability/GregtechCapabilities.*"
+    include "gregtech/api/capability/tool/*"
+
+    classifier = 'api'
+}
+
 artifacts {
     archives jar
 	archives source
+    archives energyApi
 }
 
 idea {
@@ -178,7 +185,6 @@ String getBuildNumber() {
     def commits = grgit.log {
         range('c795901d796fba8ce8d3cb87d0172c59f56f3c9b', 'HEAD')
     }
-
     return commits.size()
 }
 
@@ -233,6 +239,7 @@ curseforge {
         }
 
         addArtifact source
+        addArtifact energyApi
     }
 }
 
@@ -244,6 +251,7 @@ publishing {
             version = project.version
             artifact jar
             artifact source
+            artifact energyApi
         }
     }
 }

@@ -27,7 +27,8 @@ public class ChestGenHooks {
 
     private static ChestGenHooks instance = new ChestGenHooks();
 
-    private ChestGenHooks() {}
+    private ChestGenHooks() {
+    }
 
     public static void init() {
         MinecraftForge.EVENT_BUS.register(instance);
@@ -36,13 +37,13 @@ public class ChestGenHooks {
     @SubscribeEvent
     public void onWorldLoad(LootTableLoadEvent event) {
         LootPool mainPool = event.getTable().getPool("main");
-        if(mainPool != null && lootEntryItems.containsKey(event.getName())) {
+        if (mainPool != null && lootEntryItems.containsKey(event.getName())) {
             ArrayList<LootEntryItem> entryItems = lootEntryItems.get(event.getName());
-            for(LootEntryItem entry : entryItems) {
+            for (LootEntryItem entry : entryItems) {
                 mainPool.addEntry(entry);
             }
         }
-        if(mainPool != null && rollVals.containsKey(event.getName())) {
+        if (mainPool != null && rollVals.containsKey(event.getName())) {
             RandomValueRange rangeAdd = rollVals.get(event.getName());
             RandomValueRange range = mainPool.getRolls();
             mainPool.setRolls(new RandomValueRange(range.getMin() + rangeAdd.getMin(), range.getMax() + rangeAdd.getMax()));
@@ -50,18 +51,18 @@ public class ChestGenHooks {
     }
 
     public static void addItem(ResourceLocation lootTable, ItemStack item, int minAmount, int additionalAmount, int weight) {
-        LootEntryItem itemEntry = new LootEntryItem(item.getItem(), weight, 1, new LootFunction[] {
-                new LootFunction(NO_CONDITIONS) {
-                    @Override
-                    public ItemStack apply(ItemStack stack, Random rand, LootContext context) {
-                        stack.setItemDamage(item.getItemDamage());
-                        stack.setTagCompound(item.getTagCompound());
-                        stack.setCount(minAmount + rand.nextInt(additionalAmount));
-                        return stack;
-                    }
+        LootEntryItem itemEntry = new LootEntryItem(item.getItem(), weight, 1, new LootFunction[]{
+            new LootFunction(NO_CONDITIONS) {
+                @Override
+                public ItemStack apply(ItemStack stack, Random rand, LootContext context) {
+                    stack.setItemDamage(item.getItemDamage());
+                    stack.setTagCompound(item.getTagCompound());
+                    stack.setCount(minAmount + rand.nextInt(additionalAmount));
+                    return stack;
                 }
+            }
         }, NO_CONDITIONS, "#gregtech:loot_" + item.toString());
-        if(lootEntryItems.containsKey(lootTable)) {
+        if (lootEntryItems.containsKey(lootTable)) {
             lootEntryItems.get(lootTable).add(itemEntry);
         } else {
             lootEntryItems.put(lootTable, Lists.newArrayList(itemEntry));
@@ -71,10 +72,6 @@ public class ChestGenHooks {
     public static void addRolls(ResourceLocation tableLocation, int minAdd, int maxAdd) {
         rollVals.put(tableLocation, new RandomValueRange(minAdd, maxAdd));
     }
-
-
-
-
 
 
 }

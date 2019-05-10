@@ -12,7 +12,7 @@ public abstract class TickableTileEntityBase extends SyncedTileEntityBase implem
 
     @Override
     public void update() {
-        if(timer == 0) {
+        if (timer == 0) {
             onFirstTick();
         }
         timer++;

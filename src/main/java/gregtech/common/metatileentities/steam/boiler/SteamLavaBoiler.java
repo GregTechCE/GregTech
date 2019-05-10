@@ -38,7 +38,7 @@ public class SteamLavaBoiler extends SteamBoiler {
 
     @Override
     protected void tryConsumeNewFuel() {
-        if(lavaFluidTank.getFluidAmount() >= LAVA_PER_OPERATION) {
+        if (lavaFluidTank.getFluidAmount() >= LAVA_PER_OPERATION) {
             lavaFluidTank.drain(LAVA_PER_OPERATION, true);
             setFuelMaxBurnTime(LAVA_PER_OPERATION);
         }

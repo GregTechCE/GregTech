@@ -18,6 +18,7 @@ import net.minecraft.inventory.Container;
 import net.minecraft.network.INetHandler;
 import net.minecraft.network.NetHandlerPlayServer;
 import net.minecraft.network.PacketBuffer;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.IntIdentityHashBiMap;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -69,32 +70,34 @@ public class NetworkHandler {
     }
 
     private static final HashMap<Class<? extends Packet>, PacketCodec<? extends Packet>> codecMap = new HashMap<>();
-    @SideOnly(Side.CLIENT) private static HashMap<Class<? extends Packet>, PacketExecutor<? extends Packet, NetHandlerPlayClient>> clientExecutors;
+    @SideOnly(Side.CLIENT)
+    private static HashMap<Class<? extends Packet>, PacketExecutor<? extends Packet, NetHandlerPlayClient>> clientExecutors;
     private static final HashMap<Class<? extends Packet>, PacketExecutor<? extends Packet, NetHandlerPlayServer>> serverExecutors = new HashMap<>();
     private static final IntIdentityHashBiMap<Class<? extends Packet>> packetMap = new IntIdentityHashBiMap<>(10);
 
     static {
-        if(FMLCommonHandler.instance().getSide().isClient()) {
+        if (FMLCommonHandler.instance().getSide().isClient()) {
             clientExecutors = new HashMap<>();
         }
     }
 
     public static FMLEventChannel channel;
 
-    private NetworkHandler() {}
+    private NetworkHandler() {
+    }
 
     public static void init() {
         channel = NetworkRegistry.INSTANCE.newEventDrivenChannel(GTValues.MODID);
         channel.register(new NetworkHandler());
 
-        PacketEncoder<PacketUIWidgetUpdate> widgetUpdateEncoder =  (packet, buf) -> {
+        PacketEncoder<PacketUIWidgetUpdate> widgetUpdateEncoder = (packet, buf) -> {
             buf.writeVarInt(packet.updateData.readableBytes());
             buf.writeBytes(packet.updateData);
             buf.writeVarInt(packet.windowId);
             buf.writeVarInt(packet.widgetId);
         };
 
-        PacketDecoder<PacketUIWidgetUpdate> widgetUpdateDecoder =  (buf) -> {
+        PacketDecoder<PacketUIWidgetUpdate> widgetUpdateDecoder = (buf) -> {
             ByteBuf directSliceBuffer = buf.readBytes(buf.readVarInt());
             ByteBuf copiedDataBuffer = Unpooled.copiedBuffer(directSliceBuffer);
             directSliceBuffer.release();
@@ -111,7 +114,7 @@ public class NetworkHandler {
                 buf.writeVarInt(packet.uiFactoryId);
                 buf.writeVarInt(packet.windowId);
                 buf.writeVarInt(packet.initialWidgetUpdates.size());
-                for(PacketUIWidgetUpdate widgetUpdate : packet.initialWidgetUpdates) {
+                for (PacketUIWidgetUpdate widgetUpdate : packet.initialWidgetUpdates) {
                     widgetUpdateEncoder.encode(widgetUpdate, buf);
                 }
             },
@@ -123,7 +126,7 @@ public class NetworkHandler {
                 int windowId = buf.readVarInt();
                 ArrayList<PacketUIWidgetUpdate> initialWidgetUpdates = new ArrayList<>();
                 int initialWidgetUpdatesCount = buf.readVarInt();
-                for(int i = 0; i < initialWidgetUpdatesCount; i++) {
+                for (int i = 0; i < initialWidgetUpdatesCount; i++) {
                     initialWidgetUpdates.add(widgetUpdateDecoder.decode(buf));
                 }
                 return new PacketUIOpen(
@@ -177,7 +180,7 @@ public class NetworkHandler {
                 buf.writeFloat((float) packet.entityPos.y);
                 buf.writeFloat((float) packet.entityPos.z);
                 buf.writeVarInt(packet.particlesAmount);
-                },
+            },
             (buf) -> new PacketBlockParticle(buf.readBlockPos(),
                 new Vector3(buf.readFloat(), buf.readFloat(), buf.readFloat()),
                 buf.readVarInt())
@@ -185,7 +188,7 @@ public class NetworkHandler {
 
         registerServerExecutor(PacketUIClientAction.class, (packet, handler) -> {
             Container openContainer = handler.player.openContainer;
-            if(openContainer instanceof ModularUIContainer &&
+            if (openContainer instanceof ModularUIContainer &&
                 openContainer.windowId == packet.windowId) {
                 ModularUI modularUI = ((ModularUIContainer) openContainer).getModularUI();
                 PacketBuffer buffer = packet.updateData;
@@ -203,7 +206,7 @@ public class NetworkHandler {
     private static void initClient() {
         registerClientExecutor(PacketUIOpen.class, (packet, handler) -> {
             UIFactory<?> uiFactory = UIFactory.FACTORY_REGISTRY.getObjectById(packet.uiFactoryId);
-            if(uiFactory == null) {
+            if (uiFactory == null) {
                 GTLog.logger.warn("Couldn't find UI Factory with id '{}'", packet.uiFactoryId);
             } else {
                 uiFactory.initClientUI(packet.serializedHolder, packet.windowId, packet.initialWidgetUpdates);
@@ -260,9 +263,15 @@ public class NetworkHandler {
     @SuppressWarnings("unchecked")
     public void onClientPacket(FMLNetworkEvent.ClientCustomPacketEvent event) {
         Packet packet = proxy2packet(event.getPacket());
-        if(clientExecutors.containsKey(packet.getClass())) {
+        if (clientExecutors.containsKey(packet.getClass())) {
             PacketExecutor<Packet, NetHandlerPlayClient> executor = (PacketExecutor<Packet, NetHandlerPlayClient>) clientExecutors.get(packet.getClass());
-            executor.execute(packet, (NetHandlerPlayClient) event.getHandler());
+            NetHandlerPlayClient handler = (NetHandlerPlayClient) event.getHandler();
+            Minecraft minecraft = Minecraft.getMinecraft();
+            if(minecraft.isCallingFromMinecraftThread()) {
+                executor.execute(packet, handler);
+            } else {
+                minecraft.addScheduledTask(() -> executor.execute(packet, handler));
+            }
         }
     }
 
@@ -270,9 +279,15 @@ public class NetworkHandler {
     @SuppressWarnings("unchecked")
     public void onServerPacket(FMLNetworkEvent.ServerCustomPacketEvent event) {
         Packet packet = proxy2packet(event.getPacket());
-        if(serverExecutors.containsKey(packet.getClass())) {
+        if (serverExecutors.containsKey(packet.getClass())) {
             PacketExecutor<Packet, NetHandlerPlayServer> executor = (PacketExecutor<Packet, NetHandlerPlayServer>) serverExecutors.get(packet.getClass());
-            executor.execute(packet, (NetHandlerPlayServer) event.getHandler());
+            NetHandlerPlayServer handler = (NetHandlerPlayServer) event.getHandler();
+            MinecraftServer minecraftServer = FMLCommonHandler.instance().getMinecraftServerInstance();
+            if(minecraftServer.isCallingFromMinecraftThread()) {
+                executor.execute(packet, handler);
+            } else {
+                minecraftServer.addScheduledTask(() -> executor.execute(packet, handler));
+            }
         }
     }
 }

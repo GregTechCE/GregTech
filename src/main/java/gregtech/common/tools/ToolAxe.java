@@ -7,9 +7,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
-
-import java.util.List;
 
 public class ToolAxe extends ToolBase {
 
@@ -49,15 +46,17 @@ public class ToolAxe extends ToolBase {
     }
 
     @Override
-    public boolean isMinableBlock(IBlockState block, ItemStack stack) {
+    public boolean canMineBlock(IBlockState block, ItemStack stack) {
         String tool = block.getBlock().getHarvestTool(block);
         return (tool != null && tool.equals("axe")) ||
             block.getMaterial() == Material.WOOD;
     }
 
     @Override
-    public int convertBlockDrops(World world, BlockPos blockPos, IBlockState blockState, EntityPlayer harvester, List<ItemStack> drops, boolean recursive, ItemStack toolStack) {
-        return ToolUtility.applyTimberAxe(world, blockPos, blockState, harvester, drops);
+    public boolean onBlockPreBreak(ItemStack stack, BlockPos blockPos, EntityPlayer player) {
+        if(!player.isSneaking()) {
+            return ToolUtility.applyTimberAxe(stack, player.world, blockPos, player);
+        }
+        return false;
     }
-
 }

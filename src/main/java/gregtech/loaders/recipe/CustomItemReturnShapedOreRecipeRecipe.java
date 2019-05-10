@@ -1,18 +1,13 @@
 package gregtech.loaders.recipe;
 
 import gregtech.api.util.GTUtility;
-import net.minecraft.block.Block;
 import net.minecraft.inventory.InventoryCrafting;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
-import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.world.World;
 import net.minecraftforge.common.crafting.CraftingHelper.ShapedPrimer;
 import net.minecraftforge.oredict.ShapedOreRecipe;
-import net.minecraftforge.registries.IForgeRegistryEntry;
 
 import javax.annotation.Nonnull;
 import java.util.function.Predicate;
@@ -38,11 +33,11 @@ public class CustomItemReturnShapedOreRecipeRecipe extends ShapedOreRecipe imple
     @Override
     public NonNullList<ItemStack> getRemainingItems(InventoryCrafting inv) {
         NonNullList<ItemStack> remainingItems = super.getRemainingItems(inv);
-        for(int i = 0; i < remainingItems.size(); i++) {
-            if(!remainingItems.get(i).isEmpty()) continue;
+        for (int i = 0; i < remainingItems.size(); i++) {
+            if (!remainingItems.get(i).isEmpty()) continue;
             ItemStack stackInSlot = inv.getStackInSlot(i);
             //if specified item should be returned back, copy it with amount 1 and add to remaining items
-            if(shouldItemReturn(stackInSlot)) {
+            if (shouldItemReturn(stackInSlot)) {
                 ItemStack remainingItem = GTUtility.copyAmount(1, stackInSlot);
                 remainingItems.set(i, remainingItem);
             }

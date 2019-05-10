@@ -29,7 +29,7 @@ import java.util.function.Consumer;
 /**
  * Represents cover instance attached on the specific side of meta tile entity
  * Cover filters out interaction and logic of meta tile entity
- *
+ * <p>
  * Can implement {@link net.minecraft.util.ITickable} to listen to meta tile entity updates
  */
 @SuppressWarnings("unused")
@@ -38,6 +38,7 @@ public abstract class CoverBehavior implements IUIHolder {
     private CoverDefinition coverDefinition;
     public final ICoverable coverHolder;
     public final EnumFacing attachedSide;
+    private int redstoneSignalOutput;
 
     public CoverBehavior(ICoverable coverHolder, EnumFacing attachedSide) {
         this.coverHolder = coverHolder;
@@ -52,10 +53,35 @@ public abstract class CoverBehavior implements IUIHolder {
         return coverDefinition;
     }
 
+    public final void setRedstoneSignalOutput(int redstoneSignalOutput) {
+        this.redstoneSignalOutput = redstoneSignalOutput;
+        coverHolder.notifyBlockUpdate();
+        coverHolder.markDirty();
+    }
+
+    public final int getRedstoneSignalOutput() {
+        return redstoneSignalOutput;
+    }
+
+    public final int getRedstoneSignalInput() {
+        return coverHolder.getInputRedstoneSignal(attachedSide, true);
+    }
+
+    public void onRedstoneInputSignalChange(int newSignalStrength) {
+    }
+
+    public boolean canConnectRedstone() {
+        return false;
+    }
+
     public void writeToNBT(NBTTagCompound tagCompound) {
+        if(redstoneSignalOutput > 0) {
+            tagCompound.setInteger("RedstoneSignal", redstoneSignalOutput);
+        }
     }
 
     public void readFromNBT(NBTTagCompound tagCompound) {
+        this.redstoneSignalOutput = tagCompound.getInteger("RedstoneSignal");
     }
 
     public void writeInitialSyncData(PacketBuffer packetBuffer) {
@@ -73,6 +99,7 @@ public abstract class CoverBehavior implements IUIHolder {
 
     /**
      * Called on server side to check whether cover can be attached to given meta tile entity
+     *
      * @return true if cover can be attached, false otherwise
      */
     public abstract boolean canAttach();
@@ -80,9 +107,11 @@ public abstract class CoverBehavior implements IUIHolder {
     /**
      * Will be called on server side after the cover attachment to the meta tile entity
      * Cover can change it's internal state here and it will be synced to client with {@link #writeInitialSyncData(PacketBuffer)}
+     *
      * @param itemStack the item cover was attached from
      */
-    public void onAttached(ItemStack itemStack) {}
+    public void onAttached(ItemStack itemStack) {
+    }
 
     public List<ItemStack> getDrops() {
         return Lists.newArrayList(coverDefinition.getDropItemStack());
@@ -92,7 +121,8 @@ public abstract class CoverBehavior implements IUIHolder {
      * Called prior to cover removing on the server side
      * Will also be called during machine dismantling, as machine loses installed covers after that
      */
-    public void onRemoved() {}
+    public void onRemoved() {
+    }
 
     @SideOnly(Side.CLIENT)
     public TextureAtlasSprite getPlateSprite() {
@@ -114,6 +144,7 @@ public abstract class CoverBehavior implements IUIHolder {
     /**
      * Will be called for each capability request to meta tile entity
      * Cover can override meta tile entity capabilities, modify their values, or deny accessing them
+     *
      * @param defaultValue value of the capability from meta tile entity itself
      * @return result capability value external caller will receive
      */

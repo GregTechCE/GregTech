@@ -23,11 +23,11 @@
           "weight": 30,
           "value": "ore:nickel"
         },
-		{
+		    {
           "weight": 30,
           "value": "ore:cobaltite"
         },
-		{
+		    {
           "weight": 10,
           "value": "ore:pentlandite"
         }

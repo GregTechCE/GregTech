@@ -21,7 +21,7 @@ public class SteamCoalBoiler extends SteamBoiler {
 
     public SteamCoalBoiler(ResourceLocation metaTileEntityId, boolean isHighPressure) {
         super(metaTileEntityId, isHighPressure, Textures.COAL_BOILER_OVERLAY, 150);
-}
+    }
 
     @Override
     public MetaTileEntity createMetaTileEntity(MetaTileEntityHolder holder) {
@@ -31,12 +31,12 @@ public class SteamCoalBoiler extends SteamBoiler {
     @Override
     protected void tryConsumeNewFuel() {
         ItemStack fuelInSlot = importItems.extractItem(0, 1, true);
-        if(fuelInSlot.isEmpty()) return;
+        if (fuelInSlot.isEmpty()) return;
         int burnTime = TileEntityFurnace.getItemBurnTime(fuelInSlot);
-        if(burnTime <= 0) return;
+        if (burnTime <= 0) return;
         importItems.extractItem(0, 1, false);
         ItemStack remainderAsh = ModHandler.getBurningFuelRemainder(getWorld().rand, fuelInSlot);
-        if(!remainderAsh.isEmpty()) { //we don't care if we can't insert ash - it's chanced anyway
+        if (!remainderAsh.isEmpty()) { //we don't care if we can't insert ash - it's chanced anyway
             exportItems.insertItem(0, remainderAsh, false);
         }
         setFuelMaxBurnTime(burnTime);
@@ -53,7 +53,7 @@ public class SteamCoalBoiler extends SteamBoiler {
             @Nonnull
             @Override
             public ItemStack insertItem(int slot, @Nonnull ItemStack stack, boolean simulate) {
-                if(TileEntityFurnace.getItemBurnTime(stack) <= 0)
+                if (TileEntityFurnace.getItemBurnTime(stack) <= 0)
                     return stack;
                 return super.insertItem(slot, stack, simulate);
             }

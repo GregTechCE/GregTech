@@ -25,7 +25,7 @@ public class MultiSmelterInfo extends MultiblockInfoPage {
     @Override
     public List<MultiblockShapeInfo> getMatchingShapes() {
         ArrayList<MultiblockShapeInfo> shapeInfo = new ArrayList<>();
-        for(CoilType coilType : CoilType.values()) {
+        for (CoilType coilType : CoilType.values()) {
             shapeInfo.add(MultiblockShapeInfo.builder()
                 .aisle("IXX", "CCC", "XXX")
                 .aisle("SXE", "C#C", "XXX")
@@ -44,7 +44,7 @@ public class MultiSmelterInfo extends MultiblockInfoPage {
 
     @Override
     public String[] getDescription() {
-        return new String[] {I18n.format("gregtech.multiblock.multi_smelter.description")};
+        return new String[]{I18n.format("gregtech.multiblock.multi_smelter.description")};
     }
 
 }

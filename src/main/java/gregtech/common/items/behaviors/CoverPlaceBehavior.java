@@ -1,6 +1,6 @@
 package gregtech.common.items.behaviors;
 
-import gregtech.api.capability.GregtechCapabilities;
+import gregtech.api.capability.GregtechTileCapabilities;
 import gregtech.api.cover.CoverDefinition;
 import gregtech.api.cover.ICoverable;
 import gregtech.api.items.metaitem.stats.IItemBehaviour;
@@ -24,15 +24,15 @@ public class CoverPlaceBehavior implements IItemBehaviour {
     @Override
     public EnumActionResult onItemUseFirst(EntityPlayer player, World world, BlockPos pos, EnumFacing side, float hitX, float hitY, float hitZ, EnumHand hand) {
         TileEntity tileEntity = world.getTileEntity(pos);
-        ICoverable coverable = tileEntity == null ? null : tileEntity.getCapability(GregtechCapabilities.CAPABILITY_COVERABLE, null);
-        if(coverable == null) {
+        ICoverable coverable = tileEntity == null ? null : tileEntity.getCapability(GregtechTileCapabilities.CAPABILITY_COVERABLE, null);
+        if (coverable == null) {
             return EnumActionResult.PASS;
         }
         EnumFacing coverSide = ICoverable.rayTraceCoverableSide(coverable, player);
-        if(coverable.getCoverAtSide(coverSide) != null || !coverable.canPlaceCoverOnSide(coverSide)) {
+        if (coverable.getCoverAtSide(coverSide) != null || !coverable.canPlaceCoverOnSide(coverSide)) {
             return EnumActionResult.PASS;
         }
-        if(!world.isRemote) {
+        if (!world.isRemote) {
             ItemStack itemStack = player.getHeldItem(hand);
             boolean result = coverable.placeCoverOnSide(coverSide, itemStack, coverDefinition);
             if (result && !player.capabilities.isCreativeMode) {

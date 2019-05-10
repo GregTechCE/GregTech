@@ -8,10 +8,7 @@ import gregtech.api.pipenet.Node;
 import gregtech.api.pipenet.PipeNet;
 import gregtech.api.pipenet.WorldPipeNet;
 import gregtech.api.pipenet.tile.IPipeTile;
-import gregtech.common.multipart.FluidPipeMultiPart;
-import gregtech.common.pipelike.fluidpipe.BlockFluidPipe;
 import gregtech.common.pipelike.fluidpipe.FluidPipeProperties;
-import gregtech.common.pipelike.fluidpipe.FluidPipeType;
 import gregtech.common.pipelike.fluidpipe.tile.TileEntityFluidPipe;
 import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
@@ -41,7 +38,7 @@ public class FluidPipeNet extends MonolithicPipeNet<FluidPipeProperties> {
     }
 
     public int getMaxThroughput() {
-        if(fluidNetTank.getCapacity() == 0) {
+        if (fluidNetTank.getCapacity() == 0) {
             return 0;
         }
         return nodeData.throughput;
@@ -50,7 +47,7 @@ public class FluidPipeNet extends MonolithicPipeNet<FluidPipeProperties> {
     public void destroyNetwork(boolean isLeaking, boolean isBurning) {
         World world = worldData.getWorld();
         ((WorldFluidPipeNet) (Object) worldData).removePipeNet(this);
-        for(BlockPos nodePos : allNodes.keySet()) {
+        for (BlockPos nodePos : allNodes.keySet()) {
             TileEntity tileEntity = world.getTileEntity(nodePos);
             if (tileEntity instanceof TileEntityFluidPipe) {
                 if (isBurning) {
@@ -69,7 +66,7 @@ public class FluidPipeNet extends MonolithicPipeNet<FluidPipeProperties> {
                     TileEntityFluidPipe.setNeighboursToFire(world, nodePos);
                 }
             }
-            if(isLeaking) {
+            if (isLeaking) {
                 if (world.rand.nextInt(isBurning ? 3 : 7) == 0) {
                     world.createExplosion(null,
                         nodePos.getX() + 0.5, nodePos.getY() + 0.5, nodePos.getZ() + 0.5,
@@ -81,7 +78,7 @@ public class FluidPipeNet extends MonolithicPipeNet<FluidPipeProperties> {
 
     @Method(modid = GTValues.MODID_FMP)
     private static void removeMultipartPipePartFromTile(TileEntity tileEntity) {
-        if(tileEntity instanceof TileMultipart) {
+        if (tileEntity instanceof TileMultipart) {
             TileMultipart tileMultipart = (TileMultipart) tileEntity;
             List<TMultiPart> partList = tileMultipart.jPartList();
             for (TMultiPart tMultiPart : partList) {
@@ -105,8 +102,8 @@ public class FluidPipeNet extends MonolithicPipeNet<FluidPipeProperties> {
         super.transferNodeData(transferredNodes, parentNet1);
         FluidPipeNet parentNet = (FluidPipeNet) parentNet1;
         FluidStack parentFluid = parentNet.getFluidNetTank().getFluid();
-        if(parentFluid != null && parentFluid.amount > 0) {
-            if(parentNet.getAllNodes().isEmpty()) {
+        if (parentFluid != null && parentFluid.amount > 0) {
+            if (parentNet.getAllNodes().isEmpty()) {
                 //if this is merge of pipe nets, just add all fluid to our internal tank
                 //use fillInternal to ignore throughput restrictions
                 getFluidNetTank().fillInternal(parentFluid, true);

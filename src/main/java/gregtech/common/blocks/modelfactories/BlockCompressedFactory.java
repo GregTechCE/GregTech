@@ -17,12 +17,12 @@ import java.util.ArrayList;
 public class BlockCompressedFactory extends AbstractBlockModelFactory {
 
     private static final String VARIANT_DEFINITION =
-            "\"$MATERIAL$\": {\n" +
-                "        \"textures\": {\n" +
-                "          \"all\": \"$TEXTURE$\",\n" +
-                "          \"particle\": \"$TEXTURE$\"\n" +
-                "        }\n" +
-                "      }";
+        "\"$MATERIAL$\": {\n" +
+            "        \"textures\": {\n" +
+            "          \"all\": \"$TEXTURE$\",\n" +
+            "          \"particle\": \"$TEXTURE$\"\n" +
+            "        }\n" +
+            "      }";
 
     private static final Joiner COMMA_JOINER = Joiner.on(',');
 
@@ -39,10 +39,10 @@ public class BlockCompressedFactory extends AbstractBlockModelFactory {
     protected String fillSample(Block block, String blockStateSample) {
         ImmutableList<Material> allowedValues = ((BlockCompressed) block).variantProperty.getAllowedValues();
         ArrayList<String> variants = new ArrayList<>();
-        for(Material material : allowedValues) {
+        for (Material material : allowedValues) {
             variants.add(VARIANT_DEFINITION
-                    .replace("$MATERIAL$", material.toString())
-                    .replace("$TEXTURE$", MaterialIconType.block.getBlockPath(material.materialIconSet).toString())
+                .replace("$MATERIAL$", material.toString())
+                .replace("$TEXTURE$", MaterialIconType.block.getBlockPath(material.materialIconSet).toString())
             );
         }
         return blockStateSample.replace("$VARIANTS$", COMMA_JOINER.join(variants));

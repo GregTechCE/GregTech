@@ -22,9 +22,13 @@
           "weight": 20,
           "value": "ore:ruby"
         },
-		{
+		    {
           "weight": 20,
           "value": "ore:cinnabar"
+        },
+        {
+          "weight": 5,
+          "value": "ore:chromite"
         }
       ]
     }

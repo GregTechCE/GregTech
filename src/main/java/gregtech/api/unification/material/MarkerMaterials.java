@@ -53,8 +53,8 @@ public class MarkerMaterials {
         /**
          * Arrays containing all possible color values (without Colorless!)
          */
-        public static final MarkerMaterial[] VALUES = new MarkerMaterial[] {
-                Black, Red, Green, Brown, Blue, Purple, Cyan, Silver, Gray, Pink, Lime, Yellow, LightBlue, Magenta, Orange, White
+        public static final MarkerMaterial[] VALUES = new MarkerMaterial[]{
+            Black, Red, Green, Brown, Blue, Purple, Cyan, Silver, Gray, Pink, Lime, Yellow, LightBlue, Magenta, Orange, White
         };
 
         /**
@@ -62,8 +62,8 @@ public class MarkerMaterials {
          * Name format is equal to EnumDyeColor
          */
         public static MarkerMaterial valueOf(String string) {
-            for(MarkerMaterial color : VALUES) {
-                if(color.toString().equals(string)) {
+            for (MarkerMaterial color : VALUES) {
+                if (color.toString().equals(string)) {
                     return color;
                 }
             }
@@ -76,7 +76,7 @@ public class MarkerMaterials {
         public static final HashBiMap<EnumDyeColor, MarkerMaterial> COLORS = HashBiMap.create();
 
         static {
-            for(EnumDyeColor color : EnumDyeColor.values()) {
+            for (EnumDyeColor color : EnumDyeColor.values()) {
                 COLORS.put(color, Color.valueOf(color.getName()));
             }
         }
@@ -95,7 +95,8 @@ public class MarkerMaterials {
         public static Material Elite = new MarkerMaterial("elite");
         public static Material Master = new MarkerMaterial("master");
         public static Material Ultimate = new MarkerMaterial("ultimate");
-        public static Material Superconductor = new Material(354, "superconductor", 0xFFFFFF, MaterialIconSet.NONE, of(), 0L, null) {};
+        public static Material Superconductor = new Material(354, "superconductor", 0xFFFFFF, MaterialIconSet.NONE, of(), 0L, null) {
+        };
         public static Material Infinite = new MarkerMaterial("infinite");
     }
 

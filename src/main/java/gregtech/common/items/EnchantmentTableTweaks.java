@@ -35,7 +35,7 @@ public class EnchantmentTableTweaks {
     @SubscribeEvent
     @SideOnly(Side.CLIENT)
     public static void onGuiOpen(GuiOpenEvent event) {
-        if(event.getGui() instanceof GuiContainer) {
+        if (event.getGui() instanceof GuiContainer) {
             GuiContainer guiContainer = (GuiContainer) event.getGui();
             EntityPlayerSP playerSP = Minecraft.getMinecraft().player;
             onContainerOpen(playerSP, guiContainer.inventorySlots);
@@ -43,12 +43,12 @@ public class EnchantmentTableTweaks {
     }
 
     private static void onContainerOpen(EntityPlayer player, Container container) {
-        if(container instanceof ContainerEnchantment) {
+        if (container instanceof ContainerEnchantment) {
             //wrap in try-catch because such kind of tweaks is subject to breaking
             //don't let it crash game if some mod borked it
             try {
                 int index = getEnchantmentSlotIndex((ContainerEnchantment) container);
-                if(index != -1) {
+                if (index != -1) {
                     Slot previousLapisSlot = container.inventorySlots.get(index);
                     EnchantmentLapisSlot resultSlot = new EnchantmentLapisSlot(previousLapisSlot);
                     resultSlot.slotNumber = previousLapisSlot.slotNumber;
@@ -62,16 +62,16 @@ public class EnchantmentTableTweaks {
 
     private static int getEnchantmentSlotIndex(ContainerEnchantment container) {
         IInventory inventory = container.tableInventory;
-        for(int i = 0; i < container.inventorySlots.size(); i++) {
+        for (int i = 0; i < container.inventorySlots.size(); i++) {
             Slot slot = container.inventorySlots.get(i);
-            if(slot.isHere(inventory, EnchantmentLapisSlot.ENCHANTMENT_LAPIS_SLOT_INDEX)) return i;
+            if (slot.isHere(inventory, EnchantmentLapisSlot.ENCHANTMENT_LAPIS_SLOT_INDEX)) return i;
         }
         return -1;
     }
 
     private static boolean isValidForEnchantment(ItemStack itemStack) {
         UnificationEntry entry = OreDictUnifier.getUnificationEntry(itemStack);
-        if(entry == null || entry.orePrefix != OrePrefix.gem) {
+        if (entry == null || entry.orePrefix != OrePrefix.gem) {
             return false;
         }
         Material material = entry.material;

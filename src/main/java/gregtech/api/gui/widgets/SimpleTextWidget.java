@@ -1,6 +1,5 @@
 package gregtech.api.gui.widgets;
 
-import gregtech.api.gui.Widget;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.renderer.GlStateManager;
@@ -13,19 +12,15 @@ import java.util.function.Supplier;
  * Simple one-line text widget with text synced and displayed
  * as the raw string from the server
  */
-public class SimpleTextWidget extends Widget {
+public class SimpleTextWidget extends AbstractPositionedWidget {
 
-    protected int xPosition;
-    protected int yPosition;
     protected String formatLocale;
     protected int color;
     protected Supplier<String> textSupplier;
     protected String lastText = "";
 
     public SimpleTextWidget(int xPosition, int yPosition, String formatLocale, int color, Supplier<String> textSupplier) {
-        super();
-        this.xPosition = xPosition;
-        this.yPosition = yPosition;
+        super(xPosition, yPosition);
         this.color = color;
         this.formatLocale = formatLocale;
         this.textSupplier = textSupplier;
@@ -38,7 +33,7 @@ public class SimpleTextWidget extends Widget {
     @Override
     public void drawInBackground(int mouseX, int mouseY) {
         FontRenderer fontRenderer = Minecraft.getMinecraft().fontRenderer;
-        String text = formatLocale.isEmpty() ? lastText : I18n.format(formatLocale, lastText);
+        String text = formatLocale.isEmpty() ? (I18n.hasKey(lastText) ? I18n.format(lastText) : lastText) : I18n.format(formatLocale, lastText);
         fontRenderer.drawString(text,
             xPosition - fontRenderer.getStringWidth(text) / 2,
             yPosition - fontRenderer.FONT_HEIGHT / 2, color);
@@ -47,7 +42,7 @@ public class SimpleTextWidget extends Widget {
 
     @Override
     public void detectAndSendChanges() {
-        if(!textSupplier.get().equals(lastText)) {
+        if (!textSupplier.get().equals(lastText)) {
             this.lastText = textSupplier.get();
             writeUpdateInfo(1, buffer -> buffer.writeString(lastText));
         }
@@ -55,7 +50,7 @@ public class SimpleTextWidget extends Widget {
 
     @Override
     public void readUpdateInfo(int id, PacketBuffer buffer) {
-        if(id == 1) {
+        if (id == 1) {
             this.lastText = buffer.readString(Short.MAX_VALUE);
         }
     }

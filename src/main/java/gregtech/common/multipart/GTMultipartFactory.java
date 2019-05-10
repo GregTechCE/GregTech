@@ -64,7 +64,7 @@ public final class GTMultipartFactory implements IDynamicPartFactory, IPartConve
         registerConverter(block, (blockState, tileEntity) -> {
             TileEntityPipeBase<T, E> pipeTileEntity = (TileEntityPipeBase<T, E>) tileEntity;
             pipeTileEntity.setBeingConverted(true);
-            if(pipeTileEntity.supportsTicking()) {
+            if (pipeTileEntity.supportsTicking()) {
                 return tickableConverter.apply(pipeTileEntity);
             } else {
                 return normalConverter.apply(pipeTileEntity);
@@ -87,7 +87,7 @@ public final class GTMultipartFactory implements IDynamicPartFactory, IPartConve
     }
 
     public TMultiPart createPart(ResourceLocation identifier) {
-        if(partRegistry.containsKey(identifier)) {
+        if (partRegistry.containsKey(identifier)) {
             Supplier<TMultiPart> supplier = partRegistry.get(identifier);
             return supplier.get();
 
@@ -109,7 +109,7 @@ public final class GTMultipartFactory implements IDynamicPartFactory, IPartConve
 
     public TMultiPart convert(World world, BlockPos pos, IBlockState state) {
         BiFunction<IBlockState, TileEntity, TMultiPart> converter = findConverter(state.getBlock());
-        if(converter != null) {
+        if (converter != null) {
             TileEntity tileEntity = world.getTileEntity(pos);
             return converter.apply(state, tileEntity);
         }

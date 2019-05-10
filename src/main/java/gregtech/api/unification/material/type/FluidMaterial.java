@@ -100,19 +100,23 @@ public class FluidMaterial extends Material {
         this.materialPlasma = materialPlasma;
     }
 
-    public final @Nullable Fluid getMaterialFluid() {
+    public final @Nullable
+    Fluid getMaterialFluid() {
         return materialFluid;
     }
 
-    public final @Nullable Fluid getMaterialPlasma() {
+    public final @Nullable
+    Fluid getMaterialPlasma() {
         return materialPlasma;
     }
 
-    public final @Nullable FluidStack getFluid(int amount) {
+    public final @Nullable
+    FluidStack getFluid(int amount) {
         return materialFluid == null ? null : new FluidStack(materialFluid, amount);
     }
 
-    public final @Nullable FluidStack getPlasma(int amount) {
+    public final @Nullable
+    FluidStack getPlasma(int amount) {
         return materialPlasma == null ? null : new FluidStack(materialPlasma, amount);
     }
 

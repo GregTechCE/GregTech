@@ -40,7 +40,7 @@ public class SurfaceBlockPopulator implements VeinChunkPopulator {
 
     @Override
     public void populateChunk(World world, int chunkX, int chunkZ, Random random, OreDepositDefinition definition, GridEntryInfo gridEntryInfo) {
-        if(world.getWorldType() != WorldType.FLAT) {
+        if (world.getWorldType() != WorldType.FLAT) {
             int stonesCount = minIndicatorAmount + (minIndicatorAmount >= maxIndicatorAmount ? 0 : random.nextInt(maxIndicatorAmount - minIndicatorAmount));
             for (int i = 0; i < stonesCount; i++) {
                 int randomX = chunkX * 16 + random.nextInt(16);

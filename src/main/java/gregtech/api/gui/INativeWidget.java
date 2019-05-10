@@ -18,14 +18,15 @@ public interface INativeWidget {
 
     /**
      * You should return MC slot handle instance you created earlier
+     *
      * @return MC slot
      */
-    Slot allocateSlotHandle();
+    Slot getHandle();
 
     /**
      * @return true if this slot belongs to player inventory
      */
-    boolean isPlayerInventorySlot();
+    SlotLocationInfo getSlotLocationInfo();
 
     /**
      * @return true when this slot is valid for shift clicking
@@ -38,4 +39,13 @@ public interface INativeWidget {
      */
     ItemStack slotClick(int dragType, ClickType clickTypeIn, EntityPlayer player);
 
+    class SlotLocationInfo {
+        public final boolean isPlayerInventory;
+        public final boolean isHotbarSlot;
+
+        public SlotLocationInfo(boolean isPlayerInventory, boolean isHotbarSlot) {
+            this.isPlayerInventory = isPlayerInventory;
+            this.isHotbarSlot = isHotbarSlot;
+        }
+    }
 }

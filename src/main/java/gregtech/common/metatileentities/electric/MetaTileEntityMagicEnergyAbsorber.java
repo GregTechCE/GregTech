@@ -68,34 +68,34 @@ public class MetaTileEntityMagicEnergyAbsorber extends TieredMetaTileEntity {
     @Override
     public void update() {
         super.update();
-        if(getWorld().isRemote)
+        if (getWorld().isRemote)
             return;
-        if(!(getWorld().provider instanceof WorldProviderEnd)) {
+        if (!(getWorld().provider instanceof WorldProviderEnd)) {
             return; //don't try to do anything outside end dimension
         }
-        if(getTimer() % 20 == 0) {
+        if (getTimer() % 20 == 0) {
             updateDragonEggStatus();
         }
-        if(getTimer() % 200 == 0) {
+        if (getTimer() % 200 == 0) {
             updateConnectedCrystals();
         }
         int totalEnergyGeneration = 0;
-        for(int connectedCrystalId : connectedCrystalsIds.toArray()) {
+        for (int connectedCrystalId : connectedCrystalsIds.toArray()) {
             //since we don't check quite often, check twice before outputting energy
-            if(getWorld().getEntityByID(connectedCrystalId) instanceof EntityEnderCrystal) {
+            if (getWorld().getEntityByID(connectedCrystalId) instanceof EntityEnderCrystal) {
                 totalEnergyGeneration += hasDragonEggAmplifier ? 128 : 32;
             }
         }
-        if(totalEnergyGeneration > 0) {
+        if (totalEnergyGeneration > 0) {
             energyContainer.changeEnergy(totalEnergyGeneration);
         }
         setActive(totalEnergyGeneration > 0);
     }
 
     private void setActive(boolean isActive) {
-        if(this.isActive != isActive) {
+        if (this.isActive != isActive) {
             this.isActive = isActive;
-            if(!getWorld().isRemote) {
+            if (!getWorld().isRemote) {
                 writeCustomData(100, w -> w.writeBoolean(isActive));
             }
         }
@@ -104,7 +104,7 @@ public class MetaTileEntityMagicEnergyAbsorber extends TieredMetaTileEntity {
     @Override
     public void receiveCustomData(int dataId, PacketBuffer buf) {
         super.receiveCustomData(dataId, buf);
-        if(dataId == 100) {
+        if (dataId == 100) {
             this.isActive = buf.readBoolean();
         }
     }
@@ -124,7 +124,7 @@ public class MetaTileEntityMagicEnergyAbsorber extends TieredMetaTileEntity {
     @Override
     public void onRemoval() {
         super.onRemoval();
-        if(!getWorld().isRemote) {
+        if (!getWorld().isRemote) {
             resetConnectedEnderCrystals();
         }
     }
@@ -142,24 +142,24 @@ public class MetaTileEntityMagicEnergyAbsorber extends TieredMetaTileEntity {
             .filter(crystal -> crystal.getDistanceSq(getPos()) < maxDistance)
             .collect(Collectors.toList());
 
-        for(EntityEnderCrystal entityEnderCrystal : enderCrystals) {
+        for (EntityEnderCrystal entityEnderCrystal : enderCrystals) {
             BlockPos beamTarget = entityEnderCrystal.getBeamTarget();
-            if(beamTarget == null) {
+            if (beamTarget == null) {
                 //if beam target is null, set ourselves as beam target
                 entityEnderCrystal.setBeamTarget(getPos());
                 this.connectedCrystalsIds.add(entityEnderCrystal.getEntityId());
-            } else if(beamTarget.equals(getPos())) {
+            } else if (beamTarget.equals(getPos())) {
                 //if beam target is ourselves, just add it to list
                 this.connectedCrystalsIds.add(entityEnderCrystal.getEntityId());
             }
         }
 
-        for(EntityDragon entityDragon : getWorld().getEntities(EntityDragon.class, EntitySelectors.IS_ALIVE)) {
-            if(entityDragon.healingEnderCrystal != null && connectedCrystalsIds.contains(entityDragon.healingEnderCrystal.getEntityId())) {
+        for (EntityDragon entityDragon : getWorld().getEntities(EntityDragon.class, EntitySelectors.IS_ALIVE)) {
+            if (entityDragon.healingEnderCrystal != null && connectedCrystalsIds.contains(entityDragon.healingEnderCrystal.getEntityId())) {
                 //if dragon is healing from crystal we draw energy from, reset it's healing crystal
                 entityDragon.healingEnderCrystal = null;
                 //if dragon is holding pattern, than deal damage and set it's phase to attack ourselves
-                if(entityDragon.getPhaseManager().getCurrentPhase().getType() == PhaseList.HOLDING_PATTERN) {
+                if (entityDragon.getPhaseManager().getCurrentPhase().getType() == PhaseList.HOLDING_PATTERN) {
                     entityDragon.attackEntityFrom(DamageSource.causeExplosionDamage((EntityLivingBase) null), 10.0f);
                     entityDragon.getPhaseManager().setPhase(PhaseList.CHARGING_PLAYER);
                     ((PhaseChargingPlayer) entityDragon.getPhaseManager().getCurrentPhase()).setTarget(new Vec3d(getPos()));
@@ -169,9 +169,9 @@ public class MetaTileEntityMagicEnergyAbsorber extends TieredMetaTileEntity {
     }
 
     private void resetConnectedEnderCrystals() {
-        for(int connectedEnderCrystal : connectedCrystalsIds.toArray()) {
+        for (int connectedEnderCrystal : connectedCrystalsIds.toArray()) {
             EntityEnderCrystal entityEnderCrystal = (EntityEnderCrystal) getWorld().getEntityByID(connectedEnderCrystal);
-            if(entityEnderCrystal != null && getPos().equals(entityEnderCrystal.getBeamTarget())) {
+            if (entityEnderCrystal != null && getPos().equals(entityEnderCrystal.getBeamTarget())) {
                 //on removal, reset ender crystal beam location so somebody can use it
                 entityEnderCrystal.setBeamTarget(null);
             }

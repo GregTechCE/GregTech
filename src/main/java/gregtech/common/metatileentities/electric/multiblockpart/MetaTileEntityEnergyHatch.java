@@ -31,7 +31,7 @@ public class MetaTileEntityEnergyHatch extends MetaTileEntityMultiblockPart impl
     public MetaTileEntityEnergyHatch(ResourceLocation metaTileEntityId, int tier, boolean isExportHatch) {
         super(metaTileEntityId, tier);
         this.isExportHatch = isExportHatch;
-        if(isExportHatch) {
+        if (isExportHatch) {
             this.energyContainer = EnergyContainerHandler.emitterContainer(this, GTValues.V[tier] * 128L, GTValues.V[tier], 4);
         } else {
             this.energyContainer = EnergyContainerHandler.receiverContainer(this, GTValues.V[tier] * 16L, GTValues.V[tier], 2);
@@ -46,7 +46,7 @@ public class MetaTileEntityEnergyHatch extends MetaTileEntityMultiblockPart impl
     @Override
     public void renderMetaTileEntity(CCRenderState renderState, Matrix4 translation, IVertexOperation[] pipeline) {
         super.renderMetaTileEntity(renderState, translation, pipeline);
-        if(shouldRenderOverlay()) {
+        if (shouldRenderOverlay()) {
             SimpleOverlayRenderer renderer = isExportHatch ? Textures.ENERGY_OUT_MULTI : Textures.ENERGY_IN_MULTI;
             renderer.renderSided(getFrontFacing(), renderState, translation, PipelineUtil.color(pipeline, GTValues.VC[getTier()]));
         }

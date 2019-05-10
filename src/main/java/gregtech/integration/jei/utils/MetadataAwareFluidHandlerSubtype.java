@@ -11,7 +11,7 @@ public class MetadataAwareFluidHandlerSubtype implements ISubtypeInterpreter {
     @Override
     public String apply(ItemStack itemStack) {
         IFluidHandlerItem fluidHandler = itemStack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY, null);
-        if(fluidHandler != null) {
+        if (fluidHandler != null) {
             IFluidTankProperties fluidTankProperties = fluidHandler.getTankProperties()[0];
             FluidStack fluid = fluidTankProperties.getContents();
             return String.format("%d;f=%s", itemStack.getMetadata(), fluid == null ? "empty" : fluid.getFluid().getName());

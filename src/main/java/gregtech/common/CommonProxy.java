@@ -3,7 +3,6 @@ package gregtech.common;
 import gregtech.api.GTValues;
 import gregtech.api.block.machines.MachineItemBlock;
 import gregtech.api.enchants.EnchantmentEnderDamage;
-import gregtech.api.enchants.EnchantmentRadioactivity;
 import gregtech.api.items.metaitem.MetaItem;
 import gregtech.api.unification.material.type.DustMaterial;
 import gregtech.api.unification.material.type.Material;
@@ -23,7 +22,6 @@ import gregtech.loaders.oreprocessing.DecompositionRecipeHandler;
 import gregtech.loaders.oreprocessing.RecipeHandlerList;
 import gregtech.loaders.oreprocessing.ToolRecipeHandler;
 import gregtech.loaders.recipe.CraftingRecipeLoader;
-import gregtech.loaders.recipe.FuelRecipes;
 import gregtech.loaders.recipe.MachineRecipeLoader;
 import gregtech.loaders.recipe.MetaTileEntityLoader;
 import net.minecraft.block.Block;
@@ -177,12 +175,11 @@ public class CommonProxy {
     @SubscribeEvent
     public static void registerEnchantments(RegistryEvent.Register<Enchantment> event) {
         EnchantmentEnderDamage.INSTANCE.register(event);
-        EnchantmentRadioactivity.INSTANCE.register(event);
     }
 
     @SubscribeEvent
     public static void syncConfigValues(ConfigChangedEvent.OnConfigChangedEvent event) {
-        if(event.getModID().equals(GTValues.MODID)) {
+        if (event.getModID().equals(GTValues.MODID)) {
             ConfigManager.sync(GTValues.MODID, Type.INSTANCE);
         }
     }
@@ -192,16 +189,16 @@ public class CommonProxy {
         ItemStack stack = event.getItemStack();
         Block block = Block.getBlockFromItem(stack.getItem());
         //handle sapling and log burn rates
-        if(block == MetaBlocks.LOG) {
+        if (block == MetaBlocks.LOG) {
             event.setBurnTime(300);
-        } else if(block == MetaBlocks.SAPLING) {
+        } else if (block == MetaBlocks.SAPLING) {
             event.setBurnTime(100);
         }
         //handle material blocks burn value
-        if(stack.getItem() instanceof CompressedItemBlock) {
+        if (stack.getItem() instanceof CompressedItemBlock) {
             CompressedItemBlock itemBlock = (CompressedItemBlock) stack.getItem();
             Material material = itemBlock.getBlockState(stack).getValue(itemBlock.compressedBlock.variantProperty);
-            if(material instanceof DustMaterial &&
+            if (material instanceof DustMaterial &&
                 ((DustMaterial) material).burnTime > 0) {
                 //compute burn value for block prefix, taking amount of material in block into account
                 double materialUnitsInBlock = OrePrefix.block.getMaterialAmount(material) / (GTValues.M * 1.0);

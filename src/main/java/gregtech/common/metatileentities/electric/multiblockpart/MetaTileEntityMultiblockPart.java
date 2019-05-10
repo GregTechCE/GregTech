@@ -52,12 +52,12 @@ public abstract class MetaTileEntityMultiblockPart extends MetaTileEntity implem
     }
 
     public MultiblockControllerBase getController() {
-        if(getWorld() != null && getWorld().isRemote) { //check this only clientside
-            if(controllerTile == null && controllerPos != null) {
+        if (getWorld() != null && getWorld().isRemote) { //check this only clientside
+            if (controllerTile == null && controllerPos != null) {
                 this.controllerTile = (MultiblockControllerBase) BlockMachine.getMetaTileEntity(getWorld(), controllerPos);
             }
         }
-        if(controllerTile != null && (controllerTile.getHolder() == null ||
+        if (controllerTile != null && (controllerTile.getHolder() == null ||
             controllerTile.getHolder().isInvalid() || !(getWorld().isRemote || controllerTile.getMultiblockParts().contains(this)))) {
             //tile can become invalid for many reasons, and can also forgot to remove us once we aren't in structure anymore
             //so check it here to prevent bugs with dangling controller reference and wrong texture
@@ -86,7 +86,7 @@ public abstract class MetaTileEntityMultiblockPart extends MetaTileEntity implem
         super.writeInitialSyncData(buf);
         MultiblockControllerBase controller = getController();
         buf.writeBoolean(controller != null);
-        if(controller != null) {
+        if (controller != null) {
             buf.writeBlockPos(controller.getPos());
         }
     }
@@ -94,7 +94,7 @@ public abstract class MetaTileEntityMultiblockPart extends MetaTileEntity implem
     @Override
     public void receiveInitialSyncData(PacketBuffer buf) {
         super.receiveInitialSyncData(buf);
-        if(buf.readBoolean()) {
+        if (buf.readBoolean()) {
             this.controllerPos = buf.readBlockPos();
             this.controllerTile = null;
         }
@@ -103,8 +103,8 @@ public abstract class MetaTileEntityMultiblockPart extends MetaTileEntity implem
     @Override
     public void receiveCustomData(int dataId, PacketBuffer buf) {
         super.receiveCustomData(dataId, buf);
-        if(dataId == 100) {
-            if(buf.readBoolean()) {
+        if (dataId == 100) {
+            if (buf.readBoolean()) {
                 this.controllerPos = buf.readBlockPos();
                 this.controllerTile = null;
             } else {
@@ -117,10 +117,10 @@ public abstract class MetaTileEntityMultiblockPart extends MetaTileEntity implem
 
     private void setController(MultiblockControllerBase controller1) {
         this.controllerTile = controller1;
-        if(!getWorld().isRemote) {
+        if (!getWorld().isRemote) {
             writeCustomData(100, writer -> {
                 writer.writeBoolean(controllerTile != null);
-                if(controllerTile != null) {
+                if (controllerTile != null) {
                     writer.writeBlockPos(controllerTile.getPos());
                 }
             });
@@ -131,7 +131,7 @@ public abstract class MetaTileEntityMultiblockPart extends MetaTileEntity implem
     public void onRemoval() {
         super.onRemoval();
         MultiblockControllerBase controller = getController();
-        if(!getWorld().isRemote && controller != null) {
+        if (!getWorld().isRemote && controller != null) {
             controller.invalidateStructure();
         }
     }

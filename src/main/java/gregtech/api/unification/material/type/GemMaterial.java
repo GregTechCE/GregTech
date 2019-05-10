@@ -40,7 +40,7 @@ public class GemMaterial extends SolidMaterial {
 
     @Override
     protected long verifyMaterialBits(long generationBits) {
-        if((generationBits & MatFlags.GENERATE_LENSE) > 0) {
+        if ((generationBits & MatFlags.GENERATE_LENSE) > 0) {
             generationBits |= GENERATE_PLATE;
         }
         return super.verifyMaterialBits(generationBits);

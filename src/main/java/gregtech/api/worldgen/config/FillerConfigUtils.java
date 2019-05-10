@@ -27,22 +27,25 @@ import java.util.*;
 public class FillerConfigUtils {
 
     public static FillerEntry createBlockStateFiller(JsonElement element) {
-        if(element instanceof JsonPrimitive) {
+        if (element instanceof JsonPrimitive) {
             String stringDeclaration = element.getAsString();
             return createSimpleFiller(stringDeclaration);
 
-        } else if(element instanceof JsonObject) {
+        } else if (element instanceof JsonObject) {
             JsonObject object = element.getAsJsonObject();
-            if(object.has("block")) {
+            if (object.has("block")) {
                 IBlockState stateDefinition = PredicateConfigUtils.parseBlockStateDefinition(object);
                 return FillerEntry.createSimpleFiller(stateDefinition);
             }
             Preconditions.checkArgument(object.has("type"), "Missing required type for block state predicate");
             String predicateType = object.get("type").getAsString();
             switch (predicateType) {
-                case "weight_random": return createWeightRandomStateFiller(object);
-                case "state_match": return createStateMatchFiller(object);
-                default: throw new IllegalArgumentException("Unknown filler match type: " + predicateType);
+                case "weight_random":
+                    return createWeightRandomStateFiller(object);
+                case "state_match":
+                    return createStateMatchFiller(object);
+                default:
+                    throw new IllegalArgumentException("Unknown filler match type: " + predicateType);
             }
         } else {
             throw new IllegalArgumentException("Unknown block state type " + element);
@@ -50,22 +53,22 @@ public class FillerConfigUtils {
     }
 
     private static FillerEntry createSimpleFiller(String stringDeclaration) {
-        if(stringDeclaration.startsWith("block:")) {
+        if (stringDeclaration.startsWith("block:")) {
             Block block = OreConfigUtils.getBlockByName(stringDeclaration.substring(6));
             return FillerEntry.createSimpleFiller(block.getDefaultState());
 
-        } else if(stringDeclaration.startsWith("fluid:")) {
+        } else if (stringDeclaration.startsWith("fluid:")) {
             String fluidName = stringDeclaration.substring(6);
             Fluid fluid = FluidRegistry.getFluid(fluidName);
             Preconditions.checkNotNull(fluid, "Fluid not found with name %s", fluidName);
             Preconditions.checkNotNull(fluid.getBlock(), "Block is not defined for fluid %s", fluidName);
             return FillerEntry.createSimpleFiller(fluid.getBlock().getDefaultState());
 
-        } else if(stringDeclaration.startsWith("ore:")) {
+        } else if (stringDeclaration.startsWith("ore:")) {
             Map<StoneType, IBlockState> blockStateMap = OreConfigUtils.getOreStateMap(stringDeclaration);
             return new OreFilterEntry(blockStateMap);
 
-        } else if(stringDeclaration.startsWith("ore_dict:")) {
+        } else if (stringDeclaration.startsWith("ore_dict:")) {
             String oreDictName = stringDeclaration.substring(9);
             IBlockState firstBlock = OreConfigUtils.getOreDictBlocks(oreDictName).get(0);
             return FillerEntry.createSimpleFiller(firstBlock);
@@ -80,7 +83,7 @@ public class FillerConfigUtils {
         JsonElement defaultElement = object.get("default");
         ArrayList<Pair<WorldBlockPredicate, FillerEntry>> matchers = new ArrayList<>();
 
-        for(JsonElement valueDefinition : valuesArray) {
+        for (JsonElement valueDefinition : valuesArray) {
             Preconditions.checkArgument(valueDefinition.isJsonObject(), "Found invalid value definition: %s", valueDefinition.toString());
             JsonObject valueObject = valueDefinition.getAsJsonObject();
             WorldBlockPredicate predicate = PredicateConfigUtils.createBlockStatePredicate(valueObject.get("predicate"));
@@ -88,7 +91,7 @@ public class FillerConfigUtils {
             matchers.add(Pair.of(predicate, filler));
         }
 
-        if(!defaultElement.isJsonNull()) {
+        if (!defaultElement.isJsonNull()) {
             FillerEntry filler = createBlockStateFiller(defaultElement);
             WorldBlockPredicate predicate = (state, world, pos) -> true;
             matchers.add(Pair.of(predicate, filler));
@@ -154,7 +157,7 @@ public class FillerConfigUtils {
             this.matchers = matchers;
             ImmutableList.Builder<FillerEntry> entryBuilder = ImmutableList.builder();
             ImmutableList.Builder<IBlockState> stateBuilder = ImmutableList.builder();
-            for(Pair<WorldBlockPredicate, FillerEntry> matcher : matchers) {
+            for (Pair<WorldBlockPredicate, FillerEntry> matcher : matchers) {
                 entryBuilder.add(matcher.getRight());
                 stateBuilder.addAll(matcher.getRight().getPossibleResults());
             }
@@ -164,8 +167,8 @@ public class FillerConfigUtils {
 
         @Override
         public IBlockState apply(IBlockState source, IBlockAccess blockAccess, BlockPos blockPos) {
-            for(Pair<WorldBlockPredicate, FillerEntry> matcher : matchers) {
-                if(matcher.getLeft().test(source, blockAccess, blockPos)) {
+            for (Pair<WorldBlockPredicate, FillerEntry> matcher : matchers) {
+                if (matcher.getLeft().test(source, blockAccess, blockPos)) {
                     return matcher.getRight().apply(source, blockAccess, blockPos);
                 }
             }
@@ -194,7 +197,7 @@ public class FillerConfigUtils {
             this.randomList = randomList;
             ImmutableList.Builder<FillerEntry> entryBuilder = ImmutableList.builder();
             ImmutableList.Builder<IBlockState> stateBuilder = ImmutableList.builder();
-            for(Pair<Integer, FillerEntry> randomEntry : randomList) {
+            for (Pair<Integer, FillerEntry> randomEntry : randomList) {
                 entryBuilder.add(randomEntry.getRight());
                 stateBuilder.addAll(randomEntry.getRight().getPossibleResults());
             }

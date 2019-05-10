@@ -29,7 +29,7 @@ public class TileEntityFluidPipeActive extends TileEntityFluidPipe implements IT
     @Override
     public void update() {
         getCoverableImplementation().update();
-        if(isActive) {
+        if (isActive) {
             pushFluidsFromTank(this);
         }
     }
@@ -55,21 +55,21 @@ public class TileEntityFluidPipeActive extends TileEntityFluidPipe implements IT
     public static void pushFluidsFromTank(IPipeTile<?, ?> pipeTile) {
         PooledMutableBlockPos blockPos = PooledMutableBlockPos.retain();
         int blockedConnections = pipeTile.getBlockedConnections();
-        for(EnumFacing side : EnumFacing.VALUES) {
-            if((blockedConnections & 1 << side.getIndex()) > 0) {
+        for (EnumFacing side : EnumFacing.VALUES) {
+            if ((blockedConnections & 1 << side.getIndex()) > 0) {
                 continue; //do not dispatch energy to blocked sides
             }
             blockPos.setPos(pipeTile.getPipePos()).move(side);
-            if(!pipeTile.getPipeWorld().isBlockLoaded(blockPos)) {
+            if (!pipeTile.getPipeWorld().isBlockLoaded(blockPos)) {
                 continue; //do not allow cables to load chunks
             }
             TileEntity tileEntity = pipeTile.getPipeWorld().getTileEntity(blockPos);
-            if(tileEntity == null || pipeTile.getPipeBlock().getPipeTileEntity(tileEntity) != null) {
+            if (tileEntity == null || pipeTile.getPipeBlock().getPipeTileEntity(tileEntity) != null) {
                 continue; //do not emit into multiparts or other fluid pipes
             }
             IFluidHandler sourceHandler = pipeTile.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, side);
             IFluidHandler receiverHandler = tileEntity.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, side.getOpposite());
-            if(sourceHandler == null || receiverHandler == null) {
+            if (sourceHandler == null || receiverHandler == null) {
                 continue;
             }
             CoverPump.moveHandlerFluids(sourceHandler, receiverHandler, Integer.MAX_VALUE, FLUID_FILTER_ALWAYS_TRUE);

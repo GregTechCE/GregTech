@@ -36,23 +36,23 @@ public class FoamSprayerBehavior implements IItemCapabilityProvider, IItemDurabi
         ItemStack itemStack = player.getHeldItem(hand);
         IFluidHandlerItem fluidHandlerItem = itemStack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY, null);
         FluidStack fluidStack = fluidHandlerItem.drain(Integer.MAX_VALUE, false);
-        if(fluidStack != null && fluidStack.amount >= FLUID_PER_BLOCK) {
+        if (fluidStack != null && fluidStack.amount >= FLUID_PER_BLOCK) {
             BlockPos offsetPos = pos.offset(facing);
             IBlockState initialBlockState = world.getBlockState(pos);
             IBlockState offsetState = world.getBlockState(offsetPos);
 
-            if(initialBlockState.getBlock() instanceof BlockFrame) {
+            if (initialBlockState.getBlock() instanceof BlockFrame) {
                 int blocksToFoam = fluidStack.amount / FLUID_PER_BLOCK;
                 int blocksFoamed = foamAllFrameBlocks(world, pos, blocksToFoam, player.isSneaking());
-                if(!player.capabilities.isCreativeMode) {
+                if (!player.capabilities.isCreativeMode) {
                     fluidHandlerItem.drain(FLUID_PER_BLOCK * blocksFoamed, true);
                 }
                 return ActionResult.newResult(EnumActionResult.SUCCESS, itemStack);
 
-            } else if(offsetState.getBlock().isReplaceable(world, offsetPos)) {
+            } else if (offsetState.getBlock().isReplaceable(world, offsetPos)) {
                 int blocksToFoam = fluidStack.amount / FLUID_PER_BLOCK;
                 int blocksFoamed = foamReplacableBlocks(world, offsetPos, blocksToFoam);
-                if(!player.capabilities.isCreativeMode) {
+                if (!player.capabilities.isCreativeMode) {
                     fluidHandlerItem.drain(FLUID_PER_BLOCK * blocksFoamed, true);
                 }
                 return ActionResult.newResult(EnumActionResult.SUCCESS, itemStack);
@@ -94,10 +94,10 @@ public class FoamSprayerBehavior implements IItemCapabilityProvider, IItemDurabi
         frameBlocks = frameBlocks.subList(0, Math.min(frameBlocks.size(), maxBlocksToFoam));
 
         //replace blocks without updating physics
-        for(BlockPos framePos : frameBlocks) {
+        for (BlockPos framePos : frameBlocks) {
             IBlockState blockState = world.getBlockState(framePos);
             boolean isNormalFrame = ModHandler.isMaterialWood(((BlockFrame) blockState.getBlock()).frameMaterial) || isSneaking;
-            if(isNormalFrame) {
+            if (isNormalFrame) {
                 blockState.getBlock().dropBlockAsItem(world, framePos, blockState, 0);
             }
             IBlockState foamToPlace = isNormalFrame ? MetaBlocks.FOAM.getDefaultState() : MetaBlocks.REINFORCED_FOAM.getDefaultState();
@@ -105,7 +105,7 @@ public class FoamSprayerBehavior implements IItemCapabilityProvider, IItemDurabi
         }
 
         //perform block physics updates
-        for(BlockPos blockPos : frameBlocks) {
+        for (BlockPos blockPos : frameBlocks) {
             IBlockState blockState = world.getBlockState(blockPos);
             world.notifyNeighborsRespectDebug(blockPos, blockState.getBlock(), true);
         }
@@ -116,13 +116,13 @@ public class FoamSprayerBehavior implements IItemCapabilityProvider, IItemDurabi
         List<BlockPos> replacableBlocks = gatherReplacableBlocks(world, pos, 10);
         replacableBlocks = replacableBlocks.subList(0, Math.min(replacableBlocks.size(), maxBlocksToFoam));
 
-        for(BlockPos blockPos : replacableBlocks) {
+        for (BlockPos blockPos : replacableBlocks) {
             //foaming air blocks doesn't cause updates of other blocks, so just proceed
             world.setBlockState(blockPos, MetaBlocks.FOAM.getDefaultState(), 2);
         }
 
         //perform block physics updates
-        for(BlockPos blockPos : replacableBlocks) {
+        for (BlockPos blockPos : replacableBlocks) {
             IBlockState blockState = world.getBlockState(blockPos);
             world.notifyNeighborsRespectDebug(pos, blockState.getBlock(), true);
         }
@@ -136,12 +136,13 @@ public class FoamSprayerBehavior implements IItemCapabilityProvider, IItemDurabi
         resultAirBlocks.add(centerPos);
         Stack<EnumFacing> moveStack = new Stack<>();
         MutableBlockPos currentPos = new MutableBlockPos(centerPos);
-        main: while(true) {
-            for(EnumFacing facing : EnumFacing.VALUES) {
+        main:
+        while (true) {
+            for (EnumFacing facing : EnumFacing.VALUES) {
                 currentPos.move(facing);
                 IBlockState blockStateHere = worldIn.getBlockState(currentPos);
                 //if there is node, and it can connect with previous node, add it to list, and set previous node as current
-                if(blockStateHere.getBlock().isReplaceable(worldIn, currentPos) &&
+                if (blockStateHere.getBlock().isReplaceable(worldIn, currentPos) &&
                     currentPos.distanceSq(centerPos) <= maxRadiusSq && !observedSet.contains(currentPos)) {
                     BlockPos immutablePos = currentPos.toImmutable();
                     observedSet.add(immutablePos);
@@ -150,7 +151,7 @@ public class FoamSprayerBehavior implements IItemCapabilityProvider, IItemDurabi
                     continue main;
                 } else currentPos.move(facing.getOpposite());
             }
-            if(!moveStack.isEmpty()) {
+            if (!moveStack.isEmpty()) {
                 currentPos.move(moveStack.pop());
             } else break;
         }
@@ -166,12 +167,13 @@ public class FoamSprayerBehavior implements IItemCapabilityProvider, IItemDurabi
         IBlockState frameState = null;
         Stack<EnumFacing> moveStack = new Stack<>();
         MutableBlockPos currentPos = new MutableBlockPos(centerPos);
-        main: while(true) {
-            for(EnumFacing facing : EnumFacing.VALUES) {
+        main:
+        while (true) {
+            for (EnumFacing facing : EnumFacing.VALUES) {
                 currentPos.move(facing);
                 IBlockState blockStateHere = worldIn.getBlockState(currentPos);
                 //if there is node, and it can connect with previous node, add it to list, and set previous node as current
-                if(blockStateHere.getBlock() instanceof BlockFrame &&
+                if (blockStateHere.getBlock() instanceof BlockFrame &&
                     currentPos.distanceSq(centerPos) <= maxRadiusSq &&
                     (frameState == null || frameState == blockStateHere) && !observedSet.contains(currentPos)) {
                     BlockPos immutablePos = currentPos.toImmutable();
@@ -182,7 +184,7 @@ public class FoamSprayerBehavior implements IItemCapabilityProvider, IItemDurabi
                     continue main;
                 } else currentPos.move(facing.getOpposite());
             }
-            if(!moveStack.isEmpty()) {
+            if (!moveStack.isEmpty()) {
                 currentPos.move(moveStack.pop());
             } else break;
         }

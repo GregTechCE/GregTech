@@ -141,7 +141,7 @@ public class CoverFluidFilter extends CoverBehavior implements CoverWithUI {
             if (filterMode == FluidFilterMode.FILTER_DRAIN) {
                 return 0;
             }
-            if(!checkInputFluid(getFilterSlots(), resource)) {
+            if (!checkInputFluid(getFilterSlots(), resource)) {
                 return 0;
             }
             return super.fill(resource, doFill);
@@ -153,7 +153,7 @@ public class CoverFluidFilter extends CoverBehavior implements CoverWithUI {
             if (filterMode == FluidFilterMode.FILTER_DRAIN) {
                 return null;
             }
-            if(!checkInputFluid(getFilterSlots(), resource)) {
+            if (!checkInputFluid(getFilterSlots(), resource)) {
                 return null;
             }
             return super.drain(resource, doDrain);

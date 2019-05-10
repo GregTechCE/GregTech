@@ -7,6 +7,7 @@ before_script:
 stages:
   - build
   - deploy
+  - manual_deploy
 
 build:
   stage: build
@@ -23,7 +24,20 @@ build:
 production:
   stage: deploy
   script: ./gradlew curseforge bintrayUpload
+  retry: 2
   when: on_success
   only:
+    refs:
+      - tags
+
+manual_production:
+  stage: manual_deploy
+  script: ./gradlew curseforge bintrayUpload
+  retry: 2
+  when: manual
+  only:
+    refs:
+      - master
+  except:
     refs:
       - tags

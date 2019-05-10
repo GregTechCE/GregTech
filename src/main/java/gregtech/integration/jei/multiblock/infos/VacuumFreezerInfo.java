@@ -2,18 +2,12 @@ package gregtech.integration.jei.multiblock.infos;
 
 import com.google.common.collect.Lists;
 import gregtech.api.GTValues;
-import gregtech.api.metatileentity.MetaTileEntity;
-import gregtech.api.metatileentity.TieredMetaTileEntity;
 import gregtech.api.metatileentity.multiblock.MultiblockControllerBase;
-import gregtech.api.render.Textures;
-import gregtech.api.unification.material.MarkerMaterials;
 import gregtech.common.blocks.BlockMetalCasing.MetalCasingType;
-import gregtech.common.blocks.BlockMultiblockCasing;
 import gregtech.common.blocks.MetaBlocks;
 import gregtech.common.metatileentities.MetaTileEntities;
 import gregtech.integration.jei.multiblock.MultiblockInfoPage;
 import gregtech.integration.jei.multiblock.MultiblockShapeInfo;
-import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.EnumFacing;
@@ -47,7 +41,7 @@ public class VacuumFreezerInfo extends MultiblockInfoPage {
 
     @Override
     public String[] getDescription() {
-        return new String[] {I18n.format("gregtech.multiblock.vacuum_freezer.description")};
+        return new String[]{I18n.format("gregtech.multiblock.vacuum_freezer.description")};
     }
 
 }

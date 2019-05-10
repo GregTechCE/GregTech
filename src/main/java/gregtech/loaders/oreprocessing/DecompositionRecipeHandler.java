@@ -22,8 +22,8 @@ import static gregtech.api.unification.material.type.Material.MatFlags.DISABLE_D
 public class DecompositionRecipeHandler {
 
     public static void runRecipeGeneration() {
-        for(Material material : Material.MATERIAL_REGISTRY) {
-            if(material instanceof FluidMaterial) {
+        for (Material material : Material.MATERIAL_REGISTRY) {
+            if (material instanceof FluidMaterial) {
                 OrePrefix prefix = material instanceof DustMaterial ? OrePrefix.dust : null;
                 processDecomposition(prefix, (FluidMaterial) material);
             }
@@ -61,7 +61,7 @@ public class DecompositionRecipeHandler {
                     .map(s -> s.material).collect(Collectors.toList())));
         } else {
             builder = RecipeMaps.CENTRIFUGE_RECIPES.recipeBuilder()
-                .duration((int) material.getAverageMass() * totalInputAmount * 2)
+                .duration((int) Math.ceil(material.getAverageMass() * totalInputAmount * 1.5))
                 .EUt(30);
         }
         builder.outputs(outputs);
@@ -87,7 +87,7 @@ public class DecompositionRecipeHandler {
         if (components.contains(Materials.Tungsten))
             return 1920; //EV voltage (tungstate and scheelite electrolyzing)
         //Binary compound materials require 30 EU/t
-        if(components.size() <= 2) {
+        if (components.size() <= 2) {
             return 30;
         }
         return Math.min(2, components.size()) * 30;

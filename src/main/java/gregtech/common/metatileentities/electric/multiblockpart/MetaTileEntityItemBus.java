@@ -17,7 +17,6 @@ import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.items.IItemHandlerModifiable;
 import net.minecraftforge.items.ItemStackHandler;
@@ -44,8 +43,8 @@ public class MetaTileEntityItemBus extends MetaTileEntityMultiblockPart implemen
     @Override
     public void update() {
         super.update();
-        if(!getWorld().isRemote && getTimer() % 5 == 0) {
-            if(isExportHatch) {
+        if (!getWorld().isRemote && getTimer() % 5 == 0) {
+            if (isExportHatch) {
                 pushItemsIntoNearbyHandlers(getFrontFacing());
             } else {
                 pullItemsFromNearbyHandlers(getFrontFacing());
@@ -56,14 +55,15 @@ public class MetaTileEntityItemBus extends MetaTileEntityMultiblockPart implemen
     @Override
     public void renderMetaTileEntity(CCRenderState renderState, Matrix4 translation, IVertexOperation[] pipeline) {
         super.renderMetaTileEntity(renderState, translation, pipeline);
-        if(shouldRenderOverlay()) {
+        if (shouldRenderOverlay()) {
             SimpleOverlayRenderer renderer = isExportHatch ? Textures.PIPE_OUT_OVERLAY : Textures.PIPE_IN_OVERLAY;
             renderer.renderSided(getFrontFacing(), renderState, translation, pipeline);
         }
     }
 
     private int getInventorySize() {
-        return INVENTORY_SIZES[MathHelper.clamp(getTier(), 0, INVENTORY_SIZES.length - 1)];
+        int sizeRoot = (1 + getTier());
+        return sizeRoot * sizeRoot;
     }
 
     @Override

@@ -23,12 +23,12 @@ public class PredicateConfigUtils {
         Block block = OreConfigUtils.getBlockByName(object.get("block").getAsString());
         IBlockState blockState = block.getDefaultState();
 
-        for(IProperty<?> property : block.getBlockState().getProperties()) {
+        for (IProperty<?> property : block.getBlockState().getProperties()) {
             JsonElement valueElement = object.get(property.getName());
-            if(valueElement != null && valueElement.isJsonPrimitive()) {
+            if (valueElement != null && valueElement.isJsonPrimitive()) {
                 String stringValue = valueElement.getAsString();
                 Optional<?> parsedValue = property.parseValue(stringValue);
-                if(!parsedValue.isPresent()) {
+                if (!parsedValue.isPresent()) {
                     throw new IllegalArgumentException("Couldn't parse property " + property.getName() + " value " + valueElement);
                 }
                 //fuck java
@@ -43,21 +43,21 @@ public class PredicateConfigUtils {
     }
 
     private static WorldBlockPredicate createSimpleStatePredicate(String stringDeclaration) {
-        if(stringDeclaration.equals("any")) {
+        if (stringDeclaration.equals("any")) {
             return (state, world, pos) -> true;
-        } else if(stringDeclaration.equals("stone_type")) {
+        } else if (stringDeclaration.equals("stone_type")) {
             return (state, world, pos) -> StoneType.computeStoneType(state, world, pos) != null;
 
-        } else if(stringDeclaration.startsWith("stone_type:")) {
+        } else if (stringDeclaration.startsWith("stone_type:")) {
             String typeName = stringDeclaration.substring(11);
             return (state, world, pos) -> {
                 StoneType stoneType = StoneType.computeStoneType(state, world, pos);
                 return stoneType != null && stoneType.name.equalsIgnoreCase(typeName);
             };
-        } else if(stringDeclaration.startsWith("block:")) {
+        } else if (stringDeclaration.startsWith("block:")) {
             Block block = OreConfigUtils.getBlockByName(stringDeclaration.substring(6));
             return (state, world, pos) -> state.getBlock() == block;
-        } else if(stringDeclaration.startsWith("ore_dict:")) {
+        } else if (stringDeclaration.startsWith("ore_dict:")) {
             String oreDictName = stringDeclaration.substring(9);
             List<IBlockState> allMatching = OreConfigUtils.getOreDictBlocks(oreDictName);
             return (state, world, pos) -> allMatching.contains(state);
@@ -67,19 +67,19 @@ public class PredicateConfigUtils {
     }
 
     public static WorldBlockPredicate createBlockStatePredicate(JsonElement element) {
-        if(element instanceof JsonPrimitive) {
+        if (element instanceof JsonPrimitive) {
             String stringDeclaration = element.getAsString();
             return createSimpleStatePredicate(stringDeclaration);
-        } else if(element instanceof JsonObject) {
+        } else if (element instanceof JsonObject) {
             JsonObject object = element.getAsJsonObject();
-            if(!object.has("block"))
+            if (!object.has("block"))
                 throw new IllegalArgumentException("Block state predicate missing required block key!");
             Predicate<IBlockState> predicate = parseBlockStatePropertyPredicate(object);
             return (state, world, pos) -> predicate.test(state);
-        } else if(element instanceof JsonArray) {
+        } else if (element instanceof JsonArray) {
             JsonArray array = element.getAsJsonArray();
             ArrayList<WorldBlockPredicate> allPredicates = new ArrayList<>();
-            for(JsonElement arrayElement : array) {
+            for (JsonElement arrayElement : array) {
                 allPredicates.add(createBlockStatePredicate(arrayElement));
             }
             return (state, world, pos) -> allPredicates.stream().anyMatch(p -> p.test(state, world, pos));
@@ -92,30 +92,30 @@ public class PredicateConfigUtils {
         Block block = OreConfigUtils.getBlockByName(object.get("block").getAsString());
         Map<IProperty<?>, List<Object>> allowedValues = new HashMap<>();
 
-        for(IProperty<?> property : block.getBlockState().getProperties()) {
+        for (IProperty<?> property : block.getBlockState().getProperties()) {
             JsonElement valueElement = object.get(property.getName());
-            if(valueElement.isJsonPrimitive()) {
+            if (valueElement.isJsonPrimitive()) {
                 JsonElement singleValue = valueElement;
                 valueElement = new JsonArray();
                 valueElement.getAsJsonArray().add(singleValue);
             }
-            if(valueElement.isJsonArray()) {
+            if (valueElement.isJsonArray()) {
                 ArrayList<Object> allValues = new ArrayList<>();
                 JsonArray valuesArray = valueElement.getAsJsonArray();
                 boolean isBlacklist = false;
-                for(JsonElement allowedValue : valuesArray) {
+                for (JsonElement allowedValue : valuesArray) {
                     String elementValue = allowedValue.getAsString();
-                    if(elementValue.startsWith("!")) {
+                    if (elementValue.startsWith("!")) {
                         elementValue = elementValue.substring(1);
                         isBlacklist = true;
                     }
                     Optional<?> parsedValue = property.parseValue(elementValue);
-                    if(!parsedValue.isPresent()) {
+                    if (!parsedValue.isPresent()) {
                         throw new IllegalArgumentException("Couldn't parse property " + property.getName() + " value " + valueElement);
                     }
                     allValues.add(parsedValue.get());
                 }
-                if(isBlacklist) {
+                if (isBlacklist) {
                     ArrayList<Object> blacklistValues = allValues;
                     allValues = new ArrayList<>(property.getAllowedValues());
                     allValues.removeAll(blacklistValues);
@@ -125,11 +125,11 @@ public class PredicateConfigUtils {
         }
 
         return blockState -> {
-            for(IProperty<?> property : blockState.getPropertyKeys()) {
-                if(!allowedValues.containsKey(property))
+            for (IProperty<?> property : blockState.getPropertyKeys()) {
+                if (!allowedValues.containsKey(property))
                     continue; //do not check unspecified properties
                 Object propertyValue = blockState.getValue(property);
-                if(!allowedValues.get(property).contains(propertyValue))
+                if (!allowedValues.get(property).contains(propertyValue))
                     return false;
             }
             return true;

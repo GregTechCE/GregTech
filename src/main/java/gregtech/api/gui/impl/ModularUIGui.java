@@ -58,18 +58,18 @@ public class ModularUIGui extends GuiContainer {
 
     private void processWidgetPackets() {
         synchronized (widgetUpdatesLock) {
-            for(PacketUIWidgetUpdate packet : queuingWidgetUpdates) {
-               handleWidgetUpdate(packet);
+            for (PacketUIWidgetUpdate packet : queuingWidgetUpdates) {
+                handleWidgetUpdate(packet);
             }
             queuingWidgetUpdates.clear();
         }
     }
 
     public void handleWidgetUpdate(PacketUIWidgetUpdate packet) {
-        if(packet.windowId == inventorySlots.windowId) {
+        if (packet.windowId == inventorySlots.windowId) {
             Widget widget = modularUI.guiWidgets.get(packet.widgetId);
             int updateId = packet.updateData.readVarInt();
-            if(widget != null) {
+            if (widget != null) {
                 widget.readUpdateInfo(updateId, packet.updateData);
             }
         }
@@ -111,15 +111,16 @@ public class ModularUIGui extends GuiContainer {
     @Override
     protected void mouseClicked(int mouseX, int mouseY, int mouseButton) throws IOException {
         boolean result = modularUI.guiWidgets.values().stream().anyMatch(widget -> widget.mouseClicked(mouseX - guiLeft, mouseY - guiTop, mouseButton));
-        if(!result) {
+        if (!result) {
             super.mouseClicked(mouseX, mouseY, mouseButton);
         }
     }
 
     @Override
     protected void mouseClickMove(int mouseX, int mouseY, int clickedMouseButton, long timeSinceLastClick) {
-        boolean result = modularUI.guiWidgets.values().stream().anyMatch(widget -> widget.mouseDragged(mouseX - guiLeft, mouseY - guiTop, clickedMouseButton, timeSinceLastClick));
-        if(!result) {
+        boolean result = modularUI.guiWidgets.values().stream().anyMatch(widget ->
+            widget.mouseDragged(mouseX - guiLeft, mouseY - guiTop, clickedMouseButton, timeSinceLastClick));
+        if (!result) {
             super.mouseClickMove(mouseX, mouseY, clickedMouseButton, timeSinceLastClick);
         }
     }
@@ -127,7 +128,7 @@ public class ModularUIGui extends GuiContainer {
     @Override
     protected void mouseReleased(int mouseX, int mouseY, int state) {
         boolean result = modularUI.guiWidgets.values().stream().anyMatch(widget -> widget.mouseReleased(mouseX - guiLeft, mouseY - guiTop, state));
-        if(!result) {
+        if (!result) {
             super.mouseReleased(mouseX, mouseY, state);
         }
     }
@@ -135,7 +136,7 @@ public class ModularUIGui extends GuiContainer {
     @Override
     protected void keyTyped(char typedChar, int keyCode) throws IOException {
         boolean result = modularUI.guiWidgets.values().stream().anyMatch(widget -> widget.keyTyped(typedChar, keyCode));
-        if(!result) {
+        if (!result) {
             super.keyTyped(typedChar, keyCode);
         }
     }

@@ -1,13 +1,6 @@
 package gregtech.api.capability;
 
-import gregtech.api.metatileentity.MetaTileEntity;
-import gregtech.common.ConfigHolder;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumParticleTypes;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.WorldServer;
-
-import static gregtech.api.util.GTUtility.getTierByVoltage;
 
 public interface IEnergyContainer {
 
@@ -22,12 +15,26 @@ public interface IEnergyContainer {
         return false;
     }
 
+    /**
+     * @param differenceAmount amount of energy to add (>0) or remove (<0)
+     * @return amount of energy added or removed
+     */
     long changeEnergy(long differenceAmount);
 
+    /**
+     * Adds specified amount of energy to this energy container
+     * @param energyToAdd amount of energy to add
+     * @return amount of energy added
+     */
     default long addEnergy(long energyToAdd) {
         return changeEnergy(energyToAdd);
     }
 
+    /**
+     * Removes specified amount of energy from this energy container
+     * @param energyToRemove amount of energy to remove
+     * @return amount of energy removed
+     */
     default long removeEnergy(long energyToRemove) {
         return changeEnergy(-energyToRemove);
     }
@@ -75,20 +82,4 @@ public interface IEnergyContainer {
         return false;
     }
 
-    static void doOvervoltageExplosion(MetaTileEntity metaTileEntity, long voltage) {
-        BlockPos pos = metaTileEntity.getPos();
-        metaTileEntity.getWorld().setBlockToAir(pos);
-        if(!metaTileEntity.getWorld().isRemote) {
-            double posX = pos.getX() + 0.5;
-            double posY = pos.getY() + 0.5;
-            double posZ = pos.getZ() + 0.5;
-            ((WorldServer) metaTileEntity.getWorld()).spawnParticle(EnumParticleTypes.SMOKE_LARGE, posX, posY, posZ,
-                10, 0.2, 0.2, 0.2, 0.0);
-
-            if (ConfigHolder.doExplosions) {
-                metaTileEntity.getWorld().createExplosion(null, posX, posY, posZ,
-                    getTierByVoltage(voltage), true);
-            }
-        }
-    }
 }

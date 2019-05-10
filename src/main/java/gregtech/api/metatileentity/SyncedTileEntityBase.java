@@ -50,7 +50,7 @@ public abstract class SyncedTileEntityBase extends BlockStateTileEntity {
     public SPacketUpdateTileEntity getUpdatePacket() {
         NBTTagCompound updateTag = new NBTTagCompound();
         NBTTagList tagList = new NBTTagList();
-        for(UpdateEntry updateEntry : updateEntries) {
+        for (UpdateEntry updateEntry : updateEntries) {
             NBTTagCompound entryTag = new NBTTagCompound();
             entryTag.setInteger("i", updateEntry.discriminator);
             entryTag.setByteArray("d", updateEntry.updateData);
@@ -65,7 +65,7 @@ public abstract class SyncedTileEntityBase extends BlockStateTileEntity {
     public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity pkt) {
         NBTTagCompound updateTag = pkt.getNbtCompound();
         NBTTagList tagList = updateTag.getTagList("d", NBT.TAG_COMPOUND);
-        for(int i = 0; i < tagList.tagCount(); i++) {
+        for (int i = 0; i < tagList.tagCount(); i++) {
             NBTTagCompound entryTag = tagList.getCompoundTagAt(i);
             int discriminator = entryTag.getInteger("i");
             byte[] updateData = entryTag.getByteArray("d");
@@ -93,5 +93,5 @@ public abstract class SyncedTileEntityBase extends BlockStateTileEntity {
         ByteBuf backedBuffer = Unpooled.copiedBuffer(updateData);
         receiveInitialSyncData(new PacketBuffer(backedBuffer));
     }
-    
+
 }

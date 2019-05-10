@@ -6,16 +6,17 @@ import gregtech.api.gui.GuiTextures;
 import gregtech.api.gui.ModularUI;
 import gregtech.api.gui.ModularUI.Builder;
 import gregtech.api.gui.widgets.*;
+import gregtech.api.metatileentity.SimpleMachineMetaTileEntity.RecipeMapWithConfigButton;
 import gregtech.api.recipes.RecipeMap;
 import gregtech.api.recipes.builders.SimpleRecipeBuilder;
 import net.minecraftforge.items.IItemHandlerModifiable;
 
 import java.util.function.DoubleSupplier;
 
-public class RecipeMapGroupOutput extends RecipeMap<SimpleRecipeBuilder> {
+public class RecipeMapGroupOutput extends RecipeMap<SimpleRecipeBuilder> implements RecipeMapWithConfigButton {
 
     public RecipeMapGroupOutput(String unlocalizedName, int minInputs, int maxInputs, int minOutputs, int maxOutputs, int minFluidInputs, int maxFluidInputs, int minFluidOutputs, int maxFluidOutputs, int amperage, SimpleRecipeBuilder defaultRecipe) {
-        super(unlocalizedName, minInputs, maxInputs, minOutputs, maxOutputs, minFluidInputs, maxFluidInputs, minFluidOutputs, maxFluidOutputs, amperage, defaultRecipe);
+        super(unlocalizedName, minInputs, maxInputs, minOutputs, maxOutputs, minFluidInputs, maxFluidInputs, minFluidOutputs, maxFluidOutputs, defaultRecipe);
     }
 
     @Override
@@ -33,9 +34,20 @@ public class RecipeMapGroupOutput extends RecipeMap<SimpleRecipeBuilder> {
         ServerWidgetGroup fluidOutputGroup = createFluidOutputWidgetGroup(exportFluids, new ServerWidgetGroup(booleanWrapper::getCurrentMode));
         builder.widget(itemOutputGroup).widget(fluidOutputGroup);
         ToggleButtonWidget buttonWidget = new ToggleButtonWidget(176 - 7 - 20, 60, 20, 20,
-            GuiTextures.BUTTON_SWITCH_VIEW, booleanWrapper::getCurrentMode, booleanWrapper::setCurrentMode);
+            GuiTextures.BUTTON_SWITCH_VIEW, booleanWrapper::getCurrentMode, booleanWrapper::setCurrentMode)
+            .setTooltipText("gregtech.gui.toggle_view");
         builder.widget(buttonWidget);
         return builder;
+    }
+
+    @Override
+    public int getLeftButtonOffset() {
+        return 0;
+    }
+
+    @Override
+    public int getRightButtonOffset() {
+        return 20;
     }
 
     private static class BooleanWrapper {
@@ -57,7 +69,7 @@ public class RecipeMapGroupOutput extends RecipeMap<SimpleRecipeBuilder> {
         int itemSlotsToDown = inputSlotGrid[1];
         int startInputsX = 106;
         int startInputsY = 32 - (int) (itemSlotsToDown / 2.0 * 18);
-        for(int i = 0; i < itemSlotsToDown; i++) {
+        for (int i = 0; i < itemSlotsToDown; i++) {
             for (int j = 0; j < itemSlotsToLeft; j++) {
                 int slotIndex = i * itemSlotsToLeft + j;
                 int x = startInputsX + 18 * j;
@@ -75,7 +87,7 @@ public class RecipeMapGroupOutput extends RecipeMap<SimpleRecipeBuilder> {
         int itemSlotsToDown = inputSlotGrid[1];
         int startInputsX = 106;
         int startInputsY = 32 - (int) (itemSlotsToDown / 2.0 * 18);
-        for(int i = 0; i < itemSlotsToDown; i++) {
+        for (int i = 0; i < itemSlotsToDown; i++) {
             for (int j = 0; j < itemSlotsToLeft; j++) {
                 int slotIndex = i * itemSlotsToLeft + j;
                 int x = startInputsX + 18 * j;
@@ -83,7 +95,7 @@ public class RecipeMapGroupOutput extends RecipeMap<SimpleRecipeBuilder> {
                 widgetGroup.addWidget(new TankWidget(fluidHandler.getTankAt(slotIndex), x - 1, y - 1, 18, 18)
                     .setAlwaysShowFull(true)
                     .setBackgroundTexture(getOverlaysForSlot(true, true, false))
-                    .setContainerIO(true, false));
+                    .setContainerClicking(true, false));
             }
         }
         return widgetGroup;

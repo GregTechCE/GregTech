@@ -49,5 +49,5 @@ public class BlockMetalCasing extends VariantBlock<BlockMetalCasing.MetalCasingT
         }
 
     }
-    
+
 }

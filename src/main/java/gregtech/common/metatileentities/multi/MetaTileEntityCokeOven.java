@@ -58,18 +58,18 @@ public class MetaTileEntityCokeOven extends MultiblockControllerBase {
 
     @Override
     protected void updateFormedValid() {
-        if(maxProgressDuration == 0) {
-            if(tryPickNewRecipe()) {
-                if(wasActiveAndNeedUpdate) {
+        if (maxProgressDuration == 0) {
+            if (tryPickNewRecipe()) {
+                if (wasActiveAndNeedUpdate) {
                     this.wasActiveAndNeedUpdate = false;
                 } else setActive(true);
             }
-        } else if(++currentProgress >= maxProgressDuration) {
+        } else if (++currentProgress >= maxProgressDuration) {
             finishCurrentRecipe();
             this.wasActiveAndNeedUpdate = true;
             return;
         }
-        if(wasActiveAndNeedUpdate) {
+        if (wasActiveAndNeedUpdate) {
             this.wasActiveAndNeedUpdate = false;
             setActive(false);
         }
@@ -109,7 +109,7 @@ public class MetaTileEntityCokeOven extends MultiblockControllerBase {
 
     private boolean tryPickNewRecipe() {
         ItemStack inputStack = importItems.getStackInSlot(0);
-        if(inputStack.isEmpty()) {
+        if (inputStack.isEmpty()) {
             return false;
         }
         CokeOvenRecipe currentRecipe = getOrRefreshRecipe(inputStack);
@@ -131,7 +131,7 @@ public class MetaTileEntityCokeOven extends MultiblockControllerBase {
         data.setBoolean("Active", isActive);
         data.setBoolean("WasActive", wasActiveAndNeedUpdate);
         data.setInteger("MaxProgress", maxProgressDuration);
-        if(maxProgressDuration > 0) {
+        if (maxProgressDuration > 0) {
             data.setInteger("Progress", currentProgress);
             data.setTag("OutputItem", outputStack.writeToNBT(new NBTTagCompound()));
             data.setTag("OutputFluid", outputFluid.writeToNBT(new NBTTagCompound()));
@@ -145,7 +145,7 @@ public class MetaTileEntityCokeOven extends MultiblockControllerBase {
         this.isActive = data.getBoolean("Active");
         this.wasActiveAndNeedUpdate = data.getBoolean("WasActive");
         this.maxProgressDuration = data.getInteger("MaxProgress");
-        if(maxProgressDuration > 0) {
+        if (maxProgressDuration > 0) {
             this.currentProgress = data.getInteger("Progress");
             this.outputStack = new ItemStack(data.getCompoundTag("OutputItem"));
             this.outputFluid = FluidStack.loadFluidStackFromNBT(data.getCompoundTag("OutputFluid"));
@@ -167,7 +167,7 @@ public class MetaTileEntityCokeOven extends MultiblockControllerBase {
     @Override
     public void receiveCustomData(int dataId, PacketBuffer buf) {
         super.receiveCustomData(dataId, buf);
-        if(dataId == 100) {
+        if (dataId == 100) {
             this.isActive = buf.readBoolean();
             getWorld().checkLight(getPos());
             getHolder().scheduleChunkForRenderUpdate();
@@ -176,7 +176,7 @@ public class MetaTileEntityCokeOven extends MultiblockControllerBase {
 
     public void setActive(boolean active) {
         this.isActive = active;
-        if(!getWorld().isRemote) {
+        if (!getWorld().isRemote) {
             writeCustomData(100, b -> b.writeBoolean(isActive));
             getWorld().checkLight(getPos());
         }
@@ -212,7 +212,7 @@ public class MetaTileEntityCokeOven extends MultiblockControllerBase {
 
     @Override
     public <T> T getCapability(Capability<T> capability, EnumFacing side) {
-        if(capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY ||
+        if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY ||
             capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) {
             return null;
         }
@@ -264,7 +264,7 @@ public class MetaTileEntityCokeOven extends MultiblockControllerBase {
             .widget(new TankWidget(exportFluids.getTankAt(0), 133, 13, 20, 58)
                 .setBackgroundTexture(GuiTextures.FLUID_TANK_BACKGROUND)
                 .setOverlayTexture(GuiTextures.FLUID_TANK_OVERLAY)
-                .setContainerIO(true, false))
+                .setContainerClicking(true, false))
             .bindPlayerInventory(entityPlayer.inventory, GuiTextures.SLOT)
             .build(getHolder(), entityPlayer);
     }

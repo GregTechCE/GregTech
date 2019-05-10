@@ -16,11 +16,11 @@ public final class MarkerMaterial extends Material {
 
     public MarkerMaterial(String name) {
         super(-1, name,
-                0xFFFFFF,
-                MaterialIconSet.NONE,
-                ImmutableList.of(),
-                0,
-                null);
+            0xFFFFFF,
+            MaterialIconSet.NONE,
+            ImmutableList.of(),
+            0,
+            null);
         this.name = name;
         OreDictUnifier.registerMarkerMaterial(this);
     }

@@ -28,7 +28,7 @@ public class FluidNetTank extends FluidTank {
         FluidPipeProperties properties = handle.getNodeData();
         boolean isLeakingPipe = copyStack.getFluid().isGaseous(copyStack) && !properties.gasProof;
         boolean isBurningPipe = copyStack.getFluid().getTemperature(copyStack) > properties.maxFluidTemperature;
-        if(isLeakingPipe || isBurningPipe) {
+        if (isLeakingPipe || isBurningPipe) {
             handle.destroyNetwork(isLeakingPipe, isBurningPipe);
             return copyStack.amount;
         }
@@ -37,7 +37,7 @@ public class FluidNetTank extends FluidTank {
 
     @Override
     public FluidStack drain(FluidStack resource, boolean doDrain) {
-        if(resource == null) {
+        if (resource == null) {
             return null;
         }
         int maxDrainLeftThisTick = getMaxThroughput() - drainedThisTick.get(handle.getWorldData());
@@ -45,7 +45,7 @@ public class FluidNetTank extends FluidTank {
         resource.amount = Math.min(originalAmount, maxDrainLeftThisTick);
         FluidStack resultDrained = super.drain(resource, doDrain);
         resource.amount = originalAmount;
-        if(resultDrained != null && doDrain) {
+        if (resultDrained != null && doDrain) {
             drainedThisTick.increment(handle.getWorldData(), resultDrained.amount);
         }
         return resultDrained;
@@ -55,11 +55,11 @@ public class FluidNetTank extends FluidTank {
     public FluidStack drain(int maxDrain, boolean doDrain) {
         int maxDrainLeftThisTick = getMaxThroughput() - drainedThisTick.get(handle.getWorldData());
         maxDrain = Math.min(maxDrain, maxDrainLeftThisTick);
-        if(maxDrain == 0) {
+        if (maxDrain == 0) {
             return null;
         }
         FluidStack resultDrained = super.drain(maxDrain, doDrain);
-        if(resultDrained != null && doDrain) {
+        if (resultDrained != null && doDrain) {
             drainedThisTick.increment(handle.getWorldData(), resultDrained.amount);
         }
         return resultDrained;
@@ -67,7 +67,7 @@ public class FluidNetTank extends FluidTank {
 
     public void updateTankCapacity(int newTankCapacity) {
         this.capacity = newTankCapacity;
-        if(this.fluid != null) {
+        if (this.fluid != null) {
             this.fluid.amount = Math.min(this.fluid.amount, newTankCapacity);
         }
     }

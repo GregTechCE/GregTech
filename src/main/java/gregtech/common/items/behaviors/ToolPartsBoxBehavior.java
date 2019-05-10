@@ -29,21 +29,21 @@ public class ToolPartsBoxBehavior implements IItemBehaviour {
         List<ItemStack> components = ToolMetaItem.getToolComponents(itemStack);
         List<ItemStack> actualComponents = new ArrayList<>();
         Random random = new Random();
-        for(ItemStack componentStack : components) {
+        for (ItemStack componentStack : components) {
             int restoreChance = getItemRestoreChance(componentStack);
-            if(random.nextInt(100) >= 100 - restoreChance) {
+            if (random.nextInt(100) >= 100 - restoreChance) {
                 actualComponents.add(componentStack);
             }
         }
         int emptyPlayerSlots = 0;
         NonNullList<ItemStack> allStacks = player.inventory.mainInventory;
-        for(ItemStack inventoryStack : allStacks) {
-            if(inventoryStack.isEmpty()) emptyPlayerSlots++;
+        for (ItemStack inventoryStack : allStacks) {
+            if (inventoryStack.isEmpty()) emptyPlayerSlots++;
         }
-        if(actualComponents.size() > emptyPlayerSlots) {
+        if (actualComponents.size() > emptyPlayerSlots) {
             return ActionResult.newResult(EnumActionResult.PASS, itemStack);
         }
-        for(ItemStack componentStack : actualComponents) {
+        for (ItemStack componentStack : actualComponents) {
             player.inventory.addItemStackToInventory(componentStack);
         }
         itemStack.shrink(1);
@@ -51,22 +51,22 @@ public class ToolPartsBoxBehavior implements IItemBehaviour {
     }
 
     private static int getItemRestoreChance(ItemStack itemStack) {
-        if(itemStack.hasCapability(GregtechCapabilities.CAPABILITY_ELECTRIC_ITEM, null))
+        if (itemStack.hasCapability(GregtechCapabilities.CAPABILITY_ELECTRIC_ITEM, null))
             return 100; //electric items are always restored
-        if(itemStack.getItem() instanceof MetaItem<?>) {
+        if (itemStack.getItem() instanceof MetaItem<?>) {
             MetaItem<?> metaItem = (MetaItem<?>) itemStack.getItem();
             MetaValueItem metaValueItem = metaItem.getItem(itemStack);
-            if(ArrayUtils.contains(ToolRecipeHandler.motorItems, metaValueItem))
+            if (ArrayUtils.contains(ToolRecipeHandler.motorItems, metaValueItem))
                 return 100; //always restore electrical components like motors
         }
         OrePrefix orePrefix = OreDictUnifier.getPrefix(itemStack);
-        if(orePrefix != null) {
+        if (orePrefix != null) {
             String orePrefixName = orePrefix.name();
-            if(orePrefix == OrePrefix.circuit)
+            if (orePrefix == OrePrefix.circuit)
                 return 100; //always restore circuits of any tier
-            else if(orePrefixName.startsWith("wireGt") || orePrefixName.startsWith("cableGt"))
+            else if (orePrefixName.startsWith("wireGt") || orePrefixName.startsWith("cableGt"))
                 return 92; //almost always restore cables and wires
-            else if(orePrefixName.startsWith("toolHead"))
+            else if (orePrefixName.startsWith("toolHead"))
                 return 9; //restore tool heads only with 9% chance, because they will break almost always
         }
         return 37; //otherwise, restore with 37% chance

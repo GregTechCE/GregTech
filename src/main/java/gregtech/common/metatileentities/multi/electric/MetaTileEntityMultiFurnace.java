@@ -1,7 +1,7 @@
 package gregtech.common.metatileentities.multi.electric;
 
 import gregtech.api.capability.IMultipleTankHandler;
-import gregtech.api.capability.impl.MultiblockRecipeMapWorkable;
+import gregtech.api.capability.impl.MultiblockRecipeLogic;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.MetaTileEntityHolder;
 import gregtech.api.metatileentity.multiblock.IMultiblockPart;
@@ -50,7 +50,7 @@ public class MetaTileEntityMultiFurnace extends RecipeMapMultiblockController {
 
     @Override
     protected void addDisplayText(List<ITextComponent> textList) {
-        if(isStructureFormed()) {
+        if (isStructureFormed()) {
             textList.add(new TextComponentTranslation("gregtech.multiblock.multi_furnace.heating_coil_level", heatingCoilLevel));
             textList.add(new TextComponentTranslation("gregtech.multiblock.multi_furnace.heating_coil_discount", heatingCoilDiscount));
         }
@@ -96,10 +96,37 @@ public class MetaTileEntityMultiFurnace extends RecipeMapMultiblockController {
         return Textures.HEAT_PROOF_CASING;
     }
 
-    protected class MultiFurnaceWorkable extends MultiblockRecipeMapWorkable {
+    protected class MultiFurnaceWorkable extends MultiblockRecipeLogic {
 
         public MultiFurnaceWorkable(RecipeMapMultiblockController tileEntity) {
             super(tileEntity);
+        }
+
+        @Override
+        protected void trySearchNewRecipe() {
+            long maxVoltage = getMaxVoltage();
+            Recipe currentRecipe = null;
+            IItemHandlerModifiable importInventory = getInputInventory();
+            IMultipleTankHandler importFluids = getInputTank();
+            boolean dirty = checkRecipeInputsDirty(importInventory, importFluids);
+            //inverse of logic in normal AbstractRecipeLogic
+            //for MultiSmelter, we can reuse previous recipe if inputs didn't change
+            //otherwise, we need to recompute it for new ingredients
+            //but technically, it means we can cache multi smelter recipe, but changing inputs have more priority
+            if(dirty || forceRecipeRecheck) {
+                this.forceRecipeRecheck = false;
+                //else, try searching new recipe for given inputs
+                currentRecipe = findRecipe(maxVoltage, importInventory, importFluids);
+                if (currentRecipe != null) {
+                    this.previousRecipe = currentRecipe;
+                }
+            } else if (previousRecipe != null && previousRecipe.matches(false, importInventory, importFluids)) {
+                //if previous recipe still matches inputs, try to use it
+                currentRecipe = previousRecipe;
+            }
+            if (currentRecipe != null && setupAndConsumeRecipeInputs(currentRecipe)) {
+                setupRecipe(currentRecipe);
+            }
         }
 
         @Override
@@ -108,34 +135,33 @@ public class MetaTileEntityMultiFurnace extends RecipeMapMultiblockController {
             int maxItemsLimit = 16 * heatingCoilLevel;
             ArrayList<CountableIngredient> recipeInputs = new ArrayList<>();
             ArrayList<ItemStack> recipeOutputs = new ArrayList<>();
-            for(int index = 0; index < inputs.getSlots(); index++) {
+            for (int index = 0; index < inputs.getSlots(); index++) {
                 ItemStack stackInSlot = inputs.getStackInSlot(index);
-                if(stackInSlot.isEmpty())
+                if (stackInSlot.isEmpty())
                     continue;
                 Recipe matchingRecipe = recipeMap.findRecipe(maxVoltage,
-                    Collections.singletonList(stackInSlot), Collections.emptyList());
+                    Collections.singletonList(stackInSlot), Collections.emptyList(), 0);
                 CountableIngredient inputIngredient = matchingRecipe == null ? null : matchingRecipe.getInputs().get(0);
-                if(inputIngredient != null && (maxItemsLimit - currentItemsEngaged) >= inputIngredient.getCount()) {
+                if (inputIngredient != null && (maxItemsLimit - currentItemsEngaged) >= inputIngredient.getCount()) {
                     ItemStack outputStack = matchingRecipe.getOutputs().get(0).copy();
                     int overclockAmount = Math.min(stackInSlot.getCount() / inputIngredient.getCount(),
                         (maxItemsLimit - currentItemsEngaged) / inputIngredient.getCount());
                     recipeInputs.add(new CountableIngredient(inputIngredient.getIngredient(),
                         inputIngredient.getCount() * overclockAmount));
-                    if(!outputStack.isEmpty()) {
+                    if (!outputStack.isEmpty()) {
                         outputStack.setCount(outputStack.getCount() * overclockAmount);
                         recipeOutputs.add(outputStack);
                     }
                     currentItemsEngaged += inputIngredient.getCount() * overclockAmount;
                 }
 
-                if(currentItemsEngaged >= maxItemsLimit) break;
+                if (currentItemsEngaged >= maxItemsLimit) break;
             }
             return recipeInputs.isEmpty() ? null : recipeMap.recipeBuilder()
                 .inputsIngredients(recipeInputs)
                 .outputs(recipeOutputs)
                 .EUt(Math.max(1, 4 * heatingCoilLevel / heatingCoilDiscount))
                 .duration(512)
-                .cannotBeBuffered()
                 .build().getResult();
         }
     }

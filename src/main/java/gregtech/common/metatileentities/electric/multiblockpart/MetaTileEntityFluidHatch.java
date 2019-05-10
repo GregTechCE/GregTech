@@ -23,7 +23,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.IFluidTank;
@@ -35,7 +34,7 @@ import java.util.List;
 
 public class MetaTileEntityFluidHatch extends MetaTileEntityMultiblockPart implements IMultiblockAbilityPart<IFluidTank> {
 
-    private static final int[] INVENTORY_SIZES = {8000, 16000, 32000, 64000, 128000, 256000, 512000};
+    private static final int INITIAL_INVENTORY_SIZE = 8000;
     private ItemStackHandler containerInventory;
     private boolean isExportHatch;
 
@@ -73,8 +72,8 @@ public class MetaTileEntityFluidHatch extends MetaTileEntityMultiblockPart imple
     @Override
     public void update() {
         super.update();
-        if(!getWorld().isRemote) {
-            if(isExportHatch) {
+        if (!getWorld().isRemote) {
+            if (isExportHatch) {
                 fillContainerFromInternalTank(containerInventory, containerInventory, 0, 1);
                 pushFluidsIntoNearbyHandlers(getFrontFacing());
             } else {
@@ -87,14 +86,14 @@ public class MetaTileEntityFluidHatch extends MetaTileEntityMultiblockPart imple
     @Override
     public void renderMetaTileEntity(CCRenderState renderState, Matrix4 translation, IVertexOperation[] pipeline) {
         super.renderMetaTileEntity(renderState, translation, pipeline);
-        if(shouldRenderOverlay()) {
+        if (shouldRenderOverlay()) {
             SimpleOverlayRenderer renderer = isExportHatch ? Textures.PIPE_OUT_OVERLAY : Textures.PIPE_IN_OVERLAY;
             renderer.renderSided(getFrontFacing(), renderState, translation, pipeline);
         }
     }
 
     private int getInventorySize() {
-        return INVENTORY_SIZES[MathHelper.clamp(getTier(), 0, INVENTORY_SIZES.length - 1)];
+        return INITIAL_INVENTORY_SIZE * (1 << getTier());
     }
 
     @Override

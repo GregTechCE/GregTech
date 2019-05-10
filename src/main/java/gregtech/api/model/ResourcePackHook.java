@@ -27,7 +27,8 @@ public class ResourcePackHook implements IResourceManagerReloadListener, IResour
 
     public static final ResourcePackHook instance = new ResourcePackHook();
 
-    private ResourcePackHook() {}
+    private ResourcePackHook() {
+    }
 
     public static void init() {
         IResourceManager resourceManager = Minecraft.getMinecraft().getResourceManager();
@@ -40,7 +41,9 @@ public class ResourcePackHook implements IResourceManagerReloadListener, IResour
     public interface IResourcePackFileHook {
 
         boolean resourceExists(ResourceLocation location);
+
         InputStream getInputStream(ResourceLocation location) throws IOException;
+
         void onResourceManagerReload(SimpleReloadableResourceManager resourceManager);
 
     }
@@ -53,15 +56,15 @@ public class ResourcePackHook implements IResourceManagerReloadListener, IResour
 
     @Override
     public void onResourceManagerReload(IResourceManager resourceManager) {
-        for(IResourcePackFileHook hook : hooks) {
+        for (IResourcePackFileHook hook : hooks) {
             hook.onResourceManagerReload((SimpleReloadableResourceManager) resourceManager);
         }
     }
 
     @Override
     public InputStream getInputStream(ResourceLocation location) throws IOException {
-        for(IResourcePackFileHook hook : hooks) {
-            if(hook.resourceExists(location))
+        for (IResourcePackFileHook hook : hooks) {
+            if (hook.resourceExists(location))
                 return hook.getInputStream(location);
         }
         throw new FileNotFoundException(location.toString());
@@ -69,8 +72,8 @@ public class ResourcePackHook implements IResourceManagerReloadListener, IResour
 
     @Override
     public boolean resourceExists(ResourceLocation location) {
-        for(IResourcePackFileHook hook : hooks) {
-            if(hook.resourceExists(location))
+        for (IResourcePackFileHook hook : hooks) {
+            if (hook.resourceExists(location))
                 return true;
         }
         return false;
@@ -83,7 +86,7 @@ public class ResourcePackHook implements IResourceManagerReloadListener, IResour
 
     @Override
     public <T extends IMetadataSection> T getPackMetadata(MetadataSerializer metadataSerializer, String metadataSectionName) throws IOException {
-        if(metadataSectionName.equals("pack")) {
+        if (metadataSectionName.equals("pack")) {
             return (T) new PackMetadataSection(new TextComponentString(getPackName()), 1);
         }
         return null;

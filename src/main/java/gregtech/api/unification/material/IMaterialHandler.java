@@ -11,7 +11,7 @@ import java.lang.annotation.Target;
  * {@link gregtech.api.unification.material.IMaterialHandler.RegisterMaterialHandler}
  * That way GTCE will automatically pick up your implementation and register it.
  * Note that it should either have public no-arg constructor for class instantiation, or public static final INSTANCE field.
- *
+ * <p>
  * {@link IMaterialHandler#onMaterialsInit()} will be called by GTCE in PreInit just before
  * material registry freezing after registration of built-in materials and before
  * running early material-manipulating CraftTweaker scripts.
@@ -22,6 +22,7 @@ public interface IMaterialHandler {
 
     @Retention(RetentionPolicy.RUNTIME)
     @Target(ElementType.TYPE)
-    public @interface RegisterMaterialHandler {}
+    @interface RegisterMaterialHandler {
+    }
 
 }

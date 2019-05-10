@@ -22,7 +22,7 @@ public class ChestRenderer implements IIconRegister {
 
     private static final Cuboid6 mainBox = new Cuboid6(1 / 16.0, 0 / 16.0, 1 / 16.0, 15 / 16.0, 10 / 16.0, 15 / 16.0);
     private static final Cuboid6 capBox = new Cuboid6(1 / 16.0, 9 / 16.0, 1 / 16.0, 15 / 16.0, 14 / 16.0, 15 / 16.0);
-    private static final Cuboid6 lockBox = new Cuboid6( 7 / 16.0, 8 / 16.0, 0 / 16.0, 9 / 16.0, 12 / 16.0, 1 / 16.0);
+    private static final Cuboid6 lockBox = new Cuboid6(7 / 16.0, 8 / 16.0, 0 / 16.0, 9 / 16.0, 12 / 16.0, 1 / 16.0);
     private static final List<EnumFacing> rotations = Arrays.asList(EnumFacing.NORTH, EnumFacing.WEST, EnumFacing.SOUTH, EnumFacing.EAST);
 
     private final String basePath;
@@ -54,7 +54,7 @@ public class ChestRenderer implements IIconRegister {
         translation.rotate(Math.toRadians(90.0 * rotations.indexOf(rotation)), Rotation.axes[1]);
         translation.translate(-0.5, -0.5, -0.5);
 
-        for(EnumFacing renderSide : EnumFacing.VALUES) {
+        for (EnumFacing renderSide : EnumFacing.VALUES) {
             TextureAtlasSprite baseSprite = renderSide.getAxis() == Axis.Y ? textures[renderSide.getIndex()] : renderSide == EnumFacing.NORTH ? textures[3] : textures[2];
             Textures.renderFace(renderState, translation, pipeline, renderSide, mainBox, baseSprite);
         }

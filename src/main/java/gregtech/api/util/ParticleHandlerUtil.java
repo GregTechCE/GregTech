@@ -65,7 +65,7 @@ public class ParticleHandlerUtil {
 
     private static Cuboid6 getBoundingBox(IBlockState blockState, World world, RayTraceResult target) {
         BlockPos blockPos = target.getBlockPos();
-        if(target instanceof CuboidRayTraceResult) {
+        if (target instanceof CuboidRayTraceResult) {
             return ((CuboidRayTraceResult) target).cuboid6.copy().add(blockPos);
         }
         return new Cuboid6(blockState.getBoundingBox(world, blockPos)).add(blockPos);

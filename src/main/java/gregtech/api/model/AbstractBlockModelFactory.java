@@ -30,7 +30,7 @@ public abstract class AbstractBlockModelFactory implements ResourcePackHook.IRes
 
     @Override
     public void onResourceManagerReload(SimpleReloadableResourceManager resourceManager) {
-        if(sampleResourceLocation != null) {
+        if (sampleResourceLocation != null) {
             try {
                 blockStateSample = FileUtility.readInputStream(resourceManager.getResource(sampleResourceLocation).getInputStream());
             } catch (IOException exception) {
@@ -51,9 +51,9 @@ public abstract class AbstractBlockModelFactory implements ResourcePackHook.IRes
         String resourcePath = location.getResourcePath(); // blockstates/compressed_1.json
         resourcePath = resourcePath.substring(0, resourcePath.length() - 5); //remove .json
         resourcePath = resourcePath.substring(12); //remove blockstates/
-        if(resourcePath.startsWith(blockNamePrefix)) {
+        if (resourcePath.startsWith(blockNamePrefix)) {
             Block block = Block.REGISTRY.getObject(new ResourceLocation(location.getResourceDomain(), resourcePath));
-            if(block != null && block != Blocks.AIR) {
+            if (block != null && block != Blocks.AIR) {
                 return FileUtility.writeInputStream(fillSample(block, blockStateSample));
             }
             throw new IllegalArgumentException("Block not found: " + resourcePath);

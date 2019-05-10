@@ -24,16 +24,16 @@ public class ElectricItem implements IElectricItem, ICapabilityProvider {
     protected final int tier;
 
     protected final boolean chargeable;
-    protected final boolean dischargeable;
+    protected final boolean canProvideEnergyExternally;
 
     protected List<BiConsumer<ItemStack, Long>> listeners = new ArrayList<>();
 
-    public ElectricItem(ItemStack itemStack, long maxCharge, int tier, boolean chargeable, boolean dischargeable) {
+    public ElectricItem(ItemStack itemStack, long maxCharge, int tier, boolean chargeable, boolean canProvideEnergyExternally) {
         this.itemStack = itemStack;
         this.maxCharge = maxCharge;
         this.tier = tier;
         this.chargeable = chargeable;
-        this.dischargeable = dischargeable;
+        this.canProvideEnergyExternally = canProvideEnergyExternally;
     }
 
     @Override
@@ -61,25 +61,25 @@ public class ElectricItem implements IElectricItem, ICapabilityProvider {
     @Override
     public long getMaxCharge() {
         NBTTagCompound tagCompound = itemStack.getTagCompound();
-        if(tagCompound == null)
+        if (tagCompound == null)
             return maxCharge;
-        if(tagCompound.hasKey("MaxCharge", NBT.TAG_LONG))
+        if (tagCompound.hasKey("MaxCharge", NBT.TAG_LONG))
             return tagCompound.getLong("MaxCharge");
         return maxCharge;
     }
 
     public long getCharge() {
         NBTTagCompound tagCompound = itemStack.getTagCompound();
-        if(tagCompound == null)
+        if (tagCompound == null)
             return 0;
-        if(tagCompound.getBoolean("Infinite"))
+        if (tagCompound.getBoolean("Infinite"))
             return getMaxCharge();
-        return tagCompound.getLong("Charge");
+        return Math.min(tagCompound.getLong("Charge"), getMaxCharge());
     }
 
     @Override
     public boolean canProvideChargeExternally() {
-        return this.dischargeable;
+        return this.canProvideEnergyExternally;
     }
 
     @Override
@@ -87,8 +87,8 @@ public class ElectricItem implements IElectricItem, ICapabilityProvider {
         if (itemStack.getCount() != 1) {
             return 0L;
         }
-        if ((chargeable || amount == Long.MAX_VALUE) && (chargerTier == Integer.MAX_VALUE || tier >= chargerTier) && getMaxCharge() > 0) {
-            long canReceive = maxCharge - getCharge();
+        if ((chargeable || amount == Long.MAX_VALUE) && (chargerTier >= tier) && amount > 0L) {
+            long canReceive = getMaxCharge() - getCharge();
             if (!ignoreTransferLimit) {
                 amount = Math.min(amount, GTValues.V[tier]);
             }
@@ -106,7 +106,7 @@ public class ElectricItem implements IElectricItem, ICapabilityProvider {
         if (itemStack.getCount() != 1) {
             return 0L;
         }
-        if ((dischargeable || !externally || amount == Long.MAX_VALUE) && (chargerTier >= tier) && getMaxCharge() > 0) {
+        if ((canProvideEnergyExternally || !externally || amount == Long.MAX_VALUE) && (chargerTier >= tier) && amount > 0L) {
             if (!ignoreTransferLimit) {
                 amount = Math.min(amount, GTValues.V[tier]);
             }

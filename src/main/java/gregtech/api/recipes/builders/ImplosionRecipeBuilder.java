@@ -36,7 +36,7 @@ public class ImplosionRecipeBuilder extends RecipeBuilder<ImplosionRecipeBuilder
 
     @Override
     public boolean applyProperty(String key, Object value) {
-        if(key.equals("explosives")) {
+        if (key.equals("explosives")) {
             explosivesAmount((int) value);
             return true;
         }
@@ -58,7 +58,7 @@ public class ImplosionRecipeBuilder extends RecipeBuilder<ImplosionRecipeBuilder
         int dynamiteAmount = explosivesAmount * 4;
         int tntAmount = Math.max(1, explosivesAmount / 2);
         if (dynamiteAmount <= 16) {
-				recipeMap.addRecipe(this.copy().inputs(MetaItems.DYNAMITE.getStackForm(dynamiteAmount)).build());
+            recipeMap.addRecipe(this.copy().inputs(MetaItems.DYNAMITE.getStackForm(dynamiteAmount)).build());
         }
         recipeMap.addRecipe(this.copy().inputs(new ItemStack(Blocks.TNT, tntAmount)).build());
     }
@@ -66,7 +66,7 @@ public class ImplosionRecipeBuilder extends RecipeBuilder<ImplosionRecipeBuilder
     public ValidationResult<Recipe> build() {
         return ValidationResult.newResult(finalizeAndValidate(),
             new Recipe(inputs, outputs, chancedOutputs, fluidInputs, fluidOutputs,
-                ImmutableMap.of(), duration, EUt, hidden, canBeBuffered, needsEmptyOutput));
+                ImmutableMap.of(), duration, EUt, hidden, needsEmptyOutput));
     }
 
     @Override

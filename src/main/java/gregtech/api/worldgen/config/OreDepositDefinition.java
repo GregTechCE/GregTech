@@ -41,7 +41,7 @@ public class OreDepositDefinition {
     private int weight;
     private int priority;
     private float density;
-    private int[] heightLimit = new int[] {Integer.MIN_VALUE, Integer.MAX_VALUE};
+    private int[] heightLimit = new int[]{Integer.MIN_VALUE, Integer.MAX_VALUE};
     private boolean countAsVein = true;
 
     private Function<Biome, Integer> biomeWeightModifier = NO_BIOME_INFLUENCE;
@@ -59,43 +59,43 @@ public class OreDepositDefinition {
     public void initializeFromConfig(JsonObject configRoot) {
         this.weight = configRoot.get("weight").getAsInt();
         this.density = configRoot.get("density").getAsFloat();
-        if(configRoot.has("priority")) {
+        if (configRoot.has("priority")) {
             this.priority = configRoot.get("priority").getAsInt();
         }
-        if(configRoot.has("count_as_vein")) {
+        if (configRoot.has("count_as_vein")) {
             this.countAsVein = configRoot.get("count_as_vein").getAsBoolean();
         }
-        if(configRoot.has("min_height")) {
+        if (configRoot.has("min_height")) {
             this.heightLimit[0] = configRoot.get("min_height").getAsInt();
         }
-        if(configRoot.has("max_height")) {
+        if (configRoot.has("max_height")) {
             this.heightLimit[1] = configRoot.get("max_height").getAsInt();
         }
-        if(configRoot.has("biome_modifier")) {
+        if (configRoot.has("biome_modifier")) {
             this.biomeWeightModifier = WorldConfigUtils.createBiomeWeightModifier(configRoot.get("biome_modifier"));
         }
-        if(configRoot.has("dimension_filter")) {
+        if (configRoot.has("dimension_filter")) {
             this.dimensionFilter = WorldConfigUtils.createWorldPredicate(configRoot.get("dimension_filter"));
         }
-        if(configRoot.has("generation_predicate")) {
+        if (configRoot.has("generation_predicate")) {
             this.generationPredicate = PredicateConfigUtils.createBlockStatePredicate(configRoot.get("generation_predicate"));
         }
         //legacy surface rock specifier support
-        if(configRoot.has("surface_stone_material")) {
+        if (configRoot.has("surface_stone_material")) {
             IngotMaterial surfaceStoneMaterial = (IngotMaterial) OreConfigUtils.getMaterialByName(configRoot.get("surface_stone_material").getAsString());
-            if(!surfaceStoneMaterial.hasFlag(MatFlags.GENERATE_ORE)) {
+            if (!surfaceStoneMaterial.hasFlag(MatFlags.GENERATE_ORE)) {
                 throw new IllegalArgumentException("Material " + surfaceStoneMaterial + " doesn't have surface rock variant");
             }
             this.veinPopulator = new SurfaceRockPopulator(surfaceStoneMaterial);
         }
-        if(configRoot.has("vein_populator")) {
+        if (configRoot.has("vein_populator")) {
             JsonObject object = configRoot.get("vein_populator").getAsJsonObject();
             this.veinPopulator = WorldGenRegistry.INSTANCE.createVeinPopulator(object);
         }
         this.blockFiller = WorldGenRegistry.INSTANCE.createBlockFiller(configRoot.get("filler").getAsJsonObject());
         this.shapeGenerator = WorldGenRegistry.INSTANCE.createShapeGenerator(configRoot.get("generator").getAsJsonObject());
 
-        if(veinPopulator != null) {
+        if (veinPopulator != null) {
             veinPopulator.initializeForVein(this);
         }
     }

@@ -29,7 +29,7 @@ public class ToolWrench extends ToolBase {
     }
 
     @Override
-    public boolean isMinableBlock(IBlockState blockState, ItemStack stack) {
+    public boolean canMineBlock(IBlockState blockState, ItemStack stack) {
         Block block = blockState.getBlock();
         String tool = block.getHarvestTool(blockState);
         return (tool != null && tool.equals("wrench"))

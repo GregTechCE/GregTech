@@ -1,6 +1,6 @@
 package gregtech.integration.theoneprobe.provider;
 
-import gregtech.api.capability.GregtechCapabilities;
+import gregtech.api.capability.GregtechTileCapabilities;
 import gregtech.api.capability.IWorkable;
 import mcjty.theoneprobe.api.ElementAlignment;
 import mcjty.theoneprobe.api.IProbeInfo;
@@ -13,7 +13,7 @@ public class WorkableInfoProvider extends CapabilityInfoProvider<IWorkable> {
 
     @Override
     protected Capability<IWorkable> getCapability() {
-        return GregtechCapabilities.CAPABILITY_WORKABLE;
+        return GregtechTileCapabilities.CAPABILITY_WORKABLE;
     }
 
     @Override
@@ -25,7 +25,7 @@ public class WorkableInfoProvider extends CapabilityInfoProvider<IWorkable> {
     protected void addProbeInfo(IWorkable capability, IProbeInfo probeInfo, TileEntity tileEntity, EnumFacing sideHit) {
         int currentProgress = capability.getProgress();
         int maxProgress = capability.getMaxProgress();
-        if(maxProgress > 0) {
+        if (maxProgress > 0) {
             int progressScaled = maxProgress == 0 ? 0 : (int) Math.floor(currentProgress / (maxProgress * 1.0) * 100);
             IProbeInfo horizontalPane = probeInfo.horizontal(probeInfo.defaultLayoutStyle().alignment(ElementAlignment.ALIGN_CENTER));
             horizontalPane.text(TextStyleClass.INFO + "{*gregtech.top.progress*} ");
@@ -35,9 +35,6 @@ public class WorkableInfoProvider extends CapabilityInfoProvider<IWorkable> {
                 .backgroundColor(0x00000000)
                 .filledColor(0xFF000099)
                 .alternateFilledColor(0xFF000077));
-        }
-        if(!capability.isWorkingEnabled()) {
-            probeInfo.text(TextStyleClass.INFOIMP + "{*gregtech.top.working_disabled*}");
         }
     }
 }

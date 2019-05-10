@@ -45,11 +45,11 @@ public abstract class MultiblockControllerBase extends MetaTileEntity {
     @Override
     public void update() {
         super.update();
-        if(!getWorld().isRemote) {
-            if(getTimer() % 20 == 0) {
+        if (!getWorld().isRemote) {
+            if (getTimer() % 20 == 0) {
                 checkStructurePattern();
             }
-            if(isStructureFormed()) {
+            if (isStructureFormed()) {
                 updateFormedValid();
             }
         }
@@ -87,11 +87,11 @@ public abstract class MultiblockControllerBase extends MetaTileEntity {
     public static Predicate<BlockWorldState> tilePredicate(BiFunction<BlockWorldState, MetaTileEntity, Boolean> predicate) {
         return blockWorldState -> {
             TileEntity tileEntity = blockWorldState.getTileEntity();
-            if(!(tileEntity instanceof MetaTileEntityHolder))
+            if (!(tileEntity instanceof MetaTileEntityHolder))
                 return false;
             MetaTileEntity metaTileEntity = ((MetaTileEntityHolder) tileEntity).getMetaTileEntity();
-            if(predicate.apply(blockWorldState, metaTileEntity)) {
-                if(metaTileEntity instanceof IMultiblockPart) {
+            if (predicate.apply(blockWorldState, metaTileEntity)) {
+                if (metaTileEntity instanceof IMultiblockPart) {
                     Set<IMultiblockPart> partsFound = blockWorldState.getMatchContext().getOrCreate("MultiblockParts", HashSet::new);
                     partsFound.add((IMultiblockPart) metaTileEntity);
                 }
@@ -128,7 +128,7 @@ public abstract class MultiblockControllerBase extends MetaTileEntity {
 
     public Predicate<BlockWorldState> countMatch(String key, Predicate<BlockWorldState> original) {
         return blockWorldState -> {
-            if(original.test(blockWorldState)) {
+            if (original.test(blockWorldState)) {
                 blockWorldState.getLayerContext().increment(key, 1);
                 return true;
             }
@@ -149,12 +149,12 @@ public abstract class MultiblockControllerBase extends MetaTileEntity {
     protected void checkStructurePattern() {
         EnumFacing facing = getFrontFacing().getOpposite();
         PatternMatchContext context = structurePattern.checkPatternAt(getWorld(), getPos(), facing);
-        if(context != null && !structureFormed) {
+        if (context != null && !structureFormed) {
             Set<IMultiblockPart> rawPartsSet = context.getOrCreate("MultiblockParts", HashSet::new);
             ArrayList<IMultiblockPart> parts = new ArrayList<>(rawPartsSet);
             parts.sort(Comparator.comparing(it -> ((MetaTileEntity) it).getPos().hashCode()));
-            for(IMultiblockPart part : parts) {
-                if(part.isAttachedToMultiBlock()) {
+            for (IMultiblockPart part : parts) {
+                if (part.isAttachedToMultiBlock()) {
                     //disallow sharing of multiblock parts
                     //if part is already attached to another multiblock,
                     //stop here without attempting to register abilities
@@ -162,14 +162,14 @@ public abstract class MultiblockControllerBase extends MetaTileEntity {
                 }
             }
             Map<MultiblockAbility<Object>, List<Object>> abilities = new HashMap<>();
-            for(IMultiblockPart multiblockPart : parts) {
-                if(multiblockPart instanceof IMultiblockAbilityPart) {
+            for (IMultiblockPart multiblockPart : parts) {
+                if (multiblockPart instanceof IMultiblockAbilityPart) {
                     IMultiblockAbilityPart<Object> abilityPart = (IMultiblockAbilityPart<Object>) multiblockPart;
                     List<Object> abilityInstancesList = abilities.computeIfAbsent(abilityPart.getAbility(), k -> new ArrayList<>());
                     abilityPart.registerAbilities(abilityInstancesList);
                 }
             }
-            if(checkStructureComponents(parts, abilities)) {
+            if (checkStructureComponents(parts, abilities)) {
                 parts.forEach(part -> part.addToMultiBlock(this));
                 this.multiblockParts.addAll(parts);
                 this.multiblockAbilities.putAll(abilities);
@@ -177,7 +177,7 @@ public abstract class MultiblockControllerBase extends MetaTileEntity {
                 writeCustomData(400, buf -> buf.writeBoolean(true));
                 formStructure(context);
             }
-        } else if(context == null && structureFormed) {
+        } else if (context == null && structureFormed) {
             invalidateStructure();
         }
     }
@@ -196,7 +196,7 @@ public abstract class MultiblockControllerBase extends MetaTileEntity {
     @Override
     public void onRemoval() {
         super.onRemoval();
-        if(!getWorld().isRemote && structureFormed) {
+        if (!getWorld().isRemote && structureFormed) {
             this.multiblockParts.forEach(part -> part.removeFromMultiBlock(this));
         }
     }
@@ -227,7 +227,7 @@ public abstract class MultiblockControllerBase extends MetaTileEntity {
     @Override
     public void receiveCustomData(int dataId, PacketBuffer buf) {
         super.receiveCustomData(dataId, buf);
-        if(dataId == 400) {
+        if (dataId == 400) {
             this.structureFormed = buf.readBoolean();
         }
     }

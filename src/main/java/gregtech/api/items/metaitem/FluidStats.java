@@ -23,7 +23,7 @@ public class FluidStats implements IMetaItemStats, IItemCapabilityProvider {
 
     @Override
     public ICapabilityProvider createProvider(ItemStack itemStack) {
-        if(allowPartlyFill) {
+        if (allowPartlyFill) {
             return new ThermalFluidHandlerItemStack(itemStack, maxCapacity, minFluidTemperature, maxFluidTemperature);
         }
         return new SimpleThermalFluidHandlerItemStack(itemStack, maxCapacity, minFluidTemperature, maxFluidTemperature);

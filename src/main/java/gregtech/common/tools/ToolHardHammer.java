@@ -67,7 +67,7 @@ public class ToolHardHammer extends ToolBase {
     }
 
     @Override
-    public boolean isMinableBlock(IBlockState block, ItemStack stack) {
+    public boolean canMineBlock(IBlockState block, ItemStack stack) {
         String tool = block.getBlock().getHarvestTool(block);
         ItemStack itemStack = new ItemStack(block.getBlock(), 1, block.getBlock().getMetaFromState(block));
         return (tool != null && (tool.equals("hammer") || tool.equals("pickaxe"))) ||
@@ -75,12 +75,12 @@ public class ToolHardHammer extends ToolBase {
             block.getMaterial() == Material.GLASS ||
             block.getMaterial() == Material.ICE ||
             block.getMaterial() == Material.PACKED_ICE ||
-            RecipeMaps.FORGE_HAMMER_RECIPES.findRecipe(Long.MAX_VALUE, Collections.singletonList(itemStack), Collections.emptyList()) != null;
+            RecipeMaps.FORGE_HAMMER_RECIPES.findRecipe(Long.MAX_VALUE, Collections.singletonList(itemStack), Collections.emptyList(), 0) != null;
     }
 
     @Override
-    public int convertBlockDrops(World world, BlockPos blockPos, IBlockState blockState, EntityPlayer harvester, List<ItemStack> drops, boolean recursive, ItemStack toolStack) {
-        return ToolUtility.applyHammerDrops(world.rand, blockState, drops, EnchantmentHelper.getEnchantmentLevel(Enchantments.FORTUNE, toolStack));
+    public void convertBlockDrops(World world, BlockPos blockPos, IBlockState blockState, EntityPlayer player, List<ItemStack> dropList, ItemStack toolStack) {
+        ToolUtility.applyHammerDrops(world.rand, blockState, dropList, EnchantmentHelper.getEnchantmentLevel(Enchantments.FORTUNE, toolStack));
     }
 
     @Override

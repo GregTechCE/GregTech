@@ -37,9 +37,9 @@ public class MagnifyingGlassBehaviour implements IItemBehaviour {
     public EnumActionResult onItemUseFirst(EntityPlayer player, World world, BlockPos pos, EnumFacing side, float hitX, float hitY, float hitZ, EnumHand hand) {
         IBlockState blockState = world.getBlockState(pos);
         ItemStack itemStack = player.getHeldItem(hand);
-        if(blockState.getBlock() instanceof BlockSurfaceRock && GTUtility.doDamageItem(itemStack, cost, true)) {
+        if (blockState.getBlock() instanceof BlockSurfaceRock && GTUtility.doDamageItem(itemStack, cost, true)) {
             GTUtility.doDamageItem(itemStack, cost, false);
-            if(world.isRemote) {
+            if (world.isRemote) {
                 return EnumActionResult.SUCCESS;
             }
             BlockSurfaceRock block = (BlockSurfaceRock) blockState.getBlock();

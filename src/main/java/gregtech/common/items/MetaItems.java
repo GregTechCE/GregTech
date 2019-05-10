@@ -12,7 +12,8 @@ import java.util.List;
 @SuppressWarnings("WeakerAccess")
 public final class MetaItems {
 
-    private MetaItems() {}
+    private MetaItems() {
+    }
 
     public static List<MetaItem<?>> ITEMS = MetaItem.getMetaItems();
 
@@ -287,7 +288,9 @@ public final class MetaItems {
     public static MetaItem<?>.MetaValueItem ITEM_FILTER;
     public static MetaItem<?>.MetaValueItem ORE_DICTIONARY_FILTER;
 
-    public static MetaItem<?>.MetaValueItem COVER_CONTROLLER;
+    public static MetaItem<?>.MetaValueItem COVER_SHUTTER;
+    public static MetaItem<?>.MetaValueItem COVER_MACHINE_CONTROLLER;
+
     public static MetaItem<?>.MetaValueItem COVER_ACTIVITY_DETECTOR;
     public static MetaItem<?>.MetaValueItem COVER_FLUID_DETECTOR;
     public static MetaItem<?>.MetaValueItem COVER_ITEM_DETECTOR;
@@ -296,8 +299,6 @@ public final class MetaItems {
     public static MetaItem<?>.MetaValueItem COVER_SCREEN;
     public static MetaItem<?>.MetaValueItem COVER_CRAFTING;
     public static MetaItem<?>.MetaValueItem COVER_DRAIN;
-
-    public static MetaItem<?>.MetaValueItem COVER_SHUTTER;
 
     public static MetaItem<?>.MetaValueItem COVER_SOLAR_PANEL;
     public static MetaItem<?>.MetaValueItem COVER_SOLAR_PANEL_ULV;
@@ -344,7 +345,6 @@ public final class MetaItems {
     public static ToolMetaItem<?>.MetaToolValueItem KNIFE;
     public static ToolMetaItem<?>.MetaToolValueItem BUTCHERY_KNIFE;
     public static ToolMetaItem<?>.MetaToolValueItem SENSE;
-    public static ToolMetaItem<?>.MetaToolValueItem PLOW;
     public static ToolMetaItem<?>.MetaToolValueItem PLUNGER;
     public static ToolMetaItem<?>.MetaToolValueItem DRILL_LV;
     public static ToolMetaItem<?>.MetaToolValueItem DRILL_MV;

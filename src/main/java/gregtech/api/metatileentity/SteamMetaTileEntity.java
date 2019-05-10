@@ -7,7 +7,7 @@ import codechicken.lib.render.pipeline.IVertexOperation;
 import codechicken.lib.vec.Matrix4;
 import gregtech.api.capability.impl.FilteredFluidHandler;
 import gregtech.api.capability.impl.FluidTankList;
-import gregtech.api.capability.impl.SteamRecipeMapWorkableHandler;
+import gregtech.api.capability.impl.RecipeLogicSteam;
 import gregtech.api.gui.ModularUI;
 import gregtech.api.gui.resources.TextureArea;
 import gregtech.api.gui.widgets.ImageWidget;
@@ -36,12 +36,12 @@ public abstract class SteamMetaTileEntity extends MetaTileEntity {
 
     protected final boolean isHighPressure;
     protected final OrientedOverlayRenderer renderer;
-    protected SteamRecipeMapWorkableHandler workableHandler;
+    protected RecipeLogicSteam workableHandler;
     protected FluidTank steamFluidTank;
 
     public SteamMetaTileEntity(ResourceLocation metaTileEntityId, RecipeMap<?> recipeMap, OrientedOverlayRenderer renderer, boolean isHighPressure) {
         super(metaTileEntityId);
-        this.workableHandler = new SteamRecipeMapWorkableHandler(this,
+        this.workableHandler = new RecipeLogicSteam(this,
             recipeMap, isHighPressure, steamFluidTank, 1.0);
         this.isHighPressure = isHighPressure;
         this.renderer = renderer;
@@ -51,14 +51,14 @@ public abstract class SteamMetaTileEntity extends MetaTileEntity {
 
     @SideOnly(Side.CLIENT)
     private SimpleSidedCubeRenderer getBaseRenderer() {
-        if(isHighPressure) {
-            if(isBrickedCasing()) {
+        if (isHighPressure) {
+            if (isBrickedCasing()) {
                 return Textures.STEAM_BRICKED_CASING_STEEL;
             } else {
                 return Textures.STEAM_CASING_STEEL;
             }
         } else {
-            if(isBrickedCasing()) {
+            if (isBrickedCasing()) {
                 return Textures.STEAM_BRICKED_CASING_BRONZE;
             } else {
                 return Textures.STEAM_CASING_BRONZE;
@@ -68,9 +68,9 @@ public abstract class SteamMetaTileEntity extends MetaTileEntity {
 
     @Override
     public boolean onWrenchClick(EntityPlayer playerIn, EnumHand hand, EnumFacing facing, CuboidRayTraceResult hitResult) {
-        if(!playerIn.isSneaking()) {
+        if (!playerIn.isSneaking()) {
             EnumFacing currentVentingSide = workableHandler.getVentingSide();
-            if(currentVentingSide == facing ||
+            if (currentVentingSide == facing ||
                 getFrontFacing() == facing) return false;
             workableHandler.setVentingSide(facing);
             return true;
@@ -106,7 +106,7 @@ public abstract class SteamMetaTileEntity extends MetaTileEntity {
     public int getSteamCapacity() {
         return 16000;
     }
-    
+
     protected TextureArea getFullGuiTexture(String pathTemplate) {
         String type = isHighPressure ? "steel" : "bronze";
         return TextureArea.fullImage(String.format("textures/gui/steam/%s/%s.png",

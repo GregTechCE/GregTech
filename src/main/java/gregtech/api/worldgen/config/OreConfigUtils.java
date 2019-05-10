@@ -28,15 +28,15 @@ public class OreConfigUtils {
     public static List<IBlockState> getOreDictBlocks(String oreDictName) {
         List<ItemStack> allOres = OreDictionary.getOres(oreDictName);
         ArrayList<IBlockState> allBlocks = new ArrayList<>();
-        for(ItemStack oreStack : allOres) {
+        for (ItemStack oreStack : allOres) {
             Block itemStackBlock = Block.getBlockFromItem(oreStack.getItem());
-            if(itemStackBlock == Blocks.AIR)
+            if (itemStackBlock == Blocks.AIR)
                 continue;
             int placementMetadata = oreStack.getItem().getMetadata(oreStack.getMetadata());
             IBlockState placementState = itemStackBlock.getStateFromMeta(placementMetadata);
             allBlocks.add(placementState);
         }
-        if(allBlocks.isEmpty()) {
+        if (allBlocks.isEmpty()) {
             throw new IllegalArgumentException("Couldn't find any blocks matching " + oreDictName + " oredict tag");
         }
         return allBlocks;
@@ -44,7 +44,7 @@ public class OreConfigUtils {
 
     public static Map<StoneType, IBlockState> getOreStateMap(String stringDeclaration) {
         String materialName;
-        if(stringDeclaration.startsWith("ore:")) {
+        if (stringDeclaration.startsWith("ore:")) {
             materialName = stringDeclaration.substring(4);
         } else {
             throw new IllegalArgumentException("Invalid string ore declaration: " + stringDeclaration);
@@ -58,13 +58,13 @@ public class OreConfigUtils {
             .filter(ore -> ore.material == material)
             .collect(Collectors.toList());
         HashMap<StoneType, IBlockState> stoneTypeMap = new HashMap<>();
-        for(BlockOre blockOre : oreBlocks) {
-            for(StoneType stoneType : blockOre.STONE_TYPE.getAllowedValues()) {
+        for (BlockOre blockOre : oreBlocks) {
+            for (StoneType stoneType : blockOre.STONE_TYPE.getAllowedValues()) {
                 IBlockState blockState = blockOre.getOreBlock(stoneType);
                 stoneTypeMap.put(stoneType, blockState);
             }
         }
-        if(stoneTypeMap.isEmpty()) {
+        if (stoneTypeMap.isEmpty()) {
             throw new IllegalArgumentException("There is no ore generated for material " + material);
         }
         return stoneTypeMap;
@@ -72,7 +72,7 @@ public class OreConfigUtils {
 
     public static DustMaterial getMaterialByName(String name) {
         Material material = Material.MATERIAL_REGISTRY.getObject(name);
-        if(!(material instanceof DustMaterial))
+        if (!(material instanceof DustMaterial))
             throw new IllegalArgumentException("Material with name " + name + " not found!");
         return (DustMaterial) material;
     }
@@ -80,25 +80,25 @@ public class OreConfigUtils {
     public static Block getBlockByName(String name) {
         ResourceLocation blockName = new ResourceLocation(name);
         Block block = GameRegistry.findRegistry(Block.class).getValue(blockName);
-        if(block == null)
+        if (block == null)
             throw new IllegalArgumentException("Block with identifier " + blockName + " not found!");
         return block;
     }
 
     public static int[] getIntRange(JsonElement element) {
-        if(element.isJsonArray()) {
+        if (element.isJsonArray()) {
             JsonArray dataArray = element.getAsJsonArray();
             int max = dataArray.get(1).getAsInt();
             int min = Math.min(max, dataArray.get(0).getAsInt());
-            return new int[] {min, max};
-        } else if(element.isJsonObject()) {
+            return new int[]{min, max};
+        } else if (element.isJsonObject()) {
             JsonObject dataObject = element.getAsJsonObject();
             int max = dataObject.get("max").getAsInt();
             int min = Math.min(max, dataObject.get("min").getAsInt());
-            return new int[] {min, max};
-        } else if(element.isJsonPrimitive()) {
+            return new int[]{min, max};
+        } else if (element.isJsonPrimitive()) {
             int size = element.getAsInt();
-            return new int[] {size, size};
+            return new int[]{size, size};
         } else {
             throw new IllegalArgumentException("size range not defined");
         }

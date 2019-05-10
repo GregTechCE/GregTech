@@ -10,7 +10,10 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockPos.MutableBlockPos;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Stack;
 
 public class EnergyNet extends PipeNet<WireProperties> {
 
@@ -32,7 +35,7 @@ public class EnergyNet extends PipeNet<WireProperties> {
     public void incrementCurrentAmperage(long amperage, long voltage) {
         currentAmperageCounter.increment(worldData.getWorld(), amperage);
         long currentMaxVoltage = currentMaxVoltageCounter.get(worldData.getWorld());
-        if(voltage > currentMaxVoltage) {
+        if (voltage > currentMaxVoltage) {
             currentMaxVoltageCounter.set(worldData.getWorld(), voltage);
         }
     }
@@ -47,17 +50,18 @@ public class EnergyNet extends PipeNet<WireProperties> {
         observedSet.add(startPos);
         MutableBlockPos currentPos = new MutableBlockPos(startPos);
         Stack<EnumFacing> moveStack = new Stack<>();
-        main: while(true) {
-            for(EnumFacing facing : EnumFacing.VALUES) {
+        main:
+        while (true) {
+            for (EnumFacing facing : EnumFacing.VALUES) {
                 currentPos.move(facing);
                 Node<WireProperties> secondNode = allNodes.get(currentPos);
-                if(secondNode != null && canNodesConnect(firstNode, facing, secondNode, this) && !observedSet.contains(currentPos)) {
+                if (secondNode != null && canNodesConnect(firstNode, facing, secondNode, this) && !observedSet.contains(currentPos)) {
                     BlockPos immutablePos = currentPos.toImmutable();
                     observedSet.add(immutablePos);
                     firstNode = secondNode;
                     moveStack.push(facing.getOpposite());
                     currentPath.path.put(immutablePos, allNodes.get(immutablePos).data);
-                    if(secondNode.isActive) {
+                    if (secondNode.isActive) {
                         //if we are on active node, this is end of our path
                         RoutePath finalizedPath = currentPath.cloneAndCompute(immutablePos);
                         readyPaths.add(finalizedPath);
@@ -67,7 +71,7 @@ public class EnergyNet extends PipeNet<WireProperties> {
                     currentPos.move(facing.getOpposite());
                 }
             }
-            if(!moveStack.isEmpty()) {
+            if (!moveStack.isEmpty()) {
                 currentPos.move(moveStack.pop());
                 //also remove already visited block from path
                 currentPath.path.remove(currentPos);

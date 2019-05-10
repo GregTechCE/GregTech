@@ -8,8 +8,7 @@
   "url": "https://minecraft.curseforge.com/projects/gregtechce",
   "authorList": [
       "Archengius",
-      "Exidex",
-      "SuperCoder79"
+      "Exidex"
   ],
   "credits": "GregoriusT for making GregTech and textures, various GT community members for help in development.",
   "dependencies": ["codechickenlib"]

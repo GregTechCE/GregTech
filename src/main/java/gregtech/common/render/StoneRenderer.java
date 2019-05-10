@@ -48,7 +48,7 @@ public class StoneRenderer implements ICCBlockRenderer {
     }
 
     private void lazyInitializeRenderers() {
-        if(waterRenderer == null) {
+        if (waterRenderer == null) {
             Minecraft minecraft = Minecraft.getMinecraft();
             BlockRendererDispatcher dispatcher = minecraft.getBlockRendererDispatcher();
             this.blockColors = minecraft.getBlockColors();
@@ -70,7 +70,7 @@ public class StoneRenderer implements ICCBlockRenderer {
     public boolean renderBlock(IBlockAccess world, BlockPos pos, IBlockState state, BufferBuilder buffer) {
         //render water in dedicated translucent rendering layer
         lazyInitializeRenderers();
-        if(state.getBlock() instanceof BlockSurfaceRockFlooded &&
+        if (state.getBlock() instanceof BlockSurfaceRockFlooded &&
             MinecraftForgeClient.getRenderLayer() == BlockRenderLayer.TRANSLUCENT) {
             waterRenderer.renderFluid(world, state, pos, buffer);
             return true;
@@ -84,12 +84,12 @@ public class StoneRenderer implements ICCBlockRenderer {
         IVertexOperation[] operations = new IVertexOperation[1];
         operations[0] = new ColourMultiplier(GTUtility.convertRGBtoOpaqueRGBA_CL(
             blockColors.colorMultiplier(state, world, pos, 1)));
-        if(world != null) {
+        if (world != null) {
             renderState.setBrightness(world, pos);
         }
         TextureAtlasSprite stoneSprite = TextureUtils.getBlockTexture("stone");
         Cuboid6 baseBox = BlockSurfaceRock.getShapeFromBlockPos(pos);
-        for(EnumFacing renderSide : EnumFacing.VALUES) {
+        for (EnumFacing renderSide : EnumFacing.VALUES) {
             Textures.renderFace(renderState, translation, operations, renderSide, baseBox, stoneSprite);
         }
         return true;

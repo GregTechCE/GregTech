@@ -31,7 +31,7 @@ public class VariantBlock<T extends Enum<T> & IStringSerializable> extends Block
 
     @Override
     public void getSubBlocks(CreativeTabs tab, NonNullList<ItemStack> list) {
-        for(T variant : VALUES) {
+        for (T variant : VALUES) {
             list.add(getItemVariant(variant));
         }
     }

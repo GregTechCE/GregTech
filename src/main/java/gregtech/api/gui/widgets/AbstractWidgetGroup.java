@@ -2,13 +2,16 @@ package gregtech.api.gui.widgets;
 
 import gregtech.api.gui.INativeWidget;
 import gregtech.api.gui.Widget;
+import gregtech.api.gui.igredient.IGhostIngredientTarget;
+import gregtech.api.gui.igredient.IIngredientSlot;
+import mezz.jei.api.gui.IGhostIngredientHandler.Target;
 import net.minecraft.network.PacketBuffer;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 
-public class AbstractWidgetGroup extends Widget {
+public class AbstractWidgetGroup extends Widget implements IGhostIngredientTarget, IIngredientSlot {
 
     private List<Widget> widgets = new ArrayList<>();
     private WidgetGroupUIAccess groupUIAccess = new WidgetGroupUIAccess();
@@ -29,13 +32,13 @@ public class AbstractWidgetGroup extends Widget {
     }
 
     protected void addWidget(Widget widget) {
-        if(isInitialized) {
+        if (isInitialized) {
             throw new IllegalStateException("Cannot add widgets after initialization!");
         }
-        if(widget == this) {
+        if (widget == this) {
             throw new IllegalArgumentException("Cannot add self");
         }
-        if(!widgets.contains(widget)) {
+        if (!widgets.contains(widget)) {
             this.widgets.add(widget);
             widget.setUiAccess(groupUIAccess);
         }
@@ -52,7 +55,7 @@ public class AbstractWidgetGroup extends Widget {
     @Override
     public void initWidget() {
         this.isInitialized = true;
-        for(Widget widget : widgets) {
+        for (Widget widget : widgets) {
             widget.setGui(gui);
             widget.setSizes(sizes);
             widget.initWidget();
@@ -62,33 +65,56 @@ public class AbstractWidgetGroup extends Widget {
     @Override
     public List<INativeWidget> getNativeWidgets() {
         ArrayList<INativeWidget> nativeWidgets = new ArrayList<>();
-        for(Widget widget : widgets) {
+        for (Widget widget : widgets) {
             nativeWidgets.addAll(widget.getNativeWidgets());
         }
-        if(this instanceof INativeWidget) {
+        if (this instanceof INativeWidget) {
             nativeWidgets.add((INativeWidget) this);
         }
         return nativeWidgets;
     }
 
     @Override
-    public void detectAndSendChanges() {
+    public List<Target<?>> getPhantomTargets(Object ingredient) {
+        ArrayList<Target<?>> targets = new ArrayList<>();
         for(Widget widget : widgets) {
+            if(widget instanceof IGhostIngredientTarget) {
+                targets.addAll(((IGhostIngredientTarget) widget).getPhantomTargets(ingredient));
+            }
+        }
+        return targets;
+    }
+
+    @Override
+    public Object getIngredientOverMouse(int mouseX, int mouseY) {
+        for(Widget widget : widgets) {
+            if(widget instanceof IIngredientSlot) {
+                IIngredientSlot ingredientSlot = (IIngredientSlot) widget;
+                Object result = ingredientSlot.getIngredientOverMouse(mouseX, mouseY);
+                if(result != null) return result;
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public void detectAndSendChanges() {
+        for (Widget widget : widgets) {
             widget.detectAndSendChanges();
         }
     }
 
     @Override
     public void updateScreen() {
-        for(Widget widget : widgets) {
+        for (Widget widget : widgets) {
             widget.updateScreen();
         }
     }
 
     @Override
     public void drawInForeground(int mouseX, int mouseY) {
-        for(Widget widget : widgets) {
-            if(isWidgetVisible(widget)) {
+        for (Widget widget : widgets) {
+            if (isWidgetVisible(widget)) {
                 widget.drawInForeground(mouseX, mouseY);
             }
         }
@@ -96,8 +122,8 @@ public class AbstractWidgetGroup extends Widget {
 
     @Override
     public void drawInBackground(int mouseX, int mouseY) {
-        for(Widget widget : widgets) {
-            if(isWidgetVisible(widget)) {
+        for (Widget widget : widgets) {
+            if (isWidgetVisible(widget)) {
                 widget.drawInBackground(mouseX, mouseY);
             }
         }
@@ -105,9 +131,9 @@ public class AbstractWidgetGroup extends Widget {
 
     @Override
     public boolean mouseClicked(int mouseX, int mouseY, int button) {
-        for(Widget widget : widgets) {
-            if(isWidgetClickable(widget)) {
-                if(widget.mouseClicked(mouseX, mouseY, button)) {
+        for (Widget widget : widgets) {
+            if (isWidgetClickable(widget)) {
+                if (widget.mouseClicked(mouseX, mouseY, button)) {
                     return true;
                 }
             }
@@ -117,9 +143,9 @@ public class AbstractWidgetGroup extends Widget {
 
     @Override
     public boolean mouseDragged(int mouseX, int mouseY, int button, long timeDragged) {
-        for(Widget widget : widgets) {
-            if(isWidgetClickable(widget)) {
-                if(widget.mouseDragged(mouseX, mouseY, button, timeDragged)) {
+        for (Widget widget : widgets) {
+            if (isWidgetClickable(widget)) {
+                if (widget.mouseDragged(mouseX, mouseY, button, timeDragged)) {
                     return true;
                 }
             }
@@ -129,9 +155,9 @@ public class AbstractWidgetGroup extends Widget {
 
     @Override
     public boolean mouseReleased(int mouseX, int mouseY, int button) {
-        for(Widget widget : widgets) {
-            if(isWidgetClickable(widget)) {
-                if(widget.mouseReleased(mouseX, mouseY, mouseX)) {
+        for (Widget widget : widgets) {
+            if (isWidgetClickable(widget)) {
+                if (widget.mouseReleased(mouseX, mouseY, mouseX)) {
                     return true;
                 }
             }
@@ -141,9 +167,9 @@ public class AbstractWidgetGroup extends Widget {
 
     @Override
     public boolean keyTyped(char charTyped, int keyCode) {
-        for(Widget widget : widgets) {
-            if(isWidgetClickable(widget)) {
-                if(widget.keyTyped(charTyped, keyCode)) {
+        for (Widget widget : widgets) {
+            if (isWidgetClickable(widget)) {
+                if (widget.keyTyped(charTyped, keyCode)) {
                     return true;
                 }
             }

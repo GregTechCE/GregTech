@@ -71,18 +71,18 @@ public class GTValues {
      * ModID strings, since they are quite common parameters
      */
     public static final String MODID = "gregtech",
-            MODID_FR = "forestry",
-            MODID_FMP = "forgemultipartcbe",
-            MODID_CT = "crafttweaker",
-            MODID_TOP = "theoneprobe",
-            MODID_IT = "inventorytweaks";
+        MODID_FR = "forestry",
+        MODID_FMP = "forgemultipartcbe",
+        MODID_CT = "crafttweaker",
+        MODID_TOP = "theoneprobe",
+        MODID_IT = "inventorytweaks";
 
     //because forge is too fucking retarded to cache results or at least do not create fucking
     //immutable collections every time you retrieve indexed mod list
     private static final ConcurrentMap<String, Boolean> isModLoadedCache = new ConcurrentHashMap<>();
 
     public static boolean isModLoaded(String modid) {
-        if(isModLoadedCache.containsKey(modid)) {
+        if (isModLoadedCache.containsKey(modid)) {
             return isModLoadedCache.get(modid);
         }
         boolean isLoaded = Loader.instance().getIndexedModList().containsKey(modid);

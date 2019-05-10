@@ -29,7 +29,7 @@ public class IntCircuitRecipeBuilder extends RecipeBuilder<IntCircuitRecipeBuild
 
     @Override
     public boolean applyProperty(String key, Object value) {
-        if(key.equals("circuit") && value instanceof Number) {
+        if (key.equals("circuit") && value instanceof Number) {
             this.circuitMeta = ((Number) value).intValue();
             return true;
         }
@@ -61,7 +61,7 @@ public class IntCircuitRecipeBuilder extends RecipeBuilder<IntCircuitRecipeBuild
     public ValidationResult<Recipe> build() {
         return ValidationResult.newResult(finalizeAndValidate(),
             new Recipe(inputs, outputs, chancedOutputs, fluidInputs, fluidOutputs,
-                ImmutableMap.of(), duration, EUt, hidden, canBeBuffered, needsEmptyOutput));
+                ImmutableMap.of(), duration, EUt, hidden, needsEmptyOutput));
     }
 
     @Override
