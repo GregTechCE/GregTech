@@ -7,6 +7,7 @@ import gregtech.api.recipes.machines.FuelRecipeMap;
 import gregtech.api.recipes.recipes.FuelRecipe;
 import gregtech.api.unification.material.Materials;
 import gregtech.api.unification.material.type.FluidMaterial;
+import gregtech.common.ConfigHolder;
 import gregtech.common.MetaFluids;
 import gregtech.common.metatileentities.electric.multiblockpart.MetaTileEntityRotorHolder;
 import gregtech.common.metatileentities.multi.electric.generator.MetaTileEntityLargeTurbine.TurbineType;
@@ -21,7 +22,7 @@ public class LargeTurbineWorkableHandler extends FuelRecipeLogic {
     private static final int CYCLE_LENGTH = 230;
     private static final int BASE_ROTOR_DAMAGE = 11;
     private static final int BASE_EU_OUTPUT = 2048;
-    private static final int EU_OUTPUT_BONUS = 6144;
+ 
 
     private MetaTileEntityLargeTurbine largeTurbine;
     private int rotorCycleLength = CYCLE_LENGTH;
@@ -65,10 +66,10 @@ public class LargeTurbineWorkableHandler extends FuelRecipeLogic {
         MetaTileEntityRotorHolder rotorHolder = largeTurbine.getAbilities(MetaTileEntityLargeTurbine.ABILITY_ROTOR_HOLDER).get(0);
         if (rotorHolder.hasRotorInInventory()) {
             double rotorEfficiency = rotorHolder.getRotorEfficiency();
-            double totalEnergyOutput = (BASE_EU_OUTPUT + EU_OUTPUT_BONUS * rotorEfficiency);
+            double totalEnergyOutput = (BASE_EU_OUTPUT + getBonusForTurbineType(largeTurbine) * rotorEfficiency);
             return MathHelper.ceil(totalEnergyOutput);
         }
-        return BASE_EU_OUTPUT + EU_OUTPUT_BONUS;
+        return BASE_EU_OUTPUT + getBonusForTurbineType(largeTurbine);
     }
 
     @Override
@@ -77,6 +78,25 @@ public class LargeTurbineWorkableHandler extends FuelRecipeLogic {
         return 0L; //energy is added each tick while the rotor speed is >0 RPM
     }
 
+    private int getBonusForTurbineType(MetaTileEntityLargeTurbine t) {
+    	int bonus;
+    	switch (t.turbineType) {
+		case GAS:
+			bonus = ConfigHolder.gasTurbineBonusOutput;
+			break;
+		case PLASMA:
+			bonus = ConfigHolder.plasmaTurbineBonusOutput;			
+			break;
+		case STEAM:
+			bonus = ConfigHolder.steamTurbineBonusOutput;			
+			break;
+		default:
+			bonus = 1;
+			break;		
+    	}
+    	return bonus;
+    }
+    
     private void addOutputFluids(FuelRecipe currentRecipe, int fuelAmountUsed) {
         if (largeTurbine.turbineType == TurbineType.STEAM) {
             int waterFluidAmount = fuelAmountUsed / 15;
@@ -98,7 +118,7 @@ public class LargeTurbineWorkableHandler extends FuelRecipeLogic {
         double relativeRotorSpeed = rotorHolder.getRelativeRotorSpeed();
         if (rotorHolder.getCurrentRotorSpeed() > 0 && rotorHolder.hasRotorInInventory()) {
             double rotorEfficiency = rotorHolder.getRotorEfficiency();
-            double totalEnergyOutput = (BASE_EU_OUTPUT + EU_OUTPUT_BONUS * rotorEfficiency) * (relativeRotorSpeed * relativeRotorSpeed);
+            double totalEnergyOutput = (BASE_EU_OUTPUT + getBonusForTurbineType(largeTurbine) * rotorEfficiency) * (relativeRotorSpeed * relativeRotorSpeed);
             return MathHelper.ceil(totalEnergyOutput);
         }
         return 0L;
