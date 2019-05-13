@@ -2231,6 +2231,11 @@ gregtech.machine.air_collector.description=Collects air from adjacent blocks
 gregtech.machine.tesla_coil.name=Tesla Coil
 gregtech.machine.tesla_coil.description=Damages all living entities within 7 blocks range/nConsumes 2500 EU for 1 damage point/nInternal buffer Capacity: §e256k EU
 
+#Fisher
+gregtech.machine.fisher.name=Fisher
+gregtech.machine.fisher.tooltip=Costs string to fish. Each string is good for once.
+gregtech.machine.fisher.speed=Gets a fish (or whatnot) every %d ticks
+
 # General machinery
 gregtech.machine.basic.input_from_output_side.allow=Allow Input from Output Side
 gregtech.machine.basic.input_from_output_side.disallow=Disallow Input from Output Side
