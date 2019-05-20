@@ -1591,6 +1591,7 @@ recipemap.unpacker.name=Unpacker
 recipemap.diesel_generator.name=Diesel Generator
 recipemap.gas_turbine.name=Gas Turbine
 recipemap.steam_turbine.name=Steam Turbine
+recipemap.plasma_turbine.name=Plasma Turbine
 recipemap.semi_fluid_generator.name=Semi Fluid Fuels
 
 behavior.magnifying_glass.description=Click on surface rock to inspect it
