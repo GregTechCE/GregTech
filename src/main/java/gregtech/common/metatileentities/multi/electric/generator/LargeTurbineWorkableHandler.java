@@ -7,6 +7,7 @@ import gregtech.api.recipes.machines.FuelRecipeMap;
 import gregtech.api.recipes.recipes.FuelRecipe;
 import gregtech.api.unification.material.Materials;
 import gregtech.api.unification.material.type.FluidMaterial;
+import gregtech.api.util.GTLog;
 import gregtech.common.ConfigHolder;
 import gregtech.common.MetaFluids;
 import gregtech.common.metatileentities.electric.multiblockpart.MetaTileEntityRotorHolder;
@@ -27,8 +28,8 @@ public class LargeTurbineWorkableHandler extends FuelRecipeLogic {
     private MetaTileEntityLargeTurbine largeTurbine;
     private int rotorCycleLength = CYCLE_LENGTH;
 
-    public LargeTurbineWorkableHandler(MetaTileEntityLargeTurbine metaTileEntity, FuelRecipeMap recipeMap, Supplier<IEnergyContainer> energyContainer, Supplier<IMultipleTankHandler> fluidTank) {
-        super(metaTileEntity, recipeMap, energyContainer, fluidTank, 0L);
+    public LargeTurbineWorkableHandler(MetaTileEntityLargeTurbine metaTileEntity, FuelRecipeMap recipeMap, Supplier<IEnergyContainer> energyContainer, Supplier<IMultipleTankHandler> fluidTank, long maxVoltage) {
+        super(metaTileEntity, recipeMap, energyContainer, fluidTank, maxVoltage);
         this.largeTurbine = metaTileEntity;
     }
 
@@ -95,6 +96,14 @@ public class LargeTurbineWorkableHandler extends FuelRecipeLogic {
 			break;		
     	}
     	return bonus;
+    }
+    
+    @Override
+    protected int calculateFuelAmount(FuelRecipe currentRecipe) {
+    	MetaTileEntityRotorHolder rotorHolder = largeTurbine.getAbilities(MetaTileEntityLargeTurbine.ABILITY_ROTOR_HOLDER).get(0);
+    	double relativeRotorSpeed = rotorHolder.getRelativeRotorSpeed(6000); //sets minimum speed to 6k (normal max) for mininmum fuel consumption calculations
+
+    	return (int) Math.floor(super.calculateFuelAmount(currentRecipe) * (relativeRotorSpeed * relativeRotorSpeed));
     }
     
     private void addOutputFluids(FuelRecipe currentRecipe, int fuelAmountUsed) {

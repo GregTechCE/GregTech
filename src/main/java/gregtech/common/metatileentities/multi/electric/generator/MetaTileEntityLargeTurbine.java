@@ -63,7 +63,7 @@ public class MetaTileEntityLargeTurbine extends FueledMultiblockController {
 
     @Override
     protected FuelRecipeLogic createWorkable(long maxVoltage) {
-        return new LargeTurbineWorkableHandler(this, recipeMap, () -> energyContainer, () -> importFluidHandler);
+        return new LargeTurbineWorkableHandler(this, recipeMap, () -> energyContainer, () -> importFluidHandler, maxVoltage);
     }
 
     @Override

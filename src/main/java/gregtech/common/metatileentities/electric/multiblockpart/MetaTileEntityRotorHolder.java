@@ -132,6 +132,19 @@ public class MetaTileEntityRotorHolder extends MetaTileEntityMultiblockPart impl
     }
 
     /**
+     * @return current rotor speed, relative to NORMAL_MAXIMUM_SPEED
+     * used for scaling stats like produced EU, rotor damage and interact damage
+     */
+    public double getRelativeRotorSpeed(double min) {
+    	double speed;
+    	if (currentRotorSpeed < min)
+    		speed = min;
+    	else
+    		speed = currentRotorSpeed;
+        return speed == 0 ? 0.01 : speed / (NORMAL_MAXIMUM_SPEED * 1.0);
+    }    
+    
+    /**
      * @return true if current rotor is still looping, i.e it's current speed > 0
      * this can return true even if multiblock is not formed
      */
