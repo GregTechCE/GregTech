@@ -178,7 +178,7 @@ public class CoverOreDictionaryFilter extends CoverBehavior implements CoverWith
             return -1;
         }
         boolean startWildcard = oreDictionaryFilter.charAt(0) == '*';
-        boolean endWildcard = oreDictionaryFilter.charAt(oreDictionaryFilter.length() - 1) == '*';
+        boolean endWildcard = oreDictionaryFilter.length() > 1 && oreDictionaryFilter.charAt(oreDictionaryFilter.length() - 1) == '*';
         if (startWildcard) {
             oreDictionaryFilter = oreDictionaryFilter.substring(1);
         }

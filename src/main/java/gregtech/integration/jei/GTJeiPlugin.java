@@ -84,7 +84,7 @@ public class GTJeiPlugin implements IModPlugin {
         for (ResourceLocation metaTileEntityId : GregTechAPI.META_TILE_ENTITY_REGISTRY.getKeys()) {
             MetaTileEntity metaTileEntity = GregTechAPI.META_TILE_ENTITY_REGISTRY.getObject(metaTileEntityId);
             //noinspection ConstantConditions
-            if (metaTileEntity.getCapability(GregtechTileCapabilities.CAPABILITY_WORKABLE, null) != null) {
+            if (metaTileEntity.getCapability(GregtechTileCapabilities.CAPABILITY_CONTROLLABLE, null) != null) {
                 IControllable workableCapability = metaTileEntity.getCapability(GregtechTileCapabilities.CAPABILITY_CONTROLLABLE, null);
 
                 if (workableCapability instanceof AbstractRecipeLogic) {

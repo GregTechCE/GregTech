@@ -209,6 +209,8 @@ public class MetaTileEntityLargeBoiler extends MultiblockWithDisplayBase {
             } else {
                 this.hasNoWater = true;
             }
+        } else {
+            this.hasNoWater = false;
         }
 
         if (fuelBurnTicksLeft == 0) {

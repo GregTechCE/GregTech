@@ -39,7 +39,7 @@ public class TreeChopTask implements Task {
         this.startBlockPos = startPos.toImmutable();
         this.currentPos.setPos(startPos);
         this.world = world;
-        this.itemStack = toolStack;
+        this.itemStack = toolStack.copy();
         this.player = player;
     }
 
@@ -96,7 +96,8 @@ public class TreeChopTask implements Task {
 
     private boolean isItemEqual(ItemStack heldItem) {
         if (heldItem.getItem() != itemStack.getItem() ||
-            heldItem.getItemDamage() != itemStack.getItemDamage()) {
+            heldItem.getItemDamage() != itemStack.getItemDamage() ||
+            heldItem.getItem() instanceof ToolMetaItem<?>) {
             return false;
         }
         SolidMaterial heldToolMaterial = ToolMetaItem.getToolMaterial(heldItem);

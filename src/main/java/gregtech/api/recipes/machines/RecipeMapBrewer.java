@@ -6,7 +6,7 @@ import gregtech.api.recipes.RecipeMap;
 import gregtech.api.recipes.builders.SimpleRecipeBuilder;
 import gregtech.api.recipes.ingredients.NBTIngredient;
 import gregtech.api.util.GTUtility;
-import gregtech.common.items.PotionFluids;
+import gregtech.common.items.potions.PotionFluids;
 import net.minecraft.init.Items;
 import net.minecraft.init.PotionTypes;
 import net.minecraft.item.ItemStack;
@@ -36,12 +36,15 @@ public class RecipeMapBrewer extends RecipeMap<SimpleRecipeBuilder> {
     @Override
     public Recipe findRecipe(long voltage, List<ItemStack> inputs, List<FluidStack> fluidInputs, int outputFluidTankCapacity) {
         Recipe recipe = super.findRecipe(voltage, inputs, fluidInputs, outputFluidTankCapacity);
-        if (recipe != null || GTUtility.amountOfNonNullElements(fluidInputs) < 1 || GTUtility.amountOfNonEmptyStacks(inputs) < 1) {
+        if (recipe != null ||
+            GTUtility.amountOfNonNullElements(fluidInputs) < 1 ||
+            GTUtility.amountOfNonEmptyStacks(inputs) < 1) {
             return recipe;
         }
 
         ItemStack ingredientStack = inputs.get(0);
         FluidStack potionFluid = fluidInputs.get(0);
+
         PotionType potionType = PotionFluids.getPotionForFluid(potionFluid.getFluid());
 
         if (potionType == null || potionFluid.amount < POTION_PER_INGREDIENT) {
@@ -63,6 +66,9 @@ public class RecipeMapBrewer extends RecipeMap<SimpleRecipeBuilder> {
         }
 
         Fluid outputFluid = PotionFluids.getFluidForPotion(resultingType);
+        if(outputFluid == null) {
+            return null;
+        }
 
         //otherwise, return recipe for fluid potion + ingredient -> new fluid potion
         return recipeBuilder()
