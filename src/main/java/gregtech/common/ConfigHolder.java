@@ -63,6 +63,18 @@ public class ConfigHolder {
     @Config.RequiresMcRestart
     public static VanillaRecipes vanillaRecipes = new VanillaRecipes();
 
+    @Config.Comment("Sets the bonus EU output of Steam Turbines.")
+    @Config.RequiresMcRestart
+    public static int steamTurbineBonusOutput = 6144;
+
+    @Config.Comment("Sets the bonus EU output of Plasma Turbines.")
+    @Config.RequiresMcRestart
+    public static int plasmaTurbineBonusOutput = 6144;    
+
+    @Config.Comment("Sets the bonus EU output of Gas Turbines.")
+    @Config.RequiresMcRestart
+    public static int gasTurbineBonusOutput = 6144;    
+    
     public static class VanillaRecipes {
 
         @Config.Comment("Whether to nerf paper crafting recipe. Default is true.")
