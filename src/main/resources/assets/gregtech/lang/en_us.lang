@@ -2232,9 +2232,13 @@ gregtech.machine.tesla_coil.name=Tesla Coil
 gregtech.machine.tesla_coil.description=Damages all living entities within 7 blocks range/nConsumes 2500 EU for 1 damage point/nInternal buffer Capacity: §e256k EU
 
 #Fisher
-gregtech.machine.fisher.name=Fisher
+gregtech.machine.fisher.ulv.name=Basic Fisher
+gregtech.machine.fisher.lv.name=Advanced Fisher
+gregtech.machine.fisher.mv.name=Advanced Fisher II
+gregtech.machine.fisher.hv.name=Advanced Mechanical Cat III
 gregtech.machine.fisher.tooltip=Costs string to fish. Each string is good for once.
 gregtech.machine.fisher.speed=Gets a fish (or whatnot) every %d ticks
+gregtech.machine.fisher.requirement=Requires a square of water with size of %d blocks directly below.
 
 # General machinery
 gregtech.machine.basic.input_from_output_side.allow=Allow Input from Output Side

@@ -4,12 +4,14 @@ import codechicken.lib.render.CCRenderState;
 import codechicken.lib.render.pipeline.IVertexOperation;
 import codechicken.lib.vec.Matrix4;
 import gregtech.api.GTValues;
-import gregtech.api.capability.IEnergyContainer;
-import gregtech.api.capability.impl.EnergyContainerHandler;
 import gregtech.api.gui.GuiTextures;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.MetaTileEntityHolder;
+import gregtech.api.metatileentity.TieredMetaTileEntity;
 import gregtech.api.render.Textures;
+import gregtech.api.unification.OreDictUnifier;
+import net.minecraft.block.BlockLiquid;
+import net.minecraft.block.material.Material;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
@@ -23,6 +25,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraft.world.storage.loot.LootContext;
 import net.minecraft.world.storage.loot.LootTable;
+import net.minecraft.world.storage.loot.LootTableList;
 import net.minecraftforge.items.IItemHandlerModifiable;
 import net.minecraftforge.items.ItemHandlerHelper;
 import net.minecraftforge.items.ItemStackHandler;
@@ -32,22 +35,23 @@ import javax.annotation.Nullable;
 import java.util.List;
 
 
-public class MetaTileEntityFisher extends MetaTileEntity {
+public class MetaTileEntityFisher extends TieredMetaTileEntity {
 
-    private IEnergyContainer energyContainer;
-    private static final int inventorySize = 25;
-    private static final long fishingTicks = 400L;
-    private static final long energyAmountPerFish = 128L;
+    private final int inventorySize;
+    private final long fishingTicks;
+    private final long energyAmountPerFish;
+    private static final long waterCheckSize = 25L;
 
-    public MetaTileEntityFisher(ResourceLocation metaTileEntityId){
-        super(metaTileEntityId);
-        this.energyContainer = new EnergyContainerHandler(this,
-            1024L, 32L, 1L, 0L, 0L);
+    public MetaTileEntityFisher(ResourceLocation metaTileEntityId, int tier){
+        super(metaTileEntityId, tier);
+        this.inventorySize = (tier + 1) * (tier + 1);
+        this.fishingTicks = 1000 - tier * 200;
+        this.energyAmountPerFish = tier == 0 ? 1 : GTValues.V[getTier() - 1];
         initializeInventory();
     }
 
     public MetaTileEntity createMetaTileEntity(MetaTileEntityHolder holder) {
-        return new MetaTileEntityFisher(metaTileEntityId);
+        return new MetaTileEntityFisher(metaTileEntityId, getTier());
     }
 
     protected ModularUI createUI(EntityPlayer entityPlayer) {
@@ -76,9 +80,19 @@ public class MetaTileEntityFisher extends MetaTileEntity {
         if (!getWorld().isRemote && energyContainer.getEnergyStored() >= energyAmountPerFish && getTimer() % fishingTicks == 0L &&
             importItems.getStackInSlot(0).getCount() > 0) {
             WorldServer world = (WorldServer) this.getWorld();
-            BlockPos waterCheckPos = getPos().down();
-            if (world.getBlockState(waterCheckPos).getBlock().getRegistryName().toString().equals("minecraft:water")) {
-                LootTable table = world.getLootTableManager().getLootTableFromLocation(new ResourceLocation("minecraft:gameplay/fishing"));
+            int waterCount = 0;
+            int edgeSize = (int) Math.sqrt(waterCheckSize);
+            for (int x = 0; x < edgeSize; x++){
+                for (int z = 0; z < edgeSize; z++){
+                    BlockPos waterCheckPos = getPos().down().add(x - edgeSize / 2, 0, z - edgeSize / 2);
+                    if (world.getBlockState(waterCheckPos).getBlock() instanceof BlockLiquid &&
+                        world.getBlockState(waterCheckPos).getMaterial() == Material.WATER) {
+                        waterCount++;
+                    }
+                }
+            }
+            if (waterCount == waterCheckSize) {
+                LootTable table = world.getLootTableManager().getLootTableFromLocation(LootTableList.GAMEPLAY_FISHING);
                 List<ItemStack> itemStacks = table.generateLootForPools(world.rand, new LootContext.Builder(world).build());
                 addToInventoryOrDropItems(itemStacks);
                 importItems.getStackInSlot(0).shrink(1);
@@ -108,7 +122,7 @@ public class MetaTileEntityFisher extends MetaTileEntity {
             @Nonnull
             @Override
             public ItemStack insertItem(int slot, @Nonnull ItemStack stack, boolean simulate) {
-                if(stack.getItem().getRegistryName().toString().equals("minecraft:string")) {
+                if(OreDictUnifier.getOreDictionaryNames(stack).contains("string")) {
                     return super.insertItem(slot, stack, simulate);
                 }
                 return stack;
@@ -122,13 +136,14 @@ public class MetaTileEntityFisher extends MetaTileEntity {
     }
 
     public void renderMetaTileEntity(CCRenderState renderState, Matrix4 translation, IVertexOperation[] pipeline) {
-        Textures.SOLID_STEEL_CASING.render(renderState, translation, pipeline);
+        super.renderMetaTileEntity(renderState, translation, pipeline);
         Textures.SCREEN.renderSided(EnumFacing.UP, renderState, translation, pipeline);
         Textures.PIPE_IN_OVERLAY.renderSided(EnumFacing.DOWN, renderState, translation, pipeline);
     }
 
     public void addInformation(ItemStack stack, @Nullable World player, List<String> tooltip, boolean advanced) {
         tooltip.add(I18n.format("gregtech.machine.fisher.speed", fishingTicks));
+        tooltip.add(I18n.format("gregtech.machine.fisher.requirement", waterCheckSize));
         tooltip.add(I18n.format("gregtech.universal.tooltip.voltage_in", energyContainer.getInputVoltage(), "LV"));
         tooltip.add(I18n.format("gregtech.universal.tooltip.energy_storage_capacity", energyContainer.getEnergyCapacity()));
     }

@@ -160,7 +160,7 @@ public class MetaTileEntities {
     public static MetaTileEntityTeslaCoil TESLA_COIL;
     public static MetaTileEntityQuantumChest[] QUANTUM_CHEST = new MetaTileEntityQuantumChest[4];
     public static MetaTileEntityQuantumTank[] QUANTUM_TANK = new MetaTileEntityQuantumTank[4];
-    public static MetaTileEntityFisher FISHER;
+    public static MetaTileEntityFisher[] FISHER = new MetaTileEntityFisher[4];
 
     public static void init() {
         GTLog.logger.info("Registering MetaTileEntities");
@@ -496,8 +496,12 @@ public class MetaTileEntities {
 
         TESLA_COIL = new MetaTileEntityTeslaCoil(gregtechId("tesla_coil"));
         GregTechAPI.registerMetaTileEntity(1001, TESLA_COIL);
-        FISHER = new MetaTileEntityFisher(gregtechId("fisher"));
-        GregTechAPI.registerMetaTileEntity(1050, FISHER);
+
+        FISHER[0] = GregTechAPI.registerMetaTileEntity(1050, new MetaTileEntityFisher(gregtechId("fisher.ulv"), 0));
+        FISHER[1] = GregTechAPI.registerMetaTileEntity(1051, new MetaTileEntityFisher(gregtechId("fisher.lv"), 1));
+        FISHER[2] = GregTechAPI.registerMetaTileEntity(1052, new MetaTileEntityFisher(gregtechId("fisher.mv"), 2));
+        FISHER[3] = GregTechAPI.registerMetaTileEntity(1053, new MetaTileEntityFisher(gregtechId("fisher.hv"), 3));
+
 
         for (int i = 2; i < 6; i++) {
             String voltageName = GTValues.VN[i].toLowerCase();
