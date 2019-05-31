@@ -1717,6 +1717,7 @@ tile.multiblock_casing.fusion_mk2.name=Fusion Machine Casing MK II
 gregtech.machine.tooltip.added_by=§c§oAdded by: %s
 
 # Chests
+gregtech.machine.small_wooden_chest.name=Small Wooden Chest
 gregtech.machine.wooden_chest.name=Wooden Chest
 gregtech.machine.bronze_chest.name=Bronze Chest
 gregtech.machine.steel_chest.name=Steel Chest

@@ -19,6 +19,7 @@ import net.minecraftforge.client.MinecraftForgeClient;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import org.apache.commons.lang3.tuple.Pair;
 
 public class CableMultiPart extends PipeMultiPart<Insulation, WireProperties> {
 
@@ -66,8 +67,7 @@ public class CableMultiPart extends PipeMultiPart<Insulation, WireProperties> {
     public boolean renderStatic(Vector3 pos, BlockRenderLayer layer, CCRenderState ccrs) {
         if (MinecraftForgeClient.getRenderLayer() == BlockRenderLayer.CUTOUT) {
             CableRenderer.INSTANCE.renderCableBlock(getPipeMaterial(), getPipeType(), getInsulationColor(), ccrs,
-                new IVertexOperation[]{new Translation(pos)},
-                activeConnections & ~getBlockedConnections());
+                new IVertexOperation[]{new Translation(pos)}, activeConnections);
             getCoverableImplementation().renderCovers(ccrs, new Matrix4().translate(pos));
             return true;
         }
@@ -76,7 +76,7 @@ public class CableMultiPart extends PipeMultiPart<Insulation, WireProperties> {
 
     @Override
     @SideOnly(Side.CLIENT)
-    public TextureAtlasSprite getParticleTexture() {
+    public Pair<TextureAtlasSprite, Integer> getParticleTexture() {
         return CableRenderer.INSTANCE.getParticleTexture(this);
     }
 }

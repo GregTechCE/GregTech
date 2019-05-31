@@ -11,6 +11,7 @@ import gregtech.api.gui.ModularUI;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.MetaTileEntityHolder;
 import gregtech.api.metatileentity.TieredMetaTileEntity;
+import gregtech.api.render.ICubeRenderer;
 import gregtech.api.render.Textures;
 import gregtech.api.util.GTUtility;
 import net.minecraft.block.BlockDragonEgg;
@@ -33,6 +34,7 @@ import net.minecraft.world.biome.BiomeEndDecorator;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import org.apache.commons.lang3.ArrayUtils;
+import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.Arrays;
 import java.util.List;
@@ -53,16 +55,22 @@ public class MetaTileEntityMagicEnergyAbsorber extends TieredMetaTileEntity {
         return new MetaTileEntityMagicEnergyAbsorber(metaTileEntityId);
     }
 
+    @SideOnly(Side.CLIENT)
+    private ICubeRenderer getRenderer() {
+        return isActive ? Textures.MAGIC_ENERGY_ABSORBER_ACTIVE : Textures.MAGIC_ENERGY_ABSORBER;
+    }
+
     @Override
-    public TextureAtlasSprite getParticleTexture() {
-        return (isActive ? Textures.MAGIC_ENERGY_ABSORBER_ACTIVE : Textures.MAGIC_ENERGY_ABSORBER).getParticleSprite();
+    @SideOnly(Side.CLIENT)
+    public Pair<TextureAtlasSprite, Integer> getParticleTexture() {
+        return Pair.of(getRenderer().getParticleSprite(), getPaintingColor());
     }
 
     @Override
     @SideOnly(Side.CLIENT)
     public void renderMetaTileEntity(CCRenderState renderState, Matrix4 translation, IVertexOperation[] pipeline) {
         IVertexOperation[] colouredPipeline = ArrayUtils.add(pipeline, new ColourMultiplier(GTUtility.convertRGBtoOpaqueRGBA_CL(getPaintingColorForRendering())));
-        (isActive ? Textures.MAGIC_ENERGY_ABSORBER_ACTIVE : Textures.MAGIC_ENERGY_ABSORBER).render(renderState, translation, colouredPipeline);
+        getRenderer().render(renderState, translation, colouredPipeline);
     }
 
     @Override

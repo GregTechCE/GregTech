@@ -49,6 +49,7 @@ import net.minecraftforge.common.property.IExtendedBlockState;
 import net.minecraftforge.common.property.IUnlistedProperty;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import org.apache.commons.lang3.tuple.Pair;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
@@ -390,7 +391,7 @@ public class BlockMachine extends BlockCustomParticle implements ITileEntityProv
 
     @Override
     @SideOnly(Side.CLIENT)
-    protected TextureAtlasSprite getParticleTexture(World world, BlockPos blockPos) {
+    protected Pair<TextureAtlasSprite, Integer> getParticleTexture(World world, BlockPos blockPos) {
         return MetaTileEntityRenderer.INSTANCE.getParticleTexture(world, blockPos);
     }
 }

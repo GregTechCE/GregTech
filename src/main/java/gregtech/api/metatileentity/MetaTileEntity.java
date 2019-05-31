@@ -47,6 +47,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.*;
 import org.apache.commons.lang3.ArrayUtils;
+import org.apache.commons.lang3.tuple.Pair;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
@@ -131,8 +132,8 @@ public abstract class MetaTileEntity implements ICoverable {
     }
 
     @SideOnly(Side.CLIENT)
-    public TextureAtlasSprite getParticleTexture() {
-        return TextureUtils.getMissingSprite();
+    public Pair<TextureAtlasSprite, Integer> getParticleTexture() {
+        return Pair.of(TextureUtils.getMissingSprite(), 0xFFFFFF);
     }
 
     /**
@@ -403,7 +404,7 @@ public abstract class MetaTileEntity implements ICoverable {
         ArrayList<IndexedCuboid6> collisionList = new ArrayList<>();
         addCollisionBoundingBox(collisionList);
         //noinspection RedundantIfStatement
-        if (!ICoverable.checkCoverCollision(side, collisionList, getCoverPlateThickness())) {
+        if (ICoverable.doesCoverCollide(side, collisionList, getCoverPlateThickness())) {
             //cover collision box overlaps with meta tile entity collision box
             return false;
         }

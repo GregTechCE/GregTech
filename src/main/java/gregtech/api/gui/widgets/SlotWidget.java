@@ -107,6 +107,11 @@ public class SlotWidget extends Widget implements INativeWidget, IPositionedRect
         return isEnabled;
     }
 
+    @Override
+    public boolean canShiftFillSlot(ItemStack stack) {
+        return isEnabled;
+    }
+
     public void onSlotChanged() {
         gui.holder.markAsDirty();
     }

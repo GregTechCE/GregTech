@@ -47,6 +47,8 @@ public class DebugPipeNetInfoProvider implements IProbeInfoProvider {
                         .append(", blocked: ").append(node.blockedConnections).append("}");
                     probeInfo.text(builder.toString());
                 }
+                probeInfo.text("tile blocked: " + pipeTile.getBlockedConnections());
+
                 if (blockPipe instanceof BlockFluidPipe) {
                     if (pipeTile instanceof TileEntityFluidPipeActive) {
                         probeInfo.text("tile active: " + ((TileEntityFluidPipeActive) pipeTile).isActive());

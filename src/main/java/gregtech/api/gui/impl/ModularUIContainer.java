@@ -92,6 +92,7 @@ public class ModularUIContainer extends Container implements WidgetUIAccess {
         if (slotMap.get(slot).getSlotLocationInfo().isPlayerInventory) {
             //if we clicked on player inventory slot, move to container inventory, inverting indexes
             List<Slot> containerSlots = slotMap.entrySet().stream()
+                .filter(s -> s.getValue().canMergeSlot(remainingStack))
                 .filter(s -> !s.getValue().getSlotLocationInfo().isPlayerInventory)
                 .map(Entry::getKey)
                 .sorted(Comparator.comparing(s -> s.slotNumber))
@@ -100,6 +101,7 @@ public class ModularUIContainer extends Container implements WidgetUIAccess {
         } else {
             //if we clicked on a container inventory, move to player inventory
             List<Slot> inventorySlots = slotMap.entrySet().stream()
+                .filter(s -> s.getValue().canMergeSlot(remainingStack))
                 .filter(s -> s.getValue().getSlotLocationInfo().isPlayerInventory)
                 .map(Entry::getKey)
                 .sorted(Collections.reverseOrder(Comparator.comparing(s -> s.slotNumber)))

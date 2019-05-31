@@ -29,9 +29,14 @@ public interface INativeWidget {
     SlotLocationInfo getSlotLocationInfo();
 
     /**
-     * @return true when this slot is valid for shift clicking
+     * @return true when this slot is valid for double click merging
      */
     boolean canMergeSlot(ItemStack stack);
+
+    /**
+     * @return true if this slot can be filled by shift clicking other slot
+     */
+    boolean canShiftFillSlot(ItemStack stack);
 
     /**
      * Called when slot is clicked in Container

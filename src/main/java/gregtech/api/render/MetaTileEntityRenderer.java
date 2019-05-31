@@ -170,10 +170,10 @@ public class MetaTileEntityRenderer implements ICCBlockRenderer, IItemRenderer {
         }
     }
 
-    public TextureAtlasSprite getParticleTexture(IBlockAccess world, BlockPos pos) {
+    public Pair<TextureAtlasSprite, Integer> getParticleTexture(IBlockAccess world, BlockPos pos) {
         MetaTileEntity metaTileEntity = BlockMachine.getMetaTileEntity(world, pos);
         if (metaTileEntity == null) {
-            return TextureUtils.getMissingSprite();
+            return Pair.of(TextureUtils.getMissingSprite(), 0xFFFFFF);
         } else {
             return metaTileEntity.getParticleTexture();
         }

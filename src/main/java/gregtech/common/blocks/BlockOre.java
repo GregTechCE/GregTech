@@ -37,7 +37,6 @@ public class BlockOre extends BlockFalling implements IBlockOre {
         setSoundType(SoundType.STONE);
         setHardness(3.0f);
         setResistance(5.0f);
-        setCreativeTab(GregTechAPI.TAB_GREGTECH_ORES);
         this.material = material;
         STONE_TYPE = PropertyStoneType.create("stone_type", allowedValues);
         initBlockState();
@@ -119,9 +118,15 @@ public class BlockOre extends BlockFalling implements IBlockOre {
         return new ItemStack(this, 1, getMetaFromState(blockState));
     }
 
+
+
     @Override
     public void getSubBlocks(CreativeTabs tab, NonNullList<ItemStack> list) {
-        blockState.getValidStates().forEach(blockState -> list.add(getItem(blockState)));
+        if(tab == CreativeTabs.SEARCH) {
+            blockState.getValidStates().forEach(blockState -> list.add(getItem(blockState)));
+        } else if(tab == GregTechAPI.TAB_GREGTECH_ORES) {
+            list.add(getItem(getDefaultState()));
+        }
     }
 
     @Override

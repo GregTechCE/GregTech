@@ -39,6 +39,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.IItemHandlerModifiable;
 import net.minecraftforge.items.ItemHandlerHelper;
 import net.minecraftforge.items.ItemStackHandler;
+import org.apache.commons.lang3.tuple.Pair;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
@@ -213,9 +214,12 @@ public class MetaTileEntityChest extends MetaTileEntity implements IFastRenderMe
 
     @Override
     @SideOnly(Side.CLIENT)
-    public TextureAtlasSprite getParticleTexture() {
-        return ModHandler.isMaterialWood(material) ? Textures.WOODEN_CHEST.getParticleTexture() :
-            Textures.METAL_CHEST.getParticleTexture();
+    public Pair<TextureAtlasSprite, Integer> getParticleTexture() {
+        if(ModHandler.isMaterialWood(material)) {
+            return Pair.of(Textures.WOODEN_CHEST.getParticleTexture(), getPaintingColor());
+        } else {
+            return Pair.of(Textures.METAL_CHEST.getParticleTexture(), getPaintingColor());
+        }
     }
 
     @Override

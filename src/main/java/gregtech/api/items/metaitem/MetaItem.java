@@ -438,7 +438,7 @@ public abstract class MetaItem<T extends MetaItem<?>.MetaValueItem> extends Item
             lines.add(I18n.format("metaitem.generic.electric_item.tooltip",
                 electricItem.getCharge(),
                 electricItem.getMaxCharge(),
-                electricItem.getTier()));
+                GTValues.VN[electricItem.getTier()]));
         }
 
         IFluidHandlerItem fluidHandler = ItemHandlerHelper.copyStackWithSize(itemStack, 1)
@@ -488,9 +488,9 @@ public abstract class MetaItem<T extends MetaItem<?>.MetaValueItem> extends Item
     @Override
     @SideOnly(Side.CLIENT)
     public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> subItems) {
-        if (tab != GregTechAPI.TAB_GREGTECH && tab != CreativeTabs.SEARCH)
+        if (tab != GregTechAPI.TAB_GREGTECH && tab != CreativeTabs.SEARCH) {
             return;
-
+        }
         for (T enabledItem : metaItems.valueCollection()) {
             if (!enabledItem.isVisible())
                 continue;

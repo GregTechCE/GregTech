@@ -1,5 +1,6 @@
 package gregtech.api.pipenet.tile;
 
+import gnu.trove.map.TIntIntMap;
 import gregtech.api.pipenet.block.BlockPipe;
 import gregtech.api.pipenet.block.IPipeType;
 import gregtech.api.unification.material.type.Material;
@@ -32,6 +33,12 @@ public interface IPipeTile<PipeType extends Enum<PipeType> & IPipeType<NodeDataT
     void setInsulationColor(int newInsulationColor);
 
     int getBlockedConnections();
+
+    TIntIntMap getBlockedConnectionsMap();
+
+    boolean isConnectionBlocked(AttachmentType type, EnumFacing side);
+
+    void setConnectionBlocked(AttachmentType type, EnumFacing side, boolean isBlocked);
 
     PipeType getPipeType();
 

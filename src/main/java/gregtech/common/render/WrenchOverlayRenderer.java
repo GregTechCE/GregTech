@@ -1,7 +1,9 @@
 package gregtech.common.render;
 
+import codechicken.lib.raytracer.CuboidRayTraceResult;
 import codechicken.lib.vec.Vector3;
 import gregtech.api.capability.GregtechCapabilities;
+import gregtech.api.cover.ICoverable.PrimaryBoxData;
 import gregtech.api.items.metaitem.MetaItem;
 import gregtech.api.items.metaitem.stats.IItemBehaviour;
 import gregtech.api.metatileentity.MetaTileEntityHolder;
@@ -74,7 +76,22 @@ public class WrenchOverlayRenderer {
         }
     }
 
-    private static boolean shouldDrawOverlayForItem(ItemStack itemStack) {
+    public static boolean useGridForRayTraceResult(RayTraceResult result) {
+        if(result instanceof CuboidRayTraceResult) {
+            CuboidRayTraceResult traceResult = (CuboidRayTraceResult) result;
+            //use grid only for center hit or for primary box with placement grid enabled
+            if(traceResult.cuboid6.data == null) {
+                return true; //default is true
+            } else if(traceResult.cuboid6.data instanceof PrimaryBoxData) {
+                PrimaryBoxData primaryBoxData = (PrimaryBoxData) traceResult.cuboid6.data;
+                return primaryBoxData.usePlacementGrid;
+            } else return false; //otherwise, do not use grid
+        }
+        //also use it for default collision blocks
+        return true;
+    }
+
+    public static boolean shouldDrawOverlayForItem(ItemStack itemStack) {
         if(itemStack.hasCapability(GregtechCapabilities.CAPABILITY_WRENCH, null) ||
             itemStack.hasCapability(GregtechCapabilities.CAPABILITY_SCREWDRIVER, null)) {
             return true;

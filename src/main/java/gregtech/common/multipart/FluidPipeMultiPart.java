@@ -20,6 +20,7 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import org.apache.commons.lang3.tuple.Pair;
 
 public class FluidPipeMultiPart extends PipeMultiPart<FluidPipeType, FluidPipeProperties> {
 
@@ -84,8 +85,7 @@ public class FluidPipeMultiPart extends PipeMultiPart<FluidPipeType, FluidPipePr
     public boolean renderStatic(Vector3 pos, BlockRenderLayer layer, CCRenderState ccrs) {
         if (MinecraftForgeClient.getRenderLayer() == BlockRenderLayer.CUTOUT) {
             FluidPipeRenderer.INSTANCE.renderPipeBlock(getPipeMaterial(), getPipeType(), getInsulationColor(), ccrs,
-                new IVertexOperation[]{new Translation(pos)},
-                activeConnections & ~getBlockedConnections());
+                new IVertexOperation[]{new Translation(pos)}, activeConnections);
             getCoverableImplementation().renderCovers(ccrs, new Matrix4().translate(pos));
             return true;
         }
@@ -94,7 +94,7 @@ public class FluidPipeMultiPart extends PipeMultiPart<FluidPipeType, FluidPipePr
 
     @Override
     @SideOnly(Side.CLIENT)
-    public TextureAtlasSprite getParticleTexture() {
+    public Pair<TextureAtlasSprite, Integer> getParticleTexture() {
         return FluidPipeRenderer.INSTANCE.getParticleTexture(this);
     }
 }

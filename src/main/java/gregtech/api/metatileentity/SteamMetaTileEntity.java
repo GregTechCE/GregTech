@@ -16,7 +16,6 @@ import gregtech.api.recipes.ModHandler;
 import gregtech.api.recipes.RecipeMap;
 import gregtech.api.render.OrientedOverlayRenderer;
 import gregtech.api.render.SimpleSidedCubeRenderer;
-import gregtech.api.render.SimpleSidedCubeRenderer.RenderSide;
 import gregtech.api.render.Textures;
 import gregtech.api.util.GTUtility;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
@@ -28,6 +27,7 @@ import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import org.apache.commons.lang3.ArrayUtils;
+import org.apache.commons.lang3.tuple.Pair;
 
 public abstract class SteamMetaTileEntity extends MetaTileEntity {
 
@@ -80,8 +80,8 @@ public abstract class SteamMetaTileEntity extends MetaTileEntity {
 
     @Override
     @SideOnly(Side.CLIENT)
-    public TextureAtlasSprite getParticleTexture() {
-        return getBaseRenderer().getSpriteOnSide(RenderSide.TOP);
+    public Pair<TextureAtlasSprite, Integer> getParticleTexture() {
+        return Pair.of(getBaseRenderer().getParticleSprite(), getPaintingColor());
     }
 
     @Override

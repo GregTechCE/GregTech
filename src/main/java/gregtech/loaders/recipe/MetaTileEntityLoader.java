@@ -387,6 +387,8 @@ public class MetaTileEntityLoader {
         registerMachineRecipe(MetaTileEntities.QUANTUM_CHEST, "CPC", "PHP", "CFC", 'C', CIRCUIT, 'P', PLATE, 'F', FIELD_GENERATOR, 'H', HULL);
         registerMachineRecipe(MetaTileEntities.QUANTUM_TANK, "CFC", "PHP", "CPC", 'C', CIRCUIT, 'P', PLATE, 'F', FIELD_GENERATOR, 'H', HULL);
 
+        ModHandler.addShapelessRecipe("small_wooden_chest", MetaTileEntities.SMALL_WOODEN_CHEST.getStackForm(8), "chest", 's');
+        ModHandler.addShapelessRecipe("wooden_chest", MetaTileEntities.WOODEN_CHEST.getStackForm(), "chest", 'r');
         ModHandler.addShapedRecipe("bronze_chest", MetaTileEntities.BRONZE_CHEST.getStackForm(), "XXX", "X X", "XXX", 'X', new UnificationEntry(OrePrefix.plate, Materials.Bronze));
         ModHandler.addShapedRecipe("steel_chest", MetaTileEntities.STEEL_CHEST.getStackForm(), "XXX", "X X", "XXX", 'X', new UnificationEntry(OrePrefix.plate, Materials.Steel));
         ModHandler.addShapedRecipe("stainless_steel_chest", MetaTileEntities.STAINLESS_STEEL_CHEST.getStackForm(), "XXX", "X X", "XXX", 'X', new UnificationEntry(OrePrefix.plate, Materials.StainlessSteel));

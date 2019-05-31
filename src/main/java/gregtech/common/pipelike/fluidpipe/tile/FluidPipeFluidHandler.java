@@ -53,7 +53,7 @@ public class FluidPipeFluidHandler implements IFluidHandler {
         return fluidPipeNet == null ? null : fluidPipeNet.getFluidNetTank();
     }
 
-    protected FluidPipeNet getFluidPipeNet() {
+    public FluidPipeNet getFluidPipeNet() {
         FluidPipeNet currentPipeNet = this.currentPipeNet.get();
         if (currentPipeNet != null && currentPipeNet.isValid() &&
             currentPipeNet.containsNode(pipeTile.getPipePos()))
