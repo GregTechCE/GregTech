@@ -121,6 +121,22 @@ public final class MetaItems {
     public static MetaItem<?>.MetaValueItem ENERGY_CRYSTAL;
     public static MetaItem<?>.MetaValueItem LAPOTRON_CRYSTAL;
 
+    public static MetaItem<?>.MetaValueItem CHARGER_CONTROL_CIRCUIT_ULV;
+    public static MetaItem<?>.MetaValueItem CHARGER_CONTROL_CIRCUIT_LV;
+    public static MetaItem<?>.MetaValueItem CHARGER_CONTROL_CIRCUIT_MV;
+    public static MetaItem<?>.MetaValueItem CHARGER_CONTROL_CIRCUIT_HV;
+
+    public static MetaItem<?>.MetaValueItem CHARGER_RE_ULV_TANTALUM;
+    public static MetaItem<?>.MetaValueItem CHARGER_RE_LV_CADMIUM;
+    public static MetaItem<?>.MetaValueItem CHARGER_RE_LV_LITHIUM;
+    public static MetaItem<?>.MetaValueItem CHARGER_RE_LV_SODIUM;
+    public static MetaItem<?>.MetaValueItem CHARGER_RE_MV_CADMIUM;
+    public static MetaItem<?>.MetaValueItem CHARGER_RE_MV_LITHIUM;
+    public static MetaItem<?>.MetaValueItem CHARGER_RE_MV_SODIUM;
+    public static MetaItem<?>.MetaValueItem CHARGER_RE_HV_CADMIUM;
+    public static MetaItem<?>.MetaValueItem CHARGER_RE_HV_LITHIUM;
+    public static MetaItem<?>.MetaValueItem CHARGER_RE_HV_SODIUM;
+
     public static MetaItem<?>.MetaValueItem ENERGY_LAPOTRONIC_ORB;
     public static MetaItem<?>.MetaValueItem ENERGY_LAPOTRONIC_ORB2;
     public static MetaItem<?>.MetaValueItem ZPM;

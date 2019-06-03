@@ -270,6 +270,38 @@ metaitem.battery.re.hv.lithium.tooltip=Reusable
 metaitem.battery.re.hv.sodium.name=Large Sodium Battery
 metaitem.battery.re.hv.sodium.tooltip=Reusable
 
+metaitem.charger.control.circuit.ulv.name=Charger Control Circuit(ULV)
+metaitem.charger.control.circuit.ulv.tooltip=Stick it to a capacitor/nLose all charge after sticking
+metaitem.charger.control.circuit.lv.name=Charger Control Circuit(LV)
+metaitem.charger.control.circuit.lv.tooltip=Solder it to a LV battery/nLose all charge after soldering
+metaitem.charger.control.circuit.mv.name=Charger Control Circuit(MV)
+metaitem.charger.control.circuit.mv.tooltip=Solder it to a MV battery/nLose all charge after soldering
+metaitem.charger.control.circuit.hv.name=Charger Control Circuit(HV)
+metaitem.charger.control.circuit.hv.tooltip=Solder it to a HV battery/nLose all charge after soldering
+
+metaitem.charger.re.ulv.tantalum.name=Mini Tantalum Charger
+
+metaitem.charger.su.lv.sulfuricacid.name=Small Acid Charger
+metaitem.charger.su.lv.mercury.name=Small Mercury Charger
+
+metaitem.charger.re.lv.cadmium.name=Small Cadmium Charger
+metaitem.charger.re.lv.lithium.name=Small Lithium Charger
+metaitem.charger.re.lv.sodium.name=Small Sodium Charger
+
+metaitem.charger.su.mv.sulfuricacid.name=Medium Acid Charger
+metaitem.charger.su.mv.mercury.name=Medium Mercury Charger
+
+metaitem.charger.re.mv.cadmium.name=Medium Cadmium Charger
+metaitem.charger.re.mv.lithium.name=Medium Lithium Charger
+metaitem.charger.re.mv.sodium.name=Medium Sodium Charger
+
+metaitem.charger.su.hv.sulfuricacid.name=Large Acid Charger
+metaitem.charger.su.hv.mercury.name=Large Mercury Charger
+
+metaitem.charger.re.hv.cadmium.name=Large Cadmium Charger
+metaitem.charger.re.hv.lithium.name=Large Lithium Charger
+metaitem.charger.re.hv.sodium.name=Large Sodium Charger
+
 metaitem.energy_crystal.name=Energy Crystal
 metaitem.lapotron_crystal.name=Lapotron Crystal
 metaitem.energy.lapotronicorb.name=Lapotronic Energy Orb
@@ -1600,6 +1632,7 @@ behaviour.soft_hammer=Click machine to allow/disallow it to work
 behaviour.lighter.tooltip=Can light things on fire
 behaviour.lighter.uses=Remaining uses: %d
 behavior.plunger.description=Right click on machine to clear 1000 mb out of it's output tank./nUse while sneaking to clear 1000 mb out of machine's input tank./nInput tank clearing works only on GTCE machines!
+behaviour.portable_recharger=Right click to charge first chargeable item in toolbar/inventory./nShake well before use.
 
 enchantment.damage.endermen=Disjunction
 enchantment.damage.radioactivity=Radioactivity

@@ -31,6 +31,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static gregtech.api.GTValues.ULV;
+import static gregtech.api.GTValues.LV;
+import static gregtech.api.GTValues.MV;
+import static gregtech.api.GTValues.HV;
 import static gregtech.common.items.MetaItems.*;
 
 public class MetaItem1 extends MaterialMetaItem {
@@ -167,6 +171,25 @@ public class MetaItem1 extends MaterialMetaItem {
         BATTERY_RE_HV_CADMIUM = addItem(537, "battery.re.hv.cadmium").addStats(ElectricStats.createRechargeableBattery(1800000, 3)).setModelAmount(8);
         BATTERY_RE_HV_LITHIUM = addItem(538, "battery.re.hv.lithium").addStats(ElectricStats.createRechargeableBattery(1600000, 3)).setModelAmount(8);
         BATTERY_RE_HV_SODIUM = addItem(539, "battery.re.hv.sodium").addStats(ElectricStats.createRechargeableBattery(1200000, 3)).setModelAmount(8);
+
+        CHARGER_CONTROL_CIRCUIT_ULV = addItem(505, "charger.control.circuit.ulv");
+        CHARGER_CONTROL_CIRCUIT_LV = addItem(506, "charger.control.circuit.lv");
+        CHARGER_CONTROL_CIRCUIT_MV = addItem(507, "charger.control.circuit.mv");
+        CHARGER_CONTROL_CIRCUIT_HV = addItem(508, "charger.control.circuit.hv");
+
+        CHARGER_RE_ULV_TANTALUM = addItem(549, "charger.re.ulv.tantalum").addStats(ElectricStats.createRechargeableBattery(1000, 0)).addStats(new PortableChargerBehavior(ULV));
+
+        CHARGER_RE_LV_CADMIUM = addItem(557, "charger.re.lv.cadmium").addStats(ElectricStats.createRechargeableBattery(120000, 1)).addStats(new PortableChargerBehavior(LV)).setModelAmount(8);
+        CHARGER_RE_LV_LITHIUM = addItem(558, "charger.re.lv.lithium").addStats(ElectricStats.createRechargeableBattery(100000, 1)).addStats(new PortableChargerBehavior(LV)).setModelAmount(8);
+        CHARGER_RE_LV_SODIUM = addItem(559, "charger.re.lv.sodium").addStats(ElectricStats.createRechargeableBattery(80000, 1)).addStats(new PortableChargerBehavior(LV)).setModelAmount(8);
+
+        CHARGER_RE_MV_CADMIUM = addItem(567, "charger.re.mv.cadmium").addStats(ElectricStats.createRechargeableBattery(420000, 2)).addStats(new PortableChargerBehavior(MV)).setModelAmount(8);
+        CHARGER_RE_MV_LITHIUM = addItem(568, "charger.re.mv.lithium").addStats(ElectricStats.createRechargeableBattery(400000, 2)).addStats(new PortableChargerBehavior(MV)).setModelAmount(8);
+        CHARGER_RE_MV_SODIUM = addItem(569, "charger.re.mv.sodium").addStats(ElectricStats.createRechargeableBattery(360000, 2)).addStats(new PortableChargerBehavior(MV)).setModelAmount(8);
+
+        CHARGER_RE_HV_CADMIUM = addItem(577, "charger.re.hv.cadmium").addStats(ElectricStats.createRechargeableBattery(1800000, 3)).addStats(new PortableChargerBehavior(HV)).setModelAmount(8);
+        CHARGER_RE_HV_LITHIUM = addItem(578, "charger.re.hv.lithium").addStats(ElectricStats.createRechargeableBattery(1600000, 3)).addStats(new PortableChargerBehavior(HV)).setModelAmount(8);
+        CHARGER_RE_HV_SODIUM = addItem(579, "charger.re.hv.sodium").addStats(ElectricStats.createRechargeableBattery(1200000, 3)).addStats(new PortableChargerBehavior(HV)).setModelAmount(8);
 
         ENERGY_LAPOTRONIC_ORB = addItem(597, "energy.lapotronicorb").addStats(ElectricStats.createRechargeableBattery(100000000, 5)).setUnificationData(OrePrefix.battery, MarkerMaterials.Tier.Ultimate).setModelAmount(8);
         ENERGY_LAPOTRONIC_ORB2 = addItem(598, "energy.lapotronicorb2").addStats(ElectricStats.createRechargeableBattery(1000000000, 6)).setUnificationData(OrePrefix.battery, MarkerMaterials.Tier.Ultimate).setModelAmount(8);
@@ -369,6 +392,76 @@ public class MetaItem1 extends MaterialMetaItem {
             .EUt(256)
             .buildAndRegister();
 
+        RecipeMaps.ASSEMBLER_RECIPES.recipeBuilder()
+            .inputs(BATTERY_RE_ULV_TANTALUM.getStackForm()).inputs(CHARGER_CONTROL_CIRCUIT_ULV.getStackForm())
+            .fluidInputs(Materials.Glue.getFluid(125))
+            .outputs(CHARGER_RE_ULV_TANTALUM.getStackForm())
+            .duration(25).EUt(2)
+            .buildAndRegister();
+
+        RecipeMaps.ASSEMBLER_RECIPES.recipeBuilder()
+            .inputs(BATTERY_RE_LV_CADMIUM.getStackForm()).inputs(CHARGER_CONTROL_CIRCUIT_LV.getStackForm())
+            .fluidInputs(Materials.SolderingAlloy.getFluid(144))
+            .outputs(CHARGER_RE_LV_CADMIUM.getStackForm())
+            .duration(100).EUt(2)
+            .buildAndRegister();
+
+        RecipeMaps.ASSEMBLER_RECIPES.recipeBuilder()
+            .inputs(BATTERY_RE_LV_LITHIUM.getStackForm()).inputs(CHARGER_CONTROL_CIRCUIT_LV.getStackForm())
+            .fluidInputs(Materials.SolderingAlloy.getFluid(144))
+            .outputs(CHARGER_RE_LV_LITHIUM.getStackForm())
+            .duration(100).EUt(2)
+            .buildAndRegister();
+
+        RecipeMaps.ASSEMBLER_RECIPES.recipeBuilder()
+            .inputs(BATTERY_RE_LV_SODIUM.getStackForm()).inputs(CHARGER_CONTROL_CIRCUIT_LV.getStackForm())
+            .fluidInputs(Materials.SolderingAlloy.getFluid(144))
+            .outputs(CHARGER_RE_LV_SODIUM.getStackForm())
+            .duration(100).EUt(2)
+            .buildAndRegister();
+
+        RecipeMaps.ASSEMBLER_RECIPES.recipeBuilder()
+            .inputs(BATTERY_RE_MV_CADMIUM.getStackForm()).inputs(CHARGER_CONTROL_CIRCUIT_MV.getStackForm())
+            .fluidInputs(Materials.SolderingAlloy.getFluid(144))
+            .outputs(CHARGER_RE_MV_CADMIUM.getStackForm())
+            .duration(400).EUt(2)
+            .buildAndRegister();
+
+        RecipeMaps.ASSEMBLER_RECIPES.recipeBuilder()
+            .inputs(BATTERY_RE_MV_LITHIUM.getStackForm()).inputs(CHARGER_CONTROL_CIRCUIT_MV.getStackForm())
+            .fluidInputs(Materials.SolderingAlloy.getFluid(144))
+            .outputs(CHARGER_RE_MV_LITHIUM.getStackForm())
+            .duration(400).EUt(2)
+            .buildAndRegister();
+
+        RecipeMaps.ASSEMBLER_RECIPES.recipeBuilder()
+            .inputs(BATTERY_RE_MV_SODIUM.getStackForm()).inputs(CHARGER_CONTROL_CIRCUIT_MV.getStackForm())
+            .fluidInputs(Materials.SolderingAlloy.getFluid(144))
+            .outputs(CHARGER_RE_MV_SODIUM.getStackForm())
+            .duration(400).EUt(2)
+            .buildAndRegister();
+
+        RecipeMaps.ASSEMBLER_RECIPES.recipeBuilder()
+            .inputs(BATTERY_RE_HV_CADMIUM.getStackForm()).inputs(CHARGER_CONTROL_CIRCUIT_HV.getStackForm())
+            .fluidInputs(Materials.SolderingAlloy.getFluid(144))
+            .outputs(CHARGER_RE_HV_CADMIUM.getStackForm())
+            .duration(1600).EUt(2)
+            .buildAndRegister();
+
+        RecipeMaps.ASSEMBLER_RECIPES.recipeBuilder()
+            .inputs(BATTERY_RE_HV_LITHIUM.getStackForm()).inputs(CHARGER_CONTROL_CIRCUIT_HV.getStackForm())
+            .fluidInputs(Materials.SolderingAlloy.getFluid(144))
+            .outputs(CHARGER_RE_HV_LITHIUM.getStackForm())
+            .duration(1600).EUt(2)
+            .buildAndRegister();
+
+        RecipeMaps.ASSEMBLER_RECIPES.recipeBuilder()
+            .inputs(BATTERY_RE_HV_SODIUM.getStackForm()).inputs(CHARGER_CONTROL_CIRCUIT_HV.getStackForm())
+            .fluidInputs(Materials.SolderingAlloy.getFluid(144))
+            .outputs(CHARGER_RE_HV_SODIUM.getStackForm())
+            .duration(1600).EUt(2)
+            .buildAndRegister();
+
         RecipeMaps.EXTRACTOR_RECIPES.recipeBuilder()
             .inputs(BATTERY_SU_LV_SULFURIC_ACID.getStackForm())
             .outputs(BATTERY_HULL_LV.getStackForm())
@@ -441,6 +534,51 @@ public class MetaItem1 extends MaterialMetaItem {
 
         RecipeMaps.EXTRACTOR_RECIPES.recipeBuilder()
             .inputs(BATTERY_RE_HV_SODIUM.getStackForm())
+            .outputs(BATTERY_HULL_HV.getStackForm())
+            .buildAndRegister();
+
+        RecipeMaps.EXTRACTOR_RECIPES.recipeBuilder()
+            .inputs(CHARGER_RE_LV_CADMIUM.getStackForm())
+            .outputs(BATTERY_HULL_LV.getStackForm())
+            .buildAndRegister();
+
+        RecipeMaps.EXTRACTOR_RECIPES.recipeBuilder()
+            .inputs(CHARGER_RE_LV_LITHIUM.getStackForm())
+            .outputs(BATTERY_HULL_LV.getStackForm())
+            .buildAndRegister();
+
+        RecipeMaps.EXTRACTOR_RECIPES.recipeBuilder()
+            .inputs(CHARGER_RE_LV_SODIUM.getStackForm())
+            .outputs(BATTERY_HULL_LV.getStackForm())
+            .buildAndRegister();
+
+        RecipeMaps.EXTRACTOR_RECIPES.recipeBuilder()
+            .inputs(CHARGER_RE_MV_CADMIUM.getStackForm())
+            .outputs(BATTERY_HULL_MV.getStackForm())
+            .buildAndRegister();
+
+        RecipeMaps.EXTRACTOR_RECIPES.recipeBuilder()
+            .inputs(CHARGER_RE_MV_LITHIUM.getStackForm())
+            .outputs(BATTERY_HULL_MV.getStackForm())
+            .buildAndRegister();
+
+        RecipeMaps.EXTRACTOR_RECIPES.recipeBuilder()
+            .inputs(CHARGER_RE_MV_SODIUM.getStackForm())
+            .outputs(BATTERY_HULL_MV.getStackForm())
+            .buildAndRegister();
+
+        RecipeMaps.EXTRACTOR_RECIPES.recipeBuilder()
+            .inputs(CHARGER_RE_HV_CADMIUM.getStackForm())
+            .outputs(BATTERY_HULL_HV.getStackForm())
+            .buildAndRegister();
+
+        RecipeMaps.EXTRACTOR_RECIPES.recipeBuilder()
+            .inputs(CHARGER_RE_HV_LITHIUM.getStackForm())
+            .outputs(BATTERY_HULL_HV.getStackForm())
+            .buildAndRegister();
+
+        RecipeMaps.EXTRACTOR_RECIPES.recipeBuilder()
+            .inputs(CHARGER_RE_HV_SODIUM.getStackForm())
             .outputs(BATTERY_HULL_HV.getStackForm())
             .buildAndRegister();
 
