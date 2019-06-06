@@ -34,26 +34,28 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.List;
 
-
 public class MetaTileEntityFisher extends TieredMetaTileEntity {
 
+    private static final int WATER_CHECK_SIZE = 25;
+    
     private final int inventorySize;
     private final long fishingTicks;
     private final long energyAmountPerFish;
-    private static final long waterCheckSize = 25L;
 
     public MetaTileEntityFisher(ResourceLocation metaTileEntityId, int tier){
         super(metaTileEntityId, tier);
         this.inventorySize = (tier + 1) * (tier + 1);
         this.fishingTicks = 1000 - tier * 200;
-        this.energyAmountPerFish = tier == 0 ? 1 : GTValues.V[getTier() - 1];
+        this.energyAmountPerFish = GTValues.V[tier];
         initializeInventory();
     }
 
+    @Override
     public MetaTileEntity createMetaTileEntity(MetaTileEntityHolder holder) {
         return new MetaTileEntityFisher(metaTileEntityId, getTier());
     }
 
+    @Override
     protected ModularUI createUI(EntityPlayer entityPlayer) {
         int rowSize = (int) Math.sqrt(inventorySize);
 
@@ -75,13 +77,14 @@ public class MetaTileEntityFisher extends TieredMetaTileEntity {
         return builder.build(getHolder(), entityPlayer);
     }
 
+    @Override
     public void update() {
         super.update();
-        if (!getWorld().isRemote && energyContainer.getEnergyStored() >= energyAmountPerFish && getTimer() % fishingTicks == 0L &&
-            importItems.getStackInSlot(0).getCount() > 0) {
+        ItemStack baitStack = importItems.getStackInSlot(0);
+        if (!getWorld().isRemote && energyContainer.getEnergyStored() >= energyAmountPerFish && getTimer() % fishingTicks == 0L && !baitStack.isEmpty()) {
             WorldServer world = (WorldServer) this.getWorld();
             int waterCount = 0;
-            int edgeSize = (int) Math.sqrt(waterCheckSize);
+            int edgeSize = Math.sqrt(WATER_CHECK_SIZE);
             for (int x = 0; x < edgeSize; x++){
                 for (int z = 0; z < edgeSize; z++){
                     BlockPos waterCheckPos = getPos().down().add(x - edgeSize / 2, 0, z - edgeSize / 2);
@@ -91,28 +94,18 @@ public class MetaTileEntityFisher extends TieredMetaTileEntity {
                     }
                 }
             }
-            if (waterCount == waterCheckSize) {
+            if (waterCount == WATER_CHECK_SIZE) {
                 LootTable table = world.getLootTableManager().getLootTableFromLocation(LootTableList.GAMEPLAY_FISHING);
                 List<ItemStack> itemStacks = table.generateLootForPools(world.rand, new LootContext.Builder(world).build());
-                addToInventoryOrDropItems(itemStacks);
-                importItems.getStackInSlot(0).shrink(1);
-                energyContainer.removeEnergy(energyAmountPerFish);
+                if(addItemsToItemHandler(exportItems, true, itemStacks)) {
+                    addItemsToItemHandler(exportItems, false, itemStacks);
+                    energyContainer.removeEnergy(energyAmountPerFish);
+                    baitStack.shrink(1);
+                }
             }
         }
-    }
-
-    private void addToInventoryOrDropItems(List<ItemStack> drops) {
-        EnumFacing outputFacing = getFrontFacing();
-        double itemSpawnX = getPos().getX() + 0.5 + outputFacing.getFrontOffsetX();
-        double itemSpawnY = getPos().getY() + 0.5 + outputFacing.getFrontOffsetY();
-        double itemSpawnZ = getPos().getZ() + 0.5 + outputFacing.getFrontOffsetZ();
-        for(ItemStack itemStack : drops) {
-            ItemStack remainStack = ItemHandlerHelper.insertItemStacked(exportItems, itemStack, false);
-            if(!remainStack.isEmpty()) {
-                EntityItem entityitem = new EntityItem(getWorld(), itemSpawnX, itemSpawnY, itemSpawnZ, remainStack);
-                entityitem.setDefaultPickupDelay();
-                getWorld().spawnEntity(entityitem);
-            }
+        if(!getWorld().isRemote && getTimer() % 5 == 0) {
+            pushItemsIntoNearbyHandlers(getOutputFacing());
         }
     }
 
@@ -135,16 +128,20 @@ public class MetaTileEntityFisher extends TieredMetaTileEntity {
         return new ItemStackHandler(inventorySize);
     }
 
+    @Override
     public void renderMetaTileEntity(CCRenderState renderState, Matrix4 translation, IVertexOperation[] pipeline) {
         super.renderMetaTileEntity(renderState, translation, pipeline);
         Textures.SCREEN.renderSided(EnumFacing.UP, renderState, translation, pipeline);
+        Textures.PIPE_OUT_OVERLAY.renderSided(getFrontFacing(), renderState, translation, pipeline);
         Textures.PIPE_IN_OVERLAY.renderSided(EnumFacing.DOWN, renderState, translation, pipeline);
     }
 
+    @Override
     public void addInformation(ItemStack stack, @Nullable World player, List<String> tooltip, boolean advanced) {
+        tooltip.add(I18n.format("gregtech.universal.tooltip.voltage_in", energyContainer.getInputVoltage(), GTValues.VN[getTier()]));
+        tooltip.add(I18n.format("gregtech.universal.tooltip.energy_storage_capacity", energyContainer.getEnergyCapacity()));
         tooltip.add(I18n.format("gregtech.machine.fisher.speed", fishingTicks));
         tooltip.add(I18n.format("gregtech.machine.fisher.requirement", waterCheckSize));
-        tooltip.add(I18n.format("gregtech.universal.tooltip.voltage_in", energyContainer.getInputVoltage(), "LV"));
-        tooltip.add(I18n.format("gregtech.universal.tooltip.energy_storage_capacity", energyContainer.getEnergyCapacity()));
+        
     }
 }
