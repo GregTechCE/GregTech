@@ -303,7 +303,7 @@ public abstract class PipeMultiPart<PipeType extends Enum<PipeType> & IPipeType<
     }
 
     private void reinitializeShape() {
-        this.centerBox = BlockPipe.getSideBox(null, getPipeType().getThickness(), 0.0f);
+        this.centerBox = BlockPipe.getSideBox(null, getPipeType().getThickness());
         updateSidedConnections(false);
     }
 
@@ -314,7 +314,7 @@ public abstract class PipeMultiPart<PipeType extends Enum<PipeType> & IPipeType<
             int sideIndex = side.getIndex();
             if ((activeConnections & (1 << sideIndex)) > 0 &&
                 (blockedConnections & (1 << sideIndex)) == 0) {
-                this.sidedConnections.add(BlockPipe.getSideBox(side, thickness, 0.0f));
+                this.sidedConnections.add(BlockPipe.getSideBox(side, thickness));
             }
         }
 
@@ -337,7 +337,7 @@ public abstract class PipeMultiPart<PipeType extends Enum<PipeType> & IPipeType<
         float thickness = getPipeType().getThickness();
 
         for (EnumFacing cableSide : EnumFacing.VALUES) {
-            Cuboid6 sideBox = BlockPipe.getSideBox(cableSide, thickness, 0.0f);
+            Cuboid6 sideBox = BlockPipe.getSideBox(cableSide, thickness);
             NormallyOccludedPart part = new NormallyOccludedPart(sideBox);
             boolean isConnectionBlocked = !tileMultipart.canReplacePart(this, part);
             boolean wasConnectionBlocked = isMultipartConnectionBlocked(cableSide);

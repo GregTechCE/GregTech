@@ -255,7 +255,7 @@ public class MetaTileEntityChest extends MetaTileEntity implements IFastRenderMe
     @Override
     protected ModularUI createUI(EntityPlayer entityPlayer) {
         Builder builder = ModularUI.builder(GuiTextures.BACKGROUND,
-            14 + rowSize * 18,
+            Math.max(176, 14 + rowSize * 18),
             18 + 18 * amountOfRows + 94)
             .label(5, 5, getMetaFullName());
         builder.widget(new SortingButtonWidget(111, 4, 60, 10, "gregtech.gui.sort",
@@ -267,7 +267,7 @@ public class MetaTileEntityChest extends MetaTileEntity implements IFastRenderMe
                 builder.slot(inventory, index, 8 + x * 18, 18 + y * 18, GuiTextures.SLOT);
             }
         }
-        int startX = (14 + rowSize * 18 - 162) / 2;
+        int startX = (Math.max(176, 14 + rowSize * 18) - 162) / 2;
         builder.bindPlayerInventory(entityPlayer.inventory, GuiTextures.SLOT, startX, 18 + 18 * amountOfRows + 12);
         if (!getWorld().isRemote) {
             builder.bindOpenListener(() -> onContainerOpen(entityPlayer));

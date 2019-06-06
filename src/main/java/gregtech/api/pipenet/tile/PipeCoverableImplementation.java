@@ -174,7 +174,7 @@ public class PipeCoverableImplementation implements ICoverable {
 
     @Override
     public boolean canPlaceCoverOnSide(EnumFacing side) {
-        List<IndexedCuboid6> pipeBox = Lists.newArrayList(new IndexedCuboid6(null, BlockPipe.getSideBox(null, holder.getPipeType().getThickness(), 0.0f)));
+        List<IndexedCuboid6> pipeBox = Lists.newArrayList(new IndexedCuboid6(null, BlockPipe.getSideBox(null, holder.getPipeType().getThickness())));
         if (ICoverable.doesCoverCollide(side, pipeBox, getCoverPlateThickness())) {
             return false;
         }

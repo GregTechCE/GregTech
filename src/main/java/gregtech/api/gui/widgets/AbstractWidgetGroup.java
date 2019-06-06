@@ -15,7 +15,6 @@ public class AbstractWidgetGroup extends Widget implements IGhostIngredientTarge
 
     private List<Widget> widgets = new ArrayList<>();
     private WidgetGroupUIAccess groupUIAccess = new WidgetGroupUIAccess();
-    private boolean isInitialized;
     private boolean isVisible = true;
 
     public AbstractWidgetGroup() {
@@ -32,16 +31,38 @@ public class AbstractWidgetGroup extends Widget implements IGhostIngredientTarge
     }
 
     protected void addWidget(Widget widget) {
-        if (isInitialized) {
-            throw new IllegalStateException("Cannot add widgets after initialization!");
-        }
         if (widget == this) {
             throw new IllegalArgumentException("Cannot add self");
         }
-        if (!widgets.contains(widget)) {
-            this.widgets.add(widget);
-            widget.setUiAccess(groupUIAccess);
+        if (widgets.contains(widget)) {
+            throw new IllegalArgumentException("Already added");
         }
+        this.widgets.add(widget);
+        widget.setUiAccess(groupUIAccess);
+        widget.setGui(gui);
+        widget.setSizes(sizes);
+        if(uiAccess != null) uiAccess.notifyWidgetChange();
+    }
+
+    protected void removeWidget(Widget widget) {
+        if(!widgets.contains(widget)) {
+            throw new IllegalArgumentException("Not added");
+        }
+        this.widgets.remove(widget);
+        widget.setUiAccess(null);
+        widget.setGui(null);
+        widget.setSizes(null);
+        if(uiAccess != null) this.uiAccess.notifyWidgetChange();
+    }
+
+    protected void clearAllWidgets() {
+        this.widgets.forEach(it -> {
+            it.setUiAccess(null);
+            it.setGui(null);
+            it.setSizes(null);
+        });
+        this.widgets.clear();
+        if(uiAccess != null) this.uiAccess.notifyWidgetChange();
     }
 
     public boolean isWidgetVisible(Widget widget) {
@@ -54,7 +75,6 @@ public class AbstractWidgetGroup extends Widget implements IGhostIngredientTarge
 
     @Override
     public void initWidget() {
-        this.isInitialized = true;
         for (Widget widget : widgets) {
             widget.setGui(gui);
             widget.setSizes(sizes);
@@ -198,6 +218,11 @@ public class AbstractWidgetGroup extends Widget implements IGhostIngredientTarge
     }
 
     private class WidgetGroupUIAccess implements WidgetUIAccess {
+
+        @Override
+        public void notifyWidgetChange() {
+            AbstractWidgetGroup.this.uiAccess.notifyWidgetChange();
+        }
 
         @Override
         public void writeClientAction(Widget widget, int updateId, Consumer<PacketBuffer> dataWriter) {

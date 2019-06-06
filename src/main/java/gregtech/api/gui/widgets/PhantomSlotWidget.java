@@ -30,7 +30,7 @@ public class PhantomSlotWidget extends SlotWidget implements IGhostIngredientTar
     }
 
     @Override
-    public boolean canShiftFillSlot(ItemStack stack) {
+    public boolean canMergeSlot(ItemStack stack) {
         return false;
     }
 

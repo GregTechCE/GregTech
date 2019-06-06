@@ -14,7 +14,7 @@ public class OreDictionaryItemFilter extends AbstractItemFilter {
 
     private static final Pattern ORE_DICTIONARY_FILTER = Pattern.compile("\\*?[a-zA-Z0-9_]*\\*?");
 
-    protected String oreDictionaryFilter;
+    protected String oreDictionaryFilter = "";
 
     protected void setOreDictionaryFilter(String oreDictionaryFilter) {
         this.oreDictionaryFilter = oreDictionaryFilter;
@@ -26,25 +26,23 @@ public class OreDictionaryItemFilter extends AbstractItemFilter {
     }
 
     @Override
-    public int initUI(int y, Consumer<Widget> widgetGroup) {
-        widgetGroup.accept(new LabelWidget(10, 0, "cover.ore_dictionary_filter.title"));
-        widgetGroup.accept(new LabelWidget(10, 15, "cover.ore_dictionary_filter.title1"));
-        widgetGroup.accept(new LabelWidget(10, 25, "cover.ore_dictionary_filter.title2"));
-        widgetGroup.accept(new TextFieldWidget(10, 40, 100, 12, true,
+    public int getTotalOccupiedHeight() {
+        return 37;
+    }
+
+    @Override
+    public void initUI(int y, Consumer<Widget> widgetGroup) {
+        widgetGroup.accept(new LabelWidget(10, y, "cover.ore_dictionary_filter.title1"));
+        widgetGroup.accept(new LabelWidget(10, y + 10, "cover.ore_dictionary_filter.title2"));
+        widgetGroup.accept(new TextFieldWidget(10, y + 25, 100, 12, true,
             () -> oreDictionaryFilter, this::setOreDictionaryFilter)
             .setMaxStringLength(64)
             .setValidator(str -> ORE_DICTIONARY_FILTER.matcher(str).matches()));
-        return 52;
     }
 
     @Override
-    public int getMaxMatchSlots() {
-        return 1;
-    }
-
-    @Override
-    public int matchItemStack(ItemStack itemStack) {
-        return oreDictionaryFilterMatch(getOreDictionaryFilter(), itemStack);
+    public boolean testItemStack(ItemStack itemStack) {
+        return matchesOreDictionaryFilter(getOreDictionaryFilter(), itemStack);
     }
 
     @Override
@@ -57,9 +55,9 @@ public class OreDictionaryItemFilter extends AbstractItemFilter {
         this.oreDictionaryFilter = tagCompound.getString("OreDictionaryFilter");
     }
 
-    public static int oreDictionaryFilterMatch(String oreDictionaryFilter, ItemStack itemStack) {
+    public static boolean matchesOreDictionaryFilter(String oreDictionaryFilter, ItemStack itemStack) {
         if (oreDictionaryFilter.isEmpty()) {
-            return -1;
+            return false;
         }
         boolean startWildcard = oreDictionaryFilter.charAt(0) == '*';
         boolean endWildcard = oreDictionaryFilter.length() > 1 && oreDictionaryFilter.charAt(oreDictionaryFilter.length() - 1) == '*';
@@ -71,10 +69,10 @@ public class OreDictionaryItemFilter extends AbstractItemFilter {
         }
         for (String stackOreName : OreDictUnifier.getOreDictionaryNames(itemStack)) {
             if (areOreDictNamesEqual(startWildcard, endWildcard, oreDictionaryFilter, stackOreName)) {
-                return 0;
+                return true;
             }
         }
-        return -1;
+        return false;
     }
 
     private static boolean areOreDictNamesEqual(boolean startWildcard, boolean endWildcard, String oreDictName, String stackOreName) {

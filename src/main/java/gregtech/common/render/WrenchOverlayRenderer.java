@@ -3,6 +3,7 @@ package gregtech.common.render;
 import codechicken.lib.raytracer.CuboidRayTraceResult;
 import codechicken.lib.vec.Vector3;
 import gregtech.api.capability.GregtechCapabilities;
+import gregtech.api.capability.GregtechTileCapabilities;
 import gregtech.api.cover.ICoverable.PrimaryBoxData;
 import gregtech.api.items.metaitem.MetaItem;
 import gregtech.api.items.metaitem.stats.IItemBehaviour;
@@ -51,7 +52,7 @@ public class WrenchOverlayRenderer {
         TileEntity tileEntity = world.getTileEntity(pos);
         ItemStack heldItem = player.getHeldItem(EnumHand.MAIN_HAND);
 
-        if (tileEntity instanceof MetaTileEntityHolder && shouldDrawOverlayForItem(heldItem)) {
+        if (tileEntity != null && shouldDrawOverlayForItem(heldItem, tileEntity) && useGridForRayTraceResult(target)) {
             EnumFacing facing = target.sideHit;
             GlStateManager.enableBlend();
             GlStateManager.tryBlendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
@@ -91,19 +92,23 @@ public class WrenchOverlayRenderer {
         return true;
     }
 
-    public static boolean shouldDrawOverlayForItem(ItemStack itemStack) {
-        if(itemStack.hasCapability(GregtechCapabilities.CAPABILITY_WRENCH, null) ||
-            itemStack.hasCapability(GregtechCapabilities.CAPABILITY_SCREWDRIVER, null)) {
+    public static boolean shouldDrawOverlayForItem(ItemStack itemStack, TileEntity tileEntity) {
+        if(tileEntity instanceof MetaTileEntityHolder &&
+            itemStack.hasCapability(GregtechCapabilities.CAPABILITY_WRENCH, null)) {
             return true;
         }
-        if (itemStack.getItem() instanceof MetaItem) {
-            MetaItem<?> metaItem = (MetaItem<?>) itemStack.getItem();
-            MetaItem<?>.MetaValueItem valueItem = metaItem.getItem(itemStack);
-            if (valueItem != null) {
-                List<IItemBehaviour> behaviourList = valueItem.getBehaviours();
-                return behaviourList.stream().anyMatch(it ->
-                    it instanceof CoverPlaceBehavior ||
-                    it instanceof CrowbarBehaviour);
+        if(tileEntity.hasCapability(GregtechTileCapabilities.CAPABILITY_COVERABLE, null)) {
+            if(itemStack.hasCapability(GregtechCapabilities.CAPABILITY_SCREWDRIVER, null)) {
+                return true;
+            }
+            if (itemStack.getItem() instanceof MetaItem) {
+                MetaItem<?> metaItem = (MetaItem<?>) itemStack.getItem();
+                MetaItem<?>.MetaValueItem valueItem = metaItem.getItem(itemStack);
+                if (valueItem != null) {
+                    List<IItemBehaviour> behaviourList = valueItem.getBehaviours();
+                    return behaviourList.stream().anyMatch(it ->
+                        it instanceof CoverPlaceBehavior || it instanceof CrowbarBehaviour);
+                }
             }
         }
         return false;

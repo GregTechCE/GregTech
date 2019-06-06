@@ -12,10 +12,7 @@ import io.netty.buffer.Unpooled;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.inventory.ClickType;
-import net.minecraft.inventory.Container;
-import net.minecraft.inventory.IContainerListener;
-import net.minecraft.inventory.Slot;
+import net.minecraft.inventory.*;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketBuffer;
 
@@ -43,6 +40,53 @@ public class ModularUIContainer extends Container implements WidgetUIAccess {
                 addSlotToContainer(slot);
             });
         modularUI.triggerOpenListeners();
+    }
+
+    //WARNING! WIDGET CHANGES SHOULD BE *STRICTLY* SYNCHRONIZED BETWEEN SERVER AND CLIENT,
+    //OTHERWISE ID MISMATCH CAN HAPPEN BETWEEN ASSIGNED SLOTS!
+    @Override
+    public void notifyWidgetChange() {
+        List<INativeWidget> nativeWidgets = modularUI.guiWidgets.values().stream()
+            .flatMap(widget -> widget.getNativeWidgets().stream())
+            .collect(Collectors.toList());
+
+        Set<INativeWidget> removedWidgets = new HashSet<>(slotMap.values());
+        removedWidgets.removeAll(nativeWidgets);
+        if(!removedWidgets.isEmpty()) {
+            for(INativeWidget removedWidget : removedWidgets) {
+                Slot slotHandle = removedWidget.getHandle();
+                this.slotMap.remove(slotHandle);
+                //replace removed slot with empty placeholder to avoid list index shift
+                EmptySlotPlaceholder emptySlotPlaceholder = new EmptySlotPlaceholder();
+                emptySlotPlaceholder.slotNumber = slotHandle.slotNumber;
+                this.inventorySlots.set(slotHandle.slotNumber, emptySlotPlaceholder);
+                this.inventoryItemStacks.set(slotHandle.slotNumber, ItemStack.EMPTY);
+            }
+        }
+
+        Set<INativeWidget> addedWidgets = new HashSet<>(nativeWidgets);
+        addedWidgets.removeAll(slotMap.values());
+        if(!addedWidgets.isEmpty()) {
+            int[] emptySlotIndexes = inventorySlots.stream()
+                .filter(it -> it instanceof EmptySlotPlaceholder)
+                .mapToInt(slot -> slot.slotNumber).toArray();
+            int currentIndex = 0;
+            for(INativeWidget addedWidget : addedWidgets) {
+                Slot slotHandle = addedWidget.getHandle();
+                //add or replace empty slot in inventory
+                this.slotMap.put(slotHandle, addedWidget);
+                if(currentIndex < emptySlotIndexes.length) {
+                    int slotIndex = emptySlotIndexes[currentIndex++];
+                    slotHandle.slotNumber = slotIndex;
+                    this.inventorySlots.set(slotIndex, slotHandle);
+                    this.inventoryItemStacks.set(slotIndex, ItemStack.EMPTY);
+                } else {
+                    slotHandle.slotNumber = this.inventorySlots.size();
+                    this.inventorySlots.add(slotHandle);
+                    this.inventoryItemStacks.add(ItemStack.EMPTY);
+                }
+            }
+        }
     }
 
     public ModularUI getModularUI() {
@@ -155,6 +199,39 @@ public class ModularUIContainer extends Container implements WidgetUIAccess {
             } else {
                 accumulatedUpdates.add(widgetUpdate);
             }
+        }
+    }
+
+    private static class EmptySlotPlaceholder extends Slot {
+
+        private static final IInventory EMPTY_INVENTORY = new InventoryBasic("Empty Inventory", false, 0);
+
+        public EmptySlotPlaceholder() {
+            super(EMPTY_INVENTORY, 0, -100000, -100000);
+        }
+
+        @Override
+        public ItemStack getStack() {
+            return ItemStack.EMPTY;
+        }
+
+        @Override
+        public void putStack(ItemStack stack) {
+        }
+
+        @Override
+        public boolean isItemValid(ItemStack stack) {
+            return false;
+        }
+
+        @Override
+        public boolean canTakeStack(EntityPlayer playerIn) {
+            return false;
+        }
+
+        @Override
+        public boolean isEnabled() {
+            return false;
         }
     }
 }

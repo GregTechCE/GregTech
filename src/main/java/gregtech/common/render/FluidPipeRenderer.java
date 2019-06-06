@@ -158,7 +158,7 @@ public class FluidPipeRenderer implements ICCBlockRenderer, IItemRenderer {
         IVertexOperation[] pipeSide = ArrayUtils.addAll(pipeline, new IconTransformation(textureInfo.sideTexture), multiplier);
 
 
-        Cuboid6 cuboid6 = BlockFluidPipe.getSideBox(null, thickness, 0.0f);
+        Cuboid6 cuboid6 = BlockFluidPipe.getSideBox(null, thickness);
         for (EnumFacing renderedSide : EnumFacing.VALUES) {
             if ((connectMask & 1 << renderedSide.getIndex()) == 0) {
                 int oppositeIndex = renderedSide.getOpposite().getIndex();
@@ -181,7 +181,7 @@ public class FluidPipeRenderer implements ICCBlockRenderer, IItemRenderer {
     private static void renderPipeCube(int connections, CCRenderState renderState, IVertexOperation[] pipeline, IVertexOperation[] pipeConnectSide, EnumFacing side, float thickness) {
         if ((connections & 1 << side.getIndex()) > 0) {
             boolean renderFrontSide = (connections & 1 << (6 + side.getIndex())) > 0;
-            Cuboid6 cuboid6 = BlockFluidPipe.getSideBox(side, thickness, 0.0f);
+            Cuboid6 cuboid6 = BlockFluidPipe.getSideBox(side, thickness);
             for (EnumFacing renderedSide : EnumFacing.VALUES) {
                 if (renderedSide == side) {
                     if (renderFrontSide) {
@@ -222,11 +222,11 @@ public class FluidPipeRenderer implements ICCBlockRenderer, IItemRenderer {
         }
         float thickness = fluidPipeType.getThickness();
         int connectedSidesMask = blockFluidPipe.getActualConnections(tileEntityPipe, world);
-        Cuboid6 baseBox = BlockFluidPipe.getSideBox(null, thickness, 0.0f);
+        Cuboid6 baseBox = BlockFluidPipe.getSideBox(null, thickness);
         BlockRenderer.renderCuboid(renderState, baseBox, 0);
         for (EnumFacing renderSide : EnumFacing.VALUES) {
             if ((connectedSidesMask & (1 << renderSide.getIndex())) > 0) {
-                Cuboid6 sideBox = BlockFluidPipe.getSideBox(renderSide, thickness, 0.0f);
+                Cuboid6 sideBox = BlockFluidPipe.getSideBox(renderSide, thickness);
                 BlockRenderer.renderCuboid(renderState, sideBox, 0);
             }
         }

@@ -34,11 +34,6 @@ public interface INativeWidget {
     boolean canMergeSlot(ItemStack stack);
 
     /**
-     * @return true if this slot can be filled by shift clicking other slot
-     */
-    boolean canShiftFillSlot(ItemStack stack);
-
-    /**
      * Called when slot is clicked in Container
      * Return {@link INativeWidget#VANILLA_LOGIC} to fallback to vanilla logic
      */

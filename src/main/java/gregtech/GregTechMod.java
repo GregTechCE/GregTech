@@ -26,6 +26,7 @@ import gregtech.common.blocks.modelfactories.BlockFrameFactory;
 import gregtech.common.blocks.modelfactories.BlockOreFactory;
 import gregtech.common.command.GregTechCommand;
 import gregtech.common.covers.CoverBehaviors;
+import gregtech.common.covers.filter.FilterTypeRegistry;
 import gregtech.common.items.MetaItems;
 import gregtech.common.metatileentities.MetaTileEntities;
 import gregtech.common.multipart.GTMultipartFactory;
@@ -134,6 +135,7 @@ public class GregTechMod {
             GameRegistry.registerWorldGenerator(new WorldGenRubberTree(), 10000);
         }
 
+        FilterTypeRegistry.init();
         CoverBehaviors.init();
         DungeonLootLoader.init();
     }

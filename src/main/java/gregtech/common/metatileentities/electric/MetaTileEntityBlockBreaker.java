@@ -70,7 +70,6 @@ public class MetaTileEntityBlockBreaker extends TieredMetaTileEntity {
             pushItemsIntoNearbyHandlers(getOutputFacing());
         }
         if(!getWorld().isRemote) {
-
             if(breakProgressTicksLeft > 0) {
                 --this.breakProgressTicksLeft;
                 if(breakProgressTicksLeft == 0 && energyContainer.getEnergyStored() >= getEnergyPerBlockBreak()) {

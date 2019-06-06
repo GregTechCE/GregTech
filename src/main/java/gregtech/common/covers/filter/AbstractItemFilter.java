@@ -11,19 +11,11 @@ public abstract class AbstractItemFilter {
 
     private IUIHolder holder;
 
-    public abstract int getMaxMatchSlots();
+    public abstract boolean testItemStack(ItemStack itemStack);
 
-    /**
-     * @return number in [0..maxMatchSlots) bounds, presuming match slot of item stack,
-     * or -1 if it didn't match. Match slots are used for advanced supplying
-     * techniques like robotic arm modes, but are mostly ignored for other covers
-     */
-    public abstract int matchItemStack(ItemStack itemStack);
+    public abstract int getTotalOccupiedHeight();
 
-    /**
-     * @return total occupied height
-     */
-    public abstract int initUI(int y, Consumer<Widget> widgetGroup);
+    public abstract void initUI(int y, Consumer<Widget> widgetGroup);
 
     public abstract void writeToNBT(NBTTagCompound tagCompound);
 

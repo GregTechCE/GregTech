@@ -467,12 +467,11 @@ public abstract class BlockPipe<PipeType extends Enum<PipeType> & IPipeType<Node
         int actualConnections = getActualConnections(pipeTile, world);
         float thickness = pipeType.getThickness();
         ArrayList<IndexedCuboid6> result = new ArrayList<>();
-        result.add(new IndexedCuboid6(new PrimaryBoxData(false), getSideBox(null, thickness, 0.0f)));
+        result.add(new IndexedCuboid6(new PrimaryBoxData(false), getSideBox(null, thickness)));
         ICoverable coverable = pipeTile.getCoverableImplementation();
         for (EnumFacing side : EnumFacing.VALUES) {
             if ((actualConnections & 1 << side.getIndex()) > 0) {
-                float sideOffset = coverable.getCoverAtSide(side) == null ? 0.0f : 0.0001f + (float) coverable.getCoverPlateThickness();
-                result.add(new IndexedCuboid6(new PipeConnectionData(side), getSideBox(side, thickness, sideOffset)));
+                result.add(new IndexedCuboid6(new PipeConnectionData(side), getSideBox(side, thickness)));
             }
         }
         coverable.addCoverCollisionBoundingBox(result, false);
@@ -487,23 +486,23 @@ public abstract class BlockPipe<PipeType extends Enum<PipeType> & IPipeType<Node
         }
     }
 
-    public static Cuboid6 getSideBox(EnumFacing side, float thickness, float offset) {
+    public static Cuboid6 getSideBox(EnumFacing side, float thickness) {
         float min = (1.0f - thickness) / 2.0f;
         float max = min + thickness;
         if (side == null) {
             return new Cuboid6(min, min, min, max, max, max);
         } else if (side == EnumFacing.DOWN) {
-            return new Cuboid6(min, 0.0f + offset, min, max, min, max);
+            return new Cuboid6(min, 0.0f, min, max, min, max);
         } else if (side == EnumFacing.UP) {
-            return new Cuboid6(min, max, min, max, 1.0f - offset, max);
+            return new Cuboid6(min, max, min, max, 1.0f, max);
         } else if (side == EnumFacing.WEST) {
-            return new Cuboid6(0.0f + offset, min, min, min, max, max);
+            return new Cuboid6(0.0f, min, min, min, max, max);
         } else if (side == EnumFacing.EAST) {
-            return new Cuboid6(max, min, min, 1.0f - offset, max, max);
+            return new Cuboid6(max, min, min, 1.0f, max, max);
         } else if (side == EnumFacing.NORTH) {
-            return new Cuboid6(min, min, 0.0f + offset, max, max, min);
+            return new Cuboid6(min, min, 0.0f, max, max, min);
         } else if (side == EnumFacing.SOUTH) {
-            return new Cuboid6(min, min, max, max, max, 1.0f - offset);
+            return new Cuboid6(min, min, max, max, max, 1.0f);
         } else throw new IllegalArgumentException(side.toString());
     }
 

@@ -11,9 +11,13 @@ import gregtech.api.cover.CoverWithUI;
 import gregtech.api.cover.ICoverable;
 import gregtech.api.gui.GuiTextures;
 import gregtech.api.gui.ModularUI;
-import gregtech.api.gui.widgets.*;
-import gregtech.api.render.Textures;
+import gregtech.api.gui.widgets.CycleButtonWidget;
+import gregtech.api.gui.widgets.LabelWidget;
+import gregtech.api.gui.widgets.WidgetGroup;
+import gregtech.api.render.SimpleOverlayRenderer;
 import gregtech.api.util.GTUtility;
+import gregtech.common.covers.filter.AbstractItemFilter;
+import gregtech.common.covers.filter.ItemFilterWrapper;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
@@ -24,41 +28,33 @@ import net.minecraft.util.EnumHand;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
-import net.minecraftforge.items.ItemStackHandler;
 
 import javax.annotation.Nonnull;
 
 public class CoverItemFilter extends CoverBehavior implements CoverWithUI {
 
-    protected ItemStackHandler itemFilterSlots;
-    protected boolean ignoreDamage = true;
-    protected boolean ignoreNBT = true;
+    protected final String titleLocale;
+    protected final SimpleOverlayRenderer texture;
+    protected final ItemFilterWrapper itemFilter;
     protected ItemFilterMode filterMode = ItemFilterMode.FILTER_INSERT;
     protected ItemHandlerFiltered itemHandler;
 
-    public CoverItemFilter(ICoverable coverHolder, EnumFacing attachedSide) {
+    public CoverItemFilter(ICoverable coverHolder, EnumFacing attachedSide, String titleLocale, SimpleOverlayRenderer texture, AbstractItemFilter itemFilter) {
         super(coverHolder, attachedSide);
-        this.itemFilterSlots = new ItemStackHandler(9) {
-            @Override
-            public int getSlotLimit(int slot) {
-                return 1;
-            }
-        };
-    }
-
-    protected void setIgnoreDamage(boolean ignoreDamage) {
-        this.ignoreDamage = ignoreDamage;
-        coverHolder.markDirty();
-    }
-
-    protected void setIgnoreNBT(boolean ignoreNBT) {
-        this.ignoreNBT = ignoreNBT;
-        coverHolder.markDirty();
+        this.titleLocale = titleLocale;
+        this.texture = texture;
+        this.itemFilter = new ItemFilterWrapper();
+        this.itemFilter.setItemFilter(itemFilter);
+        this.itemFilter.setMaxStackSize(1);
     }
 
     protected void setFilterMode(ItemFilterMode filterMode) {
         this.filterMode = filterMode;
         coverHolder.markDirty();
+    }
+
+    public ItemFilterMode getFilterMode() {
+        return filterMode;
     }
 
     @Override
@@ -76,46 +72,50 @@ public class CoverItemFilter extends CoverBehavior implements CoverWithUI {
 
     @Override
     public ModularUI createUI(EntityPlayer player) {
-        WidgetGroup itemFilterGroup = new WidgetGroup();
-        itemFilterGroup.addWidget(new LabelWidget(10, 5, "cover.item_filter.title"));
-        itemFilterGroup.addWidget(new CycleButtonWidget(10, 20, 110, 20,
+        WidgetGroup filterGroup = new WidgetGroup();
+        filterGroup.addWidget(new LabelWidget(10, 5, titleLocale));
+        filterGroup.addWidget(new CycleButtonWidget(10, 20, 110, 20,
             GTUtility.mapToString(ItemFilterMode.values(), it -> it.localeName),
             () -> filterMode.ordinal(), (newMode) -> setFilterMode(ItemFilterMode.values()[newMode])));
-        for (int i = 0; i < 9; i++) {
-            itemFilterGroup.addWidget(new PhantomSlotWidget(itemFilterSlots, i, 10 + 18 * (i % 3), 46 + 18 * (i / 3)).setBackgroundTexture(GuiTextures.SLOT));
-        }
-        itemFilterGroup.addWidget(new ToggleButtonWidget(74, 45, 20, 20, GuiTextures.BUTTON_FILTER_DAMAGE,
-            () -> ignoreDamage, this::setIgnoreDamage).setTooltipText("cover.item_filter.ignore_damage"));
-        itemFilterGroup.addWidget(new ToggleButtonWidget(99, 45, 20, 20, GuiTextures.BUTTON_FILTER_NBT,
-            () -> ignoreNBT, this::setIgnoreNBT).setTooltipText("cover.item_filter.nbt_damage"));
+        this.itemFilter.initUI(45, filterGroup::addWidget);
 
         return ModularUI.builder(GuiTextures.BACKGROUND, 176, 128)
-            .widget(itemFilterGroup)
+            .widget(filterGroup)
             .bindPlayerHotbar(player.inventory, GuiTextures.SLOT, 8, 105)
             .build(this, player);
     }
 
     @Override
     public void renderCover(CCRenderState renderState, Matrix4 translation, IVertexOperation[] pipeline, Cuboid6 plateBox) {
-        Textures.ITEM_FILTER_FILTER_OVERLAY.renderSided(attachedSide, plateBox, renderState, pipeline, translation);
+        this.texture.renderSided(attachedSide, plateBox, renderState, pipeline, translation);
     }
 
     @Override
     public void writeToNBT(NBTTagCompound tagCompound) {
         super.writeToNBT(tagCompound);
-        tagCompound.setTag("FilterInventory", itemFilterSlots.serializeNBT());
-        tagCompound.setBoolean("IgnoreDamage", ignoreDamage);
-        tagCompound.setBoolean("IgnoreNBT", ignoreNBT);
         tagCompound.setInteger("FilterMode", filterMode.ordinal());
+        tagCompound.setBoolean("IsBlacklist", this.itemFilter.isBlacklistFilter());
+        NBTTagCompound filterComponent = new NBTTagCompound();
+        this.itemFilter.getItemFilter().writeToNBT(filterComponent);
+        tagCompound.setTag("Filter", filterComponent);
     }
 
     @Override
     public void readFromNBT(NBTTagCompound tagCompound) {
         super.readFromNBT(tagCompound);
-        this.itemFilterSlots.deserializeNBT(tagCompound.getCompoundTag("FilterInventory"));
-        this.ignoreDamage = tagCompound.getBoolean("IgnoreDamage");
-        this.ignoreNBT = tagCompound.getBoolean("IgnoreNBT");
         this.filterMode = ItemFilterMode.values()[tagCompound.getInteger("FilterMode")];
+        this.itemFilter.setBlacklistFilter(tagCompound.getBoolean("IsBlacklist"));
+        //LEGACY SAVE FORMAT SUPPORT
+        if(tagCompound.hasKey("FilterInventory") || tagCompound.hasKey("OreDictionaryFilter")) {
+            if(tagCompound.hasKey("FilterInventory")) {
+                tagCompound.setTag("ItemFilter", tagCompound.getCompoundTag("FilterInventory"));
+                tagCompound.removeTag("FilterInventory");
+            }
+            this.itemFilter.getItemFilter().readFromNBT(tagCompound);
+        } else {
+            NBTTagCompound filterComponent = tagCompound.getCompoundTag("Filter");
+            this.itemFilter.getItemFilter().readFromNBT(filterComponent);
+        }
     }
 
     @Override
@@ -123,41 +123,14 @@ public class CoverItemFilter extends CoverBehavior implements CoverWithUI {
         if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
             IItemHandler delegate = (IItemHandler) defaultValue;
             if (itemHandler == null || itemHandler.delegate != delegate) {
-                this.itemHandler = new ItemHandlerFilteredImpl(delegate);
+                this.itemHandler = new ItemHandlerFiltered(delegate);
             }
             return CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.cast(itemHandler);
         }
         return defaultValue;
     }
 
-    private class ItemHandlerFilteredImpl extends ItemHandlerFiltered {
-
-        public ItemHandlerFilteredImpl(IItemHandler delegate) {
-            super(delegate);
-        }
-
-        @Override
-        public ItemFilterMode getFilterMode() {
-            return filterMode;
-        }
-
-        @Override
-        public IItemHandler getFilterSlots() {
-            return itemFilterSlots;
-        }
-
-        @Override
-        public boolean isIgnoreDamage() {
-            return ignoreDamage;
-        }
-
-        @Override
-        public boolean isIgnoreNBT() {
-            return ignoreNBT;
-        }
-    }
-
-    public static abstract class ItemHandlerFiltered extends ItemHandlerDelegate {
+    private class ItemHandlerFiltered extends ItemHandlerDelegate {
 
         public ItemHandlerFiltered(IItemHandler delegate) {
             super(delegate);
@@ -169,7 +142,7 @@ public class CoverItemFilter extends CoverBehavior implements CoverWithUI {
             ItemFilterMode filterMode = getFilterMode();
             if (filterMode == ItemFilterMode.FILTER_EXTRACT) {
                 return stack;
-            } else if (itemFilterMatch(getFilterSlots(), isIgnoreDamage(), isIgnoreNBT(), stack) == -1) {
+            } else if (!itemFilter.testItemStack(stack)) {
                 return stack;
             }
             return super.insertItem(slot, stack, simulate);
@@ -183,7 +156,7 @@ public class CoverItemFilter extends CoverBehavior implements CoverWithUI {
                 return ItemStack.EMPTY;
             }
             ItemStack result = super.extractItem(slot, amount, true);
-            if (itemFilterMatch(getFilterSlots(), isIgnoreDamage(), isIgnoreNBT(), result) == -1) {
+            if (!itemFilter.testItemStack(result)) {
                 return ItemStack.EMPTY;
             }
             if (!simulate) {
@@ -191,34 +164,5 @@ public class CoverItemFilter extends CoverBehavior implements CoverWithUI {
             }
             return result;
         }
-
-        public abstract ItemFilterMode getFilterMode();
-
-        public abstract IItemHandler getFilterSlots();
-
-        public abstract boolean isIgnoreDamage();
-
-        public abstract boolean isIgnoreNBT();
-    }
-
-    public static int itemFilterMatch(IItemHandler filterSlots, boolean ignoreDamage, boolean ignoreNBTData, ItemStack itemStack) {
-        for (int i = 0; i < filterSlots.getSlots(); i++) {
-            ItemStack filterStack = filterSlots.getStackInSlot(i);
-            if (!filterStack.isEmpty() && areItemsEqual(ignoreDamage, ignoreNBTData, filterStack, itemStack)) {
-                return i;
-            }
-        }
-        return -1;
-    }
-
-    private static boolean areItemsEqual(boolean ignoreDamage, boolean ignoreNBTData, ItemStack filterStack, ItemStack itemStack) {
-        if (ignoreDamage) {
-            if (!filterStack.isItemEqualIgnoreDurability(itemStack)) {
-                return false;
-            }
-        } else if (!filterStack.isItemEqual(itemStack)) {
-            return false;
-        }
-        return ignoreNBTData || ItemStack.areItemStackTagsEqual(filterStack, itemStack);
     }
 }

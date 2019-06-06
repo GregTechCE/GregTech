@@ -547,11 +547,11 @@ public abstract class MetaTileEntity implements ICoverable {
 
     public ItemStack getPickItem(CuboidRayTraceResult result, EntityPlayer player) {
         IndexedCuboid6 hitCuboid = result.cuboid6;
-        if (hitCuboid.data instanceof EnumFacing) {
-            //data instanceof EnumFacing -> Cover plate hit
-            CoverBehavior behavior = getCoverAtSide((EnumFacing) hitCuboid.data);
+        if (hitCuboid.data instanceof CoverSideData) {
+            CoverSideData coverSideData = (CoverSideData) hitCuboid.data;
+            CoverBehavior behavior = getCoverAtSide(coverSideData.side);
             return behavior == null ? ItemStack.EMPTY : behavior.getCoverDefinition().getDropItemStack();
-        } else if (hitCuboid.data == null) {
+        } else if (hitCuboid.data == null || hitCuboid.data instanceof PrimaryBoxData) {
             //data is null -> MetaTileEntity hull hit
             CoverBehavior behavior = getCoverAtSide(result.sideHit);
             if (behavior != null) {

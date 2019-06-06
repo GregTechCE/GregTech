@@ -141,7 +141,7 @@ public class CableRenderer implements ICCBlockRenderer, IItemRenderer {
             overlays = ArrayUtils.addAll(pipeline, new IconTransformation(insulationTextures[insulation1.insulationLevel]), multiplier);
         }
 
-        Cuboid6 cuboid6 = BlockCable.getSideBox(null, thickness, 0.0f);
+        Cuboid6 cuboid6 = BlockCable.getSideBox(null, thickness);
         for (EnumFacing renderedSide : EnumFacing.VALUES) {
             if ((connectMask & 1 << renderedSide.getIndex()) == 0) {
                 int oppositeIndex = renderedSide.getOpposite().getIndex();
@@ -166,7 +166,7 @@ public class CableRenderer implements ICCBlockRenderer, IItemRenderer {
     private static void renderCableCube(int connections, CCRenderState renderState, IVertexOperation[] pipeline, IVertexOperation[] wire, IVertexOperation[] overlays, EnumFacing side, float thickness) {
         if ((connections & 1 << side.getIndex()) > 0) {
             boolean renderFrontSide = (connections & 1 << (6 + side.getIndex())) > 0;
-            Cuboid6 cuboid6 = BlockCable.getSideBox(side, thickness, 0.0f);
+            Cuboid6 cuboid6 = BlockCable.getSideBox(side, thickness);
             for (EnumFacing renderedSide : EnumFacing.VALUES) {
                 if (renderedSide == side) {
                     if (renderFrontSide) {
@@ -208,11 +208,11 @@ public class CableRenderer implements ICCBlockRenderer, IItemRenderer {
         }
         float thickness = insulation.getThickness();
         int connectedSidesMask = blockCable.getActualConnections(tileEntityCable, world);
-        Cuboid6 baseBox = BlockCable.getSideBox(null, thickness, 0.0f);
+        Cuboid6 baseBox = BlockCable.getSideBox(null, thickness);
         BlockRenderer.renderCuboid(renderState, baseBox, 0);
         for (EnumFacing renderSide : EnumFacing.VALUES) {
             if ((connectedSidesMask & (1 << renderSide.getIndex())) > 0) {
-                Cuboid6 sideBox = BlockCable.getSideBox(renderSide, thickness, 0.0f);
+                Cuboid6 sideBox = BlockCable.getSideBox(renderSide, thickness);
                 BlockRenderer.renderCuboid(renderState, sideBox, 0);
             }
         }

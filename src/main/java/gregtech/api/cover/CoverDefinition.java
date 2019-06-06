@@ -10,7 +10,7 @@ import java.util.function.BiFunction;
 
 public final class CoverDefinition extends IForgeRegistryEntry.Impl {
 
-    public static GTControlledRegistry<ResourceLocation, CoverDefinition> registry = new GTControlledRegistry<>(Integer.MAX_VALUE);
+    public static final GTControlledRegistry<ResourceLocation, CoverDefinition> registry = new GTControlledRegistry<>(Integer.MAX_VALUE);
 
     public static CoverDefinition getCoverById(ResourceLocation id) {
         return registry.getObject(id);

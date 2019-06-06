@@ -2,7 +2,6 @@ package gregtech.common.covers.filter;
 
 import gregtech.api.gui.GuiTextures;
 import gregtech.api.gui.Widget;
-import gregtech.api.gui.widgets.LabelWidget;
 import gregtech.api.gui.widgets.PhantomSlotWidget;
 import gregtech.api.gui.widgets.ToggleButtonWidget;
 import net.minecraft.item.ItemStack;
@@ -12,19 +11,20 @@ import net.minecraftforge.items.ItemStackHandler;
 
 import java.util.function.Consumer;
 
-public class SimpleItemFilter extends AbstractItemFilter {
+public class SimpleItemFilter extends AbstractItemFilter implements ISlottedItemFilter {
 
     private static final int MAX_MATCH_SLOTS = 9;
 
     protected ItemStackHandler itemFilterSlots;
     protected boolean ignoreDamage = true;
     protected boolean ignoreNBT = true;
+    protected int maxStackSize = 1;
 
     public SimpleItemFilter() {
         this.itemFilterSlots = new ItemStackHandler(MAX_MATCH_SLOTS) {
             @Override
             public int getSlotLimit(int slot) {
-                return 1;
+                return maxStackSize;
             }
         };
     }
@@ -62,28 +62,51 @@ public class SimpleItemFilter extends AbstractItemFilter {
     }
 
     @Override
-    public int initUI(int y, Consumer<Widget> widgetGroup) {
-        widgetGroup.accept(new LabelWidget(10, 0, "cover.item_filter.title"));
+    public boolean testItemStack(ItemStack itemStack) {
+        return matchItemStack(itemStack) != -1;
+    }
+
+    @Override
+    public void setMaxStackSize(int maxStackSize) {
+        this.maxStackSize = maxStackSize;
+    }
+
+    @Override
+    public int getMaxStackSize() {
+        return maxStackSize;
+    }
+
+    @Override
+    public int getSlotStackSize(int slotIndex) {
+        return itemFilterSlots.getStackInSlot(slotIndex).getCount();
+    }
+
+    @Override
+    public int getTotalOccupiedHeight() {
+        return 36;
+    }
+
+    @Override
+    public void initUI(int y, Consumer<Widget> widgetGroup) {
         for (int i = 0; i < 9; i++) {
-            widgetGroup.accept(new PhantomSlotWidget(itemFilterSlots, i, 15 + 18 * (i % 3), 46 + 18 * (i / 3)).setBackgroundTexture(GuiTextures.SLOT));
+            widgetGroup.accept(new PhantomSlotWidget(itemFilterSlots, i, 10 + 18 * (i % 3), y + 18 * (i / 3)).setBackgroundTexture(GuiTextures.SLOT));
         }
-        widgetGroup.accept(new ToggleButtonWidget(74, 50, 20, 20, GuiTextures.BUTTON_FILTER_DAMAGE,
+        widgetGroup.accept(new ToggleButtonWidget(74, y, 20, 20, GuiTextures.BUTTON_FILTER_DAMAGE,
             () -> ignoreDamage, this::setIgnoreDamage).setTooltipText("cover.item_filter.ignore_damage"));
-        widgetGroup.accept(new ToggleButtonWidget(99, 50, 20, 20, GuiTextures.BUTTON_FILTER_NBT,
-            () -> ignoreNBT, this::setIgnoreNBT).setTooltipText("cover.item_filter.nbt_damage"));
-        return 70;
+        widgetGroup.accept(new ToggleButtonWidget(99, y, 20, 20, GuiTextures.BUTTON_FILTER_NBT,
+            () -> ignoreNBT, this::setIgnoreNBT).setTooltipText("cover.item_filter.ignore_nbt"));
     }
 
     @Override
     public void writeToNBT(NBTTagCompound tagCompound) {
-        tagCompound.setTag("FilterInventory", itemFilterSlots.serializeNBT());
+        tagCompound.setTag("ItemFilter", itemFilterSlots.serializeNBT());
         tagCompound.setBoolean("IgnoreDamage", ignoreDamage);
         tagCompound.setBoolean("IgnoreNBT", ignoreNBT);
     }
 
     @Override
     public void readFromNBT(NBTTagCompound tagCompound) {
-        this.itemFilterSlots.deserializeNBT(tagCompound.getCompoundTag("FilterInventory"));
+        this.itemFilterSlots.deserializeNBT(tagCompound.getCompoundTag("ItemFilter"));
         this.ignoreDamage = tagCompound.getBoolean("IgnoreDamage");
         this.ignoreNBT = tagCompound.getBoolean("IgnoreNBT");
     }

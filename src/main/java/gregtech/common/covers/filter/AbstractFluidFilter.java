@@ -1,9 +1,11 @@
 package gregtech.common.covers.filter;
 
 import gregtech.api.gui.IUIHolder;
-import gregtech.api.gui.widgets.AbstractWidgetGroup;
+import gregtech.api.gui.Widget;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fluids.FluidStack;
+
+import java.util.function.Consumer;
 
 public abstract class AbstractFluidFilter {
 
@@ -11,10 +13,9 @@ public abstract class AbstractFluidFilter {
 
     public abstract boolean testFluid(FluidStack fluidStack);
 
-    /**
-     * @return total occupied height
-     */
-    public abstract int initUI(int y, AbstractWidgetGroup widgetGroup);
+    public abstract int getMaxOccupiedHeight();
+
+    public abstract void initUI(int y, Consumer<Widget> widgetGroup);
 
     public abstract void writeToNBT(NBTTagCompound tagCompound);
 

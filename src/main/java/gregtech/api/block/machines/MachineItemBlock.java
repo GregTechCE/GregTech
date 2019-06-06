@@ -16,8 +16,6 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
-import net.minecraftforge.fml.common.Loader;
-import net.minecraftforge.fml.common.ModContainer;
 
 import javax.annotation.Nullable;
 import java.util.Arrays;
@@ -47,6 +45,17 @@ public class MachineItemBlock extends ItemBlock {
         //set opaque property on the placing on block, instead during set of meta tile entity
         return super.placeBlockAt(stack, player, world, pos, side, hitX, hitY, hitZ,
             newState.withProperty(BlockMachine.OPAQUE, metaTileEntity != null && metaTileEntity.isOpaqueCube()));
+    }
+
+    @Nullable
+    @Override
+    public String getCreatorModId(ItemStack itemStack) {
+        MetaTileEntity metaTileEntity = getMetaTileEntity(itemStack);
+        if (metaTileEntity == null) {
+            return GTValues.MODID;
+        }
+        ResourceLocation metaTileEntityId = metaTileEntity.metaTileEntityId;
+        return metaTileEntityId.getResourceDomain();
     }
 
     @Nullable
@@ -81,11 +90,6 @@ public class MachineItemBlock extends ItemBlock {
         metaTileEntity.addInformation(stack, worldIn, tooltip, flagIn.isAdvanced());
 
         ResourceLocation metaTileEntityId = metaTileEntity.metaTileEntityId;
-        if (!metaTileEntityId.getResourceDomain().equals(GTValues.MODID)) {
-            ModContainer modContainer = Loader.instance().getIndexedModList().get(metaTileEntityId.getResourceDomain());
-            String modName = modContainer == null ? metaTileEntityId.getResourceDomain() : modContainer.getName();
-            tooltip.add(I18n.format("gregtech.machine.tooltip.added_by", modName));
-        }
         if (flagIn.isAdvanced()) {
             tooltip.add(String.format("MetaTileEntity Id: %s", metaTileEntity.metaTileEntityId.toString()));
         }
