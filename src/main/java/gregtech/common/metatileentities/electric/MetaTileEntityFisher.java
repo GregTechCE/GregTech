@@ -105,7 +105,7 @@ public class MetaTileEntityFisher extends TieredMetaTileEntity {
             }
         }
         if(!getWorld().isRemote && getTimer() % 5 == 0) {
-            pushItemsIntoNearbyHandlers(getOutputFacing());
+            pushItemsIntoNearbyHandlers(getFrontFacing());
         }
     }
 
