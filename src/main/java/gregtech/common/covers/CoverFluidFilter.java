@@ -44,7 +44,7 @@ public class CoverFluidFilter extends CoverBehavior implements CoverWithUI {
         this.filterMode = FluidFilterMode.FILTER_FILL;
         this.titleLocale = titleLocale;
         this.texture = texture;
-        this.fluidFilter = new FluidFilterWrapper();
+        this.fluidFilter = new FluidFilterWrapper(this);
         this.fluidFilter.setFluidFilter(fluidFilter);
     }
 

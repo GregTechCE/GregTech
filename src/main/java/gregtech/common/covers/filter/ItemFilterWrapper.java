@@ -4,15 +4,21 @@ import gregtech.api.gui.GuiTextures;
 import gregtech.api.gui.Widget;
 import gregtech.api.gui.widgets.ServerWidgetGroup;
 import gregtech.api.gui.widgets.ToggleButtonWidget;
+import gregtech.api.util.IDirtyNotifiable;
 import net.minecraft.item.ItemStack;
 
 import java.util.function.Consumer;
 
 public class ItemFilterWrapper {
 
+    private final IDirtyNotifiable dirtyNotifiable;
     private boolean isBlacklistFilter = false;
     private int maxStackSize = 1;
     private AbstractItemFilter currentItemFilter;
+
+    public ItemFilterWrapper(IDirtyNotifiable dirtyNotifiable) {
+        this.dirtyNotifiable = dirtyNotifiable;
+    }
 
     public void initUI(int y, Consumer<Widget> widgetGroup) {
         ServerWidgetGroup blacklistButton = new ServerWidgetGroup(() -> getItemFilter() != null);
@@ -24,6 +30,9 @@ public class ItemFilterWrapper {
 
     public void setItemFilter(AbstractItemFilter itemFilter) {
         this.currentItemFilter = itemFilter;
+        if(currentItemFilter != null) {
+            currentItemFilter.setDirtyNotifiable(dirtyNotifiable);
+        }
     }
 
     public AbstractItemFilter getItemFilter() {
@@ -35,15 +44,18 @@ public class ItemFilterWrapper {
             ISlottedItemFilter filter = (ISlottedItemFilter) currentItemFilter;
             filter.setMaxStackSize(maxStackSize);
         }
+        dirtyNotifiable.markAsDirty();
     }
 
     public void setMaxStackSize(int maxStackSize) {
         this.maxStackSize = maxStackSize;
         onFilterInstanceChange();
+        dirtyNotifiable.markAsDirty();
     }
 
     public void setBlacklistFilter(boolean blacklistFilter) {
         isBlacklistFilter = blacklistFilter;
+        dirtyNotifiable.markAsDirty();
     }
 
     public boolean isBlacklistFilter() {

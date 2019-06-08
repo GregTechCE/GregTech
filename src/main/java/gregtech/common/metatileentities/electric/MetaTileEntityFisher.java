@@ -5,6 +5,8 @@ import codechicken.lib.render.pipeline.IVertexOperation;
 import codechicken.lib.vec.Matrix4;
 import gregtech.api.GTValues;
 import gregtech.api.gui.GuiTextures;
+import gregtech.api.gui.ModularUI;
+import gregtech.api.gui.widgets.SlotWidget;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.MetaTileEntityHolder;
 import gregtech.api.metatileentity.TieredMetaTileEntity;
@@ -13,13 +15,11 @@ import gregtech.api.unification.OreDictUnifier;
 import net.minecraft.block.BlockLiquid;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.resources.I18n;
-import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
-import gregtech.api.gui.ModularUI;
-import gregtech.api.gui.widgets.SlotWidget;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
@@ -27,7 +27,6 @@ import net.minecraft.world.storage.loot.LootContext;
 import net.minecraft.world.storage.loot.LootTable;
 import net.minecraft.world.storage.loot.LootTableList;
 import net.minecraftforge.items.IItemHandlerModifiable;
-import net.minecraftforge.items.ItemHandlerHelper;
 import net.minecraftforge.items.ItemStackHandler;
 
 import javax.annotation.Nonnull;
@@ -63,13 +62,13 @@ public class MetaTileEntityFisher extends TieredMetaTileEntity {
             18 + 18 * rowSize + 94)
             .label(10, 5, getMetaFullName())
             .widget(new SlotWidget(importItems, 0, 18, 18, true, true)
-                .setBackgroundTexture(GuiTextures.SLOT, GuiTextures.IN_SLOT_OVERLAY));
+                .setBackgroundTexture(GuiTextures.SLOT, GuiTextures.STRING_SLOT_OVERLAY));
 
         for (int y = 0; y < rowSize; y++) {
             for (int x = 0; x < rowSize; x++) {
                 int index = y * rowSize + x;
                 builder.widget(new SlotWidget(exportItems, index, 89 - rowSize * 9 + x * 18, 18 + y * 18, true, false)
-                    .setBackgroundTexture(GuiTextures.SLOT, GuiTextures.OUT_SLOT_OVERLAY));
+                    .setBackgroundTexture(GuiTextures.SLOT));
             }
         }
 
@@ -84,7 +83,7 @@ public class MetaTileEntityFisher extends TieredMetaTileEntity {
         if (!getWorld().isRemote && energyContainer.getEnergyStored() >= energyAmountPerFish && getTimer() % fishingTicks == 0L && !baitStack.isEmpty()) {
             WorldServer world = (WorldServer) this.getWorld();
             int waterCount = 0;
-            int edgeSize = Math.sqrt(WATER_CHECK_SIZE);
+            int edgeSize = (int) Math.sqrt(WATER_CHECK_SIZE);
             for (int x = 0; x < edgeSize; x++){
                 for (int z = 0; z < edgeSize; z++){
                     BlockPos waterCheckPos = getPos().down().add(x - edgeSize / 2, 0, z - edgeSize / 2);
@@ -96,7 +95,8 @@ public class MetaTileEntityFisher extends TieredMetaTileEntity {
             }
             if (waterCount == WATER_CHECK_SIZE) {
                 LootTable table = world.getLootTableManager().getLootTableFromLocation(LootTableList.GAMEPLAY_FISHING);
-                List<ItemStack> itemStacks = table.generateLootForPools(world.rand, new LootContext.Builder(world).build());
+                NonNullList<ItemStack> itemStacks = NonNullList.create();
+                itemStacks.addAll(table.generateLootForPools(world.rand, new LootContext.Builder(world).build()));
                 if(addItemsToItemHandler(exportItems, true, itemStacks)) {
                     addItemsToItemHandler(exportItems, false, itemStacks);
                     energyContainer.removeEnergy(energyAmountPerFish);
@@ -141,7 +141,7 @@ public class MetaTileEntityFisher extends TieredMetaTileEntity {
         tooltip.add(I18n.format("gregtech.universal.tooltip.voltage_in", energyContainer.getInputVoltage(), GTValues.VN[getTier()]));
         tooltip.add(I18n.format("gregtech.universal.tooltip.energy_storage_capacity", energyContainer.getEnergyCapacity()));
         tooltip.add(I18n.format("gregtech.machine.fisher.speed", fishingTicks));
-        tooltip.add(I18n.format("gregtech.machine.fisher.requirement", waterCheckSize));
+        tooltip.add(I18n.format("gregtech.machine.fisher.requirement", (int) Math.sqrt(WATER_CHECK_SIZE)));
         
     }
 }

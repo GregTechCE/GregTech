@@ -125,6 +125,7 @@ public class MaterialMetaItem extends StandardMetaItem {
 
     @Override
     public void onUpdate(ItemStack itemStack, World worldIn, Entity entityIn, int itemSlot, boolean isSelected) {
+        super.onUpdate(itemStack, worldIn, entityIn, itemSlot, isSelected);
         if (itemStack.getItemDamage() < metaItemOffset && generatedItems.contains((short) itemStack.getItemDamage()) && entityIn instanceof EntityLivingBase) {
             EntityLivingBase entity = (EntityLivingBase) entityIn;
             OrePrefix prefix = orePrefixes[itemStack.getItemDamage() / 1000];

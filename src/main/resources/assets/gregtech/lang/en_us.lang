@@ -27,14 +27,19 @@ gregtech.multiblock.electric_blast_furnace.description=The Electric Blast Furnac
 gregtech.multiblock.multi_smelter.description=The Multi Smelter is multiblock structure used for smelting massive amounts of items at once. Different tiers of coils provide speed boost and energy efficiency gain. 16 is base value of items smelted per operation, and can be multiplied by using higher level coils.
 gregtech.multiblock.large_boiler.description=Large Boilers are multiblocks that generate steam from energy source and water. Usually either solid fuel or some high-density fluid acts like energy source for large boiler. Tiers differ only by amount of steam outputted.
 gregtech.multiblock.large_turbine.description=Large Turbines are multiblocks that generate power from steam, gases and plasma by them spinning turbine's rotor. Energy output is based on rotor efficiency and current speed of turbine.
-metaitem.dust.tooltip.purify=Throw into Cauldron to get clean Dust
-metaitem.generic.fluid_container.tooltip=%d/%dL %s
-metaitem.generic.fluid_container.tooltip_empty=Empty
-metaitem.generic.electric_item.tooltip=%d/%d EU - Tier §e%d
-metaitem.int_circuit.configuration=Configuration: %d
+
 item.invalid.name=Invalid item
 fluid.empty=Empty
 
+metaitem.generic.fluid_container.tooltip=%d/%dL %s
+metaitem.generic.fluid_container.tooltip_empty=Empty
+metaitem.generic.electric_item.tooltip=%d/%d EU - Tier §e%d
+metaitem.electric.discharge_mode.enabled=§eDischarge Mode Enabled
+metaitem.electric.discharge_mode.disabled=§eDischarge Mode Disabled
+metaitem.electric.discharge_mode.tooltip=Shift click to toggle discharge mode
+
+metaitem.dust.tooltip.purify=Throw into Cauldron to get clean Dust
+metaitem.int_circuit.configuration=Configuration: %d
 metaitem.credit.copper.name=Copper Credit
 metaitem.credit.copper.tooltip=0.125 Credits
 metaitem.credit.cupronickel.name=Cupronickel Credit

@@ -59,6 +59,11 @@ public class ElectricItem implements IElectricItem, ICapabilityProvider {
     }
 
     @Override
+    public long getTransferLimit() {
+        return GTValues.V[getTier()];
+    }
+
+    @Override
     public long getMaxCharge() {
         NBTTagCompound tagCompound = itemStack.getTagCompound();
         if (tagCompound == null)
@@ -90,7 +95,7 @@ public class ElectricItem implements IElectricItem, ICapabilityProvider {
         if ((chargeable || amount == Long.MAX_VALUE) && (chargerTier >= tier) && amount > 0L) {
             long canReceive = getMaxCharge() - getCharge();
             if (!ignoreTransferLimit) {
-                amount = Math.min(amount, GTValues.V[tier]);
+                amount = Math.min(amount, getTransferLimit());
             }
             long charged = amount > canReceive ? canReceive : amount;
             if (!simulate) {
@@ -108,7 +113,7 @@ public class ElectricItem implements IElectricItem, ICapabilityProvider {
         }
         if ((canProvideEnergyExternally || !externally || amount == Long.MAX_VALUE) && (chargerTier >= tier) && amount > 0L) {
             if (!ignoreTransferLimit) {
-                amount = Math.min(amount, GTValues.V[tier]);
+                amount = Math.min(amount, getTransferLimit());
             }
             long charge = getCharge();
             long discharged = amount > charge ? charge : amount;

@@ -3,14 +3,20 @@ package gregtech.common.covers.filter;
 import gregtech.api.gui.GuiTextures;
 import gregtech.api.gui.Widget;
 import gregtech.api.gui.widgets.ToggleButtonWidget;
+import gregtech.api.util.IDirtyNotifiable;
 import net.minecraftforge.fluids.FluidStack;
 
 import java.util.function.Consumer;
 
 public class FluidFilterWrapper {
 
+    private final IDirtyNotifiable dirtyNotifiable;
     private boolean isBlacklistFilter = false;
     private AbstractFluidFilter currentFluidFilter;
+
+    public FluidFilterWrapper(IDirtyNotifiable dirtyNotifiable) {
+        this.dirtyNotifiable = dirtyNotifiable;
+    }
 
     public void initUI(int y, Consumer<Widget> widgetGroup) {
         widgetGroup.accept(new ToggleButtonWidget(146, y, 20, 20, GuiTextures.BUTTON_BLACKLIST,
@@ -20,6 +26,9 @@ public class FluidFilterWrapper {
 
     public void setFluidFilter(AbstractFluidFilter fluidFilter) {
         this.currentFluidFilter = fluidFilter;
+        if(currentFluidFilter != null) {
+            currentFluidFilter.setDirtyNotifiable(dirtyNotifiable);
+        }
     }
 
     public AbstractFluidFilter getFluidFilter() {
@@ -27,10 +36,12 @@ public class FluidFilterWrapper {
     }
 
     public void onFilterInstanceChange() {
+        dirtyNotifiable.markAsDirty();
     }
 
     public void setBlacklistFilter(boolean blacklistFilter) {
         isBlacklistFilter = blacklistFilter;
+        dirtyNotifiable.markAsDirty();
     }
 
     public boolean isBlacklistFilter() {

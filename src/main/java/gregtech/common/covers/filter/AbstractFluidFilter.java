@@ -1,7 +1,7 @@
 package gregtech.common.covers.filter;
 
-import gregtech.api.gui.IUIHolder;
 import gregtech.api.gui.Widget;
+import gregtech.api.util.IDirtyNotifiable;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -9,7 +9,7 @@ import java.util.function.Consumer;
 
 public abstract class AbstractFluidFilter {
 
-    private IUIHolder holder;
+    private IDirtyNotifiable dirtyNotifiable;
 
     public abstract boolean testFluid(FluidStack fluidStack);
 
@@ -21,17 +21,13 @@ public abstract class AbstractFluidFilter {
 
     public abstract void readFromNBT(NBTTagCompound tagCompound);
 
-    public final void setHolder(IUIHolder holder) {
-        this.holder = holder;
-    }
-
-    public IUIHolder getHolder() {
-        return holder;
+    public final void setDirtyNotifiable(IDirtyNotifiable dirtyNotifiable) {
+        this.dirtyNotifiable = dirtyNotifiable;
     }
 
     public final void markDirty() {
-        if(holder != null) {
-            holder.markAsDirty();
+        if(dirtyNotifiable != null) {
+            dirtyNotifiable.markAsDirty();
         }
     }
 }

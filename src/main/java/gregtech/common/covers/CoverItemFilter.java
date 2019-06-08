@@ -43,7 +43,7 @@ public class CoverItemFilter extends CoverBehavior implements CoverWithUI {
         super(coverHolder, attachedSide);
         this.titleLocale = titleLocale;
         this.texture = texture;
-        this.itemFilter = new ItemFilterWrapper();
+        this.itemFilter = new ItemFilterWrapper(this);
         this.itemFilter.setItemFilter(itemFilter);
         this.itemFilter.setMaxStackSize(1);
     }

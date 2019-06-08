@@ -400,6 +400,13 @@ public abstract class MetaItem<T extends MetaItem<?>.MetaValueItem> extends Item
     }
 
     @Override
+    public void onUpdate(ItemStack stack, World worldIn, Entity entityIn, int itemSlot, boolean isSelected) {
+        for (IItemBehaviour behaviour : getBehaviours(stack)) {
+            behaviour.onUpdate(stack, entityIn);
+        }
+    }
+
+    @Override
     @SideOnly(Side.CLIENT)
     public String getItemStackDisplayName(ItemStack stack) {
         if (stack.getItemDamage() >= metaItemOffset) {

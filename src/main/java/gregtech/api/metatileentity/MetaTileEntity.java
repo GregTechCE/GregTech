@@ -11,6 +11,7 @@ import codechicken.lib.vec.Matrix4;
 import com.google.common.base.Preconditions;
 import gregtech.api.GregTechAPI;
 import gregtech.api.capability.GregtechTileCapabilities;
+import gregtech.api.capability.IEnergyContainer;
 import gregtech.api.capability.impl.FluidHandlerProxy;
 import gregtech.api.capability.impl.FluidTankList;
 import gregtech.api.capability.impl.ItemHandlerProxy;
@@ -730,13 +731,20 @@ public abstract class MetaTileEntity implements ICoverable {
             getItemInventory().getSlots() > 0) {
             return CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.cast(getItemInventory());
         }
+        T capabilityResult = null;
         for (MTETrait mteTrait : this.mteTraits) {
-            T capabilityResult = mteTrait.getCapability(capability);
+            capabilityResult = mteTrait.getCapability(capability);
             if(capabilityResult != null) {
-                return capabilityResult;
+                break;
             }
         }
-        return null;
+        if(capabilityResult instanceof IEnergyContainer) {
+            IEnergyContainer energyContainer = (IEnergyContainer) capabilityResult;
+            if(!energyContainer.inputsEnergy(side) && !energyContainer.outputsEnergy(side)) {
+                return null; //do not provide energy container if it can't input or output energy at all
+            }
+        }
+        return capabilityResult;
     }
 
     public boolean fillInternalTankFromFluidContainer(IItemHandlerModifiable importItems, IItemHandlerModifiable exportItems, int inputSlot, int outputSlot) {
@@ -785,7 +793,7 @@ public abstract class MetaTileEntity implements ICoverable {
             if (fluidHandler == null || myFluidHandler == null) {
                 continue;
             }
-            CoverPump.moveHandlerFluids(myFluidHandler, fluidHandler, Integer.MAX_VALUE, CoverPump.ALWAYS_TRUE);
+            CoverPump.moveHandlerFluids(myFluidHandler, fluidHandler, Integer.MAX_VALUE, fluid -> true);
         }
         blockPos.release();
     }
@@ -804,7 +812,7 @@ public abstract class MetaTileEntity implements ICoverable {
             if (fluidHandler == null || myFluidHandler == null) {
                 continue;
             }
-            CoverPump.moveHandlerFluids(fluidHandler, myFluidHandler, Integer.MAX_VALUE, CoverPump.ALWAYS_TRUE);
+            CoverPump.moveHandlerFluids(fluidHandler, myFluidHandler, Integer.MAX_VALUE, fluid -> true);
         }
         blockPos.release();
     }

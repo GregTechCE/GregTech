@@ -5,6 +5,7 @@ import gregtech.api.gui.IUIHolder;
 import gregtech.api.gui.Widget;
 import gregtech.api.gui.widgets.LabelWidget;
 import gregtech.api.gui.widgets.SlotWidget;
+import gregtech.api.util.IDirtyNotifiable;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.INBTSerializable;
@@ -16,13 +17,13 @@ import java.util.function.Consumer;
 
 public class FluidFilterContainer implements INBTSerializable<NBTTagCompound> {
 
-    private final IUIHolder holder;
+    private final IDirtyNotifiable dirtyNotifiable;
     private final ItemStackHandler filterInventory;
     private final FluidFilterWrapper filterWrapper;
 
-    public FluidFilterContainer(IUIHolder holder) {
-        this.holder = holder;
-        this.filterWrapper = new FluidFilterWrapper();
+    public FluidFilterContainer(IDirtyNotifiable dirtyNotifiable) {
+        this.dirtyNotifiable = dirtyNotifiable;
+        this.filterWrapper = new FluidFilterWrapper(dirtyNotifiable);
         this.filterInventory = new ItemStackHandler(1) {
             @Override
             public boolean isItemValid(int slot, @Nonnull ItemStack stack) {
@@ -68,7 +69,6 @@ public class FluidFilterContainer implements INBTSerializable<NBTTagCompound> {
             }
         } else if (currentFluidFilter == null ||
             newFluidFilter.getClass() != currentFluidFilter.getClass()) {
-            newFluidFilter.setHolder(holder);
             filterWrapper.setFluidFilter(newFluidFilter);
             if (notify) filterWrapper.onFilterInstanceChange();
         }

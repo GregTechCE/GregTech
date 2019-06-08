@@ -253,7 +253,7 @@ public abstract class AbstractRecipeLogic extends MTETrait implements IWorkable 
             //do not overclock further if duration is already too small
             while (resultDuration >= 3 && resultEUt <= GTValues.V[tier - 1]) {
                 resultEUt *= 4;
-                resultDuration /= 2.7;
+                resultDuration /= 2.8;
             }
             return new int[]{negativeEU ? -resultEUt : resultEUt, (int) Math.ceil(resultDuration)};
         }

@@ -1,6 +1,8 @@
 package gregtech.api.gui;
 
-public interface IUIHolder {
+import gregtech.api.util.IDirtyNotifiable;
+
+public interface IUIHolder extends IDirtyNotifiable {
 
     boolean isValid();
 

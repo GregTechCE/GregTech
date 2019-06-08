@@ -197,6 +197,7 @@ public class MetaTileEntityBlockBreaker extends TieredMetaTileEntity {
     public void setOutputFacing(EnumFacing outputFacing) {
         this.outputFacing = outputFacing;
         if (!getWorld().isRemote) {
+            getHolder().notifyBlockUpdate();
             writeCustomData(100, buf -> buf.writeByte(outputFacing.getIndex()));
             markDirty();
         }

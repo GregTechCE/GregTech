@@ -29,7 +29,7 @@ public interface IItemBehaviour extends IMetaItemStats {
     default void addInformation(ItemStack itemStack, List<String> lines) {
     }
 
-    default void onUpdate(ItemStack itemStack, World world, Entity player, int timer, boolean isInHand) {
+    default void onUpdate(ItemStack itemStack, Entity entity) {
     }
 
     default ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand) {

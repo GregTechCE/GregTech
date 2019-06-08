@@ -1,10 +1,10 @@
 package gregtech.common.covers.filter;
 
 import gregtech.api.gui.GuiTextures;
-import gregtech.api.gui.IUIHolder;
 import gregtech.api.gui.Widget;
 import gregtech.api.gui.widgets.LabelWidget;
 import gregtech.api.gui.widgets.SlotWidget;
+import gregtech.api.util.IDirtyNotifiable;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.INBTSerializable;
@@ -15,13 +15,13 @@ import java.util.function.Consumer;
 
 public class ItemFilterContainer implements INBTSerializable<NBTTagCompound> {
 
-    private final IUIHolder holder;
+    private final IDirtyNotifiable dirtyNotifiable;
     private final ItemStackHandler filterInventory;
     private final ItemFilterWrapper filterWrapper;
 
-    public ItemFilterContainer(IUIHolder holder) {
-        this.holder = holder;
-        this.filterWrapper = new ItemFilterWrapper();
+    public ItemFilterContainer(IDirtyNotifiable dirtyNotifiable) {
+        this.dirtyNotifiable = dirtyNotifiable;
+        this.filterWrapper = new ItemFilterWrapper(dirtyNotifiable);
         this.filterInventory = new ItemStackHandler(1) {
             @Override
             public boolean isItemValid(int slot, @Nonnull ItemStack stack) {
@@ -68,7 +68,6 @@ public class ItemFilterContainer implements INBTSerializable<NBTTagCompound> {
             }
         } else if (currentItemFilter == null ||
             newItemFilter.getClass() != currentItemFilter.getClass()) {
-            newItemFilter.setHolder(holder);
             filterWrapper.setItemFilter(newItemFilter);
             if (notify) filterWrapper.onFilterInstanceChange();
         }
