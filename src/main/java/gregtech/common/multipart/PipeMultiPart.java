@@ -11,20 +11,21 @@ import codechicken.lib.vec.Vector3;
 import codechicken.lib.vec.uv.IconTransformation;
 import codechicken.multipart.*;
 import com.google.common.collect.Lists;
-import gregtech.api.capability.GregtechCapabilities;
+import gnu.trove.map.TIntIntMap;
+import gnu.trove.map.hash.TIntIntHashMap;
 import gregtech.api.capability.GregtechTileCapabilities;
-import gregtech.api.capability.tool.IScrewdriverItem;
 import gregtech.api.cover.CoverBehavior;
 import gregtech.api.cover.ICoverable;
+import gregtech.api.cover.ICoverable.CoverSideData;
 import gregtech.api.pipenet.PipeNet;
 import gregtech.api.pipenet.WorldPipeNet;
 import gregtech.api.pipenet.block.BlockPipe;
 import gregtech.api.pipenet.block.IPipeType;
+import gregtech.api.pipenet.tile.AttachmentType;
 import gregtech.api.pipenet.tile.IPipeTile;
 import gregtech.api.pipenet.tile.PipeCoverableImplementation;
 import gregtech.api.unification.material.type.Material;
 import gregtech.api.util.ParticleHandlerUtil;
-import gregtech.common.tools.DamageValues;
 import io.netty.buffer.Unpooled;
 import net.minecraft.block.Block;
 import net.minecraft.client.particle.ParticleManager;
@@ -33,7 +34,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.PacketBuffer;
-import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.ResourceLocation;
@@ -43,6 +43,7 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import org.apache.commons.lang3.tuple.Pair;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -56,10 +57,11 @@ public abstract class PipeMultiPart<PipeType extends Enum<PipeType> & IPipeType<
     private PipeType pipeType;
     private Material material;
     protected int insulationColor = DEFAULT_INSULATION_COLOR;
-    private int blockedConnections;
-    private int coverBlockedConnections;
     private NodeDataType cachedNodeData;
     private final PipeCoverableImplementation coverableImplementation = new PipeCoverableImplementation(this);
+
+    private TIntIntMap blockedConnectionsMap = new TIntIntHashMap();
+    private int blockedConnections = 0;
 
     protected int activeConnections;
     protected Cuboid6 centerBox;
@@ -87,7 +89,7 @@ public abstract class PipeMultiPart<PipeType extends Enum<PipeType> & IPipeType<
         this.pipeBlock = sourceTile.getPipeBlock();
         this.pipeType = sourceTile.getPipeType();
         this.material = sourceTile.getPipeMaterial();
-        this.blockedConnections = sourceTile.getBlockedConnections();
+        this.blockedConnectionsMap = sourceTile.getBlockedConnectionsMap();
         sourceTile.getCoverableImplementation().transferDataTo(getCoverableImplementation());
         //transfer other part-related data only from multi parts
         if (sourceTile instanceof PipeMultiPart) {
@@ -96,6 +98,7 @@ public abstract class PipeMultiPart<PipeType extends Enum<PipeType> & IPipeType<
             this.centerBox = sourcePart.centerBox;
             this.sidedConnections = sourcePart.sidedConnections;
         }
+        recomputeBlockedConnections();
         reinitializeShape();
     }
 
@@ -133,13 +136,57 @@ public abstract class PipeMultiPart<PipeType extends Enum<PipeType> & IPipeType<
         return material;
     }
 
-    public void setConnectionBlocked(EnumFacing side, boolean blocked) {
-        if (blocked) {
-            this.coverBlockedConnections |= 1 << side.getIndex();
-        } else {
-            this.coverBlockedConnections &= ~(1 << side.getIndex());
+    @Override
+    public TIntIntMap getBlockedConnectionsMap() {
+        return new TIntIntHashMap(blockedConnectionsMap);
+    }
+
+    @Override
+    public boolean isConnectionBlocked(AttachmentType type, EnumFacing side) {
+        int blockedConnections = blockedConnectionsMap.get(type.ordinal());
+        return (blockedConnections & 1 << side.getIndex()) > 0;
+    }
+
+    @Override
+    public void setConnectionBlocked(AttachmentType attachmentType, EnumFacing side, boolean blocked) {
+        int blockedConnections = blockedConnectionsMap.get(attachmentType.ordinal());
+        this.blockedConnectionsMap.put(attachmentType.ordinal(), withSideConnectionBlocked(blockedConnections, side, blocked));
+        recomputeBlockedConnections();
+        updateActualConnections();
+        if (!getPipeWorld().isRemote) {
+            updateSideBlockedConnection(side);
+            MCDataOutput writeStream = getWriteStream();
+            writeStream.writeByte(3);
+            writeStream.writeVarInt(this.blockedConnections);
+            markAsDirty();
         }
-        updateBlockedConnections();
+    }
+
+    private void recomputeBlockedConnections() {
+        int resultBlockedConnections = 0;
+        for(int blockedConnections : blockedConnectionsMap.values()) {
+            resultBlockedConnections |= blockedConnections;
+        }
+        this.blockedConnections = resultBlockedConnections;
+    }
+
+    private void updateSideBlockedConnection(EnumFacing side) {
+        WorldPipeNet<?, ?> worldPipeNet = getPipeBlock().getWorldPipeNet(getPipeWorld());
+        boolean isSideBlocked = false;
+        int sideIndex = 1 << side.getIndex();
+        for(int blockedConnections : blockedConnectionsMap.values()) {
+            isSideBlocked |= (blockedConnections & sideIndex) > 0;
+        }
+        worldPipeNet.updateBlockedConnections(getPipePos(), side, isSideBlocked);
+    }
+
+    private int withSideConnectionBlocked(int blockedConnections, EnumFacing side, boolean blocked) {
+        int index = 1 << side.getIndex();
+        if(blocked) {
+            return blockedConnections | index;
+        } else {
+            return blockedConnections & ~index;
+        }
     }
 
     @Override
@@ -206,12 +253,16 @@ public abstract class PipeMultiPart<PipeType extends Enum<PipeType> & IPipeType<
         boolean isCoverable = capability == GregtechTileCapabilities.CAPABILITY_COVERABLE;
         CoverBehavior coverBehavior = facing == null ? null : getCoverableImplementation().getCoverAtSide(facing);
         T defaultValue = getCapabilityInternal(capability, facing);
-        if (!isCoverable && facing != null) {
-            if (coverBehavior != null) {
-                return coverBehavior.getCapability(capability, defaultValue);
-            } else if ((blockedConnections & (1 << facing.getIndex())) > 0) {
-                return null;
-            }
+        if(isCoverable) {
+            return defaultValue;
+        }
+        //if there is no cover, only provide capability if facing is not blocked
+        if(coverBehavior == null && facing != null) {
+            boolean isBlocked = (blockedConnections & 1 << facing.getIndex()) > 0;
+            return isBlocked ? null : defaultValue;
+        }
+        if(coverBehavior != null) {
+            return coverBehavior.getCapability(capability, defaultValue);
         }
         return defaultValue;
     }
@@ -239,14 +290,12 @@ public abstract class PipeMultiPart<PipeType extends Enum<PipeType> & IPipeType<
 
     @Override
     public ItemStack pickItem(CuboidRayTraceResult hit) {
-        if (hit.cuboid6.data == null) {
-            return getDropStack();
-        } else if (hit.cuboid6.data instanceof EnumFacing) {
-            EnumFacing coverSide = (EnumFacing) hit.cuboid6.data;
+        if (hit.cuboid6.data instanceof CoverSideData) {
+            EnumFacing coverSide = ((CoverSideData) hit.cuboid6.data).side;
             CoverBehavior coverBehavior = getCoverableImplementation().getCoverAtSide(coverSide);
             return coverBehavior == null ? ItemStack.EMPTY : coverBehavior.getCoverDefinition().getDropItemStack();
         }
-        return ItemStack.EMPTY;
+        return getDropStack();
     }
 
     private ItemStack getDropStack() {
@@ -276,41 +325,30 @@ public abstract class PipeMultiPart<PipeType extends Enum<PipeType> & IPipeType<
         }
     }
 
-    private void updateBlockedConnections() {
+    private boolean isMultipartConnectionBlocked(EnumFacing side) {
+        int blockedConnections = blockedConnectionsMap.get(AttachmentType.MULTIPART.ordinal());
+        return (blockedConnections & 1 << side.getIndex()) > 0;
+    }
+
+    private void updateMultipartBlockedConnections() {
         TileMultipart tileMultipart = tile();
         if (tileMultipart == null || tileMultipart.isInvalid())
             return;
         float thickness = getPipeType().getThickness();
-        int lastBlockedConnections = blockedConnections;
 
-        this.blockedConnections = 0;
         for (EnumFacing cableSide : EnumFacing.VALUES) {
-            if ((coverBlockedConnections & (1 << cableSide.getIndex())) > 0) {
-                this.blockedConnections |= 1 << cableSide.getIndex();
-                continue;
-            }
             Cuboid6 sideBox = BlockPipe.getSideBox(cableSide, thickness);
             NormallyOccludedPart part = new NormallyOccludedPart(sideBox);
-            if (!tileMultipart.canReplacePart(this, part)) {
-                this.blockedConnections |= 1 << cableSide.getIndex();
+            boolean isConnectionBlocked = !tileMultipart.canReplacePart(this, part);
+            boolean wasConnectionBlocked = isMultipartConnectionBlocked(cableSide);
+            if(isConnectionBlocked != wasConnectionBlocked) {
+                setConnectionBlocked(AttachmentType.MULTIPART, cableSide, isConnectionBlocked);
             }
-        }
-
-        if (lastBlockedConnections != blockedConnections) {
-            WorldPipeNet<NodeDataType, ?> worldPipeNet = pipeBlock.getWorldPipeNet(world());
-            for (EnumFacing side : EnumFacing.VALUES) {
-                boolean isBlockedCurrently = (blockedConnections & 1 << side.getIndex()) > 0;
-                boolean wasBlocked = (lastBlockedConnections & 1 << side.getIndex()) > 0;
-                if (isBlockedCurrently == wasBlocked) continue;
-                worldPipeNet.updateBlockedConnections(pos(), side, isBlockedCurrently);
-            }
-            updateActualConnections();
         }
     }
 
     private void updateActualConnections() {
         int lastActualConnections = activeConnections;
-
         TileMultipart tileMultipart = tile();
         if (tileMultipart != null && !tileMultipart.isInvalid()) {
             this.activeConnections = pipeBlock.getActualConnections(this, tileMultipart.getWorld());
@@ -324,11 +362,11 @@ public abstract class PipeMultiPart<PipeType extends Enum<PipeType> & IPipeType<
     @Override
     public void onAdded() {
         if (!this.isBeingReplaced) {
-            this.updateBlockedConnections();
+            this.updateMultipartBlockedConnections();
             this.updateActualConnections();
             this.isBeingReplaced = false;
             if (!world().isRemote) {
-                getPipeBlock().getWorldPipeNet(world()).addNode(pos(), getNodeData(), getMark(), getBlockedConnections(), pipeBlock.getActiveNodeConnections(world(), pos()) > 0);
+                getPipeBlock().getWorldPipeNet(world()).addNode(pos(), getNodeData(), getMark(), getBlockedConnections(), pipeBlock.getActiveNodeConnections(world(), pos(), this) > 0);
             }
         }
         reinitializeShape();
@@ -336,26 +374,7 @@ public abstract class PipeMultiPart<PipeType extends Enum<PipeType> & IPipeType<
 
     @Override
     public boolean activate(EntityPlayer player, CuboidRayTraceResult hit, ItemStack item, EnumHand hand) {
-        EnumFacing coverSide = ICoverable.traceCoverSide(hit);
-        CoverBehavior coverBehavior = coverSide == null ? null : getCoverableImplementation().getCoverAtSide(coverSide);
-        ItemStack itemStack = player.getHeldItem(hand);
-
-        if (coverBehavior == null) {
-            return false;
-        }
-
-        if (itemStack.hasCapability(GregtechCapabilities.CAPABILITY_SCREWDRIVER, null)) {
-            IScrewdriverItem screwdriver = itemStack.getCapability(GregtechCapabilities.CAPABILITY_SCREWDRIVER, null);
-
-            if (screwdriver.damageItem(DamageValues.DAMAGE_FOR_SCREWDRIVER, true) && coverBehavior
-                .onScrewdriverClick(player, hand, hit) == EnumActionResult.SUCCESS) {
-                screwdriver.damageItem(DamageValues.DAMAGE_FOR_SCREWDRIVER, false);
-                return true;
-            }
-            return false;
-        }
-
-        return coverBehavior.onRightClick(player, hand, hit) == EnumActionResult.SUCCESS;
+        return getPipeBlock().onPipeActivated(player, hand, hit, this);
     }
 
     @Override
@@ -412,7 +431,7 @@ public abstract class PipeMultiPart<PipeType extends Enum<PipeType> & IPipeType<
 
     @Override
     public void scheduledTick() {
-        updateBlockedConnections();
+        updateMultipartBlockedConnections();
         updateActualConnections();
         if (!world().isRemote) {
             getWriteStream().writeByte(1);
@@ -421,7 +440,7 @@ public abstract class PipeMultiPart<PipeType extends Enum<PipeType> & IPipeType<
     }
 
     public void updateActiveNodeStatus() {
-        int activeConnections = pipeBlock.getActiveNodeConnections(world(), pos());
+        int activeConnections = pipeBlock.getActiveNodeConnections(world(), pos(), this);
         activeConnections &= ~getBlockedConnections();
         boolean isActiveNode = activeConnections > 0;
         PipeNet<NodeDataType> pipeNet = pipeBlock.getWorldPipeNet(world()).getNetFromPos(pos());
@@ -450,9 +469,12 @@ public abstract class PipeMultiPart<PipeType extends Enum<PipeType> & IPipeType<
         tag.setString("PipeMaterial", material.toString());
         tag.setInteger("InsulationColor", insulationColor);
         tag.setInteger("ActiveConnections", activeConnections);
-        if (blockedConnections > 0) {
-            tag.setInteger("BlockedConnections", blockedConnections);
+        NBTTagCompound blockedConnectionsTag = new NBTTagCompound();
+        for(int attachmentType : blockedConnectionsMap.keys()) {
+            int blockedConnections = blockedConnectionsMap.get(attachmentType);
+            blockedConnectionsTag.setInteger(Integer.toString(attachmentType), blockedConnections);
         }
+        tag.setTag("BlockedConnectionsMap", blockedConnectionsTag);
         getCoverableImplementation().readFromNBT(tag);
     }
 
@@ -465,7 +487,18 @@ public abstract class PipeMultiPart<PipeType extends Enum<PipeType> & IPipeType<
         this.material = Material.MATERIAL_REGISTRY.getObject(tag.getString("PipeMaterial"));
         this.insulationColor = tag.getInteger("InsulationColor");
         this.activeConnections = tag.getInteger("ActiveConnections");
-        this.blockedConnections = tag.getInteger("BlockedConnections");
+        this.blockedConnectionsMap.clear();
+        NBTTagCompound blockedConnectionsTag = tag.getCompoundTag("BlockedConnectionsMap");
+        for(String attachmentTypeKey : blockedConnectionsTag.getKeySet()) {
+            int attachmentType = Integer.parseInt(attachmentTypeKey);
+            int blockedConnections = blockedConnectionsTag.getInteger(attachmentTypeKey);
+            this.blockedConnectionsMap.put(attachmentType, blockedConnections);
+        }
+        if(tag.hasKey("BlockedConnections")) {
+            int blockedConnections = tag.getInteger("BlockedConnections");
+            this.blockedConnectionsMap.put(AttachmentType.MULTIPART.ordinal(), blockedConnections);
+        }
+        recomputeBlockedConnections();
         getCoverableImplementation().writeToNBT(tag);
         reinitializeShape();
     }
@@ -512,7 +545,7 @@ public abstract class PipeMultiPart<PipeType extends Enum<PipeType> & IPipeType<
             PacketBuffer buffer = new PacketBuffer(Unpooled.wrappedBuffer(payload));
             getCoverableImplementation().readCustomData(dataId, buffer);
         } else if (packetType == 3) {
-            tile().markRender();
+            this.blockedConnections = packet.readVarInt();
         }
         tile().markRender();
     }
@@ -603,15 +636,17 @@ public abstract class PipeMultiPart<PipeType extends Enum<PipeType> & IPipeType<
     }
 
     @SideOnly(Side.CLIENT)
-    public abstract TextureAtlasSprite getParticleTexture();
+    public abstract Pair<TextureAtlasSprite, Integer> getParticleTexture();
 
     @Override
     public void addHitEffects(CuboidRayTraceResult hit, ParticleManager manager) {
-        ParticleHandlerUtil.addHitEffects(world(), hit, getParticleTexture(), manager);
+        Pair<TextureAtlasSprite, Integer> atlasSprite = getParticleTexture();
+        ParticleHandlerUtil.addHitEffects(world(), hit, atlasSprite.getLeft(), atlasSprite.getRight(), manager);
     }
 
     @Override
     public void addDestroyEffects(CuboidRayTraceResult hit, ParticleManager manager) {
-        ParticleHandlerUtil.addBlockDestroyEffects(world(), hit, getParticleTexture(), manager);
+        Pair<TextureAtlasSprite, Integer> atlasSprite = getParticleTexture();
+        ParticleHandlerUtil.addBlockDestroyEffects(world(), hit, atlasSprite.getLeft(), atlasSprite.getRight(), manager);
     }
 }

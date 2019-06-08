@@ -39,6 +39,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.IItemHandlerModifiable;
 import net.minecraftforge.items.ItemHandlerHelper;
 import net.minecraftforge.items.ItemStackHandler;
+import org.apache.commons.lang3.tuple.Pair;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
@@ -213,9 +214,12 @@ public class MetaTileEntityChest extends MetaTileEntity implements IFastRenderMe
 
     @Override
     @SideOnly(Side.CLIENT)
-    public TextureAtlasSprite getParticleTexture() {
-        return ModHandler.isMaterialWood(material) ? Textures.WOODEN_CHEST.getParticleTexture() :
-            Textures.METAL_CHEST.getParticleTexture();
+    public Pair<TextureAtlasSprite, Integer> getParticleTexture() {
+        if(ModHandler.isMaterialWood(material)) {
+            return Pair.of(Textures.WOODEN_CHEST.getParticleTexture(), getPaintingColor());
+        } else {
+            return Pair.of(Textures.METAL_CHEST.getParticleTexture(), getPaintingColor());
+        }
     }
 
     @Override
@@ -251,7 +255,7 @@ public class MetaTileEntityChest extends MetaTileEntity implements IFastRenderMe
     @Override
     protected ModularUI createUI(EntityPlayer entityPlayer) {
         Builder builder = ModularUI.builder(GuiTextures.BACKGROUND,
-            14 + rowSize * 18,
+            Math.max(176, 14 + rowSize * 18),
             18 + 18 * amountOfRows + 94)
             .label(5, 5, getMetaFullName());
         builder.widget(new SortingButtonWidget(111, 4, 60, 10, "gregtech.gui.sort",
@@ -263,7 +267,7 @@ public class MetaTileEntityChest extends MetaTileEntity implements IFastRenderMe
                 builder.slot(inventory, index, 8 + x * 18, 18 + y * 18, GuiTextures.SLOT);
             }
         }
-        int startX = (14 + rowSize * 18 - 162) / 2;
+        int startX = (Math.max(176, 14 + rowSize * 18) - 162) / 2;
         builder.bindPlayerInventory(entityPlayer.inventory, GuiTextures.SLOT, startX, 18 + 18 * amountOfRows + 12);
         if (!getWorld().isRemote) {
             builder.bindOpenListener(() -> onContainerOpen(entityPlayer));

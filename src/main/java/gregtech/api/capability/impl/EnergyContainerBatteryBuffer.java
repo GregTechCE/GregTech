@@ -6,10 +6,12 @@ import gregtech.api.GTValues;
 import gregtech.api.capability.GregtechCapabilities;
 import gregtech.api.capability.IElectricItem;
 import gregtech.api.capability.IEnergyContainer;
+import gregtech.api.capability.impl.EnergyContainerHandler.IEnergyChangeListener;
 import gregtech.api.metatileentity.MTETrait;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.util.GTUtility;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.capabilities.Capability;
@@ -44,7 +46,11 @@ public class EnergyContainerBatteryBuffer extends MTETrait implements IEnergyCon
                 }
             }
         }
-        return initialAmperage - amperage;
+        long amperageUsed = initialAmperage - amperage;
+        if(amperageUsed > 0L) {
+            notifyEnergyListener(false);
+        }
+        return amperage;
     }
 
     private static boolean chargeItemWithVoltageExact(IElectricItem electricItem, long voltage, int tier, boolean simulate) {
@@ -96,6 +102,7 @@ public class EnergyContainerBatteryBuffer extends MTETrait implements IEnergyCon
                 inventory.setStackInSlot(i, batteryStack);
                 if (--amperageUsed == 0) break;
             }
+            notifyEnergyListener(false);
         }
     }
 
@@ -160,7 +167,23 @@ public class EnergyContainerBatteryBuffer extends MTETrait implements IEnergyCon
             energyToAdd -= charged;
             if(energyToAdd == 0L) break;
         }
-        return initialEnergyToAdd - energyToAdd;
+        long energyAdded = initialEnergyToAdd - energyToAdd;
+        if(energyAdded > 0L) {
+            notifyEnergyListener(false);
+        }
+        return energyAdded;
+    }
+
+    @Override
+    public void deserializeNBT(NBTTagCompound compound) {
+        super.deserializeNBT(compound);
+        notifyEnergyListener(true);
+    }
+
+    public void notifyEnergyListener(boolean isInitialChange) {
+        if (metaTileEntity instanceof IEnergyChangeListener) {
+            ((IEnergyChangeListener) metaTileEntity).onEnergyChanged(this, isInitialChange);
+        }
     }
 
     @Override

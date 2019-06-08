@@ -29,7 +29,7 @@ public interface INativeWidget {
     SlotLocationInfo getSlotLocationInfo();
 
     /**
-     * @return true when this slot is valid for shift clicking
+     * @return true when this slot is valid for double click merging
      */
     boolean canMergeSlot(ItemStack stack);
 

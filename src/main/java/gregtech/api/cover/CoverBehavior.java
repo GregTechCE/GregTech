@@ -129,6 +129,11 @@ public abstract class CoverBehavior implements IUIHolder {
         return Textures.VOLTAGE_CASINGS[GTValues.LV].getSpriteOnSide(RenderSide.SIDE);
     }
 
+    @SideOnly(Side.CLIENT)
+    public boolean shouldRenderConnected() {
+        return true;
+    }
+
     public boolean onLeftClick(EntityPlayer entityPlayer, CuboidRayTraceResult hitResult) {
         return false;
     }

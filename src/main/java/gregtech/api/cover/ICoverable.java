@@ -7,6 +7,8 @@ import codechicken.lib.render.CCRenderState;
 import codechicken.lib.render.pipeline.ColourMultiplier;
 import codechicken.lib.render.pipeline.IVertexOperation;
 import codechicken.lib.vec.*;
+import gregtech.api.pipenet.block.BlockPipe;
+import gregtech.api.pipenet.block.BlockPipe.PipeConnectionData;
 import gregtech.api.render.Textures;
 import gregtech.api.util.GTUtility;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
@@ -117,25 +119,26 @@ public interface ICoverable {
                 if (getCoverAtSide(side) != null) {
                     Cuboid6 coverBox = getCoverPlateBox(side, plateThickness, offsetSide);
                     coverBox.expand(coverOffset);
-                    collisionList.add(new IndexedCuboid6(side, coverBox));
+                    CoverSideData coverSideData = new CoverSideData(side);
+                    collisionList.add(new IndexedCuboid6(coverSideData, coverBox));
                 }
             }
         }
     }
 
-    static boolean checkCoverCollision(EnumFacing side, List<IndexedCuboid6> collisionBox, double plateThickness) {
+    static boolean doesCoverCollide(EnumFacing side, List<IndexedCuboid6> collisionBox, double plateThickness) {
         if (plateThickness > 0.0) {
             Cuboid6 coverPlateBox = getCoverPlateBox(side, plateThickness, false);
             for (Cuboid6 collisionCuboid : collisionBox) {
                 if (collisionCuboid.intersects(coverPlateBox)) {
                     //collision box intersects with machine bounding box -
                     //cover cannot be placed on this side
-                    return false;
+                    return true;
                 }
             }
-            return true;
+            return false;
         }
-        return true;
+        return false;
     }
 
     static EnumFacing rayTraceCoverableSide(ICoverable coverable, EntityPlayer player) {
@@ -146,13 +149,34 @@ public interface ICoverable {
         return traceCoverSide(result);
     }
 
+    class PrimaryBoxData {
+        public final boolean usePlacementGrid;
+
+        public PrimaryBoxData(boolean usePlacementGrid) {
+            this.usePlacementGrid = usePlacementGrid;
+        }
+    }
+
+    class CoverSideData {
+        public final EnumFacing side;
+
+        public CoverSideData(EnumFacing side) {
+            this.side = side;
+        }
+    }
+
     static EnumFacing traceCoverSide(RayTraceResult result) {
         if (result instanceof CuboidRayTraceResult) {
             CuboidRayTraceResult rayTraceResult = (CuboidRayTraceResult) result;
             if (rayTraceResult.cuboid6.data == null) {
                 return determineGridSideHit(result);
-            } else if (rayTraceResult.cuboid6.data instanceof EnumFacing) {
-                return (EnumFacing) rayTraceResult.cuboid6.data;
+            } else if (rayTraceResult.cuboid6.data instanceof CoverSideData) {
+                return ((CoverSideData) rayTraceResult.cuboid6.data).side;
+            } else if (rayTraceResult.cuboid6.data instanceof BlockPipe.PipeConnectionData) {
+                return ((PipeConnectionData) rayTraceResult.cuboid6.data).side;
+            } else if(rayTraceResult.cuboid6.data instanceof PrimaryBoxData) {
+                PrimaryBoxData primaryBoxData = (PrimaryBoxData) rayTraceResult.cuboid6.data;
+                return primaryBoxData.usePlacementGrid ? determineGridSideHit(result) : result.sideHit;
             } else return null; //unknown hit type, return null
         }
         //normal collision ray trace, return side hit

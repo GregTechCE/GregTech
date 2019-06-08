@@ -26,6 +26,7 @@ import gregtech.common.blocks.modelfactories.BlockFrameFactory;
 import gregtech.common.blocks.modelfactories.BlockOreFactory;
 import gregtech.common.command.GregTechCommand;
 import gregtech.common.covers.CoverBehaviors;
+import gregtech.common.covers.filter.FilterTypeRegistry;
 import gregtech.common.items.MetaItems;
 import gregtech.common.metatileentities.MetaTileEntities;
 import gregtech.common.multipart.GTMultipartFactory;
@@ -48,7 +49,7 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 @Mod(modid = GTValues.MODID,
     name = "GregTech Community Edition",
     acceptedMinecraftVersions = "[1.12,1.13)",
-    dependencies = "required:forge@[14.23.3.2702,);" + CodeChickenLib.MOD_VERSION_DEP + "after:forestry;after:forgemultipartcbe;after:jei@[4.8.6,);after:crafttweaker;")
+    dependencies = "required:forge@[14.23.5.2838,);" + CodeChickenLib.MOD_VERSION_DEP + "after:forestry;after:forgemultipartcbe;after:jei@[4.8.6,);after:crafttweaker;")
 public class GregTechMod {
 
     static {
@@ -134,6 +135,7 @@ public class GregTechMod {
             GameRegistry.registerWorldGenerator(new WorldGenRubberTree(), 10000);
         }
 
+        FilterTypeRegistry.init();
         CoverBehaviors.init();
         DungeonLootLoader.init();
     }

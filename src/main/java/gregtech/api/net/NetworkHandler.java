@@ -12,6 +12,7 @@ import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.network.NetHandlerPlayClient;
 import net.minecraft.client.particle.ParticleManager;
 import net.minecraft.inventory.Container;
@@ -212,8 +213,12 @@ public class NetworkHandler {
                 uiFactory.initClientUI(packet.serializedHolder, packet.windowId, packet.initialWidgetUpdates);
             }
         });
-        registerClientExecutor(PacketUIWidgetUpdate.class, (packet, handler) ->
-            ModularUIGui.addWidgetUpdate(packet));
+        registerClientExecutor(PacketUIWidgetUpdate.class, (packet, handler) -> {
+            GuiScreen currentScreen = Minecraft.getMinecraft().currentScreen;
+            if(currentScreen instanceof ModularUIGui) {
+                ((ModularUIGui) currentScreen).handleWidgetUpdate(packet);
+            }
+        });
 
         registerClientExecutor(PacketBlockParticle.class, (packet, handler) -> {
             World world = Minecraft.getMinecraft().world;

@@ -62,6 +62,11 @@ public class MetaTileEntityBatteryBuffer extends TieredMetaTileEntity {
     @Override
     protected IItemHandlerModifiable createImportItemHandler() {
         return new ItemStackHandler(inventorySize) {
+            @Override
+            protected void onContentsChanged(int slot) {
+                ((EnergyContainerBatteryBuffer) energyContainer).notifyEnergyListener(false);
+            }
+
             @Nonnull
             @Override
             public ItemStack insertItem(int slot, @Nonnull ItemStack stack, boolean simulate) {

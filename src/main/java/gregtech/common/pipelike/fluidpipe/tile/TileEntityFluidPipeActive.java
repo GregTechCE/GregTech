@@ -2,6 +2,9 @@ package gregtech.common.pipelike.fluidpipe.tile;
 
 import gregtech.api.pipenet.tile.IPipeTile;
 import gregtech.common.covers.CoverPump;
+import gregtech.common.pipelike.fluidpipe.BlockFluidPipe;
+import gregtech.common.pipelike.fluidpipe.FluidPipeProperties;
+import gregtech.common.pipelike.fluidpipe.FluidPipeType;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
@@ -52,9 +55,10 @@ public class TileEntityFluidPipeActive extends TileEntityFluidPipe implements IT
         this.isActive = compound.getBoolean("ActiveNode");
     }
 
-    public static void pushFluidsFromTank(IPipeTile<?, ?> pipeTile) {
+    public static void pushFluidsFromTank(IPipeTile<FluidPipeType, FluidPipeProperties> pipeTile) {
         PooledMutableBlockPos blockPos = PooledMutableBlockPos.retain();
         int blockedConnections = pipeTile.getBlockedConnections();
+        BlockFluidPipe blockFluidPipe = (BlockFluidPipe) pipeTile.getPipeBlock();
         for (EnumFacing side : EnumFacing.VALUES) {
             if ((blockedConnections & 1 << side.getIndex()) > 0) {
                 continue; //do not dispatch energy to blocked sides
@@ -64,15 +68,14 @@ public class TileEntityFluidPipeActive extends TileEntityFluidPipe implements IT
                 continue; //do not allow cables to load chunks
             }
             TileEntity tileEntity = pipeTile.getPipeWorld().getTileEntity(blockPos);
-            if (tileEntity == null || pipeTile.getPipeBlock().getPipeTileEntity(tileEntity) != null) {
+            if (tileEntity == null) {
                 continue; //do not emit into multiparts or other fluid pipes
             }
             IFluidHandler sourceHandler = pipeTile.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, side);
             IFluidHandler receiverHandler = tileEntity.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, side.getOpposite());
-            if (sourceHandler == null || receiverHandler == null) {
-                continue;
+            if (sourceHandler != null && receiverHandler != null && blockFluidPipe.canPushIntoFluidHandler(pipeTile, tileEntity, sourceHandler, receiverHandler)) {
+                CoverPump.moveHandlerFluids(sourceHandler, receiverHandler, Integer.MAX_VALUE, FLUID_FILTER_ALWAYS_TRUE);
             }
-            CoverPump.moveHandlerFluids(sourceHandler, receiverHandler, Integer.MAX_VALUE, FLUID_FILTER_ALWAYS_TRUE);
         }
         blockPos.release();
     }

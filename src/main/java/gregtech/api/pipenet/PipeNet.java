@@ -79,9 +79,7 @@ public abstract class PipeNet<NodeDataType> implements INBTSerializable<NBTTagCo
             return;
         }
         setBlocked(selfNode, facing, isBlocked);
-
         BlockPos offsetPos = nodePos.offset(facing);
-        //noinspection unchecked
         PipeNet<NodeDataType> pipeNetAtOffset = worldData.getNetFromPos(offsetPos);
         if (pipeNetAtOffset == null) {
             //if there is no any pipe net at this side,
@@ -93,17 +91,21 @@ public abstract class PipeNet<NodeDataType> implements INBTSerializable<NBTTagCo
         if (pipeNetAtOffset == this) {
             //if side was unblocked, well, there is really nothing changed in this e-net
             //if it is blocked now, but was able to connect with neighbour node before, try split networks
-            if (isBlocked && canNodesConnect(selfNode, facing, allNodes.get(offsetPos), this)) {
-                setBlocked(selfNode, facing, true); //update current status before querying findAllConnectedBlocks
-                HashMap<BlockPos, Node<NodeDataType>> thisENet = findAllConnectedBlocks(nodePos);
-                if (!allNodes.equals(thisENet)) {
-                    //node visibility has changed, split network into 2
-                    //node that code below is similar to removeNodeInternal, but only for 2 networks, and without node removal
-                    //noinspection unchecked
-                    PipeNet<NodeDataType> newPipeNet = worldData.createNetInstance();
-                    newPipeNet.transferNodeData(thisENet, this);
-                    allNodes.keySet().removeAll(thisENet.keySet());
-                    worldData.addPipeNet(newPipeNet);
+            if (isBlocked) {
+                //need to unblock node before doing canNodesConnectCheck
+                setBlocked(selfNode, facing, false);
+                if(canNodesConnect(selfNode, facing, allNodes.get(offsetPos), this)) {
+                    //now block again to call findAllConnectedBlocks
+                    setBlocked(selfNode, facing, true);
+                    HashMap<BlockPos, Node<NodeDataType>> thisENet = findAllConnectedBlocks(nodePos);
+                    if (!allNodes.equals(thisENet)) {
+                        //node visibility has changed, split network into 2
+                        //node that code below is similar to removeNodeInternal, but only for 2 networks, and without node removal
+                        PipeNet<NodeDataType> newPipeNet = worldData.createNetInstance();
+                        newPipeNet.transferNodeData(thisENet, this);
+                        allNodes.keySet().removeAll(thisENet.keySet());
+                        worldData.addPipeNet(newPipeNet);
+                    }
                 }
             }
             //there is another network on that side

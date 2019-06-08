@@ -33,8 +33,8 @@ public class WrenchBehaviour implements IItemBehaviour {
                 return EnumActionResult.PASS;
             if (world.getBlockState(pos).getBlock().rotateBlock(world, pos, side)) {
                 GTUtility.doDamageItem(stack, this.cost, false);
+                return EnumActionResult.SUCCESS;
             }
-            return EnumActionResult.SUCCESS;
         }
         return EnumActionResult.PASS;
     }

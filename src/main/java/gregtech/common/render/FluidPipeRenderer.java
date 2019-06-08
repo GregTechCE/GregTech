@@ -1,6 +1,5 @@
 package gregtech.common.render;
 
-import codechicken.lib.colour.ColourRGBA;
 import codechicken.lib.render.BlockRenderer;
 import codechicken.lib.render.BlockRenderer.BlockFace;
 import codechicken.lib.render.CCRenderState;
@@ -122,6 +121,7 @@ public class FluidPipeRenderer implements ICCBlockRenderer, IItemRenderer {
         CCRenderState renderState = CCRenderState.instance();
         renderState.reset();
         renderState.bind(buffer);
+        renderState.setBrightness(world, pos);
         IVertexOperation[] pipeline = {new Translation(pos)};
 
         BlockFluidPipe blockFluidPipe = (BlockFluidPipe) state.getBlock();
@@ -143,14 +143,14 @@ public class FluidPipeRenderer implements ICCBlockRenderer, IItemRenderer {
         return true;
     }
 
+    private int getPipeColor(Material material, int insulationColor) {
+        if(insulationColor == IPipeTile.DEFAULT_INSULATION_COLOR) {
+            return material.materialRGB;
+        } else return insulationColor;
+    }
+
     public void renderPipeBlock(Material material, FluidPipeType pipeType, int insulationColor, CCRenderState state, IVertexOperation[] pipeline, int connectMask) {
-        int pipeColor;
-        if (insulationColor == IPipeTile.DEFAULT_INSULATION_COLOR) {
-            pipeColor = ColourRGBA.multiply(GTUtility.convertRGBtoOpaqueRGBA_CL(material.materialRGB),
-                GTUtility.convertRGBtoOpaqueRGBA_CL(insulationColor));
-        } else {
-            pipeColor = GTUtility.convertRGBtoOpaqueRGBA_CL(material.materialRGB);
-        }
+        int pipeColor = GTUtility.convertRGBtoOpaqueRGBA_CL(getPipeColor(material, insulationColor));
         float thickness = pipeType.getThickness();
         ColourMultiplier multiplier = new ColourMultiplier(pipeColor);
         PipeTextureInfo textureInfo = pipeTextures.get(pipeType);
@@ -269,14 +269,16 @@ public class FluidPipeRenderer implements ICCBlockRenderer, IItemRenderer {
         return true;
     }
 
-    public TextureAtlasSprite getParticleTexture(IPipeTile<FluidPipeType, FluidPipeProperties> tileEntity) {
+    public Pair<TextureAtlasSprite, Integer> getParticleTexture(IPipeTile<FluidPipeType, FluidPipeProperties> tileEntity) {
         if (tileEntity == null) {
-            return TextureUtils.getMissingSprite();
+            return Pair.of(TextureUtils.getMissingSprite(), 0xFFFFFF);
         }
         FluidPipeType fluidPipeType = tileEntity.getPipeType();
         if (fluidPipeType == null) {
-            return TextureUtils.getMissingSprite();
+            return Pair.of(TextureUtils.getMissingSprite(), 0xFFFFFF);
         }
-        return pipeTextures.get(fluidPipeType).sideTexture;
+        TextureAtlasSprite atlasSprite = pipeTextures.get(fluidPipeType).sideTexture;
+        int pipeColor = getPipeColor(tileEntity.getPipeMaterial(), tileEntity.getInsulationColor());
+        return Pair.of(atlasSprite, pipeColor);
     }
 }

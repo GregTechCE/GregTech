@@ -8,20 +8,8 @@ import net.minecraft.client.renderer.GlStateManager;
 import org.lwjgl.input.Keyboard;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 public class ModularUIGui extends GuiContainer {
-
-    //we don't need CopyOnWriteArrayList here because list access is guarded by lock
-    private static List<PacketUIWidgetUpdate> queuingWidgetUpdates = new ArrayList<>();
-    private static final Object widgetUpdatesLock = new Object();
-
-    public static void addWidgetUpdate(PacketUIWidgetUpdate packet) {
-        synchronized (widgetUpdatesLock) {
-            queuingWidgetUpdates.add(packet);
-        }
-    }
 
     private final ModularUI modularUI;
 
@@ -52,17 +40,7 @@ public class ModularUIGui extends GuiContainer {
     @Override
     public void updateScreen() {
         super.updateScreen();
-        processWidgetPackets();
         modularUI.guiWidgets.values().forEach(Widget::updateScreen);
-    }
-
-    private void processWidgetPackets() {
-        synchronized (widgetUpdatesLock) {
-            for (PacketUIWidgetUpdate packet : queuingWidgetUpdates) {
-                handleWidgetUpdate(packet);
-            }
-            queuingWidgetUpdates.clear();
-        }
     }
 
     public void handleWidgetUpdate(PacketUIWidgetUpdate packet) {

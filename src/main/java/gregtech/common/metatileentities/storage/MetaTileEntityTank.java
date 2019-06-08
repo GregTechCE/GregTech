@@ -33,6 +33,7 @@ import net.minecraftforge.fluids.FluidUtil;
 import net.minecraftforge.fluids.capability.templates.FluidHandlerItemStack;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import org.apache.commons.lang3.tuple.Pair;
 
 import javax.annotation.Nullable;
 import java.io.IOException;
@@ -203,10 +204,12 @@ public class MetaTileEntityTank extends MetaTileEntity {
 
     @Override
     @SideOnly(Side.CLIENT)
-    public TextureAtlasSprite getParticleTexture() {
-        return ModHandler.isMaterialWood(material) ?
-            Textures.WOODEN_TANK.getParticleTexture() :
-            Textures.METAL_TANK.getParticleTexture();
+    public Pair<TextureAtlasSprite, Integer> getParticleTexture() {
+        if(ModHandler.isMaterialWood(material)) {
+            return Pair.of(Textures.WOODEN_TANK.getParticleTexture(), getPaintingColor());
+        } else {
+            return Pair.of(Textures.METAL_TANK.getParticleTexture(), getPaintingColor());
+        }
     }
 
     @Override

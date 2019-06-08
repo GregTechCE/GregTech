@@ -131,6 +131,7 @@ public class CoverPump extends CoverBehavior implements CoverWithUI, ITickable, 
                 fluidStack = sourceHandler.drain(fluidStack, true);
                 if (fluidStack != null && fluidStack.amount > 0) {
                     destHandler.fill(fluidStack, true);
+
                     fluidLeftToTransfer -= fluidStack.amount;
                     if (fluidLeftToTransfer == 0) break;
                 }

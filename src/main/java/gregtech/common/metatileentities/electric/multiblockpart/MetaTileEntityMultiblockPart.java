@@ -17,6 +17,7 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import org.apache.commons.lang3.ArrayUtils;
+import org.apache.commons.lang3.tuple.Pair;
 
 public abstract class MetaTileEntityMultiblockPart extends MetaTileEntity implements IMultiblockPart {
 
@@ -31,8 +32,8 @@ public abstract class MetaTileEntityMultiblockPart extends MetaTileEntity implem
     }
 
     @Override
-    public TextureAtlasSprite getParticleTexture() {
-        return getBaseTexture().getParticleSprite();
+    public Pair<TextureAtlasSprite, Integer> getParticleTexture() {
+        return Pair.of(getBaseTexture().getParticleSprite(), getPaintingColor());
     }
 
     @Override
