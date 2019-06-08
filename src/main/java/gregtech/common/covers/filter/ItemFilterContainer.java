@@ -116,8 +116,14 @@ public class ItemFilterContainer implements INBTSerializable<NBTTagCompound> {
             this.filterWrapper.setMaxStackSize(tagCompound.getInteger("MaxStackSize"));
         }
         if(filterWrapper.getItemFilter() != null) {
-            NBTTagCompound filterInventory = tagCompound.getCompoundTag("Filter");
-            this.filterWrapper.getItemFilter().readFromNBT(filterInventory);
+            //LEGACY SAVE FORMAT SUPPORT
+            if(tagCompound.hasKey("ItemFilter") ||
+                tagCompound.hasKey("OreDictionaryFilter")) {
+                this.filterWrapper.getItemFilter().readFromNBT(tagCompound);
+            } else {
+                NBTTagCompound filterInventory = tagCompound.getCompoundTag("Filter");
+                this.filterWrapper.getItemFilter().readFromNBT(filterInventory);
+            }
         }
     }
 }

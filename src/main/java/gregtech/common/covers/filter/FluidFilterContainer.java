@@ -46,6 +46,10 @@ public class FluidFilterContainer implements INBTSerializable<NBTTagCompound> {
         };
     }
 
+    public ItemStackHandler getFilterInventory() {
+        return filterInventory;
+    }
+
     public void initUI(int y, Consumer<Widget> widgetGroup) {
         widgetGroup.accept(new LabelWidget(10, y, "cover.conveyor.fluid_filter.title"));
         widgetGroup.accept(new SlotWidget(filterInventory, 0, 10, y + 15)
@@ -77,7 +81,7 @@ public class FluidFilterContainer implements INBTSerializable<NBTTagCompound> {
     @Override
     public NBTTagCompound serializeNBT() {
         NBTTagCompound tagCompound = new NBTTagCompound();
-        tagCompound.setTag("Inventory", filterInventory.serializeNBT());
+        tagCompound.setTag("FilterInventory", filterInventory.serializeNBT());
         tagCompound.setBoolean("IsBlacklist", filterWrapper.isBlacklistFilter());
         if(filterWrapper.getFluidFilter() != null) {
             NBTTagCompound filterInventory = new NBTTagCompound();
@@ -89,12 +93,16 @@ public class FluidFilterContainer implements INBTSerializable<NBTTagCompound> {
 
     @Override
     public void deserializeNBT(NBTTagCompound tagCompound) {
-        this.filterInventory.deserializeNBT(tagCompound.getCompoundTag("Inventory"));
+        //LEGACY SAVE FORMAT SUPPORT
+        if(tagCompound.hasKey("FilterTypeInventory")) {
+            this.filterInventory.deserializeNBT(tagCompound.getCompoundTag("FilterTypeInventory"));
+        } else {
+            this.filterInventory.deserializeNBT(tagCompound.getCompoundTag("FilterInventory"));
+        }
         this.filterWrapper.setBlacklistFilter(tagCompound.getBoolean("IsBlacklist"));
         if(filterWrapper.getFluidFilter() != null) {
             //LEGACY SAVE FORMAT SUPPORT
-            if(tagCompound.hasKey("ItemFilter") ||
-                tagCompound.hasKey("OreDictionaryFilter")) {
+            if(tagCompound.hasKey("FluidFilter")) {
                 this.filterWrapper.getFluidFilter().readFromNBT(tagCompound);
             } else {
                 NBTTagCompound filterInventory = tagCompound.getCompoundTag("Filter");
