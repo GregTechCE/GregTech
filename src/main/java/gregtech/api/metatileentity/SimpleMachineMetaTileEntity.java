@@ -303,12 +303,14 @@ public class SimpleMachineMetaTileEntity extends WorkableTieredMetaTileEntity {
 
         if (exportItems.getSlots() > 0) {
             builder.widget(new ToggleButtonWidget(leftButtonStartX, 62, 18, 18,
-                GuiTextures.BUTTON_ITEM_OUTPUT, this::isAutoOutputItems, this::setAutoOutputItems));
+                GuiTextures.BUTTON_ITEM_OUTPUT, this::isAutoOutputItems, this::setAutoOutputItems)
+            		.setTooltipText("gregtech.gui.itemautooutput"));
             leftButtonStartX += 18;
         }
         if (exportFluids.getTanks() > 0) {
             builder.widget(new ToggleButtonWidget(leftButtonStartX, 62, 18, 18,
-                GuiTextures.BUTTON_FLUID_OUTPUT, this::isAutoOutputFluids, this::setAutoOutputFluids));
+                GuiTextures.BUTTON_FLUID_OUTPUT, this::isAutoOutputFluids, this::setAutoOutputFluids)
+            		.setTooltipText("gregtech.gui.fluidautooutput"));
         }
 
         builder.widget(new ToggleButtonWidget(rightButtonStartX, 60, 20, 20,
