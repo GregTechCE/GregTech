@@ -1,5 +1,8 @@
 package gregtech.common.tools;
 
+import gregtech.api.capability.GregtechCapabilities;
+import gregtech.api.capability.IElectricItem;
+import gregtech.common.items.MetaItems;
 import net.minecraft.item.ItemStack;
 
 public class ToolChainsawHV extends ToolChainsawLV {
@@ -42,5 +45,11 @@ public class ToolChainsawHV extends ToolChainsawLV {
     @Override
     public float getMaxDurabilityMultiplier(ItemStack stack) {
         return 4.0F;
+    }
+
+    @Override
+    public ItemStack getBrokenStack(ItemStack stack) {
+        IElectricItem electricItem = stack.getCapability(GregtechCapabilities.CAPABILITY_ELECTRIC_ITEM, null);
+        return MetaItems.POWER_UNIT_HV.getChargedStackWithOverride(electricItem);
     }
 }

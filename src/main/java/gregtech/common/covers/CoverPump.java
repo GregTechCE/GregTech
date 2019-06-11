@@ -151,9 +151,9 @@ public class CoverPump extends CoverBehavior implements CoverWithUI, ITickable, 
 
         this.fluidFilter.initUI(70, primaryGroup::addWidget);
 
-        return ModularUI.builder(GuiTextures.BACKGROUND_EXTENDED, 176, 198)
+        return ModularUI.builder(GuiTextures.BACKGROUND_EXTENDED, 176, 170 + 82)
             .widget(primaryGroup)
-            .bindPlayerHotbar(player.inventory, GuiTextures.SLOT, 8, 170)
+            .bindPlayerInventory(player.inventory, GuiTextures.SLOT, 8, 170)
             .build(this, player);
     }
 

@@ -773,6 +773,21 @@ public abstract class MetaItem<T extends MetaItem<?>.MetaValueItem> extends Item
             return itemStack;
         }
 
+        public ItemStack getChargedStackWithOverride(IElectricItem source) {
+            ItemStack itemStack = getStackForm(1);
+            IElectricItem electricItem = itemStack.getCapability(GregtechCapabilities.CAPABILITY_ELECTRIC_ITEM, null);
+            if (electricItem == null) {
+                throw new IllegalStateException("Not an electric item.");
+            }
+            if (!(electricItem instanceof ElectricItem)) {
+                throw new IllegalStateException("Only standard ElectricItem implementation supported, but this item uses " + electricItem.getClass());
+            }
+            ((ElectricItem) electricItem).setMaxChargeOverride(source.getMaxCharge());
+            long charge = source.discharge(Long.MAX_VALUE, Integer.MAX_VALUE, true, false, true);
+            electricItem.charge(charge, Integer.MAX_VALUE, true, false);
+            return itemStack;
+        }
+
         @Override
         public String toString() {
             return new ToStringBuilder(this)

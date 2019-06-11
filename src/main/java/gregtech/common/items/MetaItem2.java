@@ -13,7 +13,6 @@ import gregtech.api.unification.material.MarkerMaterials.Tier;
 import gregtech.api.unification.material.Materials;
 import gregtech.api.unification.ore.OrePrefix;
 import gregtech.api.util.RandomPotionEffect;
-import gregtech.common.items.behaviors.ToolPartsBoxBehavior;
 import gregtech.common.items.behaviors.TurbineRotorBehavior;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -61,8 +60,12 @@ public class MetaItem2 extends MaterialMetaItem {
         }
 
         PLANT_BALL = addItem(570, "plant_ball").setBurnValue(75);
-        TOOL_PARTS_BOX = addItem(571, "tool_parts_box").addStats(new ToolPartsBoxBehavior());
         ENERGIUM_DUST = addItem(572, "energium_dust");
+
+        POWER_UNIT_LV = addItem(573, "power_unit.lv").addStats(ElectricStats.createElectricItem(100000L, GTValues.LV));
+        POWER_UNIT_MV = addItem(574, "power_unit.mv").addStats(ElectricStats.createElectricItem(400000L, GTValues.MV));
+        POWER_UNIT_HV = addItem(575, "power_unit.hv") .addStats(ElectricStats.createElectricItem(1600000L, GTValues.HV));
+        JACKHAMMER_BASE = addItem(576, "jackhammer_base") .addStats(ElectricStats.createElectricItem(1600000L, GTValues.HV));
 
         CARBON_FIBERS = addItem(504, "carbon.fibers");
         CARBON_MESH = addItem(505, "carbon.mesh");

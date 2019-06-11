@@ -17,9 +17,7 @@ import gregtech.api.unification.material.Materials;
 import gregtech.api.unification.material.type.Material;
 import gregtech.api.unification.material.type.SolidMaterial;
 import gregtech.api.util.GTUtility;
-import gregtech.api.util.ShapedOreIngredientAwareRecipe;
 import gregtech.common.ConfigHolder;
-import gregtech.common.items.MetaItems;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
@@ -148,10 +146,6 @@ public class ToolMetaItem<T extends ToolMetaItem<?>.MetaToolValueItem> extends M
             IToolStats toolStats = metaToolValueItem.getToolStats();
             toolStats.onToolCrafted(stack, playerIn);
         }
-    }
-
-    public static List<ItemStack> getToolComponents(ItemStack toolStack) {
-        return ShapedOreIngredientAwareRecipe.getCraftingComponents(toolStack);
     }
 
     @Override
@@ -331,7 +325,8 @@ public class ToolMetaItem<T extends ToolMetaItem<?>.MetaToolValueItem> extends M
             int newDamageValue = getItemDamage(stack) + resultDamage * 10;
 
             if (!simulate && !setInternalDamage(stack, newDamageValue)) {
-                stack.shrink(1);
+                IToolStats toolStats = getItem(stack).getToolStats();
+                GTUtility.setItem(stack, toolStats.getBrokenStack(stack));
             }
             //non-electric tools are always damageable, and just break in case
             //they don't have enough durability left
@@ -346,8 +341,8 @@ public class ToolMetaItem<T extends ToolMetaItem<?>.MetaToolValueItem> extends M
             capability.discharge(energyAmount, capability.getTier(), true, false, simulate);
             int newDamageValue = getItemDamage(stack) + vanillaDamage;
             if (!simulate && !setInternalDamage(stack, newDamageValue)) {
-                GTUtility.setItem(stack, MetaItems.TOOL_PARTS_BOX.getStackForm());
-                stack.removeSubCompound("GT.ToolStats");
+                IToolStats toolStats = getItem(stack).getToolStats();
+                GTUtility.setItem(stack, toolStats.getBrokenStack(stack));
             }
             return true;
         }

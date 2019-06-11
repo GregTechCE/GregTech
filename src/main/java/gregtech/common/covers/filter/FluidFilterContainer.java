@@ -1,7 +1,6 @@
 package gregtech.common.covers.filter;
 
 import gregtech.api.gui.GuiTextures;
-import gregtech.api.gui.IUIHolder;
 import gregtech.api.gui.Widget;
 import gregtech.api.gui.widgets.LabelWidget;
 import gregtech.api.gui.widgets.SlotWidget;
@@ -52,7 +51,7 @@ public class FluidFilterContainer implements INBTSerializable<NBTTagCompound> {
     }
 
     public void initUI(int y, Consumer<Widget> widgetGroup) {
-        widgetGroup.accept(new LabelWidget(10, y, "cover.conveyor.fluid_filter.title"));
+        widgetGroup.accept(new LabelWidget(10, y, "cover.pump.fluid_filter.title"));
         widgetGroup.accept(new SlotWidget(filterInventory, 0, 10, y + 15)
             .setBackgroundTexture(GuiTextures.SLOT, GuiTextures.FILTER_SLOT_OVERLAY));
         this.filterWrapper.initUI(y + 15 + 18 + 5, widgetGroup);

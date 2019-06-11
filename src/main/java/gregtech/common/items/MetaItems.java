@@ -317,8 +317,12 @@ public final class MetaItems {
     public static MetaItem<?>.MetaValueItem DYE_INDIGO;
     public static MetaItem<?>.MetaValueItem PLANT_BALL;
     public static MetaItem<?>.MetaValueItem RUBBER_DROP;
-    public static MetaItem<?>.MetaValueItem TOOL_PARTS_BOX;
     public static MetaItem<?>.MetaValueItem ENERGIUM_DUST;
+
+    public static MetaItem<?>.MetaValueItem POWER_UNIT_LV;
+    public static MetaItem<?>.MetaValueItem POWER_UNIT_MV;
+    public static MetaItem<?>.MetaValueItem POWER_UNIT_HV;
+    public static MetaItem<?>.MetaValueItem JACKHAMMER_BASE;
 
     public static MetaItem<?>.MetaValueItem[] DYE_ONLY_ITEMS = new MetaItem.MetaValueItem[EnumDyeColor.values().length];
     public static MetaItem<?>.MetaValueItem[] SPRAY_CAN_DYES = new MetaItem.MetaValueItem[EnumDyeColor.values().length];

@@ -1,8 +1,11 @@
 package gregtech.common.tools;
 
+import gregtech.api.capability.GregtechCapabilities;
+import gregtech.api.capability.IElectricItem;
 import gregtech.api.items.metaitem.MetaItem.MetaValueItem;
 import gregtech.api.items.toolitem.ToolMetaItem;
 import gregtech.api.util.GTUtility;
+import gregtech.common.items.MetaItems;
 import gregtech.common.items.behaviors.ModeSwitchBehavior;
 import gregtech.common.items.behaviors.ModeSwitchBehavior.ILocalizationKey;
 import net.minecraft.block.material.Material;
@@ -170,6 +173,12 @@ public class ToolJackHammer extends ToolDrillLV {
                 }
             }
         }
+    }
+
+    @Override
+    public ItemStack getBrokenStack(ItemStack stack) {
+        IElectricItem electricItem = stack.getCapability(GregtechCapabilities.CAPABILITY_ELECTRIC_ITEM, null);
+        return MetaItems.JACKHAMMER_BASE.getChargedStackWithOverride(electricItem);
     }
 
     private static BlockPos rotate(BlockPos origin, int x, int y, EnumFacing sideHit, EnumFacing horizontalFacing) {

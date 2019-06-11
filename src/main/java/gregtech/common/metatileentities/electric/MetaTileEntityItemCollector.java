@@ -218,7 +218,7 @@ public class MetaTileEntityItemCollector extends TieredMetaTileEntity {
     protected ModularUI createUI(EntityPlayer entityPlayer) {
         int rowSize = (int) Math.sqrt(exportItems.getSlots());
         Builder builder = ModularUI.builder(GuiTextures.BACKGROUND, 176,
-            18 + 25 + 18 * rowSize + 94)
+            45 + rowSize * 18 + 105 + 82)
             .label(10, 5, getMetaFullName());
 
         builder.widget(new ClickButtonWidget(10, 20, 20, 20, "-1", data -> adjustSuckingRange(-1)));
@@ -233,7 +233,9 @@ public class MetaTileEntityItemCollector extends TieredMetaTileEntity {
                     .setBackgroundTexture(GuiTextures.SLOT));
             }
         }
-        builder.bindPlayerInventory(entityPlayer.inventory, GuiTextures.SLOT, 8, 45 + 18 * rowSize + 12);
+
+        this.itemFilter.initUI(45 + rowSize * 18 + 5, builder::widget);
+        builder.bindPlayerInventory(entityPlayer.inventory, GuiTextures.SLOT, 8, 45 + rowSize * 18 + 105);
         return builder.build(getHolder(), entityPlayer);
     }
 }
