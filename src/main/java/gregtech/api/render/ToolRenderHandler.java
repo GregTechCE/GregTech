@@ -50,14 +50,13 @@ public class ToolRenderHandler implements IResourceManagerReloadListener {
             }
             DestroyBlockProgress progress = event.getContext().damagedBlocks.get(breakerEntityId);
             RayTraceResult rayTraceResult = RayTracer.retraceBlock(mc.world, entityPlayer, progress.getPosition());
-
             if (rayTraceResult == null || rayTraceResult.typeOfHit != Type.BLOCK) {
                 continue;
             }
-            List<BlockPos> aoeBlocksToRender = ((IAOEItem) itemStack.getItem()).getAOEBlocks(itemStack, mc.player, rayTraceResult);
+            List<BlockPos> aoeBlocksToRender = ((IAOEItem) itemStack.getItem()).getAOEBlocks(itemStack, entityPlayer, rayTraceResult);
             int breakProgress = progress.getPartialBlockDamage();
             preRenderDamagedBlocks();
-            drawBlockDamageTexture(mc, Tessellator.getInstance(), entityPlayer, event.getPartialTicks(), aoeBlocksToRender, breakProgress);
+            drawBlockDamageTexture(mc, Tessellator.getInstance(), mc.getRenderViewEntity(), event.getPartialTicks(), aoeBlocksToRender, breakProgress);
             postRenderDamagedBlocks();
         }
 
@@ -124,10 +123,10 @@ public class ToolRenderHandler implements IResourceManagerReloadListener {
         }
     }
 
-    public void drawBlockDamageTexture(Minecraft mc, Tessellator tessellator, Entity entityIn, float partialTicks, List<BlockPos> blocksToRender, int partialBlockDamage) {
-        double d3 = entityIn.lastTickPosX + (entityIn.posX - entityIn.lastTickPosX) * partialTicks;
-        double d4 = entityIn.lastTickPosY + (entityIn.posY - entityIn.lastTickPosY) * partialTicks;
-        double d5 = entityIn.lastTickPosZ + (entityIn.posZ - entityIn.lastTickPosZ) * partialTicks;
+    public void drawBlockDamageTexture(Minecraft mc, Tessellator tessellator, Entity viewEntity, float partialTicks, List<BlockPos> blocksToRender, int partialBlockDamage) {
+        double d3 = viewEntity.lastTickPosX + (viewEntity.posX - viewEntity.lastTickPosX) * partialTicks;
+        double d4 = viewEntity.lastTickPosY + (viewEntity.posY - viewEntity.lastTickPosY) * partialTicks;
+        double d5 = viewEntity.lastTickPosZ + (viewEntity.posZ - viewEntity.lastTickPosZ) * partialTicks;
         BufferBuilder bufferBuilder = tessellator.getBuffer();
         BlockRendererDispatcher rendererDispatcher = mc.getBlockRendererDispatcher();
 
