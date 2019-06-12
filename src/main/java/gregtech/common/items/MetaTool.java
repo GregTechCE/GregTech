@@ -169,7 +169,7 @@ public class MetaTool extends ToolMetaItem<ToolMetaItem<?>.MetaToolValueItem> {
         JACKHAMMER = addItem(32, "tool.jackhammer").setToolStats(new ToolJackHammer())
             .setFullRepairCost(5)
             .addOreDict(ToolDictNames.craftingToolJackHammer)
-            .addStats(ElectricStats.createElectricItem(100000L, GTValues.HV));
+            .addStats(ElectricStats.createElectricItem(1600000L, GTValues.HV));
 
         BUZZSAW = addItem(33, "tool.buzzsaw").setToolStats(new ToolBuzzSaw())
             .setFullRepairCost(4)

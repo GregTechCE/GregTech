@@ -75,9 +75,9 @@ public class CoverFluidFilter extends CoverBehavior implements CoverWithUI {
             GTUtility.mapToString(FluidFilterMode.values(), (it) -> it.localeName), () -> this.filterMode.ordinal(),
             (newMode) -> this.setFilterMode(FluidFilterMode.values()[newMode])));
         this.fluidFilter.initUI(45, fluidFilterGroup::addWidget);
-        return ModularUI.builder(GuiTextures.BACKGROUND, 176, 130)
+        return ModularUI.builder(GuiTextures.BACKGROUND, 176, 105 + 82)
             .widget(fluidFilterGroup)
-            .bindPlayerHotbar(player.inventory, GuiTextures.SLOT, 8, 107)
+            .bindPlayerInventory(player.inventory, GuiTextures.SLOT, 8, 105)
             .build(this, player);
     }
 

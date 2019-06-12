@@ -19,7 +19,7 @@ import net.minecraft.inventory.Container;
 import net.minecraft.network.INetHandler;
 import net.minecraft.network.NetHandlerPlayServer;
 import net.minecraft.network.PacketBuffer;
-import net.minecraft.server.MinecraftServer;
+import net.minecraft.util.IThreadListener;
 import net.minecraft.util.IntIdentityHashBiMap;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -271,11 +271,11 @@ public class NetworkHandler {
         if (clientExecutors.containsKey(packet.getClass())) {
             PacketExecutor<Packet, NetHandlerPlayClient> executor = (PacketExecutor<Packet, NetHandlerPlayClient>) clientExecutors.get(packet.getClass());
             NetHandlerPlayClient handler = (NetHandlerPlayClient) event.getHandler();
-            Minecraft minecraft = Minecraft.getMinecraft();
-            if(minecraft.isCallingFromMinecraftThread()) {
+            IThreadListener threadListener = FMLCommonHandler.instance().getWorldThread(handler);
+            if(threadListener.isCallingFromMinecraftThread()) {
                 executor.execute(packet, handler);
             } else {
-                minecraft.addScheduledTask(() -> executor.execute(packet, handler));
+                threadListener.addScheduledTask(() -> executor.execute(packet, handler));
             }
         }
     }
@@ -287,11 +287,11 @@ public class NetworkHandler {
         if (serverExecutors.containsKey(packet.getClass())) {
             PacketExecutor<Packet, NetHandlerPlayServer> executor = (PacketExecutor<Packet, NetHandlerPlayServer>) serverExecutors.get(packet.getClass());
             NetHandlerPlayServer handler = (NetHandlerPlayServer) event.getHandler();
-            MinecraftServer minecraftServer = FMLCommonHandler.instance().getMinecraftServerInstance();
-            if(minecraftServer.isCallingFromMinecraftThread()) {
+            IThreadListener threadListener = FMLCommonHandler.instance().getWorldThread(handler);
+            if(threadListener.isCallingFromMinecraftThread()) {
                 executor.execute(packet, handler);
             } else {
-                minecraftServer.addScheduledTask(() -> executor.execute(packet, handler));
+                threadListener.addScheduledTask(() -> executor.execute(packet, handler));
             }
         }
     }

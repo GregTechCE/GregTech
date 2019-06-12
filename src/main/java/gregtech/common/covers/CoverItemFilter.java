@@ -79,9 +79,9 @@ public class CoverItemFilter extends CoverBehavior implements CoverWithUI {
             () -> filterMode.ordinal(), (newMode) -> setFilterMode(ItemFilterMode.values()[newMode])));
         this.itemFilter.initUI(45, filterGroup::addWidget);
 
-        return ModularUI.builder(GuiTextures.BACKGROUND, 176, 128)
+        return ModularUI.builder(GuiTextures.BACKGROUND, 176, 105 + 82)
             .widget(filterGroup)
-            .bindPlayerHotbar(player.inventory, GuiTextures.SLOT, 8, 105)
+            .bindPlayerInventory(player.inventory, GuiTextures.SLOT, 8, 105)
             .build(this, player);
     }
 

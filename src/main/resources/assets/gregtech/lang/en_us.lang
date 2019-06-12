@@ -74,6 +74,11 @@ metaitem.shape.empty.tooltip=Raw Plate to make Molds and Extrude Shapes
 
 metaitem.dynamite.name=Dynamite
 
+metaitem.power_unit.lv.name=Power Unit (LV)
+metaitem.power_unit.mv.name=Power Unit (MV)
+metaitem.power_unit.hv.name=Power Unit (HV)
+metaitem.jackhammer_base.name=JackHammer Base (HV)
+
 metaitem.shape.mold.plate.name=Mold (Plate)
 metaitem.shape.mold.plate.tooltip=Mold for making Plates
 metaitem.shape.mold.casing.name=Mold (Casing)

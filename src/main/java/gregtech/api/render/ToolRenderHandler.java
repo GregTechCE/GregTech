@@ -5,6 +5,7 @@ import gregtech.api.items.toolitem.IAOEItem;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.multiplayer.PlayerControllerMP;
 import net.minecraft.client.renderer.*;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureMap;
@@ -12,12 +13,12 @@ import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.client.resources.IResourceManager;
 import net.minecraft.client.resources.IResourceManagerReloadListener;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.RayTraceResult.Type;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
@@ -36,25 +37,43 @@ public class ToolRenderHandler implements IResourceManagerReloadListener {
     @SubscribeEvent
     public void onRenderWorldLast(RenderWorldLastEvent event) {
         Minecraft mc = Minecraft.getMinecraft();
-        ItemStack itemStack = mc.player.getHeldItem(EnumHand.MAIN_HAND);
-        if(itemStack.getItem() instanceof IAOEItem) {
-            RayTraceResult rayTraceResult = RayTracer.retrace(mc.player);
-            if(rayTraceResult != null && rayTraceResult.typeOfHit == Type.BLOCK) {
-                List<BlockPos> aoeBlocksToRender = ((IAOEItem) itemStack.getItem()).getAOEBlocks(itemStack, mc.player, rayTraceResult);
-                if(mc.playerController.isHittingBlock) {
-                    int rawBreakProgress = (int) (mc.playerController.curBlockDamageMP * 10.0F) - 1;
-                    int breakProgress = MathHelper.clamp(rawBreakProgress, 0, 9);
-                    preRenderDamagedBlocks();
-                    drawBlockDamageTexture(mc, Tessellator.getInstance(), mc.getRenderViewEntity(), event.getPartialTicks(), aoeBlocksToRender, breakProgress);
-                    postRenderDamagedBlocks();
-                } else {
+        //render block damage progress for all breakers
+        for(int breakerEntityId : event.getContext().damagedBlocks.keySet()) {
+            Entity breakerEntity = mc.world.getEntityByID(breakerEntityId);
+            if (!(breakerEntity instanceof EntityPlayer)) {
+                continue;
+            }
+            EntityPlayer entityPlayer = (EntityPlayer) breakerEntity;
+            ItemStack itemStack = entityPlayer.getHeldItem(EnumHand.MAIN_HAND);
+            if (!(itemStack.getItem() instanceof IAOEItem)) {
+                continue;
+            }
+            DestroyBlockProgress progress = event.getContext().damagedBlocks.get(breakerEntityId);
+            RayTraceResult rayTraceResult = RayTracer.retraceBlock(mc.world, entityPlayer, progress.getPosition());
+            if (rayTraceResult == null || rayTraceResult.typeOfHit != Type.BLOCK) {
+                continue;
+            }
+            List<BlockPos> aoeBlocksToRender = ((IAOEItem) itemStack.getItem()).getAOEBlocks(itemStack, entityPlayer, rayTraceResult);
+            int breakProgress = progress.getPartialBlockDamage();
+            preRenderDamagedBlocks();
+            drawBlockDamageTexture(mc, Tessellator.getInstance(), mc.getRenderViewEntity(), event.getPartialTicks(), aoeBlocksToRender, breakProgress);
+            postRenderDamagedBlocks();
+        }
+
+        //render block selection only for current player
+        PlayerControllerMP playerController = mc.playerController;
+        if(!playerController.getIsHittingBlock()) {
+            ItemStack itemStack = mc.player.getHeldItem(EnumHand.MAIN_HAND);
+            if (itemStack.getItem() instanceof IAOEItem) {
+                RayTraceResult rayTraceResult = RayTracer.retrace(mc.player);
+                if (rayTraceResult != null && rayTraceResult.typeOfHit == Type.BLOCK) {
+                    List<BlockPos> aoeBlocksToRender = ((IAOEItem) itemStack.getItem()).getAOEBlocks(itemStack, mc.player, rayTraceResult);
                     preRenderSelectionOutline();
                     drawSelectionOutlines(mc, aoeBlocksToRender, mc.getRenderViewEntity(), event.getPartialTicks());
                     postRenderSelectionOutline();
                 }
             }
         }
-
     }
 
     private void preRenderSelectionOutline() {
@@ -104,10 +123,10 @@ public class ToolRenderHandler implements IResourceManagerReloadListener {
         }
     }
 
-    public void drawBlockDamageTexture(Minecraft mc, Tessellator tessellator, Entity entityIn, float partialTicks, List<BlockPos> blocksToRender, int partialBlockDamage) {
-        double d3 = entityIn.lastTickPosX + (entityIn.posX - entityIn.lastTickPosX) * partialTicks;
-        double d4 = entityIn.lastTickPosY + (entityIn.posY - entityIn.lastTickPosY) * partialTicks;
-        double d5 = entityIn.lastTickPosZ + (entityIn.posZ - entityIn.lastTickPosZ) * partialTicks;
+    public void drawBlockDamageTexture(Minecraft mc, Tessellator tessellator, Entity viewEntity, float partialTicks, List<BlockPos> blocksToRender, int partialBlockDamage) {
+        double d3 = viewEntity.lastTickPosX + (viewEntity.posX - viewEntity.lastTickPosX) * partialTicks;
+        double d4 = viewEntity.lastTickPosY + (viewEntity.posY - viewEntity.lastTickPosY) * partialTicks;
+        double d5 = viewEntity.lastTickPosZ + (viewEntity.posZ - viewEntity.lastTickPosZ) * partialTicks;
         BufferBuilder bufferBuilder = tessellator.getBuffer();
         BlockRendererDispatcher rendererDispatcher = mc.getBlockRendererDispatcher();
 

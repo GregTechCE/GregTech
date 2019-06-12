@@ -145,6 +145,14 @@ public interface IToolStats {
         return -2.8f;
     }
 
+    default boolean canPerformSweepAttack(ItemStack stack) {
+        return false;
+    }
+
+    default ItemStack getBrokenStack(ItemStack stack) {
+        return ItemStack.EMPTY;
+    }
+
     default int getColor(ItemStack stack, int tintIndex) {
         SolidMaterial primaryMaterial = ToolMetaItem.getToolMaterial(stack);
         return tintIndex % 2 == 1 ? primaryMaterial.materialRGB : 0xFFFFFF;

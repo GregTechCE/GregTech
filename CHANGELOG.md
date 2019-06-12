@@ -1,5 +1,38 @@
 ## Changelog
 
+### 1.8.2
+* Show full inventory in most covers UI instead of only hotbar.
+* Added recipe for electric screwdriver. Closes #530.
+* Added alternative recipes for tools using power units.
+* Electric tools now leave power units when their tips are broken. Closes #605.
+* Remove Quartz Block cutting recipe. Closes #848.
+* Temporary revert pipe rendering to previous version. Closes #846.
+* Fix fisher-related compile issues.
+* Added discharge mode for batteries in player inventory.
+* Don't connect wires on sides of machines that can't neither input nor output energy.
+* Increased overclock efficiency a bit for high voltage recipes.
+* Reduce damage taken by tools in certain actions a bit. 
+* Added a Fisher.
+* Show only stone variants of ore in ores tab, show all variants in search tab.
+* Use voltage names instead of tier numbers in electric items tooltip.
+* Fixed incorrect pipes color after using spray on them.
+* Particle textures of machines, cables and pipes are now properly colored.
+* Added two new chest variants: wooden chest (27 slots) and small wooden chest (1 slot).
+* Fixed incorrect lighting of pipes in world.
+* Disabled cover placement grid on pipes - they now use sub areas for cover placement.
+* Fixed covers not blocking flow between pipes.
+* Allow blocking connections between pipes via wrench clicking on sides.
+* Fixed battery buffer not updating comparator value.
+* Disabled shift clicking for phantom item slots.
+* Added blacklist option for filters and conveyors.
+* Show actual meta tile entity creator mod ID in JEI.
+* Enhanced placement grid for covers on machines and pipes, show it only when it's used now.
+* Robotic Arm now isn't limited in the transfer rate in transfer exact & keep exact modes.
+* Fix few tools-related issues. 
+
+### 1.8.1
+Added a config option to specify bonus EU output per turbine type.
+
 ### 1.8.0
 * Bug fixes and tool improvements
 * Nerfed large turbine to the ground so you will never use it again.

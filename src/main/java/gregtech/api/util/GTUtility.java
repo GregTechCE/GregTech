@@ -141,6 +141,8 @@ public class GTUtility {
             itemField.set(itemStack, newStack.getItem());
             //set damage then
             itemStack.setItemDamage(newStack.getItemDamage());
+            itemStack.setTagCompound(newStack.getTagCompound());
+
             Method forgeInit = ItemStack.class.getDeclaredMethod("forgeInit");
             forgeInit.setAccessible(true);
             //reinitialize forge capabilities and delegate reference

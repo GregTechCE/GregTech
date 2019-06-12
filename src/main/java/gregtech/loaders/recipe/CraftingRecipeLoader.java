@@ -14,6 +14,7 @@ import gregtech.common.ConfigHolder;
 import gregtech.common.blocks.MetaBlocks;
 import gregtech.common.blocks.wood.BlockGregLog.LogVariant;
 import gregtech.common.items.MetaItems;
+import gregtech.loaders.oreprocessing.ToolRecipeHandler;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockColored;
 import net.minecraft.block.BlockPlanks.EnumType;
@@ -21,6 +22,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
 
@@ -31,7 +33,7 @@ public class CraftingRecipeLoader {
     }
 
     private static void loadCraftingRecipes() {
-
+        ToolRecipeHandler.registerPowerUnitRecipes();
         ModHandler.addShapedRecipe("small_wooden_pipe", OreDictUnifier.get(OrePrefix.pipeSmall, Materials.Wood, 4), "WWW", "h f", 'W', new UnificationEntry(OrePrefix.plank, Materials.Wood));
         ModHandler.addShapedRecipe("medium_wooden_pipe", OreDictUnifier.get(OrePrefix.pipeMedium, Materials.Wood, 2), "WWW", "f h", "WWW", 'W', new UnificationEntry(OrePrefix.plank, Materials.Wood));
 
@@ -58,7 +60,13 @@ public class CraftingRecipeLoader {
         ModHandler.addSmeltingRecipe(new UnificationEntry(OrePrefix.nugget, Materials.Iron), OreDictUnifier.get(OrePrefix.nugget, Materials.WroughtIron));
 
         for(Material material : new Material[] {Materials.Lapis, Materials.Lazurite, Materials.Sodalite}) {
-            ModHandler.addShapedEnergyTransferRecipe("lapotron_crystal_" + material.toString(), MetaItems.LAPOTRON_CRYSTAL.getStackForm(), "XCX", "XEX", "XCX", 'X', new UnificationEntry(OrePrefix.plate, material), 'C', new UnificationEntry(OrePrefix.circuit, Tier.Advanced), 'E', MetaItems.ENERGY_CRYSTAL.getStackForm());
+            String recipeName = "lapotron_crystal_" + material.toString();
+            ModHandler.addShapedEnergyTransferRecipe(recipeName, MetaItems.LAPOTRON_CRYSTAL.getStackForm(),
+                Ingredient.fromStacks(MetaItems.ENERGY_CRYSTAL.getStackForm()), false,
+                "XCX", "XEX", "XCX",
+                'X', new UnificationEntry(OrePrefix.plate, material),
+                'C', new UnificationEntry(OrePrefix.circuit, Tier.Advanced),
+                'E', MetaItems.ENERGY_CRYSTAL.getStackForm());
         }
 
         ModHandler.addShapelessRecipe("rubber_wood_planks", new ItemStack(Blocks.PLANKS, 4, EnumType.JUNGLE.getMetadata()), new ItemStack(MetaBlocks.LOG, 1, LogVariant.RUBBER_WOOD.ordinal()));
