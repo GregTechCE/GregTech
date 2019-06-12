@@ -30,6 +30,11 @@ public class ToolChainsawLV extends ToolSaw {
     }
 
     @Override
+    public float getMaxDurabilityMultiplier(ItemStack stack) {
+        return 10.0f;
+    }
+
+    @Override
     public boolean onBlockPreBreak(ItemStack stack, BlockPos blockPos, EntityPlayer player) {
         if(!player.isSneaking()) {
             return ToolUtility.applyTimberAxe(stack, player.world, blockPos, player);

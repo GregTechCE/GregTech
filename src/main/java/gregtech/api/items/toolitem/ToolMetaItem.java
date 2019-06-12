@@ -40,7 +40,6 @@ import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
-import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.fml.common.Optional.Interface;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -322,7 +321,7 @@ public class ToolMetaItem<T extends ToolMetaItem<?>.MetaToolValueItem> extends M
         IElectricItem capability = stack.getCapability(GregtechCapabilities.CAPABILITY_ELECTRIC_ITEM, null);
         if (capability == null) {
             int resultDamage = calculateToolDamage(stack, new Random(), vanillaDamage);
-            int newDamageValue = getItemDamage(stack) + resultDamage * 10;
+            int newDamageValue = getItemDamage(stack) + resultDamage;
 
             if (!simulate && !setInternalDamage(stack, newDamageValue)) {
                 IToolStats toolStats = getItem(stack).getToolStats();
@@ -468,7 +467,7 @@ public class ToolMetaItem<T extends ToolMetaItem<?>.MetaToolValueItem> extends M
                 materialDurability = toolMaterial.toolDurability;
             }
             float multiplier = toolStats.getMaxDurabilityMultiplier(itemStack);
-            return (int) (materialDurability * 10 * multiplier);
+            return (int) (materialDurability * multiplier);
         }
         return 0;
     }
@@ -532,15 +531,21 @@ public class ToolMetaItem<T extends ToolMetaItem<?>.MetaToolValueItem> extends M
     @Override
     public int getItemDamage(ItemStack itemStack) {
         NBTTagCompound statsTag = getToolStatsTag(itemStack);
-        if (statsTag == null || !statsTag.hasKey("Damage", Constants.NBT.TAG_INT)) {
+        if (statsTag == null) {
             return 0;
         }
-        return statsTag.getInteger("Damage");
+        if(statsTag.hasKey("Damage")) {
+            boolean isElectricItem = itemStack.hasCapability(GregtechCapabilities.CAPABILITY_ELECTRIC_ITEM, null);
+            int oldToolDamage = statsTag.getInteger("Damage");
+            return isElectricItem ? oldToolDamage : oldToolDamage / 10;
+        }
+        return statsTag.getInteger("Dmg");
     }
 
     private boolean setInternalDamage(ItemStack itemStack, int damage) {
         NBTTagCompound statsTag = getOrCreateToolStatsTag(itemStack);
-        statsTag.setInteger("Damage", damage);
+        statsTag.setInteger("Dmg", damage);
+        statsTag.removeTag("Damage");
         return getItemDamage(itemStack) < getMaxItemDamage(itemStack);
     }
 
@@ -662,7 +667,7 @@ public class ToolMetaItem<T extends ToolMetaItem<?>.MetaToolValueItem> extends M
         public void setToolMaterial(ItemStack stack, SolidMaterial toolMaterial) {
             NBTTagCompound toolNBT = new NBTTagCompound();
             ArrayList<SolidMaterial> materials = new ArrayList<>();
-            toolNBT.setString("PrimaryMaterial", toolMaterial.toString());
+            toolNBT.setString("Material", toolMaterial.toString());
             materials.add(toolMaterial);
 
             NBTTagCompound nbtTag = stack.getTagCompound();
@@ -679,7 +684,7 @@ public class ToolMetaItem<T extends ToolMetaItem<?>.MetaToolValueItem> extends M
         public ItemStack setToolData(ItemStack stack, SolidMaterial toolMaterial, int maxDurability, int harvestLevel, float digSpeed, float attackDamage) {
             NBTTagCompound toolNBT = new NBTTagCompound();
             ArrayList<SolidMaterial> materials = new ArrayList<>();
-            toolNBT.setString("PrimaryMaterial", toolMaterial.toString());
+            toolNBT.setString("Material", toolMaterial.toString());
             materials.add(toolMaterial);
             if (maxDurability > -1) {
                 toolNBT.setInteger("MaxDurability", maxDurability);

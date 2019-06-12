@@ -46,7 +46,7 @@ public class ShapedOreEnergyTransferRecipe extends ShapedOreRecipe {
                     continue;
                 }
                 IElectricItem batteryItem = stackInSlot.getCapability(GregtechCapabilities.CAPABILITY_ELECTRIC_ITEM, null);
-                if (batteryItem == null || !batteryItem.canProvideChargeExternally()) {
+                if (batteryItem == null) {
                     continue;
                 }
                 if(electricItem instanceof ElectricItem && transferMaxCharge) {

@@ -107,7 +107,7 @@ public class ToolJackHammer extends ToolDrillLV {
 
     @Override
     public float getMaxDurabilityMultiplier(ItemStack stack) {
-        return 2.0F;
+        return 29.0F;
     }
 
     @Override

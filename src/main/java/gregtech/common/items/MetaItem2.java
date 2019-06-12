@@ -62,10 +62,10 @@ public class MetaItem2 extends MaterialMetaItem {
         PLANT_BALL = addItem(570, "plant_ball").setBurnValue(75);
         ENERGIUM_DUST = addItem(572, "energium_dust");
 
-        POWER_UNIT_LV = addItem(573, "power_unit.lv").addStats(ElectricStats.createElectricItem(100000L, GTValues.LV));
-        POWER_UNIT_MV = addItem(574, "power_unit.mv").addStats(ElectricStats.createElectricItem(400000L, GTValues.MV));
-        POWER_UNIT_HV = addItem(575, "power_unit.hv") .addStats(ElectricStats.createElectricItem(1600000L, GTValues.HV));
-        JACKHAMMER_BASE = addItem(576, "jackhammer_base") .addStats(ElectricStats.createElectricItem(1600000L, GTValues.HV));
+        POWER_UNIT_LV = addItem(573, "power_unit.lv").addStats(ElectricStats.createElectricItem(100000L, GTValues.LV)).setMaxStackSize(8);
+        POWER_UNIT_MV = addItem(574, "power_unit.mv").addStats(ElectricStats.createElectricItem(400000L, GTValues.MV)).setMaxStackSize(8);
+        POWER_UNIT_HV = addItem(575, "power_unit.hv") .addStats(ElectricStats.createElectricItem(1600000L, GTValues.HV)).setMaxStackSize(8);
+        JACKHAMMER_BASE = addItem(576, "jackhammer_base") .addStats(ElectricStats.createElectricItem(1600000L, GTValues.HV)).setMaxStackSize(4);
 
         CARBON_FIBERS = addItem(504, "carbon.fibers");
         CARBON_MESH = addItem(505, "carbon.mesh");

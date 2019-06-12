@@ -38,6 +38,11 @@ public class ToolDrillLV extends ToolBase {
     }
 
     @Override
+    public float getMaxDurabilityMultiplier(ItemStack stack) {
+        return 10.0f;
+    }
+
+    @Override
     public boolean canMineBlock(IBlockState block, ItemStack stack) {
         String tool = block.getBlock().getHarvestTool(block);
         return (tool != null && (tool.equals("pickaxe") || tool.equals("shovel"))) ||
