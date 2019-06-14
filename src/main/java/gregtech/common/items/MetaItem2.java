@@ -13,6 +13,7 @@ import gregtech.api.unification.material.MarkerMaterials.Tier;
 import gregtech.api.unification.material.Materials;
 import gregtech.api.unification.ore.OrePrefix;
 import gregtech.api.util.RandomPotionEffect;
+import gregtech.common.items.behaviors.NanoSaberBehavior;
 import gregtech.common.items.behaviors.TurbineRotorBehavior;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -65,7 +66,9 @@ public class MetaItem2 extends MaterialMetaItem {
         POWER_UNIT_LV = addItem(573, "power_unit.lv").addStats(ElectricStats.createElectricItem(100000L, GTValues.LV)).setMaxStackSize(8);
         POWER_UNIT_MV = addItem(574, "power_unit.mv").addStats(ElectricStats.createElectricItem(400000L, GTValues.MV)).setMaxStackSize(8);
         POWER_UNIT_HV = addItem(575, "power_unit.hv") .addStats(ElectricStats.createElectricItem(1600000L, GTValues.HV)).setMaxStackSize(8);
-        JACKHAMMER_BASE = addItem(576, "jackhammer_base") .addStats(ElectricStats.createElectricItem(1600000L, GTValues.HV)).setMaxStackSize(4);
+        JACKHAMMER_BASE = addItem(576, "jackhammer_base").addStats(ElectricStats.createElectricItem(1600000L, GTValues.HV)).setMaxStackSize(4);
+
+        NANO_SABER = addItem(577, "nano_saber").addStats(ElectricStats.createElectricItem(4000000L, GTValues.HV)).addStats(new NanoSaberBehavior(5.0f, 20.0f, 8)).setMaxStackSize(1);
 
         CARBON_FIBERS = addItem(504, "carbon.fibers");
         CARBON_MESH = addItem(505, "carbon.mesh");

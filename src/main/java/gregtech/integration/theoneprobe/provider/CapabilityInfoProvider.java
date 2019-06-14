@@ -28,7 +28,7 @@ public abstract class CapabilityInfoProvider<T> implements IProbeInfoProvider {
             TileEntity tileEntity = world.getTileEntity(data.getPos());
             if (tileEntity == null) return;
             Capability<T> capability = getCapability();
-            T resultCapability = tileEntity.getCapability(capability, sideHit);
+            T resultCapability = tileEntity.getCapability(capability, null);
             if (resultCapability != null && allowDisplaying(resultCapability)) {
                 addProbeInfo(resultCapability, probeInfo, tileEntity, sideHit);
             }

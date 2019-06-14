@@ -1,5 +1,12 @@
 ## Changelog
 
+### 1.8.3
+* Added Nano Saber.
+* Fixed severe e-net bug where battery buffers voided accepted EU.
+* Fixed cables burning on too many amps even if they're not consumed.
+* Allow using GTCE gems and ingots as beacon payments.
+* Changed some high-tier circuit textures.
+
 ### 1.8.2
 * Show full inventory in most covers UI instead of only hotbar.
 * Added recipe for electric screwdriver. Closes #530.

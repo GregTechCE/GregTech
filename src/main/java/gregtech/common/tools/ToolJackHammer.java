@@ -26,7 +26,7 @@ import java.util.List;
 
 public class ToolJackHammer extends ToolDrillLV {
 
-    public static final ModeSwitchBehavior<JackHammerMode> MODE_SWITCH_BEHAVIOR = new ModeSwitchBehavior<>(JackHammerMode.class);
+    private static final ModeSwitchBehavior<JackHammerMode> MODE_SWITCH_BEHAVIOR = new ModeSwitchBehavior<>(JackHammerMode.class);
 
     public enum JackHammerMode implements ILocalizationKey {
         THREE_BY_THREE("metaitem.jack_hammer.mode.three_by_three", 3, 3, 1.2f),

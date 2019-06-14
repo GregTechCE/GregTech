@@ -111,8 +111,7 @@ public class ToolMetaItem<T extends ToolMetaItem<?>.MetaToolValueItem> extends M
             return item.getDurabilityManager().showsDurabilityBar(stack);
         }
         //don't show durability if item is not electric and it's damage is zero
-        return stack.hasCapability(GregtechCapabilities.CAPABILITY_ELECTRIC_ITEM, null) ||
-            getItemDamage(stack) != 0;
+        return stack.hasCapability(GregtechCapabilities.CAPABILITY_ELECTRIC_ITEM, null) || getItemDamage(stack) != 0;
     }
 
     @Override
@@ -261,6 +260,8 @@ public class ToolMetaItem<T extends ToolMetaItem<?>.MetaToolValueItem> extends M
     @Override
     public Multimap<String, AttributeModifier> getAttributeModifiers(EntityEquipmentSlot slot, ItemStack stack) {
         T metaValueItem = getItem(stack);
+        HashMultimap<String, AttributeModifier> modifiers = HashMultimap.create();
+        modifiers.putAll(super.getAttributeModifiers(slot, stack));
         if (metaValueItem != null && slot == EntityEquipmentSlot.MAINHAND) {
             IToolStats toolStats = metaValueItem.getToolStats();
             if (toolStats == null) {
@@ -269,12 +270,10 @@ public class ToolMetaItem<T extends ToolMetaItem<?>.MetaToolValueItem> extends M
             float attackDamage = getToolAttackDamage(stack);
             float attackSpeed = toolStats.getAttackSpeed(stack);
 
-            HashMultimap<String, AttributeModifier> modifiers = HashMultimap.create();
             modifiers.put(SharedMonsterAttributes.ATTACK_DAMAGE.getName(), new AttributeModifier(ATTACK_DAMAGE_MODIFIER, "Weapon modifier", attackDamage, 0));
             modifiers.put(SharedMonsterAttributes.ATTACK_SPEED.getName(), new AttributeModifier(ATTACK_SPEED_MODIFIER, "Weapon modifier", attackSpeed, 0));
-            return modifiers;
         }
-        return HashMultimap.create();
+        return modifiers;
     }
 
     @Override
@@ -319,18 +318,7 @@ public class ToolMetaItem<T extends ToolMetaItem<?>.MetaToolValueItem> extends M
     @Override
     public boolean damageItem(ItemStack stack, int vanillaDamage, boolean simulate) {
         IElectricItem capability = stack.getCapability(GregtechCapabilities.CAPABILITY_ELECTRIC_ITEM, null);
-        if (capability == null) {
-            int resultDamage = calculateToolDamage(stack, new Random(), vanillaDamage);
-            int newDamageValue = getItemDamage(stack) + resultDamage;
-
-            if (!simulate && !setInternalDamage(stack, newDamageValue)) {
-                IToolStats toolStats = getItem(stack).getToolStats();
-                GTUtility.setItem(stack, toolStats.getBrokenStack(stack));
-            }
-            //non-electric tools are always damageable, and just break in case
-            //they don't have enough durability left
-            return true;
-        } else {
+        if (capability != null) {
             int energyAmount = ConfigHolder.energyUsageMultiplier * vanillaDamage;
             if (capability.discharge(energyAmount, capability.getTier(), true, false, true) < energyAmount) {
                 //if we can't discharge full amount of energy, just return false
@@ -338,16 +326,25 @@ public class ToolMetaItem<T extends ToolMetaItem<?>.MetaToolValueItem> extends M
                 return false;
             }
             capability.discharge(energyAmount, capability.getTier(), true, false, simulate);
-            int newDamageValue = getItemDamage(stack) + vanillaDamage;
-            if (!simulate && !setInternalDamage(stack, newDamageValue)) {
-                IToolStats toolStats = getItem(stack).getToolStats();
-                GTUtility.setItem(stack, toolStats.getBrokenStack(stack));
-            }
+        }
+
+        IToolStats toolStats = getItem(stack).getToolStats();
+        if(!toolStats.isUsingDurability(stack)) {
             return true;
         }
+
+        int newDamageValue = getItemDamage(stack) + calculateToolDamage(stack, itemRand, vanillaDamage);
+        if (!simulate && !setInternalDamage(stack, newDamageValue)) {
+            GTUtility.setItem(stack, toolStats.getBrokenStack(stack));
+        }
+        return true;
     }
 
     public int regainItemDurability(ItemStack itemStack, int maxDurabilityRegain) {
+        IToolStats toolStats = getItem(itemStack).getToolStats();
+        if(!toolStats.isUsingDurability(itemStack)) {
+            return 0;
+        }
         int toolDamage = getItemDamage(itemStack);
         int durabilityRegained = Math.min(toolDamage, maxDurabilityRegain);
         setInternalDamage(itemStack, toolDamage - durabilityRegained);
@@ -402,7 +399,7 @@ public class ToolMetaItem<T extends ToolMetaItem<?>.MetaToolValueItem> extends M
         IToolStats toolStats = item.getToolStats();
         SolidMaterial primaryMaterial = getToolMaterial(itemStack);
         int maxInternalDamage = getMaxItemDamage(itemStack);
-        if (maxInternalDamage > 0) {
+        if (toolStats.isUsingDurability(itemStack) && maxInternalDamage > 0) {
             lines.add(I18n.format("metaitem.tool.tooltip.durability", maxInternalDamage - getItemDamage(itemStack), maxInternalDamage));
         }
         lines.add(I18n.format("metaitem.tool.tooltip.primary_material", primaryMaterial.getLocalizedName(), getHarvestLevel(itemStack)));
@@ -423,7 +420,16 @@ public class ToolMetaItem<T extends ToolMetaItem<?>.MetaToolValueItem> extends M
         return getMaterialEnchantability(primaryMaterial);
     }
 
-    private static int getMaterialEnchantability(SolidMaterial material) {
+    @Override
+    public boolean canApplyAtEnchantingTable(ItemStack stack, Enchantment enchantment) {
+        T metaToolValueItem = getItem(stack);
+        if (metaToolValueItem != null && metaToolValueItem.toolStats != null) {
+            return metaToolValueItem.toolStats.canApplyEnchantment(stack, enchantment);
+        }
+        return false;
+    }
+
+    public static int getMaterialEnchantability(SolidMaterial material) {
         if (material.materialIconSet == MaterialIconSet.SHINY ||
             material.materialIconSet == MaterialIconSet.RUBY) {
             return 33; //all shiny metals have gold enchantability
@@ -442,15 +448,6 @@ public class ToolMetaItem<T extends ToolMetaItem<?>.MetaToolValueItem> extends M
             return 11; //wood and stone has their default enchantability
         }
         return 10; //otherwise return lowest enchantability
-    }
-
-    @Override
-    public boolean canApplyAtEnchantingTable(ItemStack stack, Enchantment enchantment) {
-        T metaToolValueItem = getItem(stack);
-        if (metaToolValueItem != null && metaToolValueItem.toolStats != null) {
-            return metaToolValueItem.toolStats.canApplyEnchantment(stack, enchantment);
-        }
-        return false;
     }
 
     @Override

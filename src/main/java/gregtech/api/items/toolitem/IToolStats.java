@@ -149,6 +149,10 @@ public interface IToolStats {
         return false;
     }
 
+    default boolean isUsingDurability(ItemStack stack) {
+        return true;
+    }
+
     default ItemStack getBrokenStack(ItemStack stack) {
         return ItemStack.EMPTY;
     }

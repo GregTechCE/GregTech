@@ -1,6 +1,8 @@
 package gregtech.api.items.metaitem;
 
+import com.google.common.collect.HashMultimap;
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Multimap;
 import gnu.trove.map.TShortObjectMap;
 import gnu.trove.map.hash.TShortObjectHashMap;
 import gregtech.api.GTValues;
@@ -25,9 +27,12 @@ import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.EnumAction;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -400,10 +405,65 @@ public abstract class MetaItem<T extends MetaItem<?>.MetaValueItem> extends Item
     }
 
     @Override
+    public Multimap<String, AttributeModifier> getAttributeModifiers(EntityEquipmentSlot slot, ItemStack stack) {
+        HashMultimap<String, AttributeModifier> modifiers = HashMultimap.create();
+        T metaValueItem = getItem(stack);
+        if (metaValueItem != null) {
+            for(IItemBehaviour behaviour : getBehaviours(stack)) {
+                modifiers.putAll(behaviour.getAttributeModifiers(slot, stack));
+            }
+        }
+        return modifiers;
+    }
+
+    @Override
+    public boolean isEnchantable(ItemStack stack) {
+        T metaValueItem = getItem(stack);
+        if(metaValueItem != null) {
+            IEnchantabilityHelper helper = metaValueItem.getEnchantabilityHelper();
+            return helper != null && helper.isEnchantable(stack);
+        }
+        return super.isEnchantable(stack);
+    }
+
+    @Override
+    public int getItemEnchantability(ItemStack stack) {
+        T metaValueItem = getItem(stack);
+        if(metaValueItem != null) {
+            IEnchantabilityHelper helper = metaValueItem.getEnchantabilityHelper();
+            return helper == null ? 0 : helper.getItemEnchantability(stack);
+        }
+        return super.getItemEnchantability(stack);
+    }
+
+    @Override
+    public boolean canApplyAtEnchantingTable(ItemStack stack, Enchantment enchantment) {
+        T metaValueItem = getItem(stack);
+        if(metaValueItem != null) {
+            IEnchantabilityHelper helper = metaValueItem.getEnchantabilityHelper();
+            return helper != null && helper.canApplyAtEnchantingTable(stack, enchantment);
+        }
+        return super.canApplyAtEnchantingTable(stack, enchantment);
+    }
+
+    @Override
     public void onUpdate(ItemStack stack, World worldIn, Entity entityIn, int itemSlot, boolean isSelected) {
         for (IItemBehaviour behaviour : getBehaviours(stack)) {
             behaviour.onUpdate(stack, entityIn);
         }
+    }
+
+    @Override
+    public boolean shouldCauseReequipAnimation(ItemStack oldStack, ItemStack newStack, boolean slotChanged) {
+        //if item is equal, and old item has electric item capability, remove charge tags to stop reequip animation when charge is altered
+        if(ItemStack.areItemsEqual(oldStack, newStack) && oldStack.hasCapability(GregtechCapabilities.CAPABILITY_ELECTRIC_ITEM, null) &&
+            oldStack.hasTagCompound() && newStack.hasTagCompound()) {
+            oldStack = oldStack.copy();
+            newStack = newStack.copy();
+            oldStack.getTagCompound().removeTag("Charge");
+            newStack.getTagCompound().removeTag("Charge");
+        }
+        return !ItemStack.areItemStacksEqual(oldStack, newStack);
     }
 
     @Override
@@ -552,6 +612,7 @@ public abstract class MetaItem<T extends MetaItem<?>.MetaValueItem> extends Item
         private IItemModelIndexProvider modelIndexProvider;
         private IItemContainerItemProvider containerItemProvider;
         private IItemNameProvider nameProvider;
+        private IEnchantabilityHelper enchantabilityHelper;
 
         private int burnValue = 0;
         private boolean visible = true;
@@ -653,8 +714,14 @@ public abstract class MetaItem<T extends MetaItem<?>.MetaValueItem> extends Item
                 if (metaItemStats instanceof IItemContainerItemProvider)
                     this.containerItemProvider = (IItemContainerItemProvider) metaItemStats;
 
-                if (metaItemStats instanceof IItemBehaviour)
+                if (metaItemStats instanceof IItemBehaviour) {
                     this.behaviours.add((IItemBehaviour) metaItemStats);
+                    ((IItemBehaviour) metaItemStats).onAddedToItem(this);
+                }
+
+                if(metaItemStats instanceof IEnchantabilityHelper) {
+                    this.enchantabilityHelper = (IEnchantabilityHelper) metaItemStats;
+                }
 
                 this.allStats.add(metaItemStats);
             }
@@ -706,6 +773,11 @@ public abstract class MetaItem<T extends MetaItem<?>.MetaValueItem> extends Item
         @Nullable
         public IItemContainerItemProvider getContainerItemProvider() {
             return containerItemProvider;
+        }
+
+        @Nullable
+        public IEnchantabilityHelper getEnchantabilityHelper() {
+            return enchantabilityHelper;
         }
 
         public int getBurnValue() {

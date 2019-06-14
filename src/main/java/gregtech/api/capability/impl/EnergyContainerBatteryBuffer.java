@@ -28,6 +28,7 @@ public class EnergyContainerBatteryBuffer extends MTETrait implements IEnergyCon
 
     @Override
     public long acceptEnergyFromNetwork(EnumFacing side, long voltage, long amperage) {
+        System.out.println(side + " " + voltage + " " + amperage + " " + metaTileEntity.getPos());
         long initialAmperage = amperage;
         if (side == null || inputsEnergy(side)) {
             if (voltage > getInputVoltage()) {
@@ -50,7 +51,7 @@ public class EnergyContainerBatteryBuffer extends MTETrait implements IEnergyCon
         if(amperageUsed > 0L) {
             notifyEnergyListener(false);
         }
-        return amperage;
+        return amperageUsed;
     }
 
     private static boolean chargeItemWithVoltageExact(IElectricItem electricItem, long voltage, int tier, boolean simulate) {

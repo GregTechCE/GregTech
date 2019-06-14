@@ -1,9 +1,9 @@
 {
   "type": "gregtech:metaitem_shaped",
   "pattern": [
-    "CCC",
+    "SCS",
     "CAC",
-    "CCC"
+    "SCS"
   ],
   "key": {
     "C": {
@@ -13,6 +13,10 @@
     "A": {
       "type": "forge:ore_dict",
       "ore": "circuitGood"
+    },
+    "S": {
+      "type": "forge:ore_dict",
+      "ore": "plateSilicon"
     }
   },
   "result": {

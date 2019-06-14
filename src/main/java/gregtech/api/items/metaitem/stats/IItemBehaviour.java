@@ -1,7 +1,12 @@
 package gregtech.api.items.metaitem.stats;
 
+import com.google.common.collect.HashMultimap;
+import com.google.common.collect.Multimap;
+import gregtech.api.items.metaitem.MetaItem.MetaValueItem;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
@@ -13,6 +18,9 @@ import net.minecraft.world.World;
 import java.util.List;
 
 public interface IItemBehaviour extends IMetaItemStats {
+
+    default void onAddedToItem(MetaValueItem metaValueItem) {
+    }
 
     default boolean onLeftClickEntity(ItemStack itemStack, EntityPlayer player, Entity entity) {
         return false;
@@ -30,6 +38,10 @@ public interface IItemBehaviour extends IMetaItemStats {
     }
 
     default void onUpdate(ItemStack itemStack, Entity entity) {
+    }
+
+    default Multimap<String, AttributeModifier> getAttributeModifiers(EntityEquipmentSlot slot, ItemStack stack) {
+        return HashMultimap.create();
     }
 
     default ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand) {

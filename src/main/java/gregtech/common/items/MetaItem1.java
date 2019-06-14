@@ -11,6 +11,7 @@ import gregtech.api.unification.OreDictUnifier;
 import gregtech.api.unification.material.MarkerMaterials;
 import gregtech.api.unification.material.Materials;
 import gregtech.api.unification.material.type.Material;
+import gregtech.api.unification.material.type.SolidMaterial;
 import gregtech.api.unification.ore.OrePrefix;
 import gregtech.api.unification.stack.ItemMaterialInfo;
 import gregtech.api.unification.stack.MaterialStack;
@@ -507,6 +508,22 @@ public class MetaItem1 extends MaterialMetaItem {
             .duration(1600).EUt(2)
             .buildAndRegister();
 
+    }
+
+    @Override
+    public boolean isBeaconPayment(ItemStack stack) {
+        int damage = stack.getMetadata();
+        if (damage >= this.metaItemOffset) {
+            return false;
+        }
+        Material material = Material.MATERIAL_REGISTRY.getObjectById(damage % 1000);
+        OrePrefix prefix = this.orePrefixes[(damage / 1000)];
+        if(prefix != null && material != null) {
+            boolean isSolidState = prefix == OrePrefix.ingot || prefix == OrePrefix.gem;
+            boolean isMaterialTiered = material instanceof SolidMaterial && ((SolidMaterial) material).harvestLevel >= 2;
+            return isSolidState && isMaterialTiered;
+        }
+        return false;
     }
 
     @Override
