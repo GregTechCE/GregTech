@@ -2237,6 +2237,7 @@ gregtech.machine.air_collector.mv.name=Advanced Air Collector
 gregtech.machine.air_collector.hv.name=Advanced Air Collector II
 gregtech.machine.air_collector.ev.name=Atmosphere Collector III
 gregtech.machine.air_collector.description=Collects air from adjacent blocks
+gregtech.machine.air_collector.jeidescription=The Air Collector collects air from adjacent blocks for a little bit of EU
 
 #Tesla Coil
 gregtech.machine.tesla_coil.name=Tesla Coil
@@ -2842,6 +2843,7 @@ gregtech.recipe.not_consumed=Not consumed in process
 gregtech.recipe.chance=Chance: %s%%
 gregtech.recipe.blast_furnace_temperature=Temperature: %dK
 gregtech.recipe.eu_to_start=Energy To Start: %dEU
+gregtech.recipe.blastcoal=Takes coal, charcoal & coke burnvalue equivalent in any form 
 
 gregtech.fluid.click_to_fill=§7Click with a empty fluid container to fill it from tank.
 gregtech.fluid.click_to_fill.shift=§7(Shift-clicking will fill all containers in your hand)
@@ -2862,10 +2864,10 @@ gregtech.gui.toggle_view.enabled=Toggle View (Items)
 gregtech.gui.overclock.enabled=Allow Overclocking
 gregtech.gui.overclock.disabled=Disable Overclocking
 gregtech.gui.sort=Sort
-gregtech.gui.fluidautooutput.enabled=Fluid Autooutput enabled
-gregtech.gui.fluidautooutput.disabled=Fluid Autooutput disabled
-gregtech.gui.itemautooutput.enabled=Item Autooutput enabled
-gregtech.gui.itemautooutput.disabled=Item Autooutput disabled
+gregtech.gui.fluidautooutput.enabled=Fluid Auto-Output enabled
+gregtech.gui.fluidautooutput.disabled=Fluid Auto-Output disabled
+gregtech.gui.itemautooutput.enabled=Item Auto-Output enabled
+gregtech.gui.itemautooutput.disabled=Item Auto-Output disabled
 
 gregtech.item_filter.empty_item=Empty (No Item)
 gregtech.item_filter.footer=§eClick with item to override
