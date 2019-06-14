@@ -78,6 +78,8 @@ metaitem.power_unit.lv.name=Power Unit (LV)
 metaitem.power_unit.mv.name=Power Unit (MV)
 metaitem.power_unit.hv.name=Power Unit (HV)
 metaitem.jackhammer_base.name=JackHammer Base (HV)
+metaitem.nano_saber.name=Nano Saber
+metaitem.nano_saber.tooltip=Ryujin no ken wo kurae!
 
 metaitem.shape.mold.plate.name=Mold (Plate)
 metaitem.shape.mold.plate.tooltip=Mold for making Plates
@@ -1613,6 +1615,7 @@ behaviour.soft_hammer=Click machine to allow/disallow it to work
 behaviour.lighter.tooltip=Can light things on fire
 behaviour.lighter.uses=Remaining uses: %d
 behavior.plunger.description=Right click on machine to clear 1000 mb out of it's output tank./nUse while sneaking to clear 1000 mb out of machine's input tank./nInput tank clearing works only on GTCE machines!
+behavior.toggle_energy_consumer.tooltip=Click to toggle mode
 
 enchantment.damage.endermen=Disjunction
 enchantment.damage.radioactivity=Radioactivity

@@ -324,6 +324,8 @@ public final class MetaItems {
     public static MetaItem<?>.MetaValueItem POWER_UNIT_HV;
     public static MetaItem<?>.MetaValueItem JACKHAMMER_BASE;
 
+    public static MetaItem<?>.MetaValueItem NANO_SABER;
+
     public static MetaItem<?>.MetaValueItem[] DYE_ONLY_ITEMS = new MetaItem.MetaValueItem[EnumDyeColor.values().length];
     public static MetaItem<?>.MetaValueItem[] SPRAY_CAN_DYES = new MetaItem.MetaValueItem[EnumDyeColor.values().length];
 

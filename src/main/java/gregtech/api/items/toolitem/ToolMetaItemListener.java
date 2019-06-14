@@ -86,11 +86,11 @@ public class ToolMetaItemListener {
     }
 
     private static int xpToDurability(int xp) {
-        return xp * 2 * 10;
+        return xp * 2;
     }
 
     private static int durabilityToXp(int durability) {
-        return durability / 2 / 10;
+        return durability / 2;
     }
 
     @SubscribeEvent

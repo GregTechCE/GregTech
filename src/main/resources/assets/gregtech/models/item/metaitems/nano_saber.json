@@ -1,0 +1,20 @@
+{
+  "parent": "item/handheld",
+  "textures": {
+    "layer0": "gregtech:items/metaitems/nano_saber/normal"
+  },
+  "overrides": [
+    {
+      "predicate": {
+        "gregtech:nano_saber_active": 0.0
+      },
+      "model": "gregtech:item/metaitems/nano_saber/normal"
+    },
+    {
+      "predicate": {
+        "gregtech:nano_saber_active": 1.0
+      },
+      "model": "gregtech:item/metaitems/nano_saber/active"
+    }
+  ]
+}

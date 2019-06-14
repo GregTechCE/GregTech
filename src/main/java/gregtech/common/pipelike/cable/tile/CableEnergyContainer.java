@@ -43,21 +43,17 @@ public class CableEnergyContainer implements IEnergyContainer {
             }
             BlockPos destinationPos = routePath.destination;
             int blockedConnections = energyNet.getAllNodes().get(destinationPos).blockedConnections;
-            long amperageAccepted = dispatchEnergyToNode(destinationPos, blockedConnections,
+            amperesUsed += dispatchEnergyToNode(destinationPos, blockedConnections,
                 voltage - routePath.totalLoss, amperage - amperesUsed);
 
             if (voltage > routePath.minVoltage ||
-                amperage > routePath.maxAmperage ||
-                amperageAccepted > routePath.maxAmperage) {
-                burnAllPaths(paths, voltage, amperage, amperageAccepted);
+                amperesUsed > routePath.maxAmperage) {
+                burnAllPaths(paths, voltage, amperage, amperesUsed);
                 break; //break after burning all paths
             }
 
-            if (amperageAccepted > 0) {
-                amperesUsed += amperageAccepted;
-                if (amperesUsed == amperage) {
-                    break; //do not continue if all amperes are exhausted
-                }
+            if (amperesUsed == amperage) {
+                break; //do not continue if all amperes are exhausted
             }
         }
         energyNet.incrementCurrentAmperage(amperage, voltage);
