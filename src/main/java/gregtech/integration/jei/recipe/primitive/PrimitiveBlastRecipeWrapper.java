@@ -65,7 +65,7 @@ public class PrimitiveBlastRecipeWrapper implements IRecipeWrapper{
 	
 	@Override
     public void drawInfo(Minecraft minecraft, int recipeWidth, int recipeHeight, int mouseX, int mouseY) {
-        minecraft.fontRenderer.drawString(I18n.format("gregtech.recipe.duration", recipe.getDuration() / 20f), 0, 90, 0x111111);		
+        minecraft.fontRenderer.drawString(I18n.format("gregtech.recipe.duration", recipe.getDuration() / 20f), 0, 55, 0x111111);		
 	}
 
 }

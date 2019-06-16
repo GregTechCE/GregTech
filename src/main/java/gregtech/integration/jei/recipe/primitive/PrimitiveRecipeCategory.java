@@ -6,6 +6,8 @@ import java.util.List;
 import javax.annotation.Nullable;
 
 import gregtech.api.GTValues;
+import gregtech.api.gui.GuiTextures;
+import mezz.jei.api.IGuiHelper;
 import mezz.jei.api.IModRegistry;
 import mezz.jei.api.gui.IDrawable;
 import mezz.jei.api.gui.IRecipeLayout;
@@ -24,12 +26,21 @@ public abstract class PrimitiveRecipeCategory <T, W extends IRecipeWrapper> impl
 	protected IDrawable background;
 	private final Class<T> recipeClass;
 
-	public PrimitiveRecipeCategory(String uniqueName, String localKey, IDrawable background, Class<T> recipeClass)
+	protected final IDrawable slot;
+	protected final IDrawable progressBar;
+	protected final IDrawable fluidTank;
+	protected final IDrawable fluidTankOverlay;
+
+	public PrimitiveRecipeCategory(String uniqueName, String localKey, IDrawable background, Class<T> recipeClass, IGuiHelper guiHelper)
 	{
 		this.uniqueName = uniqueName;
 		this.localizedName = I18n.format(localKey);
 		this.background = background;
 		this.recipeClass = recipeClass;
+		slot = guiHelper.createDrawable(GuiTextures.SLOT.imageLocation, 0, 0, 18, 18, 18, 18);
+		progressBar = guiHelper.createDrawable(GuiTextures.BRONZE_BLAST_FURNACE_PROGRESS_BAR.imageLocation, 0, 0, 20, 15, 20, 30);
+		fluidTank = guiHelper.createDrawable(GuiTextures.FLUID_TANK_BACKGROUND.imageLocation, 0, 0, 20, 58, 20, 58);
+		fluidTankOverlay = guiHelper.createDrawable(GuiTextures.FLUID_TANK_OVERLAY.imageLocation, 0, 0, 20, 58, 20, 58);
 	}
 
 	@Nullable

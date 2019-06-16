@@ -27,37 +27,19 @@ import net.minecraftforge.items.ItemStackHandler;
 
 public class PrimitiveBlastRecipeCategory extends PrimitiveRecipeCategory<PrimitiveBlastFurnaceRecipe, PrimitiveBlastRecipeWrapper>{
 	
-    private final ModularUI modularUI;
-	
     public PrimitiveBlastRecipeCategory(IGuiHelper guiHelper) {
     	super("primitive_blast_furnace", "gregtech.machine.primitive_blast_furnace.bronze.name", guiHelper.createBlankDrawable(140, 60), 
-    			PrimitiveBlastFurnaceRecipe.class);
-    	IItemHandlerModifiable importItems = new ItemStackHandler(2);
-    	IItemHandlerModifiable exportItems = new ItemStackHandler(2);
-    	
-        this.modularUI = ModularUI.builder(GuiTextures.BACKGROUND, 176, 166)
-                .widget(new SlotWidget(importItems, 0, 33, 15, false, false)
-                        .setBackgroundTexture(GuiTextures.SLOT, GuiTextures.INGOT_OVERLAY))
-                    .widget(new SlotWidget(importItems, 1, 33, 33, false, false)
-                        .setBackgroundTexture(GuiTextures.SLOT, GuiTextures.FURNACE_OVERLAY))
-                    .progressBar(()->0.0, 58, 24, 20, 15, GuiTextures.BRONZE_BLAST_FURNACE_PROGRESS_BAR, MoveType.HORIZONTAL)
-                    .widget(new SlotWidget(exportItems, 0, 85, 24, false, false)
-                        .setBackgroundTexture(GuiTextures.SLOT, GuiTextures.INGOT_OVERLAY))
-                    .widget(new SlotWidget(exportItems, 1, 103, 24, false, false)
-                        .setBackgroundTexture(GuiTextures.SLOT, GuiTextures.DUST_OVERLAY))
-                    .build(new BlankUIHolder(), Minecraft.getMinecraft().player);
-            this.modularUI.initWidgets();
-            this.background = guiHelper.createBlankDrawable(modularUI.getWidth(), modularUI.getHeight() * 2 / 3);
+    			PrimitiveBlastFurnaceRecipe.class, guiHelper);
 	}
 
 	@Override
 	public void setRecipe(IRecipeLayout recipeLayout, PrimitiveBlastRecipeWrapper recipeWrapper, IIngredients ingredients) {
 		IGuiItemStackGroup itemStackGroup =  recipeLayout.getItemStacks();
-		itemStackGroup.init(0, true, 32, 14);
-		itemStackGroup.init(1, true, 32, 32);
+		itemStackGroup.init(0, true, 32, 4);
+		itemStackGroup.init(1, true, 32, 22);
 
-		itemStackGroup.init(2, false, 84, 23);
-		itemStackGroup.init(3, false, 102, 23);
+		itemStackGroup.init(2, false, 84, 13);
+		itemStackGroup.init(3, false, 102, 13);
 		itemStackGroup.addTooltipCallback(recipeWrapper::addTooltip);
 		itemStackGroup.set(ingredients);
 	}
@@ -70,9 +52,10 @@ public class PrimitiveBlastRecipeCategory extends PrimitiveRecipeCategory<Primit
 
     @Override
     public void drawExtras(Minecraft minecraft) {
-        for (Widget widget : modularUI.guiWidgets.values()) {
-            widget.drawInBackground(0, 0);
-            widget.drawInForeground(0, 0);
-        }
+		slot.draw(minecraft, 32, 4);
+		slot.draw(minecraft, 32, 22);
+		slot.draw(minecraft, 84, 13);
+		slot.draw(minecraft, 102, 13);
+		progressBar.draw(minecraft, 57, 14);
     }
 }
