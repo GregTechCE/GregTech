@@ -28,7 +28,6 @@ public class EnergyContainerBatteryBuffer extends MTETrait implements IEnergyCon
 
     @Override
     public long acceptEnergyFromNetwork(EnumFacing side, long voltage, long amperage) {
-        System.out.println(side + " " + voltage + " " + amperage + " " + metaTileEntity.getPos());
         long initialAmperage = amperage;
         if (side == null || inputsEnergy(side)) {
             if (voltage > getInputVoltage()) {

@@ -1,5 +1,8 @@
 ## Changelog
 
+### 1.8.3-hotfix
+* Removed debug log
+
 ### 1.8.3
 * Added Nano Saber.
 * Fixed severe e-net bug where battery buffers voided accepted EU.
@@ -16,7 +19,7 @@
 * Temporary revert pipe rendering to previous version. Closes #846.
 * Fix fisher-related compile issues.
 * Added discharge mode for batteries in player inventory.
-* Don't connect wires on sides of machines that can't neither input nor output energy.
+* Don't connect wires on sides of mach ines that can't neither input nor output energy.
 * Increased overclock efficiency a bit for high voltage recipes.
 * Reduce damage taken by tools in certain actions a bit. 
 * Added a Fisher.

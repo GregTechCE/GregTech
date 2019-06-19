@@ -175,7 +175,6 @@ public abstract class TileEntityPipeBase<PipeType extends Enum<PipeType> & IPipe
         for(int blockedConnections : blockedConnectionsMap.values()) {
             isSideBlocked |= (blockedConnections & sideIndex) > 0;
         }
-        System.out.println(side + " blocked = " + isSideBlocked);
         worldPipeNet.updateBlockedConnections(getPos(), side, isSideBlocked);
     }
 
