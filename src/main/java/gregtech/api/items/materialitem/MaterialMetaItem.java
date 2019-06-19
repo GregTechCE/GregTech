@@ -107,6 +107,7 @@ public class MaterialMetaItem extends StandardMetaItem {
     public int getItemStackLimit(ItemStack stack) {
         if (stack.getItemDamage() < metaItemOffset) {
             OrePrefix prefix = orePrefixes[stack.getItemDamage() / 1000];
+            if(prefix == null) return 64;
             return prefix.maxStackSize;
         }
         return super.getItemStackLimit(stack);
@@ -148,7 +149,7 @@ public class MaterialMetaItem extends StandardMetaItem {
         if (damage < this.metaItemOffset) {
             Material material = Material.MATERIAL_REGISTRY.getObjectById(damage % 1000);
             OrePrefix prefix = this.orePrefixes[(damage / 1000)];
-            if (material == null) return;
+            if (prefix == null || material == null) return;
             addMaterialTooltip(itemStack, prefix, material, lines, tooltipFlag);
         }
     }

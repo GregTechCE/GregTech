@@ -2,6 +2,7 @@
 
 ### 1.8.3-hotfix
 * Removed debug log
+* Fixed exception while badly written mods attempt to retrieve info from invalid stacks.
 
 ### 1.8.3
 * Added Nano Saber.
