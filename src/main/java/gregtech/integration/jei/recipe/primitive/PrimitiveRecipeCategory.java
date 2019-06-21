@@ -19,7 +19,8 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.item.ItemStack;
 
-public abstract class PrimitiveRecipeCategory <T, W extends IRecipeWrapper> implements IRecipeCategory<W>, IRecipeWrapperFactory<T>{
+public abstract class PrimitiveRecipeCategory<T, W extends IRecipeWrapper>
+		implements IRecipeCategory<W>, IRecipeWrapperFactory<T> {
 
 	public String uniqueName;
 	public String localizedName;
@@ -28,75 +29,62 @@ public abstract class PrimitiveRecipeCategory <T, W extends IRecipeWrapper> impl
 
 	protected final IDrawable slot;
 	protected final IDrawable progressBar;
-	protected final IDrawable fluidTank;
-	protected final IDrawable fluidTankOverlay;
 
-	public PrimitiveRecipeCategory(String uniqueName, String localKey, IDrawable background, Class<T> recipeClass, IGuiHelper guiHelper)
-	{
+	public PrimitiveRecipeCategory(String uniqueName, String localKey, IDrawable background, Class<T> recipeClass,
+			IGuiHelper guiHelper) {
 		this.uniqueName = uniqueName;
 		this.localizedName = I18n.format(localKey);
 		this.background = background;
 		this.recipeClass = recipeClass;
 		slot = guiHelper.createDrawable(GuiTextures.SLOT.imageLocation, 0, 0, 18, 18, 18, 18);
-		progressBar = guiHelper.createDrawable(GuiTextures.BRONZE_BLAST_FURNACE_PROGRESS_BAR.imageLocation, 0, 0, 20, 15, 20, 30);
-		fluidTank = guiHelper.createDrawable(GuiTextures.FLUID_TANK_BACKGROUND.imageLocation, 0, 0, 20, 58, 20, 58);
-		fluidTankOverlay = guiHelper.createDrawable(GuiTextures.FLUID_TANK_OVERLAY.imageLocation, 0, 0, 20, 58, 20, 58);
+		progressBar = guiHelper.createDrawable(GuiTextures.BRONZE_BLAST_FURNACE_PROGRESS_BAR.imageLocation, 0, 0, 20,
+				15, 20, 30);
 	}
 
 	@Nullable
 	@Override
-	public IDrawable getIcon()
-	{
+	public IDrawable getIcon() {
 		return null;
 	}
 
 	@Override
-	public String getUid()
-	{
-		return getModName()+":"+uniqueName;
+	public String getUid() {
+		return getModName() + ":" + uniqueName;
 	}
 
 	@Override
-	public String getTitle()
-	{
+	public String getTitle() {
 		return localizedName;
 	}
 
 	@Override
-	public IDrawable getBackground()
-	{
+	public IDrawable getBackground() {
 		return background;
 	}
 
 	@Override
-	public void drawExtras(Minecraft minecraft)
-	{
+	public void drawExtras(Minecraft minecraft) {
 	}
 
 	@Override
-	public List<String> getTooltipStrings(int mouseX, int mouseY)
-	{
+	public List<String> getTooltipStrings(int mouseX, int mouseY) {
 		return Collections.emptyList();
 	}
 
-	public Class<T> getRecipeClass()
-	{
+	public Class<T> getRecipeClass() {
 		return this.recipeClass;
 	}
 
-	public String getRecipeCategoryUid()
-	{
-		return getModName()+":"+uniqueName;
+	public String getRecipeCategoryUid() {
+		return getModName() + ":" + uniqueName;
 	}
-	
-	public boolean isRecipeValid(T recipe)
-	{
+
+	public boolean isRecipeValid(T recipe) {
 		return true;
 	}
 
 	@Override
-	public String getModName()
-	{
+	public String getModName() {
 		return GTValues.MODID;
 	}
 }

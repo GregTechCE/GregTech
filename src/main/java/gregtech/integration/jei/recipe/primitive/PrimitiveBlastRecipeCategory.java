@@ -25,16 +25,18 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.items.IItemHandlerModifiable;
 import net.minecraftforge.items.ItemStackHandler;
 
-public class PrimitiveBlastRecipeCategory extends PrimitiveRecipeCategory<PrimitiveBlastFurnaceRecipe, PrimitiveBlastRecipeWrapper>{
-	
-    public PrimitiveBlastRecipeCategory(IGuiHelper guiHelper) {
-    	super("primitive_blast_furnace", "gregtech.machine.primitive_blast_furnace.bronze.name", guiHelper.createBlankDrawable(140, 60), 
-    			PrimitiveBlastFurnaceRecipe.class, guiHelper);
+public class PrimitiveBlastRecipeCategory
+		extends PrimitiveRecipeCategory<PrimitiveBlastFurnaceRecipe, PrimitiveBlastRecipeWrapper> {
+
+	public PrimitiveBlastRecipeCategory(IGuiHelper guiHelper) {
+		super("primitive_blast_furnace", "gregtech.machine.primitive_blast_furnace.bronze.name",
+				guiHelper.createBlankDrawable(140, 60), PrimitiveBlastFurnaceRecipe.class, guiHelper);
 	}
 
 	@Override
-	public void setRecipe(IRecipeLayout recipeLayout, PrimitiveBlastRecipeWrapper recipeWrapper, IIngredients ingredients) {
-		IGuiItemStackGroup itemStackGroup =  recipeLayout.getItemStacks();
+	public void setRecipe(IRecipeLayout recipeLayout, PrimitiveBlastRecipeWrapper recipeWrapper,
+			IIngredients ingredients) {
+		IGuiItemStackGroup itemStackGroup = recipeLayout.getItemStacks();
 		itemStackGroup.init(0, true, 32, 4);
 		itemStackGroup.init(1, true, 32, 22);
 
@@ -45,17 +47,16 @@ public class PrimitiveBlastRecipeCategory extends PrimitiveRecipeCategory<Primit
 	}
 
 	@Override
-	public IRecipeWrapper getRecipeWrapper(PrimitiveBlastFurnaceRecipe recipe)
-	{
+	public IRecipeWrapper getRecipeWrapper(PrimitiveBlastFurnaceRecipe recipe) {
 		return new PrimitiveBlastRecipeWrapper(recipe);
 	}
 
-    @Override
-    public void drawExtras(Minecraft minecraft) {
-		slot.draw(minecraft, 32, 4);
-		slot.draw(minecraft, 32, 22);
-		slot.draw(minecraft, 84, 13);
-		slot.draw(minecraft, 102, 13);
-		progressBar.draw(minecraft, 57, 14);
-    }
+	@Override
+	public void drawExtras(Minecraft minecraft) {
+		this.slot.draw(minecraft, 32, 4);
+		this.slot.draw(minecraft, 32, 22);
+		this.slot.draw(minecraft, 84, 13);
+		this.slot.draw(minecraft, 102, 13);
+		this.progressBar.draw(minecraft, 57, 14);
+	}
 }

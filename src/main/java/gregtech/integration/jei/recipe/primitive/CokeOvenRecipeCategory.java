@@ -30,8 +30,14 @@ import net.minecraftforge.items.ItemStackHandler;
 
 public class CokeOvenRecipeCategory extends PrimitiveRecipeCategory<CokeOvenRecipe, CokeOvenRecipeWrapper> {
 
+	protected final IDrawable fluidTank;
+	protected final IDrawable fluidTankOverlay;
+	
 	public CokeOvenRecipeCategory(IGuiHelper guiHelper) {
-		super("coke_oven", "gregtech.machine.coke_oven.name", guiHelper.createBlankDrawable(176, 166), CokeOvenRecipe.class, guiHelper);
+		super("coke_oven", "gregtech.machine.coke_oven.name", guiHelper.createBlankDrawable(176, 166),
+				CokeOvenRecipe.class, guiHelper);
+		fluidTank = guiHelper.createDrawable(GuiTextures.FLUID_TANK_BACKGROUND.imageLocation, 0, 0, 20, 58, 20, 58);
+		fluidTankOverlay = guiHelper.createDrawable(GuiTextures.FLUID_TANK_OVERLAY.imageLocation, 0, 0, 20, 58, 20, 58);
 	}
 
 	@Override
@@ -41,7 +47,7 @@ public class CokeOvenRecipeCategory extends PrimitiveRecipeCategory<CokeOvenReci
 		itemStackGroup.init(0, true, 32, 19);
 		itemStackGroup.init(1, false, 84, 19);
 		itemStackGroup.set(ingredients);
-		fluidStackGroup.init(0, false, 133, 3, 20, 58, 32000, true, fluidTankOverlay);
+		fluidStackGroup.init(0, false, 133, 3, 20, 58, 32000, true, this.fluidTankOverlay);
 		fluidStackGroup.set(ingredients);
 	}
 
@@ -52,9 +58,9 @@ public class CokeOvenRecipeCategory extends PrimitiveRecipeCategory<CokeOvenReci
 
 	@Override
 	public void drawExtras(Minecraft minecraft) {
-		slot.draw(minecraft, 32, 19);
-		slot.draw(minecraft, 84, 19);
-		progressBar.draw(minecraft, 57, 20);
-		fluidTank.draw(minecraft, 133, 3);
+		this.slot.draw(minecraft, 32, 19);
+		this.slot.draw(minecraft, 84, 19);
+		this.progressBar.draw(minecraft, 57, 20);
+		this.fluidTank.draw(minecraft, 133, 3);
 	}
 }
