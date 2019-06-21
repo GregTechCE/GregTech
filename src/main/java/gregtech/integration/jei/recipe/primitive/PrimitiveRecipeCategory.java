@@ -36,8 +36,8 @@ public abstract class PrimitiveRecipeCategory<T, W extends IRecipeWrapper>
 		this.localizedName = I18n.format(localKey);
 		this.background = background;
 		this.recipeClass = recipeClass;
-		slot = guiHelper.createDrawable(GuiTextures.SLOT.imageLocation, 0, 0, 18, 18, 18, 18);
-		progressBar = guiHelper.createDrawable(GuiTextures.BRONZE_BLAST_FURNACE_PROGRESS_BAR.imageLocation, 0, 0, 20,
+		this.slot = guiHelper.createDrawable(GuiTextures.SLOT.imageLocation, 0, 0, 18, 18, 18, 18);
+		this.progressBar = guiHelper.createDrawable(GuiTextures.BRONZE_BLAST_FURNACE_PROGRESS_BAR.imageLocation, 0, 0, 20,
 				15, 20, 30);
 	}
 
