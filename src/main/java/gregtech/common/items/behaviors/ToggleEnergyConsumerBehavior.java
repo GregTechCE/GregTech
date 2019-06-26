@@ -63,7 +63,7 @@ public class ToggleEnergyConsumerBehavior implements IItemBehaviour {
         return tagCompound != null && tagCompound.getBoolean("Active");
     }
 
-    public void setItemActive(ItemStack itemStack, boolean isActive) {
+    public static void setItemActive(ItemStack itemStack, boolean isActive) {
         NBTTagCompound tagCompound = itemStack.getTagCompound();
         if(tagCompound == null) {
             tagCompound = new NBTTagCompound();

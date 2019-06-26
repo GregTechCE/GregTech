@@ -128,8 +128,7 @@ public abstract class CoverBehavior implements IUIHolder {
     public TextureAtlasSprite getPlateSprite() {
         return Textures.VOLTAGE_CASINGS[GTValues.LV].getSpriteOnSide(RenderSide.SIDE);
     }
-
-    @SideOnly(Side.CLIENT)
+    
     public boolean shouldRenderConnected() {
         return true;
     }

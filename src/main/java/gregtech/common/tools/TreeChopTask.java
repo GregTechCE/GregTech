@@ -8,6 +8,7 @@ import gregtech.api.unification.material.type.SolidMaterial;
 import gregtech.api.util.function.Task;
 import net.minecraft.block.BlockLeaves;
 import net.minecraft.block.BlockLog;
+import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.Item;
@@ -16,6 +17,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockPos.MutableBlockPos;
 import net.minecraft.util.math.Vec3i;
 import net.minecraft.world.World;
+import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.*;
 
@@ -23,7 +25,8 @@ public class TreeChopTask implements Task {
 
     private static final int MAX_BLOCKS_SEARCH_PER_TICK = 1024;
     private static final int MAX_BLOCKS_TO_SEARCH = 8192;
-    private final Stack<MultiFacing> moveStack = new Stack<>();
+    private final Stack<Pair<MultiFacing, Boolean>> moveStack = new Stack<>();
+    private boolean isLastBlockLeaves = false;
     private final MutableBlockPos currentPos = new MutableBlockPos();
     private final BlockPos startBlockPos;
     private final Set<BlockPos> visitedBlockPos = new HashSet<>();
@@ -38,6 +41,7 @@ public class TreeChopTask implements Task {
     public TreeChopTask(BlockPos startPos, World world, EntityPlayerMP player, ItemStack toolStack) {
         this.startBlockPos = startPos.toImmutable();
         this.currentPos.setPos(startPos);
+        this.woodBlockPos.add(startPos.toImmutable());
         this.world = world;
         this.itemStack = toolStack.copy();
         this.player = player;
@@ -97,7 +101,7 @@ public class TreeChopTask implements Task {
     private boolean isItemEqual(ItemStack heldItem) {
         if (heldItem.getItem() != itemStack.getItem() ||
             heldItem.getItemDamage() != itemStack.getItemDamage() ||
-            heldItem.getItem() instanceof ToolMetaItem<?>) {
+            !(heldItem.getItem() instanceof ToolMetaItem<?>)) {
             return false;
         }
         SolidMaterial heldToolMaterial = ToolMetaItem.getToolMaterial(heldItem);
@@ -109,9 +113,8 @@ public class TreeChopTask implements Task {
         if(woodBlockPos.size() > currentWoodBlockIndex) {
             BlockPos woodPos = woodBlockPos.get(currentWoodBlockIndex++);
             IBlockState blockState = this.world.getBlockState(woodPos);
-            if(isLogOrLeavesBlock(blockState) == 1) {
-                blockState.getBlock().dropBlockAsItemWithChance(world, woodPos, blockState, 1.0f, 0);
-                this.world.setBlockToAir(woodPos);
+            if(isLogBlock(blockState) == 1) {
+                this.world.destroyBlock(woodPos, true);
                 return true;
             }
             return true;
@@ -131,15 +134,17 @@ public class TreeChopTask implements Task {
 
                 if(!visitedBlockPos.contains(currentPos)) {
                     IBlockState blockState = this.world.getBlockState(currentPos);
-                    int blockType;
-                    if ((blockType = isLogOrLeavesBlock(blockState)) > 0) {
+                    int blockType = isLogBlock(blockState);
+                    boolean currentIsLeavesBlock = isLastBlockLeaves;
+                    if (blockType == 1 || (blockType == 2 && !isLastBlockLeaves)) {
+                        this.isLastBlockLeaves = blockType == 2;
                         BlockPos immutablePos = currentPos.toImmutable();
                         this.visitedBlockPos.add(immutablePos);
                         if(blockType == 1) {
                             this.woodBlockPos.add(immutablePos);
                         }
                         validWoodBlocksFound++;
-                        moveStack.add(facing.getOpposite());
+                        moveStack.add(Pair.of(facing.getOpposite(), currentIsLeavesBlock));
                         continue main;
                     }
                 }
@@ -149,13 +154,18 @@ public class TreeChopTask implements Task {
             }
             //we didn't found any matching block in neighbours - move back
             if (!moveStack.isEmpty()) {
-                moveStack.pop().move(currentPos);
+                Pair<MultiFacing, Boolean> prevData = moveStack.pop();
+                prevData.getLeft().move(currentPos);
+                this.isLastBlockLeaves = prevData.getRight();
             } else break;
         }
         return validWoodBlocksFound > 0;
     }
 
-    public static int isLogOrLeavesBlock(IBlockState blockState) {
+    public static int isLogBlock(IBlockState blockState) {
+        if(blockState.getMaterial() == Material.AIR) {
+            return 0;
+        }
         if(blockState.getBlock() instanceof BlockLog) {
             return 1;
         } else if(blockState.getBlock() instanceof BlockLeaves) {
@@ -168,8 +178,7 @@ public class TreeChopTask implements Task {
             return 1;
         } else if(blocks.contains("treeLeaves")) {
             return 2;
-        }
-        return 0;
+        } else return 0;
     }
 
     private enum MultiFacing {

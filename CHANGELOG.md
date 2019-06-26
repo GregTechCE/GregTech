@@ -1,5 +1,11 @@
 ## Changelog
 
+### 1.8.4
+* Added Energy Field Projector.
+* Fix server side crash with covers on pipes.
+* Tree capitation now only cuts logs connected via at most 1 leaves block.
+* Play destroy sound and spawn particles when tree capitating wood blocks too.
+
 ### 1.8.3-hotfix
 * Removed debug log
 * Fixed exception while badly written mods attempt to retrieve info from invalid stacks.

@@ -82,6 +82,15 @@ public class ElectricItem implements IElectricItem, ICapabilityProvider {
         return Math.min(tagCompound.getLong("Charge"), getMaxCharge());
     }
 
+    public void setInfiniteCharge(boolean infiniteCharge) {
+        if (!itemStack.hasTagCompound()) {
+            itemStack.setTagCompound(new NBTTagCompound());
+        }
+        //noinspection ConstantConditions
+        itemStack.getTagCompound().setBoolean("Infinite", infiniteCharge);
+        listeners.forEach(l -> l.accept(itemStack, getMaxCharge()));
+    }
+
     @Override
     public boolean canProvideChargeExternally() {
         return this.canProvideEnergyExternally;
