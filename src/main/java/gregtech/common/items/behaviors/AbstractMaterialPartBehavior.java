@@ -73,7 +73,9 @@ public abstract class AbstractMaterialPartBehavior implements IItemBehaviour, II
         IngotMaterial material = getPartMaterial(stack);
         int maxRotorDurability = getPartMaxDurability(stack);
         int rotorDamage = getPartDamage(stack);
-        lines.add(I18n.format("metaitem.tool.tooltip.durability", maxRotorDurability - rotorDamage, maxRotorDurability));
+        lines.add(I18n.format("metaitem.tool.tooltip.durability", 
+        		String.format("%,d", maxRotorDurability - rotorDamage), 
+        		String.format("%,d", maxRotorDurability)));
         lines.add(I18n.format("metaitem.tool.tooltip.primary_material", material.getLocalizedName(), material.harvestLevel));
     }
 

@@ -258,6 +258,6 @@ public class MetaTileEntityBlockBreaker extends TieredMetaTileEntity {
     public void addInformation(ItemStack stack, @Nullable World player, List<String> tooltip, boolean advanced) {
         tooltip.add(I18n.format("gregtech.universal.tooltip.item_storage_capacity", getInventorySize()));
         tooltip.add(I18n.format("gregtech.machine.block_breaker.speed_bonus", (int) (getEfficiencyMultiplier() * 100)));
-        tooltip.add(I18n.format("gregtech.machine.block_breaker.consumption", getEnergyPerBlockBreak()));
+        tooltip.add(I18n.format("gregtech.machine.block_breaker.consumption", String.format("%,d", getEnergyPerBlockBreak())));
     }
 }

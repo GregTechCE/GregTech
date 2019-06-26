@@ -112,13 +112,13 @@ public class MetaTileEntityBatteryBuffer extends TieredMetaTileEntity {
     }
 
     @Override
-    public void addInformation(ItemStack stack, @Nullable World player, List<String> tooltip, boolean advanced) {
-        String tierName = GTValues.VN[getTier()];
+	public void addInformation(ItemStack stack, @Nullable World player, List<String> tooltip, boolean advanced) {
+		String tierName = GTValues.VN[getTier()];
 
-        tooltip.add(I18n.format("gregtech.universal.tooltip.item_storage_capacity", inventorySize));
-        tooltip.add(I18n.format("gregtech.universal.tooltip.voltage_in", energyContainer.getInputVoltage(), tierName));
-        tooltip.add(I18n.format("gregtech.universal.tooltip.voltage_out", energyContainer.getOutputVoltage(), tierName));
-        tooltip.add(I18n.format("gregtech.universal.tooltip.amperage_out_till", inventorySize));
-        tooltip.add(I18n.format("gregtech.universal.tooltip.energy_storage_capacity", energyContainer.getEnergyCapacity()));
-    }
+		tooltip.add(I18n.format("gregtech.universal.tooltip.item_storage_capacity", inventorySize));
+		tooltip.add(I18n.format("gregtech.universal.tooltip.voltage_in", String.format("%,d", energyContainer.getInputVoltage()), tierName));
+		tooltip.add(I18n.format("gregtech.universal.tooltip.voltage_out", String.format("%,d", energyContainer.getOutputVoltage()), tierName));
+		tooltip.add(I18n.format("gregtech.universal.tooltip.amperage_out_till", inventorySize));
+		tooltip.add(I18n.format("gregtech.universal.tooltip.energy_storage_capacity", String.format("%,d", energyContainer.getEnergyCapacity())));
+	}
 }

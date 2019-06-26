@@ -503,8 +503,8 @@ public abstract class MetaItem<T extends MetaItem<?>.MetaValueItem> extends Item
         IElectricItem electricItem = itemStack.getCapability(GregtechCapabilities.CAPABILITY_ELECTRIC_ITEM, null);
         if (electricItem != null) {
             lines.add(I18n.format("metaitem.generic.electric_item.tooltip",
-                electricItem.getCharge(),
-                electricItem.getMaxCharge(),
+            	String.format("%,d", electricItem.getCharge()),
+            	String.format("%,d", electricItem.getMaxCharge()),
                 GTValues.VN[electricItem.getTier()]));
         }
 
@@ -515,8 +515,8 @@ public abstract class MetaItem<T extends MetaItem<?>.MetaValueItem> extends Item
             FluidStack fluid = fluidTankProperties.getContents();
             if (fluid != null) {
                 lines.add(I18n.format("metaitem.generic.fluid_container.tooltip",
-                    fluid.amount,
-                    fluidTankProperties.getCapacity(),
+                	String.format("%,d", fluid.amount),
+                	String.format("%,d", fluidTankProperties.getCapacity()),
                     fluid.getLocalizedName()));
             } else lines.add(I18n.format("metaitem.generic.fluid_container.tooltip_empty"));
         }
