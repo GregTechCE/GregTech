@@ -14,6 +14,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fluids.FluidStack;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
@@ -103,9 +104,9 @@ public class GTRecipeWrapper implements IRecipeWrapper {
 
     @Override
     public void drawInfo(Minecraft minecraft, int recipeWidth, int recipeHeight, int mouseX, int mouseY) {
-        minecraft.fontRenderer.drawString(I18n.format("gregtech.recipe.total", Math.abs(recipe.getEUt()) * recipe.getDuration()), 0, 70, 0x111111);
-        minecraft.fontRenderer.drawString(I18n.format(recipe.getEUt() >= 0 ? "gregtech.recipe.eu" : "gregtech.recipe.eu_inverted", Math.abs(recipe.getEUt())), 0, 80, 0x111111);
-        minecraft.fontRenderer.drawString(I18n.format("gregtech.recipe.duration", recipe.getDuration() / 20f), 0, 90, 0x111111);
+        minecraft.fontRenderer.drawString(I18n.format("gregtech.recipe.total", String.format("%,d", Math.abs(recipe.getEUt()) * recipe.getDuration())), 0, 70, 0x111111);
+        minecraft.fontRenderer.drawString(I18n.format(recipe.getEUt() >= 0 ? "gregtech.recipe.eu" : "gregtech.recipe.eu_inverted", String.format("%,d", Math.abs(recipe.getEUt()))), 0, 80, 0x111111);
+        minecraft.fontRenderer.drawString(I18n.format("gregtech.recipe.duration", new DecimalFormat("###,###.##").format( recipe.getDuration() / 20f)), 0, 90, 0x111111);
         int baseYPosition = 100;
         for (String propertyKey : recipe.getPropertyKeys()) {
             minecraft.fontRenderer.drawString(I18n.format("gregtech.recipe." + propertyKey,
