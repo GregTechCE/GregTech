@@ -2837,6 +2837,7 @@ gregtech.universal.tooltip.fluid_storage_capacity=Fluid Capacity: %d mb
 gregtech.universal.tooltip.max_voltage_in=Max Voltage IN: §a%d §7(§a%s§7)
 
 gregtech.recipe.total=Total: %d EU
+gregtech.recipe.total_bucket=Total: %d EU per Bucket
 gregtech.recipe.eu=Usage: %d EU/t
 gregtech.recipe.eu_inverted=Generation: %d EU/t
 gregtech.recipe.duration=Duration: %.1f secs
