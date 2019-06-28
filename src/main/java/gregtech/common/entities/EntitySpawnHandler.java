@@ -19,7 +19,7 @@ public class EntitySpawnHandler {
     public static void onEntitySpawn(LivingSpawnEvent.SpecialSpawn event) {
         EntityLivingBase entity = event.getEntityLiving();
         EnumDifficulty difficulty = entity.world.getDifficulty();
-        if (difficulty == EnumDifficulty.HARD && entity.getRNG().nextFloat() < 0.01f) {
+        if (difficulty == EnumDifficulty.HARD && entity.getRNG().nextFloat() <= 0.03f) {
             if (entity instanceof EntityZombie) {
                 ItemStack itemStack = MetaItems.NANO_SABER.getInfiniteChargedStack();
                 ToggleEnergyConsumerBehavior.setItemActive(itemStack, true);

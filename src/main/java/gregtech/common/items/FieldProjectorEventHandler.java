@@ -121,7 +121,7 @@ public class FieldProjectorEventHandler {
         if (entity instanceof EntityFireball) {
             Vec3d directionVector = targetPosition.subtract(entity.getPositionVector()).normalize();
             //compute length of motion vector, and change direction keeping motion vector length
-            float motionLength = MathHelper.sqrt(entity.motionX * entity.motionX + entity.motionY * entity.motionY + entity.motionZ * entity.motionZ);
+            float motionLength = MathHelper.sqrt(entity.motionX * entity.motionX + entity.motionY * entity.motionY + entity.motionZ * entity.motionZ) * 2.0f;
             entity.motionX = directionVector.x * motionLength;
             entity.motionY = directionVector.y * motionLength;
             entity.motionZ = directionVector.z * motionLength;
@@ -132,9 +132,9 @@ public class FieldProjectorEventHandler {
 
         } else if (entity instanceof IProjectile) {
             Vec3d distanceVector = targetPosition.subtract(entity.getPositionVector());
-            float motionLength = MathHelper.sqrt(entity.motionX * entity.motionX + entity.motionY * entity.motionY + entity.motionZ * entity.motionZ);
+            float motionLength = MathHelper.sqrt(entity.motionX * entity.motionX + entity.motionY * entity.motionY + entity.motionZ * entity.motionZ) * 2.0f;
             double verticalAccl = MathHelper.sqrt(distanceVector.x * distanceVector.x + distanceVector.z * distanceVector.z);
-            ((IProjectile) entity).shoot(distanceVector.x, distanceVector.y + verticalAccl * 0.2, distanceVector.z, motionLength, 0.0f);
+            ((IProjectile) entity).shoot(distanceVector.x, distanceVector.y + verticalAccl * 0.1, distanceVector.z, motionLength, 0.0f);
         }
         entity.velocityChanged = true;
     }
