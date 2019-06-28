@@ -10,6 +10,7 @@ import gregtech.api.gui.ModularUI;
 import gregtech.api.metatileentity.MetaTileEntityHolder;
 import gregtech.api.metatileentity.TieredMetaTileEntity;
 import gregtech.api.render.Textures;
+import gregtech.api.util.GTUtility;
 import gregtech.api.util.PipelineUtil;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
@@ -65,8 +66,8 @@ public class MetaTileEntityHull extends TieredMetaTileEntity {
     public void addInformation(ItemStack stack, @Nullable World player, List<String> tooltip, boolean advanced) {
         String tierName = GTValues.VN[getTier()];
 
-        tooltip.add(I18n.format("gregtech.universal.tooltip.voltage_in", String.format("%,d", energyContainer.getInputVoltage()), tierName));
-        tooltip.add(I18n.format("gregtech.universal.tooltip.voltage_out", String.format("%,d", energyContainer.getOutputVoltage()), tierName));
-        tooltip.add(I18n.format("gregtech.universal.tooltip.energy_storage_capacity", String.format("%,d", energyContainer.getEnergyCapacity())));
+        tooltip.add(I18n.format("gregtech.universal.tooltip.voltage_in", GTUtility.format(energyContainer.getInputVoltage()), tierName));
+        tooltip.add(I18n.format("gregtech.universal.tooltip.voltage_out", GTUtility.format(energyContainer.getOutputVoltage()), tierName));
+        tooltip.add(I18n.format("gregtech.universal.tooltip.energy_storage_capacity", GTUtility.format(energyContainer.getEnergyCapacity())));
     }
 }

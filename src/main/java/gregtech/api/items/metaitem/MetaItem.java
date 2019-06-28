@@ -21,6 +21,7 @@ import gregtech.api.unification.OreDictUnifier;
 import gregtech.api.unification.material.type.Material;
 import gregtech.api.unification.ore.OrePrefix;
 import gregtech.api.unification.stack.ItemMaterialInfo;
+import gregtech.api.util.GTUtility;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.ModelBakery;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
@@ -503,8 +504,8 @@ public abstract class MetaItem<T extends MetaItem<?>.MetaValueItem> extends Item
         IElectricItem electricItem = itemStack.getCapability(GregtechCapabilities.CAPABILITY_ELECTRIC_ITEM, null);
         if (electricItem != null) {
             lines.add(I18n.format("metaitem.generic.electric_item.tooltip",
-            	String.format("%,d", electricItem.getCharge()),
-            	String.format("%,d", electricItem.getMaxCharge()),
+            		GTUtility.format(electricItem.getCharge()),
+            		GTUtility.format(electricItem.getMaxCharge()),
                 GTValues.VN[electricItem.getTier()]));
         }
 
@@ -515,8 +516,8 @@ public abstract class MetaItem<T extends MetaItem<?>.MetaValueItem> extends Item
             FluidStack fluid = fluidTankProperties.getContents();
             if (fluid != null) {
                 lines.add(I18n.format("metaitem.generic.fluid_container.tooltip",
-                	String.format("%,d", fluid.amount),
-                	String.format("%,d", fluidTankProperties.getCapacity()),
+                		GTUtility.format(fluid.amount),
+                		GTUtility.format(fluidTankProperties.getCapacity()),
                     fluid.getLocalizedName()));
             } else lines.add(I18n.format("metaitem.generic.fluid_container.tooltip_empty"));
         }

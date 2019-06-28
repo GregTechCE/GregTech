@@ -18,6 +18,7 @@ import gregtech.api.gui.widgets.TankWidget;
 import gregtech.api.recipes.machines.FuelRecipeMap;
 import gregtech.api.render.OrientedOverlayRenderer;
 import gregtech.api.render.Textures;
+import gregtech.api.util.GTUtility;
 import gregtech.api.util.PipelineUtil;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
@@ -131,7 +132,7 @@ public class SimpleGeneratorMetaTileEntity extends TieredMetaTileEntity {
 
     @Override
     public void addInformation(ItemStack stack, @Nullable World player, List<String> tooltip, boolean advanced) {
-        tooltip.add(I18n.format("gregtech.universal.tooltip.voltage_out", String.format("%,d", energyContainer.getOutputVoltage()), GTValues.VN[getTier()]));
-        tooltip.add(I18n.format("gregtech.universal.tooltip.energy_storage_capacity", String.format("%,d", energyContainer.getEnergyCapacity())));
+        tooltip.add(I18n.format("gregtech.universal.tooltip.voltage_out", GTUtility.format(energyContainer.getOutputVoltage()), GTValues.VN[getTier()]));
+        tooltip.add(I18n.format("gregtech.universal.tooltip.energy_storage_capacity", GTUtility.format(energyContainer.getEnergyCapacity())));
     }
 }

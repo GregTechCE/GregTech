@@ -3,6 +3,7 @@ package gregtech.api.gui.widgets;
 import gregtech.api.gui.igredient.IIngredientSlot;
 import gregtech.api.gui.resources.RenderUtil;
 import gregtech.api.gui.resources.TextureArea;
+import gregtech.api.util.GTUtility;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.renderer.GlStateManager;
@@ -88,7 +89,7 @@ public class TankWidget extends AbstractPositionedRectangleWidget implements IIn
     }
 
     public String getFormattedFluidAmount() {
-        return String.format("%,d", lastFluidInTank == null ? 0 : lastFluidInTank.amount);
+        return GTUtility.format(lastFluidInTank == null ? 0 : lastFluidInTank.amount);
     }
 
     public String getFluidLocalizedName() {

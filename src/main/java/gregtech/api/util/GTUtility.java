@@ -51,6 +51,7 @@ import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.math.BigInteger;
+import java.text.DecimalFormat;
 import java.util.List;
 import java.util.*;
 import java.util.Map.Entry;
@@ -645,4 +646,12 @@ public class GTUtility {
             return worldPower;
         }
     }
+    
+	public static String format(long value) {
+		return new DecimalFormat("###,###.##").format(value);
+	}
+
+	public static String format(double value) {
+		return new DecimalFormat("###,###.##").format(value);
+	}
 }

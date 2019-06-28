@@ -13,6 +13,7 @@ import gregtech.api.metatileentity.multiblock.IMultiblockAbilityPart;
 import gregtech.api.metatileentity.multiblock.MultiblockAbility;
 import gregtech.api.render.SimpleOverlayRenderer;
 import gregtech.api.render.Textures;
+import gregtech.api.util.GTUtility;
 import gregtech.api.util.PipelineUtil;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
@@ -77,12 +78,12 @@ public class MetaTileEntityEnergyHatch extends MetaTileEntityMultiblockPart impl
         String tierName = GTValues.VN[getTier()];
 
         if (isExportHatch) {
-            tooltip.add(I18n.format("gregtech.universal.tooltip.voltage_out", String.format("%,d", energyContainer.getOutputVoltage()), tierName));
+            tooltip.add(I18n.format("gregtech.universal.tooltip.voltage_out", GTUtility.format(energyContainer.getOutputVoltage()), tierName));
             tooltip.add(I18n.format("gregtech.universal.tooltip.amperage_out_till", energyContainer.getOutputAmperage()));
         } else {
-            tooltip.add(I18n.format("gregtech.universal.tooltip.voltage_in", String.format("%,d", energyContainer.getInputVoltage()), tierName));
+            tooltip.add(I18n.format("gregtech.universal.tooltip.voltage_in", GTUtility.format(energyContainer.getInputVoltage()), tierName));
             tooltip.add(I18n.format("gregtech.universal.tooltip.amperage_in_till", energyContainer.getInputAmperage()));
         }
-        tooltip.add(I18n.format("gregtech.universal.tooltip.energy_storage_capacity", String.format("%,d", energyContainer.getEnergyCapacity())));
+        tooltip.add(I18n.format("gregtech.universal.tooltip.energy_storage_capacity", GTUtility.format(energyContainer.getEnergyCapacity())));
     }
 }
