@@ -12,6 +12,7 @@ import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.recipes.RecipeMap;
 import gregtech.api.recipes.RecipeMaps;
 import gregtech.api.recipes.machines.FuelRecipeMap;
+import gregtech.api.unification.material.Materials;
 import gregtech.common.blocks.MetaBlocks;
 import gregtech.common.items.MetaItems;
 import gregtech.common.metatileentities.MetaTileEntities;
@@ -20,14 +21,20 @@ import gregtech.integration.jei.recipe.GTRecipeWrapper;
 import gregtech.integration.jei.recipe.RecipeMapCategory;
 import gregtech.integration.jei.recipe.fuel.FuelRecipeMapCategory;
 import gregtech.integration.jei.recipe.fuel.GTFuelRecipeWrapper;
+import gregtech.integration.jei.recipe.primitive.CokeOvenRecipeCategory;
+import gregtech.integration.jei.recipe.primitive.CokeOvenRecipeWrapper;
+import gregtech.integration.jei.recipe.primitive.PrimitiveBlastRecipeCategory;
+import gregtech.integration.jei.recipe.primitive.PrimitiveBlastRecipeWrapper;
 import gregtech.integration.jei.utils.CustomItemReturnRecipeWrapper;
 import gregtech.integration.jei.utils.MetadataAwareFluidHandlerSubtype;
 import gregtech.loaders.recipe.CustomItemReturnShapedOreRecipeRecipe;
 import mezz.jei.api.*;
 import mezz.jei.api.recipe.IRecipeCategoryRegistration;
 import mezz.jei.api.recipe.VanillaRecipeCategoryUid;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fluids.FluidStack;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -53,6 +60,8 @@ public class GTJeiPlugin implements IModPlugin {
         for (FuelRecipeMap fuelRecipeMap : FuelRecipeMap.getRecipeMaps()) {
             registry.addRecipeCategories(new FuelRecipeMapCategory(fuelRecipeMap, registry.getJeiHelpers().getGuiHelper()));
         }
+        registry.addRecipeCategories(new PrimitiveBlastRecipeCategory(registry.getJeiHelpers().getGuiHelper()));
+        registry.addRecipeCategories(new CokeOvenRecipeCategory(registry.getJeiHelpers().getGuiHelper()));
     }
 
     @Override
@@ -107,5 +116,16 @@ public class GTJeiPlugin implements IModPlugin {
         registry.addRecipeCatalyst(MetaTileEntities.LARGE_STEEL_BOILER.getStackForm(), semiFluidMapId);
         registry.addRecipeCatalyst(MetaTileEntities.LARGE_TITANIUM_BOILER.getStackForm(), semiFluidMapId);
         registry.addRecipeCatalyst(MetaTileEntities.LARGE_TUNGSTENSTEEL_BOILER.getStackForm(), semiFluidMapId);
+        
+        FluidStack air = Materials.Air.getFluid(1000);
+        registry.addIngredientInfo(air, air.getClass(), I18n.format("gregtech.machine.air_collector.jeidescription"));
+        
+        String primitiveBlastId = GTValues.MODID + ":" + "primitive_blast_furnace";
+        registry.addRecipes(RecipeMaps.PRIMITIVE_BLAST_FURNACE_RECIPES.stream().map(r -> new PrimitiveBlastRecipeWrapper(r)).collect(Collectors.toList()), primitiveBlastId);
+        registry.addRecipeCatalyst(MetaTileEntities.PRIMITIVE_BLAST_FURNACE.getStackForm(), primitiveBlastId);
+        
+        String cokeOvenId = GTValues.MODID + ":" + "coke_oven";
+        registry.addRecipes(RecipeMaps.COKE_OVEN_RECIPES.stream().map(r -> new CokeOvenRecipeWrapper(r)).collect(Collectors.toList()), cokeOvenId);
+        registry.addRecipeCatalyst(MetaTileEntities.COKE_OVEN.getStackForm(), cokeOvenId);
     }
 }
