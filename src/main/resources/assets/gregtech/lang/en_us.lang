@@ -2867,10 +2867,10 @@ gregtech.gui.toggle_view.enabled=Toggle View (Items)
 gregtech.gui.overclock.enabled=Allow Overclocking
 gregtech.gui.overclock.disabled=Disable Overclocking
 gregtech.gui.sort=Sort
-gregtech.gui.fluid_auto_output.tooltip.enabled=Fluid Auto-Output enabled
-gregtech.gui.fluid_auto_output.tooltip.disabled=Fluid Auto-Output disabled
-gregtech.gui.item_auto_output.tooltip.enabled=Item Auto-Output enabled
-gregtech.gui.item_auto_output.tooltip.disabled=Item Auto-Output disabled
+gregtech.gui.fluid_auto_output.tooltip.enabled=Fluid Auto-Output Enabled
+gregtech.gui.fluid_auto_output.tooltip.disabled=Fluid Auto-Output Disabled
+gregtech.gui.item_auto_output.tooltip.enabled=Item Auto-Output Enabled
+gregtech.gui.item_auto_output.tooltip.disabled=Item Auto-Output Disabled
 
 gregtech.item_filter.empty_item=Empty (No Item)
 gregtech.item_filter.footer=§eClick with item to override
