@@ -23,31 +23,22 @@ import net.minecraftforge.fluids.FluidStack;
 public class CokeOvenRecipeWrapper implements IRecipeWrapper {
 
 	private final CokeOvenRecipe recipe;
-	private final List<List<ItemStack>> matchingInputs;
-	private final List<ItemStack> outputs;
-	private final List<FluidStack> fluidOutputs;
+	private final List<List<ItemStack>> matchingInputs = new ArrayList<>();
+	private final List<ItemStack> outputs = new ArrayList<>();
+	private final List<FluidStack> fluidOutputs = new ArrayList<>();
 
 	public CokeOvenRecipeWrapper(CokeOvenRecipe recipe) {
 		this.recipe = recipe;
 		CountableIngredient ingredient = recipe.getInput();
-		this.matchingInputs = new ArrayList<>();
+
 		List<ItemStack> ingredientValues = Arrays.stream(ingredient.getIngredient().getMatchingStacks())
 				.map(ItemStack::copy)
-				.sorted(OreDictUnifier
-				.getItemStackComparator())
+				.sorted(OreDictUnifier.getItemStackComparator())
 				.collect(Collectors.toList());
-		ingredientValues.forEach(stack -> {
-			if (ingredient.getCount() == 0) {
-				ItemNBTUtils.setBoolean(stack, "not_consumed", true);
-				stack.setCount(1);
-			} else
-				stack.setCount(ingredient.getCount());
-		});
+		ingredientValues.forEach(stack -> stack.setCount(ingredient.getCount()));
+        
 		this.matchingInputs.add(ingredientValues);
-
-		this.outputs = new ArrayList<ItemStack>();
 		this.outputs.add(recipe.getOutput());
-		this.fluidOutputs = new ArrayList<FluidStack>();
 		this.fluidOutputs.add(recipe.getFluidOutput());
 	}
 
@@ -60,8 +51,7 @@ public class CokeOvenRecipeWrapper implements IRecipeWrapper {
 
 	@Override
 	public void drawInfo(Minecraft minecraft, int recipeWidth, int recipeHeight, int mouseX, int mouseY) {
-		minecraft.fontRenderer.drawString(I18n.format("gregtech.recipe.duration", this.recipe.getDuration() / 20f), 0, 60,
-				0x111111);
+		minecraft.fontRenderer.drawString(I18n.format("gregtech.recipe.duration", this.recipe.getDuration() / 20f), 0, 60, 0x111111);
 	}
 
 }
