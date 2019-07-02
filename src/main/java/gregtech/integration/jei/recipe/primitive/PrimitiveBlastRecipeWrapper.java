@@ -1,61 +1,51 @@
 package gregtech.integration.jei.recipe.primitive;
 
+import com.google.common.collect.ImmutableList;
+import gregtech.api.recipes.CountableIngredient;
+import gregtech.api.recipes.recipes.PrimitiveBlastFurnaceRecipe;
+import gregtech.api.unification.OreDictUnifier;
+import gregtech.common.metatileentities.multi.MetaTileEntityPrimitiveBlastFurnace;
+import mezz.jei.api.ingredients.IIngredients;
+import mezz.jei.api.recipe.IRecipeWrapper;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.resources.I18n;
+import net.minecraft.item.ItemStack;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import codechicken.lib.util.ItemNBTUtils;
-import crafttweaker.api.item.IItemStack;
-import gregtech.api.recipes.CountableIngredient;
-import gregtech.api.recipes.recipes.PrimitiveBlastFurnaceRecipe;
-import gregtech.api.unification.OreDictUnifier;
-import gregtech.api.unification.material.Materials;
-import gregtech.api.unification.ore.OrePrefix;
-import mezz.jei.api.ingredients.IIngredients;
-import mezz.jei.api.recipe.IRecipeWrapper;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.resources.I18n;
-import net.minecraft.init.Items;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.Ingredient;
-import net.minecraftforge.oredict.OreDictionary;
-
 public class PrimitiveBlastRecipeWrapper implements IRecipeWrapper {
 
 	private final PrimitiveBlastFurnaceRecipe recipe;
-	private final List<List<ItemStack>> matchingInputs;
-	private final List<ItemStack> outputs;
+	private final List<List<ItemStack>> matchingInputs = new ArrayList<>();
+	private final List<List<ItemStack>> outputs = new ArrayList<>();
 
 	public PrimitiveBlastRecipeWrapper(PrimitiveBlastFurnaceRecipe recipe) {
 		this.recipe = recipe;
 		CountableIngredient ingredient = recipe.getInput();
-		this.matchingInputs = new ArrayList<>();
+
 		List<ItemStack> ingredientValues = Arrays.stream(ingredient.getIngredient().getMatchingStacks())
 				.map(ItemStack::copy)
-				.sorted(OreDictUnifier
-				.getItemStackComparator())
+				.sorted(OreDictUnifier.getItemStackComparator())
 				.collect(Collectors.toList());
-		ingredientValues.forEach(stack -> {
-			if (ingredient.getCount() == 0) {
-				stack.setCount(1);
-			} else
-				stack.setCount(ingredient.getCount());
-		});
+		ingredientValues.forEach(stack -> stack.setCount(ingredient.getCount()));
+
 		this.matchingInputs.add(ingredientValues);
 
-		List<ItemStack> inputs = new ArrayList<ItemStack>();
-		inputs.add(new ItemStack(Items.COAL, Math.max(1, recipe.getFuelAmount())));
-		this.matchingInputs.add(inputs);
-		this.outputs = new ArrayList<ItemStack>();
-		this.outputs.add(recipe.getOutput());
-		this.outputs.add(OreDictUnifier.get(OrePrefix.dustTiny, Materials.DarkAsh, 2));
+        List<ItemStack> displayFuelStacks = MetaTileEntityPrimitiveBlastFurnace.getDisplayFuelsForRecipe(recipe.getFuelAmount());
+		this.matchingInputs.add(displayFuelStacks);
+
+		ItemStack ashesItemStack = MetaTileEntityPrimitiveBlastFurnace.getAshForRecipeFuelConsumption(recipe.getFuelAmount());
+		this.outputs.add(ImmutableList.of(recipe.getOutput()));
+		this.outputs.add(ImmutableList.of(ashesItemStack));
 	}
 
 	@Override
 	public void getIngredients(IIngredients ingredients) {
 		ingredients.setInputLists(ItemStack.class, this.matchingInputs);
-		ingredients.setOutputs(ItemStack.class, this.outputs);
+		ingredients.setOutputLists(ItemStack.class, this.outputs);
 	}
 
 	@Override

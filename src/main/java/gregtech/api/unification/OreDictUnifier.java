@@ -37,6 +37,7 @@ public class OreDictUnifier {
     private static final Map<ItemAndMetadata, UnificationEntry> stackUnificationInfo = new WildcardAwareHashMap<>();
     private static final Map<UnificationEntry, ArrayList<ItemAndMetadata>> stackUnificationItems = new HashMap<>();
     private static final Map<ItemAndMetadata, Set<String>> stackOreDictName = new WildcardAwareHashMap<>();
+    private static final Map<String, List<ItemStack>> oreDictNameStacks = new HashMap<>();
 
     @Nullable
     private static Comparator<ItemAndMetadata> stackComparator;
@@ -98,6 +99,8 @@ public class OreDictUnifier {
         String oreName = event.getName();
         //cache this registration by name
         stackOreDictName.computeIfAbsent(simpleItemStack, k -> new HashSet<>()).add(oreName);
+        oreDictNameStacks.computeIfAbsent(oreName, k -> new ArrayList<>()).add(event.getOre().copy());
+
         //and try to transform registration name into OrePrefix + Material pair
         OrePrefix orePrefix = OrePrefix.getPrefix(oreName);
         Material material = null;
@@ -155,6 +158,12 @@ public class OreDictUnifier {
         if (stackOreDictName.containsKey(simpleItemStack))
             return Collections.unmodifiableSet(stackOreDictName.get(simpleItemStack));
         return Collections.emptySet();
+    }
+
+    public static List<ItemStack> getAllWithOreDictionaryName(String oreDictionaryName) {
+        return oreDictNameStacks.get(oreDictionaryName).stream()
+            .map(ItemStack::copy)
+            .collect(Collectors.toList());
     }
 
     @Nullable

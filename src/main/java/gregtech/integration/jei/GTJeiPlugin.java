@@ -12,6 +12,7 @@ import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.recipes.RecipeMap;
 import gregtech.api.recipes.RecipeMaps;
 import gregtech.api.recipes.machines.FuelRecipeMap;
+import gregtech.api.recipes.machines.RecipeMapFurnace;
 import gregtech.api.unification.material.Materials;
 import gregtech.common.blocks.MetaBlocks;
 import gregtech.common.items.MetaItems;
@@ -99,7 +100,9 @@ public class GTJeiPlugin implements IModPlugin {
                 if (workableCapability instanceof AbstractRecipeLogic) {
                     RecipeMap<?> recipeMap = ((AbstractRecipeLogic) workableCapability).recipeMap;
                     registry.addRecipeCatalyst(metaTileEntity.getStackForm(), GTValues.MODID + ":" + recipeMap.unlocalizedName);
-
+                    if(recipeMap instanceof RecipeMapFurnace) {
+                        registry.addRecipeCatalyst(metaTileEntity.getStackForm(), VanillaRecipeCategoryUid.SMELTING);
+                    }
                 } else if (workableCapability instanceof FuelRecipeLogic) {
                     FuelRecipeMap recipeMap = ((FuelRecipeLogic) workableCapability).recipeMap;
                     registry.addRecipeCatalyst(metaTileEntity.getStackForm(), GTValues.MODID + ":" + recipeMap.unlocalizedName);
@@ -111,6 +114,8 @@ public class GTJeiPlugin implements IModPlugin {
             registry.addRecipeCatalyst(breweryTile.getStackForm(), VanillaRecipeCategoryUid.BREWING);
         }
 
+        registry.addRecipeCatalyst(MetaTileEntities.MULTI_FURNACE.getStackForm(), VanillaRecipeCategoryUid.SMELTING);
+
         String semiFluidMapId = GTValues.MODID + ":" + RecipeMaps.SEMI_FLUID_GENERATOR_FUELS.getUnlocalizedName();
         registry.addRecipeCatalyst(MetaTileEntities.LARGE_BRONZE_BOILER.getStackForm(), semiFluidMapId);
         registry.addRecipeCatalyst(MetaTileEntities.LARGE_STEEL_BOILER.getStackForm(), semiFluidMapId);
@@ -118,14 +123,18 @@ public class GTJeiPlugin implements IModPlugin {
         registry.addRecipeCatalyst(MetaTileEntities.LARGE_TUNGSTENSTEEL_BOILER.getStackForm(), semiFluidMapId);
         
         FluidStack air = Materials.Air.getFluid(1000);
-        registry.addIngredientInfo(air, air.getClass(), I18n.format("gregtech.machine.air_collector.jeidescription"));
+        registry.addIngredientInfo(air, air.getClass(), I18n.format("gregtech.machine.air_collector.jei_description"));
         
         String primitiveBlastId = GTValues.MODID + ":" + "primitive_blast_furnace";
-        registry.addRecipes(RecipeMaps.PRIMITIVE_BLAST_FURNACE_RECIPES.stream().map(r -> new PrimitiveBlastRecipeWrapper(r)).collect(Collectors.toList()), primitiveBlastId);
+        registry.addRecipes(RecipeMaps.PRIMITIVE_BLAST_FURNACE_RECIPES.stream()
+            .map(PrimitiveBlastRecipeWrapper::new)
+            .collect(Collectors.toList()), primitiveBlastId);
         registry.addRecipeCatalyst(MetaTileEntities.PRIMITIVE_BLAST_FURNACE.getStackForm(), primitiveBlastId);
         
         String cokeOvenId = GTValues.MODID + ":" + "coke_oven";
-        registry.addRecipes(RecipeMaps.COKE_OVEN_RECIPES.stream().map(r -> new CokeOvenRecipeWrapper(r)).collect(Collectors.toList()), cokeOvenId);
+        registry.addRecipes(RecipeMaps.COKE_OVEN_RECIPES.stream()
+            .map(CokeOvenRecipeWrapper::new)
+            .collect(Collectors.toList()), cokeOvenId);
         registry.addRecipeCatalyst(MetaTileEntities.COKE_OVEN.getStackForm(), cokeOvenId);
     }
 }
