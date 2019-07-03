@@ -5,22 +5,22 @@ import gregtech.api.gui.Widget;
 import gregtech.api.gui.widgets.LabelWidget;
 import gregtech.api.gui.widgets.SlotWidget;
 import gregtech.api.util.IDirtyNotifiable;
+import gregtech.api.util.ItemStackKey;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.INBTSerializable;
 import net.minecraftforge.items.ItemStackHandler;
 
 import javax.annotation.Nonnull;
+import java.util.Set;
 import java.util.function.Consumer;
 
 public class ItemFilterContainer implements INBTSerializable<NBTTagCompound> {
 
-    private final IDirtyNotifiable dirtyNotifiable;
     private final ItemStackHandler filterInventory;
     private final ItemFilterWrapper filterWrapper;
 
     public ItemFilterContainer(IDirtyNotifiable dirtyNotifiable) {
-        this.dirtyNotifiable = dirtyNotifiable;
         this.filterWrapper = new ItemFilterWrapper(dirtyNotifiable);
         this.filterInventory = new ItemStackHandler(1) {
             @Override
@@ -58,8 +58,8 @@ public class ItemFilterContainer implements INBTSerializable<NBTTagCompound> {
 
     protected void onFilterSlotChange(boolean notify) {
         ItemStack filterStack = filterInventory.getStackInSlot(0);
-        AbstractItemFilter newItemFilter = FilterTypeRegistry.getItemFilterForStack(filterStack);
-        AbstractItemFilter currentItemFilter = filterWrapper.getItemFilter();
+        ItemFilter newItemFilter = FilterTypeRegistry.getItemFilterForStack(filterStack);
+        ItemFilter currentItemFilter = filterWrapper.getItemFilter();
         if(newItemFilter == null) {
             if(currentItemFilter != null) {
                 filterWrapper.setItemFilter(null);
@@ -77,20 +77,20 @@ public class ItemFilterContainer implements INBTSerializable<NBTTagCompound> {
         this.filterWrapper.setMaxStackSize(maxStackSize);
     }
 
-    public int getMaxMatchSlots() {
-        return filterWrapper.getMaxMatchSlots();
+    public boolean showGlobalTransferLimitSlider() {
+        return filterWrapper.showGlobalTransferLimitSlider();
     }
 
-    public int getSlotStackSize(int slotIndex) {
-        return filterWrapper.getSlotStackSize(slotIndex);
+    public int getSlotTransferLimit(Object slotIndex, Set<ItemStackKey> matchedStacks, int globalTransferLimit) {
+        return filterWrapper.getSlotTransferLimit(slotIndex, matchedStacks, globalTransferLimit);
     }
 
-    public int matchItemStack(ItemStack itemStack) {
+    public Object matchItemStack(ItemStack itemStack) {
         return filterWrapper.matchItemStack(itemStack);
     }
 
     public boolean testItemStack(ItemStack itemStack) {
-        return matchItemStack(itemStack) >= 0;
+        return matchItemStack(itemStack) != null;
     }
 
     @Override

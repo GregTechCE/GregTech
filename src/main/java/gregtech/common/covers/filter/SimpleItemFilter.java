@@ -4,39 +4,40 @@ import gregtech.api.gui.GuiTextures;
 import gregtech.api.gui.Widget;
 import gregtech.api.gui.widgets.PhantomSlotWidget;
 import gregtech.api.gui.widgets.ToggleButtonWidget;
+import gregtech.api.util.ItemStackKey;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 
+import java.util.Set;
 import java.util.function.Consumer;
 
-public class SimpleItemFilter extends AbstractItemFilter implements ISlottedItemFilter {
+public class SimpleItemFilter extends ItemFilter {
 
     private static final int MAX_MATCH_SLOTS = 9;
 
     protected ItemStackHandler itemFilterSlots;
     protected boolean ignoreDamage = true;
     protected boolean ignoreNBT = true;
-    protected int maxStackSize = 1;
 
     public SimpleItemFilter() {
         this.itemFilterSlots = new ItemStackHandler(MAX_MATCH_SLOTS) {
             @Override
             public int getSlotLimit(int slot) {
-                return maxStackSize;
+                return getMaxStackSize();
             }
         };
     }
 
-    protected void setIgnoreDamage(boolean ignoreDamage) {
-        this.ignoreDamage = ignoreDamage;
-        markDirty();
-    }
-
-    protected void setIgnoreNBT(boolean ignoreNBT) {
-        this.ignoreNBT = ignoreNBT;
-        markDirty();
+    @Override
+    protected void onMaxStackSizeChange() {
+        for (int i = 0; i < itemFilterSlots.getSlots(); i++) {
+            ItemStack itemStack = itemFilterSlots.getStackInSlot(i);
+            if (!itemStack.isEmpty()) {
+                itemStack.setCount(Math.min(itemStack.getCount(), getMaxStackSize()));
+            }
+        }
     }
 
     public ItemStackHandler getItemFilterSlots() {
@@ -51,34 +52,32 @@ public class SimpleItemFilter extends AbstractItemFilter implements ISlottedItem
         return ignoreNBT;
     }
 
-    @Override
-    public int getMaxMatchSlots() {
-        return MAX_MATCH_SLOTS;
+    protected void setIgnoreDamage(boolean ignoreDamage) {
+        this.ignoreDamage = ignoreDamage;
+        markDirty();
+    }
+
+    protected void setIgnoreNBT(boolean ignoreNBT) {
+        this.ignoreNBT = ignoreNBT;
+        markDirty();
     }
 
     @Override
-    public int matchItemStack(ItemStack itemStack) {
-        return itemFilterMatch(getItemFilterSlots(), isIgnoreDamage(), isIgnoreNBT(), itemStack);
+    public Integer matchItemStack(ItemStack itemStack) {
+        int itemFilterMatchIndex = itemFilterMatch(getItemFilterSlots(), isIgnoreDamage(), isIgnoreNBT(), itemStack);
+        return itemFilterMatchIndex == -1 ? null : itemFilterMatchIndex;
     }
 
     @Override
-    public boolean testItemStack(ItemStack itemStack) {
-        return matchItemStack(itemStack) != -1;
+    public int getSlotTransferLimit(Object matchSlot, Set<ItemStackKey> matchedStacks, int globalTransferLimit) {
+        Integer matchSlotIndex = (Integer) matchSlot;
+        ItemStack stackInFilterSlot = itemFilterSlots.getStackInSlot(matchSlotIndex);
+        return Math.min(stackInFilterSlot.getCount(), globalTransferLimit);
     }
 
     @Override
-    public void setMaxStackSize(int maxStackSize) {
-        this.maxStackSize = maxStackSize;
-    }
-
-    @Override
-    public int getMaxStackSize() {
-        return maxStackSize;
-    }
-
-    @Override
-    public int getSlotStackSize(int slotIndex) {
-        return itemFilterSlots.getStackInSlot(slotIndex).getCount();
+    public boolean showGlobalTransferLimitSlider() {
+        return false;
     }
 
     @Override

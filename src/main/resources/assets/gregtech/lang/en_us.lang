@@ -523,6 +523,8 @@ metaitem.ore_dictionary_filter.name=Ore Dictionary Filter
 metaitem.ore_dictionary_filter.tooltip=Filters item extract and insert with ore dictionary (as Cover)/nCan be used as a Conveyor upgrade
 metaitem.fluid_filter.name=Fluid Filter
 metaitem.fluid_filter.tooltip=Filters fluid fill and drain (as Cover)/nCan be used as a Pump upgrade
+metaitem.smart_item_filter.name=Smart Item Filter
+metaitem.smart_item_filter.tooltip=Filters items basing on specific machine's recipes
 
 metaitem.cover.controller.name=Machine Controller
 metaitem.cover.controller.tooltip=Turns Machines ON/OFF
@@ -701,6 +703,11 @@ cover.item_filter.ignore_damage.enabled=Ignore Damage
 cover.item_filter.ignore_damage.disabled=Respect Damage
 cover.item_filter.ignore_nbt.enabled=Ignore NBT
 cover.item_filter.ignore_nbt.disabled=Respect NBT
+
+cover.smart_item_filter.title=Smart Item Filter
+cover.smart_item_filter.mode.electrolyzer=Electrolyzer
+cover.smart_item_filter.mode.centrifuge=Centrifuge
+cover.smart_item_filter.mode.tooltip=Select Machine this Smart Filter will use for filtering./nIt will automatically pick right portions of items for robotic arm.
 
 cover.conveyor.title=Conveyor Cover Settings (%s)
 cover.conveyor.transfer_rate=%s items/sec

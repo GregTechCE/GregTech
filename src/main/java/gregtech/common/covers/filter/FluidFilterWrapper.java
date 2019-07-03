@@ -12,7 +12,7 @@ public class FluidFilterWrapper {
 
     private final IDirtyNotifiable dirtyNotifiable;
     private boolean isBlacklistFilter = false;
-    private AbstractFluidFilter currentFluidFilter;
+    private FluidFilter currentFluidFilter;
 
     public FluidFilterWrapper(IDirtyNotifiable dirtyNotifiable) {
         this.dirtyNotifiable = dirtyNotifiable;
@@ -24,14 +24,14 @@ public class FluidFilterWrapper {
         widgetGroup.accept(new WidgetGroupFluidFilter(y, this::getFluidFilter));
     }
 
-    public void setFluidFilter(AbstractFluidFilter fluidFilter) {
+    public void setFluidFilter(FluidFilter fluidFilter) {
         this.currentFluidFilter = fluidFilter;
         if(currentFluidFilter != null) {
             currentFluidFilter.setDirtyNotifiable(dirtyNotifiable);
         }
     }
 
-    public AbstractFluidFilter getFluidFilter() {
+    public FluidFilter getFluidFilter() {
         return currentFluidFilter;
     }
 

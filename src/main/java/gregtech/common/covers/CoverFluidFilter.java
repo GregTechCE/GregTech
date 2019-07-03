@@ -16,7 +16,7 @@ import gregtech.api.gui.widgets.LabelWidget;
 import gregtech.api.gui.widgets.WidgetGroup;
 import gregtech.api.render.SimpleOverlayRenderer;
 import gregtech.api.util.GTUtility;
-import gregtech.common.covers.filter.AbstractFluidFilter;
+import gregtech.common.covers.filter.FluidFilter;
 import gregtech.common.covers.filter.FluidFilterWrapper;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -39,7 +39,7 @@ public class CoverFluidFilter extends CoverBehavior implements CoverWithUI {
     protected FluidFilterMode filterMode;
     protected FluidHandlerFiltered fluidHandler;
 
-    public CoverFluidFilter(ICoverable coverHolder, EnumFacing attachedSide, String titleLocale, SimpleOverlayRenderer texture, AbstractFluidFilter fluidFilter) {
+    public CoverFluidFilter(ICoverable coverHolder, EnumFacing attachedSide, String titleLocale, SimpleOverlayRenderer texture, FluidFilter fluidFilter) {
         super(coverHolder, attachedSide);
         this.filterMode = FluidFilterMode.FILTER_FILL;
         this.titleLocale = titleLocale;

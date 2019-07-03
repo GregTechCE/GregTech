@@ -17,6 +17,7 @@ import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.init.Items;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.Item;
@@ -151,6 +152,17 @@ public class GTUtility {
             //should be impossible, actually
             throw new RuntimeException(exception);
         }
+    }
+
+    /**
+     * Exists because for stack equality checks actual ItemStack.itemDamage
+     * field is used, and ItemStack.getItemDamage() can be overriden,
+     * giving incorrect results for itemstack equality comparisons,
+     * which still use raw ItemStack.itemDamage field
+     * @return actual value of ItemStack.itemDamage field
+     */
+    public static int getActualItemDamageFromStack(ItemStack itemStack) {
+        return Items.FEATHER.getDamage(itemStack);
     }
 
     /**

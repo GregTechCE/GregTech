@@ -10,22 +10,24 @@ import gregtech.api.gui.ModularUI;
 import gregtech.api.gui.ModularUI.Builder;
 import gregtech.api.gui.widgets.*;
 import gregtech.api.render.Textures;
-import gregtech.api.unification.stack.ItemAndMetadata;
-import gregtech.api.util.GTUtility;
+import gregtech.api.util.ItemStackKey;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.items.IItemHandler;
 
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Set;
 
 public class CoverRoboticArm extends CoverConveyor {
 
     protected TransferMode transferMode;
     protected int transferStackSize;
+    protected int itemsTransferBuffered;
 
     public CoverRoboticArm(ICoverable coverable, EnumFacing attachedSide, int tier, int itemsPerSecond) {
         super(coverable, attachedSide, tier, itemsPerSecond);
@@ -42,7 +44,7 @@ public class CoverRoboticArm extends CoverConveyor {
     @Override
     protected int doTransferItems(IItemHandler itemHandler, IItemHandler myItemHandler, int maxTransferAmount) {
         switch (transferMode) {
-            case TRANSFER_ANY: return doTransferAny(itemHandler, myItemHandler, maxTransferAmount);
+            case TRANSFER_ANY: return doTransferItemsAny(itemHandler, myItemHandler, maxTransferAmount);
             case TRANSFER_EXACT: return doTransferExact(itemHandler, myItemHandler, maxTransferAmount);
             case KEEP_EXACT: return doKeepExact(itemHandler, myItemHandler, maxTransferAmount);
             default: return 0;
@@ -50,22 +52,14 @@ public class CoverRoboticArm extends CoverConveyor {
     }
 
     protected int doTransferExact(IItemHandler itemHandler, IItemHandler myItemHandler, int maxTransferAmount) {
-        Map<ItemAndMetadata, ItemInfo> sourceItemAmount = doCountSourceInventoryItemsByType(itemHandler, myItemHandler);
-        int[] itemsTransferLimits = new int[itemFilterContainer.getMaxMatchSlots()];
-        for (int i = 0; i < itemsTransferLimits.length; i++) {
-            int slotTransferLimit = itemFilterContainer.getSlotStackSize(i);
-            if (slotTransferLimit == -1) {
-                itemsTransferLimits[i] = transferStackSize;
-            } else {
-                itemsTransferLimits[i] = Math.min(transferMode.maxStackSize, slotTransferLimit);
-            }
-        }
-        Iterator<ItemAndMetadata> iterator = sourceItemAmount.keySet().iterator();
+        Map<ItemStackKey, TypeItemInfo> sourceItemAmount = doCountSourceInventoryItemsByType(itemHandler, myItemHandler);
+        Iterator<ItemStackKey> iterator = sourceItemAmount.keySet().iterator();
         while (iterator.hasNext()) {
-            ItemAndMetadata key = iterator.next();
-            ItemInfo sourceInfo = sourceItemAmount.get(key);
+            ItemStackKey key = iterator.next();
+            TypeItemInfo sourceInfo = sourceItemAmount.get(key);
             int itemAmount = sourceInfo.totalCount;
-            int itemToMoveAmount = itemsTransferLimits[sourceInfo.filterSlot];
+            Set<ItemStackKey> matchedItems = Collections.singleton(key);
+            int itemToMoveAmount = itemFilterContainer.getSlotTransferLimit(sourceInfo.filterSlot, matchedItems, transferStackSize);
             if (itemAmount >= itemToMoveAmount) {
                 sourceInfo.totalCount = itemToMoveAmount;
             } else {
@@ -73,42 +67,42 @@ public class CoverRoboticArm extends CoverConveyor {
             }
         }
         int itemsTransferred = 0;
-        for (ItemInfo itemInfo : sourceItemAmount.values()) {
-            if(maxTransferAmount >= itemInfo.totalCount) {
+        int maxTotalTransferAmount = maxTransferAmount + itemsTransferBuffered;
+        boolean notEnoughTransferRate = false;
+        for (TypeItemInfo itemInfo : sourceItemAmount.values()) {
+            if(maxTotalTransferAmount >= itemInfo.totalCount) {
                 boolean result = doTransferItemsExact(itemHandler, myItemHandler, itemInfo);
                 itemsTransferred += result ? itemInfo.totalCount : 0;
-                maxTransferAmount -= result ? itemInfo.totalCount : 0;
+                maxTotalTransferAmount -= result ? itemInfo.totalCount : 0;
+            } else {
+                notEnoughTransferRate = true;
             }
         }
-        return itemsTransferred;
+        //if we didn't transfer anything because of too small transfer rate, buffer it
+        if (itemsTransferred == 0 && notEnoughTransferRate) {
+            itemsTransferBuffered += maxTransferAmount;
+        } else {
+            //otherwise, if transfer succeed, empty transfer buffer value
+            itemsTransferBuffered = 0;
+        }
+        return Math.min(itemsTransferred, maxTransferAmount);
     }
 
     protected int doKeepExact(IItemHandler itemHandler, IItemHandler myItemHandler, int maxTransferAmount) {
-        int[] currentItemAmount = doCountDestinationInventoryItemsByMatchIndex(itemHandler, myItemHandler);
-        int[] keepItemAmount = new int[currentItemAmount.length];
-        for (int i = 0; i < keepItemAmount.length; i++) {
-            int slotTransferLimit = itemFilterContainer.getSlotStackSize(i);
-            if (slotTransferLimit == -1) {
-                keepItemAmount[i] = transferStackSize;
+        Map<Object, GroupItemInfo> currentItemAmount = doCountDestinationInventoryItemsByMatchIndex(itemHandler, myItemHandler);
+        Iterator<Object> iterator = currentItemAmount.keySet().iterator();
+        while (iterator.hasNext()) {
+            Object filterSlotIndex = iterator.next();
+            GroupItemInfo sourceInfo = currentItemAmount.get(filterSlotIndex);
+            int itemAmount = sourceInfo.totalCount;
+            int itemToKeepAmount = itemFilterContainer.getSlotTransferLimit(sourceInfo.filterSlot, sourceInfo.itemStackTypes, transferStackSize);
+            if (itemAmount < itemToKeepAmount) {
+                sourceInfo.totalCount = itemToKeepAmount - itemAmount;
             } else {
-                keepItemAmount[i] = slotTransferLimit;
+                iterator.remove();
             }
         }
-        int[] itemsToMove = calculateItemsToMove(currentItemAmount, keepItemAmount);
-        int[] itemsMovedArray = doTransferItemsInternal(itemHandler, myItemHandler, maxTransferAmount, itemsToMove);
-        return Arrays.stream(itemsMovedArray).sum();
-    }
-
-    private static int[] calculateItemsToMove(int[] currentItemAmount, int[] keepItemAmount) {
-        int[] resultAmount = new int[currentItemAmount.length];
-        for (int i = 0; i < resultAmount.length; i++) {
-            int currentAmount = currentItemAmount[i];
-            int minAmount = keepItemAmount[i];
-            if (minAmount > currentAmount) {
-                resultAmount[i] = minAmount - currentAmount;
-            }
-        }
-        return resultAmount;
+        return doTransferItemsByGroup(itemHandler, myItemHandler, currentItemAmount, maxTransferAmount);
     }
 
     public void setTransferMode(TransferMode transferMode) {
@@ -144,11 +138,10 @@ public class CoverRoboticArm extends CoverConveyor {
     protected ModularUI buildUI(Builder builder, EntityPlayer player) {
         WidgetGroup filterGroup = new WidgetGroup();
         filterGroup.addWidget(new CycleButtonWidget(91, 45, 75, 20,
-            GTUtility.mapToString(TransferMode.values(), it -> it.localeName),
-            () -> transferMode.ordinal(), (newMode) -> setTransferMode(TransferMode.values()[newMode]))
+            TransferMode.class, this::getTransferMode, this::setTransferMode)
             .setTooltipHoverString("cover.robotic_arm.transfer_mode.description"));
 
-        ServerWidgetGroup stackSizeGroup = new ServerWidgetGroup(() -> transferMode.maxStackSize > 1 && itemFilterContainer.getSlotStackSize(0) == -1);
+        ServerWidgetGroup stackSizeGroup = new ServerWidgetGroup(() -> transferMode.maxStackSize > 1 && itemFilterContainer.showGlobalTransferLimitSlider());
         stackSizeGroup.addWidget(new ClickButtonWidget(91, 70, 20, 20, "-1", data -> adjustTransferStackSize(data.isShiftClick ? -10 : -1)));
         stackSizeGroup.addWidget(new ClickButtonWidget(146, 70, 20, 20, "+1", data -> adjustTransferStackSize(data.isShiftClick ? +10 : +1)));
         stackSizeGroup.addWidget(new ImageWidget(111, 70, 35, 20, GuiTextures.DISPLAY));
@@ -169,7 +162,7 @@ public class CoverRoboticArm extends CoverConveyor {
         this.transferMode = TransferMode.values()[tagCompound.getInteger("TransferMode")];
     }
 
-    public enum TransferMode {
+    public enum TransferMode implements IStringSerializable {
         TRANSFER_ANY("cover.robotic_arm.transfer_mode.transfer_any", 1),
         TRANSFER_EXACT("cover.robotic_arm.transfer_mode.transfer_exact", 64),
         KEEP_EXACT("cover.robotic_arm.transfer_mode.keep_exact", 1024);
@@ -180,6 +173,12 @@ public class CoverRoboticArm extends CoverConveyor {
         TransferMode(String localeName, int maxStackSize) {
             this.localeName = localeName;
             this.maxStackSize = maxStackSize;
+        }
+
+
+        @Override
+        public String getName() {
+            return localeName;
         }
     }
 }

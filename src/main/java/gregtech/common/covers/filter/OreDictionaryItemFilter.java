@@ -4,14 +4,17 @@ import gregtech.api.gui.Widget;
 import gregtech.api.gui.widgets.LabelWidget;
 import gregtech.api.gui.widgets.TextFieldWidget;
 import gregtech.api.unification.OreDictUnifier;
+import gregtech.api.util.ItemStackKey;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 
+import java.util.Set;
 import java.util.function.Consumer;
 import java.util.regex.Pattern;
 
-public class OreDictionaryItemFilter extends AbstractItemFilter {
+public class OreDictionaryItemFilter extends ItemFilter {
 
+    private static final Object MATCH_RESULT_TRUE = new Object();
     private static final Pattern ORE_DICTIONARY_FILTER = Pattern.compile("\\*?[a-zA-Z0-9_]*\\*?");
 
     protected String oreDictionaryFilter = "";
@@ -26,11 +29,6 @@ public class OreDictionaryItemFilter extends AbstractItemFilter {
     }
 
     @Override
-    public int getTotalOccupiedHeight() {
-        return 37;
-    }
-
-    @Override
     public void initUI(int y, Consumer<Widget> widgetGroup) {
         widgetGroup.accept(new LabelWidget(10, y, "cover.ore_dictionary_filter.title1"));
         widgetGroup.accept(new LabelWidget(10, y + 10, "cover.ore_dictionary_filter.title2"));
@@ -41,8 +39,24 @@ public class OreDictionaryItemFilter extends AbstractItemFilter {
     }
 
     @Override
-    public boolean testItemStack(ItemStack itemStack) {
-        return matchesOreDictionaryFilter(getOreDictionaryFilter(), itemStack);
+    public Object matchItemStack(ItemStack itemStack) {
+        boolean matches = matchesOreDictionaryFilter(getOreDictionaryFilter(), itemStack);
+        return matches ? MATCH_RESULT_TRUE : null;
+    }
+
+    @Override
+    public int getSlotTransferLimit(Object matchSlot, Set<ItemStackKey> matchedStacks, int globalTransferLimit) {
+        return globalTransferLimit;
+    }
+
+    @Override
+    public boolean showGlobalTransferLimitSlider() {
+        return true;
+    }
+
+    @Override
+    public int getTotalOccupiedHeight() {
+        return 37;
     }
 
     @Override
