@@ -266,6 +266,8 @@ public class MetaItem1 extends MaterialMetaItem {
 
         ITEM_FILTER = addItem(729, "item_filter");
         ORE_DICTIONARY_FILTER = addItem(102, "ore_dictionary_filter");
+        SMART_FILTER = addItem(103, "smart_item_filter");
+
         COVER_MACHINE_CONTROLLER = addItem(730, "cover.controller");
 
         COVER_ACTIVITY_DETECTOR = addItem(731, "cover.activity.detector").setInvisible();

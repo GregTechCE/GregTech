@@ -11,7 +11,7 @@ import net.minecraftforge.fluids.FluidStack;
 import javax.annotation.Nullable;
 import java.util.function.Consumer;
 
-public class SimpleFluidFilter extends AbstractFluidFilter {
+public class SimpleFluidFilter extends FluidFilter {
 
     private static final int MAX_FLUID_SLOTS = 9;
 

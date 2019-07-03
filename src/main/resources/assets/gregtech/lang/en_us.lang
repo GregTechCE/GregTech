@@ -80,6 +80,8 @@ metaitem.power_unit.hv.name=Power Unit (HV)
 metaitem.jackhammer_base.name=JackHammer Base (HV)
 metaitem.nano_saber.name=Nano Saber
 metaitem.nano_saber.tooltip=Ryujin no ken wo kurae!
+metaitem.energy_field_projector.name=Energy Field Projector
+metaitem.energy_field_projector.tooltip=Repels objects in close proximity to wearer
 
 metaitem.shape.mold.plate.name=Mold (Plate)
 metaitem.shape.mold.plate.tooltip=Mold for making Plates
@@ -521,6 +523,8 @@ metaitem.ore_dictionary_filter.name=Ore Dictionary Filter
 metaitem.ore_dictionary_filter.tooltip=Filters item extract and insert with ore dictionary (as Cover)/nCan be used as a Conveyor upgrade
 metaitem.fluid_filter.name=Fluid Filter
 metaitem.fluid_filter.tooltip=Filters fluid fill and drain (as Cover)/nCan be used as a Pump upgrade
+metaitem.smart_item_filter.name=Smart Item Filter
+metaitem.smart_item_filter.tooltip=Filters items basing on specific machine's recipes
 
 metaitem.cover.controller.name=Machine Controller
 metaitem.cover.controller.tooltip=Turns Machines ON/OFF
@@ -699,6 +703,11 @@ cover.item_filter.ignore_damage.enabled=Ignore Damage
 cover.item_filter.ignore_damage.disabled=Respect Damage
 cover.item_filter.ignore_nbt.enabled=Ignore NBT
 cover.item_filter.ignore_nbt.disabled=Respect NBT
+
+cover.smart_item_filter.title=Smart Item Filter
+cover.smart_item_filter.mode.electrolyzer=Electrolyzer
+cover.smart_item_filter.mode.centrifuge=Centrifuge
+cover.smart_item_filter.mode.tooltip=Select Machine this Smart Filter will use for filtering./nIt will automatically pick right portions of items for robotic arm.
 
 cover.conveyor.title=Conveyor Cover Settings (%s)
 cover.conveyor.transfer_rate=%s items/sec
@@ -2240,6 +2249,7 @@ gregtech.machine.air_collector.mv.name=Advanced Air Collector
 gregtech.machine.air_collector.hv.name=Advanced Air Collector II
 gregtech.machine.air_collector.ev.name=Atmosphere Collector III
 gregtech.machine.air_collector.description=Collects air from adjacent blocks
+gregtech.machine.air_collector.jei_description=The Air Collector collects air from adjacent blocks for a little bit of EU
 
 #Tesla Coil
 gregtech.machine.tesla_coil.name=Tesla Coil
@@ -2866,6 +2876,10 @@ gregtech.gui.toggle_view.enabled=Toggle View (Items)
 gregtech.gui.overclock.enabled=Allow Overclocking
 gregtech.gui.overclock.disabled=Disable Overclocking
 gregtech.gui.sort=Sort
+gregtech.gui.fluid_auto_output.tooltip.enabled=Fluid Auto-Output Enabled
+gregtech.gui.fluid_auto_output.tooltip.disabled=Fluid Auto-Output Disabled
+gregtech.gui.item_auto_output.tooltip.enabled=Item Auto-Output Enabled
+gregtech.gui.item_auto_output.tooltip.disabled=Item Auto-Output Disabled
 
 gregtech.item_filter.empty_item=Empty (No Item)
 gregtech.item_filter.footer=§eClick with item to override

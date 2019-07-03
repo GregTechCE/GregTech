@@ -1,5 +1,6 @@
 package gregtech.api.unification.stack;
 
+import gregtech.api.util.GTUtility;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
@@ -15,7 +16,7 @@ public final class ItemAndMetadata {
 
     public ItemAndMetadata(ItemStack itemStack) {
         this.item = itemStack.getItem();
-        this.itemDamage = itemStack.getItemDamage();
+        this.itemDamage = GTUtility.getActualItemDamageFromStack(itemStack);
     }
 
     public ItemStack toItemStack() {

@@ -8,11 +8,11 @@ import java.util.function.Supplier;
 public class WidgetGroupItemFilter extends AbstractWidgetGroup {
 
     private final int yPosition;
-    private Supplier<AbstractItemFilter> itemFilterSupplier;
-    private AbstractItemFilter itemFilter;
+    private Supplier<ItemFilter> itemFilterSupplier;
+    private ItemFilter itemFilter;
     private int maxStackSize = 1;
 
-    public WidgetGroupItemFilter(int yPosition, Supplier<AbstractItemFilter> itemFilterSupplier) {
+    public WidgetGroupItemFilter(int yPosition, Supplier<ItemFilter> itemFilterSupplier) {
         this.yPosition = yPosition;
         this.itemFilterSupplier = itemFilterSupplier;
     }
@@ -20,7 +20,7 @@ public class WidgetGroupItemFilter extends AbstractWidgetGroup {
     @Override
     public void detectAndSendChanges() {
         super.detectAndSendChanges();
-        AbstractItemFilter newItemFilter = itemFilterSupplier.get();
+        ItemFilter newItemFilter = itemFilterSupplier.get();
         if (itemFilter != newItemFilter) {
             clearAllWidgets();
             this.itemFilter = newItemFilter;
@@ -37,10 +37,7 @@ public class WidgetGroupItemFilter extends AbstractWidgetGroup {
                 }
             });
         }
-        int newMaxStackSize = 1;
-        if(itemFilter instanceof ISlottedItemFilter) {
-            newMaxStackSize = ((ISlottedItemFilter) itemFilter).getMaxStackSize();
-        }
+        int newMaxStackSize = itemFilter == null ? 1 : itemFilter.getMaxStackSize();
         if (maxStackSize != newMaxStackSize) {
             this.maxStackSize = newMaxStackSize;
             writeUpdateInfo(3, buffer -> buffer.writeVarInt(maxStackSize));
@@ -56,14 +53,12 @@ public class WidgetGroupItemFilter extends AbstractWidgetGroup {
                 int filterId = buffer.readVarInt();
                 this.itemFilter = FilterTypeRegistry.createItemFilterById(filterId);
                 this.itemFilter.initUI(yPosition, this::addWidget);
-                if(itemFilter instanceof ISlottedItemFilter) {
-                    ((ISlottedItemFilter) itemFilter).setMaxStackSize(maxStackSize);
-                }
+                this.itemFilter.setMaxStackSize(maxStackSize);
             }
         } else if(id == 3) {
             this.maxStackSize = buffer.readVarInt();
-            if(itemFilter instanceof ISlottedItemFilter) {
-                ((ISlottedItemFilter) itemFilter).setMaxStackSize(maxStackSize);
+            if (itemFilter != null) {
+                itemFilter.setMaxStackSize(maxStackSize);
             }
         }
     }

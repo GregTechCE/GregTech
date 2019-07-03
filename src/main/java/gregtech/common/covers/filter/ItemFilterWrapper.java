@@ -5,16 +5,19 @@ import gregtech.api.gui.Widget;
 import gregtech.api.gui.widgets.ServerWidgetGroup;
 import gregtech.api.gui.widgets.ToggleButtonWidget;
 import gregtech.api.util.IDirtyNotifiable;
+import gregtech.api.util.ItemStackKey;
 import net.minecraft.item.ItemStack;
 
+import java.util.Set;
 import java.util.function.Consumer;
 
 public class ItemFilterWrapper {
 
+    private static final Object MATCH_RESULT_TRUE = new Object();
     private final IDirtyNotifiable dirtyNotifiable;
     private boolean isBlacklistFilter = false;
     private int maxStackSize = 1;
-    private AbstractItemFilter currentItemFilter;
+    private ItemFilter currentItemFilter;
 
     public ItemFilterWrapper(IDirtyNotifiable dirtyNotifiable) {
         this.dirtyNotifiable = dirtyNotifiable;
@@ -28,21 +31,20 @@ public class ItemFilterWrapper {
         widgetGroup.accept(new WidgetGroupItemFilter(y, this::getItemFilter));
     }
 
-    public void setItemFilter(AbstractItemFilter itemFilter) {
+    public void setItemFilter(ItemFilter itemFilter) {
         this.currentItemFilter = itemFilter;
         if(currentItemFilter != null) {
             currentItemFilter.setDirtyNotifiable(dirtyNotifiable);
         }
     }
 
-    public AbstractItemFilter getItemFilter() {
+    public ItemFilter getItemFilter() {
         return currentItemFilter;
     }
 
     public void onFilterInstanceChange() {
-        if(currentItemFilter instanceof ISlottedItemFilter) {
-            ISlottedItemFilter filter = (ISlottedItemFilter) currentItemFilter;
-            filter.setMaxStackSize(maxStackSize);
+        if (currentItemFilter != null) {
+            currentItemFilter.setMaxStackSize(maxStackSize);
         }
         dirtyNotifiable.markAsDirty();
     }
@@ -66,37 +68,31 @@ public class ItemFilterWrapper {
         return maxStackSize;
     }
 
-    public int getMaxMatchSlots() {
-        if (!isBlacklistFilter && currentItemFilter instanceof ISlottedItemFilter) {
-            ISlottedItemFilter filter = (ISlottedItemFilter) currentItemFilter;
-            return filter.getMaxMatchSlots();
-        }
-        return 1;
+    public boolean showGlobalTransferLimitSlider() {
+        return isBlacklistFilter() || currentItemFilter == null || currentItemFilter.showGlobalTransferLimitSlider();
     }
 
-    public int getSlotStackSize(int slotIndex) {
-        if (!isBlacklistFilter && currentItemFilter instanceof ISlottedItemFilter) {
-            ISlottedItemFilter filter = (ISlottedItemFilter) currentItemFilter;
-            return filter.getSlotStackSize(slotIndex);
+    public int getSlotTransferLimit(Object matchSlot, Set<ItemStackKey> matchedStacks, int globalTransferLimit) {
+        if (isBlacklistFilter() || currentItemFilter == null) {
+            return globalTransferLimit;
         }
-        return -1;
+        return currentItemFilter.getSlotTransferLimit(matchSlot, matchedStacks, globalTransferLimit);
     }
 
-    public int matchItemStack(ItemStack itemStack) {
-        int originalSlot = 0;
-        if(currentItemFilter instanceof ISlottedItemFilter) {
-            ISlottedItemFilter filter = (ISlottedItemFilter) currentItemFilter;
-            originalSlot = filter.matchItemStack(itemStack);
-        } else if (currentItemFilter != null) {
-            originalSlot = currentItemFilter.testItemStack(itemStack) ? 0 : -1;
+    public Object matchItemStack(ItemStack itemStack) {
+        Object originalResult;
+        if (currentItemFilter == null) {
+            originalResult = MATCH_RESULT_TRUE;
+        } else {
+            originalResult = currentItemFilter.matchItemStack(itemStack);
         }
-        if(isBlacklistFilter) {
-            originalSlot = (originalSlot >= 0) ? -1 : 0;
+        if (isBlacklistFilter()) {
+            originalResult = originalResult == null ? MATCH_RESULT_TRUE : null;
         }
-        return originalSlot;
+        return originalResult;
     }
 
     public boolean testItemStack(ItemStack itemStack) {
-        return matchItemStack(itemStack) >= 0;
+        return matchItemStack(itemStack) != null;
     }
 }

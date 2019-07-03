@@ -826,6 +826,16 @@ public abstract class MetaItem<T extends MetaItem<?>.MetaValueItem> extends Item
             return itemStack;
         }
 
+        public ItemStack getInfiniteChargedStack() {
+            ItemStack itemStack = getStackForm(1);
+            IElectricItem electricItem = itemStack.getCapability(GregtechCapabilities.CAPABILITY_ELECTRIC_ITEM, null);
+            if (!(electricItem instanceof ElectricItem)) {
+                throw new IllegalStateException("Not a supported electric item.");
+            }
+            ((ElectricItem) electricItem).setInfiniteCharge(true);
+            return itemStack;
+        }
+
         /**
          * Attempts to get an electric item variant with override of max charge
          *

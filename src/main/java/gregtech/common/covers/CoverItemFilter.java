@@ -16,7 +16,7 @@ import gregtech.api.gui.widgets.LabelWidget;
 import gregtech.api.gui.widgets.WidgetGroup;
 import gregtech.api.render.SimpleOverlayRenderer;
 import gregtech.api.util.GTUtility;
-import gregtech.common.covers.filter.AbstractItemFilter;
+import gregtech.common.covers.filter.ItemFilter;
 import gregtech.common.covers.filter.ItemFilterWrapper;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -39,7 +39,7 @@ public class CoverItemFilter extends CoverBehavior implements CoverWithUI {
     protected ItemFilterMode filterMode = ItemFilterMode.FILTER_INSERT;
     protected ItemHandlerFiltered itemHandler;
 
-    public CoverItemFilter(ICoverable coverHolder, EnumFacing attachedSide, String titleLocale, SimpleOverlayRenderer texture, AbstractItemFilter itemFilter) {
+    public CoverItemFilter(ICoverable coverHolder, EnumFacing attachedSide, String titleLocale, SimpleOverlayRenderer texture, ItemFilter itemFilter) {
         super(coverHolder, attachedSide);
         this.titleLocale = titleLocale;
         this.texture = texture;

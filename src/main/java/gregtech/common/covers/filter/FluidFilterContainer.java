@@ -59,8 +59,8 @@ public class FluidFilterContainer implements INBTSerializable<NBTTagCompound> {
 
     protected void onFilterSlotChange(boolean notify) {
         ItemStack filterStack = filterInventory.getStackInSlot(0);
-        AbstractFluidFilter newFluidFilter = FilterTypeRegistry.getFluidFilterForStack(filterStack);
-        AbstractFluidFilter currentFluidFilter = filterWrapper.getFluidFilter();
+        FluidFilter newFluidFilter = FilterTypeRegistry.getFluidFilterForStack(filterStack);
+        FluidFilter currentFluidFilter = filterWrapper.getFluidFilter();
         if(newFluidFilter == null) {
             if(currentFluidFilter != null) {
                 filterWrapper.setFluidFilter(null);

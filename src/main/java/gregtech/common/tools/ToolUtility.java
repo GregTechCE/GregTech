@@ -35,7 +35,7 @@ public class ToolUtility {
 
     public static boolean applyTimberAxe(ItemStack itemStack, World world, BlockPos blockPos, EntityPlayer player) {
         IBlockState blockState = world.getBlockState(blockPos);
-        if(TreeChopTask.isLogOrLeavesBlock(blockState) == 1) {
+        if(TreeChopTask.isLogBlock(blockState) == 1) {
             if(!world.isRemote) {
                 EntityPlayerMP playerMP = (EntityPlayerMP) player;
                 TreeChopTask treeChopTask = new TreeChopTask(blockPos, world, playerMP, itemStack);

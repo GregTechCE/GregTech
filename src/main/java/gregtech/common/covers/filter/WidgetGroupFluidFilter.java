@@ -8,10 +8,10 @@ import java.util.function.Supplier;
 public class WidgetGroupFluidFilter extends AbstractWidgetGroup {
 
     private final int yPosition;
-    private Supplier<AbstractFluidFilter> itemFilterSupplier;
-    private AbstractFluidFilter itemFilter;
+    private Supplier<FluidFilter> itemFilterSupplier;
+    private FluidFilter itemFilter;
 
-    public WidgetGroupFluidFilter(int yPosition, Supplier<AbstractFluidFilter> itemFilterSupplier) {
+    public WidgetGroupFluidFilter(int yPosition, Supplier<FluidFilter> itemFilterSupplier) {
         this.yPosition = yPosition;
         this.itemFilterSupplier = itemFilterSupplier;
     }
@@ -19,7 +19,7 @@ public class WidgetGroupFluidFilter extends AbstractWidgetGroup {
     @Override
     public void detectAndSendChanges() {
         super.detectAndSendChanges();
-        AbstractFluidFilter newItemFilter = itemFilterSupplier.get();
+        FluidFilter newItemFilter = itemFilterSupplier.get();
         if(itemFilter != newItemFilter) {
             clearAllWidgets();
             this.itemFilter = newItemFilter;
