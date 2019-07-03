@@ -2,15 +2,10 @@ package gregtech.integration.jei.recipe;
 
 import codechicken.lib.util.ItemNBTUtils;
 import gnu.trove.map.TObjectIntMap;
-import gregtech.api.GTValues;
 import gregtech.api.recipes.CountableIngredient;
 import gregtech.api.recipes.Recipe;
 import gregtech.api.recipes.RecipeMap;
-import gregtech.api.recipes.RecipeMaps;
 import gregtech.api.unification.OreDictUnifier;
-import gregtech.api.util.GTUtility;
-import gregtech.common.metatileentities.MetaTileEntities;
-import gregtech.common.metatileentities.electric.MetaTileEntityMacerator;
 import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.recipe.IRecipeWrapper;
 import net.minecraft.client.Minecraft;
@@ -100,26 +95,11 @@ public class GTRecipeWrapper implements IRecipeWrapper {
             throw new IllegalArgumentException("Unknown ingredient type: " + ingredient.getClass());
         }
         if (tagCompound != null && tagCompound.hasKey("chance")) {
-        	if(this.recipeMap.getUnlocalizedName().equals(RecipeMaps.MACERATOR_RECIPES.getUnlocalizedName())) {
-        		for(MetaTileEntityMacerator macerator : MetaTileEntities.MACERATOR) {
-        		String chanceString = Recipe.formatChanceValue(getByproductChance(macerator.getTier(), tagCompound.getInteger("chance")));
-        		tooltip.add(I18n.format("gregtech.recipe.chance_tier", GTValues.VOLTAGE_NAMES[macerator.getTier()], chanceString));        			
-        		}
-        	}else {
-        		String chanceString = Recipe.formatChanceValue(tagCompound.getInteger("chance"));
-        		tooltip.add(I18n.format("gregtech.recipe.chance", chanceString));
-        	}
+            String chanceString = Recipe.formatChanceValue(tagCompound.getInteger("chance"));
+            tooltip.add(I18n.format("gregtech.recipe.chance", chanceString));
         } else if (tagCompound != null && tagCompound.hasKey("not_consumed")) {
             tooltip.add(I18n.format("gregtech.recipe.not_consumed"));
         }
-    }
-    
-    private int getByproductChance(int tier, int baseByproductChance) {
-        int byproductChanceMultiplier = 1;
-        if (tier > GTValues.MV) {
-            byproductChanceMultiplier = 1 << (tier - GTValues.MV);
-        }
-        return Math.min(10000, byproductChanceMultiplier * baseByproductChance);
     }
 
     @Override
