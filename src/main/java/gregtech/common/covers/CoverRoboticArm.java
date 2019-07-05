@@ -154,12 +154,14 @@ public class CoverRoboticArm extends CoverConveyor {
     public void writeToNBT(NBTTagCompound tagCompound) {
         super.writeToNBT(tagCompound);
         tagCompound.setInteger("TransferMode", transferMode.ordinal());
+        tagCompound.setInteger("TransferStackSize", transferStackSize);
     }
 
     @Override
     public void readFromNBT(NBTTagCompound tagCompound) {
         super.readFromNBT(tagCompound);
         this.transferMode = TransferMode.values()[tagCompound.getInteger("TransferMode")];
+        this.transferStackSize = tagCompound.getInteger("TransferStackSize");
     }
 
     public enum TransferMode implements IStringSerializable {

@@ -3,6 +3,7 @@ package gregtech.api.worldgen.config;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import gregtech.api.unification.OreDictUnifier;
 import gregtech.api.unification.material.type.DustMaterial;
 import gregtech.api.unification.material.type.Material;
 import gregtech.api.unification.ore.StoneType;
@@ -14,7 +15,6 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.registry.GameRegistry;
-import net.minecraftforge.oredict.OreDictionary;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -26,7 +26,7 @@ public class OreConfigUtils {
 
     @SuppressWarnings("deprecation")
     public static List<IBlockState> getOreDictBlocks(String oreDictName) {
-        List<ItemStack> allOres = OreDictionary.getOres(oreDictName);
+        List<ItemStack> allOres = OreDictUnifier.getAllWithOreDictionaryName(oreDictName);
         ArrayList<IBlockState> allBlocks = new ArrayList<>();
         for (ItemStack oreStack : allOres) {
             Block itemStackBlock = Block.getBlockFromItem(oreStack.getItem());

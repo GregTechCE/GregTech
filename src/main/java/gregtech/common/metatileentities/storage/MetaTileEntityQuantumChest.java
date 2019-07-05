@@ -28,11 +28,13 @@ import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants.NBT;
+import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.IItemHandlerModifiable;
 import net.minecraftforge.items.ItemStackHandler;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.tuple.Pair;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.List;
 
@@ -137,6 +139,12 @@ public class MetaTileEntityQuantumChest extends MetaTileEntity implements ITiere
     }
 
     @Override
+    protected void initializeInventory() {
+        super.initializeInventory();
+        this.itemInventory = new QuantumChestItemHandler();
+    }
+
+    @Override
     protected IItemHandlerModifiable createImportItemHandler() {
         return new ItemStackHandler(1);
     }
@@ -184,6 +192,84 @@ public class MetaTileEntityQuantumChest extends MetaTileEntity implements ITiere
                 .setBackgroundTexture(GuiTextures.SLOT, GuiTextures.OUT_SLOT_OVERLAY))
             .bindPlayerInventory(entityPlayer.inventory)
             .build(getHolder(), entityPlayer);
+    }
+
+    private class QuantumChestItemHandler implements IItemHandler {
+
+        @Override
+        public int getSlots() {
+            return 1;
+        }
+
+        @Nonnull
+        @Override
+        public ItemStack getStackInSlot(int slot) {
+            ItemStack itemStack = MetaTileEntityQuantumChest.this.itemStack;
+            long itemsStored = MetaTileEntityQuantumChest.this.itemsStoredInside;
+            if (itemStack.isEmpty() || itemsStored == 0L) {
+                return ItemStack.EMPTY;
+            }
+            ItemStack resultStack = itemStack.copy();
+            resultStack.setCount((int) itemsStored);
+            return resultStack;
+        }
+
+        @Override
+        public int getSlotLimit(int slot) {
+            return (int) MetaTileEntityQuantumChest.this.maxStoredItems;
+        }
+
+        @Nonnull
+        @Override
+        public ItemStack extractItem(int slot, int amount, boolean simulate) {
+            int extractedAmount = (int) Math.min(amount, itemsStoredInside);
+            if (itemStack.isEmpty() || extractedAmount == 0) {
+                return ItemStack.EMPTY;
+            }
+            ItemStack extractedStack = itemStack.copy();
+            extractedStack.setCount(extractedAmount);
+            if (!simulate) {
+                MetaTileEntityQuantumChest.this.itemsStoredInside -= extractedAmount;
+                if (itemsStoredInside == 0L) {
+                    MetaTileEntityQuantumChest.this.itemStack = ItemStack.EMPTY;
+                }
+            }
+            return extractedStack;
+        }
+
+        @Nonnull
+        @Override
+        public ItemStack insertItem(int slot, @Nonnull ItemStack stack, boolean simulate) {
+            if(stack.isEmpty()) {
+                return ItemStack.EMPTY;
+            }
+            if (itemsStoredInside > 0L &&
+                !itemStack.isEmpty() &&
+                !areItemStackIdentical(itemStack, stack)) {
+                return stack;
+            }
+            long amountLeftInChest = itemStack.isEmpty() ? maxStoredItems : maxStoredItems - itemsStoredInside;
+            int insertedAmount = (int) Math.min(stack.getCount(), amountLeftInChest);
+
+            if (insertedAmount == 0) {
+                return stack;
+            }
+            ItemStack remainingStack = ItemStack.EMPTY;
+            if(stack.getCount() > insertedAmount) {
+                remainingStack = stack.copy();
+                remainingStack.setCount(stack.getCount() - insertedAmount);
+                return ItemStack.EMPTY;
+            }
+            if (!simulate) {
+                if (itemStack.isEmpty()) {
+                    MetaTileEntityQuantumChest.this.itemStack = stack.copy();
+                    MetaTileEntityQuantumChest.this.itemsStoredInside = insertedAmount;
+                } else {
+                    MetaTileEntityQuantumChest.this.itemsStoredInside += insertedAmount;
+                }
+            }
+            return remainingStack;
+        }
     }
 
 }

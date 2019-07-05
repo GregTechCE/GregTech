@@ -48,8 +48,7 @@ public class MetaItem1 extends MaterialMetaItem {
     }
 
     private void registerPurifyRecipes() {
-        purifyMap.put(OrePrefix.crushed, OrePrefix.crushedCentrifuged);
-        purifyMap.put(OrePrefix.crushedPurified, OrePrefix.crushedCentrifuged);
+        purifyMap.put(OrePrefix.crushed, OrePrefix.crushedPurified);
         purifyMap.put(OrePrefix.dustImpure, OrePrefix.dust);
         purifyMap.put(OrePrefix.dustPure, OrePrefix.dust);
     }
