@@ -2880,6 +2880,9 @@ gregtech.gui.fluid_auto_output.tooltip.disabled=Fluid Auto-Output Disabled
 gregtech.gui.item_auto_output.tooltip.enabled=Item Auto-Output Enabled
 gregtech.gui.item_auto_output.tooltip.disabled=Item Auto-Output Disabled
 
+gregtech.jei.ore_by_product_from_ore=Use %s for %s
+gregtech.jei.ore_by_product_from_machine=Produce by processing %s with %s
+
 gregtech.item_filter.empty_item=Empty (No Item)
 gregtech.item_filter.footer=§eClick with item to override
 
