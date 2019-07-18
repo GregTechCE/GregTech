@@ -1,12 +1,12 @@
 death.attack.heat=%s was boiled alive.
 death.attack.frost=%s explored cryogenics.
-death.attack.electric=%s was shocked.
+death.attack.electric=%s was electrocuted.
 death.attack.radiation=%s glows with joy now.
-death.attack.turbine=%s put his head into turbine.
+death.attack.turbine=%s put their head into a turbine.
 death.attack.explosion=%s exploded.
 death.attack.explosion.player=%s exploded with help of %s.
 death.attack.heat.player=%s was boiled alive by %s.
-death.attack.crusher=%s was grinded dead.
+death.attack.crusher=%s was ground into a pulp.
 
 enchantment.disjunction=Disjunction
 
@@ -15,18 +15,18 @@ gregtech.top.progress=Progress:
 gregtech.top.working_disabled=Working Disabled
 
 gregtech.multiblock.title=Multiblock Pattern
-gregtech.multiblock.primitive_blast_furnace.description=The Primitive Blast Furnace (PBF) is multiblock structure used for cooking steel in early game stage. Although not being very fast, it will provide your with steel for your first setups.
-gregtech.multiblock.coke_oven.description=The Coke Oven is multiblock structure used for getting coke and creosote in early game stage. It doesn't require fuel and has internal tank of 32 buckets of creosote. Inventory can be accessed via Coke Oven Hatch.
-gregtech.multiblock.vacuum_freezer.description=The Vacuum Freezer is multiblock structure mainly used for freezing Hot Ingots into regular Ingots. However, it can also freeze other substances, such as Water.
-gregtech.multiblock.implosion_compressor.description=The Implosion Compressor is a multiblock structure that uses explosives to turn gem dusts into the corresponding gems.
+gregtech.multiblock.primitive_blast_furnace.description=The Primitive Blast Furnace (PBF) is a multiblock structure used for cooking steel in the early game. Although not very fast, it will provide you with steel for your first setups.
+gregtech.multiblock.coke_oven.description=The Coke Oven is a multiblock structure used for getting coke and creosote in the early game. It doesn't require fuel and has an internal tank of 32 buckets for creosote. Its inventory can be accessed via its Coke Oven Hatch.
+gregtech.multiblock.vacuum_freezer.description=The Vacuum Freezer is a multiblock structure mainly used for freezing Hot Ingots into regular Ingots. However, it can also freeze other substances, such as Water.
+gregtech.multiblock.implosion_compressor.description=The Implosion Compressor is a multiblock structure that uses explosives to turn gem dusts into their corresponding gems.
 gregtech.multiblock.pyrolyze_oven.description=The Pyrolyze Oven is a multiblock structure used for turning Logs into Charcoal and Creosote Oil, or Ash and Heavy Oil.
 gregtech.multiblock.cracker.description=The Cracker Unit is a multiblock structure used for turning Light and Heavy Fuel into their Cracked variants.
 gregtech.multiblock.diesel_engine.description=The Diesel Engine is a multiblock structure that acts as a Diesel Generator for EV power.
 gregtech.multiblock.distillation_tower.description=The Distillation Tower is a multiblock structure used for distilling the various types of Oil and some of their byproducts.
-gregtech.multiblock.electric_blast_furnace.description=The Electric Blast Furnace (EBF) is multiblock structure used for smelting alloys, cooking metals and refining ores. It is required for obtaining high-tier alloys and metals, such as aluminium, stainless steel and titanium, naquadah alloy.
-gregtech.multiblock.multi_smelter.description=The Multi Smelter is multiblock structure used for smelting massive amounts of items at once. Different tiers of coils provide speed boost and energy efficiency gain. 16 is base value of items smelted per operation, and can be multiplied by using higher level coils.
-gregtech.multiblock.large_boiler.description=Large Boilers are multiblocks that generate steam from energy source and water. Usually either solid fuel or some high-density fluid acts like energy source for large boiler. Tiers differ only by amount of steam outputted.
-gregtech.multiblock.large_turbine.description=Large Turbines are multiblocks that generate power from steam, gases and plasma by them spinning turbine's rotor. Energy output is based on rotor efficiency and current speed of turbine.
+gregtech.multiblock.electric_blast_furnace.description=The Electric Blast Furnace (EBF) is a multiblock structure used for smelting alloys, cooking metals and refining ores. It is required for obtaining high-tier alloys and metals, such as aluminium, stainless steel, titanium, and naquadah alloy.
+gregtech.multiblock.multi_smelter.description=The Multi Smelter is a multiblock structure used for smelting massive amounts of items at once. Different tiers of coils provide a speed boost and energy efficiency gain. 16 is the base value of items smelted per operation, and can be multiplied by using higher level coils.
+gregtech.multiblock.large_boiler.description=Large Boilers are multiblocks that generate steam from an energy source and water. Said energy source is usually a solid fuel or some high-density fluid. Tiers differ only by amount of steam outputted.
+gregtech.multiblock.large_turbine.description=Large Turbines are multiblocks that generate power from steam, gases, and plasma by having them spin the turbine's rotor. Energy output is based on rotor efficiency and current speed of turbine.
 
 item.invalid.name=Invalid item
 fluid.empty=Empty
@@ -36,7 +36,7 @@ metaitem.generic.fluid_container.tooltip_empty=Empty
 metaitem.generic.electric_item.tooltip=%d/%d EU - Tier §e%d
 metaitem.electric.discharge_mode.enabled=§eDischarge Mode Enabled
 metaitem.electric.discharge_mode.disabled=§eDischarge Mode Disabled
-metaitem.electric.discharge_mode.tooltip=Shift click to toggle discharge mode
+metaitem.electric.discharge_mode.tooltip=Use while sneaking to toggle discharge mode
 
 metaitem.dust.tooltip.purify=Throw into Cauldron to get clean Dust
 metaitem.int_circuit.configuration=Configuration: %d
@@ -399,7 +399,7 @@ metaitem.tool.datastick.tooltip=A Low Capacity Data Storage
 metaitem.tool.dataorb.name=Data Orb
 metaitem.tool.dataorb.tooltip=A High Capacity Data Storage
 metaitem.circuit.integrated.name=Integrated circuit
-metaitem.circuit.integrated.tooltip=Right-click to open configuration GUI
+metaitem.circuit.integrated.tooltip=Use to open configuration GUI
 metaitem.circuit.integrated.gui=Integrated circuit configuration
 
 #CIRCUITS LOCALIZATION
@@ -602,7 +602,7 @@ metaitem.plant_ball.name=Plant Ball
 metaitem.tool_parts_box.name=Tool Parts Box
 metaitem.tool_parts_box.tooltip=Contains some tool parts/nRight click to open
 metaitem.foam_sprayer.name=Foam Sprayer
-metaitem.foam_sprayer.tooltip=Sprays Construction Foam/nRight click on a frame to foam connected frames/nUse iron metal to create reinforced stone/nFoam can be colored
+metaitem.foam_sprayer.tooltip=Sprays Construction Foam/nUse on a frame to foam connected frames/nUse iron metal to create reinforced stone/nFoam can be colored
 metaitem.energium_dust.name=Energium Dust
 metaitem.compressed.fireclay.name=Compressed Fireclay
 metaitem.compressed.clay.name=Compressed Clay
@@ -627,7 +627,7 @@ metaitem.tool.file.name=%s File
 metaitem.tool.crowbar.name=%s Crowbar
 metaitem.tool.crowbar.tooltip=Dismounts covers and rotates rails
 metaitem.tool.screwdriver.name=%s Screwdriver
-metaitem.tool.screwdriver.tooltip=Click on cover to configure it
+metaitem.tool.screwdriver.tooltip=Use on a cover to configure it
 metaitem.tool.mortar.name=%s Mortar
 metaitem.tool.wire_cutter.name=%s Wire Cutter
 metaitem.tool.scoop.name=%s Scoop
@@ -674,7 +674,7 @@ metaitem.jack_hammer.mode.vertical_line=Vertical Line
 metaitem.jack_hammer.mode.horizontal_line=Horizontal Line
 metaitem.jack_hammer.mode.single_block=Single Block
 
-metaitem.behavior.mode_switch.tooltip=Shift Click to switch mode
+metaitem.behavior.mode_switch.tooltip=Use while sneaking to switch mode
 metaitem.behavior.mode_switch.mode_switched=§eMode Set to: %s
 metaitem.behavior.mode_switch.current_mode=Mode: %s
 
@@ -721,7 +721,7 @@ cover.robotic_arm.title=Robotic Arm Settings (%s)
 cover.robotic_arm.transfer_mode.transfer_any=Transfer Any
 cover.robotic_arm.transfer_mode.transfer_exact=Supply Exact
 cover.robotic_arm.transfer_mode.keep_exact=Keep Exact
-cover.robotic_arm.transfer_mode.description=§eTransfer Any§r - in this mode, cover will transfer as much items matching it's filter as possible./n§eSupply Exact§r - in this mode, cover will supply items in portions specified in item filter slots (or variable under this button for ore dictionary filter). If amount of items is less than portion size, items won't be moved./n§eKeep Exact§r - in this mode, cover will keep specified amount of items in the destination inventory, supplying additional amount of items if required./n§7Tip: left/right click on filter slots to change item amount,  use shift clicking to change amount faster.
+cover.robotic_arm.transfer_mode.description=§eTransfer Any§r - in this mode, cover will transfer as much items matching its filter as possible./n§eSupply Exact§r - in this mode, cover will supply items in portions specified in item filter slots (or variable under this button for ore dictionary filter). If amount of items is less than portion size, items won't be moved./n§eKeep Exact§r - in this mode, cover will keep specified amount of items in the destination inventory, supplying additional amount of items if required./n§7Tip: left/right click on filter slots to change item amount,  use shift clicking to change amount faster.
 
 cover.pump.title=Pump Cover Settings (%s)
 cover.pump.transfer_rate=%s mb/s
@@ -1617,14 +1617,14 @@ recipemap.gas_turbine.name=Gas Turbine
 recipemap.steam_turbine.name=Steam Turbine
 recipemap.semi_fluid_generator.name=Semi Fluid Fuels
 
-behavior.magnifying_glass.description=Click on surface rock to inspect it
+behavior.magnifying_glass.description=Use on surface rock to inspect it
 behavior.magnifying_glass.inspect=This rock contains %s
 behaviour.hoe=Can till dirt
-behaviour.soft_hammer=Click machine to allow/disallow it to work
+behaviour.soft_hammer=Use on machine to allow/disallow it to work
 behaviour.lighter.tooltip=Can light things on fire
 behaviour.lighter.uses=Remaining uses: %d
-behavior.plunger.description=Right click on machine to clear 1000 mb out of it's output tank./nUse while sneaking to clear 1000 mb out of machine's input tank./nInput tank clearing works only on GTCE machines!
-behavior.toggle_energy_consumer.tooltip=Click to toggle mode
+behavior.plunger.description=Use to clear 1000 mb out of a machine's output tank./nUse while sneaking to clear 1000 mb out of a machine's input tank./nInput tank clearing works only on GTCE machines!
+behavior.toggle_energy_consumer.tooltip=Use to toggle mode
 
 enchantment.damage.endermen=Disjunction
 enchantment.damage.radioactivity=Radioactivity
@@ -1874,7 +1874,7 @@ gregtech.machine.block_breaker.lv.name=Basic Block Breaker
 gregtech.machine.block_breaker.mv.name=Advanced Block Breaker
 gregtech.machine.block_breaker.hv.name=Advanced Block Breaker II
 gregtech.machine.block_breaker.ev.name=Advanced Block Breaker III
-gregtech.machine.block_breaker.tooltip=Mines block on front face and collects it's drops
+gregtech.machine.block_breaker.tooltip=Mines block on front face and collects its drops
 gregtech.machine.block_breaker.consumption=Consumes §e%d EU§7 per operation
 gregtech.machine.block_breaker.speed_bonus=Speed Bonus: §e%d%%
 
@@ -2259,9 +2259,9 @@ gregtech.machine.tesla_coil.description=Damages all living entities within 7 blo
 gregtech.machine.fisher.lv.name=Basic Fisher
 gregtech.machine.fisher.mv.name=Advanced Fisher
 gregtech.machine.fisher.hv.name=Advanced Fisher II
-gregtech.machine.fisher.ev.name=Advanced Mechanical Cat III
-gregtech.machine.fisher.tooltip=Costs string to fish. Each string is good for once.
-gregtech.machine.fisher.speed=Gets a fish (or whatnot) every %d ticks
+gregtech.machine.fisher.ev.name=Advanced Fisher III
+gregtech.machine.fisher.tooltip=Costs string to fish. Consumes one string each time.
+gregtech.machine.fisher.speed=Catches something every %d ticks
 gregtech.machine.fisher.requirement=Requires a square of water with size of %d blocks directly below.
 
 # General machinery
