@@ -52,7 +52,9 @@ import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.math.BigInteger;
+import java.math.RoundingMode;
 import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.List;
 import java.util.*;
 import java.util.Map.Entry;
@@ -658,6 +660,18 @@ public class GTUtility {
             return worldPower;
         }
     }
+    
+	public static String formatUnit(double value) {
+	    int unit = 1000;
+	    if (value < unit) return value + "";
+	    int exp = (int) (Math.log(value) / Math.log(unit));
+	    String pre = ("kMGTPEZY").charAt(exp-1) + "";
+	    NumberFormat formatter = NumberFormat.getInstance();
+	    formatter.setMaximumFractionDigits(2);
+	    formatter.setMinimumFractionDigits(2);
+	    formatter.setRoundingMode(RoundingMode.HALF_UP);
+	    return String.format("%s%s", formatter.format(value / Math.pow(unit, exp)), pre);
+	}
     
 	public static String format(long value) {
 		return new DecimalFormat("###,###.##").format(value);

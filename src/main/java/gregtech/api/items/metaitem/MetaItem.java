@@ -504,8 +504,8 @@ public abstract class MetaItem<T extends MetaItem<?>.MetaValueItem> extends Item
         IElectricItem electricItem = itemStack.getCapability(GregtechCapabilities.CAPABILITY_ELECTRIC_ITEM, null);
         if (electricItem != null) {
             lines.add(I18n.format("metaitem.generic.electric_item.tooltip",
-            		GTUtility.format(electricItem.getCharge()),
-            		GTUtility.format(electricItem.getMaxCharge()),
+            		GTUtility.formatUnit(electricItem.getCharge()),
+            		GTUtility.formatUnit(electricItem.getMaxCharge()),
                 GTValues.VN[electricItem.getTier()]));
         }
 
