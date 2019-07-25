@@ -129,7 +129,6 @@ public class PhantomFluidWidget extends AbstractPositionedRectangleWidget implem
                 IFluidHandlerItem fluidHandler = itemStack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY, null);
                 if (fluidHandler != null) {
                     FluidStack resultFluid = fluidHandler.drain(Integer.MAX_VALUE, false);
-                    // System.out.printf("%s %d\n", resultFluid.getFluid().getName(), resultFluid.amount);
                     fluidStackUpdater.accept(resultFluid);
                 }
             } else {
