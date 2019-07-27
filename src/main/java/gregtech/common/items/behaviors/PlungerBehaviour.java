@@ -16,6 +16,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
+import net.minecraftforge.fluids.capability.IFluidTankProperties;
 
 import java.util.Arrays;
 import java.util.List;
@@ -43,9 +44,10 @@ public class PlungerBehaviour implements IItemBehaviour {
         IFluidHandler handlerToRemoveFrom = isShiftClick ?
             (fluidHandler instanceof FluidHandlerProxy ? ((FluidHandlerProxy) fluidHandler).input : null) :
             (fluidHandler instanceof FluidHandlerProxy ? ((FluidHandlerProxy) fluidHandler).output : fluidHandler);
+
         if (handlerToRemoveFrom != null && GTUtility.doDamageItem(toolStack, cost, false)) {
             if (!world.isRemote) {
-                FluidStack drainStack = fluidHandler.drain(1000, true);
+                FluidStack drainStack = handlerToRemoveFrom.drain(1000, true);
                 int amountOfFluid = drainStack == null ? 0 : drainStack.amount;
                 if (amountOfFluid > 0) {
                     player.playSound(SoundEvents.ENTITY_SLIME_SQUISH, 1.0f, amountOfFluid / 1000.0f);

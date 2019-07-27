@@ -156,28 +156,19 @@ public class CoverFluidFilter extends CoverBehavior implements CoverWithUI {
             if (filterMode == FluidFilterMode.FILTER_FILL) {
                 return null;
             }
-            if (this.delegate instanceof FluidHandlerProxy) {
-                FluidHandlerProxy proxy = (FluidHandlerProxy) this.delegate;
-                FluidStack fluidTank, fluidDrain;
-                for (IFluidTankProperties prop : proxy.output.getTankProperties()) {
-                    fluidTank = prop.getContents();
-                    if (fluidTank != null && fluidFilter.testFluidStack(fluidTank)) {
-                        int drainAmount = Math.min(fluidTank.amount, maxDrain);
-                        fluidDrain = new FluidStack(fluidTank.getFluid(), drainAmount, fluidTank.tag);
-                        return super.drain(fluidDrain, doDrain);
+            FluidStack fluidTank, fluidDrain, result;
+            for (IFluidTankProperties prop : this.delegate.getTankProperties()) {
+                fluidTank = prop.getContents();
+                if (fluidTank != null && fluidFilter.testFluidStack(fluidTank)) {
+                    int drainAmount = Math.min(fluidTank.amount, maxDrain);
+                    fluidDrain = new FluidStack(fluidTank.getFluid(), drainAmount, fluidTank.tag);
+                    result = super.drain(fluidDrain, doDrain);
+                    if (result != null) {
+                        return result;
                     }
                 }
-                return null;
-            } else {
-                FluidStack result = super.drain(maxDrain, false);
-                if (!fluidFilter.testFluidStack(result)) {
-                    return null;
-                }
-                if (doDrain) {
-                    super.drain(maxDrain, true);
-                }
-                return result;
             }
+            return null;
         }
 
     }
