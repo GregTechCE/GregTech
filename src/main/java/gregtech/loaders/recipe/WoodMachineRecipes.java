@@ -12,7 +12,6 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
-import net.minecraftforge.oredict.OreDictionary;
 import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.List;
@@ -68,7 +67,7 @@ public class WoodMachineRecipes {
     }
 
     private static void processLogOreDictionary() {
-        List<ItemStack> allWoodLogs = OreDictionary.getOres("logWood").stream()
+        List<ItemStack> allWoodLogs = OreDictUnifier.getAllWithOreDictionaryName("logWood").stream()
             .flatMap(stack -> ModHandler.getAllSubItems(stack).stream())
             .collect(Collectors.toList());
 

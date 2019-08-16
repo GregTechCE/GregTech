@@ -210,7 +210,7 @@ public class CoverMachineController extends CoverBehavior implements CoverWithUI
     public void readFromNBT(NBTTagCompound tagCompound) {
         super.readFromNBT(tagCompound);
         this.minRedstoneStrength = tagCompound.getInteger("MinRedstoneStrength");
-        this.isInverted = tagCompound.getBoolean("Invalid");
+        this.isInverted = tagCompound.getBoolean("Inverted");
         this.controllerMode = ControllerMode.values()[tagCompound.getInteger("ControllerMode")];
     }
 

@@ -43,9 +43,10 @@ public class PlungerBehaviour implements IItemBehaviour {
         IFluidHandler handlerToRemoveFrom = isShiftClick ?
             (fluidHandler instanceof FluidHandlerProxy ? ((FluidHandlerProxy) fluidHandler).input : null) :
             (fluidHandler instanceof FluidHandlerProxy ? ((FluidHandlerProxy) fluidHandler).output : fluidHandler);
+
         if (handlerToRemoveFrom != null && GTUtility.doDamageItem(toolStack, cost, false)) {
             if (!world.isRemote) {
-                FluidStack drainStack = fluidHandler.drain(1000, true);
+                FluidStack drainStack = handlerToRemoveFrom.drain(1000, true);
                 int amountOfFluid = drainStack == null ? 0 : drainStack.amount;
                 if (amountOfFluid > 0) {
                     player.playSound(SoundEvents.ENTITY_SLIME_SQUISH, 1.0f, amountOfFluid / 1000.0f);

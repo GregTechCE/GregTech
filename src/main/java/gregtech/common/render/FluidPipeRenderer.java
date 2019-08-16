@@ -266,11 +266,12 @@ public class FluidPipeRenderer implements ICCBlockRenderer, IItemRenderer {
             return Pair.of(TextureUtils.getMissingSprite(), 0xFFFFFF);
         }
         FluidPipeType fluidPipeType = tileEntity.getPipeType();
-        if (fluidPipeType == null) {
+        Material material = tileEntity.getPipeMaterial();
+        if (fluidPipeType == null || material == null) {
             return Pair.of(TextureUtils.getMissingSprite(), 0xFFFFFF);
         }
         TextureAtlasSprite atlasSprite = pipeTextures.get(fluidPipeType).sideTexture;
-        int pipeColor = getPipeColor(tileEntity.getPipeMaterial(), tileEntity.getInsulationColor());
+        int pipeColor = getPipeColor(material, tileEntity.getInsulationColor());
         return Pair.of(atlasSprite, pipeColor);
     }
 }

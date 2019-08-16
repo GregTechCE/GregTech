@@ -296,6 +296,7 @@ public final class MetaItems {
 
     public static MetaItem<?>.MetaValueItem ITEM_FILTER;
     public static MetaItem<?>.MetaValueItem ORE_DICTIONARY_FILTER;
+    public static MetaItem<?>.MetaValueItem SMART_FILTER;
 
     public static MetaItem<?>.MetaValueItem COVER_SHUTTER;
     public static MetaItem<?>.MetaValueItem COVER_MACHINE_CONTROLLER;
