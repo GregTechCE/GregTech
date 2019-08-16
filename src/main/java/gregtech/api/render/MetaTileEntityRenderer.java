@@ -8,6 +8,7 @@ import codechicken.lib.render.block.ICCBlockRenderer;
 import codechicken.lib.render.item.IItemRenderer;
 import codechicken.lib.render.pipeline.IVertexOperation;
 import codechicken.lib.texture.TextureUtils;
+import codechicken.lib.util.TransformUtils;
 import codechicken.lib.vec.Cuboid6;
 import codechicken.lib.vec.Matrix4;
 import codechicken.lib.vec.Vector3;
@@ -19,19 +20,15 @@ import gregtech.api.metatileentity.IFastRenderMetaTileEntity;
 import gregtech.api.metatileentity.IRenderMetaTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.util.GTLog;
+import gregtech.api.util.ModCompatibility;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.block.model.IBakedModel;
 import net.minecraft.client.renderer.block.model.ItemCameraTransforms.TransformType;
-import net.minecraft.client.renderer.block.model.ItemTransformVec3f;
-import net.minecraft.client.renderer.block.model.ModelBlock;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
-import net.minecraft.client.resources.IResource;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.ResourceLocation;
@@ -41,47 +38,23 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.client.event.ModelBakeEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.model.IModelState;
-import net.minecraftforge.common.model.TRSRTransformation;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import org.apache.commons.lang3.tuple.Pair;
 import org.lwjgl.opengl.GL11;
 
-import javax.vecmath.Matrix4f;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
 public class MetaTileEntityRenderer implements ICCBlockRenderer, IItemRenderer {
 
     public static ModelResourceLocation MODEL_LOCATION = new ModelResourceLocation(new ResourceLocation(GTValues.MODID, "machine"), "normal");
     public static MetaTileEntityRenderer INSTANCE = new MetaTileEntityRenderer();
     public static EnumBlockRenderType BLOCK_RENDER_TYPE;
-    public static Map<TransformType, TRSRTransformation> BLOCK_TRANSFORMS = new HashMap<>();
 
     public static void preInit() {
         BLOCK_RENDER_TYPE = BlockRenderingRegistry.createRenderType("meta_tile_entity");
         BlockRenderingRegistry.registerRenderer(BLOCK_RENDER_TYPE, INSTANCE);
         MinecraftForge.EVENT_BUS.register(INSTANCE);
         TextureUtils.addIconRegister(Textures::register);
-    }
-
-    @SuppressWarnings("deprecation")
-    public static void postInit() {
-        try {
-
-            try (IResource resource = Minecraft.getMinecraft().getResourceManager().getResource(new ResourceLocation("models/block/block.json"))) {
-                InputStreamReader reader = new InputStreamReader(resource.getInputStream());
-                ModelBlock modelBlock = ModelBlock.deserialize(reader);
-                for (TransformType transformType : TransformType.values()) {
-                    ItemTransformVec3f vec3f = modelBlock.getAllTransforms().getTransform(transformType);
-                    BLOCK_TRANSFORMS.put(transformType, new TRSRTransformation(vec3f));
-                }
-            }
-        } catch (IOException exception) {
-            GTLog.logger.error("Failed to load default block transforms", exception);
-        }
     }
 
     @SubscribeEvent
@@ -91,7 +64,11 @@ public class MetaTileEntityRenderer implements ICCBlockRenderer, IItemRenderer {
     }
 
     @Override
-    public void renderItem(ItemStack stack, TransformType transformType) {
+    public void renderItem(ItemStack rawStack, TransformType transformType) {
+        ItemStack stack = ModCompatibility.getRealItemStack(rawStack);
+        if (!(stack.getItem() instanceof MachineItemBlock)) {
+            return;
+        }
         MetaTileEntity metaTileEntity = MachineItemBlock.getMetaTileEntity(stack);
         if (metaTileEntity == null) {
             return;
@@ -132,16 +109,8 @@ public class MetaTileEntityRenderer implements ICCBlockRenderer, IItemRenderer {
     }
 
     @Override
-    public Pair<? extends IBakedModel, Matrix4f> handlePerspective(TransformType cameraTransformType) {
-        if (BLOCK_TRANSFORMS.containsKey(cameraTransformType)) {
-            return Pair.of(this, BLOCK_TRANSFORMS.get(cameraTransformType).getMatrix());
-        }
-        return Pair.of(this, null);
-    }
-
-    @Override
     public IModelState getTransforms() {
-        return TRSRTransformation.identity();
+        return TransformUtils.DEFAULT_BLOCK;
     }
 
     @Override

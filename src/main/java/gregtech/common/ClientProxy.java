@@ -14,6 +14,7 @@ import gregtech.api.util.GTLog;
 import gregtech.common.blocks.*;
 import gregtech.common.blocks.surfacerock.BlockSurfaceRock;
 import gregtech.common.blocks.surfacerock.BlockSurfaceRockFlooded;
+import gregtech.common.covers.facade.FacadeRenderer;
 import gregtech.common.items.MetaItems;
 import gregtech.common.render.CableRenderer;
 import gregtech.common.render.FluidPipeRenderer;
@@ -125,8 +126,8 @@ public class ClientProxy extends CommonProxy {
     @Override
     public void onPostLoad() {
         super.onPostLoad();
-        MetaTileEntityRenderer.postInit();
         ResourceUtils.registerReloadListener(ToolRenderHandler.INSTANCE);
+        FacadeRenderer.init();
         startCapeLoadingThread();
     }
 

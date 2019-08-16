@@ -293,7 +293,7 @@ public abstract class PipeMultiPart<PipeType extends Enum<PipeType> & IPipeType<
         if (hit.cuboid6.data instanceof CoverSideData) {
             EnumFacing coverSide = ((CoverSideData) hit.cuboid6.data).side;
             CoverBehavior coverBehavior = getCoverableImplementation().getCoverAtSide(coverSide);
-            return coverBehavior == null ? ItemStack.EMPTY : coverBehavior.getCoverDefinition().getDropItemStack();
+            return coverBehavior == null ? ItemStack.EMPTY : coverBehavior.getPickItem();
         }
         return getDropStack();
     }

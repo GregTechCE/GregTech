@@ -71,7 +71,7 @@ public class MetaItem1 extends MaterialMetaItem {
             .setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.Brass, 907200L)));
         COIN_CHOCOLATE = addItem(10, "coin.chocolate")
             .setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.Gold, OrePrefix.foil.materialAmount)))
-            .addStats(new FoodStats(1, 0.1F, false, true, OreDictUnifier.get(OrePrefix.foil, Materials.Gold), new RandomPotionEffect(MobEffects.SPEED, 200, 1, 10)));
+            .addComponents(new FoodStats(1, 0.1F, false, true, OreDictUnifier.get(OrePrefix.foil, Materials.Gold), new RandomPotionEffect(MobEffects.SPEED, 200, 1, 10)));
 
         SHAPE_EMPTY = addItem(300, "shape.empty");
 
@@ -115,12 +115,12 @@ public class MetaItem1 extends MaterialMetaItem {
             .setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.Tin, OrePrefix.plate.materialAmount * 2L), new MaterialStack(Materials.Redstone, OrePrefix.dust.materialAmount)));
 
         LARGE_FLUID_CELL_STEEL = addItem(405, "large_fluid_cell.steel")
-            .addStats(new FluidStats(64000, Integer.MIN_VALUE, Integer.MAX_VALUE, true))
+            .addComponents(new FluidStats(64000, Integer.MIN_VALUE, Integer.MAX_VALUE, true))
             .setMaxStackSize(16)
             .setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.Steel, OrePrefix.plate.materialAmount * 2L + 2L * OrePrefix.ring.materialAmount)));
 
         LARGE_FLUID_CELL_TUNGSTEN_STEEL = addItem(406, "large_fluid_cell.tungstensteel")
-            .addStats(new FluidStats(256000, Integer.MIN_VALUE, Integer.MAX_VALUE, true))
+            .addComponents(new FluidStats(256000, Integer.MIN_VALUE, Integer.MAX_VALUE, true))
             .setMaxStackSize(16)
             .setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.TungstenSteel, OrePrefix.plate.materialAmount * 2L + 2L * OrePrefix.ring.materialAmount)));
 
@@ -128,52 +128,52 @@ public class MetaItem1 extends MaterialMetaItem {
             EnumDyeColor dyeColor = EnumDyeColor.values()[i];
             SPRAY_CAN_DYES[i] = addItem(430 + 2 * i, "spray.can.dyes." + dyeColor.getName()).setMaxStackSize(1);
             ColorSprayBehaviour behaviour = new ColorSprayBehaviour(SPRAY_EMPTY.getStackForm(), 512, i);
-            SPRAY_CAN_DYES[i].addStats(behaviour);
+            SPRAY_CAN_DYES[i].addComponents(behaviour);
         }
 
         TOOL_MATCHES = addItem(471, "tool.matches")
-            .addStats(new LighterBehaviour(1));
+            .addComponents(new LighterBehaviour(1));
         TOOL_MATCHBOX = addItem(473, "tool.matchbox")
-            .addStats(new LighterBehaviour(16)).setMaxStackSize(1);
+            .addComponents(new LighterBehaviour(16)).setMaxStackSize(1);
         TOOL_LIGHTER_INVAR = addItem(476, "tool.lighter.invar")
             .setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.Invar, GTValues.L * 2)))
-            .addStats(new LighterBehaviour(100)).setMaxStackSize(1);
+            .addComponents(new LighterBehaviour(100)).setMaxStackSize(1);
         TOOL_LIGHTER_PLATINUM = addItem(477, "tool.lighter.platinum")
             .setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.Platinum, GTValues.L * 2)))
-            .addStats(new LighterBehaviour(1000)).setMaxStackSize(1);
+            .addComponents(new LighterBehaviour(1000)).setMaxStackSize(1);
 
         BATTERY_HULL_LV = addItem(500, "battery.hull.lv").setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.BatteryAlloy, OrePrefix.plate.materialAmount)));
         BATTERY_HULL_MV = addItem(501, "battery.hull.hv").setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.BatteryAlloy, OrePrefix.plate.materialAmount * 3L)));
         BATTERY_HULL_HV = addItem(502, "battery.hull.mv").setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.BatteryAlloy, OrePrefix.plate.materialAmount * 9L)));
 
-        BATTERY_RE_ULV_TANTALUM = addItem(499, "battery.re.ulv.tantalum").addStats(ElectricStats.createRechargeableBattery(1000, 0));
+        BATTERY_RE_ULV_TANTALUM = addItem(499, "battery.re.ulv.tantalum").addComponents(ElectricStats.createRechargeableBattery(1000, 0));
 
-        BATTERY_SU_LV_SULFURIC_ACID = addItem(510, "battery.su.lv.sulfuricacid").addStats(ElectricStats.createBattery(18000, 1, false)).setModelAmount(8);
-        BATTERY_SU_LV_MERCURY = addItem(511, "battery.su.lv.mercury").addStats(ElectricStats.createBattery(32000, 1, false)).setModelAmount(8);
+        BATTERY_SU_LV_SULFURIC_ACID = addItem(510, "battery.su.lv.sulfuricacid").addComponents(ElectricStats.createBattery(18000, 1, false)).setModelAmount(8);
+        BATTERY_SU_LV_MERCURY = addItem(511, "battery.su.lv.mercury").addComponents(ElectricStats.createBattery(32000, 1, false)).setModelAmount(8);
 
-        BATTERY_RE_LV_CADMIUM = addItem(517, "battery.re.lv.cadmium").addStats(ElectricStats.createRechargeableBattery(120000, 1)).setModelAmount(8);
-        BATTERY_RE_LV_LITHIUM = addItem(518, "battery.re.lv.lithium").addStats(ElectricStats.createRechargeableBattery(100000, 1)).setModelAmount(8);
-        BATTERY_RE_LV_SODIUM = addItem(519, "battery.re.lv.sodium").addStats(ElectricStats.createRechargeableBattery(80000, 1)).setModelAmount(8);
+        BATTERY_RE_LV_CADMIUM = addItem(517, "battery.re.lv.cadmium").addComponents(ElectricStats.createRechargeableBattery(120000, 1)).setModelAmount(8);
+        BATTERY_RE_LV_LITHIUM = addItem(518, "battery.re.lv.lithium").addComponents(ElectricStats.createRechargeableBattery(100000, 1)).setModelAmount(8);
+        BATTERY_RE_LV_SODIUM = addItem(519, "battery.re.lv.sodium").addComponents(ElectricStats.createRechargeableBattery(80000, 1)).setModelAmount(8);
 
-        BATTERY_SU_MV_SULFURIC_ACID = addItem(520, "battery.su.mv.sulfuricacid").addStats(ElectricStats.createBattery(72000, 2, false)).setModelAmount(8);
-        BATTERY_SU_MV_MERCURY = addItem(521, "battery.su.mv.mercury").addStats(ElectricStats.createBattery(128000, 2, false)).setModelAmount(8);
+        BATTERY_SU_MV_SULFURIC_ACID = addItem(520, "battery.su.mv.sulfuricacid").addComponents(ElectricStats.createBattery(72000, 2, false)).setModelAmount(8);
+        BATTERY_SU_MV_MERCURY = addItem(521, "battery.su.mv.mercury").addComponents(ElectricStats.createBattery(128000, 2, false)).setModelAmount(8);
 
-        BATTERY_RE_MV_CADMIUM = addItem(527, "battery.re.mv.cadmium").addStats(ElectricStats.createRechargeableBattery(420000, 2)).setModelAmount(8);
-        BATTERY_RE_MV_LITHIUM = addItem(528, "battery.re.mv.lithium").addStats(ElectricStats.createRechargeableBattery(400000, 2)).setModelAmount(8);
-        BATTERY_RE_MV_SODIUM = addItem(529, "battery.re.mv.sodium").addStats(ElectricStats.createRechargeableBattery(360000, 2)).setModelAmount(8);
+        BATTERY_RE_MV_CADMIUM = addItem(527, "battery.re.mv.cadmium").addComponents(ElectricStats.createRechargeableBattery(420000, 2)).setModelAmount(8);
+        BATTERY_RE_MV_LITHIUM = addItem(528, "battery.re.mv.lithium").addComponents(ElectricStats.createRechargeableBattery(400000, 2)).setModelAmount(8);
+        BATTERY_RE_MV_SODIUM = addItem(529, "battery.re.mv.sodium").addComponents(ElectricStats.createRechargeableBattery(360000, 2)).setModelAmount(8);
 
-        BATTERY_SU_HV_SULFURIC_ACID = addItem(530, "battery.su.hv.sulfuricacid").addStats(ElectricStats.createBattery(288000, 3, false)).setModelAmount(8);
-        BATTERY_SU_HV_MERCURY = addItem(531, "battery.su.hv.mercury").addStats(ElectricStats.createBattery(512000, 3, false)).setModelAmount(8);
+        BATTERY_SU_HV_SULFURIC_ACID = addItem(530, "battery.su.hv.sulfuricacid").addComponents(ElectricStats.createBattery(288000, 3, false)).setModelAmount(8);
+        BATTERY_SU_HV_MERCURY = addItem(531, "battery.su.hv.mercury").addComponents(ElectricStats.createBattery(512000, 3, false)).setModelAmount(8);
 
-        BATTERY_RE_HV_CADMIUM = addItem(537, "battery.re.hv.cadmium").addStats(ElectricStats.createRechargeableBattery(1800000, 3)).setModelAmount(8);
-        BATTERY_RE_HV_LITHIUM = addItem(538, "battery.re.hv.lithium").addStats(ElectricStats.createRechargeableBattery(1600000, 3)).setModelAmount(8);
-        BATTERY_RE_HV_SODIUM = addItem(539, "battery.re.hv.sodium").addStats(ElectricStats.createRechargeableBattery(1200000, 3)).setModelAmount(8);
+        BATTERY_RE_HV_CADMIUM = addItem(537, "battery.re.hv.cadmium").addComponents(ElectricStats.createRechargeableBattery(1800000, 3)).setModelAmount(8);
+        BATTERY_RE_HV_LITHIUM = addItem(538, "battery.re.hv.lithium").addComponents(ElectricStats.createRechargeableBattery(1600000, 3)).setModelAmount(8);
+        BATTERY_RE_HV_SODIUM = addItem(539, "battery.re.hv.sodium").addComponents(ElectricStats.createRechargeableBattery(1200000, 3)).setModelAmount(8);
 
-        ENERGY_LAPOTRONIC_ORB = addItem(597, "energy.lapotronicorb").addStats(ElectricStats.createRechargeableBattery(100000000, 5)).setUnificationData(OrePrefix.battery, MarkerMaterials.Tier.Ultimate).setModelAmount(8);
-        ENERGY_LAPOTRONIC_ORB2 = addItem(598, "energy.lapotronicorb2").addStats(ElectricStats.createRechargeableBattery(1000000000, 6)).setUnificationData(OrePrefix.battery, MarkerMaterials.Tier.Ultimate).setModelAmount(8);
+        ENERGY_LAPOTRONIC_ORB = addItem(597, "energy.lapotronicorb").addComponents(ElectricStats.createRechargeableBattery(100000000, 5)).setUnificationData(OrePrefix.battery, MarkerMaterials.Tier.Ultimate).setModelAmount(8);
+        ENERGY_LAPOTRONIC_ORB2 = addItem(598, "energy.lapotronicorb2").addComponents(ElectricStats.createRechargeableBattery(1000000000, 6)).setUnificationData(OrePrefix.battery, MarkerMaterials.Tier.Ultimate).setModelAmount(8);
 
-        ZPM = addItem(599, "zpm").addStats(ElectricStats.createBattery(2000000000000L, 7, false)).setModelAmount(8);
-        ZPM2 = addItem(605, "zpm2").addStats(ElectricStats.createRechargeableBattery(Long.MAX_VALUE, 8)).setModelAmount(8);
+        ZPM = addItem(599, "zpm").addComponents(ElectricStats.createBattery(2000000000000L, 7, false)).setModelAmount(8);
+        ZPM2 = addItem(605, "zpm2").addComponents(ElectricStats.createRechargeableBattery(Long.MAX_VALUE, 8)).setModelAmount(8);
 
         ELECTRIC_MOTOR_LV = addItem(600, "electric.motor.lv");
         ELECTRIC_MOTOR_MV = addItem(601, "electric.motor.mv");
@@ -197,7 +197,7 @@ public class MetaItem1 extends MaterialMetaItem {
 
         FLUID_FILTER = addItem(628, "fluid_filter");
 
-        DYNAMITE = addItem(629, "dynamite").addStats(new DynamiteBehaviour()).setMaxStackSize(16);
+        DYNAMITE = addItem(629, "dynamite").addComponents(new DynamiteBehaviour()).setMaxStackSize(16);
 
         CONVEYOR_MODULE_LV = addItem(630, "conveyor.module.lv");
         CONVEYOR_MODULE_MV = addItem(631, "conveyor.module.mv");
@@ -283,9 +283,9 @@ public class MetaItem1 extends MaterialMetaItem {
         COVER_SOLAR_PANEL_ULV = addItem(751, "cover.solar.panel.ulv");
         COVER_SOLAR_PANEL_LV = addItem(752, "cover.solar.panel.lv");
 
-        FLUID_CELL = addItem(762, "fluid_cell").addStats(new FluidStats(1000, Integer.MIN_VALUE, Integer.MAX_VALUE, false));
-        INTEGRATED_CIRCUIT = addItem(766, "circuit.integrated").addStats(new IntCircuitBehaviour());
-        FOAM_SPRAYER = addItem(746, "foam_sprayer").addStats(new FoamSprayerBehavior());
+        FLUID_CELL = addItem(762, "fluid_cell").addComponents(new FluidStats(1000, Integer.MIN_VALUE, Integer.MAX_VALUE, false));
+        INTEGRATED_CIRCUIT = addItem(766, "circuit.integrated").addComponents(new IntCircuitBehaviour());
+        FOAM_SPRAYER = addItem(746, "foam_sprayer").addComponents(new FoamSprayerBehavior());
     }
 
     public void registerRecipes() {

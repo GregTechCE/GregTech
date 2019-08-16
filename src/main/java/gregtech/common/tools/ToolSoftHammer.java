@@ -28,7 +28,7 @@ public class ToolSoftHammer extends ToolBase {
 
     @Override
     public void onStatsAddedToTool(MetaValueItem item) {
-        item.addStats(new SoftHammerBehaviour(DamageValues.DAMAGE_FOR_SOFT_HAMMER));
+        item.addComponents(new SoftHammerBehaviour(DamageValues.DAMAGE_FOR_SOFT_HAMMER));
     }
 
 }

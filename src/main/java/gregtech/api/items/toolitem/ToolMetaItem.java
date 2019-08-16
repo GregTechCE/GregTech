@@ -10,6 +10,7 @@ import gregtech.api.enchants.EnchantmentData;
 import gregtech.api.items.IToolItem;
 import gregtech.api.items.ToolDictNames;
 import gregtech.api.items.metaitem.MetaItem;
+import gregtech.api.items.metaitem.stats.IItemComponent;
 import gregtech.api.items.metaitem.stats.IItemContainerItemProvider;
 import gregtech.api.items.metaitem.stats.IMetaItemStats;
 import gregtech.api.unification.material.MaterialIconSet;
@@ -585,13 +586,15 @@ public class ToolMetaItem<T extends ToolMetaItem<?>.MetaToolValueItem> extends M
         }
 
         @Override
+        @Deprecated
         public MetaToolValueItem addStats(IMetaItemStats... stats) {
-            for (IMetaItemStats metaItemStats : stats) {
-                if (metaItemStats instanceof IToolStats) {
-                    setToolStats((IToolStats) metaItemStats);
-                }
-            }
             super.addStats(stats);
+            return this;
+        }
+
+        @Override
+        public MetaToolValueItem addComponents(IItemComponent... stats) {
+            super.addComponents(stats);
             return this;
         }
 
@@ -618,6 +621,8 @@ public class ToolMetaItem<T extends ToolMetaItem<?>.MetaToolValueItem> extends M
             }
             return this;
         }
+
+
 
         public IToolStats getToolStats() {
             if (toolStats == null) {

@@ -9,6 +9,7 @@ import codechicken.lib.render.item.IItemRenderer;
 import codechicken.lib.render.pipeline.ColourMultiplier;
 import codechicken.lib.render.pipeline.IVertexOperation;
 import codechicken.lib.texture.TextureUtils;
+import codechicken.lib.util.TransformUtils;
 import codechicken.lib.vec.Cuboid6;
 import codechicken.lib.vec.Matrix4;
 import codechicken.lib.vec.Translation;
@@ -19,6 +20,7 @@ import gregtech.api.pipenet.tile.IPipeTile;
 import gregtech.api.unification.material.type.Material;
 import gregtech.api.util.GTLog;
 import gregtech.api.util.GTUtility;
+import gregtech.api.util.ModCompatibility;
 import gregtech.common.pipelike.fluidpipe.BlockFluidPipe;
 import gregtech.common.pipelike.fluidpipe.FluidPipeProperties;
 import gregtech.common.pipelike.fluidpipe.FluidPipeType;
@@ -26,7 +28,6 @@ import gregtech.common.pipelike.fluidpipe.ItemBlockFluidPipe;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.block.model.IBakedModel;
 import net.minecraft.client.renderer.block.model.ItemCameraTransforms.TransformType;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
@@ -42,17 +43,13 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.client.event.ModelBakeEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.model.IModelState;
-import net.minecraftforge.common.model.TRSRTransformation;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.tuple.Pair;
 import org.lwjgl.opengl.GL11;
 
-import javax.vecmath.Matrix4f;
 import java.util.HashMap;
 import java.util.Map;
-
-import static gregtech.api.render.MetaTileEntityRenderer.BLOCK_TRANSFORMS;
 
 public class FluidPipeRenderer implements ICCBlockRenderer, IItemRenderer {
 
@@ -98,8 +95,11 @@ public class FluidPipeRenderer implements ICCBlockRenderer, IItemRenderer {
     }
 
     @Override
-    public void renderItem(ItemStack stack, TransformType transformType) {
-        GlStateManager.enableBlend();
+    public void renderItem(ItemStack rawItemStack, TransformType transformType) {
+        ItemStack stack = ModCompatibility.getRealItemStack(rawItemStack);
+        if (!(stack.getItem() instanceof ItemBlockFluidPipe)) {
+            return;
+        }
         CCRenderState renderState = CCRenderState.instance();
         GlStateManager.enableBlend();
         renderState.reset();
@@ -238,15 +238,7 @@ public class FluidPipeRenderer implements ICCBlockRenderer, IItemRenderer {
 
     @Override
     public IModelState getTransforms() {
-        return TRSRTransformation.identity();
-    }
-
-    @Override
-    public Pair<? extends IBakedModel, Matrix4f> handlePerspective(TransformType cameraTransformType) {
-        if (BLOCK_TRANSFORMS.containsKey(cameraTransformType)) {
-            return Pair.of(this, BLOCK_TRANSFORMS.get(cameraTransformType).getMatrix());
-        }
-        return Pair.of(this, null);
+        return TransformUtils.DEFAULT_BLOCK;
     }
 
     @Override

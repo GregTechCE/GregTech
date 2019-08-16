@@ -2,8 +2,17 @@ package gregtech.common.items;
 
 import gregtech.api.items.materialitem.MaterialMetaItem;
 import gregtech.api.items.metaitem.MetaItem;
+import gregtech.api.items.metaitem.MetaItem.MetaValueItem;
 import gregtech.api.items.toolitem.ToolMetaItem;
+import gregtech.api.util.GTLog;
+import gregtech.common.render.FacadeItemModel;
+import net.minecraft.client.renderer.block.model.IBakedModel;
+import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.item.EnumDyeColor;
+import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.client.event.ModelBakeEvent;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -290,6 +299,7 @@ public final class MetaItems {
 
     public static MetaItem<?>.MetaValueItem COVER_SHUTTER;
     public static MetaItem<?>.MetaValueItem COVER_MACHINE_CONTROLLER;
+    public static MetaItem<?>.MetaValueItem COVER_FACADE;
 
     public static MetaItem<?>.MetaValueItem COVER_ACTIVITY_DETECTOR;
     public static MetaItem<?>.MetaValueItem COVER_FLUID_DETECTOR;
@@ -397,6 +407,7 @@ public final class MetaItems {
 
     @SideOnly(Side.CLIENT)
     public static void registerModels() {
+        MinecraftForge.EVENT_BUS.register(MetaItems.class);
         for (MetaItem<?> item : ITEMS) {
             item.registerModels();
         }
@@ -409,4 +420,17 @@ public final class MetaItems {
         }
     }
 
+    @SubscribeEvent
+    public static void registerBakedModels(ModelBakeEvent event) {
+        GTLog.logger.info("Registering special item models");
+        registerSpecialItemModel(event, COVER_FACADE, new FacadeItemModel());
+    }
+
+    private static void registerSpecialItemModel(ModelBakeEvent event, MetaValueItem metaValueItem, IBakedModel bakedModel) {
+        //god these casts when intellij says you're fine but compiler complains about shit boundaries
+        //noinspection RedundantCast
+        ResourceLocation modelPath = ((MetaItem) metaValueItem.getMetaItem()).createItemModelPath(metaValueItem, "");
+        ModelResourceLocation modelResourceLocation = new ModelResourceLocation(modelPath, "inventory");
+        event.getModelRegistry().putObject(modelResourceLocation, bakedModel);
+    }
 }

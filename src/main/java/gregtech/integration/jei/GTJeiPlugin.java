@@ -16,12 +16,14 @@ import gregtech.common.blocks.MetaBlocks;
 import gregtech.common.items.MetaItems;
 import gregtech.common.metatileentities.MetaTileEntities;
 import gregtech.integration.jei.multiblock.MultiblockInfoCategory;
+import gregtech.integration.jei.recipe.FacadeRegistryPlugin;
 import gregtech.integration.jei.recipe.GTRecipeWrapper;
 import gregtech.integration.jei.recipe.RecipeMapCategory;
 import gregtech.integration.jei.recipe.fuel.FuelRecipeMapCategory;
 import gregtech.integration.jei.recipe.fuel.GTFuelRecipeWrapper;
 import gregtech.integration.jei.utils.CustomItemReturnRecipeWrapper;
-import gregtech.integration.jei.utils.MetadataAwareFluidHandlerSubtype;
+import gregtech.integration.jei.utils.MachineSubtypeHandler;
+import gregtech.integration.jei.utils.MetaItemSubtypeHandler;
 import gregtech.loaders.recipe.CustomItemReturnShapedOreRecipeRecipe;
 import mezz.jei.api.*;
 import mezz.jei.api.recipe.IRecipeCategoryRegistration;
@@ -37,11 +39,11 @@ public class GTJeiPlugin implements IModPlugin {
 
     @Override
     public void registerItemSubtypes(ISubtypeRegistry subtypeRegistry) {
-        MetadataAwareFluidHandlerSubtype subtype = new MetadataAwareFluidHandlerSubtype();
+        MetaItemSubtypeHandler subtype = new MetaItemSubtypeHandler();
         for (MetaItem<?> metaItem : MetaItems.ITEMS) {
             subtypeRegistry.registerSubtypeInterpreter(metaItem, subtype);
         }
-        subtypeRegistry.registerSubtypeInterpreter(Item.getItemFromBlock(MetaBlocks.MACHINE), subtype);
+        subtypeRegistry.registerSubtypeInterpreter(Item.getItemFromBlock(MetaBlocks.MACHINE), new MachineSubtypeHandler());
     }
 
     @Override
@@ -61,6 +63,7 @@ public class GTJeiPlugin implements IModPlugin {
 
         MultiblockInfoCategory.registerRecipes(registry);
         registry.handleRecipes(CustomItemReturnShapedOreRecipeRecipe.class, recipe -> new CustomItemReturnRecipeWrapper(jeiHelpers, recipe), VanillaRecipeCategoryUid.CRAFTING);
+        registry.addRecipeRegistryPlugin(new FacadeRegistryPlugin());
 
         ModularUIGuiHandler modularUIGuiHandler = new ModularUIGuiHandler();
         registry.addAdvancedGuiHandlers(modularUIGuiHandler);

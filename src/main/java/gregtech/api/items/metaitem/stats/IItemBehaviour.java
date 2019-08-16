@@ -17,7 +17,7 @@ import net.minecraft.world.World;
 
 import java.util.List;
 
-public interface IItemBehaviour extends IMetaItemStats {
+public interface IItemBehaviour extends IItemComponent {
 
     default void onAddedToItem(MetaValueItem metaValueItem) {
     }

@@ -3,7 +3,7 @@ package gregtech.api.items.metaitem.stats;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.item.ItemStack;
 
-public interface IEnchantabilityHelper extends IMetaItemStats {
+public interface IEnchantabilityHelper extends IItemComponent {
 
     boolean isEnchantable(ItemStack stack);
 

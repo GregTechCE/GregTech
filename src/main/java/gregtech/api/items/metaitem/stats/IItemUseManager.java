@@ -4,7 +4,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumAction;
 import net.minecraft.item.ItemStack;
 
-public interface IItemUseManager extends IMetaItemStats {
+public interface IItemUseManager extends IItemComponent {
 
     boolean canStartUsing(ItemStack stack, EntityPlayer player);
 

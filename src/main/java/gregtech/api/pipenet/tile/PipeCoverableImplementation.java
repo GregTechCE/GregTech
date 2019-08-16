@@ -70,7 +70,9 @@ public class PipeCoverableImplementation implements ICoverable {
             buffer.writeVarInt(CoverDefinition.getNetworkIdForCover(coverDefinition));
             coverBehavior.writeInitialSyncData(buffer);
         });
-        holder.setConnectionBlocked(AttachmentType.COVER, side, true);
+        if (!coverBehavior.canPipePassThrough()) {
+            holder.setConnectionBlocked(AttachmentType.COVER, side, true);
+        }
         holder.notifyBlockUpdate();
         holder.markAsDirty();
         return true;

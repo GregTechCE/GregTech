@@ -43,8 +43,6 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
-import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandlerItem;
@@ -108,15 +106,17 @@ public abstract class MetaItem<T extends MetaItem<?>.MetaValueItem> extends Item
             if (numberOfModels > 1) {
                 ModelResourceLocation[] resourceLocations = new ModelResourceLocation[numberOfModels];
                 for (int i = 0; i < resourceLocations.length; i++) {
-                    ResourceLocation resourceLocation = new ResourceLocation(GTValues.MODID, formatModelPath(metaValueItem) + "/" + (i + 1));
+                    ResourceLocation resourceLocation = createItemModelPath(metaValueItem, "/" + (i + 1));
                     ModelBakery.registerItemVariants(this, resourceLocation);
                     resourceLocations[i] = new ModelResourceLocation(resourceLocation, "inventory");
                 }
                 specialItemsModels.put((short) (metaItemOffset + itemMetaKey), resourceLocations);
                 continue;
             }
-            ResourceLocation resourceLocation = new ResourceLocation(GTValues.MODID, formatModelPath(metaValueItem));
-            ModelBakery.registerItemVariants(this, resourceLocation);
+            ResourceLocation resourceLocation = createItemModelPath(metaValueItem, "");
+            if (numberOfModels > 0) {
+                ModelBakery.registerItemVariants(this, resourceLocation);
+            }
             metaItemsModels.put((short) (metaItemOffset + itemMetaKey), new ModelResourceLocation(resourceLocation, "inventory"));
         }
 
@@ -131,6 +131,10 @@ public abstract class MetaItem<T extends MetaItem<?>.MetaValueItem> extends Item
             }
             return MISSING_LOCATION;
         });
+    }
+
+    public ResourceLocation createItemModelPath(T metaValueItem, String postfix) {
+        return new ResourceLocation(GTValues.MODID, formatModelPath(metaValueItem) + postfix);
     }
 
     protected String formatModelPath(T metaValueItem) {
@@ -561,26 +565,8 @@ public abstract class MetaItem<T extends MetaItem<?>.MetaValueItem> extends Item
         for (T enabledItem : metaItems.valueCollection()) {
             if (!enabledItem.isVisible())
                 continue;
-
             ItemStack itemStack = enabledItem.getStackForm();
-            subItems.add(itemStack.copy());
-
-            IElectricItem electricItem = itemStack.getCapability(GregtechCapabilities.CAPABILITY_ELECTRIC_ITEM, null);
-            if (electricItem != null) {
-                electricItem.charge(Long.MAX_VALUE, Integer.MAX_VALUE, true, false);
-                subItems.add(itemStack);
-            }
-
-            if (tab == CreativeTabs.SEARCH && itemStack.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY, null)) {
-                for (Fluid fluid : FluidRegistry.getRegisteredFluids().values()) {
-                    ItemStack containerStack = itemStack.copy();
-                    IFluidHandlerItem fluidContainer = containerStack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY, null);
-                    fluidContainer.fill(new FluidStack(fluid, Integer.MAX_VALUE), true);
-                    if (fluidContainer.drain(Integer.MAX_VALUE, false) == null)
-                        continue; //do not add empty containers multiple times
-                    subItems.add(fluidContainer.getContainer());
-                }
-            }
+            enabledItem.getSubItemHandler().getSubItems(itemStack, tab, subItems);
         }
     }
 
@@ -601,17 +587,18 @@ public abstract class MetaItem<T extends MetaItem<?>.MetaValueItem> extends Item
         public final int metaValue;
 
         public final String unlocalizedName;
+        private IItemNameProvider nameProvider;
+        private IItemMaxStackSizeProvider stackSizeProvider;
+        private IItemContainerItemProvider containerItemProvider;
+        private ISubItemHandler subItemHandler = new DefaultSubItemHandler();
 
         private List<IMetaItemStats> allStats = new ArrayList<>();
         private List<IItemBehaviour> behaviours = new ArrayList<>();
         private IItemUseManager useManager;
         private ItemUIFactory uiManager;
-        private IItemDurabilityManager durabilityManager;
-        private IItemMaxStackSizeProvider stackSizeProvider;
-        private IItemColorProvider colorProvider;
         private IItemModelIndexProvider modelIndexProvider;
-        private IItemContainerItemProvider containerItemProvider;
-        private IItemNameProvider nameProvider;
+        private IItemColorProvider colorProvider;
+        private IItemDurabilityManager durabilityManager;
         private IEnchantabilityHelper enchantabilityHelper;
 
         private int burnValue = 0;
@@ -677,6 +664,11 @@ public abstract class MetaItem<T extends MetaItem<?>.MetaValueItem> extends Item
             return this;
         }
 
+        public MetaValueItem disableModelLoading() {
+            this.modelAmount = 0;
+            return this;
+        }
+
         public MetaValueItem setModelAmount(int modelAmount) {
             if (modelAmount <= 0) {
                 throw new IllegalArgumentException("Cannot set amount of models to negative or zero number.");
@@ -685,47 +677,62 @@ public abstract class MetaItem<T extends MetaItem<?>.MetaValueItem> extends Item
             return this;
         }
 
+        /**
+         * @deprecated Use {@link #addComponents(IItemComponent...)} instead
+         * Left there for binary compatibility purposes
+         */
+        @Deprecated
         public MetaValueItem addStats(IMetaItemStats... stats) {
-            for (IMetaItemStats metaItemStats : stats) {
-                if (metaItemStats instanceof IItemDurabilityManager)
-                    this.durabilityManager = (IItemDurabilityManager) metaItemStats;
-
-                if (metaItemStats instanceof IItemUseManager)
-                    this.useManager = (IItemUseManager) metaItemStats;
-
-                if (metaItemStats instanceof IFoodBehavior)
-                    this.useManager = new FoodUseManager((IFoodBehavior) metaItemStats);
-
-                if (metaItemStats instanceof ItemUIFactory)
-                    this.uiManager = (ItemUIFactory) metaItemStats;
-
-                if (metaItemStats instanceof IItemMaxStackSizeProvider)
-                    this.stackSizeProvider = (IItemMaxStackSizeProvider) metaItemStats;
-
-                if (metaItemStats instanceof IItemColorProvider)
-                    this.colorProvider = (IItemColorProvider) metaItemStats;
-
-                if (metaItemStats instanceof IItemModelIndexProvider)
-                    this.modelIndexProvider = (IItemModelIndexProvider) metaItemStats;
-
-                if (metaItemStats instanceof IItemNameProvider)
-                    this.nameProvider = (IItemNameProvider) metaItemStats;
-
-                if (metaItemStats instanceof IItemContainerItemProvider)
-                    this.containerItemProvider = (IItemContainerItemProvider) metaItemStats;
-
-                if (metaItemStats instanceof IItemBehaviour) {
-                    this.behaviours.add((IItemBehaviour) metaItemStats);
-                    ((IItemBehaviour) metaItemStats).onAddedToItem(this);
-                }
-
-                if(metaItemStats instanceof IEnchantabilityHelper) {
-                    this.enchantabilityHelper = (IEnchantabilityHelper) metaItemStats;
-                }
-
-                this.allStats.add(metaItemStats);
-            }
+            addItemComponentsInternal(stats);
             return this;
+        }
+
+        public MetaValueItem addComponents(IItemComponent... stats) {
+            addItemComponentsInternal(stats);
+            return this;
+        }
+
+        protected void addItemComponentsInternal(IMetaItemStats... stats) {
+            for (IMetaItemStats itemComponent : stats) {
+                if (itemComponent instanceof IItemNameProvider) {
+                    this.nameProvider = (IItemNameProvider) itemComponent;
+                }
+                if (itemComponent instanceof IItemMaxStackSizeProvider) {
+                    this.stackSizeProvider = (IItemMaxStackSizeProvider) itemComponent;
+                }
+                if (itemComponent instanceof ISubItemHandler) {
+                    this.subItemHandler = (ISubItemHandler) itemComponent;
+                }
+                if (itemComponent instanceof IItemContainerItemProvider) {
+                    this.containerItemProvider = (IItemContainerItemProvider) itemComponent;
+                }
+                if (itemComponent instanceof IItemDurabilityManager) {
+                    this.durabilityManager = (IItemDurabilityManager) itemComponent;
+                }
+                if (itemComponent instanceof IItemUseManager) {
+                    this.useManager = (IItemUseManager) itemComponent;
+                }
+                if (itemComponent instanceof IFoodBehavior) {
+                    this.useManager = new FoodUseManager((IFoodBehavior) itemComponent);
+                }
+                if (itemComponent instanceof ItemUIFactory)
+                    this.uiManager = (ItemUIFactory) itemComponent;
+
+                if (itemComponent instanceof IItemColorProvider) {
+                    this.colorProvider = (IItemColorProvider) itemComponent;
+                }
+                if (itemComponent instanceof IItemModelIndexProvider) {
+                    this.modelIndexProvider = (IItemModelIndexProvider) itemComponent;
+                }
+                if (itemComponent instanceof IItemBehaviour) {
+                    this.behaviours.add((IItemBehaviour) itemComponent);
+                    ((IItemBehaviour) itemComponent).onAddedToItem(this);
+                }
+                if(itemComponent instanceof IEnchantabilityHelper) {
+                    this.enchantabilityHelper = (IEnchantabilityHelper) itemComponent;
+                }
+                this.allStats.add(itemComponent);
+            }
         }
 
         public int getMetaValue() {
@@ -738,6 +745,10 @@ public abstract class MetaItem<T extends MetaItem<?>.MetaValueItem> extends Item
 
         public List<IItemBehaviour> getBehaviours() {
             return Collections.unmodifiableList(behaviours);
+        }
+
+        public ISubItemHandler getSubItemHandler() {
+            return subItemHandler;
         }
 
         @Nullable

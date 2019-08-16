@@ -45,11 +45,11 @@ public abstract class CoverBehavior implements IUIHolder {
         this.attachedSide = attachedSide;
     }
 
-    void setCoverDefinition(CoverDefinition coverDefinition) {
+    final void setCoverDefinition(CoverDefinition coverDefinition) {
         this.coverDefinition = coverDefinition;
     }
 
-    public CoverDefinition getCoverDefinition() {
+    public final CoverDefinition getCoverDefinition() {
         return coverDefinition;
     }
 
@@ -113,8 +113,12 @@ public abstract class CoverBehavior implements IUIHolder {
     public void onAttached(ItemStack itemStack) {
     }
 
+    public ItemStack getPickItem() {
+        return coverDefinition.getDropItemStack();
+    }
+
     public List<ItemStack> getDrops() {
-        return Lists.newArrayList(coverDefinition.getDropItemStack());
+        return Lists.newArrayList(getPickItem());
     }
 
     /**
@@ -123,13 +127,16 @@ public abstract class CoverBehavior implements IUIHolder {
      */
     public void onRemoved() {
     }
-
-    @SideOnly(Side.CLIENT)
-    public TextureAtlasSprite getPlateSprite() {
-        return Textures.VOLTAGE_CASINGS[GTValues.LV].getSpriteOnSide(RenderSide.SIDE);
-    }
     
     public boolean shouldRenderConnected() {
+        return true;
+    }
+
+    public boolean canPipePassThrough() {
+        return false;
+    }
+
+    public boolean canRenderBackside() {
         return true;
     }
 
@@ -162,6 +169,18 @@ public abstract class CoverBehavior implements IUIHolder {
      */
     @SideOnly(Side.CLIENT)
     public abstract void renderCover(CCRenderState renderState, Matrix4 translation, IVertexOperation[] pipeline, Cuboid6 plateBox);
+
+    public void renderCoverPlate(CCRenderState renderState, Matrix4 translation, IVertexOperation[] pipeline, Cuboid6 plateBox) {
+        TextureAtlasSprite casingSide = getPlateSprite();
+        for (EnumFacing coverPlateSide : EnumFacing.VALUES) {
+            Textures.renderFace(renderState, translation, pipeline, coverPlateSide, plateBox, casingSide);
+        }
+    }
+
+    @SideOnly(Side.CLIENT)
+    protected TextureAtlasSprite getPlateSprite() {
+        return Textures.VOLTAGE_CASINGS[GTValues.LV].getSpriteOnSide(RenderSide.SIDE);
+    }
 
     @Override
     public final boolean isValid() {

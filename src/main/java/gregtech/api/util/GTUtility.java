@@ -1,6 +1,8 @@
 package gregtech.api.util;
 
 
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableList.Builder;
 import com.google.common.collect.Lists;
 import gregtech.api.capability.GregtechCapabilities;
 import gregtech.api.capability.IElectricItem;
@@ -56,6 +58,7 @@ import java.util.*;
 import java.util.Map.Entry;
 import java.util.function.Function;
 import java.util.function.Predicate;
+import java.util.stream.Collector;
 
 import static gregtech.api.GTValues.V;
 
@@ -587,6 +590,12 @@ public class GTUtility {
         return resultArray;
     }
 
+    public static <T> Collector<T, ?, ImmutableList<T>> toImmutableList() {
+        return Collector.of(ImmutableList::builder, Builder::add,
+            (b1, b2) -> { b1.addAll(b2.build()); return b2; },
+            ImmutableList.Builder<T>::build);
+    }
+
     public static <M, E extends M> E selectItemInList(int index, E replacement, List<? extends M> list, Class<E> minClass) {
         if (list.isEmpty())
             return replacement;
@@ -623,11 +632,7 @@ public class GTUtility {
             double posZ = pos.getZ() + 0.5;
             ((WorldServer) metaTileEntity.getWorld()).spawnParticle(EnumParticleTypes.SMOKE_LARGE, posX, posY, posZ,
                 10, 0.2, 0.2, 0.2, 0.0);
-
-            if (ConfigHolder.doExplosions) {
-                metaTileEntity.getWorld().createExplosion(null, posX, posY, posZ,
-                    getTierByVoltage(voltage), true);
-            }
+            metaTileEntity.getWorld().createExplosion(null, posX, posY, posZ, getTierByVoltage(voltage), ConfigHolder.doExplosions);
         }
     }
 

@@ -15,6 +15,8 @@ import gregtech.api.unification.material.Materials;
 import gregtech.api.unification.material.type.Material;
 import gregtech.api.util.AnnotatedMaterialHandlerLoader;
 import gregtech.api.util.GTLog;
+import gregtech.api.util.ModCompatibility;
+import gregtech.api.util.NBTUtil;
 import gregtech.api.worldgen.config.WorldGenRegistry;
 import gregtech.common.CommonProxy;
 import gregtech.common.ConfigHolder;
@@ -78,6 +80,7 @@ public class GregTechMod {
         CoverBehaviorUIFactory.INSTANCE.init();
         SimpleCapabilityManager.init();
         OreDictUnifier.init();
+        NBTUtil.registerSerializers();
 
         //first, register primary materials and run material handlers
         Materials.register();
@@ -129,6 +132,7 @@ public class GregTechMod {
             GTLog.logger.info("TheOneProbe found. Enabling integration...");
             TheOneProbeCompatibility.registerCompatibility();
         }
+        ModCompatibility.initCompat();
 
         WorldGenRegistry.INSTANCE.initializeRegistry();
         if (!ConfigHolder.disableRubberTreeGeneration) {

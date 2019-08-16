@@ -537,6 +537,9 @@ metaitem.cover.energy.detector.tooltip=Gives out Energy Amount as Redstone
 metaitem.cover.player.detector.name=Player Detector
 metaitem.cover.player.detector.tooltip=Gives out close Players as Redstone
 
+metaitem.cover.facade.name=%s Facade
+metaitem.cover.facade.tooltip=Decorative outfit
+
 metaitem.cover.screen.name=Computer Monitor
 metaitem.cover.screen.tooltip=Displays Data
 metaitem.cover.crafting.name=Crafting Table Cover

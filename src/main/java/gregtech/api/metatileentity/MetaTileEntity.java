@@ -25,6 +25,7 @@ import gregtech.common.covers.CoverPump;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
@@ -199,6 +200,14 @@ public abstract class MetaTileEntity implements ICoverable {
         if (this.paintingColor != DEFAULT_PAINTING_COLOR) { //for machines to stack
             itemStack.setInteger("PaintingColor", this.paintingColor);
         }
+    }
+
+    public void getSubItems(CreativeTabs creativeTab, NonNullList<ItemStack> subItems) {
+        subItems.add(getStackForm());
+    }
+
+    public String getItemSubTypeId(ItemStack itemStack) {
+        return "";
     }
 
     public ICapabilityProvider initItemStackCapabilities(ItemStack itemStack) {
@@ -551,12 +560,12 @@ public abstract class MetaTileEntity implements ICoverable {
         if (hitCuboid.data instanceof CoverSideData) {
             CoverSideData coverSideData = (CoverSideData) hitCuboid.data;
             CoverBehavior behavior = getCoverAtSide(coverSideData.side);
-            return behavior == null ? ItemStack.EMPTY : behavior.getCoverDefinition().getDropItemStack();
+            return behavior == null ? ItemStack.EMPTY : behavior.getPickItem();
         } else if (hitCuboid.data == null || hitCuboid.data instanceof PrimaryBoxData) {
             //data is null -> MetaTileEntity hull hit
             CoverBehavior behavior = getCoverAtSide(result.sideHit);
             if (behavior != null) {
-                return behavior.getCoverDefinition().getDropItemStack();
+                return behavior.getPickItem();
             }
             return getStackForm();
         } else {

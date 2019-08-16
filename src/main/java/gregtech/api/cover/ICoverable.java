@@ -9,9 +9,7 @@ import codechicken.lib.render.pipeline.IVertexOperation;
 import codechicken.lib.vec.*;
 import gregtech.api.pipenet.block.BlockPipe;
 import gregtech.api.pipenet.block.BlockPipe.PipeConnectionData;
-import gregtech.api.render.Textures;
 import gregtech.api.util.GTUtility;
-import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketBuffer;
@@ -86,19 +84,16 @@ public interface ICoverable {
                 renderState.preRenderWorld(getWorld(), getPos());
                 //render cover plate for cover
                 //to prevent Z-fighting between cover plates
-                plateBox.expand(coverOffset);
-                TextureAtlasSprite casingSide = coverBehavior.getPlateSprite();
-                for (EnumFacing coverPlateSide : EnumFacing.VALUES) {
-                    Textures.renderFace(renderState, translation, platePipeline, coverPlateSide, plateBox, casingSide);
-                }
                 plateBox.expand(-coverOffset);
+                coverBehavior.renderCoverPlate(renderState, translation, platePipeline, plateBox);
+                plateBox.expand(coverOffset);
             }
 
-            plateBox.expand(coverOffset * 10.0);
+            //plateBox.expand(coverOffset * 10.0);
             coverBehavior.renderCover(renderState, translation.copy(), coverPipeline, plateBox);
-            if (coverPlateThickness == 0.0 && shouldRenderBackSide()) {
+            if (coverPlateThickness == 0.0 && shouldRenderBackSide() && coverBehavior.canRenderBackside()) {
                 //machine is full block, but still not opaque - render cover on the back side too
-                plateBox.expand(-coverOffset * -20.0);
+                plateBox.expand(coverOffset);
                 Matrix4 backTranslation = translation.copy();
                 if (sideFacing.getAxis().isVertical()) {
                     REVERSE_VERTICAL_ROTATION.apply(backTranslation);

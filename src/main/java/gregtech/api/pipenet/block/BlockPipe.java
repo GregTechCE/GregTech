@@ -6,6 +6,7 @@ import codechicken.lib.raytracer.RayTracer;
 import codechicken.lib.vec.Cuboid6;
 import codechicken.multipart.TMultiPart;
 import codechicken.multipart.TileMultipart;
+import cofh.core.render.IBlockAppearance;
 import gregtech.api.GTValues;
 import gregtech.api.GregTechAPI;
 import gregtech.api.block.BuiltInRenderBlock;
@@ -16,6 +17,7 @@ import gregtech.api.cover.CoverBehavior;
 import gregtech.api.cover.ICoverable;
 import gregtech.api.cover.ICoverable.CoverSideData;
 import gregtech.api.cover.ICoverable.PrimaryBoxData;
+import gregtech.api.cover.IFacadeCover;
 import gregtech.api.pipenet.PipeNet;
 import gregtech.api.pipenet.WorldPipeNet;
 import gregtech.api.pipenet.tile.AttachmentType;
@@ -46,7 +48,9 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.Optional.Method;
+import team.chisel.ctm.api.IFacade;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -54,7 +58,7 @@ import java.util.List;
 import java.util.Random;
 
 @SuppressWarnings("deprecation")
-public abstract class BlockPipe<PipeType extends Enum<PipeType> & IPipeType<NodeDataType>, NodeDataType, WorldPipeNetType extends WorldPipeNet<NodeDataType, ? extends PipeNet<NodeDataType>>> extends BuiltInRenderBlock implements ITileEntityProvider {
+public abstract class BlockPipe<PipeType extends Enum<PipeType> & IPipeType<NodeDataType>, NodeDataType, WorldPipeNetType extends WorldPipeNet<NodeDataType, ? extends PipeNet<NodeDataType>>> extends BuiltInRenderBlock implements ITileEntityProvider, IFacade, IBlockAppearance {
 
     public BlockPipe() {
         super(net.minecraft.block.material.Material.IRON);
@@ -222,7 +226,7 @@ public abstract class BlockPipe<PipeType extends Enum<PipeType> & IPipeType<Node
             if (result.cuboid6.data instanceof CoverSideData) {
                 EnumFacing coverSide = ((CoverSideData) result.cuboid6.data).side;
                 CoverBehavior coverBehavior = pipeTile.getCoverableImplementation().getCoverAtSide(coverSide);
-                return coverBehavior == null ? ItemStack.EMPTY : coverBehavior.getCoverDefinition().getDropItemStack();
+                return coverBehavior == null ? ItemStack.EMPTY : coverBehavior.getPickItem();
             }
         }
         return getDropItem(pipeTile);
@@ -476,6 +480,29 @@ public abstract class BlockPipe<PipeType extends Enum<PipeType> & IPipeType<Node
         }
         coverable.addCoverCollisionBoundingBox(result, false);
         return result;
+    }
+
+    @Nonnull
+    @Override
+    public IBlockState getFacade(@Nonnull IBlockAccess world, @Nonnull BlockPos pos, @Nullable EnumFacing side) {
+        IPipeTile<?, ?> pipeTileEntity = getPipeTileEntity(world, pos);
+        if (pipeTileEntity != null && side != null) {
+            CoverBehavior coverBehavior = pipeTileEntity.getCoverableImplementation().getCoverAtSide(side);
+            if (coverBehavior instanceof IFacadeCover) {
+                return ((IFacadeCover) coverBehavior).getVisualState();
+            }
+        }
+        return world.getBlockState(pos);
+    }
+
+    @Override
+    public IBlockState getVisualState(IBlockAccess world, BlockPos pos, EnumFacing side) {
+        return getFacade(world, pos, side);
+    }
+
+    @Override
+    public boolean supportsVisualConnections() {
+        return true;
     }
 
     public static class PipeConnectionData {

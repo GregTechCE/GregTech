@@ -122,7 +122,7 @@ public class ToolJackHammer extends ToolDrillLV {
 
     @Override
     public void onStatsAddedToTool(MetaValueItem metaValueItem) {
-        metaValueItem.addStats(MODE_SWITCH_BEHAVIOR);
+        metaValueItem.addComponents(MODE_SWITCH_BEHAVIOR);
     }
 
     @Override

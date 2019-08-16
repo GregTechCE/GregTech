@@ -28,6 +28,6 @@ public class ToolMagnifyingGlass extends ToolBase {
 
     @Override
     public void onStatsAddedToTool(MetaValueItem item) {
-        item.addStats(new MagnifyingGlassBehaviour(DamageValues.DAMAGE_FOR_MAGNIFYING_GLASS));
+        item.addComponents(new MagnifyingGlassBehaviour(DamageValues.DAMAGE_FOR_MAGNIFYING_GLASS));
     }
 }

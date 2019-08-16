@@ -6,6 +6,7 @@ import codechicken.lib.render.CCRenderState;
 import codechicken.lib.render.pipeline.IVertexOperation;
 import codechicken.lib.vec.Matrix4;
 import gregtech.api.gui.ModularUI;
+import gregtech.api.items.metaitem.DefaultSubItemHandler;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.MetaTileEntityHolder;
 import gregtech.api.recipes.ModHandler;
@@ -16,12 +17,14 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.WatchedFluidTank;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.resources.I18n;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
@@ -113,6 +116,19 @@ public class MetaTileEntityTank extends MetaTileEntity {
             NBTTagCompound tagCompound = new NBTTagCompound();
             fluidStack.writeToNBT(tagCompound);
             itemStack.setTag(FluidHandlerItemStack.FLUID_NBT_KEY, tagCompound);
+        }
+    }
+
+    @Override
+    public String getItemSubTypeId(ItemStack itemStack) {
+        return DefaultSubItemHandler.getFluidContainerSubType(itemStack);
+    }
+
+    @Override
+    public void getSubItems(CreativeTabs creativeTab, NonNullList<ItemStack> subItems) {
+        super.getSubItems(creativeTab, subItems);
+        if (creativeTab == CreativeTabs.SEARCH) {
+            DefaultSubItemHandler.addFluidContainerVariants(getStackForm(), subItems);
         }
     }
 

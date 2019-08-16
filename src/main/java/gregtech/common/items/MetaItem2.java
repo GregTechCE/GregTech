@@ -13,6 +13,7 @@ import gregtech.api.unification.material.MarkerMaterials.Tier;
 import gregtech.api.unification.material.Materials;
 import gregtech.api.unification.ore.OrePrefix;
 import gregtech.api.util.RandomPotionEffect;
+import gregtech.common.items.behaviors.FacadeItem;
 import gregtech.common.items.behaviors.NanoSaberBehavior;
 import gregtech.common.items.behaviors.TurbineRotorBehavior;
 import net.minecraft.init.Blocks;
@@ -41,17 +42,17 @@ public class MetaItem2 extends MaterialMetaItem {
 
         IItemContainerItemProvider selfContainerItemProvider = itemStack -> itemStack;
         WOODEN_FORM_EMPTY = addItem(11, "wooden_form.empty");
-        WOODEN_FORM_BRICK = addItem(12, "wooden_form.brick").addStats(selfContainerItemProvider);
+        WOODEN_FORM_BRICK = addItem(12, "wooden_form.brick").addComponents(selfContainerItemProvider);
 
         COMPRESSED_CLAY = addItem(13, "compressed.clay");
         COMPRESSED_FIRECLAY = addItem(14, "compressed.fireclay");
         FIRECLAY_BRICK = addItem(15, "brick.fireclay");
         COKE_OVEN_BRICK = addItem(16, "brick.coke");
 
-        BOTTLE_PURPLE_DRINK = addItem(100, "bottle.purple.drink").addStats(new FoodStats(8, 0.2F, true, true, new ItemStack(Items.GLASS_BOTTLE), new RandomPotionEffect(MobEffects.HASTE, 800, 1, 90)));
+        BOTTLE_PURPLE_DRINK = addItem(100, "bottle.purple.drink").addComponents(new FoodStats(8, 0.2F, true, true, new ItemStack(Items.GLASS_BOTTLE), new RandomPotionEffect(MobEffects.HASTE, 800, 1, 90)));
 
-        ENERGY_CRYSTAL = addItem(212, "energy_crystal").addStats(ElectricStats.createRechargeableBattery(1000000L, GTValues.HV)).setModelAmount(8).setMaxStackSize(1);
-        LAPOTRON_CRYSTAL = addItem(213, "lapotron_crystal").addStats(ElectricStats.createRechargeableBattery(4000000L, GTValues.EV)).setModelAmount(8).setMaxStackSize(1);
+        ENERGY_CRYSTAL = addItem(212, "energy_crystal").addComponents(ElectricStats.createRechargeableBattery(1000000L, GTValues.HV)).setModelAmount(8).setMaxStackSize(1);
+        LAPOTRON_CRYSTAL = addItem(213, "lapotron_crystal").addComponents(ElectricStats.createRechargeableBattery(4000000L, GTValues.EV)).setModelAmount(8).setMaxStackSize(1);
 
         DYE_INDIGO = addItem(410, "dye.indigo").addOreDict("dyeBlue").setInvisible();
         for (int i = 0; i < EnumDyeColor.values().length; i++) {
@@ -63,13 +64,13 @@ public class MetaItem2 extends MaterialMetaItem {
         PLANT_BALL = addItem(570, "plant_ball").setBurnValue(75);
         ENERGIUM_DUST = addItem(572, "energium_dust");
 
-        POWER_UNIT_LV = addItem(573, "power_unit.lv").addStats(ElectricStats.createElectricItem(100000L, GTValues.LV)).setMaxStackSize(8);
-        POWER_UNIT_MV = addItem(574, "power_unit.mv").addStats(ElectricStats.createElectricItem(400000L, GTValues.MV)).setMaxStackSize(8);
-        POWER_UNIT_HV = addItem(575, "power_unit.hv") .addStats(ElectricStats.createElectricItem(1600000L, GTValues.HV)).setMaxStackSize(8);
-        JACKHAMMER_BASE = addItem(576, "jackhammer_base").addStats(ElectricStats.createElectricItem(1600000L, GTValues.HV)).setMaxStackSize(4);
+        POWER_UNIT_LV = addItem(573, "power_unit.lv").addComponents(ElectricStats.createElectricItem(100000L, GTValues.LV)).setMaxStackSize(8);
+        POWER_UNIT_MV = addItem(574, "power_unit.mv").addComponents(ElectricStats.createElectricItem(400000L, GTValues.MV)).setMaxStackSize(8);
+        POWER_UNIT_HV = addItem(575, "power_unit.hv") .addComponents(ElectricStats.createElectricItem(1600000L, GTValues.HV)).setMaxStackSize(8);
+        JACKHAMMER_BASE = addItem(576, "jackhammer_base").addComponents(ElectricStats.createElectricItem(1600000L, GTValues.HV)).setMaxStackSize(4);
 
-        NANO_SABER = addItem(577, "nano_saber").addStats(ElectricStats.createElectricItem(4000000L, GTValues.HV)).addStats(new NanoSaberBehavior(5.0f, 20.0f, 8)).setMaxStackSize(1);
-        ENERGY_FIELD_PROJECTOR = addItem(578, "energy_field_projector").addStats(ElectricStats.createElectricItem(16000000L, GTValues.EV)).setMaxStackSize(1);
+        NANO_SABER = addItem(577, "nano_saber").addComponents(ElectricStats.createElectricItem(4000000L, GTValues.HV)).addComponents(new NanoSaberBehavior(5.0f, 20.0f, 8)).setMaxStackSize(1);
+        ENERGY_FIELD_PROJECTOR = addItem(578, "energy_field_projector").addComponents(ElectricStats.createElectricItem(16000000L, GTValues.EV)).setMaxStackSize(1);
 
         CARBON_FIBERS = addItem(504, "carbon.fibers");
         CARBON_MESH = addItem(505, "carbon.mesh");
@@ -160,7 +161,8 @@ public class MetaItem2 extends MaterialMetaItem {
         ENGRAVED_CRYSTAL_CHIP = addItem(502, "engraved.crystal_chip");
         ENGRAVED_LAPOTRON_CHIP = addItem(503, "engraved.lapotron_chip");
 
-        TURBINE_ROTOR = addItem(508, "turbine_rotor").addStats(new TurbineRotorBehavior());
+        TURBINE_ROTOR = addItem(508, "turbine_rotor").addComponents(new TurbineRotorBehavior());
+        COVER_FACADE = addItem(509, "cover.facade").addComponents(new FacadeItem()).disableModelLoading();
     }
 
     public void registerRecipes() {

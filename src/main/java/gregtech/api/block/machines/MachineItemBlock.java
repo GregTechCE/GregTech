@@ -89,7 +89,6 @@ public class MachineItemBlock extends ItemBlock {
         }
         metaTileEntity.addInformation(stack, worldIn, tooltip, flagIn.isAdvanced());
 
-        ResourceLocation metaTileEntityId = metaTileEntity.metaTileEntityId;
         if (flagIn.isAdvanced()) {
             tooltip.add(String.format("MetaTileEntity Id: %s", metaTileEntity.metaTileEntityId.toString()));
         }

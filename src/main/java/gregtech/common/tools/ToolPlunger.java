@@ -8,7 +8,7 @@ public class ToolPlunger extends ToolBase {
 
     @Override
     public void onStatsAddedToTool(MetaValueItem metaValueItem) {
-        metaValueItem.addStats(new PlungerBehaviour(DamageValues.DAMAGE_FOR_PLUNGER));
+        metaValueItem.addComponents(new PlungerBehaviour(DamageValues.DAMAGE_FOR_PLUNGER));
     }
 
     @Override
