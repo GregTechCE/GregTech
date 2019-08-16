@@ -70,7 +70,6 @@ public class FacadeRenderer {
             state = state.getBlock().getExtendedState(state, coverAccess, pos);
         } catch (Exception ignored) {
         }
-
         long posRand = net.minecraft.util.math.MathHelper.getPositionRandom(pos);
         List<BakedQuad> bakedQuads = new LinkedList<>(model.getQuads(state, null, posRand));
 

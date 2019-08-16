@@ -16,6 +16,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.PacketBuffer;
+import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
@@ -168,9 +169,15 @@ public abstract class CoverBehavior implements IUIHolder {
      * It will be automatically translated to prevent Z-fighting with machine faces
      */
     @SideOnly(Side.CLIENT)
-    public abstract void renderCover(CCRenderState renderState, Matrix4 translation, IVertexOperation[] pipeline, Cuboid6 plateBox);
+    public abstract void renderCover(CCRenderState renderState, Matrix4 translation, IVertexOperation[] pipeline, Cuboid6 plateBox, BlockRenderLayer layer);
 
-    public void renderCoverPlate(CCRenderState renderState, Matrix4 translation, IVertexOperation[] pipeline, Cuboid6 plateBox) {
+    @SideOnly(Side.CLIENT)
+    public boolean canRenderInLayer(BlockRenderLayer renderLayer) {
+        return renderLayer == BlockRenderLayer.CUTOUT;
+    }
+
+    @SideOnly(Side.CLIENT)
+    public void renderCoverPlate(CCRenderState renderState, Matrix4 translation, IVertexOperation[] pipeline, Cuboid6 plateBox, BlockRenderLayer layer) {
         TextureAtlasSprite casingSide = getPlateSprite();
         for (EnumFacing coverPlateSide : EnumFacing.VALUES) {
             Textures.renderFace(renderState, translation, pipeline, coverPlateSide, plateBox, casingSide);

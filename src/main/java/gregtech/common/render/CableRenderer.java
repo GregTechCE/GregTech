@@ -16,6 +16,7 @@ import codechicken.lib.vec.Translation;
 import codechicken.lib.vec.Vector3;
 import codechicken.lib.vec.uv.IconTransformation;
 import gregtech.api.GTValues;
+import gregtech.api.cover.ICoverable;
 import gregtech.api.pipenet.tile.IPipeTile;
 import gregtech.api.unification.material.type.Material;
 import gregtech.api.util.GTLog;
@@ -34,12 +35,14 @@ import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.IBlockAccess;
+import net.minecraftforge.client.MinecraftForgeClient;
 import net.minecraftforge.client.event.ModelBakeEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.model.IModelState;
@@ -119,8 +122,12 @@ public class CableRenderer implements ICCBlockRenderer, IItemRenderer {
         Insulation insulation = tileEntityCable.getPipeType();
         Material material = tileEntityCable.getPipeMaterial();
         if (insulation != null && material != null) {
-            renderCableBlock(material, insulation, paintingColor, renderState, pipeline, connectedSidesMask);
-            tileEntityCable.getCoverableImplementation().renderCovers(renderState, new Matrix4().translate(pos.getX(), pos.getY(), pos.getZ()));
+            BlockRenderLayer renderLayer = MinecraftForgeClient.getRenderLayer();
+            if (renderLayer == BlockRenderLayer.CUTOUT) {
+                renderCableBlock(material, insulation, paintingColor, renderState, pipeline, connectedSidesMask);
+            }
+            ICoverable coverable = tileEntityCable.getCoverableImplementation();
+            coverable.renderCovers(renderState, new Matrix4().translate(pos.getX(), pos.getY(), pos.getZ()), renderLayer);
         }
         return true;
     }

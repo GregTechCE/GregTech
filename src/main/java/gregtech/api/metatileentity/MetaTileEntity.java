@@ -169,6 +169,11 @@ public abstract class MetaTileEntity implements ICoverable {
     }
 
     @SideOnly(Side.CLIENT)
+    public boolean canRenderInLayer(BlockRenderLayer renderLayer) {
+        return renderLayer == BlockRenderLayer.CUTOUT_MIPPED;
+    }
+
+    @SideOnly(Side.CLIENT)
     public int getPaintingColorForRendering() {
         if (getWorld() == null && renderContextStack != null) {
             NBTTagCompound tagCompound = renderContextStack.getTagCompound();

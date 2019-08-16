@@ -31,7 +31,7 @@ import gregtech.common.covers.CoverBehaviors;
 import gregtech.common.covers.filter.FilterTypeRegistry;
 import gregtech.common.items.MetaItems;
 import gregtech.common.metatileentities.MetaTileEntities;
-import gregtech.common.multipart.GTMultipartFactory;
+import gregtech.integration.multipart.GTMultipartFactory;
 import gregtech.common.worldgen.WorldGenRubberTree;
 import gregtech.integration.theoneprobe.TheOneProbeCompatibility;
 import gregtech.loaders.dungeon.DungeonLootLoader;
@@ -124,7 +124,7 @@ public class GregTechMod {
         }
 
         if (GTValues.isModLoaded(GTValues.MODID_FMP)) {
-            GTLog.logger.info("ForgeMultiPart found. Enabling integration...");
+            GTLog.logger.info("ForgeMultiPart found. Legacy block conversion enabled.");
             registerForgeMultipartCompat();
         }
 

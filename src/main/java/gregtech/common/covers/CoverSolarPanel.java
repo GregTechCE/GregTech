@@ -9,6 +9,7 @@ import gregtech.api.capability.IEnergyContainer;
 import gregtech.api.cover.CoverBehavior;
 import gregtech.api.cover.ICoverable;
 import gregtech.api.render.Textures;
+import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.math.BlockPos;
@@ -30,7 +31,7 @@ public class CoverSolarPanel extends CoverBehavior implements ITickable {
     }
 
     @Override
-    public void renderCover(CCRenderState renderState, Matrix4 translation, IVertexOperation[] pipeline, Cuboid6 plateBox) {
+    public void renderCover(CCRenderState renderState, Matrix4 translation, IVertexOperation[] pipeline, Cuboid6 plateBox, BlockRenderLayer layer) {
         Textures.SOLAR_PANEL.renderSided(attachedSide, plateBox, renderState, pipeline, translation);
     }
 

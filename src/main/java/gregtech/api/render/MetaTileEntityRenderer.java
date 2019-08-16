@@ -30,11 +30,13 @@ import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.IBlockAccess;
+import net.minecraftforge.client.MinecraftForgeClient;
 import net.minecraftforge.client.event.ModelBakeEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.model.IModelState;
@@ -100,11 +102,14 @@ public class MetaTileEntityRenderer implements ICCBlockRenderer, IItemRenderer {
         CCRenderState renderState = CCRenderState.instance();
         renderState.reset();
         renderState.bind(buffer);
-        IVertexOperation[] pipeline = new IVertexOperation[]{renderState.lightMatrix};
         Matrix4 translation = new Matrix4().translate(pos.getX(), pos.getY(), pos.getZ());
-        renderState.lightMatrix.locate(world, pos);
-        metaTileEntity.renderMetaTileEntity(renderState, translation.copy(), pipeline);
-        metaTileEntity.renderCovers(renderState, translation);
+        BlockRenderLayer renderLayer = MinecraftForgeClient.getRenderLayer();
+        if (metaTileEntity.canRenderInLayer(renderLayer)) {
+            renderState.lightMatrix.locate(world, pos);
+            IVertexOperation[] pipeline = new IVertexOperation[]{renderState.lightMatrix};
+            metaTileEntity.renderMetaTileEntity(renderState, translation.copy(), pipeline);
+        }
+        metaTileEntity.renderCovers(renderState, translation, renderLayer);
         return true;
     }
 

@@ -17,7 +17,10 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.PacketBuffer;
+import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
+import net.minecraftforge.client.ForgeHooksClient;
+import net.minecraftforge.client.MinecraftForgeClient;
 
 public class CoverFacade extends CoverBehavior implements IFacadeCover {
 
@@ -45,8 +48,16 @@ public class CoverFacade extends CoverBehavior implements IFacadeCover {
     }
 
     @Override
-    public void renderCover(CCRenderState renderState, Matrix4 translation, IVertexOperation[] pipeline, Cuboid6 plateBox) {
+    public void renderCover(CCRenderState renderState, Matrix4 translation, IVertexOperation[] pipeline, Cuboid6 plateBox, BlockRenderLayer layer) {
+        BlockRenderLayer oldLayer = MinecraftForgeClient.getRenderLayer();
+        ForgeHooksClient.setRenderLayer(layer);
         FacadeRenderer.renderBlockCover(renderState, translation, coverHolder.getWorld(), coverHolder.getPos(), attachedSide.getIndex(), facadeState, plateBox);
+        ForgeHooksClient.setRenderLayer(oldLayer);
+    }
+
+    @Override
+    public boolean canRenderInLayer(BlockRenderLayer renderLayer) {
+        return true;
     }
 
     @Override
@@ -110,6 +121,6 @@ public class CoverFacade extends CoverBehavior implements IFacadeCover {
     }
 
     @Override
-    public void renderCoverPlate(CCRenderState renderState, Matrix4 translation, IVertexOperation[] pipeline, Cuboid6 plateBox) {
+    public void renderCoverPlate(CCRenderState renderState, Matrix4 translation, IVertexOperation[] pipeline, Cuboid6 plateBox, BlockRenderLayer layer) {
     }
 }

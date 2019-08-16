@@ -352,8 +352,8 @@ public class BlockMachine extends BlockCustomParticle implements ITileEntityProv
     }
 
     @Override
-    public BlockRenderLayer getBlockLayer() {
-        return BlockRenderLayer.CUTOUT_MIPPED;
+    public boolean canRenderInLayer(IBlockState state, BlockRenderLayer layer) {
+        return true;
     }
 
     @Override
@@ -395,7 +395,7 @@ public class BlockMachine extends BlockCustomParticle implements ITileEntityProv
 
     @Nonnull
     @Override
-    public IBlockState getFacade(@Nonnull IBlockAccess world, @Nonnull BlockPos pos, @Nullable EnumFacing side) {
+    public IBlockState getFacade(@Nonnull IBlockAccess world, @Nonnull BlockPos pos, @Nullable EnumFacing side, BlockPos otherPos) {
         MetaTileEntity metaTileEntity = getMetaTileEntity(world, pos);
         if (metaTileEntity != null && side != null) {
             CoverBehavior coverBehavior = metaTileEntity.getCoverAtSide(side);
@@ -408,7 +408,7 @@ public class BlockMachine extends BlockCustomParticle implements ITileEntityProv
 
     @Override
     public IBlockState getVisualState(IBlockAccess world, BlockPos pos, EnumFacing side) {
-        return getFacade(world, pos, side);
+        return getFacade(world, pos, side, null);
     }
 
     @Override

@@ -25,6 +25,6 @@ public interface IFacade {
      * @return The blockstate which your block appears as.
      */
     @Nonnull
-    IBlockState getFacade(@Nonnull IBlockAccess world, @Nonnull BlockPos pos, @Nullable EnumFacing side);
+    IBlockState getFacade(@Nonnull IBlockAccess world, @Nonnull BlockPos pos, @Nullable EnumFacing side, BlockPos otherPos);
 
 }

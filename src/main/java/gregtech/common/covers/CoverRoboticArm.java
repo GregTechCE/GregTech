@@ -13,6 +13,7 @@ import gregtech.api.render.Textures;
 import gregtech.api.util.ItemStackKey;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.math.MathHelper;
@@ -37,7 +38,7 @@ public class CoverRoboticArm extends CoverConveyor {
     }
 
     @Override
-    public void renderCover(CCRenderState renderState, Matrix4 translation, IVertexOperation[] pipeline, Cuboid6 plateBox) {
+    public void renderCover(CCRenderState renderState, Matrix4 translation, IVertexOperation[] pipeline, Cuboid6 plateBox, BlockRenderLayer layer) {
         Textures.ARM_OVERLAY.renderSided(attachedSide, plateBox, renderState, pipeline, translation);
     }
 

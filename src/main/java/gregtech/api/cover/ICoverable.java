@@ -13,6 +13,7 @@ import gregtech.api.util.GTUtility;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketBuffer;
+import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumFacing.Axis;
 import net.minecraft.util.math.BlockPos;
@@ -68,7 +69,7 @@ public interface ICoverable {
     void scheduleRenderUpdate();
 
     @SideOnly(Side.CLIENT)
-    default void renderCovers(CCRenderState renderState, Matrix4 translation) {
+    default void renderCovers(CCRenderState renderState, Matrix4 translation, BlockRenderLayer layer) {
         renderState.lightMatrix.locate(getWorld(), getPos());
         double coverPlateThickness = getCoverPlateThickness();
         IVertexOperation[] platePipeline = new IVertexOperation[] {new ColourMultiplier(GTUtility.convertRGBtoOpaqueRGBA_CL(getPaintingColor()))};
@@ -80,28 +81,28 @@ public interface ICoverable {
             Cuboid6 plateBox = getCoverPlateBox(sideFacing, coverPlateThickness, false);
             double coverOffset = getCoverOffset(sideFacing);
 
-            if (coverPlateThickness > 0) {
+            if (coverBehavior.canRenderInLayer(layer) && coverPlateThickness > 0) {
                 renderState.preRenderWorld(getWorld(), getPos());
                 //render cover plate for cover
                 //to prevent Z-fighting between cover plates
                 plateBox.expand(-coverOffset);
-                coverBehavior.renderCoverPlate(renderState, translation, platePipeline, plateBox);
+                coverBehavior.renderCoverPlate(renderState, translation, platePipeline, plateBox, layer);
                 plateBox.expand(coverOffset);
             }
-
-            //plateBox.expand(coverOffset * 10.0);
-            coverBehavior.renderCover(renderState, translation.copy(), coverPipeline, plateBox);
-            if (coverPlateThickness == 0.0 && shouldRenderBackSide() && coverBehavior.canRenderBackside()) {
-                //machine is full block, but still not opaque - render cover on the back side too
-                plateBox.expand(coverOffset);
-                Matrix4 backTranslation = translation.copy();
-                if (sideFacing.getAxis().isVertical()) {
-                    REVERSE_VERTICAL_ROTATION.apply(backTranslation);
-                } else {
-                    REVERSE_HORIZONTAL_ROTATION.apply(backTranslation);
+            if (coverBehavior.canRenderInLayer(layer)) {
+                coverBehavior.renderCover(renderState, translation.copy(), coverPipeline, plateBox, layer);
+                if (coverPlateThickness == 0.0 && shouldRenderBackSide() && coverBehavior.canRenderBackside()) {
+                    //machine is full block, but still not opaque - render cover on the back side too
+                    plateBox.expand(coverOffset);
+                    Matrix4 backTranslation = translation.copy();
+                    if (sideFacing.getAxis().isVertical()) {
+                        REVERSE_VERTICAL_ROTATION.apply(backTranslation);
+                    } else {
+                        REVERSE_HORIZONTAL_ROTATION.apply(backTranslation);
+                    }
+                    backTranslation.translate(-sideFacing.getFrontOffsetX(), -sideFacing.getFrontOffsetY(), -sideFacing.getFrontOffsetZ());
+                    coverBehavior.renderCover(renderState, backTranslation, coverPipeline, plateBox, layer);
                 }
-                backTranslation.translate(-sideFacing.getFrontOffsetX(), -sideFacing.getFrontOffsetY(), -sideFacing.getFrontOffsetZ());
-                coverBehavior.renderCover(renderState, backTranslation, coverPipeline, plateBox);
             }
         }
     }

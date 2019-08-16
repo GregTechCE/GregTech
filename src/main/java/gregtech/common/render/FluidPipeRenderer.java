@@ -16,6 +16,7 @@ import codechicken.lib.vec.Translation;
 import codechicken.lib.vec.Vector3;
 import codechicken.lib.vec.uv.IconTransformation;
 import gregtech.api.GTValues;
+import gregtech.api.cover.ICoverable;
 import gregtech.api.pipenet.tile.IPipeTile;
 import gregtech.api.unification.material.type.Material;
 import gregtech.api.util.GTLog;
@@ -34,12 +35,14 @@ import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.IBlockAccess;
+import net.minecraftforge.client.MinecraftForgeClient;
 import net.minecraftforge.client.event.ModelBakeEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.model.IModelState;
@@ -125,20 +128,24 @@ public class FluidPipeRenderer implements ICCBlockRenderer, IItemRenderer {
         IVertexOperation[] pipeline = {new Translation(pos)};
 
         BlockFluidPipe blockFluidPipe = (BlockFluidPipe) state.getBlock();
-        IPipeTile<FluidPipeType, FluidPipeProperties> tileEntityCable = blockFluidPipe.getPipeTileEntity(world, pos);
+        IPipeTile<FluidPipeType, FluidPipeProperties> tileEntityPipe = blockFluidPipe.getPipeTileEntity(world, pos);
 
-        if (tileEntityCable == null) {
+        if (tileEntityPipe == null) {
             return false;
         }
 
-        int paintingColor = tileEntityCable.getInsulationColor();
-        int connectedSidesMask = blockFluidPipe.getActualConnections(tileEntityCable, world);
-        FluidPipeType fluidPipeType = tileEntityCable.getPipeType();
-        Material material = tileEntityCable.getPipeMaterial();
+        int paintingColor = tileEntityPipe.getInsulationColor();
+        int connectedSidesMask = blockFluidPipe.getActualConnections(tileEntityPipe, world);
+        FluidPipeType fluidPipeType = tileEntityPipe.getPipeType();
+        Material material = tileEntityPipe.getPipeMaterial();
 
         if (fluidPipeType != null && material != null) {
-            renderPipeBlock(material, fluidPipeType, paintingColor, renderState, pipeline, connectedSidesMask);
-            tileEntityCable.getCoverableImplementation().renderCovers(renderState, new Matrix4().translate(pos.getX(), pos.getY(), pos.getZ()));
+            BlockRenderLayer renderLayer = MinecraftForgeClient.getRenderLayer();
+            if (renderLayer == BlockRenderLayer.CUTOUT) {
+                renderPipeBlock(material, fluidPipeType, paintingColor, renderState, pipeline, connectedSidesMask);
+            }
+            ICoverable coverable = tileEntityPipe.getCoverableImplementation();
+            coverable.renderCovers(renderState, new Matrix4().translate(pos.getX(), pos.getY(), pos.getZ()), renderLayer);
         }
         return true;
     }
