@@ -141,7 +141,7 @@ public class BlockMachine extends BlockCustomParticle implements ITileEntityProv
             return EMPTY_COLLISION_BOX;
         ArrayList<IndexedCuboid6> collisionList = new ArrayList<>();
         metaTileEntity.addCollisionBoundingBox(collisionList);
-        metaTileEntity.addCoverCollisionBoundingBox(collisionList, false);
+        metaTileEntity.addCoverCollisionBoundingBox(collisionList);
         return collisionList;
     }
 

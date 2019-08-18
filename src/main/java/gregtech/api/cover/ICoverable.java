@@ -15,7 +15,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumFacing.Axis;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.RayTraceResult.Type;
@@ -78,22 +77,16 @@ public interface ICoverable {
         for (EnumFacing sideFacing : EnumFacing.values()) {
             CoverBehavior coverBehavior = getCoverAtSide(sideFacing);
             if (coverBehavior == null) continue;
-            Cuboid6 plateBox = getCoverPlateBox(sideFacing, coverPlateThickness, false);
-            double coverOffset = getCoverOffset(sideFacing);
+            Cuboid6 plateBox = getCoverPlateBox(sideFacing, coverPlateThickness);
 
             if (coverBehavior.canRenderInLayer(layer) && coverPlateThickness > 0) {
                 renderState.preRenderWorld(getWorld(), getPos());
-                //render cover plate for cover
-                //to prevent Z-fighting between cover plates
-                plateBox.expand(-coverOffset);
                 coverBehavior.renderCoverPlate(renderState, translation, platePipeline, plateBox, layer);
-                plateBox.expand(coverOffset);
             }
             if (coverBehavior.canRenderInLayer(layer)) {
                 coverBehavior.renderCover(renderState, translation.copy(), coverPipeline, plateBox, layer);
                 if (coverPlateThickness == 0.0 && shouldRenderBackSide() && coverBehavior.canRenderBackside()) {
                     //machine is full block, but still not opaque - render cover on the back side too
-                    plateBox.expand(coverOffset);
                     Matrix4 backTranslation = translation.copy();
                     if (sideFacing.getAxis().isVertical()) {
                         REVERSE_VERTICAL_ROTATION.apply(backTranslation);
@@ -107,14 +100,12 @@ public interface ICoverable {
         }
     }
 
-    default void addCoverCollisionBoundingBox(List<? super IndexedCuboid6> collisionList, boolean offsetSide) {
+    default void addCoverCollisionBoundingBox(List<? super IndexedCuboid6> collisionList) {
         double plateThickness = getCoverPlateThickness();
         if (plateThickness > 0.0) {
             for (EnumFacing side : EnumFacing.VALUES) {
-                double coverOffset = getCoverOffset(side);
                 if (getCoverAtSide(side) != null) {
-                    Cuboid6 coverBox = getCoverPlateBox(side, plateThickness, offsetSide);
-                    coverBox.expand(coverOffset);
+                    Cuboid6 coverBox = getCoverPlateBox(side, plateThickness);
                     CoverSideData coverSideData = new CoverSideData(side);
                     collisionList.add(new IndexedCuboid6(coverSideData, coverBox));
                 }
@@ -124,7 +115,7 @@ public interface ICoverable {
 
     static boolean doesCoverCollide(EnumFacing side, List<IndexedCuboid6> collisionBox, double plateThickness) {
         if (plateThickness > 0.0) {
-            Cuboid6 coverPlateBox = getCoverPlateBox(side, plateThickness, false);
+            Cuboid6 coverPlateBox = getCoverPlateBox(side, plateThickness);
             for (Cuboid6 collisionCuboid : collisionBox) {
                 if (collisionCuboid.intersects(coverPlateBox)) {
                     //collision box intersects with machine bounding box -
@@ -186,17 +177,15 @@ public interface ICoverable {
             (float) (result.hitVec.z - result.getBlockPos().getZ()));
     }
 
-    static Cuboid6 getCoverPlateBox(EnumFacing side, double plateThickness, boolean offsetSide) {
-        double offset = offsetSide ? 2.5 / 16.0 : 0.0;
-        Cuboid6 coverPlateBox = new Cuboid6(offset, 0.0, offset, 1.0 - offset, plateThickness, 1.0 - offset);
-        coverPlateBox.apply(Rotation.sideOrientation(side.getIndex(), 0).at(Vector3.center));
-        return coverPlateBox;
-    }
-
-    static double getCoverOffset(EnumFacing side) {
-        EnumFacing.Axis axis = side.getAxis();
-        double sideMultiplier = axis == Axis.Y ? 3 :
-            (axis == Axis.X ? 2 : 1);
-        return sideMultiplier * 1e-4;
+    static Cuboid6 getCoverPlateBox(EnumFacing side, double plateThickness) {
+        switch (side) {
+            case UP: return new Cuboid6(0.0, 1.0 - plateThickness, 0.0, 1.0, 1.0, 1.0);
+            case DOWN: return new Cuboid6(0.0, 0.0, 0.0, 1.0, plateThickness, 1.0);
+            case NORTH: return new Cuboid6(0.0, 0.0, 0.0, 1.0, 1.0, plateThickness);
+            case SOUTH: return new Cuboid6(0.0, 0.0, 1.0 - plateThickness, 1.0, 1.0, 1.0);
+            case WEST: return new Cuboid6(0.0, 0.0, 0.0, plateThickness, 1.0, 1.0);
+            case EAST: return new Cuboid6(1.0 - plateThickness, 0.0, 0.0, 1.0, 1.0, 1.0);
+            default: throw new UnsupportedOperationException();
+        }
     }
 }

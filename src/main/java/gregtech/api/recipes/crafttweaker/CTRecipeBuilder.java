@@ -45,12 +45,6 @@ public class CTRecipeBuilder {
     }
 
     @ZenMethod
-    public CTRecipeBuilder needsEmptyOutput() {
-        this.backingBuilder.needsEmptyOutput();
-        return this;
-    }
-
-    @ZenMethod
     public CTRecipeBuilder inputs(IIngredient... ingredients) {
         this.backingBuilder.inputsIngredients(Arrays.stream(ingredients)
             .map(s -> new CountableIngredient(new CraftTweakerIngredientWrapper(s), s.getAmount()))

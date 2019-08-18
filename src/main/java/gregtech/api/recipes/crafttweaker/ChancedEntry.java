@@ -11,10 +11,12 @@ public class ChancedEntry {
 
     private final IItemStack output;
     private final int chance;
+    private final int boostPerTier;
 
-    public ChancedEntry(IItemStack output, int chance) {
+    public ChancedEntry(IItemStack output, int chance, int boostPerTier) {
         this.output = output;
         this.chance = chance;
+        this.boostPerTier = boostPerTier;
     }
 
     @ZenGetter("output")
@@ -25,5 +27,10 @@ public class ChancedEntry {
     @ZenGetter("chance")
     public int getChance() {
         return chance;
+    }
+
+    @ZenGetter("boostPerTier")
+    public int getBoostPerTier() {
+        return boostPerTier;
     }
 }

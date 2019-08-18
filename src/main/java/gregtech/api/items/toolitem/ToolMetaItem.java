@@ -1,5 +1,6 @@
 package gregtech.api.items.toolitem;
 
+import com.google.common.base.Preconditions;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 import forestry.api.arboriculture.IToolGrafter;
@@ -225,6 +226,7 @@ public class ToolMetaItem<T extends ToolMetaItem<?>.MetaToolValueItem> extends M
 
     @Override
     public float getDestroySpeed(ItemStack stack, IBlockState state) {
+        Preconditions.checkNotNull(state, "null blockState");
         T metaToolValueItem = getItem(stack);
         if (metaToolValueItem != null) {
             IToolStats toolStats = metaToolValueItem.getToolStats();
@@ -237,6 +239,7 @@ public class ToolMetaItem<T extends ToolMetaItem<?>.MetaToolValueItem> extends M
 
     @Override
     public boolean canHarvestBlock(IBlockState state, ItemStack stack) {
+        Preconditions.checkNotNull(state, "null blockState");
         T metaToolValueItem = getItem(stack);
         if (metaToolValueItem != null) {
             IToolStats toolStats = metaToolValueItem.getToolStats();
@@ -247,6 +250,7 @@ public class ToolMetaItem<T extends ToolMetaItem<?>.MetaToolValueItem> extends M
 
     @Override
     public int getHarvestLevel(ItemStack stack, String toolClass, EntityPlayer player, IBlockState blockState) {
+        Preconditions.checkNotNull(blockState, "null blockState");
         T metaToolValueItem = getItem(stack);
         if (metaToolValueItem == null) {
             return -1;

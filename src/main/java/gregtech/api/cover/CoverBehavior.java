@@ -180,7 +180,12 @@ public abstract class CoverBehavior implements IUIHolder {
     public void renderCoverPlate(CCRenderState renderState, Matrix4 translation, IVertexOperation[] pipeline, Cuboid6 plateBox, BlockRenderLayer layer) {
         TextureAtlasSprite casingSide = getPlateSprite();
         for (EnumFacing coverPlateSide : EnumFacing.VALUES) {
-            Textures.renderFace(renderState, translation, pipeline, coverPlateSide, plateBox, casingSide);
+            boolean isAttachedSide = attachedSide.getAxis() == coverPlateSide.getAxis();
+            if (isAttachedSide) {
+                Textures.renderFace(renderState, translation, pipeline, coverPlateSide, plateBox, casingSide);
+            } else if (coverHolder.getCoverAtSide(coverPlateSide) == null) {
+                Textures.renderFace(renderState, translation, pipeline, coverPlateSide, plateBox, casingSide);
+            }
         }
     }
 

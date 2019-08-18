@@ -90,7 +90,6 @@ public class MetaTileEntityRenderer implements ICCBlockRenderer, IItemRenderer {
             ((IRenderMetaTileEntity) metaTileEntity).renderMetaTileEntityDynamic(0.0, 0.0, 0.0, 0.0f);
         }
         GlStateManager.disableBlend();
-
     }
 
     @Override
@@ -109,7 +108,8 @@ public class MetaTileEntityRenderer implements ICCBlockRenderer, IItemRenderer {
             IVertexOperation[] pipeline = new IVertexOperation[]{renderState.lightMatrix};
             metaTileEntity.renderMetaTileEntity(renderState, translation.copy(), pipeline);
         }
-        metaTileEntity.renderCovers(renderState, translation, renderLayer);
+        Matrix4 coverTranslation = new Matrix4().translate(pos.getX(), pos.getY(), pos.getZ());
+        metaTileEntity.renderCovers(renderState, coverTranslation, renderLayer);
         return true;
     }
 
@@ -133,7 +133,7 @@ public class MetaTileEntityRenderer implements ICCBlockRenderer, IItemRenderer {
         ArrayList<IndexedCuboid6> boundingBox = new ArrayList<>();
         if (metaTileEntity != null) {
             metaTileEntity.addCollisionBoundingBox(boundingBox);
-            metaTileEntity.addCoverCollisionBoundingBox(boundingBox, false);
+            metaTileEntity.addCoverCollisionBoundingBox(boundingBox);
         }
         CCRenderState renderState = CCRenderState.instance();
         renderState.reset();

@@ -61,7 +61,7 @@ public class AmplifierRecipeBuilder extends RecipeBuilder<AmplifierRecipeBuilder
         return ValidationResult.newResult(finalizeAndValidate(),
             new Recipe(inputs, outputs, chancedOutputs, fluidInputs, fluidOutputs,
                 ImmutableMap.of("amplifierAmountOutputted", amplifierAmountOutputted),
-                duration, EUt, hidden, needsEmptyOutput));
+                duration, EUt, hidden));
     }
 
     @Override

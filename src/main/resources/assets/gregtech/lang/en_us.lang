@@ -2855,7 +2855,7 @@ gregtech.recipe.eu_inverted=Generation: %d EU/t
 gregtech.recipe.duration=Duration: %.1f secs
 gregtech.recipe.amperage=Amperage: %d
 gregtech.recipe.not_consumed=Not consumed in process
-gregtech.recipe.chance=Chance: %s%%
+gregtech.recipe.chance=Chance: %s%% +%s%%/tier
 gregtech.recipe.blast_furnace_temperature=Temperature: %dK
 gregtech.recipe.eu_to_start=Energy To Start: %dEU
 

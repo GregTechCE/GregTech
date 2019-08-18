@@ -95,7 +95,7 @@ public class ToolUtility {
         Recipe recipe = RecipeMaps.FORGE_HAMMER_RECIPES.findRecipe(Long.MAX_VALUE, Collections.singletonList(itemStack), Collections.emptyList(), 0);
         if (recipe != null && !recipe.getOutputs().isEmpty()) {
             drops.clear();
-            for (ItemStack outputStack : recipe.getResultItemOutputs(random, 1)) {
+            for (ItemStack outputStack : recipe.getResultItemOutputs(Integer.MAX_VALUE, random, 0)) {
                 outputStack = outputStack.copy();
                 if (OreDictUnifier.getPrefix(outputStack) == OrePrefix.crushed) {
                     int growAmount = Math.round(outputStack.getCount() * random.nextFloat());

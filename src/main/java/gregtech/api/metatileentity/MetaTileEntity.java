@@ -884,15 +884,7 @@ public abstract class MetaTileEntity implements ICoverable {
         }
     }
 
-    public static boolean isItemHandlerEmpty(IItemHandler handler) {
-        for (int i = 0; i < handler.getSlots(); i++) {
-            if (!handler.getStackInSlot(i).isEmpty())
-                return false;
-        }
-        return true;
-    }
-
-    public static boolean addItemsToItemHandler(IItemHandler handler, boolean simulate, NonNullList<ItemStack> items) {
+    public static boolean addItemsToItemHandler(IItemHandler handler, boolean simulate, List<ItemStack> items) {
         boolean insertedAll = true;
         for (ItemStack stack : items) {
             insertedAll &= ItemHandlerHelper.insertItemStacked(handler, stack, simulate).isEmpty();

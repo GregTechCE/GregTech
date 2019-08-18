@@ -2842,8 +2842,8 @@ gregtech.recipe.eu=Потребление: %d EU/т
 gregtech.recipe.eu_inverted=Производство: %d EU/т
 gregtech.recipe.duration=Длительность: %.1f сек.
 gregtech.recipe.amperage=Сила тока: %d
-gregtech.recipe.not_consumed=Не потребляется в процессе
-gregtech.recipe.chance=Шанс: %s%%
+gregtech.recipe.not_consumed=Не расходуется
+gregtech.recipe.chance=Шанс: %s%% +%s%%/уровень
 gregtech.recipe.blast_furnace_temperature=Температура: %dK
 gregtech.recipe.eu_to_start=Энергия для запуска: %dEU
 

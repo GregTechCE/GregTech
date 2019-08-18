@@ -325,7 +325,6 @@ public abstract class BlockPipe<PipeType extends Enum<PipeType> & IPipeType<Node
 
     @Override
     public boolean recolorBlock(World world, BlockPos pos, EnumFacing side, EnumDyeColor color) {
-        @SuppressWarnings("unchecked")
         IPipeTile<PipeType, NodeDataType> tileEntityPipe = (IPipeTile<PipeType, NodeDataType>) world.getTileEntity(pos);
         if (tileEntityPipe != null && tileEntityPipe.getPipeType() != null &&
             tileEntityPipe.getPipeType().isPaintable() &&
@@ -449,7 +448,7 @@ public abstract class BlockPipe<PipeType extends Enum<PipeType> & IPipeType<Node
                 result.add(new IndexedCuboid6(new PipeConnectionData(side), getSideBox(side, thickness)));
             }
         }
-        coverable.addCoverCollisionBoundingBox(result, false);
+        coverable.addCoverCollisionBoundingBox(result);
         return result;
     }
 

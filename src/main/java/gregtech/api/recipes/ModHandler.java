@@ -27,11 +27,9 @@ import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
-import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
-import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
 import net.minecraftforge.registries.IForgeRegistry;
@@ -93,39 +91,11 @@ public class ModHandler {
      * Returns a Liquid Stack with given amount of Steam.
      */
     public static FluidStack getSteam(int amount) {
-        return Materials.Steam.getFluid(amount);
-    }
-
-    /**
-     * Returns if that Liquid is Milk
-     */
-    public static boolean isMilk(Fluid fluid) {
-        return getMilk(1).getFluid() == fluid;
-    }
-
-    /**
-     * Returns a Liquid Stack with given amount of Milk.
-     */
-    public static FluidStack getMilk(int amount) {
-        return FluidRegistry.getFluidStack("milk", amount);
+        return Objects.requireNonNull(Materials.Steam.getFluid(amount));
     }
 
     public static boolean isMaterialWood(Material material) {
         return material == Materials.Wood;
-    }
-
-    /**
-     * Gets an Item from mods
-     */
-    public static ItemStack getModItem(String modID, String itemName, int amount) {
-        return getModItem(modID, itemName, amount, 0);
-    }
-
-    /**
-     * Gets an Item from mods, with metadata specified
-     */
-    public static ItemStack getModItem(String modID, String itemName, int amount, int meta) {
-        return GameRegistry.makeItemStack(modID + ":" + itemName, meta, amount, null);
     }
 
     public static ItemStack getBurningFuelRemainder(Random random, ItemStack fuelStack) {
@@ -335,7 +305,7 @@ public class ModHandler {
                     .map(s -> "\"" + s + "\"")
                     .collect(Collectors.joining(", ")));
             GTLog.logger.error("Stacktrace:", new IllegalArgumentException());
-            //skip = true; TODO figure out why the fuck do these recipes collide
+            skip = true;
         }
         return skip;
     }
