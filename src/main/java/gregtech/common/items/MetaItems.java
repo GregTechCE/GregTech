@@ -422,11 +422,14 @@ public final class MetaItems {
     }
 
     @SubscribeEvent
+    @SideOnly(Side.CLIENT)
     public static void registerBakedModels(ModelBakeEvent event) {
         GTLog.logger.info("Registering special item models");
         registerSpecialItemModel(event, COVER_FACADE, new FacadeItemModel());
     }
 
+    @SideOnly(Side.CLIENT)
+    @SuppressWarnings("unchecked")
     private static void registerSpecialItemModel(ModelBakeEvent event, MetaValueItem metaValueItem, IBakedModel bakedModel) {
         //god these casts when intellij says you're fine but compiler complains about shit boundaries
         //noinspection RedundantCast

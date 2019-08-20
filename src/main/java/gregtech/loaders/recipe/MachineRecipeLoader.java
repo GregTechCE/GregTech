@@ -49,6 +49,7 @@ import java.util.Collection;
 
 import static gregtech.api.GTValues.L;
 import static gregtech.api.GTValues.M;
+import static gregtech.common.items.MetaItems.RUBBER_DROP;
 
 public class MachineRecipeLoader {
 
@@ -735,9 +736,19 @@ public class MachineRecipeLoader {
 
 
     private static void registerDecompositionRecipes() {
-        RecipeMaps.CENTRIFUGE_RECIPES.recipeBuilder().duration(1600).EUt(8).fluidInputs(Materials.Air.getFluid(10000)).fluidOutputs(Materials.Nitrogen.getFluid(3900), Materials.Oxygen.getFluid(1000)).buildAndRegister();
+        RecipeMaps.CENTRIFUGE_RECIPES.recipeBuilder().duration(1600).EUt(8)
+            .fluidInputs(Materials.Air.getFluid(10000))
+            .fluidOutputs(Materials.Nitrogen.getFluid(3900),
+                Materials.Oxygen.getFluid(1000))
+            .buildAndRegister();
 
-        RecipeMaps.CENTRIFUGE_RECIPES.recipeBuilder().duration(300).EUt(5)
+        RecipeMaps.EXTRACTOR_RECIPES.recipeBuilder()
+            .inputs(RUBBER_DROP.getStackForm())
+            .outputs(OreDictUnifier.get(OrePrefix.dust, Materials.RawRubber, 4))
+            .duration(200).EUt(5)
+            .buildAndRegister();
+
+        RecipeMaps.CENTRIFUGE_RECIPES.recipeBuilder().duration(400).EUt(5)
             .inputs(MetaItems.RUBBER_DROP.getStackForm())
             .outputs(OreDictUnifier.get(OrePrefix.dust, Materials.RawRubber, 3))
             .chancedOutput(MetaItems.PLANT_BALL.getStackForm(), 1000, 850)
