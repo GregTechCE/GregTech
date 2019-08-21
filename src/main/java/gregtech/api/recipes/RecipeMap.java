@@ -21,6 +21,7 @@ import gregtech.api.recipes.crafttweaker.CTRecipe;
 import gregtech.api.recipes.crafttweaker.CTRecipeBuilder;
 import gregtech.api.unification.material.type.Material;
 import gregtech.api.unification.ore.OrePrefix;
+import gregtech.api.util.EnumValidationResult;
 import gregtech.api.util.GTLog;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.ValidationResult;
@@ -147,6 +148,7 @@ public class RecipeMap<R extends RecipeBuilder<R>> {
 
     //internal usage only, use buildAndRegister()
     public void addRecipe(ValidationResult<Recipe> validationResult) {
+        validationResult = postValidateRecipe(validationResult);
         switch (validationResult.getType()) {
             case SKIP:
                 return;
@@ -173,6 +175,32 @@ public class RecipeMap<R extends RecipeBuilder<R>> {
         return false;
     }
 
+    protected ValidationResult<Recipe> postValidateRecipe(ValidationResult<Recipe> validationResult) {
+        EnumValidationResult recipeStatus = validationResult.getType();
+        Recipe recipe = validationResult.getResult();
+        if (!GTUtility.isBetweenInclusive(getMinInputs(), getMaxInputs(), recipe.getInputs().size())) {
+            GTLog.logger.error("Invalid amount of recipe inputs. Actual: {}. Should be between {} and {} inclusive.", recipe.getInputs().size(), getMinInputs(), getMaxInputs());
+            GTLog.logger.error("Stacktrace:", new IllegalArgumentException());
+            recipeStatus = EnumValidationResult.INVALID;
+        }
+        if (!GTUtility.isBetweenInclusive(getMinOutputs(), getMaxOutputs(), recipe.getOutputs().size() + recipe.getChancedOutputs().size())) {
+            GTLog.logger.error("Invalid amount of recipe outputs. Actual: {}. Should be between {} and {} inclusive.", recipe.getOutputs().size() + recipeBuilder().getChancedOutputs().size(), getMinOutputs(), getMaxOutputs());
+            GTLog.logger.error("Stacktrace:", new IllegalArgumentException());
+            recipeStatus = EnumValidationResult.INVALID;
+        }
+        if (!GTUtility.isBetweenInclusive(getMinFluidInputs(), getMaxFluidInputs(), recipe.getFluidInputs().size())) {
+            GTLog.logger.error("Invalid amount of recipe fluid inputs. Actual: {}. Should be between {} and {} inclusive.", recipe.getFluidInputs().size(), getMinFluidInputs(), getMaxFluidInputs());
+            GTLog.logger.error("Stacktrace:", new IllegalArgumentException());
+            recipeStatus = EnumValidationResult.INVALID;
+        }
+        if (!GTUtility.isBetweenInclusive(getMinFluidOutputs(), getMaxFluidOutputs(), recipe.getFluidOutputs().size())) {
+            GTLog.logger.error("Invalid amount of recipe fluid outputs. Actual: {}. Should be between {} and {} inclusive.", recipe.getFluidOutputs().size(), getMinFluidOutputs(), getMaxFluidOutputs());
+            GTLog.logger.error("Stacktrace:", new IllegalArgumentException());
+            recipeStatus = EnumValidationResult.INVALID;
+        }
+        return ValidationResult.newResult(recipeStatus, recipe);
+    }
+    
     @Nullable
     public Recipe findRecipe(long voltage, IItemHandlerModifiable inputs, IMultipleTankHandler fluidInputs, int outputFluidTankCapacity) {
         return this.findRecipe(voltage, GTUtility.itemHandlerToList(inputs), GTUtility.fluidHandlerToList(fluidInputs), outputFluidTankCapacity);
