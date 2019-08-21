@@ -84,10 +84,6 @@ public class MetaTileEntityPump extends TieredMetaTileEntity {
         }
         Textures.SCREEN.renderSided(EnumFacing.UP, renderState, translation, pipeline);
         Textures.PIPE_IN_OVERLAY.renderSided(EnumFacing.DOWN, renderState, translation, pipeline);
-        for (int i = 0; i < pumpHeadY; i++) {
-            translation.translate(0.0, -1.0, 0.0);
-            Textures.SOLID_STEEL_CASING.render(renderState, translation, pipeline, PIPE_CUBOID);
-        }
     }
 
     @Override
