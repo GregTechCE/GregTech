@@ -396,6 +396,7 @@ public class ToolMetaItem<T extends ToolMetaItem<?>.MetaToolValueItem> extends M
     }
 
     @Override
+    @SideOnly(Side.CLIENT)
     public void addInformation(ItemStack itemStack, @Nullable World worldIn, List<String> lines, ITooltipFlag tooltipFlag) {
         T item = getItem(itemStack);
         if (item == null) {

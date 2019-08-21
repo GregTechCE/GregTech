@@ -4,11 +4,14 @@ import gregtech.api.util.world.DummyWorld;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.lang.reflect.Method;
 import java.util.List;
 import java.util.Objects;
 
+@SideOnly(Side.CLIENT)
 public class ModCompatibility {
 
     private static RefinedStorage refinedStorage;
@@ -21,7 +24,7 @@ public class ModCompatibility {
             GTLog.logger.info("RefinedStorage found; enabling integration.");
         } catch (ClassNotFoundException ignored) {
             GTLog.logger.info("RefinedStorage not found; skipping integration.");
-        } catch (ReflectiveOperationException exception) {
+        } catch (Throwable exception) {
             GTLog.logger.error("Failed to enable RefinedStorage integration", exception);
         }
         try {
@@ -30,7 +33,7 @@ public class ModCompatibility {
             GTLog.logger.info("AppliedEnergistics2 found; enabling integration.");
         } catch (ClassNotFoundException ignored) {
             GTLog.logger.info("AppliedEnergistics2 not found; skipping integration.");
-        } catch (ReflectiveOperationException exception) {
+        } catch (Throwable exception) {
             GTLog.logger.error("Failed to enable AppliedEnergistics2 integration", exception);
         }
     }

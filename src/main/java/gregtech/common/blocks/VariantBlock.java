@@ -14,6 +14,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.NonNullList;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nullable;
 import java.util.Arrays;
@@ -61,6 +63,7 @@ public class VariantBlock<T extends Enum<T> & IStringSerializable> extends Block
     }
 
     @Override
+    @SideOnly(Side.CLIENT)
     public void addInformation(ItemStack stack, @Nullable World player, List<String> tooltip, ITooltipFlag advanced) {
         //tier less tooltip like: tile.turbine_casing.tooltip
         String unlocalizedVariantTooltip = getUnlocalizedName() + ".tooltip";
