@@ -2,12 +2,12 @@ package gregtech.integration.jei.recipe.primitive;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.EnumSet;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import gregtech.api.recipes.CountableIngredient;
 import gregtech.api.recipes.RecipeMaps;
-import gregtech.api.recipes.recipes.OreByProductFakeRecipe;
 import gregtech.api.unification.OreDictUnifier;
 import gregtech.api.unification.material.type.DustMaterial;
 import gregtech.api.unification.material.type.Material;
@@ -19,25 +19,53 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.item.ItemStack;
 
-public class OreByProductFakeRecipeWrapper implements IRecipeWrapper {
+public class OreByProductWrapper implements IRecipeWrapper {
 
-	private final OreByProductFakeRecipe recipe;
+	//private final OreByProductData recipe;
 	private final List<List<ItemStack>> matchingInputs = new ArrayList<>();
 	private final List<ItemStack> oreProcessingSteps = new ArrayList<>();
 	private final List<ItemStack> outputs = new ArrayList<>();
 	
-	public OreByProductFakeRecipeWrapper(OreByProductFakeRecipe recipe) {
-		this.recipe = recipe;
+	public final DustMaterial material;
+	public final List<ItemStack> oreIngredients;
+	public final List<ItemStack> byProductIngredients;
+	public final static EnumSet<OrePrefix> ores = EnumSet.of(
+			OrePrefix.ore, 
+			OrePrefix.oreBasalt, 
+			OrePrefix.oreBlackgranite, 
+			OrePrefix.oreEndstone, 
+			OrePrefix.oreGravel, 
+			OrePrefix.oreMarble,
+			OrePrefix.oreNetherrack,
+			OrePrefix.oreRedgranite,
+			OrePrefix.oreSand);	
+	
+	public OreByProductWrapper(DustMaterial material) {
+		this.material = material;
+		this.oreIngredients = new ArrayList<ItemStack>();
+		for(OrePrefix ore : ores)
+		this.oreIngredients.add(OreDictUnifier.get(ore, material));
+		this.byProductIngredients =  new ArrayList<ItemStack>();
+		
+		for(Material mat : material.oreByProducts)
+			this.byProductIngredients.add(OreDictUnifier.get(OrePrefix.dust, mat));
+		
+		this.oreProcessingSteps.add(OreDictUnifier.get(OrePrefix.crushed, material));
+		this.oreProcessingSteps.add(OreDictUnifier.get(OrePrefix.crushedPurified, material));
+		this.oreProcessingSteps.add(OreDictUnifier.get(OrePrefix.crushedCentrifuged, material));
+		this.oreProcessingSteps.add(OreDictUnifier.get(OrePrefix.dustImpure, material));
+		this.oreProcessingSteps.add(OreDictUnifier.get(OrePrefix.dustPure, material));
+		this.oreProcessingSteps.add(OreDictUnifier.get(OrePrefix.dust, material));
+		
 		List<ItemStack> inputOres = new ArrayList<ItemStack>();
-		inputOres.addAll(recipe.oreIngredients);
+		inputOres.addAll(oreIngredients);
 		matchingInputs.add(inputOres);
-		oreProcessingSteps.addAll(recipe.oreProcessingSteps);
 		for(ItemStack stack : oreProcessingSteps) {
 			List<ItemStack> stepStack = new ArrayList<ItemStack>();
 			stepStack.add(stack);
 			matchingInputs.add(stepStack);
 		}
-		outputs.addAll(recipe.byProductIngredients);
+		outputs.addAll(byProductIngredients);
 	}
 	
 	@Override
@@ -54,7 +82,7 @@ public class OreByProductFakeRecipeWrapper implements IRecipeWrapper {
 		case 1: //Crushed
 			addOreTooltip(tooltip, 0, RecipeMaps.ORE_WASHER_RECIPES.getLocalizedName(), false);
 			addOreTooltip(tooltip, 0, RecipeMaps.MACERATOR_RECIPES.getLocalizedName(), false);
-			if(recipe.material.washedIn != null) addOreTooltip(tooltip, 3, RecipeMaps.CHEMICAL_BATH_RECIPES.getLocalizedName(), false);
+			if(material.washedIn != null) addOreTooltip(tooltip, 3, RecipeMaps.CHEMICAL_BATH_RECIPES.getLocalizedName(), false);
 			addOreTooltip(tooltip, 0, RecipeMaps.THERMAL_CENTRIFUGE_RECIPES.getLocalizedName(), false);
 			break;
 		case 2: //Crushed Purified
@@ -87,7 +115,8 @@ public class OreByProductFakeRecipeWrapper implements IRecipeWrapper {
 			addOreTooltip(tooltip, 4, RecipeMaps.CENTRIFUGE_RECIPES.getLocalizedName(), true);
 			break;
 		case 10: //4th Byproduct
-			if(recipe.material.washedIn != null)addOreTooltip(tooltip, 1, RecipeMaps.CHEMICAL_BATH_RECIPES.getLocalizedName(), true);
+			if(material.washedIn != null)addOreTooltip(tooltip, 1, RecipeMaps.CHEMICAL_BATH_RECIPES.getLocalizedName(), true);
+			else tooltip.add(I18n.format("gregtech.jei.ore_by_product_not_obtainable"));
 			break;
 		default:
 			break;
@@ -103,12 +132,12 @@ public class OreByProductFakeRecipeWrapper implements IRecipeWrapper {
 	}
 	
 	public void addOreTooltip(List<String> tooltip, int byproduct, String machine, boolean result) {
-		Material byProductMaterial = GTUtility.selectItemInList(byproduct, recipe.material, recipe.material.oreByProducts, DustMaterial.class);
+		Material byProductMaterial = GTUtility.selectItemInList(byproduct, material, material.oreByProducts, DustMaterial.class);
 		if(!result)tooltip.add(I18n.format("gregtech.jei.ore_by_product_from_ore", machine, byProductMaterial.getLocalizedName()));
 		else {
 			String oreType = byproduct == 0 ? 
-					recipe.oreIngredients.get(0).getDisplayName() : 
-					recipe.oreProcessingSteps.get(byproduct - 1).getDisplayName();
+					oreIngredients.get(0).getDisplayName() : 
+					oreProcessingSteps.get(byproduct - 1).getDisplayName();
 			tooltip.add(I18n.format("gregtech.jei.ore_by_product_from_machine", oreType, machine));		
 		}
 	}

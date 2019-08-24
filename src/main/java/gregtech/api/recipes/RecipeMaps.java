@@ -6,7 +6,6 @@ import gregtech.api.gui.widgets.ProgressWidget.MoveType;
 import gregtech.api.recipes.builders.*;
 import gregtech.api.recipes.machines.*;
 import gregtech.api.recipes.recipes.CokeOvenRecipe;
-import gregtech.api.recipes.recipes.OreByProductFakeRecipe;
 import gregtech.api.recipes.recipes.PrimitiveBlastFurnaceRecipe;
 import stanhebben.zenscript.annotations.ZenClass;
 import stanhebben.zenscript.annotations.ZenMethod;
@@ -710,9 +709,6 @@ public class RecipeMaps {
 
     @ZenProperty
     public static final List<CokeOvenRecipe> COKE_OVEN_RECIPES = new CopyOnWriteArrayList<>();
-    
-    @ZenProperty
-    public static final List<OreByProductFakeRecipe> ORE_BY_PRODUCT_FAKE_RECIPES = new CopyOnWriteArrayList<OreByProductFakeRecipe>();
 
     @ZenMethod
     public static List<PrimitiveBlastFurnaceRecipe> getPrimitiveBlastFurnaceRecipes() {

@@ -2,7 +2,6 @@ package gregtech.integration.jei.recipe.primitive;
 
 import gregtech.api.gui.GuiTextures;
 import gregtech.api.recipes.recipes.CokeOvenRecipe;
-import gregtech.api.recipes.recipes.OreByProductFakeRecipe;
 import mezz.jei.api.IGuiHelper;
 import mezz.jei.api.gui.IDrawable;
 import mezz.jei.api.gui.IDrawableAnimated;
@@ -15,14 +14,14 @@ import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.recipe.IRecipeWrapper;
 import net.minecraft.client.Minecraft;
 
-public class OreByProductFakeRecipeCategory extends PrimitiveRecipeCategory<OreByProductFakeRecipe, OreByProductFakeRecipeWrapper>{
+public class OreByProductCategory extends PrimitiveRecipeCategory<OreByProductWrapper, OreByProductWrapper>{
 
 	protected final IDrawable slot;
 	protected final IDrawable arrowBackground;
 	protected final IDrawableStatic arrowForeground;
 	protected final IDrawableAnimated arrowAnimation;
 	
-	public OreByProductFakeRecipeCategory(IGuiHelper guiHelper) {
+	public OreByProductCategory(IGuiHelper guiHelper) {
 		super("ore_by_product", 
 				"recipemap.byproductlist.name", 
 				guiHelper.createBlankDrawable(176, 166), 
@@ -35,7 +34,7 @@ public class OreByProductFakeRecipeCategory extends PrimitiveRecipeCategory<OreB
 	}
 
 	@Override
-	public void setRecipe(IRecipeLayout recipeLayout, OreByProductFakeRecipeWrapper recipeWrapper, IIngredients ingredients) {
+	public void setRecipe(IRecipeLayout recipeLayout, OreByProductWrapper recipeWrapper, IIngredients ingredients) {
 		IGuiItemStackGroup itemStackGroup = recipeLayout.getItemStacks();
 		itemStackGroup.init(0, true,  22,  29); //Ore
 		itemStackGroup.init(1, true,  70,  19); //Crushed
@@ -53,8 +52,8 @@ public class OreByProductFakeRecipeCategory extends PrimitiveRecipeCategory<OreB
 	}
 
 	@Override
-	public IRecipeWrapper getRecipeWrapper(OreByProductFakeRecipe recipe) {
-		return new OreByProductFakeRecipeWrapper(recipe);
+	public IRecipeWrapper getRecipeWrapper(OreByProductWrapper recipe) {
+		return recipe;
 	}
 
 	@Override
