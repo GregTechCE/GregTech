@@ -44,7 +44,7 @@ public class ItemFilterWrapper {
 
     public void onFilterInstanceChange() {
         if (currentItemFilter != null) {
-            currentItemFilter.setMaxStackSize(maxStackSize);
+            currentItemFilter.setMaxStackSize(getInternalMaxStackSize());
         }
         dirtyNotifiable.markAsDirty();
     }
@@ -57,6 +57,7 @@ public class ItemFilterWrapper {
 
     public void setBlacklistFilter(boolean blacklistFilter) {
         isBlacklistFilter = blacklistFilter;
+        onFilterInstanceChange();
         dirtyNotifiable.markAsDirty();
     }
 
@@ -66,6 +67,14 @@ public class ItemFilterWrapper {
 
     public int getMaxStackSize() {
         return maxStackSize;
+    }
+
+    private int getInternalMaxStackSize() {
+        if (isBlacklistFilter()) {
+            return 1;
+        } else {
+            return getMaxStackSize();
+        }
     }
 
     public boolean showGlobalTransferLimitSlider() {

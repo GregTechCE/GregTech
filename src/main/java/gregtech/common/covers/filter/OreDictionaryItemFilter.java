@@ -14,7 +14,6 @@ import java.util.regex.Pattern;
 
 public class OreDictionaryItemFilter extends ItemFilter {
 
-    private static final Object MATCH_RESULT_TRUE = new Object();
     private static final Pattern ORE_DICTIONARY_FILTER = Pattern.compile("\\*?[a-zA-Z0-9_]*\\*?");
 
     protected String oreDictionaryFilter = "";
@@ -40,8 +39,7 @@ public class OreDictionaryItemFilter extends ItemFilter {
 
     @Override
     public Object matchItemStack(ItemStack itemStack) {
-        boolean matches = matchesOreDictionaryFilter(getOreDictionaryFilter(), itemStack);
-        return matches ? MATCH_RESULT_TRUE : null;
+        return matchesOreDictionaryFilter(getOreDictionaryFilter(), itemStack);
     }
 
     @Override
@@ -69,9 +67,9 @@ public class OreDictionaryItemFilter extends ItemFilter {
         this.oreDictionaryFilter = tagCompound.getString("OreDictionaryFilter");
     }
 
-    public static boolean matchesOreDictionaryFilter(String oreDictionaryFilter, ItemStack itemStack) {
+    public static String matchesOreDictionaryFilter(String oreDictionaryFilter, ItemStack itemStack) {
         if (oreDictionaryFilter.isEmpty()) {
-            return false;
+            return null;
         }
         boolean startWildcard = oreDictionaryFilter.charAt(0) == '*';
         boolean endWildcard = oreDictionaryFilter.length() > 1 && oreDictionaryFilter.charAt(oreDictionaryFilter.length() - 1) == '*';
@@ -83,10 +81,10 @@ public class OreDictionaryItemFilter extends ItemFilter {
         }
         for (String stackOreName : OreDictUnifier.getOreDictionaryNames(itemStack)) {
             if (areOreDictNamesEqual(startWildcard, endWildcard, oreDictionaryFilter, stackOreName)) {
-                return true;
+                return stackOreName;
             }
         }
-        return false;
+        return null;
     }
 
     private static boolean areOreDictNamesEqual(boolean startWildcard, boolean endWildcard, String oreDictName, String stackOreName) {

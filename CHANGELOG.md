@@ -1,5 +1,15 @@
 ## Changelog
 
+### 1.8.6
+* Fixed inability to make dark concrete bricks.
+* Fixed Air Collector consuming EU when tank is full.
+* Disabled decomposition of more organic compounds.
+* Removed max voltage transformer.
+* Prevent invalid models on facades from crashing game.
+* Fixed JEI multiblock preview not showing machines.
+* Fixed robotic arm modes not working.
+* Allow controlling battery buffers output via machine controller.
+
 ### 1.8.4
 * Added Energy Field Projector.
 * Fix server side crash with covers on pipes.
