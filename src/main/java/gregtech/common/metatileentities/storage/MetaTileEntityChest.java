@@ -10,7 +10,6 @@ import codechicken.lib.vec.Matrix4;
 import gregtech.api.gui.GuiTextures;
 import gregtech.api.gui.ModularUI;
 import gregtech.api.gui.ModularUI.Builder;
-import gregtech.api.gui.impl.ModularUIContainer;
 import gregtech.api.gui.widgets.SortingButtonWidget;
 import gregtech.api.metatileentity.IFastRenderMetaTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
@@ -22,7 +21,6 @@ import gregtech.api.util.GTUtility;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -79,18 +77,7 @@ public class MetaTileEntityChest extends MetaTileEntity implements IFastRenderMe
 
         if (!getWorld().isRemote && this.numPlayersUsing != 0 && getTimer() % 200 == 0) {
             int lastPlayersUsing = numPlayersUsing;
-            this.numPlayersUsing = 0;
-            AxisAlignedBB box = new AxisAlignedBB(getPos()).expand(10.0, 10.0, 10.0);
-            List<EntityPlayerMP> entities = getWorld().getEntitiesWithinAABB(EntityPlayerMP.class, box);
-            for (EntityPlayerMP player : entities) {
-                if (player.openContainer instanceof ModularUIContainer) {
-                    ModularUI modularUI = ((ModularUIContainer) player.openContainer).getModularUI();
-                    if (modularUI.holder instanceof MetaTileEntityHolder &&
-                        ((MetaTileEntityHolder) modularUI.holder).getMetaTileEntity() == this) {
-                        this.numPlayersUsing++;
-                    }
-                }
-            }
+            this.numPlayersUsing = GTUtility.findPlayersUsing(this, 10.0).size();
             if (lastPlayersUsing != numPlayersUsing) {
                 updateNumPlayersUsing();
             }
@@ -111,13 +98,11 @@ public class MetaTileEntityChest extends MetaTileEntity implements IFastRenderMe
             } else {
                 this.lidAngle -= 0.1F;
             }
-
             if (this.lidAngle > 1.0F) {
                 this.lidAngle = 1.0F;
             } else if (this.lidAngle < 0.0F) {
                 this.lidAngle = 0.0F;
             }
-
             if (this.lidAngle < 0.5F && currentValue >= 0.5F) {
                 double soundX = blockPos.getX() + 0.5;
                 double soundZ = blockPos.getZ() + 0.5;
@@ -315,7 +300,7 @@ public class MetaTileEntityChest extends MetaTileEntity implements IFastRenderMe
         if(result != 0) {
             return result;
         }*/
-        //so far InventoryTweaks use sorting by raw numeric IDs, and we'll too to keep things consistent
+        //so far InventoryTweaks uses sorting by raw numeric IDs, and we'll too to keep things consistent
         //TODO make this use registry names after 1.13 transition because IDs don't make sense
         int firstItemId = Item.REGISTRY.getIDForObject(stack1.getItem());
         int secondItemId = Item.REGISTRY.getIDForObject(stack2.getItem());

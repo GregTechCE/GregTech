@@ -68,7 +68,7 @@ public class BlockFluidPipe extends BlockPipe<FluidPipeType, FluidPipeProperties
 
     @Override
     protected FluidPipeProperties createProperties(FluidPipeType fluidPipeType, Material material) {
-        return fluidPipeType.modifyProperties(enabledMaterials.get(material));
+        return fluidPipeType.modifyProperties(enabledMaterials.getOrDefault(material, getFallbackType()));
     }
 
     @Override

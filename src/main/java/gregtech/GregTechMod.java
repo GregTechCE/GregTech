@@ -30,6 +30,8 @@ import gregtech.common.covers.CoverBehaviors;
 import gregtech.common.covers.filter.FilterTypeRegistry;
 import gregtech.common.items.MetaItems;
 import gregtech.common.metatileentities.MetaTileEntities;
+import gregtech.common.worldgen.LootTableHelper;
+import gregtech.common.worldgen.WorldGenAbandonedBase;
 import gregtech.common.worldgen.WorldGenRubberTree;
 import gregtech.integration.multipart.GTMultipartFactory;
 import gregtech.integration.theoneprobe.TheOneProbeCompatibility;
@@ -134,8 +136,9 @@ public class GregTechMod {
         WorldGenRegistry.INSTANCE.initializeRegistry();
         if (!ConfigHolder.disableRubberTreeGeneration) {
             GameRegistry.registerWorldGenerator(new WorldGenRubberTree(), 10000);
+            GameRegistry.registerWorldGenerator(new WorldGenAbandonedBase(), 20000);
         }
-
+        LootTableHelper.initialize();
         FilterTypeRegistry.init();
         CoverBehaviors.init();
         DungeonLootLoader.init();

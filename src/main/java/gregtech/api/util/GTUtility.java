@@ -7,8 +7,11 @@ import com.google.common.collect.Lists;
 import gregtech.api.capability.GregtechCapabilities;
 import gregtech.api.capability.IElectricItem;
 import gregtech.api.capability.IMultipleTankHandler;
+import gregtech.api.gui.ModularUI;
+import gregtech.api.gui.impl.ModularUIContainer;
 import gregtech.api.items.IToolItem;
 import gregtech.api.metatileentity.MetaTileEntity;
+import gregtech.api.metatileentity.MetaTileEntityHolder;
 import gregtech.common.ConfigHolder;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockRedstoneWire;
@@ -32,6 +35,7 @@ import net.minecraft.network.play.server.SPacketBlockChange;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.*;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
@@ -524,6 +528,22 @@ public class GTUtility {
                 return backedList.size();
             }
         };
+    }
+
+    public static List<EntityPlayerMP> findPlayersUsing(MetaTileEntity metaTileEntity, double radius) {
+        ArrayList<EntityPlayerMP> result = new ArrayList<>();
+        AxisAlignedBB box = new AxisAlignedBB(metaTileEntity.getPos()).expand(radius, radius, radius);
+        List<EntityPlayerMP> entities = metaTileEntity.getWorld().getEntitiesWithinAABB(EntityPlayerMP.class, box);
+        for (EntityPlayerMP player : entities) {
+            if (player.openContainer instanceof ModularUIContainer) {
+                ModularUI modularUI = ((ModularUIContainer) player.openContainer).getModularUI();
+                if (modularUI.holder instanceof MetaTileEntityHolder &&
+                    ((MetaTileEntityHolder) modularUI.holder).getMetaTileEntity() == metaTileEntity) {
+                    result.add(player);
+                }
+            }
+        }
+        return result;
     }
 
     public static <T> boolean iterableContains(Iterable<T> list, Predicate<T> predicate) {

@@ -226,6 +226,12 @@ public class OreDictUnifier {
         return keys.size() > 0 ? keys.get(0).toItemStack(stackSize) : ItemStack.EMPTY;
     }
 
+    public static ItemStack get(String oreDictName) {
+        List<ItemStack> itemStacks = oreDictNameStacks.get(oreDictName);
+        itemStacks.sort(getItemStackComparator());
+        return itemStacks.size() > 0 ? itemStacks.get(0).copy() : ItemStack.EMPTY;
+    }
+
     public static List<Entry<ItemStack, ItemMaterialInfo>> getAllItemInfos() {
         return materialUnificationInfo.entrySet().stream()
             .map(entry -> new SimpleEntry<>(entry.getKey().toItemStack(), entry.getValue()))

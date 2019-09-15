@@ -29,6 +29,7 @@ public class Textures {
 
     public static ChestRenderer WOODEN_CHEST = new ChestRenderer("storage/wooden_chest");
     public static ChestRenderer METAL_CHEST = new ChestRenderer("storage/metal_chest");
+    public static SafeRenderer SAFE = new SafeRenderer("storage/safe");
 
     public static TankRenderer WOODEN_TANK = new TankRenderer("storage/tank/wooden_tank");
     public static TankRenderer METAL_TANK = new TankRenderer("storage/tank/metal_tank");

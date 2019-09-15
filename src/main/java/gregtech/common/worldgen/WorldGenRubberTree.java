@@ -40,7 +40,7 @@ public class WorldGenRubberTree implements IWorldGenerator {
             BiomeDictionary.hasType(biome, Type.WET))
             rubberTreeChance /= 2; //double chance of spawning in swamp or wet biomes
 
-        if (world.provider.isSurfaceWorld() && random.nextInt(rubberTreeChance) == 0) {
+        if (random.nextInt(rubberTreeChance) == 0) {
             randomPos = world.getTopSolidOrLiquidBlock(randomPos).down();
             IBlockState solidBlockState = world.getBlockState(randomPos);
             BlockGregSapling sapling = MetaBlocks.SAPLING;

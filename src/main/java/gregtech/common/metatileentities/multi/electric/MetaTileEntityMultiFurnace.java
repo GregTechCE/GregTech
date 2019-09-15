@@ -132,7 +132,7 @@ public class MetaTileEntityMultiFurnace extends RecipeMapMultiblockController {
         @Override
         protected Recipe findRecipe(long maxVoltage, IItemHandlerModifiable inputs, IMultipleTankHandler fluidInputs) {
             int currentItemsEngaged = 0;
-            int maxItemsLimit = 16 * heatingCoilLevel;
+            int maxItemsLimit = 32 * heatingCoilLevel;
             ArrayList<CountableIngredient> recipeInputs = new ArrayList<>();
             ArrayList<ItemStack> recipeOutputs = new ArrayList<>();
             for (int index = 0; index < inputs.getSlots(); index++) {
@@ -160,8 +160,8 @@ public class MetaTileEntityMultiFurnace extends RecipeMapMultiblockController {
             return recipeInputs.isEmpty() ? null : recipeMap.recipeBuilder()
                 .inputsIngredients(recipeInputs)
                 .outputs(recipeOutputs)
-                .EUt(Math.max(1, 4 * heatingCoilLevel / heatingCoilDiscount))
-                .duration(512)
+                .EUt(Math.max(1, 16 / heatingCoilDiscount))
+                .duration((int) Math.max(1.0, 256 * (currentItemsEngaged / (maxItemsLimit * 1.0))))
                 .build().getResult();
         }
     }

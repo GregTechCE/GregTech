@@ -17,8 +17,11 @@ import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.items.IItemHandlerModifiable;
 
+import java.util.BitSet;
+
 public class EnergyContainerBatteryBuffer extends MTETrait implements IEnergyContainer {
 
+    private BitSet batterySlotsUsedThisTick = new BitSet();
     private final int tier;
 
     public EnergyContainerBatteryBuffer(MetaTileEntity metaTileEntity, int tier) {
@@ -36,12 +39,14 @@ public class EnergyContainerBatteryBuffer extends MTETrait implements IEnergyCon
             }
             IItemHandlerModifiable inventory = getInventory();
             for (int i = 0; i < inventory.getSlots(); i++) {
+                if (batterySlotsUsedThisTick.get(i)) continue;
                 ItemStack batteryStack = inventory.getStackInSlot(i);
                 IElectricItem electricItem = getBatteryContainer(batteryStack);
                 if (electricItem == null) continue;
                 if (chargeItemWithVoltageExact(electricItem, voltage, getTier(), true)) {
                     chargeItemWithVoltageExact(electricItem, voltage, getTier(), false);
                     inventory.setStackInSlot(i, batteryStack);
+                    this.batterySlotsUsedThisTick.set(i);
                     if (--amperage == 0) break;
                 }
             }
@@ -68,6 +73,7 @@ public class EnergyContainerBatteryBuffer extends MTETrait implements IEnergyCon
     @Override
     public void update() {
         if (!metaTileEntity.getWorld().isRemote) {
+            this.batterySlotsUsedThisTick.clear();
             EnumFacing outFacing = metaTileEntity.getFrontFacing();
             TileEntity tileEntity = metaTileEntity.getWorld().getTileEntity(metaTileEntity.getPos().offset(outFacing));
             if (tileEntity == null) {

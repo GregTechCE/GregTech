@@ -21,6 +21,9 @@ public class TileEntityFluidPipe extends TileEntityPipeBase<FluidPipeType, Fluid
     private static final Random random = new Random();
     private IFluidHandler fluidHandler;
 
+    public TileEntityFluidPipe() {
+    }
+
     @Override
     public Class<FluidPipeType> getPipeTypeClass() {
         return FluidPipeType.class;

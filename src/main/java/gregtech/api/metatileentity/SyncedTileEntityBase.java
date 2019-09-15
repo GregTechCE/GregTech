@@ -34,7 +34,7 @@ public abstract class SyncedTileEntityBase extends BlockStateTileEntity {
         }
     }
 
-    private final List<UpdateEntry> updateEntries = new ArrayList<>();
+    protected final List<UpdateEntry> updateEntries = new ArrayList<>();
 
     public void writeCustomData(int discriminator, Consumer<PacketBuffer> dataWriter) {
         ByteBuf backedBuffer = Unpooled.buffer();

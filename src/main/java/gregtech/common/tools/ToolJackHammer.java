@@ -19,6 +19,7 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.FakePlayer;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -152,7 +153,7 @@ public class ToolJackHammer extends ToolDrillLV {
 
     @Override
     public void onBlockDestroyed(ItemStack stack, World world, IBlockState state, BlockPos pos, EntityLivingBase entity) {
-        if(entity instanceof EntityPlayer) {
+        if(entity instanceof EntityPlayer && !(entity instanceof FakePlayer)) {
             EntityPlayer entityPlayer = (EntityPlayer) entity;
             EnumFacing sideHit = ToolUtility.getSideHit(world, pos, entityPlayer);
             int damagePerBlockBreak = getToolDamagePerBlockBreak(stack);

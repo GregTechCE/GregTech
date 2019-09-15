@@ -26,10 +26,7 @@ import gregtech.common.metatileentities.steam.*;
 import gregtech.common.metatileentities.steam.boiler.SteamCoalBoiler;
 import gregtech.common.metatileentities.steam.boiler.SteamLavaBoiler;
 import gregtech.common.metatileentities.steam.boiler.SteamSolarBoiler;
-import gregtech.common.metatileentities.storage.MetaTileEntityChest;
-import gregtech.common.metatileentities.storage.MetaTileEntityQuantumChest;
-import gregtech.common.metatileentities.storage.MetaTileEntityQuantumTank;
-import gregtech.common.metatileentities.storage.MetaTileEntityTank;
+import gregtech.common.metatileentities.storage.*;
 import net.minecraft.util.ResourceLocation;
 
 @SuppressWarnings("WeakerAccess")
@@ -146,6 +143,7 @@ public class MetaTileEntities {
     public static MetaTileEntityChest STAINLESS_STEEL_CHEST;
     public static MetaTileEntityChest TITANIUM_CHEST;
     public static MetaTileEntityChest TUNGSTENSTEEL_CHEST;
+    public static MetaTileEntityLockedSafe LOCKED_SAFE;
 
     public static MetaTileEntityTank WOODEN_TANK;
     public static MetaTileEntityTank BRONZE_TANK;
@@ -482,6 +480,7 @@ public class MetaTileEntities {
         STAINLESS_STEEL_CHEST = GregTechAPI.registerMetaTileEntity(804, new MetaTileEntityChest(gregtechId("stainless_steel_chest"), Materials.StainlessSteel, 9, 10));
         TITANIUM_CHEST = GregTechAPI.registerMetaTileEntity(805, new MetaTileEntityChest(gregtechId("titanium_chest"), Materials.Titanium, 12, 10));
         TUNGSTENSTEEL_CHEST = GregTechAPI.registerMetaTileEntity(806, new MetaTileEntityChest(gregtechId("tungstensteel_chest"), Materials.TungstenSteel, 12, 14));
+        LOCKED_SAFE = GregTechAPI.registerMetaTileEntity(824, new MetaTileEntityLockedSafe(gregtechId("locked_safe")));
 
         WOODEN_TANK = GregTechAPI.registerMetaTileEntity(811, new MetaTileEntityTank(gregtechId("wooden_tank"), Materials.Wood, 4000));
         BRONZE_TANK = GregTechAPI.registerMetaTileEntity(812, new MetaTileEntityTank(gregtechId("bronze_tank"), Materials.Bronze, 8000));
