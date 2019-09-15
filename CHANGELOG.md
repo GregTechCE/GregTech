@@ -1,5 +1,10 @@
 ## Changelog
 
+### 1.8.8
+* Fixed locked safe not having textures.
+* Added config value for rarity of abandoned base generation.
+* Bump version.
+
 ### 1.8.7
 - ##### Added WorldGen - abandoned structures.
   * Can spawn anywhere in the world on the surface

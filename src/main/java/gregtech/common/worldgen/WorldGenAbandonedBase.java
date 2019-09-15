@@ -1,6 +1,7 @@
 package gregtech.common.worldgen;
 
 import gregtech.api.GTValues;
+import gregtech.common.ConfigHolder;
 import net.minecraft.util.Mirror;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Rotation;
@@ -19,14 +20,15 @@ import java.util.Random;
 public class WorldGenAbandonedBase implements IWorldGenerator {
     @Override
     public void generate(Random random, int chunkX, int chunkZ, World world, IChunkGenerator chunkGenerator, IChunkProvider chunkProvider) {
-        if (world.getWorldType() == WorldType.FLAT ||
+        if (ConfigHolder.abandonedBaseRarity == 0 ||
+            world.getWorldType() == WorldType.FLAT ||
             world.provider.getDimensionType() != DimensionType.OVERWORLD ||
             !world.getWorldInfo().isMapFeaturesEnabled()) {
             return; //do not generate in flat worlds, or in non-surface worlds
         }
         BlockPos randomPos = new BlockPos(chunkX * 16 + 8, 0, chunkZ * 16 + 8);
 
-        if (random.nextInt(1000) == 0) {
+        if (random.nextInt(ConfigHolder.abandonedBaseRarity) == 0) {
             int variantNumber = random.nextInt(3);
             Rotation rotation = Rotation.values()[random.nextInt(Rotation.values().length)];
             ResourceLocation templateId = new ResourceLocation(GTValues.MODID, "abandoned_base/abandoned_base_1_" + variantNumber);

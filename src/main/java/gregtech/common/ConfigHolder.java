@@ -30,6 +30,9 @@ public class ConfigHolder {
     @Config.Comment("Energy use multiplier for electric items. Default: 100")
     public static int energyUsageMultiplier = 100;
 
+    @Config.Comment("Chance of generating abandoned base in chunk = 1 / THIS_VALUE. 0 disables abandoned base generation")
+    public static int abandonedBaseRarity = 1000;
+
     @Config.RangeInt(min = 0, max = 100)
     @Config.Comment("Chance with which flint and steel will create fire. Default: 50")
     public static int flintChanceToCreateFire = 50;
