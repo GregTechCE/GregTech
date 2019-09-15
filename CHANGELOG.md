@@ -1,5 +1,16 @@
 ## Changelog
 
+### 1.8.7
+- ##### Added WorldGen - abandoned structures.
+  * Can spawn anywhere in the world on the surface
+  * Contain useful materials for progression, if you can get them!
+  * More is coming soon!
+* Disallowed fake players to use most of GTCE tool abilities.
+* Fixed battery buffers charging batteries wrongly.
+* Buff multi smelter smelting speed & item amount.
+* Fixed pipe syncing sometimes working improperly.
+* Bump version.
+
 ### 1.8.6
 * Fixed inability to make dark concrete bricks.
 * Fixed Air Collector consuming EU when tank is full.
