@@ -36,7 +36,6 @@ import net.minecraft.entity.EntityLiving.SpawnPlacementType;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumDyeColor;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
@@ -45,6 +44,7 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.world.Explosion;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.property.ExtendedBlockState;
@@ -89,7 +89,6 @@ public class BlockMachine extends BlockCustomParticle implements ITileEntityProv
 
     @Override
     public int getHarvestLevel(IBlockState state) {
-
         Integer value = ((IExtendedBlockState) state).getValue(HARVEST_LEVEL);
         return value == null ? 0 : value; //safety check for mods who don't handle state properly
     }
@@ -133,6 +132,18 @@ public class BlockMachine extends BlockCustomParticle implements ITileEntityProv
     public static MetaTileEntity getMetaTileEntity(IBlockAccess blockAccess, BlockPos pos) {
         TileEntity holder = blockAccess.getTileEntity(pos);
         return holder instanceof MetaTileEntityHolder ? ((MetaTileEntityHolder) holder).getMetaTileEntity() : null;
+    }
+
+    @Override
+    public float getBlockHardness(IBlockState blockState, World worldIn, BlockPos pos) {
+        MetaTileEntity metaTileEntity = getMetaTileEntity(worldIn, pos);
+        return metaTileEntity == null ? 1.0f : metaTileEntity.getBlockHardness();
+    }
+
+    @Override
+    public float getExplosionResistance(World world, BlockPos pos, @Nullable Entity exploder, Explosion explosion) {
+        MetaTileEntity metaTileEntity = getMetaTileEntity(world, pos);
+        return metaTileEntity == null ? 1.0f : metaTileEntity.getBlockResistance();
     }
 
     private List<IndexedCuboid6> getCollisionBox(IBlockAccess blockAccess, BlockPos pos) {
@@ -237,9 +248,9 @@ public class BlockMachine extends BlockCustomParticle implements ITileEntityProv
     public void getDrops(NonNullList<ItemStack> drops, IBlockAccess world, BlockPos pos, IBlockState state, int fortune) {
         MetaTileEntity metaTileEntity = tileEntities.get() == null ? getMetaTileEntity(world, pos) : tileEntities.get();
         if (metaTileEntity == null) return;
-
-        ItemStack itemStack = new ItemStack(Item.getItemFromBlock(this), 1,
-            GregTechAPI.META_TILE_ENTITY_REGISTRY.getIdByObjectName(metaTileEntity.metaTileEntityId));
+        if (!metaTileEntity.shouldDropWhenDestroyed())
+            return;
+        ItemStack itemStack = metaTileEntity.getStackForm();
         NBTTagCompound tagCompound = new NBTTagCompound();
         metaTileEntity.writeItemStackData(tagCompound);
         //only set item tag if it's not empty, so newly created items will stack with dismantled

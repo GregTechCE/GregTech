@@ -63,7 +63,7 @@ public class BlockCable extends BlockPipe<Insulation, WireProperties, WorldENet>
 
     @Override
     protected WireProperties createProperties(Insulation insulation, Material material) {
-        return insulation.modifyProperties(enabledMaterials.get(material));
+        return insulation.modifyProperties(enabledMaterials.getOrDefault(material, getFallbackType()));
     }
 
     @Override

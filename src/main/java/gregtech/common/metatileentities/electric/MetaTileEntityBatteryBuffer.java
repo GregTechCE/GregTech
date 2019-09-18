@@ -4,11 +4,14 @@ import codechicken.lib.render.CCRenderState;
 import codechicken.lib.render.pipeline.IVertexOperation;
 import codechicken.lib.vec.Matrix4;
 import gregtech.api.GTValues;
+import gregtech.api.capability.GregtechTileCapabilities;
+import gregtech.api.capability.IControllable;
 import gregtech.api.capability.impl.EnergyContainerBatteryBuffer;
 import gregtech.api.gui.GuiTextures;
 import gregtech.api.gui.ModularUI;
 import gregtech.api.gui.ModularUI.Builder;
 import gregtech.api.gui.widgets.SlotWidget;
+import gregtech.api.metatileentity.MTETrait;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.MetaTileEntityHolder;
 import gregtech.api.metatileentity.TieredMetaTileEntity;
@@ -18,9 +21,12 @@ import gregtech.api.util.PipelineUtil;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.util.Constants.NBT;
 import net.minecraftforge.items.IItemHandlerModifiable;
 import net.minecraftforge.items.ItemStackHandler;
 
@@ -28,9 +34,10 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.List;
 
-public class MetaTileEntityBatteryBuffer extends TieredMetaTileEntity {
+public class MetaTileEntityBatteryBuffer extends TieredMetaTileEntity implements IControllable {
 
     private final int inventorySize;
+    private boolean allowEnergyOutput = true;
 
     public MetaTileEntityBatteryBuffer(ResourceLocation metaTileEntityId, int tier, int inventorySize) {
         super(metaTileEntityId, tier);
@@ -53,6 +60,30 @@ public class MetaTileEntityBatteryBuffer extends TieredMetaTileEntity {
     @Override
     protected void reinitializeEnergyContainer() {
         this.energyContainer = new EnergyContainerBatteryBuffer(this, getTier());
+    }
+
+    @Override
+    public <T> T getCapability(Capability<T> capability, EnumFacing side) {
+        if (capability == GregtechTileCapabilities.CAPABILITY_CONTROLLABLE) {
+            return GregtechTileCapabilities.CAPABILITY_CONTROLLABLE.cast(this);
+        }
+        return super.getCapability(capability, side);
+    }
+
+    @Override
+    public boolean isWorkingEnabled() {
+        return allowEnergyOutput;
+    }
+
+    @Override
+    protected boolean shouldUpdate(MTETrait trait) {
+        return !(trait instanceof EnergyContainerBatteryBuffer) || allowEnergyOutput;
+    }
+
+    @Override
+    public void setWorkingEnabled(boolean isActivationAllowed) {
+        this.allowEnergyOutput = isActivationAllowed;
+        getHolder().notifyBlockUpdate();
     }
 
     @Override
@@ -122,4 +153,19 @@ public class MetaTileEntityBatteryBuffer extends TieredMetaTileEntity {
 		tooltip.add(I18n.format("gregtech.universal.tooltip.amperage_out_till", inventorySize));
 		tooltip.add(I18n.format("gregtech.universal.tooltip.energy_storage_capacity", GTUtility.format(energyContainer.getEnergyCapacity())));
 	}
+
+    @Override
+    public NBTTagCompound writeToNBT(NBTTagCompound data) {
+        NBTTagCompound tagCompound = super.writeToNBT(data);
+        tagCompound.setBoolean("AllowEnergyOutput", allowEnergyOutput);
+        return tagCompound;
+    }
+
+    @Override
+    public void readFromNBT(NBTTagCompound data) {
+        super.readFromNBT(data);
+        if (data.hasKey("AllowEnergyOutput", NBT.TAG_ANY_NUMERIC)) {
+            this.allowEnergyOutput = data.getBoolean("AllowEnergyOutput");
+        }
+    }
 }

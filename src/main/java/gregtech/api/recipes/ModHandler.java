@@ -312,33 +312,15 @@ public class ModHandler {
 
     public static Object[] finalizeShapedRecipeInput(Object... recipe) {
         for (byte i = 0; i < recipe.length; i++) {
-            if (recipe[i] instanceof MetaItem.MetaValueItem) {
-                recipe[i] = ((MetaItem<?>.MetaValueItem) recipe[i]).getStackForm();
-            } else if (recipe[i] instanceof Enum) {
-                recipe[i] = ((Enum<?>) recipe[i]).name();
-            } else if (recipe[i] instanceof UnificationEntry) {
-                recipe[i] = recipe[i].toString();
-            } else if (!(recipe[i] instanceof ItemStack
-                || recipe[i] instanceof Item
-                || recipe[i] instanceof Block
-                || recipe[i] instanceof String
-                || recipe[i] instanceof Character
-                || recipe[i] instanceof Boolean)) {
-                throw new IllegalArgumentException(recipe.getClass().getSimpleName() + " type is not suitable for crafting input.");
-            }
+            recipe[i] = finalizeIngredient(recipe[i]);
         }
-
         int idx = 0;
         ArrayList<Object> recipeList = new ArrayList<>(Arrays.asList(recipe));
 
         while (recipe[idx] instanceof String) {
-
             StringBuilder s = new StringBuilder((String) recipe[idx++]);
-
             while (s.length() < 3) s.append(" ");
-
             if (s.length() > 3) throw new IllegalArgumentException();
-
             for (char c : s.toString().toCharArray()) {
                 String toolName = getToolNameByCharacter(c);
                 if (toolName != null) {
@@ -348,6 +330,24 @@ public class ModHandler {
             }
         }
         return recipeList.toArray();
+    }
+    
+    public static Object finalizeIngredient(Object ingredient) {
+        if (ingredient instanceof MetaItem.MetaValueItem) {
+            ingredient = ((MetaItem<?>.MetaValueItem) ingredient).getStackForm();
+        } else if (ingredient instanceof Enum) {
+            ingredient = ((Enum<?>) ingredient).name();
+        } else if (ingredient instanceof UnificationEntry) {
+            ingredient = ingredient.toString();
+        } else if (!(ingredient instanceof ItemStack
+            || ingredient instanceof Item
+            || ingredient instanceof Block
+            || ingredient instanceof String
+            || ingredient instanceof Character
+            || ingredient instanceof Boolean)) {
+            throw new IllegalArgumentException(ingredient.getClass().getSimpleName() + " type is not suitable for crafting input.");
+        }
+        return ingredient;
     }
 
     /**

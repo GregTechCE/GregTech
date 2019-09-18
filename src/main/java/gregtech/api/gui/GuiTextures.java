@@ -91,6 +91,7 @@ public class GuiTextures {
     public static final TextureArea STRING_SLOT_OVERLAY = TextureArea.fullImage("textures/gui/overlay/string_slot_overlay.png");
 
     //PROGRESS BARS
+    public static final TextureArea PROGRESS_BAR_UNLOCK = TextureArea.fullImage("textures/gui/progress_bar/progress_bar_unlock.png");
     public static final TextureArea PROGRESS_BAR_ARROW = TextureArea.fullImage("textures/gui/progress_bar/progress_bar_arrow.png");
     public static final TextureArea PROGRESS_BAR_ARROW_MULTIPLE = TextureArea.fullImage("textures/gui/progress_bar/progress_bar_arrow_multiple.png");
     public static final TextureArea PROGRESS_BAR_BATH = TextureArea.fullImage("textures/gui/progress_bar/progress_bar_bath.png");

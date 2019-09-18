@@ -28,7 +28,10 @@ public class FacadeItemModel implements IBakedModel, IItemRenderer {
         CCRenderState renderState = CCRenderState.instance();
         renderState.reset();
         renderState.startDrawing(GL11.GL_QUADS, DefaultVertexFormats.ITEM);
-        FacadeRenderer.renderItemCover(renderState, EnumFacing.NORTH.getIndex(), facadeStack, ICoverable.getCoverPlateBox(EnumFacing.NORTH, 2.0 / 16.0));
+        try {
+            FacadeRenderer.renderItemCover(renderState, EnumFacing.NORTH.getIndex(), facadeStack, ICoverable.getCoverPlateBox(EnumFacing.NORTH, 2.0 / 16.0));
+        } catch (Throwable ignored) {
+        }
         renderState.draw();
     }
 

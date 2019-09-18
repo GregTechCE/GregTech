@@ -11,7 +11,9 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.Mirror;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.Rotation;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -227,6 +229,20 @@ public class MetaTileEntityHolder extends TickableTileEntityBase implements IUIH
     @Override
     public boolean shouldRefresh(World world, BlockPos pos, IBlockState oldState, IBlockState newSate) {
         return oldState.getBlock() != newSate.getBlock(); //MetaTileEntityHolder should never refresh (until block changes)
+    }
+
+    @Override
+    public void rotate(Rotation rotationIn) {
+        if (metaTileEntity != null) {
+            metaTileEntity.setFrontFacing(rotationIn.rotate(metaTileEntity.getFrontFacing()));
+        }
+    }
+
+    @Override
+    public void mirror(Mirror mirrorIn) {
+        if (metaTileEntity != null) {
+            rotate(mirrorIn.toRotation(metaTileEntity.getFrontFacing()));
+        }
     }
 
     @Override

@@ -81,6 +81,7 @@ public abstract class MetaTileEntity implements ICoverable {
     private int[] sidedRedstoneOutput = new int[6];
     private int[] sidedRedstoneInput = new int[6];
     private int cachedComparatorValue;
+    protected boolean isFragile = false;
 
     private CoverBehavior[] coverBehaviors = new CoverBehavior[6];
 
@@ -192,6 +193,9 @@ public abstract class MetaTileEntity implements ICoverable {
     public void initFromItemStackData(NBTTagCompound itemStack) {
         if (itemStack.hasKey("PaintingColor", NBT.TAG_INT)) {
             setPaintingColor(itemStack.getInteger("PaintingColor"));
+        }
+        if (itemStack.hasKey("Fragile")) {
+            setFragile(itemStack.getBoolean("Fragile"));
         }
     }
 
@@ -642,6 +646,7 @@ public abstract class MetaTileEntity implements ICoverable {
                 buf.writeVarInt(-1);
             }
         }
+        buf.writeBoolean(isFragile);
     }
 
     public void receiveInitialSyncData(PacketBuffer buf) {
@@ -662,6 +667,7 @@ public abstract class MetaTileEntity implements ICoverable {
                 this.coverBehaviors[coverSide.getIndex()] = coverBehavior;
             }
         }
+        this.isFragile = buf.readBoolean();
     }
 
     public void writeTraitData(MTETrait trait, int internalId, Consumer<PacketBuffer> dataWriter) {
@@ -714,6 +720,9 @@ public abstract class MetaTileEntity implements ICoverable {
             if (coverBehavior != null) {
                 coverBehavior.readUpdateData(internalId, buf);
             }
+        } else if (dataId == -8) {
+            this.isFragile = buf.readBoolean();
+            getHolder().scheduleChunkForRenderUpdate();
         }
     }
 
@@ -962,6 +971,15 @@ public abstract class MetaTileEntity implements ICoverable {
         }
     }
 
+    public void setFragile(boolean fragile) {
+        this.isFragile = fragile;
+        if (getWorld() != null && !getWorld().isRemote) {
+            getHolder().notifyBlockUpdate();
+            markDirty();
+            writeCustomData(-8, buf -> buf.writeBoolean(fragile));
+        }
+    }
+
     public boolean isValidFrontFacing(EnumFacing facing) {
         return facing != EnumFacing.UP && facing != EnumFacing.DOWN;
     }
@@ -1007,6 +1025,7 @@ public abstract class MetaTileEntity implements ICoverable {
             }
         }
         data.setTag("Covers", coversList);
+        data.setBoolean("Fragile", isFragile);
         return data;
     }
 
@@ -1039,6 +1058,8 @@ public abstract class MetaTileEntity implements ICoverable {
                 this.coverBehaviors[coverSide.getIndex()] = coverBehavior;
             }
         }
+
+        this.isFragile = data.getBoolean("Fragile");
     }
 
     @Override
@@ -1102,4 +1123,19 @@ public abstract class MetaTileEntity implements ICoverable {
         return exportFluids;
     }
 
+    public boolean isFragile() {
+        return isFragile;
+    }
+
+    public boolean shouldDropWhenDestroyed() {
+        return !isFragile();
+    }
+
+    public float getBlockHardness() {
+        return 6.0f;
+    }
+
+    public float getBlockResistance() {
+        return 6.0f;
+    }
 }

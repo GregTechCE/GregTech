@@ -1,5 +1,31 @@
 ## Changelog
 
+### 1.8.8
+* Fixed locked safe not having textures.
+* Added config value for rarity of abandoned base generation.
+* Bump version.
+
+### 1.8.7
+- ##### Added WorldGen - abandoned structures.
+  * Can spawn anywhere in the world on the surface
+  * Contain useful materials for progression, if you can get them!
+  * More is coming soon!
+* Disallowed fake players to use most of GTCE tool abilities.
+* Fixed battery buffers charging batteries wrongly.
+* Buff multi smelter smelting speed & item amount.
+* Fixed pipe syncing sometimes working improperly.
+* Bump version.
+
+### 1.8.6
+* Fixed inability to make dark concrete bricks.
+* Fixed Air Collector consuming EU when tank is full.
+* Disabled decomposition of more organic compounds.
+* Removed max voltage transformer.
+* Prevent invalid models on facades from crashing game.
+* Fixed JEI multiblock preview not showing machines.
+* Fixed robotic arm modes not working.
+* Allow controlling battery buffers output via machine controller.
+
 ### 1.8.4
 * Added Energy Field Projector.
 * Fix server side crash with covers on pipes.

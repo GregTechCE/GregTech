@@ -139,10 +139,14 @@ public class MultiblockInfoRecipeWrapper implements IRecipeWrapper, SceneRenderC
         GlStateManager.scale(2.0, 2.0, 2.0);
         GlStateManager.translate(-1.0f, -2.5f, 0.0f);
 
-        GlStateManager.translate(size.x / 2.0f, size.y / 2.0f, size.z / 2.0f);
+        Vector3 centerPosition = new Vector3(size.x / 2.0f, size.y / 2.0f, size.z / 2.0f);
+        GlStateManager.translate(centerPosition.x, centerPosition.y, centerPosition.z);
         GlStateManager.rotate(rotationYaw, 0.0f, 1.0f, 0.0f);
+        GlStateManager.translate(-centerPosition.x, -centerPosition.y, -centerPosition.z);
+
+        GlStateManager.translate(centerPosition.x, centerPosition.y, centerPosition.z);
         GlStateManager.rotate(rotationPitch, 0.0f, 0.0f, 1.0f);
-        GlStateManager.translate(-size.x / 2.0f, -size.y / 2.0f, -size.z / 2.0f);
+        GlStateManager.translate(-centerPosition.x, -centerPosition.y, -centerPosition.z);
 
         if (layerIndex >= 0) {
             GlStateManager.translate(0.0, -layerIndex + 1, 0.0);

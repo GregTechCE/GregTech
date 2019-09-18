@@ -337,6 +337,7 @@ public class CoverConveyor extends CoverBehavior implements CoverWithUI, ITickab
                 GroupItemInfo itemInfo = new GroupItemInfo(transferSlotIndex, new HashSet<>(), 0);
                 itemInfo.itemStackTypes.add(itemStackKey);
                 itemInfo.totalCount += itemStack.getCount();
+                result.put(transferSlotIndex, itemInfo);
             } else {
                 GroupItemInfo itemInfo = result.get(transferSlotIndex);
                 itemInfo.itemStackTypes.add(itemStackKey);

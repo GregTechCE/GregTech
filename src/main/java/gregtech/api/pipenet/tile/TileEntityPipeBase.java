@@ -69,6 +69,9 @@ public abstract class TileEntityPipeBase<PipeType extends Enum<PipeType> & IPipe
         this.pipeMaterial = tileEntity.getPipeMaterial();
         this.blockedConnectionsMap = tileEntity.getBlockedConnectionsMap();
         this.insulationColor = tileEntity.getInsulationColor();
+        if (tileEntity instanceof TileEntityPipeBase) {
+            this.updateEntries.addAll(((TileEntityPipeBase<?, ?>) tileEntity).updateEntries);
+        }
         tileEntity.getCoverableImplementation().transferDataTo(coverableImplementation);
         recomputeBlockedConnections();
     }

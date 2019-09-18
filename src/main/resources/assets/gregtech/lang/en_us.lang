@@ -1632,6 +1632,7 @@ behavior.toggle_energy_consumer.tooltip=Use to toggle mode
 enchantment.damage.endermen=Disjunction
 enchantment.damage.radioactivity=Radioactivity
 
+tile.gt.seal.name=Sealed Block
 tile.gt.foam.name=Foam
 tile.gt.reinforced_foam.name=Reinforced Foam
 tile.gt.petrified_foam.name=Petrified Foam
@@ -1749,6 +1750,10 @@ gregtech.machine.steel_chest.name=Steel Chest
 gregtech.machine.stainless_steel_chest.name=Stainless Steel Chest
 gregtech.machine.titanium_chest.name=Titanium Chest
 gregtech.machine.tungstensteel_chest.name=Tungstensteel Chest
+gregtech.machine.locked_safe.name=Locked Safe
+
+gregtech.machine.locked_safe.malfunctioning=§cMalfunctioning!
+gregtech.machine.locked_safe.requirements=§7Replacements required:
 
 # Tanks
 gregtech.machine.wooden_tank.name=Wooden Tank

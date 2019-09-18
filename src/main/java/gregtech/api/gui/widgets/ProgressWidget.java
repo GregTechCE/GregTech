@@ -9,7 +9,8 @@ public class ProgressWidget extends AbstractPositionedRectangleWidget {
 
     public enum MoveType {
         VERTICAL,
-        HORIZONTAL
+        HORIZONTAL,
+        VERTICAL_INVERTED
     }
 
     public final DoubleSupplier progressSupplier;
@@ -53,6 +54,11 @@ public class ProgressWidget extends AbstractPositionedRectangleWidget {
                 int progressValueScaled = (int) (height * lastProgressValue);
                 filledBarArea.drawSubArea(xPosition, yPosition + height - progressValueScaled, width, progressValueScaled,
                     0.0, 1.0 - (progressValueScaled / (height * 1.0)),
+                    1.0, (progressValueScaled / (height * 1.0)));
+            } else if (moveType == MoveType.VERTICAL_INVERTED) {
+                int progressValueScaled = (int) (height * lastProgressValue);
+                filledBarArea.drawSubArea(xPosition, yPosition, width, progressValueScaled,
+                    0.0, 0.0,
                     1.0, (progressValueScaled / (height * 1.0)));
             }
         }

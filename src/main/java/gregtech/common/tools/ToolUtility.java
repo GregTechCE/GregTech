@@ -21,6 +21,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
 import net.minecraftforge.common.IShearable;
+import net.minecraftforge.common.util.FakePlayer;
 
 import java.util.Collections;
 import java.util.List;
@@ -34,6 +35,9 @@ public class ToolUtility {
     }
 
     public static boolean applyTimberAxe(ItemStack itemStack, World world, BlockPos blockPos, EntityPlayer player) {
+        if (player instanceof FakePlayer) {
+            return false;
+        }
         IBlockState blockState = world.getBlockState(blockPos);
         if(TreeChopTask.isLogBlock(blockState) == 1) {
             if(!world.isRemote) {
@@ -90,14 +94,14 @@ public class ToolUtility {
         }
     }
 
-    public static void applyHammerDrops(Random random, IBlockState blockState, List<ItemStack> drops, int fortuneLevel) {
+    public static void applyHammerDrops(Random random, IBlockState blockState, List<ItemStack> drops, int fortuneLevel, EntityPlayer player) {
         ItemStack itemStack = new ItemStack(blockState.getBlock(), 1, blockState.getBlock().getMetaFromState(blockState));
         Recipe recipe = RecipeMaps.FORGE_HAMMER_RECIPES.findRecipe(Long.MAX_VALUE, Collections.singletonList(itemStack), Collections.emptyList(), 0);
         if (recipe != null && !recipe.getOutputs().isEmpty()) {
             drops.clear();
             for (ItemStack outputStack : recipe.getResultItemOutputs(Integer.MAX_VALUE, random, 0)) {
                 outputStack = outputStack.copy();
-                if (OreDictUnifier.getPrefix(outputStack) == OrePrefix.crushed) {
+                if (!(player instanceof FakePlayer) && OreDictUnifier.getPrefix(outputStack) == OrePrefix.crushed) {
                     int growAmount = Math.round(outputStack.getCount() * random.nextFloat());
                     if (fortuneLevel > 0) {
                         int i = Math.max(0, random.nextInt(fortuneLevel + 2) - 1);
