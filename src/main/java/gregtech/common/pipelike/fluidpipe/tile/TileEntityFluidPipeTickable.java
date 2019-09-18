@@ -16,7 +16,7 @@ import net.minecraftforge.fluids.capability.IFluidHandler;
 
 import java.util.function.Predicate;
 
-public class TileEntityFluidPipeActive extends TileEntityFluidPipe implements ITickable {
+public class TileEntityFluidPipeTickable extends TileEntityFluidPipe implements ITickable {
 
     private static final Predicate<FluidStack> FLUID_FILTER_ALWAYS_TRUE = (fluid) -> true;
     private boolean isActive;

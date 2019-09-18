@@ -192,8 +192,7 @@ public abstract class AbstractRecipeLogic extends MTETrait implements IWorkable 
         for (int i = 0; i < lastItemInputs.length; i++) {
             ItemStack currentStack = inputs.getStackInSlot(i);
             ItemStack lastStack = lastItemInputs[i];
-            if (!ItemStack.areItemsEqual(currentStack, lastStack) ||
-                !ItemStack.areItemStackTagsEqual(currentStack, lastStack)) {
+            if (!areItemStacksEqual(currentStack, lastStack)) {
                 this.lastItemInputs[i] = currentStack.isEmpty() ? ItemStack.EMPTY : currentStack.copy();
                 shouldRecheckRecipe = true;
             } else if (currentStack.getCount() != lastStack.getCount()) {
@@ -217,6 +216,12 @@ public abstract class AbstractRecipeLogic extends MTETrait implements IWorkable 
         return shouldRecheckRecipe;
     }
 
+    private static boolean areItemStacksEqual(ItemStack stackA, ItemStack stackB) {
+        return (stackA.isEmpty() && stackB.isEmpty()) ||
+            (ItemStack.areItemsEqual(stackA, stackB) &&
+                ItemStack.areItemStackTagsEqual(stackA, stackB));
+    }
+
     protected boolean setupAndConsumeRecipeInputs(Recipe recipe) {
         int[] resultOverclock = calculateOverclock(recipe.getEUt(), getMaxVoltage(), recipe.getDuration());
         int totalEUt = resultOverclock[0] * resultOverclock[1];
@@ -226,8 +231,7 @@ public abstract class AbstractRecipeLogic extends MTETrait implements IWorkable 
         IMultipleTankHandler exportFluids = getOutputTank();
         return (totalEUt >= 0 ? getEnergyStored() >= (totalEUt > getEnergyCapacity() / 2 ? resultOverclock[0] : totalEUt) :
             (getEnergyStored() - resultOverclock[0] <= getEnergyCapacity())) &&
-            (!recipe.needsEmptyOutput() || MetaTileEntity.isItemHandlerEmpty(exportInventory)) &&
-            MetaTileEntity.addItemsToItemHandler(exportInventory, true, recipe.getOutputs()) &&
+            MetaTileEntity.addItemsToItemHandler(exportInventory, true, recipe.getAllItemOutputs(exportInventory.getSlots())) &&
             MetaTileEntity.addFluidsToFluidHandler(exportFluids, true, recipe.getFluidOutputs()) &&
             recipe.matches(true, importInventory, importFluids);
     }
@@ -269,8 +273,8 @@ public abstract class AbstractRecipeLogic extends MTETrait implements IWorkable 
         setMaxProgress(resultOverclock[1]);
         this.recipeEUt = resultOverclock[0];
         this.fluidOutputs = GTUtility.copyFluidList(recipe.getFluidOutputs());
-        int byproductChanceMultiplier = getByproductChanceMultiplier(recipe);
-        this.itemOutputs = GTUtility.copyStackList(recipe.getResultItemOutputs(random, byproductChanceMultiplier));
+        int tier = getMachineTierForRecipe(recipe);
+        this.itemOutputs = GTUtility.copyStackList(recipe.getResultItemOutputs(getOutputInventory().getSlots(), random, tier));
         if (this.wasActiveAndNeedsUpdate) {
             this.wasActiveAndNeedsUpdate = false;
         } else {
@@ -278,14 +282,8 @@ public abstract class AbstractRecipeLogic extends MTETrait implements IWorkable 
         }
     }
 
-    protected int getByproductChanceMultiplier(Recipe recipe) {
-        int byproductChanceMultiplier = 1;
-        int tier = GTUtility.getTierByVoltage(getMaxVoltage());
-        int recipeTier = GTUtility.getTierByVoltage(recipe.getEUt());
-        if (tier > GTValues.LV && tier > recipeTier) {
-            byproductChanceMultiplier = 1 << (tier - recipeTier);
-        }
-        return byproductChanceMultiplier;
+    protected int getMachineTierForRecipe(Recipe recipe) {
+        return GTUtility.getTierByVoltage(getMaxVoltage());
     }
 
     protected void completeRecipe() {

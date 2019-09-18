@@ -11,6 +11,7 @@ import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.PacketBuffer;
+import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandlerItem;
@@ -36,11 +37,22 @@ public class PhantomFluidWidget extends AbstractPositionedRectangleWidget implem
         this.fluidStackUpdater = fluidStackUpdater;
     }
 
+    private FluidStack drainFrom(Object ingredient) {
+        if (ingredient instanceof ItemStack) {
+            ItemStack itemStack = (ItemStack) ingredient;
+            IFluidHandlerItem fluidHandler = itemStack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY, null);
+            if (fluidHandler != null)
+                return fluidHandler.drain(Integer.MAX_VALUE, false);
+        }
+        return null;
+    }
+
     @Override
     public List<Target<?>> getPhantomTargets(Object ingredient) {
-        if (!(ingredient instanceof FluidStack)) {
+        if (!(ingredient instanceof FluidStack) && drainFrom(ingredient) == null) {
             return Collections.emptyList();
         }
+
         Rectangle rectangle = sizes.toScreenCoords(toRectangleBox());
         return Lists.newArrayList(new Target<Object>() {
             @Override
@@ -50,8 +62,13 @@ public class PhantomFluidWidget extends AbstractPositionedRectangleWidget implem
 
             @Override
             public void accept(Object ingredient) {
-                if (ingredient instanceof FluidStack) {
-                    FluidStack ingredientStack = (FluidStack) ingredient;
+                FluidStack ingredientStack;
+                if (ingredient instanceof FluidStack)
+                    ingredientStack = (FluidStack) ingredient;
+                else
+                    ingredientStack = drainFrom(ingredient);
+
+                if (ingredientStack != null) {
                     NBTTagCompound tagCompound = ingredientStack.writeToNBT(new NBTTagCompound());
                     writeClientAction(2, buffer -> buffer.writeCompoundTag(tagCompound));
                 }

@@ -2,8 +2,6 @@ package gregtech.api.recipes;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
-import gnu.trove.impl.unmodifiable.TUnmodifiableObjectIntMap;
-import gnu.trove.map.TObjectIntMap;
 import gregtech.api.capability.IMultipleTankHandler;
 import gregtech.api.util.GTUtility;
 import net.minecraft.item.ItemStack;
@@ -13,6 +11,7 @@ import net.minecraftforge.items.IItemHandlerModifiable;
 import org.apache.commons.lang3.Validate;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Class that represent machine recipe.<p>
@@ -42,8 +41,7 @@ public class Recipe {
     /**
      * A chance of 10000 equals 100%
      */
-    private final TObjectIntMap<ItemStack> chancedOutputs;
-
+    private final List<ChanceEntry> chancedOutputs;
     private final List<FluidStack> fluidInputs;
     private final List<FluidStack> fluidOutputs;
 
@@ -59,28 +57,22 @@ public class Recipe {
      */
     private final boolean hidden;
 
-    /**
-     * If this Recipe needs the Output Slots to be completely empty. Needed in case you have randomised Outputs
-     */
-    private final boolean needsEmptyOutput;
-
     private final Map<String, Object> recipeProperties;
 
-    public Recipe(List<CountableIngredient> inputs, List<ItemStack> outputs, TObjectIntMap<ItemStack> chancedOutputs,
+    public Recipe(List<CountableIngredient> inputs, List<ItemStack> outputs, List<ChanceEntry> chancedOutputs,
                   List<FluidStack> fluidInputs, List<FluidStack> fluidOutputs,
-                  Map<String, Object> recipeProperties, int duration, int EUt, boolean hidden, boolean needsEmptyOutput) {
+                  Map<String, Object> recipeProperties, int duration, int EUt, boolean hidden) {
         this.recipeProperties = ImmutableMap.copyOf(recipeProperties);
         this.inputs = NonNullList.create();
         this.inputs.addAll(inputs);
         this.outputs = NonNullList.create();
         this.outputs.addAll(outputs);
-        this.chancedOutputs = new TUnmodifiableObjectIntMap<>(chancedOutputs);
+        this.chancedOutputs = new ArrayList<>(chancedOutputs);
         this.fluidInputs = ImmutableList.copyOf(fluidInputs);
         this.fluidOutputs = ImmutableList.copyOf(fluidOutputs);
         this.duration = duration;
         this.EUt = EUt;
         this.hidden = hidden;
-        this.needsEmptyOutput = needsEmptyOutput;
         //sort input elements in descending order (i.e not consumables inputs are last)
         this.inputs.sort(Comparator.comparing(CountableIngredient::getCount).reversed());
     }
@@ -176,18 +168,33 @@ public class Recipe {
         return outputs;
     }
 
-    public List<ItemStack> getResultItemOutputs(Random random, int byproductChanceMultiplier) {
+    public List<ItemStack> getResultItemOutputs(int maxOutputSlots, Random random, int tier) {
         ArrayList<ItemStack> outputs = new ArrayList<>(GTUtility.copyStackList(getOutputs()));
-        TObjectIntMap<ItemStack> chancedOutputsMap = getChancedOutputs();
-        for (ItemStack chancedOutput : chancedOutputsMap.keySet()) {
-            int outputChance = chancedOutputsMap.get(chancedOutput) * byproductChanceMultiplier;
-            if (random.nextInt(Recipe.getMaxChancedValue()) <= outputChance)
-                outputs.add(chancedOutput.copy());
+        List<ChanceEntry> chancedOutputsList = getChancedOutputs();
+        int maxChancedSlots = maxOutputSlots - outputs.size();
+        if (chancedOutputsList.size() > maxChancedSlots) {
+            chancedOutputsList = chancedOutputsList.subList(0, maxChancedSlots);
+        }
+        for (ChanceEntry chancedOutput : chancedOutputsList) {
+            int outputChance = chancedOutput.getChance() + (chancedOutput.getBoostPerTier() * tier);
+            if (random.nextInt(Recipe.getMaxChancedValue()) <= outputChance) {
+                outputs.add(chancedOutput.getItemStack().copy());
+            }
         }
         return outputs;
     }
 
-    public TObjectIntMap<ItemStack> getChancedOutputs() {
+    public List<ItemStack> getAllItemOutputs(int maxOutputSlots) {
+        List<ItemStack> outputs = new ArrayList<>();
+        outputs.addAll(GTUtility.copyStackList(getOutputs()));
+        outputs.addAll(getChancedOutputs().stream().map(ChanceEntry::getItemStack).collect(Collectors.toList()));
+        if (outputs.size() > maxOutputSlots) {
+            outputs = outputs.subList(0, maxOutputSlots);
+        }
+        return outputs;
+    }
+
+    public List<ChanceEntry> getChancedOutputs() {
         return chancedOutputs;
     }
 
@@ -227,10 +234,6 @@ public class Recipe {
             hasValidInputs &= Arrays.stream(matchingItems).anyMatch(s -> !s.isEmpty());
         }
         return hasValidInputs;
-    }
-
-    public boolean needsEmptyOutput() {
-        return needsEmptyOutput;
     }
 
     public Set<String> getPropertyKeys() {
@@ -274,4 +277,27 @@ public class Recipe {
         return (String) o;
     }
 
+    public static class ChanceEntry {
+        private final ItemStack itemStack;
+        private final int chance;
+        private final int boostPerTier;
+
+        public ChanceEntry(ItemStack itemStack, int chance, int boostPerTier) {
+            this.itemStack = itemStack.copy();
+            this.chance = chance;
+            this.boostPerTier = boostPerTier;
+        }
+
+        public ItemStack getItemStack() {
+            return itemStack.copy();
+        }
+
+        public int getChance() {
+            return chance;
+        }
+
+        public int getBoostPerTier() {
+            return boostPerTier;
+        }
+    }
 }

@@ -20,7 +20,7 @@ public class ToolScoop extends ToolBase {
 
     @Override
     public void onStatsAddedToTool(MetaValueItem item) {
-        item.addStats(new ScoopBehaviour(DamageValues.DAMAGE_FOR_SCOOP));
+        item.addComponents(new ScoopBehaviour(DamageValues.DAMAGE_FOR_SCOOP));
     }
 
 }

@@ -13,6 +13,7 @@ import gregtech.api.util.GTLog;
 import gregtech.common.ConfigHolder;
 import gregtech.common.blocks.MetaBlocks;
 import gregtech.common.blocks.wood.BlockGregLog.LogVariant;
+import gregtech.common.crafting.FacadeRecipe;
 import gregtech.common.items.MetaItems;
 import gregtech.loaders.oreprocessing.ToolRecipeHandler;
 import net.minecraft.block.Block;
@@ -25,6 +26,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
+import net.minecraftforge.oredict.OreIngredient;
 
 public class CraftingRecipeLoader {
 
@@ -33,6 +35,10 @@ public class CraftingRecipeLoader {
     }
 
     private static void loadCraftingRecipes() {
+        registerFacadeRecipe(Materials.Aluminium, 4);
+        registerFacadeRecipe(Materials.WroughtIron, 4);
+        registerFacadeRecipe(Materials.Iron, 4);
+
         ToolRecipeHandler.registerPowerUnitRecipes();
         ModHandler.addShapedRecipe("small_wooden_pipe", OreDictUnifier.get(OrePrefix.pipeSmall, Materials.Wood, 4), "WWW", "h f", 'W', new UnificationEntry(OrePrefix.plank, Materials.Wood));
         ModHandler.addShapedRecipe("medium_wooden_pipe", OreDictUnifier.get(OrePrefix.pipeMedium, Materials.Wood, 2), "WWW", "f h", "WWW", 'W', new UnificationEntry(OrePrefix.plank, Materials.Wood));
@@ -194,6 +200,11 @@ public class CraftingRecipeLoader {
             ModHandler.removeRecipeByName(new ResourceLocation("minecraft:flint_and_steel"));
         }
 
+    }
+
+    private static void registerFacadeRecipe(Material material, int facadeAmount) {
+        OreIngredient ingredient = new OreIngredient(new UnificationEntry(OrePrefix.plate, material).toString());
+        ForgeRegistries.RECIPES.register(new FacadeRecipe(null, ingredient, facadeAmount).setRegistryName("facade_" + material));
     }
 
     private static void registerColoringRecipes(BlockColored block) {

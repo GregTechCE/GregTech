@@ -114,9 +114,8 @@ public class MetaTileEntityPrimitiveBlastFurnace extends MultiblockControllerBas
         if (previousRecipe != null &&
             previousRecipe.getInput().getIngredient().apply(inputStack)) {
             currentRecipe = previousRecipe;
-        } else if (!ItemStack.areItemsEqual(lastInputStack, inputStack) ||
-            !ItemStack.areItemStackTagsEqual(lastInputStack, inputStack)) {
-            this.lastInputStack = inputStack.copy();
+        } else if (!areItemStacksEqual(inputStack, lastInputStack)) {
+            this.lastInputStack = inputStack.isEmpty() ? ItemStack.EMPTY : inputStack.copy();
             currentRecipe = RecipeMaps.PRIMITIVE_BLAST_FURNACE_RECIPES.stream()
                 .filter(it -> it.getInput().getIngredient().test(inputStack))
                 .findFirst().orElse(null);
@@ -125,6 +124,12 @@ public class MetaTileEntityPrimitiveBlastFurnace extends MultiblockControllerBas
             }
         }
         return currentRecipe;
+    }
+
+    private static boolean areItemStacksEqual(ItemStack stackA, ItemStack stackB) {
+        return (stackA.isEmpty() && stackB.isEmpty()) ||
+            (ItemStack.areItemsEqual(stackA, stackB) &&
+                ItemStack.areItemStackTagsEqual(stackA, stackB));
     }
 
     private boolean setupRecipe(ItemStack inputStack, int fuelAmount, PrimitiveBlastFurnaceRecipe recipe) {

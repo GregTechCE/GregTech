@@ -6,7 +6,7 @@ import gregtech.api.capability.impl.ElectricItem;
 import gregtech.api.items.metaitem.stats.IItemBehaviour;
 import gregtech.api.items.metaitem.stats.IItemCapabilityProvider;
 import gregtech.api.items.metaitem.stats.IItemMaxStackSizeProvider;
-import gregtech.api.items.metaitem.stats.IMetaItemStats;
+import gregtech.api.items.metaitem.stats.IItemComponent;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -22,7 +22,7 @@ import net.minecraftforge.common.capabilities.ICapabilityProvider;
 
 import java.util.List;
 
-public class ElectricStats implements IMetaItemStats, IItemCapabilityProvider, IItemMaxStackSizeProvider, IItemBehaviour {
+public class ElectricStats implements IItemComponent, IItemCapabilityProvider, IItemMaxStackSizeProvider, IItemBehaviour {
 
     public static final ElectricStats EMPTY = new ElectricStats(0, 0, false, false);
 

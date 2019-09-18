@@ -25,6 +25,7 @@ import gregtech.common.covers.CoverPump;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
@@ -168,6 +169,11 @@ public abstract class MetaTileEntity implements ICoverable {
     }
 
     @SideOnly(Side.CLIENT)
+    public boolean canRenderInLayer(BlockRenderLayer renderLayer) {
+        return renderLayer == BlockRenderLayer.CUTOUT_MIPPED;
+    }
+
+    @SideOnly(Side.CLIENT)
     public int getPaintingColorForRendering() {
         if (getWorld() == null && renderContextStack != null) {
             NBTTagCompound tagCompound = renderContextStack.getTagCompound();
@@ -199,6 +205,14 @@ public abstract class MetaTileEntity implements ICoverable {
         if (this.paintingColor != DEFAULT_PAINTING_COLOR) { //for machines to stack
             itemStack.setInteger("PaintingColor", this.paintingColor);
         }
+    }
+
+    public void getSubItems(CreativeTabs creativeTab, NonNullList<ItemStack> subItems) {
+        subItems.add(getStackForm());
+    }
+
+    public String getItemSubTypeId(ItemStack itemStack) {
+        return "";
     }
 
     public ICapabilityProvider initItemStackCapabilities(ItemStack itemStack) {
@@ -551,12 +565,12 @@ public abstract class MetaTileEntity implements ICoverable {
         if (hitCuboid.data instanceof CoverSideData) {
             CoverSideData coverSideData = (CoverSideData) hitCuboid.data;
             CoverBehavior behavior = getCoverAtSide(coverSideData.side);
-            return behavior == null ? ItemStack.EMPTY : behavior.getCoverDefinition().getDropItemStack();
+            return behavior == null ? ItemStack.EMPTY : behavior.getPickItem();
         } else if (hitCuboid.data == null || hitCuboid.data instanceof PrimaryBoxData) {
             //data is null -> MetaTileEntity hull hit
             CoverBehavior behavior = getCoverAtSide(result.sideHit);
             if (behavior != null) {
-                return behavior.getCoverDefinition().getDropItemStack();
+                return behavior.getPickItem();
             }
             return getStackForm();
         } else {
@@ -870,15 +884,7 @@ public abstract class MetaTileEntity implements ICoverable {
         }
     }
 
-    public static boolean isItemHandlerEmpty(IItemHandler handler) {
-        for (int i = 0; i < handler.getSlots(); i++) {
-            if (!handler.getStackInSlot(i).isEmpty())
-                return false;
-        }
-        return true;
-    }
-
-    public static boolean addItemsToItemHandler(IItemHandler handler, boolean simulate, NonNullList<ItemStack> items) {
+    public static boolean addItemsToItemHandler(IItemHandler handler, boolean simulate, List<ItemStack> items) {
         boolean insertedAll = true;
         for (ItemStack stack : items) {
             insertedAll &= ItemHandlerHelper.insertItemStacked(handler, stack, simulate).isEmpty();

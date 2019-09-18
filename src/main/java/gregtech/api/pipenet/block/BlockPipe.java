@@ -4,9 +4,7 @@ import codechicken.lib.raytracer.CuboidRayTraceResult;
 import codechicken.lib.raytracer.IndexedCuboid6;
 import codechicken.lib.raytracer.RayTracer;
 import codechicken.lib.vec.Cuboid6;
-import codechicken.multipart.TMultiPart;
-import codechicken.multipart.TileMultipart;
-import gregtech.api.GTValues;
+import cofh.core.render.IBlockAppearance;
 import gregtech.api.GregTechAPI;
 import gregtech.api.block.BuiltInRenderBlock;
 import gregtech.api.capability.GregtechCapabilities;
@@ -16,6 +14,7 @@ import gregtech.api.cover.CoverBehavior;
 import gregtech.api.cover.ICoverable;
 import gregtech.api.cover.ICoverable.CoverSideData;
 import gregtech.api.cover.ICoverable.PrimaryBoxData;
+import gregtech.api.cover.IFacadeCover;
 import gregtech.api.pipenet.PipeNet;
 import gregtech.api.pipenet.WorldPipeNet;
 import gregtech.api.pipenet.tile.AttachmentType;
@@ -35,18 +34,16 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumActionResult;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumHand;
-import net.minecraft.util.NonNullList;
+import net.minecraft.util.*;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.common.Optional.Method;
+import team.chisel.ctm.api.IFacade;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -54,7 +51,7 @@ import java.util.List;
 import java.util.Random;
 
 @SuppressWarnings("deprecation")
-public abstract class BlockPipe<PipeType extends Enum<PipeType> & IPipeType<NodeDataType>, NodeDataType, WorldPipeNetType extends WorldPipeNet<NodeDataType, ? extends PipeNet<NodeDataType>>> extends BuiltInRenderBlock implements ITileEntityProvider {
+public abstract class BlockPipe<PipeType extends Enum<PipeType> & IPipeType<NodeDataType>, NodeDataType, WorldPipeNetType extends WorldPipeNet<NodeDataType, ? extends PipeNet<NodeDataType>>> extends BuiltInRenderBlock implements ITileEntityProvider, IFacade, IBlockAppearance {
 
     public BlockPipe() {
         super(net.minecraft.block.material.Material.IRON);
@@ -127,7 +124,7 @@ public abstract class BlockPipe<PipeType extends Enum<PipeType> & IPipeType<Node
     @Override
     public void breakBlock(World worldIn, BlockPos pos, IBlockState state) {
         IPipeTile<PipeType, NodeDataType> pipeTile = getPipeTileEntity(worldIn, pos);
-        if (pipeTile != null && !((TileEntityPipeBase) pipeTile).isBeingConverted()) {
+        if (pipeTile != null) {
             pipeTile.getCoverableImplementation().dropAllCovers();
         }
         super.breakBlock(worldIn, pos, state);
@@ -142,7 +139,7 @@ public abstract class BlockPipe<PipeType extends Enum<PipeType> & IPipeType<Node
     @Override
     public void updateTick(World worldIn, BlockPos pos, IBlockState state, Random rand) {
         IPipeTile<PipeType, NodeDataType> pipeTile = getPipeTileEntity(worldIn, pos);
-        if (pipeTile != null) {
+        if (pipeTile != null && !((TileEntityPipeBase<?, ?>) pipeTile).wasInDetachedConversionMode()) {
             int activeConnections = getActiveNodeConnections(worldIn, pos, pipeTile);
             activeConnections &= ~pipeTile.getBlockedConnections(); //remove blocked connections
             boolean isActiveNode = activeConnections > 0;
@@ -222,7 +219,7 @@ public abstract class BlockPipe<PipeType extends Enum<PipeType> & IPipeType<Node
             if (result.cuboid6.data instanceof CoverSideData) {
                 EnumFacing coverSide = ((CoverSideData) result.cuboid6.data).side;
                 CoverBehavior coverBehavior = pipeTile.getCoverableImplementation().getCoverAtSide(coverSide);
-                return coverBehavior == null ? ItemStack.EMPTY : coverBehavior.getCoverDefinition().getDropItemStack();
+                return coverBehavior == null ? ItemStack.EMPTY : coverBehavior.getPickItem();
             }
         }
         return getDropItem(pipeTile);
@@ -328,7 +325,6 @@ public abstract class BlockPipe<PipeType extends Enum<PipeType> & IPipeType<Node
 
     @Override
     public boolean recolorBlock(World world, BlockPos pos, EnumFacing side, EnumDyeColor color) {
-        @SuppressWarnings("unchecked")
         IPipeTile<PipeType, NodeDataType> tileEntityPipe = (IPipeTile<PipeType, NodeDataType>) world.getTileEntity(pos);
         if (tileEntityPipe != null && tileEntityPipe.getPipeType() != null &&
             tileEntityPipe.getPipeType().isPaintable() &&
@@ -353,32 +349,10 @@ public abstract class BlockPipe<PipeType extends Enum<PipeType> & IPipeType<Node
 
     public IPipeTile<PipeType, NodeDataType> getPipeTileEntity(TileEntity tileEntityAtPos) {
         if (tileEntityAtPos instanceof IPipeTile && isThisPipeBlock(((IPipeTile) tileEntityAtPos).getPipeBlock())) {
-            //noinspection unchecked
             return (IPipeTile<PipeType, NodeDataType>) tileEntityAtPos;
-        } else if (GTValues.isModLoaded(GTValues.MODID_FMP)) {
-            return tryGetMultipartTile(tileEntityAtPos);
         }
         return null;
     }
-
-    @Method(modid = GTValues.MODID_FMP)
-    private IPipeTile<PipeType, NodeDataType> tryGetMultipartTile(TileEntity tileEntityAtPos) {
-        if (tileEntityAtPos instanceof TileMultipart) {
-            TileMultipart tileMultipart = (TileMultipart) tileEntityAtPos;
-            List<TMultiPart> partList = tileMultipart.jPartList();
-            for (TMultiPart multiPart : partList) {
-                if (multiPart instanceof IPipeTile) {
-                    IPipeTile<?, ?> pipePart = (IPipeTile<?, ?>) multiPart;
-                    if (isThisPipeBlock(pipePart.getPipeBlock())) {
-                        //noinspection unchecked
-                        return (IPipeTile<PipeType, NodeDataType>) pipePart;
-                    }
-                }
-            }
-        }
-        return null;
-    }
-
 
     /**
      * Tests whatever pipe at given position can connect to a pipe from fromFacing face with fromColor color
@@ -474,8 +448,36 @@ public abstract class BlockPipe<PipeType extends Enum<PipeType> & IPipeType<Node
                 result.add(new IndexedCuboid6(new PipeConnectionData(side), getSideBox(side, thickness)));
             }
         }
-        coverable.addCoverCollisionBoundingBox(result, false);
+        coverable.addCoverCollisionBoundingBox(result);
         return result;
+    }
+
+    @Override
+    public boolean canRenderInLayer(IBlockState state, BlockRenderLayer layer) {
+        return true;
+    }
+
+    @Nonnull
+    @Override
+    public IBlockState getFacade(@Nonnull IBlockAccess world, @Nonnull BlockPos pos, @Nullable EnumFacing side, BlockPos otherPos) {
+        IPipeTile<?, ?> pipeTileEntity = getPipeTileEntity(world, pos);
+        if (pipeTileEntity != null && side != null) {
+            CoverBehavior coverBehavior = pipeTileEntity.getCoverableImplementation().getCoverAtSide(side);
+            if (coverBehavior instanceof IFacadeCover) {
+                return ((IFacadeCover) coverBehavior).getVisualState();
+            }
+        }
+        return world.getBlockState(pos);
+    }
+
+    @Override
+    public IBlockState getVisualState(IBlockAccess world, BlockPos pos, EnumFacing side) {
+        return getFacade(world, pos, side, null);
+    }
+
+    @Override
+    public boolean supportsVisualConnections() {
+        return true;
     }
 
     public static class PipeConnectionData {

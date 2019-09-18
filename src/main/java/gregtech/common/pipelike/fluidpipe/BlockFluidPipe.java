@@ -10,7 +10,7 @@ import gregtech.common.pipelike.fluidpipe.net.FluidPipeNet;
 import gregtech.common.pipelike.fluidpipe.net.WorldFluidPipeNet;
 import gregtech.common.pipelike.fluidpipe.tile.FluidPipeFluidHandler;
 import gregtech.common.pipelike.fluidpipe.tile.TileEntityFluidPipe;
-import gregtech.common.pipelike.fluidpipe.tile.TileEntityFluidPipeActive;
+import gregtech.common.pipelike.fluidpipe.tile.TileEntityFluidPipeTickable;
 import gregtech.common.render.FluidPipeRenderer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
@@ -19,7 +19,6 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.NonNullList;
@@ -166,19 +165,19 @@ public class BlockFluidPipe extends BlockPipe<FluidPipeType, FluidPipeProperties
 
     @Override
     public TileEntityPipeBase<FluidPipeType, FluidPipeProperties> createNewTileEntity(boolean supportsTicking) {
-        return supportsTicking ? new TileEntityFluidPipeActive() : new TileEntityFluidPipe();
+        return supportsTicking ? new TileEntityFluidPipeTickable() : new TileEntityFluidPipe();
     }
 
     @Override
     protected void onActiveModeChange(World world, BlockPos pos, boolean isActiveNow, boolean isInitialChange) {
         TileEntityFluidPipe oldTileEntity = (TileEntityFluidPipe) world.getTileEntity(pos);
-        if (!(oldTileEntity instanceof TileEntityFluidPipeActive) && isActiveNow) {
-            TileEntityFluidPipeActive newTileEntity = new TileEntityFluidPipeActive();
+        if (!(oldTileEntity instanceof TileEntityFluidPipeTickable) && isActiveNow) {
+            TileEntityFluidPipeTickable newTileEntity = new TileEntityFluidPipeTickable();
             newTileEntity.transferDataFrom(oldTileEntity);
             newTileEntity.setActive(true);
             world.setTileEntity(pos, newTileEntity);
-        } else if (oldTileEntity instanceof TileEntityFluidPipeActive) {
-            ((TileEntityFluidPipeActive) oldTileEntity).setActive(isActiveNow);
+        } else if (oldTileEntity instanceof TileEntityFluidPipeTickable) {
+            ((TileEntityFluidPipeTickable) oldTileEntity).setActive(isActiveNow);
         }
     }
 
@@ -186,11 +185,6 @@ public class BlockFluidPipe extends BlockPipe<FluidPipeType, FluidPipeProperties
     @SideOnly(Side.CLIENT)
     public EnumBlockRenderType getRenderType(IBlockState state) {
         return FluidPipeRenderer.BLOCK_RENDER_TYPE;
-    }
-
-    @Override
-    public BlockRenderLayer getBlockLayer() {
-        return BlockRenderLayer.CUTOUT;
     }
 
     @Override

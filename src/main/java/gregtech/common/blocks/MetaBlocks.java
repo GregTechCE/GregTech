@@ -35,7 +35,7 @@ import gregtech.common.pipelike.fluidpipe.BlockFluidPipe;
 import gregtech.common.pipelike.fluidpipe.FluidPipeProperties;
 import gregtech.common.pipelike.fluidpipe.FluidPipeType;
 import gregtech.common.pipelike.fluidpipe.tile.TileEntityFluidPipe;
-import gregtech.common.pipelike.fluidpipe.tile.TileEntityFluidPipeActive;
+import gregtech.common.pipelike.fluidpipe.tile.TileEntityFluidPipeTickable;
 import gregtech.common.render.CableRenderer;
 import gregtech.common.render.FluidPipeRenderer;
 import gregtech.common.render.tesr.TileEntityCrusherBladeRenderer;
@@ -277,7 +277,7 @@ public class MetaBlocks {
         GameRegistry.registerTileEntity(TileEntityCable.class, new ResourceLocation(GTValues.MODID, "cable"));
         GameRegistry.registerTileEntity(TileEntityCableTickable.class, new ResourceLocation(GTValues.MODID, "cable_tickable"));
         GameRegistry.registerTileEntity(TileEntityFluidPipe.class, new ResourceLocation(GTValues.MODID, "fluid_pipe"));
-        GameRegistry.registerTileEntity(TileEntityFluidPipeActive.class, new ResourceLocation(GTValues.MODID, "fluid_pipe_active"));
+        GameRegistry.registerTileEntity(TileEntityFluidPipeTickable.class, new ResourceLocation(GTValues.MODID, "fluid_pipe_active"));
     }
 
     @SideOnly(Side.CLIENT)

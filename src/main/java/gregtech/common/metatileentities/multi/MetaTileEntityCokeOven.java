@@ -88,9 +88,8 @@ public class MetaTileEntityCokeOven extends MultiblockControllerBase {
         if (previousRecipe != null &&
             previousRecipe.getInput().getIngredient().apply(inputStack)) {
             currentRecipe = previousRecipe;
-        } else if (!ItemStack.areItemsEqual(lastInputStack, inputStack) ||
-            !ItemStack.areItemStackTagsEqual(lastInputStack, inputStack)) {
-            this.lastInputStack = inputStack.copy();
+        } else if (!areItemStacksEqual(inputStack, lastInputStack)) {
+            this.lastInputStack = inputStack.isEmpty() ? ItemStack.EMPTY : inputStack.copy();
             currentRecipe = RecipeMaps.COKE_OVEN_RECIPES.stream()
                 .filter(it -> it.getInput().getIngredient().test(inputStack))
                 .findFirst().orElse(null);
@@ -99,6 +98,12 @@ public class MetaTileEntityCokeOven extends MultiblockControllerBase {
             }
         }
         return currentRecipe;
+    }
+
+    private static boolean areItemStacksEqual(ItemStack stackA, ItemStack stackB) {
+        return (stackA.isEmpty() && stackB.isEmpty()) ||
+            (ItemStack.areItemsEqual(stackA, stackB) &&
+                ItemStack.areItemStackTagsEqual(stackA, stackB));
     }
 
     private boolean setupRecipe(ItemStack inputStack, CokeOvenRecipe recipe) {

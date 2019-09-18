@@ -21,6 +21,7 @@ import gregtech.common.covers.filter.FluidFilterWrapper;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
@@ -28,6 +29,7 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
+import net.minecraftforge.fluids.capability.IFluidTankProperties;
 
 import javax.annotation.Nullable;
 
@@ -81,7 +83,7 @@ public class CoverFluidFilter extends CoverBehavior implements CoverWithUI {
             .build(this, player);
     }
 
-    public void renderCover(CCRenderState renderState, Matrix4 translation, IVertexOperation[] pipeline, Cuboid6 plateBox) {
+    public void renderCover(CCRenderState renderState, Matrix4 translation, IVertexOperation[] pipeline, Cuboid6 plateBox, BlockRenderLayer layer) {
         this.texture.renderSided(attachedSide, plateBox, renderState, pipeline, translation);
     }
 
@@ -138,7 +140,7 @@ public class CoverFluidFilter extends CoverBehavior implements CoverWithUI {
         @Nullable
         public FluidStack drain(FluidStack resource, boolean doDrain) {
             FluidFilterMode filterMode = getFilterMode();
-            if (filterMode == FluidFilterMode.FILTER_DRAIN) {
+            if (filterMode == FluidFilterMode.FILTER_FILL) {
                 return null;
             }
             if (!fluidFilter.testFluidStack(resource)) {
@@ -153,14 +155,19 @@ public class CoverFluidFilter extends CoverBehavior implements CoverWithUI {
             if (filterMode == FluidFilterMode.FILTER_FILL) {
                 return null;
             }
-            FluidStack result = super.drain(maxDrain, false);
-            if (!fluidFilter.testFluidStack(result)) {
-                return null;
+            FluidStack fluidTank, fluidDrain, result;
+            for (IFluidTankProperties prop : this.delegate.getTankProperties()) {
+                fluidTank = prop.getContents();
+                if (fluidTank != null && fluidFilter.testFluidStack(fluidTank)) {
+                    int drainAmount = Math.min(fluidTank.amount, maxDrain);
+                    fluidDrain = new FluidStack(fluidTank.getFluid(), drainAmount, fluidTank.tag);
+                    result = super.drain(fluidDrain, doDrain);
+                    if (result != null) {
+                        return result;
+                    }
+                }
             }
-            if (doDrain) {
-                super.drain(maxDrain, true);
-            }
-            return result;
+            return null;
         }
 
     }

@@ -143,6 +143,7 @@ public class MaterialMetaItem extends StandardMetaItem {
     }
 
     @Override
+    @SideOnly(Side.CLIENT)
     public void addInformation(ItemStack itemStack, @Nullable World worldIn, List<String> lines, ITooltipFlag tooltipFlag) {
         super.addInformation(itemStack, worldIn, lines, tooltipFlag);
         int damage = itemStack.getItemDamage();

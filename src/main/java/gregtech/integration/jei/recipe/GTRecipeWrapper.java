@@ -1,9 +1,9 @@
 package gregtech.integration.jei.recipe;
 
 import codechicken.lib.util.ItemNBTUtils;
-import gnu.trove.map.TObjectIntMap;
 import gregtech.api.recipes.CountableIngredient;
 import gregtech.api.recipes.Recipe;
+import gregtech.api.recipes.Recipe.ChanceEntry;
 import gregtech.api.recipes.RecipeMap;
 import gregtech.api.unification.OreDictUnifier;
 import gregtech.api.util.GTUtility;
@@ -52,6 +52,7 @@ public class GTRecipeWrapper implements IRecipeWrapper {
             }
             ingredients.setInputLists(ItemStack.class, matchingInputs);
         }
+
         if (!recipe.getFluidInputs().isEmpty()) {
             List<FluidStack> recipeInputs = recipe.getFluidInputs()
                 .stream().map(FluidStack::copy)
@@ -66,19 +67,21 @@ public class GTRecipeWrapper implements IRecipeWrapper {
             });
             ingredients.setInputs(FluidStack.class, recipeInputs);
         }
+
         if (!recipe.getOutputs().isEmpty() || !recipe.getChancedOutputs().isEmpty()) {
             List<ItemStack> recipeOutputs = recipe.getOutputs()
                 .stream().map(ItemStack::copy).collect(Collectors.toList());
-            TObjectIntMap<ItemStack> chancedOutputs = recipe.getChancedOutputs();
-            for (ItemStack chancedStack : chancedOutputs.keySet()) {
-                int outputChance = chancedOutputs.get(chancedStack);
-                chancedStack = chancedStack.copy();
-                ItemNBTUtils.setInteger(chancedStack, "chance", outputChance);
+            List<ChanceEntry> chancedOutputs = recipe.getChancedOutputs();
+            for (ChanceEntry chancedEntry : chancedOutputs) {
+                ItemStack chancedStack = chancedEntry.getItemStack();
+                ItemNBTUtils.setInteger(chancedStack, "chance", chancedEntry.getChance());
+                ItemNBTUtils.setInteger(chancedStack, "boost_per_tier", chancedEntry.getBoostPerTier());
                 recipeOutputs.add(chancedStack);
             }
             recipeOutputs.sort(Comparator.comparing(stack -> ItemNBTUtils.getInteger(stack, "chance")));
             ingredients.setOutputs(ItemStack.class, recipeOutputs);
         }
+
         if (!recipe.getFluidOutputs().isEmpty()) {
             List<FluidStack> recipeOutputs = recipe.getFluidOutputs()
                 .stream().map(FluidStack::copy).collect(Collectors.toList());
@@ -97,7 +100,9 @@ public class GTRecipeWrapper implements IRecipeWrapper {
         }
         if (tagCompound != null && tagCompound.hasKey("chance")) {
             String chanceString = Recipe.formatChanceValue(tagCompound.getInteger("chance"));
-            tooltip.add(I18n.format("gregtech.recipe.chance", chanceString));
+            String boostString = Recipe.formatChanceValue(tagCompound.getInteger("boost_per_tier"));
+            tooltip.add(I18n.format("gregtech.recipe.chance", chanceString, boostString));
+
         } else if (tagCompound != null && tagCompound.hasKey("not_consumed")) {
             tooltip.add(I18n.format("gregtech.recipe.not_consumed"));
         }

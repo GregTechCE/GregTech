@@ -11,9 +11,11 @@ import gregtech.api.unification.OreDictUnifier;
 import gregtech.api.unification.material.type.Material;
 import gregtech.api.unification.stack.UnificationEntry;
 import gregtech.api.util.GTLog;
+import gregtech.api.util.ModCompatibility;
 import gregtech.common.blocks.*;
 import gregtech.common.blocks.surfacerock.BlockSurfaceRock;
 import gregtech.common.blocks.surfacerock.BlockSurfaceRockFlooded;
+import gregtech.common.covers.facade.FacadeRenderer;
 import gregtech.common.items.MetaItems;
 import gregtech.common.render.CableRenderer;
 import gregtech.common.render.FluidPipeRenderer;
@@ -125,8 +127,9 @@ public class ClientProxy extends CommonProxy {
     @Override
     public void onPostLoad() {
         super.onPostLoad();
-        MetaTileEntityRenderer.postInit();
         ResourceUtils.registerReloadListener(ToolRenderHandler.INSTANCE);
+        ModCompatibility.initCompat();
+        FacadeRenderer.init();
         startCapeLoadingThread();
     }
 

@@ -16,6 +16,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.PacketBuffer;
+import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
@@ -45,11 +46,11 @@ public abstract class CoverBehavior implements IUIHolder {
         this.attachedSide = attachedSide;
     }
 
-    void setCoverDefinition(CoverDefinition coverDefinition) {
+    final void setCoverDefinition(CoverDefinition coverDefinition) {
         this.coverDefinition = coverDefinition;
     }
 
-    public CoverDefinition getCoverDefinition() {
+    public final CoverDefinition getCoverDefinition() {
         return coverDefinition;
     }
 
@@ -113,8 +114,12 @@ public abstract class CoverBehavior implements IUIHolder {
     public void onAttached(ItemStack itemStack) {
     }
 
+    public ItemStack getPickItem() {
+        return coverDefinition.getDropItemStack();
+    }
+
     public List<ItemStack> getDrops() {
-        return Lists.newArrayList(coverDefinition.getDropItemStack());
+        return Lists.newArrayList(getPickItem());
     }
 
     /**
@@ -123,13 +128,16 @@ public abstract class CoverBehavior implements IUIHolder {
      */
     public void onRemoved() {
     }
-
-    @SideOnly(Side.CLIENT)
-    public TextureAtlasSprite getPlateSprite() {
-        return Textures.VOLTAGE_CASINGS[GTValues.LV].getSpriteOnSide(RenderSide.SIDE);
-    }
     
     public boolean shouldRenderConnected() {
+        return true;
+    }
+
+    public boolean canPipePassThrough() {
+        return false;
+    }
+
+    public boolean canRenderBackside() {
         return true;
     }
 
@@ -161,7 +169,30 @@ public abstract class CoverBehavior implements IUIHolder {
      * It will be automatically translated to prevent Z-fighting with machine faces
      */
     @SideOnly(Side.CLIENT)
-    public abstract void renderCover(CCRenderState renderState, Matrix4 translation, IVertexOperation[] pipeline, Cuboid6 plateBox);
+    public abstract void renderCover(CCRenderState renderState, Matrix4 translation, IVertexOperation[] pipeline, Cuboid6 plateBox, BlockRenderLayer layer);
+
+    @SideOnly(Side.CLIENT)
+    public boolean canRenderInLayer(BlockRenderLayer renderLayer) {
+        return renderLayer == BlockRenderLayer.CUTOUT;
+    }
+
+    @SideOnly(Side.CLIENT)
+    public void renderCoverPlate(CCRenderState renderState, Matrix4 translation, IVertexOperation[] pipeline, Cuboid6 plateBox, BlockRenderLayer layer) {
+        TextureAtlasSprite casingSide = getPlateSprite();
+        for (EnumFacing coverPlateSide : EnumFacing.VALUES) {
+            boolean isAttachedSide = attachedSide.getAxis() == coverPlateSide.getAxis();
+            if (isAttachedSide) {
+                Textures.renderFace(renderState, translation, pipeline, coverPlateSide, plateBox, casingSide);
+            } else if (coverHolder.getCoverAtSide(coverPlateSide) == null) {
+                Textures.renderFace(renderState, translation, pipeline, coverPlateSide, plateBox, casingSide);
+            }
+        }
+    }
+
+    @SideOnly(Side.CLIENT)
+    protected TextureAtlasSprite getPlateSprite() {
+        return Textures.VOLTAGE_CASINGS[GTValues.LV].getSpriteOnSide(RenderSide.SIDE);
+    }
 
     @Override
     public final boolean isValid() {

@@ -1,5 +1,6 @@
 package gregtech.api.items.toolitem;
 
+import com.google.common.base.Preconditions;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 import forestry.api.arboriculture.IToolGrafter;
@@ -10,6 +11,7 @@ import gregtech.api.enchants.EnchantmentData;
 import gregtech.api.items.IToolItem;
 import gregtech.api.items.ToolDictNames;
 import gregtech.api.items.metaitem.MetaItem;
+import gregtech.api.items.metaitem.stats.IItemComponent;
 import gregtech.api.items.metaitem.stats.IItemContainerItemProvider;
 import gregtech.api.items.metaitem.stats.IMetaItemStats;
 import gregtech.api.unification.material.MaterialIconSet;
@@ -224,6 +226,7 @@ public class ToolMetaItem<T extends ToolMetaItem<?>.MetaToolValueItem> extends M
 
     @Override
     public float getDestroySpeed(ItemStack stack, IBlockState state) {
+        Preconditions.checkNotNull(state, "null blockState");
         T metaToolValueItem = getItem(stack);
         if (metaToolValueItem != null) {
             IToolStats toolStats = metaToolValueItem.getToolStats();
@@ -236,6 +239,7 @@ public class ToolMetaItem<T extends ToolMetaItem<?>.MetaToolValueItem> extends M
 
     @Override
     public boolean canHarvestBlock(IBlockState state, ItemStack stack) {
+        Preconditions.checkNotNull(state, "null blockState");
         T metaToolValueItem = getItem(stack);
         if (metaToolValueItem != null) {
             IToolStats toolStats = metaToolValueItem.getToolStats();
@@ -246,6 +250,7 @@ public class ToolMetaItem<T extends ToolMetaItem<?>.MetaToolValueItem> extends M
 
     @Override
     public int getHarvestLevel(ItemStack stack, String toolClass, EntityPlayer player, IBlockState blockState) {
+        Preconditions.checkNotNull(blockState, "null blockState");
         T metaToolValueItem = getItem(stack);
         if (metaToolValueItem == null) {
             return -1;
@@ -391,6 +396,7 @@ public class ToolMetaItem<T extends ToolMetaItem<?>.MetaToolValueItem> extends M
     }
 
     @Override
+    @SideOnly(Side.CLIENT)
     public void addInformation(ItemStack itemStack, @Nullable World worldIn, List<String> lines, ITooltipFlag tooltipFlag) {
         T item = getItem(itemStack);
         if (item == null) {
@@ -587,13 +593,15 @@ public class ToolMetaItem<T extends ToolMetaItem<?>.MetaToolValueItem> extends M
         }
 
         @Override
+        @Deprecated
         public MetaToolValueItem addStats(IMetaItemStats... stats) {
-            for (IMetaItemStats metaItemStats : stats) {
-                if (metaItemStats instanceof IToolStats) {
-                    setToolStats((IToolStats) metaItemStats);
-                }
-            }
             super.addStats(stats);
+            return this;
+        }
+
+        @Override
+        public MetaToolValueItem addComponents(IItemComponent... stats) {
+            super.addComponents(stats);
             return this;
         }
 
@@ -620,6 +628,8 @@ public class ToolMetaItem<T extends ToolMetaItem<?>.MetaToolValueItem> extends M
             }
             return this;
         }
+
+
 
         public IToolStats getToolStats() {
             if (toolStats == null) {

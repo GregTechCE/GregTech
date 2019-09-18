@@ -122,7 +122,7 @@ public class ToolJackHammer extends ToolDrillLV {
 
     @Override
     public void onStatsAddedToTool(MetaValueItem metaValueItem) {
-        metaValueItem.addStats(MODE_SWITCH_BEHAVIOR);
+        metaValueItem.addComponents(MODE_SWITCH_BEHAVIOR);
     }
 
     @Override
@@ -166,7 +166,10 @@ public class ToolJackHammer extends ToolDrillLV {
                     if (x == 0 && y == 0) continue;
                     BlockPos offsetPos = rotate(pos, x, y, sideHit, horizontalFacing);
                     IBlockState blockState = world.getBlockState(offsetPos);
-                    if(world.isBlockModifiable(entityPlayer, offsetPos) && stack.canHarvestBlock(blockState)) {
+                    if(world.isBlockModifiable(entityPlayer, offsetPos) &&
+                        blockState.getBlock().canHarvestBlock(world, offsetPos, entityPlayer) &&
+                        blockState.getPlayerRelativeBlockHardness(entityPlayer, world, offsetPos) > 0.0f &&
+                        stack.canHarvestBlock(blockState)) {
                         GTUtility.harvestBlock(world, offsetPos, entityPlayer);
                         ((ToolMetaItem) stack.getItem()).damageItem(stack, damagePerBlockBreak, false);
                     }

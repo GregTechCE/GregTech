@@ -7,9 +7,8 @@ import gregtech.api.pipenet.PipeNet;
 import gregtech.api.pipenet.block.BlockPipe;
 import gregtech.api.pipenet.tile.IPipeTile;
 import gregtech.common.ConfigHolder;
-import gregtech.common.multipart.FluidPipeActiveMultiPart;
 import gregtech.common.pipelike.fluidpipe.BlockFluidPipe;
-import gregtech.common.pipelike.fluidpipe.tile.TileEntityFluidPipeActive;
+import gregtech.common.pipelike.fluidpipe.tile.TileEntityFluidPipeTickable;
 import mcjty.theoneprobe.api.IProbeHitData;
 import mcjty.theoneprobe.api.IProbeInfo;
 import mcjty.theoneprobe.api.IProbeInfoProvider;
@@ -50,10 +49,8 @@ public class DebugPipeNetInfoProvider implements IProbeInfoProvider {
                 probeInfo.text("tile blocked: " + pipeTile.getBlockedConnections());
 
                 if (blockPipe instanceof BlockFluidPipe) {
-                    if (pipeTile instanceof TileEntityFluidPipeActive) {
-                        probeInfo.text("tile active: " + ((TileEntityFluidPipeActive) pipeTile).isActive());
-                    } else if (GTValues.isModLoaded(GTValues.MODID_FMP) && pipeTile instanceof FluidPipeActiveMultiPart) {
-                        probeInfo.text("tile active: " + ((FluidPipeActiveMultiPart) pipeTile).isActivePart());
+                    if (pipeTile instanceof TileEntityFluidPipeTickable) {
+                        probeInfo.text("tile active: " + ((TileEntityFluidPipeTickable) pipeTile).isActive());
                     }
                 }
             }

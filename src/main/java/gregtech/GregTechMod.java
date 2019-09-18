@@ -15,6 +15,7 @@ import gregtech.api.unification.material.Materials;
 import gregtech.api.unification.material.type.Material;
 import gregtech.api.util.AnnotatedMaterialHandlerLoader;
 import gregtech.api.util.GTLog;
+import gregtech.api.util.NBTUtil;
 import gregtech.api.worldgen.config.WorldGenRegistry;
 import gregtech.common.CommonProxy;
 import gregtech.common.ConfigHolder;
@@ -29,8 +30,8 @@ import gregtech.common.covers.CoverBehaviors;
 import gregtech.common.covers.filter.FilterTypeRegistry;
 import gregtech.common.items.MetaItems;
 import gregtech.common.metatileentities.MetaTileEntities;
-import gregtech.common.multipart.GTMultipartFactory;
 import gregtech.common.worldgen.WorldGenRubberTree;
+import gregtech.integration.multipart.GTMultipartFactory;
 import gregtech.integration.theoneprobe.TheOneProbeCompatibility;
 import gregtech.loaders.dungeon.DungeonLootLoader;
 import net.minecraftforge.classloading.FMLForgePlugin;
@@ -78,6 +79,7 @@ public class GregTechMod {
         CoverBehaviorUIFactory.INSTANCE.init();
         SimpleCapabilityManager.init();
         OreDictUnifier.init();
+        NBTUtil.registerSerializers();
 
         //first, register primary materials and run material handlers
         Materials.register();
@@ -121,7 +123,7 @@ public class GregTechMod {
         }
 
         if (GTValues.isModLoaded(GTValues.MODID_FMP)) {
-            GTLog.logger.info("ForgeMultiPart found. Enabling integration...");
+            GTLog.logger.info("ForgeMultiPart found. Legacy block conversion enabled.");
             registerForgeMultipartCompat();
         }
 
@@ -129,7 +131,6 @@ public class GregTechMod {
             GTLog.logger.info("TheOneProbe found. Enabling integration...");
             TheOneProbeCompatibility.registerCompatibility();
         }
-
         WorldGenRegistry.INSTANCE.initializeRegistry();
         if (!ConfigHolder.disableRubberTreeGeneration) {
             GameRegistry.registerWorldGenerator(new WorldGenRubberTree(), 10000);

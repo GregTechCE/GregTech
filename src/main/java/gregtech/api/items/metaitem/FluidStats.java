@@ -3,11 +3,11 @@ package gregtech.api.items.metaitem;
 import gregtech.api.capability.impl.SimpleThermalFluidHandlerItemStack;
 import gregtech.api.capability.impl.ThermalFluidHandlerItemStack;
 import gregtech.api.items.metaitem.stats.IItemCapabilityProvider;
-import gregtech.api.items.metaitem.stats.IMetaItemStats;
+import gregtech.api.items.metaitem.stats.IItemComponent;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 
-public class FluidStats implements IMetaItemStats, IItemCapabilityProvider {
+public class FluidStats implements IItemComponent, IItemCapabilityProvider {
 
     public final int maxCapacity;
     public final int minFluidTemperature;
