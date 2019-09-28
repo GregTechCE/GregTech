@@ -1755,6 +1755,10 @@ gregtech.machine.locked_safe.name=Locked Safe
 gregtech.machine.locked_safe.malfunctioning=§cMalfunctioning!
 gregtech.machine.locked_safe.requirements=§7Replacements required:
 
+gregtech.machine.workbench.name=Advanced Crafting Station
+gregtech.machine.workbench.tab.crafting=Crafting
+gregtech.machine.workbench.tab.container=Container
+
 # Tanks
 gregtech.machine.wooden_tank.name=Wooden Tank
 gregtech.machine.bronze_tank.name=Bronze Tank

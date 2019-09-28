@@ -10,7 +10,9 @@ public class GuiTextures {
     public static final TextureArea BACKGROUND_SMALL = TextureArea.fullImage("textures/gui/base/background_small.png");
     public static final TextureArea BACKGROUND_EXTENDED = TextureArea.fullImage("textures/gui/base/background_extended.png");
     public static final TextureArea BORDERED_BACKGROUND = TextureArea.fullImage("textures/gui/base/bordered_background.png");
+    public static final TextureArea BORDERED_BACKGROUND_EXTENDED = TextureArea.fullImage("textures/gui/base/bordered_background_extended.png");
     public static final TextureArea SLOT = TextureArea.fullImage("textures/gui/base/slot.png");
+    public static final TextureArea SLOT_BIG = TextureArea.fullImage("textures/gui/base/slot_big.png");
     public static final TextureArea FLUID_SLOT = TextureArea.fullImage("textures/gui/base/fluid_slot.png");
     public static final TextureArea DISPLAY = TextureArea.fullImage("textures/gui/base/display.png");
     public static final TextureArea FLUID_TANK_BACKGROUND = TextureArea.fullImage("textures/gui/base/fluid_tank_background.png");

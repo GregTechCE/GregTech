@@ -63,8 +63,8 @@ public class SmartItemFilter extends ItemFilter {
     }
 
     @Override
-    public void initUI(int y, Consumer<Widget> widgetGroup) {
-        widgetGroup.accept(new CycleButtonWidget(10, y, 75, 20,
+    public void initUI(Consumer<Widget> widgetGroup) {
+        widgetGroup.accept(new CycleButtonWidget(10, 0, 75, 20,
             SmartFilteringMode.class, this::getFilteringMode, this::setFilteringMode));
     }
 

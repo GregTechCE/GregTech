@@ -25,7 +25,9 @@ public class MTJsonGenerator {
                 Path modelPath = modelsPath.resolve(relativePath.replace(".png", ".json"));
                 try {
                     Files.createDirectories(modelPath.getParent());
-                    Files.write(modelPath, Collections.singleton(fileText), StandardCharsets.UTF_8);
+                    if (!Files.exists(modelPath)) {
+                        Files.write(modelPath, Collections.singleton(fileText), StandardCharsets.UTF_8);
+                    }
                 } catch (IOException exception) {
                     exception.printStackTrace();
                 }

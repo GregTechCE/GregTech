@@ -152,7 +152,9 @@ public class MetaTileEntities {
     public static MetaTileEntityTank TITANIUM_TANK;
     public static MetaTileEntityTank TUNGSTENSTEEL_TANK;
 
+
     //MISC MACHINES SECTION
+    public static MetaTileEntityWorkbench WORKBENCH;
     public static MetaTileEntityPump[] PUMP = new MetaTileEntityPump[4];
     public static MetaTileEntityBlockBreaker[] BLOCK_BREAKER = new MetaTileEntityBlockBreaker[4];
     public static MetaTileEntityAirCollector[] AIR_COLLECTOR = new MetaTileEntityAirCollector[4];
@@ -480,7 +482,6 @@ public class MetaTileEntities {
         STAINLESS_STEEL_CHEST = GregTechAPI.registerMetaTileEntity(804, new MetaTileEntityChest(gregtechId("stainless_steel_chest"), Materials.StainlessSteel, 9, 10));
         TITANIUM_CHEST = GregTechAPI.registerMetaTileEntity(805, new MetaTileEntityChest(gregtechId("titanium_chest"), Materials.Titanium, 12, 10));
         TUNGSTENSTEEL_CHEST = GregTechAPI.registerMetaTileEntity(806, new MetaTileEntityChest(gregtechId("tungstensteel_chest"), Materials.TungstenSteel, 12, 14));
-        LOCKED_SAFE = GregTechAPI.registerMetaTileEntity(824, new MetaTileEntityLockedSafe(gregtechId("locked_safe")));
 
         WOODEN_TANK = GregTechAPI.registerMetaTileEntity(811, new MetaTileEntityTank(gregtechId("wooden_tank"), Materials.Wood, 4000));
         BRONZE_TANK = GregTechAPI.registerMetaTileEntity(812, new MetaTileEntityTank(gregtechId("bronze_tank"), Materials.Bronze, 8000));
@@ -493,7 +494,10 @@ public class MetaTileEntities {
         FISHER[1] = GregTechAPI.registerMetaTileEntity(821, new MetaTileEntityFisher(gregtechId("fisher.mv"), 2));
         FISHER[2] = GregTechAPI.registerMetaTileEntity(822, new MetaTileEntityFisher(gregtechId("fisher.hv"), 3));
         FISHER[3] = GregTechAPI.registerMetaTileEntity(823, new MetaTileEntityFisher(gregtechId("fisher.ev"), 4));
-        
+
+        LOCKED_SAFE = GregTechAPI.registerMetaTileEntity(824, new MetaTileEntityLockedSafe(gregtechId("locked_safe")));
+        WORKBENCH = GregTechAPI.registerMetaTileEntity(825, new MetaTileEntityWorkbench(gregtechId("workbench")));
+
         for (int i = 1; i < 5; i++) {
             String voltageName = GTValues.VN[i].toLowerCase();
             PUMP[i - 1] = new MetaTileEntityPump(gregtechId("pump." + voltageName), i);

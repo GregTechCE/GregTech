@@ -31,8 +31,8 @@ public class Textures {
     public static ChestRenderer METAL_CHEST = new ChestRenderer("storage/metal_chest");
     public static SafeRenderer SAFE = new SafeRenderer("storage/safe");
 
-    public static TankRenderer WOODEN_TANK = new TankRenderer("storage/tank/wooden_tank");
-    public static TankRenderer METAL_TANK = new TankRenderer("storage/tank/metal_tank");
+    public static TankRenderer WOODEN_TANK = new TankRenderer("storage/tank/wooden");
+    public static TankRenderer METAL_TANK = new TankRenderer("storage/tank/metal");
 
     public static SimpleSidedCubeRenderer STEAM_CASING_BRONZE = new SimpleSidedCubeRenderer("casings/steam/bronze");
     public static SimpleSidedCubeRenderer STEAM_CASING_STEEL = new SimpleSidedCubeRenderer("casings/steam/steel");

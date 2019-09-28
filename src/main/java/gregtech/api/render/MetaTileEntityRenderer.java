@@ -80,7 +80,6 @@ public class MetaTileEntityRenderer implements ICCBlockRenderer, IItemRenderer {
             return;
         }
         GlStateManager.enableBlend();
-        GlStateManager.disableCull();
         CCRenderState renderState = CCRenderState.instance();
         renderState.reset();
         renderState.startDrawing(GL11.GL_QUADS, DefaultVertexFormats.ITEM);
@@ -94,7 +93,6 @@ public class MetaTileEntityRenderer implements ICCBlockRenderer, IItemRenderer {
         if(metaTileEntity instanceof IRenderMetaTileEntity) {
             ((IRenderMetaTileEntity) metaTileEntity).renderMetaTileEntityDynamic(0.0, 0.0, 0.0, 0.0f);
         }
-        GlStateManager.enableCull();
         GlStateManager.disableBlend();
     }
 

@@ -1,5 +1,8 @@
 package gregtech.api.gui.widgets;
 
+import gregtech.api.gui.Widget;
+import gregtech.api.util.Position;
+import gregtech.api.util.Size;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiUtilRenderComponents;
@@ -17,7 +20,7 @@ import java.util.stream.Collectors;
  * Represents a text-component based widget, which obtains
  * text from server and automatically synchronizes it with clients
  */
-public class AdvancedTextWidget extends AbstractPositionedWidget {
+public class AdvancedTextWidget extends Widget {
     protected int maxWidthLimit;
 
     protected Consumer<List<ITextComponent>> textSupplier;
@@ -25,13 +28,16 @@ public class AdvancedTextWidget extends AbstractPositionedWidget {
     private int color;
 
     public AdvancedTextWidget(int xPosition, int yPosition, Consumer<List<ITextComponent>> text, int color) {
-        super(xPosition, yPosition);
+        super(new Position(xPosition, yPosition), Size.ZERO);
         this.textSupplier = text;
         this.color = color;
     }
 
     public AdvancedTextWidget setMaxWidthLimit(int maxWidthLimit) {
         this.maxWidthLimit = maxWidthLimit;
+        if (isClientSide()) {
+            updateSize();
+        }
         return this;
     }
 
@@ -50,21 +56,7 @@ public class AdvancedTextWidget extends AbstractPositionedWidget {
         }
     }
 
-    @Override
-    public void readUpdateInfo(int id, PacketBuffer buffer) {
-        if (id == 1) {
-            this.lastText.clear();
-            int count = buffer.readVarInt();
-            for (int i = 0; i < count; i++) {
-                String jsonText = buffer.readString(32767);
-                this.lastText.add(ITextComponent.Serializer.jsonToComponent(jsonText));
-            }
-        }
-    }
-
-    @Override
-    @SideOnly(Side.CLIENT)
-    public void drawInForeground(int mouseX, int mouseY) {
+    private String[] getResultText() {
         FontRenderer fontRenderer = Minecraft.getMinecraft().fontRenderer;
         List<ITextComponent> cutText;
         if (maxWidthLimit > 0) {
@@ -74,8 +66,48 @@ public class AdvancedTextWidget extends AbstractPositionedWidget {
         } else {
             cutText = lastText;
         }
-        for (int i = 0; i < cutText.size(); i++) {
-            fontRenderer.drawString(cutText.get(i).getFormattedText(), this.xPosition, this.yPosition + (i * (fontRenderer.FONT_HEIGHT + 2)), color);
+        return cutText.stream()
+            .map(ITextComponent::getFormattedText)
+            .toArray(String[]::new);
+    }
+
+    private void updateSize() {
+        FontRenderer fontRenderer = Minecraft.getMinecraft().fontRenderer;
+        String[] resultText = getResultText();
+        int maxStringWidth = 0;
+        int totalHeight = 0;
+        for (String string : resultText) {
+            maxStringWidth = Math.max(maxStringWidth, fontRenderer.getStringWidth(string));
+            totalHeight += fontRenderer.FONT_HEIGHT + 2;
+        }
+        totalHeight -= 2;
+        setSize(new Size(maxStringWidth, totalHeight));
+        if (uiAccess != null) {
+            uiAccess.notifySizeChange();
+        }
+    }
+
+    @Override
+    public void readUpdateInfo(int id, PacketBuffer buffer) {
+        if (id == 1) {
+            this.lastText.clear();
+            int count = buffer.readVarInt();
+            for (int i = 0; i < count; i++) {
+                String jsonText = buffer.readString(32767);
+                this.lastText.add(ITextComponent.Serializer.jsonToComponent(jsonText));
+                updateSize();
+            }
+        }
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public void drawInForeground(int mouseX, int mouseY) {
+        FontRenderer fontRenderer = Minecraft.getMinecraft().fontRenderer;
+        String[] resultText = getResultText();
+        Position position = getPosition();
+        for (int i = 0; i < resultText.length; i++) {
+            fontRenderer.drawString(resultText[i], position.x, position.y + (i * (fontRenderer.FONT_HEIGHT + 2)), color);
         }
     }
 }

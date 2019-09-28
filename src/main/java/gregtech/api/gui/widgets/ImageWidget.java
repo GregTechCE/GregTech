@@ -1,13 +1,17 @@
 package gregtech.api.gui.widgets;
 
+import gregtech.api.gui.IRenderContext;
+import gregtech.api.gui.Widget;
 import gregtech.api.gui.resources.TextureArea;
+import gregtech.api.util.Position;
+import gregtech.api.util.Size;
 import net.minecraft.network.PacketBuffer;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.function.BooleanSupplier;
 
-public class ImageWidget extends AbstractPositionedRectangleWidget {
+public class ImageWidget extends Widget {
 
     protected TextureArea area;
 
@@ -15,19 +19,11 @@ public class ImageWidget extends AbstractPositionedRectangleWidget {
     private boolean isVisible = true;
 
     public ImageWidget(int xPosition, int yPosition, int width, int height) {
-        super(xPosition, yPosition, width, height);
-        this.xPosition = xPosition;
-        this.yPosition = yPosition;
-        this.width = width;
-        this.height = height;
+        super(new Position(xPosition, yPosition), new Size(width, height));
     }
 
     public ImageWidget(int xPosition, int yPosition, int width, int height, TextureArea area) {
-        super(xPosition, yPosition, width, height);
-        this.xPosition = xPosition;
-        this.yPosition = yPosition;
-        this.width = width;
-        this.height = height;
+        this(xPosition, yPosition, width, height);
         this.area = area;
     }
 
@@ -61,9 +57,11 @@ public class ImageWidget extends AbstractPositionedRectangleWidget {
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void drawInBackground(int mouseX, int mouseY) {
+    public void drawInBackground(int mouseX, int mouseY, IRenderContext context) {
         if (!this.isVisible || area == null) return;
-        area.draw(xPosition, yPosition, width, height);
+        Position position = getPosition();
+        Size size = getSize();
+        area.draw(position.x, position.y, size.width, size.height);
     }
 
 }

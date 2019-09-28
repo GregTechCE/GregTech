@@ -1,18 +1,18 @@
 package gregtech.common.covers.filter;
 
 import gregtech.api.gui.widgets.AbstractWidgetGroup;
+import gregtech.api.util.Position;
 import net.minecraft.network.PacketBuffer;
 
 import java.util.function.Supplier;
 
 public class WidgetGroupFluidFilter extends AbstractWidgetGroup {
 
-    private final int yPosition;
     private Supplier<FluidFilter> itemFilterSupplier;
     private FluidFilter itemFilter;
 
     public WidgetGroupFluidFilter(int yPosition, Supplier<FluidFilter> itemFilterSupplier) {
-        this.yPosition = yPosition;
+        super(new Position(0, yPosition));
         this.itemFilterSupplier = itemFilterSupplier;
     }
 
@@ -24,7 +24,7 @@ public class WidgetGroupFluidFilter extends AbstractWidgetGroup {
             clearAllWidgets();
             this.itemFilter = newItemFilter;
             if(itemFilter != null) {
-                this.itemFilter.initUI(yPosition, this::addWidget);
+                this.itemFilter.initUI(this::addWidget);
             }
             writeUpdateInfo(2, buffer -> {
                 if(itemFilter != null) {
@@ -46,7 +46,7 @@ public class WidgetGroupFluidFilter extends AbstractWidgetGroup {
             if(buffer.readBoolean()) {
                 int filterId = buffer.readVarInt();
                 this.itemFilter = FilterTypeRegistry.createFluidFilterById(filterId);
-                this.itemFilter.initUI(yPosition, this::addWidget);
+                this.itemFilter.initUI(this::addWidget);
             }
         }
     }

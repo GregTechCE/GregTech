@@ -1,6 +1,10 @@
 package gregtech.api.util;
 
 
+import codechicken.lib.vec.Matrix4;
+import codechicken.lib.vec.Rotation;
+import codechicken.lib.vec.Transformation;
+import codechicken.lib.vec.Vector3;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableList.Builder;
 import com.google.common.collect.Lists;
@@ -69,6 +73,9 @@ import static gregtech.api.GTValues.V;
 
 public class GTUtility {
 
+    private static final Transformation REVERSE_HORIZONTAL_ROTATION = new codechicken.lib.vec.Rotation(Math.PI, new Vector3(0.0, 1.0, 0.0)).at(Vector3.center);
+    private static final Transformation REVERSE_VERTICAL_ROTATION = new Rotation(Math.PI, new Vector3(1.0, 0.0, 0.0)).at(Vector3.center);
+
     public static BigInteger LONG_MAX = BigInteger.valueOf(Long.MAX_VALUE);
     public static BigInteger LONG_MIN = BigInteger.valueOf(Long.MIN_VALUE);
 
@@ -78,6 +85,10 @@ public class GTUtility {
             result[i] = mapper.apply(array[i]);
         }
         return result;
+    }
+
+    public static void rotateBackFace(Matrix4 matrix, EnumFacing direction) {
+        matrix.translate(direction.getFrontOffsetX(), direction.getFrontOffsetY(), direction.getFrontOffsetZ());
     }
 
     //magic is here

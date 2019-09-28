@@ -1,19 +1,19 @@
 package gregtech.common.covers.filter;
 
 import gregtech.api.gui.widgets.AbstractWidgetGroup;
+import gregtech.api.util.Position;
 import net.minecraft.network.PacketBuffer;
 
 import java.util.function.Supplier;
 
 public class WidgetGroupItemFilter extends AbstractWidgetGroup {
 
-    private final int yPosition;
     private Supplier<ItemFilter> itemFilterSupplier;
     private ItemFilter itemFilter;
     private int maxStackSize = 1;
 
     public WidgetGroupItemFilter(int yPosition, Supplier<ItemFilter> itemFilterSupplier) {
-        this.yPosition = yPosition;
+        super(new Position(0, yPosition));
         this.itemFilterSupplier = itemFilterSupplier;
     }
 
@@ -25,7 +25,7 @@ public class WidgetGroupItemFilter extends AbstractWidgetGroup {
             clearAllWidgets();
             this.itemFilter = newItemFilter;
             if (itemFilter != null) {
-                this.itemFilter.initUI(yPosition, this::addWidget);
+                this.itemFilter.initUI(this::addWidget);
             }
             writeUpdateInfo(2, buffer -> {
                 if (itemFilter != null) {
@@ -52,7 +52,7 @@ public class WidgetGroupItemFilter extends AbstractWidgetGroup {
             if(buffer.readBoolean()) {
                 int filterId = buffer.readVarInt();
                 this.itemFilter = FilterTypeRegistry.createItemFilterById(filterId);
-                this.itemFilter.initUI(yPosition, this::addWidget);
+                this.itemFilter.initUI(this::addWidget);
                 this.itemFilter.setMaxStackSize(maxStackSize);
             }
         } else if(id == 3) {

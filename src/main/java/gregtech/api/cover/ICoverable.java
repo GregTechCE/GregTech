@@ -28,9 +28,6 @@ import java.util.function.Consumer;
 
 public interface ICoverable {
 
-    Transformation REVERSE_HORIZONTAL_ROTATION = new Rotation(Math.PI, new Vector3(0.0, 1.0, 0.0)).at(Vector3.center);
-    Transformation REVERSE_VERTICAL_ROTATION = new Rotation(Math.PI, new Vector3(1.0, 0.0, 0.0)).at(Vector3.center);
-
     World getWorld();
 
     BlockPos getPos();
@@ -88,12 +85,7 @@ public interface ICoverable {
                 if (coverPlateThickness == 0.0 && shouldRenderBackSide() && coverBehavior.canRenderBackside()) {
                     //machine is full block, but still not opaque - render cover on the back side too
                     Matrix4 backTranslation = translation.copy();
-                    if (sideFacing.getAxis().isVertical()) {
-                        REVERSE_VERTICAL_ROTATION.apply(backTranslation);
-                    } else {
-                        REVERSE_HORIZONTAL_ROTATION.apply(backTranslation);
-                    }
-                    backTranslation.translate(-sideFacing.getFrontOffsetX(), -sideFacing.getFrontOffsetY(), -sideFacing.getFrontOffsetZ());
+                    GTUtility.rotateBackFace(backTranslation, sideFacing);
                     coverBehavior.renderCover(renderState, backTranslation, coverPipeline, plateBox, layer);
                 }
             }

@@ -23,7 +23,7 @@ import java.util.stream.Collectors;
 
 public class ModularUIContainer extends Container implements WidgetUIAccess {
 
-    private final HashMap<Slot, INativeWidget> slotMap = new HashMap<>();
+    protected final HashMap<Slot, INativeWidget> slotMap = new HashMap<>();
     private final ModularUI modularUI;
 
     public boolean accumulateWidgetUpdateData = false;
@@ -40,6 +40,10 @@ public class ModularUIContainer extends Container implements WidgetUIAccess {
                 addSlotToContainer(slot);
             });
         modularUI.triggerOpenListeners();
+    }
+
+    @Override
+    public void notifySizeChange() {
     }
 
     //WARNING! WIDGET CHANGES SHOULD BE *STRICTLY* SYNCHRONIZED BETWEEN SERVER AND CLIENT,

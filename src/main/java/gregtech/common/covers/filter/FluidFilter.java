@@ -15,7 +15,7 @@ public abstract class FluidFilter {
 
     public abstract int getMaxOccupiedHeight();
 
-    public abstract void initUI(int y, Consumer<Widget> widgetGroup);
+    public abstract void initUI(Consumer<Widget> widgetGroup);
 
     public abstract void writeToNBT(NBTTagCompound tagCompound);
 

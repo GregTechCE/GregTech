@@ -7,13 +7,15 @@ import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 
 /**
- * Native widget is widget that is based on MC native container mechanics
- * This widget logic delegates to MC slot
+ * Native widget is widget wrapping native Slot
+ * That means controls are delegated to vanilla {@link net.minecraft.client.gui.inventory.GuiContainer}
+ * Rendering is still handled by widget via helpers in {@link gregtech.api.gui.IRenderContext}
  */
-public interface INativeWidget {
+public interface INativeWidget extends EnableNotifiedWidget {
 
     ItemStack VANILLA_LOGIC = new ItemStack(Items.AIR);
 
+    @Override
     void setEnabled(boolean isEnabled);
 
     /**

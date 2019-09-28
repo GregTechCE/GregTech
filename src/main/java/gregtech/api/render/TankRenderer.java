@@ -4,70 +4,51 @@ import codechicken.lib.render.CCRenderState;
 import codechicken.lib.render.pipeline.ColourMultiplier;
 import codechicken.lib.render.pipeline.IVertexOperation;
 import codechicken.lib.texture.TextureUtils;
-import codechicken.lib.texture.TextureUtils.IIconRegister;
 import codechicken.lib.vec.Cuboid6;
 import codechicken.lib.vec.Matrix4;
-import gregtech.api.GTValues;
 import gregtech.api.util.GTUtility;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 import org.apache.commons.lang3.ArrayUtils;
 
-public class TankRenderer implements IIconRegister {
-
-    private final String basePath;
-
-    @SideOnly(Side.CLIENT)
-    private TextureAtlasSprite sideSprite;
+public class TankRenderer extends CTCubeRenderer {
 
     public TankRenderer(String basePath) {
-        this.basePath = basePath;
-        Textures.iconRegisters.add(this);
+        super(basePath);
     }
 
-    @Override
-    @SideOnly(Side.CLIENT)
-    public void registerIcons(TextureMap textureMap) {
-        this.sideSprite = textureMap.registerSprite(new ResourceLocation(GTValues.MODID, "blocks/" + basePath));
-    }
-
-    @SideOnly(Side.CLIENT)
-    public TextureAtlasSprite getParticleTexture() {
-        return sideSprite;
-    }
-
-    public void render(CCRenderState renderState, Matrix4 translation, int baseColor, IVertexOperation[] pipeline, int capacity, FluidStack fluidStack) {
+    public void render(CCRenderState renderState, Matrix4 translation, int baseColor, IVertexOperation[] pipeline, int connectionMask, int capacity, FluidStack fluidStack) {
         IVertexOperation[] basePipeline = ArrayUtils.add(pipeline, new ColourMultiplier(baseColor));
-        Cuboid6 fluidCuboid = null;
-        IVertexOperation[] fluidPipeline = null;
-        TextureAtlasSprite fluidSprite = null;
-
+        super.render(renderState, translation, basePipeline, connectionMask);
         if (fluidStack != null) {
-            double fluidLevel = fluidStack.amount / (capacity * 1.0) * 0.98;
+            double fluidLevelOffset = (offset(EnumFacing.UP, connectionMask) + offset(EnumFacing.DOWN, connectionMask));
+            double fluidLevel = fluidStack.amount / (capacity * 1.0) * (1.0 - fluidLevelOffset);
+            Cuboid6 fluidCuboid = new Cuboid6(
+                offset(EnumFacing.WEST, connectionMask), 0.0,
+                offset(EnumFacing.NORTH, connectionMask),
+                1.0 - offset(EnumFacing.EAST, connectionMask), 1.0,
+                1.0 - offset(EnumFacing.SOUTH, connectionMask));
             if (fluidStack.getFluid().isGaseous(fluidStack)) {
-                fluidCuboid = new Cuboid6(0.01, 0.99 - fluidLevel, 0.01, 0.99, 0.99, 0.99);
+                double maxHeight = offset(EnumFacing.UP, connectionMask);
+                fluidCuboid.min.y = 1.0 - maxHeight - fluidLevel;
+                fluidCuboid.max.y = maxHeight;
             } else {
-                fluidCuboid = new Cuboid6(0.01, 0.01, 0.01, 0.99, 0.01 + fluidLevel, 0.99);
+                double minHeight = offset(EnumFacing.DOWN, connectionMask);
+                fluidCuboid.min.y = minHeight;
+                fluidCuboid.max.y = minHeight + fluidLevel;
             }
             ColourMultiplier multiplier = new ColourMultiplier(GTUtility.convertRGBtoOpaqueRGBA_CL(fluidStack.getFluid().getColor(fluidStack)));
-            fluidPipeline = new IVertexOperation[]{multiplier};
-            fluidSprite = TextureUtils.getTexture(fluidStack.getFluid().getStill(fluidStack));
-        }
-
-        for (EnumFacing renderSide : EnumFacing.VALUES) {
-            Textures.renderFace(renderState, translation, basePipeline, renderSide, Cuboid6.full, sideSprite);
-            Textures.renderFace(renderState, translation.copy()
-                    .translate(renderSide.getFrontOffsetX(), renderSide.getFrontOffsetY(), renderSide.getFrontOffsetZ()),
-                basePipeline, renderSide.getOpposite(), Cuboid6.full, sideSprite); //for rendering sides from inside too
-            if (fluidStack != null) {
+            IVertexOperation[] fluidPipeline = new IVertexOperation[]{multiplier};
+            TextureAtlasSprite fluidSprite = TextureUtils.getTexture(fluidStack.getFluid().getStill(fluidStack));
+            for (EnumFacing renderSide : EnumFacing.VALUES) {
                 Textures.renderFace(renderState, translation, fluidPipeline, renderSide, fluidCuboid, fluidSprite);
             }
         }
+    }
+
+    private static double offset(EnumFacing side, int connectionMask) {
+        return hasFaceBit(connectionMask, side) ? 0.0 : 0.001;
     }
 
 }

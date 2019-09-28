@@ -28,10 +28,10 @@ public class OreDictionaryItemFilter extends ItemFilter {
     }
 
     @Override
-    public void initUI(int y, Consumer<Widget> widgetGroup) {
-        widgetGroup.accept(new LabelWidget(10, y, "cover.ore_dictionary_filter.title1"));
-        widgetGroup.accept(new LabelWidget(10, y + 10, "cover.ore_dictionary_filter.title2"));
-        widgetGroup.accept(new TextFieldWidget(10, y + 25, 100, 12, true,
+    public void initUI(Consumer<Widget> widgetGroup) {
+        widgetGroup.accept(new LabelWidget(10, 0, "cover.ore_dictionary_filter.title1"));
+        widgetGroup.accept(new LabelWidget(10, 10, "cover.ore_dictionary_filter.title2"));
+        widgetGroup.accept(new TextFieldWidget(10, 25, 100, 12, true,
             () -> oreDictionaryFilter, this::setOreDictionaryFilter)
             .setMaxStringLength(64)
             .setValidator(str -> ORE_DICTIONARY_FILTER.matcher(str).matches()));

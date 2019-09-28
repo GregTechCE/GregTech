@@ -34,7 +34,7 @@ public abstract class ItemFilter {
 
     public abstract int getTotalOccupiedHeight();
 
-    public abstract void initUI(int y, Consumer<Widget> widgetGroup);
+    public abstract void initUI(Consumer<Widget> widgetGroup);
 
     public abstract void writeToNBT(NBTTagCompound tagCompound);
 

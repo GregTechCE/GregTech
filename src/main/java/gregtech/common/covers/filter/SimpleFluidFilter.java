@@ -41,10 +41,10 @@ public class SimpleFluidFilter extends FluidFilter {
     }
 
     @Override
-    public void initUI(int y, Consumer<Widget> widgetGroup) {
+    public void initUI(Consumer<Widget> widgetGroup) {
         for (int i = 0; i < 9; ++i) {
             int index = i;
-            widgetGroup.accept((new PhantomFluidWidget(10 + 18 * (i % 3), y + 18 * (i / 3), 18, 18,
+            widgetGroup.accept((new PhantomFluidWidget(10 + 18 * (i % 3), 18 * (i / 3), 18, 18,
                 () -> getFluidInSlot(index),
                 (newFluid) -> setFluidInSlot(index, newFluid)))
                 .setBackgroundTexture(GuiTextures.SLOT));

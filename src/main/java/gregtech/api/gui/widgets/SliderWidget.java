@@ -2,7 +2,11 @@ package gregtech.api.gui.widgets;
 
 import com.google.common.base.Preconditions;
 import gregtech.api.gui.GuiTextures;
+import gregtech.api.gui.IRenderContext;
+import gregtech.api.gui.Widget;
 import gregtech.api.gui.resources.TextureArea;
+import gregtech.api.util.Position;
+import gregtech.api.util.Size;
 import gregtech.api.util.function.FloatConsumer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
@@ -15,7 +19,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.function.BiFunction;
 
-public class SliderWidget extends AbstractPositionedRectangleWidget {
+public class SliderWidget extends Widget {
 
     public static final BiFunction<String, Float, String> DEFAULT_TEXT_SUPPLIER = (name, value) -> I18n.format(name, value.intValue());
 
@@ -37,7 +41,7 @@ public class SliderWidget extends AbstractPositionedRectangleWidget {
     public boolean isMouseDown;
 
     public SliderWidget(String name, int xPosition, int yPosition, int width, int height, float min, float max, float currentValue, FloatConsumer responder) {
-        super(xPosition, yPosition, width, height);
+        super(new Position(xPosition, yPosition), new Size(width, height));
         Preconditions.checkNotNull(responder, "responder");
         Preconditions.checkNotNull(name, "name");
         this.min = min;
@@ -85,25 +89,29 @@ public class SliderWidget extends AbstractPositionedRectangleWidget {
     }
 
     @Override
-    public void drawInBackground(int mouseX, int mouseY) {
+    public void drawInBackground(int mouseX, int mouseY, IRenderContext context) {
+        Position pos = getPosition();
+        Size size = getSize();
         if (backgroundArea != null) {
-            backgroundArea.draw(xPosition, yPosition, width, height);
+            backgroundArea.draw(pos.x, pos.y, size.width, size.height);
         }
         if(displayString == null) {
             this.displayString = getDisplayString();
         }
-        sliderIcon.draw(xPosition + (int) (this.sliderPosition * (float) (this.width - 8)), yPosition, sliderWidth, height);
+        sliderIcon.draw(pos.x + (int) (this.sliderPosition * (float) (size.width - 8)), pos.y, sliderWidth, size.height);
         FontRenderer fontRenderer = Minecraft.getMinecraft().fontRenderer;
         fontRenderer.drawString(displayString,
-            xPosition + width / 2 - fontRenderer.getStringWidth(displayString) / 2,
-            yPosition + height / 2 - fontRenderer.FONT_HEIGHT / 2, textColor);
+            pos.x + size.width / 2 - fontRenderer.getStringWidth(displayString) / 2,
+            pos.y + size.height / 2 - fontRenderer.FONT_HEIGHT / 2, textColor);
         GlStateManager.color(1.0f, 1.0f, 1.0f);
     }
 
     @Override
     public boolean mouseDragged(int mouseX, int mouseY, int button, long timeDragged) {
         if (this.isMouseDown) {
-            this.sliderPosition = (float) (mouseX - (this.xPosition + 4)) / (float) (this.width - 8);
+            Position pos = getPosition();
+            Size size = getSize();
+            this.sliderPosition = (float) (mouseX - (pos.x + 4)) / (float) (size.width - 8);
 
             if (this.sliderPosition < 0.0F) {
                 this.sliderPosition = 0.0F;
@@ -122,8 +130,10 @@ public class SliderWidget extends AbstractPositionedRectangleWidget {
 
     @Override
     public boolean mouseClicked(int mouseX, int mouseY, int button) {
-        if (isMouseOver(xPosition, yPosition, width, height, mouseX, mouseY)) {
-            this.sliderPosition = (float) (mouseX - (this.xPosition + 4)) / (float) (this.width - 8);
+        if (isMouseOverElement(mouseX, mouseY)) {
+            Position pos = getPosition();
+            Size size = getSize();
+            this.sliderPosition = (float) (mouseX - (pos.x + 4)) / (float) (size.width - 8);
 
             if (this.sliderPosition < 0.0F) {
                 this.sliderPosition = 0.0F;

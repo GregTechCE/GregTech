@@ -380,6 +380,7 @@ public abstract class MetaTileEntity implements ICoverable {
             getHolder().notifyBlockUpdate();
             getHolder().markDirty();
         }
+        onCoverPlacementUpdate();
         return true;
     }
 
@@ -400,7 +401,11 @@ public abstract class MetaTileEntity implements ICoverable {
             getHolder().notifyBlockUpdate();
             getHolder().markDirty();
         }
+        onCoverPlacementUpdate();
         return true;
+    }
+
+    protected void onCoverPlacementUpdate() {
     }
 
     public final void dropAllCovers() {

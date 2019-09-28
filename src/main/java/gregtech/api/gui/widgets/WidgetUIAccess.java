@@ -12,6 +12,8 @@ import java.util.function.Consumer;
  */
 public interface WidgetUIAccess {
 
+    void notifySizeChange();
+
     /**
      * Call when widget is added/removed, or INativeWidget list changed
      * and should be updated accordingly

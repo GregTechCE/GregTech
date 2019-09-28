@@ -3,6 +3,7 @@ package gregtech.integration.jei.recipe;
 import gregtech.api.GTValues;
 import gregtech.api.capability.impl.FluidTankList;
 import gregtech.api.gui.BlankUIHolder;
+import gregtech.api.gui.IRenderContext;
 import gregtech.api.gui.ModularUI;
 import gregtech.api.gui.Widget;
 import gregtech.api.gui.widgets.SlotWidget;
@@ -16,6 +17,7 @@ import mezz.jei.api.gui.IRecipeLayout;
 import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.recipe.IRecipeCategory;
 import net.minecraft.client.Minecraft;
+import net.minecraft.inventory.Slot;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.items.ItemStackHandler;
@@ -78,10 +80,14 @@ public class RecipeMapCategory implements IRecipeCategory<GTRecipeWrapper> {
                 SlotWidget slotWidget = (SlotWidget) uiWidget;
                 if (slotWidget.getHandle().getItemHandler() == importItems) {
                     //this is input item stack slot widget, so add it to item group
-                    itemStackGroup.init(slotWidget.getHandle().getSlotIndex(), true, slotWidget.getXPosition() - 1, slotWidget.getYPosition() - 1);
+                    itemStackGroup.init(slotWidget.getHandle().getSlotIndex(), true,
+                        slotWidget.getPosition().x - 1,
+                        slotWidget.getPosition().y - 1);
                 } else if (slotWidget.getHandle().getItemHandler() == exportItems) {
                     //this is output item stack slot widget, so add it to item group
-                    itemStackGroup.init(importItems.getSlots() + slotWidget.getHandle().getSlotIndex(), false, slotWidget.getXPosition() - 1, slotWidget.getYPosition() - 1);
+                    itemStackGroup.init(importItems.getSlots() + slotWidget.getHandle().getSlotIndex(), false,
+                        slotWidget.getPosition().x - 1,
+                        slotWidget.getPosition().y - 1);
                 }
 
             } else if (uiWidget instanceof TankWidget) {
@@ -94,10 +100,10 @@ public class RecipeMapCategory implements IRecipeCategory<GTRecipeWrapper> {
                         fluidAmount = inputsList.get(importIndex).get(0).amount;
                     //this is input tank widget, so add it to fluid group
                     fluidStackGroup.init(importIndex, true,
-                        tankWidget.getXPosition() + tankWidget.fluidRenderOffset,
-                        tankWidget.getYPosition() + tankWidget.fluidRenderOffset,
-                        tankWidget.getWidth() - tankWidget.fluidRenderOffset,
-                        tankWidget.getHeight() - tankWidget.fluidRenderOffset,
+                        tankWidget.getPosition().x + tankWidget.fluidRenderOffset,
+                        tankWidget.getPosition().y + tankWidget.fluidRenderOffset,
+                        tankWidget.getSize().width - tankWidget.fluidRenderOffset,
+                        tankWidget.getSize().height - tankWidget.fluidRenderOffset,
                         fluidAmount, false, null);
 
                 } else if (exportFluids.getFluidTanks().contains(tankWidget.fluidTank)) {
@@ -108,10 +114,10 @@ public class RecipeMapCategory implements IRecipeCategory<GTRecipeWrapper> {
                         fluidAmount = inputsList.get(exportIndex).get(0).amount;
                     //this is output tank widget, so add it to fluid group
                     fluidStackGroup.init(importFluids.getFluidTanks().size() + exportIndex, false,
-                        tankWidget.getXPosition() + tankWidget.fluidRenderOffset,
-                        tankWidget.getYPosition() + tankWidget.fluidRenderOffset,
-                        tankWidget.getWidth() - tankWidget.fluidRenderOffset,
-                        tankWidget.getHeight() - tankWidget.fluidRenderOffset,
+                        tankWidget.getPosition().x + tankWidget.fluidRenderOffset,
+                        tankWidget.getPosition().y + tankWidget.fluidRenderOffset,
+                        tankWidget.getSize().width - tankWidget.fluidRenderOffset,
+                        tankWidget.getSize().height - tankWidget.fluidRenderOffset,
                         fluidAmount, false, null);
 
                 }
@@ -126,7 +132,19 @@ public class RecipeMapCategory implements IRecipeCategory<GTRecipeWrapper> {
     @Override
     public void drawExtras(Minecraft minecraft) {
         for (Widget widget : modularUI.guiWidgets.values()) {
-            widget.drawInBackground(0, 0);
+            widget.drawInBackground(0, 0, new IRenderContext() {
+                @Override
+                public void drawSlotContents(Slot slot) {
+                }
+
+                @Override
+                public void renderSlotOverlay(Slot slot) {
+                }
+
+                @Override
+                public void setHoveredSlot(Slot hoveredSlot) {
+                }
+            });
             widget.drawInForeground(0, 0);
         }
     }
