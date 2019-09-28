@@ -43,9 +43,9 @@ public abstract class MetaTileEntityMultiblockPart extends MetaTileEntity implem
     }
 
     @Override
-    public int getLightValue() {
+    public int getActualLightValue() {
         MultiblockControllerBase controller = getController();
-        return controller == null ? 0 : controller.getLightValue(this);
+        return controller == null ? 0 : controller.getLightValueForPart(this);
     }
 
     public int getTier() {

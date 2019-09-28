@@ -98,7 +98,6 @@ public class MetaTileEntityQuantumChest extends MetaTileEntity implements ITiere
                     inputStack.shrink(amountOfItemsToInsert);
                     importItems.setStackInSlot(0, inputStack);
                     this.itemsStoredInside += amountOfItemsToInsert;
-                    updateComparatorValue();
                     markDirty();
                 }
             }
@@ -115,7 +114,6 @@ public class MetaTileEntityQuantumChest extends MetaTileEntity implements ITiere
                     if (this.itemsStoredInside == 0) {
                         this.itemStack = ItemStack.EMPTY;
                     }
-                    updateComparatorValue();
                     markDirty();
                 }
             }

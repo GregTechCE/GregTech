@@ -4,17 +4,18 @@ import codechicken.lib.raytracer.CuboidRayTraceResult;
 import codechicken.lib.render.CCRenderState;
 import codechicken.lib.render.pipeline.IVertexOperation;
 import codechicken.lib.vec.Matrix4;
-import com.google.common.base.Preconditions;
 import gregtech.api.block.machines.BlockMachine;
 import gregtech.api.cover.CoverBehavior;
 import gregtech.api.gui.ModularUI;
 import gregtech.api.items.metaitem.DefaultSubItemHandler;
+import gregtech.api.metatileentity.IFastRenderMetaTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.MetaTileEntityHolder;
 import gregtech.api.recipes.ModHandler;
 import gregtech.api.render.Textures;
 import gregtech.api.unification.material.type.Material.MatFlags;
 import gregtech.api.unification.material.type.SolidMaterial;
+import gregtech.api.util.ByteBufUtils;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.WatchedFluidTank;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
@@ -23,11 +24,14 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
+import net.minecraft.nbt.NBTUtil;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockPos.MutableBlockPos;
 import net.minecraft.util.math.MathHelper;
@@ -39,6 +43,7 @@ import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.FluidUtil;
+import net.minecraftforge.fluids.capability.IFluidTankProperties;
 import net.minecraftforge.fluids.capability.templates.FluidHandlerItemStack;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -46,17 +51,17 @@ import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.tuple.Pair;
 
 import javax.annotation.Nullable;
-import java.io.IOException;
 import java.lang.ref.WeakReference;
 import java.util.*;
+import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-public class MetaTileEntityTank extends MetaTileEntity {
+public class MetaTileEntityTank extends MetaTileEntity implements IFastRenderMetaTileEntity {
 
+    private static final int FLUID_SYNC_THROTTLE = 20;
     private final int tankSize;
     private final SolidMaterial material;
-    private int oldLightValue = 0;
     private boolean addedToMultiblock = false;
     private boolean needsCoversUpdate = false;
     private boolean isRemoved = false;
@@ -64,23 +69,37 @@ public class MetaTileEntityTank extends MetaTileEntity {
 
     private final FluidTank multiblockFluidTank;
     private List<BlockPos> connectedTanks = new ArrayList<>();
-    private BlockPos lowestPos = null;
-    private BlockPos highestPos = null;
+    private BlockPos lowestPos = BlockPos.ORIGIN;
+    private BlockPos highestPos = BlockPos.ORIGIN;
+    private boolean shapeUninitialized = true;
 
     private BlockPos controllerPos = null;
     private WeakReference<MetaTileEntityTank> controllerCache = new WeakReference<>(null);
+    private NetworkStatus networkStatus;
+    private int timeSinceLastFluidSync = Integer.MAX_VALUE;
+    private Consumer<PacketBuffer> fluidSyncTask;
+    private boolean needsShapeResync;
 
     public MetaTileEntityTank(ResourceLocation metaTileEntityId, SolidMaterial material, int tankSize) {
         super(metaTileEntityId);
         this.tankSize = tankSize;
         this.material = material;
-        this.multiblockFluidTank = new FluidTank(tankSize);
+        this.multiblockFluidTank = new WatchedFluidTank(tankSize) {
+            @Override
+            protected void onFluidChanged(FluidStack newFluidStack, FluidStack oldFluidStack) {
+                MetaTileEntityTank.this.onFluidChangedInternal(newFluidStack, oldFluidStack);
+            }
+        };
         initializeInventory();
     }
 
     @Override
     public void update() {
+        this.fluidInventory = getActualFluidTank();
         super.update();
+        if (!shapeUninitialized) {
+            recomputeTankSize();
+        }
         if (!getWorld().isRemote) {
             if (!addedToMultiblock) {
                 this.addedToMultiblock = true;
@@ -88,13 +107,37 @@ public class MetaTileEntityTank extends MetaTileEntity {
             }
             if (needsCoversUpdate) {
                 this.needsCoversUpdate = false;
-                rescanSurroundingMultiblocks();
+                recheckBlockedSides();
                 rescanTankMultiblocks(recomputeNearbyMultiblocks());
+            }
+            if (networkStatus == NetworkStatus.ATTACHED_TO_MULTIBLOCK) {
+                writeCustomData(1, buf -> buf.writeBlockPos(controllerPos));
+                this.fluidSyncTask = null;
+                this.networkStatus = null;
+                this.needsShapeResync = false;
+            }
+            if (networkStatus == NetworkStatus.DETACHED_FROM_MULTIBLOCK) {
+                writeCustomData(2, buf -> {});
+                this.networkStatus = null;
+            }
+            if (isTankController() && needsShapeResync) {
+                writeCustomData(4, buf -> {
+                    buf.writeBlockPos(highestPos);
+                    buf.writeBlockPos(lowestPos);
+                });
+                this.needsShapeResync = false;
+            }
+            if (isTankController() && fluidSyncTask != null) {
+                if (timeSinceLastFluidSync++ >= FLUID_SYNC_THROTTLE) {
+                    writeCustomData(3, fluidSyncTask);
+                    this.timeSinceLastFluidSync = 0;
+                    this.fluidSyncTask = null;
+                }
             }
         }
     }
 
-    private void rescanSurroundingMultiblocks() {
+    private void recheckBlockedSides() {
         this.blockedSides = 0;
         for (EnumFacing side : EnumFacing.VALUES) {
             CoverBehavior coverBehavior = getCoverAtSide(side);
@@ -121,20 +164,27 @@ public class MetaTileEntityTank extends MetaTileEntity {
         HashSet<BlockPos> handledSet = new HashSet<>();
         for (EnumFacing side : EnumFacing.VALUES) {
             MetaTileEntityTank tank = getTankTile(getPos().offset(side));
+            if (tank == null) continue;
             handledSet.addAll(tank.rescanTankMultiblocks(handledSet));
         }
         return handledSet;
     }
 
-    private double getFluidLevelForTank(BlockPos tankPos) {
-        Preconditions.checkArgument(connectedTanks.contains(tankPos), "Tank is not controlled by this controller");
+    private double getFluidLevelForTank() {
+        FluidTank multiblockFluidTank = getActualFluidTank();
+        if (multiblockFluidTank == null) {
+            return 0.0;
+        }
+        if (!shapeUninitialized) {
+            recomputeTankSize();
+        }
         double fillPercent = multiblockFluidTank.getFluidAmount() / (multiblockFluidTank.getCapacity() * 1.0);
-        double perLevelFill = fillPercent * (highestPos.getY() - lowestPos.getY() + 1) - tankPos.getY();
+        double perLevelFill = fillPercent * (highestPos.getY() - lowestPos.getY() + 1) - getPos().getY();
         return MathHelper.clamp(perLevelFill, 0.0, 1.0);
     }
 
-    private int getFluidStoredInTank(BlockPos tankPos) {
-        double fluidLevel = getFluidLevelForTank(tankPos);
+    private int getFluidStoredInTank() {
+        double fluidLevel = getFluidLevelForTank();
         return MathHelper.floor(fluidLevel * tankSize);
     }
 
@@ -153,19 +203,28 @@ public class MetaTileEntityTank extends MetaTileEntity {
         return metaTileEntityTank;
     }
 
-    private void recomputeTankSize() {
-        this.lowestPos = connectedTanks.stream().min(Comparator.comparing(Vec3i::getY)).orElse(null);
-        this.highestPos = connectedTanks.stream().max(Comparator.comparing(Vec3i::getY)).orElse(null);
-        this.multiblockFluidTank.setCapacity((1 + connectedTanks.size()) * tankSize);
-        if (multiblockFluidTank.getFluid() != null &&
-            multiblockFluidTank.getFluidAmount() > multiblockFluidTank.getCapacity()) {
-            multiblockFluidTank.getFluid().amount = multiblockFluidTank.getCapacity();
+    private boolean isTankController() {
+        return controllerPos == null;
+    }
+
+    private FluidTank getActualFluidTank() {
+        if (controllerPos != null) {
+            MetaTileEntityTank metaTileEntityTank = getControllerEntity();
+            return metaTileEntityTank == null ? null : metaTileEntityTank.getActualFluidTank();
+        } else {
+            return multiblockFluidTank;
         }
     }
 
+    private FluidStack getActualTankFluid() {
+        FluidTank fluidTank = getActualFluidTank();
+        return fluidTank == null ? null : fluidTank.getFluid();
+    }
+
     private void removeTankFromMultiblock(MetaTileEntityTank removedTank) {
-        int fluidInTank = getFluidStoredInTank(removedTank.getPos());
+        int fluidInTank = removedTank.getFluidStoredInTank();
         this.connectedTanks.remove(removedTank.getPos());
+        this.needsShapeResync = true;
         removedTank.setTankControllerInternal(null);
         FluidStack fluidStack = multiblockFluidTank.getFluid();
         //do not retain fluid to disconnected tank if it has less than 0 bucket
@@ -178,31 +237,32 @@ public class MetaTileEntityTank extends MetaTileEntity {
     }
 
     private void addTankToMultiblock(MetaTileEntityTank addedTank) {
-        FluidStack tankFluid = addedTank.multiblockFluidTank.drain(Integer.MAX_VALUE, true);
         this.connectedTanks.add(addedTank.getPos());
-        addedTank.setTankControllerInternal(this);
+        this.needsShapeResync = true;
+        FluidStack tankFluid = addedTank.setTankControllerInternal(this);
         recomputeTankSize();
         if (tankFluid != null) {
             multiblockFluidTank.fill(tankFluid, true);
         }
     }
 
-    private boolean isTankController() {
-        return controllerPos == null;
-    }
-
-    private FluidStack getActualTankFluid() {
-        if (isTankController()) {
-            FluidStack fluidStack = multiblockFluidTank.getFluid();
-            return fluidStack == null ? null : fluidStack.copy();
-        } else if (controllerPos != null) {
-            MetaTileEntityTank controller = getControllerEntity();
-            return controller == null ? null : controller.getActualTankFluid();
+    private void recomputeTankSize() {
+        List<BlockPos> connectedTanks = new ArrayList<>(this.connectedTanks);
+        connectedTanks.add(getPos()); //add self to connected tanks
+        this.lowestPos = connectedTanks.stream().min(Comparator.comparing(Vec3i::getY)).get();
+        this.highestPos = connectedTanks.stream().max(Comparator.comparing(Vec3i::getY)).get();
+        this.multiblockFluidTank.setCapacity(connectedTanks.size() * tankSize);
+        if (multiblockFluidTank.getFluid() != null &&
+            multiblockFluidTank.getFluidAmount() > multiblockFluidTank.getCapacity()) {
+            multiblockFluidTank.getFluid().amount = multiblockFluidTank.getCapacity();
         }
-        return null;
+        this.shapeUninitialized = false;
     }
 
     private MetaTileEntityTank getControllerEntity() {
+        if (controllerPos == null) {
+            return null;
+        }
         MetaTileEntityTank cachedController = controllerCache.get();
         if (cachedController != null) {
             if (cachedController.isValid()) {
@@ -219,9 +279,27 @@ public class MetaTileEntityTank extends MetaTileEntity {
         return null;
     }
 
-    private void setTankControllerInternal(MetaTileEntityTank controller) {
+    private FluidStack setTankControllerInternal(MetaTileEntityTank controller) {
         this.controllerPos = controller == null ? null : controller.getPos();
         this.controllerCache = new WeakReference<>(controller);
+        getHolder().markAsDirty();
+        if (controller == null) {
+            this.networkStatus = NetworkStatus.DETACHED_FROM_MULTIBLOCK;
+            return null;
+        } else {
+            this.networkStatus = NetworkStatus.ATTACHED_TO_MULTIBLOCK;
+            FluidStack fluidStack = multiblockFluidTank.drain(Integer.MAX_VALUE, true);
+            this.multiblockFluidTank.setFluid(null);
+            this.fluidSyncTask = null;
+            return fluidStack;
+        }
+    }
+
+    private void onFluidChangedInternal(FluidStack oldStack, FluidStack newStack) {
+        if (getWorld() != null && !getWorld().isRemote && isTankController()) {
+            //controller fluid update - sent in update() after network status
+            this.fluidSyncTask = buf -> ByteBufUtils.writeFluidStackDelta(buf, oldStack, newStack);
+        }
     }
 
     private void setTankController(MetaTileEntityTank controller) {
@@ -238,17 +316,17 @@ public class MetaTileEntityTank extends MetaTileEntity {
             setTankControllerInternal(null);
         }
         if (!connectedTanks.isEmpty()) {
-            updateConnectedTanks();
+            //on controller switch, disconnect all tanks
+            updateConnectedTanks(connectedTanks);
             this.connectedTanks.clear();
-            this.highestPos = null;
-            this.lowestPos = null;
         }
     }
 
-    private void updateConnectedTanks() {
+    private void updateConnectedTanks(Collection<BlockPos> connectedTanks) {
         HashSet<BlockPos> handledSet = new HashSet<>(connectedTanks);
         while (!handledSet.isEmpty()) {
             MetaTileEntityTank tank = getTankTile(handledSet.iterator().next());
+            if (tank == null) continue;
             handledSet.removeAll(tank.rescanTankMultiblocks(handledSet));
         }
     }
@@ -271,13 +349,18 @@ public class MetaTileEntityTank extends MetaTileEntity {
         connectedTanks.remove(firstController);
         MetaTileEntityTank finalFirstController = firstController;
         connectedTanks.forEach(it -> it.setTankController(finalFirstController));
+        ArrayList<BlockPos> orphanTanks = new ArrayList<>(finalFirstController.connectedTanks);
+        orphanTanks.removeAll(structureBlocks);
+        if (!orphanTanks.isEmpty()) {
+            //recompute structures for blocks which don't belong here anymore
+            updateConnectedTanks(orphanTanks);
+        }
     }
 
     private static boolean isTankFluidEqual(MetaTileEntityTank tank1, MetaTileEntityTank tank2) {
         FluidStack fluidStack1 = tank1.getActualTankFluid();
         FluidStack fluidStack2 = tank2.getActualTankFluid();
-        return fluidStack1 == null || fluidStack2 == null ||
-            (fluidStack1 != null && fluidStack1.isFluidEqual(fluidStack2));
+        return fluidStack1 == null || fluidStack2 == null || fluidStack1.isFluidEqual(fluidStack2);
     }
 
     private static boolean canTanksConnect(MetaTileEntityTank tank1, MetaTileEntityTank tank2, EnumFacing side) {
@@ -348,15 +431,6 @@ public class MetaTileEntityTank extends MetaTileEntity {
     }
 
     @Override
-    public int getLightValue() {
-        FluidStack fluidStack = fluidTank.getFluid();
-        if (fluidStack == null) {
-            return 0;
-        }
-        return fluidStack.getFluid().getLuminosity(fluidStack);
-    }
-
-    @Override
     public int getLightOpacity() {
         return 1; //let light pass trough us entirely
     }
@@ -377,27 +451,18 @@ public class MetaTileEntityTank extends MetaTileEntity {
     }
 
     @Override
-    protected void initializeInventory() {
-        super.initializeInventory();
-        this.fluidTank = new SyncFluidTank(tankSize);
-        this.fluidInventory = fluidTank;
-        updateComparatorValue();
-    }
-
-    @Override
     public void initFromItemStackData(NBTTagCompound itemStack) {
         super.initFromItemStackData(itemStack);
         if (itemStack.hasKey(FluidHandlerItemStack.FLUID_NBT_KEY, NBT.TAG_COMPOUND)) {
             FluidStack fluidStack = FluidStack.loadFluidStackFromNBT(itemStack.getCompoundTag(FluidHandlerItemStack.FLUID_NBT_KEY));
-            fluidTank.setFluid(fluidStack);
-            fluidTank.onContentsChanged();
+            this.multiblockFluidTank.setFluid(fluidStack);
         }
     }
 
     @Override
     public void writeItemStackData(NBTTagCompound itemStack) {
         super.writeItemStackData(itemStack);
-        FluidStack fluidStack = fluidTank.getFluid();
+        FluidStack fluidStack = multiblockFluidTank.drain(Integer.MAX_VALUE, false);
         if (fluidStack != null && fluidStack.amount > 0) {
             NBTTagCompound tagCompound = new NBTTagCompound();
             fluidStack.writeToNBT(tagCompound);
@@ -431,77 +496,88 @@ public class MetaTileEntityTank extends MetaTileEntity {
     @Override
     public void writeInitialSyncData(PacketBuffer buf) {
         super.writeInitialSyncData(buf);
-        FluidStack fluidStack = fluidTank.getFluid();
-        buf.writeBoolean(fluidStack != null);
-        if (fluidStack != null) {
-            NBTTagCompound tagCompound = new NBTTagCompound();
-            fluidStack.writeToNBT(tagCompound);
-            buf.writeCompoundTag(tagCompound);
+        if (isTankController()) {
+            buf.writeBoolean(true);
+            FluidStack fluidStack = multiblockFluidTank.getFluid();
+            ByteBufUtils.writeFluidStack(buf, fluidStack);
+            buf.writeBlockPos(highestPos);
+            buf.writeBlockPos(lowestPos);
+        } else {
+            buf.writeBlockPos(controllerPos);
         }
     }
 
     @Override
     public void receiveInitialSyncData(PacketBuffer buf) {
         super.receiveInitialSyncData(buf);
-        FluidStack fluidStack = null;
         if (buf.readBoolean()) {
-            try {
-                NBTTagCompound tagCompound = buf.readCompoundTag();
-                fluidStack = FluidStack.loadFluidStackFromNBT(tagCompound);
-            } catch (IOException ignored) {
-            }
+            FluidStack fluidStack = ByteBufUtils.readFluidStack(buf);
+            this.multiblockFluidTank.setFluid(fluidStack);
+            this.highestPos = buf.readBlockPos();
+            this.lowestPos = buf.readBlockPos();
+        } else {
+            this.controllerPos = buf.readBlockPos();
         }
-        fluidTank.setFluid(fluidStack);
     }
 
     @Override
     public void receiveCustomData(int dataId, PacketBuffer buf) {
         super.receiveCustomData(dataId, buf);
-        if (dataId == 200) {
-            FluidStack fluidStack = null;
-            if (buf.readBoolean()) {
-                try {
-                    NBTTagCompound tagCompound = buf.readCompoundTag();
-                    fluidStack = FluidStack.loadFluidStackFromNBT(tagCompound);
-                } catch (IOException ignored) {
-                }
+        if (dataId == 1) {
+            this.controllerPos = buf.readBlockPos();
+            this.controllerCache = new WeakReference<>(null);
+            this.multiblockFluidTank.setFluid(null);
+        } else if (dataId == 2) {
+            this.controllerPos = null;
+            this.controllerCache = new WeakReference<>(null);
+            this.multiblockFluidTank.setFluid(null);
+            this.highestPos = getPos();
+            this.lowestPos = getPos();
+        } else if (dataId == 3) {
+            if (controllerPos == null) {
+                FluidStack fluidStack = ByteBufUtils.readFluidStackDelta(buf, multiblockFluidTank.getFluid());
+                this.multiblockFluidTank.setFluid(fluidStack);
             }
-            fluidTank.setFluid(fluidStack);
-            //update light on client side
-            updateLightValue();
-            getHolder().scheduleChunkForRenderUpdate();
-        } else if (dataId == 201) {
-            int newFluidAmount = buf.readVarInt();
-            FluidStack fluidStack = fluidTank.getFluid();
-            if (fluidStack != null) {
-                fluidStack.amount = newFluidAmount;
-                getHolder().scheduleChunkForRenderUpdate();
-                //update light on client side
-                updateLightValue();
-            }
+        } else if (dataId == 4) {
+            this.highestPos = buf.readBlockPos();
+            this.lowestPos = buf.readBlockPos();
         }
     }
 
-    private void updateLightValue() {
-        int newLightValue = getLightValue();
-        if (oldLightValue != newLightValue) {
-            MetaTileEntityTank.this.oldLightValue = newLightValue;
-            getWorld().checkLight(getPos());
-        }
+    private IFluidTankProperties getTankProperties() {
+        IFluidTankProperties[] properties = fluidInventory.getTankProperties();
+        return properties.length == 0 ? null : properties[0];
     }
 
     @Override
     public int getActualComparatorValue() {
-        FluidTank fluidTank = this.fluidTank;
-        int fluidAmount = fluidTank.getFluidAmount();
-        int maxCapacity = fluidTank.getCapacity();
+        IFluidTankProperties properties = getTankProperties();
+        if (properties == null) {
+            return 0;
+        }
+        FluidStack fluidStack = properties.getContents();
+        int fluidAmount = fluidStack == null ? 0 : fluidStack.amount;
+        int maxCapacity = properties.getCapacity();
         float f = fluidAmount / (maxCapacity * 1.0f);
         return MathHelper.floor(f * 14.0f) + (fluidAmount > 0 ? 1 : 0);
     }
 
     @Override
+    public int getActualLightValue() {
+        IFluidTankProperties properties = getTankProperties();
+        if (properties == null) {
+            return 0;
+        }
+        FluidStack fluidStack = properties.getContents();
+        if (fluidStack == null) {
+            return 0;
+        }
+        return fluidStack.getFluid().getLuminosity(fluidStack);
+    }
+
+    @Override
     public boolean onRightClick(EntityPlayer playerIn, EnumHand hand, EnumFacing facing, CuboidRayTraceResult hitResult) {
-        return getWorld().isRemote || FluidUtil.interactWithFluidHandler(playerIn, hand, fluidTank);
+        return getWorld().isRemote || FluidUtil.interactWithFluidHandler(playerIn, hand, fluidInventory);
     }
 
     @Override
@@ -514,30 +590,50 @@ public class MetaTileEntityTank extends MetaTileEntity {
         }
     }
 
+    private int computeMultiblockConnectionMask() {
+        int connectionsMask = 0;
+        for (EnumFacing side : EnumFacing.VALUES) {
+            MetaTileEntity metaTileEntity = BlockMachine.getMetaTileEntity(getWorld(), getPos().offset(side));
+            if (!(metaTileEntity instanceof MetaTileEntityTank)) continue;
+            if (((MetaTileEntityTank) metaTileEntity).material != material) continue;
+            if (!canTanksConnect(this, (MetaTileEntityTank) metaTileEntity, side)) continue;
+            connectionsMask |= 1 << side.getIndex();
+        }
+        return connectionsMask;
+    }
+
     @Override
     public void renderMetaTileEntity(CCRenderState renderState, Matrix4 translation, IVertexOperation[] pipeline) {
+    }
+
+    @Override
+    public void renderMetaTileEntityFast(CCRenderState renderState, Matrix4 translation, float partialTicks) {
         FluidStack fluidStack = getFluidForRendering();
         int connectionsMask = 0;
         if (getWorld() != null) {
-            for (EnumFacing side : EnumFacing.VALUES) {
-                MetaTileEntity metaTileEntity = BlockMachine.getMetaTileEntity(getWorld(), getPos().offset(side));
-                if (!(metaTileEntity instanceof MetaTileEntityTank)) continue;
-                if (((MetaTileEntityTank) metaTileEntity).material != material) continue;
-                connectionsMask |= 1 << side.getIndex();
-            }
+            connectionsMask = computeMultiblockConnectionMask();
         }
-
         int paintingColor = getPaintingColor();
         if (paintingColor == DEFAULT_PAINTING_COLOR) {
             paintingColor = material.materialRGB;
         }
         int baseColor = GTUtility.convertRGBtoOpaqueRGBA_CL(paintingColor);
-
-        if (ModHandler.isMaterialWood(material)) {
-            Textures.WOODEN_TANK.render(renderState, translation, baseColor, pipeline, connectionsMask, tankSize, fluidStack);
+        double fillPercent;
+        if (getWorld() == null) {
+            fillPercent = fluidStack == null ? 0 : fluidStack.amount / (tankSize * 1.0);
         } else {
-            Textures.METAL_TANK.render(renderState, translation, baseColor, pipeline, connectionsMask, tankSize, fluidStack);
+            fillPercent = getFluidLevelForTank();
         }
+        if (ModHandler.isMaterialWood(material)) {
+            Textures.WOODEN_TANK.render(renderState, translation, baseColor, new IVertexOperation[0], connectionsMask, fillPercent, fluidStack);
+        } else {
+            Textures.METAL_TANK.render(renderState, translation, baseColor, new IVertexOperation[0], connectionsMask, fillPercent, fluidStack);
+        }
+    }
+
+    @Override
+    public AxisAlignedBB getRenderBoundingBox() {
+        return new AxisAlignedBB(getPos());
     }
 
     @SideOnly(Side.CLIENT)
@@ -549,7 +645,7 @@ public class MetaTileEntityTank extends MetaTileEntity {
             }
             return null;
         }
-        return fluidTank.getFluid();
+        return getActualTankFluid();
     }
 
     @Override
@@ -575,14 +671,28 @@ public class MetaTileEntityTank extends MetaTileEntity {
     @Override
     public NBTTagCompound writeToNBT(NBTTagCompound data) {
         super.writeToNBT(data);
-        data.setTag("FluidInventory", ((FluidTank) fluidInventory).writeToNBT(new NBTTagCompound()));
+        if (controllerPos != null) {
+            data.setTag("ControllerPos", NBTUtil.createPosTag(controllerPos));
+        } else {
+            data.setTag("FluidInventory", multiblockFluidTank.writeToNBT(new NBTTagCompound()));
+            NBTTagList connectedTanks = new NBTTagList();
+            this.connectedTanks.forEach(pos -> connectedTanks.appendTag(NBTUtil.createPosTag(pos)));
+            data.setTag("ConnectedTanks", connectedTanks);
+        }
         return data;
     }
 
     @Override
     public void readFromNBT(NBTTagCompound data) {
         super.readFromNBT(data);
-        ((FluidTank) this.fluidInventory).readFromNBT(data.getCompoundTag("FluidInventory"));
+        if (data.hasKey("ControllerPos")) {
+            this.controllerPos = NBTUtil.getPosFromTag(data.getCompoundTag("ControllerPos"));
+        } else {
+            NBTTagList connectedTanks = data.getTagList("ConnectedTanks", NBT.TAG_COMPOUND);
+            connectedTanks.forEach(pos -> this.connectedTanks.add(NBTUtil.getPosFromTag((NBTTagCompound) pos)));
+            recomputeTankSize();
+            this.multiblockFluidTank.readFromNBT(data.getCompoundTag("FluidInventory"));
+        }
     }
 
     protected boolean canFillFluidType(FluidStack fluid) {
@@ -596,48 +706,10 @@ public class MetaTileEntityTank extends MetaTileEntity {
         return false; //handled manually
     }
 
-    private class SyncFluidTank extends WatchedFluidTank {
-
-
-        public SyncFluidTank(int capacity) {
-            super(capacity);
-        }
-
-        @Override
-        public boolean canFillFluidType(FluidStack fluid) {
-            return MetaTileEntityTank.this.canFillFluidType(fluid);
-        }
-
-        @Override
-        protected void onFluidChanged(FluidStack newFluidStack, FluidStack oldFluidStack) {
-            updateComparatorValue();
-            if (getWorld() != null && !getWorld().isRemote) {
-                onContentsChangedOnServer(newFluidStack, oldFluidStack);
-            }
-        }
-
-        private void onContentsChangedOnServer(FluidStack newFluid, FluidStack oldFluidStack) {
-            //update lightning value on server-side
-            //clientside will update it with custom data packet
-            updateLightValue();
-
-            //send fluid amount/type change packet
-            if (newFluid != null && newFluid.isFluidEqual(oldFluidStack)) {
-                //if fluid wasn't removed completely or changed, but just reduced/added amount
-                //compute new amount value and set it right back to the client
-                writeCustomData(201, buf -> buf.writeVarInt(newFluid.amount));
-            } else {
-                //otherwise, write full data dump of fluid
-                writeCustomData(200, buf -> {
-                    buf.writeBoolean(newFluid != null);
-                    if (newFluid != null) {
-                        NBTTagCompound tagCompound = new NBTTagCompound();
-                        newFluid.writeToNBT(tagCompound);
-                        buf.writeCompoundTag(tagCompound);
-                    }
-                });
-            }
-        }
-
+    private enum NetworkStatus {
+        //retain contained fluid, reset controller pos
+        DETACHED_FROM_MULTIBLOCK,
+        //clear contained fluid, update controller pos
+        ATTACHED_TO_MULTIBLOCK
     }
 }

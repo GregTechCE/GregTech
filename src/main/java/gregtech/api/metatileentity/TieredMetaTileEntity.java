@@ -37,7 +37,6 @@ public abstract class TieredMetaTileEntity extends MetaTileEntity implements IEn
                 tierVoltage * 32L, tierVoltage, getMaxInputOutputAmperage());
         } else this.energyContainer = EnergyContainerHandler.receiverContainer(this,
             tierVoltage * 32L, tierVoltage, getMaxInputOutputAmperage());
-        updateComparatorValue();
     }
 
     @Override
@@ -50,9 +49,6 @@ public abstract class TieredMetaTileEntity extends MetaTileEntity implements IEn
 
     @Override
     public void onEnergyChanged(IEnergyContainer container, boolean isInitialChange) {
-        if (!isInitialChange) {
-            updateComparatorValue();
-        }
     }
 
     @SideOnly(Side.CLIENT)

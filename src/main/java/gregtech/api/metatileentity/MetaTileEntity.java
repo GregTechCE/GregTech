@@ -81,6 +81,7 @@ public abstract class MetaTileEntity implements ICoverable {
     private int[] sidedRedstoneOutput = new int[6];
     private int[] sidedRedstoneInput = new int[6];
     private int cachedComparatorValue;
+    private int cachedLightValue;
     protected boolean isFragile = false;
 
     private CoverBehavior[] coverBehaviors = new CoverBehavior[6];
@@ -515,16 +516,34 @@ public abstract class MetaTileEntity implements ICoverable {
         return 0;
     }
 
+    public int getActualLightValue() {
+        return 0;
+    }
+
     public final int getComparatorValue() {
         return cachedComparatorValue;
     }
 
-    public void updateComparatorValue() {
+    public final int getLightValue() {
+        return cachedLightValue;
+    }
+
+    private void updateComparatorValue() {
         int newComparatorValue = getActualComparatorValue();
         if (cachedComparatorValue != newComparatorValue) {
             this.cachedComparatorValue = newComparatorValue;
             if (getWorld() != null && !getWorld().isRemote) {
                 notifyBlockUpdate();
+            }
+        }
+    }
+
+    private void updateLightValue() {
+        int newLightValue = getActualLightValue();
+        if (cachedLightValue != newLightValue) {
+            this.cachedLightValue = newLightValue;
+            if (getWorld() != null) {
+                getWorld().checkLight(getPos());
             }
         }
     }
@@ -541,6 +560,12 @@ public abstract class MetaTileEntity implements ICoverable {
                     ((ITickable) coverBehavior).update();
                 }
             }
+            if (getTimer() % 5 == 0L) {
+                updateComparatorValue();
+            }
+        }
+        if (getTimer() % 5 == 0L) {
+            updateLightValue();
         }
     }
 
@@ -594,10 +619,6 @@ public abstract class MetaTileEntity implements ICoverable {
      */
     public boolean isOpaqueCube() {
         return true;
-    }
-
-    public int getLightValue() {
-        return 0;
     }
 
     public int getLightOpacity() {
@@ -1004,6 +1025,7 @@ public abstract class MetaTileEntity implements ICoverable {
     public NBTTagCompound writeToNBT(NBTTagCompound data) {
         data.setInteger("FrontFacing", frontFacing.getIndex());
         data.setInteger("PaintingColor", paintingColor);
+        data.setInteger("CachedLightValue", cachedLightValue);
 
         if (shouldSerializeInventories()) {
             GTUtility.writeItems(importItems, "ImportInventory", data);
@@ -1037,6 +1059,7 @@ public abstract class MetaTileEntity implements ICoverable {
     public void readFromNBT(NBTTagCompound data) {
         this.frontFacing = EnumFacing.VALUES[data.getInteger("FrontFacing")];
         this.paintingColor = data.getInteger("PaintingColor");
+        this.cachedLightValue = data.getInteger("CachedLightValue");
 
         if (shouldSerializeInventories()) {
             GTUtility.readItems(importItems, "ImportInventory", data);

@@ -176,15 +176,8 @@ public class MetaTileEntityChest extends MetaTileEntity implements IFastRenderMe
     @Override
     protected void initializeInventory() {
         super.initializeInventory();
-        this.inventory = new ItemStackHandler(rowSize * amountOfRows) {
-            @Override
-            protected void onContentsChanged(int slot) {
-                super.onContentsChanged(slot);
-                updateComparatorValue();
-            }
-        };
+        this.inventory = new ItemStackHandler(rowSize * amountOfRows);
         this.itemInventory = inventory;
-        updateComparatorValue();
     }
 
     @Override

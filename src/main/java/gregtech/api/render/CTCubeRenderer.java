@@ -86,7 +86,7 @@ public class CTCubeRenderer implements IIconRegister {
         private static final int RIGHT = 8;
     }
 
-    protected static boolean hasFaceBit(int mask, EnumFacing side) {
+    public static boolean hasFaceBit(int mask, EnumFacing side) {
         return (mask & 1 << side.getIndex()) > 0;
     }
 }

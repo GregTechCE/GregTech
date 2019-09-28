@@ -174,6 +174,7 @@ public class ModularUIGui extends GuiContainer implements IRenderContext {
             int deltaY = this.returningStackDestSlot.yPos - this.touchUpY;
             int currentX = this.touchUpX + (int) ((float) deltaX * partialTicks);
             int currentY = this.touchUpY + (int) ((float) deltaY * partialTicks);
+            //noinspection ConstantConditions
             this.drawItemStack(this.returningStack, currentX, currentY, null);
         }
     }

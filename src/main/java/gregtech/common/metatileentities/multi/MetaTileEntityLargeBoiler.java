@@ -317,7 +317,7 @@ public class MetaTileEntityLargeBoiler extends MultiblockWithDisplayBase {
     }
 
     @Override
-    public int getLightValue(IMultiblockPart sourcePart) {
+    public int getLightValueForPart(IMultiblockPart sourcePart) {
         return sourcePart == null ? 0 : (isActive ? 15 : 0);
     }
 

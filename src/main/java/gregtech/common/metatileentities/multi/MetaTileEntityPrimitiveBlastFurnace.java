@@ -243,7 +243,7 @@ public class MetaTileEntityPrimitiveBlastFurnace extends MultiblockControllerBas
     }
 
     @Override
-    public int getLightValue(IMultiblockPart sourcePart) {
+    public int getLightValueForPart(IMultiblockPart sourcePart) {
         return sourcePart == null && isActive ? 15 : 0;
     }
 

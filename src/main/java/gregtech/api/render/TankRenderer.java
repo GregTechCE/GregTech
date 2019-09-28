@@ -18,12 +18,12 @@ public class TankRenderer extends CTCubeRenderer {
         super(basePath);
     }
 
-    public void render(CCRenderState renderState, Matrix4 translation, int baseColor, IVertexOperation[] pipeline, int connectionMask, int capacity, FluidStack fluidStack) {
+    public void render(CCRenderState renderState, Matrix4 translation, int baseColor, IVertexOperation[] pipeline, int connectionMask, double fillPercent, FluidStack fluidStack) {
         IVertexOperation[] basePipeline = ArrayUtils.add(pipeline, new ColourMultiplier(baseColor));
         super.render(renderState, translation, basePipeline, connectionMask);
         if (fluidStack != null) {
             double fluidLevelOffset = (offset(EnumFacing.UP, connectionMask) + offset(EnumFacing.DOWN, connectionMask));
-            double fluidLevel = fluidStack.amount / (capacity * 1.0) * (1.0 - fluidLevelOffset);
+            double fluidLevel = fillPercent * (1.0 - fluidLevelOffset);
             Cuboid6 fluidCuboid = new Cuboid6(
                 offset(EnumFacing.WEST, connectionMask), 0.0,
                 offset(EnumFacing.NORTH, connectionMask),

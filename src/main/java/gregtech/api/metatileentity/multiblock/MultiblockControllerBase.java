@@ -72,7 +72,7 @@ public abstract class MultiblockControllerBase extends MetaTileEntity {
         return true;
     }
 
-    public int getLightValue(IMultiblockPart sourcePart) {
+    public int getLightValueForPart(IMultiblockPart sourcePart) {
         return 0;
     }
 
@@ -81,8 +81,8 @@ public abstract class MultiblockControllerBase extends MetaTileEntity {
     }
 
     @Override
-    public final int getLightValue() {
-        return getLightValue(null);
+    public final int getActualLightValue() {
+        return getLightValueForPart(null);
     }
 
     public static Predicate<BlockWorldState> tilePredicate(BiFunction<BlockWorldState, MetaTileEntity, Boolean> predicate) {
