@@ -29,7 +29,7 @@ import gregtech.integration.jei.recipe.fuel.GTFuelRecipeWrapper;
 import gregtech.integration.jei.recipe.primitive.CokeOvenRecipeCategory;
 import gregtech.integration.jei.recipe.primitive.CokeOvenRecipeWrapper;
 import gregtech.integration.jei.recipe.primitive.OreByProductCategory;
-import gregtech.integration.jei.recipe.primitive.OreByProductWrapper;
+import gregtech.integration.jei.recipe.primitive.OreByProduct;
 import gregtech.integration.jei.recipe.primitive.PrimitiveBlastRecipeCategory;
 import gregtech.integration.jei.recipe.primitive.PrimitiveBlastRecipeWrapper;
 import gregtech.integration.jei.utils.CustomItemReturnRecipeWrapper;
@@ -145,10 +145,10 @@ public class GTJeiPlugin implements IModPlugin {
             .collect(Collectors.toList()), cokeOvenId);
         registry.addRecipeCatalyst(MetaTileEntities.COKE_OVEN.getStackForm(), cokeOvenId);
         
-        List<OreByProductWrapper> oreByproductList = new CopyOnWriteArrayList<OreByProductWrapper>();
+        List<OreByProduct> oreByproductList = new CopyOnWriteArrayList<OreByProduct>();
         for (Material material : Material.MATERIAL_REGISTRY) {
             if (material instanceof DustMaterial && OreDictUnifier.get(OrePrefix.ore, material) != ItemStack.EMPTY) {
-            	 oreByproductList.add(new OreByProductWrapper((DustMaterial)material));
+            	 oreByproductList.add(new OreByProduct((DustMaterial)material));
             }
         }
         String oreByProductId = GTValues.MODID + ":" + "ore_by_product";

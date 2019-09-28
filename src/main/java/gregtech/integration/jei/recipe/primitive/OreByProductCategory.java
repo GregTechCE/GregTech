@@ -14,7 +14,7 @@ import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.recipe.IRecipeWrapper;
 import net.minecraft.client.Minecraft;
 
-public class OreByProductCategory extends PrimitiveRecipeCategory<OreByProductWrapper, OreByProductWrapper>{
+public class OreByProductCategory extends PrimitiveRecipeCategory<OreByProduct, OreByProduct>{
 
 	protected final IDrawable slot;
 	protected final IDrawable arrowBackground;
@@ -34,7 +34,7 @@ public class OreByProductCategory extends PrimitiveRecipeCategory<OreByProductWr
 	}
 
 	@Override
-	public void setRecipe(IRecipeLayout recipeLayout, OreByProductWrapper recipeWrapper, IIngredients ingredients) {
+	public void setRecipe(IRecipeLayout recipeLayout, OreByProduct recipeWrapper, IIngredients ingredients) {
 		IGuiItemStackGroup itemStackGroup = recipeLayout.getItemStacks();
 		itemStackGroup.init(0, true,  22,  29); //Ore
 		itemStackGroup.init(1, true,  70,  19); //Crushed
@@ -52,7 +52,7 @@ public class OreByProductCategory extends PrimitiveRecipeCategory<OreByProductWr
 	}
 
 	@Override
-	public IRecipeWrapper getRecipeWrapper(OreByProductWrapper recipe) {
+	public IRecipeWrapper getRecipeWrapper(OreByProduct recipe) {
 		return recipe;
 	}
 
