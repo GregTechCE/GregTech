@@ -6,7 +6,6 @@ import codechicken.lib.texture.TextureUtils.IIconRegister;
 import codechicken.lib.vec.Cuboid6;
 import codechicken.lib.vec.Matrix4;
 import gregtech.api.GTValues;
-import gregtech.api.util.GTUtility;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.util.EnumFacing;
@@ -63,7 +62,7 @@ public class CTCubeRenderer implements IIconRegister {
             TextureAtlasSprite sideSprite = ctSprites[resultTextureMask];
             Textures.renderFace(renderState, translation, pipeline, renderSide, Cuboid6.full, sideSprite);
             Matrix4 backTranslation = translation.copy();
-            GTUtility.rotateBackFace(backTranslation, renderSide);
+            backTranslation.translate(renderSide.getFrontOffsetX(), renderSide.getFrontOffsetY() * 0.999, renderSide.getFrontOffsetZ());
             int backFaceTextureMask;
             if (renderSide.getAxis().isHorizontal()) {
                 backFaceTextureMask = resultTextureMask & ~(TextureDirection.RIGHT | TextureDirection.LEFT);

@@ -1,7 +1,6 @@
 package gregtech.api.util;
 
 
-import codechicken.lib.vec.Matrix4;
 import codechicken.lib.vec.Rotation;
 import codechicken.lib.vec.Transformation;
 import codechicken.lib.vec.Vector3;
@@ -85,10 +84,6 @@ public class GTUtility {
             result[i] = mapper.apply(array[i]);
         }
         return result;
-    }
-
-    public static void rotateBackFace(Matrix4 matrix, EnumFacing direction) {
-        matrix.translate(direction.getFrontOffsetX(), direction.getFrontOffsetY(), direction.getFrontOffsetZ());
     }
 
     //magic is here

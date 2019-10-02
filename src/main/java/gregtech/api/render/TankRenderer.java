@@ -10,7 +10,6 @@ import gregtech.api.util.GTUtility;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.fluids.FluidStack;
-import org.apache.commons.lang3.ArrayUtils;
 
 public class TankRenderer extends CTCubeRenderer {
 
@@ -18,9 +17,7 @@ public class TankRenderer extends CTCubeRenderer {
         super(basePath);
     }
 
-    public void render(CCRenderState renderState, Matrix4 translation, int baseColor, IVertexOperation[] pipeline, int connectionMask, double fillPercent, FluidStack fluidStack) {
-        IVertexOperation[] basePipeline = ArrayUtils.add(pipeline, new ColourMultiplier(baseColor));
-        super.render(renderState, translation, basePipeline, connectionMask);
+    public void renderFluid(CCRenderState renderState, Matrix4 translation, int connectionMask, double fillPercent, FluidStack fluidStack) {
         if (fluidStack != null) {
             double fluidLevelOffset = (offset(EnumFacing.UP, connectionMask) + offset(EnumFacing.DOWN, connectionMask));
             double fluidLevel = fillPercent * (1.0 - fluidLevelOffset);
@@ -42,13 +39,14 @@ public class TankRenderer extends CTCubeRenderer {
             IVertexOperation[] fluidPipeline = new IVertexOperation[]{multiplier};
             TextureAtlasSprite fluidSprite = TextureUtils.getTexture(fluidStack.getFluid().getStill(fluidStack));
             for (EnumFacing renderSide : EnumFacing.VALUES) {
+                if (hasFaceBit(connectionMask, renderSide)) continue;
                 Textures.renderFace(renderState, translation, fluidPipeline, renderSide, fluidCuboid, fluidSprite);
             }
         }
     }
 
     private static double offset(EnumFacing side, int connectionMask) {
-        return hasFaceBit(connectionMask, side) ? 0.0 : 0.001;
+        return hasFaceBit(connectionMask, side) ? 0.0 : 0.003;
     }
 
 }

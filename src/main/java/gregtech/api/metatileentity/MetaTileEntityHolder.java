@@ -42,6 +42,7 @@ public class MetaTileEntityHolder extends TickableTileEntityBase implements IUIH
         Preconditions.checkNotNull(sampleMetaTileEntity, "metaTileEntity");
         this.metaTileEntity = sampleMetaTileEntity.createMetaTileEntity(this);
         this.metaTileEntity.holder = this;
+        this.metaTileEntity.onAttached();
         if (hasWorld() && !getWorld().isRemote) {
             updateBlockOpacity();
             writeCustomData(-1, buffer -> {

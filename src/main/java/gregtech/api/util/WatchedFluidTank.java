@@ -3,8 +3,6 @@ package gregtech.api.util;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
 
-import javax.annotation.Nullable;
-
 public abstract class WatchedFluidTank extends FluidTank {
 
     private FluidStack oldFluidStack;
@@ -12,11 +10,6 @@ public abstract class WatchedFluidTank extends FluidTank {
     public WatchedFluidTank(int capacity) {
         super(capacity);
         this.oldFluidStack = null;
-    }
-
-    public WatchedFluidTank(@Nullable FluidStack fluidStack, int capacity) {
-        super(fluidStack, capacity);
-        this.oldFluidStack = fluidStack == null ? null : fluidStack.copy();
     }
 
     @Override

@@ -784,8 +784,6 @@ public class Materials {
         Tin.setCableProperties(GTValues.V[1], 1, 1);
         Copper.setCableProperties(GTValues.V[2], 1, 2);
 
-        RedAlloy.setCableProperties(GTValues.V[0], 1, 0);
-
         Cobalt.setCableProperties(GTValues.V[1], 2, 2);
         Lead.setCableProperties(GTValues.V[1], 2, 2);
         Tin.setCableProperties(GTValues.V[1], 1, 1);
@@ -803,7 +801,7 @@ public class Materials {
         Electrum.setCableProperties(GTValues.V[3], 3, 2);
         Silver.setCableProperties(GTValues.V[3], 1, 1);
 
-        Nichrome.setCableProperties(GTValues.V[4], 3, 4);
+        Nichrome.setCableProperties(GTValues.V[4], 4, 4);
         Steel.setCableProperties(GTValues.V[4], 2, 2);
         BlackSteel.setCableProperties(GTValues.V[4], 3, 2);
         Titanium.setCableProperties(GTValues.V[4], 4, 2);
@@ -812,6 +810,7 @@ public class Materials {
         Graphene.setCableProperties(GTValues.V[5], 1, 1);
         Osmium.setCableProperties(GTValues.V[5], 4, 2);
         Platinum.setCableProperties(GTValues.V[5], 2, 1);
+        Palladium.setCableProperties(GTValues.V[5], 2, 1);
         TungstenSteel.setCableProperties(GTValues.V[5], 3, 2);
         Tungsten.setCableProperties(GTValues.V[5], 2, 2);
 

@@ -131,6 +131,9 @@ public abstract class MetaTileEntity implements ICoverable {
         }
     }
 
+    public void addDebugInfo(List<String> list) {
+    }
+
     @SideOnly(Side.CLIENT)
     public void addInformation(ItemStack stack, @Nullable World player, List<String> tooltip, boolean advanced) {
     }
@@ -732,11 +735,13 @@ public abstract class MetaTileEntity implements ICoverable {
             CoverBehavior coverBehavior = coverDefinition.createCoverBehavior(this, placementSide);
             this.coverBehaviors[placementSide.getIndex()] = coverBehavior;
             coverBehavior.readInitialSyncData(buf);
+            onCoverPlacementUpdate();
             getHolder().scheduleChunkForRenderUpdate();
         } else if (dataId == -6) {
             //cover removed event
             EnumFacing placementSide = EnumFacing.VALUES[buf.readByte()];
             this.coverBehaviors[placementSide.getIndex()] = null;
+            onCoverPlacementUpdate();
             getHolder().scheduleChunkForRenderUpdate();
         } else if (dataId == -7) {
             //cover custom data received
@@ -1108,6 +1113,9 @@ public abstract class MetaTileEntity implements ICoverable {
                 itemBuffer.add(stackInSlot);
             }
         }
+    }
+
+    public void onAttached() {
     }
 
     /**
