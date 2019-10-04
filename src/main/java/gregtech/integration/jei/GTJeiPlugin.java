@@ -13,7 +13,11 @@ import gregtech.api.recipes.RecipeMap;
 import gregtech.api.recipes.RecipeMaps;
 import gregtech.api.recipes.machines.FuelRecipeMap;
 import gregtech.api.recipes.machines.RecipeMapFurnace;
+import gregtech.api.unification.OreDictUnifier;
 import gregtech.api.unification.material.Materials;
+import gregtech.api.unification.material.type.DustMaterial;
+import gregtech.api.unification.material.type.Material;
+import gregtech.api.unification.ore.OrePrefix;
 import gregtech.common.blocks.MetaBlocks;
 import gregtech.common.items.MetaItems;
 import gregtech.common.metatileentities.MetaTileEntities;
@@ -25,6 +29,8 @@ import gregtech.integration.jei.recipe.fuel.FuelRecipeMapCategory;
 import gregtech.integration.jei.recipe.fuel.GTFuelRecipeWrapper;
 import gregtech.integration.jei.recipe.primitive.CokeOvenRecipeCategory;
 import gregtech.integration.jei.recipe.primitive.CokeOvenRecipeWrapper;
+import gregtech.integration.jei.recipe.primitive.OreByProductCategory;
+import gregtech.integration.jei.recipe.primitive.OreByProduct;
 import gregtech.integration.jei.recipe.primitive.PrimitiveBlastRecipeCategory;
 import gregtech.integration.jei.recipe.primitive.PrimitiveBlastRecipeWrapper;
 import gregtech.integration.jei.utils.CustomItemReturnRecipeWrapper;
@@ -36,10 +42,13 @@ import mezz.jei.api.recipe.IRecipeCategoryRegistration;
 import mezz.jei.api.recipe.VanillaRecipeCategoryUid;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.oredict.OreDictionary;
 
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.stream.Collectors;
 
 @JEIPlugin
@@ -65,6 +74,7 @@ public class GTJeiPlugin implements IModPlugin {
         }
         registry.addRecipeCategories(new PrimitiveBlastRecipeCategory(registry.getJeiHelpers().getGuiHelper()));
         registry.addRecipeCategories(new CokeOvenRecipeCategory(registry.getJeiHelpers().getGuiHelper()));
+        registry.addRecipeCategories(new OreByProductCategory(registry.getJeiHelpers().getGuiHelper()));
     }
 
     @Override
@@ -137,5 +147,22 @@ public class GTJeiPlugin implements IModPlugin {
             .map(CokeOvenRecipeWrapper::new)
             .collect(Collectors.toList()), cokeOvenId);
         registry.addRecipeCatalyst(MetaTileEntities.COKE_OVEN.getStackForm(), cokeOvenId);
+        
+        List<OreByProduct> oreByproductList = new CopyOnWriteArrayList<OreByProduct>();
+        for (Material material : Material.MATERIAL_REGISTRY) {
+            if (material instanceof DustMaterial && OreDictUnifier.get(OrePrefix.ore, material) != ItemStack.EMPTY) {
+            	 oreByproductList.add(new OreByProduct((DustMaterial)material));
+            }
+        }
+        String oreByProductId = GTValues.MODID + ":" + "ore_by_product";
+        registry.addRecipes(oreByproductList, oreByProductId);
+        for(MetaTileEntity machine : MetaTileEntities.MACERATOR)
+        	registry.addRecipeCatalyst(machine.getStackForm(), oreByProductId);        
+        for(MetaTileEntity machine : MetaTileEntities.ORE_WASHER)
+        	registry.addRecipeCatalyst(machine.getStackForm(), oreByProductId);        
+        for(MetaTileEntity machine : MetaTileEntities.CENTRIFUGE)
+        	registry.addRecipeCatalyst(machine.getStackForm(), oreByProductId);        
+        for(MetaTileEntity machine : MetaTileEntities.THERMAL_CENTRIFUGE)
+        	registry.addRecipeCatalyst(machine.getStackForm(), oreByProductId);
     }
 }
