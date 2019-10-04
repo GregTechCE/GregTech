@@ -5,7 +5,6 @@ import gregtech.api.capability.GregtechTileCapabilities;
 import gregtech.api.capability.IEnergyContainer;
 import mcjty.theoneprobe.api.ElementAlignment;
 import mcjty.theoneprobe.api.IProbeInfo;
-import mcjty.theoneprobe.api.NumberFormat;
 import mcjty.theoneprobe.api.TextStyleClass;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
@@ -41,8 +40,7 @@ public class ElectricContainerInfoProvider extends CapabilityInfoProvider<IEnerg
             .borderColor(0x00000000)
             .backgroundColor(0x00000000)
             .filledColor(0xFFFFE000)
-            .alternateFilledColor(0xFFEED000)
-            .numberFormat(NumberFormat.COMMAS));
+            .alternateFilledColor(0xFFEED000));
     }
 
 }
