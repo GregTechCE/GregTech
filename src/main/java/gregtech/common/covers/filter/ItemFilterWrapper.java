@@ -18,6 +18,7 @@ public class ItemFilterWrapper {
     private boolean isBlacklistFilter = false;
     private int maxStackSize = 1;
     private ItemFilter currentItemFilter;
+    private Runnable onFilterInstanceChange;
 
     public ItemFilterWrapper(IDirtyNotifiable dirtyNotifiable) {
         this.dirtyNotifiable = dirtyNotifiable;
@@ -36,10 +37,17 @@ public class ItemFilterWrapper {
         if(currentItemFilter != null) {
             currentItemFilter.setDirtyNotifiable(dirtyNotifiable);
         }
+        if (onFilterInstanceChange != null) {
+            this.onFilterInstanceChange.run();
+        }
     }
 
     public ItemFilter getItemFilter() {
         return currentItemFilter;
+    }
+
+    public void setOnFilterInstanceChange(Runnable onFilterInstanceChange) {
+        this.onFilterInstanceChange = onFilterInstanceChange;
     }
 
     public void onFilterInstanceChange() {

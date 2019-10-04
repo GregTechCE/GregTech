@@ -698,10 +698,12 @@ cover.ore_dictionary_filter.title2=(use * for wildcard)
 cover.fluid_filter.title=Fluid Filter
 cover.fluid_filter.mode.filter_fill=Filter Fill
 cover.fluid_filter.mode.filter_drain=Filter Drain
+cover.fluid_filter.mode.filter_both=Filter Fill & Drain
 
 cover.item_filter.title=Item Filter
 cover.filter.mode.filter_insert=Filter Insert
 cover.filter.mode.filter_extract=Filter Extract
+cover.filter.mode.filter_both=Filter Insert/Extract
 cover.item_filter.ignore_damage.enabled=Ignore Damage
 cover.item_filter.ignore_damage.disabled=Respect Damage
 cover.item_filter.ignore_nbt.enabled=Ignore NBT
@@ -720,6 +722,9 @@ cover.conveyor.item_filter.title=Item Filter
 cover.conveyor.ore_dictionary.title=Ore Dictionary Name
 cover.conveyor.ore_dictionary.title2=(use * for wildcard)
 
+cover.conveyor.manual_io.enabled=Allow Manual Import/Export
+cover.conveyor.manual_io.disabled=Disallow Manual Import/Export
+
 cover.robotic_arm.title=Robotic Arm Settings (%s)
 cover.robotic_arm.transfer_mode.transfer_any=Transfer Any
 cover.robotic_arm.transfer_mode.transfer_exact=Supply Exact
@@ -731,6 +736,8 @@ cover.pump.transfer_rate=%s mb/s
 cover.pump.mode.export=Mode: Export
 cover.pump.mode.import=Mode: Import
 cover.pump.fluid_filter.title=Fluid Filter
+cover.pump.manual_io.enabled=Allow Manual Import/Export
+cover.pump.manual_io.disabled=Disallow Manual Import/Export
 
 cover.machine_controller.name=Machine Controller Settings
 cover.machine_controller.normal=Normal

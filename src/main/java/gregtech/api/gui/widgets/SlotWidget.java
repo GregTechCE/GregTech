@@ -46,13 +46,6 @@ public class SlotWidget extends Widget implements INativeWidget {
                 backgroundTexture.draw(pos.x, pos.y, size.width, size.height);
             }
         }
-        if (isEnabled) {
-            context.drawSlotContents(slotReference);
-            if (isMouseOver(slotReference.xPos, slotReference.yPos, 16, 16, mouseX, mouseY)) {
-                context.renderSlotOverlay(slotReference);
-                context.setHoveredSlot(slotReference);
-            }
-        }
     }
 
     @Override

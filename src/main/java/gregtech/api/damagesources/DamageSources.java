@@ -49,5 +49,4 @@ public class DamageSources {
     public static DamageSource causeCombatDamage(String type, EntityLivingBase damager) {
         return new EntityDamageSource(type, damager);
     }
-
 }

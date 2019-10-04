@@ -84,13 +84,8 @@ public class ModularUIGui extends GuiContainer implements IRenderContext {
         OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, 240.0F, 240.0F);
         GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
 
-        ModularUIContainer container = (ModularUIContainer) inventorySlots;
         for (int i = 0; i < this.inventorySlots.inventorySlots.size(); ++i) {
             Slot slot = this.inventorySlots.inventorySlots.get(i);
-            if (container.slotMap.containsKey(slot)) {
-                //skip drawing slots which are managed by widgets
-                continue;
-            }
             if (slot.isEnabled()) {
                 this.drawSlotContents(slot);
             }

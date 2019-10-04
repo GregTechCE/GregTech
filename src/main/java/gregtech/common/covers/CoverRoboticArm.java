@@ -5,10 +5,10 @@ import codechicken.lib.render.pipeline.IVertexOperation;
 import codechicken.lib.vec.Cuboid6;
 import codechicken.lib.vec.Matrix4;
 import gregtech.api.cover.ICoverable;
-import gregtech.api.gui.GuiTextures;
 import gregtech.api.gui.ModularUI;
 import gregtech.api.gui.ModularUI.Builder;
-import gregtech.api.gui.widgets.*;
+import gregtech.api.gui.widgets.CycleButtonWidget;
+import gregtech.api.gui.widgets.WidgetGroup;
 import gregtech.api.render.Textures;
 import gregtech.api.util.ItemStackKey;
 import net.minecraft.entity.player.EntityPlayer;
@@ -16,7 +16,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.IStringSerializable;
-import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.items.IItemHandler;
 
 import java.util.Collections;
@@ -27,14 +26,12 @@ import java.util.Set;
 public class CoverRoboticArm extends CoverConveyor {
 
     protected TransferMode transferMode;
-    protected int transferStackSize;
     protected int itemsTransferBuffered;
 
     public CoverRoboticArm(ICoverable coverable, EnumFacing attachedSide, int tier, int itemsPerSecond) {
         super(coverable, attachedSide, tier, itemsPerSecond);
         this.transferMode = TransferMode.TRANSFER_ANY;
-        this.itemFilterContainer.setMaxStackSize(transferMode.maxStackSize);
-        this.transferStackSize = TransferMode.TRANSFER_ANY.maxStackSize;
+        this.itemFilterContainer.setMaxStackSize(1);
     }
 
     @Override
@@ -60,7 +57,7 @@ public class CoverRoboticArm extends CoverConveyor {
             TypeItemInfo sourceInfo = sourceItemAmount.get(key);
             int itemAmount = sourceInfo.totalCount;
             Set<ItemStackKey> matchedItems = Collections.singleton(key);
-            int itemToMoveAmount = itemFilterContainer.getSlotTransferLimit(sourceInfo.filterSlot, matchedItems, transferStackSize);
+            int itemToMoveAmount = itemFilterContainer.getSlotTransferLimit(sourceInfo.filterSlot, matchedItems);
             if (itemAmount >= itemToMoveAmount) {
                 sourceInfo.totalCount = itemToMoveAmount;
             } else {
@@ -97,7 +94,7 @@ public class CoverRoboticArm extends CoverConveyor {
         while (iterator.hasNext()) {
             Object filterSlotIndex = iterator.next();
             GroupItemInfo sourceInfo = sourceItemAmounts.get(filterSlotIndex);
-            int itemToKeepAmount = itemFilterContainer.getSlotTransferLimit(sourceInfo.filterSlot, sourceInfo.itemStackTypes, transferStackSize);
+            int itemToKeepAmount = itemFilterContainer.getSlotTransferLimit(sourceInfo.filterSlot, sourceInfo.itemStackTypes);
             int itemAmount = 0;
             if (currentItemAmount.containsKey(filterSlotIndex)) {
                 GroupItemInfo destItemInfo = currentItemAmount.get(filterSlotIndex);
@@ -114,26 +111,12 @@ public class CoverRoboticArm extends CoverConveyor {
 
     public void setTransferMode(TransferMode transferMode) {
         this.transferMode = transferMode;
-        coverHolder.markDirty();
-        setTransferStackSize(transferMode.maxStackSize);
+        this.coverHolder.markDirty();
+        this.itemFilterContainer.setMaxStackSize(transferMode.maxStackSize);
     }
 
     public TransferMode getTransferMode() {
         return transferMode;
-    }
-
-    public void adjustTransferStackSize(int amount) {
-        setTransferStackSize(transferStackSize + amount);
-    }
-
-    public void setTransferStackSize(int transferStackSize) {
-        this.transferStackSize = MathHelper.clamp(transferStackSize, 1, transferMode.maxStackSize);
-        itemFilterContainer.setMaxStackSize(transferStackSize);
-        coverHolder.markDirty();
-    }
-
-    public int getTransferStackSize() {
-        return transferStackSize;
     }
 
     @Override
@@ -148,27 +131,19 @@ public class CoverRoboticArm extends CoverConveyor {
             TransferMode.class, this::getTransferMode, this::setTransferMode)
             .setTooltipHoverString("cover.robotic_arm.transfer_mode.description"));
 
-        ServerWidgetGroup stackSizeGroup = new ServerWidgetGroup(() -> transferMode.maxStackSize > 1 && itemFilterContainer.showGlobalTransferLimitSlider());
-        stackSizeGroup.addWidget(new ClickButtonWidget(91, 70, 20, 20, "-1", data -> adjustTransferStackSize(data.isShiftClick ? -10 : -1)));
-        stackSizeGroup.addWidget(new ClickButtonWidget(146, 70, 20, 20, "+1", data -> adjustTransferStackSize(data.isShiftClick ? +10 : +1)));
-        stackSizeGroup.addWidget(new ImageWidget(111, 70, 35, 20, GuiTextures.DISPLAY));
-        stackSizeGroup.addWidget(new SimpleTextWidget(128, 80, "", 0xFFFFFF, () -> Integer.toString(transferStackSize)));
-
-        return super.buildUI(builder.widget(filterGroup).widget(stackSizeGroup), player);
+        return super.buildUI(builder.widget(filterGroup), player);
     }
 
     @Override
     public void writeToNBT(NBTTagCompound tagCompound) {
         super.writeToNBT(tagCompound);
         tagCompound.setInteger("TransferMode", transferMode.ordinal());
-        tagCompound.setInteger("TransferStackSize", transferStackSize);
     }
 
     @Override
     public void readFromNBT(NBTTagCompound tagCompound) {
         super.readFromNBT(tagCompound);
         this.transferMode = TransferMode.values()[tagCompound.getInteger("TransferMode")];
-        this.transferStackSize = tagCompound.getInteger("TransferStackSize");
     }
 
     public enum TransferMode implements IStringSerializable {
