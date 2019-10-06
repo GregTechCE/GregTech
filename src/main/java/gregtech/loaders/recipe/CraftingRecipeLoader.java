@@ -2,6 +2,7 @@ package gregtech.loaders.recipe;
 
 import com.google.common.base.CaseFormat;
 import gregtech.api.GTValues;
+import gregtech.api.items.metaitem.MetaItem.MetaValueItem;
 import gregtech.api.recipes.ModHandler;
 import gregtech.api.unification.OreDictUnifier;
 import gregtech.api.unification.material.MarkerMaterials.Tier;
@@ -15,6 +16,7 @@ import gregtech.common.blocks.MetaBlocks;
 import gregtech.common.blocks.wood.BlockGregLog.LogVariant;
 import gregtech.common.crafting.FacadeRecipe;
 import gregtech.common.items.MetaItems;
+import gregtech.common.metatileentities.MetaTileEntities;
 import gregtech.loaders.oreprocessing.ToolRecipeHandler;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockColored;
@@ -78,6 +80,20 @@ public class CraftingRecipeLoader {
                 'X', new UnificationEntry(OrePrefix.plate, material),
                 'C', new UnificationEntry(OrePrefix.circuit, Tier.Advanced),
                 'E', MetaItems.ENERGY_CRYSTAL.getStackForm());
+        }
+
+        for (MetaValueItem batteryItem : ToolRecipeHandler.batteryItems[1]) {
+            ItemStack batteryStack = batteryItem.getStackForm();
+            ModHandler.addShapedEnergyTransferRecipe("rebreather_" + batteryItem.unlocalizedName,
+                MetaItems.REBREATHER.getStackForm(),
+                Ingredient.fromStacks(batteryStack), true,
+                "CEC", "PGP", "BUB",
+                'C', new UnificationEntry(OrePrefix.circuit, Tier.Basic),
+                'E', MetaTileEntities.ELECTROLYZER[0].getStackForm(),
+                'G', new UnificationEntry(OrePrefix.glass, null),
+                'P', new UnificationEntry(OrePrefix.pipeSmall, Materials.Steel),
+                'B', batteryStack,
+                'U', MetaItems.ELECTRIC_PUMP_LV.getStackForm());
         }
 
         ModHandler.addShapelessRecipe("rubber_wood_planks", new ItemStack(Blocks.PLANKS, 4, EnumType.JUNGLE.getMetadata()), new ItemStack(MetaBlocks.LOG, 1, LogVariant.RUBBER_WOOD.ordinal()));

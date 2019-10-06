@@ -17,10 +17,10 @@ import java.util.List;
 
 public class ToggleEnergyConsumerBehavior implements IItemBehaviour {
 
-    private final int energyUsagePerTenTicks;
+    private final int energyUsagePerTick;
 
-    public ToggleEnergyConsumerBehavior(int energyUsagePerTenTicks) {
-        this.energyUsagePerTenTicks = energyUsagePerTenTicks;
+    public ToggleEnergyConsumerBehavior(int energyUsagePerTick) {
+        this.energyUsagePerTick = energyUsagePerTick;
     }
 
     @Override
@@ -39,7 +39,7 @@ public class ToggleEnergyConsumerBehavior implements IItemBehaviour {
     }
 
     private boolean drainActivationEnergy(IElectricItem electricItem, boolean simulate) {
-        return electricItem.discharge(energyUsagePerTenTicks, electricItem.getTier(), true, false, simulate) >= energyUsagePerTenTicks;
+        return electricItem.discharge(energyUsagePerTick, electricItem.getTier(), true, false, simulate) >= energyUsagePerTick;
     }
 
     @Override

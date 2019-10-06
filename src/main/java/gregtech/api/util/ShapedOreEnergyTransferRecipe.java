@@ -39,6 +39,7 @@ public class ShapedOreEnergyTransferRecipe extends ShapedOreRecipe {
 
     public static void chargeStackFromComponents(ItemStack toolStack, IInventory ingredients, Predicate<ItemStack> chargePredicate, boolean transferMaxCharge) {
         IElectricItem electricItem = toolStack.getCapability(GregtechCapabilities.CAPABILITY_ELECTRIC_ITEM, null);
+        long totalMaxCharge = 0L;
         if (electricItem != null && electricItem.getMaxCharge() > 0L) {
             for (int slotIndex = 0; slotIndex < ingredients.getSizeInventory(); slotIndex++) {
                 ItemStack stackInSlot = ingredients.getStackInSlot(slotIndex);
@@ -49,18 +50,16 @@ public class ShapedOreEnergyTransferRecipe extends ShapedOreRecipe {
                 if (batteryItem == null) {
                     continue;
                 }
-                if(electricItem instanceof ElectricItem && transferMaxCharge) {
-                    if(batteryItem.getMaxCharge() > electricItem.getMaxCharge()) {
-                        ((ElectricItem) electricItem).setMaxChargeOverride(batteryItem.getMaxCharge());
-                    }
-                }
-
+                totalMaxCharge += batteryItem.getMaxCharge();
                 long discharged = batteryItem.discharge(Long.MAX_VALUE, Integer.MAX_VALUE, true, true, false);
                 electricItem.charge(discharged, Integer.MAX_VALUE, true, false);
                 if (discharged > 0L) {
                     ingredients.setInventorySlotContents(slotIndex, stackInSlot);
                 }
             }
+        }
+        if(electricItem instanceof ElectricItem && transferMaxCharge) {
+            ((ElectricItem) electricItem).setMaxChargeOverride(totalMaxCharge);
         }
     }
 }

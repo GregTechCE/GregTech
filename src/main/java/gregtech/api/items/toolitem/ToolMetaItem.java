@@ -48,6 +48,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.oredict.OreDictionary;
 import org.apache.commons.lang3.Validate;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.*;
 
@@ -582,10 +583,10 @@ public class ToolMetaItem<T extends ToolMetaItem<?>.MetaToolValueItem> extends M
 
     public class MetaToolValueItem extends MetaValueItem {
 
-        protected IToolStats toolStats;
-        protected double amountOfMaterialToRepair;
+        protected IToolStats toolStats = new DummyToolStats();
+        protected double amountOfMaterialToRepair = 0;
 
-        private MetaToolValueItem(int metaValue, String unlocalizedName) {
+        protected MetaToolValueItem(int metaValue, String unlocalizedName) {
             super(metaValue, unlocalizedName);
             setMaxStackSize(1);
         }
@@ -609,9 +610,7 @@ public class ToolMetaItem<T extends ToolMetaItem<?>.MetaToolValueItem> extends M
         }
 
         public MetaToolValueItem setToolStats(IToolStats toolStats) {
-            if (toolStats == null) {
-                throw new IllegalArgumentException("Cannot set Tool Stats to null.");
-            }
+            Preconditions.checkNotNull(toolStats, "Cannot set toolStats to null");
             this.toolStats = toolStats;
             toolStats.onStatsAddedToTool(this);
             return this;
@@ -627,12 +626,8 @@ public class ToolMetaItem<T extends ToolMetaItem<?>.MetaToolValueItem> extends M
             return this;
         }
 
-
-
+        @Nonnull
         public IToolStats getToolStats() {
-            if (toolStats == null) {
-                throw new IllegalStateException("Someone forgot to assign toolStats to MetaToolValueItem.");
-            }
             return toolStats;
         }
 

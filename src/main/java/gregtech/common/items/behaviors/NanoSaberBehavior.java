@@ -27,8 +27,8 @@ public class NanoSaberBehavior extends ToggleEnergyConsumerBehavior implements I
     private final float baseAttackDamage;
     private final float additionalAttackDamage;
 
-    public NanoSaberBehavior(float baseAttackDamage, float additionalAttackDamage, int energyUsagePerTenTicks) {
-        super(energyUsagePerTenTicks);
+    public NanoSaberBehavior(float baseAttackDamage, float additionalAttackDamage, int energyUsagePerTick) {
+        super(energyUsagePerTick);
         this.baseAttackDamage = baseAttackDamage;
         this.additionalAttackDamage = additionalAttackDamage;
     }
