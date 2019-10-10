@@ -1,9 +1,9 @@
 package gregtech.common.pipelike.cable;
 
-import gregtech.api.pipenet.block.IPipeType;
+import gregtech.api.pipenet.block.material.IMaterialPipeType;
 import gregtech.api.unification.ore.OrePrefix;
 
-public enum Insulation implements IPipeType<WireProperties> {
+public enum Insulation implements IMaterialPipeType<WireProperties> {
 
     WIRE_SINGLE("wire_single", 0.2f, 1, 2, OrePrefix.wireGtSingle, -1),
     WIRE_DOUBLE("wire_double", 0.3f, 2, 2, OrePrefix.wireGtDouble, -1),

@@ -19,6 +19,11 @@ public final class ItemStackKey {
         this.itemStack.setCount(1);
     }
 
+    public boolean isItemStackEqual(ItemStack itemStack) {
+        return ItemStack.areItemsEqual(this.itemStack, itemStack) &&
+            ItemStack.areItemStackTagsEqual(this.itemStack, itemStack);
+    }
+
     public ItemStack getItemStack() {
         return itemStack.copy();
     }

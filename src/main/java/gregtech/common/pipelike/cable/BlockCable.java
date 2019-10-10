@@ -4,7 +4,7 @@ import com.google.common.base.Preconditions;
 import gregtech.api.capability.GregtechCapabilities;
 import gregtech.api.capability.IEnergyContainer;
 import gregtech.api.damagesources.DamageSources;
-import gregtech.api.pipenet.block.BlockPipe;
+import gregtech.api.pipenet.block.material.BlockMaterialPipe;
 import gregtech.api.pipenet.tile.IPipeTile;
 import gregtech.api.pipenet.tile.TileEntityPipeBase;
 import gregtech.api.unification.material.type.Material;
@@ -37,7 +37,7 @@ import java.util.Collections;
 import java.util.Map;
 import java.util.TreeMap;
 
-public class BlockCable extends BlockPipe<Insulation, WireProperties, WorldENet> implements ITileEntityProvider {
+public class BlockCable extends BlockMaterialPipe<Insulation, WireProperties, WorldENet> implements ITileEntityProvider {
 
     private final Map<Material, WireProperties> enabledMaterials = new TreeMap<>();
 

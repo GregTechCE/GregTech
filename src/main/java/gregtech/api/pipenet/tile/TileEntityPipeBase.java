@@ -8,8 +8,6 @@ import gregtech.api.metatileentity.SyncedTileEntityBase;
 import gregtech.api.pipenet.WorldPipeNet;
 import gregtech.api.pipenet.block.BlockPipe;
 import gregtech.api.pipenet.block.IPipeType;
-import gregtech.api.unification.material.Materials;
-import gregtech.api.unification.material.type.Material;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.nbt.NBTTagCompound;
@@ -33,7 +31,6 @@ public abstract class TileEntityPipeBase<PipeType extends Enum<PipeType> & IPipe
     protected int insulationColor = DEFAULT_INSULATION_COLOR;
     protected final PipeCoverableImplementation coverableImplementation = new PipeCoverableImplementation(this);
     private NodeDataType cachedNodeData;
-    private Material pipeMaterial = Materials.Aluminium;
     private BlockPipe<PipeType, NodeDataType, ?> pipeBlock;
     private PipeType pipeType = getPipeTypeClass().getEnumConstants()[0];
     private boolean detachedConversionMode;
@@ -51,22 +48,17 @@ public abstract class TileEntityPipeBase<PipeType extends Enum<PipeType> & IPipe
         return wasInDetachedConversionMode;
     }
 
-    public void setPipeData(BlockPipe<PipeType, NodeDataType, ?> pipeBlock, PipeType pipeType, Material material) {
+    public void setPipeData(BlockPipe<PipeType, NodeDataType, ?> pipeBlock, PipeType pipeType) {
         this.pipeBlock = pipeBlock;
         this.pipeType = pipeType;
-        this.pipeMaterial = material;
         if(!getWorld().isRemote) {
-            writeCustomData(-4, buffer -> {
-                buffer.writeVarInt(pipeType.ordinal());
-                buffer.writeVarInt(Material.MATERIAL_REGISTRY.getIDForObject(pipeMaterial));
-            });
+            writeCustomData(-4, this::writePipeProperties);
         }
     }
 
     @Override
     public void transferDataFrom(IPipeTile<PipeType, NodeDataType> tileEntity) {
         this.pipeType = tileEntity.getPipeType();
-        this.pipeMaterial = tileEntity.getPipeMaterial();
         this.blockedConnectionsMap = tileEntity.getBlockedConnectionsMap();
         this.insulationColor = tileEntity.getInsulationColor();
         if (tileEntity instanceof TileEntityPipeBase) {
@@ -205,11 +197,6 @@ public abstract class TileEntityPipeBase<PipeType extends Enum<PipeType> & IPipe
     }
 
     @Override
-    public Material getPipeMaterial() {
-        return pipeMaterial;
-    }
-
-    @Override
     public NodeDataType getNodeData() {
         if (cachedNodeData == null) {
             this.cachedNodeData = getPipeBlock().createProperties(this);
@@ -261,7 +248,6 @@ public abstract class TileEntityPipeBase<PipeType extends Enum<PipeType> & IPipe
             compound.setString("PipeBlock", pipeBlock.getRegistryName().toString());
         }
         compound.setInteger("PipeType", pipeType.ordinal());
-        compound.setString("PipeMaterial", pipeMaterial.toString());
         NBTTagCompound blockedConnectionsTag = new NBTTagCompound();
         for(int attachmentType : blockedConnectionsMap.keys()) {
             int blockedConnections = blockedConnectionsMap.get(attachmentType);
@@ -282,7 +268,6 @@ public abstract class TileEntityPipeBase<PipeType extends Enum<PipeType> & IPipe
             this.pipeBlock = block instanceof BlockPipe ? (BlockPipe<PipeType, NodeDataType, ?>) block : null;
         }
         this.pipeType = getPipeTypeClass().getEnumConstants()[compound.getInteger("PipeType")];
-        this.pipeMaterial = Material.MATERIAL_REGISTRY.getObject(compound.getString("PipeMaterial"));
         NBTTagCompound blockedConnectionsTag = compound.getCompoundTag("BlockedConnectionsMap");
         this.blockedConnectionsMap.clear();
         for(String attachmentTypeKey : blockedConnectionsTag.getKeySet()) {
@@ -301,10 +286,17 @@ public abstract class TileEntityPipeBase<PipeType extends Enum<PipeType> & IPipe
         this.coverableImplementation.onLoad();
     }
 
+    protected void writePipeProperties(PacketBuffer buf) {
+        buf.writeVarInt(pipeType.ordinal());
+    }
+
+    protected void readPipeProperties(PacketBuffer buf) {
+        this.pipeType = getPipeTypeClass().getEnumConstants()[buf.readVarInt()];
+    }
+
     @Override
     public void writeInitialSyncData(PacketBuffer buf) {
-        buf.writeVarInt(pipeType.ordinal());
-        buf.writeVarInt(Material.MATERIAL_REGISTRY.getIDForObject(pipeMaterial));
+        writePipeProperties(buf);
         buf.writeVarInt(blockedConnections);
         buf.writeInt(insulationColor);
         this.coverableImplementation.writeInitialSyncData(buf);
@@ -312,8 +304,7 @@ public abstract class TileEntityPipeBase<PipeType extends Enum<PipeType> & IPipe
 
     @Override
     public void receiveInitialSyncData(PacketBuffer buf) {
-        this.pipeType = getPipeTypeClass().getEnumConstants()[buf.readVarInt()];
-        this.pipeMaterial = Material.MATERIAL_REGISTRY.getObjectById(buf.readVarInt());
+        readPipeProperties(buf);
         this.blockedConnections = buf.readVarInt();
         this.insulationColor = buf.readInt();
         this.coverableImplementation.readInitialSyncData(buf);
@@ -330,8 +321,7 @@ public abstract class TileEntityPipeBase<PipeType extends Enum<PipeType> & IPipe
         } else if (discriminator == -3) {
             this.coverableImplementation.readCustomData(buf.readVarInt(), buf);
         } else if(discriminator == -4) {
-            this.pipeType = getPipeTypeClass().getEnumConstants()[buf.readVarInt()];
-            this.pipeMaterial = Material.MATERIAL_REGISTRY.getObjectById(buf.readVarInt());
+            readPipeProperties(buf);
             scheduleChunkForRenderUpdate();
         }
     }

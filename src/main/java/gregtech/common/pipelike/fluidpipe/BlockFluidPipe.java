@@ -2,7 +2,7 @@ package gregtech.common.pipelike.fluidpipe;
 
 import com.google.common.base.Preconditions;
 import gregtech.api.damagesources.DamageSources;
-import gregtech.api.pipenet.block.BlockPipe;
+import gregtech.api.pipenet.block.material.BlockMaterialPipe;
 import gregtech.api.pipenet.tile.IPipeTile;
 import gregtech.api.pipenet.tile.TileEntityPipeBase;
 import gregtech.api.unification.material.type.Material;
@@ -37,7 +37,7 @@ import java.util.Collections;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
-public class BlockFluidPipe extends BlockPipe<FluidPipeType, FluidPipeProperties, WorldFluidPipeNet> {
+public class BlockFluidPipe extends BlockMaterialPipe<FluidPipeType, FluidPipeProperties, WorldFluidPipeNet> {
 
     private final SortedMap<Material, FluidPipeProperties> enabledMaterials = new TreeMap<>();
 

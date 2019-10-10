@@ -2,7 +2,7 @@ package gregtech.common.pipelike.cable.tile;
 
 import gregtech.api.capability.GregtechCapabilities;
 import gregtech.api.capability.IEnergyContainer;
-import gregtech.api.pipenet.tile.TileEntityPipeBase;
+import gregtech.api.pipenet.block.material.TileEntityMaterialPipeBase;
 import gregtech.common.pipelike.cable.Insulation;
 import gregtech.common.pipelike.cable.WireProperties;
 import net.minecraft.util.EnumFacing;
@@ -10,7 +10,7 @@ import net.minecraftforge.common.capabilities.Capability;
 
 import javax.annotation.Nullable;
 
-public class TileEntityCable extends TileEntityPipeBase<Insulation, WireProperties> {
+public class TileEntityCable extends TileEntityMaterialPipeBase<Insulation, WireProperties> {
 
     private IEnergyContainer energyContainer;
 

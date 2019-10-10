@@ -1,6 +1,6 @@
 package gregtech.integration.multipart;
 
-import gregtech.api.pipenet.tile.TileEntityPipeBase;
+import gregtech.api.pipenet.block.material.TileEntityMaterialPipeBase;
 import gregtech.common.pipelike.fluidpipe.FluidPipeProperties;
 import gregtech.common.pipelike.fluidpipe.FluidPipeType;
 import gregtech.common.pipelike.fluidpipe.tile.TileEntityFluidPipeTickable;
@@ -13,8 +13,10 @@ public class FluidPipeActiveMultiPart extends FluidPipeMultiPart {
     FluidPipeActiveMultiPart() {
     }
 
+
+
     @Override
-    protected TileEntityPipeBase<FluidPipeType, FluidPipeProperties> createTileEntity() {
+    protected TileEntityMaterialPipeBase<FluidPipeType, FluidPipeProperties> createTileEntity() {
         TileEntityFluidPipeTickable tileEntity = (TileEntityFluidPipeTickable) pipeBlock.createNewTileEntity(true);
         tileEntity.setActive(isActivePart);
         return tileEntity;

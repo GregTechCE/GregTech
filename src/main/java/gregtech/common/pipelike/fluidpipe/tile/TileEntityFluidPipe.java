@@ -1,6 +1,6 @@
 package gregtech.common.pipelike.fluidpipe.tile;
 
-import gregtech.api.pipenet.tile.TileEntityPipeBase;
+import gregtech.api.pipenet.block.material.TileEntityMaterialPipeBase;
 import gregtech.common.pipelike.fluidpipe.FluidPipeProperties;
 import gregtech.common.pipelike.fluidpipe.FluidPipeType;
 import net.minecraft.block.state.IBlockState;
@@ -16,7 +16,7 @@ import net.minecraftforge.fluids.capability.IFluidHandler;
 import javax.annotation.Nullable;
 import java.util.Random;
 
-public class TileEntityFluidPipe extends TileEntityPipeBase<FluidPipeType, FluidPipeProperties> {
+public class TileEntityFluidPipe extends TileEntityMaterialPipeBase<FluidPipeType, FluidPipeProperties> {
 
     private static final Random random = new Random();
     private IFluidHandler fluidHandler;

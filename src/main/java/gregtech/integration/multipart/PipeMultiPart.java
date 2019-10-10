@@ -5,8 +5,8 @@ import gnu.trove.map.TIntIntMap;
 import gnu.trove.map.hash.TIntIntHashMap;
 import gregtech.api.pipenet.block.BlockPipe;
 import gregtech.api.pipenet.block.IPipeType;
+import gregtech.api.pipenet.block.material.TileEntityMaterialPipeBase;
 import gregtech.api.pipenet.tile.AttachmentType;
-import gregtech.api.pipenet.tile.TileEntityPipeBase;
 import gregtech.api.unification.material.type.Material;
 import net.minecraft.block.Block;
 import net.minecraft.nbt.NBTTagCompound;
@@ -25,15 +25,15 @@ public abstract class PipeMultiPart<PipeType extends Enum<PipeType> & IPipeType<
     protected PipeMultiPart() {
     }
 
-    protected TileEntityPipeBase<PipeType, NodeDataType> createTileEntity() {
-        return pipeBlock.createNewTileEntity(false);
+    protected TileEntityMaterialPipeBase<PipeType, NodeDataType> createTileEntity() {
+        return (TileEntityMaterialPipeBase<PipeType, NodeDataType>) pipeBlock.createNewTileEntity(false);
     }
 
     @Override
     public void update() {
         if (world().isRemote) return;
         world().setBlockState(pos(), pipeBlock.getDefaultState());
-        TileEntityPipeBase<PipeType, NodeDataType> tileEntity = createTileEntity();
+        TileEntityMaterialPipeBase<PipeType, NodeDataType> tileEntity = createTileEntity();
         world().setTileEntity(pos(), tileEntity);
         PipeType pipeType = pipeBlock.getPipeTypeClass().getEnumConstants()[this.pipeType];
         tileEntity.setDetachedConversionMode(true);
