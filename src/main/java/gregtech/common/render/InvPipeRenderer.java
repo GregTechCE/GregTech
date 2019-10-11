@@ -1,7 +1,7 @@
 package gregtech.common.render;
 
 import codechicken.lib.render.BlockRenderer;
-import codechicken.lib.render.BlockRenderer.BlockFace;
+import codechicken.lib.render.CCModel;
 import codechicken.lib.render.CCRenderState;
 import codechicken.lib.render.block.BlockRenderingRegistry;
 import codechicken.lib.render.block.ICCBlockRenderer;
@@ -16,13 +16,11 @@ import codechicken.lib.vec.Vector3;
 import codechicken.lib.vec.uv.IconTransformation;
 import gregtech.api.GTValues;
 import gregtech.api.cover.ICoverable;
+import gregtech.api.pipenet.block.BlockPipe;
+import gregtech.api.pipenet.block.simple.EmptyNodeData;
 import gregtech.api.pipenet.tile.IPipeTile;
-import gregtech.api.unification.material.type.Material;
-import gregtech.common.pipelike.cable.BlockCable;
-import gregtech.common.pipelike.cable.Insulation;
-import gregtech.common.pipelike.cable.WireProperties;
-import gregtech.common.pipelike.cable.tile.TileEntityCable;
 import gregtech.common.pipelike.inventory.BlockInventoryPipe;
+import gregtech.common.pipelike.inventory.InventoryPipeType;
 import gregtech.common.pipelike.inventory.tile.TileEntityInventoryPipe;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.BufferBuilder;
@@ -45,7 +43,6 @@ import net.minecraftforge.client.event.ModelBakeEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.model.IModelState;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.tuple.Pair;
 import org.lwjgl.opengl.GL11;
 
@@ -54,7 +51,11 @@ public class InvPipeRenderer implements ICCBlockRenderer, IItemRenderer {
     public static ModelResourceLocation MODEL_LOCATION = new ModelResourceLocation(new ResourceLocation(GTValues.MODID, "inv_pipe"), "normal");
     public static InvPipeRenderer INSTANCE = new InvPipeRenderer();
     public static EnumBlockRenderType BLOCK_RENDER_TYPE;
-    private static ThreadLocal<BlockFace> blockFaces = ThreadLocal.withInitial(BlockFace::new);
+
+    private TextureAtlasSprite jointTextureSprite;
+    private TextureAtlasSprite pipeTextureSprite;
+    private CCModel[] fullBlockVariants;
+    private CCModel[] connectionModels;
 
     public static void preInit() {
         BLOCK_RENDER_TYPE = BlockRenderingRegistry.createRenderType("gt_inv_pipe");
@@ -64,6 +65,17 @@ public class InvPipeRenderer implements ICCBlockRenderer, IItemRenderer {
     }
 
     public void registerIcons(TextureMap map) {
+        this.jointTextureSprite = map.registerSprite(new ResourceLocation(GTValues.MODID, "blocks/inv_pipe/joint"));
+        this.pipeTextureSprite = map.registerSprite(new ResourceLocation(GTValues.MODID, "blocks/inv_pipe/pipe"));
+
+        InventoryPipeType pipeType = InventoryPipeType.NORMAL;
+        float thickness = pipeType.getThickness();
+        double height = (1.0f - thickness) / 2.0f;
+        CCModel connectionModel = ShapeModelGenerator.generateModel(3, height, thickness / 3.0f, height);
+        CCModel fullBlockModel = ShapeModelGenerator.generateModel(3, 1.0f, thickness / 3.0f, height);
+
+        this.fullBlockVariants = ShapeModelGenerator.generateFullBlockVariants(fullBlockModel);
+        this.connectionModels = ShapeModelGenerator.generateRotatedVariants(connectionModel);
     }
 
     @SubscribeEvent
@@ -77,7 +89,7 @@ public class InvPipeRenderer implements ICCBlockRenderer, IItemRenderer {
         CCRenderState renderState = CCRenderState.instance();
         renderState.reset();
         renderState.startDrawing(GL11.GL_QUADS, DefaultVertexFormats.ITEM);
-        renderCableBlock(renderState, new IVertexOperation[0], IPipeTile.DEFAULT_INSULATION_COLOR, 12);
+        renderPipe(renderState, new IVertexOperation[0], IPipeTile.DEFAULT_INSULATION_COLOR, 12);
         renderState.draw();
         GlStateManager.disableBlend();
     }
@@ -100,30 +112,15 @@ public class InvPipeRenderer implements ICCBlockRenderer, IItemRenderer {
 
         BlockRenderLayer renderLayer = MinecraftForgeClient.getRenderLayer();
         if (renderLayer == BlockRenderLayer.SOLID) {
-            renderCableBlock(renderState, pipeline, paintingColor, connectedSidesMask);
+            renderPipe(renderState, pipeline, paintingColor, connectedSidesMask);
         }
         ICoverable coverable = tileEntity.getCoverableImplementation();
         coverable.renderCovers(renderState, new Matrix4().translate(pos.getX(), pos.getY(), pos.getZ()), renderLayer);
         return true;
     }
 
-    public void renderCableBlock(CCRenderState renderState, IVertexOperation[] pipeline, int insulationColor, int connectMask) {
-        float thickness = 0.7f;
-        for (EnumFacing renderedSide : EnumFacing.VALUES) {
-            if ((connectMask & 1 << renderedSide.getIndex()) == 0) {
+    public void renderPipe(CCRenderState renderState, IVertexOperation[] pipeline, int insulationColor, int connectMask) {
 
-            }
-        }
-
-        BlockFace blockFace = blockFaces.get();
-        Cuboid6 centerBox = BlockCable.getSideBox(null, thickness);
-        TextureAtlasSprite atlasSprite = TextureUtils.getBlockTexture("stone");
-        for (EnumFacing side : EnumFacing.VALUES) {
-            pipeline = ArrayUtils.add(pipeline, new IconTransformation(atlasSprite));
-            blockFace.loadCuboidFace(centerBox, side.getIndex());
-            renderState.setPipeline(blockFace, 0, blockFace.verts.length, pipeline);
-            renderState.render();
-        }
     }
 
     @Override
@@ -136,22 +133,22 @@ public class InvPipeRenderer implements ICCBlockRenderer, IItemRenderer {
         renderState.reset();
         renderState.bind(buffer);
         renderState.setPipeline(new Vector3(new Vec3d(pos)).translation(), new IconTransformation(sprite));
-        BlockCable blockCable = (BlockCable) state.getBlock();
-        IPipeTile<Insulation, WireProperties> tileEntityCable = blockCable.getPipeTileEntity(world, pos);
-        if (tileEntityCable == null) {
+        BlockInventoryPipe block = (BlockInventoryPipe) state.getBlock();
+        TileEntityInventoryPipe tileEntity = (TileEntityInventoryPipe) block.getPipeTileEntity(world, pos);
+        if (tileEntity == null) {
             return;
         }
-        Insulation insulation = tileEntityCable.getPipeType();
-        if (insulation == null) {
+        InventoryPipeType pipeType = tileEntity.getPipeType();
+        if (pipeType == null) {
             return;
         }
-        float thickness = insulation.getThickness();
-        int connectedSidesMask = blockCable.getActualConnections(tileEntityCable, world);
-        Cuboid6 baseBox = BlockCable.getSideBox(null, thickness);
+        float thickness = pipeType.getThickness();
+        int connectedSidesMask = block.getActualConnections(tileEntity, world);
+        Cuboid6 baseBox = BlockPipe.getSideBox(null, thickness);
         BlockRenderer.renderCuboid(renderState, baseBox, 0);
         for (EnumFacing renderSide : EnumFacing.VALUES) {
             if ((connectedSidesMask & (1 << renderSide.getIndex())) > 0) {
-                Cuboid6 sideBox = BlockCable.getSideBox(renderSide, thickness);
+                Cuboid6 sideBox = BlockPipe.getSideBox(renderSide, thickness);
                 BlockRenderer.renderCuboid(renderState, sideBox, 0);
             }
         }
@@ -186,13 +183,8 @@ public class InvPipeRenderer implements ICCBlockRenderer, IItemRenderer {
         return true;
     }
 
-    public Pair<TextureAtlasSprite, Integer> getParticleTexture(IPipeTile<Insulation, WireProperties> tileEntity) {
+    public Pair<TextureAtlasSprite, Integer> getParticleTexture(IPipeTile<InventoryPipeType, EmptyNodeData> tileEntity) {
         if (tileEntity == null) {
-            return Pair.of(TextureUtils.getMissingSprite(), 0xFFFFFF);
-        }
-        Material material = ((TileEntityCable) tileEntity).getPipeMaterial();
-        Insulation insulation = tileEntity.getPipeType();
-        if (material == null || insulation == null) {
             return Pair.of(TextureUtils.getMissingSprite(), 0xFFFFFF);
         }
         TextureAtlasSprite atlasSprite = TextureUtils.getBlockTexture("stone");

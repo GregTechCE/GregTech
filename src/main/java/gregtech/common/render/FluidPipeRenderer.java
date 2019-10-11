@@ -102,8 +102,9 @@ public class FluidPipeRenderer implements ICCBlockRenderer, IItemRenderer {
         for (FluidPipeType fluidPipeType : FluidPipeType.values()) {
             float thickness = fluidPipeType.getThickness();
             double height = (1.0f - thickness) / 2.0f;
-            CCModel model = ShapeModelGenerator.generateModel(6, height, thickness / 3.0f, height);
-            CCModel fullBlockModel = ShapeModelGenerator.generateModel(6, 1.0f, thickness / 3.0, height);
+            int angles = 5 + fluidPipeType.ordinal();
+            CCModel model = ShapeModelGenerator.generateModel(angles, height, thickness / 3.0f, height);
+            CCModel fullBlockModel = ShapeModelGenerator.generateModel(angles, 1.0f, thickness / 3.0f, height);
 
             CCModel[] rotatedVariants = ShapeModelGenerator.generateRotatedVariants(model);
             CCModel[] fullBlockVariants = ShapeModelGenerator.generateFullBlockVariants(fullBlockModel);

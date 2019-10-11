@@ -1,5 +1,18 @@
 ## Changelog
 
+### 1.8.9.450
+* Fluid pipes visuals rework - Archengius
+* Added Rebreather - Archengius
+* Increased Nano Saber energy usage to 64 EU/t when on - Archengius
+* New system for armor metaitems - Archengius
+* Add OreByproduct page to JEI (#913) - Blood-Asp
+* Implemented manual IO switch for conveyors/pumps - Archengius
+* Fixed weird max stack size behavior on robot arm - Archengius
+* Allow using different rubbers in wire insulation - Archengius
+* Multiblock tanks finish - Archengius
+* More multiblock fluid tanks work - Dragon2488
+* Decrease cobalt mining level - Archengius
+
 ### 1.8.8
 * Fixed locked safe not having textures.
 * Added config value for rarity of abandoned base generation.
