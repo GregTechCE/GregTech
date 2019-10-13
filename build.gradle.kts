@@ -345,32 +345,31 @@ fun CurseProject.relations(config: CurseRelation.() -> Unit) = CurseRelation().a
     mainArtifact.curseRelations = it
 }
 
-curseforge {
-    if (System.getenv("CURSE_API_KEY") == null) {
-        println("Skipping curseforge task as there is no api key in the environment")
-        return@curseforge
-    }
+if (System.getenv("CURSE_API_KEY") == null) {
+    curseforge {
+        apiKey = System.getenv("CURSE_API_KEY")
 
-    apiKey = System.getenv("CURSE_API_KEY")
+        project {
+            id = "293327"
+            changelog = file("CHANGELOG.md")
+            changelogType = "markdown"
+            releaseType = "beta"
 
-    project {
-        id = "293327"
-        changelog = file("CHANGELOG.md")
-        changelogType = "markdown"
-        releaseType = "beta"
+            mainArtifact(jar)
+            addArtifact(sourceTask)
+            addArtifact(energyApiTask)
 
-        mainArtifact(jar)
-        addArtifact(sourceTask)
-        addArtifact(energyApiTask)
-
-        relations {
-            requiredDependency("codechicken-lib-1-8")
-            optionalDependency("forge-multipart-cbe")
-            optionalDependency("crafttweaker")
-            optionalDependency("jei")
-            optionalDependency("the-one-probe")
+            relations {
+                requiredDependency("codechicken-lib-1-8")
+                optionalDependency("forge-multipart-cbe")
+                optionalDependency("crafttweaker")
+                optionalDependency("jei")
+                optionalDependency("the-one-probe")
+            }
         }
     }
+} else {
+    println("Skipping curseforge task as there is no api key in the environment")
 }
 
 publishing {
