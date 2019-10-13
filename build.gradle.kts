@@ -1,4 +1,5 @@
 
+import com.google.gson.JsonObject
 import com.jfrog.bintray.gradle.BintrayExtension
 import com.jfrog.bintray.gradle.BintrayExtension.PackageConfig
 import com.jfrog.bintray.gradle.BintrayExtension.VersionConfig
@@ -14,6 +15,8 @@ import org.eclipse.jgit.revwalk.RevCommit
 import org.eclipse.jgit.revwalk.RevObject
 import org.eclipse.jgit.revwalk.RevTag
 import org.eclipse.jgit.revwalk.RevWalk
+import java.net.HttpURLConnection
+import java.net.URL
 import java.time.ZoneOffset
 import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
@@ -222,19 +225,91 @@ tasks.create("ciWriteBuildNumber") {
 tasks.create("generateChangelog") {
     doLast {
         val file = file("CHANGELOG.md")
-        val fileContents = StringBuilder(file.readText())
+        val fileContents = StringBuilder(file.readText(Charsets.UTF_8))
         val versionHeader = "\n### $modVersion\n"
         if (fileContents.contains(versionHeader)) return@doLast
         val firstNewline = fileContents.indexOf('\n')
         val changelog = getActualChangeList()
         val insertText = "\n$versionHeader$changelog"
         fileContents.insert(firstNewline, insertText)
-        file.writeText(fileContents.toString())
+        file.writeText(fileContents.toString(), Charsets.UTF_8)
     }
+}
+
+val curseforgeProject = configureCurseforgeTask()
+//just because curseforge task is retarded
+curseforgeProject?.uploadTask?.outputs?.upToDateWhen { false }
+
+fun resolveGitLabDownloadLink(): String? {
+    val gitlabJobId: String = System.getProperty("CI_JOB_ID") ?: return null
+    return "https://gitlab.com/GregTechCE/GregTech/-/jobs/$gitlabJobId/artifacts/raw/build/libs/${jar.archiveName}"
+}
+
+fun resolveCurseforgeArtifactId(): String? {
+    if (curseforgeProject == null) {
+        return null
+    }
+    val artifact = curseforgeProject.additionalArtifacts.first()
+    return artifact.parentFileID?.toString()
+}
+
+fun resolveCurseForgeDownloadLink(): String? {
+    val cfArtifactId = resolveCurseforgeArtifactId() ?: return null
+    return "https://www.curseforge.com/minecraft/mc-mods/gregtechce/files/$cfArtifactId"
+}
+
+fun resolveVersionChangelog(): String {
+    val changeLogLines = file("CHANGELOG.md").readLines(Charsets.UTF_8)
+    val versionHeader = "### $modVersion"
+    val startLineIndex = changeLogLines.indexOf(versionHeader)
+    if (startLineIndex == -1) {
+        return "No changelog provided"
+    }
+    val changelogBuilder = StringBuilder()
+    var lineIndex = startLineIndex
+    while (lineIndex < changeLogLines.size) {
+        val changelogLine = changeLogLines[lineIndex]
+        if (changelogLine.isEmpty()) break
+        changelogBuilder.append(changelogLine).append("\n")
+        lineIndex++
+    }
+    return changelogBuilder.toString()
+}
+
+val notificationTask: Task = tasks.create("postDiscordNotification") {
+    doLast {
+        val webhookToken = System.getProperty("DISCORD_WEBHOOK_TOKEN") ?: return@doLast
+        val curseForgeDownloadLink = resolveCurseForgeDownloadLink()
+        val gitLabDownloadLink = resolveGitLabDownloadLink()
+        val message = StringBuilder("@everyone New GTCE version $modVersion is out!\n")
+        if (gitLabDownloadLink != null) {
+            message.append("GitLab download:\n")
+            message.append(gitLabDownloadLink)
+            message.append("\n")
+        }
+        if (curseForgeDownloadLink != null) {
+            message.append("CurseForge download (may take a while to be approved):\n")
+            message.append(curseForgeDownloadLink)
+            message.append("\n")
+        }
+        message.append("```${resolveVersionChangelog()}```")
+        val jsonObject = JsonObject()
+        jsonObject.addProperty("content", message.toString())
+        val connection = URL("https://discordapp.com/api/webhooks/$webhookToken").openConnection() as HttpURLConnection
+        connection.requestMethod = "POST"
+        connection.setRequestProperty("Content-Type", "application/json; charset=utf-8")
+        connection.outputStream.write(jsonObject.toString().toByteArray(Charsets.UTF_8))
+        connection.connect()
+    }
+}
+
+if (curseforgeProject != null) {
+    notificationTask.dependsOn(curseforgeProject.uploadTask)
 }
 
 tasks["build"].dependsOn("generateChangelog")
 tasks["ciWriteBuildNumber"].dependsOn("generateChangelog")
+notificationTask.dependsOn("generateChangelog")
 
 fun getPrettyCommitDescription(commit: RevCommit): String {
     val closePattern = Regex("(Closes|Fixes) #[0-9]*\\.?")
@@ -345,11 +420,11 @@ fun CurseProject.relations(config: CurseRelation.() -> Unit) = CurseRelation().a
     mainArtifact.curseRelations = it
 }
 
-if (System.getenv("CURSE_API_KEY") == null) {
-    curseforge {
-        apiKey = System.getenv("CURSE_API_KEY")
-
-        project {
+fun configureCurseforgeTask(): CurseProject? {
+    if (System.getenv("CURSE_API_KEY") == null) {
+        val extension = curseforge
+        extension.apiKey = System.getenv("CURSE_API_KEY")
+        return extension.project {
             id = "293327"
             changelog = file("CHANGELOG.md")
             changelogType = "markdown"
@@ -367,9 +442,10 @@ if (System.getenv("CURSE_API_KEY") == null) {
                 optionalDependency("the-one-probe")
             }
         }
+    } else {
+        println("Skipping curseforge task as there is no api key in the environment")
+        return null
     }
-} else {
-    println("Skipping curseforge task as there is no api key in the environment")
 }
 
 publishing {
