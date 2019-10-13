@@ -67,9 +67,10 @@ val crafttweakerVersion = config["crafttweaker.version"] as String
 val jeiVersion = config["jei.version"] as String
 val topVersion = config["top.version"] as String
 
-val git = Git.open(File("."))
+val git: Git = Git.open(File("."))
 
 val modVersion = getVersionFromJava(file("src/main/java/gregtech/GregTechVersion.java"))
+val modVersionNoBuild = modVersion.substring(0, modVersion.lastIndexOf('.'))
 version = "$mcVersion-$modVersion"
 group = "gregtech"
 
@@ -228,7 +229,7 @@ tasks.create("generateChangelog") {
     doLast {
         val file = file("CHANGELOG.md")
         val fileContents = StringBuilder(file.readText(Charsets.UTF_8))
-        val versionHeader = "\n### $modVersion\n"
+        val versionHeader = "\n### $modVersionNoBuild\n"
         if (fileContents.contains(versionHeader)) return@doLast
         val firstNewline = fileContents.indexOf('\n')
         val changelog = getActualChangeList()
@@ -262,7 +263,7 @@ fun resolveCurseForgeDownloadLink(): String? {
 
 fun resolveVersionChangelog(): String {
     val changeLogLines = file("CHANGELOG.md").readLines(Charsets.UTF_8)
-    val versionHeader = "### $modVersion"
+    val versionHeader = "### $modVersionNoBuild"
     val startLineIndex = changeLogLines.indexOf(versionHeader)
     if (startLineIndex == -1) {
         return "No changelog provided"
@@ -284,7 +285,7 @@ val notificationTask: Task = tasks.create("postDiscordNotification") {
         val webhookToken = System.getProperty("DISCORD_WEBHOOK_TOKEN") ?: error("Duscord webhook token not set")
         val curseForgeDownloadLink = resolveCurseForgeDownloadLink()
         val gitLabDownloadLink = resolveGitLabDownloadLink()
-        val message = StringBuilder("New GTCE version $modVersion is out!\n")
+        val message = StringBuilder("New GTCE version $modVersionNoBuild is out!\n")
         if (gitLabDownloadLink != null) {
             message.append("GitLab download:\n")
             message.append(gitLabDownloadLink)
@@ -438,7 +439,7 @@ fun configureCurseforgeTask(): CurseProject? {
             id = "293327"
             changelog = file("CHANGELOG.md")
             changelogType = "markdown"
-            releaseType = "beta"
+            releaseType = "release"
 
             mainArtifact(jar)
             addArtifact(sourceTask)

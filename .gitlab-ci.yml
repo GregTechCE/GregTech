@@ -26,6 +26,9 @@ production:
   script: ./gradlew curseforge bintrayUpload postDiscordNotification
   retry: 2
   when: on_success
+  artifacts:
+    paths:
+      - build/libs/*.jar
   only:
     refs:
       - tags
@@ -35,6 +38,9 @@ manual_production:
   script: ./gradlew curseforge bintrayUpload postDiscordNotification
   retry: 2
   when: manual
+  artifacts:
+    paths:
+      - build/libs/*.jar
   only:
     refs:
       - master

@@ -1,9 +1,6 @@
 ## Changelog
 
-### 1.8.9.457
-* Fixed buildscript x4 - Archengius
-
-### 1.8.9.450
+### 1.8.9
 * Fluid pipes visuals rework - Archengius
 * Added Rebreather - Archengius
 * Increased Nano Saber energy usage to 64 EU/t when on - Archengius
