@@ -8,6 +8,10 @@ import com.matthewprenger.cursegradle.CurseProject
 import com.matthewprenger.cursegradle.CurseRelation
 import net.minecraftforge.gradle.user.UserBaseExtension
 import org.apache.commons.lang.StringUtils
+import org.apache.http.client.methods.HttpPost
+import org.apache.http.entity.ContentType
+import org.apache.http.entity.StringEntity
+import org.apache.http.impl.client.HttpClientBuilder
 import org.eclipse.jgit.api.Git
 import org.eclipse.jgit.lib.Constants
 import org.eclipse.jgit.lib.ObjectId
@@ -15,8 +19,6 @@ import org.eclipse.jgit.revwalk.RevCommit
 import org.eclipse.jgit.revwalk.RevObject
 import org.eclipse.jgit.revwalk.RevTag
 import org.eclipse.jgit.revwalk.RevWalk
-import java.net.HttpURLConnection
-import java.net.URL
 import java.time.ZoneOffset
 import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
@@ -278,10 +280,11 @@ fun resolveVersionChangelog(): String {
 
 val notificationTask: Task = tasks.create("postDiscordNotification") {
     doLast {
-        val webhookToken = System.getProperty("DISCORD_WEBHOOK_TOKEN") ?: return@doLast
+        val webhookId = System.getProperty("DISCORD_WEBHOOK_ID") ?: error("Duscord webhook id not set")
+        val webhookToken = System.getProperty("DISCORD_WEBHOOK_TOKEN") ?: error("Duscord webhook token not set")
         val curseForgeDownloadLink = resolveCurseForgeDownloadLink()
         val gitLabDownloadLink = resolveGitLabDownloadLink()
-        val message = StringBuilder("@everyone New GTCE version $modVersion is out!\n")
+        val message = StringBuilder("New GTCE version $modVersion is out!\n")
         if (gitLabDownloadLink != null) {
             message.append("GitLab download:\n")
             message.append(gitLabDownloadLink)
@@ -293,13 +296,19 @@ val notificationTask: Task = tasks.create("postDiscordNotification") {
             message.append("\n")
         }
         message.append("```${resolveVersionChangelog()}```")
+
         val jsonObject = JsonObject()
         jsonObject.addProperty("content", message.toString())
-        val connection = URL("https://discordapp.com/api/webhooks/$webhookToken").openConnection() as HttpURLConnection
-        connection.requestMethod = "POST"
-        connection.setRequestProperty("Content-Type", "application/json; charset=utf-8")
-        connection.outputStream.write(jsonObject.toString().toByteArray(Charsets.UTF_8))
-        connection.connect()
+
+        val httpClient = HttpClientBuilder.create().build()
+        val webhookUrl = "https://discordapp.com/api/webhooks/$webhookId/$webhookToken"
+        val response = httpClient.execute(HttpPost(webhookUrl).also {
+            it.entity = StringEntity(jsonObject.toString(), ContentType.APPLICATION_JSON)
+        })
+        if (response.statusLine.statusCode !in 200..210) {
+            val status = response.statusLine
+            throw IllegalStateException("Failed to send discord notification - ${status.statusCode} - ${status.reasonPhrase}")
+        }
     }
 }
 
