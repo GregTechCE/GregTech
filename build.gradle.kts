@@ -425,6 +425,7 @@ fun configureCurseforgeTask(): CurseProject? {
         val extension = curseforge
         extension.apiKey = System.getenv("CURSE_API_KEY")
         return extension.project {
+            apiKey = System.getenv("CURSE_API_KEY")
             id = "293327"
             changelog = file("CHANGELOG.md")
             changelogType = "markdown"
