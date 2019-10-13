@@ -359,6 +359,7 @@ curseforge {
         changelogType = "markdown"
         releaseType = "beta"
 
+        mainArtifact(jar)
         addArtifact(sourceTask)
         addArtifact(energyApiTask)
 
