@@ -304,7 +304,7 @@ val notificationTask: Task = tasks.create("postDiscordNotification") {
 }
 
 if (curseforgeProject != null) {
-    notificationTask.dependsOn(curseforgeProject.uploadTask)
+    notificationTask.dependsOn("curseforge")
 }
 
 tasks["build"].dependsOn("generateChangelog")
@@ -421,7 +421,7 @@ fun CurseProject.relations(config: CurseRelation.() -> Unit) = CurseRelation().a
 }
 
 fun configureCurseforgeTask(): CurseProject? {
-    if (System.getenv("CURSE_API_KEY") == null) {
+    if (System.getenv("CURSE_API_KEY") != null) {
         val extension = curseforge
         extension.apiKey = System.getenv("CURSE_API_KEY")
         return extension.project {

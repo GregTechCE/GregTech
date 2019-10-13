@@ -23,7 +23,7 @@ build:
 
 production:
   stage: deploy
-  script: ./gradlew curseforge bintrayUpload
+  script: ./gradlew curseforge bintrayUpload postDiscordNotification
   retry: 2
   when: on_success
   only:
