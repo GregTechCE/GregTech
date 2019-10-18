@@ -499,6 +499,7 @@ bintray {
     key = bintrayApiKey
     setPublications("GTCEPublication")
     publish = true
+    override = true //not sure why it is needed
     pkg {
         repo = "dev"
         name = "GregTechCE"
