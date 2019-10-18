@@ -244,7 +244,7 @@ val curseforgeProject = configureCurseforgeTask()
 curseforgeProject?.uploadTask?.outputs?.upToDateWhen { false }
 
 fun resolveGitLabDownloadLink(): String? {
-    val gitlabJobId: String = System.getProperty("CI_JOB_ID") ?: return null
+    val gitlabJobId: String = System.getenv("CI_JOB_ID") ?: return null
     return "https://gitlab.com/GregTechCE/GregTech/-/jobs/$gitlabJobId/artifacts/raw/build/libs/${jar.archiveName}"
 }
 
@@ -281,8 +281,8 @@ fun resolveVersionChangelog(): String {
 
 val notificationTask: Task = tasks.create("postDiscordNotification") {
     doLast {
-        val webhookId = System.getProperty("DISCORD_WEBHOOK_ID") ?: error("Duscord webhook id not set")
-        val webhookToken = System.getProperty("DISCORD_WEBHOOK_TOKEN") ?: error("Duscord webhook token not set")
+        val webhookId = System.getenv("DISCORD_WEBHOOK_ID") ?: error("Discord webhook id not set")
+        val webhookToken = System.getenv("DISCORD_WEBHOOK_TOKEN") ?: error("Discord webhook token not set")
         val curseForgeDownloadLink = resolveCurseForgeDownloadLink()
         val gitLabDownloadLink = resolveGitLabDownloadLink()
         val message = StringBuilder("New GTCE version $modVersionNoBuild is out!\n")
