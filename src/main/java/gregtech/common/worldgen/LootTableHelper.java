@@ -44,12 +44,15 @@ public class LootTableHelper {
 
     public static void initialize() {
         try {
-            Field gsonField = LootTableManager.class.getDeclaredField("GSON_INSTANCE");
+            Field gsonField = Arrays.stream(LootTableManager.class.getDeclaredFields())
+                .filter(it -> Gson.class.isAssignableFrom(it.getType()))
+                .findFirst().orElseThrow(() -> new RuntimeException("Failed to find Gson field!"));
             gsonField.setAccessible(true);
             Gson gsonInstance = (Gson) gsonField.get(null);
             replaceGsonTypeHierarchySerializer(gsonInstance, LootEntry.class, LootTableEntrySerializerDelegate::new);
         } catch (Throwable exception) {
             GTLog.logger.fatal("Failed to initialize loot table helper", exception);
+            throw new RuntimeException(exception);
         }
         registerLootEntry("gregtech:meta_item", LootEntryMetaItem::deserialize);
         registerLootEntry("gregtech:ore_dict", LootEntryOreDict::deserialize);
