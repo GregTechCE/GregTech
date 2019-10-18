@@ -35,7 +35,7 @@ production:
 
 manual_production:
   stage: manual_deploy
-  script: ./gradlew curseforge bintrayUpload postDiscordNotification
+  script: ./gradlew curseforge postDiscordNotification bintrayUpload
   retry: 2
   when: manual
   artifacts:
