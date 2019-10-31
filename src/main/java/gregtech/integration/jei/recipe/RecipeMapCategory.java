@@ -17,7 +17,6 @@ import mezz.jei.api.gui.IRecipeLayout;
 import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.recipe.IRecipeCategory;
 import net.minecraft.client.Minecraft;
-import net.minecraft.inventory.Slot;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.items.ItemStackHandler;
@@ -132,19 +131,7 @@ public class RecipeMapCategory implements IRecipeCategory<GTRecipeWrapper> {
     @Override
     public void drawExtras(Minecraft minecraft) {
         for (Widget widget : modularUI.guiWidgets.values()) {
-            widget.drawInBackground(0, 0, new IRenderContext() {
-                @Override
-                public void drawSlotContents(Slot slot) {
-                }
-
-                @Override
-                public void renderSlotOverlay(Slot slot) {
-                }
-
-                @Override
-                public void setHoveredSlot(Slot hoveredSlot) {
-                }
-            });
+            widget.drawInBackground(0, 0, new IRenderContext() {});
             widget.drawInForeground(0, 0);
         }
     }

@@ -69,11 +69,12 @@ public class ModularUIGui extends GuiContainer implements IRenderContext {
         this.hoveredSlot = null;
         drawDefaultBackground();
 
-        drawGuiContainerBackgroundLayer(partialTicks, mouseX, mouseY);
         GlStateManager.disableRescaleNormal();
         RenderHelper.disableStandardItemLighting();
         GlStateManager.disableLighting();
         GlStateManager.disableDepth();
+
+        drawGuiContainerBackgroundLayer(partialTicks, mouseX, mouseY);
 
         RenderHelper.enableGUIStandardItemLighting();
         GlStateManager.pushMatrix();
@@ -91,7 +92,7 @@ public class ModularUIGui extends GuiContainer implements IRenderContext {
             }
             if (isPointInRegion(slot.xPos, slot.yPos, 16, 16, mouseX, mouseY) && slot.isEnabled()) {
                 renderSlotOverlay(slot);
-                this.hoveredSlot = slot;
+                setHoveredSlot(slot);
             }
         }
 
@@ -111,12 +112,11 @@ public class ModularUIGui extends GuiContainer implements IRenderContext {
         renderHoveredToolTip(mouseX, mouseY);
     }
 
-    @Override
+
     public void setHoveredSlot(Slot hoveredSlot) {
         this.hoveredSlot = hoveredSlot;
     }
 
-    @Override
     public void drawSlotContents(Slot slot) {
         GlStateManager.enableDepth();
         RenderHelper.enableGUIStandardItemLighting();
@@ -128,7 +128,6 @@ public class ModularUIGui extends GuiContainer implements IRenderContext {
         GlStateManager.disableLighting();
     }
 
-    @Override
     public void renderSlotOverlay(Slot slot) {
         GlStateManager.disableDepth();
         int slotX = slot.xPos;

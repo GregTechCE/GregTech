@@ -1,16 +1,21 @@
 package gregtech.api.gui;
 
+import gregtech.api.gui.resources.AdoptableTextureArea;
 import gregtech.api.gui.resources.SizedTextureArea;
 import gregtech.api.gui.resources.TextureArea;
 
 public class GuiTextures {
 
     //BASE TEXTURES
-    public static final TextureArea BACKGROUND = TextureArea.fullImage("textures/gui/base/background.png");
-    public static final TextureArea BACKGROUND_SMALL = TextureArea.fullImage("textures/gui/base/background_small.png");
-    public static final TextureArea BACKGROUND_EXTENDED = TextureArea.fullImage("textures/gui/base/background_extended.png");
-    public static final TextureArea BORDERED_BACKGROUND = TextureArea.fullImage("textures/gui/base/bordered_background.png");
-    public static final TextureArea BORDERED_BACKGROUND_EXTENDED = TextureArea.fullImage("textures/gui/base/bordered_background_extended.png");
+    public static final TextureArea BACKGROUND = AdoptableTextureArea.fullImage("textures/gui/base/background.png", 176, 166, 3, 3);
+    public static final TextureArea BORDERED_BACKGROUND = AdoptableTextureArea.fullImage("textures/gui/base/bordered_background.png", 195, 136, 4, 4);
+    public static final TextureArea BOXED_BACKGROUND = AdoptableTextureArea.fullImage("textures/gui/base/boxed_background.png", 256, 174, 11, 11);
+
+    //deprecated texture areas retained for binary & source compatibility
+    @Deprecated public static final TextureArea BACKGROUND_SMALL = BACKGROUND; //replaced by normal background
+    @Deprecated public static final TextureArea BACKGROUND_EXTENDED = BACKGROUND; //replaced by normal background
+    @Deprecated public static final TextureArea BORDERED_BACKGROUND_EXTENDED = BORDERED_BACKGROUND; //replaced by normal background
+
     public static final TextureArea SLOT = TextureArea.fullImage("textures/gui/base/slot.png");
     public static final TextureArea SLOT_BIG = TextureArea.fullImage("textures/gui/base/slot_big.png");
     public static final TextureArea FLUID_SLOT = TextureArea.fullImage("textures/gui/base/fluid_slot.png");
@@ -47,6 +52,10 @@ public class GuiTextures {
     public static final TextureArea BRONZE_FURNACE_OVERLAY = TextureArea.fullImage("textures/gui/steam/bronze/slot_bronze_furnace_background.png");
     public static final TextureArea BRONZE_INGOT_OVERLAY = TextureArea.fullImage("textures/gui/steam/bronze/overlay_bronze_ingot.png");
     public static final TextureArea BRONZE_DUST_OVERLAY = TextureArea.fullImage("textures/gui/steam/bronze/overlay_bronze_dust.png");
+
+    //ARMOR
+    public static final TextureArea CONNECTION_TYPE_POWER = TextureArea.fullImage("textures/gui/armor/connection/power.png");
+    public static final TextureArea COMPONENT_BATTERY = TextureArea.fullImage("textures/gui/armor/component/battery.png");
 
     //SLOT OVERLAYS
     public static final TextureArea ARROW_INPUT_OVERLAY = TextureArea.fullImage("textures/gui/overlay/arrow_input_overlay.png");

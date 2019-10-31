@@ -15,7 +15,7 @@ import java.util.Map;
 public class GTCELoadingPlugin implements IFMLLoadingPlugin {
     @Override
     public String[] getASMTransformerClass() {
-        return new String[] {"gregtech.common.asm.ArmorTransformer"};
+        return new String[] {"gregtech.common.asm.GTCETransformer"};
     }
 
     @Override

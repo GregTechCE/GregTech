@@ -1,8 +1,16 @@
 package gregtech.api.gui.resources;
 
+import codechicken.lib.vec.Rotation;
+import codechicken.lib.vec.Transformation;
+import codechicken.lib.vec.Translation;
+import codechicken.lib.vec.Vector3;
 import gregtech.api.GTValues;
+import gregtech.api.util.Position;
+import gregtech.api.util.PositionedRect;
+import gregtech.api.util.Size;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BufferBuilder;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.util.ResourceLocation;
@@ -53,20 +61,52 @@ public class TextureArea {
     }
 
     @SideOnly(Side.CLIENT)
-    public void draw(int x, int y, int width, int height) {
-        Minecraft.getMinecraft().renderEngine.bindTexture(imageLocation);
-        Tessellator tessellator = Tessellator.getInstance();
-        BufferBuilder bufferbuilder = tessellator.getBuffer();
-        bufferbuilder.begin(7, DefaultVertexFormats.POSITION_TEX);
-        bufferbuilder.pos(x, y + height, 0.0D).tex(offsetX, offsetY + imageHeight).endVertex();
-        bufferbuilder.pos(x + width, y + height, 0.0D).tex(offsetX + imageWidth, offsetY + imageHeight).endVertex();
-        bufferbuilder.pos(x + width, y, 0.0D).tex(offsetX + imageWidth, offsetY).endVertex();
-        bufferbuilder.pos(x, y, 0.0D).tex(offsetX, offsetY).endVertex();
-        tessellator.draw();
+    public void drawRotated(int x, int y, Size areaSize, PositionedRect positionedRect, int orientation) {
+        Transformation transformation = createOrientation(areaSize, orientation);
+        GlStateManager.pushMatrix();
+        GlStateManager.translate(x, y, 0.0f);
+        transformation.glApply();
+        draw(positionedRect.position.x, positionedRect.position.y, positionedRect.size.width, positionedRect.size.height);
+        GlStateManager.popMatrix();
+    }
+
+    public static Transformation createOrientation(Size areaSize, int orientation) {
+        Transformation transformation = new Rotation(Math.toRadians(orientation * 90.0), 0.0, 0.0, 1.0)
+            .at(new Vector3(areaSize.width / 2.0, areaSize.height / 2.0, 0.0));
+        Size orientedSize = transformSize(transformation, areaSize);
+        double offsetX = (areaSize.width - orientedSize.width) / 2.0;
+        double offsetY = (areaSize.height - orientedSize.height) / 2.0;
+        return transformation.with(new Translation(-offsetX, -offsetY, 0.0));
+    }
+
+    public static Size transformSize(Transformation transformation, Size position) {
+        Vector3 sizeVector = new Vector3(position.width, position.height, 0.0);
+        Vector3 zeroVector = new Vector3(0.0, 0.0, 0.0);
+        transformation.apply(zeroVector);
+        transformation.apply(sizeVector);
+        sizeVector.subtract(zeroVector);
+        return new Size((int) Math.abs(sizeVector.x), (int) Math.abs(sizeVector.y));
+    }
+
+    public static PositionedRect transformRect(Transformation transformation, PositionedRect positionedRect) {
+        Position pos1 = transformPos(transformation, positionedRect.position);
+        Position pos2 = transformPos(transformation, positionedRect.position.add(positionedRect.size));
+        return new PositionedRect(pos1, pos2);
+    }
+
+    public static Position transformPos(Transformation transformation, Position position) {
+        Vector3 vector = new Vector3(position.x, position.y, 0.0);
+        transformation.apply(vector);
+        return new Position((int) vector.x, (int) vector.y);
     }
 
     @SideOnly(Side.CLIENT)
-    public void drawSubArea(int x, int y, int width, int height, double drawnU, double drawnV, double drawnWidth, double drawnHeight) {
+    public void draw(double x, double y, int width, int height) {
+        drawSubArea(x, y, width, height, 0.0, 0.0, 1.0, 1.0);
+    }
+
+    @SideOnly(Side.CLIENT)
+    public void drawSubArea(double x, double y, int width, int height, double drawnU, double drawnV, double drawnWidth, double drawnHeight) {
         //sub area is just different width and height
         double imageU = this.offsetX + (this.imageWidth * drawnU);
         double imageV = this.offsetY + (this.imageHeight * drawnV);
@@ -82,5 +122,4 @@ public class TextureArea {
         bufferbuilder.pos(x, y, 0.0D).tex(imageU, imageV).endVertex();
         tessellator.draw();
     }
-
 }

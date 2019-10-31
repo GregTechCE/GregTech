@@ -81,7 +81,7 @@ public final class ModularUI implements ISizeProvider {
     }
 
     public static Builder extendedBuilder() {
-        return new Builder(GuiTextures.BACKGROUND_EXTENDED, 176, 216);
+        return new Builder(GuiTextures.BACKGROUND, 176, 216);
     }
 
     public static Builder builder(TextureArea background, int width, int height) {

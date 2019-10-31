@@ -48,7 +48,7 @@ public class MetaTileEntityWorkbench extends MetaTileEntity {
 
     @Override
     protected ModularUI createUI(EntityPlayer entityPlayer) {
-        ModularUI.Builder builder = ModularUI.builder(GuiTextures.BORDERED_BACKGROUND_EXTENDED, 176, 198)
+        ModularUI.Builder builder = ModularUI.builder(GuiTextures.BORDERED_BACKGROUND, 176, 198)
             .bindPlayerInventory(entityPlayer.inventory, 117);
 
         ItemStackHandler craftingGridHandler = new ItemStackHandler(9);

@@ -1406,6 +1406,7 @@ material.cocoa=Cocoa
 material.coffee=Coffee
 material.wheat=Wheat
 
+item.nether_quartz.oreNetherrack=Nether Quartz Ore
 item.gunpowder.dustTiny=Tiny Pile of Gunpowder
 item.gunpowder.dustSmall=Small Pile of Gunpowder
 item.paper.dustTiny=Tiny Pile of Chad
