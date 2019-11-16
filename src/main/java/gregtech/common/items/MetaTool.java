@@ -61,12 +61,12 @@ public class MetaTool extends ToolMetaItem<ToolMetaItem<?>.MetaToolValueItem> {
         SOFT_HAMMER = addItem(7, "tool.soft_hammer").setToolStats(new ToolSoftHammer())
             .setFullRepairCost(6)
             .addOreDict(ToolDictNames.craftingToolSoftHammer)
-            .addStats(new SoftMalletItemStat());
+            .addComponents(new SoftMalletItemStat());
 
         WRENCH = addItem(8, "tool.wrench").setToolStats(new ToolWrench())
             .setFullRepairCost(6)
             .addOreDict(ToolDictNames.craftingToolWrench)
-            .addStats(new WrenchItemStat());
+            .addComponents(new WrenchItemStat());
 
         FILE = addItem(9, "tool.file").setToolStats(new ToolFile())
             .setFullRepairCost(2)
@@ -79,7 +79,7 @@ public class MetaTool extends ToolMetaItem<ToolMetaItem<?>.MetaToolValueItem> {
         SCREWDRIVER = addItem(11, "tool.screwdriver").setToolStats(new ToolScrewdriver())
             .setFullRepairCost(1)
             .addOreDict(ToolDictNames.craftingToolScrewdriver)
-            .addStats(new ScrewdriverItemStat());
+            .addComponents(new ScrewdriverItemStat());
 
         MORTAR = addItem(12, "tool.mortar").setToolStats(new ToolMortar())
             .addOreDict(ToolDictNames.craftingToolMortar);
@@ -112,73 +112,69 @@ public class MetaTool extends ToolMetaItem<ToolMetaItem<?>.MetaToolValueItem> {
             .setFullRepairCost(3)
             .addOreDict(ToolDictNames.craftingToolBlade);
 
-        PLOW = addItem(20, "tool.plow").setToolStats(new ToolPlow())
-            .setFullRepairCost(4)
-            .addOreDict(ToolDictNames.craftingToolPlow);
-
         DRILL_LV = addItem(23, "tool.drill.lv").setToolStats(new ToolDrillLV())
             .setFullRepairCost(4)
             .addOreDict(ToolDictNames.craftingToolMiningDrill)
-            .addStats(ElectricStats.createElectricItem(100000L, 1L));
+            .addComponents(ElectricStats.createElectricItem(100000L, 1L));
 
         DRILL_MV = addItem(24, "tool.drill.mv").setToolStats(new ToolDrillMV())
             .setFullRepairCost(4)
             .addOreDict(ToolDictNames.craftingToolMiningDrill)
-            .addStats(ElectricStats.createElectricItem(400000L, 2L));
+            .addComponents(ElectricStats.createElectricItem(400000L, 2L));
 
         DRILL_HV = addItem(25, "tool.drill.hv").setToolStats(new ToolDrillHV())
             .setFullRepairCost(4)
             .addOreDict(ToolDictNames.craftingToolMiningDrill)
-            .addStats(ElectricStats.createElectricItem(1600000L, 3L));
+            .addComponents(ElectricStats.createElectricItem(1600000L, 3L));
 
         CHAINSAW_LV = addItem(26, "tool.chainsaw.lv").setToolStats(new ToolChainsawLV())
             .setFullRepairCost(4)
             .addOreDict(ToolDictNames.craftingToolSaw)
-            .addStats(ElectricStats.createElectricItem(100000L, 1L));
+            .addComponents(ElectricStats.createElectricItem(100000L, 1L));
 
         CHAINSAW_MV = addItem(27, "tool.chainsaw.mv").setToolStats(new ToolChainsawMV())
             .setFullRepairCost(4)
             .addOreDict(ToolDictNames.craftingToolSaw)
-            .addStats(ElectricStats.createElectricItem(400000L, 2L));
+            .addComponents(ElectricStats.createElectricItem(400000L, 2L));
 
         CHAINSAW_HV = addItem(28, "tool.chainsaw.hv").setToolStats(new ToolChainsawHV())
             .setFullRepairCost(4)
             .addOreDict(ToolDictNames.craftingToolSaw)
-            .addStats(ElectricStats.createElectricItem(1600000L, 3L));
+            .addComponents(ElectricStats.createElectricItem(1600000L, 3L));
 
         WRENCH_LV = addItem(29, "tool.wrench.lv").setToolStats(new ToolWrenchLV())
             .setFullRepairCost(4)
             .addOreDict(ToolDictNames.craftingToolWrench)
-            .addStats(new WrenchItemStat())
-            .addStats(ElectricStats.createElectricItem(100000L, 1L));
+            .addComponents(new WrenchItemStat())
+            .addComponents(ElectricStats.createElectricItem(100000L, 1L));
 
         WRENCH_MV = addItem(30, "tool.wrench.mv").setToolStats(new ToolWrenchMV())
             .setFullRepairCost(4)
             .addOreDict(ToolDictNames.craftingToolWrench)
-            .addStats(new WrenchItemStat())
-            .addStats(ElectricStats.createElectricItem(400000L, 2L));
+            .addComponents(new WrenchItemStat())
+            .addComponents(ElectricStats.createElectricItem(400000L, 2L));
 
         WRENCH_HV = addItem(31, "tool.wrench.hv").setToolStats(new ToolWrenchHV())
             .setFullRepairCost(4)
             .addOreDict(ToolDictNames.craftingToolWrench)
-            .addStats(new WrenchItemStat())
-            .addStats(ElectricStats.createElectricItem(1600000L, 3L));
+            .addComponents(new WrenchItemStat())
+            .addComponents(ElectricStats.createElectricItem(1600000L, 3L));
 
         SCREWDRIVER_LV = addItem(34, "tool.screwdriver.lv").setToolStats(new ToolScrewdriverLV())
             .setFullRepairCost(1)
             .addOreDict(ToolDictNames.craftingToolScrewdriver)
-            .addStats(new ScrewdriverItemStat())
-            .addStats(ElectricStats.createElectricItem(100000L, 1L));
+            .addComponents(new ScrewdriverItemStat())
+            .addComponents(ElectricStats.createElectricItem(100000L, 1L));
 
         JACKHAMMER = addItem(32, "tool.jackhammer").setToolStats(new ToolJackHammer())
             .setFullRepairCost(5)
             .addOreDict(ToolDictNames.craftingToolJackHammer)
-            .addStats(ElectricStats.createElectricItem(100000L, GTValues.HV));
+            .addComponents(ElectricStats.createElectricItem(1600000L, GTValues.HV));
 
         BUZZSAW = addItem(33, "tool.buzzsaw").setToolStats(new ToolBuzzSaw())
             .setFullRepairCost(4)
             .addOreDict(ToolDictNames.craftingToolSaw)
-            .addStats(ElectricStats.createElectricItem(100000L, 1L));
+            .addComponents(ElectricStats.createElectricItem(100000L, 1L));
 
         MAGNIFYING_GLASS = addItem(36, "tool.magnifying_glass").setToolStats(new ToolMagnifyingGlass())
             .addOreDict(ToolDictNames.craftingToolMagnifyingGlass);

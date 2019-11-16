@@ -17,7 +17,6 @@ import gregtech.common.items.behaviors.TurbineRotorBehavior;
 import gregtech.common.metatileentities.multi.electric.generator.MetaTileEntityLargeTurbine;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.PacketBuffer;
@@ -102,8 +101,9 @@ public class MetaTileEntityRotorHolder extends MetaTileEntityMultiblockPart impl
             for (int y = -1; y < 2; y++) {
                 BlockPos blockPos = centerPos.add(permuteXZ ? x : 0, y, permuteXZ ? 0 : x);
                 IBlockState blockState = getWorld().getBlockState(blockPos);
-                if (blockState.getBlock() != Blocks.AIR)
+                if (!blockState.getBlock().isAir(blockState, getWorld(), blockPos)) {
                     return false;
+                }
             }
         }
         return true;

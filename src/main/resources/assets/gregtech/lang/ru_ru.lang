@@ -8,6 +8,8 @@ death.attack.explosion.player=%s взорвался при помощи %s.
 death.attack.heat.player=%s был сварен живым %s.
 death.attack.crusher=%s был измельчен в фарш.
 
+enchantment.disjunction=Разъединение
+
 gregtech.top.energy_stored=Энергия:
 gregtech.top.progress=Прогресс:
 gregtech.top.working_disabled=Работа запрещена
@@ -25,14 +27,19 @@ gregtech.multiblock.electric_blast_furnace.description=Электрическа�
 gregtech.multiblock.multi_smelter.description=Плавильная печь - это многоблочная структура, используемая для плавки большого количества изделий одновременно. Различные уровни катушек обеспечивают повышение скорости и повышение энергоэффективности. 16 изделий может быть выплавленно за одну операцию, и может быть умножено с использованием катушек более высокого уровня.
 gregtech.multiblock.large_boiler.description=Большой котел - представляет собой мультиблок, которые генерируют пар из источника энергии и воды. Обычно либо твердое топливо, либо горючая жидкость высокой плотности действует как источник энергии для большого котла. Уровни отличаются только количеством вырабатываемого пара.
 gregtech.multiblock.large_turbine.description=Большие турбины - это мультиблоки, которые вырабатывают энергию из пара, газов и плазмы, вращая ротор турбины. Выход энергии зависит от КПД ротора и текущей скорости турбины.
-metaitem.dust.tooltip.purify=Бросьте в котел, чтобы получить чистую пыль
-metaitem.generic.fluid_container.tooltip=%d/%dЛ %s
-metaitem.generic.fluid_container.tooltip_empty=Пусто
-metaitem.generic.electric_item.tooltip=%d/%d ЭЕ - Уровень §e%d
-metaitem.int_circuit.configuration=Конфигурация: %d
+
 item.invalid.name=Недопустимый предмет
 fluid.empty=Пусто
 
+metaitem.generic.fluid_container.tooltip=%d/%dЛ %s
+metaitem.generic.fluid_container.tooltip_empty=Пусто
+metaitem.generic.electric_item.tooltip=%d/%d EU - Уровень §e%d
+metaitem.electric.discharge_mode.enabled=§eРежим разрядки Включен
+metaitem.electric.discharge_mode.disabled=§eРежим разрядки Выключен
+metaitem.electric.discharge_mode.tooltip=Нажмите Shift для переключения режима разрядки
+
+metaitem.dust.tooltip.purify=Бросьте в котел, чтобы получить чистую пыль
+metaitem.int_circuit.configuration=Конфигурация: %d
 metaitem.credit.copper.name=Медный кредит
 metaitem.credit.copper.tooltip=0, 125 кредитов
 metaitem.credit.cupronickel.name=Купроникелевый кредит
@@ -66,6 +73,13 @@ metaitem.shape.empty.name=Пустая форма
 metaitem.shape.empty.tooltip=Сырье для изготовления пресс-форм и форм
 
 metaitem.dynamite.name=Динамит
+
+metaitem.power_unit.lv.name=Блок питания (LV)
+metaitem.power_unit.mv.name=Блок питания (MV)
+metaitem.power_unit.hv.name=Блок питания (HV)
+metaitem.jackhammer_base.name=Отбойный молоток Base (HV)
+metaitem.nano_saber.name=Нано сабля
+metaitem.nano_saber.tooltip=Ryujin no ken wo kurae!
 
 metaitem.shape.mold.plate.name=Форма (Пластина)
 metaitem.shape.mold.plate.tooltip=Форма для изготовления пластин
@@ -276,14 +290,14 @@ metaitem.zpm.name=Модуль нулевой точки
 metaitem.zpm2.name=Предельная батарея
 metaitem.zpm2.tooltip=Заполни это, чтобы пройти minecraft
 
-metaitem.electric.motor.lv.name=Электрический двигатель (LV)
-metaitem.electric.motor.mv.name=Электрический двигатель (MV)
-metaitem.electric.motor.hv.name=Электрический двигатель (HV)
-metaitem.electric.motor.ev.name=Электрический двигатель (EV)
-metaitem.electric.motor.iv.name=Электрический двигатель (IV)
-metaitem.electric.motor.luv.name=Электрический двигатель (LuV)
-metaitem.electric.motor.zpm.name=Электрический двигатель (ZPM)
-metaitem.electric.motor.uv.name=Электрический двигатель (UV)
+metaitem.electric.motor.lv.name=Электрический Мотор (LV)
+metaitem.electric.motor.mv.name=Электрический Мотор (MV)
+metaitem.electric.motor.hv.name=Электрический Мотор (HV)
+metaitem.electric.motor.ev.name=Электрический Мотор (EV)
+metaitem.electric.motor.iv.name=Электрический Мотор (IV)
+metaitem.electric.motor.luv.name=Электрический Мотор (LuV)
+metaitem.electric.motor.zpm.name=Электрический Мотор (ZPM)
+metaitem.electric.motor.uv.name=Электрический Мотор (UV)
 
 metaitem.electric.pump.lv.name=Электрическая помпа (LV)
 metaitem.electric.pump.lv.tooltip=640 Л/сек (как улучшение)
@@ -386,47 +400,112 @@ metaitem.circuit.integrated.name=Интегральная схема
 metaitem.circuit.integrated.tooltip=Щелкните правой кнопкой мыши, чтобы открыть графический интерфейс настройки
 metaitem.circuit.integrated.gui=Конфигурация интегральной схемы
 
-metaitem.circuit.primitive.name=NAND чип
-metaitem.circuit.primitive.tooltip=Очень простая микросхема
-metaitem.circuit.basic.name=Базовый чип
-metaitem.circuit.basic.tooltip=Основная электронная микросхема
-metaitem.circuit.good.name=Хороший чип
-metaitem.circuit.good.tooltip=Хорошая электронная микросхема
-metaitem.circuit.advanced.name=Усовершенствованный чип
-metaitem.circuit.advanced.tooltip=Усовершенствованная электронная микросхема
-metaitem.circuit.data.name=Чип памяти
-metaitem.circuit.data.tooltip=Чип для хранения данных
-metaitem.circuit.elite.name=Процессор
-metaitem.circuit.elite.tooltip=Микросхема управления данными
-metaitem.circuit.master.name=Процессор (HV)
-metaitem.circuit.master.tooltip=Микросхема управления данными высокого напряжения
+#CIRCUITS LOCALIZATION
+metaitem.boule.silicon.name=Кремниевый монокристалл
+metaitem.boule.glowstone.name=Светокамневый монокристалл
+metaitem.boule.naquadah.name=Наквадаховый монокристалл
+metaitem.wafer.silicon.name=Силиконовый лист
+metaitem.wafer.glowstone.name=Светокамневый лист
+metaitem.wafer.naquadah.name=Наквадаховый лист
 
-metaitem.circuit.board.basic.name=Простая печатная плата
-metaitem.circuit.board.basic.tooltip=Простая плата
-metaitem.circuit.board.advanced.name=Усовершенствованная печатная плата
-metaitem.circuit.board.advanced.tooltip=Улучшенная плата
-metaitem.circuit.board.elite.name=Процессорная плата
-metaitem.circuit.board.elite.tooltip=Процессорная плата
-metaitem.circuit.parts.crystal.chip.elite.name=Гравированный кристалл
-metaitem.circuit.parts.crystal.chip.elite.tooltip=Необходим для цепей
-metaitem.circuit.parts.crystal.chip.master.name=Гравированный лапотрон
-metaitem.circuit.parts.crystal.chip.master.tooltip=Необходим для цепей
-metaitem.circuit.parts.advanced.name=Передовые детали чипа
-metaitem.circuit.parts.advanced.tooltip=Передовые детали чипа
-metaitem.circuit.parts.wiring.basic.name=Луженая плата среднего напряжения
-metaitem.circuit.parts.wiring.basic.tooltip=Часть печатных плат
-metaitem.circuit.parts.wiring.advanced.name=Луженая плата высоковольтная
-metaitem.circuit.parts.wiring.advanced.tooltip=Часть печатных плат
-metaitem.circuit.parts.wiring.elite.name=Луженая плата  экстремального напряжения
-metaitem.circuit.parts.wiring.elite.tooltip=Часть печатных плат
-metaitem.empty.board.basic.name=Пустая печатная плата
-metaitem.empty.board.basic.tooltip=Часть платы
-metaitem.empty.board.elite.name=Пустая плата процессора
-metaitem.empty.board.elite.tooltip=Часть платы процессора
+metaitem.board.coated.name=Прорезиненая подложка
+metaitem.board.epoxy.name=Эпоксидная подложка
+metaitem.board.fiber_reinforced.name=Укрепленная эпоксидная подложка
+metaitem.board.multilayer.fiber_reinforced.name=Многослойная Укрепленная эпоксидная подложка
+metaitem.board.phenolic.name=Профеноленая подложка
+metaitem.board.plastic.name=Пластиковая подложка
+metaitem.board.wetware.name=Питательная подложка
+
+metaitem.circuit.vacuum_tube.name=Электровакуумная лампа
+metaitem.circuit.vacuum_tube.description=Простейший компонент схемы
+metaitem.component.diode.name=Диод
+metaitem.component.resistor.name=Резистор
+metaitem.component.transistor.name=Транзистор
+metaitem.component.capacitor.name=Конденсатор
+metaitem.component.glass.fiber.name=Стекловолокно
+metaitem.component.glass.tube.name=Стеклянная трубка
+metaitem.component.small_coil.name=Маленькая катушка
+metaitem.component.smd.diode.name=SMD Диод
+metaitem.component.smd.capacitor.name=SMD Конденсатор
+metaitem.component.smd.transistor.name=SMD Транзистор
+metaitem.component.smd.resistor.name=SMD Резистор
+
+metaitem.wafer.advanced_system_on_chip.name=ASoC Лист
+metaitem.wafer.integrated_logic_circuit.name=IC Лист
+metaitem.wafer.central_processing_unit.name=CPU Лист
+metaitem.wafer.high_power_integrated_circuit.name=High-Power IC Лист
+metaitem.wafer.nand_memory_chip.name=NAND Лист
+metaitem.wafer.power_integrated_circuit.name=Power IC Лист
+metaitem.wafer.nano_central_processing_unit.name=Nano CPU Лист
+metaitem.wafer.nor_memory_chip.name=NOR Лист
+metaitem.wafer.qbit_central_processing_unit.name=QBit CPU Лист
+metaitem.wafer.random_access_memory.name=RAM Лист
+metaitem.wafer.system_on_chip.name=SoC Лист
+metaitem.engraved.crystal_chip.name=Engraved Crystal Чип
+metaitem.engraved.lapotron_chip.name=Engraved Lapotron Crystal Чип
+
+metaitem.crystal.central_processing_unit.name=Кристальный CPU
+metaitem.crystal.central_processing_unit.tooltip=Выгравирован на кристалле
+metaitem.crystal.system_on_chip.name=Кристальный SoC
+metaitem.crystal.system_on_chip.tooltip=Выгравирован на кристалле
+metaitem.plate.advanced_system_on_chip.name=ASoC
+metaitem.plate.advanced_system_on_chip.tooltip=Advanced System on Chip
+metaitem.plate.integrated_logic_circuit.name=Integrated Circuit
+metaitem.plate.central_processing_unit.name=Central Processing Unit
+metaitem.plate.high_power_integrated_circuit.name=HPIC
+metaitem.plate.high_power_integrated_circuit.tooltip=High-Power Integrated Circuit
+metaitem.plate.nand_memory_chip.name=NAND Gate
+metaitem.plate.nano_central_processing_unit.name=Nano CPU
+metaitem.plate.nano_central_processing_unit.tooltip=Nano Central Processing Unit
+metaitem.plate.nor_memory_chip.name=NOR Gate
+metaitem.plate.power_integrated_circuit.name=Power IC
+metaitem.plate.power_integrated_circuit.tooltip=Power Integrated Circuit
+metaitem.plate.qbit_central_processing_unit.name=QBit CPU
+metaitem.plate.random_access_memory.name=RAM
+metaitem.plate.random_access_memory.tooltip=Random Access Memory
+metaitem.plate.system_on_chip.name=SoC
+metaitem.plate.system_on_chip.tooltip=System on Chip
+
+metaitem.circuit.basic.name=Basic Circuit
+metaitem.circuit.basic_electronic.name=Basic Electronic Circuit
+metaitem.circuit.advanced_parts.name=Advanced Circuit Parts
+metaitem.circuit.good.name=Good Electronic Circuit
+metaitem.circuit.advanced.name=Advanced Circuit
+metaitem.circuit.processor_assembly.name=Processor Assembly
+metaitem.circuit.nano_processor.name=Nanoprocessor
+metaitem.circuit.nano_processor.tooltip=Smaller than ever
+metaitem.circuit.nano_processor_assembly.name=Nano Processor Assembly
+metaitem.circuit.quantum_processor.name=Quantumprocessor
+metaitem.circuit.quantum_processor.tooltip=Quantum computing comes to life!
+metaitem.circuit.data_control.name=Data Control Circuit
+metaitem.circuit.crystal_processor.name=Crystalprocessor
+metaitem.circuit.crystal_processor.tooltip=Taking Advantage of Crystal Engraving
+metaitem.circuit.energy_flow.name=Energy Flow Circuit
+metaitem.circuit.wetware_processor.name=Wetware Processor
+metaitem.circuit.wetware_processor.tooltip=You have a feeling like it's watching you
+metaitem.circuit.wetware_assembly.name=Wetware Assembly
+metaitem.circuit.wetware_assembly.tooltip=Can run Minecraft
+metaitem.circuit.wetware_super_computer.name=Wetware Supercomputer
+metaitem.circuit.wetware_mainframe.name=Wetware Mainframe
+
+metaitem.carbon.fibers.name=Сырые углеродные волокна
+metaitem.carbon.mesh.name=углеродная сеть
+metaitem.carbon.plate.name=Углеродный лист
+metaitem.carbon_fiber.name=Карбоновый лист
+metaitem.ingot.mixed_metal=Усиленный сплав
+metaitem.plate.advanced_alloy=Усиленный сплав (Пластина)
+metaitem.ingot.iridium_alloy=Иридиевый сплав
+metaitem.plate.iridium_alloy=Иридиевый сплав (Пластина)
+metaitem.neutron_reflector=Нейтронный отражатель
 
 metaitem.component.sawblade.diamond.name=Алмазный пильный диск
 metaitem.component.grinder.diamond.name=Алмазная шлифовальная головка
 metaitem.component.grinder.tungsten.name=Вольфрамовая шлифовальная головка
+
+metaitem.ingot.mixed_metal.name=Усиленный сплав
+metaitem.plate.advanced_alloy.name=Усиленный сплав (Пластина)
+metaitem.ingot.iridium_alloy.name=Иридиевый сплав
+metaitem.plate.iridium_alloy.name=Иридиевый сплав (Пластина)
 
 metaitem.quantumeye.tooltip=Квантовый глаз
 metaitem.quantumeye.name=Улучшенный глаз энда
@@ -434,11 +513,7 @@ metaitem.quantumstar.tooltip=Квантовая звезда
 metaitem.quantumstar.name=Улучшенная звезда края
 metaitem.gravistar.name=Гравитационная звезда
 metaitem.gravistar.tooltip=Предельная звезда края
-
-metaitem.upgrade.muffler.name=Глушитель (улучшение)
-metaitem.upgrade.muffler.tooltip=Заставляет машины молчать
-metaitem.upgrade.lock.name=Замок (улучшение)
-metaitem.upgrade.lock.tooltip=Защищает ваши машины
+metaitem.neutron_reflector.name=Нейтронный отражатель
 
 metaitem.item_filter.name=Предметный фильтр
 metaitem.item_filter.tooltip=Фильтрует помещаемые и извлекаемые предметы (улучшение)/nМожет использоваться как обновление конвейера
@@ -465,7 +540,7 @@ metaitem.cover.screen.tooltip=Отображает данные
 metaitem.cover.crafting.name=Верстак (улучшение)
 metaitem.cover.crafting.tooltip=Лучше, чем деревянный верстак
 metaitem.cover.shutter.name=Затвор
-metaitem.cover.shutter.tooltip=Инвентарь/Резервуар. Используйте вместе с контроллером машины.
+metaitem.cover.shutter.tooltip=Предотвращает все взаимодействия с этой стороной машины
 
 metaitem.cover.solar.panel.name=Солнечная панель
 metaitem.cover.solar.panel.tooltip=Прибудет солнце с тобой
@@ -486,7 +561,7 @@ metaitem.gelled_toluene.name=Гелеобразный толуол
 metaitem.gelled_toluene.tooltip=Сырое взрывчатое вещество
 
 metaitem.bottle.purple.drink.name=Фиолетовый напиток
-metaitem.bottle.purple.drink.tooltip=Как насчет лимонада. Или ледяного чая? Я получил пурпурный напиток!
+metaitem.bottle.purple.drink.tooltip=Как насчет лимонада. Или чая со льдом? Я получил пурпурный напиток!
 
 metaitem.food.chum.name=Chum
 metaitem.food.chum.tooltip=Chum is Fum!
@@ -578,7 +653,7 @@ metaitem.tool.wrench.mv.name=%s ключ (MV)
 metaitem.tool.wrench.mv.tooltip=Удерживайте левую кнопку, чтобы демонтировать машины
 metaitem.tool.wrench.hv.name=%s ключ (HV)
 metaitem.tool.wrench.hv.tooltip=Удерживайте левую кнопку, чтобы демонтировать машины
-metaitem.tool.jackhammer.name=%s перфоратор (HV)
+metaitem.tool.jackhammer.name=%s отбойный молоток (HV)
 metaitem.tool.jackhammer.tooltip=Разбивает скалы на куски
 metaitem.tool.buzzsaw.name=%s циркулярная пила (LV)
 metaitem.tool.buzzsaw.tooltip=Не подходит для уборки блоков
@@ -590,12 +665,24 @@ metaitem.tool.turbine.name=%s ротор турбины
 metaitem.tool.turbine.tooltip=Турбинные роторы для вашей электростанции
 metaitem.tool.magnifying_glass.name=%s увеличительное стекло
 
+metaitem.jack_hammer.mode.three_by_three=3x3 Квадрат
+metaitem.jack_hammer.mode.vertical_line=Мертикальная линия
+metaitem.jack_hammer.mode.horizontal_line=Горизонтальная линия
+metaitem.jack_hammer.mode.single_block=Один блок
+
+metaitem.behavior.mode_switch.tooltip=Нажмите Shift для переключения режимов
+metaitem.behavior.mode_switch.mode_switched=§eРежим изменен на: %s
+metaitem.behavior.mode_switch.current_mode=Режим: %s
+
 metaitem.tool.tooltip.primary_material=Материал: %s (%s ур.)
 metaitem.tool.tooltip.attack_damage=Наносимый урон: %d
 metaitem.tool.tooltip.mining_speed=Скорость добычи: %d
 metaitem.tool.tooltip.durability=Прочность: %d/%d
 metaitem.tool.tooltip.rotor.efficiency=Эффективность ротора: %d%%
 metaitem.tool.tooltip.hammer.extra_drop=Имеет 50%% шанс добыть еще 1 дробленую руду
+
+cover.filter.blacklist.disabled=Белый список
+cover.filter.blacklist.enabled=Черный список
 
 cover.ore_dictionary_filter.title=Фильтр по словарю руд
 cover.ore_dictionary_filter.title1=Название по словарю руд
@@ -608,9 +695,13 @@ cover.fluid_filter.mode.filter_drain=Фильтрирует при сливе
 cover.item_filter.title=Предиетный фильтр
 cover.filter.mode.filter_insert=Фильтрирует помещаемые предметы
 cover.filter.mode.filter_extract=Фильтрирует извлекаемые предметы
+cover.item_filter.ignore_damage.enabled=Игнорировать повреждения
+cover.item_filter.ignore_damage.disabled=Учитывать повреждения
+cover.item_filter.ignore_nbt.enabled=Игнорировать NBT
+cover.item_filter.ignore_nbt.disabled=Учитывать NBT
 
 cover.conveyor.title=Настройки покрытия конвейера (%s)
-cover.conveyor.transfer_rate=%s предметов/сек.
+cover.conveyor.transfer_rate=%s предметов/с.
 cover.conveyor.mode.export=Режим: Экспорт
 cover.conveyor.mode.import=Режим: Импорт
 cover.conveyor.item_filter.title=Фильтр предметов
@@ -628,6 +719,18 @@ cover.pump.transfer_rate=%s мВ/сек.
 cover.pump.mode.export=Режим: Экспорт
 cover.pump.mode.import=Режим: Импорт
 cover.pump.fluid_filter.title=Жидкостный фильтр
+
+cover.machine_controller.name=Настройки контроллера машины
+cover.machine_controller.normal=Нормально
+cover.machine_controller.inverted=Инвертировано
+cover.machine_controller.redstone=Минимальный Редстоун сигнал: %d
+cover.machine_controller.mode.machine=Контролирует работу машины
+cover.machine_controller.mode.cover_up=Контроллер машины (Верх)
+cover.machine_controller.mode.cover_down=Контроллер машины (Низ)
+cover.machine_controller.mode.cover_south=Контроллер машины (Юг)
+cover.machine_controller.mode.cover_north=Контроллер машины (Север)
+cover.machine_controller.mode.cover_east=Контроллер машины (Восток)
+cover.machine_controller.mode.cover_west=Контроллер машины (Запад)
 
 # %s это локализованное название материала
 item.material.oreprefix.oreBlackgranite=%s (Черногранитная руда)
@@ -690,7 +793,7 @@ item.material.oreprefix.screw=%s (Винт)
 item.material.oreprefix.ring=%s (Кольцо)
 item.material.oreprefix.springSmall=%s (Маленькая пружина)
 item.material.oreprefix.spring=%s (Пружина)
-item.material.oreprefix.wireFine=%s (Хороший провод)
+item.material.oreprefix.wireFine=%s (Проволока)
 item.material.oreprefix.rotor=%s (Ротор)
 item.material.oreprefix.gearSmall=%s (Маленькая шестерня)
 item.material.oreprefix.gear=%s (Шестерня)
@@ -835,8 +938,8 @@ material.magnesium=Магний
 material.manganese=Марганец
 material.mercury=Ртуть
 material.molybdenum=Молибден
-material.neodymium=Неодим
-material.darmstadtium=Дармстадтиум
+material.neodymium=Неодий
+material.darmstadtium=Дармштадтий
 material.nickel=Никель
 material.niobium=Ниобий
 material.nitrogen=Азот
@@ -943,7 +1046,7 @@ material.clay=Глина
 material.coal=Уголь
 material.cobaltite=Кобальтит
 material.cooperite=Шелдонит
-material.cupronickel=Мельхиор
+material.cupronickel=Купроникель
 material.dark_ash=Темный пепел
 material.diamond=Алмаз
 material.electrum=Электрум
@@ -1000,9 +1103,122 @@ material.sodium_persulfate=Персульфат натрия
 material.sodium_sulfide=Сульфид натрия
 material.hydrogen_sulfide=Сероводород
 
-material.oil_heavy=Тяжелый газойль
-material.oil_medium=Средний газойль
-material.oil_light=Легкий газойль
+material.phosphorous_pentoxide=Пятиокись фосфора
+material.phosphoric_acid=Фосфорная кислота
+material.polyvinyl_acetate=Поливинилацетат
+material.phenol=Фенол
+material.bisphenol_a=Бисфенол А
+material.epoxid=Эпоксидная смола
+material.reinforced_epoxy_resin=Укрепленная эпоксидная смола
+material.borosilicate_glass=Боросиликатное стекло
+material.polyvinyl_chloride=Поливинил хлорид
+material.vinyl_chloride=Винил хлорид
+material.ethylene=Этилен
+material.charcoal_byproducts=Продукты переработки Древесного угля
+material.benzene=Бензол
+material.wood_gas=Древесный газ
+material.wood_vinegar=Древесный уксус
+material.wood_tar=Древесная смола
+material.sodium_hydroxide=Гидроксид натрия
+material.quicklime=Негашеная известь
+material.acetone=Ацетон
+material.sulfur_trioxide=Триоксид серы
+material.sulfur_dioxide=Дииоксид серы
+material.glycerol=Глицерин
+material.methanol=Метанол
+material.carbon_monoxide=Монооксид углерода
+material.nitro_fuel=Цетановый дизель
+material.diluted_sulfuric_acid=Разбавленная серная кислота
+material.sodium_bisulfate=Бисульфат натрия
+material.chloroform=Хлороформ
+material.diluted_hydrochloric_acid=Разбавленная соляная кислота
+material.hypochlorous_acid=Соляная кислота
+material.ammonia=Аммиак
+material.chloramine=Хлорамин
+material.dimethylamine=Диметиламин
+material.dimethylhidrazine=1,1-Диметилгидразин
+material.rocket_fuel=Ракетное топливо
+material.dinitrogen_tetroxide=Тетраоксид диазота
+material.silicon_rubber=Силиконовая резина
+material.polydimethylsiloxane=Полидиметилсилоксан
+material.dimethyldichlorosilane=Диметилдихлорсилана
+material.styrene=Стирол
+material.polystyrene=Полистирол
+material.butadiene=Бутадиен
+material.raw_styrene_butadiene_rubber=Стирол-бутадиеновый каучук
+material.styrene_butadiene_rubber=Стирол-бутадиеновая резина
+material.dichlorobenzene=Дихлорбензол
+material.hydrochloric_acid=Соляная кислота
+material.acetic_acid=Уксусная кислота
+material.fermented_biomass=Ферментированная биомасса
+material.potash=Оксид калийя
+material.soda_ash=Сода
+material.hydrofluoric_acid=Плавиковая кислота
+material.nitric_oxide=Оксид азота
+material.methyl_acetate=Метилацетат
+material.ethenone=Кетен
+material.tetranitromethane=Тетранитрометан
+material.bio_diesel=Биодизель
+material.raw_growth_medium=Сырая Среда Роста
+material.sterilized_growth_medium=Стерилизованная Среда Роста
+material.vinyl_acetate=Винилацетат
+material.gallium_arsenide=Арсенид галлия
+material.polyphenylene_sulfide=Полифениленсульфид
+material.nickel_sulfate_water_solution=Водный раствор сульфата никеля
+material.blue_vitriol_water_solution=Водный раствор медного купороса
+material.propane=Пропан
+material.propene=Пропен
+material.ethane=Этан
+material.butene=Бутен
+material.butane=Бутан
+material.calcium_acetate=Раствор ацетата кальция
+material.cumene=Кумола
+material.indium_gallium_phosphide=Индий Галлий Фосфид
+material.platinum_group_sludge=Осадок платиновой группы
+material.ferrite_mixture=Ферритовая смесь
+material.nickel_zinc_ferrite=Никель Цинк Феррит
+material.indium_concentrate=Концентрат Индия
+material.lead_zinc_solution=Свинцово-цинковый раствор
+material.tetrafluoroethylene=Тетрафторэтилен
+material.salt_water=Соленая вода
+material.hydrocracked_ethane=Hydro-Cracked Этан
+material.hydrocracked_ethylene=Hydro-Cracked Этилен
+material.hydrocracked_propene=Hydro-Cracked Пропен
+material.hydrocracked_propane=Hydro-Cracked Пропан
+material.hydrocracked_light_fuel=Hydro-Cracked Легкое топливо
+material.hydrocracked_butane=Hydro-Cracked Бутан
+material.hydrocracked_naphtha=Hydro-Cracked Нафта
+material.hydrocracked_heavy_fuel=Hydro-Cracked Тяжелое топливо
+material.hydrocracked_gas=Hydro-Cracked Нефтяной газ
+material.hydrocracked_butene=Hydro-Cracked Бутен
+material.hydrocracked_butadiene=Hydro-Cracked Бутадиен
+material.steamcracked_ethane=Steam-Cracked Этан
+material.steamcracked_ethylene=Steam-Cracked Этилен
+material.steamcracked_propene=Steam-Cracked Пропен
+material.steamcracked_propane=Steam-Cracked Пропан
+material.cracked_light_fuel=Steam-Cracked Легкое топливо
+material.steamcracked_butane=Steam-Cracked Бутан
+material.steamcracked_naphtha=Steam-Cracked Нафта
+material.cracked_heavy_fuel=Steam-Cracked Тяжелое топливо
+material.steamcracked_gas=Steam-Cracked Нефтяной газ
+material.steamcracked_butene=Steam-Cracked Бутен
+material.steamcracked_butadiene=Steam-Cracked Бутадиен
+material.biogas=Биогаз
+material.chloromethane=Хлорометан
+material.allyl_chloride=Аллилхлорид
+material.isoprene=Изопрен
+material.massicot=Массикот
+material.antimony_trioxide=Триоксид сурьмы
+material.zincite=Цинкит
+material.cobalt_oxide=Оксид кобальта
+material.arsenic_trioxide=Триоксид мышьяка
+material.cupric_oxide=Оксид меди
+material.ferrosilite=Ферросилит
+material.magnesia=Магнезия
+
+material.oil_heavy=Тяжелая нефть
+material.oil_medium=Средняя нефть
+material.oil_light=Легкая нефть
 material.natural_gas=Природный газ
 material.sulfuric_gas=Серный газ
 material.gas=Нефтяной газ
@@ -1352,7 +1568,7 @@ recipemap.fluid_solidifier.name=Жидкостный отвердитель
 recipemap.fluid_extractor.name=Жидкостный экстрактор
 recipemap.packager.name=Упаковщик
 recipemap.fusion_reactor.name=Термоядерный реактор
-recipemap.fusion_reactor.value=Запуск: %s ЭЕ
+recipemap.fusion_reactor.value=Запуск: %s EU
 recipemap.centrifuge.name=Центрифуга
 recipemap.electrolyzer.name=Электролизер
 recipemap.blast_furnace.name=Доменная печь
@@ -1374,14 +1590,14 @@ recipemap.extruder.name=Экструдер
 recipemap.hammer.name=Молот
 recipemap.uuamplifier.name=Усилитель мощности UU
 recipemap.dieselgeneratorfuel.name=Топливо дизельного генератора
-recipemap.dieselgeneratorfuel.value=Энергоемкость топлива: %s ЭЕ
+recipemap.dieselgeneratorfuel.value=Энергоемкость топлива: %s EU
 recipemap.gasturbinefuel.name=Топливо газовой турбины
-recipemap.gasturbinefuel.value=Энергоемкость топлива: %s ЭЕ
+recipemap.gasturbinefuel.value=Энергоемкость топлива: %s EU
 recipemap.thermalgeneratorfuel.name=Топливо термального генератора
 recipemap.semifluidboilerfuels.name=Топливо полужидкостого котла
 recipemap.plasmageneratorfuels.name=Топливо плазменного генератора
 recipemap.magicfuels.name=Магическое топливо
-recipemap.magicfuels.value=Энергоемкость топлива: %s ЭЕ
+recipemap.magicfuels.value=Энергоемкость топлива: %s EU
 recipemap.forming_press.name=Формовочный пресс
 recipemap.forge_hammer.name=Кузнечный молот
 recipemap.compressor.name=Компрессор
@@ -1399,6 +1615,7 @@ behaviour.soft_hammer=Нажмите на машину, чтобы разреш�
 behaviour.lighter.tooltip=Может поджечь предметы
 behaviour.lighter.uses=Осталось использований: %d
 behavior.plunger.description=Щелкните правой кнопкой мыши на машине, чтобы очистить 1000 мВ из его выходного бака./nкрадитесь, чтобы очистить 1000 мВ от входного бака машины./nОчистка входного бака работает только на машинах GTCE!
+behavior.toggle_energy_consumer.tooltip=Щелкните для переключения режима
 
 enchantment.damage.endermen=Дизъюнкция
 enchantment.damage.radioactivity=Радиоактивность
@@ -1428,7 +1645,7 @@ tile.wire_coil.tooltip_ebf=Когда используется в §aэлект�
 tile.wire_coil.tooltip_heat=  Базовая тепловая мощность: §e%dK
 tile.wire_coil.tooltip_smelter=Когда используется в §aмульти плавильном заводе§7:
 tile.wire_coil.tooltip_level=  Уровень: §e%d
-tile.wire_coil.tooltip_discount=  Энергетическая скидка: §a%dx
+tile.wire_coil.tooltip_discount=  Снижение энергозатрат: §a%dx
 
 tile.wire_coil.cupronickel.name=Купроникелевая катушка
 tile.wire_coil.kanthal.name=Канталовая катушка
@@ -1443,14 +1660,14 @@ tile.wire_coil.fusion_coil.name=Катушка термоядерного реа
 # Блоки предупреждающих знаков
 tile.warning_sign.yellow_stripes.name=Блок желтых полос
 tile.warning_sign.small_yellow_stripes.name=Блок желтых полос
-tile.warning_sign.radioactive_hazard.name=Блок знака радиоактивной опасности
+tile.warning_sign.radioactive_hazard.name=Знак радиоактивной опасности
 tile.warning_sign.bio_hazard.name=Знак био опасности
 tile.warning_sign.explosion_hazard.name=Знак опасности взрыва
-tile.warning_sign.fire_hazard.name=Блок знака пожарной опасности
+tile.warning_sign.fire_hazard.name=Знак пожарной опасности
 tile.warning_sign.acid_hazard.name=Кислотный знак опасности
 tile.warning_sign.magic_hazard.name=Знак опасности магии
-tile.warning_sign.frost_hazard.name=Знак опасности от замерзания
-tile.warning_sign.noise_hazard.name=Блок знака опасности шума
+tile.warning_sign.frost_hazard.name=Знак опасности низких температур
+tile.warning_sign.noise_hazard.name=Блок знака шумовой опасности
 
 # Блоки корпуса котла
 tile.boiler_casing.bronze_pipe.name=Бронзовый кожух трубы
@@ -1468,7 +1685,7 @@ tile.boiler_casing.tungstensteel_firebox.name=Вольфрамовый корп�
 tile.metal_casing.primitive_bricks.name=Примитивные кирпич
 tile.metal_casing.coke_bricks.name=Кирпич коксовой печи
 tile.metal_casing.bronze_bricks.name=Бронзовый корпус машины
-tile.metal_casing.invar_heatproof.name=Жаропрочный корпус машины
+tile.metal_casing.invar_heatproof.name=Теплостойкий  корпус машины
 tile.metal_casing.aluminium_frostproof.name=Морозостойкий корпус машины
 tile.metal_casing.steel_solid.name=Цельный стальной корпус машины
 tile.metal_casing.stainless_clean.name=Чистый корпус из нержавейки
@@ -1506,16 +1723,14 @@ tile.turbine_casing.stainless_turbine_casing.name=Нержавеющий кор�
 tile.turbine_casing.tungstensteel_turbine_casing.name=Вольфрамовый корпус турбины
 
 # Многоблочные корпусные блоки
-tile.multiblock_casing.engine_intake.name=Кожух двигателя
+tile.multiblock_casing.engine_intake.name=Воздухозаборник двигателя
 tile.multiblock_casing.grate.name=Колосниковая решетка машины
 tile.multiblock_casing.assembler.name=Сборочный корпус машины
 tile.multiblock_casing.fusion.name=Корпус термоядерного агрегата
 tile.multiblock_casing.fusion_mk2.name=Корпус термоядерного агрегата MK II
 
-# Machine general things
-gregtech.machine.tooltip.added_by=§c§oДобавлено: %s
-
 # Сундуки
+gregtech.machine.small_wooden_chest.name=Маленький деревянный сундук
 gregtech.machine.wooden_chest.name=Деревянный сундук
 gregtech.machine.bronze_chest.name=Бронзовый сундук
 gregtech.machine.steel_chest.name=Стальной сундук
@@ -1588,7 +1803,7 @@ tile.concrete.dark_bricks.cracked.name=Потресканые кирпичи т�
 tile.concrete.dark_bricks.mossy.name=Замшелые кирпичи темного бетона
 tile.concrete.dark_bricks.chiseled.name=Точеные кирпичи темного бетона
 
-# Паровой machines
+# Паровые механизмы
 gregtech.machine.steam_boiler.tooltip_produces=Производит %dмВ пара в %d тик
 
 gregtech.machine.steam_boiler_coal_bronze.name=Маленький паровой угольный котел
@@ -1622,7 +1837,7 @@ gregtech.machine.steam_alloy_smelter_bronze.name=Паровая плавильн
 gregtech.machine.steam_alloy_smelter_steel.name=Паровая плавильня высокого давления
 
 # Генераторы
-gregtech.machine.diesel_generator.tooltip=Требует легковоспламеняющихся жидкостей
+gregtech.machine.diesel_generator.tooltip=Требует горючих жидкостей
 
 gregtech.machine.diesel_generator.lv.name=Базовый дизельный генератор
 gregtech.machine.diesel_generator.mv.name=Улучшеный дизельный генератор
@@ -1642,11 +1857,19 @@ gregtech.machine.gas_turbine.hv.name=Турбогазовая турбина
 gregtech.machine.gas_turbine.ev.name=Турбогазовая турбина II
 
 gregtech.machine.magic_energy_absorber.name=Поглотитель магической энергии
-gregtech.machine.magic_energy_absorber.tooltip=Максимальное напряжение: §a2048 §7(§aEV§7)/nСобирает энергию от эндерных кристаллов в 64 блоках/nКаждый кристалл эндера добавляет 32 ЭЕ/т к выходу/nПоместите яйцо дракона сверху, чтобы усилить вывод/n/nКогда усилено:/nКаждый эндер кристалл добавляет 128 ЭЕ/т
+gregtech.machine.magic_energy_absorber.tooltip=Максимальное напряжение: §a2048 §7(§aEV§7)/nСобирает энергию от эндерных кристаллов в 64 блоках/nКаждый кристалл эндера добавляет 32 EU/т к выходу/nПоместите яйцо дракона сверху, чтобы усилить вывод/n/nКогда усилено:/nКаждый эндер кристалл добавляет 128 EU/т
 gregtech.machine.magic_energy_converter.name=Конвертер магической энергии
 gregtech.machine.magic_energy_converter.tooltip=Выходное напряжение: §a128 §7(§aMV§7)/nСобирает эссенции из контейнеров в пределах 16 блоков/nПотребляет 20 энергии через второй
 
 # Machines
+gregtech.machine.block_breaker.lv.name=Базовый разрушитель блоков
+gregtech.machine.block_breaker.mv.name=Улучшеный разрушитель блоков
+gregtech.machine.block_breaker.hv.name=Advanced разрушитель блоков II
+gregtech.machine.block_breaker.ev.name=Advanced разрушитель блоков III
+gregtech.machine.block_breaker.tooltip=Разрушает блок перед собой и подбирает то, что выпало
+gregtech.machine.block_breaker.consumption=Потребляет §e%d EU§7 за операцию
+gregtech.machine.block_breaker.speed_bonus=Бонус скорости: §e%d%%
+
 gregtech.machine.electric_furnace.lv.name=Базовая электрическая печь
 gregtech.machine.electric_furnace.mv.name=Улучшеная электрическая печь
 gregtech.machine.electric_furnace.hv.name=Улучшеная электрическая печь II
@@ -1817,10 +2040,10 @@ gregtech.machine.lathe.mv.name=Улучшеный токарный станок
 gregtech.machine.lathe.hv.name=Улучшеный токарный станок II
 gregtech.machine.lathe.ev.name=Улучшеный токарный станок III
 
-gregtech.machine.microwave.lv.name=Базовая СВЧ
-gregtech.machine.microwave.mv.name=Улучшеная СВЧ
-gregtech.machine.microwave.hv.name=Улучшеная СВЧ II
-gregtech.machine.microwave.ev.name=Улучшеная СВЧ III
+gregtech.machine.microwave.lv.name=Базовая микроволновка
+gregtech.machine.microwave.mv.name=Улучшеная микроволновка
+gregtech.machine.microwave.hv.name=Улучшеная микроволновка II
+gregtech.machine.microwave.ev.name=Улучшеная микроволновка III
 
 gregtech.machine.mixer.lv.name=Базовый смеситель
 gregtech.machine.mixer.mv.name=Улучшеный смеситель
@@ -1829,10 +2052,10 @@ gregtech.machine.mixer.ev.name=Улучшеный смеситель III
 
 gregtech.machine.ore_washer.tooltip=Мытье ваших руд, чтобы получить побочные продукты
 
-gregtech.machine.ore_washer.lv.name=Базовый рудоперерабатывающий агрегат
-gregtech.machine.ore_washer.mv.name=Улучшеный рудоперерабатывающий агрегат
-gregtech.machine.ore_washer.hv.name=Улучшеный рудоперерабатывающий агрегат II
-gregtech.machine.ore_washer.ev.name=Улучшеный рудоперерабатывающий агрегат III
+gregtech.machine.ore_washer.lv.name=Базовый рудопромывочный агрегат
+gregtech.machine.ore_washer.mv.name=Улучшеный рудопромывочный агрегат
+gregtech.machine.ore_washer.hv.name=Улучшеный рудопромывочный агрегат II
+gregtech.machine.ore_washer.ev.name=Улучшеный рудопромывочный агрегат III
 
 gregtech.machine.packer.lv.name=Базовый упаковщик
 gregtech.machine.packer.mv.name=Улучшеный упаковщик
@@ -1908,7 +2131,7 @@ gregtech.machine.battery_buffer.lv.9.name=Батарейный буфер (9 я�
 gregtech.machine.battery_buffer.lv.16.name=Батарейный буфер (16 ячеек LV)
 
 gregtech.machine.battery_buffer.mv.1.name=Батарейный буфер (1 ячейка MV)
-gregtech.machine.battery_buffer.mv.4.name=СБатарейный буфер (4 ячеек MV)
+gregtech.machine.battery_buffer.mv.4.name=Батарейный буфер (4 ячеек MV)
 gregtech.machine.battery_buffer.mv.9.name=Батарейный буфер (9 ячеек MV)
 gregtech.machine.battery_buffer.mv.16.name=Батарейный буфер (16 ячеек MV)
 
@@ -1935,7 +2158,7 @@ gregtech.machine.battery_buffer.luv.16.name=Батарейный буфер (16 
 gregtech.machine.battery_buffer.zpm.1.name=Батарейный буфер (1 ячейка ZPM)
 gregtech.machine.battery_buffer.zpm.4.name=Батарейный буфер (4 ячейки ZPM)
 gregtech.machine.battery_buffer.zpm.9.name=Батарейный буфер (9 ячеек ZPM)
-gregtech.machine.battery_buffer.zpm.16.name=НБатарейный буфер (16 ячеек ZPM)
+gregtech.machine.battery_buffer.zpm.16.name=Батарейный буфер (16 ячеек ZPM)
 
 gregtech.machine.battery_buffer.uv.1.name=Батарейный буфер (1 ячейка UV)
 gregtech.machine.battery_buffer.uv.4.name=Батарейный буфер (4 ячейки UV)
@@ -1985,6 +2208,14 @@ gregtech.machine.pump.mv.name=Улучшеный насос
 gregtech.machine.pump.hv.name=Улучшеный насос II
 gregtech.machine.pump.ev.name=Улучшеный насос III
 
+gregtech.machine.item_collector.lv.name=Базовый подбиратель предметов
+gregtech.machine.item_collector.mv.name=Улучшеный подбиратель предметов
+gregtech.machine.item_collector.hv.name=Улучшеный подбиратель предметов II
+gregtech.machine.item_collector.ev.name=Улучшеный подбиратель предметов III
+
+gregtech.machine.item_collector.collect_range=Область работы: %dx%d
+gregtech.machine.item_collector.gui.collect_range=Подбирает в радиусе %s блоков
+
 # Квантовые сундуки
 gregtech.machine.quantum_chest.tooltip=Лучше чем JABBA.
 gregtech.machine.quantum_chest.capacity=Вместительность: %d предметов
@@ -2013,7 +2244,16 @@ gregtech.machine.air_collector.description=Собирает воздух из с
 
 # Катушка Тесла
 gregtech.machine.tesla_coil.name=Катушка Тесла
-gregtech.machine.tesla_coil.description=Наносит урон всем живым существам в радиусе 7 блоков и потребляет 2500EU за 1 очко урона\nЕмкость внутреннего буфера: §e256k ЭЕ
+gregtech.machine.tesla_coil.description=Наносит урон всем живым существам в радиусе 7 блоков и потребляет 2500EU за 1 очко урона\nЕмкость внутреннего буфера: §e256k EU
+
+#Fisher
+gregtech.machine.fisher.lv.name=Базовый рыболов
+gregtech.machine.fisher.mv.name=Улучшеный рыболов
+gregtech.machine.fisher.hv.name=Улучшеный рыболов II
+gregtech.machine.fisher.ev.name=Улучшеный робокот III
+gregtech.machine.fisher.tooltip=Тратит нитки при ловле.
+gregtech.machine.fisher.speed=Ловит рыбу (или еще что-то) каждые %d тиков
+gregtech.machine.fisher.requirement=Требует куб воды радиусом %d блоков под собой.
 
 # Общая техника
 gregtech.machine.basic.output_override.reset=Выходной фильтр: все резервуары.
@@ -2409,12 +2649,12 @@ itemGroup.gregtech.ores=Руды (GTCE)
 
 for.bees.species.clay=Глина
 for.bees.species.slimeball=Сгусток слизи
-for.bees.species.peat=Торфяной
-for.bees.species.stickyresin=Липкая смола
+for.bees.species.peat=Торф
+for.bees.species.stickyresin=Каучук
 for.bees.species.coal=Каменный уголь
 for.bees.species.oil=Нефть
-for.bees.species.redstone=Красный камень
-for.bees.species.lapis=Ляпис
+for.bees.species.redstone=Редстоун
+for.bees.species.lapis=Лазурит
 for.bees.species.certus=Истинный кварц
 for.bees.species.ruby=Рубин
 for.bees.species.sapphire=Сапфир
@@ -2439,7 +2679,7 @@ for.bees.species.platinum=Платина
 for.bees.species.iridium=Иридий
 for.bees.species.uranium=Уран
 for.bees.species.plutonium=Плутоний
-for.bees.species.naquadah=Наквада
+for.bees.species.naquadah=Наквадах
 
 behaviour.scoop=Ловит бабочек на левый клик
 behaviour.softhammer=Активирует и деактивирует машины
@@ -2470,7 +2710,7 @@ gregtech.machine.electric_blast_furnace.name=Электрическая доме
 gregtech.machine.vacuum_freezer.name=Вакуумный морозильник
 gregtech.machine.implosion_compressor.name=Детонационный компрессор
 gregtech.machine.pyrolyse_oven.name=Пиролизная печь
-gregtech.machine.distillation_tower.name=Ратификацонная колонна
+gregtech.machine.distillation_tower.name=Ректификационная колонна
 gregtech.machine.multi_furnace.name=Мульти плавильный завод
 gregtech.machine.cracker.name=Крекинговый завод
 gregtech.machine.coke_oven.name=Коксовая печь
@@ -2519,29 +2759,29 @@ gregtech.machine.item_bus.export.max.name=Выходной люк (Макс.)
 
 gregtech.machine.fluid_hatch.import.tooltip=Для подачи жидкости в агрегат
 
-gregtech.machine.fluid_hatch.import.ulv.name=Входной шлюз (ULV)
-gregtech.machine.fluid_hatch.import.lv.name=Входной шлюз (LV)
-gregtech.machine.fluid_hatch.import.mv.name=Входной шлюз (MV)
-gregtech.machine.fluid_hatch.import.hv.name=Входной шлюз (HV)
-gregtech.machine.fluid_hatch.import.ev.name=Входной шлюз (EV)
-gregtech.machine.fluid_hatch.import.iv.name=Входной шлюз (IV)
-gregtech.machine.fluid_hatch.import.luv.name=Входной шлюз (LuV)
-gregtech.machine.fluid_hatch.import.zpm.name=Входной шлюз (ZPM)
-gregtech.machine.fluid_hatch.import.uv.name=Входной шлюз (UV)
-gregtech.machine.fluid_hatch.import.max.name=Входной шлюз (Макс.)
+gregtech.machine.fluid_hatch.import.ulv.name=Жидкостный входной люк (ULV)
+gregtech.machine.fluid_hatch.import.lv.name=Жидкостный входной люк (LV)
+gregtech.machine.fluid_hatch.import.mv.name=Жидкостный входной люк (MV)
+gregtech.machine.fluid_hatch.import.hv.name=Жидкостный входной люк (HV)
+gregtech.machine.fluid_hatch.import.ev.name=Жидкостный входной люк (EV)
+gregtech.machine.fluid_hatch.import.iv.name=Жидкостный входной люк (IV)
+gregtech.machine.fluid_hatch.import.luv.name=Жидкостный входной люк (LuV)
+gregtech.machine.fluid_hatch.import.zpm.name=Жидкостный входной люк (ZPM)
+gregtech.machine.fluid_hatch.import.uv.name=Жидкостный входной люк (UV)
+gregtech.machine.fluid_hatch.import.max.name=Жидкостный входной люк (Макс.)
 
 gregtech.machine.fluid_hatch.export.tooltip=Для слива жидкости из агрегата
 
-gregtech.machine.fluid_hatch.export.ulv.name=Выходной шлюз (ULV)
-gregtech.machine.fluid_hatch.export.lv.name=Выходной шлюз (LV)
-gregtech.machine.fluid_hatch.export.mv.name=Выходной шлюз (MV)
-gregtech.machine.fluid_hatch.export.hv.name=Выходной шлюз (HV)
-gregtech.machine.fluid_hatch.export.ev.name=Выходной шлюз (EV)
-gregtech.machine.fluid_hatch.export.iv.name=Выходной шлюз (IV)
-gregtech.machine.fluid_hatch.export.luv.name=Выходной шлюз (LuV)
-gregtech.machine.fluid_hatch.export.zpm.name=Выходной шлюз (ZPM)
-gregtech.machine.fluid_hatch.export.uv.name=Выходной шлюз (UV)
-gregtech.machine.fluid_hatch.export.max.name=Выходной шлюз (Макс.)
+gregtech.machine.fluid_hatch.export.ulv.name=Жидкостный выходной люк (ULV)
+gregtech.machine.fluid_hatch.export.lv.name=Жидкостный выходной люк (LV)
+gregtech.machine.fluid_hatch.export.mv.name=Жидкостный выходной люк (MV)
+gregtech.machine.fluid_hatch.export.hv.name=Жидкостный выходной люк (HV)
+gregtech.machine.fluid_hatch.export.ev.name=Жидкостный выходной люк (EV)
+gregtech.machine.fluid_hatch.export.iv.name=Жидкостный выходной люк (IV)
+gregtech.machine.fluid_hatch.export.luv.name=Жидкостный выходной люк (LuV)
+gregtech.machine.fluid_hatch.export.zpm.name=Жидкостный выходной люк (ZPM)
+gregtech.machine.fluid_hatch.export.uv.name=Жидкостный выходной люк (UV)
+gregtech.machine.fluid_hatch.export.max.name=Жидкостный выходной люк (Макс.)
 
 gregtech.machine.energy_hatch.input.tooltip=Разъем для подключения кабелей к агрегату
 
@@ -2580,6 +2820,11 @@ gregtech.machine.rotor_holder.zpm.name=Держатель ротора (ZPM)
 gregtech.machine.rotor_holder.uv.name=Держатель ротора (UV)
 gregtech.machine.rotor_holder.max.name=Держатель ротора (Макс.)
 
+gregtech.machine.fluid_tank.fluid=слдежит %s mb %s
+
+gregtech.machine.item_controller.tooltip.redstone=Требует подачи редстоуп сигнала для работы
+gregtech.machine.item_controller.tooltip.consumption=Пока работает, постоянно потребляет %d EU/тик
+
 # Универсальные подсказки
 gregtech.universal.tooltip.voltage_in=Потребляемое напряжение: §a%d §7(§a%s§7)
 gregtech.universal.tooltip.voltage_out=Выдаваемое напряжение: §a%d §7(§a%s§7)
@@ -2590,18 +2835,17 @@ gregtech.universal.tooltip.amperage_out=Сила генерируемого то
 gregtech.universal.tooltip.amperage_out_till=Генерирует ток до: §e%d
 gregtech.universal.tooltip.item_storage_capacity=Предметные слоты: %d
 gregtech.universal.tooltip.fluid_storage_capacity=Объем жидкости: %d Л
+gregtech.universal.tooltip.max_voltage_in=Максимальное потребляемое напряжение: §a%d §7(§a%s§7)
 
-gregtech.machine.fluid_tank.fluid=Содержит %s мВ %s
-
-gregtech.recipe.total=Всего: %d ЭЕ
-gregtech.recipe.eu=Потребление: %d ЭЕ/т
-gregtech.recipe.eu_inverted=Производительность: %d ЭЕ/т
+gregtech.recipe.total=Всего: %d EU
+gregtech.recipe.eu=Потребление: %d EU/т
+gregtech.recipe.eu_inverted=Производство: %d EU/т
 gregtech.recipe.duration=Длительность: %.1f сек.
 gregtech.recipe.amperage=Сила тока: %d
-gregtech.recipe.not_consumed=Не потребляется в процессе
-gregtech.recipe.chance=Шанс: %s%%
+gregtech.recipe.not_consumed=Не расходуется
+gregtech.recipe.chance=Шанс: %s%% +%s%%/уровень
 gregtech.recipe.blast_furnace_temperature=Температура: %dK
-gregtech.recipe.eu_to_start=Энергия для начала: %dЭЕ
+gregtech.recipe.eu_to_start=Энергия для запуска: %dEU
 
 gregtech.fluid.click_to_fill=§7Нажмите с пустым контейнером для жидкости, чтобы заполнить его из бака.
 gregtech.fluid.click_to_fill.shift=§7(Shift-нажатие заполнит все контейнеры в вашей руке)
@@ -2617,9 +2861,14 @@ gregtech.fluid.state_gas=§7Состояние: газообразный
 gregtech.fluid.state_liquid=§7Состояние: жидкость
 gregtech.gui.fuel_amount=Количество топлива:
 gregtech.gui.fluid_amount=Количество жидкости:
+gregtech.gui.toggle_view.disabled=Переключить вид (Жидкости)
+gregtech.gui.toggle_view.enabled=Переключить вид (Предметы)
+gregtech.gui.overclock.enabled=Разрешить разгон
+gregtech.gui.overclock.disabled=Запретить разгон
+gregtech.gui.sort=Сорировать
 
 gregtech.item_filter.empty_item=Пусто (нет предмета)
-gregtech.item_filter.footer=§eНажмите с элементом, чтобы переопределить
+gregtech.item_filter.footer=§eНажмите с предметом, чтобы переопределить
 
 gregtech.cable.voltage=Вольтаж: §a%d §7(§a%s§7)
 gregtech.cable.amperage=Сила тока: §e%d
@@ -2636,12 +2885,12 @@ gregtech.multiblock.not_enough_energy=ВНИМАНИЕ: машине нужно 
 gregtech.multiblock.progress=Прогресс: %s%%
 gregtech.multiblock.invalid_structure=Неверная структура.
 gregtech.multiblock.validation_failed=Неверное количество входов/выходов.
-gregtech.multiblock.max_energy_per_tick=Максимум ЭЕ/т: %s (%s)
-gregtech.multiblock.generation_eu=Генерирует: %s ЭЕ/т
+gregtech.multiblock.max_energy_per_tick=Максимум EU/т: %s (%s)
+gregtech.multiblock.generation_eu=Генерирует: %s EU/т
 
 gregtech.multiblock.blast_furnace.max_temperature=Максимальная температура: %sK
 gregtech.multiblock.multi_furnace.heating_coil_level=Уровень нагревательной катушки: %s
-gregtech.multiblock.multi_furnace.heating_coil_discount=ЭЕ усиление нагревательной катушки: %sx
+gregtech.multiblock.multi_furnace.heating_coil_discount=EU усиление нагревательной катушки: %sx
 gregtech.multiblock.distillation_tower.distilling_fluid=Дистилляция %s
 gregtech.multiblock.cracker.cracking_fluid=Крекинг %s
 
@@ -2649,7 +2898,7 @@ gregtech.multiblock.diesel_engine.lubricant_amount=Количество смаз
 gregtech.multiblock.diesel_engine.fuel_amount=Количество топлива: %sЛ (%s)
 gregtech.multiblock.diesel_engine.oxygen_amount=Количество кислорода: %sЛ
 gregtech.multiblock.diesel_engine.oxygen_boosted=Кислород добавлен.
-gregtech.multiblock.diesel_engine.supply_oxygen_to_boost=Принимает кислород для улучшения.
+gregtech.multiblock.diesel_engine.supply_oxygen_to_boost=Принимает кислород для ускорения.
 
 gregtech.multiblock.turbine.fuel_amount=Количество топлива: %sЛ (%s)
 gregtech.multiblock.turbine.rotor_speed=Скорость ротора: %s / %s об/мин
@@ -2664,12 +2913,12 @@ gregtech.command.usage=Применение: /gregtech <worldgen/util>
 gregtech.command.worldgen.usage=Применение: /gregtech worldgen <reload>
 gregtech.command.worldgen.reload.usage=Применение: /gregtech worldgen reload
 gregtech.command.worldgen.reload.success=Гнереатор мира успешно перезагрузился из конфига.
-gregtech.command.worldgen.reload.failed=Гнереатор мира оборвался с ошибкой. Проверьте консоль на наличие ошибок.
+gregtech.command.worldgen.reload.failed=Перезагрузка гнереатора мира окончилась ошибкой. Проверьте ошибки в консоли.
 gregtech.command.util.usage=Применение: /gregtech util <hand>
 gregtech.command.util.hand.usage=Применение: /gregtech util hand
 gregtech.command.util.hand.item_id=Предмет: %s (Метаданные: %d)
-gregtech.command.util.hand.electric=Электрическая информация: %d / %d ЭЕ - уровень: %d; Батарея: %s
-gregtech.command.util.hand.fluid=Жидкость: %s %d / %d мВ; Может заполнить: %s; Может слить: %s
+gregtech.command.util.hand.electric=Электрическая информация: %d / %d EU - уровень: %d; Батарея: %s
+gregtech.command.util.hand.fluid=Жидкостная информация: %s %d / %d мВ; Может заполнить: %s; Может слить: %s
 gregtech.command.util.hand.material_meta_item=Префикс руды: %s; Материал: %s
 gregtech.command.util.hand.tool_stats=Класс инструмента: %s
 gregtech.command.util.hand.meta_item=Название мета-предмета: %s

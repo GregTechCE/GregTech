@@ -1,6 +1,8 @@
 package gregtech.api.gui.widgets;
 
 import gregtech.api.gui.Widget;
+import gregtech.api.util.Position;
+import gregtech.api.util.Size;
 import net.minecraft.network.PacketBuffer;
 
 import java.util.function.BooleanSupplier;
@@ -10,8 +12,18 @@ public class ServerWidgetGroup extends AbstractWidgetGroup {
     private BooleanSupplier isVisibleGetter;
     private Boolean lastIsVisible;
 
-    public ServerWidgetGroup(BooleanSupplier isVisibleGetter) {
+    public ServerWidgetGroup(BooleanSupplier isVisibleGetter, Position position, Size size) {
+        super(position, size);
         this.isVisibleGetter = isVisibleGetter;
+    }
+
+    public ServerWidgetGroup(BooleanSupplier isVisibleGetter, Position position) {
+        super(position);
+        this.isVisibleGetter = isVisibleGetter;
+    }
+
+    public ServerWidgetGroup(BooleanSupplier isVisibleGetter) {
+        this(isVisibleGetter, Position.ORIGIN);
     }
 
     @Override

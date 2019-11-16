@@ -63,7 +63,8 @@ public class DynamiteEntity extends EntityThrowable {
         }
 
         if (ticksUntilExplosion < 0 && !world.isRemote) {
-            world.createExplosion(this, this.posX, this.posY, this.posZ, 1, true);
+            EntityLivingBase thrower = getThrower();
+            world.createExplosion(thrower == null ? this : thrower, this.posX, this.posY, this.posZ, 1.5f, true);
             this.setDead();
             return;
         }

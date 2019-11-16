@@ -70,6 +70,9 @@ public class PipeCoverableImplementation implements ICoverable {
             buffer.writeVarInt(CoverDefinition.getNetworkIdForCover(coverDefinition));
             coverBehavior.writeInitialSyncData(buffer);
         });
+        if (!coverBehavior.canPipePassThrough()) {
+            holder.setConnectionBlocked(AttachmentType.COVER, side, true);
+        }
         holder.notifyBlockUpdate();
         holder.markAsDirty();
         return true;
@@ -88,6 +91,7 @@ public class PipeCoverableImplementation implements ICoverable {
             Block.spawnAsEntity(getWorld(), getPos(), dropStack);
         }
         writeCustomData(2, buffer -> buffer.writeByte(side.getIndex()));
+        holder.setConnectionBlocked(AttachmentType.COVER, side, false);
         holder.notifyBlockUpdate();
         holder.markAsDirty();
         return true;
@@ -173,7 +177,7 @@ public class PipeCoverableImplementation implements ICoverable {
     @Override
     public boolean canPlaceCoverOnSide(EnumFacing side) {
         List<IndexedCuboid6> pipeBox = Lists.newArrayList(new IndexedCuboid6(null, BlockPipe.getSideBox(null, holder.getPipeType().getThickness())));
-        if (!ICoverable.checkCoverCollision(side, pipeBox, getCoverPlateThickness())) {
+        if (ICoverable.doesCoverCollide(side, pipeBox, getCoverPlateThickness())) {
             return false;
         }
         return holder.canPlaceCoverOnSide(side);

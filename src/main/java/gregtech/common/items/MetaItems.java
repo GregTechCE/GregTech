@@ -1,9 +1,19 @@
 package gregtech.common.items;
 
+import gregtech.api.items.armor.ArmorMetaItem;
 import gregtech.api.items.materialitem.MaterialMetaItem;
 import gregtech.api.items.metaitem.MetaItem;
+import gregtech.api.items.metaitem.MetaItem.MetaValueItem;
 import gregtech.api.items.toolitem.ToolMetaItem;
+import gregtech.api.util.GTLog;
+import gregtech.common.render.FacadeItemModel;
+import net.minecraft.client.renderer.block.model.IBakedModel;
+import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.item.EnumDyeColor;
+import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.client.event.ModelBakeEvent;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -287,9 +297,11 @@ public final class MetaItems {
 
     public static MetaItem<?>.MetaValueItem ITEM_FILTER;
     public static MetaItem<?>.MetaValueItem ORE_DICTIONARY_FILTER;
+    public static MetaItem<?>.MetaValueItem SMART_FILTER;
 
     public static MetaItem<?>.MetaValueItem COVER_SHUTTER;
     public static MetaItem<?>.MetaValueItem COVER_MACHINE_CONTROLLER;
+    public static MetaItem<?>.MetaValueItem COVER_FACADE;
 
     public static MetaItem<?>.MetaValueItem COVER_ACTIVITY_DETECTOR;
     public static MetaItem<?>.MetaValueItem COVER_FLUID_DETECTOR;
@@ -317,13 +329,22 @@ public final class MetaItems {
     public static MetaItem<?>.MetaValueItem DYE_INDIGO;
     public static MetaItem<?>.MetaValueItem PLANT_BALL;
     public static MetaItem<?>.MetaValueItem RUBBER_DROP;
-    public static MetaItem<?>.MetaValueItem TOOL_PARTS_BOX;
     public static MetaItem<?>.MetaValueItem ENERGIUM_DUST;
+
+    public static MetaItem<?>.MetaValueItem POWER_UNIT_LV;
+    public static MetaItem<?>.MetaValueItem POWER_UNIT_MV;
+    public static MetaItem<?>.MetaValueItem POWER_UNIT_HV;
+    public static MetaItem<?>.MetaValueItem JACKHAMMER_BASE;
+
+    public static MetaItem<?>.MetaValueItem NANO_SABER;
+    public static MetaItem<?>.MetaValueItem ENERGY_FIELD_PROJECTOR;
 
     public static MetaItem<?>.MetaValueItem[] DYE_ONLY_ITEMS = new MetaItem.MetaValueItem[EnumDyeColor.values().length];
     public static MetaItem<?>.MetaValueItem[] SPRAY_CAN_DYES = new MetaItem.MetaValueItem[EnumDyeColor.values().length];
 
     public static MetaItem<?>.MetaValueItem TURBINE_ROTOR;
+
+    public static ArmorMetaItem.ArmorMetaValueItem REBREATHER;
 
     public static ToolMetaItem<?>.MetaToolValueItem SWORD;
     public static ToolMetaItem<?>.MetaToolValueItem PICKAXE;
@@ -345,7 +366,6 @@ public final class MetaItems {
     public static ToolMetaItem<?>.MetaToolValueItem KNIFE;
     public static ToolMetaItem<?>.MetaToolValueItem BUTCHERY_KNIFE;
     public static ToolMetaItem<?>.MetaToolValueItem SENSE;
-    public static ToolMetaItem<?>.MetaToolValueItem PLOW;
     public static ToolMetaItem<?>.MetaToolValueItem PLUNGER;
     public static ToolMetaItem<?>.MetaToolValueItem DRILL_LV;
     public static ToolMetaItem<?>.MetaToolValueItem DRILL_MV;
@@ -368,6 +388,8 @@ public final class MetaItems {
         second.setRegistryName("meta_item_2");
         MetaTool tool = new MetaTool();
         tool.setRegistryName("meta_tool");
+        MetaArmor armor = new MetaArmor();
+        armor.setRegistryName("meta_armor");
     }
 
     public static void registerOreDict() {
@@ -391,6 +413,7 @@ public final class MetaItems {
 
     @SideOnly(Side.CLIENT)
     public static void registerModels() {
+        MinecraftForge.EVENT_BUS.register(MetaItems.class);
         for (MetaItem<?> item : ITEMS) {
             item.registerModels();
         }
@@ -403,4 +426,20 @@ public final class MetaItems {
         }
     }
 
+    @SubscribeEvent
+    @SideOnly(Side.CLIENT)
+    public static void registerBakedModels(ModelBakeEvent event) {
+        GTLog.logger.info("Registering special item models");
+        registerSpecialItemModel(event, COVER_FACADE, new FacadeItemModel());
+    }
+
+    @SideOnly(Side.CLIENT)
+    @SuppressWarnings("unchecked")
+    private static void registerSpecialItemModel(ModelBakeEvent event, MetaValueItem metaValueItem, IBakedModel bakedModel) {
+        //god these casts when intellij says you're fine but compiler complains about shit boundaries
+        //noinspection RedundantCast
+        ResourceLocation modelPath = ((MetaItem) metaValueItem.getMetaItem()).createItemModelPath(metaValueItem, "");
+        ModelResourceLocation modelResourceLocation = new ModelResourceLocation(modelPath, "inventory");
+        event.getModelRegistry().putObject(modelResourceLocation, bakedModel);
+    }
 }

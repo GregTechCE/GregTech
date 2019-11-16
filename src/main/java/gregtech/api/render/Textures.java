@@ -29,9 +29,10 @@ public class Textures {
 
     public static ChestRenderer WOODEN_CHEST = new ChestRenderer("storage/wooden_chest");
     public static ChestRenderer METAL_CHEST = new ChestRenderer("storage/metal_chest");
+    public static SafeRenderer SAFE = new SafeRenderer("storage/safe");
 
-    public static TankRenderer WOODEN_TANK = new TankRenderer("storage/tank/wooden_tank");
-    public static TankRenderer METAL_TANK = new TankRenderer("storage/tank/metal_tank");
+    public static TankRenderer WOODEN_TANK = new TankRenderer("storage/tank/wooden");
+    public static TankRenderer METAL_TANK = new TankRenderer("storage/tank/metal");
 
     public static SimpleSidedCubeRenderer STEAM_CASING_BRONZE = new SimpleSidedCubeRenderer("casings/steam/bronze");
     public static SimpleSidedCubeRenderer STEAM_CASING_STEEL = new SimpleSidedCubeRenderer("casings/steam/steel");
@@ -140,6 +141,7 @@ public class Textures {
     public static SimpleOverlayRenderer FLUID_FILTER_OVERLAY = new SimpleOverlayRenderer("overlay/machine/overlay_fluid_filter");
     public static SimpleOverlayRenderer ITEM_FILTER_FILTER_OVERLAY = new SimpleOverlayRenderer("overlay/machine/overlay_item_filter");
     public static SimpleOverlayRenderer ORE_DICTIONARY_FILTER_OVERLAY = new SimpleOverlayRenderer("overlay/machine/overlay_ore_dictionary_filter");
+    public static SimpleOverlayRenderer SMART_FILTER_FILTER_OVERLAY = new SimpleOverlayRenderer("overlay/machine/overlay_smart_item_filter");
     public static SimpleOverlayRenderer MACHINE_CONTROLLER_OVERLAY = new SimpleOverlayRenderer("overlay/machine/overlay_controller");
 
     public static SimpleOverlayRenderer ENERGY_OUT = new SimpleOverlayRenderer("overlay/machine/overlay_energy_out");

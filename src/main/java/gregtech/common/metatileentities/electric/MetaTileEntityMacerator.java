@@ -27,13 +27,12 @@ public class MetaTileEntityMacerator extends SimpleMachineMetaTileEntity {
     protected RecipeLogicEnergy createWorkable(RecipeMap<?> recipeMap) {
         return new RecipeLogicEnergy(this, recipeMap, () -> energyContainer) {
             @Override
-            protected int getByproductChanceMultiplier(Recipe recipe) {
-                int byproductChanceMultiplier = 1;
+            protected int getMachineTierForRecipe(Recipe recipe) {
                 int tier = GTUtility.getTierByVoltage(getMaxVoltage());
                 if (tier > GTValues.MV) {
-                    byproductChanceMultiplier = 1 << (tier - GTValues.MV);
+                    return tier - GTValues.MV;
                 }
-                return byproductChanceMultiplier;
+                return 0;
             }
         };
     }

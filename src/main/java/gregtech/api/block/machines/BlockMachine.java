@@ -6,13 +6,16 @@ import codechicken.lib.raytracer.CuboidRayTraceResult;
 import codechicken.lib.raytracer.IndexedCuboid6;
 import codechicken.lib.raytracer.RayTracer;
 import codechicken.lib.vec.Cuboid6;
+import cofh.core.render.IBlockAppearance;
 import com.google.common.collect.Lists;
 import gregtech.api.GregTechAPI;
 import gregtech.api.block.BlockCustomParticle;
 import gregtech.api.capability.GregtechCapabilities;
 import gregtech.api.capability.tool.IScrewdriverItem;
 import gregtech.api.capability.tool.IWrenchItem;
+import gregtech.api.cover.CoverBehavior;
 import gregtech.api.cover.ICoverable;
+import gregtech.api.cover.IFacadeCover;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.MetaTileEntityHolder;
 import gregtech.api.render.MetaTileEntityRenderer;
@@ -33,7 +36,6 @@ import net.minecraft.entity.EntityLiving.SpawnPlacementType;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumDyeColor;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
@@ -42,6 +44,7 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.world.Explosion;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.property.ExtendedBlockState;
@@ -49,14 +52,17 @@ import net.minecraftforge.common.property.IExtendedBlockState;
 import net.minecraftforge.common.property.IUnlistedProperty;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import org.apache.commons.lang3.tuple.Pair;
+import team.chisel.ctm.api.IFacade;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 @SuppressWarnings("deprecation")
-public class BlockMachine extends BlockCustomParticle implements ITileEntityProvider {
+public class BlockMachine extends BlockCustomParticle implements ITileEntityProvider, IFacade, IBlockAppearance {
 
     private static final List<IndexedCuboid6> EMPTY_COLLISION_BOX = Lists.newArrayList(new IndexedCuboid6(null, Cuboid6.full));
     private static final IUnlistedProperty<String> HARVEST_TOOL = new UnlistedStringProperty("harvest_tool");
@@ -83,7 +89,6 @@ public class BlockMachine extends BlockCustomParticle implements ITileEntityProv
 
     @Override
     public int getHarvestLevel(IBlockState state) {
-
         Integer value = ((IExtendedBlockState) state).getValue(HARVEST_LEVEL);
         return value == null ? 0 : value; //safety check for mods who don't handle state properly
     }
@@ -129,13 +134,25 @@ public class BlockMachine extends BlockCustomParticle implements ITileEntityProv
         return holder instanceof MetaTileEntityHolder ? ((MetaTileEntityHolder) holder).getMetaTileEntity() : null;
     }
 
+    @Override
+    public float getBlockHardness(IBlockState blockState, World worldIn, BlockPos pos) {
+        MetaTileEntity metaTileEntity = getMetaTileEntity(worldIn, pos);
+        return metaTileEntity == null ? 1.0f : metaTileEntity.getBlockHardness();
+    }
+
+    @Override
+    public float getExplosionResistance(World world, BlockPos pos, @Nullable Entity exploder, Explosion explosion) {
+        MetaTileEntity metaTileEntity = getMetaTileEntity(world, pos);
+        return metaTileEntity == null ? 1.0f : metaTileEntity.getBlockResistance();
+    }
+
     private List<IndexedCuboid6> getCollisionBox(IBlockAccess blockAccess, BlockPos pos) {
         MetaTileEntity metaTileEntity = getMetaTileEntity(blockAccess, pos);
         if (metaTileEntity == null)
             return EMPTY_COLLISION_BOX;
         ArrayList<IndexedCuboid6> collisionList = new ArrayList<>();
         metaTileEntity.addCollisionBoundingBox(collisionList);
-        metaTileEntity.addCoverCollisionBoundingBox(collisionList, false);
+        metaTileEntity.addCoverCollisionBoundingBox(collisionList);
         return collisionList;
     }
 
@@ -231,9 +248,9 @@ public class BlockMachine extends BlockCustomParticle implements ITileEntityProv
     public void getDrops(NonNullList<ItemStack> drops, IBlockAccess world, BlockPos pos, IBlockState state, int fortune) {
         MetaTileEntity metaTileEntity = tileEntities.get() == null ? getMetaTileEntity(world, pos) : tileEntities.get();
         if (metaTileEntity == null) return;
-
-        ItemStack itemStack = new ItemStack(Item.getItemFromBlock(this), 1,
-            GregTechAPI.META_TILE_ENTITY_REGISTRY.getIdByObjectName(metaTileEntity.metaTileEntityId));
+        if (!metaTileEntity.shouldDropWhenDestroyed())
+            return;
+        ItemStack itemStack = metaTileEntity.getStackForm();
         NBTTagCompound tagCompound = new NBTTagCompound();
         metaTileEntity.writeItemStackData(tagCompound);
         //only set item tag if it's not empty, so newly created items will stack with dismantled
@@ -346,8 +363,8 @@ public class BlockMachine extends BlockCustomParticle implements ITileEntityProv
     }
 
     @Override
-    public BlockRenderLayer getBlockLayer() {
-        return BlockRenderLayer.CUTOUT_MIPPED;
+    public boolean canRenderInLayer(IBlockState state, BlockRenderLayer layer) {
+        return true;
     }
 
     @Override
@@ -382,15 +399,37 @@ public class BlockMachine extends BlockCustomParticle implements ITileEntityProv
 
     @Override
     public void getSubBlocks(CreativeTabs tab, NonNullList<ItemStack> items) {
-        for (ResourceLocation metaTileEntityId : GregTechAPI.META_TILE_ENTITY_REGISTRY.getKeys()) {
-            int metaId = GregTechAPI.META_TILE_ENTITY_REGISTRY.getIdByObjectName(metaTileEntityId);
-            items.add(new ItemStack(this, 1, metaId));
+        for (MetaTileEntity metaTileEntity : GregTechAPI.META_TILE_ENTITY_REGISTRY) {
+            metaTileEntity.getSubItems(tab, items);
         }
+    }
+
+    @Nonnull
+    @Override
+    public IBlockState getFacade(@Nonnull IBlockAccess world, @Nonnull BlockPos pos, @Nullable EnumFacing side, BlockPos otherPos) {
+        MetaTileEntity metaTileEntity = getMetaTileEntity(world, pos);
+        if (metaTileEntity != null && side != null) {
+            CoverBehavior coverBehavior = metaTileEntity.getCoverAtSide(side);
+            if (coverBehavior instanceof IFacadeCover) {
+                return ((IFacadeCover) coverBehavior).getVisualState();
+            }
+        }
+        return world.getBlockState(pos);
+    }
+
+    @Override
+    public IBlockState getVisualState(IBlockAccess world, BlockPos pos, EnumFacing side) {
+        return getFacade(world, pos, side, null);
+    }
+
+    @Override
+    public boolean supportsVisualConnections() {
+        return true;
     }
 
     @Override
     @SideOnly(Side.CLIENT)
-    protected TextureAtlasSprite getParticleTexture(World world, BlockPos blockPos) {
+    protected Pair<TextureAtlasSprite, Integer> getParticleTexture(World world, BlockPos blockPos) {
         return MetaTileEntityRenderer.INSTANCE.getParticleTexture(world, blockPos);
     }
 }

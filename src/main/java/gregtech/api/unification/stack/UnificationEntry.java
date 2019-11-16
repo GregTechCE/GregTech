@@ -4,6 +4,7 @@ import gregtech.api.unification.material.type.Material;
 import gregtech.api.unification.ore.OrePrefix;
 
 import javax.annotation.Nullable;
+import java.util.Objects;
 
 public class UnificationEntry {
 
@@ -29,7 +30,7 @@ public class UnificationEntry {
         UnificationEntry that = (UnificationEntry) o;
 
         if (orePrefix != that.orePrefix) return false;
-        return material != null ? material.equals(that.material) : that.material == null;
+        return Objects.equals(material, that.material);
     }
 
     @Override

@@ -17,7 +17,7 @@ public enum CraftingComponent {
 
     CIRCUIT {
         @Override
-        Object getIngredient(int tier) {
+        public Object getIngredient(int tier) {
             switch (tier) {
                 case 0:
                     return new UnificationEntry(OrePrefix.circuit, Tier.Primitive);
@@ -42,7 +42,7 @@ public enum CraftingComponent {
     },
     PUMP {
         @Override
-        Object getIngredient(int tier) {
+        public Object getIngredient(int tier) {
             switch (tier) {
                 case 0:
                 case 1:
@@ -66,7 +66,7 @@ public enum CraftingComponent {
     },
     CABLE {
         @Override
-        Object getIngredient(int tier) {
+        public Object getIngredient(int tier) {
             switch (tier) {
                 case 0:
                     return new UnificationEntry(OrePrefix.cableGtSingle, Materials.Lead);
@@ -93,7 +93,7 @@ public enum CraftingComponent {
     },
     WIRE {
         @Override
-        Object getIngredient(int tier) {
+        public Object getIngredient(int tier) {
             switch (tier) {
                 case 0:
                 case 1:
@@ -111,7 +111,7 @@ public enum CraftingComponent {
     },
     CABLE_QUAD {
         @Override
-        Object getIngredient(int tier) {
+        public Object getIngredient(int tier) {
             switch (tier) {
                 case 0:
                     return new UnificationEntry(OrePrefix.cableGtQuadruple, Materials.Lead);
@@ -138,19 +138,19 @@ public enum CraftingComponent {
     },
     HULL {
         @Override
-        Object getIngredient(int tier) {
+        public Object getIngredient(int tier) {
             return MetaTileEntities.HULL[tier].getStackForm();
         }
     },
     WORSE_HULL {
         @Override
-        Object getIngredient(int tier) {
+        public Object getIngredient(int tier) {
             return MetaTileEntities.HULL[tier - 1].getStackForm();
         }
     },
     PIPE {
         @Override
-        Object getIngredient(int tier) {
+        public Object getIngredient(int tier) {
             switch (tier) {
                 case 0:
                 case 1:
@@ -170,13 +170,13 @@ public enum CraftingComponent {
     },
     GLASS {
         @Override
-        Object getIngredient(int tier) {
+        public Object getIngredient(int tier) {
             return new ItemStack(Blocks.GLASS, 1, W);
         }
     },
     PLATE {
         @Override
-        Object getIngredient(int tier) {
+        public Object getIngredient(int tier) {
             switch (tier) {
                 case 0:
                 case 1:
@@ -202,7 +202,7 @@ public enum CraftingComponent {
     },
     MOTOR {
         @Override
-        Object getIngredient(int tier) {
+        public Object getIngredient(int tier) {
             switch (tier) {
                 case 0:
                 case 1:
@@ -226,7 +226,7 @@ public enum CraftingComponent {
     },
     ROTOR {
         @Override
-        Object getIngredient(int tier) {
+        public Object getIngredient(int tier) {
             switch (tier) {
                 case 0:
                 case 1:
@@ -250,7 +250,7 @@ public enum CraftingComponent {
     },
     SENSOR {
         @Override
-        Object getIngredient(int tier) {
+        public Object getIngredient(int tier) {
             switch (tier) {
                 case 0:
                 case 1:
@@ -274,7 +274,7 @@ public enum CraftingComponent {
     },
     GRINDER {
         @Override
-        Object getIngredient(int tier) {
+        public Object getIngredient(int tier) {
             switch (tier) {
                 case 0:
                 case 1:
@@ -288,13 +288,13 @@ public enum CraftingComponent {
     },
     DIAMOND {
         @Override
-        Object getIngredient(int tier) {
+        public Object getIngredient(int tier) {
             return new UnificationEntry(OrePrefix.gem, Materials.Diamond);
         }
     },
     PISTON {
         @Override
-        Object getIngredient(int tier) {
+        public Object getIngredient(int tier) {
             switch (tier) {
                 case 0:
                 case 1:
@@ -318,7 +318,7 @@ public enum CraftingComponent {
     },
     EMITTER {
         @Override
-        Object getIngredient(int tier) {
+        public Object getIngredient(int tier) {
             switch (tier) {
                 case 0:
                 case 1:
@@ -342,7 +342,7 @@ public enum CraftingComponent {
     },
     CONVEYOR {
         @Override
-        Object getIngredient(int tier) {
+        public Object getIngredient(int tier) {
             switch (tier) {
                 case 0:
                 case 1:
@@ -366,7 +366,7 @@ public enum CraftingComponent {
     },
     ROBOT_ARM {
         @Override
-        Object getIngredient(int tier) {
+        public Object getIngredient(int tier) {
             switch (tier) {
                 case 0:
                 case 1:
@@ -390,7 +390,7 @@ public enum CraftingComponent {
     },
     COIL_HEATING {
         @Override
-        Object getIngredient(int tier) {
+        public Object getIngredient(int tier) {
             switch (tier) {
                 case 0:
                 case 1:
@@ -416,7 +416,7 @@ public enum CraftingComponent {
     },
     COIL_ELECTRIC {
         @Override
-        Object getIngredient(int tier) {
+        public Object getIngredient(int tier) {
             switch (tier) {
                 case 0:
                     return new UnificationEntry(OrePrefix.wireGtSingle, Materials.Tin);
@@ -441,7 +441,7 @@ public enum CraftingComponent {
     },
     STICK_MAGNETIC {
         @Override
-        Object getIngredient(int tier) {
+        public Object getIngredient(int tier) {
             switch (tier) {
                 case 0:
                 case 1:
@@ -462,13 +462,13 @@ public enum CraftingComponent {
     },
     STICK_DISTILLATION {
         @Override
-        Object getIngredient(int tier) {
+        public Object getIngredient(int tier) {
             return new UnificationEntry(OrePrefix.stick, Materials.Blaze);
         }
     },
     FIELD_GENERATOR {
         @Override
-        Object getIngredient(int tier) {
+        public Object getIngredient(int tier) {
             switch (tier) {
                 case 0:
                 case 1:
@@ -492,7 +492,7 @@ public enum CraftingComponent {
     },
     COIL_HEATING_DOUBLE {
         @Override
-        Object getIngredient(int tier) {
+        public Object getIngredient(int tier) {
             switch (tier) {
                 case 0:
                 case 1:
@@ -518,7 +518,7 @@ public enum CraftingComponent {
     },
     STICK_ELECTROMAGNETIC {
         @Override
-        Object getIngredient(int tier) {
+        public Object getIngredient(int tier) {
             switch (tier) {
                 case 0:
                 case 1:
@@ -534,5 +534,5 @@ public enum CraftingComponent {
         }
     };
 
-    abstract Object getIngredient(int tier);
+    abstract public Object getIngredient(int tier);
 }

@@ -50,7 +50,6 @@ public enum MaterialIconType {
     toolHeadDrill,
     toolHeadChainsaw,
     toolHeadSense,
-    toolHeadPlow,
     toolHeadArrow,
     toolHeadScrewdriver,
     toolHeadBuzSaw,

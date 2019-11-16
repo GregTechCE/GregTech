@@ -59,6 +59,11 @@ public class ElectricItem implements IElectricItem, ICapabilityProvider {
     }
 
     @Override
+    public long getTransferLimit() {
+        return GTValues.V[getTier()];
+    }
+
+    @Override
     public long getMaxCharge() {
         NBTTagCompound tagCompound = itemStack.getTagCompound();
         if (tagCompound == null)
@@ -74,7 +79,16 @@ public class ElectricItem implements IElectricItem, ICapabilityProvider {
             return 0;
         if (tagCompound.getBoolean("Infinite"))
             return getMaxCharge();
-        return tagCompound.getLong("Charge");
+        return Math.min(tagCompound.getLong("Charge"), getMaxCharge());
+    }
+
+    public void setInfiniteCharge(boolean infiniteCharge) {
+        if (!itemStack.hasTagCompound()) {
+            itemStack.setTagCompound(new NBTTagCompound());
+        }
+        //noinspection ConstantConditions
+        itemStack.getTagCompound().setBoolean("Infinite", infiniteCharge);
+        listeners.forEach(l -> l.accept(itemStack, getMaxCharge()));
     }
 
     @Override
@@ -87,10 +101,10 @@ public class ElectricItem implements IElectricItem, ICapabilityProvider {
         if (itemStack.getCount() != 1) {
             return 0L;
         }
-        if ((chargeable || amount == Long.MAX_VALUE) && (chargerTier >= tier)) {
+        if ((chargeable || amount == Long.MAX_VALUE) && (chargerTier >= tier) && amount > 0L) {
             long canReceive = getMaxCharge() - getCharge();
             if (!ignoreTransferLimit) {
-                amount = Math.min(amount, GTValues.V[tier]);
+                amount = Math.min(amount, getTransferLimit());
             }
             long charged = amount > canReceive ? canReceive : amount;
             if (!simulate) {
@@ -106,9 +120,9 @@ public class ElectricItem implements IElectricItem, ICapabilityProvider {
         if (itemStack.getCount() != 1) {
             return 0L;
         }
-        if ((canProvideEnergyExternally || !externally || amount == Long.MAX_VALUE) && (chargerTier >= tier)) {
+        if ((canProvideEnergyExternally || !externally || amount == Long.MAX_VALUE) && (chargerTier >= tier) && amount > 0L) {
             if (!ignoreTransferLimit) {
-                amount = Math.min(amount, GTValues.V[tier]);
+                amount = Math.min(amount, getTransferLimit());
             }
             long charge = getCharge();
             long discharged = amount > charge ? charge : amount;

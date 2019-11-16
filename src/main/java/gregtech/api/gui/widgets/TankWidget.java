@@ -1,8 +1,12 @@
 package gregtech.api.gui.widgets;
 
+import gregtech.api.gui.IRenderContext;
+import gregtech.api.gui.Widget;
 import gregtech.api.gui.igredient.IIngredientSlot;
 import gregtech.api.gui.resources.RenderUtil;
 import gregtech.api.gui.resources.TextureArea;
+import gregtech.api.util.Position;
+import gregtech.api.util.Size;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.renderer.GlStateManager;
@@ -24,7 +28,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TankWidget extends AbstractPositionedRectangleWidget implements IIngredientSlot {
+public class TankWidget extends Widget implements IIngredientSlot {
 
     public final IFluidTank fluidTank;
 
@@ -42,7 +46,7 @@ public class TankWidget extends AbstractPositionedRectangleWidget implements IIn
     private int lastTankCapacity;
 
     public TankWidget(IFluidTank fluidTank, int x, int y, int width, int height) {
-        super(x, y, width, height);
+        super(new Position(x, y), new Size(width, height));
         this.fluidTank = fluidTank;
     }
 
@@ -81,7 +85,7 @@ public class TankWidget extends AbstractPositionedRectangleWidget implements IIn
 
     @Override
     public Object getIngredientOverMouse(int mouseX, int mouseY) {
-        if (isMouseOver(mouseX, mouseY)) {
+        if (isMouseOverElement(mouseX, mouseY)) {
             return lastFluidInTank;
         }
         return null;
@@ -96,35 +100,37 @@ public class TankWidget extends AbstractPositionedRectangleWidget implements IIn
     }
 
     @Override
-    public void drawInBackground(int mouseX, int mouseY) {
+    public void drawInBackground(int mouseX, int mouseY, IRenderContext context) {
+        Position pos = getPosition();
+        Size size = getSize();
         if (backgroundTexture != null) {
             for (TextureArea textureArea : backgroundTexture) {
-                textureArea.draw(xPosition, yPosition, width, height);
+                textureArea.draw(pos.x, pos.y, size.width, size.height);
             }
         }
         //do not draw fluids if they are handled by JEI - it draws them itself
         if (lastFluidInTank != null && lastFluidInTank.amount > 0 && !gui.isJEIHandled) {
             GlStateManager.disableBlend();
             RenderUtil.drawFluidForGui(lastFluidInTank, alwaysShowFull ? lastFluidInTank.amount : lastTankCapacity,
-                xPosition + fluidRenderOffset, yPosition + fluidRenderOffset,
-                width - fluidRenderOffset, height - fluidRenderOffset);
+                pos.x + fluidRenderOffset, pos.y + fluidRenderOffset,
+                size.width - fluidRenderOffset, size.height - fluidRenderOffset);
             int bucketsAmount = lastFluidInTank.amount / 1000;
             if (alwaysShowFull && !hideTooltip && bucketsAmount > 0) {
                 String s = String.valueOf(bucketsAmount);
                 FontRenderer fontRenderer = Minecraft.getMinecraft().fontRenderer;
-                fontRenderer.drawStringWithShadow(s, xPosition + 1 + width - 2 - fontRenderer.getStringWidth(s), yPosition + (height / 3) + 3, 0xFFFFFF);
+                fontRenderer.drawStringWithShadow(s, pos.x + 1 + size.width - 2 - fontRenderer.getStringWidth(s), pos.y + (size.height / 3) + 3, 0xFFFFFF);
             }
             GlStateManager.enableBlend();
             GlStateManager.color(1.0f, 1.0f, 1.0f);
         }
         if (overlayTexture != null) {
-            overlayTexture.draw(xPosition, yPosition, width, height);
+            overlayTexture.draw(pos.x, pos.y, size.width, size.height);
         }
     }
 
     @Override
     public void drawInForeground(int mouseX, int mouseY) {
-        if (!hideTooltip && !gui.isJEIHandled && isMouseOver(xPosition, yPosition, width, height, mouseX, mouseY)) {
+        if (!hideTooltip && !gui.isJEIHandled && isMouseOverElement(mouseX, mouseY)) {
             List<String> tooltips = new ArrayList<>();
             if (lastFluidInTank != null) {
                 Fluid fluid = lastFluidInTank.getFluid();
@@ -271,7 +277,7 @@ public class TankWidget extends AbstractPositionedRectangleWidget implements IIn
     @Override
     @SideOnly(Side.CLIENT)
     public boolean mouseClicked(int mouseX, int mouseY, int button) {
-        if (isMouseOver(xPosition, yPosition, width, height, mouseX, mouseY)) {
+        if (isMouseOverElement(mouseX, mouseY)) {
             ItemStack currentStack = gui.entityPlayer.inventory.getItemStack();
             if (button == 0 && (allowClickEmptying || allowClickFilling) &&
                 currentStack.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY, null)) {

@@ -45,8 +45,8 @@ public class CTRecipe {
     }
 
     @ZenMethod
-    public List<IItemStack> getResultItemOutputs(@Optional(valueLong = -1) long randomSeed, @Optional(valueLong = 1) int byproductChanceMultiplier) {
-        return this.backingRecipe.getResultItemOutputs(randomSeed == -1L ? new Random() : new Random(randomSeed), byproductChanceMultiplier).stream()
+    public List<IItemStack> getResultItemOutputs(@Optional(valueLong = -1) long randomSeed, @Optional(valueLong = 1) int tier) {
+        return this.backingRecipe.getResultItemOutputs(Integer.MAX_VALUE, randomSeed == -1L ? new Random() : new Random(randomSeed), tier).stream()
             .map(MCItemStack::new)
             .collect(Collectors.toList());
     }
@@ -54,8 +54,8 @@ public class CTRecipe {
     @ZenGetter("changedOutputs")
     public List<ChancedEntry> getChancedOutputs() {
         ArrayList<ChancedEntry> result = new ArrayList<>();
-        this.backingRecipe.getChancedOutputs().forEachEntry((stack, chance) ->
-            result.add(new ChancedEntry(new MCItemStack(stack), chance)));
+        this.backingRecipe.getChancedOutputs().forEach(chanceEntry ->
+            result.add(new ChancedEntry(new MCItemStack(chanceEntry.getItemStack()), chanceEntry.getChance(), chanceEntry.getBoostPerTier())));
         return result;
     }
 
@@ -91,11 +91,6 @@ public class CTRecipe {
     @ZenGetter("hidden")
     public boolean isHidden() {
         return this.backingRecipe.isHidden();
-    }
-
-    @ZenGetter
-    public boolean needsEmptyOutput() {
-        return this.backingRecipe.needsEmptyOutput();
     }
 
     @ZenGetter("propertyKeys")

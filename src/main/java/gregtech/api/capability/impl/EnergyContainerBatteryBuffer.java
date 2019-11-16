@@ -6,17 +6,22 @@ import gregtech.api.GTValues;
 import gregtech.api.capability.GregtechCapabilities;
 import gregtech.api.capability.IElectricItem;
 import gregtech.api.capability.IEnergyContainer;
+import gregtech.api.capability.impl.EnergyContainerHandler.IEnergyChangeListener;
 import gregtech.api.metatileentity.MTETrait;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.util.GTUtility;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.items.IItemHandlerModifiable;
 
+import java.util.BitSet;
+
 public class EnergyContainerBatteryBuffer extends MTETrait implements IEnergyContainer {
 
+    private BitSet batterySlotsUsedThisTick = new BitSet();
     private final int tier;
 
     public EnergyContainerBatteryBuffer(MetaTileEntity metaTileEntity, int tier) {
@@ -34,21 +39,27 @@ public class EnergyContainerBatteryBuffer extends MTETrait implements IEnergyCon
             }
             IItemHandlerModifiable inventory = getInventory();
             for (int i = 0; i < inventory.getSlots(); i++) {
+                if (batterySlotsUsedThisTick.get(i)) continue;
                 ItemStack batteryStack = inventory.getStackInSlot(i);
                 IElectricItem electricItem = getBatteryContainer(batteryStack);
                 if (electricItem == null) continue;
                 if (chargeItemWithVoltageExact(electricItem, voltage, getTier(), true)) {
                     chargeItemWithVoltageExact(electricItem, voltage, getTier(), false);
                     inventory.setStackInSlot(i, batteryStack);
+                    this.batterySlotsUsedThisTick.set(i);
                     if (--amperage == 0) break;
                 }
             }
         }
-        return initialAmperage - amperage;
+        long amperageUsed = initialAmperage - amperage;
+        if(amperageUsed > 0L) {
+            notifyEnergyListener(false);
+        }
+        return amperageUsed;
     }
 
     private static boolean chargeItemWithVoltageExact(IElectricItem electricItem, long voltage, int tier, boolean simulate) {
-        return electricItem.discharge(-voltage, tier, false, true, simulate) == -voltage;
+        return electricItem.charge(voltage, tier, false, simulate) == voltage;
     }
 
     private static long chargeItem(IElectricItem electricItem, long amount, int tier, boolean discharge) {
@@ -62,6 +73,7 @@ public class EnergyContainerBatteryBuffer extends MTETrait implements IEnergyCon
     @Override
     public void update() {
         if (!metaTileEntity.getWorld().isRemote) {
+            this.batterySlotsUsedThisTick.clear();
             EnumFacing outFacing = metaTileEntity.getFrontFacing();
             TileEntity tileEntity = metaTileEntity.getWorld().getTileEntity(metaTileEntity.getPos().offset(outFacing));
             if (tileEntity == null) {
@@ -96,6 +108,7 @@ public class EnergyContainerBatteryBuffer extends MTETrait implements IEnergyCon
                 inventory.setStackInSlot(i, batteryStack);
                 if (--amperageUsed == 0) break;
             }
+            notifyEnergyListener(false);
         }
     }
 
@@ -160,7 +173,23 @@ public class EnergyContainerBatteryBuffer extends MTETrait implements IEnergyCon
             energyToAdd -= charged;
             if(energyToAdd == 0L) break;
         }
-        return initialEnergyToAdd - energyToAdd;
+        long energyAdded = initialEnergyToAdd - energyToAdd;
+        if(energyAdded > 0L) {
+            notifyEnergyListener(false);
+        }
+        return energyAdded;
+    }
+
+    @Override
+    public void deserializeNBT(NBTTagCompound compound) {
+        super.deserializeNBT(compound);
+        notifyEnergyListener(true);
+    }
+
+    public void notifyEnergyListener(boolean isInitialChange) {
+        if (metaTileEntity instanceof IEnergyChangeListener) {
+            ((IEnergyChangeListener) metaTileEntity).onEnergyChanged(this, isInitialChange);
+        }
     }
 
     @Override

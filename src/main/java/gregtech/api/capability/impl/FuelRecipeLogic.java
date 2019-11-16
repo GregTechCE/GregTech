@@ -109,12 +109,12 @@ public class FuelRecipeLogic extends MTETrait implements IControllable {
 
     private int tryAcquireNewRecipe(FluidStack fluidStack) {
         FuelRecipe currentRecipe;
-        if (previousRecipe != null && previousRecipe.matches(maxVoltage, fluidStack)) {
+        if (previousRecipe != null && previousRecipe.matches(getMaxVoltage(), fluidStack)) {
             //if previous recipe still matches inputs, try to use it
             currentRecipe = previousRecipe;
         } else {
             //else, try searching new recipe for given inputs
-            currentRecipe = recipeMap.findRecipe(maxVoltage, fluidStack);
+            currentRecipe = recipeMap.findRecipe(getMaxVoltage(), fluidStack);
             //if we found recipe that can be buffered, buffer it
             if (currentRecipe != null) {
                 this.previousRecipe = currentRecipe;
@@ -140,8 +140,12 @@ public class FuelRecipeLogic extends MTETrait implements IControllable {
         return true;
     }
 
+    public long getMaxVoltage() {
+        return maxVoltage;
+    }
+
     protected int calculateFuelAmount(FuelRecipe currentRecipe) {
-        return currentRecipe.getRecipeFluid().amount * getVoltageMultiplier(maxVoltage, currentRecipe.getMinVoltage());
+        return currentRecipe.getRecipeFluid().amount * getVoltageMultiplier(getMaxVoltage(), currentRecipe.getMinVoltage());
     }
 
     protected int calculateRecipeDuration(FuelRecipe currentRecipe) {
@@ -154,11 +158,11 @@ public class FuelRecipeLogic extends MTETrait implements IControllable {
      * @return recipe's output voltage
      */
     protected long startRecipe(FuelRecipe currentRecipe, int fuelAmountUsed, int recipeDuration) {
-        return maxVoltage;
+        return getMaxVoltage();
     }
 
     public static int getVoltageMultiplier(long maxVoltage, long minVoltage) {
-        return (int) (getTieredVoltage(maxVoltage) / getTieredVoltage(minVoltage));
+        return (int) (maxVoltage / minVoltage);
     }
 
     public static long getTieredVoltage(long voltage) {

@@ -16,8 +16,8 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
-import net.minecraftforge.fml.common.Loader;
-import net.minecraftforge.fml.common.ModContainer;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nullable;
 import java.util.Arrays;
@@ -51,12 +51,24 @@ public class MachineItemBlock extends ItemBlock {
 
     @Nullable
     @Override
+    public String getCreatorModId(ItemStack itemStack) {
+        MetaTileEntity metaTileEntity = getMetaTileEntity(itemStack);
+        if (metaTileEntity == null) {
+            return GTValues.MODID;
+        }
+        ResourceLocation metaTileEntityId = metaTileEntity.metaTileEntityId;
+        return metaTileEntityId.getResourceDomain();
+    }
+
+    @Nullable
+    @Override
     public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable NBTTagCompound nbt) {
         MetaTileEntity metaTileEntity = getMetaTileEntity(stack);
         return metaTileEntity == null ? null : metaTileEntity.initItemStackCapabilities(stack);
     }
 
     @Override
+    @SideOnly(Side.CLIENT)
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
         MetaTileEntity metaTileEntity = getMetaTileEntity(stack);
         if (metaTileEntity == null) return;
@@ -80,12 +92,6 @@ public class MachineItemBlock extends ItemBlock {
         }
         metaTileEntity.addInformation(stack, worldIn, tooltip, flagIn.isAdvanced());
 
-        ResourceLocation metaTileEntityId = metaTileEntity.metaTileEntityId;
-        if (!metaTileEntityId.getResourceDomain().equals(GTValues.MODID)) {
-            ModContainer modContainer = Loader.instance().getIndexedModList().get(metaTileEntityId.getResourceDomain());
-            String modName = modContainer == null ? metaTileEntityId.getResourceDomain() : modContainer.getName();
-            tooltip.add(I18n.format("gregtech.machine.tooltip.added_by", modName));
-        }
         if (flagIn.isAdvanced()) {
             tooltip.add(String.format("MetaTileEntity Id: %s", metaTileEntity.metaTileEntityId.toString()));
         }

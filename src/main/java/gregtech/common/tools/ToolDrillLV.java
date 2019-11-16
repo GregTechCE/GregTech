@@ -1,5 +1,8 @@
 package gregtech.common.tools;
 
+import gregtech.api.capability.GregtechCapabilities;
+import gregtech.api.capability.IElectricItem;
+import gregtech.common.items.MetaItems;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.enchantment.Enchantment;
@@ -35,7 +38,12 @@ public class ToolDrillLV extends ToolBase {
     }
 
     @Override
-    public boolean isMinableBlock(IBlockState block, ItemStack stack) {
+    public float getMaxDurabilityMultiplier(ItemStack stack) {
+        return 10.0f;
+    }
+
+    @Override
+    public boolean canMineBlock(IBlockState block, ItemStack stack) {
         String tool = block.getBlock().getHarvestTool(block);
         return (tool != null && (tool.equals("pickaxe") || tool.equals("shovel"))) ||
             block.getMaterial() == Material.ROCK ||
@@ -49,4 +57,9 @@ public class ToolDrillLV extends ToolBase {
             block.getMaterial() == Material.GLASS;
     }
 
+    @Override
+    public ItemStack getBrokenStack(ItemStack stack) {
+        IElectricItem electricItem = stack.getCapability(GregtechCapabilities.CAPABILITY_ELECTRIC_ITEM, null);
+        return MetaItems.POWER_UNIT_LV.getChargedStackWithOverride(electricItem);
+    }
 }

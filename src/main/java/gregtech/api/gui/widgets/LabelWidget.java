@@ -1,5 +1,9 @@
 package gregtech.api.gui.widgets;
 
+import gregtech.api.gui.IRenderContext;
+import gregtech.api.gui.Widget;
+import gregtech.api.util.Position;
+import gregtech.api.util.Size;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.renderer.GlStateManager;
@@ -7,7 +11,7 @@ import net.minecraft.client.resources.I18n;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class LabelWidget extends AbstractPositionedWidget {
+public class LabelWidget extends Widget {
 
     protected boolean xCentered = false;
 
@@ -23,29 +27,45 @@ public class LabelWidget extends AbstractPositionedWidget {
         this(xPosition, yPosition, text, color, new Object[0]);
     }
 
+    public LabelWidget(int xPosition, int yPosition, String text, int color, Object[] formatting) {
+        super(new Position(xPosition, yPosition), Size.ZERO);
+        this.text = text;
+        this.color = color;
+        this.formatting = formatting;
+        recomputeSize();
+    }
+
+    private String getResultText() {
+        return I18n.format(text, formatting);
+    }
+
+    private void recomputeSize() {
+        if (isClientSide()) {
+            FontRenderer fontRenderer = Minecraft.getMinecraft().fontRenderer;
+            String resultText = getResultText();
+            setSize(new Size(fontRenderer.getStringWidth(resultText), fontRenderer.FONT_HEIGHT));
+            if (uiAccess != null) {
+                uiAccess.notifySizeChange();
+            }
+        }
+    }
+
     public LabelWidget setXCentered(boolean xCentered) {
         this.xCentered = xCentered;
         return this;
     }
 
-    public LabelWidget(int xPosition, int yPosition, String text, int color, Object[] formatting) {
-        super(xPosition, yPosition);
-        this.text = text;
-        this.color = color;
-        this.formatting = formatting;
-    }
-
     @Override
     @SideOnly(Side.CLIENT)
-    public void drawInBackground(int mouseX, int mouseY) {
-        String resultText = I18n.format(text, formatting);
+    public void drawInBackground(int mouseX, int mouseY, IRenderContext context) {
+        String resultText = getResultText();
         FontRenderer fontRenderer = Minecraft.getMinecraft().fontRenderer;
+        Position pos = getPosition();
         if (!xCentered) {
-            fontRenderer.drawString(resultText, this.xPosition, this.yPosition, color);
+            fontRenderer.drawString(resultText, pos.x, pos.y, color);
         } else {
             fontRenderer.drawString(resultText,
-                xPosition - fontRenderer.getStringWidth(resultText) / 2,
-                yPosition, color);
+                pos.x - fontRenderer.getStringWidth(resultText) / 2, pos.y, color);
         }
         GlStateManager.color(1.0f, 1.0f, 1.0f);
     }

@@ -8,7 +8,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.*;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.IChunkProvider;
-import net.minecraft.world.storage.MapStorage;
 import net.minecraft.world.storage.WorldInfo;
 
 import javax.annotation.Nullable;
@@ -28,8 +27,6 @@ public class DummyWorld extends World {
         this.provider.setWorld(this);
         this.provider.setDimension(providerDim);
         this.chunkProvider = this.createChunkProvider();
-        //noinspection ConstantConditions
-        this.perWorldStorage = new MapStorage(null);
         this.calculateInitialSkylight();
         this.calculateInitialWeather();
         this.getWorldBorder().setSize(30000000);

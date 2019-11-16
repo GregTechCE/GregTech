@@ -34,7 +34,7 @@ public class ToolUniversalSpade extends ToolBase {
     }
 
     @Override
-    public boolean isMinableBlock(IBlockState block, ItemStack stack) {
+    public boolean canMineBlock(IBlockState block, ItemStack stack) {
         String tool = block.getBlock().getHarvestTool(block);
         return (tool != null && (tool.equals("shovel") ||
             tool.equals("axe") ||
@@ -64,7 +64,7 @@ public class ToolUniversalSpade extends ToolBase {
 
     @Override
     public void onStatsAddedToTool(MetaValueItem item) {
-        item.addStats(new CrowbarBehaviour(DamageValues.DAMAGE_FOR_UNIVERSAL_SPADE));
+        item.addComponents(new CrowbarBehaviour(DamageValues.DAMAGE_FOR_UNIVERSAL_SPADE));
     }
 
 }

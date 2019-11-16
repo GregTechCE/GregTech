@@ -1,9 +1,12 @@
 package gregtech.api.gui.widgets;
 
 import gregtech.api.gui.INativeWidget;
+import gregtech.api.gui.IRenderContext;
 import gregtech.api.gui.Widget;
 import gregtech.api.gui.igredient.IGhostIngredientTarget;
 import gregtech.api.gui.igredient.IIngredientSlot;
+import gregtech.api.util.Position;
+import gregtech.api.util.Size;
 import mezz.jei.api.gui.IGhostIngredientHandler.Target;
 import net.minecraft.network.PacketBuffer;
 
@@ -11,15 +14,59 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 
-public class AbstractWidgetGroup extends Widget implements IGhostIngredientTarget, IIngredientSlot {
+public class  AbstractWidgetGroup extends Widget implements IGhostIngredientTarget, IIngredientSlot {
 
-    private List<Widget> widgets = new ArrayList<>();
+    protected final List<Widget> widgets = new ArrayList<>();
     private WidgetGroupUIAccess groupUIAccess = new WidgetGroupUIAccess();
-    private boolean isInitialized;
     private boolean isVisible = true;
+    private boolean isDynamicSized;
 
-    public AbstractWidgetGroup() {
-        super();
+    public AbstractWidgetGroup(Position position) {
+        super(position, Size.ZERO);
+        this.isDynamicSized = true;
+    }
+
+    public AbstractWidgetGroup(Position position, Size size) {
+        super (position, size);
+        this.isDynamicSized = false;
+    }
+
+    @Override
+    protected void onPositionUpdate() {
+        Position selfPosition = getPosition();
+        for (Widget widget : widgets) {
+            widget.setParentPosition(selfPosition);
+        }
+        recomputeSize();
+    }
+
+    protected boolean recomputeSize() {
+        if (isDynamicSized) {
+            Size currentSize = getSize();
+            Size dynamicSize = computeDynamicSize();
+            if (!currentSize.equals(dynamicSize)) {
+                setSize(dynamicSize);
+                if (uiAccess != null)
+                    uiAccess.notifySizeChange();
+                return true;
+            }
+        }
+        return false;
+    }
+
+    protected Size computeDynamicSize() {
+        Position selfPosition = getPosition();
+        Size currentSize = getSize();
+        for (Widget widget : widgets) {
+            Position size = widget.getPosition().add(widget.getSize()).subtract(selfPosition);
+            if (size.x > currentSize.width) {
+                currentSize = new Size(size.x, currentSize.height);
+            }
+            if (size.y > currentSize.height) {
+                currentSize = new Size(currentSize.width, size.y);
+            }
+        }
+        return currentSize;
     }
 
     public void setVisible(boolean visible) {
@@ -32,15 +79,49 @@ public class AbstractWidgetGroup extends Widget implements IGhostIngredientTarge
     }
 
     protected void addWidget(Widget widget) {
-        if (isInitialized) {
-            throw new IllegalStateException("Cannot add widgets after initialization!");
-        }
         if (widget == this) {
             throw new IllegalArgumentException("Cannot add self");
         }
-        if (!widgets.contains(widget)) {
-            this.widgets.add(widget);
-            widget.setUiAccess(groupUIAccess);
+        if (widgets.contains(widget)) {
+            throw new IllegalArgumentException("Already added");
+        }
+        this.widgets.add(widget);
+        widget.setUiAccess(groupUIAccess);
+        widget.setGui(gui);
+        widget.setSizes(sizes);
+        widget.setParentPosition(getPosition());
+        recomputeSize();
+        if(uiAccess != null) {
+            uiAccess.notifyWidgetChange();
+        }
+    }
+
+    protected void removeWidget(Widget widget) {
+        if(!widgets.contains(widget)) {
+            throw new IllegalArgumentException("Not added");
+        }
+        this.widgets.remove(widget);
+        widget.setUiAccess(null);
+        widget.setGui(null);
+        widget.setSizes(null);
+        widget.setParentPosition(Position.ORIGIN);
+        recomputeSize();
+        if(uiAccess != null) {
+            this.uiAccess.notifyWidgetChange();
+        }
+    }
+
+    protected void clearAllWidgets() {
+        this.widgets.forEach(it -> {
+            it.setUiAccess(null);
+            it.setGui(null);
+            it.setSizes(null);
+            it.setParentPosition(Position.ORIGIN);
+        });
+        this.widgets.clear();
+        recomputeSize();
+        if(uiAccess != null) {
+            this.uiAccess.notifyWidgetChange();
         }
     }
 
@@ -54,7 +135,6 @@ public class AbstractWidgetGroup extends Widget implements IGhostIngredientTarge
 
     @Override
     public void initWidget() {
-        this.isInitialized = true;
         for (Widget widget : widgets) {
             widget.setGui(gui);
             widget.setSizes(sizes);
@@ -121,60 +201,37 @@ public class AbstractWidgetGroup extends Widget implements IGhostIngredientTarge
     }
 
     @Override
-    public void drawInBackground(int mouseX, int mouseY) {
+    public void drawInBackground(int mouseX, int mouseY, IRenderContext context) {
         for (Widget widget : widgets) {
             if (isWidgetVisible(widget)) {
-                widget.drawInBackground(mouseX, mouseY);
+                widget.drawInBackground(mouseX, mouseY, context);
             }
         }
+    }
+
+    @Override
+    public boolean mouseWheelMove(int mouseX, int mouseY, int wheelDelta) {
+        return widgets.stream().filter(this::isWidgetClickable).anyMatch(it -> it.mouseWheelMove(mouseX, mouseY, wheelDelta));
     }
 
     @Override
     public boolean mouseClicked(int mouseX, int mouseY, int button) {
-        for (Widget widget : widgets) {
-            if (isWidgetClickable(widget)) {
-                if (widget.mouseClicked(mouseX, mouseY, button)) {
-                    return true;
-                }
-            }
-        }
-        return false;
+        return widgets.stream().filter(this::isWidgetClickable).anyMatch(it -> it.mouseClicked(mouseX, mouseY, button));
     }
 
     @Override
     public boolean mouseDragged(int mouseX, int mouseY, int button, long timeDragged) {
-        for (Widget widget : widgets) {
-            if (isWidgetClickable(widget)) {
-                if (widget.mouseDragged(mouseX, mouseY, button, timeDragged)) {
-                    return true;
-                }
-            }
-        }
-        return false;
+        return widgets.stream().filter(this::isWidgetClickable).anyMatch(it -> it.mouseDragged(mouseX, mouseY, button, timeDragged));
     }
 
     @Override
     public boolean mouseReleased(int mouseX, int mouseY, int button) {
-        for (Widget widget : widgets) {
-            if (isWidgetClickable(widget)) {
-                if (widget.mouseReleased(mouseX, mouseY, mouseX)) {
-                    return true;
-                }
-            }
-        }
-        return false;
+        return widgets.stream().filter(this::isWidgetClickable).anyMatch(it -> it.mouseReleased(mouseX, mouseY, button));
     }
 
     @Override
     public boolean keyTyped(char charTyped, int keyCode) {
-        for (Widget widget : widgets) {
-            if (isWidgetClickable(widget)) {
-                if (widget.keyTyped(charTyped, keyCode)) {
-                    return true;
-                }
-            }
-        }
-        return false;
+        return widgets.stream().filter(this::isWidgetClickable).anyMatch(it -> it.keyTyped(charTyped, keyCode));
     }
 
     @Override
@@ -198,6 +255,24 @@ public class AbstractWidgetGroup extends Widget implements IGhostIngredientTarge
     }
 
     private class WidgetGroupUIAccess implements WidgetUIAccess {
+
+        @Override
+        public void notifySizeChange() {
+            WidgetUIAccess uiAccess = AbstractWidgetGroup.this.uiAccess;
+            recomputeSize();
+            if (uiAccess != null) {
+                uiAccess.notifySizeChange();
+            }
+        }
+
+        @Override
+        public void notifyWidgetChange() {
+            WidgetUIAccess uiAccess = AbstractWidgetGroup.this.uiAccess;
+            if (uiAccess != null) {
+                uiAccess.notifyWidgetChange();
+            }
+            recomputeSize();
+        }
 
         @Override
         public void writeClientAction(Widget widget, int updateId, Consumer<PacketBuffer> dataWriter) {

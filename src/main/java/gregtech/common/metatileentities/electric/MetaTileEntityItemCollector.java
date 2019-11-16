@@ -16,6 +16,7 @@ import gregtech.api.metatileentity.MetaTileEntityHolder;
 import gregtech.api.metatileentity.TieredMetaTileEntity;
 import gregtech.api.render.SimpleOverlayRenderer;
 import gregtech.api.render.Textures;
+import gregtech.common.covers.filter.ItemFilterContainer;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
@@ -49,11 +50,13 @@ public class MetaTileEntityItemCollector extends TieredMetaTileEntity {
     private AxisAlignedBB areaBoundingBox;
     private BlockPos areaCenterPos;
     private boolean isWorking;
+    private ItemFilterContainer itemFilter;
 
     public MetaTileEntityItemCollector(ResourceLocation metaTileEntityId, int tier, int maxItemSuckingRange) {
         super(metaTileEntityId, tier);
         this.maxItemSuckingRange = maxItemSuckingRange;
         this.itemSuckingRange = maxItemSuckingRange;
+        this.itemFilter = new ItemFilterContainer(this::markDirty);
         initializeInventory();
     }
 
@@ -108,6 +111,7 @@ public class MetaTileEntityItemCollector extends TieredMetaTileEntity {
         if(getWorld().isRemote) {
             return;
         }
+
         boolean isWorkingNow = energyContainer.getEnergyStored() >= getEnergyConsumedPerTick() && isBlockRedstonePowered();
 
         if (isWorkingNow) {
@@ -133,6 +137,9 @@ public class MetaTileEntityItemCollector extends TieredMetaTileEntity {
             double distanceX = (areaCenterPos.getX() + 0.5) - entityItem.posX;
             double distanceZ = (areaCenterPos.getZ() + 0.5) - entityItem.posZ;
             double distance = MathHelper.sqrt(distanceX * distanceX + distanceZ * distanceZ);
+            if(!itemFilter.testItemStack(entityItem.getItem())) {
+                continue;
+            }
             if (distance >= 0.7) {
                 if(!entityItem.cannotPickup()) {
                     double directionX = distanceX / distance;
@@ -186,6 +193,7 @@ public class MetaTileEntityItemCollector extends TieredMetaTileEntity {
     public NBTTagCompound writeToNBT(NBTTagCompound data) {
         super.writeToNBT(data);
         data.setInteger("CollectRange", itemSuckingRange);
+        data.setTag("Filter", itemFilter.serializeNBT());
         return data;
     }
 
@@ -193,6 +201,7 @@ public class MetaTileEntityItemCollector extends TieredMetaTileEntity {
     public void readFromNBT(NBTTagCompound data) {
         super.readFromNBT(data);
         this.itemSuckingRange = data.getInteger("CollectRange");
+        this.itemFilter.deserializeNBT(data.getCompoundTag("Filter"));
     }
 
     protected void setItemSuckingRange(int itemSuckingRange) {
@@ -209,7 +218,7 @@ public class MetaTileEntityItemCollector extends TieredMetaTileEntity {
     protected ModularUI createUI(EntityPlayer entityPlayer) {
         int rowSize = (int) Math.sqrt(exportItems.getSlots());
         Builder builder = ModularUI.builder(GuiTextures.BACKGROUND, 176,
-            18 + 25 + 18 * rowSize + 94)
+            45 + rowSize * 18 + 105 + 82)
             .label(10, 5, getMetaFullName());
 
         builder.widget(new ClickButtonWidget(10, 20, 20, 20, "-1", data -> adjustSuckingRange(-1)));
@@ -224,7 +233,9 @@ public class MetaTileEntityItemCollector extends TieredMetaTileEntity {
                     .setBackgroundTexture(GuiTextures.SLOT));
             }
         }
-        builder.bindPlayerInventory(entityPlayer.inventory, GuiTextures.SLOT, 8, 45 + 18 * rowSize + 12);
+
+        this.itemFilter.initUI(45 + rowSize * 18 + 5, builder::widget);
+        builder.bindPlayerInventory(entityPlayer.inventory, GuiTextures.SLOT, 8, 45 + rowSize * 18 + 105);
         return builder.build(getHolder(), entityPlayer);
     }
 }

@@ -14,6 +14,7 @@ import gregtech.api.unification.material.Materials;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
 
 public class MetaTileEntityAirCollector extends TieredMetaTileEntity {
@@ -39,8 +40,11 @@ public class MetaTileEntityAirCollector extends TieredMetaTileEntity {
             long energyToConsume = GTValues.V[getTier()];
             if (checkOpenSides() && getTimer() % 20 == 0L && energyContainer.getEnergyStored() >= energyToConsume) {
                 int fluidAmount = 500 * (1 << getTier());
-                exportFluids.fill(Materials.Air.getFluid(fluidAmount), true);
-                energyContainer.removeEnergy(energyToConsume);
+                FluidStack fluidStack = Materials.Air.getFluid(fluidAmount);
+                if (exportFluids.fill(fluidStack, false) == fluidAmount) {
+                    exportFluids.fill(fluidStack, true);
+                    energyContainer.removeEnergy(energyToConsume);
+                }
             }
             if (getTimer() % 5 == 0) {
                 pushFluidsIntoNearbyHandlers(getFrontFacing());

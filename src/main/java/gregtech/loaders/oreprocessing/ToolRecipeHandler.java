@@ -16,6 +16,7 @@ import gregtech.common.items.MetaItems;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.Ingredient;
 import org.apache.commons.lang3.ArrayUtils;
 
 import java.util.ArrayList;
@@ -40,7 +41,6 @@ public class ToolRecipeHandler {
         OrePrefix.toolHeadChainsaw.addProcessingHandler(SolidMaterial.class, ToolRecipeHandler::processChainSawHead);
         OrePrefix.toolHeadDrill.addProcessingHandler(SolidMaterial.class, ToolRecipeHandler::processDrillHead);
 
-        OrePrefix.toolHeadPlow.addProcessingHandler(SolidMaterial.class, ToolRecipeHandler::processPlowHead);
         OrePrefix.toolHeadSense.addProcessingHandler(SolidMaterial.class, ToolRecipeHandler::processSenseHead);
         OrePrefix.toolHeadWrench.addProcessingHandler(SolidMaterial.class, ToolRecipeHandler::processWrenchHead);
         OrePrefix.toolHeadBuzzSaw.addProcessingHandler(SolidMaterial.class, ToolRecipeHandler::processBuzzSawHead);
@@ -53,29 +53,64 @@ public class ToolRecipeHandler {
     public static MetaValueItem[] motorItems;
     public static SolidMaterial[] baseMaterials;
     public static MetaValueItem[][] batteryItems;
+    public static MetaValueItem[] powerUnitItems;
 
     public static void initializeMetaItems() {
         motorItems = new MetaValueItem[]{MetaItems.ELECTRIC_MOTOR_LV, MetaItems.ELECTRIC_MOTOR_MV, MetaItems.ELECTRIC_MOTOR_HV};
         baseMaterials = new SolidMaterial[]{Materials.StainlessSteel, Materials.Titanium, Materials.TungstenSteel};
+        powerUnitItems = new MetaValueItem[] {MetaItems.POWER_UNIT_LV, MetaItems.POWER_UNIT_MV, MetaItems.POWER_UNIT_HV};
         batteryItems = new MetaValueItem[][]{
             {MetaItems.BATTERY_RE_LV_LITHIUM, MetaItems.BATTERY_RE_LV_CADMIUM, MetaItems.BATTERY_RE_LV_SODIUM},
             {MetaItems.BATTERY_RE_MV_LITHIUM, MetaItems.BATTERY_RE_MV_CADMIUM, MetaItems.BATTERY_RE_MV_SODIUM},
             {MetaItems.BATTERY_RE_HV_LITHIUM, MetaItems.BATTERY_RE_HV_CADMIUM, MetaItems.BATTERY_RE_HV_SODIUM}};
     }
 
+    public static void registerPowerUnitRecipes() {
+        for(int i = 0; i < powerUnitItems.length; i++) {
+            for(MetaValueItem batteryItem : batteryItems[i]) {
+                ItemStack batteryStack = batteryItem.getStackForm();
+                long maxCharge = batteryStack.getCapability(GregtechCapabilities.CAPABILITY_ELECTRIC_ITEM, null).getMaxCharge();
+                ItemStack powerUnitStack = powerUnitItems[i].getMaxChargeOverrideStack(maxCharge);
+                String recipeName = String.format("%s_%s", powerUnitItems[i].unlocalizedName, batteryItem.unlocalizedName);
+
+                ModHandler.addShapedEnergyTransferRecipe(recipeName, powerUnitStack,
+                    Ingredient.fromStacks(batteryStack), false,
+                    "S  ", "GMG", "PBP",
+                    'M', motorItems[i].getStackForm(),
+                    'S', new UnificationEntry(OrePrefix.screw, baseMaterials[i]),
+                    'P', new UnificationEntry(OrePrefix.plate, baseMaterials[i]),
+                    'G', new UnificationEntry(OrePrefix.gearSmall, baseMaterials[i]),
+                    'B', batteryStack);
+            }
+        }
+
+        for(MetaValueItem batteryItem : batteryItems[2]) {
+            ItemStack batteryStack = batteryItem.getStackForm();
+            long maxCharge = batteryStack.getCapability(GregtechCapabilities.CAPABILITY_ELECTRIC_ITEM, null).getMaxCharge();
+            ItemStack hammerBaseStack = MetaItems.JACKHAMMER_BASE.getMaxChargeOverrideStack(maxCharge);
+            String recipeName = String.format("jackhammer_base_%s", batteryItem.unlocalizedName);
+
+            ModHandler.addShapedEnergyTransferRecipe(recipeName, hammerBaseStack,
+                Ingredient.fromStacks(batteryStack), false,
+                "S  ", "PRP", "MPB",
+                'M', MetaItems.ELECTRIC_PISTON_HV.getStackForm(),
+                'S', new UnificationEntry(OrePrefix.screw, Materials.Titanium),
+                'P', new UnificationEntry(OrePrefix.plateDense, Materials.Titanium),
+                'R', new UnificationEntry(OrePrefix.spring, Materials.Titanium),
+                'B', batteryStack);
+        }
+    }
+
     public static void processSimpleElectricToolHead(OrePrefix toolPrefix, SolidMaterial solidMaterial, MetaToolValueItem[] toolItems) {
         for (int i = 0; i < toolItems.length; i++) {
-            for (MetaValueItem battery : batteryItems[i]) {
-                ItemStack batteryStack = battery.getStackForm();
-
-                @SuppressWarnings("ConstantConditions")
+            for(MetaValueItem batteryItem : batteryItems[i]) {
+                ItemStack batteryStack = batteryItem.getStackForm();
                 long maxCharge = batteryStack.getCapability(GregtechCapabilities.CAPABILITY_ELECTRIC_ITEM, null).getMaxCharge();
-                ItemStack drillStack = toolItems[i].getMaxChargeOverrideStack(
-                    solidMaterial, maxCharge);
-                String recipeName = String.format("%s_%s_%s",
-                    toolItems[i].unlocalizedName, battery.unlocalizedName, solidMaterial);
+                ItemStack chargedDrillStack = toolItems[i].getMaxChargeOverrideStack(solidMaterial, maxCharge);
 
-                ModHandler.addShapedIngredientAwareRecipe(recipeName, drillStack,
+                String recipeNameFirst = String.format("%s_%s_%s_full", toolItems[i].unlocalizedName, solidMaterial, batteryItem.unlocalizedName);
+                ModHandler.addShapedEnergyTransferRecipe(recipeNameFirst, chargedDrillStack,
+                    Ingredient.fromStacks(batteryStack), false,
                     "SXd", "GMG", "PBP",
                     'X', new UnificationEntry(toolPrefix, solidMaterial),
                     'M', motorItems[i].getStackForm(),
@@ -84,6 +119,15 @@ public class ToolRecipeHandler {
                     'G', new UnificationEntry(OrePrefix.gearSmall, baseMaterials[i]),
                     'B', batteryStack);
             }
+
+            ItemStack drillStack = toolItems[i].getStackForm(solidMaterial);
+            ItemStack powerUnitStack = powerUnitItems[i].getStackForm();
+            String recipeNameSecond = String.format("%s_%s_unit", toolItems[i].unlocalizedName, solidMaterial);
+            ModHandler.addShapedEnergyTransferRecipe(recipeNameSecond, drillStack,
+                Ingredient.fromStacks(powerUnitStack), true,
+                "wHd", " U ",
+                'H', new UnificationEntry(toolPrefix, solidMaterial),
+                'U', powerUnitStack);
         }
     }
 
@@ -176,19 +220,33 @@ public class ToolRecipeHandler {
 
     public static void processLongStick(OrePrefix orePrefix, IngotMaterial material) {
         if (material.toolDurability <= 0) return;
+        processSimpleElectricToolHead(orePrefix, material, new MetaToolValueItem[]{MetaItems.SCREWDRIVER_LV});
+
         for (MetaValueItem batteryItem : batteryItems[2]) {
             ItemStack batteryStack = batteryItem.getStackForm();
             long maxCharge = batteryStack.getCapability(GregtechCapabilities.CAPABILITY_ELECTRIC_ITEM, null).getMaxCharge();
-            ModHandler.addShapedIngredientAwareRecipe(String.format("jack_hammer_%s_%s", batteryItem.unlocalizedName, material.toString()),
-                MetaItems.JACKHAMMER.getMaxChargeOverrideStack(material, maxCharge),
+            ItemStack chargedHammerStack = MetaItems.JACKHAMMER.getMaxChargeOverrideStack(material, maxCharge);
+            String recipeNameFirst = String.format("jack_hammer_%s_%s_full", batteryItem.unlocalizedName, material.toString());
+
+            ModHandler.addShapedEnergyTransferRecipe(recipeNameFirst, chargedHammerStack,
+                Ingredient.fromStacks(batteryStack), false,
                 "SXd", "PRP", "MPB",
                 'X', new UnificationEntry(OrePrefix.stickLong, material),
                 'M', MetaItems.ELECTRIC_PISTON_HV.getStackForm(),
                 'S', new UnificationEntry(OrePrefix.screw, Materials.Titanium),
-                'P', new UnificationEntry(OrePrefix.plate, Materials.Titanium),
+                'P', new UnificationEntry(OrePrefix.plateDense, Materials.Titanium),
                 'R', new UnificationEntry(OrePrefix.spring, Materials.Titanium),
-                'B', batteryItem);
+                'B', batteryStack);
         }
+
+        ItemStack drillStack = MetaItems.JACKHAMMER.getStackForm(material);
+        ItemStack powerUnitStack = MetaItems.JACKHAMMER_BASE.getStackForm();
+        String recipeNameSecond = String.format("jack_hammer_%s_unit", material);
+        ModHandler.addShapedEnergyTransferRecipe(recipeNameSecond, drillStack,
+            Ingredient.fromStacks(powerUnitStack), true,
+            "wHd", " U ",
+            'H', new UnificationEntry(orePrefix, material),
+            'U', powerUnitStack);
     }
 
     public static void processDrillHead(OrePrefix drillHead, SolidMaterial solidMaterial) {
@@ -302,10 +360,6 @@ public class ToolRecipeHandler {
             .EUt(8 * voltageMultiplier)
             .buildAndRegister();
 
-    }
-
-    public static void processPlowHead(OrePrefix toolPrefix, SolidMaterial solidMaterial) {
-        processSimpleToolHead(toolPrefix, solidMaterial, MetaItems.PLOW, "PP", "PP", "hf");
     }
 
     public static void processSawHead(OrePrefix toolPrefix, SolidMaterial solidMaterial) {

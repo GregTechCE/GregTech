@@ -1,8 +1,12 @@
 package gregtech.api.gui.widgets;
 
 import gregtech.api.gui.GuiTextures;
+import gregtech.api.gui.IRenderContext;
+import gregtech.api.gui.Widget;
 import gregtech.api.gui.resources.SizedTextureArea;
 import gregtech.api.gui.resources.TextureArea;
+import gregtech.api.util.Position;
+import gregtech.api.util.Size;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.renderer.GlStateManager;
@@ -12,7 +16,7 @@ import org.lwjgl.input.Keyboard;
 
 import java.util.function.Consumer;
 
-public class ClickButtonWidget extends AbstractPositionedRectangleWidget {
+public class ClickButtonWidget extends Widget {
 
     protected TextureArea buttonTexture = GuiTextures.VANILLA_BUTTON.getSubArea(0.0, 0.0, 1.0, 0.5);
     protected String displayText;
@@ -20,7 +24,7 @@ public class ClickButtonWidget extends AbstractPositionedRectangleWidget {
     protected Consumer<ClickData> onPressCallback;
 
     public ClickButtonWidget(int xPosition, int yPosition, int width, int height, String displayText, Consumer<ClickData> onPressed) {
-        super(xPosition, yPosition, width, height);
+        super(new Position(xPosition, yPosition), new Size(width, height));
         this.displayText = displayText;
         this.onPressCallback = onPressed;
     }
@@ -36,24 +40,26 @@ public class ClickButtonWidget extends AbstractPositionedRectangleWidget {
     }
 
     @Override
-    public void drawInBackground(int mouseX, int mouseY) {
-        super.drawInBackground(mouseX, mouseY);
+    public void drawInBackground(int mouseX, int mouseY, IRenderContext context) {
+        super.drawInBackground(mouseX, mouseY, context);
+        Position position = getPosition();
+        Size size = getSize();
         if (buttonTexture instanceof SizedTextureArea) {
-            ((SizedTextureArea) buttonTexture).drawHorizontalCutSubArea(xPosition, yPosition, width, height, 0.0, 1.0);
+            ((SizedTextureArea) buttonTexture).drawHorizontalCutSubArea(position.x, position.y, size.width, size.height, 0.0, 1.0);
         } else {
-            buttonTexture.drawSubArea(xPosition, yPosition, width, height, 0.0, 0.0, 1.0, 1.0);
+            buttonTexture.drawSubArea(position.x, position.y, size.width, size.height, 0.0, 0.0, 1.0, 1.0);
         }
         FontRenderer fontRenderer = Minecraft.getMinecraft().fontRenderer;
         String text = I18n.format(displayText);
         fontRenderer.drawString(text,
-            xPosition + width / 2 - fontRenderer.getStringWidth(text) / 2,
-            yPosition + height / 2 - fontRenderer.FONT_HEIGHT / 2, textColor);
+            position.x + size.width / 2 - fontRenderer.getStringWidth(text) / 2,
+            position.y + size.height / 2 - fontRenderer.FONT_HEIGHT / 2, textColor);
         GlStateManager.color(1.0f, 1.0f, 1.0f);
     }
 
     @Override
     public boolean mouseClicked(int mouseX, int mouseY, int button) {
-        if (isMouseOver(xPosition, yPosition, width, height, mouseX, mouseY)) {
+        if (isMouseOverElement(mouseX, mouseY)) {
             triggerButton();
             return true;
         }

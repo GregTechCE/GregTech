@@ -209,6 +209,8 @@ public class MetaTileEntityLargeBoiler extends MultiblockWithDisplayBase {
             } else {
                 this.hasNoWater = true;
             }
+        } else {
+            this.hasNoWater = false;
         }
 
         if (fuelBurnTicksLeft == 0) {
@@ -315,7 +317,7 @@ public class MetaTileEntityLargeBoiler extends MultiblockWithDisplayBase {
     }
 
     @Override
-    public int getLightValue(IMultiblockPart sourcePart) {
+    public int getLightValueForPart(IMultiblockPart sourcePart) {
         return sourcePart == null ? 0 : (isActive ? 15 : 0);
     }
 

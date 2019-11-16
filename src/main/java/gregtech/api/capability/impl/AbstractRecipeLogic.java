@@ -44,10 +44,10 @@ public abstract class AbstractRecipeLogic extends MTETrait implements IWorkable 
     protected NonNullList<ItemStack> itemOutputs;
     protected final Random random = new Random();
 
-    private boolean isActive;
-    private boolean workingEnabled = true;
-    private boolean hasNotEnoughEnergy;
-    private boolean wasActiveAndNeedsUpdate;
+    protected boolean isActive;
+    protected boolean workingEnabled = true;
+    protected boolean hasNotEnoughEnergy;
+    protected boolean wasActiveAndNeedsUpdate;
 
     public AbstractRecipeLogic(MetaTileEntity tileEntity, RecipeMap<?> recipeMap) {
         super(tileEntity);
@@ -116,7 +116,7 @@ public abstract class AbstractRecipeLogic extends MTETrait implements IWorkable 
         }
     }
 
-    private void updateRecipeProgress() {
+    protected void updateRecipeProgress() {
         boolean drawEnergy = drawEnergy(recipeEUt);
         if (drawEnergy || (recipeEUt < 0)) {
             if (++progressTime >= maxProgressTime) {
@@ -192,8 +192,7 @@ public abstract class AbstractRecipeLogic extends MTETrait implements IWorkable 
         for (int i = 0; i < lastItemInputs.length; i++) {
             ItemStack currentStack = inputs.getStackInSlot(i);
             ItemStack lastStack = lastItemInputs[i];
-            if (!ItemStack.areItemsEqual(currentStack, lastStack) ||
-                !ItemStack.areItemStackTagsEqual(currentStack, lastStack)) {
+            if (!areItemStacksEqual(currentStack, lastStack)) {
                 this.lastItemInputs[i] = currentStack.isEmpty() ? ItemStack.EMPTY : currentStack.copy();
                 shouldRecheckRecipe = true;
             } else if (currentStack.getCount() != lastStack.getCount()) {
@@ -217,6 +216,12 @@ public abstract class AbstractRecipeLogic extends MTETrait implements IWorkable 
         return shouldRecheckRecipe;
     }
 
+    protected static boolean areItemStacksEqual(ItemStack stackA, ItemStack stackB) {
+        return (stackA.isEmpty() && stackB.isEmpty()) ||
+            (ItemStack.areItemsEqual(stackA, stackB) &&
+                ItemStack.areItemStackTagsEqual(stackA, stackB));
+    }
+
     protected boolean setupAndConsumeRecipeInputs(Recipe recipe) {
         int[] resultOverclock = calculateOverclock(recipe.getEUt(), getMaxVoltage(), recipe.getDuration());
         int totalEUt = resultOverclock[0] * resultOverclock[1];
@@ -226,8 +231,7 @@ public abstract class AbstractRecipeLogic extends MTETrait implements IWorkable 
         IMultipleTankHandler exportFluids = getOutputTank();
         return (totalEUt >= 0 ? getEnergyStored() >= (totalEUt > getEnergyCapacity() / 2 ? resultOverclock[0] : totalEUt) :
             (getEnergyStored() - resultOverclock[0] <= getEnergyCapacity())) &&
-            (!recipe.needsEmptyOutput() || MetaTileEntity.isItemHandlerEmpty(exportInventory)) &&
-            MetaTileEntity.addItemsToItemHandler(exportInventory, true, recipe.getOutputs()) &&
+            MetaTileEntity.addItemsToItemHandler(exportInventory, true, recipe.getAllItemOutputs(exportInventory.getSlots())) &&
             MetaTileEntity.addFluidsToFluidHandler(exportFluids, true, recipe.getFluidOutputs()) &&
             recipe.matches(true, importInventory, importFluids);
     }
@@ -253,7 +257,7 @@ public abstract class AbstractRecipeLogic extends MTETrait implements IWorkable 
             //do not overclock further if duration is already too small
             while (resultDuration >= 3 && resultEUt <= GTValues.V[tier - 1]) {
                 resultEUt *= 4;
-                resultDuration /= 2.7;
+                resultDuration /= 2.8;
             }
             return new int[]{negativeEU ? -resultEUt : resultEUt, (int) Math.ceil(resultDuration)};
         }
@@ -269,8 +273,8 @@ public abstract class AbstractRecipeLogic extends MTETrait implements IWorkable 
         setMaxProgress(resultOverclock[1]);
         this.recipeEUt = resultOverclock[0];
         this.fluidOutputs = GTUtility.copyFluidList(recipe.getFluidOutputs());
-        int byproductChanceMultiplier = getByproductChanceMultiplier(recipe);
-        this.itemOutputs = GTUtility.copyStackList(recipe.getResultItemOutputs(random, byproductChanceMultiplier));
+        int tier = getMachineTierForRecipe(recipe);
+        this.itemOutputs = GTUtility.copyStackList(recipe.getResultItemOutputs(getOutputInventory().getSlots(), random, tier));
         if (this.wasActiveAndNeedsUpdate) {
             this.wasActiveAndNeedsUpdate = false;
         } else {
@@ -278,14 +282,8 @@ public abstract class AbstractRecipeLogic extends MTETrait implements IWorkable 
         }
     }
 
-    protected int getByproductChanceMultiplier(Recipe recipe) {
-        int byproductChanceMultiplier = 1;
-        int tier = GTUtility.getTierByVoltage(getMaxVoltage());
-        int recipeTier = GTUtility.getTierByVoltage(recipe.getEUt());
-        if (tier > GTValues.LV && tier > recipeTier) {
-            byproductChanceMultiplier = 1 << (tier - recipeTier);
-        }
-        return byproductChanceMultiplier;
+    protected int getMachineTierForRecipe(Recipe recipe) {
+        return GTUtility.getTierByVoltage(getMaxVoltage());
     }
 
     protected void completeRecipe() {
@@ -330,7 +328,7 @@ public abstract class AbstractRecipeLogic extends MTETrait implements IWorkable 
         metaTileEntity.markDirty();
     }
 
-    private void setActive(boolean active) {
+    protected void setActive(boolean active) {
         this.isActive = active;
         metaTileEntity.markDirty();
         if (!metaTileEntity.getWorld().isRemote) {

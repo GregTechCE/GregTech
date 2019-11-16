@@ -1,13 +1,14 @@
 package gregtech.api.gui.widgets;
 
-import gregtech.api.gui.IPositionedRectangularWidget;
+import gregtech.api.gui.IRenderContext;
 import gregtech.api.gui.Widget;
 import gregtech.api.util.MCGuiUtil;
+import gregtech.api.util.Position;
+import gregtech.api.util.Size;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiTextField;
 import net.minecraft.network.PacketBuffer;
-import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -15,7 +16,7 @@ import java.util.function.Consumer;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 
-public class TextFieldWidget extends Widget implements IPositionedRectangularWidget {
+public class TextFieldWidget extends Widget {
 
     @SideOnly(Side.CLIENT)
     protected GuiTextField textField;
@@ -27,7 +28,7 @@ public class TextFieldWidget extends Widget implements IPositionedRectangularWid
     protected String currentString;
 
     public TextFieldWidget(int xPosition, int yPosition, int width, int height, boolean enableBackground, Supplier<String> textSupplier, Consumer<String> textResponder) {
-        super();
+        super(new Position(xPosition, yPosition), new Size(width, height));
         if (isClientSide()) {
             FontRenderer fontRenderer = Minecraft.getMinecraft().fontRenderer;
             this.textField = new GuiTextField(0, fontRenderer, xPosition, yPosition, width, height);
@@ -41,28 +42,28 @@ public class TextFieldWidget extends Widget implements IPositionedRectangularWid
     }
 
     @Override
-    public int getXPosition() {
-        return textField.x;
+    protected void onPositionUpdate() {
+        if (isClientSide() && textField != null) {
+            Position position = getPosition();
+            GuiTextField textField = this.textField;
+            textField.x = position.x;
+            textField.y = position.y;
+        }
     }
 
     @Override
-    public int getYPosition() {
-        return textField.y;
+    protected void onSizeUpdate() {
+        if (isClientSide() && textField != null) {
+            Size size = getSize();
+            GuiTextField textField = this.textField;
+            textField.width = size.width;
+            textField.height = size.height;
+        }
     }
 
     @Override
-    public int getWidth() {
-        return textField.width;
-    }
-
-    @Override
-    public int getHeight() {
-        return textField.height;
-    }
-
-    @Override
-    public void drawInBackground(int mouseX, int mouseY) {
-        super.drawInBackground(mouseX, mouseY);
+    public void drawInBackground(int mouseX, int mouseY, IRenderContext context) {
+        super.drawInBackground(mouseX, mouseY, context);
         this.textField.drawTextBox();
     }
 
@@ -134,9 +135,5 @@ public class TextFieldWidget extends Widget implements IPositionedRectangularWid
             this.textField.setValidator(validator::test);
         }
         return this;
-    }
-
-    private static boolean isClientSide() {
-        return FMLCommonHandler.instance().getSide().isClient();
     }
 }

@@ -49,6 +49,13 @@ public interface IElectricItem {
     long discharge(long amount, int dischargerTier, boolean ignoreTransferLimit, boolean externally, boolean simulate);
 
     /**
+     * Determine the transfer limit for the specified item
+     *
+     * @return maximum transfer rate item can handle in EU/t
+     */
+    long getTransferLimit();
+
+    /**
      * Determine the charge level for the specified item.
      * <p>
      * The item may not actually be chargeable to the returned level, e.g. if it is a

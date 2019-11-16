@@ -13,7 +13,7 @@ import gregtech.common.blocks.wood.BlockGregLeaves;
 import gregtech.common.blocks.wood.BlockGregLog;
 import gregtech.common.blocks.wood.BlockGregSapling;
 import gregtech.common.items.MetaItems;
-import gregtech.common.items.PotionFluids;
+import gregtech.common.items.potions.PotionFluids;
 import gregtech.common.pipelike.cable.ItemBlockCable;
 import gregtech.common.pipelike.fluidpipe.ItemBlockFluidPipe;
 import gregtech.loaders.MaterialInfoLoader;
@@ -54,9 +54,6 @@ public class CommonProxy {
         GTLog.logger.info("Registering Blocks...");
         IForgeRegistry<Block> registry = event.getRegistry();
 
-        //last chance for mods to register their potion types is here
-        PotionFluids.initPotionFluids();
-
         registry.register(MACHINE);
         registry.register(CABLE);
         registry.register(FLUID_PIPE);
@@ -87,6 +84,12 @@ public class CommonProxy {
         FRAMES.values().stream().distinct().forEach(registry::register);
         ORES.forEach(registry::register);
         FLUID_BLOCKS.forEach(registry::register);
+    }
+
+    @SubscribeEvent(priority = EventPriority.LOWEST)
+    public static void registerBlocksLast(RegistryEvent.Register<Block> event) {
+        //last chance for mods to register their potion types is here
+        PotionFluids.initPotionFluids();
     }
 
     @SuppressWarnings("unchecked")

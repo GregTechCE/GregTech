@@ -1,9 +1,13 @@
 package gregtech.api.gui.widgets;
 
 import gregtech.api.gui.GuiTextures;
+import gregtech.api.gui.IRenderContext;
+import gregtech.api.gui.Widget;
 import gregtech.api.gui.resources.SizedTextureArea;
 import gregtech.api.gui.resources.TextureArea;
 import gregtech.api.util.GTUtility;
+import gregtech.api.util.Position;
+import gregtech.api.util.Size;
 import gregtech.api.util.function.BooleanConsumer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
@@ -20,7 +24,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.function.*;
 
-public class CycleButtonWidget extends AbstractPositionedRectangleWidget {
+public class CycleButtonWidget extends Widget {
 
     protected TextureArea buttonTexture = GuiTextures.VANILLA_BUTTON.getSubArea(0.0, 0.0, 1.0, 0.5);
     private String[] optionNames;
@@ -33,14 +37,14 @@ public class CycleButtonWidget extends AbstractPositionedRectangleWidget {
     protected boolean isMouseHovered;
 
     public CycleButtonWidget(int xPosition, int yPosition, int width, int height, String[] optionNames, IntSupplier currentOptionSupplier, IntConsumer setOptionExecutor) {
-        super(xPosition, yPosition, width, height);
+        super(new Position(xPosition, yPosition), new Size(width, height));
         this.optionNames = optionNames;
         this.currentOptionSupplier = currentOptionSupplier;
         this.setOptionExecutor = setOptionExecutor;
     }
 
     public <T extends Enum<T> & IStringSerializable> CycleButtonWidget(int xPosition, int yPosition, int width, int height, Class<T> enumClass, Supplier<T> supplier, Consumer<T> updater) {
-        super(xPosition, yPosition, width, height);
+        super(new Position(xPosition, yPosition), new Size(width, height));
         T[] enumConstantPool = enumClass.getEnumConstants();
         this.optionNames = GTUtility.mapToString(enumConstantPool, it -> ((IStringSerializable) it).getName());
         this.currentOptionSupplier = () -> supplier.get().ordinal();
@@ -48,7 +52,7 @@ public class CycleButtonWidget extends AbstractPositionedRectangleWidget {
     }
 
     public CycleButtonWidget(int xPosition, int yPosition, int width, int height, BooleanSupplier supplier, BooleanConsumer updater, String... optionNames) {
-        super(xPosition, yPosition, width, height);
+        super(new Position(xPosition, yPosition), new Size(width, height));
         this.optionNames = optionNames;
         this.currentOptionSupplier = () -> supplier.getAsBoolean() ? 1 : 0;
         this.setOptionExecutor = (value) -> updater.apply(value >= 1);
@@ -71,23 +75,25 @@ public class CycleButtonWidget extends AbstractPositionedRectangleWidget {
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void drawInBackground(int mouseX, int mouseY) {
+    public void drawInBackground(int mouseX, int mouseY, IRenderContext context) {
+        Position pos = getPosition();
+        Size size = getSize();
         if (buttonTexture instanceof SizedTextureArea) {
-            ((SizedTextureArea) buttonTexture).drawHorizontalCutSubArea(xPosition, yPosition, width, height, 0.0, 1.0);
+            ((SizedTextureArea) buttonTexture).drawHorizontalCutSubArea(pos.x, pos.y, size.width, size.height, 0.0, 1.0);
         } else {
-            buttonTexture.drawSubArea(xPosition, yPosition, width, height, 0.0, 0.0, 1.0, 1.0);
+            buttonTexture.drawSubArea(pos.x, pos.y, size.width, size.height, 0.0, 0.0, 1.0, 1.0);
         }
         FontRenderer fontRenderer = Minecraft.getMinecraft().fontRenderer;
         String text = I18n.format(optionNames[currentOption]);
         fontRenderer.drawString(text,
-            xPosition + width / 2 - fontRenderer.getStringWidth(text) / 2,
-            yPosition + height / 2 - fontRenderer.FONT_HEIGHT / 2, textColor);
+            pos.x + size.width / 2 - fontRenderer.getStringWidth(text) / 2,
+            pos.y + size.height / 2 - fontRenderer.FONT_HEIGHT / 2, textColor);
         GlStateManager.color(1.0f, 1.0f, 1.0f);
     }
 
     @Override
     public void drawInForeground(int mouseX, int mouseY) {
-        boolean isHovered = isMouseOver(xPosition, yPosition, width, height, mouseX, mouseY);
+        boolean isHovered = isMouseOverElement(mouseX, mouseY);
         boolean wasHovered = isMouseHovered;
         if (isHovered && !wasHovered) {
             this.isMouseHovered = true;
@@ -125,7 +131,7 @@ public class CycleButtonWidget extends AbstractPositionedRectangleWidget {
     @SideOnly(Side.CLIENT)
     public boolean mouseClicked(int mouseX, int mouseY, int button) {
         super.mouseClicked(mouseX, mouseY, button);
-        if (isMouseOver(xPosition, yPosition, width, height, mouseX, mouseY)) {
+        if (isMouseOverElement(mouseX, mouseY)) {
             this.currentOption = (currentOption + 1) % optionNames.length;
             writeClientAction(1, buf -> buf.writeVarInt(currentOption));
             playButtonClickSound();

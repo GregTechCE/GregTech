@@ -30,6 +30,9 @@ public class ConfigHolder {
     @Config.Comment("Energy use multiplier for electric items. Default: 100")
     public static int energyUsageMultiplier = 100;
 
+    @Config.Comment("Chance of generating abandoned base in chunk = 1 / THIS_VALUE. 0 disables abandoned base generation")
+    public static int abandonedBaseRarity = 1000;
+
     @Config.RangeInt(min = 0, max = 100)
     @Config.Comment("Chance with which flint and steel will create fire. Default: 50")
     public static int flintChanceToCreateFire = 50;
@@ -63,6 +66,18 @@ public class ConfigHolder {
     @Config.RequiresMcRestart
     public static VanillaRecipes vanillaRecipes = new VanillaRecipes();
 
+    @Config.Comment("Sets the bonus EU output of Steam Turbines.")
+    @Config.RequiresMcRestart
+    public static int steamTurbineBonusOutput = 6144;
+
+    @Config.Comment("Sets the bonus EU output of Plasma Turbines.")
+    @Config.RequiresMcRestart
+    public static int plasmaTurbineBonusOutput = 6144;    
+
+    @Config.Comment("Sets the bonus EU output of Gas Turbines.")
+    @Config.RequiresMcRestart
+    public static int gasTurbineBonusOutput = 6144;    
+    
     public static class VanillaRecipes {
 
         @Config.Comment("Whether to nerf paper crafting recipe. Default is true.")

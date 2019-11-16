@@ -14,7 +14,6 @@ import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.recipes.ModHandler;
 import gregtech.api.render.OrientedOverlayRenderer;
 import gregtech.api.render.SimpleSidedCubeRenderer;
-import gregtech.api.render.SimpleSidedCubeRenderer.RenderSide;
 import gregtech.api.render.Textures;
 import gregtech.api.util.GTUtility;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
@@ -33,6 +32,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.ItemStackHandler;
 import org.apache.commons.lang3.ArrayUtils;
+import org.apache.commons.lang3.tuple.Pair;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -87,8 +87,8 @@ public abstract class SteamBoiler extends MetaTileEntity {
 
     @SideOnly(Side.CLIENT)
     @Override
-    public TextureAtlasSprite getParticleTexture() {
-        return getBaseRenderer().getSpriteOnSide(RenderSide.TOP);
+    public Pair<TextureAtlasSprite, Integer> getParticleTexture() {
+        return Pair.of(getBaseRenderer().getParticleSprite(), getPaintingColor());
     }
 
     @Override
@@ -197,24 +197,28 @@ public abstract class SteamBoiler extends MetaTileEntity {
     }
 
     private void generateSteam() {
-        if (currentTemperature >= 100 && getTimer() % getBoilingCycleLength() == 0) {
-            int fillAmount = (int) (baseSteamOutput * (currentTemperature / (getMaxTemperate() * 1.0)));
-            boolean hasDrainedWater = waterFluidTank.drain(1, true) != null;
-            int filledSteam = 0;
-            if (hasDrainedWater) {
-                filledSteam = steamFluidTank.fill(ModHandler.getSteam(fillAmount), true);
+        if(currentTemperature >= 100) {
+            if (getTimer() % getBoilingCycleLength() == 0) {
+                int fillAmount = (int) (baseSteamOutput * (currentTemperature / (getMaxTemperate() * 1.0)));
+                boolean hasDrainedWater = waterFluidTank.drain(1, true) != null;
+                int filledSteam = 0;
+                if (hasDrainedWater) {
+                    filledSteam = steamFluidTank.fill(ModHandler.getSteam(fillAmount), true);
+                }
+                if (this.hasNoWater && hasDrainedWater) {
+                    getWorld().setBlockToAir(getPos());
+                    getWorld().createExplosion(null,
+                        getPos().getX() + 0.5, getPos().getY() + 0.5, getPos().getZ() + 0.5,
+                        2.0f, true);
+                } else this.hasNoWater = !hasDrainedWater;
+                if (filledSteam == 0 && hasDrainedWater) {
+                    getWorld().playSound(null, getPos().getX() + 0.5, getPos().getY() + 0.5, getPos().getZ() + 0.5,
+                        SoundEvents.BLOCK_LAVA_EXTINGUISH, SoundCategory.BLOCKS, 1.0f, 1.0f);
+                    steamFluidTank.drain(4000, true);
+                }
             }
-            if (this.hasNoWater && hasDrainedWater) {
-                getWorld().setBlockToAir(getPos());
-                getWorld().createExplosion(null,
-                    getPos().getX() + 0.5, getPos().getY() + 0.5, getPos().getZ() + 0.5,
-                    2.0f, true);
-            } else this.hasNoWater = !hasDrainedWater;
-            if (filledSteam == 0 && hasDrainedWater) {
-                getWorld().playSound(null, getPos().getX() + 0.5, getPos().getY() + 0.5, getPos().getZ() + 0.5,
-                    SoundEvents.BLOCK_LAVA_EXTINGUISH, SoundCategory.BLOCKS, 1.0f, 1.0f);
-                steamFluidTank.drain(4000, true);
-            }
+        } else {
+            this.hasNoWater = false;
         }
     }
 

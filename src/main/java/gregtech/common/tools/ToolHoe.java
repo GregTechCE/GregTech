@@ -19,7 +19,7 @@ public class ToolHoe extends ToolBase {
     }
 
     @Override
-    public boolean isMinableBlock(IBlockState block, ItemStack stack) {
+    public boolean canMineBlock(IBlockState block, ItemStack stack) {
         String tool = block.getBlock().getHarvestTool(block);
         return (tool != null && tool.equals("hoe")) ||
             block.getMaterial() == Material.GROUND;
@@ -27,7 +27,7 @@ public class ToolHoe extends ToolBase {
 
     @Override
     public void onStatsAddedToTool(MetaValueItem item) {
-        item.addStats(new HoeBehaviour(DamageValues.DAMAGE_FOR_HOE));
+        item.addComponents(new HoeBehaviour(DamageValues.DAMAGE_FOR_HOE));
     }
 
 }

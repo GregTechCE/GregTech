@@ -89,7 +89,7 @@ public class OreRecipeHandler {
 
             RecipeBuilder<?> builder = RecipeMaps.MACERATOR_RECIPES.recipeBuilder()
                 .input(orePrefix, material)
-                .outputs(GTUtility.copyAmount((int) Math.round(amountOfCrushedOre * 2), crushedStack))
+                .outputs(GTUtility.copyAmount((int) Math.round(amountOfCrushedOre) * 2, crushedStack))
                 .chancedOutput(byproductStack, 1400, 850)
                 .duration(400).EUt(12);
             for (MaterialStack secondaryMaterial : orePrefix.secondaryMaterials) {
@@ -144,7 +144,7 @@ public class OreRecipeHandler {
             .input(crushedPrefix, material)
             .fluidInputs(ModHandler.getWater(1000))
             .outputs(crushedPurifiedOre,
-                OreDictUnifier.get(OrePrefix.dustTiny, byproductMaterial, material.byProductMultiplier * 3),
+                OreDictUnifier.get(OrePrefix.dustTiny, byproductMaterial, 3),
                 OreDictUnifier.get(OrePrefix.dust, Materials.Stone))
             .buildAndRegister();
 
@@ -152,7 +152,7 @@ public class OreRecipeHandler {
             .input(crushedPrefix, material)
             .fluidInputs(ModHandler.getDistilledWater(1000))
             .outputs(crushedPurifiedOre,
-                OreDictUnifier.get(OrePrefix.dustTiny, byproductMaterial, material.byProductMultiplier * 3),
+                OreDictUnifier.get(OrePrefix.dustTiny, byproductMaterial, 3),
                 OreDictUnifier.get(OrePrefix.dust, Materials.Stone))
             .duration(300)
             .buildAndRegister();

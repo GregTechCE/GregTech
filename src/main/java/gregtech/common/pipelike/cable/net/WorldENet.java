@@ -14,7 +14,7 @@ public class WorldENet extends WorldPipeNet<WireProperties, EnergyNet> {
             eNetWorldData = new WorldENet(DATA_ID);
             world.setData(DATA_ID, eNetWorldData);
         }
-        eNetWorldData.world = world;
+        eNetWorldData.setWorldAndInit(world);
         return eNetWorldData;
     }
 

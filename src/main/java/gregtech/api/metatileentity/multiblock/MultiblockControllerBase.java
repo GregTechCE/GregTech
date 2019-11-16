@@ -20,6 +20,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
 import org.apache.commons.lang3.ArrayUtils;
+import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.*;
 import java.util.function.BiFunction;
@@ -71,7 +72,7 @@ public abstract class MultiblockControllerBase extends MetaTileEntity {
         return true;
     }
 
-    public int getLightValue(IMultiblockPart sourcePart) {
+    public int getLightValueForPart(IMultiblockPart sourcePart) {
         return 0;
     }
 
@@ -80,8 +81,8 @@ public abstract class MultiblockControllerBase extends MetaTileEntity {
     }
 
     @Override
-    public final int getLightValue() {
-        return getLightValue(null);
+    public final int getActualLightValue() {
+        return getLightValueForPart(null);
     }
 
     public static Predicate<BlockWorldState> tilePredicate(BiFunction<BlockWorldState, MetaTileEntity, Boolean> predicate) {
@@ -142,8 +143,8 @@ public abstract class MultiblockControllerBase extends MetaTileEntity {
     }
 
     @Override
-    public TextureAtlasSprite getParticleTexture() {
-        return getBaseTexture(null).getParticleSprite();
+    public Pair<TextureAtlasSprite, Integer> getParticleTexture() {
+        return Pair.of(getBaseTexture(null).getParticleSprite(), getPaintingColor());
     }
 
     protected void checkStructurePattern() {

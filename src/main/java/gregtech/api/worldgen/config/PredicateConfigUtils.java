@@ -94,6 +94,9 @@ public class PredicateConfigUtils {
 
         for (IProperty<?> property : block.getBlockState().getProperties()) {
             JsonElement valueElement = object.get(property.getName());
+            if (valueElement == null) {
+                continue;
+            }
             if (valueElement.isJsonPrimitive()) {
                 JsonElement singleValue = valueElement;
                 valueElement = new JsonArray();

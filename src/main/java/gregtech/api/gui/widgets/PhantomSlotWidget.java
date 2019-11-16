@@ -30,6 +30,11 @@ public class PhantomSlotWidget extends SlotWidget implements IGhostIngredientTar
     }
 
     @Override
+    public boolean canMergeSlot(ItemStack stack) {
+        return false;
+    }
+
+    @Override
     public List<Target<?>> getPhantomTargets(Object ingredient) {
         if (!(ingredient instanceof ItemStack)) {
             return Collections.emptyList();

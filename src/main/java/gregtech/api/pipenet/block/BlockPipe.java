@@ -4,20 +4,22 @@ import codechicken.lib.raytracer.CuboidRayTraceResult;
 import codechicken.lib.raytracer.IndexedCuboid6;
 import codechicken.lib.raytracer.RayTracer;
 import codechicken.lib.vec.Cuboid6;
-import codechicken.multipart.TMultiPart;
-import codechicken.multipart.TileMultipart;
-import gregtech.api.GTValues;
+import cofh.core.render.IBlockAppearance;
 import gregtech.api.GregTechAPI;
 import gregtech.api.block.BuiltInRenderBlock;
 import gregtech.api.capability.GregtechCapabilities;
 import gregtech.api.capability.tool.IScrewdriverItem;
+import gregtech.api.capability.tool.IWrenchItem;
 import gregtech.api.cover.CoverBehavior;
 import gregtech.api.cover.ICoverable;
+import gregtech.api.cover.ICoverable.CoverSideData;
+import gregtech.api.cover.ICoverable.PrimaryBoxData;
+import gregtech.api.cover.IFacadeCover;
 import gregtech.api.pipenet.PipeNet;
 import gregtech.api.pipenet.WorldPipeNet;
+import gregtech.api.pipenet.tile.AttachmentType;
 import gregtech.api.pipenet.tile.IPipeTile;
 import gregtech.api.pipenet.tile.TileEntityPipeBase;
-import gregtech.api.unification.material.type.Material;
 import gregtech.common.tools.DamageValues;
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
@@ -31,18 +33,16 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumActionResult;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumHand;
-import net.minecraft.util.NonNullList;
+import net.minecraft.util.*;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.common.Optional.Method;
+import team.chisel.ctm.api.IFacade;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -50,7 +50,7 @@ import java.util.List;
 import java.util.Random;
 
 @SuppressWarnings("deprecation")
-public abstract class BlockPipe<PipeType extends Enum<PipeType> & IPipeType<NodeDataType>, NodeDataType, WorldPipeNetType extends WorldPipeNet<NodeDataType, ? extends PipeNet<NodeDataType>>> extends BuiltInRenderBlock implements ITileEntityProvider {
+public abstract class BlockPipe<PipeType extends Enum<PipeType> & IPipeType<NodeDataType>, NodeDataType, WorldPipeNetType extends WorldPipeNet<NodeDataType, ? extends PipeNet<NodeDataType>>> extends BuiltInRenderBlock implements ITileEntityProvider, IFacade, IBlockAppearance {
 
     public BlockPipe() {
         super(net.minecraft.block.material.Material.IRON);
@@ -59,7 +59,7 @@ public abstract class BlockPipe<PipeType extends Enum<PipeType> & IPipeType<Node
         setSoundType(SoundType.METAL);
         setHardness(2.0f);
         setResistance(3.0f);
-        setLightOpacity(1);
+        setLightOpacity(0);
         disableStats();
     }
 
@@ -67,55 +67,21 @@ public abstract class BlockPipe<PipeType extends Enum<PipeType> & IPipeType<Node
 
     public abstract WorldPipeNetType getWorldPipeNet(World world);
 
-    public abstract int getActiveNodeConnections(IBlockAccess world, BlockPos nodePos);
+    public abstract int getActiveNodeConnections(IBlockAccess world, BlockPos nodePos, IPipeTile<PipeType, NodeDataType> selfTileEntity);
 
     public abstract TileEntityPipeBase<PipeType, NodeDataType> createNewTileEntity(boolean supportsTicking);
 
-    public NodeDataType createProperties(IPipeTile<PipeType, NodeDataType> pipeTile) {
-        PipeType pipeType = pipeTile.getPipeType();
-        Material material = pipeTile.getPipeMaterial();
-        if (pipeType == null || material == null) {
-            return getFallbackType();
-        }
-        return createProperties(pipeTile.getPipeType(), pipeTile.getPipeMaterial());
-    }
+    public abstract NodeDataType createProperties(IPipeTile<PipeType, NodeDataType> pipeTile);
 
-    public NodeDataType createItemProperties(ItemStack itemStack) {
-        PipeType pipeType = getItemPipeType(itemStack);
-        Material material = getItemMaterial(itemStack);
-        if (pipeType == null || material == null) {
-            return getFallbackType();
-        }
-        return createProperties(pipeType, material);
-    }
+    public abstract NodeDataType createItemProperties(ItemStack itemStack);
 
-    protected abstract NodeDataType createProperties(PipeType pipeType, Material material);
+    public abstract ItemStack getDropItem(IPipeTile<PipeType, NodeDataType> pipeTile);
 
     protected abstract NodeDataType getFallbackType();
 
-    public ItemStack getDropItem(IPipeTile<PipeType, NodeDataType> pipeTile) {
-        return getItem(pipeTile.getPipeType(), pipeTile.getPipeMaterial());
-    }
+    public abstract PipeType getItemPipeType(ItemStack itemStack);
 
-    public ItemStack getItem(PipeType pipeType, Material material) {
-        if (pipeType == null || material == null) {
-            return ItemStack.EMPTY;
-        }
-        int materialId = Material.MATERIAL_REGISTRY.getIDForObject(material);
-        return new ItemStack(this, 1, pipeType.ordinal() * 1000 + materialId);
-    }
-
-    public PipeType getItemPipeType(ItemStack itemStack) {
-        return getPipeTypeClass().getEnumConstants()[itemStack.getMetadata() / 1000];
-    }
-
-    public Material getItemMaterial(ItemStack itemStack) {
-        return Material.MATERIAL_REGISTRY.getObjectById(itemStack.getMetadata() % 1000);
-    }
-
-    public void setTileEntityData(TileEntityPipeBase<PipeType, NodeDataType> pipeTile, ItemStack itemStack) {
-        pipeTile.setPipeData(this, getItemPipeType(itemStack), getItemMaterial(itemStack));
-    }
+    public abstract void setTileEntityData(TileEntityPipeBase<PipeType, NodeDataType> pipeTile, ItemStack itemStack);
 
     @Override
     public abstract void getSubBlocks(CreativeTabs itemIn, NonNullList<ItemStack> items);
@@ -123,7 +89,7 @@ public abstract class BlockPipe<PipeType extends Enum<PipeType> & IPipeType<Node
     @Override
     public void breakBlock(World worldIn, BlockPos pos, IBlockState state) {
         IPipeTile<PipeType, NodeDataType> pipeTile = getPipeTileEntity(worldIn, pos);
-        if (pipeTile != null && !((TileEntityPipeBase) pipeTile).isBeingConverted()) {
+        if (pipeTile != null) {
             pipeTile.getCoverableImplementation().dropAllCovers();
         }
         super.breakBlock(worldIn, pos, state);
@@ -138,8 +104,8 @@ public abstract class BlockPipe<PipeType extends Enum<PipeType> & IPipeType<Node
     @Override
     public void updateTick(World worldIn, BlockPos pos, IBlockState state, Random rand) {
         IPipeTile<PipeType, NodeDataType> pipeTile = getPipeTileEntity(worldIn, pos);
-        if (pipeTile != null) {
-            int activeConnections = getActiveNodeConnections(worldIn, pos);
+        if (pipeTile != null && !((TileEntityPipeBase<?, ?>) pipeTile).wasInDetachedConversionMode()) {
+            int activeConnections = getActiveNodeConnections(worldIn, pos, pipeTile);
             activeConnections &= ~pipeTile.getBlockedConnections(); //remove blocked connections
             boolean isActiveNode = activeConnections > 0;
             getWorldPipeNet(worldIn).addNode(pos, createProperties(pipeTile), 0, pipeTile.getBlockedConnections(), isActiveNode);
@@ -184,7 +150,7 @@ public abstract class BlockPipe<PipeType extends Enum<PipeType> & IPipeType<Node
     public void updateActiveNodeStatus(World worldIn, BlockPos pos, IPipeTile<PipeType, NodeDataType> pipeTile) {
         PipeNet<NodeDataType> pipeNet = getWorldPipeNet(worldIn).getNetFromPos(pos);
         if (pipeNet != null && pipeTile != null) {
-            int activeConnections = getActiveNodeConnections(worldIn, pos);
+            int activeConnections = getActiveNodeConnections(worldIn, pos, pipeTile);
             activeConnections &= ~pipeTile.getBlockedConnections(); //remove blocked connections
             boolean isActiveNodeNow = activeConnections > 0;
             boolean modeChanged = pipeNet.markNodeAsActive(pos, isActiveNodeNow);
@@ -215,12 +181,10 @@ public abstract class BlockPipe<PipeType extends Enum<PipeType> & IPipeType<Node
         }
         if (target instanceof CuboidRayTraceResult) {
             CuboidRayTraceResult result = (CuboidRayTraceResult) target;
-            if (result.cuboid6.data == null) {
-                return getDropItem(pipeTile);
-            } else if (result.cuboid6.data instanceof EnumFacing) {
-                EnumFacing coverSide = (EnumFacing) result.cuboid6.data;
+            if (result.cuboid6.data instanceof CoverSideData) {
+                EnumFacing coverSide = ((CoverSideData) result.cuboid6.data).side;
                 CoverBehavior coverBehavior = pipeTile.getCoverableImplementation().getCoverAtSide(coverSide);
-                return coverBehavior == null ? ItemStack.EMPTY : coverBehavior.getCoverDefinition().getDropItemStack();
+                return coverBehavior == null ? ItemStack.EMPTY : coverBehavior.getPickItem();
             }
         }
         return getDropItem(pipeTile);
@@ -233,26 +197,44 @@ public abstract class BlockPipe<PipeType extends Enum<PipeType> & IPipeType<Node
         if (rayTraceResult == null || pipeTile == null) {
             return false;
         }
-        EnumFacing coverSide = ICoverable.traceCoverSide(rayTraceResult);
-        CoverBehavior coverBehavior = coverSide == null ? null : pipeTile.getCoverableImplementation().getCoverAtSide(coverSide);
-        ItemStack itemStack = playerIn.getHeldItem(hand);
+        return onPipeActivated(playerIn, hand, rayTraceResult, pipeTile);
+    }
 
-        if(coverBehavior == null) {
+    public boolean onPipeActivated(EntityPlayer entityPlayer, EnumHand hand, CuboidRayTraceResult hit, IPipeTile<PipeType, NodeDataType> pipeTile) {
+        ItemStack itemStack = entityPlayer.getHeldItem(hand);
+        EnumFacing coverSide = ICoverable.traceCoverSide(hit);
+        if(coverSide == null)
             return false;
+
+        if (!(hit.cuboid6.data instanceof CoverSideData)) {
+            IWrenchItem wrenchItem = itemStack.getCapability(GregtechCapabilities.CAPABILITY_WRENCH, null);
+            if (wrenchItem != null) {
+                if(wrenchItem.damageItem(DamageValues.DAMAGE_FOR_WRENCH, true)) {
+                    if(!entityPlayer.world.isRemote) {
+                        boolean isBlocked = pipeTile.isConnectionBlocked(AttachmentType.PIPE, coverSide);
+                        pipeTile.setConnectionBlocked(AttachmentType.PIPE, coverSide, !isBlocked);
+                        wrenchItem.damageItem(DamageValues.DAMAGE_FOR_WRENCH, false);
+                    }
+                    return true;
+                }
+                return false;
+            }
         }
 
-        if (itemStack.hasCapability(GregtechCapabilities.CAPABILITY_SCREWDRIVER, null)) {
-            IScrewdriverItem screwdriver = itemStack.getCapability(GregtechCapabilities.CAPABILITY_SCREWDRIVER, null);
+        CoverBehavior coverBehavior = pipeTile.getCoverableImplementation().getCoverAtSide(coverSide);
+        if (coverBehavior == null)
+            return false;
 
-            if (screwdriver.damageItem(DamageValues.DAMAGE_FOR_SCREWDRIVER, true) && coverBehavior
-                .onScrewdriverClick(playerIn, hand, rayTraceResult) == EnumActionResult.SUCCESS) {
+        IScrewdriverItem screwdriver = itemStack.getCapability(GregtechCapabilities.CAPABILITY_SCREWDRIVER, null);
+        if(screwdriver != null) {
+            if (screwdriver.damageItem(DamageValues.DAMAGE_FOR_SCREWDRIVER, true) &&
+                coverBehavior.onScrewdriverClick(entityPlayer, hand, hit) == EnumActionResult.SUCCESS) {
                 screwdriver.damageItem(DamageValues.DAMAGE_FOR_SCREWDRIVER, false);
                 return true;
             }
             return false;
         }
-
-        return coverBehavior.onRightClick(playerIn, hand, rayTraceResult) == EnumActionResult.SUCCESS;
+        return coverBehavior.onRightClick(entityPlayer, hand, hit) == EnumActionResult.SUCCESS;
     }
 
     @Override
@@ -289,7 +271,7 @@ public abstract class BlockPipe<PipeType extends Enum<PipeType> & IPipeType<Node
 
     @Override
     public void addCollisionBoxToList(IBlockState state, World worldIn, BlockPos pos, AxisAlignedBB entityBox, List<AxisAlignedBB> collidingBoxes, @Nullable Entity entityIn, boolean isActualState) {
-        for (Cuboid6 axisAlignedBB : getCollisionBox(worldIn, pos, state)) {
+        for (Cuboid6 axisAlignedBB : getCollisionBox(worldIn, pos)) {
             AxisAlignedBB offsetBox = axisAlignedBB.aabb().offset(pos);
             if (offsetBox.intersects(entityBox)) collidingBoxes.add(offsetBox);
         }
@@ -298,7 +280,7 @@ public abstract class BlockPipe<PipeType extends Enum<PipeType> & IPipeType<Node
     @Nullable
     @Override
     public RayTraceResult collisionRayTrace(IBlockState blockState, World worldIn, BlockPos pos, Vec3d start, Vec3d end) {
-        return RayTracer.rayTraceCuboidsClosest(start, end, pos, getCollisionBox(worldIn, pos, blockState));
+        return RayTracer.rayTraceCuboidsClosest(start, end, pos, getCollisionBox(worldIn, pos));
     }
 
     @Override
@@ -308,7 +290,6 @@ public abstract class BlockPipe<PipeType extends Enum<PipeType> & IPipeType<Node
 
     @Override
     public boolean recolorBlock(World world, BlockPos pos, EnumFacing side, EnumDyeColor color) {
-        @SuppressWarnings("unchecked")
         IPipeTile<PipeType, NodeDataType> tileEntityPipe = (IPipeTile<PipeType, NodeDataType>) world.getTileEntity(pos);
         if (tileEntityPipe != null && tileEntityPipe.getPipeType() != null &&
             tileEntityPipe.getPipeType().isPaintable() &&
@@ -319,7 +300,7 @@ public abstract class BlockPipe<PipeType extends Enum<PipeType> & IPipeType<Node
         return false;
     }
 
-    private boolean isThisPipeBlock(Block block) {
+    protected boolean isThisPipeBlock(Block block) {
         return block.getClass().isAssignableFrom(getClass());
     }
 
@@ -333,32 +314,10 @@ public abstract class BlockPipe<PipeType extends Enum<PipeType> & IPipeType<Node
 
     public IPipeTile<PipeType, NodeDataType> getPipeTileEntity(TileEntity tileEntityAtPos) {
         if (tileEntityAtPos instanceof IPipeTile && isThisPipeBlock(((IPipeTile) tileEntityAtPos).getPipeBlock())) {
-            //noinspection unchecked
             return (IPipeTile<PipeType, NodeDataType>) tileEntityAtPos;
-        } else if (GTValues.isModLoaded(GTValues.MODID_FMP)) {
-            return tryGetMultipartTile(tileEntityAtPos);
         }
         return null;
     }
-
-    @Method(modid = GTValues.MODID_FMP)
-    private IPipeTile<PipeType, NodeDataType> tryGetMultipartTile(TileEntity tileEntityAtPos) {
-        if (tileEntityAtPos instanceof TileMultipart) {
-            TileMultipart tileMultipart = (TileMultipart) tileEntityAtPos;
-            List<TMultiPart> partList = tileMultipart.jPartList();
-            for (TMultiPart multiPart : partList) {
-                if (multiPart instanceof IPipeTile) {
-                    IPipeTile<?, ?> pipePart = (IPipeTile<?, ?>) multiPart;
-                    if (isThisPipeBlock(pipePart.getPipeBlock())) {
-                        //noinspection unchecked
-                        return (IPipeTile<PipeType, NodeDataType>) pipePart;
-                    }
-                }
-            }
-        }
-        return null;
-    }
-
 
     /**
      * Tests whatever pipe at given position can connect to a pipe from fromFacing face with fromColor color
@@ -368,6 +327,10 @@ public abstract class BlockPipe<PipeType extends Enum<PipeType> & IPipeType<Node
      */
     protected final int isPipeAccessibleAtSide(IBlockAccess world, IPipeTile<PipeType, NodeDataType> selfTile, EnumFacing side) {
         IPipeTile<PipeType, NodeDataType> tileEntityPipe = getPipeTileEntity(world, selfTile.getPipePos().offset(side));
+        return isPipeAccessibleAtSideInternal(selfTile, tileEntityPipe, side);
+    }
+
+    protected final int isPipeAccessibleAtSideInternal(IPipeTile<PipeType, NodeDataType> selfTile, IPipeTile<PipeType, NodeDataType> tileEntityPipe, EnumFacing side) {
         if (tileEntityPipe == null) {
             return 0; //not a cable pipe entity
         }
@@ -404,9 +367,10 @@ public abstract class BlockPipe<PipeType extends Enum<PipeType> & IPipeType<Node
      */
     public int getActualConnections(IPipeTile<PipeType, NodeDataType> selfTile, IBlockAccess world) {
         int connectedSidesMask = 0;
-        int activeNodeConnections = getActiveNodeConnections(world, selfTile.getPipePos());
+        int activeNodeConnections = getActiveVisualConnections(selfTile);
         for (EnumFacing side : EnumFacing.VALUES) {
-            if (selfTile.getCoverableImplementation().getCoverAtSide(side) != null) {
+            CoverBehavior coverBehavior = selfTile.getCoverableImplementation().getCoverAtSide(side);
+            if (coverBehavior != null && coverBehavior.shouldRenderConnected()) {
                 connectedSidesMask |= 1 << side.getIndex();
             }
             if ((selfTile.getBlockedConnections() & (1 << side.getIndex())) > 0)
@@ -417,7 +381,7 @@ public abstract class BlockPipe<PipeType extends Enum<PipeType> & IPipeType<Node
                 if (cableState >= 3) {
                     connectedSidesMask |= 1 << (6 + side.getIndex());
                 }
-            } else if (cableState == 0 && (activeNodeConnections & 1 << side.getIndex()) > 0) {
+            } else if ((activeNodeConnections & 1 << side.getIndex()) > 0) {
                 connectedSidesMask |= 1 << side.getIndex();
                 //always render back face for active machine connections
                 connectedSidesMask |= 1 << (6 + side.getIndex());
@@ -426,7 +390,11 @@ public abstract class BlockPipe<PipeType extends Enum<PipeType> & IPipeType<Node
         return connectedSidesMask;
     }
 
-    private List<IndexedCuboid6> getCollisionBox(IBlockAccess world, BlockPos pos, IBlockState state) {
+    protected int getActiveVisualConnections(IPipeTile<PipeType, NodeDataType> selfTile) {
+        return getActiveNodeConnections(selfTile.getPipeWorld(), selfTile.getPipePos(), selfTile);
+    }
+
+    private List<IndexedCuboid6> getCollisionBox(IBlockAccess world, BlockPos pos) {
         IPipeTile<PipeType, NodeDataType> pipeTile = getPipeTileEntity(world, pos);
         if (pipeTile == null) {
             return Collections.emptyList();
@@ -438,14 +406,51 @@ public abstract class BlockPipe<PipeType extends Enum<PipeType> & IPipeType<Node
         int actualConnections = getActualConnections(pipeTile, world);
         float thickness = pipeType.getThickness();
         ArrayList<IndexedCuboid6> result = new ArrayList<>();
-        result.add(new IndexedCuboid6(null, getSideBox(null, thickness)));
+        result.add(new IndexedCuboid6(new PrimaryBoxData(false), getSideBox(null, thickness)));
+        ICoverable coverable = pipeTile.getCoverableImplementation();
         for (EnumFacing side : EnumFacing.VALUES) {
             if ((actualConnections & 1 << side.getIndex()) > 0) {
-                result.add(new IndexedCuboid6(null, getSideBox(side, thickness)));
+                result.add(new IndexedCuboid6(new PipeConnectionData(side), getSideBox(side, thickness)));
             }
         }
-        pipeTile.getCoverableImplementation().addCoverCollisionBoundingBox(result, false);
+        coverable.addCoverCollisionBoundingBox(result);
         return result;
+    }
+
+    @Override
+    public boolean canRenderInLayer(IBlockState state, BlockRenderLayer layer) {
+        return true;
+    }
+
+    @Nonnull
+    @Override
+    public IBlockState getFacade(@Nonnull IBlockAccess world, @Nonnull BlockPos pos, @Nullable EnumFacing side, BlockPos otherPos) {
+        IPipeTile<?, ?> pipeTileEntity = getPipeTileEntity(world, pos);
+        if (pipeTileEntity != null && side != null) {
+            CoverBehavior coverBehavior = pipeTileEntity.getCoverableImplementation().getCoverAtSide(side);
+            if (coverBehavior instanceof IFacadeCover) {
+                return ((IFacadeCover) coverBehavior).getVisualState();
+            }
+        }
+        return world.getBlockState(pos);
+    }
+
+    @Override
+    public IBlockState getVisualState(IBlockAccess world, BlockPos pos, EnumFacing side) {
+        return getFacade(world, pos, side, null);
+    }
+
+    @Override
+    public boolean supportsVisualConnections() {
+        return true;
+    }
+
+    public static class PipeConnectionData {
+        public final EnumFacing side;
+
+        public PipeConnectionData(EnumFacing side) {
+            this.side = side;
+        }
     }
 
     public static Cuboid6 getSideBox(EnumFacing side, float thickness) {

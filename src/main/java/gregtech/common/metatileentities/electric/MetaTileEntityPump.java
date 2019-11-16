@@ -3,6 +3,7 @@ package gregtech.common.metatileentities.electric;
 import codechicken.lib.render.CCRenderState;
 import codechicken.lib.render.pipeline.ColourMultiplier;
 import codechicken.lib.render.pipeline.IVertexOperation;
+import codechicken.lib.vec.Cuboid6;
 import codechicken.lib.vec.Matrix4;
 import gregtech.api.GTValues;
 import gregtech.api.capability.impl.FluidTankList;
@@ -13,15 +14,11 @@ import gregtech.api.gui.widgets.FluidContainerSlotWidget;
 import gregtech.api.gui.widgets.ImageWidget;
 import gregtech.api.gui.widgets.SlotWidget;
 import gregtech.api.gui.widgets.TankWidget;
-import gregtech.api.metatileentity.IFastRenderMetaTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.MetaTileEntityHolder;
 import gregtech.api.metatileentity.TieredMetaTileEntity;
 import gregtech.api.render.Textures;
-import gregtech.api.unification.material.Materials;
 import gregtech.api.util.GTUtility;
-import gregtech.common.pipelike.fluidpipe.FluidPipeType;
-import gregtech.common.render.FluidPipeRenderer;
 import net.minecraft.block.BlockLiquid;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.resources.I18n;
@@ -32,9 +29,7 @@ import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumFacing.Axis;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.BlockPos.MutableBlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fluids.FluidStack;
@@ -53,8 +48,9 @@ import java.util.ArrayDeque;
 import java.util.Deque;
 import java.util.List;
 
-public class MetaTileEntityPump extends TieredMetaTileEntity implements IFastRenderMetaTileEntity {
+public class MetaTileEntityPump extends TieredMetaTileEntity {
 
+    private static final Cuboid6 PIPE_CUBOID = new Cuboid6(6 / 16.0, 0.0, 6 / 16.0, 10 / 16.0, 1.0, 10 / 16.0);
     private static final int BASE_PUMP_RANGE = 32;
     private static final int EXTRA_PUMP_RANGE = 8;
     private static final int PUMP_SPEED_BASE = 40;
@@ -88,30 +84,6 @@ public class MetaTileEntityPump extends TieredMetaTileEntity implements IFastRen
         }
         Textures.SCREEN.renderSided(EnumFacing.UP, renderState, translation, pipeline);
         Textures.PIPE_IN_OVERLAY.renderSided(EnumFacing.DOWN, renderState, translation, pipeline);
-    }
-
-    @Override
-    public void renderMetaTileEntityFast(CCRenderState renderState, Matrix4 translation, float partialTicks) {
-        if(getWorld() != null) {
-            MutableBlockPos blockPos = new MutableBlockPos(getPos());
-            IVertexOperation[] pipeline1 = new IVertexOperation[] {translation};
-            for (int i = 0; i < pumpHeadY; i++) {
-                translation.translate(0.0, -1.0, 0.0);
-                blockPos.move(EnumFacing.DOWN);
-                renderState.preRenderWorld(getWorld(), blockPos);
-                FluidPipeRenderer.INSTANCE.renderPipeBlock(Materials.Steel, FluidPipeType.SMALL_OPAQUE, -1, renderState, pipeline1, 0b11 | 1 << 6);
-            }
-        }
-    }
-
-    @Override
-    public AxisAlignedBB getRenderBoundingBox() {
-        return new AxisAlignedBB(getPos(), getPos().add(1, 1, 1));
-    }
-
-    @Override
-    public boolean isGlobalRenderer() {
-        return true;
     }
 
     @Override

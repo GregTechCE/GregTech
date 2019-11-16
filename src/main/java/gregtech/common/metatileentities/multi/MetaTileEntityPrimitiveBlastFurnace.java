@@ -5,6 +5,8 @@ import codechicken.lib.render.pipeline.IVertexOperation;
 import codechicken.lib.texture.TextureUtils;
 import codechicken.lib.vec.Cuboid6;
 import codechicken.lib.vec.Matrix4;
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableMap;
 import gregtech.api.GTValues;
 import gregtech.api.capability.impl.ItemHandlerProxy;
 import gregtech.api.gui.GuiTextures;
@@ -23,8 +25,10 @@ import gregtech.api.render.ICubeRenderer;
 import gregtech.api.render.Textures;
 import gregtech.api.unification.OreDictUnifier;
 import gregtech.api.unification.material.Materials;
+import gregtech.api.unification.material.type.Material;
 import gregtech.api.unification.ore.OrePrefix;
 import gregtech.api.unification.stack.MaterialStack;
+import gregtech.api.unification.stack.UnificationEntry;
 import gregtech.common.blocks.BlockMetalCasing.MetalCasingType;
 import gregtech.common.blocks.MetaBlocks;
 import net.minecraft.block.state.IBlockState;
@@ -37,19 +41,37 @@ import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.common.util.Constants.NBT;
 import net.minecraftforge.items.IItemHandlerModifiable;
 import net.minecraftforge.items.ItemHandlerHelper;
 import net.minecraftforge.items.ItemStackHandler;
 
 import javax.annotation.Nonnull;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 
 public class MetaTileEntityPrimitiveBlastFurnace extends MultiblockControllerBase {
+
+    private static final List<OrePrefix> FUEL_DISPLAY_PREFIXES = ImmutableList.of(
+        OrePrefix.gem, OrePrefix.dust, OrePrefix.block);
+
+    private static final Map<String, MaterialStack> ALTERNATIVE_MATERIAL_NAMES = ImmutableMap.of(
+        "fuelCoke", new MaterialStack(Materials.Coke, GTValues.M),
+        "blockFuelCoke", new MaterialStack(Materials.Coke, GTValues.M * 9L));
+
+    private static final Map<Material, Float> MATERIAL_FUEL_MAP = ImmutableMap.of(
+        Materials.Lignite, 0.7f,
+        Materials.Charcoal, 1.0f,
+        Materials.Coal, 1.0f,
+        Materials.Coke, 2.0f);
 
     private int maxProgressDuration;
     private int currentProgress;
     private NonNullList<ItemStack> outputsList;
-    private int fuelUnitsLeft;
+    private float fuelUnitsLeft;
     private boolean isActive;
     private boolean wasActiveAndNeedUpdate;
 
@@ -92,9 +114,8 @@ public class MetaTileEntityPrimitiveBlastFurnace extends MultiblockControllerBas
         if (previousRecipe != null &&
             previousRecipe.getInput().getIngredient().apply(inputStack)) {
             currentRecipe = previousRecipe;
-        } else if (!ItemStack.areItemsEqual(lastInputStack, inputStack) ||
-            !ItemStack.areItemStackTagsEqual(lastInputStack, inputStack)) {
-            this.lastInputStack = inputStack.copy();
+        } else if (!areItemStacksEqual(inputStack, lastInputStack)) {
+            this.lastInputStack = inputStack.isEmpty() ? ItemStack.EMPTY : inputStack.copy();
             currentRecipe = RecipeMaps.PRIMITIVE_BLAST_FURNACE_RECIPES.stream()
                 .filter(it -> it.getInput().getIngredient().test(inputStack))
                 .findFirst().orElse(null);
@@ -103,6 +124,12 @@ public class MetaTileEntityPrimitiveBlastFurnace extends MultiblockControllerBas
             }
         }
         return currentRecipe;
+    }
+
+    private static boolean areItemStacksEqual(ItemStack stackA, ItemStack stackB) {
+        return (stackA.isEmpty() && stackB.isEmpty()) ||
+            (ItemStack.areItemsEqual(stackA, stackB) &&
+                ItemStack.areItemStackTagsEqual(stackA, stackB));
     }
 
     private boolean setupRecipe(ItemStack inputStack, int fuelAmount, PrimitiveBlastFurnaceRecipe recipe) {
@@ -116,17 +143,17 @@ public class MetaTileEntityPrimitiveBlastFurnace extends MultiblockControllerBas
         if (inputStack.isEmpty() || (fuelStack.isEmpty() && fuelUnitsLeft == 0)) {
             return false;
         }
-        int fuelUnitsPerItem = getFuelUnits(fuelStack);
-        int totalFuelUnits = fuelUnitsLeft + fuelUnitsPerItem * fuelStack.getCount();
+        float fuelUnitsPerItem = getFuelUnits(fuelStack);
+        float totalFuelUnits = fuelUnitsLeft + fuelUnitsPerItem * fuelStack.getCount();
         PrimitiveBlastFurnaceRecipe currentRecipe = getOrRefreshRecipe(inputStack);
-        if (currentRecipe != null && setupRecipe(inputStack, totalFuelUnits, currentRecipe)) {
+        if (currentRecipe != null && setupRecipe(inputStack, (int) totalFuelUnits, currentRecipe)) {
             inputStack.shrink(currentRecipe.getInput().getCount());
-            int fuelUnitsToConsume = currentRecipe.getFuelAmount();
-            int remainderConsumed = Math.min(fuelUnitsToConsume, fuelUnitsLeft);
+            float fuelUnitsToConsume = currentRecipe.getFuelAmount();
+            float remainderConsumed = Math.min(fuelUnitsToConsume, fuelUnitsLeft);
             fuelUnitsToConsume -= remainderConsumed;
 
             int fuelItemsToConsume = (int) Math.ceil(fuelUnitsToConsume / (fuelUnitsPerItem * 1.0));
-            int remainderAdded = fuelItemsToConsume * fuelUnitsPerItem - fuelUnitsToConsume;
+            float remainderAdded = fuelItemsToConsume * fuelUnitsPerItem - fuelUnitsToConsume;
 
             this.fuelUnitsLeft += (remainderAdded - remainderConsumed);
             fuelStack.shrink(fuelItemsToConsume);
@@ -134,7 +161,7 @@ public class MetaTileEntityPrimitiveBlastFurnace extends MultiblockControllerBas
             this.currentProgress = 0;
             NonNullList<ItemStack> outputs = NonNullList.create();
             outputs.add(currentRecipe.getOutput().copy());
-            outputs.add(OreDictUnifier.get(OrePrefix.dustTiny, Materials.DarkAsh, Math.max(1, Math.abs(3 - fuelUnitsPerItem))));
+            outputs.add(getAshForRecipeFuelConsumption(currentRecipe.getFuelAmount()));
             this.outputsList = outputs;
             markDirty();
             return true;
@@ -147,7 +174,7 @@ public class MetaTileEntityPrimitiveBlastFurnace extends MultiblockControllerBas
         super.writeToNBT(data);
         data.setBoolean("Active", isActive);
         data.setBoolean("WasActive", wasActiveAndNeedUpdate);
-        data.setInteger("FuelUnitsLeft", fuelUnitsLeft);
+        data.setFloat("FuelUnitsLeft", fuelUnitsLeft);
         data.setInteger("MaxProgress", maxProgressDuration);
         if (maxProgressDuration > 0) {
             data.setInteger("Progress", currentProgress);
@@ -165,7 +192,7 @@ public class MetaTileEntityPrimitiveBlastFurnace extends MultiblockControllerBas
         super.readFromNBT(data);
         this.isActive = data.getBoolean("Active");
         this.wasActiveAndNeedUpdate = data.getBoolean("WasActive");
-        this.fuelUnitsLeft = data.getInteger("FuelUnitsLeft");
+        this.fuelUnitsLeft = data.getFloat("FuelUnitsLeft");
         this.maxProgressDuration = data.getInteger("MaxProgress");
         if (maxProgressDuration > 0) {
             this.currentProgress = data.getInteger("Progress");
@@ -216,27 +243,85 @@ public class MetaTileEntityPrimitiveBlastFurnace extends MultiblockControllerBas
     }
 
     @Override
-    public int getLightValue(IMultiblockPart sourcePart) {
+    public int getLightValueForPart(IMultiblockPart sourcePart) {
         return sourcePart == null && isActive ? 15 : 0;
     }
 
-    protected int getFuelUnits(ItemStack fuelType) {
+    public static float getFuelUnits(ItemStack fuelType) {
         if (fuelType.isEmpty()) {
             return 0;
         }
         MaterialStack materialStack = OreDictUnifier.getMaterial(fuelType);
+        if(materialStack == null) {
+            //try alternative material names if we can't find valid standard one
+            materialStack = OreDictUnifier.getOreDictionaryNames(fuelType).stream()
+                .map(ALTERNATIVE_MATERIAL_NAMES::get)
+                .filter(Objects::nonNull)
+                .findFirst().orElse(null);
+        }
+
         if (materialStack != null && materialStack.amount >= GTValues.M) {
             int materialAmount = (int) (materialStack.amount / GTValues.M);
-            if (materialStack.material == Materials.Coal || materialStack.material == Materials.Charcoal) {
-                return materialAmount;
-            } else if (materialStack.material == Materials.Coke) {
-                return 2 * materialAmount;
-            }
-        }
-        if (OreDictUnifier.getOreDictionaryNames(fuelType).contains("fuelCoke")) {
-            return 2;
+            Float materialMultiplier = MATERIAL_FUEL_MAP.get(materialStack.material);
+            return materialMultiplier == null ? 0 : materialAmount * materialMultiplier;
         }
         return 0;
+    }
+
+    public static List<ItemStack> getDisplayFuelsForRecipe(int recipeFuelUnits) {
+        ArrayList<ItemStack> resultStacks = new ArrayList<>();
+
+        for (OrePrefix orePrefix : FUEL_DISPLAY_PREFIXES) {
+            int materialAmount = (int) (orePrefix.materialAmount / GTValues.M);
+            for (Material fuelMaterial : MATERIAL_FUEL_MAP.keySet()) {
+                float materialMultiplier = MATERIAL_FUEL_MAP.get(fuelMaterial);
+                float materialFuelUnits = materialAmount * materialMultiplier;
+                int stackSize = (int) Math.ceil(recipeFuelUnits / materialFuelUnits);
+
+                List<ItemStack> materialStacks = OreDictUnifier.getAll(new UnificationEntry(orePrefix, fuelMaterial));
+                for (ItemStack materialStack : materialStacks) {
+                    materialStack.setCount(stackSize);
+                    resultStacks.add(materialStack);
+                }
+            }
+        }
+
+        for (String specialFuelName : ALTERNATIVE_MATERIAL_NAMES.keySet()) {
+            List<ItemStack> allItemStacks = OreDictUnifier.getAllWithOreDictionaryName(specialFuelName);
+            MaterialStack materialStack = ALTERNATIVE_MATERIAL_NAMES.get(specialFuelName);
+            int materialAmount = (int) (materialStack.amount / GTValues.M);
+            float materialMultiplier = MATERIAL_FUEL_MAP.getOrDefault(materialStack.material, 0.0f);
+            float materialFuelUnits = materialAmount * materialMultiplier;
+            int stackSize = (int) Math.ceil(recipeFuelUnits / materialFuelUnits);
+
+            for (ItemStack itemStack : allItemStacks) {
+                itemStack.setCount(stackSize);
+                resultStacks.add(itemStack);
+            }
+        }
+
+        //de-duplicate items in the result list
+        int currentIndex = 0;
+        loop: while (currentIndex < resultStacks.size()) {
+            ItemStack itemStack = resultStacks.get(currentIndex);
+
+            for (int i = 0; i < currentIndex; i++) {
+                ItemStack otherStack = resultStacks.get(i);
+                if(ItemStack.areItemsEqual(itemStack, otherStack)) {
+                    resultStacks.remove(currentIndex); //remove duplicate item
+                    continue loop;
+                }
+            }
+            //increment index only if we didn't remove item
+            currentIndex++;
+        }
+
+        return resultStacks;
+    }
+
+    public static ItemStack getAshForRecipeFuelConsumption(int fuelUnitsConsumed) {
+        int ashAmount = MathHelper.clamp(1 + fuelUnitsConsumed, 2, 8);
+        return OreDictUnifier.get(OrePrefix.dustTiny, Materials.DarkAsh, ashAmount);
     }
 
     protected IBlockState getCasingState() {

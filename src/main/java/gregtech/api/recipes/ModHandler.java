@@ -14,7 +14,6 @@ import gregtech.api.unification.stack.UnificationEntry;
 import gregtech.api.util.DummyContainer;
 import gregtech.api.util.GTLog;
 import gregtech.api.util.ShapedOreEnergyTransferRecipe;
-import gregtech.api.util.ShapedOreIngredientAwareRecipe;
 import gregtech.api.util.world.DummyWorld;
 import gregtech.common.MetaFluids;
 import net.minecraft.block.Block;
@@ -28,11 +27,9 @@ import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
-import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
-import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
 import net.minecraftforge.registries.IForgeRegistry;
@@ -94,39 +91,11 @@ public class ModHandler {
      * Returns a Liquid Stack with given amount of Steam.
      */
     public static FluidStack getSteam(int amount) {
-        return Materials.Steam.getFluid(amount);
-    }
-
-    /**
-     * Returns if that Liquid is Milk
-     */
-    public static boolean isMilk(Fluid fluid) {
-        return getMilk(1).getFluid() == fluid;
-    }
-
-    /**
-     * Returns a Liquid Stack with given amount of Milk.
-     */
-    public static FluidStack getMilk(int amount) {
-        return FluidRegistry.getFluidStack("milk", amount);
+        return Objects.requireNonNull(Materials.Steam.getFluid(amount));
     }
 
     public static boolean isMaterialWood(Material material) {
         return material == Materials.Wood;
-    }
-
-    /**
-     * Gets an Item from mods
-     */
-    public static ItemStack getModItem(String modID, String itemName, int amount) {
-        return getModItem(modID, itemName, amount, 0);
-    }
-
-    /**
-     * Gets an Item from mods, with metadata specified
-     */
-    public static ItemStack getModItem(String modID, String itemName, int amount, int meta) {
-        return GameRegistry.makeItemStack(modID + ":" + itemName, meta, amount, null);
     }
 
     public static ItemStack getBurningFuelRemainder(Random random, ItemStack fuelStack) {
@@ -290,7 +259,7 @@ public class ModHandler {
         ForgeRegistries.RECIPES.register(shapedOreRecipe);
     }
 
-    public static void addShapedEnergyTransferRecipe(String regName, ItemStack result, Object... recipe) {
+    public static void addShapedEnergyTransferRecipe(String regName, ItemStack result, Predicate<ItemStack> chargePredicate, boolean transferMaxCharge, Object... recipe) {
         boolean skip = false;
         if (result.isEmpty()) {
             GTLog.logger.error("Result cannot be an empty ItemStack. Recipe: {}", regName);
@@ -303,26 +272,7 @@ public class ModHandler {
             return;
         }
 
-        IRecipe shapedOreRecipe = new ShapedOreEnergyTransferRecipe(null, result.copy(), finalizeShapedRecipeInput(recipe))
-            .setMirrored(false) //make all recipes not mirrored by default
-            .setRegistryName(regName);
-        ForgeRegistries.RECIPES.register(shapedOreRecipe);
-    }
-
-    public static void addShapedIngredientAwareRecipe(String regName, ItemStack result, Object... recipe) {
-        boolean skip = false;
-        if (result.isEmpty()) {
-            GTLog.logger.error("Result cannot be an empty ItemStack. Recipe: {}", regName);
-            GTLog.logger.error("Stacktrace:", new IllegalArgumentException());
-            skip = true;
-        }
-        skip |= validateRecipe(regName, recipe);
-        if (skip) {
-            RecipeMap.setFoundInvalidRecipe(true);
-            return;
-        }
-
-        IRecipe shapedOreRecipe = new ShapedOreIngredientAwareRecipe(null, result.copy(), finalizeShapedRecipeInput(recipe))
+        IRecipe shapedOreRecipe = new ShapedOreEnergyTransferRecipe(null, result.copy(), chargePredicate, transferMaxCharge, finalizeShapedRecipeInput(recipe))
             .setMirrored(false) //make all recipes not mirrored by default
             .setRegistryName(regName);
         ForgeRegistries.RECIPES.register(shapedOreRecipe);
@@ -355,40 +305,22 @@ public class ModHandler {
                     .map(s -> "\"" + s + "\"")
                     .collect(Collectors.joining(", ")));
             GTLog.logger.error("Stacktrace:", new IllegalArgumentException());
-            //skip = true; TODO figure out why the fuck do these recipes collide
+            skip = true;
         }
         return skip;
     }
 
     public static Object[] finalizeShapedRecipeInput(Object... recipe) {
         for (byte i = 0; i < recipe.length; i++) {
-            if (recipe[i] instanceof MetaItem.MetaValueItem) {
-                recipe[i] = ((MetaItem<?>.MetaValueItem) recipe[i]).getStackForm();
-            } else if (recipe[i] instanceof Enum) {
-                recipe[i] = ((Enum<?>) recipe[i]).name();
-            } else if (recipe[i] instanceof UnificationEntry) {
-                recipe[i] = recipe[i].toString();
-            } else if (!(recipe[i] instanceof ItemStack
-                || recipe[i] instanceof Item
-                || recipe[i] instanceof Block
-                || recipe[i] instanceof String
-                || recipe[i] instanceof Character
-                || recipe[i] instanceof Boolean)) {
-                throw new IllegalArgumentException(recipe.getClass().getSimpleName() + " type is not suitable for crafting input.");
-            }
+            recipe[i] = finalizeIngredient(recipe[i]);
         }
-
         int idx = 0;
         ArrayList<Object> recipeList = new ArrayList<>(Arrays.asList(recipe));
 
         while (recipe[idx] instanceof String) {
-
             StringBuilder s = new StringBuilder((String) recipe[idx++]);
-
             while (s.length() < 3) s.append(" ");
-
             if (s.length() > 3) throw new IllegalArgumentException();
-
             for (char c : s.toString().toCharArray()) {
                 String toolName = getToolNameByCharacter(c);
                 if (toolName != null) {
@@ -398,6 +330,24 @@ public class ModHandler {
             }
         }
         return recipeList.toArray();
+    }
+    
+    public static Object finalizeIngredient(Object ingredient) {
+        if (ingredient instanceof MetaItem.MetaValueItem) {
+            ingredient = ((MetaItem<?>.MetaValueItem) ingredient).getStackForm();
+        } else if (ingredient instanceof Enum) {
+            ingredient = ((Enum<?>) ingredient).name();
+        } else if (ingredient instanceof UnificationEntry) {
+            ingredient = ingredient.toString();
+        } else if (!(ingredient instanceof ItemStack
+            || ingredient instanceof Item
+            || ingredient instanceof Block
+            || ingredient instanceof String
+            || ingredient instanceof Character
+            || ingredient instanceof Boolean)) {
+            throw new IllegalArgumentException(ingredient.getClass().getSimpleName() + " type is not suitable for crafting input.");
+        }
+        return ingredient;
     }
 
     /**

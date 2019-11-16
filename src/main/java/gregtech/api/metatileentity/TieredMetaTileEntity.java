@@ -9,7 +9,6 @@ import gregtech.api.capability.IEnergyContainer;
 import gregtech.api.capability.impl.EnergyContainerHandler;
 import gregtech.api.capability.impl.EnergyContainerHandler.IEnergyChangeListener;
 import gregtech.api.render.SimpleSidedCubeRenderer;
-import gregtech.api.render.SimpleSidedCubeRenderer.RenderSide;
 import gregtech.api.render.Textures;
 import gregtech.api.util.GTUtility;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
@@ -18,6 +17,7 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import org.apache.commons.lang3.ArrayUtils;
+import org.apache.commons.lang3.tuple.Pair;
 
 public abstract class TieredMetaTileEntity extends MetaTileEntity implements IEnergyChangeListener, ITieredMetaTileEntity {
 
@@ -37,7 +37,6 @@ public abstract class TieredMetaTileEntity extends MetaTileEntity implements IEn
                 tierVoltage * 32L, tierVoltage, getMaxInputOutputAmperage());
         } else this.energyContainer = EnergyContainerHandler.receiverContainer(this,
             tierVoltage * 32L, tierVoltage, getMaxInputOutputAmperage());
-        updateComparatorValue();
     }
 
     @Override
@@ -50,9 +49,6 @@ public abstract class TieredMetaTileEntity extends MetaTileEntity implements IEn
 
     @Override
     public void onEnergyChanged(IEnergyContainer container, boolean isInitialChange) {
-        if (!isInitialChange) {
-            updateComparatorValue();
-        }
     }
 
     @SideOnly(Side.CLIENT)
@@ -62,8 +58,8 @@ public abstract class TieredMetaTileEntity extends MetaTileEntity implements IEn
 
     @Override
     @SideOnly(Side.CLIENT)
-    public TextureAtlasSprite getParticleTexture() {
-        return getBaseRenderer().getSpriteOnSide(RenderSide.TOP);
+    public Pair<TextureAtlasSprite, Integer> getParticleTexture() {
+        return Pair.of(getBaseRenderer().getParticleSprite(), getPaintingColor());
     }
 
     @Override

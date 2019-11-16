@@ -45,5 +45,4 @@ public class ToolButcheryKnife extends ToolBase {
     public List<EnchantmentData> getEnchantments(ItemStack stack) {
         return Lists.newArrayList(new EnchantmentData(Enchantments.LOOTING, 3));
     }
-
 }

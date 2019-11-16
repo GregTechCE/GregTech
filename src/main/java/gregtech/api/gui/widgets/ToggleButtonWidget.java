@@ -2,8 +2,12 @@ package gregtech.api.gui.widgets;
 
 import com.google.common.base.Preconditions;
 import gregtech.api.gui.GuiTextures;
+import gregtech.api.gui.IRenderContext;
+import gregtech.api.gui.Widget;
 import gregtech.api.gui.resources.SizedTextureArea;
 import gregtech.api.gui.resources.TextureArea;
+import gregtech.api.util.Position;
+import gregtech.api.util.Size;
 import gregtech.api.util.function.BooleanConsumer;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.item.ItemStack;
@@ -15,7 +19,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.function.BooleanSupplier;
 
-public class ToggleButtonWidget extends AbstractPositionedRectangleWidget {
+public class ToggleButtonWidget extends Widget {
 
     protected TextureArea buttonTexture;
     private BooleanSupplier isPressedCondition;
@@ -29,12 +33,8 @@ public class ToggleButtonWidget extends AbstractPositionedRectangleWidget {
 
     public ToggleButtonWidget(int xPosition, int yPosition, int width, int height, TextureArea buttonTexture,
                               BooleanSupplier isPressedCondition, BooleanConsumer setPressedExecutor) {
-        super(xPosition, yPosition, width, height);
+        super(new Position(xPosition, yPosition), new Size(width, height));
         Preconditions.checkNotNull(buttonTexture, "texture");
-        this.xPosition = xPosition;
-        this.yPosition = yPosition;
-        this.width = width;
-        this.height = height;
         this.buttonTexture = buttonTexture;
         this.isPressedCondition = isPressedCondition;
         this.setPressedExecutor = setPressedExecutor;
@@ -54,17 +54,19 @@ public class ToggleButtonWidget extends AbstractPositionedRectangleWidget {
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void drawInBackground(int mouseX, int mouseY) {
+    public void drawInBackground(int mouseX, int mouseY, IRenderContext context) {
+        Position pos = getPosition();
+        Size size = getSize();
         if (buttonTexture instanceof SizedTextureArea) {
-            ((SizedTextureArea) buttonTexture).drawHorizontalCutSubArea(xPosition, yPosition, width, height, isPressed ? 0.5 : 0.0, 0.5);
+            ((SizedTextureArea) buttonTexture).drawHorizontalCutSubArea(pos.x, pos.y, size.width, size.height, isPressed ? 0.5 : 0.0, 0.5);
         } else {
-            buttonTexture.drawSubArea(xPosition, yPosition, width, height, 0.0, isPressed ? 0.5 : 0.0, 1.0, 0.5);
+            buttonTexture.drawSubArea(pos.x, pos.y, size.width, size.height, 0.0, isPressed ? 0.5 : 0.0, 1.0, 0.5);
         }
     }
 
     @Override
     public void drawInForeground(int mouseX, int mouseY) {
-        if(isMouseOver(mouseX, mouseY) && tooltipText != null) {
+        if(isMouseOverElement(mouseX, mouseY) && tooltipText != null) {
             String postfix = isPressed ? ".enabled" : ".disabled";
             String tooltipHoverString = tooltipText + postfix;
             List<String> hoverList = Arrays.asList(I18n.format(tooltipHoverString).split("/n"));
@@ -93,7 +95,7 @@ public class ToggleButtonWidget extends AbstractPositionedRectangleWidget {
     @SideOnly(Side.CLIENT)
     public boolean mouseClicked(int mouseX, int mouseY, int button) {
         super.mouseClicked(mouseX, mouseY, button);
-        if (isMouseOver(xPosition, yPosition, width, height, mouseX, mouseY)) {
+        if (isMouseOverElement(mouseX, mouseY)) {
             this.isPressed = !this.isPressed;
             writeClientAction(1, buf -> buf.writeBoolean(isPressed));
             playButtonClickSound();

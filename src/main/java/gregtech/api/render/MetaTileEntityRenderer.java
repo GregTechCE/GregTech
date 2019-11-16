@@ -8,6 +8,7 @@ import codechicken.lib.render.block.ICCBlockRenderer;
 import codechicken.lib.render.item.IItemRenderer;
 import codechicken.lib.render.pipeline.IVertexOperation;
 import codechicken.lib.texture.TextureUtils;
+import codechicken.lib.util.TransformUtils;
 import codechicken.lib.vec.Cuboid6;
 import codechicken.lib.vec.Matrix4;
 import codechicken.lib.vec.Vector3;
@@ -19,69 +20,47 @@ import gregtech.api.metatileentity.IFastRenderMetaTileEntity;
 import gregtech.api.metatileentity.IRenderMetaTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.util.GTLog;
+import gregtech.api.util.ModCompatibility;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.block.model.IBakedModel;
 import net.minecraft.client.renderer.block.model.ItemCameraTransforms.TransformType;
-import net.minecraft.client.renderer.block.model.ItemTransformVec3f;
-import net.minecraft.client.renderer.block.model.ModelBlock;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
-import net.minecraft.client.resources.IResource;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumBlockRenderType;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.IBlockAccess;
+import net.minecraftforge.client.MinecraftForgeClient;
 import net.minecraftforge.client.event.ModelBakeEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.model.IModelState;
-import net.minecraftforge.common.model.TRSRTransformation;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import org.apache.commons.lang3.tuple.Pair;
 import org.lwjgl.opengl.GL11;
 
-import javax.vecmath.Matrix4f;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.Random;
 
 public class MetaTileEntityRenderer implements ICCBlockRenderer, IItemRenderer {
 
     public static ModelResourceLocation MODEL_LOCATION = new ModelResourceLocation(new ResourceLocation(GTValues.MODID, "machine"), "normal");
     public static MetaTileEntityRenderer INSTANCE = new MetaTileEntityRenderer();
     public static EnumBlockRenderType BLOCK_RENDER_TYPE;
-    public static Map<TransformType, TRSRTransformation> BLOCK_TRANSFORMS = new HashMap<>();
 
     public static void preInit() {
         BLOCK_RENDER_TYPE = BlockRenderingRegistry.createRenderType("meta_tile_entity");
         BlockRenderingRegistry.registerRenderer(BLOCK_RENDER_TYPE, INSTANCE);
         MinecraftForge.EVENT_BUS.register(INSTANCE);
         TextureUtils.addIconRegister(Textures::register);
-    }
-
-    @SuppressWarnings("deprecation")
-    public static void postInit() {
-        try {
-
-            try (IResource resource = Minecraft.getMinecraft().getResourceManager().getResource(new ResourceLocation("models/block/block.json"))) {
-                InputStreamReader reader = new InputStreamReader(resource.getInputStream());
-                ModelBlock modelBlock = ModelBlock.deserialize(reader);
-                for (TransformType transformType : TransformType.values()) {
-                    ItemTransformVec3f vec3f = modelBlock.getAllTransforms().getTransform(transformType);
-                    BLOCK_TRANSFORMS.put(transformType, new TRSRTransformation(vec3f));
-                }
-            }
-        } catch (IOException exception) {
-            GTLog.logger.error("Failed to load default block transforms", exception);
-        }
     }
 
     @SubscribeEvent
@@ -91,7 +70,11 @@ public class MetaTileEntityRenderer implements ICCBlockRenderer, IItemRenderer {
     }
 
     @Override
-    public void renderItem(ItemStack stack, TransformType transformType) {
+    public void renderItem(ItemStack rawStack, TransformType transformType) {
+        ItemStack stack = ModCompatibility.getRealItemStack(rawStack);
+        if (!(stack.getItem() instanceof MachineItemBlock)) {
+            return;
+        }
         MetaTileEntity metaTileEntity = MachineItemBlock.getMetaTileEntity(stack);
         if (metaTileEntity == null) {
             return;
@@ -111,7 +94,6 @@ public class MetaTileEntityRenderer implements ICCBlockRenderer, IItemRenderer {
             ((IRenderMetaTileEntity) metaTileEntity).renderMetaTileEntityDynamic(0.0, 0.0, 0.0, 0.0f);
         }
         GlStateManager.disableBlend();
-
     }
 
     @Override
@@ -123,25 +105,31 @@ public class MetaTileEntityRenderer implements ICCBlockRenderer, IItemRenderer {
         CCRenderState renderState = CCRenderState.instance();
         renderState.reset();
         renderState.bind(buffer);
-        IVertexOperation[] pipeline = new IVertexOperation[]{renderState.lightMatrix};
         Matrix4 translation = new Matrix4().translate(pos.getX(), pos.getY(), pos.getZ());
-        renderState.lightMatrix.locate(world, pos);
-        metaTileEntity.renderMetaTileEntity(renderState, translation.copy(), pipeline);
-        metaTileEntity.renderCovers(renderState, translation);
+        BlockRenderLayer renderLayer = MinecraftForgeClient.getRenderLayer();
+        if (metaTileEntity.canRenderInLayer(renderLayer)) {
+            renderState.lightMatrix.locate(world, pos);
+            IVertexOperation[] pipeline = new IVertexOperation[]{renderState.lightMatrix};
+            metaTileEntity.renderMetaTileEntity(renderState, translation.copy(), pipeline);
+        }
+        Matrix4 coverTranslation = new Matrix4().translate(pos.getX(), pos.getY(), pos.getZ());
+        metaTileEntity.renderCovers(renderState, coverTranslation, renderLayer);
+
+        if (metaTileEntity.isFragile() && renderLayer == BlockRenderLayer.CUTOUT) {
+            TextureMap textureMap = Minecraft.getMinecraft().getTextureMapBlocks();
+            Random posRand = new Random(MathHelper.getPositionRandom(pos));
+            int destroyStage = posRand.nextInt(10);
+            TextureAtlasSprite atlasSprite = textureMap.getAtlasSprite("minecraft:blocks/destroy_stage_" + destroyStage);
+            for (EnumFacing face : EnumFacing.VALUES) {
+                Textures.renderFace(renderState, translation, new IVertexOperation[0], face, Cuboid6.full, atlasSprite);
+            }
+        }
         return true;
     }
 
     @Override
-    public Pair<? extends IBakedModel, Matrix4f> handlePerspective(TransformType cameraTransformType) {
-        if (BLOCK_TRANSFORMS.containsKey(cameraTransformType)) {
-            return Pair.of(this, BLOCK_TRANSFORMS.get(cameraTransformType).getMatrix());
-        }
-        return Pair.of(this, null);
-    }
-
-    @Override
     public IModelState getTransforms() {
-        return TRSRTransformation.identity();
+        return TransformUtils.DEFAULT_BLOCK;
     }
 
     @Override
@@ -159,7 +147,7 @@ public class MetaTileEntityRenderer implements ICCBlockRenderer, IItemRenderer {
         ArrayList<IndexedCuboid6> boundingBox = new ArrayList<>();
         if (metaTileEntity != null) {
             metaTileEntity.addCollisionBoundingBox(boundingBox);
-            metaTileEntity.addCoverCollisionBoundingBox(boundingBox, false);
+            metaTileEntity.addCoverCollisionBoundingBox(boundingBox);
         }
         CCRenderState renderState = CCRenderState.instance();
         renderState.reset();
@@ -170,10 +158,10 @@ public class MetaTileEntityRenderer implements ICCBlockRenderer, IItemRenderer {
         }
     }
 
-    public TextureAtlasSprite getParticleTexture(IBlockAccess world, BlockPos pos) {
+    public Pair<TextureAtlasSprite, Integer> getParticleTexture(IBlockAccess world, BlockPos pos) {
         MetaTileEntity metaTileEntity = BlockMachine.getMetaTileEntity(world, pos);
         if (metaTileEntity == null) {
-            return TextureUtils.getMissingSprite();
+            return Pair.of(TextureUtils.getMissingSprite(), 0xFFFFFF);
         } else {
             return metaTileEntity.getParticleTexture();
         }

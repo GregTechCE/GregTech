@@ -2,10 +2,14 @@ package gregtech.api.gui.widgets;
 
 import com.google.common.collect.Lists;
 import gregtech.api.gui.GuiTextures;
+import gregtech.api.gui.IRenderContext;
+import gregtech.api.gui.Widget;
 import gregtech.api.gui.igredient.IGhostIngredientTarget;
 import gregtech.api.gui.igredient.IIngredientSlot;
 import gregtech.api.gui.resources.RenderUtil;
 import gregtech.api.gui.resources.TextureArea;
+import gregtech.api.util.Position;
+import gregtech.api.util.Size;
 import mezz.jei.api.gui.IGhostIngredientHandler.Target;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.item.ItemStack;
@@ -22,7 +26,7 @@ import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
-public class PhantomFluidWidget extends AbstractPositionedRectangleWidget implements IIngredientSlot, IGhostIngredientTarget {
+public class PhantomFluidWidget extends Widget implements IIngredientSlot, IGhostIngredientTarget {
 
     protected TextureArea backgroundTexture = GuiTextures.FLUID_SLOT;
 
@@ -31,16 +35,27 @@ public class PhantomFluidWidget extends AbstractPositionedRectangleWidget implem
     protected FluidStack lastFluidStack;
 
     public PhantomFluidWidget(int xPosition, int yPosition, int width, int height, Supplier<FluidStack> fluidStackSupplier, Consumer<FluidStack> fluidStackUpdater) {
-        super(xPosition, yPosition, width, height);
+        super(new Position(xPosition, yPosition), new Size(width, height));
         this.fluidStackSupplier = fluidStackSupplier;
         this.fluidStackUpdater = fluidStackUpdater;
     }
 
+    private FluidStack drainFrom(Object ingredient) {
+        if (ingredient instanceof ItemStack) {
+            ItemStack itemStack = (ItemStack) ingredient;
+            IFluidHandlerItem fluidHandler = itemStack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY, null);
+            if (fluidHandler != null)
+                return fluidHandler.drain(Integer.MAX_VALUE, false);
+        }
+        return null;
+    }
+
     @Override
     public List<Target<?>> getPhantomTargets(Object ingredient) {
-        if (!(ingredient instanceof FluidStack)) {
+        if (!(ingredient instanceof FluidStack) && drainFrom(ingredient) == null) {
             return Collections.emptyList();
         }
+
         Rectangle rectangle = sizes.toScreenCoords(toRectangleBox());
         return Lists.newArrayList(new Target<Object>() {
             @Override
@@ -50,8 +65,13 @@ public class PhantomFluidWidget extends AbstractPositionedRectangleWidget implem
 
             @Override
             public void accept(Object ingredient) {
-                if (ingredient instanceof FluidStack) {
-                    FluidStack ingredientStack = (FluidStack) ingredient;
+                FluidStack ingredientStack;
+                if (ingredient instanceof FluidStack)
+                    ingredientStack = (FluidStack) ingredient;
+                else
+                    ingredientStack = drainFrom(ingredient);
+
+                if (ingredientStack != null) {
                     NBTTagCompound tagCompound = ingredientStack.writeToNBT(new NBTTagCompound());
                     writeClientAction(2, buffer -> buffer.writeCompoundTag(tagCompound));
                 }
@@ -61,7 +81,7 @@ public class PhantomFluidWidget extends AbstractPositionedRectangleWidget implem
 
     @Override
     public Object getIngredientOverMouse(int mouseX, int mouseY) {
-        if (isMouseOver(mouseX, mouseY)) {
+        if (isMouseOverElement(mouseX, mouseY)) {
             return lastFluidStack;
         }
         return null;
@@ -130,7 +150,7 @@ public class PhantomFluidWidget extends AbstractPositionedRectangleWidget implem
 
     @Override
     public boolean mouseClicked(int mouseX, int mouseY, int button) {
-        if (isMouseOver(mouseX, mouseY)) {
+        if (isMouseOverElement(mouseX, mouseY)) {
             writeClientAction(1, buffer -> {
             });
             return true;
@@ -139,13 +159,15 @@ public class PhantomFluidWidget extends AbstractPositionedRectangleWidget implem
     }
 
     @Override
-    public void drawInBackground(int mouseX, int mouseY) {
+    public void drawInBackground(int mouseX, int mouseY, IRenderContext context) {
+        Position pos = getPosition();
+        Size size = getSize();
         if (backgroundTexture != null) {
-            backgroundTexture.draw(xPosition, yPosition, width, height);
+            backgroundTexture.draw(pos.x, pos.y, size.width, size.height);
         }
         if (lastFluidStack != null) {
             GlStateManager.disableBlend();
-            RenderUtil.drawFluidForGui(lastFluidStack, lastFluidStack.amount, xPosition + 1, yPosition + 1, width - 1, height - 1);
+            RenderUtil.drawFluidForGui(lastFluidStack, lastFluidStack.amount, pos.x + 1, pos.y + 1, size.width - 1, size.height - 1);
             GlStateManager.enableBlend();
             GlStateManager.color(1.0f, 1.0f, 1.0f);
         }
@@ -153,7 +175,7 @@ public class PhantomFluidWidget extends AbstractPositionedRectangleWidget implem
 
     @Override
     public void drawInForeground(int mouseX, int mouseY) {
-        if (isMouseOver(mouseX, mouseY)) {
+        if (isMouseOverElement(mouseX, mouseY)) {
             if (lastFluidStack != null) {
                 String fluidName = lastFluidStack.getLocalizedName();
                 drawHoveringText(ItemStack.EMPTY, Lists.newArrayList(fluidName), -1, mouseX, mouseY);

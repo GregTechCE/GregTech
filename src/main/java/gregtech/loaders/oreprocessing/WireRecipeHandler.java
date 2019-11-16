@@ -1,11 +1,14 @@
 package gregtech.loaders.oreprocessing;
 
+import com.google.common.collect.ImmutableMap;
+import gregtech.api.GTValues;
 import gregtech.api.items.OreDictNames;
 import gregtech.api.recipes.ModHandler;
 import gregtech.api.recipes.RecipeMaps;
 import gregtech.api.unification.OreDictUnifier;
 import gregtech.api.unification.material.Materials;
 import gregtech.api.unification.material.type.DustMaterial.MatFlags;
+import gregtech.api.unification.material.type.FluidMaterial;
 import gregtech.api.unification.material.type.IngotMaterial;
 import gregtech.api.unification.material.type.Material;
 import gregtech.api.unification.ore.OrePrefix;
@@ -17,9 +20,17 @@ import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.ItemStack;
 import org.apache.commons.lang3.ArrayUtils;
 
+import java.util.Map;
+
 import static gregtech.api.GTValues.M;
 
 public class WireRecipeHandler {
+
+    private static final Map<FluidMaterial, Integer> INSULATION_MATERIALS = ImmutableMap.of(
+        Materials.Rubber, GTValues.HV,
+        Materials.StyreneButadieneRubber, GTValues.LuV,
+        Materials.SiliconeRubber, GTValues.MAX
+    );
 
     public static void register() {
         OrePrefix.wireGtSingle.addProcessingHandler(IngotMaterial.class, WireRecipeHandler::processWireSingle);
@@ -60,6 +71,7 @@ public class WireRecipeHandler {
         int cableAmount = (int) (wirePrefix.materialAmount * 2 / M);
         OrePrefix cablePrefix = OrePrefix.valueOf("cable" + wirePrefix.name().substring(4));
         ItemStack cableStack = OreDictUnifier.get(cablePrefix, material);
+        if (material.cableProperties == null) return;
 
         if (isPaperInsulatedCable(material)) {
             if (cableAmount <= 7) {
@@ -83,21 +95,26 @@ public class WireRecipeHandler {
                 .buildAndRegister();
         }
 
-        if (wirePrefix != OrePrefix.wireGtSingle) {
+        for(FluidMaterial insulationMaterial : INSULATION_MATERIALS.keySet()) {
+            int cableTier = GTUtility.getTierByVoltage(material.cableProperties.voltage);
+            int materialAmount = getMaterialAmount(cableTier, INSULATION_MATERIALS.get(insulationMaterial));
+            if (materialAmount == -1) continue;
+
+            if (wirePrefix != OrePrefix.wireGtSingle) {
+                RecipeMaps.ASSEMBLER_RECIPES.recipeBuilder()
+                    .input(OrePrefix.wireGtSingle, material, cableAmount).circuitMeta(24 + ArrayUtils.indexOf(WIRE_DOUBLING_ORDER, wirePrefix))
+                    .fluidInputs(insulationMaterial.getFluid(materialAmount * cableAmount))
+                    .outputs(cableStack)
+                    .duration(150).EUt(8)
+                    .buildAndRegister();
+            }
             RecipeMaps.ASSEMBLER_RECIPES.recipeBuilder()
-                .input(OrePrefix.wireGtSingle, material, cableAmount).circuitMeta(24 + ArrayUtils.indexOf(WIRE_DOUBLING_ORDER, wirePrefix))
-                .fluidInputs(Materials.Rubber.getFluid(144 * cableAmount))
+                .input(wirePrefix, material).circuitMeta(24)
+                .fluidInputs(insulationMaterial.getFluid(materialAmount * cableAmount))
                 .outputs(cableStack)
                 .duration(150).EUt(8)
                 .buildAndRegister();
         }
-
-        RecipeMaps.ASSEMBLER_RECIPES.recipeBuilder()
-            .input(wirePrefix, material).circuitMeta(24)
-            .fluidInputs(Materials.Rubber.getFluid(144 * cableAmount))
-            .outputs(cableStack)
-            .duration(150).EUt(8)
-            .buildAndRegister();
     }
 
 
@@ -116,6 +133,14 @@ public class WireRecipeHandler {
                 OreDictUnifier.get(WIRE_DOUBLING_ORDER[wireIndex - 1], material, 2),
                 new UnificationEntry(wirePrefix, material));
         }
+    }
+
+    private static int getMaterialAmount(int cableTier, int insulationTier) {
+        if (cableTier > insulationTier) {
+            return -1;
+        }
+        int insulationDiscount = (insulationTier - cableTier) / 2;
+        return Math.max(36, 144 / (1 + insulationDiscount));
     }
 
     public static boolean isPaperInsulatedCable(IngotMaterial material) {

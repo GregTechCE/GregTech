@@ -1,7 +1,8 @@
 package gregtech.common.blocks.modelfactories;
 
+import codechicken.lib.render.item.CCRenderItem;
 import codechicken.lib.texture.TextureUtils;
-import gregtech.api.render.MetaTileEntityRenderer;
+import codechicken.lib.util.TransformUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.ItemMeshDefinition;
@@ -20,6 +21,7 @@ import net.minecraft.util.Tuple;
 import net.minecraftforge.client.event.ModelBakeEvent;
 import net.minecraftforge.client.model.ModelFluid;
 import net.minecraftforge.client.model.ModelLoader;
+import net.minecraftforge.client.model.PerspectiveMapWrapper;
 import net.minecraftforge.fluids.BlockFluidBase;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
@@ -120,10 +122,8 @@ public class BakedModelHandler {
 
         @Override
         public Pair<? extends IBakedModel, Matrix4f> handlePerspective(TransformType cameraTransformType) {
-            if (MetaTileEntityRenderer.BLOCK_TRANSFORMS.containsKey(cameraTransformType)) {
-                return Pair.of(this, MetaTileEntityRenderer.BLOCK_TRANSFORMS.get(cameraTransformType).getMatrix());
-            }
-            return Pair.of(this, null);
+            CCRenderItem.notifyTransform(cameraTransformType);
+            return PerspectiveMapWrapper.handlePerspective(this, TransformUtils.DEFAULT_BLOCK, cameraTransformType);
         }
     }
 

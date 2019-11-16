@@ -107,6 +107,7 @@ public class MaterialMetaItem extends StandardMetaItem {
     public int getItemStackLimit(ItemStack stack) {
         if (stack.getItemDamage() < metaItemOffset) {
             OrePrefix prefix = orePrefixes[stack.getItemDamage() / 1000];
+            if(prefix == null) return 64;
             return prefix.maxStackSize;
         }
         return super.getItemStackLimit(stack);
@@ -125,6 +126,7 @@ public class MaterialMetaItem extends StandardMetaItem {
 
     @Override
     public void onUpdate(ItemStack itemStack, World worldIn, Entity entityIn, int itemSlot, boolean isSelected) {
+        super.onUpdate(itemStack, worldIn, entityIn, itemSlot, isSelected);
         if (itemStack.getItemDamage() < metaItemOffset && generatedItems.contains((short) itemStack.getItemDamage()) && entityIn instanceof EntityLivingBase) {
             EntityLivingBase entity = (EntityLivingBase) entityIn;
             OrePrefix prefix = orePrefixes[itemStack.getItemDamage() / 1000];
@@ -141,13 +143,14 @@ public class MaterialMetaItem extends StandardMetaItem {
     }
 
     @Override
+    @SideOnly(Side.CLIENT)
     public void addInformation(ItemStack itemStack, @Nullable World worldIn, List<String> lines, ITooltipFlag tooltipFlag) {
         super.addInformation(itemStack, worldIn, lines, tooltipFlag);
         int damage = itemStack.getItemDamage();
         if (damage < this.metaItemOffset) {
             Material material = Material.MATERIAL_REGISTRY.getObjectById(damage % 1000);
             OrePrefix prefix = this.orePrefixes[(damage / 1000)];
-            if (material == null) return;
+            if (prefix == null || material == null) return;
             addMaterialTooltip(itemStack, prefix, material, lines, tooltipFlag);
         }
     }

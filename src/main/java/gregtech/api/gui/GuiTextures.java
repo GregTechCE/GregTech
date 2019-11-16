@@ -10,7 +10,9 @@ public class GuiTextures {
     public static final TextureArea BACKGROUND_SMALL = TextureArea.fullImage("textures/gui/base/background_small.png");
     public static final TextureArea BACKGROUND_EXTENDED = TextureArea.fullImage("textures/gui/base/background_extended.png");
     public static final TextureArea BORDERED_BACKGROUND = TextureArea.fullImage("textures/gui/base/bordered_background.png");
+    public static final TextureArea BORDERED_BACKGROUND_EXTENDED = TextureArea.fullImage("textures/gui/base/bordered_background_extended.png");
     public static final TextureArea SLOT = TextureArea.fullImage("textures/gui/base/slot.png");
+    public static final TextureArea SLOT_BIG = TextureArea.fullImage("textures/gui/base/slot_big.png");
     public static final TextureArea FLUID_SLOT = TextureArea.fullImage("textures/gui/base/fluid_slot.png");
     public static final TextureArea DISPLAY = TextureArea.fullImage("textures/gui/base/display.png");
     public static final TextureArea FLUID_TANK_BACKGROUND = TextureArea.fullImage("textures/gui/base/fluid_tank_background.png");
@@ -26,7 +28,9 @@ public class GuiTextures {
     public static final TextureArea BUTTON_FILTER_DAMAGE = TextureArea.fullImage("textures/gui/widget/button_filter_damage.png");
     public static final TextureArea BUTTON_OVERCLOCK = TextureArea.fullImage("textures/gui/widget/button_overclock.png");
     public static final TextureArea BUTTON_FILTER_NBT = TextureArea.fullImage("textures/gui/widget/button_filter_nbt.png");
+    public static final TextureArea BUTTON_BLACKLIST = TextureArea.fullImage("textures/gui/widget/button_blacklist.png");
     public static final TextureArea BUTTON_SWITCH_VIEW = TextureArea.fullImage("textures/gui/widget/button_switch_view.png");
+    public static final TextureArea BUTTON_ALLOW_IMPORT_EXPORT = TextureArea.fullImage("textures/gui/widget/button_allow_import_export.png");
 
     //INDICATORS & ICONS
     public static final TextureArea INDICATOR_NO_ENERGY = TextureArea.fullImage("textures/gui/base/indicator_no_energy.png");
@@ -87,8 +91,10 @@ public class GuiTextures {
     public static final TextureArea IN_SLOT_OVERLAY = TextureArea.fullImage("textures/gui/overlay/in_slot_overlay.png");
     public static final TextureArea OUT_SLOT_OVERLAY = TextureArea.fullImage("textures/gui/overlay/out_slot_overlay.png");
     public static final TextureArea FILTER_SLOT_OVERLAY = TextureArea.fullImage("textures/gui/overlay/filter_slot_overlay.png");
+    public static final TextureArea STRING_SLOT_OVERLAY = TextureArea.fullImage("textures/gui/overlay/string_slot_overlay.png");
 
     //PROGRESS BARS
+    public static final TextureArea PROGRESS_BAR_UNLOCK = TextureArea.fullImage("textures/gui/progress_bar/progress_bar_unlock.png");
     public static final TextureArea PROGRESS_BAR_ARROW = TextureArea.fullImage("textures/gui/progress_bar/progress_bar_arrow.png");
     public static final TextureArea PROGRESS_BAR_ARROW_MULTIPLE = TextureArea.fullImage("textures/gui/progress_bar/progress_bar_arrow_multiple.png");
     public static final TextureArea PROGRESS_BAR_BATH = TextureArea.fullImage("textures/gui/progress_bar/progress_bar_bath.png");

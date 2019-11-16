@@ -18,10 +18,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumActionResult;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumHand;
-import net.minecraft.util.IStringSerializable;
+import net.minecraft.util.*;
 import net.minecraftforge.items.ItemStackHandler;
 
 import java.util.ArrayList;
@@ -143,7 +140,7 @@ public class CoverMachineController extends CoverBehavior implements CoverWithUI
     }
 
     @Override
-    public void renderCover(CCRenderState renderState, Matrix4 translation, IVertexOperation[] pipeline, Cuboid6 plateBox) {
+    public void renderCover(CCRenderState renderState, Matrix4 translation, IVertexOperation[] pipeline, Cuboid6 plateBox, BlockRenderLayer layer) {
         Textures.MACHINE_CONTROLLER_OVERLAY.renderSided(attachedSide, plateBox, renderState, pipeline, translation);
     }
 
@@ -210,7 +207,7 @@ public class CoverMachineController extends CoverBehavior implements CoverWithUI
     public void readFromNBT(NBTTagCompound tagCompound) {
         super.readFromNBT(tagCompound);
         this.minRedstoneStrength = tagCompound.getInteger("MinRedstoneStrength");
-        this.isInverted = tagCompound.getBoolean("Invalid");
+        this.isInverted = tagCompound.getBoolean("Inverted");
         this.controllerMode = ControllerMode.values()[tagCompound.getInteger("ControllerMode")];
     }
 

@@ -1,5 +1,99 @@
 ## Changelog
 
+### 1.8.9
+* Fluid pipes visuals rework - Archengius
+* Added Rebreather - Archengius
+* Increased Nano Saber energy usage to 64 EU/t when on - Archengius
+* New system for armor metaitems - Archengius
+* Add OreByproduct page to JEI (#913) - Blood-Asp
+* Implemented manual IO switch for conveyors/pumps - Archengius
+* Fixed weird max stack size behavior on robot arm - Archengius
+* Allow using different rubbers in wire insulation - Archengius
+* Multiblock tanks finish - Archengius
+* More multiblock fluid tanks work - Dragon2488
+* Decrease cobalt mining level - Archengius
+
+### 1.8.8
+* Fixed locked safe not having textures.
+* Added config value for rarity of abandoned base generation.
+* Bump version.
+
+### 1.8.7
+- ##### Added WorldGen - abandoned structures.
+  * Can spawn anywhere in the world on the surface
+  * Contain useful materials for progression, if you can get them!
+  * More is coming soon!
+* Disallowed fake players to use most of GTCE tool abilities.
+* Fixed battery buffers charging batteries wrongly.
+* Buff multi smelter smelting speed & item amount.
+* Fixed pipe syncing sometimes working improperly.
+* Bump version.
+
+### 1.8.6
+* Fixed inability to make dark concrete bricks.
+* Fixed Air Collector consuming EU when tank is full.
+* Disabled decomposition of more organic compounds.
+* Removed max voltage transformer.
+* Prevent invalid models on facades from crashing game.
+* Fixed JEI multiblock preview not showing machines.
+* Fixed robotic arm modes not working.
+* Allow controlling battery buffers output via machine controller.
+
+### 1.8.4
+* Added Energy Field Projector.
+* Fix server side crash with covers on pipes.
+* Tree capitation now only cuts logs connected via at most 1 leaves block.
+* Play destroy sound and spawn particles when tree capitating wood blocks too.
+
+### 1.8.3-hotfix
+* Removed debug log
+* Fixed exception while badly written mods attempt to retrieve info from invalid stacks.
+
+### 1.8.3
+* Added Nano Saber.
+* Fixed severe e-net bug where battery buffers voided accepted EU.
+* Fixed cables burning on too many amps even if they're not consumed.
+* Allow using GTCE gems and ingots as beacon payments.
+* Changed some high-tier circuit textures.
+
+### 1.8.2
+* Show full inventory in most covers UI instead of only hotbar.
+* Added recipe for electric screwdriver. Closes #530.
+* Added alternative recipes for tools using power units.
+* Electric tools now leave power units when their tips are broken. Closes #605.
+* Remove Quartz Block cutting recipe. Closes #848.
+* Temporary revert pipe rendering to previous version. Closes #846.
+* Fix fisher-related compile issues.
+* Added discharge mode for batteries in player inventory.
+* Don't connect wires on sides of mach ines that can't neither input nor output energy.
+* Increased overclock efficiency a bit for high voltage recipes.
+* Reduce damage taken by tools in certain actions a bit. 
+* Added a Fisher.
+* Show only stone variants of ore in ores tab, show all variants in search tab.
+* Use voltage names instead of tier numbers in electric items tooltip.
+* Fixed incorrect pipes color after using spray on them.
+* Particle textures of machines, cables and pipes are now properly colored.
+* Added two new chest variants: wooden chest (27 slots) and small wooden chest (1 slot).
+* Fixed incorrect lighting of pipes in world.
+* Disabled cover placement grid on pipes - they now use sub areas for cover placement.
+* Fixed covers not blocking flow between pipes.
+* Allow blocking connections between pipes via wrench clicking on sides.
+* Fixed battery buffer not updating comparator value.
+* Disabled shift clicking for phantom item slots.
+* Added blacklist option for filters and conveyors.
+* Show actual meta tile entity creator mod ID in JEI.
+* Enhanced placement grid for covers on machines and pipes, show it only when it's used now.
+* Robotic Arm now isn't limited in the transfer rate in transfer exact & keep exact modes.
+* Fix few tools-related issues. 
+
+### 1.8.1
+Added a config option to specify bonus EU output per turbine type.
+
+### 1.8.0
+* Bug fixes and tool improvements
+* Nerfed large turbine to the ground so you will never use it again.
+* Some other improvements.
+
 ### 1.7.1
 * Added block breakers with several tiers.
 * Refactor pump. Increase range and pump speed, made visuals better.

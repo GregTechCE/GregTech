@@ -1,6 +1,8 @@
 package gregtech.api.items.metaitem;
 
+import com.google.common.collect.HashMultimap;
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Multimap;
 import gnu.trove.map.TShortObjectMap;
 import gnu.trove.map.hash.TShortObjectHashMap;
 import gregtech.api.GTValues;
@@ -25,9 +27,12 @@ import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.EnumAction;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -38,8 +43,6 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
-import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandlerItem;
@@ -103,15 +106,17 @@ public abstract class MetaItem<T extends MetaItem<?>.MetaValueItem> extends Item
             if (numberOfModels > 1) {
                 ModelResourceLocation[] resourceLocations = new ModelResourceLocation[numberOfModels];
                 for (int i = 0; i < resourceLocations.length; i++) {
-                    ResourceLocation resourceLocation = new ResourceLocation(GTValues.MODID, formatModelPath(metaValueItem) + "/" + (i + 1));
+                    ResourceLocation resourceLocation = createItemModelPath(metaValueItem, "/" + (i + 1));
                     ModelBakery.registerItemVariants(this, resourceLocation);
                     resourceLocations[i] = new ModelResourceLocation(resourceLocation, "inventory");
                 }
                 specialItemsModels.put((short) (metaItemOffset + itemMetaKey), resourceLocations);
                 continue;
             }
-            ResourceLocation resourceLocation = new ResourceLocation(GTValues.MODID, formatModelPath(metaValueItem));
-            ModelBakery.registerItemVariants(this, resourceLocation);
+            ResourceLocation resourceLocation = createItemModelPath(metaValueItem, "");
+            if (numberOfModels > 0) {
+                ModelBakery.registerItemVariants(this, resourceLocation);
+            }
             metaItemsModels.put((short) (metaItemOffset + itemMetaKey), new ModelResourceLocation(resourceLocation, "inventory"));
         }
 
@@ -126,6 +131,10 @@ public abstract class MetaItem<T extends MetaItem<?>.MetaValueItem> extends Item
             }
             return MISSING_LOCATION;
         });
+    }
+
+    public ResourceLocation createItemModelPath(T metaValueItem, String postfix) {
+        return new ResourceLocation(GTValues.MODID, formatModelPath(metaValueItem) + postfix);
     }
 
     protected String formatModelPath(T metaValueItem) {
@@ -400,6 +409,68 @@ public abstract class MetaItem<T extends MetaItem<?>.MetaValueItem> extends Item
     }
 
     @Override
+    public Multimap<String, AttributeModifier> getAttributeModifiers(EntityEquipmentSlot slot, ItemStack stack) {
+        HashMultimap<String, AttributeModifier> modifiers = HashMultimap.create();
+        T metaValueItem = getItem(stack);
+        if (metaValueItem != null) {
+            for(IItemBehaviour behaviour : getBehaviours(stack)) {
+                modifiers.putAll(behaviour.getAttributeModifiers(slot, stack));
+            }
+        }
+        return modifiers;
+    }
+
+    @Override
+    public boolean isEnchantable(ItemStack stack) {
+        T metaValueItem = getItem(stack);
+        if(metaValueItem != null) {
+            IEnchantabilityHelper helper = metaValueItem.getEnchantabilityHelper();
+            return helper != null && helper.isEnchantable(stack);
+        }
+        return super.isEnchantable(stack);
+    }
+
+    @Override
+    public int getItemEnchantability(ItemStack stack) {
+        T metaValueItem = getItem(stack);
+        if(metaValueItem != null) {
+            IEnchantabilityHelper helper = metaValueItem.getEnchantabilityHelper();
+            return helper == null ? 0 : helper.getItemEnchantability(stack);
+        }
+        return super.getItemEnchantability(stack);
+    }
+
+    @Override
+    public boolean canApplyAtEnchantingTable(ItemStack stack, Enchantment enchantment) {
+        T metaValueItem = getItem(stack);
+        if(metaValueItem != null) {
+            IEnchantabilityHelper helper = metaValueItem.getEnchantabilityHelper();
+            return helper != null && helper.canApplyAtEnchantingTable(stack, enchantment);
+        }
+        return super.canApplyAtEnchantingTable(stack, enchantment);
+    }
+
+    @Override
+    public void onUpdate(ItemStack stack, World worldIn, Entity entityIn, int itemSlot, boolean isSelected) {
+        for (IItemBehaviour behaviour : getBehaviours(stack)) {
+            behaviour.onUpdate(stack, entityIn);
+        }
+    }
+
+    @Override
+    public boolean shouldCauseReequipAnimation(ItemStack oldStack, ItemStack newStack, boolean slotChanged) {
+        //if item is equal, and old item has electric item capability, remove charge tags to stop reequip animation when charge is altered
+        if(ItemStack.areItemsEqual(oldStack, newStack) && oldStack.hasCapability(GregtechCapabilities.CAPABILITY_ELECTRIC_ITEM, null) &&
+            oldStack.hasTagCompound() && newStack.hasTagCompound()) {
+            oldStack = oldStack.copy();
+            newStack = newStack.copy();
+            oldStack.getTagCompound().removeTag("Charge");
+            newStack.getTagCompound().removeTag("Charge");
+        }
+        return !ItemStack.areItemStacksEqual(oldStack, newStack);
+    }
+
+    @Override
     @SideOnly(Side.CLIENT)
     public String getItemStackDisplayName(ItemStack stack) {
         if (stack.getItemDamage() >= metaItemOffset) {
@@ -438,7 +509,7 @@ public abstract class MetaItem<T extends MetaItem<?>.MetaValueItem> extends Item
             lines.add(I18n.format("metaitem.generic.electric_item.tooltip",
                 electricItem.getCharge(),
                 electricItem.getMaxCharge(),
-                electricItem.getTier()));
+                GTValues.VN[electricItem.getTier()]));
         }
 
         IFluidHandlerItem fluidHandler = ItemHandlerHelper.copyStackWithSize(itemStack, 1)
@@ -488,32 +559,14 @@ public abstract class MetaItem<T extends MetaItem<?>.MetaValueItem> extends Item
     @Override
     @SideOnly(Side.CLIENT)
     public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> subItems) {
-        if (tab != GregTechAPI.TAB_GREGTECH && tab != CreativeTabs.SEARCH)
+        if (tab != GregTechAPI.TAB_GREGTECH && tab != CreativeTabs.SEARCH) {
             return;
-
+        }
         for (T enabledItem : metaItems.valueCollection()) {
             if (!enabledItem.isVisible())
                 continue;
-
             ItemStack itemStack = enabledItem.getStackForm();
-            subItems.add(itemStack.copy());
-
-            IElectricItem electricItem = itemStack.getCapability(GregtechCapabilities.CAPABILITY_ELECTRIC_ITEM, null);
-            if (electricItem != null) {
-                electricItem.charge(Long.MAX_VALUE, Integer.MAX_VALUE, true, false);
-                subItems.add(itemStack);
-            }
-
-            if (tab == CreativeTabs.SEARCH && itemStack.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY, null)) {
-                for (Fluid fluid : FluidRegistry.getRegisteredFluids().values()) {
-                    ItemStack containerStack = itemStack.copy();
-                    IFluidHandlerItem fluidContainer = containerStack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY, null);
-                    fluidContainer.fill(new FluidStack(fluid, Integer.MAX_VALUE), true);
-                    if (fluidContainer.drain(Integer.MAX_VALUE, false) == null)
-                        continue; //do not add empty containers multiple times
-                    subItems.add(fluidContainer.getContainer());
-                }
-            }
+            enabledItem.getSubItemHandler().getSubItems(itemStack, tab, subItems);
         }
     }
 
@@ -534,17 +587,19 @@ public abstract class MetaItem<T extends MetaItem<?>.MetaValueItem> extends Item
         public final int metaValue;
 
         public final String unlocalizedName;
+        private IItemNameProvider nameProvider;
+        private IItemMaxStackSizeProvider stackSizeProvider;
+        private IItemContainerItemProvider containerItemProvider;
+        private ISubItemHandler subItemHandler = new DefaultSubItemHandler();
 
         private List<IMetaItemStats> allStats = new ArrayList<>();
         private List<IItemBehaviour> behaviours = new ArrayList<>();
         private IItemUseManager useManager;
         private ItemUIFactory uiManager;
-        private IItemDurabilityManager durabilityManager;
-        private IItemMaxStackSizeProvider stackSizeProvider;
-        private IItemColorProvider colorProvider;
         private IItemModelIndexProvider modelIndexProvider;
-        private IItemContainerItemProvider containerItemProvider;
-        private IItemNameProvider nameProvider;
+        private IItemColorProvider colorProvider;
+        private IItemDurabilityManager durabilityManager;
+        private IEnchantabilityHelper enchantabilityHelper;
 
         private int burnValue = 0;
         private boolean visible = true;
@@ -609,6 +664,11 @@ public abstract class MetaItem<T extends MetaItem<?>.MetaValueItem> extends Item
             return this;
         }
 
+        public MetaValueItem disableModelLoading() {
+            this.modelAmount = 0;
+            return this;
+        }
+
         public MetaValueItem setModelAmount(int modelAmount) {
             if (modelAmount <= 0) {
                 throw new IllegalArgumentException("Cannot set amount of models to negative or zero number.");
@@ -617,41 +677,62 @@ public abstract class MetaItem<T extends MetaItem<?>.MetaValueItem> extends Item
             return this;
         }
 
+        /**
+         * @deprecated Use {@link #addComponents(IItemComponent...)} instead
+         * Left there for binary compatibility purposes
+         */
+        @Deprecated
         public MetaValueItem addStats(IMetaItemStats... stats) {
-            for (IMetaItemStats metaItemStats : stats) {
-                if (metaItemStats instanceof IItemDurabilityManager)
-                    this.durabilityManager = (IItemDurabilityManager) metaItemStats;
-
-                if (metaItemStats instanceof IItemUseManager)
-                    this.useManager = (IItemUseManager) metaItemStats;
-
-                if (metaItemStats instanceof IFoodBehavior)
-                    this.useManager = new FoodUseManager((IFoodBehavior) metaItemStats);
-
-                if (metaItemStats instanceof ItemUIFactory)
-                    this.uiManager = (ItemUIFactory) metaItemStats;
-
-                if (metaItemStats instanceof IItemMaxStackSizeProvider)
-                    this.stackSizeProvider = (IItemMaxStackSizeProvider) metaItemStats;
-
-                if (metaItemStats instanceof IItemColorProvider)
-                    this.colorProvider = (IItemColorProvider) metaItemStats;
-
-                if (metaItemStats instanceof IItemModelIndexProvider)
-                    this.modelIndexProvider = (IItemModelIndexProvider) metaItemStats;
-
-                if (metaItemStats instanceof IItemNameProvider)
-                    this.nameProvider = (IItemNameProvider) metaItemStats;
-
-                if (metaItemStats instanceof IItemContainerItemProvider)
-                    this.containerItemProvider = (IItemContainerItemProvider) metaItemStats;
-
-                if (metaItemStats instanceof IItemBehaviour)
-                    this.behaviours.add((IItemBehaviour) metaItemStats);
-
-                this.allStats.add(metaItemStats);
-            }
+            addItemComponentsInternal(stats);
             return this;
+        }
+
+        public MetaValueItem addComponents(IItemComponent... stats) {
+            addItemComponentsInternal(stats);
+            return this;
+        }
+
+        protected void addItemComponentsInternal(IMetaItemStats... stats) {
+            for (IMetaItemStats itemComponent : stats) {
+                if (itemComponent instanceof IItemNameProvider) {
+                    this.nameProvider = (IItemNameProvider) itemComponent;
+                }
+                if (itemComponent instanceof IItemMaxStackSizeProvider) {
+                    this.stackSizeProvider = (IItemMaxStackSizeProvider) itemComponent;
+                }
+                if (itemComponent instanceof ISubItemHandler) {
+                    this.subItemHandler = (ISubItemHandler) itemComponent;
+                }
+                if (itemComponent instanceof IItemContainerItemProvider) {
+                    this.containerItemProvider = (IItemContainerItemProvider) itemComponent;
+                }
+                if (itemComponent instanceof IItemDurabilityManager) {
+                    this.durabilityManager = (IItemDurabilityManager) itemComponent;
+                }
+                if (itemComponent instanceof IItemUseManager) {
+                    this.useManager = (IItemUseManager) itemComponent;
+                }
+                if (itemComponent instanceof IFoodBehavior) {
+                    this.useManager = new FoodUseManager((IFoodBehavior) itemComponent);
+                }
+                if (itemComponent instanceof ItemUIFactory)
+                    this.uiManager = (ItemUIFactory) itemComponent;
+
+                if (itemComponent instanceof IItemColorProvider) {
+                    this.colorProvider = (IItemColorProvider) itemComponent;
+                }
+                if (itemComponent instanceof IItemModelIndexProvider) {
+                    this.modelIndexProvider = (IItemModelIndexProvider) itemComponent;
+                }
+                if (itemComponent instanceof IItemBehaviour) {
+                    this.behaviours.add((IItemBehaviour) itemComponent);
+                    ((IItemBehaviour) itemComponent).onAddedToItem(this);
+                }
+                if(itemComponent instanceof IEnchantabilityHelper) {
+                    this.enchantabilityHelper = (IEnchantabilityHelper) itemComponent;
+                }
+                this.allStats.add(itemComponent);
+            }
         }
 
         public int getMetaValue() {
@@ -664,6 +745,10 @@ public abstract class MetaItem<T extends MetaItem<?>.MetaValueItem> extends Item
 
         public List<IItemBehaviour> getBehaviours() {
             return Collections.unmodifiableList(behaviours);
+        }
+
+        public ISubItemHandler getSubItemHandler() {
+            return subItemHandler;
         }
 
         @Nullable
@@ -699,6 +784,11 @@ public abstract class MetaItem<T extends MetaItem<?>.MetaValueItem> extends Item
         @Nullable
         public IItemContainerItemProvider getContainerItemProvider() {
             return containerItemProvider;
+        }
+
+        @Nullable
+        public IEnchantabilityHelper getEnchantabilityHelper() {
+            return enchantabilityHelper;
         }
 
         public int getBurnValue() {
@@ -746,6 +836,16 @@ public abstract class MetaItem<T extends MetaItem<?>.MetaValueItem> extends Item
             return itemStack;
         }
 
+        public ItemStack getInfiniteChargedStack() {
+            ItemStack itemStack = getStackForm(1);
+            IElectricItem electricItem = itemStack.getCapability(GregtechCapabilities.CAPABILITY_ELECTRIC_ITEM, null);
+            if (!(electricItem instanceof ElectricItem)) {
+                throw new IllegalStateException("Not a supported electric item.");
+            }
+            ((ElectricItem) electricItem).setInfiniteCharge(true);
+            return itemStack;
+        }
+
         /**
          * Attempts to get an electric item variant with override of max charge
          *
@@ -763,6 +863,21 @@ public abstract class MetaItem<T extends MetaItem<?>.MetaValueItem> extends Item
                 throw new IllegalStateException("Only standard ElectricItem implementation supported, but this item uses " + electricItem.getClass());
             }
             ((ElectricItem) electricItem).setMaxChargeOverride(maxCharge);
+            return itemStack;
+        }
+
+        public ItemStack getChargedStackWithOverride(IElectricItem source) {
+            ItemStack itemStack = getStackForm(1);
+            IElectricItem electricItem = itemStack.getCapability(GregtechCapabilities.CAPABILITY_ELECTRIC_ITEM, null);
+            if (electricItem == null) {
+                throw new IllegalStateException("Not an electric item.");
+            }
+            if (!(electricItem instanceof ElectricItem)) {
+                throw new IllegalStateException("Only standard ElectricItem implementation supported, but this item uses " + electricItem.getClass());
+            }
+            ((ElectricItem) electricItem).setMaxChargeOverride(source.getMaxCharge());
+            long charge = source.discharge(Long.MAX_VALUE, Integer.MAX_VALUE, true, false, true);
+            electricItem.charge(charge, Integer.MAX_VALUE, true, false);
             return itemStack;
         }
 

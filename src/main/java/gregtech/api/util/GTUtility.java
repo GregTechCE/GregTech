@@ -1,29 +1,44 @@
 package gregtech.api.util;
 
 
+import codechicken.lib.vec.Rotation;
+import codechicken.lib.vec.Transformation;
+import codechicken.lib.vec.Vector3;
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableList.Builder;
 import com.google.common.collect.Lists;
 import gregtech.api.capability.GregtechCapabilities;
 import gregtech.api.capability.IElectricItem;
 import gregtech.api.capability.IMultipleTankHandler;
+import gregtech.api.gui.ModularUI;
+import gregtech.api.gui.impl.ModularUIContainer;
 import gregtech.api.items.IToolItem;
 import gregtech.api.metatileentity.MetaTileEntity;
-import gregtech.api.unification.OreDictUnifier;
-import gregtech.api.unification.ore.OrePrefix;
+import gregtech.api.metatileentity.MetaTileEntityHolder;
 import gregtech.common.ConfigHolder;
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockRedstoneWire;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.init.Items;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.network.play.client.CPacketPlayerDigging;
+import net.minecraft.network.play.client.CPacketPlayerDigging.Action;
+import net.minecraft.network.play.server.SPacketBlockChange;
 import net.minecraft.potion.PotionEffect;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.*;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
@@ -51,10 +66,14 @@ import java.util.*;
 import java.util.Map.Entry;
 import java.util.function.Function;
 import java.util.function.Predicate;
+import java.util.stream.Collector;
 
 import static gregtech.api.GTValues.V;
 
 public class GTUtility {
+
+    private static final Transformation REVERSE_HORIZONTAL_ROTATION = new codechicken.lib.vec.Rotation(Math.PI, new Vector3(0.0, 1.0, 0.0)).at(Vector3.center);
+    private static final Transformation REVERSE_VERTICAL_ROTATION = new Rotation(Math.PI, new Vector3(1.0, 0.0, 0.0)).at(Vector3.center);
 
     public static BigInteger LONG_MAX = BigInteger.valueOf(Long.MAX_VALUE);
     public static BigInteger LONG_MIN = BigInteger.valueOf(Long.MIN_VALUE);
@@ -136,6 +155,8 @@ public class GTUtility {
             itemField.set(itemStack, newStack.getItem());
             //set damage then
             itemStack.setItemDamage(newStack.getItemDamage());
+            itemStack.setTagCompound(newStack.getTagCompound());
+
             Method forgeInit = ItemStack.class.getDeclaredMethod("forgeInit");
             forgeInit.setAccessible(true);
             //reinitialize forge capabilities and delegate reference
@@ -144,6 +165,17 @@ public class GTUtility {
             //should be impossible, actually
             throw new RuntimeException(exception);
         }
+    }
+
+    /**
+     * Exists because for stack equality checks actual ItemStack.itemDamage
+     * field is used, and ItemStack.getItemDamage() can be overriden,
+     * giving incorrect results for itemstack equality comparisons,
+     * which still use raw ItemStack.itemDamage field
+     * @return actual value of ItemStack.itemDamage field
+     */
+    public static int getActualItemDamageFromStack(ItemStack itemStack) {
+        return Items.FEATHER.getDamage(itemStack);
     }
 
     /**
@@ -197,14 +229,54 @@ public class GTUtility {
         return merged;
     }
 
-    public static boolean isBlockOrePrefixed(OrePrefix targetPrefix, List<ItemStack> drops) {
-        for (ItemStack itemStack : drops) {
-            OrePrefix orePrefix = OreDictUnifier.getPrefix(itemStack);
-            if (orePrefix == targetPrefix)
-                return true;
+    public static boolean harvestBlock(World world, BlockPos pos, EntityPlayer player) {
+        IBlockState blockState = world.getBlockState(pos);
+        TileEntity tileEntity = world.getTileEntity(pos);
+
+        if(blockState.getBlock().isAir(blockState, world, pos)) {
+            return false;
         }
-        return false;
+
+        if(!blockState.getBlock().canHarvestBlock(world, pos, player)) {
+            return false;
+        }
+
+        int expToDrop = 0;
+        if(!world.isRemote) {
+            EntityPlayerMP playerMP = (EntityPlayerMP) player;
+            expToDrop = ForgeHooks.onBlockBreakEvent(world, playerMP.interactionManager.getGameType(), playerMP, pos);
+            if(expToDrop == -1) {
+                //notify client if block can't be removed because of BreakEvent cancelled on server side
+                playerMP.connection.sendPacket(new SPacketBlockChange(world, pos));
+                return false;
+            }
+        }
+
+        world.playEvent(player, 2001, pos, Block.getStateId(blockState));
+
+        boolean wasRemovedByPlayer = blockState.getBlock().removedByPlayer(blockState, world, pos, player, !player.capabilities.isCreativeMode);
+        if(wasRemovedByPlayer) {
+            blockState.getBlock().onBlockDestroyedByPlayer(world, pos, blockState);
+
+            if(!world.isRemote && !player.capabilities.isCreativeMode) {
+                ItemStack stackInHand = player.getHeldItemMainhand();
+                blockState.getBlock().harvestBlock(world, player, pos, blockState, tileEntity, stackInHand);
+                if(expToDrop > 0) {
+                    blockState.getBlock().dropXpOnBlockBreak(world, pos, expToDrop);
+                }
+            }
+        }
+
+        if(!world.isRemote) {
+            EntityPlayerMP playerMP = (EntityPlayerMP) player;
+            playerMP.connection.sendPacket(new SPacketBlockChange(world, pos));
+        } else {
+            Minecraft mc = Minecraft.getMinecraft();
+            mc.getConnection().sendPacket(new CPacketPlayerDigging(Action.START_DESTROY_BLOCK, pos, mc.objectMouseOver.sideHit));
+        }
+        return wasRemovedByPlayer;
     }
+
 
     @SideOnly(Side.CLIENT)
     public static void drawCenteredSizedText(int x, int y, String string, int color, double sizeMultiplier) {
@@ -464,6 +536,22 @@ public class GTUtility {
         };
     }
 
+    public static List<EntityPlayerMP> findPlayersUsing(MetaTileEntity metaTileEntity, double radius) {
+        ArrayList<EntityPlayerMP> result = new ArrayList<>();
+        AxisAlignedBB box = new AxisAlignedBB(metaTileEntity.getPos()).expand(radius, radius, radius);
+        List<EntityPlayerMP> entities = metaTileEntity.getWorld().getEntitiesWithinAABB(EntityPlayerMP.class, box);
+        for (EntityPlayerMP player : entities) {
+            if (player.openContainer instanceof ModularUIContainer) {
+                ModularUI modularUI = ((ModularUIContainer) player.openContainer).getModularUI();
+                if (modularUI.holder instanceof MetaTileEntityHolder &&
+                    ((MetaTileEntityHolder) modularUI.holder).getMetaTileEntity() == metaTileEntity) {
+                    result.add(player);
+                }
+            }
+        }
+        return result;
+    }
+
     public static <T> boolean iterableContains(Iterable<T> list, Predicate<T> predicate) {
         for (T t : list) {
             if (predicate.test(t)) {
@@ -540,6 +628,12 @@ public class GTUtility {
         return resultArray;
     }
 
+    public static <T> Collector<T, ?, ImmutableList<T>> toImmutableList() {
+        return Collector.of(ImmutableList::builder, Builder::add,
+            (b1, b2) -> { b1.addAll(b2.build()); return b2; },
+            ImmutableList.Builder<T>::build);
+    }
+
     public static <M, E extends M> E selectItemInList(int index, E replacement, List<? extends M> list, Class<E> minClass) {
         if (list.isEmpty())
             return replacement;
@@ -576,11 +670,7 @@ public class GTUtility {
             double posZ = pos.getZ() + 0.5;
             ((WorldServer) metaTileEntity.getWorld()).spawnParticle(EnumParticleTypes.SMOKE_LARGE, posX, posY, posZ,
                 10, 0.2, 0.2, 0.2, 0.0);
-
-            if (ConfigHolder.doExplosions) {
-                metaTileEntity.getWorld().createExplosion(null, posX, posY, posZ,
-                    getTierByVoltage(voltage), true);
-            }
+            metaTileEntity.getWorld().createExplosion(null, posX, posY, posZ, getTierByVoltage(voltage), ConfigHolder.doExplosions);
         }
     }
 

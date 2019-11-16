@@ -12,12 +12,14 @@ import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.network.NetHandlerPlayClient;
 import net.minecraft.client.particle.ParticleManager;
 import net.minecraft.inventory.Container;
 import net.minecraft.network.INetHandler;
 import net.minecraft.network.NetHandlerPlayServer;
 import net.minecraft.network.PacketBuffer;
+import net.minecraft.util.IThreadListener;
 import net.minecraft.util.IntIdentityHashBiMap;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -211,8 +213,12 @@ public class NetworkHandler {
                 uiFactory.initClientUI(packet.serializedHolder, packet.windowId, packet.initialWidgetUpdates);
             }
         });
-        registerClientExecutor(PacketUIWidgetUpdate.class, (packet, handler) ->
-            ModularUIGui.addWidgetUpdate(packet));
+        registerClientExecutor(PacketUIWidgetUpdate.class, (packet, handler) -> {
+            GuiScreen currentScreen = Minecraft.getMinecraft().currentScreen;
+            if(currentScreen instanceof ModularUIGui) {
+                ((ModularUIGui) currentScreen).handleWidgetUpdate(packet);
+            }
+        });
 
         registerClientExecutor(PacketBlockParticle.class, (packet, handler) -> {
             World world = Minecraft.getMinecraft().world;
@@ -264,7 +270,13 @@ public class NetworkHandler {
         Packet packet = proxy2packet(event.getPacket());
         if (clientExecutors.containsKey(packet.getClass())) {
             PacketExecutor<Packet, NetHandlerPlayClient> executor = (PacketExecutor<Packet, NetHandlerPlayClient>) clientExecutors.get(packet.getClass());
-            executor.execute(packet, (NetHandlerPlayClient) event.getHandler());
+            NetHandlerPlayClient handler = (NetHandlerPlayClient) event.getHandler();
+            IThreadListener threadListener = FMLCommonHandler.instance().getWorldThread(handler);
+            if(threadListener.isCallingFromMinecraftThread()) {
+                executor.execute(packet, handler);
+            } else {
+                threadListener.addScheduledTask(() -> executor.execute(packet, handler));
+            }
         }
     }
 
@@ -274,7 +286,13 @@ public class NetworkHandler {
         Packet packet = proxy2packet(event.getPacket());
         if (serverExecutors.containsKey(packet.getClass())) {
             PacketExecutor<Packet, NetHandlerPlayServer> executor = (PacketExecutor<Packet, NetHandlerPlayServer>) serverExecutors.get(packet.getClass());
-            executor.execute(packet, (NetHandlerPlayServer) event.getHandler());
+            NetHandlerPlayServer handler = (NetHandlerPlayServer) event.getHandler();
+            IThreadListener threadListener = FMLCommonHandler.instance().getWorldThread(handler);
+            if(threadListener.isCallingFromMinecraftThread()) {
+                executor.execute(packet, handler);
+            } else {
+                threadListener.addScheduledTask(() -> executor.execute(packet, handler));
+            }
         }
     }
 }

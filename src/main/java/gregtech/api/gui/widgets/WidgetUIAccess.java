@@ -12,6 +12,14 @@ import java.util.function.Consumer;
  */
 public interface WidgetUIAccess {
 
+    void notifySizeChange();
+
+    /**
+     * Call when widget is added/removed, or INativeWidget list changed
+     * and should be updated accordingly
+     */
+    void notifyWidgetChange();
+
     /**
      * Sends action to the server with the ID and data payload supplied
      * Server will receive it in {@link Widget#handleClientAction(int, PacketBuffer)}

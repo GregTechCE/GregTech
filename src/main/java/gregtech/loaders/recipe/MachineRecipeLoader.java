@@ -49,6 +49,7 @@ import java.util.Collection;
 
 import static gregtech.api.GTValues.L;
 import static gregtech.api.GTValues.M;
+import static gregtech.common.items.MetaItems.RUBBER_DROP;
 
 public class MachineRecipeLoader {
 
@@ -147,7 +148,7 @@ public class MachineRecipeLoader {
     private static void registerStoneBricksRecipes() {
         //decorative blocks: normal variant -> brick variant
         registerBrickRecipe(MetaBlocks.CONCRETE, ConcreteVariant.LIGHT_CONCRETE, ConcreteVariant.LIGHT_BRICKS);
-        registerBrickRecipe(MetaBlocks.CONCRETE, ConcreteVariant.DARK_CONCRETE, ConcreteVariant.DARK_CONCRETE);
+        registerBrickRecipe(MetaBlocks.CONCRETE, ConcreteVariant.DARK_CONCRETE, ConcreteVariant.DARK_BRICKS);
         registerBrickRecipe(MetaBlocks.GRANITE, GraniteVariant.BLACK_GRANITE, GraniteVariant.BLACK_GRANITE_BRICKS);
         registerBrickRecipe(MetaBlocks.GRANITE, GraniteVariant.RED_GRANITE, GraniteVariant.RED_GRANITE_BRICKS);
         registerBrickRecipe(MetaBlocks.MINERAL, MineralVariant.MARBLE, MineralVariant.MARBLE_BRICKS);
@@ -199,7 +200,7 @@ public class MachineRecipeLoader {
         RecipeMaps.CHEMICAL_RECIPES.recipeBuilder().duration(1200).EUt(1920).inputs(MetaItems.POWER_INTEGRATED_CIRCUIT_WAFER.getStackForm()).input(OrePrefix.dust, Materials.IndiumGalliumPhosphide, 2).fluidInputs(Materials.RedAlloy.getFluid(288)).outputs(MetaItems.HIGH_POWER_INTEGRATED_CIRCUIT_WAFER.getStackForm()).buildAndRegister();
         RecipeMaps.CHEMICAL_RECIPES.recipeBuilder().duration(400).EUt(480).inputs(MetaItems.CENTRAL_PROCESSING_UNIT_WAFER.getStackForm(), MetaItems.CARBON_FIBERS.getStackForm(16)).fluidInputs(Materials.Glowstone.getFluid(576)).outputs(MetaItems.NANO_CENTRAL_PROCESSING_UNIT_WAFER.getStackForm()).buildAndRegister();
         RecipeMaps.CHEMICAL_RECIPES.recipeBuilder().duration(400).EUt(1920).inputs(MetaItems.NANO_CENTRAL_PROCESSING_UNIT_WAFER.getStackForm(), MetaItems.QUANTUM_EYE.getStackForm(2)).fluidInputs(Materials.GalliumArsenide.getFluid(288)).outputs(MetaItems.QBIT_CENTRAL_PROCESSING_UNIT_WAFER.getStackForm()).buildAndRegister();
-        RecipeMaps.CHEMICAL_RECIPES.recipeBuilder().duration(600).EUt(1920).inputs(MetaItems.NANO_CENTRAL_PROCESSING_UNIT_WAFER.getStackForm()).input(OrePrefix.dust, Materials.IndiumGalliumPhosphide).fluidInputs(Materials.Radon.getFluid(50)).outputs(MetaItems.QBIT_CENTRAL_PROCESSING_UNIT_WAFER.getStackForm()).buildAndRegister();
+        RecipeMaps.CHEMICAL_RECIPES.recipeBuilder().duration(600).EUt(1920).inputs(MetaItems.NANO_CENTRAL_PROCESSING_UNIT_WAFER.getStackForm()).input(OrePrefix.cableGtSingle, Tier.Superconductor, 8).outputs(MetaItems.QBIT_CENTRAL_PROCESSING_UNIT_WAFER.getStackForm()).buildAndRegister();
 
         //Wafer cutting recipes
         RecipeMaps.CUTTER_RECIPES.recipeBuilder().duration(200).EUt(8).inputs(MetaItems.SILICON_BOULE.getStackForm()).outputs(MetaItems.SILICON_WAFER.getStackForm(16)).buildAndRegister();
@@ -735,9 +736,19 @@ public class MachineRecipeLoader {
 
 
     private static void registerDecompositionRecipes() {
-        RecipeMaps.CENTRIFUGE_RECIPES.recipeBuilder().duration(1600).EUt(8).fluidInputs(Materials.Air.getFluid(10000)).fluidOutputs(Materials.Nitrogen.getFluid(3900), Materials.Oxygen.getFluid(1000)).buildAndRegister();
+        RecipeMaps.CENTRIFUGE_RECIPES.recipeBuilder().duration(1600).EUt(8)
+            .fluidInputs(Materials.Air.getFluid(10000))
+            .fluidOutputs(Materials.Nitrogen.getFluid(3900),
+                Materials.Oxygen.getFluid(1000))
+            .buildAndRegister();
 
-        RecipeMaps.CENTRIFUGE_RECIPES.recipeBuilder().duration(300).EUt(5)
+        RecipeMaps.EXTRACTOR_RECIPES.recipeBuilder()
+            .inputs(RUBBER_DROP.getStackForm())
+            .outputs(OreDictUnifier.get(OrePrefix.dust, Materials.RawRubber, 4))
+            .duration(200).EUt(5)
+            .buildAndRegister();
+
+        RecipeMaps.CENTRIFUGE_RECIPES.recipeBuilder().duration(400).EUt(5)
             .inputs(MetaItems.RUBBER_DROP.getStackForm())
             .outputs(OreDictUnifier.get(OrePrefix.dust, Materials.RawRubber, 3))
             .chancedOutput(MetaItems.PLANT_BALL.getStackForm(), 1000, 850)
@@ -900,7 +911,6 @@ public class MachineRecipeLoader {
         RecipeMaps.CUTTER_RECIPES.recipeBuilder().duration(25).EUt(8).inputs(new ItemStack(Blocks.BRICK_BLOCK)).outputs(new ItemStack(Blocks.STONE_SLAB, 2, 4)).buildAndRegister();
         RecipeMaps.CUTTER_RECIPES.recipeBuilder().duration(25).EUt(8).inputs(new ItemStack(Blocks.STONEBRICK)).outputs(new ItemStack(Blocks.STONE_SLAB, 2, 5)).buildAndRegister();
         RecipeMaps.CUTTER_RECIPES.recipeBuilder().duration(25).EUt(8).inputs(new ItemStack(Blocks.NETHER_BRICK)).outputs(new ItemStack(Blocks.STONE_SLAB, 2, 6)).buildAndRegister();
-        RecipeMaps.CUTTER_RECIPES.recipeBuilder().duration(25).EUt(8).inputs(new ItemStack(Blocks.QUARTZ_BLOCK, 1, OreDictionary.WILDCARD_VALUE)).outputs(new ItemStack(Blocks.STONE_SLAB, 2, 7)).buildAndRegister();
         RecipeMaps.CUTTER_RECIPES.recipeBuilder().duration(100).EUt(16).inputs(new ItemStack(Blocks.GLOWSTONE)).outputs(OreDictUnifier.get(OrePrefix.plate, Materials.Glowstone, 4)).buildAndRegister();
     }
 

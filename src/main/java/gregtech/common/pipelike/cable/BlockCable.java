@@ -4,7 +4,8 @@ import com.google.common.base.Preconditions;
 import gregtech.api.capability.GregtechCapabilities;
 import gregtech.api.capability.IEnergyContainer;
 import gregtech.api.damagesources.DamageSources;
-import gregtech.api.pipenet.block.BlockPipe;
+import gregtech.api.pipenet.block.material.BlockMaterialPipe;
+import gregtech.api.pipenet.tile.IPipeTile;
 import gregtech.api.pipenet.tile.TileEntityPipeBase;
 import gregtech.api.unification.material.type.Material;
 import gregtech.api.util.GTUtility;
@@ -21,7 +22,6 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.NonNullList;
@@ -30,13 +30,14 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Map;
 import java.util.TreeMap;
 
-public class BlockCable extends BlockPipe<Insulation, WireProperties, WorldENet> implements ITileEntityProvider {
+public class BlockCable extends BlockMaterialPipe<Insulation, WireProperties, WorldENet> implements ITileEntityProvider {
 
     private final Map<Material, WireProperties> enabledMaterials = new TreeMap<>();
 
@@ -62,7 +63,7 @@ public class BlockCable extends BlockPipe<Insulation, WireProperties, WorldENet>
 
     @Override
     protected WireProperties createProperties(Insulation insulation, Material material) {
-        return insulation.modifyProperties(enabledMaterials.get(material));
+        return insulation.modifyProperties(enabledMaterials.getOrDefault(material, getFallbackType()));
     }
 
     @Override
@@ -85,7 +86,7 @@ public class BlockCable extends BlockPipe<Insulation, WireProperties, WorldENet>
     }
 
     @Override
-    public int getActiveNodeConnections(IBlockAccess world, BlockPos nodePos) {
+    public int getActiveNodeConnections(IBlockAccess world, BlockPos nodePos, IPipeTile<Insulation, WireProperties> selfTileEntity) {
         int activeNodeConnections = 0;
         for (EnumFacing side : EnumFacing.VALUES) {
             BlockPos offsetPos = nodePos.offset(side);
@@ -125,18 +126,13 @@ public class BlockCable extends BlockPipe<Insulation, WireProperties, WorldENet>
     }
 
     @Override
-    public BlockRenderLayer getBlockLayer() {
-        return BlockRenderLayer.CUTOUT;
-    }
-
-    @Override
     public TileEntityPipeBase<Insulation, WireProperties> createNewTileEntity(boolean supportsTicking) {
         return supportsTicking ? new TileEntityCableTickable() : new TileEntityCable();
     }
 
     @Override
     @SideOnly(Side.CLIENT)
-    protected TextureAtlasSprite getParticleTexture(World world, BlockPos blockPos) {
+    protected Pair<TextureAtlasSprite, Integer> getParticleTexture(World world, BlockPos blockPos) {
         return CableRenderer.INSTANCE.getParticleTexture((TileEntityCable) world.getTileEntity(blockPos));
     }
 }

@@ -70,7 +70,6 @@ public class MetaTileEntityBlockBreaker extends TieredMetaTileEntity {
             pushItemsIntoNearbyHandlers(getOutputFacing());
         }
         if(!getWorld().isRemote) {
-
             if(breakProgressTicksLeft > 0) {
                 --this.breakProgressTicksLeft;
                 if(breakProgressTicksLeft == 0 && energyContainer.getEnergyStored() >= getEnergyPerBlockBreak()) {
@@ -198,6 +197,7 @@ public class MetaTileEntityBlockBreaker extends TieredMetaTileEntity {
     public void setOutputFacing(EnumFacing outputFacing) {
         this.outputFacing = outputFacing;
         if (!getWorld().isRemote) {
+            getHolder().notifyBlockUpdate();
             writeCustomData(100, buf -> buf.writeByte(outputFacing.getIndex()));
             markDirty();
         }

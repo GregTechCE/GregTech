@@ -1,5 +1,6 @@
 package gregtech.api.gui.widgets;
 
+import gregtech.api.gui.IRenderContext;
 import gregtech.api.gui.Widget;
 import gregtech.api.gui.widgets.tab.HorizontalTabListRenderer;
 import gregtech.api.gui.widgets.tab.HorizontalTabListRenderer.HorizontalStartCorner;
@@ -9,6 +10,7 @@ import gregtech.api.gui.widgets.tab.TabListRenderer;
 import gregtech.api.gui.widgets.tab.VerticalTabListRenderer;
 import gregtech.api.gui.widgets.tab.VerticalTabListRenderer.HorizontalLocation;
 import gregtech.api.gui.widgets.tab.VerticalTabListRenderer.VerticalStartCorner;
+import gregtech.api.util.Position;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.PositionedSoundRecord;
 import net.minecraft.init.SoundEvents;
@@ -27,8 +29,13 @@ public class TabGroup extends AbstractWidgetGroup {
     private int selectedTabIndex = 0;
     private TabListRenderer tabListRenderer;
 
-    public TabGroup(TabLocation tabLocation) {
+    public TabGroup(TabLocation tabLocation, Position position) {
+        super(position);
         this.tabListRenderer = tabLocation.supplier.get();
+    }
+
+    public TabGroup(TabLocation tabLocation) {
+        this(tabLocation, Position.ORIGIN);
     }
 
     public void addTab(ITabInfo tabInfo, AbstractWidgetGroup tabWidget) {
@@ -40,8 +47,8 @@ public class TabGroup extends AbstractWidgetGroup {
     }
 
     @Override
-    public void drawInBackground(int mouseX, int mouseY) {
-        super.drawInBackground(mouseX, mouseY);
+    public void drawInBackground(int mouseX, int mouseY, IRenderContext context) {
+        super.drawInBackground(mouseX, mouseY, context);
         this.tabListRenderer.renderTabs(tabInfos, sizes.getWidth(), sizes.getHeight(), selectedTabIndex);
     }
 

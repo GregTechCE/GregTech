@@ -1,12 +1,11 @@
 package gregtech.common.tools;
 
-import net.minecraft.block.state.IBlockState;
+import gregtech.api.capability.GregtechCapabilities;
+import gregtech.api.capability.IElectricItem;
+import gregtech.common.items.MetaItems;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
-
-import java.util.List;
 
 public class ToolChainsawLV extends ToolSaw {
 
@@ -31,14 +30,21 @@ public class ToolChainsawLV extends ToolSaw {
     }
 
     @Override
-    public int convertBlockDrops(World world, BlockPos blockPos, IBlockState blockState, EntityPlayer harvester, List<ItemStack> drops, boolean recursive, ItemStack toolStack) {
-        int superResult = super.convertBlockDrops(world, blockPos, blockState, harvester, drops, recursive, toolStack);
-        if (superResult > 0) {
-            //we already harvested block and converted blocks in saw class
-            return superResult;
-        }
-        //if not, try to apply timber axe mechanic
-        return ToolUtility.applyTimberAxe(world, blockPos, blockState, harvester, drops);
+    public float getMaxDurabilityMultiplier(ItemStack stack) {
+        return 10.0f;
     }
 
+    @Override
+    public boolean onBlockPreBreak(ItemStack stack, BlockPos blockPos, EntityPlayer player) {
+        if(!player.isSneaking()) {
+            return ToolUtility.applyTimberAxe(stack, player.world, blockPos, player);
+        }
+        return false;
+    }
+
+    @Override
+    public ItemStack getBrokenStack(ItemStack stack) {
+        IElectricItem electricItem = stack.getCapability(GregtechCapabilities.CAPABILITY_ELECTRIC_ITEM, null);
+        return MetaItems.POWER_UNIT_LV.getChargedStackWithOverride(electricItem);
+    }
 }

@@ -50,7 +50,7 @@ public abstract class MonolithicPipeNet<NodeDataType> extends PipeNet<NodeDataTy
     public void deserializeNBT(NBTTagCompound nbt) {
         super.deserializeNBT(nbt);
         //since net cannot exist in world without at least one node
-        this.nodeData = allNodes.values().iterator().next().data;
+        this.nodeData = getAllNodes().values().iterator().next().data;
     }
 
     @Override

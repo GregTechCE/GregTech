@@ -11,16 +11,16 @@ import gregtech.api.util.world.DummyWorld;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
-import net.minecraft.client.renderer.BlockRendererDispatcher;
-import net.minecraft.client.renderer.BufferBuilder;
-import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.*;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.init.Blocks;
+import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec2f;
+import net.minecraftforge.client.ForgeHooksClient;
+import net.minecraftforge.client.MinecraftForgeClient;
 import net.minecraftforge.client.model.pipeline.LightUtil;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
@@ -92,17 +92,23 @@ public class WorldSceneRenderer {
         Minecraft minecraft = Minecraft.getMinecraft();
         minecraft.renderEngine.bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
         BlockRendererDispatcher dispatcher = minecraft.getBlockRendererDispatcher();
+        BlockRenderLayer oldRenderLayer = MinecraftForgeClient.getRenderLayer();
         Tessellator tessellator = Tessellator.getInstance();
-        BufferBuilder buffer = tessellator.getBuffer();
+        BufferBuilder bufferBuilder = tessellator.getBuffer();
 
-        buffer.begin(GL11.GL_QUADS, DefaultVertexFormats.BLOCK);
+        bufferBuilder.begin(GL11.GL_QUADS, DefaultVertexFormats.BLOCK);
         for (BlockPos pos : renderedBlocks) {
             if (renderFilter != null && !renderFilter.test(pos))
                 continue; //do not render if position is skipped
             IBlockState blockState = world.getBlockState(pos);
-            dispatcher.renderBlock(blockState, pos, world, buffer);
+            for(BlockRenderLayer renderLayer : BlockRenderLayer.values()) {
+                if (!blockState.getBlock().canRenderInLayer(blockState, renderLayer)) continue;
+                ForgeHooksClient.setRenderLayer(renderLayer);
+                dispatcher.renderBlock(blockState, pos, world, bufferBuilder);
+            }
         }
         tessellator.draw();
+        ForgeHooksClient.setRenderLayer(oldRenderLayer);
 
         if (mousePosition != null) {
             this.lastHitBlock = handleMouseHit(mousePosition);
@@ -113,7 +119,7 @@ public class WorldSceneRenderer {
         if (lastHitBlock != null) {
             GlStateManager.disableTexture2D();
             CCRenderState renderState = CCRenderState.instance();
-            renderState.startDrawing(GL11.GL_QUADS, DefaultVertexFormats.POSITION_COLOR, buffer);
+            renderState.startDrawing(GL11.GL_QUADS, DefaultVertexFormats.POSITION_COLOR, tessellator.getBuffer());
             ColourMultiplier multiplier = new ColourMultiplier(0);
             renderState.setPipeline(new Translation(lastHitBlock), multiplier);
             BlockFace blockFace = new BlockFace();

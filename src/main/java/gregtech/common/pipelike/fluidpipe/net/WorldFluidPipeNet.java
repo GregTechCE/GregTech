@@ -14,7 +14,7 @@ public class WorldFluidPipeNet extends WorldPipeNet<FluidPipeProperties, FluidPi
             netWorldData = new WorldFluidPipeNet(DATA_ID);
             world.setData(DATA_ID, netWorldData);
         }
-        netWorldData.world = world;
+        netWorldData.setWorldAndInit(world);
         return netWorldData;
     }
 

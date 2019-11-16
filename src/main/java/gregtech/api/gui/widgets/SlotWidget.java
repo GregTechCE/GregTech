@@ -1,9 +1,11 @@
 package gregtech.api.gui.widgets;
 
 import gregtech.api.gui.INativeWidget;
-import gregtech.api.gui.IPositionedRectangularWidget;
+import gregtech.api.gui.IRenderContext;
 import gregtech.api.gui.Widget;
 import gregtech.api.gui.resources.TextureArea;
+import gregtech.api.util.Position;
+import gregtech.api.util.Size;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.ClickType;
 import net.minecraft.item.ItemStack;
@@ -15,7 +17,7 @@ import net.minecraftforge.items.SlotItemHandler;
 
 import javax.annotation.Nonnull;
 
-public class SlotWidget extends Widget implements INativeWidget, IPositionedRectangularWidget {
+public class SlotWidget extends Widget implements INativeWidget {
 
     protected SlotItemHandler slotReference;
     protected boolean isEnabled = true;
@@ -28,29 +30,31 @@ public class SlotWidget extends Widget implements INativeWidget, IPositionedRect
     protected Runnable changeListener;
 
     public SlotWidget(IItemHandlerModifiable itemHandler, int slotIndex, int xPosition, int yPosition, boolean canTakeItems, boolean canPutItems) {
+        super(new Position(xPosition, yPosition), new Size(18, 18));
         this.canTakeItems = canTakeItems;
         this.canPutItems = canPutItems;
-        this.slotReference = new WidgetSlotDelegate(itemHandler, slotIndex, xPosition, yPosition);
+        this.slotReference = new WidgetSlotDelegate(itemHandler, slotIndex, xPosition + 1, yPosition + 1);
     }
 
     @Override
-    public int getXPosition() {
-        return slotReference.xPos;
+    @SideOnly(Side.CLIENT)
+    public void drawInBackground(int mouseX, int mouseY, IRenderContext context) {
+        if (isEnabled && backgroundTexture != null) {
+            Position pos = getPosition();
+            Size size = getSize();
+            for (TextureArea backgroundTexture : this.backgroundTexture) {
+                backgroundTexture.draw(pos.x, pos.y, size.width, size.height);
+            }
+        }
     }
 
     @Override
-    public int getYPosition() {
-        return slotReference.yPos;
-    }
-
-    @Override
-    public int getWidth() {
-        return 16;
-    }
-
-    @Override
-    public int getHeight() {
-        return 16;
+    protected void onPositionUpdate() {
+        if (slotReference != null) {
+            Position position = getPosition();
+            this.slotReference.xPos = position.x + 1;
+            this.slotReference.yPos = position.y + 1;
+        }
     }
 
     public SlotWidget setChangeListener(Runnable changeListener) {
@@ -119,16 +123,6 @@ public class SlotWidget extends Widget implements INativeWidget, IPositionedRect
     @Override
     public final SlotItemHandler getHandle() {
         return slotReference;
-    }
-
-    @Override
-    @SideOnly(Side.CLIENT)
-    public void drawInBackground(int mouseX, int mouseY) {
-        if (isEnabled && backgroundTexture != null) {
-            for (TextureArea backgroundTexture : this.backgroundTexture) {
-                backgroundTexture.draw(getXPosition() - 1, getYPosition() - 1, getWidth() + 2, getHeight() + 2);
-            }
-        }
     }
 
     protected class WidgetSlotDelegate extends SlotItemHandler {

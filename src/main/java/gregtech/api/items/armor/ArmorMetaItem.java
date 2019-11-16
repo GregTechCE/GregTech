@@ -1,117 +1,179 @@
 package gregtech.api.items.armor;
 
-import gregtech.api.items.armor.ArmorMetaItem.ArmorMetaValueItem;
+import com.google.common.base.Preconditions;
+import com.google.common.collect.Multimap;
 import gregtech.api.items.metaitem.MetaItem;
+import gregtech.api.items.metaitem.stats.IItemComponent;
+import gregtech.api.items.metaitem.stats.IMetaItemStats;
 import net.minecraft.client.gui.ScaledResolution;
+import net.minecraft.client.model.ModelBiped;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ISpecialArmor;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-public class ArmorMetaItem extends MetaItem<ArmorMetaValueItem> implements ISpecialArmor {
+public class ArmorMetaItem<T extends ArmorMetaItem<?>.ArmorMetaValueItem> extends MetaItem<T> implements IArmorItem, ISpecialArmor {
 
-    public ArmorMetaItem(short metaItemOffset) {
-        super(metaItemOffset);
+    public ArmorMetaItem() {
+        super((short) 0);
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    protected T constructMetaValueItem(short metaValue, String unlocalizedName) {
+        return (T) new ArmorMetaValueItem(metaValue, unlocalizedName);
+    }
+
+    @Nonnull
+    private IArmorLogic getArmorLogic(ItemStack itemStack) {
+        T metaValueItem = getItem(itemStack);
+        return metaValueItem == null ? new DummyArmorLogic() : metaValueItem.getArmorLogic();
     }
 
     @Override
-    protected ArmorMetaValueItem constructMetaValueItem(short metaValue, String unlocalizedName) {
-        return new ArmorMetaValueItem(metaValue, unlocalizedName);
-    }
-
-    @Override
-    public boolean isValidArmor(ItemStack stack, EntityEquipmentSlot armorType, Entity entity) {
-        ArmorMetaValueItem valueItem = getItem(stack);
-        return valueItem != null && valueItem.getEquipmentSlot() == armorType;
-    }
-
-    @Nullable
-    @Override
-    public EntityEquipmentSlot getEquipmentSlot(ItemStack stack) {
-        ArmorMetaValueItem valueItem = getItem(stack);
-        return valueItem == null ? null : valueItem.getEquipmentSlot();
-    }
-
-    @Override
-    public void onArmorTick(World world, EntityPlayer player, ItemStack itemStack) {
-        ArmorMetaValueItem metaValueItem = getItem(itemStack);
-        IArmorLogic armorLogic = metaValueItem == null ? null : metaValueItem.getArmorLogic();
-        if (armorLogic != null) {
-            armorLogic.onArmorTick(world, player, itemStack);
-        }
-    }
-
-    @Override
-    public void renderHelmetOverlay(ItemStack stack, EntityPlayer player, ScaledResolution resolution, float partialTicks) {
-        ArmorMetaValueItem metaValueItem = getItem(stack);
-        IArmorLogic armorLogic = metaValueItem == null ? null : metaValueItem.getArmorLogic();
-        if (armorLogic != null) {
-            armorLogic.renderHelmetOverlay(stack, player, resolution, partialTicks);
-        }
+    public Multimap<String, AttributeModifier> getAttributeModifiers(EntityEquipmentSlot slot, ItemStack stack) {
+        Multimap<String, AttributeModifier> multimap = super.getAttributeModifiers(slot, stack);
+        IArmorLogic armorLogic = getArmorLogic(stack);
+        multimap.putAll(armorLogic.getAttributeModifiers(slot, stack));
+        return multimap;
     }
 
     @Override
     public ArmorProperties getProperties(EntityLivingBase player, @Nonnull ItemStack armor, DamageSource source, double damage, int slot) {
-        ArmorMetaValueItem metaValueItem = getItem(armor);
-        IArmorLogic armorLogic = metaValueItem == null ? null : metaValueItem.getArmorLogic();
-        if (armorLogic != null) {
-            return armorLogic.getArmorProperties(player, armor, source, damage, EntityEquipmentSlot.values()[slot]);
+        IArmorLogic armorLogic = getArmorLogic(armor);
+        if (armorLogic instanceof ISpecialArmor) {
+            return ((ISpecialArmor) armorLogic).getProperties(player, armor, source, damage, slot);
         }
-        return new ArmorProperties(0, 0.0, 0);
+        return new ArmorProperties(0, 0, Integer.MAX_VALUE);
     }
 
     @Override
     public int getArmorDisplay(EntityPlayer player, @Nonnull ItemStack armor, int slot) {
-        ArmorMetaValueItem metaValueItem = getItem(armor);
-        IArmorLogic armorLogic = metaValueItem == null ? null : metaValueItem.getArmorLogic();
-        if (armorLogic != null) {
-            armorLogic.getArmorDisplay(player, armor, EntityEquipmentSlot.values()[slot]);
+        IArmorLogic armorLogic = getArmorLogic(armor);
+        if (armorLogic instanceof ISpecialArmorLogic) {
+            return ((ISpecialArmorLogic) armorLogic).getArmorDisplay(player, armor, slot);
         }
         return 0;
     }
 
     @Override
     public void damageArmor(EntityLivingBase entity, @Nonnull ItemStack stack, DamageSource source, int damage, int slot) {
-        ArmorMetaValueItem metaValueItem = getItem(stack);
-        IArmorLogic armorLogic = metaValueItem == null ? null : metaValueItem.getArmorLogic();
-        if (armorLogic != null) {
-            armorLogic.damageArmor(entity, stack, source, damage, EntityEquipmentSlot.values()[slot]);
+        IArmorLogic armorLogic = getArmorLogic(stack);
+        armorLogic.damageArmor(entity, stack, source, damage, getSlotByIndex(slot));
+    }
+
+    @Override
+    public boolean handleUnblockableDamage(EntityLivingBase entity, @Nonnull ItemStack armor, DamageSource source, double damage, int slot) {
+        IArmorLogic armorLogic = getArmorLogic(armor);
+        if (armorLogic instanceof ISpecialArmorLogic) {
+            return ((ISpecialArmorLogic) armorLogic).handleUnblockableDamage(entity, armor, source, damage, getSlotByIndex(slot));
+        }
+        return false;
+    }
+
+    @Override
+    public void onArmorTick(World world, EntityPlayer player, ItemStack itemStack) {
+        IArmorLogic armorLogic = getArmorLogic(itemStack);
+        armorLogic.onArmorTick(world, player, itemStack);
+    }
+
+    @Override
+    public boolean isValidArmor(ItemStack stack, EntityEquipmentSlot armorType, Entity entity) {
+        IArmorLogic armorLogic = getArmorLogic(stack);
+        return super.isValidArmor(stack, armorType, entity) &&
+            armorLogic.isValidArmor(stack, entity, armorType);
+    }
+
+    @Nullable
+    @Override
+    public EntityEquipmentSlot getEquipmentSlot(ItemStack stack) {
+        IArmorLogic armorLogic = getArmorLogic(stack);
+        return armorLogic.getEquipmentSlot(stack);
+    }
+
+    @Nullable
+    @Override
+    public String getArmorTexture(ItemStack stack, Entity entity, EntityEquipmentSlot slot, String type) {
+        IArmorLogic armorLogic = getArmorLogic(stack);
+        return armorLogic.getArmorTexture(stack, entity, slot, type);
+    }
+
+    @Nullable
+    @Override
+    @SideOnly(Side.CLIENT)
+    public ModelBiped getArmorModel(EntityLivingBase entityLiving, ItemStack itemStack, EntityEquipmentSlot armorSlot, ModelBiped _default) {
+        IArmorLogic armorLogic = getArmorLogic(itemStack);
+        return armorLogic.getArmorModel(entityLiving, itemStack, armorSlot, _default);
+    }
+
+    @Override
+    public int getArmorLayersAmount(ItemStack itemStack) {
+        IArmorLogic armorLogic = getArmorLogic(itemStack);
+        return armorLogic.getArmorLayersAmount(itemStack);
+    }
+
+    @Override
+    public int getArmorLayerColor(ItemStack itemStack, int layerIndex) {
+        IArmorLogic armorLogic = getArmorLogic(itemStack);
+        return armorLogic.getArmorLayerColor(itemStack, layerIndex);
+    }
+
+    @Override
+    public void renderHelmetOverlay(ItemStack stack, EntityPlayer player, ScaledResolution resolution, float partialTicks) {
+        IArmorLogic armorLogic = getArmorLogic(stack);
+        armorLogic.renderHelmetOverlay(stack, player, resolution, partialTicks);
+    }
+
+    private static EntityEquipmentSlot getSlotByIndex(int index) {
+        switch (index) {
+            case 0: return EntityEquipmentSlot.FEET;
+            case 1: return EntityEquipmentSlot.LEGS;
+            case 2: return EntityEquipmentSlot.CHEST;
+            default: return EntityEquipmentSlot.HEAD;
         }
     }
 
-    public class ArmorMetaValueItem extends MetaItem<?>.MetaValueItem {
+    public class ArmorMetaValueItem extends MetaValueItem {
 
-        private EntityEquipmentSlot equipmentSlot;
-        private IArmorLogic armorLogic;
+        private IArmorLogic armorLogic = new DummyArmorLogic();
 
-        public ArmorMetaValueItem(int metaValue, String unlocalizedName) {
+        protected ArmorMetaValueItem(int metaValue, String unlocalizedName) {
             super(metaValue, unlocalizedName);
+            setMaxStackSize(1);
         }
 
-        public EntityEquipmentSlot getEquipmentSlot() {
-            return equipmentSlot;
-        }
-
+        @Nonnull
         public IArmorLogic getArmorLogic() {
             return armorLogic;
         }
 
-        public ArmorMetaValueItem setEquipmentSlot(EntityEquipmentSlot equipmentSlot) {
-            this.equipmentSlot = equipmentSlot;
+        public ArmorMetaValueItem setArmorLogic(IArmorLogic armorLogic) {
+            Preconditions.checkNotNull(armorLogic, "Cannot set armorLogic to null");
+            this.armorLogic = armorLogic;
+            this.armorLogic.addToolComponents(this);
             return this;
         }
 
-        public ArmorMetaValueItem setArmorLogic(IArmorLogic armorLogic) {
-            this.armorLogic = armorLogic;
+        @Override
+        public ArmorMetaValueItem addStats(IMetaItemStats... stats) {
+            super.addStats(stats);
+            return this;
+        }
+
+        @Override
+        public ArmorMetaValueItem addComponents(IItemComponent... stats) {
+            super.addComponents(stats);
             return this;
         }
     }
-
 }

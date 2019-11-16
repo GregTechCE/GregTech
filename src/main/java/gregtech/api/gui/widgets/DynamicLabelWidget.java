@@ -1,5 +1,8 @@
 package gregtech.api.gui.widgets;
 
+import gregtech.api.gui.Widget;
+import gregtech.api.util.Position;
+import gregtech.api.util.Size;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraftforge.fml.relauncher.Side;
@@ -13,9 +16,10 @@ import java.util.function.Supplier;
  * Note that this DOESN'T DO SYNC and calls getter on client side only
  * if you're looking for server-side controlled text field, see {@link gregtech.api.gui.widgets.AdvancedTextWidget}
  */
-public class DynamicLabelWidget extends AbstractPositionedWidget {
+public class DynamicLabelWidget extends Widget {
 
     protected Supplier<String> textSupplier;
+    private String lastTextValue = "";
     private int color;
 
     public DynamicLabelWidget(int xPosition, int yPosition, Supplier<String> text) {
@@ -23,18 +27,33 @@ public class DynamicLabelWidget extends AbstractPositionedWidget {
     }
 
     public DynamicLabelWidget(int xPosition, int yPosition, Supplier<String> text, int color) {
-        super(xPosition, yPosition);
+        super(new Position(xPosition, yPosition), Size.ZERO);
         this.textSupplier = text;
         this.color = color;
+    }
+
+    private void updateSize() {
+        FontRenderer fontRenderer = Minecraft.getMinecraft().fontRenderer;
+        String resultText = lastTextValue;
+        setSize(new Size(fontRenderer.getStringWidth(resultText), fontRenderer.FONT_HEIGHT));
+        if (uiAccess != null) {
+            uiAccess.notifySizeChange();
+        }
     }
 
     @Override
     @SideOnly(Side.CLIENT)
     public void drawInForeground(int mouseX, int mouseY) {
+        String suppliedText = textSupplier.get();
+        if (!suppliedText.equals(lastTextValue)) {
+            this.lastTextValue = suppliedText;
+            updateSize();
+        }
         String[] split = textSupplier.get().split("\n");
         FontRenderer fontRenderer = Minecraft.getMinecraft().fontRenderer;
+        Position position = getPosition();
         for (int i = 0; i < split.length; i++) {
-            fontRenderer.drawString(split[i], this.xPosition, this.yPosition + (i * (fontRenderer.FONT_HEIGHT + 2)), color);
+            fontRenderer.drawString(split[i], position.x, position.y + (i * (fontRenderer.FONT_HEIGHT + 2)), color);
         }
     }
 

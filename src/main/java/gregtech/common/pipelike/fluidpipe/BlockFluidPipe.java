@@ -2,14 +2,15 @@ package gregtech.common.pipelike.fluidpipe;
 
 import com.google.common.base.Preconditions;
 import gregtech.api.damagesources.DamageSources;
-import gregtech.api.pipenet.block.BlockPipe;
+import gregtech.api.pipenet.block.material.BlockMaterialPipe;
 import gregtech.api.pipenet.tile.IPipeTile;
 import gregtech.api.pipenet.tile.TileEntityPipeBase;
 import gregtech.api.unification.material.type.Material;
 import gregtech.common.pipelike.fluidpipe.net.FluidPipeNet;
 import gregtech.common.pipelike.fluidpipe.net.WorldFluidPipeNet;
+import gregtech.common.pipelike.fluidpipe.tile.FluidPipeFluidHandler;
 import gregtech.common.pipelike.fluidpipe.tile.TileEntityFluidPipe;
-import gregtech.common.pipelike.fluidpipe.tile.TileEntityFluidPipeActive;
+import gregtech.common.pipelike.fluidpipe.tile.TileEntityFluidPipeTickable;
 import gregtech.common.render.FluidPipeRenderer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
@@ -18,7 +19,6 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.NonNullList;
@@ -30,13 +30,14 @@ import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.Collection;
 import java.util.Collections;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
-public class BlockFluidPipe extends BlockPipe<FluidPipeType, FluidPipeProperties, WorldFluidPipeNet> {
+public class BlockFluidPipe extends BlockMaterialPipe<FluidPipeType, FluidPipeProperties, WorldFluidPipeNet> {
 
     private final SortedMap<Material, FluidPipeProperties> enabledMaterials = new TreeMap<>();
 
@@ -67,7 +68,7 @@ public class BlockFluidPipe extends BlockPipe<FluidPipeType, FluidPipeProperties
 
     @Override
     protected FluidPipeProperties createProperties(FluidPipeType fluidPipeType, Material material) {
-        return fluidPipeType.modifyProperties(enabledMaterials.get(material));
+        return fluidPipeType.modifyProperties(enabledMaterials.getOrDefault(material, getFallbackType()));
     }
 
     @Override
@@ -85,31 +86,60 @@ public class BlockFluidPipe extends BlockPipe<FluidPipeType, FluidPipeProperties
     }
 
     @Override
-    //because fluid pipe networks are monolithic - pipes of different kinds just don't connect to each other
     protected boolean canPipesConnect(IPipeTile<FluidPipeType, FluidPipeProperties> selfTile, EnumFacing side, IPipeTile<FluidPipeType, FluidPipeProperties> sideTile) {
         return selfTile.getNodeData().equals(sideTile.getNodeData());
     }
 
     @Override
-    public int getActiveNodeConnections(IBlockAccess world, BlockPos nodePos) {
+    protected int getActiveVisualConnections(IPipeTile<FluidPipeType, FluidPipeProperties> selfTile) {
         int activeNodeConnections = 0;
         for (EnumFacing side : EnumFacing.VALUES) {
-            BlockPos offsetPos = nodePos.offset(side);
-            TileEntity tileEntity = world.getTileEntity(offsetPos);
-            //do not connect to null cables and ignore cables
-            if (tileEntity == null || getPipeTileEntity(tileEntity) != null) continue;
-            EnumFacing opposite = side.getOpposite();
-            IFluidHandler fluidHandler = tileEntity.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, opposite);
-            if (fluidHandler != null) {
-                activeNodeConnections |= 1 << side.getIndex();
+            BlockPos offsetPos = selfTile.getPipePos().offset(side);
+            TileEntity tileEntity = selfTile.getPipeWorld().getTileEntity(offsetPos);
+            if(tileEntity != null) {
+                EnumFacing opposite = side.getOpposite();
+                IFluidHandler sourceHandler = selfTile.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, side);
+                IFluidHandler receivedHandler = tileEntity.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, opposite);
+                if (sourceHandler != null && receivedHandler != null) {
+                    activeNodeConnections |= 1 << side.getIndex();
+                }
             }
         }
         return activeNodeConnections;
     }
 
     @Override
+    public int getActiveNodeConnections(IBlockAccess world, BlockPos nodePos, IPipeTile<FluidPipeType, FluidPipeProperties> selfTileEntity) {
+        int activeNodeConnections = 0;
+        for (EnumFacing side : EnumFacing.VALUES) {
+            BlockPos offsetPos = nodePos.offset(side);
+            TileEntity tileEntity = world.getTileEntity(offsetPos);
+            if(tileEntity != null) {
+                EnumFacing opposite = side.getOpposite();
+                IFluidHandler sourceHandler = selfTileEntity.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, side);
+                IFluidHandler receivedHandler = tileEntity.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, opposite);
+                if (sourceHandler != null && receivedHandler != null && canPushIntoFluidHandler(selfTileEntity, tileEntity, sourceHandler, receivedHandler)) {
+                    activeNodeConnections |= 1 << side.getIndex();
+                }
+            }
+        }
+        return activeNodeConnections;
+    }
+
+    public boolean canPushIntoFluidHandler(IPipeTile<FluidPipeType, FluidPipeProperties> selfTileEntity, TileEntity otherTileEntity, IFluidHandler sourceHandler, IFluidHandler destinationHandler) {
+        boolean isSourcePipe = sourceHandler instanceof FluidPipeFluidHandler;
+        boolean isDestPipe = destinationHandler instanceof FluidPipeFluidHandler;
+        if(isSourcePipe && isDestPipe) {
+            float sourceThickness = selfTileEntity.getPipeType().getThickness();
+            float destThickness = getPipeTileEntity(otherTileEntity).getPipeType().getThickness();
+            return sourceThickness > destThickness;
+        }
+        return true;
+    }
+
+    @Override
     public void onEntityCollidedWithBlock(World worldIn, BlockPos pos, IBlockState state, Entity entityIn) {
-        if (entityIn instanceof EntityLivingBase) {
+        if (entityIn instanceof EntityLivingBase && entityIn.world.getWorldTime() % 20 == 0L) {
             EntityLivingBase entityLiving = (EntityLivingBase) entityIn;
             FluidPipeNet pipeNet = getWorldPipeNet(worldIn).getNetFromPos(pos);
             if (pipeNet != null) {
@@ -120,12 +150,12 @@ public class BlockFluidPipe extends BlockPipe<FluidPipeType, FluidPipeProperties
                 int fluidTemperature = fluidStack.getFluid().getTemperature(fluidStack);
                 if (fluidTemperature >= 373) {
                     //100C, temperature of boiling water
-                    float damageAmount = (fluidTemperature - 363) / 2.0f;
+                    float damageAmount = (fluidTemperature - 363) / 4.0f;
                     entityLiving.attackEntityFrom(DamageSources.getHeatDamage(), damageAmount);
 
                 } else if (fluidTemperature <= 183) {
-                    //-90C, temperature of freezing of many gases
-                    float damageAmount = fluidTemperature / 2.0f;
+                    //-90C, temperature of freezing of most gaseous elements
+                    float damageAmount = fluidTemperature / 4.0f;
                     entityLiving.attackEntityFrom(DamageSources.getFrostDamage(), damageAmount);
 
                 }
@@ -135,19 +165,19 @@ public class BlockFluidPipe extends BlockPipe<FluidPipeType, FluidPipeProperties
 
     @Override
     public TileEntityPipeBase<FluidPipeType, FluidPipeProperties> createNewTileEntity(boolean supportsTicking) {
-        return supportsTicking ? new TileEntityFluidPipeActive() : new TileEntityFluidPipe();
+        return supportsTicking ? new TileEntityFluidPipeTickable() : new TileEntityFluidPipe();
     }
 
     @Override
     protected void onActiveModeChange(World world, BlockPos pos, boolean isActiveNow, boolean isInitialChange) {
         TileEntityFluidPipe oldTileEntity = (TileEntityFluidPipe) world.getTileEntity(pos);
-        if (!(oldTileEntity instanceof TileEntityFluidPipeActive) && isActiveNow) {
-            TileEntityFluidPipeActive newTileEntity = new TileEntityFluidPipeActive();
+        if (!(oldTileEntity instanceof TileEntityFluidPipeTickable) && isActiveNow) {
+            TileEntityFluidPipeTickable newTileEntity = new TileEntityFluidPipeTickable();
             newTileEntity.transferDataFrom(oldTileEntity);
             newTileEntity.setActive(true);
             world.setTileEntity(pos, newTileEntity);
-        } else if (oldTileEntity instanceof TileEntityFluidPipeActive) {
-            ((TileEntityFluidPipeActive) oldTileEntity).setActive(isActiveNow);
+        } else if (oldTileEntity instanceof TileEntityFluidPipeTickable) {
+            ((TileEntityFluidPipeTickable) oldTileEntity).setActive(isActiveNow);
         }
     }
 
@@ -158,13 +188,8 @@ public class BlockFluidPipe extends BlockPipe<FluidPipeType, FluidPipeProperties
     }
 
     @Override
-    public BlockRenderLayer getBlockLayer() {
-        return BlockRenderLayer.CUTOUT;
-    }
-
-    @Override
     @SideOnly(Side.CLIENT)
-    protected TextureAtlasSprite getParticleTexture(World world, BlockPos blockPos) {
+    protected Pair<TextureAtlasSprite, Integer> getParticleTexture(World world, BlockPos blockPos) {
         return FluidPipeRenderer.INSTANCE.getParticleTexture((TileEntityFluidPipe) world.getTileEntity(blockPos));
     }
 }
