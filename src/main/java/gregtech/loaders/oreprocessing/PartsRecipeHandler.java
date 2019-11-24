@@ -246,9 +246,10 @@ public class PartsRecipeHandler {
     public static void processRotor(OrePrefix rotorPrefix, SolidMaterial material) {
         ItemStack stack = OreDictUnifier.get(rotorPrefix, material);
         ModHandler.addShapedRecipe(String.format("rotor_%s", material.toString()), stack,
-            "PdP", " R ", "P P",
+            "PdP", " R ", "PSP",
             'P', new UnificationEntry(OrePrefix.plate, material),
-            'R', new UnificationEntry(OrePrefix.ring, material));
+            'R', new UnificationEntry(OrePrefix.ring, material),
+            'S', new UnificationEntry(OrePrefix.screw, material));
 
         RecipeMaps.ASSEMBLER_RECIPES.recipeBuilder()
             .input(OrePrefix.plate, material, 4).input(OrePrefix.ring, material)
