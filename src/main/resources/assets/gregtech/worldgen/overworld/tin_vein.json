@@ -1,0 +1,27 @@
+{
+  "weight": 95,
+  "density": 0.5,
+  "min_height": 40,
+  "surface_stone_material": "tin",
+
+  "generator": {
+    "type": "ellipsoid",
+    "radius": [17, 19]
+  },
+  "filler": {
+    "type": "simple",
+    "value": {
+      "type": "weight_random",
+      "values": [
+        {
+          "weight": 75,
+          "value": "ore:tin"
+        },
+        {
+          "weight": 25,
+          "value": "ore:cassiterite"
+        }
+      ]
+    }
+  }
+}

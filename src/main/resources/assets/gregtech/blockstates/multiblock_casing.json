@@ -1,0 +1,48 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+    "model": "minecraft:cube_all",
+    "textures": {
+      "all": "gregtech:blocks/rendering_error"
+    }
+  },
+  "variants": {
+    "variant": {
+      "bronze_bricks": {
+        "textures": {
+          "all": "gregtech:blocks/rendering_error"
+        }
+      },
+      "engine_intake": {
+        "textures": {
+          "all": "gregtech:blocks/casings/pipe/machine_casing_pipe_titanium"
+        }
+      },
+      "grate": {
+        "textures": {
+          "all": "gregtech:blocks/casings/pipe/machine_casing_grate"
+        }
+      },
+      "assembler": {
+        "textures": {
+          "all": "gregtech:blocks/casings/mechanic/machine_casing_assembler"
+        }
+      },
+      "assembling_machine": {
+        "textures": {
+          "all": "gregtech:blocks/rendering_error"
+        }
+      },
+      "fusion": {
+        "textures": {
+          "all": "gregtech:blocks/multiblock/fusion/fusioni_8"
+        }
+      },
+      "fusion_mk2": {
+        "textures": {
+          "all": "gregtech:blocks/multiblock/fusion/fusionii_8"
+        }
+      }
+    }
+  }
+}

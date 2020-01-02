@@ -1,0 +1,22 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+    "model": "minecraft:cross",
+    "textures": {
+      "cross": "gregtech:blocks/rendering_error"
+    }
+  },
+  "variants": {
+    "stage": {
+      "0": {},
+      "1": {}
+    },
+    "variant": {
+      "rubber_wood": {
+        "textures": {
+          "cross": "gregtech:blocks/wood/rubber/sapling_rubber"
+        }
+      }
+    }
+  }
+}

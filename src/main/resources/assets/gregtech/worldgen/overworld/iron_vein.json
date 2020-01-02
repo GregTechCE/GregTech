@@ -1,0 +1,36 @@
+{
+  "weight": 80,
+  "density": 0.4,
+  "max_height": 55,
+  "min_height": 5,
+  "surface_stone_material": "iron",
+
+  "generator": {
+    "type": "ellipsoid",
+    "radius": [13, 13]
+  },
+  "filler": {
+    "type": "simple",
+    "value": {
+      "type": "weight_random",
+      "values": [
+		{
+          "weight": 30,
+          "value": "ore:brown_limonite"
+        },
+        {
+          "weight": 30,
+          "value": "ore:yellow_limonite"
+        },
+		{
+          "weight": 30,
+          "value": "ore:banded_iron"
+        },
+		{
+          "weight": 10,
+          "value": "ore:malachite"
+        }
+      ]
+    }
+  }
+}

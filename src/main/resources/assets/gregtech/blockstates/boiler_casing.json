@@ -1,0 +1,37 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+    "model": "minecraft:cube_all",
+    "textures": {
+      "all": "gregtech:blocks/rendering_error"
+    }
+  },
+  "variants": {
+    "variant": {
+      "bronze_pipe": {
+        "model": "minecraft:cube_all",
+        "textures": {
+          "all": "gregtech:blocks/casings/pipe/machine_casing_pipe_bronze"
+        }
+      },
+      "steel_pipe": {
+        "model": "minecraft:cube_all",
+        "textures": {
+          "all": "gregtech:blocks/casings/pipe/machine_casing_pipe_steel"
+        }
+      },
+      "titanium_pipe": {
+        "model": "minecraft:cube_all",
+        "textures": {
+          "all": "gregtech:blocks/casings/pipe/machine_casing_pipe_titanium"
+        }
+      },
+      "tungstensteel_pipe": {
+        "model": "minecraft:cube_all",
+        "textures": {
+          "all": "gregtech:blocks/casings/pipe/machine_casing_pipe_tungstensteel"
+        }
+      }
+    }
+  }
+}

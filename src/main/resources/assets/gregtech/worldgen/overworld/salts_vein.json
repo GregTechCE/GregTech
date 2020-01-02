@@ -1,0 +1,34 @@
+{
+  "weight": 60,
+  "density": 0.7,
+  "min_height": 40,
+
+  "generator": {
+    "type": "ellipsoid",
+    "radius": [14, 17]
+  },
+  "filler": {
+    "type": "simple",
+    "value": {
+      "type": "weight_random",
+      "values": [
+        {
+          "weight": 40,
+          "value": "ore:salt"
+        },
+        {
+          "weight": 35,
+          "value": "ore:rock_salt"
+        },
+		{
+          "weight": 15,
+          "value": "ore:lepidolite"
+        },
+		{
+          "weight": 10,
+          "value": "ore:spodumene"
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,34 @@
+{
+  "weight": 70,
+  "density": 0.4,
+  "min_height": 40,
+
+  "generator": {
+    "type": "ellipsoid",
+    "radius": [13, 17]
+  },
+  "filler": {
+    "type": "simple",
+    "value": {
+      "type": "weight_random",
+      "values": [
+        {
+          "weight": 45,
+          "value": "ore:quartzite"
+        },
+        {
+          "weight": 25,
+          "value": "ore:barite"
+        },
+        {
+          "weight": 30,
+          "value": "ore:certus_quartz"
+        },
+        {
+          "weight": 30,
+          "value": "ore:tennantite"
+        }
+      ]
+    }
+  }
+}

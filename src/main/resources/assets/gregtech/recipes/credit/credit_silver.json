@@ -1,0 +1,13 @@
+{
+  "type": "gregtech:metaitem_shapeless",
+  "ingredients": [
+    {
+      "type": "gregtech:metaitem",
+      "name": "credit.gold"
+    }
+  ],
+  "result": {
+    "name": "credit.silver",
+    "amount": 8
+  }
+}

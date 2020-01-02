@@ -1,0 +1,16 @@
+{
+  "type": "gregtech:metaitem_shaped",
+  "pattern": [
+    "XX",
+    "XX"
+  ],
+  "key": {
+    "X": {
+      "type": "gregtech:metaitem",
+      "name": "carbon.fibers"
+    }
+  },
+  "result": {
+    "name": "carbon.mesh"
+  }
+}

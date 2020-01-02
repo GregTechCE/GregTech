@@ -1,0 +1,26 @@
+{
+  "weight": 60,
+  "density": 0.3,
+  "min_height": 60,
+
+  "generator": {
+    "type": "ellipsoid",
+    "radius": [13, 13]
+  },
+  "filler": {
+    "type": "simple",
+    "value": {
+      "type": "weight_random",
+      "values": [
+        {
+          "weight": 60,
+          "value": "ore:apatite"
+        },
+        {
+          "weight": 40,
+          "value": "ore:phosphor"
+        }
+      ]
+    }
+  }
+}

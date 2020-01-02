@@ -1,0 +1,33 @@
+package gregtech.api.items;
+
+public enum ToolDictNames {
+    craftingToolSaw,
+    craftingToolHoe,
+    craftingToolAxe,
+    craftingToolFile,
+    craftingToolPlow,
+    craftingToolDrill,
+    craftingToolSword,
+    craftingToolScoop,
+    craftingToolKnife,
+    craftingToolBlade,
+    craftingToolMortar,
+    craftingToolShovel,
+    craftingToolWrench,
+    craftingToolPlunger,
+    craftingToolCrowbar,
+    craftingToolPickaxe,
+    craftingToolDrawplate,
+    craftingToolRollingPin,
+    craftingToolWireCutter,
+    craftingToolBranchCutter,
+    craftingToolHardHammer,
+    craftingToolSoftHammer,
+    craftingToolJackHammer,
+    craftingToolMiningDrill,
+    craftingToolForgeHammer,
+    craftingToolScrewdriver,
+    craftingToolSolderingIron,
+    craftingToolSolderingMetal,
+    craftingToolMagnifyingGlass
+}
