@@ -3,19 +3,22 @@ package gregtech.common.asm;
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
 
+import net.minecraft.launchwrapper.Launch;
+
 class LayerArmorBaseVisitor extends MethodVisitor implements Opcodes {
 
     public static final String TARGET_CLASS_NAME = "net/minecraft/client/renderer/entity/layers/LayerArmorBase";
-    public static final String TARGET_METHOD_NAME = "renderArmorLayer(Lnet/minecraft/entity/EntityLivingBase;FFFFFFFLnet/minecraft/inventory/EntityEquipmentSlot;)V";
+    public static final String TARGET_METHOD_NAME;
 
     private static final String ARMOR_HOOKS_OWNER = "gregtech/api/items/armor/ArmorRenderHooks";
     private static final String ARMOR_HOOKS_SIGNATURE = "(Lnet/minecraft/client/renderer/entity/layers/LayerArmorBase;Lnet/minecraft/entity/EntityLivingBase;FFFFFFFLnet/minecraft/inventory/EntityEquipmentSlot;)V";
     private static final String ARMOR_HOOKS_METHOD_NAME = "renderArmorLayer";
-
+    
+    
     public LayerArmorBaseVisitor(MethodVisitor mv) {
         super(Opcodes.ASM5, mv);
     }
-
+    
     @Override
     public void visitInsn(int opcode) {
         if (opcode == Opcodes.RETURN) {
@@ -26,5 +29,13 @@ class LayerArmorBaseVisitor extends MethodVisitor implements Opcodes {
             super.visitMethodInsn(INVOKESTATIC, ARMOR_HOOKS_OWNER, ARMOR_HOOKS_METHOD_NAME, ARMOR_HOOKS_SIGNATURE, false);
         }
         super.visitInsn(opcode);
+    }
+    
+    static {
+    	if ((boolean) Launch.blackboard.get("fml.deobfuscatedEnvironment")) {
+    		TARGET_METHOD_NAME = "renderArmorLayer(Lnet/minecraft/entity/EntityLivingBase;FFFFFFFLnet/minecraft/inventory/EntityEquipmentSlot;)V";
+    	} else {
+    		TARGET_METHOD_NAME = "a(Lvp;FFFFFFFLvl;)V";
+    	}
     }
 }

@@ -27,23 +27,25 @@ public class TargetClassVisitor extends ClassVisitor {
         this.className = name;
     }
 
-    @Override
+    @SuppressWarnings("deprecation")
+	@Override
     public MethodVisitor visitMethod(int access, String name, String desc, String signature, String[] exceptions) {
         MethodVisitor visitor = super.visitMethod(access, name, desc, signature, exceptions);
         String methodKey = name + desc;
         if (this.methodKey.equals(methodKey)) {
-            FMLLog.log("ArmorRenderTransformer", Level.INFO, "Patched method {} successfully", methodKey);
+            FMLLog.log("ArmorRenderTransformer", Level.INFO, "Patched method {%s} successfully", methodKey);
             this.foundMethod = true;
             return visitorCreator.apply(visitor);
         }
         return visitor;
     }
-
+    
+    @SuppressWarnings("deprecation")
     @Override
     public void visitEnd() {
         super.visitEnd();
         if (!foundMethod) {
-            FMLLog.log("ArmorRenderTransformer", Level.FATAL, "Failed to find method {} in {}.", methodKey, className);
+            FMLLog.log("ArmorRenderTransformer", Level.FATAL, "Failed to find method {%s} in {%s}.", methodKey, className);
         }
     }
 }
