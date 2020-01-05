@@ -2,7 +2,7 @@
   "type": "gregtech:metaitem_shaped",
   "pattern": [
     "SXO",
-    "dPw",
+    "P P",
     "OMW"
   ],
   "key": {
@@ -28,15 +28,7 @@
     },
     "P": {
       "type": "forge:ore_dict",
-      "ore": "pipeMediumTungstenSteel"
-    },
-    "d": {
-      "type": "forge:ore_dict",
-      "ore": "craftingToolScrewdriver"
-    },
-    "w": {
-      "type": "forge:ore_dict",
-      "ore": "craftingToolWrench"
+      "ore": "plateTungstenSteel"
     }
   },
   "result": {
