@@ -3,7 +3,8 @@ package gregtech.common.asm;
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
 
-import codechicken.asm.ObfMapping;
+import gregtech.common.asm.util.ObfMapping;
+
 
 class LayerArmorBaseVisitor extends MethodVisitor implements Opcodes {
 

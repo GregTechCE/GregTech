@@ -1,12 +1,10 @@
-package gregtech.common.asm;
+package gregtech.common.asm.util;
 
 import net.minecraftforge.fml.common.FMLLog;
 import org.apache.logging.log4j.Level;
 import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
-
-import codechicken.asm.ObfMapping;
 
 import java.util.function.Function;
 
@@ -19,7 +17,7 @@ public class TargetClassVisitor extends ClassVisitor {
 
     public TargetClassVisitor(ClassVisitor cv, ObfMapping methodKey, Function<MethodVisitor, MethodVisitor> visitorCreator) {
         super(Opcodes.ASM5, cv);
-        this.methodKey = methodKey.toClassloading();
+        this.methodKey = methodKey.toRuntime();
         this.visitorCreator = visitorCreator;
     }
 

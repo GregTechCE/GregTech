@@ -3,14 +3,16 @@ package gregtech.common.asm;
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
 
-import codechicken.asm.ObfMapping;
+import gregtech.common.asm.util.ObfMapping;
+import gregtech.common.asm.util.SafeMethodVisitor;
+
 
 public class SpecialArmorApplyVisitor extends SafeMethodVisitor {
 
     public static final String TARGET_CLASS_NAME = "net/minecraftforge/common/ISpecialArmor$ArmorProperties";
     public static final ObfMapping TARGET_METHOD = new ObfMapping(TARGET_CLASS_NAME, "applyArmor", "(Lnet/minecraft/entity/EntityLivingBase;Lnet/minecraft/util/NonNullList;Lnet/minecraft/util/DamageSource;D)F");
 
-    private static final ObfMapping METHOD_MAPPING = new ObfMapping("net/minecraft/util/CombatRules", "func_189427_a", "(FFF)F").toClassloading();
+    private static final ObfMapping METHOD_MAPPING = new ObfMapping("net/minecraft/util/CombatRules", "func_189427_a", "(FFF)F").toRuntime();
 
     private static final String ARMOR_HOOKS_OWNER = "gregtech/api/items/armor/ArmorHooks";
     private static final String ARMOR_HOOKS_SIGNATURE = "(FLnet/minecraft/entity/EntityLivingBase;Lnet/minecraft/util/NonNullList;Lnet/minecraft/util/DamageSource;)V";

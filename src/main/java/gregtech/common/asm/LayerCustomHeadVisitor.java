@@ -4,7 +4,9 @@ import org.objectweb.asm.Label;
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
 
-import codechicken.asm.ObfMapping;
+import gregtech.common.asm.util.ObfMapping;
+import gregtech.common.asm.util.SafeMethodVisitor;
+
 
 class LayerCustomHeadVisitor extends SafeMethodVisitor {
 
@@ -14,7 +16,7 @@ class LayerCustomHeadVisitor extends SafeMethodVisitor {
     private static final String METHOD_OWNER = "net/minecraft/client/renderer/ItemRenderer";
     private static final String METHOD_SIGNATURE = "(Lnet/minecraft/entity/EntityLivingBase;Lnet/minecraft/item/ItemStack;Lnet/minecraft/client/renderer/block/model/ItemCameraTransforms$TransformType;)V";
     private static final String METHOD_NAME = "func_178099_a";
-    private static final ObfMapping METHOD_MAPPING = new ObfMapping(METHOD_OWNER, METHOD_NAME, METHOD_SIGNATURE).toClassloading();
+    private static final ObfMapping METHOD_MAPPING = new ObfMapping(METHOD_OWNER, METHOD_NAME, METHOD_SIGNATURE).toRuntime();
     
 
     private static final String ARMOR_HOOKS_OWNER = "gregtech/api/items/armor/ArmorRenderHooks";
