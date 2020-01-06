@@ -4,6 +4,8 @@ import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
 
+import codechicken.asm.ObfMapping;
+
 import java.util.function.Function;
 
 public class SpecialArmorClassVisitor extends TargetClassVisitor {
@@ -11,7 +13,7 @@ public class SpecialArmorClassVisitor extends TargetClassVisitor {
     public static final String CACHED_TOUGHNESS_FIELD_NAME = "gregtech__cachedToughness";
     public static final String CACHED_TOTAL_ARMOR_FIELD_NAME = "gregtech__cachedTotalArmor";
 
-    public SpecialArmorClassVisitor(ClassVisitor cv, String methodKey, Function<MethodVisitor, MethodVisitor> visitorCreator) {
+    public SpecialArmorClassVisitor(ClassVisitor cv, ObfMapping methodKey, Function<MethodVisitor, MethodVisitor> visitorCreator) {
         super(cv, methodKey, visitorCreator);
     }
 

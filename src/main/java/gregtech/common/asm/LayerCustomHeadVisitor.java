@@ -4,15 +4,18 @@ import org.objectweb.asm.Label;
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
 
-class LayerCustomHeadVisitor extends MethodVisitor {
+import codechicken.asm.ObfMapping;
+
+class LayerCustomHeadVisitor extends SafeMethodVisitor {
 
     public static final String TARGET_CLASS_NAME = "net/minecraft/client/renderer/entity/layers/LayerCustomHead";
-    public static final String TARGET_METHOD_NAME = "doRenderLayer(Lnet/minecraft/entity/EntityLivingBase;FFFFFFF)V";
+    public static final ObfMapping TARGET_METHOD = new ObfMapping(TARGET_CLASS_NAME, "func_177141_a", "(Lnet/minecraft/entity/EntityLivingBase;FFFFFFF)V");
 
     private static final String METHOD_OWNER = "net/minecraft/client/renderer/ItemRenderer";
     private static final String METHOD_SIGNATURE = "(Lnet/minecraft/entity/EntityLivingBase;Lnet/minecraft/item/ItemStack;Lnet/minecraft/client/renderer/block/model/ItemCameraTransforms$TransformType;)V";
-    private static final String METHOD_NAME_SRG = "func_178099_a";
-    private static final String METHOD_NAME_MCP = "renderItem";
+    private static final String METHOD_NAME = "func_178099_a";
+    private static final ObfMapping METHOD_MAPPING = new ObfMapping(METHOD_OWNER, METHOD_NAME, METHOD_SIGNATURE).toClassloading();
+    
 
     private static final String ARMOR_HOOKS_OWNER = "gregtech/api/items/armor/ArmorRenderHooks";
     private static final String ARMOR_HOOKS_SIGNATURE = "(Lnet/minecraft/entity/EntityLivingBase;)Z";
@@ -23,14 +26,13 @@ class LayerCustomHeadVisitor extends MethodVisitor {
     }
 
     private boolean checkTargetInsn(int opcode, String owner, String name, String desc) {
-        return opcode == Opcodes.INVOKEVIRTUAL && owner.equals(METHOD_OWNER) &&
-            desc.equals(METHOD_SIGNATURE) &&
-            (name.equals(METHOD_NAME_SRG) || name.equals(METHOD_NAME_MCP));
+    	return opcode == Opcodes.INVOKEVIRTUAL && METHOD_MAPPING.s_owner.equals(owner) && METHOD_MAPPING.matches(name, desc);
     }
 
     @Override
     public void visitMethodInsn(int opcode, String owner, String name, String desc, boolean itf) {
         if (checkTargetInsn(opcode, owner, name, desc)) {
+        	markPatchedSuccessfully();
             Label endLabel = new Label();
             Label skipLabel = new Label();
             super.visitVarInsn(Opcodes.ALOAD, 1); //load entity
@@ -44,5 +46,10 @@ class LayerCustomHeadVisitor extends MethodVisitor {
             return;
         }
         super.visitMethodInsn(opcode, owner, name, desc, itf);
+    }
+    
+    @Override
+    protected String getInjectTargetString() {
+    	return String.format("Patch target: %s; injection point: %s; (point not found)", TARGET_METHOD, METHOD_MAPPING);
     }
 }
