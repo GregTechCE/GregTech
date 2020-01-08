@@ -6,7 +6,8 @@ import gregtech.api.unification.material.MaterialIconSet;
 import gregtech.api.unification.stack.MaterialStack;
 import gregtech.common.pipelike.cable.WireProperties;
 import gregtech.common.pipelike.fluidpipe.FluidPipeProperties;
-import stanhebben.zenscript.annotations.ZenMethod;
+import crafttweaker.annotations.ZenRegister;
+import stanhebben.zenscript.annotations.*;
 
 import javax.annotation.Nullable;
 
