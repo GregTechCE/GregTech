@@ -1,4 +1,4 @@
-package gregtech.common.asm;
+package gregtech.common.asm.util;
 
 import net.minecraftforge.fml.common.FMLLog;
 import org.apache.logging.log4j.Level;
@@ -11,13 +11,13 @@ import java.util.function.Function;
 public class TargetClassVisitor extends ClassVisitor {
 
     private String className;
-    private final String methodKey;
+    private final ObfMapping methodKey;
     private final Function<MethodVisitor, MethodVisitor> visitorCreator;
     private boolean foundMethod = false;
 
-    public TargetClassVisitor(ClassVisitor cv, String methodKey, Function<MethodVisitor, MethodVisitor> visitorCreator) {
+    public TargetClassVisitor(ClassVisitor cv, ObfMapping methodKey, Function<MethodVisitor, MethodVisitor> visitorCreator) {
         super(Opcodes.ASM5, cv);
-        this.methodKey = methodKey;
+        this.methodKey = methodKey.toRuntime();
         this.visitorCreator = visitorCreator;
     }
 
@@ -27,23 +27,26 @@ public class TargetClassVisitor extends ClassVisitor {
         this.className = name;
     }
 
-    @Override
+    @SuppressWarnings("deprecation")
+	@Override
     public MethodVisitor visitMethod(int access, String name, String desc, String signature, String[] exceptions) {
         MethodVisitor visitor = super.visitMethod(access, name, desc, signature, exceptions);
         String methodKey = name + desc;
-        if (this.methodKey.equals(methodKey)) {
-            FMLLog.log("ArmorRenderTransformer", Level.INFO, "Patched method {} successfully", methodKey);
+        if (this.methodKey.matches(name, desc)) {
+            FMLLog.log("GTCETransformer", Level.INFO, "Patched method %s in %s successfully", methodKey, className);
             this.foundMethod = true;
             return visitorCreator.apply(visitor);
         }
         return visitor;
     }
 
-    @Override
+    @SuppressWarnings("deprecation")
+	@Override
     public void visitEnd() {
         super.visitEnd();
         if (!foundMethod) {
-            FMLLog.log("ArmorRenderTransformer", Level.FATAL, "Failed to find method {} in {}.", methodKey, className);
+        	FMLLog.log("ArmorRenderTransformer", Level.FATAL, "Failed to find method %s in %s.", methodKey, className);
+            throw new RuntimeException("Failed to patch method " + methodKey + ", loading cannot continue. Check your environment is correct.");
         }
     }
 }
