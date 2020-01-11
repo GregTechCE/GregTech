@@ -51,8 +51,8 @@ public class ArmorMetaItem<T extends ArmorMetaItem<?>.ArmorMetaValueItem> extend
     @Override
     public ArmorProperties getProperties(EntityLivingBase player, @Nonnull ItemStack armor, DamageSource source, double damage, int slot) {
         IArmorLogic armorLogic = getArmorLogic(armor);
-        if (armorLogic instanceof ISpecialArmor) {
-            return ((ISpecialArmor) armorLogic).getProperties(player, armor, source, damage, slot);
+        if (armorLogic instanceof ISpecialArmorLogic) {
+            return ((ISpecialArmorLogic) armorLogic).getProperties(player, armor, source, damage, getSlotByIndex(slot));
         }
         return new ArmorProperties(0, 0, Integer.MAX_VALUE);
     }

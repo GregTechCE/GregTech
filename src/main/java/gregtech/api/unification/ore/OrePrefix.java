@@ -179,7 +179,7 @@ public enum OrePrefix {
         gemExquisite.maxStackSize = 16;
 
         plateDense.maxStackSize = 8;
-        rotor.maxStackSize = 16;
+        rotor.maxStackSize = 32;
         gear.maxStackSize = 16;
 
         toolHeadSword.maxStackSize = 16;

@@ -44,10 +44,10 @@ public abstract class AbstractRecipeLogic extends MTETrait implements IWorkable 
     protected NonNullList<ItemStack> itemOutputs;
     protected final Random random = new Random();
 
-    private boolean isActive;
-    private boolean workingEnabled = true;
-    private boolean hasNotEnoughEnergy;
-    private boolean wasActiveAndNeedsUpdate;
+    protected boolean isActive;
+    protected boolean workingEnabled = true;
+    protected boolean hasNotEnoughEnergy;
+    protected boolean wasActiveAndNeedsUpdate;
 
     public AbstractRecipeLogic(MetaTileEntity tileEntity, RecipeMap<?> recipeMap) {
         super(tileEntity);
@@ -116,7 +116,7 @@ public abstract class AbstractRecipeLogic extends MTETrait implements IWorkable 
         }
     }
 
-    private void updateRecipeProgress() {
+    protected void updateRecipeProgress() {
         boolean drawEnergy = drawEnergy(recipeEUt);
         if (drawEnergy || (recipeEUt < 0)) {
             if (++progressTime >= maxProgressTime) {
@@ -216,7 +216,7 @@ public abstract class AbstractRecipeLogic extends MTETrait implements IWorkable 
         return shouldRecheckRecipe;
     }
 
-    private static boolean areItemStacksEqual(ItemStack stackA, ItemStack stackB) {
+    protected static boolean areItemStacksEqual(ItemStack stackA, ItemStack stackB) {
         return (stackA.isEmpty() && stackB.isEmpty()) ||
             (ItemStack.areItemsEqual(stackA, stackB) &&
                 ItemStack.areItemStackTagsEqual(stackA, stackB));
@@ -328,7 +328,7 @@ public abstract class AbstractRecipeLogic extends MTETrait implements IWorkable 
         metaTileEntity.markDirty();
     }
 
-    private void setActive(boolean active) {
+    protected void setActive(boolean active) {
         this.isActive = active;
         metaTileEntity.markDirty();
         if (!metaTileEntity.getWorld().isRemote) {

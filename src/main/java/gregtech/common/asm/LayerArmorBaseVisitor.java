@@ -4,6 +4,9 @@ import codechicken.asm.ObfMapping;
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
 
+import gregtech.common.asm.util.ObfMapping;
+
+
 class LayerArmorBaseVisitor extends MethodVisitor implements Opcodes {
 
     public static final String TARGET_CLASS_NAME = "net/minecraft/client/renderer/entity/layers/LayerArmorBase";

@@ -6,7 +6,8 @@ import gregtech.api.unification.material.MaterialIconSet;
 import gregtech.api.unification.stack.MaterialStack;
 import gregtech.common.pipelike.cable.WireProperties;
 import gregtech.common.pipelike.fluidpipe.FluidPipeProperties;
-import stanhebben.zenscript.annotations.ZenMethod;
+import crafttweaker.annotations.ZenRegister;
+import stanhebben.zenscript.annotations.*;
 
 import javax.annotation.Nullable;
 
@@ -16,6 +17,8 @@ import static gregtech.api.unification.material.type.IngotMaterial.MatFlags.*;
 import static gregtech.api.unification.material.type.SolidMaterial.MatFlags.GENERATE_ROD;
 import static gregtech.api.util.GTUtility.createFlag;
 
+@ZenClass("mods.gregtech.material.IngotMaterial")
+@ZenRegister
 public class IngotMaterial extends SolidMaterial {
 
     public static final class MatFlags {

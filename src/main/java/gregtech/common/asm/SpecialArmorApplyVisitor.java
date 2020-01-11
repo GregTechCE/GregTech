@@ -1,8 +1,11 @@
 package gregtech.common.asm;
 
-import codechicken.asm.ObfMapping;
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
+
+import gregtech.common.asm.util.ObfMapping;
+import gregtech.common.asm.util.SafeMethodVisitor;
+
 
 public class SpecialArmorApplyVisitor extends SafeMethodVisitor {
 
@@ -20,13 +23,13 @@ public class SpecialArmorApplyVisitor extends SafeMethodVisitor {
     }
 
     private boolean checkTargetInsn(int opcode, String owner, String name, String desc) {
-        return opcode == Opcodes.INVOKESTATIC && METHOD_MAPPING.s_owner.equals(owner) && METHOD_MAPPING.matches(name, desc);
+    	return opcode == Opcodes.INVOKESTATIC && METHOD_MAPPING.s_owner.equals(owner) && METHOD_MAPPING.matches(name, desc);
     }
 
     @Override
     public void visitMethodInsn(int opcode, String owner, String name, String desc, boolean itf) {
         if (checkTargetInsn(opcode, owner, name, desc)) {
-            markPatchedSuccessfully();
+        	markPatchedSuccessfully();
             super.visitFieldInsn(Opcodes.PUTSTATIC, TARGET_CLASS_NAME, SpecialArmorClassVisitor.CACHED_TOUGHNESS_FIELD_NAME, "F"); //store armorToughness
             super.visitFieldInsn(Opcodes.PUTSTATIC, TARGET_CLASS_NAME, SpecialArmorClassVisitor.CACHED_TOTAL_ARMOR_FIELD_NAME, "F"); //store totalArmor
             super.visitInsn(Opcodes.DUP); //duplicate damage
@@ -39,9 +42,9 @@ public class SpecialArmorApplyVisitor extends SafeMethodVisitor {
         }
         super.visitMethodInsn(opcode, owner, name, desc, itf);
     }
-
+    
     @Override
     protected String getInjectTargetString() {
-        return String.format("Patch target: %s; injection point: %s; (point not found)", TARGET_METHOD, METHOD_MAPPING);
+    	return String.format("Patch target: %s; injection point: %s; (point not found)", TARGET_METHOD, METHOD_MAPPING);
     }
 }

@@ -5,6 +5,9 @@ import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
 
+import gregtech.common.asm.util.ObfMapping;
+import gregtech.common.asm.util.TargetClassVisitor;
+
 import java.util.function.Function;
 
 public class SpecialArmorClassVisitor extends TargetClassVisitor {

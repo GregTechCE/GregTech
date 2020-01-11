@@ -1,6 +1,5 @@
-package gregtech.common.asm;
+package gregtech.common.asm.util;
 
-import codechicken.asm.ObfMapping;
 import net.minecraftforge.fml.common.FMLLog;
 import org.apache.logging.log4j.Level;
 import org.objectweb.asm.ClassVisitor;
@@ -28,9 +27,11 @@ public class TargetClassVisitor extends ClassVisitor {
         this.className = name;
     }
 
-    @Override
+    @SuppressWarnings("deprecation")
+	@Override
     public MethodVisitor visitMethod(int access, String name, String desc, String signature, String[] exceptions) {
         MethodVisitor visitor = super.visitMethod(access, name, desc, signature, exceptions);
+        String methodKey = name + desc;
         if (this.methodKey.matches(name, desc)) {
             FMLLog.log("GTCETransformer", Level.INFO, "Patched method %s in %s successfully", methodKey, className);
             this.foundMethod = true;
@@ -39,11 +40,12 @@ public class TargetClassVisitor extends ClassVisitor {
         return visitor;
     }
 
-    @Override
+    @SuppressWarnings("deprecation")
+	@Override
     public void visitEnd() {
         super.visitEnd();
         if (!foundMethod) {
-            FMLLog.log("ArmorRenderTransformer", Level.FATAL, "Failed to find method %s in %s.", methodKey, className);
+        	FMLLog.log("ArmorRenderTransformer", Level.FATAL, "Failed to find method %s in %s.", methodKey, className);
             throw new RuntimeException("Failed to patch method " + methodKey + ", loading cannot continue. Check your environment is correct.");
         }
     }
