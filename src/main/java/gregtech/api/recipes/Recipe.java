@@ -173,7 +173,7 @@ public class Recipe {
         List<ChanceEntry> chancedOutputsList = getChancedOutputs();
         int maxChancedSlots = maxOutputSlots - outputs.size();
         if (chancedOutputsList.size() > maxChancedSlots) {
-            chancedOutputsList = chancedOutputsList.subList(0, maxChancedSlots);
+            chancedOutputsList = chancedOutputsList.subList(0, Math.max(0, maxChancedSlots));
         }
         for (ChanceEntry chancedOutput : chancedOutputsList) {
             int outputChance = chancedOutput.getChance() + (chancedOutput.getBoostPerTier() * tier);

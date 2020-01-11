@@ -1,9 +1,12 @@
 package gregtech.common.items.behaviors;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockStainedGlass;
+import net.minecraft.block.BlockStainedGlassPane;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumActionResult;
@@ -41,7 +44,23 @@ public class ColorSprayBehaviour extends AbstractUsableBehaviour {
     private boolean tryPaintBlock(World world, BlockPos pos, EnumFacing side) {
         IBlockState blockState = world.getBlockState(pos);
         Block block = blockState.getBlock();
-        return block.recolorBlock(world, pos, side, this.color);
+        return block.recolorBlock(world, pos, side, this.color) || tryPaintSpecialBlock(world, pos, block);
+    }
+
+    private boolean tryPaintSpecialBlock(World world, BlockPos pos, Block block) {
+        if (block == Blocks.GLASS) {
+            IBlockState newBlockState = Blocks.STAINED_GLASS.getDefaultState()
+                .withProperty(BlockStainedGlass.COLOR, this.color);
+            world.setBlockState(pos, newBlockState);
+            return true;
+        }
+        if (block == Blocks.GLASS_PANE) {
+            IBlockState newBlockState = Blocks.STAINED_GLASS_PANE.getDefaultState()
+                .withProperty(BlockStainedGlassPane.COLOR, this.color);
+            world.setBlockState(pos, newBlockState);
+            return true;
+        }
+        return false;
     }
 
     @Override

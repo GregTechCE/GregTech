@@ -3,6 +3,7 @@ package gregtech.common.items.behaviors;
 import com.google.common.collect.ImmutableList;
 import gregtech.api.items.metaitem.stats.IItemNameProvider;
 import gregtech.api.items.metaitem.stats.ISubItemHandler;
+import gregtech.common.ConfigHolder;
 import gregtech.common.covers.facade.FacadeHelper;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.creativetab.CreativeTabs;
@@ -29,7 +30,7 @@ public class FacadeItem implements IItemNameProvider, ISubItemHandler {
     @Override
     public void getSubItems(ItemStack itemStack, CreativeTabs creativeTab, NonNullList<ItemStack> subItems) {
         List<ItemStack> validFacades;
-        if (creativeTab == CreativeTabs.SEARCH) {
+        if (creativeTab == CreativeTabs.SEARCH && !ConfigHolder.hideFacadesInJEI) {
             validFacades = FacadeHelper.getValidFacadeItems();
         } else {
             validFacades = ImmutableList.of(new ItemStack(Blocks.STONE));
