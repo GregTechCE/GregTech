@@ -418,7 +418,7 @@ public class CoverConveyor extends CoverBehavior implements CoverWithUI, ITickab
 
         this.itemFilterContainer.initUI(70, primaryGroup::addWidget);
 
-        ModularUI.Builder builder = ModularUI.builder(GuiTextures.BACKGROUND_EXTENDED, 176, 170 + 82)
+        ModularUI.Builder builder = ModularUI.builder(GuiTextures.BACKGROUND, 176, 170 + 82)
             .widget(primaryGroup)
             .bindPlayerInventory(player.inventory, GuiTextures.SLOT, 8, 170);
         return buildUI(builder, player);
