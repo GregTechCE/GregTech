@@ -29,11 +29,15 @@ public class SlotWidget extends Widget implements INativeWidget {
     protected TextureArea[] backgroundTexture;
     protected Runnable changeListener;
 
-    public SlotWidget(IItemHandlerModifiable itemHandler, int slotIndex, int xPosition, int yPosition, boolean canTakeItems, boolean canPutItems) {
+    public SlotWidget(IItemHandler itemHandler, int slotIndex, int xPosition, int yPosition, boolean canTakeItems, boolean canPutItems) {
         super(new Position(xPosition, yPosition), new Size(18, 18));
         this.canTakeItems = canTakeItems;
         this.canPutItems = canPutItems;
-        this.slotReference = new WidgetSlotDelegate(itemHandler, slotIndex, xPosition + 1, yPosition + 1);
+        this.slotReference = createSlot(itemHandler, slotIndex, xPosition + 1, yPosition + 1);
+    }
+
+    protected SlotItemHandler createSlot(IItemHandler itemHandler, int index, int x, int y) {
+        return new WidgetSlotDelegate(itemHandler, index, x, y);
     }
 
     @Override
@@ -102,6 +106,10 @@ public class SlotWidget extends Widget implements INativeWidget {
         return isEnabled && canTakeItems;
     }
 
+    protected ItemStack onItemTake(EntityPlayer thePlayer, ItemStack stack) {
+        return stack;
+    }
+
     public boolean isEnabled() {
         return isEnabled;
     }
@@ -147,6 +155,11 @@ public class SlotWidget extends Widget implements INativeWidget {
             if (changeListener != null) {
                 changeListener.run();
             }
+        }
+
+        @Override
+        public ItemStack onTake(EntityPlayer thePlayer, ItemStack stack) {
+            return onItemTake(thePlayer, super.onTake(thePlayer, stack));
         }
 
         @Override

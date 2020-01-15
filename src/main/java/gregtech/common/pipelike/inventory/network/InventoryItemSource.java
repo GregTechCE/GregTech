@@ -14,6 +14,7 @@ import java.util.Map;
 public abstract class InventoryItemSource extends ItemSource {
 
     protected final World world;
+    protected final int priority;
     private Runnable invalidationCallback = null;
     private StoredItemsChangeCallback changeCallback = null;
     protected IItemHandler itemHandler = EmptyHandler.INSTANCE;
@@ -21,20 +22,26 @@ public abstract class InventoryItemSource extends ItemSource {
     private long lastItemHandlerUpdateTick = -1L;
     private long lastStoredItemListUpdateTick = -1L;
 
-    public InventoryItemSource(World world) {
+    public InventoryItemSource(World world, int priority) {
         this.world = world;
+        this.priority = priority;
     }
 
-    public static InventoryItemSource direct(World world, IItemHandler itemHandler) {
-        return new InventoryItemSource(world) {
+    public static InventoryItemSource direct(World world, IItemHandler itemHandler1, int priority) {
+        return new InventoryItemSource(world, priority) {
             @Override
             protected IItemHandler computeItemHandler() {
-                return itemHandler;
+                return itemHandler1;
             }
         };
     }
 
     protected abstract IItemHandler computeItemHandler();
+
+    @Override
+    public int getPriority() {
+        return priority;
+    }
 
     @Override
     public void setInvalidationCallback(Runnable invalidatedRunnable) {

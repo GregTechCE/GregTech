@@ -18,7 +18,7 @@ public class TileItemSource extends InventoryItemSource {
     private WeakReference<TileEntity> cachedTileEntity = new WeakReference<>(null);
 
     public TileItemSource(World world, BlockPos blockPos, EnumFacing accessSide) {
-        super(world);
+        super(world, 0);
         this.blockPos = blockPos;
         this.accessSide = accessSide;
         this.accessedBlockPos = blockPos.offset(accessSide);

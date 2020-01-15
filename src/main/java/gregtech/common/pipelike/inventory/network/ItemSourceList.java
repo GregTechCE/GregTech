@@ -12,6 +12,7 @@ public class ItemSourceList {
     protected final List<ItemSource> handlerInfoList = new CopyOnWriteArrayList<>();
     protected final Map<ItemStackKey, NetworkItemInfo> itemInfoMap = new HashMap<>();
     protected Runnable itemListChangeCallback = null;
+    private final Comparator<ItemSource> comparator = Comparator.comparing(ItemSource::getPriority).reversed();
 
     public ItemSourceList(World world) {
         this.world = world;
@@ -29,8 +30,26 @@ public class ItemSourceList {
         return Collections.unmodifiableCollection(itemInfoMap.values());
     }
 
+    public Map<ItemStackKey, NetworkItemInfo> getStoredItemsMap() {
+        return Collections.unmodifiableMap(itemInfoMap);
+    }
+
     public void update() {
         this.handlerInfoList.forEach(ItemSource::update);
+    }
+
+    public int insertItem(ItemStackKey itemStack, int amount, boolean simulate) {
+        int amountToInsert = amount;
+        for (ItemSource itemSource : handlerInfoList) {
+            int inserted = itemSource.insertItem(itemStack, amountToInsert, simulate);
+            amountToInsert -= inserted;
+            if (amountToInsert == 0) break;
+        }
+        return amount - amountToInsert;
+    }
+
+    public void notifyPriorityUpdated() {
+        this.handlerInfoList.sort(comparator);
     }
 
     public void addItemHandler(ItemSource handlerInfo) {
@@ -40,6 +59,7 @@ public class ItemSourceList {
             handlerInfo.setInvalidationCallback(() -> removeItemHandler(handlerInfo));
             this.handlerInfoList.add(handlerInfo);
             addItemHandlerPost(handlerInfo);
+            notifyPriorityUpdated();
         }
     }
 

@@ -7,6 +7,8 @@ import java.util.Set;
 
 public abstract class ItemSource {
 
+    public abstract int getPriority();
+
     public abstract void setInvalidationCallback(Runnable invalidatedRunnable);
 
     public abstract void setStoredItemsChangeCallback(StoredItemsChangeCallback callback);
