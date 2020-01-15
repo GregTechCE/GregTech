@@ -7,7 +7,6 @@ import org.objectweb.asm.Opcodes;
 import gregtech.common.asm.util.ObfMapping;
 import gregtech.common.asm.util.SafeMethodVisitor;
 
-
 class LayerCustomHeadVisitor extends SafeMethodVisitor {
 
     public static final String TARGET_CLASS_NAME = "net/minecraft/client/renderer/entity/layers/LayerCustomHead";

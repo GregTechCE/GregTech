@@ -32,6 +32,7 @@ public class DynamicLabelWidget extends Widget {
         this.color = color;
     }
 
+    @SideOnly(Side.CLIENT)
     private void updateSize() {
         FontRenderer fontRenderer = Minecraft.getMinecraft().fontRenderer;
         String resultText = lastTextValue;

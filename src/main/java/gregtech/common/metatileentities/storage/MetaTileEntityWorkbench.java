@@ -8,18 +8,14 @@ import codechicken.lib.vec.Cuboid6;
 import codechicken.lib.vec.Matrix4;
 import gregtech.api.gui.GuiTextures;
 import gregtech.api.gui.ModularUI;
-import gregtech.api.gui.widgets.*;
-import gregtech.api.gui.widgets.TabGroup.TabLocation;
-import gregtech.api.gui.widgets.tab.ItemTabInfo;
+import gregtech.api.gui.resources.TextureArea;
+import gregtech.api.gui.widgets.SlotWidget;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.MetaTileEntityHolder;
 import gregtech.api.render.Textures;
 import gregtech.api.util.GTUtility;
-import gregtech.api.util.Position;
-import gregtech.api.util.Size;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
@@ -27,6 +23,10 @@ import net.minecraftforge.items.ItemStackHandler;
 import org.apache.commons.lang3.ArrayUtils;
 
 public class MetaTileEntityWorkbench extends MetaTileEntity {
+
+    private ItemStackHandler craftingGrid = new ItemStackHandler(9);
+    private ItemStack resultStack = ItemStack.EMPTY;
+
 
     public MetaTileEntityWorkbench(ResourceLocation metaTileEntityId) {
         super(metaTileEntityId);
@@ -48,47 +48,42 @@ public class MetaTileEntityWorkbench extends MetaTileEntity {
 
     @Override
     protected ModularUI createUI(EntityPlayer entityPlayer) {
-        ModularUI.Builder builder = ModularUI.builder(GuiTextures.BORDERED_BACKGROUND, 176, 198)
-            .bindPlayerInventory(entityPlayer.inventory, 117);
+        ModularUI.Builder builder = ModularUI.builder(GuiTextures.BORDERED_BACKGROUND, 176, 221)
+            .bindPlayerInventory(entityPlayer.inventory, 140);
 
         ItemStackHandler craftingGridHandler = new ItemStackHandler(9);
         ItemStackHandler resultSlotInventory = new ItemStackHandler(1);
+
+        ItemStackHandler toolInventory = new ItemStackHandler(9);
         ItemStackHandler internalInventory = new ItemStackHandler(18);
 
         builder.label(5, 5, getMetaFullName());
-
-        WidgetGroup containerGroup = new WidgetGroup();
-        ScrollableListWidget scrollableListWidget = new ScrollableListWidget(11, 15, 154, 90);
-        containerGroup.addWidget(scrollableListWidget);
-        for (int j = 0; j < 20; j++) {
-            WidgetGroup slotGroup = new WidgetGroup(new Position(0, 0), new Size(144, 18));
-            for (int i = 0; i < 8; i++) {
-                slotGroup.addWidget(new SlotWidget(internalInventory, (j + i) % 18, i * 18, 0)
-                    .setBackgroundTexture(GuiTextures.SLOT));
-            }
-            scrollableListWidget.addWidget(slotGroup);
-        }
-
-        TabGroup tabGroup = new TabGroup(TabLocation.HORIZONTAL_TOP_LEFT);
-        WidgetGroup craftingGroup = new WidgetGroup();
-        tabGroup.addTab(new ItemTabInfo("gregtech.machine.workbench.tab.crafting", new ItemStack(Blocks.CRAFTING_TABLE)), craftingGroup);
-        tabGroup.addTab(new ItemTabInfo("gregtech.machine.workbench.tab.container", new ItemStack(Blocks.CHEST)), containerGroup);
-
-        craftingGroup.addWidget(new ImageWidget(124 + 8 - 13, 35 + 8 - 13, 26, 26, GuiTextures.SLOT_BIG));
-        craftingGroup.addWidget(new SlotWidget(resultSlotInventory, 0, 124, 35));
-
         //crafting grid
         for(int i = 0; i < 3; ++i) {
             for(int j = 0; j < 3; ++j) {
-                craftingGroup.addWidget(new PhantomSlotWidget(craftingGridHandler, j + i * 3, 30 + j * 18, 17 + i * 18).setBackgroundTexture(GuiTextures.SLOT));
+                builder.widget(new SlotWidget(craftingGridHandler, j + i * 3, 8 + j * 18, 17 + i * 18).setBackgroundTexture(GuiTextures.SLOT));
             }
+        }
+        builder.image(88-13, 44-13, 26, 26, GuiTextures.SLOT);
+        builder.widget(new SlotWidget(resultSlotInventory, 0, 88-9, 44-9, true, false));
+
+        builder.image(168-18*3, 44-18*3/2, 18*3, 18*3, TextureArea.fullImage("textures/gui/base/darkened_slot.png"));
+        for(int i = 0; i < 3; ++i) {
+            for(int j = 0; j < 3; ++j) {
+                builder.widget(new SlotWidget(craftingGridHandler, j + i * 3, 168-18*3/2-27 + j * 18, 44-27 + i * 18));
+            }
+        }
+
+        //tool inventory
+        for (int i = 0; i < 9; i++) {
+            builder.widget(new SlotWidget(toolInventory, i, 8 + i * 18, 76).setBackgroundTexture(GuiTextures.SLOT, GuiTextures.TOOL_SLOT_OVERLAY));
         }
         //internal inventory
         for(int i = 0; i < 2; ++i) {
             for(int j = 0; j < 9; ++j) {
-                craftingGroup.addWidget(new SlotWidget(internalInventory, j + i * 9, 8 + j * 18, 76 + i * 18).setBackgroundTexture(GuiTextures.SLOT));
+                builder.widget(new SlotWidget(internalInventory, j + i * 9, 8 + j * 18, 99 + i * 18).setBackgroundTexture(GuiTextures.SLOT));
             }
         }
-        return builder.widget(tabGroup).build(getHolder(), entityPlayer);
+        return builder.build(getHolder(), entityPlayer);
     }
 }

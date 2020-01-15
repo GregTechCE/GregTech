@@ -6,7 +6,6 @@ import org.objectweb.asm.Opcodes;
 import gregtech.common.asm.util.ObfMapping;
 import gregtech.common.asm.util.SafeMethodVisitor;
 
-
 public class SpecialArmorApplyVisitor extends SafeMethodVisitor {
 
     public static final String TARGET_CLASS_NAME = "net/minecraftforge/common/ISpecialArmor$ArmorProperties";

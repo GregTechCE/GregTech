@@ -30,6 +30,7 @@ import gregtech.common.covers.CoverBehaviors;
 import gregtech.common.covers.filter.FilterTypeRegistry;
 import gregtech.common.items.MetaItems;
 import gregtech.common.metatileentities.MetaTileEntities;
+import gregtech.common.util.ResourcePackFix;
 import gregtech.common.worldgen.LootTableHelper;
 import gregtech.common.worldgen.WorldGenAbandonedBase;
 import gregtech.common.worldgen.WorldGenRubberTree;
@@ -38,16 +39,12 @@ import gregtech.integration.theoneprobe.TheOneProbeCompatibility;
 import gregtech.loaders.dungeon.DungeonLootLoader;
 import net.minecraftforge.classloading.FMLForgePlugin;
 import net.minecraftforge.fluids.FluidRegistry;
-import net.minecraftforge.fml.common.FMLCommonHandler;
-import net.minecraftforge.fml.common.LoaderException;
-import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.*;
 import net.minecraftforge.fml.common.Optional.Method;
-import net.minecraftforge.fml.common.SidedProxy;
-import net.minecraftforge.fml.common.event.FMLInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
+import net.minecraftforge.fml.common.event.*;
 import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 @Mod(modid = GTValues.MODID,
     name = "GregTech Community Edition",
@@ -72,9 +69,18 @@ public class GregTechMod {
     public static CommonProxy proxy;
 
     @Mod.EventHandler
+    @SideOnly(Side.CLIENT)
+    public void onConstruction(FMLConstructionEvent event) {
+        ModContainer selfModContainer = Loader.instance().activeModContainer();
+        if (selfModContainer.getSource().isDirectory()) {
+            //check and fix resource pack file path as needed
+            ResourcePackFix.fixResourcePackLocation(selfModContainer);
+        }
+    }
+
+    @Mod.EventHandler
     public void onPreInit(FMLPreInitializationEvent event) {
         GTLog.init(event.getModLog());
-
         NetworkHandler.init();
         MetaTileEntityUIFactory.INSTANCE.init();
         PlayerInventoryUIFactory.INSTANCE.init();

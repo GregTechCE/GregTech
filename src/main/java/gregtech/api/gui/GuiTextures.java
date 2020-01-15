@@ -16,9 +16,9 @@ public class GuiTextures {
     @Deprecated public static final TextureArea BACKGROUND_EXTENDED = BACKGROUND; //replaced by normal background
     @Deprecated public static final TextureArea BORDERED_BACKGROUND_EXTENDED = BORDERED_BACKGROUND; //replaced by normal background
 
-    public static final TextureArea SLOT = TextureArea.fullImage("textures/gui/base/slot.png");
-    public static final TextureArea SLOT_BIG = TextureArea.fullImage("textures/gui/base/slot_big.png");
-    public static final TextureArea FLUID_SLOT = TextureArea.fullImage("textures/gui/base/fluid_slot.png");
+    public static final TextureArea SLOT = AdoptableTextureArea.fullImage("textures/gui/base/slot.png", 18, 18, 1, 1);
+    public static final TextureArea FLUID_SLOT = AdoptableTextureArea.fullImage("textures/gui/base/fluid_slot.png", 18, 18, 1, 1);
+    public static final TextureArea SLOT_DARKENED = TextureArea.fullImage("textures/gui/base/darkened_slot.png");
     public static final TextureArea DISPLAY = TextureArea.fullImage("textures/gui/base/display.png");
     public static final TextureArea FLUID_TANK_BACKGROUND = TextureArea.fullImage("textures/gui/base/fluid_tank_background.png");
     public static final TextureArea FLUID_TANK_OVERLAY = TextureArea.fullImage("textures/gui/base/fluid_tank_overlay.png");
@@ -58,6 +58,7 @@ public class GuiTextures {
     public static final TextureArea COMPONENT_BATTERY = TextureArea.fullImage("textures/gui/armor/component/battery.png");
 
     //SLOT OVERLAYS
+    public static final TextureArea TOOL_SLOT_OVERLAY = TextureArea.fullImage("textures/gui/overlay/tool_slot_overlay.png");
     public static final TextureArea ARROW_INPUT_OVERLAY = TextureArea.fullImage("textures/gui/overlay/arrow_input_overlay.png");
     public static final TextureArea ARROW_OUTPUT_OVERLAY = TextureArea.fullImage("textures/gui/overlay/arrow_output_overlay.png");
     public static final TextureArea CHARGER_OVERLAY = TextureArea.fullImage("textures/gui/overlay/charger_slot_overlay.png");
