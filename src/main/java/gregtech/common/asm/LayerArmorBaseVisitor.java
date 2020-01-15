@@ -1,6 +1,5 @@
 package gregtech.common.asm;
 
-import codechicken.asm.ObfMapping;
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
 
