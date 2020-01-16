@@ -182,7 +182,17 @@ public class MetaTileEntityPump extends TieredMetaTileEntity {
 
         if (fluidSourceBlocks.isEmpty()) {
             if (getTimer() % 20 == 0) {
-                this.pumpHeadY++;
+                BlockPos downPos = selfPos.down(1);
+                if (downPos != null && downPos.getY() >= 0) {
+                    IBlockState downBlock = getWorld().getBlockState(downPos);
+                    if (downBlock.getBlock() instanceof BlockLiquid ||
+                        downBlock.getBlock() instanceof IFluidBlock ||
+                        !downBlock.isTopSolid()) {
+                        this.pumpHeadY++;
+                    }
+                }
+
+                // Always recheck next time
                 writeCustomData(200, b -> b.writeVarInt(pumpHeadY));
                 markDirty();
                 //schedule queue rebuild because we changed our position and no fluid is available
