@@ -10,7 +10,9 @@ import com.google.common.base.Preconditions;
 import gregtech.api.gui.GuiTextures;
 import gregtech.api.gui.ModularUI;
 import gregtech.api.gui.resources.TextureArea;
+import gregtech.api.gui.widgets.ClickButtonWidget;
 import gregtech.api.gui.widgets.PhantomSlotWidget;
+import gregtech.api.gui.widgets.SimpleTextWidget;
 import gregtech.api.gui.widgets.SlotWidget;
 import gregtech.api.items.toolitem.ToolMetaItem;
 import gregtech.api.metatileentity.MetaTileEntity;
@@ -18,6 +20,7 @@ import gregtech.api.metatileentity.MetaTileEntityHolder;
 import gregtech.api.render.Textures;
 import gregtech.api.util.GTUtility;
 import gregtech.common.gui.widget.CraftingSlotWidget;
+import gregtech.common.gui.widget.MemorizedRecipeWidget;
 import gregtech.common.pipelike.inventory.network.InventoryItemSource;
 import gregtech.common.pipelike.inventory.network.ItemSourceList;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
@@ -60,6 +63,7 @@ public class MetaTileEntityWorkbench extends MetaTileEntity {
         }
     };
 
+    private CraftingRecipeMemory recipeMemory = new CraftingRecipeMemory(9);
     private CraftingRecipeResolver recipeResolver = null;
     private int itemsCrafted = 0;
 
@@ -88,6 +92,7 @@ public class MetaTileEntityWorkbench extends MetaTileEntity {
         data.setTag("ToolInventory", toolInventory.serializeNBT());
         data.setTag("InternalInventory", internalInventory.serializeNBT());
         data.setInteger("ItemsCrafted", recipeResolver == null ? itemsCrafted : recipeResolver.getItemsCrafted());
+        data.setTag("RecipeMemory", recipeMemory.serializeNBT());
         return data;
     }
 
@@ -98,6 +103,7 @@ public class MetaTileEntityWorkbench extends MetaTileEntity {
         this.toolInventory.deserializeNBT(data.getCompoundTag("ToolInventory"));
         this.internalInventory.deserializeNBT(data.getCompoundTag("InternalInventory"));
         this.itemsCrafted = data.getInteger("ItemsCrafted");
+        this.recipeMemory.deserializeNBT(data.getCompoundTag("RecipeMemory"));
     }
 
     @Override
@@ -115,11 +121,13 @@ public class MetaTileEntityWorkbench extends MetaTileEntity {
             return null;
         }
         if (recipeResolver == null) {
-            this.recipeResolver = new CraftingRecipeResolver(getWorld(), craftingGrid);
+            this.recipeResolver = new CraftingRecipeResolver(getWorld(), craftingGrid, recipeMemory);
             this.recipeResolver.setItemsCrafted(itemsCrafted);
             ItemSourceList itemSourceList = this.recipeResolver.getItemSourceList();
             itemSourceList.addItemHandler(InventoryItemSource.direct(getWorld(), toolInventory, 100));
             itemSourceList.addItemHandler(InventoryItemSource.direct(getWorld(), internalInventory, 99));
+            //TODO external inventory support
+            //itemSourceList.addItemHandler(new TileItemSource(getWorld(), getPos(), EnumFacing.SOUTH));
         }
         return recipeResolver;
     }
@@ -140,15 +148,14 @@ public class MetaTileEntityWorkbench extends MetaTileEntity {
         builder.image(88-13, 44-13, 26, 26, GuiTextures.SLOT);
         builder.widget(new CraftingSlotWidget(recipeResolver, 0, 88-9, 44-9));
 
+        builder.widget(new SimpleTextWidget(88, 44 + 20, "", () -> Integer.toString(recipeResolver.getItemsCrafted())));
+        builder.widget(new ClickButtonWidget(8+18*3+1, 17, 8, 8, "", (clickData) -> recipeResolver.clearCraftingGrid())
+            .setButtonTexture(GuiTextures.BUTTON_CLEAR_GRID));
+
         builder.image(168-18*3, 44-18*3/2, 18*3, 18*3, TextureArea.fullImage("textures/gui/base/darkened_slot.png"));
         for(int i = 0; i < 3; ++i) {
             for(int j = 0; j < 3; ++j) {
-                //TODO JEI recipe transfer support
-                //TODO recipe memory
-                //TODO clear grid button
-                //TODO external inventory support
-                //TODO display amount of items crafted
-                //builder.widget(new SlotWidget(craftingGridHandler, j + i * 3, 168-18*3/2-27 + j * 18, 44-27 + i * 18));
+                builder.widget(new MemorizedRecipeWidget(recipeMemory, j + i * 3, craftingGrid, 168-18*3/2-27 + j * 18, 44-27 + i * 18));
             }
         }
 

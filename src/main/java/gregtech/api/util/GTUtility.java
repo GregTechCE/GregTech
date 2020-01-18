@@ -67,6 +67,7 @@ import java.util.Map.Entry;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collector;
+import java.util.stream.IntStream;
 
 import static gregtech.api.GTValues.V;
 
@@ -77,6 +78,20 @@ public class GTUtility {
 
     public static BigInteger LONG_MAX = BigInteger.valueOf(Long.MAX_VALUE);
     public static BigInteger LONG_MIN = BigInteger.valueOf(Long.MIN_VALUE);
+
+    public static void copyInventoryItems(IItemHandler src, IItemHandlerModifiable dest) {
+        for (int i = 0; i < src.getSlots(); i++) {
+            ItemStack itemStack = src.getStackInSlot(i);
+            dest.setStackInSlot(i, itemStack.isEmpty() ? ItemStack.EMPTY : itemStack.copy());
+        }
+    }
+
+    public static <T> IntStream indices(T[] array) {
+        int[] indices = new int[array.length];
+        for (int i = 0; i < indices.length; i++)
+            indices[i] = i;
+        return Arrays.stream(indices);
+    }
 
     public static <T> String[] mapToString(T[] array, Function<T, String> mapper) {
         String[] result = new String[array.length];
@@ -181,8 +196,12 @@ public class GTUtility {
     /**
      * Attempts to merge given ItemStack with ItemStacks in slot list supplied
      * If it's not possible to merge it fully, it will attempt to insert it into first empty slots
+     *
+     * @param itemStack item stack to merge. It WILL be modified.
+     * @param simulate if true, stack won't actually modify items in other slots
+     * @return if merging of at least one item succeed, false otherwise
      */
-    public static boolean mergeItemStack(ItemStack itemStack, List<Slot> slots) {
+    public static boolean mergeItemStack(ItemStack itemStack, List<Slot> slots, boolean simulate) {
         if (itemStack.isEmpty())
             return false; //if we are merging empty stack, return
 
@@ -201,7 +220,9 @@ public class GTUtility {
             if (amountToInsert == 0)
                 continue; //if we can't insert anything, continue
             //shrink our stack, grow slot's stack and mark slot as changed
-            stackInSlot.grow(amountToInsert);
+            if (!simulate) {
+                stackInSlot.grow(amountToInsert);
+            }
             itemStack.shrink(amountToInsert);
             slot.onSlotChanged();
             merged = true;
@@ -221,7 +242,9 @@ public class GTUtility {
                 continue; //if we can't insert anything, continue
             //split our stack and put result in slot
             ItemStack stackInSlot = itemStack.splitStack(amountToInsert);
-            slot.putStack(stackInSlot);
+            if (!simulate) {
+                slot.putStack(stackInSlot);
+            }
             merged = true;
             if (itemStack.isEmpty())
                 return true; //if we inserted all items, return

@@ -32,10 +32,12 @@ public class CachedRecipeData {
     }
 
     public boolean performRecipe(EntityPlayer player) {
+        this.lastTickChecked = -1L;
         if (!checkRecipeValid()) {
             return false;
         }
         if (!consumeRecipeItems(false)) {
+            this.lastTickChecked = -1L;
             return false;
         }
         ForgeHooks.setCraftingPlayer(player);
@@ -53,6 +55,7 @@ public class CachedRecipeData {
                 }
             }
         }
+        this.lastTickChecked = -1L;
         return true;
     }
 
@@ -64,8 +67,7 @@ public class CachedRecipeData {
                 return false; //ingredient didn't match, return false
         }
         this.ingredientsMatched = true;
-        //all ingredients matched and can be extracted successfully
-        return checkRecipeValid();
+        return true;
     }
 
     public boolean checkRecipeValid() {
@@ -85,7 +87,7 @@ public class CachedRecipeData {
     private boolean consumeRecipeItems(boolean simulate) {
         for (Entry<ItemStackKey, Integer> entry : requiredItems.entrySet()) {
             ItemStackKey itemStackKey = entry.getKey();
-            NetworkItemInfo itemInfo = itemSourceList.getStoredItemsMap().get(itemStackKey);
+            NetworkItemInfo itemInfo = itemSourceList.getItemByType(itemStackKey);
             if (itemInfo == null) {
                 return false;
             }
@@ -125,7 +127,7 @@ public class CachedRecipeData {
     }
 
     private boolean simulateExtractItem(ItemStackKey itemStack) {
-        NetworkItemInfo itemInfo = itemSourceList.getStoredItemsMap().get(itemStack);
+        NetworkItemInfo itemInfo = itemSourceList.getItemByType(itemStack);
         if (itemInfo == null) {
             return false;
         }

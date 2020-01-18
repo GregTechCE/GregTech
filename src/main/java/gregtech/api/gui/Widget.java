@@ -85,7 +85,7 @@ public abstract class Widget {
     public Rectangle toRectangleBox() {
         Position pos = getPosition();
         Size size = getSize();
-        return new Rectangle(pos.x, pos.y, pos.x + size.width, pos.y + size.height);
+        return new Rectangle(pos.x, pos.y, size.width, size.height);
     }
 
     private void recomputePosition() {

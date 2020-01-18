@@ -3,21 +3,58 @@ package gregtech.api.gui.impl;
 import gregtech.api.gui.Widget;
 import gregtech.api.gui.igredient.IGhostIngredientTarget;
 import gregtech.api.gui.igredient.IIngredientSlot;
+import gregtech.api.gui.igredient.IRecipeTransferHandlerWidget;
 import mezz.jei.api.gui.IAdvancedGuiHandler;
 import mezz.jei.api.gui.IGhostIngredientHandler;
+import mezz.jei.api.gui.IGuiIngredient;
+import mezz.jei.api.gui.IRecipeLayout;
+import mezz.jei.api.recipe.transfer.IRecipeTransferError;
+import mezz.jei.api.recipe.transfer.IRecipeTransferHandler;
+import mezz.jei.api.recipe.transfer.IRecipeTransferHandlerHelper;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 
 import javax.annotation.Nullable;
 import java.awt.*;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
+import java.util.*;
 
-public class ModularUIGuiHandler implements IAdvancedGuiHandler<ModularUIGui>, IGhostIngredientHandler<ModularUIGui> {
+public class ModularUIGuiHandler implements IAdvancedGuiHandler<ModularUIGui>, IGhostIngredientHandler<ModularUIGui>, IRecipeTransferHandler<ModularUIContainer> {
+
+    private IRecipeTransferHandlerHelper transferHelper;
+
+    public ModularUIGuiHandler(IRecipeTransferHandlerHelper transferHelper) {
+        this.transferHelper = transferHelper;
+    }
 
     @Override
     public Class<ModularUIGui> getGuiContainerClass() {
         return ModularUIGui.class;
+    }
+
+    @Override
+    public Class<ModularUIContainer> getContainerClass() {
+        return ModularUIContainer.class;
+    }
+
+    @Nullable
+    @Override
+    public IRecipeTransferError transferRecipe(ModularUIContainer container, IRecipeLayout recipeLayout, EntityPlayer player, boolean maxTransfer, boolean doTransfer) {
+        Optional<IRecipeTransferHandlerWidget> transferHandler = container.getModularUI()
+            .guiWidgets.values().stream()
+            .filter(it -> it instanceof IRecipeTransferHandlerWidget)
+            .map(it -> (IRecipeTransferHandlerWidget) it)
+            .findFirst();
+        if (!transferHandler.isPresent()) {
+            return transferHelper.createInternalError();
+        }
+        Map<Integer, IGuiIngredient<ItemStack>> group = new HashMap<>(recipeLayout.getItemStacks().getGuiIngredients());
+        group.values().removeIf(it -> it.getAllIngredients().isEmpty());
+        String errorTooltip = transferHandler.get().transferRecipe(container, group, player, maxTransfer, doTransfer);
+        if (errorTooltip == null) {
+            return null;
+        }
+        return transferHelper.createUserErrorWithTooltip(errorTooltip);
     }
 
     @Nullable

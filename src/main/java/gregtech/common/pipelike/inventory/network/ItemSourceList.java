@@ -1,5 +1,6 @@
 package gregtech.common.pipelike.inventory.network;
 
+import com.google.common.collect.ImmutableList;
 import gregtech.api.util.ItemStackKey;
 import net.minecraft.world.World;
 
@@ -13,6 +14,8 @@ public class ItemSourceList {
     protected final Map<ItemStackKey, NetworkItemInfo> itemInfoMap = new HashMap<>();
     protected Runnable itemListChangeCallback = null;
     private final Comparator<ItemSource> comparator = Comparator.comparing(ItemSource::getPriority).reversed();
+    private boolean callbackWasCalled = false;
+    private boolean disableCallback = false;
 
     public ItemSourceList(World world) {
         this.world = world;
@@ -27,11 +30,24 @@ public class ItemSourceList {
     }
 
     public Collection<NetworkItemInfo> getStoredItems() {
-        return Collections.unmodifiableCollection(itemInfoMap.values());
+        return ImmutableList.copyOf(itemInfoMap.values());
     }
 
-    public Map<ItemStackKey, NetworkItemInfo> getStoredItemsMap() {
-        return Collections.unmodifiableMap(itemInfoMap);
+    public NetworkItemInfo getItemByType(ItemStackKey itemStackKey) {
+        return itemInfoMap.get(itemStackKey);
+    }
+
+    public void disableCallback() {
+        this.disableCallback = true;
+        this.callbackWasCalled = false;
+    }
+
+    public void enableCallback() {
+        this.disableCallback = false;
+        if (callbackWasCalled && itemListChangeCallback != null) {
+            this.callbackWasCalled = false;
+            itemListChangeCallback.run();
+        }
     }
 
     public void update() {
@@ -85,9 +101,7 @@ public class ItemSourceList {
         boolean updatedItemAmount = false;
         for (ItemStackKey itemStackKey : itemAmount.keySet()) {
             NetworkItemInfo itemInfo = itemInfoMap.computeIfAbsent(itemStackKey, NetworkItemInfo::new);
-            if (itemInfo != null) {
-                updatedItemAmount |= itemInfo.addInventory(handlerInfo, itemAmount.get(itemStackKey));
-            }
+            updatedItemAmount |= itemInfo.addInventory(handlerInfo, itemAmount.get(itemStackKey));
         }
         for (ItemStackKey removedItem : removedItems) {
             NetworkItemInfo itemInfo = itemInfoMap.get(removedItem);
@@ -96,7 +110,11 @@ public class ItemSourceList {
             }
         }
         if (updatedItemAmount && itemListChangeCallback != null) {
-            itemListChangeCallback.run();
+            if (!disableCallback) {
+                itemListChangeCallback.run();
+            } else {
+                this.callbackWasCalled = true;
+            }
         }
     }
 

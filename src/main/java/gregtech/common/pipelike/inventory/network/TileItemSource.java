@@ -38,7 +38,7 @@ public class TileItemSource extends InventoryItemSource {
 
     @Override
     protected IItemHandler computeItemHandler() {
-        if (world.isBlockLoaded(accessedBlockPos)) {
+        if (!world.isBlockLoaded(accessedBlockPos)) {
             //we handle unloaded blocks as empty item handlers
             //so when they are loaded, they are refreshed and handled correctly
             return EmptyHandler.INSTANCE;

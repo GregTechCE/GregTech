@@ -10,10 +10,13 @@ import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.FMLCommonHandler;
-import net.minecraftforge.items.IItemHandler;
-import net.minecraftforge.items.IItemHandlerModifiable;
 import net.minecraftforge.items.ItemStackHandler;
 import net.minecraftforge.items.wrapper.InvWrapper;
+
+import java.util.Collections;
+import java.util.Map;
+
+import static gregtech.api.util.GTUtility.copyInventoryItems;
 
 public class CraftingRecipeResolver {
 
@@ -26,10 +29,12 @@ public class CraftingRecipeResolver {
     private long timer = 0L;
     private CachedRecipeData cachedRecipeData = null;
     private int itemsCrafted = 0;
+    private CraftingRecipeMemory recipeMemory;
 
-    public CraftingRecipeResolver(World world, ItemStackHandler craftingGrid) {
+    public CraftingRecipeResolver(World world, ItemStackHandler craftingGrid, CraftingRecipeMemory recipeMemory) {
         this.world = world;
         this.craftingGrid = craftingGrid;
+        this.recipeMemory = recipeMemory;
         this.itemSourceList = new ItemSourceList(world);
         this.itemSourceList.setItemListChangeCallback(this::notifyStoredItemsChanged);
     }
@@ -50,6 +55,16 @@ public class CraftingRecipeResolver {
         this.itemsCrafted = itemsCrafted;
     }
 
+    public void clearCraftingGrid() {
+        setCraftingGrid(Collections.emptyMap());
+    }
+
+    public void setCraftingGrid(Map<Integer, ItemStack> ingredients) {
+        for (int i = 0; i < craftingGrid.getSlots(); i++) {
+            craftingGrid.setStackInSlot(i, ingredients.getOrDefault(i, ItemStack.EMPTY));
+        }
+    }
+
     private boolean updateInventoryCrafting() {
         boolean craftingGridChanged = false;
         for (int i = 0; i < craftingGrid.getSlots(); i++) {
@@ -66,22 +81,40 @@ public class CraftingRecipeResolver {
 
     public void performRecipe(EntityPlayer player) {
         if (cachedRecipeData != null) {
+            itemSourceList.disableCallback();
             cachedRecipeData.performRecipe(player);
             //update items in the crafting grid to the actual equivalents used in crafting
             InvWrapper invWrapper = new InvWrapper(this.cachedRecipeData.inventory);
             copyInventoryItems(invWrapper, craftingGrid);
             //also update items in inventory crafting to avoid useless recipe re-caching
             copyInventoryItems(invWrapper, new InvWrapper(inventoryCrafting));
+            itemSourceList.enableCallback();
         }
     }
 
-    public void handlePostItemCraft(ItemStack itemStack, EntityPlayer player) {
+    public void handleItemCraft(ItemStack itemStack, EntityPlayer player, boolean simulate) {
         itemStack.onCrafting(world, player, 1);
-        FMLCommonHandler.instance().firePlayerCraftingEvent(player, itemStack, inventoryCrafting);
-        if (cachedRecipe != null && !cachedRecipe.isDynamic()) {
-            player.unlockRecipes(Lists.newArrayList(cachedRecipe));
+        itemStack.getItem().onCreated(itemStack, world, player);
+        if (!simulate) {
+            //if we're not simulated, fire the event, unlock recipe and add crafted items
+            FMLCommonHandler.instance().firePlayerCraftingEvent(player, itemStack, inventoryCrafting);
+            if (cachedRecipe != null && !cachedRecipe.isDynamic()) {
+                player.unlockRecipes(Lists.newArrayList(cachedRecipe));
+            }
+            if (cachedRecipe != null) {
+                ItemStack resultStack = cachedRecipe.getCraftingResult(inventoryCrafting);
+                this.itemsCrafted += resultStack.getCount();
+                recipeMemory.notifyRecipePerformed(craftingGrid, resultStack);
+            }
         }
-        this.itemsCrafted++;
+    }
+
+    public void refreshOutputSlot() {
+        ItemStack itemStack = ItemStack.EMPTY;
+        if (cachedRecipe != null) {
+            itemStack = cachedRecipe.getCraftingResult(inventoryCrafting).copy();
+        }
+        this.craftingResultInventory.setStackInSlot(0, itemStack);
     }
 
     public boolean checkRecipeValid() {
@@ -90,6 +123,7 @@ public class CraftingRecipeResolver {
 
     private void notifyStoredItemsChanged() {
         if (cachedRecipeData != null) {
+            copyInventoryItems(craftingGrid, new InvWrapper(this.cachedRecipeData.inventory));
             cachedRecipeData.attemptMatchRecipe();
         }
     }
@@ -99,7 +133,7 @@ public class CraftingRecipeResolver {
         if (cachedRecipe != newRecipe) {
             this.cachedRecipe = newRecipe;
             if (newRecipe != null) {
-                ItemStack resultStack = newRecipe.getCraftingResult(inventoryCrafting);
+                ItemStack resultStack = newRecipe.getCraftingResult(inventoryCrafting).copy();
                 this.craftingResultInventory.setStackInSlot(0, resultStack.copy());
                 this.cachedRecipeData = new CachedRecipeData(itemSourceList, newRecipe, resultStack.copy());
                 copyInventoryItems(craftingGrid, new InvWrapper(this.cachedRecipeData.inventory));
@@ -122,12 +156,5 @@ public class CraftingRecipeResolver {
             updateCurrentRecipe();
         }
         this.timer++;
-    }
-
-    private static void copyInventoryItems(IItemHandler src, IItemHandlerModifiable dest) {
-        for (int i = 0; i < src.getSlots(); i++) {
-            ItemStack itemStack = src.getStackInSlot(i);
-            dest.setStackInSlot(i, itemStack.isEmpty() ? ItemStack.EMPTY : itemStack.copy());
-        }
     }
 }

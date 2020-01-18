@@ -21,6 +21,7 @@ public abstract class InventoryItemSource extends ItemSource {
     private Map<ItemStackKey, Integer> itemStackByAmountMap = new HashMap<>();
     private long lastItemHandlerUpdateTick = -1L;
     private long lastStoredItemListUpdateTick = -1L;
+    private boolean cachedRefreshResult = false;
 
     public InventoryItemSource(World world, int priority) {
         this.world = world;
@@ -53,52 +54,60 @@ public abstract class InventoryItemSource extends ItemSource {
         this.changeCallback = callback;
     }
 
-    @Override
-    public UpdateResult update() {
+    private boolean refreshItemHandler(boolean simulated) {
         this.lastItemHandlerUpdateTick = world.getTotalWorldTime();
         IItemHandler newItemHandler = computeItemHandler();
         if (newItemHandler == null) {
-            if (invalidationCallback != null) {
+            if (!simulated && invalidationCallback != null) {
                 invalidationCallback.run();
             }
-            return UpdateResult.INVALID;
+            this.cachedRefreshResult = false;
+            return false;
         }
         if (!newItemHandler.equals(itemHandler) || newItemHandler.getSlots() != itemHandler.getSlots()) {
             this.itemHandler = newItemHandler;
-            recomputeItemStackCount();
-            return UpdateResult.CHANGED;
+            if (!simulated) {
+                recomputeItemStackCount();
+            }
+            this.cachedRefreshResult = false;
+            return false;
         }
+        this.cachedRefreshResult = true;
+        return true;
+    }
+
+    @Override
+    public UpdateResult update() {
         //update stored item list once a second
-        if (lastItemHandlerUpdateTick - lastStoredItemListUpdateTick >= 20) {
-            this.lastStoredItemListUpdateTick = lastItemHandlerUpdateTick;
-            recomputeItemStackCount();
+        long currentTick = world.getTotalWorldTime();
+        if (currentTick - lastStoredItemListUpdateTick >= 20) {
+            return recomputeItemStackCount() ? UpdateResult.CHANGED : UpdateResult.STANDBY;
         }
         return UpdateResult.STANDBY;
     }
 
-    private boolean ensureCachedInfoUpdated() {
+    private boolean checkItemHandlerValid(boolean simulated) {
         long currentUpdateTick = world.getTotalWorldTime();
         if (currentUpdateTick != lastItemHandlerUpdateTick) {
-            UpdateResult result = update();
-            return result != UpdateResult.INVALID;
+            return refreshItemHandler(simulated);
         }
-        return true;
+        return cachedRefreshResult;
     }
 
     /**
      * @return amount of items inserted into the inventory
      */
     public int insertItem(ItemStackKey itemStackKey, int amount, boolean simulate) {
-        if (!ensureCachedInfoUpdated()) {
+        if (!checkItemHandlerValid(simulate)) {
             return 0;
         }
         int itemsInserted = 0;
         ItemStack itemStack = itemStackKey.getItemStack();
         for (int i = 0; i < itemHandler.getSlots(); i++) {
-            ItemStack insertStack = itemStackKey.getItemStack();
-            insertStack.setCount(amount);
+            itemStack.setCount(amount - itemsInserted);
             ItemStack remainderStack = itemHandler.insertItem(i, itemStack, simulate);
-            itemsInserted += (insertStack.getCount() - remainderStack.getCount());
+            itemsInserted += (itemStack.getCount() - remainderStack.getCount());
+            if (itemsInserted == amount) break;
         }
         if (itemsInserted > 0 && !simulate) {
             recomputeItemStackCount();
@@ -110,7 +119,7 @@ public abstract class InventoryItemSource extends ItemSource {
      * @return amount of items extracted from the inventory
      */
     public int extractItem(ItemStackKey itemStackKey, int amount, boolean simulate) {
-        if (!ensureCachedInfoUpdated()) {
+        if (!checkItemHandlerValid(simulate)) {
             return 0;
         }
         int itemsExtracted = 0;
@@ -118,10 +127,11 @@ public abstract class InventoryItemSource extends ItemSource {
             ItemStack stackInSlot = itemHandler.getStackInSlot(i);
             if (stackInSlot.isEmpty()) continue;
             if (!itemStackKey.isItemStackEqual(stackInSlot)) continue;
-            ItemStack extractedStack = itemHandler.extractItem(i, amount, simulate);
+            ItemStack extractedStack = itemHandler.extractItem(i, amount - itemsExtracted, simulate);
             if (!extractedStack.isEmpty()) {
                 itemsExtracted += extractedStack.getCount();
             }
+            if (itemsExtracted == amount) break;
         }
         if (itemsExtracted > 0 && !simulate) {
             recomputeItemStackCount();
@@ -135,6 +145,10 @@ public abstract class InventoryItemSource extends ItemSource {
     }
 
     private boolean recomputeItemStackCount() {
+        if (!checkItemHandlerValid(false)) {
+            return false;
+        }
+        this.lastStoredItemListUpdateTick = world.getTotalWorldTime();
         HashMap<ItemStackKey, Integer> amountMap = new HashMap<>();
         for (int i = 0; i < itemHandler.getSlots(); i++) {
             ItemStack itemStack = itemHandler.getStackInSlot(i);
