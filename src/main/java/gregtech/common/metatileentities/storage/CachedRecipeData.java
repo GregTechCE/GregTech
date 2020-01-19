@@ -2,8 +2,7 @@ package gregtech.common.metatileentities.storage;
 
 import gregtech.api.util.DummyContainer;
 import gregtech.api.util.ItemStackKey;
-import gregtech.common.pipelike.inventory.network.ItemSourceList;
-import gregtech.common.pipelike.inventory.network.NetworkItemInfo;
+import gregtech.common.inventory.itemsource.ItemSourceList;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
@@ -85,11 +84,7 @@ public class CachedRecipeData {
     private boolean consumeRecipeItems(boolean simulate) {
         for (Entry<ItemStackKey, Integer> entry : requiredItems.entrySet()) {
             ItemStackKey itemStackKey = entry.getKey();
-            NetworkItemInfo itemInfo = itemSourceList.getStoredItemsMap().get(itemStackKey);
-            if (itemInfo == null) {
-                return false;
-            }
-            if (itemInfo.extractItem(entry.getValue(), simulate) != entry.getValue()) {
+            if (itemSourceList.extractItem(itemStackKey, entry.getValue(), simulate) != entry.getValue()) {
                 return false;
             }
         }
@@ -108,14 +103,14 @@ public class CachedRecipeData {
             return true;
         }
         //iterate stored items to find equivalent
-        for (NetworkItemInfo itemInfo : itemSourceList.getStoredItems()) {
-            ItemStack itemStack = itemInfo.getItemStackKey().getItemStack();
+        for (ItemStackKey itemStackKey : itemSourceList.getStoredItems()) {
+            ItemStack itemStack = itemStackKey.getItemStack();
             //update item in slot, and check that recipe matches and output item is equal to the expected one
             inventory.setInventorySlotContents(slot, itemStack);
             if (recipe.matches(inventory, itemSourceList.getWorld()) &&
                 ItemStack.areItemStacksEqual(expectedOutput, recipe.getCraftingResult(inventory))) {
                 //ingredient matched, attempt to extract it and return if successful
-                if (simulateExtractItem(itemInfo.getItemStackKey())) {
+                if (simulateExtractItem(itemStackKey)) {
                     return true;
                 }
             }
@@ -125,12 +120,8 @@ public class CachedRecipeData {
     }
 
     private boolean simulateExtractItem(ItemStackKey itemStack) {
-        NetworkItemInfo itemInfo = itemSourceList.getStoredItemsMap().get(itemStack);
-        if (itemInfo == null) {
-            return false;
-        }
         int amountToExtract = requiredItems.getOrDefault(itemStack, 0) + 1;
-        int extracted = itemInfo.extractItem(amountToExtract, true);
+        int extracted = itemSourceList.extractItem(itemStack, amountToExtract, true);
         if (extracted == amountToExtract) {
             requiredItems.put(itemStack, amountToExtract);
             return true;

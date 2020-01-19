@@ -28,6 +28,10 @@ public final class ItemStackKey {
         return itemStack.copy();
     }
 
+    public ItemStack getItemStackRaw() {
+        return itemStack;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

@@ -78,6 +78,15 @@ public class GTUtility {
     public static BigInteger LONG_MAX = BigInteger.valueOf(Long.MAX_VALUE);
     public static BigInteger LONG_MIN = BigInteger.valueOf(Long.MIN_VALUE);
 
+    public static Runnable combine(Runnable... runnables) {
+        return () -> {
+            for (Runnable runnable : runnables) {
+                if (runnable != null)
+                    runnable.run();
+            }
+        };
+    }
+
     public static <T> String[] mapToString(T[] array, Function<T, String> mapper) {
         String[] result = new String[array.length];
         for (int i = 0; i < array.length; i++) {
@@ -687,5 +696,13 @@ public class GTUtility {
             }
             return worldPower;
         }
+    }
+
+    public static Comparator<ItemStack> createItemStackComparator() {
+        return Comparator.<ItemStack, Integer>comparing(it -> Item.REGISTRY.getIDForObject(it.getItem()))
+            .thenComparing(ItemStack::getItemDamage)
+            .thenComparing(ItemStack::hasTagCompound)
+            .thenComparing(it -> -it.getTagCompound().hashCode())
+            .thenComparing(ItemStack::getCount);
     }
 }

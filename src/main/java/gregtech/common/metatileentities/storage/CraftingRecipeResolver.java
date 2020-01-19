@@ -2,7 +2,7 @@ package gregtech.common.metatileentities.storage;
 
 import com.google.common.collect.Lists;
 import gregtech.api.util.DummyContainer;
-import gregtech.common.pipelike.inventory.network.ItemSourceList;
+import gregtech.common.inventory.itemsource.ItemSourceList;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;

@@ -8,9 +8,11 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.PositionedSoundRecord;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketBuffer;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.fml.client.config.GuiUtils;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.relauncher.Side;
@@ -226,12 +228,28 @@ public abstract class Widget {
             sizes.getScreenHeight() - sizes.getGuiTop(), maxTextWidth, mc.fontRenderer);
     }
 
+    public List<String> getItemToolTip(ItemStack itemStack) {
+        Minecraft mc = Minecraft.getMinecraft();
+        ITooltipFlag flag = mc.gameSettings.advancedItemTooltips ? ITooltipFlag.TooltipFlags.ADVANCED : ITooltipFlag.TooltipFlags.NORMAL;
+        List<String> tooltip = itemStack.getTooltip(mc.player, flag);
+        for (int i = 0; i < tooltip.size(); ++i) {
+            if (i == 0) {
+                tooltip.set(i, itemStack.getItem().getForgeRarity(itemStack).getColor() + tooltip.get(i));
+            } else {
+                tooltip.set(i, TextFormatting.GRAY + tooltip.get(i));
+            }
+        }
+        return tooltip;
+    }
+
+    @SideOnly(Side.CLIENT)
     public static void drawSolidRect(int x, int y, int width, int height, int color) {
         Gui.drawRect(x, y, x + width, y + height, color);
         GlStateManager.color(1.0f, 1.0f, 1.0f, 1.0f);
         GlStateManager.enableBlend();
     }
 
+    @SideOnly(Side.CLIENT)
     public static void drawGradientRect(int x, int y, int width, int height, int startColor, int endColor) {
         GuiUtils.drawGradientRect(0, x, y, x + width, y + height, startColor, endColor);
         GlStateManager.enableBlend();

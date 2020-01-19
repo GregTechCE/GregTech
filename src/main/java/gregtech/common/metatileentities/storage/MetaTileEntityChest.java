@@ -22,7 +22,6 @@ import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.PacketBuffer;
@@ -280,42 +279,10 @@ public class MetaTileEntityChest extends MetaTileEntity implements IFastRenderMe
                 inventoryContents.add(itemStack);
             }
         }
-        inventoryContents.sort(MetaTileEntityChest::compareItemStacks);
+        inventoryContents.sort(GTUtility.createItemStackComparator());
         for (int i = 0; i < inventoryContents.size(); i++) {
             inventory.setStackInSlot(i, inventoryContents.get(i));
         }
-    }
-
-    private static int compareItemStacks(ItemStack stack1, ItemStack stack2) {
-        /*String firstStackName = stack1.getItem().getRegistryName().toString();
-        String secondStackName = stack2.getItem().getRegistryName().toString();
-        int result = firstStackName.compareTo(secondStackName);
-        if(result != 0) {
-            return result;
-        }*/
-        //so far InventoryTweaks uses sorting by raw numeric IDs, and we'll too to keep things consistent
-        //TODO make this use registry names after 1.13 transition because IDs don't make sense
-        int firstItemId = Item.REGISTRY.getIDForObject(stack1.getItem());
-        int secondItemId = Item.REGISTRY.getIDForObject(stack2.getItem());
-        int result = Integer.compare(firstItemId, secondItemId);
-        if (result != 0) {
-            return result;
-        }
-        result = Integer.compare(stack1.getItemDamage(), stack2.getItemDamage());
-        if (result != 0) {
-            return result;
-        }
-        if (stack1.hasTagCompound() != stack2.hasTagCompound()) {
-            return stack1.hasTagCompound() ? 1 : -1;
-        }
-        if (stack1.hasTagCompound() && !stack1.getTagCompound().equals(stack2.getTagCompound())) {
-            result = -Integer.compare(stack1.getTagCompound().hashCode(), stack2.getTagCompound().hashCode());
-            if (result != 0) {
-                return result;
-            }
-        }
-        result = -Integer.compare(stack1.getCount(), stack2.getCount());
-        return result;
     }
 
     @Override

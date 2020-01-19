@@ -1,6 +1,8 @@
-package gregtech.common.pipelike.inventory.network;
+package gregtech.common.inventory.itemsource.sources;
 
 import gregtech.api.util.ItemStackKey;
+import gregtech.common.inventory.itemsource.ItemSource;
+import gregtech.common.pipelike.inventory.network.UpdateResult;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import net.minecraftforge.items.IItemHandler;

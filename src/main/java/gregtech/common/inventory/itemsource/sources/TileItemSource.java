@@ -1,4 +1,4 @@
-package gregtech.common.pipelike.inventory.network;
+package gregtech.common.inventory.itemsource.sources;
 
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;

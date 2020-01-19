@@ -1,11 +1,12 @@
-package gregtech.common.pipelike.inventory.network;
+package gregtech.common.inventory.itemsource;
 
 import gregtech.api.util.ItemStackKey;
+import gregtech.common.inventory.IItemInfo;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public class NetworkItemInfo {
+public class NetworkItemInfo implements IItemInfo {
 
     private final ItemStackKey itemStackKey;
     private int totalItemAmount = 0;
@@ -15,15 +16,17 @@ public class NetworkItemInfo {
         this.itemStackKey = itemStackKey;
     }
 
+    @Override
     public int getTotalItemAmount() {
         return totalItemAmount;
     }
 
+    @Override
     public ItemStackKey getItemStackKey() {
         return itemStackKey;
     }
 
-    public int extractItem(int amount, boolean simulate) {
+    int extractItem(int amount, boolean simulate) {
         int amountToExtract = amount;
         for (ItemSource itemSource : inventories.keySet()) {
             amountToExtract -= itemSource.extractItem(itemStackKey, amountToExtract, simulate);

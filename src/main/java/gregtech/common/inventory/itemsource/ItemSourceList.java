@@ -1,18 +1,26 @@
-package gregtech.common.pipelike.inventory.network;
+package gregtech.common.inventory.itemsource;
 
+import gregtech.api.util.GTUtility;
 import gregtech.api.util.ItemStackKey;
+import gregtech.common.inventory.IItemInfo;
+import gregtech.common.inventory.IItemList;
+import gregtech.common.pipelike.inventory.network.UpdateResult;
+import net.minecraft.util.ITickable;
 import net.minecraft.world.World;
 
+import javax.annotation.Nullable;
 import java.util.*;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-public class ItemSourceList {
+public class ItemSourceList implements IItemList, ITickable {
 
     protected final World world;
     protected final List<ItemSource> handlerInfoList = new CopyOnWriteArrayList<>();
     protected final Map<ItemStackKey, NetworkItemInfo> itemInfoMap = new HashMap<>();
-    protected Runnable itemListChangeCallback = null;
+    protected final List<ItemStackKey> storedItemsList = new ArrayList<>();
     private final Comparator<ItemSource> comparator = Comparator.comparing(ItemSource::getPriority).reversed();
+    private final List<ItemStackKey> storedItemsView = Collections.unmodifiableList(storedItemsList);
+    protected Runnable itemListChangeCallback = null;
 
     public ItemSourceList(World world) {
         this.world = world;
@@ -22,22 +30,28 @@ public class ItemSourceList {
         return world;
     }
 
-    public void setItemListChangeCallback(Runnable changeCallback) {
-        this.itemListChangeCallback = changeCallback;
+    @Override
+    public void addItemListChangeCallback(Runnable changeCallback) {
+        this.itemListChangeCallback = GTUtility.combine(itemListChangeCallback, changeCallback);
     }
 
-    public Collection<NetworkItemInfo> getStoredItems() {
-        return Collections.unmodifiableCollection(itemInfoMap.values());
+    @Override
+    public List<ItemStackKey> getStoredItems() {
+        return storedItemsView;
     }
 
-    public Map<ItemStackKey, NetworkItemInfo> getStoredItemsMap() {
-        return Collections.unmodifiableMap(itemInfoMap);
+    @Nullable
+    @Override
+    public IItemInfo getItemInfo(ItemStackKey stackKey) {
+        return itemInfoMap.get(stackKey);
     }
 
+    @Override
     public void update() {
         this.handlerInfoList.forEach(ItemSource::update);
     }
 
+    @Override
     public int insertItem(ItemStackKey itemStack, int amount, boolean simulate) {
         int amountToInsert = amount;
         for (ItemSource itemSource : handlerInfoList) {
@@ -46,6 +60,15 @@ public class ItemSourceList {
             if (amountToInsert == 0) break;
         }
         return amount - amountToInsert;
+    }
+
+    @Override
+    public int extractItem(ItemStackKey itemStack, int amount, boolean simulate) {
+        NetworkItemInfo itemInfo = (NetworkItemInfo) getItemInfo(itemStack);
+        if (itemInfo == null) {
+            return 0;
+        }
+        return itemInfo.extractItem(amount, simulate);
     }
 
     public void notifyPriorityUpdated() {
