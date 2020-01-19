@@ -106,10 +106,6 @@ public class SlotWidget extends Widget implements INativeWidget {
         return isEnabled && canTakeItems;
     }
 
-    protected ItemStack onItemTake(EntityPlayer thePlayer, ItemStack stack) {
-        return stack;
-    }
-
     public boolean isEnabled() {
         return isEnabled;
     }
@@ -158,8 +154,8 @@ public class SlotWidget extends Widget implements INativeWidget {
         }
 
         @Override
-        public ItemStack onTake(EntityPlayer thePlayer, ItemStack stack) {
-            return onItemTake(thePlayer, super.onTake(thePlayer, stack));
+        public final ItemStack onTake(EntityPlayer thePlayer, ItemStack stack) {
+            return onItemTake(thePlayer, super.onTake(thePlayer, stack), false);
         }
 
         @Override

@@ -36,6 +36,15 @@ public interface INativeWidget extends EnableNotifiedWidget {
     boolean canMergeSlot(ItemStack stack);
 
     /**
+     * Called when item is taken from the slot
+     * Simulated take is used to compute slot merging behavior
+     * This method should not modify slot state if it is simulated
+     */
+    default ItemStack onItemTake(EntityPlayer player, ItemStack stack, boolean simulate) {
+        return stack;
+    }
+
+    /**
      * Called when slot is clicked in Container
      * Return {@link INativeWidget#VANILLA_LOGIC} to fallback to vanilla logic
      */

@@ -8,6 +8,7 @@ import gregtech.api.net.NetworkHandler;
 import gregtech.api.net.PacketUIClientAction;
 import gregtech.api.net.PacketUIWidgetUpdate;
 import gregtech.api.util.GTUtility;
+import gregtech.api.util.PerTickIntCounter;
 import io.netty.buffer.Unpooled;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.entity.player.EntityPlayer;
@@ -110,6 +111,14 @@ public class ModularUIContainer extends Container implements WidgetUIAccess {
     }
 
     @Override
+    public void sendSlotUpdate(INativeWidget slot) {
+        Slot slotHandle = slot.getHandle();
+        for (IContainerListener listener : listeners) {
+            listener.sendSlotContents(this, slotHandle.slotNumber, slotHandle.getStack());
+        }
+    }
+
+    @Override
     public void detectAndSendChanges() {
         super.detectAndSendChanges();
         modularUI.guiWidgets.values().forEach(Widget::detectAndSendChanges);
@@ -128,44 +137,76 @@ public class ModularUIContainer extends Container implements WidgetUIAccess {
         return super.slotClick(slotId, dragType, clickTypeIn, player);
     }
 
-    @Override
-    public ItemStack transferStackInSlot(EntityPlayer player, int index) {
-        Slot slot = inventorySlots.get(index);
-        if (slot == null || !slot.getHasStack()) {
-            //return empty if we can't transfer it
-            return ItemStack.EMPTY;
-        }
-        ItemStack remainingStack = slot.getStack();
-        boolean mergedStack;
+    private PerTickIntCounter transferredPerTick = new PerTickIntCounter(0);
+
+    private boolean attemptSlotMerge(ItemStack itemStack, Slot slot, boolean simulate) {
         if (slotMap.get(slot).getSlotLocationInfo().isPlayerInventory) {
             //if we clicked on player inventory slot, move to container inventory, inverting indexes
             List<Slot> containerSlots = slotMap.entrySet().stream()
-                .filter(s -> s.getValue().canMergeSlot(remainingStack))
+                .filter(s -> s.getValue().canMergeSlot(itemStack))
                 .filter(s -> !s.getValue().getSlotLocationInfo().isPlayerInventory)
                 .map(Entry::getKey)
                 .sorted(Comparator.comparing(s -> s.slotNumber))
                 .collect(Collectors.toList());
-            mergedStack = GTUtility.mergeItemStack(remainingStack, containerSlots);
+            return GTUtility.mergeItemStack(itemStack, containerSlots, simulate);
         } else {
             //if we clicked on a container inventory, move to player inventory
             List<Slot> inventorySlots = slotMap.entrySet().stream()
-                .filter(s -> s.getValue().canMergeSlot(remainingStack))
+                .filter(s -> s.getValue().canMergeSlot(itemStack))
                 .filter(s -> s.getValue().getSlotLocationInfo().isPlayerInventory)
                 .map(Entry::getKey)
                 .sorted(Collections.reverseOrder(Comparator.comparing(s -> s.slotNumber)))
                 .collect(Collectors.toList());
-            mergedStack = GTUtility.mergeItemStack(remainingStack, inventorySlots);
+            return GTUtility.mergeItemStack(itemStack, inventorySlots, simulate);
         }
-        if (!mergedStack) {
-            return ItemStack.EMPTY; //if we didn't merge anything, return empty stack
-        }
+    }
 
-        if (remainingStack.isEmpty()) {
+    @Override
+    public ItemStack transferStackInSlot(EntityPlayer player, int index) {
+        Slot slot = inventorySlots.get(index);
+        if (!slot.canTakeStack(player)) {
+            return ItemStack.EMPTY;
+        }
+        if (!slot.getHasStack()) {
+            //return empty if we can't transfer it
+            return ItemStack.EMPTY;
+        }
+        ItemStack stackInSlot = slot.getStack();
+        ItemStack stackToMerge = slotMap.get(slot).onItemTake(player, stackInSlot.copy(), true);
+        if (!attemptSlotMerge(stackToMerge, slot, true)) {
+            return ItemStack.EMPTY;
+        }
+        int itemsMerged;
+        if (stackToMerge.isEmpty() || slotMap.get(slot).canMergeSlot(stackToMerge)) {
+            itemsMerged = stackInSlot.getCount() - stackToMerge.getCount();
+        } else {
+            //if we can't have partial stack merge, we have to use all the stack
+            itemsMerged = stackInSlot.getCount();
+        }
+        int itemsToExtract = itemsMerged;
+        itemsMerged += transferredPerTick.get(player.world);
+        if (itemsMerged > stackInSlot.getMaxStackSize()) {
+            //we can merge at most one stack at a time
+            return ItemStack.EMPTY;
+        }
+        transferredPerTick.increment(player.world, itemsToExtract);
+        //otherwise, perform extraction and merge
+        ItemStack extractedStack = stackInSlot.splitStack(itemsToExtract);
+        if (stackInSlot.isEmpty()) {
             slot.putStack(ItemStack.EMPTY);
         } else {
             slot.onSlotChanged();
         }
-        return remainingStack;
+        extractedStack = slotMap.get(slot).onItemTake(player, extractedStack, false);
+        ItemStack resultStack = extractedStack.copy();
+        if (!attemptSlotMerge(extractedStack, slot, false)) {
+            resultStack = ItemStack.EMPTY;
+        }
+        if (!extractedStack.isEmpty()) {
+            player.dropItem(extractedStack, false, false);
+            resultStack = ItemStack.EMPTY;
+        }
+        return resultStack;
     }
 
     @Override

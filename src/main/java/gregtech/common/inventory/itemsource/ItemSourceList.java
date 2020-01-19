@@ -21,6 +21,8 @@ public class ItemSourceList implements IItemList, ITickable {
     private final Comparator<ItemSource> comparator = Comparator.comparing(ItemSource::getPriority).reversed();
     private final List<ItemStackKey> storedItemsView = Collections.unmodifiableList(storedItemsList);
     protected Runnable itemListChangeCallback = null;
+    private boolean callbackWasCalled = false;
+    private boolean disableCallback = false;
 
     public ItemSourceList(World world) {
         this.world = world;
@@ -44,6 +46,19 @@ public class ItemSourceList implements IItemList, ITickable {
     @Override
     public IItemInfo getItemInfo(ItemStackKey stackKey) {
         return itemInfoMap.get(stackKey);
+    }
+
+    public void disableCallback() {
+        this.disableCallback = true;
+        this.callbackWasCalled = false;
+    }
+
+    public void enableCallback() {
+        this.disableCallback = false;
+        if (callbackWasCalled && itemListChangeCallback != null) {
+            this.callbackWasCalled = false;
+            itemListChangeCallback.run();
+        }
     }
 
     @Override
@@ -108,9 +123,7 @@ public class ItemSourceList implements IItemList, ITickable {
         boolean updatedItemAmount = false;
         for (ItemStackKey itemStackKey : itemAmount.keySet()) {
             NetworkItemInfo itemInfo = itemInfoMap.computeIfAbsent(itemStackKey, NetworkItemInfo::new);
-            if (itemInfo != null) {
-                updatedItemAmount |= itemInfo.addInventory(handlerInfo, itemAmount.get(itemStackKey));
-            }
+            updatedItemAmount |= itemInfo.addInventory(handlerInfo, itemAmount.get(itemStackKey));
         }
         for (ItemStackKey removedItem : removedItems) {
             NetworkItemInfo itemInfo = itemInfoMap.get(removedItem);
@@ -119,7 +132,11 @@ public class ItemSourceList implements IItemList, ITickable {
             }
         }
         if (updatedItemAmount && itemListChangeCallback != null) {
-            itemListChangeCallback.run();
+            if (!disableCallback) {
+                itemListChangeCallback.run();
+            } else {
+                this.callbackWasCalled = true;
+            }
         }
     }
 

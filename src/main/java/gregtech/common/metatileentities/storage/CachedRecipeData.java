@@ -31,10 +31,12 @@ public class CachedRecipeData {
     }
 
     public boolean performRecipe(EntityPlayer player) {
+        this.lastTickChecked = -1L;
         if (!checkRecipeValid()) {
             return false;
         }
         if (!consumeRecipeItems(false)) {
+            this.lastTickChecked = -1L;
             return false;
         }
         ForgeHooks.setCraftingPlayer(player);
@@ -52,6 +54,7 @@ public class CachedRecipeData {
                 }
             }
         }
+        this.lastTickChecked = -1L;
         return true;
     }
 
@@ -63,8 +66,7 @@ public class CachedRecipeData {
                 return false; //ingredient didn't match, return false
         }
         this.ingredientsMatched = true;
-        //all ingredients matched and can be extracted successfully
-        return checkRecipeValid();
+        return true;
     }
 
     public boolean checkRecipeValid() {

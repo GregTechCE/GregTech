@@ -1,5 +1,6 @@
 package gregtech.api.gui.widgets;
 
+import gregtech.api.gui.INativeWidget;
 import gregtech.api.gui.Widget;
 import net.minecraft.network.PacketBuffer;
 
@@ -19,6 +20,14 @@ public interface WidgetUIAccess {
      * and should be updated accordingly
      */
     void notifyWidgetChange();
+
+    /**
+     * Sends force slot update to the client, even if stack didn't change from the server perspective
+     * Can be useful if client and server handle stack removal differently via override of Slot#onTake to
+     * notify client of stack status computed on server side
+     * Used for crafting table result stack taking, for example
+     */
+    void sendSlotUpdate(INativeWidget slot);
 
     /**
      * Sends action to the server with the ID and data payload supplied

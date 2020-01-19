@@ -27,12 +27,7 @@ import gregtech.integration.jei.recipe.GTRecipeWrapper;
 import gregtech.integration.jei.recipe.RecipeMapCategory;
 import gregtech.integration.jei.recipe.fuel.FuelRecipeMapCategory;
 import gregtech.integration.jei.recipe.fuel.GTFuelRecipeWrapper;
-import gregtech.integration.jei.recipe.primitive.CokeOvenRecipeCategory;
-import gregtech.integration.jei.recipe.primitive.CokeOvenRecipeWrapper;
-import gregtech.integration.jei.recipe.primitive.OreByProductCategory;
-import gregtech.integration.jei.recipe.primitive.OreByProduct;
-import gregtech.integration.jei.recipe.primitive.PrimitiveBlastRecipeCategory;
-import gregtech.integration.jei.recipe.primitive.PrimitiveBlastRecipeWrapper;
+import gregtech.integration.jei.recipe.primitive.*;
 import gregtech.integration.jei.utils.CustomItemReturnRecipeWrapper;
 import gregtech.integration.jei.utils.MachineSubtypeHandler;
 import gregtech.integration.jei.utils.MetaItemSubtypeHandler;
@@ -45,7 +40,6 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.oredict.OreDictionary;
 
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -85,9 +79,10 @@ public class GTJeiPlugin implements IModPlugin {
         registry.handleRecipes(CustomItemReturnShapedOreRecipeRecipe.class, recipe -> new CustomItemReturnRecipeWrapper(jeiHelpers, recipe), VanillaRecipeCategoryUid.CRAFTING);
         registry.addRecipeRegistryPlugin(new FacadeRegistryPlugin());
 
-        ModularUIGuiHandler modularUIGuiHandler = new ModularUIGuiHandler();
+        ModularUIGuiHandler modularUIGuiHandler = new ModularUIGuiHandler(jeiHelpers.recipeTransferHandlerHelper());
         registry.addAdvancedGuiHandlers(modularUIGuiHandler);
         registry.addGhostIngredientHandler(modularUIGuiHandler.getGuiContainerClass(), modularUIGuiHandler);
+        registry.getRecipeTransferRegistry().addRecipeTransferHandler(modularUIGuiHandler, VanillaRecipeCategoryUid.CRAFTING);
 
         for (RecipeMap<?> recipeMap : RecipeMap.getRecipeMaps()) {
             List<GTRecipeWrapper> recipesList = recipeMap.getRecipeList()

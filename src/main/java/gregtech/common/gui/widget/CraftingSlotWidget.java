@@ -1,19 +1,24 @@
 package gregtech.common.gui.widget;
 
-import gregtech.api.capability.impl.ItemHandlerDelegate;
+import com.google.common.base.Preconditions;
+import gregtech.api.gui.igredient.IRecipeTransferHandlerWidget;
+import gregtech.api.gui.impl.ModularUIContainer;
 import gregtech.api.gui.widgets.SlotWidget;
 import gregtech.common.metatileentities.storage.CraftingRecipeResolver;
+import mezz.jei.api.gui.IGuiIngredient;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketBuffer;
 import net.minecraftforge.items.IItemHandler;
-import net.minecraftforge.items.IItemHandlerModifiable;
 import net.minecraftforge.items.ItemStackHandler;
 import net.minecraftforge.items.SlotItemHandler;
 
-import javax.annotation.Nonnull;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Map.Entry;
 
-public class CraftingSlotWidget extends SlotWidget {
+public class CraftingSlotWidget extends SlotWidget implements IRecipeTransferHandlerWidget {
 
     private CraftingRecipeResolver recipeResolver;
     private boolean canTakeStack = false;
@@ -25,18 +30,29 @@ public class CraftingSlotWidget extends SlotWidget {
     }
 
     private static IItemHandler createItemHandler(CraftingRecipeResolver resolver) {
-        return new ItemHandlerDelegate(resolver == null ? new ItemStackHandler(1) : resolver.getCraftingResultInventory());
+        return resolver == null ? new ItemStackHandler(1) : resolver.getCraftingResultInventory();
     }
 
     @Override
     protected SlotItemHandler createSlot(IItemHandler itemHandler, int index, int x, int y) {
-        return new WidgetSlotDelegate(itemHandler, index, x, y) {
-            @Override
-            public void putStack(@Nonnull ItemStack stack) {
-                if (stack.isEmpty()) return;
-                ((IItemHandlerModifiable) ((ItemHandlerDelegate) itemHandler).delegate).setStackInSlot(index, stack);
+        return new WidgetSlotDelegate(itemHandler, index, x, y);
+    }
+
+    @Override
+    public void handleClientAction(int id, PacketBuffer buffer) {
+        super.handleClientAction(id, buffer);
+        if (id == 1) {
+            HashMap<Integer, ItemStack> ingredients = new HashMap<>();
+            int ingredientAmount = buffer.readVarInt();
+            try {
+                for (int i = 0; i < ingredientAmount; i++) {
+                    ingredients.put(buffer.readVarInt(), buffer.readItemStack());
+                }
+            } catch (IOException exception) {
+                throw new RuntimeException(exception);
             }
-        };
+            recipeResolver.setCraftingGrid(ingredients);
+        }
     }
 
     @Override
@@ -61,6 +77,11 @@ public class CraftingSlotWidget extends SlotWidget {
     }
 
     @Override
+    public boolean canMergeSlot(ItemStack stack) {
+        return false;
+    }
+
+    @Override
     public boolean canTakeStack(EntityPlayer player) {
         if (!super.canTakeStack(player)) {
             return false;
@@ -72,16 +93,40 @@ public class CraftingSlotWidget extends SlotWidget {
     }
 
     @Override
-    protected ItemStack onItemTake(EntityPlayer thePlayer, ItemStack stack) {
+    public ItemStack onItemTake(EntityPlayer thePlayer, ItemStack stack, boolean simulate) {
         if (recipeResolver == null) {
             return canTakeStack ? stack : ItemStack.EMPTY;
         }
         if (!recipeResolver.checkRecipeValid()) {
             return ItemStack.EMPTY;
         }
+        recipeResolver.handleItemCraft(stack, thePlayer, simulate);
+        if (simulate) {
+            return stack;
+        }
         recipeResolver.performRecipe(thePlayer);
-        recipeResolver.handlePostItemCraft(stack, thePlayer);
-        recipeResolver.checkRecipeValid();
+        recipeResolver.refreshOutputSlot();
+        //send slot changes now, both of consumed items in inventory and result slot
+        gui.entityPlayer.openContainer.detectAndSendChanges();
+        uiAccess.sendSlotUpdate(this);
         return stack;
+    }
+
+    @Override
+    public String transferRecipe(ModularUIContainer container, Map<Integer, IGuiIngredient<ItemStack>> ingredients, EntityPlayer player, boolean maxTransfer, boolean doTransfer) {
+        if (!doTransfer) {
+            return null;
+        }
+        ingredients.values().removeIf(it -> !it.isInput());
+        writeClientAction(1, buf -> {
+            buf.writeVarInt(ingredients.size());
+            for (Entry<Integer, IGuiIngredient<ItemStack>> entry : ingredients.entrySet()) {
+                buf.writeVarInt(entry.getKey());
+                ItemStack itemStack = entry.getValue().getDisplayedIngredient();
+                Preconditions.checkNotNull(itemStack);
+                buf.writeItemStack(itemStack);
+            }
+        });
+        return null;
     }
 }

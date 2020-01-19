@@ -266,6 +266,14 @@ public class  AbstractWidgetGroup extends Widget implements IGhostIngredientTarg
         }
 
         @Override
+        public void sendSlotUpdate(INativeWidget slot) {
+            WidgetUIAccess uiAccess = AbstractWidgetGroup.this.uiAccess;
+            if (uiAccess != null) {
+                uiAccess.sendSlotUpdate(slot);
+            }
+        }
+
+        @Override
         public void notifyWidgetChange() {
             WidgetUIAccess uiAccess = AbstractWidgetGroup.this.uiAccess;
             if (uiAccess != null) {
