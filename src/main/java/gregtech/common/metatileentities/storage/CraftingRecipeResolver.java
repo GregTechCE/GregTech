@@ -3,11 +3,14 @@ package gregtech.common.metatileentities.storage;
 import com.google.common.collect.Lists;
 import gregtech.api.util.DummyContainer;
 import gregtech.common.inventory.itemsource.ItemSourceList;
+import gregtech.common.inventory.itemsource.sources.TileItemSource;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.item.crafting.IRecipe;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.items.ItemStackHandler;
@@ -36,7 +39,7 @@ public class CraftingRecipeResolver {
         this.craftingGrid = craftingGrid;
         this.recipeMemory = recipeMemory;
         this.itemSourceList = new ItemSourceList(world);
-        this.itemSourceList.setItemListChangeCallback(this::notifyStoredItemsChanged);
+        this.itemSourceList.addItemListChangeCallback(this::notifyStoredItemsChanged);
     }
 
     public ItemSourceList getItemSourceList() {
@@ -156,5 +159,12 @@ public class CraftingRecipeResolver {
             updateCurrentRecipe();
         }
         this.timer++;
+    }
+
+    public void checkNeighbourInventories(BlockPos blockPos) {
+        for (EnumFacing side : EnumFacing.VALUES) {
+            TileItemSource itemSource = new TileItemSource(world, blockPos, side);
+            this.itemSourceList.addItemHandler(itemSource);
+        }
     }
 }

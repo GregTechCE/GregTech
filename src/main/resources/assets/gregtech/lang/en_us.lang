@@ -1756,7 +1756,6 @@ itemGroup.gregtech.materials=Materials (GTCE)
 itemGroup.gregtech.ores=Ores (GTCE)
 
 # Chests
-gregtech.machine.workbench.name=Workbench
 gregtech.machine.small_wooden_chest.name=Small Wooden Chest
 gregtech.machine.wooden_chest.name=Wooden Chest
 gregtech.machine.bronze_chest.name=Bronze Chest
@@ -1769,7 +1768,12 @@ gregtech.machine.locked_safe.name=Locked Safe
 gregtech.machine.locked_safe.malfunctioning=§cMalfunctioning!
 gregtech.machine.locked_safe.requirements=§7Replacements required:
 
-gregtech.machine.workbench.name=Advanced Crafting Station
+#Workbench
+gregtech.machine.workbench.name=Crafting Station
+gregtech.machine.workbench.tab.workbench=Crafting
+gregtech.machine.workbench.tab.item_list=Storage
+gregtech.item_list.items_stored=§7Stored: %d
+
 gregtech.machine.workbench.tab.crafting=Crafting
 gregtech.machine.workbench.tab.container=Container
 

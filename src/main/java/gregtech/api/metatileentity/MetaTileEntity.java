@@ -501,6 +501,9 @@ public abstract class MetaTileEntity implements ICoverable {
         return false;
     }
 
+    public void onNeighborChanged() {
+    }
+
     public void updateInputRedstoneSignals() {
         for (EnumFacing side : EnumFacing.VALUES) {
             int redstoneValue = GTUtility.getRedstonePower(getWorld(), getPos(), side);

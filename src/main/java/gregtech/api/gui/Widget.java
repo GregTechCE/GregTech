@@ -6,8 +6,12 @@ import gregtech.api.util.Position;
 import gregtech.api.util.Size;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.PositionedSoundRecord;
+import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.renderer.OpenGlHelper;
+import net.minecraft.client.renderer.RenderHelper;
+import net.minecraft.client.renderer.RenderItem;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
@@ -18,6 +22,7 @@ import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import javax.annotation.Nullable;
 import java.awt.*;
 import java.util.Collections;
 import java.util.List;
@@ -101,7 +106,7 @@ public abstract class Widget {
     protected void onSizeUpdate() {
     }
 
-    protected boolean isMouseOverElement(int mouseX, int mouseY) {
+    public boolean isMouseOverElement(int mouseX, int mouseY) {
         Position position = getPosition();
         Size size = getSize();
         return isMouseOver(position.x, position.y, size.width, size.height, mouseX, mouseY);
@@ -224,11 +229,52 @@ public abstract class Widget {
     protected void drawHoveringText(ItemStack itemStack, List<String> tooltip, int maxTextWidth, int mouseX, int mouseY) {
         Minecraft mc = Minecraft.getMinecraft();
         GuiUtils.drawHoveringText(itemStack, tooltip, mouseX, mouseY,
-            sizes.getScreenWidth() - sizes.getGuiLeft(),
-            sizes.getScreenHeight() - sizes.getGuiTop(), maxTextWidth, mc.fontRenderer);
+             sizes.getScreenWidth(),
+             sizes.getScreenHeight(), maxTextWidth, mc.fontRenderer);
     }
 
-    public List<String> getItemToolTip(ItemStack itemStack) {
+    @SideOnly(Side.CLIENT)
+    protected void drawStringSized(String text, double x, double y, int color, boolean dropShadow, float scale, boolean center) {
+        GlStateManager.pushMatrix();
+        FontRenderer fontRenderer = Minecraft.getMinecraft().fontRenderer;
+        double scaledTextWidth = center ? fontRenderer.getStringWidth(text) * scale : 0.0;
+        GlStateManager.translate(x + scaledTextWidth / 2.0, y, 0.0f);
+        GlStateManager.scale(scale, scale, scale);
+        fontRenderer.drawString(text, 0, 0, color, dropShadow);
+        GlStateManager.popMatrix();
+    }
+
+    @SideOnly(Side.CLIENT)
+    protected void drawStringFixedCorner(String text, double x, double y, int color, boolean dropShadow, float scale) {
+        FontRenderer fontRenderer = Minecraft.getMinecraft().fontRenderer;
+        double scaledWidth = fontRenderer.getStringWidth(text) * scale;
+        double scaledHeight = fontRenderer.FONT_HEIGHT * scale;
+        drawStringSized(text, x - scaledWidth, y - scaledHeight, color, dropShadow, scale, false);
+    }
+
+    @SideOnly(Side.CLIENT)
+    protected static void drawItemStack(ItemStack itemStack, int x, int y, @Nullable String altTxt) {
+        GlStateManager.pushMatrix();
+        GlStateManager.translate(0.0F, 0.0F, 32.0F);
+        GlStateManager.color(1F, 1F, 1F, 1F);
+        GlStateManager.enableRescaleNormal();
+        GlStateManager.enableLighting();
+        RenderHelper.enableGUIStandardItemLighting();
+        OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, 240.0f, 240.0f);
+        Minecraft mc = Minecraft.getMinecraft();
+        RenderItem itemRender = mc.getRenderItem();
+        itemRender.renderItemAndEffectIntoGUI(itemStack, x, y);
+        itemRender.renderItemOverlayIntoGUI(mc.fontRenderer, itemStack, x, y, altTxt);
+        GlStateManager.disableRescaleNormal();
+        GlStateManager.disableLighting();
+        GlStateManager.color(1F, 1F, 1F, 1F);
+        GlStateManager.popMatrix();
+        GlStateManager.enableBlend();
+        GlStateManager.disableDepth();
+    }
+
+    @SideOnly(Side.CLIENT)
+    protected static List<String> getItemToolTip(ItemStack itemStack) {
         Minecraft mc = Minecraft.getMinecraft();
         ITooltipFlag flag = mc.gameSettings.advancedItemTooltips ? ITooltipFlag.TooltipFlags.ADVANCED : ITooltipFlag.TooltipFlags.NORMAL;
         List<String> tooltip = itemStack.getTooltip(mc.player, flag);
@@ -243,14 +289,24 @@ public abstract class Widget {
     }
 
     @SideOnly(Side.CLIENT)
-    public static void drawSolidRect(int x, int y, int width, int height, int color) {
+    protected static void drawSelectionOverlay(int x, int y, int width, int height) {
+        GlStateManager.disableDepth();
+        GlStateManager.colorMask(true, true, true, false);
+        drawGradientRect(x, y, width, height, -2130706433, -2130706433);
+        GlStateManager.colorMask(true, true, true, true);
+        GlStateManager.enableDepth();
+        GlStateManager.enableBlend();
+    }
+
+    @SideOnly(Side.CLIENT)
+    protected static void drawSolidRect(int x, int y, int width, int height, int color) {
         Gui.drawRect(x, y, x + width, y + height, color);
         GlStateManager.color(1.0f, 1.0f, 1.0f, 1.0f);
         GlStateManager.enableBlend();
     }
 
     @SideOnly(Side.CLIENT)
-    public static void drawGradientRect(int x, int y, int width, int height, int startColor, int endColor) {
+    protected static void drawGradientRect(int x, int y, int width, int height, int startColor, int endColor) {
         GuiUtils.drawGradientRect(0, x, y, x + width, y + height, startColor, endColor);
         GlStateManager.enableBlend();
     }

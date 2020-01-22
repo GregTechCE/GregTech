@@ -1,12 +1,16 @@
 package gregtech.common.gui.widget;
 
+import gregtech.api.gui.INativeWidget;
 import gregtech.api.gui.Widget;
 import gregtech.api.gui.widgets.ScrollableListWidget;
+import gregtech.api.gui.widgets.WidgetGroup;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.ItemStackKey;
 import gregtech.common.inventory.IItemInfo;
 import gregtech.common.inventory.IItemList;
+import gregtech.common.inventory.IItemList.InsertMode;
 import gregtech.common.inventory.SimpleItemInfo;
+import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketBuffer;
 
 import javax.annotation.Nullable;
@@ -35,29 +39,80 @@ public class ItemListGridWidget extends ScrollableListWidget {
     }
 
     @Nullable
+    public IItemList getItemList() {
+        return itemList;
+    }
+
+    @Nullable
     public IItemInfo getItemInfoAt(int index) {
         return displayItemList.size() > index ? displayItemList.get(index) : null;
     }
 
-    private void modifySlotRows(int delta) {
-        for (int i = 0; i < delta * 9; i++) {
-            if (delta > 0) {
-                int widgetAmount = widgets.size();
-                int yOffset = (widgetAmount / 9) * 18;
-                Widget slotWidget = new ItemListSlotWidget(i * 18, yOffset, this, widgetAmount);
-                addWidget(slotWidget);
-            } else {
-                Widget slotWidget = widgets.remove(widgets.size() - 1);
-                removeWidget(slotWidget);
+    @Override
+    public boolean mouseClicked(int mouseX, int mouseY, int button) {
+        boolean result = super.mouseClicked(mouseX, mouseY, button);
+        if (!result) {
+            INativeWidget hoveredSlot = findHoveredSlot(mouseX, mouseY);
+            if (hoveredSlot != null) {
+                dispatchOtherSlotShiftClick(hoveredSlot);
+                return true;
+            }
+        }
+        return result;
+    }
+
+    private void dispatchOtherSlotShiftClick(INativeWidget clickedSlot) {
+        ItemStack stackInSlot = clickedSlot.getHandle().getStack();
+        if (!stackInSlot.isEmpty()) {
+            writeClientAction(4, buf -> {
+                buf.writeVarInt(clickedSlot.getHandle().slotNumber);
+            });
+        }
+    }
+
+    private void handleSlotShiftClick(INativeWidget clickedSlot) {
+        ItemStack itemStack = clickedSlot.getHandle().getStack();
+        if (clickedSlot.getHandle().canTakeStack(gui.entityPlayer) && !itemStack.isEmpty()) {
+            itemStack = clickedSlot.onItemTake(gui.entityPlayer, itemStack, true);
+            int amountInserted = getItemList().insertItem(new ItemStackKey(itemStack), itemStack.getCount(), false, InsertMode.LOWEST_PRIORITY);
+            if (amountInserted > 0) {
+                clickedSlot.onItemTake(gui.entityPlayer, itemStack, false);
+                itemStack.shrink(amountInserted);
+                if (!clickedSlot.canMergeSlot(itemStack)) {
+                    gui.entityPlayer.dropItem(itemStack.copy(), false, false);
+                    itemStack.setCount(0);
+                }
+                clickedSlot.getHandle().onSlotChanged();
+                uiAccess.sendSlotUpdate(clickedSlot);
+                gui.entityPlayer.openContainer.detectAndSendChanges();
             }
         }
     }
 
-    @Override
-    public void addWidget(Widget widget) {
-        super.addWidget(widget);
-        if (!(widget instanceof ItemListSlotWidget)) {
-            throw new UnsupportedOperationException();
+    private void addSlotRows(int amount) {
+        for (int i = 0; i < amount; i++) {
+            int widgetAmount = widgets.size();
+            WidgetGroup widgetGroup = new WidgetGroup();
+            for (int j = 0; j < slotAmountX; j++) {
+                Widget widget = new ItemListSlotWidget(j * 18, 0, this, widgetAmount * 9 + j);
+                widgetGroup.addWidget(widget);
+            }
+            addWidget(widgetGroup);
+        }
+    }
+
+    private void removeSlotRows(int amount) {
+        for (int i = 0; i < amount; i++) {
+            Widget slotWidget = widgets.remove(widgets.size() - 1);
+            removeWidget(slotWidget);
+        }
+    }
+
+    private void modifySlotRows(int delta) {
+        if (delta > 0) {
+            addSlotRows(delta);
+        } else {
+            removeSlotRows(delta);
         }
     }
 
@@ -92,11 +147,11 @@ public class ItemListGridWidget extends ScrollableListWidget {
         super.detectAndSendChanges();
         if (itemList == null) return;
         int amountOfItemTypes = itemList.getStoredItems().size();
-        int slotRowsRequired = Math.max(slotAmountY, (int) Math.ceil(amountOfItemTypes / (slotAmountX * 1.0)) * slotAmountX);
+        int slotRowsRequired = Math.max(slotAmountY, (int) Math.ceil(amountOfItemTypes / (slotAmountX * 1.0)) * slotAmountY);
         if (slotRowsAmount != slotRowsRequired) {
-            this.slotRowsAmount = slotRowsRequired;
             int slotsToAdd = slotRowsRequired - slotRowsAmount;
-            writeUpdateInfo(1, buf -> buf.writeVarInt(slotsToAdd));
+            this.slotRowsAmount = slotRowsRequired;
+            writeUpdateInfo(2, buf -> buf.writeVarInt(slotsToAdd));
             modifySlotRows(slotsToAdd);
         }
 
@@ -104,7 +159,7 @@ public class ItemListGridWidget extends ScrollableListWidget {
         this.itemsRemoved.clear();
         checkItemListForChanges();
         if (!itemsChanged.isEmpty() || !itemsRemoved.isEmpty()) {
-            writeUpdateInfo(2, buf -> {
+            writeUpdateInfo(3, buf -> {
                 buf.writeVarInt(itemsRemoved.size());
                 for (ItemStackKey itemStackKey : itemsRemoved) {
                     buf.writeItemStack(itemStackKey.getItemStackRaw());
@@ -121,11 +176,11 @@ public class ItemListGridWidget extends ScrollableListWidget {
     @Override
     public void readUpdateInfo(int id, PacketBuffer buffer) {
         super.readUpdateInfo(id, buffer);
-        if (id == 1) {
+        if (id == 2) {
             int slotsToAdd = buffer.readVarInt();
             modifySlotRows(slotsToAdd);
         }
-        if (id == 2) {
+        if (id == 3) {
             try {
                 int itemsRemoved = buffer.readVarInt();
                 for (int i = 0; i < itemsRemoved; i++) {
@@ -148,5 +203,34 @@ public class ItemListGridWidget extends ScrollableListWidget {
                 throw new RuntimeException(ex);
             }
         }
+    }
+
+    @Override
+    public void handleClientAction(int id, PacketBuffer buffer) {
+        super.handleClientAction(id, buffer);
+        if (id == 4) {
+            INativeWidget clickedSlot = findSlotByNumber(buffer.readVarInt());
+            if (clickedSlot != null) {
+                handleSlotShiftClick(clickedSlot);
+            }
+        }
+    }
+
+    @Nullable
+    private INativeWidget findHoveredSlot(int mouseX, int mouseY) {
+        return gui.guiWidgets.values().stream()
+            .flatMap(it -> it.getNativeWidgets().stream())
+            .filter(it -> it.getHandle().isEnabled())
+            .filter(it -> it.getHandle().canTakeStack(gui.entityPlayer))
+            .filter(it -> ((Widget) it).isMouseOverElement(mouseX, mouseY))
+            .findFirst().orElse(null);
+    }
+
+    @Nullable
+    private INativeWidget findSlotByNumber(int slotNumber) {
+        return gui.guiWidgets.values().stream()
+            .flatMap(it -> it.getNativeWidgets().stream())
+            .filter(it -> it.getHandle().slotNumber == slotNumber)
+            .findFirst().orElse(null);
     }
 }

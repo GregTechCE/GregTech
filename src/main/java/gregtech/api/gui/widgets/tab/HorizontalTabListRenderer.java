@@ -1,6 +1,7 @@
 package gregtech.api.gui.widgets.tab;
 
 import gregtech.api.gui.resources.TextureArea;
+import gregtech.api.util.Position;
 
 import java.util.List;
 
@@ -15,7 +16,7 @@ public class HorizontalTabListRenderer extends TabListRenderer {
     }
 
     @Override
-    public void renderTabs(List<ITabInfo> tabInfos, int guiWidth, int guiHeight, int selectedTabIndex) {
+    public void renderTabs(Position offset, List<ITabInfo> tabInfos, int guiWidth, int guiHeight, int selectedTabIndex) {
         boolean startLeft = startCorner == HorizontalStartCorner.LEFT;
         boolean isTopLine = verticalLocation == VerticalLocation.TOP;
         int tabYPosition = isTopLine ? (0 - TAB_HEIGHT + TAB_Y_OFFSET) : (guiHeight - TAB_Y_OFFSET);
@@ -24,7 +25,8 @@ public class HorizontalTabListRenderer extends TabListRenderer {
             boolean isTabSelected = tabIndex == selectedTabIndex;
             boolean isTabFirst = tabIndex == 0;
             TextureArea tabTexture = getTabTexture(isTabSelected, isTabFirst, isTopLine, startLeft);
-            tabInfos.get(tabIndex).renderTab(tabTexture, startLeft ? currentXOffset : (guiWidth - TAB_WIDTH - currentXOffset), tabYPosition, TAB_WIDTH, TAB_HEIGHT, isTabSelected);
+            int finalPosX = startLeft ? currentXOffset : (guiWidth - TAB_WIDTH - currentXOffset);
+            tabInfos.get(tabIndex).renderTab(tabTexture, offset.x + finalPosX, offset.y + tabYPosition, TAB_WIDTH, TAB_HEIGHT, isTabSelected);
             currentXOffset += (TAB_WIDTH + SPACE_BETWEEN_TABS);
         }
     }

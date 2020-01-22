@@ -101,7 +101,7 @@ public class ScrollableListWidget extends AbstractWidgetGroup {
         int scrollSliderY = Math.round(position.y + (size.height - scrollSliderHeight) * scrollPercent);
         drawGradientRect(scrollX + 1, scrollSliderY, paneSize - 2, scrollSliderHeight, 0xFF555555, 0xFF454545);
 
-        RenderUtil.useScissor(sizes, position.x, position.y, size.width - paneSize, size.height, () ->
+        RenderUtil.useScissor(position.x, position.y, size.width - paneSize, size.height, () ->
             super.drawInBackground(finalMouseX, finalMouseY, context));
     }
 

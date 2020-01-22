@@ -11,7 +11,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketBuffer;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
-import net.minecraftforge.items.SlotItemHandler;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -31,11 +30,6 @@ public class CraftingSlotWidget extends SlotWidget implements IRecipeTransferHan
 
     private static IItemHandler createItemHandler(CraftingRecipeResolver resolver) {
         return resolver == null ? new ItemStackHandler(1) : resolver.getCraftingResultInventory();
-    }
-
-    @Override
-    protected SlotItemHandler createSlot(IItemHandler itemHandler, int index, int x, int y) {
-        return new WidgetSlotDelegate(itemHandler, index, x, y);
     }
 
     @Override

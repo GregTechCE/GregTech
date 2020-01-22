@@ -9,6 +9,7 @@ import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.wrapper.EmptyHandler;
 
 import java.lang.ref.WeakReference;
+import java.util.Objects;
 
 public class TileItemSource extends InventoryItemSource {
 
@@ -60,5 +61,19 @@ public class TileItemSource extends InventoryItemSource {
         //block should emit block update once it obtains capability again,
         //so handler info will be recreated accordingly
         return tileEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, accessSide.getOpposite());
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof TileItemSource)) return false;
+        TileItemSource that = (TileItemSource) o;
+        return blockPos.equals(that.blockPos) &&
+            accessSide == that.accessSide;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(blockPos, accessSide);
     }
 }

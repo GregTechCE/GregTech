@@ -33,11 +33,11 @@ public class SlotWidget extends Widget implements INativeWidget {
         super(new Position(xPosition, yPosition), new Size(18, 18));
         this.canTakeItems = canTakeItems;
         this.canPutItems = canPutItems;
-        this.slotReference = createSlot(itemHandler, slotIndex, xPosition + 1, yPosition + 1);
+        this.slotReference = createSlot(itemHandler, slotIndex);
     }
 
-    protected SlotItemHandler createSlot(IItemHandler itemHandler, int index, int x, int y) {
-        return new WidgetSlotDelegate(itemHandler, index, x, y);
+    protected SlotItemHandler createSlot(IItemHandler itemHandler, int index) {
+        return new WidgetSlotDelegate(itemHandler, index, 0, 0);
     }
 
     @Override
@@ -54,10 +54,10 @@ public class SlotWidget extends Widget implements INativeWidget {
 
     @Override
     protected void onPositionUpdate() {
-        if (slotReference != null) {
+        if (slotReference != null && sizes != null) {
             Position position = getPosition();
-            this.slotReference.xPos = position.x + 1;
-            this.slotReference.yPos = position.y + 1;
+            this.slotReference.xPos = position.x + 1 - sizes.getGuiLeft();
+            this.slotReference.yPos = position.y + 1 - sizes.getGuiTop();
         }
     }
 

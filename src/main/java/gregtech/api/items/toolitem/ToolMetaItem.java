@@ -333,12 +333,14 @@ public class ToolMetaItem<T extends ToolMetaItem<?>.MetaToolValueItem> extends M
             }
             capability.discharge(energyAmount, capability.getTier(), true, false, simulate);
         }
-
-        IToolStats toolStats = getItem(stack).getToolStats();
+        T toolMetaItem = getItem(stack);
+        if (toolMetaItem == null) {
+            return false;
+        }
+        IToolStats toolStats = toolMetaItem.getToolStats();
         if(!toolStats.isUsingDurability(stack)) {
             return true;
         }
-
         int newDamageValue = getItemDamage(stack) + calculateToolDamage(stack, itemRand, vanillaDamage);
         if (!simulate && !setInternalDamage(stack, newDamageValue)) {
             GTUtility.setItem(stack, toolStats.getBrokenStack(stack));

@@ -8,18 +8,20 @@ import gregtech.api.gui.igredient.IIngredientSlot;
 import gregtech.api.util.Position;
 import gregtech.api.util.Size;
 import mezz.jei.api.gui.IGhostIngredientHandler.Target;
+import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketBuffer;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 
-public class  AbstractWidgetGroup extends Widget implements IGhostIngredientTarget, IIngredientSlot {
+public class AbstractWidgetGroup extends Widget implements IGhostIngredientTarget, IIngredientSlot {
 
     protected final List<Widget> widgets = new ArrayList<>();
     private WidgetGroupUIAccess groupUIAccess = new WidgetGroupUIAccess();
     private boolean isVisible = true;
     private boolean isDynamicSized;
+    private boolean initialized = false;
 
     public AbstractWidgetGroup(Position position) {
         super(position, Size.ZERO);
@@ -90,6 +92,9 @@ public class  AbstractWidgetGroup extends Widget implements IGhostIngredientTarg
         widget.setGui(gui);
         widget.setSizes(sizes);
         widget.setParentPosition(getPosition());
+        if (initialized) {
+            widget.initWidget();
+        }
         recomputeSize();
         if(uiAccess != null) {
             uiAccess.notifyWidgetChange();
@@ -135,6 +140,7 @@ public class  AbstractWidgetGroup extends Widget implements IGhostIngredientTarg
 
     @Override
     public void initWidget() {
+        this.initialized = true;
         for (Widget widget : widgets) {
             widget.setGui(gui);
             widget.setSizes(sizes);
@@ -266,10 +272,27 @@ public class  AbstractWidgetGroup extends Widget implements IGhostIngredientTarg
         }
 
         @Override
+        public boolean attemptMergeStack(ItemStack itemStack, boolean fromContainer, boolean simulate) {
+            WidgetUIAccess uiAccess = AbstractWidgetGroup.this.uiAccess;
+            if (uiAccess != null) {
+                return uiAccess.attemptMergeStack(itemStack, fromContainer, simulate);
+            }
+            return false;
+        }
+
+        @Override
         public void sendSlotUpdate(INativeWidget slot) {
             WidgetUIAccess uiAccess = AbstractWidgetGroup.this.uiAccess;
             if (uiAccess != null) {
                 uiAccess.sendSlotUpdate(slot);
+            }
+        }
+
+        @Override
+        public void sendHeldItemUpdate() {
+            WidgetUIAccess uiAccess = AbstractWidgetGroup.this.uiAccess;
+            if (uiAccess != null) {
+                uiAccess.sendHeldItemUpdate();
             }
         }
 

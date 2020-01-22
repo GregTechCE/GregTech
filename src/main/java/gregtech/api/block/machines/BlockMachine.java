@@ -327,6 +327,7 @@ public class BlockMachine extends BlockCustomParticle implements ITileEntityProv
         MetaTileEntity metaTileEntity = getMetaTileEntity(worldIn, pos);
         if(metaTileEntity != null) {
             metaTileEntity.updateInputRedstoneSignals();
+            metaTileEntity.onNeighborChanged();
         }
     }
 

@@ -3,36 +3,47 @@ package gregtech.common.metatileentities.storage;
 import codechicken.lib.render.CCRenderState;
 import codechicken.lib.render.pipeline.ColourMultiplier;
 import codechicken.lib.render.pipeline.IVertexOperation;
-import codechicken.lib.texture.TextureUtils;
 import codechicken.lib.vec.Cuboid6;
 import codechicken.lib.vec.Matrix4;
 import com.google.common.base.Preconditions;
 import gregtech.api.gui.GuiTextures;
 import gregtech.api.gui.ModularUI;
+import gregtech.api.gui.ModularUI.Builder;
 import gregtech.api.gui.resources.TextureArea;
-import gregtech.api.gui.widgets.ClickButtonWidget;
-import gregtech.api.gui.widgets.PhantomSlotWidget;
-import gregtech.api.gui.widgets.SimpleTextWidget;
-import gregtech.api.gui.widgets.SlotWidget;
+import gregtech.api.gui.widgets.*;
+import gregtech.api.gui.widgets.ClickButtonWidget.ClickData;
+import gregtech.api.gui.widgets.TabGroup.TabLocation;
+import gregtech.api.gui.widgets.tab.ItemTabInfo;
 import gregtech.api.items.toolitem.ToolMetaItem;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.MetaTileEntityHolder;
 import gregtech.api.render.Textures;
+import gregtech.api.unification.material.Materials;
 import gregtech.api.util.GTUtility;
+import gregtech.api.util.Position;
 import gregtech.common.gui.widget.CraftingSlotWidget;
-import gregtech.common.inventory.itemsource.sources.InventoryItemSource;
+import gregtech.common.gui.widget.ItemListGridWidget;
+import gregtech.common.gui.widget.MemorizedRecipeWidget;
+import gregtech.common.inventory.IItemList;
 import gregtech.common.inventory.itemsource.ItemSourceList;
+import gregtech.common.inventory.itemsource.sources.InventoryItemSource;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemTool;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.ItemStackHandler;
 import org.apache.commons.lang3.ArrayUtils;
+import org.apache.commons.lang3.tuple.Pair;
 
 import javax.annotation.Nonnull;
+import java.util.function.Consumer;
+import java.util.function.Supplier;
 
 public class MetaTileEntityWorkbench extends MetaTileEntity {
 
@@ -75,13 +86,25 @@ public class MetaTileEntityWorkbench extends MetaTileEntity {
         return new MetaTileEntityWorkbench(metaTileEntityId);
     }
 
+    @SideOnly(Side.CLIENT)
+    private int getResultRenderingColor() {
+        int paintingColor = getPaintingColorForRendering();
+        if (paintingColor == DEFAULT_PAINTING_COLOR) {
+            paintingColor = Materials.Bronze.materialRGB;
+        }
+        return paintingColor;
+    }
+
+    @Override
+    public Pair<TextureAtlasSprite, Integer> getParticleTexture() {
+        return Pair.of(Textures.CRAFTING_TABLE.getParticleSprite(), getResultRenderingColor());
+    }
+
     @Override
     public void renderMetaTileEntity(CCRenderState renderState, Matrix4 translation, IVertexOperation[] pipeline) {
-        TextureAtlasSprite craftingTable = TextureUtils.getBlockTexture("crafting_table_top");
-        pipeline = ArrayUtils.add(pipeline, new ColourMultiplier(GTUtility.convertRGBtoOpaqueRGBA_CL(getPaintingColor())));
-        for (EnumFacing side : EnumFacing.VALUES) {
-            Textures.renderFace(renderState, translation, pipeline, side, Cuboid6.full, craftingTable);
-        }
+        int paintingColor = getResultRenderingColor();
+        pipeline = ArrayUtils.add(pipeline, new ColourMultiplier(GTUtility.convertRGBtoOpaqueRGBA_CL(paintingColor)));
+        Textures.CRAFTING_TABLE.render(renderState, translation, pipeline, Cuboid6.full);
     }
 
     @Override
@@ -105,69 +128,103 @@ public class MetaTileEntityWorkbench extends MetaTileEntity {
         this.recipeMemory.deserializeNBT(data.getCompoundTag("RecipeMemory"));
     }
 
+    private void createRecipeResolver() {
+        this.recipeResolver = new CraftingRecipeResolver(getWorld(), craftingGrid, recipeMemory);
+        this.recipeResolver.setItemsCrafted(itemsCrafted);
+        ItemSourceList itemSourceList = this.recipeResolver.getItemSourceList();
+        itemSourceList.addItemHandler(InventoryItemSource.direct(getWorld(), toolInventory, -2));
+        itemSourceList.addItemHandler(InventoryItemSource.direct(getWorld(), internalInventory, -1));
+        this.recipeResolver.checkNeighbourInventories(getPos());
+    }
+
     @Override
     public void update() {
         super.update();
+        if (!getWorld().isRemote && recipeResolver == null) {
+            createRecipeResolver();
+        }
         if (!getWorld().isRemote) {
             getRecipeResolver().update();
         }
     }
 
     private CraftingRecipeResolver getRecipeResolver() {
-        Preconditions.checkState(getWorld() != null, "getRecipeResolver called without world context");
-        if (getWorld().isRemote) {
-            //recipe resolver only exists on server side
-            return null;
-        }
-        if (recipeResolver == null) {
-            this.recipeResolver = new CraftingRecipeResolver(getWorld(), craftingGrid, recipeMemory);
-            this.recipeResolver.setItemsCrafted(itemsCrafted);
-            ItemSourceList itemSourceList = this.recipeResolver.getItemSourceList();
-            itemSourceList.addItemHandler(InventoryItemSource.direct(getWorld(), toolInventory, 100));
-            itemSourceList.addItemHandler(InventoryItemSource.direct(getWorld(), internalInventory, 99));
-            //TODO external inventory support
-            //itemSourceList.addItemHandler(new TileItemSource(getWorld(), getPos(), EnumFacing.SOUTH));
-        }
+        Preconditions.checkState(getWorld() != null, "getRecipeResolver called too early");
         return recipeResolver;
     }
 
     @Override
-    protected ModularUI createUI(EntityPlayer entityPlayer) {
-        ModularUI.Builder builder = ModularUI.builder(GuiTextures.BORDERED_BACKGROUND, 176, 221)
-            .bindPlayerInventory(entityPlayer.inventory, 140);
+    public void onNeighborChanged() {
+        super.onNeighborChanged();
+        if (recipeResolver != null) {
+            this.recipeResolver.checkNeighbourInventories(getPos());
+        }
+    }
 
-        builder.label(5, 5, getMetaFullName());
+    @Override
+    public void clearMachineInventory(NonNullList<ItemStack> itemBuffer) {
+        super.clearMachineInventory(itemBuffer);
+        clearInventory(itemBuffer, internalInventory);
+        clearInventory(itemBuffer, toolInventory);
+    }
+
+    private AbstractWidgetGroup createWorkbenchTab() {
+        WidgetGroup widgetGroup = new WidgetGroup();
+        CraftingRecipeResolver recipeResolver = getRecipeResolver();
+
+        widgetGroup.addWidget(new ImageWidget(88-13, 44-13, 26, 26, GuiTextures.SLOT));
+        widgetGroup.addWidget(new CraftingSlotWidget(recipeResolver, 0, 88-9, 44-9));
+
         //crafting grid
         for(int i = 0; i < 3; ++i) {
             for(int j = 0; j < 3; ++j) {
-                builder.widget(new PhantomSlotWidget(craftingGrid, j + i * 3, 8 + j * 18, 17 + i * 18).setBackgroundTexture(GuiTextures.SLOT));
+                widgetGroup.addWidget(new PhantomSlotWidget(craftingGrid, j + i * 3, 8 + j * 18, 17 + i * 18).setBackgroundTexture(GuiTextures.SLOT));
             }
         }
-        CraftingRecipeResolver recipeResolver = getRecipeResolver();
-        builder.image(88-13, 44-13, 26, 26, GuiTextures.SLOT);
-        builder.widget(new CraftingSlotWidget(recipeResolver, 0, 88-9, 44-9));
+        Supplier<String> textSupplier = () -> Integer.toString(recipeResolver.getItemsCrafted());
+        widgetGroup.addWidget(new SimpleTextWidget(88, 44 + 20, "", textSupplier));
 
-        builder.widget(new SimpleTextWidget(88, 44 + 20, "", () -> Integer.toString(recipeResolver.getItemsCrafted())));
-        builder.widget(new ClickButtonWidget(8+18*3+1, 17, 8, 8, "", (clickData) -> recipeResolver.clearCraftingGrid())
-            .setButtonTexture(GuiTextures.BUTTON_CLEAR_GRID));
+        Consumer<ClickData> clearAction = (clickData) -> recipeResolver.clearCraftingGrid();
+        widgetGroup.addWidget(new ClickButtonWidget(8+18*3+1, 17, 8, 8, "", clearAction).setButtonTexture(GuiTextures.BUTTON_CLEAR_GRID));
 
-        builder.image(168-18*3, 44-18*3/2, 18*3, 18*3, TextureArea.fullImage("textures/gui/base/darkened_slot.png"));
+        widgetGroup.addWidget(new ImageWidget(168-18*3, 44-18*3/2, 18*3, 18*3, TextureArea.fullImage("textures/gui/base/darkened_slot.png")));
         for(int i = 0; i < 3; ++i) {
             for(int j = 0; j < 3; ++j) {
-                builder.widget(new MemorizedRecipeWidget(recipeMemory, j + i * 3, craftingGrid, 168-18*3/2-27 + j * 18, 44-27 + i * 18));
+                widgetGroup.addWidget(new MemorizedRecipeWidget(recipeMemory, j + i * 3, craftingGrid, 168-18*3/2-27 + j * 18, 44-27 + i * 18));
             }
         }
-
         //tool inventory
         for (int i = 0; i < 9; i++) {
-            builder.widget(new SlotWidget(toolInventory, i, 8 + i * 18, 76).setBackgroundTexture(GuiTextures.SLOT, GuiTextures.TOOL_SLOT_OVERLAY));
+            widgetGroup.addWidget(new SlotWidget(toolInventory, i, 8 + i * 18, 76).setBackgroundTexture(GuiTextures.SLOT, GuiTextures.TOOL_SLOT_OVERLAY));
         }
         //internal inventory
         for(int i = 0; i < 2; ++i) {
             for(int j = 0; j < 9; ++j) {
-                builder.widget(new SlotWidget(internalInventory, j + i * 9, 8 + j * 18, 99 + i * 18).setBackgroundTexture(GuiTextures.SLOT));
+                widgetGroup.addWidget(new SlotWidget(internalInventory, j + i * 9, 8 + j * 18, 99 + i * 18).setBackgroundTexture(GuiTextures.SLOT));
             }
         }
+        return widgetGroup;
+    }
+
+    private AbstractWidgetGroup createItemListTab() {
+        WidgetGroup widgetGroup = new WidgetGroup();
+        CraftingRecipeResolver recipeResolver = getRecipeResolver();
+        IItemList itemList = recipeResolver == null ? null : recipeResolver.getItemSourceList();
+        widgetGroup.addWidget(new ItemListGridWidget(2, 17, 9, 6, itemList));
+        return widgetGroup;
+    }
+
+    @Override
+    protected ModularUI createUI(EntityPlayer entityPlayer) {
+        Builder builder = ModularUI.builder(GuiTextures.BORDERED_BACKGROUND, 176, 221)
+            .bindPlayerInventory(entityPlayer.inventory, 140);
+        builder.label(5, 5, getMetaFullName());
+
+        TabGroup tabGroup = new TabGroup(TabLocation.HORIZONTAL_TOP_LEFT, Position.ORIGIN);
+        tabGroup.addTab(new ItemTabInfo("gregtech.machine.workbench.tab.workbench", new ItemStack(Blocks.CRAFTING_TABLE)), createWorkbenchTab());
+        tabGroup.addTab(new ItemTabInfo("gregtech.machine.workbench.tab.item_list", new ItemStack(Blocks.CHEST)), createItemListTab());
+        builder.widget(tabGroup);
+
         return builder.build(getHolder(), entityPlayer);
     }
 }

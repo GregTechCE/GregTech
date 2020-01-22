@@ -1,6 +1,5 @@
 package gregtech.api.util;
 
-import gregtech.api.gui.ISizeProvider;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraftforge.client.GuiIngameForge;
@@ -12,9 +11,7 @@ public class RenderUtil {
 
     private static Stack<int[]> scissorFrameStack = new Stack<>();
 
-    public static void useScissor(ISizeProvider provider, int x, int y, int width, int height, Runnable codeBlock) {
-        x += provider.getGuiLeft();
-        y += provider.getGuiTop();
+    public static void useScissor(int x, int y, int width, int height, Runnable codeBlock) {
         pushScissorFrame(x, y, width, height);
         try {
             codeBlock.run();

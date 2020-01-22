@@ -2,6 +2,7 @@ package gregtech.common.metatileentities.storage;
 
 import gregtech.api.util.DummyContainer;
 import gregtech.api.util.ItemStackKey;
+import gregtech.common.inventory.IItemList.InsertMode;
 import gregtech.common.inventory.itemsource.ItemSourceList;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.InventoryCrafting;
@@ -45,7 +46,7 @@ public class CachedRecipeData {
         for (ItemStack itemStack : remainingItems) {
             itemStack = itemStack.copy();
             ItemStackKey stackKey = new ItemStackKey(itemStack);
-            int remainingAmount = itemStack.getCount() - itemSourceList.insertItem(stackKey, itemStack.getCount(), false);
+            int remainingAmount = itemStack.getCount() - itemSourceList.insertItem(stackKey, itemStack.getCount(), false, InsertMode.HIGHEST_PRIORITY);
             if (remainingAmount > 0) {
                 itemStack.setCount(remainingAmount);
                 player.addItemStackToInventory(itemStack);

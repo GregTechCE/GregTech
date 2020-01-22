@@ -16,9 +16,9 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.*;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketBuffer;
+import net.minecraft.network.play.server.SPacketSetSlot;
 
 import java.util.*;
-import java.util.Map.Entry;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
@@ -119,9 +119,19 @@ public class ModularUIContainer extends Container implements WidgetUIAccess {
     }
 
     @Override
+    public void sendHeldItemUpdate() {
+        for (IContainerListener listener : listeners) {
+            EntityPlayerMP player = (EntityPlayerMP) listener;
+            player.connection.sendPacket(new SPacketSetSlot(-1, -1, player.inventory.getItemStack()));
+        }
+    }
+
+    @Override
     public void detectAndSendChanges() {
         super.detectAndSendChanges();
-        modularUI.guiWidgets.values().forEach(Widget::detectAndSendChanges);
+        if (listeners.size() > 0) {
+            modularUI.guiWidgets.values().forEach(Widget::detectAndSendChanges);
+        }
     }
 
     @Override
@@ -139,26 +149,20 @@ public class ModularUIContainer extends Container implements WidgetUIAccess {
 
     private PerTickIntCounter transferredPerTick = new PerTickIntCounter(0);
 
-    private boolean attemptSlotMerge(ItemStack itemStack, Slot slot, boolean simulate) {
-        if (slotMap.get(slot).getSlotLocationInfo().isPlayerInventory) {
-            //if we clicked on player inventory slot, move to container inventory, inverting indexes
-            List<Slot> containerSlots = slotMap.entrySet().stream()
-                .filter(s -> s.getValue().canMergeSlot(itemStack))
-                .filter(s -> !s.getValue().getSlotLocationInfo().isPlayerInventory)
-                .map(Entry::getKey)
-                .sorted(Comparator.comparing(s -> s.slotNumber))
-                .collect(Collectors.toList());
-            return GTUtility.mergeItemStack(itemStack, containerSlots, simulate);
-        } else {
-            //if we clicked on a container inventory, move to player inventory
-            List<Slot> inventorySlots = slotMap.entrySet().stream()
-                .filter(s -> s.getValue().canMergeSlot(itemStack))
-                .filter(s -> s.getValue().getSlotLocationInfo().isPlayerInventory)
-                .map(Entry::getKey)
-                .sorted(Collections.reverseOrder(Comparator.comparing(s -> s.slotNumber)))
-                .collect(Collectors.toList());
-            return GTUtility.mergeItemStack(itemStack, inventorySlots, simulate);
-        }
+    private List<INativeWidget> getShiftClickSlots(ItemStack itemStack, boolean fromContainer) {
+        return slotMap.values().stream()
+            .filter(it -> it.canMergeSlot(itemStack))
+            .filter(it -> it.getSlotLocationInfo().isPlayerInventory == fromContainer)
+            .sorted(Comparator.comparing(s -> (fromContainer ? -1 : 1) * s.getHandle().slotNumber))
+            .collect(Collectors.toList());
+    }
+
+    @Override
+    public boolean attemptMergeStack(ItemStack itemStack, boolean fromContainer, boolean simulate) {
+        List<Slot> inventorySlots = getShiftClickSlots(itemStack, fromContainer).stream()
+            .map(INativeWidget::getHandle)
+            .collect(Collectors.toList());
+        return GTUtility.mergeItemStack(itemStack, inventorySlots, simulate);
     }
 
     @Override
@@ -173,7 +177,8 @@ public class ModularUIContainer extends Container implements WidgetUIAccess {
         }
         ItemStack stackInSlot = slot.getStack();
         ItemStack stackToMerge = slotMap.get(slot).onItemTake(player, stackInSlot.copy(), true);
-        if (!attemptSlotMerge(stackToMerge, slot, true)) {
+        boolean fromContainer = !slotMap.get(slot).getSlotLocationInfo().isPlayerInventory;
+        if (!attemptMergeStack(stackToMerge, fromContainer, true)) {
             return ItemStack.EMPTY;
         }
         int itemsMerged;
@@ -199,7 +204,7 @@ public class ModularUIContainer extends Container implements WidgetUIAccess {
         }
         extractedStack = slotMap.get(slot).onItemTake(player, extractedStack, false);
         ItemStack resultStack = extractedStack.copy();
-        if (!attemptSlotMerge(extractedStack, slot, false)) {
+        if (!attemptMergeStack(extractedStack, fromContainer, false)) {
             resultStack = ItemStack.EMPTY;
         }
         if (!extractedStack.isEmpty()) {
