@@ -12,6 +12,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketBuffer;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.function.Consumer;
 
@@ -162,6 +163,9 @@ public class AbstractWidgetGroup extends Widget implements IGhostIngredientTarge
 
     @Override
     public List<Target<?>> getPhantomTargets(Object ingredient) {
+        if (!isVisible) {
+            return Collections.emptyList();
+        }
         ArrayList<Target<?>> targets = new ArrayList<>();
         for(Widget widget : widgets) {
             if(widget instanceof IGhostIngredientTarget) {
@@ -173,6 +177,9 @@ public class AbstractWidgetGroup extends Widget implements IGhostIngredientTarge
 
     @Override
     public Object getIngredientOverMouse(int mouseX, int mouseY) {
+        if (!isVisible) {
+            return Collections.emptyList();
+        }
         for(Widget widget : widgets) {
             if(widget instanceof IIngredientSlot) {
                 IIngredientSlot ingredientSlot = (IIngredientSlot) widget;
