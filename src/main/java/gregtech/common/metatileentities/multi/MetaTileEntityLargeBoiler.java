@@ -113,7 +113,7 @@ public class MetaTileEntityLargeBoiler extends MultiblockWithDisplayBase {
 
     private int currentTemperature;
     private int fuelBurnTicksLeft;
-    private float throttlePercentage;
+    private float throttlePercentage = 1.0f;
     private boolean isActive;
     private boolean wasActiveAndNeedsUpdate;
     private boolean hasNoWater;
@@ -188,10 +188,6 @@ public class MetaTileEntityLargeBoiler extends MultiblockWithDisplayBase {
 
     @Override
     protected void updateFormedValid() {
-        if (throttlePercentage == 0) {
-            throttlePercentage = 1.0f; // Arch: This feels wrong.  But I don't know where to initialize w/o killing the saved value on world reload.
-        }
-
         if (fuelBurnTicksLeft > 0) {
             --this.fuelBurnTicksLeft;
             if (this.currentTemperature < boilerType.maxTemperature && getTimer() % 20 == 0) {
@@ -306,7 +302,9 @@ public class MetaTileEntityLargeBoiler extends MultiblockWithDisplayBase {
         this.currentTemperature = data.getInteger("CurrentTemperature");
         this.fuelBurnTicksLeft = data.getInteger("FuelBurnTicksLeft");
         this.hasNoWater = data.getBoolean("HasNoWater");
-        this.throttlePercentage = data.getFloat("ThrottlePercentage");
+        if(data.hasKey("ThrottlePercentage")) {
+            this.throttlePercentage = data.getFloat("ThrottlePercentage");
+        }
         this.isActive = fuelBurnTicksLeft > 0;
     }
 
@@ -328,17 +326,8 @@ public class MetaTileEntityLargeBoiler extends MultiblockWithDisplayBase {
     }
 
     private float getThrottleEfficiency() {
-        // Throttling comes with a price.
-        // We could replace this with a logarithmic approach to save some computation and keep it expandable to future throttle options, but this is easier to document/wiki for users.
-        if (this.throttlePercentage == .25f)
-            return .85f;
-        else if (this.throttlePercentage == .50f)
-            return .90f;
-        else if (this.throttlePercentage == .75f)
-            return .95f;
-        else if (this.throttlePercentage == 1.0f)
-            return 1.0f;
-        return 0;  // Something is going horribly wrong
+        float penaltyPer25Percent = 0.05f;
+        return .8f + (penaltyPer25Percent * this.throttlePercentage / .25f);
     }
 
     private void replaceFireboxAsActive(boolean isActive) {
