@@ -10,13 +10,17 @@ import gregtech.api.items.toolitem.ToolMetaItem;
 import gregtech.api.items.toolitem.ToolMetaItem.MetaToolValueItem;
 import gregtech.api.unification.material.type.Material;
 import gregtech.api.unification.ore.OrePrefix;
+import gregtech.api.unification.stack.UnificationEntry;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.util.text.Style;
 import net.minecraft.util.text.TextComponentTranslation;
+import net.minecraft.util.text.event.ClickEvent;
+import net.minecraft.util.text.event.ClickEvent.Action;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandlerItem;
@@ -41,7 +45,11 @@ public class CommandHand extends CommandBase {
             if (stackInHand.isEmpty()) {
                 throw new CommandException("gregtech.command.util.hand.no_item");
             }
-            player.sendMessage(new TextComponentTranslation("gregtech.command.util.hand.item_id", stackInHand.getItem().getRegistryName(), stackInHand.getItemDamage()));
+            String registryName = stackInHand.getItem().getRegistryName().toString();
+            ClickEvent itemNameEvent = new ClickEvent(Action.OPEN_URL, registryName);
+            player.sendMessage(new TextComponentTranslation("gregtech.command.util.hand.item_id", registryName, stackInHand.getItemDamage())
+                .setStyle(new Style().setClickEvent(itemNameEvent)));
+
             IElectricItem electricItem = stackInHand.getCapability(GregtechCapabilities.CAPABILITY_ELECTRIC_ITEM, null);
             IFluidHandlerItem fluidHandlerItem = stackInHand.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY, null);
             if (electricItem != null) {
@@ -51,16 +59,21 @@ public class CommandHand extends CommandBase {
                     electricItem.getTier(),
                     Boolean.toString(electricItem.canProvideChargeExternally())));
             }
+
             if (fluidHandlerItem != null) {
                 for (IFluidTankProperties properties : fluidHandlerItem.getTankProperties()) {
                     FluidStack contents = properties.getContents();
+                    String fluidName = contents == null ? "empty" : contents.getFluid().getName();
+                    ClickEvent fluidClickEvent = new ClickEvent(Action.OPEN_URL, fluidName);
                     player.sendMessage(new TextComponentTranslation("gregtech.command.util.hand.fluid",
-                        contents == null ? "empty" : contents.getFluid().getName(),
+                        fluidName,
                         contents == null ? 0 : contents.amount,
                         properties.getCapacity(),
-                        Boolean.toString(properties.canFill()), Boolean.toString(properties.canDrain())));
+                        Boolean.toString(properties.canFill()), Boolean.toString(properties.canDrain()))
+                    .setStyle(new Style().setClickEvent(fluidClickEvent)));
                 }
             }
+
             if (stackInHand.getItem() instanceof MetaItem) {
                 MetaItem<?> metaItem = (MetaItem<?>) stackInHand.getItem();
                 MetaValueItem metaValueItem = metaItem.getItem(stackInHand);
@@ -68,14 +81,18 @@ public class CommandHand extends CommandBase {
                     if (metaItem instanceof MaterialMetaItem) {
                         Material material = ((MaterialMetaItem) metaItem).getMaterial(stackInHand);
                         OrePrefix orePrefix = ((MaterialMetaItem) metaItem).getOrePrefix(stackInHand);
-                        player.sendMessage(new TextComponentTranslation("gregtech.command.util.hand.material_meta_item", orePrefix, material));
+                        String oreDictName = new UnificationEntry(orePrefix, material).toString();
+                        player.sendMessage(new TextComponentTranslation("gregtech.command.util.hand.material_meta_item", orePrefix, material)
+                            .setStyle(new Style().setClickEvent(new ClickEvent(Action.OPEN_URL, oreDictName))));
                     }
                 } else {
                     if (metaValueItem instanceof ToolMetaItem.MetaToolValueItem) {
                         IToolStats toolStats = ((MetaToolValueItem) metaValueItem).getToolStats();
                         player.sendMessage(new TextComponentTranslation("gregtech.command.util.hand.tool_stats", toolStats.getClass().getName()));
                     }
-                    player.sendMessage(new TextComponentTranslation("gregtech.command.util.hand.meta_item", metaValueItem.unlocalizedName, metaValueItem));
+                    ClickEvent metaItemEvent = new ClickEvent(Action.OPEN_URL, metaValueItem.unlocalizedName);
+                    player.sendMessage(new TextComponentTranslation("gregtech.command.util.hand.meta_item", metaValueItem.unlocalizedName, metaValueItem)
+                        .setStyle(new Style().setClickEvent(metaItemEvent)));
                 }
             }
         } else {

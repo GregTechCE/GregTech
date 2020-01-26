@@ -12,7 +12,7 @@ import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.network.PacketBuffer;
-import org.lwjgl.input.Keyboard;
+import org.lwjgl.input.Mouse;
 
 import java.util.function.Consumer;
 
@@ -67,12 +67,8 @@ public class ClickButtonWidget extends Widget {
     }
 
     protected void triggerButton() {
-        boolean isShiftClick = Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) || Keyboard.isKeyDown(Keyboard.KEY_RSHIFT);
-        boolean isCtrlClick = Keyboard.isKeyDown(Keyboard.KEY_LCONTROL) || Keyboard.isKeyDown(Keyboard.KEY_RCONTROL);
-        writeClientAction(1, buffer -> {
-            buffer.writeBoolean(isShiftClick);
-            buffer.writeBoolean(isCtrlClick);
-        });
+        ClickData clickData = new ClickData(Mouse.getEventButton(), isShiftDown(), isCtrlDown());
+        writeClientAction(1, clickData::writeToBuf);
         playButtonClickSound();
     }
 
@@ -80,19 +76,8 @@ public class ClickButtonWidget extends Widget {
     public void handleClientAction(int id, PacketBuffer buffer) {
         super.handleClientAction(id, buffer);
         if (id == 1) {
-            boolean isShiftClick = buffer.readBoolean();
-            boolean isCtrlClick = buffer.readBoolean();
-            onPressCallback.accept(new ClickData(isShiftClick, isCtrlClick));
-        }
-    }
-
-    public final class ClickData {
-        public final boolean isShiftClick;
-        public final boolean isCtrlClick;
-
-        public ClickData(boolean isShiftClick, boolean isCtrlClick) {
-            this.isShiftClick = isShiftClick;
-            this.isCtrlClick = isCtrlClick;
+            ClickData clickData = ClickData.readFromBuf(buffer);
+            onPressCallback.accept(clickData);
         }
     }
 }

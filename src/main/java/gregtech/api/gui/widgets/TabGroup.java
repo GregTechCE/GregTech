@@ -11,9 +11,6 @@ import gregtech.api.gui.widgets.tab.VerticalTabListRenderer;
 import gregtech.api.gui.widgets.tab.VerticalTabListRenderer.HorizontalLocation;
 import gregtech.api.gui.widgets.tab.VerticalTabListRenderer.VerticalStartCorner;
 import gregtech.api.util.Position;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.audio.PositionedSoundRecord;
-import net.minecraft.init.SoundEvents;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.Tuple;
 
@@ -74,7 +71,7 @@ public class TabGroup extends AbstractWidgetGroup {
             int tabIndex = tabInfos.indexOf(tabInfo);
             if (selectedTabIndex != tabIndex) {
                 setSelectedTab(tabIndex);
-                Minecraft.getMinecraft().getSoundHandler().playSound(PositionedSoundRecord.getMasterRecord(SoundEvents.UI_BUTTON_CLICK, 1.0F));
+                playButtonClickSound();
                 writeClientAction(2, buf -> buf.writeVarInt(tabIndex));
                 return true;
             }

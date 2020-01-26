@@ -21,12 +21,14 @@ import net.minecraftforge.fml.client.config.GuiUtils;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import org.lwjgl.input.Keyboard;
 
 import javax.annotation.Nullable;
 import java.awt.*;
 import java.util.Collections;
 import java.util.List;
 import java.util.function.Consumer;
+import java.util.function.Supplier;
 
 /**
  * Widget is functional element of ModularUI
@@ -136,8 +138,6 @@ public abstract class Widget {
 
     /**
      * Called each draw tick to draw this widget in GUI
-     * <p>
-     * Note that current GL state is ALREADY translated to (guiLeft, guiTop, 0.0)!
      */
     @SideOnly(Side.CLIENT)
     public void drawInForeground(int mouseX, int mouseY) {
@@ -145,8 +145,6 @@ public abstract class Widget {
 
     /**
      * Called each draw tick to draw this widget in GUI
-     * <p>
-     * Note that current GL state is ALREADY translated to (guiLeft, guiTop, 0.0)!
      */
     @SideOnly(Side.CLIENT)
     public void drawInBackground(int mouseX, int mouseY, IRenderContext context) {
@@ -316,7 +314,64 @@ public abstract class Widget {
         Minecraft.getMinecraft().getSoundHandler().playSound(PositionedSoundRecord.getMasterRecord(SoundEvents.UI_BUTTON_CLICK, 1.0F));
     }
 
+    @SideOnly(Side.CLIENT)
+    protected boolean isShiftDown() {
+        return Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) || Keyboard.isKeyDown(Keyboard.KEY_RSHIFT);
+    }
+
+    @SideOnly(Side.CLIENT)
+    protected boolean isCtrlDown() {
+        return Keyboard.isKeyDown(Keyboard.KEY_LCONTROL) || Keyboard.isKeyDown(Keyboard.KEY_RCONTROL);
+    }
+
     protected static boolean isClientSide() {
         return FMLCommonHandler.instance().getSide().isClient();
+    }
+
+    public static final class ClickData {
+        public final int button;
+        public final boolean isShiftClick;
+        public final boolean isCtrlClick;
+
+        public ClickData(int button, boolean isShiftClick, boolean isCtrlClick) {
+            this.button = button;
+            this.isShiftClick = isShiftClick;
+            this.isCtrlClick = isCtrlClick;
+        }
+
+        public void writeToBuf(PacketBuffer buf) {
+            buf.writeVarInt(button);
+            buf.writeBoolean(isShiftClick);
+            buf.writeBoolean(isCtrlClick);
+        }
+
+        public static ClickData readFromBuf(PacketBuffer buf) {
+            int button = buf.readVarInt();
+            boolean shiftClick = buf.readBoolean();
+            boolean ctrlClick = buf.readBoolean();
+            return new ClickData(button, shiftClick, ctrlClick);
+        }
+    }
+
+    public static class ClientSideField<T> {
+        @SideOnly(Side.CLIENT)
+        private T fieldValue;
+
+        public ClientSideField(Supplier<T> initializer) {
+            if (isClientSide()) {
+                this.fieldValue = initializer.get();
+            }
+        }
+
+        public void useOnClient(Consumer<T> callback) {
+            if (isClientSide()) {
+                callback.accept(fieldValue);
+            }
+        }
+
+        @SideOnly(Side.CLIENT)
+        public T get() {
+            return fieldValue;
+        }
     }
 }

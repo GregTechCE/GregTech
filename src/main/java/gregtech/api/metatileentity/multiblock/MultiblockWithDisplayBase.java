@@ -2,6 +2,7 @@ package gregtech.api.metatileentity.multiblock;
 
 import gregtech.api.gui.GuiTextures;
 import gregtech.api.gui.ModularUI;
+import gregtech.api.gui.Widget.ClickData;
 import gregtech.api.gui.widgets.AdvancedTextWidget;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ResourceLocation;
@@ -9,6 +10,8 @@ import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.Style;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.util.text.TextFormatting;
+import net.minecraft.util.text.event.HoverEvent;
+import net.minecraft.util.text.event.HoverEvent.Action;
 
 import java.util.List;
 
@@ -25,9 +28,20 @@ public abstract class MultiblockWithDisplayBase extends MultiblockControllerBase
      */
     protected void addDisplayText(List<ITextComponent> textList) {
         if (!isStructureFormed()) {
+            ITextComponent tooltip = new TextComponentTranslation("gregtech.multiblock.invalid_structure.tooltip");
+            tooltip.setStyle(new Style().setColor(TextFormatting.GRAY));
             textList.add(new TextComponentTranslation("gregtech.multiblock.invalid_structure")
-                .setStyle(new Style().setColor(TextFormatting.RED)));
+                .setStyle(new Style().setColor(TextFormatting.RED)
+                    .setHoverEvent(new HoverEvent(Action.SHOW_TEXT, tooltip))));
         }
+    }
+
+    /**
+     * Called on serverside when client is clicked on the specific text component
+     * with special click event handler
+     * Data is the data specified in the component
+     */
+    protected void handleDisplayClick(String componentData, ClickData clickData) {
     }
 
     protected ModularUI.Builder createUITemplate(EntityPlayer entityPlayer) {
@@ -35,7 +49,8 @@ public abstract class MultiblockWithDisplayBase extends MultiblockControllerBase
         builder.image(7, 4, 162, 121, GuiTextures.DISPLAY);
         builder.label(10, 7, getMetaFullName(), 0xFFFFFF);
         builder.widget(new AdvancedTextWidget(10, 17, this::addDisplayText, 0xFFFFFF)
-            .setMaxWidthLimit(156));
+            .setMaxWidthLimit(156)
+            .setClickHandler(this::handleDisplayClick));
         builder.bindPlayerInventory(entityPlayer.inventory, 134);
         return builder;
     }
