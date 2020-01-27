@@ -52,7 +52,7 @@ public final class BlockMetalCasing extends Block  implements ICubeRenderer, IIc
     @Override
     @SideOnly(Side.CLIENT)
     public void registerIcons(TextureMap textureMap) {
-        this.sprite = textureMap.registerSprite(MaterialIconType.metalCasing.getBlockPath(metalCasingMaterial.materialIconSet));
+        this.sprite = textureMap.registerSprite(MaterialIconType.gtMetalCasing.getBlockPath(metalCasingMaterial.materialIconSet));
     }
 
     @SideOnly(Side.CLIENT)

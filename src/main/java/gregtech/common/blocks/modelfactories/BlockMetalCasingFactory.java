@@ -25,6 +25,6 @@ public class BlockMetalCasingFactory extends AbstractBlockModelFactory {
     protected String fillSample(Block block, String blockStateSample) {
         Material material = ((BlockMetalCasing) block).getMetalCasingMaterial();
         return blockStateSample.replace("$MATERIAL$", material.toString())
-            .replace("$TEXTURE$", MaterialIconType.metalCasing.getBlockPath(material.materialIconSet).toString());
+            .replace("$TEXTURE$", MaterialIconType.gtMetalCasing.getBlockPath(material.materialIconSet).toString());
     }
 }

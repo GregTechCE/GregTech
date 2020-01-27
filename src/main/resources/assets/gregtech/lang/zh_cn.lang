@@ -1685,8 +1685,8 @@ tile.machine_casing.steel_hull.name=钢外壳
 tile.machine_casing.steel_hull.tooltip=用以制作更高等级的蒸汽机器
 tile.machine_casing.steel_bricks_hull.name=砖砌钢外壳
 tile.machine_casing.steel_bricks_hull.tooltip=用以制作更高等级的蒸汽机器
-tile.metal_casing.primitive_bricks.name=耐火砖
-tile.metal_casing.coke_bricks.name=焦炉砖块
+tile.machine_casing.primitive_bricks.name=耐火砖
+tile.machine_casing.coke_bricks.name=焦炉砖块
 
 # Turbine casing blocks
 tile.turbine_casing.bronze_gearbox.name=青铜齿轮机械方块

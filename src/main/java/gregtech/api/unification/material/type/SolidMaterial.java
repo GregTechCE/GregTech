@@ -32,7 +32,7 @@ public abstract class SolidMaterial extends DustMaterial {
         public static final long GENERATE_LONG_ROD = createFlag(22);
         public static final long MORTAR_GRINDABLE = createFlag(24);
         public static final long GENERATE_FRAME = createFlag(45);
-        public static final long GENERATE_METAL_CASING = createFlag(65);
+        public static final long GENERATE_METAL_CASING =  createFlag(46);
 
         static {
             Material.MatFlags.registerMaterialFlagsHolder(MatFlags.class, SolidMaterial.class);
@@ -88,6 +88,11 @@ public abstract class SolidMaterial extends DustMaterial {
         if ((generationBits & GENERATE_LONG_ROD) > 0) {
             generationBits |= GENERATE_ROD;
         }
+        if ((generationBits & GENERATE_METAL_CASING) > 0) {
+            generationBits |= GENERATE_FRAME;
+            generationBits |= GENERATE_PLATE;
+        }
+
         return super.verifyMaterialBits(generationBits);
     }
 
