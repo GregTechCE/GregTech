@@ -107,6 +107,20 @@
           "top": "gregtech:blocks/casings/steam/bricked_steel/top",
           "side": "gregtech:blocks/casings/steam/bricked_steel/side"
         }
+      },
+      "primitive_bricks": {
+        "textures": {
+          "bottom": "gregtech:blocks/casings/solid/machine_primitive_bricks",
+          "top": "gregtech:blocks/casings/solid/machine_primitive_bricks",
+          "side": "gregtech:blocks/casings/solid/machine_primitive_bricks"
+        }
+      },
+      "coke_bricks": {
+        "textures": {
+          "all": "gregtech:blocks/casings/solid/machine_coke_bricks",
+          "top": "gregtech:blocks/casings/solid/machine_coke_bricks",
+          "side": "gregtech:blocks/casings/solid/machine_coke_bricks"
+        }
       }
     }
   }

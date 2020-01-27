@@ -11,8 +11,7 @@ import gregtech.api.multiblock.FactoryBlockPattern;
 import gregtech.api.multiblock.PatternMatchContext;
 import gregtech.api.recipes.RecipeMaps;
 import gregtech.api.render.ICubeRenderer;
-import gregtech.api.render.Textures;
-import gregtech.common.blocks.BlockMetalCasing.MetalCasingType;
+import gregtech.api.unification.material.Materials;
 import gregtech.common.blocks.MetaBlocks;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.ResourceLocation;
@@ -73,11 +72,11 @@ public class MetaTileEntityDistillationTower extends RecipeMapMultiblockControll
 
     @Override
     public ICubeRenderer getBaseTexture(IMultiblockPart sourcePart) {
-        return Textures.CLEAN_STAINLESS_STEEL_CASING;
+        return  MetaBlocks.METAL_CASING.get(Materials.Aluminium);
     }
 
     protected IBlockState getCasingState() {
-        return MetaBlocks.METAL_CASING.getState(MetalCasingType.STAINLESS_CLEAN);
+        return MetaBlocks.METAL_CASING.get(Materials.Aluminium).getDefaultState();
     }
 
 }

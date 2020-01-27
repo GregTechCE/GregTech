@@ -3,7 +3,7 @@ package gregtech.integration.jei.multiblock.infos;
 import com.google.common.collect.Lists;
 import gregtech.api.GTValues;
 import gregtech.api.metatileentity.multiblock.MultiblockControllerBase;
-import gregtech.common.blocks.BlockMetalCasing.MetalCasingType;
+import gregtech.api.unification.material.Materials;
 import gregtech.common.blocks.BlockMultiblockCasing;
 import gregtech.common.blocks.BlockTurbineCasing;
 import gregtech.common.blocks.MetaBlocks;
@@ -30,7 +30,7 @@ public class DieselEngineInfo extends MultiblockInfoPage {
             .aisle("HHH", "HGH", "HHH")
             .aisle("HHH", "FGH", "HHH")
             .aisle("HHH", "HEH", "HHH")
-            .where('H', MetaBlocks.METAL_CASING.getState(MetalCasingType.TITANIUM_STABLE))
+            .where('H', MetaBlocks.METAL_CASING.get(Materials.Titanium).getDefaultState())
             .where('G', MetaBlocks.TURBINE_CASING.getState(BlockTurbineCasing.TurbineCasingType.TITANIUM_GEARBOX))
             .where('A', MetaBlocks.MUTLIBLOCK_CASING.getState(BlockMultiblockCasing.MultiblockCasingType.ENGINE_INTAKE_CASING))
             .where('C', MetaTileEntities.DIESEL_ENGINE, EnumFacing.NORTH)

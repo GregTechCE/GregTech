@@ -70,6 +70,7 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 import static gregtech.api.unification.material.type.SolidMaterial.MatFlags.GENERATE_FRAME;
+import static gregtech.api.unification.material.type.SolidMaterial.MatFlags.GENERATE_METAL_CASING;
 import static gregtech.common.ClientProxy.*;
 
 public class MetaBlocks {
@@ -83,7 +84,7 @@ public class MetaBlocks {
 
     public static BlockBoilerCasing BOILER_CASING;
     public static BlockFireboxCasing BOILER_FIREBOX_CASING;
-    public static BlockMetalCasing METAL_CASING;
+    public static Map<SolidMaterial, BlockMetalCasing> METAL_CASING = new HashMap<>();
     public static BlockTurbineCasing TURBINE_CASING;
     public static BlockMachineCasing MACHINE_CASING;
     public static BlockMultiblockCasing MUTLIBLOCK_CASING;
@@ -123,8 +124,6 @@ public class MetaBlocks {
         BOILER_CASING.setRegistryName("boiler_casing");
         BOILER_FIREBOX_CASING = new BlockFireboxCasing();
         BOILER_FIREBOX_CASING.setRegistryName("boiler_firebox_casing");
-        METAL_CASING = new BlockMetalCasing();
-        METAL_CASING.setRegistryName("metal_casing");
         TURBINE_CASING = new BlockTurbineCasing();
         TURBINE_CASING.setRegistryName("turbine_casing");
         MACHINE_CASING = new BlockMachineCasing();
@@ -178,6 +177,11 @@ public class MetaBlocks {
                 BlockFrame blockFrame = new BlockFrame((SolidMaterial) material);
                 blockFrame.setRegistryName("frame_" + material.toString());
                 FRAMES.put((SolidMaterial) material, blockFrame);
+            }
+            if (material instanceof SolidMaterial && material.hasFlag(GENERATE_METAL_CASING)) {
+                BlockMetalCasing blockFrame = new BlockMetalCasing((SolidMaterial) material);
+                blockFrame.setRegistryName("metal_casing_" + material.toString());
+                METAL_CASING.put((SolidMaterial) material, blockFrame);
             }
             if (material instanceof IngotMaterial) {
                 IngotMaterial metalMaterial = (IngotMaterial) material;
@@ -287,7 +291,6 @@ public class MetaBlocks {
         ModelLoader.setCustomMeshDefinition(Item.getItemFromBlock(FLUID_PIPE), stack -> FluidPipeRenderer.MODEL_LOCATION);
         registerItemModel(BOILER_CASING);
         registerItemModel(BOILER_FIREBOX_CASING);
-        registerItemModel(METAL_CASING);
         registerItemModel(TURBINE_CASING);
         registerItemModel(MACHINE_CASING);
         registerItemModel(MUTLIBLOCK_CASING);
@@ -302,6 +305,7 @@ public class MetaBlocks {
 
         COMPRESSED.values().stream().distinct().forEach(MetaBlocks::registerItemModel);
         FRAMES.values().forEach(it -> registerItemModelWithFilteredProperties(it));
+        METAL_CASING.values().forEach(it -> registerItemModelWithFilteredProperties(it));
         ORES.stream().distinct().forEach(MetaBlocks::registerItemModel);
     }
 
@@ -376,6 +380,7 @@ public class MetaBlocks {
         ModelLoader.setCustomStateMapper(PETRIFIED_FOAM, normalStateMapper);
         ModelLoader.setCustomStateMapper(REINFORCED_PETRIFIED_FOAM, normalStateMapper);
         FRAMES.values().forEach(it -> ModelLoader.setCustomStateMapper(it, normalStateMapper));
+        METAL_CASING.values().forEach(it -> ModelLoader.setCustomStateMapper(it, normalStateMapper));
 
         BakedModelHandler modelHandler = new BakedModelHandler();
         MinecraftForge.EVENT_BUS.register(modelHandler);
@@ -397,6 +402,11 @@ public class MetaBlocks {
         MetaBlocks.COMPRESSED.values().stream().distinct().forEach(block -> {
             Minecraft.getMinecraft().getBlockColors().registerBlockColorHandler(COMPRESSED_BLOCK_COLOR, block);
             Minecraft.getMinecraft().getItemColors().registerItemColorHandler(COMPRESSED_ITEM_COLOR, block);
+        });
+
+        MetaBlocks.METAL_CASING.values().forEach(block -> {
+            Minecraft.getMinecraft().getBlockColors().registerBlockColorHandler(METAL_CASING_BLOCK_COLOR, block);
+            Minecraft.getMinecraft().getItemColors().registerItemColorHandler(METAL_CASING_ITEM_COLOR, block);
         });
 
         MetaBlocks.FRAMES.values().forEach(block -> {
@@ -434,6 +444,14 @@ public class MetaBlocks {
             for (int i = 0; i < 16; i++) {
                 ItemStack itemStack = new ItemStack(block, 1, i);
                 OreDictUnifier.registerOre(itemStack, OrePrefix.frameGt, material);
+            }
+        }
+        for (Entry<SolidMaterial, BlockMetalCasing> entry : METAL_CASING.entrySet()) {
+            SolidMaterial material = entry.getKey();
+            BlockMetalCasing block = entry.getValue();
+            for (int i = 0; i < 16; i++) {
+                ItemStack itemStack = new ItemStack(block, 1, i);
+                OreDictUnifier.registerOre(itemStack, OrePrefix.metalCasing, material);
             }
         }
 

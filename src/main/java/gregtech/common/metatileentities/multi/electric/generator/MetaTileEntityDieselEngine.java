@@ -13,7 +13,6 @@ import gregtech.api.recipes.RecipeMaps;
 import gregtech.api.render.ICubeRenderer;
 import gregtech.api.render.Textures;
 import gregtech.api.unification.material.Materials;
-import gregtech.common.blocks.BlockMetalCasing.MetalCasingType;
 import gregtech.common.blocks.BlockMultiblockCasing.MultiblockCasingType;
 import gregtech.common.blocks.BlockTurbineCasing.TurbineCasingType;
 import gregtech.common.blocks.MetaBlocks;
@@ -88,7 +87,7 @@ public class MetaTileEntityDieselEngine extends FueledMultiblockController {
     }
 
     public IBlockState getCasingState() {
-        return MetaBlocks.METAL_CASING.getState(MetalCasingType.TITANIUM_STABLE);
+        return MetaBlocks.METAL_CASING.get(Materials.Titanium).getDefaultState();
     }
 
     @Override

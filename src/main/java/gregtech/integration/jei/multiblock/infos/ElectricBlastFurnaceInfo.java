@@ -2,7 +2,7 @@ package gregtech.integration.jei.multiblock.infos;
 
 import gregtech.api.GTValues;
 import gregtech.api.metatileentity.multiblock.MultiblockControllerBase;
-import gregtech.common.blocks.BlockMetalCasing.MetalCasingType;
+import gregtech.api.unification.material.Materials;
 import gregtech.common.blocks.BlockWireCoil.CoilType;
 import gregtech.common.blocks.MetaBlocks;
 import gregtech.common.metatileentities.MetaTileEntities;
@@ -30,7 +30,7 @@ public class ElectricBlastFurnaceInfo extends MultiblockInfoPage {
                 .aisle("IFX", "CCC", "CCC", "XXX")
                 .aisle("SXE", "C#C", "C#C", "XXX")
                 .aisle("ODX", "CCC", "CCC", "XXX")
-                .where('X', MetaBlocks.METAL_CASING.getState(MetalCasingType.INVAR_HEATPROOF))
+                .where('X', MetaBlocks.METAL_CASING.get(Materials.Invar).getDefaultState())
                 .where('C', MetaBlocks.WIRE_COIL.getState(coilType))
                 .where('S', MetaTileEntities.ELECTRIC_BLAST_FURNACE, EnumFacing.WEST)
 

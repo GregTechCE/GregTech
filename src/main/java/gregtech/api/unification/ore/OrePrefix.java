@@ -122,6 +122,7 @@ public enum OrePrefix {
     stoneCobble("Cobblestones", -1, Materials.Stone, null, SELF_REFERENCING | DISALLOW_RECYCLING, null), // Cobblestone Prefix for all Cobblestones.
 
     frameGt("Frame Boxes", (long) (M * 1.375), null, null, ENABLE_UNIFICATION, material -> material instanceof IngotMaterial && material.hasFlag(GENERATE_ROD | GENERATE_PLATE)),
+    metalCasing("Metal Casing", (long) (M * 6.375), null, null, ENABLE_UNIFICATION, material -> material instanceof IngotMaterial && material.hasFlag(GENERATE_FRAME | GENERATE_PLATE)),
 
     pipeTiny("Tiny Pipes", M / 2, null, MaterialIconType.pipeTiny, ENABLE_UNIFICATION, null),
     pipeSmall("Small Pipes", M, null, MaterialIconType.pipeSmall, ENABLE_UNIFICATION, null),

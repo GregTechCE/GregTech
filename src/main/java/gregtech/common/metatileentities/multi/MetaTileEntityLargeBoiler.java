@@ -25,11 +25,11 @@ import gregtech.api.recipes.recipes.FuelRecipe;
 import gregtech.api.render.ICubeRenderer;
 import gregtech.api.render.SimpleCubeRenderer;
 import gregtech.api.render.Textures;
+import gregtech.api.unification.material.Materials;
 import gregtech.api.util.GTUtility;
 import gregtech.common.blocks.BlockBoilerCasing.BoilerCasingType;
 import gregtech.common.blocks.BlockFireboxCasing;
 import gregtech.common.blocks.BlockFireboxCasing.FireboxCasingType;
-import gregtech.common.blocks.BlockMetalCasing.MetalCasingType;
 import gregtech.common.blocks.MetaBlocks;
 import gregtech.common.tools.DamageValues;
 import net.minecraft.block.state.IBlockState;
@@ -64,31 +64,31 @@ public class MetaTileEntityLargeBoiler extends MultiblockWithDisplayBase {
 
     public enum BoilerType {
         BRONZE(900, 1.0f, 28, 500,
-            MetaBlocks.METAL_CASING.getState(MetalCasingType.BRONZE_BRICKS),
+            MetaBlocks.METAL_CASING.get(Materials.Bronze).getDefaultState(),
             MetaBlocks.BOILER_FIREBOX_CASING.getState(FireboxCasingType.BRONZE_FIREBOX),
             MetaBlocks.BOILER_CASING.getState(BoilerCasingType.BRONZE_PIPE),
-            Textures.BRONZE_PLATED_BRICKS,
+            MetaBlocks.METAL_CASING.get(Materials.Bronze),
             Textures.BRONZE_FIREBOX, Textures.BRONZE_FIREBOX_ACTIVE),
 
         STEEL(1600, 1.6f, 30, 800,
-            MetaBlocks.METAL_CASING.getState(MetalCasingType.STEEL_SOLID),
+            MetaBlocks.METAL_CASING.get(Materials.Steel).getDefaultState(),
             MetaBlocks.BOILER_FIREBOX_CASING.getState(FireboxCasingType.STEEL_FIREBOX),
             MetaBlocks.BOILER_CASING.getState(BoilerCasingType.STEEL_PIPE),
-            Textures.SOLID_STEEL_CASING,
+            MetaBlocks.METAL_CASING.get(Materials.Steel),
             Textures.STEEL_FIREBOX, Textures.STEEL_FIREBOX_ACTIVE),
 
         TITANIUM(3700, 3.0f, 31, 2000,
-            MetaBlocks.METAL_CASING.getState(MetalCasingType.TITANIUM_STABLE),
+            MetaBlocks.METAL_CASING.get(Materials.Titanium).getDefaultState(),
             MetaBlocks.BOILER_FIREBOX_CASING.getState(FireboxCasingType.TITANIUM_FIREBOX),
             MetaBlocks.BOILER_CASING.getState(BoilerCasingType.TITANIUM_PIPE),
-            Textures.STABLE_TITANIUM_CASING,
+            MetaBlocks.METAL_CASING.get(Materials.Titanium),
             Textures.TITANIUM_FIREBOX, Textures.TITANIUM_FIREBOX_ACTIVE),
 
         TUNGSTENSTEEL(7800, 5.4f, 32, 4000,
-            MetaBlocks.METAL_CASING.getState(MetalCasingType.TUNGSTENSTEEL_ROBUST),
+            MetaBlocks.METAL_CASING.get(Materials.TungstenSteel).getDefaultState(),
             MetaBlocks.BOILER_FIREBOX_CASING.getState(FireboxCasingType.TUNGSTENSTEEL_FIREBOX),
             MetaBlocks.BOILER_CASING.getState(BoilerCasingType.TUNGSTENSTEEL_PIPE),
-            Textures.ROBUST_TUNGSTENSTEEL_CASING,
+            MetaBlocks.METAL_CASING.get(Materials.TungstenSteel),
             Textures.TUNGSTENSTEEL_FIREBOX, Textures.TUNGSTENSTEEL_FIREBOX_ACTIVE);
 
         public final int baseSteamOutput;

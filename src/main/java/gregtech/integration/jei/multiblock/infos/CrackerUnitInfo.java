@@ -3,7 +3,7 @@ package gregtech.integration.jei.multiblock.infos;
 import com.google.common.collect.Lists;
 import gregtech.api.GTValues;
 import gregtech.api.metatileentity.multiblock.MultiblockControllerBase;
-import gregtech.common.blocks.BlockMetalCasing;
+import gregtech.api.unification.material.Materials;
 import gregtech.common.blocks.BlockWireCoil;
 import gregtech.common.blocks.MetaBlocks;
 import gregtech.common.metatileentities.MetaTileEntities;
@@ -29,7 +29,7 @@ public class CrackerUnitInfo extends MultiblockInfoPage {
             .aisle("XCXCX", "H###X", "XCXCX")
             .aisle("XCXCX", "XCECF", "XCXCX")
             .where('S', MetaTileEntities.CRACKER, EnumFacing.NORTH)
-            .where('X', MetaBlocks.METAL_CASING.getState(BlockMetalCasing.MetalCasingType.STAINLESS_CLEAN))
+            .where('X', MetaBlocks.METAL_CASING.get(Materials.StainlessSteel).getDefaultState())
             .where('C', MetaBlocks.WIRE_COIL.getState(BlockWireCoil.CoilType.CUPRONICKEL))
             .where('#', Blocks.AIR.getDefaultState())
             .where('F', MetaTileEntities.FLUID_IMPORT_HATCH[GTValues.HV], EnumFacing.EAST)

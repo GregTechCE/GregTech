@@ -41,7 +41,9 @@ public class BlockMachineCasing extends VariantBlock<BlockMachineCasing.MachineC
         BRONZE_HULL("bronze_hull"),
         BRONZE_BRICKS_HULL("bronze_bricks_hull"),
         STEEL_HULL("steel_hull"),
-        STEEL_BRICKS_HULL("steel_bricks_hull");
+        STEEL_BRICKS_HULL("steel_bricks_hull"),
+        PRIMITIVE_BRICKS("primitive_bricks"),
+        COKE_BRICKS("coke_bricks");
 
         private final String name;
 

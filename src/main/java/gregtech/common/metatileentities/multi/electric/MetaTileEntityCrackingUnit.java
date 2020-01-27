@@ -9,8 +9,7 @@ import gregtech.api.multiblock.BlockPattern;
 import gregtech.api.multiblock.FactoryBlockPattern;
 import gregtech.api.recipes.RecipeMaps;
 import gregtech.api.render.ICubeRenderer;
-import gregtech.api.render.Textures;
-import gregtech.common.blocks.BlockMetalCasing;
+import gregtech.api.unification.material.Materials;
 import gregtech.common.blocks.BlockWireCoil.CoilType;
 import gregtech.common.blocks.MetaBlocks;
 import net.minecraft.block.state.IBlockState;
@@ -49,7 +48,7 @@ public class MetaTileEntityCrackingUnit extends RecipeMapMultiblockController {
 
     @Override
     public ICubeRenderer getBaseTexture(IMultiblockPart sourcePart) {
-        return Textures.CLEAN_STAINLESS_STEEL_CASING;
+        return MetaBlocks.METAL_CASING.get(Materials.StainlessSteel);
     }
 
     protected IBlockState getCoilState() {
@@ -57,6 +56,6 @@ public class MetaTileEntityCrackingUnit extends RecipeMapMultiblockController {
     }
 
     protected IBlockState getCasingState() {
-        return MetaBlocks.METAL_CASING.getState(BlockMetalCasing.MetalCasingType.STAINLESS_CLEAN);
+        return MetaBlocks.METAL_CASING.get(Materials.StainlessSteel).getDefaultState();
     }
 }

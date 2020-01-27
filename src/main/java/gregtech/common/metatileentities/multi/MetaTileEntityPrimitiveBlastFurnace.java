@@ -29,7 +29,7 @@ import gregtech.api.unification.material.type.Material;
 import gregtech.api.unification.ore.OrePrefix;
 import gregtech.api.unification.stack.MaterialStack;
 import gregtech.api.unification.stack.UnificationEntry;
-import gregtech.common.blocks.BlockMetalCasing.MetalCasingType;
+import gregtech.common.blocks.BlockMachineCasing;
 import gregtech.common.blocks.MetaBlocks;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
@@ -325,7 +325,7 @@ public class MetaTileEntityPrimitiveBlastFurnace extends MultiblockControllerBas
     }
 
     protected IBlockState getCasingState() {
-        return MetaBlocks.METAL_CASING.getState(MetalCasingType.PRIMITIVE_BRICKS);
+        return MetaBlocks.MACHINE_CASING.getState(BlockMachineCasing.MachineCasingType.PRIMITIVE_BRICKS);
     }
 
     @Override

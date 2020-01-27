@@ -1665,17 +1665,6 @@ tile.boiler_casing.steel_firebox.name=钢燃烧室
 tile.boiler_casing.titanium_firebox.name=钛燃烧室
 tile.boiler_casing.tungstensteel_firebox.name=钨钢燃烧室
 
-# Metal casing blocks
-tile.metal_casing.primitive_bricks.name=耐火砖
-tile.metal_casing.coke_bricks.name=焦炉砖块
-tile.metal_casing.bronze_bricks.name=青铜机器外壳
-tile.metal_casing.invar_heatproof.name=隔热机械方块
-tile.metal_casing.aluminium_frostproof.name=防冻机械方块
-tile.metal_casing.steel_solid.name=脱氧钢机械方块
-tile.metal_casing.stainless_clean.name=洁净不锈钢机械方块
-tile.metal_casing.titanium_stable.name=加强钛机械方块
-tile.metal_casing.tungstensteel_robust.name=强化钨钢机械方块
-
 # Machine casing blocks
 tile.machine_casing.ultra_low_voltage.name=ULV机器外壳
 tile.machine_casing.low_voltage.name=LV机器外壳
@@ -1696,6 +1685,8 @@ tile.machine_casing.steel_hull.name=钢外壳
 tile.machine_casing.steel_hull.tooltip=用以制作更高等级的蒸汽机器
 tile.machine_casing.steel_bricks_hull.name=砖砌钢外壳
 tile.machine_casing.steel_bricks_hull.tooltip=用以制作更高等级的蒸汽机器
+tile.metal_casing.primitive_bricks.name=耐火砖
+tile.metal_casing.coke_bricks.name=焦炉砖块
 
 # Turbine casing blocks
 tile.turbine_casing.bronze_gearbox.name=青铜齿轮机械方块

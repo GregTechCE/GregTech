@@ -85,6 +85,7 @@ public enum MaterialIconType {
     frameGt,
     frameSide,
     frameTop,
+    metalCasing,
     pipeSide,
     pipeTiny,
     pipeSmall,

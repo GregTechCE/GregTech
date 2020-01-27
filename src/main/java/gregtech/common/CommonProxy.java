@@ -62,7 +62,6 @@ public class CommonProxy {
         registry.register(REINFORCED_PETRIFIED_FOAM);
         registry.register(BOILER_CASING);
         registry.register(BOILER_FIREBOX_CASING);
-        registry.register(METAL_CASING);
         registry.register(TURBINE_CASING);
         registry.register(MACHINE_CASING);
         registry.register(MUTLIBLOCK_CASING);
@@ -80,6 +79,7 @@ public class CommonProxy {
         SURFACE_ROCKS.values().stream().distinct().forEach(registry::register);
         FLOODED_SURFACE_ROCKS.values().stream().distinct().forEach(registry::register);
         FRAMES.values().stream().distinct().forEach(registry::register);
+        METAL_CASING.values().stream().distinct().forEach(registry::register);
         ORES.forEach(registry::register);
         FLUID_BLOCKS.forEach(registry::register);
     }
@@ -108,7 +108,6 @@ public class CommonProxy {
 
         registry.register(createItemBlock(BOILER_CASING, VariantItemBlock::new));
         registry.register(createItemBlock(BOILER_FIREBOX_CASING, VariantItemBlock::new));
-        registry.register(createItemBlock(METAL_CASING, VariantItemBlock::new));
         registry.register(createItemBlock(TURBINE_CASING, VariantItemBlock::new));
         registry.register(createItemBlock(MACHINE_CASING, VariantItemBlock::new));
         registry.register(createItemBlock(MUTLIBLOCK_CASING, VariantItemBlock::new));
@@ -129,6 +128,10 @@ public class CommonProxy {
         FRAMES.values()
             .stream().distinct()
             .map(block -> createItemBlock(block, FrameItemBlock::new))
+            .forEach(registry::register);
+        METAL_CASING.values()
+            .stream().distinct()
+            .map(block -> createItemBlock(block, MetalCasingItemBlock::new))
             .forEach(registry::register);
         ORES.stream()
             .map(block -> createItemBlock(block, OreItemBlock::new))

@@ -2,7 +2,7 @@ package gregtech.integration.jei.multiblock.infos;
 
 import com.google.common.collect.Lists;
 import gregtech.api.metatileentity.multiblock.MultiblockControllerBase;
-import gregtech.common.blocks.BlockMetalCasing.MetalCasingType;
+import gregtech.common.blocks.BlockMachineCasing;
 import gregtech.common.blocks.MetaBlocks;
 import gregtech.common.metatileentities.MetaTileEntities;
 import gregtech.integration.jei.multiblock.MultiblockInfoPage;
@@ -26,7 +26,7 @@ public class CokeOvenInfo extends MultiblockInfoPage {
             .aisle("XXX", "XXX", "XXX")
             .aisle("XXX", "C#X", "XXX")
             .aisle("XXX", "XSX", "XXX")
-            .where('X', MetaBlocks.METAL_CASING.getState(MetalCasingType.COKE_BRICKS))
+            .where('X', MetaBlocks.MACHINE_CASING.getState(BlockMachineCasing.MachineCasingType.COKE_BRICKS))
             .where('C', MetaTileEntities.COKE_OVEN, EnumFacing.WEST)
             .where('S', MetaTileEntities.COKE_OVEN_HATCH, EnumFacing.SOUTH)
             .where('#', Blocks.AIR.getDefaultState())

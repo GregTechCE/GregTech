@@ -3,7 +3,7 @@ package gregtech.integration.jei.multiblock.infos;
 import com.google.common.collect.Lists;
 import gregtech.api.GTValues;
 import gregtech.api.metatileentity.multiblock.MultiblockControllerBase;
-import gregtech.common.blocks.BlockMetalCasing.MetalCasingType;
+import gregtech.api.unification.material.Materials;
 import gregtech.common.blocks.MetaBlocks;
 import gregtech.common.metatileentities.MetaTileEntities;
 import gregtech.integration.jei.multiblock.MultiblockInfoPage;
@@ -28,7 +28,7 @@ public class VacuumFreezerInfo extends MultiblockInfoPage {
             .aisle("XXX", "C#E", "XXX")
             .aisle("XXX", "IXF", "XXX")
             .where('C', MetaTileEntities.VACUUM_FREEZER, EnumFacing.WEST)
-            .where('X', MetaBlocks.METAL_CASING.getState(MetalCasingType.ALUMINIUM_FROSTPROOF))
+            .where('X', MetaBlocks.METAL_CASING.get(Materials.Aluminium).getDefaultState())
             .where('#', Blocks.AIR.getDefaultState())
             .where('I', MetaTileEntities.ITEM_IMPORT_BUS[GTValues.HV], EnumFacing.SOUTH)
             .where('F', MetaTileEntities.FLUID_IMPORT_HATCH[GTValues.HV], EnumFacing.SOUTH)

@@ -1681,17 +1681,6 @@ tile.boiler_casing.steel_firebox.name=Стальной корпус топки
 tile.boiler_casing.titanium_firebox.name=Титановый корпус топки
 tile.boiler_casing.tungstensteel_firebox.name=Вольфрамовый корпус топки
 
-# Металлические корпусные блоки
-tile.metal_casing.primitive_bricks.name=Примитивные кирпич
-tile.metal_casing.coke_bricks.name=Кирпич коксовой печи
-tile.metal_casing.bronze_bricks.name=Бронзовый корпус машины
-tile.metal_casing.invar_heatproof.name=Теплостойкий  корпус машины
-tile.metal_casing.aluminium_frostproof.name=Морозостойкий корпус машины
-tile.metal_casing.steel_solid.name=Цельный стальной корпус машины
-tile.metal_casing.stainless_clean.name=Чистый корпус из нержавейки
-tile.metal_casing.titanium_stable.name=Стабильный титановый корпус машины
-tile.metal_casing.tungstensteel_robust.name=Крепкий вольфрамовый корпус машины
-
 # Блоки корпуса машины
 tile.machine_casing.ultra_low_voltage.name=Корпус машины (ULV)
 tile.machine_casing.low_voltage.name=Корпус машины (LV)
@@ -1712,6 +1701,8 @@ tile.machine_casing.steel_hull.name=Стальной корпус
 tile.machine_casing.steel_hull.tooltip=Для улучшения паровой машины
 tile.machine_casing.steel_bricks_hull.name=Кирпичный стальной корпус
 tile.machine_casing.steel_bricks_hull.tooltip=Для улучшения паровой машины
+tile.metal_casing.primitive_bricks.name=Примитивные кирпич
+tile.metal_casing.coke_bricks.name=Кирпич коксовой печи
 
 # Блоки турбинных корпусов
 tile.turbine_casing.bronze_gearbox.name=Бронзовый корпус редуктора

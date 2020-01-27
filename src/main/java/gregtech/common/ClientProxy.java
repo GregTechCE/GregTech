@@ -83,6 +83,17 @@ public class ClientProxy extends CommonProxy {
         return dyeColor == EnumDyeColor.WHITE ? block.frameMaterial.materialRGB : dyeColor.colorValue;
     };
 
+    public static final IBlockColor METAL_CASING_BLOCK_COLOR = (IBlockState state, IBlockAccess worldIn, BlockPos pos, int tintIndex) -> {
+        Material material = ((BlockMetalCasing) state.getBlock()).getMetalCasingMaterial();
+        return material.materialRGB;
+    };
+
+    public static final IItemColor METAL_CASING_ITEM_COLOR = (stack, tintIndex) -> {
+        IBlockState metalCasingState = ((MetalCasingItemBlock) stack.getItem()).getBlockState(stack);
+        BlockMetalCasing block = (BlockMetalCasing) metalCasingState.getBlock();
+        return block.getMetalCasingMaterial().materialRGB;
+    };
+
     public static final IBlockColor ORE_BLOCK_COLOR = (IBlockState state, IBlockAccess worldIn, BlockPos pos, int tintIndex) ->
         tintIndex == 1 ? ((BlockOre) state.getBlock()).material.materialRGB : 0xFFFFFF;
 

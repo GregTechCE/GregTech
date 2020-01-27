@@ -2,7 +2,7 @@ package gregtech.integration.jei.multiblock.infos;
 
 import com.google.common.collect.Lists;
 import gregtech.api.metatileentity.multiblock.MultiblockControllerBase;
-import gregtech.common.blocks.BlockMetalCasing.MetalCasingType;
+import gregtech.common.blocks.BlockMachineCasing;
 import gregtech.common.blocks.MetaBlocks;
 import gregtech.common.metatileentities.MetaTileEntities;
 import gregtech.integration.jei.multiblock.MultiblockInfoPage;
@@ -26,7 +26,7 @@ public class PrimitiveBlastFurnaceInfo extends MultiblockInfoPage {
             .aisle("XXX", "XXX", "XXX", "XXX")
             .aisle("XXX", "C#X", "X#X", "X#X")
             .aisle("XXX", "XXX", "XXX", "XXX")
-            .where('X', MetaBlocks.METAL_CASING.getState(MetalCasingType.PRIMITIVE_BRICKS))
+            .where('X', MetaBlocks.MACHINE_CASING.getState(BlockMachineCasing.MachineCasingType.COKE_BRICKS))
             .where('C', MetaTileEntities.PRIMITIVE_BLAST_FURNACE, EnumFacing.WEST)
             .where('#', Blocks.AIR.getDefaultState())
             .build();

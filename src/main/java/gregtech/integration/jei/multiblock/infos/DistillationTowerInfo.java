@@ -3,7 +3,7 @@ package gregtech.integration.jei.multiblock.infos;
 import com.google.common.collect.Lists;
 import gregtech.api.GTValues;
 import gregtech.api.metatileentity.multiblock.MultiblockControllerBase;
-import gregtech.common.blocks.BlockMetalCasing.MetalCasingType;
+import gregtech.api.unification.material.Materials;
 import gregtech.common.blocks.MetaBlocks;
 import gregtech.common.metatileentities.MetaTileEntities;
 import gregtech.integration.jei.multiblock.MultiblockInfoPage;
@@ -28,7 +28,7 @@ public class DistillationTowerInfo extends MultiblockInfoPage {
             .aisle("SFX", "X#X", "X#X", "X#X", "X#X", "XXX")
             .aisle("IXX", "HXX", "HXX", "HXX", "HXX", "HXX")
             .where('#', Blocks.AIR.getDefaultState())
-            .where('X', MetaBlocks.METAL_CASING.getState(MetalCasingType.STAINLESS_CLEAN))
+            .where('X', MetaBlocks.METAL_CASING.get(Materials.StainlessSteel).getDefaultState())
             .where('S', MetaTileEntities.DISTILLATION_TOWER, EnumFacing.WEST)
             .where('E', MetaTileEntities.ENERGY_INPUT_HATCH[GTValues.EV], EnumFacing.WEST)
             .where('I', MetaTileEntities.ITEM_EXPORT_BUS[GTValues.EV], EnumFacing.WEST)

@@ -24,6 +24,7 @@ import gregtech.common.MetaFluids;
 import gregtech.common.blocks.MetaBlocks;
 import gregtech.common.blocks.modelfactories.BlockCompressedFactory;
 import gregtech.common.blocks.modelfactories.BlockFrameFactory;
+import gregtech.common.blocks.modelfactories.BlockMetalCasingFactory;
 import gregtech.common.blocks.modelfactories.BlockOreFactory;
 import gregtech.common.command.GregTechCommand;
 import gregtech.common.covers.CoverBehaviors;
@@ -59,6 +60,7 @@ public class GregTechMod {
             BlockOreFactory.init();
             BlockCompressedFactory.init();
             BlockFrameFactory.init();
+            BlockMetalCasingFactory.init();
         }
     }
 

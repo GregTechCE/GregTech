@@ -14,8 +14,7 @@ import gregtech.api.recipes.CountableIngredient;
 import gregtech.api.recipes.Recipe;
 import gregtech.api.recipes.RecipeMaps;
 import gregtech.api.render.ICubeRenderer;
-import gregtech.api.render.Textures;
-import gregtech.common.blocks.BlockMetalCasing.MetalCasingType;
+import gregtech.api.unification.material.Materials;
 import gregtech.common.blocks.BlockWireCoil.CoilType;
 import gregtech.common.blocks.MetaBlocks;
 import net.minecraft.block.state.IBlockState;
@@ -88,12 +87,12 @@ public class MetaTileEntityMultiFurnace extends RecipeMapMultiblockController {
     }
 
     public IBlockState getCasingState() {
-        return MetaBlocks.METAL_CASING.getState(MetalCasingType.INVAR_HEATPROOF);
+        return MetaBlocks.METAL_CASING.get(Materials.Invar).getDefaultState();
     }
 
     @Override
     public ICubeRenderer getBaseTexture(IMultiblockPart sourcePart) {
-        return Textures.HEAT_PROOF_CASING;
+        return MetaBlocks.METAL_CASING.get(Materials.Invar);
     }
 
     protected class MultiFurnaceWorkable extends MultiblockRecipeLogic {

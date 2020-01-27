@@ -20,7 +20,7 @@ import gregtech.api.recipes.RecipeMaps;
 import gregtech.api.recipes.recipes.CokeOvenRecipe;
 import gregtech.api.render.ICubeRenderer;
 import gregtech.api.render.Textures;
-import gregtech.common.blocks.BlockMetalCasing.MetalCasingType;
+import gregtech.common.blocks.BlockMachineCasing;
 import gregtech.common.blocks.MetaBlocks;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
@@ -201,7 +201,7 @@ public class MetaTileEntityCokeOven extends MultiblockControllerBase {
     }
 
     protected IBlockState getCasingState() {
-        return MetaBlocks.METAL_CASING.getState(MetalCasingType.COKE_BRICKS);
+        return MetaBlocks.MACHINE_CASING.getState(BlockMachineCasing.MachineCasingType.COKE_BRICKS);
     }
 
     @Override
