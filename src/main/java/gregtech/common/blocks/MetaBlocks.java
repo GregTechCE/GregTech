@@ -70,7 +70,7 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 import static gregtech.api.unification.material.type.SolidMaterial.MatFlags.GENERATE_FRAME;
-import static gregtech.api.unification.material.type.SolidMaterial.MatFlags.GENERATE_METAL_CASING;
+import static gregtech.api.unification.material.type.IngotMaterial.MatFlags.GENERATE_METAL_CASING;
 import static gregtech.common.ClientProxy.*;
 
 public class MetaBlocks {
@@ -84,7 +84,7 @@ public class MetaBlocks {
 
     public static BlockBoilerCasing BOILER_CASING;
     public static BlockFireboxCasing BOILER_FIREBOX_CASING;
-    public static Map<SolidMaterial, BlockMetalCasing> METAL_CASING = new HashMap<>();
+    public static Map<IngotMaterial, BlockMetalCasing> METAL_CASING = new HashMap<>();
     public static BlockTurbineCasing TURBINE_CASING;
     public static BlockMachineCasing MACHINE_CASING;
     public static BlockMultiblockCasing MUTLIBLOCK_CASING;
@@ -178,10 +178,10 @@ public class MetaBlocks {
                 blockFrame.setRegistryName("frame_" + material.toString());
                 FRAMES.put((SolidMaterial) material, blockFrame);
             }
-            if (material instanceof SolidMaterial && material.hasFlag(GENERATE_METAL_CASING)) {
-                BlockMetalCasing blockFrame = new BlockMetalCasing((SolidMaterial) material);
-                blockFrame.setRegistryName("metal_casing_" + material.toString());
-                METAL_CASING.put((SolidMaterial) material, blockFrame);
+            if (material instanceof IngotMaterial && material.hasFlag(GENERATE_METAL_CASING)) {
+                BlockMetalCasing blockMetalCasing = new BlockMetalCasing((IngotMaterial) material);
+                blockMetalCasing.setRegistryName("metal_casing_" + material.toString());
+                METAL_CASING.put((IngotMaterial) material, blockMetalCasing);
             }
             if (material instanceof IngotMaterial) {
                 IngotMaterial metalMaterial = (IngotMaterial) material;
@@ -446,7 +446,7 @@ public class MetaBlocks {
                 OreDictUnifier.registerOre(itemStack, OrePrefix.frameGt, material);
             }
         }
-        for (Entry<SolidMaterial, BlockMetalCasing> entry : METAL_CASING.entrySet()) {
+        for (Entry<IngotMaterial, BlockMetalCasing> entry : METAL_CASING.entrySet()) {
             SolidMaterial material = entry.getKey();
             BlockMetalCasing block = entry.getValue();
             for (int i = 0; i < 16; i++) {

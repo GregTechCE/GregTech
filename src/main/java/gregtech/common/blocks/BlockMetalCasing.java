@@ -8,7 +8,7 @@ import codechicken.lib.vec.Matrix4;
 import gregtech.api.render.ICubeRenderer;
 import gregtech.api.render.Textures;
 import gregtech.api.unification.material.MaterialIconType;
-import gregtech.api.unification.material.type.SolidMaterial;
+import gregtech.api.unification.material.type.IngotMaterial;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
@@ -24,11 +24,11 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public final class BlockMetalCasing extends Block  implements ICubeRenderer, IIconRegister {
 
-    private final SolidMaterial metalCasingMaterial;
+    private final IngotMaterial metalCasingMaterial;
     @SideOnly(Side.CLIENT)
     private TextureAtlasSprite sprite;
 
-    public BlockMetalCasing(SolidMaterial metalCasingMaterial) {
+    public BlockMetalCasing(IngotMaterial metalCasingMaterial) {
         super(Material.IRON);
         this.metalCasingMaterial = metalCasingMaterial;
         setUnlocalizedName("metal_casing");
@@ -44,7 +44,7 @@ public final class BlockMetalCasing extends Block  implements ICubeRenderer, IIc
         return false;
     }
 
-    public SolidMaterial getMetalCasingMaterial() {
+    public IngotMaterial getMetalCasingMaterial() {
         return metalCasingMaterial;
     }
 

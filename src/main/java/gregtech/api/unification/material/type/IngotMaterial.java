@@ -14,7 +14,7 @@ import javax.annotation.Nullable;
 import static gregtech.api.unification.material.type.DustMaterial.MatFlags.GENERATE_PLATE;
 import static gregtech.api.unification.material.type.DustMaterial.MatFlags.SMELT_INTO_FLUID;
 import static gregtech.api.unification.material.type.IngotMaterial.MatFlags.*;
-import static gregtech.api.unification.material.type.SolidMaterial.MatFlags.GENERATE_ROD;
+import static gregtech.api.unification.material.type.SolidMaterial.MatFlags.*;
 import static gregtech.api.util.GTUtility.createFlag;
 
 @ZenClass("mods.gregtech.material.IngotMaterial")
@@ -32,6 +32,7 @@ public class IngotMaterial extends SolidMaterial {
         public static final long GENERATE_SMALL_GEAR = createFlag(31);
         public static final long GENERATE_DENSE = createFlag(32);
         public static final long GENERATE_SPRING_SMALL = createFlag(33);
+        public static final long GENERATE_METAL_CASING =  createFlag(46);
 
         /**
          * Add this to your Material if you want to have its Ore Calcite heated in a Blast Furnace for more output. Already listed are:
@@ -144,6 +145,10 @@ public class IngotMaterial extends SolidMaterial {
         }
         if ((generationBits & GENERATE_BOLT_SCREW) > 0) {
             generationBits |= GENERATE_ROD;
+        }
+        if ((generationBits & GENERATE_METAL_CASING) > 0) {
+            generationBits |= GENERATE_FRAME;
+            generationBits |= GENERATE_PLATE;
         }
         return super.verifyMaterialBits(generationBits);
     }

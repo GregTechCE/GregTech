@@ -20,6 +20,7 @@ import java.util.*;
 import static gregtech.api.GTValues.L;
 import static gregtech.api.GTValues.M;
 import static gregtech.api.unification.material.type.DustMaterial.MatFlags.*;
+import static gregtech.api.unification.material.type.IngotMaterial.MatFlags.*;
 import static gregtech.api.unification.material.type.SolidMaterial.MatFlags.*;
 
 public class MaterialRecipeHandler {
@@ -35,7 +36,7 @@ public class MaterialRecipeHandler {
 
         OrePrefix.block.addProcessingHandler(DustMaterial.class, MaterialRecipeHandler::processBlock);
         OrePrefix.frameGt.addProcessingHandler(SolidMaterial.class, MaterialRecipeHandler::processFrame);
-        OrePrefix.metalCasing.addProcessingHandler(SolidMaterial.class, MaterialRecipeHandler::processMetalCasing);
+        OrePrefix.metalCasing.addProcessingHandler(IngotMaterial.class, MaterialRecipeHandler::processMetalCasing);
 
         OrePrefix.dust.addProcessingHandler(DustMaterial.class, MaterialRecipeHandler::processDust);
         OrePrefix.dustSmall.addProcessingHandler(DustMaterial.class, MaterialRecipeHandler::processSmallDust);
@@ -362,8 +363,8 @@ public class MaterialRecipeHandler {
         }
     }
 
-    public static void processMetalCasing(OrePrefix prefix, SolidMaterial material) {
-        if (material.hasFlag(GENERATE_PLATE | GENERATE_FRAME | GENERATE_METAL_CASING)) {
+    public static void processMetalCasing(OrePrefix prefix, IngotMaterial material) {
+        if (material.hasFlag(GENERATE_METAL_CASING)) {
             ItemStack metalCasingStack = OreDictUnifier.get(prefix, material, 3);
             ModHandler.addShapedRecipe(String.format("metal_casing_%s", material), metalCasingStack,
                 "PhP", "PBP", "PwP",
