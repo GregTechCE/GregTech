@@ -9,6 +9,7 @@ import codechicken.lib.vec.Matrix4;
 import gregtech.api.util.GTUtility;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumFacing.AxisDirection;
 import net.minecraftforge.fluids.FluidStack;
 
 public class TankRenderer extends CTCubeRenderer {
@@ -19,30 +20,39 @@ public class TankRenderer extends CTCubeRenderer {
 
     public void renderFluid(CCRenderState renderState, Matrix4 translation, int connectionMask, double fillPercent, FluidStack fluidStack) {
         if (fluidStack != null) {
+            int fluidStackColor = fluidStack.getFluid().getColor(fluidStack);
             double fluidLevelOffset = (offset(EnumFacing.UP, connectionMask) + offset(EnumFacing.DOWN, connectionMask));
             double fluidLevel = fillPercent * (1.0 - fluidLevelOffset);
-            Cuboid6 fluidCuboid = new Cuboid6(
-                offset(EnumFacing.WEST, connectionMask), 0.0,
-                offset(EnumFacing.NORTH, connectionMask),
-                1.0 - offset(EnumFacing.EAST, connectionMask), 1.0,
-                1.0 - offset(EnumFacing.SOUTH, connectionMask));
+
+            Cuboid6 resultFluidCuboid = createFullOffsetCuboid(connectionMask);
+            int resultFluidColor;
             if (fluidStack.getFluid().isGaseous(fluidStack)) {
-                double maxHeight = offset(EnumFacing.UP, connectionMask);
-                fluidCuboid.min.y = 1.0 - maxHeight - fluidLevel;
-                fluidCuboid.max.y = maxHeight;
+                int opacity = (int) (fillPercent * 255);
+                resultFluidColor = GTUtility.convertRGBtoRGBA_CL(fluidStackColor, opacity);
             } else {
-                double minHeight = offset(EnumFacing.DOWN, connectionMask);
-                fluidCuboid.min.y = minHeight;
-                fluidCuboid.max.y = minHeight + fluidLevel;
+                resultFluidCuboid.max.y = resultFluidCuboid.min.y + fluidLevel;
+                resultFluidColor = GTUtility.convertRGBtoOpaqueRGBA_CL(fluidStackColor);
             }
-            ColourMultiplier multiplier = new ColourMultiplier(GTUtility.convertRGBtoOpaqueRGBA_CL(fluidStack.getFluid().getColor(fluidStack)));
+
+            ColourMultiplier multiplier = new ColourMultiplier(resultFluidColor);
             IVertexOperation[] fluidPipeline = new IVertexOperation[]{multiplier};
             TextureAtlasSprite fluidSprite = TextureUtils.getTexture(fluidStack.getFluid().getStill(fluidStack));
+
             for (EnumFacing renderSide : EnumFacing.VALUES) {
                 if (hasFaceBit(connectionMask, renderSide)) continue;
-                Textures.renderFace(renderState, translation, fluidPipeline, renderSide, fluidCuboid, fluidSprite);
+                Textures.renderFace(renderState, translation, fluidPipeline, renderSide, resultFluidCuboid, fluidSprite);
             }
         }
+    }
+
+    private static Cuboid6 createFullOffsetCuboid(int connectionMask) {
+        Cuboid6 cuboid6 = new Cuboid6();
+        for (EnumFacing side : EnumFacing.VALUES) {
+            double offset = offset(side, connectionMask);
+            double value = side.getAxisDirection() == AxisDirection.POSITIVE ? 1.0 - offset : offset;
+            cuboid6.setSide(side, value);
+        }
+        return cuboid6;
     }
 
     private static double offset(EnumFacing side, int connectionMask) {

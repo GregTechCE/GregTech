@@ -1,9 +1,6 @@
 package gregtech.api.util;
 
 
-import codechicken.lib.vec.Rotation;
-import codechicken.lib.vec.Transformation;
-import codechicken.lib.vec.Vector3;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableList.Builder;
 import com.google.common.collect.Lists;
@@ -60,7 +57,6 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
-import java.math.BigInteger;
 import java.util.List;
 import java.util.*;
 import java.util.Map.Entry;
@@ -149,10 +145,14 @@ public class GTUtility {
     //just because CCL uses a different color format
     //0xRRGGBBAA
     public static int convertRGBtoOpaqueRGBA_CL(int colorValue) {
+        return convertRGBtoRGBA_CL(colorValue, 255);
+    }
+
+    public static int convertRGBtoRGBA_CL(int colorValue, int opacity) {
         int r = (colorValue >> 16) & 0xFF;
         int g = (colorValue >> 8) & 0xFF;
         int b = (colorValue & 0xFF);
-        return (r & 0xFF) << 24 | (g & 0xFF) << 16 | (b & 0xFF) << 8 | (0xFF);
+        return (r & 0xFF) << 24 | (g & 0xFF) << 16 | (b & 0xFF) << 8 | (opacity & 0xFF);
     }
 
     //0xAARRGGBB

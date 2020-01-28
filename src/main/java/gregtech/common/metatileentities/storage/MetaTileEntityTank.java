@@ -5,9 +5,8 @@ import codechicken.lib.render.CCRenderState;
 import codechicken.lib.render.pipeline.ColourMultiplier;
 import codechicken.lib.render.pipeline.IVertexOperation;
 import codechicken.lib.vec.Matrix4;
+import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
-import gnu.trove.list.TIntList;
-import gnu.trove.list.array.TIntArrayList;
 import gregtech.api.block.machines.BlockMachine;
 import gregtech.api.cover.CoverBehavior;
 import gregtech.api.gui.ModularUI;
@@ -58,14 +57,13 @@ import org.apache.commons.lang3.tuple.Pair;
 import javax.annotation.Nullable;
 import java.lang.ref.WeakReference;
 import java.util.*;
-import java.util.function.Function;
-import java.util.stream.Collectors;
 
 public class MetaTileEntityTank extends MetaTileEntity implements IFastRenderMetaTileEntity {
 
     private static final int FLUID_SYNC_THROTTLE = 0;
     private final int tankSize;
-    private final int maxMultiblockSize;
+    private final int maxSizeVertical;
+    private final int maxSizeHorizontal;
     private final SolidMaterial material;
     private boolean addedToMultiblock = false;
     private boolean needsCoversUpdate = false;
@@ -73,27 +71,26 @@ public class MetaTileEntityTank extends MetaTileEntity implements IFastRenderMet
     private int blockedSides = 0;
     private int connectionMask = 0;
 
-    private final FluidTank multiblockFluidTank;
-    private List<BlockPos> connectedTanks = new ArrayList<>();
-
-    private BlockPos lowestPos = BlockPos.ORIGIN;
-    private BlockPos highestPos = BlockPos.ORIGIN;
-    private TIntList tankCountByLevel = new TIntArrayList();
-    private TIntList sumCapacityByLevel = new TIntArrayList();
-
     private BlockPos controllerPos = null;
     private WeakReference<MetaTileEntityTank> controllerCache = new WeakReference<>(null);
+
+    private final FluidTank multiblockFluidTank;
+    private List<BlockPos> connectedTanks = new ArrayList<>();
+    private Vec3i multiblockSize = new Vec3i(1, 1, 1);
+    private boolean recomputeTankSize = false;
+
     private NetworkStatus networkStatus;
-    private int timeSinceLastFluidSync = Integer.MAX_VALUE;
     private FluidStack lastSentFluidStack;
+    private int timeSinceLastFluidSync = Integer.MAX_VALUE;
     private boolean needsShapeResync;
     private boolean needsFluidResync;
 
-    public MetaTileEntityTank(ResourceLocation metaTileEntityId, SolidMaterial material, int tankSize, int maxMultiblockSize) {
+    public MetaTileEntityTank(ResourceLocation metaTileEntityId, SolidMaterial material, int tankSize, int maxSizeVertical, int maxSizeHorizontal) {
         super(metaTileEntityId);
         this.tankSize = tankSize;
         this.material = material;
-        this.maxMultiblockSize = maxMultiblockSize == -1 ? Integer.MAX_VALUE : maxMultiblockSize;
+        this.maxSizeVertical = maxSizeVertical;
+        this.maxSizeHorizontal = maxSizeHorizontal;
         this.multiblockFluidTank = new WatchedFluidTank(tankSize) {
             @Override
             protected void onFluidChanged(FluidStack newFluidStack, FluidStack oldFluidStack) {
@@ -110,37 +107,19 @@ public class MetaTileEntityTank extends MetaTileEntity implements IFastRenderMet
         if (!getWorld().isRemote) {
             if (!addedToMultiblock) {
                 this.addedToMultiblock = true;
-                rescanTankMultiblocks(Collections.emptySet());
+                checkScanMultiblock();
             }
-            if (networkStatus == NetworkStatus.ATTACHED_TO_MULTIBLOCK) {
-                writeCustomData(1, buf -> buf.writeBlockPos(controllerPos));
-                this.needsFluidResync = false;
-                this.networkStatus = null;
-                this.needsShapeResync = false;
+            if (recomputeTankSize) {
+                this.recomputeTankSize = false;
+                recomputeTankSizeNow(true);
             }
-            if (networkStatus == NetworkStatus.DETACHED_FROM_MULTIBLOCK) {
-                writeCustomData(2, buf -> {});
-                this.networkStatus = null;
-            }
-            if (isTankController() && needsShapeResync) {
-                writeCustomData(4, buf -> ByteBufUtils.writeRelativeBlockList(buf, getPos(), connectedTanks));
-                this.needsShapeResync = false;
-            }
-            if (isTankController() && needsFluidResync) {
-                if (timeSinceLastFluidSync++ >= FLUID_SYNC_THROTTLE) {
-                    FluidStack fluidStack = multiblockFluidTank.getFluid();
-                    writeCustomData(3, buf -> ByteBufUtils.writeFluidStackDelta(buf, lastSentFluidStack, fluidStack));
-                    this.lastSentFluidStack = fluidStack == null ? null : fluidStack.copy();
-                    this.timeSinceLastFluidSync = 0;
-                    this.needsFluidResync = false;
-                }
-            }
+            handleTankSyncing();
         }
         if (needsCoversUpdate) {
             this.needsCoversUpdate = false;
             recheckBlockedSides();
             if (!getWorld().isRemote) {
-                rescanTankMultiblocks(recomputeNearbyMultiblocks());
+                checkScanMultiblock();
             }
         }
         if (getWorld().isRemote) {
@@ -171,7 +150,7 @@ public class MetaTileEntityTank extends MetaTileEntity implements IFastRenderMet
     @Override
     public void onAttached() {
         super.onAttached();
-        recomputeTankSize();
+        recomputeTankSizeNow(true);
     }
 
     @Override
@@ -179,17 +158,34 @@ public class MetaTileEntityTank extends MetaTileEntity implements IFastRenderMet
         super.onRemoval();
         this.isRemoved = true;
         setTankController(null);
-        recomputeNearbyMultiblocks();
+        checkScanMultiblock();
     }
 
-    private Set<BlockPos> recomputeNearbyMultiblocks() {
-        HashSet<BlockPos> handledSet = new HashSet<>();
+    private void checkScanMultiblock() {
+        HashSet<BlockPos> visitedSet = new HashSet<>();
         for (EnumFacing side : EnumFacing.VALUES) {
             MetaTileEntityTank tank = getTankTile(getPos().offset(side));
-            if (tank == null) continue;
-            handledSet.addAll(tank.rescanTankMultiblocks(handledSet));
+            if (tank != null) tank.checkScanMultiblockSelf(visitedSet);
         }
-        return handledSet;
+    }
+
+    private void checkScanMultiblockSelf(Set<BlockPos> visitedSet) {
+        Map<BlockPos, MetaTileEntityTank> tankMap = findConnectedTanks(this, visitedSet);
+        if (tankMap.isEmpty()) return;
+        Comparator<BlockPos> comparator = Comparator.comparing(it -> it.getX() + it.getY() + it.getZ());
+        BlockPos lowestCorner = tankMap.keySet().stream().min(comparator).get();
+        BlockPos highestCorner = tankMap.keySet().stream().max(comparator).get();
+        int expectedSizeX = Math.min(highestCorner.getX() - lowestCorner.getX() + 1, maxSizeHorizontal);
+        int expectedSizeY = Math.min(highestCorner.getY() - lowestCorner.getY() + 1, maxSizeVertical);
+        int expectedSizeZ = Math.min(highestCorner.getZ() - lowestCorner.getZ() + 1, maxSizeHorizontal);
+        boolean multiblockAssembled = checkMultiblockValid(tankMap, lowestCorner, expectedSizeX, expectedSizeY, expectedSizeZ);
+        MetaTileEntityTank newController = multiblockAssembled ? tankMap.get(lowestCorner) : null;
+        if (newController != null) {
+            Vec3i multiblockSize = new Vec3i(expectedSizeX, expectedSizeY, expectedSizeZ);
+            newController.setTankController(null);
+            newController.updateControllerSize(multiblockSize);
+        }
+        tankMap.values().forEach(it -> it.setTankController(newController));
     }
 
     private double getFluidLevelForTank(BlockPos tankPos) {
@@ -197,14 +193,19 @@ public class MetaTileEntityTank extends MetaTileEntity implements IFastRenderMet
             MetaTileEntityTank controller = getControllerEntity();
             return controller == null ? 0.0 : controller.getFluidLevelForTank(tankPos);
         }
-        int tankLayer = tankPos.getY() - lowestPos.getY();
-        if (tankLayer >= 0 && tankLayer < sumCapacityByLevel.size()) {
-            int prevLayerTotalCapacity = tankLayer > 0 ? sumCapacityByLevel.get(tankLayer - 1) : 0;
-            int thisLevelCapacity = sumCapacityByLevel.get(tankLayer) - prevLayerTotalCapacity;
-            double levelFill = (multiblockFluidTank.getFluidAmount() - prevLayerTotalCapacity) / (thisLevelCapacity * 1.0);
-            return MathHelper.clamp(levelFill, 0.0, 1.0);
+        FluidStack fluidStack = multiblockFluidTank.getFluid();
+        if (fluidStack == null) {
+            return 0.0;
         }
-        return 0.0;
+        double fluidLevel = multiblockFluidTank.getFluidAmount() / (1.0 * multiblockFluidTank.getCapacity());
+        double resultLevel;
+        if (fluidStack.getFluid().isGaseous(fluidStack)) {
+            resultLevel = fluidLevel;
+        } else {
+            int tankOffset = (tankPos.getY() - getPos().getY());
+            resultLevel = fluidLevel * multiblockSize.getY() - tankOffset;
+        }
+        return MathHelper.clamp(resultLevel, 0.0, 1.0);
     }
 
     private int getConnectionMaskForTank(BlockPos blockPos, int excludeMask) {
@@ -286,35 +287,18 @@ public class MetaTileEntityTank extends MetaTileEntity implements IFastRenderMet
         }
     }
 
-    private int computeTanksInLayer(List<BlockPos> connectedTanks, int layerPos) {
-        return (int) connectedTanks.stream().filter(tank -> tank.getY() == layerPos).count();
+    private void recomputeTankSize() {
+        this.recomputeTankSize = true;
+        recomputeTankSizeNow(false);
     }
 
-    private void recomputeTankSize() {
-        List<BlockPos> connectedTanks = new ArrayList<>(this.connectedTanks);
-        connectedTanks.add(getPos());
-        this.lowestPos = connectedTanks.stream().min(Comparator.comparing(Vec3i::getY)).get();
-        this.highestPos = connectedTanks.stream().max(Comparator.comparing(Vec3i::getY)).get();
-        this.tankCountByLevel.clear();
-        for (int i = lowestPos.getY(); i <= highestPos.getY(); i++) {
-            this.tankCountByLevel.add(computeTanksInLayer(connectedTanks, i));
-        }
-        recomputeByLevelSumCapacity();
-        this.multiblockFluidTank.setCapacity(connectedTanks.size() * tankSize);
-
-        if (multiblockFluidTank.getFluid() != null &&
+    private void recomputeTankSizeNow(boolean allowShrinking) {
+        int newCapacity = (connectedTanks.size() + 1) * tankSize;
+        int resultCapacity = allowShrinking ? newCapacity : Math.max(multiblockFluidTank.getCapacity(), newCapacity);
+        this.multiblockFluidTank.setCapacity(resultCapacity);
+        if (allowShrinking && multiblockFluidTank.getFluid() != null &&
             multiblockFluidTank.getFluidAmount() > multiblockFluidTank.getCapacity()) {
             multiblockFluidTank.getFluid().amount = multiblockFluidTank.getCapacity();
-        }
-    }
-
-    private void recomputeByLevelSumCapacity() {
-        int capacity = 0;
-        this.sumCapacityByLevel.clear();
-        for (int i = 0; i < tankCountByLevel.size(); i++) {
-            int layerCapacity = tankCountByLevel.get(i) * tankSize;
-            this.sumCapacityByLevel.add(capacity + layerCapacity);
-            capacity += layerCapacity;
         }
     }
 
@@ -341,7 +325,7 @@ public class MetaTileEntityTank extends MetaTileEntity implements IFastRenderMet
     private FluidStack setTankControllerInternal(MetaTileEntityTank controller) {
         this.controllerPos = controller == null ? null : controller.getPos();
         this.controllerCache = new WeakReference<>(controller);
-        getHolder().markAsDirty();
+        markDirty();
         if (controller == null) {
             this.networkStatus = NetworkStatus.DETACHED_FROM_MULTIBLOCK;
             return null;
@@ -351,15 +335,15 @@ public class MetaTileEntityTank extends MetaTileEntity implements IFastRenderMet
             this.multiblockFluidTank.setFluid(null);
             this.lastSentFluidStack = null;
             this.needsFluidResync = false;
-
-
             return fluidStack;
         }
     }
 
     private void onFluidChangedInternal() {
+        //also mark ourselves dirty by the way
+        markDirty();
+        //controller fluid update - sent in update() after network status
         if (getWorld() != null && !getWorld().isRemote && isTankController()) {
-            //controller fluid update - sent in update() after network status
             this.needsFluidResync = true;
         }
     }
@@ -376,18 +360,22 @@ public class MetaTileEntityTank extends MetaTileEntity implements IFastRenderMet
                 connectedTanks = connectedTanks.subList(startIndex, connectedTanks.size());
             } else break;
         }
-        debugInfo.add("HighestPos: " + highestPos);
-        debugInfo.add("LowestPos: " + lowestPos);
         debugInfo.add("Tank fluid: " + multiblockFluidTank.getFluidAmount() + "/" + multiblockFluidTank.getCapacity() + " #" + multiblockFluidTank.hashCode());
         FluidTank actualTankFluid = getActualFluidTank();
         debugInfo.add("Actual Tank fluid: " + actualTankFluid.getFluidAmount() + "/" + actualTankFluid.getCapacity() + " #" + actualTankFluid.hashCode());
         debugInfo.add("FluidLevel: " + getFluidLevelForTank(getPos()));
         debugInfo.add("FluidInTank: " + getFluidStoredInTank(getPos()));
-        debugInfo.add("TankCountByLevel: " + tankCountByLevel);
-        debugInfo.add("CapacityByLevel: " + sumCapacityByLevel);
+    }
+
+    private void updateControllerSize(Vec3i controllerSize) {
+        Preconditions.checkState(isTankController(), "Can update controller size only on controller tile entity!");
+        this.multiblockSize = controllerSize;
     }
 
     private void setTankController(MetaTileEntityTank controller) {
+        if (controller == this) {
+            return;
+        }
         MetaTileEntityTank oldController = getControllerEntity();
         if (oldController == controller) {
             return; //do not pointlessly update controller
@@ -396,36 +384,25 @@ public class MetaTileEntityTank extends MetaTileEntity implements IFastRenderMet
             oldController.removeTankFromMultiblock(this);
         }
         if (controller != null) {
+            //we are controlled by somebody now, remove our own controlled tanks
+            clearConnectedTanks();
             controller.addTankToMultiblock(this);
         } else {
+            //we are controller ourselves now
             setTankControllerInternal(null);
+            //reset multiblock size anyway
+            this.multiblockSize = new Vec3i(1, 1, 1);
         }
+    }
+
+    private void clearConnectedTanks() {
         for (BlockPos tankPos : ImmutableList.copyOf(connectedTanks)) {
             MetaTileEntityTank metaTileEntityTank = getTankTile(tankPos);
             if (metaTileEntityTank == null) continue;
             removeTankFromMultiblock(metaTileEntityTank);
         }
         this.connectedTanks.clear();
-    }
-
-    private void buildTankStructure(Set<BlockPos> structureBlocks, Map<BlockPos, MetaTileEntityTank> allTanks) {
-        //index all connected blocks
-        List<MetaTileEntityTank> connectedTanks = structureBlocks.stream()
-            .sorted(buildRootComparator())
-            .map(allTanks::get)
-            .collect(Collectors.toList());
-        //first, attempt to search for an existing master block
-        MetaTileEntityTank firstController = connectedTanks.stream()
-            .filter(MetaTileEntityTank::isTankController)
-            .findFirst().orElse(null);
-        if (firstController == null) {
-            firstController = connectedTanks.get(connectedTanks.size() - 1);
-            firstController.setTankController(null);
-        }
-        //add all new tanks to the controller
-        connectedTanks.remove(firstController);
-        MetaTileEntityTank finalFirstController = firstController;
-        connectedTanks.forEach(it -> it.setTankController(finalFirstController));
+        this.multiblockSize = new Vec3i(1, 1, 1);
     }
 
     private static boolean isTankFluidEqual(MetaTileEntityTank tank1, MetaTileEntityTank tank2) {
@@ -439,71 +416,9 @@ public class MetaTileEntityTank extends MetaTileEntity implements IFastRenderMet
             (tank2.blockedSides & 1 << side.getOpposite().getIndex()) <= 0);
     }
 
-    private static Comparator<BlockPos> buildRootComparator() {
-        //we compare on all axis to ensure stable order and independence from the tank who started
-        //the tank multiblock update sequence
-        return Comparator.comparing(BlockPos::getY)
-            .thenComparing(BlockPos::getX)
-            .thenComparing(BlockPos::getZ)
-            .reversed();
-    }
-
-    private Set<BlockPos> rescanTankMultiblocks(Set<BlockPos> excludedBlocks) {
-        Map<BlockPos, MetaTileEntityTank> allTanks = findConnectedTankBlocks(getPos());
-        allTanks.keySet().removeAll(excludedBlocks);
-        TreeSet<BlockPos> sortedTanks = new TreeSet<>(buildRootComparator());
-        sortedTanks.addAll(allTanks.keySet());
-        while (!sortedTanks.isEmpty()) {
-            BlockPos rootTankPos = sortedTanks.pollLast();
-            sortedTanks.remove(rootTankPos);
-            Set<BlockPos> structureBlocks = findStructureBlocksFromBottom(rootTankPos, allTanks);
-            sortedTanks.removeAll(structureBlocks);
-            buildTankStructure(structureBlocks, allTanks);
-        }
-        return allTanks.keySet();
-    }
-
-    private Set<BlockPos> findStructureBlocksFromBottom(BlockPos bottomStartPos, Map<BlockPos, MetaTileEntityTank> allTanks) {
-        return findAllConnectedBlocks(bottomStartPos, ArrayUtils.add(EnumFacing.HORIZONTALS, EnumFacing.UP), allTanks::get, maxMultiblockSize).keySet();
-    }
-
-    private Map<BlockPos, MetaTileEntityTank> findConnectedTankBlocks(BlockPos startPos) {
-        return findAllConnectedBlocks(startPos, EnumFacing.VALUES, this::getTankTile, Integer.MAX_VALUE);
-    }
-
-    private static Map<BlockPos, MetaTileEntityTank> findAllConnectedBlocks(BlockPos startPos, EnumFacing[] directions, Function<BlockPos, MetaTileEntityTank> blockProvider, int maxAmount) {
-        HashMap<BlockPos, MetaTileEntityTank> observedSet = new HashMap<>();
-        observedSet.put(startPos, blockProvider.apply(startPos));
-        MetaTileEntityTank firstNode = observedSet.get(startPos);
-        MutableBlockPos currentPos = new MutableBlockPos(startPos);
-        Stack<EnumFacing> moveStack = new Stack<>();
-        int currentAmount = 0;
-        main: while (true) {
-            if (currentAmount >= maxAmount) {
-                break;
-            }
-            for (EnumFacing facing : directions) {
-                currentPos.move(facing);
-                MetaTileEntityTank metaTileEntity;
-                if (!observedSet.containsKey(currentPos) && (metaTileEntity = blockProvider.apply(currentPos)) != null && canTanksConnect(firstNode, metaTileEntity, facing)) {
-                    observedSet.put(metaTileEntity.getPos(), metaTileEntity);
-                    firstNode = metaTileEntity;
-                    moveStack.push(facing.getOpposite());
-                    currentAmount++;
-                    continue main;
-                } else currentPos.move(facing.getOpposite());
-            }
-            if (!moveStack.isEmpty()) {
-                currentPos.move(moveStack.pop());
-                firstNode = observedSet.get(currentPos);
-            } else break;
-        }
-        return observedSet;
-    }
-
     @Override
     public MetaTileEntity createMetaTileEntity(MetaTileEntityHolder holder) {
-        return new MetaTileEntityTank(metaTileEntityId, material, tankSize, maxMultiblockSize);
+        return new MetaTileEntityTank(metaTileEntityId, material, tankSize, maxSizeVertical, maxSizeHorizontal);
     }
 
     @Override
@@ -575,7 +490,7 @@ public class MetaTileEntityTank extends MetaTileEntity implements IFastRenderMet
         if (isTankController()) {
             buf.writeBoolean(true);
             ByteBufUtils.writeRelativeBlockList(buf, getPos(), connectedTanks);
-            recomputeTankSize();
+            buf.writeBlockPos(new BlockPos(multiblockSize));
             FluidStack fluidStack = multiblockFluidTank.getFluid();
             ByteBufUtils.writeFluidStack(buf, fluidStack);
         } else {
@@ -589,10 +504,10 @@ public class MetaTileEntityTank extends MetaTileEntity implements IFastRenderMet
         super.receiveInitialSyncData(buf);
         if (buf.readBoolean()) {
             this.connectedTanks = ByteBufUtils.readRelativeBlockList(buf, getPos());
-            recomputeTankSize();
+            this.multiblockSize = buf.readBlockPos();
+            recomputeTankSizeNow(true);
             FluidStack fluidStack = ByteBufUtils.readFluidStack(buf);
             this.multiblockFluidTank.setFluid(fluidStack);
-            recomputeByLevelSumCapacity();
         } else {
             this.controllerPos = buf.readBlockPos();
         }
@@ -609,11 +524,8 @@ public class MetaTileEntityTank extends MetaTileEntity implements IFastRenderMet
             this.controllerPos = null;
             this.controllerCache = new WeakReference<>(null);
             this.multiblockFluidTank.setFluid(null);
-            this.highestPos = getPos();
-            this.lowestPos = getPos();
-            this.tankCountByLevel.clear();
-            this.sumCapacityByLevel.clear();
             this.connectedTanks.clear();
+            this.multiblockSize = new Vec3i(1, 1, 1);
         } else if (dataId == 3) {
             if (controllerPos == null) {
                 FluidStack fluidStack = ByteBufUtils.readFluidStackDelta(buf, multiblockFluidTank.getFluid());
@@ -621,7 +533,8 @@ public class MetaTileEntityTank extends MetaTileEntity implements IFastRenderMet
             }
         } else if (dataId == 4) {
             this.connectedTanks = ByteBufUtils.readRelativeBlockList(buf, getPos());
-            recomputeTankSize();
+            this.multiblockSize = buf.readBlockPos();
+            recomputeTankSizeNow(true);
         }
     }
 
@@ -704,6 +617,11 @@ public class MetaTileEntityTank extends MetaTileEntity implements IFastRenderMet
     }
 
     @Override
+    public boolean shouldRenderInPass(int pass) {
+        return pass == RENDER_PASS_TRANSLUCENT; //fluids should be rendered in translucent layer
+    }
+
+    @Override
     public AxisAlignedBB getRenderBoundingBox() {
         return new AxisAlignedBB(getPos());
     }
@@ -724,14 +642,13 @@ public class MetaTileEntityTank extends MetaTileEntity implements IFastRenderMet
     @SideOnly(Side.CLIENT)
     public void addInformation(ItemStack stack, @Nullable World player, List<String> tooltip, boolean advanced) {
         tooltip.add(I18n.format("gregtech.universal.tooltip.fluid_storage_capacity", tankSize));
-
+        tooltip.add(I18n.format("gregtech.machine.fluid_tank.max_multiblock", maxSizeHorizontal, maxSizeVertical, maxSizeHorizontal));
         NBTTagCompound tagCompound = stack.getTagCompound();
         if (tagCompound != null && tagCompound.hasKey("Fluid", NBT.TAG_COMPOUND)) {
             FluidStack fluidStack = FluidStack.loadFluidStackFromNBT(tagCompound.getCompoundTag("Fluid"));
-            if (fluidStack == null)
-                return;
-            tooltip.add(I18n.format("gregtech.machine.fluid_tank.fluid",
-                fluidStack.amount, I18n.format(fluidStack.getUnlocalizedName())));
+            if (fluidStack != null) {
+                tooltip.add(I18n.format("gregtech.machine.fluid_tank.fluid", fluidStack.amount, I18n.format(fluidStack.getUnlocalizedName())));
+            }
         }
     }
 
@@ -750,6 +667,7 @@ public class MetaTileEntityTank extends MetaTileEntity implements IFastRenderMet
             NBTTagList connectedTanks = new NBTTagList();
             this.connectedTanks.forEach(pos -> connectedTanks.appendTag(NBTUtil.createPosTag(pos)));
             data.setTag("ConnectedTanks", connectedTanks);
+            data.setTag("MultiblockSize", NBTUtil.createPosTag(new BlockPos(multiblockSize)));
         }
         return data;
     }
@@ -762,9 +680,12 @@ public class MetaTileEntityTank extends MetaTileEntity implements IFastRenderMet
         } else {
             NBTTagList connectedTanks = data.getTagList("ConnectedTanks", NBT.TAG_COMPOUND);
             connectedTanks.forEach(pos -> this.connectedTanks.add(NBTUtil.getPosFromTag((NBTTagCompound) pos)));
-            recomputeTankSize();
+            recomputeTankSizeNow(true);
             this.multiblockFluidTank.readFromNBT(data.getCompoundTag("FluidInventory"));
             this.lastSentFluidStack = this.multiblockFluidTank.getFluid();
+            if (data.hasKey("MultiblockSize")) {
+                this.multiblockSize = NBTUtil.getPosFromTag(data.getCompoundTag("MultiblockSize"));
+            }
         }
     }
 
@@ -784,5 +705,96 @@ public class MetaTileEntityTank extends MetaTileEntity implements IFastRenderMet
         DETACHED_FROM_MULTIBLOCK,
         //clear contained fluid, update controller pos
         ATTACHED_TO_MULTIBLOCK
+    }
+
+    private void handleTankSyncing() {
+        if (networkStatus == NetworkStatus.ATTACHED_TO_MULTIBLOCK) {
+            writeCustomData(1, buf -> buf.writeBlockPos(controllerPos));
+            this.needsFluidResync = false;
+            this.networkStatus = null;
+            this.needsShapeResync = false;
+        }
+        if (networkStatus == NetworkStatus.DETACHED_FROM_MULTIBLOCK) {
+            writeCustomData(2, buf -> {});
+            this.networkStatus = null;
+        }
+        if (isTankController() && needsShapeResync) {
+            writeCustomData(4, buf -> {
+                ByteBufUtils.writeRelativeBlockList(buf, getPos(), connectedTanks);
+                buf.writeBlockPos(new BlockPos(multiblockSize));
+            });
+            this.needsShapeResync = false;
+        }
+        if (isTankController() && needsFluidResync) {
+            if (timeSinceLastFluidSync++ >= FLUID_SYNC_THROTTLE) {
+                FluidStack fluidStack = multiblockFluidTank.getFluid();
+                writeCustomData(3, buf -> ByteBufUtils.writeFluidStackDelta(buf, lastSentFluidStack, fluidStack));
+                this.lastSentFluidStack = fluidStack == null ? null : fluidStack.copy();
+                this.timeSinceLastFluidSync = 0;
+                this.needsFluidResync = false;
+            }
+        }
+    }
+
+    private static Map<BlockPos, MetaTileEntityTank> findConnectedTanks(MetaTileEntityTank tank, Set<BlockPos> visitedSet) {
+        BlockPos startPos = tank.getPos();
+        HashMap<BlockPos, MetaTileEntityTank> observedSet = new HashMap<>();
+        if (visitedSet.contains(startPos)) {
+            return observedSet;
+        }
+        observedSet.put(tank.getPos(), tank);
+        visitedSet.add(startPos);
+        MetaTileEntityTank firstNode = observedSet.get(startPos);
+        MutableBlockPos currentPos = new MutableBlockPos(startPos);
+        Stack<EnumFacing> moveStack = new Stack<>();
+        int currentAmount = 0;
+        int scanSizeLimit = tank.maxSizeHorizontal * tank.maxSizeHorizontal * tank.maxSizeVertical * 4;
+        main: while (true) {
+            if (currentAmount >= scanSizeLimit) {
+                break;
+            }
+            for (EnumFacing facing : EnumFacing.VALUES) {
+                currentPos.move(facing);
+                MetaTileEntityTank metaTileEntity;
+                if (!visitedSet.contains(currentPos) &&
+                    !observedSet.containsKey(currentPos) &&
+                    (metaTileEntity = tank.getTankTile(currentPos)) != null &&
+                    canTanksConnect(firstNode, metaTileEntity, facing)) {
+                    observedSet.put(metaTileEntity.getPos(), metaTileEntity);
+                    visitedSet.add(metaTileEntity.getPos());
+                    firstNode = metaTileEntity;
+                    moveStack.push(facing.getOpposite());
+                    currentAmount++;
+                    continue main;
+                } else currentPos.move(facing.getOpposite());
+            }
+            if (!moveStack.isEmpty()) {
+                currentPos.move(moveStack.pop());
+                firstNode = observedSet.get(currentPos);
+            } else break;
+        }
+        return observedSet;
+    }
+
+    private boolean checkMultiblockValid(Map<BlockPos, MetaTileEntityTank> tankMap, BlockPos lowestCorner, int sizeX, int sizeY, int sizeZ) {
+        //iterate each block to ensure that we have tanks in valid positions
+        HashSet<BlockPos> visitedPositions = new HashSet<>();
+        MutableBlockPos blockPos = new MutableBlockPos();
+        for (int i = 0; i < sizeX; i++) {
+            for (int j = 0; j < sizeY; j++) {
+                for (int k = 0; k < sizeZ; k++) {
+                    blockPos.setPos(lowestCorner.getX() + i, lowestCorner.getY() + j, lowestCorner.getZ() + k);
+                    MetaTileEntityTank tankHere = tankMap.get(blockPos);
+                    if (tankHere == null) {
+                        //tank is not here, so multiblock is not formed
+                        return false;
+                    }
+                    //add found tank into the visited position list
+                    visitedPositions.add(tankHere.getPos());
+                }
+            }
+        }
+        //multiblock is assembled only if every tank neighbour is in the multiblock
+        return visitedPositions.containsAll(tankMap.keySet());
     }
 }
