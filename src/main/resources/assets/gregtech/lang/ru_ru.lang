@@ -1681,6 +1681,15 @@ tile.boiler_casing.steel_firebox.name=Стальной корпус топки
 tile.boiler_casing.titanium_firebox.name=Титановый корпус топки
 tile.boiler_casing.tungstensteel_firebox.name=Вольфрамовый корпус топки
 
+# Металлические корпусные блоки
+tile.metal_casing.material.bronze.name=Бронзовый корпус машины
+tile.metal_casing.material.invar.name=Теплостойкий  корпус машины
+tile.metal_casing.material.aluminium.name=Морозостойкий корпус машины
+tile.metal_casing.material.steel.name=Цельный стальной корпус машины
+tile.metal_casing.material.stainless.name=Чистый корпус из нержавейки
+tile.metal_casing.material.titanium.name=Стабильный титановый корпус машины
+tile.metal_casing.material.tungstensteel.name=Крепкий вольфрамовый корпус машины
+
 # Блоки корпуса машины
 tile.machine_casing.ultra_low_voltage.name=Корпус машины (ULV)
 tile.machine_casing.low_voltage.name=Корпус машины (LV)

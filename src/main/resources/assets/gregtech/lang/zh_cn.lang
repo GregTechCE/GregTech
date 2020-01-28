@@ -1665,6 +1665,15 @@ tile.boiler_casing.steel_firebox.name=钢燃烧室
 tile.boiler_casing.titanium_firebox.name=钛燃烧室
 tile.boiler_casing.tungstensteel_firebox.name=钨钢燃烧室
 
+# Metal casing blocks
+tile.metal_casing.material.bronze.name=青铜机器外壳
+tile.metal_casing.material.invar.name=隔热机械方块
+tile.metal_casing.material.aluminium.name=防冻机械方块
+tile.metal_casing.material.steel.name=脱氧钢机械方块
+tile.metal_casing.material.stainless.name=洁净不锈钢机械方块
+tile.metal_casing.material.titanium.name=加强钛机械方块
+tile.metal_casing.material.tungstensteel.name=强化钨钢机械方块
+
 # Machine casing blocks
 tile.machine_casing.ultra_low_voltage.name=ULV机器外壳
 tile.machine_casing.low_voltage.name=LV机器外壳

@@ -892,7 +892,6 @@ item.material.oreprefix.armorLeggings=
 item.material.oreprefix.armorBoots=
 item.material.oreprefix.armor=
 item.material.oreprefix.frameGt=%s Frame
-item.material.oreprefix.metalCasing=%s Metal Casing
 item.material.oreprefix.pipeTiny=Tiny %s Pipe
 item.material.oreprefix.pipeSmall=Small %s Pipe
 item.material.oreprefix.pipeMedium=Medium %s Pipe
@@ -1702,6 +1701,15 @@ tile.boiler_casing.bronze_firebox.name=Bronze Firebox Casing
 tile.boiler_casing.steel_firebox.name=Steel Firebox Casing
 tile.boiler_casing.titanium_firebox.name=Titanium Firebox Casing
 tile.boiler_casing.tungstensteel_firebox.name=Tungstensteel Firebox Casing
+
+# Metal casing blocks
+tile.metal_casing.material.bronze.name=Bronze Machine Casing
+tile.metal_casing.material.invar.name=Heat Proof Machine Casing
+tile.metal_casing.material.aluminium.name=Frost Proof Machine Casing
+tile.metal_casing.material.steel.name=Solid Steel Machine Casing
+tile.metal_casing.material.stainless.name=Clean Stainless Steel Casing
+tile.metal_casing.material.titanium.name=Stable Titanium Machine Casing
+tile.metal_casing.material.tungstensteel.name=Robust Tungstensteel Machine Casing
 
 # Machine casing blocks
 tile.machine_casing.ultra_low_voltage.name=ULV Machine Casing
