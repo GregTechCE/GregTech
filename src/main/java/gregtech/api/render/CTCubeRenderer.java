@@ -40,6 +40,7 @@ public class CTCubeRenderer implements IIconRegister {
         return ctSprites[ctSprites.length - 1];
     }
 
+    @SideOnly(Side.CLIENT)
     public void render(CCRenderState renderState, Matrix4 translation, IVertexOperation[] pipeline, int connectionMask) {
         for (EnumFacing renderSide : EnumFacing.VALUES) {
             if (hasFaceBit(connectionMask, renderSide)) {

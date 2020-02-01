@@ -1,17 +1,12 @@
 package gregtech.common.blocks.surfacerock;
 
-import codechicken.lib.vec.Cuboid6;
 import gregtech.api.unification.OreDictUnifier;
-import gregtech.api.unification.material.type.IngotMaterial;
 import gregtech.api.unification.material.type.Material;
 import gregtech.api.unification.ore.OrePrefix;
-import gregtech.api.util.XSTR;
-import gregtech.common.blocks.properties.PropertyMaterial;
 import gregtech.common.render.StoneRenderer;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.state.BlockFaceShape;
-import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -26,80 +21,42 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import java.util.Arrays;
 import java.util.Random;
 
-public class BlockSurfaceRock extends Block {
+public abstract class BlockSurfaceRock extends Block {
 
-    public final PropertyMaterial materialProperty;
+    private static final AxisAlignedBB STONE_AABB = new AxisAlignedBB(0.0, 0.0, 0.0, 1.0, 12.0 / 16.0, 1.0);
 
-    public BlockSurfaceRock(Material[] allowedValues) {
+    public BlockSurfaceRock() {
         super(net.minecraft.block.material.Material.ROCK);
-        this.materialProperty = PropertyMaterial.create("material", allowedValues);
-        setHardness(1.0f);
-        setResistance(0.3f);
+        setHardness(1.5f);
         setSoundType(SoundType.STONE);
         setUnlocalizedName("surface_rock");
-        initBlockState();
+        setLightOpacity(1);
     }
 
-    protected void initBlockState() {
-        BlockStateContainer stateContainer = createBlockState();
-        this.blockState = stateContainer;
-        this.setDefaultState(stateContainer.getBaseState());
-    }
-
-    @Override
-    protected BlockStateContainer createBlockState() {
-        if (materialProperty == null)
-            return new BlockStateContainer(this);
-        return new BlockStateContainer(this, materialProperty);
-    }
-
-    @Override
-    public IBlockState getStateFromMeta(int meta) {
-        return getDefaultState().withProperty(materialProperty, materialProperty.getAllowedValues().get(meta));
-    }
-
-    @Override
-    public int getMetaFromState(IBlockState state) {
-        return materialProperty.getAllowedValues().indexOf(state.getValue(materialProperty));
-    }
-
-    public static Cuboid6 getShapeFromBlockPos(BlockPos blockPos) {
-        XSTR random = new XSTR(Arrays.hashCode(new int[]{blockPos.getX(), blockPos.getY(), blockPos.getZ(), 135}));
-        int size = 4 + random.nextInt(2);
-        boolean invertStart = random.nextBoolean();
-        boolean moveStart = random.nextBoolean();
-        int startX = invertStart ? 8 : 6 - (moveStart ? size : 0);
-        int startZ = invertStart ? 6 : 8 - (moveStart ? 0 : size);
-        return new Cuboid6(
-            startX / 16.0, 0 / 16.0, startZ / 16.0,
-            (startX + size) / 16.0, size / 16.0, (startZ + size) / 16.0);
-    }
+    public abstract Material getStoneMaterial(IBlockAccess blockAccess, BlockPos pos, IBlockState blockState);
 
     @Override
     public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
-        return getShapeFromBlockPos(pos).aabb();
+        return STONE_AABB;
     }
 
-    private ItemStack getDropStack(IBlockState blockState, int amount) {
-        Material material = blockState.getValue(materialProperty);
-        if (material instanceof IngotMaterial && ((IngotMaterial) material).blastFurnaceTemperature == 0)
-            return OreDictUnifier.get(OrePrefix.nugget, material, amount);
+    private ItemStack getDropStack(IBlockAccess blockAccess, BlockPos pos, IBlockState blockState, int amount) {
+        Material material = getStoneMaterial(blockAccess, pos, blockState);
         return OreDictUnifier.get(OrePrefix.dustTiny, material, amount);
     }
 
     @Override
     public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player) {
-        return getDropStack(state, 1);
+        return getDropStack(world, pos, state, 1);
     }
 
     @Override
     public void getDrops(NonNullList<ItemStack> drops, IBlockAccess world, BlockPos pos, IBlockState state, int fortune) {
-        Random rand = world instanceof World ? ((World) world).rand : RANDOM;
-        int amount = 1 + rand.nextInt(fortune == 0 ? 1 : fortune);
-        drops.add(getDropStack(state, amount));
+        Random rand = new Random();
+        int amount = 3 + rand.nextInt((int) (2 + fortune * 1.5));
+        drops.add(getDropStack(world, pos, state, amount));
     }
 
     @Override
@@ -119,11 +76,6 @@ public class BlockSurfaceRock extends Block {
     }
 
     @Override
-    public boolean canHarvestBlock(IBlockAccess world, BlockPos pos, EntityPlayer player) {
-        return true;
-    }
-
-    @Override
     public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos) {
         if (fromPos.up().equals(pos)) {
             if (worldIn.getBlockState(fromPos).getBlockFaceShape(worldIn, fromPos, EnumFacing.UP) != BlockFaceShape.SOLID) {
@@ -136,5 +88,4 @@ public class BlockSurfaceRock extends Block {
     public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face) {
         return BlockFaceShape.UNDEFINED;
     }
-
 }

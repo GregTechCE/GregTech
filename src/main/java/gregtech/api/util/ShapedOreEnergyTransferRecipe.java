@@ -12,6 +12,8 @@ import net.minecraftforge.common.crafting.CraftingHelper.ShapedPrimer;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 
 import javax.annotation.Nonnull;
+import java.util.Arrays;
+import java.util.Objects;
 import java.util.function.Predicate;
 
 public class ShapedOreEnergyTransferRecipe extends ShapedOreRecipe {
@@ -27,6 +29,21 @@ public class ShapedOreEnergyTransferRecipe extends ShapedOreRecipe {
         super(group, result, primer);
         this.chargePredicate = chargePredicate;
         this.transferMaxCharge = transferMaxCharge;
+        fixOutputItemMaxCharge();
+    }
+
+    //transfer initial max charge for correct display in JEI
+    private void fixOutputItemMaxCharge() {
+        long totalMaxCharge = getIngredients().stream()
+            .mapToLong(it -> Arrays.stream(it.getMatchingStacks())
+                .map(stack -> stack.getCapability(GregtechCapabilities.CAPABILITY_ELECTRIC_ITEM, null))
+                .filter(Objects::nonNull)
+                .mapToLong(IElectricItem::getMaxCharge)
+                .max().orElse(0L)).sum();
+        IElectricItem electricItem = output.getCapability(GregtechCapabilities.CAPABILITY_ELECTRIC_ITEM, null);
+        if (totalMaxCharge > 0L && electricItem instanceof ElectricItem) {
+            ((ElectricItem) electricItem).setMaxChargeOverride(totalMaxCharge);
+        }
     }
 
     @Nonnull

@@ -6,18 +6,21 @@ import net.minecraft.item.ItemStack;
 
 public interface IItemUseManager extends IItemComponent {
 
-    boolean canStartUsing(ItemStack stack, EntityPlayer player);
+    default boolean canStartUsing(ItemStack stack, EntityPlayer player) {
+        return true;
+    }
 
-    void onItemUseStart(ItemStack stack, EntityPlayer player);
+    default void onItemUseStart(ItemStack stack, EntityPlayer player) {}
 
     EnumAction getUseAction(ItemStack stack);
 
     int getMaxItemUseDuration(ItemStack stack);
 
-    void onItemUsingTick(ItemStack stack, EntityPlayer player, int count);
+    default void onItemUsingTick(ItemStack stack, EntityPlayer player, int count) {}
 
-    void onPlayerStoppedItemUsing(ItemStack stack, EntityPlayer player, int timeLeft);
+    default void onPlayerStoppedItemUsing(ItemStack stack, EntityPlayer player, int timeLeft) {}
 
-    ItemStack onItemUseFinish(ItemStack stack, EntityPlayer player);
-
+    default ItemStack onItemUseFinish(ItemStack stack, EntityPlayer player) {
+        return stack;
+    }
 }

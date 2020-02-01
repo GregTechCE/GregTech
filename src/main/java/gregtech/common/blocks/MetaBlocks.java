@@ -20,8 +20,9 @@ import gregtech.api.unification.ore.StoneType;
 import gregtech.common.blocks.foam.BlockFoam;
 import gregtech.common.blocks.foam.BlockPetrifiedFoam;
 import gregtech.common.blocks.modelfactories.BakedModelHandler;
-import gregtech.common.blocks.surfacerock.BlockSurfaceRock;
-import gregtech.common.blocks.surfacerock.BlockSurfaceRockFlooded;
+import gregtech.common.blocks.surfacerock.BlockSurfaceRockDeprecated;
+import gregtech.common.blocks.surfacerock.BlockSurfaceRockNew;
+import gregtech.common.blocks.surfacerock.TileEntitySurfaceRock;
 import gregtech.common.blocks.tileentity.TileEntityCrusherBlade;
 import gregtech.common.blocks.wood.BlockGregLeaves;
 import gregtech.common.blocks.wood.BlockGregLog;
@@ -106,8 +107,8 @@ public class MetaBlocks {
     public static BlockCrusherBlade CRUSHER_BLADE;
 
     public static Map<DustMaterial, BlockCompressed> COMPRESSED = new HashMap<>();
-    public static Map<IngotMaterial, BlockSurfaceRock> SURFACE_ROCKS = new HashMap<>();
-    public static Map<IngotMaterial, BlockSurfaceRockFlooded> FLOODED_SURFACE_ROCKS = new HashMap<>();
+    public static Map<IngotMaterial, BlockSurfaceRockDeprecated> SURFACE_ROCKS = new HashMap<>();
+    public static BlockSurfaceRockNew SURFACE_ROCK_NEW;
     public static Map<SolidMaterial, BlockFrame> FRAMES = new HashMap<>();
     public static Collection<BlockOre> ORES = new HashSet<>();
     public static Collection<BlockFluidBase> FLUID_BLOCKS = new HashSet<>();
@@ -161,6 +162,9 @@ public class MetaBlocks {
 
         CRUSHER_BLADE = new BlockCrusherBlade();
         CRUSHER_BLADE.setRegistryName("crusher_blade");
+
+        SURFACE_ROCK_NEW = new BlockSurfaceRockNew();
+        SURFACE_ROCK_NEW.setRegistryName("surface_rock_new");
 
         StoneType.init();
 
@@ -220,14 +224,11 @@ public class MetaBlocks {
     }
 
     private static void createSurfaceRockBlock(Material[] materials, int index) {
-        BlockSurfaceRock block = new BlockSurfaceRock(materials);
-        BlockSurfaceRockFlooded floodedBlock = new BlockSurfaceRockFlooded(materials);
+        BlockSurfaceRockDeprecated block = new BlockSurfaceRockDeprecated(materials);
         block.setRegistryName("surface_rock_" + index);
-        floodedBlock.setRegistryName("surface_rock_flooded_" + index);
         for (Material material : materials) {
             if (material instanceof IngotMaterial) {
                 SURFACE_ROCKS.put((IngotMaterial) material, block);
-                FLOODED_SURFACE_ROCKS.put((IngotMaterial) material, floodedBlock);
             }
         }
     }
@@ -278,6 +279,7 @@ public class MetaBlocks {
         GameRegistry.registerTileEntity(TileEntityCableTickable.class, new ResourceLocation(GTValues.MODID, "cable_tickable"));
         GameRegistry.registerTileEntity(TileEntityFluidPipe.class, new ResourceLocation(GTValues.MODID, "fluid_pipe"));
         GameRegistry.registerTileEntity(TileEntityFluidPipeTickable.class, new ResourceLocation(GTValues.MODID, "fluid_pipe_active"));
+        GameRegistry.registerTileEntity(TileEntitySurfaceRock.class, new ResourceLocation(GTValues.MODID, "surface_rock"));
     }
 
     @SideOnly(Side.CLIENT)
@@ -381,9 +383,10 @@ public class MetaBlocks {
         MinecraftForge.EVENT_BUS.register(modelHandler);
         FLUID_BLOCKS.forEach(modelHandler::addFluidBlock);
         SURFACE_ROCKS.values().stream().distinct().forEach(block -> modelHandler.addBuiltInBlock(block, "stone"));
-        FLOODED_SURFACE_ROCKS.values().stream().distinct().forEach(block -> modelHandler.addBuiltInBlock(block, "stone"));
 
+        modelHandler.addBuiltInBlock(SURFACE_ROCK_NEW, "stone_andesite");
         modelHandler.addBuiltInBlock(CRUSHER_BLADE, "iron_block");
+
         Item.getItemFromBlock(CRUSHER_BLADE).setTileEntityItemStackRenderer(new TileEntityRenderBaseItem<>(TileEntityCrusherBlade.class));
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityCrusherBlade.class, new TileEntityCrusherBladeRenderer());
         ClientRegistry.bindTileEntitySpecialRenderer(MetaTileEntityHolder.class, new MetaTileEntityTESR());
@@ -410,8 +413,6 @@ public class MetaBlocks {
         });
 
         MetaBlocks.SURFACE_ROCKS.values().stream().distinct().forEach(block ->
-            Minecraft.getMinecraft().getBlockColors().registerBlockColorHandler(SURFACE_ROCK_COLOR, block));
-        MetaBlocks.FLOODED_SURFACE_ROCKS.values().stream().distinct().forEach(block ->
             Minecraft.getMinecraft().getBlockColors().registerBlockColorHandler(SURFACE_ROCK_COLOR, block));
     }
 

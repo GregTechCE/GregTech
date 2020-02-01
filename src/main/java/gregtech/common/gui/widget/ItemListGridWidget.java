@@ -51,7 +51,7 @@ public class ItemListGridWidget extends ScrollableListWidget {
     @Override
     public boolean mouseClicked(int mouseX, int mouseY, int button) {
         boolean result = super.mouseClicked(mouseX, mouseY, button);
-        if (!result) {
+        if (!result && isShiftDown()) {
             INativeWidget hoveredSlot = findHoveredSlot(mouseX, mouseY);
             if (hoveredSlot != null) {
                 dispatchOtherSlotShiftClick(hoveredSlot);

@@ -1,5 +1,8 @@
 package gregtech.common.metatileentities.electric;
 
+import codechicken.lib.render.CCRenderState;
+import codechicken.lib.render.pipeline.IVertexOperation;
+import codechicken.lib.vec.Matrix4;
 import gregtech.api.gui.GuiTextures;
 import gregtech.api.gui.ModularUI;
 import gregtech.api.gui.widgets.armor.*;
@@ -18,6 +21,26 @@ public class MetaTileEntityArmorTable extends MetaTileEntity {
     @Override
     public MetaTileEntity createMetaTileEntity(MetaTileEntityHolder holder) {
         return new MetaTileEntityArmorTable(metaTileEntityId);
+    }
+
+    @Override
+    public void update() {
+        super.update();
+    }
+
+    @Override
+    public void renderMetaTileEntity(CCRenderState renderState, Matrix4 translation, IVertexOperation[] pipeline) {
+        super.renderMetaTileEntity(renderState, translation, pipeline);
+    }
+
+    @Override
+    public int getLightOpacity() {
+        return 1;
+    }
+
+    @Override
+    public boolean isOpaqueCube() {
+        return false;
     }
 
     @Override

@@ -76,6 +76,7 @@ public class OrientedOverlayRenderer implements IIconRegister {
         }
     }
 
+    @SideOnly(Side.CLIENT)
     public void render(CCRenderState renderState, Matrix4 translation, IVertexOperation[] ops, Cuboid6 bounds, EnumFacing frontFacing, boolean isActive) {
         for (EnumFacing renderSide : EnumFacing.VALUES) {
             OverlayFace overlayFace = OverlayFace.bySide(renderSide, frontFacing);
@@ -86,9 +87,8 @@ public class OrientedOverlayRenderer implements IIconRegister {
         }
     }
 
+    @SideOnly(Side.CLIENT)
     public void render(CCRenderState renderState, Matrix4 translation, IVertexOperation[] pipeline, EnumFacing frontFacing, boolean isActive) {
         render(renderState, translation, pipeline, Cuboid6.full, frontFacing, isActive);
     }
-
-
 }

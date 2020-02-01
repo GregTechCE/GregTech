@@ -2,10 +2,13 @@ package gregtech.api.worldgen.generator;
 
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
+import gnu.trove.iterator.TLongIterator;
 import gnu.trove.list.TLongList;
 import gnu.trove.list.array.TLongArrayList;
 import gnu.trove.map.TLongObjectMap;
 import gnu.trove.map.hash.TLongObjectHashMap;
+import gnu.trove.set.TLongSet;
+import gnu.trove.set.hash.TLongHashSet;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.XSTR;
 import gregtech.api.worldgen.config.OreDepositDefinition;
@@ -16,6 +19,7 @@ import gregtech.api.worldgen.populator.VeinBufferPopulator;
 import gregtech.api.worldgen.populator.VeinChunkPopulator;
 import gregtech.api.worldgen.shape.IBlockGeneratorAccess;
 import gregtech.common.ConfigHolder;
+import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockPos.MutableBlockPos;
@@ -178,6 +182,21 @@ public class CachedGridEntry implements GridEntryInfo, IBlockGeneratorAccess, IB
         return false;
     }
 
+    @Override
+    public Collection<IBlockState> getGeneratedBlocks(OreDepositDefinition definition, int chunkX, int chunkZ) {
+        long chunkId = (long) chunkX << 32 | chunkZ & 0xFFFFFFFFL;
+        ChunkDataEntry chunkDataEntry = dataByChunkPos.get(chunkId);
+        if (chunkDataEntry != null) {
+            TLongSet longSet = chunkDataEntry.generatedBlocksSet.get(definition);
+            ArrayList<IBlockState> blockStates = new ArrayList<>();
+            TLongIterator iterator = longSet.iterator();
+            while (iterator.hasNext())
+                blockStates.add(Block.getStateById((int) iterator.next()));
+            return blockStates;
+        }
+        return Collections.emptyList();
+    }
+
     private GTWorldGenCapability retrieveCapability(World world, int chunkX, int chunkZ) {
         return world.getChunkFromChunkCoords(chunkX, chunkZ).getCapability(GTWorldGenCapability.CAPABILITY, null);
     }
@@ -241,7 +260,6 @@ public class CachedGridEntry implements GridEntryInfo, IBlockGeneratorAccess, IB
 
         if (currentOreVein.getDensity() < randomDensityValue)
             return false; //only place blocks in positions matching density
-
         setBlock(globalBlockX, globalBlockY, globalBlockZ, currentOreVein, 0);
         return true;
     }
@@ -277,6 +295,7 @@ public class CachedGridEntry implements GridEntryInfo, IBlockGeneratorAccess, IB
     public static class ChunkDataEntry {
 
         private final Map<OreDepositDefinition, TLongList> oreBlocks = new HashMap<>();
+        private final Map<OreDepositDefinition, TLongSet> generatedBlocksSet = new HashMap<>();
         private final List<OreDepositDefinition> generatedOres = new ArrayList<>();
         private final int chunkX;
         private final int chunkZ;
@@ -302,6 +321,7 @@ public class CachedGridEntry implements GridEntryInfo, IBlockGeneratorAccess, IB
             boolean generatedAnything = false;
             for (OreDepositDefinition definition : oreBlocks.keySet()) {
                 TLongList blockIndexList = oreBlocks.get(definition);
+                TLongSet generatedBlocks = new TLongHashSet();
                 boolean generatedOreVein = false;
                 for (int i = 0; i < blockIndexList.size(); i++) {
                     long blockIndex = blockIndexList.get(i);
@@ -325,10 +345,12 @@ public class CachedGridEntry implements GridEntryInfo, IBlockGeneratorAccess, IB
                     }
                     //set flags as 16 to avoid observer updates loading neighbour chunks
                     world.setBlockState(blockPos, newState, 16);
+                    generatedBlocks.add(Block.getStateId(newState));
                     generatedOreVein = true;
                     generatedAnything = true;
                 }
                 if (generatedOreVein) {
+                    this.generatedBlocksSet.put(definition, generatedBlocks);
                     this.generatedOres.add(definition);
                 }
             }

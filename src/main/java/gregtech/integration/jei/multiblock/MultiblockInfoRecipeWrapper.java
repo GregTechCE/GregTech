@@ -8,6 +8,7 @@ import gregtech.api.render.scene.SceneRenderCallback;
 import gregtech.api.render.scene.WorldSceneRenderer;
 import gregtech.api.util.BlockInfo;
 import gregtech.api.util.GTUtility;
+import gregtech.api.util.ItemStackKey;
 import mezz.jei.api.gui.IDrawable;
 import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.recipe.IRecipeWrapper;
@@ -23,9 +24,11 @@ import net.minecraft.client.util.ITooltipFlag.TooltipFlags;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.text.TextFormatting;
+import net.minecraft.world.World;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 
@@ -40,6 +43,8 @@ public class MultiblockInfoRecipeWrapper implements IRecipeWrapper, SceneRenderC
     private WorldSceneRenderer[] sceneRenders;
     private Map<GuiButton, Runnable> buttons = new HashMap<>();
     private RecipeLayout recipeLayout;
+    private List<ItemStack> allItemStackInputs = new ArrayList<>();
+    private ItemStack controllerStack;
 
     private int layerIndex = -1;
     private int currentRendererPage = 0;
@@ -56,16 +61,19 @@ public class MultiblockInfoRecipeWrapper implements IRecipeWrapper, SceneRenderC
 
     public MultiblockInfoRecipeWrapper(MultiblockInfoPage infoPage) {
         this.infoPage = infoPage;
+        this.controllerStack = infoPage.getController().getStackForm();
+        HashSet<ItemStackKey> drops = new HashSet<>();
+        drops.add(new ItemStackKey(controllerStack));
         this.sceneRenders = infoPage.getMatchingShapes().stream()
-            .map(this::initializeSceneRenderer)
+            .map(it -> initializeSceneRenderer(it, drops))
             .toArray(WorldSceneRenderer[]::new);
+        drops.forEach(it -> allItemStackInputs.add(it.getItemStack()));
     }
 
     @Override
     public void getIngredients(IIngredients ingredients) {
-        ItemStack itemStack = infoPage.getController().getStackForm();
-        ingredients.setInput(ItemStack.class, itemStack);
-        ingredients.setOutput(ItemStack.class, itemStack);
+        ingredients.setInputs(ItemStack.class, allItemStackInputs);
+        ingredients.setOutput(ItemStack.class, controllerStack);
     }
 
     public void setRecipeLayout(RecipeLayout layout) {
@@ -135,16 +143,19 @@ public class MultiblockInfoRecipeWrapper implements IRecipeWrapper, SceneRenderC
     @Override
     public void preRenderScene(WorldSceneRenderer renderer) {
         Vector3f size = renderer.getSize();
+        Vector3f minPos = renderer.world.getMinPos();
+        minPos = new Vector3f(minPos);
+        minPos.add(new Vector3f(0.0f, -1.0f, 0.5f));
 
-        GlStateManager.scale(2.0, 2.0, 2.0);
-        GlStateManager.translate(-1.0f, -2.5f, 0.0f);
-
+        GlStateManager.translate(-minPos.x, -minPos.y, -minPos.z);
         Vector3 centerPosition = new Vector3(size.x / 2.0f, size.y / 2.0f, size.z / 2.0f);
         GlStateManager.translate(centerPosition.x, centerPosition.y, centerPosition.z);
-        GlStateManager.rotate(rotationYaw, 0.0f, 1.0f, 0.0f);
+        GlStateManager.scale(2.0, 2.0, 2.0);
         GlStateManager.translate(-centerPosition.x, -centerPosition.y, -centerPosition.z);
+        GlStateManager.translate(minPos.x, minPos.y, minPos.z);
 
         GlStateManager.translate(centerPosition.x, centerPosition.y, centerPosition.z);
+        GlStateManager.rotate(rotationYaw, 0.0f, 1.0f, 0.0f);
         GlStateManager.rotate(rotationPitch, 0.0f, 0.0f, 1.0f);
         GlStateManager.translate(-centerPosition.x, -centerPosition.y, -centerPosition.z);
 
@@ -241,7 +252,18 @@ public class MultiblockInfoRecipeWrapper implements IRecipeWrapper, SceneRenderC
         return Collections.emptyList();
     }
 
-    private WorldSceneRenderer initializeSceneRenderer(MultiblockShapeInfo shapeInfo) {
+    private static void gatherBlockDrops(World world, Collection<BlockPos> positions, Set<ItemStackKey> drops) {
+        NonNullList<ItemStack> dropsList = NonNullList.create();
+        for (BlockPos pos : positions) {
+            IBlockState blockState = world.getBlockState(pos);
+            blockState.getBlock().getDrops(dropsList, world, pos, blockState, 0);
+        }
+        for (ItemStack itemStack : dropsList) {
+            drops.add(new ItemStackKey(itemStack));
+        }
+    }
+
+    private WorldSceneRenderer initializeSceneRenderer(MultiblockShapeInfo shapeInfo, Set<ItemStackKey> blockDrops) {
         Map<BlockPos, BlockInfo> blockMap = new HashMap<>();
         BlockInfo[][][] blocks = shapeInfo.getBlocks();
         for (int z = 0; z < blocks.length; z++) {
@@ -257,6 +279,7 @@ public class MultiblockInfoRecipeWrapper implements IRecipeWrapper, SceneRenderC
         }
         WorldSceneRenderer worldSceneRenderer = new WorldSceneRenderer(blockMap);
         worldSceneRenderer.world.updateEntities();
+        gatherBlockDrops(worldSceneRenderer.world, blockMap.keySet(), blockDrops);
         worldSceneRenderer.setRenderCallback(this);
         worldSceneRenderer.setRenderFilter(this::shouldDisplayBlock);
         return worldSceneRenderer;

@@ -54,6 +54,7 @@ public class SafeRenderer implements IIconRegister {
         this.textures[6] = textureMap.registerSprite(new ResourceLocation(formattedBase + "/door_front"));
     }
 
+    @SideOnly(Side.CLIENT)
     public void render(CCRenderState renderState, Matrix4 translation, IVertexOperation[] pipeline, EnumFacing rotation, float capRotation) {
         translation.translate(0.5, 0.5, 0.5);
         translation.rotate(Math.toRadians(90.0 * rotations.indexOf(rotation)), Rotation.axes[1]);

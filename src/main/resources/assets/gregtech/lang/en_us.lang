@@ -1628,8 +1628,6 @@ recipemap.gas_turbine.name=Gas Turbine
 recipemap.steam_turbine.name=Steam Turbine
 recipemap.semi_fluid_generator.name=Semi Fluid Fuels
 
-behavior.magnifying_glass.description=Use on surface rock to inspect it
-behavior.magnifying_glass.inspect=This rock contains %s
 behaviour.hoe=Can till dirt
 behaviour.soft_hammer=Use on machine to allow/disallow it to work
 behaviour.lighter.tooltip=Can light things on fire
@@ -1651,6 +1649,17 @@ tile.gt.leaves.rubber_wood.name=Rubber Tree Leaves
 tile.gt.sapling.rubber_wood.name=Rubber Tree Sapling
 
 tile.surface_rock.name=Surface Rock
+
+tile.surface_rock_new.name=Surface Rock
+gregtech.block.surface_rock.material=Rock Material: %s
+gregtech.block.surface_rock.underground_materials=Underground Materials: %s
+
+metaitem.scanner.name=Scanner
+metaitem.scanner.tooltip=Right click on surface rocks/nto discover underground materials
+behavior.scanner.analyzing=Analyzing...
+behavior.scanner.analyzing_failed=Analyzing failed!
+behavior.scanner.analyzing_complete=Analyzing complete!
+behavior.scanner.not_enough_energy=Analyzing failed: Not Enough Energy!
 
 tile.casing.ulv=ULV Machine Casing
 tile.casing.lv=LV Machine Casing

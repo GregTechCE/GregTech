@@ -46,7 +46,6 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextComponentTranslation;
-import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.IFluidTank;
 
@@ -273,7 +272,7 @@ public class MetaTileEntityLargeBoiler extends MultiblockWithDisplayBase {
     private int setupRecipeAndConsumeInputs() {
         for (IFluidTank fluidTank : fluidImportInventory.getFluidTanks()) {
             FluidStack fuelStack = fluidTank.drain(Integer.MAX_VALUE, false);
-            if (fuelStack == null || fuelStack.getFluid() == FluidRegistry.WATER)
+            if (fuelStack == null || ModHandler.isWater(fuelStack))
                 continue; //ignore empty tanks and water
             FuelRecipe dieselRecipe = RecipeMaps.DIESEL_GENERATOR_FUELS.findRecipe(GTValues.V[9], fuelStack);
             if (dieselRecipe != null) {

@@ -66,7 +66,7 @@ public class Textures {
     public static SimpleCubeRenderer TUNGSTENSTEEL_FIREBOX_ACTIVE = new SimpleCubeRenderer("casings/firebox/machine_casing_firebox_tungstensteel_active");
 
     public static SimpleSidedCubeRenderer TESLA_COIL = new SimpleSidedCubeRenderer("casings/tesla_coil");
-    public static SimpleSidedCubeRenderer CRAFTING_TABLE = new SimpleSidedCubeRenderer("casings/crafting_table");
+    public static SimpleOrientedCubeRenderer CRAFTING_TABLE = new SimpleOrientedCubeRenderer("casings/crafting_table");
 
     public static OrientedOverlayRenderer COAL_BOILER_OVERLAY = new OrientedOverlayRenderer("generators/boiler/coal", FRONT);
     public static OrientedOverlayRenderer LAVA_BOILER_OVERLAY = new OrientedOverlayRenderer("generators/boiler/lava", FRONT);

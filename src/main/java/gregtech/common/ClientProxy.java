@@ -13,8 +13,7 @@ import gregtech.api.unification.stack.UnificationEntry;
 import gregtech.api.util.GTLog;
 import gregtech.api.util.ModCompatibility;
 import gregtech.common.blocks.*;
-import gregtech.common.blocks.surfacerock.BlockSurfaceRock;
-import gregtech.common.blocks.surfacerock.BlockSurfaceRockFlooded;
+import gregtech.common.blocks.surfacerock.BlockSurfaceRockDeprecated;
 import gregtech.common.covers.facade.FacadeRenderer;
 import gregtech.common.items.MetaItems;
 import gregtech.common.render.CableRenderer;
@@ -94,11 +93,8 @@ public class ClientProxy extends CommonProxy {
 
     public static final IBlockColor SURFACE_ROCK_COLOR = (IBlockState state, IBlockAccess worldIn, BlockPos pos, int tintIndex) -> {
         if (tintIndex == 1) {
-            if (state.getBlock() instanceof BlockSurfaceRock) {
-                BlockSurfaceRock surfaceRock = (BlockSurfaceRock) state.getBlock();
-                return state.getValue(surfaceRock.materialProperty).materialRGB;
-            } else if (state.getBlock() instanceof BlockSurfaceRockFlooded) {
-                BlockSurfaceRockFlooded surfaceRock = (BlockSurfaceRockFlooded) state.getBlock();
+            if (state.getBlock() instanceof BlockSurfaceRockDeprecated) {
+                BlockSurfaceRockDeprecated surfaceRock = (BlockSurfaceRockDeprecated) state.getBlock();
                 return state.getValue(surfaceRock.materialProperty).materialRGB;
             } else return 0xFFFFFF;
         } else {

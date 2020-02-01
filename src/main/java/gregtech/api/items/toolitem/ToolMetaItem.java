@@ -391,6 +391,9 @@ public class ToolMetaItem<T extends ToolMetaItem<?>.MetaToolValueItem> extends M
     public String getItemStackDisplayName(ItemStack stack) {
         if (stack.getItemDamage() >= metaItemOffset) {
             T item = getItem(stack);
+            if (item == null) {
+                return "invalid item";
+            }
             SolidMaterial primaryMaterial = getToolMaterial(stack);
             String materialName = primaryMaterial == null ? "" : String.valueOf(primaryMaterial.getLocalizedName());
             return I18n.format("metaitem." + item.unlocalizedName + ".name", materialName);

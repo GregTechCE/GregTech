@@ -176,9 +176,6 @@ public class MetaTool extends ToolMetaItem<ToolMetaItem<?>.MetaToolValueItem> {
             .addOreDict(ToolDictNames.craftingToolSaw)
             .addComponents(ElectricStats.createElectricItem(100000L, 1L));
 
-        MAGNIFYING_GLASS = addItem(36, "tool.magnifying_glass").setToolStats(new ToolMagnifyingGlass())
-            .addOreDict(ToolDictNames.craftingToolMagnifyingGlass);
-
         PLUNGER = addItem(37, "tool.plunger").setToolStats(new ToolPlunger())
             .addOreDict(ToolDictNames.craftingToolPlunger);
     }

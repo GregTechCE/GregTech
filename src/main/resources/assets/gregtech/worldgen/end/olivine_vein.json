@@ -4,6 +4,7 @@
   "max_height": 50,
   "min_height": 10,
   "dimension_filter": ["name:the_end"],
+  "surface_stone_material": "olivine",
 
   "generator": {
     "type": "ellipsoid",

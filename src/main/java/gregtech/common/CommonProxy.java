@@ -75,10 +75,10 @@ public class CommonProxy {
         registry.register(LEAVES);
         registry.register(SAPLING);
         registry.register(CRUSHER_BLADE);
+        registry.register(SURFACE_ROCK_NEW);
 
         COMPRESSED.values().stream().distinct().forEach(registry::register);
         SURFACE_ROCKS.values().stream().distinct().forEach(registry::register);
-        FLOODED_SURFACE_ROCKS.values().stream().distinct().forEach(registry::register);
         FRAMES.values().stream().distinct().forEach(registry::register);
         ORES.forEach(registry::register);
         FLUID_BLOCKS.forEach(registry::register);

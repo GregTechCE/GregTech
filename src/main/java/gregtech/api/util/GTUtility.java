@@ -64,6 +64,7 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collector;
 import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 import static gregtech.api.GTValues.V;
 
@@ -76,6 +77,10 @@ public class GTUtility {
                     runnable.run();
             }
         };
+    }
+
+    public static Stream<Object> flatten(Object[] array) {
+        return Arrays.stream(array).flatMap(o -> o instanceof Object[] ? flatten((Object[]) o): Stream.of(o));
     }
 
     public static void copyInventoryItems(IItemHandler src, IItemHandlerModifiable dest) {
@@ -719,7 +724,7 @@ public class GTUtility {
         return Comparator.<ItemStack, Integer>comparing(it -> Item.REGISTRY.getIDForObject(it.getItem()))
             .thenComparing(ItemStack::getItemDamage)
             .thenComparing(ItemStack::hasTagCompound)
-            .thenComparing(it -> -it.getTagCompound().hashCode())
+            .thenComparing(it -> -Objects.hashCode(it.getTagCompound()))
             .thenComparing(ItemStack::getCount);
     }
 }

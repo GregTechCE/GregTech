@@ -31,10 +31,12 @@ public class SimpleOverlayRenderer implements IIconRegister {
         this.sprite = textureMap.registerSprite(new ResourceLocation(GTValues.MODID, "blocks/" + basePath));
     }
 
+    @SideOnly(Side.CLIENT)
     public void renderSided(EnumFacing side, Cuboid6 bounds, CCRenderState renderState, IVertexOperation[] pipeline, Matrix4 translation) {
         Textures.renderFace(renderState, translation, pipeline, side, bounds, sprite);
     }
 
+    @SideOnly(Side.CLIENT)
     public void renderSided(EnumFacing side, CCRenderState renderState, Matrix4 translation, IVertexOperation[] pipeline) {
         renderSided(side, Cuboid6.full, renderState, pipeline, translation);
     }

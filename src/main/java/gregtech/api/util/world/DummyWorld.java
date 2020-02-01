@@ -53,6 +53,22 @@ public class DummyWorld extends World {
     }
 
     @Override
+    public void notifyBlockUpdate(BlockPos pos, IBlockState oldState, IBlockState newState, int flags) {
+    }
+
+    @Override
+    public void markBlockRangeForRenderUpdate(BlockPos rangeMin, BlockPos rangeMax) {
+    }
+
+    @Override
+    public void markBlockRangeForRenderUpdate(int x1, int y1, int z1, int x2, int y2, int z2) {
+    }
+
+    @Override
+    public void updateObservingBlocksAt(BlockPos pos, Block blockType) {
+    }
+
+    @Override
     protected IChunkProvider createChunkProvider() {
         return new DummyChunkProvider(this);
     }

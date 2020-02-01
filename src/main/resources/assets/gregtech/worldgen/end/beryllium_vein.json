@@ -3,7 +3,7 @@
   "density": 0.3,
   "max_height": 35,
   "min_height": 5,
-  "surface_stone_material": "thorium",
+  "surface_stone_material": "emerald",
   "dimension_filter": ["name:the_end"],
 
   "generator": {

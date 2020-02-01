@@ -30,6 +30,20 @@ public class PositionedRect {
         return size;
     }
 
+    public boolean intersects(Position other) {
+        return position.x <= other.x &&
+            position.y <= other.y &&
+            position.x + size.width >= other.x &&
+            position.y + size.height >= other.y;
+    }
+
+    public boolean intersects(PositionedRect other) {
+        return intersects(other.position) ||
+            intersects(other.position.add(other.size)) ||
+            intersects(other.position.add(new Size(other.size.width, 0))) ||
+            intersects(other.position.add(new Size(0, other.size.height)));
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

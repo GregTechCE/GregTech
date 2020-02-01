@@ -102,9 +102,9 @@ public class MetaTileEntityWorkbench extends MetaTileEntity {
 
     @Override
     public void renderMetaTileEntity(CCRenderState renderState, Matrix4 translation, IVertexOperation[] pipeline) {
-        int paintingColor = getResultRenderingColor();
+        int paintingColor = getPaintingColorForRendering();
         pipeline = ArrayUtils.add(pipeline, new ColourMultiplier(GTUtility.convertRGBtoOpaqueRGBA_CL(paintingColor)));
-        Textures.CRAFTING_TABLE.render(renderState, translation, pipeline, Cuboid6.full);
+        Textures.CRAFTING_TABLE.render(renderState, translation, pipeline, Cuboid6.full, getFrontFacing());
     }
 
     @Override

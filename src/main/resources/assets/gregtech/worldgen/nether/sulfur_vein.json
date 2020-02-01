@@ -4,6 +4,7 @@
   "max_height": 70,
   "min_height": 10,
   "dimension_filter": ["is_nether"],
+  "surface_stone_material": "sulfur",
 
   "generator": {
     "type": "ellipsoid",

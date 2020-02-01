@@ -44,12 +44,15 @@ import net.minecraftforge.client.event.ModelBakeEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.model.IModelState;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import org.apache.commons.lang3.tuple.Pair;
 import org.lwjgl.opengl.GL11;
 
 import java.util.ArrayList;
 import java.util.Random;
 
+@SideOnly(Side.CLIENT)
 public class MetaTileEntityRenderer implements ICCBlockRenderer, IItemRenderer {
 
     public static ModelResourceLocation MODEL_LOCATION = new ModelResourceLocation(new ResourceLocation(GTValues.MODID, "machine"), "normal");

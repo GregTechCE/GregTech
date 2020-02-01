@@ -18,8 +18,6 @@ import org.apache.commons.lang3.ArrayUtils;
 
 public class LargeTurbineRenderer implements IIconRegister {
 
-    private static final Cuboid6 BIG_CUBOID = new Cuboid6(0.0, 0.0, 0.0, 3.0, 3.0, 3.0);
-
     @SideOnly(Side.CLIENT)
     private TextureAtlasSprite baseRingSprite;
     @SideOnly(Side.CLIENT)
@@ -42,6 +40,7 @@ public class LargeTurbineRenderer implements IIconRegister {
         this.activeBladeSprite = textureMap.registerSprite(new ResourceLocation(GTValues.MODID, "blocks/multiblock/large_turbine/rotor_spinning"));
     }
 
+    @SideOnly(Side.CLIENT)
     public void renderSided(CCRenderState renderState, Matrix4 translation, IVertexOperation[] pipeline, EnumFacing side, boolean hasBase, boolean hasRotor, boolean isActive, int rotorRGB) {
         Matrix4 cornerOffset = null;
         switch (side.getAxis()) {

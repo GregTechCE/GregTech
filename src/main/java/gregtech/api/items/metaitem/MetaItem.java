@@ -476,7 +476,7 @@ public abstract class MetaItem<T extends MetaItem<?>.MetaValueItem> extends Item
         if (stack.getItemDamage() >= metaItemOffset) {
             T item = getItem(stack);
             if (item == null) {
-                return "unnamed";
+                return "invalid item";
             }
             String unlocalizedName = String.format("metaitem.%s.name", item.unlocalizedName);
             if (item.getNameProvider() != null) {

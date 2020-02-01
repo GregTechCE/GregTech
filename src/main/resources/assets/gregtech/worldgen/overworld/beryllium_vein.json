@@ -2,7 +2,7 @@
   "weight": 40,
   "density": 0.3,
   "max_height": 35,
-  "surface_stone_material": "thorium",
+  "surface_stone_material": "silicon",
 
   "generator": {
     "type": "ellipsoid",

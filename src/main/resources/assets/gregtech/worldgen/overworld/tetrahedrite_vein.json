@@ -2,8 +2,10 @@
   "weight": 70,
   "density": 0.3,
   "min_height": 50,
-  "surface_stone_material": "copper",
-
+  "surface_stone": {
+    "material": "copper",
+    "hidden": false
+  },
   "biome_modifier": {
     "type": "biome_dictionary",
     "mountain": 20
