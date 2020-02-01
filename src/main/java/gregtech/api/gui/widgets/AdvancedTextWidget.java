@@ -73,7 +73,9 @@ public class AdvancedTextWidget extends Widget {
 
     @SideOnly(Side.CLIENT)
     private void resizeWrapScreen() {
-        this.wrapScreen.get().setWorldAndResolution(Minecraft.getMinecraft(), sizes.getScreenWidth(), sizes.getScreenHeight());
+        if (sizes != null) {
+            this.wrapScreen.get().setWorldAndResolution(Minecraft.getMinecraft(), sizes.getScreenWidth(), sizes.getScreenHeight());
+        }
     }
 
     @Override
