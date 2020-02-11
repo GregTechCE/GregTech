@@ -357,9 +357,15 @@ public abstract class Widget {
         @SideOnly(Side.CLIENT)
         private T fieldValue;
 
-        public ClientSideField(Supplier<T> initializer) {
+        /**
+         * See {@link gregtech.api.gui.widgets.AdvancedTextWidget} for example usage.
+         * Extra attention must be paid to avoid leaving client only classes in the method signature
+         * of classes that could be loaded in a dedicated server.
+         */
+        @SuppressWarnings("unchecked")
+        public ClientSideField(Supplier<?> initializer) {
             if (isClientSide()) {
-                this.fieldValue = initializer.get();
+                this.fieldValue = (T) initializer.get();
             }
         }
 
