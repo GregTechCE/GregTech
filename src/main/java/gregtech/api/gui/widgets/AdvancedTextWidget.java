@@ -31,7 +31,7 @@ import java.util.stream.Collectors;
 public class AdvancedTextWidget extends Widget {
     protected int maxWidthLimit;
 
-    private ClientSideField<WrapScreen> wrapScreen = new ClientSideField<>(WrapScreen::new);
+    private ClientSideField<WrapScreen> wrapScreen = new ClientSideField<>(() -> new WrapScreen());
     protected Consumer<List<ITextComponent>> textSupplier;
     protected BiConsumer<String, ClickData> clickHandler;
     private List<ITextComponent> displayText = new ArrayList<>();
