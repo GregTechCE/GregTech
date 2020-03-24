@@ -80,13 +80,13 @@ public class RecipeMapCategory implements IRecipeCategory<GTRecipeWrapper> {
                 if (slotWidget.getHandle().getItemHandler() == importItems) {
                     //this is input item stack slot widget, so add it to item group
                     itemStackGroup.init(slotWidget.getHandle().getSlotIndex(), true,
-                        slotWidget.getPosition().x - 1,
-                        slotWidget.getPosition().y - 1);
+                        slotWidget.getPosition().x,
+                        slotWidget.getPosition().y);
                 } else if (slotWidget.getHandle().getItemHandler() == exportItems) {
                     //this is output item stack slot widget, so add it to item group
                     itemStackGroup.init(importItems.getSlots() + slotWidget.getHandle().getSlotIndex(), false,
-                        slotWidget.getPosition().x - 1,
-                        slotWidget.getPosition().y - 1);
+                        slotWidget.getPosition().x,
+                        slotWidget.getPosition().y);
                 }
 
             } else if (uiWidget instanceof TankWidget) {
