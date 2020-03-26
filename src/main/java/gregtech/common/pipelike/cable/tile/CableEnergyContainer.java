@@ -85,7 +85,7 @@ public class CableEnergyContainer implements IEnergyContainer {
             if (tileEntity == null || tileEntityCable.getPipeBlock().getPipeTileEntity(tileEntity) != null) {
                 continue; //do not emit into other cable tile entities
             }
-            IEnergyContainer energyContainer = tileEntity.getCapability(GregtechCapabilities.CAPABILITY_ENERGY_CONTAINER, null);
+            IEnergyContainer energyContainer = tileEntity.getCapability(GregtechCapabilities.CAPABILITY_ENERGY_CONTAINER, facing.getOpposite());
             if (energyContainer == null) continue;
             amperesUsed += energyContainer.acceptEnergyFromNetwork(facing.getOpposite(), voltage, amperage - amperesUsed);
             if (amperesUsed == amperage)
