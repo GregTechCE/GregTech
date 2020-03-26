@@ -239,6 +239,11 @@ public class MetaItem2 extends MaterialMetaItem {
             .outputs(new ItemStack(Items.DYE, 3, 9))
             .buildAndRegister();
 
+        RecipeMaps.EXTRACTOR_RECIPES.recipeBuilder()
+            .inputs(new ItemStack(Items.BEETROOT, 1))
+            .outputs(new ItemStack(Items.DYE, 2, 1))
+            .buildAndRegister();
+
         // Misc
         RecipeMaps.MACERATOR_RECIPES.recipeBuilder()
             .inputs(new ItemStack(Items.DYE, 1, EnumDyeColor.BROWN.getDyeDamage()))
