@@ -5,8 +5,8 @@ import crafttweaker.annotations.ZenRegister;
 import crafttweaker.api.minecraft.CraftTweakerMC;
 import crafttweaker.api.world.IBiome;
 import gregtech.api.GTValues;
+import gregtech.api.unification.material.type.DustMaterial;
 import gregtech.api.unification.material.type.DustMaterial.MatFlags;
-import gregtech.api.unification.material.type.IngotMaterial;
 import gregtech.api.unification.ore.StoneType;
 import gregtech.api.util.WorldBlockPredicate;
 import gregtech.api.worldgen.filler.BlockFiller;
@@ -82,7 +82,7 @@ public class OreDepositDefinition {
         }
         //legacy surface rock specifier support
         if (configRoot.has("surface_stone_material")) {
-            IngotMaterial surfaceStoneMaterial = (IngotMaterial) OreConfigUtils.getMaterialByName(configRoot.get("surface_stone_material").getAsString());
+            DustMaterial surfaceStoneMaterial = OreConfigUtils.getMaterialByName(configRoot.get("surface_stone_material").getAsString());
             if (!surfaceStoneMaterial.hasFlag(MatFlags.GENERATE_ORE)) {
                 throw new IllegalArgumentException("Material " + surfaceStoneMaterial + " doesn't have surface rock variant");
             }
