@@ -25,9 +25,9 @@ public class TileEntitySurfaceRock extends TileEntity {
     private List<Material> undergroundMaterials = new ArrayList<>();
 
     @SideOnly(Side.CLIENT)
-    public Object cachedModel = null;
+    public Object cachedModel;
     @SideOnly(Side.CLIENT)
-    public Object cacheKey = null;
+    public Object cacheKey;
 
     public Material getMaterial() {
         return material;
