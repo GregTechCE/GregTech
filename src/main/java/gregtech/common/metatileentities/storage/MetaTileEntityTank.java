@@ -263,8 +263,9 @@ public class MetaTileEntityTank extends MetaTileEntity implements IFastRenderMet
     }
 
     private void removeTankFromMultiblock(MetaTileEntityTank removedTank) {
-        int fluidInTank = getFluidStoredInTank(removedTank.getPos());
         this.connectedTanks.remove(removedTank.getPos());
+        recomputeTankSize();
+        int fluidInTank = getFluidStoredInTank(removedTank.getPos());
         this.needsShapeResync = true;
         removedTank.setTankControllerInternal(null);
         FluidStack fluidStack = multiblockFluidTank.getFluid();
@@ -274,7 +275,6 @@ public class MetaTileEntityTank extends MetaTileEntity implements IFastRenderMet
             removedTank.multiblockFluidTank.fill(fillStack, true);
             this.multiblockFluidTank.drain(fillStack, true);
         }
-        recomputeTankSize();
     }
 
     private void addTankToMultiblock(MetaTileEntityTank addedTank) {
@@ -294,7 +294,8 @@ public class MetaTileEntityTank extends MetaTileEntity implements IFastRenderMet
 
     private void recomputeTankSizeNow(boolean allowShrinking) {
         int newCapacity = (connectedTanks.size() + 1) * tankSize;
-        int resultCapacity = allowShrinking ? newCapacity : Math.max(multiblockFluidTank.getCapacity(), newCapacity);
+        //int resultCapacity = allowShrinking ? newCapacity : Math.max(multiblockFluidTank.getCapacity(), newCapacity);  // Delete this prior to pull request
+        int resultCapacity = newCapacity;
         this.multiblockFluidTank.setCapacity(resultCapacity);
         if (allowShrinking && multiblockFluidTank.getFluid() != null &&
             multiblockFluidTank.getFluidAmount() > multiblockFluidTank.getCapacity()) {
