@@ -294,9 +294,7 @@ public class MetaTileEntityTank extends MetaTileEntity implements IFastRenderMet
 
     private void recomputeTankSizeNow(boolean allowShrinking) {
         int newCapacity = (connectedTanks.size() + 1) * tankSize;
-        //int resultCapacity = allowShrinking ? newCapacity : Math.max(multiblockFluidTank.getCapacity(), newCapacity);  // Delete this prior to pull request
-        int resultCapacity = newCapacity;
-        this.multiblockFluidTank.setCapacity(resultCapacity);
+        this.multiblockFluidTank.setCapacity(newCapacity);
         if (allowShrinking && multiblockFluidTank.getFluid() != null &&
             multiblockFluidTank.getFluidAmount() > multiblockFluidTank.getCapacity()) {
             multiblockFluidTank.getFluid().amount = multiblockFluidTank.getCapacity();
