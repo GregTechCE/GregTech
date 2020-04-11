@@ -263,8 +263,6 @@ public class MetaTileEntityTank extends MetaTileEntity implements IFastRenderMet
     }
 
     private void removeTankFromMultiblock(MetaTileEntityTank removedTank) {
-        this.connectedTanks.remove(removedTank.getPos());
-        recomputeTankSize();
         int fluidInTank = getFluidStoredInTank(removedTank.getPos());
         this.needsShapeResync = true;
         removedTank.setTankControllerInternal(null);
@@ -275,6 +273,8 @@ public class MetaTileEntityTank extends MetaTileEntity implements IFastRenderMet
             removedTank.multiblockFluidTank.fill(fillStack, true);
             this.multiblockFluidTank.drain(fillStack, true);
         }
+        this.connectedTanks.remove(removedTank.getPos());
+        recomputeTankSize();
     }
 
     private void addTankToMultiblock(MetaTileEntityTank addedTank) {
