@@ -19,8 +19,11 @@ public abstract class TileEntityMaterialPipeBase<PipeType extends Enum<PipeType>
     }
 
     public void setPipeData(BlockPipe<PipeType, NodeDataType, ?> pipeBlock, PipeType pipeType, Material pipeMaterial) {
-        this.pipeMaterial = pipeMaterial;
         super.setPipeData(pipeBlock, pipeType);
+        this.pipeMaterial = pipeMaterial;
+        if (!getWorld().isRemote) {
+            writeCustomData(-5, this::writePipeMaterial);
+        }
     }
 
     @Override
@@ -47,6 +50,14 @@ public abstract class TileEntityMaterialPipeBase<PipeType extends Enum<PipeType>
         this.pipeMaterial = Material.MATERIAL_REGISTRY.getObject(compound.getString("PipeMaterial"));
     }
 
+    private void writePipeMaterial(PacketBuffer buf) {
+        buf.writeVarInt(Material.MATERIAL_REGISTRY.getIDForObject(pipeMaterial));
+    }
+
+    private void readPipeMaterial(PacketBuffer buf) {
+        this.pipeMaterial = Material.MATERIAL_REGISTRY.getObjectById(buf.readVarInt());
+    }
+
     @Override
     public void writeInitialSyncData(PacketBuffer buf) {
         super.writeInitialSyncData(buf);
@@ -57,5 +68,14 @@ public abstract class TileEntityMaterialPipeBase<PipeType extends Enum<PipeType>
     public void receiveInitialSyncData(PacketBuffer buf) {
         super.receiveInitialSyncData(buf);
         this.pipeMaterial = Material.MATERIAL_REGISTRY.getObjectById(buf.readVarInt());
+    }
+
+    @Override
+    public void receiveCustomData(int discriminator, PacketBuffer buf) {
+        super.receiveCustomData(discriminator, buf);
+        if (discriminator == -5) {
+            readPipeMaterial(buf);
+            scheduleChunkForRenderUpdate();
+        }
     }
 }
