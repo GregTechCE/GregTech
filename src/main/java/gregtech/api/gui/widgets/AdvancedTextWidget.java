@@ -32,7 +32,7 @@ public class AdvancedTextWidget extends Widget {
     protected int maxWidthLimit;
 
     @SideOnly(Side.CLIENT)
-    private ClientSideField<WrapScreen> wrapScreen;
+    private WrapScreen wrapScreen;
 
     protected Consumer<List<ITextComponent>> textSupplier;
     protected BiConsumer<String, ClickData> clickHandler;
@@ -76,9 +76,9 @@ public class AdvancedTextWidget extends Widget {
     @SideOnly(Side.CLIENT)
     private WrapScreen getWrapScreen() {
         if (wrapScreen == null)
-            wrapScreen = new ClientSideField<>(WrapScreen::new);
+            wrapScreen = new WrapScreen();
 
-        return wrapScreen.get();
+        return wrapScreen;
     }
 
     @SideOnly(Side.CLIENT)
