@@ -49,7 +49,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 @Mod(modid = GTValues.MODID,
     name = "GregTech Community Edition",
     acceptedMinecraftVersions = "[1.12,1.13)",
-    dependencies = "required:forge@[14.23.5.2838,);" + CodeChickenLib.MOD_VERSION_DEP + "after:forestry;after:forgemultipartcbe;after:jei@[4.8.6,);after:crafttweaker;")
+    dependencies = "required:forge@[14.23.5.2847,);" + CodeChickenLib.MOD_VERSION_DEP + "after:forestry;after:forgemultipartcbe;after:jei@[4.15.0,);after:crafttweaker;")
 public class GregTechMod {
 
     static {
