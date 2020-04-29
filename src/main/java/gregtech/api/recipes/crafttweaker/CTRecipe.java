@@ -51,7 +51,7 @@ public class CTRecipe {
             .collect(Collectors.toList());
     }
 
-    @ZenGetter("chancedOutputs")
+    @ZenGetter("changedOutputs")
     public List<ChancedEntry> getChancedOutputs() {
         ArrayList<ChancedEntry> result = new ArrayList<>();
         this.backingRecipe.getChancedOutputs().forEach(chanceEntry ->
@@ -59,6 +59,12 @@ public class CTRecipe {
         return result;
     }
 
+    //Typo Fix
+    @ZenGetter("chancedOutputs")
+    public List<ChancedEntry> getChancedOutputsFix() {
+        return getChancedOutputs();
+    }        
+    
     @ZenGetter("fluidInputs")
     public List<ILiquidStack> getFluidInputs() {
         return this.backingRecipe.getFluidInputs().stream()
