@@ -51,7 +51,7 @@ public class CTRecipe {
             .collect(Collectors.toList());
     }
 
-    @ZenGetter("changedOutputs")
+    @ZenGetter("chancedOutputs")
     public List<ChancedEntry> getChancedOutputs() {
         ArrayList<ChancedEntry> result = new ArrayList<>();
         this.backingRecipe.getChancedOutputs().forEach(chanceEntry ->
