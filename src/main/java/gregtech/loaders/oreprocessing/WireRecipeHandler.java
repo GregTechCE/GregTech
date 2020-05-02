@@ -1,6 +1,5 @@
 package gregtech.loaders.oreprocessing;
 
-import com.google.common.collect.ImmutableMap;
 import gregtech.api.GTValues;
 import gregtech.api.items.OreDictNames;
 import gregtech.api.recipes.ModHandler;
@@ -20,17 +19,20 @@ import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.ItemStack;
 import org.apache.commons.lang3.ArrayUtils;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import static gregtech.api.GTValues.M;
 
 public class WireRecipeHandler {
 
-    private static final Map<FluidMaterial, Integer> INSULATION_MATERIALS = ImmutableMap.of(
-        Materials.Rubber, GTValues.HV,
-        Materials.StyreneButadieneRubber, GTValues.LuV,
-        Materials.SiliconeRubber, GTValues.MAX
-    );
+    public static final Map<FluidMaterial, Integer> INSULATION_MATERIALS = new HashMap<>();
+
+    static {
+        INSULATION_MATERIALS.put(Materials.Rubber, GTValues.HV);
+        INSULATION_MATERIALS.put(Materials.StyreneButadieneRubber, GTValues.LuV);
+        INSULATION_MATERIALS.put(Materials.SiliconeRubber, GTValues.MAX);
+    }
 
     public static void register() {
         OrePrefix.wireGtSingle.addProcessingHandler(IngotMaterial.class, WireRecipeHandler::processWireSingle);
