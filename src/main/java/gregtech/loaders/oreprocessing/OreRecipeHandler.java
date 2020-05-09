@@ -66,7 +66,7 @@ public class OreRecipeHandler {
     public static void processOre(OrePrefix orePrefix, DustMaterial material) {
         DustMaterial byproductMaterial = GTUtility.selectItemInList(0, material, material.oreByProducts, DustMaterial.class);
         ItemStack byproductStack = OreDictUnifier.get(OrePrefix.dust, byproductMaterial);
-        ItemStack crushedStack = OreDictUnifier.get(OrePrefix.crushed, material);
+        ItemStack crushedStack = OreDictUnifier.get(OrePrefix.crushed, material.crushedInto);
         ItemStack ingotStack;
         DustMaterial smeltingMaterial = material.directSmelting == null ? material : material.directSmelting;
         double amountOfCrushedOre = material.oreMultiplier / getPercentOfComponentInMaterial(material, smeltingMaterial);
@@ -102,7 +102,7 @@ public class OreRecipeHandler {
         }
 
         //do not try to add smelting recipes for materials which require blast furnace
-        if (!ingotStack.isEmpty() && doesMaterialUseNormalFurnace(smeltingMaterial)) {
+        if (!ingotStack.isEmpty() && doesMaterialUseNormalFurnace(smeltingMaterial) && !material.disableDirectSmelting) {
             ModHandler.addSmeltingRecipe(new UnificationEntry(orePrefix, material), ingotStack);
         }
     }

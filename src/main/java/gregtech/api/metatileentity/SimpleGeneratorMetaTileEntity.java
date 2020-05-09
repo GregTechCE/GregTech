@@ -37,13 +37,19 @@ public class SimpleGeneratorMetaTileEntity extends TieredMetaTileEntity {
     private FuelRecipeLogic workableHandler;
     private ItemStackHandler containerInventory;
     private OrientedOverlayRenderer overlayRenderer;
+    private FuelRecipeMap recipeMap;
 
     public SimpleGeneratorMetaTileEntity(ResourceLocation metaTileEntityId, FuelRecipeMap recipeMap, OrientedOverlayRenderer renderer, int tier) {
         super(metaTileEntityId, tier);
-        this.workableHandler = new FuelRecipeLogic(this, recipeMap,
-            () -> energyContainer, () -> importFluids, GTValues.V[tier]);
         this.containerInventory = new ItemStackHandler(2);
         this.overlayRenderer = renderer;
+        this.recipeMap = recipeMap;
+        this.workableHandler = createWorkableHandler();
+    }
+
+    protected FuelRecipeLogic createWorkableHandler() {
+        return new FuelRecipeLogic(this, recipeMap,
+            () -> energyContainer, () -> importFluids, GTValues.V[getTier()]);
     }
 
     @Override

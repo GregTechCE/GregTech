@@ -95,6 +95,12 @@ public class DustMaterial extends FluidMaterial {
     public SolidMaterial directSmelting;
 
     /**
+     * Disable directSmelting
+     */
+    @ZenProperty
+    public boolean disableDirectSmelting = false;
+
+    /**
      * Material in which this material's ore should be washed to give additional output
      */
     @ZenProperty
@@ -112,6 +118,12 @@ public class DustMaterial extends FluidMaterial {
      */
     @ZenProperty
     public int burnTime = 0;
+
+    /**
+     * During OreProcessing (Macerator, OreWasher, ThermalCentrifuge), this material will be turned into crushedInto
+     */
+    @ZenProperty
+    public DustMaterial crushedInto = this;
 
     public DustMaterial(int metaItemSubId, String name, int materialRGB, MaterialIconSet materialIconSet, int harvestLevel, ImmutableList<MaterialStack> materialComponents, long materialGenerationFlags, Element element) {
         super(metaItemSubId, name, materialRGB, materialIconSet, materialComponents, materialGenerationFlags, element);

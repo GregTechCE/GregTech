@@ -410,7 +410,7 @@ public class GTUtility {
                 return (byte) Math.max(0, tier - 1);
             }
         }
-        return tier;
+        return (byte) Math.min(V.length -1, tier);
     }
 
     public static BiomeDictionary.Type getBiomeTypeTagByName(String name) {
