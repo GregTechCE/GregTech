@@ -59,6 +59,12 @@ public class CTRecipe {
         return result;
     }
 
+    //Typo Fix
+    @ZenGetter("chancedOutputs")
+    public List<ChancedEntry> getChancedOutputsFix() {
+        return getChancedOutputs();
+    }        
+    
     @ZenGetter("fluidInputs")
     public List<ILiquidStack> getFluidInputs() {
         return this.backingRecipe.getFluidInputs().stream()
