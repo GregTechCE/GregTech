@@ -1,5 +1,46 @@
 ## Changelog
 
+### 1.9.1
+* Fixed mess regarding WrapScreen initialization (#1066) (#1080) - LAGIdiot
+* Add flexibility into API (#1076) - Decal
+* Add possibility to disable direct smelting - Decal
+* Add possibility to change crushed material - Decal
+* SimpleGeneratorMetaTileEntity has now a createWorkableHandle - Decal
+* INSULATION_MATERIALS is now public to add more insulation tier - Decal
+* Total EU is now long - Decal
+* Added Method for fixed ZenGetter (addresses typo) - Ludi87
+* Fixed Client side only field being initialized on server (#1065) - LAGIdiot
+* Fix surface rock drops (#1062) - pyure
+* Fix Lossy tank break (#1060) - pyure
+* Bugfix/some ore veins not being generated because of surface rocks (#1049) - LAGIdiot
+* Fixed some veins using silicon  as surface rock - which is invalid - replace it with surface rock from same file from diferent dimension, or just by most appropriet one - LAGIdiot
+* Bugfix/spray can tooltip (#1056) - LAGIdiot
+* Updated some color names in tooltip for RU - LAGIdiot
+* Fixed light gray tooltip for ColorSprayBehaviour for ZH - LAGIdiot
+* Fixed Light Gray Dye localization (#1057) - LAGIdiot
+* Fixed missing material synchronization (#1059) - LAGIdiot
+* Make sure to not initialize client-side only fields - Archengius
+* Fixed unlocalized name shown for vanilla fluids (#1053) - LAGIdiot
+* Added Extractor recipe: 1 beetroot -> 2 red dyes (#1048) - LAGIdiot
+* Fixed energy network ignoring sideness on connecting to machine (#1047) - LAGIdiot
+* Bugfix/item fluid slots out of alignment (#1045) - LAGIdiot
+* Fixed JEI fluid being too big for fluid slots - LAGIdiot
+* Scanner: - Archengius
+* Surface rocks: - Archengius
+* Crafting station: - Archengius
+* Fixed sort button not working properly - Archengius
+* Multiblock JEI preview now includes all blocks used in template in recipe lookup - Archengius
+* Fix null pointer in AdvancedTextWidget - Archengius
+* Fluid Tank changes: - Archengius
+* Large Boiler Multiblock changes: - Archengius
+* Fixed workbench ui not working on server - Archengius
+* Implemented text copying for /gt util hand - Archengius
+* Added boiler throttling (initial version) (#1010) - pyure
+* Replaced hammer throttling with gui and removed max-temp throttling prevention - Archengius
+* Pump: stop and re-calculate when touching solid-top block (#1006) - oxalica
+* Do not allow ghost ingredient placing and picking if widget group is not visible - Archengius
+* Bump version - Archengius
+
 ### 1.8.9
 * Fluid pipes visuals rework - Archengius
 * Added Rebreather - Archengius
