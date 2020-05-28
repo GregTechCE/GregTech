@@ -2,7 +2,6 @@ package gregtech.api.worldgen.populator;
 
 import com.google.gson.JsonObject;
 import gregtech.api.unification.OreDictUnifier;
-import gregtech.api.unification.material.type.DustMaterial;
 import gregtech.api.unification.material.type.Material;
 import gregtech.api.unification.stack.UnificationEntry;
 import gregtech.api.worldgen.config.OreConfigUtils;
@@ -38,10 +37,7 @@ public class SurfaceRockPopulator implements VeinChunkPopulator {
 
     @Override
     public void loadFromConfig(JsonObject object) {
-        DustMaterial material = OreConfigUtils.getMaterialByName(object.get("material").getAsString());
-        if (!(material instanceof DustMaterial))
-            throw new IllegalArgumentException("Only dust materials are supported for surface rocks");
-        this.material = material;
+        this.material = OreConfigUtils.getMaterialByName(object.get("material").getAsString());
     }
 
     @Override
