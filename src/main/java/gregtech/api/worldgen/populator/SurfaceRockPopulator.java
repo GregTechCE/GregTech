@@ -78,6 +78,9 @@ public class SurfaceRockPopulator implements VeinChunkPopulator {
         int stonesCount = random.nextInt(2);
         if (world.getWorldType() != WorldType.FLAT && stonesCount > 0) {
             Set<Material> undergroundMaterials = findUndergroundMaterials(gridEntryInfo.getGeneratedBlocks(definition, chunkX, chunkZ));
+            if(undergroundMaterials.isEmpty())
+                return;
+
             for (int i = 0; i < stonesCount; i++) {
                 int randomX = chunkX * 16 + random.nextInt(16);
                 int randomZ = chunkZ * 16 + random.nextInt(16);
