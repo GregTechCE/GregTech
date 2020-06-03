@@ -1933,7 +1933,7 @@ gregtech.machine.assembler.lv.name=Basic Assembling Machine
 gregtech.machine.assembler.mv.name=Advanced Assembling Machine
 gregtech.machine.assembler.hv.name=Advanced Assembling Machine II
 gregtech.machine.assembler.ev.name=Advanced Assembling Machine III
-
+gregtech.machine.assembler.iv.name=Advanced Assembling Machine IV
 
 gregtech.machine.autoclave.tooltip=Crystallizing your Dusts
 
@@ -1941,6 +1941,7 @@ gregtech.machine.autoclave.lv.name=Basic Autoclave
 gregtech.machine.autoclave.mv.name=Advanced Autoclave
 gregtech.machine.autoclave.hv.name=Advanced Autoclave II
 gregtech.machine.autoclave.ev.name=Advanced Autoclave III
+gregtech.machine.autoclave.iv.name=Advanced Autoclave IV
 
 gregtech.machine.bender.tooltip=Produces Plates more efficiently
 
@@ -2114,6 +2115,7 @@ gregtech.machine.laser_engraver.lv.name=Basic Precision Laser Engraver
 gregtech.machine.laser_engraver.mv.name=Advanced Precision Laser Engraver
 gregtech.machine.laser_engraver.hv.name=Advanced Precision Laser Engraver II
 gregtech.machine.laser_engraver.ev.name=Advanced Precision Laser Engraver III
+gregtech.machine.laser_engraver.iv.name=Advanced Precision Laser Engraver IV
 
 gregtech.machine.sifter.tooltip=Stay calm and keep sifting
 
