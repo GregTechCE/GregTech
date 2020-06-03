@@ -545,6 +545,9 @@ metaitem.tool.cheat.tooltip=Also an Infinite Energy Source
 metaitem.tool.scanner.name=Portable Scanner
 metaitem.tool.scanner.tooltip=Tricorder
 
+metaitem.rebreather.name=Rebreather
+metaitem.rebreather.tooltip=Allows breathing under water in expense of consuming energy
+
 metaitem.duct.tape.name=BrainTech Aerospace Advanced Reinforced Duct Tape FAL-84
 metaitem.duct.tape.tooltip=If you can't fix it with this, use more of it!
 
