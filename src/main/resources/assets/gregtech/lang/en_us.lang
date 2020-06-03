@@ -984,7 +984,6 @@ material.ytterbium=Ytterbium
 material.yttrium=Yttrium
 material.zinc=Zinc
 
-material.construction_foam=Construction Foam
 material.bio_fuel=Biofuel
 material.biomass=Biomass
 material.creosote=Creosote
@@ -1085,7 +1084,6 @@ material.obsidian=Obsidian
 material.phosphate=Phosphate
 material.pig_iron=Pig Iron
 material.plastic=Polyethylene
-material.epoxid=Epoxid
 material.silicone=Polysiloxane
 material.polycaprolactam=Polycaprolactam
 material.polytetrafluoroethylene=Polytetrafluoroethylene
@@ -1133,7 +1131,6 @@ material.sulfur_dioxide=Sulfur Dioxide
 material.glycerol=Glycerol
 material.methanol=Methanol
 material.carbon_monoxide=Carbon Monoxide
-material.nitro_fuel=Cetane-Boosted Diesel
 material.diluted_sulfuric_acid=Diluted Sulfuric Acid
 material.sodium_bisulfate=Sodium Bisulfate
 material.chloroform=Chloroform
@@ -1235,8 +1232,6 @@ material.naphtha=Naphtha
 material.light_fuel=Light Fuel
 material.heavy_fuel=Heavy Fuel
 material.lpg=LPG
-material.cracked_light_fuel=Cracked Light Fuel
-material.cracked_heavy_fuel=Cracked Heavy Fuel
 
 material.soldering_alloy=Soldering Alloy
 material.spessartine=Spessartine
@@ -1919,18 +1914,15 @@ gregtech.machine.alloy_smelter.mv.name=Advanced Alloy Smelter
 gregtech.machine.alloy_smelter.hv.name=Advanced Alloy Smelter II
 gregtech.machine.alloy_smelter.ev.name=Advanced Alloy Smelter III
 
-
 gregtech.machine.amplifab.lv.name=Basic Amplifabricator
 gregtech.machine.amplifab.mv.name=Advanced Amplifabricator
 gregtech.machine.amplifab.hv.name=Advanced Amplifabricator II
 gregtech.machine.amplifab.ev.name=Advanced Amplifabricator III
 
-
 gregtech.machine.arc_furnace.lv.name=Basic Arc Furnace
 gregtech.machine.arc_furnace.mv.name=Advanced Arc Furnace
 gregtech.machine.arc_furnace.hv.name=Advanced Arc Furnace II
 gregtech.machine.arc_furnace.ev.name=Advanced Arc Furnace III
-
 
 gregtech.machine.assembler.lv.name=Basic Assembling Machine
 gregtech.machine.assembler.mv.name=Advanced Assembling Machine
@@ -2678,11 +2670,6 @@ achievement.denseaspossible=As Dense As Possible
 achievement.denseaspossible.desc=Produce Neutronium
 achievement.whatnow=What now?
 achievement.whatnow.desc=Craft a Ultimate Battery
-
-# Creative tabs
-itemGroup.gregtech.main=Main
-itemGroup.gregtech.materials=Materials
-itemGroup.gregtech.ores=Ores
 
 for.bees.species.clay=Clay
 for.bees.species.slimeball=Slimeball
