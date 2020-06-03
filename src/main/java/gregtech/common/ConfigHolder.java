@@ -15,6 +15,9 @@ public class ConfigHolder {
     @Config.Comment("Whether to hide facades of all blocks in JEI and creative search menu")
     public static boolean hideFacadesInJEI = true;
 
+    @Config.Comment("Whether to hide filled cells. Default is false.")
+    public static boolean hideFilledCells = false;
+
     @Config.Comment("Specifies min amount of veins in section")
     public static int minVeinsInSection = 0;
 
@@ -80,7 +83,7 @@ public class ConfigHolder {
 
     @Config.Comment("Sets the bonus EU output of Gas Turbines.")
     @Config.RequiresMcRestart
-    public static int gasTurbineBonusOutput = 6144;    
+    public static int gasTurbineBonusOutput = 6144;
     
     public static class VanillaRecipes {
 
