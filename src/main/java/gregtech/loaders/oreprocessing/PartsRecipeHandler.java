@@ -22,6 +22,7 @@ import static gregtech.api.unification.material.type.IngotMaterial.MatFlags.GENE
 import static gregtech.api.unification.material.type.IngotMaterial.MatFlags.GENERATE_SPRING;
 import static gregtech.api.unification.material.type.SolidMaterial.MatFlags.GENERATE_ROD;
 import static gregtech.api.unification.material.type.SolidMaterial.MatFlags.MORTAR_GRINDABLE;
+import static gregtech.api.util.DyeUtil.determineDyeColor;
 
 public class PartsRecipeHandler {
 
@@ -172,7 +173,7 @@ public class PartsRecipeHandler {
             .EUt(16)
             .buildAndRegister();
 
-        EnumDyeColor dyeColor = GTUtility.determineDyeColor(material.materialRGB);
+        EnumDyeColor dyeColor = determineDyeColor(material.materialRGB);
         MarkerMaterial colorMaterial = MarkerMaterials.Color.COLORS.get(dyeColor);
         OreDictUnifier.registerOre(stack, OrePrefix.craftingLens, colorMaterial);
     }
@@ -370,5 +371,4 @@ public class PartsRecipeHandler {
         return material instanceof IngotMaterial && ((IngotMaterial) material)
             .blastFurnaceTemperature >= 2800 ? 32 : 8;
     }
-
 }

@@ -1,6 +1,5 @@
 package gregtech.loaders.recipe;
 
-import com.google.common.base.CaseFormat;
 import gregtech.api.GTValues;
 import gregtech.api.items.metaitem.MetaItem.MetaValueItem;
 import gregtech.api.recipes.ModHandler;
@@ -29,6 +28,8 @@ import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.oredict.OreIngredient;
+
+import static gregtech.api.util.DyeUtil.*;
 
 public class CraftingRecipeLoader {
 
@@ -234,11 +235,9 @@ public class CraftingRecipeLoader {
 
     private static void registerColoringRecipes(BlockColored block) {
         for (EnumDyeColor dyeColor : EnumDyeColor.values()) {
-            String colorName = CaseFormat.LOWER_UNDERSCORE.to(CaseFormat.UPPER_CAMEL, dyeColor.getName());
-            String recipeName = String.format("%s_color_%s", block.getRegistryName().getResourcePath(), colorName);
+            String recipeName = String.format("%s_color_%s", block.getRegistryName().getResourcePath(), getColorName(dyeColor));
             ModHandler.addShapedRecipe(recipeName, new ItemStack(block, 8, dyeColor.getMetadata()), "XXX", "XDX", "XXX",
-                'X', new ItemStack(block, 1, GTValues.W), 'D', "dye" + colorName);
+                'X', new ItemStack(block, 1, GTValues.W), 'D', getOrdictColorName(dyeColor));
         }
     }
-
 }

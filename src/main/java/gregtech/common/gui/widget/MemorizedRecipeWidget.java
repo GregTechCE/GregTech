@@ -5,6 +5,7 @@ import gregtech.api.gui.widgets.SlotWidget;
 import gregtech.api.util.Position;
 import gregtech.common.metatileentities.storage.CraftingRecipeMemory;
 import gregtech.common.metatileentities.storage.CraftingRecipeMemory.MemorizedRecipe;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.ClickType;
 import net.minecraft.item.ItemStack;
@@ -47,7 +48,9 @@ public class MemorizedRecipeWidget extends SlotWidget {
         super.drawInForeground(mouseX, mouseY);
         if (recipeLocked) {
             Position pos = getPosition();
-            GuiTextures.LOCK.draw(pos.x + 10, pos.y + 10, 8, 8);
+            GlStateManager.disableDepth();
+            GuiTextures.LOCK.draw(pos.x, pos.y + 10, 8, 8);
+            GlStateManager.enableDepth();
         }
     }
 
