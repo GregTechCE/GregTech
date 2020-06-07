@@ -1,6 +1,5 @@
 package gregtech.loaders.recipe;
 
-import com.google.common.base.CaseFormat;
 import gregtech.api.GTValues;
 import gregtech.api.recipes.CountableIngredient;
 import gregtech.api.recipes.ModHandler;
@@ -49,6 +48,7 @@ import java.util.Collection;
 
 import static gregtech.api.GTValues.L;
 import static gregtech.api.GTValues.M;
+import static gregtech.api.util.DyeUtil.getOrdictColorName;
 import static gregtech.common.items.MetaItems.RUBBER_DROP;
 
 public class MachineRecipeLoader {
@@ -552,10 +552,9 @@ public class MachineRecipeLoader {
 
     private static void registerAssemblerRecipes() {
         for (EnumDyeColor dyeColor : EnumDyeColor.values()) {
-            String colorName = CaseFormat.LOWER_UNDERSCORE.to(CaseFormat.UPPER_CAMEL, dyeColor.getName());
             RecipeMaps.ASSEMBLER_RECIPES.recipeBuilder()
                 .inputs(MetaItems.SPRAY_EMPTY.getStackForm())
-                .input("dye" + colorName, 1)
+                .input(getOrdictColorName(dyeColor), 1)
                 .outputs(MetaItems.SPRAY_CAN_DYES[dyeColor.getMetadata()].getStackForm())
                 .EUt(8).duration(200)
                 .buildAndRegister();
@@ -1081,5 +1080,4 @@ public class MachineRecipeLoader {
                 stoneBlock.getItemVariant(variant, ChiselingVariant.NORMAL));
         }
     }
-
 }

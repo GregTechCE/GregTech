@@ -1,6 +1,5 @@
 package gregtech.api.util;
 
-
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableList.Builder;
 import com.google.common.collect.Lists;
@@ -24,7 +23,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.Slot;
-import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -52,7 +50,6 @@ import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.IItemHandlerModifiable;
 
 import javax.annotation.Nullable;
-import java.awt.*;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
@@ -124,27 +121,6 @@ public class GTUtility {
         PotionEffect potionEffect = new PotionEffect(sample.getPotion(), sample.getDuration(), sample.getAmplifier(), sample.getIsAmbient(), sample.doesShowParticles());
         potionEffect.setCurativeItems(sample.getCurativeItems());
         return potionEffect;
-    }
-
-    /**
-     * Determines dye color nearest to specified RGB color
-     */
-    public static EnumDyeColor determineDyeColor(int rgbColor) {
-        Color c = new Color(rgbColor);
-
-        Map<Double, EnumDyeColor> distances = new HashMap<>();
-        for (EnumDyeColor dyeColor : EnumDyeColor.values()) {
-            Color c2 = new Color(dyeColor.colorValue);
-
-            double distance = (c.getRed() - c2.getRed()) * (c.getRed() - c2.getRed())
-                + (c.getGreen() - c2.getGreen()) * (c.getGreen() - c2.getGreen())
-                + (c.getBlue() - c2.getBlue()) * (c.getBlue() - c2.getBlue());
-
-            distances.put(distance, dyeColor);
-        }
-
-        double min = Collections.min(distances.keySet());
-        return distances.get(min);
     }
 
     //just because CCL uses a different color format
