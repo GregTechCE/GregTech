@@ -47,7 +47,7 @@ public class MemorizedRecipeWidget extends SlotWidget {
         super.drawInForeground(mouseX, mouseY);
         if (recipeLocked) {
             Position pos = getPosition();
-            GuiTextures.LOCK.draw(pos.x + 10, pos.y + 10, 8, 8);
+            GuiTextures.LOCK.draw(pos.x, pos.y + 10, 8, 8);
         }
     }
 
