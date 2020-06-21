@@ -1,12 +1,16 @@
 package gregtech.integration.jei.recipe;
 
 import codechicken.lib.util.ItemNBTUtils;
+import gregtech.api.GTValues;
 import gregtech.api.recipes.CountableIngredient;
 import gregtech.api.recipes.Recipe;
 import gregtech.api.recipes.Recipe.ChanceEntry;
 import gregtech.api.recipes.RecipeMap;
 import gregtech.api.unification.OreDictUnifier;
+import gregtech.api.util.GTUtility;
+import gregtech.integration.jei.utils.JEIHelpers;
 import mezz.jei.api.ingredients.IIngredients;
+import mezz.jei.api.ingredients.VanillaTypes;
 import mezz.jei.api.recipe.IRecipeWrapper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.I18n;
@@ -48,7 +52,7 @@ public class GTRecipeWrapper implements IRecipeWrapper {
                 });
                 matchingInputs.add(ingredientValues);
             }
-            ingredients.setInputLists(ItemStack.class, matchingInputs);
+            ingredients.setInputLists(VanillaTypes.ITEM, matchingInputs);
         }
 
         if (!recipe.getFluidInputs().isEmpty()) {
@@ -63,7 +67,7 @@ public class GTRecipeWrapper implements IRecipeWrapper {
                     stack.amount = 1;
                 }
             });
-            ingredients.setInputs(FluidStack.class, recipeInputs);
+            ingredients.setInputs(VanillaTypes.FLUID, recipeInputs);
         }
 
         if (!recipe.getOutputs().isEmpty() || !recipe.getChancedOutputs().isEmpty()) {
@@ -77,13 +81,13 @@ public class GTRecipeWrapper implements IRecipeWrapper {
                 recipeOutputs.add(chancedStack);
             }
             recipeOutputs.sort(Comparator.comparing(stack -> ItemNBTUtils.getInteger(stack, "chance")));
-            ingredients.setOutputs(ItemStack.class, recipeOutputs);
+            ingredients.setOutputs(VanillaTypes.ITEM, recipeOutputs);
         }
 
         if (!recipe.getFluidOutputs().isEmpty()) {
             List<FluidStack> recipeOutputs = recipe.getFluidOutputs()
                 .stream().map(FluidStack::copy).collect(Collectors.toList());
-            ingredients.setOutputs(FluidStack.class, recipeOutputs);
+            ingredients.setOutputs(VanillaTypes.FLUID, recipeOutputs);
         }
     }
 
@@ -109,8 +113,9 @@ public class GTRecipeWrapper implements IRecipeWrapper {
     @Override
     public void drawInfo(Minecraft minecraft, int recipeWidth, int recipeHeight, int mouseX, int mouseY) {
         minecraft.fontRenderer.drawString(I18n.format("gregtech.recipe.total", Math.abs((long) recipe.getEUt()) * recipe.getDuration()), 0, 70, 0x111111);
-        minecraft.fontRenderer.drawString(I18n.format(recipe.getEUt() >= 0 ? "gregtech.recipe.eu" : "gregtech.recipe.eu_inverted", Math.abs(recipe.getEUt())), 0, 80, 0x111111);
+        minecraft.fontRenderer.drawString(I18n.format(recipe.getEUt() >= 0 ? "gregtech.recipe.eu" : "gregtech.recipe.eu_inverted", Math.abs(recipe.getEUt()),JEIHelpers.getMinTierForVoltage(recipe.getEUt())), 0, 80, 0x111111);
         minecraft.fontRenderer.drawString(I18n.format("gregtech.recipe.duration", recipe.getDuration() / 20f), 0, 90, 0x111111);
+
         int baseYPosition = 100;
         for (String propertyKey : recipe.getPropertyKeys()) {
             minecraft.fontRenderer.drawString(I18n.format("gregtech.recipe." + propertyKey,
