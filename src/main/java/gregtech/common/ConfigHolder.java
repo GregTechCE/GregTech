@@ -18,6 +18,9 @@ public class ConfigHolder {
     @Config.Comment("Whether to hide filled cells. Default is false.")
     public static boolean hideFilledCells = false;
 
+    @Config.Comment("Whether to hide filled tanks. Default is false.")
+    public static boolean hideFilledTanks = false;
+
     @Config.Comment("Specifies min amount of veins in section")
     public static int minVeinsInSection = 0;
 
@@ -79,12 +82,12 @@ public class ConfigHolder {
 
     @Config.Comment("Sets the bonus EU output of Plasma Turbines.")
     @Config.RequiresMcRestart
-    public static int plasmaTurbineBonusOutput = 6144;    
+    public static int plasmaTurbineBonusOutput = 6144;
 
     @Config.Comment("Sets the bonus EU output of Gas Turbines.")
     @Config.RequiresMcRestart
     public static int gasTurbineBonusOutput = 6144;
-    
+
     public static class VanillaRecipes {
 
         @Config.Comment("Whether to nerf paper crafting recipe. Default is true.")
@@ -107,7 +110,5 @@ public class ConfigHolder {
 
         @Config.Comment("Require a knife for bowl crafting instead of only plank? Default is true.")
         public boolean bowlRequireKnife = true;
-
     }
-
 }
