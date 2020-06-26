@@ -13,12 +13,15 @@ public class ConfigHolder {
     public static boolean increaseDungeonLoot = true;
 
     @Config.Comment("Whether to hide facades of all blocks in JEI and creative search menu")
+    @Config.RequiresMcRestart
     public static boolean hideFacadesInJEI = true;
 
     @Config.Comment("Whether to hide filled cells. Default is false.")
+    @Config.RequiresMcRestart
     public static boolean hideFilledCells = false;
 
     @Config.Comment("Whether to hide filled tanks. Default is false.")
+    @Config.RequiresMcRestart
     public static boolean hideFilledTanks = false;
 
     @Config.Comment("Specifies min amount of veins in section")
