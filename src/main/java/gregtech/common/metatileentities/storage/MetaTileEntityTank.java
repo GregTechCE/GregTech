@@ -469,7 +469,7 @@ public class MetaTileEntityTank extends MetaTileEntity implements IFastRenderMet
     @Override
     public void getSubItems(CreativeTabs creativeTab, NonNullList<ItemStack> subItems) {
         super.getSubItems(creativeTab, subItems);
-        if (creativeTab == CreativeTabs.SEARCH && !ConfigHolder.hideFilledTanks) {
+        if (creativeTab == CreativeTabs.SEARCH && !ConfigHolder.hideFilledTanksInJEI) {
             DefaultSubItemHandler.addFluidContainerVariants(getStackForm(), subItems);
         }
     }

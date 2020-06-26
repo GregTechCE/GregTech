@@ -12,17 +12,17 @@ public class ConfigHolder {
     @Config.Comment("Whether to increase number of rolls for dungeon chests. Increases dungeon loot drastically.")
     public static boolean increaseDungeonLoot = true;
 
-    @Config.Comment("Whether to hide facades of all blocks in JEI and creative search menu")
+    @Config.Comment("Whether to hide facades of all blocks in JEI and creative search menu. Default is true.")
     @Config.RequiresMcRestart
     public static boolean hideFacadesInJEI = true;
 
-    @Config.Comment("Whether to hide filled cells. Default is false.")
+    @Config.Comment("Whether to hide filled cells in JEI and creative search menu. Default is false.")
     @Config.RequiresMcRestart
-    public static boolean hideFilledCells = false;
+    public static boolean hideFilledCellsInJEI = false;
 
-    @Config.Comment("Whether to hide filled tanks. Default is false.")
+    @Config.Comment("Whether to hide filled tanks in JEI and creative search menu. Default is false.")
     @Config.RequiresMcRestart
-    public static boolean hideFilledTanks = false;
+    public static boolean hideFilledTanksInJEI = false;
 
     @Config.Comment("Specifies min amount of veins in section")
     public static int minVeinsInSection = 0;
