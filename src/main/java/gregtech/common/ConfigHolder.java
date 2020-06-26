@@ -16,13 +16,13 @@ public class ConfigHolder {
     @Config.RequiresMcRestart
     public static boolean hideFacadesInJEI = true;
 
-    @Config.Comment("Whether to hide filled cells in JEI and creative search menu. Default is false.")
+    @Config.Comment("Whether to hide filled cells in JEI and creative search menu. Default is true.")
     @Config.RequiresMcRestart
-    public static boolean hideFilledCellsInJEI = false;
+    public static boolean hideFilledCellsInJEI = true;
 
-    @Config.Comment("Whether to hide filled tanks in JEI and creative search menu. Default is false.")
+    @Config.Comment("Whether to hide filled tanks in JEI and creative search menu. Default is true.")
     @Config.RequiresMcRestart
-    public static boolean hideFilledTanksInJEI = false;
+    public static boolean hideFilledTanksInJEI = true;
 
     @Config.Comment("Specifies min amount of veins in section")
     public static int minVeinsInSection = 0;
