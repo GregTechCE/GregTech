@@ -2212,7 +2212,7 @@ gregtech.machine.air_collector.lv.name=基础空气收集器
 gregtech.machine.air_collector.mv.name=进阶空气收集器
 gregtech.machine.air_collector.hv.name=进阶空气收集器 II
 gregtech.machine.air_collector.ev.name=大气收集器 III
-gregtech.machine.air_collector.description=从临近方块中收集空气
+gregtech.machine.air_collector.tooltip=从临近方块中收集空气
 
 #Tesla Coil
 gregtech.machine.tesla_coil.name=特斯拉线圈
