@@ -111,6 +111,7 @@ public class ConfigHolder {
     }
 
     public static class MachineSpecificConfiguration {
-        
+        @Config.Comment("List of whitelisted dimension IDs in which Air Collector works.")
+        public int[] airCollectorDimensionWhitelist = new int[]{ 0, -1, 1};
     }
 }
