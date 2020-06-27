@@ -11,11 +11,14 @@ import gregtech.api.metatileentity.MetaTileEntityHolder;
 import gregtech.api.metatileentity.TieredMetaTileEntity;
 import gregtech.api.render.Textures;
 import gregtech.api.unification.material.Materials;
+import gregtech.common.ConfigHolder;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
+
+import java.util.stream.IntStream;
 
 public class MetaTileEntityAirCollector extends TieredMetaTileEntity {
 
@@ -36,9 +39,10 @@ public class MetaTileEntityAirCollector extends TieredMetaTileEntity {
     @Override
     public void update() {
         super.update();
+
         if (!getWorld().isRemote) {
             long energyToConsume = GTValues.V[getTier()];
-            if (checkOpenSides() && getTimer() % 20 == 0L && energyContainer.getEnergyStored() >= energyToConsume) {
+            if (checkDimension() && checkOpenSides() && getTimer() % 20 == 0L && energyContainer.getEnergyStored() >= energyToConsume) {
                 int fluidAmount = 500 * (1 << getTier());
                 FluidStack fluidStack = Materials.Air.getFluid(fluidAmount);
                 if (exportFluids.fill(fluidStack, false) == fluidAmount) {
@@ -60,6 +64,11 @@ public class MetaTileEntityAirCollector extends TieredMetaTileEntity {
                 return true;
         }
         return false;
+    }
+
+    private boolean checkDimension() {
+        int dimensionId = getWorld().provider.getDimension();
+        return IntStream.of(ConfigHolder.machineSpecific.airCollectorDimensionBlacklist).noneMatch(x -> x == dimensionId);
     }
 
     @Override
