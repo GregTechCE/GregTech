@@ -21,6 +21,9 @@ public class ConfigHolder {
     @Config.Comment("Specifies additional random amount of veins in section")
     public static int additionalVeinsInSection = 2;
 
+    @Config.Comment("Whether veins should be generated in center of chunk. Default is false.")
+    public static boolean generateVeinsInCenterOfChunk = false;
+
     @Config.Comment("Whether to disable vanilla ores generation in world. Default is false.")
     public static boolean disableVanillaOres = false;
 
