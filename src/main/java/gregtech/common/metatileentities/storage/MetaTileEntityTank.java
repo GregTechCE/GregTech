@@ -22,6 +22,7 @@ import gregtech.api.unification.material.type.SolidMaterial;
 import gregtech.api.util.ByteBufUtils;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.WatchedFluidTank;
+import gregtech.common.ConfigHolder;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.creativetab.CreativeTabs;
@@ -468,7 +469,7 @@ public class MetaTileEntityTank extends MetaTileEntity implements IFastRenderMet
     @Override
     public void getSubItems(CreativeTabs creativeTab, NonNullList<ItemStack> subItems) {
         super.getSubItems(creativeTab, subItems);
-        if (creativeTab == CreativeTabs.SEARCH) {
+        if (creativeTab == CreativeTabs.SEARCH && !ConfigHolder.hideFilledTanksInJEI) {
             DefaultSubItemHandler.addFluidContainerVariants(getStackForm(), subItems);
         }
     }
@@ -575,7 +576,7 @@ public class MetaTileEntityTank extends MetaTileEntity implements IFastRenderMet
 
     @SideOnly(Side.CLIENT)
     private TankRenderer getTankRenderer() {
-        if(ModHandler.isMaterialWood(material)) {
+        if (ModHandler.isMaterialWood(material)) {
             return Textures.WOODEN_TANK;
         } else return Textures.METAL_TANK;
     }
@@ -714,7 +715,8 @@ public class MetaTileEntityTank extends MetaTileEntity implements IFastRenderMet
             this.needsShapeResync = false;
         }
         if (networkStatus == NetworkStatus.DETACHED_FROM_MULTIBLOCK) {
-            writeCustomData(2, buf -> {});
+            writeCustomData(2, buf -> {
+            });
             this.networkStatus = null;
         }
         if (isTankController() && needsShapeResync) {
@@ -748,7 +750,8 @@ public class MetaTileEntityTank extends MetaTileEntity implements IFastRenderMet
         Stack<EnumFacing> moveStack = new Stack<>();
         int currentAmount = 0;
         int scanSizeLimit = tank.maxSizeHorizontal * tank.maxSizeHorizontal * tank.maxSizeVertical * 4;
-        main: while (true) {
+        main:
+        while (true) {
             if (currentAmount >= scanSizeLimit) {
                 break;
             }
