@@ -108,14 +108,18 @@ public class GTRecipeWrapper implements IRecipeWrapper {
 
     @Override
     public void drawInfo(Minecraft minecraft, int recipeWidth, int recipeHeight, int mouseX, int mouseY) {
-        minecraft.fontRenderer.drawString(I18n.format("gregtech.recipe.total", Math.abs((long) recipe.getEUt()) * recipe.getDuration()), 0, 70, 0x111111);
-        minecraft.fontRenderer.drawString(I18n.format(recipe.getEUt() >= 0 ? "gregtech.recipe.eu" : "gregtech.recipe.eu_inverted", Math.abs(recipe.getEUt())), 0, 80, 0x111111);
-        minecraft.fontRenderer.drawString(I18n.format("gregtech.recipe.duration", recipe.getDuration() / 20f), 0, 90, 0x111111);
-        int baseYPosition = 100;
+        int yPosition = recipeHeight - getPropertyListHeight();
+        minecraft.fontRenderer.drawString(I18n.format("gregtech.recipe.total", Math.abs((long) recipe.getEUt()) * recipe.getDuration()), 0, yPosition, 0x111111);
+        minecraft.fontRenderer.drawString(I18n.format(recipe.getEUt() >= 0 ? "gregtech.recipe.eu" : "gregtech.recipe.eu_inverted", Math.abs(recipe.getEUt())), 0, yPosition += 10, 0x111111);
+        minecraft.fontRenderer.drawString(I18n.format("gregtech.recipe.duration", recipe.getDuration() / 20f), 0, yPosition += 10, 0x111111);
         for (String propertyKey : recipe.getPropertyKeys()) {
             minecraft.fontRenderer.drawString(I18n.format("gregtech.recipe." + propertyKey,
-                recipe.<Object>getProperty(propertyKey)), 0, baseYPosition, 0x111111);
-            baseYPosition += 10;
+                recipe.<Object>getProperty(propertyKey)), 0, yPosition += 10, 0x111111);
         }
     }
+
+    private int getPropertyListHeight() {
+        return (recipe.getPropertyKeys().size() + 3) * 10;
+    }
+
 }
