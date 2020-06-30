@@ -12,8 +12,17 @@ public class ConfigHolder {
     @Config.Comment("Whether to increase number of rolls for dungeon chests. Increases dungeon loot drastically.")
     public static boolean increaseDungeonLoot = true;
 
-    @Config.Comment("Whether to hide facades of all blocks in JEI and creative search menu")
+    @Config.Comment("Whether to hide facades of all blocks in JEI and creative search menu. Default is true.")
+    @Config.RequiresMcRestart
     public static boolean hideFacadesInJEI = true;
+
+    @Config.Comment("Whether to hide filled cells in JEI and creative search menu. Default is true.")
+    @Config.RequiresMcRestart
+    public static boolean hideFilledCellsInJEI = true;
+
+    @Config.Comment("Whether to hide filled tanks in JEI and creative search menu. Default is true.")
+    @Config.RequiresMcRestart
+    public static boolean hideFilledTanksInJEI = true;
 
     @Config.Comment("Specifies min amount of veins in section")
     public static int minVeinsInSection = 0;
@@ -76,12 +85,12 @@ public class ConfigHolder {
 
     @Config.Comment("Sets the bonus EU output of Plasma Turbines.")
     @Config.RequiresMcRestart
-    public static int plasmaTurbineBonusOutput = 6144;    
+    public static int plasmaTurbineBonusOutput = 6144;
 
     @Config.Comment("Sets the bonus EU output of Gas Turbines.")
     @Config.RequiresMcRestart
-    public static int gasTurbineBonusOutput = 6144;    
-    
+    public static int gasTurbineBonusOutput = 6144;
+
     public static class VanillaRecipes {
 
         @Config.Comment("Whether to nerf paper crafting recipe. Default is true.")
@@ -104,7 +113,5 @@ public class ConfigHolder {
 
         @Config.Comment("Require a knife for bowl crafting instead of only plank? Default is true.")
         public boolean bowlRequireKnife = true;
-
     }
-
 }
