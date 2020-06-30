@@ -82,6 +82,9 @@ public class ConfigHolder {
     @Config.RequiresMcRestart
     public static VanillaRecipes vanillaRecipes = new VanillaRecipes();
 
+    @Config.Comment("Category that contains configs for machines with specific behavior")
+    public static MachineSpecificConfiguration machineSpecific = new MachineSpecificConfiguration();
+
     @Config.Comment("Sets the bonus EU output of Steam Turbines.")
     @Config.RequiresMcRestart
     public static int steamTurbineBonusOutput = 6144;
@@ -116,5 +119,10 @@ public class ConfigHolder {
 
         @Config.Comment("Require a knife for bowl crafting instead of only plank? Default is true.")
         public boolean bowlRequireKnife = true;
+    }
+
+    public static class MachineSpecificConfiguration {
+        @Config.Comment("Array of blacklisted dimension IDs in which Air Collector does not work.")
+        public int[] airCollectorDimensionBlacklist = new int[]{};
     }
 }

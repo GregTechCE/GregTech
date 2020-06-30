@@ -2268,7 +2268,8 @@ gregtech.machine.air_collector.lv.name=Basic Air Collector
 gregtech.machine.air_collector.mv.name=Advanced Air Collector
 gregtech.machine.air_collector.hv.name=Advanced Air Collector II
 gregtech.machine.air_collector.ev.name=Atmosphere Collector III
-gregtech.machine.air_collector.description=Collects air from adjacent blocks
+gregtech.machine.air_collector.tooltip=Collects air from adjacent blocks at the expense of energy
+gregtech.machine.air_collector.collection_speed=Produces %d mb of Air every %d ticks
 gregtech.machine.air_collector.jei_description=The Air Collector collects air from adjacent blocks for a little bit of EU
 
 #Tesla Coil
