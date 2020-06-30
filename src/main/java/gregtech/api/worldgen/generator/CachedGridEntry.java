@@ -69,9 +69,9 @@ public class CachedGridEntry implements GridEntryInfo, IBlockGeneratorAccess, IB
     private final Random gridRandom;
     private final int gridX;
     private final int gridZ;
-    private List<Entry<Integer, OreDepositDefinition>> cachedDepositMap;
+    private final List<Entry<Integer, OreDepositDefinition>> cachedDepositMap;
     private GTWorldGenCapability masterEntry;
-    private int worldSeaLevel;
+    private final int worldSeaLevel;
     private Map<OreDepositDefinition, BlockPos> veinGeneratedMap;
 
     private int veinCenterX, veinCenterY, veinCenterZ;
@@ -228,17 +228,16 @@ public class CachedGridEntry implements GridEntryInfo, IBlockGeneratorAccess, IB
 
     private void doGenerateVein(OreDepositDefinition definition) {
         this.currentOreVein = definition;
-        int gridSizeX = WorldGeneratorImpl.GRID_SIZE_X * 16;
-        int gridSizeZ = WorldGeneratorImpl.GRID_SIZE_Z * 16;
+
         int topHeightOffset = currentOreVein.getShapeGenerator().getMaxSize().getY() / 2 + 4;
         int maximumHeight = Math.min(masterEntry.getMaxBottomHeight(), currentOreVein.getHeightLimit()[1] - topHeightOffset);
         int minimumHeight = Math.max(3, currentOreVein.getHeightLimit()[0]);
         if (minimumHeight >= maximumHeight) {
             return;
         }
-        this.veinCenterX = gridX * gridSizeX + gridRandom.nextInt(gridSizeX);
+        this.veinCenterX = calculateVeinCenterX();
         this.veinCenterY = minimumHeight + gridRandom.nextInt(maximumHeight - minimumHeight);
-        this.veinCenterZ = gridZ * gridSizeZ + gridRandom.nextInt(gridSizeZ);
+        this.veinCenterZ = calculateVeinCenterZ();
         this.currentOreVein.getShapeGenerator().generate(gridRandom, this);
         this.veinGeneratedMap.put(definition, new BlockPos(veinCenterX, veinCenterY, veinCenterZ));
         IVeinPopulator veinPopulator = currentOreVein.getVeinPopulator();
@@ -246,6 +245,18 @@ public class CachedGridEntry implements GridEntryInfo, IBlockGeneratorAccess, IB
             ((VeinBufferPopulator) veinPopulator).populateBlockBuffer(gridRandom, this, this, currentOreVein);
         }
         this.currentOreVein = null;
+    }
+
+    private int calculateVeinCenterX() {
+        int gridSizeX = WorldGeneratorImpl.GRID_SIZE_X * 16;
+        int offset = ConfigHolder.generateVeinsInCenterOfChunk ? gridSizeX / 2 : gridRandom.nextInt(gridSizeX);
+        return gridX * gridSizeX + offset;
+    }
+
+    private int calculateVeinCenterZ() {
+        int gridSizeZ = WorldGeneratorImpl.GRID_SIZE_Z * 16;
+        int offset = ConfigHolder.generateVeinsInCenterOfChunk ? gridSizeZ / 2 : gridRandom.nextInt(gridSizeZ);
+        return gridZ * gridSizeZ + offset;
     }
 
     @Override
@@ -356,7 +367,5 @@ public class CachedGridEntry implements GridEntryInfo, IBlockGeneratorAccess, IB
             }
             return generatedAnything;
         }
-
     }
-
 }
