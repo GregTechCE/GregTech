@@ -1,5 +1,26 @@
 ## Changelog
 
+### 1.9.2
+* Updated dependencies versions (#1070) - LAGIdiot 
+    * Forge updated to 14.23.5.2847
+    * CraftTweaker updated to 4.1.9.6
+    * CodeChickenLib updated to 3.2.3.358
+    * Forestry updated to 5.8.2.387
+    * ForgeMultipart updated to 2.6.2.83
+    * JEI updated to 4.15.0.291
+    * The One Probe updated to 1.4.28
+* Added pan and zoom for Multiblock Pattern category in JEI (#1090) - Eutro
+* Added minimum tier energy input required to machine recipes in JEI (#1108) - clienthax
+* Added config options to hide containers (#1110) - LAGIdiot
+* Added Air Collector QOL improvements - tooltip, dimension blacklist (#1113) - LAGIdiot
+* Added config option for generating veins in center of chunk (#1116) - LAGIdiot
+* Fixed Chinese translation for Kanthal (#1034) - Balthild Ires
+* Fixed Light Gray Dye (Silver) using bad oreDict name (#1098) - LAGIdiot
+* Fixed all recipes using Gray Dye not being correctly oreDict (#1098) - LAGIdiot
+* Fixed Crafting Station missing lock texture (#1099) - LAGIdiot
+* Fixed Slider Widget not saving it's state when clicked (#1111) - LAGIdiot
+* Improved English localization (#1094) - LAGIdiot
+
 ### 1.9.1
 * Fixed mess regarding WrapScreen initialization (#1066) (#1080) - LAGIdiot
 * Add flexibility into API (#1076) - Decal
