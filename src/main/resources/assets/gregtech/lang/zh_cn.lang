@@ -1033,7 +1033,7 @@ material.bauxite=铝土矿
 material.titanium_tetrachloride=四氯化钛
 material.magnesium_chloride=氯化镁
 material.invar=殷钢
-material.kanthal=坝塔尔合金
+material.kanthal=坎塔尔合金
 material.lazurite=蓝金石
 material.magnalium=镁铝合金
 material.magnesite=菱镁矿
@@ -2212,7 +2212,7 @@ gregtech.machine.air_collector.lv.name=基础空气收集器
 gregtech.machine.air_collector.mv.name=进阶空气收集器
 gregtech.machine.air_collector.hv.name=进阶空气收集器 II
 gregtech.machine.air_collector.ev.name=大气收集器 III
-gregtech.machine.air_collector.description=从临近方块中收集空气
+gregtech.machine.air_collector.tooltip=从临近方块中收集空气
 
 #Tesla Coil
 gregtech.machine.tesla_coil.name=特斯拉线圈

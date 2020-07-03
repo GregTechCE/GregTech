@@ -3,6 +3,7 @@ package gregtech.api.items.metaitem;
 import gregtech.api.capability.GregtechCapabilities;
 import gregtech.api.capability.IElectricItem;
 import gregtech.api.items.metaitem.stats.ISubItemHandler;
+import gregtech.common.ConfigHolder;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
@@ -32,7 +33,9 @@ public class DefaultSubItemHandler implements ISubItemHandler {
         }
         if (creativeTab == CreativeTabs.SEARCH) {
             if (itemStack.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY, null)) {
-                addFluidContainerVariants(itemStack, subItems);
+                if (!ConfigHolder.hideFilledCellsInJEI) {
+                    addFluidContainerVariants(itemStack, subItems);
+                }
             }
         }
     }
