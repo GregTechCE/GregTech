@@ -478,6 +478,28 @@ public class MetaTileEntityTank extends MetaTileEntity implements IFastRenderMet
     public ICapabilityProvider initItemStackCapabilities(ItemStack itemStack) {
         return new FluidHandlerItemStack(itemStack, tankSize) {
             @Override
+            public FluidStack drain(FluidStack resource, boolean doDrain) {
+                FluidStack drained = super.drain(resource, doDrain);
+                this.removeTagWhenEmptied(doDrain);
+                return drained;
+            }
+
+            @Override
+            public FluidStack drain(int maxDrain, boolean doDrain) {
+                FluidStack drained = super.drain(maxDrain, doDrain);
+                this.removeTagWhenEmptied(doDrain);
+                return drained;
+            }
+
+            private void removeTagWhenEmptied(boolean doDrain) {
+                if (doDrain && this.getFluid() == null &&
+                    this.container.hasTagCompound() &&
+                    this.container.getTagCompound().hasNoTags()) {
+                    this.container.setTagCompound(null);
+                }
+            }
+
+            @Override
             public boolean canFillFluidType(FluidStack fluid) {
                 return MetaTileEntityTank.this.canFillFluidType(fluid);
             }
