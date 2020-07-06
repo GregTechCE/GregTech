@@ -492,9 +492,7 @@ public class MetaTileEntityTank extends MetaTileEntity implements IFastRenderMet
             }
 
             private void removeTagWhenEmptied(boolean doDrain) {
-                if (doDrain && this.getFluid() == null &&
-                    this.container.hasTagCompound() &&
-                    this.container.getTagCompound().hasNoTags()) {
+                if (doDrain && this.getFluid() == null) {
                     this.container.setTagCompound(null);
                 }
             }
