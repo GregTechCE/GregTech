@@ -1,6 +1,7 @@
 package gregtech.common.blocks.surfacerock;
 
 import gregtech.api.items.toolitem.IScannableBlock;
+import gregtech.api.pipenet.tile.IPipeTile;
 import gregtech.api.unification.material.Materials;
 import gregtech.api.unification.material.type.Material;
 import net.minecraft.block.ITileEntityProvider;
@@ -67,8 +68,18 @@ public class BlockSurfaceRockNew extends BlockSurfaceRock implements ITileEntity
     }
 
     @Override
+    public void breakBlock(World worldIn, BlockPos pos, IBlockState state) {
+        TileEntitySurfaceRock surfaceRockTileEntity = getTileEntity(worldIn, pos);
+        if (surfaceRockTileEntity != null) {
+            tileEntities.set(surfaceRockTileEntity);
+        }
+
+        super.breakBlock(worldIn, pos, state);
+    }
+
+    @Override
     public void harvestBlock(World worldIn, EntityPlayer player, BlockPos pos, IBlockState state, @Nullable TileEntity te, ItemStack stack) {
-        tileEntities.set((TileEntitySurfaceRock)te);
+        tileEntities.set(te == null ? tileEntities.get() : (TileEntitySurfaceRock) te);
         super.harvestBlock(worldIn, player, pos, state, te, stack);
         tileEntities.set(null);
     }

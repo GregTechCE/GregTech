@@ -91,6 +91,8 @@ public abstract class BlockPipe<PipeType extends Enum<PipeType> & IPipeType<Node
         IPipeTile<PipeType, NodeDataType> pipeTile = getPipeTileEntity(worldIn, pos);
         if (pipeTile != null) {
             pipeTile.getCoverableImplementation().dropAllCovers();
+
+            tileEntities.set(pipeTile);
         }
         super.breakBlock(worldIn, pos, state);
         getWorldPipeNet(worldIn).removeNode(pos);
@@ -257,7 +259,7 @@ public abstract class BlockPipe<PipeType extends Enum<PipeType> & IPipeType<Node
     @SuppressWarnings("unchecked")
     @Override
     public void harvestBlock(World worldIn, EntityPlayer player, BlockPos pos, IBlockState state, @Nullable TileEntity te, ItemStack stack) {
-        tileEntities.set(te == null ? null : (IPipeTile<PipeType, NodeDataType>) te);
+        tileEntities.set(te == null ? tileEntities.get() : (IPipeTile<PipeType, NodeDataType>) te);
         super.harvestBlock(worldIn, player, pos, state, te, stack);
         tileEntities.set(null);
     }
