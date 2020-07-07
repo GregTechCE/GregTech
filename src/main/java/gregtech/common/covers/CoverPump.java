@@ -81,6 +81,8 @@ public class CoverPump extends CoverBehavior implements CoverWithUI, ITickable, 
 
     public void setBucketMode(BucketMode bucketMode) {
         this.bucketMode = bucketMode;
+        if (this.bucketMode == BucketMode.BUCKET)
+            setTransferRate(transferRate / 1000 * 1000);
         coverHolder.markDirty();
     }
 
@@ -244,7 +246,6 @@ public class CoverPump extends CoverBehavior implements CoverWithUI, ITickable, 
         super.writeToNBT(tagCompound);
         tagCompound.setInteger("TransferRate", transferRate);
         tagCompound.setInteger("PumpMode", pumpMode.ordinal());
-        tagCompound.setInteger("BucketMode", bucketMode.ordinal());
         tagCompound.setBoolean("WorkingAllowed", isWorkingAllowed);
         tagCompound.setBoolean("AllowManualIO", allowManualImportExport);
         tagCompound.setTag("Filter", fluidFilter.serializeNBT());
@@ -255,9 +256,8 @@ public class CoverPump extends CoverBehavior implements CoverWithUI, ITickable, 
         super.readFromNBT(tagCompound);
         this.transferRate = tagCompound.getInteger("TransferRate");
         this.pumpMode = PumpMode.values()[tagCompound.getInteger("PumpMode")];
-        this.bucketMode = BucketMode.values()[tagCompound.getInteger("BucketMode")];
         //LEGACY SAVE FORMAT SUPPORT
-        if(tagCompound.hasKey("FluidFilter")) {
+        if (tagCompound.hasKey("FluidFilter")) {
             this.fluidFilter.deserializeNBT(tagCompound);
         } else {
             this.fluidFilter.deserializeNBT(tagCompound.getCompoundTag("Filter"));
