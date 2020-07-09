@@ -16,9 +16,10 @@ import net.minecraftforge.fluids.capability.IFluidHandler;
 
 import java.util.function.Predicate;
 
+import static gregtech.api.util.FluidTankUtils.moveHandlerFluids;
+
 public class TileEntityFluidPipeTickable extends TileEntityFluidPipe implements ITickable {
 
-    private static final Predicate<FluidStack> FLUID_FILTER_ALWAYS_TRUE = (fluid) -> true;
     private boolean isActive;
 
     public boolean isActive() {
@@ -74,7 +75,7 @@ public class TileEntityFluidPipeTickable extends TileEntityFluidPipe implements 
             IFluidHandler sourceHandler = pipeTile.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, side);
             IFluidHandler receiverHandler = tileEntity.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, side.getOpposite());
             if (sourceHandler != null && receiverHandler != null && blockFluidPipe.canPushIntoFluidHandler(pipeTile, tileEntity, sourceHandler, receiverHandler)) {
-                CoverPump.moveHandlerFluids(sourceHandler, receiverHandler, Integer.MAX_VALUE, FLUID_FILTER_ALWAYS_TRUE);
+                moveHandlerFluids(sourceHandler, receiverHandler, Integer.MAX_VALUE);
             }
         }
         blockPos.release();

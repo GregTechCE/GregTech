@@ -24,9 +24,10 @@ import net.minecraftforge.items.ItemStackHandler;
 
 import java.util.function.Predicate;
 
+import static gregtech.api.util.FluidTankUtils.moveHandlerFluids;
+
 public class MetaTileEntityCokeOvenHatch extends MetaTileEntityMultiblockPart {
 
-    private static final Predicate<FluidStack> ALWAYS_TRUE = fluidStack -> true;
 
     public MetaTileEntityCokeOvenHatch(ResourceLocation metaTileEntityId) {
         super(metaTileEntityId, 0);
@@ -50,7 +51,7 @@ public class MetaTileEntityCokeOvenHatch extends MetaTileEntityMultiblockPart {
             TileEntity tileEntity = getWorld().getTileEntity(getPos().offset(getFrontFacing()));
             IFluidHandler fluidHandler = tileEntity == null ? null : tileEntity.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, getFrontFacing().getOpposite());
             if (fluidHandler != null) {
-                CoverPump.moveHandlerFluids(fluidInventory, fluidHandler, Integer.MAX_VALUE, ALWAYS_TRUE);
+                moveHandlerFluids(fluidInventory, fluidHandler, Integer.MAX_VALUE);
             }
         }
     }
