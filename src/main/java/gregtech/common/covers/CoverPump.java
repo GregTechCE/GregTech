@@ -36,29 +36,40 @@ import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidTankProperties;
 
 import javax.annotation.Nullable;
-import java.util.function.Predicate;
 
 public class CoverPump extends CoverBehavior implements CoverWithUI, ITickable, IControllable {
 
     public final int tier;
     public final int maxFluidTransferRate;
+    protected final FluidFilterContainer fluidFilter;
+    protected int percentageInTank;
     protected int transferRate;
     protected PumpMode pumpMode;
     protected boolean allowManualImportExport = false;
     protected int fluidLeftToTransferLastSecond;
-    private CoverableFluidHandlerWrapper fluidHandlerWrapper;
     protected boolean isWorkingAllowed = true;
-    protected final FluidFilterContainer fluidFilter;
+    private CoverableFluidHandlerWrapper fluidHandlerWrapper;
 
     public CoverPump(ICoverable coverHolder, EnumFacing attachedSide, int tier, int mbPerTick) {
         super(coverHolder, attachedSide);
         this.tier = tier;
         this.maxFluidTransferRate = mbPerTick;
+        this.percentageInTank = 0;
         this.transferRate = mbPerTick;
         this.fluidLeftToTransferLastSecond = transferRate;
         this.pumpMode = PumpMode.EXPORT;
         this.fluidFilter = new FluidFilterContainer(this);
     }
+
+    protected void setPortionInTank(int percentage) {
+        this.percentageInTank = percentage;
+        coverHolder.markDirty();
+    }
+
+    protected void adjustPortionInTank(int percentage) {
+        this.setPortionInTank(MathHelper.clamp(this.percentageInTank + percentage, 0, 100));
+    }
+
 
     protected void setTransferRate(int transferRate) {
         this.transferRate = transferRate;
@@ -99,19 +110,58 @@ public class CoverPump extends CoverBehavior implements CoverWithUI, ITickable, 
     }
 
     protected int doTransferFluidsInternal(IFluidHandler myFluidHandler, IFluidHandler fluidHandler, int transferLimit) {
-        if (pumpMode == PumpMode.IMPORT) {
-            return moveHandlerFluids(fluidHandler, myFluidHandler, transferLimit, fluidFilter::testFluidStack);
-        } else if (pumpMode == PumpMode.EXPORT) {
-            return moveHandlerFluids(myFluidHandler, fluidHandler, transferLimit, fluidFilter::testFluidStack);
+        IFluidHandler sourceHandler;
+        IFluidHandler destHandler;
+        switch (this.pumpMode) {
+            case IMPORT:
+                sourceHandler = fluidHandler;
+                destHandler = myFluidHandler;
+                break;
+            case EXPORT:
+                sourceHandler = myFluidHandler;
+                destHandler = fluidHandler;
+                break;
+            default:
+                return 0;
         }
-        return 0;
-    }
 
-    public static int moveHandlerFluids(IFluidHandler sourceHandler, IFluidHandler destHandler, int transferLimit, Predicate<FluidStack> fluidFilter) {
         int fluidLeftToTransfer = transferLimit;
-        for (IFluidTankProperties tankProperties : sourceHandler.getTankProperties()) {
-            FluidStack currentFluid = tankProperties.getContents();
-            if (currentFluid == null || currentFluid.amount == 0 || !fluidFilter.test(currentFluid)) continue;
+        for (IFluidTankProperties sourceTankProperties : sourceHandler.getTankProperties()) {
+            FluidStack currentFluid = sourceTankProperties.getContents();
+
+            if (currentFluid == null || currentFluid.amount == 0 || !fluidFilter.testFluidStack(currentFluid)) continue;
+
+            // Testing fluid percentage
+            switch (this.pumpMode) {
+                case IMPORT:
+                    int myDestTankAmount = 0;
+                    int myDestTankCap = 0;
+
+                    // For this particular fluid
+                    for (IFluidTankProperties destTankProperies : destHandler.getTankProperties()) {
+                        FluidStack content = destTankProperies.getContents();
+
+                        // There are some in my tank
+                        if (content != null && content.isFluidEqual(currentFluid)) {
+                            myDestTankAmount += content.amount;
+                            myDestTankCap += destTankProperies.getCapacity();
+                        }
+                    }
+
+                    if (myDestTankCap != 0 && (myDestTankAmount > (myDestTankCap * ((double) this.percentageInTank / 100)))) {
+                        continue;
+                    }
+                    break;
+                case EXPORT:
+                    int currentAmount = currentFluid.amount;
+                    int currentCap = sourceTankProperties.getCapacity();
+                    if (currentAmount <= (currentCap * ((double) this.percentageInTank / 100))) {
+                        continue;
+                    }
+                    break;
+                default:
+                    continue;
+            }
             currentFluid.amount = fluidLeftToTransfer;
             FluidStack fluidStack = sourceHandler.drain(currentFluid, false);
             if (fluidStack == null || fluidStack.amount == 0) continue;
@@ -146,11 +196,18 @@ public class CoverPump extends CoverBehavior implements CoverWithUI, ITickable, 
         primaryGroup.addWidget(new ImageWidget(50, 20, 76, 20, GuiTextures.DISPLAY));
         primaryGroup.addWidget(new SimpleTextWidget(88, 30, "cover.pump.transfer_rate", 0xFFFFFF, () -> Integer.toString(transferRate)));
 
+
+        primaryGroup.addWidget(new ClickButtonWidget(85, 45, 20, 20, "-10", data -> adjustPortionInTank(-10)));
+        primaryGroup.addWidget(new ImageWidget(105, 45, 20, 20, GuiTextures.DISPLAY));
+        primaryGroup.addWidget(new ClickButtonWidget(125, 45, 20, 20, "+10", data -> adjustPortionInTank(10)));
+        primaryGroup.addWidget(new SimpleTextWidget(115, 55, "", 0xFFFFFF, () -> this.percentageInTank + "%"));
+
+
         primaryGroup.addWidget(new CycleButtonWidget(10, 45, 75, 20,
             GTUtility.mapToString(ConveyorMode.values(), it -> it.localeName),
             () -> pumpMode.ordinal(), newMode -> setPumpMode(PumpMode.values()[newMode])));
 
-        primaryGroup.addWidget(new ToggleButtonWidget(151, 45, 20, 20,
+        primaryGroup.addWidget(new ToggleButtonWidget(145, 45, 20, 20,
             this::isAllowManualImportExport, this::setAllowManualImportExport)
             .setTooltipText("cover.pump.manual_io")
             .setButtonTexture(GuiTextures.BUTTON_ALLOW_IMPORT_EXPORT));
@@ -208,7 +265,7 @@ public class CoverPump extends CoverBehavior implements CoverWithUI, ITickable, 
             }
             return CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY.cast(fluidHandlerWrapper);
         }
-        if(capability == GregtechTileCapabilities.CAPABILITY_CONTROLLABLE) {
+        if (capability == GregtechTileCapabilities.CAPABILITY_CONTROLLABLE) {
             return GregtechTileCapabilities.CAPABILITY_CONTROLLABLE.cast(this);
         }
         return defaultValue;
@@ -228,6 +285,7 @@ public class CoverPump extends CoverBehavior implements CoverWithUI, ITickable, 
     public void writeToNBT(NBTTagCompound tagCompound) {
         super.writeToNBT(tagCompound);
         tagCompound.setInteger("TransferRate", transferRate);
+        tagCompound.setInteger("PercentageInTank", this.percentageInTank);
         tagCompound.setInteger("PumpMode", pumpMode.ordinal());
         tagCompound.setBoolean("WorkingAllowed", isWorkingAllowed);
         tagCompound.setBoolean("AllowManualIO", allowManualImportExport);
@@ -238,6 +296,7 @@ public class CoverPump extends CoverBehavior implements CoverWithUI, ITickable, 
     public void readFromNBT(NBTTagCompound tagCompound) {
         super.readFromNBT(tagCompound);
         this.transferRate = tagCompound.getInteger("TransferRate");
+        this.percentageInTank = tagCompound.getInteger("PercentageInTank");
         this.pumpMode = PumpMode.values()[tagCompound.getInteger("PumpMode")];
         //LEGACY SAVE FORMAT SUPPORT
         if(tagCompound.hasKey("FluidFilter")) {
