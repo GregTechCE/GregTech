@@ -1,13 +1,11 @@
 package gregtech.integration.jei.recipe;
 
 import codechicken.lib.util.ItemNBTUtils;
-import gregtech.api.GTValues;
 import gregtech.api.recipes.CountableIngredient;
 import gregtech.api.recipes.Recipe;
 import gregtech.api.recipes.Recipe.ChanceEntry;
 import gregtech.api.recipes.RecipeMap;
 import gregtech.api.unification.OreDictUnifier;
-import gregtech.api.util.GTUtility;
 import gregtech.integration.jei.utils.JEIHelpers;
 import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.ingredients.VanillaTypes;
@@ -26,6 +24,7 @@ import java.util.stream.Collectors;
 
 public class GTRecipeWrapper implements IRecipeWrapper {
 
+    private static final int lineHeight = 10;
     private final RecipeMap<?> recipeMap;
     private final Recipe recipe;
 
@@ -114,16 +113,16 @@ public class GTRecipeWrapper implements IRecipeWrapper {
     public void drawInfo(Minecraft minecraft, int recipeWidth, int recipeHeight, int mouseX, int mouseY) {
         int yPosition = recipeHeight - getPropertyListHeight();
         minecraft.fontRenderer.drawString(I18n.format("gregtech.recipe.total", Math.abs((long) recipe.getEUt()) * recipe.getDuration()), 0, yPosition, 0x111111);
-        minecraft.fontRenderer.drawString(I18n.format(recipe.getEUt() >= 0 ? "gregtech.recipe.eu" : "gregtech.recipe.eu_inverted", Math.abs(recipe.getEUt()), JEIHelpers.getMinTierForVoltage(recipe.getEUt())), 0, yPosition += 10, 0x111111);
-        minecraft.fontRenderer.drawString(I18n.format("gregtech.recipe.duration", recipe.getDuration() / 20f), 0, yPosition += 10, 0x111111);
+        minecraft.fontRenderer.drawString(I18n.format(recipe.getEUt() >= 0 ? "gregtech.recipe.eu" : "gregtech.recipe.eu_inverted", Math.abs(recipe.getEUt()), JEIHelpers.getMinTierForVoltage(recipe.getEUt())), 0, yPosition += lineHeight, 0x111111);
+        minecraft.fontRenderer.drawString(I18n.format("gregtech.recipe.duration", recipe.getDuration() / 20f), 0, yPosition += lineHeight, 0x111111);
         for (String propertyKey : recipe.getPropertyKeys()) {
             minecraft.fontRenderer.drawString(I18n.format("gregtech.recipe." + propertyKey,
-                recipe.<Object>getProperty(propertyKey)), 0, yPosition += 10, 0x111111);
+                recipe.<Object>getProperty(propertyKey)), 0, yPosition += lineHeight, 0x111111);
         }
     }
 
     private int getPropertyListHeight() {
-        return (recipe.getPropertyKeys().size() + 3) * 10;
+        return (recipe.getPropertyKeys().size() + 3) * lineHeight;
     }
 
 }
