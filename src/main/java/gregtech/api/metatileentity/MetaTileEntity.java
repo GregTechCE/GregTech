@@ -55,7 +55,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 
-import static gregtech.api.util.FluidTankUtils.moveHandlerFluids;
+import static gregtech.api.util.GTFluidUtils.moveHandlerFluids;
 
 public abstract class MetaTileEntity implements ICoverable {
 

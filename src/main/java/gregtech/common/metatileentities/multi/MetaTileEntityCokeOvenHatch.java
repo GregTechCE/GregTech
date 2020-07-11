@@ -12,19 +12,15 @@ import gregtech.api.metatileentity.MetaTileEntityHolder;
 import gregtech.api.metatileentity.multiblock.MultiblockControllerBase;
 import gregtech.api.render.ICubeRenderer;
 import gregtech.api.render.Textures;
-import gregtech.common.covers.CoverPump;
 import gregtech.common.metatileentities.electric.multiblockpart.MetaTileEntityMultiblockPart;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.items.ItemStackHandler;
 
-import java.util.function.Predicate;
-
-import static gregtech.api.util.FluidTankUtils.moveHandlerFluids;
+import static gregtech.api.util.GTFluidUtils.moveHandlerFluids;
 
 public class MetaTileEntityCokeOvenHatch extends MetaTileEntityMultiblockPart {
 

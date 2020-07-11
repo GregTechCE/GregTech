@@ -1,7 +1,6 @@
 package gregtech.common.pipelike.fluidpipe.tile;
 
 import gregtech.api.pipenet.tile.IPipeTile;
-import gregtech.common.covers.CoverPump;
 import gregtech.common.pipelike.fluidpipe.BlockFluidPipe;
 import gregtech.common.pipelike.fluidpipe.FluidPipeProperties;
 import gregtech.common.pipelike.fluidpipe.FluidPipeType;
@@ -10,13 +9,10 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.math.BlockPos.PooledMutableBlockPos;
-import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 
-import java.util.function.Predicate;
-
-import static gregtech.api.util.FluidTankUtils.moveHandlerFluids;
+import static gregtech.api.util.GTFluidUtils.moveHandlerFluids;
 
 public class TileEntityFluidPipeTickable extends TileEntityFluidPipe implements ITickable {
 

@@ -6,7 +6,7 @@ import net.minecraftforge.fluids.capability.IFluidTankProperties;
 
 import java.util.function.Predicate;
 
-public class FluidTankUtils {
+public class GTFluidUtils {
 
     public static int moveHandlerFluids(IFluidHandler sourceHandler, IFluidHandler destHandler, int transferLimit) {
         int fluidLeftToTransfer = transferLimit;
