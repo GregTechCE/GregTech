@@ -1,7 +1,6 @@
 package gregtech.common.blocks.surfacerock;
 
 import gregtech.api.items.toolitem.IScannableBlock;
-import gregtech.api.pipenet.tile.IPipeTile;
 import gregtech.api.unification.material.Materials;
 import gregtech.api.unification.material.type.Material;
 import net.minecraft.block.ITileEntityProvider;
