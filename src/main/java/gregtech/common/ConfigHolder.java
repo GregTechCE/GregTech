@@ -124,5 +124,10 @@ public class ConfigHolder {
     public static class MachineSpecificConfiguration {
         @Config.Comment("Array of blacklisted dimension IDs in which Air Collector does not work.")
         public int[] airCollectorDimensionBlacklist = new int[]{};
+
+        @Config.RangeInt(min = 0, max = 1)
+        @Config.Comment("Number of byproduct slots (Slots other than the main output slot) for the MV Macerator. Default 0.")
+        @Config.RequiresMcRestart
+        public int maceratorByproductSlots = 0;
     }
 }
