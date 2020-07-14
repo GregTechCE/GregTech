@@ -176,7 +176,7 @@ public class Recipe {
             chancedOutputsList = chancedOutputsList.subList(0, Math.max(0, maxChancedSlots));
         }
         for (ChanceEntry chancedOutput : chancedOutputsList) {
-            int outputChance = chancedOutput.getChance() + (chancedOutput.getBoostPerTier() * tier);
+            int outputChance = RecipeMap.getChanceFunction().chanceFor(chancedOutput.getChance(),chancedOutput.getBoostPerTier(), tier);
             if (random.nextInt(Recipe.getMaxChancedValue()) <= outputChance) {
                 outputs.add(chancedOutput.getItemStack().copy());
             }
