@@ -56,7 +56,7 @@ public class IntCircuitBehaviour implements IItemBehaviour, ItemUIFactory, ISubI
         ItemStack stack = holder.getCurrentItem();
         int configuration = IntCircuitIngredient.getCircuitConfiguration(stack);
         configuration += amount;
-        configuration = MathHelper.clamp(configuration, 0, 32);
+        configuration = MathHelper.clamp(configuration, 0, IntCircuitIngredient.CIRCUIT_MAX);
         IntCircuitIngredient.setCircuitConfiguration(stack, configuration);
         holder.markAsDirty();
     }

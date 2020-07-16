@@ -11,6 +11,7 @@ import gregtech.api.items.metaitem.MetaItem;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.recipes.RecipeMap;
 import gregtech.api.recipes.RecipeMaps;
+import gregtech.api.recipes.ingredients.IntCircuitIngredient;
 import gregtech.api.recipes.machines.FuelRecipeMap;
 import gregtech.api.recipes.machines.RecipeMapFurnace;
 import gregtech.api.unification.OreDictUnifier;
@@ -33,6 +34,7 @@ import gregtech.integration.jei.utils.MachineSubtypeHandler;
 import gregtech.integration.jei.utils.MetaItemSubtypeHandler;
 import gregtech.loaders.recipe.CustomItemReturnShapedOreRecipeRecipe;
 import mezz.jei.api.*;
+import mezz.jei.api.ingredients.VanillaTypes;
 import mezz.jei.api.recipe.IRecipeCategoryRegistration;
 import mezz.jei.api.recipe.VanillaRecipeCategoryUid;
 import net.minecraft.client.resources.I18n;
@@ -129,7 +131,7 @@ public class GTJeiPlugin implements IModPlugin {
         registry.addRecipeCatalyst(MetaTileEntities.LARGE_TUNGSTENSTEEL_BOILER.getStackForm(), semiFluidMapId);
         
         FluidStack air = Materials.Air.getFluid(1000);
-        registry.addIngredientInfo(air, air.getClass(), I18n.format("gregtech.machine.air_collector.jei_description"));
+        registry.addIngredientInfo(air, VanillaTypes.FLUID, I18n.format("gregtech.machine.air_collector.jei_description"));
         
         String primitiveBlastId = GTValues.MODID + ":" + "primitive_blast_furnace";
         registry.addRecipes(RecipeMaps.PRIMITIVE_BLAST_FURNACE_RECIPES.stream()
@@ -159,5 +161,10 @@ public class GTJeiPlugin implements IModPlugin {
         	registry.addRecipeCatalyst(machine.getStackForm(), oreByProductId);        
         for(MetaTileEntity machine : MetaTileEntities.THERMAL_CENTRIFUGE)
         	registry.addRecipeCatalyst(machine.getStackForm(), oreByProductId);
+
+        for (int i = 0; i <= IntCircuitIngredient.CIRCUIT_MAX; i++) {
+            registry.addIngredientInfo(IntCircuitIngredient.getIntegratedCircuit(i), VanillaTypes.ITEM,
+                "metaitem.circuit.integrated.jei_description");
+        }
     }
 }
