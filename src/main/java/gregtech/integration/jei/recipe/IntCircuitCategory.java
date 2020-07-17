@@ -18,12 +18,22 @@ import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.ingredients.VanillaTypes;
 import mezz.jei.api.recipe.IRecipeCategory;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.FontRenderer;
+import net.minecraft.client.renderer.BufferBuilder;
+import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.client.resources.I18n;
+import net.minecraft.client.shader.Framebuffer;
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
+import org.lwjgl.opengl.GL11;
 
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
+import java.util.List;
+import java.util.Random;
 import java.util.function.Supplier;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
@@ -44,7 +54,12 @@ public class IntCircuitCategory implements IRecipeCategory<IntCircuitRecipeWrapp
 
     private final Supplier<IIngredientRenderer<ItemStack>> firstItemRenderer =
         Suppliers.memoize(() ->
-            new ScaledRenderer<>(FIRST_SLOT_SCALE, GTJeiPlugin.ingredientRegistry.getIngredientRenderer(VanillaTypes.ITEM)));
+            new ScaledRenderer<>(FIRST_SLOT_SCALE,
+                new SlicedItemRenderer(GTJeiPlugin.ingredientRegistry.getIngredientRenderer(VanillaTypes.ITEM))));
+
+    private final Supplier<IIngredientRenderer<ItemStack>> otherItemRenderer =
+        Suppliers.memoize(() ->
+            new SlicedItemRenderer(GTJeiPlugin.ingredientRegistry.getIngredientRenderer(VanillaTypes.ITEM)));
 
     public IntCircuitCategory(IGuiHelper guiHelper) {
         iconDrawable = guiHelper.createDrawableIngredient(MetaItems.INTEGRATED_CIRCUIT.getStackForm());
@@ -107,8 +122,13 @@ public class IntCircuitCategory implements IRecipeCategory<IntCircuitRecipeWrapp
         for (int i = 0; i < positions.length; i++) {
             stacks.init(i + 1,
                 recipeWrapper.input,
+                otherItemRenderer.get(),
                 positions[i][0],
-                positions[i][1]
+                positions[i][1],
+                SLOT_SIZE,
+                SLOT_SIZE,
+                1,
+                1
             );
             stacks.setBackground(i + 1, slotBase);
         }
@@ -117,5 +137,64 @@ public class IntCircuitCategory implements IRecipeCategory<IntCircuitRecipeWrapp
 
     @Override
     public void drawExtras(Minecraft minecraft) {
+    }
+
+    private static class SlicedItemRenderer implements IIngredientRenderer<ItemStack> {
+        public static final int ITEM_WIDTH = 16;
+        private final IIngredientRenderer<ItemStack> delegate;
+
+        public SlicedItemRenderer(IIngredientRenderer<ItemStack> delegate) {
+            this.delegate = delegate;
+        }
+
+        @Override
+        public List<String> getTooltip(Minecraft minecraft, ItemStack ingredient, ITooltipFlag tooltipFlag) {
+            return delegate.getTooltip(minecraft, ingredient, tooltipFlag);
+        }
+
+        @Override
+        public FontRenderer getFontRenderer(Minecraft minecraft, ItemStack ingredient) {
+            return delegate.getFontRenderer(minecraft, ingredient);
+        }
+
+        @Override
+        public void render(Minecraft minecraft, int xPosition, int yPosition, @Nullable ItemStack ingredient) {
+            if (ingredient == null)
+                return;
+
+            Framebuffer fb = minecraft.getFramebuffer();
+            if (!fb.isStencilEnabled()) {
+                fb.enableStencil();
+            }
+
+            final int mask = 0xFF;
+            final int val = 1;
+
+            GL11.glEnable(GL11.GL_STENCIL_TEST);
+            GlStateManager.clear(GL11.GL_STENCIL_BUFFER_BIT);
+            GL11.glStencilOp(GL11.GL_KEEP, GL11.GL_KEEP, GL11.GL_REPLACE);
+            GL11.glStencilFunc(GL11.GL_ALWAYS, val, mask);
+            GL11.glStencilMask(mask);
+
+            GlStateManager.colorMask(false, false, false, false);
+            GlStateManager.depthMask(false);
+
+            Tessellator tes = Tessellator.getInstance();
+            BufferBuilder buf = tes.getBuffer();
+            buf.begin(GL11.GL_TRIANGLES, DefaultVertexFormats.POSITION);
+            buf.pos(xPosition + ITEM_WIDTH, yPosition, 0).endVertex();
+            buf.pos(xPosition, yPosition + ITEM_WIDTH, 0).endVertex();
+            buf.pos(xPosition + ITEM_WIDTH, yPosition + ITEM_WIDTH, 0).endVertex();
+            tes.draw();
+
+            GL11.glStencilOp(GL11.GL_KEEP, GL11.GL_KEEP, GL11.GL_KEEP);
+            GlStateManager.colorMask(true, true, true, true);
+            GlStateManager.depthMask(true);
+
+            GL11.glStencilFunc(GL11.GL_EQUAL, val, mask);
+
+            delegate.render(minecraft, xPosition, yPosition, ingredient);
+            GL11.glDisable(GL11.GL_STENCIL_TEST);
+        }
     }
 }
