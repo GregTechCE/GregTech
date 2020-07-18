@@ -4,6 +4,7 @@ import gregtech.api.GTValues;
 import gregtech.api.recipes.RecipeMaps;
 import gregtech.api.recipes.recipes.FuelRecipe;
 import gregtech.api.unification.material.Materials;
+import gregtech.common.ConfigHolder;
 import net.minecraftforge.fluids.FluidStack;
 
 public class FuelRecipes {
@@ -58,11 +59,11 @@ public class FuelRecipes {
         registerSemiFluidGeneratorFuel(Materials.HeavyFuel.getFluid(8), 15, GTValues.LV);
 
         //plasma turbine
-        registerPlasmaFuel(Materials.Helium.getPlasma(1), 2560, GTValues.LV);
-        registerPlasmaFuel(Materials.Nitrogen.getPlasma(1), 4032, GTValues.LV);
-        registerPlasmaFuel(Materials.Oxygen.getPlasma(1), 4096, GTValues.LV);
-        registerPlasmaFuel(Materials.Iron.getPlasma(16), 103219, GTValues.LV);
-        registerPlasmaFuel(Materials.Nickel.getPlasma(16), 106905, GTValues.LV);
+        registerPlasmaFuel(Materials.Helium.getPlasma(1), ConfigHolder.heliumPlasmaDuration, GTValues.LV);
+        registerPlasmaFuel(Materials.Nitrogen.getPlasma(1), ConfigHolder.nitrogenPlasmaDuration, GTValues.LV);
+        registerPlasmaFuel(Materials.Oxygen.getPlasma(1), ConfigHolder.oxygenPlasmaDuration, GTValues.LV);
+        registerPlasmaFuel(Materials.Iron.getPlasma(16), ConfigHolder.ironPlasmaDuration, GTValues.LV);
+        registerPlasmaFuel(Materials.Nickel.getPlasma(16), ConfigHolder.nickelPlasmaDuration, GTValues.LV);
 
     }
 

@@ -97,6 +97,27 @@ public class ConfigHolder {
     @Config.RequiresMcRestart
     public static int gasTurbineBonusOutput = 6144;
 
+    @Config.Comment("Sets the duration of Helium Plasma of Plasma turbine")
+    @Config.RequiresMcRestart
+    public static int heliumPlasmaDuration = 2560;
+
+    @Config.Comment("Sets the duration of Nitrogen Plasma of Plasma turbine")
+    @Config.RequiresMcRestart
+    public static int nitrogenPlasmaDuration = 4032;
+
+    @Config.Comment("Sets the duration of Oxygen Plasma of Plasma turbine")
+    @Config.RequiresMcRestart
+    public static int oxygenPlasmaDuration = 4096;
+
+    @Config.Comment("Sets the duration of Iron Plasma of Plasma turbine")
+    @Config.RequiresMcRestart
+    public static int ironPlasmaDuration = 103219;
+
+    @Config.Comment("Sets the duration of Nickel Plasma of Plasma turbine")
+    @Config.RequiresMcRestart
+    public static int nickelPlasmaDuration = 106905;
+
+
     public static class VanillaRecipes {
 
         @Config.Comment("Whether to nerf paper crafting recipe. Default is true.")
