@@ -16,6 +16,7 @@ import stanhebben.zenscript.annotations.ZenMethod;
 public class ImplosionRecipeBuilder extends RecipeBuilder<ImplosionRecipeBuilder> {
 
     protected int explosivesAmount;
+    protected ItemStack explosivesType;
 
     public ImplosionRecipeBuilder() {
     }
@@ -42,6 +43,16 @@ public class ImplosionRecipeBuilder extends RecipeBuilder<ImplosionRecipeBuilder
         return false;
     }
 
+    @Override
+    public boolean applyProperty(String key, ItemStack exploType) {
+        if (key.equals("explosives")) {
+            explosivesAmount(exploType.getCount());
+            explosivesType = exploType;
+            return true;
+        }
+        return false;
+    }
+
     @ZenMethod
     public ImplosionRecipeBuilder explosivesAmount(int explosivesAmount) {
         if (!GTUtility.isBetweenInclusive(1, 64, explosivesAmount)) {
@@ -52,10 +63,22 @@ public class ImplosionRecipeBuilder extends RecipeBuilder<ImplosionRecipeBuilder
         return this;
     }
 
+    @ZenMethod
+    public ImplosionRecipeBuilder explosivesType(ItemStack explosivesType) {
+        this.explosivesType = explosivesType;
+        return this;
+    }
+
     @Override
     public void buildAndRegister() {
-        int tntAmount = Math.max(1, explosivesAmount / 2);
-        recipeMap.addRecipe(this.copy().inputs(new ItemStack(Blocks.TNT, tntAmount)).build());
+        int amount  = Math.max(1, explosivesAmount / 2);
+        if(explosivesType == null) {
+            explosivesType = new ItemStack(Blocks.TNT, amount);
+        }
+        else {
+            explosivesType = new ItemStack(explosivesType.getItem(), amount, explosivesType.getMetadata());
+        }
+        recipeMap.addRecipe(this.copy().inputs(explosivesType).build());
     }
 
     public ValidationResult<Recipe> build() {

@@ -101,6 +101,17 @@ public class CTRecipeBuilder {
     }
 
     @ZenMethod
+    public CTRecipeBuilder property(String key, IItemStack item) {
+        boolean applied = this.backingBuilder.applyProperty(key, CraftTweakerMC.getItemStack(item));
+        if (!applied) {
+            throw new IllegalArgumentException("Property " +
+                key + " cannot be applied to recipe type " +
+                backingBuilder.getClass().getSimpleName() + " for Item " + CraftTweakerMC.getItemStack(item).getDisplayName());
+        }
+        return this;
+    }
+
+    @ZenMethod
     public void buildAndRegister() {
         this.backingBuilder.buildAndRegister();
     }
