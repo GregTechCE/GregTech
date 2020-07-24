@@ -106,11 +106,11 @@ public class BlockCable extends BlockMaterialPipe<Insulation, WireProperties, Wo
     @Override
     public void onEntityCollidedWithBlock(World worldIn, BlockPos pos, IBlockState state, Entity entityIn) {
         Insulation insulation = getPipeTileEntity(worldIn, pos).getPipeType();
-        boolean damageOnLossless = ConfigHolder.doesLosslessDamage;
+        boolean damageOnLossless = ConfigHolder.doLosslessWiresDamage;
         if (!worldIn.isRemote && insulation.insulationLevel == -1 && entityIn instanceof EntityLivingBase) {
             EntityLivingBase entityLiving = (EntityLivingBase) entityIn;
             EnergyNet energyNet = getWorldPipeNet(worldIn).getNetFromPos(pos);
-            if (energyNet != null && (energyNet.getAllNodes().get(pos).data.lossPerBlock > 0 || damageOnLossless)) {
+            if (energyNet != null && (damageOnLossless || energyNet.getAllNodes().get(pos).data.lossPerBlock > 0)) {
                 long voltage = energyNet.getLastMaxVoltage();
                 long amperage = energyNet.getLastAmperage();
                 if (voltage > 0L && amperage > 0L) {
