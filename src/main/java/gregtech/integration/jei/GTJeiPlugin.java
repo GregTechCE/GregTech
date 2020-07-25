@@ -80,6 +80,7 @@ public class GTJeiPlugin implements IModPlugin {
     public void register(IModRegistry registry) {
         IJeiHelpers jeiHelpers = registry.getJeiHelpers();
 
+        registry.addRecipes(IntCircuitRecipeWrapper.create(), IntCircuitCategory.UID);
         MultiblockInfoCategory.registerRecipes(registry);
         registry.handleRecipes(CustomItemReturnShapedOreRecipeRecipe.class, recipe -> new CustomItemReturnRecipeWrapper(jeiHelpers, recipe), VanillaRecipeCategoryUid.CRAFTING);
         registry.addRecipeRegistryPlugin(new FacadeRegistryPlugin());
@@ -164,7 +165,6 @@ public class GTJeiPlugin implements IModPlugin {
         for (MetaTileEntity machine : MetaTileEntities.THERMAL_CENTRIFUGE)
             registry.addRecipeCatalyst(machine.getStackForm(), oreByProductId);
 
-        registry.addRecipes(IntCircuitRecipeWrapper.create(), IntCircuitCategory.UID);
         ingredientRegistry = registry.getIngredientRegistry();
         for (int i = 0; i <= IntCircuitIngredient.CIRCUIT_MAX; i++) {
             registry.addIngredientInfo(IntCircuitIngredient.getIntegratedCircuit(i), VanillaTypes.ITEM,
