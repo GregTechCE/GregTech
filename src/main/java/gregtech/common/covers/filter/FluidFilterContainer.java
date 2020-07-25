@@ -54,7 +54,7 @@ public class FluidFilterContainer implements INBTSerializable<NBTTagCompound> {
         widgetGroup.accept(new LabelWidget(10, y, "cover.pump.fluid_filter.title"));
         widgetGroup.accept(new SlotWidget(filterInventory, 0, 10, y + 15)
             .setBackgroundTexture(GuiTextures.SLOT, GuiTextures.FILTER_SLOT_OVERLAY));
-        this.filterWrapper.initUI(y + 15 + 18 + 5, widgetGroup);
+        this.filterWrapper.initUI(y + 15, widgetGroup);
     }
 
     protected void onFilterSlotChange(boolean notify) {
