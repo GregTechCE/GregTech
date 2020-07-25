@@ -1611,6 +1611,7 @@ recipemap.diesel_generator.name=Diesel Generator
 recipemap.gas_turbine.name=Gas Turbine
 recipemap.steam_turbine.name=Steam Turbine
 recipemap.semi_fluid_generator.name=Semi Fluid Fuels
+recipemap.plasma_generator.name=Plasma Generator
 
 behaviour.hoe=Can till dirt
 behaviour.soft_hammer=Use on machine to allow/disallow it to work
