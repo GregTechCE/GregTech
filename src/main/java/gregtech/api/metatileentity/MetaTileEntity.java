@@ -55,7 +55,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 
-import static gregtech.api.util.GTFluidUtils.moveHandlerFluids;
+import static gregtech.api.util.GTFluidUtils.transferFluids;
 
 public abstract class MetaTileEntity implements ICoverable {
 
@@ -851,7 +851,7 @@ public abstract class MetaTileEntity implements ICoverable {
             if (fluidHandler == null || myFluidHandler == null) {
                 continue;
             }
-            moveHandlerFluids(myFluidHandler, fluidHandler, Integer.MAX_VALUE);
+            transferFluids(myFluidHandler, fluidHandler, Integer.MAX_VALUE);
         }
         blockPos.release();
     }
@@ -870,7 +870,7 @@ public abstract class MetaTileEntity implements ICoverable {
             if (fluidHandler == null || myFluidHandler == null) {
                 continue;
             }
-            moveHandlerFluids(fluidHandler, myFluidHandler, Integer.MAX_VALUE);
+            transferFluids(fluidHandler, myFluidHandler, Integer.MAX_VALUE);
         }
         blockPos.release();
     }

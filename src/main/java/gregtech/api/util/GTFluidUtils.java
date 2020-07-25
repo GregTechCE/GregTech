@@ -8,12 +8,12 @@ import java.util.function.Predicate;
 
 public class GTFluidUtils {
 
-    public static int moveHandlerFluids(IFluidHandler sourceHandler, IFluidHandler destHandler, int transferLimit) {
-        return moveHandlerFluids(sourceHandler, destHandler, transferLimit, (fluid) -> true);
+    public static int transferFluids(IFluidHandler sourceHandler, IFluidHandler destHandler, int transferLimit) {
+        return transferFluids(sourceHandler, destHandler, transferLimit, (fluid) -> true);
     }
 
 
-    public static int moveHandlerFluids(IFluidHandler sourceHandler, IFluidHandler destHandler, int transferLimit ,  Predicate<FluidStack> fluidFilter) {
+    public static int transferFluids(IFluidHandler sourceHandler, IFluidHandler destHandler, int transferLimit , Predicate<FluidStack> fluidFilter) {
         int fluidLeftToTransfer = transferLimit;
         for (IFluidTankProperties tankProperties : sourceHandler.getTankProperties()) {
             FluidStack currentFluid = tankProperties.getContents();

@@ -12,7 +12,7 @@ import net.minecraft.util.math.BlockPos.PooledMutableBlockPos;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 
-import static gregtech.api.util.GTFluidUtils.moveHandlerFluids;
+import static gregtech.api.util.GTFluidUtils.transferFluids;
 
 public class TileEntityFluidPipeTickable extends TileEntityFluidPipe implements ITickable {
 
@@ -71,7 +71,7 @@ public class TileEntityFluidPipeTickable extends TileEntityFluidPipe implements 
             IFluidHandler sourceHandler = pipeTile.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, side);
             IFluidHandler receiverHandler = tileEntity.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, side.getOpposite());
             if (sourceHandler != null && receiverHandler != null && blockFluidPipe.canPushIntoFluidHandler(pipeTile, tileEntity, sourceHandler, receiverHandler)) {
-                moveHandlerFluids(sourceHandler, receiverHandler, Integer.MAX_VALUE);
+                transferFluids(sourceHandler, receiverHandler, Integer.MAX_VALUE);
             }
         }
         blockPos.release();
