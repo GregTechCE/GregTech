@@ -97,6 +97,9 @@ public class ConfigHolder {
     @Config.RequiresMcRestart
     public static int gasTurbineBonusOutput = 6144;
 
+    @Config.Comment("If true, powered zero loss wires will damage the player. Default: false.")
+    public static boolean doLosslessWiresDamage = false;
+
     public static class VanillaRecipes {
 
         @Config.Comment("Whether to nerf paper crafting recipe. Default is true.")
