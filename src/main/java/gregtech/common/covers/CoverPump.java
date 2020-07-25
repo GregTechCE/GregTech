@@ -49,6 +49,9 @@ public class CoverPump extends CoverBehavior implements CoverWithUI, ITickable, 
     protected int fluidLeftToTransferLastSecond;
     protected boolean isWorkingAllowed = true;
     private CoverableFluidHandlerWrapper fluidHandlerWrapper;
+    protected boolean isWorkingAllowed = true;
+    protected final FluidFilterContainer fluidFilter;
+    protected BucketMode bucketMode;
 
     public CoverPump(ICoverable coverHolder, EnumFacing attachedSide, int tier, int mbPerTick) {
         super(coverHolder, attachedSide);
@@ -58,6 +61,7 @@ public class CoverPump extends CoverBehavior implements CoverWithUI, ITickable, 
         this.transferRate = mbPerTick;
         this.fluidLeftToTransferLastSecond = transferRate;
         this.pumpMode = PumpMode.EXPORT;
+        this.bucketMode = BucketMode.MILLI_BUCKET;
         this.fluidFilter = new FluidFilterContainer(this);
     }
 
@@ -77,11 +81,19 @@ public class CoverPump extends CoverBehavior implements CoverWithUI, ITickable, 
     }
 
     protected void adjustTransferRate(int amount) {
+        amount *= this.bucketMode == BucketMode.BUCKET ? 1000 : 1;
         setTransferRate(MathHelper.clamp(transferRate + amount, 1, maxFluidTransferRate));
     }
 
     public void setPumpMode(PumpMode pumpMode) {
         this.pumpMode = pumpMode;
+        coverHolder.markDirty();
+    }
+
+    public void setBucketMode(BucketMode bucketMode) {
+        this.bucketMode = bucketMode;
+        if (this.bucketMode == BucketMode.BUCKET)
+            setTransferRate(transferRate / 1000 * 1000);
         coverHolder.markDirty();
     }
 
@@ -189,12 +201,17 @@ public class CoverPump extends CoverBehavior implements CoverWithUI, ITickable, 
         WidgetGroup primaryGroup = new WidgetGroup();
         primaryGroup.addWidget(new LabelWidget(10, 5, "cover.pump.title", GTValues.VN[tier]));
 
-        primaryGroup.addWidget(new ClickButtonWidget(10, 20, 20, 20, "-10", data -> adjustTransferRate(data.isShiftClick ? -100 : -10)));
-        primaryGroup.addWidget(new ClickButtonWidget(146, 20, 20, 20, "+10", data -> adjustTransferRate(data.isShiftClick ? +100 : +10)));
-        primaryGroup.addWidget(new ClickButtonWidget(30, 20, 20, 20, "-1", data -> adjustTransferRate(data.isShiftClick ? -5 : -1)));
-        primaryGroup.addWidget(new ClickButtonWidget(126, 20, 20, 20, "+1", data -> adjustTransferRate(data.isShiftClick ? +5 : +1)));
-        primaryGroup.addWidget(new ImageWidget(50, 20, 76, 20, GuiTextures.DISPLAY));
-        primaryGroup.addWidget(new SimpleTextWidget(88, 30, "cover.pump.transfer_rate", 0xFFFFFF, () -> Integer.toString(transferRate)));
+        primaryGroup.addWidget(new ClickButtonWidget(10, 20, 34, 18, "-100", data -> adjustTransferRate(data.isShiftClick ? -500 : -100)));
+        primaryGroup.addWidget(new ClickButtonWidget(128, 20, 34, 18, "+100", data -> adjustTransferRate(data.isShiftClick ? +500 : +100)));
+        primaryGroup.addWidget(new ClickButtonWidget(45, 20, 23, 18, "-10", data -> adjustTransferRate(data.isShiftClick ? -50 : -10)));
+        primaryGroup.addWidget(new ClickButtonWidget(105, 20, 23, 18, "+10", data -> adjustTransferRate(data.isShiftClick ? +50 : +10)));
+        primaryGroup.addWidget(new ClickButtonWidget(68, 20, 18, 18, "-1", data -> adjustTransferRate(data.isShiftClick ? -5 : -1)));
+        primaryGroup.addWidget(new ClickButtonWidget(86, 20, 18, 18, "+1", data -> adjustTransferRate(data.isShiftClick ? +5 : +1)));
+        primaryGroup.addWidget(new ImageWidget(10, 40, 120, 18, GuiTextures.DISPLAY));
+        primaryGroup.addWidget(new SimpleTextWidget(65, 50, "cover.pump.transfer_rate", 0xFFFFFF, () -> bucketMode == BucketMode.BUCKET ? Integer.toString(transferRate / 1000) : Integer.toString(transferRate)));
+        primaryGroup.addWidget(new CycleButtonWidget(132, 40, 30, 18,
+            GTUtility.mapToString(BucketMode.values(), it -> it.localeName),
+            () -> bucketMode.ordinal(), newMode -> setBucketMode(BucketMode.values()[newMode])));
 
 
         primaryGroup.addWidget(new ClickButtonWidget(85, 45, 20, 20, "-10", data -> adjustPortionInTank(-10)));
@@ -203,7 +220,7 @@ public class CoverPump extends CoverBehavior implements CoverWithUI, ITickable, 
         primaryGroup.addWidget(new SimpleTextWidget(115, 55, "", 0xFFFFFF, () -> this.percentageInTank + "%"));
 
 
-        primaryGroup.addWidget(new CycleButtonWidget(10, 45, 75, 20,
+        primaryGroup.addWidget(new CycleButtonWidget(10, 63, 75, 18,
             GTUtility.mapToString(ConveyorMode.values(), it -> it.localeName),
             () -> pumpMode.ordinal(), newMode -> setPumpMode(PumpMode.values()[newMode])));
 
@@ -212,7 +229,7 @@ public class CoverPump extends CoverBehavior implements CoverWithUI, ITickable, 
             .setTooltipText("cover.pump.manual_io")
             .setButtonTexture(GuiTextures.BUTTON_ALLOW_IMPORT_EXPORT));
 
-        this.fluidFilter.initUI(70, primaryGroup::addWidget);
+        this.fluidFilter.initUI(88, primaryGroup::addWidget);
 
         return ModularUI.builder(GuiTextures.BACKGROUND, 176, 170 + 82)
             .widget(primaryGroup)
@@ -299,7 +316,7 @@ public class CoverPump extends CoverBehavior implements CoverWithUI, ITickable, 
         this.percentageInTank = tagCompound.getInteger("PercentageInTank");
         this.pumpMode = PumpMode.values()[tagCompound.getInteger("PumpMode")];
         //LEGACY SAVE FORMAT SUPPORT
-        if(tagCompound.hasKey("FluidFilter")) {
+        if (tagCompound.hasKey("FluidFilter")) {
             this.fluidFilter.deserializeNBT(tagCompound);
         } else {
             this.fluidFilter.deserializeNBT(tagCompound.getCompoundTag("Filter"));
@@ -319,6 +336,17 @@ public class CoverPump extends CoverBehavior implements CoverWithUI, ITickable, 
         public final String localeName;
 
         PumpMode(String localeName) {
+            this.localeName = localeName;
+        }
+    }
+
+    public enum BucketMode {
+        BUCKET("cover.bucket.mode.bucket"),
+        MILLI_BUCKET("cover.bucket.mode.milli_bucket");
+
+        public final String localeName;
+
+        BucketMode(String localeName) {
             this.localeName = localeName;
         }
     }

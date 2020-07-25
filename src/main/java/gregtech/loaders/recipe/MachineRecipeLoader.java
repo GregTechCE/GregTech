@@ -1,6 +1,7 @@
 package gregtech.loaders.recipe;
 
 import gregtech.api.GTValues;
+import gregtech.api.items.metaitem.MetaItem;
 import gregtech.api.recipes.CountableIngredient;
 import gregtech.api.recipes.ModHandler;
 import gregtech.api.recipes.RecipeMaps;
@@ -49,7 +50,7 @@ import java.util.Collection;
 import static gregtech.api.GTValues.L;
 import static gregtech.api.GTValues.M;
 import static gregtech.api.util.DyeUtil.getOrdictColorName;
-import static gregtech.common.items.MetaItems.RUBBER_DROP;
+import static gregtech.common.items.MetaItems.*;
 
 public class MachineRecipeLoader {
 
@@ -99,6 +100,31 @@ public class MachineRecipeLoader {
             .notConsumable(MetaItems.SHAPE_MOLD_CREDIT.getStackForm())
             .input(OrePrefix.plate, Materials.Brass, 1)
             .outputs(MetaItems.COIN_DOGE.getStackForm(4))
+            .buildAndRegister();
+
+        for (MetaItem.MetaValueItem shapeMold : SHAPE_MOLDS) {
+            RecipeMaps.FORMING_PRESS_RECIPES.recipeBuilder()
+                .duration(120).EUt(22)
+                .notConsumable(shapeMold.getStackForm())
+                .inputs(MetaItems.SHAPE_EMPTY.getStackForm())
+                .outputs(shapeMold.getStackForm())
+                .buildAndRegister();
+        }
+
+        for (MetaItem.MetaValueItem shapeExtruder : SHAPE_EXTRUDERS) {
+            RecipeMaps.FORMING_PRESS_RECIPES.recipeBuilder()
+                .duration(120).EUt(22)
+                .notConsumable(shapeExtruder.getStackForm())
+                .inputs(MetaItems.SHAPE_EMPTY.getStackForm())
+                .outputs(shapeExtruder.getStackForm())
+                .buildAndRegister();
+        }
+
+        RecipeMaps.BENDER_RECIPES.recipeBuilder()
+            .circuitMeta(4)
+            .input(OrePrefix.plate, Materials.Steel, 4)
+            .outputs(MetaItems.SHAPE_EMPTY.getStackForm())
+            .duration(180).EUt(12)
             .buildAndRegister();
 
         RecipeMaps.BENDER_RECIPES.recipeBuilder()

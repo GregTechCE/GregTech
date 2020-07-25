@@ -240,6 +240,8 @@ public class BlockMachine extends BlockCustomParticle implements ITileEntityProv
             }
             metaTileEntity.dropAllCovers();
             metaTileEntity.onRemoval();
+
+            tileEntities.set(metaTileEntity);
         }
         super.breakBlock(worldIn, pos, state);
     }
@@ -341,7 +343,7 @@ public class BlockMachine extends BlockCustomParticle implements ITileEntityProv
 
     @Override
     public void harvestBlock(World worldIn, EntityPlayer player, BlockPos pos, IBlockState state, @Nullable TileEntity te, ItemStack stack) {
-        tileEntities.set(te == null ? null : ((MetaTileEntityHolder) te).getMetaTileEntity());
+        tileEntities.set(te == null ? tileEntities.get() : ((MetaTileEntityHolder) te).getMetaTileEntity());
         super.harvestBlock(worldIn, player, pos, state, te, stack);
         tileEntities.set(null);
     }
