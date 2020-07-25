@@ -68,10 +68,8 @@ public class CoverPump extends CoverBehavior implements CoverWithUI, ITickable, 
     }
 
     protected void adjustTransferRate(int amount) {
-        if (this.bucketMode == BucketMode.BUCKET)
-            setTransferRate(MathHelper.clamp(transferRate + amount * 1000, 1, maxFluidTransferRate));
-        else if (this.bucketMode == BucketMode.MILLI_BUCKET)
-            setTransferRate(MathHelper.clamp(transferRate + amount, 1, maxFluidTransferRate));
+        amount *= this.bucketMode == BucketMode.BUCKET ? 1000 : 1;
+        setTransferRate(MathHelper.clamp(transferRate + amount, 1, maxFluidTransferRate));
     }
 
     public void setPumpMode(PumpMode pumpMode) {
