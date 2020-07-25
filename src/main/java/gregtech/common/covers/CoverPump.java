@@ -41,13 +41,11 @@ public class CoverPump extends CoverBehavior implements CoverWithUI, ITickable, 
 
     public final int tier;
     public final int maxFluidTransferRate;
-    protected final FluidFilterContainer fluidFilter;
     protected int percentageInTank;
     protected int transferRate;
     protected PumpMode pumpMode;
     protected boolean allowManualImportExport = false;
     protected int fluidLeftToTransferLastSecond;
-    protected boolean isWorkingAllowed = true;
     private CoverableFluidHandlerWrapper fluidHandlerWrapper;
     protected boolean isWorkingAllowed = true;
     protected final FluidFilterContainer fluidFilter;
@@ -121,17 +119,22 @@ public class CoverPump extends CoverBehavior implements CoverWithUI, ITickable, 
         return doTransferFluidsInternal(myFluidHandler, fluidHandler, transferLimit);
     }
 
-    protected int doTransferFluidsInternal(IFluidHandler coveredBlockFluidHandler, IFluidHandler fluidHandler, int transferLimit) {
+    protected int doTransferFluidsInternal(IFluidHandler coveredBlockFluidHandler, IFluidHandler connectionFluidHandler, int transferLimit) {
+        if (coveredBlockFluidHandler == null || connectionFluidHandler == null) {
+            return 0;
+        }
+
+
         IFluidHandler sourceHandler;
         IFluidHandler destHandler;
         switch (this.pumpMode) {
             case IMPORT:
-                sourceHandler = fluidHandler;
+                sourceHandler = connectionFluidHandler;
                 destHandler = coveredBlockFluidHandler;
                 break;
             case EXPORT:
                 sourceHandler = coveredBlockFluidHandler;
-                destHandler = fluidHandler;
+                destHandler = connectionFluidHandler;
                 break;
             default:
                 return 0;
@@ -321,7 +324,7 @@ public class CoverPump extends CoverBehavior implements CoverWithUI, ITickable, 
         } else {
             this.fluidFilter.deserializeNBT(tagCompound.getCompoundTag("Filter"));
         }
-        if(tagCompound.hasKey("WorkingAllowed")) {
+        if (tagCompound.hasKey("WorkingAllowed")) {
             this.isWorkingAllowed = tagCompound.getBoolean("WorkingAllowed");
         }
         if (tagCompound.hasKey("AllowManualIO")) {
