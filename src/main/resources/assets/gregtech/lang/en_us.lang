@@ -385,6 +385,7 @@ metaitem.tool.dataorb.tooltip=A High Capacity Data Storage
 metaitem.circuit.integrated.name=Integrated circuit
 metaitem.circuit.integrated.tooltip=Use to open configuration GUI
 metaitem.circuit.integrated.gui=Integrated circuit configuration
+metaitem.circuit.integrated.jei_description=JEI is only showing recipes for the given configuration.\n\nYou can select a configuration in the Integrated circuit configuration tab.
 
 #CIRCUITS LOCALIZATION
 metaitem.boule.silicon.name=Silicon Boule
