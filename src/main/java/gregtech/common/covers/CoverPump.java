@@ -41,15 +41,15 @@ public class CoverPump extends CoverBehavior implements CoverWithUI, ITickable, 
 
     public final int tier;
     public final int maxFluidTransferRate;
+    protected final FluidFilterContainer fluidFilter;
     protected int percentageInTank;
     protected int transferRate;
     protected PumpMode pumpMode;
     protected boolean allowManualImportExport = false;
     protected int fluidLeftToTransferLastSecond;
-    private CoverableFluidHandlerWrapper fluidHandlerWrapper;
     protected boolean isWorkingAllowed = true;
-    protected final FluidFilterContainer fluidFilter;
     protected BucketMode bucketMode;
+    private CoverableFluidHandlerWrapper fluidHandlerWrapper;
 
     public CoverPump(ICoverable coverHolder, EnumFacing attachedSide, int tier, int mbPerTick) {
         super(coverHolder, attachedSide);
@@ -116,81 +116,68 @@ public class CoverPump extends CoverBehavior implements CoverWithUI, ITickable, 
         if (fluidHandler == null || myFluidHandler == null) {
             return 0;
         }
-        return doTransferFluidsInternal(myFluidHandler, fluidHandler, transferLimit);
+        return doTransferFluidsInternalSmart(myFluidHandler, fluidHandler, transferLimit);
     }
 
-    protected int doTransferFluidsInternal(IFluidHandler coveredBlockFluidHandler, IFluidHandler connectionFluidHandler, int transferLimit) {
-        if (coveredBlockFluidHandler == null || connectionFluidHandler == null) {
-            return 0;
-        }
-
-
-        IFluidHandler sourceHandler;
-        IFluidHandler destHandler;
+    protected int doTransferFluidsInternalSmart(IFluidHandler coveredBlockFluidHandler, IFluidHandler connectionFluidHandler, int transferLimit) {
         switch (this.pumpMode) {
-            case IMPORT:
-                sourceHandler = connectionFluidHandler;
-                destHandler = coveredBlockFluidHandler;
-                break;
-            case EXPORT:
-                sourceHandler = coveredBlockFluidHandler;
-                destHandler = connectionFluidHandler;
-                break;
+            case EXPORT: return doExportFluid(coveredBlockFluidHandler , connectionFluidHandler, transferLimit);
+            case IMPORT: return doImportFluid(coveredBlockFluidHandler , connectionFluidHandler, transferLimit);
             default:
                 return 0;
         }
+    }
 
+    protected int doImportFluid(IFluidHandler me, IFluidHandler dest, int transferLimit) {
         int fluidLeftToTransfer = transferLimit;
-        for (IFluidTankProperties sourceTankProperties : sourceHandler.getTankProperties()) {
-            FluidStack currentFluid = sourceTankProperties.getContents();
+        for (IFluidTankProperties sourceTankProperties : dest.getTankProperties()) {
 
+            FluidStack currentFluid = sourceTankProperties.getContents();
             if (currentFluid == null || currentFluid.amount == 0 || !fluidFilter.testFluidStack(currentFluid)) continue;
 
-            // Testing fluid percentage
-            switch (this.pumpMode) {
-                case IMPORT:
-                    int myDestTankAmount = 0;
-                    int myDestTankCap = 0;
+            FluidStack currentFluidCopy = currentFluid.copy();
+            currentFluidCopy.amount = fluidLeftToTransfer;
+            FluidStack canExtractFluid = dest.drain(currentFluidCopy, false);
+            if (canExtractFluid == null || canExtractFluid.amount == 0) continue;
+            int canInsertAmount = me.fill(canExtractFluid, false);
+            if (canInsertAmount == 0) continue;
+            int liquidDeltaLimitFromPortion = Math.round((sourceTankProperties.getCapacity() * ((float) this.percentageInTank / 100))) - sourceTankProperties.getContents().amount;
+            int finalTransferAmount = Math.min(liquidDeltaLimitFromPortion, canInsertAmount);
+            if (finalTransferAmount <= 0) continue;
+            currentFluidCopy.amount = finalTransferAmount;
+            FluidStack fluidExtracted = dest.drain(currentFluidCopy, true);
+            int actualFilled =   me.fill(fluidExtracted, true);
+            fluidLeftToTransfer -= actualFilled;
 
-                    // For this particular fluid
-                    for (IFluidTankProperties destTankProperies : destHandler.getTankProperties()) {
-                        FluidStack content = destTankProperies.getContents();
+        }
+        return transferLimit - fluidLeftToTransfer;
 
-                        // There are some in my tank
-                        if (content != null && content.isFluidEqual(currentFluid)) {
-                            myDestTankAmount += content.amount;
-                            myDestTankCap += destTankProperies.getCapacity();
-                        }
-                    }
 
-                    if (myDestTankCap != 0 && (myDestTankAmount > (myDestTankCap * ((double) this.percentageInTank / 100)))) {
-                        continue;
-                    }
-                    break;
-                case EXPORT:
-                    int currentAmount = currentFluid.amount;
-                    int currentCap = sourceTankProperties.getCapacity();
-                    if (currentAmount <= (currentCap * ((double) this.percentageInTank / 100))) {
-                        continue;
-                    }
-                    break;
-                default:
-                    continue;
+    }
+
+    protected int doExportFluid(IFluidHandler me, IFluidHandler dest, int transferLimit) {
+        int fluidLeftToTransfer = transferLimit;
+
+        for (IFluidTankProperties sourceTankProperties : me.getTankProperties()) {
+            if (fluidLeftToTransfer == 0) {
+                break;
             }
-            currentFluid.amount = fluidLeftToTransfer;
-            FluidStack fluidStack = sourceHandler.drain(currentFluid, false);
-            if (fluidStack == null || fluidStack.amount == 0) continue;
-            int canInsertAmount = destHandler.fill(fluidStack, false);
-            if (canInsertAmount > 0) {
-                fluidStack.amount = canInsertAmount;
-                fluidStack = sourceHandler.drain(fluidStack, true);
-                if (fluidStack != null && fluidStack.amount > 0) {
-                    destHandler.fill(fluidStack, true);
+            FluidStack currentFluid = sourceTankProperties.getContents();
+            if (currentFluid == null || currentFluid.amount == 0 || !fluidFilter.testFluidStack(currentFluid)) continue;
 
-                    fluidLeftToTransfer -= fluidStack.amount;
-                    if (fluidLeftToTransfer == 0) break;
-                }
-            }
+            FluidStack currentFluidCopy = currentFluid.copy();
+            currentFluidCopy.amount = fluidLeftToTransfer;
+            FluidStack canExtractFluid = me.drain(currentFluidCopy, false);
+            if (canExtractFluid == null || canExtractFluid.amount == 0) continue;
+            int canInsertAmount = dest.fill(canExtractFluid, false);
+            if (canInsertAmount == 0) continue;
+            int liquidDeltaLimitFromPortion = sourceTankProperties.getContents().amount - Math.round((sourceTankProperties.getCapacity() * ((float) this.percentageInTank / 100)));
+            int finalTransferAmount = Math.min(liquidDeltaLimitFromPortion, canInsertAmount);
+            if (finalTransferAmount <= 0) continue;
+            currentFluidCopy.amount = finalTransferAmount;
+            FluidStack fluidExtracted = me.drain(currentFluidCopy, true);
+            int actualFilled = dest.fill(fluidExtracted, true);
+            fluidLeftToTransfer -= actualFilled;
         }
         return transferLimit - fluidLeftToTransfer;
     }
@@ -217,17 +204,17 @@ public class CoverPump extends CoverBehavior implements CoverWithUI, ITickable, 
             () -> bucketMode.ordinal(), newMode -> setBucketMode(BucketMode.values()[newMode])));
 
 
-        primaryGroup.addWidget(new ClickButtonWidget(85, 45, 20, 20, "-10", data -> adjustPortionInTank(-10)));
-        primaryGroup.addWidget(new ImageWidget(105, 45, 20, 20, GuiTextures.DISPLAY));
-        primaryGroup.addWidget(new ClickButtonWidget(125, 45, 20, 20, "+10", data -> adjustPortionInTank(10)));
-        primaryGroup.addWidget(new SimpleTextWidget(115, 55, "", 0xFFFFFF, () -> this.percentageInTank + "%"));
+        primaryGroup.addWidget(new ClickButtonWidget(85, 63, 20, 18, "-10", data -> adjustPortionInTank(-10)));
+        primaryGroup.addWidget(new ImageWidget(105, 63, 20, 18, GuiTextures.DISPLAY));
+        primaryGroup.addWidget(new ClickButtonWidget(125, 63, 20, 18, "+10", data -> adjustPortionInTank(10)));
+        primaryGroup.addWidget(new SimpleTextWidget(115, 71, "", 0xFFFFFF, () -> this.percentageInTank + "%"));
 
 
         primaryGroup.addWidget(new CycleButtonWidget(10, 63, 75, 18,
             GTUtility.mapToString(ConveyorMode.values(), it -> it.localeName),
             () -> pumpMode.ordinal(), newMode -> setPumpMode(PumpMode.values()[newMode])));
 
-        primaryGroup.addWidget(new ToggleButtonWidget(145, 45, 20, 20,
+        primaryGroup.addWidget(new ToggleButtonWidget(146, 63, 18, 18,
             this::isAllowManualImportExport, this::setAllowManualImportExport)
             .setTooltipText("cover.pump.manual_io")
             .setButtonTexture(GuiTextures.BUTTON_ALLOW_IMPORT_EXPORT));
