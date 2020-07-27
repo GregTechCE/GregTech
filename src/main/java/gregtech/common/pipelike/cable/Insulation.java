@@ -5,11 +5,11 @@ import gregtech.api.unification.ore.OrePrefix;
 
 public enum Insulation implements IMaterialPipeType<WireProperties> {
 
-    WIRE_SINGLE("wire_single", 0.2f, 1, 2, OrePrefix.wireGtSingle, -1),
-    WIRE_DOUBLE("wire_double", 0.3f, 2, 2, OrePrefix.wireGtDouble, -1),
-    WIRE_QUADRUPLE("wire_quadruple", 0.4f, 4, 3, OrePrefix.wireGtQuadruple, -1),
-    WIRE_OCTAL("wire_octal", 0.6f, 8, 3, OrePrefix.wireGtOctal, -1),
-    WIRE_HEX("wire_hex", 1.0f, 16, 3, OrePrefix.wireGtHex, -1),
+    WIRE_SINGLE("wire_single", 0.1f, 1, 2, OrePrefix.wireGtSingle, -1),
+    WIRE_DOUBLE("wire_double", 0.2f, 2, 2, OrePrefix.wireGtDouble, -1),
+    WIRE_QUADRUPLE("wire_quadruple", 0.3f, 4, 3, OrePrefix.wireGtQuadruple, -1),
+    WIRE_OCTAL("wire_octal", 0.5f, 8, 3, OrePrefix.wireGtOctal, -1),
+    WIRE_HEX("wire_hex", 0.8f, 16, 3, OrePrefix.wireGtHex, -1),
 
     CABLE_SINGLE("cable_single", 0.2f, 1, 1, OrePrefix.cableGtSingle, 0),
     CABLE_DOUBLE("cable_double", 0.3f, 2, 1, OrePrefix.cableGtDouble, 1),
