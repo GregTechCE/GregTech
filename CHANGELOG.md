@@ -1,5 +1,27 @@
 ## Changelog
 
+### 1.9.3
+* Added replication of mold and extruder shapes in Forming Press (#1138) - LAGIdiot
+* Added Metal Bender recipe for Empty Shape Plate (#1138) - LAGIdiot
+* Added JEI information for integrated circuits (#1142) - Eutro
+* Added support custom chance functions (#1145) - Eutro
+  * This allows for reverting to old byproduct chances
+* Added Implosion Compressor CraftTweaker integration for the ability to specify explosives types (#1148) - ALongStringOfNumbers
+* Added config option for lossless wires ot damage player on contact (#1151) - ALongStringOfNumbers
+* Updated JEI recipe info to render from the bottom instead of at a constant height (#1118) - Eutro
+* Updated zh-cn translation for Americium (#1124) - Rika
+* Updated pump cover with QOL improvements (#1125) - Decal
+* Updated circuit configurations to be distinct subtypes in JEI (#1142) - Eutro
+* Updated overclocking tooltip in GUI (#1143) - ALongStringOfNumbers
+* Updated thickness of wires for more realistic look regarding insulating them (#1159) - LAGIdiot
+* Fixed drained tank not being stackable (#1127) - Derek.CHAN
+* Fixed blocks not dropping when destroyed by AOE effect of Thermal Foundation hammers (#1130) - Creysys
+* Fixed the zh_cn translations for fluid_extractor (#1133) - Rika
+* Fixed running into powered 16x wires does not damage player (#1159) - LAGIdiot
+* Fixed missing localization for plasma generator recipe map (#1160) - LAGIdiot
+* Removed redundant DISABLE_DECOMPOSITION flag (#1150) - ALongStringOfNumbers
+* Removed localization for old way of handling fuel recipe maps (#1160) - LAGIdiot
+
 ### 1.9.2
 * Updated dependencies versions (#1070) - LAGIdiot 
     * Forge updated to 14.23.5.2847
