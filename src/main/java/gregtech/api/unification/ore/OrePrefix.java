@@ -209,8 +209,8 @@ public enum OrePrefix {
         gem.setIgnored(Materials.Emerald);
         gem.setIgnored(Materials.Lapis);
         gem.setIgnored(Materials.NetherQuartz);
-
         gem.setIgnored(Materials.Coal);
+
         excludeAllGems(Materials.Charcoal);
         excludeAllGems(Materials.NetherStar);
         excludeAllGems(Materials.EnderPearl);
@@ -221,15 +221,19 @@ public enum OrePrefix {
         dust.setIgnored(Materials.Glowstone);
         dust.setIgnored(Materials.Gunpowder);
         dust.setIgnored(Materials.Sugar);
+        dust.setIgnored(Materials.Bone);
         dust.setIgnored(Materials.Blaze);
+
         stick.setIgnored(Materials.Wood);
         stick.setIgnored(Materials.Bone);
         stick.setIgnored(Materials.Blaze);
         stick.setIgnored(Materials.Paper);
+
         ingot.setIgnored(Materials.Iron);
         ingot.setIgnored(Materials.Gold);
         ingot.setIgnored(Materials.Wood);
         ingot.setIgnored(Materials.Paper);
+
         nugget.setIgnored(Materials.Wood);
         nugget.setIgnored(Materials.Gold);
         nugget.setIgnored(Materials.Paper);
