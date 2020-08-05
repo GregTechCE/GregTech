@@ -360,6 +360,11 @@ public enum OrePrefix {
                 material == Materials.Ice ||
                 material == Materials.Obsidian)
                 return M;
+        } else if (this == stick) {
+            if (material == Materials.Blaze)
+                return M * 4;
+            else if (material == Materials.Bone)
+                return M * 5;
         }
         return materialAmount;
     }
