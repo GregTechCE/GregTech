@@ -116,7 +116,7 @@ public class ScrollableListWidget extends AbstractWidgetGroup {
 
     @Override
     public boolean mouseWheelMove(int mouseX, int mouseY, int wheelDelta) {
-        if (isMouseOverElement(mouseX, mouseY)) {
+        if (isMouseOverElement(mouseX, mouseY, true)) {
             int direction = -MathHelper.clamp(wheelDelta, -1, 1);
             int moveDelta = direction * (slotHeight / 2);
             addScrollOffset(moveDelta);
