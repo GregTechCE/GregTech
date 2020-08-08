@@ -19,9 +19,9 @@ import java.util.function.Consumer;
 public class AbstractWidgetGroup extends Widget implements IGhostIngredientTarget, IIngredientSlot {
 
     protected final List<Widget> widgets = new ArrayList<>();
-    private WidgetGroupUIAccess groupUIAccess = new WidgetGroupUIAccess();
+    private final WidgetGroupUIAccess groupUIAccess = new WidgetGroupUIAccess();
     private boolean isVisible = true;
-    private boolean isDynamicSized;
+    private final boolean isDynamicSized;
     private boolean initialized = false;
 
     public AbstractWidgetGroup(Position position) {
@@ -30,8 +30,21 @@ public class AbstractWidgetGroup extends Widget implements IGhostIngredientTarge
     }
 
     public AbstractWidgetGroup(Position position, Size size) {
-        super (position, size);
+        super(position, size);
         this.isDynamicSized = false;
+    }
+
+    public List<Widget> getContainedWidgets(boolean includeHidden) {
+        ArrayList<Widget> containedWidgets = new ArrayList<>(widgets.size());
+
+        for (Widget widget : widgets) {
+            containedWidgets.add(widget);
+
+            if (widget instanceof AbstractWidgetGroup)
+                containedWidgets.addAll(((AbstractWidgetGroup) widget).getContainedWidgets(includeHidden));
+        }
+
+        return containedWidgets;
     }
 
     @Override
@@ -97,13 +110,13 @@ public class AbstractWidgetGroup extends Widget implements IGhostIngredientTarge
             widget.initWidget();
         }
         recomputeSize();
-        if(uiAccess != null) {
+        if (uiAccess != null) {
             uiAccess.notifyWidgetChange();
         }
     }
 
     protected void removeWidget(Widget widget) {
-        if(!widgets.contains(widget)) {
+        if (!widgets.contains(widget)) {
             throw new IllegalArgumentException("Not added");
         }
         this.widgets.remove(widget);
@@ -112,7 +125,7 @@ public class AbstractWidgetGroup extends Widget implements IGhostIngredientTarge
         widget.setSizes(null);
         widget.setParentPosition(Position.ORIGIN);
         recomputeSize();
-        if(uiAccess != null) {
+        if (uiAccess != null) {
             this.uiAccess.notifyWidgetChange();
         }
     }
@@ -126,7 +139,7 @@ public class AbstractWidgetGroup extends Widget implements IGhostIngredientTarge
         });
         this.widgets.clear();
         recomputeSize();
-        if(uiAccess != null) {
+        if (uiAccess != null) {
             this.uiAccess.notifyWidgetChange();
         }
     }
@@ -167,8 +180,8 @@ public class AbstractWidgetGroup extends Widget implements IGhostIngredientTarge
             return Collections.emptyList();
         }
         ArrayList<Target<?>> targets = new ArrayList<>();
-        for(Widget widget : widgets) {
-            if(widget instanceof IGhostIngredientTarget) {
+        for (Widget widget : widgets) {
+            if (widget instanceof IGhostIngredientTarget) {
                 targets.addAll(((IGhostIngredientTarget) widget).getPhantomTargets(ingredient));
             }
         }
@@ -180,11 +193,11 @@ public class AbstractWidgetGroup extends Widget implements IGhostIngredientTarge
         if (!isVisible) {
             return Collections.emptyList();
         }
-        for(Widget widget : widgets) {
-            if(widget instanceof IIngredientSlot) {
+        for (Widget widget : widgets) {
+            if (widget instanceof IIngredientSlot) {
                 IIngredientSlot ingredientSlot = (IIngredientSlot) widget;
                 Object result = ingredientSlot.getIngredientOverMouse(mouseX, mouseY);
-                if(result != null) return result;
+                if (result != null) return result;
             }
         }
         return null;
