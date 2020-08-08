@@ -170,5 +170,7 @@ public class GTJeiPlugin implements IModPlugin {
             registry.addIngredientInfo(IntCircuitIngredient.getIntegratedCircuit(i), VanillaTypes.ITEM,
                 "metaitem.circuit.integrated.jei_description");
         }
+
+        registry.addRecipeCatalyst(MetaTileEntities.WORKBENCH.getStackForm(), VanillaRecipeCategoryUid.CRAFTING);
     }
 }
