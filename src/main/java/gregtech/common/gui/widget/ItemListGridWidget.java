@@ -147,7 +147,7 @@ public class ItemListGridWidget extends ScrollableListWidget {
         super.detectAndSendChanges();
         if (itemList == null) return;
         int amountOfItemTypes = itemList.getStoredItems().size();
-        int slotRowsRequired = Math.max(slotAmountY, (int) Math.ceil(amountOfItemTypes / (slotAmountX * 1.0)) * slotAmountY);
+        int slotRowsRequired = Math.max(slotAmountY, (int) Math.ceil(amountOfItemTypes / (slotAmountX * 1.0)));
         if (slotRowsAmount != slotRowsRequired) {
             int slotsToAdd = slotRowsRequired - slotRowsAmount;
             this.slotRowsAmount = slotRowsRequired;
