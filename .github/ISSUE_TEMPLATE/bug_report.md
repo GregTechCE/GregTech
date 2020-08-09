@@ -1,7 +1,7 @@
 ---
 name: Bug report
 about: Something is not working as expected
-title: "[BUG]"
+title: "[BUG] "
 labels: 'status: unverified, type: bug'
 assignees: ''
 
@@ -14,10 +14,10 @@ A clear and concise description of what the bug is.
 Forge: 
 GTCE: 
 _Modpack:_ if applicable add link to modpack (CurseForge preferred), version and any modification applied
-_Addons:_ if applicable add addon name and version
+_Addons:_ if applicable add all addon names and corresponding versions
 
 **Setup**
-Playing Solo/Multiplayer
+Playing Solo/Multiplayer/Both
 _New world generated_ if applicable
 
 **Steps To Reproduce**
