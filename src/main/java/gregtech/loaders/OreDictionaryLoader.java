@@ -70,6 +70,8 @@ public class OreDictionaryLoader {
         OreDictUnifier.registerOre(new ItemStack(Items.REDSTONE), OrePrefix.dust, Materials.Redstone);
         OreDictUnifier.registerOre(new ItemStack(Items.GUNPOWDER), OrePrefix.dust, Materials.Gunpowder);
         OreDictUnifier.registerOre(new ItemStack(Items.GLOWSTONE_DUST), OrePrefix.dust, Materials.Glowstone);
+        OreDictUnifier.registerOre(new ItemStack(Items.DYE, 1, 15), OrePrefix.dust, Materials.Bone);
+        OreDictUnifier.registerOre(new ItemStack(Items.BONE), OrePrefix.stick, Materials.Bone);
         OreDictUnifier.registerOre(new ItemStack(Items.BLAZE_POWDER), OrePrefix.dust, Materials.Blaze);
         OreDictUnifier.registerOre(new ItemStack(Items.BLAZE_ROD), OrePrefix.stick, Materials.Blaze);
         OreDictUnifier.registerOre(new ItemStack(Blocks.IRON_BLOCK), OrePrefix.block, Materials.Iron);
