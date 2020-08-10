@@ -24,12 +24,12 @@ public class ItemListGridWidget extends ScrollableListWidget {
     private final int slotAmountX;
     private final int slotAmountY;
     private int slotRowsAmount = 0;
-    private Map<ItemStackKey, SimpleItemInfo> cachedItemList = new HashMap<>();
-    private List<SimpleItemInfo> itemsChanged = new ArrayList<>();
-    private List<ItemStackKey> itemsRemoved = new ArrayList<>();
+    private final Map<ItemStackKey, SimpleItemInfo> cachedItemList = new HashMap<>();
+    private final List<SimpleItemInfo> itemsChanged = new ArrayList<>();
+    private final List<ItemStackKey> itemsRemoved = new ArrayList<>();
 
-    private Comparator<IItemInfo> comparator = Comparator.comparing(it -> it.getItemStackKey().getItemStackRaw(), GTUtility.createItemStackComparator());
-    private List<SimpleItemInfo> displayItemList = new ArrayList<>();
+    private final Comparator<IItemInfo> comparator = Comparator.comparing(it -> it.getItemStackKey().getItemStackRaw(), GTUtility.createItemStackComparator());
+    private final List<SimpleItemInfo> displayItemList = new ArrayList<>();
 
     public ItemListGridWidget(int x, int y, int slotsX, int slotsY, @Nullable IItemList itemList) {
         super(x, y, slotsX * 18 + 10, slotsY * 18);
@@ -127,11 +127,20 @@ public class ItemListGridWidget extends ScrollableListWidget {
         }
         for (ItemStackKey itemStack : itemList.getStoredItems()) {
             IItemInfo itemInfo = itemList.getItemInfo(itemStack);
+            if (itemInfo == null)
+                continue;
+
             if (!cachedItemList.containsKey(itemStack)) {
                 SimpleItemInfo lookupInfo = new SimpleItemInfo(itemStack);
-                lookupInfo.setTotalItemAmount(itemInfo.getTotalItemAmount());
-                cachedItemList.put(itemStack, lookupInfo);
-                itemsChanged.add(lookupInfo);
+                int totalAmount = itemInfo.getTotalItemAmount();
+
+                if (totalAmount == 0) {
+                    itemsRemoved.add(itemStack);
+                } else {
+                    lookupInfo.setTotalItemAmount(totalAmount);
+                    cachedItemList.put(itemStack, lookupInfo);
+                    itemsChanged.add(lookupInfo);
+                }
             } else {
                 SimpleItemInfo cachedItemInfo = cachedItemList.get(itemStack);
                 if (cachedItemInfo.getTotalItemAmount() != itemInfo.getTotalItemAmount()) {
@@ -147,7 +156,7 @@ public class ItemListGridWidget extends ScrollableListWidget {
         super.detectAndSendChanges();
         if (itemList == null) return;
         int amountOfItemTypes = itemList.getStoredItems().size();
-        int slotRowsRequired = Math.max(slotAmountY, (int) Math.ceil(amountOfItemTypes / (slotAmountX * 1.0)) * slotAmountY);
+        int slotRowsRequired = Math.max(slotAmountY, (int) Math.ceil(amountOfItemTypes / (slotAmountX * 1.0)));
         if (slotRowsAmount != slotRowsRequired) {
             int slotsToAdd = slotRowsRequired - slotRowsAmount;
             this.slotRowsAmount = slotRowsRequired;

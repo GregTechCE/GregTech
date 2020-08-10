@@ -25,14 +25,14 @@ public class CraftingRecipeResolver {
 
     private final World world;
     private final ItemSourceList itemSourceList;
-    private ItemStackHandler craftingGrid;
-    private InventoryCrafting inventoryCrafting = new InventoryCrafting(new DummyContainer(), 3, 3);
+    private final ItemStackHandler craftingGrid;
+    private final InventoryCrafting inventoryCrafting = new InventoryCrafting(new DummyContainer(), 3, 3);
     private IRecipe cachedRecipe = null;
-    private ItemStackHandler craftingResultInventory = new ItemStackHandler(1);
+    private final ItemStackHandler craftingResultInventory = new ItemStackHandler(1);
     private long timer = 0L;
     private CachedRecipeData cachedRecipeData = null;
     private int itemsCrafted = 0;
-    private CraftingRecipeMemory recipeMemory;
+    private final CraftingRecipeMemory recipeMemory;
 
     public CraftingRecipeResolver(World world, ItemStackHandler craftingGrid, CraftingRecipeMemory recipeMemory) {
         this.world = world;
@@ -64,7 +64,7 @@ public class CraftingRecipeResolver {
 
     public void setCraftingGrid(Map<Integer, ItemStack> ingredients) {
         for (int i = 0; i < craftingGrid.getSlots(); i++) {
-            craftingGrid.setStackInSlot(i, ingredients.getOrDefault(i, ItemStack.EMPTY));
+            craftingGrid.setStackInSlot(i, ingredients.getOrDefault(i + 1, ItemStack.EMPTY));
         }
     }
 

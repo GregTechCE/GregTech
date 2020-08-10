@@ -99,7 +99,8 @@ public class OreDictUnifier {
         String oreName = event.getName();
         //cache this registration by name
         stackOreDictName.computeIfAbsent(simpleItemStack, k -> new HashSet<>()).add(oreName);
-        oreDictNameStacks.computeIfAbsent(oreName, k -> new ArrayList<>()).add(event.getOre().copy());
+        List<ItemStack> itemStackListForOreDictName = oreDictNameStacks.computeIfAbsent(oreName, k -> new ArrayList<>());
+        addAndSort(itemStackListForOreDictName, event.getOre().copy(), getItemStackComparator());
 
         //and try to transform registration name into OrePrefix + Material pair
         OrePrefix orePrefix = OrePrefix.getPrefix(oreName);
@@ -144,7 +145,9 @@ public class OreDictUnifier {
         //finally register item
         if (orePrefix != null && (material != null || orePrefix.isSelfReferencing)) {
             UnificationEntry unificationEntry = new UnificationEntry(orePrefix, material);
-            stackUnificationItems.computeIfAbsent(unificationEntry, p -> new ArrayList<>()).add(simpleItemStack);
+            ArrayList<ItemAndMetadata> itemListForUnifiedEntry = stackUnificationItems.computeIfAbsent(unificationEntry, p -> new ArrayList<>());
+            addAndSort(itemListForUnifiedEntry, simpleItemStack, getSimpleItemStackComparator());
+
             if (!unificationEntry.orePrefix.isMarkerPrefix()) {
                 stackUnificationInfo.put(simpleItemStack, unificationEntry);
             }
@@ -205,7 +208,6 @@ public class OreDictUnifier {
         if (unificationEntry == null || !stackUnificationItems.containsKey(unificationEntry) || !unificationEntry.orePrefix.isUnificationEnabled)
             return itemStack;
         ArrayList<ItemAndMetadata> keys = stackUnificationItems.get(unificationEntry);
-        keys.sort(getSimpleItemStackComparator());
         return keys.size() > 0 ? keys.get(0).toItemStack(itemStack.getCount()) : itemStack;
     }
 
@@ -222,13 +224,11 @@ public class OreDictUnifier {
         if (!stackUnificationItems.containsKey(unificationEntry))
             return ItemStack.EMPTY;
         ArrayList<ItemAndMetadata> keys = stackUnificationItems.get(unificationEntry);
-        keys.sort(getSimpleItemStackComparator());
         return keys.size() > 0 ? keys.get(0).toItemStack(stackSize) : ItemStack.EMPTY;
     }
 
     public static ItemStack get(String oreDictName) {
         List<ItemStack> itemStacks = oreDictNameStacks.get(oreDictName);
-        itemStacks.sort(getItemStackComparator());
         return itemStacks.size() > 0 ? itemStacks.get(0).copy() : ItemStack.EMPTY;
     }
 
@@ -242,7 +242,6 @@ public class OreDictUnifier {
         if (!stackUnificationItems.containsKey(unificationEntry))
             return Collections.emptyList();
         ArrayList<ItemAndMetadata> keys = stackUnificationItems.get(unificationEntry);
-        keys.sort(getSimpleItemStackComparator());
         return keys.stream().map(ItemAndMetadata::toItemStack).collect(Collectors.toList());
     }
 
@@ -272,4 +271,10 @@ public class OreDictUnifier {
         return ItemStack.EMPTY;
     }
 
+    synchronized private static <T> void addAndSort(List<T> list, T itemToAdd, Comparator<T> comparator) {
+        list.add(itemToAdd);
+
+        if (list.size() > 1)
+            list.sort(comparator);
+    }
 }

@@ -63,6 +63,7 @@ public class ConfigHolder {
 
     @Config.Comment("Whether to use modPriorities setting in config for prioritizing ore dictionary item registrations. " +
         "By default, GTCE will sort ore dictionary registrations alphabetically comparing their owner ModIDs. Default: false")
+    @Config.RequiresMcRestart
     public static boolean useCustomModPriorities = false;
 
     @Config.Comment("Specifies priorities of mods in ore dictionary item registration. First ModID has highest priority, last - lowest. " +
