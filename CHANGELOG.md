@@ -1,5 +1,24 @@
 ## Changelog
 
+### 1.9.4
+* Added Bone Meal recipe to Mortar (#1178) - LAGIdiot
+* Added Crafting Station to JEI list of crafting tables (#1186) - LAGIdiot
+* Added Material Flag EXCLUDE_BLOCK_CRAFTING_BY_HAND_RECIPES (#1188) - LAGIdiot
+* Updated Bone Meal recipes to work with Vanilla MC Bone Meal (#1178) - LAGIdiot
+* Updated Config to have unified style and default values (#1185) - ALongStringOfNumbers
+* Updated Crafting Station GUI (#1186) - LAGIdiot
+    * Recipes from JEI can be clicked to crafting grid
+    * Fixed scrolling via mouse wheel
+    * Fixed scroll bar rendering outside of GUI
+    * Fixed too many empty rows being rendered on Item List tab
+    * Fixed Item List not correctly responding to removal/destruction of adjacent container
+* Updated Energy Crystal and Lapotron Crystal capacity (#1189) - LAGIdiot
+* Updated Nano Saber recipe to use Energy Crystal as battery (#1189) - LAGIdiot
+* Fixed possible concurrent modification exception on unification (#1176) - LAGIdiot
+* Fixed Blaze Powder and Bone Meal amount from Macerating recipes (#1178) - LAGIdiot
+* Fixed some Vanilla MC blocks having duplicate recipes (#1188) - LAGIdiot
+* Removed Bone Meal Dust (#1178) - LAGIdiot
+
 ### 1.9.3
 * Added replication of mold and extruder shapes in Forming Press (#1138) - LAGIdiot
 * Added Metal Bender recipe for Empty Shape Plate (#1138) - LAGIdiot
