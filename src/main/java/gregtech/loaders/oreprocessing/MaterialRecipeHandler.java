@@ -396,13 +396,18 @@ public class MaterialRecipeHandler {
         for (int index = 0; index < materialAmount / M; index++) {
             result.add(blockEntry);
         }
-        //do not allow hand crafting or uncrafting of blacklisted blocks
-        if (!material.hasFlag(EXCLUDE_BLOCK_CRAFTING_RECIPES)) {
-            ModHandler.addShapelessRecipe(String.format("block_compress_%s", material.toString()), blockStack, result.toArray());
 
-            ModHandler.addShapelessRecipe(String.format("block_decompress_%s", material.toString()),
-                GTUtility.copyAmount((int) (materialAmount / M), OreDictUnifier.get(blockEntry)),
-                new UnificationEntry(blockPrefix, material));
+        //do not allow hand crafting or uncrafting, extruding or alloy smelting of blacklisted blocks
+        if (!material.hasFlag(EXCLUDE_BLOCK_CRAFTING_RECIPES)) {
+
+            //do not allow hand crafting or uncrafting of blacklisted blocks
+            if (!material.hasFlag(EXCLUDE_BLOCK_CRAFTING_BY_HAND_RECIPES)) {
+                ModHandler.addShapelessRecipe(String.format("block_compress_%s", material.toString()), blockStack, result.toArray());
+
+                ModHandler.addShapelessRecipe(String.format("block_decompress_%s", material.toString()),
+                    GTUtility.copyAmount((int) (materialAmount / M), OreDictUnifier.get(blockEntry)),
+                    new UnificationEntry(blockPrefix, material));
+            }
 
             if (material instanceof IngotMaterial) {
                 int voltageMultiplier = getVoltageMultiplier(material);
@@ -427,5 +432,4 @@ public class MaterialRecipeHandler {
         return material instanceof IngotMaterial && ((IngotMaterial) material)
             .blastFurnaceTemperature >= 2800 ? 32 : 8;
     }
-
 }
