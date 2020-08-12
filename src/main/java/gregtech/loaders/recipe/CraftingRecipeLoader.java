@@ -38,9 +38,9 @@ public class CraftingRecipeLoader {
     }
 
     private static void loadCraftingRecipes() {
-        registerFacadeRecipe(Materials.Aluminium, 4);
-        registerFacadeRecipe(Materials.WroughtIron, 4);
-        registerFacadeRecipe(Materials.Iron, 4);
+        registerFacadeRecipe(Materials.Aluminium, 5);
+        registerFacadeRecipe(Materials.WroughtIron, 3);
+        registerFacadeRecipe(Materials.Iron, 2);
 
         ToolRecipeHandler.registerPowerUnitRecipes();
         ModHandler.addShapedRecipe("small_wooden_pipe", OreDictUnifier.get(OrePrefix.pipeSmall, Materials.Wood, 4), "WWW", "h f", 'W', new UnificationEntry(OrePrefix.plank, Materials.Wood));
