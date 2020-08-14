@@ -453,6 +453,7 @@ fun configureCurseforgeTask(): CurseProject? {
                 optionalDependency("crafttweaker")
                 optionalDependency("jei")
                 optionalDependency("the-one-probe")
+                optionalDependency("ctm")
             }
         }
     } else {
