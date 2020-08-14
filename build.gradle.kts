@@ -66,6 +66,7 @@ val multipartVersion = config["multipart.version"] as String
 val crafttweakerVersion = config["crafttweaker.version"] as String
 val jeiVersion = config["jei.version"] as String
 val topVersion = config["top.version"] as String
+val ctmVersion = config["ctm.version"] as String
 
 val git: Git = Git.open(File("."))
 
@@ -132,6 +133,7 @@ dependencies {
     "deobfCompile"("CraftTweaker2:CraftTweaker2-MC$strippedVersion-Main:$crafttweakerVersion")
     "deobfCompile"("mezz.jei:jei_$mcVersion:$jeiVersion")
     "deobfCompile"("mcjty.theoneprobe:TheOneProbe-$shortVersion:$shortVersion-$topVersion")
+    "deobfCompile"("team.chisel.ctm:CTM:MC$mcVersion-$ctmVersion")
 }
 
 configure<JavaPluginConvention> {
