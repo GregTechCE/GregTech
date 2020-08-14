@@ -6,7 +6,6 @@ import codechicken.lib.raytracer.CuboidRayTraceResult;
 import codechicken.lib.raytracer.IndexedCuboid6;
 import codechicken.lib.raytracer.RayTracer;
 import codechicken.lib.vec.Cuboid6;
-import cofh.core.render.IBlockAppearance;
 import com.google.common.collect.Lists;
 import gregtech.api.GregTechAPI;
 import gregtech.api.block.BlockCustomParticle;
@@ -20,6 +19,7 @@ import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.MetaTileEntityHolder;
 import gregtech.api.render.MetaTileEntityRenderer;
 import gregtech.common.tools.DamageValues;
+import gregtech.api.render.IBlockAppearance;
 import gregtech.integration.ctm.IFacadeWrapper;
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
@@ -426,8 +426,9 @@ public class BlockMachine extends BlockCustomParticle implements ITileEntityProv
         return world.getBlockState(pos);
     }
 
+    @Nonnull
     @Override
-    public IBlockState getVisualState(IBlockAccess world, BlockPos pos, EnumFacing side) {
+    public IBlockState getVisualState(@Nonnull IBlockAccess world, @Nonnull BlockPos pos, @Nonnull EnumFacing side) {
         return getFacade(world, pos, side);
     }
 

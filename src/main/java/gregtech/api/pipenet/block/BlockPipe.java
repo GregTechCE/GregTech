@@ -4,7 +4,6 @@ import codechicken.lib.raytracer.CuboidRayTraceResult;
 import codechicken.lib.raytracer.IndexedCuboid6;
 import codechicken.lib.raytracer.RayTracer;
 import codechicken.lib.vec.Cuboid6;
-import cofh.core.render.IBlockAppearance;
 import gregtech.api.GregTechAPI;
 import gregtech.api.block.BuiltInRenderBlock;
 import gregtech.api.capability.GregtechCapabilities;
@@ -21,6 +20,7 @@ import gregtech.api.pipenet.tile.AttachmentType;
 import gregtech.api.pipenet.tile.IPipeTile;
 import gregtech.api.pipenet.tile.TileEntityPipeBase;
 import gregtech.common.tools.DamageValues;
+import gregtech.api.render.IBlockAppearance;
 import gregtech.integration.ctm.IFacadeWrapper;
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
@@ -443,8 +443,9 @@ public abstract class BlockPipe<PipeType extends Enum<PipeType> & IPipeType<Node
         return world.getBlockState(pos);
     }
 
+    @Nonnull
     @Override
-    public IBlockState getVisualState(IBlockAccess world, BlockPos pos, EnumFacing side) {
+    public IBlockState getVisualState(@Nonnull IBlockAccess world, @Nonnull BlockPos pos, @Nonnull EnumFacing side) {
         return getFacade(world, pos, side);
     }
 
