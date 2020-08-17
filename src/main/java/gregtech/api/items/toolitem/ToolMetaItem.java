@@ -18,6 +18,7 @@ import gregtech.api.unification.material.MaterialIconSet;
 import gregtech.api.unification.material.Materials;
 import gregtech.api.unification.material.type.Material;
 import gregtech.api.unification.material.type.SolidMaterial;
+import gregtech.api.util.GTLog;
 import gregtech.api.util.GTUtility;
 import gregtech.common.ConfigHolder;
 import net.minecraft.block.state.IBlockState;
@@ -51,6 +52,7 @@ import org.apache.commons.lang3.Validate;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * ToolMetaItem is item that can have up to Short.MAX_VALUE tools inside it
@@ -251,7 +253,11 @@ public class ToolMetaItem<T extends ToolMetaItem<?>.MetaToolValueItem> extends M
 
     @Override
     public int getHarvestLevel(ItemStack stack, String toolClass, EntityPlayer player, IBlockState blockState) {
-        Preconditions.checkNotNull(blockState, "null blockState");
+        if (blockState == null) {
+            GTLog.logger.warn("ToolMetaItem.getHarvestLevel called for tool '{}' without providing IBlockState. Offending stack trace:\n    {}",
+                toolClass, Arrays.stream(Thread.currentThread().getStackTrace()).skip(1).map(StackTraceElement::toString).collect(Collectors.joining("\n    ")));
+            return -1;
+        }
         T metaToolValueItem = getItem(stack);
         if (metaToolValueItem == null) {
             return -1;
@@ -338,7 +344,7 @@ public class ToolMetaItem<T extends ToolMetaItem<?>.MetaToolValueItem> extends M
             return false;
         }
         IToolStats toolStats = toolMetaItem.getToolStats();
-        if(!toolStats.isUsingDurability(stack)) {
+        if (!toolStats.isUsingDurability(stack)) {
             return true;
         }
         int newDamageValue = getItemDamage(stack) + calculateToolDamage(stack, itemRand, vanillaDamage);
@@ -350,7 +356,7 @@ public class ToolMetaItem<T extends ToolMetaItem<?>.MetaToolValueItem> extends M
 
     public int regainItemDurability(ItemStack itemStack, int maxDurabilityRegain) {
         IToolStats toolStats = getItem(itemStack).getToolStats();
-        if(!toolStats.isUsingDurability(itemStack)) {
+        if (!toolStats.isUsingDurability(itemStack)) {
             return 0;
         }
         int toolDamage = getItemDamage(itemStack);
@@ -543,7 +549,7 @@ public class ToolMetaItem<T extends ToolMetaItem<?>.MetaToolValueItem> extends M
         if (statsTag == null) {
             return 0;
         }
-        if(statsTag.hasKey("Damage")) {
+        if (statsTag.hasKey("Damage")) {
             boolean isElectricItem = itemStack.hasCapability(GregtechCapabilities.CAPABILITY_ELECTRIC_ITEM, null);
             int oldToolDamage = statsTag.getInteger("Damage");
             return isElectricItem ? oldToolDamage : oldToolDamage / 10;
