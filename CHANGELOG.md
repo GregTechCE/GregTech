@@ -1,5 +1,15 @@
 ## Changelog
 
+### 1.10.0
+* Added CTM as optional dependency (#1197) - LAGIdiot
+* Updated output amount of Facade recipes to be based on used plate (#1194) - LAGIdiot
+* Updated Integrated Circuit recipe to return circuit with configuration set to zero (#1198) - LAGIdiot
+* Fixed crash on getHarvestLevel when IBlockState is not provided (#1193) - LAGIdiot
+    * Mostly know as crash on putting GTCE tools to EnderIO machines
+    * GTCE tools can't be put in EnderIO machines as GTCE is not provided with information how they will be used
+* Fixed API shading (#1197) - LAGIdiot
+    * Problems related to EnderIO facades glitching when made from Chisel blocks
+
 ### 1.9.4
 * Added Bone Meal recipe to Mortar (#1178) - LAGIdiot
 * Added Crafting Station to JEI list of crafting tables (#1186) - LAGIdiot
