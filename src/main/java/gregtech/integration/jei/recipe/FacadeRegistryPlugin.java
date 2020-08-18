@@ -64,15 +64,16 @@ public class FacadeRegistryPlugin implements IRecipeRegistryPlugin {
 
     private static List<IRecipeWrapper> createFacadeRecipes(ItemStack itemStack) {
         return Lists.newArrayList(
-            createFacadeRecipe(itemStack, Materials.Aluminium, 4),
-            createFacadeRecipe(itemStack, Materials.WroughtIron, 4),
-            createFacadeRecipe(itemStack, Materials.Iron, 4));
+            createFacadeRecipe(itemStack, Materials.Aluminium, 5),
+            createFacadeRecipe(itemStack, Materials.WroughtIron, 3),
+            createFacadeRecipe(itemStack, Materials.Iron, 2));
     }
 
     private static IRecipeWrapper createFacadeRecipe(ItemStack itemStack, Material material, int facadeAmount) {
-        itemStack.setCount(facadeAmount);
+        ItemStack itemStackCopy = itemStack.copy();
+        itemStackCopy.setCount(facadeAmount);
         return new FacadeRecipeWrapper(new ResourceLocation(GTValues.MODID, "facade_" + material),
-            OreDictUnifier.get(OrePrefix.plate, material), itemStack);
+            OreDictUnifier.get(OrePrefix.plate, material), itemStackCopy);
     }
 
     @Override

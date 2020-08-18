@@ -3,6 +3,7 @@ package gregtech.loaders.recipe;
 import gregtech.api.GTValues;
 import gregtech.api.items.metaitem.MetaItem.MetaValueItem;
 import gregtech.api.recipes.ModHandler;
+import gregtech.api.recipes.ingredients.IntCircuitIngredient;
 import gregtech.api.unification.OreDictUnifier;
 import gregtech.api.unification.material.MarkerMaterials.Tier;
 import gregtech.api.unification.material.Materials;
@@ -38,9 +39,9 @@ public class CraftingRecipeLoader {
     }
 
     private static void loadCraftingRecipes() {
-        registerFacadeRecipe(Materials.Aluminium, 4);
-        registerFacadeRecipe(Materials.WroughtIron, 4);
-        registerFacadeRecipe(Materials.Iron, 4);
+        registerFacadeRecipe(Materials.Aluminium, 5);
+        registerFacadeRecipe(Materials.WroughtIron, 3);
+        registerFacadeRecipe(Materials.Iron, 2);
 
         ToolRecipeHandler.registerPowerUnitRecipes();
         ModHandler.addShapedRecipe("small_wooden_pipe", OreDictUnifier.get(OrePrefix.pipeSmall, Materials.Wood, 4), "WWW", "h f", 'W', new UnificationEntry(OrePrefix.plank, Materials.Wood));
@@ -52,8 +53,9 @@ public class CraftingRecipeLoader {
         ModHandler.addShapelessRecipe("brick_to_dust", OreDictUnifier.get(OrePrefix.dust, Materials.Brick), 'm', Items.BRICK);
         ModHandler.addShapelessRecipe("wheat_to_dust", OreDictUnifier.get(OrePrefix.dust, Materials.Wheat, 1), 'm', Items.WHEAT);
         ModHandler.addShapelessRecipe("gravel_to_flint", new ItemStack(Items.FLINT, 1), 'm', Blocks.GRAVEL);
+        ModHandler.addShapelessRecipe("bone_to_bone_meal", new ItemStack(Items.DYE, 4, 15), 'm', Items.BONE);
         ModHandler.addShapelessRecipe("blaze_rod_to_powder", new ItemStack(Items.BLAZE_POWDER, 3), 'm', Items.BLAZE_ROD);
-        ModHandler.addShapelessRecipe("integrated_circuit", MetaItems.INTEGRATED_CIRCUIT.getStackForm(), new UnificationEntry(OrePrefix.circuit, Tier.Basic));
+        ModHandler.addShapelessRecipe("integrated_circuit", IntCircuitIngredient.getIntegratedCircuit(0), new UnificationEntry(OrePrefix.circuit, Tier.Basic));
 
         ModHandler.addShapedRecipe("item_filter", MetaItems.ITEM_FILTER.getStackForm(), "XXX", "XYX", "XXX", 'X', new UnificationEntry(OrePrefix.foil, Materials.Zinc), 'Y', new UnificationEntry(OrePrefix.plate, Materials.Steel));
         ModHandler.addShapedRecipe("fluid_filter", MetaItems.FLUID_FILTER.getStackForm(), "XXX", "XYX", "XXX", 'X', new UnificationEntry(OrePrefix.foil, Materials.Zinc), 'Y', new UnificationEntry(OrePrefix.plate, Materials.Lapis));

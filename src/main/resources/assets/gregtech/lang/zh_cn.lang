@@ -867,7 +867,7 @@ item.material.oreprefix.cableGtDouble=2x%s线缆
 item.material.oreprefix.cableGtSingle=1x%s线缆
 
 material.aluminium=铝
-material.americium=镁
+material.americium=镅
 material.antimony=锑
 material.argon=氩
 material.arsenic=砷
@@ -1033,7 +1033,7 @@ material.bauxite=铝土矿
 material.titanium_tetrachloride=四氯化钛
 material.magnesium_chloride=氯化镁
 material.invar=殷钢
-material.kanthal=坝塔尔合金
+material.kanthal=坎塔尔合金
 material.lazurite=蓝金石
 material.magnalium=镁铝合金
 material.magnesite=菱镁矿
@@ -1558,15 +1558,6 @@ recipemap.slicer.name=食材切片机
 recipemap.extruder.name=压模器
 recipemap.hammer.name=锻造锤
 recipemap.uuamplifier.name=UU增幅液生产器
-recipemap.dieselgeneratorfuel.name=柴油发电机燃料
-recipemap.dieselgeneratorfuel.value=燃值: %s EU
-recipemap.gasturbinefuel.name=燃气轮机燃料
-recipemap.gasturbinefuel.value=燃值: %s EU
-recipemap.thermalgeneratorfuel.name=火力发电机燃料
-recipemap.semifluidboilerfuels.name=半流体锅炉燃料
-recipemap.plasmageneratorfuels.name=等离子发电机燃料
-recipemap.magicfuels.name=魔法超级燃料
-recipemap.magicfuels.value=燃值: %s EU
 recipemap.forming_press.name=冲压机床
 recipemap.forge_hammer.name=锻造锤
 recipemap.compressor.name=压缩机
@@ -1979,8 +1970,8 @@ gregtech.machine.fluid_extractor.tooltip=从物品中提取流体
 
 gregtech.machine.fluid_extractor.lv.name=基础流体提取机
 gregtech.machine.fluid_extractor.mv.name=进阶流体提取机
-gregtech.machine.fluid_extractor.hv.name=快速流体灌装机
-gregtech.machine.fluid_extractor.ev.name=涡轮流体灌装机
+gregtech.machine.fluid_extractor.hv.name=进阶流体灌装机 II
+gregtech.machine.fluid_extractor.ev.name=进阶流体灌装机 III
 
 gregtech.machine.fluid_heater.lv.name=基础流体加热器
 gregtech.machine.fluid_heater.mv.name=进阶流体加热器
@@ -2212,7 +2203,7 @@ gregtech.machine.air_collector.lv.name=基础空气收集器
 gregtech.machine.air_collector.mv.name=进阶空气收集器
 gregtech.machine.air_collector.hv.name=进阶空气收集器 II
 gregtech.machine.air_collector.ev.name=大气收集器 III
-gregtech.machine.air_collector.description=从临近方块中收集空气
+gregtech.machine.air_collector.tooltip=从临近方块中收集空气
 
 #Tesla Coil
 gregtech.machine.tesla_coil.name=特斯拉线圈

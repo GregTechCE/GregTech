@@ -1573,15 +1573,6 @@ recipemap.slicer.name=Слайсер
 recipemap.extruder.name=Экструдер
 recipemap.hammer.name=Молот
 recipemap.uuamplifier.name=Усилитель мощности UU
-recipemap.dieselgeneratorfuel.name=Топливо дизельного генератора
-recipemap.dieselgeneratorfuel.value=Энергоемкость топлива: %s EU
-recipemap.gasturbinefuel.name=Топливо газовой турбины
-recipemap.gasturbinefuel.value=Энергоемкость топлива: %s EU
-recipemap.thermalgeneratorfuel.name=Топливо термального генератора
-recipemap.semifluidboilerfuels.name=Топливо полужидкостого котла
-recipemap.plasmageneratorfuels.name=Топливо плазменного генератора
-recipemap.magicfuels.name=Магическое топливо
-recipemap.magicfuels.value=Энергоемкость топлива: %s EU
 recipemap.forming_press.name=Формовочный пресс
 recipemap.forge_hammer.name=Кузнечный молот
 recipemap.compressor.name=Компрессор
@@ -2224,7 +2215,7 @@ gregtech.machine.air_collector.lv.name=Базовый воздухосборни
 gregtech.machine.air_collector.mv.name=Улучшеный воздухосборник
 gregtech.machine.air_collector.hv.name=Улучшеный воздухосборник II
 gregtech.machine.air_collector.ev.name=Атмосферный коллектор
-gregtech.machine.air_collector.description=Собирает воздух из соседних блоков
+gregtech.machine.air_collector.tooltip=Собирает воздух из соседних блоков
 
 # Катушка Тесла
 gregtech.machine.tesla_coil.name=Катушка Тесла

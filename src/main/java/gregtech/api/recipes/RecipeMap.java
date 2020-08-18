@@ -33,10 +33,8 @@ import net.minecraftforge.fml.common.Optional.Method;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.IItemHandlerModifiable;
+import stanhebben.zenscript.annotations.*;
 import stanhebben.zenscript.annotations.Optional;
-import stanhebben.zenscript.annotations.ZenClass;
-import stanhebben.zenscript.annotations.ZenGetter;
-import stanhebben.zenscript.annotations.ZenMethod;
 
 import javax.annotation.Nullable;
 import java.util.*;
@@ -48,6 +46,8 @@ import java.util.stream.Collectors;
 public class RecipeMap<R extends RecipeBuilder<R>> {
 
     private static final List<RecipeMap<?>> RECIPE_MAPS = new ArrayList<>();
+    @ZenProperty
+    public static IChanceFunction chanceFunction = (chance, boostPerTier, tier) -> chance + (boostPerTier * tier);
 
     public final String unlocalizedName;
 
@@ -97,6 +97,10 @@ public class RecipeMap<R extends RecipeBuilder<R>> {
         return RECIPE_MAPS.stream()
             .filter(map -> map.unlocalizedName.equals(unlocalizedName))
             .findFirst().orElse(null);
+    }
+
+    public static IChanceFunction getChanceFunction() {
+        return chanceFunction;
     }
 
     public static boolean isFoundInvalidRecipe() {
@@ -451,5 +455,12 @@ public class RecipeMap<R extends RecipeBuilder<R>> {
         return "RecipeMap{" +
             "unlocalizedName='" + unlocalizedName + '\'' +
             '}';
+    }
+
+    @FunctionalInterface
+    @ZenClass("mods.gregtech.recipe.IChanceFunction")
+    @ZenRegister
+    public interface IChanceFunction {
+        int chanceFor(int chance, int boostPerTier, int boostTier);
     }
 }

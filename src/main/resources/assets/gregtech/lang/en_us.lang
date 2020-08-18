@@ -385,6 +385,7 @@ metaitem.tool.dataorb.tooltip=A High Capacity Data Storage
 metaitem.circuit.integrated.name=Integrated circuit
 metaitem.circuit.integrated.tooltip=Use to open configuration GUI
 metaitem.circuit.integrated.gui=Integrated circuit configuration
+metaitem.circuit.integrated.jei_description=JEI is only showing recipes for the given configuration.\n\nYou can select a configuration in the Integrated circuit configuration tab.
 
 #CIRCUITS LOCALIZATION
 metaitem.boule.silicon.name=Silicon Boule
@@ -719,12 +720,14 @@ cover.robotic_arm.transfer_mode.keep_exact=Keep Exact
 cover.robotic_arm.transfer_mode.description=§eTransfer Any§r - in this mode, cover will transfer as many items matching its filter as possible./n§eSupply Exact§r - in this mode, cover will supply items in portions specified in item filter slots (or variable under this button for ore dictionary filter). If amount of items is less than portion size, items won't be moved./n§eKeep Exact§r - in this mode, cover will keep specified amount of items in the destination inventory, supplying additional amount of items if required./n§7Tip: left/right click on filter slots to change item amount,  use shift clicking to change amount faster.
 
 cover.pump.title=Pump Cover Settings (%s)
-cover.pump.transfer_rate=%s mb/s
+cover.pump.transfer_rate=%s
 cover.pump.mode.export=Mode: Export
 cover.pump.mode.import=Mode: Import
 cover.pump.fluid_filter.title=Fluid Filter
 cover.pump.manual_io.enabled=Allow Manual Import/Export
 cover.pump.manual_io.disabled=Disallow Manual Import/Export
+cover.bucket.mode.bucket=B/s
+cover.bucket.mode.milli_bucket=mB/s
 
 cover.machine_controller.name=Machine Controller Settings
 cover.machine_controller.normal=Normal
@@ -1591,15 +1594,6 @@ recipemap.slicer.name=Slicer
 recipemap.extruder.name=Extruder
 recipemap.hammer.name=Hammer
 recipemap.uuamplifier.name=UU Amplifier
-recipemap.dieselgeneratorfuel.name=Diesel Generator Fuel
-recipemap.dieselgeneratorfuel.value=Fuel Value: %s EU
-recipemap.gasturbinefuel.name=Gas Turbine Fuel
-recipemap.gasturbinefuel.value=Fuel Value: %s EU
-recipemap.thermalgeneratorfuel.name=Thermal Generator Fuel
-recipemap.semifluidboilerfuels.name=Semifluid Boiler Fuels
-recipemap.plasmageneratorfuels.name=Plasma generator Fuels
-recipemap.magicfuels.name=Magic Fuels
-recipemap.magicfuels.value=Fuel Value: %s EU
 recipemap.forming_press.name=Forming Press
 recipemap.forge_hammer.name=Forge Hammer
 recipemap.compressor.name=Compressor
@@ -1609,6 +1603,7 @@ recipemap.diesel_generator.name=Diesel Generator
 recipemap.gas_turbine.name=Gas Turbine
 recipemap.steam_turbine.name=Steam Turbine
 recipemap.semi_fluid_generator.name=Semi Fluid Fuels
+recipemap.plasma_generator.name=Plasma Generator
 
 behaviour.hoe=Can till dirt
 behaviour.soft_hammer=Use on machine to allow/disallow it to work
@@ -2268,7 +2263,8 @@ gregtech.machine.air_collector.lv.name=Basic Air Collector
 gregtech.machine.air_collector.mv.name=Advanced Air Collector
 gregtech.machine.air_collector.hv.name=Advanced Air Collector II
 gregtech.machine.air_collector.ev.name=Atmosphere Collector III
-gregtech.machine.air_collector.description=Collects air from adjacent blocks
+gregtech.machine.air_collector.tooltip=Collects air from adjacent blocks at the expense of energy
+gregtech.machine.air_collector.collection_speed=Produces %d mb of Air every %d ticks
 gregtech.machine.air_collector.jei_description=The Air Collector collects air from adjacent blocks for a little bit of EU
 
 #Tesla Coil
@@ -2863,7 +2859,7 @@ gregtech.universal.tooltip.fluid_storage_capacity=Fluid Capacity: %d mb
 gregtech.universal.tooltip.max_voltage_in=Max Voltage IN: §a%d §7(§a%s§7)
 
 gregtech.recipe.total=Total: %d EU
-gregtech.recipe.eu=Usage: %d EU/t
+gregtech.recipe.eu=Usage: %d EU/t (%s)
 gregtech.recipe.eu_inverted=Generation: %d EU/t
 gregtech.recipe.duration=Duration: %.1f secs
 gregtech.recipe.amperage=Amperage: %d
@@ -2888,8 +2884,8 @@ gregtech.gui.fuel_amount=Fuel Amount:
 gregtech.gui.fluid_amount=Fluid Amount:
 gregtech.gui.toggle_view.disabled=Toggle View (Fluids)
 gregtech.gui.toggle_view.enabled=Toggle View (Items)
-gregtech.gui.overclock.enabled=Allow Overclocking
-gregtech.gui.overclock.disabled=Disable Overclocking
+gregtech.gui.overclock.enabled=Overclocking Enabled./nClick to Disable
+gregtech.gui.overclock.disabled=Overclocking Disabled./nClick to Enable
 gregtech.gui.sort=Sort
 gregtech.gui.fluid_auto_output.tooltip.enabled=Fluid Auto-Output Enabled
 gregtech.gui.fluid_auto_output.tooltip.disabled=Fluid Auto-Output Disabled

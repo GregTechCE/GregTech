@@ -143,6 +143,7 @@ public class SliderWidget extends Widget {
                 this.sliderPosition = 1.0F;
             }
             this.displayString = this.getDisplayString();
+            writeClientAction(1, buffer -> buffer.writeFloat(sliderPosition));
             this.isMouseDown = true;
             return true;
         }

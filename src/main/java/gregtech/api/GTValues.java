@@ -74,7 +74,8 @@ public class GTValues {
         MODID_FR = "forestry",
         MODID_FMP = "forgemultipartcbe",
         MODID_CT = "crafttweaker",
-        MODID_TOP = "theoneprobe";
+        MODID_TOP = "theoneprobe",
+        MODID_CTM = "ctm";
 
     //because forge is too fucking retarded to cache results or at least do not create fucking
     //immutable collections every time you retrieve indexed mod list

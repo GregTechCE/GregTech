@@ -6,7 +6,6 @@ import codechicken.lib.raytracer.CuboidRayTraceResult;
 import codechicken.lib.raytracer.IndexedCuboid6;
 import codechicken.lib.raytracer.RayTracer;
 import codechicken.lib.vec.Cuboid6;
-import cofh.core.render.IBlockAppearance;
 import com.google.common.collect.Lists;
 import gregtech.api.GregTechAPI;
 import gregtech.api.block.BlockCustomParticle;
@@ -20,6 +19,8 @@ import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.MetaTileEntityHolder;
 import gregtech.api.render.MetaTileEntityRenderer;
 import gregtech.common.tools.DamageValues;
+import gregtech.api.render.IBlockAppearance;
+import gregtech.integration.ctm.IFacadeWrapper;
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.SoundType;
@@ -53,7 +54,6 @@ import net.minecraftforge.common.property.IUnlistedProperty;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import org.apache.commons.lang3.tuple.Pair;
-import team.chisel.ctm.api.IFacade;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -62,7 +62,7 @@ import java.util.Arrays;
 import java.util.List;
 
 @SuppressWarnings("deprecation")
-public class BlockMachine extends BlockCustomParticle implements ITileEntityProvider, IFacade, IBlockAppearance {
+public class BlockMachine extends BlockCustomParticle implements ITileEntityProvider, IFacadeWrapper, IBlockAppearance {
 
     private static final List<IndexedCuboid6> EMPTY_COLLISION_BOX = Lists.newArrayList(new IndexedCuboid6(null, Cuboid6.full));
     private static final IUnlistedProperty<String> HARVEST_TOOL = new UnlistedStringProperty("harvest_tool");
@@ -240,6 +240,8 @@ public class BlockMachine extends BlockCustomParticle implements ITileEntityProv
             }
             metaTileEntity.dropAllCovers();
             metaTileEntity.onRemoval();
+
+            tileEntities.set(metaTileEntity);
         }
         super.breakBlock(worldIn, pos, state);
     }
@@ -325,7 +327,7 @@ public class BlockMachine extends BlockCustomParticle implements ITileEntityProv
     @Override
     public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos) {
         MetaTileEntity metaTileEntity = getMetaTileEntity(worldIn, pos);
-        if(metaTileEntity != null) {
+        if (metaTileEntity != null) {
             metaTileEntity.updateInputRedstoneSignals();
             metaTileEntity.onNeighborChanged();
         }
@@ -341,7 +343,7 @@ public class BlockMachine extends BlockCustomParticle implements ITileEntityProv
 
     @Override
     public void harvestBlock(World worldIn, EntityPlayer player, BlockPos pos, IBlockState state, @Nullable TileEntity te, ItemStack stack) {
-        tileEntities.set(te == null ? null : ((MetaTileEntityHolder) te).getMetaTileEntity());
+        tileEntities.set(te == null ? tileEntities.get() : ((MetaTileEntityHolder) te).getMetaTileEntity());
         super.harvestBlock(worldIn, player, pos, state, te, stack);
         tileEntities.set(null);
     }
@@ -407,7 +409,13 @@ public class BlockMachine extends BlockCustomParticle implements ITileEntityProv
 
     @Nonnull
     @Override
-    public IBlockState getFacade(@Nonnull IBlockAccess world, @Nonnull BlockPos pos, @Nullable EnumFacing side, BlockPos otherPos) {
+    public IBlockState getFacade(@Nonnull IBlockAccess world, @Nonnull BlockPos pos, @Nullable EnumFacing side, @Nonnull BlockPos otherPos) {
+        return getFacade(world, pos, side);
+    }
+
+    @Nonnull
+    @Override
+    public IBlockState getFacade(@Nonnull IBlockAccess world, @Nonnull BlockPos pos, EnumFacing side) {
         MetaTileEntity metaTileEntity = getMetaTileEntity(world, pos);
         if (metaTileEntity != null && side != null) {
             CoverBehavior coverBehavior = metaTileEntity.getCoverAtSide(side);
@@ -418,9 +426,10 @@ public class BlockMachine extends BlockCustomParticle implements ITileEntityProv
         return world.getBlockState(pos);
     }
 
+    @Nonnull
     @Override
-    public IBlockState getVisualState(IBlockAccess world, BlockPos pos, EnumFacing side) {
-        return getFacade(world, pos, side, null);
+    public IBlockState getVisualState(@Nonnull IBlockAccess world, @Nonnull BlockPos pos, @Nonnull EnumFacing side) {
+        return getFacade(world, pos, side);
     }
 
     @Override
