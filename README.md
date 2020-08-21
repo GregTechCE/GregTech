@@ -32,10 +32,18 @@ For that reason Gregtech 5 Unofficial was used as base and some ideas from GT4 a
 
 ## Contribution
 ### Current state of project
-Project is being maintained by @LAGIdiot and is open to contributions.
+Project is being actively developed by its designed maintainer @LAGIdiot. 
+And we are looking for contributors.
 
 ### Release cycle
-
-### Milestones
+Project is following two weeks release cycle (if possible). 
+PRs are accepted all time and merged mostly on Monday of even week.
+Changelog is generated and beautified after merging PRs on Monday of even week. Submitted for one day as PR.
+Release is being build and deployed on Tuesday on even week right after merging Changelog PR.
 
 ### How to contribute
+Every contribution counts. 
+Found a bug? Please let us know by creating issue with bug template. 
+Something is missing or thought about cool feature? Sure there is a template for it, and we will have a look at it.
+Know how to mod or at least code? Then don't hesitate and jump to Discord channel, contact Maintainer to discuss possible contribution.
+Anything else? Sure come to Discord.
