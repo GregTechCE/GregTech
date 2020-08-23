@@ -56,7 +56,7 @@ public class PhantomFluidWidget extends Widget implements IIngredientSlot, IGhos
             return Collections.emptyList();
         }
 
-        Rectangle rectangle = sizes.toScreenCoords(toRectangleBox());
+        Rectangle rectangle = toRectangleBox();
         return Lists.newArrayList(new Target<Object>() {
             @Override
             public Rectangle getArea() {
