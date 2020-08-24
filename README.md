@@ -36,12 +36,12 @@ We work with our addon-partners to attempt to preserve backwards-compatibility.
 
 ### Release cycle
 GTCE follows a two week release cycle (when possible). 
-Changelogs are generated and beautified after merging PRs every other Monday. Submitted for one day as a Pull Request.
+Changelogs are generated and beautified after merging PRs every other Monday. Changelog is then submitted as a Pull Request (PR).
 Releases are built and deployed on Tuesdays after merging the Changelog PR.
 
 ## Contribution
 ### Current state of project
-Project is being actively maintained by its designed maintainer @LAGIdiot. 
+Project is currently maintained by its designated maintainer @LAGIdiot. 
 We are always looking for contributors!
 
 ### How to contribute
