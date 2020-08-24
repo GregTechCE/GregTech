@@ -5,45 +5,52 @@
 
 ## Welcome to GregTech Community Edition
 ### What is this?
-GregTech Community Edition or shortly **GTCE** is Minecraft mod. And this repository shelters all code and associated files.
+GregTech Community Edition, or **GTCE**, is a Minecraft mod. The repository contains all the code and assets required to build and run that mod.
 
 ### GregTech?
-Yes, you probably already heard this name before as it is quite known one in modding community. This is **indirect descendant** and **total rewrite** of _**the GregTech**_ also it is **not created or maintained by GregoriusT**.
+Yes, you have probably heard this name before as it is quite known in the Minecraft modding community. GTCE is an **indirect descendant** and **total rewrite** of _**GregTech**_.  It is **neither created nor maintained by GregoriusT** but was created with his knowledge and permission.
 
 If you did not hear about it yet let me shortly describe what this mod it is all about. It is about **Technology**. Wait was it to short? Hm, let me try again.
 
 This mod is about **technology** and **progression**.
-From simple crude tools which will allow you to process resources more realistically.
-Through **Steam Age** where first machines will help you save some precious resources and open new possibilities.
-To many **Electric Ages** where machines will become indispensable helpers. Rows and rows of them will be working on processing complex resources creating even more complex materials to be used in machines of higher tiers.
-And let's not forget about multiblock machines working on lengthy processing chains.
-Also, there is whole power generation system from simple wood burning for steam to plasma powered turbines.
+* From simple crude tools which will allow you to process resources more realistically...
+* Through **Steam Age** where early machines will help you save some precious resources and open new possibilities...
+* To many **Electric Ages** where increasingly complex machines and logistics will become indispensable parts of your industrial regime.
+
+A common GregTech facility demonstrates large arrays of both single- and multi-block machines processing numerous resources, creating even more complex materials which will be used in machines of higher tiers.
+
+All of which are powered by GTCE's own power systems, featuring generators from simple wood burning for steam to plasma-powered turbines.
 
 ### Community Edition?
-**Community Edition** is necessary part of **GTCE name** as it defines what will this project give to world also it is required by permission to use GregTech name.
+**Community Edition** is a necessary part of the **GTCE name**: 
+* It is required by our permission to use the GregTech name
+* It is a reminder that the ideas and design are primarily driven by the community
+* It is a reminder that the implementation and work are solely provided by the community.
 
-It could be said that this is simple case of community driven development.
-Of course, it does not mean that anyone can get in whatever they want.
-This is about listening to community and taking suggestion to account when working on any stuff.
+Of course, this does not mean that everyone can add whatever content they want.  But it does mean that the primary maintainers want to listen to the community and take suggestions and ideas to heart when planning or working on any projects.
 
-### Project Idea
-To bring GregTech to modern version of Minecraft (or at least at that time was 1.12 modern version). And created possible the best edition ever.
-For that reason Gregtech 5 Unofficial was used as base and some ideas from GT4 and GT6 were thrown in. Also some community suggestions were applied.
+### Project Goal
+To bring preferred GregTech concepts and ideas from GT (Minecraft 1.7.10 versions and earlier) to Minecraft 1.12, targetting a feature-rich, UX-friendly and comprehensive play-through while streamlining and eliminating bloat and make-work details.
+
+Gregtech 5 Unofficial was used as an original base, with some ideas from GT4 and GT6 also incorporated. Many community suggestions have been since applied.
+
+We work with our addon-partners to attempt to preserve backwards-compatibility.
+
+### Release cycle
+GTCE follows a two week release cycle (when possible). 
+Changelogs are generated and beautified after merging PRs every other Monday. Submitted for one day as a Pull Request.
+Releases are built and deployed on Tuesdays after merging the Changelog PR.
 
 ## Contribution
 ### Current state of project
-Project is being actively developed by its designed maintainer @LAGIdiot. 
-And we are looking for contributors.
-
-### Release cycle
-Project is following two weeks release cycle (if possible). 
-PRs are accepted all time and merged mostly on Monday of even week.
-Changelog is generated and beautified after merging PRs on Monday of even week. Submitted for one day as PR.
-Release is being build and deployed on Tuesday on even week right after merging Changelog PR.
+Project is being actively maintained by its designed maintainer @LAGIdiot. 
+We are always looking for contributors!
 
 ### How to contribute
-Every contribution counts. 
-Found a bug? Please let us know by creating issue with bug template. 
-Something is missing or thought about cool feature? Sure there is a template for it, and we will have a look at it.
-Know how to mod or at least code? Then don't hesitate and jump to Discord channel, contact Maintainer to discuss possible contribution.
+Remember: Every contribution counts. 
+Found a bug? Please let us know by creating an Issue with the bug template. 
+Something is missing? Thought about a cool feature idea? Of course there's a template for that.  We'll have a look!
+Know how to mod or at least code? Then don't hesitate and jump to Discord channel, contact the Maintainer to discuss possible contribution.
 Anything else? Sure come to Discord.
+
+
