@@ -10,14 +10,12 @@ GregTech Community Edition, or **GTCE**, is a Minecraft mod. The repository cont
 ### GregTech?
 Yes, you have probably heard this name before as it is quite known in the Minecraft modding community. GTCE is an **indirect descendant** and **total rewrite** of _**GregTech**_.  It is **neither created nor maintained by GregoriusT** but was created with his knowledge and permission.
 
-If you did not hear about it yet let me shortly describe what this mod it is all about. It is about **Technology**. Wait was it to short? Hm, let me try again.
-
 This mod is about **technology** and **progression**.
 * From simple crude tools which will allow you to process resources more realistically...
 * Through **Steam Age** where early machines will help you save some precious resources and open new possibilities...
 * To many **Electric Ages** where increasingly complex machines and logistics will become indispensable parts of your industrial regime.
 
-A common GregTech facility demonstrates large arrays of both single- and multi-block machines processing numerous resources, creating even more complex materials which will be used in machines of higher tiers.
+A typical GregTech facility features large arrays of both single- and multi-block machines processing numerous resources, creating even more complex materials which will be used in machines of higher tiers.
 
 All of which are powered by GTCE's own power systems, featuring generators from simple wood burning for steam to plasma-powered turbines.
 
