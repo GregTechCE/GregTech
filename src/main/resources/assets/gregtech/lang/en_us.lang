@@ -1632,7 +1632,7 @@ gregtech.block.surface_rock.material=Rock Material: %s
 gregtech.block.surface_rock.underground_materials=Underground Materials: %s
 
 metaitem.scanner.name=Scanner
-metaitem.scanner.tooltip=Right click on surface rocks/nto discover underground materials
+metaitem.scanner.tooltip=Hold right mouse button on surface rocks/nto discover underground materials
 behavior.scanner.analyzing=Analyzing...
 behavior.scanner.analyzing_failed=Analyzing failed!
 behavior.scanner.analyzing_complete=Analyzing complete!
