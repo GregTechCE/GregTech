@@ -33,4 +33,4 @@ If applicable, add screenshots to help explain your problem.
 **Additional context**
 Add any other context about the problem here.
 
-_Please fill in as many useful information as possible and also please remove all unused sections_
+_Please fill in as much useful information as possible. Also please remove all unused sections._

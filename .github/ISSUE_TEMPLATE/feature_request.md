@@ -16,4 +16,4 @@ A clear and concise description of what you want to happen.
 **Additional context**
 Add any other context or screenshots about the feature request here.
 
-_Please fill in as many useful information as possible and also please remove all unused sections_
+_Please fill in as much useful information as possible. Also please remove all unused sections._
