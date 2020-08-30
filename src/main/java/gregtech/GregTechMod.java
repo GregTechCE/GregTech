@@ -139,11 +139,13 @@ public class GregTechMod {
             GTLog.logger.info("TheOneProbe found. Enabling integration...");
             TheOneProbeCompatibility.registerCompatibility();
         }
+
         WorldGenRegistry.INSTANCE.initializeRegistry();
+        GameRegistry.registerWorldGenerator(new WorldGenAbandonedBase(), 20000);
         if (!ConfigHolder.disableRubberTreeGeneration) {
             GameRegistry.registerWorldGenerator(new WorldGenRubberTree(), 10000);
-            GameRegistry.registerWorldGenerator(new WorldGenAbandonedBase(), 20000);
         }
+
         LootTableHelper.initialize();
         FilterTypeRegistry.init();
         CoverBehaviors.init();
