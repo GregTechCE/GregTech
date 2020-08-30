@@ -54,7 +54,16 @@ public class DustMaterial extends FluidMaterial {
          */
         public static final long SMELT_INTO_FLUID = createFlag(17);
 
+        /**
+         * This will prevent material from creating Shapeless recipes for dust to block and vice versa
+         * Also preventing extruding and alloy smelting recipes via SHAPE_EXTRUDING/MOLD_BLOCK
+         */
         public static final long EXCLUDE_BLOCK_CRAFTING_RECIPES = createFlag(18);
+
+        /**
+         * This will prevent material from creating Shapeless recipes for dust to block and vice versa
+         */
+        public static final long EXCLUDE_BLOCK_CRAFTING_BY_HAND_RECIPES = createFlag(46);
 
         public static final long EXCLUDE_PLATE_COMPRESSOR_RECIPE = createFlag(19);
 

@@ -1,7 +1,6 @@
 package gregtech.common.covers.facade;
 
-
-import cofh.core.render.IBlockAppearance;
+import gregtech.api.render.IBlockAppearance;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
@@ -89,7 +88,7 @@ public class FacadeBlockAccess implements IBlockAccess {
     }
 
     @Override
-    @SideOnly (Side.CLIENT)
+    @SideOnly(Side.CLIENT)
     public int getCombinedLight(BlockPos pos, int t) {
         if (((side == DOWN && pos.getY() > this.pos.getY()) ||
             (side == UP && pos.getY() < this.pos.getY()) ||

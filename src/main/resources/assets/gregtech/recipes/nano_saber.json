@@ -16,7 +16,7 @@
     },
     "B": {
       "type": "gregtech:metaitem",
-      "name": "lapotron_crystal"
+      "name": "energy_crystal"
     },
     "C": {
       "type": "forge:ore_dict",

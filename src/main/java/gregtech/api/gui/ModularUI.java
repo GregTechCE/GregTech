@@ -12,6 +12,8 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraftforge.items.IItemHandlerModifiable;
 import net.minecraftforge.items.wrapper.PlayerMainInvWrapper;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.function.DoubleSupplier;
 import java.util.function.Supplier;
 
@@ -50,6 +52,19 @@ public final class ModularUI implements ISizeProvider {
         this.height = height;
         this.holder = holder;
         this.entityPlayer = entityPlayer;
+    }
+
+    public List<Widget> getFlatVisibleWidgetCollection() {
+        List<Widget> widgetList = new ArrayList<>(guiWidgets.size());
+
+        for (Widget widget : guiWidgets.values()) {
+            widgetList.add(widget);
+
+            if (widget instanceof AbstractWidgetGroup)
+                widgetList.addAll(((AbstractWidgetGroup) widget).getContainedWidgets(false));
+        }
+
+        return widgetList;
     }
 
     public void updateScreenSize(int screenWidth, int screenHeight) {

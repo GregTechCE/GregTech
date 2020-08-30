@@ -1,5 +1,56 @@
 ## Changelog
 
+### 1.10.0
+* Added CTM as optional dependency (#1197) - LAGIdiot
+* Updated output amount of Facade recipes to be based on used plate (#1194) - LAGIdiot
+* Updated Integrated Circuit recipe to return circuit with configuration set to zero (#1198) - LAGIdiot
+* Fixed crash on getHarvestLevel when IBlockState is not provided (#1193) - LAGIdiot
+    * Mostly know as crash on putting GTCE tools to EnderIO machines
+    * GTCE tools can't be put in EnderIO machines as GTCE is not provided with information how they will be used
+* Fixed API shading (#1197) - LAGIdiot
+    * Problems related to EnderIO facades glitching when made from Chisel blocks
+
+### 1.9.4
+* Added Bone Meal recipe to Mortar (#1178) - LAGIdiot
+* Added Crafting Station to JEI list of crafting tables (#1186) - LAGIdiot
+* Added Material Flag EXCLUDE_BLOCK_CRAFTING_BY_HAND_RECIPES (#1188) - LAGIdiot
+* Updated Bone Meal recipes to work with Vanilla MC Bone Meal (#1178) - LAGIdiot
+* Updated Config to have unified style and default values (#1185) - ALongStringOfNumbers
+* Updated Crafting Station GUI (#1186) - LAGIdiot
+    * Recipes from JEI can be clicked to crafting grid
+    * Fixed scrolling via mouse wheel
+    * Fixed scroll bar rendering outside of GUI
+    * Fixed too many empty rows being rendered on Item List tab
+    * Fixed Item List not correctly responding to removal/destruction of adjacent container
+* Updated Energy Crystal and Lapotron Crystal capacity (#1189) - LAGIdiot
+* Updated Nano Saber recipe to use Energy Crystal as battery (#1189) - LAGIdiot
+* Fixed possible concurrent modification exception on unification (#1176) - LAGIdiot
+* Fixed Blaze Powder and Bone Meal amount from Macerating recipes (#1178) - LAGIdiot
+* Fixed some Vanilla MC blocks having duplicate recipes (#1188) - LAGIdiot
+* Removed Bone Meal Dust (#1178) - LAGIdiot
+
+### 1.9.3
+* Added replication of mold and extruder shapes in Forming Press (#1138) - LAGIdiot
+* Added Metal Bender recipe for Empty Shape Plate (#1138) - LAGIdiot
+* Added JEI information for integrated circuits (#1142) - Eutro
+* Added support custom chance functions (#1145) - Eutro
+  * This allows for reverting to old byproduct chances
+* Added Implosion Compressor CraftTweaker integration for the ability to specify explosives types (#1148) - ALongStringOfNumbers
+* Added config option for lossless wires ot damage player on contact (#1151) - ALongStringOfNumbers
+* Updated JEI recipe info to render from the bottom instead of at a constant height (#1118) - Eutro
+* Updated zh-cn translation for Americium (#1124) - Rika
+* Updated pump cover with QOL improvements (#1125) - Decal
+* Updated circuit configurations to be distinct subtypes in JEI (#1142) - Eutro
+* Updated overclocking tooltip in GUI (#1143) - ALongStringOfNumbers
+* Updated thickness of wires for more realistic look regarding insulating them (#1159) - LAGIdiot
+* Fixed drained tank not being stackable (#1127) - Derek.CHAN
+* Fixed blocks not dropping when destroyed by AOE effect of Thermal Foundation hammers (#1130) - Creysys
+* Fixed the zh_cn translations for fluid_extractor (#1133) - Rika
+* Fixed running into powered 16x wires does not damage player (#1159) - LAGIdiot
+* Fixed missing localization for plasma generator recipe map (#1160) - LAGIdiot
+* Removed redundant DISABLE_DECOMPOSITION flag (#1150) - ALongStringOfNumbers
+* Removed localization for old way of handling fuel recipe maps (#1160) - LAGIdiot
+
 ### 1.9.2
 * Updated dependencies versions (#1070) - LAGIdiot 
     * Forge updated to 14.23.5.2847

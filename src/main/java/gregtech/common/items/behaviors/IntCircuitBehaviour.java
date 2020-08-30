@@ -7,19 +7,22 @@ import gregtech.api.gui.widgets.DynamicLabelWidget;
 import gregtech.api.items.gui.ItemUIFactory;
 import gregtech.api.items.gui.PlayerInventoryHolder;
 import gregtech.api.items.metaitem.stats.IItemBehaviour;
+import gregtech.api.items.metaitem.stats.ISubItemHandler;
 import gregtech.api.recipes.ingredients.IntCircuitIngredient;
 import net.minecraft.client.resources.I18n;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 
 import java.util.List;
 
-public class IntCircuitBehaviour implements IItemBehaviour, ItemUIFactory {
+public class IntCircuitBehaviour implements IItemBehaviour, ItemUIFactory, ISubItemHandler {
 
     @Override
     public void addInformation(ItemStack itemStack, List<String> lines) {
@@ -53,8 +56,18 @@ public class IntCircuitBehaviour implements IItemBehaviour, ItemUIFactory {
         ItemStack stack = holder.getCurrentItem();
         int configuration = IntCircuitIngredient.getCircuitConfiguration(stack);
         configuration += amount;
-        configuration = MathHelper.clamp(configuration, 0, 32);
+        configuration = MathHelper.clamp(configuration, 0, IntCircuitIngredient.CIRCUIT_MAX);
         IntCircuitIngredient.setCircuitConfiguration(stack, configuration);
         holder.markAsDirty();
+    }
+
+    @Override
+    public String getItemSubType(ItemStack itemStack) {
+        return Integer.toString(IntCircuitIngredient.getCircuitConfiguration(itemStack));
+    }
+
+    @Override
+    public void getSubItems(ItemStack itemStack, CreativeTabs creativeTab, NonNullList<ItemStack> subItems) {
+        subItems.add(itemStack.copy());
     }
 }
