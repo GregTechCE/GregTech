@@ -128,26 +128,42 @@ public class CoverPump extends CoverBehavior implements CoverWithUI, ITickable, 
         }
     }
 
-    protected int doImportFluid(IFluidHandler me, IFluidHandler dest, int transferLimit) {
+    protected int doImportFluid(IFluidHandler me, IFluidHandler source, int transferLimit) {
         int fluidLeftToTransfer = transferLimit;
-        for (IFluidTankProperties sourceTankProperties : dest.getTankProperties()) {
+        for (IFluidTankProperties sourceTankProperties : source.getTankProperties()) {
 
             FluidStack currentFluid = sourceTankProperties.getContents();
             if (currentFluid == null || currentFluid.amount == 0 || !fluidFilter.testFluidStack(currentFluid)) continue;
 
-            FluidStack currentFluidCopy = currentFluid.copy();
-            currentFluidCopy.amount = fluidLeftToTransfer;
-            FluidStack canExtractFluid = dest.drain(currentFluidCopy, false);
+            FluidStack canExtractFluid = source.drain(currentFluid, false);
             if (canExtractFluid == null || canExtractFluid.amount == 0) continue;
-            int canInsertAmount = me.fill(canExtractFluid, false);
-            if (canInsertAmount == 0) continue;
-            int liquidDeltaLimitFromPortion = Math.round((sourceTankProperties.getCapacity() * ((float) this.percentageInTank / 100))) - sourceTankProperties.getContents().amount;
-            int finalTransferAmount = Math.min(liquidDeltaLimitFromPortion, canInsertAmount);
+
+            int canInsertAmount = source.fill(canExtractFluid, false);
+
+
+
+            int keptAmount = 0;
+            int minCapacity = Integer.MAX_VALUE;
+            for (IFluidTankProperties myTankProperties : me.getTankProperties()) {
+
+                if (myTankProperties.getCapacity() < minCapacity){
+                    minCapacity = myTankProperties.getCapacity();
+                }
+                if (myTankProperties.getContents() != null &&
+                myTankProperties.getContents().getFluid() == canExtractFluid.getFluid()){
+                    keptAmount += myTankProperties.getContents().amount;
+                }
+
+            }
+            int  liquidDeltaLimitByPortion = Math.round((minCapacity * ((float) this.percentageInTank / 100)))
+                - keptAmount ;
+            int   finalTransferAmount  = Math.min(liquidDeltaLimitByPortion, Math.min(canInsertAmount , transferLimit));
             if (finalTransferAmount <= 0) continue;
-            currentFluidCopy.amount = finalTransferAmount;
-            FluidStack fluidExtracted = dest.drain(currentFluidCopy, true);
+            canExtractFluid.amount = finalTransferAmount;
+            FluidStack fluidExtracted = source.drain(canExtractFluid, true);
             int actualFilled =   me.fill(fluidExtracted, true);
             fluidLeftToTransfer -= actualFilled;
+
 
         }
         return transferLimit - fluidLeftToTransfer;
@@ -162,16 +178,17 @@ public class CoverPump extends CoverBehavior implements CoverWithUI, ITickable, 
             if (fluidLeftToTransfer == 0) {
                 break;
             }
-            FluidStack currentFluid = sourceTankProperties.getContents();
-            if (currentFluid == null || currentFluid.amount == 0 || !fluidFilter.testFluidStack(currentFluid)) continue;
+            FluidStack currentFluidCopy = sourceTankProperties.getContents();
+            if (currentFluidCopy == null || currentFluidCopy.amount == 0 || !fluidFilter.testFluidStack(currentFluidCopy)) continue;
 
-            FluidStack currentFluidCopy = currentFluid.copy();
             currentFluidCopy.amount = fluidLeftToTransfer;
             FluidStack canExtractFluid = me.drain(currentFluidCopy, false);
             if (canExtractFluid == null || canExtractFluid.amount == 0) continue;
+
             int canInsertAmount = dest.fill(canExtractFluid, false);
-            if (canInsertAmount == 0) continue;
+
             int liquidDeltaLimitFromPortion = sourceTankProperties.getContents().amount - Math.round((sourceTankProperties.getCapacity() * ((float) this.percentageInTank / 100)));
+
             int finalTransferAmount = Math.min(liquidDeltaLimitFromPortion, canInsertAmount);
             if (finalTransferAmount <= 0) continue;
             currentFluidCopy.amount = finalTransferAmount;
