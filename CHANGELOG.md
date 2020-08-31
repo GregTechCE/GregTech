@@ -1,5 +1,13 @@
 ## Changelog
 
+### 1.10.1
+* Added english fruit juice localization (#1204) - Saereth
+* Updated Scanner tooltip to clarify usage (#1214) - DoctorWeirdGuy
+* Fixed position of ghosting area for JEI items/fluids - (#1208) - detav
+* Fixed zh localization for Fluid Extractor (#1213) - LovelyCatHyt
+* Fixed Abandon Base generation being disabled on disabling Rubber Tree generation (#1225) - LAGIdiot
+* Fixed zh localization for Autoclave (#1227) - LAGIdiot
+
 ### 1.10.0
 * Added CTM as optional dependency (#1197) - LAGIdiot
 * Updated output amount of Facade recipes to be based on used plate (#1194) - LAGIdiot
