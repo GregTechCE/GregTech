@@ -1871,7 +1871,7 @@ gregtech.machine.autoclave.lv.name=基础高压釜
 gregtech.machine.autoclave.mv.name=进阶高压釜
 gregtech.machine.autoclave.hv.name=进阶高压釜 II
 gregtech.machine.autoclave.ev.name=进阶高压釜 III
-gregtech.machine.autoclave.ev.name=进阶高压釜 IV
+gregtech.machine.autoclave.iv.name=进阶高压釜 IV
 
 gregtech.machine.bender.tooltip=更高效地生产板材
 
