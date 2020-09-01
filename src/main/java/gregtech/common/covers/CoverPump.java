@@ -116,10 +116,10 @@ public class CoverPump extends CoverBehavior implements CoverWithUI, ITickable, 
         if (fluidHandler == null || myFluidHandler == null) {
             return 0;
         }
-        return doTransferFluidsInternalSmart(myFluidHandler, fluidHandler, transferLimit);
+        return doTransferFluidsInternal(myFluidHandler, fluidHandler, transferLimit);
     }
 
-    protected int doTransferFluidsInternalSmart(IFluidHandler coveredBlockFluidHandler, IFluidHandler connectionFluidHandler, int transferLimit) {
+    protected int doTransferFluidsInternal(IFluidHandler coveredBlockFluidHandler, IFluidHandler connectionFluidHandler, int transferLimit) {
         switch (this.pumpMode) {
             case EXPORT: return doExportFluid(coveredBlockFluidHandler , connectionFluidHandler, transferLimit);
             case IMPORT: return doImportFluid(coveredBlockFluidHandler , connectionFluidHandler, transferLimit);
