@@ -220,9 +220,9 @@ public class CoverPump extends CoverBehavior implements CoverWithUI, ITickable, 
             () -> bucketMode.ordinal(), newMode -> setBucketMode(BucketMode.values()[newMode])));
 
 
-        primaryGroup.addWidget(new ClickButtonWidget(85, 63, 20, 18, "-10", data -> adjustPortionInTank(-10)));
+        primaryGroup.addWidget(new ClickButtonWidget(85, 63, 20, 18, "-1", data -> adjustPortionInTank(data.isShiftClick ? -10 : -1)));
         primaryGroup.addWidget(new ImageWidget(105, 63, 20, 18, GuiTextures.DISPLAY));
-        primaryGroup.addWidget(new ClickButtonWidget(125, 63, 20, 18, "+10", data -> adjustPortionInTank(10)));
+        primaryGroup.addWidget(new ClickButtonWidget(125, 63, 20, 18, "+1", data -> adjustPortionInTank(data.isShiftClick ? +10 : +1)));
         primaryGroup.addWidget(new SimpleTextWidget(115, 71, "", 0xFFFFFF, () -> this.percentageInTank + "%"));
 
 
