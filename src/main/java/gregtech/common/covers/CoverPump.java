@@ -178,11 +178,11 @@ public class CoverPump extends CoverBehavior implements CoverWithUI, ITickable, 
             if (fluidLeftToTransfer == 0) {
                 break;
             }
-            FluidStack currentFluidCopy = sourceTankProperties.getContents();
-            if (currentFluidCopy == null || currentFluidCopy.amount == 0 || !fluidFilter.testFluidStack(currentFluidCopy)) continue;
+            FluidStack currentFluid = sourceTankProperties.getContents();
+            if (currentFluid == null || currentFluid.amount == 0 || !fluidFilter.testFluidStack(currentFluid)) continue;
 
-            currentFluidCopy.amount = fluidLeftToTransfer;
-            FluidStack canExtractFluid = me.drain(currentFluidCopy, false);
+            currentFluid.amount = fluidLeftToTransfer;
+            FluidStack canExtractFluid = me.drain(currentFluid, false);
             if (canExtractFluid == null || canExtractFluid.amount == 0) continue;
 
             int canInsertAmount = dest.fill(canExtractFluid, false);
@@ -191,8 +191,8 @@ public class CoverPump extends CoverBehavior implements CoverWithUI, ITickable, 
 
             int finalTransferAmount = Math.min(liquidDeltaLimitFromPortion, canInsertAmount);
             if (finalTransferAmount <= 0) continue;
-            currentFluidCopy.amount = finalTransferAmount;
-            FluidStack fluidExtracted = me.drain(currentFluidCopy, true);
+            currentFluid.amount = finalTransferAmount;
+            FluidStack fluidExtracted = me.drain(currentFluid, true);
             int actualFilled = dest.fill(fluidExtracted, true);
             fluidLeftToTransfer -= actualFilled;
         }
