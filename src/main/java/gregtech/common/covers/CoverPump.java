@@ -131,7 +131,7 @@ public class CoverPump extends CoverBehavior implements CoverWithUI, ITickable, 
     protected int doImportFluid(IFluidHandler me, IFluidHandler source, int transferLimit) {
         int fluidLeftToTransfer = transferLimit;
         for (IFluidTankProperties sourceTankProperties : source.getTankProperties()) {
-
+            if (fluidLeftToTransfer == 0) break;
             FluidStack currentFluid = sourceTankProperties.getContents();
             if (currentFluid == null || currentFluid.amount == 0 || !fluidFilter.testFluidStack(currentFluid)) continue;
 
@@ -175,9 +175,8 @@ public class CoverPump extends CoverBehavior implements CoverWithUI, ITickable, 
         int fluidLeftToTransfer = transferLimit;
 
         for (IFluidTankProperties sourceTankProperties : me.getTankProperties()) {
-            if (fluidLeftToTransfer == 0) {
-                break;
-            }
+            if (fluidLeftToTransfer == 0) break;
+
             FluidStack currentFluid = sourceTankProperties.getContents();
             if (currentFluid == null || currentFluid.amount == 0 || !fluidFilter.testFluidStack(currentFluid)) continue;
 
