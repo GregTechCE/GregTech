@@ -44,9 +44,11 @@ public class SimpleMachineMetaTileEntity extends WorkableTieredMetaTileEntity {
 
     private boolean autoOutputItems;
     private boolean autoOutputFluids;
+    private boolean itemExtractFromInputSlot;
     private boolean allowInputFromOutputSide;
 
     protected IItemHandler outputItemInventory;
+    protected IItemHandler allowInputExtractItemInventory;
     protected IFluidHandler outputFluidInventory;
 
     public SimpleMachineMetaTileEntity(ResourceLocation metaTileEntityId, RecipeMap<?> recipeMap, OrientedOverlayRenderer renderer, int tier) {
@@ -73,6 +75,7 @@ public class SimpleMachineMetaTileEntity extends WorkableTieredMetaTileEntity {
     protected void initializeInventory() {
         super.initializeInventory();
         this.outputItemInventory = new ItemHandlerProxy(new ItemStackHandler(0), exportItems);
+        this.allowInputExtractItemInventory = new ItemHandlerProxy(importItems, exportItems,true);
         this.outputFluidInventory = new FluidHandlerProxy(new FluidTankList(false), exportFluids);
     }
 
@@ -154,8 +157,10 @@ public class SimpleMachineMetaTileEntity extends WorkableTieredMetaTileEntity {
             }
             return null;
         } else if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
-            IItemHandler itemHandler = (side == getOutputFacing() && !allowInputFromOutputSide) ? outputItemInventory : itemInventory;
-            if(itemHandler.getSlots() > 0) {
+            IItemHandler itemHandler = (side == getOutputFacing() && !allowInputFromOutputSide) ?
+                outputItemInventory :
+                (this.itemExtractFromInputSlot ? allowInputExtractItemInventory : itemInventory);
+            if (itemHandler.getSlots() > 0) {
                 return CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.cast(itemHandler);
             }
             return null;
@@ -169,6 +174,7 @@ public class SimpleMachineMetaTileEntity extends WorkableTieredMetaTileEntity {
         data.setTag("ChargerInventory", chargerInventory.serializeNBT());
         data.setInteger("OutputFacing", getOutputFacing().getIndex());
         data.setBoolean("AutoOutputItems", autoOutputItems);
+        data.setBoolean("ItemExtractFromInputSlot", itemExtractFromInputSlot);
         data.setBoolean("AutoOutputFluids", autoOutputFluids);
         data.setBoolean("AllowInputFromOutputSide", allowInputFromOutputSide);
         return data;
@@ -181,6 +187,7 @@ public class SimpleMachineMetaTileEntity extends WorkableTieredMetaTileEntity {
         this.outputFacing = EnumFacing.VALUES[data.getInteger("OutputFacing")];
         this.autoOutputItems = data.getBoolean("AutoOutputItems");
         this.autoOutputFluids = data.getBoolean("AutoOutputFluids");
+        this.itemExtractFromInputSlot = data.getBoolean("ItemExtractFromInputSlot");
         this.allowInputFromOutputSide = data.getBoolean("AllowInputFromOutputSide");
     }
 
@@ -190,6 +197,7 @@ public class SimpleMachineMetaTileEntity extends WorkableTieredMetaTileEntity {
         buf.writeByte(getOutputFacing().getIndex());
         buf.writeBoolean(autoOutputItems);
         buf.writeBoolean(autoOutputFluids);
+        buf.writeBoolean(itemExtractFromInputSlot);
     }
 
     @Override
@@ -198,6 +206,7 @@ public class SimpleMachineMetaTileEntity extends WorkableTieredMetaTileEntity {
         this.outputFacing = EnumFacing.VALUES[buf.readByte()];
         this.autoOutputItems = buf.readBoolean();
         this.autoOutputFluids = buf.readBoolean();
+        this.itemExtractFromInputSlot = buf.readBoolean();
     }
 
     @Override
@@ -211,6 +220,9 @@ public class SimpleMachineMetaTileEntity extends WorkableTieredMetaTileEntity {
             getHolder().scheduleChunkForRenderUpdate();
         } else if (dataId == 102) {
             this.autoOutputFluids = buf.readBoolean();
+            getHolder().scheduleChunkForRenderUpdate();
+        } else if (dataId == 103) {
+            this.itemExtractFromInputSlot = buf.readBoolean();
             getHolder().scheduleChunkForRenderUpdate();
         }
     }
@@ -247,6 +259,16 @@ public class SimpleMachineMetaTileEntity extends WorkableTieredMetaTileEntity {
         }
     }
 
+
+    public void setItemExtractFromInputSlot(boolean itemExtractFromInputSlot){
+        this.itemExtractFromInputSlot = itemExtractFromInputSlot;
+        if (!getWorld().isRemote) {
+            writeCustomData(103, buf -> buf.writeBoolean(itemExtractFromInputSlot));
+            markDirty();
+        }
+    }
+
+
     public void setAllowInputFromOutputSide(boolean allowInputFromOutputSide) {
         this.allowInputFromOutputSide = allowInputFromOutputSide;
         if(!getWorld().isRemote) {
@@ -269,6 +291,10 @@ public class SimpleMachineMetaTileEntity extends WorkableTieredMetaTileEntity {
 
     public boolean isAutoOutputItems() {
         return autoOutputItems;
+    }
+
+    public boolean isItemExtractFromInputSlot() {
+        return itemExtractFromInputSlot;
     }
 
     public boolean isAutoOutputFluids() {
@@ -305,6 +331,11 @@ public class SimpleMachineMetaTileEntity extends WorkableTieredMetaTileEntity {
             builder.widget(new ToggleButtonWidget(leftButtonStartX, 62, 18, 18,
                 GuiTextures.BUTTON_ITEM_OUTPUT, this::isAutoOutputItems, this::setAutoOutputItems)
             		.setTooltipText("gregtech.gui.item_auto_output.tooltip"));
+            leftButtonStartX += 18;
+
+            builder.widget(new ToggleButtonWidget(leftButtonStartX, 62, 18, 18,
+                GuiTextures.BUTTON_ITEM_EXTRACT_FROM_INPUT, this::isItemExtractFromInputSlot, this::setItemExtractFromInputSlot)
+                .setTooltipText("gregtech.gui.item_extract_from_input.tooltip"));
             leftButtonStartX += 18;
         }
         if (exportFluids.getTanks() > 0) {

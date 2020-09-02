@@ -9,10 +9,18 @@ public class ItemHandlerProxy implements IItemHandler {
 
     private IItemHandler insertHandler;
     private IItemHandler extractHandler;
+    private boolean canExtractFromInsertionSlot;
 
     public ItemHandlerProxy(IItemHandler insertHandler, IItemHandler extractHandler) {
         this.insertHandler = insertHandler;
         this.extractHandler = extractHandler;
+        this.canExtractFromInsertionSlot = false;
+    }
+
+    public ItemHandlerProxy(IItemHandler insertHandler, IItemHandler extractHandler, boolean canExtractFromInsertionSlot) {
+        this.insertHandler = insertHandler;
+        this.extractHandler = extractHandler;
+        this.canExtractFromInsertionSlot = canExtractFromInsertionSlot;
     }
 
     @Override
@@ -35,7 +43,12 @@ public class ItemHandlerProxy implements IItemHandler {
     @Nonnull
     @Override
     public ItemStack extractItem(int slot, int amount, boolean simulate) {
-        return slot >= insertHandler.getSlots() ? extractHandler.extractItem(slot - insertHandler.getSlots(), amount, simulate) : ItemStack.EMPTY;
+        return slot >= insertHandler.getSlots() ?
+            extractHandler.extractItem(slot - insertHandler.getSlots(), amount, simulate)
+            :
+            this.canExtractFromInsertionSlot ?
+                insertHandler.extractItem(slot, amount, simulate)
+                : ItemStack.EMPTY;
     }
 
     @Override
