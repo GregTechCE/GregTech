@@ -706,13 +706,13 @@ cover.conveyor.title=Conveyor Cover Settings (%s)
 cover.conveyor.transfer_rate=%s items/sec
 cover.conveyor.mode.export=Mode: Export
 cover.conveyor.mode.import=Mode: Import
+cover.conveyor.allowManualImportExportMode.mode.disabled=Disallow Manual I/O
+cover.conveyor.allowManualImportExportMode.mode.filtered=Filtered Manual I/O
+cover.conveyor.allowManualImportExportMode.mode.unfiltered=Unfiltered Manual I/O
+cover.conveyor.allowManualImportExportMode.mode.description=§eDisallow§r - in this mode, items/fluids will only move as specified by the cover and its filter. /n§eAllow Filtered§r - Items/fluids can be extracted and inserted indepedently of the cover mode, as long as its match filter (if any). /n§eAllow Unfiltered§r - In this mode, items/fluids can be moved indepedently of the cover mode. Filter applies to the items inserted or extracted by this cover
 cover.conveyor.item_filter.title=Item Filter
 cover.conveyor.ore_dictionary.title=Ore Dictionary Name
 cover.conveyor.ore_dictionary.title2=(use * for wildcard)
-
-cover.conveyor.manual_io.enabled=Allow Manual Import/Export
-cover.conveyor.manual_io.disabled=Disallow Manual Import/Export
-
 cover.robotic_arm.title=Robotic Arm Settings (%s)
 cover.robotic_arm.transfer_mode.transfer_any=Transfer Any
 cover.robotic_arm.transfer_mode.transfer_exact=Supply Exact

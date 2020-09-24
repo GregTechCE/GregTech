@@ -43,7 +43,7 @@ public class CoverPump extends CoverBehavior implements CoverWithUI, ITickable, 
     public final int maxFluidTransferRate;
     protected int transferRate;
     protected PumpMode pumpMode;
-    protected boolean allowManualImportExport = false;
+    protected AllowManualImportExportMode allowManualImportExportMode = AllowManualImportExportMode.DISABLED;
     protected int fluidLeftToTransferLastSecond;
     private CoverableFluidHandlerWrapper fluidHandlerWrapper;
     protected boolean isWorkingAllowed = true;
@@ -80,6 +80,11 @@ public class CoverPump extends CoverBehavior implements CoverWithUI, ITickable, 
         this.bucketMode = bucketMode;
         if (this.bucketMode == BucketMode.BUCKET)
             setTransferRate(transferRate / 1000 * 1000);
+        coverHolder.markDirty();
+    }
+
+    protected void getAllowManualImportExportMode(AllowManualImportExportMode allowManualImportExportMode) {
+        this.allowManualImportExportMode = allowManualImportExportMode;
         coverHolder.markDirty();
     }
 
@@ -141,11 +146,10 @@ public class CoverPump extends CoverBehavior implements CoverWithUI, ITickable, 
             GTUtility.mapToString(ConveyorMode.values(), it -> it.localeName),
             () -> pumpMode.ordinal(), newMode -> setPumpMode(PumpMode.values()[newMode])));
 
-        primaryGroup.addWidget(new ToggleButtonWidget(146, 63, 18, 18,
-            this::isAllowManualImportExport, this::setAllowManualImportExport)
-            .setTooltipText("cover.pump.manual_io")
-            .setButtonTexture(GuiTextures.BUTTON_ALLOW_IMPORT_EXPORT));
-
+        primaryGroup.addWidget(new CycleButtonWidget(63, 133, 110, 20,
+           AllowManualImportExportMode.class, this::getAllowManualImportExportMode, this::setAllowManualImportExportMode)
+            .setTooltipHoverString("cover.conveyor.allowManualImportExportMode.mode.description"));
+              
         this.fluidFilter.initUI(88, primaryGroup::addWidget);
 
         return ModularUI.builder(GuiTextures.BACKGROUND, 176, 170 + 82)
@@ -154,13 +158,14 @@ public class CoverPump extends CoverBehavior implements CoverWithUI, ITickable, 
             .build(this, player);
     }
 
-    public boolean isAllowManualImportExport() {
-        return allowManualImportExport;
+
+    public AllowManualImportExportMode getAllowManualImportExportMode() {
+        return allowManualImportExportMode;
     }
 
-    public void setAllowManualImportExport(boolean allowManualImportExport) {
-        this.allowManualImportExport = allowManualImportExport;
-        markAsDirty();
+    protected void setAllowManualImportExportMode(AllowManualImportExportMode allowManualImportExportMode) {
+        this.allowManualImportExportMode = allowManualImportExportMode;
+        coverHolder.markDirty();
     }
 
     @Override
@@ -221,7 +226,7 @@ public class CoverPump extends CoverBehavior implements CoverWithUI, ITickable, 
         tagCompound.setInteger("TransferRate", transferRate);
         tagCompound.setInteger("PumpMode", pumpMode.ordinal());
         tagCompound.setBoolean("WorkingAllowed", isWorkingAllowed);
-        tagCompound.setBoolean("AllowManualIO", allowManualImportExport);
+        tagCompound.setInteger("AllowManualImportExportMode", allowManualImportExportMode.ordinal());
         tagCompound.setTag("Filter", fluidFilter.serializeNBT());
     }
 
@@ -240,7 +245,7 @@ public class CoverPump extends CoverBehavior implements CoverWithUI, ITickable, 
             this.isWorkingAllowed = tagCompound.getBoolean("WorkingAllowed");
         }
         if (tagCompound.hasKey("AllowManualIO")) {
-            this.allowManualImportExport = tagCompound.getBoolean("AllowManualIO");
+            this.allowManualImportExportMode = AllowManualImportExportMode.values()[tagCompound.getInteger("AllowManualIO")];
         }
     }
 
@@ -266,6 +271,23 @@ public class CoverPump extends CoverBehavior implements CoverWithUI, ITickable, 
         }
     }
 
+    public enum AllowManualImportExportMode implements IStringSerializable {
+        DISABLED("cover.conveyor.allowManualImportExportMode.mode.disabled"),
+        FILTERED("cover.conveyor.allowManualImportExportMode.mode.filtered"),
+        UNFILTERED("cover.conveyor.allowManualImportExportMode.mode.unfiltered");
+
+        public final String localeName;
+
+        AllowManualImportExportMode(String localeName) {
+            this.localeName = localeName;
+        }
+
+        @Override
+        public String getName() {
+            return localeName;
+        }
+    }
+
     private class CoverableFluidHandlerWrapper extends FluidHandlerDelegate {
 
         public CoverableFluidHandlerWrapper(IFluidHandler delegate) {
@@ -274,10 +296,10 @@ public class CoverPump extends CoverBehavior implements CoverWithUI, ITickable, 
 
         @Override
         public int fill(FluidStack resource, boolean doFill) {
-            if (pumpMode == PumpMode.EXPORT && !allowManualImportExport) {
+            if (pumpMode == PumpMode.EXPORT && allowManualImportExportMode == AllowManualImportExportMode.DISABLED) {
                 return 0;
             }
-            if (!checkInputFluid(resource)) {
+            if (!checkInputFluid(resource) && allowManualImportExportMode == AllowManualImportExportMode.FILTERED) {
                 return 0;
             }
             return super.fill(resource, doFill);
@@ -286,10 +308,10 @@ public class CoverPump extends CoverBehavior implements CoverWithUI, ITickable, 
         @Nullable
         @Override
         public FluidStack drain(FluidStack resource, boolean doDrain) {
-            if (pumpMode == PumpMode.IMPORT && !allowManualImportExport) {
+            if (pumpMode == PumpMode.IMPORT && allowManualImportExportMode == AllowManualImportExportMode.DISABLED) {
                 return null;
             }
-            if (!checkInputFluid(resource)) {
+            if (!checkInputFluid(resource) && allowManualImportExportMode == AllowManualImportExportMode.FILTERED) {
                 return null;
             }
             return super.drain(resource, doDrain);
@@ -298,11 +320,11 @@ public class CoverPump extends CoverBehavior implements CoverWithUI, ITickable, 
         @Nullable
         @Override
         public FluidStack drain(int maxDrain, boolean doDrain) {
-            if (pumpMode == PumpMode.IMPORT && !allowManualImportExport) {
+            if (pumpMode == PumpMode.IMPORT && allowManualImportExportMode == AllowManualImportExportMode.DISABLED) {
                 return null;
             }
             FluidStack result = super.drain(maxDrain, false);
-            if (!checkInputFluid(result)) {
+            if (!checkInputFluid(result) && allowManualImportExportMode == AllowManualImportExportMode.FILTERED) {
                 return null;
             }
             if (doDrain) {
