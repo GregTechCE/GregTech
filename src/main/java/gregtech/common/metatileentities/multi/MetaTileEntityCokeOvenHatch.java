@@ -13,7 +13,6 @@ import gregtech.api.metatileentity.multiblock.MultiblockControllerBase;
 import gregtech.api.render.ICubeRenderer;
 import gregtech.api.render.Textures;
 import gregtech.api.util.GTFluidUtils;
-import gregtech.common.covers.CoverPump;
 import gregtech.common.metatileentities.electric.multiblockpart.MetaTileEntityMultiblockPart;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
@@ -51,7 +50,7 @@ public class MetaTileEntityCokeOvenHatch extends MetaTileEntityMultiblockPart {
             TileEntity tileEntity = getWorld().getTileEntity(getPos().offset(getFrontFacing()));
             IFluidHandler fluidHandler = tileEntity == null ? null : tileEntity.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, getFrontFacing().getOpposite());
             if (fluidHandler != null) {
-                GTFluidUtils.moveHandlerFluids(fluidInventory, fluidHandler, Integer.MAX_VALUE, ALWAYS_TRUE);
+                GTFluidUtils.transferFluids(fluidInventory, fluidHandler, Integer.MAX_VALUE, ALWAYS_TRUE);
             }
         }
     }

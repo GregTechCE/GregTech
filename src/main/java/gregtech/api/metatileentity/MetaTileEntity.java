@@ -22,7 +22,6 @@ import gregtech.api.gui.ModularUI;
 import gregtech.api.render.Textures;
 import gregtech.api.util.GTFluidUtils;
 import gregtech.api.util.GTUtility;
-import gregtech.common.covers.CoverPump;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
@@ -851,7 +850,7 @@ public abstract class MetaTileEntity implements ICoverable {
             if (fluidHandler == null || myFluidHandler == null) {
                 continue;
             }
-            GTFluidUtils.moveHandlerFluids(myFluidHandler, fluidHandler, Integer.MAX_VALUE, fluid -> true);
+            GTFluidUtils.transferFluids(myFluidHandler, fluidHandler, Integer.MAX_VALUE, fluid -> true);
         }
         blockPos.release();
     }
@@ -870,7 +869,7 @@ public abstract class MetaTileEntity implements ICoverable {
             if (fluidHandler == null || myFluidHandler == null) {
                 continue;
             }
-            GTFluidUtils.moveHandlerFluids(fluidHandler, myFluidHandler, Integer.MAX_VALUE, fluid -> true);
+            GTFluidUtils.transferFluids(fluidHandler, myFluidHandler, Integer.MAX_VALUE, fluid -> true);
         }
         blockPos.release();
     }

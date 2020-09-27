@@ -34,10 +34,8 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
-import net.minecraftforge.fluids.capability.IFluidTankProperties;
 
 import javax.annotation.Nullable;
-import java.util.function.Predicate;
 
 public class CoverPump extends CoverBehavior implements CoverWithUI, ITickable, IControllable {
 
@@ -111,9 +109,9 @@ public class CoverPump extends CoverBehavior implements CoverWithUI, ITickable, 
 
     protected int doTransferFluidsInternal(IFluidHandler myFluidHandler, IFluidHandler fluidHandler, int transferLimit) {
         if (pumpMode == PumpMode.IMPORT) {
-            return GTFluidUtils.moveHandlerFluids(fluidHandler, myFluidHandler, transferLimit, fluidFilter::testFluidStack);
+            return GTFluidUtils.transferFluids(fluidHandler, myFluidHandler, transferLimit, fluidFilter::testFluidStack);
         } else if (pumpMode == PumpMode.EXPORT) {
-            return GTFluidUtils.moveHandlerFluids(myFluidHandler, fluidHandler, transferLimit, fluidFilter::testFluidStack);
+            return GTFluidUtils.transferFluids(myFluidHandler, fluidHandler, transferLimit, fluidFilter::testFluidStack);
         }
         return 0;
     }
