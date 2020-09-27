@@ -4,15 +4,16 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidTankProperties;
 
+import javax.annotation.Nonnull;
 import java.util.function.Predicate;
 
 public class GTFluidUtils {
 
-    public static int transferFluids(IFluidHandler sourceHandler, IFluidHandler destHandler, int transferLimit) {
+    public static int transferFluids(@Nonnull IFluidHandler sourceHandler, @Nonnull IFluidHandler destHandler, int transferLimit) {
         return transferFluids(sourceHandler, destHandler, transferLimit, fluidStack -> true);
     }
 
-    public static int transferFluids(IFluidHandler sourceHandler, IFluidHandler destHandler, int transferLimit, Predicate<FluidStack> fluidFilter) {
+    public static int transferFluids(@Nonnull IFluidHandler sourceHandler, @Nonnull IFluidHandler destHandler, int transferLimit, @Nonnull Predicate<FluidStack> fluidFilter) {
         int fluidLeftToTransfer = transferLimit;
         for (IFluidTankProperties tankProperties : sourceHandler.getTankProperties()) {
             FluidStack currentFluid = tankProperties.getContents();
