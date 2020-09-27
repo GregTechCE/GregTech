@@ -469,12 +469,12 @@ public abstract class MetaTileEntity implements ICoverable {
     public final boolean canConnectRedstone(@Nullable EnumFacing side) {
         //so far null side means either upwards or downwards redstone wire connection
         //so check both top cover and bottom cover
-        if(side == null) {
+        if (side == null) {
             return canConnectRedstone(EnumFacing.UP) ||
                 canConnectRedstone(EnumFacing.DOWN);
         }
         CoverBehavior coverBehavior = getCoverAtSide(side);
-        if(coverBehavior == null) {
+        if (coverBehavior == null) {
             return canMachineConnectRedstone(side);
         }
         return coverBehavior.canConnectRedstone();
@@ -486,15 +486,15 @@ public abstract class MetaTileEntity implements ICoverable {
 
     @Override
     public final int getInputRedstoneSignal(EnumFacing side, boolean ignoreCover) {
-        if(!ignoreCover && getCoverAtSide(side) != null) {
+        if (!ignoreCover && getCoverAtSide(side) != null) {
             return 0; //covers block input redstone signal for machine
         }
         return sidedRedstoneInput[side.getIndex()];
     }
 
     public final boolean isBlockRedstonePowered() {
-        for(EnumFacing side : EnumFacing.VALUES) {
-            if(getInputRedstoneSignal(side, false) > 0) {
+        for (EnumFacing side : EnumFacing.VALUES) {
+            if (getInputRedstoneSignal(side, false) > 0) {
                 return true;
             }
         }
@@ -508,10 +508,10 @@ public abstract class MetaTileEntity implements ICoverable {
         for (EnumFacing side : EnumFacing.VALUES) {
             int redstoneValue = GTUtility.getRedstonePower(getWorld(), getPos(), side);
             int currentValue = sidedRedstoneInput[side.getIndex()];
-            if(redstoneValue != currentValue) {
+            if (redstoneValue != currentValue) {
                 this.sidedRedstoneInput[side.getIndex()] = redstoneValue;
                 CoverBehavior coverBehavior = getCoverAtSide(side);
-                if(coverBehavior != null) {
+                if (coverBehavior != null) {
                     coverBehavior.onRedstoneInputSignalChange(redstoneValue);
                 }
             }
@@ -791,13 +791,13 @@ public abstract class MetaTileEntity implements ICoverable {
         T capabilityResult = null;
         for (MTETrait mteTrait : this.mteTraits) {
             capabilityResult = mteTrait.getCapability(capability);
-            if(capabilityResult != null) {
+            if (capabilityResult != null) {
                 break;
             }
         }
-        if(side != null && capabilityResult instanceof IEnergyContainer) {
+        if (side != null && capabilityResult instanceof IEnergyContainer) {
             IEnergyContainer energyContainer = (IEnergyContainer) capabilityResult;
-            if(!energyContainer.inputsEnergy(side) && !energyContainer.outputsEnergy(side)) {
+            if (!energyContainer.inputsEnergy(side) && !energyContainer.outputsEnergy(side)) {
                 return null; //do not provide energy container if it can't input or output energy at all
             }
         }
@@ -850,7 +850,7 @@ public abstract class MetaTileEntity implements ICoverable {
             if (fluidHandler == null || myFluidHandler == null) {
                 continue;
             }
-            GTFluidUtils.transferFluids(myFluidHandler, fluidHandler, Integer.MAX_VALUE, fluid -> true);
+            GTFluidUtils.transferFluids(myFluidHandler, fluidHandler, Integer.MAX_VALUE);
         }
         blockPos.release();
     }
@@ -869,7 +869,7 @@ public abstract class MetaTileEntity implements ICoverable {
             if (fluidHandler == null || myFluidHandler == null) {
                 continue;
             }
-            GTFluidUtils.transferFluids(fluidHandler, myFluidHandler, Integer.MAX_VALUE, fluid -> true);
+            GTFluidUtils.transferFluids(fluidHandler, myFluidHandler, Integer.MAX_VALUE);
         }
         blockPos.release();
     }
@@ -947,7 +947,7 @@ public abstract class MetaTileEntity implements ICoverable {
     }
 
     public final int getOutputRedstoneSignal(@Nullable EnumFacing side) {
-        if(side == null) {
+        if (side == null) {
             return getHighestOutputRedstoneSignal();
         }
         CoverBehavior behavior = getCoverAtSide(side);
@@ -957,7 +957,7 @@ public abstract class MetaTileEntity implements ICoverable {
 
     public final int getHighestOutputRedstoneSignal() {
         int highestSignal = 0;
-        for(EnumFacing side : EnumFacing.VALUES) {
+        for (EnumFacing side : EnumFacing.VALUES) {
             CoverBehavior behavior = getCoverAtSide(side);
             int sidedOutput = sidedRedstoneOutput[side.getIndex()];
             int sideResult = behavior == null ? sidedOutput : behavior.getRedstoneSignalOutput();
