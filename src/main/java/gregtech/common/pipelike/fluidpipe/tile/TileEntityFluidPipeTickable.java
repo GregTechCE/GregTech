@@ -1,6 +1,7 @@
 package gregtech.common.pipelike.fluidpipe.tile;
 
 import gregtech.api.pipenet.tile.IPipeTile;
+import gregtech.api.util.GTFluidUtils;
 import gregtech.common.covers.CoverPump;
 import gregtech.common.pipelike.fluidpipe.BlockFluidPipe;
 import gregtech.common.pipelike.fluidpipe.FluidPipeProperties;
@@ -74,7 +75,7 @@ public class TileEntityFluidPipeTickable extends TileEntityFluidPipe implements 
             IFluidHandler sourceHandler = pipeTile.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, side);
             IFluidHandler receiverHandler = tileEntity.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, side.getOpposite());
             if (sourceHandler != null && receiverHandler != null && blockFluidPipe.canPushIntoFluidHandler(pipeTile, tileEntity, sourceHandler, receiverHandler)) {
-                CoverPump.moveHandlerFluids(sourceHandler, receiverHandler, Integer.MAX_VALUE, FLUID_FILTER_ALWAYS_TRUE);
+                GTFluidUtils.moveHandlerFluids(sourceHandler, receiverHandler, Integer.MAX_VALUE, FLUID_FILTER_ALWAYS_TRUE);
             }
         }
         blockPos.release();

@@ -17,6 +17,7 @@ import gregtech.api.gui.ModularUI;
 import gregtech.api.gui.widgets.*;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.render.Textures;
+import gregtech.api.util.GTFluidUtils;
 import gregtech.api.util.GTUtility;
 import gregtech.common.covers.CoverConveyor.ConveyorMode;
 import gregtech.common.covers.filter.FluidFilterContainer;
@@ -110,34 +111,11 @@ public class CoverPump extends CoverBehavior implements CoverWithUI, ITickable, 
 
     protected int doTransferFluidsInternal(IFluidHandler myFluidHandler, IFluidHandler fluidHandler, int transferLimit) {
         if (pumpMode == PumpMode.IMPORT) {
-            return moveHandlerFluids(fluidHandler, myFluidHandler, transferLimit, fluidFilter::testFluidStack);
+            return GTFluidUtils.moveHandlerFluids(fluidHandler, myFluidHandler, transferLimit, fluidFilter::testFluidStack);
         } else if (pumpMode == PumpMode.EXPORT) {
-            return moveHandlerFluids(myFluidHandler, fluidHandler, transferLimit, fluidFilter::testFluidStack);
+            return GTFluidUtils.moveHandlerFluids(myFluidHandler, fluidHandler, transferLimit, fluidFilter::testFluidStack);
         }
         return 0;
-    }
-
-    public static int moveHandlerFluids(IFluidHandler sourceHandler, IFluidHandler destHandler, int transferLimit, Predicate<FluidStack> fluidFilter) {
-        int fluidLeftToTransfer = transferLimit;
-        for (IFluidTankProperties tankProperties : sourceHandler.getTankProperties()) {
-            FluidStack currentFluid = tankProperties.getContents();
-            if (currentFluid == null || currentFluid.amount == 0 || !fluidFilter.test(currentFluid)) continue;
-            currentFluid.amount = fluidLeftToTransfer;
-            FluidStack fluidStack = sourceHandler.drain(currentFluid, false);
-            if (fluidStack == null || fluidStack.amount == 0) continue;
-            int canInsertAmount = destHandler.fill(fluidStack, false);
-            if (canInsertAmount > 0) {
-                fluidStack.amount = canInsertAmount;
-                fluidStack = sourceHandler.drain(fluidStack, true);
-                if (fluidStack != null && fluidStack.amount > 0) {
-                    destHandler.fill(fluidStack, true);
-
-                    fluidLeftToTransfer -= fluidStack.amount;
-                    if (fluidLeftToTransfer == 0) break;
-                }
-            }
-        }
-        return transferLimit - fluidLeftToTransfer;
     }
 
     protected boolean checkInputFluid(FluidStack fluidStack) {
