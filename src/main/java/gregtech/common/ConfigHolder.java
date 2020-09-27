@@ -67,7 +67,8 @@ public class ConfigHolder {
     public static boolean useCustomModPriorities = false;
 
     @Config.Comment("Specifies priorities of mods in ore dictionary item registration. First ModID has highest priority, last - lowest. " +
-        "Unspecified ModIDs follow standard sorting, but always have lower priority than last specified ModID.")
+        "Unspecified ModIDs follow standard sorting, but always have lower priority than last specified ModID." +
+        "\nFor this to work \"useCustomModPriorities\" has to be set to true.")
     @Config.RequiresMcRestart
     public static String[] modPriorities = new String[0];
 
