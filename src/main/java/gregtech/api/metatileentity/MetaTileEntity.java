@@ -885,7 +885,7 @@ public abstract class MetaTileEntity implements ICoverable {
             IItemHandler itemHandler = tileEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, nearbyFacing.getOpposite());
             //use getCoverCapability so item/ore dictionary filter covers will work properly
             IItemHandler myItemHandler = getCoverCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, nearbyFacing);
-            if (itemHandler == null) {
+            if (itemHandler == null || myItemHandler == null) {
                 continue;
             }
             moveInventoryItems(myItemHandler, itemHandler);
@@ -904,7 +904,7 @@ public abstract class MetaTileEntity implements ICoverable {
             IItemHandler itemHandler = tileEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, nearbyFacing.getOpposite());
             //use getCoverCapability so item/ore dictionary filter covers will work properly
             IItemHandler myItemHandler = getCoverCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, nearbyFacing);
-            if (itemHandler == null) {
+            if (itemHandler == null || myItemHandler == null) {
                 continue;
             }
             moveInventoryItems(itemHandler, myItemHandler);
