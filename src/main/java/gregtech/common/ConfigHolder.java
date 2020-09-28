@@ -136,16 +136,16 @@ public class ConfigHolder {
     public static class NanoSaberConfiguration {
 
         @Config.RangeDouble(min = 0, max = 100)
-        @Config.Comment("The additional damage added when the NanoSaber is powered. Default: 20f")
+        @Config.Comment("The additional damage added when the NanoSaber is powered. Default: 20.0")
         @Config.RequiresMcRestart
         public double nanoSaberDamageBoost = 20;
 
         @Config.RangeDouble(min = 0, max = 100)
-        @Config.Comment("The base damage of the NanoSaber. Default: 5f")
+        @Config.Comment("The base damage of the NanoSaber. Default: 5.0")
         @Config.RequiresMcRestart
         public double nanoSaberBaseDamage = 5;
 
-        @Config.Comment("Should Zombies spawn with NanoSabers? Default: true")
+        @Config.Comment("Should Zombies spawn with charged, active NanoSabers on hard difficulty? Default: true")
         public boolean zombieSpawnWithSabers = true;
 
         @Config.RangeInt(min = 1, max = 512)
