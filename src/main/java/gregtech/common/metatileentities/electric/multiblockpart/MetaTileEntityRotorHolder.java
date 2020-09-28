@@ -218,6 +218,7 @@ public class MetaTileEntityRotorHolder extends MetaTileEntityMultiblockPart impl
         super.receiveInitialSyncData(buf);
         this.isRotorLooping = buf.readBoolean();
         this.rotorColor = buf.readInt();
+        getHolder().scheduleChunkForRenderUpdate();
     }
 
     @Override
@@ -239,6 +240,7 @@ public class MetaTileEntityRotorHolder extends MetaTileEntityMultiblockPart impl
         super.readFromNBT(data);
         this.rotorInventory.deserializeNBT(data.getCompoundTag("RotorInventory"));
         this.currentRotorSpeed = data.getInteger("CurrentSpeed");
+        this.isRotorLooping = currentRotorSpeed > 0;
     }
 
     @Override
