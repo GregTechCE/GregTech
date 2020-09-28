@@ -1,6 +1,5 @@
 package gregtech.integration.jei.multiblock;
 
-import com.google.common.collect.Lists;
 import gregtech.api.GTValues;
 import gregtech.common.metatileentities.MetaTileEntities;
 import gregtech.integration.jei.multiblock.infos.*;
@@ -14,6 +13,9 @@ import mezz.jei.gui.recipes.RecipeLayout;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.util.ResourceLocation;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class MultiblockInfoCategory implements IRecipeCategory<MultiblockInfoRecipeWrapper> {
 
     private final IDrawable background;
@@ -25,26 +27,28 @@ public class MultiblockInfoCategory implements IRecipeCategory<MultiblockInfoRec
         this.icon = helpers.getGuiHelper().createDrawable(iconLocation, 0, 0, 16, 16, 16, 16);
     }
 
+    public static final Map<String, MultiblockInfoRecipeWrapper> multiblockRecipes = new HashMap<String, MultiblockInfoRecipeWrapper>() {{
+        put("primitive_blast_furnace", new MultiblockInfoRecipeWrapper(new PrimitiveBlastFurnaceInfo()));
+        put("coke_oven", new MultiblockInfoRecipeWrapper(new CokeOvenInfo()));
+        put("vacuum_freezer", new MultiblockInfoRecipeWrapper(new VacuumFreezerInfo()));
+        put("implosion_compressor", new MultiblockInfoRecipeWrapper(new ImplosionCompressorInfo()));
+        put("pyrolyze_oven", new MultiblockInfoRecipeWrapper(new PyrolyzeOvenInfo()));
+        put("cracker_unit", new MultiblockInfoRecipeWrapper(new CrackerUnitInfo()));
+        put("diesel_engine", new MultiblockInfoRecipeWrapper(new DieselEngineInfo()));
+        put("distillation_tower", new MultiblockInfoRecipeWrapper(new DistillationTowerInfo()));
+        put("electric_blast_furnace", new MultiblockInfoRecipeWrapper(new ElectricBlastFurnaceInfo()));
+        put("multi_smelter", new MultiblockInfoRecipeWrapper(new MultiSmelterInfo()));
+        put("large_bronze_boiler", new MultiblockInfoRecipeWrapper(new LargeBoilerInfo(MetaTileEntities.LARGE_BRONZE_BOILER)));
+        put("large_steel_boiler", new MultiblockInfoRecipeWrapper(new LargeBoilerInfo(MetaTileEntities.LARGE_STEEL_BOILER)));
+        put("large_titanium_boiler", new MultiblockInfoRecipeWrapper(new LargeBoilerInfo(MetaTileEntities.LARGE_TITANIUM_BOILER)));
+        put("large_tungstensteel_boiler", new MultiblockInfoRecipeWrapper(new LargeBoilerInfo(MetaTileEntities.LARGE_TUNGSTENSTEEL_BOILER)));
+        put("large_steam_turbine", new MultiblockInfoRecipeWrapper(new LargeTurbineInfo(MetaTileEntities.LARGE_STEAM_TURBINE)));
+        put("large_gas_turbine", new MultiblockInfoRecipeWrapper(new LargeTurbineInfo(MetaTileEntities.LARGE_GAS_TURBINE)));
+        put("large_plasma_turbine", new MultiblockInfoRecipeWrapper(new LargeTurbineInfo(MetaTileEntities.LARGE_PLASMA_TURBINE)));
+    }};
+
     public static void registerRecipes(IModRegistry registry) {
-        registry.addRecipes(Lists.newArrayList(
-            new MultiblockInfoRecipeWrapper(new PrimitiveBlastFurnaceInfo()),
-            new MultiblockInfoRecipeWrapper(new CokeOvenInfo()),
-            new MultiblockInfoRecipeWrapper(new VacuumFreezerInfo()),
-            new MultiblockInfoRecipeWrapper(new ImplosionCompressorInfo()),
-            new MultiblockInfoRecipeWrapper(new PyrolyzeOvenInfo()),
-            new MultiblockInfoRecipeWrapper(new CrackerUnitInfo()),
-            new MultiblockInfoRecipeWrapper(new DieselEngineInfo()),
-            new MultiblockInfoRecipeWrapper(new DistillationTowerInfo()),
-            new MultiblockInfoRecipeWrapper(new ElectricBlastFurnaceInfo()),
-            new MultiblockInfoRecipeWrapper(new MultiSmelterInfo()),
-            new MultiblockInfoRecipeWrapper(new LargeBoilerInfo(MetaTileEntities.LARGE_BRONZE_BOILER)),
-            new MultiblockInfoRecipeWrapper(new LargeBoilerInfo(MetaTileEntities.LARGE_STEEL_BOILER)),
-            new MultiblockInfoRecipeWrapper(new LargeBoilerInfo(MetaTileEntities.LARGE_TITANIUM_BOILER)),
-            new MultiblockInfoRecipeWrapper(new LargeBoilerInfo(MetaTileEntities.LARGE_TUNGSTENSTEEL_BOILER)),
-            new MultiblockInfoRecipeWrapper(new LargeTurbineInfo(MetaTileEntities.LARGE_STEAM_TURBINE)),
-            new MultiblockInfoRecipeWrapper(new LargeTurbineInfo(MetaTileEntities.LARGE_GAS_TURBINE)),
-            new MultiblockInfoRecipeWrapper(new LargeTurbineInfo(MetaTileEntities.LARGE_PLASMA_TURBINE))
-        ), "gregtech:multiblock_info");
+        registry.addRecipes(multiblockRecipes.values(), "gregtech:multiblock_info");
     }
 
     @Override
