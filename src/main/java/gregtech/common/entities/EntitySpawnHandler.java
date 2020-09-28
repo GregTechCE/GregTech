@@ -1,6 +1,7 @@
 package gregtech.common.entities;
 
 import gregtech.api.GTValues;
+import gregtech.common.ConfigHolder;
 import gregtech.common.items.MetaItems;
 import gregtech.common.items.behaviors.ToggleEnergyConsumerBehavior;
 import net.minecraft.entity.EntityLivingBase;
@@ -20,7 +21,7 @@ public class EntitySpawnHandler {
         EntityLivingBase entity = event.getEntityLiving();
         EnumDifficulty difficulty = entity.world.getDifficulty();
         if (difficulty == EnumDifficulty.HARD && entity.getRNG().nextFloat() <= 0.03f) {
-            if (entity instanceof EntityZombie) {
+            if (entity instanceof EntityZombie && ConfigHolder.nanoSaberConfiguration.zombieSpawnWithSabers) {
                 ItemStack itemStack = MetaItems.NANO_SABER.getInfiniteChargedStack();
                 ToggleEnergyConsumerBehavior.setItemActive(itemStack, true);
                 entity.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, itemStack);
