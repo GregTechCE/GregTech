@@ -1,5 +1,14 @@
 ## Changelog
 
+### 1.10.2
+* Added way to cast materials in CraftTweaker (#1232) - LAGIdiot
+* Added zenClass annotation to GemMaterial and RoughSolidMaterial (#1253) - LAGIdiot
+* Added comment to config regarding need of useCustomModPriorities to be set to true for modPriorities to work (#1254) - LAGIdiot
+* Added NanoSaber configuration options (#1258) - ALongStringOfNumbers
+* Updated multiblock info recipe to be exposed (#1245) - decal
+* Fixed Rotor Holder spinning status after world reload (#1240) - ALongStringOfNumbers
+* Fixed crash when attempting to move items through Shutter Covers (#1247) - ALongStringOfNumbers
+
 ### 1.10.1
 * Added english fruit juice localization (#1204) - Saereth
 * Updated Scanner tooltip to clarify usage (#1214) - DoctorWeirdGuy
