@@ -142,22 +142,21 @@ public class CoverPump extends CoverBehavior implements CoverWithUI, ITickable, 
             GTUtility.mapToString(BucketMode.values(), it -> it.localeName),
             () -> bucketMode.ordinal(), newMode -> setBucketMode(BucketMode.values()[newMode])));
 
-        primaryGroup.addWidget(new CycleButtonWidget(10, 63, 75, 18,
+        primaryGroup.addWidget(new CycleButtonWidget(8, 63, 75, 18,
             GTUtility.mapToString(ConveyorMode.values(), it -> it.localeName),
             () -> pumpMode.ordinal(), newMode -> setPumpMode(PumpMode.values()[newMode])));
-
-        primaryGroup.addWidget(new CycleButtonWidget(63, 133, 110, 20,
-           AllowManualImportExportMode.class, this::getAllowManualImportExportMode, this::setAllowManualImportExportMode)
-            .setTooltipHoverString("cover.conveyor.allowManualImportExportMode.mode.description"));
-              
+             
         this.fluidFilter.initUI(88, primaryGroup::addWidget);
 
-        return ModularUI.builder(GuiTextures.BACKGROUND, 176, 170 + 82)
+        primaryGroup.addWidget(new CycleButtonWidget(8, 163, 110, 20,
+           AllowManualImportExportMode.class, this::getAllowManualImportExportMode, this::setAllowManualImportExportMode)
+            .setTooltipHoverString("cover.conveyor.allowManualImportExportMode.mode.description"));
+
+        return ModularUI.builder(GuiTextures.BACKGROUND, 176, 190 + 83)
             .widget(primaryGroup)
-            .bindPlayerInventory(player.inventory, GuiTextures.SLOT, 8, 170)
+            .bindPlayerInventory(player.inventory, GuiTextures.SLOT, 8, 190)
             .build(this, player);
     }
-
 
     public AllowManualImportExportMode getAllowManualImportExportMode() {
         return allowManualImportExportMode;
