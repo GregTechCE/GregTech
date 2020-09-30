@@ -236,6 +236,9 @@ public class CoverPump extends CoverBehavior implements CoverWithUI, ITickable, 
         this.transferRate = tagCompound.getInteger("TransferRate");
         this.pumpMode = PumpMode.values()[tagCompound.getInteger("PumpMode")];
         //LEGACY SAVE FORMAT SUPPORT
+        if(tagCompound.hasKey("ManualImportExportMode")) {
+            this.manualImportExportMode = ManualImportExportMode.values()[tagCompound.getInteger("ManualImportExportMode")];
+        }
         if (tagCompound.hasKey("FluidFilter")) {
             this.fluidFilter.deserializeNBT(tagCompound);
         } else {
