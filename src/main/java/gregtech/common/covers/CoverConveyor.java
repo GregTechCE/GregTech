@@ -43,7 +43,7 @@ public class CoverConveyor extends CoverBehavior implements CoverWithUI, ITickab
     public final int maxItemTransferRate;
     protected int transferRate;
     protected ConveyorMode conveyorMode;
-    protected AllowManualImportExportMode allowManualImportExportMode = AllowManualImportExportMode.DISABLED;
+    protected ManualImportExportMode manualImportExportMode = ManualImportExportMode.DISABLED;
     protected final ItemFilterContainer itemFilterContainer;
     protected int itemsLeftToTransferLastSecond;
     private CoverableItemHandlerWrapper itemHandlerWrapper;
@@ -77,12 +77,12 @@ public class CoverConveyor extends CoverBehavior implements CoverWithUI, ITickab
         return conveyorMode;
     }
 
-    public AllowManualImportExportMode getAllowManualImportExportMode() {
-        return allowManualImportExportMode;
+    public ManualImportExportMode getManualImportExportMode() {
+        return manualImportExportMode;
     }
 
-    protected void setAllowManualImportExportMode(AllowManualImportExportMode allowManualImportExportMode) {
-        this.allowManualImportExportMode = allowManualImportExportMode;
+    protected void setManualImportExportMode(ManualImportExportMode manualImportExportMode) {
+        this.manualImportExportMode = manualImportExportMode;
         coverHolder.markDirty();
     }
 
@@ -421,8 +421,8 @@ public class CoverConveyor extends CoverBehavior implements CoverWithUI, ITickab
         primaryGroup.addWidget(new CycleButtonWidget(10, 45, 75, 20,
             ConveyorMode.class, this::getConveyorMode, this::setConveyorMode));
         primaryGroup.addWidget(new CycleButtonWidget(63, 133, 110, 20,
-            AllowManualImportExportMode.class, this::getAllowManualImportExportMode, this::setAllowManualImportExportMode)
-            .setTooltipHoverString("cover.conveyor.allowManualImportExportMode.mode.description"));
+            ManualImportExportMode.class, this::getManualImportExportMode, this::setManualImportExportMode)
+            .setTooltipHoverString("cover.conveyor.manualimportexportmode.mode.description"));
 
         this.itemFilterContainer.initUI(70, primaryGroup::addWidget);
 
@@ -448,7 +448,7 @@ public class CoverConveyor extends CoverBehavior implements CoverWithUI, ITickab
         tagCompound.setInteger("TransferRate", transferRate);
         tagCompound.setInteger("ConveyorMode", conveyorMode.ordinal());
         tagCompound.setBoolean("WorkingAllowed", isWorkingAllowed);
-        tagCompound.setInteger("AllowManualImportExportMode", allowManualImportExportMode.ordinal());
+        tagCompound.setInteger("ManualImportExportMode", manualImportExportMode.ordinal());
         tagCompound.setTag("Filter", this.itemFilterContainer.serializeNBT());
     }
 
@@ -457,7 +457,7 @@ public class CoverConveyor extends CoverBehavior implements CoverWithUI, ITickab
         super.readFromNBT(tagCompound);
         this.transferRate = tagCompound.getInteger("TransferRate");
         this.conveyorMode = ConveyorMode.values()[tagCompound.getInteger("ConveyorMode")];
-        this.allowManualImportExportMode = AllowManualImportExportMode.values()[tagCompound.getInteger("AllowManualImportExportMode")];
+        this.manualImportExportMode = ManualImportExportMode.values()[tagCompound.getInteger("ManualImportExportMode")];
         //LEGACY SAVE FORMAT SUPPORT
         if(tagCompound.hasKey("FilterInventory")) {
             this.itemFilterContainer.deserializeNBT(tagCompound);
@@ -469,7 +469,7 @@ public class CoverConveyor extends CoverBehavior implements CoverWithUI, ITickab
             this.isWorkingAllowed = tagCompound.getBoolean("WorkingAllowed");
         }
         if (tagCompound.hasKey("AllowManualIO")) {
-            this.allowManualImportExportMode = AllowManualImportExportMode.values()[tagCompound.getInteger("AllowManualIO")];
+            this.manualImportExportMode = ManualImportExportMode.values()[tagCompound.getInteger("AllowManualIO")];
         }
     }
 
@@ -489,23 +489,6 @@ public class CoverConveyor extends CoverBehavior implements CoverWithUI, ITickab
         }
     }
 
-    public enum AllowManualImportExportMode implements IStringSerializable {
-        DISABLED("cover.conveyor.allowManualImportExportMode.mode.disabled"),
-        FILTERED("cover.conveyor.allowManualImportExportMode.mode.filtered"),
-        UNFILTERED("cover.conveyor.allowManualImportExportMode.mode.unfiltered");
-
-        public final String localeName;
-
-        AllowManualImportExportMode(String localeName) {
-            this.localeName = localeName;
-        }
-
-        @Override
-        public String getName() {
-            return localeName;
-        }
-    }
-
     private class CoverableItemHandlerWrapper extends ItemHandlerDelegate {
 
         public CoverableItemHandlerWrapper(IItemHandler delegate) {
@@ -515,10 +498,10 @@ public class CoverConveyor extends CoverBehavior implements CoverWithUI, ITickab
         @Nonnull
         @Override
         public ItemStack insertItem(int slot, @Nonnull ItemStack stack, boolean simulate) {
-            if (conveyorMode == ConveyorMode.EXPORT && allowManualImportExportMode == AllowManualImportExportMode.DISABLED) {
+            if (conveyorMode == ConveyorMode.EXPORT && manualImportExportMode == ManualImportExportMode.DISABLED) {
                 return stack;
             }
-            if (!itemFilterContainer.testItemStack(stack) && allowManualImportExportMode == AllowManualImportExportMode.FILTERED) {
+            if (!itemFilterContainer.testItemStack(stack) && manualImportExportMode == ManualImportExportMode.FILTERED) {
                 return stack;
             }
             return super.insertItem(slot, stack, simulate);
@@ -527,11 +510,11 @@ public class CoverConveyor extends CoverBehavior implements CoverWithUI, ITickab
         @Nonnull
         @Override
         public ItemStack extractItem(int slot, int amount, boolean simulate) {
-            if (conveyorMode == ConveyorMode.IMPORT && allowManualImportExportMode == AllowManualImportExportMode.DISABLED) {
+            if (conveyorMode == ConveyorMode.IMPORT && manualImportExportMode == ManualImportExportMode.DISABLED) {
                 return ItemStack.EMPTY;
             }
             ItemStack resultStack = super.extractItem(slot, amount, true);
-            if (!itemFilterContainer.testItemStack(resultStack) && allowManualImportExportMode == AllowManualImportExportMode.FILTERED) {
+            if (!itemFilterContainer.testItemStack(resultStack) && manualImportExportMode == ManualImportExportMode.FILTERED) {
                 return ItemStack.EMPTY;
             }
             if (!simulate) {
