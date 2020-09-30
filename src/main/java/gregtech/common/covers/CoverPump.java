@@ -148,7 +148,7 @@ public class CoverPump extends CoverBehavior implements CoverWithUI, ITickable, 
 
         primaryGroup.addWidget(new CycleButtonWidget(63, 133, 110, 20,
            ManualImportExportMode.class, this::getManualImportExportMode, this::setManualImportExportMode)
-            .setTooltipHoverString("cover.conveyor.manualimportexportmode.mode.description"));
+            .setTooltipHoverString("cover.universal.manual_import_export.mode.description"));
               
         this.fluidFilter.initUI(88, primaryGroup::addWidget);
 

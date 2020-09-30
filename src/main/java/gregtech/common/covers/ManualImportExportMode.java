@@ -4,9 +4,9 @@ import net.minecraft.util.IStringSerializable;
 
 public enum ManualImportExportMode implements IStringSerializable {
 
-    DISABLED("cover.conveyor.manualimportexportmode.mode.disabled"),
-    FILTERED("cover.conveyor.manualimportexportmode.mode.filtered"),
-    UNFILTERED("cover.conveyor.manualimportexportmode.mode.unfiltered");
+    DISABLED("cover.universal.manual_import_export.mode.disabled"),
+    FILTERED("cover.universal.manual_import_export.mode.filtered"),
+    UNFILTERED("cover.universal.manual_import_export.mode.unfiltered");
 
     public final String localeName;
 
