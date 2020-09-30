@@ -418,18 +418,17 @@ public class CoverConveyor extends CoverBehavior implements CoverWithUI, ITickab
         primaryGroup.addWidget(new ImageWidget(50, 20, 76, 20, GuiTextures.DISPLAY));
         primaryGroup.addWidget(new SimpleTextWidget(88, 30, "cover.conveyor.transfer_rate", 0xFFFFFF, () -> Integer.toString(transferRate)));
 
-        primaryGroup.addWidget(new CycleButtonWidget(8, 45, 75, 20,
+        primaryGroup.addWidget(new CycleButtonWidget(10, 45, 75, 20,
             ConveyorMode.class, this::getConveyorMode, this::setConveyorMode));
-        
-        this.itemFilterContainer.initUI(70, primaryGroup::addWidget);
-        
-        primaryGroup.addWidget(new CycleButtonWidget(8, 168, 110, 20,
+        primaryGroup.addWidget(new CycleButtonWidget(63, 133, 110, 20,
             AllowManualImportExportMode.class, this::getAllowManualImportExportMode, this::setAllowManualImportExportMode)
             .setTooltipHoverString("cover.conveyor.allowManualImportExportMode.mode.description"));
-        
-        ModularUI.Builder builder = ModularUI.builder(GuiTextures.BACKGROUND, 176, 190 + 83)
+
+        this.itemFilterContainer.initUI(70, primaryGroup::addWidget);
+
+        ModularUI.Builder builder = ModularUI.builder(GuiTextures.BACKGROUND, 176, 170 + 82)
             .widget(primaryGroup)
-            .bindPlayerInventory(player.inventory, GuiTextures.SLOT, 8, 195);
+            .bindPlayerInventory(player.inventory, GuiTextures.SLOT, 8, 170);
         return buildUI(builder, player);
     }
 
