@@ -420,15 +420,15 @@ public class CoverConveyor extends CoverBehavior implements CoverWithUI, ITickab
 
         primaryGroup.addWidget(new CycleButtonWidget(10, 45, 75, 20,
             ConveyorMode.class, this::getConveyorMode, this::setConveyorMode));
-        primaryGroup.addWidget(new CycleButtonWidget(63, 133, 110, 20,
+        primaryGroup.addWidget(new CycleButtonWidget(10, 166, 113, 20,
             ManualImportExportMode.class, this::getManualImportExportMode, this::setManualImportExportMode)
             .setTooltipHoverString("cover.universal.manual_import_export.mode.description"));
 
         this.itemFilterContainer.initUI(70, primaryGroup::addWidget);
 
-        ModularUI.Builder builder = ModularUI.builder(GuiTextures.BACKGROUND, 176, 170 + 82)
+        ModularUI.Builder builder = ModularUI.builder(GuiTextures.BACKGROUND, 176, 190 + 82)
             .widget(primaryGroup)
-            .bindPlayerInventory(player.inventory, GuiTextures.SLOT, 8, 170);
+            .bindPlayerInventory(player.inventory, GuiTextures.SLOT, 8, 190);
         return buildUI(builder, player);
     }
 
@@ -471,7 +471,9 @@ public class CoverConveyor extends CoverBehavior implements CoverWithUI, ITickab
             this.isWorkingAllowed = tagCompound.getBoolean("WorkingAllowed");
         }
         if (tagCompound.hasKey("AllowManualIO")) {
-            this.manualImportExportMode = ManualImportExportMode.values()[tagCompound.getInteger("AllowManualIO")];
+            this.manualImportExportMode = tagCompound.getBoolean("AllowManualIO")
+            ? ManualImportExportMode.FILTERED
+            : ManualImportExportMode.DISABLED;
         }
     }
 

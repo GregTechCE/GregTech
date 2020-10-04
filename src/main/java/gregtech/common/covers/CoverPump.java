@@ -146,15 +146,15 @@ public class CoverPump extends CoverBehavior implements CoverWithUI, ITickable, 
             GTUtility.mapToString(ConveyorMode.values(), it -> it.localeName),
             () -> pumpMode.ordinal(), newMode -> setPumpMode(PumpMode.values()[newMode])));
 
-        primaryGroup.addWidget(new CycleButtonWidget(63, 133, 110, 20,
+        primaryGroup.addWidget(new CycleButtonWidget(10, 152, 113, 20,
            ManualImportExportMode.class, this::getManualImportExportMode, this::setManualImportExportMode)
             .setTooltipHoverString("cover.universal.manual_import_export.mode.description"));
               
         this.fluidFilter.initUI(88, primaryGroup::addWidget);
 
-        return ModularUI.builder(GuiTextures.BACKGROUND, 176, 170 + 82)
+        return ModularUI.builder(GuiTextures.BACKGROUND, 176, 190 + 82)
             .widget(primaryGroup)
-            .bindPlayerInventory(player.inventory, GuiTextures.SLOT, 8, 170)
+            .bindPlayerInventory(player.inventory, GuiTextures.SLOT, 8, 190)
             .build(this, player);
     }
 
@@ -248,7 +248,9 @@ public class CoverPump extends CoverBehavior implements CoverWithUI, ITickable, 
             this.isWorkingAllowed = tagCompound.getBoolean("WorkingAllowed");
         }
         if (tagCompound.hasKey("AllowManualIO")) {
-            this.manualImportExportMode = ManualImportExportMode.values()[tagCompound.getInteger("AllowManualIO")];
+            this.manualImportExportMode = tagCompound.getBoolean("AllowManualIO")
+            ? ManualImportExportMode.FILTERED
+            : ManualImportExportMode.DISABLED;
         }
     }
 
