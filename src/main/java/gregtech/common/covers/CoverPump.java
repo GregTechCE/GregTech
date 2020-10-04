@@ -83,7 +83,11 @@ public class CoverPump extends CoverBehavior implements CoverWithUI, ITickable, 
         coverHolder.markDirty();
     }
 
-    protected void getManualImportExportMode(ManualImportExportMode manualImportExportMode) {
+    public ManualImportExportMode getManualImportExportMode() {
+        return manualImportExportMode;
+    }
+
+    protected void setManualImportExportMode(ManualImportExportMode manualImportExportMode) {
         this.manualImportExportMode = manualImportExportMode;
         coverHolder.markDirty();
     }
@@ -156,16 +160,6 @@ public class CoverPump extends CoverBehavior implements CoverWithUI, ITickable, 
             .widget(primaryGroup)
             .bindPlayerInventory(player.inventory, GuiTextures.SLOT, 8, 190)
             .build(this, player);
-    }
-
-
-    public ManualImportExportMode getManualImportExportMode() {
-        return manualImportExportMode;
-    }
-
-    protected void setManualImportExportMode(ManualImportExportMode manualImportExportMode) {
-        this.manualImportExportMode = manualImportExportMode;
-        coverHolder.markDirty();
     }
 
     @Override
