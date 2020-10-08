@@ -16,6 +16,6 @@ public enum ManualImportExportMode implements IStringSerializable {
 
     @Override
     public String getName() {
-            return localeName;
+        return localeName;
     }
 }
