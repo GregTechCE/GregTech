@@ -458,8 +458,10 @@ public class CoverConveyor extends CoverBehavior implements CoverWithUI, ITickab
         this.transferRate = tagCompound.getInteger("TransferRate");
         this.conveyorMode = ConveyorMode.values()[tagCompound.getInteger("ConveyorMode")];
         //LEGACY SAVE FORMAT SUPPORT
-        if(tagCompound.hasKey("ManualImportExportMode")) {
-            this.manualImportExportMode = ManualImportExportMode.values()[tagCompound.getInteger("ManualImportExportMode")];
+        if (tagCompound.hasKey("AllowManualIO")) {
+            this.manualImportExportMode = tagCompound.getBoolean("AllowManualIO")
+            ? ManualImportExportMode.FILTERED
+            : ManualImportExportMode.DISABLED;
         }
         if(tagCompound.hasKey("FilterInventory")) {
             this.itemFilterContainer.deserializeNBT(tagCompound);
@@ -470,10 +472,8 @@ public class CoverConveyor extends CoverBehavior implements CoverWithUI, ITickab
         if(tagCompound.hasKey("WorkingAllowed")) {
             this.isWorkingAllowed = tagCompound.getBoolean("WorkingAllowed");
         }
-        if (tagCompound.hasKey("AllowManualIO")) {
-            this.manualImportExportMode = tagCompound.getBoolean("AllowManualIO")
-            ? ManualImportExportMode.FILTERED
-            : ManualImportExportMode.DISABLED;
+        if(tagCompound.hasKey("ManualImportExportMode")) {
+            this.manualImportExportMode = ManualImportExportMode.values()[tagCompound.getInteger("ManualImportExportMode")];
         }
     }
 

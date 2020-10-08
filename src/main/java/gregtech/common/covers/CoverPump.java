@@ -234,8 +234,10 @@ public class CoverPump extends CoverBehavior implements CoverWithUI, ITickable, 
         this.transferRate = tagCompound.getInteger("TransferRate");
         this.pumpMode = PumpMode.values()[tagCompound.getInteger("PumpMode")];
         //LEGACY SAVE FORMAT SUPPORT
-        if(tagCompound.hasKey("ManualImportExportMode")) {
-            this.manualImportExportMode = ManualImportExportMode.values()[tagCompound.getInteger("ManualImportExportMode")];
+        if (tagCompound.hasKey("AllowManualIO")) {
+            this.manualImportExportMode = tagCompound.getBoolean("AllowManualIO")
+            ? ManualImportExportMode.FILTERED
+            : ManualImportExportMode.DISABLED;
         }
         if (tagCompound.hasKey("FluidFilter")) {
             this.fluidFilter.deserializeNBT(tagCompound);
@@ -245,11 +247,10 @@ public class CoverPump extends CoverBehavior implements CoverWithUI, ITickable, 
         if(tagCompound.hasKey("WorkingAllowed")) {
             this.isWorkingAllowed = tagCompound.getBoolean("WorkingAllowed");
         }
-        if (tagCompound.hasKey("AllowManualIO")) {
-            this.manualImportExportMode = tagCompound.getBoolean("AllowManualIO")
-            ? ManualImportExportMode.FILTERED
-            : ManualImportExportMode.DISABLED;
+        if(tagCompound.hasKey("ManualImportExportMode")) {
+            this.manualImportExportMode = ManualImportExportMode.values()[tagCompound.getInteger("ManualImportExportMode")];
         }
+
     }
 
     public enum PumpMode implements IStringSerializable {
