@@ -17,6 +17,8 @@ import gregtech.api.gui.widgets.ToggleButtonWidget;
 import gregtech.api.recipes.RecipeMap;
 import gregtech.api.render.OrientedOverlayRenderer;
 import gregtech.api.render.Textures;
+import gregtech.common.covers.CoverConveyor;
+import gregtech.common.covers.CoverPump;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -148,13 +150,13 @@ public class SimpleMachineMetaTileEntity extends WorkableTieredMetaTileEntity {
     @Override
     public <T> T getCapability(Capability<T> capability, EnumFacing side) {
         if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) {
-            IFluidHandler fluidHandler = (side == getOutputFacing() && !allowInputFromOutputSide) ? outputFluidInventory : fluidInventory;
+            IFluidHandler fluidHandler = (side == getOutputFacing() && !allowInputFromOutputSide && !(getCoverAtSide(side) instanceof CoverPump)) ? outputFluidInventory : fluidInventory;
             if(fluidHandler.getTankProperties().length > 0) {
                 return CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY.cast(fluidHandler);
             }
             return null;
         } else if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
-            IItemHandler itemHandler = (side == getOutputFacing() && !allowInputFromOutputSide) ? outputItemInventory : itemInventory;
+            IItemHandler itemHandler = (side == getOutputFacing() && !allowInputFromOutputSide && !(getCoverAtSide(side) instanceof CoverConveyor)) ? outputItemInventory : itemInventory;
             if(itemHandler.getSlots() > 0) {
                 return CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.cast(itemHandler);
             }
