@@ -1,5 +1,9 @@
 ## Changelog
 
+### 1.10.3
+* Updated (extended) manual I/O mode on covers to be able to bypass filter (#1248) - PrototypeTrousers
+* Fixed JEI R/U hotkeys not working on GTCE Fluid Slots (#1260) - PrototypeTrousers
+
 ### 1.10.2
 * Added way to cast materials in CraftTweaker (#1232) - LAGIdiot
 * Added zenClass annotation to GemMaterial and RoughSolidMaterial (#1253) - LAGIdiot
