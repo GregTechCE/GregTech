@@ -8,7 +8,6 @@ import gregtech.api.capability.impl.EnergyContainerHandler;
 import gregtech.api.capability.impl.FluidHandlerProxy;
 import gregtech.api.capability.impl.FluidTankList;
 import gregtech.api.capability.impl.ItemHandlerProxy;
-import gregtech.api.cover.CoverDefinition;
 import gregtech.api.gui.GuiTextures;
 import gregtech.api.gui.ModularUI;
 import gregtech.api.gui.widgets.DischargerSlotWidget;
@@ -92,8 +91,8 @@ public class SimpleMachineMetaTileEntity extends WorkableTieredMetaTileEntity {
             if(!getWorld().isRemote) {
                 setOutputFacing(facing);
                 if (getCoverAtSide(facing) != null && !isAllowInputFromOutputSide() &&
-                    getCoverAtSide(facing).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY,null) != null ||
-                    getCoverAtSide(facing).getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY,null) != null) {
+                    (getCoverAtSide(facing).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY,null) != null ||
+                    getCoverAtSide(facing).getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY,null) != null)) {
                         setAllowInputFromOutputSide(true);
                         playerIn.sendMessage(new TextComponentTranslation("gregtech.machine.basic.input_from_output_side.allow"));
                 }
@@ -133,23 +132,6 @@ public class SimpleMachineMetaTileEntity extends WorkableTieredMetaTileEntity {
                 }
             }
         }
-    }
-
-    @Override
-    public boolean placeCoverOnSide(EnumFacing side, ItemStack itemStack, CoverDefinition coverDefinition,EntityPlayer player) {
-        boolean result = super.placeCoverOnSide(side,itemStack,coverDefinition, player);
-        if (result) {
-            if (!getWorld().isRemote) {
-                EnumFacing facing = getOutputFacing();
-                if (getCoverAtSide(facing) != null && !isAllowInputFromOutputSide() &&
-                    getCoverAtSide(facing).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY,null) != null ||
-                    getCoverAtSide(facing).getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY,null) != null) {
-                        setAllowInputFromOutputSide(true);
-                        player.sendMessage(new TextComponentTranslation("gregtech.machine.basic.input_from_output_side.allow"));
-                }
-            }
-        }
-        return result;
     }
 
     @Override

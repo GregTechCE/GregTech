@@ -43,7 +43,7 @@ public interface ICoverable {
 
     <T> T getCapability(Capability<T> capability, EnumFacing side);
 
-    boolean placeCoverOnSide(EnumFacing side, ItemStack itemStack, CoverDefinition definition, EntityPlayer player);
+    boolean placeCoverOnSide(EnumFacing side, ItemStack itemStack, CoverDefinition definition);
 
     boolean removeCover(EnumFacing side);
 
