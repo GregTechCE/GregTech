@@ -3,6 +3,7 @@ package gregtech.common.items.behaviors;
 import gregtech.api.block.machines.BlockMachine;
 import gregtech.api.capability.GregtechTileCapabilities;
 import gregtech.api.cover.CoverDefinition;
+import gregtech.api.cover.ICoverMachineSetup;
 import gregtech.api.cover.ICoverable;
 import gregtech.api.items.metaitem.stats.IItemBehaviour;
 import gregtech.api.metatileentity.SimpleMachineMetaTileEntity;
@@ -13,12 +14,9 @@ import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
-import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
-import net.minecraftforge.items.CapabilityItemHandler;
 
-public class CoverPlaceBehavior implements IItemBehaviour {
+public class CoverPlaceBehavior implements IItemBehaviour, ICoverMachineSetup {
 
     public final CoverDefinition coverDefinition;
 
@@ -43,18 +41,10 @@ public class CoverPlaceBehavior implements IItemBehaviour {
             if (result && !player.capabilities.isCreativeMode) {
                 itemStack.shrink(1);
             }
-            if (result && BlockMachine.getMetaTileEntity(world, pos) instanceof SimpleMachineMetaTileEntity){
-                SimpleMachineMetaTileEntity metaTileEntity = (SimpleMachineMetaTileEntity) BlockMachine.getMetaTileEntity(world, pos);
-                EnumFacing facing = metaTileEntity.getOutputFacing();
-
-                if (metaTileEntity.getCoverAtSide(facing) != null && !metaTileEntity.isAllowInputFromOutputSide() &&
-                    (metaTileEntity.getCoverAtSide(facing).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null) != null ||
-                        metaTileEntity.getCoverAtSide(facing).getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null) != null)) {
-                    metaTileEntity.setAllowInputFromOutputSide(true);
-                    player.sendMessage(new TextComponentTranslation("gregtech.machine.basic.input_from_output_side.allow"));
-                }
+            if (result && (BlockMachine.getMetaTileEntity(world, pos) instanceof SimpleMachineMetaTileEntity)) {
+                SimpleMachineMetaTileEntity simpleMachineMetaTileEntity = (SimpleMachineMetaTileEntity) BlockMachine.getMetaTileEntity(world, pos);
+                tellMachineToInputFromOutput(simpleMachineMetaTileEntity, player);
             }
-
             return result ? EnumActionResult.SUCCESS : EnumActionResult.FAIL;
         }
         return EnumActionResult.SUCCESS;

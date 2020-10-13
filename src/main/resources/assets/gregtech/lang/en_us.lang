@@ -676,6 +676,8 @@ metaitem.tool.tooltip.durability=Durability: %d/%d
 metaitem.tool.tooltip.rotor.efficiency=Rotor Efficiency: %d%%
 metaitem.tool.tooltip.hammer.extra_drop=Has a chance to drop double crushed ores
 
+cover.setup.input_from_output_side=Machine was set to allow input from the output side by the cover
+
 cover.filter.blacklist.disabled=Whitelist
 cover.filter.blacklist.enabled=Blacklist
 
