@@ -8,6 +8,7 @@ import gregtech.api.capability.impl.EnergyContainerHandler;
 import gregtech.api.capability.impl.FluidHandlerProxy;
 import gregtech.api.capability.impl.FluidTankList;
 import gregtech.api.capability.impl.ItemHandlerProxy;
+import gregtech.api.cover.CoverDefinition;
 import gregtech.api.gui.GuiTextures;
 import gregtech.api.gui.ModularUI;
 import gregtech.api.gui.widgets.DischargerSlotWidget;
@@ -17,8 +18,6 @@ import gregtech.api.gui.widgets.ToggleButtonWidget;
 import gregtech.api.recipes.RecipeMap;
 import gregtech.api.render.OrientedOverlayRenderer;
 import gregtech.api.render.Textures;
-import gregtech.common.covers.CoverConveyor;
-import gregtech.common.covers.CoverPump;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -92,6 +91,12 @@ public class SimpleMachineMetaTileEntity extends WorkableTieredMetaTileEntity {
             }
             if(!getWorld().isRemote) {
                 setOutputFacing(facing);
+                if (getCoverAtSide(facing) != null && !isAllowInputFromOutputSide() &&
+                    getCoverAtSide(facing).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY,null) != null ||
+                    getCoverAtSide(facing).getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY,null) != null) {
+                        setAllowInputFromOutputSide(true);
+                        playerIn.sendMessage(new TextComponentTranslation("gregtech.machine.basic.input_from_output_side.allow"));
+                }
             }
             return true;
         }
@@ -131,6 +136,23 @@ public class SimpleMachineMetaTileEntity extends WorkableTieredMetaTileEntity {
     }
 
     @Override
+    public boolean placeCoverOnSide(EnumFacing side, ItemStack itemStack, CoverDefinition coverDefinition) {
+        boolean result = super.placeCoverOnSide(side,itemStack,coverDefinition);
+        if (result) {
+            if (!getWorld().isRemote) {
+            EnumFacing facing = getOutputFacing();
+                if (getCoverAtSide(facing) != null && !isAllowInputFromOutputSide() &&
+                    getCoverAtSide(facing).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY,null) != null ||
+                    getCoverAtSide(facing).getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY,null) != null) {
+                        setAllowInputFromOutputSide(true);
+                        //playerIn.sendMessage(new TextComponentTranslation("gregtech.machine.basic.input_from_output_side.allow"));
+                }
+            }
+        }
+        return result;
+    }
+
+    @Override
     public boolean onScrewdriverClick(EntityPlayer playerIn, EnumHand hand, EnumFacing facing, CuboidRayTraceResult hitResult) {
         if(facing == getOutputFacing()) {
             if(!getWorld().isRemote) {
@@ -150,13 +172,13 @@ public class SimpleMachineMetaTileEntity extends WorkableTieredMetaTileEntity {
     @Override
     public <T> T getCapability(Capability<T> capability, EnumFacing side) {
         if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) {
-            IFluidHandler fluidHandler = (side == getOutputFacing() && !allowInputFromOutputSide && !(getCoverAtSide(side) instanceof CoverPump)) ? outputFluidInventory : fluidInventory;
+            IFluidHandler fluidHandler = (side == getOutputFacing() && !allowInputFromOutputSide) ? outputFluidInventory : fluidInventory;
             if(fluidHandler.getTankProperties().length > 0) {
                 return CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY.cast(fluidHandler);
             }
             return null;
         } else if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
-            IItemHandler itemHandler = (side == getOutputFacing() && !allowInputFromOutputSide && !(getCoverAtSide(side) instanceof CoverConveyor)) ? outputItemInventory : itemInventory;
+            IItemHandler itemHandler = (side == getOutputFacing() && !allowInputFromOutputSide) ? outputItemInventory : itemInventory;
             if(itemHandler.getSlots() > 0) {
                 return CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.cast(itemHandler);
             }

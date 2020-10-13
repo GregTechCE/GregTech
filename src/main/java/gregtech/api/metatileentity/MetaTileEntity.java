@@ -363,7 +363,7 @@ public abstract class MetaTileEntity implements ICoverable {
         return coverBehaviors[side.getIndex()];
     }
 
-    public final boolean placeCoverOnSide(EnumFacing side, ItemStack itemStack, CoverDefinition coverDefinition) {
+    public boolean placeCoverOnSide(EnumFacing side, ItemStack itemStack, CoverDefinition coverDefinition) {
         Preconditions.checkNotNull(side, "side");
         Preconditions.checkNotNull(coverDefinition, "coverDefinition");
         CoverBehavior coverBehavior = coverDefinition.createCoverBehavior(this, side);
