@@ -136,16 +136,16 @@ public class SimpleMachineMetaTileEntity extends WorkableTieredMetaTileEntity {
     }
 
     @Override
-    public boolean placeCoverOnSide(EnumFacing side, ItemStack itemStack, CoverDefinition coverDefinition) {
-        boolean result = super.placeCoverOnSide(side,itemStack,coverDefinition);
+    public boolean placeCoverOnSide(EnumFacing side, ItemStack itemStack, CoverDefinition coverDefinition,EntityPlayer player) {
+        boolean result = super.placeCoverOnSide(side,itemStack,coverDefinition, player);
         if (result) {
             if (!getWorld().isRemote) {
-            EnumFacing facing = getOutputFacing();
+                EnumFacing facing = getOutputFacing();
                 if (getCoverAtSide(facing) != null && !isAllowInputFromOutputSide() &&
                     getCoverAtSide(facing).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY,null) != null ||
                     getCoverAtSide(facing).getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY,null) != null) {
                         setAllowInputFromOutputSide(true);
-                        //playerIn.sendMessage(new TextComponentTranslation("gregtech.machine.basic.input_from_output_side.allow"));
+                        player.sendMessage(new TextComponentTranslation("gregtech.machine.basic.input_from_output_side.allow"));
                 }
             }
         }
