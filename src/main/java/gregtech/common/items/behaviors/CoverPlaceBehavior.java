@@ -1,12 +1,10 @@
 package gregtech.common.items.behaviors;
 
-import gregtech.api.block.machines.BlockMachine;
 import gregtech.api.capability.GregtechTileCapabilities;
 import gregtech.api.cover.CoverDefinition;
 import gregtech.api.cover.ICoverMachineSetup;
 import gregtech.api.cover.ICoverable;
 import gregtech.api.items.metaitem.stats.IItemBehaviour;
-import gregtech.api.metatileentity.SimpleMachineMetaTileEntity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -37,17 +35,12 @@ public class CoverPlaceBehavior implements IItemBehaviour, ICoverMachineSetup {
         }
         if (!world.isRemote) {
             ItemStack itemStack = player.getHeldItem(hand);
-            boolean result = coverable.placeCoverOnSide(coverSide, itemStack, coverDefinition);
+            boolean result = coverable.placeCoverOnSide(coverSide, itemStack, coverDefinition, player);
             if (result && !player.capabilities.isCreativeMode) {
                 itemStack.shrink(1);
-            }
-            if (result && (BlockMachine.getMetaTileEntity(world, pos) instanceof SimpleMachineMetaTileEntity)) {
-                SimpleMachineMetaTileEntity simpleMachineMetaTileEntity = (SimpleMachineMetaTileEntity) BlockMachine.getMetaTileEntity(world, pos);
-                tellMachineToInputFromOutput(simpleMachineMetaTileEntity, player);
             }
             return result ? EnumActionResult.SUCCESS : EnumActionResult.FAIL;
         }
         return EnumActionResult.SUCCESS;
     }
-
 }

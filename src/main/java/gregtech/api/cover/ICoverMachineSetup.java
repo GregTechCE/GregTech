@@ -7,9 +7,11 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.items.CapabilityItemHandler;
 
+
+
 public interface ICoverMachineSetup {
 
-    default void tellMachineToInputFromOutput(SimpleMachineMetaTileEntity simpleMachineMetaTileEntity, EntityPlayer playerIn) {
+        default void setMachineToInputFromOutput(SimpleMachineMetaTileEntity simpleMachineMetaTileEntity, EntityPlayer playerIn) {
         EnumFacing facing = simpleMachineMetaTileEntity.getOutputFacing();
         if (simpleMachineMetaTileEntity.getCoverAtSide(facing) != null && !simpleMachineMetaTileEntity.isAllowInputFromOutputSide() &&
             (simpleMachineMetaTileEntity.getCoverAtSide(facing).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null) != null ||

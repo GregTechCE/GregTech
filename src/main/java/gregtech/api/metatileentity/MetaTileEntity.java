@@ -363,7 +363,7 @@ public abstract class MetaTileEntity implements ICoverable {
         return coverBehaviors[side.getIndex()];
     }
 
-    public final boolean placeCoverOnSide(EnumFacing side, ItemStack itemStack, CoverDefinition coverDefinition) {
+    public boolean placeCoverOnSide(EnumFacing side, ItemStack itemStack, CoverDefinition coverDefinition,EntityPlayer playerIn) {
         Preconditions.checkNotNull(side, "side");
         Preconditions.checkNotNull(coverDefinition, "coverDefinition");
         CoverBehavior coverBehavior = coverDefinition.createCoverBehavior(this, side);
@@ -388,7 +388,7 @@ public abstract class MetaTileEntity implements ICoverable {
         return true;
     }
 
-    public final boolean removeCover(EnumFacing side) {
+        public final boolean removeCover(EnumFacing side) {
         Preconditions.checkNotNull(side, "side");
         CoverBehavior coverBehavior = getCoverAtSide(side);
         if (coverBehavior == null) {
@@ -1177,4 +1177,5 @@ public abstract class MetaTileEntity implements ICoverable {
     public float getBlockResistance() {
         return 6.0f;
     }
+
 }

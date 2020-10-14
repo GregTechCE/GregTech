@@ -8,7 +8,9 @@ import gregtech.api.capability.impl.EnergyContainerHandler;
 import gregtech.api.capability.impl.FluidHandlerProxy;
 import gregtech.api.capability.impl.FluidTankList;
 import gregtech.api.capability.impl.ItemHandlerProxy;
+import gregtech.api.cover.CoverDefinition;
 import gregtech.api.cover.ICoverMachineSetup;
+import gregtech.api.cover.ICoverable;
 import gregtech.api.gui.GuiTextures;
 import gregtech.api.gui.ModularUI;
 import gregtech.api.gui.widgets.DischargerSlotWidget;
@@ -36,7 +38,7 @@ import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 
-public class SimpleMachineMetaTileEntity extends WorkableTieredMetaTileEntity implements ICoverMachineSetup {
+public class SimpleMachineMetaTileEntity extends WorkableTieredMetaTileEntity implements ICoverMachineSetup, ICoverable {
 
     private boolean hasFrontFacing;
 
@@ -91,7 +93,7 @@ public class SimpleMachineMetaTileEntity extends WorkableTieredMetaTileEntity im
             }
             if(!getWorld().isRemote) {
                 setOutputFacing(facing);
-                tellMachineToInputFromOutput(this,playerIn);
+                setMachineToInputFromOutput(this, playerIn);
             }
             return true;
         }
@@ -320,6 +322,13 @@ public class SimpleMachineMetaTileEntity extends WorkableTieredMetaTileEntity im
             .setTooltipText("gregtech.gui.overclock"));
 
         return builder;
+    }
+
+    @Override
+    public boolean placeCoverOnSide(EnumFacing side, ItemStack itemStack, CoverDefinition coverDefinition, EntityPlayer playerIn) {
+        boolean coverPlaced = super.placeCoverOnSide(side,itemStack,coverDefinition,playerIn);
+        if (coverPlaced) setMachineToInputFromOutput(this,playerIn);
+        return coverPlaced;
     }
 
     @Override
