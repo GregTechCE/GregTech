@@ -9,8 +9,6 @@ import gregtech.api.capability.impl.FluidHandlerProxy;
 import gregtech.api.capability.impl.FluidTankList;
 import gregtech.api.capability.impl.ItemHandlerProxy;
 import gregtech.api.cover.CoverDefinition;
-import gregtech.api.cover.ICoverMachineSetup;
-import gregtech.api.cover.ICoverable;
 import gregtech.api.gui.GuiTextures;
 import gregtech.api.gui.ModularUI;
 import gregtech.api.gui.widgets.DischargerSlotWidget;
@@ -38,7 +36,7 @@ import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 
-public class SimpleMachineMetaTileEntity extends WorkableTieredMetaTileEntity implements ICoverMachineSetup, ICoverable {
+public class SimpleMachineMetaTileEntity extends WorkableTieredMetaTileEntity {
 
     private boolean hasFrontFacing;
 
@@ -93,7 +91,12 @@ public class SimpleMachineMetaTileEntity extends WorkableTieredMetaTileEntity im
             }
             if(!getWorld().isRemote) {
                 setOutputFacing(facing);
-                setMachineToInputFromOutput(this, playerIn);
+                if (!isAllowInputFromOutputSide()) {
+                    if (getCoverCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, facing) != null ||
+                        (getCoverCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, facing) != null)) {
+                        setAllowInputFromOutputSide(true);
+                    }
+                }
             }
             return true;
         }
@@ -325,9 +328,14 @@ public class SimpleMachineMetaTileEntity extends WorkableTieredMetaTileEntity im
     }
 
     @Override
-    public boolean placeCoverOnSide(EnumFacing side, ItemStack itemStack, CoverDefinition coverDefinition, EntityPlayer playerIn) {
-        boolean coverPlaced = super.placeCoverOnSide(side,itemStack,coverDefinition,playerIn);
-        if (coverPlaced) setMachineToInputFromOutput(this,playerIn);
+    public boolean placeCoverOnSide(EnumFacing side, ItemStack itemStack, CoverDefinition coverDefinition) {
+        boolean coverPlaced = super.placeCoverOnSide(side,itemStack,coverDefinition);
+        if (getOutputFacing() == side && !isAllowInputFromOutputSide()) {
+            if (getCoverCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY,side) != null ||
+                (getCoverCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY,side) != null)) {
+                setAllowInputFromOutputSide(true);
+            }
+        }
         return coverPlaced;
     }
 

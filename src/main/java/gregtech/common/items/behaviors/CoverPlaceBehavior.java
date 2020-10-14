@@ -2,7 +2,6 @@ package gregtech.common.items.behaviors;
 
 import gregtech.api.capability.GregtechTileCapabilities;
 import gregtech.api.cover.CoverDefinition;
-import gregtech.api.cover.ICoverMachineSetup;
 import gregtech.api.cover.ICoverable;
 import gregtech.api.items.metaitem.stats.IItemBehaviour;
 import net.minecraft.entity.player.EntityPlayer;
@@ -14,7 +13,7 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-public class CoverPlaceBehavior implements IItemBehaviour, ICoverMachineSetup {
+public class CoverPlaceBehavior implements IItemBehaviour {
 
     public final CoverDefinition coverDefinition;
 
@@ -35,7 +34,7 @@ public class CoverPlaceBehavior implements IItemBehaviour, ICoverMachineSetup {
         }
         if (!world.isRemote) {
             ItemStack itemStack = player.getHeldItem(hand);
-            boolean result = coverable.placeCoverOnSide(coverSide, itemStack, coverDefinition, player);
+            boolean result = coverable.placeCoverOnSide(coverSide, itemStack, coverDefinition);
             if (result && !player.capabilities.isCreativeMode) {
                 itemStack.shrink(1);
             }
