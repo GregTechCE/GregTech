@@ -350,7 +350,7 @@ public class CoverConveyor extends CoverBehavior implements CoverWithUI, ITickab
 
     @Override
     public boolean canAttach() {
-        return coverHolder.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, attachedSide) != null;
+        return coverHolder.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null) != null;
     }
 
     @Override
