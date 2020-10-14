@@ -104,6 +104,18 @@ public class SimpleMachineMetaTileEntity extends WorkableTieredMetaTileEntity {
     }
 
     @Override
+    public boolean placeCoverOnSide(EnumFacing side, ItemStack itemStack, CoverDefinition coverDefinition) {
+        boolean coverPlaced = super.placeCoverOnSide(side,itemStack,coverDefinition);
+        if (getOutputFacing() == side && !isAllowInputFromOutputSide()) {
+            if (getCoverCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY,side) != null ||
+                (getCoverCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY,side) != null)) {
+                setAllowInputFromOutputSide(true);
+            }
+        }
+        return coverPlaced;
+    }
+
+    @Override
     @SideOnly(Side.CLIENT)
     public void renderMetaTileEntity(CCRenderState renderState, Matrix4 translation, IVertexOperation[] pipeline) {
         super.renderMetaTileEntity(renderState, translation, pipeline);
@@ -325,18 +337,6 @@ public class SimpleMachineMetaTileEntity extends WorkableTieredMetaTileEntity {
             .setTooltipText("gregtech.gui.overclock"));
 
         return builder;
-    }
-
-    @Override
-    public boolean placeCoverOnSide(EnumFacing side, ItemStack itemStack, CoverDefinition coverDefinition) {
-        boolean coverPlaced = super.placeCoverOnSide(side,itemStack,coverDefinition);
-        if (getOutputFacing() == side && !isAllowInputFromOutputSide()) {
-            if (getCoverCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY,side) != null ||
-                (getCoverCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY,side) != null)) {
-                setAllowInputFromOutputSide(true);
-            }
-        }
-        return coverPlaced;
     }
 
     @Override
