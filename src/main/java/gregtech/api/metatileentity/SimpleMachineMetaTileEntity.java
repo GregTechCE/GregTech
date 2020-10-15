@@ -91,12 +91,6 @@ public class SimpleMachineMetaTileEntity extends WorkableTieredMetaTileEntity {
             }
             if(!getWorld().isRemote) {
                 setOutputFacing(facing);
-                if (!isAllowInputFromOutputSide()) {
-                    if (getCoverCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, facing) != null ||
-                        (getCoverCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, facing) != null)) {
-                        setAllowInputFromOutputSide(true);
-                    }
-                }
             }
             return true;
         }
