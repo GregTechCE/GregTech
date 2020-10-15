@@ -107,8 +107,8 @@ public class SimpleMachineMetaTileEntity extends WorkableTieredMetaTileEntity {
     public boolean placeCoverOnSide(EnumFacing side, ItemStack itemStack, CoverDefinition coverDefinition) {
         boolean coverPlaced = super.placeCoverOnSide(side,itemStack,coverDefinition);
         if (getOutputFacing() == side && !isAllowInputFromOutputSide()) {
-            if (getCoverCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY,side) != null ||
-                (getCoverCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY,side) != null)) {
+            if (getCoverAtSide(side).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY,null) != null ||
+                (getCoverAtSide(side).getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null) != null)) {
                 setAllowInputFromOutputSide(true);
             }
         }
