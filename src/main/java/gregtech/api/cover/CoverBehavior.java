@@ -116,14 +116,7 @@ public abstract class CoverBehavior implements IUIHolder {
     }
 
     public boolean shouldCoverInteractWithOutputside() {
-        return (coverHolder instanceof SimpleMachineMetaTileEntity);
-    }
-
-    public void overrideAllowInputFromOutputside() {
-        SimpleMachineMetaTileEntity simpleMachineMetaTileEntity = (SimpleMachineMetaTileEntity) coverHolder;
-        if (simpleMachineMetaTileEntity.getOutputFacing() == attachedSide) {
-            simpleMachineMetaTileEntity.setAllowInputFromOutputSide(true);
-        }
+        return false;
     }
 
     public ItemStack getPickItem() {

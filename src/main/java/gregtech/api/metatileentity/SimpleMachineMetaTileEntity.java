@@ -8,6 +8,7 @@ import gregtech.api.capability.impl.EnergyContainerHandler;
 import gregtech.api.capability.impl.FluidHandlerProxy;
 import gregtech.api.capability.impl.FluidTankList;
 import gregtech.api.capability.impl.ItemHandlerProxy;
+import gregtech.api.cover.CoverDefinition;
 import gregtech.api.gui.GuiTextures;
 import gregtech.api.gui.ModularUI;
 import gregtech.api.gui.widgets.DischargerSlotWidget;
@@ -94,6 +95,15 @@ public class SimpleMachineMetaTileEntity extends WorkableTieredMetaTileEntity {
             return true;
         }
         return super.onWrenchClick(playerIn, hand, facing, hitResult);
+    }
+
+    @Override
+    public boolean placeCoverOnSide(EnumFacing side, ItemStack itemStack, CoverDefinition coverDefinition) {
+        boolean coverPlaced = super.placeCoverOnSide(side,itemStack,coverDefinition);
+        if (coverPlaced && getOutputFacing() == side && getCoverAtSide(side).shouldCoverInteractWithOutputside()) {
+            setAllowInputFromOutputSide(true);
+        }
+        return coverPlaced;
     }
 
     @Override
