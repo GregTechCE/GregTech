@@ -18,6 +18,7 @@ import gregtech.api.gui.GuiTextures;
 import gregtech.api.gui.ModularUI;
 import gregtech.api.gui.widgets.*;
 import gregtech.api.metatileentity.MetaTileEntity;
+import gregtech.api.metatileentity.SimpleMachineMetaTileEntity;
 import gregtech.api.render.Textures;
 import gregtech.api.util.ItemStackKey;
 import gregtech.common.covers.filter.ItemFilterContainer;
@@ -351,6 +352,11 @@ public class CoverConveyor extends CoverBehavior implements CoverWithUI, ITickab
     @Override
     public boolean canAttach() {
         return coverHolder.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, attachedSide) != null;
+    }
+
+    @Override
+    public void onAttached(ItemStack itemStack) {
+        if (shouldCoverInteractWithOutputside()) overrideAllowInputFromOutputside();
     }
 
     @Override

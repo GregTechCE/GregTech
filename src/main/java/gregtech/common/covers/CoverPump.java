@@ -16,6 +16,7 @@ import gregtech.api.gui.GuiTextures;
 import gregtech.api.gui.ModularUI;
 import gregtech.api.gui.widgets.*;
 import gregtech.api.metatileentity.MetaTileEntity;
+import gregtech.api.metatileentity.SimpleMachineMetaTileEntity;
 import gregtech.api.render.Textures;
 import gregtech.api.util.GTUtility;
 import gregtech.common.covers.CoverConveyor.ConveyorMode;
@@ -198,6 +199,11 @@ public class CoverPump extends CoverBehavior implements CoverWithUI, ITickable, 
     @Override
     public boolean canAttach() {
         return coverHolder.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, attachedSide) != null;
+    }
+
+    @Override
+    public void onAttached(ItemStack itemStack) {
+        if (shouldCoverInteractWithOutputside()) overrideAllowInputFromOutputside();
     }
 
     @Override
