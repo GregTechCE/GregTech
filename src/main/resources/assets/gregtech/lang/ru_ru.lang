@@ -41,7 +41,7 @@ metaitem.electric.discharge_mode.tooltip=Нажмите Shift для перек�
 metaitem.dust.tooltip.purify=Бросьте в котел, чтобы получить чистую пыль
 metaitem.int_circuit.configuration=Конфигурация: %d
 metaitem.credit.copper.name=Медный кредит
-metaitem.credit.copper.tooltip=0, 125 кредитов
+metaitem.credit.copper.tooltip=0,125 кредита
 metaitem.credit.cupronickel.name=Купроникелевый кредит
 metaitem.credit.cupronickel.tooltip=1 кредит
 metaitem.credit.silver.name=Серебряный кредит
@@ -55,7 +55,7 @@ metaitem.credit.osmium.tooltip=4096 кредитов
 metaitem.credit.naquadah.name=Наквадовый кредит
 metaitem.credit.naquadah.tooltip=32768 кредитов
 metaitem.credit.darmstadtium.name=Дармштадтиевый кредит
-metaitem.credit.darmstadtium.tooltip=262144 кредитов
+metaitem.credit.darmstadtium.tooltip=262144 кредита
 
 metaitem.coin.gold.ancient.name=Древняя золотая монета
 metaitem.coin.gold.ancient.tooltip=Найдено в древних руинах
