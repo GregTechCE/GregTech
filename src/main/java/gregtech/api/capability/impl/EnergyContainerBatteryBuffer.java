@@ -60,7 +60,7 @@ public class EnergyContainerBatteryBuffer extends MTETrait implements IEnergyCon
 
     private static boolean chargeItemWithVoltage(IElectricItem electricItem, long voltage, int tier, boolean simulate) {
         long charged = electricItem.charge(voltage, tier, false, simulate);
-        return charged > 0 && charged <= voltage;
+        return charged > 0;
     }
 
     private static long chargeItem(IElectricItem electricItem, long amount, int tier, boolean discharge) {
