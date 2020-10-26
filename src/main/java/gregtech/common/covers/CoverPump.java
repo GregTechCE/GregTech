@@ -180,6 +180,11 @@ public class CoverPump extends CoverBehavior implements CoverWithUI, ITickable, 
     }
 
     @Override
+    public boolean shouldCoverInteractWithOutputside() {
+        return true;
+    }
+
+    @Override
     public void onRemoved() {
         NonNullList<ItemStack> drops = NonNullList.create();
         MetaTileEntity.clearInventory(drops, fluidFilter.getFilterInventory());
