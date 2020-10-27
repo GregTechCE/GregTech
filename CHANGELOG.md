@@ -1,5 +1,11 @@
 ## Changelog
 
+### 1.10.4
+* Added placing Pump/Conveyor/Robotic Arm on Output side of machine will turn allow input from output side on (#1266) - PrototypeTrousers
+* Fixed issue preventing battery from fully charged. (#1267) - Derek.CHAN
+* Fixes Crafting Station crash and item dupe (#1274) - PrototypeTrousers
+* Fixed some RU lang entries (#1279) - Bombm
+
 ### 1.10.3
 * Updated (extended) manual I/O mode on covers to be able to bypass filter (#1248) - PrototypeTrousers
 * Fixed JEI R/U hotkeys not working on GTCE Fluid Slots (#1260) - PrototypeTrousers
