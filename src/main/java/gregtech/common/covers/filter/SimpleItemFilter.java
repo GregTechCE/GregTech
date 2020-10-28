@@ -4,6 +4,7 @@ import gregtech.api.gui.GuiTextures;
 import gregtech.api.gui.Widget;
 import gregtech.api.gui.widgets.PhantomSlotWidget;
 import gregtech.api.gui.widgets.ToggleButtonWidget;
+import gregtech.api.util.LargeStackSizeItemStackHandler;
 import gregtech.api.util.ItemStackKey;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -22,7 +23,7 @@ public class SimpleItemFilter extends ItemFilter {
     protected boolean ignoreNBT = true;
 
     public SimpleItemFilter() {
-        this.itemFilterSlots = new ItemStackHandler(MAX_MATCH_SLOTS) {
+        this.itemFilterSlots = new LargeStackSizeItemStackHandler(MAX_MATCH_SLOTS) {
             @Override
             public int getSlotLimit(int slot) {
                 return getMaxStackSize();
