@@ -107,7 +107,7 @@ public class ConfigHolder {
 
     @Config.Comment("Show all the cell and bucket recipes for the Fluid Canner Machine. Default false")
     @Config.RequiresMcRestart
-    public static boolean showAllBucketAndCellRecipesForFluidCannerMachine = true;
+    public static boolean showAllBucketAndCellRecipesForFluidCannerMachine = false;
 
     public static class VanillaRecipes {
 
