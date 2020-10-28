@@ -1,6 +1,5 @@
 package gregtech.loaders.recipe;
 
-import codechicken.lib.util.ItemUtils;
 import gregtech.api.GTValues;
 import gregtech.api.items.metaitem.MetaItem;
 import gregtech.api.recipes.CountableIngredient;
