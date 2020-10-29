@@ -431,6 +431,7 @@ public class Materials {
     public static DustMaterial Basalt = new DustMaterial(240, "basalt", 0x1E1414, MaterialIconSet.ROUGH, 1, of(new MaterialStack(Olivine, 1), new MaterialStack(Calcite, 3), new MaterialStack(Flint, 8), new MaterialStack(DarkAsh, 4)), NO_SMASHING);
     public static DustMaterial Andesite = new DustMaterial(241, "andesite", 0xBEBEBE, MaterialIconSet.ROUGH, 2, of(), NO_SMASHING);
     public static DustMaterial Diorite = new DustMaterial(242, "diorite", 0xFFFFFF, MaterialIconSet.ROUGH, 2, of(), NO_SMASHING);
+    public static DustMaterial Granite = new DustMaterial(449, "granite", 0xCFA18C, MaterialIconSet.ROUGH, 2, of(), NO_SMASHING);
     public static GemMaterial GarnetRed = new GemMaterial(243, "garnet_red", 0xC85050, MaterialIconSet.RUBY, 2, of(new MaterialStack(Pyrope, 3), new MaterialStack(Almandine, 5), new MaterialStack(Spessartine, 8)), STD_SOLID | GENERATE_LENSE | NO_SMASHING | NO_SMELTING | HIGH_SIFTER_OUTPUT | GENERATE_ORE, null, 7.5F, 3.0f, 156);
     public static GemMaterial GarnetYellow = new GemMaterial(244, "garnet_yellow", 0xC8C850, MaterialIconSet.RUBY, 2, of(new MaterialStack(Andradite, 5), new MaterialStack(Grossular, 8), new MaterialStack(Uvarovite, 3)), STD_SOLID | GENERATE_LENSE | NO_SMASHING | NO_SMELTING | HIGH_SIFTER_OUTPUT | GENERATE_ORE, null, 7.5F, 3.0f, 156);
     public static DustMaterial Marble = new DustMaterial(245, "marble", 0xC8C8C8, MaterialIconSet.FINE, 1, of(new MaterialStack(Magnesium, 1), new MaterialStack(Calcite, 7)), NO_SMASHING);
