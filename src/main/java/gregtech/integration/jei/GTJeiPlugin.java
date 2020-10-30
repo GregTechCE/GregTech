@@ -42,6 +42,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 
 import javax.annotation.Nonnull;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -172,5 +173,8 @@ public class GTJeiPlugin implements IModPlugin {
         }
 
         registry.addRecipeCatalyst(MetaTileEntities.WORKBENCH.getStackForm(), VanillaRecipeCategoryUid.CRAFTING);
+
+        Arrays.stream(MetaTileEntities.FLUID_CANNER).forEach(machine ->
+            registry.addIngredientInfo(machine.getStackForm(), VanillaTypes.ITEM, "gregtech.machine.fluid_canner.jei_description"));
     }
 }
