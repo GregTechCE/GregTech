@@ -1757,6 +1757,8 @@ gregtech.machine.locked_safe.requirements=§7Replacements required:
 gregtech.machine.workbench.name=Crafting Station
 gregtech.machine.workbench.tab.workbench=Crafting
 gregtech.machine.workbench.tab.item_list=Storage
+gregtech.machine.workbench.storage_note_1=(Available items from connected
+gregtech.machine.workbench.storage_note_2=inventories usable for crafting)
 gregtech.item_list.items_stored=§7Stored: %d
 
 gregtech.machine.workbench.tab.crafting=Crafting
