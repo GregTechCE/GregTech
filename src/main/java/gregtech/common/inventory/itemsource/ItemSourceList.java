@@ -5,12 +5,14 @@ import gregtech.api.util.ItemStackKey;
 import gregtech.common.inventory.IItemInfo;
 import gregtech.common.inventory.IItemList;
 import gregtech.common.pipelike.inventory.network.UpdateResult;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.ITickable;
 import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
 import java.util.*;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.stream.Collectors;
 
 public class ItemSourceList implements IItemList, ITickable {
 
@@ -38,7 +40,12 @@ public class ItemSourceList implements IItemList, ITickable {
 
     @Override
     public Set<ItemStackKey> getStoredItems() {
-        return storedItemsView;
+        return storedItemsView.stream()
+            .map(storedItem -> {
+                ItemStack itemStack = storedItem.getItemStack();
+                int extractedCount = extractItem(storedItem, itemStack.getCount(), true);
+                return new ItemStackKey(new ItemStack(itemStack.getItem(), extractedCount));
+            }).collect(Collectors.toSet());
     }
 
     @Nullable
