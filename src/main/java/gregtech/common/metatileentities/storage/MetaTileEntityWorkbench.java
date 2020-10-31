@@ -209,9 +209,11 @@ public class MetaTileEntityWorkbench extends MetaTileEntity {
 
     private AbstractWidgetGroup createItemListTab() {
         WidgetGroup widgetGroup = new WidgetGroup();
+        widgetGroup.addWidget(new LabelWidget(5, 20, "(Available items from connected"));
+        widgetGroup.addWidget(new LabelWidget(5, 30, "inventories usable for crafting)"));
         CraftingRecipeResolver recipeResolver = getRecipeResolver();
         IItemList itemList = recipeResolver == null ? null : recipeResolver.getItemSourceList();
-        widgetGroup.addWidget(new ItemListGridWidget(2, 17, 9, 6, itemList));
+        widgetGroup.addWidget(new ItemListGridWidget(2, 47, 9, 5, itemList));
         return widgetGroup;
     }
 
