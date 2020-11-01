@@ -2019,7 +2019,7 @@ gregtech.machine.fermenter.hv.name=Advanced Fermenter II
 gregtech.machine.fermenter.ev.name=Advanced Fermenter III
 
 gregtech.machine.fluid_canner.tooltip=Puts fluids into and out of fluid containers
-gregtech.machine.fluid_canner.jei_description=Don't you know that you could use the Fluid Canner Machine to fill Buckets and Fluid Cells?
+gregtech.machine.fluid_canner.jei_description=You can fill and empty any fluid containers with the Fluid Canner (e.g. Buckets or Fluid Cells)
 
 gregtech.machine.fluid_canner.lv.name=Basic Fluid Canner
 gregtech.machine.fluid_canner.mv.name=Advanced Fluid Canner
