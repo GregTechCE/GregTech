@@ -126,7 +126,8 @@ public class MetaTileEntityFluidHatch extends MetaTileEntityMultiblockPart imple
         Builder builder = ModularUI.defaultBuilder();
         builder.image(7, 16, 81, 55, GuiTextures.DISPLAY);
         TankWidget tankWidget = new TankWidget(fluidTank, 69, 52, 18, 18)
-            .setHideTooltip(true).setAlwaysShowFull(true);
+            .setHideTooltip(true).setAlwaysShowFull(true)
+            .setContainerClicking(!isExportHatch, true);
         builder.widget(tankWidget);
         builder.label(11, 20, "gregtech.gui.fluid_amount", 0xFFFFFF);
         builder.dynamicLabel(11, 30, tankWidget::getFormattedFluidAmount, 0xFFFFFF);
