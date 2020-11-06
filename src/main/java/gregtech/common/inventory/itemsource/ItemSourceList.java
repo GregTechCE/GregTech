@@ -40,12 +40,7 @@ public class ItemSourceList implements IItemList, ITickable {
 
     @Override
     public Set<ItemStackKey> getStoredItems() {
-        return storedItemsView.stream()
-            .filter(storedItem -> {
-                ItemStack itemStack = storedItem.getItemStack();
-                int extractedCount = extractItem(storedItem, itemStack.getCount(), true);
-                return extractedCount > 0;
-            }).collect(Collectors.toSet());
+        return storedItemsView;
     }
 
     @Nullable

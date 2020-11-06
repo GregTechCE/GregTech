@@ -213,7 +213,7 @@ public class MetaTileEntityWorkbench extends MetaTileEntity {
         widgetGroup.addWidget(new LabelWidget(5, 30, "gregtech.machine.workbench.storage_note_2"));
         CraftingRecipeResolver recipeResolver = getRecipeResolver();
         IItemList itemList = recipeResolver == null ? null : recipeResolver.getItemSourceList();
-        widgetGroup.addWidget(new ItemListGridWidget(2, 47, 9, 5, itemList));
+        widgetGroup.addWidget(new ItemListGridWidget(2, 45, 9, 5, itemList));
         return widgetGroup;
     }
 
