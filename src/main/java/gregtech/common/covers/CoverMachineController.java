@@ -182,17 +182,30 @@ public class CoverMachineController extends CoverBehavior implements CoverWithUI
     private void resetCurrentControllable() {
         IControllable controllable = getControllable();
         if(controllable != null) {
-            controllable.setWorkingEnabled(true);
+            controllable.setWorkingEnabled(isOtherAllowingWork());
         }
     }
 
     private void updateRedstoneStatus() {
-        boolean shouldAllowWorking = getRedstoneSignalInput() < minRedstoneStrength;
-        if(isInverted) shouldAllowWorking = !shouldAllowWorking;
         IControllable controllable = getControllable();
         if(controllable != null) {
-            controllable.setWorkingEnabled(shouldAllowWorking);
+            controllable.setWorkingEnabled(shouldAllowWorking() && isOtherAllowingWork());
         }
+    }
+
+    private boolean shouldAllowWorking(){
+        boolean shouldAllowWorking = getRedstoneSignalInput() < minRedstoneStrength;
+        return  isInverted != shouldAllowWorking ;// equivalent to isInverted ? !shouldAllowWorking: shouldAllowWorking
+    }
+
+    private boolean isOtherAllowingWork(){
+        boolean otherAllow = true;
+        for (EnumFacing side : EnumFacing.values()){
+            if(side != attachedSide && coverHolder.getCoverAtSide(side) instanceof  CoverMachineController ){
+                otherAllow = otherAllow && ((CoverMachineController)coverHolder.getCoverAtSide(side)).shouldAllowWorking();
+            }
+        }
+        return otherAllow;
     }
 
     @Override
