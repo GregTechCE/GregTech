@@ -14,6 +14,7 @@ import gregtech.api.gui.GuiTextures;
 import gregtech.api.gui.ModularUI;
 import gregtech.api.gui.widgets.*;
 import gregtech.api.render.Textures;
+import gregtech.api.util.GTLog;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
@@ -33,7 +34,7 @@ public class CoverMachineController extends CoverBehavior implements CoverWithUI
 
     public CoverMachineController(ICoverable coverHolder, EnumFacing attachedSide) {
         super(coverHolder, attachedSide);
-        this.minRedstoneStrength = 1;
+        this.minRedstoneStrength = 0;
         this.isInverted = false;
         this.controllerMode = ControllerMode.MACHINE;
     }
@@ -115,7 +116,7 @@ public class CoverMachineController extends CoverBehavior implements CoverWithUI
         updateDisplayInventory();
         return ModularUI.defaultBuilder()
             .label(10, 5, "cover.machine_controller.name")
-            .widget(new SliderWidget("cover.machine_controller.redstone", 10, 20, 156, 20, 1.0f, 16.0f,
+            .widget(new SliderWidget("cover.machine_controller.redstone", 10, 20, 156, 20, 0f, 15.0f,
                 minRedstoneStrength, it -> setMinRedstoneStrength((int) it)))
             .widget(new ClickButtonWidget(10, 45, 126, 20, "", data -> cycleNextControllerMode()))
             .widget(new SimpleTextWidget(68, 55, "", 0xFFFFFF, () -> getControllerMode().getName()))
@@ -222,6 +223,7 @@ public class CoverMachineController extends CoverBehavior implements CoverWithUI
         this.minRedstoneStrength = tagCompound.getInteger("MinRedstoneStrength");
         this.isInverted = tagCompound.getBoolean("Inverted");
         this.controllerMode = ControllerMode.values()[tagCompound.getInteger("ControllerMode")];
+        if (minRedstoneStrength > 15) minRedstoneStrength = 15;
     }
 
     public enum ControllerMode implements IStringSerializable {
