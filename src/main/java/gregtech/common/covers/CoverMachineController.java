@@ -14,7 +14,6 @@ import gregtech.api.gui.GuiTextures;
 import gregtech.api.gui.ModularUI;
 import gregtech.api.gui.widgets.*;
 import gregtech.api.render.Textures;
-import gregtech.api.util.GTLog;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
@@ -34,7 +33,7 @@ public class CoverMachineController extends CoverBehavior implements CoverWithUI
 
     public CoverMachineController(ICoverable coverHolder, EnumFacing attachedSide) {
         super(coverHolder, attachedSide);
-        this.minRedstoneStrength = 0;
+        this.minRedstoneStrength = 1;
         this.isInverted = false;
         this.controllerMode = ControllerMode.MACHINE;
     }
@@ -116,7 +115,7 @@ public class CoverMachineController extends CoverBehavior implements CoverWithUI
         updateDisplayInventory();
         return ModularUI.defaultBuilder()
             .label(10, 5, "cover.machine_controller.name")
-            .widget(new SliderWidget("cover.machine_controller.redstone", 10, 20, 156, 20, 0f, 15.0f,
+            .widget(new SliderWidget("cover.machine_controller.redstone", 10, 20, 156, 20, 1f, 15.0f,
                 minRedstoneStrength, it -> setMinRedstoneStrength((int) it)))
             .widget(new ClickButtonWidget(10, 45, 126, 20, "", data -> cycleNextControllerMode()))
             .widget(new SimpleTextWidget(68, 55, "", 0xFFFFFF, () -> getControllerMode().getName()))
@@ -183,14 +182,14 @@ public class CoverMachineController extends CoverBehavior implements CoverWithUI
     private void resetCurrentControllable() {
         IControllable controllable = getControllable();
         if(controllable != null) {
-            controllable.setWorkingEnabled(isOtherAllowingWork());
+            controllable.setWorkingEnabled(doesOtherAllowingWork());
         }
     }
 
     private void updateRedstoneStatus() {
         IControllable controllable = getControllable();
         if(controllable != null) {
-            controllable.setWorkingEnabled(shouldAllowWorking() && isOtherAllowingWork());
+            controllable.setWorkingEnabled(shouldAllowWorking() && doesOtherAllowingWork());
         }
     }
 
@@ -200,11 +199,13 @@ public class CoverMachineController extends CoverBehavior implements CoverWithUI
         return isInverted ? !shouldAllowWorking : shouldAllowWorking;
     }
 
-    private boolean isOtherAllowingWork(){
+    private boolean doesOtherAllowingWork(){
         boolean otherAllow = true;
+        CoverMachineController cover;
         for (EnumFacing side : EnumFacing.values()){
             if(side != attachedSide && coverHolder.getCoverAtSide(side) instanceof  CoverMachineController ){
-                otherAllow = otherAllow && ((CoverMachineController)coverHolder.getCoverAtSide(side)).shouldAllowWorking();
+                cover = (CoverMachineController)coverHolder.getCoverAtSide(side);
+                otherAllow = otherAllow && cover.controllerMode == controllerMode && cover.shouldAllowWorking();
             }
         }
         return otherAllow;
