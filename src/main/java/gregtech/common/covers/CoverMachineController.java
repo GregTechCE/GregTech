@@ -196,7 +196,8 @@ public class CoverMachineController extends CoverBehavior implements CoverWithUI
 
     private boolean shouldAllowWorking(){
         boolean shouldAllowWorking = getRedstoneSignalInput() < minRedstoneStrength;
-        return  isInverted != shouldAllowWorking ;// equivalent to isInverted ? !shouldAllowWorking: shouldAllowWorking
+        //noinspection SimplifiableConditionalExpression
+        return isInverted ? !shouldAllowWorking : shouldAllowWorking;
     }
 
     private boolean isOtherAllowingWork(){
