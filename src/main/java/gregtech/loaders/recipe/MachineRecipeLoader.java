@@ -1015,6 +1015,12 @@ public class MachineRecipeLoader {
             .outputs(OreDictUnifier.get(OrePrefix.dust, Materials.Diorite, 1))
             .chancedOutput(OreDictUnifier.get(OrePrefix.dustSmall, Materials.Stone, 1), 100, 40)
             .buildAndRegister();
+
+        RecipeMaps.MACERATOR_RECIPES.recipeBuilder()
+            .input(OrePrefix.stone, Materials.Granite)
+            .outputs(OreDictUnifier.get(OrePrefix.dust, Materials.Granite, 1))
+            .chancedOutput(OreDictUnifier.get(OrePrefix.dustSmall, Materials.Stone, 1), 100, 40)
+            .buildAndRegister();
     }
 
     private static void registerFluidRecipes() {

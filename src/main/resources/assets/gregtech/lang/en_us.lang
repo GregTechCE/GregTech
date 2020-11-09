@@ -1299,6 +1299,7 @@ material.phosphor=Phosphor
 material.basalt=Basalt
 material.andesite=Andesite
 material.diorite=Diorite
+material.granite=Granite
 material.garnet_red=Red Garnet
 material.garnet_yellow=Yellow Garnet
 material.marble=Marble
