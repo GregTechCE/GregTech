@@ -102,6 +102,12 @@ public class MetaTileEntityTank extends MetaTileEntity implements IFastRenderMet
     }
 
     @Override
+    public void onLoad() {
+        this.recheckBlockedSides();
+        super.onLoad();
+    }
+
+    @Override
     public void update() {
         this.fluidInventory = getActualFluidTank();
         super.update();
