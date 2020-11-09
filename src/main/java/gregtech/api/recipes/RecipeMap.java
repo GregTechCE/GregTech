@@ -188,7 +188,7 @@ public class RecipeMap<R extends RecipeBuilder<R>> {
             recipeStatus = EnumValidationResult.INVALID;
         }
         if (!GTUtility.isBetweenInclusive(getMinOutputs(), getMaxOutputs(), recipe.getOutputs().size() + recipe.getChancedOutputs().size())) {
-            GTLog.logger.error("Invalid amount of recipe outputs. Actual: {}. Should be between {} and {} inclusive.", recipe.getOutputs().size() + recipeBuilder().getChancedOutputs().size(), getMinOutputs(), getMaxOutputs());
+            GTLog.logger.error("Invalid amount of recipe outputs. Actual: {}. Should be between {} and {} inclusive.", recipe.getOutputs().size() + recipe.getChancedOutputs().size(), getMinOutputs(), getMaxOutputs());
             GTLog.logger.error("Stacktrace:", new IllegalArgumentException());
             recipeStatus = EnumValidationResult.INVALID;
         }
