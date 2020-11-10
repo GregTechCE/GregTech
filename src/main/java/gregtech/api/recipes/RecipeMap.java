@@ -204,7 +204,7 @@ public class RecipeMap<R extends RecipeBuilder<R>> {
         }
         return ValidationResult.newResult(recipeStatus, recipe);
     }
-    
+
     @Nullable
     public Recipe findRecipe(long voltage, IItemHandlerModifiable inputs, IMultipleTankHandler fluidInputs, int outputFluidTankCapacity) {
         return this.findRecipe(voltage, GTUtility.itemHandlerToList(inputs), GTUtility.fluidHandlerToList(fluidInputs), outputFluidTankCapacity);
@@ -213,9 +213,9 @@ public class RecipeMap<R extends RecipeBuilder<R>> {
     /**
      * Finds a Recipe matching the Fluid and ItemStack Inputs.
      *
-     * @param voltage     Voltage of the Machine or Long.MAX_VALUE if it has no Voltage
-     * @param inputs      the Item Inputs
-     * @param fluidInputs the Fluid Inputs
+     * @param voltage                 Voltage of the Machine or Long.MAX_VALUE if it has no Voltage
+     * @param inputs                  the Item Inputs
+     * @param fluidInputs             the Fluid Inputs
      * @param outputFluidTankCapacity minimal capacity of output fluid tank, used for fluid canner recipes for example
      * @return the Recipe it has found or null for no matching Recipe
      */
@@ -236,6 +236,31 @@ public class RecipeMap<R extends RecipeBuilder<R>> {
         }
     }
 
+    /**
+     * Finds a Recipe matching ItemStack Inputs ignoring any required fluid input .
+     *
+     * @param voltage                 Voltage of the Machine or Long.MAX_VALUE if it has no Voltage
+     * @param inputs                  the Item Inputs
+     * @param outputFluidTankCapacity minimal capacity of output fluid tank, used for fluid canner recipes for example
+     * @return the Recipe it has found or null for no matching Recipe
+     */
+    @Nullable
+    public Recipe findRecipe(long voltage, List<ItemStack> inputs, int outputFluidTankCapacity) {
+        if (recipeList.isEmpty())
+            return null;
+        if (minInputs > 0 && GTUtility.amountOfNonEmptyStacks(inputs) < minInputs) {
+            return null;
+        }
+        if (inputs.isEmpty())
+            return null;
+        if (maxInputs > 0) {
+            return findByInputs(voltage, inputs);
+        } else {
+            return null;
+        }
+    }
+
+
     @Nullable
     private Recipe findByFluidInputs(long voltage, List<ItemStack> inputs, List<FluidStack> fluidInputs) {
         for (FluidStack fluid : fluidInputs) {
@@ -255,6 +280,16 @@ public class RecipeMap<R extends RecipeBuilder<R>> {
     private Recipe findByInputs(long voltage, List<ItemStack> inputs, List<FluidStack> fluidInputs) {
         for (Recipe recipe : recipeList) {
             if (recipe.matches(false, inputs, fluidInputs)) {
+                return voltage >= recipe.getEUt() ? recipe : null;
+            }
+        }
+        return null;
+    }
+
+    @Nullable
+    private Recipe findByInputs(long voltage, List<ItemStack> inputs) {
+        for (Recipe recipe : recipeList) {
+            if (recipe.matches(inputs) && !recipe.getInputs().isEmpty()) {
                 return voltage >= recipe.getEUt() ? recipe : null;
             }
         }

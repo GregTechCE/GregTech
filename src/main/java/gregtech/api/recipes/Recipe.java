@@ -9,6 +9,7 @@ import net.minecraft.util.NonNullList;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.items.IItemHandlerModifiable;
 import org.apache.commons.lang3.Validate;
+import stanhebben.zenscript.util.Pair;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -83,15 +84,16 @@ public class Recipe {
 
     public boolean matches(boolean consumeIfSuccessful, List<ItemStack> inputs, List<FluidStack> fluidInputs) {
         int[] fluidAmountInTank = new int[fluidInputs.size()];
-        int[] itemAmountInSlot = new int[inputs.size()];
+
+        Pair<Boolean, int[]> pair = matchesItem(inputs);
+        if (!pair.getKey()) {
+            return false;
+        }
+        int[] itemAmountInSlot = pair.getValue();
 
         for (int i = 0; i < fluidAmountInTank.length; i++) {
             FluidStack fluidInTank = fluidInputs.get(i);
             fluidAmountInTank[i] = fluidInTank == null ? 0 : fluidInTank.amount;
-        }
-        for (int i = 0; i < itemAmountInSlot.length; i++) {
-            ItemStack itemInSlot = inputs.get(i);
-            itemAmountInSlot[i] = itemInSlot.isEmpty() ? 0 : itemInSlot.getCount();
         }
 
         for (FluidStack fluid : this.fluidInputs) {
@@ -111,26 +113,6 @@ public class Recipe {
                 if (fluidAmount == 0) break;
             }
             if (fluidAmount > 0)
-                return false;
-        }
-
-        for (CountableIngredient ingredient : this.inputs) {
-            int ingredientAmount = ingredient.getCount();
-            boolean isNotConsumed = false;
-            if (ingredientAmount == 0) {
-                ingredientAmount = 1;
-                isNotConsumed = true;
-            }
-            for (int i = 0; i < inputs.size(); i++) {
-                ItemStack inputStack = inputs.get(i);
-                if (inputStack.isEmpty() || !ingredient.getIngredient().apply(inputStack))
-                    continue;
-                int itemAmountToConsume = Math.min(itemAmountInSlot[i], ingredientAmount);
-                ingredientAmount -= itemAmountToConsume;
-                if (!isNotConsumed) itemAmountInSlot[i] -= itemAmountToConsume;
-                if (ingredientAmount == 0) break;
-            }
-            if (ingredientAmount > 0)
                 return false;
         }
 
@@ -156,6 +138,41 @@ public class Recipe {
         return true;
     }
 
+    public boolean matches(List<ItemStack> inputs) {
+        return matchesItem(inputs).getKey();
+    }
+
+    private Pair<Boolean, int[]> matchesItem(List<ItemStack> inputs) {
+        int[] itemAmountInSlot = new int[inputs.size()];
+
+        for (int i = 0; i < itemAmountInSlot.length; i++) {
+            ItemStack itemInSlot = inputs.get(i);
+            itemAmountInSlot[i] = itemInSlot.isEmpty() ? 0 : itemInSlot.getCount();
+        }
+
+        for (CountableIngredient ingredient : this.inputs) {
+            int ingredientAmount = ingredient.getCount();
+            boolean isNotConsumed = false;
+            if (ingredientAmount == 0) {
+                ingredientAmount = 1;
+                isNotConsumed = true;
+            }
+            for (int i = 0; i < inputs.size(); i++) {
+                ItemStack inputStack = inputs.get(i);
+                if (inputStack.isEmpty() || !ingredient.getIngredient().apply(inputStack))
+                    continue;
+                int itemAmountToConsume = Math.min(itemAmountInSlot[i], ingredientAmount);
+                ingredientAmount -= itemAmountToConsume;
+                if (!isNotConsumed) itemAmountInSlot[i] -= itemAmountToConsume;
+                if (ingredientAmount == 0) break;
+            }
+            if (ingredientAmount > 0)
+                return new Pair<>(false, itemAmountInSlot);
+        }
+
+        return new Pair<>(true, itemAmountInSlot);
+    }
+
     ///////////////////
     //    Getters    //
     ///////////////////
@@ -176,7 +193,7 @@ public class Recipe {
             chancedOutputsList = chancedOutputsList.subList(0, Math.max(0, maxChancedSlots));
         }
         for (ChanceEntry chancedOutput : chancedOutputsList) {
-            int outputChance = RecipeMap.getChanceFunction().chanceFor(chancedOutput.getChance(),chancedOutput.getBoostPerTier(), tier);
+            int outputChance = RecipeMap.getChanceFunction().chanceFor(chancedOutput.getChance(), chancedOutput.getBoostPerTier(), tier);
             if (random.nextInt(Recipe.getMaxChancedValue()) <= outputChance) {
                 outputs.add(chancedOutput.getItemStack().copy());
             }

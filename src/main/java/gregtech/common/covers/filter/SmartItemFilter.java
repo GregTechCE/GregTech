@@ -21,6 +21,7 @@ import java.util.function.Consumer;
 public class SmartItemFilter extends ItemFilter {
 
     private SmartFilteringMode filteringMode = SmartFilteringMode.ELECTROLYZER;
+    private SmartMatchingMode matchingMode = SmartMatchingMode.DEFAULT;
 
     public SmartFilteringMode getFilteringMode() {
         return filteringMode;
@@ -28,6 +29,16 @@ public class SmartItemFilter extends ItemFilter {
 
     public void setFilteringMode(SmartFilteringMode filteringMode) {
         this.filteringMode = filteringMode;
+        markDirty();
+    }
+
+    public SmartMatchingMode getMatchingMode() {
+        return matchingMode;
+    }
+
+    public void setMatchingMode(SmartMatchingMode matchingMode) {
+        filteringMode.transferStackSizesCache.clear();
+        this.matchingMode = matchingMode;
         markDirty();
     }
 
@@ -45,8 +56,13 @@ public class SmartItemFilter extends ItemFilter {
         if (cachedTransferRateValue == null) {
             ItemStack infinitelyBigStack = itemStack.copy();
             infinitelyBigStack.setCount(Integer.MAX_VALUE);
-            Recipe recipe = filteringMode.recipeMap.findRecipe(Long.MAX_VALUE, Collections.singletonList(infinitelyBigStack), Collections.emptyList(), Integer.MAX_VALUE);
-            if(recipe == null) {
+            Recipe recipe;
+            if (matchingMode == SmartMatchingMode.DEFAULT) {
+                recipe = filteringMode.recipeMap.findRecipe(Long.MAX_VALUE, Collections.singletonList(infinitelyBigStack), Collections.emptyList(), Integer.MAX_VALUE);
+            } else {
+                recipe = filteringMode.recipeMap.findRecipe(Long.MAX_VALUE, Collections.singletonList(infinitelyBigStack), Integer.MAX_VALUE);
+            }
+            if (recipe == null) {
                 filteringMode.transferStackSizesCache.put(itemAndMetadata, 0);
                 cachedTransferRateValue = 0;
             } else {
@@ -66,6 +82,8 @@ public class SmartItemFilter extends ItemFilter {
     public void initUI(Consumer<Widget> widgetGroup) {
         widgetGroup.accept(new CycleButtonWidget(10, 0, 75, 20,
             SmartFilteringMode.class, this::getFilteringMode, this::setFilteringMode));
+        widgetGroup.accept(new CycleButtonWidget(10, 20, 75, 20,
+            SmartMatchingMode.class, this::getMatchingMode, this::setMatchingMode));
     }
 
     @Override
@@ -81,11 +99,17 @@ public class SmartItemFilter extends ItemFilter {
     @Override
     public void writeToNBT(NBTTagCompound tagCompound) {
         tagCompound.setInteger("FilterMode", filteringMode.ordinal());
+        tagCompound.setInteger("MatchingMode", matchingMode.ordinal());
     }
 
     @Override
     public void readFromNBT(NBTTagCompound tagCompound) {
         this.filteringMode = SmartFilteringMode.values()[tagCompound.getInteger("FilterMode")];
+        if (tagCompound.hasKey("MatchingMode")) {
+            this.matchingMode = SmartMatchingMode.values()[tagCompound.getInteger("MatchingMode")];
+        } else {
+            this.matchingMode = SmartMatchingMode.DEFAULT;
+        }
     }
 
     private class ItemAndMetadataAndStackSize {
@@ -112,8 +136,8 @@ public class SmartItemFilter extends ItemFilter {
     }
 
     public enum SmartFilteringMode implements IStringSerializable {
-        ELECTROLYZER("cover.smart_item_filter.mode.electrolyzer", RecipeMaps.ELECTROLYZER_RECIPES),
-        CENTRIFUGE("cover.smart_item_filter.mode.centrifuge", RecipeMaps.CENTRIFUGE_RECIPES);
+        ELECTROLYZER("cover.smart_item_filter.filtering_mode.electrolyzer", RecipeMaps.ELECTROLYZER_RECIPES),
+        CENTRIFUGE("cover.smart_item_filter.filtering_mode.centrifuge", RecipeMaps.CENTRIFUGE_RECIPES);
 
         private final Map<ItemAndMetadata, Integer> transferStackSizesCache = new HashMap<>();
         public final String localeName;
@@ -128,6 +152,24 @@ public class SmartItemFilter extends ItemFilter {
         public String getName() {
             return localeName;
         }
+    }
+
+    public enum SmartMatchingMode implements IStringSerializable {
+
+        DEFAULT("cover.smart_item_filter.matching_mode.default"),
+        IGNORE_FLUID("cover.smart_item_filter.matching_mode.ignore_fluid");
+
+        public final String localeName;
+
+        SmartMatchingMode(String localeName) {
+            this.localeName = localeName;
+        }
+
+        @Override
+        public String getName() {
+            return localeName;
+        }
+
     }
 
 }
