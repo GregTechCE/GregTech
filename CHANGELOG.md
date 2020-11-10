@@ -1,9 +1,21 @@
 ## Changelog
 
+### 1.10.5
+* Added LargeStackSizeItemStackHandler to API (#1284) - LAGIdiot
+* Added a JEI Info Tab for the Fluid Canner Machines for Buckets and Fluid Cells (#1288) - Frederic Marceau
+* Added recipe for turning Block of Quartz (Vanilla MC) to 4 Nether Quartz (Vanilla MC) (#1293) - LAGIdiot
+* Updated Granite to be its own material (#1287) - LAGIdiot
+    * Macerating recipe changed
+* Fixed Item Filter not persisting items with size > 127 (#1284) - LAGIdiot
+* Fixed recipe validation logging data from builder chance instead of recipe chance (#1297) - galyfray
+* Fixed Machine Controller GUI allowing to set too high redstone signal (#1299) - galyfray
+* Fixed Machine Controller incorrectly setting working enabled on cover removal (#1299) - galyfray
+* Fixed recipes taking 1 tick less to finish then they should (#1301) - LAGIdiot
+
 ### 1.10.4
 * Added placing Pump/Conveyor/Robotic Arm on Output side of machine will turn allow input from output side on (#1266) - PrototypeTrousers
 * Fixed issue preventing battery from fully charged. (#1267) - Derek.CHAN
-* Fixes Crafting Station crash and item dupe (#1274) - PrototypeTrousers
+* Fixed Crafting Station crash and item dupe (#1274) - PrototypeTrousers
 * Fixed some RU lang entries (#1279) - Bombm
 
 ### 1.10.3
