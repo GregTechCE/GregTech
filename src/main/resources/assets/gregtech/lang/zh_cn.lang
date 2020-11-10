@@ -566,7 +566,7 @@ metaitem.msfmixture.name=魔法超级燃料粘合剂
 metaitem.msfmixture.tooltip=合成材料
 
 metaitem.rubber_drop.name=橡胶
-metaitem.plant_ball.name=植物求
+metaitem.plant_ball.name=植物球
 metaitem.tool_parts_box.name=零件盒
 metaitem.tool_parts_box.tooltip=盛装一些工具部件/n按右键打开
 metaitem.foam_sprayer.name=建筑泡沫喷枪
@@ -2876,4 +2876,5 @@ gregtech.command.util.hand.fluid=流体信息: %s %d / %d 升; 可输入: %s; �
 gregtech.command.util.hand.material_meta_item=矿物前缀: %s; 材质: %s
 gregtech.command.util.hand.tool_stats=工具状态类: %s
 gregtech.command.util.hand.meta_item=元物品名字: %s
-gregtech.command.util.hand.not_a_player=这条命令只能由玩家使用.
+gregtech.command.util.hand.not_a_player=这条指令只能由玩家使用。
+gregtech.command.util.hand.not_item=必须在主手持握物品时执行这条指令。

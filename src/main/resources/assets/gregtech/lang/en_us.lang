@@ -2961,3 +2961,4 @@ gregtech.command.util.hand.material_meta_item=Ore Prefix: %s; Material: %s
 gregtech.command.util.hand.tool_stats=Tool Stats Class: %s
 gregtech.command.util.hand.meta_item=Meta Item Name: %s
 gregtech.command.util.hand.not_a_player=This command is only usable by a player.
+gregtech.command.util.hand.not_item=You must hold something in mainhand before executing this command.
