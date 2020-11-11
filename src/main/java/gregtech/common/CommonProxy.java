@@ -90,7 +90,6 @@ public class CommonProxy {
         FLUID_BLOCKS.forEach(event.getRegistry()::register);
     }
 
-    @SuppressWarnings("unchecked")
     @SubscribeEvent
     public static void registerItems(RegistryEvent.Register<Item> event) {
         GTLog.logger.info("Registering Items...");
