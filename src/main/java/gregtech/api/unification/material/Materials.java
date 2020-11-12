@@ -712,8 +712,6 @@ public class Materials {
         Sodalite.addOreByProducts(Lazurite, Lapis);
         Spodumene.addOreByProducts(Aluminium, Lithium);
         Ruby.addOreByProducts(Chrome, GarnetRed);
-        Redstone.addOreByProducts(Cinnabar, Pyrite);
-        Cinnabar.addOreByProducts(Ruby);
         Phosphor.addOreByProducts(Apatite, Phosphate);
         Iridium.addOreByProducts(Platinum, Osmium);
         Pyrope.addOreByProducts(GarnetRed, Magnesium);
