@@ -48,6 +48,7 @@ public class CoverConveyor extends CoverBehavior implements CoverWithUI, ITickab
     protected int itemsLeftToTransferLastSecond;
     private CoverableItemHandlerWrapper itemHandlerWrapper;
     protected boolean isWorkingAllowed = true;
+    protected DiagnoseIssue diagnoseIssue;
 
     public CoverConveyor(ICoverable coverable, EnumFacing attachedSide, int tier, int itemsPerSecond) {
         super(coverable, attachedSide);
@@ -56,6 +57,7 @@ public class CoverConveyor extends CoverBehavior implements CoverWithUI, ITickab
         this.transferRate = maxItemTransferRate;
         this.itemsLeftToTransferLastSecond = transferRate;
         this.conveyorMode = ConveyorMode.EXPORT;
+        this.diagnoseIssue = DiagnoseIssue.IDLING;
         this.itemFilterContainer = new ItemFilterContainer(this);
     }
 
@@ -86,6 +88,14 @@ public class CoverConveyor extends CoverBehavior implements CoverWithUI, ITickab
         coverHolder.markDirty();
     }
 
+    public DiagnoseIssue getDiagnoseIssue() {
+        return this.diagnoseIssue;
+    }
+
+    public void setDiagnoseIssue(DiagnoseIssue diagnoseIssue) {
+        this.diagnoseIssue = diagnoseIssue;
+    }
+
     @Override
     public void update() {
         long timer = coverHolder.getTimer();
@@ -99,6 +109,12 @@ public class CoverConveyor extends CoverBehavior implements CoverWithUI, ITickab
             }
         }
         if (timer % 20 == 0) {
+            if (itemsLeftToTransferLastSecond < transferRate) {
+                setDiagnoseIssue(DiagnoseIssue.WORKING);
+            }
+            if (itemsLeftToTransferLastSecond == transferRate) {
+                setDiagnoseIssue(DiagnoseIssue.IDLING);
+            }
             this.itemsLeftToTransferLastSecond = transferRate;
         }
     }
@@ -392,6 +408,10 @@ public class CoverConveyor extends CoverBehavior implements CoverWithUI, ITickab
     @Override
     public <T> T getCapability(Capability<T> capability, T defaultValue) {
         if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
+            if (defaultValue == null ) {
+                setDiagnoseIssue(DiagnoseIssue.EXPECTED_CAPABILITY_UNAVAILABLE);
+                return null;
+            }
             IItemHandler delegate = (IItemHandler) defaultValue;
             if (itemHandlerWrapper == null || itemHandlerWrapper.delegate != delegate) {
                 this.itemHandlerWrapper = new CoverableItemHandlerWrapper(delegate);
@@ -428,6 +448,8 @@ public class CoverConveyor extends CoverBehavior implements CoverWithUI, ITickab
         primaryGroup.addWidget(new CycleButtonWidget(10, 166, 113, 20,
             ManualImportExportMode.class, this::getManualImportExportMode, this::setManualImportExportMode)
             .setTooltipHoverString("cover.universal.manual_import_export.mode.description"));
+
+        primaryGroup.addWidget(new DiagnoseWidget(80,90,16,16,DiagnoseIssue.class,this::getDiagnoseIssue));
 
         this.itemFilterContainer.initUI(70, primaryGroup::addWidget);
 

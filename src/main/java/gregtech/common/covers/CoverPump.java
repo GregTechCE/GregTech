@@ -47,6 +47,7 @@ public class CoverPump extends CoverBehavior implements CoverWithUI, ITickable, 
     protected boolean isWorkingAllowed = true;
     protected final FluidFilterContainer fluidFilter;
     protected BucketMode bucketMode;
+    protected DiagnoseIssue diagnoseIssue;
 
     public CoverPump(ICoverable coverHolder, EnumFacing attachedSide, int tier, int mbPerTick) {
         super(coverHolder, attachedSide);
@@ -56,6 +57,7 @@ public class CoverPump extends CoverBehavior implements CoverWithUI, ITickable, 
         this.fluidLeftToTransferLastSecond = transferRate;
         this.pumpMode = PumpMode.EXPORT;
         this.bucketMode = BucketMode.MILLI_BUCKET;
+        this.diagnoseIssue = DiagnoseIssue.IDLING;
         this.fluidFilter = new FluidFilterContainer(this);
     }
 
@@ -98,6 +100,14 @@ public class CoverPump extends CoverBehavior implements CoverWithUI, ITickable, 
         coverHolder.markDirty();
     }
 
+    public DiagnoseIssue getDiagnoseIssue() {
+        return this.diagnoseIssue;
+    }
+
+    public void setDiagnoseIssue(DiagnoseIssue diagnoseIssue) {
+        this.diagnoseIssue = diagnoseIssue;
+    }
+
     @Override
     public void update() {
         long timer = coverHolder.getTimer();
@@ -105,6 +115,12 @@ public class CoverPump extends CoverBehavior implements CoverWithUI, ITickable, 
             this.fluidLeftToTransferLastSecond -= doTransferFluids(fluidLeftToTransferLastSecond);
         }
         if (timer % 20 == 0) {
+            if (fluidLeftToTransferLastSecond < transferRate) {
+                setDiagnoseIssue(DiagnoseIssue.WORKING);
+            }
+            if (fluidLeftToTransferLastSecond == transferRate) {
+                setDiagnoseIssue(DiagnoseIssue.IDLING);
+            }
             this.fluidLeftToTransferLastSecond = transferRate;
         }
     }
@@ -157,7 +173,9 @@ public class CoverPump extends CoverBehavior implements CoverWithUI, ITickable, 
         primaryGroup.addWidget(new CycleButtonWidget(10, 160, 113, 20,
            ManualImportExportMode.class, this::getManualImportExportMode, this::setManualImportExportMode)
             .setTooltipHoverString("cover.universal.manual_import_export.mode.description"));
-              
+
+        primaryGroup.addWidget(new DiagnoseWidget(80,84,16,16,DiagnoseIssue.class,this::getDiagnoseIssue));
+
         this.fluidFilter.initUI(88, primaryGroup::addWidget);
 
         return ModularUI.builder(GuiTextures.BACKGROUND, 176, 184 + 82)
@@ -201,6 +219,10 @@ public class CoverPump extends CoverBehavior implements CoverWithUI, ITickable, 
     @Override
     public <T> T getCapability(Capability<T> capability, T defaultValue) {
         if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) {
+            if (defaultValue == null ) {
+                setDiagnoseIssue(DiagnoseIssue.EXPECTED_CAPABILITY_UNAVAILABLE);
+                return null;
+            }
             IFluidHandler delegate = (IFluidHandler) defaultValue;
             if (fluidHandlerWrapper == null || fluidHandlerWrapper.delegate != delegate) {
                 this.fluidHandlerWrapper = new CoverableFluidHandlerWrapper(delegate);
