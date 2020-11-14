@@ -81,9 +81,9 @@ public class SmartItemFilter extends ItemFilter {
     @Override
     public void initUI(Consumer<Widget> widgetGroup) {
         widgetGroup.accept(new CycleButtonWidget(10, 0, 75, 20,
-            SmartFilteringMode.class, this::getFilteringMode, this::setFilteringMode));
+            SmartFilteringMode.class, this::getFilteringMode, this::setFilteringMode).setTooltipHoverString("cover.smart_item_filter.filtering_mode.description"));
         widgetGroup.accept(new CycleButtonWidget(10, 20, 75, 20,
-            SmartMatchingMode.class, this::getMatchingMode, this::setMatchingMode));
+            SmartMatchingMode.class, this::getMatchingMode, this::setMatchingMode).setTooltipHoverString("cover.smart_item_filter.matching_mode.description"));
     }
 
     @Override
@@ -107,8 +107,6 @@ public class SmartItemFilter extends ItemFilter {
         this.filteringMode = SmartFilteringMode.values()[tagCompound.getInteger("FilterMode")];
         if (tagCompound.hasKey("MatchingMode")) {
             this.matchingMode = SmartMatchingMode.values()[tagCompound.getInteger("MatchingMode")];
-        } else {
-            this.matchingMode = SmartMatchingMode.DEFAULT;
         }
     }
 

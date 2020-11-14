@@ -700,10 +700,10 @@ cover.item_filter.ignore_nbt.disabled=Respect NBT
 cover.smart_item_filter.title=Smart Item Filter
 cover.smart_item_filter.filtering_mode.electrolyzer=Electrolyzer
 cover.smart_item_filter.filtering_mode.centrifuge=Centrifuge
-cover.smart_item_filter.filtering_mode.tooltip=Select Machine this Smart Filter will use for filtering./nIt will automatically pick right portions of items for robotic arm.
+cover.smart_item_filter.filtering_mode.description=Select Machine this Smart Filter will use for filtering./nIt will automatically pick right portions of items for robotic arm.
 cover.smart_item_filter.matching_mode.default=Default
 cover.smart_item_filter.matching_mode.ignore_fluid=Ignore Fluids
-cover.smart_item_filter.matching_mode.tooltip=Select mode this Smart Filter will use for filtering./nDefault will assume your not providing any fluid for the recipe.
+cover.smart_item_filter.matching_mode.description=§eDefault§r - Will match recipes on both items/fluids criteria assuming you aren't providing any fluid. /n§eIgnore Fluids§r - Will match recipes only on items criteria.
 
 cover.conveyor.title=Conveyor Cover Settings (%s)
 cover.conveyor.transfer_rate=%s items/sec

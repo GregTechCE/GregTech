@@ -33,8 +33,8 @@ import net.minecraftforge.fml.common.Optional.Method;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.IItemHandlerModifiable;
-import stanhebben.zenscript.annotations.*;
 import stanhebben.zenscript.annotations.Optional;
+import stanhebben.zenscript.annotations.*;
 
 import javax.annotation.Nullable;
 import java.util.*;
@@ -286,10 +286,11 @@ public class RecipeMap<R extends RecipeBuilder<R>> {
         return null;
     }
 
+    @SuppressWarnings("unchecked")
     @Nullable
     private Recipe findByInputs(long voltage, List<ItemStack> inputs) {
         for (Recipe recipe : recipeList) {
-            if (recipe.matches(inputs) && !recipe.getInputs().isEmpty()) {
+            if (recipe.matches(false, inputs, Collections.EMPTY_LIST, Recipe.MatchingMode.ITEM_ONLY) && !recipe.getInputs().isEmpty()) {
                 return voltage >= recipe.getEUt() ? recipe : null;
             }
         }
