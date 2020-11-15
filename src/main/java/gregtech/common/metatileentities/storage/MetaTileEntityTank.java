@@ -98,7 +98,7 @@ public class MetaTileEntityTank extends MetaTileEntity implements IFastRenderMet
                 MetaTileEntityTank.this.onFluidChangedInternal();
             }
         };
-        initializeInventory();
+        this.fluidInventory = getActualFluidTank();
     }
 
     @Override
