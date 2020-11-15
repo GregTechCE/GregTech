@@ -196,10 +196,10 @@ public class MetaTileEntityTank extends MetaTileEntity implements IFastRenderMet
         tankMap.values().forEach(it -> it.setTankController(newController));
     }
 
-    private double getFluidLevelForTank(BlockPos tankPos, Boolean rendering) {
+    private double getFluidLevelForTank(BlockPos tankPos) {
         if (!isTankController()) {
             MetaTileEntityTank controller = getControllerEntity();
-            return controller == null ? 0.0 : controller.getFluidLevelForTank(tankPos, rendering);
+            return controller == null ? 0.0 : controller.getFluidLevelForTank(tankPos);
         }
         FluidStack fluidStack = multiblockFluidTank.getFluid();
         if (fluidStack == null) {
@@ -207,16 +207,13 @@ public class MetaTileEntityTank extends MetaTileEntity implements IFastRenderMet
         }
         double fluidLevel = multiblockFluidTank.getFluidAmount() / (1.0 * multiblockFluidTank.getCapacity());
         double resultLevel;
-        if (rendering) {
-            if (fluidStack.getFluid().isGaseous(fluidStack)) {
-                resultLevel = fluidLevel;
-            } else {
-                int tankOffset = (tankPos.getY() - getPos().getY());
-                resultLevel = fluidLevel * multiblockSize.getY() - tankOffset;
-            }
-            return MathHelper.clamp(resultLevel, 0.0, 1.0);
+        if (fluidStack.getFluid().isGaseous(fluidStack)) {
+            resultLevel = fluidLevel;
+        } else {
+            int tankOffset = (tankPos.getY() - getPos().getY());
+            resultLevel = fluidLevel * multiblockSize.getY() - tankOffset;
         }
-        return fluidLevel;
+        return MathHelper.clamp(resultLevel, 0.0, 1.0);
     }
 
     private int getConnectionMaskForTank(BlockPos blockPos, int excludeMask) {
@@ -235,7 +232,7 @@ public class MetaTileEntityTank extends MetaTileEntity implements IFastRenderMet
     }
 
     private int getFluidStoredInTank(BlockPos blockPos) {
-        double fluidLevel = getFluidLevelForTank(blockPos,false);
+        double fluidLevel = getFluidLevelForTank(blockPos);
         return MathHelper.floor(fluidLevel * tankSize);
     }
 
@@ -373,7 +370,7 @@ public class MetaTileEntityTank extends MetaTileEntity implements IFastRenderMet
         debugInfo.add("Tank fluid: " + multiblockFluidTank.getFluidAmount() + "/" + multiblockFluidTank.getCapacity() + " #" + multiblockFluidTank.hashCode());
         FluidTank actualTankFluid = getActualFluidTank();
         debugInfo.add("Actual Tank fluid: " + actualTankFluid.getFluidAmount() + "/" + actualTankFluid.getCapacity() + " #" + actualTankFluid.hashCode());
-        debugInfo.add("FluidLevel: " + getFluidLevelForTank(getPos(),false));
+        debugInfo.add("FluidLevel: " + getFluidLevelForTank(getPos()));
         debugInfo.add("FluidInTank: " + getFluidStoredInTank(getPos()));
     }
 
@@ -639,7 +636,7 @@ public class MetaTileEntityTank extends MetaTileEntity implements IFastRenderMet
         if (getWorld() == null) {
             fillPercent = fluidStack == null ? 0 : fluidStack.amount / (tankSize * 1.0);
         } else {
-            fillPercent = getFluidLevelForTank(getPos(),true);
+            fillPercent = getFluidLevelForTank(getPos());
         }
         if (fillPercent > 0.0) {
             getTankRenderer().renderFluid(renderState, translation, connectionMask, fillPercent, fluidStack);
