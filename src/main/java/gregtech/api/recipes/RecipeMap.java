@@ -207,20 +207,31 @@ public class RecipeMap<R extends RecipeBuilder<R>> {
 
     @Nullable
     public Recipe findRecipe(long voltage, IItemHandlerModifiable inputs, IMultipleTankHandler fluidInputs, int outputFluidTankCapacity) {
-        return this.findRecipe(voltage, GTUtility.itemHandlerToList(inputs), GTUtility.fluidHandlerToList(fluidInputs), outputFluidTankCapacity);
+        return this.findRecipe(voltage, GTUtility.itemHandlerToList(inputs), GTUtility.fluidHandlerToList(fluidInputs), outputFluidTankCapacity, MatchingMode.DEFAULT);
+    }
+
+    @Nullable
+    public Recipe findRecipe(long voltage, List<ItemStack> inputs, List<FluidStack> fluidInputs, int outputFluidTankCapacity) {
+        return this.findRecipe(voltage, inputs, fluidInputs, outputFluidTankCapacity, MatchingMode.DEFAULT);
+    }
+
+    @Nullable
+    public Recipe findRecipe(long voltage, IItemHandlerModifiable inputs, IMultipleTankHandler fluidInputs, int outputFluidTankCapacity, MatchingMode matchingMode) {
+        return this.findRecipe(voltage, GTUtility.itemHandlerToList(inputs), GTUtility.fluidHandlerToList(fluidInputs), outputFluidTankCapacity, matchingMode);
     }
 
     /**
-     * Finds a Recipe matching the Fluid and ItemStack Inputs.
+     * Finds a Recipe matching the Fluid and/or ItemStack Inputs.
      *
      * @param voltage                 Voltage of the Machine or Long.MAX_VALUE if it has no Voltage
      * @param inputs                  the Item Inputs
      * @param fluidInputs             the Fluid Inputs
      * @param outputFluidTankCapacity minimal capacity of output fluid tank, used for fluid canner recipes for example
+     * @param matchingMode            matching logic used for finding the recipe according to {@link MatchingMode}
      * @return the Recipe it has found or null for no matching Recipe
      */
     @Nullable
-    public Recipe findRecipe(long voltage, List<ItemStack> inputs, List<FluidStack> fluidInputs, int outputFluidTankCapacity) {
+    public Recipe findRecipe(long voltage, List<ItemStack> inputs, List<FluidStack> fluidInputs, int outputFluidTankCapacity, MatchingMode matchingMode) {
         if (recipeList.isEmpty())
             return null;
         if (minFluidInputs > 0 && GTUtility.amountOfNonNullElements(fluidInputs) < minFluidInputs) {
@@ -230,45 +241,20 @@ public class RecipeMap<R extends RecipeBuilder<R>> {
             return null;
         }
         if (maxInputs > 0) {
-            return findByInputs(voltage, inputs, fluidInputs);
+            return findByInputs(voltage, inputs, fluidInputs, matchingMode);
         } else {
-            return findByFluidInputs(voltage, inputs, fluidInputs);
+            return findByFluidInputs(voltage, inputs, fluidInputs, matchingMode);
         }
     }
 
-    /**
-     * Finds a Recipe matching ItemStack Inputs ignoring any required fluid input .
-     *
-     * @param voltage                 Voltage of the Machine or Long.MAX_VALUE if it has no Voltage
-     * @param inputs                  the Item Inputs
-     * @param outputFluidTankCapacity minimal capacity of output fluid tank, used for fluid canner recipes for example
-     * @return the Recipe it has found or null for no matching Recipe
-     */
     @Nullable
-    public Recipe findRecipe(long voltage, List<ItemStack> inputs, int outputFluidTankCapacity) {
-        if (recipeList.isEmpty())
-            return null;
-        if (minInputs > 0 && GTUtility.amountOfNonEmptyStacks(inputs) < minInputs) {
-            return null;
-        }
-        if (inputs.isEmpty())
-            return null;
-        if (maxInputs > 0) {
-            return findByInputs(voltage, inputs);
-        } else {
-            return null;
-        }
-    }
-
-
-    @Nullable
-    private Recipe findByFluidInputs(long voltage, List<ItemStack> inputs, List<FluidStack> fluidInputs) {
+    private Recipe findByFluidInputs(long voltage, List<ItemStack> inputs, List<FluidStack> fluidInputs, MatchingMode matchingMode) {
         for (FluidStack fluid : fluidInputs) {
             if (fluid == null) continue;
             Collection<Recipe> recipes = recipeFluidMap.get(new FluidKey(fluid));
             if (recipes == null) continue;
             for (Recipe tmpRecipe : recipes) {
-                if (tmpRecipe.matches(false, inputs, fluidInputs)) {
+                if (tmpRecipe.matches(false, inputs, fluidInputs, matchingMode)) {
                     return voltage >= tmpRecipe.getEUt() ? tmpRecipe : null;
                 }
             }
@@ -277,20 +263,9 @@ public class RecipeMap<R extends RecipeBuilder<R>> {
     }
 
     @Nullable
-    private Recipe findByInputs(long voltage, List<ItemStack> inputs, List<FluidStack> fluidInputs) {
+    private Recipe findByInputs(long voltage, List<ItemStack> inputs, List<FluidStack> fluidInputs, MatchingMode matchingMode) {
         for (Recipe recipe : recipeList) {
-            if (recipe.matches(false, inputs, fluidInputs)) {
-                return voltage >= recipe.getEUt() ? recipe : null;
-            }
-        }
-        return null;
-    }
-
-    @SuppressWarnings("unchecked")
-    @Nullable
-    private Recipe findByInputs(long voltage, List<ItemStack> inputs) {
-        for (Recipe recipe : recipeList) {
-            if (recipe.matches(false, inputs, Collections.EMPTY_LIST, Recipe.MatchingMode.ITEM_ONLY) && !recipe.getInputs().isEmpty()) {
+            if (recipe.matches(false, inputs, fluidInputs, matchingMode)) {
                 return voltage >= recipe.getEUt() ? recipe : null;
             }
         }

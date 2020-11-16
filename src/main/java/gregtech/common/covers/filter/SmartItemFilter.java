@@ -2,10 +2,7 @@ package gregtech.common.covers.filter;
 
 import gregtech.api.gui.Widget;
 import gregtech.api.gui.widgets.CycleButtonWidget;
-import gregtech.api.recipes.CountableIngredient;
-import gregtech.api.recipes.Recipe;
-import gregtech.api.recipes.RecipeMap;
-import gregtech.api.recipes.RecipeMaps;
+import gregtech.api.recipes.*;
 import gregtech.api.unification.stack.ItemAndMetadata;
 import gregtech.api.util.ItemStackKey;
 import net.minecraft.item.ItemStack;
@@ -56,12 +53,9 @@ public class SmartItemFilter extends ItemFilter {
         if (cachedTransferRateValue == null) {
             ItemStack infinitelyBigStack = itemStack.copy();
             infinitelyBigStack.setCount(Integer.MAX_VALUE);
-            Recipe recipe;
-            if (matchingMode == SmartMatchingMode.DEFAULT) {
-                recipe = filteringMode.recipeMap.findRecipe(Long.MAX_VALUE, Collections.singletonList(infinitelyBigStack), Collections.emptyList(), Integer.MAX_VALUE);
-            } else {
-                recipe = filteringMode.recipeMap.findRecipe(Long.MAX_VALUE, Collections.singletonList(infinitelyBigStack), Integer.MAX_VALUE);
-            }
+
+            Recipe recipe = filteringMode.recipeMap.findRecipe(Long.MAX_VALUE, Collections.singletonList(infinitelyBigStack), Collections.emptyList(), Integer.MAX_VALUE, matchingMode.matchingMode);
+
             if (recipe == null) {
                 filteringMode.transferStackSizesCache.put(itemAndMetadata, 0);
                 cachedTransferRateValue = 0;
@@ -81,9 +75,11 @@ public class SmartItemFilter extends ItemFilter {
     @Override
     public void initUI(Consumer<Widget> widgetGroup) {
         widgetGroup.accept(new CycleButtonWidget(10, 0, 75, 20,
-            SmartFilteringMode.class, this::getFilteringMode, this::setFilteringMode).setTooltipHoverString("cover.smart_item_filter.filtering_mode.description"));
+            SmartFilteringMode.class, this::getFilteringMode, this::setFilteringMode)
+            .setTooltipHoverString("cover.smart_item_filter.filtering_mode.description"));
         widgetGroup.accept(new CycleButtonWidget(10, 20, 75, 20,
-            SmartMatchingMode.class, this::getMatchingMode, this::setMatchingMode).setTooltipHoverString("cover.smart_item_filter.matching_mode.description"));
+            SmartMatchingMode.class, this::getMatchingMode, this::setMatchingMode)
+            .setTooltipHoverString("cover.smart_item_filter.matching_mode.description"));
     }
 
     @Override
@@ -154,13 +150,15 @@ public class SmartItemFilter extends ItemFilter {
 
     public enum SmartMatchingMode implements IStringSerializable {
 
-        DEFAULT("cover.smart_item_filter.matching_mode.default"),
-        IGNORE_FLUID("cover.smart_item_filter.matching_mode.ignore_fluid");
+        DEFAULT("cover.smart_item_filter.matching_mode.default", MatchingMode.DEFAULT),
+        IGNORE_FLUID("cover.smart_item_filter.matching_mode.ignore_fluid", MatchingMode.IGNORE_FLUIDS);
 
         public final String localeName;
+        public final MatchingMode matchingMode;
 
-        SmartMatchingMode(String localeName) {
+        SmartMatchingMode(String localeName, MatchingMode matchingMode) {
             this.localeName = localeName;
+            this.matchingMode = matchingMode;
         }
 
         @Override

@@ -4,6 +4,7 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import gregtech.api.capability.IMultipleTankHandler;
 import gregtech.api.util.GTUtility;
+import javafx.util.Pair;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
 import net.minecraftforge.fluids.FluidStack;
@@ -89,62 +90,36 @@ public class Recipe {
         return matches(consumeIfSuccessful, inputs, fluidInputs, MatchingMode.DEFAULT);
     }
 
+    /**
+     * This methods aim to verify if the current recipe matches the given inputs according to matchingMode mode.
+     *
+     * @param consumeIfSuccessful if true and matchingMode is equal to {@link MatchingMode#DEFAULT} will consume the inputs of the recipe.
+     * @param inputs              Items input or Collections.emptyList() if none.
+     * @param fluidInputs         Fluids input or Collections.emptyList() if none.
+     * @param matchingMode        How this method should check if inputs matches according to {@link MatchingMode} description.
+     * @return true if the recipe matches the given inputs false otherwise.
+     */
     public boolean matches(boolean consumeIfSuccessful, List<ItemStack> inputs, List<FluidStack> fluidInputs, MatchingMode matchingMode) {
-        int[] fluidAmountInTank = new int[fluidInputs.size()];
-        int[] itemAmountInSlot = new int[inputs.size()];
 
-        for (int i = 0; i < fluidAmountInTank.length; i++) {
-            FluidStack fluidInTank = fluidInputs.get(i);
-            fluidAmountInTank[i] = fluidInTank == null ? 0 : fluidInTank.amount;
+        if (matchingMode == MatchingMode.IGNORE_FLUIDS && getInputs().isEmpty()) {
+            return false;
         }
-        for (int i = 0; i < itemAmountInSlot.length; i++) {
-            ItemStack itemInSlot = inputs.get(i);
-            itemAmountInSlot[i] = itemInSlot.isEmpty() ? 0 : itemInSlot.getCount();
+        if (matchingMode == MatchingMode.IGNORE_ITEMS && getFluidInputs().isEmpty()) {
+            return false;
         }
 
-        if (matchingMode != MatchingMode.FLUID_ONLY) {
-            for (FluidStack fluid : this.fluidInputs) {
-                int fluidAmount = fluid.amount;
-                boolean isNotConsumed = false;
-                if (fluidAmount == 0) {
-                    fluidAmount = 1;
-                    isNotConsumed = true;
-                }
-                for (int i = 0; i < fluidInputs.size(); i++) {
-                    FluidStack tankFluid = fluidInputs.get(i);
-                    if (tankFluid == null || !tankFluid.isFluidEqual(fluid))
-                        continue;
-                    int fluidAmountToConsume = Math.min(fluidAmountInTank[i], fluidAmount);
-                    fluidAmount -= fluidAmountToConsume;
-                    if (!isNotConsumed) fluidAmountInTank[i] -= fluidAmountToConsume;
-                    if (fluidAmount == 0) break;
-                }
-                if (fluidAmount > 0)
-                    return false;
-            }
+        Pair<Boolean, Integer[]> fluids = matchesFluid(fluidInputs);
+        if (!fluids.getKey()) {
+            return false;
         }
 
-        if (matchingMode != MatchingMode.ITEM_ONLY) {
-            for (CountableIngredient ingredient : this.inputs) {
-                int ingredientAmount = ingredient.getCount();
-                boolean isNotConsumed = false;
-                if (ingredientAmount == 0) {
-                    ingredientAmount = 1;
-                    isNotConsumed = true;
-                }
-                for (int i = 0; i < inputs.size(); i++) {
-                    ItemStack inputStack = inputs.get(i);
-                    if (inputStack.isEmpty() || !ingredient.getIngredient().apply(inputStack))
-                        continue;
-                    int itemAmountToConsume = Math.min(itemAmountInSlot[i], ingredientAmount);
-                    ingredientAmount -= itemAmountToConsume;
-                    if (!isNotConsumed) itemAmountInSlot[i] -= itemAmountToConsume;
-                    if (ingredientAmount == 0) break;
-                }
-                if (ingredientAmount > 0)
-                    return false;
-            }
+        Pair<Boolean, Integer[]> items = matchesItems(inputs);
+        if (!items.getKey()) {
+            return false;
         }
+
+        Integer[] fluidAmountInTank = fluids.getValue();
+        Integer[] itemAmountInSlot = items.getValue();
 
         if (consumeIfSuccessful && matchingMode == MatchingMode.DEFAULT) {
             for (int i = 0; i < fluidAmountInTank.length; i++) {
@@ -166,6 +141,68 @@ public class Recipe {
         }
 
         return true;
+    }
+
+    private Pair<Boolean, Integer[]> matchesItems(List<ItemStack> inputs) {
+        Integer[] itemAmountInSlot = new Integer[inputs.size()];
+
+        for (int i = 0; i < itemAmountInSlot.length; i++) {
+            ItemStack itemInSlot = inputs.get(i);
+            itemAmountInSlot[i] = itemInSlot.isEmpty() ? 0 : itemInSlot.getCount();
+        }
+
+        for (CountableIngredient ingredient : this.inputs) {
+            int ingredientAmount = ingredient.getCount();
+            boolean isNotConsumed = false;
+            if (ingredientAmount == 0) {
+                ingredientAmount = 1;
+                isNotConsumed = true;
+            }
+            for (int i = 0; i < inputs.size(); i++) {
+                ItemStack inputStack = inputs.get(i);
+                if (inputStack.isEmpty() || !ingredient.getIngredient().apply(inputStack))
+                    continue;
+                int itemAmountToConsume = Math.min(itemAmountInSlot[i], ingredientAmount);
+                ingredientAmount -= itemAmountToConsume;
+                if (!isNotConsumed) itemAmountInSlot[i] -= itemAmountToConsume;
+                if (ingredientAmount == 0) break;
+            }
+            if (ingredientAmount > 0)
+                return new Pair<>(false, itemAmountInSlot);
+        }
+
+        return new Pair<>(true, itemAmountInSlot);
+
+    }
+
+    private Pair<Boolean, Integer[]> matchesFluid(List<FluidStack> fluidInputs) {
+        Integer[] fluidAmountInTank = new Integer[fluidInputs.size()];
+
+        for (int i = 0; i < fluidAmountInTank.length; i++) {
+            FluidStack fluidInTank = fluidInputs.get(i);
+            fluidAmountInTank[i] = fluidInTank == null ? 0 : fluidInTank.amount;
+        }
+
+        for (FluidStack fluid : this.fluidInputs) {
+            int fluidAmount = fluid.amount;
+            boolean isNotConsumed = false;
+            if (fluidAmount == 0) {
+                fluidAmount = 1;
+                isNotConsumed = true;
+            }
+            for (int i = 0; i < fluidInputs.size(); i++) {
+                FluidStack tankFluid = fluidInputs.get(i);
+                if (tankFluid == null || !tankFluid.isFluidEqual(fluid))
+                    continue;
+                int fluidAmountToConsume = Math.min(fluidAmountInTank[i], fluidAmount);
+                fluidAmount -= fluidAmountToConsume;
+                if (!isNotConsumed) fluidAmountInTank[i] -= fluidAmountToConsume;
+                if (fluidAmount == 0) break;
+            }
+            if (fluidAmount > 0)
+                return new Pair<>(false, fluidAmountInTank);
+        }
+        return new Pair<>(true, fluidAmountInTank);
     }
 
     ///////////////////
@@ -310,17 +347,6 @@ public class Recipe {
 
         public int getBoostPerTier() {
             return boostPerTier;
-        }
-    }
-
-    public enum MatchingMode {
-        DEFAULT,
-        FLUID_ONLY,
-        ITEM_ONLY;
-
-        @Override
-        public String toString() {
-            return this == DEFAULT ? "Default" : this == FLUID_ONLY ? "Fluid" : "Item";
         }
     }
 }
