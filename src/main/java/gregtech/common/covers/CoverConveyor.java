@@ -103,16 +103,21 @@ public class CoverConveyor extends CoverBehavior implements CoverWithUI, ITickab
             TileEntity tileEntity = coverHolder.getWorld().getTileEntity(coverHolder.getPos().offset(attachedSide));
             IItemHandler itemHandler = tileEntity == null ? null : tileEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, attachedSide.getOpposite());
             IItemHandler myItemHandler = coverHolder.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, attachedSide);
-            if (itemHandler != null && myItemHandler != null) {
-                int totalTransferred = doTransferItems(itemHandler, myItemHandler, itemsLeftToTransferLastSecond);
-                this.itemsLeftToTransferLastSecond -= totalTransferred;
+            if (myItemHandler == null) {
+                setDiagnoseIssue(DiagnoseIssue.EXPECTED_CAPABILITY_UNAVAILABLE);
+                return;
             }
+            if (itemHandler == null) {
+                setDiagnoseIssue(DiagnoseIssue.IDLING);
+                return;
+            }
+            int totalTransferred = doTransferItems(itemHandler, myItemHandler, itemsLeftToTransferLastSecond);
+            this.itemsLeftToTransferLastSecond -= totalTransferred;
         }
         if (timer % 20 == 0) {
             if (itemsLeftToTransferLastSecond < transferRate) {
                 setDiagnoseIssue(DiagnoseIssue.WORKING);
-            }
-            if (itemsLeftToTransferLastSecond == transferRate) {
+            } else {
                 setDiagnoseIssue(DiagnoseIssue.IDLING);
             }
             this.itemsLeftToTransferLastSecond = transferRate;

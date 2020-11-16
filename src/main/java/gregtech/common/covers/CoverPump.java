@@ -117,8 +117,7 @@ public class CoverPump extends CoverBehavior implements CoverWithUI, ITickable, 
         if (timer % 20 == 0) {
             if (fluidLeftToTransferLastSecond < transferRate) {
                 setDiagnoseIssue(DiagnoseIssue.WORKING);
-            }
-            if (fluidLeftToTransferLastSecond == transferRate) {
+            } else {
                 setDiagnoseIssue(DiagnoseIssue.IDLING);
             }
             this.fluidLeftToTransferLastSecond = transferRate;
@@ -132,7 +131,12 @@ public class CoverPump extends CoverBehavior implements CoverWithUI, ITickable, 
         blockPos.release();
         IFluidHandler fluidHandler = tileEntity == null ? null : tileEntity.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, attachedSide.getOpposite());
         IFluidHandler myFluidHandler = coverHolder.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, attachedSide);
-        if (fluidHandler == null || myFluidHandler == null) {
+        if (myFluidHandler == null) {
+            setDiagnoseIssue(DiagnoseIssue.EXPECTED_CAPABILITY_UNAVAILABLE);
+            return 0;
+        }
+        else if (fluidHandler == null) {
+            setDiagnoseIssue(DiagnoseIssue.IDLING);
             return 0;
         }
         return doTransferFluidsInternal(myFluidHandler, fluidHandler, transferLimit);
