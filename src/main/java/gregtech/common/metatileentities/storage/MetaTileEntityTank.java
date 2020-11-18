@@ -103,8 +103,8 @@ public class MetaTileEntityTank extends MetaTileEntity implements IFastRenderMet
 
     @Override
     public void onLoad() {
-        this.recheckBlockedSides();
         super.onLoad();
+        this.recheckBlockedSides();
     }
 
     @Override
