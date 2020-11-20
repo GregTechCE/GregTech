@@ -4,12 +4,12 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import gregtech.api.capability.IMultipleTankHandler;
 import gregtech.api.util.GTUtility;
-import javafx.util.Pair;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.items.IItemHandlerModifiable;
 import org.apache.commons.lang3.Validate;
+import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -100,28 +100,35 @@ public class Recipe {
      * @return true if the recipe matches the given inputs false otherwise.
      */
     public boolean matches(boolean consumeIfSuccessful, List<ItemStack> inputs, List<FluidStack> fluidInputs, MatchingMode matchingMode) {
+        Pair<Boolean, Integer[]> fluids = null;
+        Pair<Boolean, Integer[]> items = null;
 
-        if (matchingMode == MatchingMode.IGNORE_FLUIDS && getInputs().isEmpty()) {
-            return false;
-        }
-        if (matchingMode == MatchingMode.IGNORE_ITEMS && getFluidInputs().isEmpty()) {
-            return false;
-        }
-
-        Pair<Boolean, Integer[]> fluids = matchesFluid(fluidInputs);
-        if (!fluids.getKey()) {
-            return false;
-        }
-
-        Pair<Boolean, Integer[]> items = matchesItems(inputs);
-        if (!items.getKey()) {
-            return false;
+        if (matchingMode == MatchingMode.IGNORE_FLUIDS) {
+            if (getInputs().isEmpty()) {
+                return false;
+            }
+        } else {
+            fluids = matchesFluid(fluidInputs);
+            if (!fluids.getKey()) {
+                return false;
+            }
         }
 
-        Integer[] fluidAmountInTank = fluids.getValue();
-        Integer[] itemAmountInSlot = items.getValue();
+        if (matchingMode == MatchingMode.IGNORE_ITEMS) {
+            if (getFluidInputs().isEmpty()) {
+                return false;
+            }
+
+        } else {
+            items = matchesItems(inputs);
+            if (!items.getKey()) {
+                return false;
+            }
+        }
 
         if (consumeIfSuccessful && matchingMode == MatchingMode.DEFAULT) {
+            Integer[] fluidAmountInTank = fluids.getValue();
+            Integer[] itemAmountInSlot = items.getValue();
             for (int i = 0; i < fluidAmountInTank.length; i++) {
                 FluidStack fluidStack = fluidInputs.get(i);
                 int fluidAmount = fluidAmountInTank[i];
@@ -168,11 +175,10 @@ public class Recipe {
                 if (ingredientAmount == 0) break;
             }
             if (ingredientAmount > 0)
-                return new Pair<>(false, itemAmountInSlot);
+                return Pair.of(false, itemAmountInSlot);
         }
 
-        return new Pair<>(true, itemAmountInSlot);
-
+        return Pair.of(true, itemAmountInSlot);
     }
 
     private Pair<Boolean, Integer[]> matchesFluid(List<FluidStack> fluidInputs) {
@@ -200,9 +206,9 @@ public class Recipe {
                 if (fluidAmount == 0) break;
             }
             if (fluidAmount > 0)
-                return new Pair<>(false, fluidAmountInTank);
+                return Pair.of(false, fluidAmountInTank);
         }
-        return new Pair<>(true, fluidAmountInTank);
+        return Pair.of(true, fluidAmountInTank);
     }
 
     ///////////////////
