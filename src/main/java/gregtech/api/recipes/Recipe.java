@@ -118,7 +118,6 @@ public class Recipe {
             if (getFluidInputs().isEmpty()) {
                 return false;
             }
-
         } else {
             items = matchesItems(inputs);
             if (!items.getKey()) {
