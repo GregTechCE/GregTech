@@ -103,7 +103,7 @@ public class ToolSaw extends ToolBase {
                 worldIn.removeEventListener(this);
                 return;
             }
-            if (pos == blockPos && newState.getBlock() == Blocks.FLOWING_WATER) {
+            if (pos.equals(blockPos) && newState.getBlock() == Blocks.FLOWING_WATER) {
                 // it's probably alright to assume this will only be attempted once
                 worldIn.removeEventListener(this);
                 worldIn.setBlockState(pos, Blocks.AIR.getDefaultState(), flags);
