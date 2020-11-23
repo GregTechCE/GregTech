@@ -26,4 +26,25 @@ public class SimpleThermalFluidHandlerItemStack extends FluidHandlerItemStackSim
         int liquidTemperature = fluid.getFluid().getTemperature();
         return liquidTemperature >= minFluidTemperature && liquidTemperature <= maxFluidTemperature;
     }
+
+
+    @Override
+    public FluidStack drain(FluidStack resource, boolean doDrain) {
+        FluidStack drained = super.drain(resource, doDrain);
+        this.removeTagWhenEmpty(doDrain);
+        return drained;
+    }
+
+    @Override
+    public FluidStack drain(int maxDrain, boolean doDrain) {
+        FluidStack drained = super.drain(maxDrain, doDrain);
+        this.removeTagWhenEmpty(doDrain);
+        return drained;
+    }
+
+    private void removeTagWhenEmpty(Boolean doDrain) {
+        if(doDrain && this.getFluid() == null) {
+            this.container.setTagCompound(null);
+        }
+    }
 }
