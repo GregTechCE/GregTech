@@ -38,8 +38,8 @@ public class OreByProductCategory extends PrimitiveRecipeCategory<OreByProduct, 
 		IGuiItemStackGroup itemStackGroup = recipeLayout.getItemStacks();
 		itemStackGroup.init(0, true,  22,  29); //Ore
 		itemStackGroup.init(1, true,  70,  19); //Crushed
-		itemStackGroup.init(2, true,  88,  19); //Crushed Prurified
-		itemStackGroup.init(3, true, 106,  19); //Crushed Centfiguged
+		itemStackGroup.init(2, true,  88,  19); //Crushed Purified
+		itemStackGroup.init(3, true, 106,  19); //Crushed Centrifuged
 		itemStackGroup.init(4, true,  70,  37); //Dust Impure
 		itemStackGroup.init(5, true,  88,  37); //Dust Purified
 		itemStackGroup.init(6, true, 106,  37); //Dust
