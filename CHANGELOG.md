@@ -1,5 +1,20 @@
 ## Changelog
 
+### 1.10.6
+* Added Oredicts to granite variants, marble, basalt (#1306) - ALongStringOfNumbers
+* Added Matching Mode to API for possible recipe filtering (#1308) - galyfray
+* Added Smart Matching Mode to Smart Item Filter allowing it ignoring fluids in recipes (#1308) - galyfray
+* Updated Crafting Station to show only extractable items from connected inventories (#1290) - Frederic Marceau
+* Updated zh_cn localization (#1307) - Pierre Zhang
+* Updated Ore Byproduct JEI page to include data for Chemical Bath byproducts (#1310) - ALongStringOfNumbers
+* Fixed a missing command warning for hand (#1307) - Pierre Zhang
+* Fixed Smart Item Filter tooltip on Filter Mode (#1308) - galyfray
+* Fixed Ore Byproduct JEI page showing some unobtainable resources (#1310) - ALongStringOfNumbers
+* Fixed multiblock fluid tank forming on load not respecting blocked sides (#1313) - PrototypeTrousers
+* Fixed multiblock fluid tank incorrectly providing capabilities on load (#1313) - PrototypeTrousers
+* Fixed Ice broken by Saw still creating water block (#1317) - Eutro
+* Fixed drained Fluid Cells not stacking due to NBT (#1319) - ALongStringOfNumbers
+
 ### 1.10.5
 * Added LargeStackSizeItemStackHandler to API (#1284) - LAGIdiot
 * Added a JEI Info Tab for the Fluid Canner Machines for Buckets and Fluid Cells (#1288) - Frederic Marceau
