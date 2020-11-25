@@ -8,6 +8,7 @@ import gregtech.api.metatileentity.MTETrait;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.recipes.Recipe;
 import gregtech.api.recipes.RecipeMap;
+import gregtech.api.util.GTFluidUtils;
 import gregtech.api.util.GTUtility;
 import gregtech.common.ConfigHolder;
 import net.minecraft.item.ItemStack;
@@ -147,6 +148,16 @@ public abstract class AbstractRecipeLogic extends MTETrait implements IWorkable 
         Recipe currentRecipe = null;
         IItemHandlerModifiable importInventory = getInputInventory();
         IMultipleTankHandler importFluids = getInputTank();
+        boolean hasImportInventory = importInventory.getSlots() > 0;
+        boolean hasImportFluids = importFluids.getTanks() > 0;
+        boolean isImportInventoryEmpty = (GTUtility.amountOfNonEmptyStacks(GTUtility.itemHandlerToList(importInventory)) == 0);
+        boolean isImportFluidsEmpty = (GTUtility.amountOfNonNullElements(GTUtility.fluidHandlerToList(importFluids)) == 0);
+        if ((isImportInventoryEmpty && isImportFluidsEmpty) ||
+            (isImportInventoryEmpty && !hasImportFluids) ||
+            (isImportFluidsEmpty && !hasImportInventory)) {
+            metaTileEntity.setSituationalStatus(IDLE);
+            return;
+        }
         if (previousRecipe != null && previousRecipe.matches(false, importInventory, importFluids)) {
             //if previous recipe still matches inputs, try to use it
             currentRecipe = previousRecipe;
@@ -164,7 +175,7 @@ public abstract class AbstractRecipeLogic extends MTETrait implements IWorkable 
         if (currentRecipe != null && setupAndConsumeRecipeInputs(currentRecipe)) {
             setupRecipe(currentRecipe);
         }
-        if (currentRecipe == null){
+        if (currentRecipe == null) {
             metaTileEntity.setSituationalStatus(NO_MATCHING_RECIPE);
         }
     }
