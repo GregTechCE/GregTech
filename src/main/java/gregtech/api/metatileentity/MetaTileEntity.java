@@ -89,7 +89,7 @@ public abstract class MetaTileEntity implements ICoverable {
 
     private CoverBehavior[] coverBehaviors = new CoverBehavior[6];
 
-    private SituationalStatus situationalStatus;
+    private int situationCode;
 
     public MetaTileEntity(ResourceLocation metaTileEntityId) {
         this.metaTileEntityId = metaTileEntityId;
@@ -1045,12 +1045,11 @@ public abstract class MetaTileEntity implements ICoverable {
     }
 
     public int getSituationalStatus() {
-        if (this.situationalStatus == null) return -1;
-        return this.situationalStatus.code;
+        return this.situationCode;
     }
 
-    public void setSituationalStatus(SituationalStatus situationalStatus) {
-        this.situationalStatus = situationalStatus;
+    public void setSituationalStatus(int situationCode) {
+        this.situationCode = situationCode;
     }
 
     public boolean isValidFrontFacing(EnumFacing facing) {

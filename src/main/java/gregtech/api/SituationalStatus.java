@@ -17,12 +17,12 @@ public class SituationalStatus {
     public int code;
     public String localeName;
 
-    public static SituationalStatus WORKING;
-    public static SituationalStatus IDLE;
-    public static SituationalStatus EXPECTED_CAPABILITY_UNAVAILABLE;
-    public static SituationalStatus EMPTY_SOURCE;
-    public static SituationalStatus INSUFFICIENT_POWER;
-    public static SituationalStatus NO_MATCHING_RECIPE;
+    public static int WORKING;
+    public static int IDLE;
+    public static int EXPECTED_CAPABILITY_UNAVAILABLE;
+    public static int EMPTY_SOURCE;
+    public static int INSUFFICIENT_POWER;
+    public static int NO_MATCHING_RECIPE;
 
     public SituationalStatus(String localeName, int errorGroup,int code) {
         this.localeName = localeName;
@@ -41,11 +41,12 @@ public class SituationalStatus {
         NO_MATCHING_RECIPE = registerSituationalStatus(YELLOW, "gregtech.situational_status.no_matching_recipe");
     }
 
-    public static SituationalStatus registerSituationalStatus(int errorGroup, String localeName){
+    public static int registerSituationalStatus(int errorGroup, String localeName){
         SituationalStatus situationalStatus = new SituationalStatus(localeName, errorGroup, registryIdIndex);
         SITUATIONAL_STATUS_REGISTRY.register(registryIdIndex, situationalStatus, registryIdIndex);
+        int currentRegistryIdIndex = registryIdIndex;
         registryIdIndex += 1;
-        return situationalStatus;
+        return currentRegistryIdIndex;
     }
 
     public static SituationalStatus getSituationalStatusFromId(int id) {

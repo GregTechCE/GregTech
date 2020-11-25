@@ -48,7 +48,7 @@ public class CoverPump extends CoverBehavior implements CoverWithUI, ITickable, 
     protected boolean isWorkingAllowed = true;
     protected final FluidFilterContainer fluidFilter;
     protected BucketMode bucketMode;
-    protected SituationalStatus situationalStatus;
+    protected int situationCode;
 
     public CoverPump(ICoverable coverHolder, EnumFacing attachedSide, int tier, int mbPerTick) {
         super(coverHolder, attachedSide);
@@ -58,7 +58,7 @@ public class CoverPump extends CoverBehavior implements CoverWithUI, ITickable, 
         this.fluidLeftToTransferLastSecond = transferRate;
         this.pumpMode = PumpMode.EXPORT;
         this.bucketMode = BucketMode.MILLI_BUCKET;
-        this.situationalStatus = SituationalStatus.IDLE;
+        this.situationCode = SituationalStatus.IDLE;
         this.fluidFilter = new FluidFilterContainer(this);
     }
 
@@ -102,11 +102,11 @@ public class CoverPump extends CoverBehavior implements CoverWithUI, ITickable, 
     }
 
     public int getSituationalStatus() {
-        return this.situationalStatus.code;
+        return this.situationCode;
     }
 
-    public void setSituationalStatus(SituationalStatus situationalStatus) {
-        this.situationalStatus = situationalStatus;
+    public void setSituationalStatus(int situationCode) {
+        this.situationCode = situationCode;
     }
 
     @Override

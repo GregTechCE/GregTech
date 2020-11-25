@@ -38,6 +38,8 @@ import net.minecraftforge.items.ItemHandlerHelper;
 import javax.annotation.Nonnull;
 import java.util.*;
 
+import static gregtech.api.SituationalStatus.IDLE;
+
 public class CoverConveyor extends CoverBehavior implements CoverWithUI, ITickable, IControllable {
 
     public final int tier;
@@ -49,7 +51,7 @@ public class CoverConveyor extends CoverBehavior implements CoverWithUI, ITickab
     protected int itemsLeftToTransferLastSecond;
     private CoverableItemHandlerWrapper itemHandlerWrapper;
     protected boolean isWorkingAllowed = true;
-    protected SituationalStatus situationalStatus;
+    protected int situationCode;
 
     public CoverConveyor(ICoverable coverable, EnumFacing attachedSide, int tier, int itemsPerSecond) {
         super(coverable, attachedSide);
@@ -58,7 +60,7 @@ public class CoverConveyor extends CoverBehavior implements CoverWithUI, ITickab
         this.transferRate = maxItemTransferRate;
         this.itemsLeftToTransferLastSecond = transferRate;
         this.conveyorMode = ConveyorMode.EXPORT;
-        this.situationalStatus = SituationalStatus.IDLE;
+        this.situationCode = SituationalStatus.IDLE;
         this.itemFilterContainer = new ItemFilterContainer(this);
     }
 
@@ -90,11 +92,11 @@ public class CoverConveyor extends CoverBehavior implements CoverWithUI, ITickab
     }
 
     public int getSituationalStatus() {
-        return this.situationalStatus.code;
+        return this.situationCode;
     }
 
-    public void setSituationalStatus(SituationalStatus situationalStatus) {
-        this.situationalStatus = situationalStatus;
+    public void setSituationalStatus(int situationCode) {
+        this.situationCode = situationCode;
     }
 
     @Override
@@ -109,7 +111,7 @@ public class CoverConveyor extends CoverBehavior implements CoverWithUI, ITickab
                 return;
             }
             if (itemHandler == null) {
-                setSituationalStatus(SituationalStatus.IDLE);
+                setSituationalStatus(IDLE);
                 return;
             }
             int totalTransferred = doTransferItems(itemHandler, myItemHandler, itemsLeftToTransferLastSecond);
@@ -119,7 +121,7 @@ public class CoverConveyor extends CoverBehavior implements CoverWithUI, ITickab
             if (itemsLeftToTransferLastSecond < transferRate) {
                 setSituationalStatus(SituationalStatus.WORKING);
             } else {
-                setSituationalStatus(SituationalStatus.IDLE);
+                setSituationalStatus(IDLE);
             }
             this.itemsLeftToTransferLastSecond = transferRate;
         }
