@@ -917,19 +917,24 @@ public abstract class MetaTileEntity implements ICoverable {
         blockPos.release();
     }
 
-    protected static void moveInventoryItems(IItemHandler sourceInventory, IItemHandler targetInventory) {
+    protected void moveInventoryItems(IItemHandler sourceInventory, IItemHandler targetInventory) {
+        boolean hasItemsToMove = false;
+        boolean movedItems = false;
         for (int srcIndex = 0; srcIndex < sourceInventory.getSlots(); srcIndex++) {
             ItemStack sourceStack = sourceInventory.extractItem(srcIndex, Integer.MAX_VALUE, true);
             if (sourceStack.isEmpty()) {
                 continue;
             }
+            hasItemsToMove = true;
             ItemStack remainder = ItemHandlerHelper.insertItemStacked(targetInventory, sourceStack, true);
             int amountToInsert = sourceStack.getCount() - remainder.getCount();
             if (amountToInsert > 0) {
+                movedItems = true;
                 sourceStack = sourceInventory.extractItem(srcIndex, amountToInsert, false);
                 ItemHandlerHelper.insertItemStacked(targetInventory, sourceStack, false);
             }
         }
+        if (hasItemsToMove && !movedItems) setSituationalStatus(SituationalStatus.TARGET_INVENTORY_FULL);
     }
 
     /**

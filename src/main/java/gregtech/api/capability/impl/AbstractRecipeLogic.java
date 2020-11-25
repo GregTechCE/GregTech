@@ -1,5 +1,6 @@
 package gregtech.api.capability.impl;
 
+import crafttweaker.api.item.IItemStack;
 import gregtech.api.GTValues;
 import gregtech.api.capability.GregtechTileCapabilities;
 import gregtech.api.capability.IMultipleTankHandler;
@@ -148,16 +149,6 @@ public abstract class AbstractRecipeLogic extends MTETrait implements IWorkable 
         Recipe currentRecipe = null;
         IItemHandlerModifiable importInventory = getInputInventory();
         IMultipleTankHandler importFluids = getInputTank();
-        boolean hasImportInventory = importInventory.getSlots() > 0;
-        boolean hasImportFluids = importFluids.getTanks() > 0;
-        boolean isImportInventoryEmpty = (GTUtility.amountOfNonEmptyStacks(GTUtility.itemHandlerToList(importInventory)) == 0);
-        boolean isImportFluidsEmpty = (GTUtility.amountOfNonNullElements(GTUtility.fluidHandlerToList(importFluids)) == 0);
-        if ((isImportInventoryEmpty && isImportFluidsEmpty) ||
-            (isImportInventoryEmpty && !hasImportFluids) ||
-            (isImportFluidsEmpty && !hasImportInventory)) {
-            metaTileEntity.setSituationalStatus(IDLE);
-            return;
-        }
         if (previousRecipe != null && previousRecipe.matches(false, importInventory, importFluids)) {
             //if previous recipe still matches inputs, try to use it
             currentRecipe = previousRecipe;
@@ -175,8 +166,28 @@ public abstract class AbstractRecipeLogic extends MTETrait implements IWorkable 
         if (currentRecipe != null && setupAndConsumeRecipeInputs(currentRecipe)) {
             setupRecipe(currentRecipe);
         }
+        boolean emptyInputSlots = true;
+        boolean emptyInputTanks = true;
         if (currentRecipe == null) {
-            metaTileEntity.setSituationalStatus(NO_MATCHING_RECIPE);
+            if (importInventory.getSlots() > 0) {
+                for (int i = 0; i < importInventory.getSlots(); i++) {
+                    if (!importInventory.getStackInSlot(i).isEmpty()) {
+                        emptyInputSlots = false;
+                    }
+                }
+            }
+            if (importFluids.getTanks() > 0) {
+                for (int i = 0; i < importFluids.getTanks(); i++) {
+                    if (importFluids.getTankAt(i).getFluid() != null) {
+                        emptyInputTanks = false;
+                    }
+                }
+            }
+            if (emptyInputSlots && emptyInputTanks) {
+                metaTileEntity.setSituationalStatus(IDLE);
+            } else {
+                metaTileEntity.setSituationalStatus(NO_MATCHING_RECIPE);
+            }
         }
     }
 

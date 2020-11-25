@@ -23,6 +23,8 @@ public class SituationalStatus {
     public static int EMPTY_SOURCE;
     public static int INSUFFICIENT_POWER;
     public static int NO_MATCHING_RECIPE;
+    public static int TARGET_INVENTORY_FULL;
+
 
     public SituationalStatus(String localeName, int errorGroup,int code) {
         this.localeName = localeName;
@@ -39,6 +41,7 @@ public class SituationalStatus {
         EMPTY_SOURCE = registerSituationalStatus(YELLOW, "gregtech.situational_status.empty_source");
         INSUFFICIENT_POWER = registerSituationalStatus(YELLOW, "gregtech.situational_status.insufficient_power");
         NO_MATCHING_RECIPE = registerSituationalStatus(YELLOW, "gregtech.situational_status.no_matching_recipe");
+        TARGET_INVENTORY_FULL = registerSituationalStatus(RED, "gregtech.situational_status.target_inventory_full");
     }
 
     public static int registerSituationalStatus(int errorGroup, String localeName){

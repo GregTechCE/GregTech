@@ -763,6 +763,7 @@ gregtech.situational_status.null_capability=This cover currently cant access thi
 gregtech.situational_status.empty_source=This inventory is empty
 gregtech.situational_status.insufficient_power=Not enough power to run this current recipe
 gregtech.situational_status.no_matching_recipe=input does not match any recipes for this %s tier
+gregtech.situational_status.target_inventory_full=The target inventory is full
 
 
 # %s is a localized material name
