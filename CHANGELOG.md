@@ -1,5 +1,9 @@
 ## Changelog
 
+### 1.10.7 (Hotfix)
+* Fixed Brewery and Forming Press recipe finder not working properly - LAGIdiot
+* Fixed Fluid Canner and Electric Furnace recipe finder not working properly (#1326) - ALongStringOfNumbers
+
 ### 1.10.6
 * Added Oredicts to granite variants, marble, basalt (#1306) - ALongStringOfNumbers
 * Added Matching Mode to API for possible recipe filtering (#1308) - galyfray
