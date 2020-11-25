@@ -1,29 +1,24 @@
 package gregtech.api.gui.widgets;
 
-import com.sun.jna.platform.win32.Guid;
 import gregtech.api.gui.GuiTextures;
 import gregtech.api.gui.IRenderContext;
 import gregtech.api.gui.Widget;
 import gregtech.api.gui.resources.TextureArea;
-import gregtech.api.util.GTUtility;
 import gregtech.api.util.Position;
 import gregtech.api.util.Size;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketBuffer;
-import net.minecraft.util.IStringSerializable;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-
 import java.util.Collections;
 import java.util.function.IntSupplier;
-import java.util.function.Supplier;
 
+import static gregtech.api.SituationalStatus.*;
 
-public class DiagnoseWidget extends Widget {
+public class SituationalWidget extends Widget {
 
-    private final String[] issueNames;
-    private IntSupplier currentIssue;
+    private final IntSupplier currentSituationId;
     protected String tooltipHoverString;
     protected long hoverStartTime = -1L;
     protected boolean isMouseHovered;
@@ -32,26 +27,27 @@ public class DiagnoseWidget extends Widget {
     protected TextureArea area;
     private boolean isVisible = true;
 
-    public <T extends Enum<T> & IStringSerializable> DiagnoseWidget(int xPosition, int yPosition, int width, int height, Class<T> enumClass, Supplier<T> supplier) {
+    public SituationalWidget(int xPosition, int yPosition, int width, int height, IntSupplier getSituationalStatus) {
         super(new Position(xPosition, yPosition), new Size(width, height));
-        T[] enumConstantPool = enumClass.getEnumConstants();
-        this.issueNames = GTUtility.mapToString(enumConstantPool, it -> ((IStringSerializable) it).getName());
-        this.currentIssue = () -> supplier.get().ordinal();
+        this.currentSituationId = () -> getSituationalStatus.getAsInt();
         setImage();
     }
 
     public void setTooltipHoverString() {
-        this.tooltipHoverString = I18n.format(issueNames[currentError]);
+        this.tooltipHoverString = I18n.format(getSituationalStatusFromId(currentError).localeName);
     }
 
-    public DiagnoseWidget setImage() {
-        if (currentError == 0) {
+    public SituationalWidget setImage() {
+        if (getSituationalStatusFromId(currentError).errorGroup == BLUE) {
             this.area = GuiTextures.DIAGNOSE_IDLING;
         }
-        if (currentError == 1) {
+        else if (getSituationalStatusFromId(currentError).errorGroup  == GREEN) {
             this.area = GuiTextures.DIAGNOSE_WORKING;
         }
-        else if (currentError > 1) {
+        else if (getSituationalStatusFromId(currentError).errorGroup  == YELLOW) {
+            this.area = null;
+        }
+        else if (getSituationalStatusFromId(currentError).errorGroup  == RED) {
             this.area = GuiTextures.DIAGNOSE_ISSUE;
         }
         return this;
@@ -60,8 +56,8 @@ public class DiagnoseWidget extends Widget {
     @Override
     public void detectAndSendChanges() {
         super.detectAndSendChanges();
-        if (currentIssue.getAsInt() != currentError) {
-            this.currentError = currentIssue.getAsInt();
+        if (currentSituationId.getAsInt() != currentError) {
+            this.currentError = currentSituationId.getAsInt();
             writeUpdateInfo(1, buf -> buf.writeVarInt(currentError));
         }
     }

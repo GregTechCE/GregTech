@@ -8,6 +8,7 @@ import codechicken.lib.vec.Matrix4;
 import gnu.trove.list.TIntList;
 import gnu.trove.list.array.TIntArrayList;
 import gregtech.api.GTValues;
+import gregtech.api.SituationalStatus;
 import gregtech.api.capability.GregtechTileCapabilities;
 import gregtech.api.capability.IControllable;
 import gregtech.api.capability.impl.ItemHandlerDelegate;
@@ -48,7 +49,7 @@ public class CoverConveyor extends CoverBehavior implements CoverWithUI, ITickab
     protected int itemsLeftToTransferLastSecond;
     private CoverableItemHandlerWrapper itemHandlerWrapper;
     protected boolean isWorkingAllowed = true;
-    protected DiagnoseIssue diagnoseIssue;
+    protected SituationalStatus situationalStatus;
 
     public CoverConveyor(ICoverable coverable, EnumFacing attachedSide, int tier, int itemsPerSecond) {
         super(coverable, attachedSide);
@@ -57,7 +58,7 @@ public class CoverConveyor extends CoverBehavior implements CoverWithUI, ITickab
         this.transferRate = maxItemTransferRate;
         this.itemsLeftToTransferLastSecond = transferRate;
         this.conveyorMode = ConveyorMode.EXPORT;
-        this.diagnoseIssue = DiagnoseIssue.IDLING;
+        this.situationalStatus = SituationalStatus.IDLE;
         this.itemFilterContainer = new ItemFilterContainer(this);
     }
 
@@ -88,12 +89,12 @@ public class CoverConveyor extends CoverBehavior implements CoverWithUI, ITickab
         coverHolder.markDirty();
     }
 
-    public DiagnoseIssue getDiagnoseIssue() {
-        return this.diagnoseIssue;
+    public int getSituationalStatus() {
+        return this.situationalStatus.code;
     }
 
-    public void setDiagnoseIssue(DiagnoseIssue diagnoseIssue) {
-        this.diagnoseIssue = diagnoseIssue;
+    public void setSituationalStatus(SituationalStatus situationalStatus) {
+        this.situationalStatus = situationalStatus;
     }
 
     @Override
@@ -104,11 +105,11 @@ public class CoverConveyor extends CoverBehavior implements CoverWithUI, ITickab
             IItemHandler itemHandler = tileEntity == null ? null : tileEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, attachedSide.getOpposite());
             IItemHandler myItemHandler = coverHolder.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, attachedSide);
             if (myItemHandler == null) {
-                setDiagnoseIssue(DiagnoseIssue.EXPECTED_CAPABILITY_UNAVAILABLE);
+                setSituationalStatus(SituationalStatus.EXPECTED_CAPABILITY_UNAVAILABLE);
                 return;
             }
             if (itemHandler == null) {
-                setDiagnoseIssue(DiagnoseIssue.IDLING);
+                setSituationalStatus(SituationalStatus.IDLE);
                 return;
             }
             int totalTransferred = doTransferItems(itemHandler, myItemHandler, itemsLeftToTransferLastSecond);
@@ -116,9 +117,9 @@ public class CoverConveyor extends CoverBehavior implements CoverWithUI, ITickab
         }
         if (timer % 20 == 0) {
             if (itemsLeftToTransferLastSecond < transferRate) {
-                setDiagnoseIssue(DiagnoseIssue.WORKING);
+                setSituationalStatus(SituationalStatus.WORKING);
             } else {
-                setDiagnoseIssue(DiagnoseIssue.IDLING);
+                setSituationalStatus(SituationalStatus.IDLE);
             }
             this.itemsLeftToTransferLastSecond = transferRate;
         }
@@ -414,7 +415,7 @@ public class CoverConveyor extends CoverBehavior implements CoverWithUI, ITickab
     public <T> T getCapability(Capability<T> capability, T defaultValue) {
         if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
             if (defaultValue == null ) {
-                setDiagnoseIssue(DiagnoseIssue.EXPECTED_CAPABILITY_UNAVAILABLE);
+                setSituationalStatus(SituationalStatus.EXPECTED_CAPABILITY_UNAVAILABLE);
                 return null;
             }
             IItemHandler delegate = (IItemHandler) defaultValue;
@@ -454,7 +455,7 @@ public class CoverConveyor extends CoverBehavior implements CoverWithUI, ITickab
             ManualImportExportMode.class, this::getManualImportExportMode, this::setManualImportExportMode)
             .setTooltipHoverString("cover.universal.manual_import_export.mode.description"));
 
-        primaryGroup.addWidget(new DiagnoseWidget(80,90,16,16,DiagnoseIssue.class,this::getDiagnoseIssue));
+        primaryGroup.addWidget(new SituationalWidget(80,90,16,16,this::getSituationalStatus));
 
         this.itemFilterContainer.initUI(70, primaryGroup::addWidget);
 

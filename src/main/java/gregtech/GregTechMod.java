@@ -3,6 +3,7 @@ package gregtech;
 import codechicken.lib.CodeChickenLib;
 import crafttweaker.CraftTweakerAPI;
 import gregtech.api.GTValues;
+import gregtech.api.SituationalStatus;
 import gregtech.api.capability.SimpleCapabilityManager;
 import gregtech.api.cover.CoverBehaviorUIFactory;
 import gregtech.api.items.gui.PlayerInventoryUIFactory;
@@ -108,6 +109,7 @@ public class GregTechMod {
         MetaFluids.init();
         MetaTileEntities.init();
         MetaEntities.init();
+        SituationalStatus.init();
 
         proxy.onPreLoad();
     }

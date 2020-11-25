@@ -6,6 +6,7 @@ import codechicken.lib.render.pipeline.IVertexOperation;
 import codechicken.lib.vec.Cuboid6;
 import codechicken.lib.vec.Matrix4;
 import gregtech.api.GTValues;
+import gregtech.api.SituationalStatus;
 import gregtech.api.capability.GregtechTileCapabilities;
 import gregtech.api.capability.IControllable;
 import gregtech.api.capability.impl.FluidHandlerDelegate;
@@ -47,7 +48,7 @@ public class CoverPump extends CoverBehavior implements CoverWithUI, ITickable, 
     protected boolean isWorkingAllowed = true;
     protected final FluidFilterContainer fluidFilter;
     protected BucketMode bucketMode;
-    protected DiagnoseIssue diagnoseIssue;
+    protected SituationalStatus situationalStatus;
 
     public CoverPump(ICoverable coverHolder, EnumFacing attachedSide, int tier, int mbPerTick) {
         super(coverHolder, attachedSide);
@@ -57,7 +58,7 @@ public class CoverPump extends CoverBehavior implements CoverWithUI, ITickable, 
         this.fluidLeftToTransferLastSecond = transferRate;
         this.pumpMode = PumpMode.EXPORT;
         this.bucketMode = BucketMode.MILLI_BUCKET;
-        this.diagnoseIssue = DiagnoseIssue.IDLING;
+        this.situationalStatus = SituationalStatus.IDLE;
         this.fluidFilter = new FluidFilterContainer(this);
     }
 
@@ -100,12 +101,12 @@ public class CoverPump extends CoverBehavior implements CoverWithUI, ITickable, 
         coverHolder.markDirty();
     }
 
-    public DiagnoseIssue getDiagnoseIssue() {
-        return this.diagnoseIssue;
+    public int getSituationalStatus() {
+        return this.situationalStatus.code;
     }
 
-    public void setDiagnoseIssue(DiagnoseIssue diagnoseIssue) {
-        this.diagnoseIssue = diagnoseIssue;
+    public void setSituationalStatus(SituationalStatus situationalStatus) {
+        this.situationalStatus = situationalStatus;
     }
 
     @Override
@@ -116,9 +117,9 @@ public class CoverPump extends CoverBehavior implements CoverWithUI, ITickable, 
         }
         if (timer % 20 == 0) {
             if (fluidLeftToTransferLastSecond < transferRate) {
-                setDiagnoseIssue(DiagnoseIssue.WORKING);
+                setSituationalStatus(SituationalStatus.WORKING);
             } else {
-                setDiagnoseIssue(DiagnoseIssue.IDLING);
+                setSituationalStatus(SituationalStatus.IDLE);
             }
             this.fluidLeftToTransferLastSecond = transferRate;
         }
@@ -132,11 +133,11 @@ public class CoverPump extends CoverBehavior implements CoverWithUI, ITickable, 
         IFluidHandler fluidHandler = tileEntity == null ? null : tileEntity.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, attachedSide.getOpposite());
         IFluidHandler myFluidHandler = coverHolder.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, attachedSide);
         if (myFluidHandler == null) {
-            setDiagnoseIssue(DiagnoseIssue.EXPECTED_CAPABILITY_UNAVAILABLE);
+            setSituationalStatus(SituationalStatus.EXPECTED_CAPABILITY_UNAVAILABLE);
             return 0;
         }
         else if (fluidHandler == null) {
-            setDiagnoseIssue(DiagnoseIssue.IDLING);
+            setSituationalStatus(SituationalStatus.IDLE);
             return 0;
         }
         return doTransferFluidsInternal(myFluidHandler, fluidHandler, transferLimit);
@@ -178,7 +179,7 @@ public class CoverPump extends CoverBehavior implements CoverWithUI, ITickable, 
            ManualImportExportMode.class, this::getManualImportExportMode, this::setManualImportExportMode)
             .setTooltipHoverString("cover.universal.manual_import_export.mode.description"));
 
-        primaryGroup.addWidget(new DiagnoseWidget(80,84,16,16,DiagnoseIssue.class,this::getDiagnoseIssue));
+        primaryGroup.addWidget(new SituationalWidget(80,84,16,16,this::getSituationalStatus));
 
         this.fluidFilter.initUI(88, primaryGroup::addWidget);
 
@@ -224,7 +225,7 @@ public class CoverPump extends CoverBehavior implements CoverWithUI, ITickable, 
     public <T> T getCapability(Capability<T> capability, T defaultValue) {
         if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) {
             if (defaultValue == null ) {
-                setDiagnoseIssue(DiagnoseIssue.EXPECTED_CAPABILITY_UNAVAILABLE);
+                setSituationalStatus(SituationalStatus.EXPECTED_CAPABILITY_UNAVAILABLE);
                 return null;
             }
             IFluidHandler delegate = (IFluidHandler) defaultValue;

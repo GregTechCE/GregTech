@@ -1,0 +1,54 @@
+package gregtech.api;
+
+import gregtech.api.util.GTControlledRegistry;
+import gregtech.api.util.GTLog;
+
+public class SituationalStatus {
+
+    public static GTControlledRegistry<SituationalStatus, Integer> SITUATIONAL_STATUS_REGISTRY = new GTControlledRegistry<>(Short.MAX_VALUE);
+
+    public static int GREEN = 0;
+    public static int BLUE = 1;
+    public static int YELLOW = 2;
+    public static int RED = 3;
+
+    private static int registryIdIndex = 0;
+    public int errorGroup;
+    public int code;
+    public String localeName;
+
+    public static SituationalStatus WORKING;
+    public static SituationalStatus IDLE;
+    public static SituationalStatus EXPECTED_CAPABILITY_UNAVAILABLE;
+    public static SituationalStatus EMPTY_SOURCE;
+
+    public SituationalStatus(String localeName, int errorGroup,int code) {
+        this.localeName = localeName;
+        this.errorGroup = errorGroup;
+        this.code = code;
+    }
+
+    public static void init() {
+        GTLog.logger.info("Registering SituationalStatus");
+
+        WORKING = registerSituationalStatus(GREEN, "gregtech.situational_status.working");
+        IDLE = registerSituationalStatus(BLUE, "gregtech.situational_status.idle");
+        EXPECTED_CAPABILITY_UNAVAILABLE = registerSituationalStatus(RED, "gregtech.situational_status.null_capability");
+        EMPTY_SOURCE = registerSituationalStatus(YELLOW, "gregtech.situational_status.empty_source");
+    }
+
+    public static SituationalStatus registerSituationalStatus(int errorGroup, String localeName){
+        SituationalStatus situationalStatus = new SituationalStatus(localeName, errorGroup, registryIdIndex);
+        SITUATIONAL_STATUS_REGISTRY.register(registryIdIndex, situationalStatus, registryIdIndex);
+        registryIdIndex += 1;
+        return situationalStatus;
+    }
+
+    public static SituationalStatus getSituationalStatusFromId(int id) {
+        return SITUATIONAL_STATUS_REGISTRY.getNameForObject(id);
+    }
+
+    public static int getIdFromSituationalStatus(SituationalStatus situationalStatus) {
+        return SITUATIONAL_STATUS_REGISTRY.getIdByObjectName(situationalStatus);
+    }
+}
