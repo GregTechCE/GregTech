@@ -21,6 +21,8 @@ public class SituationalStatus {
     public static SituationalStatus IDLE;
     public static SituationalStatus EXPECTED_CAPABILITY_UNAVAILABLE;
     public static SituationalStatus EMPTY_SOURCE;
+    public static SituationalStatus INSUFFICIENT_POWER;
+    public static SituationalStatus NO_MATCHING_RECIPE;
 
     public SituationalStatus(String localeName, int errorGroup,int code) {
         this.localeName = localeName;
@@ -35,6 +37,8 @@ public class SituationalStatus {
         IDLE = registerSituationalStatus(BLUE, "gregtech.situational_status.idle");
         EXPECTED_CAPABILITY_UNAVAILABLE = registerSituationalStatus(RED, "gregtech.situational_status.null_capability");
         EMPTY_SOURCE = registerSituationalStatus(YELLOW, "gregtech.situational_status.empty_source");
+        INSUFFICIENT_POWER = registerSituationalStatus(YELLOW, "gregtech.situational_status.insufficient_power");
+        NO_MATCHING_RECIPE = registerSituationalStatus(YELLOW, "gregtech.situational_status.no_matching_recipe");
     }
 
     public static SituationalStatus registerSituationalStatus(int errorGroup, String localeName){

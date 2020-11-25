@@ -10,6 +10,7 @@ import codechicken.lib.vec.Cuboid6;
 import codechicken.lib.vec.Matrix4;
 import com.google.common.base.Preconditions;
 import gregtech.api.GregTechAPI;
+import gregtech.api.SituationalStatus;
 import gregtech.api.capability.GregtechTileCapabilities;
 import gregtech.api.capability.IEnergyContainer;
 import gregtech.api.capability.impl.FluidHandlerProxy;
@@ -87,6 +88,8 @@ public abstract class MetaTileEntity implements ICoverable {
     protected boolean isFragile = false;
 
     private CoverBehavior[] coverBehaviors = new CoverBehavior[6];
+
+    private SituationalStatus situationalStatus;
 
     public MetaTileEntity(ResourceLocation metaTileEntityId) {
         this.metaTileEntityId = metaTileEntityId;
@@ -1039,6 +1042,15 @@ public abstract class MetaTileEntity implements ICoverable {
             markDirty();
             writeCustomData(-8, buf -> buf.writeBoolean(fragile));
         }
+    }
+
+    public int getSituationalStatus() {
+        if (this.situationalStatus == null) return -1;
+        return this.situationalStatus.code;
+    }
+
+    public void setSituationalStatus(SituationalStatus situationalStatus) {
+        this.situationalStatus = situationalStatus;
     }
 
     public boolean isValidFrontFacing(EnumFacing facing) {

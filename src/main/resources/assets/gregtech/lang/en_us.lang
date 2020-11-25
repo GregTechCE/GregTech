@@ -759,8 +759,11 @@ cover.machine_controller.mode.cover_west=Control Cover (West)
 
 gregtech.situational_status.idle=This cover is idling
 gregtech.situational_status.working=This cover is working without issue
-gregtech.situational_status.null_capability=This cover currently cant access this inventory from this side. No work will be done.
-gregtech.situational_status.empty_source=This inventory is empty.
+gregtech.situational_status.null_capability=This cover currently cant access this inventory from this side. No work will be done
+gregtech.situational_status.empty_source=This inventory is empty
+gregtech.situational_status.insufficient_power=Not enough power to run this current recipe
+gregtech.situational_status.no_matching_recipe=input does not match any recipes for this machine tier
+
 
 # %s is a localized material name
 item.material.oreprefix.oreBlackgranite=Granite %s Ore

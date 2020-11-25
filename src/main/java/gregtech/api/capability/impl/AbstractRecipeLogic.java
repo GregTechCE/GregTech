@@ -27,6 +27,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
+import static gregtech.api.SituationalStatus.*;
+
 public abstract class AbstractRecipeLogic extends MTETrait implements IWorkable {
 
     public final RecipeMap<?> recipeMap;
@@ -123,10 +125,12 @@ public abstract class AbstractRecipeLogic extends MTETrait implements IWorkable 
             if (++progressTime > maxProgressTime) {
                 completeRecipe();
             }
+            metaTileEntity.setSituationalStatus(WORKING);
         } else if (recipeEUt > 0) {
             //only set hasNotEnoughEnergy if this recipe is consuming recipe
             //generators always have enough energy
             this.hasNotEnoughEnergy = true;
+            metaTileEntity.setSituationalStatus(INSUFFICIENT_POWER);
             //if current progress value is greater than 2, decrement it by 2
             if (progressTime >= 2) {
                 if (ConfigHolder.insufficientEnergySupplyWipesRecipeProgress) {
@@ -159,6 +163,9 @@ public abstract class AbstractRecipeLogic extends MTETrait implements IWorkable 
         }
         if (currentRecipe != null && setupAndConsumeRecipeInputs(currentRecipe)) {
             setupRecipe(currentRecipe);
+        }
+        if (currentRecipe == null){
+            metaTileEntity.setSituationalStatus(NO_MATCHING_RECIPE);
         }
     }
 
