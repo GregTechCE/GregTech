@@ -38,14 +38,9 @@ public class SituationalWidget extends Widget {
     }
 
     public SituationalWidget setImage() {
-        if (getSituationalStatusFromId(currentError).errorGroup == BLUE) {
-            this.area = GuiTextures.STATUS_IDLING;
-        } else if (getSituationalStatusFromId(currentError).errorGroup == GREEN) {
-            this.area = GuiTextures.STATUS_WORKING;
-        } else if (getSituationalStatusFromId(currentError).errorGroup == YELLOW) {
-            this.area = GuiTextures.STATUS_WARNING;
-        } else if (getSituationalStatusFromId(currentError).errorGroup == RED) {
-            this.area = GuiTextures.STATUS_ISSUE;
+        TextureArea iconTexture = getSituationalStatusFromId(currentError).iconTexture;
+        if (iconTexture != null) {
+            this.area = iconTexture;
         } else {
             this.area = null;
         }
