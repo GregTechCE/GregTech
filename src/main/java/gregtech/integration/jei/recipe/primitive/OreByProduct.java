@@ -102,15 +102,21 @@ public class OreByProduct implements IRecipeWrapper {
 			addOreTooltip(tooltip, 0, RecipeMaps.MACERATOR_RECIPES.getLocalizedName(), true);
 			addOreTooltip(tooltip, 1, RecipeMaps.ORE_WASHER_RECIPES.getLocalizedName(), true);
 			addOreTooltip(tooltip, 1, RecipeMaps.THERMAL_CENTRIFUGE_RECIPES.getLocalizedName(), true);
-			break;
+            if (material.washedIn != null && material.oreByProducts.size() == 1)
+                addOreTooltip(tooltip, 1, RecipeMaps.CHEMICAL_BATH_RECIPES.getLocalizedName(), true);
+            break;
 		case 8: // 2nd Byproduct
 			addOreTooltip(tooltip, 2, RecipeMaps.MACERATOR_RECIPES.getLocalizedName(), true);
 			addOreTooltip(tooltip, 2, RecipeMaps.THERMAL_CENTRIFUGE_RECIPES.getLocalizedName(), true);
 			addOreTooltip(tooltip, 5, RecipeMaps.CENTRIFUGE_RECIPES.getLocalizedName(), true);
+			if (material.washedIn != null && material.oreByProducts.size() == 2)
+			    addOreTooltip(tooltip, 1, RecipeMaps.CHEMICAL_BATH_RECIPES.getLocalizedName(), true);
 			break;
 		case 9: // 3rd Byproduct
 			addOreTooltip(tooltip, 3, RecipeMaps.MACERATOR_RECIPES.getLocalizedName(), true);
 			addOreTooltip(tooltip, 4, RecipeMaps.CENTRIFUGE_RECIPES.getLocalizedName(), true);
+            if (material.washedIn != null && material.oreByProducts.size() == 3)
+                addOreTooltip(tooltip, 1, RecipeMaps.CHEMICAL_BATH_RECIPES.getLocalizedName(), true);
 			break;
 		case 10: // 4th Byproduct
 			if (material.washedIn != null)

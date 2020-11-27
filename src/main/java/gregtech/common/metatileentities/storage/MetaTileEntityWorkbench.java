@@ -209,9 +209,11 @@ public class MetaTileEntityWorkbench extends MetaTileEntity {
 
     private AbstractWidgetGroup createItemListTab() {
         WidgetGroup widgetGroup = new WidgetGroup();
+        widgetGroup.addWidget(new LabelWidget(5, 20, "gregtech.machine.workbench.storage_note_1"));
+        widgetGroup.addWidget(new LabelWidget(5, 30, "gregtech.machine.workbench.storage_note_2"));
         CraftingRecipeResolver recipeResolver = getRecipeResolver();
         IItemList itemList = recipeResolver == null ? null : recipeResolver.getItemSourceList();
-        widgetGroup.addWidget(new ItemListGridWidget(2, 17, 9, 6, itemList));
+        widgetGroup.addWidget(new ItemListGridWidget(2, 45, 9, 5, itemList));
         return widgetGroup;
     }
 
