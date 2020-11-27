@@ -4,6 +4,7 @@ import codechicken.lib.raytracer.CuboidRayTraceResult;
 import codechicken.lib.render.CCRenderState;
 import codechicken.lib.render.pipeline.IVertexOperation;
 import codechicken.lib.vec.Matrix4;
+import gregtech.api.SituationalStatus;
 import gregtech.api.capability.impl.EnergyContainerHandler;
 import gregtech.api.capability.impl.FluidHandlerProxy;
 import gregtech.api.capability.impl.FluidTankList;
@@ -132,6 +133,7 @@ public class SimpleMachineMetaTileEntity extends WorkableTieredMetaTileEntity {
                     pushItemsIntoNearbyHandlers(outputFacing);
                 }
             }
+            if (failedToMoveItemsOrFluids()) this.setSituationalStatus(SituationalStatus.TARGET_INVENTORY_FULL);
         }
     }
 

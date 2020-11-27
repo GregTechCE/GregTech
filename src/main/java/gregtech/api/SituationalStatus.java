@@ -21,7 +21,7 @@ public class SituationalStatus {
     public static int INSUFFICIENT_POWER;
     public static int NO_MATCHING_RECIPE;
     public static int TARGET_INVENTORY_FULL;
-
+    public static int OUTPUT_INVENTORY_FULL;
 
     public SituationalStatus(String localeName, TextureArea errorGroup,int code) {
         this.localeName = localeName;
@@ -31,13 +31,13 @@ public class SituationalStatus {
 
     public static void init() {
         GTLog.logger.info("Registering SituationalStatus");
-
         WORKING = registerSituationalStatus(GuiTextures.STATUS_WORKING, "gregtech.situational_status.working");
         IDLE = registerSituationalStatus(GuiTextures.STATUS_IDLING, "gregtech.situational_status.idle");
         EXPECTED_CAPABILITY_UNAVAILABLE = registerSituationalStatus(GuiTextures.STATUS_ISSUE, "gregtech.situational_status.null_capability");
         EMPTY_SOURCE = registerSituationalStatus(GuiTextures.STATUS_WARNING, "gregtech.situational_status.empty_source");
         INSUFFICIENT_POWER = registerSituationalStatus(GuiTextures.STATUS_WARNING, "gregtech.situational_status.insufficient_power");
         NO_MATCHING_RECIPE = registerSituationalStatus(GuiTextures.STATUS_WARNING, "gregtech.situational_status.no_matching_recipe");
+        OUTPUT_INVENTORY_FULL = registerSituationalStatus(GuiTextures.STATUS_ISSUE, "gregtech.situational_status.output_inventory_full");
         TARGET_INVENTORY_FULL = registerSituationalStatus(GuiTextures.STATUS_ISSUE, "gregtech.situational_status.target_inventory_full");
     }
 

@@ -90,6 +90,8 @@ public abstract class MetaTileEntity implements ICoverable {
     private CoverBehavior[] coverBehaviors = new CoverBehavior[6];
 
     private int situationCode;
+    private boolean failedToMoveFluids;
+    private boolean failedToMoveItems;
 
     public MetaTileEntity(ResourceLocation metaTileEntityId) {
         this.metaTileEntityId = metaTileEntityId;
@@ -842,6 +844,7 @@ public abstract class MetaTileEntity implements ICoverable {
     }
 
     public void pushFluidsIntoNearbyHandlers(EnumFacing... allowedFaces) {
+        this.failedToMoveFluids = false;
         PooledMutableBlockPos blockPos = PooledMutableBlockPos.retain();
         for (EnumFacing nearbyFacing : allowedFaces) {
             blockPos.setPos(getPos()).move(nearbyFacing);
@@ -855,7 +858,9 @@ public abstract class MetaTileEntity implements ICoverable {
             if (fluidHandler == null || myFluidHandler == null) {
                 continue;
             }
-            GTFluidUtils.transferFluids(myFluidHandler, fluidHandler, Integer.MAX_VALUE);
+            if (GTFluidUtils.transferFluids(myFluidHandler, fluidHandler, Integer.MAX_VALUE) == 0) {
+                this.failedToMoveFluids = true;
+            }
         }
         blockPos.release();
     }
@@ -874,7 +879,8 @@ public abstract class MetaTileEntity implements ICoverable {
             if (fluidHandler == null || myFluidHandler == null) {
                 continue;
             }
-            GTFluidUtils.transferFluids(fluidHandler, myFluidHandler, Integer.MAX_VALUE);
+            if (GTFluidUtils.transferFluids(fluidHandler, myFluidHandler, Integer.MAX_VALUE) == 0) {
+            }
         }
         blockPos.release();
     }
@@ -917,9 +923,14 @@ public abstract class MetaTileEntity implements ICoverable {
         blockPos.release();
     }
 
+    public boolean failedToMoveItemsOrFluids(){
+        return (this.failedToMoveItems || this.failedToMoveFluids);
+    }
+
     protected void moveInventoryItems(IItemHandler sourceInventory, IItemHandler targetInventory) {
         boolean hasItemsToMove = false;
         boolean movedItems = false;
+        this.failedToMoveItems = false;
         for (int srcIndex = 0; srcIndex < sourceInventory.getSlots(); srcIndex++) {
             ItemStack sourceStack = sourceInventory.extractItem(srcIndex, Integer.MAX_VALUE, true);
             if (sourceStack.isEmpty()) {
@@ -934,7 +945,7 @@ public abstract class MetaTileEntity implements ICoverable {
                 ItemHandlerHelper.insertItemStacked(targetInventory, sourceStack, false);
             }
         }
-        if (hasItemsToMove && !movedItems) setSituationalStatus(SituationalStatus.TARGET_INVENTORY_FULL);
+        if (hasItemsToMove && !movedItems) this.failedToMoveItems = true;
     }
 
     /**
@@ -980,6 +991,47 @@ public abstract class MetaTileEntity implements ICoverable {
         }
         return filledAll;
     }
+
+    public boolean isInputEmpty() {
+        boolean emptyInputSlots = true;
+        boolean emptyInputTanks = true;
+        if (importItems.getSlots() > 0) {
+            for (int i = 0; i < importItems.getSlots(); i++) {
+                if (!importItems.getStackInSlot(i).isEmpty()) {
+                    emptyInputSlots = false;
+                }
+            }
+        }
+        if (importFluids.getTanks() > 0) {
+            for (int i = 0; i < importFluids.getTanks(); i++) {
+                if (importFluids.getTankAt(i).getFluid() != null) {
+                    emptyInputTanks = false;
+                }
+            }
+        }
+        return (emptyInputSlots && emptyInputTanks);
+    }
+
+    public boolean isOutputFull() {
+        boolean fullOutputSlots = true;
+        boolean fullOutputTanks = true;
+        if (exportItems.getSlots() > 0) {
+            for (int i = 0; i < exportItems.getSlots(); i++) {
+                if (exportItems.getStackInSlot(i).getCount() < exportItems.getStackInSlot(i).getMaxStackSize()) {
+                    fullOutputSlots = false;
+                }
+            }
+        }
+        if (exportFluids.getTanks() > 0) {
+            for (int i = 0; i < exportFluids.getTanks(); i++) {
+                if (exportFluids.getTankAt(i).getFluidAmount() < exportFluids.getTankAt(i).getCapacity()) {
+                    fullOutputTanks = false;
+                }
+            }
+        }
+        return (fullOutputSlots && fullOutputTanks);
+    }
+
 
     public final int getOutputRedstoneSignal(@Nullable EnumFacing side) {
         if (side == null) {
