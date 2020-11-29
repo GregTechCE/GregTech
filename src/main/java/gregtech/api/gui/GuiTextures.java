@@ -47,7 +47,7 @@ public class GuiTextures {
     public static final TextureArea SLIDER_ICON = TextureArea.fullImage("textures/gui/widget/slider.png");
     public static final TextureArea STATUS_IDLING = TextureArea.fullImage("textures/gui/widget/idling.png");
     public static final TextureArea STATUS_WORKING = TextureArea.fullImage("textures/gui/widget/working.png");
-    public static final TextureArea STATUS_ISSUE =TextureArea.fullImage("textures/gui/widget/issue.png");
+    public static final TextureArea STATUS_ERROR =TextureArea.fullImage("textures/gui/widget/error.png");
     public static final TextureArea STATUS_WARNING =TextureArea.fullImage("textures/gui/widget/warning.png");
 
 
