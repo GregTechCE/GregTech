@@ -111,7 +111,8 @@ public class CoverConveyor extends CoverBehavior implements CoverWithUI, ITickab
                 return;
             }
             if (itemHandler == null) {
-                setSituation(IDLE);
+                if (conveyorMode == ConveyorMode.IMPORT) setSituation(NO_IMPORT_INVENTORY);
+                if (conveyorMode == ConveyorMode.EXPORT) setSituation(NO_EXPORT_INVENTORY);
                 return;
             }
             int totalTransferred = doTransferItems(itemHandler, myItemHandler, itemsLeftToTransferLastSecond);
@@ -124,6 +125,9 @@ public class CoverConveyor extends CoverBehavior implements CoverWithUI, ITickab
                 setSituation(IDLE);
             }
             this.itemsLeftToTransferLastSecond = transferRate;
+        }
+        if (!isWorkingAllowed) {
+            setSituation(DISABLED_BY_CONTROLLER);
         }
     }
 

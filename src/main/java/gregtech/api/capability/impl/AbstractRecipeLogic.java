@@ -127,6 +127,9 @@ public abstract class AbstractRecipeLogic extends MTETrait implements IWorkable 
                     metaTileEntity.setSituation(OUTPUT_INVENTORY_FULL);
                 }
             }
+            else {
+                metaTileEntity.setSituation(DISABLED_BY_CONTROLLER);
+            }
         }
         if (wasActiveAndNeedsUpdate) {
             this.wasActiveAndNeedsUpdate = false;
