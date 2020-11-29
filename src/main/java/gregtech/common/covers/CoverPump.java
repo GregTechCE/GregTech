@@ -6,7 +6,7 @@ import codechicken.lib.render.pipeline.IVertexOperation;
 import codechicken.lib.vec.Cuboid6;
 import codechicken.lib.vec.Matrix4;
 import gregtech.api.GTValues;
-import gregtech.api.SituationalStatus;
+import gregtech.api.Situation;
 import gregtech.api.capability.GregtechTileCapabilities;
 import gregtech.api.capability.IControllable;
 import gregtech.api.capability.impl.FluidHandlerDelegate;
@@ -36,6 +36,8 @@ import net.minecraftforge.fluids.capability.IFluidHandler;
 
 import javax.annotation.Nullable;
 
+import static gregtech.api.Situations.*;
+
 public class CoverPump extends CoverBehavior implements CoverWithUI, ITickable, IControllable {
 
     public final int tier;
@@ -48,7 +50,7 @@ public class CoverPump extends CoverBehavior implements CoverWithUI, ITickable, 
     protected boolean isWorkingAllowed = true;
     protected final FluidFilterContainer fluidFilter;
     protected BucketMode bucketMode;
-    protected int situationCode;
+    protected Situation situation;
 
     public CoverPump(ICoverable coverHolder, EnumFacing attachedSide, int tier, int mbPerTick) {
         super(coverHolder, attachedSide);
@@ -58,7 +60,7 @@ public class CoverPump extends CoverBehavior implements CoverWithUI, ITickable, 
         this.fluidLeftToTransferLastSecond = transferRate;
         this.pumpMode = PumpMode.EXPORT;
         this.bucketMode = BucketMode.MILLI_BUCKET;
-        this.situationCode = SituationalStatus.IDLE;
+        this.situation = IDLE;
         this.fluidFilter = new FluidFilterContainer(this);
     }
 
@@ -101,12 +103,12 @@ public class CoverPump extends CoverBehavior implements CoverWithUI, ITickable, 
         coverHolder.markDirty();
     }
 
-    public int getSituationalStatus() {
-        return this.situationCode;
+    public int getSituation() {
+        return this.situation.id;
     }
 
-    public void setSituationalStatus(int situationCode) {
-        this.situationCode = situationCode;
+    public void setSituation(Situation situation) {
+        this.situation = situation;
     }
 
     @Override
@@ -117,9 +119,9 @@ public class CoverPump extends CoverBehavior implements CoverWithUI, ITickable, 
         }
         if (timer % 20 == 0) {
             if (fluidLeftToTransferLastSecond < transferRate) {
-                setSituationalStatus(SituationalStatus.WORKING);
+                setSituation(WORKING);
             } else {
-                setSituationalStatus(SituationalStatus.IDLE);
+                setSituation(IDLE);
             }
             this.fluidLeftToTransferLastSecond = transferRate;
         }
@@ -133,11 +135,11 @@ public class CoverPump extends CoverBehavior implements CoverWithUI, ITickable, 
         IFluidHandler fluidHandler = tileEntity == null ? null : tileEntity.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, attachedSide.getOpposite());
         IFluidHandler myFluidHandler = coverHolder.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, attachedSide);
         if (myFluidHandler == null) {
-            setSituationalStatus(SituationalStatus.EXPECTED_CAPABILITY_UNAVAILABLE);
+            setSituation(EXPECTED_CAPABILITY_UNAVAILABLE);
             return 0;
         }
         else if (fluidHandler == null) {
-            setSituationalStatus(SituationalStatus.IDLE);
+            setSituation(IDLE);
             return 0;
         }
         return doTransferFluidsInternal(myFluidHandler, fluidHandler, transferLimit);
@@ -179,7 +181,7 @@ public class CoverPump extends CoverBehavior implements CoverWithUI, ITickable, 
            ManualImportExportMode.class, this::getManualImportExportMode, this::setManualImportExportMode)
             .setTooltipHoverString("cover.universal.manual_import_export.mode.description"));
 
-        primaryGroup.addWidget(new SituationalWidget(80,84,16,16,this::getSituationalStatus));
+        primaryGroup.addWidget(new SituationWidget(80,84,16,16,this::getSituation));
 
         this.fluidFilter.initUI(88, primaryGroup::addWidget);
 
@@ -225,7 +227,7 @@ public class CoverPump extends CoverBehavior implements CoverWithUI, ITickable, 
     public <T> T getCapability(Capability<T> capability, T defaultValue) {
         if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) {
             if (defaultValue == null ) {
-                setSituationalStatus(SituationalStatus.EXPECTED_CAPABILITY_UNAVAILABLE);
+                setSituation(EXPECTED_CAPABILITY_UNAVAILABLE);
                 return null;
             }
             IFluidHandler delegate = (IFluidHandler) defaultValue;

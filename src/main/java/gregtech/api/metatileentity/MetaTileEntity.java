@@ -10,7 +10,7 @@ import codechicken.lib.vec.Cuboid6;
 import codechicken.lib.vec.Matrix4;
 import com.google.common.base.Preconditions;
 import gregtech.api.GregTechAPI;
-import gregtech.api.SituationalStatus;
+import gregtech.api.Situation;
 import gregtech.api.capability.GregtechTileCapabilities;
 import gregtech.api.capability.IEnergyContainer;
 import gregtech.api.capability.impl.FluidHandlerProxy;
@@ -59,6 +59,8 @@ import java.util.function.Consumer;
 
 import static gregtech.api.util.InventoryUtils.simulateItemStackMerge;
 
+import static gregtech.api.Situations.*;
+
 public abstract class MetaTileEntity implements ICoverable {
 
     public static final int DEFAULT_PAINTING_COLOR = 0xFFFFFF;
@@ -89,7 +91,7 @@ public abstract class MetaTileEntity implements ICoverable {
 
     private CoverBehavior[] coverBehaviors = new CoverBehavior[6];
 
-    private int situationCode;
+    private Situation situation = IDLE;
     private boolean failedToMoveFluids;
     private boolean failedToMoveItems;
 
@@ -1101,12 +1103,12 @@ public abstract class MetaTileEntity implements ICoverable {
         }
     }
 
-    public int getSituationalStatus() {
-        return this.situationCode;
+    public int getSituation() {
+        return this.situation.id;
     }
 
-    public void setSituationalStatus(int situationCode) {
-        this.situationCode = situationCode;
+    public void setSituation(Situation situation) {
+        this.situation = situation;
     }
 
     public boolean isValidFrontFacing(EnumFacing facing) {

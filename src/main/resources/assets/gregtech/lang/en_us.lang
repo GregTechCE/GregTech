@@ -757,13 +757,14 @@ cover.machine_controller.mode.cover_north=Control Cover (North)
 cover.machine_controller.mode.cover_east=Control Cover (East)
 cover.machine_controller.mode.cover_west=Control Cover (West)
 
-gregtech.situational_status.idle=This %s is idling
-gregtech.situational_status.working=This %s is working without issue
-gregtech.situational_status.null_capability=This cover currently cant access this inventory from this side. No work will be done
-gregtech.situational_status.empty_source=This inventory is empty
-gregtech.situational_status.insufficient_power=Not enough power to run this current recipe
-gregtech.situational_status.no_matching_recipe=input does not match any recipes for this %s tier
-gregtech.situational_status.target_inventory_full=The target inventory is full
+gregtech.situation.idle=Idling
+gregtech.situation.working=Working
+gregtech.situation.null_capability=Error accessing inventory from this side
+gregtech.situation.empty_source=This inventory is empty
+gregtech.situation.insufficient_power=Not enough power to run this recipe
+gregtech.situation.no_matching_recipe=No recipe found
+gregtech.situation.target_inventory_full=The target inventory is full
+gregtech.situation.output_inventory_full=Output is full
 
 
 # %s is a localized material name

@@ -1,8 +1,6 @@
 package gregtech.api.capability.impl;
 
-import crafttweaker.api.item.IItemStack;
 import gregtech.api.GTValues;
-import gregtech.api.SituationalStatus;
 import gregtech.api.capability.GregtechTileCapabilities;
 import gregtech.api.capability.IMultipleTankHandler;
 import gregtech.api.capability.IWorkable;
@@ -10,7 +8,6 @@ import gregtech.api.metatileentity.MTETrait;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.recipes.Recipe;
 import gregtech.api.recipes.RecipeMap;
-import gregtech.api.util.GTFluidUtils;
 import gregtech.api.util.GTUtility;
 import gregtech.common.ConfigHolder;
 import net.minecraft.item.ItemStack;
@@ -30,7 +27,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
-import static gregtech.api.SituationalStatus.*;
+import static gregtech.api.Situations.*;
 
 public abstract class AbstractRecipeLogic extends MTETrait implements IWorkable {
 
@@ -111,9 +108,10 @@ public abstract class AbstractRecipeLogic extends MTETrait implements IWorkable 
                 if (progressTime > 0) {
                     int currentProgress = progressTime;
                     updateRecipeProgress();
-                    if (progressTime > currentProgress) metaTileEntity.setSituationalStatus(WORKING);
-                    else if (progressTime != 0) {
-                        metaTileEntity.setSituationalStatus(INSUFFICIENT_POWER);
+                    if (progressTime > currentProgress) {
+                        metaTileEntity.setSituation(WORKING);
+                    } else if (progressTime != 0) {
+                        metaTileEntity.setSituation(INSUFFICIENT_POWER);
                     }
                 }
                 if (progressTime == 0) {
@@ -121,12 +119,12 @@ public abstract class AbstractRecipeLogic extends MTETrait implements IWorkable 
                 }
                 if (currentRecipe == null) {
                     if (metaTileEntity.isInputEmpty()) {
-                        metaTileEntity.setSituationalStatus(IDLE);
+                        metaTileEntity.setSituation(IDLE);
                     } else {
-                        metaTileEntity.setSituationalStatus(NO_MATCHING_RECIPE);
+                        metaTileEntity.setSituation(NO_MATCHING_RECIPE);
                     }
                 } else if (!canOutputsFit()) {
-                    metaTileEntity.setSituationalStatus(OUTPUT_INVENTORY_FULL);
+                    metaTileEntity.setSituation(OUTPUT_INVENTORY_FULL);
                 }
             }
         }

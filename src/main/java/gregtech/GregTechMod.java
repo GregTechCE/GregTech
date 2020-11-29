@@ -3,7 +3,8 @@ package gregtech;
 import codechicken.lib.CodeChickenLib;
 import crafttweaker.CraftTweakerAPI;
 import gregtech.api.GTValues;
-import gregtech.api.SituationalStatus;
+import gregtech.api.Situation;
+import gregtech.api.Situations;
 import gregtech.api.capability.SimpleCapabilityManager;
 import gregtech.api.cover.CoverBehaviorUIFactory;
 import gregtech.api.items.gui.PlayerInventoryUIFactory;
@@ -83,6 +84,7 @@ public class GregTechMod {
     public void onPreInit(FMLPreInitializationEvent event) {
         GTLog.init(event.getModLog());
         NetworkHandler.init();
+        Situation.init();
         MetaTileEntityUIFactory.INSTANCE.init();
         PlayerInventoryUIFactory.INSTANCE.init();
         CoverBehaviorUIFactory.INSTANCE.init();
@@ -109,7 +111,6 @@ public class GregTechMod {
         MetaFluids.init();
         MetaTileEntities.init();
         MetaEntities.init();
-        SituationalStatus.init();
 
         proxy.onPreLoad();
     }

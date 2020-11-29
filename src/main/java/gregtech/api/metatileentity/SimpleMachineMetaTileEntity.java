@@ -4,7 +4,6 @@ import codechicken.lib.raytracer.CuboidRayTraceResult;
 import codechicken.lib.render.CCRenderState;
 import codechicken.lib.render.pipeline.IVertexOperation;
 import codechicken.lib.vec.Matrix4;
-import gregtech.api.SituationalStatus;
 import gregtech.api.capability.impl.EnergyContainerHandler;
 import gregtech.api.capability.impl.FluidHandlerProxy;
 import gregtech.api.capability.impl.FluidTankList;
@@ -33,6 +32,8 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
+
+import static gregtech.api.Situations.*;
 
 public class SimpleMachineMetaTileEntity extends WorkableTieredMetaTileEntity {
 
@@ -133,7 +134,7 @@ public class SimpleMachineMetaTileEntity extends WorkableTieredMetaTileEntity {
                     pushItemsIntoNearbyHandlers(outputFacing);
                 }
             }
-            if (failedToMoveItemsOrFluids()) this.setSituationalStatus(SituationalStatus.TARGET_INVENTORY_FULL);
+            if (failedToMoveItemsOrFluids()) this.setSituation(TARGET_INVENTORY_FULL);
         }
     }
 
@@ -299,7 +300,7 @@ public class SimpleMachineMetaTileEntity extends WorkableTieredMetaTileEntity {
             .widget(new LabelWidget(5, 5, getMetaFullName()))
             .widget(new DischargerSlotWidget(chargerInventory, 0, 79, 62)
                 .setBackgroundTexture(GuiTextures.SLOT, GuiTextures.CHARGER_OVERLAY))
-            .widget(new SituationalWidget(80,43,16,16,this::getSituationalStatus))
+            .widget(new SituationWidget(80,43,16,16,this::getSituation))
             .bindPlayerInventory(player.inventory);
 
         int leftButtonStartX = 7;

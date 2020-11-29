@@ -1,5 +1,6 @@
 package gregtech.api.gui.widgets;
 
+import gregtech.api.Situation;
 import gregtech.api.gui.GuiTextures;
 import gregtech.api.gui.IRenderContext;
 import gregtech.api.gui.Widget;
@@ -14,9 +15,10 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import java.util.Collections;
 import java.util.function.IntSupplier;
 
-import static gregtech.api.SituationalStatus.*;
+import static gregtech.api.Situation.*;
+import static gregtech.api.Situations.SituationsTypes.*;
 
-public class SituationalWidget extends Widget {
+public class SituationWidget extends Widget {
 
     private final IntSupplier currentSituationId;
     protected String tooltipHoverString;
@@ -27,21 +29,23 @@ public class SituationalWidget extends Widget {
     protected TextureArea area;
     private boolean isVisible = true;
 
-    public SituationalWidget(int xPosition, int yPosition, int width, int height, IntSupplier getSituationalStatus) {
+    public SituationWidget(int xPosition, int yPosition, int width, int height, IntSupplier getSituationId) {
         super(new Position(xPosition, yPosition), new Size(width, height));
-        this.currentSituationId = () -> getSituationalStatus.getAsInt();
+        this.currentSituationId = () -> getSituationId.getAsInt();
         setImage();
     }
 
     public void setTooltipHoverString() {
-        this.tooltipHoverString = I18n.format(getSituationalStatusFromId(currentError).localeName);
+        this.tooltipHoverString = I18n.format(getSituationFromId(currentError).situationLocaleName);
     }
 
-    public SituationalWidget setImage() {
-        TextureArea iconTexture = getSituationalStatusFromId(currentError).iconTexture;
-        if (iconTexture != null) {
-            this.area = iconTexture;
-        } else {
+    public SituationWidget setImage() {
+        Enum iconTextureEnum = getSituationFromId(currentError).situationType;
+        if (iconTextureEnum.equals(ERROR)) this.area = GuiTextures.STATUS_ERROR;
+        else if (iconTextureEnum.equals(WARNING)) this.area = GuiTextures.STATUS_WARNING;
+        else if (iconTextureEnum.equals(WORKING)) this.area = GuiTextures.STATUS_WORKING;
+        else if (iconTextureEnum.equals(IDLE)) this.area = GuiTextures.STATUS_IDLING;
+        else {
             this.area = null;
         }
         return this;
