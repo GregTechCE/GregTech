@@ -860,7 +860,7 @@ public abstract class MetaTileEntity implements ICoverable {
             if (fluidHandler == null || myFluidHandler == null) {
                 continue;
             }
-            if (GTFluidUtils.transferFluids(myFluidHandler, fluidHandler, Integer.MAX_VALUE) == 0) {
+            if (GTFluidUtils.transferFluids(myFluidHandler, fluidHandler, Integer.MAX_VALUE) == Integer.MAX_VALUE ) {
                 this.failedToMoveFluids = true;
             }
         }

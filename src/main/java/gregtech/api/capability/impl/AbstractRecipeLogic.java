@@ -106,28 +106,18 @@ public abstract class AbstractRecipeLogic extends MTETrait implements IWorkable 
         if (!getMetaTileEntity().getWorld().isRemote) {
             if (workingEnabled) {
                 if (progressTime > 0) {
-                    int currentProgress = progressTime;
                     updateRecipeProgress();
-                    if (progressTime > currentProgress) {
-                        metaTileEntity.setSituation(WORKING);
-                    } else if (progressTime != 0) {
-                        metaTileEntity.setSituation(INSUFFICIENT_POWER);
-                    }
                 }
                 if (progressTime == 0) {
                     trySearchNewRecipe();
-                }
-                if (currentRecipe == null) {
-                    if (metaTileEntity.isInputEmpty()) {
-                        metaTileEntity.setSituation(IDLE);
-                    } else {
+                    if (currentRecipe == null) {
                         metaTileEntity.setSituation(NO_MATCHING_RECIPE);
                     }
-                } else if (!canOutputsFit()) {
-                    metaTileEntity.setSituation(OUTPUT_INVENTORY_FULL);
+                    if (metaTileEntity.isInputEmpty()) {
+                        metaTileEntity.setSituation(IDLE);
+                    }
                 }
-            }
-            else {
+            } else {
                 metaTileEntity.setSituation(DISABLED_BY_CONTROLLER);
             }
         }
@@ -146,6 +136,7 @@ public abstract class AbstractRecipeLogic extends MTETrait implements IWorkable 
         boolean drawEnergy = drawEnergy(recipeEUt);
         if (drawEnergy || (recipeEUt < 0)) {
             //as recipe starts with progress on 1 this has to be > only not => to compensate for it
+            metaTileEntity.setSituation(WORKING);
             if (++progressTime > maxProgressTime) {
                 completeRecipe();
             }
@@ -153,6 +144,7 @@ public abstract class AbstractRecipeLogic extends MTETrait implements IWorkable 
             //only set hasNotEnoughEnergy if this recipe is consuming recipe
             //generators always have enough energy
             this.hasNotEnoughEnergy = true;
+            metaTileEntity.setSituation(INSUFFICIENT_POWER);
             //if current progress value is greater than 2, decrement it by 2
             if (progressTime >= 2) {
                 if (ConfigHolder.insufficientEnergySupplyWipesRecipeProgress) {
@@ -184,6 +176,8 @@ public abstract class AbstractRecipeLogic extends MTETrait implements IWorkable 
         }
         if (this.currentRecipe != null && setupAndConsumeRecipeInputs(this.currentRecipe)) {
             setupRecipe(this.currentRecipe);
+        } else {
+            metaTileEntity.setSituation(OUTPUT_INVENTORY_FULL);
         }
     }
 
