@@ -136,6 +136,11 @@ public class MetaTileEntityMultiFurnace extends RecipeMapMultiblockController {
             ArrayList<CountableIngredient> recipeInputs = new ArrayList<>();
             ArrayList<ItemStack> recipeOutputs = new ArrayList<>();
             for (int index = 0; index < inputs.getSlots(); index++) {
+                //Check first if there is room in the output bus
+                if(findFreeOutputSlots(this.getOutputInventory()) == 0) {
+                    break;
+                }
+
                 ItemStack stackInSlot = inputs.getStackInSlot(index);
                 if (stackInSlot.isEmpty())
                     continue;
@@ -148,7 +153,7 @@ public class MetaTileEntityMultiFurnace extends RecipeMapMultiblockController {
                         (maxItemsLimit - currentItemsEngaged) / inputIngredient.getCount());
                     recipeInputs.add(new CountableIngredient(inputIngredient.getIngredient(),
                         inputIngredient.getCount() * overclockAmount));
-                    if (!outputStack.isEmpty()) {
+                    if (!outputStack.isEmpty() && currentItemsEngaged < findFreeOutputSlots(this.getOutputInventory()) * 64) {
                         outputStack.setCount(outputStack.getCount() * overclockAmount);
                         recipeOutputs.add(outputStack);
                     }
@@ -163,6 +168,20 @@ public class MetaTileEntityMultiFurnace extends RecipeMapMultiblockController {
                 .EUt(Math.max(1, 16 / heatingCoilDiscount))
                 .duration((int) Math.max(1.0, 256 * (currentItemsEngaged / (maxItemsLimit * 1.0))))
                 .build().getResult();
+        }
+
+        //Finds the number of empty slots in an output bus
+        protected int findFreeOutputSlots(IItemHandlerModifiable outputInventory) {
+            int outputSlots = 0;
+
+            for(int index = 0; index < outputInventory.getSlots(); index++) {
+                ItemStack stackInSlot = outputInventory.getStackInSlot(index);
+                if(stackInSlot.isEmpty()) {
+                    outputSlots++;
+                }
+            }
+
+            return outputSlots;
         }
     }
 
