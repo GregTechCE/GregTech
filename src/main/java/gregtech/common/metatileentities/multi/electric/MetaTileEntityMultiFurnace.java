@@ -135,12 +135,12 @@ public class MetaTileEntityMultiFurnace extends RecipeMapMultiblockController {
             int maxItemsLimit = 32 * heatingCoilLevel;
             ArrayList<CountableIngredient> recipeInputs = new ArrayList<>();
             ArrayList<ItemStack> recipeOutputs = new ArrayList<>();
-            for (int index = 0; index < inputs.getSlots(); index++) {
-                //Check first if there is room in the output bus
-                if(findFreeOutputSlots(this.getOutputInventory()) == 0) {
-                    break;
-                }
+            //Check first if there is room in the output bus
+            if(findFreeOutputSlots(this.getOutputInventory()) == 0) {
+                return null;
+            }
 
+            for (int index = 0; index < inputs.getSlots(); index++) {
                 ItemStack stackInSlot = inputs.getStackInSlot(index);
                 if (stackInSlot.isEmpty())
                     continue;
