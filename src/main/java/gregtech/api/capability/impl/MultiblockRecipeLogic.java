@@ -2,6 +2,7 @@ package gregtech.api.capability.impl;
 
 import gregtech.api.capability.IEnergyContainer;
 import gregtech.api.capability.IMultipleTankHandler;
+import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.multiblock.RecipeMapMultiblockController;
 import gregtech.api.recipes.Recipe;
 import net.minecraftforge.items.IItemHandlerModifiable;
@@ -54,10 +55,38 @@ public class MultiblockRecipeLogic extends AbstractRecipeLogic {
     protected boolean setupAndConsumeRecipeInputs(Recipe recipe) {
         RecipeMapMultiblockController controller = (RecipeMapMultiblockController) metaTileEntity;
         if (controller.checkRecipe(recipe, false) &&
-            super.setupAndConsumeRecipeInputs(recipe)) {
+            multiBlockSetupAndConsumeRecipeInputs(recipe)) {
             controller.checkRecipe(recipe, true);
             return true;
         } else return false;
+    }
+
+    //Logic Mostly copied from AbstractRecipeLogic, but with some additional checking for Multiblock output spacing to prevent voiding
+    protected boolean multiBlockSetupAndConsumeRecipeInputs(Recipe recipe) {
+        int[] resultOverclock = calculateOverclock(recipe.getEUt(), getMaxVoltage(), recipe.getDuration());
+        int totalEUt = resultOverclock[0] * resultOverclock[1];
+        IItemHandlerModifiable importInventory = getInputInventory();
+        IItemHandlerModifiable exportInventory = getOutputInventory();
+        IMultipleTankHandler importFluids = getInputTank();
+        IMultipleTankHandler exportFluids = getOutputTank();
+        return (totalEUt >= 0 ? getEnergyStored() >= (totalEUt > getEnergyCapacity() / 2 ? resultOverclock[0] : totalEUt) :
+            (getEnergyStored() - resultOverclock[0] <= getEnergyCapacity())) &&
+            MetaTileEntity.addItemsToItemHandler(exportInventory, true, recipe.getAllItemOutputs(exportInventory.getSlots())) &&
+            recipe.getAllItemOutputs(exportInventory.getSlots()).size() <= getFreeSlots(exportInventory) &&
+            MetaTileEntity.addFluidsToFluidHandler(exportFluids, true, recipe.getFluidOutputs()) &&
+            recipe.matches(true, importInventory, importFluids);
+    }
+
+    //Determines the number of free slots in the paseed inventory
+    protected int getFreeSlots(IItemHandlerModifiable inventory) {
+        int emptySlots = 0;
+        for(int index = 0; index < inventory.getSlots(); index++) {
+            if(inventory.getStackInSlot(index).isEmpty()) {
+                emptySlots++;
+            }
+        }
+
+        return emptySlots;
     }
 
     @Override
