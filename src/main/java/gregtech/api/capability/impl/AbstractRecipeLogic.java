@@ -27,7 +27,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
-import static gregtech.api.Situations.*;
+import static gregtech.api.situation.Situations.*;
 
 public abstract class AbstractRecipeLogic extends MTETrait implements IWorkable {
 
