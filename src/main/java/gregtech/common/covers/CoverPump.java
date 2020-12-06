@@ -103,14 +103,6 @@ public class CoverPump extends CoverBehavior implements CoverWithUI, ITickable, 
         coverHolder.markDirty();
     }
 
-    public int getSituation() {
-        return this.situation.id;
-    }
-
-    public void setSituation(Situation situation) {
-        this.situation = situation;
-    }
-
     @Override
     public void update() {
         long timer = coverHolder.getTimer();
@@ -125,9 +117,7 @@ public class CoverPump extends CoverBehavior implements CoverWithUI, ITickable, 
             }
             this.fluidLeftToTransferLastSecond = transferRate;
         }
-        if (!isWorkingAllowed) {
-            setSituation(DISABLED_BY_CONTROLLER);
-        }
+        super.update();
     }
 
     protected int doTransferFluids(int transferLimit) {
@@ -137,11 +127,7 @@ public class CoverPump extends CoverBehavior implements CoverWithUI, ITickable, 
         blockPos.release();
         IFluidHandler fluidHandler = tileEntity == null ? null : tileEntity.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, attachedSide.getOpposite());
         IFluidHandler myFluidHandler = coverHolder.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, attachedSide);
-        if (myFluidHandler == null) {
-            setSituation(EXPECTED_CAPABILITY_UNAVAILABLE);
-            return 0;
-        }
-        else if (fluidHandler == null) {
+        if (fluidHandler == null) {
             if (pumpMode == PumpMode.IMPORT) setSituation(NO_IMPORT_TANK);
             if (pumpMode == PumpMode.EXPORT) setSituation(NO_EXPORT_TANK);
             return 0;

@@ -91,14 +91,6 @@ public class CoverConveyor extends CoverBehavior implements CoverWithUI, ITickab
         coverHolder.markDirty();
     }
 
-    public int getSituation() {
-        return this.situation.id;
-    }
-
-    public void setSituation(Situation situation) {
-        this.situation = situation;
-    }
-
     @Override
     public void update() {
         long timer = coverHolder.getTimer();
@@ -106,10 +98,6 @@ public class CoverConveyor extends CoverBehavior implements CoverWithUI, ITickab
             TileEntity tileEntity = coverHolder.getWorld().getTileEntity(coverHolder.getPos().offset(attachedSide));
             IItemHandler itemHandler = tileEntity == null ? null : tileEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, attachedSide.getOpposite());
             IItemHandler myItemHandler = coverHolder.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, attachedSide);
-            if (myItemHandler == null) {
-                setSituation(EXPECTED_CAPABILITY_UNAVAILABLE);
-                return;
-            }
             if (itemHandler == null) {
                 if (conveyorMode == ConveyorMode.IMPORT) setSituation(NO_IMPORT_INVENTORY);
                 if (conveyorMode == ConveyorMode.EXPORT) setSituation(NO_EXPORT_INVENTORY);
@@ -126,9 +114,7 @@ public class CoverConveyor extends CoverBehavior implements CoverWithUI, ITickab
             }
             this.itemsLeftToTransferLastSecond = transferRate;
         }
-        if (!isWorkingAllowed) {
-            setSituation(DISABLED_BY_CONTROLLER);
-        }
+        super.update();
     }
 
     protected int doTransferItems(IItemHandler itemHandler, IItemHandler myItemHandler, int maxTransferAmount) {
