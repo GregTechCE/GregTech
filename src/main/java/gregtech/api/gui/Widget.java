@@ -12,6 +12,7 @@ import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.RenderItem;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
@@ -25,6 +26,7 @@ import org.lwjgl.input.Keyboard;
 
 import javax.annotation.Nullable;
 import java.awt.*;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.function.Consumer;
@@ -44,6 +46,8 @@ public abstract class Widget {
     private Position selfPosition;
     private Position position;
     private Size size;
+    protected long hoverStartTime = -1L;
+    protected boolean isMouseHovered;
 
     public Widget(Position selfPosition, Size size) {
         Preconditions.checkNotNull(selfPosition, "selfPosition");
@@ -226,6 +230,25 @@ public abstract class Widget {
     protected final void writeClientAction(int id, Consumer<PacketBuffer> packetBufferWriter) {
         if (uiAccess != null) {
             uiAccess.writeClientAction(this, id, packetBufferWriter);
+        }
+    }
+
+    @SideOnly(Side.CLIENT)
+    public void drawHoveringTooltip(int mouseX, int mouseY, String tooltipHoverString) {
+        boolean isHovered = isMouseOverElement(mouseX, mouseY);
+        boolean wasHovered = isMouseHovered;
+        if (isHovered && !wasHovered) {
+            this.isMouseHovered = true;
+            this.hoverStartTime = System.currentTimeMillis();
+        } else if (!isHovered && wasHovered) {
+            this.isMouseHovered = false;
+            this.hoverStartTime = 0L;
+        } else if (isHovered) {
+            long timeSinceHover = System.currentTimeMillis() - hoverStartTime;
+            if (timeSinceHover > 1000L && tooltipHoverString != null) {
+                List<String> hoverList = Arrays.asList(I18n.format(tooltipHoverString).split("/n"));
+                drawHoveringText(ItemStack.EMPTY, hoverList, 300, mouseX, mouseY);
+            }
         }
     }
 
