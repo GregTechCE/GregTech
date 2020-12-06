@@ -8,7 +8,7 @@ import codechicken.lib.vec.Matrix4;
 import gnu.trove.list.TIntList;
 import gnu.trove.list.array.TIntArrayList;
 import gregtech.api.GTValues;
-import gregtech.api.Situation;
+import gregtech.api.situation.Situation;
 import gregtech.api.capability.GregtechTileCapabilities;
 import gregtech.api.capability.IControllable;
 import gregtech.api.capability.impl.ItemHandlerDelegate;
@@ -38,7 +38,7 @@ import net.minecraftforge.items.ItemHandlerHelper;
 import javax.annotation.Nonnull;
 import java.util.*;
 
-import static gregtech.api.Situations.*;
+import static gregtech.api.situation.Situations.*;
 
 public class CoverConveyor extends CoverBehavior implements CoverWithUI, ITickable, IControllable {
 

@@ -10,7 +10,7 @@ import codechicken.lib.vec.Cuboid6;
 import codechicken.lib.vec.Matrix4;
 import com.google.common.base.Preconditions;
 import gregtech.api.GregTechAPI;
-import gregtech.api.Situation;
+import gregtech.api.situation.Situation;
 import gregtech.api.capability.GregtechTileCapabilities;
 import gregtech.api.capability.IEnergyContainer;
 import gregtech.api.capability.impl.FluidHandlerProxy;
@@ -58,7 +58,6 @@ import java.util.List;
 import java.util.function.Consumer;
 
 import static gregtech.api.util.InventoryUtils.simulateItemStackMerge;
-
 import static gregtech.api.Situations.*;
 
 public abstract class MetaTileEntity implements ICoverable {

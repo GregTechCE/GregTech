@@ -6,7 +6,7 @@ import codechicken.lib.render.pipeline.IVertexOperation;
 import codechicken.lib.vec.Cuboid6;
 import codechicken.lib.vec.Matrix4;
 import gregtech.api.GTValues;
-import gregtech.api.Situation;
+import gregtech.api.situation.Situation;
 import gregtech.api.capability.GregtechTileCapabilities;
 import gregtech.api.capability.IControllable;
 import gregtech.api.capability.impl.FluidHandlerDelegate;
@@ -36,7 +36,7 @@ import net.minecraftforge.fluids.capability.IFluidHandler;
 
 import javax.annotation.Nullable;
 
-import static gregtech.api.Situations.*;
+import static gregtech.api.situation.Situations.*;
 
 public class CoverPump extends CoverBehavior implements CoverWithUI, ITickable, IControllable {
 

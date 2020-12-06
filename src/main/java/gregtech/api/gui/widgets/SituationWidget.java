@@ -1,6 +1,5 @@
 package gregtech.api.gui.widgets;
 
-import gregtech.api.Situation;
 import gregtech.api.gui.GuiTextures;
 import gregtech.api.gui.IRenderContext;
 import gregtech.api.gui.Widget;
@@ -15,8 +14,8 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import java.util.Collections;
 import java.util.function.IntSupplier;
 
-import static gregtech.api.Situation.*;
-import static gregtech.api.Situations.SituationsTypes.*;
+import static gregtech.api.situation.Situation.getSituationFromId;
+import static gregtech.api.situation.SituationTypes.*;
 
 public class SituationWidget extends Widget {
 

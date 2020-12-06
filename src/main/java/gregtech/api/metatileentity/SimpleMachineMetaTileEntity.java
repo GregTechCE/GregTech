@@ -33,7 +33,7 @@ import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 
-import static gregtech.api.Situations.*;
+import static gregtech.api.situation.Situations.*;
 
 public class SimpleMachineMetaTileEntity extends WorkableTieredMetaTileEntity {
 
