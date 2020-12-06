@@ -4,6 +4,7 @@ import gregtech.api.gui.GuiTextures;
 import gregtech.api.gui.IRenderContext;
 import gregtech.api.gui.Widget;
 import gregtech.api.gui.resources.TextureArea;
+import gregtech.api.situation.SituationTypes;
 import gregtech.api.util.Position;
 import gregtech.api.util.Size;
 import net.minecraft.client.resources.I18n;
@@ -36,13 +37,22 @@ public class SituationWidget extends Widget {
     }
 
     public SituationWidget setImage() {
-        Enum iconTextureEnum = getSituationFromId(currentError).situationTypes;
-        if (iconTextureEnum.equals(ERROR)) this.area = GuiTextures.STATUS_ERROR;
-        else if (iconTextureEnum.equals(WARNING)) this.area = GuiTextures.STATUS_WARNING;
-        else if (iconTextureEnum.equals(WORKING)) this.area = GuiTextures.STATUS_WORKING;
-        else if (iconTextureEnum.equals(IDLE)) this.area = GuiTextures.STATUS_IDLING;
-        else {
-            this.area = null;
+        SituationTypes iconTextures = getSituationFromId(currentError).situationTypes;
+        switch (iconTextures) {
+            case IDLE:
+                this.area = GuiTextures.STATUS_IDLING;
+                return this;
+            case WORKING:
+                this.area = GuiTextures.STATUS_WORKING;
+                return this;
+            case WARNING:
+                this.area = GuiTextures.STATUS_WARNING;
+                return this;
+            case ERROR:
+                this.area = GuiTextures.STATUS_ERROR;
+                return this;
+            default:
+                this.area = null;
         }
         return this;
     }
