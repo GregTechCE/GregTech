@@ -5,7 +5,12 @@ import gregtech.api.capability.IMultipleTankHandler;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.multiblock.RecipeMapMultiblockController;
 import gregtech.api.recipes.Recipe;
+import net.minecraft.item.ItemStack;
 import net.minecraftforge.items.IItemHandlerModifiable;
+
+import java.util.List;
+
+import static gregtech.api.util.InventoryUtils.simulateItemStackMerge;
 
 public class MultiblockRecipeLogic extends AbstractRecipeLogic {
 
@@ -69,24 +74,13 @@ public class MultiblockRecipeLogic extends AbstractRecipeLogic {
         IItemHandlerModifiable exportInventory = getOutputInventory();
         IMultipleTankHandler importFluids = getInputTank();
         IMultipleTankHandler exportFluids = getOutputTank();
+        List<ItemStack> itemOutputs = recipe.getAllItemOutputs(exportInventory.getSlots());
         return (totalEUt >= 0 ? getEnergyStored() >= (totalEUt > getEnergyCapacity() / 2 ? resultOverclock[0] : totalEUt) :
             (getEnergyStored() - resultOverclock[0] <= getEnergyCapacity())) &&
-            MetaTileEntity.addItemsToItemHandler(exportInventory, true, recipe.getAllItemOutputs(exportInventory.getSlots())) &&
-            recipe.getAllItemOutputs(exportInventory.getSlots()).size() <= getFreeSlots(exportInventory) &&
+            MetaTileEntity.addItemsToItemHandler(exportInventory, true, itemOutputs) &&
+            simulateItemStackMerge(itemOutputs, exportInventory) &&
             MetaTileEntity.addFluidsToFluidHandler(exportFluids, true, recipe.getFluidOutputs()) &&
             recipe.matches(true, importInventory, importFluids);
-    }
-
-    //Determines the number of free slots in the paseed inventory
-    protected int getFreeSlots(IItemHandlerModifiable inventory) {
-        int emptySlots = 0;
-        for(int index = 0; index < inventory.getSlots(); index++) {
-            if(inventory.getStackInSlot(index).isEmpty()) {
-                emptySlots++;
-            }
-        }
-
-        return emptySlots;
     }
 
     @Override
