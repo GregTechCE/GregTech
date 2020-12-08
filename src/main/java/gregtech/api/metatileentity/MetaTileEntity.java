@@ -1099,8 +1099,8 @@ public abstract class MetaTileEntity implements ICoverable {
         }
     }
 
-    public int getSituation() {
-        return this.situation.id;
+    public Situation getSituation() {
+        return this.situation;
     }
 
     public void setSituation(Situation situation) {

@@ -214,8 +214,8 @@ public abstract class CoverBehavior implements IUIHolder {
         return coverHolder.getWorld().isRemote;
     }
 
-    public int getSituation() {
-        return this.situation.id;
+    public Situation getSituation() {
+        return this.situation;
     }
 
     public void setSituation(Situation situation) {

@@ -4,6 +4,7 @@ import gregtech.api.gui.GuiTextures;
 import gregtech.api.gui.IRenderContext;
 import gregtech.api.gui.Widget;
 import gregtech.api.gui.resources.TextureArea;
+import gregtech.api.situation.Situation;
 import gregtech.api.situation.SituationTypes;
 import gregtech.api.util.Position;
 import gregtech.api.util.Size;
@@ -11,33 +12,32 @@ import net.minecraft.client.resources.I18n;
 import net.minecraft.network.PacketBuffer;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import java.util.function.IntSupplier;
-
-import static gregtech.api.situation.Situation.getSituationFromId;
-import static gregtech.api.situation.SituationTypes.*;
+import java.util.function.Supplier;
 
 public class SituationWidget extends Widget {
 
-    private final IntSupplier currentSituationId;
+    private final Supplier<Situation> currentSituationSupplier;
+    private Situation currentSituation;
     protected String tooltipHoverString;
-    protected int currentError;
+    protected int currentId;
 
     protected TextureArea area;
     private boolean isVisible = true;
 
-    public SituationWidget(int xPosition, int yPosition, int width, int height, IntSupplier getSituationId) {
+    public <T extends Situation> SituationWidget(int xPosition, int yPosition, int width, int height, Supplier <Situation> getSituation) {
         super(new Position(xPosition, yPosition), new Size(width, height));
-        this.currentSituationId = () -> getSituationId.getAsInt();
+        this.currentSituationSupplier = getSituation;
+        this.currentSituation = getSituation.get();
         setTooltipHoverString();
         setImage();
     }
 
     public void setTooltipHoverString() {
-        this.tooltipHoverString = I18n.format(getSituationFromId(currentError).situationLocaleName);
+        this.tooltipHoverString = I18n.format(this.currentSituation.situationLocaleName);
     }
 
     public SituationWidget setImage() {
-        SituationTypes iconTextures = getSituationFromId(currentError).situationTypes;
+        SituationTypes iconTextures = this.currentSituation.situationTypes;
         switch (iconTextures) {
             case IDLE:
                 this.area = GuiTextures.STATUS_IDLING;
@@ -60,9 +60,9 @@ public class SituationWidget extends Widget {
     @Override
     public void detectAndSendChanges() {
         super.detectAndSendChanges();
-        if (currentSituationId.getAsInt() != currentError) {
-            this.currentError = currentSituationId.getAsInt();
-            writeUpdateInfo(1, buf -> buf.writeVarInt(currentError));
+        if (currentSituationSupplier.get().id != currentId) {
+            this.currentId = currentSituationSupplier.get().id;
+            writeUpdateInfo(1, buf -> buf.writeVarInt(currentId));
         }
     }
 
@@ -70,7 +70,8 @@ public class SituationWidget extends Widget {
     public void readUpdateInfo(int id, PacketBuffer buffer) {
         super.readUpdateInfo(id, buffer);
         if (id == 1) {
-            this.currentError = buffer.readVarInt();
+            this.currentId = buffer.readVarInt();
+            this.currentSituation = Situation.getSituationFromId(this.currentId);
             setTooltipHoverString();
             setImage();
         }
