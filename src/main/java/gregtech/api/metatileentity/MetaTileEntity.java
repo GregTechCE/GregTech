@@ -993,23 +993,21 @@ public abstract class MetaTileEntity implements ICoverable {
     }
 
     public boolean isInputEmpty() {
-        boolean emptyInputSlots = true;
-        boolean emptyInputTanks = true;
         if (importItems.getSlots() > 0) {
             for (int i = 0; i < importItems.getSlots(); i++) {
                 if (!importItems.getStackInSlot(i).isEmpty()) {
-                    emptyInputSlots = false;
+                    return false;
                 }
             }
         }
         if (importFluids.getTanks() > 0) {
             for (int i = 0; i < importFluids.getTanks(); i++) {
                 if (importFluids.getTankAt(i).getFluid() != null) {
-                    emptyInputTanks = false;
+                    return false;
                 }
             }
         }
-        return (emptyInputSlots && emptyInputTanks);
+        return true;
     }
 
     public boolean isOutputFull() {
