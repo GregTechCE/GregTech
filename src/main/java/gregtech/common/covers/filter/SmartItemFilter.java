@@ -130,7 +130,8 @@ public class SmartItemFilter extends ItemFilter {
 
     public enum SmartFilteringMode implements IStringSerializable {
         ELECTROLYZER("cover.smart_item_filter.filtering_mode.electrolyzer", RecipeMaps.ELECTROLYZER_RECIPES),
-        CENTRIFUGE("cover.smart_item_filter.filtering_mode.centrifuge", RecipeMaps.CENTRIFUGE_RECIPES);
+        CENTRIFUGE("cover.smart_item_filter.filtering_mode.centrifuge", RecipeMaps.CENTRIFUGE_RECIPES),
+        SIFTER("cover.smart_item_filter.filtering_mode.sifter", RecipeMaps.SIFTER_RECIPES);
 
         private final Map<ItemAndMetadata, Integer> transferStackSizesCache = new HashMap<>();
         public final String localeName;
