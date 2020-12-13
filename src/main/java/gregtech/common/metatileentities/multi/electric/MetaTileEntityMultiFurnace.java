@@ -191,8 +191,11 @@ public class MetaTileEntityMultiFurnace extends RecipeMapMultiblockController {
             }
 
             // If there were no accepted ingredients, then there is no recipe to process.
-            if(recipeInputs.isEmpty())
+            if(recipeInputs.isEmpty()) {
+                //Set here to prevent recipe deadlock on world load with full output bus
+                forceRecipeRecheck = true;
                 return null;
+            }
 
             return recipeMap.recipeBuilder()
                 .inputsIngredients(recipeInputs)
