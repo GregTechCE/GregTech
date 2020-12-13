@@ -90,7 +90,7 @@ public class CraftingRecipeLoader {
         for(Material material : new Material[] {Materials.Lapis, Materials.Lazurite, Materials.Sodalite}) {
             String recipeName = "lapotron_crystal_" + material.toString();
             ModHandler.addShapedEnergyTransferRecipe(recipeName, MetaItems.LAPOTRON_CRYSTAL.getStackForm(),
-                Ingredient.fromStacks(MetaItems.ENERGY_CRYSTAL.getStackForm()), false,
+                Ingredient.fromStacks(MetaItems.LAPOTRON_CRYSTAL.getStackForm()), MetaItems.LAPOTRON_CRYSTAL.getChargeAmount(), false,
                 "XCX", "XEX", "XCX",
                 'X', new UnificationEntry(OrePrefix.plate, material),
                 'C', new UnificationEntry(OrePrefix.circuit, Tier.Advanced),

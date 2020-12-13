@@ -278,6 +278,25 @@ public class ModHandler {
         ForgeRegistries.RECIPES.register(shapedOreRecipe);
     }
 
+    public static void addShapedEnergyTransferRecipe(String regName, ItemStack result, Predicate<ItemStack> chargePredicate, long chargeAmount, boolean transferMaxCharge, Object... recipe) {
+        boolean skip = false;
+        if (result.isEmpty()) {
+            GTLog.logger.error("Result cannot be an empty ItemStack. Recipe: {}", regName);
+            GTLog.logger.error("Stacktrace:", new IllegalArgumentException());
+            skip = true;
+        }
+        skip |= validateRecipe(regName, recipe);
+        if (skip) {
+            RecipeMap.setFoundInvalidRecipe(true);
+            return;
+        }
+
+        IRecipe shapedOreRecipe = new ShapedOreEnergyTransferRecipe(null, result.copy(), chargePredicate, chargeAmount, transferMaxCharge, finalizeShapedRecipeInput(recipe))
+            .setMirrored(false) //make all recipes not mirrored by default
+            .setRegistryName(regName);
+        ForgeRegistries.RECIPES.register(shapedOreRecipe);
+    }
+
     private static boolean validateRecipe(String regName, Object... recipe) {
         boolean skip = false;
         if (recipe == null) {

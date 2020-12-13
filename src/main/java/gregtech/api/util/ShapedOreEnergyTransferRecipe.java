@@ -25,11 +25,29 @@ public class ShapedOreEnergyTransferRecipe extends ShapedOreRecipe {
         this(group, result, chargePredicate, transferMaxCharge, CraftingHelper.parseShaped(recipe));
     }
 
+    public ShapedOreEnergyTransferRecipe(ResourceLocation group, @Nonnull ItemStack result, Predicate<ItemStack> chargePredicate, long chargeAmount, boolean transferMaxCharge, Object... recipe) {
+        this(group, result, chargePredicate, chargeAmount, transferMaxCharge, CraftingHelper.parseShaped(recipe));
+    }
+
     public ShapedOreEnergyTransferRecipe(ResourceLocation group, @Nonnull ItemStack result, Predicate<ItemStack> chargePredicate, boolean transferMaxCharge, ShapedPrimer primer) {
         super(group, result, primer);
         this.chargePredicate = chargePredicate;
         this.transferMaxCharge = transferMaxCharge;
         fixOutputItemMaxCharge();
+    }
+
+    public ShapedOreEnergyTransferRecipe(ResourceLocation group, @Nonnull ItemStack result, Predicate<ItemStack> chargePredicate, long chargeAmount, boolean transferMaxCharge, ShapedPrimer primer) {
+        super(group, result, primer);
+        this.chargePredicate = chargePredicate;
+        this.transferMaxCharge = transferMaxCharge;
+        setMaxChargeInRecipe(chargeAmount);
+    }
+
+    private void setMaxChargeInRecipe(long chargeAmount) {
+        IElectricItem electricItem = output.getCapability(GregtechCapabilities.CAPABILITY_ELECTRIC_ITEM, null);
+        if(!(electricItem == null)) {
+            ((ElectricItem) electricItem).setMaxChargeOverride(chargeAmount);
+        }
     }
 
     //transfer initial max charge for correct display in JEI
