@@ -201,48 +201,49 @@ public class MetaTileEntityMultiFurnace extends RecipeMapMultiblockController {
                 .duration((int) Math.max(1.0, 256 * (currentItemsEngaged / (maxItemsLimit * 1.0))))
                 .build().getResult();
         }
-    }
 
-    /**
-     * Computes the minimal number of ItemStacks necessary to store a multiplied recipe output, then
-     * generates the stacks. The result is then stored in {@code recipeOutputs}.
-     *
-     * @param recipeOutputs   a collection of outputs to store the resulting output ItemStacks
-     * @param outputStack     an ItemStack representing the output item of a recipe
-     * @param overclockAmount the number of times that {@code outputStack}'s quantity should
-     *                        be multiplied by for the desired total
-     */
-    private void computeOutputItemStacks(Collection<ItemStack> recipeOutputs,
-                                         ItemStack outputStack,
-                                         int overclockAmount)
-    {
-        if(!outputStack.isEmpty()) {
-            // number of output items we're generating
-            int finalAmount = outputStack.getCount() * overclockAmount;
+        /**
+         * Computes the minimal number of ItemStacks necessary to store a multiplied recipe output, then
+         * generates the stacks. The result is then stored in {@code recipeOutputs}.
+         *
+         * @param recipeOutputs   a collection of outputs to store the resulting output ItemStacks
+         * @param outputStack     an ItemStack representing the output item of a recipe
+         * @param overclockAmount the number of times that {@code outputStack}'s quantity should
+         *                        be multiplied by for the desired total
+         */
+        private void computeOutputItemStacks(Collection<ItemStack> recipeOutputs,
+                                             ItemStack outputStack,
+                                             int overclockAmount)
+        {
+            if(!outputStack.isEmpty()) {
+                // number of output items we're generating
+                int finalAmount = outputStack.getCount() * overclockAmount;
 
-            // max items allowed in a stack
-            int maxCount = outputStack.getMaxStackSize();
+                // max items allowed in a stack
+                int maxCount = outputStack.getMaxStackSize();
 
-            // number of whole stacks of output this will make
-            int numStacks = finalAmount / maxCount;
+                // number of whole stacks of output this will make
+                int numStacks = finalAmount / maxCount;
 
-            // number of items left (partial stack)
-            int remainder = finalAmount % maxCount;
+                // number of items left (partial stack)
+                int remainder = finalAmount % maxCount;
 
-            // Add full stacks of the output item
-            for(int fullStacks = numStacks; fullStacks > 0; fullStacks--) {
-                ItemStack full = outputStack.copy();
-                full.setCount(maxCount);
-                recipeOutputs.add(full);
-            }
+                // Add full stacks of the output item
+                for(int fullStacks = numStacks; fullStacks > 0; fullStacks--) {
+                    ItemStack full = outputStack.copy();
+                    full.setCount(maxCount);
+                    recipeOutputs.add(full);
+                }
 
-            // if there is a partial stack, add it too
-            if(remainder > 0) {
-                ItemStack partial = outputStack.copy();
-                partial.setCount(remainder);
-                recipeOutputs.add(partial);
+                // if there is a partial stack, add it too
+                if(remainder > 0) {
+                    ItemStack partial = outputStack.copy();
+                    partial.setCount(remainder);
+                    recipeOutputs.add(partial);
+                }
             }
         }
+
     }
 
 }
