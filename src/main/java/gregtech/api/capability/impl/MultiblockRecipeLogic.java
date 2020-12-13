@@ -2,15 +2,9 @@ package gregtech.api.capability.impl;
 
 import gregtech.api.capability.IEnergyContainer;
 import gregtech.api.capability.IMultipleTankHandler;
-import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.multiblock.RecipeMapMultiblockController;
 import gregtech.api.recipes.Recipe;
-import net.minecraft.item.ItemStack;
 import net.minecraftforge.items.IItemHandlerModifiable;
-
-import java.util.List;
-
-import static gregtech.api.util.InventoryUtils.simulateItemStackMerge;
 
 public class MultiblockRecipeLogic extends AbstractRecipeLogic {
 
@@ -60,27 +54,10 @@ public class MultiblockRecipeLogic extends AbstractRecipeLogic {
     protected boolean setupAndConsumeRecipeInputs(Recipe recipe) {
         RecipeMapMultiblockController controller = (RecipeMapMultiblockController) metaTileEntity;
         if (controller.checkRecipe(recipe, false) &&
-            multiBlockSetupAndConsumeRecipeInputs(recipe)) {
+            super.setupAndConsumeRecipeInputs(recipe)) {
             controller.checkRecipe(recipe, true);
             return true;
         } else return false;
-    }
-
-    //Logic Mostly copied from AbstractRecipeLogic, but with some additional checking for Multiblock output spacing to prevent voiding
-    protected boolean multiBlockSetupAndConsumeRecipeInputs(Recipe recipe) {
-        int[] resultOverclock = calculateOverclock(recipe.getEUt(), getMaxVoltage(), recipe.getDuration());
-        int totalEUt = resultOverclock[0] * resultOverclock[1];
-        IItemHandlerModifiable importInventory = getInputInventory();
-        IItemHandlerModifiable exportInventory = getOutputInventory();
-        IMultipleTankHandler importFluids = getInputTank();
-        IMultipleTankHandler exportFluids = getOutputTank();
-        List<ItemStack> itemOutputs = recipe.getAllItemOutputs(exportInventory.getSlots());
-        return (totalEUt >= 0 ? getEnergyStored() >= (totalEUt > getEnergyCapacity() / 2 ? resultOverclock[0] : totalEUt) :
-            (getEnergyStored() - resultOverclock[0] <= getEnergyCapacity())) &&
-            MetaTileEntity.addItemsToItemHandler(exportInventory, true, itemOutputs) &&
-            simulateItemStackMerge(itemOutputs, exportInventory) &&
-            MetaTileEntity.addFluidsToFluidHandler(exportFluids, true, recipe.getFluidOutputs()) &&
-            recipe.matches(true, importInventory, importFluids);
     }
 
     @Override
