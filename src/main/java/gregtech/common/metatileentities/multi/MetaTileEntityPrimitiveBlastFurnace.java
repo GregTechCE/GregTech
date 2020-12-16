@@ -139,7 +139,7 @@ public class MetaTileEntityPrimitiveBlastFurnace extends MultiblockControllerBas
         outputs.add(recipe.getOutput());
         outputs.add(getAshForRecipeFuelConsumption(recipe.getFuelAmount()));
         return inputStack.getCount() >= recipe.getInput().getCount() && fuelAmount >= recipe.getFuelAmount() &&
-                simulateItemStackMerge(outputs, exportItems);
+            ItemHandlerHelper.insertItemStacked(exportItems, recipe.getOutput(), true).isEmpty();
     }
 
     private boolean tryPickNewRecipe() {
@@ -166,8 +166,15 @@ public class MetaTileEntityPrimitiveBlastFurnace extends MultiblockControllerBas
             this.currentProgress = 0;
             NonNullList<ItemStack> outputs = NonNullList.create();
             outputs.add(currentRecipe.getOutput().copy());
-            outputs.add(getAshForRecipeFuelConsumption(currentRecipe.getFuelAmount()));
-            this.outputsList = outputs;
+            NonNullList<ItemStack> outputsWithAsh = NonNullList.create();
+            outputsWithAsh.add(currentRecipe.getOutput().copy());
+            outputsWithAsh.add(getAshForRecipeFuelConsumption(currentRecipe.getFuelAmount()));
+            if(simulateItemStackMerge(outputs, exportItems) && !simulateItemStackMerge(outputsWithAsh, exportItems)) {
+                this.outputsList = outputs;
+            }
+            else {
+                this.outputsList = outputsWithAsh;
+            }
             markDirty();
             return true;
         }
