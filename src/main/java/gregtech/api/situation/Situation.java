@@ -6,17 +6,17 @@ import static gregtech.api.GTValues.MODID;
 
 public class Situation {
 
-    public static GTControlledRegistry<String, Situation> SITUATION_REGISTRY = new GTControlledRegistry<>(Short.MAX_VALUE);
+    public final static GTControlledRegistry<String, Situation> SITUATION_REGISTRY = new GTControlledRegistry<>(Short.MAX_VALUE);
     public final String situationName;
     public final SituationTypes situationTypes;
     public final String situationLocaleName;
-    public int id;
+    public final int id;
     
     public Situation(int id, String situationName, SituationTypes situationTypes) {
         this.id = id;
         this.situationName = situationName;
         this.situationTypes = situationTypes;
-        this.situationLocaleName = MODID + ".situation." + this.situationName;
+        this.situationLocaleName = "gregtech.situation." + this.situationName;
         registerSituation(id,situationName,this);
     }
 
