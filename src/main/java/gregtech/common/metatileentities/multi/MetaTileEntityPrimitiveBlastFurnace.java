@@ -135,9 +135,6 @@ public class MetaTileEntityPrimitiveBlastFurnace extends MultiblockControllerBas
     }
 
     private boolean setupRecipe(ItemStack inputStack, int fuelAmount, PrimitiveBlastFurnaceRecipe recipe) {
-        List<ItemStack> outputs = new ArrayList<>();
-        outputs.add(recipe.getOutput());
-        outputs.add(getAshForRecipeFuelConsumption(recipe.getFuelAmount()));
         return inputStack.getCount() >= recipe.getInput().getCount() && fuelAmount >= recipe.getFuelAmount() &&
             ItemHandlerHelper.insertItemStacked(exportItems, recipe.getOutput(), true).isEmpty();
     }
