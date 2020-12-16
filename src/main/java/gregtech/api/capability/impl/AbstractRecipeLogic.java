@@ -120,16 +120,11 @@ public abstract class AbstractRecipeLogic extends MTETrait implements IWorkable 
             } else {
                 metaTileEntity.setSituation(DISABLED_BY_CONTROLLER);
             }
+            if (wasActiveAndNeedsUpdate) {
+                this.wasActiveAndNeedsUpdate = false;
+                setActive(false);
+            }
         }
-        if (wasActiveAndNeedsUpdate) {
-            this.wasActiveAndNeedsUpdate = false;
-            setActive(false);
-        }
-    }
-
-    boolean canOutputsFit(){
-        return (MetaTileEntity.addItemsToItemHandler(metaTileEntity.getExportItems(), true, currentRecipe.getAllItemOutputs(metaTileEntity.getExportItems().getSlots())) &&
-            MetaTileEntity.addFluidsToFluidHandler(metaTileEntity.getExportFluids(), true, currentRecipe.getFluidOutputs()));
     }
 
     protected void updateRecipeProgress() {

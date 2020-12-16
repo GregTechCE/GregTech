@@ -129,7 +129,7 @@ public class CoverPump extends CoverBehavior implements CoverWithUI, ITickable, 
         blockPos.release();
         IFluidHandler fluidHandler = tileEntity == null ? null : tileEntity.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, attachedSide.getOpposite());
         IFluidHandler myFluidHandler = coverHolder.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, attachedSide);
-        if (fluidHandler == null) {
+        if (fluidHandler == null || myFluidHandler == null) {
             if (pumpMode == PumpMode.IMPORT) setSituation(NO_IMPORT_TANK);
             if (pumpMode == PumpMode.EXPORT) setSituation(NO_EXPORT_TANK);
             return 0;
