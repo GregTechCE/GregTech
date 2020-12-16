@@ -33,8 +33,6 @@ public class CycleButtonWidget extends Widget {
     private IntConsumer setOptionExecutor;
     protected int currentOption;
     protected String tooltipHoverString;
-    protected long hoverStartTime = -1L;
-    protected boolean isMouseHovered;
 
     public CycleButtonWidget(int xPosition, int yPosition, int width, int height, String[] optionNames, IntSupplier currentOptionSupplier, IntConsumer setOptionExecutor) {
         super(new Position(xPosition, yPosition), new Size(width, height));
@@ -125,7 +123,6 @@ public class CycleButtonWidget extends Widget {
         }
         return false;
     }
-
 
     @Override
     public void handleClientAction(int id, PacketBuffer buffer) {

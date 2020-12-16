@@ -24,7 +24,7 @@ public class SituationWidget extends Widget {
     protected TextureArea area;
     private boolean isVisible = true;
 
-    public <T extends Situation> SituationWidget(int xPosition, int yPosition, int width, int height, Supplier <Situation> getSituation) {
+    public <T extends Situation> SituationWidget(int xPosition, int yPosition, int width, int height, Supplier<Situation> getSituation) {
         super(new Position(xPosition, yPosition), new Size(width, height));
         this.currentSituationSupplier = getSituation;
         this.currentSituation = getSituation.get();
@@ -41,12 +41,16 @@ public class SituationWidget extends Widget {
         switch (iconTextures) {
             case IDLE:
                 this.area = GuiTextures.STATUS_IDLING;
+                break;
             case WORKING:
                 this.area = GuiTextures.STATUS_WORKING;
+                break;
             case WARNING:
                 this.area = GuiTextures.STATUS_WARNING;
+                break;
             case ERROR:
                 this.area = GuiTextures.STATUS_ERROR;
+                break;
             default:
                 this.area = null;
         }
