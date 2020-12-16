@@ -45,7 +45,6 @@ public abstract class CoverBehavior implements IUIHolder {
     public final EnumFacing attachedSide;
     private int redstoneSignalOutput;
     private Situation situation = IDLE;
-    private boolean isWorkingAllowed = true;
 
     public CoverBehavior(ICoverable coverHolder, EnumFacing attachedSide) {
         this.coverHolder = coverHolder;
@@ -220,12 +219,6 @@ public abstract class CoverBehavior implements IUIHolder {
 
     public void setSituation(Situation situation) {
         this.situation = situation;
-    }
-
-    public void update(){
-        if (!isWorkingAllowed) {
-            setSituation(DISABLED_BY_CONTROLLER);
-        }
     }
 
     @Override

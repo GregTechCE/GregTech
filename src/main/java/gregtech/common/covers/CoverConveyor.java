@@ -114,7 +114,9 @@ public class CoverConveyor extends CoverBehavior implements CoverWithUI, ITickab
             }
             this.itemsLeftToTransferLastSecond = transferRate;
         }
-        super.update();
+        if (!isWorkingAllowed) {
+            setSituation(DISABLED_BY_CONTROLLER);
+        }
     }
 
     protected int doTransferItems(IItemHandler itemHandler, IItemHandler myItemHandler, int maxTransferAmount) {

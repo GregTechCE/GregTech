@@ -117,7 +117,9 @@ public class CoverPump extends CoverBehavior implements CoverWithUI, ITickable, 
             }
             this.fluidLeftToTransferLastSecond = transferRate;
         }
-        super.update();
+        if (!isWorkingAllowed) {
+            setSituation(DISABLED_BY_CONTROLLER);
+        }
     }
 
     protected int doTransferFluids(int transferLimit) {

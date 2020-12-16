@@ -41,16 +41,12 @@ public class SituationWidget extends Widget {
         switch (iconTextures) {
             case IDLE:
                 this.area = GuiTextures.STATUS_IDLING;
-                return this;
             case WORKING:
                 this.area = GuiTextures.STATUS_WORKING;
-                return this;
             case WARNING:
                 this.area = GuiTextures.STATUS_WARNING;
-                return this;
             case ERROR:
                 this.area = GuiTextures.STATUS_ERROR;
-                return this;
             default:
                 this.area = null;
         }
