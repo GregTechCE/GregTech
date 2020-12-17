@@ -41,13 +41,11 @@ public class MetaItemBracketHandler implements IBracketHandler {
             if (item instanceof MaterialMetaItem) {
                 for(ItemStack entry : ((MaterialMetaItem) item).getEntries()) {
                     metaItemNames.put(OreDictUnifier.getPrefix(entry).name() + OreDictUnifier.getMaterial(entry).material.toCamelCaseString(), entry);
-                    System.out.println(OreDictUnifier.getPrefix(entry).name() + OreDictUnifier.getMaterial(entry).material.toCamelCaseString());
                 }
             }
             for(MetaValueItem entry : item.getAllItems()) {
                 if (!entry.unlocalizedName.equals("meta_item")) {
                     metaItemNames.put(entry.unlocalizedName, entry.getStackForm());
-                    System.out.println(entry.unlocalizedName);
                 }
             }
         }
