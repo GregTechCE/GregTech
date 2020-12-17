@@ -60,8 +60,6 @@ public class MaterialMetaItem extends StandardMetaItem {
     public List<ItemStack> getEntries() {
         List<ItemStack> items = new ArrayList<>();
         for (short metaItem : generatedItems) {
-            OrePrefix prefix = this.orePrefixes[metaItem / 1000];
-            Material material = Material.MATERIAL_REGISTRY.getObjectById(metaItem % 1000);
             items.add(new ItemStack(this, 1, metaItem));
         }
         return items;
