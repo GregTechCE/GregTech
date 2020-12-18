@@ -171,8 +171,6 @@ public abstract class AbstractRecipeLogic extends MTETrait implements IWorkable 
         }
         if (this.currentRecipe != null && setupAndConsumeRecipeInputs(this.currentRecipe)) {
             setupRecipe(this.currentRecipe);
-        } else {
-            metaTileEntity.setSituation(OUTPUT_INVENTORY_FULL);
         }
     }
 
@@ -244,11 +242,20 @@ public abstract class AbstractRecipeLogic extends MTETrait implements IWorkable 
         IItemHandlerModifiable exportInventory = getOutputInventory();
         IMultipleTankHandler importFluids = getInputTank();
         IMultipleTankHandler exportFluids = getOutputTank();
-        return (totalEUt >= 0 ? getEnergyStored() >= (totalEUt > getEnergyCapacity() / 2 ? resultOverclock[0] : totalEUt) :
-            (getEnergyStored() - resultOverclock[0] <= getEnergyCapacity())) &&
-            MetaTileEntity.addItemsToItemHandler(exportInventory, true, recipe.getAllItemOutputs(exportInventory.getSlots())) &&
-            MetaTileEntity.addFluidsToFluidHandler(exportFluids, true, recipe.getFluidOutputs()) &&
-            recipe.matches(true, importInventory, importFluids);
+        if (!(totalEUt >= 0 ? getEnergyStored() >= (totalEUt > getEnergyCapacity() / 2 ? resultOverclock[0] : totalEUt) :
+            (getEnergyStored() - resultOverclock[0] <= getEnergyCapacity()))) {
+            metaTileEntity.setSituation(INSUFFICIENT_POWER_TO_START);
+            return false;
+        }
+        if (!MetaTileEntity.addItemsToItemHandler(exportInventory, true, recipe.getAllItemOutputs(exportInventory.getSlots()))) {
+            metaTileEntity.setSituation(OUTPUT_SLOTS_FULL);
+            return false;
+        }
+        if (!MetaTileEntity.addFluidsToFluidHandler(exportFluids, true, recipe.getFluidOutputs())) {
+            metaTileEntity.setSituation(OUTPUT_TANKS_FULL);
+            return false;
+        }
+        return recipe.matches(true, importInventory, importFluids);
     }
 
     protected int[] calculateOverclock(int EUt, long voltage, int duration) {
