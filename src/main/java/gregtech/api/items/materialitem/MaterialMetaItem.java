@@ -32,6 +32,7 @@ public class MaterialMetaItem extends StandardMetaItem {
 
     protected OrePrefix[] orePrefixes;
     private ArrayList<Short> generatedItems = new ArrayList<>();
+    private ArrayList<ItemStack> items = new ArrayList<>();
 
     public MaterialMetaItem(OrePrefix... orePrefixes) {
         super((short) (1000 * orePrefixes.length));
@@ -54,14 +55,11 @@ public class MaterialMetaItem extends StandardMetaItem {
             OrePrefix prefix = this.orePrefixes[metaItem / 1000];
             Material material = Material.MATERIAL_REGISTRY.getObjectById(metaItem % 1000);
             OreDictUnifier.registerOre(new ItemStack(this, 1, metaItem), prefix, material);
+            items.add(new ItemStack(this, 1, metaItem));
         }
     }
 
     public List<ItemStack> getEntries() {
-        List<ItemStack> items = new ArrayList<>();
-        for (short metaItem : generatedItems) {
-            items.add(new ItemStack(this, 1, metaItem));
-        }
         return items;
     }
 
