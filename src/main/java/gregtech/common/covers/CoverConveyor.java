@@ -97,7 +97,7 @@ public class CoverConveyor extends CoverBehavior implements CoverWithUI, ITickab
             TileEntity tileEntity = coverHolder.getWorld().getTileEntity(coverHolder.getPos().offset(attachedSide));
             IItemHandler itemHandler = tileEntity == null ? null : tileEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, attachedSide.getOpposite());
             IItemHandler myItemHandler = coverHolder.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, attachedSide);
-            if (itemHandler == null || myItemHandler == null) {
+            if (itemHandler == null) {
                 if (conveyorMode == ConveyorMode.IMPORT) setSituation(NO_IMPORT_INVENTORY);
                 if (conveyorMode == ConveyorMode.EXPORT) setSituation(NO_EXPORT_INVENTORY);
             } else {
