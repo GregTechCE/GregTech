@@ -44,7 +44,7 @@ public abstract class CoverBehavior implements IUIHolder {
     public final ICoverable coverHolder;
     public final EnumFacing attachedSide;
     private int redstoneSignalOutput;
-    private Situation situation = IDLE;
+    private Situation situation;
 
     public CoverBehavior(ICoverable coverHolder, EnumFacing attachedSide) {
         this.coverHolder = coverHolder;

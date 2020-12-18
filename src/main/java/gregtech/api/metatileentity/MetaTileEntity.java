@@ -90,7 +90,7 @@ public abstract class MetaTileEntity implements ICoverable {
 
     private CoverBehavior[] coverBehaviors = new CoverBehavior[6];
 
-    private Situation situation = IDLE;
+    private Situation situation;
     private boolean failedToMoveFluids;
     private boolean failedToMoveItems;
 

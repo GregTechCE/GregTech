@@ -60,7 +60,6 @@ public class CoverPump extends CoverBehavior implements CoverWithUI, ITickable, 
         this.fluidLeftToTransferLastSecond = transferRate;
         this.pumpMode = PumpMode.EXPORT;
         this.bucketMode = BucketMode.MILLI_BUCKET;
-        this.situation = IDLE;
         this.fluidFilter = new FluidFilterContainer(this);
     }
 
@@ -110,11 +109,6 @@ public class CoverPump extends CoverBehavior implements CoverWithUI, ITickable, 
             this.fluidLeftToTransferLastSecond -= doTransferFluids(fluidLeftToTransferLastSecond);
         }
         if (timer % 20 == 0) {
-            if (fluidLeftToTransferLastSecond < transferRate) {
-                setSituation(WORKING);
-            } else {
-                setSituation(IDLE);
-            }
             this.fluidLeftToTransferLastSecond = transferRate;
         }
         if (!isWorkingAllowed) {
@@ -134,7 +128,13 @@ public class CoverPump extends CoverBehavior implements CoverWithUI, ITickable, 
             if (pumpMode == PumpMode.EXPORT) setSituation(NO_EXPORT_TANK);
             return 0;
         }
-        return doTransferFluidsInternal(myFluidHandler, fluidHandler, transferLimit);
+        int transferredFluid = doTransferFluidsInternal(myFluidHandler, fluidHandler, transferLimit);
+        if (transferredFluid != 0) {
+            setSituation(WORKING);
+        } else {
+            setSituation(IDLE);
+        }
+        return transferredFluid;
     }
 
     protected int doTransferFluidsInternal(IFluidHandler myFluidHandler, IFluidHandler fluidHandler, int transferLimit) {

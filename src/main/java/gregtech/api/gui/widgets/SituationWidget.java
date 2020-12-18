@@ -22,7 +22,6 @@ public class SituationWidget extends Widget {
     protected int currentId;
 
     protected TextureArea area;
-    private boolean isVisible = true;
 
     public <T extends Situation> SituationWidget(int xPosition, int yPosition, int width, int height, Supplier<Situation> getSituation) {
         super(new Position(xPosition, yPosition), new Size(width, height));
@@ -33,10 +32,18 @@ public class SituationWidget extends Widget {
     }
 
     public void setTooltipHoverString() {
-        this.tooltipHoverString = I18n.format(this.currentSituation.situationLocaleName);
+        if (this.currentSituation != null) {
+            this.tooltipHoverString = I18n.format(this.currentSituation.situationLocaleName);
+        } else {
+            this.tooltipHoverString = null;
+        }
     }
 
     public SituationWidget setImage() {
+        if (this.currentSituation == null) {
+            this.area = null;
+            return this;
+        }
         SituationTypes iconTextures = this.currentSituation.situationTypes;
         switch (iconTextures) {
             case IDLE:
@@ -71,7 +78,7 @@ public class SituationWidget extends Widget {
         super.readUpdateInfo(id, buffer);
         if (id == 1) {
             this.currentId = buffer.readVarInt();
-            this.currentSituation = Situation.getSituationFromId(this.currentId);
+            this.currentSituation = Situation.getSituationFromId(currentId);
             setTooltipHoverString();
             setImage();
         }
@@ -86,7 +93,7 @@ public class SituationWidget extends Widget {
     @Override
     @SideOnly(Side.CLIENT)
     public void drawInBackground(int mouseX, int mouseY, IRenderContext context) {
-        if (!this.isVisible || area == null) return;
+        if (area == null) return;
         Position position = getPosition();
         Size size = getSize();
         area.draw(position.x, position.y, size.width, size.height);

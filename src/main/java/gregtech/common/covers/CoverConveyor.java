@@ -60,7 +60,6 @@ public class CoverConveyor extends CoverBehavior implements CoverWithUI, ITickab
         this.transferRate = maxItemTransferRate;
         this.itemsLeftToTransferLastSecond = transferRate;
         this.conveyorMode = ConveyorMode.EXPORT;
-        this.situation = IDLE;
         this.itemFilterContainer = new ItemFilterContainer(this);
     }
 
@@ -101,23 +100,24 @@ public class CoverConveyor extends CoverBehavior implements CoverWithUI, ITickab
             if (itemHandler == null || myItemHandler == null) {
                 if (conveyorMode == ConveyorMode.IMPORT) setSituation(NO_IMPORT_INVENTORY);
                 if (conveyorMode == ConveyorMode.EXPORT) setSituation(NO_EXPORT_INVENTORY);
-                return;
+            } else {
+                int totalTransferred = doTransferItems(itemHandler, myItemHandler, itemsLeftToTransferLastSecond);
+                this.itemsLeftToTransferLastSecond -= totalTransferred;
+                if (this.itemsLeftToTransferLastSecond < transferRate) {
+                    setSituation(WORKING);
+                } else {
+                    setSituation(IDLE);
+                }
             }
-            int totalTransferred = doTransferItems(itemHandler, myItemHandler, itemsLeftToTransferLastSecond);
-            this.itemsLeftToTransferLastSecond -= totalTransferred;
         }
         if (timer % 20 == 0) {
-            if (itemsLeftToTransferLastSecond < transferRate) {
-                setSituation(WORKING);
-            } else {
-                setSituation(IDLE);
-            }
             this.itemsLeftToTransferLastSecond = transferRate;
         }
         if (!isWorkingAllowed) {
             setSituation(DISABLED_BY_CONTROLLER);
         }
     }
+
 
     protected int doTransferItems(IItemHandler itemHandler, IItemHandler myItemHandler, int maxTransferAmount) {
         return doTransferItemsAny(itemHandler, myItemHandler, maxTransferAmount);
