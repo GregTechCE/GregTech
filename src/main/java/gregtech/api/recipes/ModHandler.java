@@ -260,25 +260,10 @@ public class ModHandler {
     }
 
     public static void addShapedEnergyTransferRecipe(String regName, ItemStack result, Predicate<ItemStack> chargePredicate, boolean transferMaxCharge, Object... recipe) {
-        boolean skip = false;
-        if (result.isEmpty()) {
-            GTLog.logger.error("Result cannot be an empty ItemStack. Recipe: {}", regName);
-            GTLog.logger.error("Stacktrace:", new IllegalArgumentException());
-            skip = true;
-        }
-        skip |= validateRecipe(regName, recipe);
-        if (skip) {
-            RecipeMap.setFoundInvalidRecipe(true);
-            return;
-        }
-
-        IRecipe shapedOreRecipe = new ShapedOreEnergyTransferRecipe(null, result.copy(), chargePredicate, transferMaxCharge, finalizeShapedRecipeInput(recipe))
-            .setMirrored(false) //make all recipes not mirrored by default
-            .setRegistryName(regName);
-        ForgeRegistries.RECIPES.register(shapedOreRecipe);
+        addShapedEnergyTransferRecipeWithOverride(regName, result, chargePredicate, true, transferMaxCharge, recipe);
     }
 
-    public static void addShapedEnergyTransferRecipe(String regName, ItemStack result, Predicate<ItemStack> chargePredicate, long chargeAmount, boolean transferMaxCharge, Object... recipe) {
+    public static void addShapedEnergyTransferRecipeWithOverride(String regName, ItemStack result, Predicate<ItemStack> chargePredicate, boolean overrideCharge, boolean transferMaxCharge, Object... recipe) {
         boolean skip = false;
         if (result.isEmpty()) {
             GTLog.logger.error("Result cannot be an empty ItemStack. Recipe: {}", regName);
@@ -291,7 +276,7 @@ public class ModHandler {
             return;
         }
 
-        IRecipe shapedOreRecipe = new ShapedOreEnergyTransferRecipe(null, result.copy(), chargePredicate, chargeAmount, transferMaxCharge, finalizeShapedRecipeInput(recipe))
+        IRecipe shapedOreRecipe = new ShapedOreEnergyTransferRecipe(null, result.copy(), chargePredicate, overrideCharge, transferMaxCharge, finalizeShapedRecipeInput(recipe))
             .setMirrored(false) //make all recipes not mirrored by default
             .setRegistryName(regName);
         ForgeRegistries.RECIPES.register(shapedOreRecipe);

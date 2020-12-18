@@ -25,28 +25,20 @@ public class ShapedOreEnergyTransferRecipe extends ShapedOreRecipe {
         this(group, result, chargePredicate, transferMaxCharge, CraftingHelper.parseShaped(recipe));
     }
 
-    public ShapedOreEnergyTransferRecipe(ResourceLocation group, @Nonnull ItemStack result, Predicate<ItemStack> chargePredicate, long chargeAmount, boolean transferMaxCharge, Object... recipe) {
-        this(group, result, chargePredicate, chargeAmount, transferMaxCharge, CraftingHelper.parseShaped(recipe));
+    public ShapedOreEnergyTransferRecipe(ResourceLocation group, @Nonnull ItemStack result, Predicate<ItemStack> chargePredicate, boolean overrideCharge, boolean transferMaxCharge, Object... recipe) {
+        this(group, result, chargePredicate, overrideCharge, transferMaxCharge, CraftingHelper.parseShaped(recipe));
     }
 
     public ShapedOreEnergyTransferRecipe(ResourceLocation group, @Nonnull ItemStack result, Predicate<ItemStack> chargePredicate, boolean transferMaxCharge, ShapedPrimer primer) {
+        this(group, result, chargePredicate, true, transferMaxCharge, primer);
+    }
+
+    public ShapedOreEnergyTransferRecipe(ResourceLocation group, @Nonnull ItemStack result, Predicate<ItemStack> chargePredicate, boolean overrideCharge, boolean transferMaxCharge, ShapedPrimer primer) {
         super(group, result, primer);
         this.chargePredicate = chargePredicate;
         this.transferMaxCharge = transferMaxCharge;
-        fixOutputItemMaxCharge();
-    }
-
-    public ShapedOreEnergyTransferRecipe(ResourceLocation group, @Nonnull ItemStack result, Predicate<ItemStack> chargePredicate, long chargeAmount, boolean transferMaxCharge, ShapedPrimer primer) {
-        super(group, result, primer);
-        this.chargePredicate = chargePredicate;
-        this.transferMaxCharge = transferMaxCharge;
-        setMaxChargeInRecipe(chargeAmount);
-    }
-
-    private void setMaxChargeInRecipe(long chargeAmount) {
-        IElectricItem electricItem = output.getCapability(GregtechCapabilities.CAPABILITY_ELECTRIC_ITEM, null);
-        if(!(electricItem == null)) {
-            ((ElectricItem) electricItem).setMaxChargeOverride(chargeAmount);
+        if(overrideCharge) {
+            fixOutputItemMaxCharge();
         }
     }
 
