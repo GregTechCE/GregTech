@@ -139,11 +139,11 @@ public class MetaFluids {
             FluidMaterial fluidMaterial = (FluidMaterial) material;
             if (fluidMaterial.shouldGenerateFluid() && fluidMaterial.getMaterialFluid() == null) {
                 int temperature = fluidMaterial.getFluidTemperature();
-                Fluid fluid = registerFluid(fluidMaterial, FluidType.NORMAL, temperature);
+                Fluid fluid = registerFluid(fluidMaterial, FluidType.NORMAL, temperature, false);
                 fluidMaterial.setMaterialFluid(fluid);
             }
             if (fluidMaterial.shouldGeneratePlasma() && fluidMaterial.getMaterialPlasma() == null) {
-                Fluid fluid = registerFluid(fluidMaterial, FluidType.PLASMA, 30000);
+                Fluid fluid = registerFluid(fluidMaterial, FluidType.PLASMA, 30000, true);
                 fluidMaterial.setMaterialPlasma(fluid);
             }
         }
@@ -163,7 +163,7 @@ public class MetaFluids {
         alternativeFluidNames.put(fluidType.getFluidName(material), alternativeName);
     }
 
-    public static Fluid registerFluid(FluidMaterial material, FluidType fluidType, int temperature) {
+    public static Fluid registerFluid(FluidMaterial material, FluidType fluidType, int temperature, boolean isPlasma) {
         String materialName = material.toString();
         String fluidName = fluidType.getFluidName(material);
         Fluid fluid = FluidRegistry.getFluid(fluidName);
@@ -188,7 +188,11 @@ public class MetaFluids {
 
         if (material.hasFlag(MatFlags.GENERATE_FLUID_BLOCK) && fluid.getBlock() == null) {
             BlockFluidBase fluidBlock = new BlockFluidClassic(fluid, net.minecraft.block.material.Material.WATER);
-            fluidBlock.setRegistryName("fluid." + materialName);
+            if(isPlasma) {
+                fluidBlock.setRegistryName("plasma." + materialName);
+            } else  {
+                fluidBlock.setRegistryName("fluid." + materialName);
+            }
             MetaBlocks.FLUID_BLOCKS.add(fluidBlock);
         }
 
