@@ -5,12 +5,9 @@ import codechicken.lib.render.CCModel;
 import codechicken.lib.render.CCRenderState;
 import codechicken.lib.render.block.BlockRenderingRegistry;
 import codechicken.lib.render.block.ICCBlockRenderer;
-import codechicken.lib.render.pipeline.ColourMultiplier;
-import codechicken.lib.render.pipeline.IVertexOperation;
 import codechicken.lib.texture.TextureUtils;
 import codechicken.lib.vec.Cuboid6;
 import codechicken.lib.vec.Matrix4;
-import codechicken.lib.vec.TransformationList;
 import codechicken.lib.vec.Vector3;
 import codechicken.lib.vec.uv.IconTransformation;
 import gregtech.api.unification.material.type.Material;
@@ -68,22 +65,16 @@ public class StoneRenderer implements ICCBlockRenderer {
         CCRenderState renderState = CCRenderState.instance();
         renderState.reset();
         renderState.bind(buffer);
+        renderState.setBrightness(world, pos);
+
         Matrix4 translation = new Matrix4();
         translation.translate(pos.getX(), pos.getY(), pos.getZ());
         TextureAtlasSprite stoneSprite = TextureUtils.getBlockTexture("stone");
         Material material = ((BlockSurfaceRock) state.getBlock()).getStoneMaterial(world, pos, state);
         int renderingColor = GTUtility.convertRGBtoOpaqueRGBA_CL(material.materialRGB);
-        IVertexOperation[] operations = new IVertexOperation[] {
-            new IconTransformation(stoneSprite),
-            new ColourMultiplier(renderingColor),
-            new TransformationList(translation)};
-        if (world != null) {
-            renderState.setBrightness(world, pos);
-        }
-        renderState.setPipeline(operations);
-        CCModel actualModel = getActualModel(world, pos);
-        renderState.setModel(actualModel);
-        renderState.render();
+
+        CCModel actualModel = getActualModel(world, pos).setColour(renderingColor).computeNormals().smoothNormals();
+        actualModel.render(renderState, new IconTransformation(stoneSprite), translation);
         return true;
     }
 
