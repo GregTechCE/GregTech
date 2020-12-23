@@ -5,6 +5,7 @@ import codechicken.lib.render.CCModel;
 import codechicken.lib.render.CCRenderState;
 import codechicken.lib.render.block.BlockRenderingRegistry;
 import codechicken.lib.render.block.ICCBlockRenderer;
+import codechicken.lib.render.pipeline.ColourMultiplier;
 import codechicken.lib.texture.TextureUtils;
 import codechicken.lib.vec.Cuboid6;
 import codechicken.lib.vec.Matrix4;
@@ -73,8 +74,8 @@ public class StoneRenderer implements ICCBlockRenderer {
         Material material = ((BlockSurfaceRock) state.getBlock()).getStoneMaterial(world, pos, state);
         int renderingColor = GTUtility.convertRGBtoOpaqueRGBA_CL(material.materialRGB);
 
-        CCModel actualModel = getActualModel(world, pos).setColour(renderingColor).computeNormals().smoothNormals();
-        actualModel.render(renderState, new IconTransformation(stoneSprite), translation);
+        CCModel actualModel = getActualModel(world, pos).computeNormals().smoothNormals();
+        actualModel.render(renderState, new ColourMultiplier(renderingColor), new IconTransformation(stoneSprite), translation);
         return true;
     }
 
