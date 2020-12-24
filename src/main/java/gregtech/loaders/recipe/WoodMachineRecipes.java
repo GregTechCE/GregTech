@@ -22,6 +22,9 @@ public class WoodMachineRecipes {
     public static void init() {
         initializeWoodRecipes();
         registerPyrolyseOvenRecipes();
+    }
+
+    public static void postInit() {
         processLogOreDictionary();
     }
 
