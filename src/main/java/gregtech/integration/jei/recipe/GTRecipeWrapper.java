@@ -135,8 +135,9 @@ public class GTRecipeWrapper implements IRecipeWrapper {
         minecraft.fontRenderer.drawString(I18n.format(recipe.getEUt() >= 0 ? "gregtech.recipe.eu" : "gregtech.recipe.eu_inverted", Math.abs(recipe.getEUt()), JEIHelpers.getMinTierForVoltage(recipe.getEUt())), 0, yPosition += lineHeight, 0x111111);
         minecraft.fontRenderer.drawString(I18n.format("gregtech.recipe.duration", recipe.getDuration() / 20f), 0, yPosition += lineHeight, 0x111111);
         for (String propertyKey : recipe.getPropertyKeys()) {
+            Object prop = recipe.getProperty(propertyKey);
             minecraft.fontRenderer.drawString(I18n.format("gregtech.recipe." + propertyKey,
-                recipe.<Object>getProperty(propertyKey)), 0, yPosition += lineHeight, 0x111111);
+                prop, JEIHelpers.getMinTierForTemperature(propertyKey, prop)), 0, yPosition += lineHeight, 0x111111);
         }
     }
 

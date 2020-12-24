@@ -1,6 +1,7 @@
 package gregtech.integration.jei.utils;
 
 import gregtech.api.GTValues;
+import gregtech.common.blocks.BlockWireCoil;
 
 public class JEIHelpers {
 
@@ -16,4 +17,17 @@ public class JEIHelpers {
         return "";
     }
 
+    public static String getMinTierForTemperature(String propertyKey, Object prop) {
+        if (!propertyKey.equals("blast_furnace_temperature")) {
+            return "";
+        }
+
+        for (BlockWireCoil.CoilType values : BlockWireCoil.CoilType.values()) {
+             if ((Integer)prop <= values.getCoilTemperature()) {
+                 return values.getMaterial().getLocalizedName();
+             }
+        }
+
+        return "";
+    }
 }
