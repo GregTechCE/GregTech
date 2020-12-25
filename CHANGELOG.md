@@ -1,5 +1,12 @@
 ## Changelog
 
+### 1.10.8
+* Added Sifter to Smart Item FIlter options (#1345) - LAGIdiot
+* Fixed shouldCheckWeakPower not working correctly because of Vanilla MC bug (#1331) - solidDoWant
+* Fixed wrong localization key for empty hand (#1327) - Pierre Zhang
+* Fixed wrong translation of Rubber nuget in ZH (#1327) - Pierre Zhang
+* Fixed Multiblocks voiding partial recipe outputs when output bus is mostly full (#1337) - ALongStringOfNumbers
+
 ### 1.10.7 (Hotfix)
 * Fixed Brewery and Forming Press recipe finder not working properly - LAGIdiot
 * Fixed Fluid Canner and Electric Furnace recipe finder not working properly (#1326) - ALongStringOfNumbers

@@ -56,6 +56,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 
+import static gregtech.api.util.InventoryUtils.simulateItemStackMerge;
+
 public abstract class MetaTileEntity implements ICoverable {
 
     public static final int DEFAULT_PAINTING_COLOR = 0xFFFFFF;
@@ -927,13 +929,38 @@ public abstract class MetaTileEntity implements ICoverable {
         }
     }
 
-    public static boolean addItemsToItemHandler(IItemHandler handler, boolean simulate, List<ItemStack> items) {
-        boolean insertedAll = true;
-        for (ItemStack stack : items) {
-            insertedAll &= ItemHandlerHelper.insertItemStacked(handler, stack, simulate).isEmpty();
-            if (!insertedAll && simulate) return false;
-        }
-        return insertedAll;
+    /**
+     * Simulates the insertion of items into a target inventory, then optionally performs the insertion.
+     * <br /><br />
+     * Simulating will not modify any of the input parameters. Insertion will either succeed completely, or fail
+     * without modifying anything.
+     *
+     * @param handler  the target inventory
+     * @param simulate whether to simulate ({@code true}) or actually perform the insertion ({@code false})
+     * @param items    the items to insert into {@code handler}.
+     * @return {@code true} if the insertion succeeded, {@code false} otherwise.
+     * @throws IllegalStateException if {@code handler} does not accept all items as expected while performing a
+     *                               real insertion. This should not be possible unless the handler is modified in
+     *                               another thread, or it does not behave in a manner conforming with the contract
+     *                               of {@link gregtech.api.util.InventoryUtils#simulateItemStackMerge simulateItemStackMerge}.
+     */
+    public static boolean addItemsToItemHandler(final IItemHandler handler,
+                                                final boolean simulate,
+                                                final List<ItemStack> items)
+    {
+        // determine if there is sufficient room to insert all items into the target inventory
+        final boolean canMerge = simulateItemStackMerge(items, handler);
+
+        // if we're not simulating and the merge should succeed, perform the merge.
+        if(!simulate && canMerge)
+            items.forEach(stack -> {
+                ItemStack rest = ItemHandlerHelper.insertItemStacked(handler, stack, simulate);
+                if(!rest.isEmpty())
+                    throw new IllegalStateException(
+                        String.format("Insertion failed, remaining stack contained %d items.", rest.getCount()));
+            });
+
+        return canMerge;
     }
 
     public static boolean addFluidsToFluidHandler(IFluidHandler handler, boolean simulate, List<FluidStack> items) {
