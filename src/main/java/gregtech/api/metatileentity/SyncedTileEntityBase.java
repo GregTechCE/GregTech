@@ -11,6 +11,7 @@ import net.minecraft.network.PacketBuffer;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraftforge.common.util.Constants.NBT;
 
+import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -88,7 +89,8 @@ public abstract class SyncedTileEntityBase extends BlockStateTileEntity {
     }
 
     @Override
-    public void handleUpdateTag(NBTTagCompound tag) {
+    public void handleUpdateTag(@Nonnull NBTTagCompound tag) {
+        super.readFromNBT(tag); // deserializes Forge data and capabilities
         byte[] updateData = tag.getByteArray("d");
         ByteBuf backedBuffer = Unpooled.copiedBuffer(updateData);
         receiveInitialSyncData(new PacketBuffer(backedBuffer));
