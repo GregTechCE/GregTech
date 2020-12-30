@@ -52,14 +52,27 @@ public class InventoryUtils {
      * <b>Precondition:</b> the target inventory must actually accept the types of items
      *               you are trying to insert.
      * <br /><br />
-     * @param items the items you want to insert
+     * @param inputItems the items you want to insert
      * @param inventory the target inventory receiving items
      * @return {@code true} if inventory contains sufficient slots to merge and
      *         insert all requested items, {@code false} otherwise.
      */
-    public static boolean simulateItemStackMerge(List<ItemStack> items,
+    public static boolean simulateItemStackMerge(List<ItemStack> inputItems,
                                                  IItemHandler inventory)
     {
+        //First Ensure that the passed list of ItemStacks is actually within its max stacksize
+        List<ItemStack> items = new ArrayList<>();
+        for(ItemStack stack : inputItems) {
+            if(!stack.isEmpty()) {
+                if(stack.getCount() > stack.getMaxStackSize()) {
+                    computeItemStacks(items, stack);
+                }
+                else {
+                    items.add(stack.copy());
+                }
+            }
+        }
+
         // If there's enough empty output slots then we don't need to compute merges.
         final int emptySlots = getNumberOfEmptySlotsInInventory(inventory);
         if(items.size() <= emptySlots)
@@ -113,6 +126,35 @@ public class InventoryUtils {
                         }
                     }
                 }
+        }
+    }
+
+    /**
+     * Computes a resultant number of ItemStacks from an ItemStack exceeding its
+     * {@link net.minecraft.item.ItemStack#getMaxStackSize()}.<br />
+     * Resultant ItemStacks will be added to {@code collapsedStack} as full stacks followed
+     * by a partial stack if applicable.<br />
+     *
+     * @param stack      the ItemStack exceeding its maximum stack size.
+     * @param collapsedStack A Collection of ItemStacks for the resultant ItemStacks to be merged into.
+     */
+    public static void computeItemStacks(Collection<ItemStack> collapsedStack, ItemStack stack) {
+        int overCount  = stack.getCount();
+        int maxCount = stack.getMaxStackSize();
+
+        int numStacks = overCount / maxCount;
+        int remainder = overCount % maxCount;
+
+        for(int fullStackCount = numStacks; fullStackCount > 0; fullStackCount--) {
+            ItemStack fullStack = stack.copy();
+            fullStack.setCount(maxCount);
+            collapsedStack.add(fullStack);
+        }
+
+        if(remainder > 0) {
+            ItemStack partialStack = stack.copy();
+            partialStack.setCount(remainder);
+            collapsedStack.add(partialStack);
         }
     }
 }
