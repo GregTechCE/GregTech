@@ -48,6 +48,10 @@ public class InventoryUtils
      * simulating merging like items into existing stacks, then checking if there
      * are enough empty stacks left to accommodate the remaining items.
      * <br /><br />
+     * <b>Precondition:</b> the target inventory must not virtualize ItemStacks such that
+     *               they can exceed the maximum stackable size of the item as
+     *               defined by {@link net.minecraft.item.ItemStack#getMaxStackSize()}.
+     * <br /><br />
      * <b>Precondition:</b> the target inventory must actually accept the types of items
      *               you are trying to insert.
      * <br /><br />
