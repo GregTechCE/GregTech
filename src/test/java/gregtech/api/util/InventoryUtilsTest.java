@@ -39,10 +39,6 @@ public class InventoryUtilsTest
         );
     }
 
-    /**
-     * This test currently fails (because there's a bug discovered) and the resulting error halts the build, so it is
-     * skipped for the moment.
-     */
     @Test
     public void simulateItemStackMerge_succeeds_for_inserting_two_half_stacks_into_empty_one_slot_inventory()
     {
@@ -167,9 +163,6 @@ public class InventoryUtilsTest
         );
     }
 
-    /**
-     * This test also fails because there's a bug it detects. Ignored to prevent breaking build.
-     */
     @Test
     public void simulateItemStackMerge_respects_different_NBT_tags_as_different_items()
     {
