@@ -139,11 +139,11 @@ public class MetaFluids {
             FluidMaterial fluidMaterial = (FluidMaterial) material;
             if (fluidMaterial.shouldGenerateFluid() && fluidMaterial.getMaterialFluid() == null) {
                 int temperature = fluidMaterial.getFluidTemperature();
-                Fluid fluid = registerFluid(fluidMaterial, FluidType.NORMAL, temperature, false);
+                Fluid fluid = registerFluid(fluidMaterial, FluidType.NORMAL, temperature);
                 fluidMaterial.setMaterialFluid(fluid);
             }
             if (fluidMaterial.shouldGeneratePlasma() && fluidMaterial.getMaterialPlasma() == null) {
-                Fluid fluid = registerFluid(fluidMaterial, FluidType.PLASMA, 30000, true);
+                Fluid fluid = registerFluid(fluidMaterial, FluidType.PLASMA, 30000);
                 fluidMaterial.setMaterialPlasma(fluid);
             }
         }
@@ -163,7 +163,7 @@ public class MetaFluids {
         alternativeFluidNames.put(fluidType.getFluidName(material), alternativeName);
     }
 
-    public static Fluid registerFluid(FluidMaterial material, FluidType fluidType, int temperature, boolean isPlasma) {
+    public static Fluid registerFluid(FluidMaterial material, FluidType fluidType, int temperature) {
         String materialName = material.toString();
         String fluidName = fluidType.getFluidName(material);
         Fluid fluid = FluidRegistry.getFluid(fluidName);
@@ -188,9 +188,10 @@ public class MetaFluids {
 
         if (material.hasFlag(MatFlags.GENERATE_FLUID_BLOCK) && fluid.getBlock() == null) {
             BlockFluidBase fluidBlock = new BlockFluidClassic(fluid, net.minecraft.block.material.Material.WATER);
-            if(isPlasma) {
+            if(fluidType == FluidType.PLASMA) {
                 fluidBlock.setRegistryName("plasma." + materialName);
-            } else  {
+            }
+            if(fluidType == FluidType.NORMAL) {
                 fluidBlock.setRegistryName("fluid." + materialName);
             }
             MetaBlocks.FLUID_BLOCKS.add(fluidBlock);
