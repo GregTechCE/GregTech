@@ -78,9 +78,6 @@ public abstract class SyncedTileEntityBase extends BlockStateTileEntity {
     @Override
     public NBTTagCompound getUpdateTag() {
         NBTTagCompound updateTag = super.getUpdateTag();
-        updateTag.setInteger("x", getPos().getX());
-        updateTag.setInteger("y", getPos().getY());
-        updateTag.setInteger("z", getPos().getZ());
         ByteBuf backedBuffer = Unpooled.buffer();
         writeInitialSyncData(new PacketBuffer(backedBuffer));
         byte[] updateData = Arrays.copyOfRange(backedBuffer.array(), 0, backedBuffer.writerIndex());
