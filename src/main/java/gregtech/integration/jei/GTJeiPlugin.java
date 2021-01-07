@@ -19,6 +19,9 @@ import gregtech.api.unification.material.Materials;
 import gregtech.api.unification.material.type.DustMaterial;
 import gregtech.api.unification.material.type.Material;
 import gregtech.api.unification.ore.OrePrefix;
+import gregtech.api.worldgen.config.OreDepositDefinition;
+import gregtech.api.worldgen.config.WorldGenRegistry;
+import gregtech.common.blocks.BlockOre;
 import gregtech.common.blocks.MetaBlocks;
 import gregtech.common.items.MetaItems;
 import gregtech.common.metatileentities.MetaTileEntities;
@@ -74,6 +77,7 @@ public class GTJeiPlugin implements IModPlugin {
         registry.addRecipeCategories(new PrimitiveBlastRecipeCategory(registry.getJeiHelpers().getGuiHelper()));
         registry.addRecipeCategories(new CokeOvenRecipeCategory(registry.getJeiHelpers().getGuiHelper()));
         registry.addRecipeCategories(new OreByProductCategory(registry.getJeiHelpers().getGuiHelper()));
+        registry.addRecipeCategories(new GTOreCategory(registry.getJeiHelpers().getGuiHelper()));
     }
 
     @Override
@@ -166,6 +170,19 @@ public class GTJeiPlugin implements IModPlugin {
             registry.addRecipeCatalyst(machine.getStackForm(), oreByProductId);
         for (MetaTileEntity machine : MetaTileEntities.CHEMICAL_BATH)
             registry.addRecipeCatalyst(machine.getStackForm(), oreByProductId);
+
+        //Ore Veins
+        List<OreDepositDefinition> oreVeins = WorldGenRegistry.getOreDeposits();
+        List<GTOreInfo> oreInfoList = new CopyOnWriteArrayList<>();
+        for(OreDepositDefinition vein : oreVeins) {
+            oreInfoList.add(new GTOreInfo(vein));
+        }
+
+        String oreSpawnID = GTValues.MODID + ":" + "ore_spawn_location";
+        registry.addRecipes(oreInfoList, oreSpawnID);
+        registry.addRecipeCatalyst(MetaTileEntities.WORKBENCH.getStackForm(), oreSpawnID);
+        //Ore Veins End
+
 
         ingredientRegistry = registry.getIngredientRegistry();
         for (int i = 0; i <= IntCircuitIngredient.CIRCUIT_MAX; i++) {

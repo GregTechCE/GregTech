@@ -2903,6 +2903,8 @@ gregtech.jei.ore_by_product_from_ore=Use %s for %s
 gregtech.jei.ore_by_product_from_machine=Produce by processing %s with %s
 gregtech.jei.ore_by_product_not_obtainable=Byproduct not obtainable
 
+ore.spawnlocation.name=Ore Spawn Information
+
 gregtech.item_filter.empty_item=Empty (No Item)
 gregtech.item_filter.footer=§eClick with item to override
 
