@@ -28,20 +28,15 @@ public class RecipeMapFurnace extends RecipeMap<SimpleRecipeBuilder> {
         for(ItemStack input : inputs) {
             ItemStack output = ModHandler.getSmeltingOutput(input);
 
-            if(output == null) {
-                continue;
-            }
-            else {
+            if(!output.isEmpty()) {
                 return this.recipeBuilder()
                     .inputs(GTUtility.copyAmount(1, input))
                     .outputs(output)
                     .duration(128).EUt(4)
                     .build().getResult();
             }
-
         }
 
         return null;
-
     }
 }
