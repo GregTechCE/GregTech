@@ -46,7 +46,8 @@ public class GTOreCategory extends PrimitiveRecipeCategory<GTOreInfo, GTOreInfo>
 
 
         for(int i = 0; i < recipeWrapper.getOutputCount(); i++) {
-            itemStackGroup.init(i + 2, false, baseXPos + (--counter * 18), baseYPos);
+            int temp = counter - 1;
+            itemStackGroup.init(i + 2, false, baseXPos + (temp * 18), baseYPos);
             //Only Span 5 slots in the X direction
             if((baseXPos + (counter * 18)) == (baseXPos + (5 * 18))) {
                 //Increment the Y display
@@ -85,7 +86,8 @@ public class GTOreCategory extends PrimitiveRecipeCategory<GTOreInfo, GTOreInfo>
         int endPos;
 
         for(int i = 0; i < outputCount; i++) {
-            this.slot.draw(minecraft, baseXPos + (--counter * 18), baseYPos);
+            int temp = counter - 1;
+            this.slot.draw(minecraft, baseXPos + (temp * 18), baseYPos);
             //Only Span 5 slots in the X direction
             if((baseXPos + (counter * 18)) == (baseXPos + (5 * 18))) {
                 //Increment the Y display
