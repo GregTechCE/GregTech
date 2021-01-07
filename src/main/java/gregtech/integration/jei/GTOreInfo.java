@@ -25,6 +25,7 @@ import java.nio.file.FileSystem;
 import java.nio.file.FileSystems;
 import java.util.*;
 import java.util.function.Function;
+import java.util.regex.Matcher;
 
 import static gregtech.api.GTValues.M;
 
@@ -200,13 +201,7 @@ public class GTOreInfo implements IRecipeWrapper {
         String separator = fs.getSeparator();
 
         //Remove the leading "folderName\"
-        String[] tempName;
-        if(separator.equals("\\")) {
-            tempName = name.split("\\\\"); // Windows /shrug
-        }
-        else {
-            tempName = name.split(separator);
-        }
+        String[] tempName = name.split(Matcher.quoteReplacement(separator));
         //Take the last entry in case of nested folders
         String newName = tempName[tempName.length - 1];
         //Remove the ".json"
