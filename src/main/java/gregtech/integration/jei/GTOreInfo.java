@@ -21,6 +21,8 @@ import net.minecraft.world.biome.Biome;
 import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.fluids.*;
 
+import java.nio.file.FileSystem;
+import java.nio.file.FileSystems;
 import java.util.*;
 import java.util.function.Function;
 
@@ -194,8 +196,17 @@ public class GTOreInfo implements IRecipeWrapper {
 
     public String makePrettyName(String name) {
 
+        FileSystem fs = FileSystems.getDefault();
+        String separator = fs.getSeparator();
+
         //Remove the leading "folderName\"
-        String[] tempName = name.split("\\\\");
+        String[] tempName;
+        if(separator.equals("\\")) {
+            tempName = name.split("\\\\"); // Windows /shrug
+        }
+        else {
+            tempName = name.split(separator);
+        }
         //Take the last entry in case of nested folders
         String newName = tempName[tempName.length - 1];
         //Remove the ".json"
