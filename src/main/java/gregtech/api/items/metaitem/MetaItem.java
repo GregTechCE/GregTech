@@ -835,16 +835,6 @@ public abstract class MetaItem<T extends MetaItem<?>.MetaValueItem> extends Item
             return itemStack;
         }
 
-        public long getChargeAmount() {
-            ItemStack itemstack = getStackForm(1);
-            IElectricItem electricItem = itemstack.getCapability(GregtechCapabilities.CAPABILITY_ELECTRIC_ITEM, null);
-            if(electricItem == null) {
-                throw new IllegalStateException("Not an electric item");
-            }
-
-            return electricItem.getMaxCharge();
-        }
-
         public ItemStack getInfiniteChargedStack() {
             ItemStack itemStack = getStackForm(1);
             IElectricItem electricItem = itemStack.getCapability(GregtechCapabilities.CAPABILITY_ELECTRIC_ITEM, null);
