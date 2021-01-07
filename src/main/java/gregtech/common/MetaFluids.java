@@ -190,8 +190,7 @@ public class MetaFluids {
             BlockFluidBase fluidBlock = new BlockFluidClassic(fluid, net.minecraft.block.material.Material.WATER);
             if(fluidType == FluidType.PLASMA) {
                 fluidBlock.setRegistryName("plasma." + materialName);
-            }
-            if(fluidType == FluidType.NORMAL) {
+            } else {
                 fluidBlock.setRegistryName("fluid." + materialName);
             }
             MetaBlocks.FLUID_BLOCKS.add(fluidBlock);
