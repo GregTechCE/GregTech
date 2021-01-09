@@ -90,8 +90,8 @@ public final class InventoryUtils {
      * @return a list containing the resulting ItemStacks.
      */
     static List<ItemStack> compactItemStacks(Collection<ItemStack> inputItems) {
-        Hash.Strategy<ItemStack>      strategy = ItemStackHashStrategy.comparingAllButCount();
-        final Map<ItemStack, Integer> map      = new Object2IntOpenCustomHashMap<>(strategy);
+        Hash.Strategy<ItemStack> strategy = ItemStackHashStrategy.comparingAllButCount();
+        final Map<ItemStack, Integer> map = new Object2IntOpenCustomHashMap<>(strategy);
 
         return inputItems.stream()
 
@@ -190,7 +190,7 @@ public final class InventoryUtils {
 
         final ArrayList<ItemStack> splitStacks = new ArrayList<>();
 
-        int count     = stack.getCount();
+        int count = stack.getCount();
         int numStacks = count / maxCount;
         int remainder = count % maxCount;
 

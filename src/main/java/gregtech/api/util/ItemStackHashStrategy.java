@@ -10,13 +10,11 @@ import java.util.*;
  * A configurable generator of hashing strategies, allowing for consideration of select properties of ItemStacks when
  * considering equality.
  */
-public interface ItemStackHashStrategy extends Hash.Strategy<ItemStack>
-{
+public interface ItemStackHashStrategy extends Hash.Strategy<ItemStack> {
     /**
      * @return a builder object for producing a custom ItemStackHashStrategy.
      */
-    static ItemStackHashStrategyBuilder builder()
-    {
+    static ItemStackHashStrategyBuilder builder() {
         return new ItemStackHashStrategyBuilder();
     }
 
@@ -26,8 +24,7 @@ public interface ItemStackHashStrategy extends Hash.Strategy<ItemStack>
      *
      * @return the ItemStackHashStrategy as described above.
      */
-    static ItemStackHashStrategy comparingAllButCount()
-    {
+    static ItemStackHashStrategy comparingAllButCount() {
         return builder().compareItem(true)
                         .compareDamage(true)
                         .compareTag(true)
@@ -37,8 +34,7 @@ public interface ItemStackHashStrategy extends Hash.Strategy<ItemStack>
     /**
      * Builder pattern class for generating customized ItemStackHashStrategy
      */
-    class ItemStackHashStrategyBuilder
-    {
+    class ItemStackHashStrategyBuilder {
         private boolean item, count, damage, tag;
 
         /**
@@ -47,8 +43,7 @@ public interface ItemStackHashStrategy extends Hash.Strategy<ItemStack>
          * @param choice {@code true} to consider this property, {@code false} to ignore it.
          * @return {@code this}
          */
-        public ItemStackHashStrategyBuilder compareItem(boolean choice)
-        {
+        public ItemStackHashStrategyBuilder compareItem(boolean choice) {
             item = choice;
             return this;
         }
@@ -59,8 +54,7 @@ public interface ItemStackHashStrategy extends Hash.Strategy<ItemStack>
          * @param choice {@code true} to consider this property, {@code false} to ignore it.
          * @return {@code this}
          */
-        public ItemStackHashStrategyBuilder compareCount(boolean choice)
-        {
+        public ItemStackHashStrategyBuilder compareCount(boolean choice) {
             count = choice;
             return this;
         }
@@ -71,8 +65,7 @@ public interface ItemStackHashStrategy extends Hash.Strategy<ItemStack>
          * @param choice {@code true} to consider this property, {@code false} to ignore it.
          * @return {@code this}
          */
-        public ItemStackHashStrategyBuilder compareDamage(boolean choice)
-        {
+        public ItemStackHashStrategyBuilder compareDamage(boolean choice) {
             damage = choice;
             return this;
         }
@@ -83,8 +76,7 @@ public interface ItemStackHashStrategy extends Hash.Strategy<ItemStack>
          * @param choice {@code true} to consider this property, {@code false} to ignore it.
          * @return {@code this}
          */
-        public ItemStackHashStrategyBuilder compareTag(boolean choice)
-        {
+        public ItemStackHashStrategyBuilder compareTag(boolean choice) {
             tag = choice;
             return this;
         }
@@ -92,13 +84,10 @@ public interface ItemStackHashStrategy extends Hash.Strategy<ItemStack>
         /**
          * @return the ItemStackHashStrategy as configured by "compare" methods.
          */
-        public ItemStackHashStrategy build()
-        {
-            return new ItemStackHashStrategy()
-            {
+        public ItemStackHashStrategy build() {
+            return new ItemStackHashStrategy() {
                 @Override
-                public int hashCode(@Nullable ItemStack o)
-                {
+                public int hashCode(@Nullable ItemStack o) {
                     return o == null || o.isEmpty() ? 0 : Objects.hash(
                         item ? o.getItem() : null,
                         count ? o.getCount() : null,
@@ -108,8 +97,7 @@ public interface ItemStackHashStrategy extends Hash.Strategy<ItemStack>
                 }
 
                 @Override
-                public boolean equals(@Nullable ItemStack a, @Nullable ItemStack b)
-                {
+                public boolean equals(@Nullable ItemStack a, @Nullable ItemStack b) {
                     if(a == null || a.isEmpty()) return b == null || b.isEmpty();
                     if(b == null || b.isEmpty()) return false;
 
