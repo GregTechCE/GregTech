@@ -5,6 +5,7 @@ import net.minecraft.item.*;
 import net.minecraft.nbt.*;
 import net.minecraftforge.items.*;
 import org.junit.*;
+import org.junit.rules.*;
 
 import java.util.*;
 
@@ -20,6 +21,12 @@ public class InventoryUtilsTest
     {
         Bootstrap.register();
     }
+
+    /**
+     * Used by tests where exception properties need to be verified.
+     */
+    @Rule
+    public ExpectedException thrown = ExpectedException.none();
 
     @Test
     public void simulateItemStackMerge_succeeds_for_inserting_single_stack_into_empty_one_slot_inventory()
@@ -285,21 +292,27 @@ public class InventoryUtilsTest
                    ItemStack.areItemStacksEqual(expectedPartial, result.get(2)));
     }
 
-    @Test(expected = AssertionError.class)
+    @Test
     public void apportionStack_throws_AssertionError_when_supplied_stack_is_empty()
     {
+        thrown.expect(IllegalArgumentException.class);
+        thrown.expectMessage("Cannot apportion an empty stack.");
         InventoryUtils.apportionStack(ItemStack.EMPTY, 64);
     }
 
-    @Test(expected = AssertionError.class)
+    @Test
     public void apportionStack_throws_AssertionError_when_maxCount_is_zero()
     {
+        thrown.expect(IllegalArgumentException.class);
+        thrown.expectMessage("Count must be non-zero and positive.");
         InventoryUtils.apportionStack(new ItemStack(Items.ARROW, 1), 0);
     }
 
-    @Test(expected = AssertionError.class)
+    @Test
     public void apportionStack_throws_AssertionError_when_maxCount_is_negative()
     {
+        thrown.expect(IllegalArgumentException.class);
+        thrown.expectMessage("Count must be non-zero and positive.");
         InventoryUtils.apportionStack(new ItemStack(Items.ARROW, 1), -1);
     }
 

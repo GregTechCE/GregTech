@@ -183,8 +183,10 @@ public final class InventoryUtils {
      */
     public static List<ItemStack> apportionStack(ItemStack stack,
                                                  final int maxCount) {
-        assert !stack.isEmpty();
-        assert maxCount > 0;
+        if(stack.isEmpty())
+            throw new IllegalArgumentException("Cannot apportion an empty stack.");
+        if(maxCount <= 0)
+            throw new IllegalArgumentException("Count must be non-zero and positive.");
 
         final ArrayList<ItemStack> splitStacks = new ArrayList<>();
 
