@@ -4,37 +4,12 @@ import net.minecraft.item.*;
 import net.minecraftforge.items.*;
 
 import java.util.*;
-import java.util.function.*;
 import java.util.stream.*;
 
 /**
  * Various Quality-of-Life methods for working with Java 8 Streams.
  */
-public class StreamUtils {
-    /**
-     * Create an inverse predicate from another predicate. Makes it less ugly to use method references.
-     */
-    public static <T> Predicate<T> not(Predicate<T> predicate) {
-        return predicate.negate();
-    }
-
-    /**
-     * Reduce multiple OR predicates into a single predicate.
-     */
-    @SafeVarargs
-    public static <T> Predicate<T> or(Predicate<T>... predicates) {
-        return Arrays.stream(predicates)
-                     .reduce(x -> false, Predicate::or);
-    }
-
-    /**
-     * Reduce multiple AND predicates into a single predicate.
-     */
-    @SafeVarargs
-    public static <T> Predicate<T> and(Predicate<T>... predicates) {
-        return Arrays.stream(predicates)
-                     .reduce(x -> true, Predicate::and);
-    }
+public final class StreamUtils {
 
     /**
      * Creates a stream view of the actual contents of the inventory.

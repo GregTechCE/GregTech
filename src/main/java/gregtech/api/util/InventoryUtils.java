@@ -9,9 +9,10 @@ import java.util.*;
 import java.util.function.Function;
 import java.util.stream.*;
 
+import static gregtech.api.util.Predicates.*;
 import static gregtech.api.util.StreamUtils.*;
 
-public class InventoryUtils {
+public final class InventoryUtils {
     /**
      * @param inventory the target inventory
      * @return the number of empty slots in {@code inventory}
