@@ -11,14 +11,12 @@ import java.util.stream.*;
 
 import static gregtech.api.util.StreamUtils.*;
 
-public class InventoryUtils
-{
+public class InventoryUtils {
     /**
      * @param inventory the target inventory
      * @return the number of empty slots in {@code inventory}
      */
-    public static int getNumberOfEmptySlotsInInventory(IItemHandler inventory)
-    {
+    public static int getNumberOfEmptySlotsInInventory(IItemHandler inventory) {
         // IItemHandler#getSlots() is an int, so this cast is safe.
         return (int)
             streamFrom(inventory)
@@ -34,8 +32,7 @@ public class InventoryUtils
      * @return a deep copy of the inventory.
      */
     public static List<ItemStack> deepCopy(final IItemHandler inventory,
-                                           final boolean keepEmpty)
-    {
+                                           final boolean keepEmpty) {
         return streamFrom(inventory)
             .filter(or(x -> keepEmpty,
                        not(ItemStack::isEmpty)))
@@ -62,8 +59,7 @@ public class InventoryUtils
      *         insert all requested items, {@code false} otherwise.
      */
     public static boolean simulateItemStackMerge(List<ItemStack> inputItems,
-                                                 IItemHandler inventory)
-    {
+                                                 IItemHandler inventory) {
         // Generate a stack-minimized copy of the input items
         final List<ItemStack> itemStacks = compactItemStacks(inputItems);
 
@@ -92,8 +88,7 @@ public class InventoryUtils
      * @param inputItems the itemStacks to compact.
      * @return a list containing the resulting ItemStacks.
      */
-    static List<ItemStack> compactItemStacks(Collection<ItemStack> inputItems)
-    {
+    static List<ItemStack> compactItemStacks(Collection<ItemStack> inputItems) {
         Hash.Strategy<ItemStack>      strategy = ItemStackHashStrategy.comparingAllButCount();
         final Map<ItemStack, Integer> map      = new Object2IntOpenCustomHashMap<>(strategy);
 
@@ -110,12 +105,11 @@ public class InventoryUtils
 
                          // Create a single stack of the combined count for each item
                          .entrySet().stream()
-                         .map(entry ->
-                              {
-                                  ItemStack combined = entry.getKey().copy();
-                                  combined.setCount(entry.getValue());
-                                  return combined;
-                              })
+                         .map(entry -> {
+                             ItemStack combined = entry.getKey().copy();
+                             combined.setCount(entry.getValue());
+                             return combined;
+                         })
 
                          // Normalize these stacks into separate valid ItemStacks, flattening them into a List
                          .map(InventoryUtils::normalizeItemStack)
@@ -131,30 +125,25 @@ public class InventoryUtils
      * @param source      the ItemStacks to merge into {@code destination}.
      * @param destination a target inventory of existing ItemStacks.
      */
-    static void mergeItemStacks(Collection<ItemStack> source, Collection<ItemStack> destination)
-    {
+    static void mergeItemStacks(Collection<ItemStack> source, Collection<ItemStack> destination) {
         // Since we're mutating the collection during iteration, use an iterator.
         final Iterator<ItemStack> sourceItemStacks = source.iterator();
-        while(sourceItemStacks.hasNext())
-        {
+        while(sourceItemStacks.hasNext()) {
             final ItemStack sourceItemStack = sourceItemStacks.next();
 
             // Find a matching item in the output bus, if any
             for(ItemStack destItemStack : destination)
                 if(ItemStack.areItemsEqual(destItemStack, sourceItemStack) &&
-                   ItemStack.areItemStackTagsEqual(destItemStack, sourceItemStack))
-                {
+                   ItemStack.areItemStackTagsEqual(destItemStack, sourceItemStack)) {
                     // if it's possible to merge stacks
                     final int availableSlots = destItemStack.getMaxStackSize() - destItemStack.getCount();
-                    if(availableSlots > 0)
-                    {
+                    if(availableSlots > 0) {
                         final int itemCount = Math.min(availableSlots, sourceItemStack.getCount());
                         sourceItemStack.shrink(itemCount);
                         destItemStack.grow(itemCount);
 
                         // if the output stack was merged completely, remove it and stop looking
-                        if(sourceItemStack.isEmpty())
-                        {
+                        if(sourceItemStack.isEmpty()) {
                             sourceItemStacks.remove();
                             break;
                         }
@@ -171,8 +160,7 @@ public class InventoryUtils
      * @param stack an ItemStack to process.
      * @return an immutable List of the resulting ItemStacks, in descending size order.
      */
-    public static List<ItemStack> normalizeItemStack(ItemStack stack)
-    {
+    public static List<ItemStack> normalizeItemStack(ItemStack stack) {
         if(stack.isEmpty())
             return Collections.emptyList();
 
@@ -193,8 +181,7 @@ public class InventoryUtils
      * @return the resulting zero to many whole stacks and zero to one partial stack.
      */
     public static List<ItemStack> apportionStack(ItemStack stack,
-                                                 final int maxCount)
-    {
+                                                 final int maxCount) {
         assert !stack.isEmpty();
         assert maxCount > 0;
 
@@ -204,15 +191,13 @@ public class InventoryUtils
         int numStacks = count / maxCount;
         int remainder = count % maxCount;
 
-        for(int fullStackCount = numStacks; fullStackCount > 0; fullStackCount--)
-        {
+        for(int fullStackCount = numStacks; fullStackCount > 0; fullStackCount--) {
             ItemStack fullStack = stack.copy();
             fullStack.setCount(maxCount);
             splitStacks.add(fullStack);
         }
 
-        if(remainder > 0)
-        {
+        if(remainder > 0) {
             ItemStack partialStack = stack.copy();
             partialStack.setCount(remainder);
             splitStacks.add(partialStack);

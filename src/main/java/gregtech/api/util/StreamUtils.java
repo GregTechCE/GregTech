@@ -10,13 +10,11 @@ import java.util.stream.*;
 /**
  * Various Quality-of-Life methods for working with Java 8 Streams.
  */
-public class StreamUtils
-{
+public class StreamUtils {
     /**
      * Create an inverse predicate from another predicate. Makes it less ugly to use method references.
      */
-    public static <T> Predicate<T> not(Predicate<T> predicate)
-    {
+    public static <T> Predicate<T> not(Predicate<T> predicate) {
         return predicate.negate();
     }
 
@@ -24,8 +22,7 @@ public class StreamUtils
      * Reduce multiple OR predicates into a single predicate.
      */
     @SafeVarargs
-    public static <T> Predicate<T> or(Predicate<T>... predicates)
-    {
+    public static <T> Predicate<T> or(Predicate<T>... predicates) {
         return Arrays.stream(predicates)
                      .reduce(x -> false, Predicate::or);
     }
@@ -34,8 +31,7 @@ public class StreamUtils
      * Reduce multiple AND predicates into a single predicate.
      */
     @SafeVarargs
-    public static <T> Predicate<T> and(Predicate<T>... predicates)
-    {
+    public static <T> Predicate<T> and(Predicate<T>... predicates) {
         return Arrays.stream(predicates)
                      .reduce(x -> true, Predicate::and);
     }
@@ -47,8 +43,7 @@ public class StreamUtils
      * @param inventory the target inventory
      * @return a stream over the contents of the target inventory
      */
-    public static Stream<ItemStack> streamFrom(IItemHandler inventory)
-    {
+    public static Stream<ItemStack> streamFrom(IItemHandler inventory) {
         return StreamSupport.stream(iterableFrom(inventory).spliterator(),
                                     false);
     }
@@ -63,26 +58,20 @@ public class StreamUtils
      * @see Iterator
      * @see Iterable
      */
-    public static Iterable<ItemStack> iterableFrom(IItemHandler inventory)
-    {
-        return new Iterable<ItemStack>()
-        {
+    public static Iterable<ItemStack> iterableFrom(IItemHandler inventory) {
+        return new Iterable<ItemStack>() {
             @Override
-            public Iterator<ItemStack> iterator()
-            {
-                return new Iterator<ItemStack>()
-                {
+            public Iterator<ItemStack> iterator() {
+                return new Iterator<ItemStack>() {
                     private int cursor = 0;
 
                     @Override
-                    public boolean hasNext()
-                    {
+                    public boolean hasNext() {
                         return cursor < inventory.getSlots();
                     }
 
                     @Override
-                    public ItemStack next()
-                    {
+                    public ItemStack next() {
                         if(!hasNext())
                             throw new NoSuchElementException();
 
@@ -94,8 +83,7 @@ public class StreamUtils
             }
 
             @Override
-            public Spliterator<ItemStack> spliterator()
-            {
+            public Spliterator<ItemStack> spliterator() {
                 return Spliterators.spliterator(iterator(), inventory.getSlots(), 0);
             }
         };
