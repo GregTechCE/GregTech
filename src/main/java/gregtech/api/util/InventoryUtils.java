@@ -7,6 +7,7 @@ import net.minecraftforge.items.*;
 
 import java.util.*;
 import java.util.function.Function;
+import java.util.function.Supplier;
 import java.util.stream.*;
 
 import static gregtech.api.util.Predicates.*;
@@ -91,7 +92,8 @@ public final class InventoryUtils {
      */
     static List<ItemStack> compactItemStacks(Collection<ItemStack> inputItems) {
         Hash.Strategy<ItemStack> strategy = ItemStackHashStrategy.comparingAllButCount();
-        final Map<ItemStack, Integer> map = new Object2IntOpenCustomHashMap<>(strategy);
+        final Supplier<Map<ItemStack, Integer>> mapSupplier =
+                () -> new Object2IntOpenCustomHashMap<>(strategy);
 
         return inputItems.stream()
 
@@ -102,7 +104,7 @@ public final class InventoryUtils {
                          .collect(Collectors.toMap(Function.identity(),
                                                    ItemStack::getCount,
                                                    Math::addExact,
-                                                   () -> map))
+                                                   mapSupplier))
 
                          // Create a single stack of the combined count for each item
                          .entrySet().stream()
