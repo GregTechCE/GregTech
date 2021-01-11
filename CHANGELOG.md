@@ -6,7 +6,7 @@
 * Removed Extra Fuel recipe additions (#1388) - ALongStringOfNumbers
 * Fixed incorrect Lapotron Crystal crafting recipe (#1348) - ALongStringOfNumbers
 * Fixed the Primitive Blast Furnace Voiding outputs (#1351) - ALongStringOfNumbers
-* Fixed rare crash on plaicng cover (#1354) - Eutro
+* Fixed rare crash on placing cover (#1354) - Eutro
 * Fixed large boiler heatEfficiencyMultiplier not working (#1355) - Artem Melentyev
 * Fixed Forestry like wood not having GTCE recipes (#1369) - detav
 * Fixed Forge data and Capabilities not being synced to client (#1372) - Eutro
