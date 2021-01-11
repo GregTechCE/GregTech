@@ -67,9 +67,11 @@ public class SituationWidget extends Widget {
     @Override
     public void detectAndSendChanges() {
         super.detectAndSendChanges();
-        if (currentSituationSupplier.get().id != currentId) {
-            this.currentId = currentSituationSupplier.get().id;
-            writeUpdateInfo(1, buf -> buf.writeVarInt(currentId));
+        if (currentSituationSupplier.get() != null) {
+            if (currentSituationSupplier.get().id != currentId) {
+                this.currentId = currentSituationSupplier.get().id;
+                writeUpdateInfo(1, buf -> buf.writeVarInt(currentId));
+            }
         }
     }
 
