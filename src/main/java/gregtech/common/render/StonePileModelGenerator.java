@@ -27,7 +27,7 @@ public class StonePileModelGenerator {
             int color = (b & 0xFF) << 24 | (b & 0xFF) << 16 | (b & 0xFF) << 8 | (0xFF);
             Arrays.fill(colours, i * 24, i* 24 + 24, color);
         }
-        return ccModel;
+        return ccModel.computeNormals();
     }
 
     private static List<IndexedCuboid6> generateCuboidList(Random random) {
