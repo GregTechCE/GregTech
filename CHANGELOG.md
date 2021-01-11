@@ -1,5 +1,18 @@
 ## Changelog
 
+### 1.10.9
+* Updated Fuel recipe map to be similar to recipe map (#1353) - idcppl
+* Updated Furnace recipe map to check all inputs (#1362) - ALongStringOfNumbers
+* Removed Extra Fuel recipe additions (#1388) - ALongStringOfNumbers
+* Fixed incorrect Lapotron Crystal crafting recipe (#1348) - ALongStringOfNumbers
+* Fixed the Primitive Blast Furnace Voiding outputs (#1351) - ALongStringOfNumbers
+* Fixed rare crash on plaicng cover (#1354) - Eutro
+* Fixed large boiler heatEfficiencyMultiplier not working (#1355) - Artem Melentyev
+* Fixed Forestry like wood not having GTCE recipes (#1369) - detav
+* Fixed Forge data and Capabilities not being synced to client (#1372) - Eutro
+* Fixed surface rocks rendering issue with shaders (#1373) - Hero9909
+* Fixed Multiblocks output voiding (#1384) - Exaxxion
+
 ### 1.10.8
 * Added Sifter to Smart Item FIlter options (#1345) - LAGIdiot
 * Fixed shouldCheckWeakPower not working correctly because of Vanilla MC bug (#1331) - solidDoWant
