@@ -24,9 +24,6 @@ public class FuelRecipes {
         registerSteamGeneratorFuel(Materials.Steam.getFluid(60), 1, GTValues.LV);
 
         //low-tier gas turbine fuels
-        registerGasGeneratorFuel(Materials.Hydrogen.getFluid(1), 1, GTValues.LV);
-        registerGasGeneratorFuel(Materials.Methane.getFluid(1), 2, GTValues.LV);
-
         registerGasGeneratorFuel(Materials.NaturalGas.getFluid(8), 5, GTValues.LV);
         registerGasGeneratorFuel(Materials.Hydrogen.getFluid(8), 5, GTValues.LV);
         registerGasGeneratorFuel(Materials.CarbonMonoxde.getFluid(8), 6, GTValues.LV);
