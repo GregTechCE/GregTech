@@ -132,6 +132,32 @@ public class ConfigHolder {
     public static class MachineSpecificConfiguration {
         @Config.Comment("Array of blacklisted dimension IDs in which Air Collector does not work.")
         public int[] airCollectorDimensionBlacklist = new int[]{};
+
+        @Config.Comment("Whether to use Electric Blast Furnace coil bonuses. Default: true")
+        @Config.RequiresMcRestart
+        public boolean ebfCoilBonuses = true;
+
+        @Config.Comment({"The Electric Blast Furnace temperature value used to calculate heating coil bonuses. Default: 900", "Requires ebfCoilBonuses=true"})
+        @Config.RequiresMcRestart
+        @Config.RangeInt(min = 1)
+        public int coilBonusTemperature = 900;
+
+        @Config.Comment({"The Electric Blast Furnace recipe EU/t multiplier used for each 'coilBonusTemperature' when the coil temperature is larger than the recipe's. Default: 0.95", "Requires ebfCoilBonuses=true"})
+        @Config.RequiresMcRestart
+        @Config.RangeDouble(min = 0.01)
+        public double coilBonusEUtDiscount = 0.95;
+
+        @Config.Comment({"The Electric Blast Furnace recipe duration multiplier used for each 2 * 'coilBonusTemperature' when the coil temperature is larger than the recipe's and it is overclocking. Default: 0.25", "Requires ebfCoilBonuses=true"})
+        @Config.RequiresMcRestart
+        @Config.RangeDouble(min = 0.01)
+        public double coilBonusHighTemperatureDurationDiscount = 0.25;
+
+        @Config.Comment("Whether to use the GTNH's tweaks for Electric Blast Furnace heating coil temperatures. Follows the formula: temperatureBonus = 'GTNHTemperatureCoilBonusBase' * (multiblockVoltageTier - 2), can be negative. Default: true")
+        @Config.RequiresMcRestart
+        public boolean useGTNHBonusCoilHeating = true;
+
+        @Config.Comment({"The base coil bonus used in calculating the GTNH tweaked heating coil temperatures. Setting this value to anything larger than 100 may allow for skipping coils in standard GTCE progression. Default: 100", "Requires useGTNHBonusCoilHeating=true"})
+        public int GTNHTemperatureCoilBonusBase = 100;
     }
 
     public static class NanoSaberConfiguration {

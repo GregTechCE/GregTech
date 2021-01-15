@@ -2926,6 +2926,11 @@ gregtech.multiblock.max_energy_per_tick=Max EU/t: %s (%s)
 gregtech.multiblock.generation_eu=Outputting: %s EU/t
 
 gregtech.multiblock.blast_furnace.max_temperature=Max Temperature: %sK
+gregtech.multiblock.blast_furnace.bonus_temperature=Additional Temperature: %sK
+gregtech.multiblock.electric_blast_furnace.tooltip1=Every %dK above the recipe's temperature multiplicatively discounts the input EU/t by %%%f.
+gregtech.multiblock.electric_blast_furnace.tooltip2=Every %dK above the recipe's temperature allows for 1 additional overclock that reduces the recipe's duration by %%%f.
+gregtech.multiblock.electric_blast_furnace.tooltip3=Each voltage tier above MV increases the temperature by %d.
+
 gregtech.multiblock.multi_furnace.heating_coil_level=Heating Coil Level: %s
 gregtech.multiblock.multi_furnace.heating_coil_discount=Heating Coil EU Boost: %sx
 gregtech.multiblock.distillation_tower.distilling_fluid=Distilling %s
