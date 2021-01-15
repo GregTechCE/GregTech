@@ -142,17 +142,17 @@ public class ConfigHolder {
         @Config.RangeInt(min = 1)
         public int coilBonusTemperature = 900;
 
-        @Config.Comment({"The Electric Blast Furnace recipe EU/t multiplier used for each 'coilBonusTemperature' when the coil temperature is larger than the recipe's. Default: 0.95", "Requires ebfCoilBonuses=true"})
+        @Config.Comment({"The Electric Blast Furnace recipe EU/t is multiplied by this value for every 'coilBonusTemperature' above the recipe's temperature. Default: 0.95", "Requires ebfCoilBonuses=true"})
         @Config.RequiresMcRestart
         @Config.RangeDouble(min = 0.01)
         public double coilBonusEUtDiscount = 0.95;
 
-        @Config.Comment({"The Electric Blast Furnace recipe duration multiplier used for each 2 * 'coilBonusTemperature' when the coil temperature is larger than the recipe's and it is overclocking. Default: 0.25", "Requires ebfCoilBonuses=true"})
+        @Config.Comment({"The Electric Blast Furnace recipe duration is multiplied by this value for every 2 * 'coilBonusTemperature' above the recipe's temperature when overclocking. Default: 0.25", "Requires ebfCoilBonuses=true"})
         @Config.RequiresMcRestart
         @Config.RangeDouble(min = 0.01)
         public double coilBonusHighTemperatureDurationDiscount = 0.25;
 
-        @Config.Comment("Whether to use the GTNH's tweaks for Electric Blast Furnace heating coil temperatures. Follows the formula: temperatureBonus = 'GTNHTemperatureCoilBonusBase' * (multiblockVoltageTier - 2), can be negative. Default: true")
+        @Config.Comment("Whether to use the GTNH's tweaks for Electric Blast Furnace heating coil temperatures according to the formula: temperatureBonus = 'GTNHTemperatureCoilBonusBase' * (multiblockVoltageTier - 2), can be negative. Default: true")
         @Config.RequiresMcRestart
         public boolean useGTNHBonusCoilHeating = true;
 
