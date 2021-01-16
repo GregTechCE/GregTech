@@ -27,16 +27,25 @@ public class TickableWorldPipeNetEventHandler {
 
     @SubscribeEvent
     public static void onWorldTick(WorldTickEvent event) {
-        getPipeNetsForWorld(event.world).forEach(TickableWorldPipeNet::update);
+        final World world = event.world;
+        if (world == null || world.isRemote)
+            return;
+        getPipeNetsForWorld(world).forEach(TickableWorldPipeNet::update);
     }
 
     @SubscribeEvent
     public static void onChunkLoad(ChunkEvent.Load event) {
-        getPipeNetsForWorld(event.getWorld()).forEach(it -> it.onChunkLoaded(event.getChunk()));
+        final World world = event.getWorld();
+        if (world == null || world.isRemote)
+            return;
+        getPipeNetsForWorld(world).forEach(it -> it.onChunkLoaded(event.getChunk()));
     }
 
     @SubscribeEvent
     public static void onChunkUnload(ChunkEvent.Unload event) {
-        getPipeNetsForWorld(event.getWorld()).forEach(it -> it.onChunkUnloaded(event.getChunk()));
+        final World world = event.getWorld();
+        if (world == null || world.isRemote)
+            return;
+        getPipeNetsForWorld(world).forEach(it -> it.onChunkUnloaded(event.getChunk()));
     }
 }

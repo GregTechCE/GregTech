@@ -9,27 +9,33 @@ import net.minecraft.world.World;
 import net.minecraft.world.storage.WorldSavedData;
 import net.minecraftforge.common.util.Constants.NBT;
 
+import java.lang.ref.WeakReference;
 import java.util.*;
 
 public abstract class WorldPipeNet<NodeDataType, T extends PipeNet<NodeDataType>> extends WorldSavedData {
 
-    private World world;
-    protected boolean isFirstTick = true;
+    private WeakReference<World> worldRef = new WeakReference<>(null);
     protected List<T> pipeNets = new ArrayList<>();
     protected Map<ChunkPos, List<T>> pipeNetsByChunk = new HashMap<>();
+
+    public static String getDataID(final String baseID, final World world) {
+        if (world == null || world.isRemote)
+            throw new RuntimeException("WorldPipeNet should only be created on the server!");
+        final int dimension = world.provider.getDimension();
+        return dimension == 0 ? baseID : baseID + '.' + dimension;
+    }
 
     public WorldPipeNet(String name) {
         super(name);
     }
 
     public World getWorld() {
-        return world;
+        return this.worldRef.get();
     }
 
     protected void setWorldAndInit(World world) {
-        if (isFirstTick) {
-            this.world = world;
-            this.isFirstTick = false;
+        if (world != this.worldRef.get()) {
+            this.worldRef = new WeakReference<World>(world);
             onWorldSet();
         }
     }
