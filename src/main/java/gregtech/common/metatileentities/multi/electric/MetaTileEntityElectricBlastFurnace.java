@@ -162,7 +162,7 @@ public class MetaTileEntityElectricBlastFurnace extends RecipeMapMultiblockContr
                 int EUtBonusLeft = amountEUtBonus;
                 for (int i = amountEUtBonus; modifiedEUt <= getEnergyContainer().getInputVoltage() && i > 0; i--) {
                     if (EUtBonusLeft % 2 == 0) {
-                        modifiedDuration *= ConfigHolder.machineSpecific.coilBonusHighTemperatureDurationDiscount;
+                        modifiedDuration -= (modifiedDuration*ConfigHolder.machineSpecific.coilBonusHighTemperatureDurationDiscount);
                         modifiedEUt *= 4;
                     }
                 }
