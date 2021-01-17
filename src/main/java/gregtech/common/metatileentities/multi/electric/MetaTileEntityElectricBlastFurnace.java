@@ -1,5 +1,6 @@
 package gregtech.common.metatileentities.multi.electric;
 
+import gregtech.api.GTValues;
 import gregtech.api.capability.impl.MultiblockRecipeLogic;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.MetaTileEntityHolder;
@@ -57,7 +58,7 @@ public class MetaTileEntityElectricBlastFurnace extends RecipeMapMultiblockContr
     @Override
     protected void addDisplayText(List<ITextComponent> textList) {
         if (isStructureFormed()) {
-            if (ConfigHolder.machineSpecific.useGTNHBonusCoilHeating) {
+            if (ConfigHolder.machineSpecific.useVoltageTieredHeatBonus) {
                 textList.add(new TextComponentTranslation("gregtech.multiblock.blast_furnace.bonus_temperature", bonusTemperature));
             }
             textList.add(new TextComponentTranslation("gregtech.multiblock.blast_furnace.max_temperature", blastFurnaceTemperature));
@@ -70,9 +71,9 @@ public class MetaTileEntityElectricBlastFurnace extends RecipeMapMultiblockContr
         super.formStructure(context);
         this.blastFurnaceTemperature = context.getOrDefault("CoilType", CoilType.CUPRONICKEL).getCoilTemperature();
 
-        if (ConfigHolder.machineSpecific.useGTNHBonusCoilHeating) {
-            this.bonusTemperature = (ConfigHolder.machineSpecific.GTNHTemperatureCoilBonusBase * (
-                GTUtility.getTierByVoltage(getEnergyContainer().getInputVoltage()) - 2));
+        if (ConfigHolder.machineSpecific.useVoltageTieredHeatBonus) {
+            int energyTier = GTUtility.getTierByVoltage(getEnergyContainer().getInputVoltage());
+            this.bonusTemperature = ConfigHolder.machineSpecific.VoltageTieredHeatBonusBase * (energyTier - 2);
             this.blastFurnaceTemperature += bonusTemperature;
         }
     }
@@ -129,17 +130,14 @@ public class MetaTileEntityElectricBlastFurnace extends RecipeMapMultiblockContr
     public void addInformation(ItemStack stack, @Nullable World player, List<String> tooltip, boolean advanced) {
         super.addInformation(stack, player, tooltip, advanced);
         if (ConfigHolder.machineSpecific.ebfCoilBonuses) {
-            double coilDiscount = 100-ConfigHolder.machineSpecific.coilBonusEUtDiscount * 100;
-            double durationDiscount = 100-ConfigHolder.machineSpecific.coilBonusHighTemperatureDurationDiscount * 100;
-
-            if (coilDiscount < 0) { coilDiscount *= -1; }
-            if (durationDiscount < 0) { durationDiscount *= -1; }
+            double coilDiscount = Math.abs(100 - ConfigHolder.machineSpecific.coilBonusEUtDiscount * 100);
+            double durationDiscount = Math.abs(100 - ConfigHolder.machineSpecific.coilBonusHighTemperatureDurationDiscount * 100);
 
             tooltip.add(I18n.format("gregtech.multiblock.electric_blast_furnace.tooltip1", ConfigHolder.machineSpecific.coilBonusTemperature, coilDiscount));
             tooltip.add(I18n.format("gregtech.multiblock.electric_blast_furnace.tooltip2", ConfigHolder.machineSpecific.coilBonusTemperature*2, durationDiscount));
         }
-        if (ConfigHolder.machineSpecific.useGTNHBonusCoilHeating) {
-            tooltip.add(I18n.format("gregtech.multiblock.electric_blast_furnace.tooltip3", ConfigHolder.machineSpecific.GTNHTemperatureCoilBonusBase));
+        if (ConfigHolder.machineSpecific.useVoltageTieredHeatBonus) {
+            tooltip.add(I18n.format("gregtech.multiblock.electric_blast_furnace.tooltip3", ConfigHolder.machineSpecific.VoltageTieredHeatBonusBase));
         }
     }
 
@@ -151,27 +149,10 @@ public class MetaTileEntityElectricBlastFurnace extends RecipeMapMultiblockContr
 
         @Override
         protected void setupRecipe(Recipe recipe) {
-            int modifiedEUt = recipe.getEUt();
-            int modifiedDuration = recipe.getDuration();
-            int amountEUtBonus = 0;
-            if (ConfigHolder.machineSpecific.ebfCoilBonuses) {
-                int recipeTemp = Math.max(1, recipe.getIntegerProperty("blast_furnace_temperature"));
-                int tempOverBase = Math.max(1, blastFurnaceTemperature - recipeTemp);
-                amountEUtBonus = tempOverBase / ConfigHolder.machineSpecific.coilBonusTemperature;
-
-                int EUtBonusLeft = amountEUtBonus;
-                for (int i = amountEUtBonus; modifiedEUt <= getEnergyContainer().getInputVoltage() && i > 0; i--) {
-                    if (EUtBonusLeft % 2 == 0) {
-                        modifiedDuration *= ConfigHolder.machineSpecific.coilBonusHighTemperatureDurationDiscount;
-                        modifiedEUt *= 4;
-                    }
-                }
-            }
-
-            int[] resultOverclock = calculateOverclock(modifiedEUt, getMaxVoltage(), modifiedDuration);
+            int[] resultOverclock = calculateOverclock(recipe.getEUt(), getMaxVoltage(), recipe.getDuration(), recipe);
             this.progressTime = 1;
             setMaxProgress(resultOverclock[1]);
-            this.recipeEUt = (int) (resultOverclock[0] * Math.pow(ConfigHolder.machineSpecific.coilBonusEUtDiscount, amountEUtBonus));
+            this.recipeEUt = resultOverclock[0];
             this.fluidOutputs = GTUtility.copyFluidList(recipe.getFluidOutputs());
             int tier = getMachineTierForRecipe(recipe);
             this.itemOutputs = GTUtility.copyStackList(recipe.getResultItemOutputs(getOutputInventory().getSlots(), random, tier));
@@ -179,6 +160,54 @@ public class MetaTileEntityElectricBlastFurnace extends RecipeMapMultiblockContr
                 this.wasActiveAndNeedsUpdate = false;
             } else {
                 this.setActive(true);
+            }
+        }
+
+        protected int[] calculateOverclock(int EUt, long voltage, int duration, Recipe recipe) {
+            if (!ConfigHolder.machineSpecific.ebfCoilBonuses) {
+                return super.calculateOverclock(EUt, voltage, duration);
+            }
+
+            if(!allowOverclocking) {
+                return new int[] {EUt, duration};
+            }
+            boolean negativeEU = EUt < 0;
+            int tier = getOverclockingTier(voltage);
+            if (GTValues.V[tier] <= EUt || tier == 0)
+                return new int[]{EUt, duration};
+            if (negativeEU)
+                EUt = -EUt;
+            if (EUt <= 16) {
+                int multiplier = EUt <= 8 ? tier : tier - 1;
+                int resultEUt = EUt * (1 << multiplier) * (1 << multiplier);
+                int resultDuration = duration / (1 << multiplier);
+                return new int[]{negativeEU ? -resultEUt : resultEUt, resultDuration};
+            } else {
+                int resultEUt = EUt;
+                double resultDuration = duration;
+
+                // Improved Overclocks - do not overclock further if duration is too small
+                int recipeTemp = recipe.getIntegerProperty("blast_furnace_temperature");
+                int tempOverBase = Math.max(1, blastFurnaceTemperature - recipeTemp);
+                int amountEUtBonus = tempOverBase / ConfigHolder.machineSpecific.coilBonusTemperature;
+
+                for (int i = amountEUtBonus; resultEUt <= GTValues.V[tier - 1] && resultDuration >= 3 && i > 0; i--) {
+                    if (i % 2 == 0) {
+                        resultEUt *= 4;
+                        resultDuration -= (resultDuration * ConfigHolder.machineSpecific.coilBonusHighTemperatureDurationDiscount);
+                    }
+                }
+
+                // Regular Overclocks - do not overclock further if duration is already too small
+                while (resultDuration >= 3 && resultEUt <= GTValues.V[tier - 1]) {
+                    resultEUt *= 4;
+                    resultDuration /= 2.8;
+                }
+
+                // Coil Energy Discount
+                resultEUt *= (Math.pow(ConfigHolder.machineSpecific.coilBonusEUtDiscount, amountEUtBonus));
+
+                return new int[]{negativeEU ? -resultEUt : resultEUt, (int) Math.ceil(resultDuration)};
             }
         }
     }

@@ -147,17 +147,17 @@ public class ConfigHolder {
         @Config.RangeDouble(min = 0.01)
         public double coilBonusEUtDiscount = 0.95;
 
-        @Config.Comment({"The Electric Blast Furnace recipe duration is multiplied by this value for every 2 * 'coilBonusTemperature' above the recipe's temperature when overclocking. Default: 0.25", "Requires ebfCoilBonuses=true"})
+        @Config.Comment({"The Electric Blast Furnace recipe duration is multiplied by this value for every 2 * 'coilBonusTemperature' above the recipe's temperature when overclocking. Default: 0.75", "Requires ebfCoilBonuses=true"})
         @Config.RequiresMcRestart
         @Config.RangeDouble(min = 0.01)
-        public double coilBonusHighTemperatureDurationDiscount = 0.25;
+        public double coilBonusHighTemperatureDurationDiscount = 0.75;
 
-        @Config.Comment("Whether to use the GTNH's tweaks for Electric Blast Furnace heating coil temperatures according to the formula: temperatureBonus = 'GTNHTemperatureCoilBonusBase' * (multiblockVoltageTier - 2), can be negative. Default: true")
+        @Config.Comment("Whether to use the voltage tier based tweaks for Electric Blast Furnace heating coil temperatures according to the formula: temperatureBonus = 'VoltageTieredHeatBonusBase' * (multiblockVoltageTier - 2), can be negative. Default: true")
         @Config.RequiresMcRestart
-        public boolean useGTNHBonusCoilHeating = true;
+        public boolean useVoltageTieredHeatBonus = true;
 
-        @Config.Comment({"The base coil bonus used in calculating the GTNH tweaked heating coil temperatures. Setting this value to anything larger than 100 may allow for skipping coils in standard GTCE progression. Default: 100", "Requires useGTNHBonusCoilHeating=true"})
-        public int GTNHTemperatureCoilBonusBase = 100;
+        @Config.Comment({"The base coil bonus used in calculating tweaked heating coil temperatures. Setting this value to anything larger than 100 or negative may break standard GTCE progression. Default: 100", "Requires useVoltageTieredHeatBonus=true"})
+        public int VoltageTieredHeatBonusBase = 100;
     }
 
     public static class NanoSaberConfiguration {
