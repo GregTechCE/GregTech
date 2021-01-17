@@ -10,7 +10,15 @@ public class WorldFluidPipeNet extends WorldPipeNet<FluidPipeProperties, FluidPi
 
     public static WorldFluidPipeNet getWorldPipeNet(World world) {
         final String DATA_ID = getDataID(DATA_ID_BASE, world);
+        // First look for per dimension data
         WorldFluidPipeNet netWorldData = (WorldFluidPipeNet) world.loadData(WorldFluidPipeNet.class, DATA_ID);
+        if (netWorldData == null) {
+            // Next look for the old shared data
+            netWorldData = (WorldFluidPipeNet) world.loadData(WorldFluidPipeNet.class, DATA_ID_BASE);
+            if (netWorldData != null)
+                netWorldData.old = true;
+        }
+        // No saved data, create it and queue it to be saved
         if (netWorldData == null) {
             netWorldData = new WorldFluidPipeNet(DATA_ID);
             world.setData(DATA_ID, netWorldData);
