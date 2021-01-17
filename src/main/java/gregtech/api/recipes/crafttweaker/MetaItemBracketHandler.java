@@ -10,7 +10,6 @@ import gregtech.api.items.materialitem.MaterialMetaItem;
 import gregtech.api.items.metaitem.MetaItem;
 import gregtech.api.items.metaitem.MetaItem.MetaValueItem;
 import gregtech.api.unification.OreDictUnifier;
-import gregtech.common.items.MetaItems;
 import net.minecraft.item.ItemStack;
 import stanhebben.zenscript.compiler.IEnvironmentGlobal;
 import stanhebben.zenscript.expression.ExpressionCallStatic;
@@ -37,7 +36,7 @@ public class MetaItemBracketHandler implements IBracketHandler {
     @SuppressWarnings("unchecked")
     public static void rebuildComponentRegistry() {
         metaItemNames.clear();
-        for (MetaItem<?> item : MetaItems.ITEMS) {
+        for (MetaItem<?> item : MetaItem.getMetaItems()) {
             if (item instanceof MaterialMetaItem) {
                 for(ItemStack entry : ((MaterialMetaItem) item).getEntries()) {
                     metaItemNames.put(OreDictUnifier.getPrefix(entry).name() + OreDictUnifier.getMaterial(entry).material.toCamelCaseString(), entry);
