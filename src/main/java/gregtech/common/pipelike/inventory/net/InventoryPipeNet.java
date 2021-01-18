@@ -49,6 +49,19 @@ public class InventoryPipeNet extends PipeNet<EmptyNodeData> implements ITickabl
         }
     }
 
+    @Override
+    protected void addNodeSilently(BlockPos nodePos, Node<EmptyNodeData> node) {
+        super.addNodeSilently(nodePos, node);
+        // Review: Correct place? Looks for adjacent inventories during deserialisation 
+        getStorageNetwork().checkForItemHandlers(nodePos, node.blockedConnections);
+    }
+
+    @Override
+    protected Node<EmptyNodeData> removeNodeWithoutRebuilding(BlockPos nodePos) {
+        getStorageNetwork().removeItemHandlers(nodePos);
+        return super.removeNodeWithoutRebuilding(nodePos);
+    }
+
     public ItemStorageNetwork getStorageNetwork() {
         if (storageNetwork == null) {
             Preconditions.checkNotNull(getWorldData(), "World is null at the time getStorageNetwork is called!");

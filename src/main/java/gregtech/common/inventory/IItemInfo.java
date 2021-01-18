@@ -1,10 +1,5 @@
 package gregtech.common.inventory;
 
-import gregtech.api.util.ItemStackKey;
-
-public interface IItemInfo {
-
-    int getTotalItemAmount();
-
-    ItemStackKey getItemStackKey();
+// Review: Moved into the api
+public interface IItemInfo  extends gregtech.api.capability.IItemInfo {
 }

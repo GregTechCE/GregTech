@@ -9,17 +9,21 @@ import gregtech.common.pipelike.inventory.net.InventoryPipeNet;
 import gregtech.common.pipelike.inventory.net.WorldInventoryPipeNet;
 import gregtech.common.pipelike.inventory.tile.TileEntityInventoryPipe;
 import gregtech.common.pipelike.inventory.tile.TileEntityInventoryPipeTickable;
+import gregtech.common.render.InventoryPipeRenderer;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.CapabilityItemHandler;
 import org.apache.commons.lang3.tuple.Pair;
 
@@ -27,6 +31,11 @@ public class BlockInventoryPipe extends BlockSimplePipe<InventoryPipeType, Empty
 
     static {
         TickableWorldPipeNetEventHandler.registerTickablePipeNet(WorldInventoryPipeNet::getWorldPipeNet);
+    }
+
+    public BlockInventoryPipe() {
+        // Review: without this, the name is tile.pipe.name which doesn't seem correct?
+        setUnlocalizedName("inventory_pipe");
     }
 
     @Override
@@ -86,7 +95,14 @@ public class BlockInventoryPipe extends BlockSimplePipe<InventoryPipeType, Empty
     }
 
     @Override
+    @SideOnly(Side.CLIENT)
+    public EnumBlockRenderType getRenderType(IBlockState state) {
+        return InventoryPipeRenderer.BLOCK_RENDER_TYPE;
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
     protected Pair<TextureAtlasSprite, Integer> getParticleTexture(World world, BlockPos blockPos) {
-        return null;
+        return InventoryPipeRenderer.INSTANCE.getParticleTexture((TileEntityInventoryPipe) world.getTileEntity(blockPos));
     }
 }

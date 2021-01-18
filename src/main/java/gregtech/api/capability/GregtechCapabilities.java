@@ -23,4 +23,7 @@ public class GregtechCapabilities {
     @CapabilityInject(ISoftHammerItem.class)
     public static Capability<ISoftHammerItem> CAPABILITY_MALLET = null;
 
+    @CapabilityInject(IStorageNetwork.class)
+    public static Capability<IStorageNetwork> CAPABILITY_STORAGE_NETWORK = null;
+
 }

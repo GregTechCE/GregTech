@@ -10,13 +10,15 @@ import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 public class ItemSourceList implements IItemList, ITickable {
 
     protected final World world;
     protected final List<ItemSource> handlerInfoList = new CopyOnWriteArrayList<>();
-    protected final Map<ItemStackKey, NetworkItemInfo> itemInfoMap = new LinkedHashMap<>();
+    // Review: protect against CCME
+    protected final Map<ItemStackKey, NetworkItemInfo> itemInfoMap = new ConcurrentHashMap<>();
     private final Comparator<ItemSource> comparator = Comparator.comparing(ItemSource::getPriority);
     private final Set<ItemStackKey> storedItemsView = Collections.unmodifiableSet(itemInfoMap.keySet());
     protected Runnable itemListChangeCallback = null;

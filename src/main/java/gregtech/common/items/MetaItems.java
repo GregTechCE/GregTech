@@ -348,6 +348,8 @@ public final class MetaItems {
 
     public static MetaItem<?>.MetaValueItem TURBINE_ROTOR;
 
+    public static MetaItem<?>.MetaValueItem INTERFACE_MODULE_LV;
+
     public static ArmorMetaItem.ArmorMetaValueItem REBREATHER;
 
     public static ToolMetaItem<?>.MetaToolValueItem SWORD;

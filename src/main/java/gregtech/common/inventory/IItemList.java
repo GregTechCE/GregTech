@@ -1,22 +1,16 @@
 package gregtech.common.inventory;
 
+import gregtech.api.capability.IStorageNetwork;
 import gregtech.api.util.ItemStackKey;
 
-import javax.annotation.Nullable;
-import java.util.Set;
-
-public interface IItemList {
+// Review: Partially moved into the api
+public interface IItemList extends IStorageNetwork {
 
     void addItemListChangeCallback(Runnable changeCallback);
 
-    Set<ItemStackKey> getStoredItems();
-
-    @Nullable
-    IItemInfo getItemInfo(ItemStackKey stackKey);
-
-    default boolean hasItemStored(ItemStackKey itemStackKey) {
-        return getItemInfo(itemStackKey) != null;
-    }
+    default int insertItem(ItemStackKey itemStack, int amount, boolean simulate) {
+        return insertItem(itemStack, amount, simulate, InsertMode.LOWEST_PRIORITY);
+    };
 
     int insertItem(ItemStackKey itemStack, int amount, boolean simulate, InsertMode insertMode);
 

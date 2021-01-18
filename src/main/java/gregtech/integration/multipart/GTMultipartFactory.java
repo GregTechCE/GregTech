@@ -18,6 +18,8 @@ public final class GTMultipartFactory implements IDynamicPartFactory {
     public static final ResourceLocation CABLE_PART_TICKABLE_KEY = new ResourceLocation(GTValues.MODID, "cable_tickable");
     public static final ResourceLocation FLUID_PIPE_PART_KEY = new ResourceLocation(GTValues.MODID, "fluid_pipe");
     public static final ResourceLocation FLUID_PIPE_ACTIVE_PART_KEY = new ResourceLocation(GTValues.MODID, "fluid_pipe_active");
+    public static final ResourceLocation INVENTORY_PIPE_PART_KEY = new ResourceLocation(GTValues.MODID, "inv_pipe");
+    public static final ResourceLocation INVENTORY_PIPE_TICKABLE_PART_KEY = new ResourceLocation(GTValues.MODID, "inv_pipe_tickable");
 
     public static final GTMultipartFactory INSTANCE = new GTMultipartFactory();
     private final Map<ResourceLocation, Supplier<TMultiPart>> partRegistry = new HashMap<>();
@@ -27,6 +29,8 @@ public final class GTMultipartFactory implements IDynamicPartFactory {
         registerPart(CABLE_PART_TICKABLE_KEY, CableMultiPartTickable::new);
         registerPart(FLUID_PIPE_PART_KEY, FluidPipeMultiPart::new);
         registerPart(FLUID_PIPE_ACTIVE_PART_KEY, FluidPipeActiveMultiPart::new);
+        registerPart(INVENTORY_PIPE_PART_KEY, InventoryPipeMultiPart::new);
+        registerPart(INVENTORY_PIPE_TICKABLE_PART_KEY, InventoryPipeMultiPartTickable::new);
         MultiPartRegistry.registerParts(this, partRegistry.keySet());
     }
 

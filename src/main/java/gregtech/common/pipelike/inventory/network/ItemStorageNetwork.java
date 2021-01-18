@@ -8,14 +8,22 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
 public class ItemStorageNetwork extends ItemSourceList {
 
-    private final Map<SidedBlockPos, TileItemSource> handlerInfoMap = new HashMap<>();
+    // Review: stop CCME
+    private final Map<SidedBlockPos, TileItemSource> handlerInfoMap = new ConcurrentHashMap<>();
 
     public ItemStorageNetwork(World world) {
         super(world);
+    }
+
+    // Review: Exposure for TOP debugging
+    public Collection<TileItemSource> getHandlerInfos()
+    {
+        return Collections.unmodifiableCollection(handlerInfoMap.values());
     }
 
     public void transferItemHandlers(Collection<BlockPos> nodePositions, ItemStorageNetwork destNetwork) {
@@ -61,6 +69,14 @@ public class ItemStorageNetwork extends ItemSourceList {
                 //avoids duplicating logic here
                 addItemHandler(handlerInfo);
             }
+        }
+    }
+
+    public void removeItemHandlers(BlockPos nodePos) {
+        for (EnumFacing accessSide : EnumFacing.VALUES) {
+            ItemSource handlerInfo = handlerInfoMap.get(new SidedBlockPos(nodePos, accessSide));
+            if (handlerInfo != null)
+                removeItemHandler(handlerInfo);
         }
     }
 
