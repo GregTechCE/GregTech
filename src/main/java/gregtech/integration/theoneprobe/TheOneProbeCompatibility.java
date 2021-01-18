@@ -1,9 +1,6 @@
 package gregtech.integration.theoneprobe;
 
-import gregtech.integration.theoneprobe.provider.ControllableInfoProvider;
-import gregtech.integration.theoneprobe.provider.DebugPipeNetInfoProvider;
-import gregtech.integration.theoneprobe.provider.ElectricContainerInfoProvider;
-import gregtech.integration.theoneprobe.provider.WorkableInfoProvider;
+import gregtech.integration.theoneprobe.provider.*;
 import mcjty.theoneprobe.TheOneProbe;
 import mcjty.theoneprobe.api.ITheOneProbe;
 
@@ -15,6 +12,8 @@ public class TheOneProbeCompatibility {
         oneProbe.registerProvider(new WorkableInfoProvider());
         oneProbe.registerProvider(new ControllableInfoProvider());
         oneProbe.registerProvider(new DebugPipeNetInfoProvider());
-    }
 
+        // Providers for more detailed information
+        oneProbe.registerProvider(new AdditionalInfoProvider());
+    }
 }
