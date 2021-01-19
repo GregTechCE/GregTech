@@ -20,6 +20,7 @@ public class AdditionalInfoProvider extends ElectricContainerInfoProvider {
         return "gregtech:additional_info_provider";
     }
 
+    @Override
     protected void addProbeInfo(IEnergyContainer capability, IProbeInfo probeInfo, TileEntity tileEntity, EnumFacing sideHit) {
         if (tileEntity instanceof MetaTileEntityHolder) {
             MetaTileEntity metaTileEntity = ((MetaTileEntityHolder) tileEntity).getMetaTileEntity();
@@ -36,16 +37,17 @@ public class AdditionalInfoProvider extends ElectricContainerInfoProvider {
         String outputVoltageN = GTValues.VN[GTUtility.getTierByVoltage(capability.getOutputVoltage())];
         long inputAmperage = capability.getInputAmperage();
         long outputAmperage = capability.getOutputAmperage();
+        IProbeInfo horizontalPane = probeInfo.vertical(probeInfo.defaultLayoutStyle().alignment(ElementAlignment.ALIGN_CENTER));
         String transformInfo;
 
         // Step Up/Step Down line
-        if (mteTransformer.isInverted())
+        if (mteTransformer.isInverted()) {
             transformInfo = I18n.format("gregtech.top.transform_up",
                 inputVoltageN, inputAmperage, outputVoltageN, outputAmperage);
-        else
+        } else {
             transformInfo = I18n.format("gregtech.top.transform_down",
                 inputVoltageN, inputAmperage, outputVoltageN, outputAmperage);
-        IProbeInfo horizontalPane = probeInfo.vertical(probeInfo.defaultLayoutStyle().alignment(ElementAlignment.ALIGN_CENTER));
+        }
         horizontalPane.text(TextStyleClass.INFO + transformInfo);
 
         // Input/Output side line
