@@ -243,7 +243,7 @@ public class Materials {
     public static DustMaterial Tennantite = new DustMaterial(363, "tennantite", 0x909090, MaterialIconSet.METALLIC, 2, of(new MaterialStack(Copper, 12), new MaterialStack(Arsenic, 4), new MaterialStack(Sulfur, 13)), GENERATE_ORE);
 
     public static DustMaterial PhosphorousPentoxide = new DustMaterial(466, "phosphorous_pentoxide", 8158464, MaterialIconSet.DULL, 1, of(new MaterialStack(Materials.Phosphorus, 4), new MaterialStack(Materials.Oxygen, 10)), 0);
-    public static FluidMaterial PhosphoricAcid = new FluidMaterial(467, "phosphoric_acid", 11447824, MaterialIconSet.FLUID, of(new MaterialStack(Materials.Hydrogen, 3), new MaterialStack(Materials.Phosphorus, 4)), 0);
+    public static FluidMaterial PhosphoricAcid = new FluidMaterial(467, "phosphoric_acid", 11447824, MaterialIconSet.FLUID, of(new MaterialStack(Materials.Hydrogen, 3), new MaterialStack(Materials.Phosphorus, 1), new MaterialStack(Materials.Oxygen, 4)), 0);
     public static DustMaterial SodiumHydroxide = new DustMaterial(373, "sodium_hydroxide", 6466, MaterialIconSet.DULL, 1, of(new MaterialStack(Materials.Sodium, 1), new MaterialStack(Materials.Oxygen, 1), new MaterialStack(Materials.Hydrogen, 1)), DISABLE_DECOMPOSITION);
     public static DustMaterial Quicklime = new DustMaterial(374, "quicklime", 8421504, MaterialIconSet.SAND, 1, of(new MaterialStack(Materials.Calcium, 1), new MaterialStack(Materials.Oxygen, 1)), 0);
     public static FluidMaterial SulfurTrioxide = new FluidMaterial(376, "sulfur_trioxide", 8618781, MaterialIconSet.GAS, of(new MaterialStack(Materials.Sulfur, 1), new MaterialStack(Materials.Oxygen, 3)), STATE_GAS);
