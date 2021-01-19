@@ -252,11 +252,12 @@ public class PartsRecipeHandler {
             'R', new UnificationEntry(OrePrefix.ring, material),
             'S', new UnificationEntry(OrePrefix.screw, material));
 
-        RecipeMaps.ASSEMBLER_RECIPES.recipeBuilder()
-            .input(OrePrefix.plate, material, 4).input(OrePrefix.ring, material)
+        RecipeMaps.EXTRUDER_RECIPES.recipeBuilder()
+            .input(OrePrefix.ingot, material, 4)
+            .notConsumable(MetaItems.SHAPE_EXTRUDER_ROTOR)
             .outputs(stack)
-            .duration(240)
-            .EUt(24)
+            .duration(120)
+            .EUt(120)
             .buildAndRegister();
     }
 

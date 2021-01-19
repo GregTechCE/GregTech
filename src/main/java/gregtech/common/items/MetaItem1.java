@@ -109,6 +109,7 @@ public class MetaItem1 extends MaterialMetaItem {
         SHAPE_EXTRUDERS[19] = SHAPE_EXTRUDER_SAW = addItem(371, "shape.extruder.saw");
         SHAPE_EXTRUDERS[20] = SHAPE_EXTRUDER_GEAR = addItem(372, "shape.extruder.gear");
         SHAPE_EXTRUDERS[21] = SHAPE_EXTRUDER_BOTTLE = addItem(373, "shape.extruder.bottle");
+        SHAPE_EXTRUDERS[22] = SHAPE_EXTRUDER_ROTOR = addItem(374, "shape.extruder.rotor");
 
         SPRAY_EMPTY = addItem(402, "spray.empty")
             .setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.Tin, OrePrefix.plate.materialAmount * 2L), new MaterialStack(Materials.Redstone, OrePrefix.dust.materialAmount)));
