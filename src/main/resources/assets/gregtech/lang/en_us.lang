@@ -115,6 +115,8 @@ metaitem.shape.mold.name.name=Mold (Name)
 metaitem.shape.mold.name.tooltip=Mold for naming Items (rename Mold with Anvil)
 metaitem.shape.mold.gear.small.name=Mold (Small Gear)
 metaitem.shape.mold.gear.small.tooltip=Mold for making small Gears
+metaitem.shape.mold.rotor.name=Mold (Rotor)
+metaitem.shape.mold.rotor.tooltip=Mold for making Rotors
 
 metaitem.shape.extruder.plate.name=Extruder Shape (Plate)
 metaitem.shape.extruder.plate.tooltip=Extruder Shape for making Plates
