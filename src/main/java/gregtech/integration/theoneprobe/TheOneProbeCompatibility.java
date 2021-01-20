@@ -12,6 +12,6 @@ public class TheOneProbeCompatibility {
         oneProbe.registerProvider(new WorkableInfoProvider());
         oneProbe.registerProvider(new ControllableInfoProvider());
         oneProbe.registerProvider(new DebugPipeNetInfoProvider());
-        oneProbe.registerProvider(new AdditionalInfoProvider());
+        oneProbe.registerProvider(new TransformerInfoProvider());
     }
 }
