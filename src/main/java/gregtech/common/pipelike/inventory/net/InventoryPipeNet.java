@@ -1,6 +1,8 @@
 package gregtech.common.pipelike.inventory.net;
 
 import com.google.common.base.Preconditions;
+
+import gregtech.api.capability.IEnergyContainer;
 import gregtech.api.pipenet.Node;
 import gregtech.api.pipenet.PipeNet;
 import gregtech.api.pipenet.WorldPipeNet;
@@ -17,8 +19,11 @@ public class InventoryPipeNet extends PipeNet<EmptyNodeData> implements ITickabl
 
     private ItemStorageNetwork storageNetwork;
 
+    private InventoryPipeNetEnergyContainer energyContainer;
+    
     public InventoryPipeNet(WorldPipeNet<EmptyNodeData, ? extends PipeNet> world) {
         super(world);
+        this.energyContainer = new InventoryPipeNetEnergyContainer();
     }
 
     @Override
@@ -44,6 +49,25 @@ public class InventoryPipeNet extends PipeNet<EmptyNodeData> implements ITickabl
     protected void transferNodeData(Map<BlockPos, Node<EmptyNodeData>> transferredNodes, PipeNet<EmptyNodeData> parentNet) {
         super.transferNodeData(transferredNodes, parentNet);
         InventoryPipeNet parentInventoryNet = (InventoryPipeNet) parentNet;
+        InventoryPipeNetEnergyContainer parentEnergyContainer = parentInventoryNet.energyContainer;
+        long parentEnergy = parentEnergyContainer.getEnergyStored();
+        if (parentEnergy > 0) {
+            if (parentNet.getAllNodes().isEmpty()) {
+                //if this is a merge of pipe nets, just add all the energy
+                energyContainer.addEnergy(parentEnergy);
+            } else {
+                //otherwise, it is donating of some nodes to our net in result of split
+                //so, we should estabilish equal amount of energy in networks
+                long firstNetCapacity = energyContainer.getEnergyCapacity();
+                long secondNetCapacity = parentInventoryNet.energyContainer.getEnergyCapacity();
+                long totalEnergy = energyContainer.getEnergyStored() + parentEnergy;
+                long energy1 = totalEnergy * firstNetCapacity / (firstNetCapacity + secondNetCapacity);
+                long energy2 = totalEnergy - energy1;
+
+                energyContainer.setEnergyStored(energy1);
+                parentEnergyContainer.setEnergyStored(energy2);
+            }
+        }
         if (parentInventoryNet.storageNetwork != null) {
             parentInventoryNet.storageNetwork.transferItemHandlers(transferredNodes.keySet(), getStorageNetwork());
         }
@@ -65,9 +89,13 @@ public class InventoryPipeNet extends PipeNet<EmptyNodeData> implements ITickabl
     public ItemStorageNetwork getStorageNetwork() {
         if (storageNetwork == null) {
             Preconditions.checkNotNull(getWorldData(), "World is null at the time getStorageNetwork is called!");
-            this.storageNetwork = new ItemStorageNetwork(getWorldData());
+            this.storageNetwork = new ItemStorageNetwork(this);
         }
         return storageNetwork;
+    }
+
+    public IEnergyContainer getEnergyContainer() {
+        return energyContainer;
     }
 
     @Override
@@ -77,5 +105,19 @@ public class InventoryPipeNet extends PipeNet<EmptyNodeData> implements ITickabl
     @Override
     protected EmptyNodeData readNodeData(NBTTagCompound tagCompound) {
         return EmptyNodeData.INSTANCE;
+    }
+
+    @Override
+    public NBTTagCompound serializeNBT() {
+        final NBTTagCompound nbt = super.serializeNBT();
+        nbt.setTag("EnergyContainer", this.energyContainer.serializeNBT());
+        return nbt;
+    }
+
+    @Override
+    public void deserializeNBT(final NBTTagCompound nbt) {
+        super.deserializeNBT(nbt);
+        final NBTTagCompound energyData = nbt.getCompoundTag("EnergyContainer");
+        this.energyContainer.deserializeNBT(energyData);
     }
 }
