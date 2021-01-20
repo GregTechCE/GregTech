@@ -42,4 +42,5 @@ public class ElectricContainerInfoProvider extends CapabilityInfoProvider<IEnerg
             .filledColor(0xFFFFE000)
             .alternateFilledColor(0xFFEED000));
     }
+
 }
