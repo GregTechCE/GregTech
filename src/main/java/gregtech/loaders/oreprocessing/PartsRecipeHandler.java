@@ -265,8 +265,8 @@ public class PartsRecipeHandler {
                 .notConsumable(MetaItems.SHAPE_MOLD_ROTOR)
                 .fluidInputs(material.getFluid(L * 4))
                 .outputs(OreDictUnifier.get(rotorPrefix, material))
-                .duration(40)
-                .EUt(8)
+                .duration(120)
+                .EUt(120)
                 .buildAndRegister();
         }
     }
