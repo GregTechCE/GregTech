@@ -158,9 +158,9 @@ public class ChemistryRecipes {
         RecipeMaps.CHEMICAL_RECIPES.recipeBuilder().duration(160).EUt(120).fluidInputs(Materials.SulfuricAcid.getFluid(1000), Materials.AceticAcid.getFluid(1000)).fluidOutputs(Materials.Ethenone.getFluid(1000), Materials.DilutedSulfuricAcid.getFluid(1000)).buildAndRegister();
 
         // Calcium Acetate / Acetone
-        RecipeMaps.CHEMICAL_RECIPES.recipeBuilder().duration(400).EUt(380).input(OrePrefix.dust, Materials.Calcite, 2).fluidInputs(Materials.AceticAcid.getFluid(2000)).fluidOutputs(Materials.CalciumAcetate.getFluid(1000), Materials.Water.getFluid(1000)).buildAndRegister();
-        RecipeMaps.CHEMICAL_RECIPES.recipeBuilder().duration(400).EUt(380).input(OrePrefix.dust, Materials.Quicklime, 2).fluidInputs(Materials.AceticAcid.getFluid(2000)).fluidOutputs(Materials.CalciumAcetate.getFluid(1000), Materials.Water.getFluid(1000)).buildAndRegister();
-        RecipeMaps.CHEMICAL_RECIPES.recipeBuilder().duration(400).EUt(380).input(OrePrefix.dust, Materials.Calcium).fluidInputs(Materials.AceticAcid.getFluid(2000)).fluidOutputs(Materials.CalciumAcetate.getFluid(1000), Materials.Hydrogen.getFluid(2000)).buildAndRegister();
+        RecipeMaps.CHEMICAL_RECIPES.recipeBuilder().duration(400).EUt(380).input(OrePrefix.dust, Materials.Calcite, 2).fluidInputs(Materials.AceticAcid.getFluid(2000)).fluidOutputs(Materials.CalciumAcetate.getFluid(1000)).buildAndRegister();
+        RecipeMaps.CHEMICAL_RECIPES.recipeBuilder().duration(400).EUt(380).input(OrePrefix.dust, Materials.Quicklime, 2).fluidInputs(Materials.AceticAcid.getFluid(2000)).fluidOutputs(Materials.CalciumAcetate.getFluid(1000)).buildAndRegister();
+        RecipeMaps.CHEMICAL_RECIPES.recipeBuilder().duration(400).EUt(380).input(OrePrefix.dust, Materials.Calcium).fluidInputs(Materials.AceticAcid.getFluid(2000), Materials.Oxygen.getFluid(1000)).fluidOutputs(Materials.CalciumAcetate.getFluid(1000).buildAndRegister();
         
         RecipeMaps.CHEMICAL_RECIPES.recipeBuilder().duration(200).EUt(120).input(OrePrefix.dust, Materials.Calcite, 5).fluidInputs(Materials.AceticAcid.getFluid(2000)).fluidOutputs(Materials.CalciumAcetate.getFluid(1000), Materials.CarbonDioxide.getFluid(1000)).buildAndRegister();
         RecipeMaps.DISTILLATION_RECIPES.recipeBuilder().duration(80).EUt(120).fluidInputs(Materials.CalciumAcetate.getFluid(1000)).outputs(OreDictUnifier.get(OrePrefix.dust, Materials.Quicklime, 2)).fluidOutputs(Materials.Acetone.getFluid(600), Materials.CarbonDioxide.getFluid(1000), Materials.Water.getFluid(1000)).buildAndRegister();
