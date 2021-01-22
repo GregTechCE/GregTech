@@ -94,6 +94,7 @@ public class CachedGridEntry implements GridEntryInfo, IBlockGeneratorAccess, IB
         if (masterEntry == null) {
             Chunk primerChunk = world.getChunkFromChunkCoords(primerChunkX, primerChunkZ);
             BlockPos heightSpot = findOptimalSpot(gridX, gridZ, primerChunkX, primerChunkZ);
+            heightSpot = heightSpot.add(primerChunkX * 16, 0, primerChunkZ * 16);
             int masterHeight = world.getHeight(heightSpot).getY();
             int masterBottomHeight = world.getTopSolidOrLiquidBlock(heightSpot).getY();
             this.masterEntry = primerChunk.getCapability(GTWorldGenCapability.CAPABILITY, null);
