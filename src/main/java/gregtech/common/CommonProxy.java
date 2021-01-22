@@ -13,6 +13,7 @@ import gregtech.common.blocks.*;
 import gregtech.common.blocks.wood.BlockGregLeaves;
 import gregtech.common.blocks.wood.BlockGregLog;
 import gregtech.common.blocks.wood.BlockGregSapling;
+import gregtech.common.crafting.TemperatureProperty;
 import gregtech.common.items.MetaItems;
 import gregtech.common.items.potions.PotionFluids;
 import gregtech.common.pipelike.cable.ItemBlockCable;
@@ -139,6 +140,8 @@ public class CommonProxy {
     //ore dictionary and recipes will get recipes accessible in time
     @SubscribeEvent
     public static void registerRecipes(RegistryEvent.Register<IRecipe> event) {
+        TemperatureProperty.register();
+
         GTLog.logger.info("Registering ore dictionary...");
 
         MetaItems.registerOreDict();
