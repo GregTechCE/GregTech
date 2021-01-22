@@ -1,7 +1,6 @@
 package gregtech.api.recipes;
 
 import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableSet;
 import gregtech.api.capability.IMultipleTankHandler;
 import gregtech.api.util.GTUtility;
 import net.minecraft.item.ItemStack;
