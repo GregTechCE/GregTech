@@ -1,6 +1,7 @@
 package gregtech.api.recipes;
 
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableSet;
 import gregtech.api.capability.IMultipleTankHandler;
 import gregtech.api.util.GTUtility;
 import net.minecraft.item.ItemStack;
@@ -311,8 +312,8 @@ public class Recipe {
         return hasValidInputs;
     }
 
-    public List<String> getPropertyKeys() {
-        ArrayList<String> keys = new ArrayList<>();
+    public Set<String> getPropertyKeys() {
+        Set<String> keys = new HashSet<>();
         this.recipeProperties.forEach(recipeProperty -> keys.add(recipeProperty.getKey()));
         return keys;
     }
