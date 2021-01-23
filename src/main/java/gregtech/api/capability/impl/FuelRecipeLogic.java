@@ -169,7 +169,7 @@ public class FuelRecipeLogic extends MTETrait implements IControllable {
         return GTValues.V[GTUtility.getTierByVoltage(voltage)];
     }
 
-    private void setActive(boolean active) {
+    protected void setActive(boolean active) {
         this.isActive = active;
         if (!metaTileEntity.getWorld().isRemote) {
             metaTileEntity.markDirty();

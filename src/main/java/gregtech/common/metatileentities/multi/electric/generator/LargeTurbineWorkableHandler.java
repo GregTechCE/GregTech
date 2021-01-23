@@ -40,6 +40,11 @@ public class LargeTurbineWorkableHandler extends FuelRecipeLogic {
         }
     }
 
+    @Override
+    protected void setActive(boolean active) {
+        super.setActive(active);
+    }
+
     public FluidStack getFuelStack() {
         if (previousRecipe == null)
             return null;
