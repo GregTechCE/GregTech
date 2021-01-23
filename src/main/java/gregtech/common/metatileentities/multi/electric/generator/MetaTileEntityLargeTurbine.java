@@ -90,6 +90,7 @@ public class MetaTileEntityLargeTurbine extends FueledMultiblockController {
     public void invalidateStructure() {
         super.invalidateStructure();
         this.exportFluidHandler = null;
+        this.setActive(false);
     }
 
     /**

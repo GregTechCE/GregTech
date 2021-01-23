@@ -85,6 +85,10 @@ public class FuelRecipeLogic extends MTETrait implements IControllable {
         }
     }
 
+    public void clearRecipe() {
+        recipeDurationLeft = 0;
+    }
+
     protected boolean shouldVoidExcessiveEnergy() {
         return false;
     }
