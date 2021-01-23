@@ -79,10 +79,21 @@ public class MetaTileEntityRotorHolder extends MetaTileEntityMultiblockPart impl
         MetaTileEntityLargeTurbine controller = (MetaTileEntityLargeTurbine) getController();
         boolean isControllerActive = controller != null && controller.isActive();
 
-        if (currentRotorSpeed < maxRotorSpeed && isControllerActive) {
+        //Need to reactivate the turbine somehow. Currently it stops when you take the rotor out,
+        //but then does not start again.
+        if(!isHasRotor() && controller != null) {
+            incrementSpeed(-currentRotorSpeed);
+            controller.setActive(false);
+        }
+        else if(currentRotorSpeed < maxRotorSpeed && isControllerActive) {
             incrementSpeed(1);
-        } else if (currentRotorSpeed > 0 && !isControllerActive) {
+        }
+        else if(currentRotorSpeed > 0 && !isControllerActive) {
             incrementSpeed(-3);
+        }
+        else if(currentRotorSpeed == 0 && controller != null) {
+            controller.setActive(false);
+            markDirty();
         }
     }
 

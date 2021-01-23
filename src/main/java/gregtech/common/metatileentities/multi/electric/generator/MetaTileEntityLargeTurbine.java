@@ -33,6 +33,8 @@ public class MetaTileEntityLargeTurbine extends FueledMultiblockController {
     public static final MultiblockAbility<MetaTileEntityRotorHolder> ABILITY_ROTOR_HOLDER = new MultiblockAbility<>();
     private static final int MIN_DURABILITY_TO_WARN = 10;
 
+    public final LargeTurbineWorkableHandler workHandler = (LargeTurbineWorkableHandler) workableHandler;
+
     public enum TurbineType {
 
         STEAM(RecipeMaps.STEAM_TURBINE_FUELS, MetaBlocks.TURBINE_CASING.getState(TurbineCasingType.STEEL_TURBINE_CASING), Textures.SOLID_STEEL_CASING, true),
@@ -95,6 +97,10 @@ public class MetaTileEntityLargeTurbine extends FueledMultiblockController {
      */
     public boolean isActive() {
         return isTurbineFaceFree() && workableHandler.isActive() && workableHandler.isWorkingEnabled();
+    }
+
+    public void setActive(boolean active) {
+        workHandler.setActive(active);
     }
 
     /**
