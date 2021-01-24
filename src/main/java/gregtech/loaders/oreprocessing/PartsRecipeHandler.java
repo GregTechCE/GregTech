@@ -252,14 +252,6 @@ public class PartsRecipeHandler {
             'R', new UnificationEntry(OrePrefix.ring, material),
             'S', new UnificationEntry(OrePrefix.screw, material));
 
-        RecipeMaps.EXTRUDER_RECIPES.recipeBuilder()
-            .input(OrePrefix.ingot, material, 4)
-            .notConsumable(MetaItems.SHAPE_EXTRUDER_ROTOR)
-            .outputs(stack)
-            .duration(120)
-            .EUt(120)
-            .buildAndRegister();
-
         if (material.shouldGenerateFluid()) {
             RecipeMaps.FLUID_SOLIDFICATION_RECIPES.recipeBuilder()
                 .notConsumable(MetaItems.SHAPE_MOLD_ROTOR)
