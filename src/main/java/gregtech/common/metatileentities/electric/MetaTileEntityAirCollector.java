@@ -11,13 +11,22 @@ import gregtech.api.metatileentity.MetaTileEntityHolder;
 import gregtech.api.metatileentity.TieredMetaTileEntity;
 import gregtech.api.render.Textures;
 import gregtech.api.unification.material.Materials;
+import gregtech.common.ConfigHolder;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
 
+import javax.annotation.Nullable;
+import java.util.List;
+import java.util.stream.IntStream;
+
 public class MetaTileEntityAirCollector extends TieredMetaTileEntity {
+    private static final int PRODUCTION_CYCLE_LENGTH = 20;
 
     public MetaTileEntityAirCollector(ResourceLocation metaTileEntityId, int tier) {
         super(metaTileEntityId, tier);
@@ -36,10 +45,11 @@ public class MetaTileEntityAirCollector extends TieredMetaTileEntity {
     @Override
     public void update() {
         super.update();
+
         if (!getWorld().isRemote) {
             long energyToConsume = GTValues.V[getTier()];
-            if (checkOpenSides() && getTimer() % 20 == 0L && energyContainer.getEnergyStored() >= energyToConsume) {
-                int fluidAmount = 500 * (1 << getTier());
+            if (checkDimension() && checkOpenSides() && getTimer() % PRODUCTION_CYCLE_LENGTH == 0L && energyContainer.getEnergyStored() >= energyToConsume) {
+                int fluidAmount = getCollectedFluidAmount();
                 FluidStack fluidStack = Materials.Air.getFluid(fluidAmount);
                 if (exportFluids.fill(fluidStack, false) == fluidAmount) {
                     exportFluids.fill(fluidStack, true);
@@ -60,6 +70,15 @@ public class MetaTileEntityAirCollector extends TieredMetaTileEntity {
                 return true;
         }
         return false;
+    }
+
+    private boolean checkDimension() {
+        int dimensionId = getWorld().provider.getDimension();
+        return IntStream.of(ConfigHolder.machineSpecific.airCollectorDimensionBlacklist).noneMatch(x -> x == dimensionId);
+    }
+
+    private int getCollectedFluidAmount() {
+        return 500 * (1 << getTier());
     }
 
     @Override
@@ -84,5 +103,14 @@ public class MetaTileEntityAirCollector extends TieredMetaTileEntity {
     @Override
     protected boolean openGUIOnRightClick() {
         return false;
+    }
+
+    @Override
+    public void addInformation(ItemStack stack, @Nullable World player, List<String> tooltip, boolean advanced) {
+        tooltip.add(I18n.format("gregtech.machine.air_collector.tooltip"));
+        tooltip.add(I18n.format("gregtech.machine.air_collector.collection_speed", getCollectedFluidAmount(), PRODUCTION_CYCLE_LENGTH));
+        tooltip.add(I18n.format("gregtech.universal.tooltip.voltage_in", energyContainer.getInputVoltage(), GTValues.VN[getTier()]));
+        tooltip.add(I18n.format("gregtech.universal.tooltip.energy_storage_capacity", energyContainer.getEnergyCapacity()));
+        tooltip.add(I18n.format("gregtech.universal.tooltip.fluid_storage_capacity", exportFluids.getTankAt(0).getCapacity()));
     }
 }

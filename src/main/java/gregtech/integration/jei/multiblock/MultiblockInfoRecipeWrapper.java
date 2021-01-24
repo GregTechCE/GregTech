@@ -50,8 +50,11 @@ public class MultiblockInfoRecipeWrapper implements IRecipeWrapper, SceneRenderC
     private int currentRendererPage = 0;
     private int lastMouseX;
     private int lastMouseY;
+    private float panX;
+    private float panY;
     private float rotationYaw;
     private float rotationPitch;
+    private float zoom;
 
     private GuiButton buttonPreviousPattern;
     private GuiButton buttonNextPattern;
@@ -91,6 +94,9 @@ public class MultiblockInfoRecipeWrapper implements IRecipeWrapper, SceneRenderC
         this.buttonNextPattern.visible = !isPagesDisabled;
         this.buttonPreviousPattern.enabled = false;
         this.buttonNextPattern.enabled = sceneRenders.length > 1;
+        this.panX = 0.0f;
+        this.panY = 0.0f;
+        this.zoom = 1.0f;
         this.rotationYaw = -45.0f;
         this.rotationPitch = 0.0f;
         this.currentRendererPage = 0;
@@ -147,6 +153,8 @@ public class MultiblockInfoRecipeWrapper implements IRecipeWrapper, SceneRenderC
         minPos = new Vector3f(minPos);
         minPos.add(new Vector3f(0.0f, -1.0f, 0.5f));
 
+        GlStateManager.scale(zoom, zoom, zoom);
+        GlStateManager.translate(panX, panY, 0);
         GlStateManager.translate(-minPos.x, -minPos.y, -minPos.z);
         Vector3 centerPosition = new Vector3(size.x / 2.0f, size.y / 2.0f, size.z / 2.0f);
         GlStateManager.translate(centerPosition.x, centerPosition.y, centerPosition.z);
@@ -178,27 +186,39 @@ public class MultiblockInfoRecipeWrapper implements IRecipeWrapper, SceneRenderC
 
         this.tooltipBlockStack = null;
         BlockPos pos = renderer.getLastHitBlock();
-        boolean leftClickHeldAndInsideView = Mouse.isButtonDown(0) &&
-            mouseX >= 0 && mouseY >= scenePosY &&
+        boolean insideView = mouseX >= 0 && mouseY >= scenePosY &&
             mouseX < recipeWidth && mouseY < (scenePosY + sceneHeight);
+        boolean leftClickHeld = Mouse.isButtonDown(0);
+        boolean rightClickHeld = Mouse.isButtonDown(1);
         boolean isHoldingShift = Keyboard.isKeyDown(Keyboard.KEY_LSHIFT);
 
-        if (!leftClickHeldAndInsideView && pos != null && !renderer.world.isAirBlock(pos)) {
+        if (insideView) {
+            if (leftClickHeld) {
+                if (isHoldingShift) {
+                    int mouseDeltaY = mouseY - lastMouseY;
+                    this.rotationPitch += mouseDeltaY * 2.0f;
+                } else {
+                    int mouseDeltaX = mouseX - lastMouseX;
+                    this.rotationYaw += mouseDeltaX * 2.0f;
+                }
+            } else if (rightClickHeld) {
+                int mouseDeltaY = mouseY - lastMouseY;
+                if (isHoldingShift) {
+                    this.zoom *= Math.pow(1.05d, -mouseDeltaY);
+                } else {
+                    int mouseDeltaX = mouseX - lastMouseX;
+                    this.panX -= mouseDeltaX / 2.0f;
+                    this.panY -= mouseDeltaY / 2.0f;
+                }
+            }
+        }
+
+        if (!(leftClickHeld || rightClickHeld) && pos != null && !renderer.world.isAirBlock(pos)) {
             IBlockState blockState = renderer.world.getBlockState(pos);
             RayTraceResult result = new CuboidRayTraceResult(new Vector3(0.5, 0.5, 0.5).add(pos), pos, EnumFacing.UP, new IndexedCuboid6(null, Cuboid6.full), 1.0);
             ItemStack itemStack = blockState.getBlock().getPickBlock(blockState, result, renderer.world, pos, minecraft.player);
             if (itemStack != null && !itemStack.isEmpty()) {
                 this.tooltipBlockStack = itemStack;
-            }
-        }
-
-        if (leftClickHeldAndInsideView) {
-            if (isHoldingShift) {
-                int mouseDeltaY = mouseY - lastMouseY;
-                this.rotationPitch += mouseDeltaY * 2.0f;
-            } else {
-                int mouseDeltaX = mouseX - lastMouseX;
-                this.rotationYaw += mouseDeltaX * 2.0f;
             }
         }
 

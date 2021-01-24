@@ -54,7 +54,16 @@ public class DustMaterial extends FluidMaterial {
          */
         public static final long SMELT_INTO_FLUID = createFlag(17);
 
+        /**
+         * This will prevent material from creating Shapeless recipes for dust to block and vice versa
+         * Also preventing extruding and alloy smelting recipes via SHAPE_EXTRUDING/MOLD_BLOCK
+         */
         public static final long EXCLUDE_BLOCK_CRAFTING_RECIPES = createFlag(18);
+
+        /**
+         * This will prevent material from creating Shapeless recipes for dust to block and vice versa
+         */
+        public static final long EXCLUDE_BLOCK_CRAFTING_BY_HAND_RECIPES = createFlag(46);
 
         public static final long EXCLUDE_PLATE_COMPRESSOR_RECIPE = createFlag(19);
 
@@ -95,6 +104,12 @@ public class DustMaterial extends FluidMaterial {
     public SolidMaterial directSmelting;
 
     /**
+     * Disable directSmelting
+     */
+    @ZenProperty
+    public boolean disableDirectSmelting = false;
+
+    /**
      * Material in which this material's ore should be washed to give additional output
      */
     @ZenProperty
@@ -112,6 +127,12 @@ public class DustMaterial extends FluidMaterial {
      */
     @ZenProperty
     public int burnTime = 0;
+
+    /**
+     * During OreProcessing (Macerator, OreWasher, ThermalCentrifuge), this material will be turned into crushedInto
+     */
+    @ZenProperty
+    public DustMaterial crushedInto = this;
 
     public DustMaterial(int metaItemSubId, String name, int materialRGB, MaterialIconSet materialIconSet, int harvestLevel, ImmutableList<MaterialStack> materialComponents, long materialGenerationFlags, Element element) {
         super(metaItemSubId, name, materialRGB, materialIconSet, materialComponents, materialGenerationFlags, element);

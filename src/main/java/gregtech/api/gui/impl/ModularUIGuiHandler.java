@@ -21,7 +21,7 @@ import java.util.*;
 
 public class ModularUIGuiHandler implements IAdvancedGuiHandler<ModularUIGui>, IGhostIngredientHandler<ModularUIGui>, IRecipeTransferHandler<ModularUIContainer> {
 
-    private IRecipeTransferHandlerHelper transferHelper;
+    private final IRecipeTransferHandlerHelper transferHelper;
 
     public ModularUIGuiHandler(IRecipeTransferHandlerHelper transferHelper) {
         this.transferHelper = transferHelper;
@@ -41,7 +41,7 @@ public class ModularUIGuiHandler implements IAdvancedGuiHandler<ModularUIGui>, I
     @Override
     public IRecipeTransferError transferRecipe(ModularUIContainer container, IRecipeLayout recipeLayout, EntityPlayer player, boolean maxTransfer, boolean doTransfer) {
         Optional<IRecipeTransferHandlerWidget> transferHandler = container.getModularUI()
-            .guiWidgets.values().stream()
+            .getFlatVisibleWidgetCollection().stream()
             .filter(it -> it instanceof IRecipeTransferHandlerWidget)
             .map(it -> (IRecipeTransferHandlerWidget) it)
             .findFirst();
@@ -61,12 +61,10 @@ public class ModularUIGuiHandler implements IAdvancedGuiHandler<ModularUIGui>, I
     @Override
     public Object getIngredientUnderMouse(ModularUIGui gui, int mouseX, int mouseY) {
         Collection<Widget> widgets = gui.getModularUI().guiWidgets.values();
-        mouseX -= gui.getGuiLeft();
-        mouseY -= gui.getGuiTop();
         for (Widget widget : widgets) {
             if (widget instanceof IIngredientSlot) {
                 Object result = ((IIngredientSlot) widget).getIngredientOverMouse(mouseX, mouseY);
-                if(result != null) {
+                if (result != null) {
                     return result;
                 }
             }
@@ -78,8 +76,8 @@ public class ModularUIGuiHandler implements IAdvancedGuiHandler<ModularUIGui>, I
     public <I> List<Target<I>> getTargets(ModularUIGui gui, I ingredient, boolean doStart) {
         Collection<Widget> widgets = gui.getModularUI().guiWidgets.values();
         List<Target<I>> targets = new ArrayList<>();
-        for(Widget widget : widgets) {
-            if(widget instanceof IGhostIngredientTarget) {
+        for (Widget widget : widgets) {
+            if (widget instanceof IGhostIngredientTarget) {
                 IGhostIngredientTarget ghostTarget = (IGhostIngredientTarget) widget;
                 List<Target<?>> widgetTargets = ghostTarget.getPhantomTargets(ingredient);
                 //noinspection unchecked

@@ -31,7 +31,9 @@ import java.util.stream.Collectors;
 public class AdvancedTextWidget extends Widget {
     protected int maxWidthLimit;
 
-    private ClientSideField<WrapScreen> wrapScreen = new ClientSideField<>(WrapScreen::new);
+    @SideOnly(Side.CLIENT)
+    private WrapScreen wrapScreen;
+
     protected Consumer<List<ITextComponent>> textSupplier;
     protected BiConsumer<String, ClickData> clickHandler;
     private List<ITextComponent> displayText = new ArrayList<>();
@@ -72,9 +74,17 @@ public class AdvancedTextWidget extends Widget {
     }
 
     @SideOnly(Side.CLIENT)
+    private WrapScreen getWrapScreen() {
+        if (wrapScreen == null)
+            wrapScreen = new WrapScreen();
+
+        return wrapScreen;
+    }
+
+    @SideOnly(Side.CLIENT)
     private void resizeWrapScreen() {
         if (sizes != null) {
-            this.wrapScreen.get().setWorldAndResolution(Minecraft.getMinecraft(), sizes.getScreenWidth(), sizes.getScreenHeight());
+            getWrapScreen().setWorldAndResolution(Minecraft.getMinecraft(), sizes.getScreenWidth(), sizes.getScreenHeight());
         }
     }
 
@@ -203,7 +213,7 @@ public class AdvancedTextWidget extends Widget {
         ITextComponent textComponent = getTextUnderMouse(mouseX, mouseY);
         if (textComponent != null) {
             if (handleCustomComponentClick(textComponent) ||
-                wrapScreen.get().handleComponentClick(textComponent)) {
+                getWrapScreen().handleComponentClick(textComponent)) {
                 playButtonClickSound();
                 return true;
             }
@@ -228,7 +238,7 @@ public class AdvancedTextWidget extends Widget {
         super.drawInForeground(mouseX, mouseY);
         ITextComponent component = getTextUnderMouse(mouseX, mouseY);
         if (component != null) {
-            wrapScreen.get().handleComponentHover(component, mouseX, mouseY);
+            getWrapScreen().handleComponentHover(component, mouseX, mouseY);
         }
     }
 

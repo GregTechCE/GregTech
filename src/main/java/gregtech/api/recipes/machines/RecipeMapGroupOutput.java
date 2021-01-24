@@ -92,7 +92,7 @@ public class RecipeMapGroupOutput extends RecipeMap<SimpleRecipeBuilder> impleme
                 int slotIndex = i * itemSlotsToLeft + j;
                 int x = startInputsX + 18 * j;
                 int y = startInputsY + 18 * i;
-                widgetGroup.addWidget(new TankWidget(fluidHandler.getTankAt(slotIndex), x - 1, y - 1, 18, 18)
+                widgetGroup.addWidget(new TankWidget(fluidHandler.getTankAt(slotIndex), x, y, 18, 18)
                     .setAlwaysShowFull(true)
                     .setBackgroundTexture(getOverlaysForSlot(true, true, false))
                     .setContainerClicking(true, false));

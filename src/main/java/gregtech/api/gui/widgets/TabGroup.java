@@ -22,10 +22,10 @@ import java.util.function.Supplier;
 
 public class TabGroup extends AbstractWidgetGroup {
 
-    private List<ITabInfo> tabInfos = new ArrayList<>();
-    private Map<Integer, AbstractWidgetGroup> tabWidgets = new HashMap<>();
+    private final List<ITabInfo> tabInfos = new ArrayList<>();
+    private final Map<Integer, AbstractWidgetGroup> tabWidgets = new HashMap<>();
     private int selectedTabIndex = 0;
-    private TabListRenderer tabListRenderer;
+    private final TabListRenderer tabListRenderer;
 
     public TabGroup(TabLocation tabLocation, Position position) {
         super(position);
@@ -42,6 +42,26 @@ public class TabGroup extends AbstractWidgetGroup {
         this.tabWidgets.put(tabIndex, tabWidget);
         tabWidget.setVisible(tabIndex == selectedTabIndex);
         addWidget(tabWidget);
+    }
+
+    @Override
+    public List<Widget> getContainedWidgets(boolean includeHidden) {
+        ArrayList<Widget> containedWidgets = new ArrayList<>(widgets.size());
+
+        if (includeHidden) {
+            for (Widget widget : tabWidgets.values()) {
+                containedWidgets.add(widget);
+
+                if (widget instanceof AbstractWidgetGroup)
+                    containedWidgets.addAll(((AbstractWidgetGroup) widget).getContainedWidgets(true));
+            }
+        } else {
+            AbstractWidgetGroup widgetGroup = tabWidgets.get(selectedTabIndex);
+            containedWidgets.add(widgetGroup);
+            containedWidgets.addAll(widgetGroup.getContainedWidgets(false));
+        }
+
+        return containedWidgets;
     }
 
     @Override

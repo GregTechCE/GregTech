@@ -1,6 +1,7 @@
 package gregtech.api.recipes.machines;
 
 import gregtech.api.recipes.CountableIngredient;
+import gregtech.api.recipes.MatchingMode;
 import gregtech.api.recipes.Recipe;
 import gregtech.api.recipes.RecipeMap;
 import gregtech.api.recipes.builders.SimpleRecipeBuilder;
@@ -34,8 +35,8 @@ public class RecipeMapBrewer extends RecipeMap<SimpleRecipeBuilder> {
 
     @Nullable
     @Override
-    public Recipe findRecipe(long voltage, List<ItemStack> inputs, List<FluidStack> fluidInputs, int outputFluidTankCapacity) {
-        Recipe recipe = super.findRecipe(voltage, inputs, fluidInputs, outputFluidTankCapacity);
+    public Recipe findRecipe(long voltage, List<ItemStack> inputs, List<FluidStack> fluidInputs, int outputFluidTankCapacity, MatchingMode mode) {
+        Recipe recipe = super.findRecipe(voltage, inputs, fluidInputs, outputFluidTankCapacity, mode);
         if (recipe != null ||
             GTUtility.amountOfNonNullElements(fluidInputs) < 1 ||
             GTUtility.amountOfNonEmptyStacks(inputs) < 1) {

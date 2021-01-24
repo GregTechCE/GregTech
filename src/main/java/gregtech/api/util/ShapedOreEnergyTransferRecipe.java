@@ -25,11 +25,21 @@ public class ShapedOreEnergyTransferRecipe extends ShapedOreRecipe {
         this(group, result, chargePredicate, transferMaxCharge, CraftingHelper.parseShaped(recipe));
     }
 
+    public ShapedOreEnergyTransferRecipe(ResourceLocation group, @Nonnull ItemStack result, Predicate<ItemStack> chargePredicate, boolean overrideCharge, boolean transferMaxCharge, Object... recipe) {
+        this(group, result, chargePredicate, overrideCharge, transferMaxCharge, CraftingHelper.parseShaped(recipe));
+    }
+
     public ShapedOreEnergyTransferRecipe(ResourceLocation group, @Nonnull ItemStack result, Predicate<ItemStack> chargePredicate, boolean transferMaxCharge, ShapedPrimer primer) {
+        this(group, result, chargePredicate, true, transferMaxCharge, primer);
+    }
+
+    public ShapedOreEnergyTransferRecipe(ResourceLocation group, @Nonnull ItemStack result, Predicate<ItemStack> chargePredicate, boolean overrideCharge, boolean transferMaxCharge, ShapedPrimer primer) {
         super(group, result, primer);
         this.chargePredicate = chargePredicate;
         this.transferMaxCharge = transferMaxCharge;
-        fixOutputItemMaxCharge();
+        if(overrideCharge) {
+            fixOutputItemMaxCharge();
+        }
     }
 
     //transfer initial max charge for correct display in JEI

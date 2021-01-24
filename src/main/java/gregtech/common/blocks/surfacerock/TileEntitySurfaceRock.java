@@ -2,6 +2,7 @@ package gregtech.common.blocks.surfacerock;
 
 import gregtech.api.unification.material.Materials;
 import gregtech.api.unification.material.type.Material;
+import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.nbt.NBTTagString;
@@ -16,8 +17,6 @@ import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.Objects;
-import java.util.stream.Collectors;
 
 public class TileEntitySurfaceRock extends TileEntity {
 
@@ -25,9 +24,9 @@ public class TileEntitySurfaceRock extends TileEntity {
     private List<Material> undergroundMaterials = new ArrayList<>();
 
     @SideOnly(Side.CLIENT)
-    public Object cachedModel = null;
+    public Object cachedModel;
     @SideOnly(Side.CLIENT)
-    public Object cacheKey = null;
+    public Object cacheKey;
 
     public Material getMaterial() {
         return material;
@@ -64,12 +63,10 @@ public class TileEntitySurfaceRock extends TileEntity {
         super.readFromNBT(compound);
         Material material = Material.MATERIAL_REGISTRY.getObject(compound.getString("Material"));
         this.material = material == null ? Materials.Aluminium : material;
-        this.undergroundMaterials =
-            compound.getTagList("UndergroundMaterials", NBT.TAG_STRING)
-            .tagList.stream()
-            .map(it -> ((NBTTagString) it).getString())
-            .map(Material.MATERIAL_REGISTRY::getObject)
-            .filter(Objects::nonNull).collect(Collectors.toList());
+
+        for (NBTBase undergroundMaterialNBTBase : compound.getTagList("UndergroundMaterials", NBT.TAG_STRING)) {
+            undergroundMaterials.add(Material.MATERIAL_REGISTRY.getObject(((NBTTagString) undergroundMaterialNBTBase).getString()));
+        }
     }
 
     @Override

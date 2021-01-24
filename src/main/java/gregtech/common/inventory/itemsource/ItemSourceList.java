@@ -132,12 +132,15 @@ public class ItemSourceList implements IItemList, ITickable {
     void updateStoredItems(ItemSource handlerInfo, Map<ItemStackKey, Integer> itemAmount, Set<ItemStackKey> removedItems) {
         boolean updatedItemAmount = false;
         for (ItemStackKey itemStackKey : itemAmount.keySet()) {
-            NetworkItemInfo itemInfo = itemInfoMap.get(itemStackKey);
-            if (itemInfo == null) {
-                itemInfo = new NetworkItemInfo(itemStackKey);
-                this.itemInfoMap.put(itemStackKey, itemInfo);
+            int extractedAmount = handlerInfo.extractItem(itemStackKey, 1, true);
+            if (extractedAmount > 0) {
+                NetworkItemInfo itemInfo = itemInfoMap.get(itemStackKey);
+                if (itemInfo == null) {
+                    itemInfo = new NetworkItemInfo(itemStackKey);
+                    this.itemInfoMap.put(itemStackKey, itemInfo);
+                }
+                updatedItemAmount |= itemInfo.addInventory(handlerInfo, itemAmount.get(itemStackKey));
             }
-            updatedItemAmount |= itemInfo.addInventory(handlerInfo, itemAmount.get(itemStackKey));
         }
         for (ItemStackKey removedItem : removedItems) {
             NetworkItemInfo itemInfo = itemInfoMap.get(removedItem);

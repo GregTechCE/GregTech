@@ -1,7 +1,7 @@
 package gregtech.loaders.recipe;
 
-import com.google.common.base.CaseFormat;
 import gregtech.api.GTValues;
+import gregtech.api.items.metaitem.MetaItem;
 import gregtech.api.recipes.CountableIngredient;
 import gregtech.api.recipes.ModHandler;
 import gregtech.api.recipes.RecipeMaps;
@@ -49,7 +49,8 @@ import java.util.Collection;
 
 import static gregtech.api.GTValues.L;
 import static gregtech.api.GTValues.M;
-import static gregtech.common.items.MetaItems.RUBBER_DROP;
+import static gregtech.api.util.DyeUtil.getOrdictColorName;
+import static gregtech.common.items.MetaItems.*;
 
 public class MachineRecipeLoader {
 
@@ -99,6 +100,31 @@ public class MachineRecipeLoader {
             .notConsumable(MetaItems.SHAPE_MOLD_CREDIT.getStackForm())
             .input(OrePrefix.plate, Materials.Brass, 1)
             .outputs(MetaItems.COIN_DOGE.getStackForm(4))
+            .buildAndRegister();
+
+        for (MetaItem.MetaValueItem shapeMold : SHAPE_MOLDS) {
+            RecipeMaps.FORMING_PRESS_RECIPES.recipeBuilder()
+                .duration(120).EUt(22)
+                .notConsumable(shapeMold.getStackForm())
+                .inputs(MetaItems.SHAPE_EMPTY.getStackForm())
+                .outputs(shapeMold.getStackForm())
+                .buildAndRegister();
+        }
+
+        for (MetaItem.MetaValueItem shapeExtruder : SHAPE_EXTRUDERS) {
+            RecipeMaps.FORMING_PRESS_RECIPES.recipeBuilder()
+                .duration(120).EUt(22)
+                .notConsumable(shapeExtruder.getStackForm())
+                .inputs(MetaItems.SHAPE_EMPTY.getStackForm())
+                .outputs(shapeExtruder.getStackForm())
+                .buildAndRegister();
+        }
+
+        RecipeMaps.BENDER_RECIPES.recipeBuilder()
+            .circuitMeta(4)
+            .input(OrePrefix.plate, Materials.Steel, 4)
+            .outputs(MetaItems.SHAPE_EMPTY.getStackForm())
+            .duration(180).EUt(12)
             .buildAndRegister();
 
         RecipeMaps.BENDER_RECIPES.recipeBuilder()
@@ -552,10 +578,9 @@ public class MachineRecipeLoader {
 
     private static void registerAssemblerRecipes() {
         for (EnumDyeColor dyeColor : EnumDyeColor.values()) {
-            String colorName = CaseFormat.LOWER_UNDERSCORE.to(CaseFormat.UPPER_CAMEL, dyeColor.getName());
             RecipeMaps.ASSEMBLER_RECIPES.recipeBuilder()
                 .inputs(MetaItems.SPRAY_EMPTY.getStackForm())
-                .input("dye" + colorName, 1)
+                .input(getOrdictColorName(dyeColor), 1)
                 .outputs(MetaItems.SPRAY_CAN_DYES[dyeColor.getMetadata()].getStackForm())
                 .EUt(8).duration(200)
                 .buildAndRegister();
@@ -990,6 +1015,12 @@ public class MachineRecipeLoader {
             .outputs(OreDictUnifier.get(OrePrefix.dust, Materials.Diorite, 1))
             .chancedOutput(OreDictUnifier.get(OrePrefix.dustSmall, Materials.Stone, 1), 100, 40)
             .buildAndRegister();
+
+        RecipeMaps.MACERATOR_RECIPES.recipeBuilder()
+            .input(OrePrefix.stone, Materials.Granite)
+            .outputs(OreDictUnifier.get(OrePrefix.dust, Materials.Granite, 1))
+            .chancedOutput(OreDictUnifier.get(OrePrefix.dustSmall, Materials.Stone, 1), 100, 40)
+            .buildAndRegister();
     }
 
     private static void registerFluidRecipes() {
@@ -1081,5 +1112,4 @@ public class MachineRecipeLoader {
                 stoneBlock.getItemVariant(variant, ChiselingVariant.NORMAL));
         }
     }
-
 }

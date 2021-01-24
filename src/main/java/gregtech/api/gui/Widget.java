@@ -108,6 +108,11 @@ public abstract class Widget {
     protected void onSizeUpdate() {
     }
 
+    public boolean isMouseOverElement(int mouseX, int mouseY, boolean correctPositionOnMouseWheelMoveEvent) {
+        mouseX = correctPositionOnMouseWheelMoveEvent ? mouseX + getPosition().x : mouseX;
+        return isMouseOverElement(mouseX, mouseY);
+    }
+
     public boolean isMouseOverElement(int mouseX, int mouseY) {
         Position position = getPosition();
         Size size = getSize();
@@ -152,6 +157,7 @@ public abstract class Widget {
 
     /**
      * Called when mouse wheel is moved in GUI
+     * For some -redacted- reason mouseX position is relative against GUI not game window as in other mouse events
      */
     @SideOnly(Side.CLIENT)
     public boolean mouseWheelMove(int mouseX, int mouseY, int wheelDelta) {
@@ -227,8 +233,8 @@ public abstract class Widget {
     protected void drawHoveringText(ItemStack itemStack, List<String> tooltip, int maxTextWidth, int mouseX, int mouseY) {
         Minecraft mc = Minecraft.getMinecraft();
         GuiUtils.drawHoveringText(itemStack, tooltip, mouseX, mouseY,
-             sizes.getScreenWidth(),
-             sizes.getScreenHeight(), maxTextWidth, mc.fontRenderer);
+            sizes.getScreenWidth(),
+            sizes.getScreenHeight(), maxTextWidth, mc.fontRenderer);
     }
 
     @SideOnly(Side.CLIENT)

@@ -12,7 +12,7 @@ public class WidgetGroupFluidFilter extends AbstractWidgetGroup {
     private FluidFilter itemFilter;
 
     public WidgetGroupFluidFilter(int yPosition, Supplier<FluidFilter> itemFilterSupplier) {
-        super(new Position(0, yPosition));
+        super(new Position(18 + 5, yPosition));
         this.itemFilterSupplier = itemFilterSupplier;
     }
 

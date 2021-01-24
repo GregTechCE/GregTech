@@ -96,7 +96,7 @@ public class ScrollableListWidget extends AbstractWidgetGroup {
         drawSolidRect(scrollX + 1, position.y + 1, paneSize - 2, size.height - 2, 0xFF888888);
 
         int maxScrollOffset = totalListHeight - getSize().height;
-        float scrollPercent = scrollOffset / (maxScrollOffset * 1.0f);
+        float scrollPercent = maxScrollOffset == 0 ? 0 : scrollOffset / (maxScrollOffset * 1.0f);
         int scrollSliderHeight = 14;
         int scrollSliderY = Math.round(position.y + (size.height - scrollSliderHeight) * scrollPercent);
         drawGradientRect(scrollX + 1, scrollSliderY, paneSize - 2, scrollSliderHeight, 0xFF555555, 0xFF454545);
@@ -116,7 +116,7 @@ public class ScrollableListWidget extends AbstractWidgetGroup {
 
     @Override
     public boolean mouseWheelMove(int mouseX, int mouseY, int wheelDelta) {
-        if (isMouseOverElement(mouseX, mouseY)) {
+        if (isMouseOverElement(mouseX, mouseY, true)) {
             int direction = -MathHelper.clamp(wheelDelta, -1, 1);
             int moveDelta = direction * (slotHeight / 2);
             addScrollOffset(moveDelta);

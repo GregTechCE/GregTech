@@ -81,6 +81,10 @@ public abstract class RecipeBuilder<R extends RecipeBuilder<R>> {
         return false;
     }
 
+    public boolean applyProperty(String key, ItemStack item) {
+        return false;
+    }
+
     public R inputs(ItemStack... inputs) {
         return inputs(Arrays.asList(inputs));
     }

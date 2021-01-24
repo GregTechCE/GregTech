@@ -1,6 +1,5 @@
 package gregtech.common.items;
 
-import com.google.common.base.CaseFormat;
 import gregtech.api.GTValues;
 import gregtech.api.items.materialitem.MaterialMetaItem;
 import gregtech.api.items.metaitem.ElectricStats;
@@ -13,6 +12,7 @@ import gregtech.api.unification.material.MarkerMaterials.Tier;
 import gregtech.api.unification.material.Materials;
 import gregtech.api.unification.ore.OrePrefix;
 import gregtech.api.util.RandomPotionEffect;
+import gregtech.common.ConfigHolder;
 import gregtech.common.items.behaviors.FacadeItem;
 import gregtech.common.items.behaviors.ScannerBehavior;
 import gregtech.common.items.behaviors.NanoSaberBehavior;
@@ -23,6 +23,7 @@ import net.minecraft.init.MobEffects;
 import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.ItemStack;
 
+import static gregtech.api.util.DyeUtil.getOrdictColorName;
 import static gregtech.common.items.MetaItems.*;
 
 public class MetaItem2 extends MaterialMetaItem {
@@ -52,14 +53,13 @@ public class MetaItem2 extends MaterialMetaItem {
 
         BOTTLE_PURPLE_DRINK = addItem(100, "bottle.purple.drink").addComponents(new FoodStats(8, 0.2F, true, true, new ItemStack(Items.GLASS_BOTTLE), new RandomPotionEffect(MobEffects.HASTE, 800, 1, 90)));
 
-        ENERGY_CRYSTAL = addItem(212, "energy_crystal").addComponents(ElectricStats.createRechargeableBattery(1000000L, GTValues.HV)).setModelAmount(8).setMaxStackSize(1);
-        LAPOTRON_CRYSTAL = addItem(213, "lapotron_crystal").addComponents(ElectricStats.createRechargeableBattery(4000000L, GTValues.EV)).setModelAmount(8).setMaxStackSize(1);
+        ENERGY_CRYSTAL = addItem(212, "energy_crystal").addComponents(ElectricStats.createRechargeableBattery(4000000L, GTValues.HV)).setModelAmount(8).setMaxStackSize(1);
+        LAPOTRON_CRYSTAL = addItem(213, "lapotron_crystal").addComponents(ElectricStats.createRechargeableBattery(10000000L, GTValues.EV)).setModelAmount(8).setMaxStackSize(1);
 
         DYE_INDIGO = addItem(410, "dye.indigo").addOreDict("dyeBlue").setInvisible();
         for (int i = 0; i < EnumDyeColor.values().length; i++) {
             EnumDyeColor dyeColor = EnumDyeColor.values()[i];
-            String colorName = CaseFormat.LOWER_UNDERSCORE.to(CaseFormat.UPPER_CAMEL, dyeColor.getName());
-            DYE_ONLY_ITEMS[i] = addItem(414 + i, "dye." + dyeColor.getName()).addOreDict("dye" + colorName);
+            DYE_ONLY_ITEMS[i] = addItem(414 + i, "dye." + dyeColor.getName()).addOreDict(getOrdictColorName(dyeColor));
         }
 
         PLANT_BALL = addItem(570, "plant_ball").setBurnValue(75);
@@ -70,7 +70,7 @@ public class MetaItem2 extends MaterialMetaItem {
         POWER_UNIT_HV = addItem(575, "power_unit.hv") .addComponents(ElectricStats.createElectricItem(1600000L, GTValues.HV)).setMaxStackSize(8);
         JACKHAMMER_BASE = addItem(576, "jackhammer_base").addComponents(ElectricStats.createElectricItem(1600000L, GTValues.HV)).setMaxStackSize(4);
 
-        NANO_SABER = addItem(577, "nano_saber").addComponents(ElectricStats.createElectricItem(4000000L, GTValues.HV)).addComponents(new NanoSaberBehavior(5.0f, 20.0f, 64)).setMaxStackSize(1);
+        NANO_SABER = addItem(577, "nano_saber").addComponents(ElectricStats.createElectricItem(4000000L, GTValues.HV)).addComponents(new NanoSaberBehavior()).setMaxStackSize(1);
         ENERGY_FIELD_PROJECTOR = addItem(578, "energy_field_projector").addComponents(ElectricStats.createElectricItem(16000000L, GTValues.EV)).setMaxStackSize(1);
         SCANNER = addItem(579, "scanner").addComponents(ElectricStats.createElectricItem(200_000L, GTValues.LV), new ScannerBehavior(50));
 
@@ -237,6 +237,11 @@ public class MetaItem2 extends MaterialMetaItem {
         RecipeMaps.EXTRACTOR_RECIPES.recipeBuilder()
             .inputs(new ItemStack(Blocks.DOUBLE_PLANT, 1, 5))
             .outputs(new ItemStack(Items.DYE, 3, 9))
+            .buildAndRegister();
+
+        RecipeMaps.EXTRACTOR_RECIPES.recipeBuilder()
+            .inputs(new ItemStack(Items.BEETROOT, 1))
+            .outputs(new ItemStack(Items.DYE, 2, 1))
             .buildAndRegister();
 
         // Misc

@@ -8,6 +8,7 @@ import gregtech.api.items.metaitem.stats.IEnchantabilityHelper;
 import gregtech.api.items.metaitem.stats.IItemUseManager;
 import gregtech.api.items.toolitem.ToolMetaItem;
 import gregtech.api.unification.material.Materials;
+import gregtech.common.ConfigHolder;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
@@ -31,13 +32,13 @@ public class NanoSaberBehavior extends ToggleEnergyConsumerBehavior implements I
     protected static final UUID ATTACK_SPEED_MODIFIER = UUID.fromString("FA233E1C-4180-4288-B01B-BCCE9785ACA3");
     protected static final UUID REACH_DISTANCE_MODIFIER = UUID.fromString("FA233E1C-4180-4288-B01B-BCCEFF45ACA3");
 
-    private final float baseAttackDamage;
-    private final float additionalAttackDamage;
+    private final double baseAttackDamage;
+    private final double additionalAttackDamage;
 
-    public NanoSaberBehavior(float baseAttackDamage, float additionalAttackDamage, int energyUsagePerTick) {
-        super(energyUsagePerTick);
-        this.baseAttackDamage = baseAttackDamage;
-        this.additionalAttackDamage = additionalAttackDamage;
+    public NanoSaberBehavior() {
+        super(ConfigHolder.nanoSaberConfiguration.energyConsumption);
+        this.baseAttackDamage = ConfigHolder.nanoSaberConfiguration.nanoSaberBaseDamage;
+        this.additionalAttackDamage = ConfigHolder.nanoSaberConfiguration.nanoSaberDamageBoost;
     }
 
     @Override
@@ -109,7 +110,7 @@ public class NanoSaberBehavior extends ToggleEnergyConsumerBehavior implements I
     public Multimap<String, AttributeModifier> getAttributeModifiers(EntityEquipmentSlot slot, ItemStack stack) {
         HashMultimap<String, AttributeModifier> modifiers = HashMultimap.create();
         if(slot == EntityEquipmentSlot.MAINHAND) {
-            float attackDamage = baseAttackDamage + (isItemActive(stack) ? additionalAttackDamage : 0.0f);
+            double attackDamage = baseAttackDamage + (isItemActive(stack) ? additionalAttackDamage : 0.0f);
             modifiers.put(SharedMonsterAttributes.ATTACK_SPEED.getName(), new AttributeModifier(ATTACK_SPEED_MODIFIER, "Weapon Modifier", -2.0, 0));
             modifiers.put(SharedMonsterAttributes.ATTACK_DAMAGE.getName(), new AttributeModifier(ATTACK_DAMAGE_MODIFIER, "Weapon Modifier", attackDamage, 0));
             modifiers.put(EntityPlayer.REACH_DISTANCE.getName(), new AttributeModifier(REACH_DISTANCE_MODIFIER, "Weapon Modifier", 3f, 0));

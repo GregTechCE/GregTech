@@ -1,5 +1,196 @@
 ## Changelog
 
+### 1.10.9
+* Updated Fuel recipe map to be similar to recipe map (#1353) - idcppl
+* Updated Furnace recipe map to check all inputs (#1362) - ALongStringOfNumbers
+* Removed Extra Fuel recipe additions (#1388) - ALongStringOfNumbers
+* Fixed incorrect Lapotron Crystal crafting recipe (#1348) - ALongStringOfNumbers
+* Fixed the Primitive Blast Furnace Voiding outputs (#1351) - ALongStringOfNumbers
+* Fixed rare crash on placing cover (#1354) - Eutro
+* Fixed large boiler heatEfficiencyMultiplier not working (#1355) - Artem Melentyev
+* Fixed Forestry like wood not having GTCE recipes (#1369) - detav
+* Fixed Forge data and Capabilities not being synced to client (#1372) - Eutro
+* Fixed surface rocks rendering issue with shaders (#1373) - Hero9909
+* Fixed Multiblocks output voiding (#1384) - Exaxxion
+
+### 1.10.8
+* Added Sifter to Smart Item FIlter options (#1345) - LAGIdiot
+* Fixed shouldCheckWeakPower not working correctly because of Vanilla MC bug (#1331) - solidDoWant
+* Fixed wrong localization key for empty hand (#1327) - Pierre Zhang
+* Fixed wrong translation of Rubber nuget in ZH (#1327) - Pierre Zhang
+* Fixed Multiblocks voiding partial recipe outputs when output bus is mostly full (#1337) - ALongStringOfNumbers
+
+### 1.10.7 (Hotfix)
+* Fixed Brewery and Forming Press recipe finder not working properly - LAGIdiot
+* Fixed Fluid Canner and Electric Furnace recipe finder not working properly (#1326) - ALongStringOfNumbers
+
+### 1.10.6
+* Added Oredicts to granite variants, marble, basalt (#1306) - ALongStringOfNumbers
+* Added Matching Mode to API for possible recipe filtering (#1308) - galyfray
+* Added Smart Matching Mode to Smart Item Filter allowing it ignoring fluids in recipes (#1308) - galyfray
+* Updated Crafting Station to show only extractable items from connected inventories (#1290) - Frederic Marceau
+* Updated zh_cn localization (#1307) - Pierre Zhang
+* Updated Ore Byproduct JEI page to include data for Chemical Bath byproducts (#1310) - ALongStringOfNumbers
+* Fixed a missing command warning for hand (#1307) - Pierre Zhang
+* Fixed Smart Item Filter tooltip on Filter Mode (#1308) - galyfray
+* Fixed Ore Byproduct JEI page showing some unobtainable resources (#1310) - ALongStringOfNumbers
+* Fixed multiblock fluid tank forming on load not respecting blocked sides (#1313) - PrototypeTrousers
+* Fixed multiblock fluid tank incorrectly providing capabilities on load (#1313) - PrototypeTrousers
+* Fixed Ice broken by Saw still creating water block (#1317) - Eutro
+* Fixed drained Fluid Cells not stacking due to NBT (#1319) - ALongStringOfNumbers
+
+### 1.10.5
+* Added LargeStackSizeItemStackHandler to API (#1284) - LAGIdiot
+* Added a JEI Info Tab for the Fluid Canner Machines for Buckets and Fluid Cells (#1288) - Frederic Marceau
+* Added recipe for turning Block of Quartz (Vanilla MC) to 4 Nether Quartz (Vanilla MC) (#1293) - LAGIdiot
+* Updated Granite to be its own material (#1287) - LAGIdiot
+    * Macerating recipe changed
+* Fixed Item Filter not persisting items with size > 127 (#1284) - LAGIdiot
+* Fixed recipe validation logging data from builder chance instead of recipe chance (#1297) - galyfray
+* Fixed Machine Controller GUI allowing to set too high redstone signal (#1299) - galyfray
+* Fixed Machine Controller incorrectly setting working enabled on cover removal (#1299) - galyfray
+* Fixed recipes taking 1 tick less to finish then they should (#1301) - LAGIdiot
+
+### 1.10.4
+* Added placing Pump/Conveyor/Robotic Arm on Output side of machine will turn allow input from output side on (#1266) - PrototypeTrousers
+* Fixed issue preventing battery from fully charged. (#1267) - Derek.CHAN
+* Fixed Crafting Station crash and item dupe (#1274) - PrototypeTrousers
+* Fixed some RU lang entries (#1279) - Bombm
+
+### 1.10.3
+* Updated (extended) manual I/O mode on covers to be able to bypass filter (#1248) - PrototypeTrousers
+* Fixed JEI R/U hotkeys not working on GTCE Fluid Slots (#1260) - PrototypeTrousers
+
+### 1.10.2
+* Added way to cast materials in CraftTweaker (#1232) - LAGIdiot
+* Added zenClass annotation to GemMaterial and RoughSolidMaterial (#1253) - LAGIdiot
+* Added comment to config regarding need of useCustomModPriorities to be set to true for modPriorities to work (#1254) - LAGIdiot
+* Added NanoSaber configuration options (#1258) - ALongStringOfNumbers
+* Updated multiblock info recipe to be exposed (#1245) - decal
+* Fixed Rotor Holder spinning status after world reload (#1240) - ALongStringOfNumbers
+* Fixed crash when attempting to move items through Shutter Covers (#1247) - ALongStringOfNumbers
+
+### 1.10.1
+* Added english fruit juice localization (#1204) - Saereth
+* Updated Scanner tooltip to clarify usage (#1214) - DoctorWeirdGuy
+* Fixed position of ghosting area for JEI items/fluids - (#1208) - detav
+* Fixed zh localization for Fluid Extractor (#1213) - LovelyCatHyt
+* Fixed Abandon Base generation being disabled on disabling Rubber Tree generation (#1225) - LAGIdiot
+* Fixed zh localization for Autoclave (#1227) - LAGIdiot
+
+### 1.10.0
+* Added CTM as optional dependency (#1197) - LAGIdiot
+* Updated output amount of Facade recipes to be based on used plate (#1194) - LAGIdiot
+* Updated Integrated Circuit recipe to return circuit with configuration set to zero (#1198) - LAGIdiot
+* Fixed crash on getHarvestLevel when IBlockState is not provided (#1193) - LAGIdiot
+    * Mostly know as crash on putting GTCE tools to EnderIO machines
+    * GTCE tools can't be put in EnderIO machines as GTCE is not provided with information how they will be used
+* Fixed API shading (#1197) - LAGIdiot
+    * Problems related to EnderIO facades glitching when made from Chisel blocks
+
+### 1.9.4
+* Added Bone Meal recipe to Mortar (#1178) - LAGIdiot
+* Added Crafting Station to JEI list of crafting tables (#1186) - LAGIdiot
+* Added Material Flag EXCLUDE_BLOCK_CRAFTING_BY_HAND_RECIPES (#1188) - LAGIdiot
+* Updated Bone Meal recipes to work with Vanilla MC Bone Meal (#1178) - LAGIdiot
+* Updated Config to have unified style and default values (#1185) - ALongStringOfNumbers
+* Updated Crafting Station GUI (#1186) - LAGIdiot
+    * Recipes from JEI can be clicked to crafting grid
+    * Fixed scrolling via mouse wheel
+    * Fixed scroll bar rendering outside of GUI
+    * Fixed too many empty rows being rendered on Item List tab
+    * Fixed Item List not correctly responding to removal/destruction of adjacent container
+* Updated Energy Crystal and Lapotron Crystal capacity (#1189) - LAGIdiot
+* Updated Nano Saber recipe to use Energy Crystal as battery (#1189) - LAGIdiot
+* Fixed possible concurrent modification exception on unification (#1176) - LAGIdiot
+* Fixed Blaze Powder and Bone Meal amount from Macerating recipes (#1178) - LAGIdiot
+* Fixed some Vanilla MC blocks having duplicate recipes (#1188) - LAGIdiot
+* Removed Bone Meal Dust (#1178) - LAGIdiot
+
+### 1.9.3
+* Added replication of mold and extruder shapes in Forming Press (#1138) - LAGIdiot
+* Added Metal Bender recipe for Empty Shape Plate (#1138) - LAGIdiot
+* Added JEI information for integrated circuits (#1142) - Eutro
+* Added support custom chance functions (#1145) - Eutro
+  * This allows for reverting to old byproduct chances
+* Added Implosion Compressor CraftTweaker integration for the ability to specify explosives types (#1148) - ALongStringOfNumbers
+* Added config option for lossless wires ot damage player on contact (#1151) - ALongStringOfNumbers
+* Updated JEI recipe info to render from the bottom instead of at a constant height (#1118) - Eutro
+* Updated zh-cn translation for Americium (#1124) - Rika
+* Updated pump cover with QOL improvements (#1125) - Decal
+* Updated circuit configurations to be distinct subtypes in JEI (#1142) - Eutro
+* Updated overclocking tooltip in GUI (#1143) - ALongStringOfNumbers
+* Updated thickness of wires for more realistic look regarding insulating them (#1159) - LAGIdiot
+* Fixed drained tank not being stackable (#1127) - Derek.CHAN
+* Fixed blocks not dropping when destroyed by AOE effect of Thermal Foundation hammers (#1130) - Creysys
+* Fixed the zh_cn translations for fluid_extractor (#1133) - Rika
+* Fixed running into powered 16x wires does not damage player (#1159) - LAGIdiot
+* Fixed missing localization for plasma generator recipe map (#1160) - LAGIdiot
+* Removed redundant DISABLE_DECOMPOSITION flag (#1150) - ALongStringOfNumbers
+* Removed localization for old way of handling fuel recipe maps (#1160) - LAGIdiot
+
+### 1.9.2
+* Updated dependencies versions (#1070) - LAGIdiot 
+    * Forge updated to 14.23.5.2847
+    * CraftTweaker updated to 4.1.9.6
+    * CodeChickenLib updated to 3.2.3.358
+    * Forestry updated to 5.8.2.387
+    * ForgeMultipart updated to 2.6.2.83
+    * JEI updated to 4.15.0.291
+    * The One Probe updated to 1.4.28
+* Added pan and zoom for Multiblock Pattern category in JEI (#1090) - Eutro
+* Added minimum tier energy input required to machine recipes in JEI (#1108) - clienthax
+* Added config options to hide containers (#1110) - LAGIdiot
+* Added Air Collector QOL improvements - tooltip, dimension blacklist (#1113) - LAGIdiot
+* Added config option for generating veins in center of chunk (#1116) - LAGIdiot
+* Fixed Chinese translation for Kanthal (#1034) - Balthild Ires
+* Fixed Light Gray Dye (Silver) using bad oreDict name (#1098) - LAGIdiot
+* Fixed all recipes using Gray Dye not being correctly oreDict (#1098) - LAGIdiot
+* Fixed Crafting Station missing lock texture (#1099) - LAGIdiot
+* Fixed Slider Widget not saving it's state when clicked (#1111) - LAGIdiot
+* Improved English localization (#1094) - LAGIdiot
+
+### 1.9.1
+* Fixed mess regarding WrapScreen initialization (#1066) (#1080) - LAGIdiot
+* Add flexibility into API (#1076) - Decal
+* Add possibility to disable direct smelting - Decal
+* Add possibility to change crushed material - Decal
+* SimpleGeneratorMetaTileEntity has now a createWorkableHandle - Decal
+* INSULATION_MATERIALS is now public to add more insulation tier - Decal
+* Total EU is now long - Decal
+* Added Method for fixed ZenGetter (addresses typo) - Ludi87
+* Fixed Client side only field being initialized on server (#1065) - LAGIdiot
+* Fix surface rock drops (#1062) - pyure
+* Fix Lossy tank break (#1060) - pyure
+* Bugfix/some ore veins not being generated because of surface rocks (#1049) - LAGIdiot
+* Fixed some veins using silicon  as surface rock - which is invalid - replace it with surface rock from same file from diferent dimension, or just by most appropriet one - LAGIdiot
+* Bugfix/spray can tooltip (#1056) - LAGIdiot
+* Updated some color names in tooltip for RU - LAGIdiot
+* Fixed light gray tooltip for ColorSprayBehaviour for ZH - LAGIdiot
+* Fixed Light Gray Dye localization (#1057) - LAGIdiot
+* Fixed missing material synchronization (#1059) - LAGIdiot
+* Make sure to not initialize client-side only fields - Archengius
+* Fixed unlocalized name shown for vanilla fluids (#1053) - LAGIdiot
+* Added Extractor recipe: 1 beetroot -> 2 red dyes (#1048) - LAGIdiot
+* Fixed energy network ignoring sideness on connecting to machine (#1047) - LAGIdiot
+* Bugfix/item fluid slots out of alignment (#1045) - LAGIdiot
+* Fixed JEI fluid being too big for fluid slots - LAGIdiot
+* Scanner: - Archengius
+* Surface rocks: - Archengius
+* Crafting station: - Archengius
+* Fixed sort button not working properly - Archengius
+* Multiblock JEI preview now includes all blocks used in template in recipe lookup - Archengius
+* Fix null pointer in AdvancedTextWidget - Archengius
+* Fluid Tank changes: - Archengius
+* Large Boiler Multiblock changes: - Archengius
+* Fixed workbench ui not working on server - Archengius
+* Implemented text copying for /gt util hand - Archengius
+* Added boiler throttling (initial version) (#1010) - pyure
+* Replaced hammer throttling with gui and removed max-temp throttling prevention - Archengius
+* Pump: stop and re-calculate when touching solid-top block (#1006) - oxalica
+* Do not allow ghost ingredient placing and picking if widget group is not visible - Archengius
+* Bump version - Archengius
+
 ### 1.8.9
 * Fluid pipes visuals rework - Archengius
 * Added Rebreather - Archengius

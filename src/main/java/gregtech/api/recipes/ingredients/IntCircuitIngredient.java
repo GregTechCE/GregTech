@@ -10,6 +10,8 @@ import javax.annotation.Nullable;
 
 public class IntCircuitIngredient extends Ingredient {
 
+    public static final int CIRCUIT_MAX = 32;
+
     public static ItemStack getIntegratedCircuit(int configuration) {
         ItemStack stack = MetaItems.INTEGRATED_CIRCUIT.getStackForm();
         setCircuitConfiguration(stack, configuration);
@@ -19,6 +21,8 @@ public class IntCircuitIngredient extends Ingredient {
     public static void setCircuitConfiguration(ItemStack itemStack, int configuration) {
         if (!MetaItems.INTEGRATED_CIRCUIT.isItemEqual(itemStack))
             throw new IllegalArgumentException("Given item stack is not an integrated circuit!");
+        if (configuration < 0 || configuration > CIRCUIT_MAX)
+            throw new IllegalArgumentException("Given configuration number is out of range!");
         NBTTagCompound tagCompound = itemStack.getTagCompound();
         if (tagCompound == null) {
             tagCompound = new NBTTagCompound();

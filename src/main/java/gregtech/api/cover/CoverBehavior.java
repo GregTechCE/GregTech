@@ -9,6 +9,7 @@ import codechicken.lib.vec.Matrix4;
 import com.google.common.collect.Lists;
 import gregtech.api.GTValues;
 import gregtech.api.gui.IUIHolder;
+import gregtech.api.metatileentity.SimpleMachineMetaTileEntity;
 import gregtech.api.render.SimpleSidedCubeRenderer.RenderSide;
 import gregtech.api.render.Textures;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
@@ -112,6 +113,10 @@ public abstract class CoverBehavior implements IUIHolder {
      * @param itemStack the item cover was attached from
      */
     public void onAttached(ItemStack itemStack) {
+    }
+
+    public boolean shouldCoverInteractWithOutputside() {
+        return false;
     }
 
     public ItemStack getPickItem() {

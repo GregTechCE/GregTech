@@ -66,6 +66,7 @@ val multipartVersion = config["multipart.version"] as String
 val crafttweakerVersion = config["crafttweaker.version"] as String
 val jeiVersion = config["jei.version"] as String
 val topVersion = config["top.version"] as String
+val ctmVersion = config["ctm.version"] as String
 
 val git: Git = Git.open(File("."))
 
@@ -113,10 +114,6 @@ repositories {
         setUrl("http://maven.covers1624.net")
     }
     maven {
-        name = "tehnut maven"
-        setUrl("http://tehnut.info/maven/")
-    }
-    maven {
         name = "CraftTweaker Maven"
         setUrl("https://maven.blamejared.com/")
     }
@@ -132,6 +129,9 @@ dependencies {
     "deobfCompile"("CraftTweaker2:CraftTweaker2-MC$strippedVersion-Main:$crafttweakerVersion")
     "deobfCompile"("mezz.jei:jei_$mcVersion:$jeiVersion")
     "deobfCompile"("mcjty.theoneprobe:TheOneProbe-$shortVersion:$shortVersion-$topVersion")
+    "deobfCompile"("team.chisel.ctm:CTM:MC$mcVersion-$ctmVersion")
+
+    "testImplementation"("junit:junit:4.13.1")
 }
 
 configure<JavaPluginConvention> {
@@ -451,6 +451,7 @@ fun configureCurseforgeTask(): CurseProject? {
                 optionalDependency("crafttweaker")
                 optionalDependency("jei")
                 optionalDependency("the-one-probe")
+                optionalDependency("ctm")
             }
         }
     } else {

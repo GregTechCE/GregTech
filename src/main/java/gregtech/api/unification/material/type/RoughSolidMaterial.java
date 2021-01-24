@@ -1,12 +1,16 @@
 package gregtech.api.unification.material.type;
 
 import com.google.common.collect.ImmutableList;
+import crafttweaker.annotations.ZenRegister;
 import gregtech.api.unification.material.MaterialIconSet;
 import gregtech.api.unification.ore.OrePrefix;
 import gregtech.api.unification.stack.MaterialStack;
+import stanhebben.zenscript.annotations.ZenClass;
 
 import java.util.function.Supplier;
 
+@ZenClass("mods.gregtech.material.RoughSolidMaterial")
+@ZenRegister
 public class RoughSolidMaterial extends SolidMaterial {
 
     //use Supplier to avoid directly referencing and resolving OrePrefix too early,

@@ -6,6 +6,7 @@ import gregtech.api.unification.material.type.Material;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
@@ -21,6 +22,7 @@ import java.util.Collections;
 import java.util.List;
 
 public class BlockSurfaceRockNew extends BlockSurfaceRock implements ITileEntityProvider, IScannableBlock {
+    protected ThreadLocal<TileEntitySurfaceRock> tileEntities = new ThreadLocal<>();
 
     public BlockSurfaceRockNew() {
         setHarvestLevel("pickaxe", 1);
@@ -52,11 +54,33 @@ public class BlockSurfaceRockNew extends BlockSurfaceRock implements ITileEntity
 
     @Override
     public Material getStoneMaterial(IBlockAccess blockAccess, BlockPos pos, IBlockState blockState) {
-        TileEntitySurfaceRock tileEntity = getTileEntity(blockAccess, pos);
-        if (tileEntity != null) {
-            return tileEntity.getMaterial();
+        TileEntitySurfaceRock surfaceRockTileEntity = getTileEntity(blockAccess, pos);
+        if (surfaceRockTileEntity == null) {
+            // This can be null during Harvest event, in which case we've (hackily) stashed a tile entity via harvestBlock()
+            surfaceRockTileEntity = tileEntities.get();
+        }
+
+        if (surfaceRockTileEntity != null) {
+            return surfaceRockTileEntity.getMaterial();
         }
         return Materials.Aluminium;
+    }
+
+    @Override
+    public void breakBlock(World worldIn, BlockPos pos, IBlockState state) {
+        TileEntitySurfaceRock surfaceRockTileEntity = getTileEntity(worldIn, pos);
+        if (surfaceRockTileEntity != null) {
+            tileEntities.set(surfaceRockTileEntity);
+        }
+
+        super.breakBlock(worldIn, pos, state);
+    }
+
+    @Override
+    public void harvestBlock(World worldIn, EntityPlayer player, BlockPos pos, IBlockState state, @Nullable TileEntity te, ItemStack stack) {
+        tileEntities.set(te == null ? tileEntities.get() : (TileEntitySurfaceRock) te);
+        super.harvestBlock(worldIn, player, pos, state, te, stack);
+        tileEntities.set(null);
     }
 
     public static TileEntitySurfaceRock getTileEntity(IBlockAccess world, BlockPos pos) {

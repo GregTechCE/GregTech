@@ -1,6 +1,7 @@
 package gregtech.api.recipes.machines;
 
 import gregtech.api.recipes.CountableIngredient;
+import gregtech.api.recipes.MatchingMode;
 import gregtech.api.recipes.Recipe;
 import gregtech.api.recipes.RecipeMap;
 import gregtech.api.recipes.builders.SimpleRecipeBuilder;
@@ -27,8 +28,8 @@ public class RecipeMapFluidCanner extends RecipeMap<SimpleRecipeBuilder> {
 
     @Override
     @Nullable
-    public Recipe findRecipe(long voltage, List<ItemStack> inputs, List<FluidStack> fluidInputs, int outputFluidTankCapacity) {
-        Recipe recipe = super.findRecipe(voltage, inputs, fluidInputs, outputFluidTankCapacity);
+    public Recipe findRecipe(long voltage, List<ItemStack> inputs, List<FluidStack> fluidInputs, int outputFluidTankCapacity, MatchingMode mode) {
+        Recipe recipe = super.findRecipe(voltage, inputs, fluidInputs, outputFluidTankCapacity, mode);
         if (inputs.size() == 0 || inputs.get(0).isEmpty() || recipe != null)
             return recipe;
 

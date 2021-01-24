@@ -47,20 +47,21 @@ import java.util.function.Supplier;
 
 public class MetaTileEntityWorkbench extends MetaTileEntity {
 
-    private ItemStackHandler internalInventory = new ItemStackHandler(18);
+    private final ItemStackHandler internalInventory = new ItemStackHandler(18);
 
-    private ItemStackHandler craftingGrid = new ItemStackHandler(9) {
+    private final ItemStackHandler craftingGrid = new ItemStackHandler(9) {
         @Override
         public int getSlotLimit(int slot) {
             return 1;
         }
     };
 
-    private ItemStackHandler toolInventory = new ItemStackHandler(9) {
+    private final ItemStackHandler toolInventory = new ItemStackHandler(9) {
         @Override
         public int getSlotLimit(int slot) {
             return 1;
         }
+
         @Nonnull
         @Override
         public ItemStack insertItem(int slot, @Nonnull ItemStack stack, boolean simulate) {
@@ -73,7 +74,7 @@ public class MetaTileEntityWorkbench extends MetaTileEntity {
         }
     };
 
-    private CraftingRecipeMemory recipeMemory = new CraftingRecipeMemory(9);
+    private final CraftingRecipeMemory recipeMemory = new CraftingRecipeMemory(9);
     private CraftingRecipeResolver recipeResolver = null;
     private int itemsCrafted = 0;
 
@@ -172,12 +173,12 @@ public class MetaTileEntityWorkbench extends MetaTileEntity {
         WidgetGroup widgetGroup = new WidgetGroup();
         CraftingRecipeResolver recipeResolver = getRecipeResolver();
 
-        widgetGroup.addWidget(new ImageWidget(88-13, 44-13, 26, 26, GuiTextures.SLOT));
-        widgetGroup.addWidget(new CraftingSlotWidget(recipeResolver, 0, 88-9, 44-9));
+        widgetGroup.addWidget(new ImageWidget(88 - 13, 44 - 13, 26, 26, GuiTextures.SLOT));
+        widgetGroup.addWidget(new CraftingSlotWidget(recipeResolver, 0, 88 - 9, 44 - 9));
 
         //crafting grid
-        for(int i = 0; i < 3; ++i) {
-            for(int j = 0; j < 3; ++j) {
+        for (int i = 0; i < 3; ++i) {
+            for (int j = 0; j < 3; ++j) {
                 widgetGroup.addWidget(new PhantomSlotWidget(craftingGrid, j + i * 3, 8 + j * 18, 17 + i * 18).setBackgroundTexture(GuiTextures.SLOT));
             }
         }
@@ -185,12 +186,12 @@ public class MetaTileEntityWorkbench extends MetaTileEntity {
         widgetGroup.addWidget(new SimpleTextWidget(88, 44 + 20, "", textSupplier));
 
         Consumer<ClickData> clearAction = (clickData) -> recipeResolver.clearCraftingGrid();
-        widgetGroup.addWidget(new ClickButtonWidget(8+18*3+1, 17, 8, 8, "", clearAction).setButtonTexture(GuiTextures.BUTTON_CLEAR_GRID));
+        widgetGroup.addWidget(new ClickButtonWidget(8 + 18 * 3 + 1, 17, 8, 8, "", clearAction).setButtonTexture(GuiTextures.BUTTON_CLEAR_GRID));
 
-        widgetGroup.addWidget(new ImageWidget(168-18*3, 44-18*3/2, 18*3, 18*3, TextureArea.fullImage("textures/gui/base/darkened_slot.png")));
-        for(int i = 0; i < 3; ++i) {
-            for(int j = 0; j < 3; ++j) {
-                widgetGroup.addWidget(new MemorizedRecipeWidget(recipeMemory, j + i * 3, craftingGrid, 168-18*3/2-27 + j * 18, 44-27 + i * 18));
+        widgetGroup.addWidget(new ImageWidget(168 - 18 * 3, 44 - 18 * 3 / 2, 18 * 3, 18 * 3, TextureArea.fullImage("textures/gui/base/darkened_slot.png")));
+        for (int i = 0; i < 3; ++i) {
+            for (int j = 0; j < 3; ++j) {
+                widgetGroup.addWidget(new MemorizedRecipeWidget(recipeMemory, j + i * 3, craftingGrid, 168 - 18 * 3 / 2 - 27 + j * 18, 44 - 27 + i * 18));
             }
         }
         //tool inventory
@@ -198,8 +199,8 @@ public class MetaTileEntityWorkbench extends MetaTileEntity {
             widgetGroup.addWidget(new SlotWidget(toolInventory, i, 8 + i * 18, 76).setBackgroundTexture(GuiTextures.SLOT, GuiTextures.TOOL_SLOT_OVERLAY));
         }
         //internal inventory
-        for(int i = 0; i < 2; ++i) {
-            for(int j = 0; j < 9; ++j) {
+        for (int i = 0; i < 2; ++i) {
+            for (int j = 0; j < 9; ++j) {
                 widgetGroup.addWidget(new SlotWidget(internalInventory, j + i * 9, 8 + j * 18, 99 + i * 18).setBackgroundTexture(GuiTextures.SLOT));
             }
         }
@@ -208,9 +209,11 @@ public class MetaTileEntityWorkbench extends MetaTileEntity {
 
     private AbstractWidgetGroup createItemListTab() {
         WidgetGroup widgetGroup = new WidgetGroup();
+        widgetGroup.addWidget(new LabelWidget(5, 20, "gregtech.machine.workbench.storage_note_1"));
+        widgetGroup.addWidget(new LabelWidget(5, 30, "gregtech.machine.workbench.storage_note_2"));
         CraftingRecipeResolver recipeResolver = getRecipeResolver();
         IItemList itemList = recipeResolver == null ? null : recipeResolver.getItemSourceList();
-        widgetGroup.addWidget(new ItemListGridWidget(2, 17, 9, 6, itemList));
+        widgetGroup.addWidget(new ItemListGridWidget(2, 45, 9, 5, itemList));
         return widgetGroup;
     }
 

@@ -20,8 +20,8 @@ import gregtech.api.cover.CoverDefinition;
 import gregtech.api.cover.ICoverable;
 import gregtech.api.gui.ModularUI;
 import gregtech.api.render.Textures;
+import gregtech.api.util.GTFluidUtils;
 import gregtech.api.util.GTUtility;
-import gregtech.common.covers.CoverPump;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
@@ -55,6 +55,8 @@ import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
+
+import static gregtech.api.util.InventoryUtils.simulateItemStackMerge;
 
 public abstract class MetaTileEntity implements ICoverable {
 
@@ -363,7 +365,7 @@ public abstract class MetaTileEntity implements ICoverable {
         return coverBehaviors[side.getIndex()];
     }
 
-    public final boolean placeCoverOnSide(EnumFacing side, ItemStack itemStack, CoverDefinition coverDefinition) {
+    public boolean placeCoverOnSide(EnumFacing side, ItemStack itemStack, CoverDefinition coverDefinition) {
         Preconditions.checkNotNull(side, "side");
         Preconditions.checkNotNull(coverDefinition, "coverDefinition");
         CoverBehavior coverBehavior = coverDefinition.createCoverBehavior(this, side);
@@ -469,12 +471,12 @@ public abstract class MetaTileEntity implements ICoverable {
     public final boolean canConnectRedstone(@Nullable EnumFacing side) {
         //so far null side means either upwards or downwards redstone wire connection
         //so check both top cover and bottom cover
-        if(side == null) {
+        if (side == null) {
             return canConnectRedstone(EnumFacing.UP) ||
                 canConnectRedstone(EnumFacing.DOWN);
         }
         CoverBehavior coverBehavior = getCoverAtSide(side);
-        if(coverBehavior == null) {
+        if (coverBehavior == null) {
             return canMachineConnectRedstone(side);
         }
         return coverBehavior.canConnectRedstone();
@@ -486,15 +488,15 @@ public abstract class MetaTileEntity implements ICoverable {
 
     @Override
     public final int getInputRedstoneSignal(EnumFacing side, boolean ignoreCover) {
-        if(!ignoreCover && getCoverAtSide(side) != null) {
+        if (!ignoreCover && getCoverAtSide(side) != null) {
             return 0; //covers block input redstone signal for machine
         }
         return sidedRedstoneInput[side.getIndex()];
     }
 
     public final boolean isBlockRedstonePowered() {
-        for(EnumFacing side : EnumFacing.VALUES) {
-            if(getInputRedstoneSignal(side, false) > 0) {
+        for (EnumFacing side : EnumFacing.VALUES) {
+            if (getInputRedstoneSignal(side, false) > 0) {
                 return true;
             }
         }
@@ -508,10 +510,10 @@ public abstract class MetaTileEntity implements ICoverable {
         for (EnumFacing side : EnumFacing.VALUES) {
             int redstoneValue = GTUtility.getRedstonePower(getWorld(), getPos(), side);
             int currentValue = sidedRedstoneInput[side.getIndex()];
-            if(redstoneValue != currentValue) {
+            if (redstoneValue != currentValue) {
                 this.sidedRedstoneInput[side.getIndex()] = redstoneValue;
                 CoverBehavior coverBehavior = getCoverAtSide(side);
-                if(coverBehavior != null) {
+                if (coverBehavior != null) {
                     coverBehavior.onRedstoneInputSignalChange(redstoneValue);
                 }
             }
@@ -791,13 +793,13 @@ public abstract class MetaTileEntity implements ICoverable {
         T capabilityResult = null;
         for (MTETrait mteTrait : this.mteTraits) {
             capabilityResult = mteTrait.getCapability(capability);
-            if(capabilityResult != null) {
+            if (capabilityResult != null) {
                 break;
             }
         }
-        if(side != null && capabilityResult instanceof IEnergyContainer) {
+        if (side != null && capabilityResult instanceof IEnergyContainer) {
             IEnergyContainer energyContainer = (IEnergyContainer) capabilityResult;
-            if(!energyContainer.inputsEnergy(side) && !energyContainer.outputsEnergy(side)) {
+            if (!energyContainer.inputsEnergy(side) && !energyContainer.outputsEnergy(side)) {
                 return null; //do not provide energy container if it can't input or output energy at all
             }
         }
@@ -850,7 +852,7 @@ public abstract class MetaTileEntity implements ICoverable {
             if (fluidHandler == null || myFluidHandler == null) {
                 continue;
             }
-            CoverPump.moveHandlerFluids(myFluidHandler, fluidHandler, Integer.MAX_VALUE, fluid -> true);
+            GTFluidUtils.transferFluids(myFluidHandler, fluidHandler, Integer.MAX_VALUE);
         }
         blockPos.release();
     }
@@ -869,7 +871,7 @@ public abstract class MetaTileEntity implements ICoverable {
             if (fluidHandler == null || myFluidHandler == null) {
                 continue;
             }
-            CoverPump.moveHandlerFluids(fluidHandler, myFluidHandler, Integer.MAX_VALUE, fluid -> true);
+            GTFluidUtils.transferFluids(fluidHandler, myFluidHandler, Integer.MAX_VALUE);
         }
         blockPos.release();
     }
@@ -885,7 +887,7 @@ public abstract class MetaTileEntity implements ICoverable {
             IItemHandler itemHandler = tileEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, nearbyFacing.getOpposite());
             //use getCoverCapability so item/ore dictionary filter covers will work properly
             IItemHandler myItemHandler = getCoverCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, nearbyFacing);
-            if (itemHandler == null) {
+            if (itemHandler == null || myItemHandler == null) {
                 continue;
             }
             moveInventoryItems(myItemHandler, itemHandler);
@@ -904,7 +906,7 @@ public abstract class MetaTileEntity implements ICoverable {
             IItemHandler itemHandler = tileEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, nearbyFacing.getOpposite());
             //use getCoverCapability so item/ore dictionary filter covers will work properly
             IItemHandler myItemHandler = getCoverCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, nearbyFacing);
-            if (itemHandler == null) {
+            if (itemHandler == null || myItemHandler == null) {
                 continue;
             }
             moveInventoryItems(itemHandler, myItemHandler);
@@ -927,13 +929,38 @@ public abstract class MetaTileEntity implements ICoverable {
         }
     }
 
-    public static boolean addItemsToItemHandler(IItemHandler handler, boolean simulate, List<ItemStack> items) {
-        boolean insertedAll = true;
-        for (ItemStack stack : items) {
-            insertedAll &= ItemHandlerHelper.insertItemStacked(handler, stack, simulate).isEmpty();
-            if (!insertedAll && simulate) return false;
-        }
-        return insertedAll;
+    /**
+     * Simulates the insertion of items into a target inventory, then optionally performs the insertion.
+     * <br /><br />
+     * Simulating will not modify any of the input parameters. Insertion will either succeed completely, or fail
+     * without modifying anything.
+     *
+     * @param handler  the target inventory
+     * @param simulate whether to simulate ({@code true}) or actually perform the insertion ({@code false})
+     * @param items    the items to insert into {@code handler}.
+     * @return {@code true} if the insertion succeeded, {@code false} otherwise.
+     * @throws IllegalStateException if {@code handler} does not accept all items as expected while performing a
+     *                               real insertion. This should not be possible unless the handler is modified in
+     *                               another thread, or it does not behave in a manner conforming with the contract
+     *                               of {@link gregtech.api.util.InventoryUtils#simulateItemStackMerge simulateItemStackMerge}.
+     */
+    public static boolean addItemsToItemHandler(final IItemHandler handler,
+                                                final boolean simulate,
+                                                final List<ItemStack> items)
+    {
+        // determine if there is sufficient room to insert all items into the target inventory
+        final boolean canMerge = simulateItemStackMerge(items, handler);
+
+        // if we're not simulating and the merge should succeed, perform the merge.
+        if(!simulate && canMerge)
+            items.forEach(stack -> {
+                ItemStack rest = ItemHandlerHelper.insertItemStacked(handler, stack, simulate);
+                if(!rest.isEmpty())
+                    throw new IllegalStateException(
+                        String.format("Insertion failed, remaining stack contained %d items.", rest.getCount()));
+            });
+
+        return canMerge;
     }
 
     public static boolean addFluidsToFluidHandler(IFluidHandler handler, boolean simulate, List<FluidStack> items) {
@@ -947,7 +974,7 @@ public abstract class MetaTileEntity implements ICoverable {
     }
 
     public final int getOutputRedstoneSignal(@Nullable EnumFacing side) {
-        if(side == null) {
+        if (side == null) {
             return getHighestOutputRedstoneSignal();
         }
         CoverBehavior behavior = getCoverAtSide(side);
@@ -957,7 +984,7 @@ public abstract class MetaTileEntity implements ICoverable {
 
     public final int getHighestOutputRedstoneSignal() {
         int highestSignal = 0;
-        for(EnumFacing side : EnumFacing.VALUES) {
+        for (EnumFacing side : EnumFacing.VALUES) {
             CoverBehavior behavior = getCoverAtSide(side);
             int sidedOutput = sidedRedstoneOutput[side.getIndex()];
             int sideResult = behavior == null ? sidedOutput : behavior.getRedstoneSignalOutput();
