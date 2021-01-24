@@ -261,16 +261,6 @@ public class PartsRecipeHandler {
     }
 
     public static void processStick(OrePrefix stickPrefix, DustMaterial material) {
-        if (material instanceof IngotMaterial) {
-            RecipeMaps.EXTRUDER_RECIPES.recipeBuilder()
-                .input(OrePrefix.ingot, material)
-                .notConsumable(MetaItems.SHAPE_EXTRUDER_ROD)
-                .outputs(OreDictUnifier.get(OrePrefix.stick, material, 2))
-                .duration((int) material.getAverageMass() * 2)
-                .EUt(6 * getVoltageMultiplier(material))
-                .buildAndRegister();
-        }
-
         if (material instanceof GemMaterial || material instanceof IngotMaterial) {
             RecipeMaps.LATHE_RECIPES.recipeBuilder()
                 .input(material instanceof GemMaterial ? OrePrefix.gem : OrePrefix.ingot, material)
