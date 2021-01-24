@@ -1,20 +1,28 @@
 {
-  "parent": "item/handheld",
+  "parent": "item/generated",
   "textures": {
     "layer0": "gregtech:items/metaitems/nano_saber/normal"
   },
-  "overrides": [
-    {
-      "predicate": {
-        "gregtech:nano_saber_active": 0.0
-      },
-      "model": "gregtech:item/metaitems/nano_saber/normal"
+  "display": {
+    "thirdperson_righthand": {
+      "rotation": [ 0, -90, 40 ],
+      "translation": [ 0, 9.0, 2.5 ],
+      "scale": [ 1.2, 1.2, 0.85 ]
     },
-    {
-      "predicate": {
-        "gregtech:nano_saber_active": 1.0
-      },
-      "model": "gregtech:item/metaitems/nano_saber/active"
+    "thirdperson_lefthand": {
+      "rotation": [ 0, 90, 55 ],
+      "translation": [ 0, 9.0, 3.5 ],
+      "scale": [ 1.2, 1.2, 0.85 ]
+    },
+    "firstperson_righthand": {
+      "rotation": [ 0, -90, 25 ],
+      "translation": [ 1.13, 4.2, 1.13 ],
+      "scale": [ 1.2, 1.2, 0.68 ]
+    },
+    "firstperson_lefthand": {
+      "rotation": [ 0, 90, 45 ],
+      "translation": [ 0.3, 5.2, 1.13 ],
+      "scale": [ 1.2, 1.2, 0.68 ]
     }
-  ]
+  }
 }

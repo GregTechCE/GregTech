@@ -3,10 +3,11 @@ package gregtech.api.items.metaitem.stats;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumAction;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumHand;
 
 public interface IItemUseManager extends IItemComponent {
 
-    default boolean canStartUsing(ItemStack stack, EntityPlayer player) {
+    default boolean canStartUsing(ItemStack stack, EntityPlayer player, EnumHand hand) {
         return true;
     }
 

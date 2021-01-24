@@ -6,6 +6,7 @@ import gregtech.api.items.metaitem.stats.IItemUseManager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumAction;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumHand;
 
 import java.util.List;
 
@@ -26,7 +27,7 @@ public class FoodUseManager implements IItemBehaviour, IItemUseManager {
     }
 
     @Override
-    public boolean canStartUsing(ItemStack stack, EntityPlayer player) {
+    public boolean canStartUsing(ItemStack stack, EntityPlayer player, EnumHand hand) {
         return player.getFoodStats().needFood() || foodStats.alwaysEdible(stack, player);
     }
 

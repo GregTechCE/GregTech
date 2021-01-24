@@ -8,6 +8,7 @@ import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
@@ -38,6 +39,9 @@ public interface IItemBehaviour extends IItemComponent {
     }
 
     default void onUpdate(ItemStack itemStack, Entity entity) {
+    }
+
+    default void removeReequipCompareTags(NBTTagCompound tagCompound) {
     }
 
     default Multimap<String, AttributeModifier> getAttributeModifiers(EntityEquipmentSlot slot, ItemStack stack) {

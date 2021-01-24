@@ -1,6 +1,7 @@
 package gregtech.common.blocks.surfacerock;
 
 import gregtech.api.unification.OreDictUnifier;
+import gregtech.api.unification.material.Materials;
 import gregtech.api.unification.material.type.Material;
 import gregtech.api.unification.ore.OrePrefix;
 import gregtech.common.render.StoneRenderer;
@@ -42,21 +43,19 @@ public abstract class BlockSurfaceRock extends Block {
         return STONE_AABB;
     }
 
-    private ItemStack getDropStack(IBlockAccess blockAccess, BlockPos pos, IBlockState blockState, int amount) {
-        Material material = getStoneMaterial(blockAccess, pos, blockState);
-        return OreDictUnifier.get(OrePrefix.dustTiny, material, amount);
-    }
-
     @Override
     public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player) {
-        return getDropStack(world, pos, state, 1);
+        Material material = getStoneMaterial(world, pos, state);
+        return OreDictUnifier.get(OrePrefix.dust, material);
     }
 
     @Override
     public void getDrops(NonNullList<ItemStack> drops, IBlockAccess world, BlockPos pos, IBlockState state, int fortune) {
         Random rand = new Random();
-        int amount = 3 + rand.nextInt((int) (2 + fortune * 1.5));
-        drops.add(getDropStack(world, pos, state, amount));
+        int amount = 3 + rand.nextInt((int) (2 + fortune * 2));
+        Material material = getStoneMaterial(world, pos, state);
+        drops.add(OreDictUnifier.get(OrePrefix.dust, Materials.Stone, 1));
+        drops.add(OreDictUnifier.get(OrePrefix.dustTiny, material, amount));
     }
 
     @Override

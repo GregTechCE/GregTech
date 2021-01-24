@@ -1,5 +1,6 @@
 package gregtech.api.util;
 
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.network.datasync.DataParameter;
@@ -9,6 +10,13 @@ import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.registries.DataSerializerEntry;
 
 public class NBTUtil {
+
+    public static NBTTagCompound getOrCreateComponent(ItemStack itemStack) {
+        if (itemStack.getTagCompound() == null) {
+            itemStack.setTagCompound(new NBTTagCompound());
+        }
+        return itemStack.getTagCompound();
+    }
 
     public static final DataSerializer<Vec3d> VECTOR = new DataSerializer<Vec3d>() {
         @Override

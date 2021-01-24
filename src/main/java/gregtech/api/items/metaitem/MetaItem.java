@@ -367,7 +367,7 @@ public abstract class MetaItem<T extends MetaItem<?>.MetaValueItem> extends Item
             }
         }
         IItemUseManager useManager = getUseManager(itemStack);
-        if (useManager != null && useManager.canStartUsing(itemStack, player)) {
+        if (useManager != null && useManager.canStartUsing(itemStack, player, hand)) {
             useManager.onItemUseStart(itemStack, player);
             player.setActiveHand(hand);
             return ActionResult.newResult(EnumActionResult.SUCCESS, itemStack);
@@ -458,14 +458,26 @@ public abstract class MetaItem<T extends MetaItem<?>.MetaValueItem> extends Item
     }
 
     @Override
+    public boolean shouldCauseBlockBreakReset(ItemStack oldStack, ItemStack newStack) {
+        return !shouldCauseReequipAnimation(oldStack, newStack, false);
+    }
+
+    @Override
+    public boolean canContinueUsing(ItemStack oldStack, ItemStack newStack) {
+        return !shouldCauseReequipAnimation(oldStack, newStack, false);
+    }
+
+    @Override
     public boolean shouldCauseReequipAnimation(ItemStack oldStack, ItemStack newStack, boolean slotChanged) {
         //if item is equal, and old item has electric item capability, remove charge tags to stop reequip animation when charge is altered
-        if(ItemStack.areItemsEqual(oldStack, newStack) && oldStack.hasCapability(GregtechCapabilities.CAPABILITY_ELECTRIC_ITEM, null) &&
-            oldStack.hasTagCompound() && newStack.hasTagCompound()) {
-            oldStack = oldStack.copy();
-            newStack = newStack.copy();
-            oldStack.getTagCompound().removeTag("Charge");
-            newStack.getTagCompound().removeTag("Charge");
+        if(ItemStack.areItemsEqual(oldStack, newStack) && oldStack.hasTagCompound() && newStack.hasTagCompound()) {
+            NBTTagCompound currentComponent = newStack.getTagCompound().copy();
+            NBTTagCompound oldComponent = oldStack.getTagCompound().copy();
+            T metaItem = getItem(newStack);
+            if (metaItem != null) {
+                metaItem.deleteReequipAwareNBTTags(newStack, oldComponent, currentComponent);
+            }
+            return !oldComponent.equals(currentComponent);
         }
         return !ItemStack.areItemStacksEqual(oldStack, newStack);
     }
@@ -609,6 +621,18 @@ public abstract class MetaItem<T extends MetaItem<?>.MetaValueItem> extends Item
         protected MetaValueItem(int metaValue, String unlocalizedName) {
             this.metaValue = metaValue;
             this.unlocalizedName = unlocalizedName;
+        }
+
+        protected void deleteReequipAwareNBTTags(ItemStack itemStack, NBTTagCompound oldTag, NBTTagCompound newTag) {
+            IElectricItem electricItem = itemStack.getCapability(GregtechCapabilities.CAPABILITY_ELECTRIC_ITEM, null);
+            if (electricItem != null) {
+                electricItem.removeChargeTags(oldTag);
+                electricItem.removeChargeTags(newTag);
+            }
+            getBehaviours().forEach(behavior -> {
+                behavior.removeReequipCompareTags(oldTag);
+                behavior.removeReequipCompareTags(newTag);
+            });
         }
 
         public MetaValueItem setMaterialInfo(ItemMaterialInfo materialInfo) {

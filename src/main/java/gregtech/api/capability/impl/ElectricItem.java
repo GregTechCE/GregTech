@@ -140,6 +140,11 @@ public class ElectricItem implements IElectricItem, ICapabilityProvider {
     }
 
     @Override
+    public void removeChargeTags(NBTTagCompound tagCompound) {
+        tagCompound.removeTag("Charge");
+    }
+
+    @Override
     public boolean hasCapability(@Nonnull Capability<?> capability, @Nullable EnumFacing facing) {
         return capability == GregtechCapabilities.CAPABILITY_ELECTRIC_ITEM;
     }

@@ -357,9 +357,17 @@ public abstract class Widget {
         @SideOnly(Side.CLIENT)
         private T fieldValue;
 
-        public ClientSideField(Supplier<T> initializer) {
+        /**
+         * Constructs ClientSideField from lambda that will be called on client side only
+         * Return type should be a subclass of T. It is object
+         * because of how Javac handles lambda generation, and making it T
+         * will generate methods with client-side class only in descriptors,
+         * which will definitely crash on server side
+         */
+        @SuppressWarnings("unchecked")
+        public ClientSideField(Supplier<Object> initializer) {
             if (isClientSide()) {
-                this.fieldValue = initializer.get();
+                this.fieldValue = (T) initializer.get();
             }
         }
 

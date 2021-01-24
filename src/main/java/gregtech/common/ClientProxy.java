@@ -5,6 +5,7 @@ import codechicken.lib.util.ResourceUtils;
 import com.mojang.authlib.minecraft.MinecraftProfileTexture.Type;
 import com.mojang.realmsclient.gui.ChatFormatting;
 import gregtech.api.GTValues;
+import gregtech.api.items.metaitem.MetaItem;
 import gregtech.api.render.MetaTileEntityRenderer;
 import gregtech.api.render.ToolRenderHandler;
 import gregtech.api.unification.OreDictUnifier;
@@ -16,14 +17,14 @@ import gregtech.common.blocks.*;
 import gregtech.common.blocks.surfacerock.BlockSurfaceRockDeprecated;
 import gregtech.common.covers.facade.FacadeRenderer;
 import gregtech.common.items.MetaItems;
-import gregtech.common.render.CableRenderer;
-import gregtech.common.render.FluidPipeRenderer;
-import gregtech.common.render.StoneRenderer;
+import gregtech.common.render.*;
 import net.minecraft.block.BlockColored;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.AbstractClientPlayer;
 import net.minecraft.client.network.NetworkPlayerInfo;
+import net.minecraft.client.renderer.block.model.ModelBakery;
+import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.renderer.color.IBlockColor;
 import net.minecraft.client.renderer.color.IItemColor;
 import net.minecraft.item.EnumDyeColor;
@@ -134,11 +135,17 @@ public class ClientProxy extends CommonProxy {
         MetaItems.registerColors();
     }
 
+    @SuppressWarnings("unchecked")
     @SubscribeEvent
     public static void registerModels(ModelRegistryEvent event) {
         MetaBlocks.registerStateMappers();
         MetaBlocks.registerItemModels();
         MetaItems.registerModels();
+        MetaItem<?>.MetaValueItem nanoSaber = MetaItems.NANO_SABER;
+        MetaItem<MetaItem<?>.MetaValueItem> metaItem = (MetaItem<MetaItem<?>.MetaValueItem>) nanoSaber.getMetaItem();
+        ModelBakery.registerItemVariants(metaItem, metaItem.createItemModelPath(nanoSaber, "/active_base"), metaItem.createItemModelPath(nanoSaber, "/active_blade"));
+        ModelResourceLocation resourceLocation = new ModelResourceLocation("gregtech:metaitems/nano_saber#inventory");
+        ItemBakedModelHandler.addModelOverride(resourceLocation, NanoSaberModel::new);
     }
 
     @SubscribeEvent

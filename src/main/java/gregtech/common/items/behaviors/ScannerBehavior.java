@@ -10,6 +10,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumAction;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.RayTraceResult.Type;
@@ -29,7 +30,7 @@ public class ScannerBehavior implements IItemBehaviour, IItemUseManager {
     }
 
     @Override
-    public boolean canStartUsing(ItemStack stack, EntityPlayer player) {
+    public boolean canStartUsing(ItemStack stack, EntityPlayer player, EnumHand hand) {
         return checkCanUseScanner(stack, player, true).getLeft() == null;
     }
 

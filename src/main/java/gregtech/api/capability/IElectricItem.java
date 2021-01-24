@@ -1,6 +1,7 @@
 package gregtech.api.capability;
 
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 
 import java.util.function.BiConsumer;
 
@@ -88,5 +89,8 @@ public interface IElectricItem {
      * @return The tier of the item.
      */
     int getTier();
+
+    default void removeChargeTags(NBTTagCompound tagCompound) {
+    }
 
 }

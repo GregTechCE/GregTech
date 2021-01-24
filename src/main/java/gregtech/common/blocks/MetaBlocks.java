@@ -19,7 +19,7 @@ import gregtech.api.unification.ore.OrePrefix;
 import gregtech.api.unification.ore.StoneType;
 import gregtech.common.blocks.foam.BlockFoam;
 import gregtech.common.blocks.foam.BlockPetrifiedFoam;
-import gregtech.common.blocks.modelfactories.BakedModelHandler;
+import gregtech.common.blocks.modelfactories.BlockBakedModelHandler;
 import gregtech.common.blocks.surfacerock.BlockSurfaceRockDeprecated;
 import gregtech.common.blocks.surfacerock.BlockSurfaceRockNew;
 import gregtech.common.blocks.surfacerock.TileEntitySurfaceRock;
@@ -56,7 +56,6 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.model.ModelLoader;
-import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fluids.BlockFluidBase;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.common.registry.GameRegistry;
@@ -379,13 +378,11 @@ public class MetaBlocks {
         ModelLoader.setCustomStateMapper(REINFORCED_PETRIFIED_FOAM, normalStateMapper);
         FRAMES.values().forEach(it -> ModelLoader.setCustomStateMapper(it, normalStateMapper));
 
-        BakedModelHandler modelHandler = new BakedModelHandler();
-        MinecraftForge.EVENT_BUS.register(modelHandler);
-        FLUID_BLOCKS.forEach(modelHandler::addFluidBlock);
-        SURFACE_ROCKS.values().stream().distinct().forEach(block -> modelHandler.addBuiltInBlock(block, "stone"));
+        FLUID_BLOCKS.forEach(BlockBakedModelHandler::addFluidBlock);
+        SURFACE_ROCKS.values().stream().distinct().forEach(block -> BlockBakedModelHandler.addBuiltInBlock(block, "stone"));
 
-        modelHandler.addBuiltInBlock(SURFACE_ROCK_NEW, "stone_andesite");
-        modelHandler.addBuiltInBlock(CRUSHER_BLADE, "iron_block");
+        BlockBakedModelHandler.addBuiltInBlock(SURFACE_ROCK_NEW, "stone_andesite");
+        BlockBakedModelHandler.addBuiltInBlock(CRUSHER_BLADE, "iron_block");
 
         Item.getItemFromBlock(CRUSHER_BLADE).setTileEntityItemStackRenderer(new TileEntityRenderBaseItem<>(TileEntityCrusherBlade.class));
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityCrusherBlade.class, new TileEntityCrusherBladeRenderer());
