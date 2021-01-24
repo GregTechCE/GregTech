@@ -114,10 +114,6 @@ repositories {
         setUrl("http://maven.covers1624.net")
     }
     maven {
-        name = "tehnut maven"
-        setUrl("http://tehnut.info/maven/")
-    }
-    maven {
         name = "CraftTweaker Maven"
         setUrl("https://maven.blamejared.com/")
     }
