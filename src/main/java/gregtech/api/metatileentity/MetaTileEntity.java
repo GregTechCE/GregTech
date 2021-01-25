@@ -124,7 +124,7 @@ public abstract class MetaTileEntity implements ICoverable {
     }
 
     public long getTimer() {
-        return holder == null ? 0L : holder.getTimer();
+        return holder == null ? 0L : holder.getOffsetTimer();
     }
 
     public void writeCustomData(int discriminator, Consumer<PacketBuffer> dataWriter) {
