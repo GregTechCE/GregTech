@@ -79,33 +79,12 @@ public class MetaTileEntityRotorHolder extends MetaTileEntityMultiblockPart impl
         MetaTileEntityLargeTurbine controller = (MetaTileEntityLargeTurbine) getController();
         boolean isControllerActive = controller != null && controller.isActive();
 
-        // Only remaining bug is that when the rotor is removed, it voids roughly 59B of fuel before showing
-        // the controller as "disabled"
-        if(controller == null) {
-            incrementSpeed(-currentRotorSpeed);
-        }
-        else if(!isHasRotor()) {
-            incrementSpeed(-currentRotorSpeed);
-            controller.workHandler.clearRecipe();
-            if (controller.isActive()) {
-                // For some reason, this code is being reached many times, despite .setActive(false) being called
-                controller.setActive(false);
-                markDirty();
-            }
-        }
-        else if(currentRotorSpeed < maxRotorSpeed && isControllerActive) {
+        if (!isHasRotor()) {
+            resetRotorSpeed();
+        } else if (currentRotorSpeed < maxRotorSpeed && isControllerActive) {
             incrementSpeed(1);
-        }
-        else if(currentRotorSpeed > 0 && !isControllerActive) {
+        } else if (currentRotorSpeed > 0 && !isControllerActive) {
             incrementSpeed(-3);
-        }
-        else if(currentRotorSpeed == 0 && controller != null) {
-            if(controller.isActive()) {
-                controller.setActive(false);
-                markDirty();
-            } else {
-                controller.workHandler.clearRecipe();
-            }
         }
     }
 
@@ -168,6 +147,10 @@ public class MetaTileEntityRotorHolder extends MetaTileEntityMultiblockPart impl
      */
     public boolean isHasRotor() {
         return rotorColor != -1;
+    }
+
+    public void resetRotorSpeed() {
+        currentRotorSpeed = 0;
     }
 
     public int getRotorColor() {

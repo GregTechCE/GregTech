@@ -85,15 +85,11 @@ public class FuelRecipeLogic extends MTETrait implements IControllable {
         }
     }
 
-    public void clearRecipe() {
-        recipeDurationLeft = 0;
-    }
-
     protected boolean shouldVoidExcessiveEnergy() {
         return false;
     }
 
-    private void tryAcquireNewRecipe() {
+    protected void tryAcquireNewRecipe() {
         IMultipleTankHandler fluidTanks = this.fluidTank.get();
         for (IFluidTank fluidTank : fluidTanks) {
             FluidStack tankContents = fluidTank.getFluid();
@@ -111,7 +107,7 @@ public class FuelRecipeLogic extends MTETrait implements IControllable {
         return isActive;
     }
 
-    private int tryAcquireNewRecipe(FluidStack fluidStack) {
+    protected int tryAcquireNewRecipe(FluidStack fluidStack) {
         FuelRecipe currentRecipe;
         if (previousRecipe != null && previousRecipe.matches(getMaxVoltage(), fluidStack)) {
             //if previous recipe still matches inputs, try to use it
@@ -174,6 +170,10 @@ public class FuelRecipeLogic extends MTETrait implements IControllable {
     }
 
     protected void setActive(boolean active) {
+        // If we are changing states (active -> inactive), clear remaining recipe duration
+        if (this.isActive && !active && recipeDurationLeft != 0) {
+            recipeDurationLeft = 0;
+        }
         this.isActive = active;
         if (!metaTileEntity.getWorld().isRemote) {
             metaTileEntity.markDirty();
