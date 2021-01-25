@@ -151,6 +151,7 @@ public class MetaTileEntityRotorHolder extends MetaTileEntityMultiblockPart impl
 
     public void resetRotorSpeed() {
         currentRotorSpeed = 0;
+        markDirty();
     }
 
     public int getRotorColor() {
