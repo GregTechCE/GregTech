@@ -21,7 +21,6 @@ import gregtech.api.unification.material.type.Material;
 import gregtech.api.unification.ore.OrePrefix;
 import gregtech.api.worldgen.config.OreDepositDefinition;
 import gregtech.api.worldgen.config.WorldGenRegistry;
-import gregtech.common.blocks.BlockOre;
 import gregtech.common.blocks.MetaBlocks;
 import gregtech.common.items.MetaItems;
 import gregtech.common.metatileentities.MetaTileEntities;
@@ -180,7 +179,7 @@ public class GTJeiPlugin implements IModPlugin {
 
         String oreSpawnID = GTValues.MODID + ":" + "ore_spawn_location";
         registry.addRecipes(oreInfoList, oreSpawnID);
-        registry.addRecipeCatalyst(MetaTileEntities.WORKBENCH.getStackForm(), oreSpawnID);
+        registry.addRecipeCatalyst(MetaItems.SCANNER.getStackForm(), oreSpawnID);
         //Ore Veins End
 
 

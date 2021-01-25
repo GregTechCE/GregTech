@@ -40,7 +40,7 @@ public class GTOreCategory extends PrimitiveRecipeCategory<GTOreInfo, GTOreInfo>
         int counter = 1;
 
         //The ore selected from JEI
-        itemStackGroup.init(0, true, 22, 29);
+        itemStackGroup.init(0, true, 22, baseYPos);
         //The Surface Identifier
         itemStackGroup.init(1, true, 22, 73);
 
@@ -58,7 +58,7 @@ public class GTOreCategory extends PrimitiveRecipeCategory<GTOreInfo, GTOreInfo>
             counter++;
         }
 
-        itemStackGroup.addTooltipCallback(recipeWrapper::addBiomeTooltip);
+        itemStackGroup.addTooltipCallback(recipeWrapper::addTooltip);
         itemStackGroup.set(ingredients);
         veinName = recipeWrapper.getVeinName();
         minHeight = recipeWrapper.getMinHeight();
@@ -75,15 +75,19 @@ public class GTOreCategory extends PrimitiveRecipeCategory<GTOreInfo, GTOreInfo>
 
     @Override
     public void drawExtras(Minecraft minecraft) {
-        //Selected Ore
-        this.slot.draw(minecraft, 22, 29);
-        //Surface Identifier
-        this.slot.draw(minecraft, 22, 73);
 
         int baseXPos = 70;
         int baseYPos = 19;
         int counter = 1;
         int endPos;
+        int dimDisplayPos = 70;
+        int dimDisplayLength;
+        String dimName;
+
+        //Selected Ore
+        this.slot.draw(minecraft, 22, baseYPos);
+        //Surface Identifier
+        this.slot.draw(minecraft, 22, 73);
 
         for(int i = 0; i < outputCount; i++) {
             int temp = counter - 1;
@@ -99,7 +103,22 @@ public class GTOreCategory extends PrimitiveRecipeCategory<GTOreInfo, GTOreInfo>
         }
 
         //Draw the Vein Name
-        minecraft.fontRenderer.drawString(veinName,70, 1, 0x111111);
+        int veinNameLength = minecraft.fontRenderer.getStringWidth(veinName);
+        int startPosition = (176 - veinNameLength)/2;
+        if(startPosition < 0) {
+            startPosition = 0;
+        }
+
+        //Account for really long names
+        if(veinNameLength > 176) {
+            String newVeinName = minecraft.fontRenderer.trimStringToWidth(veinName, 176, false);
+            newVeinName = newVeinName.substring(0, newVeinName.length() - 4) + "...";
+
+            minecraft.fontRenderer.drawString(newVeinName, startPosition, 1, 0x111111);
+        }
+        else {
+            minecraft.fontRenderer.drawString(veinName, startPosition, 1, 0x111111);
+        }
 
         //Begin Drawing information, depending on how many rows of ore outputs were created
         //Give room for 5 lines of 5 ores each, so 25 unique ores in the vein
@@ -123,22 +142,64 @@ public class GTOreCategory extends PrimitiveRecipeCategory<GTOreInfo, GTOreInfo>
 
         //Create the Dimensions
         minecraft.fontRenderer.drawString("Dimensions: ", 70, endPos + 1 + (2 * FONT_HEIGHT), 0x111111);
-        for(int i  = 0; i < dimensionIDs.length; i++) {
+        for(int i = 0; i < dimensionIDs.length; i++) {
 
-            //Draw with commas between the dimensions
-            if(i != dimensionIDs.length - 1) {
-                minecraft.fontRenderer.drawString(Integer.toString(dimensionIDs[i]) + ", ", 70, endPos + 1 + (3 * FONT_HEIGHT), 0x111111);
+            //Special case vanilla dimensions
+            if(dimensionIDs[i] == 0 || dimensionIDs[i] == 1 || dimensionIDs[i] == -1) {
+
+                //Construct the dimension Name to be displayed
+                dimName = getVanillaDimensionName(dimensionIDs[i]);
+                String fullName = i == dimensionIDs.length -1 ?
+                    dimensionIDs[i] + " (" + dimName + ")" :
+                    dimensionIDs[i] + " (" + dimName + "),";
+
+                dimDisplayLength = minecraft.fontRenderer.getStringWidth(fullName);
+
+                //Check if the name is too long to fit, and drop down a line if it is
+                if(dimDisplayLength > 176 - dimDisplayPos) {
+                    endPos = endPos + FONT_HEIGHT;
+                    dimDisplayPos = 70;
+                }
+
+                minecraft.fontRenderer.drawString(fullName, dimDisplayPos, endPos + 1 + (3 * FONT_HEIGHT), 0x111111);
+
             }
             else {
-                minecraft.fontRenderer.drawString(Integer.toString(dimensionIDs[i]), 70, endPos + 1 + (3 * FONT_HEIGHT), 0x111111);
+
+                dimName = i == dimensionIDs.length - 1 ?
+                    Integer.toString(dimensionIDs[i]) :
+                    dimensionIDs[i] + ",";
+
+                dimDisplayLength = minecraft.fontRenderer.getStringWidth(dimName);
+
+                if(dimDisplayLength > (176 - dimDisplayPos)) {
+                    endPos = endPos + FONT_HEIGHT;
+                    dimDisplayPos = 70;
+                }
+
+                minecraft.fontRenderer.drawString(dimName, dimDisplayPos, endPos + (3 * FONT_HEIGHT), 0x111111);
             }
+            dimDisplayPos = dimDisplayPos + dimDisplayLength;
         }
 
 
         //Label the Surface Identifier
-        minecraft.fontRenderer.drawString("Surface", 15, 92, 0x111111);
-        minecraft.fontRenderer.drawString("Material", 15, 92 + FONT_HEIGHT, 0x111111);
+        minecraft.fontRenderer.drawSplitString("SurfaceMaterial", 15, 92, 42, 0x111111);
 
 
+    }
+
+    public String getVanillaDimensionName(int dim) {
+
+        switch(dim) {
+            case 0:
+                return "Overworld";
+            case 1:
+                return "End";
+            case -1:
+                return "Nether";
+            default:
+                return "";
+        }
     }
 }

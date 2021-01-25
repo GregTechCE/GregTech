@@ -2,6 +2,7 @@ package gregtech.integration.jei;
 
 import gregtech.api.unification.OreDictUnifier;
 import gregtech.api.unification.material.type.Material;
+import gregtech.api.worldgen.config.FillerConfigUtils;
 import gregtech.api.worldgen.config.OreDepositDefinition;
 import gregtech.api.worldgen.filler.BlockFiller;
 import gregtech.api.worldgen.filler.FillerEntry;
@@ -14,6 +15,7 @@ import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.recipe.IRecipeWrapper;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.DimensionType;
@@ -38,6 +40,7 @@ public class GTOreInfo implements IRecipeWrapper {
     private final int weight;
     private final int[] dimensionIDs;
     private final IVeinPopulator veinPopulator;
+    private final BlockFiller blockFiller;
     private List<List<ItemStack>> groupedInputsAsItemStacks = new ArrayList<>();
     private List<List<ItemStack>> groupedOutputsAsItemStacks = new ArrayList<>();
     private final Function<Biome, Integer> biomeFunction;
@@ -58,6 +61,8 @@ public class GTOreInfo implements IRecipeWrapper {
         //Find the Vein Populator and use it to define the Surface Indicator
         veinPopulator = definition.getVeinPopulator();
         ItemStack identifierStack = findSurfaceBlock(veinPopulator);
+
+        this.blockFiller = definition.getBlockFiller();
 
         this.biomeFunction = definition.getBiomeWeightModifier();
 
@@ -91,7 +96,6 @@ public class GTOreInfo implements IRecipeWrapper {
 
         //Find all possible states in the Filler
         //Needed because one generation option returns all possible blockStates
-        BlockFiller blockFiller = definition.getBlockFiller();
         List<FillerEntry> possibleStates = blockFiller.getAllPossibleStates();
         for(FillerEntry entry: possibleStates) {
             containedStates.addAll(entry.getPossibleResults());
@@ -168,8 +172,8 @@ public class GTOreInfo implements IRecipeWrapper {
         //Legacy Surface rock Support
         if(veinPopulator instanceof SurfaceRockPopulator) {
             mat = ((SurfaceRockPopulator) veinPopulator).getMaterial();
-            //Create a Dust for the Identifier. Should we create a tiny dust as that is what is dropped?
-            stack = OreDictUnifier.getDust(mat.createMaterialStack(M));
+            //Create a Tiny Dust for the Identifier.
+            stack = OreDictUnifier.getDust(mat.createMaterialStack(M / 9));
             return stack.isEmpty() ? new ItemStack(Items.AIR) : stack;
         }
         //Surface Block support
@@ -216,18 +220,29 @@ public class GTOreInfo implements IRecipeWrapper {
         return newName;
     }
 
-    //Adds the Biome weighting as a tooltip to the selected ore
-    public void addBiomeTooltip(int slotIndex, boolean input, Object ingredient, List<String> tooltip) {
+    //Creates a tooltip based on the specific slots
+    public void addTooltip(int slotIndex, boolean input, Object ingredient, List<String> tooltip) {
 
-        List<String> createdTooltip;
         //Only add the Biome Information to the selected Ore
         if(slotIndex == 0) {
-            createdTooltip = createTooltip();
-            tooltip.addAll(createdTooltip);
+            tooltip.addAll(createBiomeTooltip());
+        }
+        //Surface Indicator slot
+        else if(slotIndex == 1) {
+            //Only add the special tooltip to the Material rock piles
+            if(veinPopulator instanceof SurfaceRockPopulator) {
+                tooltip.add(I18n.format("gregtech.jei.ore.surface_rock_1"));
+                tooltip.add(I18n.format("gregtech.jei.ore.surface_rock_2"));
+            }
+        }
+        else {
+            //TODO: Suppoer for an individual ore's weight in the vein
+            //tooltip.addAll(createOreWeightingTooltip());
         }
     }
 
-    public List<String> createTooltip() {
+    //Creates a tooltip showing the Biome weighting of the ore vein
+    public List<String> createBiomeTooltip() {
 
         Iterator<Biome> biomeIterator = Biome.REGISTRY.iterator();
         int biomeWeight;
@@ -253,12 +268,30 @@ public class GTOreInfo implements IRecipeWrapper {
             if(!(entry.getValue() == weight)) {
                 //Cannot Spawn
                 if(entry.getValue() <= 0) {
-                    tooltip.add(entry.getKey().biomeName + " Weight: Cannot Spawn");
+                    tooltip.add(I18n.format("gregtech.jei.ore.biome_weighting_no_spawn", entry.getKey().biomeName));
                 }
                 else {
-                    tooltip.add(entry.getKey().biomeName + " Weight: " + entry.getValue());
+                    tooltip.add(I18n.format("gregtech.jei.ore.biome_weighting", entry.getKey().biomeName, entry.getValue()));
                 }
             }
+        }
+
+
+        return tooltip;
+    }
+
+    //Creates a tooltip show the weighting of the individual ores in the ore vein
+    //TODO: Figure out a way to get the individual ore weightings from the BlockFiller
+    public List<String> createOreWeightingTooltip() {
+
+        List<String> tooltip = new ArrayList<>();
+
+        List<FillerEntry> fillerEntries = blockFiller.getAllPossibleStates();
+        for(FillerEntry entry : fillerEntries) {
+
+            /*if(entry instanceof FillerConfigUtils.WeightRandomMatcherEntry) {
+                ((FillerConfigUtils.WeightRandomMatcherEntry) entry)
+            }*/
         }
 
 
