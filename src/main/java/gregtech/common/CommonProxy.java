@@ -81,16 +81,15 @@ public class CommonProxy {
         SURFACE_ROCKS.values().stream().distinct().forEach(registry::register);
         FRAMES.values().stream().distinct().forEach(registry::register);
         ORES.forEach(registry::register);
-        FLUID_BLOCKS.forEach(registry::register);
     }
 
     @SubscribeEvent(priority = EventPriority.LOWEST)
     public static void registerBlocksLast(RegistryEvent.Register<Block> event) {
         //last chance for mods to register their potion types is here
         PotionFluids.initPotionFluids();
+        FLUID_BLOCKS.forEach(event.getRegistry()::register);
     }
 
-    @SuppressWarnings("unchecked")
     @SubscribeEvent
     public static void registerItems(RegistryEvent.Register<Item> event) {
         GTLog.logger.info("Registering Items...");
