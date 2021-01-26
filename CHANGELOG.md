@@ -1,5 +1,30 @@
 ## Changelog
 
+### 1.11.0
+* Highlight: Chemistry update (#1414) - dan
+  * Unifies conventions of how much of a material is considered 1 mol
+  * Corrects non-stoichiometric reactions, removing the possibility of positive crafting loops
+  * High number of recipes got added/changed/removed
+  * Full info: https://github.com/GregTechCE/GregTech/pull/1414
+* Added better TOP Transformer info (#1404) - dan
+* Added Cable separation recipes (#1405) - dan
+* Added Wire & Cable 4x recipes (#1405) - dan
+* Added Rotor Mold (#1408) - dan
+  * Old Assembler recipe was removed
+* Added "Regular" to dust oredict entries (#1416) - dan
+* Added ability to take Fluids out of Input Hatch (#1427) - dan
+* Updated CT bracket handler to allows getting MetaItems (#1352) - idcppl
+* Updated InputIngredient to implement IIngredient (#1387) - Eutro
+* Removed Tehnut's maven as it is not needed (#1400) - LAGIdiot
+* Removed Duplicate Seed Oil recipes from Fluid Extractor (#1413) - thecodingchicken
+* Removed duplicated extruder recipes for metal rods (#1419) - LAGIdiot
+* Fixed ItemHandlerList::extractItem using slot instead of amount (#1394) - solidDoWant
+* Fixed Tooltip Bounding Box (#1415) - dan
+* Fixed oregen skipping high altitude ores in rare cases (#1418) - ALongStringOfNumbers
+* Fixed Surface Rocks being place underwater (#1420) - Ametsuchi
+* Fixed placed potions missing texture (#1421) - Ametsuchi
+* Fixed crash on registering Fluid with GENERATE_FLUID_BLOCK & GENERATE_PLASMA flags (#1428) - dan
+
 ### 1.10.9
 * Updated Fuel recipe map to be similar to recipe map (#1353) - idcppl
 * Updated Furnace recipe map to check all inputs (#1362) - ALongStringOfNumbers
