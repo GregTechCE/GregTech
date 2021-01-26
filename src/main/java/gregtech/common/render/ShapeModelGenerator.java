@@ -61,8 +61,7 @@ public class ShapeModelGenerator {
                 secondTop.y = second.y + nextSegmentHeight;
             }
         }
-        initialModel.computeNormals();
-        return initialModel;
+        return initialModel.computeNormals();
     }
 
     private static Vector3 generatePoint(double anglePerNumber, int number, double radius) {

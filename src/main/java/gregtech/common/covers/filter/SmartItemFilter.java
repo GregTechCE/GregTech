@@ -2,10 +2,7 @@ package gregtech.common.covers.filter;
 
 import gregtech.api.gui.Widget;
 import gregtech.api.gui.widgets.CycleButtonWidget;
-import gregtech.api.recipes.CountableIngredient;
-import gregtech.api.recipes.Recipe;
-import gregtech.api.recipes.RecipeMap;
-import gregtech.api.recipes.RecipeMaps;
+import gregtech.api.recipes.*;
 import gregtech.api.unification.stack.ItemAndMetadata;
 import gregtech.api.util.ItemStackKey;
 import net.minecraft.item.ItemStack;
@@ -21,6 +18,7 @@ import java.util.function.Consumer;
 public class SmartItemFilter extends ItemFilter {
 
     private SmartFilteringMode filteringMode = SmartFilteringMode.ELECTROLYZER;
+    private SmartMatchingMode matchingMode = SmartMatchingMode.DEFAULT;
 
     public SmartFilteringMode getFilteringMode() {
         return filteringMode;
@@ -28,6 +26,16 @@ public class SmartItemFilter extends ItemFilter {
 
     public void setFilteringMode(SmartFilteringMode filteringMode) {
         this.filteringMode = filteringMode;
+        markDirty();
+    }
+
+    public SmartMatchingMode getMatchingMode() {
+        return matchingMode;
+    }
+
+    public void setMatchingMode(SmartMatchingMode matchingMode) {
+        filteringMode.transferStackSizesCache.clear();
+        this.matchingMode = matchingMode;
         markDirty();
     }
 
@@ -45,8 +53,9 @@ public class SmartItemFilter extends ItemFilter {
         if (cachedTransferRateValue == null) {
             ItemStack infinitelyBigStack = itemStack.copy();
             infinitelyBigStack.setCount(Integer.MAX_VALUE);
-            Recipe recipe = filteringMode.recipeMap.findRecipe(Long.MAX_VALUE, Collections.singletonList(infinitelyBigStack), Collections.emptyList(), Integer.MAX_VALUE);
-            if(recipe == null) {
+
+            Recipe recipe = filteringMode.recipeMap.findRecipe(Long.MAX_VALUE, Collections.singletonList(infinitelyBigStack), Collections.emptyList(), Integer.MAX_VALUE, matchingMode.matchingMode);
+            if (recipe == null) {
                 filteringMode.transferStackSizesCache.put(itemAndMetadata, 0);
                 cachedTransferRateValue = 0;
             } else {
@@ -65,7 +74,11 @@ public class SmartItemFilter extends ItemFilter {
     @Override
     public void initUI(Consumer<Widget> widgetGroup) {
         widgetGroup.accept(new CycleButtonWidget(10, 0, 75, 20,
-            SmartFilteringMode.class, this::getFilteringMode, this::setFilteringMode));
+            SmartFilteringMode.class, this::getFilteringMode, this::setFilteringMode)
+            .setTooltipHoverString("cover.smart_item_filter.filtering_mode.description"));
+        widgetGroup.accept(new CycleButtonWidget(10, 20, 75, 20,
+            SmartMatchingMode.class, this::getMatchingMode, this::setMatchingMode)
+            .setTooltipHoverString("cover.smart_item_filter.matching_mode.description"));
     }
 
     @Override
@@ -81,11 +94,15 @@ public class SmartItemFilter extends ItemFilter {
     @Override
     public void writeToNBT(NBTTagCompound tagCompound) {
         tagCompound.setInteger("FilterMode", filteringMode.ordinal());
+        tagCompound.setInteger("MatchingMode", matchingMode.ordinal());
     }
 
     @Override
     public void readFromNBT(NBTTagCompound tagCompound) {
         this.filteringMode = SmartFilteringMode.values()[tagCompound.getInteger("FilterMode")];
+        if (tagCompound.hasKey("MatchingMode")) {
+            this.matchingMode = SmartMatchingMode.values()[tagCompound.getInteger("MatchingMode")];
+        }
     }
 
     private class ItemAndMetadataAndStackSize {
@@ -112,8 +129,9 @@ public class SmartItemFilter extends ItemFilter {
     }
 
     public enum SmartFilteringMode implements IStringSerializable {
-        ELECTROLYZER("cover.smart_item_filter.mode.electrolyzer", RecipeMaps.ELECTROLYZER_RECIPES),
-        CENTRIFUGE("cover.smart_item_filter.mode.centrifuge", RecipeMaps.CENTRIFUGE_RECIPES);
+        ELECTROLYZER("cover.smart_item_filter.filtering_mode.electrolyzer", RecipeMaps.ELECTROLYZER_RECIPES),
+        CENTRIFUGE("cover.smart_item_filter.filtering_mode.centrifuge", RecipeMaps.CENTRIFUGE_RECIPES),
+        SIFTER("cover.smart_item_filter.filtering_mode.sifter", RecipeMaps.SIFTER_RECIPES);
 
         private final Map<ItemAndMetadata, Integer> transferStackSizesCache = new HashMap<>();
         public final String localeName;
@@ -128,6 +146,26 @@ public class SmartItemFilter extends ItemFilter {
         public String getName() {
             return localeName;
         }
+    }
+
+    public enum SmartMatchingMode implements IStringSerializable {
+
+        DEFAULT("cover.smart_item_filter.matching_mode.default", MatchingMode.DEFAULT),
+        IGNORE_FLUID("cover.smart_item_filter.matching_mode.ignore_fluid", MatchingMode.IGNORE_FLUIDS);
+
+        public final String localeName;
+        public final MatchingMode matchingMode;
+
+        SmartMatchingMode(String localeName, MatchingMode matchingMode) {
+            this.localeName = localeName;
+            this.matchingMode = matchingMode;
+        }
+
+        @Override
+        public String getName() {
+            return localeName;
+        }
+
     }
 
 }

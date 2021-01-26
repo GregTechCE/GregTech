@@ -164,6 +164,8 @@ public class GTJeiPlugin implements IModPlugin {
             registry.addRecipeCatalyst(machine.getStackForm(), oreByProductId);
         for (MetaTileEntity machine : MetaTileEntities.THERMAL_CENTRIFUGE)
             registry.addRecipeCatalyst(machine.getStackForm(), oreByProductId);
+        for (MetaTileEntity machine : MetaTileEntities.CHEMICAL_BATH)
+            registry.addRecipeCatalyst(machine.getStackForm(), oreByProductId);
 
         ingredientRegistry = registry.getIngredientRegistry();
         for (int i = 0; i <= IntCircuitIngredient.CIRCUIT_MAX; i++) {
@@ -172,5 +174,10 @@ public class GTJeiPlugin implements IModPlugin {
         }
 
         registry.addRecipeCatalyst(MetaTileEntities.WORKBENCH.getStackForm(), VanillaRecipeCategoryUid.CRAFTING);
+
+        for (MetaTileEntity machine : MetaTileEntities.FLUID_CANNER) {
+            registry.addIngredientInfo(machine.getStackForm(), VanillaTypes.ITEM,
+                "gregtech.machine.fluid_canner.jei_description");
+        }
     }
 }

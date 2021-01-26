@@ -86,6 +86,7 @@ public class MetaItem1 extends MaterialMetaItem {
         SHAPE_MOLDS[9] = SHAPE_MOLD_ANVIL = addItem(314, "shape.mold.anvil");
         SHAPE_MOLDS[10] = SHAPE_MOLD_NAME = addItem(315, "shape.mold.name");
         SHAPE_MOLDS[11] = SHAPE_MOLD_GEAR_SMALL = addItem(317, "shape.mold.gear.small");
+        SHAPE_MOLDS[12] = SHAPE_MOLD_ROTOR = addItem(318, "shape.mold.rotor");
 
         SHAPE_EXTRUDERS[0] = SHAPE_EXTRUDER_PLATE = addItem(350, "shape.extruder.plate");
         SHAPE_EXTRUDERS[1] = SHAPE_EXTRUDER_ROD = addItem(351, "shape.extruder.rod");

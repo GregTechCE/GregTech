@@ -1,5 +1,6 @@
 package gregtech.api.recipes.machines;
 
+import crafttweaker.annotations.ZenRegister;
 import crafttweaker.api.liquid.ILiquidStack;
 import crafttweaker.api.minecraft.CraftTweakerMC;
 import gregtech.api.GTValues;
@@ -10,11 +11,14 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fml.common.Optional.Method;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import stanhebben.zenscript.annotations.ZenClass;
 import stanhebben.zenscript.annotations.ZenGetter;
 import stanhebben.zenscript.annotations.ZenMethod;
 
 import java.util.*;
 
+@ZenClass("mods.gregtech.recipe.FuelRecipeMap")
+@ZenRegister
 public class FuelRecipeMap {
 
     private static final List<FuelRecipeMap> RECIPE_MAPS = new ArrayList<>();
@@ -32,6 +36,13 @@ public class FuelRecipeMap {
     @ZenGetter("recipeMaps")
     public static List<FuelRecipeMap> getRecipeMaps() {
         return RECIPE_MAPS;
+    }
+
+    @ZenMethod
+    public static FuelRecipeMap getByName(String unlocalizedName) {
+        return RECIPE_MAPS.stream()
+            .filter(map -> map.unlocalizedName.equals(unlocalizedName))
+            .findFirst().orElse(null);
     }
 
     @ZenMethod

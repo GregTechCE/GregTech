@@ -114,10 +114,6 @@ repositories {
         setUrl("http://maven.covers1624.net")
     }
     maven {
-        name = "tehnut maven"
-        setUrl("http://tehnut.info/maven/")
-    }
-    maven {
         name = "CraftTweaker Maven"
         setUrl("https://maven.blamejared.com/")
     }
@@ -134,6 +130,8 @@ dependencies {
     "deobfCompile"("mezz.jei:jei_$mcVersion:$jeiVersion")
     "deobfCompile"("mcjty.theoneprobe:TheOneProbe-$shortVersion:$shortVersion-$topVersion")
     "deobfCompile"("team.chisel.ctm:CTM:MC$mcVersion-$ctmVersion")
+
+    "testImplementation"("junit:junit:4.13.1")
 }
 
 configure<JavaPluginConvention> {

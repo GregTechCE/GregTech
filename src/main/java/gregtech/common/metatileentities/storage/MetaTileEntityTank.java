@@ -98,7 +98,13 @@ public class MetaTileEntityTank extends MetaTileEntity implements IFastRenderMet
                 MetaTileEntityTank.this.onFluidChangedInternal();
             }
         };
-        initializeInventory();
+        this.fluidInventory = getActualFluidTank();
+    }
+
+    @Override
+    public void onLoad() {
+        super.onLoad();
+        this.recheckBlockedSides();
     }
 
     @Override
@@ -146,6 +152,7 @@ public class MetaTileEntityTank extends MetaTileEntity implements IFastRenderMet
     protected void onCoverPlacementUpdate() {
         super.onCoverPlacementUpdate();
         this.needsCoversUpdate = true;
+        setTankController(null);
     }
 
     @Override

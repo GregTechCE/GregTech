@@ -205,7 +205,7 @@ public class MetaTileEntityLargeBoiler extends MultiblockWithDisplayBase {
 
     private double getHeatEfficiencyMultiplier() {
         double temperature = currentTemperature / (boilerType.maxTemperature * 1.0);
-        return 1.0 + Math.round((boilerType.temperatureEffBuff * temperature) / 100.0);
+        return 1.0 + Math.round(boilerType.temperatureEffBuff * temperature) / 100.0;
     }
 
     @Override

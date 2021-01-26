@@ -1,9 +1,60 @@
 ## Changelog
 
+### 1.10.9
+* Updated Fuel recipe map to be similar to recipe map (#1353) - idcppl
+* Updated Furnace recipe map to check all inputs (#1362) - ALongStringOfNumbers
+* Removed Extra Fuel recipe additions (#1388) - ALongStringOfNumbers
+* Fixed incorrect Lapotron Crystal crafting recipe (#1348) - ALongStringOfNumbers
+* Fixed the Primitive Blast Furnace Voiding outputs (#1351) - ALongStringOfNumbers
+* Fixed rare crash on placing cover (#1354) - Eutro
+* Fixed large boiler heatEfficiencyMultiplier not working (#1355) - Artem Melentyev
+* Fixed Forestry like wood not having GTCE recipes (#1369) - detav
+* Fixed Forge data and Capabilities not being synced to client (#1372) - Eutro
+* Fixed surface rocks rendering issue with shaders (#1373) - Hero9909
+* Fixed Multiblocks output voiding (#1384) - Exaxxion
+
+### 1.10.8
+* Added Sifter to Smart Item FIlter options (#1345) - LAGIdiot
+* Fixed shouldCheckWeakPower not working correctly because of Vanilla MC bug (#1331) - solidDoWant
+* Fixed wrong localization key for empty hand (#1327) - Pierre Zhang
+* Fixed wrong translation of Rubber nuget in ZH (#1327) - Pierre Zhang
+* Fixed Multiblocks voiding partial recipe outputs when output bus is mostly full (#1337) - ALongStringOfNumbers
+
+### 1.10.7 (Hotfix)
+* Fixed Brewery and Forming Press recipe finder not working properly - LAGIdiot
+* Fixed Fluid Canner and Electric Furnace recipe finder not working properly (#1326) - ALongStringOfNumbers
+
+### 1.10.6
+* Added Oredicts to granite variants, marble, basalt (#1306) - ALongStringOfNumbers
+* Added Matching Mode to API for possible recipe filtering (#1308) - galyfray
+* Added Smart Matching Mode to Smart Item Filter allowing it ignoring fluids in recipes (#1308) - galyfray
+* Updated Crafting Station to show only extractable items from connected inventories (#1290) - Frederic Marceau
+* Updated zh_cn localization (#1307) - Pierre Zhang
+* Updated Ore Byproduct JEI page to include data for Chemical Bath byproducts (#1310) - ALongStringOfNumbers
+* Fixed a missing command warning for hand (#1307) - Pierre Zhang
+* Fixed Smart Item Filter tooltip on Filter Mode (#1308) - galyfray
+* Fixed Ore Byproduct JEI page showing some unobtainable resources (#1310) - ALongStringOfNumbers
+* Fixed multiblock fluid tank forming on load not respecting blocked sides (#1313) - PrototypeTrousers
+* Fixed multiblock fluid tank incorrectly providing capabilities on load (#1313) - PrototypeTrousers
+* Fixed Ice broken by Saw still creating water block (#1317) - Eutro
+* Fixed drained Fluid Cells not stacking due to NBT (#1319) - ALongStringOfNumbers
+
+### 1.10.5
+* Added LargeStackSizeItemStackHandler to API (#1284) - LAGIdiot
+* Added a JEI Info Tab for the Fluid Canner Machines for Buckets and Fluid Cells (#1288) - Frederic Marceau
+* Added recipe for turning Block of Quartz (Vanilla MC) to 4 Nether Quartz (Vanilla MC) (#1293) - LAGIdiot
+* Updated Granite to be its own material (#1287) - LAGIdiot
+    * Macerating recipe changed
+* Fixed Item Filter not persisting items with size > 127 (#1284) - LAGIdiot
+* Fixed recipe validation logging data from builder chance instead of recipe chance (#1297) - galyfray
+* Fixed Machine Controller GUI allowing to set too high redstone signal (#1299) - galyfray
+* Fixed Machine Controller incorrectly setting working enabled on cover removal (#1299) - galyfray
+* Fixed recipes taking 1 tick less to finish then they should (#1301) - LAGIdiot
+
 ### 1.10.4
 * Added placing Pump/Conveyor/Robotic Arm on Output side of machine will turn allow input from output side on (#1266) - PrototypeTrousers
 * Fixed issue preventing battery from fully charged. (#1267) - Derek.CHAN
-* Fixes Crafting Station crash and item dupe (#1274) - PrototypeTrousers
+* Fixed Crafting Station crash and item dupe (#1274) - PrototypeTrousers
 * Fixed some RU lang entries (#1279) - Bombm
 
 ### 1.10.3
