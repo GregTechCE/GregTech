@@ -120,7 +120,7 @@ public abstract class Widget {
     }
 
     public static boolean isMouseOver(int x, int y, int width, int height, int mouseX, int mouseY) {
-        return mouseX >= x && mouseY >= y && x + width >= mouseX && y + height >= mouseY;
+        return mouseX >= x && mouseY >= y && x + width > mouseX && y + height > mouseY;
     }
 
     /**
