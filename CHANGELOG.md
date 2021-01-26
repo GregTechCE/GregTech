@@ -1,5 +1,8 @@
 ## Changelog
 
+### 1.11.1 (Hotfix)
+* Fixed crash when CraftTweaker is not present - LAGIdiot
+
 ### 1.11.0
 * Highlight: Chemistry update (#1414) - dan
   * Unifies conventions of how much of a material is considered 1 mol
