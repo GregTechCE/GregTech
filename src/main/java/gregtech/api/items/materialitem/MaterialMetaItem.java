@@ -54,6 +54,9 @@ public class MaterialMetaItem extends StandardMetaItem {
             OrePrefix prefix = this.orePrefixes[metaItem / 1000];
             Material material = Material.MATERIAL_REGISTRY.getObjectById(metaItem % 1000);
             OreDictUnifier.registerOre(new ItemStack(this, 1, metaItem), prefix, material);
+
+            if(prefix.name().equals("dust"))
+                OreDictUnifier.registerOre(new ItemStack(this, 1, metaItem), "dustRegular", material);
         }
     }
 
