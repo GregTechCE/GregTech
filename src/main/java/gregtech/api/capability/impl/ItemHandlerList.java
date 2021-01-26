@@ -72,7 +72,7 @@ public class ItemHandlerList implements IItemHandlerModifiable {
     @Override
     public ItemStack extractItem(int slot, int amount, boolean simulate) {
         IItemHandler itemHandler = handlerBySlotIndex.get(slot);
-        return itemHandler.extractItem(slot - baseIndexOffset.get(itemHandler), slot, simulate);
+        return itemHandler.extractItem(slot - baseIndexOffset.get(itemHandler), amount, simulate);
     }
 
 }
