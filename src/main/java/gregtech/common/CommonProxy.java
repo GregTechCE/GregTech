@@ -4,6 +4,7 @@ import gregtech.api.GTValues;
 import gregtech.api.block.machines.MachineItemBlock;
 import gregtech.api.enchants.EnchantmentEnderDamage;
 import gregtech.api.items.metaitem.MetaItem;
+import gregtech.api.recipes.crafttweaker.MetaItemBracketHandler;
 import gregtech.api.unification.material.type.DustMaterial;
 import gregtech.api.unification.material.type.Material;
 import gregtech.api.unification.ore.OrePrefix;
@@ -172,6 +173,7 @@ public class CommonProxy {
         DecompositionRecipeHandler.runRecipeGeneration();
         RecyclingRecipes.init();
         WoodMachineRecipes.init();
+        MetaItemBracketHandler.rebuildComponentRegistry();
     }
 
     @SubscribeEvent
