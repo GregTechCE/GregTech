@@ -173,7 +173,10 @@ public class CommonProxy {
         DecompositionRecipeHandler.runRecipeGeneration();
         RecyclingRecipes.init();
         WoodMachineRecipes.init();
-        MetaItemBracketHandler.rebuildComponentRegistry();
+        
+        if (GTValues.isModLoaded(GTValues.MODID_CT)){
+            MetaItemBracketHandler.rebuildComponentRegistry();
+        }
     }
 
     @SubscribeEvent
