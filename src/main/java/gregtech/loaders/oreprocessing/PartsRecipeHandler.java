@@ -264,12 +264,15 @@ public class PartsRecipeHandler {
             'R', new UnificationEntry(OrePrefix.ring, material),
             'S', new UnificationEntry(OrePrefix.screw, material));
 
-        RecipeMaps.ASSEMBLER_RECIPES.recipeBuilder()
-            .input(OrePrefix.plate, material, 4).input(OrePrefix.ring, material)
-            .outputs(stack)
-            .duration(240)
-            .EUt(24)
-            .buildAndRegister();
+        if (material.shouldGenerateFluid()) {
+            RecipeMaps.FLUID_SOLIDFICATION_RECIPES.recipeBuilder()
+                .notConsumable(MetaItems.SHAPE_MOLD_ROTOR)
+                .fluidInputs(material.getFluid(L * 4))
+                .outputs(OreDictUnifier.get(rotorPrefix, material))
+                .duration(120)
+                .EUt(120)
+                .buildAndRegister();
+        }
     }
 
     public static void processStick(OrePrefix stickPrefix, DustMaterial material) {
