@@ -1,6 +1,7 @@
 package gregtech.integration.jei;
 
 import gregtech.api.gui.GuiTextures;
+import gregtech.api.worldgen.config.WorldGenRegistry;
 import gregtech.integration.jei.recipe.primitive.PrimitiveRecipeCategory;
 import mezz.jei.api.IGuiHelper;
 import mezz.jei.api.gui.IDrawable;
@@ -9,6 +10,8 @@ import mezz.jei.api.gui.IRecipeLayout;
 import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.recipe.IRecipeWrapper;
 import net.minecraft.client.Minecraft;
+
+import java.util.Map;
 
 public class GTOreCategory extends PrimitiveRecipeCategory<GTOreInfo, GTOreInfo> {
 
@@ -20,6 +23,7 @@ public class GTOreCategory extends PrimitiveRecipeCategory<GTOreInfo, GTOreInfo>
     protected int weight;
     protected int[] dimensionIDs;
     protected final int FONT_HEIGHT = Minecraft.getMinecraft().fontRenderer.FONT_HEIGHT;
+    protected final Map<String, Integer> namedDimensions = WorldGenRegistry.getNamedDimensions();
 
     public GTOreCategory(IGuiHelper guiHelper) {
         super("ore_spawn_location",
@@ -144,11 +148,12 @@ public class GTOreCategory extends PrimitiveRecipeCategory<GTOreInfo, GTOreInfo>
         minecraft.fontRenderer.drawString("Dimensions: ", 70, endPos + 1 + (2 * FONT_HEIGHT), 0x111111);
         for(int i = 0; i < dimensionIDs.length; i++) {
 
-            //Special case vanilla dimensions
-            if(dimensionIDs[i] == 0 || dimensionIDs[i] == 1 || dimensionIDs[i] == -1) {
-
-                //Construct the dimension Name to be displayed
-                dimName = getVanillaDimensionName(dimensionIDs[i]);
+            if(namedDimensions.containsValue(dimensionIDs[i])) {
+                int finalI = i;
+                dimName = namedDimensions.entrySet().stream()
+                                            .filter(entry -> dimensionIDs[finalI] == entry.getValue())
+                                            .map(Map.Entry::getKey)
+                                            .findFirst().get();
                 String fullName = i == dimensionIDs.length -1 ?
                     dimensionIDs[i] + " (" + dimName + ")" :
                     dimensionIDs[i] + " (" + dimName + "),";
@@ -186,20 +191,5 @@ public class GTOreCategory extends PrimitiveRecipeCategory<GTOreInfo, GTOreInfo>
         //Label the Surface Identifier
         minecraft.fontRenderer.drawSplitString("SurfaceMaterial", 15, 92, 42, 0x111111);
 
-
-    }
-
-    public String getVanillaDimensionName(int dim) {
-
-        switch(dim) {
-            case 0:
-                return "Overworld";
-            case 1:
-                return "End";
-            case -1:
-                return "Nether";
-            default:
-                return "";
-        }
     }
 }

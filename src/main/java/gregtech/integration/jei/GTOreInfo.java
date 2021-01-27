@@ -236,7 +236,7 @@ public class GTOreInfo implements IRecipeWrapper {
             }
         }
         else {
-            //TODO: Suppoer for an individual ore's weight in the vein
+            //TODO: Support for an individual ore's weight in the vein
             //tooltip.addAll(createOreWeightingTooltip());
         }
     }
