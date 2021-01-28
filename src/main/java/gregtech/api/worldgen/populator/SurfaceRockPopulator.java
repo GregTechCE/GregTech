@@ -11,7 +11,6 @@ import gregtech.common.MetaFluids;
 import gregtech.common.blocks.MetaBlocks;
 import gregtech.common.blocks.surfacerock.TileEntitySurfaceRock;
 import net.minecraft.block.BlockLiquid;
-import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
@@ -75,22 +74,17 @@ public class SurfaceRockPopulator implements VeinChunkPopulator {
     @Override
     public void populateChunk(World world, int chunkX, int chunkZ, Random random, OreDepositDefinition definition, GridEntryInfo gridEntryInfo) {
         int stonesCount = random.nextInt(2);
-        if (world.getWorldType() != WorldType.FLAT && stonesCount > 0) {
+        if (stonesCount > 0 && world.getWorldType() != WorldType.FLAT) {
             Set<Material> undergroundMaterials = findUndergroundMaterials(gridEntryInfo.getGeneratedBlocks(definition, chunkX, chunkZ));
             if (undergroundMaterials.isEmpty())
                 return;
-
             for (int i = 0; i < stonesCount; i++) {
-                int randomX = chunkX * 16 + random.nextInt(16);
-                int randomZ = chunkZ * 16 + random.nextInt(16);
-                BlockPos topBlockPos = new BlockPos(randomX, 0, randomZ);
-                topBlockPos = world.getTopSolidOrLiquidBlock(topBlockPos).down();
-                IBlockState blockState = world.getBlockState(topBlockPos);
-                if (blockState.getBlockFaceShape(world, topBlockPos, EnumFacing.UP) != BlockFaceShape.SOLID ||
-                    !blockState.isOpaqueCube() || !blockState.isFullBlock())
-                    continue;
-                BlockPos surfaceRockPos = topBlockPos.up();
-                setStoneBlock(world, surfaceRockPos, undergroundMaterials);
+                int randomX = chunkX * 16 + 8 + random.nextInt(16);
+                int randomZ = chunkZ * 16 + 8 + random.nextInt(16);
+                BlockPos topBlockPos = world.getTopSolidOrLiquidBlock(new BlockPos(randomX, 0, randomZ));
+                if (world.isAirBlock(topBlockPos) && world.isSideSolid(topBlockPos.down(), EnumFacing.UP)) {
+                    setStoneBlock(world, topBlockPos, undergroundMaterials);
+                }
             }
         }
     }

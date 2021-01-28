@@ -4,6 +4,7 @@ import gregtech.api.GTValues;
 import gregtech.api.block.machines.MachineItemBlock;
 import gregtech.api.enchants.EnchantmentEnderDamage;
 import gregtech.api.items.metaitem.MetaItem;
+import gregtech.api.recipes.crafttweaker.MetaItemBracketHandler;
 import gregtech.api.unification.material.type.DustMaterial;
 import gregtech.api.unification.material.type.Material;
 import gregtech.api.unification.ore.OrePrefix;
@@ -81,16 +82,15 @@ public class CommonProxy {
         SURFACE_ROCKS.values().stream().distinct().forEach(registry::register);
         FRAMES.values().stream().distinct().forEach(registry::register);
         ORES.forEach(registry::register);
-        FLUID_BLOCKS.forEach(registry::register);
     }
 
     @SubscribeEvent(priority = EventPriority.LOWEST)
     public static void registerBlocksLast(RegistryEvent.Register<Block> event) {
         //last chance for mods to register their potion types is here
         PotionFluids.initPotionFluids();
+        FLUID_BLOCKS.forEach(event.getRegistry()::register);
     }
 
-    @SuppressWarnings("unchecked")
     @SubscribeEvent
     public static void registerItems(RegistryEvent.Register<Item> event) {
         GTLog.logger.info("Registering Items...");
@@ -173,6 +173,10 @@ public class CommonProxy {
         DecompositionRecipeHandler.runRecipeGeneration();
         RecyclingRecipes.init();
         WoodMachineRecipes.init();
+        
+        if (GTValues.isModLoaded(GTValues.MODID_CT)){
+            MetaItemBracketHandler.rebuildComponentRegistry();
+        }
     }
 
     @SubscribeEvent

@@ -71,7 +71,7 @@ public class DecompositionRecipeHandler {
         if (decomposePrefix != null) {
             builder.input(decomposePrefix, material, totalInputAmount);
         } else {
-            builder.fluidInputs(material.getFluid(1000 * totalInputAmount));
+            builder.fluidInputs(material.getFluid(1000));
         }
         if (material.hasFlag(DECOMPOSITION_REQUIRES_HYDROGEN)) {
             builder.fluidInputs(Materials.Hydrogen.getFluid(1000 * totalInputAmount));
