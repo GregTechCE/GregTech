@@ -74,8 +74,12 @@ public class OreDictUnifier {
     }
 
     public static void registerOre(ItemStack itemStack, OrePrefix orePrefix, @Nullable Material material) {
+        registerOre(itemStack, orePrefix.name(), material);
+    }
+
+    public static void registerOre(ItemStack itemStack, String customOrePrefix, @Nullable Material material) {
         if (itemStack.isEmpty()) return;
-        OreDictionary.registerOre(orePrefix.name() + (material == null ? "" : material.toCamelCaseString()), itemStack);
+        OreDictionary.registerOre(customOrePrefix + (material == null ? "" : material.toCamelCaseString()), itemStack);
     }
 
     public static void registerOre(ItemStack itemStack, String oreDict) {

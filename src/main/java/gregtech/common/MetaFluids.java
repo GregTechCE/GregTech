@@ -186,7 +186,7 @@ public class MetaFluids {
 
         FluidRegistry.addBucketForFluid(fluid);
 
-        if (material.hasFlag(MatFlags.GENERATE_FLUID_BLOCK) && fluid.getBlock() == null) {
+        if (material.hasFlag(MatFlags.GENERATE_FLUID_BLOCK) && fluid.getBlock() == null && fluidType != FluidType.PLASMA) {
             BlockFluidBase fluidBlock = new BlockFluidClassic(fluid, net.minecraft.block.material.Material.WATER);
             fluidBlock.setRegistryName("fluid." + materialName);
             MetaBlocks.FLUID_BLOCKS.add(fluidBlock);

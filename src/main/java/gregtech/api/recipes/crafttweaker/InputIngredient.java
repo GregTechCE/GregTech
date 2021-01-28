@@ -1,43 +1,131 @@
 package gregtech.api.recipes.crafttweaker;
 
 import crafttweaker.annotations.ZenRegister;
-import crafttweaker.api.item.IItemStack;
+import crafttweaker.api.item.*;
+import crafttweaker.api.liquid.ILiquidStack;
 import crafttweaker.api.minecraft.CraftTweakerMC;
-import crafttweaker.mc1120.item.MCItemStack;
+import crafttweaker.api.player.IPlayer;
 import gregtech.api.recipes.CountableIngredient;
 import stanhebben.zenscript.annotations.ZenClass;
 import stanhebben.zenscript.annotations.ZenGetter;
-import stanhebben.zenscript.annotations.ZenMethod;
 
-import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @ZenClass("mods.gregtech.recipe.InputIngredient")
 @ZenRegister
-public class InputIngredient {
+public class InputIngredient implements IIngredient {
 
-    private final CountableIngredient backingIngredient;
+    private final IIngredient iingredient;
 
     public InputIngredient(CountableIngredient backingIngredient) {
-        this.backingIngredient = backingIngredient;
+        iingredient = CraftTweakerMC
+            .getIIngredient(backingIngredient.getIngredient())
+            .amount(backingIngredient.getCount());
     }
 
-    @ZenGetter("amount")
+    @Override
+    public String getMark() {
+        return iingredient.getMark();
+    }
+
+    @Override
     public int getAmount() {
-        return backingIngredient.getCount();
+        return iingredient.getAmount();
     }
 
+    @Override
     @ZenGetter("matchingItems")
-    public List<IItemStack> getMatchingItems() {
-        return Arrays.stream(backingIngredient.getIngredient().getMatchingStacks())
-            .map(MCItemStack::new)
-            .collect(Collectors.toList());
+    public List<IItemStack> getItems() {
+        return iingredient.getItems();
     }
 
-    @ZenMethod
-    public boolean matches(IItemStack ingredient) {
-        return backingIngredient.getIngredient().apply(CraftTweakerMC.getItemStack(ingredient));
+    @Override
+    public IItemStack[] getItemArray() {
+        return iingredient.getItemArray();
     }
 
+    @Override
+    public List<ILiquidStack> getLiquids() {
+        return iingredient.getLiquids();
+    }
+
+    @Override
+    public IIngredient amount(int amount) {
+        return iingredient.amount(amount);
+    }
+
+    @Override
+    public IIngredient or(IIngredient ingredient) {
+        return iingredient.or(ingredient);
+    }
+
+    @Override
+    public IIngredient transformNew(IItemTransformerNew transformer) {
+        return iingredient.transformNew(transformer);
+    }
+
+    @Override
+    public IIngredient only(IItemCondition condition) {
+        return iingredient.only(condition);
+    }
+
+    @Override
+    public IIngredient marked(String mark) {
+        return iingredient.marked(mark);
+    }
+
+    @Override
+    public boolean matches(IItemStack item) {
+        return iingredient.matches(item);
+    }
+
+    @Override
+    public boolean matchesExact(IItemStack item) {
+        return iingredient.matchesExact(item);
+    }
+
+    @Override
+    public boolean matches(ILiquidStack liquid) {
+        return iingredient.matches(liquid);
+    }
+
+    @Override
+    public boolean contains(IIngredient ingredient) {
+        return iingredient.contains(ingredient);
+    }
+
+    @Override
+    public IItemStack applyTransform(IItemStack item, IPlayer byPlayer) {
+        return iingredient.applyTransform(item, byPlayer);
+    }
+
+    @Override
+    public IItemStack applyNewTransform(IItemStack item) {
+        return iingredient.applyNewTransform(item);
+    }
+
+    @Override
+    public boolean hasNewTransformers() {
+        return iingredient.hasNewTransformers();
+    }
+
+    @Override
+    public boolean hasTransformers() {
+        return iingredient.hasTransformers();
+    }
+
+    @Override
+    public IIngredient transform(IItemTransformer transformer) {
+        return iingredient.transform(transformer);
+    }
+
+    @Override
+    public Object getInternal() {
+        return iingredient.getInternal();
+    }
+
+    @Override
+    public String toCommandString() {
+        return iingredient.toCommandString();
+    }
 }

@@ -169,7 +169,7 @@ public class OreRecipeHandler {
             DustMaterial washingByproduct = GTUtility.selectItemInList(3, material, material.oreByProducts, DustMaterial.class);
             RecipeMaps.CHEMICAL_BATH_RECIPES.recipeBuilder()
                 .input(crushedPrefix, material)
-                .fluidInputs(material.washedIn.getFluid(1000))
+                .fluidInputs(material.washedIn.getFluid(material.washedIn == Materials.SodiumPersulfate ? 100 : 1000))
                 .outputs(crushedPurifiedOre)
                 .chancedOutput(OreDictUnifier.get(OrePrefix.dust, washingByproduct, material.byProductMultiplier), 7000, 580)
                 .chancedOutput(OreDictUnifier.get(OrePrefix.dust, Materials.Stone), 4000, 650)
