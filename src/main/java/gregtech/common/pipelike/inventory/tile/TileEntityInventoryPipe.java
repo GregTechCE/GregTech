@@ -3,6 +3,7 @@ package gregtech.common.pipelike.inventory.tile;
 import javax.annotation.Nullable;
 
 import gregtech.api.capability.GregtechCapabilities;
+import gregtech.api.capability.IEnergyContainer;
 import gregtech.api.capability.IStorageNetwork;
 import gregtech.api.gui.GuiTextures;
 import gregtech.api.gui.ModularUI;
@@ -20,6 +21,7 @@ import gregtech.common.gui.widget.ItemListGridWidget;
 import gregtech.common.inventory.IItemList;
 import gregtech.common.pipelike.inventory.InventoryPipeType;
 import gregtech.common.pipelike.inventory.net.InventoryPipeNet;
+import gregtech.common.pipelike.inventory.net.InventoryPipeNetEnergyContainer;
 import gregtech.common.pipelike.inventory.net.WorldInventoryPipeNet;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -40,14 +42,25 @@ public class TileEntityInventoryPipe extends TileEntityPipeBase<InventoryPipeTyp
         return false;
     }
 
-    IStorageNetwork getStorageNetwork() {
+    InventoryPipeNet getPipeNet() {
         World world = getPipeWorld();
         if (world == null || world.isRemote)
             return null;
-        InventoryPipeNet pipeNet = WorldInventoryPipeNet.getWorldPipeNet(world).getNetFromPos(getPos());
+        return WorldInventoryPipeNet.getWorldPipeNet(world).getNetFromPos(getPos());
+    }
+
+    IStorageNetwork getStorageNetwork() {
+        InventoryPipeNet pipeNet = getPipeNet();
         if (pipeNet == null)
             return null;
         return pipeNet.getStorageNetwork();
+    }
+
+    IEnergyContainer getEnergyContainer() {
+        InventoryPipeNet pipeNet = getPipeNet();
+        if (pipeNet == null)
+            return null;
+        return pipeNet.getEnergyContainer();
     }
     
     @Nullable
@@ -55,6 +68,9 @@ public class TileEntityInventoryPipe extends TileEntityPipeBase<InventoryPipeTyp
     public <T> T getCapabilityInternal(Capability<T> capability, @Nullable EnumFacing facing) {
         if (capability == GregtechCapabilities.CAPABILITY_STORAGE_NETWORK) {
             return GregtechCapabilities.CAPABILITY_STORAGE_NETWORK.cast(getStorageNetwork());
+        }
+        if (capability == GregtechCapabilities.CAPABILITY_ENERGY_CONTAINER) {
+            return GregtechCapabilities.CAPABILITY_ENERGY_CONTAINER.cast(getEnergyContainer());
         }
         return super.getCapabilityInternal(capability, facing);
     }
