@@ -8,19 +8,27 @@ import gregtech.api.GTValues;
 import gregtech.api.gui.GuiTextures;
 import gregtech.api.gui.ModularUI;
 import gregtech.api.gui.ModularUI.Builder;
-import gregtech.api.gui.widgets.SlotWidget;
+import gregtech.api.gui.Widget;
+import gregtech.api.gui.widgets.*;
+import gregtech.api.gui.widgets.tab.ItemTabInfo;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.MetaTileEntityHolder;
 import gregtech.api.metatileentity.TieredMetaTileEntity;
 import gregtech.api.render.Textures;
+import gregtech.api.unification.OreDictUnifier;
+import gregtech.api.unification.material.Materials;
+import gregtech.api.unification.ore.OrePrefix;
 import gregtech.api.util.BlockUtility;
 import gregtech.api.util.GregFakePlayer;
+import gregtech.common.covers.filter.ItemFilterContainer;
+import gregtech.common.items.MetaItems;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.PacketBuffer;
@@ -45,10 +53,12 @@ public class MetaTileEntityBlockBreaker extends TieredMetaTileEntity {
     private EnumFacing outputFacing;
     private int breakProgressTicksLeft;
     private float currentBlockHardness;
+    private final ItemFilterContainer itemFilterContainer;
 
     public MetaTileEntityBlockBreaker(ResourceLocation metaTileEntityId, int tier) {
         super(metaTileEntityId, tier);
         initializeInventory();
+        this.itemFilterContainer = new ItemFilterContainer(this::markDirty);
     }
 
     @Override
@@ -104,6 +114,11 @@ public class MetaTileEntityBlockBreaker extends TieredMetaTileEntity {
         }
     }
 
+    @Override
+    protected boolean canMachineConnectRedstone(EnumFacing side) {
+        return true;
+    }
+
     private void addToInventoryOrDropItems(List<ItemStack> drops) {
         EnumFacing outputFacing = getOutputFacing();
         double itemSpawnX = getPos().getX() + 0.5 + outputFacing.getFrontOffsetX();
@@ -151,6 +166,7 @@ public class MetaTileEntityBlockBreaker extends TieredMetaTileEntity {
         data.setInteger("OutputFacing", getOutputFacing().getIndex());
         data.setInteger("BlockBreakProgress", breakProgressTicksLeft);
         data.setFloat("BlockHardness", currentBlockHardness);
+        data.setTag("ItemFilter", itemFilterContainer.serializeNBT());
         return data;
     }
 
@@ -160,6 +176,9 @@ public class MetaTileEntityBlockBreaker extends TieredMetaTileEntity {
         this.outputFacing = EnumFacing.VALUES[data.getInteger("OutputFacing")];
         this.breakProgressTicksLeft = data.getInteger("BlockBreakProgress");
         this.currentBlockHardness = data.getFloat("BlockHardness");
+        if (data.hasKey("ItemFilter")) {
+            this.itemFilterContainer.deserializeNBT(data.getCompoundTag("ItemFilter"));
+        }
     }
 
     @Override
@@ -243,13 +262,43 @@ public class MetaTileEntityBlockBreaker extends TieredMetaTileEntity {
         Builder builder = ModularUI.builder(GuiTextures.BACKGROUND, 176, 18 + 18 * rowSize + 94)
             .label(10, 5, getMetaFullName());
 
+        TabGroup primaryTabGroup = new TabGroup(TabGroup.TabLocation.HORIZONTAL_TOP_LEFT);
+
+        //Initialize and populate inventory tab, containing output slots
+        WidgetGroup inventoryTab = new WidgetGroup();
+        inventoryTab.addWidget(new LabelWidget(10, 15, "gregtech.machine.block_breaker.tab.inventory"));
+
         for (int y = 0; y < rowSize; y++) {
             for (int x = 0; x < rowSize; x++) {
                 int index = y * rowSize + x;
-                builder.widget(new SlotWidget(exportItems, index, 89 - rowSize * 9 + x * 18, 18 + y * 18, true, false)
-                    .setBackgroundTexture(GuiTextures.SLOT));
+                int xPosition = 89 - rowSize * 9 + x * 18;
+                int yPosition = 30 + y * 18;
+                inventoryTab.addWidget(new SlotWidget(exportItems, index, xPosition, yPosition, true, false).setBackgroundTexture(GuiTextures.SLOT));
             }
         }
+
+        //Initialize separate tab for item filter, which will contain filter-specific content and slot for it
+        WidgetGroup blockFilterTab = new WidgetGroup();
+        blockFilterTab.addWidget(new LabelWidget(10, 15, "gregtech.machine.block_breaker.tab.block_filter"));
+        this.itemFilterContainer.initUI(30, blockFilterTab::addWidget);
+
+        //Initialize general settings tab. This will contain area size and a special widget for configuring each block individually
+        WidgetGroup settingsTab = new WidgetGroup();
+        blockFilterTab.addWidget(new LabelWidget(10, 15, "gregtech.machine.block_breaker.tab.settings"));
+
+        builder.widget(new ClickButtonWidget(10, 30, 20, 20, "-1", data -> {}));
+        builder.widget(new ClickButtonWidget(146, 30, 20, 20, "+1", data -> {}));
+        builder.widget(new ImageWidget(30, 30, 116, 20, GuiTextures.DISPLAY));
+        builder.widget(new SimpleTextWidget(88, 40, "gregtech.machine.block_breaker.working_area", 0xFFFFFF, () -> Integer.toString(0)));
+
+        
+
+        //Add the tabs we created earlier into the tab group
+        primaryTabGroup.addTab(new ItemTabInfo("gregtech.machine.block_breaker.tab.settings", OreDictUnifier.get(OrePrefix.gear, Materials.Aluminium)), settingsTab);
+        primaryTabGroup.addTab(new ItemTabInfo("gregtech.machine.block_breaker.tab.block_filter", MetaItems.ITEM_FILTER.getStackForm()), blockFilterTab);
+        primaryTabGroup.addTab(new ItemTabInfo("gregtech.machine.block_breaker.tab.inventory", new ItemStack(Blocks.CHEST)), inventoryTab);
+
+
         builder.bindPlayerInventory(entityPlayer.inventory, GuiTextures.SLOT, 8, 18 + 18 * rowSize + 12);
         return builder.build(getHolder(), entityPlayer);
     }

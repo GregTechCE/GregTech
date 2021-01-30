@@ -100,18 +100,12 @@ public class MetaTileEntityItemCollector extends TieredMetaTileEntity {
     }
 
     @Override
-    protected boolean canMachineConnectRedstone(EnumFacing side) {
-        return true;
-    }
-
-    @Override
     public void update() {
         super.update();
 
         if(getWorld().isRemote) {
             return;
         }
-
         boolean isWorkingNow = energyContainer.getEnergyStored() >= getEnergyConsumedPerTick() && isBlockRedstonePowered();
 
         if (isWorkingNow) {
@@ -131,26 +125,20 @@ public class MetaTileEntityItemCollector extends TieredMetaTileEntity {
         }
     }
 
+    @Override
+    protected boolean canMachineConnectRedstone(EnumFacing side) {
+        return true;
+    }
+
     protected void moveItemsInEffectRange() {
         List<EntityItem> itemsInRange = getWorld().getEntitiesWithinAABB(EntityItem.class, areaBoundingBox);
         for (EntityItem entityItem : itemsInRange) {
-            double distanceX = (areaCenterPos.getX() + 0.5) - entityItem.posX;
-            double distanceZ = (areaCenterPos.getZ() + 0.5) - entityItem.posZ;
-            double distance = MathHelper.sqrt(distanceX * distanceX + distanceZ * distanceZ);
-            if(!itemFilter.testItemStack(entityItem.getItem())) {
+            ItemStack itemStack = entityItem.getItem();
+            if(!itemFilter.testItemStack(itemStack)) {
                 continue;
             }
-            if (distance >= 0.7) {
-                if(!entityItem.cannotPickup()) {
-                    double directionX = distanceX / distance;
-                    double directionZ = distanceZ / distance;
-                    entityItem.motionX = directionX * MOTION_MULTIPLIER * getTier();
-                    entityItem.motionZ = directionZ * MOTION_MULTIPLIER * getTier();
-                    entityItem.velocityChanged = true;
-                    entityItem.setPickupDelay(1);
-                }
-            } else {
-                ItemStack itemStack = entityItem.getItem();
+
+            if (!entityItem.cannotPickup()) {
                 ItemStack remainder = ItemHandlerHelper.insertItemStacked(exportItems, itemStack, false);
                 if (remainder.isEmpty()) {
                     entityItem.setDead();
