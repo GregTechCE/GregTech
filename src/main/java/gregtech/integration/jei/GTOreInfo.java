@@ -54,7 +54,12 @@ public class GTOreInfo implements IRecipeWrapper {
         this.minHeight = definition.getMinimumHeight() == Integer.MIN_VALUE ? 0 : definition.getMinimumHeight();
 
         //Get the Name and trim unneeded information
-        this.name = makePrettyName(definition.getDepositName());
+        if(definition.getAssignedName() == null) {
+            this.name = makePrettyName(definition.getDepositName());
+        }
+        else {
+            this.name = definition.getAssignedName();
+        }
 
         this.weight = definition.getWeight();
 
