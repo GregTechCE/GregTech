@@ -37,6 +37,7 @@ public class GTOreInfo implements IRecipeWrapper {
     private final int maxHeight;
     private final int minHeight;
     private final String name;
+    private final String description;
     private final int weight;
     private final int[] dimensionIDs;
     private final IVeinPopulator veinPopulator;
@@ -69,6 +70,8 @@ public class GTOreInfo implements IRecipeWrapper {
         else {
             this.name = definition.getAssignedName();
         }
+
+        this.description = definition.getDescription();
 
         this.weight = definition.getWeight();
 
@@ -240,6 +243,9 @@ public class GTOreInfo implements IRecipeWrapper {
         //Only add the Biome Information to the selected Ore
         if(slotIndex == 0) {
             tooltip.addAll(createBiomeTooltip());
+            if(description != null) {
+                tooltip.add(description);
+            }
         }
         //Surface Indicator slot
         else if(slotIndex == 1) {
