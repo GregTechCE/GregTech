@@ -159,7 +159,7 @@ public class MetaTileEntityItemCollector extends TieredMetaTileEntity {
                 }
             }
         }
-        if (getTimer() % 5 == 0) {
+        if (getOffsetTimer() % 5 == 0) {
             pushItemsIntoNearbyHandlers(getFrontFacing());
         }
     }

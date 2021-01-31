@@ -72,7 +72,7 @@ public class MetaTileEntityRotorHolder extends MetaTileEntityMultiblockPart impl
         if (getWorld().isRemote) {
             return;
         }
-        if (getTimer() % 10 == 0) {
+        if (getOffsetTimer() % 10 == 0) {
             this.frontFaceFree = checkTurbineFaceFree();
         }
 
