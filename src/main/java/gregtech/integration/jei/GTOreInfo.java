@@ -29,7 +29,7 @@ import java.util.*;
 import java.util.function.Function;
 import java.util.regex.Matcher;
 
-import static gregtech.api.GTValues.M;
+import static gregtech.api.GTValues.*;
 
 public class GTOreInfo implements IRecipeWrapper {
 
@@ -48,10 +48,19 @@ public class GTOreInfo implements IRecipeWrapper {
 
     public GTOreInfo(OreDepositDefinition definition) {
         this.definition = definition;
-        //Some veins don't have a maximum height, so set it to the maximum world height?
-        this.maxHeight = definition.getMaximumHeight() == Integer.MAX_VALUE ? 255 : definition.getMaximumHeight();
-        //Some veins don't have a minimum height, so set it to 0 in that case
-        this.minHeight = definition.getMinimumHeight() == Integer.MIN_VALUE ? 0 : definition.getMinimumHeight();
+
+        //Don't default to vanilla Maximums and minimums if the values are not defined and Cubic Chunks is loaded
+        //This could be improved to use the actual minimum and maximum heights, at the cost of including the CC Api
+        if(isModLoaded(MODID_CC)) {
+            this.maxHeight = definition.getMaximumHeight() == Integer.MAX_VALUE ? Integer.MAX_VALUE : definition.getMaximumHeight();
+            this.minHeight = definition.getMinimumHeight() == Integer.MIN_VALUE ? Integer.MIN_VALUE : definition.getMinimumHeight();
+        }
+        else {
+            //Some veins don't have a maximum height, so set it to the maximum world height?
+            this.maxHeight = definition.getMaximumHeight() == Integer.MAX_VALUE ? 255 : definition.getMaximumHeight();
+            //Some veins don't have a minimum height, so set it to 0 in that case
+            this.minHeight = definition.getMinimumHeight() == Integer.MIN_VALUE ? 0 : definition.getMinimumHeight();
+        }
 
         //Get the Name and trim unneeded information
         if(definition.getAssignedName() == null) {
