@@ -124,7 +124,7 @@ public class WorldGenRegistry {
 
         if(!Files.exists(dimensionsFile)) {
             Files.createFile(dimensionsFile);
-            extractDimensionInfo(dimensionsFile);
+            extractJarVeinDefinitions(configPath, dimensionsFile);
         }
 
         //attempt extraction if file extraction lock is absent or worldgen root directory is empty
@@ -133,7 +133,7 @@ public class WorldGenRegistry {
                 //create extraction lock only if it doesn't exist
                 Files.createFile(jarFileExtractLock);
             }
-            extractJarVeinDefinitions(worldgenRootPath);
+            extractJarVeinDefinitions(configPath, worldgenRootPath);
         }
 
         gatherNamedDimensions(dimensionsFile);
@@ -162,7 +162,9 @@ public class WorldGenRegistry {
         GTLog.logger.info("Loaded {} worldgen definitions", registeredDefinitions.size());
     }
 
-    private static void extractJarVeinDefinitions(Path worldgenRootPath) throws IOException {
+    private static void extractJarVeinDefinitions(Path configPath, Path targetPath) throws IOException {
+        Path worldgenRootPath = configPath.resolve("worldgen");
+        Path dimensionsRootPath = configPath.resolve("dimensions.json");
         FileSystem zipFileSystem = null;
         try {
             URI sampleUri = WorldGenRegistry.class.getResource("/assets/gregtech/.gtassetsroot").toURI();
@@ -175,17 +177,32 @@ public class WorldGenRegistry {
             } else {
                 throw new IllegalStateException("Unable to locate absolute path to worldgen root directory: " + sampleUri);
             }
-            GTLog.logger.info("Attempting extraction of standard worldgen definitions from {} to {}",
-                worldgenJarRootPath, worldgenRootPath);
-            List<Path> jarFiles = Files.walk(worldgenJarRootPath)
-                .filter(jarFile -> Files.isRegularFile(jarFile))
-                .collect(Collectors.toList());
-            for (Path jarFile : jarFiles) {
-                Path worldgenPath = worldgenRootPath.resolve(worldgenJarRootPath.relativize(jarFile).toString());
-                Files.createDirectories(worldgenPath.getParent());
-                Files.copy(jarFile, worldgenPath, StandardCopyOption.REPLACE_EXISTING);
+
+            if(targetPath.compareTo(worldgenRootPath) == 0) {
+                GTLog.logger.info("Attempting extraction of standard worldgen definitions from {} to {}",
+                    worldgenJarRootPath, worldgenRootPath);
+                List<Path> jarFiles = Files.walk(worldgenJarRootPath)
+                    .filter(jarFile -> Files.isRegularFile(jarFile))
+                    .collect(Collectors.toList());
+                for (Path jarFile : jarFiles) {
+                    Path worldgenPath = worldgenRootPath.resolve(worldgenJarRootPath.relativize(jarFile).toString());
+                    Files.createDirectories(worldgenPath.getParent());
+                    Files.copy(jarFile, worldgenPath, StandardCopyOption.REPLACE_EXISTING);
+                }
+                GTLog.logger.info("Extracted {} builtin worldgen definitions into worldgen folder", jarFiles.size());
             }
-            GTLog.logger.info("Extracted {} builtin worldgen definitions into worldgen folder", jarFiles.size());
+            else if(targetPath.compareTo(dimensionsRootPath) == 0) {
+                GTLog.logger.info("Attempting extraction of standard dimension definitions from {} to {}",
+                    worldgenJarRootPath, dimensionsRootPath);
+
+                Path dimensionFile = worldgenJarRootPath.resolve("dimensions.json");
+
+                Path worldgenPath = dimensionsRootPath.resolve(worldgenJarRootPath.relativize(worldgenJarRootPath).toString());
+                Files.copy(dimensionFile, worldgenPath, StandardCopyOption.REPLACE_EXISTING);
+
+                GTLog.logger.info("Extracted builtin dimension definitions into worldgen folder");
+            }
+
         } catch (URISyntaxException impossible) {
             //this is impossible, since getResource always returns valid URI
             throw new RuntimeException(impossible);
@@ -195,40 +212,6 @@ public class WorldGenRegistry {
                 IOUtils.closeQuietly(zipFileSystem);
             }
         }
-    }
-
-    private static void extractDimensionInfo(Path dimensionPath) throws IOException {
-        FileSystem zipFileSystem = null;
-        try {
-            URI sampleUri = WorldGenRegistry.class.getResource("/assets/gregtech/.gtassetsroot").toURI();
-            Path worldgenJarRootPath;
-            if (sampleUri.getScheme().equals("jar") || sampleUri.getScheme().equals("zip")) {
-                zipFileSystem = FileSystems.newFileSystem(sampleUri, Collections.emptyMap());
-                worldgenJarRootPath = zipFileSystem.getPath("/assets/gregtech/worldgen");
-            } else if (sampleUri.getScheme().equals("file")) {
-                worldgenJarRootPath = Paths.get(WorldGenRegistry.class.getResource("/assets/gregtech/worldgen").toURI());
-            } else {
-                throw new IllegalStateException("Unable to locate absolute path to worldgen root directory: " + sampleUri);
-            }
-            GTLog.logger.info("Attempting extraction of standard dimension definitions from {} to {}",
-                worldgenJarRootPath, dimensionPath);
-
-            Path dimensionFile = worldgenJarRootPath.resolve("dimensions.json");
-
-            Path worldgenPath = dimensionPath.resolve(worldgenJarRootPath.relativize(worldgenJarRootPath).toString());
-            Files.copy(dimensionFile, worldgenPath, StandardCopyOption.REPLACE_EXISTING);
-
-            GTLog.logger.info("Extracted builtin dimension definitions into worldgen folder");
-        } catch (URISyntaxException impossible) {
-            //this is impossible, since getResource always returns valid URI
-            throw new RuntimeException(impossible);
-        } finally {
-            if (zipFileSystem != null) {
-                //close zip file system to avoid issues
-                IOUtils.closeQuietly(zipFileSystem);
-            }
-        }
-
     }
 
     private void gatherNamedDimensions(Path dimensionsFile) {
