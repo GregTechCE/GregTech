@@ -8,9 +8,9 @@ public abstract class TickableTileEntityBase extends SyncedTileEntityBase implem
 
     private long timer = 0L;
 
-    // Create an offset [0,20] to distribute ticks more evenly
+    // Create an offset [0,20) to distribute ticks more evenly
     private Random random = new Random();
-    private int offset = random.nextInt(21);
+    private int offset = random.nextInt(20);
 
     /**
      * @deprecated This method distributes ticks unevenly.

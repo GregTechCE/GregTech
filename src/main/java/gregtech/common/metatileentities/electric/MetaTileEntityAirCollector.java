@@ -48,7 +48,7 @@ public class MetaTileEntityAirCollector extends TieredMetaTileEntity {
 
         if (!getWorld().isRemote) {
             long energyToConsume = GTValues.V[getTier()];
-            if (checkDimension() && checkOpenSides() && getTimer() % PRODUCTION_CYCLE_LENGTH == 0L && energyContainer.getEnergyStored() >= energyToConsume) {
+            if (checkDimension() && checkOpenSides() && getOffsetTimer() % PRODUCTION_CYCLE_LENGTH == 0L && energyContainer.getEnergyStored() >= energyToConsume) {
                 int fluidAmount = getCollectedFluidAmount();
                 FluidStack fluidStack = Materials.Air.getFluid(fluidAmount);
                 if (exportFluids.fill(fluidStack, false) == fluidAmount) {
@@ -56,7 +56,7 @@ public class MetaTileEntityAirCollector extends TieredMetaTileEntity {
                     energyContainer.removeEnergy(energyToConsume);
                 }
             }
-            if (getTimer() % 5 == 0) {
+            if (getOffsetTimer() % 5 == 0) {
                 pushFluidsIntoNearbyHandlers(getFrontFacing());
             }
         }
