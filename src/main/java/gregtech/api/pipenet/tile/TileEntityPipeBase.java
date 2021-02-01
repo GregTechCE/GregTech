@@ -283,6 +283,11 @@ public abstract class TileEntityPipeBase<PipeType extends Enum<PipeType> & IPipe
     @Override
     public void onLoad() {
         super.onLoad();
+        final World world = getWorld();
+        final BlockPipe<PipeType, NodeDataType, ?> pipeBlock = getPipeBlock();
+        if (world != null && !world.isRemote && pipeBlock != null) {
+            pipeBlock.getWorldPipeNet(world).checkForOldData(getPos());
+        }
         this.coverableImplementation.onLoad();
     }
 

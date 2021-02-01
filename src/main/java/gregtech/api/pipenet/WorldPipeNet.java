@@ -12,14 +12,15 @@ import net.minecraftforge.common.util.Constants.NBT;
 import java.lang.ref.WeakReference;
 import java.util.*;
 
+import gregtech.api.util.GTLog;
+
 public abstract class WorldPipeNet<NodeDataType, T extends PipeNet<NodeDataType>> extends WorldSavedData {
 
     private WeakReference<World> worldRef = new WeakReference<>(null);
-    protected boolean isFirstTick = true;
     protected List<T> pipeNets = new ArrayList<>();
     protected Map<ChunkPos, List<T>> pipeNetsByChunk = new HashMap<>();
-    // Used to do the old processing where a singleton is maintained
-    protected boolean old = false;
+    protected WorldPipeNet<NodeDataType, T> oldData = null;
+    protected boolean checkedForOldData = false;
 
     public static String getDataID(final String baseID, final World world) {
         if (world == null || world.isRemote)
@@ -37,17 +38,8 @@ public abstract class WorldPipeNet<NodeDataType, T extends PipeNet<NodeDataType>
     }
 
     protected void setWorldAndInit(World world) {
-        // The original way was to setup one WorldPipeNet
-        if (old) {
-            if (this.isFirstTick) {
-                this.worldRef = new WeakReference<World>(world);
-                this.isFirstTick = false;
-                onWorldSet();
-            }
-        }
-        // The correct way is to have to a WorldPipeNet per dimension
-        // which will change as the dimensions are loaded/unloaded
-        else if (world != this.worldRef.get()) {
+        // Reset the world as the dimensions are loaded/unloaded
+        if (world != this.worldRef.get()) {
             this.worldRef = new WeakReference<World>(world);
             onWorldSet();
         }
@@ -140,6 +132,46 @@ public abstract class WorldPipeNet<NodeDataType, T extends PipeNet<NodeDataType>
     }
 
     protected abstract T createNetInstance();
+
+    /*
+     * This method is invoked during tile loading
+     *
+     * It's purpose is to move pipenets from the old data file to new one based on matching block position
+     */
+    public void checkForOldData(final BlockPos blockPos) {
+        // No old data
+        if (this.oldData == null || this.oldData.pipeNets.isEmpty())
+            return;
+
+        // We have new data at this position so don't try to fix
+        if (getNetFromPos(blockPos) != null)
+            return;
+
+        // See if we have a pipenet for this block pos in the old data
+        T foundOldData = null;
+        final List<T> oldPipeNets = this.oldData.pipeNetsByChunk.getOrDefault(new ChunkPos(blockPos), Collections.emptyList());
+        for (T pipeNet : oldPipeNets) {
+            if (pipeNet.containsNode(blockPos)) {
+                if (foundOldData != null)
+                {
+                    // We have 2 pipenets at this position?
+                    GTLog.logger.warn("Found duplicate pipenets in old data at " + blockPos + " [" + foundOldData + ',' + pipeNet + ']');
+                    return;
+                }
+                foundOldData = pipeNet;
+            }
+        }
+        // Nothing found
+        if (foundOldData == null)
+            return;
+        // Move the old data into the new data
+        GTLog.logger.info("Fixing old data for " + foundOldData + " found at " + blockPos);
+        this.oldData.removePipeNet(foundOldData);
+        this.oldData.markDirty();
+        this.addPipeNetSilently(foundOldData);
+        this.markDirty();
+        foundOldData.setWorldData(this);
+    }
 
     @Override
     public void readFromNBT(NBTTagCompound nbt) {
