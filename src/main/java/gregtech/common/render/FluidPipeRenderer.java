@@ -125,15 +125,17 @@ public class FluidPipeRenderer implements ICCBlockRenderer, IItemRenderer {
         }
         CCRenderState renderState = CCRenderState.instance();
         GlStateManager.enableBlend();
+        GlStateManager.disableCull();
         renderState.reset();
         renderState.startDrawing(GL11.GL_QUADS, DefaultVertexFormats.ITEM);
         BlockFluidPipe blockFluidPipe = (BlockFluidPipe) ((ItemBlockFluidPipe) stack.getItem()).getBlock();
         FluidPipeType pipeType = blockFluidPipe.getItemPipeType(stack);
         Material material = blockFluidPipe.getItemMaterial(stack);
         if (pipeType != null && material != null) {
-            renderPipeBlock(material, pipeType, IPipeTile.DEFAULT_INSULATION_COLOR, renderState, new IVertexOperation[0], 0);
+            renderPipeBlock(material, pipeType, IPipeTile.DEFAULT_INSULATION_COLOR, renderState, new IVertexOperation[0], 0b001100);
         }
         renderState.draw();
+        GlStateManager.enableCull();
         GlStateManager.disableBlend();
     }
 
