@@ -75,10 +75,12 @@ public class FluidPipeRenderer implements ICCBlockRenderer, IItemRenderer {
     private static class PipeModelInfo {
         public final CCModel[] connectionModels;
         public final CCModel[] fullBlockModels;
+        public final CCModel[] cornerModels;
 
-        public PipeModelInfo(CCModel[] connectionModels, CCModel[] fullBlockModels) {
-            this.connectionModels = connectionModels;
+        public PipeModelInfo(CCModel[] connectionModels, CCModel[] fullBlockModels, CCModel[] cornerModels) {
+            this.connectionModels = connectionModels; // TODO Remove this field when finished
             this.fullBlockModels = fullBlockModels;
+            this.cornerModels = cornerModels;
         }
     }
 
@@ -106,9 +108,10 @@ public class FluidPipeRenderer implements ICCBlockRenderer, IItemRenderer {
             CCModel model = ShapeModelGenerator.generateModel(angles, height, thickness / 3.0f, height);
             CCModel fullBlockModel = ShapeModelGenerator.generateModel(angles, 1.0f, thickness / 3.0f, height);
 
-            CCModel[] rotatedVariants = ShapeModelGenerator.generateRotatedVariants(model);
+            CCModel[] rotatedVariants = ShapeModelGenerator.generateRotatedVariants(model); // TODO Remove this when finished
             CCModel[] fullBlockVariants = ShapeModelGenerator.generateFullBlockVariants(fullBlockModel);
-            this.pipeModels.put(fluidPipeType, new PipeModelInfo(rotatedVariants, fullBlockVariants));
+            CCModel[] cornerVariants = ShapeModelGenerator.generateCornerVariants(fullBlockModel);
+            this.pipeModels.put(fluidPipeType, new PipeModelInfo(rotatedVariants, fullBlockVariants, cornerVariants));
         }
     }
 
@@ -196,6 +199,16 @@ public class FluidPipeRenderer implements ICCBlockRenderer, IItemRenderer {
             fullBlockModel = modelInfo.fullBlockModels[1];
         } else if (sidedConnMask == 0b110000) {
             fullBlockModel = modelInfo.fullBlockModels[2];
+        } else if (sidedConnMask == 0b111111) { // TODO eventually replace this with general "else" (might need to handle edge models before it) except for connection models
+            fullBlockModel = modelInfo.cornerModels[63];
+        } else if (sidedConnMask == 0b001111) {
+            fullBlockModel = modelInfo.cornerModels[0b001111];
+        } else if (sidedConnMask == 0b110011) {
+            fullBlockModel = modelInfo.cornerModels[0b110011];
+        } else if (sidedConnMask == 0b111100) {
+            fullBlockModel = modelInfo.cornerModels[0b111100];
+        } else if (sidedConnMask == 0b010011) {
+            fullBlockModel = modelInfo.cornerModels[0b010011];
         }
         if (fullBlockModel != null) {
             state.setPipeline(fullBlockModel, 0, fullBlockModel.verts.length, sideTexture);
@@ -203,6 +216,7 @@ public class FluidPipeRenderer implements ICCBlockRenderer, IItemRenderer {
             return true;
         }
 
+        /* Lines below here to be removed */
         Cuboid6 centerCuboid = BlockFluidPipe.getSideBox(null, pipeType.getThickness());
         state.setPipeline(openingTexture);
         BlockRenderer.renderCuboid(state, centerCuboid, 0);
