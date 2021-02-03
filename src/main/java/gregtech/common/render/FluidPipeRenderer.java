@@ -112,16 +112,13 @@ public class FluidPipeRenderer implements ICCBlockRenderer, IItemRenderer {
             CCModel fullBlockModel = ShapeModelGenerator.generateModel(angles, 1.0f, thickness / 3.0f, height);
             CCModel halfModel = ShapeModelGenerator.generateModel(angles, 0.5f, thickness / 3.0f, height);
 
-            // TODO Fix this
-            CCModel coreModel = ShapeModelGenerator.generateModel(angles, 0.5f, thickness / 3.0f, height / 2.0f);
-
             CCModel[] rotatedVariants = ShapeModelGenerator.generateRotatedVariants(model); // TODO Remove this when finished
             CCModel[] fullBlockVariants = ShapeModelGenerator.generateFullBlockVariants(fullBlockModel);
             CCModel[] cornerVariants = ShapeModelGenerator.generateCornerVariants(fullBlockModel, halfModel);
 
             CCModel[] halfModels = ShapeModelGenerator.generateHalfModels(halfModel);
 
-            CCModel[] allVariants = ShapeModelGenerator.generateCornerVariantsTakeTwo(halfModels, model);
+            CCModel[] allVariants = ShapeModelGenerator.generateCornerVariantsTakeTwo(fullBlockVariants, halfModels);
             this.pipeModels.put(fluidPipeType, new PipeModelInfo(rotatedVariants, fullBlockVariants, allVariants, halfModels));
         }
     }
@@ -225,17 +222,18 @@ public class FluidPipeRenderer implements ICCBlockRenderer, IItemRenderer {
             } else if ((sidedConnMask & 32) == 32) {
                 fullBlockModel = modelInfo.halfModels[5];
             }
+            // TODO Null check? Shouldn't be needed, but Intellij wants it
             state.setPipeline(fullBlockModel, 0, fullBlockModel.verts.length, sideTexture);
             state.render();
             return true;
         }
-        if (sidedConnMask == 0b000011) {
+        /*if (sidedConnMask == 0b000011) {
             fullBlockModel = modelInfo.fullBlockModels[0];
         } else if (sidedConnMask == 0b001100) {
             fullBlockModel = modelInfo.fullBlockModels[1];
         } else if (sidedConnMask == 0b110000) {
             fullBlockModel = modelInfo.fullBlockModels[2];
-        } else if (modelInfo.cornerModels[sidedConnMask] != null) {
+        } else */if (modelInfo.cornerModels[sidedConnMask] != null) {
             fullBlockModel = modelInfo.cornerModels[sidedConnMask];
         }
         if (fullBlockModel != null) {

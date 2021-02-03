@@ -2,8 +2,10 @@ package gregtech.common.render;
 
 import codechicken.lib.render.CCModel;
 import codechicken.lib.vec.*;
+import gregtech.api.util.GTLog;
 import net.minecraft.util.EnumFacing;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -42,7 +44,7 @@ public class ShapeModelGenerator {
         double translate = 1.0 - modelHeight;
 
         result[0] = originalModel.copy();
-        result[1] = originalModel.copy().apply(Rotation.quarterRotations[2].at(Vector3.center));
+        result[1] = originalModel.copy().apply(Rotation.sideRotations[1].at(Vector3.center)); // wrong
         result[2] = originalModel.copy().apply(Rotation.sideRotations[2].at(Vector3.center));
         result[3] = result[2].copy().apply(Rotation.quarterRotations[2].at(Vector3.center));
         result[4] = originalModel.copy().apply(Rotation.sideRotations[4].at(Vector3.center));
@@ -62,8 +64,15 @@ public class ShapeModelGenerator {
         return result;
     }
 
-    public static CCModel[] generateCornerVariantsTakeTwo(CCModel[] halfModels, CCModel coreModel) {
+    public static CCModel[] generateCornerVariantsTakeTwo(CCModel[] straightModels, CCModel[] halfModels) {
         CCModel[] result = generateFancyVariants();
+
+        /* Indices:
+         * Up/Down: 0
+         * North/South: 1
+         * West/East: 2
+         */
+        // CCModel[] straightModels = generateFullBlockVariants(originalModel);
 
         /*
          * Indices:
@@ -74,31 +83,39 @@ public class ShapeModelGenerator {
          * West: 4
          * East: 5
          */
-        //CCModel[] halfModels = generateHalfModels(halfModel);
-        
+        // CCModel[] halfModels = generateHalfModels(halfModel);
+
         for (int i=0; i < 64; i++) {
             if (result[i] == null) { // Check here to not overwrite models handled separately
-                CCModel model = coreModel.copy();
-                if ((i & 1) == 1) {
-                    model = CCModel.combine(Arrays.asList(model, halfModels[0]));
+                int iMask = i & 0b111111; // maybe not necessary
+                List<CCModel> parts = new ArrayList<>();
+
+                if ((iMask & 0b1) == 0b1 && (iMask & 0b10) == 0b10) {
+                    parts.add(straightModels[0].copy());
+                } else if ((iMask & 0b1) == 0b1) {
+                    parts.add(halfModels[0].copy());
+                } else if ((iMask & 0b10) == 0b10) {
+                    parts.add(halfModels[1].copy());
                 }
-                if ((i & 2) == 2) {
-                    model = CCModel.combine(Arrays.asList(model, halfModels[1]));
+
+                if ((iMask & 0b100) == 0b100 && (iMask & 0b1000) == 0b1000) {
+                    parts.add(straightModels[1].copy());
+                } else if ((iMask & 0b100) == 0b100) {
+                    parts.add(halfModels[2].copy());
+                } else if ((iMask & 0b1000) == 0b1000) {
+                    parts.add(halfModels[3].copy());
                 }
-                if ((i & 4) == 4) {
-                    model = CCModel.combine(Arrays.asList(model, halfModels[2]));
+
+                if ((iMask & 0b10000) == 0b10000 && (iMask & 0b100000) == 0b100000) {
+                    parts.add(straightModels[2].copy());
+                } else if ((iMask & 0b10000) == 0b10000) {
+                    parts.add(halfModels[4].copy());
+                } else if ((iMask & 0b100000) == 0b100000) {
+                    parts.add(halfModels[5].copy());
                 }
-                if ((i & 8) == 8) {
-                    model = CCModel.combine(Arrays.asList(model, halfModels[3]));
-                }
-                if ((i & 16) == 16) {
-                    model = CCModel.combine(Arrays.asList(model, halfModels[4]));
-                }
-                if ((i & 32) == 32) {
-                    model = CCModel.combine(Arrays.asList(model, halfModels[5]));
-                }
-                if (model != null) {
-                    result[i] = model;
+                if (parts.size() != 0) {
+                    GTLog.logger.info("i value: " + i + ", parts.size(): " + parts.size());
+                    result[i] = CCModel.combine(parts);
                 }
             }
         }
@@ -286,6 +303,7 @@ public class ShapeModelGenerator {
         return result;
     }
 
+    // Example was with (20, 5, 6, 0.5)
     private static CCModel generateTurnModel(int numberOfTurns, int turnPointsPerTexel, int numberOfAnglesInner, double radiusInner) {
         CCModel initialModel = CCModel.quadModel(numberOfAnglesInner * 4 * numberOfTurns);
         int currentIndex = 0;
