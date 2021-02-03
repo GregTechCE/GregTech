@@ -19,7 +19,7 @@ public class ShapeModelGenerator {
         return result;
     }
 
-    public static CCModel[] generateRotatedVariants(CCModel originalModel) {
+    public static CCModel[] generateRotatedVariants(CCModel originalModel) { // pipe rotations here are not *exactly* right
         CCModel[] result = new CCModel[6];
         double modelHeight = originalModel.verts[2].vec.y;
         double translate = 1.0 - modelHeight;
@@ -35,22 +35,83 @@ public class ShapeModelGenerator {
         return result;
     }
 
-    private static CCModel[] generateHalfModels(CCModel originalModel) {
+    public static CCModel[] generateHalfModels(CCModel originalModel) {
         CCModel[] result = new CCModel[6];
         double modelHeight = originalModel.verts[2].vec.y;
+        // double modelLength = originalModel.verts[0].vec.x;
         double translate = 1.0 - modelHeight;
+
+        result[0] = originalModel.copy();
+        result[1] = originalModel.copy().apply(Rotation.quarterRotations[2].at(Vector3.center));
+        result[2] = originalModel.copy().apply(Rotation.sideRotations[2].at(Vector3.center));
+        result[3] = result[2].copy().apply(Rotation.quarterRotations[2].at(Vector3.center));
+        result[4] = originalModel.copy().apply(Rotation.sideRotations[4].at(Vector3.center));
+        result[5] = result[4].copy().apply(Rotation.quarterRotations[2].at(Vector3.center));
+
+        /*
         for (int i = 0; i < 3; i++) {
             EnumFacing side = EnumFacing.VALUES[i * 2 + 1];
             Transformation rotation = Rotation.sideRotations[i * 2].at(Vector3.center);
-            Transformation translation = new Translation(side.getFrontOffsetX() * translate / 2.0f, side.getFrontOffsetY() * translate / 2.0f, side.getFrontOffsetZ() * translate / 2.0f);
+            Transformation translation = new Translation(side.getFrontOffsetX() * translate, side.getFrontOffsetY() * translate, side.getFrontOffsetZ() * translate);
+
             CCModel negativeModel = originalModel.copy().apply(rotation);
             CCModel positiveModel = negativeModel.copy().apply(translation);
             result[i * 2] = negativeModel;
             result[i * 2 + 1] = positiveModel;
+        }*/
+        return result;
+    }
+
+    public static CCModel[] generateCornerVariantsTakeTwo(CCModel[] halfModels, CCModel coreModel) {
+        CCModel[] result = generateFancyVariants();
+
+        /*
+         * Indices:
+         * Down: 0
+         * Up: 1
+         * North: 2
+         * South: 3
+         * West: 4
+         * East: 5
+         */
+        //CCModel[] halfModels = generateHalfModels(halfModel);
+        
+        for (int i=0; i < 64; i++) {
+            if (result[i] == null) { // Check here to not overwrite models handled separately
+                CCModel model = coreModel.copy();
+                if ((i & 1) == 1) {
+                    model = CCModel.combine(Arrays.asList(model, halfModels[0]));
+                }
+                if ((i & 2) == 2) {
+                    model = CCModel.combine(Arrays.asList(model, halfModels[1]));
+                }
+                if ((i & 4) == 4) {
+                    model = CCModel.combine(Arrays.asList(model, halfModels[2]));
+                }
+                if ((i & 8) == 8) {
+                    model = CCModel.combine(Arrays.asList(model, halfModels[3]));
+                }
+                if ((i & 16) == 16) {
+                    model = CCModel.combine(Arrays.asList(model, halfModels[4]));
+                }
+                if ((i & 32) == 32) {
+                    model = CCModel.combine(Arrays.asList(model, halfModels[5]));
+                }
+                if (model != null) {
+                    result[i] = model;
+                }
+            }
         }
         return result;
     }
 
+    private static CCModel[] generateFancyVariants() {
+        CCModel[] result = new CCModel[64];
+
+        // TODO Generate corners and corner+1 pipes here here
+
+        return result;
+    }
 
     /*
      * Bitmask info:
@@ -61,7 +122,8 @@ public class ShapeModelGenerator {
      * 4: WEST
      * 5: EAST
      */
-    public static CCModel[] generateCornerVariants(CCModel originalModel) {
+    // TODO Test more sizes for z-fighting
+    public static CCModel[] generateCornerVariants(CCModel originalModel, CCModel halfModel) {
         CCModel[] result = new CCModel[64]; // 64 different "corner" variants possible.
                                             // There are some extra models generated that are wasted, but it saved a TON of code to do it this way
         double modelHeight = originalModel.verts[2].vec.y;
@@ -76,9 +138,11 @@ public class ShapeModelGenerator {
             Rotation.sideRotations[3].at(Vector3.center),     // - y=z, z=-y
             Rotation.sideRotations[4].at(Vector3.center),     // - x=y, y=-x
             Rotation.sideRotations[5].at(Vector3.center),     // - x=-y, y=x
-            Rotation.quarterRotations[1].at(Vector3.center),  // - x=-z, z=x    // 6
-            Rotation.quarterRotations[2].at(Vector3.center),  // - x=-x, z=-z   // 7
-            Rotation.quarterRotations[3].at(Vector3.center)); // - x=z, z=-x    // 8
+            Rotation.quarterRotations[1].at(Vector3.center),  // - x=-z, z=x      // 6
+            Rotation.quarterRotations[2].at(Vector3.center),  // - x=-x, z=-z     // 7
+            Rotation.quarterRotations[3].at(Vector3.center),  // - x=z, z=-x      // 8
+            AxisCycle.cycles[1].at(Vector3.center),           // - x=z, y=x, z=y  // 9
+            AxisCycle.cycles[2].at(Vector3.center));          // - x=y, y=z, z=x  // 10
 
 
         /* Indices:
@@ -97,17 +161,32 @@ public class ShapeModelGenerator {
          * West: 4
          * East: 5
          */
-        CCModel[] halfModels = generateHalfModels(originalModel); // TODO Fix half models code
+        CCModel[] halfModels = generateHalfModels(halfModel);
 
         // No connections "joint"
 
 
         // Elbow joint (save for later)
+        // CCModel elbowJoint = generateTurnModel(<calculate values>);
 
 
         // T joint
-        CCModel tJoint = CCModel.combine(Arrays.asList(straightModels[0], halfModels[4]));
-        result[0b010011] = tJoint;
+        CCModel tJoint = CCModel.combine(Arrays.asList(straightModels[0].copy(), halfModels[4].copy()));
+        result[0b010011] = tJoint.copy();                         // DUW
+        result[0b000111] = tJoint.copy().apply(rotations.get(6)); // NUD
+        result[0b100011] = tJoint.copy().apply(rotations.get(7)); // EUD
+        result[0b001011] = tJoint.copy().apply(rotations.get(8)); // SUD
+
+        result[0b110010] = tJoint.copy().apply(rotations.get(4)); // UWE good
+        result[0b110100] = tJoint.copy().apply(rotations.get(10)); // NWE good
+        result[0b110001] = tJoint.copy().apply(rotations.get(5)); // DWE good
+        result[0b111000] = tJoint.copy().apply(rotations.get(2)).apply(rotations.get(8)); // SWE
+
+        result[0b101100] = tJoint.copy().apply(rotations.get(1)); // ENS
+        result[0b001110] = tJoint.copy().apply(rotations.get(10)); // UNS
+        result[0b011100] = tJoint.copy().apply(rotations.get(3)); // WNS good
+        result[0b001101] = tJoint.copy().apply(rotations.get(9)); // DNS good
+
 
 
         // 3-way joint (save for later)
@@ -120,10 +199,10 @@ public class ShapeModelGenerator {
         result[0b111100] = plusJoint.copy().apply(rotations.get(4)); // EWSN
 
         // T+1 joint
-
+        CCModel tPlusJoint = CCModel.combine(Arrays.asList(tJoint.copy(), halfModels[2].copy())); // DUWN
 
         // 5-way joint
-
+        CCModel fiveJoint = CCModel.combine(Arrays.asList(plusJoint.copy(), halfModels[4].copy())); // SNUDW
 
         // 6-way joint TODO DONE
         CCModel sixJoint = CCModel.combine(Arrays.asList(straightModels[0].copy(), straightModels[1].copy(), straightModels[2].copy()));
@@ -173,4 +252,75 @@ public class ShapeModelGenerator {
         return new Vector3(x, 0.0, z);
     }
 
+
+    // Thank you to Arch for these complex generations
+    private static Matrix4 createRotationMatrix(Vector3 forward, Vector3 up) {
+        Vector3 right = forward.copy().crossProduct(up).multiply(-1.0f); //i*j = -k
+
+        return new Matrix4(
+            forward.x, up.x, right.x, 0.0f,
+            forward.y, up.y, right.y, 0.0f,
+            forward.z, up.z, right.z, 0.0f,
+            0.0f, 0.0f, 0.0f, 1.0f);
+    }
+
+    private static Vector3[] generatePointsForAngle(double anglePerNumber, int number, int numberOfAnglesInner, double radiusInner) {
+        double angle = anglePerNumber * number;
+        double nextAngle = anglePerNumber * (number + 1);
+
+        Vector3 center = new Vector3(Math.cos(angle) * 0.5, 0.5f, Math.sin(angle) * 0.5);
+        Vector3 nextCenter = new Vector3(Math.cos(nextAngle) * 0.5, 0.5, Math.sin(nextAngle) * 0.5);
+        Vector3 forward = nextCenter.copy().subtract(center).normalize();
+        Vector3 up = new Vector3(0.0f, 1.0f, 0.0f);
+        Matrix4 rotationMatrix = createRotationMatrix(forward, up);
+
+        Vector3[] result = new Vector3[numberOfAnglesInner];
+        double anglePerNumberInner = (Math.PI * 2) / (numberOfAnglesInner * 1.0);
+        for (int numberInner = 0; numberInner < numberOfAnglesInner; numberInner++) {
+            double angleInner = anglePerNumberInner * numberInner;
+            Vector3 originalPoint = new Vector3(0.0f, Math.cos(angleInner) * radiusInner, Math.sin(angleInner) * radiusInner);
+            rotationMatrix.apply(originalPoint);
+            originalPoint.add(center);
+            result[numberInner] = originalPoint;
+        }
+        return result;
+    }
+
+    private static CCModel generateTurnModel(int numberOfTurns, int turnPointsPerTexel, int numberOfAnglesInner, double radiusInner) {
+        CCModel initialModel = CCModel.quadModel(numberOfAnglesInner * 4 * numberOfTurns);
+        int currentIndex = 0;
+
+        Vector3[][] allGeneratedPoints = new Vector3[numberOfTurns + 1][];
+        double anglePerNumber = (Math.PI / 2) / numberOfTurns;
+        for (int i = 0; i <= numberOfTurns; i++) {
+            allGeneratedPoints[i] = generatePointsForAngle(anglePerNumber, i, numberOfAnglesInner, radiusInner);
+        }
+
+        double texelSizePerTurn = 1.0 / (turnPointsPerTexel * 1.0);
+
+        for (int i = 0; i < numberOfTurns; i++) {
+            Vector3[] currentTurn = allGeneratedPoints[i];
+            Vector3[] nextTurn = allGeneratedPoints[i + 1];
+
+            for (int j = 0; j < numberOfAnglesInner; j++) {
+                Vector3 currentTurnFirstPoint = currentTurn[j];
+                Vector3 currentTurnSecondPoint = currentTurn[(j + 1) % numberOfAnglesInner];
+
+                Vector3 nextTurnFirstPoint = nextTurn[j];
+                Vector3 nextTurnSecondPoint = nextTurn[(j + 1) % numberOfAnglesInner];
+
+                double startU = texelSizePerTurn * (i % turnPointsPerTexel);
+                double endU = startU + texelSizePerTurn;
+
+                double startV = 0.0;
+                double endV = 1.0;
+
+                initialModel.verts[currentIndex++] = new Vertex5(nextTurnFirstPoint.copy(), endU, startV);
+                initialModel.verts[currentIndex++] = new Vertex5(nextTurnSecondPoint.copy(), endU, endV);
+                initialModel.verts[currentIndex++] = new Vertex5(currentTurnSecondPoint.copy(), startU, endV);
+                initialModel.verts[currentIndex++] = new Vertex5(currentTurnFirstPoint.copy(), startU, startV);
+            }
+        }
+        return initialModel.computeNormals();
+    }
 }
