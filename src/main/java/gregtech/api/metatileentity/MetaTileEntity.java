@@ -992,24 +992,6 @@ public abstract class MetaTileEntity implements ICoverable {
         return filledAll;
     }
 
-    public boolean isInputEmpty() {
-        if (importItems.getSlots() > 0) {
-            for (int i = 0; i < importItems.getSlots(); i++) {
-                if (!importItems.getStackInSlot(i).isEmpty()) {
-                    return false;
-                }
-            }
-        }
-        if (importFluids.getTanks() > 0) {
-            for (int i = 0; i < importFluids.getTanks(); i++) {
-                if (importFluids.getTankAt(i).getFluid() != null) {
-                    return false;
-                }
-            }
-        }
-        return true;
-    }
-
     public final int getOutputRedstoneSignal(@Nullable EnumFacing side) {
         if (side == null) {
             return getHighestOutputRedstoneSignal();

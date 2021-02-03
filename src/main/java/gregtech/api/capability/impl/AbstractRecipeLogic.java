@@ -51,6 +51,7 @@ public abstract class AbstractRecipeLogic extends MTETrait implements IWorkable 
     protected boolean workingEnabled = true;
     protected boolean hasNotEnoughEnergy;
     protected boolean wasActiveAndNeedsUpdate;
+    protected boolean isInputsEmpty;
 
     public AbstractRecipeLogic(MetaTileEntity tileEntity, RecipeMap<?> recipeMap) {
         super(tileEntity);
@@ -111,10 +112,11 @@ public abstract class AbstractRecipeLogic extends MTETrait implements IWorkable 
                 if (progressTime == 0) {
                     trySearchNewRecipe();
                     if (currentRecipe == null) {
-                        metaTileEntity.setSituation(NO_MATCHING_RECIPE);
-                    }
-                    if (metaTileEntity.isInputEmpty()) {
-                        metaTileEntity.setSituation(IDLE);
+                        if (isInputsEmpty) {
+                            metaTileEntity.setSituation(IDLE);
+                        } else {
+                            metaTileEntity.setSituation(NO_MATCHING_RECIPE);
+                        }
                     }
                 }
             } else {
@@ -195,6 +197,7 @@ public abstract class AbstractRecipeLogic extends MTETrait implements IWorkable 
 
     protected boolean checkRecipeInputsDirty(IItemHandler inputs, IMultipleTankHandler fluidInputs) {
         boolean shouldRecheckRecipe = false;
+        this.isInputsEmpty = true;
         if (lastItemInputs == null || lastItemInputs.length != inputs.getSlots()) {
             this.lastItemInputs = new ItemStack[inputs.getSlots()];
             Arrays.fill(lastItemInputs, ItemStack.EMPTY);
@@ -211,6 +214,8 @@ public abstract class AbstractRecipeLogic extends MTETrait implements IWorkable 
             } else if (currentStack.getCount() != lastStack.getCount()) {
                 lastStack.setCount(currentStack.getCount());
                 shouldRecheckRecipe = true;
+            } else if (!currentStack.isEmpty()) {
+                this.isInputsEmpty = false;
             }
         }
         for (int i = 0; i < lastFluidInputs.length; i++) {
@@ -224,6 +229,8 @@ public abstract class AbstractRecipeLogic extends MTETrait implements IWorkable 
                 currentStack.amount != lastStack.amount) {
                 lastStack.amount = currentStack.amount;
                 shouldRecheckRecipe = true;
+            } else if (currentStack != null) {
+                this.isInputsEmpty = false;
             }
         }
         return shouldRecheckRecipe;
