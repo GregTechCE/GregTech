@@ -77,12 +77,14 @@ public class FluidPipeRenderer implements ICCBlockRenderer, IItemRenderer {
         public final CCModel[] fullBlockModels;
         public final CCModel[] cornerModels;
         public final CCModel[] halfModels;
+        public final CCModel testVertPipe;
 
-        public PipeModelInfo(CCModel[] connectionModels, CCModel[] fullBlockModels, CCModel[] cornerModels, CCModel[] halfModels) {
+        public PipeModelInfo(CCModel[] connectionModels, CCModel[] fullBlockModels, CCModel[] cornerModels, CCModel[] halfModels, CCModel pipe) {
             this.connectionModels = connectionModels; // TODO Remove this field when finished, maybe
             this.fullBlockModels = fullBlockModels;
             this.cornerModels = cornerModels;
             this.halfModels = halfModels;
+            this.testVertPipe = pipe;
         }
     }
 
@@ -114,12 +116,12 @@ public class FluidPipeRenderer implements ICCBlockRenderer, IItemRenderer {
 
             CCModel[] rotatedVariants = ShapeModelGenerator.generateRotatedVariants(model); // TODO Remove this when finished
             CCModel[] fullBlockVariants = ShapeModelGenerator.generateFullBlockVariants(fullBlockModel);
-            CCModel[] cornerVariants = ShapeModelGenerator.generateCornerVariants(fullBlockModel, halfModel);
+            // CCModel[] cornerVariants = ShapeModelGenerator.generateCornerVariants(fullBlockModel, halfModel);
 
             CCModel[] halfModels = ShapeModelGenerator.generateHalfModels(halfModel);
 
             CCModel[] allVariants = ShapeModelGenerator.generateCornerVariantsTakeTwo(fullBlockVariants, halfModels);
-            this.pipeModels.put(fluidPipeType, new PipeModelInfo(rotatedVariants, fullBlockVariants, allVariants, halfModels));
+            this.pipeModels.put(fluidPipeType, new PipeModelInfo(rotatedVariants, fullBlockVariants, allVariants, halfModels, fullBlockVariants[0]));
         }
     }
 
@@ -202,6 +204,12 @@ public class FluidPipeRenderer implements ICCBlockRenderer, IItemRenderer {
         int sidedConnMask = connectMask & 0b111111;
         int totalConnections = 0;
 
+        // 3 lines are a test
+        // state.setPipeline(modelInfo.testVertPipe, 0, modelInfo.testVertPipe.verts.length, sideTexture);
+        // state.render();
+        // return true;
+
+
         for (int i = 0; i < 6; i++) {
             if (((sidedConnMask << i) & 1) == 1) {
                 totalConnections++;
@@ -227,13 +235,14 @@ public class FluidPipeRenderer implements ICCBlockRenderer, IItemRenderer {
             state.render();
             return true;
         }
-        /*if (sidedConnMask == 0b000011) {
-            fullBlockModel = modelInfo.fullBlockModels[0];
+        if (sidedConnMask == 0b000011) {
+            fullBlockModel = modelInfo.fullBlockModels[0]; // why is this also wrong??
         } else if (sidedConnMask == 0b001100) {
             fullBlockModel = modelInfo.fullBlockModels[1];
         } else if (sidedConnMask == 0b110000) {
             fullBlockModel = modelInfo.fullBlockModels[2];
-        } else */if (modelInfo.cornerModels[sidedConnMask] != null) {
+        } else
+        if (modelInfo.cornerModels[sidedConnMask] != null) {
             fullBlockModel = modelInfo.cornerModels[sidedConnMask];
         }
         if (fullBlockModel != null) {
@@ -242,7 +251,7 @@ public class FluidPipeRenderer implements ICCBlockRenderer, IItemRenderer {
             return true;
         }
 
-        /* Lines below here to be removed and replaced with new solo-pipe/endpoint code*/
+        // Lines below here to be removed and replaced with new solo-pipe/endpoint code
         Cuboid6 centerCuboid = BlockFluidPipe.getSideBox(null, pipeType.getThickness());
         state.setPipeline(openingTexture);
         BlockRenderer.renderCuboid(state, centerCuboid, 0);

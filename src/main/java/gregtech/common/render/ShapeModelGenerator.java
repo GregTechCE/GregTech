@@ -2,7 +2,6 @@ package gregtech.common.render;
 
 import codechicken.lib.render.CCModel;
 import codechicken.lib.vec.*;
-import gregtech.api.util.GTLog;
 import net.minecraft.util.EnumFacing;
 
 import java.util.ArrayList;
@@ -40,10 +39,9 @@ public class ShapeModelGenerator {
     public static CCModel[] generateHalfModels(CCModel originalModel) {
         CCModel[] result = new CCModel[6];
         double modelHeight = originalModel.verts[2].vec.y;
-        // double modelLength = originalModel.verts[0].vec.x;
         double translate = 1.0 - modelHeight;
 
-        result[0] = originalModel.copy();
+        result[0] = originalModel.copy().apply(Rotation.sideRotations[0].at(Vector3.center));
         result[1] = originalModel.copy().apply(Rotation.sideRotations[1].at(Vector3.center)); // wrong
         result[2] = originalModel.copy().apply(Rotation.sideRotations[2].at(Vector3.center));
         result[3] = result[2].copy().apply(Rotation.quarterRotations[2].at(Vector3.center));
@@ -72,7 +70,7 @@ public class ShapeModelGenerator {
          * North/South: 1
          * West/East: 2
          */
-        // CCModel[] straightModels = generateFullBlockVariants(originalModel);
+        // CCModel[] straightModels = generateFullBlockVariants(straightModel);
 
         /*
          * Indices:
@@ -113,8 +111,11 @@ public class ShapeModelGenerator {
                 } else if ((iMask & 0b100000) == 0b100000) {
                     parts.add(halfModels[5].copy());
                 }
-                if (parts.size() != 0) {
-                    GTLog.logger.info("i value: " + i + ", parts.size(): " + parts.size());
+
+                // TODO Distinction here should be unnecessary
+                if (parts.size() == 1) {
+                    result[i] = parts.get(0);
+                } else if (parts.size() > 1) {
                     result[i] = CCModel.combine(parts);
                 }
             }
