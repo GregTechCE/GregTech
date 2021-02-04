@@ -20,7 +20,7 @@ public class ShapeModelGenerator {
         return result;
     }
 
-    public static CCModel[] generateRotatedVariants(CCModel originalModel) { // pipe rotations here are not *exactly* right
+    public static CCModel[] generateRotatedVariants(CCModel originalModel) {
         CCModel[] result = new CCModel[6];
         double modelHeight = originalModel.verts[2].vec.y;
         double translate = 1.0 - modelHeight;
@@ -36,19 +36,20 @@ public class ShapeModelGenerator {
         return result;
     }
 
+    // TODO Fix this so that pipes line up together well
     public static CCModel[] generateHalfModels(CCModel originalModel) {
         CCModel[] result = new CCModel[6];
         double modelHeight = originalModel.verts[2].vec.y;
         double translate = 1.0 - modelHeight;
 
         result[0] = originalModel.copy().apply(Rotation.sideRotations[0].at(Vector3.center));
-        result[1] = originalModel.copy().apply(Rotation.sideRotations[1].at(Vector3.center)); // wrong
+        result[1] = originalModel.copy().apply(Rotation.sideRotations[1].at(Vector3.center));
         result[2] = originalModel.copy().apply(Rotation.sideRotations[2].at(Vector3.center));
         result[3] = result[2].copy().apply(Rotation.quarterRotations[2].at(Vector3.center));
         result[4] = originalModel.copy().apply(Rotation.sideRotations[4].at(Vector3.center));
         result[5] = result[4].copy().apply(Rotation.quarterRotations[2].at(Vector3.center));
 
-        /*
+        /* old code (from generateRotatedVariants() )
         for (int i = 0; i < 3; i++) {
             EnumFacing side = EnumFacing.VALUES[i * 2 + 1];
             Transformation rotation = Rotation.sideRotations[i * 2].at(Vector3.center);
@@ -62,62 +63,39 @@ public class ShapeModelGenerator {
         return result;
     }
 
+    // TODO Finished
     public static CCModel[] generateCornerVariantsTakeTwo(CCModel[] straightModels, CCModel[] halfModels) {
         CCModel[] result = generateFancyVariants();
 
-        /* Indices:
-         * Up/Down: 0
-         * North/South: 1
-         * West/East: 2
-         */
-        // CCModel[] straightModels = generateFullBlockVariants(straightModel);
-
-        /*
-         * Indices:
-         * Down: 0
-         * Up: 1
-         * North: 2
-         * South: 3
-         * West: 4
-         * East: 5
-         */
-        // CCModel[] halfModels = generateHalfModels(halfModel);
-
-        for (int i=0; i < 64; i++) {
+        for (int i=1; i < 64; i++) {
             if (result[i] == null) { // Check here to not overwrite models handled separately
-                int iMask = i & 0b111111; // maybe not necessary
                 List<CCModel> parts = new ArrayList<>();
 
-                if ((iMask & 0b1) == 0b1 && (iMask & 0b10) == 0b10) {
+                if ((i & 1) == 1 && (i & 2) == 2) {
                     parts.add(straightModels[0].copy());
-                } else if ((iMask & 0b1) == 0b1) {
+                } else if ((i & 1) == 1) {
                     parts.add(halfModels[0].copy());
-                } else if ((iMask & 0b10) == 0b10) {
+                } else if ((i & 2) == 2) {
                     parts.add(halfModels[1].copy());
                 }
 
-                if ((iMask & 0b100) == 0b100 && (iMask & 0b1000) == 0b1000) {
+                if ((i & 4) == 4 && (i & 8) == 8) {
                     parts.add(straightModels[1].copy());
-                } else if ((iMask & 0b100) == 0b100) {
+                } else if ((i & 4) == 4) {
                     parts.add(halfModels[2].copy());
-                } else if ((iMask & 0b1000) == 0b1000) {
+                } else if ((i & 8) == 8) {
                     parts.add(halfModels[3].copy());
                 }
 
-                if ((iMask & 0b10000) == 0b10000 && (iMask & 0b100000) == 0b100000) {
+                if ((i & 16) == 16 && (i & 32) == 32) {
                     parts.add(straightModels[2].copy());
-                } else if ((iMask & 0b10000) == 0b10000) {
+                } else if ((i & 16) == 16) {
                     parts.add(halfModels[4].copy());
-                } else if ((iMask & 0b100000) == 0b100000) {
+                } else if ((i & 32) == 32) {
                     parts.add(halfModels[5].copy());
                 }
 
-                // TODO Distinction here should be unnecessary
-                if (parts.size() == 1) {
-                    result[i] = parts.get(0);
-                } else if (parts.size() > 1) {
-                    result[i] = CCModel.combine(parts);
-                }
+                result[i] = CCModel.combine(parts);
             }
         }
         return result;
@@ -131,23 +109,8 @@ public class ShapeModelGenerator {
         return result;
     }
 
-    /*
-     * Bitmask info:
-     * 0: DOWN
-     * 1: UP
-     * 2: NORTH
-     * 3: SOUTH
-     * 4: WEST
-     * 5: EAST
-     */
-    // TODO Test more sizes for z-fighting
     public static CCModel[] generateCornerVariants(CCModel originalModel, CCModel halfModel) {
-        CCModel[] result = new CCModel[64]; // 64 different "corner" variants possible.
-                                            // There are some extra models generated that are wasted, but it saved a TON of code to do it this way
-        double modelHeight = originalModel.verts[2].vec.y;
-        double translate = 1.0 - modelHeight;
-
-        CCModel[] baseTypes = new CCModel[7]; // 7 basic types of pipe joints
+        CCModel[] result = new CCModel[64];
 
         List<Transformation> rotations = Arrays.asList(       // Rotation chart:
             Rotation.sideRotations[0].at(Vector3.center),     // - No rotation, is current state
@@ -161,7 +124,6 @@ public class ShapeModelGenerator {
             Rotation.quarterRotations[3].at(Vector3.center),  // - x=z, z=-x      // 8
             AxisCycle.cycles[1].at(Vector3.center),           // - x=z, y=x, z=y  // 9
             AxisCycle.cycles[2].at(Vector3.center));          // - x=y, y=z, z=x  // 10
-
 
         /* Indices:
          * Up/Down: 0
@@ -182,7 +144,6 @@ public class ShapeModelGenerator {
         CCModel[] halfModels = generateHalfModels(halfModel);
 
         // No connections "joint"
-
 
         // Elbow joint (save for later)
         // CCModel elbowJoint = generateTurnModel(<calculate values>);
@@ -225,8 +186,6 @@ public class ShapeModelGenerator {
         // 6-way joint TODO DONE
         CCModel sixJoint = CCModel.combine(Arrays.asList(straightModels[0].copy(), straightModels[1].copy(), straightModels[2].copy()));
         result[0b111111] = sixJoint;
-
-
 
         return result;
     }
