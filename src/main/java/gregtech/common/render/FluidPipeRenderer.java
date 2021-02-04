@@ -72,18 +72,17 @@ public class FluidPipeRenderer implements ICCBlockRenderer, IItemRenderer {
         }
     }
 
+    // TODO Clean out old unused fields
     private static class PipeModelInfo {
-        public final CCModel[] connectionModels;
-        public final CCModel[] fullBlockModels;
         public final CCModel[] cornerModels;
         public final CCModel[] halfModels;
+        public final CCModel[] singleModels;
         public final CCModel testModel;
 
-        public PipeModelInfo(CCModel[] connectionModels, CCModel[] fullBlockModels, CCModel[] cornerModels, CCModel[] halfModels, CCModel testModel) {
-            this.connectionModels = connectionModels; // TODO Remove this field when finished, maybe
-            this.fullBlockModels = fullBlockModels;
+        public PipeModelInfo(CCModel[] cornerModels, CCModel[] halfModels, CCModel[] singleModels, CCModel testModel) {
             this.cornerModels = cornerModels;
             this.halfModels = halfModels;
+            this.singleModels = singleModels;
             this.testModel = testModel;
         }
     }
@@ -96,6 +95,7 @@ public class FluidPipeRenderer implements ICCBlockRenderer, IItemRenderer {
     }
 
     public void registerIcons(TextureMap map) {
+        int[] turnPointsPerTexel = {10, 7, 5, 4};
         for (FluidPipeType fluidPipeType : FluidPipeType.values()) {
             ResourceLocation inLocation = new ResourceLocation(GTValues.MODID, String.format("blocks/pipe/pipe_%s_in", fluidPipeType.name));
             ResourceLocation sideLocation = new ResourceLocation(GTValues.MODID, String.format("blocks/pipe/pipe_%s_side", fluidPipeType.name));
@@ -109,17 +109,21 @@ public class FluidPipeRenderer implements ICCBlockRenderer, IItemRenderer {
             float thickness = fluidPipeType.getThickness();
             double height = (1.0f - thickness) / 2.0f;
             int angles = fluidPipeType.ordinal() < 2 ? 4 : 8;
-            CCModel model = ShapeModelGenerator.generateModel(angles, height, thickness / 3.0f, height);
             CCModel fullBlockModel = ShapeModelGenerator.generateModel(angles, 1.0f, thickness / 3.0f, height);
             CCModel halfModel = ShapeModelGenerator.generateModel(angles, 0.5f, thickness / 3.0f, height);
 
-            CCModel[] rotatedVariants = ShapeModelGenerator.generateRotatedVariants(model); // TODO Remove this when finished
+            // original was 20, 5, 6, .5
+            int numberOfTurns = 5 * (fluidPipeType.ordinal() + 1);
+            CCModel turnModel = ShapeModelGenerator.generateTurnModel(20, turnPointsPerTexel[fluidPipeType.ordinal()], angles, thickness / 3);
+
             CCModel[] fullBlockVariants = ShapeModelGenerator.generateFullBlockVariants(fullBlockModel);
+            CCModel[] halfVariants = ShapeModelGenerator.generateHalfModels(halfModel);
+            CCModel[] allVariants = ShapeModelGenerator.generateCornerVariantsTakeTwo(fullBlockVariants, halfVariants, turnModel);
+            CCModel[] singleVariants = ShapeModelGenerator.generateSingleModels(halfModel);
 
-            CCModel[] halfModels = ShapeModelGenerator.generateHalfModels(halfModel);
+            allVariants[0b010100] = turnModel;
 
-            CCModel[] allVariants = ShapeModelGenerator.generateCornerVariantsTakeTwo(fullBlockVariants, halfModels);
-            this.pipeModels.put(fluidPipeType, new PipeModelInfo(rotatedVariants, fullBlockVariants, allVariants, halfModels, fullBlockVariants[2]));
+            this.pipeModels.put(fluidPipeType, new PipeModelInfo(allVariants, halfVariants, singleVariants, halfVariants[2]));
         }
     }
 
@@ -208,6 +212,7 @@ public class FluidPipeRenderer implements ICCBlockRenderer, IItemRenderer {
         // return true;
 
         if (Integer.bitCount(sidedConnMask) == 1) {
+            // TODO Need end texture code in here somehow
             fullBlockModel = modelInfo.halfModels[(int)(Math.log(sidedConnMask) / Math.log(2))];
             state.setPipeline(fullBlockModel, 0, fullBlockModel.verts.length, sideTexture);
             state.render();
@@ -222,18 +227,15 @@ public class FluidPipeRenderer implements ICCBlockRenderer, IItemRenderer {
             return true;
         }
 
-        // Lines below here to be removed and replaced with new solo-pipe code
-        Cuboid6 centerCuboid = BlockFluidPipe.getSideBox(null, pipeType.getThickness());
-        state.setPipeline(openingTexture);
-        BlockRenderer.renderCuboid(state, centerCuboid, 0);
+        // TODO Lines below here to be removed and replaced with new solo-pipe code
+        // Pass in world(?) to get player facing direction for solo model?
+        //Cuboid6 centerCuboid = BlockFluidPipe.getSideBox(null, pipeType.getThickness());
+        //state.setPipeline(openingTexture);
+        //BlockRenderer.renderCuboid(state, centerCuboid, 0);
 
-        for (EnumFacing side : EnumFacing.VALUES) {
-            if ((connectMask & 1 << side.getIndex()) > 0) {
-                CCModel model = modelInfo.connectionModels[side.getIndex()];
-                state.setPipeline(model, 0, model.verts.length, sideTexture);
-                state.render();
-            }
-        }
+        // TODO Get facing to know which model to use
+        state.setPipeline(modelInfo.singleModels[0], 0, modelInfo.singleModels[0].verts.length, sideTexture);
+        state.render();
         return true;
     }
 

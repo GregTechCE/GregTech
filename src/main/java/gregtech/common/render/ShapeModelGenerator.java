@@ -20,6 +20,7 @@ public class ShapeModelGenerator {
         return result;
     }
 
+    // Old, should be removed, but InvPipeRenderer depends on it (despite never being used)
     public static CCModel[] generateRotatedVariants(CCModel originalModel) {
         CCModel[] result = new CCModel[6];
         double modelHeight = originalModel.verts[2].vec.y;
@@ -36,36 +37,30 @@ public class ShapeModelGenerator {
         return result;
     }
 
-    // TODO Fix this so that pipes line up together well
     public static CCModel[] generateHalfModels(CCModel originalModel) {
         CCModel[] result = new CCModel[6];
-        double modelHeight = originalModel.verts[2].vec.y;
-        double translate = 1.0 - modelHeight;
-
-        result[0] = originalModel.copy().apply(Rotation.sideRotations[0].at(Vector3.center));
-        result[1] = originalModel.copy().apply(Rotation.sideRotations[1].at(Vector3.center));
-        result[2] = originalModel.copy().apply(Rotation.sideRotations[2].at(Vector3.center));
-        result[3] = result[2].copy().apply(Rotation.quarterRotations[2].at(Vector3.center));
-        result[4] = originalModel.copy().apply(Rotation.sideRotations[4].at(Vector3.center));
-        result[5] = result[4].copy().apply(Rotation.quarterRotations[2].at(Vector3.center));
-
-        /* old code (from generateRotatedVariants() )
+        double translate = 0.5;
         for (int i = 0; i < 3; i++) {
             EnumFacing side = EnumFacing.VALUES[i * 2 + 1];
             Transformation rotation = Rotation.sideRotations[i * 2].at(Vector3.center);
             Transformation translation = new Translation(side.getFrontOffsetX() * translate, side.getFrontOffsetY() * translate, side.getFrontOffsetZ() * translate);
-
             CCModel negativeModel = originalModel.copy().apply(rotation);
             CCModel positiveModel = negativeModel.copy().apply(translation);
             result[i * 2] = negativeModel;
             result[i * 2 + 1] = positiveModel;
-        }*/
+        }
         return result;
     }
 
+    public static CCModel[] generateSingleModels(CCModel halfModel) {
+        Transformation translation = new Translation(0, 0.25, 0);
+        CCModel centeredModel = halfModel.copy().apply(translation);
+        return generateFullBlockVariants(centeredModel);
+    }
+
     // TODO Finished
-    public static CCModel[] generateCornerVariantsTakeTwo(CCModel[] straightModels, CCModel[] halfModels) {
-        CCModel[] result = generateFancyVariants();
+    public static CCModel[] generateCornerVariantsTakeTwo(CCModel[] straightModels, CCModel[] halfModels, CCModel curvedModel) {
+        CCModel[] result = generateFancyCornerVariants(curvedModel);
 
         for (int i=1; i < 64; i++) {
             if (result[i] == null) { // Check here to not overwrite models handled separately
@@ -101,7 +96,7 @@ public class ShapeModelGenerator {
         return result;
     }
 
-    private static CCModel[] generateFancyVariants() {
+    private static CCModel[] generateFancyCornerVariants(CCModel originalModel) {
         CCModel[] result = new CCModel[64];
 
         // TODO Generate corners and corner+1 pipes here here
@@ -264,7 +259,7 @@ public class ShapeModelGenerator {
     }
 
     // Example was with (20, 5, 6, 0.5)
-    private static CCModel generateTurnModel(int numberOfTurns, int turnPointsPerTexel, int numberOfAnglesInner, double radiusInner) {
+    public static CCModel generateTurnModel(int numberOfTurns, int turnPointsPerTexel, int numberOfAnglesInner, double radiusInner) {
         CCModel initialModel = CCModel.quadModel(numberOfAnglesInner * 4 * numberOfTurns);
         int currentIndex = 0;
 
