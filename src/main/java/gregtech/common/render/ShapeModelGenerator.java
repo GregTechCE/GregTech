@@ -96,11 +96,64 @@ public class ShapeModelGenerator {
         return result;
     }
 
-    private static CCModel[] generateFancyCornerVariants(CCModel originalModel) {
+    /*
+     * Indices:
+     * Down: 0
+     * Up: 1
+     * North: 2
+     * South: 3
+     * West: 4
+     * East: 5
+     */
+    private static CCModel[] generateFancyCornerVariants(CCModel turnModel) { // turnModel is NW
         CCModel[] result = new CCModel[64];
 
-        // TODO Generate corners and corner+1 pipes here here
+        List<Transformation> rotations = Arrays.asList(       // Rotation chart:
+            Rotation.sideRotations[0].at(Vector3.center),     // - No rotation, is current state
+            Rotation.sideRotations[1].at(Vector3.center),     // - y=-y, z=-z
+            Rotation.sideRotations[2].at(Vector3.center),     // - y=-z, z=y
+            Rotation.sideRotations[3].at(Vector3.center),     // - y=z, z=-y
+            Rotation.sideRotations[4].at(Vector3.center),     // - x=y, y=-x
+            Rotation.sideRotations[5].at(Vector3.center),     // - x=-y, y=x
+            Rotation.quarterRotations[1].at(Vector3.center),  // - x=-z, z=x      // 6
+            Rotation.quarterRotations[2].at(Vector3.center),  // - x=-x, z=-z     // 7
+            Rotation.quarterRotations[3].at(Vector3.center),  // - x=z, z=-x      // 8
+            AxisCycle.cycles[1].at(Vector3.center),           // - x=z, y=x, z=y  // 9
+            AxisCycle.cycles[2].at(Vector3.center));          // - x=y, y=z, z=x  // 10
 
+        CCModel originalModel = turnModel.copy();
+        result[0b010100] = originalModel.copy();
+        result[0b100100] = originalModel.copy().apply(rotations.get(6));
+        result[0b101000] = originalModel.copy().apply(rotations.get(7));
+        result[0b011000] = originalModel.copy().apply(rotations.get(8));
+
+        originalModel = turnModel.copy().apply(rotations.get(4));
+        result[0b000110] = originalModel.copy();
+        result[0b100010] = originalModel.copy().apply(rotations.get(6));
+        result[0b001010] = originalModel.copy().apply(rotations.get(7));
+        result[0b010010] = originalModel.copy().apply(rotations.get(8));
+
+        originalModel = turnModel.copy().apply(rotations.get(5));
+        result[0b000101] = originalModel.copy();
+        result[0b100001] = originalModel.copy().apply(rotations.get(6));
+        result[0b001001] = originalModel.copy().apply(rotations.get(7));
+        result[0b010001] = originalModel.copy().apply(rotations.get(8));
+
+        // Generate corner+1 pipes
+        for (int i = 0; i < result.length; i++) {
+            CCModel corner1 = result[i];
+            if (corner1 != null) {
+                for (int j = i + 1; j < result.length; j++) {
+                    CCModel corner2 = result[j];
+                    if (corner2 != null) {
+                        CCModel corner3 = result[(i ^ j)];
+                        if (corner3 != null) {
+                            result[i | j] = CCModel.combine(Arrays.asList(corner1.copy(), corner2.copy(), corner3.copy()));
+                        }
+                    }
+                }
+            }
+        }
         return result;
     }
 

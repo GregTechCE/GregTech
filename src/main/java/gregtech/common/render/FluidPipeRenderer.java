@@ -26,6 +26,7 @@ import gregtech.common.pipelike.fluidpipe.FluidPipeProperties;
 import gregtech.common.pipelike.fluidpipe.FluidPipeType;
 import gregtech.common.pipelike.fluidpipe.ItemBlockFluidPipe;
 import gregtech.common.pipelike.fluidpipe.tile.TileEntityFluidPipe;
+import net.minecraft.block.state.IBlockProperties;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
@@ -121,7 +122,6 @@ public class FluidPipeRenderer implements ICCBlockRenderer, IItemRenderer {
             CCModel[] allVariants = ShapeModelGenerator.generateCornerVariantsTakeTwo(fullBlockVariants, halfVariants, turnModel);
             CCModel[] singleVariants = ShapeModelGenerator.generateSingleModels(halfModel);
 
-            allVariants[0b010100] = turnModel;
 
             this.pipeModels.put(fluidPipeType, new PipeModelInfo(allVariants, halfVariants, singleVariants, halfVariants[2]));
         }
@@ -241,6 +241,7 @@ public class FluidPipeRenderer implements ICCBlockRenderer, IItemRenderer {
 
     @Override
     public void renderBrightness(IBlockState state, float brightness) {
+        // TODO Do lighting here
     }
 
     @Override
