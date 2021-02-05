@@ -73,18 +73,15 @@ public class FluidPipeRenderer implements ICCBlockRenderer, IItemRenderer {
         }
     }
 
-    // TODO Clean out old unused fields
     private static class PipeModelInfo {
         public final CCModel[] cornerModels;
         public final CCModel[] halfModels;
         public final CCModel[] singleModels;
-        public final CCModel testModel;
 
-        public PipeModelInfo(CCModel[] cornerModels, CCModel[] halfModels, CCModel[] singleModels, CCModel testModel) {
+        public PipeModelInfo(CCModel[] cornerModels, CCModel[] halfModels, CCModel[] singleModels) {
             this.cornerModels = cornerModels;
             this.halfModels = halfModels;
             this.singleModels = singleModels;
-            this.testModel = testModel;
         }
     }
 
@@ -114,7 +111,6 @@ public class FluidPipeRenderer implements ICCBlockRenderer, IItemRenderer {
             CCModel halfModel = ShapeModelGenerator.generateModel(angles, 0.5f, thickness / 3.0f, height);
 
             // original was 20, 5, 6, .5
-            int numberOfTurns = 5 * (fluidPipeType.ordinal() + 1);
             CCModel turnModel = ShapeModelGenerator.generateTurnModel(20, turnPointsPerTexel[fluidPipeType.ordinal()], angles, thickness / 3);
 
             CCModel[] fullBlockVariants = ShapeModelGenerator.generateFullBlockVariants(fullBlockModel);
@@ -122,8 +118,7 @@ public class FluidPipeRenderer implements ICCBlockRenderer, IItemRenderer {
             CCModel[] allVariants = ShapeModelGenerator.generateCornerVariantsTakeTwo(fullBlockVariants, halfVariants, turnModel);
             CCModel[] singleVariants = ShapeModelGenerator.generateSingleModels(halfModel);
 
-
-            this.pipeModels.put(fluidPipeType, new PipeModelInfo(allVariants, halfVariants, singleVariants, halfVariants[2]));
+            this.pipeModels.put(fluidPipeType, new PipeModelInfo(allVariants, halfVariants, singleVariants));
         }
     }
 
@@ -206,35 +201,18 @@ public class FluidPipeRenderer implements ICCBlockRenderer, IItemRenderer {
         int sidedConnMask = connectMask & 0b111111;
         CCModel fullBlockModel = null;
 
-        // 3 lines are a test
-        // state.setPipeline(modelInfo.testModel, 0, modelInfo.testModel.verts.length, sideTexture);
-        // state.render();
-        // return true;
-
-        if (Integer.bitCount(sidedConnMask) == 1) {
-            // TODO Need end texture code in here somehow
+        // TODO Figure out end textures for halfModels and singleModels
+        /*if (Integer.bitCount(sidedConnMask) == 1) {
             fullBlockModel = modelInfo.halfModels[(int)(Math.log(sidedConnMask) / Math.log(2))];
-            state.setPipeline(fullBlockModel, 0, fullBlockModel.verts.length, sideTexture);
-            state.render();
-            return true;
-        }
+        } else*/
+        
         if (modelInfo.cornerModels[sidedConnMask] != null) {
             fullBlockModel = modelInfo.cornerModels[sidedConnMask];
-        }
-        if (fullBlockModel != null) {
-            state.setPipeline(fullBlockModel, 0, fullBlockModel.verts.length, sideTexture);
-            state.render();
-            return true;
+        } else {
+            fullBlockModel = modelInfo.singleModels[0]; // TODO add check for facing here to know which to use
         }
 
-        // TODO Lines below here to be removed and replaced with new solo-pipe code
-        // Pass in world(?) to get player facing direction for solo model?
-        //Cuboid6 centerCuboid = BlockFluidPipe.getSideBox(null, pipeType.getThickness());
-        //state.setPipeline(openingTexture);
-        //BlockRenderer.renderCuboid(state, centerCuboid, 0);
-
-        // TODO Get facing to know which model to use
-        state.setPipeline(modelInfo.singleModels[0], 0, modelInfo.singleModels[0].verts.length, sideTexture);
+        state.setPipeline(fullBlockModel, 0, fullBlockModel.verts.length, sideTexture);
         state.render();
         return true;
     }

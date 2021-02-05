@@ -109,35 +109,30 @@ public class ShapeModelGenerator {
         CCModel[] result = new CCModel[64];
 
         List<Transformation> rotations = Arrays.asList(       // Rotation chart:
-            Rotation.sideRotations[0].at(Vector3.center),     // - No rotation, is current state
-            Rotation.sideRotations[1].at(Vector3.center),     // - y=-y, z=-z
-            Rotation.sideRotations[2].at(Vector3.center),     // - y=-z, z=y
-            Rotation.sideRotations[3].at(Vector3.center),     // - y=z, z=-y
+            Rotation.quarterRotations[0].at(Vector3.center),  // - Redundant, no rotation, just so indices match
+            Rotation.quarterRotations[1].at(Vector3.center),  // - 90 degrees clockwise around Y
+            Rotation.quarterRotations[2].at(Vector3.center),  // - 180 degrees clockwise around Y
+            Rotation.quarterRotations[3].at(Vector3.center),  // - 270 degrees clockwise around Y
             Rotation.sideRotations[4].at(Vector3.center),     // - x=y, y=-x
-            Rotation.sideRotations[5].at(Vector3.center),     // - x=-y, y=x
-            Rotation.quarterRotations[1].at(Vector3.center),  // - x=-z, z=x      // 6
-            Rotation.quarterRotations[2].at(Vector3.center),  // - x=-x, z=-z     // 7
-            Rotation.quarterRotations[3].at(Vector3.center),  // - x=z, z=-x      // 8
-            AxisCycle.cycles[1].at(Vector3.center),           // - x=z, y=x, z=y  // 9
-            AxisCycle.cycles[2].at(Vector3.center));          // - x=y, y=z, z=x  // 10
+            Rotation.sideRotations[5].at(Vector3.center));    // - x=-y, y=x
 
         CCModel originalModel = turnModel.copy();
         result[0b010100] = originalModel.copy();
-        result[0b100100] = originalModel.copy().apply(rotations.get(6));
-        result[0b101000] = originalModel.copy().apply(rotations.get(7));
-        result[0b011000] = originalModel.copy().apply(rotations.get(8));
+        result[0b100100] = originalModel.copy().apply(rotations.get(1));
+        result[0b101000] = originalModel.copy().apply(rotations.get(2));
+        result[0b011000] = originalModel.copy().apply(rotations.get(3));
 
         originalModel = turnModel.copy().apply(rotations.get(4));
         result[0b000110] = originalModel.copy();
-        result[0b100010] = originalModel.copy().apply(rotations.get(6));
-        result[0b001010] = originalModel.copy().apply(rotations.get(7));
-        result[0b010010] = originalModel.copy().apply(rotations.get(8));
+        result[0b100010] = originalModel.copy().apply(rotations.get(1));
+        result[0b001010] = originalModel.copy().apply(rotations.get(2));
+        result[0b010010] = originalModel.copy().apply(rotations.get(3));
 
         originalModel = turnModel.copy().apply(rotations.get(5));
         result[0b000101] = originalModel.copy();
-        result[0b100001] = originalModel.copy().apply(rotations.get(6));
-        result[0b001001] = originalModel.copy().apply(rotations.get(7));
-        result[0b010001] = originalModel.copy().apply(rotations.get(8));
+        result[0b100001] = originalModel.copy().apply(rotations.get(1));
+        result[0b001001] = originalModel.copy().apply(rotations.get(2));
+        result[0b010001] = originalModel.copy().apply(rotations.get(3));
 
         // Generate corner+1 pipes
         for (int i = 0; i < result.length; i++) {
@@ -154,87 +149,6 @@ public class ShapeModelGenerator {
                 }
             }
         }
-        return result;
-    }
-
-    public static CCModel[] generateCornerVariants(CCModel originalModel, CCModel halfModel) {
-        CCModel[] result = new CCModel[64];
-
-        List<Transformation> rotations = Arrays.asList(       // Rotation chart:
-            Rotation.sideRotations[0].at(Vector3.center),     // - No rotation, is current state
-            Rotation.sideRotations[1].at(Vector3.center),     // - y=-y, z=-z
-            Rotation.sideRotations[2].at(Vector3.center),     // - y=-z, z=y
-            Rotation.sideRotations[3].at(Vector3.center),     // - y=z, z=-y
-            Rotation.sideRotations[4].at(Vector3.center),     // - x=y, y=-x
-            Rotation.sideRotations[5].at(Vector3.center),     // - x=-y, y=x
-            Rotation.quarterRotations[1].at(Vector3.center),  // - x=-z, z=x      // 6
-            Rotation.quarterRotations[2].at(Vector3.center),  // - x=-x, z=-z     // 7
-            Rotation.quarterRotations[3].at(Vector3.center),  // - x=z, z=-x      // 8
-            AxisCycle.cycles[1].at(Vector3.center),           // - x=z, y=x, z=y  // 9
-            AxisCycle.cycles[2].at(Vector3.center));          // - x=y, y=z, z=x  // 10
-
-        /* Indices:
-         * Up/Down: 0
-         * North/South: 1
-         * West/East: 2
-         */
-        CCModel[] straightModels = generateFullBlockVariants(originalModel);
-
-        /*
-         * Indices:
-         * Down: 0
-         * Up: 1
-         * North: 2
-         * South: 3
-         * West: 4
-         * East: 5
-         */
-        CCModel[] halfModels = generateHalfModels(halfModel);
-
-        // No connections "joint"
-
-        // Elbow joint (save for later)
-        // CCModel elbowJoint = generateTurnModel(<calculate values>);
-
-
-        // T joint
-        CCModel tJoint = CCModel.combine(Arrays.asList(straightModels[0].copy(), halfModels[4].copy()));
-        result[0b010011] = tJoint.copy();                         // DUW
-        result[0b000111] = tJoint.copy().apply(rotations.get(6)); // NUD
-        result[0b100011] = tJoint.copy().apply(rotations.get(7)); // EUD
-        result[0b001011] = tJoint.copy().apply(rotations.get(8)); // SUD
-
-        result[0b110010] = tJoint.copy().apply(rotations.get(4)); // UWE good
-        result[0b110100] = tJoint.copy().apply(rotations.get(10)); // NWE good
-        result[0b110001] = tJoint.copy().apply(rotations.get(5)); // DWE good
-        result[0b111000] = tJoint.copy().apply(rotations.get(2)).apply(rotations.get(8)); // SWE
-
-        result[0b101100] = tJoint.copy().apply(rotations.get(1)); // ENS
-        result[0b001110] = tJoint.copy().apply(rotations.get(10)); // UNS
-        result[0b011100] = tJoint.copy().apply(rotations.get(3)); // WNS good
-        result[0b001101] = tJoint.copy().apply(rotations.get(9)); // DNS good
-
-
-
-        // 3-way joint (save for later)
-
-
-        // Plus joint TODO DONE
-        CCModel plusJoint = CCModel.combine(Arrays.asList(straightModels[0].copy(), straightModels[1].copy()));
-        result[0b001111] = plusJoint; // SNUD
-        result[0b110011] = plusJoint.copy().apply(rotations.get(8)); // EWUD
-        result[0b111100] = plusJoint.copy().apply(rotations.get(4)); // EWSN
-
-        // T+1 joint
-        CCModel tPlusJoint = CCModel.combine(Arrays.asList(tJoint.copy(), halfModels[2].copy())); // DUWN
-
-        // 5-way joint
-        CCModel fiveJoint = CCModel.combine(Arrays.asList(plusJoint.copy(), halfModels[4].copy())); // SNUDW
-
-        // 6-way joint TODO DONE
-        CCModel sixJoint = CCModel.combine(Arrays.asList(straightModels[0].copy(), straightModels[1].copy(), straightModels[2].copy()));
-        result[0b111111] = sixJoint;
-
         return result;
     }
 
