@@ -1,16 +1,14 @@
 package gregtech.api.metatileentity;
 
+import gregtech.api.util.GTUtility;
 import net.minecraft.util.ITickable;
-
-import java.util.Random;
 
 public abstract class TickableTileEntityBase extends SyncedTileEntityBase implements ITickable {
 
     private long timer = 0L;
 
     // Create an offset [0,20) to distribute ticks more evenly
-    private Random random = new Random();
-    private int offset = random.nextInt(20);
+    private final int offset = GTUtility.getRandomIntXSTR(20);
 
     /**
      * @deprecated This method distributes ticks unevenly.
