@@ -66,6 +66,8 @@ import static gregtech.api.GTValues.V;
 
 public class GTUtility {
 
+    private static final XSTR random = new XSTR();
+
     public static Runnable combine(Runnable... runnables) {
         return () -> {
             for (Runnable runnable : runnables) {
@@ -709,5 +711,9 @@ public class GTUtility {
             .thenComparing(ItemStack::hasTagCompound)
             .thenComparing(it -> -Objects.hashCode(it.getTagCompound()))
             .thenComparing(it -> -it.getCount());
+    }
+
+    public static int getRandomIntXSTR(int bound) {
+        return random.nextInt(bound);
     }
 }
