@@ -124,7 +124,7 @@ public abstract class MetaTileEntity implements ICoverable {
     }
 
     /**
-     * @Deprecated Use {@link MetaTileEntity#getOffsetTimer()} instead for
+     * @deprecated Use {@link MetaTileEntity#getOffsetTimer()} instead for
      * a better timer that spreads ticks more evenly.
      * @return Timer value, starting at zero.
      */
