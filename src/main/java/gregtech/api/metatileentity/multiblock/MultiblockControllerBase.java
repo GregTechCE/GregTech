@@ -198,7 +198,7 @@ public abstract class MultiblockControllerBase extends MetaTileEntity {
     public void onRemoval() {
         super.onRemoval();
         if (!getWorld().isRemote && structureFormed) {
-            this.multiblockParts.forEach(part -> part.removeFromMultiBlock(this));
+            invalidateStructure();
         }
     }
 
