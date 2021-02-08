@@ -4,12 +4,15 @@ import codechicken.lib.raytracer.CuboidRayTraceResult;
 import codechicken.lib.raytracer.IndexedCuboid6;
 import codechicken.lib.vec.Cuboid6;
 import codechicken.lib.vec.Vector3;
+import gregtech.api.gui.GuiTextures;
 import gregtech.api.render.scene.SceneRenderCallback;
 import gregtech.api.render.scene.WorldSceneRenderer;
 import gregtech.api.util.BlockInfo;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.ItemStackKey;
+import mezz.jei.api.IGuiHelper;
 import mezz.jei.api.gui.IDrawable;
+import mezz.jei.api.gui.IGuiItemStackGroup;
 import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.recipe.IRecipeWrapper;
 import mezz.jei.gui.recipes.RecipeLayout;
@@ -38,9 +41,19 @@ import java.util.Map.Entry;
 import java.util.stream.Collectors;
 
 public class MultiblockInfoRecipeWrapper implements IRecipeWrapper, SceneRenderCallback {
+    private static final int MAX_PARTS = 20;
+
+    private class MBPattern {
+        final WorldSceneRenderer sceneRenderer;
+        final List<ItemStack> parts;
+        public MBPattern(final WorldSceneRenderer sceneRenderer, final List<ItemStack> parts) {
+            this.sceneRenderer = sceneRenderer;
+            this.parts = parts;
+        }
+    }
 
     private final MultiblockInfoPage infoPage;
-    private WorldSceneRenderer[] sceneRenders;
+    private MBPattern[] patterns;
     private Map<GuiButton, Runnable> buttons = new HashMap<>();
     private RecipeLayout recipeLayout;
     private List<ItemStack> allItemStackInputs = new ArrayList<>();
@@ -59,6 +72,7 @@ public class MultiblockInfoRecipeWrapper implements IRecipeWrapper, SceneRenderC
     private GuiButton buttonPreviousPattern;
     private GuiButton buttonNextPattern;
     private GuiButton nextLayerButton;
+    private IDrawable slot;
 
     private ItemStack tooltipBlockStack;
 
@@ -67,9 +81,9 @@ public class MultiblockInfoRecipeWrapper implements IRecipeWrapper, SceneRenderC
         this.controllerStack = infoPage.getController().getStackForm();
         HashSet<ItemStackKey> drops = new HashSet<>();
         drops.add(new ItemStackKey(controllerStack));
-        this.sceneRenders = infoPage.getMatchingShapes().stream()
-            .map(it -> initializeSceneRenderer(it, drops))
-            .toArray(WorldSceneRenderer[]::new);
+        this.patterns = infoPage.getMatchingShapes().stream()
+            .map(it -> initializePattern(it, drops))
+            .toArray(MBPattern[]::new);
         drops.forEach(it -> allItemStackInputs.add(it.getItemStack()));
     }
 
@@ -79,7 +93,7 @@ public class MultiblockInfoRecipeWrapper implements IRecipeWrapper, SceneRenderC
         ingredients.setOutput(ItemStack.class, controllerStack);
     }
 
-    public void setRecipeLayout(RecipeLayout layout) {
+    public void setRecipeLayout(RecipeLayout layout, IGuiHelper guiHelper) {
         this.recipeLayout = layout;
         IDrawable border = layout.getRecipeCategory().getBackground();
         this.buttons.clear();
@@ -89,11 +103,15 @@ public class MultiblockInfoRecipeWrapper implements IRecipeWrapper, SceneRenderC
         this.buttons.put(nextLayerButton, this::toggleNextLayer);
         this.buttons.put(buttonPreviousPattern, () -> switchRenderPage(-1));
         this.buttons.put(buttonNextPattern, () -> switchRenderPage(1));
-        boolean isPagesDisabled = sceneRenders.length == 1;
+        boolean isPagesDisabled = patterns.length == 1;
         this.buttonPreviousPattern.visible = !isPagesDisabled;
         this.buttonNextPattern.visible = !isPagesDisabled;
         this.buttonPreviousPattern.enabled = false;
-        this.buttonNextPattern.enabled = sceneRenders.length > 1;
+        this.buttonNextPattern.enabled = patterns.length > 1;
+        IGuiItemStackGroup itemStackGroup = recipeLayout.getItemStacks();
+        this.slot = guiHelper.createDrawable(GuiTextures.SLOT.imageLocation, 0, 0, 18, 18, 18, 18);
+        for (int i = 0; i < MAX_PARTS; ++i)
+           itemStackGroup.init(i, true, 1+18*i-180*(i/10), border.getHeight()-10+18*(i/10));
         this.panX = 0.0f;
         this.panY = 0.0f;
         this.zoom = 1.0f;
@@ -101,10 +119,11 @@ public class MultiblockInfoRecipeWrapper implements IRecipeWrapper, SceneRenderC
         this.rotationPitch = 0.0f;
         this.currentRendererPage = 0;
         setNextLayer(-1);
+        updateParts(); 
     }
 
     public WorldSceneRenderer getCurrentRenderer() {
-        return sceneRenders[currentRendererPage];
+        return patterns[currentRendererPage].sceneRenderer;
     }
 
     public int getLayerIndex() {
@@ -128,13 +147,24 @@ public class MultiblockInfoRecipeWrapper implements IRecipeWrapper, SceneRenderC
     }
 
     private void switchRenderPage(int amount) {
-        int maxIndex = sceneRenders.length - 1;
+        int maxIndex = patterns.length - 1;
         int newIndex = Math.max(0, Math.min(currentRendererPage + amount, maxIndex));
         if (currentRendererPage != newIndex) {
             this.currentRendererPage = newIndex;
             this.buttonNextPattern.enabled = newIndex < maxIndex;
             this.buttonPreviousPattern.enabled = newIndex > 0;
+            updateParts();
         }
+    }
+
+    private void updateParts() {
+        IGuiItemStackGroup itemStackGroup = recipeLayout.getItemStacks();
+        List<ItemStack> parts = this.patterns[currentRendererPage].parts;
+        int limit = Math.min(parts.size(), MAX_PARTS);
+        for (int i = 0; i < limit; ++i)
+            itemStackGroup.set(i, parts.get(i));
+        for (int i = parts.size(); i < limit; ++i)
+            itemStackGroup.set(i, (ItemStack) null);
     }
 
     private boolean shouldDisplayBlock(BlockPos pos) {
@@ -183,6 +213,9 @@ public class MultiblockInfoRecipeWrapper implements IRecipeWrapper, SceneRenderC
         for (GuiButton button : buttons.keySet()) {
             button.drawButton(minecraft, mouseX, mouseY, 0.0f);
         }
+        for (int i = 0; i < MAX_PARTS; ++i) {
+            this.slot.draw(minecraft, 1+18*i-180*(i/10), recipeHeight-10+18*(i/10));
+       }
 
         this.tooltipBlockStack = null;
         BlockPos pos = renderer.getLastHitBlock();
@@ -272,18 +305,22 @@ public class MultiblockInfoRecipeWrapper implements IRecipeWrapper, SceneRenderC
         return Collections.emptyList();
     }
 
-    private static void gatherBlockDrops(World world, Collection<BlockPos> positions, Set<ItemStackKey> drops) {
+    private static void gatherBlockDrops(World world, Collection<BlockPos> positions, Set<ItemStackKey> drops, Map<ItemStackKey, Integer> partsMap) {
         NonNullList<ItemStack> dropsList = NonNullList.create();
         for (BlockPos pos : positions) {
             IBlockState blockState = world.getBlockState(pos);
             blockState.getBlock().getDrops(dropsList, world, pos, blockState, 0);
         }
+        Integer ZERO = 0;
         for (ItemStack itemStack : dropsList) {
-            drops.add(new ItemStackKey(itemStack));
+            ItemStackKey itemStackKey = new ItemStackKey(itemStack);
+            drops.add(itemStackKey);
+            Integer amount = partsMap.getOrDefault(itemStackKey, ZERO);
+            partsMap.put(itemStackKey, ++amount);
         }
     }
 
-    private WorldSceneRenderer initializeSceneRenderer(MultiblockShapeInfo shapeInfo, Set<ItemStackKey> blockDrops) {
+    private MBPattern initializePattern(MultiblockShapeInfo shapeInfo, Set<ItemStackKey> blockDrops) {
         Map<BlockPos, BlockInfo> blockMap = new HashMap<>();
         BlockInfo[][][] blocks = shapeInfo.getBlocks();
         for (int z = 0; z < blocks.length; z++) {
@@ -299,10 +336,17 @@ public class MultiblockInfoRecipeWrapper implements IRecipeWrapper, SceneRenderC
         }
         WorldSceneRenderer worldSceneRenderer = new WorldSceneRenderer(blockMap);
         worldSceneRenderer.world.updateEntities();
-        gatherBlockDrops(worldSceneRenderer.world, blockMap.keySet(), blockDrops);
+        HashMap<ItemStackKey, Integer> partsMap = new HashMap<>();
+        gatherBlockDrops(worldSceneRenderer.world, blockMap.keySet(), blockDrops, partsMap);
         worldSceneRenderer.setRenderCallback(this);
         worldSceneRenderer.setRenderFilter(this::shouldDisplayBlock);
-        return worldSceneRenderer;
+        List<ItemStack> parts = new ArrayList<>();
+        for (Entry<ItemStackKey, Integer> entry : partsMap.entrySet()) {
+            ItemStack part = entry.getKey().getItemStack();
+            part.setCount(entry.getValue());
+            parts.add(part);
+        }
+        return new MBPattern(worldSceneRenderer, parts);
     }
 
 }
