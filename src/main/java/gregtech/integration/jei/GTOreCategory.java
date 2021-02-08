@@ -24,6 +24,9 @@ public class GTOreCategory extends PrimitiveRecipeCategory<GTOreInfo, GTOreInfo>
     protected int[] dimensionIDs;
     protected final int FONT_HEIGHT = Minecraft.getMinecraft().fontRenderer.FONT_HEIGHT;
     protected final Map<String, Integer> namedDimensions = WorldGenRegistry.getNamedDimensions();
+    private final int NUM_OF_SLOTS = 5;
+    private final int SLOT_WIDTH = 18;
+    private final int SLOT_HEIGHT = 18;
 
     public GTOreCategory(IGuiHelper guiHelper) {
         super("ore_spawn_location",
@@ -41,7 +44,7 @@ public class GTOreCategory extends PrimitiveRecipeCategory<GTOreInfo, GTOreInfo>
         IGuiItemStackGroup itemStackGroup = recipeLayout.getItemStacks();
         int baseXPos = 70;
         int baseYPos = 19;
-        int counter = 1;
+        int counter = 0;
 
         //The ore selected from JEI
         itemStackGroup.init(0, true, 22, baseYPos);
@@ -50,16 +53,18 @@ public class GTOreCategory extends PrimitiveRecipeCategory<GTOreInfo, GTOreInfo>
 
 
         for(int i = 0; i < recipeWrapper.getOutputCount(); i++) {
-            int temp = counter - 1;
-            itemStackGroup.init(i + 2, false, baseXPos + (temp * 18), baseYPos);
-            //Only Span 5 slots in the X direction
-            if((baseXPos + (counter * 18)) == (baseXPos + (5 * 18))) {
+            //Draw the slots, while ensuring no overlap by incrementing the x position of the slots
+            itemStackGroup.init(i + 2, false, baseXPos + (counter * SLOT_WIDTH), baseYPos);
+            //Only Span 5 slots in the X direction. If we reach 5 slots, increment the Y position and reset the increment counter
+            if((baseXPos + (counter * SLOT_WIDTH)) == (baseXPos + (NUM_OF_SLOTS * SLOT_WIDTH))) {
                 //Increment the Y display
-                baseYPos = baseYPos + 18;
+                baseYPos = baseYPos + SLOT_HEIGHT;
                 counter = 0;
             }
-
-            counter++;
+            //If we have not reached 5 slots, instead just increment the counter
+            else {
+                counter++;
+            }
         }
 
         itemStackGroup.addTooltipCallback(recipeWrapper::addTooltip);
@@ -82,11 +87,11 @@ public class GTOreCategory extends PrimitiveRecipeCategory<GTOreInfo, GTOreInfo>
 
         int baseXPos = 70;
         int baseYPos = 19;
-        int counter = 1;
-        int endPos;
+        int counter = 0;
         int dimDisplayPos = 70;
         int dimDisplayLength;
         String dimName;
+        String fullDimName;
 
         //Selected Ore
         this.slot.draw(minecraft, 22, baseYPos);
@@ -94,28 +99,35 @@ public class GTOreCategory extends PrimitiveRecipeCategory<GTOreInfo, GTOreInfo>
         this.slot.draw(minecraft, 22, 73);
 
         for(int i = 0; i < outputCount; i++) {
-            int temp = counter - 1;
-            this.slot.draw(minecraft, baseXPos + (temp * 18), baseYPos);
-            //Only Span 5 slots in the X direction
-            if((baseXPos + (counter * 18)) == (baseXPos + (5 * 18))) {
+            //Draw the slots, while ensuring no overlap by incrementing the x position of the slots
+            this.slot.draw(minecraft, baseXPos + (counter * SLOT_WIDTH), baseYPos);
+
+            //Only Span 5 slots in the X direction. If we reach 5 slots, increment the Y position and reset the increment counter
+            if((baseXPos + (counter * SLOT_WIDTH)) == (baseXPos + (NUM_OF_SLOTS * SLOT_WIDTH))) {
                 //Increment the Y display
-                baseYPos = baseYPos + 18;
+                baseYPos = baseYPos + SLOT_HEIGHT;
                 counter = 0;
             }
-
-            counter++;
+            //If we have not reached 5 slots, instead just increment the counter
+            else {
+                counter++;
+            }
         }
 
         //Draw the Vein Name
         int veinNameLength = minecraft.fontRenderer.getStringWidth(veinName);
+        //Ensure that the vein name is centered
         int startPosition = (176 - veinNameLength)/2;
+        //Start at the edge of the page, don't allow overrunning names on the left side
         if(startPosition < 0) {
             startPosition = 0;
         }
 
         //Account for really long names
         if(veinNameLength > 176) {
+            //Trim the name to fit the overall width of the page
             String newVeinName = minecraft.fontRenderer.trimStringToWidth(veinName, 176, false);
+            //Append on "..."
             newVeinName = newVeinName.substring(0, newVeinName.length() - 4) + "...";
 
             minecraft.fontRenderer.drawString(newVeinName, startPosition, 1, 0x111111);
@@ -126,64 +138,56 @@ public class GTOreCategory extends PrimitiveRecipeCategory<GTOreInfo, GTOreInfo>
 
         //Begin Drawing information, depending on how many rows of ore outputs were created
         //Give room for 5 lines of 5 ores each, so 25 unique ores in the vein
-        if(baseYPos > 109) { //109 is starting pos of 19 + (5 * 18)
+        if(baseYPos > 73) {
             minecraft.fontRenderer.drawString("Spawn Range: " + minHeight + "-" + maxHeight, 70, baseYPos + 1, 0x111111);
-            endPos = baseYPos + 1;
         }
         else {
-            if(baseYPos > 73) {
-                minecraft.fontRenderer.drawString("Spawn Range: " + minHeight + "-" + maxHeight, 70, baseYPos + 1, 0x111111);
-                endPos = baseYPos + 1;
-            }
-            else {
-                minecraft.fontRenderer.drawString("Spawn Range: " + minHeight + "-" + maxHeight, 70, 73, 0x111111);
-                endPos = 73;
-            }
+            minecraft.fontRenderer.drawString("Spawn Range: " + minHeight + "-" + maxHeight, 70, 73, 0x111111);
+            //Update the position at which the spawn information ends
+            baseYPos = 73;
         }
 
         //Create the Weight
-        minecraft.fontRenderer.drawString("Vein Weight: " + weight, 70, endPos + FONT_HEIGHT, 0x111111);
+        minecraft.fontRenderer.drawString("Vein Weight: " + weight, 70, baseYPos + FONT_HEIGHT, 0x111111);
 
         //Create the Dimensions
-        minecraft.fontRenderer.drawString("Dimensions: ", 70, endPos + 1 + (2 * FONT_HEIGHT), 0x111111);
+        minecraft.fontRenderer.drawString("Dimensions: ", 70, baseYPos + (2 * FONT_HEIGHT), 0x111111);
+
+        //Will attempt to write dimension IDs in a single line, separated by commas. If the list is so long such that it
+        //would run off the end of the page, the list is continued on a new line.
         for(int i = 0; i < dimensionIDs.length; i++) {
 
+            //If the dimension name is included, append it to the dimension number
             if(namedDimensions.containsValue(dimensionIDs[i])) {
                 int finalI = i;
                 dimName = namedDimensions.entrySet().stream()
                                             .filter(entry -> dimensionIDs[finalI] == entry.getValue())
                                             .map(Map.Entry::getKey)
                                             .findFirst().get();
-                String fullName = i == dimensionIDs.length -1 ?
+                fullDimName = i == dimensionIDs.length - 1 ?
                     dimensionIDs[i] + " (" + dimName + ")" :
                     dimensionIDs[i] + " (" + dimName + "),";
-
-                dimDisplayLength = minecraft.fontRenderer.getStringWidth(fullName);
-
-                //Check if the name is too long to fit, and drop down a line if it is
-                if(dimDisplayLength > 176 - dimDisplayPos) {
-                    endPos = endPos + FONT_HEIGHT;
-                    dimDisplayPos = 70;
-                }
-
-                minecraft.fontRenderer.drawString(fullName, dimDisplayPos, endPos + 1 + (3 * FONT_HEIGHT), 0x111111);
-
             }
+            //If the dimension name is not included, just add the dimension number
             else {
 
-                dimName = i == dimensionIDs.length - 1 ?
+                fullDimName = i == dimensionIDs.length - 1 ?
                     Integer.toString(dimensionIDs[i]) :
                     dimensionIDs[i] + ",";
-
-                dimDisplayLength = minecraft.fontRenderer.getStringWidth(dimName);
-
-                if(dimDisplayLength > (176 - dimDisplayPos)) {
-                    endPos = endPos + FONT_HEIGHT;
-                    dimDisplayPos = 70;
-                }
-
-                minecraft.fontRenderer.drawString(dimName, dimDisplayPos, endPos + (3 * FONT_HEIGHT), 0x111111);
             }
+
+            //Find the length of the dimension name string
+            dimDisplayLength = minecraft.fontRenderer.getStringWidth(fullDimName);
+
+            //If the length of the string would go off the edge of screen, instead increment the y position
+            if(dimDisplayLength > (176 - dimDisplayPos)) {
+                baseYPos = baseYPos + FONT_HEIGHT;
+                dimDisplayPos = 70;
+            }
+
+            minecraft.fontRenderer.drawString(fullDimName, dimDisplayPos, baseYPos + (3 * FONT_HEIGHT), 0x111111);
+
+            //Increment the dimension name display position
             dimDisplayPos = dimDisplayPos + dimDisplayLength;
         }
 
