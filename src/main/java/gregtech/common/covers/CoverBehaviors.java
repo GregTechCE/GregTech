@@ -65,6 +65,7 @@ public class CoverBehaviors {
         // Review: Would this conflict with mod addons?
         // Review: Add other tiers
         registerBehavior(40, new ResourceLocation(GTValues.MODID, "interface.lv"), MetaItems.INTERFACE_MODULE_LV, (tile, side) -> new CoverStorageNetworkInterface(tile, side, GTValues.LV, 8));
+        registerBehavior(41, new ResourceLocation(GTValues.MODID, "keep_in_stock.lv"), MetaItems.KEEP_IN_STOCK_MODULE_LV, (tile, side) -> new CoverKeepInStock(tile, side, GTValues.LV, 8));
     }
 
     public static void registerBehavior(int coverNetworkId, ResourceLocation coverId, MetaValueItem placerItem, BiFunction<ICoverable, EnumFacing, CoverBehavior> behaviorCreator) {

@@ -1637,6 +1637,7 @@ tile.gt.sapling.rubber_wood.name=Rubber Tree Sapling
 
 tile.inventory_pipe.name=Inventory Pipe
 metaitem.interface.module.lv.name=Storage Network Interface
+metaitem.keep_in_stock.module.lv.name=Keep In Stock
 gregtech.inventory_pipe.name=Storage Network
 gregtech.pipe.inventory.tab.storage_network=Stored Items
 gregtech.pipe.inventory.storage_note_1=Items in connected inventories
