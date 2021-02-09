@@ -123,22 +123,8 @@ public abstract class MetaTileEntity implements ICoverable {
         }
     }
 
-    /**
-     * @deprecated Use {@link MetaTileEntity#getOffsetTimer()} instead for
-     * a better timer that spreads ticks more evenly.
-     * @return Timer value, starting at zero.
-     */
-    @Deprecated
     public long getTimer() {
         return holder == null ? 0L : holder.getTimer();
-    }
-
-    /**
-     * Replacement for {@link MetaTileEntity#getTimer()}.
-     * @return Timer value, starting at zero, with a random offset [0, 20).
-     */
-    public long getOffsetTimer() {
-        return holder == null ? 0L : holder.getOffsetTimer();
     }
 
     public void writeCustomData(int discriminator, Consumer<PacketBuffer> dataWriter) {
@@ -582,11 +568,11 @@ public abstract class MetaTileEntity implements ICoverable {
                     ((ITickable) coverBehavior).update();
                 }
             }
-            if (getOffsetTimer() % 5 == 0L) {
+            if (getTimer() % 5 == 0L) {
                 updateComparatorValue();
             }
         }
-        if (getOffsetTimer() % 5 == 0L) {
+        if (getTimer() % 5 == 0L) {
             updateLightValue();
         }
     }

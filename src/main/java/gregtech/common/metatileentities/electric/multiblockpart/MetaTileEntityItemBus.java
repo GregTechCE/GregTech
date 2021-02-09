@@ -45,7 +45,7 @@ public class MetaTileEntityItemBus extends MetaTileEntityMultiblockPart implemen
     @Override
     public void update() {
         super.update();
-        if (!getWorld().isRemote && getOffsetTimer() % 5 == 0) {
+        if (!getWorld().isRemote && getTimer() % 5 == 0) {
             if (isExportHatch) {
                 pushItemsIntoNearbyHandlers(getFrontFacing());
             } else {
