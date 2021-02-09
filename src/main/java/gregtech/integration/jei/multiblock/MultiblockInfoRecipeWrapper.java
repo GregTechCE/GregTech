@@ -5,6 +5,9 @@ import codechicken.lib.raytracer.IndexedCuboid6;
 import codechicken.lib.vec.Cuboid6;
 import codechicken.lib.vec.Vector3;
 import gregtech.api.gui.GuiTextures;
+import gregtech.api.metatileentity.MetaTileEntity;
+import gregtech.api.metatileentity.MetaTileEntityHolder;
+import gregtech.api.metatileentity.multiblock.MultiblockControllerBase;
 import gregtech.api.render.scene.SceneRenderCallback;
 import gregtech.api.render.scene.WorldSceneRenderer;
 import gregtech.api.util.BlockInfo;
@@ -16,6 +19,7 @@ import mezz.jei.api.gui.IGuiItemStackGroup;
 import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.recipe.IRecipeWrapper;
 import mezz.jei.gui.recipes.RecipeLayout;
+import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
@@ -26,6 +30,7 @@ import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.client.util.ITooltipFlag.TooltipFlags;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
@@ -43,7 +48,7 @@ import java.util.stream.Collectors;
 public class MultiblockInfoRecipeWrapper implements IRecipeWrapper, SceneRenderCallback {
     private static final int MAX_PARTS = 20;
 
-    private class MBPattern {
+    private static class MBPattern {
         final WorldSceneRenderer sceneRenderer;
         final List<ItemStack> parts;
         public MBPattern(final WorldSceneRenderer sceneRenderer, final List<ItemStack> parts) {
@@ -97,9 +102,9 @@ public class MultiblockInfoRecipeWrapper implements IRecipeWrapper, SceneRenderC
         this.recipeLayout = layout;
         IDrawable border = layout.getRecipeCategory().getBackground();
         this.buttons.clear();
-        this.nextLayerButton = new GuiButton(0, border.getWidth() - 30, 70, 20, 20, "");
-        this.buttonPreviousPattern = new GuiButton(0, 10, border.getHeight() - 30, 20, 20, "<");
-        this.buttonNextPattern = new GuiButton(0, border.getWidth() - 30, border.getHeight() - 30, 20, 20, ">");
+        this.nextLayerButton = new GuiButton(0, border.getWidth() - 25, 70, 20, 20, "");
+        this.buttonPreviousPattern = new GuiButton(0, border.getWidth()-46, 90, 20, 20, "<");
+        this.buttonNextPattern = new GuiButton(0, border.getWidth() - 25, 90, 20, 20, ">");
         this.buttons.put(nextLayerButton, this::toggleNextLayer);
         this.buttons.put(buttonPreviousPattern, () -> switchRenderPage(-1));
         this.buttons.put(buttonNextPattern, () -> switchRenderPage(1));
@@ -111,7 +116,7 @@ public class MultiblockInfoRecipeWrapper implements IRecipeWrapper, SceneRenderC
         IGuiItemStackGroup itemStackGroup = recipeLayout.getItemStacks();
         this.slot = guiHelper.createDrawable(GuiTextures.SLOT.imageLocation, 0, 0, 18, 18, 18, 18);
         for (int i = 0; i < MAX_PARTS; ++i)
-           itemStackGroup.init(i, true, 1+18*i-180*(i/10), border.getHeight()-10+18*(i/10));
+           itemStackGroup.init(i, true, 18*i-180*(i/10), border.getHeight()-36+18*(i/10));
         this.panX = 0.0f;
         this.panY = 0.0f;
         this.zoom = 1.0f;
@@ -210,12 +215,14 @@ public class MultiblockInfoRecipeWrapper implements IRecipeWrapper, SceneRenderC
         int sceneHeight = recipeWidth;
         renderer.render(recipeLayout.getPosX(), recipeLayout.getPosY() + scenePosY, recipeWidth, sceneHeight, 0xC6C6C6);
         drawText(minecraft, recipeWidth);
+        for (int i = 0; i < MAX_PARTS; ++i) {
+            this.slot.draw(minecraft, 18*i-180*(i/10), recipeHeight-36+18*(i/10));
+        }
+        // Hmmm, the buttons need to be last otherwise sometimes highlighting 
+        // the button by mousing over it, leaks into other gui elements?
         for (GuiButton button : buttons.keySet()) {
             button.drawButton(minecraft, mouseX, mouseY, 0.0f);
         }
-        for (int i = 0; i < MAX_PARTS; ++i) {
-            this.slot.draw(minecraft, 1+18*i-180*(i/10), recipeHeight-10+18*(i/10));
-       }
 
         this.tooltipBlockStack = null;
         BlockPos pos = renderer.getLastHitBlock();
@@ -305,20 +312,56 @@ public class MultiblockInfoRecipeWrapper implements IRecipeWrapper, SceneRenderC
         return Collections.emptyList();
     }
 
-    private static void gatherBlockDrops(World world, Collection<BlockPos> positions, Set<ItemStackKey> drops, Map<ItemStackKey, Integer> partsMap) {
-        NonNullList<ItemStack> dropsList = NonNullList.create();
-        for (BlockPos pos : positions) {
-            IBlockState blockState = world.getBlockState(pos);
-            blockState.getBlock().getDrops(dropsList, world, pos, blockState, 0);
+    private static class PartInfo {
+        final ItemStackKey itemStackKey;
+        boolean isController = false;
+        boolean isTile = false;
+        final int blockId;
+        int amount = 0;
+
+        PartInfo(final ItemStackKey itemStackKey, final BlockInfo blockInfo) {
+            this.itemStackKey = itemStackKey;
+            this.blockId = Block.getIdFromBlock(blockInfo.getBlockState().getBlock());
+            TileEntity tileEntity = blockInfo.getTileEntity();
+            if (tileEntity != null) {
+                this.isTile = true;
+                MetaTileEntity mte = ((MetaTileEntityHolder) tileEntity).getMetaTileEntity();
+                if (mte instanceof MultiblockControllerBase)
+                    this.isController = true;
+            }
         }
-        Integer ZERO = 0;
-        for (ItemStack itemStack : dropsList) {
-            ItemStackKey itemStackKey = new ItemStackKey(itemStack);
-            drops.add(itemStackKey);
-            Integer amount = partsMap.getOrDefault(itemStackKey, ZERO);
-            partsMap.put(itemStackKey, ++amount);
+
+        ItemStack getItemStack() {
+            ItemStack result = this.itemStackKey.getItemStack();
+            result.setCount(this.amount);
+            return result;
         }
     }
+
+    private static void gatherBlockDrops(World world, Map<BlockPos, BlockInfo> blocks, Set<ItemStackKey> drops, Map<ItemStackKey, PartInfo> partsMap) {
+        NonNullList<ItemStack> dropsList = NonNullList.create();
+        for (Entry<BlockPos, BlockInfo> entry : blocks.entrySet()) {
+            BlockPos pos = entry.getKey();
+            IBlockState blockState = world.getBlockState(pos);
+            NonNullList<ItemStack> blockDrops = NonNullList.create();
+            blockState.getBlock().getDrops(blockDrops, world, pos, blockState, 0);
+            dropsList.addAll(blockDrops);
+
+            for (ItemStack itemStack : blockDrops) {
+                ItemStackKey itemStackKey = new ItemStackKey(itemStack);
+                PartInfo partInfo = partsMap.get(itemStackKey);
+                if (partInfo == null) {
+                    partInfo = new PartInfo(itemStackKey, entry.getValue());
+                    partsMap.put(itemStackKey, partInfo);
+                }
+                ++partInfo.amount;
+            }
+        }
+        for (ItemStack itemStack : dropsList) {
+            drops.add(new ItemStackKey(itemStack));
+        }
+    }
+
 
     private MBPattern initializePattern(MultiblockShapeInfo shapeInfo, Set<ItemStackKey> blockDrops) {
         Map<BlockPos, BlockInfo> blockMap = new HashMap<>();
@@ -336,15 +379,22 @@ public class MultiblockInfoRecipeWrapper implements IRecipeWrapper, SceneRenderC
         }
         WorldSceneRenderer worldSceneRenderer = new WorldSceneRenderer(blockMap);
         worldSceneRenderer.world.updateEntities();
-        HashMap<ItemStackKey, Integer> partsMap = new HashMap<>();
-        gatherBlockDrops(worldSceneRenderer.world, blockMap.keySet(), blockDrops, partsMap);
+        HashMap<ItemStackKey, PartInfo> partsMap = new HashMap<>();
+        gatherBlockDrops(worldSceneRenderer.world, blockMap, blockDrops, partsMap);
         worldSceneRenderer.setRenderCallback(this);
         worldSceneRenderer.setRenderFilter(this::shouldDisplayBlock);
-        List<ItemStack> parts = new ArrayList<>();
-        for (Entry<ItemStackKey, Integer> entry : partsMap.entrySet()) {
-            ItemStack part = entry.getKey().getItemStack();
-            part.setCount(entry.getValue());
-            parts.add(part);
+        ArrayList<PartInfo> partInfos = new ArrayList<>(partsMap.values());
+        partInfos.sort((one, two) -> {
+            if (one.isController) return -1;
+            if (two.isController) return +1;
+            if (one.isTile && !two.isTile) return -1;
+            if (two.isTile && !one.isTile) return +1;
+            if (one.blockId != two.blockId) return two.blockId - one.blockId;
+            return two.amount - one.amount;
+        });
+        ArrayList<ItemStack> parts = new ArrayList<ItemStack>();
+        for (PartInfo partInfo : partInfos) {
+           parts.add(partInfo.getItemStack());
         }
         return new MBPattern(worldSceneRenderer, parts);
     }
