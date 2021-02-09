@@ -740,6 +740,7 @@ cover.bucket.mode.milli_bucket=mB/s
 cover.machine_controller.name=Machine Controller Settings
 cover.machine_controller.normal=Normal
 cover.machine_controller.inverted=Inverted
+cover.machine_controller.inverted.description=§eNormal§r - in this mode, the cover will require a signal weaker than the set redstone level to run/n§eInverted§r - in this mode, the cover will require a signal stronger than the set redstone level to run
 cover.machine_controller.redstone=Min Redstone Strength: %d
 cover.machine_controller.mode.machine=Control Machine
 cover.machine_controller.mode.cover_up=Control Cover (Top)
