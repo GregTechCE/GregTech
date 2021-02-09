@@ -35,10 +35,7 @@ public interface ICoverable {
 
     BlockPos getPos();
 
-    @Deprecated
     long getTimer();
-
-    long getOffsetTimer();
 
     void markDirty();
 

@@ -66,7 +66,7 @@ public class MetaTileEntityBlockBreaker extends TieredMetaTileEntity {
     @Override
     public void update() {
         super.update();
-        if(!getWorld().isRemote && getOffsetTimer() % 5 == 0) {
+        if(!getWorld().isRemote && getTimer() % 5 == 0) {
             pushItemsIntoNearbyHandlers(getOutputFacing());
         }
         if(!getWorld().isRemote) {

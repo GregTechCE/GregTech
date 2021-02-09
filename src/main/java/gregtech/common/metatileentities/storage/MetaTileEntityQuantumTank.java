@@ -82,7 +82,7 @@ public class MetaTileEntityQuantumTank extends MetaTileEntity implements ITiered
     @Override
     public void update() {
         super.update();
-        if (!getWorld().isRemote && getOffsetTimer() % 5 == 0) {
+        if (!getWorld().isRemote && getTimer() % 5 == 0) {
             ItemStack itemStack = containerInventory.getStackInSlot(0);
             Capability<IFluidHandlerItem> capability = CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY;
             if (!itemStack.isEmpty() && itemStack.hasCapability(capability, null)) {

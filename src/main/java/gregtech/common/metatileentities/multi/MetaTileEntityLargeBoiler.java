@@ -212,19 +212,19 @@ public class MetaTileEntityLargeBoiler extends MultiblockWithDisplayBase {
     protected void updateFormedValid() {
         if (fuelBurnTicksLeft > 0 && currentTemperature < boilerType.maxTemperature) {
             --this.fuelBurnTicksLeft;
-            if (getOffsetTimer() % 20 == 0) {
+            if (getTimer() % 20 == 0) {
                 this.currentTemperature++;
             }
             if (fuelBurnTicksLeft == 0) {
                 this.wasActiveAndNeedsUpdate = true;
             }
-        } else if (currentTemperature > 0 && getOffsetTimer() % 20 == 0) {
+        } else if (currentTemperature > 0 && getTimer() % 20 == 0) {
             --this.currentTemperature;
         }
 
         this.lastTickSteamOutput = 0;
         if (currentTemperature >= BOILING_TEMPERATURE) {
-            boolean doWaterDrain = getOffsetTimer() % 20 == 0;
+            boolean doWaterDrain = getTimer() % 20 == 0;
             FluidStack drainedWater = fluidImportInventory.drain(ModHandler.getWater(1), doWaterDrain);
             if (drainedWater == null || drainedWater.amount == 0) {
                 drainedWater = fluidImportInventory.drain(ModHandler.getDistilledWater(1), doWaterDrain);
