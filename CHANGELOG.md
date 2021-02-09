@@ -1,5 +1,8 @@
 ## Changelog
 
+### 1.11.3 (Hotfix)
+* Removed mechanism to distribute expensive ticks more evenly as it broke JEI multiblock preview - LAGIdiot
+
 ### 1.11.2
 * Added mechanism to distribute expensive ticks more evenly (#1424) - dan
 * Fixed Turbine rotor retaining/resetting speed incorrectly (#1422) - dan
