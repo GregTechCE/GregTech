@@ -10,6 +10,7 @@ import mezz.jei.api.gui.IRecipeLayout;
 import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.recipe.IRecipeWrapper;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.FontRenderer;
 
 import java.util.Map;
 
@@ -97,27 +98,7 @@ public class GTOreCategory extends PrimitiveRecipeCategory<GTOreInfo, GTOreInfo>
 
         baseYPos = yPos; //has to be set to position of last rendered slot for later use
 
-        //Draw the Vein Name
-        int veinNameLength = minecraft.fontRenderer.getStringWidth(veinName);
-        //Ensure that the vein name is centered
-        int startPosition = (176 - veinNameLength)/2;
-        //Start at the edge of the page, don't allow overrunning names on the left side
-        if(startPosition < 0) {
-            startPosition = 0;
-        }
-
-        //Account for really long names
-        if(veinNameLength > 176) {
-            //Trim the name to fit the overall width of the page
-            String newVeinName = minecraft.fontRenderer.trimStringToWidth(veinName, 176, false);
-            //Append on "..."
-            newVeinName = newVeinName.substring(0, newVeinName.length() - 4) + "...";
-
-            minecraft.fontRenderer.drawString(newVeinName, startPosition, 1, 0x111111);
-        }
-        else {
-            minecraft.fontRenderer.drawString(veinName, startPosition, 1, 0x111111);
-        }
+        drawVeinName(minecraft.fontRenderer);
 
         //Begin Drawing information, depending on how many rows of ore outputs were created
         //Give room for 5 lines of 5 ores each, so 25 unique ores in the vein
@@ -178,5 +159,21 @@ public class GTOreCategory extends PrimitiveRecipeCategory<GTOreInfo, GTOreInfo>
         //Label the Surface Identifier
         minecraft.fontRenderer.drawSplitString("SurfaceMaterial", 15, 92, 42, 0x111111);
 
+    }
+
+    private void drawVeinName(final FontRenderer fontRenderer) {
+        final int maxVeinNameLength = 176;
+
+        String veinNameToDraw = veinName;
+
+        //Account for really long names
+        if (fontRenderer.getStringWidth(veinNameToDraw) > maxVeinNameLength) {
+            veinNameToDraw = fontRenderer.trimStringToWidth(veinName, maxVeinNameLength - 3, false) + "...";
+        }
+
+        //Ensure that the vein name is centered
+        int startPosition = (maxVeinNameLength - fontRenderer.getStringWidth(veinNameToDraw)) / 2;
+
+        fontRenderer.drawString(veinNameToDraw, startPosition, 1, 0x111111);
     }
 }
