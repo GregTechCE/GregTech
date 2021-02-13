@@ -4,9 +4,9 @@ import com.google.common.collect.Lists;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 import crafttweaker.annotations.ZenRegister;
 import gregtech.api.GTValues;
+import gregtech.api.util.FileUtility;
 import gregtech.api.util.GTLog;
 import gregtech.api.worldgen.filler.BlacklistedBlockFiller;
 import gregtech.api.worldgen.filler.BlockFiller;
@@ -28,8 +28,6 @@ import stanhebben.zenscript.annotations.ZenClass;
 import stanhebben.zenscript.annotations.ZenGetter;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.nio.file.*;
@@ -43,7 +41,6 @@ import java.util.stream.Collectors;
 @ZenRegister
 public class WorldGenRegistry {
 
-    private static final JsonParser jsonParser = new JsonParser();
     public static final WorldGenRegistry INSTANCE = new WorldGenRegistry();
 
     private WorldGenRegistry() {
@@ -144,17 +141,17 @@ public class WorldGenRegistry {
             .collect(Collectors.toList());
 
         for (Path worldgenDefinition : worldgenFiles) {
+            JsonObject element = FileUtility.tryExtractFromFile(worldgenDefinition);
+            if(element == null){
+                break;
+            }
+
             String depositName = worldgenRootPath.relativize(worldgenDefinition).toString();
+
             try {
-                try (InputStream fileStream = Files.newInputStream(worldgenDefinition)) {
-                    InputStreamReader streamReader = new InputStreamReader(fileStream);
-                    JsonObject element = jsonParser.parse(streamReader).getAsJsonObject();
-                    OreDepositDefinition deposit = new OreDepositDefinition(depositName);
-                    deposit.initializeFromConfig(element);
-                    registeredDefinitions.add(deposit);
-                }
-            } catch (IOException exception) {
-                GTLog.logger.error("Failed to load worldgen definition file on path {}", worldgenDefinition, exception);
+                OreDepositDefinition deposit = new OreDepositDefinition(depositName);
+                deposit.initializeFromConfig(element);
+                registeredDefinitions.add(deposit);
             } catch (RuntimeException exception) {
                 GTLog.logger.error("Failed to parse worldgen definition {} on path {}", depositName, worldgenDefinition, exception);
             }
@@ -215,16 +212,18 @@ public class WorldGenRegistry {
     }
 
     private void gatherNamedDimensions(Path dimensionsFile) {
-        try (InputStream fileStream = Files.newInputStream(dimensionsFile)) {
-            InputStreamReader streamReader = new InputStreamReader(fileStream);
-            JsonObject element = jsonParser.parse(streamReader).getAsJsonObject();
+        JsonObject element = FileUtility.tryExtractFromFile(dimensionsFile);
+        if(element == null){
+            return;
+        }
+
+        try {
             JsonArray dims = element.getAsJsonArray("dims");
             for(JsonElement dim : dims) {
                 namedDimensions.put(dim.getAsJsonObject().get("dimName").getAsString(), dim.getAsJsonObject().get("dimID").getAsInt());
             }
-        }
-        catch (IOException exception) {
-            GTLog.logger.error("Failed to load dimensions definition file on path {}", dimensionsFile, exception);
+        } catch (RuntimeException exception){
+            GTLog.logger.error("Failed to parse named dimensions", exception);
         }
     }
 
