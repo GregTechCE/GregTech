@@ -42,9 +42,7 @@ public class GTOreCategory extends PrimitiveRecipeCategory<GTOreInfo, GTOreInfo>
     public void setRecipe(IRecipeLayout recipeLayout, GTOreInfo recipeWrapper, IIngredients ingredients) {
 
         IGuiItemStackGroup itemStackGroup = recipeLayout.getItemStacks();
-        int baseXPos = 70;
         int baseYPos = 19;
-        int counter = 0;
 
         //The ore selected from JEI
         itemStackGroup.init(0, true, 22, baseYPos);
@@ -53,18 +51,10 @@ public class GTOreCategory extends PrimitiveRecipeCategory<GTOreInfo, GTOreInfo>
 
 
         for(int i = 0; i < recipeWrapper.getOutputCount(); i++) {
-            //Draw the slots, while ensuring no overlap by incrementing the x position of the slots
-            itemStackGroup.init(i + 2, false, baseXPos + (counter * SLOT_WIDTH), baseYPos);
-            //Only Span 5 slots in the X direction. If we reach 5 slots, increment the Y position and reset the increment counter
-            if((baseXPos + (counter * SLOT_WIDTH)) == (baseXPos + (NUM_OF_SLOTS * SLOT_WIDTH))) {
-                //Increment the Y display
-                baseYPos = baseYPos + SLOT_HEIGHT;
-                counter = 0;
-            }
-            //If we have not reached 5 slots, instead just increment the counter
-            else {
-                counter++;
-            }
+            int yPos = baseYPos + (i / NUM_OF_SLOTS) * SLOT_HEIGHT;
+            int xPos = 70 + (i % NUM_OF_SLOTS) * SLOT_WIDTH;
+
+            itemStackGroup.init(i + 2, false, xPos, yPos);
         }
 
         itemStackGroup.addTooltipCallback(recipeWrapper::addTooltip);
@@ -87,7 +77,6 @@ public class GTOreCategory extends PrimitiveRecipeCategory<GTOreInfo, GTOreInfo>
 
         int baseXPos = 70;
         int baseYPos = 19;
-        int counter = 0;
         int dimDisplayPos = 70;
         int dimDisplayLength;
         String dimName;
@@ -98,21 +87,15 @@ public class GTOreCategory extends PrimitiveRecipeCategory<GTOreInfo, GTOreInfo>
         //Surface Identifier
         this.slot.draw(minecraft, 22, 73);
 
+        int yPos = 0;
         for(int i = 0; i < outputCount; i++) {
-            //Draw the slots, while ensuring no overlap by incrementing the x position of the slots
-            this.slot.draw(minecraft, baseXPos + (counter * SLOT_WIDTH), baseYPos);
+            yPos = baseYPos + (i / NUM_OF_SLOTS) * SLOT_HEIGHT;
+            int xPos = baseXPos + (i % NUM_OF_SLOTS) * SLOT_WIDTH;
 
-            //Only Span 5 slots in the X direction. If we reach 5 slots, increment the Y position and reset the increment counter
-            if((baseXPos + (counter * SLOT_WIDTH)) == (baseXPos + (NUM_OF_SLOTS * SLOT_WIDTH))) {
-                //Increment the Y display
-                baseYPos = baseYPos + SLOT_HEIGHT;
-                counter = 0;
-            }
-            //If we have not reached 5 slots, instead just increment the counter
-            else {
-                counter++;
-            }
+            this.slot.draw(minecraft, xPos, yPos);
         }
+
+        baseYPos = yPos; //has to be set to position of last rendered slot for later use
 
         //Draw the Vein Name
         int veinNameLength = minecraft.fontRenderer.getStringWidth(veinName);
