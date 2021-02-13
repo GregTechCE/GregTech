@@ -180,6 +180,7 @@ public class WorldGenRegistry {
                     worldgenJarRootPath, worldgenRootPath);
                 List<Path> jarFiles = Files.walk(worldgenJarRootPath)
                     .filter(jarFile -> Files.isRegularFile(jarFile))
+                    .filter(jarPath -> !(jarPath.compareTo(worldgenJarRootPath.resolve("dimensions.json")) == 0))
                     .collect(Collectors.toList());
                 for (Path jarFile : jarFiles) {
                     Path worldgenPath = worldgenRootPath.resolve(worldgenJarRootPath.relativize(jarFile).toString());
