@@ -2,6 +2,7 @@ package gregtech.common.items.behaviors;
 
 import gregtech.api.capability.impl.FluidHandlerProxy;
 import gregtech.api.capability.impl.VoidFluidHandlerItemStack;
+import gregtech.api.items.IToolItem;
 import gregtech.api.items.metaitem.stats.IItemBehaviour;
 import gregtech.api.items.metaitem.stats.IItemCapabilityProvider;
 import gregtech.api.util.GTUtility;
@@ -72,13 +73,24 @@ public class PlungerBehaviour implements IItemBehaviour, IItemCapabilityProvider
             public int fill(FluidStack resource, boolean doFill) {
                 int result = super.fill(resource, doFill);
                 if (result > 0) {
-                    // See if there is enough durability on the plunger
-                    double operations = result;
-                    operations /= 1000;
-                    final int damage = cost * (int) Math.ceil(operations);
-                    if (!GTUtility.doDamageItem(getContainer(), damage, !doFill))
-                       return 0;
-                    // TODO take part of the fluid if low on durability?
+                    // Calculate the remaining durability
+                    final ItemStack container = getContainer();
+                    final IToolItem plunger = (IToolItem) container.getItem();
+                    final int remainingDurability = plunger.getMaxItemDamage(container) - plunger.getItemDamage(container);
+                    if (remainingDurability <= 0)
+                        return 0;
+
+                    // Work out how much fluid we can drain based on durability
+                    final int canDrain = (1000 * remainingDurability) / cost;
+                    result = Math.min(result, canDrain);
+
+                    // Work out the damage to inflict on the plunger
+                    if (doFill) {
+                        double operations = result;
+                        operations /= 1000;
+                        final int damage = cost * (int) Math.ceil(operations);
+                        GTUtility.doDamageItem(container, damage, false);
+                    }
                 }
                 // TODO play sound (how to get the player?)
                 return result;
