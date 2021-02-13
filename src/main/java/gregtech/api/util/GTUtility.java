@@ -11,6 +11,8 @@ import gregtech.api.gui.impl.ModularUIContainer;
 import gregtech.api.items.IToolItem;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.MetaTileEntityHolder;
+import gregtech.api.net.NetworkHandler;
+import gregtech.api.net.PacketClipboard;
 import gregtech.common.ConfigHolder;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockRedstoneWire;
@@ -50,6 +52,11 @@ import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.IItemHandlerModifiable;
 
 import javax.annotation.Nullable;
+
+import java.awt.Desktop;
+import java.awt.Toolkit;
+import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.StringSelection;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
@@ -295,6 +302,19 @@ public class GTUtility {
         GlStateManager.translate(-textWidth * sizeMultiplier / 2.0, -textHeight * sizeMultiplier / 2.0, 0);
         fontRenderer.drawString(string, x, y, color);
         GlStateManager.popMatrix();
+    }
+
+    public static void copyToClipboard(final String text) {
+        if (Desktop.isDesktopSupported()) {
+            final StringSelection selection = new StringSelection(text);
+            final Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+            clipboard.setContents(selection, null);
+        }
+    }
+
+    public static void copyToClipboard(final EntityPlayerMP player, final String text) {
+        PacketClipboard packet = new PacketClipboard(text);
+        NetworkHandler.channel.sendTo(packet.toFMLPacket(), player);
     }
 
     /**
