@@ -212,7 +212,7 @@ public class MultiblockInfoRecipeWrapper implements IRecipeWrapper, SceneRenderC
         WorldSceneRenderer renderer = getCurrentRenderer();
         int scenePosY = 0;
         //noinspection UnnecessaryLocalVariable,SuspiciousNameCombination
-        int sceneHeight = recipeWidth;
+        int sceneHeight = recipeHeight-36;
         renderer.render(recipeLayout.getPosX(), recipeLayout.getPosY() + scenePosY, recipeWidth, sceneHeight, 0xC6C6C6);
         drawText(minecraft, recipeWidth);
         for (int i = 0; i < MAX_PARTS; ++i) {
