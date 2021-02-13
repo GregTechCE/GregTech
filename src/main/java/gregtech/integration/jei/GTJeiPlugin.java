@@ -151,7 +151,9 @@ public class GTJeiPlugin implements IModPlugin {
         List<OreByProduct> oreByproductList = new CopyOnWriteArrayList<>();
         for (Material material : Material.MATERIAL_REGISTRY) {
             if (material instanceof DustMaterial && OreDictUnifier.get(OrePrefix.ore, material) != ItemStack.EMPTY) {
-                oreByproductList.add(new OreByProduct((DustMaterial) material));
+                final OreByProduct oreByProduct = new OreByProduct((DustMaterial) material);
+                if (oreByProduct.hasByProducts())
+                    oreByproductList.add(oreByProduct);
             }
         }
         String oreByProductId = GTValues.MODID + ":" + "ore_by_product";
