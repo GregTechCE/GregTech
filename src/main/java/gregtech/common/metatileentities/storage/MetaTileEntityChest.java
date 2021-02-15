@@ -254,23 +254,7 @@ public class MetaTileEntityChest extends MetaTileEntity implements IFastRenderMe
     }
 
     private static void sortInventorySlotContents(IItemHandlerModifiable inventory) {
-        //stack item stacks with equal items and compounds
-        for (int i = 0; i < inventory.getSlots(); i++) {
-            for (int j = i + 1; j < inventory.getSlots(); j++) {
-                ItemStack stack1 = inventory.getStackInSlot(i);
-                ItemStack stack2 = inventory.getStackInSlot(j);
-                if (!stack1.isEmpty() && ItemStack.areItemsEqual(stack1, stack2) &&
-                    ItemStack.areItemStackTagsEqual(stack1, stack2)) {
-                    int maxStackSize = Math.min(stack1.getMaxStackSize(), inventory.getSlotLimit(i));
-                    int itemsCanAccept = Math.min(stack2.getCount(), maxStackSize - Math.min(stack1.getCount(), maxStackSize));
-                    if (itemsCanAccept > 0) {
-                        stack1.grow(itemsCanAccept);
-                        stack2.shrink(itemsCanAccept);
-                    }
-                }
-            }
-        }
-        //create itemstack pairs and sort them out by attributes
+        // create itemstack pairs and sort them out by attributes
         ArrayList<ItemStack> inventoryContents = new ArrayList<>();
         for (int i = 0; i < inventory.getSlots(); i++) {
             ItemStack itemStack = inventory.getStackInSlot(i);
@@ -282,6 +266,55 @@ public class MetaTileEntityChest extends MetaTileEntity implements IFastRenderMe
         inventoryContents.sort(GTUtility.createItemStackComparator());
         for (int i = 0; i < inventoryContents.size(); i++) {
             inventory.setStackInSlot(i, inventoryContents.get(i));
+        }
+        stackConsecutiveItemsAndTrimSpaces(inventory);
+    }
+
+    private static void stackConsecutiveItemsAndTrimSpaces(IItemHandlerModifiable inventory) {
+        if (inventory.getSlots() == 0) {
+            return;
+        }
+
+        int freeSlot = 0;
+        int firstSlot = 0;
+        ItemStack stack1 = inventory.getStackInSlot(firstSlot);
+
+        while (firstSlot < inventory.getSlots() && !stack1.isEmpty()) {
+            int secondSlot = firstSlot + 1;
+
+            while (secondSlot < inventory.getSlots()) {
+                ItemStack stack2 = inventory.getStackInSlot(secondSlot);
+
+                if (!(ItemStack.areItemsEqual(stack1, stack2) && ItemStack.areItemStackTagsEqual(stack1, stack2))) {
+                    // If firstSlot == freeSlot then that means stack1 is already in right slot
+                    if (firstSlot > freeSlot) {
+                        inventory.setStackInSlot(freeSlot, stack1);
+                        inventory.setStackInSlot(firstSlot, ItemStack.EMPTY);
+                    }
+                    ++freeSlot;
+                    stack1 = stack2;
+                    firstSlot = secondSlot;
+                    break;
+                }
+
+                int maxStackSize = Math.min(stack1.getMaxStackSize(), inventory.getSlotLimit(firstSlot));
+                int itemsCanAccept = Math.min(stack2.getCount(), maxStackSize - stack1.getCount());
+                if (itemsCanAccept > 0) {
+                    stack1.grow(itemsCanAccept);
+                    stack2.shrink(itemsCanAccept);
+                }
+                if (stack2.getCount() > 0) {
+                    // If firstSlot == freeSlot then that means stack1 is already in right slot
+                    if (firstSlot > freeSlot) {
+                        inventory.setStackInSlot(freeSlot, stack1);
+                        inventory.setStackInSlot(firstSlot, ItemStack.EMPTY);
+                    }
+                    ++freeSlot;
+                    stack1 = stack2;
+                    firstSlot = secondSlot;
+                }
+                ++secondSlot;
+            }
         }
     }
 
