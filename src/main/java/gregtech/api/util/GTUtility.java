@@ -543,11 +543,11 @@ public class GTUtility {
         };
     }
 
-    public static List<EntityPlayerMP> findPlayersUsing(MetaTileEntity metaTileEntity, double radius) {
-        ArrayList<EntityPlayerMP> result = new ArrayList<>();
+    public static List<EntityPlayer> findPlayersUsing(MetaTileEntity metaTileEntity, double radius) {
+        ArrayList<EntityPlayer> result = new ArrayList<>();
         AxisAlignedBB box = new AxisAlignedBB(metaTileEntity.getPos()).expand(radius, radius, radius);
-        List<EntityPlayerMP> entities = metaTileEntity.getWorld().getEntitiesWithinAABB(EntityPlayerMP.class, box);
-        for (EntityPlayerMP player : entities) {
+        List<EntityPlayer> entities = metaTileEntity.getWorld().getEntitiesWithinAABB(EntityPlayer.class, box);
+        for (EntityPlayer player : entities) {
             if (player.openContainer instanceof ModularUIContainer) {
                 ModularUI modularUI = ((ModularUIContainer) player.openContainer).getModularUI();
                 if (modularUI.holder instanceof MetaTileEntityHolder &&
