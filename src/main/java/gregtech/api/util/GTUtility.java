@@ -701,6 +701,6 @@ public class GTUtility {
             .thenComparing(ItemStack::getItemDamage)
             .thenComparing(ItemStack::hasTagCompound)
             .thenComparing(it -> -Objects.hashCode(it.getTagCompound()))
-            .thenComparing(ItemStack::getCount);
+            .thenComparing(it -> -it.getCount());
     }
 }
