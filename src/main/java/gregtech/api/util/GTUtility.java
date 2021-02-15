@@ -141,7 +141,6 @@ public class GTUtility {
         return convertRGBtoOpaqueRGBA_MC(colorValue, 255);
     }
 
-    //0xAARRGGBB
     public static int convertRGBtoOpaqueRGBA_MC(int colorValue, int opacity) {
         return opacity << 24 | colorValue;
     }
