@@ -54,7 +54,6 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
-import java.util.List;
 import java.util.*;
 import java.util.Map.Entry;
 import java.util.function.Function;
@@ -701,6 +700,6 @@ public class GTUtility {
             .thenComparing(ItemStack::getItemDamage)
             .thenComparing(ItemStack::hasTagCompound)
             .thenComparing(it -> -Objects.hashCode(it.getTagCompound()))
-            .thenComparing(ItemStack::getCount);
+            .thenComparing(it -> -it.getCount());
     }
 }
