@@ -54,7 +54,6 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
-import java.util.List;
 import java.util.*;
 import java.util.Map.Entry;
 import java.util.function.Function;
@@ -543,11 +542,13 @@ public class GTUtility {
         };
     }
 
-    public static List<EntityPlayer> findPlayersUsing(MetaTileEntity metaTileEntity, double radius) {
-        ArrayList<EntityPlayer> result = new ArrayList<>();
-        AxisAlignedBB box = new AxisAlignedBB(metaTileEntity.getPos()).expand(radius, radius, radius);
-        List<EntityPlayer> entities = metaTileEntity.getWorld().getEntitiesWithinAABB(EntityPlayer.class, box);
-        for (EntityPlayer player : entities) {
+    public static List<EntityPlayerMP> findPlayersUsing(MetaTileEntity metaTileEntity, double radius) {
+        ArrayList<EntityPlayerMP> result = new ArrayList<>();
+        AxisAlignedBB box = new AxisAlignedBB(metaTileEntity.getPos())
+            .expand(radius, radius, radius)
+            .expand(-radius, -radius, -radius);
+        List<EntityPlayerMP> entities = metaTileEntity.getWorld().getEntitiesWithinAABB(EntityPlayerMP.class, box);
+        for (EntityPlayerMP player : entities) {
             if (player.openContainer instanceof ModularUIContainer) {
                 ModularUI modularUI = ((ModularUIContainer) player.openContainer).getModularUI();
                 if (modularUI.holder instanceof MetaTileEntityHolder &&
