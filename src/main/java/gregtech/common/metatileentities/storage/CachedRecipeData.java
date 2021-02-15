@@ -1,6 +1,7 @@
 package gregtech.common.metatileentities.storage;
 
 import gregtech.api.util.DummyContainer;
+import gregtech.api.util.GTUtility;
 import gregtech.api.util.ItemStackKey;
 import gregtech.common.inventory.IItemList.InsertMode;
 import gregtech.common.inventory.itemsource.ItemSourceList;
@@ -41,7 +42,8 @@ public class CachedRecipeData {
             return false;
         }
         ForgeHooks.setCraftingPlayer(player);
-        NonNullList<ItemStack> remainingItems = recipe.getRemainingItems(inventory);
+        InventoryCrafting deepCopy = GTUtility.deepCopyInventoryCrafting(inventory);
+        NonNullList<ItemStack> remainingItems = recipe.getRemainingItems(deepCopy);
         ForgeHooks.setCraftingPlayer(null);
         for (ItemStack itemStack : remainingItems) {
             itemStack = itemStack.copy();
