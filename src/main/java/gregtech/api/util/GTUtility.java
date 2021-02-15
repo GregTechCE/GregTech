@@ -54,7 +54,6 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
-import java.util.List;
 import java.util.*;
 import java.util.Map.Entry;
 import java.util.function.Function;
@@ -130,18 +129,25 @@ public class GTUtility {
     }
 
     public static int convertRGBtoRGBA_CL(int colorValue, int opacity) {
-        int r = (colorValue >> 16) & 0xFF;
-        int g = (colorValue >> 8) & 0xFF;
-        int b = (colorValue & 0xFF);
-        return (r & 0xFF) << 24 | (g & 0xFF) << 16 | (b & 0xFF) << 8 | (opacity & 0xFF);
+        return colorValue << 8 | (opacity & 0xFF);
+    }
+
+    public static int convertOpaqueRGBA_CLtoRGB(int colorAlpha) {
+        return colorAlpha >> 8;
     }
 
     //0xAARRGGBB
     public static int convertRGBtoOpaqueRGBA_MC(int colorValue) {
-        int r = (colorValue >> 16) & 0xFF;
-        int g = (colorValue >> 8) & 0xFF;
-        int b = (colorValue & 0xFF);
-        return 0xFF << 24 | (r & 0xFF) << 16 | (g & 0xFF) << 8 | (b & 0xFF);
+        return convertRGBtoOpaqueRGBA_MC(colorValue, 255);
+    }
+
+    //0xAARRGGBB
+    public static int convertRGBtoOpaqueRGBA_MC(int colorValue, int opacity) {
+        return opacity << 24 | colorValue;
+    }
+
+    public static int convertOpaqueRGBA_MCtoRGB(int alphaColor) {
+        return alphaColor & 0xFFFFFF;
     }
 
     public static void setItem(ItemStack itemStack, ItemStack newStack) {
