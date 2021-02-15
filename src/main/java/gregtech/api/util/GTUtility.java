@@ -60,6 +60,7 @@ import java.util.Map.Entry;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collector;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
@@ -77,7 +78,7 @@ public class GTUtility {
     }
 
     public static Stream<Object> flatten(Object[] array) {
-        return Arrays.stream(array).flatMap(o -> o instanceof Object[] ? flatten((Object[]) o): Stream.of(o));
+        return Arrays.stream(array).flatMap(o -> o instanceof Object[] ? flatten((Object[]) o) : Stream.of(o));
     }
 
     public static void copyInventoryItems(IItemHandler src, IItemHandlerModifiable dest) {
@@ -171,6 +172,7 @@ public class GTUtility {
      * field is used, and ItemStack.getItemDamage() can be overriden,
      * giving incorrect results for itemstack equality comparisons,
      * which still use raw ItemStack.itemDamage field
+     *
      * @return actual value of ItemStack.itemDamage field
      */
     public static int getActualItemDamageFromStack(ItemStack itemStack) {
@@ -182,7 +184,7 @@ public class GTUtility {
      * If it's not possible to merge it fully, it will attempt to insert it into first empty slots
      *
      * @param itemStack item stack to merge. It WILL be modified.
-     * @param simulate if true, stack won't actually modify items in other slots
+     * @param simulate  if true, stack won't actually modify items in other slots
      * @return if merging of at least one item succeed, false otherwise
      */
     public static boolean mergeItemStack(ItemStack itemStack, List<Slot> slots, boolean simulate) {
@@ -240,19 +242,19 @@ public class GTUtility {
         IBlockState blockState = world.getBlockState(pos);
         TileEntity tileEntity = world.getTileEntity(pos);
 
-        if(blockState.getBlock().isAir(blockState, world, pos)) {
+        if (blockState.getBlock().isAir(blockState, world, pos)) {
             return false;
         }
 
-        if(!blockState.getBlock().canHarvestBlock(world, pos, player)) {
+        if (!blockState.getBlock().canHarvestBlock(world, pos, player)) {
             return false;
         }
 
         int expToDrop = 0;
-        if(!world.isRemote) {
+        if (!world.isRemote) {
             EntityPlayerMP playerMP = (EntityPlayerMP) player;
             expToDrop = ForgeHooks.onBlockBreakEvent(world, playerMP.interactionManager.getGameType(), playerMP, pos);
-            if(expToDrop == -1) {
+            if (expToDrop == -1) {
                 //notify client if block can't be removed because of BreakEvent cancelled on server side
                 playerMP.connection.sendPacket(new SPacketBlockChange(world, pos));
                 return false;
@@ -262,19 +264,19 @@ public class GTUtility {
         world.playEvent(player, 2001, pos, Block.getStateId(blockState));
 
         boolean wasRemovedByPlayer = blockState.getBlock().removedByPlayer(blockState, world, pos, player, !player.capabilities.isCreativeMode);
-        if(wasRemovedByPlayer) {
+        if (wasRemovedByPlayer) {
             blockState.getBlock().onBlockDestroyedByPlayer(world, pos, blockState);
 
-            if(!world.isRemote && !player.capabilities.isCreativeMode) {
+            if (!world.isRemote && !player.capabilities.isCreativeMode) {
                 ItemStack stackInHand = player.getHeldItemMainhand();
                 blockState.getBlock().harvestBlock(world, player, pos, blockState, tileEntity, stackInHand);
-                if(expToDrop > 0) {
+                if (expToDrop > 0) {
                     blockState.getBlock().dropXpOnBlockBreak(world, pos, expToDrop);
                 }
             }
         }
 
-        if(!world.isRemote) {
+        if (!world.isRemote) {
             EntityPlayerMP playerMP = (EntityPlayerMP) player;
             playerMP.connection.sendPacket(new SPacketBlockChange(world, pos));
         } else {
@@ -386,7 +388,7 @@ public class GTUtility {
                 return (byte) Math.max(0, tier - 1);
             }
         }
-        return (byte) Math.min(V.length -1, tier);
+        return (byte) Math.min(V.length - 1, tier);
     }
 
     public static BiomeDictionary.Type getBiomeTypeTagByName(String name) {
@@ -543,20 +545,25 @@ public class GTUtility {
         };
     }
 
-    public static List<EntityPlayerMP> findPlayersUsing(MetaTileEntity metaTileEntity, double radius) {
-        ArrayList<EntityPlayerMP> result = new ArrayList<>();
+    public static List<EntityPlayerMP> findPlayersUsing(MetaTileEntity metaTileEntity, double radius, boolean includeSpectators) {
         AxisAlignedBB box = new AxisAlignedBB(metaTileEntity.getPos()).expand(radius, radius, radius);
-        List<EntityPlayerMP> entities = metaTileEntity.getWorld().getEntitiesWithinAABB(EntityPlayerMP.class, box);
-        for (EntityPlayerMP player : entities) {
+        Stream<EntityPlayerMP> entities = metaTileEntity.getWorld().getEntitiesWithinAABB(EntityPlayerMP.class, box).stream();
+        if (!includeSpectators) {
+            entities = entities.filter(entityPlayer -> !entityPlayer.isSpectator());
+        }
+        entities = entities.filter(player -> {
             if (player.openContainer instanceof ModularUIContainer) {
                 ModularUI modularUI = ((ModularUIContainer) player.openContainer).getModularUI();
-                if (modularUI.holder instanceof MetaTileEntityHolder &&
-                    ((MetaTileEntityHolder) modularUI.holder).getMetaTileEntity() == metaTileEntity) {
-                    result.add(player);
-                }
+                return modularUI.holder instanceof MetaTileEntityHolder &&
+                    ((MetaTileEntityHolder) modularUI.holder).getMetaTileEntity() == metaTileEntity;
             }
-        }
-        return result;
+            return false;
+        });
+        return entities.collect(Collectors.toList());
+    }
+
+    public static List<EntityPlayerMP> findPlayersUsing(MetaTileEntity metaTileEntity, double radius) {
+        return GTUtility.findPlayersUsing(metaTileEntity, radius, true);
     }
 
     public static <T> boolean iterableContains(Iterable<T> list, Predicate<T> predicate) {
@@ -637,7 +644,10 @@ public class GTUtility {
 
     public static <T> Collector<T, ?, ImmutableList<T>> toImmutableList() {
         return Collector.of(ImmutableList::builder, Builder::add,
-            (b1, b2) -> { b1.addAll(b2.build()); return b2; },
+            (b1, b2) -> {
+                b1.addAll(b2.build());
+                return b2;
+            },
             ImmutableList.Builder<T>::build);
     }
 
@@ -688,7 +698,7 @@ public class GTUtility {
             return worldPower;
         } else {
             IBlockState offsetState = world.getBlockState(offsetPos);
-            if(offsetState.getBlock() instanceof BlockRedstoneWire) {
+            if (offsetState.getBlock() instanceof BlockRedstoneWire) {
                 int wirePower = offsetState.getValue(BlockRedstoneWire.POWER);
                 return Math.max(worldPower, wirePower);
             }

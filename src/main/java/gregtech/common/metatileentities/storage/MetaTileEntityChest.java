@@ -77,10 +77,7 @@ public class MetaTileEntityChest extends MetaTileEntity implements IFastRenderMe
 
         if (!getWorld().isRemote && this.numPlayersUsing != 0 && getTimer() % 200 == 0) {
             int lastPlayersUsing = numPlayersUsing;
-            this.numPlayersUsing = (int) GTUtility.findPlayersUsing(this, 10.0)
-                .stream()
-                .filter(entityPlayer -> !entityPlayer.isSpectator())
-                .count();
+            this.numPlayersUsing = (int) GTUtility.findPlayersUsing(this, 10.0, false).size();
             if (lastPlayersUsing != numPlayersUsing) {
                 updateNumPlayersUsing();
             }
