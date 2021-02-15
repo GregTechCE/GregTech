@@ -18,6 +18,7 @@ import gregtech.api.cover.IFacadeCover;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.MetaTileEntityHolder;
 import gregtech.api.render.MetaTileEntityRenderer;
+import gregtech.api.util.GTLog;
 import gregtech.common.tools.DamageValues;
 import gregtech.api.render.IBlockAppearance;
 import gregtech.integration.ctm.IFacadeWrapper;
@@ -399,7 +400,8 @@ public class BlockMachine extends BlockCustomParticle implements ITileEntityProv
     public int getLightOpacity(IBlockState state, IBlockAccess world, BlockPos pos) {
         //why mc is so fucking retarded to call this method on fucking NEIGHBOUR BLOCKS!
         MetaTileEntity metaTileEntity = getMetaTileEntity(world, pos);
-        return metaTileEntity == null ? 255 : metaTileEntity.getLightOpacity();
+        GTLog.logger.info(metaTileEntity == null);
+        return metaTileEntity == null ? 0 : metaTileEntity.getLightOpacity();
     }
 
     @Override
