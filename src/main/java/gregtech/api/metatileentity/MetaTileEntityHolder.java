@@ -214,7 +214,7 @@ public class MetaTileEntityHolder extends TickableTileEntityBase implements IUIH
     @Override
     public void onLoad() {
         super.onLoad();
-        if(metaTileEntity != null) {
+        if (metaTileEntity != null) {
             metaTileEntity.onLoad();
         }
     }
@@ -222,7 +222,7 @@ public class MetaTileEntityHolder extends TickableTileEntityBase implements IUIH
     @Override
     public void onChunkUnload() {
         super.onChunkUnload();
-        if(metaTileEntity != null) {
+        if (metaTileEntity != null) {
             metaTileEntity.onUnload();
         }
     }
@@ -248,9 +248,9 @@ public class MetaTileEntityHolder extends TickableTileEntityBase implements IUIH
 
     @Override
     public boolean shouldRenderInPass(int pass) {
-        if(metaTileEntity instanceof IRenderMetaTileEntity) {
+        if (metaTileEntity instanceof IRenderMetaTileEntity) {
             return ((IRenderMetaTileEntity) metaTileEntity).shouldRenderInPass(pass);
-        } else if(metaTileEntity instanceof IFastRenderMetaTileEntity) {
+        } else if (metaTileEntity instanceof IFastRenderMetaTileEntity) {
             return ((IFastRenderMetaTileEntity) metaTileEntity).shouldRenderInPass(pass);
         }
         return false;
@@ -258,9 +258,9 @@ public class MetaTileEntityHolder extends TickableTileEntityBase implements IUIH
 
     @Override
     public AxisAlignedBB getRenderBoundingBox() {
-        if(metaTileEntity instanceof IRenderMetaTileEntity) {
+        if (metaTileEntity instanceof IRenderMetaTileEntity) {
             return ((IRenderMetaTileEntity) metaTileEntity).getRenderBoundingBox();
-        } else if(metaTileEntity instanceof IFastRenderMetaTileEntity) {
+        } else if (metaTileEntity instanceof IFastRenderMetaTileEntity) {
             return ((IFastRenderMetaTileEntity) metaTileEntity).getRenderBoundingBox();
         }
         return new AxisAlignedBB(getPos());
