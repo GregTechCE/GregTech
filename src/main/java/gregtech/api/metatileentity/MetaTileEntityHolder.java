@@ -263,7 +263,7 @@ public class MetaTileEntityHolder extends TickableTileEntityBase implements IUIH
         } else if(metaTileEntity instanceof IFastRenderMetaTileEntity) {
             return ((IFastRenderMetaTileEntity) metaTileEntity).getRenderBoundingBox();
         }
-        return new AxisAlignedBB(getPos(), getPos().add(1, 1, 1));
+        return new AxisAlignedBB(getPos());
     }
 
     @Override
