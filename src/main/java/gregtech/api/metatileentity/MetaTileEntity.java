@@ -305,10 +305,15 @@ public abstract class MetaTileEntity implements ICoverable {
     }
 
     public final boolean onCoverScrewdriverClick(EntityPlayer playerIn, EnumHand hand, CuboidRayTraceResult result) {
+        boolean accessingOutputSide = false;
+        if(this instanceof SimpleMachineMetaTileEntity) {
+            EnumFacing hitFacing = ICoverable.determineGridSideHit(result);
+            accessingOutputSide = hitFacing == ((SimpleMachineMetaTileEntity) this).getOutputFacing() && playerIn.isSneaking();
+        }
         EnumFacing coverSide = ICoverable.traceCoverSide(result);
         CoverBehavior coverBehavior = coverSide == null ? null : getCoverAtSide(coverSide);
         EnumActionResult coverResult = coverBehavior == null ? EnumActionResult.PASS :
-            coverBehavior.onScrewdriverClick(playerIn, hand, result);
+            accessingOutputSide ? EnumActionResult.PASS : coverBehavior.onScrewdriverClick(playerIn, hand, result);
         if (coverResult != EnumActionResult.PASS) {
             return coverResult == EnumActionResult.SUCCESS;
         }
