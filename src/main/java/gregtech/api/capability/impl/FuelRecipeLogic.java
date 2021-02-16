@@ -14,9 +14,11 @@ import net.minecraftforge.common.util.Constants.NBT;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.IFluidTank;
 
+import java.util.Collection;
+import java.util.Collections;
 import java.util.function.Supplier;
 
-public class FuelRecipeLogic extends MTETrait implements IControllable {
+public class FuelRecipeLogic extends MTETrait implements IControllable, IFuelable {
 
     public final FuelRecipeMap recipeMap;
     protected FuelRecipe previousRecipe;
@@ -55,9 +57,34 @@ public class FuelRecipeLogic extends MTETrait implements IControllable {
     }
 
     @Override
+    public Collection<IFuelInfo> getFuels() {
+        if (this.previousRecipe == null)
+            return Collections.emptySet();
+        final FluidStack fluid = this.previousRecipe.getRecipeFluid();
+        int fuelRemaining = 0;
+        int fuelCapacity = 0;
+        final IMultipleTankHandler fluidTanks = this.fluidTank.get();
+        for (IFluidTank fluidTank : fluidTanks) {
+            fuelCapacity += fluidTank.getCapacity();
+            final FluidStack tankContents = fluidTank.drain(Integer.MAX_VALUE, false);
+            if (fluid.isFluidEqual(tankContents))
+                fuelRemaining += tankContents.amount;
+        }
+        if (fuelRemaining == 0)
+            return Collections.emptySet();
+        int amountPerRecipe = calculateFuelAmount(this.previousRecipe);
+        int duration = calculateRecipeDuration(this.previousRecipe);
+        int fuelBurnTime = duration * fuelRemaining / amountPerRecipe;
+        return Collections.singleton(new FluidFuelInfo(fluid, fuelRemaining, fuelCapacity, fuelBurnTime));
+    }
+
+    @Override
     public <T> T getCapability(Capability<T> capability) {
         if(capability == GregtechTileCapabilities.CAPABILITY_CONTROLLABLE) {
             return GregtechTileCapabilities.CAPABILITY_CONTROLLABLE.cast(this);
+        }
+        if(capability == GregtechCapabilities.CAPABILITY_FUELABLE) {
+            return GregtechCapabilities.CAPABILITY_FUELABLE.cast(this);
         }
         return null;
     }
