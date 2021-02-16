@@ -7,8 +7,8 @@ import gregtech.api.gui.ModularUI;
 import gregtech.api.gui.UIFactory;
 import gregtech.api.gui.impl.ModularUIContainer;
 import gregtech.api.gui.impl.ModularUIGui;
+import gregtech.api.util.ClipboardUtil;
 import gregtech.api.util.GTLog;
-import gregtech.api.util.GTUtility;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import net.minecraft.block.state.IBlockState;
@@ -236,7 +236,7 @@ public class NetworkHandler {
         });
 
         registerClientExecutor(PacketClipboard.class, (packet, handler) -> {
-            GTUtility.copyToClipboard(packet.text);
+            ClipboardUtil.copyToClipboard(packet.text);
         });
     }
 
