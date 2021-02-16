@@ -134,7 +134,7 @@ public class GTUtility {
     }
 
     public static int convertOpaqueRGBA_CLtoRGB(int colorAlpha) {
-        return colorAlpha >> 8;
+        return colorAlpha >>> 8;
     }
 
     //0xAARRGGBB
