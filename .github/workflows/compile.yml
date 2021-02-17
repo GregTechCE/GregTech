@@ -1,4 +1,4 @@
-name: "Latest version views"
+name: "Compilation and tests"
 
 on:
   push:
@@ -11,7 +11,7 @@ on:
 
 jobs:
   compile:
-    name: "Compile"
+    name: "Compile and test"
     runs-on: ubuntu-latest
     
     steps:
@@ -32,3 +32,7 @@ jobs:
     - uses: eskatos/gradle-command-action@v1
       with:
         arguments: build
+
+    - uses: eskatos/gradle-command-action@v1
+      with:
+        arguments: test
