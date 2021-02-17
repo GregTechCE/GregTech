@@ -54,8 +54,8 @@ public class SlotWidget extends Widget implements INativeWidget {
         return new WidgetSlot(inventory, index, 0, 0);
     }
 
-    protected Slot createSlot(IItemHandler inventory, int index) {
-        return new WidgetSlotItemHandler(inventory, index, 0, 0);
+    protected Slot createSlot(IItemHandler itemHandler, int index) {
+        return new WidgetSlotItemHandler(itemHandler, index, 0, 0);
     }
 
     @Override
