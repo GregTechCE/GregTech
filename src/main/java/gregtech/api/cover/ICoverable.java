@@ -114,6 +114,9 @@ public interface ICoverable {
     }
 
     static boolean doesCoverCollide(EnumFacing side, List<IndexedCuboid6> collisionBox, double plateThickness) {
+        if (side == null) {
+            return false;
+        }
         if (plateThickness > 0.0) {
             Cuboid6 coverPlateBox = getCoverPlateBox(side, plateThickness);
             for (Cuboid6 collisionCuboid : collisionBox) {

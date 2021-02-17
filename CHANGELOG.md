@@ -1,5 +1,15 @@
 ## Changelog
 
+### 1.11.3 (Hotfix)
+* Removed mechanism to distribute expensive ticks more evenly as it broke JEI multiblock preview - LAGIdiot
+
+### 1.11.2
+* Added mechanism to distribute expensive ticks more evenly (#1424) - dan
+* Fixed Turbine rotor retaining/resetting speed incorrectly (#1422) - dan
+* Fixed CokeOven/PBF controller coloring support (#1432) - dan
+* Fixed NPE when placing covers (#1435) - dan
+* Fixed two tanks being shown in TOP for import hatch (#1447) - dan
+
 ### 1.11.1 (Hotfix)
 * Fixed crash when CraftTweaker is not present - LAGIdiot
 

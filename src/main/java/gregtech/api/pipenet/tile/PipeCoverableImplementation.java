@@ -48,8 +48,9 @@ public class PipeCoverableImplementation implements ICoverable {
     }
 
     public final boolean placeCoverOnSide(EnumFacing side, ItemStack itemStack, CoverDefinition coverDefinition) {
-        Preconditions.checkNotNull(side, "side");
-        Preconditions.checkNotNull(coverDefinition, "coverDefinition");
+        if (side == null || coverDefinition == null) {
+            return false;
+        }
         CoverBehavior coverBehavior = coverDefinition.createCoverBehavior(this, side);
         if (!canPlaceCoverOnSide(side) || !coverBehavior.canAttach()) {
             return false;
@@ -171,7 +172,7 @@ public class PipeCoverableImplementation implements ICoverable {
 
     @Override
     public CoverBehavior getCoverAtSide(EnumFacing side) {
-        return coverBehaviors[side.getIndex()];
+        return side == null ? null : coverBehaviors[side.getIndex()];
     }
 
     @Override
