@@ -77,19 +77,9 @@ public class LargeTurbineWorkableHandler extends FuelRecipeLogic {
     }
 
     @Override
-    protected void tryAcquireNewRecipe() {
-        IMultipleTankHandler fluidTanks = this.fluidTank.get();
+    protected boolean isReadyForRecipes() {
         MetaTileEntityRotorHolder rotorHolder = largeTurbine.getAbilities(MetaTileEntityLargeTurbine.ABILITY_ROTOR_HOLDER).get(0);
-        for (IFluidTank fluidTank : fluidTanks) {
-            FluidStack tankContents = fluidTank.getFluid();
-            if (tankContents != null && tankContents.amount > 0 && rotorHolder.isHasRotor()) {
-                int fuelAmountUsed = tryAcquireNewRecipe(tankContents);
-                if (fuelAmountUsed > 0) {
-                    fluidTank.drain(fuelAmountUsed, true);
-                    break; //recipe is found and ready to use
-                }
-            }
-        }
+        return rotorHolder.isHasRotor();
     }
 
     @Override
