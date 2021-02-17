@@ -499,7 +499,7 @@ public class MetaTileEntityLargeBoiler extends MultiblockWithDisplayBase impleme
                 int fuelBurnTime = fuelStack.amount * burnTime / fuelAmountToConsume;
                 FluidFuelInfo fluidFuelInfo = (FluidFuelInfo) fuels.get(fuelStack.getUnlocalizedName());
                 if (fluidFuelInfo == null) {
-                    fluidFuelInfo = new FluidFuelInfo(fuelStack, fuelStack.amount, fluidCapacity, fuelBurnTime);
+                    fluidFuelInfo = new FluidFuelInfo(fuelStack, fuelStack.amount, fluidCapacity, fuelAmountToConsume, fuelBurnTime);
                     fuels.put(fuelStack.getUnlocalizedName(), fluidFuelInfo);
                 }
                 else {
@@ -516,7 +516,7 @@ public class MetaTileEntityLargeBoiler extends MultiblockWithDisplayBase impleme
                 int fuelBurnTime = fuelStack.amount * burnTime / fuelAmountToConsume;
                 FluidFuelInfo fluidFuelInfo = (FluidFuelInfo) fuels.get(fuelStack.getUnlocalizedName());
                 if (fluidFuelInfo == null) {
-                    fluidFuelInfo = new FluidFuelInfo(fuelStack, fuelStack.amount, fluidCapacity, fuelBurnTime);
+                    fluidFuelInfo = new FluidFuelInfo(fuelStack, fuelStack.amount, fluidCapacity, fuelAmountToConsume, fuelBurnTime);
                     fuels.put(fuelStack.getUnlocalizedName(), fluidFuelInfo);
                 }
                 else {
@@ -535,7 +535,7 @@ public class MetaTileEntityLargeBoiler extends MultiblockWithDisplayBase impleme
             if (burnTime > 0) {
                 ItemFuelInfo itemFuelInfo = (ItemFuelInfo) fuels.get(itemStack.getUnlocalizedName());
                 if (itemFuelInfo == null) {
-                    itemFuelInfo = new ItemFuelInfo(itemStack, itemStack.getCount(), itemCapacity, itemStack.getCount() * burnTime);
+                    itemFuelInfo = new ItemFuelInfo(itemStack, itemStack.getCount(), itemCapacity, 1, itemStack.getCount() * burnTime);
                     fuels.put(itemStack.getUnlocalizedName(), itemFuelInfo);
                 }
                 else {

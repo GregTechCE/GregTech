@@ -20,6 +20,11 @@ public interface IFuelInfo {
     int getFuelCapacity();
 
     /**
+     * @return the minimum fuel that can be consumed
+     */
+    int getFuelMinConsumed();
+
+    /**
      * @return the estimated amount of time in ticks for burning the remaining fuel
      */
     int getFuelBurnTime();

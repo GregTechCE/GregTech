@@ -41,6 +41,7 @@ public class FuelableInfoProvider extends CapabilityInfoProvider<IFuelable> {
             final String fuelName = fuelInfo.getFuelName();
             final int fuelRemaining = fuelInfo.getFuelRemaining();
             final int fuelCapacity = fuelInfo.getFuelCapacity();
+            final int fuelMinConsumed = fuelInfo.getFuelMinConsumed();
             final int burnTime = fuelInfo.getFuelBurnTime()/20;
             final int burnTimeMins = burnTime/60;
             final int burnTimeSecs = burnTime%60;
@@ -49,8 +50,13 @@ public class FuelableInfoProvider extends CapabilityInfoProvider<IFuelable> {
             horizontalPane.text(TextStyleClass.INFO + I18n.format("gregtech.top.fuel_name", fuelName));
 
             horizontalPane = probeInfo.horizontal(probeInfo.defaultLayoutStyle().alignment(ElementAlignment.ALIGN_CENTER));
+            String suffix;
+            if (fuelRemaining < fuelMinConsumed)
+                suffix = I18n.format("gregtech.top.fuel_min_consume", fuelCapacity, fuelMinConsumed);
+            else
+                suffix = I18n.format("gregtech.top.fuel_info", fuelCapacity, burnTimeMins, burnTimeSecs);
             horizontalPane.progress(fuelRemaining, fuelCapacity, probeInfo.defaultProgressStyle()
-                .suffix(I18n.format("gregtech.top.fuel_info", fuelCapacity, burnTimeMins, burnTimeSecs))
+                .suffix(suffix)
                 .borderColor(0x00000000)
                 .backgroundColor(0x00000000)
                 .filledColor(0xFFFFE000)

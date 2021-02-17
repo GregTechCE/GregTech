@@ -87,7 +87,7 @@ public class SteamCoalBoiler extends SteamBoiler implements IFuelable {
         final int fuelRemaining = fuelInSlot.getCount();
         final int fuelCapacity = importItems.getSlotLimit(0);
         final int burnTime = fuelRemaining * TileEntityFurnace.getItemBurnTime(fuelInSlot);
-        return Collections.singleton(new ItemFuelInfo(fuelInSlot, fuelRemaining, fuelCapacity, burnTime));
+        return Collections.singleton(new ItemFuelInfo(fuelInSlot, fuelRemaining, fuelCapacity, 1, burnTime));
     }
 
     @Override

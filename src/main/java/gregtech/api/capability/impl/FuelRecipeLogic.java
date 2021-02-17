@@ -75,7 +75,7 @@ public class FuelRecipeLogic extends MTETrait implements IControllable, IFuelabl
         int amountPerRecipe = calculateFuelAmount(this.previousRecipe);
         int duration = calculateRecipeDuration(this.previousRecipe);
         int fuelBurnTime = duration * fuelRemaining / amountPerRecipe;
-        return Collections.singleton(new FluidFuelInfo(fluid, fuelRemaining, fuelCapacity, fuelBurnTime));
+        return Collections.singleton(new FluidFuelInfo(fluid, fuelRemaining, fuelCapacity, amountPerRecipe, fuelBurnTime));
     }
 
     @Override

@@ -9,8 +9,8 @@ public class ItemFuelInfo extends AbstractFuelInfo {
 
     private final ItemStack itemStack;
 
-    public ItemFuelInfo(ItemStack itemStack, int fuelRemaining, int fuelCapacity, int fuelBurnTime) {
-        super(fuelRemaining, fuelCapacity, fuelBurnTime);
+    public ItemFuelInfo(ItemStack itemStack, int fuelRemaining, int fuelCapacity, int fuelMinConsumed, int fuelBurnTime) {
+        super(fuelRemaining, fuelCapacity, fuelMinConsumed, fuelBurnTime);
         this.itemStack = itemStack;
     }
 
