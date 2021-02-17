@@ -11,7 +11,7 @@ on:
 
 jobs:
   compile:
-    name: "Compile and test"
+    name: "Compilation and tests"
     runs-on: ubuntu-latest
     
     steps:
