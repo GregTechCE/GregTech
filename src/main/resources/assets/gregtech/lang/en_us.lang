@@ -17,7 +17,8 @@ gregtech.top.transform_up=§cStep Up§r %s (%dA) -> %s (%dA)
 gregtech.top.transform_down=§aStep Down§r %s (%dA) -> %s (%dA)
 gregtech.top.transform_input=§6Input:§r %s (%dA)
 gregtech.top.transform_output=§9Output:§r %s (%dA)
-gregtech.top.fuel_info=/%,d %,d s
+gregtech.top.fuel_info=/%,d for %,d:%02d mins
+gregtech.top.fuel_name=Fuel: %s
 gregtech.top.fuel_none=No fuel/idle
 
 gregtech.multiblock.title=Multiblock Pattern
