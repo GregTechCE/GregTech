@@ -51,11 +51,11 @@ public class SlotWidget extends Widget implements INativeWidget {
     }
 
     protected Slot createSlot(IInventory inventory, int index) {
-        return new WidgetSlotDelegate(inventory, index, 0, 0);
+        return new WidgetSlot(inventory, index, 0, 0);
     }
 
     protected Slot createSlot(IItemHandler inventory, int index) {
-        return new WidgetSlotItemHandlerDelegate(inventory, index, 0, 0);
+        return new WidgetSlotItemHandler(inventory, index, 0, 0);
     }
 
     @Override
@@ -162,8 +162,8 @@ public class SlotWidget extends Widget implements INativeWidget {
         return slotReference;
     }
 
-    protected class WidgetSlotDelegate extends Slot implements IScissored {
-        public WidgetSlotDelegate(IInventory inventory, int index, int xPosition, int yPosition) {
+    protected class WidgetSlot extends Slot implements IScissored {
+        public WidgetSlot(IInventory inventory, int index, int xPosition, int yPosition) {
             super(inventory, index, xPosition, yPosition);
         }
 
@@ -206,9 +206,9 @@ public class SlotWidget extends Widget implements INativeWidget {
         }
     }
 
-    protected class WidgetSlotItemHandlerDelegate extends SlotItemHandler implements IScissored {
+    protected class WidgetSlotItemHandler extends SlotItemHandler implements IScissored {
 
-        public WidgetSlotItemHandlerDelegate(IItemHandler itemHandler, int index, int xPosition, int yPosition) {
+        public WidgetSlotItemHandler(IItemHandler itemHandler, int index, int xPosition, int yPosition) {
             super(itemHandler, index, xPosition, yPosition);
         }
 
