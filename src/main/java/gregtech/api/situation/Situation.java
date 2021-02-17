@@ -18,6 +18,10 @@ public class Situation {
         registerSituation(id,situationName,this);
     }
 
+    public String getSituationErrorLevel(Situation situation) {
+        return situation.situationTypes.toString();
+    }
+
     void registerSituation(int id, String situationName, Situation situation){
         SITUATION_REGISTRY.register(id, situationName, situation);
     }

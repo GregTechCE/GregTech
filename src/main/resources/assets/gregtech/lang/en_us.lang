@@ -757,6 +757,10 @@ cover.machine_controller.mode.cover_north=Control Cover (North)
 cover.machine_controller.mode.cover_east=Control Cover (East)
 cover.machine_controller.mode.cover_west=Control Cover (West)
 
+gregtech.situation.level.working=WORKING
+gregtech.situation.level.idle=IDLING
+gregtech.situation.level.warning=WARNING
+gregtech.situation.level.error=ERROR
 gregtech.situation.idle=Idling
 gregtech.situation.disabled_by_controller=Disabled by controller cover
 gregtech.situation.working=Working

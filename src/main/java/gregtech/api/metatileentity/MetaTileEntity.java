@@ -58,7 +58,6 @@ import java.util.List;
 import java.util.function.Consumer;
 
 import static gregtech.api.util.InventoryUtils.simulateItemStackMerge;
-import static gregtech.api.Situations.*;
 
 public abstract class MetaTileEntity implements ICoverable {
 
