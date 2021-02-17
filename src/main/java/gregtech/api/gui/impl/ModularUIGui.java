@@ -96,7 +96,7 @@ public class ModularUIGui extends GuiContainer implements IRenderContext {
             }
         }
 
-        RenderHelper.disableStandardItemLigting();
+        RenderHelper.disableStandardItemLighting();
         GlStateManager.popMatrix();
 
         drawGuiContainerForegroundLayer(mouseX, mouseY);
