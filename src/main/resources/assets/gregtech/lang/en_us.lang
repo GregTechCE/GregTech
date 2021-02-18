@@ -37,7 +37,6 @@ fluid.empty=Empty
 
 metaitem.generic.fluid_container.tooltip=%,d/%,dL %s
 metaitem.generic.fluid_container.tooltip_empty=Empty
-# Final %d ==> %s
 metaitem.generic.electric_item.tooltip=%,d/%,d EU - Tier §e%s
 metaitem.electric.discharge_mode.enabled=§eDischarge Mode Enabled
 metaitem.electric.discharge_mode.disabled=§eDischarge Mode Disabled
@@ -677,9 +676,7 @@ metaitem.behavior.mode_switch.mode_switched=§eMode Set to: %s
 metaitem.behavior.mode_switch.current_mode=Mode: %s
 
 metaitem.tool.tooltip.primary_material=Material: %s (%s lvl)
-# %d => %,.1f
 metaitem.tool.tooltip.attack_damage=Attack damage: %,.1f
-# %d => %,.1f
 metaitem.tool.tooltip.mining_speed=Mining speed: %,.1f
 metaitem.tool.tooltip.durability=Durability: %,d/%,d
 metaitem.tool.tooltip.rotor.efficiency=Rotor Efficiency: %,d%%
@@ -1773,7 +1770,6 @@ gregtech.machine.workbench.tab.workbench=Crafting
 gregtech.machine.workbench.tab.item_list=Storage
 gregtech.machine.workbench.storage_note_1=(Available items from connected
 gregtech.machine.workbench.storage_note_2=inventories usable for crafting)
-# items_stored ===> item_stored
 gregtech.item_list.item_stored=§7Stored: %,d
 
 gregtech.machine.workbench.tab.crafting=Crafting
@@ -2878,7 +2874,6 @@ gregtech.universal.tooltip.max_voltage_in=Max Voltage IN: §a%,d §7(§a%s§7)
 gregtech.recipe.total=Total: %,d EU
 gregtech.recipe.eu=Usage: %,d EU/t (%s)
 gregtech.recipe.eu_inverted=Generation: %,d EU/t
-# %.1f ===> %,.1f
 gregtech.recipe.duration=Duration: %,.1f secs
 gregtech.recipe.amperage=Amperage: %,d
 gregtech.recipe.not_consumed=Not consumed in process
