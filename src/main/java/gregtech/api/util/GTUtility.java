@@ -22,7 +22,6 @@ import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Items;
-import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -86,14 +85,6 @@ public class GTUtility {
             ItemStack itemStack = src.getStackInSlot(i);
             dest.setStackInSlot(i, itemStack.isEmpty() ? ItemStack.EMPTY : itemStack.copy());
         }
-    }
-
-    public static InventoryCrafting deepCopyInventoryCrafting(final InventoryCrafting source) {
-        final InventoryCrafting result = new InventoryCrafting(new DummyContainer(), source.getWidth(), source.getHeight());
-        for (int i = 0; i < result.getSizeInventory(); ++i) {
-            result.setInventorySlotContents(i, source.getStackInSlot(i).copy());
-        }
-        return result;
     }
 
     public static <T> IntStream indices(T[] array) {
