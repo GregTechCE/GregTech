@@ -20,6 +20,9 @@ public class ShapeModelGenerator {
         return result;
     }
 
+
+//TODO What is going on here?
+
     // Old, should be removed, but InvPipeRenderer depends on it (despite never being used)
     public static CCModel[] generateRotatedVariants(CCModel originalModel) {
         CCModel[] result = new CCModel[6];
@@ -35,11 +38,14 @@ public class ShapeModelGenerator {
             result[i * 2 + 1] = positiveModel;
         }
         return result;
+    public static CCModel[] generateHalfVariants(CCModel halfModel) {
+        Transformation translation = new Translation(0, 0.25, 0);
+        CCModel centeredModel = halfModel.copy().apply(translation);
+        return generateFullBlockVariants(centeredModel);
     }
 
-    public static CCModel[] generateHalfModels(CCModel originalModel) {
+    public static CCModel[] generateRotatedVariants(CCModel originalModel, double translate) {
         CCModel[] result = new CCModel[6];
-        double translate = 0.5;
         for (int i = 0; i < 3; i++) {
             EnumFacing side = EnumFacing.VALUES[i * 2 + 1];
             Transformation rotation = Rotation.sideRotations[i * 2].at(Vector3.center);
@@ -52,87 +58,54 @@ public class ShapeModelGenerator {
         return result;
     }
 
-    public static CCModel[] generateSingleModels(CCModel halfModel) {
-        Transformation translation = new Translation(0, 0.25, 0);
-        CCModel centeredModel = halfModel.copy().apply(translation);
-        return generateFullBlockVariants(centeredModel);
+    public static CCModel[] generateRotatedVariants(CCModel originalModel) {
+        return generateRotatedVariants(originalModel, 1.0 - originalModel.verts[2].vec.y);
     }
 
-    // TODO Finished
-    public static CCModel[] generateCornerVariantsTakeTwo(CCModel[] straightModels, CCModel[] halfModels, CCModel curvedModel) {
+    public static CCModel[] generateCornerVariants(CCModel[] halfModels, CCModel curvedModel) {
         CCModel[] result = generateFancyCornerVariants(curvedModel);
+        List<CCModel> parts;
 
-        for (int i=1; i < 64; i++) {
+        for (int i = 1; i < result.length; i++) {
             if (result[i] == null) { // Check here to not overwrite models handled separately
-                List<CCModel> parts = new ArrayList<>();
-
-                if ((i & 1) == 1 && (i & 2) == 2) {
-                    parts.add(straightModels[0].copy());
-                } else if ((i & 1) == 1) {
-                    parts.add(halfModels[0].copy());
-                } else if ((i & 2) == 2) {
-                    parts.add(halfModels[1].copy());
+                parts = new ArrayList<>();
+                for (int j = 0; j < 6; j++) {
+                    int bit = (int)Math.pow(2, j);
+                    if ((i & bit) == bit) {
+                        parts.add(halfModels[j].copy());
+                    }
                 }
-
-                if ((i & 4) == 4 && (i & 8) == 8) {
-                    parts.add(straightModels[1].copy());
-                } else if ((i & 4) == 4) {
-                    parts.add(halfModels[2].copy());
-                } else if ((i & 8) == 8) {
-                    parts.add(halfModels[3].copy());
-                }
-
-                if ((i & 16) == 16 && (i & 32) == 32) {
-                    parts.add(straightModels[2].copy());
-                } else if ((i & 16) == 16) {
-                    parts.add(halfModels[4].copy());
-                } else if ((i & 32) == 32) {
-                    parts.add(halfModels[5].copy());
-                }
-
                 result[i] = CCModel.combine(parts);
             }
         }
         return result;
     }
 
-    /*
-     * Indices:
-     * Down: 0
-     * Up: 1
-     * North: 2
-     * South: 3
-     * West: 4
-     * East: 5
-     */
-    private static CCModel[] generateFancyCornerVariants(CCModel turnModel) { // turnModel is NW
+    private static CCModel[] generateFancyCornerVariants(CCModel turnModel) {
         CCModel[] result = new CCModel[64];
 
-        List<Transformation> rotations = Arrays.asList(       // Rotation chart:
-            Rotation.quarterRotations[0].at(Vector3.center),  // - Redundant, no rotation, just so indices match
-            Rotation.quarterRotations[1].at(Vector3.center),  // - 90 degrees clockwise around Y
-            Rotation.quarterRotations[2].at(Vector3.center),  // - 180 degrees clockwise around Y
-            Rotation.quarterRotations[3].at(Vector3.center),  // - 270 degrees clockwise around Y
-            Rotation.sideRotations[4].at(Vector3.center),     // - x=y, y=-x
-            Rotation.sideRotations[5].at(Vector3.center));    // - x=-y, y=x
+        List<Transformation> sRotations = Arrays.asList(
+            Rotation.sideRotations[0].at(Vector3.center),
+            Rotation.sideRotations[5].at(Vector3.center),
+            Rotation.sideRotations[4].at(Vector3.center));
 
-        CCModel originalModel = turnModel.copy();
-        result[0b010100] = originalModel.copy();
-        result[0b100100] = originalModel.copy().apply(rotations.get(1));
-        result[0b101000] = originalModel.copy().apply(rotations.get(2));
-        result[0b011000] = originalModel.copy().apply(rotations.get(3));
+        List<Transformation> qRotations = Arrays.asList(
+            Rotation.quarterRotations[0].at(Vector3.center),
+            Rotation.quarterRotations[2].at(Vector3.center),
+            Rotation.quarterRotations[3].at(Vector3.center),
+            Rotation.quarterRotations[1].at(Vector3.center));
 
-        originalModel = turnModel.copy().apply(rotations.get(4));
-        result[0b000110] = originalModel.copy();
-        result[0b100010] = originalModel.copy().apply(rotations.get(1));
-        result[0b001010] = originalModel.copy().apply(rotations.get(2));
-        result[0b010010] = originalModel.copy().apply(rotations.get(3));
-
-        originalModel = turnModel.copy().apply(rotations.get(5));
-        result[0b000101] = originalModel.copy();
-        result[0b100001] = originalModel.copy().apply(rotations.get(1));
-        result[0b001001] = originalModel.copy().apply(rotations.get(2));
-        result[0b010001] = originalModel.copy().apply(rotations.get(3));
+        for (int i = 0; i < 3; i++) {
+            CCModel originalModel = turnModel.copy().apply(sRotations.get(i));
+            if (i == 0) {
+                result[0b010100] = originalModel.copy().apply(qRotations.get(0));
+                result[0b101000] = originalModel.copy().apply(qRotations.get(1));
+                result[0b011000] = originalModel.copy().apply(qRotations.get(2));
+                result[0b100100] = originalModel.copy().apply(qRotations.get(3));
+            } else for (int j = 0; j < 4; j++) {
+                result[(4 << j) + i] = originalModel.copy().apply(qRotations.get(j));
+            }
+        }
 
         // Generate corner+1 pipes
         for (int i = 0; i < result.length; i++) {
@@ -161,17 +134,14 @@ public class ShapeModelGenerator {
             Vector3 second = generatePoint(radiansPerAngle, i + 1, radius);
             Vector3 firstTop = first.copy().add(0.0, segmentHeight, 0.0);
             Vector3 secondTop = second.copy().add(0.0, segmentHeight, 0.0);
-            double width = first.copy().subtract(second).mag();
             double heightLeft = height;
             for (int j = 0; j < amountOfSegments; j++) {
                 double actualHeight = firstTop.y - first.y;
-                double textureHeight = 1.0 * (actualHeight / segmentHeight);
-                double textureWidth = (textureHeight / actualHeight) * width;
                 int offset = i * amountOfSegments * 4 + j * 4;
-                initialModel.verts[offset] = new Vertex5(first.copy(), 0.0, 0.0);
-                initialModel.verts[offset + 1] = new Vertex5(firstTop.copy(), 0.0, textureHeight);
-                initialModel.verts[offset + 2] = new Vertex5(secondTop.copy(), textureWidth, textureHeight);
-                initialModel.verts[offset + 3] = new Vertex5(second.copy(), textureWidth, 0.0);
+                initialModel.verts[offset] = new Vertex5(first.copy(), 1.0, 0.0);
+                initialModel.verts[offset + 1] = new Vertex5(firstTop.copy(), 1.0, 1.0);
+                initialModel.verts[offset + 2] = new Vertex5(secondTop.copy(), 0.0, 1.0);
+                initialModel.verts[offset + 3] = new Vertex5(second.copy(), 0.0, 0.0);
 
                 heightLeft -= actualHeight;
                 double nextSegmentHeight = Math.min(segmentHeight, heightLeft);
@@ -191,8 +161,6 @@ public class ShapeModelGenerator {
         return new Vector3(x, 0.0, z);
     }
 
-
-    // Thank you to Arch for these complex generations
     private static Matrix4 createRotationMatrix(Vector3 forward, Vector3 up) {
         Vector3 right = forward.copy().crossProduct(up).multiply(-1.0f); //i*j = -k
 
@@ -225,7 +193,6 @@ public class ShapeModelGenerator {
         return result;
     }
 
-    // Example was with (20, 5, 6, 0.5)
     public static CCModel generateTurnModel(int numberOfTurns, int turnPointsPerTexel, int numberOfAnglesInner, double radiusInner) {
         CCModel initialModel = CCModel.quadModel(numberOfAnglesInner * 4 * numberOfTurns);
         int currentIndex = 0;

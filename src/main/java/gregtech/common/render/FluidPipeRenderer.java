@@ -26,7 +26,6 @@ import gregtech.common.pipelike.fluidpipe.FluidPipeProperties;
 import gregtech.common.pipelike.fluidpipe.FluidPipeType;
 import gregtech.common.pipelike.fluidpipe.ItemBlockFluidPipe;
 import gregtech.common.pipelike.fluidpipe.tile.TileEntityFluidPipe;
-import net.minecraft.block.state.IBlockProperties;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
@@ -107,16 +106,15 @@ public class FluidPipeRenderer implements ICCBlockRenderer, IItemRenderer {
             float thickness = fluidPipeType.getThickness();
             double height = (1.0f - thickness) / 2.0f;
             int angles = fluidPipeType.ordinal() < 2 ? 4 : 8;
-            CCModel fullBlockModel = ShapeModelGenerator.generateModel(angles, 1.0f, thickness / 3.0f, height);
+
             CCModel halfModel = ShapeModelGenerator.generateModel(angles, 0.5f, thickness / 3.0f, height);
 
             // original was 20, 5, 6, .5
             CCModel turnModel = ShapeModelGenerator.generateTurnModel(20, turnPointsPerTexel[fluidPipeType.ordinal()], angles, thickness / 3);
 
-            CCModel[] fullBlockVariants = ShapeModelGenerator.generateFullBlockVariants(fullBlockModel);
-            CCModel[] halfVariants = ShapeModelGenerator.generateHalfModels(halfModel);
-            CCModel[] allVariants = ShapeModelGenerator.generateCornerVariantsTakeTwo(fullBlockVariants, halfVariants, turnModel);
-            CCModel[] singleVariants = ShapeModelGenerator.generateSingleModels(halfModel);
+            CCModel[] halfVariants = ShapeModelGenerator.generateRotatedVariants(halfModel, 0.5);
+            CCModel[] allVariants = ShapeModelGenerator.generateCornerVariants(halfVariants, turnModel);
+            CCModel[] singleVariants = ShapeModelGenerator.generateHalfVariants(halfModel);
 
             this.pipeModels.put(fluidPipeType, new PipeModelInfo(allVariants, halfVariants, singleVariants));
         }
@@ -199,13 +197,13 @@ public class FluidPipeRenderer implements ICCBlockRenderer, IItemRenderer {
         IVertexOperation[] sideTexture = ArrayUtils.addAll(pipeline, new IconTransformation(textureInfo.sideTexture), multiplier);
 
         int sidedConnMask = connectMask & 0b111111;
-        CCModel fullBlockModel = null;
+        CCModel fullBlockModel;
 
         // TODO Figure out end textures for halfModels and singleModels
         /*if (Integer.bitCount(sidedConnMask) == 1) {
             fullBlockModel = modelInfo.halfModels[(int)(Math.log(sidedConnMask) / Math.log(2))];
         } else*/
-        
+
         if (modelInfo.cornerModels[sidedConnMask] != null) {
             fullBlockModel = modelInfo.cornerModels[sidedConnMask];
         } else {
@@ -219,7 +217,7 @@ public class FluidPipeRenderer implements ICCBlockRenderer, IItemRenderer {
 
     @Override
     public void renderBrightness(IBlockState state, float brightness) {
-        // TODO Do lighting here
+
     }
 
     @Override
@@ -258,6 +256,7 @@ public class FluidPipeRenderer implements ICCBlockRenderer, IItemRenderer {
         return TransformUtils.DEFAULT_BLOCK;
     }
 
+    // TODO Update this
     @Override
     public TextureAtlasSprite getParticleTexture() {
         return TextureUtils.getMissingSprite();
