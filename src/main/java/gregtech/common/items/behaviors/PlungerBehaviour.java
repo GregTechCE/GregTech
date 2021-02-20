@@ -73,24 +73,13 @@ public class PlungerBehaviour implements IItemBehaviour, IItemCapabilityProvider
             public int fill(FluidStack resource, boolean doFill) {
                 int result = super.fill(resource, doFill);
                 if (result > 0) {
-                    // Calculate the remaining durability
+                    // Adjust the fluid amount based on remaining durability/charge of the item
                     final ItemStack container = getContainer();
                     final IToolItem plunger = (IToolItem) container.getItem();
-                    final int remainingDurability = plunger.getMaxItemDamage(container) - plunger.getItemDamage(container);
-                    if (remainingDurability <= 0)
-                        return 0;
-
-                    // Work out how much fluid we can drain based on durability
-                    final int canDrain = (1000 * remainingDurability) / cost;
-                    result = Math.min(result, canDrain);
-
-                    // Work out the damage to inflict on the plunger
-                    if (doFill) {
-                        double operations = result;
-                        operations /= 1000;
-                        final int damage = cost * (int) Math.ceil(operations);
-                        GTUtility.doDamageItem(container, damage, false);
-                    }
+                    double operations = result;
+                    operations /= 1000;
+                    final int damage = (int) Math.ceil(operations);
+                    result = 1000 * plunger.damageItem(container, damage, true, !doFill);
                 }
                 // TODO play sound (how to get the player?)
                 return result;
