@@ -169,7 +169,7 @@ public class FluidPipeNet extends MonolithicPipeNet<FluidPipeProperties> {
     @Override
     public void deserializeNBT(final NBTTagCompound nbt) {
         super.deserializeNBT(nbt);
-        if (nbt.hasKey("FluidNetTank", NBT.TAG_COMPOUND));
+        if (nbt.hasKey("FluidNetTank", NBT.TAG_COMPOUND))
             this.fluidNetTank.readFromNBT(nbt.getCompoundTag("FluidNetTank"));
     }
 }
