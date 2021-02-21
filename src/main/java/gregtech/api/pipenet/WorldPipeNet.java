@@ -155,7 +155,7 @@ public abstract class WorldPipeNet<NodeDataType, T extends PipeNet<NodeDataType>
                 if (foundOldData != null)
                 {
                     // We have 2 pipenets at this position?
-                    GTLog.logger.warn("Found duplicate pipenets in old data at " + blockPos + " [" + foundOldData + ',' + pipeNet + ']');
+                    GTLog.logger.warn("Found duplicate pipenets in old data at {} [{},{}]", blockPos, foundOldData, pipeNet);
                     return;
                 }
                 foundOldData = pipeNet;
@@ -165,7 +165,7 @@ public abstract class WorldPipeNet<NodeDataType, T extends PipeNet<NodeDataType>
         if (foundOldData == null)
             return;
         // Move the old data into the new data
-        GTLog.logger.info("Fixing old data for " + foundOldData + " found at " + blockPos);
+        GTLog.logger.info("Fixing old data for {} found at {}", foundOldData, blockPos);
         this.oldData.removePipeNet(foundOldData);
         this.oldData.markDirty();
         this.addPipeNetSilently(foundOldData);
