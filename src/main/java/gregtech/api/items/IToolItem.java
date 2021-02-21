@@ -29,8 +29,7 @@ public interface IToolItem {
      * @param damage the damage to apply
      * @param allowPartial normally you should pass false, when true an electric item
                            will discharge all its remaining charge if it cannot do the
-                           full operation and tell you how much it had left
-                           (not currently implemented)
+                           full operation and tell you the equivalent damage
      * @param simulate pass true to do a dry run of the process
      * @return the actual damage applied
      */

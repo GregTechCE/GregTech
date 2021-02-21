@@ -332,14 +332,20 @@ public class ToolMetaItem<T extends ToolMetaItem<?>.MetaToolValueItem> extends M
         IElectricItem capability = stack.getCapability(GregtechCapabilities.CAPABILITY_ELECTRIC_ITEM, null);
         if (capability != null) {
             int energyAmount = ConfigHolder.energyUsageMultiplier * vanillaDamage;
-            if (capability.discharge(energyAmount, capability.getTier(), true, false, true) < energyAmount) {
-
-            // TODO when allowPartial is true, replace energyAmount with remaining charge
-            // and recalculate the damage done/returned based on that
-
-                //if we can't discharge full amount of energy, just return false
-                //and don't attempt to discharge left amount of energy
-                return 0;
+            long discharged = capability.discharge(energyAmount, capability.getTier(), true, false, true);
+            // if we can't discharge full amount of energy
+            if (discharged < energyAmount) {
+                // when asked use the discharged energy and recalculate the equivalent damage
+                if (allowPartial && discharged > 0) {
+                    energyAmount = (int) discharged;
+                    vanillaDamage = energyAmount / ConfigHolder.energyUsageMultiplier;
+                    if (energyAmount % ConfigHolder.energyUsageMultiplier != 0)
+                       ++vanillaDamage;
+                }
+                else {
+                    // Can't do the operation
+                    return 0;
+                }
             }
             capability.discharge(energyAmount, capability.getTier(), true, false, simulate);
         }
