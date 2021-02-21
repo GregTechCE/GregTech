@@ -112,7 +112,7 @@ public abstract class WorldPipeNet<NodeDataType, T extends PipeNet<NodeDataType>
             if (pipeNet.containsNode(blockPos))
                 return pipeNet;
         }
-        return null;
+        return checkForOldData(blockPos);
     }
 
     protected void addPipeNet(T pipeNet) {
@@ -138,32 +138,27 @@ public abstract class WorldPipeNet<NodeDataType, T extends PipeNet<NodeDataType>
      *
      * It's purpose is to move pipenets from the old data file to new one based on matching block position
      */
-    public void checkForOldData(final BlockPos blockPos) {
+    private T checkForOldData(final BlockPos blockPos) {
         // No old data
         if (this.oldData == null || this.oldData.pipeNets.isEmpty())
-            return;
-
-        // We have new data at this position so don't try to fix
-        if (getNetFromPos(blockPos) != null)
-            return;
+            return null;
 
         // See if we have a pipenet for this block pos in the old data
         T foundOldData = null;
         final List<T> oldPipeNets = this.oldData.pipeNetsByChunk.getOrDefault(new ChunkPos(blockPos), Collections.emptyList());
         for (T pipeNet : oldPipeNets) {
             if (pipeNet.containsNode(blockPos)) {
-                if (foundOldData != null)
-                {
+                if (foundOldData != null) {
                     // We have 2 pipenets at this position?
                     GTLog.logger.warn("Found duplicate pipenets in old data at {} [{},{}]", blockPos, foundOldData, pipeNet);
-                    return;
+                    return null;
                 }
                 foundOldData = pipeNet;
             }
         }
         // Nothing found
         if (foundOldData == null)
-            return;
+            return null;
         // Move the old data into the new data
         GTLog.logger.info("Fixing old data for {} found at {}", foundOldData, blockPos);
         this.oldData.removePipeNet(foundOldData);
@@ -171,6 +166,7 @@ public abstract class WorldPipeNet<NodeDataType, T extends PipeNet<NodeDataType>
         this.addPipeNetSilently(foundOldData);
         this.markDirty();
         foundOldData.setWorldData(this);
+        return foundOldData;
     }
 
     @Override
