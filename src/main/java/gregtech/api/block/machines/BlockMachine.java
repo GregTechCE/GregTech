@@ -288,7 +288,7 @@ public class BlockMachine extends BlockCustomParticle implements ITileEntityProv
 
             if (wrenchItem.damageItem(DamageValues.DAMAGE_FOR_WRENCH, true) &&
                 metaTileEntity.onWrenchClick(playerIn, hand, wrenchDirection, rayTraceResult)) {
-                wrenchItem.damageItem(DamageValues.DAMAGE_FOR_SCREWDRIVER, false);
+                wrenchItem.damageItem(DamageValues.DAMAGE_FOR_WRENCH, false);
                 return true;
             }
             return false;
