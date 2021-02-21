@@ -14,6 +14,7 @@ import gregtech.api.capability.impl.MultiblockRecipeLogic;
 import gregtech.api.multiblock.PatternMatchContext;
 import gregtech.api.recipes.Recipe;
 import gregtech.api.recipes.RecipeMap;
+import gregtech.api.render.OrientedOverlayRenderer;
 import gregtech.api.render.Textures;
 import gregtech.api.util.GTUtility;
 import net.minecraft.util.ResourceLocation;
@@ -157,6 +158,14 @@ public abstract class RecipeMapMultiblockController extends MultiblockWithDispla
     @Override
     public void renderMetaTileEntity(CCRenderState renderState, Matrix4 translation, IVertexOperation[] pipeline) {
         super.renderMetaTileEntity(renderState, translation, pipeline);
-        Textures.MULTIBLOCK_WORKABLE_OVERLAY.render(renderState, translation, pipeline, getFrontFacing(), recipeMapWorkable.isActive());
+        this.getFrontOverlay().render(renderState, translation, pipeline, getFrontFacing(), recipeMapWorkable.isActive());
+    }
+
+    /**
+     * Override this method to change the Controller overlay
+     * @return The overlay to render on the Multiblock Controller
+     */
+    protected OrientedOverlayRenderer getFrontOverlay() {
+        return Textures.MULTIBLOCK_WORKABLE_OVERLAY;
     }
 }
