@@ -2,14 +2,10 @@ package gregtech.loaders.recipe;
 
 import gregtech.api.unification.OreDictUnifier;
 import gregtech.api.unification.material.type.DustMaterial;
-import gregtech.api.unification.material.type.FluidMaterial;
 import gregtech.common.items.MetaItems;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
-
-import java.util.HashMap;
-import java.util.Map;
 
 import static gregtech.api.unification.ore.OrePrefix.*;
 import static gregtech.api.unification.material.Materials.*;
@@ -543,6 +539,12 @@ public class ChemistryRecipes {
             .fluidOutputs(LPG.getFluid(290))
             .duration(20).EUt(5).buildAndRegister();
 
+        CENTRIFUGE_RECIPES.recipeBuilder()
+            .fluidInputs(NitrationMixture.getFluid(2000))
+            .fluidOutputs(NitricAcid.getFluid(1000))
+            .fluidOutputs(SulfuricAcid.getFluid(1000))
+            .duration(192).EUt(30).buildAndRegister();
+
 
         // Mixer
         MIXER_RECIPES.recipeBuilder()
@@ -702,6 +704,32 @@ public class ChemistryRecipes {
             .input(dust, Graphite)
             .output(dust, Carbon, 4)
             .duration(100).EUt(26).buildAndRegister();
+
+        ELECTROLYZER_RECIPES.recipeBuilder()
+            .fluidInputs(AceticAcid.getFluid(2000))
+            .fluidOutputs(Ethane.getFluid(1000))
+            .fluidOutputs(CarbonDioxide.getFluid(2000))
+            .fluidOutputs(Hydrogen.getFluid(2000))
+            .duration(512).EUt(60).buildAndRegister();
+
+        ELECTROLYZER_RECIPES.recipeBuilder()
+            .fluidInputs(Chloromethane.getFluid(2000))
+            .fluidOutputs(Ethane.getFluid(1000))
+            .fluidOutputs(Chlorine.getFluid(2000))
+            .duration(400).EUt(60).buildAndRegister();
+
+        ELECTROLYZER_RECIPES.recipeBuilder()
+            .fluidInputs(MethylAcetate.getFluid(1000))
+            .output(dust, Carbon)
+            .fluidOutputs(AceticAcid.getFluid(1000))
+            .duration(264).EUt(60).buildAndRegister();
+
+        ELECTROLYZER_RECIPES.recipeBuilder()
+            .fluidInputs(Acetone.getFluid(2000))
+            .output(dust, Carbon, 3)
+            .fluidOutputs(Propane.getFluid(1000))
+            .fluidOutputs(Water.getFluid(2000))
+            .duration(480).EUt(60).buildAndRegister();
 
 
         // Brewing

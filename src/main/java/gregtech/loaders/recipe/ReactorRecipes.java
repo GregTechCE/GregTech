@@ -8,7 +8,6 @@ import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 
-import static gregtech.api.GTValues.L;
 import static gregtech.api.recipes.RecipeMaps.CHEMICAL_RECIPES;
 import static gregtech.api.unification.material.Materials.*;
 import static gregtech.api.unification.ore.OrePrefix.*;
@@ -18,9 +17,6 @@ public class ReactorRecipes {
 
     public static void init() {
 
-        // Plastics / Rubbers *************************************************
-
-        // Rubber
         CHEMICAL_RECIPES.recipeBuilder()
             .fluidInputs(Isoprene.getFluid(144))
             .fluidInputs(Air.getFluid(2000))
@@ -33,7 +29,6 @@ public class ReactorRecipes {
             .output(dust, RawRubber, 3)
             .duration(160).EUt(30).buildAndRegister();
 
-        // S-B Rubber
         CHEMICAL_RECIPES.recipeBuilder()
             .fluidInputs(Butadiene.getFluid(108))
             .fluidInputs(Styrene.getFluid(36))
@@ -53,7 +48,6 @@ public class ReactorRecipes {
             .input(dust, Sulfur)
             .fluidOutputs(StyreneButadieneRubber.getFluid(1296))
             .duration(600).EUt(30).buildAndRegister();
-
 
         CHEMICAL_RECIPES.recipeBuilder()
             .notConsumable(new IntCircuitIngredient(2))
@@ -75,8 +69,6 @@ public class ReactorRecipes {
             .fluidOutputs(Hydrogen.getFluid(2000))
             .fluidOutputs(Isoprene.getFluid(1000))
             .duration(120).EUt(30).buildAndRegister();
-
-
 
         CHEMICAL_RECIPES.recipeBuilder()
             .input(dust, SodiumSulfide, 3)
@@ -923,7 +915,7 @@ public class ReactorRecipes {
             .fluidInputs(Epichlorhydrin.getFluid(144))
             .fluidInputs(Naphtha.getFluid(3000))
             .fluidInputs(NitrogenDioxide.getFluid(1000))
-            .fluidOutputs(Epoxid.getFluid(L * 2))
+            .fluidOutputs(Epoxid.getFluid(288))
             .duration(240).EUt(30).buildAndRegister();
 
         CHEMICAL_RECIPES.recipeBuilder()
@@ -1030,5 +1022,33 @@ public class ReactorRecipes {
             .fluidInputs(SulfuricAcid.getFluid(250))
             .outputs(new ItemStack(Blocks.TNT))
             .duration(200).EUt(24).buildAndRegister();
+
+        CHEMICAL_RECIPES.recipeBuilder()
+            .input(dust, SodiumBisulfate, 7)
+            .fluidInputs(Water.getFluid(1000))
+            .output(dust, SodiumHydroxide, 3)
+            .fluidOutputs(SulfuricAcid.getFluid(1000))
+            .duration(60).EUt(30).buildAndRegister();
+
+        CHEMICAL_RECIPES.recipeBuilder()
+            .input(dust, SodiumHydroxide, 6)
+            .fluidInputs(Dichlorobenzene.getFluid(1000))
+            .output(dust, Salt, 4)
+            .fluidOutputs(Phenol.getFluid(1000))
+            .fluidOutputs(Oxygen.getFluid(1000))
+            .duration(120).EUt(30).buildAndRegister();
+
+        CHEMICAL_RECIPES.recipeBuilder()
+            .fluidInputs(Benzene.getFluid(1000))
+            .fluidInputs(Oxygen.getFluid(1000))
+            .fluidOutputs(Phenol.getFluid(1000))
+            .duration(400).EUt(2000).buildAndRegister();
+
+        CHEMICAL_RECIPES.recipeBuilder()
+            .fluidInputs(Glycerol.getFluid(1000))
+            .fluidInputs(CarbonDioxide.getFluid(1000))
+            .fluidOutputs(Ethylene.getFluid(2000))
+            .fluidOutputs(Oxygen.getFluid(5000))
+            .duration(400).EUt(200).buildAndRegister();
     }
 }

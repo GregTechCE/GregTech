@@ -235,7 +235,7 @@ public class Materials {
     public static IngotMaterial Graphene = new IngotMaterial(205, "graphene", 0x808080, SHINY, 2, of(), GENERATE_PLATE);
     public static GemMaterial Jasper = new GemMaterial(206, "jasper", 0xC85050, EMERALD, 2, of(), STD_GEM | NO_SMELTING | HIGH_SIFTER_OUTPUT);
     public static IngotMaterial Osmiridium = new IngotMaterial(207, "osmiridium", 0x6464FF, METALLIC, 3, of(new MaterialStack(Iridium, 3), new MaterialStack(Osmium, 1)), EXT2_METAL, null, 9.0F, 3.0f, 3152, 2500);
-    public static FluidMaterial NitrationMixture = new FluidMaterial(352, "nitration_mixture", 0xEEEEAA, FLUID, of(new MaterialStack(NitricAcid, 1), new MaterialStack(SulfuricAcid, 1)), 0);
+    public static FluidMaterial NitrationMixture = new FluidMaterial(352, "nitration_mixture", 0xEEEEAA, FLUID, of(new MaterialStack(NitricAcid, 1), new MaterialStack(SulfuricAcid, 1)), DISABLE_DECOMPOSITION);
     public static DustMaterial Tenorite = new DustMaterial(358, "tenorite", 0x606060, FINE, 1, of(new MaterialStack(Copper, 1), new MaterialStack(Oxygen, 1)), GENERATE_ORE);
     public static DustMaterial Cuprite = new DustMaterial(359, "cuprite", 0x770000, RUBY, 2, of(new MaterialStack(Copper, 2), new MaterialStack(Oxygen, 1)), GENERATE_ORE);
     public static DustMaterial Bornite = new DustMaterial(360, "bornite", 0xC11800, DULL, 1, of(new MaterialStack(Copper, 5), new MaterialStack(Iron, 1), new MaterialStack(Sulfur, 4)), GENERATE_ORE);
