@@ -2,6 +2,7 @@ package gregtech.api.recipes;
 
 import gregtech.api.items.metaitem.MetaItem;
 import gregtech.api.recipes.Recipe.ChanceEntry;
+import gregtech.api.unification.OreDictUnifier;
 import gregtech.api.unification.material.type.Material;
 import gregtech.api.unification.ore.OrePrefix;
 import gregtech.api.util.EnumValidationResult;
@@ -148,6 +149,14 @@ public abstract class RecipeBuilder<R extends RecipeBuilder<R>> {
 
     public R notConsumable(MetaItem<?>.MetaValueItem item) {
         return inputs(CountableIngredient.from(item.getStackForm(), 0));
+    }
+
+    public R output(OrePrefix orePrefix, Material material) {
+        return outputs(OreDictUnifier.get(orePrefix, material, 1));
+    }
+
+    public R output(OrePrefix orePrefix, Material material, int count) {
+        return outputs(OreDictUnifier.get(orePrefix, material, count));
     }
 
     public R outputs(ItemStack... outputs) {

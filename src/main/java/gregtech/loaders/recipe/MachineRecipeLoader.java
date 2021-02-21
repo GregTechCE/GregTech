@@ -58,6 +58,7 @@ public class MachineRecipeLoader {
 
     public static void init() {
         ChemistryRecipes.init();
+        ReactorRecipes.init();
         FuelRecipes.registerFuels();
         AssemblyLineRecipeLoader.registerAssemblyLineRecipes();
 
