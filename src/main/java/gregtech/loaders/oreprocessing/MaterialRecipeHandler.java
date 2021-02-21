@@ -270,13 +270,6 @@ public class MaterialRecipeHandler {
                     .circuitMeta(5)
                     .EUt(96).duration((int) (material.getAverageMass() * 9))
                     .buildAndRegister();
-
-                RecipeMaps.BENDER_RECIPES.recipeBuilder()
-                    .input(OrePrefix.plate, material, 9)
-                    .outputs(denseStack)
-                    .circuitMeta(5)
-                    .EUt(96).duration((int) (material.getAverageMass() * 2))
-                    .buildAndRegister();
             }
         }
 
