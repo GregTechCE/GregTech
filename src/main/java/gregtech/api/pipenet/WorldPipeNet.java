@@ -134,7 +134,7 @@ public abstract class WorldPipeNet<NodeDataType, T extends PipeNet<NodeDataType>
     protected abstract T createNetInstance();
 
     /*
-     * This method is invoked during tile loading
+     * This method is used when data cannot be found at the given position.
      *
      * It's purpose is to move pipenets from the old data file to new one based on matching block position
      */
