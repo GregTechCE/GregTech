@@ -42,6 +42,8 @@ import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
+import static gregtech.api.util.GTUtility.convertOpaqueRGBA_CLtoRGB;
+
 public class MetaTileEntityChest extends MetaTileEntity implements IFastRenderMetaTileEntity {
 
     private static final IndexedCuboid6 CHEST_COLLISION = new IndexedCuboid6(null, new Cuboid6(1 / 16.0, 0 / 16.0, 1 / 16.0, 15 / 16.0, 14 / 16.0, 15 / 16.0));
@@ -195,7 +197,12 @@ public class MetaTileEntityChest extends MetaTileEntity implements IFastRenderMe
         if(ModHandler.isMaterialWood(material)) {
             return Pair.of(Textures.WOODEN_CHEST.getParticleTexture(), getPaintingColor());
         } else {
-            return Pair.of(Textures.METAL_CHEST.getParticleTexture(), getPaintingColor());
+            int color = ColourRGBA.multiply(
+                GTUtility.convertRGBtoOpaqueRGBA_CL(material.materialRGB),
+                GTUtility.convertRGBtoOpaqueRGBA_CL(getPaintingColor())
+            );
+            color = convertOpaqueRGBA_CLtoRGB(color);
+            return Pair.of(Textures.METAL_CHEST.getParticleTexture(), color);
         }
     }
 
