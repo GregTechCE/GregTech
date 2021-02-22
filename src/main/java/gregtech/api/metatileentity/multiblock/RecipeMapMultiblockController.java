@@ -26,6 +26,7 @@ import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.IItemHandlerModifiable;
 import net.minecraftforge.items.ItemStackHandler;
 
+import javax.annotation.Nonnull;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -165,6 +166,7 @@ public abstract class RecipeMapMultiblockController extends MultiblockWithDispla
      * Override this method to change the Controller overlay
      * @return The overlay to render on the Multiblock Controller
      */
+    @Nonnull
     protected OrientedOverlayRenderer getFrontOverlay() {
         return Textures.MULTIBLOCK_WORKABLE_OVERLAY;
     }
