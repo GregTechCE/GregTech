@@ -121,8 +121,10 @@ public class ModularUIContainer extends Container implements WidgetUIAccess {
     @Override
     public void sendHeldItemUpdate() {
         for (IContainerListener listener : listeners) {
-            EntityPlayerMP player = (EntityPlayerMP) listener;
-            player.connection.sendPacket(new SPacketSetSlot(-1, -1, player.inventory.getItemStack()));
+            if (listener instanceof EntityPlayerMP) {
+                EntityPlayerMP player = (EntityPlayerMP) listener;
+                player.connection.sendPacket(new SPacketSetSlot(-1, -1, player.inventory.getItemStack()));
+            }
         }
     }
 
