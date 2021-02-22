@@ -6,6 +6,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import gregtech.api.util.GTUtility;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.DimensionType;
 import net.minecraft.world.WorldProvider;
 import net.minecraft.world.biome.Biome;
 import net.minecraftforge.common.BiomeDictionary;
@@ -32,7 +33,7 @@ public class WorldConfigUtils {
                 allPredicates.add(WorldProvider::isSurfaceWorld);
                 continue;
             } else if (stringValue.equals("is_nether")) {
-                allPredicates.add(WorldProvider::isNether);
+                allPredicates.add(wp -> wp.isNether() || wp.getDimensionType() == DimensionType.NETHER);
                 continue;
             }
             Function<WorldProvider, String> stringSupplier;

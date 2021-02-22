@@ -1,0 +1,16 @@
+{
+  "dims": [
+    {
+      "dimID": 0,
+      "dimName": "Overworld"
+    },
+    {
+      "dimID": 1,
+      "dimName": "End"
+    },
+    {
+      "dimID": -1,
+      "dimName": "Nether"
+    }
+  ]
+}
