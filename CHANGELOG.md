@@ -11,7 +11,7 @@
 * Added descriptors to the machine controller (#1459) - ALongStringOfNumbers
 * Added mechanism to copy text to the player's clipboard (#1465) - Adrian Brock
 * Added support for multiblocks having own front side overlay (#1494) - dan
-* Added circuit method for adding circuits ot CT recipes (#1496) - ALongStringOfNumbers
+* Added circuit method for adding circuits to CT recipes (#1496) - ALongStringOfNumbers
 * Updated JEI Multiblocks to show block counts and allow bookmarking (#1452) - Adrian Brock
 * Updated surface rocks to allow walking over them (#1462) - Adrian Brock
 * Updated sort to sort items by amount in descending order (#1477) - Nikolay Korolev
