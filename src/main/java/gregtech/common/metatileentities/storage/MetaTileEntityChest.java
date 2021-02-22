@@ -156,7 +156,7 @@ public class MetaTileEntityChest extends MetaTileEntity implements IFastRenderMe
 
     @Override
     public int getLightOpacity() {
-        return 1;
+        return 0;
     }
 
     @Override
