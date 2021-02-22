@@ -4,6 +4,8 @@ import codechicken.lib.raytracer.CuboidRayTraceResult;
 import codechicken.lib.render.CCRenderState;
 import codechicken.lib.render.pipeline.IVertexOperation;
 import codechicken.lib.vec.Matrix4;
+import gregtech.api.capability.GregtechTileCapabilities;
+import gregtech.api.capability.IOutputInformation;
 import gregtech.api.capability.impl.EnergyContainerHandler;
 import gregtech.api.capability.impl.FluidHandlerProxy;
 import gregtech.api.capability.impl.FluidTankList;
@@ -37,7 +39,7 @@ import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 
-public class SimpleMachineMetaTileEntity extends WorkableTieredMetaTileEntity {
+public class SimpleMachineMetaTileEntity extends WorkableTieredMetaTileEntity implements IOutputInformation {
 
     private boolean hasFrontFacing;
 
@@ -171,6 +173,8 @@ public class SimpleMachineMetaTileEntity extends WorkableTieredMetaTileEntity {
                 return CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.cast(itemHandler);
             }
             return null;
+        } else if (capability == GregtechTileCapabilities.CAPABILITY_OUTPUT_INFORMATION) {
+            return GregtechTileCapabilities.CAPABILITY_OUTPUT_INFORMATION.cast(this);
         }
         return super.getCapability(capability, side);
     }
@@ -330,6 +334,21 @@ public class SimpleMachineMetaTileEntity extends WorkableTieredMetaTileEntity {
             .setTooltipText("gregtech.gui.overclock"));
 
         return builder;
+    }
+
+    @Override
+    public EnumFacing getOutputSide() {
+        return getOutputFacing();
+    }
+
+    @Override
+    public boolean isOutputEnabled() {
+        return isAutoOutputItems() || isAutoOutputFluids();
+    }
+
+    @Override
+    public boolean isInputAllowedFromOutput() {
+        return isAllowInputFromOutputSide();
     }
 
     @Override

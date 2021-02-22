@@ -12,6 +12,7 @@ import com.google.common.base.Preconditions;
 import gregtech.api.GregTechAPI;
 import gregtech.api.capability.GregtechTileCapabilities;
 import gregtech.api.capability.IEnergyContainer;
+import gregtech.api.capability.IOutputInformation;
 import gregtech.api.capability.impl.FluidHandlerProxy;
 import gregtech.api.capability.impl.FluidTankList;
 import gregtech.api.capability.impl.ItemHandlerProxy;
@@ -58,7 +59,7 @@ import java.util.function.Consumer;
 
 import static gregtech.api.util.InventoryUtils.simulateItemStackMerge;
 
-public abstract class MetaTileEntity implements ICoverable {
+public abstract class MetaTileEntity implements ICoverable, IOutputInformation {
 
     public static final int DEFAULT_PAINTING_COLOR = 0xFFFFFF;
     public static final IndexedCuboid6 FULL_CUBE_COLLISION = new IndexedCuboid6(null, Cuboid6.full);
@@ -305,10 +306,10 @@ public abstract class MetaTileEntity implements ICoverable {
     }
 
     public final boolean onCoverScrewdriverClick(EntityPlayer playerIn, EnumHand hand, CuboidRayTraceResult result) {
+        EnumFacing hitFacing = ICoverable.determineGridSideHit(result);
         boolean accessingOutputSide = false;
-        if(this instanceof SimpleMachineMetaTileEntity) {
-            EnumFacing hitFacing = ICoverable.determineGridSideHit(result);
-            accessingOutputSide = hitFacing == ((SimpleMachineMetaTileEntity) this).getOutputFacing() && playerIn.isSneaking();
+        if(this.getCapability(GregtechTileCapabilities.CAPABILITY_OUTPUT_INFORMATION, hitFacing) != null) {
+            accessingOutputSide = (hitFacing == getOutputSide() && playerIn.isSneaking());
         }
         EnumFacing coverSide = ICoverable.traceCoverSide(result);
         CoverBehavior coverBehavior = coverSide == null ? null : getCoverAtSide(coverSide);

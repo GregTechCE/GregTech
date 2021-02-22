@@ -15,4 +15,7 @@ public class GregtechTileCapabilities {
     @CapabilityInject(IControllable.class)
     public static Capability<IControllable> CAPABILITY_CONTROLLABLE = null;
 
+    @CapabilityInject(IOutputInformation.class)
+    public static Capability<IOutputInformation> CAPABILITY_OUTPUT_INFORMATION = null;
+
 }
