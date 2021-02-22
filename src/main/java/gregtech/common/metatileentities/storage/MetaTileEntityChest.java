@@ -226,7 +226,7 @@ public class MetaTileEntityChest extends MetaTileEntity implements IFastRenderMe
 
     @Override
     public AxisAlignedBB getRenderBoundingBox() {
-        return new AxisAlignedBB(getPos().add(-1, -1, -1), getPos().add(2, 2, 2));
+        return new AxisAlignedBB(getPos().add(-1, 0, -1), getPos().add(2, 2, 2));
     }
 
     @Override
