@@ -14,9 +14,12 @@ import net.minecraftforge.common.util.Constants.NBT;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.IFluidTank;
 
+import java.util.Collection;
+import java.util.Collections;
+import java.util.LinkedHashMap;
 import java.util.function.Supplier;
 
-public class FuelRecipeLogic extends MTETrait implements IControllable {
+public class FuelRecipeLogic extends MTETrait implements IControllable, IFuelable {
 
     public final FuelRecipeMap recipeMap;
     protected FuelRecipe previousRecipe;
@@ -55,9 +58,52 @@ public class FuelRecipeLogic extends MTETrait implements IControllable {
     }
 
     @Override
+    public Collection<IFuelInfo> getFuels() {
+        if (!isReadyForRecipes())
+            return Collections.emptySet();
+        final IMultipleTankHandler fluidTanks = this.fluidTank.get();
+        if (fluidTanks == null)
+            return Collections.emptySet();
+
+        final LinkedHashMap<String, IFuelInfo> fuels = new LinkedHashMap<>();
+        // Fuel capacity is all tanks
+        int fuelCapacity = 0;
+        for (IFluidTank fluidTank : fluidTanks) {
+            fuelCapacity += fluidTank.getCapacity();
+        }
+
+        for (IFluidTank fluidTank : fluidTanks) {
+            final FluidStack tankContents = fluidTank.drain(Integer.MAX_VALUE, false);
+            if (tankContents == null || tankContents.amount <= 0)
+                continue;
+            int fuelRemaining = tankContents.amount;
+            FuelRecipe recipe = findRecipe(tankContents);
+            if (recipe == null)
+                continue;
+            int amountPerRecipe = calculateFuelAmount(recipe);
+            int duration = calculateRecipeDuration(recipe);
+            int fuelBurnTime = duration * fuelRemaining / amountPerRecipe;
+
+            FluidFuelInfo fuelInfo = (FluidFuelInfo) fuels.get(tankContents.getUnlocalizedName());
+            if (fuelInfo == null) {
+                fuelInfo = new FluidFuelInfo(tankContents, fuelRemaining, fuelCapacity, amountPerRecipe, fuelBurnTime);
+                fuels.put(tankContents.getUnlocalizedName(), fuelInfo);
+            }
+            else {
+                fuelInfo.addFuelRemaining(fuelRemaining);
+                fuelInfo.addFuelBurnTime(fuelBurnTime);
+            }
+        }
+        return fuels.values();
+    }
+
+    @Override
     public <T> T getCapability(Capability<T> capability) {
         if(capability == GregtechTileCapabilities.CAPABILITY_CONTROLLABLE) {
             return GregtechTileCapabilities.CAPABILITY_CONTROLLABLE.cast(this);
+        }
+        if(capability == GregtechCapabilities.CAPABILITY_FUELABLE) {
+            return GregtechCapabilities.CAPABILITY_FUELABLE.cast(this);
         }
         return null;
     }
@@ -75,7 +121,7 @@ public class FuelRecipeLogic extends MTETrait implements IControllable {
                     }
                 }
             }
-            if (recipeDurationLeft == 0) {
+            if (recipeDurationLeft == 0 && isReadyForRecipes()) {
                 tryAcquireNewRecipe();
             }
         }
@@ -85,11 +131,15 @@ public class FuelRecipeLogic extends MTETrait implements IControllable {
         }
     }
 
+    protected boolean isReadyForRecipes() {
+       return true;
+    }
+
     protected boolean shouldVoidExcessiveEnergy() {
         return false;
     }
 
-    protected void tryAcquireNewRecipe() {
+    private void tryAcquireNewRecipe() {
         IMultipleTankHandler fluidTanks = this.fluidTank.get();
         for (IFluidTank fluidTank : fluidTanks) {
             FluidStack tankContents = fluidTank.getFluid();
@@ -107,7 +157,7 @@ public class FuelRecipeLogic extends MTETrait implements IControllable {
         return isActive;
     }
 
-    protected int tryAcquireNewRecipe(FluidStack fluidStack) {
+    private int tryAcquireNewRecipe(FluidStack fluidStack) {
         FuelRecipe currentRecipe;
         if (previousRecipe != null && previousRecipe.matches(getMaxVoltage(), fluidStack)) {
             //if previous recipe still matches inputs, try to use it
@@ -134,6 +184,19 @@ public class FuelRecipeLogic extends MTETrait implements IControllable {
             }
         }
         return 0;
+    }
+
+    // Similar to tryAcquire but with no side effects
+    private FuelRecipe findRecipe(FluidStack fluidStack) {
+        FuelRecipe currentRecipe;
+        if (previousRecipe != null && previousRecipe.matches(getMaxVoltage(), fluidStack)) {
+            currentRecipe = previousRecipe;
+        } else {
+            currentRecipe = recipeMap.findRecipe(getMaxVoltage(), fluidStack);
+        }
+        if (currentRecipe != null && checkRecipe(currentRecipe))
+            return currentRecipe;
+        return null;
     }
 
     protected boolean checkRecipe(FuelRecipe recipe) {

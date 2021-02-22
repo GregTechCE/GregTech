@@ -1,5 +1,9 @@
 package gregtech.common.metatileentities.steam.boiler;
 
+import gregtech.api.capability.GregtechCapabilities;
+import gregtech.api.capability.IFuelInfo;
+import gregtech.api.capability.IFuelable;
+import gregtech.api.capability.impl.ItemFuelInfo;
 import gregtech.api.gui.ModularUI;
 import gregtech.api.gui.widgets.ProgressWidget;
 import gregtech.api.gui.widgets.ProgressWidget.MoveType;
@@ -11,13 +15,18 @@ import gregtech.api.render.Textures;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntityFurnace;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.items.IItemHandlerModifiable;
 import net.minecraftforge.items.ItemStackHandler;
 
+import java.util.Collection;
+import java.util.Collections;
+
 import javax.annotation.Nonnull;
 
-public class SteamCoalBoiler extends SteamBoiler {
+public class SteamCoalBoiler extends SteamBoiler implements IFuelable {
 
     public SteamCoalBoiler(ResourceLocation metaTileEntityId, boolean isHighPressure) {
         super(metaTileEntityId, isHighPressure, Textures.COAL_BOILER_OVERLAY, 150);
@@ -58,6 +67,27 @@ public class SteamCoalBoiler extends SteamBoiler {
                 return super.insertItem(slot, stack, simulate);
             }
         };
+    }
+
+    public <T> T getCapability(Capability<T> capability, EnumFacing side) {
+        T result = super.getCapability(capability, side);
+        if (result != null)
+            return result;
+        if (capability == GregtechCapabilities.CAPABILITY_FUELABLE) {
+            return GregtechCapabilities.CAPABILITY_FUELABLE.cast(this);
+        }
+        return null;
+    }
+
+    @Override
+    public Collection<IFuelInfo> getFuels() {
+        ItemStack fuelInSlot = importItems.extractItem(0, Integer.MAX_VALUE, true);
+        if (fuelInSlot == null || fuelInSlot.isEmpty())
+            return Collections.emptySet();
+        final int fuelRemaining = fuelInSlot.getCount();
+        final int fuelCapacity = importItems.getSlotLimit(0);
+        final int burnTime = fuelRemaining * TileEntityFurnace.getItemBurnTime(fuelInSlot);
+        return Collections.singleton(new ItemFuelInfo(fuelInSlot, fuelRemaining, fuelCapacity, 1, burnTime));
     }
 
     @Override
