@@ -59,7 +59,7 @@ import java.util.function.Consumer;
 
 import static gregtech.api.util.InventoryUtils.simulateItemStackMerge;
 
-public abstract class MetaTileEntity implements ICoverable, IOutputInformation {
+public abstract class MetaTileEntity implements ICoverable {
 
     public static final int DEFAULT_PAINTING_COLOR = 0xFFFFFF;
     public static final IndexedCuboid6 FULL_CUBE_COLLISION = new IndexedCuboid6(null, Cuboid6.full);
@@ -309,7 +309,8 @@ public abstract class MetaTileEntity implements ICoverable, IOutputInformation {
         EnumFacing hitFacing = ICoverable.determineGridSideHit(result);
         boolean accessingOutputSide = false;
         if(this.getCapability(GregtechTileCapabilities.CAPABILITY_OUTPUT_INFORMATION, hitFacing) != null) {
-            accessingOutputSide = (hitFacing == getOutputSide() && playerIn.isSneaking());
+            EnumFacing OutputSide = this.getCapability(GregtechTileCapabilities.CAPABILITY_OUTPUT_INFORMATION, hitFacing).getOutputSide();
+            accessingOutputSide = (hitFacing == OutputSide && playerIn.isSneaking());
         }
         EnumFacing coverSide = ICoverable.traceCoverSide(result);
         CoverBehavior coverBehavior = coverSide == null ? null : getCoverAtSide(coverSide);
