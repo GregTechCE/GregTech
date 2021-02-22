@@ -92,19 +92,14 @@ public class MetaTileEntityChest extends MetaTileEntity implements IFastRenderMe
         }
 
         if ((numPlayersUsing == 0 && this.lidAngle > 0.0F) || (this.numPlayersUsing > 0 && this.lidAngle < 1.0F)) {
-            float currentValue = this.lidAngle;
+            float previousValue = this.lidAngle;
 
             if (this.numPlayersUsing > 0) {
-                this.lidAngle += 0.1F;
+                this.lidAngle = Math.min(this.lidAngle + 0.1F, 1.0F);
             } else {
-                this.lidAngle -= 0.1F;
+                this.lidAngle = Math.max(this.lidAngle - 0.1F, 0.0F);
             }
-            if (this.lidAngle > 1.0F) {
-                this.lidAngle = 1.0F;
-            } else if (this.lidAngle < 0.0F) {
-                this.lidAngle = 0.0F;
-            }
-            if (this.lidAngle < 0.5F && currentValue >= 0.5F) {
+            if (this.lidAngle < 0.5F && previousValue >= 0.5F) {
                 double soundX = blockPos.getX() + 0.5;
                 double soundZ = blockPos.getZ() + 0.5;
                 double soundY = blockPos.getY() + 0.5;
