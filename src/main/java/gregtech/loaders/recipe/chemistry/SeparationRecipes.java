@@ -91,7 +91,6 @@ public class SeparationRecipes {
             .fluidOutputs(Oxygen.getFluid(1000))
             .duration(1500).EUt(30).buildAndRegister();
 
-        // TODO Make sure recipe right below this works
         ELECTROLYZER_RECIPES.recipeBuilder()
             .fluidInputs(DistilledWater.getFluid(1000))
             .fluidOutputs(Hydrogen.getFluid(2000))

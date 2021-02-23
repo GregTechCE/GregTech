@@ -565,6 +565,7 @@ public class ReactorRecipes {
             .duration(60).EUt(8).buildAndRegister();
 
         CHEMICAL_RECIPES.recipeBuilder()
+            .notConsumable(new IntCircuitIngredient(1))
             .fluidInputs(Oxygen.getFluid(3000))
             .fluidInputs(HydrogenSulfide.getFluid(1000))
             .fluidOutputs(Water.getFluid(1000))
@@ -899,6 +900,7 @@ public class ReactorRecipes {
             .duration(140).EUt(192).buildAndRegister();
 
         CHEMICAL_RECIPES.recipeBuilder()
+            .notConsumable(new IntCircuitIngredient(2))
             .fluidInputs(HydrogenSulfide.getFluid(1000))
             .fluidInputs(Oxygen.getFluid(4000))
             .fluidOutputs(SulfuricAcid.getFluid(1000))

@@ -34,7 +34,6 @@ public class ChemicalBathRecipes {
             .output(Items.PAPER)
             .duration(100).EUt(8).buildAndRegister();
 
-        // TODO Check recipe exists
         CHEMICAL_BATH_RECIPES.recipeBuilder()
             .input(dust, Coal)
             .fluidInputs(DistilledWater.getFluid(125))
