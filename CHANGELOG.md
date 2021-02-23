@@ -9,7 +9,7 @@
   * Additional information like dimensions, spawn range and vein weight are available
   * Vein files now can contain name and description optional values
 * Added descriptors to the machine controller (#1459) - ALongStringOfNumbers
-* Added mechanism to copy text to the player's clipboard (#1465) - Adrian Brock
+* Added unlocalized name of supported items is copied to clipboard when using /gt util hand (#1465) - Adrian Brock
 * Added support for multiblocks having own front side overlay (#1494) - dan
 * Added circuit method for adding circuits to CT recipes (#1496) - ALongStringOfNumbers
 * Updated JEI Multiblocks to show block counts and allow bookmarking (#1452) - Adrian Brock
