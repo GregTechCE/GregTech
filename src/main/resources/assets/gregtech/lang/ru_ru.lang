@@ -2840,7 +2840,7 @@ gregtech.gui.toggle_view.disabled=Переключить вид (Жидкост�
 gregtech.gui.toggle_view.enabled=Переключить вид (Предметы)
 gregtech.gui.overclock.enabled=Разрешить разгон
 gregtech.gui.overclock.disabled=Запретить разгон
-gregtech.gui.sort=Сорировать
+gregtech.gui.sort=Сортировать
 
 gregtech.item_filter.empty_item=Пусто (нет предмета)
 gregtech.item_filter.footer=§eНажмите с предметом, чтобы переопределить
@@ -2887,8 +2887,8 @@ gregtech.multiblock.large_boiler.steam_output=Выход пара: %s мВ/т
 gregtech.command.usage=Применение: /gregtech <worldgen/util>
 gregtech.command.worldgen.usage=Применение: /gregtech worldgen <reload>
 gregtech.command.worldgen.reload.usage=Применение: /gregtech worldgen reload
-gregtech.command.worldgen.reload.success=Гнереатор мира успешно перезагрузился из конфига.
-gregtech.command.worldgen.reload.failed=Перезагрузка гнереатора мира окончилась ошибкой. Проверьте ошибки в консоли.
+gregtech.command.worldgen.reload.success=Генератор мира успешно перезагрузился из конфига.
+gregtech.command.worldgen.reload.failed=Перезагрузка генератора мира окончилась ошибкой. Проверьте ошибки в консоли.
 gregtech.command.util.usage=Применение: /gregtech util <hand>
 gregtech.command.util.hand.usage=Применение: /gregtech util hand
 gregtech.command.util.hand.item_id=Предмет: %s (Метаданные: %d)
@@ -2898,7 +2898,7 @@ gregtech.command.util.hand.material_meta_item=Префикс руды: %s; Ма�
 gregtech.command.util.hand.tool_stats=Класс инструмента: %s
 gregtech.command.util.hand.meta_item=Название мета-предмета: %s
 gregtech.command.util.hand.not_a_player=Эта команда может использоваться только игроком.
-gregtech.command.util.hand.no_item=Перед выполнением этой команды, вы должны держать что-то в главном руке.
+gregtech.command.util.hand.no_item=Перед выполнением этой команды, вы должны держать что-то в основной руке.
 
 # Fixes
 fluid.tile.water=Вода

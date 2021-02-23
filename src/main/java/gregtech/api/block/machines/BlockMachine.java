@@ -399,7 +399,7 @@ public class BlockMachine extends BlockCustomParticle implements ITileEntityProv
     public int getLightOpacity(IBlockState state, IBlockAccess world, BlockPos pos) {
         //why mc is so fucking retarded to call this method on fucking NEIGHBOUR BLOCKS!
         MetaTileEntity metaTileEntity = getMetaTileEntity(world, pos);
-        return metaTileEntity == null ? 255 : metaTileEntity.getLightOpacity();
+        return metaTileEntity == null ? 0 : metaTileEntity.getLightOpacity();
     }
 
     @Override

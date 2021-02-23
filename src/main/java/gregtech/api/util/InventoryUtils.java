@@ -2,6 +2,7 @@ package gregtech.api.util;
 
 import it.unimi.dsi.fastutil.*;
 import it.unimi.dsi.fastutil.objects.*;
+import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.*;
 import net.minecraftforge.items.*;
 
@@ -209,5 +210,13 @@ public final class InventoryUtils {
         }
 
         return splitStacks;
+    }
+
+    public static InventoryCrafting deepCopyInventoryCrafting(final InventoryCrafting source) {
+        final InventoryCrafting result = new InventoryCrafting(new DummyContainer(), source.getWidth(), source.getHeight());
+        for (int i = 0; i < result.getSizeInventory(); ++i) {
+            result.setInventorySlotContents(i, source.getStackInSlot(i).copy());
+        }
+        return result;
     }
 }

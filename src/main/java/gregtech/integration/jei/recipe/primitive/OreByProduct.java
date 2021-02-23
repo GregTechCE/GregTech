@@ -73,6 +73,10 @@ public class OreByProduct implements IRecipeWrapper {
 		ingredients.setOutputs(ItemStack.class, this.outputs);
 	}
 
+     public boolean hasByProducts() {
+         return !outputs.isEmpty();
+     }
+
 	public void addTooltip(int slotIndex, boolean input, Object ingredient, List<String> tooltip) {
 		switch (slotIndex) {
 		case 0: // Ore

@@ -4,6 +4,7 @@ import gregtech.api.GTValues;
 import gregtech.common.metatileentities.MetaTileEntities;
 import gregtech.integration.jei.multiblock.infos.*;
 import mezz.jei.api.IJeiHelpers;
+import mezz.jei.api.IGuiHelper;
 import mezz.jei.api.IModRegistry;
 import mezz.jei.api.gui.IDrawable;
 import mezz.jei.api.gui.IRecipeLayout;
@@ -20,11 +21,13 @@ public class MultiblockInfoCategory implements IRecipeCategory<MultiblockInfoRec
 
     private final IDrawable background;
     private final IDrawable icon;
+    private final IGuiHelper guiHelper;
 
     public MultiblockInfoCategory(IJeiHelpers helpers) {
-        this.background = helpers.getGuiHelper().createBlankDrawable(176, 166);
+        this.guiHelper = helpers.getGuiHelper();
+        this.background = this.guiHelper.createBlankDrawable(176, 166);
         ResourceLocation iconLocation = new ResourceLocation(GTValues.MODID, "textures/gui/icon/coke_oven.png");
-        this.icon = helpers.getGuiHelper().createDrawable(iconLocation, 0, 0, 16, 16, 16, 16);
+        this.icon = this.guiHelper.createDrawable(iconLocation, 0, 0, 16, 16, 16, 16);
     }
 
     public static final Map<String, MultiblockInfoRecipeWrapper> multiblockRecipes = new HashMap<String, MultiblockInfoRecipeWrapper>() {{
@@ -78,7 +81,7 @@ public class MultiblockInfoCategory implements IRecipeCategory<MultiblockInfoRec
 
     @Override
     public void setRecipe(IRecipeLayout recipeLayout, MultiblockInfoRecipeWrapper recipeWrapper, IIngredients ingredients) {
-        recipeWrapper.setRecipeLayout((RecipeLayout) recipeLayout);
+        recipeWrapper.setRecipeLayout((RecipeLayout) recipeLayout, this.guiHelper);
     }
 
 }
