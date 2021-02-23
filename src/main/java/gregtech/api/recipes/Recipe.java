@@ -1,7 +1,6 @@
 package gregtech.api.recipes;
 
 import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableMap;
 import gregtech.api.capability.IMultipleTankHandler;
 import gregtech.api.util.GTUtility;
 import net.minecraft.item.ItemStack;
@@ -58,12 +57,21 @@ public class Recipe {
      */
     private final boolean hidden;
 
-    private final Map<String, Object> recipeProperties;
+    private final List<RecipeProperty> recipeProperties = new ArrayList<>();
 
     public Recipe(List<CountableIngredient> inputs, List<ItemStack> outputs, List<ChanceEntry> chancedOutputs,
                   List<FluidStack> fluidInputs, List<FluidStack> fluidOutputs,
-                  Map<String, Object> recipeProperties, int duration, int EUt, boolean hidden) {
-        this.recipeProperties = ImmutableMap.copyOf(recipeProperties);
+                  Map<String, Object> recipePropertiesOld, int duration, int EUt, boolean hidden) {
+
+        this(inputs, outputs, chancedOutputs, fluidInputs, fluidOutputs, RecipeProperty.makeProperties(recipePropertiesOld), duration, EUt, hidden);
+
+    }
+
+    public Recipe(List<CountableIngredient> inputs, List<ItemStack> outputs, List<ChanceEntry> chancedOutputs,
+                  List<FluidStack> fluidInputs, List<FluidStack> fluidOutputs,
+                  List<RecipeProperty> recipeProperties, int duration, int EUt, boolean hidden) {
+
+        this.recipeProperties.addAll(recipeProperties);
         this.inputs = NonNullList.create();
         this.inputs.addAll(inputs);
         this.outputs = NonNullList.create();
@@ -291,12 +299,48 @@ public class Recipe {
     }
 
     public Set<String> getPropertyKeys() {
-        return recipeProperties.keySet();
+        Set<String> keys = new HashSet<>();
+        this.recipeProperties.forEach(recipeProperty -> keys.add(recipeProperty.getKey()));
+        return keys;
+    }
+
+    public List<RecipeProperty> getRecipeProperties() {
+        return recipeProperties;
+    }
+
+    private Object findValue(String key) {
+        for(RecipeProperty property : this.recipeProperties) {
+            if(property.getKey().equals(key))
+                return property.getValue();
+        }
+
+        return null;
+    }
+
+    public static RecipeProperty getPropertyByKey(String key) {
+        List<RecipeProperty> allProperties = RecipeProperty.getPropertyList();
+        for(RecipeProperty property : allProperties) {
+            if(property.getKey().equals(key)) {
+                return property;
+            }
+        }
+
+        return null;
+    }
+
+    private boolean isPropertyRegistered(String key) {
+        for(RecipeProperty property : this.recipeProperties) {
+            if(property.getKey().equals(key)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     public boolean getBooleanProperty(String key) {
         Validate.notNull(key);
-        Object o = this.recipeProperties.get(key);
+        Object o = findValue(key);
         if (!(o instanceof Boolean)) {
             throw new IllegalArgumentException();
         }
@@ -305,7 +349,7 @@ public class Recipe {
 
     public int getIntegerProperty(String key) {
         Validate.notNull(key);
-        Object o = this.recipeProperties.get(key);
+        Object o = findValue(key);
         if (!(o instanceof Integer)) {
             throw new IllegalArgumentException();
         }
@@ -315,7 +359,7 @@ public class Recipe {
     @SuppressWarnings("unchecked")
     public <T> T getProperty(String key) {
         Validate.notNull(key);
-        Object o = this.recipeProperties.get(key);
+        Object o = findValue(key);
         if (o == null) {
             throw new IllegalArgumentException();
         }
@@ -324,7 +368,7 @@ public class Recipe {
 
     public String getStringProperty(String key) {
         Validate.notNull(key);
-        Object o = this.recipeProperties.get(key);
+        Object o = findValue(key);
         if (!(o instanceof String)) {
             throw new IllegalArgumentException();
         }

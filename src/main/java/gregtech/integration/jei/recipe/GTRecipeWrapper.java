@@ -5,6 +5,7 @@ import gregtech.api.recipes.CountableIngredient;
 import gregtech.api.recipes.Recipe;
 import gregtech.api.recipes.Recipe.ChanceEntry;
 import gregtech.api.recipes.RecipeMap;
+import gregtech.api.recipes.RecipeProperty;
 import gregtech.api.unification.OreDictUnifier;
 import gregtech.integration.jei.utils.JEIHelpers;
 import mezz.jei.api.ingredients.IIngredients;
@@ -115,9 +116,8 @@ public class GTRecipeWrapper implements IRecipeWrapper {
         minecraft.fontRenderer.drawString(I18n.format("gregtech.recipe.total", Math.abs((long) recipe.getEUt()) * recipe.getDuration()), 0, yPosition, 0x111111);
         minecraft.fontRenderer.drawString(I18n.format(recipe.getEUt() >= 0 ? "gregtech.recipe.eu" : "gregtech.recipe.eu_inverted", Math.abs(recipe.getEUt()), JEIHelpers.getMinTierForVoltage(recipe.getEUt())), 0, yPosition += lineHeight, 0x111111);
         minecraft.fontRenderer.drawString(I18n.format("gregtech.recipe.duration", recipe.getDuration() / 20f), 0, yPosition += lineHeight, 0x111111);
-        for (String propertyKey : recipe.getPropertyKeys()) {
-            minecraft.fontRenderer.drawString(I18n.format("gregtech.recipe." + propertyKey,
-                recipe.<Object>getProperty(propertyKey)), 0, yPosition += lineHeight, 0x111111);
+        for(RecipeProperty property : recipe.getRecipeProperties()) {
+            property.drawInfo(minecraft, 0, yPosition += lineHeight, 0x111111);
         }
     }
 
