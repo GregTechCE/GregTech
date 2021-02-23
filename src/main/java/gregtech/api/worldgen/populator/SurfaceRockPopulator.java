@@ -88,4 +88,8 @@ public class SurfaceRockPopulator implements VeinChunkPopulator {
             }
         }
     }
+
+    public Material getMaterial() {
+        return material;
+    }
 }

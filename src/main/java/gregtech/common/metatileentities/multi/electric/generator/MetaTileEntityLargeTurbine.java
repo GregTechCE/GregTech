@@ -71,6 +71,10 @@ public class MetaTileEntityLargeTurbine extends FueledMultiblockController {
         return new MetaTileEntityLargeTurbine(metaTileEntityId, turbineType);
     }
 
+    public MetaTileEntityRotorHolder getRotorHolder() {
+        return getAbilities(ABILITY_ROTOR_HOLDER).get(0);
+    }
+
     @Override
     protected void updateFormedValid() {
         if (isTurbineFaceFree()) {
@@ -86,6 +90,7 @@ public class MetaTileEntityLargeTurbine extends FueledMultiblockController {
 
     @Override
     public void invalidateStructure() {
+        getRotorHolder().resetRotorSpeed();
         super.invalidateStructure();
         this.exportFluidHandler = null;
     }
@@ -108,7 +113,7 @@ public class MetaTileEntityLargeTurbine extends FueledMultiblockController {
     @Override
     protected void addDisplayText(List<ITextComponent> textList) {
         if (isStructureFormed()) {
-            MetaTileEntityRotorHolder rotorHolder = getAbilities(ABILITY_ROTOR_HOLDER).get(0);
+            MetaTileEntityRotorHolder rotorHolder = getRotorHolder();
             FluidStack fuelStack = ((LargeTurbineWorkableHandler) workableHandler).getFuelStack();
             int fuelAmount = fuelStack == null ? 0 : fuelStack.amount;
 

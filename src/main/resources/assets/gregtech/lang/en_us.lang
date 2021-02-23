@@ -17,6 +17,10 @@ gregtech.top.transform_up=§cStep Up§r %s (%dA) -> %s (%dA)
 gregtech.top.transform_down=§aStep Down§r %s (%dA) -> %s (%dA)
 gregtech.top.transform_input=§6Input:§r %s (%dA)
 gregtech.top.transform_output=§9Output:§r %s (%dA)
+gregtech.top.fuel_info=/%,d for %,d secs
+gregtech.top.fuel_min_consume=/%,d needs %,d
+gregtech.top.fuel_name=Fuel: %s
+gregtech.top.fuel_none=No fuel
 
 gregtech.multiblock.title=Multiblock Pattern
 gregtech.multiblock.primitive_blast_furnace.description=The Primitive Blast Furnace (PBF) is a multiblock structure used for cooking steel in the early game. Although not very fast, it will provide you with steel for your first setups.
@@ -740,6 +744,7 @@ cover.bucket.mode.milli_bucket=mB/s
 cover.machine_controller.name=Machine Controller Settings
 cover.machine_controller.normal=Normal
 cover.machine_controller.inverted=Inverted
+cover.machine_controller.inverted.description=§eNormal§r - in this mode, the cover will require a signal weaker than the set redstone level to run/n§eInverted§r - in this mode, the cover will require a signal stronger than the set redstone level to run
 cover.machine_controller.redstone=Min Redstone Strength: %d
 cover.machine_controller.mode.machine=Control Machine
 cover.machine_controller.mode.cover_up=Control Cover (Top)
@@ -2915,6 +2920,12 @@ gregtech.gui.item_auto_output.tooltip.disabled=Item Auto-Output Disabled
 gregtech.jei.ore_by_product_from_ore=Use %s for %s
 gregtech.jei.ore_by_product_from_machine=Produce by processing %s with %s
 gregtech.jei.ore_by_product_not_obtainable=Byproduct not obtainable
+
+ore.spawnlocation.name=Ore Spawn Information
+gregtech.jei.ore.surface_rock_1=Surface Rocks with this material denote vein spawn locations.
+gregtech.jei.ore.surface_rock_2=They can be broken for 3 Tiny Piles of the dust, with Fortune giving a bonus.
+gregtech.jei.ore.biome_weighting=%s Weight: %d
+gregtech.jei.ore.biome_weighting_no_spawn=%s Weight: Cannot Spawn
 
 gregtech.item_filter.empty_item=Empty (No Item)
 gregtech.item_filter.footer=§eClick with item to override
