@@ -268,7 +268,7 @@ public class ReactorRecipes {
             .duration(80).EUt(30).buildAndRegister();
 
         CHEMICAL_RECIPES.recipeBuilder()
-            .fluidInputs(Chlorine.getFluid(3000))
+            .fluidInputs(Chlorine.getFluid(4000))
             .fluidInputs(Benzene.getFluid(1000))
             .fluidOutputs(HydrochloricAcid.getFluid(2000))
             .fluidOutputs(Dichlorobenzene.getFluid(1000))
