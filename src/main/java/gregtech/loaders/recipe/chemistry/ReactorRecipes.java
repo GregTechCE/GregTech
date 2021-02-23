@@ -1,4 +1,4 @@
-package gregtech.loaders.recipe;
+package gregtech.loaders.recipe.chemistry;
 
 import gregtech.api.recipes.ingredients.IntCircuitIngredient;
 import gregtech.api.unification.OreDictUnifier;

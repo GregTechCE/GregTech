@@ -9,10 +9,13 @@ import gregtech.api.util.EnumValidationResult;
 import gregtech.api.util.GTLog;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.ValidationResult;
+import net.minecraft.block.Block;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.util.NonNullList;
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.oredict.OreDictionary;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import java.util.*;
@@ -116,6 +119,34 @@ public abstract class RecipeBuilder<R extends RecipeBuilder<R>> {
         return inputs(CountableIngredient.from(orePrefix, material, count));
     }
 
+    public R input(Item item) {
+        return input(item, 1);
+    }
+
+    public R input(Item item, int count) {
+        return inputs(new ItemStack(item, count));
+    }
+
+    public R input(Item item, int count, int meta) {
+        return inputs(new ItemStack(item, count, meta));
+    }
+
+    public R input(Item item, int count, boolean wild) {
+        return inputs(new ItemStack(item, count, OreDictionary.WILDCARD_VALUE));
+    }
+
+    public R input(Block item) {
+        return input(item, 1);
+    }
+
+    public R input(Block item, int count) {
+        return inputs(new ItemStack(item, count));
+    }
+
+    public R input(Block item, int count, boolean wild) {
+        return inputs(new ItemStack(item, count, OreDictionary.WILDCARD_VALUE));
+    }
+
     public R inputs(CountableIngredient... inputs) {
         List<CountableIngredient> ingredients = new ArrayList<>();
         for (CountableIngredient input : inputs) {
@@ -157,6 +188,26 @@ public abstract class RecipeBuilder<R extends RecipeBuilder<R>> {
 
     public R output(OrePrefix orePrefix, Material material, int count) {
         return outputs(OreDictUnifier.get(orePrefix, material, count));
+    }
+
+    public R output(Item item) {
+        return output(item, 1);
+    }
+
+    public R output(Item item, int count) {
+        return outputs(new ItemStack(item, count));
+    }
+
+    public R output(Item item, int count, int meta) {
+        return outputs(new ItemStack(item, count, meta));
+    }
+
+    public R output(Block item) {
+        return output(item, 1);
+    }
+
+    public R output(Block item, int count) {
+        return outputs(new ItemStack(item, count));
     }
 
     public R outputs(ItemStack... outputs) {
