@@ -374,7 +374,7 @@ public class MetaTileEntityLockedSafe extends MetaTileEntity implements IFastRen
 
     @Override
     public AxisAlignedBB getRenderBoundingBox() {
-        return new AxisAlignedBB(getPos().add(-1, -1, -1), getPos().add(2, 2, 2));
+        return new AxisAlignedBB(getPos().add(-1, 0, -1), getPos().add(2, 1, 2));
     }
 
     @Override

@@ -79,7 +79,9 @@ public class MetaTileEntityRotorHolder extends MetaTileEntityMultiblockPart impl
         MetaTileEntityLargeTurbine controller = (MetaTileEntityLargeTurbine) getController();
         boolean isControllerActive = controller != null && controller.isActive();
 
-        if (currentRotorSpeed < maxRotorSpeed && isControllerActive) {
+        if (!isHasRotor()) {
+            resetRotorSpeed();
+        } else if (currentRotorSpeed < maxRotorSpeed && isControllerActive) {
             incrementSpeed(1);
         } else if (currentRotorSpeed > 0 && !isControllerActive) {
             incrementSpeed(-3);
@@ -145,6 +147,11 @@ public class MetaTileEntityRotorHolder extends MetaTileEntityMultiblockPart impl
      */
     public boolean isHasRotor() {
         return rotorColor != -1;
+    }
+
+    public void resetRotorSpeed() {
+        currentRotorSpeed = 0;
+        markDirty();
     }
 
     public int getRotorColor() {

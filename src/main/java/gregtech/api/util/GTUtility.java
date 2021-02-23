@@ -54,7 +54,6 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
-import java.util.List;
 import java.util.*;
 import java.util.Map.Entry;
 import java.util.function.Function;
@@ -130,18 +129,24 @@ public class GTUtility {
     }
 
     public static int convertRGBtoRGBA_CL(int colorValue, int opacity) {
-        int r = (colorValue >> 16) & 0xFF;
-        int g = (colorValue >> 8) & 0xFF;
-        int b = (colorValue & 0xFF);
-        return (r & 0xFF) << 24 | (g & 0xFF) << 16 | (b & 0xFF) << 8 | (opacity & 0xFF);
+        return colorValue << 8 | (opacity & 0xFF);
+    }
+
+    public static int convertOpaqueRGBA_CLtoRGB(int colorAlpha) {
+        return colorAlpha >>> 8;
     }
 
     //0xAARRGGBB
     public static int convertRGBtoOpaqueRGBA_MC(int colorValue) {
-        int r = (colorValue >> 16) & 0xFF;
-        int g = (colorValue >> 8) & 0xFF;
-        int b = (colorValue & 0xFF);
-        return 0xFF << 24 | (r & 0xFF) << 16 | (g & 0xFF) << 8 | (b & 0xFF);
+        return convertRGBtoOpaqueRGBA_MC(colorValue, 255);
+    }
+
+    public static int convertRGBtoOpaqueRGBA_MC(int colorValue, int opacity) {
+        return opacity << 24 | colorValue;
+    }
+
+    public static int convertOpaqueRGBA_MCtoRGB(int alphaColor) {
+        return alphaColor & 0xFFFFFF;
     }
 
     public static void setItem(ItemStack itemStack, ItemStack newStack) {
@@ -545,7 +550,9 @@ public class GTUtility {
 
     public static List<EntityPlayerMP> findPlayersUsing(MetaTileEntity metaTileEntity, double radius) {
         ArrayList<EntityPlayerMP> result = new ArrayList<>();
-        AxisAlignedBB box = new AxisAlignedBB(metaTileEntity.getPos()).expand(radius, radius, radius);
+        AxisAlignedBB box = new AxisAlignedBB(metaTileEntity.getPos())
+            .expand(radius, radius, radius)
+            .expand(-radius, -radius, -radius);
         List<EntityPlayerMP> entities = metaTileEntity.getWorld().getEntitiesWithinAABB(EntityPlayerMP.class, box);
         for (EntityPlayerMP player : entities) {
             if (player.openContainer instanceof ModularUIContainer) {
@@ -701,6 +708,6 @@ public class GTUtility {
             .thenComparing(ItemStack::getItemDamage)
             .thenComparing(ItemStack::hasTagCompound)
             .thenComparing(it -> -Objects.hashCode(it.getTagCompound()))
-            .thenComparing(ItemStack::getCount);
+            .thenComparing(it -> -it.getCount());
     }
 }

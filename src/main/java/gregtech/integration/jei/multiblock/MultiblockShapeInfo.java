@@ -5,6 +5,7 @@ import gregtech.api.metatileentity.MetaTileEntityHolder;
 import gregtech.api.util.BlockInfo;
 import gregtech.common.blocks.MetaBlocks;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 
 import java.util.ArrayList;
@@ -64,6 +65,15 @@ public class MultiblockShapeInfo {
                     BlockInfo[] columnData = new BlockInfo[columnEntry.length()];
                     for (int k = 0; k < columnData.length; k++) {
                         columnData[k] = symbolMap.getOrDefault(columnEntry.charAt(k), BlockInfo.EMPTY);
+                        TileEntity tileEntity = columnData[k].getTileEntity();
+                        if (tileEntity != null) {
+                            MetaTileEntityHolder holder = (MetaTileEntityHolder) tileEntity;
+                            final MetaTileEntity mte = holder.getMetaTileEntity();
+                            holder = new MetaTileEntityHolder();
+                            holder.setMetaTileEntity(mte);
+                            holder.getMetaTileEntity().setFrontFacing(mte.getFrontFacing());
+                            columnData[k] = new BlockInfo(columnData[k].getBlockState(), holder);
+                        }
                     }
                     aisleData[j] = columnData;
                 }

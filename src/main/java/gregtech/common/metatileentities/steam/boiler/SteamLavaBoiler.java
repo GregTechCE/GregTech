@@ -1,6 +1,13 @@
 package gregtech.common.metatileentities.steam.boiler;
 
+import java.util.Collection;
+import java.util.Collections;
+
+import gregtech.api.capability.GregtechCapabilities;
+import gregtech.api.capability.IFuelInfo;
+import gregtech.api.capability.IFuelable;
 import gregtech.api.capability.impl.FilteredFluidHandler;
+import gregtech.api.capability.impl.FluidFuelInfo;
 import gregtech.api.capability.impl.FluidTankList;
 import gregtech.api.gui.ModularUI;
 import gregtech.api.gui.widgets.TankWidget;
@@ -9,10 +16,13 @@ import gregtech.api.metatileentity.MetaTileEntityHolder;
 import gregtech.api.recipes.ModHandler;
 import gregtech.api.render.Textures;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
 
-public class SteamLavaBoiler extends SteamBoiler {
+public class SteamLavaBoiler extends SteamBoiler implements IFuelable {
 
     private FluidTank lavaFluidTank;
 
@@ -42,6 +52,27 @@ public class SteamLavaBoiler extends SteamBoiler {
             lavaFluidTank.drain(LAVA_PER_OPERATION, true);
             setFuelMaxBurnTime(LAVA_PER_OPERATION);
         }
+    }
+
+    public <T> T getCapability(Capability<T> capability, EnumFacing side) {
+        T result = super.getCapability(capability, side);
+        if (result != null)
+            return result;
+        if (capability == GregtechCapabilities.CAPABILITY_FUELABLE) {
+            return GregtechCapabilities.CAPABILITY_FUELABLE.cast(this);
+        }
+        return null;
+    }
+
+    @Override
+    public Collection<IFuelInfo> getFuels() {
+        FluidStack lava = lavaFluidTank.drain(Integer.MAX_VALUE, false);
+        if (lava == null || lava.amount == 0)
+            return Collections.emptySet();
+        final int fuelRemaining = lava.amount;
+        final int fuelCapacity = lavaFluidTank.getCapacity();
+        final int burnTime = fuelRemaining; // 100 mb lasts 100 ticks
+        return Collections.singleton(new FluidFuelInfo(lava, fuelRemaining, fuelCapacity, LAVA_PER_OPERATION, burnTime));
     }
 
     @Override

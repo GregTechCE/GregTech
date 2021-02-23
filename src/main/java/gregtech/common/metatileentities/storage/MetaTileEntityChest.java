@@ -42,6 +42,8 @@ import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
+import static gregtech.api.util.GTUtility.convertOpaqueRGBA_CLtoRGB;
+
 public class MetaTileEntityChest extends MetaTileEntity implements IFastRenderMetaTileEntity {
 
     private static final IndexedCuboid6 CHEST_COLLISION = new IndexedCuboid6(null, new Cuboid6(1 / 16.0, 0 / 16.0, 1 / 16.0, 15 / 16.0, 14 / 16.0, 15 / 16.0));
@@ -76,7 +78,7 @@ public class MetaTileEntityChest extends MetaTileEntity implements IFastRenderMe
 
         if (!getWorld().isRemote && this.numPlayersUsing != 0 && getTimer() % 200 == 0) {
             int lastPlayersUsing = numPlayersUsing;
-            this.numPlayersUsing = GTUtility.findPlayersUsing(this, 10.0).size();
+            this.numPlayersUsing = GTUtility.findPlayersUsing(this, 5.0).size();
             if (lastPlayersUsing != numPlayersUsing) {
                 updateNumPlayersUsing();
             }
@@ -90,19 +92,14 @@ public class MetaTileEntityChest extends MetaTileEntity implements IFastRenderMe
         }
 
         if ((numPlayersUsing == 0 && this.lidAngle > 0.0F) || (this.numPlayersUsing > 0 && this.lidAngle < 1.0F)) {
-            float currentValue = this.lidAngle;
+            float previousValue = this.lidAngle;
 
             if (this.numPlayersUsing > 0) {
-                this.lidAngle += 0.1F;
+                this.lidAngle = Math.min(this.lidAngle + 0.1F, 1.0F);
             } else {
-                this.lidAngle -= 0.1F;
+                this.lidAngle = Math.max(this.lidAngle - 0.1F, 0.0F);
             }
-            if (this.lidAngle > 1.0F) {
-                this.lidAngle = 1.0F;
-            } else if (this.lidAngle < 0.0F) {
-                this.lidAngle = 0.0F;
-            }
-            if (this.lidAngle < 0.5F && currentValue >= 0.5F) {
+            if (this.lidAngle < 0.5F && previousValue >= 0.5F) {
                 double soundX = blockPos.getX() + 0.5;
                 double soundZ = blockPos.getZ() + 0.5;
                 double soundY = blockPos.getY() + 0.5;
@@ -154,7 +151,7 @@ public class MetaTileEntityChest extends MetaTileEntity implements IFastRenderMe
 
     @Override
     public int getLightOpacity() {
-        return 1;
+        return 0;
     }
 
     @Override
@@ -195,7 +192,12 @@ public class MetaTileEntityChest extends MetaTileEntity implements IFastRenderMe
         if(ModHandler.isMaterialWood(material)) {
             return Pair.of(Textures.WOODEN_CHEST.getParticleTexture(), getPaintingColor());
         } else {
-            return Pair.of(Textures.METAL_CHEST.getParticleTexture(), getPaintingColor());
+            int color = ColourRGBA.multiply(
+                GTUtility.convertRGBtoOpaqueRGBA_CL(material.materialRGB),
+                GTUtility.convertRGBtoOpaqueRGBA_CL(getPaintingColor())
+            );
+            color = convertOpaqueRGBA_CLtoRGB(color);
+            return Pair.of(Textures.METAL_CHEST.getParticleTexture(), color);
         }
     }
 
@@ -226,7 +228,7 @@ public class MetaTileEntityChest extends MetaTileEntity implements IFastRenderMe
 
     @Override
     public AxisAlignedBB getRenderBoundingBox() {
-        return new AxisAlignedBB(getPos().add(-1, -1, -1), getPos().add(2, 2, 2));
+        return new AxisAlignedBB(getPos().add(-1, 0, -1), getPos().add(2, 2, 2));
     }
 
     @Override

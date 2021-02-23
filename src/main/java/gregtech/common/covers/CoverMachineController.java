@@ -122,7 +122,8 @@ public class CoverMachineController extends CoverBehavior implements CoverWithUI
             .widget(new SlotWidget(displayInventory, 0, 141, 47, false, false)
                 .setBackgroundTexture(GuiTextures.SLOT))
             .widget(new CycleButtonWidget(10, 70, 75, 20, this::isInverted, this::setInverted,
-                "cover.machine_controller.normal", "cover.machine_controller.inverted"))
+                "cover.machine_controller.normal", "cover.machine_controller.inverted")
+                .setTooltipHoverString("cover.machine_controller.inverted.description"))
             .build(this, player);
     }
 

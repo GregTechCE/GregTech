@@ -1,5 +1,6 @@
 package gregtech.common.metatileentities.storage;
 
+import codechicken.lib.colour.ColourRGBA;
 import codechicken.lib.raytracer.CuboidRayTraceResult;
 import codechicken.lib.render.CCRenderState;
 import codechicken.lib.render.pipeline.ColourMultiplier;
@@ -58,6 +59,8 @@ import org.apache.commons.lang3.tuple.Pair;
 import javax.annotation.Nullable;
 import java.lang.ref.WeakReference;
 import java.util.*;
+
+import static gregtech.api.util.GTUtility.convertOpaqueRGBA_CLtoRGB;
 
 public class MetaTileEntityTank extends MetaTileEntity implements IFastRenderMetaTileEntity {
 
@@ -610,11 +613,12 @@ public class MetaTileEntityTank extends MetaTileEntity implements IFastRenderMet
 
     @SideOnly(Side.CLIENT)
     private int getActualPaintingColor() {
-        int paintingColor = getPaintingColorForRendering();
-        if (paintingColor == DEFAULT_PAINTING_COLOR) {
-            return material.materialRGB;
-        }
-        return paintingColor;
+        int color = ColourRGBA.multiply(
+            GTUtility.convertRGBtoOpaqueRGBA_CL(material.materialRGB),
+            GTUtility.convertRGBtoOpaqueRGBA_CL(getPaintingColorForRendering())
+        );
+        color = convertOpaqueRGBA_CLtoRGB(color);
+        return color;
     }
 
     @Override
