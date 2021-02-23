@@ -64,4 +64,8 @@ public class FluidSpringPopulator implements VeinBufferPopulator {
     public IBlockState getBlockByIndex(World world, BlockPos pos, int index) {
         return fluidState.withProperty(BlockFluidBase.LEVEL, index);
     }
+
+    public IBlockState getFluidState() {
+        return fluidState;
+    }
 }
