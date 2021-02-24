@@ -23,6 +23,8 @@ public class Situations {
     public static Situation NO_EXPORT_TANK = new Situation(204, "no_export_tank", SituationTypes.ERROR);
     public static Situation EXPECTED_CAPABILITY_UNAVAILABLE = new Situation(205, "null_capability", SituationTypes.ERROR);
     public static Situation WATER_CHECK_FAILED = new Situation(206, "water_check_failed", SituationTypes.ERROR);
+    public static Situation BLOCKED_INTAKES = new Situation(207, "blocked_intakes", SituationTypes.ERROR);
+    public static Situation DIMENSION_LACKS_ATMOSPHERE = new Situation(208, "dimension_lacks_atmosphere", SituationTypes.ERROR);
 
     public static void init() {
         GTLog.logger.info("Registering situations...");
