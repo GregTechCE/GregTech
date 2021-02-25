@@ -49,7 +49,7 @@ public class OreDictUnifier {
                 stackComparator = Collections.reverseOrder(new CustomModPriorityComparator(modPriorities));
             } else {
                 //noinspection ConstantConditions
-                Function<ItemAndMetadata, String> modIdExtractor = stack -> stack.item.getRegistryName().getResourceDomain();
+                Function<ItemAndMetadata, String> modIdExtractor = stack -> stack.item.getRegistryName().getNamespace();
                 stackComparator = Comparator.comparing(modIdExtractor);
             }
         }

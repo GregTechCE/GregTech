@@ -24,7 +24,7 @@ public final class BlockCompressed extends DelayedStateBlock {
 
     public BlockCompressed(Material[] materials) {
         super(net.minecraft.block.material.Material.IRON);
-        setUnlocalizedName("compressed");
+        setTranslationKey("compressed");
         setHardness(5.0f);
         setResistance(10.0f);
         setCreativeTab(GregTechAPI.TAB_GREGTECH_MATERIALS);

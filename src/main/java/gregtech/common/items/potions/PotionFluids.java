@@ -38,14 +38,14 @@ public class PotionFluids {
     public static void initPotionFluids() {
         MinecraftForge.EVENT_BUS.register(new PotionFluids());
         for (ResourceLocation registryName : ForgeRegistries.POTION_TYPES.getKeys()) {
-            if (registryName.getResourceDomain().equals("minecraft") &&
-                registryName.getResourcePath().equals("empty")) continue;
+            if (registryName.getNamespace().equals("minecraft") &&
+                registryName.getPath().equals("empty")) continue;
 
             PotionType potion = ForgeRegistries.POTION_TYPES.getValue(registryName);
             Preconditions.checkNotNull(potion);
             Fluid potionFluid;
             if (potion != PotionTypes.WATER) {
-                String fluidName = String.format("potion.%s.%s", registryName.getResourceDomain(), registryName.getResourcePath());
+                String fluidName = String.format("potion.%s.%s", registryName.getNamespace(), registryName.getPath());
                 potionFluid = new Fluid(fluidName, AUTO_GENERATED_FLUID_TEXTURE, AUTO_GENERATED_FLUID_TEXTURE) {
                     @Override
                     public String getUnlocalizedName() {

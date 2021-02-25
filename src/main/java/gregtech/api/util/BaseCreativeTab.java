@@ -25,7 +25,7 @@ public class BaseCreativeTab extends CreativeTabs {
     }
 
     @Override
-    public ItemStack getTabIconItem() {
+    public ItemStack createIcon() {
         if (iconSupplier == null) {
             GTLog.logger.error("Icon supplier was null for CreativeTab " + getTabLabel());
             return new ItemStack(Blocks.STONE);

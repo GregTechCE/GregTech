@@ -76,7 +76,7 @@ public class BlockMachine extends BlockCustomParticle implements ITileEntityProv
         setSoundType(SoundType.METAL);
         setHardness(6.0f);
         setResistance(6.0f);
-        setUnlocalizedName("unnamed");
+        setTranslationKey("unnamed");
         setHarvestLevel("wrench", 1);
         setDefaultState(getDefaultState().withProperty(OPAQUE, true));
     }
@@ -256,7 +256,7 @@ public class BlockMachine extends BlockCustomParticle implements ITileEntityProv
         NBTTagCompound tagCompound = new NBTTagCompound();
         metaTileEntity.writeItemStackData(tagCompound);
         //only set item tag if it's not empty, so newly created items will stack with dismantled
-        if (!tagCompound.hasNoTags())
+        if (!tagCompound.isEmpty())
             itemStack.setTagCompound(tagCompound);
         drops.add(itemStack);
         metaTileEntity.getDrops(drops, harvesters.get());

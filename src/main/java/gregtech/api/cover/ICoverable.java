@@ -93,7 +93,7 @@ public interface ICoverable {
                     } else {
                         REVERSE_HORIZONTAL_ROTATION.apply(backTranslation);
                     }
-                    backTranslation.translate(-sideFacing.getFrontOffsetX(), -sideFacing.getFrontOffsetY(), -sideFacing.getFrontOffsetZ());
+                    backTranslation.translate(-sideFacing.getXOffset(), -sideFacing.getYOffset(), -sideFacing.getZOffset());
                     coverBehavior.renderCover(renderState, backTranslation, coverPipeline, plateBox, layer);
                 }
             }

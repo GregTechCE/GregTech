@@ -12,7 +12,7 @@ public class BlockMultiblockCasing extends VariantBlock<BlockMultiblockCasing.Mu
 
     public BlockMultiblockCasing() {
         super(Material.IRON);
-        setUnlocalizedName("multiblock_casing");
+        setTranslationKey("multiblock_casing");
         setHardness(5.0f);
         setResistance(10.0f);
         setSoundType(SoundType.METAL);

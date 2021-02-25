@@ -65,7 +65,7 @@ public class ArmorRenderHooks {
 
     private static ResourceLocation getArmorTexture(EntityLivingBase entity, ItemStack itemStack, EntityEquipmentSlot slot, String type) {
         ResourceLocation registryName = itemStack.getItem().getRegistryName();
-        String s1 = String.format("%s:textures/models/armor/%s_layer_%d%s.png", registryName.getResourceDomain(), registryName.getResourcePath(),
+        String s1 = String.format("%s:textures/models/armor/%s_layer_%d%s.png", registryName.getNamespace(), registryName.getPath(),
             (isLegSlot(slot) ? 2 : 1), type == null ? "" : String.format("_%s", type));
         return new ResourceLocation(ForgeHooksClient.getArmorTexture(entity, itemStack, s1, slot, type));
     }

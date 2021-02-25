@@ -268,7 +268,7 @@ public class GTUtility {
 
         boolean wasRemovedByPlayer = blockState.getBlock().removedByPlayer(blockState, world, pos, player, !player.capabilities.isCreativeMode);
         if(wasRemovedByPlayer) {
-            blockState.getBlock().onBlockDestroyedByPlayer(world, pos, blockState);
+            blockState.getBlock().onPlayerDestroy(world, pos, blockState);
 
             if(!world.isRemote && !player.capabilities.isCreativeMode) {
                 ItemStack stackInHand = player.getHeldItemMainhand();

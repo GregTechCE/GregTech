@@ -110,7 +110,7 @@ public class MetaTileEntityHolder extends TickableTileEntityBase implements IUIH
         //try to lookup by different registry IDs
         if (registeredModIDs == null) {
             registeredModIDs = registry.getKeys().stream()
-                .map(ResourceLocation::getResourceDomain)
+                .map(ResourceLocation::getNamespace)
                 .distinct().collect(Collectors.toList());
             registeredModIDs.remove(GTValues.MODID);
         }

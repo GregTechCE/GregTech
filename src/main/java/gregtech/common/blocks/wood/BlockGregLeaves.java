@@ -30,7 +30,7 @@ public class BlockGregLeaves extends BlockLeaves {
             .withProperty(VARIANT, LogVariant.RUBBER_WOOD)
             .withProperty(CHECK_DECAY, Boolean.TRUE)
             .withProperty(DECAYABLE, Boolean.TRUE));
-        setUnlocalizedName("gt.leaves");
+        setTranslationKey("gt.leaves");
         this.setCreativeTab(GregTechAPI.TAB_GREGTECH);
         this.leavesFancy = true;
     }

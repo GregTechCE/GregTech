@@ -302,7 +302,7 @@ public class MultiblockInfoRecipeWrapper implements IRecipeWrapper, SceneRenderC
             EnumRarity rarity = tooltipBlockStack.getRarity();
             for (int k = 0; k < tooltip.size(); ++k) {
                 if (k == 0) {
-                    tooltip.set(k, rarity.rarityColor + tooltip.get(k));
+                    tooltip.set(k, rarity.color + tooltip.get(k));
                 } else {
                     tooltip.set(k, TextFormatting.GRAY + tooltip.get(k));
                 }

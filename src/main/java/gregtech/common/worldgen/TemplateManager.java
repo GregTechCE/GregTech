@@ -26,7 +26,7 @@ public class TemplateManager {
             return templateMap.get(templateId);
         }
         Template template = new Template();
-        String resourcePath = "/assets/" + templateId.getResourceDomain() + "/structures/" + templateId.getResourcePath() + ".nbt";
+        String resourcePath = "/assets/" + templateId.getNamespace() + "/structures/" + templateId.getPath() + ".nbt";
         InputStream inputStream = TemplateManager.class.getResourceAsStream(resourcePath);
         if (inputStream != null) {
             try {

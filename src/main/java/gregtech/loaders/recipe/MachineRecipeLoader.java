@@ -1075,7 +1075,7 @@ public class MachineRecipeLoader {
     }
 
     private static <T extends Enum<T> & IStringSerializable> void registerBrickRecipe(StoneBlock<T> stoneBlock, T normalVariant, T brickVariant) {
-        ModHandler.addShapedRecipe(stoneBlock.getRegistryName().getResourceDomain() + "_" + normalVariant + "_bricks",
+        ModHandler.addShapedRecipe(stoneBlock.getRegistryName().getNamespace() + "_" + normalVariant + "_bricks",
             stoneBlock.getItemVariant(brickVariant, ChiselingVariant.NORMAL, 4),
             "XX", "XX", 'X',
             stoneBlock.getItemVariant(normalVariant, ChiselingVariant.NORMAL));
@@ -1098,7 +1098,7 @@ public class MachineRecipeLoader {
                 .fluidInputs(Materials.Water.getFluid(144))
                 .outputs(stoneBlock.getItemVariant(variant, ChiselingVariant.MOSSY))
                 .buildAndRegister();
-            ModHandler.addShapelessRecipe(stoneBlock.getRegistryName().getResourcePath() + "_chiseling_" + variant,
+            ModHandler.addShapelessRecipe(stoneBlock.getRegistryName().getPath() + "_chiseling_" + variant,
                 stoneBlock.getItemVariant(variant, ChiselingVariant.CHISELED),
                 stoneBlock.getItemVariant(variant, ChiselingVariant.NORMAL));
         }

@@ -39,7 +39,7 @@ public class BlockCrusherBlade extends Block implements ITileEntityProvider {
 
     public BlockCrusherBlade() {
         super(Material.IRON);
-        setUnlocalizedName("gt.crusher_blade");
+        setTranslationKey("gt.crusher_blade");
         setCreativeTab(GregTechAPI.TAB_GREGTECH);
         setHarvestLevel("pickaxe", 2);
         setHardness(3.0f);
@@ -99,7 +99,7 @@ public class BlockCrusherBlade extends Block implements ITileEntityProvider {
     }
 
     @Override
-    public void onEntityCollidedWithBlock(World worldIn, BlockPos pos, IBlockState state, Entity entityIn) {
+    public void onEntityCollision(World worldIn, BlockPos pos, IBlockState state, Entity entityIn) {
         if (state.getValue(ACTIVE)) {
             entityIn.attackEntityFrom(DamageSources.getCrusherDamage(), 5.0f);
             entityIn.motionY *= 0.04;
