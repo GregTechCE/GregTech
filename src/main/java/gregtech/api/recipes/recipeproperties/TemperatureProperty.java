@@ -4,9 +4,8 @@ import gregtech.api.recipes.Recipe;
 import gregtech.api.unification.material.type.Material;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.I18n;
+import org.apache.commons.lang3.Validate;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -52,7 +51,8 @@ public class TemperatureProperty extends RecipeProperty<Integer> {
      * In case the coil was not constructed with a Material you can pass a String name,
      * ideally an unlocalized name
      */
-    public static void registerCoilType(int temperature, @Nullable Material coilMaterial, @Nonnull String coilName) {
+    public static void registerCoilType(int temperature, Material coilMaterial, String coilName) {
+        Validate.notNull(coilName);
         if (coilMaterial == null) {
             registeredCoilTypes.put(temperature, coilName);
         } else {
