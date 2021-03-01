@@ -250,8 +250,7 @@ public class CommonProxy {
 
     @SubscribeEvent
     public static void onWorldLoad(WorldEvent.Load event) {
-        GTLog.logger.info("In onWorldLoad");
-        if (!event.getWorld().isRemote) { // Is this needed?
+        if (!event.getWorld().isRemote) {
             try {
                 File saveDir = event.getWorld().getSaveHandler().getWorldDirectory();
                 if (!saveDir.exists()) return;
@@ -263,14 +262,15 @@ public class CommonProxy {
                 NBTTagCompound nbt = CompressedStreamTools.readCompressed(new FileInputStream(levelDat));
                 NBTTagCompound fmlTag = nbt.getCompoundTag("FML");
 
-                if (fmlTag.hasKey("ModList"))
-                {
+                if (fmlTag.hasKey("ModList")) {
                     NBTTagList modList = fmlTag.getTagList("ModList", (byte)10);
-                    for (int i = 0; i < modList.tagCount(); i++)
-                    {
+                    for (int i = 0; i < modList.tagCount(); i++) {
                         NBTTagCompound mod = modList.getCompoundTagAt(i);
                         if (!mod.getString("ModId").equals(GTValues.MODID)) continue;
-                        GTLog.logger.info("GregTech version in save is: " + mod.getString("ModVersion"));
+                        String GTVersion = mod.getString("ModVersion");
+                        GTLog.logger.info("GregTech version in save is: " + GTVersion);
+                        // Pass "GTVersion" on to shift-fixing from here
+                        return;
                     }
                 } else GTLog.logger.info("Nbt doesnt have ModList key");
             } catch (Exception e) {
