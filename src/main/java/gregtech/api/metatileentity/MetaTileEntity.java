@@ -126,6 +126,9 @@ public abstract class MetaTileEntity implements ICoverable {
     /**
      * @deprecated Use {@link MetaTileEntity#getOffsetTimer()} instead for
      * a better timer that spreads ticks more evenly.
+     *
+     * This method should only be used to check for first tick behavior, as
+     * a comparison against zero.
      * @return Timer value, starting at zero.
      */
     @Deprecated
