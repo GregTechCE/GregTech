@@ -80,6 +80,8 @@ public class GTRecipeWrapper implements IRecipeWrapper {
                 recipeOutputs.add(chancedStack);
             }
 
+            // For some reason, ItemNBTUtils.getInteger() will create an empty tag if the item has no
+            // NBTTagCompound, instead of null checking. Forge code ¯\_(ツ)_/¯
             recipeOutputs.sort(Comparator.comparing(stack -> {
                 NBTTagCompound tag = stack.getTagCompound();
                 if (tag != null)
