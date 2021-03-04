@@ -79,7 +79,13 @@ public class GTRecipeWrapper implements IRecipeWrapper {
                 ItemNBTUtils.setInteger(chancedStack, "boost_per_tier", chancedEntry.getBoostPerTier());
                 recipeOutputs.add(chancedStack);
             }
-            recipeOutputs.sort(Comparator.comparing(stack -> ItemNBTUtils.getInteger(stack, "chance")));
+
+            recipeOutputs.sort(Comparator.comparing(stack -> {
+                NBTTagCompound tag = stack.getTagCompound();
+                if (tag != null)
+                    return ItemNBTUtils.getInteger(stack, "chance");
+                else return 0;
+            }));
             ingredients.setOutputs(VanillaTypes.ITEM, recipeOutputs);
         }
 
