@@ -126,12 +126,6 @@ public class SeparationRecipes {
             .duration(400).EUt(60).buildAndRegister();
 
         ELECTROLYZER_RECIPES.recipeBuilder()
-            .fluidInputs(MethylAcetate.getFluid(1000))
-            .output(dust, Carbon)
-            .fluidOutputs(AceticAcid.getFluid(1000))
-            .duration(264).EUt(60).buildAndRegister();
-
-        ELECTROLYZER_RECIPES.recipeBuilder()
             .fluidInputs(Acetone.getFluid(2000))
             .output(dust, Carbon, 3)
             .fluidOutputs(Propane.getFluid(1000))

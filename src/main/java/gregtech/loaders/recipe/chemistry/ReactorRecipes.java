@@ -9,6 +9,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 
 import static gregtech.api.recipes.RecipeMaps.CHEMICAL_RECIPES;
+import static gregtech.api.recipes.RecipeMaps.ELECTROLYZER_RECIPES;
 import static gregtech.api.unification.material.Materials.*;
 import static gregtech.api.unification.ore.OrePrefix.*;
 import static gregtech.api.unification.ore.OrePrefix.block;
@@ -1052,5 +1053,13 @@ public class ReactorRecipes {
             .fluidOutputs(Ethylene.getFluid(2000))
             .fluidOutputs(Oxygen.getFluid(5000))
             .duration(400).EUt(200).buildAndRegister();
+
+        CHEMICAL_RECIPES.recipeBuilder()
+            .fluidInputs(MethylAcetate.getFluid(1000))
+            .fluidInputs(Water.getFluid(1000))
+            .notConsumable(OreDictUnifier.get(dust, SodiumHydroxide))
+            .fluidOutputs(AceticAcid.getFluid(1000))
+            .fluidOutputs(Methanol.getFluid(1000))
+            .duration(264).EUt(60).buildAndRegister();
     }
 }
