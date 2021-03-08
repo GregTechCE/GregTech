@@ -288,10 +288,10 @@ public class GTOreInfo implements IRecipeWrapper {
             if(!(entry.getValue() == weight)) {
                 //Cannot Spawn
                 if(entry.getValue() <= 0) {
-                    tooltip.add(I18n.format("gregtech.jei.ore.biome_weighting_no_spawn", entry.getKey().biomeName));
+                    tooltip.add(I18n.format("gregtech.jei.ore.biome_weighting_no_spawn", entry.getKey().getBiomeName()));
                 }
                 else {
-                    tooltip.add(I18n.format("gregtech.jei.ore.biome_weighting", entry.getKey().biomeName, entry.getValue()));
+                    tooltip.add(I18n.format("gregtech.jei.ore.biome_weighting", entry.getKey().getBiomeName(), entry.getValue()));
                 }
             }
         }
