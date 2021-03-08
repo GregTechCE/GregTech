@@ -8,6 +8,7 @@ import gregtech.api.gui.resources.RenderUtil;
 import gregtech.api.gui.resources.TextureArea;
 import gregtech.api.unification.material.type.FluidMaterial;
 import gregtech.api.unification.material.type.Material;
+import gregtech.api.util.GTUtility;
 import gregtech.api.util.Position;
 import gregtech.api.util.Size;
 import net.minecraft.client.Minecraft;
@@ -137,11 +138,13 @@ public class TankWidget extends Widget implements IIngredientSlot {
             List<String> tooltips = new ArrayList<>();
             if (lastFluidInTank != null) {
                 Fluid fluid = lastFluidInTank.getFluid();
-                Material material = FluidMaterial.MATERIAL_REGISTRY.getObject(fluid.getUnlocalizedName().split("\\.")[1]);
-
                 tooltips.add(fluid.getLocalizedName(lastFluidInTank));
-                if (material != null && material.chemicalFormula != null && !material.chemicalFormula.isEmpty())
-                    tooltips.add(ChatFormatting.GRAY.toString() + material.chemicalFormula);
+
+                // Add chemical formula tooltip
+                String formula = GTUtility.getFluidFormula(lastFluidInTank);
+                if (formula != null && !formula.isEmpty())
+                    tooltips.add(ChatFormatting.GRAY.toString() + formula);
+
                 tooltips.add(I18n.format("gregtech.fluid.amount", lastFluidInTank.amount, lastTankCapacity));
                 tooltips.add(I18n.format("gregtech.fluid.temperature", fluid.getTemperature(lastFluidInTank)));
                 tooltips.add(I18n.format(fluid.isGaseous(lastFluidInTank) ? "gregtech.fluid.state_gas" : "gregtech.fluid.state_liquid"));

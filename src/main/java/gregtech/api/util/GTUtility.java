@@ -11,6 +11,8 @@ import gregtech.api.gui.impl.ModularUIContainer;
 import gregtech.api.items.IToolItem;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.MetaTileEntityHolder;
+import gregtech.api.unification.material.type.FluidMaterial;
+import gregtech.api.unification.material.type.Material;
 import gregtech.common.ConfigHolder;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockRedstoneWire;
@@ -709,5 +711,39 @@ public class GTUtility {
             .thenComparing(ItemStack::hasTagCompound)
             .thenComparing(it -> -Objects.hashCode(it.getTagCompound()))
             .thenComparing(it -> -it.getCount());
+    }
+
+    /**
+     * Used to get the Chemical Formula of a Fluid.
+     *
+     * @param fluidStack The FluidStack to acquire the formula of
+     * @return A String, being the chemical formula of the FluidStack
+     */
+    public static String getFluidFormula(FluidStack fluidStack) {
+        String formula = null;
+        if (fluidStack != null) {
+            String[] materialArray = fluidStack.getUnlocalizedName().split("\\.");
+            if (materialArray.length >= 2 && materialArray[0].equals("material")) {
+                formula = getFluidFormula(materialArray[1]);
+            }
+        }
+        return formula;
+    }
+
+    /**
+     * Used to get the Chemical Formula of a FluidMaterial with Material name "fluidName"
+     *
+     * @param fluidName A String corresponding with a FluidMaterial
+     * @return A String, being the chemical formula of the corresponding FluidMaterial
+     */
+    public static String getFluidFormula(String fluidName) {
+        String formula = null;
+        if (fluidName != null) {
+            Material fluidMaterial = FluidMaterial.MATERIAL_REGISTRY.getObject(fluidName);
+            if (fluidMaterial != null && fluidMaterial.chemicalFormula != null && !fluidMaterial.chemicalFormula.isEmpty()) {
+                formula = fluidMaterial.chemicalFormula;
+            }
+        }
+        return formula;
     }
 }
