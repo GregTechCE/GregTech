@@ -1,7 +1,6 @@
 package gregtech.integration.jei.recipe;
 
 import codechicken.lib.util.ItemNBTUtils;
-import com.mojang.realmsclient.gui.ChatFormatting;
 import gregtech.api.recipes.CountableIngredient;
 import gregtech.api.recipes.Recipe;
 import gregtech.api.recipes.Recipe.ChanceEntry;
