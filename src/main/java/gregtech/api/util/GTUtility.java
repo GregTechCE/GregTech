@@ -720,7 +720,7 @@ public class GTUtility {
      * @return A String, being the chemical formula of the FluidStack
      */
     public static String getFluidFormula(FluidStack fluidStack) {
-        String formula = null;
+        String formula = formulaHook(fluidStack);
         if (fluidStack != null) {
             String[] materialArray = fluidStack.getUnlocalizedName().split("\\.");
             if (materialArray.length >= 2 && materialArray[0].equals("material")) {
@@ -745,5 +745,12 @@ public class GTUtility {
             }
         }
         return formula;
+    }
+
+    /**
+     * Used as a Hook for addons to add tooltips to their non-material Fluids.
+     */
+    public static String formulaHook(FluidStack fluidStack) {
+        return null;
     }
 }
