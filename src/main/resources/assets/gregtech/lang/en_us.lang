@@ -13,13 +13,16 @@ enchantment.disjunction=Disjunction
 gregtech.top.energy_stored=Energy:
 gregtech.top.progress=Progress:
 gregtech.top.working_disabled=Working Disabled
+
 gregtech.top.transform_up=§cStep Up§r %s (%,dA) -> %s (%,dA)
 gregtech.top.transform_down=§aStep Down§r %s (%,dA) -> %s (%,dA)
 gregtech.top.transform_input=§6Input:§r %s (%,dA)
 gregtech.top.transform_output=§9Output:§r %s (%,dA)
-gregtech.top.fuel_info=/%,d for %,d secs
-gregtech.top.fuel_min_consume=/%,d needs %,d
-gregtech.top.fuel_name=Fuel: %s
+
+gregtech.top.fuel_burn=for
+gregtech.top.fuel_time=secs
+gregtech.top.fuel_min_consume=needs
+gregtech.top.fuel_name=Fuel:
 gregtech.top.fuel_none=No fuel
 
 gregtech.multiblock.title=Multiblock Pattern
