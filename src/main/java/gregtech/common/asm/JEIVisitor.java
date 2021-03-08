@@ -21,13 +21,13 @@ public class JEIVisitor extends MethodVisitor implements Opcodes {
     @Override
     public void visitCode() {
 
-        visitVarInsn(ALOAD, 1); // List<String> tooltip
-        visitVarInsn(ALOAD, 2); // T ingredient
+        mv.visitVarInsn(ALOAD, 1); // List<String> tooltip
+        mv.visitVarInsn(ALOAD, 2); // T ingredient
 
         // statically call addFluidTooltip(List<String>, Object)
-        visitMethodInsn(INVOKESTATIC, FLUID_TOOLTIP_OWNER, FLUID_TOOLTIP_METHOD_NAME, FLUID_TOOLTIP_SIGNATURE, false);
+        mv.visitMethodInsn(INVOKESTATIC, FLUID_TOOLTIP_OWNER, FLUID_TOOLTIP_METHOD_NAME, FLUID_TOOLTIP_SIGNATURE, false);
 
-        super.visitCode();
+        mv.visitCode();
     }
 
     // public <E> List<String> addModNameToIngredientTooltip(List<String> tooltip, E ingredient, IIngredientHelper<E> ingredientHelper)
