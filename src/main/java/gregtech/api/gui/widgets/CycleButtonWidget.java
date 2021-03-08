@@ -132,7 +132,14 @@ public class CycleButtonWidget extends Widget {
     public boolean mouseClicked(int mouseX, int mouseY, int button) {
         super.mouseClicked(mouseX, mouseY, button);
         if (isMouseOverElement(mouseX, mouseY)) {
-            this.currentOption = (currentOption + 1) % optionNames.length;
+            //Allow only the RMB to reverse cycle
+            if(button == 1) {
+                //Wrap from the first option to the last if needed
+                this.currentOption = currentOption - 1 < 0 ? currentOption + optionNames.length - 1 : currentOption - 1;
+            }
+            else {
+                this.currentOption = (currentOption + 1) % optionNames.length;
+            }
             writeClientAction(1, buf -> buf.writeVarInt(currentOption));
             playButtonClickSound();
             return true;
