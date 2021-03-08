@@ -8,9 +8,11 @@ import gregtech.api.capability.impl.EnergyContainerHandler;
 import gregtech.api.capability.impl.FluidHandlerProxy;
 import gregtech.api.capability.impl.FluidTankList;
 import gregtech.api.capability.impl.ItemHandlerProxy;
+import gregtech.api.capability.impl.RecipeLogicEnergy;
 import gregtech.api.cover.CoverDefinition;
 import gregtech.api.gui.GuiTextures;
 import gregtech.api.gui.ModularUI;
+import gregtech.api.gui.widgets.CycleButtonWidget;
 import gregtech.api.gui.widgets.DischargerSlotWidget;
 import gregtech.api.gui.widgets.ImageWidget;
 import gregtech.api.gui.widgets.LabelWidget;
@@ -295,6 +297,13 @@ public class SimpleMachineMetaTileEntity extends WorkableTieredMetaTileEntity {
         clearInventory(itemBuffer, chargerInventory);
     }
 
+    @Override
+    protected RecipeLogicEnergy createWorkable(RecipeMap<?> recipeMap) {
+        final RecipeLogicEnergy result = super.createWorkable(recipeMap);
+        result.enableOverclockVoltage();
+        return result;
+    }
+
     protected ModularUI.Builder createGuiTemplate(EntityPlayer player) {
         ModularUI.Builder builder = workable.recipeMap.createUITemplate(workable::getProgressPercent, importItems, exportItems, importFluids, exportFluids)
             .widget(new LabelWidget(5, 5, getMetaFullName()))
@@ -323,9 +332,16 @@ public class SimpleMachineMetaTileEntity extends WorkableTieredMetaTileEntity {
             		.setTooltipText("gregtech.gui.fluid_auto_output.tooltip"));
         }
 
-        builder.widget(new ToggleButtonWidget(rightButtonStartX, 60, 20, 20,
-            GuiTextures.BUTTON_OVERCLOCK, workable::isAllowOverclocking, workable::setAllowOverclocking)
-            .setTooltipText("gregtech.gui.overclock"));
+        final long overclockVolatage = this.workable.getOverclockVoltage();
+        if (overclockVolatage == -1) {
+            builder.widget(new ToggleButtonWidget(rightButtonStartX, 60, 20, 20,
+                    GuiTextures.BUTTON_OVERCLOCK, workable::isAllowOverclocking, workable::setAllowOverclocking)
+                    .setTooltipText("gregtech.gui.overclock"));
+        } else {
+            builder.widget(new CycleButtonWidget(rightButtonStartX, 60, 20, 20,
+                    workable.getAvailableOverclockingTiers(), workable::getOverclockTier, workable::setOverclockTier)
+                    .setTooltipHoverString("gregtech.gui.overclock.description"));
+        }
 
         return builder;
     }

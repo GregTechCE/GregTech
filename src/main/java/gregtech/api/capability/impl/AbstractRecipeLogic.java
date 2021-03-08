@@ -36,6 +36,7 @@ public abstract class AbstractRecipeLogic extends MTETrait implements IWorkable 
     protected FluidStack[] lastFluidInputs;
     protected Recipe previousRecipe;
     protected boolean allowOverclocking = true;
+    protected long overclockVoltage = -1;
 
     protected int progressTime;
     protected int maxProgressTime;
@@ -224,7 +225,7 @@ public abstract class AbstractRecipeLogic extends MTETrait implements IWorkable 
     }
 
     protected boolean setupAndConsumeRecipeInputs(Recipe recipe) {
-        int[] resultOverclock = calculateOverclock(recipe.getEUt(), getMaxVoltage(), recipe.getDuration());
+        int[] resultOverclock = calculateOverclock(recipe.getEUt(), recipe.getDuration());
         int totalEUt = resultOverclock[0] * resultOverclock[1];
         IItemHandlerModifiable importInventory = getInputInventory();
         IItemHandlerModifiable exportInventory = getOutputInventory();
@@ -235,6 +236,14 @@ public abstract class AbstractRecipeLogic extends MTETrait implements IWorkable 
             MetaTileEntity.addItemsToItemHandler(exportInventory, true, recipe.getAllItemOutputs(exportInventory.getSlots())) &&
             MetaTileEntity.addFluidsToFluidHandler(exportFluids, true, recipe.getFluidOutputs()) &&
             recipe.matches(true, importInventory, importFluids);
+    }
+
+    protected int[] calculateOverclock(int EUt, int duration) {
+        if (this.overclockVoltage == -1) {
+            return calculateOverclock(EUt, getMaxVoltage(), duration);
+        } else {
+            return calculateOverclock(EUt, overclockVoltage, duration);
+        }
     }
 
     protected int[] calculateOverclock(int EUt, long voltage, int duration) {
@@ -268,8 +277,17 @@ public abstract class AbstractRecipeLogic extends MTETrait implements IWorkable 
         return GTUtility.getTierByVoltage(voltage);
     }
 
+    protected long getVoltageByTier(final int tier) {
+        return GTValues.V[tier];
+    }
+
+    public String[] getAvailableOverclockingTiers() {
+        final int maxTier = getOverclockingTier(getMaxVoltage());
+        return Arrays.copyOf(GTValues.VN, maxTier+1);
+    }
+
     protected void setupRecipe(Recipe recipe) {
-        int[] resultOverclock = calculateOverclock(recipe.getEUt(), getMaxVoltage(), recipe.getDuration());
+        int[] resultOverclock = calculateOverclock(recipe.getEUt(), recipe.getDuration());
         this.progressTime = 1;
         setMaxProgress(resultOverclock[1]);
         this.recipeEUt = resultOverclock[0];
@@ -366,6 +384,27 @@ public abstract class AbstractRecipeLogic extends MTETrait implements IWorkable 
         return allowOverclocking;
     }
 
+    public long getOverclockVoltage() {
+        return overclockVoltage;
+    }
+
+    public void setOverclockVoltage(final long overclockVoltage) {
+        this.overclockVoltage = overclockVoltage;
+        metaTileEntity.markDirty();
+    }
+
+    public void enableOverclockVoltage() {
+        setOverclockVoltage(getMaxVoltage());
+    }
+
+    public int getOverclockTier() {
+        return getOverclockingTier(this.overclockVoltage);
+    }
+
+    public void setOverclockTier(final int tier) {
+        setOverclockVoltage(getVoltageByTier(tier));
+    }
+
     @Override
     public void receiveCustomData(int dataId, PacketBuffer buf) {
         if (dataId == 1) {
@@ -389,6 +428,9 @@ public abstract class AbstractRecipeLogic extends MTETrait implements IWorkable 
         NBTTagCompound compound = new NBTTagCompound();
         compound.setBoolean("WorkEnabled", workingEnabled);
         compound.setBoolean("AllowOverclocking", allowOverclocking);
+        if (this.overclockVoltage != -1) {
+            compound.setLong("OverclockVoltage", this.overclockVoltage);
+        }
         if (progressTime > 0) {
             compound.setInteger("Progress", progressTime);
             compound.setInteger("MaxProgress", maxProgressTime);
@@ -413,6 +455,20 @@ public abstract class AbstractRecipeLogic extends MTETrait implements IWorkable 
         this.progressTime = compound.getInteger("Progress");
         if(compound.hasKey("AllowOverclocking")) {
             this.allowOverclocking = compound.getBoolean("AllowOverclocking");
+        }
+        if (this.overclockVoltage != 1) {
+            if (compound.hasKey("OverclockVoltage")) {
+                this.overclockVoltage = compound.getLong("OverclockVoltage");
+            } else {
+                // Calculate overclock voltage based on old allow flag
+                if (this.allowOverclocking) {
+                    this.overclockVoltage = getMaxVoltage();
+                } else {
+                    this.overclockVoltage = getVoltageByTier(0);
+                }
+                // Overclocking is now always enabled it is just constrained by the voltage
+                this.allowOverclocking = true;
+            }
         }
         this.isActive = false;
         if (progressTime > 0) {
