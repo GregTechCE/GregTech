@@ -42,7 +42,7 @@ public class SteamMacerator extends SteamMetaTileEntity {
         return createUITemplate(player)
             .widget(new SlotWidget(this.importItems, 0, 53, 25)
                 .setBackgroundTexture(BRONZE_SLOT_BACKGROUND_TEXTURE, getFullGuiTexture("slot_%s_macerator_background")))
-            .widget(new ProgressWidget(workableHandler::getProgressPercent, 78, 25, 20, 18)
+            .widget(new ProgressWidget(workableHandler::getProgressPercent, 78, 25, 21, 18)
                 .setProgressBar(getFullGuiTexture("progress_bar_%s_macerator"),
                     getFullGuiTexture("progress_bar_%s_macerator_filled"),
                     ProgressWidget.MoveType.HORIZONTAL))
