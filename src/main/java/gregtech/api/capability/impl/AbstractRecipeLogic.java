@@ -456,7 +456,7 @@ public abstract class AbstractRecipeLogic extends MTETrait implements IWorkable 
         if(compound.hasKey("AllowOverclocking")) {
             this.allowOverclocking = compound.getBoolean("AllowOverclocking");
         }
-        if (this.overclockVoltage != 1) {
+        if (this.overclockVoltage != -1) {
             if (compound.hasKey("OverclockVoltage")) {
                 this.overclockVoltage = compound.getLong("OverclockVoltage");
             } else {
