@@ -26,6 +26,7 @@ import net.minecraft.client.entity.AbstractClientPlayer;
 import net.minecraft.client.network.NetworkPlayerInfo;
 import net.minecraft.client.renderer.color.IBlockColor;
 import net.minecraft.client.renderer.color.IItemColor;
+import net.minecraft.init.Items;
 import net.minecraft.item.*;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
@@ -169,6 +170,10 @@ public class ClientProxy extends CommonProxy {
                         chemicalFormula = GTUtility.getFluidFormula(FluidStack.loadFluidStackFromNBT(compound.getCompoundTag(FluidHandlerItemStack.FLUID_NBT_KEY)));
                     }
                 }
+
+            // Water buckets have a separate registry name from other buckets
+            } else if(itemStack.getItem().equals(Items.WATER_BUCKET)) {
+                chemicalFormula = GTUtility.getWaterTooltip();
             }
             if (chemicalFormula != null && !chemicalFormula.isEmpty())
                 event.getToolTip().add(1, ChatFormatting.GRAY.toString() + chemicalFormula);

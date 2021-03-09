@@ -11,8 +11,10 @@ import gregtech.api.gui.impl.ModularUIContainer;
 import gregtech.api.items.IToolItem;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.MetaTileEntityHolder;
+import gregtech.api.unification.material.Materials;
 import gregtech.api.unification.material.type.FluidMaterial;
 import gregtech.api.unification.material.type.Material;
+import gregtech.api.unification.stack.MaterialStack;
 import gregtech.common.ConfigHolder;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockRedstoneWire;
@@ -42,6 +44,7 @@ import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.BiomeDictionary;
 import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.common.util.Constants;
+import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.IFluidTank;
@@ -51,6 +54,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.IItemHandlerModifiable;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -719,11 +723,17 @@ public class GTUtility {
      * @param fluidStack The FluidStack to acquire the formula of
      * @return A String, being the chemical formula of the FluidStack
      */
-    public static String getFluidFormula(FluidStack fluidStack) {
+    public static String getFluidFormula(@Nonnull FluidStack fluidStack) {
+
+        // Edge case for Water needed because despite being a GT Material, it does not have the
+        // name formatted as "material.water" so it is separate.
+        if (fluidStack.getFluid().equals(FluidRegistry.WATER) || fluidStack.equals(Materials.DistilledWater.getFluid(fluidStack.amount))) {
+            return getWaterTooltip();
+        }
         StringBuilder sb = new StringBuilder();
         formulaHook(fluidStack, sb);
         String formula = sb.toString();
-        if (fluidStack != null && formula.equals("")) {
+        if (formula.equals("")) {
             String[] materialArray = fluidStack.getUnlocalizedName().split("\\.");
             if (materialArray.length >= 2 && materialArray[0].equals("material")) {
                 formula = getFluidFormula(materialArray[1]);
@@ -750,7 +760,18 @@ public class GTUtility {
     }
 
     /**
+     * A simple helper method to get the tooltip for Water, since it is an edge case of fluids.
+     *
+     * @return "H₂O"
+     */
+    public static String getWaterTooltip() {
+        // Done like this to not return parenthesis around the tooltip
+        return (new MaterialStack(Materials.Hydrogen, 2)).toString() + (new MaterialStack(Materials.Oxygen, 1)).toString();
+    }
+
+    /**
      * Used as a Hook for addons to add tooltips to their non-material Fluids.
+     * Do not call this unless you know what you are doing.
      */
     public static void formulaHook(FluidStack fluidStack, StringBuilder formula) {
     }
