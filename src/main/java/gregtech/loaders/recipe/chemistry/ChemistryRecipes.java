@@ -44,7 +44,7 @@ public class ChemistryRecipes {
 
         BLAST_RECIPES.recipeBuilder()
             .input(dust, FerriteMixture)
-            .fluidInputs(Oxygen.getFluid(2000))
+            .fluidInputs(Oxygen.getFluid(1500))
             .output(ingot, NickelZincFerrite)
             .blastFurnaceTemp(1500)
             .duration(600).EUt(120).buildAndRegister();
