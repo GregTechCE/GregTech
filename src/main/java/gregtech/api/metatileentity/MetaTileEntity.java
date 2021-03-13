@@ -12,7 +12,6 @@ import com.google.common.base.Preconditions;
 import gregtech.api.GregTechAPI;
 import gregtech.api.capability.GregtechTileCapabilities;
 import gregtech.api.capability.IEnergyContainer;
-import gregtech.api.capability.IOutputInformation;
 import gregtech.api.capability.impl.FluidHandlerProxy;
 import gregtech.api.capability.impl.FluidTankList;
 import gregtech.api.capability.impl.ItemHandlerProxy;
@@ -307,15 +306,14 @@ public abstract class MetaTileEntity implements ICoverable {
 
     public final boolean onCoverScrewdriverClick(EntityPlayer playerIn, EnumHand hand, CuboidRayTraceResult result) {
         EnumFacing hitFacing = ICoverable.determineGridSideHit(result);
-        boolean accessingOutputSide = false;
-        if(this.getCapability(GregtechTileCapabilities.CAPABILITY_OUTPUT_INFORMATION, hitFacing) != null) {
-            EnumFacing OutputSide = this.getCapability(GregtechTileCapabilities.CAPABILITY_OUTPUT_INFORMATION, hitFacing).getOutputSide();
-            accessingOutputSide = (hitFacing == OutputSide && playerIn.isSneaking());
+        boolean accessingActiveOutputSide = false;
+        if(this.getCapability(GregtechTileCapabilities.CAPABILITY_ACTIVE_OUTPUT_SIDE, hitFacing) != null) {
+            accessingActiveOutputSide =playerIn.isSneaking();
         }
         EnumFacing coverSide = ICoverable.traceCoverSide(result);
         CoverBehavior coverBehavior = coverSide == null ? null : getCoverAtSide(coverSide);
         EnumActionResult coverResult = coverBehavior == null ? EnumActionResult.PASS :
-            accessingOutputSide ? EnumActionResult.PASS : coverBehavior.onScrewdriverClick(playerIn, hand, result);
+            accessingActiveOutputSide ? EnumActionResult.PASS : coverBehavior.onScrewdriverClick(playerIn, hand, result);
         if (coverResult != EnumActionResult.PASS) {
             return coverResult == EnumActionResult.SUCCESS;
         }

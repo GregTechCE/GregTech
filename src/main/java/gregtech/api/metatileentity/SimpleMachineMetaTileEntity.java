@@ -5,7 +5,7 @@ import codechicken.lib.render.CCRenderState;
 import codechicken.lib.render.pipeline.IVertexOperation;
 import codechicken.lib.vec.Matrix4;
 import gregtech.api.capability.GregtechTileCapabilities;
-import gregtech.api.capability.IOutputInformation;
+import gregtech.api.capability.IActiveOutputSide;
 import gregtech.api.capability.impl.EnergyContainerHandler;
 import gregtech.api.capability.impl.FluidHandlerProxy;
 import gregtech.api.capability.impl.FluidTankList;
@@ -39,7 +39,7 @@ import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 
-public class SimpleMachineMetaTileEntity extends WorkableTieredMetaTileEntity implements IOutputInformation {
+public class SimpleMachineMetaTileEntity extends WorkableTieredMetaTileEntity implements IActiveOutputSide {
 
     private boolean hasFrontFacing;
 
@@ -92,7 +92,7 @@ public class SimpleMachineMetaTileEntity extends WorkableTieredMetaTileEntity im
             if (currentOutputSide == facing || getFrontFacing() == facing) {
                 return false;
             }
-            if(!getWorld().isRemote) {
+            if (!getWorld().isRemote) {
                 setOutputFacing(facing);
             }
             return true;
@@ -102,7 +102,7 @@ public class SimpleMachineMetaTileEntity extends WorkableTieredMetaTileEntity im
 
     @Override
     public boolean placeCoverOnSide(EnumFacing side, ItemStack itemStack, CoverDefinition coverDefinition) {
-        boolean coverPlaced = super.placeCoverOnSide(side,itemStack,coverDefinition);
+        boolean coverPlaced = super.placeCoverOnSide(side, itemStack, coverDefinition);
         if (coverPlaced && getOutputFacing() == side && getCoverAtSide(side).shouldCoverInteractWithOutputside()) {
             setAllowInputFromOutputSide(true);
         }
@@ -144,9 +144,9 @@ public class SimpleMachineMetaTileEntity extends WorkableTieredMetaTileEntity im
     @Override
     public boolean onScrewdriverClick(EntityPlayer playerIn, EnumHand hand, EnumFacing facing, CuboidRayTraceResult hitResult) {
         EnumFacing hitFacing = ICoverable.determineGridSideHit(hitResult);
-        if(facing == getOutputFacing() || (hitFacing == getOutputFacing() && playerIn.isSneaking())) {
-            if(!getWorld().isRemote) {
-                if(allowInputFromOutputSide) {
+        if (facing == getOutputFacing() || (hitFacing == getOutputFacing() && playerIn.isSneaking())) {
+            if (!getWorld().isRemote) {
+                if (allowInputFromOutputSide) {
                     setAllowInputFromOutputSide(false);
                     playerIn.sendMessage(new TextComponentTranslation("gregtech.machine.basic.input_from_output_side.disallow"));
                 } else {
@@ -163,18 +163,21 @@ public class SimpleMachineMetaTileEntity extends WorkableTieredMetaTileEntity im
     public <T> T getCapability(Capability<T> capability, EnumFacing side) {
         if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) {
             IFluidHandler fluidHandler = (side == getOutputFacing() && !allowInputFromOutputSide) ? outputFluidInventory : fluidInventory;
-            if(fluidHandler.getTankProperties().length > 0) {
+            if (fluidHandler.getTankProperties().length > 0) {
                 return CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY.cast(fluidHandler);
             }
             return null;
         } else if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
             IItemHandler itemHandler = (side == getOutputFacing() && !allowInputFromOutputSide) ? outputItemInventory : itemInventory;
-            if(itemHandler.getSlots() > 0) {
+            if (itemHandler.getSlots() > 0) {
                 return CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.cast(itemHandler);
             }
             return null;
-        } else if (capability == GregtechTileCapabilities.CAPABILITY_OUTPUT_INFORMATION) {
-            return GregtechTileCapabilities.CAPABILITY_OUTPUT_INFORMATION.cast(this);
+        } else if (capability == GregtechTileCapabilities.CAPABILITY_ACTIVE_OUTPUT_SIDE) {
+            if (side == getOutputFacing()) {
+                return GregtechTileCapabilities.CAPABILITY_ACTIVE_OUTPUT_SIDE.cast(this);
+            }
+            return null;
         }
         return super.getCapability(capability, side);
     }
@@ -265,7 +268,7 @@ public class SimpleMachineMetaTileEntity extends WorkableTieredMetaTileEntity im
 
     public void setAllowInputFromOutputSide(boolean allowInputFromOutputSide) {
         this.allowInputFromOutputSide = allowInputFromOutputSide;
-        if(!getWorld().isRemote) {
+        if (!getWorld().isRemote) {
             markDirty();
         }
     }
@@ -312,7 +315,7 @@ public class SimpleMachineMetaTileEntity extends WorkableTieredMetaTileEntity im
 
         int leftButtonStartX = 7;
         int rightButtonStartX = 176 - 7 - 20;
-        if(workable.recipeMap instanceof RecipeMapWithConfigButton) {
+        if (workable.recipeMap instanceof RecipeMapWithConfigButton) {
             leftButtonStartX += ((RecipeMapWithConfigButton) workable.recipeMap).getLeftButtonOffset();
             rightButtonStartX -= ((RecipeMapWithConfigButton) workable.recipeMap).getRightButtonOffset();
         }
@@ -320,13 +323,13 @@ public class SimpleMachineMetaTileEntity extends WorkableTieredMetaTileEntity im
         if (exportItems.getSlots() > 0) {
             builder.widget(new ToggleButtonWidget(leftButtonStartX, 62, 18, 18,
                 GuiTextures.BUTTON_ITEM_OUTPUT, this::isAutoOutputItems, this::setAutoOutputItems)
-            		.setTooltipText("gregtech.gui.item_auto_output.tooltip"));
+                .setTooltipText("gregtech.gui.item_auto_output.tooltip"));
             leftButtonStartX += 18;
         }
         if (exportFluids.getTanks() > 0) {
             builder.widget(new ToggleButtonWidget(leftButtonStartX, 62, 18, 18,
                 GuiTextures.BUTTON_FLUID_OUTPUT, this::isAutoOutputFluids, this::setAutoOutputFluids)
-            		.setTooltipText("gregtech.gui.fluid_auto_output.tooltip"));
+                .setTooltipText("gregtech.gui.fluid_auto_output.tooltip"));
         }
 
         builder.widget(new ToggleButtonWidget(rightButtonStartX, 60, 20, 20,
@@ -337,27 +340,13 @@ public class SimpleMachineMetaTileEntity extends WorkableTieredMetaTileEntity im
     }
 
     @Override
-    public EnumFacing getOutputSide() {
-        return getOutputFacing();
-    }
-
-    @Override
-    public boolean isOutputEnabled() {
-        return isAutoOutputItems() || isAutoOutputFluids();
-    }
-
-    @Override
-    public boolean isInputAllowedFromOutput() {
-        return isAllowInputFromOutputSide();
-    }
-
-    @Override
     protected ModularUI createUI(EntityPlayer entityPlayer) {
         return createGuiTemplate(entityPlayer).build(getHolder(), entityPlayer);
     }
 
     public interface RecipeMapWithConfigButton {
         int getLeftButtonOffset();
+
         int getRightButtonOffset();
     }
 }
