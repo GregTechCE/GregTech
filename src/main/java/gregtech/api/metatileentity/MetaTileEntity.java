@@ -62,6 +62,9 @@ public abstract class MetaTileEntity implements ICoverable {
 
     public static final int DEFAULT_PAINTING_COLOR = 0xFFFFFF;
     public static final IndexedCuboid6 FULL_CUBE_COLLISION = new IndexedCuboid6(null, Cuboid6.full);
+    public static final String TAG_KEY_PAINTING_COLOR = "PaintingColor";
+    public static final String TAG_KEY_FRAGILE = "Fragile";
+
     public final ResourceLocation metaTileEntityId;
     MetaTileEntityHolder holder;
 
@@ -80,13 +83,13 @@ public abstract class MetaTileEntity implements ICoverable {
     protected EnumFacing frontFacing = EnumFacing.NORTH;
     protected int paintingColor = DEFAULT_PAINTING_COLOR;
 
-    private int[] sidedRedstoneOutput = new int[6];
-    private int[] sidedRedstoneInput = new int[6];
+    private final int[] sidedRedstoneOutput = new int[6];
+    private final int[] sidedRedstoneInput = new int[6];
     private int cachedComparatorValue;
     private int cachedLightValue;
     protected boolean isFragile = false;
 
-    private CoverBehavior[] coverBehaviors = new CoverBehavior[6];
+    private final CoverBehavior[] coverBehaviors = new CoverBehavior[6];
 
     public MetaTileEntity(ResourceLocation metaTileEntityId) {
         this.metaTileEntityId = metaTileEntityId;
@@ -184,8 +187,8 @@ public abstract class MetaTileEntity implements ICoverable {
     public int getPaintingColorForRendering() {
         if (getWorld() == null && renderContextStack != null) {
             NBTTagCompound tagCompound = renderContextStack.getTagCompound();
-            if (tagCompound != null && tagCompound.hasKey("PaintingColor", NBT.TAG_INT)) {
-                return tagCompound.getInteger("PaintingColor");
+            if (tagCompound != null && tagCompound.hasKey(TAG_KEY_PAINTING_COLOR, NBT.TAG_INT)) {
+                return tagCompound.getInteger(TAG_KEY_PAINTING_COLOR);
             }
         }
         return paintingColor;
@@ -197,11 +200,11 @@ public abstract class MetaTileEntity implements ICoverable {
      * @param itemStack itemstack of itemblock
      */
     public void initFromItemStackData(NBTTagCompound itemStack) {
-        if (itemStack.hasKey("PaintingColor", NBT.TAG_INT)) {
-            setPaintingColor(itemStack.getInteger("PaintingColor"));
+        if (itemStack.hasKey(TAG_KEY_PAINTING_COLOR, NBT.TAG_INT)) {
+            setPaintingColor(itemStack.getInteger(TAG_KEY_PAINTING_COLOR));
         }
-        if (itemStack.hasKey("Fragile")) {
-            setFragile(itemStack.getBoolean("Fragile"));
+        if (itemStack.hasKey(TAG_KEY_FRAGILE)) {
+            setFragile(itemStack.getBoolean(TAG_KEY_FRAGILE));
         }
     }
 
@@ -213,7 +216,7 @@ public abstract class MetaTileEntity implements ICoverable {
      */
     public void writeItemStackData(NBTTagCompound itemStack) {
         if (this.paintingColor != DEFAULT_PAINTING_COLOR) { //for machines to stack
-            itemStack.setInteger("PaintingColor", this.paintingColor);
+            itemStack.setInteger(TAG_KEY_PAINTING_COLOR, this.paintingColor);
         }
     }
 
@@ -307,8 +310,8 @@ public abstract class MetaTileEntity implements ICoverable {
     public final boolean onCoverScrewdriverClick(EntityPlayer playerIn, EnumHand hand, CuboidRayTraceResult result) {
         EnumFacing hitFacing = ICoverable.determineGridSideHit(result);
         boolean accessingActiveOutputSide = false;
-        if(this.getCapability(GregtechTileCapabilities.CAPABILITY_ACTIVE_OUTPUT_SIDE, hitFacing) != null) {
-            accessingActiveOutputSide =playerIn.isSneaking();
+        if (this.getCapability(GregtechTileCapabilities.CAPABILITY_ACTIVE_OUTPUT_SIDE, hitFacing) != null) {
+            accessingActiveOutputSide = playerIn.isSneaking();
         }
         EnumFacing coverSide = ICoverable.traceCoverSide(result);
         CoverBehavior coverBehavior = coverSide == null ? null : getCoverAtSide(coverSide);
@@ -951,16 +954,15 @@ public abstract class MetaTileEntity implements ICoverable {
      */
     public static boolean addItemsToItemHandler(final IItemHandler handler,
                                                 final boolean simulate,
-                                                final List<ItemStack> items)
-    {
+                                                final List<ItemStack> items) {
         // determine if there is sufficient room to insert all items into the target inventory
         final boolean canMerge = simulateItemStackMerge(items, handler);
 
         // if we're not simulating and the merge should succeed, perform the merge.
-        if(!simulate && canMerge)
+        if (!simulate && canMerge)
             items.forEach(stack -> {
                 ItemStack rest = ItemHandlerHelper.insertItemStacked(handler, stack, simulate);
-                if(!rest.isEmpty())
+                if (!rest.isEmpty())
                     throw new IllegalStateException(
                         String.format("Insertion failed, remaining stack contained %d items.", rest.getCount()));
             });
@@ -1064,7 +1066,7 @@ public abstract class MetaTileEntity implements ICoverable {
 
     public NBTTagCompound writeToNBT(NBTTagCompound data) {
         data.setInteger("FrontFacing", frontFacing.getIndex());
-        data.setInteger("PaintingColor", paintingColor);
+        data.setInteger(TAG_KEY_PAINTING_COLOR, paintingColor);
         data.setInteger("CachedLightValue", cachedLightValue);
 
         if (shouldSerializeInventories()) {
@@ -1092,13 +1094,13 @@ public abstract class MetaTileEntity implements ICoverable {
             }
         }
         data.setTag("Covers", coversList);
-        data.setBoolean("Fragile", isFragile);
+        data.setBoolean(TAG_KEY_FRAGILE, isFragile);
         return data;
     }
 
     public void readFromNBT(NBTTagCompound data) {
         this.frontFacing = EnumFacing.VALUES[data.getInteger("FrontFacing")];
-        this.paintingColor = data.getInteger("PaintingColor");
+        this.paintingColor = data.getInteger(TAG_KEY_PAINTING_COLOR);
         this.cachedLightValue = data.getInteger("CachedLightValue");
 
         if (shouldSerializeInventories()) {
@@ -1127,7 +1129,7 @@ public abstract class MetaTileEntity implements ICoverable {
             }
         }
 
-        this.isFragile = data.getBoolean("Fragile");
+        this.isFragile = data.getBoolean(TAG_KEY_FRAGILE);
     }
 
     @Override
