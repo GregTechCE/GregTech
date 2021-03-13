@@ -146,7 +146,7 @@ public class SimpleMachineMetaTileEntity extends WorkableTieredMetaTileEntity im
         EnumFacing hitFacing = ICoverable.determineGridSideHit(hitResult);
         if (facing == getOutputFacing() || (hitFacing == getOutputFacing() && playerIn.isSneaking())) {
             if (!getWorld().isRemote) {
-                if (allowInputFromOutputSide) {
+                if (isAllowInputFromOutputSide()) {
                     setAllowInputFromOutputSide(false);
                     playerIn.sendMessage(new TextComponentTranslation("gregtech.machine.basic.input_from_output_side.disallow"));
                 } else {
@@ -162,13 +162,13 @@ public class SimpleMachineMetaTileEntity extends WorkableTieredMetaTileEntity im
     @Override
     public <T> T getCapability(Capability<T> capability, EnumFacing side) {
         if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) {
-            IFluidHandler fluidHandler = (side == getOutputFacing() && !allowInputFromOutputSide) ? outputFluidInventory : fluidInventory;
+            IFluidHandler fluidHandler = (side == getOutputFacing() && !isAllowInputFromOutputSide()) ? outputFluidInventory : fluidInventory;
             if (fluidHandler.getTankProperties().length > 0) {
                 return CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY.cast(fluidHandler);
             }
             return null;
         } else if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
-            IItemHandler itemHandler = (side == getOutputFacing() && !allowInputFromOutputSide) ? outputItemInventory : itemInventory;
+            IItemHandler itemHandler = (side == getOutputFacing() && !isAllowInputFromOutputSide()) ? outputItemInventory : itemInventory;
             if (itemHandler.getSlots() > 0) {
                 return CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.cast(itemHandler);
             }
