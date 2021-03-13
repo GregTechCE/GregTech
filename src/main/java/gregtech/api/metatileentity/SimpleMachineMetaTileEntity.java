@@ -119,10 +119,10 @@ public class SimpleMachineMetaTileEntity extends WorkableTieredMetaTileEntity im
         super.renderMetaTileEntity(renderState, translation, pipeline);
         if (outputFacing != null) {
             Textures.PIPE_OUT_OVERLAY.renderSided(outputFacing, renderState, translation, pipeline);
-            if (autoOutputItems) {
+            if (isAutoOutputItems()) {
                 Textures.ITEM_OUTPUT_OVERLAY.renderSided(outputFacing, renderState, translation, pipeline);
             }
-            if (autoOutputFluids) {
+            if (isAutoOutputFluids()) {
                 Textures.FLUID_OUTPUT_OVERLAY.renderSided(outputFacing, renderState, translation, pipeline);
             }
         }
@@ -135,10 +135,10 @@ public class SimpleMachineMetaTileEntity extends WorkableTieredMetaTileEntity im
             ((EnergyContainerHandler) this.energyContainer).dischargeOrRechargeEnergyContainers(chargerInventory, 0);
             if (getTimer() % 5 == 0) {
                 EnumFacing currentOutputFacing = getOutputFacing();
-                if (autoOutputFluids) {
+                if (isAutoOutputFluids()) {
                     pushFluidsIntoNearbyHandlers(currentOutputFacing);
                 }
-                if (autoOutputItems) {
+                if (isAutoOutputItems()) {
                     pushItemsIntoNearbyHandlers(currentOutputFacing);
                 }
             }
