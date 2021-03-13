@@ -10,6 +10,7 @@ import gregtech.api.capability.impl.EnergyContainerHandler;
 import gregtech.api.capability.impl.FluidHandlerProxy;
 import gregtech.api.capability.impl.FluidTankList;
 import gregtech.api.capability.impl.ItemHandlerProxy;
+import gregtech.api.cover.CoverBehavior;
 import gregtech.api.cover.CoverDefinition;
 import gregtech.api.cover.ICoverable;
 import gregtech.api.gui.GuiTextures;
@@ -41,9 +42,9 @@ import net.minecraftforge.items.ItemStackHandler;
 
 public class SimpleMachineMetaTileEntity extends WorkableTieredMetaTileEntity implements IActiveOutputSide {
 
-    private boolean hasFrontFacing;
+    private final boolean hasFrontFacing;
 
-    private ItemStackHandler chargerInventory;
+    private final ItemStackHandler chargerInventory;
     private EnumFacing outputFacing;
 
     private boolean autoOutputItems;
@@ -103,8 +104,11 @@ public class SimpleMachineMetaTileEntity extends WorkableTieredMetaTileEntity im
     @Override
     public boolean placeCoverOnSide(EnumFacing side, ItemStack itemStack, CoverDefinition coverDefinition) {
         boolean coverPlaced = super.placeCoverOnSide(side, itemStack, coverDefinition);
-        if (coverPlaced && getOutputFacing() == side && getCoverAtSide(side).shouldCoverInteractWithOutputside()) {
-            setAllowInputFromOutputSide(true);
+        if (coverPlaced && getOutputFacing() == side) {
+            CoverBehavior cover = getCoverAtSide(side);
+            if (cover != null && cover.shouldCoverInteractWithOutputside()) {
+                setAllowInputFromOutputSide(true);
+            }
         }
         return coverPlaced;
     }
@@ -130,12 +134,12 @@ public class SimpleMachineMetaTileEntity extends WorkableTieredMetaTileEntity im
         if (!getWorld().isRemote) {
             ((EnergyContainerHandler) this.energyContainer).dischargeOrRechargeEnergyContainers(chargerInventory, 0);
             if (getTimer() % 5 == 0) {
-                EnumFacing outputFacing = getOutputFacing();
+                EnumFacing currentOutputFacing = getOutputFacing();
                 if (autoOutputFluids) {
-                    pushFluidsIntoNearbyHandlers(outputFacing);
+                    pushFluidsIntoNearbyHandlers(currentOutputFacing);
                 }
                 if (autoOutputItems) {
-                    pushItemsIntoNearbyHandlers(outputFacing);
+                    pushItemsIntoNearbyHandlers(currentOutputFacing);
                 }
             }
         }
