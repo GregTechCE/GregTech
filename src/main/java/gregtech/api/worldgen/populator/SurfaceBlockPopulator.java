@@ -56,4 +56,8 @@ public class SurfaceBlockPopulator implements VeinChunkPopulator {
             }
         }
     }
+
+    public IBlockState getBlockState() {
+        return blockState;
+    }
 }

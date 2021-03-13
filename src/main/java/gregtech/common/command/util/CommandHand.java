@@ -11,6 +11,7 @@ import gregtech.api.items.toolitem.ToolMetaItem.MetaToolValueItem;
 import gregtech.api.unification.material.type.Material;
 import gregtech.api.unification.ore.OrePrefix;
 import gregtech.api.unification.stack.UnificationEntry;
+import gregtech.api.util.ClipboardUtil;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
@@ -90,6 +91,7 @@ public class CommandHand extends CommandBase {
                         IToolStats toolStats = ((MetaToolValueItem) metaValueItem).getToolStats();
                         player.sendMessage(new TextComponentTranslation("gregtech.command.util.hand.tool_stats", toolStats.getClass().getName()));
                     }
+                    ClipboardUtil.copyToClipboard(player, metaValueItem.unlocalizedName);
                     ClickEvent metaItemEvent = new ClickEvent(Action.OPEN_URL, metaValueItem.unlocalizedName);
                     player.sendMessage(new TextComponentTranslation("gregtech.command.util.hand.meta_item", metaValueItem.unlocalizedName, metaValueItem)
                         .setStyle(new Style().setClickEvent(metaItemEvent)));

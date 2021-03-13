@@ -39,6 +39,7 @@ public class SimpleCapabilityManager {
         registerCapabilityWithNoDefault(ICoverable.class);
         registerCapabilityWithNoDefault(IControllable.class);
         registerCapabilityWithNoDefault(IActiveOutputSide.class);
+        registerCapabilityWithNoDefault(IFuelable.class);
 
         registerCapabilityWithNoDefault(IWrenchItem.class);
         registerCapabilityWithNoDefault(IScrewdriverItem.class);

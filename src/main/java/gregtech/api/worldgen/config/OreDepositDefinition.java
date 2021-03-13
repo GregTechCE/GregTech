@@ -41,6 +41,8 @@ public class OreDepositDefinition {
     private int weight;
     private int priority;
     private float density;
+    private String assignedName;
+    private String description;
     private int[] heightLimit = new int[]{Integer.MIN_VALUE, Integer.MAX_VALUE};
     private boolean countAsVein = true;
 
@@ -59,6 +61,12 @@ public class OreDepositDefinition {
     public void initializeFromConfig(JsonObject configRoot) {
         this.weight = configRoot.get("weight").getAsInt();
         this.density = configRoot.get("density").getAsFloat();
+        if(configRoot.has("name")) {
+            this.assignedName = configRoot.get("name").getAsString();
+        }
+        if(configRoot.has("description")) {
+            this.description = configRoot.get("description").getAsString();
+        }
         if (configRoot.has("priority")) {
             this.priority = configRoot.get("priority").getAsInt();
         }
@@ -100,9 +108,20 @@ public class OreDepositDefinition {
         }
     }
 
+    //This is the file name
     @ZenGetter("depositName")
     public String getDepositName() {
         return depositName;
+    }
+
+    @ZenGetter("assignedName")
+    public String getAssignedName() {
+        return assignedName;
+    }
+
+    @ZenGetter("description")
+    public String getDescription() {
+        return description;
     }
 
     @ZenGetter("weight")

@@ -7,6 +7,7 @@ import gregtech.api.gui.ModularUI;
 import gregtech.api.gui.UIFactory;
 import gregtech.api.gui.impl.ModularUIContainer;
 import gregtech.api.gui.impl.ModularUIGui;
+import gregtech.api.util.ClipboardUtil;
 import gregtech.api.util.GTLog;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
@@ -187,6 +188,13 @@ public class NetworkHandler {
                 buf.readVarInt())
         ));
 
+        registerPacket(5, PacketClipboard.class, new PacketCodec<>(
+            (packet, buf) -> {
+                buf.writeString(packet.text);
+            },
+            (buf) -> new PacketClipboard(buf.readString(32767))
+        ));
+
         registerServerExecutor(PacketUIClientAction.class, (packet, handler) -> {
             Container openContainer = handler.player.openContainer;
             if (openContainer instanceof ModularUIContainer &&
@@ -225,6 +233,10 @@ public class NetworkHandler {
             IBlockState blockState = world.getBlockState(packet.blockPos);
             ParticleManager particleManager = Minecraft.getMinecraft().effectRenderer;
             ((ICustomParticleBlock) blockState.getBlock()).handleCustomParticle(world, packet.blockPos, particleManager, packet.entityPos, packet.particlesAmount);
+        });
+
+        registerClientExecutor(PacketClipboard.class, (packet, handler) -> {
+            ClipboardUtil.copyToClipboard(packet.text);
         });
     }
 

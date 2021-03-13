@@ -25,7 +25,7 @@ import java.util.Random;
 
 public abstract class BlockSurfaceRock extends Block {
 
-    private static final AxisAlignedBB STONE_AABB = new AxisAlignedBB(0.0, 0.0, 0.0, 1.0, 12.0 / 16.0, 1.0);
+    private static final AxisAlignedBB STONE_AABB = new AxisAlignedBB(0.0, 0.0, 0.0, 1.0, 8.0 / 16.0, 1.0);
 
     public BlockSurfaceRock() {
         super(net.minecraft.block.material.Material.ROCK);

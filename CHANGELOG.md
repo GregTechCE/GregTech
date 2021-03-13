@@ -1,5 +1,41 @@
 ## Changelog
 
+### 1.12.1
+* Updated number formatting (#1467) - Adrian Brock
+* Updated progress bars for some machines (#1504) - dan
+* Updated EU/t price of Rotor recipe in Fluid Solidifier (#1517) - ALongStringOfNumbers
+* Fixed progress bars being 1px off (#1504) - dan
+* Fixed Fuel TOP integration not working for server hosted games (#1511) - Adrian Brock
+* Fixed rare bug with Ore vein generation page biome tooltip (#1518) - ALongStringOfNumbers
+* Fixed Transformer TOP integration not working for server hosted games (#1520) - dan
+
+### 1.12.0
+* Highlight: TOP now displays fuel information (#1484) - Adrian Brock
+  * Blocks consuming fuel now has new information provided in TOP
+  * Specifically what fuel is used and how long will last
+* Highlight: Ore vein generation page in JEI (#1386) - ALongStringOfNumbers
+  * Pressing U on GTCE Ore will show in which veins it can be found
+  * Additional information like dimensions, spawn range and vein weight are available
+  * Vein files now can contain name and description optional values
+* Added descriptors to the machine controller (#1459) - ALongStringOfNumbers
+* Added unlocalized name of supported items is copied to clipboard when using /gt util hand (#1465) - Adrian Brock
+* Added support for multiblocks having own front side overlay (#1494) - dan
+* Added circuit method for adding circuits to CT recipes (#1496) - ALongStringOfNumbers
+* Updated JEI Multiblocks to show block counts and allow bookmarking (#1452) - Adrian Brock
+* Updated surface rocks to allow walking over them (#1462) - Adrian Brock
+* Updated sort to sort items by amount in descending order (#1477) - Nikolay Korolev
+* Updated particle texture to use material color (#1481) - Nikolay Korolev
+* Updated bounding box for Chest and Safe (#1482) - Nikolay Korolev
+* Removed generation of orebyproduct recipes when there are no byproducts (#1463) - Adrian Brock
+* Removed duplicate Dense Plate recipe (#1495) - dan
+* Fixed JEI multiblock rendering issue for Cracking Unit (#1464) - Adrian Brock
+* Fixed setting held item for non player listeners (#1466) - Adrian Brock
+* Fixed findPlayersUsing usage of AxisAlignedBB (#1470) - Nikolay Korolev
+* Fixed chest placement render problem (#1475) - Nikolay Korolev
+* Fixed some Russian translation (#1478) - Nikolay Korolev
+* Fixed empty containers working as full ones in Crafting Station (#1479) - Adrian Brock
+* Refactored MetaTileEntityChest (#1471) - Nikolay Korolev
+
 ### 1.11.3 (Hotfix)
 * Removed mechanism to distribute expensive ticks more evenly as it broke JEI multiblock preview - LAGIdiot
 
