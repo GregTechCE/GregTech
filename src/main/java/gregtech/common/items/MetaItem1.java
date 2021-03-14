@@ -279,6 +279,7 @@ public class MetaItem1 extends MaterialMetaItem {
         COVER_CRAFTING = addItem(744, "cover.crafting").setInvisible();
         COVER_DRAIN = addItem(745, "cover.drain").setInvisible();
 
+        COVER_FLUID_VOIDING = addItem(748, "cover.fluid.voiding");
         COVER_SHUTTER = addItem(749, "cover.shutter");
 
         COVER_SOLAR_PANEL = addItem(750, "cover.solar.panel");
