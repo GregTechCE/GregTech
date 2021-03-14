@@ -24,8 +24,7 @@ public class GTFluidUtils {
     }
 
     /**
-    Used to void fluids through the fluid voiding filter before transferring any non voided fluids into a neighboring fluid handler
-    destHandler is an array of fluid handlers, with the handler of the voiding fluid cover first
+     Used to transfer fluids from a source to multiple destinations. Each destination can have a separate fluid filter applied.
      **/
     public static int transferFluidsToMultipleHandlers(@Nonnull IFluidHandler sourceHandler, @Nonnull List<Tuple<IFluidHandler, Predicate<FluidStack>>> transferTuple, int transferLimit) {
 
