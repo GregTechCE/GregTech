@@ -28,7 +28,7 @@ import net.minecraftforge.fluids.capability.IFluidHandler;
 
 import java.util.List;
 
-public class MetaTileEntityLargeTurbine extends TurbineMultiblockController {
+public class MetaTileEntityLargeTurbine extends RotorHolderMultiblockController {
 
     private static final int MIN_DURABILITY_TO_WARN = 10;
 

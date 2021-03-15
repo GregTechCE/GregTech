@@ -15,7 +15,7 @@ import gregtech.api.render.Textures;
 import gregtech.api.unification.material.type.IngotMaterial;
 import gregtech.common.items.behaviors.TurbineRotorBehavior;
 import gregtech.common.metatileentities.multi.electric.generator.MetaTileEntityLargeTurbine;
-import gregtech.common.metatileentities.multi.electric.generator.TurbineMultiblockController;
+import gregtech.common.metatileentities.multi.electric.generator.RotorHolderMultiblockController;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -77,7 +77,7 @@ public class MetaTileEntityRotorHolder extends MetaTileEntityMultiblockPart impl
             this.frontFaceFree = checkTurbineFaceFree();
         }
 
-        TurbineMultiblockController controller = (TurbineMultiblockController) getController();
+        RotorHolderMultiblockController controller = (RotorHolderMultiblockController) getController();
         boolean isControllerActive = controller != null && controller.isActive();
 
         if (!isHasRotor()) {

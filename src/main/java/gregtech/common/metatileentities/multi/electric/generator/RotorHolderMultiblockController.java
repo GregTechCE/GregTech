@@ -7,11 +7,11 @@ import net.minecraft.util.ResourceLocation;
 
 import java.util.List;
 
-public abstract class TurbineMultiblockController extends FueledMultiblockController {
+public abstract class RotorHolderMultiblockController extends FueledMultiblockController {
 
     public static final MultiblockAbility<MetaTileEntityRotorHolder> ABILITY_ROTOR_HOLDER = new MultiblockAbility<>();
 
-    public TurbineMultiblockController(ResourceLocation metaTileEntityId, FuelRecipeMap recipeMap, long maxVoltage) {
+    public RotorHolderMultiblockController(ResourceLocation metaTileEntityId, FuelRecipeMap recipeMap, long maxVoltage) {
         super(metaTileEntityId, recipeMap, maxVoltage);
     }
 
