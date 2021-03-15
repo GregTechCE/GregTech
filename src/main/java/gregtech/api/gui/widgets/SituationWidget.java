@@ -17,6 +17,8 @@ import java.util.function.Supplier;
 public class SituationWidget extends Widget {
 
     private final Supplier<Situation> currentSituationSupplier;
+    private boolean isHighPressure = false;
+    private boolean steam = false;
     private Situation currentSituation;
     protected String tooltipHoverString;
     protected int currentId;
@@ -31,9 +33,23 @@ public class SituationWidget extends Widget {
         setImage();
     }
 
+    public SituationWidget(int xPosition, int yPosition, int width, int height, Supplier<Situation> getSituation, boolean isHighPressure) {
+        super(new Position(xPosition, yPosition), new Size(width, height));
+        this.steam = true;
+        this.isHighPressure = isHighPressure;
+        this.currentSituationSupplier = getSituation;
+        this.currentSituation = getSituation.get();
+        setTooltipHoverString();
+        setImage();
+    }
+
     public void setTooltipHoverString() {
         if (this.currentSituation != null) {
-            this.tooltipHoverString = I18n.format(this.currentSituation.situationLocaleName);
+            String situationLocaleName = this.currentSituation.situationLocaleName;
+            if (steam && situationLocaleName.contains("_power_")) {
+                situationLocaleName = situationLocaleName.replace("_power_","_steam_");
+            }
+            this.tooltipHoverString = I18n.format(situationLocaleName);
         } else {
             this.tooltipHoverString = null;
         }
@@ -44,9 +60,66 @@ public class SituationWidget extends Widget {
             this.area = null;
             return this;
         }
+        if (isHighPressure)
+            setImageSteamHighPressure();
+        else if (steam)
+            setImageSteam();
+        else {
+            setImageElectric();
+        }
+        return this;
+    }
+
+    public SituationWidget setImageSteamHighPressure() {
         SituationTypes iconTextures = this.currentSituation.situationTypes;
         switch (iconTextures) {
-            case IDLE:
+            case INFO:
+                this.area = GuiTextures.STATUS_IDLING;
+                break;
+            case WORKING:
+                this.area = GuiTextures.STATUS_WORKING;
+                break;
+            case WARNING:
+                this.area = GuiTextures.STATUS_WARNING;
+                break;
+            case ERROR:
+                this.area = GuiTextures.STATUS_ERROR;
+                break;
+            default:
+                this.area = null;
+        }
+        return this;
+    }
+
+    public SituationWidget setImageSteam() {
+        SituationTypes iconTextures = this.currentSituation.situationTypes;
+        switch (iconTextures) {
+            case INFO:
+                this.area = GuiTextures.STATUS_IDLING;
+                break;
+            case WORKING:
+                this.area = GuiTextures.STATUS_WORKING;
+                break;
+            case WARNING:
+                this.area = GuiTextures.STATUS_WARNING;
+                break;
+            case ERROR:
+                this.area = GuiTextures.STATUS_ERROR;
+                break;
+            default:
+                this.area = null;
+        }
+        return this;
+    }
+
+    public SituationWidget setImageElectric() {
+        if (this.currentSituation == null) {
+            this.area = null;
+            return this;
+        }
+        SituationTypes iconTextures = this.currentSituation.situationTypes;
+        switch (iconTextures) {
+            case INFO:
                 this.area = GuiTextures.STATUS_IDLING;
                 break;
             case WORKING:

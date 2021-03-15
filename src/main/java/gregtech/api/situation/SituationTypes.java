@@ -4,7 +4,7 @@ import net.minecraft.util.IStringSerializable;
 
 public enum SituationTypes implements IStringSerializable {
     WORKING("gregtech.situation.level.warning"),
-    IDLE("gregtech.situation.level.idle"),
+    INFO("gregtech.situation.level.idle"),
     ERROR("gregtech.situation.level.error"),
     WARNING("gregtech.situation.level.warning");
 

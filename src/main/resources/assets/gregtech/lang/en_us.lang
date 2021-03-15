@@ -768,6 +768,8 @@ gregtech.situation.null_capability=Error accessing inventory from this side
 gregtech.situation.empty_source=This inventory is empty
 gregtech.situation.insufficient_power=Not enough power to run this recipe
 gregtech.situation.insufficient_power_to_start=Not enough power to start this recipe
+gregtech.situation.insufficient_steam=Not enough steam to run this recipe
+gregtech.situation.insufficient_steam_to_start=Not enough steam to start this recipe
 gregtech.situation.no_matching_recipe=No recipe found
 gregtech.situation.target_inventory_full=The target inventory is full
 gregtech.situation.output_slots_full=Output slots are full
@@ -778,6 +780,7 @@ gregtech.situation.no_export_inventory=Cant access inventory to export to
 gregtech.situation.no_import_tank=Cant access tank to import from
 gregtech.situation.no_export_tank=Cant access tank to export to
 gregtech.situation.blocked_intakes=Blocked intakes
+gregtech.situation.blocked_vent=Blocked vent
 gregtech.situation.dimension_lacks_atmosphere=Dimension lacks atmosphere
 
 # %s is a localized material name

@@ -1,6 +1,7 @@
 package gregtech.api.capability.impl;
 
 import gregtech.api.GTValues;
+import gregtech.api.capability.IMultipleTankHandler;
 import gregtech.api.damagesources.DamageSources;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.recipes.Recipe;
@@ -9,6 +10,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.init.SoundEvents;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.EntitySelectors;
@@ -18,7 +20,13 @@ import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.WorldServer;
+import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.IFluidTank;
+import net.minecraftforge.items.IItemHandler;
+
+import java.util.Arrays;
+
+import static gregtech.api.situation.Situations.*;
 
 public class RecipeLogicSteam extends AbstractRecipeLogic {
 
@@ -143,8 +151,54 @@ public class RecipeLogicSteam extends AbstractRecipeLogic {
             return;
         if (this.needsVenting && metaTileEntity.getTimer() % 10 == 0) {
             tryDoVenting();
+            if (isVentingStuck()){
+                metaTileEntity.setSituation(BLOCKED_VENT);
+            }
         }
         super.update();
+    }
+
+    protected boolean checkRecipeInputsDirty(IItemHandler inputs, IMultipleTankHandler fluidInputs) {
+        boolean shouldRecheckRecipe = false;
+        this.isInputsEmpty = true;
+        if (lastItemInputs == null || lastItemInputs.length != inputs.getSlots()) {
+            this.lastItemInputs = new ItemStack[inputs.getSlots()];
+            Arrays.fill(lastItemInputs, ItemStack.EMPTY);
+        }
+        if (lastFluidInputs == null || lastFluidInputs.length != fluidInputs.getTanks()) {
+            this.lastFluidInputs = new FluidStack[fluidInputs.getTanks()];
+        }
+        for (int i = 0; i < lastItemInputs.length; i++) {
+            ItemStack currentStack = inputs.getStackInSlot(i);
+            ItemStack lastStack = lastItemInputs[i];
+            if (!areItemStacksEqual(currentStack, lastStack)) {
+                this.lastItemInputs[i] = currentStack.isEmpty() ? ItemStack.EMPTY : currentStack.copy();
+                shouldRecheckRecipe = true;
+            } else if (currentStack.getCount() != lastStack.getCount()) {
+                lastStack.setCount(currentStack.getCount());
+                shouldRecheckRecipe = true;
+            } else if (!currentStack.isEmpty()) {
+                this.isInputsEmpty = false;
+            }
+        }
+        for (int i = 0; i < lastFluidInputs.length; i++) {
+            if (fluidInputs.getTankAt(i) == steamFluidTank)
+                continue;
+            FluidStack currentStack = fluidInputs.getTankAt(i).getFluid();
+            FluidStack lastStack = lastFluidInputs[i];
+            if ((currentStack == null && lastStack != null) ||
+                    (currentStack != null && !currentStack.isFluidEqual(lastStack))) {
+                this.lastFluidInputs[i] = currentStack == null ? null : currentStack.copy();
+                shouldRecheckRecipe = true;
+            } else if (currentStack != null && lastStack != null &&
+                    currentStack.amount != lastStack.amount) {
+                lastStack.amount = currentStack.amount;
+                shouldRecheckRecipe = true;
+            } else if (currentStack != null) {
+                this.isInputsEmpty = false;
+            }
+        }
+        return shouldRecheckRecipe;
     }
 
     @Override
