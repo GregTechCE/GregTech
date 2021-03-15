@@ -154,7 +154,6 @@ public abstract class AbstractRecipeLogic extends MTETrait implements IWorkable 
         IItemHandlerModifiable importInventory = getInputInventory();
         IMultipleTankHandler importFluids = getInputTank();
 
-        boolean inputsChanged = checkRecipeInputsDirty(importInventory, importFluids);
         // if the output is full check if the output changed so we can process recipes results again.
         if (this.isOutputsFull) {
             IItemHandlerModifiable exportInventory = getOutputInventory();
@@ -164,11 +163,14 @@ public abstract class AbstractRecipeLogic extends MTETrait implements IWorkable 
             }
         }
 
-        if (inputsChanged || (!invalidInputsForRecipes && !this.isOutputsFull) || this.forceRecipeRecheck) {
+        if (!invalidInputsForRecipes && !this.isOutputsFull) {
             if (this.previousRecipe != null && this.previousRecipe.matches(false, importInventory, importFluids)) {
                 //if previous recipe still matches inputs, try to use it
                 currentRecipe = this.previousRecipe;
-            } else {
+            }
+        }
+        if (currentRecipe == null) {
+            if (checkRecipeInputsDirty(importInventory, importFluids) || this.forceRecipeRecheck) {
                 this.forceRecipeRecheck = false;
                 //else, try searching new recipe for given inputs
                 currentRecipe = findRecipe(maxVoltage, importInventory, importFluids);
@@ -181,9 +183,9 @@ public abstract class AbstractRecipeLogic extends MTETrait implements IWorkable 
                     this.invalidInputsForRecipes = true;
                 }
             }
-            if (currentRecipe != null && setupAndConsumeRecipeInputs(currentRecipe)) {
-                setupRecipe(currentRecipe);
-            }
+        }
+        if (currentRecipe != null && setupAndConsumeRecipeInputs(currentRecipe)) {
+            setupRecipe(currentRecipe);
         }
     }
 
@@ -312,6 +314,7 @@ public abstract class AbstractRecipeLogic extends MTETrait implements IWorkable 
             this.isOutputsFull = true;
             return false;
         }
+        this.isOutputsFull = false;
         return recipe.matches(true, importInventory, importFluids);
     }
 
