@@ -8,6 +8,7 @@ import codechicken.lib.vec.Matrix4;
 import gnu.trove.list.TIntList;
 import gnu.trove.list.array.TIntArrayList;
 import gregtech.api.GTValues;
+import gregtech.api.situation.Situation;
 import gregtech.api.capability.GregtechTileCapabilities;
 import gregtech.api.capability.IControllable;
 import gregtech.api.capability.impl.ItemHandlerDelegate;
@@ -37,6 +38,8 @@ import net.minecraftforge.items.ItemHandlerHelper;
 import javax.annotation.Nonnull;
 import java.util.*;
 
+import static gregtech.api.situation.Situations.*;
+
 public class CoverConveyor extends CoverBehavior implements CoverWithUI, ITickable, IControllable {
 
     public final int tier;
@@ -48,6 +51,7 @@ public class CoverConveyor extends CoverBehavior implements CoverWithUI, ITickab
     protected int itemsLeftToTransferLastSecond;
     private CoverableItemHandlerWrapper itemHandlerWrapper;
     protected boolean isWorkingAllowed = true;
+    protected Situation situation;
 
     public CoverConveyor(ICoverable coverable, EnumFacing attachedSide, int tier, int itemsPerSecond) {
         super(coverable, attachedSide);
@@ -93,15 +97,27 @@ public class CoverConveyor extends CoverBehavior implements CoverWithUI, ITickab
             TileEntity tileEntity = coverHolder.getWorld().getTileEntity(coverHolder.getPos().offset(attachedSide));
             IItemHandler itemHandler = tileEntity == null ? null : tileEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, attachedSide.getOpposite());
             IItemHandler myItemHandler = coverHolder.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, attachedSide);
-            if (itemHandler != null && myItemHandler != null) {
+            if (itemHandler == null) {
+                if (conveyorMode == ConveyorMode.IMPORT) setSituation(NO_IMPORT_INVENTORY);
+                if (conveyorMode == ConveyorMode.EXPORT) setSituation(NO_EXPORT_INVENTORY);
+            } else {
                 int totalTransferred = doTransferItems(itemHandler, myItemHandler, itemsLeftToTransferLastSecond);
                 this.itemsLeftToTransferLastSecond -= totalTransferred;
+                if (this.itemsLeftToTransferLastSecond < transferRate) {
+                    setSituation(WORKING);
+                } else {
+                    setSituation(IDLE);
+                }
             }
         }
         if (timer % 20 == 0) {
             this.itemsLeftToTransferLastSecond = transferRate;
         }
+        if (!isWorkingAllowed) {
+            setSituation(DISABLED_BY_CONTROLLER);
+        }
     }
+
 
     protected int doTransferItems(IItemHandler itemHandler, IItemHandler myItemHandler, int maxTransferAmount) {
         return doTransferItemsAny(itemHandler, myItemHandler, maxTransferAmount);
@@ -392,6 +408,10 @@ public class CoverConveyor extends CoverBehavior implements CoverWithUI, ITickab
     @Override
     public <T> T getCapability(Capability<T> capability, T defaultValue) {
         if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
+            if (defaultValue == null ) {
+                setSituation(EXPECTED_CAPABILITY_UNAVAILABLE);
+                return null;
+            }
             IItemHandler delegate = (IItemHandler) defaultValue;
             if (itemHandlerWrapper == null || itemHandlerWrapper.delegate != delegate) {
                 this.itemHandlerWrapper = new CoverableItemHandlerWrapper(delegate);
@@ -428,6 +448,8 @@ public class CoverConveyor extends CoverBehavior implements CoverWithUI, ITickab
         primaryGroup.addWidget(new CycleButtonWidget(10, 166, 113, 20,
             ManualImportExportMode.class, this::getManualImportExportMode, this::setManualImportExportMode)
             .setTooltipHoverString("cover.universal.manual_import_export.mode.description"));
+
+        primaryGroup.addWidget(new SituationWidget(80,90,16,16,this::getSituation));
 
         this.itemFilterContainer.initUI(70, primaryGroup::addWidget);
 

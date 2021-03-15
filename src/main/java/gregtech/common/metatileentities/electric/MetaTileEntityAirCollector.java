@@ -25,6 +25,8 @@ import javax.annotation.Nullable;
 import java.util.List;
 import java.util.stream.IntStream;
 
+import static gregtech.api.situation.Situations.*;
+
 public class MetaTileEntityAirCollector extends TieredMetaTileEntity {
     private static final int PRODUCTION_CYCLE_LENGTH = 20;
 
@@ -48,12 +50,19 @@ public class MetaTileEntityAirCollector extends TieredMetaTileEntity {
 
         if (!getWorld().isRemote) {
             long energyToConsume = GTValues.V[getTier()];
-            if (checkDimension() && checkOpenSides() && getTimer() % PRODUCTION_CYCLE_LENGTH == 0L && energyContainer.getEnergyStored() >= energyToConsume) {
-                int fluidAmount = getCollectedFluidAmount();
-                FluidStack fluidStack = Materials.Air.getFluid(fluidAmount);
-                if (exportFluids.fill(fluidStack, false) == fluidAmount) {
-                    exportFluids.fill(fluidStack, true);
-                    energyContainer.removeEnergy(energyToConsume);
+            if (getTimer() % PRODUCTION_CYCLE_LENGTH == 0L ) {
+                if (energyContainer.getEnergyStored() >= energyToConsume) {
+                    if (checkDimension() && checkOpenSides()) {
+                        this.setSituation(WORKING);
+                        int fluidAmount = getCollectedFluidAmount();
+                        FluidStack fluidStack = Materials.Air.getFluid(fluidAmount);
+                        if (exportFluids.fill(fluidStack, false) == fluidAmount) {
+                            exportFluids.fill(fluidStack, true);
+                            energyContainer.removeEnergy(energyToConsume);
+                        }
+                    }
+                } else {
+                    setSituation(INSUFFICIENT_POWER_TO_START);
                 }
             }
             if (getTimer() % 5 == 0) {
@@ -69,12 +78,15 @@ public class MetaTileEntityAirCollector extends TieredMetaTileEntity {
             if (getWorld().isAirBlock(getPos().offset(side)))
                 return true;
         }
+        setSituation(BLOCKED_INTAKES);
         return false;
     }
 
     private boolean checkDimension() {
         int dimensionId = getWorld().provider.getDimension();
-        return IntStream.of(ConfigHolder.machineSpecific.airCollectorDimensionBlacklist).noneMatch(x -> x == dimensionId);
+        boolean air = IntStream.of(ConfigHolder.machineSpecific.airCollectorDimensionBlacklist).noneMatch(x -> x == dimensionId);
+        if (!air) setSituation(DIMENSION_LACKS_ATMOSPHERE);
+        return air;
     }
 
     private int getCollectedFluidAmount() {

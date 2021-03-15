@@ -27,6 +27,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
+import static gregtech.api.situation.Situations.*;
+
 public abstract class AbstractRecipeLogic extends MTETrait implements IWorkable {
 
     public final RecipeMap<?> recipeMap;
@@ -34,6 +36,7 @@ public abstract class AbstractRecipeLogic extends MTETrait implements IWorkable 
     protected boolean forceRecipeRecheck;
     protected ItemStack[] lastItemInputs;
     protected FluidStack[] lastFluidInputs;
+    protected Recipe currentRecipe;
     protected Recipe previousRecipe;
     protected boolean allowOverclocking = true;
 
@@ -48,6 +51,7 @@ public abstract class AbstractRecipeLogic extends MTETrait implements IWorkable 
     protected boolean workingEnabled = true;
     protected boolean hasNotEnoughEnergy;
     protected boolean wasActiveAndNeedsUpdate;
+    protected boolean isInputsEmpty;
 
     public AbstractRecipeLogic(MetaTileEntity tileEntity, RecipeMap<?> recipeMap) {
         super(tileEntity);
@@ -107,7 +111,16 @@ public abstract class AbstractRecipeLogic extends MTETrait implements IWorkable 
                 }
                 if (progressTime == 0) {
                     trySearchNewRecipe();
+                    if (currentRecipe == null) {
+                        if (isInputsEmpty) {
+                            metaTileEntity.setSituation(IDLE);
+                        } else {
+                            metaTileEntity.setSituation(NO_MATCHING_RECIPE);
+                        }
+                    }
                 }
+            } else {
+                metaTileEntity.setSituation(DISABLED_BY_CONTROLLER);
             }
             if (wasActiveAndNeedsUpdate) {
                 this.wasActiveAndNeedsUpdate = false;
@@ -120,6 +133,7 @@ public abstract class AbstractRecipeLogic extends MTETrait implements IWorkable 
         boolean drawEnergy = drawEnergy(recipeEUt);
         if (drawEnergy || (recipeEUt < 0)) {
             //as recipe starts with progress on 1 this has to be > only not => to compensate for it
+            metaTileEntity.setSituation(WORKING);
             if (++progressTime > maxProgressTime) {
                 completeRecipe();
             }
@@ -127,6 +141,7 @@ public abstract class AbstractRecipeLogic extends MTETrait implements IWorkable 
             //only set hasNotEnoughEnergy if this recipe is consuming recipe
             //generators always have enough energy
             this.hasNotEnoughEnergy = true;
+            metaTileEntity.setSituation(INSUFFICIENT_POWER);
             //if current progress value is greater than 2, decrement it by 2
             if (progressTime >= 2) {
                 if (ConfigHolder.insufficientEnergySupplyWipesRecipeProgress) {
@@ -140,25 +155,24 @@ public abstract class AbstractRecipeLogic extends MTETrait implements IWorkable 
 
     protected void trySearchNewRecipe() {
         long maxVoltage = getMaxVoltage();
-        Recipe currentRecipe = null;
         IItemHandlerModifiable importInventory = getInputInventory();
         IMultipleTankHandler importFluids = getInputTank();
-        if (previousRecipe != null && previousRecipe.matches(false, importInventory, importFluids)) {
+        if (this.previousRecipe != null && this.previousRecipe.matches(false, importInventory, importFluids)) {
             //if previous recipe still matches inputs, try to use it
-            currentRecipe = previousRecipe;
+            this.currentRecipe = this.previousRecipe;
         } else {
             boolean dirty = checkRecipeInputsDirty(importInventory, importFluids);
-            if (dirty || forceRecipeRecheck) {
+            if (dirty || this.forceRecipeRecheck) {
                 this.forceRecipeRecheck = false;
                 //else, try searching new recipe for given inputs
-                currentRecipe = findRecipe(maxVoltage, importInventory, importFluids);
-                if (currentRecipe != null) {
-                    this.previousRecipe = currentRecipe;
+                this.currentRecipe = findRecipe(maxVoltage, importInventory, importFluids);
+                if (this.currentRecipe != null) {
+                    this.previousRecipe = this.currentRecipe;
                 }
             }
         }
-        if (currentRecipe != null && setupAndConsumeRecipeInputs(currentRecipe)) {
-            setupRecipe(currentRecipe);
+        if (this.currentRecipe != null && setupAndConsumeRecipeInputs(this.currentRecipe)) {
+            setupRecipe(this.currentRecipe);
         }
     }
 
@@ -183,6 +197,7 @@ public abstract class AbstractRecipeLogic extends MTETrait implements IWorkable 
 
     protected boolean checkRecipeInputsDirty(IItemHandler inputs, IMultipleTankHandler fluidInputs) {
         boolean shouldRecheckRecipe = false;
+        this.isInputsEmpty = true;
         if (lastItemInputs == null || lastItemInputs.length != inputs.getSlots()) {
             this.lastItemInputs = new ItemStack[inputs.getSlots()];
             Arrays.fill(lastItemInputs, ItemStack.EMPTY);
@@ -199,6 +214,8 @@ public abstract class AbstractRecipeLogic extends MTETrait implements IWorkable 
             } else if (currentStack.getCount() != lastStack.getCount()) {
                 lastStack.setCount(currentStack.getCount());
                 shouldRecheckRecipe = true;
+            } else if (!currentStack.isEmpty()) {
+                this.isInputsEmpty = false;
             }
         }
         for (int i = 0; i < lastFluidInputs.length; i++) {
@@ -212,6 +229,8 @@ public abstract class AbstractRecipeLogic extends MTETrait implements IWorkable 
                 currentStack.amount != lastStack.amount) {
                 lastStack.amount = currentStack.amount;
                 shouldRecheckRecipe = true;
+            } else if (currentStack != null) {
+                this.isInputsEmpty = false;
             }
         }
         return shouldRecheckRecipe;
@@ -230,11 +249,20 @@ public abstract class AbstractRecipeLogic extends MTETrait implements IWorkable 
         IItemHandlerModifiable exportInventory = getOutputInventory();
         IMultipleTankHandler importFluids = getInputTank();
         IMultipleTankHandler exportFluids = getOutputTank();
-        return (totalEUt >= 0 ? getEnergyStored() >= (totalEUt > getEnergyCapacity() / 2 ? resultOverclock[0] : totalEUt) :
-            (getEnergyStored() - resultOverclock[0] <= getEnergyCapacity())) &&
-            MetaTileEntity.addItemsToItemHandler(exportInventory, true, recipe.getAllItemOutputs(exportInventory.getSlots())) &&
-            MetaTileEntity.addFluidsToFluidHandler(exportFluids, true, recipe.getFluidOutputs()) &&
-            recipe.matches(true, importInventory, importFluids);
+        if (!(totalEUt >= 0 ? getEnergyStored() >= (totalEUt > getEnergyCapacity() / 2 ? resultOverclock[0] : totalEUt) :
+            (getEnergyStored() - resultOverclock[0] <= getEnergyCapacity()))) {
+            metaTileEntity.setSituation(INSUFFICIENT_POWER_TO_START);
+            return false;
+        }
+        if (!MetaTileEntity.addItemsToItemHandler(exportInventory, true, recipe.getAllItemOutputs(exportInventory.getSlots()))) {
+            metaTileEntity.setSituation(OUTPUT_SLOTS_FULL);
+            return false;
+        }
+        if (!MetaTileEntity.addFluidsToFluidHandler(exportFluids, true, recipe.getFluidOutputs())) {
+            metaTileEntity.setSituation(OUTPUT_TANKS_FULL);
+            return false;
+        }
+        return recipe.matches(true, importInventory, importFluids);
     }
 
     protected int[] calculateOverclock(int EUt, long voltage, int duration) {

@@ -9,9 +9,9 @@ import codechicken.lib.vec.Matrix4;
 import com.google.common.collect.Lists;
 import gregtech.api.GTValues;
 import gregtech.api.gui.IUIHolder;
-import gregtech.api.metatileentity.SimpleMachineMetaTileEntity;
 import gregtech.api.render.SimpleSidedCubeRenderer.RenderSide;
 import gregtech.api.render.Textures;
+import gregtech.api.situation.Situation;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -28,6 +28,9 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import java.util.List;
 import java.util.function.Consumer;
 
+import static gregtech.api.situation.Situations.DISABLED_BY_CONTROLLER;
+import static gregtech.api.situation.Situations.IDLE;
+
 /**
  * Represents cover instance attached on the specific side of meta tile entity
  * Cover filters out interaction and logic of meta tile entity
@@ -41,6 +44,7 @@ public abstract class CoverBehavior implements IUIHolder {
     public final ICoverable coverHolder;
     public final EnumFacing attachedSide;
     private int redstoneSignalOutput;
+    private Situation situation;
 
     public CoverBehavior(ICoverable coverHolder, EnumFacing attachedSide) {
         this.coverHolder = coverHolder;
@@ -207,6 +211,14 @@ public abstract class CoverBehavior implements IUIHolder {
     @Override
     public boolean isRemote() {
         return coverHolder.getWorld().isRemote;
+    }
+
+    public Situation getSituation() {
+        return this.situation;
+    }
+
+    public void setSituation(Situation situation) {
+        this.situation = situation;
     }
 
     @Override

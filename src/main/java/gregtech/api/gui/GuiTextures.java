@@ -45,6 +45,11 @@ public class GuiTextures {
     //WIDGET UI RELATED
     public static final TextureArea SLIDER_BACKGROUND = TextureArea.fullImage("textures/gui/widget/slider_background.png");
     public static final TextureArea SLIDER_ICON = TextureArea.fullImage("textures/gui/widget/slider.png");
+    public static final TextureArea STATUS_IDLING = TextureArea.fullImage("textures/gui/widget/idling.png");
+    public static final TextureArea STATUS_WORKING = TextureArea.fullImage("textures/gui/widget/working.png");
+    public static final TextureArea STATUS_ERROR =TextureArea.fullImage("textures/gui/widget/error.png");
+    public static final TextureArea STATUS_WARNING =TextureArea.fullImage("textures/gui/widget/warning.png");
+
 
     //BRONZE
     public static final TextureArea BRONZE_BACKGROUND = TextureArea.fullImage("textures/gui/steam/bronze/bronze_gui.png");

@@ -6,6 +6,7 @@ import codechicken.lib.render.pipeline.IVertexOperation;
 import codechicken.lib.vec.Cuboid6;
 import codechicken.lib.vec.Matrix4;
 import gregtech.api.GTValues;
+import gregtech.api.situation.Situation;
 import gregtech.api.capability.GregtechTileCapabilities;
 import gregtech.api.capability.IControllable;
 import gregtech.api.capability.impl.FluidHandlerDelegate;
@@ -35,6 +36,8 @@ import net.minecraftforge.fluids.capability.IFluidHandler;
 
 import javax.annotation.Nullable;
 
+import static gregtech.api.situation.Situations.*;
+
 public class CoverPump extends CoverBehavior implements CoverWithUI, ITickable, IControllable {
 
     public final int tier;
@@ -47,6 +50,7 @@ public class CoverPump extends CoverBehavior implements CoverWithUI, ITickable, 
     protected boolean isWorkingAllowed = true;
     protected final FluidFilterContainer fluidFilter;
     protected BucketMode bucketMode;
+    protected Situation situation;
 
     public CoverPump(ICoverable coverHolder, EnumFacing attachedSide, int tier, int mbPerTick) {
         super(coverHolder, attachedSide);
@@ -107,6 +111,9 @@ public class CoverPump extends CoverBehavior implements CoverWithUI, ITickable, 
         if (timer % 20 == 0) {
             this.fluidLeftToTransferLastSecond = transferRate;
         }
+        if (!isWorkingAllowed) {
+            setSituation(DISABLED_BY_CONTROLLER);
+        }
     }
 
     protected int doTransferFluids(int transferLimit) {
@@ -116,10 +123,18 @@ public class CoverPump extends CoverBehavior implements CoverWithUI, ITickable, 
         blockPos.release();
         IFluidHandler fluidHandler = tileEntity == null ? null : tileEntity.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, attachedSide.getOpposite());
         IFluidHandler myFluidHandler = coverHolder.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, attachedSide);
-        if (fluidHandler == null || myFluidHandler == null) {
+        if (fluidHandler == null) {
+            if (pumpMode == PumpMode.IMPORT) setSituation(NO_IMPORT_TANK);
+            if (pumpMode == PumpMode.EXPORT) setSituation(NO_EXPORT_TANK);
             return 0;
         }
-        return doTransferFluidsInternal(myFluidHandler, fluidHandler, transferLimit);
+        int transferredFluid = doTransferFluidsInternal(myFluidHandler, fluidHandler, transferLimit);
+        if (transferredFluid != 0) {
+            setSituation(WORKING);
+        } else {
+            setSituation(IDLE);
+        }
+        return transferredFluid;
     }
 
     protected int doTransferFluidsInternal(IFluidHandler myFluidHandler, IFluidHandler fluidHandler, int transferLimit) {
@@ -157,7 +172,9 @@ public class CoverPump extends CoverBehavior implements CoverWithUI, ITickable, 
         primaryGroup.addWidget(new CycleButtonWidget(10, 160, 113, 20,
            ManualImportExportMode.class, this::getManualImportExportMode, this::setManualImportExportMode)
             .setTooltipHoverString("cover.universal.manual_import_export.mode.description"));
-              
+
+        primaryGroup.addWidget(new SituationWidget(80,84,16,16,this::getSituation));
+
         this.fluidFilter.initUI(88, primaryGroup::addWidget);
 
         return ModularUI.builder(GuiTextures.BACKGROUND, 176, 184 + 82)
@@ -201,6 +218,10 @@ public class CoverPump extends CoverBehavior implements CoverWithUI, ITickable, 
     @Override
     public <T> T getCapability(Capability<T> capability, T defaultValue) {
         if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) {
+            if (defaultValue == null ) {
+                setSituation(EXPECTED_CAPABILITY_UNAVAILABLE);
+                return null;
+            }
             IFluidHandler delegate = (IFluidHandler) defaultValue;
             if (fluidHandlerWrapper == null || fluidHandlerWrapper.delegate != delegate) {
                 this.fluidHandlerWrapper = new CoverableFluidHandlerWrapper(delegate);

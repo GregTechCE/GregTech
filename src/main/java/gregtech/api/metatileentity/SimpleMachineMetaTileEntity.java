@@ -11,10 +11,7 @@ import gregtech.api.capability.impl.ItemHandlerProxy;
 import gregtech.api.cover.CoverDefinition;
 import gregtech.api.gui.GuiTextures;
 import gregtech.api.gui.ModularUI;
-import gregtech.api.gui.widgets.DischargerSlotWidget;
-import gregtech.api.gui.widgets.ImageWidget;
-import gregtech.api.gui.widgets.LabelWidget;
-import gregtech.api.gui.widgets.ToggleButtonWidget;
+import gregtech.api.gui.widgets.*;
 import gregtech.api.recipes.RecipeMap;
 import gregtech.api.render.OrientedOverlayRenderer;
 import gregtech.api.render.Textures;
@@ -35,6 +32,8 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
+
+import static gregtech.api.situation.Situations.*;
 
 public class SimpleMachineMetaTileEntity extends WorkableTieredMetaTileEntity {
 
@@ -135,6 +134,7 @@ public class SimpleMachineMetaTileEntity extends WorkableTieredMetaTileEntity {
                     pushItemsIntoNearbyHandlers(outputFacing);
                 }
             }
+            if (failedToMoveItemsOrFluids()) this.setSituation(TARGET_INVENTORY_FULL);
         }
     }
 
@@ -300,8 +300,7 @@ public class SimpleMachineMetaTileEntity extends WorkableTieredMetaTileEntity {
             .widget(new LabelWidget(5, 5, getMetaFullName()))
             .widget(new DischargerSlotWidget(chargerInventory, 0, 79, 62)
                 .setBackgroundTexture(GuiTextures.SLOT, GuiTextures.CHARGER_OVERLAY))
-            .widget(new ImageWidget(79, 42, 18, 18, GuiTextures.INDICATOR_NO_ENERGY)
-                .setPredicate(workable::isHasNotEnoughEnergy))
+            .widget(new SituationWidget(80,43,16,16,this::getSituation))
             .bindPlayerInventory(player.inventory);
 
         int leftButtonStartX = 7;

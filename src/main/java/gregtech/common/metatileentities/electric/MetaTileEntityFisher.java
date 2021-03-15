@@ -6,6 +6,7 @@ import codechicken.lib.vec.Matrix4;
 import gregtech.api.GTValues;
 import gregtech.api.gui.GuiTextures;
 import gregtech.api.gui.ModularUI;
+import gregtech.api.gui.widgets.SituationWidget;
 import gregtech.api.gui.widgets.SlotWidget;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.MetaTileEntityHolder;
@@ -32,6 +33,8 @@ import net.minecraftforge.items.ItemStackHandler;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.List;
+
+import static gregtech.api.situation.Situations.*;
 
 public class MetaTileEntityFisher extends TieredMetaTileEntity {
 
@@ -62,7 +65,8 @@ public class MetaTileEntityFisher extends TieredMetaTileEntity {
             18 + 18 * rowSize + 94)
             .label(10, 5, getMetaFullName())
             .widget(new SlotWidget(importItems, 0, 18, 18, true, true)
-                .setBackgroundTexture(GuiTextures.SLOT, GuiTextures.STRING_SLOT_OVERLAY));
+                .setBackgroundTexture(GuiTextures.SLOT, GuiTextures.STRING_SLOT_OVERLAY))
+            .widget(new SituationWidget(19,38,16,16,this::getSituation));
 
         for (int y = 0; y < rowSize; y++) {
             for (int x = 0; x < rowSize; x++) {
@@ -80,32 +84,41 @@ public class MetaTileEntityFisher extends TieredMetaTileEntity {
     public void update() {
         super.update();
         ItemStack baitStack = importItems.getStackInSlot(0);
-        if (!getWorld().isRemote && energyContainer.getEnergyStored() >= energyAmountPerFish && getTimer() % fishingTicks == 0L && !baitStack.isEmpty()) {
-            WorldServer world = (WorldServer) this.getWorld();
-            int waterCount = 0;
-            int edgeSize = (int) Math.sqrt(WATER_CHECK_SIZE);
-            for (int x = 0; x < edgeSize; x++){
-                for (int z = 0; z < edgeSize; z++){
-                    BlockPos waterCheckPos = getPos().down().add(x - edgeSize / 2, 0, z - edgeSize / 2);
-                    if (world.getBlockState(waterCheckPos).getBlock() instanceof BlockLiquid &&
-                        world.getBlockState(waterCheckPos).getMaterial() == Material.WATER) {
-                        waterCount++;
+        if (!getWorld().isRemote) {
+            if (baitStack.isEmpty()) {
+                setSituation(IDLE);
+            } else if (energyContainer.getEnergyStored() < energyAmountPerFish) {
+                setSituation(INSUFFICIENT_POWER_TO_START);
+            } else if (getTimer() % fishingTicks == 0L) {
+                setSituation(WORKING);
+                WorldServer world = (WorldServer) this.getWorld();
+                int waterCount = 0;
+                int edgeSize = (int) Math.sqrt(WATER_CHECK_SIZE);
+                for (int x = 0; x < edgeSize; x++) {
+                    for (int z = 0; z < edgeSize; z++) {
+                        BlockPos waterCheckPos = getPos().down().add(x - edgeSize / 2, 0, z - edgeSize / 2);
+                        if (world.getBlockState(waterCheckPos).getBlock() instanceof BlockLiquid &&
+                            world.getBlockState(waterCheckPos).getMaterial() == Material.WATER) {
+                            waterCount++;
+                        }
                     }
                 }
-            }
-            if (waterCount == WATER_CHECK_SIZE) {
-                LootTable table = world.getLootTableManager().getLootTableFromLocation(LootTableList.GAMEPLAY_FISHING);
-                NonNullList<ItemStack> itemStacks = NonNullList.create();
-                itemStacks.addAll(table.generateLootForPools(world.rand, new LootContext.Builder(world).build()));
-                if(addItemsToItemHandler(exportItems, true, itemStacks)) {
-                    addItemsToItemHandler(exportItems, false, itemStacks);
-                    energyContainer.removeEnergy(energyAmountPerFish);
-                    baitStack.shrink(1);
+                if (waterCount == WATER_CHECK_SIZE) {
+                    LootTable table = world.getLootTableManager().getLootTableFromLocation(LootTableList.GAMEPLAY_FISHING);
+                    NonNullList<ItemStack> itemStacks = NonNullList.create();
+                    itemStacks.addAll(table.generateLootForPools(world.rand, new LootContext.Builder(world).build()));
+                    if (addItemsToItemHandler(exportItems, true, itemStacks)) {
+                        addItemsToItemHandler(exportItems, false, itemStacks);
+                        energyContainer.removeEnergy(energyAmountPerFish);
+                        baitStack.shrink(1);
+                    }
+                } else {
+                    setSituation(WATER_CHECK_FAILED);
                 }
             }
-        }
-        if(!getWorld().isRemote && getTimer() % 5 == 0) {
-            pushItemsIntoNearbyHandlers(getFrontFacing());
+            if (getTimer() % 5 == 0) {
+                pushItemsIntoNearbyHandlers(getFrontFacing());
+            }
         }
     }
 

@@ -33,8 +33,6 @@ public class CycleButtonWidget extends Widget {
     private IntConsumer setOptionExecutor;
     protected int currentOption;
     protected String tooltipHoverString;
-    protected long hoverStartTime = -1L;
-    protected boolean isMouseHovered;
 
     public CycleButtonWidget(int xPosition, int yPosition, int width, int height, String[] optionNames, IntSupplier currentOptionSupplier, IntConsumer setOptionExecutor) {
         super(new Position(xPosition, yPosition), new Size(width, height));
@@ -93,21 +91,7 @@ public class CycleButtonWidget extends Widget {
 
     @Override
     public void drawInForeground(int mouseX, int mouseY) {
-        boolean isHovered = isMouseOverElement(mouseX, mouseY);
-        boolean wasHovered = isMouseHovered;
-        if (isHovered && !wasHovered) {
-            this.isMouseHovered = true;
-            this.hoverStartTime = System.currentTimeMillis();
-        } else if (!isHovered && wasHovered) {
-            this.isMouseHovered = false;
-            this.hoverStartTime = 0L;
-        } else if (isHovered) {
-            long timeSinceHover = System.currentTimeMillis() - hoverStartTime;
-            if (timeSinceHover > 1000L && tooltipHoverString != null) {
-                List<String> hoverList = Arrays.asList(I18n.format(tooltipHoverString).split("/n"));
-                drawHoveringText(ItemStack.EMPTY, hoverList, 300, mouseX, mouseY);
-            }
-        }
+        drawHoveringTooltip(mouseX,mouseY,tooltipHoverString);
     }
 
     @Override
@@ -139,7 +123,6 @@ public class CycleButtonWidget extends Widget {
         }
         return false;
     }
-
 
     @Override
     public void handleClientAction(int id, PacketBuffer buffer) {

@@ -10,8 +10,8 @@ import gregtech.api.capability.impl.FluidTankList;
 import gregtech.api.capability.impl.RecipeLogicSteam;
 import gregtech.api.gui.ModularUI;
 import gregtech.api.gui.resources.TextureArea;
-import gregtech.api.gui.widgets.ImageWidget;
 import gregtech.api.gui.widgets.LabelWidget;
+import gregtech.api.gui.widgets.SituationWidget;
 import gregtech.api.recipes.ModHandler;
 import gregtech.api.recipes.RecipeMap;
 import gregtech.api.render.OrientedOverlayRenderer;
@@ -116,8 +116,7 @@ public abstract class SteamMetaTileEntity extends MetaTileEntity {
     public ModularUI.Builder createUITemplate(EntityPlayer player) {
         return ModularUI.builder(BRONZE_BACKGROUND_TEXTURE, 176, 166)
             .widget(new LabelWidget(6, 6, getMetaFullName()))
-            .widget(new ImageWidget(79, 42, 18, 18, getFullGuiTexture("not_enough_steam_%s"))
-                .setPredicate(() -> workableHandler.isHasNotEnoughEnergy()))
+                .widget(new SituationWidget(79,42,18,18,this::getSituation, isHighPressure))
             .bindPlayerInventory(player.inventory, BRONZE_SLOT_BACKGROUND_TEXTURE);
     }
 }

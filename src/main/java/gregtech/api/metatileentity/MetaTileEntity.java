@@ -10,6 +10,7 @@ import codechicken.lib.vec.Cuboid6;
 import codechicken.lib.vec.Matrix4;
 import com.google.common.base.Preconditions;
 import gregtech.api.GregTechAPI;
+import gregtech.api.situation.Situation;
 import gregtech.api.capability.GregtechTileCapabilities;
 import gregtech.api.capability.IEnergyContainer;
 import gregtech.api.capability.impl.FluidHandlerProxy;
@@ -87,6 +88,10 @@ public abstract class MetaTileEntity implements ICoverable {
     protected boolean isFragile = false;
 
     private CoverBehavior[] coverBehaviors = new CoverBehavior[6];
+
+    private Situation situation;
+    private boolean failedToMoveFluids;
+    private boolean failedToMoveItems;
 
     public MetaTileEntity(ResourceLocation metaTileEntityId) {
         this.metaTileEntityId = metaTileEntityId;
@@ -839,6 +844,7 @@ public abstract class MetaTileEntity implements ICoverable {
     }
 
     public void pushFluidsIntoNearbyHandlers(EnumFacing... allowedFaces) {
+        this.failedToMoveFluids = false;
         PooledMutableBlockPos blockPos = PooledMutableBlockPos.retain();
         for (EnumFacing nearbyFacing : allowedFaces) {
             blockPos.setPos(getPos()).move(nearbyFacing);
@@ -852,7 +858,9 @@ public abstract class MetaTileEntity implements ICoverable {
             if (fluidHandler == null || myFluidHandler == null) {
                 continue;
             }
-            GTFluidUtils.transferFluids(myFluidHandler, fluidHandler, Integer.MAX_VALUE);
+            if (GTFluidUtils.transferFluids(myFluidHandler, fluidHandler, Integer.MAX_VALUE) == Integer.MAX_VALUE ) {
+                this.failedToMoveFluids = true;
+            }
         }
         blockPos.release();
     }
@@ -914,19 +922,29 @@ public abstract class MetaTileEntity implements ICoverable {
         blockPos.release();
     }
 
-    protected static void moveInventoryItems(IItemHandler sourceInventory, IItemHandler targetInventory) {
+    public boolean failedToMoveItemsOrFluids(){
+        return (this.failedToMoveItems || this.failedToMoveFluids);
+    }
+
+    protected void moveInventoryItems(IItemHandler sourceInventory, IItemHandler targetInventory) {
+        boolean hasItemsToMove = false;
+        boolean movedItems = false;
+        this.failedToMoveItems = false;
         for (int srcIndex = 0; srcIndex < sourceInventory.getSlots(); srcIndex++) {
             ItemStack sourceStack = sourceInventory.extractItem(srcIndex, Integer.MAX_VALUE, true);
             if (sourceStack.isEmpty()) {
                 continue;
             }
+            hasItemsToMove = true;
             ItemStack remainder = ItemHandlerHelper.insertItemStacked(targetInventory, sourceStack, true);
             int amountToInsert = sourceStack.getCount() - remainder.getCount();
             if (amountToInsert > 0) {
+                movedItems = true;
                 sourceStack = sourceInventory.extractItem(srcIndex, amountToInsert, false);
                 ItemHandlerHelper.insertItemStacked(targetInventory, sourceStack, false);
             }
         }
+        if (hasItemsToMove && !movedItems) this.failedToMoveItems = true;
     }
 
     /**
@@ -1039,6 +1057,14 @@ public abstract class MetaTileEntity implements ICoverable {
             markDirty();
             writeCustomData(-8, buf -> buf.writeBoolean(fragile));
         }
+    }
+
+    public Situation getSituation() {
+        return this.situation;
+    }
+
+    public void setSituation(Situation situation) {
+        this.situation = situation;
     }
 
     public boolean isValidFrontFacing(EnumFacing facing) {
