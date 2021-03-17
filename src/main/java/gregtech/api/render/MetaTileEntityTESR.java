@@ -23,7 +23,7 @@ public class MetaTileEntityTESR extends TileEntitySpecialRenderer<MetaTileEntity
 
     @Override
     public void render(MetaTileEntityHolder te, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
-        if(te instanceof IFastRenderMetaTileEntity) {
+        if(te.getMetaTileEntity() instanceof IFastRenderMetaTileEntity) {
             renderTileEntityFastPart(te, x, y, z, partialTicks, destroyStage);
         }
         if(te instanceof IRenderMetaTileEntity) {

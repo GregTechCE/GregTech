@@ -113,9 +113,6 @@ public class MetaTileEntityRenderer implements ICCBlockRenderer, IItemRenderer {
         if (metaTileEntity.canRenderInLayer(renderLayer)) {
             renderState.lightMatrix.locate(world, pos);
             IVertexOperation[] pipeline = new IVertexOperation[]{renderState.lightMatrix};
-            if(metaTileEntity instanceof IFastRenderMetaTileEntity) {
-                ((IFastRenderMetaTileEntity) metaTileEntity).renderMetaTileEntityFast(renderState, translation.copy(), Minecraft.getMinecraft().getRenderPartialTicks());
-            }
             metaTileEntity.renderMetaTileEntity(renderState, translation.copy(), pipeline);
         }
         Matrix4 coverTranslation = new Matrix4().translate(pos.getX(), pos.getY(), pos.getZ());

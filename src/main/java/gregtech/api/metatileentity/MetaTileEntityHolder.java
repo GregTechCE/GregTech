@@ -267,12 +267,6 @@ public class MetaTileEntityHolder extends TickableTileEntityBase implements IUIH
     }
 
     @Override
-    public boolean hasFastRenderer() {
-        return metaTileEntity instanceof IFastRenderMetaTileEntity &&
-            !(metaTileEntity instanceof IRenderMetaTileEntity);
-    }
-
-    @Override
     public boolean canRenderBreaking() {
         return false;
     }
