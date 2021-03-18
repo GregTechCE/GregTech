@@ -58,5 +58,19 @@ public class ChemistryRecipes {
             .input(ingot, Polycaprolactam)
             .output(Items.STRING, 32)
             .duration(80).EUt(48).buildAndRegister();
+
+        BLAST_RECIPES.recipeBuilder()
+            .input(Items.REDSTONE)
+            .input(ingot, Copper)
+            .output(ingot, RedAlloy, 2)
+            .blastFurnaceTemp(1200)
+            .duration(884).EUt(120).buildAndRegister();
+
+        BLAST_RECIPES.recipeBuilder()
+            .input(Items.REDSTONE)
+            .input(dust, Copper)
+            .output(ingot, RedAlloy, 2)
+            .blastFurnaceTemp(1200)
+            .duration(884).EUt(120).buildAndRegister();
     }
 }
