@@ -43,11 +43,11 @@ public class ChemistryRecipes {
             .duration(400).EUt(30).buildAndRegister();
 
         BLAST_RECIPES.recipeBuilder()
-            .input(dust, FerriteMixture)
-            .fluidInputs(Oxygen.getFluid(1500))
-            .output(ingot, NickelZincFerrite)
+            .input(dust, FerriteMixture, 6)
+            .fluidInputs(Oxygen.getFluid(8000))
+            .output(ingot, NickelZincFerrite, 14)
             .blastFurnaceTemp(1500)
-            .duration(600).EUt(120).buildAndRegister();
+            .duration(3200).EUt(120).buildAndRegister();
 
         FERMENTING_RECIPES.recipeBuilder()
             .fluidInputs(Biomass.getFluid(100))
