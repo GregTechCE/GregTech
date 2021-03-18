@@ -733,6 +733,7 @@ public class ReactorRecipes {
             .duration(40).EUt(30).buildAndRegister();
 
         CHEMICAL_RECIPES.recipeBuilder()
+            .notConsumable(new IntCircuitIngredient(2))
             .input(dust, Phosphorus, 2)
             .fluidInputs(Water.getFluid(3000))
             .fluidInputs(Oxygen.getFluid(5000))
@@ -755,6 +756,7 @@ public class ReactorRecipes {
             .duration(60).EUt(150).buildAndRegister();
 
         CHEMICAL_RECIPES.recipeBuilder()
+            .notConsumable(new IntCircuitIngredient(1))
             .input(dust, Phosphorus, 4)
             .fluidInputs(Oxygen.getFluid(10000))
             .output(dust, PhosphorousPentoxide, 14)
