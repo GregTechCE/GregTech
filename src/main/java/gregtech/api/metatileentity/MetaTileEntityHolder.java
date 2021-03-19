@@ -4,6 +4,7 @@ import com.google.common.base.Preconditions;
 import gregtech.api.GTValues;
 import gregtech.api.GregTechAPI;
 import gregtech.api.block.machines.BlockMachine;
+import gregtech.api.cover.CoverBehavior;
 import gregtech.api.gui.IUIHolder;
 import gregtech.api.util.GTControlledRegistry;
 import gregtech.api.util.GTLog;
@@ -248,6 +249,15 @@ public class MetaTileEntityHolder extends TickableTileEntityBase implements IUIH
 
     @Override
     public boolean shouldRenderInPass(int pass) {
+        if (metaTileEntity == null) return false;
+        for (EnumFacing side: EnumFacing.VALUES){
+            CoverBehavior cover = metaTileEntity.getCoverAtSide(side);
+            if (cover instanceof IFastRenderMetaTileEntity && ((IFastRenderMetaTileEntity) cover).shouldRenderInPass(pass)) {
+                return true;
+            } else if(cover instanceof IRenderMetaTileEntity && ((IRenderMetaTileEntity) cover).shouldRenderInPass(pass)) {
+                return true;
+            }
+        }
         if (metaTileEntity instanceof IRenderMetaTileEntity) {
             return ((IRenderMetaTileEntity) metaTileEntity).shouldRenderInPass(pass);
         } else if (metaTileEntity instanceof IFastRenderMetaTileEntity) {
