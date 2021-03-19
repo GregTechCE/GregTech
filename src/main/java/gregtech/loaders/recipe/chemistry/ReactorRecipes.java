@@ -810,11 +810,11 @@ public class ReactorRecipes {
             .duration(150).EUt(480).buildAndRegister();
 
         CHEMICAL_RECIPES.recipeBuilder()
-            .fluidInputs(AceticAcid.getFluid(4000))
-            .fluidInputs(Ethenone.getFluid(4000))
+            .fluidInputs(MethylAcetate.getFluid(2000))
             .fluidInputs(NitricAcid.getFluid(4000))
+            .output(dust, Carbon, 5)
             .fluidOutputs(Tetranitromethane.getFluid(1000))
-            .fluidOutputs(AceticAcid.getFluid(7000))
+            .fluidOutputs(Water.getFluid(8000))
             .duration(480).EUt(120).buildAndRegister();
 
         CHEMICAL_RECIPES.recipeBuilder()
