@@ -247,7 +247,7 @@ public abstract class AbstractRecipeLogic extends MTETrait implements IWorkable 
     }
 
     protected int[] calculateOverclock(int EUt, long voltage, int duration) {
-        if(!allowOverclocking) {
+        if(!allowOverclocking || voltage == 0) {
             return new int[] {EUt, duration};
         }
         boolean negativeEU = EUt < 0;
@@ -283,7 +283,12 @@ public abstract class AbstractRecipeLogic extends MTETrait implements IWorkable 
 
     public String[] getAvailableOverclockingTiers() {
         final int maxTier = getOverclockingTier(getMaxVoltage());
-        return Arrays.copyOf(GTValues.VN, maxTier+1);
+        final String[] result = new String[maxTier + 2];
+        result[0] = "gregtech.gui.overclock.off";
+        for (int i = 0; i < maxTier + 1; ++i) {
+            result[i+1] = GTValues.VN[i];
+        }
+        return result;
     }
 
     protected void setupRecipe(Recipe recipe) {
@@ -397,12 +402,21 @@ public abstract class AbstractRecipeLogic extends MTETrait implements IWorkable 
         setOverclockVoltage(getMaxVoltage());
     }
 
+    // The overclocking tier
+    // it is 1 greater than the index into GTValues.V since here the "0 tier" represents 0 EU or no overclock
     public int getOverclockTier() {
-        return getOverclockingTier(this.overclockVoltage);
+        if (this.overclockVoltage == 0) {
+            return 0;
+        }
+        return 1 + getOverclockingTier(this.overclockVoltage);
     }
 
     public void setOverclockTier(final int tier) {
-        setOverclockVoltage(getVoltageByTier(tier));
+        if (tier == 0) {
+            this.overclockVoltage = 0;
+            return;
+        }
+        setOverclockVoltage(getVoltageByTier(tier - 1));
     }
 
     @Override
@@ -464,7 +478,7 @@ public abstract class AbstractRecipeLogic extends MTETrait implements IWorkable 
                 if (this.allowOverclocking) {
                     this.overclockVoltage = getMaxVoltage();
                 } else {
-                    this.overclockVoltage = getVoltageByTier(0);
+                    this.overclockVoltage = 0;
                 }
                 // Overclocking is now always enabled it is just constrained by the voltage
                 this.allowOverclocking = true;
