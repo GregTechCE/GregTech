@@ -31,6 +31,7 @@ public class CycleButtonWidget extends Widget {
     private int textColor = 0xFFFFFF;
     private IntSupplier currentOptionSupplier;
     private IntConsumer setOptionExecutor;
+    private final int RIGHT_MOUSE = 1;
     protected int currentOption;
     protected String tooltipHoverString;
     protected long hoverStartTime = -1L;
@@ -133,9 +134,9 @@ public class CycleButtonWidget extends Widget {
         super.mouseClicked(mouseX, mouseY, button);
         if (isMouseOverElement(mouseX, mouseY)) {
             //Allow only the RMB to reverse cycle
-            if(button == 1) {
+            if(button == RIGHT_MOUSE) {
                 //Wrap from the first option to the last if needed
-                this.currentOption = currentOption - 1 < 0 ? currentOption + optionNames.length - 1 : currentOption - 1;
+                this.currentOption = currentOption == 0 ? optionNames.length - 1 : currentOption - 1;
             }
             else {
                 this.currentOption = (currentOption + 1) % optionNames.length;
