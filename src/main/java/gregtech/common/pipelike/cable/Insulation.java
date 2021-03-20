@@ -53,7 +53,9 @@ public enum Insulation implements IMaterialPipeType<WireProperties> {
     public WireProperties modifyProperties(WireProperties baseProperties) {
         return new WireProperties(baseProperties.voltage,
             baseProperties.amperage * amperage,
-            baseProperties.lossPerBlock * lossMultiplier);
+                baseProperties.lossPerBlock == 0 ?
+                        (int)(0.75 * lossMultiplier) : // Lossless cables still have lossy wires
+                        baseProperties.lossPerBlock * lossMultiplier);
     }
 
     @Override
