@@ -85,8 +85,7 @@ minecraft {
     version = mcFullVersion
     mappings = "stable_39"
     runDir = "run"
-    makeObfSourceJar = false
-    //isUseDepAts = true
+    isUseDepAts = true
 }
 
 repositories {
