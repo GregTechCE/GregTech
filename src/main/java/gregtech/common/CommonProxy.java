@@ -13,6 +13,7 @@ import gregtech.common.blocks.*;
 import gregtech.common.blocks.wood.BlockGregLeaves;
 import gregtech.common.blocks.wood.BlockGregLog;
 import gregtech.common.blocks.wood.BlockGregSapling;
+import gregtech.common.datafix.GregTechDataFixers;
 import gregtech.common.items.MetaItems;
 import gregtech.common.items.potions.PotionFluids;
 import gregtech.common.pipelike.cable.ItemBlockCable;
@@ -31,22 +32,16 @@ import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemMultiTexture;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
-import net.minecraft.nbt.CompressedStreamTools;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
 import net.minecraftforge.common.config.Config.Type;
 import net.minecraftforge.common.config.ConfigManager;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.event.furnace.FurnaceFuelBurnTimeEvent;
-import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fml.client.event.ConfigChangedEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.registries.IForgeRegistry;
 
-import java.io.File;
-import java.io.FileInputStream;
 import java.util.function.Function;
 
 import static gregtech.common.blocks.MetaBlocks.*;
@@ -241,43 +236,11 @@ public class CommonProxy {
     }
 
     public void onLoad() {
-
+        GregTechDataFixers.init();
     }
 
     public void onPostLoad() {
         WoodMachineRecipes.postInit();
-    }
-
-    @SubscribeEvent
-    public static void onWorldLoad(WorldEvent.Load event) {
-        if (!event.getWorld().isRemote) {
-            try {
-                File saveDir = event.getWorld().getSaveHandler().getWorldDirectory();
-                if (!saveDir.exists()) return;
-                File levelDat = new File(saveDir, "level.dat");
-                if (!levelDat.exists()) {
-                    GTLog.logger.info("Level.dat doesn't exist!");
-                    return;
-                }
-                NBTTagCompound nbt = CompressedStreamTools.readCompressed(new FileInputStream(levelDat));
-                NBTTagCompound fmlTag = nbt.getCompoundTag("FML");
-
-                if (fmlTag.hasKey("ModList")) {
-                    NBTTagList modList = fmlTag.getTagList("ModList", (byte)10);
-                    for (int i = 0; i < modList.tagCount(); i++) {
-                        NBTTagCompound mod = modList.getCompoundTagAt(i);
-                        if (!mod.getString("ModId").equals(GTValues.MODID)) continue;
-                        String GTVersion = mod.getString("ModVersion");
-                        GTLog.logger.info("GregTech version in save is: " + GTVersion);
-                        // Pass "GTVersion" on to shift-fixing from here
-                        return;
-                    }
-                } else GTLog.logger.info("Nbt doesnt have ModList key");
-            } catch (Exception e) {
-                GTLog.logger.info("Error on WorldLoad");
-                e.printStackTrace();
-            }
-        }
     }
 
 }
