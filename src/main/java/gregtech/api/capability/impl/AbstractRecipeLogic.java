@@ -36,7 +36,7 @@ public abstract class AbstractRecipeLogic extends MTETrait implements IWorkable 
     protected FluidStack[] lastFluidInputs;
     protected Recipe previousRecipe;
     protected boolean allowOverclocking = true;
-    protected long overclockVoltage = -1;
+    private long overclockVoltage = -1;
 
     protected int progressTime;
     protected int maxProgressTime;
@@ -247,7 +247,7 @@ public abstract class AbstractRecipeLogic extends MTETrait implements IWorkable 
     }
 
     protected int[] calculateOverclock(int EUt, long voltage, int duration) {
-        if(!allowOverclocking || voltage == 0) {
+        if (!allowOverclocking) {
             return new int[] {EUt, duration};
         }
         boolean negativeEU = EUt < 0;
@@ -368,6 +368,9 @@ public abstract class AbstractRecipeLogic extends MTETrait implements IWorkable 
 
     public void setAllowOverclocking(boolean allowOverclocking) {
         this.allowOverclocking = allowOverclocking;
+        if (this.overclockVoltage != -1) {
+            this.overclockVoltage = allowOverclocking ? getMaxVoltage() : 0;
+        }
         metaTileEntity.markDirty();
     }
 
@@ -395,6 +398,7 @@ public abstract class AbstractRecipeLogic extends MTETrait implements IWorkable 
 
     public void setOverclockVoltage(final long overclockVoltage) {
         this.overclockVoltage = overclockVoltage;
+        this.allowOverclocking = (overclockVoltage != 0);
         metaTileEntity.markDirty();
     }
 
@@ -475,13 +479,7 @@ public abstract class AbstractRecipeLogic extends MTETrait implements IWorkable 
                 this.overclockVoltage = compound.getLong("OverclockVoltage");
             } else {
                 // Calculate overclock voltage based on old allow flag
-                if (this.allowOverclocking) {
-                    this.overclockVoltage = getMaxVoltage();
-                } else {
-                    this.overclockVoltage = 0;
-                }
-                // Overclocking is now always enabled it is just constrained by the voltage
-                this.allowOverclocking = true;
+                this.overclockVoltage = this.allowOverclocking ? getMaxVoltage() : 0;
             }
         }
         this.isActive = false;
