@@ -413,7 +413,7 @@ public abstract class AbstractRecipeLogic extends MTETrait implements IWorkable 
 
     public void setOverclockTier(final int tier) {
         if (tier == 0) {
-            this.overclockVoltage = 0;
+            setOverclockVoltage(0);
             return;
         }
         setOverclockVoltage(getVoltageByTier(tier - 1));
