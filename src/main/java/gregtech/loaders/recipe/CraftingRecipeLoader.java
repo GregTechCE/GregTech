@@ -238,7 +238,7 @@ public class CraftingRecipeLoader {
 
     private static void registerColoringRecipes(BlockColored block) {
         for (EnumDyeColor dyeColor : EnumDyeColor.values()) {
-            String recipeName = String.format("%s_color_%s", block.getRegistryName().getNamespace(), getColorName(dyeColor));
+            String recipeName = String.format("%s_color_%s", block.getRegistryName().getPath(), getColorName(dyeColor));
             ModHandler.addShapedRecipe(recipeName, new ItemStack(block, 8, dyeColor.getMetadata()), "XXX", "XDX", "XXX",
                 'X', new ItemStack(block, 1, GTValues.W), 'D', getOrdictColorName(dyeColor));
         }

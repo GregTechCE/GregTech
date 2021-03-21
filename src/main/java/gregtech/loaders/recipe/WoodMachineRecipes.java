@@ -94,7 +94,7 @@ public class WoodMachineRecipes {
                 }
             }
             //noinspection ConstantConditions
-            ModHandler.addShapedRecipe(outputRecipe.getRegistryName().getNamespace() + "_saw",
+            ModHandler.addShapedRecipe(outputRecipe.getRegistryName().getPath() + "_saw",
                 GTUtility.copyAmount(originalOutput, plankStack), "s", "L", 'L', stack);
 
             RecipeMaps.CUTTER_RECIPES.recipeBuilder().inputs(stack)
