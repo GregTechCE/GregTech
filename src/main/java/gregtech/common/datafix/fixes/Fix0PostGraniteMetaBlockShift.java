@@ -4,8 +4,11 @@ import gregtech.api.GTValues;
 import gregtech.api.unification.material.Materials;
 import gregtech.api.unification.material.type.Material;
 import gregtech.common.blocks.MetaBlocks;
+import gregtech.common.datafix.util.RemappedBlock;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.datafix.IFixableData;
+
+import javax.annotation.Nullable;
 
 public class Fix0PostGraniteMetaBlockShift implements IFixableData {
 
@@ -22,21 +25,27 @@ public class Fix0PostGraniteMetaBlockShift implements IFixableData {
     public NBTTagCompound fixTagCompound(NBTTagCompound compound) {
         String regName = compound.getString("id");
         if (regName.startsWith(COMP_BLOCK_PREFIX)) {
-            int index = Integer.parseInt(regName.substring(COMP_BLOCK_PREFIX_LEN));
-            short damage = compound.getShort("Damage");
-            int matId = MetaBlocks.COMPRESSED_OLD.get(index)[damage];
-            if (matId >= GRANITE_ID) {
-                if (damage == 15) {
-                    damage = 0;
-                    ++index;
-                } else {
-                    ++damage;
-                }
-                compound.setString("id", COMP_BLOCK_PREFIX + index);
-                compound.setShort("Damage", damage);
+            RemappedBlock remapped = remap(
+                    Integer.parseInt(regName.substring(COMP_BLOCK_PREFIX_LEN)), compound.getShort("Damage"));
+            if (remapped != null) {
+                compound.setString("id", COMP_BLOCK_PREFIX + remapped.id);
+                compound.setShort("Damage", remapped.data);
             }
         }
         return compound;
+    }
+
+    @Nullable
+    static RemappedBlock remap(int index, int data) {
+        int matId = MetaBlocks.COMPRESSED_OLD.get(index)[data];
+        if (matId >= GRANITE_ID) {
+            if (data == 15) {
+                return new RemappedBlock(index + 1, (short) 0);
+            } else {
+                return new RemappedBlock(index, (short) (data + 1));
+            }
+        }
+        return null;
     }
 
 }

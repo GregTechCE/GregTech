@@ -1,6 +1,6 @@
 package gregtech.common.datafix.walker;
 
-import gregtech.common.datafix.DataFixHelper;
+import gregtech.common.datafix.util.DataFixHelper;
 import gregtech.common.datafix.GregTechFixType;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.datafix.IDataFixer;

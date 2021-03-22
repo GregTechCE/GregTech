@@ -2,7 +2,10 @@ package gregtech.common.datafix;
 
 import gregtech.api.GTValues;
 import gregtech.common.datafix.fixes.Fix0PostGraniteMetaBlockShift;
+import gregtech.common.datafix.fixes.Fix0PostGraniteMetaBlockShiftInWorld;
 import gregtech.common.datafix.fixes.Fix1MetaBlockIdSystem;
+import gregtech.common.datafix.fixes.Fix1MetaBlockIdSystemInWorld;
+import gregtech.common.datafix.walker.WalkChunkSection;
 import gregtech.common.datafix.walker.WalkItemStackLike;
 import net.minecraft.util.datafix.FixTypes;
 import net.minecraft.util.datafix.IDataWalker;
@@ -30,10 +33,13 @@ public class GregTechDataFixers {
         fmlFixer.registerWalker(FixTypes.BLOCK_ENTITY, walkItemStackLike);
         fmlFixer.registerWalker(FixTypes.ENTITY, walkItemStackLike);
         fmlFixer.registerWalker(FixTypes.PLAYER, walkItemStackLike);
+        fmlFixer.registerWalker(FixTypes.CHUNK, new WalkChunkSection());
 
         ModFixs gtFixer = fmlFixer.init(GTValues.MODID, DATA_VERSION);
         gtFixer.registerFix(GregTechFixType.ITEM_STACK_LIKE, new Fix0PostGraniteMetaBlockShift());
+        gtFixer.registerFix(GregTechFixType.CHUNK_SECTION, new Fix0PostGraniteMetaBlockShiftInWorld());
         gtFixer.registerFix(GregTechFixType.ITEM_STACK_LIKE, new Fix1MetaBlockIdSystem());
+        gtFixer.registerFix(GregTechFixType.CHUNK_SECTION, new Fix1MetaBlockIdSystemInWorld());
     }
 
 }
