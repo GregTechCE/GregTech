@@ -21,7 +21,7 @@ public class RecipeMaps {
     @ZenProperty
     public static final RecipeMap<SimpleRecipeBuilder> COMPRESSOR_RECIPES = new RecipeMap<>("compressor", 1, 1, 1, 1, 0, 0, 0, 0, new SimpleRecipeBuilder().duration(400).EUt(2))
         .setSlotOverlay(false, false, GuiTextures.COMPRESSOR_OVERLAY)
-        .setProgressBar(GuiTextures.PROGRESS_BAR_COMPRESS, MoveType.HORIZONTAL);
+        .setProgressBar(GuiTextures.PROGRESS_BAR_BENDING, MoveType.HORIZONTAL);
 
 
     @ZenProperty
@@ -149,7 +149,7 @@ public class RecipeMaps {
     public static final RecipeMap<SimpleRecipeBuilder> MIXER_RECIPES = new RecipeMap<>("mixer", 0, 4, 0, 1, 0, 2, 0, 1, new SimpleRecipeBuilder())
         .setSlotOverlay(false, false, GuiTextures.DUST_OVERLAY)
         .setSlotOverlay(true, false, GuiTextures.DUST_OVERLAY)
-        .setProgressBar(GuiTextures.PROGRESS_BAR_BATH, MoveType.HORIZONTAL);
+        .setProgressBar(GuiTextures.PROGRESS_BAR_MIXER, MoveType.HORIZONTAL);
 
     /**
      * Example:
@@ -220,7 +220,7 @@ public class RecipeMaps {
 
     @ZenProperty
     public static final RecipeMap<SimpleRecipeBuilder> CHEMICAL_BATH_RECIPES = new RecipeMap<>("chemical_bath", 1, 1, 1, 3, 1, 1, 0, 0, new SimpleRecipeBuilder())
-        .setProgressBar(GuiTextures.PROGRESS_BAR_BATH, MoveType.HORIZONTAL);
+        .setProgressBar(GuiTextures.PROGRESS_BAR_MIXER, MoveType.HORIZONTAL);
 
     /**
      * Example:
@@ -558,7 +558,7 @@ public class RecipeMaps {
     @ZenProperty
     public static final RecipeMap<IntCircuitRecipeBuilder> BENDER_RECIPES = new RecipeMap<>("metal_bender", 2, 2, 1, 1, 0, 0, 0, 0, new IntCircuitRecipeBuilder())
         .setSlotOverlay(false, false, false, GuiTextures.BENDER_OVERLAY)
-        .setProgressBar(GuiTextures.PROGRESS_BAR_BENDING, MoveType.HORIZONTAL);
+        .setProgressBar(GuiTextures.PROGRESS_BAR_COMPRESS, MoveType.HORIZONTAL);
 
 
     @ZenProperty

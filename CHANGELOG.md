@@ -1,5 +1,14 @@
 ## Changelog
 
+### 1.12.1
+* Updated number formatting (#1467) - Adrian Brock
+* Updated progress bars for some machines (#1504) - dan
+* Updated EU/t price of Rotor recipe in Fluid Solidifier (#1517) - ALongStringOfNumbers
+* Fixed progress bars being 1px off (#1504) - dan
+* Fixed Fuel TOP integration not working for server hosted games (#1511) - Adrian Brock
+* Fixed rare bug with Ore vein generation page biome tooltip (#1518) - ALongStringOfNumbers
+* Fixed Transformer TOP integration not working for server hosted games (#1520) - dan
+
 ### 1.12.0
 * Highlight: TOP now displays fuel information (#1484) - Adrian Brock
   * Blocks consuming fuel now has new information provided in TOP

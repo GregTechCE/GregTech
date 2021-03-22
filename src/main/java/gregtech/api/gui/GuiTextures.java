@@ -119,6 +119,7 @@ public class GuiTextures {
     public static final TextureArea PROGRESS_BAR_LATHE = TextureArea.fullImage("textures/gui/progress_bar/progress_bar_lathe.png");
     public static final TextureArea PROGRESS_BAR_MACERATE = TextureArea.fullImage("textures/gui/progress_bar/progress_bar_macerate.png");
     public static final TextureArea PROGRESS_BAR_MAGNET = TextureArea.fullImage("textures/gui/progress_bar/progress_bar_magnet.png");
+    public static final TextureArea PROGRESS_BAR_MIXER = TextureArea.fullImage("textures/gui/progress_bar/progress_bar_mixer.png");
     public static final TextureArea PROGRESS_BAR_RECYCLER = TextureArea.fullImage("textures/gui/progress_bar/progress_bar_recycler.png");
     public static final TextureArea PROGRESS_BAR_SIFT = TextureArea.fullImage("textures/gui/progress_bar/progress_bar_sift.png");
     public static final TextureArea PROGRESS_BAR_SLICE = TextureArea.fullImage("textures/gui/progress_bar/progress_bar_slice.png");
