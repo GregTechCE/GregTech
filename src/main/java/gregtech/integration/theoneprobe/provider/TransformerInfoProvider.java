@@ -35,21 +35,24 @@ public class TransformerInfoProvider extends ElectricContainerInfoProvider {
 
                 // Step Up/Step Down line
                 if (mteTransformer.isInverted()) {
-                    transformInfo = I18n.format("gregtech.top.transform_up",
-                        inputVoltageN, inputAmperage, outputVoltageN, outputAmperage);
+                    transformInfo = "{*gregtech.top.transform_up*} ";
                 } else {
-                    transformInfo = I18n.format("gregtech.top.transform_down",
-                        inputVoltageN, inputAmperage, outputVoltageN, outputAmperage);
+                    transformInfo = "{*gregtech.top.transform_down*} ";
                 }
+                transformInfo += inputVoltageN + " (" + inputAmperage + "A) -> "
+                               + outputVoltageN + " (" + outputAmperage + "A)";
                 horizontalPane.text(TextStyleClass.INFO + transformInfo);
 
                 // Input/Output side line
                 horizontalPane = probeInfo.vertical(probeInfo.defaultLayoutStyle().alignment(ElementAlignment.ALIGN_CENTER));
                 if (capability.inputsEnergy(sideHit)) {
-                    transformInfo = I18n.format("gregtech.top.transform_input", inputVoltageN, inputAmperage);
+                    transformInfo = "{*gregtech.top.transform_input*} "
+                            + inputVoltageN + " (" + inputAmperage + "A)";
                     horizontalPane.text(TextStyleClass.INFO + transformInfo);
+
                 } else if(capability.outputsEnergy(sideHit)) {
-                    transformInfo = I18n.format("gregtech.top.transform_output", outputVoltageN, outputAmperage);
+                    transformInfo = "{*gregtech.top.transform_output*} "
+                            + outputVoltageN + " (" + outputAmperage + "A)";
                     horizontalPane.text(TextStyleClass.INFO + transformInfo);
                 }
             }

@@ -13,13 +13,16 @@ enchantment.disjunction=Disjunction
 gregtech.top.energy_stored=Energy:
 gregtech.top.progress=Progress:
 gregtech.top.working_disabled=Working Disabled
-gregtech.top.transform_up=§cStep Up§r %s (%dA) -> %s (%dA)
-gregtech.top.transform_down=§aStep Down§r %s (%dA) -> %s (%dA)
-gregtech.top.transform_input=§6Input:§r %s (%dA)
-gregtech.top.transform_output=§9Output:§r %s (%dA)
-gregtech.top.fuel_info=/%,d for %,d secs
-gregtech.top.fuel_min_consume=/%,d needs %,d
-gregtech.top.fuel_name=Fuel: %s
+
+gregtech.top.transform_up=§cStep Up§r
+gregtech.top.transform_down=§aStep Down§r
+gregtech.top.transform_input=§6Input:§r
+gregtech.top.transform_output=§9Output:§r
+
+gregtech.top.fuel_burn=for
+gregtech.top.fuel_time=secs
+gregtech.top.fuel_min_consume=needs
+gregtech.top.fuel_name=Fuel:
 gregtech.top.fuel_none=No fuel
 
 gregtech.multiblock.title=Multiblock Pattern
@@ -39,15 +42,15 @@ gregtech.multiblock.large_turbine.description=Large Turbines are multiblocks tha
 item.invalid.name=Invalid item
 fluid.empty=Empty
 
-metaitem.generic.fluid_container.tooltip=%d/%dL %s
+metaitem.generic.fluid_container.tooltip=%,d/%,dL %s
 metaitem.generic.fluid_container.tooltip_empty=Empty
-metaitem.generic.electric_item.tooltip=%d/%d EU - Tier §e%d
+metaitem.generic.electric_item.tooltip=%,d/%,d EU - Tier §e%s
 metaitem.electric.discharge_mode.enabled=§eDischarge Mode Enabled
 metaitem.electric.discharge_mode.disabled=§eDischarge Mode Disabled
 metaitem.electric.discharge_mode.tooltip=Use while sneaking to toggle discharge mode
 
 metaitem.dust.tooltip.purify=Throw into Cauldron to get clean Dust
-metaitem.int_circuit.configuration=Configuration: %d
+metaitem.int_circuit.configuration=Configuration: %,d
 metaitem.credit.copper.name=Copper Credit
 metaitem.credit.copper.tooltip=0.125 Credits
 metaitem.credit.cupronickel.name=Cupronickel Credit
@@ -680,10 +683,10 @@ metaitem.behavior.mode_switch.mode_switched=§eMode Set to: %s
 metaitem.behavior.mode_switch.current_mode=Mode: %s
 
 metaitem.tool.tooltip.primary_material=Material: %s (%s lvl)
-metaitem.tool.tooltip.attack_damage=Attack damage: %d
-metaitem.tool.tooltip.mining_speed=Mining speed: %d
-metaitem.tool.tooltip.durability=Durability: %d/%d
-metaitem.tool.tooltip.rotor.efficiency=Rotor Efficiency: %d%%
+metaitem.tool.tooltip.attack_damage=Attack damage: %,.1f
+metaitem.tool.tooltip.mining_speed=Mining speed: %,.1f
+metaitem.tool.tooltip.durability=Durability: %,d/%,d
+metaitem.tool.tooltip.rotor.efficiency=Rotor Efficiency: %,d%%
 metaitem.tool.tooltip.hammer.extra_drop=Has a chance to drop double crushed ores
 
 cover.filter.blacklist.disabled=Whitelist
@@ -745,7 +748,7 @@ cover.machine_controller.name=Machine Controller Settings
 cover.machine_controller.normal=Normal
 cover.machine_controller.inverted=Inverted
 cover.machine_controller.inverted.description=§eNormal§r - in this mode, the cover will require a signal weaker than the set redstone level to run/n§eInverted§r - in this mode, the cover will require a signal stronger than the set redstone level to run
-cover.machine_controller.redstone=Min Redstone Strength: %d
+cover.machine_controller.redstone=Min Redstone Strength: %,d
 cover.machine_controller.mode.machine=Control Machine
 cover.machine_controller.mode.cover_up=Control Cover (Top)
 cover.machine_controller.mode.cover_down=Control Cover (Bottom)
@@ -1623,7 +1626,7 @@ recipemap.plasma_generator.name=Plasma Generator
 behaviour.hoe=Can till dirt
 behaviour.soft_hammer=Use on machine to allow/disallow it to work
 behaviour.lighter.tooltip=Can light things on fire
-behaviour.lighter.uses=Remaining uses: %d
+behaviour.lighter.uses=Remaining uses: %,d
 behavior.plunger.description=Use to clear 1000 mb out of a machine's output tank./nUse while sneaking to clear 1000 mb out of a machine's input tank./nInput tank clearing works only on GTCE machines!
 behavior.toggle_energy_consumer.tooltip=Use to toggle mode
 
@@ -1664,10 +1667,10 @@ fluid.distilled_water=Distilled Water
 
 # Wire coil blocks
 tile.wire_coil.tooltip_ebf=When used in §aElectric Blast Furnace§7:
-tile.wire_coil.tooltip_heat=  Base Heating Capacity: §e%dK
+tile.wire_coil.tooltip_heat=  Base Heating Capacity: §e%,dK
 tile.wire_coil.tooltip_smelter=When used in §aMulti Smelter§7:
-tile.wire_coil.tooltip_level=  Level: §e%d
-tile.wire_coil.tooltip_discount=  Energy Discount: §a%dx
+tile.wire_coil.tooltip_level=  Level: §e%,d
+tile.wire_coil.tooltip_discount=  Energy Discount: §a%,dx
 
 tile.wire_coil.cupronickel.name=Cupronickel Coil Block
 tile.wire_coil.kanthal.name=Kanthal Coil Block
@@ -1775,7 +1778,7 @@ gregtech.machine.workbench.tab.workbench=Crafting
 gregtech.machine.workbench.tab.item_list=Storage
 gregtech.machine.workbench.storage_note_1=(Available items from connected
 gregtech.machine.workbench.storage_note_2=inventories usable for crafting)
-gregtech.item_list.items_stored=§7Stored: %d
+gregtech.item_list.item_stored=§7Stored: %,d
 
 gregtech.machine.workbench.tab.crafting=Crafting
 gregtech.machine.workbench.tab.container=Container
@@ -1846,7 +1849,7 @@ tile.concrete.dark_bricks.mossy.name=Mossy Dark Concrete Bricks
 tile.concrete.dark_bricks.chiseled.name=Chiseled Dark Concrete Bricks
 
 # Steam machines
-gregtech.machine.steam_boiler.tooltip_produces=Produces %dmb of steam in %d ticks
+gregtech.machine.steam_boiler.tooltip_produces=Produces %,dmb of steam in %,d ticks
 
 gregtech.machine.steam_boiler_coal_bronze.name=Small Steam Coal Boiler
 gregtech.machine.steam_boiler_coal_bronze.tooltip=An early way to get Steam Power
@@ -1908,8 +1911,8 @@ gregtech.machine.block_breaker.mv.name=Advanced Block Breaker
 gregtech.machine.block_breaker.hv.name=Advanced Block Breaker II
 gregtech.machine.block_breaker.ev.name=Advanced Block Breaker III
 gregtech.machine.block_breaker.tooltip=Mines block on front face and collects its drops
-gregtech.machine.block_breaker.consumption=Consumes §e%d EU§7 per operation
-gregtech.machine.block_breaker.speed_bonus=Speed Bonus: §e%d%%
+gregtech.machine.block_breaker.consumption=Consumes §e%,d EU§7 per operation
+gregtech.machine.block_breaker.speed_bonus=Speed Bonus: §e%,d%%
 
 gregtech.machine.electric_furnace.lv.name=Basic Electric Furnace
 gregtech.machine.electric_furnace.mv.name=Advanced Electric Furnace
@@ -2214,9 +2217,9 @@ gregtech.machine.battery_buffer.max.16.name=MAX Voltage Battery Buffer
 # Transformers
 gregtech.machine.transformer.tooltip_tool_usage=Use Soft Hammer to invert (Starts as Transform Down)
 gregtech.machine.transformer.tooltip_transform_down=Transform Down:
-gregtech.machine.transformer.message_transform_down=Transforming Down, In: %dV %d Amp, Out: %dV %d Amp
+gregtech.machine.transformer.message_transform_down=Transforming Down, In: %,dV %,d Amp, Out: %,dV %,d Amp
 gregtech.machine.transformer.tooltip_transform_up=Transform Up:
-gregtech.machine.transformer.message_transform_up=Transforming Up, In: %dV %d Amp, Out: %dV %d Amp
+gregtech.machine.transformer.message_transform_up=Transforming Up, In: %,dV %,d Amp, Out: %,dV %,d Amp
 
 gregtech.machine.transformer.lv.name=Low Voltage Transformer
 gregtech.machine.transformer.mv.name=Medium Voltage Transformer
@@ -2241,8 +2244,8 @@ gregtech.machine.charger.uv.name=Ultimate Voltage Battery Charger
 gregtech.machine.charger.max.name=MAX Voltage Battery Charger
 
 # Pumps
-gregtech.machine.pump.tooltip_range=Pumping Area: %dx%d
-gregtech.machine.pump.tooltip_speed=Pumps Fluid every %d ticks
+gregtech.machine.pump.tooltip_range=Pumping Area: %,dx%,d
+gregtech.machine.pump.tooltip_speed=Pumps Fluid every %,d ticks
 
 gregtech.machine.pump.lv.name=Basic Pump
 gregtech.machine.pump.mv.name=Advanced Pump
@@ -2254,12 +2257,12 @@ gregtech.machine.item_collector.mv.name=Advanced Item Collector
 gregtech.machine.item_collector.hv.name=Advanced Item Collector II
 gregtech.machine.item_collector.ev.name=Advanced Item Collector III
 
-gregtech.machine.item_collector.collect_range=Collection Area: %dx%d
+gregtech.machine.item_collector.collect_range=Collection Area: %,dx%,d
 gregtech.machine.item_collector.gui.collect_range=Collect in %s blocks
 
 #Quantum chests
 gregtech.machine.quantum_chest.tooltip=Better than JABBA.
-gregtech.machine.quantum_chest.capacity=Item Capacity: %d items
+gregtech.machine.quantum_chest.capacity=Item Capacity: %,d items
 gregtech.machine.quantum_chest.items_stored=Item Amount:
 
 gregtech.machine.quantum_chest.mv.name=Basic Quantum Chest
@@ -2269,7 +2272,7 @@ gregtech.machine.quantum_chest.iv.name=Black Hole-Quantum Chest III
 
 #Quantum tanks
 gregtech.machine.quantum_tank.tooltip=Compact place to store all your fluids.
-gregtech.machine.quantum_tank.capacity=Fluid Capacity: %d mb
+gregtech.machine.quantum_tank.capacity=Fluid Capacity: %,d mb
 
 gregtech.machine.quantum_tank.mv.name=Basic Quantum Tank
 gregtech.machine.quantum_tank.hv.name=Advanced Quantum Tank
@@ -2282,7 +2285,7 @@ gregtech.machine.air_collector.mv.name=Advanced Air Collector
 gregtech.machine.air_collector.hv.name=Advanced Air Collector II
 gregtech.machine.air_collector.ev.name=Atmosphere Collector III
 gregtech.machine.air_collector.tooltip=Collects air from adjacent blocks at the expense of energy
-gregtech.machine.air_collector.collection_speed=Produces %d mb of Air every %d ticks
+gregtech.machine.air_collector.collection_speed=Produces %,d mb of Air every %,d ticks
 gregtech.machine.air_collector.jei_description=The Air Collector collects air from adjacent blocks for a little bit of EU
 
 #Tesla Coil
@@ -2295,8 +2298,8 @@ gregtech.machine.fisher.mv.name=Advanced Fisher
 gregtech.machine.fisher.hv.name=Advanced Fisher II
 gregtech.machine.fisher.ev.name=Advanced Fisher III
 gregtech.machine.fisher.tooltip=Costs string to fish. Consumes one string each time.
-gregtech.machine.fisher.speed=Catches something every %d ticks
-gregtech.machine.fisher.requirement=Requires a square of water with size of %d blocks directly below.
+gregtech.machine.fisher.speed=Catches something every %,d ticks
+gregtech.machine.fisher.requirement=Requires a square of water with size of %,d blocks directly below.
 
 # General machinery
 gregtech.machine.basic.input_from_output_side.allow=Allow Input from Output Side
@@ -2739,7 +2742,7 @@ behaviour.paintspray.brown.tooltip=Can paint things in Brown
 behaviour.paintspray.green.tooltip=Can paint things in Green
 behaviour.paintspray.red.tooltip=Can paint things in Red
 behaviour.paintspray.black.tooltip=Can paint things in Black
-behaviour.paintspray.uses=Remaining Uses: %d
+behaviour.paintspray.uses=Remaining Uses: %,d
 behaviour.prospecting=Usable for Prospecting
 
 # Multiblock machine controllers
@@ -2858,33 +2861,33 @@ gregtech.machine.rotor_holder.zpm.name=Rotor Holder (ZPM)
 gregtech.machine.rotor_holder.uv.name=Rotor Holder (UV)
 gregtech.machine.rotor_holder.max.name=Rotor Holder (MAX)
 
-gregtech.machine.fluid_tank.max_multiblock=Max Multiblock Size: %dx%dx%d
+gregtech.machine.fluid_tank.max_multiblock=Max Multiblock Size: %,dx%,dx%,d
 gregtech.machine.fluid_tank.fluid=Contains %s mb of %s
 
 gregtech.machine.item_controller.tooltip.redstone=Requires Redstone Input To Work
-gregtech.machine.item_controller.tooltip.consumption=While working, constantly consumes %d EU/t
+gregtech.machine.item_controller.tooltip.consumption=While working, constantly consumes %,d EU/t
 
 # Universal tooltips
-gregtech.universal.tooltip.voltage_in=Voltage IN: §a%d §7(§a%s§7)
-gregtech.universal.tooltip.voltage_out=Voltage OUT: §a%d §7(§a%s§7)
-gregtech.universal.tooltip.energy_storage_capacity=Internal Energy Capacity: §9%d
-gregtech.universal.tooltip.amperage_in=Amperage IN: §e%d
-gregtech.universal.tooltip.amperage_in_till=Amperage IN up to: §e%d
-gregtech.universal.tooltip.amperage_out=Amperage OUT: §e%d
-gregtech.universal.tooltip.amperage_out_till=Amperage OUT up to: §e%d
-gregtech.universal.tooltip.item_storage_capacity=Item Slots: %d
-gregtech.universal.tooltip.fluid_storage_capacity=Fluid Capacity: %d mb
-gregtech.universal.tooltip.max_voltage_in=Max Voltage IN: §a%d §7(§a%s§7)
+gregtech.universal.tooltip.voltage_in=Voltage IN: §a%,d §7(§a%s§7)
+gregtech.universal.tooltip.voltage_out=Voltage OUT: §a%,d §7(§a%s§7)
+gregtech.universal.tooltip.energy_storage_capacity=Internal Energy Capacity: §9%,d
+gregtech.universal.tooltip.amperage_in=Amperage IN: §e%,d
+gregtech.universal.tooltip.amperage_in_till=Amperage IN up to: §e%,d
+gregtech.universal.tooltip.amperage_out=Amperage OUT: §e%,d
+gregtech.universal.tooltip.amperage_out_till=Amperage OUT up to: §e%,d
+gregtech.universal.tooltip.item_storage_capacity=Item Slots: %,d
+gregtech.universal.tooltip.fluid_storage_capacity=Fluid Capacity: %,d mb
+gregtech.universal.tooltip.max_voltage_in=Max Voltage IN: §a%,d §7(§a%s§7)
 
-gregtech.recipe.total=Total: %d EU
-gregtech.recipe.eu=Usage: %d EU/t (%s)
-gregtech.recipe.eu_inverted=Generation: %d EU/t
-gregtech.recipe.duration=Duration: %.1f secs
-gregtech.recipe.amperage=Amperage: %d
+gregtech.recipe.total=Total: %,d EU
+gregtech.recipe.eu=Usage: %,d EU/t (%s)
+gregtech.recipe.eu_inverted=Generation: %,d EU/t
+gregtech.recipe.duration=Duration: %,.1f secs
+gregtech.recipe.amperage=Amperage: %,d
 gregtech.recipe.not_consumed=Not consumed in process
 gregtech.recipe.chance=Chance: %s%% +%s%%/tier
-gregtech.recipe.blast_furnace_temperature=Temperature: %dK
-gregtech.recipe.eu_to_start=Energy To Start: %dEU
+gregtech.recipe.blast_furnace_temperature=Temperature: %,dK
+gregtech.recipe.eu_to_start=Energy To Start: %,dEU
 
 gregtech.fluid.click_to_fill=§7Click with a empty fluid container to fill it from tank.
 gregtech.fluid.click_to_fill.shift=§7(Shift-clicking will fill all containers in your hand)
@@ -2895,7 +2898,7 @@ gregtech.fluid.click_to_empty.shift=§7(Shift-clicking will empty all containers
 gregtech.fluid.plasma=%s Plasma
 gregtech.fluid.empty=Empty
 gregtech.fluid.amount=§7%,d/%,d
-gregtech.fluid.temperature=§7Temperature: %dK
+gregtech.fluid.temperature=§7Temperature: %,dK
 gregtech.fluid.state_gas=§7State: Gaseous
 gregtech.fluid.state_liquid=§7State: Liquid
 gregtech.gui.fuel_amount=Fuel Amount:
@@ -2923,12 +2926,12 @@ gregtech.jei.ore.biome_weighting_no_spawn=%s Weight: Cannot Spawn
 gregtech.item_filter.empty_item=Empty (No Item)
 gregtech.item_filter.footer=§eClick with item to override
 
-gregtech.cable.voltage=Voltage: §a%d §7(§a%s§7)
-gregtech.cable.amperage=Amperage: §e%d
-gregtech.cable.loss_per_block=Loss per block: §c%d
+gregtech.cable.voltage=Voltage: §a%,d §7(§a%s§7)
+gregtech.cable.amperage=Amperage: §e%,d
+gregtech.cable.loss_per_block=Loss per block: §c%,d
 
-gregtech.fluid_pipe.throughput=Transfer: §e%d mb/t
-gregtech.fluid_pipe.max_temperature=Max Temperature: §c%dK
+gregtech.fluid_pipe.throughput=Transfer: §e%,d mb/t
+gregtech.fluid_pipe.max_temperature=Max Temperature: §c%,dK
 gregtech.fluid_pipe.non_gas_proof=Can't transfer gases.
 
 gregtech.multiblock.work_paused=Work Paused.
