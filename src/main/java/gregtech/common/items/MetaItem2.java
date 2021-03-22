@@ -282,20 +282,6 @@ public class MetaItem2 extends MaterialMetaItem {
             .buildAndRegister();
 
         RecipeMaps.MACERATOR_RECIPES.recipeBuilder()
-            .inputs(new ItemStack(Items.WHEAT, 1, 0))
-            .outputs(OreDictUnifier.get(OrePrefix.dust, Materials.Wheat, 1))
-            .duration(400)
-            .EUt(2)
-            .buildAndRegister();
-
-        RecipeMaps.MACERATOR_RECIPES.recipeBuilder()
-            .inputs(new ItemStack(Items.STICK, 1))
-            .outputs(OreDictUnifier.get(OrePrefix.dustSmall, Materials.Wood, 2))
-            .duration(400)
-            .EUt(2)
-            .buildAndRegister();
-
-        RecipeMaps.MACERATOR_RECIPES.recipeBuilder()
             .inputs(CountableIngredient.from("blockWool", 1))
             .outputs(new ItemStack(Items.STRING, 3))
             .chancedOutput(new ItemStack(Items.STRING, 1), 2000, 800)
