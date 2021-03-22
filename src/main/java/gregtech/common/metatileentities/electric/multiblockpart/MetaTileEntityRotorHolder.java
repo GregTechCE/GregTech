@@ -83,13 +83,9 @@ public class MetaTileEntityRotorHolder extends MetaTileEntityMultiblockPart impl
         if (!isHasRotor()) {
             resetRotorSpeed();
         } else if (currentRotorSpeed < maxRotorSpeed && isControllerActive) {
-            incrementSpeed(controller.getRotorIncrementSpeed());
+            incrementSpeed(controller.getRotorSpeedIncrement());
         } else if (currentRotorSpeed > 0 && !isControllerActive) {
-            if(controller == null){
-                incrementSpeed( maxRotorSpeed/10);
-            }else {
-                incrementSpeed(controller.getRotorDecrementSpeed());
-            }
+            incrementSpeed(controller.getRotorSpeedDecrement());
         }
     }
 

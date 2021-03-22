@@ -83,12 +83,12 @@ public class MetaTileEntityLargeTurbine extends RotorHolderMultiblockController 
     }
 
     @Override
-    public int getRotorIncrementSpeed() {
+    public int getRotorSpeedIncrement() {
         return 1;
     }
 
     @Override
-    public int getRotorDecrementSpeed() {
+    public int getRotorSpeedDecrement() {
         return -3;
     }
 
@@ -146,6 +146,14 @@ public class MetaTileEntityLargeTurbine extends RotorHolderMultiblockController 
     @Override
     public ICubeRenderer getBaseTexture(IMultiblockPart sourcePart) {
         return turbineType.casingRenderer;
+    }
+
+    /** Deprecated method please use {@code {@see isRotorFaceFree}} instead
+     *
+     */
+    @Deprecated
+    public boolean isTurbineFaceFree() {
+        return isRotorFaceFree();
     }
 
 }

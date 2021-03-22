@@ -25,7 +25,7 @@ public abstract class RotorHolderMultiblockController extends FueledMultiblockCo
 
     @Override
     protected void updateFormedValid() {
-        if (isTurbineFaceFree()) {
+        if (isRotorFaceFree()) {
             super.updateFormedValid();
         }
     }
@@ -40,7 +40,7 @@ public abstract class RotorHolderMultiblockController extends FueledMultiblockCo
      * @return true if turbine is formed and it's face is free and contains
      * only air blocks in front of rotor holder
      */
-    public boolean isTurbineFaceFree() {
+    public boolean isRotorFaceFree() {
         return isStructureFormed() && getAbilities(ABILITY_ROTOR_HOLDER).get(0).isFrontFaceFree();
     }
 
@@ -48,10 +48,10 @@ public abstract class RotorHolderMultiblockController extends FueledMultiblockCo
      * @return true if structure formed, workable is active and front face is free
      */
     public boolean isActive() {
-        return isTurbineFaceFree() && workableHandler.isActive() && workableHandler.isWorkingEnabled();
+        return isRotorFaceFree() && workableHandler.isActive() && workableHandler.isWorkingEnabled();
     }
 
-    public abstract int getRotorIncrementSpeed();
+    public abstract int getRotorSpeedIncrement();
 
-    public abstract int getRotorDecrementSpeed();
+    public abstract int getRotorSpeedDecrement();
 }
