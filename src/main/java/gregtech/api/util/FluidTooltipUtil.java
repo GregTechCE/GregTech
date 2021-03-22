@@ -23,16 +23,17 @@ public class FluidTooltipUtil {
      *
      * @param fluid   The fluid to register a tooltip for.
      * @param tooltip The tooltip.
-     * @return        False if either parameter is null, true otherwise.
+     * @return        False if either parameter is null or if tooltip is empty, true otherwise.
      */
     public static boolean registerTooltip(Fluid fluid, String tooltip) {
         if (fluid == null || tooltip == null)
             return false;
 
         // Handle Water separately. Not done perfectly, but works for us.
-        if (fluid.equals(FluidRegistry.WATER) || fluid.equals(Materials.DistilledWater.getMaterialFluid()) || fluid.equals(Materials.Steam.getMaterialFluid()))
+        if (fluid.equals(FluidRegistry.WATER) || fluid.equals(Materials.DistilledWater.getMaterialFluid()))
             tooltips.put(fluid, getWaterTooltip());
-        else tooltips.put(fluid, tooltip);
+        else if (!tooltip.isEmpty())
+            tooltips.put(fluid, tooltip);
 
         return true;
     }
@@ -70,7 +71,7 @@ public class FluidTooltipUtil {
      * @return          The tooltip.
      */
     public static String getFluidTooltip(String fluidName) {
-        if (fluidName == null)
+        if (fluidName == null || fluidName.isEmpty())
             return null;
 
         return getFluidTooltip(FluidRegistry.getFluid(fluidName));
