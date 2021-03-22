@@ -1,5 +1,17 @@
 ## Changelog
 
+### 1.13.0
+* Highlight: Chemistry update, Take Two (#1492) - dan
+  * Full info: https://github.com/GregTechCE/GregTech/pull/1492
+* Added ability to set Allowed Input from output side via the machine grid (#1483) - ALongStringOfNumbers
+* Added notConsumable Fluids as possible recipe input (#1514) - dan
+* Updated Plunger to work as always empty fluid container (#1461) - Adrian Brock
+* Updated CycleButtonWidget to cycle in reverse on right click (#1523) - ALongStringOfNumbers
+* Removed NBT from JEI recipe registration (#1516) - dan
+* Removed some duplicated recipes in Macerator (#1542) - dan
+* Fixed Quantum Tank behavior (#1535) - dan
+* Refactored RotorHolder to not be dependent on MetaTileEntityLargeTurbine (#1527) - galyfray
+
 ### 1.12.1
 * Updated number formatting (#1467) - Adrian Brock
 * Updated progress bars for some machines (#1504) - dan
