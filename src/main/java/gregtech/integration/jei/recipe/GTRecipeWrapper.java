@@ -1,16 +1,11 @@
 package gregtech.integration.jei.recipe;
 
-import codechicken.lib.util.ItemNBTUtils;
 import gregtech.api.recipes.CountableIngredient;
 import gregtech.api.recipes.Recipe;
 import gregtech.api.recipes.Recipe.ChanceEntry;
 import gregtech.api.recipes.RecipeMap;
 import gregtech.api.unification.OreDictUnifier;
 import gregtech.api.util.ItemStackHashStrategy;
-import gregtech.api.unification.material.type.FluidMaterial;
-import gregtech.api.unification.material.type.Material;
-import gregtech.api.util.GTFluidUtils;
-import gregtech.api.util.GTUtility;
 import gregtech.integration.jei.utils.JEIHelpers;
 import it.unimi.dsi.fastutil.Hash;
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenCustomHashMap;
