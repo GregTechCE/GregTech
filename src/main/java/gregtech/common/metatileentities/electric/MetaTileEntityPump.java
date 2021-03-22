@@ -19,6 +19,8 @@ import gregtech.api.metatileentity.MetaTileEntityHolder;
 import gregtech.api.metatileentity.TieredMetaTileEntity;
 import gregtech.api.render.Textures;
 import gregtech.api.util.GTUtility;
+import gregtech.api.util.IDirtyNotifiable;
+import gregtech.common.covers.filter.FluidFilterContainer;
 import net.minecraft.block.BlockLiquid;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.resources.I18n;
@@ -48,7 +50,7 @@ import java.util.ArrayDeque;
 import java.util.Deque;
 import java.util.List;
 
-public class MetaTileEntityPump extends TieredMetaTileEntity {
+public class MetaTileEntityPump extends TieredMetaTileEntity implements IDirtyNotifiable {
 
     private static final Cuboid6 PIPE_CUBOID = new Cuboid6(6 / 16.0, 0.0, 6 / 16.0, 10 / 16.0, 1.0, 10 / 16.0);
     private static final int BASE_PUMP_RANGE = 32;
@@ -60,8 +62,11 @@ public class MetaTileEntityPump extends TieredMetaTileEntity {
     private boolean initializedQueue = false;
     private int pumpHeadY;
 
+    protected final FluidFilterContainer fluidFilter;
+
     public MetaTileEntityPump(ResourceLocation metaTileEntityId, int tier) {
         super(metaTileEntityId, tier);
+        this.fluidFilter = new FluidFilterContainer(this);
     }
 
     @Override
@@ -133,10 +138,14 @@ public class MetaTileEntityPump extends TieredMetaTileEntity {
         builder.image(7, 16, 81, 55, GuiTextures.DISPLAY);
         TankWidget tankWidget = new TankWidget(exportFluids.getTankAt(0), 69, 52, 18, 18)
             .setHideTooltip(true).setAlwaysShowFull(true);
+
         builder.widget(tankWidget);
         builder.label(11, 20, "gregtech.gui.fluid_amount", 0xFFFFFF);
         builder.dynamicLabel(11, 30, tankWidget::getFormattedFluidAmount, 0xFFFFFF);
         builder.dynamicLabel(11, 40, tankWidget::getFluidLocalizedName, 0xFFFFFF);
+
+        this.fluidFilter.initUI(88, builder::widget);
+
         return builder.label(6, 6, getMetaFullName())
             .widget(new FluidContainerSlotWidget(importItems, 0, 90, 17, false)
                 .setBackgroundTexture(GuiTextures.SLOT, GuiTextures.IN_SLOT_OVERLAY))
@@ -243,7 +252,7 @@ public class MetaTileEntityPump extends TieredMetaTileEntity {
             blockHere.getBlock() instanceof IFluidBlock) {
             IFluidHandler fluidHandler = FluidUtil.getFluidHandler(getWorld(), fluidBlockPos, null);
             FluidStack drainStack = fluidHandler.drain(Integer.MAX_VALUE, false);
-            if (drainStack != null && exportFluids.fill(drainStack, false) == drainStack.amount) {
+            if (drainStack != null && exportFluids.fill(drainStack, false) == drainStack.amount && this.fluidFilter.testFluidStack(drainStack)) {
                 exportFluids.fill(drainStack, true);
                 fluidHandler.drain(drainStack.amount, true);
                 this.fluidSourceBlocks.remove(fluidBlockPos);
@@ -296,5 +305,10 @@ public class MetaTileEntityPump extends TieredMetaTileEntity {
         tooltip.add(I18n.format("gregtech.universal.tooltip.voltage_in", energyContainer.getInputVoltage(), GTValues.VN[getTier()]));
         tooltip.add(I18n.format("gregtech.universal.tooltip.energy_storage_capacity", energyContainer.getEnergyCapacity()));
         tooltip.add(I18n.format("gregtech.universal.tooltip.fluid_storage_capacity", exportFluids.getTankAt(0).getCapacity()));
+    }
+
+    @Override
+    public void markAsDirty() {
+        this.markDirty();
     }
 }
