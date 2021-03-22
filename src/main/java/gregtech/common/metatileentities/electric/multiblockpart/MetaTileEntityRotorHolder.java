@@ -77,14 +77,17 @@ public class MetaTileEntityRotorHolder extends MetaTileEntityMultiblockPart impl
         }
 
         RotorHolderMultiblockController controller = (RotorHolderMultiblockController) getController();
-        boolean isControllerActive = controller != null && controller.isActive();
 
         if (!isHasRotor()) {
             resetRotorSpeed();
-        } else if (currentRotorSpeed < maxRotorSpeed && isControllerActive) {
-            incrementSpeed(controller.getRotorSpeedIncrement());
-        } else if (currentRotorSpeed > 0 && !isControllerActive) {
-            incrementSpeed(controller.getRotorSpeedDecrement());
+        } else if (controller != null) {
+            boolean isControllerActive = controller.isActive();
+
+            if (isControllerActive && currentRotorSpeed < maxRotorSpeed) {
+                incrementSpeed(controller.getRotorSpeedIncrement());
+            } else if (!isControllerActive && currentRotorSpeed > 0) {
+                incrementSpeed(controller.getRotorSpeedDecrement());
+            }
         }
     }
 
