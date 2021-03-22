@@ -6,9 +6,7 @@ import gregtech.api.gui.Widget;
 import gregtech.api.gui.igredient.IIngredientSlot;
 import gregtech.api.gui.resources.RenderUtil;
 import gregtech.api.gui.resources.TextureArea;
-import gregtech.api.unification.material.type.FluidMaterial;
-import gregtech.api.unification.material.type.Material;
-import gregtech.api.util.GTUtility;
+import gregtech.api.util.FluidTooltipUtil;
 import gregtech.api.util.Position;
 import gregtech.api.util.Size;
 import net.minecraft.client.Minecraft;
@@ -141,7 +139,7 @@ public class TankWidget extends Widget implements IIngredientSlot {
                 tooltips.add(fluid.getLocalizedName(lastFluidInTank));
 
                 // Add chemical formula tooltip
-                String formula = GTUtility.getFluidFormula(lastFluidInTank);
+                String formula = FluidTooltipUtil.getFluidTooltip(lastFluidInTank);
                 if (formula != null && !formula.isEmpty())
                     tooltips.add(ChatFormatting.GRAY.toString() + formula);
 

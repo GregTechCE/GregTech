@@ -160,20 +160,20 @@ public class ClientProxy extends CommonProxy {
             // Test for Fluids
             } else if (ItemNBTUtils.hasTag(itemStack)) {
 
-                // Vanilla bucket
-                chemicalFormula = GTUtility.getFluidFormula(ItemNBTUtils.getString(itemStack, "FluidName"));
+                // Vanilla bucket TODO
+                chemicalFormula = FluidTooltipUtil.getFluidTooltip(ItemNBTUtils.getString(itemStack, "FluidName"));
 
                 // GTCE Cells, Forestry cans, some other containers
                 if (chemicalFormula == null) {
                     NBTTagCompound compound = itemStack.getTagCompound();
                     if (compound != null && compound.hasKey(FluidHandlerItemStack.FLUID_NBT_KEY, Constants.NBT.TAG_COMPOUND)) {
-                        chemicalFormula = GTUtility.getFluidFormula(FluidStack.loadFluidStackFromNBT(compound.getCompoundTag(FluidHandlerItemStack.FLUID_NBT_KEY)));
+                        chemicalFormula = FluidTooltipUtil.getFluidTooltip(FluidStack.loadFluidStackFromNBT(compound.getCompoundTag(FluidHandlerItemStack.FLUID_NBT_KEY)));
                     }
                 }
 
             // Water buckets have a separate registry name from other buckets
             } else if(itemStack.getItem().equals(Items.WATER_BUCKET)) {
-                chemicalFormula = GTUtility.getWaterTooltip();
+                chemicalFormula = FluidTooltipUtil.getWaterTooltip();
             }
             if (chemicalFormula != null && !chemicalFormula.isEmpty())
                 event.getToolTip().add(1, ChatFormatting.GRAY.toString() + chemicalFormula);

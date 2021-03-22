@@ -5,6 +5,7 @@ import gregtech.api.unification.material.Materials;
 import gregtech.api.unification.material.type.FluidMaterial;
 import gregtech.api.unification.material.type.FluidMaterial.MatFlags;
 import gregtech.api.unification.material.type.Material;
+import gregtech.api.util.FluidTooltipUtil;
 import gregtech.api.util.GTUtility;
 import gregtech.common.blocks.MetaBlocks;
 import net.minecraft.client.renderer.texture.TextureMap;
@@ -141,6 +142,7 @@ public class MetaFluids {
                 int temperature = fluidMaterial.getFluidTemperature();
                 Fluid fluid = registerFluid(fluidMaterial, FluidType.NORMAL, temperature);
                 fluidMaterial.setMaterialFluid(fluid);
+                FluidTooltipUtil.registerTooltip(fluid, fluidMaterial.chemicalFormula);
             }
             if (fluidMaterial.shouldGeneratePlasma() && fluidMaterial.getMaterialPlasma() == null) {
                 Fluid fluid = registerFluid(fluidMaterial, FluidType.PLASMA, 30000);
