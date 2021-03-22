@@ -11,7 +11,9 @@ import gregtech.api.render.ToolRenderHandler;
 import gregtech.api.unification.OreDictUnifier;
 import gregtech.api.unification.material.type.Material;
 import gregtech.api.unification.stack.UnificationEntry;
-import gregtech.api.util.*;
+import gregtech.api.util.FluidTooltipUtil;
+import gregtech.api.util.GTLog;
+import gregtech.api.util.ModCompatibility;
 import gregtech.common.blocks.*;
 import gregtech.common.blocks.surfacerock.BlockSurfaceRockDeprecated;
 import gregtech.common.covers.facade.FacadeRenderer;
@@ -27,7 +29,9 @@ import net.minecraft.client.network.NetworkPlayerInfo;
 import net.minecraft.client.renderer.color.IBlockColor;
 import net.minecraft.client.renderer.color.IItemColor;
 import net.minecraft.init.Items;
-import net.minecraft.item.*;
+import net.minecraft.item.EnumDyeColor;
+import net.minecraft.item.ItemBlock;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
@@ -160,7 +164,7 @@ public class ClientProxy extends CommonProxy {
             // Test for Fluids
             } else if (ItemNBTUtils.hasTag(itemStack)) {
 
-                // Vanilla bucket TODO
+                // Vanilla bucket
                 chemicalFormula = FluidTooltipUtil.getFluidTooltip(ItemNBTUtils.getString(itemStack, "FluidName"));
 
                 // GTCE Cells, Forestry cans, some other containers
