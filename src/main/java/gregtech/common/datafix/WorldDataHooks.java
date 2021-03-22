@@ -18,6 +18,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.Objects;
 
 public class WorldDataHooks {
 
@@ -120,8 +121,8 @@ public class WorldDataHooks {
     public static int getNewCompressedId(int index) {
         int id = newIdMapCompressed.get(index);
         if (id == -1) {
-            id = Block.getIdFromBlock(ForgeRegistries.BLOCKS.getValue(
-                    new ResourceLocation(GTValues.MODID, "meta_block_compressed_" + index)));
+            id = Block.getIdFromBlock(Objects.requireNonNull(ForgeRegistries.BLOCKS.getValue(
+                    new ResourceLocation(GTValues.MODID, "meta_block_compressed_" + index))));
             newIdMapCompressed.put(index, id);
         }
         return id;
@@ -138,8 +139,8 @@ public class WorldDataHooks {
     public static int getNewSurfaceRockId(int index) {
         int id = newIdMapSurfaceRock.get(index);
         if (id == -1) {
-            id = Block.getIdFromBlock(ForgeRegistries.BLOCKS.getValue(
-                    new ResourceLocation(GTValues.MODID, "meta_block_surface_rock_" + index)));
+            id = Block.getIdFromBlock(Objects.requireNonNull(ForgeRegistries.BLOCKS.getValue(
+                    new ResourceLocation(GTValues.MODID, "meta_block_surface_rock_" + index))));
             newIdMapSurfaceRock.put(index, id);
         }
         return id;

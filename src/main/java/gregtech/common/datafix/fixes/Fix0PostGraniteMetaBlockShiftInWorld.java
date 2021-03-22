@@ -5,8 +5,6 @@ import gregtech.common.datafix.util.DataFixHelper;
 import gregtech.common.datafix.util.RemappedBlock;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.datafix.IFixableData;
-import net.minecraft.world.chunk.NibbleArray;
-import net.minecraftforge.common.util.Constants;
 
 public class Fix0PostGraniteMetaBlockShiftInWorld implements IFixableData {
 
