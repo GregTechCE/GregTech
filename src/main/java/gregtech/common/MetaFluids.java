@@ -150,6 +150,7 @@ public class MetaFluids {
             if (fluidMaterial.shouldGeneratePlasma() && fluidMaterial.getMaterialPlasma() == null) {
                 Fluid fluid = registerFluid(fluidMaterial, FluidType.PLASMA, 30000);
                 fluidMaterial.setMaterialPlasma(fluid);
+                FluidTooltipUtil.registerTooltip(fluid, fluidMaterial.chemicalFormula);
             }
         }
     }
