@@ -345,16 +345,9 @@ public class SimpleMachineMetaTileEntity extends WorkableTieredMetaTileEntity im
                 .setTooltipText("gregtech.gui.fluid_auto_output.tooltip"));
         }
 
-        final long overclockVolatage = this.workable.getOverclockVoltage();
-        if (overclockVolatage == -1) {
-            builder.widget(new ToggleButtonWidget(rightButtonStartX, 60, 20, 20,
-                    GuiTextures.BUTTON_OVERCLOCK, workable::isAllowOverclocking, workable::setAllowOverclocking)
-                    .setTooltipText("gregtech.gui.overclock"));
-        } else {
-            builder.widget(new CycleButtonWidget(rightButtonStartX, 60, 20, 20,
-                    workable.getAvailableOverclockingTiers(), workable::getOverclockTier, workable::setOverclockTier)
-                    .setTooltipHoverString("gregtech.gui.overclock.description"));
-        }
+        builder.widget(new CycleButtonWidget(rightButtonStartX, 60, 20, 20,
+                workable.getAvailableOverclockingTiers(), workable::getOverclockTier, workable::setOverclockTier)
+                .setTooltipHoverString("gregtech.gui.overclock.description"));
 
         return builder;
     }

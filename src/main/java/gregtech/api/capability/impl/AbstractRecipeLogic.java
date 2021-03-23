@@ -26,6 +26,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
+import java.util.function.LongSupplier;
 
 public abstract class AbstractRecipeLogic extends MTETrait implements IWorkable {
 
@@ -36,7 +37,8 @@ public abstract class AbstractRecipeLogic extends MTETrait implements IWorkable 
     protected FluidStack[] lastFluidInputs;
     protected Recipe previousRecipe;
     protected boolean allowOverclocking = true;
-    private long overclockVoltage = -1;
+    private long overclockVoltage = 0;
+    private LongSupplier overclockPolicy = this::getMaxVoltage;
 
     protected int progressTime;
     protected int maxProgressTime;
@@ -239,11 +241,7 @@ public abstract class AbstractRecipeLogic extends MTETrait implements IWorkable 
     }
 
     protected int[] calculateOverclock(int EUt, int duration) {
-        if (this.overclockVoltage == -1) {
-            return calculateOverclock(EUt, getMaxVoltage(), duration);
-        } else {
-            return calculateOverclock(EUt, overclockVoltage, duration);
-        }
+        return calculateOverclock(EUt, this.overclockPolicy.getAsLong(), duration);
     }
 
     protected int[] calculateOverclock(int EUt, long voltage, int duration) {
@@ -368,9 +366,7 @@ public abstract class AbstractRecipeLogic extends MTETrait implements IWorkable 
 
     public void setAllowOverclocking(boolean allowOverclocking) {
         this.allowOverclocking = allowOverclocking;
-        if (this.overclockVoltage != -1) {
-            this.overclockVoltage = allowOverclocking ? getMaxVoltage() : 0;
-        }
+        this.overclockVoltage = allowOverclocking ? getMaxVoltage() : 0;
         metaTileEntity.markDirty();
     }
 
@@ -397,11 +393,20 @@ public abstract class AbstractRecipeLogic extends MTETrait implements IWorkable 
     }
 
     public void setOverclockVoltage(final long overclockVoltage) {
+        this.overclockPolicy = this::getOverclockVoltage;
         this.overclockVoltage = overclockVoltage;
         this.allowOverclocking = (overclockVoltage != 0);
         metaTileEntity.markDirty();
     }
 
+    /**
+     * Sets the overclocking policy to use getOverclockVoltage() instead of getMaxVoltage()
+     * and initialises the overclock voltage to max voltage.
+     * The actual value will come from the saved tag when the tile is loaded for pre-existing machines.
+     *
+     * NOTE: This should only be used directly after construction of the workable.
+     * Use setOverclockVoltage() or setOverclockTier() for more a dynamic use case.
+     */
     public void enableOverclockVoltage() {
         setOverclockVoltage(getMaxVoltage());
     }
@@ -446,9 +451,7 @@ public abstract class AbstractRecipeLogic extends MTETrait implements IWorkable 
         NBTTagCompound compound = new NBTTagCompound();
         compound.setBoolean("WorkEnabled", workingEnabled);
         compound.setBoolean("AllowOverclocking", allowOverclocking);
-        if (this.overclockVoltage != -1) {
-            compound.setLong("OverclockVoltage", this.overclockVoltage);
-        }
+        compound.setLong("OverclockVoltage", this.overclockVoltage);
         if (progressTime > 0) {
             compound.setInteger("Progress", progressTime);
             compound.setInteger("MaxProgress", maxProgressTime);
@@ -474,13 +477,11 @@ public abstract class AbstractRecipeLogic extends MTETrait implements IWorkable 
         if(compound.hasKey("AllowOverclocking")) {
             this.allowOverclocking = compound.getBoolean("AllowOverclocking");
         }
-        if (this.overclockVoltage != -1) {
-            if (compound.hasKey("OverclockVoltage")) {
-                this.overclockVoltage = compound.getLong("OverclockVoltage");
-            } else {
-                // Calculate overclock voltage based on old allow flag
-                this.overclockVoltage = this.allowOverclocking ? getMaxVoltage() : 0;
-            }
+        if (compound.hasKey("OverclockVoltage")) {
+            this.overclockVoltage = compound.getLong("OverclockVoltage");
+        } else {
+            // Calculate overclock voltage based on old allow flag
+            this.overclockVoltage = this.allowOverclocking ? getMaxVoltage() : 0;
         }
         this.isActive = false;
         if (progressTime > 0) {
