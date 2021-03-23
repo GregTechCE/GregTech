@@ -405,7 +405,7 @@ public abstract class AbstractRecipeLogic extends MTETrait implements IWorkable 
      * The actual value will come from the saved tag when the tile is loaded for pre-existing machines.
      *
      * NOTE: This should only be used directly after construction of the workable.
-     * Use setOverclockVoltage() or setOverclockTier() for more a dynamic use case.
+     * Use setOverclockVoltage() or setOverclockTier() for a more dynamic use case.
      */
     public void enableOverclockVoltage() {
         setOverclockVoltage(getMaxVoltage());
