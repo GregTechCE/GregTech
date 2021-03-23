@@ -2,6 +2,7 @@ package gregtech.common.datafix;
 
 import gnu.trove.map.TIntIntMap;
 import gnu.trove.map.hash.TIntIntHashMap;
+import gregtech.GregTechVersion;
 import gregtech.api.GTValues;
 import gregtech.api.util.GTLog;
 import gregtech.api.util.Version;
@@ -10,8 +11,11 @@ import net.minecraft.nbt.CompressedStreamTools;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.storage.SaveHandler;
 import net.minecraftforge.common.util.Constants;
+import net.minecraftforge.fml.common.StartupQuery;
+import net.minecraftforge.fml.common.ZipperUtil;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
 
 import java.io.File;
@@ -19,6 +23,8 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Objects;
+
+import static gregtech.common.datafix.GregTechDataFixers.DATA_VERSION;
 
 public class WorldDataHooks {
 
@@ -99,10 +105,31 @@ public class WorldDataHooks {
         } catch (IOException e) {
             throw new IllegalStateException("Failed to write GregTech world-saved data!", e);
         }
+
+        // TODO Need to test for CLIENT here somehow
+        if (gtFallbackVersion != DATA_VERSION)
+            promptWorldBackup(gtFallbackVersion);
     }
 
     public static int getFallbackModVersion(String modId) {
         return modId.equals(GTValues.MODID) ? gtFallbackVersion : -1;
+    }
+
+    public static void promptWorldBackup(int version) {
+        String text = "GregTech detected a required registry remapping.\n\n"
+                + "Updating from (or before) " + TextFormatting.AQUA + (version == 1 ? V1_12_2 : V1_10_5) + TextFormatting.RESET
+                + " to " + TextFormatting.AQUA + GregTechVersion.getPrettyVersion() + ".\n" + TextFormatting.RESET
+                + "It is strongly recommended you perform a backup. Create backup?";
+
+        if (StartupQuery.confirm(text)) {
+            try {
+                GTLog.logger.info("Creating world backup before starting registry remapping...");
+                ZipperUtil.backupWorld();
+            } catch (IOException e) {
+                StartupQuery.notify("Error creating backup!!!");
+                StartupQuery.abort();
+            }
+        }
     }
 
     public static void addOldCompressedId(int id, int index) {
