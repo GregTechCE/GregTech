@@ -12,7 +12,7 @@ import gregtech.common.items.behaviors.TurbineRotorBehavior;
 import gregtech.common.metatileentities.MetaTileEntities;
 import gregtech.common.metatileentities.electric.multiblockpart.MetaTileEntityRotorHolder;
 import gregtech.common.metatileentities.multi.electric.generator.MetaTileEntityLargeTurbine;
-import gregtech.integration.jei.multiblock.MultiblockInfoPage;
+import gregtech.integration.jei.multiblock.IMultiblockInfoPage;
 import gregtech.integration.jei.multiblock.MultiblockShapeInfo;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.init.Blocks;
@@ -21,7 +21,7 @@ import net.minecraft.util.EnumFacing;
 
 import java.util.List;
 
-public class LargeTurbineInfo extends MultiblockInfoPage {
+public class LargeTurbineInfo implements IMultiblockInfoPage {
 
     public final MetaTileEntityLargeTurbine turbine;
 

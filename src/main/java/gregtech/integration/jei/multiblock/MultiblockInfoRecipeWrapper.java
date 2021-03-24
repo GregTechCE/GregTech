@@ -57,7 +57,12 @@ public class MultiblockInfoRecipeWrapper implements IRecipeWrapper, SceneRenderC
         }
     }
 
-    private final MultiblockInfoPage infoPage;
+    private final IMultiblockInfoPage infoPage;
+
+    // This field is only here to maintain compatibility with older versions
+    @Deprecated
+    private final MultiblockInfoPage infoPageDep;
+
     private MBPattern[] patterns;
     private Map<GuiButton, Runnable> buttons = new HashMap<>();
     private RecipeLayout recipeLayout;
@@ -81,14 +86,28 @@ public class MultiblockInfoRecipeWrapper implements IRecipeWrapper, SceneRenderC
 
     private ItemStack tooltipBlockStack;
 
-    public MultiblockInfoRecipeWrapper(MultiblockInfoPage infoPage) {
+    public MultiblockInfoRecipeWrapper(IMultiblockInfoPage infoPage) {
         this.infoPage = infoPage;
+        this.infoPageDep = null;
         this.controllerStack = infoPage.getController().getStackForm();
         HashSet<ItemStackKey> drops = new HashSet<>();
         drops.add(new ItemStackKey(controllerStack));
         this.patterns = infoPage.getMatchingShapes().stream()
             .map(it -> initializePattern(it, drops))
             .toArray(MBPattern[]::new);
+        drops.forEach(it -> allItemStackInputs.add(it.getItemStack()));
+    }
+
+    @Deprecated
+    public MultiblockInfoRecipeWrapper(MultiblockInfoPage infoPageDep) {
+        this.infoPage = null;
+        this.infoPageDep = infoPageDep;
+        this.controllerStack = infoPageDep.getController().getStackForm();
+        HashSet<ItemStackKey> drops = new HashSet<>();
+        drops.add(new ItemStackKey(controllerStack));
+        this.patterns = infoPageDep.getMatchingShapes().stream()
+                .map(it -> initializePattern(it, drops))
+                .toArray(MBPattern[]::new);
         drops.forEach(it -> allItemStackInputs.add(it.getItemStack()));
     }
 
@@ -119,7 +138,7 @@ public class MultiblockInfoRecipeWrapper implements IRecipeWrapper, SceneRenderC
            itemStackGroup.init(i, true, 18*i-180*(i/10), border.getHeight()-36+18*(i/10));
         this.panX = 0.0f;
         this.panY = 0.0f;
-        this.zoom = 1.0f;
+        this.zoom = infoPage == null ? 1.0f : infoPage.getZoom();
         this.rotationYaw = -45.0f;
         this.rotationPitch = 0.0f;
         this.currentRendererPage = 0;
@@ -267,12 +286,16 @@ public class MultiblockInfoRecipeWrapper implements IRecipeWrapper, SceneRenderC
     }
 
     private void drawText(Minecraft minecraft, int recipeWidth) {
-        String localizedName = I18n.format(infoPage.getController().getMetaFullName());
+        MultiblockControllerBase controller = infoPage == null ? infoPageDep.getController() : infoPage.getController();
+        String localizedName = I18n.format(controller.getMetaFullName());
         GTUtility.drawCenteredSizedText(recipeWidth / 2, 0, localizedName, 0x333333, 1.3);
+
+        String[] description = infoPage == null ? infoPageDep.getDescription() : infoPage.getDescription();
         FontRenderer fontRenderer = minecraft.fontRenderer;
-        List<String> lines = Arrays.stream(infoPage.getDescription())
+        List<String> lines = Arrays.stream(description)
             .flatMap(s -> fontRenderer.listFormattedStringToWidth(s, recipeWidth).stream())
             .collect(Collectors.toList());
+
         for (int i = 0; i < lines.size(); i++) {
             String lineText = lines.get(i);
             int x = (recipeWidth - fontRenderer.getStringWidth(lineText)) / 2;
@@ -398,5 +421,4 @@ public class MultiblockInfoRecipeWrapper implements IRecipeWrapper, SceneRenderC
         }
         return new MBPattern(worldSceneRenderer, parts);
     }
-
 }

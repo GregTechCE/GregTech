@@ -5,7 +5,7 @@ import gregtech.api.metatileentity.multiblock.MultiblockControllerBase;
 import gregtech.common.blocks.BlockMetalCasing.MetalCasingType;
 import gregtech.common.blocks.MetaBlocks;
 import gregtech.common.metatileentities.MetaTileEntities;
-import gregtech.integration.jei.multiblock.MultiblockInfoPage;
+import gregtech.integration.jei.multiblock.IMultiblockInfoPage;
 import gregtech.integration.jei.multiblock.MultiblockShapeInfo;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.init.Blocks;
@@ -13,7 +13,7 @@ import net.minecraft.util.EnumFacing;
 
 import java.util.List;
 
-public class PrimitiveBlastFurnaceInfo extends MultiblockInfoPage {
+public class PrimitiveBlastFurnaceInfo implements IMultiblockInfoPage {
 
     @Override
     public MultiblockControllerBase getController() {
