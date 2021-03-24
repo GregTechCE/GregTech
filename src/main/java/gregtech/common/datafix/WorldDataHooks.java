@@ -41,6 +41,7 @@ public class WorldDataHooks {
     private static final TIntIntMap oldIdMapSurfaceRock = new TIntIntHashMap(4, 0.8F, -1, -1);
     private static final TIntIntMap newIdMapSurfaceRock = new TIntIntHashMap(64, 1F, -1, -1);
 
+    @SuppressWarnings("unused")
     public static void onWorldLoad(SaveHandler saveHandler, NBTTagCompound levelTag) {
         gtFallbackVersion = -2;
         oldIdMapCompressed.clear();
@@ -150,6 +151,7 @@ public class WorldDataHooks {
         }
     }
 
+    @SuppressWarnings("unused")
     public static int getFallbackModVersion(String modId) {
         return modId.equals(GTValues.MODID) ? gtFallbackVersion : -1;
     }
