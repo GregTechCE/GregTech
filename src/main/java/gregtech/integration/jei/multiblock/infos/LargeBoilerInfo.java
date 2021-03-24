@@ -5,14 +5,14 @@ import gregtech.api.GTValues;
 import gregtech.api.metatileentity.multiblock.MultiblockControllerBase;
 import gregtech.common.metatileentities.MetaTileEntities;
 import gregtech.common.metatileentities.multi.MetaTileEntityLargeBoiler;
-import gregtech.integration.jei.multiblock.IMultiblockInfoPage;
+import gregtech.integration.jei.multiblock.MultiblockInfoPage;
 import gregtech.integration.jei.multiblock.MultiblockShapeInfo;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.util.EnumFacing;
 
 import java.util.List;
 
-public class LargeBoilerInfo implements IMultiblockInfoPage {
+public class LargeBoilerInfo extends MultiblockInfoPage {
 
     public final MetaTileEntityLargeBoiler boiler;
 
