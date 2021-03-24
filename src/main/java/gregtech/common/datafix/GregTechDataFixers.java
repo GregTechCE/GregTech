@@ -28,12 +28,12 @@ public class GregTechDataFixers {
 
     public static void init() {
         CompoundDataFixer fmlFixer = FMLCommonHandler.instance().getDataFixer();
+        // forge says `registerWalker` is deprecated but there's no other way to register walkers... :I
         IDataWalker walkItemStackLike = new WalkItemStackLike();
-
-        fmlFixer.registerVanillaWalker(FixTypes.BLOCK_ENTITY, walkItemStackLike);
-        fmlFixer.registerVanillaWalker(FixTypes.ENTITY, walkItemStackLike);
-        fmlFixer.registerVanillaWalker(FixTypes.PLAYER, walkItemStackLike);
-        fmlFixer.registerVanillaWalker(FixTypes.CHUNK, new WalkChunkSection());
+        fmlFixer.registerWalker(FixTypes.BLOCK_ENTITY, walkItemStackLike);
+        fmlFixer.registerWalker(FixTypes.ENTITY, walkItemStackLike);
+        fmlFixer.registerWalker(FixTypes.PLAYER, walkItemStackLike);
+        fmlFixer.registerWalker(FixTypes.CHUNK, new WalkChunkSection());
 
         ModFixs gtFixer = fmlFixer.init(GTValues.MODID, DATA_VERSION);
         gtFixer.registerFix(GregTechFixType.ITEM_STACK_LIKE, new Fix0PostGraniteMetaBlockShift());

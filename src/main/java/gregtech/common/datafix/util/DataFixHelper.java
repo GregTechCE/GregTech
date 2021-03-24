@@ -12,7 +12,7 @@ import java.util.ListIterator;
 public class DataFixHelper {
 
     public static void rewriteCompoundTags(NBTTagCompound tag, CompoundRewriter rewriter) {
-        tag.getKeySet().forEach(key -> {
+        for (String key : tag.getKeySet()) {
             NBTBase childTag = tag.getTag(key);
             switch (childTag.getId()) {
                 case Constants.NBT.TAG_LIST:
@@ -27,7 +27,7 @@ public class DataFixHelper {
                     }
                     break;
             }
-        });
+        }
     }
 
     public static void rewriteCompoundTags(NBTTagList tag, CompoundRewriter rewriter) {

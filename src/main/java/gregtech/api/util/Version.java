@@ -10,7 +10,7 @@ public class Version implements Comparable<Version> {
 
     public Version(int... nums) {
         if (nums.length == 0) {
-            throw new IllegalArgumentException("Must be at least version number!");
+            throw new IllegalArgumentException("Must be at least one version number!");
         }
         for (int num : nums) {
             if (num < 0) {
@@ -63,6 +63,9 @@ public class Version implements Comparable<Version> {
     }
 
     public String toString(int sigPlaces) {
-        return Arrays.stream(nums).limit(sigPlaces).mapToObj(Integer::toString).collect(Collectors.joining("."));
+        return Arrays.stream(nums, 0, Math.min(sigPlaces, nums.length))
+                .mapToObj(Integer::toString)
+                .collect(Collectors.joining("."));
     }
+
 }

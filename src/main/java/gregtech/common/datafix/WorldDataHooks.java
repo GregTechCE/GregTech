@@ -37,7 +37,6 @@ public class WorldDataHooks {
     private static final Version V1_14_0 = new Version(1, 14, 0); // meta block id alloc was changed in 1.14.0
 
     private static int gtFallbackVersion = -1;
-    private static int previousVersion = 1;
     private static final TIntIntMap oldIdMapCompressed = new TIntIntHashMap(32, 0.8F, -1, -1);
     private static final TIntIntMap oldIdMapCompressedInv = new TIntIntHashMap(32, 0.8F, -1, -1);
     private static final TIntIntMap newIdMapCompressed = new TIntIntHashMap(64, 1F, -1, -1);
@@ -68,6 +67,7 @@ public class WorldDataHooks {
         }
 
         // that failing, infer from previously-saved map version
+        Version prevGtVersion = null;
         if (gtFallbackVersion < -1 && levelTag.hasKey("FML", Constants.NBT.TAG_COMPOUND)) {
             NBTTagCompound fmlTag = levelTag.getCompoundTag("FML");
             if (fmlTag.hasKey("ModList", Constants.NBT.TAG_LIST)) {
@@ -75,17 +75,16 @@ public class WorldDataHooks {
                 for (int i = 0; i < modListTag.tagCount(); i++) {
                     NBTTagCompound modEntryTag = modListTag.getCompoundTagAt(i);
                     if (modEntryTag.getString("ModId").equals(GTValues.MODID)) {
-                        Version version = Version.parse(modEntryTag.getString("ModVersion"));
-                        if (version.compareTo(V1_10_5) < 0) {
+                        prevGtVersion = Version.parse(modEntryTag.getString("ModVersion"));
+                        if (prevGtVersion.compareTo(V1_10_5) < 0) {
                             gtFallbackVersion = -1;
-                        } else if (version.compareTo(V1_14_0) < 0) {
+                        } else if (prevGtVersion.compareTo(V1_14_0) < 0) {
                             gtFallbackVersion = 0;
                         } else {
                             gtFallbackVersion = 1;
                         }
-                        previousVersion = gtFallbackVersion;
                         GTLog.logger.info("Using fallback data version {} from previous GregTech version {}",
-                                gtFallbackVersion, version);
+                                gtFallbackVersion, prevGtVersion);
                     }
                 }
             }
@@ -111,15 +110,15 @@ public class WorldDataHooks {
         }
 
         // Prompt the user for a backup
-        if (previousVersion != DATA_VERSION)
-            promptWorldBackup();
+        if (prevGtVersion != null && gtFallbackVersion < 1)
+            promptWorldBackup(prevGtVersion);
     }
 
-    public static void promptWorldBackup() {
+    public static void promptWorldBackup(Version prevGtVersion) {
         FMLCommonHandler fmlHandler = FMLCommonHandler.instance();
         if (fmlHandler.getEffectiveSide() == Side.SERVER) {
-            String text = "GregTech detected a required registry remapping.\n\n"
-                    + "Updating from (or before) " + TextFormatting.AQUA + (previousVersion == 0 ? V1_14_0 : V1_10_5) + TextFormatting.RESET
+            String text = "GregTech detected a required registry remapping!\n\n"
+                    + "Updating from (or before) " + TextFormatting.AQUA + prevGtVersion.toString(3) + TextFormatting.RESET
                     + " to " + TextFormatting.AQUA + GregTechVersion.VERSION.toString(3) + TextFormatting.RESET + ".\n"
                     + "It is " + TextFormatting.UNDERLINE + "strongly" + TextFormatting.RESET + " recommended that you perform a backup. Create backup?";
 
@@ -128,7 +127,9 @@ public class WorldDataHooks {
                     GTLog.logger.info("Creating world backup before starting registry remapping...");
                     ZipperUtil.backupWorld();
                 } catch (IOException e) {
-                    StartupQuery.notify("Error creating backup!!!");
+                    GTLog.logger.error(e);
+                    StartupQuery.notify("Encountered an error while creating the backup!\n" +
+                            "See the game log for more details.");
                     StartupQuery.abort();
                 }
             } else {
@@ -136,7 +137,6 @@ public class WorldDataHooks {
                 if (!StartupQuery.confirm(reconfirm))
                     StartupQuery.abort();
             }
-            previousVersion = 1;
         }
     }
 
