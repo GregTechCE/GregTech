@@ -58,7 +58,6 @@ public class MultiblockInfoRecipeWrapper implements IRecipeWrapper, SceneRenderC
     }
 
     private final MultiblockInfoPage infoPage;
-
     private MBPattern[] patterns;
     private Map<GuiButton, Runnable> buttons = new HashMap<>();
     private RecipeLayout recipeLayout;
@@ -88,8 +87,8 @@ public class MultiblockInfoRecipeWrapper implements IRecipeWrapper, SceneRenderC
         HashSet<ItemStackKey> drops = new HashSet<>();
         drops.add(new ItemStackKey(controllerStack));
         this.patterns = infoPage.getMatchingShapes().stream()
-                .map(it -> initializePattern(it, drops))
-                .toArray(MBPattern[]::new);
+            .map(it -> initializePattern(it, drops))
+            .toArray(MBPattern[]::new);
         drops.forEach(it -> allItemStackInputs.add(it.getItemStack()));
     }
 
@@ -270,12 +269,10 @@ public class MultiblockInfoRecipeWrapper implements IRecipeWrapper, SceneRenderC
     private void drawText(Minecraft minecraft, int recipeWidth) {
         String localizedName = I18n.format(infoPage.getController().getMetaFullName());
         GTUtility.drawCenteredSizedText(recipeWidth / 2, 0, localizedName, 0x333333, 1.3);
-
         FontRenderer fontRenderer = minecraft.fontRenderer;
         List<String> lines = Arrays.stream(infoPage.getDescription())
             .flatMap(s -> fontRenderer.listFormattedStringToWidth(s, recipeWidth).stream())
             .collect(Collectors.toList());
-
         for (int i = 0; i < lines.size(); i++) {
             String lineText = lines.get(i);
             int x = (recipeWidth - fontRenderer.getStringWidth(lineText)) / 2;
@@ -401,4 +398,5 @@ public class MultiblockInfoRecipeWrapper implements IRecipeWrapper, SceneRenderC
         }
         return new MBPattern(worldSceneRenderer, parts);
     }
+
 }
