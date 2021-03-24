@@ -59,7 +59,10 @@ public class Version implements Comparable<Version> {
 
     @Override
     public String toString() {
-        return Arrays.stream(nums).mapToObj(Integer::toString).collect(Collectors.joining("."));
+        return toString(nums.length);
     }
 
+    public String toString(int sigPlaces) {
+        return Arrays.stream(nums).limit(sigPlaces).mapToObj(Integer::toString).collect(Collectors.joining("."));
+    }
 }

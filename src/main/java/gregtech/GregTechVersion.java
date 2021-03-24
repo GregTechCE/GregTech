@@ -16,13 +16,4 @@ public final class GregTechVersion {
 
     private GregTechVersion() {
     }
-
-    /**
-     * Get the Version of GT without the build number, which is always zero in Java.
-     *
-     * @return VERSION.toString() without the trailing ".0"
-     */
-    public static String getPrettyVersion() {
-        return VERSION.toString().substring(0, VERSION.toString().length() - 2);
-    }
 }

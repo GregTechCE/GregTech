@@ -14,10 +14,10 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.storage.SaveHandler;
 import net.minecraftforge.common.util.Constants;
+import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.StartupQuery;
 import net.minecraftforge.fml.common.ZipperUtil;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
-import net.minecraftforge.fml.common.thread.SidedThreadGroup;
 import net.minecraftforge.fml.relauncher.Side;
 
 import java.io.File;
@@ -37,6 +37,7 @@ public class WorldDataHooks {
     private static final Version V1_14_0 = new Version(1, 14, 0); // meta block id alloc was changed in 1.14.0
 
     private static int gtFallbackVersion = -1;
+    private static int previousVersion = 1;
     private static final TIntIntMap oldIdMapCompressed = new TIntIntHashMap(32, 0.8F, -1, -1);
     private static final TIntIntMap oldIdMapCompressedInv = new TIntIntHashMap(32, 0.8F, -1, -1);
     private static final TIntIntMap newIdMapCompressed = new TIntIntHashMap(64, 1F, -1, -1);
@@ -82,6 +83,7 @@ public class WorldDataHooks {
                         } else {
                             gtFallbackVersion = 1;
                         }
+                        previousVersion = gtFallbackVersion;
                         GTLog.logger.info("Using fallback data version {} from previous GregTech version {}",
                                 gtFallbackVersion, version);
                     }
@@ -108,16 +110,17 @@ public class WorldDataHooks {
             throw new IllegalStateException("Failed to write GregTech world-saved data!", e);
         }
 
-        if (gtFallbackVersion != DATA_VERSION)
-            promptWorldBackup(gtFallbackVersion);
+        // Prompt the user for a backup
+        if (previousVersion != DATA_VERSION)
+            promptWorldBackup();
     }
 
-    // TODO Fix backup being prompted on 1.14.0
-    public static void promptWorldBackup(int version) {
-        if (getSide() == Side.SERVER) {
+    public static void promptWorldBackup() {
+        FMLCommonHandler fmlHandler = FMLCommonHandler.instance();
+        if (fmlHandler.getEffectiveSide() == Side.SERVER) {
             String text = "GregTech detected a required registry remapping.\n\n"
-                    + "Updating from (or before) " + TextFormatting.AQUA + (version == 0 ? V1_14_0 : V1_10_5) + TextFormatting.RESET
-                    + " to " + TextFormatting.AQUA + GregTechVersion.getPrettyVersion() + TextFormatting.RESET + ".\n"
+                    + "Updating from (or before) " + TextFormatting.AQUA + (previousVersion == 0 ? V1_14_0 : V1_10_5) + TextFormatting.RESET
+                    + " to " + TextFormatting.AQUA + GregTechVersion.VERSION.toString(3) + TextFormatting.RESET + ".\n"
                     + "It is " + TextFormatting.UNDERLINE + "strongly" + TextFormatting.RESET + " recommended that you perform a backup. Create backup?";
 
             if (StartupQuery.confirm(text)) {
@@ -133,12 +136,8 @@ public class WorldDataHooks {
                 if (!StartupQuery.confirm(reconfirm))
                     StartupQuery.abort();
             }
+            previousVersion = 1;
         }
-    }
-
-    public static Side getSide() {
-        final ThreadGroup group = Thread.currentThread().getThreadGroup();
-        return group instanceof SidedThreadGroup ? ((SidedThreadGroup) group).getSide() : Side.CLIENT;
     }
 
     public static int getFallbackModVersion(String modId) {
