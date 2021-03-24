@@ -23,6 +23,6 @@ public final class GregTechVersion {
      * @return VERSION.toString() without the trailing ".0"
      */
     public static String getPrettyVersion() {
-        return VERSION.toString().substring(0, VERSION.toString().length() - 1);
+        return VERSION.toString().substring(0, VERSION.toString().length() - 2);
     }
 }

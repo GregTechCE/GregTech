@@ -17,6 +17,8 @@ import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.fml.common.StartupQuery;
 import net.minecraftforge.fml.common.ZipperUtil;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
+import net.minecraftforge.fml.common.thread.SidedThreadGroup;
+import net.minecraftforge.fml.relauncher.Side;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -32,7 +34,7 @@ public class WorldDataHooks {
     private static final String KEY_FALLBACK_DATA_VERSION = "FallbackDataVersion";
 
     private static final Version V1_10_5 = new Version(1, 10, 5); // granite was added in 1.10.5
-    private static final Version V1_12_2 = new Version(1, 12, 2); // meta block id alloc was changed in 1.12.2
+    private static final Version V1_14_0 = new Version(1, 14, 0); // meta block id alloc was changed in 1.14.0
 
     private static int gtFallbackVersion = -1;
     private static final TIntIntMap oldIdMapCompressed = new TIntIntHashMap(32, 0.8F, -1, -1);
@@ -75,7 +77,7 @@ public class WorldDataHooks {
                         Version version = Version.parse(modEntryTag.getString("ModVersion"));
                         if (version.compareTo(V1_10_5) < 0) {
                             gtFallbackVersion = -1;
-                        } else if (version.compareTo(V1_12_2) < 0) {
+                        } else if (version.compareTo(V1_14_0) < 0) {
                             gtFallbackVersion = 0;
                         } else {
                             gtFallbackVersion = 1;
@@ -106,30 +108,41 @@ public class WorldDataHooks {
             throw new IllegalStateException("Failed to write GregTech world-saved data!", e);
         }
 
-        // TODO Need to test for CLIENT here somehow
         if (gtFallbackVersion != DATA_VERSION)
             promptWorldBackup(gtFallbackVersion);
     }
 
-    public static int getFallbackModVersion(String modId) {
-        return modId.equals(GTValues.MODID) ? gtFallbackVersion : -1;
-    }
-
+    // TODO Fix backup being prompted on 1.14.0
     public static void promptWorldBackup(int version) {
-        String text = "GregTech detected a required registry remapping.\n\n"
-                + "Updating from (or before) " + TextFormatting.AQUA + (version == 1 ? V1_12_2 : V1_10_5) + TextFormatting.RESET
-                + " to " + TextFormatting.AQUA + GregTechVersion.getPrettyVersion() + ".\n" + TextFormatting.RESET
-                + "It is strongly recommended you perform a backup. Create backup?";
+        if (getSide() == Side.SERVER) {
+            String text = "GregTech detected a required registry remapping.\n\n"
+                    + "Updating from (or before) " + TextFormatting.AQUA + (version == 0 ? V1_14_0 : V1_10_5) + TextFormatting.RESET
+                    + " to " + TextFormatting.AQUA + GregTechVersion.getPrettyVersion() + TextFormatting.RESET + ".\n"
+                    + "It is " + TextFormatting.UNDERLINE + "strongly" + TextFormatting.RESET + " recommended that you perform a backup. Create backup?";
 
-        if (StartupQuery.confirm(text)) {
-            try {
-                GTLog.logger.info("Creating world backup before starting registry remapping...");
-                ZipperUtil.backupWorld();
-            } catch (IOException e) {
-                StartupQuery.notify("Error creating backup!!!");
-                StartupQuery.abort();
+            if (StartupQuery.confirm(text)) {
+                try {
+                    GTLog.logger.info("Creating world backup before starting registry remapping...");
+                    ZipperUtil.backupWorld();
+                } catch (IOException e) {
+                    StartupQuery.notify("Error creating backup!!!");
+                    StartupQuery.abort();
+                }
+            } else {
+                String reconfirm = "No backup will be created. Proceed with the remapping without a backup?";
+                if (!StartupQuery.confirm(reconfirm))
+                    StartupQuery.abort();
             }
         }
+    }
+
+    public static Side getSide() {
+        final ThreadGroup group = Thread.currentThread().getThreadGroup();
+        return group instanceof SidedThreadGroup ? ((SidedThreadGroup) group).getSide() : Side.CLIENT;
+    }
+
+    public static int getFallbackModVersion(String modId) {
+        return modId.equals(GTValues.MODID) ? gtFallbackVersion : -1;
     }
 
     public static void addOldCompressedId(int id, int index) {
