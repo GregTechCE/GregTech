@@ -23,6 +23,8 @@ public class Fix1MetaBlockIdSystem implements IFixableData {
     private static final int SURF_ROCK_BLOCK_NAME_LEN = SURF_ROCK_BLOCK_NAME.length();
     private static final String SURF_ROCK_BLOCK_PREFIX = GTValues.MODID + ":" + SURF_ROCK_BLOCK_NAME;
 
+    private static final String SURF_ROCK_BLOCK_OLD = "flooded_";
+
     public Fix1MetaBlockIdSystem() {
         MinecraftForge.EVENT_BUS.register(this);
     }
@@ -69,6 +71,8 @@ public class Fix1MetaBlockIdSystem implements IFixableData {
                         mapping.id, Integer.parseInt(regName.substring(COMP_BLOCK_NAME_LEN)));
             } else if (regName.startsWith(SURF_ROCK_BLOCK_NAME)) {
                 mapping.ignore();
+                if (regName.contains(SURF_ROCK_BLOCK_OLD)) // throw out old flooded surface rocks
+                    continue;
                 WorldDataHooks.addOldSurfaceRockId(
                         mapping.id, Integer.parseInt(regName.substring(SURF_ROCK_BLOCK_NAME_LEN)));
             }
