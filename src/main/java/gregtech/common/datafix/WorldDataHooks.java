@@ -26,8 +26,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Objects;
 
-import static gregtech.common.datafix.GregTechDataFixers.DATA_VERSION;
-
 public class WorldDataHooks {
 
     private static final String MAP_STORAGE_NAME = "gregtech_data";
@@ -67,7 +65,6 @@ public class WorldDataHooks {
         }
 
         // that failing, infer from previously-saved map version
-        Version prevGtVersion = null;
         if (gtFallbackVersion < -1 && levelTag.hasKey("FML", Constants.NBT.TAG_COMPOUND)) {
             NBTTagCompound fmlTag = levelTag.getCompoundTag("FML");
             if (fmlTag.hasKey("ModList", Constants.NBT.TAG_LIST)) {
@@ -75,16 +72,16 @@ public class WorldDataHooks {
                 for (int i = 0; i < modListTag.tagCount(); i++) {
                     NBTTagCompound modEntryTag = modListTag.getCompoundTagAt(i);
                     if (modEntryTag.getString("ModId").equals(GTValues.MODID)) {
-                        prevGtVersion = Version.parse(modEntryTag.getString("ModVersion"));
-                        if (prevGtVersion.compareTo(V1_10_5) < 0) {
+                        Version version = Version.parse(modEntryTag.getString("ModVersion"));
+                        if (version.compareTo(V1_10_5) < 0) {
                             gtFallbackVersion = -1;
-                        } else if (prevGtVersion.compareTo(V1_14_0) < 0) {
+                        } else if (version.compareTo(V1_14_0) < 0) {
                             gtFallbackVersion = 0;
                         } else {
                             gtFallbackVersion = 1;
                         }
                         GTLog.logger.info("Using fallback data version {} from previous GregTech version {}",
-                                gtFallbackVersion, prevGtVersion);
+                                gtFallbackVersion, version);
                     }
                 }
             }
@@ -110,15 +107,28 @@ public class WorldDataHooks {
         }
 
         // Prompt the user for a backup
-        if (prevGtVersion != null && gtFallbackVersion < 1)
-            promptWorldBackup(prevGtVersion);
+        if (gtFallbackVersion < 1) {
+            int prevDataVersion = gtFallbackVersion;
+            if (levelTag.hasKey("Data", Constants.NBT.TAG_COMPOUND)) {
+                NBTTagCompound tag = levelTag.getCompoundTag("Data");
+                if (tag.hasKey("ForgeDataVersion", Constants.NBT.TAG_COMPOUND)) {
+                    tag = tag.getCompoundTag("ForgeDataVersion");
+                    if (tag.hasKey(GTValues.MODID, Constants.NBT.TAG_INT)) {
+                        prevDataVersion = tag.getInteger(GTValues.MODID);
+                    }
+                }
+            }
+            if (prevDataVersion < 1) {
+                promptWorldBackup(prevDataVersion);
+            }
+        }
     }
 
-    public static void promptWorldBackup(Version prevGtVersion) {
+    public static void promptWorldBackup(int prevDataVersion) {
         FMLCommonHandler fmlHandler = FMLCommonHandler.instance();
         if (fmlHandler.getEffectiveSide() == Side.SERVER) {
             String text = "GregTech detected a required registry remapping!\n\n"
-                    + "Updating from (or before) " + TextFormatting.AQUA + prevGtVersion.toString(3) + TextFormatting.RESET
+                    + "Updating from (or before) " + TextFormatting.AQUA + (prevDataVersion == -1 ? V1_10_5 : V1_14_0) + TextFormatting.RESET
                     + " to " + TextFormatting.AQUA + GregTechVersion.VERSION.toString(3) + TextFormatting.RESET + ".\n"
                     + "It is " + TextFormatting.UNDERLINE + "strongly" + TextFormatting.RESET + " recommended that you perform a backup. Create backup?";
 
