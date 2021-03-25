@@ -22,7 +22,6 @@ import gregtech.api.gui.ModularUI;
 import gregtech.api.render.Textures;
 import gregtech.api.util.GTFluidUtils;
 import gregtech.api.util.GTUtility;
-import gregtech.api.util.InventoryUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
@@ -56,6 +55,8 @@ import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
+
+import static gregtech.api.util.InventoryUtils.simulateItemStackMerge;
 
 public abstract class MetaTileEntity implements ICoverable {
 
@@ -990,14 +991,8 @@ public abstract class MetaTileEntity implements ICoverable {
                                                 final boolean simulate,
                                                 final List<ItemStack> items) {
         // determine if there is sufficient room to insert all items into the target inventory
-        boolean canMerge;
-        if (items.size() == 1) {
-            canMerge = ItemHandlerHelper.insertItemStacked(handler, items.get(0), true).isEmpty();
-        } else {
-            // merging 2 or more stacks may change the slots available for merging,
-            // needing full simulation of the state of the inventory after every merge
-            canMerge = InventoryUtils.simulateItemStackMerge(items, handler);
-        }
+        final boolean canMerge = simulateItemStackMerge(items, handler);
+
         // if we're not simulating and the merge should succeed, perform the merge.
         if (!simulate && canMerge)
             items.forEach(stack -> {
