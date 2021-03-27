@@ -17,6 +17,10 @@ public class OreRecipeHandler {
 
     public static void register() {
         OrePrefix.ore.addProcessingHandler(DustMaterial.class, OreRecipeHandler::processOre);
+        OrePrefix.oreGranite.addProcessingHandler(DustMaterial.class, OreRecipeHandler::processOre);
+        OrePrefix.oreDiorite.addProcessingHandler(DustMaterial.class, OreRecipeHandler::processOre);
+        OrePrefix.oreAndesite.addProcessingHandler(DustMaterial.class, OreRecipeHandler::processOre);
+        OrePrefix.oreBedrock.addProcessingHandler(DustMaterial.class, OreRecipeHandler::processOre);
         OrePrefix.oreBasalt.addProcessingHandler(DustMaterial.class, OreRecipeHandler::processOre);
         OrePrefix.oreBlackgranite.addProcessingHandler(DustMaterial.class, OreRecipeHandler::processOre);
         OrePrefix.oreEndstone.addProcessingHandler(DustMaterial.class, OreRecipeHandler::processOre);

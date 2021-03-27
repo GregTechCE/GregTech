@@ -758,8 +758,8 @@ cover.machine_controller.mode.cover_east=Control Cover (East)
 cover.machine_controller.mode.cover_west=Control Cover (West)
 
 # %s is a localized material name
-item.material.oreprefix.oreBlackgranite=Granite %s Ore
-item.material.oreprefix.oreRedgranite=Granite %s Ore
+item.material.oreprefix.oreBlackgranite=Black Granite %s Ore
+item.material.oreprefix.oreRedgranite=Red Granite %s Ore
 item.material.oreprefix.oreMarble=Marble %s Ore
 item.material.oreprefix.oreBasalt=Basalt %s Ore
 item.material.oreprefix.oreSand=Sand %s Ore
@@ -774,6 +774,10 @@ item.material.oreprefix.orePoor=Poor %s Ore
 item.material.oreprefix.oreEndstone=End %s Ore
 item.material.oreprefix.oreEnd=End %s Ore
 item.material.oreprefix.ore=%s Ore
+item.material.oreprefix.oreGranite=Granite %s Ore
+item.material.oreprefix.oreDiorite=Diorite %s Ore
+item.material.oreprefix.oreAndesite=Andesite %s Ore
+item.material.oreprefix.oreBedrock=Bedrock %s Ore
 item.material.oreprefix.crushedCentrifuged=Centrifuged %s Ore
 item.material.oreprefix.crushedPurified=Purified %s Ore
 item.material.oreprefix.crushed=Crushed %s Ore
