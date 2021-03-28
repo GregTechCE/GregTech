@@ -16,15 +16,25 @@ import net.minecraftforge.fml.common.FMLCommonHandler;
 public class GregTechDataFixers {
 
     /**
-     * The current data format version for all of GregTech. Increment this when breaking changes are made and a new
-     * data fixer needs to be written. All defined version numbers are listed below:
-     * <ul>
-     *     <li>-1: before addition of granite GregTech material</li>
-     *     <li>0: added granite material</li>
-     *     <li>1: new meta block ID system</li>
-     * </ul>
+     * Data version corresponding to before the granite GregTech material was added.
      */
-    public static final int DATA_VERSION = 1;
+    public static final int V_PRE_GRANITE = -1;
+
+    /**
+     * Data version corresponding to after the granite GregTech material was added.
+     */
+    public static final int V0_POST_GRANITE = 0;
+
+    /**
+     * Data version corresponding to after the implementation of the new meta block ID system.
+     */
+    public static final int V1_META_BLOCK_ID_REWORK = 1;
+
+    /**
+     * The current data format version for all of GregTech. Increment this when breaking changes are made and a new
+     * data fixer needs to be written. All defined version numbers are listed in {@link GregTechDataFixers}.
+     */
+    public static final int DATA_VERSION = V1_META_BLOCK_ID_REWORK;
 
     public static void init() {
         CompoundDataFixer fmlFixer = FMLCommonHandler.instance().getDataFixer();

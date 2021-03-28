@@ -10,7 +10,7 @@ public class CompoundDataFixerGetVersionVisitor extends SafeMethodVisitor {
     public static final String TARGET_CLASS_NAME = "net/minecraftforge/common/util/CompoundDataFixer$1";
     public static final ObfMapping TARGET_METHOD = new ObfMapping(TARGET_CLASS_NAME, "getVersion", "(Ljava/lang/String;)I");
 
-    private static final String WORLD_DATA_HOOKS_OWNER = "gregtech/common/datafix/WorldDataHooks";
+    private static final String WORLD_DATA_HOOKS_OWNER = "gregtech/common/datafix/fixes/metablockid/WorldDataHooks";
     private static final String WORLD_DATA_HOOKS_METHOD_NAME = "getFallbackModVersion";
     private static final String WORLD_DATA_HOOKS_SIGNATURE = "(Ljava/lang/String;)I";
 

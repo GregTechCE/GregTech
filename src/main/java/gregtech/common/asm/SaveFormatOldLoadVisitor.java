@@ -6,7 +6,7 @@ import gregtech.common.asm.util.SafeMethodVisitor;
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
 
-public class SafeFormatOldLoadVisitor extends SafeMethodVisitor {
+public class SaveFormatOldLoadVisitor extends SafeMethodVisitor {
 
     public static final String TARGET_CLASS_NAME = "net/minecraft/world/storage/SaveFormatOld";
     public static final ObfMapping TARGET_METHOD = new ObfMapping(TARGET_CLASS_NAME, "loadAndFix", // forge method
@@ -16,13 +16,13 @@ public class SafeFormatOldLoadVisitor extends SafeMethodVisitor {
     private static final ObfMapping LOAD_COMPRESSED_METHOD = new ObfMapping(LOAD_COMPRESSED_OWNER, "func_74796_a",
             "(Ljava/io/InputStream;)Lnet/minecraft/nbt/NBTTagCompound;").toRuntime();
 
-    private static final String WORLD_DATA_HOOKS_OWNER = "gregtech/common/datafix/WorldDataHooks";
+    private static final String WORLD_DATA_HOOKS_OWNER = "gregtech/common/datafix/fixes/metablockid/WorldDataHooks";
     private static final String WORLD_DATA_HOOKS_METHOD_NAME = "onWorldLoad";
     private static final String WORLD_DATA_HOOKS_SIGNATURE = "(Lnet/minecraft/world/storage/SaveHandler;Lnet/minecraft/nbt/NBTTagCompound;)V";
 
     private State state = State.WAITING_FOR_READ;
 
-    public SafeFormatOldLoadVisitor(MethodVisitor mv) {
+    public SaveFormatOldLoadVisitor(MethodVisitor mv) {
         super(Opcodes.ASM5, mv);
     }
 

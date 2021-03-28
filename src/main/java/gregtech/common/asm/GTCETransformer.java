@@ -38,7 +38,7 @@ public class GTCETransformer implements IClassTransformer, Opcodes {
         if (internalName.equals(SafeFormatOldLoadVisitor.TARGET_CLASS_NAME)) {
             ClassReader classReader = new ClassReader(basicClass);
             ClassWriter classWriter = new ClassWriter(ClassWriter.COMPUTE_FRAMES | ClassWriter.COMPUTE_MAXS);
-            classReader.accept(new TargetClassVisitor(classWriter, SafeFormatOldLoadVisitor.TARGET_METHOD, SafeFormatOldLoadVisitor::new), 0);
+            classReader.accept(new TargetClassVisitor(classWriter, SaveFormatOldLoadVisitor.TARGET_METHOD, SaveFormatOldLoadVisitor::new), 0);
             return classWriter.toByteArray();
         }
         if (internalName.equals(CompoundDataFixerGetVersionVisitor.TARGET_CLASS_NAME)) {

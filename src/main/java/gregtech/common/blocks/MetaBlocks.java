@@ -2,7 +2,6 @@ package gregtech.common.blocks;
 
 import com.google.common.collect.ImmutableMap;
 import gnu.trove.map.TIntObjectMap;
-import gnu.trove.map.hash.TIntObjectHashMap;
 import gregtech.api.GTValues;
 import gregtech.api.GregTechAPI;
 import gregtech.api.block.machines.BlockMachine;
@@ -109,9 +108,7 @@ public class MetaBlocks {
     public static BlockCrusherBlade CRUSHER_BLADE;
 
     public static Map<DustMaterial, BlockCompressed> COMPRESSED = new HashMap<>();
-    public static TIntObjectMap<int[]> COMPRESSED_OLD = new TIntObjectHashMap<>();
     public static Map<IngotMaterial, BlockSurfaceRockDeprecated> SURFACE_ROCKS = new HashMap<>();
-    public static TIntObjectMap<int[]> SURFACE_ROCKS_OLD = new TIntObjectHashMap<>();
     public static BlockSurfaceRockNew SURFACE_ROCK_NEW;
     public static Map<SolidMaterial, BlockFrame> FRAMES = new HashMap<>();
     public static Collection<BlockOre> ORES = new HashSet<>();
@@ -175,16 +172,10 @@ public class MetaBlocks {
         createGeneratedBlock(
             material -> material instanceof DustMaterial && !OrePrefix.block.isIgnored(material),
             MetaBlocks::createCompressedBlock);
-        createGeneratedBlockDeprecated(
-            material -> material instanceof DustMaterial && !OrePrefix.block.isIgnored(material),
-            generateInto(COMPRESSED_OLD));
 
         createGeneratedBlock(
             material -> material instanceof IngotMaterial && material.hasFlag(MatFlags.GENERATE_ORE),
             MetaBlocks::createSurfaceRockBlock);
-        createGeneratedBlockDeprecated(
-            material -> material instanceof IngotMaterial && material.hasFlag(MatFlags.GENERATE_ORE),
-            generateInto(SURFACE_ROCKS_OLD));
 
         for (Material material : Material.MATERIAL_REGISTRY) {
             if (material instanceof DustMaterial &&

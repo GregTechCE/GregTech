@@ -1,6 +1,7 @@
 package gregtech.common.datafix.fixes;
 
-import gregtech.common.datafix.WorldDataHooks;
+import gregtech.common.datafix.fixes.metablockid.PreGraniteMetaBlockIdFixer;
+import gregtech.common.datafix.fixes.metablockid.WorldDataHooks;
 import gregtech.common.datafix.util.DataFixHelper;
 import gregtech.common.datafix.util.RemappedBlock;
 import net.minecraft.nbt.NBTTagCompound;
@@ -15,16 +16,21 @@ public class Fix0PostGraniteMetaBlockShiftInWorld implements IFixableData {
 
     @Override
     public NBTTagCompound fixTagCompound(NBTTagCompound compound) {
+        if (!WorldDataHooks.isFixerAvailable()) {
+            return compound;
+        }
+
+        PreGraniteMetaBlockIdFixer fixer = (PreGraniteMetaBlockIdFixer) WorldDataHooks.getMetaBlockIdFixer();
         DataFixHelper.rewriteBlocks(compound, (id, data) -> {
-            int index = WorldDataHooks.getOldCompressedIndex(id);
+            int index = fixer.getRemapCacheCompressed().getOldIndex(id);
             if (index == -1) {
                 return null;
             }
-            RemappedBlock remapped = Fix0PostGraniteMetaBlockShift.remap(index, data);
+            RemappedBlock remapped = fixer.remapCompressedPreGraniteToPost(index, data);
             if (remapped == null) {
                 return null;
             }
-            return new RemappedBlock(WorldDataHooks.getOldCompressedId(remapped.id), remapped.data);
+            return new RemappedBlock(fixer.getRemapCacheCompressed().getOldId(remapped.id), remapped.data);
         });
         return compound;
     }
