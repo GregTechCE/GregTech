@@ -7,7 +7,6 @@ import net.minecraft.world.chunk.NibbleArray;
 import net.minecraftforge.common.util.Constants;
 
 import javax.annotation.Nullable;
-import java.util.ListIterator;
 
 public class DataFixHelper {
 
@@ -31,9 +30,8 @@ public class DataFixHelper {
     }
 
     public static void rewriteCompoundTags(NBTTagList tag, CompoundRewriter rewriter) {
-        ListIterator<NBTBase> iter = tag.tagList.listIterator();
-        while (iter.hasNext()) {
-            NBTBase childTag = iter.next();
+        for (int i = 0; i < tag.tagCount(); i++) {
+            NBTBase childTag = tag.get(i);
             switch (childTag.getId()) {
                 case Constants.NBT.TAG_LIST:
                     rewriteCompoundTags((NBTTagList) childTag, rewriter);
@@ -43,7 +41,7 @@ public class DataFixHelper {
                     rewriteCompoundTags(childTagCompound, rewriter);
                     childTagCompound = rewriter.rewrite(childTagCompound);
                     if (childTagCompound != null) {
-                        iter.set(childTagCompound);
+                        tag.set(i, childTagCompound);
                     }
                     break;
             }
