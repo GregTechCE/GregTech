@@ -14,6 +14,7 @@ import gregtech.api.metatileentity.ITieredMetaTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.MetaTileEntityHolder;
 import gregtech.api.render.Textures;
+import gregtech.api.util.GTLog;
 import gregtech.api.util.GTUtility;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.resources.I18n;
@@ -26,6 +27,7 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextComponentTranslation;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants.NBT;
 import net.minecraftforge.items.IItemHandler;
@@ -134,6 +136,12 @@ public class MetaTileEntityQuantumChest extends MetaTileEntity implements ITiere
     public void addInformation(ItemStack stack, @Nullable World player, List<String> tooltip, boolean advanced) {
         super.addInformation(stack, player, tooltip, advanced);
         tooltip.add(I18n.format("gregtech.machine.quantum_chest.capacity", maxStoredItems));
+        NBTTagCompound compound = stack.getTagCompound();
+        if (compound != null && compound.hasKey("ItemStack")) {
+            tooltip.add(I18n.format("gregtech.machine.quantum_chest.tooltip.item",
+                    I18n.format(new ItemStack(compound.getCompoundTag("ItemStack")).getUnlocalizedName() + ".name")));
+            tooltip.add(I18n.format("gregtech.machine.quantum_chest.tooltip.count", compound.getLong("ItemAmount")));
+        }
     }
 
     @Override
@@ -176,6 +184,37 @@ public class MetaTileEntityQuantumChest extends MetaTileEntity implements ITiere
                 this.itemsStoredInside = data.getLong("ItemAmount");
             }
         }
+    }
+
+    @Override
+    public void initFromItemStackData(NBTTagCompound itemStack) {
+        super.initFromItemStackData(itemStack);
+        if (itemStack.hasKey("ItemStack", NBT.TAG_COMPOUND)) {
+            this.itemStack = new ItemStack(itemStack.getCompoundTag("ItemStack"));
+            if (!this.itemStack.isEmpty()) {
+                this.itemsStoredInside = itemStack.getLong("ItemAmount");
+            }
+        } else if (itemStack.hasKey("PartialStack", NBT.TAG_COMPOUND)) {
+            importItems.setStackInSlot(0, new ItemStack(itemStack.getCompoundTag("PartialStack")));
+        }
+    }
+
+    @Override
+    public void writeItemStackData(NBTTagCompound itemStack) {
+        super.writeItemStackData(itemStack);
+        if (!this.itemStack.isEmpty()) {
+            itemStack.setTag("ItemStack", this.itemStack.writeToNBT(new NBTTagCompound()));
+            itemStack.setLong("ItemAmount", itemsStoredInside + 64);
+        } else {
+            ItemStack partialStack = exportItems.extractItem(0, 64, false);
+            GTLog.logger.info("partialStack: " + partialStack.toString());
+            if (!partialStack.isEmpty()) {
+                itemStack.setTag("PartialStack", partialStack.writeToNBT(new NBTTagCompound()));
+            }
+        }
+        this.itemStack = ItemStack.EMPTY;
+        this.itemsStoredInside = 0;
+        exportItems.setStackInSlot(0, ItemStack.EMPTY);
     }
 
     @Override
