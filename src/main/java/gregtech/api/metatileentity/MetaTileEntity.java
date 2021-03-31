@@ -1230,8 +1230,9 @@ public abstract class MetaTileEntity implements ICoverable {
     }
 
     /**
-     * Override this if the MTE will keep its Item inventory on-break
-     * If this is carelessly overridden and set to true, then Items will be voided.
+     * Override this if the MTE will keep its Item inventory on-break.
+     * If this is overridden to return True, you MUST take care to handle
+     * the ItemStacks in the MTE's inventory otherwise they will be voided on break.
      *
      * @return True if MTE inventory is kept as an ItemStack, false otherwise
      */

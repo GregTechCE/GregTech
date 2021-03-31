@@ -29,6 +29,10 @@ import net.minecraft.client.network.NetworkPlayerInfo;
 import net.minecraft.client.renderer.color.IBlockColor;
 import net.minecraft.client.renderer.color.IItemColor;
 import net.minecraft.init.Items;
+import net.minecraft.client.resources.I18n;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.ContainerPlayer;
+import net.minecraft.inventory.ContainerWorkbench;
 import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
@@ -149,7 +153,7 @@ public class ClientProxy extends CommonProxy {
     }
 
     @SubscribeEvent
-    public static void addMaterialFormulaHandler(ItemTooltipEvent event) {
+    public static void addTooltip(ItemTooltipEvent event) {
         ItemStack itemStack = event.getItemStack();
 
         // Handles Item tooltips
@@ -181,6 +185,14 @@ public class ClientProxy extends CommonProxy {
             }
             if (chemicalFormula != null && !chemicalFormula.isEmpty())
                 event.getToolTip().add(1, ChatFormatting.GRAY.toString() + chemicalFormula);
+        }
+        final EntityPlayer player = event.getEntityPlayer();
+        if (player != null
+                && ((player.openContainer instanceof ContainerWorkbench
+                && ((ContainerWorkbench) player.openContainer).craftResult.getStackInSlot(0) == event.getItemStack())
+                || (player.openContainer instanceof ContainerPlayer
+                && ((ContainerPlayer) player.openContainer).craftResult.getStackInSlot(0) == event.getItemStack()))) {
+            event.getToolTip().add(I18n.format("gregtech.universal.clear_nbt_recipe.tooltip"));
         }
     }
 

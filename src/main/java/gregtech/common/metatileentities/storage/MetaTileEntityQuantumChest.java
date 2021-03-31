@@ -14,7 +14,6 @@ import gregtech.api.metatileentity.ITieredMetaTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.MetaTileEntityHolder;
 import gregtech.api.render.Textures;
-import gregtech.api.util.GTLog;
 import gregtech.api.util.GTUtility;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.resources.I18n;
@@ -47,6 +46,10 @@ public class MetaTileEntityQuantumChest extends MetaTileEntity implements ITiere
     private final long maxStoredItems;
     private ItemStack itemStack = ItemStack.EMPTY;
     private long itemsStoredInside = 0L;
+
+    private static final String NBT_ITEMSTACK = "ItemStack";
+    private static final String NBT_PARTIALSTACK = "PartialStack";
+    private static final String NBT_ITEMCOUNT = "ItemAmount";
 
     public MetaTileEntityQuantumChest(ResourceLocation metaTileEntityId, int tier, long maxStoredItems) {
         super(metaTileEntityId);
@@ -140,12 +143,12 @@ public class MetaTileEntityQuantumChest extends MetaTileEntity implements ITiere
         if (compound != null) {
             String translationKey = null;
             long count = 0;
-            if (compound.hasKey("ItemStack")) {
-                translationKey = new ItemStack(compound.getCompoundTag("ItemStack")).getUnlocalizedName() + ".name";
-                count = compound.getLong("ItemAmount");
-            } else if (compound.hasKey("PartialStack")) {
-                ItemStack tempStack = new ItemStack(compound.getCompoundTag("PartialStack"));
-                translationKey = tempStack.getUnlocalizedName() + ".name";
+            if (compound.hasKey(NBT_ITEMSTACK)) {
+                translationKey = new ItemStack(compound.getCompoundTag(NBT_ITEMSTACK)).getDisplayName();
+                count = compound.getLong(NBT_ITEMCOUNT);
+            } else if (compound.hasKey(NBT_PARTIALSTACK)) {
+                ItemStack tempStack = new ItemStack(compound.getCompoundTag(NBT_PARTIALSTACK));
+                translationKey = tempStack.getDisplayName();
                 count = tempStack.getCount();
             }
             if (translationKey != null) {
@@ -181,8 +184,8 @@ public class MetaTileEntityQuantumChest extends MetaTileEntity implements ITiere
     public NBTTagCompound writeToNBT(NBTTagCompound data) {
         NBTTagCompound tagCompound = super.writeToNBT(data);
         if (!itemStack.isEmpty() && itemsStoredInside > 0L) {
-            tagCompound.setTag("ItemStack", itemStack.writeToNBT(new NBTTagCompound()));
-            tagCompound.setLong("ItemAmount", itemsStoredInside);
+            tagCompound.setTag(NBT_ITEMSTACK, itemStack.writeToNBT(new NBTTagCompound()));
+            tagCompound.setLong(NBT_ITEMCOUNT, itemsStoredInside);
         }
         return tagCompound;
     }
@@ -190,10 +193,10 @@ public class MetaTileEntityQuantumChest extends MetaTileEntity implements ITiere
     @Override
     public void readFromNBT(NBTTagCompound data) {
         super.readFromNBT(data);
-        if (data.hasKey("ItemStack", NBT.TAG_COMPOUND)) {
-            this.itemStack = new ItemStack(data.getCompoundTag("ItemStack"));
+        if (data.hasKey(NBT_ITEMSTACK, NBT.TAG_COMPOUND)) {
+            this.itemStack = new ItemStack(data.getCompoundTag(NBT_ITEMSTACK));
             if (!itemStack.isEmpty()) {
-                this.itemsStoredInside = data.getLong("ItemAmount");
+                this.itemsStoredInside = data.getLong(NBT_ITEMCOUNT);
             }
         }
     }
@@ -201,13 +204,13 @@ public class MetaTileEntityQuantumChest extends MetaTileEntity implements ITiere
     @Override
     public void initFromItemStackData(NBTTagCompound itemStack) {
         super.initFromItemStackData(itemStack);
-        if (itemStack.hasKey("ItemStack", NBT.TAG_COMPOUND)) {
-            this.itemStack = new ItemStack(itemStack.getCompoundTag("ItemStack"));
+        if (itemStack.hasKey(NBT_ITEMSTACK, NBT.TAG_COMPOUND)) {
+            this.itemStack = new ItemStack(itemStack.getCompoundTag(NBT_ITEMSTACK));
             if (!this.itemStack.isEmpty()) {
-                this.itemsStoredInside = itemStack.getLong("ItemAmount");
+                this.itemsStoredInside = itemStack.getLong(NBT_ITEMCOUNT);
             }
-        } else if (itemStack.hasKey("PartialStack", NBT.TAG_COMPOUND)) {
-            importItems.setStackInSlot(0, new ItemStack(itemStack.getCompoundTag("PartialStack")));
+        } else if (itemStack.hasKey(NBT_PARTIALSTACK, NBT.TAG_COMPOUND)) {
+            importItems.setStackInSlot(0, new ItemStack(itemStack.getCompoundTag(NBT_PARTIALSTACK)));
         }
     }
 
@@ -215,13 +218,12 @@ public class MetaTileEntityQuantumChest extends MetaTileEntity implements ITiere
     public void writeItemStackData(NBTTagCompound itemStack) {
         super.writeItemStackData(itemStack);
         if (!this.itemStack.isEmpty()) {
-            itemStack.setTag("ItemStack", this.itemStack.writeToNBT(new NBTTagCompound()));
-            itemStack.setLong("ItemAmount", itemsStoredInside + 64);
+            itemStack.setTag(NBT_ITEMSTACK, this.itemStack.writeToNBT(new NBTTagCompound()));
+            itemStack.setLong(NBT_ITEMCOUNT, itemsStoredInside + this.itemStack.getMaxStackSize());
         } else {
             ItemStack partialStack = exportItems.extractItem(0, 64, false);
-            GTLog.logger.info("partialStack: " + partialStack.toString());
             if (!partialStack.isEmpty()) {
-                itemStack.setTag("PartialStack", partialStack.writeToNBT(new NBTTagCompound()));
+                itemStack.setTag(NBT_PARTIALSTACK, partialStack.writeToNBT(new NBTTagCompound()));
             }
         }
         this.itemStack = ItemStack.EMPTY;

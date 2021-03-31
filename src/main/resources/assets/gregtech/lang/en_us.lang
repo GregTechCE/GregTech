@@ -3015,3 +3015,5 @@ gregtech.command.util.hand.tool_stats=Tool Stats Class: %s
 gregtech.command.util.hand.meta_item=Meta Item Name: %s
 gregtech.command.util.hand.not_a_player=This command is only usable by a player.
 gregtech.command.util.hand.no_item=You must hold something in mainhand before executing this command.
+
+gregtech.universal.clear_nbt_recipe.tooltip=§cThis will destroy all contents!
