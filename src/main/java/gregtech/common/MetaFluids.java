@@ -81,8 +81,8 @@ public class MetaFluids {
         Materials.DistilledWater.setMaterialFluid(DISTILLED_WATER);
         fluidSprites.add(AUTO_GENERATED_FLUID_TEXTURE);
 
-        FluidTooltipUtil.registerTooltip(FluidRegistry.WATER, "");
-        FluidTooltipUtil.registerTooltip(DISTILLED_WATER, "");
+        FluidTooltipUtil.registerTooltip(FluidRegistry.WATER, FluidTooltipUtil.getWaterTooltip());
+        FluidTooltipUtil.registerTooltip(DISTILLED_WATER, FluidTooltipUtil.getWaterTooltip());
 
         //alternative names for forestry fluids
         setAlternativeFluidName(Materials.Ethanol, FluidType.NORMAL, "bio.ethanol");

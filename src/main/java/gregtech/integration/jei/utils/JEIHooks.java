@@ -10,6 +10,7 @@ import java.util.List;
  * Class used for code injection into JEI.
  * Not intended for normal use within GTCE.
  */
+@SuppressWarnings("unused")
 public class JEIHooks {
 
     /**
