@@ -30,6 +30,9 @@ import java.util.function.LongSupplier;
 
 public abstract class AbstractRecipeLogic extends MTETrait implements IWorkable {
 
+    private static final String ALLOW_OVERCLOCKING = "AllowOverclocking";
+    private static final String OVERCLOCK_VOLTAGE = "OverclockVoltage";
+
     public final RecipeMap<?> recipeMap;
 
     protected boolean forceRecipeRecheck;
@@ -450,8 +453,8 @@ public abstract class AbstractRecipeLogic extends MTETrait implements IWorkable 
     public NBTTagCompound serializeNBT() {
         NBTTagCompound compound = new NBTTagCompound();
         compound.setBoolean("WorkEnabled", workingEnabled);
-        compound.setBoolean("AllowOverclocking", allowOverclocking);
-        compound.setLong("OverclockVoltage", this.overclockVoltage);
+        compound.setBoolean(ALLOW_OVERCLOCKING, allowOverclocking);
+        compound.setLong(OVERCLOCK_VOLTAGE, this.overclockVoltage);
         if (progressTime > 0) {
             compound.setInteger("Progress", progressTime);
             compound.setInteger("MaxProgress", maxProgressTime);
@@ -474,11 +477,11 @@ public abstract class AbstractRecipeLogic extends MTETrait implements IWorkable 
     public void deserializeNBT(NBTTagCompound compound) {
         this.workingEnabled = compound.getBoolean("WorkEnabled");
         this.progressTime = compound.getInteger("Progress");
-        if(compound.hasKey("AllowOverclocking")) {
-            this.allowOverclocking = compound.getBoolean("AllowOverclocking");
+        if(compound.hasKey(ALLOW_OVERCLOCKING)) {
+            this.allowOverclocking = compound.getBoolean(ALLOW_OVERCLOCKING);
         }
-        if (compound.hasKey("OverclockVoltage")) {
-            this.overclockVoltage = compound.getLong("OverclockVoltage");
+        if (compound.hasKey(OVERCLOCK_VOLTAGE)) {
+            this.overclockVoltage = compound.getLong(OVERCLOCK_VOLTAGE);
         } else {
             // Calculate overclock voltage based on old allow flag
             this.overclockVoltage = this.allowOverclocking ? getMaxVoltage() : 0;

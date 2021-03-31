@@ -327,7 +327,7 @@ public class SimpleMachineMetaTileEntity extends WorkableTieredMetaTileEntity im
             .bindPlayerInventory(player.inventory);
 
         int leftButtonStartX = 7;
-        int rightButtonStartX = 176 - 7 - 20;
+        int rightButtonStartX = 176 - 7 - 24;
         if (workable.recipeMap instanceof RecipeMapWithConfigButton) {
             leftButtonStartX += ((RecipeMapWithConfigButton) workable.recipeMap).getLeftButtonOffset();
             rightButtonStartX -= ((RecipeMapWithConfigButton) workable.recipeMap).getRightButtonOffset();
@@ -345,7 +345,7 @@ public class SimpleMachineMetaTileEntity extends WorkableTieredMetaTileEntity im
                 .setTooltipText("gregtech.gui.fluid_auto_output.tooltip"));
         }
 
-        builder.widget(new CycleButtonWidget(rightButtonStartX, 60, 20, 20,
+        builder.widget(new CycleButtonWidget(rightButtonStartX, 60, 24, 20,
                 workable.getAvailableOverclockingTiers(), workable::getOverclockTier, workable::setOverclockTier)
                 .setTooltipHoverString("gregtech.gui.overclock.description"));
 
