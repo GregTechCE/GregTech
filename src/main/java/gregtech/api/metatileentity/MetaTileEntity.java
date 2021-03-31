@@ -1228,4 +1228,14 @@ public abstract class MetaTileEntity implements ICoverable {
     public float getBlockResistance() {
         return 6.0f;
     }
+
+    /**
+     * Override this if the MTE will keep its Item inventory on-break
+     * If this is carelessly overridden and set to true, then Items will be voided.
+     *
+     * @return True if MTE inventory is kept as an ItemStack, false otherwise
+     */
+    public boolean keepsInventory() {
+        return false;
+    }
 }

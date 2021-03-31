@@ -27,7 +27,6 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextComponentTranslation;
-import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants.NBT;
 import net.minecraftforge.items.IItemHandler;
@@ -136,11 +135,24 @@ public class MetaTileEntityQuantumChest extends MetaTileEntity implements ITiere
     public void addInformation(ItemStack stack, @Nullable World player, List<String> tooltip, boolean advanced) {
         super.addInformation(stack, player, tooltip, advanced);
         tooltip.add(I18n.format("gregtech.machine.quantum_chest.capacity", maxStoredItems));
+
         NBTTagCompound compound = stack.getTagCompound();
-        if (compound != null && compound.hasKey("ItemStack")) {
-            tooltip.add(I18n.format("gregtech.machine.quantum_chest.tooltip.item",
-                    I18n.format(new ItemStack(compound.getCompoundTag("ItemStack")).getUnlocalizedName() + ".name")));
-            tooltip.add(I18n.format("gregtech.machine.quantum_chest.tooltip.count", compound.getLong("ItemAmount")));
+        if (compound != null) {
+            String translationKey = null;
+            long count = 0;
+            if (compound.hasKey("ItemStack")) {
+                translationKey = new ItemStack(compound.getCompoundTag("ItemStack")).getUnlocalizedName() + ".name";
+                count = compound.getLong("ItemAmount");
+            } else if (compound.hasKey("PartialStack")) {
+                ItemStack tempStack = new ItemStack(compound.getCompoundTag("PartialStack"));
+                translationKey = tempStack.getUnlocalizedName() + ".name";
+                count = tempStack.getCount();
+            }
+            if (translationKey != null) {
+                tooltip.add(I18n.format("gregtech.machine.quantum_chest.tooltip.item",
+                        I18n.format(translationKey)));
+                tooltip.add(I18n.format("gregtech.machine.quantum_chest.tooltip.count", count));
+            }
         }
     }
 
@@ -229,6 +241,11 @@ public class MetaTileEntityQuantumChest extends MetaTileEntity implements ITiere
                 .setBackgroundTexture(GuiTextures.SLOT, GuiTextures.OUT_SLOT_OVERLAY))
             .bindPlayerInventory(entityPlayer.inventory)
             .build(getHolder(), entityPlayer);
+    }
+
+    @Override
+    public boolean keepsInventory() {
+        return true;
     }
 
     private class QuantumChestItemHandler implements IItemHandler {
