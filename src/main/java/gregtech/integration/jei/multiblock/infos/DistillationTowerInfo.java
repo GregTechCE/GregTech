@@ -44,7 +44,7 @@ public class DistillationTowerInfo extends MultiblockInfoPage {
     }
 
     @Override
-    public float getZoom() {
+    public float getDefaultZoom() {
         return 0.7f;
     }
 }
