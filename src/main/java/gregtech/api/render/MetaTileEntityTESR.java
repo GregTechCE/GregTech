@@ -46,36 +46,44 @@ public class MetaTileEntityTESR extends TileEntitySpecialRenderer<MetaTileEntity
                     ((IRenderMetaTileEntity) cover).renderMetaTileEntityDynamic(x, y, z, partialTicks);
                 }
             }
-            if (coverFast.size() > 0) {
-                Matrix4 translation = (new Matrix4()).translate(x, y, z);
-                Tessellator tessellator = Tessellator.getInstance();
-                BufferBuilder buffer = tessellator.getBuffer();
-                this.bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
-                RenderHelper.disableStandardItemLighting();
-                GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-                GlStateManager.enableBlend();
-
-                if (Minecraft.isAmbientOcclusionEnabled()) {
-                    GlStateManager.shadeModel(GL11.GL_SMOOTH);
-                }
-                else {
-                    GlStateManager.shadeModel(GL11.GL_FLAT);
-                }
-                buffer.begin(GL11.GL_QUADS, DefaultVertexFormats.BLOCK);
-
-                for (Tuple<IFastRenderMetaTileEntity, EnumFacing> tuple : coverFast) {
-                    CCRenderState renderState = CCRenderState.instance();
-                    renderState.reset();
-                    renderState.bind(buffer);
-                    renderState.setBrightness(te.getWorld(), te.getPos().offset(tuple.getSecond()));
-                    tuple.getFirst().renderMetaTileEntityFast(renderState, translation, partialTicks);
-                }
-
-                buffer.setTranslation(0, 0, 0);
-                tessellator.draw();
-                RenderHelper.enableStandardItemLighting();
+            if (!coverFast.isEmpty()) {
+                renderCoverFast(te, x, y, x, partialTicks, destroyStage, alpha, coverFast);
             }
         }
+    }
+
+    /** Used Specifically to render covers that are IFastRenderMetaTileEntity
+     * Adapted from renderTileEntityFastPart
+     * **/
+    private void renderCoverFast(MetaTileEntityHolder te, double x, double y, double z, float partialTicks, int destroyStage, float alpha, List<Tuple<IFastRenderMetaTileEntity, EnumFacing>> coverList) {
+
+        Matrix4 translation = (new Matrix4()).translate(x, y, z);
+        Tessellator tessellator = Tessellator.getInstance();
+        BufferBuilder buffer = tessellator.getBuffer();
+        this.bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
+        RenderHelper.disableStandardItemLighting();
+        GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+        GlStateManager.enableBlend();
+
+        if (Minecraft.isAmbientOcclusionEnabled()) {
+            GlStateManager.shadeModel(GL11.GL_SMOOTH);
+        }
+        else {
+            GlStateManager.shadeModel(GL11.GL_FLAT);
+        }
+        buffer.begin(GL11.GL_QUADS, DefaultVertexFormats.BLOCK);
+
+        for (Tuple<IFastRenderMetaTileEntity, EnumFacing> tuple : coverList) {
+            CCRenderState renderState = CCRenderState.instance();
+            renderState.reset();
+            renderState.bind(buffer);
+            renderState.setBrightness(te.getWorld(), te.getPos().offset(tuple.getSecond()));
+            tuple.getFirst().renderMetaTileEntityFast(renderState, translation, partialTicks);
+        }
+
+        buffer.setTranslation(0, 0, 0);
+        tessellator.draw();
+        RenderHelper.enableStandardItemLighting();
     }
 
     private void renderTileEntityFastPart(MetaTileEntityHolder te, double x, double y, double z, float partialTicks, int destroyStage) {
