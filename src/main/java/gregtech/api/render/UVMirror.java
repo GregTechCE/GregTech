@@ -3,13 +3,13 @@ package gregtech.api.render;
 import codechicken.lib.vec.uv.UV;
 import codechicken.lib.vec.uv.UVTransformation;
 
-public class UVmirror extends UVTransformation{
+public class UVMirror extends UVTransformation{
     public double minU;
     public double maxU;
     public double minV;
     public double maxV;
 
-    public UVmirror(double minU, double maxU, double minV, double maxV) {
+    public UVMirror(double minU, double maxU, double minV, double maxV) {
         this.minU = minU;
         this.maxU = maxU;
         this.minV = minV;

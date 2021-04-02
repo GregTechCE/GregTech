@@ -180,7 +180,7 @@ public class Textures {
         blockFace.loadCuboidFace(bounds, face.getIndex());
         UVTransformationList uvList = new UVTransformationList(new IconTransformation(sprite));
         if (face.getIndex() == 0) {
-            uvList.prepend(new UVmirror(0, 0, bounds.min.z, bounds.max.z));
+            uvList.prepend(new UVMirror(0, 0, bounds.min.z, bounds.max.z));
         }
         renderState.setPipeline(blockFace, 0, blockFace.verts.length,
                 ArrayUtils.addAll(ops, new TransformationList(translation), uvList));
