@@ -8,6 +8,7 @@ import codechicken.lib.vec.Cuboid6;
 import codechicken.lib.vec.Matrix4;
 import codechicken.lib.vec.TransformationList;
 import codechicken.lib.vec.uv.IconTransformation;
+import codechicken.lib.vec.uv.UVTransformationList;
 import gregtech.api.GTValues;
 import gregtech.api.util.GTLog;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
@@ -177,8 +178,12 @@ public class Textures {
     public static void renderFace(CCRenderState renderState, Matrix4 translation, IVertexOperation[] ops, EnumFacing face, Cuboid6 bounds, TextureAtlasSprite sprite) {
         BlockFace blockFace = blockFaces.get();
         blockFace.loadCuboidFace(bounds, face.getIndex());
+        UVTransformationList uvList = new UVTransformationList(new IconTransformation(sprite));
+        if (face.getIndex() == 0) {
+            uvList.prepend(new UVmirror(0, 0, bounds.min.z, bounds.max.z));
+        }
         renderState.setPipeline(blockFace, 0, blockFace.verts.length,
-            ArrayUtils.addAll(ops, new TransformationList(translation), new IconTransformation(sprite)));
+                ArrayUtils.addAll(ops, new TransformationList(translation), uvList));
         renderState.render();
     }
 }
