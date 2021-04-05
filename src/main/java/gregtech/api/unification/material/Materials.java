@@ -319,7 +319,7 @@ public class Materials {
     /**
      * Not possible to determine exact Components
      */
-    public static FluidMaterial SaltWater = new FluidMaterial(428, "salt_water", 255, FLUID, of(), 0);
+    public static FluidMaterial SaltWater = new FluidMaterial(428, "salt_water", 255, FLUID, of(new MaterialStack(Salt, 1), new MaterialStack(Water, 1)), DISABLE_DECOMPOSITION);
     public static RoughSolidMaterial Wood = new RoughSolidMaterial(196, "wood", 0x896727, WOOD, 0, of(), STD_SOLID | FLAMMABLE | NO_SMELTING | GENERATE_GEAR | GENERATE_LONG_ROD | GENERATE_FRAME, () -> OrePrefix.plank);
     public static FluidMaterial WoodGas = new FluidMaterial(370, "wood_gas", 0xB1A571, GAS, of(), STATE_GAS | DISABLE_DECOMPOSITION);
     public static FluidMaterial WoodVinegar = new FluidMaterial(371, "wood_vinegar", 0xA54B0F, FLUID, of(), 0);
@@ -331,7 +331,7 @@ public class Materials {
     public static FluidMaterial FermentedBiomass = new FluidMaterial(472, "fermented_biomass", 0x3F4B0D, FLUID, of(), 0);
 
     public static FluidMaterial Creosote = new FluidMaterial(316, "creosote", 0x804000, FLUID, of(), 0);
-    public static FluidMaterial Ethanol = new FluidMaterial(317, "ethanol", 0xFF8000, FLUID, of(), 0);
+    public static FluidMaterial Ethanol = new FluidMaterial(317, "ethanol", 0xFF8000, FLUID, of(new MaterialStack(Carbon, 2), new MaterialStack(Hydrogen, 6), new MaterialStack(Oxygen, 1)), DISABLE_DECOMPOSITION);
     public static FluidMaterial Fuel = new FluidMaterial(318, "fuel", 0xFFFF00, FLUID, of(), 0);
     public static FluidMaterial RocketFuel = new FluidMaterial(474, "rocket_fuel", 0xBDB78C, FLUID, of(), 0);
     public static FluidMaterial Glue = new FluidMaterial(319, "glue", 0xC8C400, FLUID, of(), 0);
@@ -393,7 +393,7 @@ public class Materials {
     public static FluidMaterial LPG = new FluidMaterial(177, "lpg", 0xFFFF00, FLUID, of(), 0);
     public static FluidMaterial CrackedLightFuel = new FluidMaterial(464, "cracked_light_fuel", 0xFFFF00, FLUID, of(), 0);
     public static FluidMaterial CrackedHeavyFuel = new FluidMaterial(465, "cracked_heavy_fuel", 0xFFFF00, FLUID, of(), 0);
-    public static FluidMaterial Toluene = new FluidMaterial(350, "toluene", 0xFFFFFF, FLUID, of(), 0);
+    public static FluidMaterial Toluene = new FluidMaterial(350, "toluene", 0xFFFFFF, FLUID, of(new MaterialStack(Carbon, 7), new MaterialStack(Hydrogen, 8)), DISABLE_DECOMPOSITION);
 
     /**
      * Second Degree Compounds
