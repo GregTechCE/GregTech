@@ -1,5 +1,14 @@
 ## Changelog
 
+### 1.14.0
+* Added Fluid Tooltips (#1519) - dan
+* Added partial overclocking (#1522) - Adrian Brock
+* Added config option for lossless cables to have lossy wires  (#1537) - dan
+* Added Zoom Functionality to Multiblock Previews (#1550) - dan
+* Fixed chests rendering issues (#1531) - ALongStringOfNumbers
+* Fixed NPE when something proxies fluid pipe capabilities (#1552) - Adrian Brock
+* Fixed TileEntities bottom side texture being rotated (#1556) - detav
+
 ### 1.13.0
 * Highlight: Chemistry update, Take Two (#1492) - dan
   * Full info: https://github.com/GregTechCE/GregTech/pull/1492
