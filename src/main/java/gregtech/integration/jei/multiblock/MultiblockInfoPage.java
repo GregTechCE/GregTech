@@ -12,4 +12,7 @@ public abstract class MultiblockInfoPage {
 
     public abstract String[] getDescription();
 
+    public float getDefaultZoom() {
+        return 1.0f;
+    }
 }
