@@ -131,7 +131,11 @@ public class BlockFluidPipe extends BlockMaterialPipe<FluidPipeType, FluidPipePr
         boolean isDestPipe = destinationHandler instanceof FluidPipeFluidHandler;
         if(isSourcePipe && isDestPipe) {
             float sourceThickness = selfTileEntity.getPipeType().getThickness();
-            float destThickness = getPipeTileEntity(otherTileEntity).getPipeType().getThickness();
+            IPipeTile<FluidPipeType, FluidPipeProperties> otherPipe = getPipeTileEntity(otherTileEntity);
+            if (otherPipe == null) {
+                return false;
+            }
+            float destThickness = otherPipe.getPipeType().getThickness();
             return sourceThickness > destThickness;
         }
         return true;
