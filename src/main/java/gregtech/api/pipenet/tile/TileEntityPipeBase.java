@@ -10,10 +10,13 @@ import gregtech.api.pipenet.block.BlockPipe;
 import gregtech.api.pipenet.block.IPipeType;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -21,6 +24,9 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.Constants.NBT;
 
 import javax.annotation.Nullable;
+
+import codechicken.lib.raytracer.CuboidRayTraceResult;
+
 import java.util.function.Consumer;
 
 public abstract class TileEntityPipeBase<PipeType extends Enum<PipeType> & IPipeType<NodeDataType>, NodeDataType> extends SyncedTileEntityBase implements IPipeTile<PipeType, NodeDataType> {
@@ -361,5 +367,28 @@ public abstract class TileEntityPipeBase<PipeType extends Enum<PipeType> & IPipe
     @Override
     public boolean shouldRefresh(World world, BlockPos pos, IBlockState oldState, IBlockState newSate) {
         return oldState.getBlock() != newSate.getBlock();
+    }
+
+    /**
+     * @return true to enable an invocation of createUI when right click is pressed
+     */
+    protected boolean openGUIOnRightClick() {
+        return false;
+    }
+
+    /**
+     * Called when player clicks on specific side of this pipe tile entity
+     *
+     * @return true if something happened, so animation will be played
+     */
+    public boolean onRightClick(EntityPlayer playerIn, EnumHand hand, EnumFacing facing, CuboidRayTraceResult hitResult) {
+        if (!playerIn.isSneaking() && openGUIOnRightClick()) {
+            World world = getWorld();
+            if (world != null && !world.isRemote) {
+                PipeTileUIFactory.INSTANCE.openUI(this, (EntityPlayerMP) playerIn);
+            }
+            return true;
+        }
+        return false;
     }
 }

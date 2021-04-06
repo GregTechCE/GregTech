@@ -1,12 +1,12 @@
 package gregtech.common.gui.widget;
 
+import gregtech.api.capability.IItemInfo;
 import gregtech.api.gui.GuiTextures;
 import gregtech.api.gui.IRenderContext;
 import gregtech.api.gui.Widget;
 import gregtech.api.util.ItemStackKey;
 import gregtech.api.util.Position;
 import gregtech.api.util.Size;
-import gregtech.common.inventory.IItemInfo;
 import gregtech.common.inventory.IItemList;
 import gregtech.common.inventory.IItemList.InsertMode;
 import net.minecraft.client.resources.I18n;

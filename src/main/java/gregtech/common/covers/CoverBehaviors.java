@@ -61,6 +61,11 @@ public class CoverBehaviors {
         registerBehavior(37, new ResourceLocation(GTValues.MODID, "machine_controller"), MetaItems.COVER_MACHINE_CONTROLLER, CoverMachineController::new);
         registerBehavior(38, new ResourceLocation(GTValues.MODID, "smart_filter"), MetaItems.SMART_FILTER, (tile, side) -> new CoverItemFilter(tile, side, "cover.smart_item_filter.title", Textures.SMART_FILTER_FILTER_OVERLAY, new SmartItemFilter()));
         registerBehavior(39, new ResourceLocation(GTValues.MODID, "facade"), MetaItems.COVER_FACADE, CoverFacade::new);
+
+        // Review: Would this conflict with mod addons?
+        // Review: Add other tiers
+        registerBehavior(40, new ResourceLocation(GTValues.MODID, "interface.lv"), MetaItems.INTERFACE_MODULE_LV, (tile, side) -> new CoverStorageNetworkInterface(tile, side, GTValues.LV, 8));
+        registerBehavior(41, new ResourceLocation(GTValues.MODID, "keep_in_stock.lv"), MetaItems.KEEP_IN_STOCK_MODULE_LV, (tile, side) -> new CoverKeepInStock(tile, side, GTValues.LV, 8));
     }
 
     public static void registerBehavior(int coverNetworkId, ResourceLocation coverId, MetaValueItem placerItem, BiFunction<ICoverable, EnumFacing, CoverBehavior> behaviorCreator) {

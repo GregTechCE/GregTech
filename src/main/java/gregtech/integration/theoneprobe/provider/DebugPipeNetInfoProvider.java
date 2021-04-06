@@ -10,6 +10,8 @@ import gregtech.api.pipenet.tile.TileEntityPipeBase;
 import gregtech.common.ConfigHolder;
 import gregtech.common.pipelike.fluidpipe.BlockFluidPipe;
 import gregtech.common.pipelike.fluidpipe.tile.TileEntityFluidPipeTickable;
+import gregtech.common.pipelike.inventory.BlockInventoryPipe;
+import gregtech.common.pipelike.inventory.net.InventoryPipeNet;
 import mcjty.theoneprobe.api.IProbeHitData;
 import mcjty.theoneprobe.api.IProbeInfo;
 import mcjty.theoneprobe.api.IProbeInfoProvider;
@@ -62,6 +64,12 @@ public class DebugPipeNetInfoProvider implements IProbeInfoProvider {
                     if (pipeTile instanceof TileEntityFluidPipeTickable) {
                         probeInfo.text("tile active: " + ((TileEntityFluidPipeTickable) pipeTile).isActive());
                     }
+                }
+                if (blockPipe instanceof BlockInventoryPipe) {
+                    InventoryPipeNet inventoryPipeNet = (InventoryPipeNet) pipeNet;
+                    inventoryPipeNet.getStorageNetwork().getHandlerInfos().forEach(handlerInfo -> {
+                        probeInfo.text("connection: " + handlerInfo.getAccessSide() + '@' + handlerInfo.getBlockPos() + " -> "+ handlerInfo.getAccessedBlockPos());
+                    });
                 }
             }
         }

@@ -4,6 +4,7 @@ import gregtech.api.GTValues;
 import gregtech.api.block.machines.MachineItemBlock;
 import gregtech.api.enchants.EnchantmentEnderDamage;
 import gregtech.api.items.metaitem.MetaItem;
+import gregtech.api.pipenet.block.ItemBlockPipe;
 import gregtech.api.recipes.crafttweaker.MetaItemBracketHandler;
 import gregtech.api.unification.material.type.DustMaterial;
 import gregtech.api.unification.material.type.Material;
@@ -56,6 +57,7 @@ public class CommonProxy {
         registry.register(MACHINE);
         registry.register(CABLE);
         registry.register(FLUID_PIPE);
+        registry.register(INVENTORY_PIPE);
 
         registry.register(FOAM);
         registry.register(REINFORCED_FOAM);
@@ -105,6 +107,7 @@ public class CommonProxy {
         registry.register(createItemBlock(MACHINE, MachineItemBlock::new));
         registry.register(createItemBlock(CABLE, ItemBlockCable::new));
         registry.register(createItemBlock(FLUID_PIPE, ItemBlockFluidPipe::new));
+        registry.register(createItemBlock(INVENTORY_PIPE, ItemBlockPipe::new));
 
         registry.register(createItemBlock(BOILER_CASING, VariantItemBlock::new));
         registry.register(createItemBlock(BOILER_FIREBOX_CASING, VariantItemBlock::new));

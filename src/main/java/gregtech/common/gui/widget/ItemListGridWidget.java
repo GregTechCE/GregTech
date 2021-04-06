@@ -1,12 +1,12 @@
 package gregtech.common.gui.widget;
 
+import gregtech.api.capability.IItemInfo;
 import gregtech.api.gui.INativeWidget;
 import gregtech.api.gui.Widget;
 import gregtech.api.gui.widgets.ScrollableListWidget;
 import gregtech.api.gui.widgets.WidgetGroup;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.ItemStackKey;
-import gregtech.common.inventory.IItemInfo;
 import gregtech.common.inventory.IItemList;
 import gregtech.common.inventory.IItemList.InsertMode;
 import gregtech.common.inventory.SimpleItemInfo;

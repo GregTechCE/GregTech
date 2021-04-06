@@ -10,13 +10,15 @@ import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 public class ItemSourceList implements IItemList, ITickable {
 
     protected final World world;
     protected final List<ItemSource> handlerInfoList = new CopyOnWriteArrayList<>();
-    protected final Map<ItemStackKey, NetworkItemInfo> itemInfoMap = new LinkedHashMap<>();
+    // Review: protect against CCME
+    protected final Map<ItemStackKey, NetworkItemInfo> itemInfoMap = new ConcurrentHashMap<>();
     private final Comparator<ItemSource> comparator = Comparator.comparing(ItemSource::getPriority);
     private final Set<ItemStackKey> storedItemsView = Collections.unmodifiableSet(itemInfoMap.keySet());
     protected Runnable itemListChangeCallback = null;
@@ -67,7 +69,9 @@ public class ItemSourceList implements IItemList, ITickable {
 
     @Override
     public int insertItem(ItemStackKey itemStack, int amount, boolean simulate, InsertMode insertMode) {
-        int amountToInsert = amount;
+        int amountToInsert = preInsert(itemStack, amount, simulate, insertMode);
+        if (amountToInsert == 0)
+            return 0;
         if (insertMode == InsertMode.HIGHEST_PRIORITY) {
             for (ItemSource itemSource : handlerInfoList) {
                 int inserted = itemSource.insertItem(itemStack, amountToInsert, simulate);
@@ -82,16 +86,35 @@ public class ItemSourceList implements IItemList, ITickable {
                 if (amountToInsert == 0) break;
             }
         }
-        return amount - amountToInsert;
+        return postInsert(itemStack, amount - amountToInsert, simulate, insertMode);
     }
 
     @Override
     public int extractItem(ItemStackKey itemStack, int amount, boolean simulate) {
+    	int amountToExtract = preExtract(itemStack, amount, simulate);
+    	if (amountToExtract == 0)
+    	    return 0;
         NetworkItemInfo itemInfo = (NetworkItemInfo) getItemInfo(itemStack);
         if (itemInfo == null) {
             return 0;
         }
-        return itemInfo.extractItem(amount, simulate);
+        return postExtract(itemStack, itemInfo.extractItem(amountToExtract, simulate), simulate);
+    }
+
+    protected int preInsert(ItemStackKey key, int amount, boolean simulate, InsertMode insertMode) {
+        return amount;
+    }
+
+    protected int postInsert(ItemStackKey key, int amount, boolean simulate, InsertMode insertMode) {
+        return amount;
+    }
+
+    protected int preExtract(ItemStackKey key, int amount, boolean simulate) {
+        return amount;
+    }
+
+    protected int postExtract(ItemStackKey key, int amount, boolean simulate) {
+        return amount;
     }
 
     public void notifyPriorityUpdated() {

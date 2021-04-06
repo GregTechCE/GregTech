@@ -165,6 +165,11 @@ public class MetaItem2 extends MaterialMetaItem {
 
         TURBINE_ROTOR = addItem(508, "turbine_rotor").addComponents(new TurbineRotorBehavior());
         COVER_FACADE = addItem(509, "cover.facade").addComponents(new FacadeItem()).disableModelLoading();
+
+        // Review: how do these numbers get assigned?
+        INTERFACE_MODULE_LV = addItem(600, "interface.module.lv");
+
+        KEEP_IN_STOCK_MODULE_LV = addItem(610, "keep_in_stock.module.lv");
     }
 
     public void registerRecipes() {

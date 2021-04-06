@@ -9,15 +9,18 @@ import net.minecraft.world.chunk.Chunk;
 import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
+import java.util.Collections;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.stream.Collectors;
 
 public abstract class TickableWorldPipeNet<NodeDataType, T extends PipeNet<NodeDataType> & ITickable> extends WorldPipeNet<NodeDataType, T> {
 
-    private Map<T, List<ChunkPos>> loadedChunksByPipeNet = new HashMap<>();
-    private List<T> tickingPipeNets = new ArrayList<>();
+    // Review: Protected against CCME (iteration/modification conflict)
+    private Map<T, List<ChunkPos>> loadedChunksByPipeNet = new ConcurrentHashMap<>();
+    private List<ITickable> tickingPipeNets = new CopyOnWriteArrayList<>();
 
     public TickableWorldPipeNet(String name) {
         super(name);
@@ -38,7 +41,8 @@ public abstract class TickableWorldPipeNet<NodeDataType, T extends PipeNet<NodeD
 
     public void onChunkLoaded(Chunk chunk) {
         ChunkPos chunkPos = chunk.getPos();
-        List<T> pipeNetsInThisChunk = this.pipeNetsByChunk.get(chunkPos);
+        // Review: NPE
+        List<T> pipeNetsInThisChunk = this.pipeNetsByChunk.getOrDefault(chunkPos, Collections.emptyList());
         for (T pipeNet : pipeNetsInThisChunk) {
             List<ChunkPos> loadedChunks = getOrCreateChunkListForPipeNet(pipeNet);
             if (loadedChunks.isEmpty()) {
@@ -50,7 +54,8 @@ public abstract class TickableWorldPipeNet<NodeDataType, T extends PipeNet<NodeD
 
     public void onChunkUnloaded(Chunk chunk) {
         ChunkPos chunkPos = chunk.getPos();
-        List<T> pipeNetsInThisChunk = this.pipeNetsByChunk.get(chunkPos);
+        // Review: NPE
+        List<T> pipeNetsInThisChunk = this.pipeNetsByChunk.getOrDefault(chunkPos, Collections.emptyList());
         for (T pipeNet : pipeNetsInThisChunk) {
             List<ChunkPos> loadedChunks = this.loadedChunksByPipeNet.get(pipeNet);
             if (loadedChunks != null && loadedChunks.contains(chunkPos)) {

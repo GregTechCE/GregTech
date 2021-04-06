@@ -201,7 +201,9 @@ public abstract class BlockPipe<PipeType extends Enum<PipeType> & IPipeType<Node
         if (rayTraceResult == null || pipeTile == null) {
             return false;
         }
-        return onPipeActivated(playerIn, hand, rayTraceResult, pipeTile);
+        if (!onPipeActivated(playerIn, hand, rayTraceResult, pipeTile))
+            return pipeTile.onRightClick(playerIn, hand, facing, rayTraceResult);
+        return true;
     }
 
     public boolean onPipeActivated(EntityPlayer entityPlayer, EnumHand hand, CuboidRayTraceResult hit, IPipeTile<PipeType, NodeDataType> pipeTile) {

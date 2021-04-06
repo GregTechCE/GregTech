@@ -9,27 +9,46 @@ import net.minecraft.world.World;
 import net.minecraft.world.storage.WorldSavedData;
 import net.minecraftforge.common.util.Constants.NBT;
 
+import java.lang.ref.WeakReference;
 import java.util.*;
 
 public abstract class WorldPipeNet<NodeDataType, T extends PipeNet<NodeDataType>> extends WorldSavedData {
 
-    private World world;
+    private WeakReference<World> worldRef = new WeakReference<>(null);
     protected boolean isFirstTick = true;
     protected List<T> pipeNets = new ArrayList<>();
     protected Map<ChunkPos, List<T>> pipeNetsByChunk = new HashMap<>();
+    // Used to do the old processing where a singleton is maintained
+    protected boolean old = false;
+
+    public static String getDataID(final String baseID, final World world) {
+        if (world == null || world.isRemote)
+            throw new RuntimeException("WorldPipeNet should only be created on the server!");
+        final int dimension = world.provider.getDimension();
+        return baseID + '.' + dimension;
+    }
 
     public WorldPipeNet(String name) {
         super(name);
     }
 
     public World getWorld() {
-        return world;
+        return this.worldRef.get();
     }
 
     protected void setWorldAndInit(World world) {
-        if (isFirstTick) {
-            this.world = world;
-            this.isFirstTick = false;
+        // The original way was to setup one WorldPipeNet
+        if (old) {
+            if (this.isFirstTick) {
+                this.worldRef = new WeakReference<World>(world);
+                this.isFirstTick = false;
+                onWorldSet();
+            }
+        }
+        // The correct way is to have to a WorldPipeNet per dimension
+        // which will change as the dimensions are loaded/unloaded
+        else if (world != this.worldRef.get()) {
+            this.worldRef = new WeakReference<World>(world);
             onWorldSet();
         }
     }

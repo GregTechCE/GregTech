@@ -3,6 +3,7 @@ package gregtech.common.metatileentities.storage;
 import com.google.common.collect.Lists;
 import gregtech.api.util.DummyContainer;
 import gregtech.common.inventory.itemsource.ItemSourceList;
+import gregtech.common.inventory.itemsource.sources.StorageNetworkItemSource;
 import gregtech.common.inventory.itemsource.sources.TileItemSource;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.InventoryCrafting;
@@ -165,6 +166,8 @@ public class CraftingRecipeResolver {
         for (EnumFacing side : EnumFacing.VALUES) {
             TileItemSource itemSource = new TileItemSource(world, blockPos, side);
             this.itemSourceList.addItemHandler(itemSource);
+            StorageNetworkItemSource storageNetworkItemSource = new StorageNetworkItemSource(world, blockPos, side);
+            this.itemSourceList.addItemHandler(storageNetworkItemSource);
         }
     }
 }

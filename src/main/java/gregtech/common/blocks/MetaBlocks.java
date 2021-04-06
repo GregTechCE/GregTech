@@ -37,8 +37,12 @@ import gregtech.common.pipelike.fluidpipe.FluidPipeProperties;
 import gregtech.common.pipelike.fluidpipe.FluidPipeType;
 import gregtech.common.pipelike.fluidpipe.tile.TileEntityFluidPipe;
 import gregtech.common.pipelike.fluidpipe.tile.TileEntityFluidPipeTickable;
+import gregtech.common.pipelike.inventory.BlockInventoryPipe;
+import gregtech.common.pipelike.inventory.tile.TileEntityInventoryPipe;
+import gregtech.common.pipelike.inventory.tile.TileEntityInventoryPipeTickable;
 import gregtech.common.render.CableRenderer;
 import gregtech.common.render.FluidPipeRenderer;
+import gregtech.common.render.InventoryPipeRenderer;
 import gregtech.common.render.tesr.TileEntityCrusherBladeRenderer;
 import gregtech.common.render.tesr.TileEntityRendererBase.TileEntityRenderBaseItem;
 import net.minecraft.block.Block;
@@ -81,6 +85,7 @@ public class MetaBlocks {
     public static BlockMachine MACHINE;
     public static BlockCable CABLE;
     public static BlockFluidPipe FLUID_PIPE;
+    public static BlockInventoryPipe INVENTORY_PIPE;
 
     public static BlockBoilerCasing BOILER_CASING;
     public static BlockFireboxCasing BOILER_FIREBOX_CASING;
@@ -120,6 +125,8 @@ public class MetaBlocks {
         CABLE.setRegistryName("cable");
         FLUID_PIPE = new BlockFluidPipe();
         FLUID_PIPE.setRegistryName("fluid_pipe");
+        INVENTORY_PIPE = new BlockInventoryPipe();
+        INVENTORY_PIPE.setRegistryName("inventory_pipe");
         BOILER_CASING = new BlockBoilerCasing();
         BOILER_CASING.setRegistryName("boiler_casing");
         BOILER_FIREBOX_CASING = new BlockFireboxCasing();
@@ -279,6 +286,8 @@ public class MetaBlocks {
         GameRegistry.registerTileEntity(TileEntityCableTickable.class, new ResourceLocation(GTValues.MODID, "cable_tickable"));
         GameRegistry.registerTileEntity(TileEntityFluidPipe.class, new ResourceLocation(GTValues.MODID, "fluid_pipe"));
         GameRegistry.registerTileEntity(TileEntityFluidPipeTickable.class, new ResourceLocation(GTValues.MODID, "fluid_pipe_active"));
+        GameRegistry.registerTileEntity(TileEntityInventoryPipe.class, new ResourceLocation(GTValues.MODID, "inventory_pipe"));
+        GameRegistry.registerTileEntity(TileEntityInventoryPipeTickable.class, new ResourceLocation(GTValues.MODID, "inventory_pipe_tickable"));
         GameRegistry.registerTileEntity(TileEntitySurfaceRock.class, new ResourceLocation(GTValues.MODID, "surface_rock"));
     }
 
@@ -287,6 +296,7 @@ public class MetaBlocks {
         ModelLoader.setCustomMeshDefinition(Item.getItemFromBlock(MACHINE), stack -> MetaTileEntityRenderer.MODEL_LOCATION);
         ModelLoader.setCustomMeshDefinition(Item.getItemFromBlock(CABLE), stack -> CableRenderer.MODEL_LOCATION);
         ModelLoader.setCustomMeshDefinition(Item.getItemFromBlock(FLUID_PIPE), stack -> FluidPipeRenderer.MODEL_LOCATION);
+        ModelLoader.setCustomMeshDefinition(Item.getItemFromBlock(INVENTORY_PIPE), stack -> InventoryPipeRenderer.MODEL_LOCATION);
         registerItemModel(BOILER_CASING);
         registerItemModel(BOILER_FIREBOX_CASING);
         registerItemModel(METAL_CASING);
@@ -365,6 +375,12 @@ public class MetaBlocks {
             @Override
             protected ModelResourceLocation getModelResourceLocation(IBlockState state) {
                 return FluidPipeRenderer.MODEL_LOCATION;
+            }
+        });
+        ModelLoader.setCustomStateMapper(INVENTORY_PIPE, new DefaultStateMapper() {
+            @Override
+            protected ModelResourceLocation getModelResourceLocation(IBlockState state) {
+                return InventoryPipeRenderer.MODEL_LOCATION;
             }
         });
         IStateMapper normalStateMapper = new StateMapperBase() {
