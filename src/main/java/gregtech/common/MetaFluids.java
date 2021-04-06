@@ -5,6 +5,7 @@ import gregtech.api.unification.material.Materials;
 import gregtech.api.unification.material.type.FluidMaterial;
 import gregtech.api.unification.material.type.FluidMaterial.MatFlags;
 import gregtech.api.unification.material.type.Material;
+import gregtech.api.util.FluidTooltipUtil;
 import gregtech.api.util.GTUtility;
 import gregtech.common.blocks.MetaBlocks;
 import net.minecraft.client.renderer.texture.TextureMap;
@@ -80,6 +81,9 @@ public class MetaFluids {
         Materials.DistilledWater.setMaterialFluid(DISTILLED_WATER);
         fluidSprites.add(AUTO_GENERATED_FLUID_TEXTURE);
 
+        FluidTooltipUtil.registerTooltip(FluidRegistry.WATER, FluidTooltipUtil.getWaterTooltip());
+        FluidTooltipUtil.registerTooltip(DISTILLED_WATER, FluidTooltipUtil.getWaterTooltip());
+
         //alternative names for forestry fluids
         setAlternativeFluidName(Materials.Ethanol, FluidType.NORMAL, "bio.ethanol");
         setAlternativeFluidName(Materials.Honey, FluidType.NORMAL, "for.honey");
@@ -141,10 +145,12 @@ public class MetaFluids {
                 int temperature = fluidMaterial.getFluidTemperature();
                 Fluid fluid = registerFluid(fluidMaterial, FluidType.NORMAL, temperature);
                 fluidMaterial.setMaterialFluid(fluid);
+                FluidTooltipUtil.registerTooltip(fluid, fluidMaterial.chemicalFormula);
             }
             if (fluidMaterial.shouldGeneratePlasma() && fluidMaterial.getMaterialPlasma() == null) {
                 Fluid fluid = registerFluid(fluidMaterial, FluidType.PLASMA, 30000);
                 fluidMaterial.setMaterialPlasma(fluid);
+                FluidTooltipUtil.registerTooltip(fluid, fluidMaterial.chemicalFormula);
             }
         }
     }

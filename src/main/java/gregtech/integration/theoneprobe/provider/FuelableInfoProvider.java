@@ -8,7 +8,6 @@ import gregtech.api.capability.IFuelable;
 import mcjty.theoneprobe.api.ElementAlignment;
 import mcjty.theoneprobe.api.IProbeInfo;
 import mcjty.theoneprobe.api.TextStyleClass;
-import net.minecraft.client.resources.I18n;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.capabilities.Capability;
@@ -34,7 +33,7 @@ public class FuelableInfoProvider extends CapabilityInfoProvider<IFuelable> {
     protected void addProbeInfo(IFuelable capability, IProbeInfo probeInfo, TileEntity tileEntity, EnumFacing sideHit) {
         Collection<IFuelInfo> fuels = capability.getFuels();
         if (fuels == null || fuels.isEmpty()) {
-            probeInfo.text(TextStyleClass.WARNING + I18n.format("gregtech.top.fuel_none"));
+            probeInfo.text(TextStyleClass.WARNING + "{*gregtech.top.fuel_none*}");
             return;
         }
         for (IFuelInfo fuelInfo : fuels) {
@@ -45,20 +44,19 @@ public class FuelableInfoProvider extends CapabilityInfoProvider<IFuelable> {
             final int burnTime = fuelInfo.getFuelBurnTime()/20;
 
             IProbeInfo horizontalPane = probeInfo.horizontal(probeInfo.defaultLayoutStyle().alignment(ElementAlignment.ALIGN_CENTER));
-            horizontalPane.text(TextStyleClass.INFO + I18n.format("gregtech.top.fuel_name", fuelName));
+            horizontalPane.text(TextStyleClass.INFO + "{*gregtech.top.fuel_name*} {*" + fuelName + "*}");
 
             horizontalPane = probeInfo.horizontal(probeInfo.defaultLayoutStyle().alignment(ElementAlignment.ALIGN_CENTER));
-            String suffix;
-            if (fuelRemaining < fuelMinConsumed)
-                suffix = I18n.format("gregtech.top.fuel_min_consume", fuelCapacity, fuelMinConsumed);
-            else
-                suffix = I18n.format("gregtech.top.fuel_info", fuelCapacity, burnTime);
             horizontalPane.progress(fuelRemaining, fuelCapacity, probeInfo.defaultProgressStyle()
-                .suffix(suffix)
+                .suffix("/" + fuelCapacity + " ")
                 .borderColor(0x00000000)
                 .backgroundColor(0x00000000)
                 .filledColor(0xFFFFE000)
                 .alternateFilledColor(0xFFEED000));
+            if (fuelRemaining < fuelMinConsumed)
+                horizontalPane.text("{*gregtech.top.fuel_min_consume*} " + fuelMinConsumed);
+            else
+                horizontalPane.text("{*gregtech.top.fuel_burn*} " + burnTime + " {*gregtech.top.fuel_time*}");
         }
     }
 

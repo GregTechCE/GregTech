@@ -82,19 +82,9 @@ public class MetaTileEntityQuantumTank extends MetaTileEntity implements ITiered
     @Override
     public void update() {
         super.update();
-        if (!getWorld().isRemote && getTimer() % 5 == 0) {
-            ItemStack itemStack = containerInventory.getStackInSlot(0);
-            Capability<IFluidHandlerItem> capability = CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY;
-            if (!itemStack.isEmpty() && itemStack.hasCapability(capability, null)) {
-                //if we can't drain anything, try filling container. Otherwise, drain it into the quantum chest tank
-                if (itemStack.getCapability(capability, null).drain(Integer.MAX_VALUE, false) == null) {
-                    fillContainerFromInternalTank(containerInventory, containerInventory, 0, 1);
-                    pushFluidsIntoNearbyHandlers(getFrontFacing());
-                } else {
-                    fillInternalTankFromFluidContainer(containerInventory, containerInventory, 0, 1);
-                    pullFluidsFromNearbyHandlers(getFrontFacing());
-                }
-            }
+        if (!getWorld().isRemote) {
+            fillContainerFromInternalTank(containerInventory, containerInventory, 0, 1);
+            fillInternalTankFromFluidContainer(containerInventory, containerInventory, 0, 1);
         }
     }
 

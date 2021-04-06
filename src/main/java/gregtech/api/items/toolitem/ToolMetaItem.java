@@ -340,30 +340,43 @@ public class ToolMetaItem<T extends ToolMetaItem<?>.MetaToolValueItem> extends M
     }
 
     @Override
-    public boolean damageItem(ItemStack stack, int vanillaDamage, boolean simulate) {
+    public int damageItem(ItemStack stack, int vanillaDamage, boolean allowPartial, boolean simulate) {
         IElectricItem capability = stack.getCapability(GregtechCapabilities.CAPABILITY_ELECTRIC_ITEM, null);
         if (capability != null) {
             int energyAmount = ConfigHolder.energyUsageMultiplier * vanillaDamage;
-            if (capability.discharge(energyAmount, capability.getTier(), true, false, true) < energyAmount) {
-                //if we can't discharge full amount of energy, just return false
-                //and don't attempt to discharge left amount of energy
-                return false;
+            long discharged = capability.discharge(energyAmount, capability.getTier(), true, false, true);
+            // if we can't discharge full amount of energy
+            if (discharged < energyAmount) {
+                // when asked use the discharged energy and recalculate the equivalent damage
+                if (allowPartial && discharged > 0) {
+                    energyAmount = (int) discharged;
+                    vanillaDamage = energyAmount / ConfigHolder.energyUsageMultiplier;
+                    if (energyAmount % ConfigHolder.energyUsageMultiplier != 0)
+                       ++vanillaDamage;
+                }
+                else {
+                    // Can't do the operation
+                    return 0;
+                }
             }
             capability.discharge(energyAmount, capability.getTier(), true, false, simulate);
         }
         T toolMetaItem = getItem(stack);
         if (toolMetaItem == null) {
-            return false;
+            return 0;
         }
         IToolStats toolStats = toolMetaItem.getToolStats();
         if (!toolStats.isUsingDurability(stack)) {
-            return true;
+            return vanillaDamage;
         }
-        int newDamageValue = getItemDamage(stack) + calculateToolDamage(stack, itemRand, vanillaDamage);
+        int itemDamage = getItemDamage(stack);
+        int maxDamage = getMaxItemDamage(stack);
+        int damageRemaining = maxDamage - itemDamage;
+        int newDamageValue = itemDamage + calculateToolDamage(stack, itemRand, vanillaDamage);
         if (!simulate && !setInternalDamage(stack, newDamageValue)) {
             GTUtility.setItem(stack, toolStats.getBrokenStack(stack));
         }
-        return true;
+        return Math.min(vanillaDamage, damageRemaining);
     }
 
     public int regainItemDurability(ItemStack itemStack, int maxDurabilityRegain) {

@@ -1,5 +1,35 @@
 ## Changelog
 
+### 1.14.0
+* Added Fluid Tooltips (#1519) - dan
+* Added partial overclocking (#1522) - Adrian Brock
+* Added config option for lossless cables to have lossy wires  (#1537) - dan
+* Added Zoom Functionality to Multiblock Previews (#1550) - dan
+* Fixed chests rendering issues (#1531) - ALongStringOfNumbers
+* Fixed NPE when something proxies fluid pipe capabilities (#1552) - Adrian Brock
+* Fixed TileEntities bottom side texture being rotated (#1556) - detav
+
+### 1.13.0
+* Highlight: Chemistry update, Take Two (#1492) - dan
+  * Full info: https://github.com/GregTechCE/GregTech/pull/1492
+* Added ability to set Allowed Input from output side via the machine grid (#1483) - ALongStringOfNumbers
+* Added notConsumable Fluids as possible recipe input (#1514) - dan
+* Updated Plunger to work as always empty fluid container (#1461) - Adrian Brock
+* Updated CycleButtonWidget to cycle in reverse on right click (#1523) - ALongStringOfNumbers
+* Removed NBT from JEI recipe registration (#1516) - dan
+* Removed some duplicated recipes in Macerator (#1542) - dan
+* Fixed Quantum Tank behavior (#1535) - dan
+* Refactored RotorHolder to not be dependent on MetaTileEntityLargeTurbine (#1527) - galyfray
+
+### 1.12.1
+* Updated number formatting (#1467) - Adrian Brock
+* Updated progress bars for some machines (#1504) - dan
+* Updated EU/t price of Rotor recipe in Fluid Solidifier (#1517) - ALongStringOfNumbers
+* Fixed progress bars being 1px off (#1504) - dan
+* Fixed Fuel TOP integration not working for server hosted games (#1511) - Adrian Brock
+* Fixed rare bug with Ore vein generation page biome tooltip (#1518) - ALongStringOfNumbers
+* Fixed Transformer TOP integration not working for server hosted games (#1520) - dan
+
 ### 1.12.0
 * Highlight: TOP now displays fuel information (#1484) - Adrian Brock
   * Blocks consuming fuel now has new information provided in TOP
