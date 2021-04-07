@@ -31,7 +31,7 @@ public abstract class BlockSurfaceRock extends Block {
         super(net.minecraft.block.material.Material.ROCK);
         setHardness(1.5f);
         setSoundType(SoundType.STONE);
-        setUnlocalizedName("surface_rock");
+        setTranslationKey("surface_rock");
         setLightOpacity(1);
     }
 

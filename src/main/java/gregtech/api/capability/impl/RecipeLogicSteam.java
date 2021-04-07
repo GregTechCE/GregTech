@@ -121,15 +121,15 @@ public class RecipeLogicSteam extends AbstractRecipeLogic {
                 .getEntitiesWithinAABB(EntityLivingBase.class, new AxisAlignedBB(ventingBlockPos), EntitySelectors.CAN_AI_TARGET)
                 .forEach(entity -> entity.attackEntityFrom(DamageSources.getHeatDamage(), 6.0f));
             WorldServer world = (WorldServer) metaTileEntity.getWorld();
-            double posX = machinePos.getX() + 0.5 + ventingSide.getFrontOffsetX() * 0.6;
-            double posY = machinePos.getY() + 0.5 + ventingSide.getFrontOffsetY() * 0.6;
-            double posZ = machinePos.getZ() + 0.5 + ventingSide.getFrontOffsetZ() * 0.6;
+            double posX = machinePos.getX() + 0.5 + ventingSide.getXOffset() * 0.6;
+            double posY = machinePos.getY() + 0.5 + ventingSide.getYOffset() * 0.6;
+            double posZ = machinePos.getZ() + 0.5 + ventingSide.getZOffset() * 0.6;
 
             world.spawnParticle(EnumParticleTypes.SMOKE_LARGE, posX, posY, posZ,
                 7 + world.rand.nextInt(3),
-                ventingSide.getFrontOffsetX() / 2.0,
-                ventingSide.getFrontOffsetY() / 2.0,
-                ventingSide.getFrontOffsetZ() / 2.0, 0.1);
+                ventingSide.getXOffset() / 2.0,
+                ventingSide.getYOffset() / 2.0,
+                ventingSide.getZOffset() / 2.0, 0.1);
             world.playSound(null, posX, posY, posZ, SoundEvents.BLOCK_LAVA_EXTINGUISH, SoundCategory.BLOCKS, 1.0f, 1.0f);
             setNeedsVenting(false);
         } else if (!ventingStuck) {

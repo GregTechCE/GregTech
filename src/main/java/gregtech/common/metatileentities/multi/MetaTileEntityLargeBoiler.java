@@ -533,10 +533,10 @@ public class MetaTileEntityLargeBoiler extends MultiblockWithDisplayBase impleme
             ItemStack itemStack = itemImportInventory.getStackInSlot(slotIndex);
             int burnTime = (int) Math.ceil(TileEntityFurnace.getItemBurnTime(itemStack) / (50.0 * boilerType.fuelConsumptionMultiplier * getThrottleMultiplier()));
             if (burnTime > 0) {
-                ItemFuelInfo itemFuelInfo = (ItemFuelInfo) fuels.get(itemStack.getUnlocalizedName());
+                ItemFuelInfo itemFuelInfo = (ItemFuelInfo) fuels.get(itemStack.getTranslationKey());
                 if (itemFuelInfo == null) {
                     itemFuelInfo = new ItemFuelInfo(itemStack, itemStack.getCount(), itemCapacity, 1, itemStack.getCount() * burnTime);
-                    fuels.put(itemStack.getUnlocalizedName(), itemFuelInfo);
+                    fuels.put(itemStack.getTranslationKey(), itemFuelInfo);
                 }
                 else {
                     itemFuelInfo.addFuelRemaining(itemStack.getCount());

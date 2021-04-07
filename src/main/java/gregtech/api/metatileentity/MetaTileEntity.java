@@ -250,7 +250,7 @@ public abstract class MetaTileEntity implements ICoverable {
     }
 
     public final String getMetaName() {
-        return String.format("%s.machine.%s", metaTileEntityId.getResourceDomain(), metaTileEntityId.getResourcePath());
+        return String.format("%s.machine.%s", metaTileEntityId.getNamespace(), metaTileEntityId.getPath());
     }
 
     public final String getMetaFullName() {

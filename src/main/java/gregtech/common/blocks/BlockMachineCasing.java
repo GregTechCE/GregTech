@@ -12,7 +12,7 @@ public class BlockMachineCasing extends VariantBlock<BlockMachineCasing.MachineC
 
     public BlockMachineCasing() {
         super(Material.IRON);
-        setUnlocalizedName("machine_casing");
+        setTranslationKey("machine_casing");
         setHardness(4.0f);
         setResistance(8.0f);
         setSoundType(SoundType.METAL);

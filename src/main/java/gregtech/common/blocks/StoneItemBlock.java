@@ -26,9 +26,9 @@ public class StoneItemBlock<R extends Enum<R> & IStringSerializable, T extends S
     }
 
     @Override
-    public String getUnlocalizedName(ItemStack stack) {
+    public String getTranslationKey(ItemStack stack) {
         IBlockState blockState = getBlockState(stack);
-        return super.getUnlocalizedName(stack) + '.' +
+        return super.getTranslationKey(stack) + '.' +
             genericBlock.getVariant(blockState).getName() + "." +
             genericBlock.getChiselingVariant(blockState).getName();
     }

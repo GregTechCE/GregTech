@@ -68,7 +68,7 @@ public class CrowbarBehaviour implements IItemBehaviour {
             for (ItemStack drops : blockState.getBlock().getDrops(world, blockPos, blockState, 0)) {
                 Block.spawnAsEntity(world, blockPos, drops);
             }
-            blockState.getBlock().onBlockDestroyedByPlayer(world, blockPos, blockState);
+            blockState.getBlock().onPlayerDestroy(world, blockPos, blockState);
             blockState.getBlock().onBlockHarvested(world, blockPos, blockState, player);
             blockState.getBlock().breakBlock(world, blockPos, blockState);
             world.setBlockToAir(blockPos);

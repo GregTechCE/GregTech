@@ -35,7 +35,7 @@ public class MachineItemBlock extends ItemBlock {
     }
 
     @Override
-    public String getUnlocalizedName(ItemStack stack) {
+    public String getTranslationKey(ItemStack stack) {
         MetaTileEntity metaTileEntity = getMetaTileEntity(stack);
         return metaTileEntity == null ? "unnamed" : metaTileEntity.getMetaName();
     }
@@ -57,7 +57,7 @@ public class MachineItemBlock extends ItemBlock {
             return GTValues.MODID;
         }
         ResourceLocation metaTileEntityId = metaTileEntity.metaTileEntityId;
-        return metaTileEntityId.getResourceDomain();
+        return metaTileEntityId.getNamespace();
     }
 
     @Nullable
