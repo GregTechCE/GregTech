@@ -102,7 +102,7 @@ public class SimpleGeneratorMetaTileEntity extends TieredMetaTileEntity {
     @Override
     public void update() {
         super.update();
-        if (!getWorld().isRemote && getTimer() % 5 == 0) {
+        if (!getWorld().isRemote && getOffsetTimer() % 5 == 0) {
             fillInternalTankFromFluidContainer(containerInventory, containerInventory, 0, 1);
         }
     }

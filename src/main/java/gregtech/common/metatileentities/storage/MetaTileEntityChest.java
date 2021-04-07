@@ -76,7 +76,7 @@ public class MetaTileEntityChest extends MetaTileEntity implements IFastRenderMe
         BlockPos blockPos = getPos();
         this.prevLidAngle = this.lidAngle;
 
-        if (!getWorld().isRemote && this.numPlayersUsing != 0 && getTimer() % 200 == 0) {
+        if (!getWorld().isRemote && this.numPlayersUsing != 0 && getOffsetTimer() % 200 == 0) {
             int lastPlayersUsing = numPlayersUsing;
             this.numPlayersUsing = GTUtility.findPlayersUsing(this, 5.0).size();
             if (lastPlayersUsing != numPlayersUsing) {

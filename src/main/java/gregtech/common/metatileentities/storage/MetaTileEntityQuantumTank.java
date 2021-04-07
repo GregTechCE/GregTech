@@ -82,9 +82,11 @@ public class MetaTileEntityQuantumTank extends MetaTileEntity implements ITiered
     @Override
     public void update() {
         super.update();
+
         if (!getWorld().isRemote) {
             fillContainerFromInternalTank(containerInventory, containerInventory, 0, 1);
             fillInternalTankFromFluidContainer(containerInventory, containerInventory, 0, 1);
+
         }
     }
 

@@ -141,7 +141,7 @@ public class RecipeLogicSteam extends AbstractRecipeLogic {
     public void update() {
         if (getMetaTileEntity().getWorld().isRemote)
             return;
-        if (this.needsVenting && metaTileEntity.getTimer() % 10 == 0) {
+        if (this.needsVenting && metaTileEntity.getOffsetTimer() % 10 == 0) {
             tryDoVenting();
         }
         super.update();
