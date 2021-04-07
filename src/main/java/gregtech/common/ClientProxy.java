@@ -33,7 +33,9 @@ import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.ContainerPlayer;
 import net.minecraft.inventory.ContainerWorkbench;
+import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.EnumDyeColor;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -60,10 +62,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.*;
 import java.nio.charset.StandardCharsets;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
 @SideOnly(Side.CLIENT)
 @Mod.EventBusSubscriber(Side.CLIENT)
@@ -152,6 +151,11 @@ public class ClientProxy extends CommonProxy {
         MetaItems.registerModels();
     }
 
+    private static final String[] clearRecipes = new String[]{
+            "quantum_tank",
+            "quantum_chest"
+    };
+
     @SubscribeEvent
     public static void addTooltip(ItemTooltipEvent event) {
         ItemStack itemStack = event.getItemStack();
@@ -186,13 +190,36 @@ public class ClientProxy extends CommonProxy {
             if (chemicalFormula != null && !chemicalFormula.isEmpty())
                 event.getToolTip().add(1, ChatFormatting.GRAY.toString() + chemicalFormula);
         }
+
+        // Quantum Tank/Chest NBT Clearing Recipe Tooltip
         final EntityPlayer player = event.getEntityPlayer();
-        if (player != null
-                && ((player.openContainer instanceof ContainerWorkbench
-                && ((ContainerWorkbench) player.openContainer).craftResult.getStackInSlot(0) == event.getItemStack())
-                || (player.openContainer instanceof ContainerPlayer
-                && ((ContainerPlayer) player.openContainer).craftResult.getStackInSlot(0) == event.getItemStack()))) {
-            event.getToolTip().add(I18n.format("gregtech.universal.clear_nbt_recipe.tooltip"));
+        InventoryCrafting inv = null;
+        if (player != null) {
+
+            if (player.openContainer instanceof ContainerWorkbench)
+                inv = ((ContainerWorkbench) player.openContainer).craftMatrix;
+            else if (player.openContainer instanceof ContainerPlayer)
+                inv = ((ContainerPlayer) player.openContainer).craftMatrix;
+
+            if (inv != null) {
+                boolean foundSelf = false;
+                for (int i = 0; i < inv.getSizeInventory(); i++) {
+                    if (ItemStack.areItemsEqual(inv.getStackInSlot(i), event.getItemStack())) {
+                        foundSelf = true;
+                        break;
+                    }
+                }
+
+                if (foundSelf) {
+                    String unlocalizedName = event.getItemStack().getUnlocalizedName();
+                    for (String key : clearRecipes) {
+                        if (unlocalizedName.contains(key)) {
+                            event.getToolTip().add(I18n.format("gregtech.universal.clear_nbt_recipe.tooltip"));
+                            break;
+                        }
+                    }
+                }
+            }
         }
     }
 
