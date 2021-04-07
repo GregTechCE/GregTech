@@ -28,9 +28,8 @@ import net.minecraftforge.fluids.capability.IFluidHandler;
 
 import java.util.List;
 
-public class MetaTileEntityLargeTurbine extends FueledMultiblockController {
+public class MetaTileEntityLargeTurbine extends RotorHolderMultiblockController {
 
-    public static final MultiblockAbility<MetaTileEntityRotorHolder> ABILITY_ROTOR_HOLDER = new MultiblockAbility<>();
     private static final int MIN_DURABILITY_TO_WARN = 10;
 
     public enum TurbineType {
@@ -71,17 +70,6 @@ public class MetaTileEntityLargeTurbine extends FueledMultiblockController {
         return new MetaTileEntityLargeTurbine(metaTileEntityId, turbineType);
     }
 
-    public MetaTileEntityRotorHolder getRotorHolder() {
-        return getAbilities(ABILITY_ROTOR_HOLDER).get(0);
-    }
-
-    @Override
-    protected void updateFormedValid() {
-        if (isTurbineFaceFree()) {
-            super.updateFormedValid();
-        }
-    }
-
     @Override
     protected void formStructure(PatternMatchContext context) {
         super.formStructure(context);
@@ -90,24 +78,18 @@ public class MetaTileEntityLargeTurbine extends FueledMultiblockController {
 
     @Override
     public void invalidateStructure() {
-        getRotorHolder().resetRotorSpeed();
         super.invalidateStructure();
         this.exportFluidHandler = null;
     }
 
-    /**
-     * @return true if structure formed, workable is active and front face is free
-     */
-    public boolean isActive() {
-        return isTurbineFaceFree() && workableHandler.isActive() && workableHandler.isWorkingEnabled();
+    @Override
+    public int getRotorSpeedIncrement() {
+        return 1;
     }
 
-    /**
-     * @return true if turbine is formed and it's face is free and contains
-     * only air blocks in front of rotor holder
-     */
-    public boolean isTurbineFaceFree() {
-        return isStructureFormed() && getAbilities(ABILITY_ROTOR_HOLDER).get(0).isFrontFaceFree();
+    @Override
+    public int getRotorSpeedDecrement() {
+        return -3;
     }
 
     @Override
@@ -128,7 +110,7 @@ public class MetaTileEntityLargeTurbine extends FueledMultiblockController {
                     textList.add(new TextComponentTranslation("gregtech.multiblock.turbine.rotor_durability", rotorDurability));
                 } else {
                     textList.add(new TextComponentTranslation("gregtech.multiblock.turbine.low_rotor_durability",
-                        MIN_DURABILITY_TO_WARN, rotorDurability).setStyle(new Style().setColor(TextFormatting.RED)));
+                            MIN_DURABILITY_TO_WARN, rotorDurability).setStyle(new Style().setColor(TextFormatting.RED)));
                 }
             }
         }
@@ -138,23 +120,23 @@ public class MetaTileEntityLargeTurbine extends FueledMultiblockController {
     @Override
     protected BlockPattern createStructurePattern() {
         return turbineType == null ? null :
-            FactoryBlockPattern.start()
-                .aisle("CCCC", "CHHC", "CCCC")
-                .aisle("CHHC", "R##D", "CHHC")
-                .aisle("CCCC", "CSHC", "CCCC")
-                .where('S', selfPredicate())
-                .where('#', isAirPredicate())
-                .where('C', statePredicate(getCasingState()))
-                .where('H', statePredicate(getCasingState()).or(abilityPartPredicate(getAllowedAbilities())))
-                .where('R', abilityPartPredicate(ABILITY_ROTOR_HOLDER))
-                .where('D', abilityPartPredicate(MultiblockAbility.OUTPUT_ENERGY))
-                .build();
+                FactoryBlockPattern.start()
+                        .aisle("CCCC", "CHHC", "CCCC")
+                        .aisle("CHHC", "R##D", "CHHC")
+                        .aisle("CCCC", "CSHC", "CCCC")
+                        .where('S', selfPredicate())
+                        .where('#', isAirPredicate())
+                        .where('C', statePredicate(getCasingState()))
+                        .where('H', statePredicate(getCasingState()).or(abilityPartPredicate(getAllowedAbilities())))
+                        .where('R', abilityPartPredicate(ABILITY_ROTOR_HOLDER))
+                        .where('D', abilityPartPredicate(MultiblockAbility.OUTPUT_ENERGY))
+                        .build();
     }
 
     public MultiblockAbility[] getAllowedAbilities() {
         return turbineType.hasOutputHatch ?
-            new MultiblockAbility[]{MultiblockAbility.IMPORT_FLUIDS, MultiblockAbility.EXPORT_FLUIDS} :
-            new MultiblockAbility[]{MultiblockAbility.IMPORT_FLUIDS};
+                new MultiblockAbility[]{MultiblockAbility.IMPORT_FLUIDS, MultiblockAbility.EXPORT_FLUIDS} :
+                new MultiblockAbility[]{MultiblockAbility.IMPORT_FLUIDS};
     }
 
     public IBlockState getCasingState() {
@@ -164,6 +146,14 @@ public class MetaTileEntityLargeTurbine extends FueledMultiblockController {
     @Override
     public ICubeRenderer getBaseTexture(IMultiblockPart sourcePart) {
         return turbineType.casingRenderer;
+    }
+
+    /** Deprecated method please use {@code {@see isRotorFaceFree}} instead
+     *
+     */
+    @Deprecated
+    public boolean isTurbineFaceFree() {
+        return isRotorFaceFree();
     }
 
 }

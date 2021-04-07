@@ -21,6 +21,7 @@ import gregtech.api.render.Textures;
 import gregtech.api.unification.material.type.Material.MatFlags;
 import gregtech.api.unification.material.type.SolidMaterial;
 import gregtech.api.util.ByteBufUtils;
+import gregtech.api.util.FluidTooltipUtil;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.WatchedFluidTank;
 import gregtech.common.ConfigHolder;
@@ -42,6 +43,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockPos.MutableBlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3i;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.common.util.Constants.NBT;
@@ -680,6 +682,9 @@ public class MetaTileEntityTank extends MetaTileEntity implements IFastRenderMet
             if (fluidStack != null) {
                 tooltip.add(I18n.format("gregtech.machine.fluid_tank.fluid", fluidStack.amount, fluidStack.getLocalizedName()));
             }
+            String formula = FluidTooltipUtil.getFluidTooltip(fluidStack);
+            if (formula != null)
+                tooltip.add(TextFormatting.GRAY + formula);
         }
     }
 

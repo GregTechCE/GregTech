@@ -1,6 +1,7 @@
 package gregtech.common;
 
 import codechicken.lib.texture.TextureUtils;
+import codechicken.lib.util.ItemNBTUtils;
 import codechicken.lib.util.ResourceUtils;
 import com.mojang.authlib.minecraft.MinecraftProfileTexture.Type;
 import com.mojang.realmsclient.gui.ChatFormatting;
@@ -10,6 +11,7 @@ import gregtech.api.render.ToolRenderHandler;
 import gregtech.api.unification.OreDictUnifier;
 import gregtech.api.unification.material.type.Material;
 import gregtech.api.unification.stack.UnificationEntry;
+import gregtech.api.util.FluidTooltipUtil;
 import gregtech.api.util.GTLog;
 import gregtech.api.util.ModCompatibility;
 import gregtech.common.blocks.*;
@@ -26,9 +28,11 @@ import net.minecraft.client.entity.AbstractClientPlayer;
 import net.minecraft.client.network.NetworkPlayerInfo;
 import net.minecraft.client.renderer.color.IBlockColor;
 import net.minecraft.client.renderer.color.IItemColor;
+import net.minecraft.init.Items;
 import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
@@ -36,7 +40,10 @@ import net.minecraft.world.biome.BiomeColorHelper;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.client.event.RenderPlayerEvent;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.capability.templates.FluidHandlerItemStack;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -144,14 +151,36 @@ public class ClientProxy extends CommonProxy {
     @SubscribeEvent
     public static void addMaterialFormulaHandler(ItemTooltipEvent event) {
         ItemStack itemStack = event.getItemStack();
+
+        // Handles Item tooltips
         if (!(itemStack.getItem() instanceof ItemBlock)) {
+            String chemicalFormula = null;
+
+            // Test for Items
             UnificationEntry unificationEntry = OreDictUnifier.getUnificationEntry(itemStack);
             if (unificationEntry != null && unificationEntry.material != null) {
-                String formula = unificationEntry.material.chemicalFormula;
-                if (formula != null && !formula.isEmpty() && !formula.equals("?")) {
-                    event.getToolTip().add(1, ChatFormatting.GRAY.toString() + unificationEntry.material.chemicalFormula);
+                chemicalFormula = unificationEntry.material.chemicalFormula;
+
+            // Test for Fluids
+            } else if (ItemNBTUtils.hasTag(itemStack)) {
+
+                // Vanilla bucket
+                chemicalFormula = FluidTooltipUtil.getFluidTooltip(ItemNBTUtils.getString(itemStack, "FluidName"));
+
+                // GTCE Cells, Forestry cans, some other containers
+                if (chemicalFormula == null) {
+                    NBTTagCompound compound = itemStack.getTagCompound();
+                    if (compound != null && compound.hasKey(FluidHandlerItemStack.FLUID_NBT_KEY, Constants.NBT.TAG_COMPOUND)) {
+                        chemicalFormula = FluidTooltipUtil.getFluidTooltip(FluidStack.loadFluidStackFromNBT(compound.getCompoundTag(FluidHandlerItemStack.FLUID_NBT_KEY)));
+                    }
                 }
+
+            // Water buckets have a separate registry name from other buckets
+            } else if(itemStack.getItem().equals(Items.WATER_BUCKET)) {
+                chemicalFormula = FluidTooltipUtil.getWaterTooltip();
             }
+            if (chemicalFormula != null && !chemicalFormula.isEmpty())
+                event.getToolTip().add(1, ChatFormatting.GRAY.toString() + chemicalFormula);
         }
     }
 

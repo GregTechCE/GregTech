@@ -270,7 +270,7 @@ public class PartsRecipeHandler {
                 .fluidInputs(material.getFluid(L * 4))
                 .outputs(OreDictUnifier.get(rotorPrefix, material))
                 .duration(120)
-                .EUt(120)
+                .EUt(20)
                 .buildAndRegister();
         }
     }
