@@ -15,6 +15,6 @@ public class ItemFuelInfo extends AbstractFuelInfo {
     }
 
     public String getFuelName() {
-        return itemStack.getUnlocalizedName();
+        return itemStack.getTranslationKey();
     }
 }
