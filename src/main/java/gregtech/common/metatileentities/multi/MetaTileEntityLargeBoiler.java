@@ -219,19 +219,19 @@ public class MetaTileEntityLargeBoiler extends MultiblockWithDisplayBase impleme
     protected void updateFormedValid() {
         if (fuelBurnTicksLeft > 0 && currentTemperature < boilerType.maxTemperature) {
             --this.fuelBurnTicksLeft;
-            if (getTimer() % 20 == 0) {
+            if (getOffsetTimer() % 20 == 0) {
                 this.currentTemperature++;
             }
             if (fuelBurnTicksLeft == 0) {
                 this.wasActiveAndNeedsUpdate = true;
             }
-        } else if (currentTemperature > 0 && getTimer() % 20 == 0) {
+        } else if (currentTemperature > 0 && getOffsetTimer() % 20 == 0) {
             --this.currentTemperature;
         }
 
         this.lastTickSteamOutput = 0;
         if (currentTemperature >= BOILING_TEMPERATURE) {
-            boolean doWaterDrain = getTimer() % 20 == 0;
+            boolean doWaterDrain = getOffsetTimer() % 20 == 0;
             FluidStack drainedWater = fluidImportInventory.drain(ModHandler.getWater(1), doWaterDrain);
             if (drainedWater == null || drainedWater.amount == 0) {
                 drainedWater = fluidImportInventory.drain(ModHandler.getDistilledWater(1), doWaterDrain);
@@ -533,10 +533,10 @@ public class MetaTileEntityLargeBoiler extends MultiblockWithDisplayBase impleme
             ItemStack itemStack = itemImportInventory.getStackInSlot(slotIndex);
             int burnTime = (int) Math.ceil(TileEntityFurnace.getItemBurnTime(itemStack) / (50.0 * boilerType.fuelConsumptionMultiplier * getThrottleMultiplier()));
             if (burnTime > 0) {
-                ItemFuelInfo itemFuelInfo = (ItemFuelInfo) fuels.get(itemStack.getUnlocalizedName());
+                ItemFuelInfo itemFuelInfo = (ItemFuelInfo) fuels.get(itemStack.getTranslationKey());
                 if (itemFuelInfo == null) {
                     itemFuelInfo = new ItemFuelInfo(itemStack, itemStack.getCount(), itemCapacity, 1, itemStack.getCount() * burnTime);
-                    fuels.put(itemStack.getUnlocalizedName(), itemFuelInfo);
+                    fuels.put(itemStack.getTranslationKey(), itemFuelInfo);
                 }
                 else {
                     itemFuelInfo.addFuelRemaining(itemStack.getCount());

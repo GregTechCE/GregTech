@@ -344,7 +344,7 @@ public class MetaTileEntityPrimitiveBlastFurnace extends MultiblockControllerBas
         Textures.PRIMITIVE_BLAST_FURNACE_OVERLAY.render(renderState, translation, pipeline, getFrontFacing(), isActive());
         if (isActive() && isStructureFormed()) {
             EnumFacing back = getFrontFacing().getOpposite();
-            Matrix4 offset = translation.copy().translate(back.getFrontOffsetX(), -0.3, back.getFrontOffsetZ());
+            Matrix4 offset = translation.copy().translate(back.getXOffset(), -0.3, back.getZOffset());
             TextureAtlasSprite sprite = TextureUtils.getBlockTexture("lava_still");
             renderState.brightness = 0xF000F0;
             renderState.colour = 0xFFFFFFFF;

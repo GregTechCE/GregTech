@@ -33,7 +33,7 @@ public class BlockOre extends BlockFalling implements IBlockOre {
 
     public BlockOre(DustMaterial material, StoneType[] allowedValues) {
         super(net.minecraft.block.material.Material.ROCK);
-        setUnlocalizedName("ore_block");
+        setTranslationKey("ore_block");
         setSoundType(SoundType.STONE);
         setHardness(3.0f);
         setResistance(5.0f);
@@ -130,7 +130,7 @@ public class BlockOre extends BlockFalling implements IBlockOre {
     }
 
     @Override
-    public BlockRenderLayer getBlockLayer() {
+    public BlockRenderLayer getRenderLayer() {
         return BlockRenderLayer.CUTOUT_MIPPED;
     }
 

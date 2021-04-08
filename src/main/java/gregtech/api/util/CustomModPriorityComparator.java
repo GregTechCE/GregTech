@@ -16,8 +16,8 @@ public class CustomModPriorityComparator implements Comparator<ItemAndMetadata> 
 
     @Override
     public int compare(ItemAndMetadata first, ItemAndMetadata second) {
-        String firstModId = first.item.getRegistryName().getResourceDomain();
-        String secondModId = second.item.getRegistryName().getResourceDomain();
+        String firstModId = first.item.getRegistryName().getNamespace();
+        String secondModId = second.item.getRegistryName().getNamespace();
         int firstModIndex = modPriorityList.indexOf(firstModId);
         int secondModIndex = modPriorityList.indexOf(secondModId);
         if (firstModIndex == -1 && secondModIndex == -1) {

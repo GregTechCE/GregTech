@@ -8,7 +8,7 @@ public class BlockWarningSign extends VariantBlock<BlockWarningSign.SignType> {
 
     public BlockWarningSign() {
         super(Material.IRON);
-        setUnlocalizedName("warning_sign");
+        setTranslationKey("warning_sign");
         setHardness(2.0f);
         setResistance(3.0f);
         setSoundType(SoundType.METAL);

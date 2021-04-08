@@ -181,7 +181,7 @@ public class MetaTileEntityPump extends TieredMetaTileEntity {
         }
 
         if (fluidSourceBlocks.isEmpty()) {
-            if (getTimer() % 20 == 0) {
+            if (getOffsetTimer() % 20 == 0) {
                 BlockPos downPos = selfPos.down(1);
                 if (downPos != null && downPos.getY() >= 0) {
                     IBlockState downBlock = getWorld().getBlockState(downPos);
@@ -199,7 +199,7 @@ public class MetaTileEntityPump extends TieredMetaTileEntity {
                 this.initializedQueue = false;
             }
 
-            if (!initializedQueue || getTimer() % 6000 == 0) {
+            if (!initializedQueue || getOffsetTimer() % 6000 == 0 || getTimer() == 0) {
                 this.initializedQueue = true;
                 //just add ourselves to check list and see how this will go
                 this.blocksToCheck.add(selfPos);
@@ -265,7 +265,7 @@ public class MetaTileEntityPump extends TieredMetaTileEntity {
         pushFluidsIntoNearbyHandlers(getFrontFacing());
         fillContainerFromInternalTank(importItems, exportItems, 0, 0);
         updateQueueState(getTier());
-        if (getTimer() % getPumpingCycleLength() == 0 && !fluidSourceBlocks.isEmpty() &&
+        if (getOffsetTimer() % getPumpingCycleLength() == 0 && !fluidSourceBlocks.isEmpty() &&
             energyContainer.getEnergyStored() >= GTValues.V[getTier()]) {
             tryPumpFirstBlock();
         }
