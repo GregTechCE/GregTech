@@ -5,6 +5,7 @@ import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 import forestry.api.arboriculture.IToolGrafter;
 import gregtech.api.GTValues;
+import gregtech.api.GregTechAPI;
 import gregtech.api.capability.GregtechCapabilities;
 import gregtech.api.capability.IElectricItem;
 import gregtech.api.enchants.EnchantmentData;
@@ -438,8 +439,13 @@ public class ToolMetaItem<T extends ToolMetaItem<?>.MetaToolValueItem> extends M
         super.getSubItems(tab, subItems);
 
         // Not expanding tools
-        if (ConfigHolder.hideToolsInJEI)
+        if (ConfigHolder.hideToolsInJEI) {
             return;
+        }
+
+        if (tab != GregTechAPI.TAB_GREGTECH_TOOLS && tab != CreativeTabs.SEARCH) {
+            return;
+        }
 
         for (short itemMetaKey : metaItems.keys()) {
             ToolMetaItem<?>.MetaToolValueItem metaToolValueItem = metaItems.get(itemMetaKey);
