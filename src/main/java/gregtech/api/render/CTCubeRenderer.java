@@ -63,7 +63,7 @@ public class CTCubeRenderer implements IIconRegister {
             TextureAtlasSprite sideSprite = ctSprites[resultTextureMask];
             Textures.renderFace(renderState, translation, pipeline, renderSide, Cuboid6.full, sideSprite);
             Matrix4 backTranslation = translation.copy();
-            backTranslation.translate(renderSide.getFrontOffsetX(), renderSide.getFrontOffsetY() * 0.999, renderSide.getFrontOffsetZ());
+            backTranslation.translate(renderSide.getXOffset(), renderSide.getYOffset() * 0.999, renderSide.getZOffset());
             int backFaceTextureMask;
             if (renderSide.getAxis().isHorizontal()) {
                 backFaceTextureMask = resultTextureMask & ~(TextureDirection.RIGHT | TextureDirection.LEFT);

@@ -59,8 +59,8 @@ public class ModCompatibility {
 
         public boolean canHandleItemStack(ItemStack itemStack) {
             ResourceLocation registryName = Objects.requireNonNull(itemStack.getItem().getRegistryName());
-            return registryName.getResourceDomain().equals("refinedstorage") &&
-                registryName.getResourcePath().equals("pattern");
+            return registryName.getNamespace().equals("refinedstorage") &&
+                registryName.getPath().equals("pattern");
         }
 
         public ItemStack getRealItemStack(ItemStack itemStack) {
@@ -83,8 +83,8 @@ public class ModCompatibility {
 
         public boolean canHandleItemStack(ItemStack itemStack) {
             ResourceLocation registryName = Objects.requireNonNull(itemStack.getItem().getRegistryName());
-            return registryName.getResourceDomain().equals("appliedenergistics2") &&
-                registryName.getResourcePath().equals("encoded_pattern");
+            return registryName.getNamespace().equals("appliedenergistics2") &&
+                registryName.getPath().equals("encoded_pattern");
         }
 
         public ItemStack getRealItemStack(ItemStack itemStack) {

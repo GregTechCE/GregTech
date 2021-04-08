@@ -66,7 +66,7 @@ public class ColorSprayBehaviour extends AbstractUsableBehaviour {
     @Override
     public void addInformation(ItemStack itemStack, List<String> lines) {
         int remainingUses = getUsesLeft(itemStack);
-        lines.add(I18n.format("behaviour.paintspray." + this.color.getUnlocalizedName() + ".tooltip"));
+        lines.add(I18n.format("behaviour.paintspray." + this.color.getTranslationKey() + ".tooltip"));
         lines.add(I18n.format("behaviour.paintspray.uses", remainingUses));
     }
 }

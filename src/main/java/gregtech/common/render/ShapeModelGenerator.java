@@ -23,7 +23,7 @@ public class ShapeModelGenerator {
         for (int i = 0; i < 3; i++) {
             EnumFacing side = EnumFacing.VALUES[i * 2 + 1];
             Transformation rotation = Rotation.sideRotations[i * 2].at(Vector3.center);
-            Transformation translation = new Translation(side.getFrontOffsetX() * translate, side.getFrontOffsetY() * translate, side.getFrontOffsetZ() * translate);
+            Transformation translation = new Translation(side.getXOffset() * translate, side.getYOffset() * translate, side.getZOffset() * translate);
             CCModel negativeModel = originalModel.copy().apply(rotation);
             CCModel positiveModel = negativeModel.copy().apply(translation);
             result[i * 2] = negativeModel;

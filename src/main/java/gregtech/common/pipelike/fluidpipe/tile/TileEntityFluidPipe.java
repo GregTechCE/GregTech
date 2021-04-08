@@ -65,12 +65,12 @@ public class TileEntityFluidPipe extends TileEntityMaterialPipeBase<FluidPipeTyp
     public static void spawnParticles(World worldIn, BlockPos pos, EnumFacing direction, EnumParticleTypes particleType, int particleCount, Random rand) {
         for (int i = 0; i < particleCount; i++) {
             worldIn.spawnParticle(particleType,
-                pos.getX() + 0.5 - direction.getFrontOffsetX() / 1.8,
-                pos.getY() + 0.5 - direction.getFrontOffsetY() / 1.8,
-                pos.getZ() + 0.5 - direction.getFrontOffsetZ() / 1.8,
-                direction.getFrontOffsetX() * 0.2 + rand.nextDouble() * 0.1,
-                direction.getFrontOffsetY() * 0.2 + rand.nextDouble() * 0.1,
-                direction.getFrontOffsetZ() * 0.2 + rand.nextDouble() * 0.1);
+                pos.getX() + 0.5 - direction.getXOffset() / 1.8,
+                pos.getY() + 0.5 - direction.getYOffset() / 1.8,
+                pos.getZ() + 0.5 - direction.getZOffset() / 1.8,
+                direction.getXOffset() * 0.2 + rand.nextDouble() * 0.1,
+                direction.getYOffset() * 0.2 + rand.nextDouble() * 0.1,
+                direction.getZOffset() * 0.2 + rand.nextDouble() * 0.1);
         }
     }
 }

@@ -87,7 +87,7 @@ public abstract class MetaItem<T extends MetaItem<?>.MetaValueItem> extends Item
     protected final short metaItemOffset;
 
     public MetaItem(short metaItemOffset) {
-        setUnlocalizedName("meta_item");
+        setTranslationKey("meta_item");
         setHasSubtypes(true);
         this.metaItemOffset = metaItemOffset;
         META_ITEMS.add(this);

@@ -12,7 +12,7 @@ public class BlockMetalCasing extends VariantBlock<BlockMetalCasing.MetalCasingT
 
     public BlockMetalCasing() {
         super(Material.IRON);
-        setUnlocalizedName("metal_casing");
+        setTranslationKey("metal_casing");
         setHardness(5.0f);
         setResistance(10.0f);
         setSoundType(SoundType.METAL);

@@ -41,18 +41,18 @@ public abstract class AbstractBlockModelFactory implements ResourcePackHook.IRes
 
     @Override
     public boolean resourceExists(ResourceLocation location) {
-        return location.getResourceDomain().equals(GTValues.MODID)
-            && location.getResourcePath().startsWith("blockstates/" + blockNamePrefix)
-            && !location.getResourcePath().contains(".mcmeta");
+        return location.getNamespace().equals(GTValues.MODID)
+            && location.getPath().startsWith("blockstates/" + blockNamePrefix)
+            && !location.getPath().contains(".mcmeta");
     }
 
     @Override
     public InputStream getInputStream(ResourceLocation location) throws IOException {
-        String resourcePath = location.getResourcePath(); // blockstates/compressed_1.json
+        String resourcePath = location.getPath(); // blockstates/compressed_1.json
         resourcePath = resourcePath.substring(0, resourcePath.length() - 5); //remove .json
         resourcePath = resourcePath.substring(12); //remove blockstates/
         if (resourcePath.startsWith(blockNamePrefix)) {
-            Block block = Block.REGISTRY.getObject(new ResourceLocation(location.getResourceDomain(), resourcePath));
+            Block block = Block.REGISTRY.getObject(new ResourceLocation(location.getNamespace(), resourcePath));
             if (block != null && block != Blocks.AIR) {
                 return FileUtility.writeInputStream(fillSample(block, blockStateSample));
             }

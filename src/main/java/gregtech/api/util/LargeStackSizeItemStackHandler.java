@@ -39,7 +39,7 @@ public class LargeStackSizeItemStackHandler extends ItemStackHandler {
             tagCompound.setTag(BIG_STACK_SIZE_TAG_KEY, stackSizes);
 
             //fix size overflow of existing item tags
-            for (NBTBase itemBase : items.tagList) {
+            for (NBTBase itemBase : items) {
                 NBTTagCompound item = (NBTTagCompound) itemBase;
 
                 byte size = item.getByte(ITEM_COUNT_TAG_KEY);

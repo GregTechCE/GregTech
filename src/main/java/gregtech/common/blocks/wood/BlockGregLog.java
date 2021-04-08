@@ -30,7 +30,7 @@ public class BlockGregLog extends BlockLog {
             .withProperty(VARIANT, LogVariant.RUBBER_WOOD)
             .withProperty(LOG_AXIS, BlockLog.EnumAxis.Y)
             .withProperty(NATURAL, false));
-        setUnlocalizedName("gt.log");
+        setTranslationKey("gt.log");
         this.setCreativeTab(GregTechAPI.TAB_GREGTECH);
     }
 

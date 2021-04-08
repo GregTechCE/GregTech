@@ -47,12 +47,12 @@ public class CustomItemReturnRecipeWrapper extends ShapedOreRecipeWrapper implem
         ResourceLocation registryName = getRegistryName();
         guiItemStacks.addTooltipCallback((slotIndex, input, ingredient, tooltip) -> {
             if (slotIndex == craftOutputSlot && registryName != null) {
-                String recipeModId = registryName.getResourceDomain();
+                String recipeModId = registryName.getNamespace();
 
                 boolean modIdDifferent = false;
                 ResourceLocation itemRegistryName = ingredient.getItem().getRegistryName();
                 if (itemRegistryName != null) {
-                    String itemModId = itemRegistryName.getResourceDomain();
+                    String itemModId = itemRegistryName.getNamespace();
                     modIdDifferent = !recipeModId.equals(itemModId);
                 }
 
@@ -63,7 +63,7 @@ public class CustomItemReturnRecipeWrapper extends ShapedOreRecipeWrapper implem
 
                 boolean showAdvanced = Minecraft.getMinecraft().gameSettings.advancedItemTooltips || GuiScreen.isShiftKeyDown();
                 if (showAdvanced) {
-                    tooltip.add(TextFormatting.GRAY + registryName.getResourcePath());
+                    tooltip.add(TextFormatting.GRAY + registryName.getPath());
                 }
             }
 
