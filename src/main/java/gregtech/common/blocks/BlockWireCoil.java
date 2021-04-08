@@ -23,7 +23,7 @@ public class BlockWireCoil extends VariantBlock<BlockWireCoil.CoilType> {
 
     public BlockWireCoil() {
         super(net.minecraft.block.material.Material.IRON);
-        setUnlocalizedName("wire_coil");
+        setTranslationKey("wire_coil");
         setHardness(5.0f);
         setResistance(10.0f);
         setSoundType(SoundType.METAL);

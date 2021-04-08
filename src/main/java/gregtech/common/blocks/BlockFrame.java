@@ -37,7 +37,7 @@ public final class BlockFrame extends BlockColored {
             net.minecraft.block.material.Material.WOOD :
             net.minecraft.block.material.Material.IRON);
         this.frameMaterial = material;
-        setUnlocalizedName("frame");
+        setTranslationKey("frame");
         setHardness(3.0f);
         setResistance(6.0f);
         setHarvestLevel(ModHandler.isMaterialWood(material) ? "axe" : "pickaxe", 1);
@@ -145,7 +145,7 @@ public final class BlockFrame extends BlockColored {
     }
 
     @Override
-    public void onEntityCollidedWithBlock(World worldIn, BlockPos pos, IBlockState state, Entity entityIn) {
+    public void onEntityCollision(World worldIn, BlockPos pos, IBlockState state, Entity entityIn) {
         entityIn.motionX = MathHelper.clamp(entityIn.motionX, -0.15, 0.15);
         entityIn.motionZ = MathHelper.clamp(entityIn.motionZ, -0.15, 0.15);
         entityIn.fallDistance = 0.0F;
@@ -161,7 +161,7 @@ public final class BlockFrame extends BlockColored {
     }
 
     @Override
-    public EnumPushReaction getMobilityFlag(IBlockState state) {
+    public EnumPushReaction getPushReaction(IBlockState state) {
         return EnumPushReaction.DESTROY;
     }
 
@@ -171,7 +171,7 @@ public final class BlockFrame extends BlockColored {
     }
 
     @Override
-    public BlockRenderLayer getBlockLayer() {
+    public BlockRenderLayer getRenderLayer() {
         return BlockRenderLayer.CUTOUT_MIPPED;
     }
 

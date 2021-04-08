@@ -66,6 +66,8 @@ import static gregtech.api.GTValues.V;
 
 public class GTUtility {
 
+    private static final XSTR random = new XSTR();
+
     public static Runnable combine(Runnable... runnables) {
         return () -> {
             for (Runnable runnable : runnables) {
@@ -268,7 +270,7 @@ public class GTUtility {
 
         boolean wasRemovedByPlayer = blockState.getBlock().removedByPlayer(blockState, world, pos, player, !player.capabilities.isCreativeMode);
         if(wasRemovedByPlayer) {
-            blockState.getBlock().onBlockDestroyedByPlayer(world, pos, blockState);
+            blockState.getBlock().onPlayerDestroy(world, pos, blockState);
 
             if(!world.isRemote && !player.capabilities.isCreativeMode) {
                 ItemStack stackInHand = player.getHeldItemMainhand();
@@ -709,5 +711,9 @@ public class GTUtility {
             .thenComparing(ItemStack::hasTagCompound)
             .thenComparing(it -> -Objects.hashCode(it.getTagCompound()))
             .thenComparing(it -> -it.getCount());
+    }
+
+    public static int getRandomIntXSTR(int bound) {
+        return random.nextInt(bound);
     }
 }

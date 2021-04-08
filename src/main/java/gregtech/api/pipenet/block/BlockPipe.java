@@ -54,7 +54,7 @@ public abstract class BlockPipe<PipeType extends Enum<PipeType> & IPipeType<Node
 
     public BlockPipe() {
         super(net.minecraft.block.material.Material.IRON);
-        setUnlocalizedName("pipe");
+        setTranslationKey("pipe");
         setCreativeTab(GregTechAPI.TAB_GREGTECH);
         setSoundType(SoundType.METAL);
         setHardness(2.0f);

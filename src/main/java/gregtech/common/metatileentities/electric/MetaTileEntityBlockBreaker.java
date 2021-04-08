@@ -66,7 +66,7 @@ public class MetaTileEntityBlockBreaker extends TieredMetaTileEntity {
     @Override
     public void update() {
         super.update();
-        if(!getWorld().isRemote && getTimer() % 5 == 0) {
+        if(!getWorld().isRemote && getOffsetTimer() % 5 == 0) {
             pushItemsIntoNearbyHandlers(getOutputFacing());
         }
         if(!getWorld().isRemote) {
@@ -106,9 +106,9 @@ public class MetaTileEntityBlockBreaker extends TieredMetaTileEntity {
 
     private void addToInventoryOrDropItems(List<ItemStack> drops) {
         EnumFacing outputFacing = getOutputFacing();
-        double itemSpawnX = getPos().getX() + 0.5 + outputFacing.getFrontOffsetX();
-        double itemSpawnY = getPos().getX() + 0.5 + outputFacing.getFrontOffsetX();
-        double itemSpawnZ = getPos().getX() + 0.5 + outputFacing.getFrontOffsetX();
+        double itemSpawnX = getPos().getX() + 0.5 + outputFacing.getXOffset();
+        double itemSpawnY = getPos().getX() + 0.5 + outputFacing.getYOffset();
+        double itemSpawnZ = getPos().getX() + 0.5 + outputFacing.getZOffset();
         for(ItemStack itemStack : drops) {
             ItemStack remainStack = ItemHandlerHelper.insertItemStacked(exportItems, itemStack, false);
             if(!remainStack.isEmpty()) {
@@ -124,7 +124,7 @@ public class MetaTileEntityBlockBreaker extends TieredMetaTileEntity {
         boolean result = blockState.getBlock().removedByPlayer(blockState, getWorld(), blockPos, entityPlayer, true);
         if(result) {
             getWorld().playEvent(null, 2001, blockPos, Block.getStateId(blockState));
-            blockState.getBlock().onBlockDestroyedByPlayer(getWorld(), blockPos, blockState);
+            blockState.getBlock().onPlayerDestroy(getWorld(), blockPos, blockState);
 
             BlockUtility.startCaptureDrops();
             blockState.getBlock().harvestBlock(getWorld(), entityPlayer, blockPos, blockState, tileEntity, ItemStack.EMPTY);

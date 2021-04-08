@@ -59,7 +59,7 @@ public class MetaTileEntityTeslaCoil extends MetaTileEntity {
     @Override
     public void update() {
         super.update();
-        if (!getWorld().isRemote && energyContainer.getEnergyStored() > 0L && getWorld().isBlockPowered(getPos()) && getTimer() % 20 == 0L) {
+        if (!getWorld().isRemote && energyContainer.getEnergyStored() > 0L && getWorld().isBlockPowered(getPos()) && getOffsetTimer() % 20 == 0L) {
             double damageRadius = getDamageRadius();
             List<EntityLivingBase> entities = getWorld().getEntitiesWithinAABB(EntityLivingBase.class, new AxisAlignedBB(getPos()).grow(damageRadius));
             if (entities.isEmpty()) return; //no entities found, return

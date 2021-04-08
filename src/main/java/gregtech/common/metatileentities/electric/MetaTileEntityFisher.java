@@ -80,7 +80,7 @@ public class MetaTileEntityFisher extends TieredMetaTileEntity {
     public void update() {
         super.update();
         ItemStack baitStack = importItems.getStackInSlot(0);
-        if (!getWorld().isRemote && energyContainer.getEnergyStored() >= energyAmountPerFish && getTimer() % fishingTicks == 0L && !baitStack.isEmpty()) {
+        if (!getWorld().isRemote && energyContainer.getEnergyStored() >= energyAmountPerFish && getOffsetTimer() % fishingTicks == 0L && !baitStack.isEmpty()) {
             WorldServer world = (WorldServer) this.getWorld();
             int waterCount = 0;
             int edgeSize = (int) Math.sqrt(WATER_CHECK_SIZE);
@@ -104,7 +104,7 @@ public class MetaTileEntityFisher extends TieredMetaTileEntity {
                 }
             }
         }
-        if(!getWorld().isRemote && getTimer() % 5 == 0) {
+        if(!getWorld().isRemote && getOffsetTimer() % 5 == 0) {
             pushItemsIntoNearbyHandlers(getFrontFacing());
         }
     }

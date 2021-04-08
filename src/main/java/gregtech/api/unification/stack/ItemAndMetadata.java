@@ -47,7 +47,7 @@ public final class ItemAndMetadata {
 
     @Override
     public String toString() {
-        return this.item.getUnlocalizedName(toItemStack());
+        return this.item.getTranslationKey(toItemStack());
     }
 
 }
