@@ -28,7 +28,7 @@ public class GregTechAPI {
     public static final BaseCreativeTab TAB_GREGTECH_ORES =
         new BaseCreativeTab(GTValues.MODID + ".ores", () -> MetaItems.JACKHAMMER.getStackForm(), true);
     public static final BaseCreativeTab TAB_GREGTECH_TOOLS =
-            new BaseCreativeTab(GTValues.MODID + ".tools", () -> MetaItems.HARD_HAMMER.getStackForm(), true);
+        new BaseCreativeTab(GTValues.MODID + ".tools", () -> MetaItems.HARD_HAMMER.getStackForm(), true);
 
     public static final GTControlledRegistry<ResourceLocation, MetaTileEntity> META_TILE_ENTITY_REGISTRY = new GTControlledRegistry<>(Short.MAX_VALUE);
 
