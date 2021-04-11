@@ -20,24 +20,6 @@ public class ShapeModelGenerator {
         return result;
     }
 
-
-//TODO What is going on here?
-
-    // Old, should be removed, but InvPipeRenderer depends on it (despite never being used)
-    public static CCModel[] generateRotatedVariants(CCModel originalModel) {
-        CCModel[] result = new CCModel[6];
-        double modelHeight = originalModel.verts[2].vec.y;
-        double translate = 1.0 - modelHeight;
-        for (int i = 0; i < 3; i++) {
-            EnumFacing side = EnumFacing.VALUES[i * 2 + 1];
-            Transformation rotation = Rotation.sideRotations[i * 2].at(Vector3.center);
-            Transformation translation = new Translation(side.getXOffset() * translate, side.getYOffset() * translate, side.getZOffset() * translate);
-            CCModel negativeModel = originalModel.copy().apply(rotation);
-            CCModel positiveModel = negativeModel.copy().apply(translation);
-            result[i * 2] = negativeModel;
-            result[i * 2 + 1] = positiveModel;
-        }
-        return result;
     public static CCModel[] generateHalfVariants(CCModel halfModel) {
         Transformation translation = new Translation(0, 0.25, 0);
         CCModel centeredModel = halfModel.copy().apply(translation);
@@ -49,7 +31,7 @@ public class ShapeModelGenerator {
         for (int i = 0; i < 3; i++) {
             EnumFacing side = EnumFacing.VALUES[i * 2 + 1];
             Transformation rotation = Rotation.sideRotations[i * 2].at(Vector3.center);
-            Transformation translation = new Translation(side.getFrontOffsetX() * translate, side.getFrontOffsetY() * translate, side.getFrontOffsetZ() * translate);
+            Transformation translation = new Translation(side.getXOffset() * translate, side.getYOffset() * translate, side.getZOffset() * translate);
             CCModel negativeModel = originalModel.copy().apply(rotation);
             CCModel positiveModel = negativeModel.copy().apply(translation);
             result[i * 2] = negativeModel;
