@@ -2,6 +2,7 @@ package gregtech.common.render;
 
 import codechicken.lib.render.CCModel;
 import codechicken.lib.vec.*;
+import gregtech.api.util.GTLog;
 import net.minecraft.util.EnumFacing;
 
 import java.util.ArrayList;
@@ -152,7 +153,7 @@ public class ShapeModelGenerator {
             0.0f, 0.0f, 0.0f, 1.0f);
     }
 
-    private static Vector3[] generatePointsForAngle(double anglePerNumber, int number, int numberOfAnglesInner, double radiusInner) {
+    private static Vector3[] generatePointsForAngle(double anglePerNumber, int number, int numberOfAnglesInner, double radiusInner, int numberOfTurns) {
         double angle = anglePerNumber * number;
         double nextAngle = anglePerNumber * (number + 1);
 
@@ -169,6 +170,10 @@ public class ShapeModelGenerator {
             Vector3 originalPoint = new Vector3(0.0f, Math.cos(angleInner) * radiusInner, Math.sin(angleInner) * radiusInner);
             rotationMatrix.apply(originalPoint);
             originalPoint.add(center);
+            if (number == 0)
+                originalPoint.z = 0.0;
+            else if (number == numberOfTurns)
+                originalPoint.x = 0.0;
             result[numberInner] = originalPoint;
         }
         return result;
@@ -181,7 +186,7 @@ public class ShapeModelGenerator {
         Vector3[][] allGeneratedPoints = new Vector3[numberOfTurns + 1][];
         double anglePerNumber = (Math.PI / 2) / numberOfTurns;
         for (int i = 0; i <= numberOfTurns; i++) {
-            allGeneratedPoints[i] = generatePointsForAngle(anglePerNumber, i, numberOfAnglesInner, radiusInner);
+            allGeneratedPoints[i] = generatePointsForAngle(anglePerNumber, i, numberOfAnglesInner, radiusInner, numberOfTurns);
         }
 
         double texelSizePerTurn = 1.0 / (turnPointsPerTexel * 1.0);
