@@ -52,8 +52,7 @@ public class ShapeModelGenerator {
             if (result[i] == null) { // Check here to not overwrite models handled separately
                 parts = new ArrayList<>();
                 for (int j = 0; j < 6; j++) {
-                    int bit = (int)Math.pow(2, j);
-                    if ((i & bit) == bit) {
+                    if ((i >> j & 1) == 1) {
                         parts.add(halfModels[j].copy());
                     }
                 }
@@ -79,13 +78,13 @@ public class ShapeModelGenerator {
 
         for (int i = 0; i < 3; i++) {
             CCModel originalModel = turnModel.copy().apply(sRotations.get(i));
-            if (i == 0) {
-                result[0b010100] = originalModel.copy().apply(qRotations.get(0));
-                result[0b101000] = originalModel.copy().apply(qRotations.get(1));
-                result[0b011000] = originalModel.copy().apply(qRotations.get(2));
-                result[0b100100] = originalModel.copy().apply(qRotations.get(3));
-            } else for (int j = 0; j < 4; j++) {
-                result[(4 << j) + i] = originalModel.copy().apply(qRotations.get(j));
+            for (int j = 0; j < 4; j++) {
+                int index = i == 0
+                        ? j < 2
+                            ? ((j + 1) * 5) << 2
+                            : (j * 3) << 2
+                        : (4 << j) + i;
+                result[index] = originalModel.copy().apply(qRotations.get(j));
             }
         }
 
