@@ -40,6 +40,11 @@ public class ShapeModelGenerator {
         return result;
     }
 
+    /**
+     * Method left for compatibility, as InvPipeRenderer is using this method.
+     * When Inventory Pipes are fully implemented, they should either switch to this new
+     * model generation system, or create their own models. Then this method can be removed.
+     */
     public static CCModel[] generateRotatedVariants(CCModel originalModel) {
         return generateRotatedVariants(originalModel, 1.0 - originalModel.verts[2].vec.y);
     }
@@ -169,7 +174,7 @@ public class ShapeModelGenerator {
             Vector3 originalPoint = new Vector3(0.0f, Math.cos(angleInner) * radiusInner, Math.sin(angleInner) * radiusInner);
             rotationMatrix.apply(originalPoint);
             originalPoint.add(center);
-            if (number == 0)
+            if (number == 0) // TODO There is probably a smarter way to do this, maybe in "center"
                 originalPoint.z = 0.0;
             else if (number == numberOfTurns)
                 originalPoint.x = 0.0;

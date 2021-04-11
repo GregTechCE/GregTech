@@ -131,7 +131,7 @@ public class FluidPipeRenderer implements ICCBlockRenderer, IItemRenderer {
         }
         CCRenderState renderState = CCRenderState.instance();
         GlStateManager.enableBlend();
-        GlStateManager.disableCull();
+        GlStateManager.disableCull(); // TODO Remove this when endpoints are done
         renderState.reset();
         renderState.startDrawing(GL11.GL_QUADS, DefaultVertexFormats.ITEM);
         BlockFluidPipe blockFluidPipe = (BlockFluidPipe) ((ItemBlockFluidPipe) stack.getItem()).getBlock();
