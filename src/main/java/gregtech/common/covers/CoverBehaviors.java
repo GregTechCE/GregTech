@@ -61,6 +61,16 @@ public class CoverBehaviors {
         registerBehavior(37, new ResourceLocation(GTValues.MODID, "machine_controller"), MetaItems.COVER_MACHINE_CONTROLLER, CoverMachineController::new);
         registerBehavior(38, new ResourceLocation(GTValues.MODID, "smart_filter"), MetaItems.SMART_FILTER, (tile, side) -> new CoverItemFilter(tile, side, "cover.smart_item_filter.title", Textures.SMART_FILTER_FILTER_OVERLAY, new SmartItemFilter()));
         registerBehavior(39, new ResourceLocation(GTValues.MODID, "facade"), MetaItems.COVER_FACADE, CoverFacade::new);
+
+        registerBehavior(40, new ResourceLocation(GTValues.MODID, "fluid.regulator.lv"), MetaItems.FLUID_REGULATOR_LV, (tile, side) -> new CoverFluidRegulator(tile, side, GTValues.LV, 1280));
+        registerBehavior(41, new ResourceLocation(GTValues.MODID, "fluid.regulator.mv"), MetaItems.FLUID_REGULATOR_MV, (tile, side) -> new CoverFluidRegulator(tile, side, GTValues.MV, 5120));
+        registerBehavior(42, new ResourceLocation(GTValues.MODID, "fluid.regulator.hv"), MetaItems.FLUID_REGULATOR_HV, (tile, side) -> new CoverFluidRegulator(tile, side, GTValues.HV, 20480));
+        registerBehavior(43, new ResourceLocation(GTValues.MODID, "fluid.regulator.ev"), MetaItems.FLUID_REGULATOR_EV, (tile, side) -> new CoverFluidRegulator(tile, side, GTValues.EV, 81920));
+        registerBehavior(44, new ResourceLocation(GTValues.MODID, "fluid.regulator.iv"), MetaItems.FLUID_REGULATOR_IV, (tile, side) -> new CoverFluidRegulator(tile, side, GTValues.IV, 327680));
+        registerBehavior(45, new ResourceLocation(GTValues.MODID, "fluid.regulator.luv"), MetaItems.FLUID_REGULATOR_LUV, (tile, side) -> new CoverFluidRegulator(tile, side, GTValues.LuV, 1310720));
+        registerBehavior(46, new ResourceLocation(GTValues.MODID, "fluid.regulator.zpm"), MetaItems.FLUID_REGULATOR_ZPM, (tile, side) -> new CoverFluidRegulator(tile, side, GTValues.ZPM, 5242880));
+        registerBehavior(47, new ResourceLocation(GTValues.MODID, "fluid.regulator.uv"), MetaItems.FLUID_REGULATOR_UV, (tile, side) -> new CoverFluidRegulator(tile, side, GTValues.UV, 20971520));
+
     }
 
     public static void registerBehavior(int coverNetworkId, ResourceLocation coverId, MetaValueItem placerItem, BiFunction<ICoverable, EnumFacing, CoverBehavior> behaviorCreator) {

@@ -158,6 +158,15 @@ public final class MetaItems {
     public static MetaItem<?>.MetaValueItem ELECTRIC_PUMP_ZPM;
     public static MetaItem<?>.MetaValueItem ELECTRIC_PUMP_UV;
 
+    public static MetaItem<?>.MetaValueItem FLUID_REGULATOR_LV;
+    public static MetaItem<?>.MetaValueItem FLUID_REGULATOR_MV;
+    public static MetaItem<?>.MetaValueItem FLUID_REGULATOR_HV;
+    public static MetaItem<?>.MetaValueItem FLUID_REGULATOR_EV;
+    public static MetaItem<?>.MetaValueItem FLUID_REGULATOR_IV;
+    public static MetaItem<?>.MetaValueItem FLUID_REGULATOR_LUV;
+    public static MetaItem<?>.MetaValueItem FLUID_REGULATOR_ZPM;
+    public static MetaItem<?>.MetaValueItem FLUID_REGULATOR_UV;
+
     public static MetaItem<?>.MetaValueItem FLUID_FILTER;
 
     public static MetaItem<?>.MetaValueItem DYNAMITE;

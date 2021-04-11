@@ -165,6 +165,15 @@ public class MetaItem2 extends MaterialMetaItem {
 
         TURBINE_ROTOR = addItem(508, "turbine_rotor").addComponents(new TurbineRotorBehavior());
         COVER_FACADE = addItem(509, "cover.facade").addComponents(new FacadeItem()).disableModelLoading();
+
+        FLUID_REGULATOR_LV = addItem(700, "fluid.regulator.lv");
+        FLUID_REGULATOR_MV = addItem(701, "fluid.regulator.mv");
+        FLUID_REGULATOR_HV = addItem(702, "fluid.regulator.hv");
+        FLUID_REGULATOR_EV = addItem(703, "fluid.regulator.ev");
+        FLUID_REGULATOR_IV = addItem(704, "fluid.regulator.iv");
+        FLUID_REGULATOR_LUV = addItem(705, "fluid.regulator.luv");
+        FLUID_REGULATOR_ZPM = addItem(706, "fluid.regulator.zpm");
+        FLUID_REGULATOR_UV = addItem(707, "fluid.regulator.uv");
     }
 
     public void registerRecipes() {
