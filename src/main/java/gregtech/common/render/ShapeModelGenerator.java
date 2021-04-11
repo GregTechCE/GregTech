@@ -2,7 +2,6 @@ package gregtech.common.render;
 
 import codechicken.lib.render.CCModel;
 import codechicken.lib.vec.*;
-import gregtech.api.util.GTLog;
 import net.minecraft.util.EnumFacing;
 
 import java.util.ArrayList;

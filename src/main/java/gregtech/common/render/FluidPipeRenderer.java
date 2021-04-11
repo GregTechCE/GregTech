@@ -59,8 +59,8 @@ public class FluidPipeRenderer implements ICCBlockRenderer, IItemRenderer {
     public static ModelResourceLocation MODEL_LOCATION = new ModelResourceLocation(new ResourceLocation(GTValues.MODID, "fluid_pipe"), "normal");
     public static FluidPipeRenderer INSTANCE = new FluidPipeRenderer();
     public static EnumBlockRenderType BLOCK_RENDER_TYPE;
-    private Map<FluidPipeType, PipeTextureInfo> pipeTextures = new HashMap<>();
-    private Map<FluidPipeType, PipeModelInfo> pipeModels = new HashMap<>();
+    private final Map<FluidPipeType, PipeTextureInfo> pipeTextures = new HashMap<>();
+    private final Map<FluidPipeType, PipeModelInfo> pipeModels = new HashMap<>();
 
     private static class PipeTextureInfo {
         public final TextureAtlasSprite inTexture;
@@ -108,8 +108,6 @@ public class FluidPipeRenderer implements ICCBlockRenderer, IItemRenderer {
             int angles = fluidPipeType.ordinal() < 2 ? 4 : 8;
 
             CCModel halfModel = ShapeModelGenerator.generateModel(angles, 0.5f, thickness / 3.0f, height);
-
-            // original was 20, 5, 6, .5
             CCModel turnModel = ShapeModelGenerator.generateTurnModel(20, turnPointsPerTexel[fluidPipeType.ordinal()], angles, thickness / 3);
 
             CCModel[] halfVariants = ShapeModelGenerator.generateRotatedVariants(halfModel, 0.5);
