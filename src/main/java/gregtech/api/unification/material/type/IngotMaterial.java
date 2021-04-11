@@ -64,9 +64,11 @@ public class IngotMaterial extends SolidMaterial {
     /**
      * Blast furnace temperature of this material
      * Equal to zero if material doesn't use blast furnace
-     * If below 1000C, primitive blast furnace recipes will be also added
+     * If below 1000C, primitive blast furnace recipes will be also added.
+     * If above 1750C, a Hot Ingot and its Vacuum Freezer recipe will be also added.
      */
-    public final int blastFurnaceTemperature;
+    @ZenProperty("blastFurnaceTemp")
+    public int blastFurnaceTemperature;
 
     /**
      * If set, cable will be generated for this material with base stats
