@@ -209,7 +209,7 @@ public class CoverFluidRegulator extends CoverPump {
     @Override
     public void writeToNBT(NBTTagCompound tagCompound) {
         super.writeToNBT(tagCompound);
-        tagCompound.setInteger("gregtech.common.covers.TransferMode", transferMode.ordinal());
+        tagCompound.setInteger("TransferMode", transferMode.ordinal());
         tagCompound.setInteger("KeepAmount", keepAmount);
         tagCompound.setInteger("SupplyAmount", supplyAmount);
     }
@@ -217,7 +217,7 @@ public class CoverFluidRegulator extends CoverPump {
     @Override
     public void readFromNBT(NBTTagCompound tagCompound) {
         super.readFromNBT(tagCompound);
-        this.transferMode = TransferMode.values()[tagCompound.getInteger("gregtech.common.covers.TransferMode")];
+        this.transferMode = TransferMode.values()[tagCompound.getInteger("TransferMode")];
         this.keepAmount = tagCompound.getInteger("KeepAmount");
         this.supplyAmount = tagCompound.getInteger("SupplyAmouny");
     }
