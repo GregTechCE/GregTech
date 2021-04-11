@@ -67,8 +67,8 @@ public class IngotMaterial extends SolidMaterial {
      * If below 1000K, primitive blast furnace recipes will be also added.
      * If above 1750K, a Hot Ingot and its Vacuum Freezer recipe will be also added.
      */
-    @ZenProperty("blastFurnaceTemp")
-    public int blastFurnaceTemperature;
+    @ZenProperty
+    public final int blastFurnaceTemperature;
 
     /**
      * If set, cable will be generated for this material with base stats
