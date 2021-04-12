@@ -23,6 +23,8 @@ public class CoverFluidRegulator extends CoverPump {
     protected TransferMode transferMode;
     protected int keepAmount = 0;
     protected int supplyAmount = 0;
+    private static String supplyKey = "SupplyAmount";
+    private static String keepKey = "KeepAmount";
 
     public CoverFluidRegulator(ICoverable coverHolder, EnumFacing attachedSide, int tier, int mbPerTick) {
         super(coverHolder, attachedSide, tier, mbPerTick);
@@ -150,16 +152,45 @@ public class CoverFluidRegulator extends CoverPump {
         return val == -1 ? "" : Integer.toString(val);
     }
 
+    @Override
+    public void setBucketMode(BucketMode bucketMode){
+        super.setBucketMode(bucketMode);
+        if (this.bucketMode == BucketMode.BUCKET)
+            setKeepAmount(keepAmount / 1000 * 1000);
+            setSupplyAmount(supplyAmount / 1000 * 1000);
+    }
+
+    private void adjustTransferSize(int amount) {
+        amount *= this.bucketMode == BucketMode.BUCKET ? 1000 : 1;
+        switch(this.transferMode) {
+            case TRANSFER_EXACT:
+                setSupplyAmount(MathHelper.clamp(this.supplyAmount + amount, 0, this.transferRate));
+            case KEEP_EXACT:
+                setKeepAmount(MathHelper.clamp(this.keepAmount + amount, 0, Integer.MAX_VALUE));
+        }
+    }
+
+    private void setKeepAmount(int keepAmount) {
+        this.keepAmount = keepAmount;
+        coverHolder.markDirty();
+    }
+
+    private void setSupplyAmount(int supplyAmount) {
+        this.supplyAmount = supplyAmount;
+        coverHolder.markDirty();
+    }
 
     @Override
-    public ModularUI createUI(EntityPlayer player) {
+    protected String getUITitle() {
+        return "cover.fluid_regulator.title";
+    }
+
+    @Override
+    protected ModularUI buildUI(ModularUI.Builder builder, EntityPlayer player) {
         WidgetGroup filterGroup = new WidgetGroup();
         filterGroup.addWidget(new CycleButtonWidget(88, 63, 75, 18,
                 TransferMode.class, this::getTransferMode, this::setTransferMode)
                 .setTooltipHoverString("cover.fluid_regulator.transfer_mode.description"));
-
-        WidgetGroup primaryGroup = new WidgetGroup();
-        primaryGroup.addWidget(new LabelWidget(10, 5, "cover.fluid_regulator.title", GTValues.VN[tier]));
 
         ServerWidgetGroup stackSizeGroup = new ServerWidgetGroup(this::checkTransferMode);
         stackSizeGroup.addWidget(new ClickButtonWidget(88, 84, 18, 18, "-1", data -> adjustTransferSize(data.isCtrlClick ? -100 : data.isShiftClick ? -10 : -1)));
@@ -167,59 +198,24 @@ public class CoverFluidRegulator extends CoverPump {
         stackSizeGroup.addWidget(new ImageWidget(108, 84, 34, 18, GuiTextures.DISPLAY));
         stackSizeGroup.addWidget(new SimpleTextWidget(125, 93, "", 0xFFFFFF,
                 this::getTransferSizeString));
-
-        primaryGroup.addWidget(new ClickButtonWidget(10, 20, 34, 18, "-100", data -> adjustTransferRate(data.isShiftClick ? -500 : -100)));
-        primaryGroup.addWidget(new ClickButtonWidget(128, 20, 34, 18, "+100", data -> adjustTransferRate(data.isShiftClick ? +500 : +100)));
-        primaryGroup.addWidget(new ClickButtonWidget(45, 20, 23, 18, "-10", data -> adjustTransferRate(data.isShiftClick ? -50 : -10)));
-        primaryGroup.addWidget(new ClickButtonWidget(105, 20, 23, 18, "+10", data -> adjustTransferRate(data.isShiftClick ? +50 : +10)));
-        primaryGroup.addWidget(new ClickButtonWidget(68, 20, 18, 18, "-1", data -> adjustTransferRate(data.isShiftClick ? -5 : -1)));
-        primaryGroup.addWidget(new ClickButtonWidget(86, 20, 18, 18, "+1", data -> adjustTransferRate(data.isShiftClick ? +5 : +1)));
-        primaryGroup.addWidget(new ImageWidget(10, 40, 120, 18, GuiTextures.DISPLAY));
-        primaryGroup.addWidget(new SimpleTextWidget(65, 50, "cover.pump.transfer_rate", 0xFFFFFF, () -> bucketMode == BucketMode.BUCKET ? Integer.toString(transferRate / 1000) : Integer.toString(transferRate)));
-        primaryGroup.addWidget(new CycleButtonWidget(132, 40, 30, 18,
-                BucketMode.class, this::getBucketMode, this::setBucketMode));
-
-        primaryGroup.addWidget(new CycleButtonWidget(10, 63, 75, 18,
-                PumpMode.class, this::getPumpMode, this::setPumpMode));
-
-        primaryGroup.addWidget(new CycleButtonWidget(10, 160, 113, 18,
-                ManualImportExportMode.class, this::getManualImportExportMode, this::setManualImportExportMode)
-                .setTooltipHoverString("cover.universal.manual_import_export.mode.description"));
-
-        this.fluidFilter.initUI(88, primaryGroup::addWidget);
-
-        return ModularUI.builder(GuiTextures.BACKGROUND, 176, 184 + 82)
-                .widget(primaryGroup)
-                .widget(filterGroup)
-                .widget(stackSizeGroup)
-                .bindPlayerInventory(player.inventory, GuiTextures.SLOT, 8, 184)
-                .build(this, player);
+        return super.buildUI(builder.widget(filterGroup).widget(stackSizeGroup), player);
     }
 
-    private void adjustTransferSize(int amount) {
-        amount *= this.bucketMode == BucketMode.BUCKET ? 1000 : 1;
-        switch(this.transferMode) {
-            case TRANSFER_EXACT:
-                this.supplyAmount = MathHelper.clamp(this.supplyAmount + amount, 0, this.transferRate);
-            case KEEP_EXACT:
-                this.keepAmount = MathHelper.clamp(this.keepAmount + amount, 0, Integer.MAX_VALUE);
-        }
-    }
 
     @Override
     public void writeToNBT(NBTTagCompound tagCompound) {
         super.writeToNBT(tagCompound);
         tagCompound.setInteger("TransferMode", transferMode.ordinal());
-        tagCompound.setInteger("KeepAmount", keepAmount);
-        tagCompound.setInteger("SupplyAmount", supplyAmount);
+        tagCompound.setInteger(keepKey, keepAmount);
+        tagCompound.setInteger(supplyKey, supplyAmount);
     }
 
     @Override
     public void readFromNBT(NBTTagCompound tagCompound) {
         super.readFromNBT(tagCompound);
         this.transferMode = TransferMode.values()[tagCompound.getInteger("TransferMode")];
-        this.keepAmount = tagCompound.getInteger("KeepAmount");
-        this.supplyAmount = tagCompound.getInteger("SupplyAmouny");
+        this.keepAmount = tagCompound.getInteger(keepKey);
+        this.supplyAmount = tagCompound.getInteger(supplyKey);
     }
 
 }
