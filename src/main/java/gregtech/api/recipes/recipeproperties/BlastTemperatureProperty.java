@@ -12,7 +12,6 @@ public class BlastTemperatureProperty extends RecipeProperty<Integer> {
     private static final TreeMap<Integer, Object> registeredCoilTypes = new TreeMap<>((x, y) -> y - x);
     public static final BlastTemperatureProperty INSTANCE = new BlastTemperatureProperty();
     private static final String key = "blast_furnace_temperature";
-    private String cachedName = null;
 
     private BlastTemperatureProperty() {
         super(Integer.class);
@@ -21,7 +20,7 @@ public class BlastTemperatureProperty extends RecipeProperty<Integer> {
     @Override
     public void drawInfo(Minecraft minecraft, int x, int y, int color, Object value) {
         minecraft.fontRenderer.drawString(I18n.format("gregtech.recipe.blast_furnace_temperature",
-                value, cachedName == null ? getMinTierForTemperature(castValue(value)) : cachedName), x, y, color);
+                value, getMinTierForTemperature(castValue(value))), x, y, color);
     }
 
     @Override
@@ -44,7 +43,7 @@ public class BlastTemperatureProperty extends RecipeProperty<Integer> {
         if (name.length() >= 13) {
             name = name.substring(0, 10) + "..";
         }
-        return cachedName = name;
+        return name;
     }
 
     /**
