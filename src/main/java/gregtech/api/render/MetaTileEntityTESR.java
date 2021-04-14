@@ -125,15 +125,22 @@ public class MetaTileEntityTESR extends TileEntitySpecialRenderer<MetaTileEntity
 
     @Override
     public boolean isGlobalRenderer(MetaTileEntityHolder te) {
-        if(te instanceof IRenderMetaTileEntity && ((IRenderMetaTileEntity) te).isGlobalRenderer()) {
-            return true;
-        } else if(te instanceof IFastRenderMetaTileEntity && ((IFastRenderMetaTileEntity) te).isGlobalRenderer()) {
-            return true;
+        if (te instanceof IRenderMetaTileEntity) {
+            if (((IRenderMetaTileEntity) te).isGlobalRenderer()) {
+                return true;
+            }
+        } else if (te instanceof IFastRenderMetaTileEntity) {
+            if (((IFastRenderMetaTileEntity) te).isGlobalRenderer()) {
+                return true;
+            }
         }
-        if (te.getMetaTileEntity() instanceof IRenderMetaTileEntity && ((IRenderMetaTileEntity) te.getMetaTileEntity()).isGlobalRenderer()) {
-            return true;
-        } else {
-            return te.getMetaTileEntity() instanceof IFastRenderMetaTileEntity && ((IFastRenderMetaTileEntity) te.getMetaTileEntity()).isGlobalRenderer();
+        if (te.getMetaTileEntity() instanceof IRenderMetaTileEntity) {
+            if (((IRenderMetaTileEntity) te.getMetaTileEntity()).isGlobalRenderer()) {
+                return true;
+            }
+        } else if (te.getMetaTileEntity() instanceof IFastRenderMetaTileEntity){
+            return ((IFastRenderMetaTileEntity) te.getMetaTileEntity()).isGlobalRenderer();
         }
+        return false;
     }
 }
