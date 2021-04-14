@@ -52,7 +52,7 @@ public class Fix1MetaBlockIdSystem implements IFixableData {
     @SubscribeEvent
     public void onMissingBlockMappings(RegistryEvent.MissingMappings<Block> event) {
         for (RegistryEvent.MissingMappings.Mapping<Block> mapping : event.getMappings()) {
-            String regName = mapping.key.getResourcePath();
+            String regName = mapping.key.getPath();
             if (regName.startsWith(MetaBlockIdFixHelper.COMP_NAME_PREF)
                     || regName.startsWith(MetaBlockIdFixHelper.SURF_ROCK_NAME_PREF)) {
                 mapping.ignore();
@@ -63,7 +63,7 @@ public class Fix1MetaBlockIdSystem implements IFixableData {
     @SubscribeEvent
     public void onMissingItemMappings(RegistryEvent.MissingMappings<Item> event) {
         for (RegistryEvent.MissingMappings.Mapping<Item> mapping : event.getMappings()) {
-            String regName = mapping.key.getResourcePath();
+            String regName = mapping.key.getPath();
             if (regName.startsWith(MetaBlockIdFixHelper.COMP_NAME_PREF)
                     || regName.startsWith(MetaBlockIdFixHelper.SURF_ROCK_NAME_PREF)) {
                 mapping.ignore();
