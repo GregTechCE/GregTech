@@ -5,6 +5,7 @@ import gregtech.api.block.machines.MachineItemBlock;
 import gregtech.api.enchants.EnchantmentEnderDamage;
 import gregtech.api.items.metaitem.MetaItem;
 import gregtech.api.recipes.crafttweaker.MetaItemBracketHandler;
+import gregtech.api.recipes.recipeproperties.BlastTemperatureProperty;
 import gregtech.api.unification.material.type.DustMaterial;
 import gregtech.api.unification.material.type.Material;
 import gregtech.api.unification.ore.OrePrefix;
@@ -13,7 +14,6 @@ import gregtech.common.blocks.*;
 import gregtech.common.blocks.wood.BlockGregLeaves;
 import gregtech.common.blocks.wood.BlockGregLog;
 import gregtech.common.blocks.wood.BlockGregSapling;
-import gregtech.api.recipes.recipeproperties.TemperatureProperty;
 import gregtech.common.items.MetaItems;
 import gregtech.common.items.potions.PotionFluids;
 import gregtech.common.pipelike.cable.ItemBlockCable;
@@ -140,9 +140,9 @@ public class CommonProxy {
     //ore dictionary and recipes will get recipes accessible in time
     @SubscribeEvent
     public static void registerRecipes(RegistryEvent.Register<IRecipe> event) {
-        // registers coiltypes for the TemperatureProperty used in Blast Furnace Recipes
+        // registers coiltypes for the BlastTemperatureProperty used in Blast Furnace Recipes
         for (BlockWireCoil.CoilType values : BlockWireCoil.CoilType.values()) {
-            TemperatureProperty.registerCoilType(values.getCoilTemperature(), values.getMaterial(),
+            BlastTemperatureProperty.registerCoilType(values.getCoilTemperature(), values.getMaterial(),
                     "tile.wire_coil." + values.getName() + ".name");
         }
 

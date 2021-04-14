@@ -3,7 +3,7 @@ package gregtech.api.recipes;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import gregtech.api.capability.IMultipleTankHandler;
-import gregtech.api.recipes.recipeproperties.BaseProperty;
+import gregtech.api.recipes.recipeproperties.DefaultProperty;
 import gregtech.api.recipes.recipeproperties.RecipeProperty;
 import gregtech.api.util.GTUtility;
 import net.minecraft.item.ItemStack;
@@ -84,8 +84,11 @@ public class Recipe {
         Map<RecipeProperty<?>, Object> temp = new HashMap<>();
         recipeProperties.forEach((s, o) -> {
             if (s instanceof String) {
-                temp.put(new BaseProperty<>((String) s, o.getClass()), o);
+                temp.put(new DefaultProperty<>((String) s, o.getClass()), o);
             } else if (s instanceof RecipeProperty) {
+                if (!((RecipeProperty<?>) s).isOfType(o.getClass())) {
+                    throw new IllegalArgumentException();
+                }
                 temp.put((RecipeProperty<?>) s, o);
             } else {
                 throw new IllegalArgumentException();
@@ -306,6 +309,7 @@ public class Recipe {
         return hasValidInputs;
     }
 
+    @Deprecated
     public Set<String> getPropertyKeys() {
         Set<String> keys = new HashSet<>();
         this.recipeProperties.forEach((recipeProperty, value) -> keys.add(recipeProperty.getKey()));
@@ -318,31 +322,33 @@ public class Recipe {
 
     public <T> T getPropertyValue(RecipeProperty<T> key) {
         if (this.recipeProperties.containsKey(key)) {
-            return key.type.cast(this.recipeProperties.get(key));
+            return key.castValue(this.recipeProperties.get(key));
         }
         throw new IllegalArgumentException();
     }
 
     public <T> T getPropertyValue(String key, Class<T> type) {
+        Validate.notNull(key);
         for (RecipeProperty<?> property : getRecipeProperties()) {
-            if (property.getKey().equals(key) && property.type == type) {
+            if (property.getKey().equals(key) && property.isOfType(type)) {
                 return type.cast(this.recipeProperties.get(property));
             }
         }
         throw new IllegalArgumentException();
     }
 
+    @Deprecated
     public boolean getBooleanProperty(String key) {
-        Validate.notNull(key);
         return getPropertyValue(key, Boolean.class);
     }
 
+    @Deprecated
     public int getIntegerProperty(String key) {
-        Validate.notNull(key);
         return getPropertyValue(key, Integer.class);
     }
 
     @SuppressWarnings("unchecked")
+    @Deprecated
     public <T> T getProperty(String key) {
         Validate.notNull(key);
         Object o = null;
@@ -357,8 +363,8 @@ public class Recipe {
         return (T) o;
     }
 
+    @Deprecated
     public String getStringProperty(String key) {
-        Validate.notNull(key);
         return getPropertyValue(key, String.class);
     }
 

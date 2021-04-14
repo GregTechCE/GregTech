@@ -1,13 +1,12 @@
 package gregtech.api.recipes.recipeproperties;
 
-import gregtech.api.recipes.Recipe;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.I18n;
 
-public class BaseProperty<T> extends RecipeProperty<T> {
+public class DefaultProperty<T> extends RecipeProperty<T> {
     private final String key;
 
-    public BaseProperty(String key, Class<T> type) {
+    public DefaultProperty(String key, Class<T> type) {
         super(type);
         this.key = key;
     }
@@ -16,9 +15,9 @@ public class BaseProperty<T> extends RecipeProperty<T> {
         return key;
     }
 
-    public void drawInfo(Minecraft minecraft, int x, int y, int color, Recipe recipe) {
+    public void drawInfo(Minecraft minecraft, int x, int y, int color, Object value) {
         minecraft.fontRenderer.drawString(I18n.format("gregtech.recipe." + key,
-            recipe.getPropertyValue(this)), x, y, color);
+                castValue(value)), x, y, color);
     }
 
 }

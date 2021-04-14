@@ -1,6 +1,5 @@
 package gregtech.api.recipes.recipeproperties;
 
-import gregtech.api.recipes.Recipe;
 import gregtech.api.unification.material.type.Material;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.I18n;
@@ -9,24 +8,25 @@ import org.apache.commons.lang3.Validate;
 import java.util.Map;
 import java.util.TreeMap;
 
-public class TemperatureProperty extends RecipeProperty<Integer> {
+public class BlastTemperatureProperty extends RecipeProperty<Integer> {
     private static final TreeMap<Integer, Object> registeredCoilTypes = new TreeMap<>((x, y) -> y - x);
+    public static final BlastTemperatureProperty INSTANCE = new BlastTemperatureProperty();
+    private static final String key = "blast_furnace_temperature";
     private String cachedName = null;
 
-    public TemperatureProperty() {
+    private BlastTemperatureProperty() {
         super(Integer.class);
     }
 
     @Override
-    public void drawInfo(Minecraft minecraft, int x, int y, int color, Recipe recipe) {
-        Integer value = recipe.getPropertyValue(this);
+    public void drawInfo(Minecraft minecraft, int x, int y, int color, Object value) {
         minecraft.fontRenderer.drawString(I18n.format("gregtech.recipe.blast_furnace_temperature",
-            value, cachedName == null ? getMinTierForTemperature(value) : cachedName), x, y, color);
+                value, cachedName == null ? getMinTierForTemperature(castValue(value)) : cachedName), x, y, color);
     }
 
     @Override
     public String getKey() {
-        return "blast_furnace_temperature";
+        return key;
     }
 
     private String getMinTierForTemperature(Integer value) {
