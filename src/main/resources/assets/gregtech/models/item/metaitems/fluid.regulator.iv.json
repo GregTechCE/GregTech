@@ -1,6 +1,6 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "gregtech:items/metaitems/electric.pump.iv"
+    "layer0": "gregtech:items/metaitems/fluid.regulator.iv"
   }
 }

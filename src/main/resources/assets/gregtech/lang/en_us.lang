@@ -743,6 +743,10 @@ cover.pump.mode.import=Mode: Import
 cover.pump.fluid_filter.title=Fluid Filter
 cover.bucket.mode.bucket=B/s
 cover.bucket.mode.milli_bucket=mB/s
+cover.fluid_regulator.title=Fluid Regulator Settings (%s)
+cover.fluid_regulator.transfer_mode.description=§eTransfer Any§r - in this mode, cover will transfer as many fluids matching its filter as possible./n§eSupply Exact§r - in this mode, cover will supply fluids in portions specified in the window underneath this button. If amount of fluids is less than portion size, fluids won't be moved./n§eKeep Exact§r - in this mode, cover will keep specified amount of fluids in the destination inventory, supplying additional amount of fluids if required./n§7Tip: shift click will multiply increase/decrease amounts by 10 and ctrl click will multiply by 100.
+cover.fluid_regulator.supply_exact=Supply Exact: %s
+cover.fluid_regulator.keep_exact=Keep Exact: %s
 
 cover.machine_controller.name=Machine Controller Settings
 cover.machine_controller.normal=Normal

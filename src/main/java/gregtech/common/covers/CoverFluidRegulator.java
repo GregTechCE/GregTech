@@ -1,30 +1,38 @@
 package gregtech.common.covers;
 
-import gregtech.api.GTValues;
 import gregtech.api.cover.ICoverable;
 import gregtech.api.gui.GuiTextures;
 import gregtech.api.gui.ModularUI;
 import gregtech.api.gui.widgets.*;
+import gregtech.api.util.GTUtility;
+import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TextComponentString;
+import net.minecraft.util.text.TextComponentTranslation;
+import net.minecraft.util.text.event.HoverEvent;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidTankProperties;
 
+import java.util.List;
 import java.util.function.Predicate;
+
+import static gregtech.api.gui.widgets.AdvancedTextWidget.withHoverTextTranslate;
 
 public class CoverFluidRegulator extends CoverPump {
 
     protected TransferMode transferMode;
     protected int keepAmount = 0;
     protected int supplyAmount = 0;
-    private static String supplyKey = "SupplyAmount";
-    private static String keepKey = "KeepAmount";
+    private static final String supplyKey = "SupplyAmount";
+    private static final String keepKey = "KeepAmount";
 
     public CoverFluidRegulator(ICoverable coverHolder, EnumFacing attachedSide, int tier, int mbPerTick) {
         super(coverHolder, attachedSide, tier, mbPerTick);
@@ -149,7 +157,24 @@ public class CoverFluidRegulator extends CoverPump {
         if (this.bucketMode == BucketMode.BUCKET) {
             val /= 1000;
         }
-        return val == -1 ? "" : Integer.toString(val);
+        return val == -1 ? "" : GTUtility.formatLongToCompactString(val);
+    }
+
+    protected void getHoverString(List<ITextComponent> textList) {
+        switch (this.transferMode) {
+            case KEEP_EXACT:
+                ITextComponent keepGhost = new TextComponentTranslation("        ");
+                TextComponentTranslation hoverKeep = new TextComponentTranslation("cover.fluid_regulator.keep_exact", this.keepAmount);
+                keepGhost.getStyle().setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, hoverKeep));
+                textList.add(keepGhost);
+                break;
+            case TRANSFER_EXACT:
+                ITextComponent supplyGhost = new TextComponentTranslation("        ");
+                TextComponentTranslation hoverSupply = new TextComponentTranslation("cover.fluid_regulator.supply_exact", this.supplyAmount);
+                supplyGhost.getStyle().setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, hoverSupply));
+                textList.add(supplyGhost);
+                break;
+        }
     }
 
     @Override
@@ -196,6 +221,7 @@ public class CoverFluidRegulator extends CoverPump {
         stackSizeGroup.addWidget(new ClickButtonWidget(88, 84, 18, 18, "-1", data -> adjustTransferSize(data.isCtrlClick ? -100 : data.isShiftClick ? -10 : -1)));
         stackSizeGroup.addWidget(new ClickButtonWidget(144, 84, 18, 18, "+1", data -> adjustTransferSize(data.isCtrlClick ? 100 : data.isShiftClick ? +10 : +1)));
         stackSizeGroup.addWidget(new ImageWidget(108, 84, 34, 18, GuiTextures.DISPLAY));
+        stackSizeGroup.addWidget(new AdvancedTextWidget(108, 93, this::getHoverString, 0xFFFFFF));
         stackSizeGroup.addWidget(new SimpleTextWidget(125, 93, "", 0xFFFFFF,
                 this::getTransferSizeString));
         return super.buildUI(builder.widget(filterGroup).widget(stackSizeGroup), player);

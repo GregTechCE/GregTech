@@ -14,6 +14,7 @@ import gregtech.api.unification.material.MarkerMaterials.Color;
 import gregtech.api.unification.material.MarkerMaterials.Tier;
 import gregtech.api.unification.material.Materials;
 import gregtech.api.unification.material.type.IngotMaterial;
+import gregtech.api.unification.material.type.Material;
 import gregtech.api.unification.ore.OrePrefix;
 import gregtech.api.unification.stack.MaterialStack;
 import gregtech.api.unification.stack.UnificationEntry;
@@ -680,6 +681,19 @@ public class MachineRecipeLoader {
         RecipeMaps.ASSEMBLER_RECIPES.recipeBuilder().EUt(1).input(OrePrefix.stick, Materials.Wood, 1).input(OrePrefix.dust, Materials.Sulfur, 1).outputs(new ItemStack(Blocks.TORCH, 2)).duration(400).buildAndRegister();
         RecipeMaps.ASSEMBLER_RECIPES.recipeBuilder().EUt(1).input(OrePrefix.stick, Materials.Wood, 1).input(OrePrefix.dust, Materials.Phosphorus, 1).outputs(new ItemStack(Blocks.TORCH, 6)).duration(400).buildAndRegister();
 
+        ItemStack[] pumps = new ItemStack[] {ELECTRIC_PUMP_LV.getStackForm(), ELECTRIC_PUMP_MV.getStackForm(), ELECTRIC_PUMP_HV.getStackForm(), ELECTRIC_PUMP_EV.getStackForm()};
+        ItemStack[] fluidRegulators = new ItemStack[] {FLUID_REGULATOR_LV.getStackForm(), FLUID_REGULATOR_MV.getStackForm(), FLUID_REGULATOR_HV.getStackForm(), FLUID_REGULATOR_EV.getStackForm()};
+        Material[] circuitTiers = new Material[] {Tier.Basic, Tier.Good, Tier.Advanced, Tier.Extreme};
+
+        for (int i = 0; i < pumps.length; i++) {
+            RecipeMaps.ASSEMBLER_RECIPES.recipeBuilder()
+                    .inputs(pumps[i])
+                    .input(OrePrefix.circuit, circuitTiers[i], 2)
+                    .outputs(fluidRegulators[i])
+                    .EUt((int) (GTValues.V[i] / 2))
+                    .duration(400)
+                    .buildAndRegister();
+        }
     }
 
     private static void registerBlastFurnaceRecipes() {
