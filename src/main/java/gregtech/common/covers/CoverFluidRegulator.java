@@ -163,16 +163,16 @@ public class CoverFluidRegulator extends CoverPump {
     protected void getHoverString(List<ITextComponent> textList) {
         switch (this.transferMode) {
             case KEEP_EXACT:
-                ITextComponent keepGhost = new TextComponentTranslation("        ");
+                ITextComponent keepComponent = new TextComponentString(getTransferSizeString());
                 TextComponentTranslation hoverKeep = new TextComponentTranslation("cover.fluid_regulator.keep_exact", this.keepAmount);
-                keepGhost.getStyle().setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, hoverKeep));
-                textList.add(keepGhost);
+                keepComponent.getStyle().setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, hoverKeep));
+                textList.add(keepComponent);
                 break;
             case TRANSFER_EXACT:
-                ITextComponent supplyGhost = new TextComponentTranslation("        ");
+                ITextComponent supplyComponent = new TextComponentString(getTransferSizeString());
                 TextComponentTranslation hoverSupply = new TextComponentTranslation("cover.fluid_regulator.supply_exact", this.supplyAmount);
-                supplyGhost.getStyle().setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, hoverSupply));
-                textList.add(supplyGhost);
+                supplyComponent.getStyle().setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, hoverSupply));
+                textList.add(supplyComponent);
                 break;
         }
     }
@@ -221,9 +221,7 @@ public class CoverFluidRegulator extends CoverPump {
         stackSizeGroup.addWidget(new ClickButtonWidget(88, 84, 18, 18, "-1", data -> adjustTransferSize(data.isCtrlClick ? -100 : data.isShiftClick ? -10 : -1)));
         stackSizeGroup.addWidget(new ClickButtonWidget(144, 84, 18, 18, "+1", data -> adjustTransferSize(data.isCtrlClick ? 100 : data.isShiftClick ? +10 : +1)));
         stackSizeGroup.addWidget(new ImageWidget(108, 84, 34, 18, GuiTextures.DISPLAY));
-        stackSizeGroup.addWidget(new AdvancedTextWidget(108, 93, this::getHoverString, 0xFFFFFF));
-        stackSizeGroup.addWidget(new SimpleTextWidget(125, 93, "", 0xFFFFFF,
-                this::getTransferSizeString));
+        stackSizeGroup.addWidget(new AdvancedTextWidget(114, 89, this::getHoverString, 0xFFFFFF));
         return super.buildUI(builder.widget(filterGroup).widget(stackSizeGroup), player);
     }
 
