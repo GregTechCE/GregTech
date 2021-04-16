@@ -77,7 +77,7 @@ public abstract class SteamBoiler extends MetaTileEntity {
     }
 
     @SideOnly(Side.CLIENT)
-    private SimpleSidedCubeRenderer getBaseRenderer() {
+    protected SimpleSidedCubeRenderer getBaseRenderer() {
         if (isHighPressure) {
             return Textures.STEAM_BRICKED_CASING_STEEL;
         } else {
