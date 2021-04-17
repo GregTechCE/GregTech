@@ -280,7 +280,9 @@ public class RecipeMap<R extends RecipeBuilder<R>> {
     }
 
     public ModularUI.Builder createJeiUITemplate(IItemHandlerModifiable importItems, IItemHandlerModifiable exportItems, FluidTankList importFluids, FluidTankList exportFluids) {
-        return createUITemplate(() -> 0.0, importItems, exportItems, importFluids, exportFluids);
+        ModularUI.Builder builder = createUITemplate(() -> 0.0, importItems, exportItems, importFluids, exportFluids);
+        builder.image(176 - 7 - 18, 62, 17, 17, GuiTextures.LOGO);
+        return builder;
     }
 
     //this DOES NOT include machine control widgets or binds player inventory

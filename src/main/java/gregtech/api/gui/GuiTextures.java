@@ -10,6 +10,7 @@ public class GuiTextures {
     public static final TextureArea BACKGROUND = AdoptableTextureArea.fullImage("textures/gui/base/background.png", 176, 166, 3, 3);
     public static final TextureArea BORDERED_BACKGROUND = AdoptableTextureArea.fullImage("textures/gui/base/bordered_background.png", 195, 136, 4, 4);
     public static final TextureArea BOXED_BACKGROUND = AdoptableTextureArea.fullImage("textures/gui/base/boxed_background.png", 256, 174, 11, 11);
+    public static final TextureArea LOGO = AdoptableTextureArea.fullImage("textures/gtce_logo.png", 17, 17);
 
     //deprecated texture areas retained for binary & source compatibility
     @Deprecated public static final TextureArea BACKGROUND_SMALL = BACKGROUND; //replaced by normal background
