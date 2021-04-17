@@ -188,6 +188,7 @@ public class MetaTileEntityQuantumChest extends MetaTileEntity implements ITiere
                 .setBackgroundTexture(GuiTextures.SLOT, GuiTextures.IN_SLOT_OVERLAY))
             .widget(new SlotWidget(exportItems, 0, 90, 54, true, false)
                 .setBackgroundTexture(GuiTextures.SLOT, GuiTextures.OUT_SLOT_OVERLAY))
+            .image(151, 62, 17, 17, GuiTextures.LOGO)
             .bindPlayerInventory(entityPlayer.inventory)
             .build(getHolder(), entityPlayer);
     }
