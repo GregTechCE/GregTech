@@ -309,6 +309,12 @@ public class Recipe {
         return hasValidInputs;
     }
 
+    //region RecipeProperties
+
+    public int getRecipePropertiesSize(){
+        return recipePropertyStorage.getSize();
+    }
+
     @Deprecated
     public Set<String> getPropertyKeys() {
         Set<String> keys = new HashSet<>();
@@ -367,6 +373,8 @@ public class Recipe {
     public String getStringProperty(String key) {
         return getPropertyValue(key, String.class);
     }
+
+    //endregion RecipeProperties
 
     public static class ChanceEntry {
         private final ItemStack itemStack;

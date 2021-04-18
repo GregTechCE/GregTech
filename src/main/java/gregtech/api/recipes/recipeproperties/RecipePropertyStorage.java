@@ -77,5 +77,7 @@ public class RecipePropertyStorage {
         return success;
     }
 
-
+    public int getSize() {
+        return recipeProperties.size();
+    }
 }

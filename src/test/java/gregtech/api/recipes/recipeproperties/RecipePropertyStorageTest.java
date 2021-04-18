@@ -70,6 +70,22 @@ public class RecipePropertyStorageTest {
     public void storing_property_with_old_format_without_value_fails(){
         Map<String, Object> map = new HashMap<>();
         map.put("emptyKey", null);
+
         assertFalse(storage.storeOldFormat(map));
+    }
+
+    @Test
+    public void get_size_returns_correct_value(){
+        storage.store(propInt1, 1);//succeeds
+
+        assertEquals(1, storage.getSize());
+
+        storage.store(propInt2, 2); //succeeds
+
+        assertEquals(2, storage.getSize());
+
+        storage.store(propInt1, 1);//fails
+
+        assertEquals(2, storage.getSize());
     }
 }
