@@ -13,6 +13,13 @@ public class RecipePropertyStorage {
         recipeProperties = new HashMap<>();
     }
 
+    /**
+     * Stores new {@link RecipeProperty} with value
+     *
+     * @param recipeProperty {@link RecipeProperty}
+     * @param value          value
+     * @return <code>true</code> if store succeeds; otherwise <code>false</code>
+     */
     public boolean store(RecipeProperty<?> recipeProperty, Object value) {
         boolean success = true;
         String key = recipeProperty.getKey();
@@ -46,6 +53,12 @@ public class RecipePropertyStorage {
         return success;
     }
 
+    /**
+     * Stores all {@link RecipeProperty} with values in provided {@link Map}
+     *
+     * @param recipeProperties {@link Map} of {@link RecipeProperty} and values
+     * @return <code>true</code> if store of all succeeds; otherwise <code>false</code>
+     */
     public boolean store(Map<RecipeProperty<?>, Object> recipeProperties) {
         boolean success = true;
         for (Map.Entry<RecipeProperty<?>, Object> recipePropertyEntry : recipeProperties.entrySet()) {
@@ -58,7 +71,10 @@ public class RecipePropertyStorage {
     }
 
     /**
+     * @param recipeProperties {@link Map} of {@link String} property key and values
+     * @return <code>true</code> if conversion and store of all succeeds; otherwise <code>false</code>
      * @deprecated use {@link #store(Map recipeProperties)}
+     * Converts recipe properties from old format to new and stores them
      */
     @Deprecated
     public boolean storeOldFormat(Map<String, Object> recipeProperties) {
@@ -82,15 +98,33 @@ public class RecipePropertyStorage {
         return success;
     }
 
+    /**
+     * Provides information how many {@link RecipeProperty} are stored
+     *
+     * @return number of stored {@link RecipeProperty}
+     */
     public int getSize() {
         return recipeProperties.size();
     }
 
+    /**
+     * Provides all stored {@link RecipeProperty}
+     *
+     * @return all stored {@link RecipeProperty} and values
+     */
     @SuppressWarnings("java:S1452")
     public Set<Map.Entry<RecipeProperty<?>, Object>> getRecipeProperties() {
         return this.recipeProperties.entrySet();
     }
 
+    /**
+     * Provides casted value for one specific {@link RecipeProperty} if is stored or defaultValue
+     *
+     * @param recipeProperty {@link RecipeProperty}
+     * @param defaultValue   Default value if recipeProperty is not found
+     * @param <T>            Type of returned value
+     * @return value tied with provided recipeProperty on success; otherwise defaultValue
+     */
     public <T> T getRecipePropertyValue(RecipeProperty<T> recipeProperty, T defaultValue) {
         Object value = recipeProperties.get(recipeProperty);
 
@@ -104,7 +138,10 @@ public class RecipePropertyStorage {
     }
 
     /**
+     * @param key Key of {@link RecipeProperty}
+     * @return {@link AbstractMap.SimpleEntry} containing {@link RecipeProperty} and value on success; otherwise <code>null</code>
      * @deprecated use {@link #getRecipePropertyValue(RecipeProperty recipeProperty, Object defaultValue)} instead
+     * Compatibility way of getting {@link RecipeProperty} and value via key
      */
     @Deprecated
     @SuppressWarnings("java:S1452")
@@ -117,6 +154,11 @@ public class RecipePropertyStorage {
         return null;
     }
 
+    /**
+     * Provides keys of all stored {@link RecipeProperty}
+     *
+     * @return {@link Set} of keys
+     */
     public Set<String> getRecipePropertyKeys() {
         HashSet<String> keys = new HashSet<>();
 
@@ -125,6 +167,12 @@ public class RecipePropertyStorage {
         return keys;
     }
 
+    /**
+     * Provides un-casted value for one specific {@link RecipeProperty} searched by key
+     *
+     * @param key Key of stored {@link RecipeProperty}
+     * @return {@link Object} value on success; otherwise <code>null</code>
+     */
     public Object getRawRecipePropertyValue(String key) {
         RecipeProperty<?> recipeProperty = getRecipePropertyValue(key);
         if (recipeProperty != null) {
