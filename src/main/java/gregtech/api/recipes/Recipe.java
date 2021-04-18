@@ -81,7 +81,8 @@ public class Recipe {
     /**
      * @deprecated use {@link #Recipe(List inputs, List outputs, List chancedOutputs, List fluidInputs,
      * List fluidOutputs, int duration, int EUt, boolean hidden)} instead
-     * Recipe properties are added by {@link #addRecipeProperties(Map recipeProperties)}
+     * Recipe properties are added by {@link RecipePropertyStorage#store(Map recipeProperties)}
+     * on {@link #getRecipePropertyStorage()}
      */
     @Deprecated
     public Recipe(List<CountableIngredient> inputs, List<ItemStack> outputs, List<ChanceEntry> chancedOutputs,
@@ -305,33 +306,17 @@ public class Recipe {
 
     //region RecipeProperties
 
-    public int getRecipePropertiesSize() {
-        return recipePropertyStorage.getSize();
-    }
-
-    public boolean addRecipeProperties(Map<RecipeProperty<?>, Object> recipeProperties){
-        return recipePropertyStorage.store(recipeProperties);
-    }
-
-    @SuppressWarnings("java:S1452")
-    public Set<Map.Entry<RecipeProperty<?>, Object>> getRecipeProperties() {
-        return recipePropertyStorage.getRecipeProperties();
-    }
-
-    public <T> T getRecipePropertyValue(RecipeProperty<T> recipeProperty, T defaultValue) {
-        return recipePropertyStorage.getRecipePropertyValue(recipeProperty, defaultValue);
-    }
-
-    public Set<String> getRecipePropertyKeys() {
-        return recipePropertyStorage.getRecipePropertyKeys();
-    }
-
-    public Object getRawRecipePropertyValue(String key) {
-        return recipePropertyStorage.getRawRecipePropertyValue(key);
+    /**
+     * Provides full access to {@link RecipePropertyStorage} for this Recipe
+     * @return RecipePropertyStorage
+     */
+    public RecipePropertyStorage getRecipePropertyStorage(){
+        return recipePropertyStorage;
     }
 
     /**
-     * @deprecated use {@link #getRecipePropertyValue(RecipeProperty recipeProperty, Object defaultValue)} instead
+     * @deprecated use {@link RecipePropertyStorage#getRecipePropertyValue(RecipeProperty recipeProperty, Object defaultValue)}
+     * on {@link #getRecipePropertyStorage()}
      */
     @Deprecated
     public boolean getBooleanProperty(String key) {
@@ -339,7 +324,8 @@ public class Recipe {
     }
 
     /**
-     * @deprecated use {@link #getRecipePropertyValue(RecipeProperty recipeProperty, Object defaultValue)} instead
+     * @deprecated use {@link RecipePropertyStorage#getRecipePropertyValue(RecipeProperty recipeProperty, Object defaultValue)}
+     * on {@link #getRecipePropertyStorage()}
      */
     @Deprecated
     public int getIntegerProperty(String key) {
@@ -347,7 +333,8 @@ public class Recipe {
     }
 
     /**
-     * @deprecated use {@link #getRecipePropertyValue(RecipeProperty recipeProperty, Object defaultValue)} instead
+     * @deprecated use {@link RecipePropertyStorage#getRecipePropertyValue(RecipeProperty recipeProperty, Object defaultValue)}
+     * on {@link #getRecipePropertyStorage()}
      */
     @Deprecated
     public String getStringProperty(String key) {
@@ -355,12 +342,13 @@ public class Recipe {
     }
 
     /**
-     * @deprecated use {@link #getRecipePropertyValue(RecipeProperty recipeProperty, Object defaultValue)} instead
+     * @deprecated use {@link RecipePropertyStorage#getRecipePropertyValue(RecipeProperty recipeProperty, Object defaultValue)}
+     * on {@link #getRecipePropertyStorage()}
      */
     @Deprecated
     @SuppressWarnings("unchecked")
     public <T> T getProperty(String key) {
-        AbstractMap.SimpleEntry<RecipeProperty<?>, Object> recipePropertySet = recipePropertyStorage.getRecipeProperty(key);
+        AbstractMap.SimpleEntry<RecipeProperty<?>, Object> recipePropertySet = getRecipePropertyStorage().getRecipeProperty(key);
 
         if (recipePropertySet == null) {
             throw new IllegalArgumentException();
