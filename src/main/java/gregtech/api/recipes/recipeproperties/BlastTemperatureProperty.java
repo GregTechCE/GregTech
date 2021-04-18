@@ -11,10 +11,10 @@ import java.util.TreeMap;
 public class BlastTemperatureProperty extends RecipeProperty<Integer> {
     private static final TreeMap<Integer, Object> registeredCoilTypes = new TreeMap<>((x, y) -> y - x);
     public static final BlastTemperatureProperty INSTANCE = new BlastTemperatureProperty();
-    private static final String key = "blast_furnace_temperature";
+    private static final String KEY = "blast_furnace_temperature";
 
     private BlastTemperatureProperty() {
-        super(Integer.class);
+        super(KEY, Integer.class);
     }
 
     @Override
@@ -23,10 +23,6 @@ public class BlastTemperatureProperty extends RecipeProperty<Integer> {
                 value, getMinTierForTemperature(castValue(value))), x, y, color);
     }
 
-    @Override
-    public String getKey() {
-        return key;
-    }
 
     private String getMinTierForTemperature(Integer value) {
         String name = "";
