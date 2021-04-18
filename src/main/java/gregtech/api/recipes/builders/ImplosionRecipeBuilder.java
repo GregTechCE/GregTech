@@ -1,6 +1,5 @@
 package gregtech.api.recipes.builders;
 
-import com.google.common.collect.ImmutableMap;
 import gregtech.api.recipes.Recipe;
 import gregtech.api.recipes.RecipeBuilder;
 import gregtech.api.recipes.RecipeMap;
@@ -71,11 +70,10 @@ public class ImplosionRecipeBuilder extends RecipeBuilder<ImplosionRecipeBuilder
 
     @Override
     public void buildAndRegister() {
-        int amount  = Math.max(1, explosivesAmount / 2);
-        if(explosivesType == null) {
+        int amount = Math.max(1, explosivesAmount / 2);
+        if (explosivesType == null) {
             explosivesType = new ItemStack(Blocks.TNT, amount);
-        }
-        else {
+        } else {
             explosivesType = new ItemStack(explosivesType.getItem(), amount, explosivesType.getMetadata());
         }
         recipeMap.addRecipe(this.copy().inputs(explosivesType).build());
@@ -83,15 +81,14 @@ public class ImplosionRecipeBuilder extends RecipeBuilder<ImplosionRecipeBuilder
 
     public ValidationResult<Recipe> build() {
         return ValidationResult.newResult(finalizeAndValidate(),
-            new Recipe(inputs, outputs, chancedOutputs, fluidInputs, fluidOutputs,
-                ImmutableMap.of(), duration, EUt, hidden));
+                new Recipe(inputs, outputs, chancedOutputs, fluidInputs, fluidOutputs, duration, EUt, hidden));
     }
 
     @Override
     public String toString() {
         return new ToStringBuilder(this)
-            .appendSuper(super.toString())
-            .append("explosivesAmount", explosivesAmount)
-            .toString();
+                .appendSuper(super.toString())
+                .append("explosivesAmount", explosivesAmount)
+                .toString();
     }
 }
