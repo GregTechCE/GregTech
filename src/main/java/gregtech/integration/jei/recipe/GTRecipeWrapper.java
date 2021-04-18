@@ -135,8 +135,8 @@ public class GTRecipeWrapper implements IRecipeWrapper {
         minecraft.fontRenderer.drawString(I18n.format("gregtech.recipe.total", Math.abs((long) recipe.getEUt()) * recipe.getDuration()), 0, yPosition, 0x111111);
         minecraft.fontRenderer.drawString(I18n.format(recipe.getEUt() >= 0 ? "gregtech.recipe.eu" : "gregtech.recipe.eu_inverted", Math.abs(recipe.getEUt()), JEIHelpers.getMinTierForVoltage(recipe.getEUt())), 0, yPosition += lineHeight, 0x111111);
         minecraft.fontRenderer.drawString(I18n.format("gregtech.recipe.duration", recipe.getDuration() / 20f), 0, yPosition += lineHeight, 0x111111);
-        for (RecipeProperty<?> property : recipe.getRecipeProperties()) {
-            property.drawInfo(minecraft, 0, yPosition += lineHeight, 0x111111, recipe.getPropertyValue(property));
+        for (Map.Entry<RecipeProperty<?>, Object> propertyEntry : recipe.getRecipeProperties()) {
+            propertyEntry.getKey().drawInfo(minecraft, 0, yPosition += lineHeight, 0x111111, propertyEntry.getValue());
         }
     }
 

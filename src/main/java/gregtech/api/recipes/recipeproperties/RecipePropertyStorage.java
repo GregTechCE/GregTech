@@ -4,8 +4,11 @@ import gregtech.api.util.GTLog;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 public class RecipePropertyStorage {
+    private static final String STACKTRACE = "Stacktrace:";
+
     private final Map<RecipeProperty<?>, Object> recipeProperties;
 
     public RecipePropertyStorage() {
@@ -39,7 +42,7 @@ public class RecipePropertyStorage {
         if (success) {
             recipeProperties.put(recipeProperty, value);
         } else {
-            GTLog.logger.warn("Stacktrace:", new IllegalArgumentException());
+            GTLog.logger.warn(STACKTRACE, new IllegalArgumentException());
         }
 
         return success;
@@ -69,7 +72,7 @@ public class RecipePropertyStorage {
                 }
             } else {
                 GTLog.logger.warn("Provided value is null for old RecipeProperty with key {}", key);
-                GTLog.logger.warn("Stacktrace:", new IllegalArgumentException());
+                GTLog.logger.warn(STACKTRACE, new IllegalArgumentException());
                 success = false;
             }
         }
@@ -79,5 +82,22 @@ public class RecipePropertyStorage {
 
     public int getSize() {
         return recipeProperties.size();
+    }
+
+    @SuppressWarnings("java:S1452")
+    public Set<Map.Entry<RecipeProperty<?>, Object>> getRecipeProperties() {
+        return this.recipeProperties.entrySet();
+    }
+
+    public <T> T getRecipePropertyValue(RecipeProperty<T> recipeProperty, T defaultValue) {
+        Object value = recipeProperties.get(recipeProperty);
+
+        if (value == null) {
+            GTLog.logger.warn("There is no property with key {}", recipeProperty.getKey());
+            GTLog.logger.warn(STACKTRACE, new IllegalArgumentException());
+            return defaultValue;
+        }
+
+        return recipeProperty.castValue(value);
     }
 }

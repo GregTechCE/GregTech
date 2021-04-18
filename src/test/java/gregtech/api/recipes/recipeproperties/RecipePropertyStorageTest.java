@@ -9,15 +9,16 @@ import org.junit.Test;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 import static org.junit.Assert.*;
 
 public class RecipePropertyStorageTest {
 
-    private static DefaultProperty<Integer> propInt1 = new DefaultProperty<>("propInt1", Integer.class);
-    private static DefaultProperty<Integer> propInt2 = new DefaultProperty<>("propInt2", Integer.class);
-    private static DefaultProperty<Integer> propInt1_2 = new DefaultProperty<>("propInt1", Integer.class);
-    private static DefaultProperty<Integer> wrongCast = new DefaultProperty<>("wrongCast", Integer.class);
+    private static final DefaultProperty<Integer> propInt1 = new DefaultProperty<>("propInt1", Integer.class);
+    private static final DefaultProperty<Integer> propInt2 = new DefaultProperty<>("propInt2", Integer.class);
+    private static final DefaultProperty<Integer> propInt1_2 = new DefaultProperty<>("propInt1", Integer.class);
+    private static final DefaultProperty<Integer> wrongCast = new DefaultProperty<>("wrongCast", Integer.class);
 
     private RecipePropertyStorage storage;
 
@@ -76,7 +77,7 @@ public class RecipePropertyStorageTest {
 
     @Test
     public void get_size_returns_correct_value(){
-        storage.store(propInt1, 1);//succeeds
+        storage.store(propInt1, 1); //succeeds
 
         assertEquals(1, storage.getSize());
 
@@ -84,8 +85,44 @@ public class RecipePropertyStorageTest {
 
         assertEquals(2, storage.getSize());
 
-        storage.store(propInt1, 1);//fails
+        storage.store(propInt1, 1); //fails
 
         assertEquals(2, storage.getSize());
+    }
+
+    @Test
+    public void get_recipe_properties_returns_correct_value(){
+        storage.store(propInt1, 1); //succeeds
+        storage.store(propInt2, 2); //succeeds
+
+        HashMap<RecipeProperty<?>, Object> map = new HashMap<>();
+        map.put(propInt1, 1);
+        map.put(propInt2, 2);
+        Set<Map.Entry<RecipeProperty<?>, Object>> expectedProperties = map.entrySet();
+
+        Set<Map.Entry<RecipeProperty<?>, Object>> actualProperties = storage.getRecipeProperties();
+
+        assertEquals(2, actualProperties.size());
+        assertTrue(actualProperties.containsAll(expectedProperties) && expectedProperties.containsAll(actualProperties));
+    }
+
+    @Test
+    public void get_recipe_property_value_returns_correct_value_if_exists(){
+        final int expectedValue = 1;
+        storage.store(propInt1, expectedValue); //succeeds
+
+        int actual = storage.getRecipePropertyValue(propInt1, 0);
+
+        assertEquals(expectedValue, actual);
+    }
+
+    @Test
+    public void get_recipe_property_value_returns_correct_default_value_if_does_not_exists(){
+        final int expectedValue = 0;
+        storage.store(propInt1, 1); //succeeds
+
+        int actual = storage.getRecipePropertyValue(propInt2, expectedValue);
+
+        assertEquals(expectedValue, actual);
     }
 }

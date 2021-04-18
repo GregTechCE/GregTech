@@ -1,10 +1,9 @@
 package gregtech.api.recipes;
 
 import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableMap;
 import gregtech.api.capability.IMultipleTankHandler;
-import gregtech.api.recipes.recipeproperties.DefaultProperty;
 import gregtech.api.recipes.recipeproperties.RecipeProperty;
+import gregtech.api.recipes.recipeproperties.RecipePropertyStorage;
 import gregtech.api.util.GTUtility;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
@@ -61,6 +60,7 @@ public class Recipe {
     private final boolean hidden;
 
     private final Map<RecipeProperty<?>, Object> recipeProperties;
+    private final RecipePropertyStorage recipePropertyStorage;
 
     public Recipe(List<CountableIngredient> inputs, List<ItemStack> outputs, List<ChanceEntry> chancedOutputs,
                   List<FluidStack> fluidInputs, List<FluidStack> fluidOutputs,
@@ -315,22 +315,20 @@ public class Recipe {
         return recipePropertyStorage.getSize();
     }
 
-    @Deprecated
+    @SuppressWarnings("java:S1452")
+    public Set<Map.Entry<RecipeProperty<?>, Object>> getRecipeProperties() {
+        return recipePropertyStorage.getRecipeProperties();
+    }
+
+    public <T> T getRecipePropertyValue(RecipeProperty<T> recipeProperty, T defaultValue){
+        return recipePropertyStorage.getRecipePropertyValue(recipeProperty, defaultValue);
+    }
+
+
     public Set<String> getPropertyKeys() {
         Set<String> keys = new HashSet<>();
         this.recipeProperties.forEach((recipeProperty, value) -> keys.add(recipeProperty.getKey()));
         return keys;
-    }
-
-    public Set<RecipeProperty<?>> getRecipeProperties() {
-        return this.recipeProperties.keySet();
-    }
-
-    public <T> T getPropertyValue(RecipeProperty<T> key) {
-        if (this.recipeProperties.containsKey(key)) {
-            return key.castValue(this.recipeProperties.get(key));
-        }
-        throw new IllegalArgumentException();
     }
 
     public <T> T getPropertyValue(String key, Class<T> type) {
