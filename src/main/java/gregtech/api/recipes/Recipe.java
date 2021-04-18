@@ -58,13 +58,12 @@ public class Recipe {
      */
     private final boolean hidden;
 
-    private final Map<RecipeProperty<?>, Object> recipeProperties;
     private final RecipePropertyStorage recipePropertyStorage;
 
     public Recipe(List<CountableIngredient> inputs, List<ItemStack> outputs, List<ChanceEntry> chancedOutputs,
                   List<FluidStack> fluidInputs, List<FluidStack> fluidOutputs,
-                  Map<?, Object> recipeProperties, int duration, int EUt, boolean hidden) {
-        this.recipeProperties = ImmutableMap.copyOf(remapProperties(recipeProperties));
+                  int duration, int EUt, boolean hidden) {
+        this.recipePropertyStorage = new RecipePropertyStorage();
         this.inputs = NonNullList.create();
         this.inputs.addAll(inputs);
         this.outputs = NonNullList.create();
@@ -79,21 +78,17 @@ public class Recipe {
         this.inputs.sort(Comparator.comparing(CountableIngredient::getCount).reversed());
     }
 
-    private static Map<RecipeProperty<?>, Object> remapProperties(Map<?, Object> recipeProperties) {
-        Map<RecipeProperty<?>, Object> temp = new HashMap<>();
-        recipeProperties.forEach((s, o) -> {
-            if (s instanceof String) {
-                temp.put(new DefaultProperty<>((String) s, o.getClass()), o);
-            } else if (s instanceof RecipeProperty) {
-                if (!((RecipeProperty<?>) s).isOfType(o.getClass())) {
-                    throw new IllegalArgumentException();
-                }
-                temp.put((RecipeProperty<?>) s, o);
-            } else {
-                throw new IllegalArgumentException();
-            }
-        });
-        return temp;
+    /**
+     * @deprecated use {@link #Recipe(List inputs, List outputs, List chancedOutputs, List fluidInputs,
+     * List fluidOutputs, int duration, int EUt, boolean hidden)} instead
+     * Recipe properties are added by {@link #addRecipeProperties(Map recipeProperties)}
+     */
+    @Deprecated
+    public Recipe(List<CountableIngredient> inputs, List<ItemStack> outputs, List<ChanceEntry> chancedOutputs,
+                  List<FluidStack> fluidInputs, List<FluidStack> fluidOutputs,
+                  Map<String, Object> recipeProperties, int duration, int EUt, boolean hidden) {
+        this(inputs, outputs, chancedOutputs, fluidInputs, fluidOutputs, duration, EUt, hidden);
+        recipePropertyStorage.storeOldFormat(recipeProperties);
     }
 
     public final boolean matches(boolean consumeIfSuccessful, IItemHandlerModifiable inputs, IMultipleTankHandler fluidInputs, MatchingMode matchingMode) {
@@ -312,6 +307,10 @@ public class Recipe {
 
     public int getRecipePropertiesSize() {
         return recipePropertyStorage.getSize();
+    }
+
+    public boolean addRecipeProperties(Map<RecipeProperty<?>, Object> recipeProperties){
+        return recipePropertyStorage.store(recipeProperties);
     }
 
     @SuppressWarnings("java:S1452")
