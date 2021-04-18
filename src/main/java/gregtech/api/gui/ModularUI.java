@@ -171,6 +171,10 @@ public final class ModularUI implements ISizeProvider {
             return widget(new ImageWidget(x, y, width, height, area));
         }
 
+        public Builder defaultLogo(int x, int y) {
+            return widget(new ImageWidget(x, y, 17, 17, GuiTextures.LOGO));
+        }
+
         public Builder dynamicLabel(int x, int y, Supplier<String> text, int color) {
             return widget(new DynamicLabelWidget(x, y, text, color));
         }
