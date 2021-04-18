@@ -19,19 +19,11 @@ import net.minecraft.client.resources.I18n;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
-import java.util.ArrayList;
-import java.util.Map;
-import java.util.Set;
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class GTRecipeWrapper implements IRecipeWrapper {
-
-    private static final int lineHeight = 10;
-    private final RecipeMap<?> recipeMap;
-    private final Recipe recipe;
+    private static final int LINE_HEIGHT = 10;
 
     private final Hash.Strategy<ItemStack> strategy = ItemStackHashStrategy.comparingAllButCount();
 
@@ -39,8 +31,17 @@ public class GTRecipeWrapper implements IRecipeWrapper {
     private final Map<ItemStack, ChanceEntry> chanceOutput = new Object2ObjectOpenCustomHashMap<>(strategy);
     private final List<FluidStack> notConsumedFluidInput = new ArrayList<>();
 
+    private final Recipe recipe;
+
+    public GTRecipeWrapper(Recipe recipe) {
+        this.recipe = recipe;
+    }
+
+    /**
+     * @deprecated use {@link #GTRecipeWrapper(Recipe recipe)} instead
+     */
+    @Deprecated
     public GTRecipeWrapper(RecipeMap<?> recipeMap, Recipe recipe) {
-        this.recipeMap = recipeMap;
         this.recipe = recipe;
     }
 
@@ -51,9 +52,9 @@ public class GTRecipeWrapper implements IRecipeWrapper {
             List<List<ItemStack>> matchingInputs = new ArrayList<>(recipeInputs.size());
             for (CountableIngredient ingredient : recipeInputs) {
                 List<ItemStack> ingredientValues = Arrays.stream(ingredient.getIngredient().getMatchingStacks())
-                    .map(ItemStack::copy)
-                    .sorted(OreDictUnifier.getItemStackComparator())
-                    .collect(Collectors.toList());
+                        .map(ItemStack::copy)
+                        .sorted(OreDictUnifier.getItemStackComparator())
+                        .collect(Collectors.toList());
                 ingredientValues.forEach(stack -> {
                     if (ingredient.getCount() == 0) {
                         notConsumedInput.add(stack);
@@ -67,8 +68,8 @@ public class GTRecipeWrapper implements IRecipeWrapper {
 
         if (!recipe.getFluidInputs().isEmpty()) {
             List<FluidStack> recipeInputs = recipe.getFluidInputs()
-                .stream().map(FluidStack::copy)
-                .collect(Collectors.toList());
+                    .stream().map(FluidStack::copy)
+                    .collect(Collectors.toList());
             recipeInputs.forEach(stack -> {
                 if (stack.amount == 0) {
                     notConsumedFluidInput.add(stack);
@@ -80,7 +81,7 @@ public class GTRecipeWrapper implements IRecipeWrapper {
 
         if (!recipe.getOutputs().isEmpty() || !recipe.getChancedOutputs().isEmpty()) {
             List<ItemStack> recipeOutputs = recipe.getOutputs()
-                .stream().map(ItemStack::copy).collect(Collectors.toList());
+                    .stream().map(ItemStack::copy).collect(Collectors.toList());
             List<ChanceEntry> chancedOutputs = recipe.getChancedOutputs();
             for (ChanceEntry chancedEntry : chancedOutputs) {
                 ItemStack chancedStack = chancedEntry.getItemStack();
@@ -99,7 +100,7 @@ public class GTRecipeWrapper implements IRecipeWrapper {
 
         if (!recipe.getFluidOutputs().isEmpty()) {
             List<FluidStack> recipeOutputs = recipe.getFluidOutputs()
-                .stream().map(FluidStack::copy).collect(Collectors.toList());
+                    .stream().map(FluidStack::copy).collect(Collectors.toList());
             ingredients.setOutputs(VanillaTypes.FLUID, recipeOutputs);
         }
     }
@@ -130,18 +131,19 @@ public class GTRecipeWrapper implements IRecipeWrapper {
     }
 
     @Override
+    @SuppressWarnings("java:S1121")
     public void drawInfo(Minecraft minecraft, int recipeWidth, int recipeHeight, int mouseX, int mouseY) {
         int yPosition = recipeHeight - getPropertyListHeight();
         minecraft.fontRenderer.drawString(I18n.format("gregtech.recipe.total", Math.abs((long) recipe.getEUt()) * recipe.getDuration()), 0, yPosition, 0x111111);
-        minecraft.fontRenderer.drawString(I18n.format(recipe.getEUt() >= 0 ? "gregtech.recipe.eu" : "gregtech.recipe.eu_inverted", Math.abs(recipe.getEUt()), JEIHelpers.getMinTierForVoltage(recipe.getEUt())), 0, yPosition += lineHeight, 0x111111);
-        minecraft.fontRenderer.drawString(I18n.format("gregtech.recipe.duration", recipe.getDuration() / 20f), 0, yPosition += lineHeight, 0x111111);
+        minecraft.fontRenderer.drawString(I18n.format(recipe.getEUt() >= 0 ? "gregtech.recipe.eu" : "gregtech.recipe.eu_inverted", Math.abs(recipe.getEUt()), JEIHelpers.getMinTierForVoltage(recipe.getEUt())), 0, yPosition += LINE_HEIGHT, 0x111111);
+        minecraft.fontRenderer.drawString(I18n.format("gregtech.recipe.duration", recipe.getDuration() / 20f), 0, yPosition += LINE_HEIGHT, 0x111111);
         for (Map.Entry<RecipeProperty<?>, Object> propertyEntry : recipe.getRecipePropertyStorage().getRecipeProperties()) {
-            propertyEntry.getKey().drawInfo(minecraft, 0, yPosition += lineHeight, 0x111111, propertyEntry.getValue());
+            propertyEntry.getKey().drawInfo(minecraft, 0, yPosition += LINE_HEIGHT, 0x111111, propertyEntry.getValue());
         }
     }
 
     private int getPropertyListHeight() {
-        return (recipe.getRecipePropertyStorage().getSize() + 3) * lineHeight;
+        return (recipe.getRecipePropertyStorage().getSize() + 3) * LINE_HEIGHT;
     }
 
 }
