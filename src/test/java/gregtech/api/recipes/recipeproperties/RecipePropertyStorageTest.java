@@ -7,10 +7,7 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import java.util.AbstractMap;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 import static org.junit.Assert.*;
 
@@ -63,14 +60,13 @@ public class RecipePropertyStorageTest {
     }
 
 
-
     @Test
-    public void storing_property_without_value_fails(){
+    public void storing_property_without_value_fails() {
         assertFalse(storage.store(propInt1, null));
     }
 
     @Test
-    public void storing_property_with_old_format_without_value_fails(){
+    public void storing_property_with_old_format_without_value_fails() {
         Map<String, Object> map = new HashMap<>();
         map.put("emptyKey", null);
 
@@ -78,7 +74,7 @@ public class RecipePropertyStorageTest {
     }
 
     @Test
-    public void get_size_returns_correct_value(){
+    public void get_size_returns_correct_value() {
         storage.store(propInt1, 1); //succeeds
 
         assertEquals(1, storage.getSize());
@@ -93,7 +89,7 @@ public class RecipePropertyStorageTest {
     }
 
     @Test
-    public void get_recipe_properties_returns_correct_value(){
+    public void get_recipe_properties_returns_correct_value() {
         storage.store(propInt1, 1); //succeeds
         storage.store(propInt2, 2); //succeeds
 
@@ -109,7 +105,7 @@ public class RecipePropertyStorageTest {
     }
 
     @Test
-    public void get_recipe_property_value_returns_correct_value_if_exists(){
+    public void get_recipe_property_value_returns_correct_value_if_exists() {
         final int expectedValue = 1;
         storage.store(propInt1, expectedValue); //succeeds
 
@@ -119,7 +115,7 @@ public class RecipePropertyStorageTest {
     }
 
     @Test
-    public void get_recipe_property_value_returns_default_value_if_does_not_exists(){
+    public void get_recipe_property_value_returns_default_value_if_does_not_exists() {
         final int expectedValue = 0;
         storage.store(propInt1, 1); //succeeds
 
@@ -130,7 +126,22 @@ public class RecipePropertyStorageTest {
 
     @Test
     //CT way
-    public void get_raw_recipe_property_value_via_string_key(){
+    public void get_recipe_property_keys() {
+        storage.store(propInt1, 1); //succeeds
+        storage.store(propInt2, 2); //succeeds
+
+        Set<String> expectedKeys = new HashSet<>();
+        expectedKeys.add(propInt1.getKey());
+        expectedKeys.add(propInt2.getKey());
+
+        Set<String> actualKeys = storage.getRecipePropertyKeys();
+
+        assertTrue(expectedKeys.containsAll(actualKeys) && actualKeys.containsAll(expectedKeys));
+    }
+
+    @Test
+    //CT way
+    public void get_raw_recipe_property_value_via_string_key() {
         final int expectedValue = 1;
 
         storage.store(propInt1, expectedValue); //succeeds
@@ -141,7 +152,7 @@ public class RecipePropertyStorageTest {
     }
 
     @Test
-    public void get_recipe_property_value_via_string_returns_correct_value_if_exist(){
+    public void get_recipe_property_value_via_string_returns_correct_value_if_exist() {
         final int expectedValue = 1;
         storage.store(propInt1, expectedValue); //succeeds
 
@@ -153,7 +164,7 @@ public class RecipePropertyStorageTest {
     }
 
     @Test
-    public void get_recipe_property_value_via_string_returns_null_value_if_does_not_exists(){
+    public void get_recipe_property_value_via_string_returns_null_value_if_does_not_exists() {
         storage.store(propInt1, 1); //succeeds
 
         AbstractMap.SimpleEntry<RecipeProperty<?>, Object> recipePropertySet = storage.getRecipeProperty("not existent key");

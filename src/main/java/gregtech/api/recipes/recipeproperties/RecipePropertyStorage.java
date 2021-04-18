@@ -2,10 +2,7 @@ package gregtech.api.recipes.recipeproperties;
 
 import gregtech.api.util.GTLog;
 
-import java.util.AbstractMap;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 public class RecipePropertyStorage {
     private static final String STACKTRACE = "Stacktrace:";
@@ -114,6 +111,14 @@ public class RecipePropertyStorage {
         }
 
         return null;
+    }
+
+    public Set<String> getRecipePropertyKeys() {
+        HashSet<String> keys = new HashSet<>();
+
+        recipeProperties.keySet().forEach(recipeProperty -> keys.add(recipeProperty.getKey()));
+
+        return keys;
     }
 
     public Object getRawRecipePropertyValue(String key) {

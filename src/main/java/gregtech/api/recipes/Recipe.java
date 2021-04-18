@@ -9,7 +9,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.items.IItemHandlerModifiable;
-import org.apache.commons.lang3.Validate;
 import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.*;
@@ -325,9 +324,7 @@ public class Recipe {
     }
 
     public Set<String> getRecipePropertyKeys() {
-        Set<String> keys = new HashSet<>();
-        this.recipeProperties.forEach((recipeProperty, value) -> keys.add(recipeProperty.getKey()));
-        return keys;
+        return recipePropertyStorage.getRecipePropertyKeys();
     }
 
     public Object getRawRecipePropertyValue(String key) {
