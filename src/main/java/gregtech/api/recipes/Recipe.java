@@ -324,11 +324,14 @@ public class Recipe {
         return recipePropertyStorage.getRecipePropertyValue(recipeProperty, defaultValue);
     }
 
-
-    public Set<String> getPropertyKeys() {
+    public Set<String> getRecipePropertyKeys() {
         Set<String> keys = new HashSet<>();
         this.recipeProperties.forEach((recipeProperty, value) -> keys.add(recipeProperty.getKey()));
         return keys;
+    }
+
+    public Object getRawRecipePropertyValue(String key){
+        return recipePropertyStorage.getRawRecipePropertyValue(key);
     }
 
     public <T> T getPropertyValue(String key, Class<T> type) {

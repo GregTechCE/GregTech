@@ -100,4 +100,15 @@ public class RecipePropertyStorage {
 
         return recipeProperty.castValue(value);
     }
+
+    public Object getRawRecipePropertyValue(String key){
+        for(RecipeProperty<?> recipeProperty : recipeProperties.keySet()){
+            if(recipeProperty.getKey().equals(key))
+                return recipeProperties.get(recipeProperty);
+        }
+
+        GTLog.logger.warn("There is no property with key {}", key);
+        GTLog.logger.warn(STACKTRACE, new IllegalArgumentException());
+        return null;
+    }
 }

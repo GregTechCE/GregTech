@@ -125,4 +125,16 @@ public class RecipePropertyStorageTest {
 
         assertEquals(expectedValue, actual);
     }
+
+    @Test
+    //CT way
+    public void get_raw_recipe_property_value_via_string_key(){
+        final int expectedValue = 1;
+
+        storage.store(propInt1, expectedValue); //succeeds
+
+        Object actualValue = storage.getRawRecipePropertyValue(propInt1.getKey());
+
+        assertEquals(expectedValue, actualValue);
+    }
 }
