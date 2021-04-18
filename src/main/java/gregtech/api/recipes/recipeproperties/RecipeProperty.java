@@ -15,9 +15,10 @@ public abstract class RecipeProperty<T> {
 
     public abstract void drawInfo(Minecraft minecraft, int x, int y, int color, Object value);
 
-
     public boolean isOfType(Class<?> otherType) {
         return this.type == otherType;
+    }
+
     public String getKey() {
         return key;
     }

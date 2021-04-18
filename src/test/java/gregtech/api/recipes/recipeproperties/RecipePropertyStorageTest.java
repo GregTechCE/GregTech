@@ -7,6 +7,7 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import java.util.AbstractMap;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -14,8 +15,9 @@ import java.util.Set;
 import static org.junit.Assert.*;
 
 public class RecipePropertyStorageTest {
+    private static final String propInt1Key = "propInt1";
 
-    private static final DefaultProperty<Integer> propInt1 = new DefaultProperty<>("propInt1", Integer.class);
+    private static final DefaultProperty<Integer> propInt1 = new DefaultProperty<>(propInt1Key, Integer.class);
     private static final DefaultProperty<Integer> propInt2 = new DefaultProperty<>("propInt2", Integer.class);
     private static final DefaultProperty<Integer> propInt1_2 = new DefaultProperty<>("propInt1", Integer.class);
     private static final DefaultProperty<Integer> wrongCast = new DefaultProperty<>("wrongCast", Integer.class);
@@ -117,7 +119,7 @@ public class RecipePropertyStorageTest {
     }
 
     @Test
-    public void get_recipe_property_value_returns_correct_default_value_if_does_not_exists(){
+    public void get_recipe_property_value_returns_default_value_if_does_not_exists(){
         final int expectedValue = 0;
         storage.store(propInt1, 1); //succeeds
 
@@ -136,5 +138,26 @@ public class RecipePropertyStorageTest {
         Object actualValue = storage.getRawRecipePropertyValue(propInt1.getKey());
 
         assertEquals(expectedValue, actualValue);
+    }
+
+    @Test
+    public void get_recipe_property_value_via_string_returns_correct_value_if_exist(){
+        final int expectedValue = 1;
+        storage.store(propInt1, expectedValue); //succeeds
+
+        AbstractMap.SimpleEntry<RecipeProperty<?>, Object> recipePropertySet = storage.getRecipeProperty(propInt1Key);
+
+        Object actual = recipePropertySet.getKey().castValue(recipePropertySet.getValue());
+
+        assertEquals(expectedValue, actual);
+    }
+
+    @Test
+    public void get_recipe_property_value_via_string_returns_null_value_if_does_not_exists(){
+        storage.store(propInt1, 1); //succeeds
+
+        AbstractMap.SimpleEntry<RecipeProperty<?>, Object> recipePropertySet = storage.getRecipeProperty("not existent key");
+
+        assertNull(recipePropertySet);
     }
 }

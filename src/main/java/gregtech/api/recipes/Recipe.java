@@ -311,7 +311,7 @@ public class Recipe {
 
     //region RecipeProperties
 
-    public int getRecipePropertiesSize(){
+    public int getRecipePropertiesSize() {
         return recipePropertyStorage.getSize();
     }
 
@@ -320,7 +320,7 @@ public class Recipe {
         return recipePropertyStorage.getRecipeProperties();
     }
 
-    public <T> T getRecipePropertyValue(RecipeProperty<T> recipeProperty, T defaultValue){
+    public <T> T getRecipePropertyValue(RecipeProperty<T> recipeProperty, T defaultValue) {
         return recipePropertyStorage.getRecipePropertyValue(recipeProperty, defaultValue);
     }
 
@@ -330,49 +330,47 @@ public class Recipe {
         return keys;
     }
 
-    public Object getRawRecipePropertyValue(String key){
+    public Object getRawRecipePropertyValue(String key) {
         return recipePropertyStorage.getRawRecipePropertyValue(key);
     }
 
-    public <T> T getPropertyValue(String key, Class<T> type) {
-        Validate.notNull(key);
-        for (RecipeProperty<?> property : getRecipeProperties()) {
-            if (property.getKey().equals(key) && property.isOfType(type)) {
-                return type.cast(this.recipeProperties.get(property));
-            }
-        }
-        throw new IllegalArgumentException();
-    }
-
+    /**
+     * @deprecated use {@link #getRecipePropertyValue(RecipeProperty, Object)} instead
+     */
     @Deprecated
     public boolean getBooleanProperty(String key) {
-        return getPropertyValue(key, Boolean.class);
+        return getProperty(key);
     }
 
+    /**
+     * @deprecated use {@link #getRecipePropertyValue(RecipeProperty, Object)} instead
+     */
     @Deprecated
     public int getIntegerProperty(String key) {
-        return getPropertyValue(key, Integer.class);
+        return getProperty(key);
     }
 
-    @SuppressWarnings("unchecked")
-    @Deprecated
-    public <T> T getProperty(String key) {
-        Validate.notNull(key);
-        Object o = null;
-        for (Map.Entry<RecipeProperty<?>, Object> entry : this.recipeProperties.entrySet()) {
-            if (entry.getKey().getKey().equals(key)) {
-                o = entry.getValue();
-            }
-        }
-        if (o == null) {
-            throw new IllegalArgumentException();
-        }
-        return (T) o;
-    }
-
+    /**
+     * @deprecated use {@link #getRecipePropertyValue(RecipeProperty, Object)} instead
+     */
     @Deprecated
     public String getStringProperty(String key) {
-        return getPropertyValue(key, String.class);
+        return getProperty(key);
+    }
+
+    /**
+     * @deprecated use {@link #getRecipePropertyValue(RecipeProperty, Object)} instead
+     */
+    @Deprecated
+    @SuppressWarnings("unchecked")
+    public <T> T getProperty(String key) {
+        AbstractMap.SimpleEntry<RecipeProperty<?>, Object> recipePropertySet = recipePropertyStorage.getRecipeProperty(key);
+
+        if (recipePropertySet == null) {
+            throw new IllegalArgumentException();
+        }
+
+        return (T) recipePropertySet.getKey().castValue(recipePropertySet.getValue());
     }
 
     //endregion RecipeProperties

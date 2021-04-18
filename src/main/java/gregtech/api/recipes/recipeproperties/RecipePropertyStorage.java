@@ -2,6 +2,7 @@ package gregtech.api.recipes.recipeproperties;
 
 import gregtech.api.util.GTLog;
 
+import java.util.AbstractMap;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -101,14 +102,38 @@ public class RecipePropertyStorage {
         return recipeProperty.castValue(value);
     }
 
-    public Object getRawRecipePropertyValue(String key){
-        for(RecipeProperty<?> recipeProperty : recipeProperties.keySet()){
-            if(recipeProperty.getKey().equals(key))
-                return recipeProperties.get(recipeProperty);
+    /**
+     * @deprecated use {@link #getRecipePropertyValue(RecipeProperty, Object)} instead
+     */
+    @Deprecated
+    @SuppressWarnings("java:S1452")
+    public AbstractMap.SimpleEntry<RecipeProperty<?>, Object> getRecipeProperty(String key) {
+        RecipeProperty<?> recipeProperty = getRecipePropertyValue(key);
+        if (recipeProperty != null) {
+            return new AbstractMap.SimpleEntry<>(recipeProperty, recipeProperties.get(recipeProperty));
+        }
+
+        return null;
+    }
+
+    public Object getRawRecipePropertyValue(String key) {
+        RecipeProperty<?> recipeProperty = getRecipePropertyValue(key);
+        if (recipeProperty != null) {
+            return recipeProperties.get(recipeProperty);
+        }
+
+        return null;
+    }
+
+    private RecipeProperty<?> getRecipePropertyValue(String key) {
+        for (RecipeProperty<?> recipeProperty : recipeProperties.keySet()) {
+            if (recipeProperty.getKey().equals(key))
+                return recipeProperty;
         }
 
         GTLog.logger.warn("There is no property with key {}", key);
         GTLog.logger.warn(STACKTRACE, new IllegalArgumentException());
+
         return null;
     }
 }
