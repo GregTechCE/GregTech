@@ -353,8 +353,6 @@ public class SimpleMachineMetaTileEntity extends WorkableTieredMetaTileEntity im
                 .setTooltipHoverString("gregtech.gui.overclock.description")
                 .setButtonTexture(GuiTextures.BUTTON_OVERCLOCK));
 
-        builder.image(176 - 7 - 18, 62, 17, 17, GuiTextures.LOGO);
-
         return builder;
     }
 

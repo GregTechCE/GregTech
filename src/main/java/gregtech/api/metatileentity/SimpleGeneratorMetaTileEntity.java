@@ -127,7 +127,6 @@ public class SimpleGeneratorMetaTileEntity extends TieredMetaTileEntity {
             .widget(new ImageWidget(91, 36, 14, 15, GuiTextures.TANK_ICON))
             .widget(new SlotWidget(containerInventory, 1, 90, 54, true, false)
                 .setBackgroundTexture(GuiTextures.SLOT, GuiTextures.OUT_SLOT_OVERLAY))
-            .image(151, 62, 17, 17, GuiTextures.LOGO)
             .bindPlayerInventory(player.inventory);
     }
 

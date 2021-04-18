@@ -90,6 +90,15 @@ public final class ModularUI implements ISizeProvider {
     }
 
     public static Builder defaultBuilder() {
+        return defaultBuilder(GuiTextures.LOGO);
+    }
+
+    public static Builder defaultBuilder(TextureArea logo) {
+        return new Builder(GuiTextures.BACKGROUND, 176, 166)
+                .image(151, 62, 17, 17, logo);
+    }
+
+    public static Builder defaultBuilderNoLogo() {
         return new Builder(GuiTextures.BACKGROUND, 176, 166);
     }
 
