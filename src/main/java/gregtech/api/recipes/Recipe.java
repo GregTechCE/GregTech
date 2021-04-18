@@ -331,7 +331,7 @@ public class Recipe {
     }
 
     /**
-     * @deprecated use {@link #getRecipePropertyValue(RecipeProperty, Object)} instead
+     * @deprecated use {@link #getRecipePropertyValue(RecipeProperty recipeProperty, Object defaultValue)} instead
      */
     @Deprecated
     public boolean getBooleanProperty(String key) {
@@ -339,7 +339,7 @@ public class Recipe {
     }
 
     /**
-     * @deprecated use {@link #getRecipePropertyValue(RecipeProperty, Object)} instead
+     * @deprecated use {@link #getRecipePropertyValue(RecipeProperty recipeProperty, Object defaultValue)} instead
      */
     @Deprecated
     public int getIntegerProperty(String key) {
@@ -347,7 +347,7 @@ public class Recipe {
     }
 
     /**
-     * @deprecated use {@link #getRecipePropertyValue(RecipeProperty, Object)} instead
+     * @deprecated use {@link #getRecipePropertyValue(RecipeProperty recipeProperty, Object defaultValue)} instead
      */
     @Deprecated
     public String getStringProperty(String key) {
@@ -355,7 +355,7 @@ public class Recipe {
     }
 
     /**
-     * @deprecated use {@link #getRecipePropertyValue(RecipeProperty, Object)} instead
+     * @deprecated use {@link #getRecipePropertyValue(RecipeProperty recipeProperty, Object defaultValue)} instead
      */
     @Deprecated
     @SuppressWarnings("unchecked")

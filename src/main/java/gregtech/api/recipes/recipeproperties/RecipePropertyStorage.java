@@ -57,6 +57,10 @@ public class RecipePropertyStorage {
         return success;
     }
 
+    /**
+     * @deprecated use {@link #store(Map recipeProperties)}
+     */
+    @Deprecated
     public boolean storeOldFormat(Map<String, Object> recipeProperties) {
         boolean success = true;
         for (Map.Entry<String, Object> recipePropertyEntry : recipeProperties.entrySet()) {
@@ -100,7 +104,7 @@ public class RecipePropertyStorage {
     }
 
     /**
-     * @deprecated use {@link #getRecipePropertyValue(RecipeProperty, Object)} instead
+     * @deprecated use {@link #getRecipePropertyValue(RecipeProperty recipeProperty, Object defaultValue)} instead
      */
     @Deprecated
     @SuppressWarnings("java:S1452")
