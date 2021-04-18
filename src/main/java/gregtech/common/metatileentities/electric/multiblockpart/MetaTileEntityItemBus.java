@@ -98,8 +98,8 @@ public class MetaTileEntityItemBus extends MetaTileEntityMultiblockPart implemen
         for (int y = 0; y < rowSize; y++) {
             for (int x = 0; x < rowSize; x++) {
                 int index = y * rowSize + x;
-                builder.widget(new SlotWidget(isExportHatch ? exportItems : importItems, index, 89 - rowSize * 9 + x * 18, 18 + y * 18, true, !isExportHatch)
-                        .setBackgroundTexture(GuiTextures.SLOT));
+                builder.widget(new SlotWidget(isExportHatch ? exportItems : importItems, index, 88 - rowSize * 9 + x * 18, 18 + y * 18, true, !isExportHatch)
+                    .setBackgroundTexture(GuiTextures.SLOT));
             }
         }
         builder.bindPlayerInventory(entityPlayer.inventory, GuiTextures.SLOT, 7, 18 + 18 * rowSize + 12);
