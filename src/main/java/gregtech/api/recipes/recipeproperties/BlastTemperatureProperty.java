@@ -9,12 +9,22 @@ import java.util.Map;
 import java.util.TreeMap;
 
 public class BlastTemperatureProperty extends RecipeProperty<Integer> {
-    private static final TreeMap<Integer, Object> registeredCoilTypes = new TreeMap<>((x, y) -> y - x);
-    public static final BlastTemperatureProperty INSTANCE = new BlastTemperatureProperty();
     private static final String KEY = "blast_furnace_temperature";
+
+    private static final TreeMap<Integer, Object> registeredCoilTypes = new TreeMap<>((x, y) -> y - x);
+
+    private static BlastTemperatureProperty INSTANCE;
 
     private BlastTemperatureProperty() {
         super(KEY, Integer.class);
+    }
+
+    public static BlastTemperatureProperty getInstance() {
+        if (INSTANCE == null) {
+            INSTANCE = new BlastTemperatureProperty();
+        }
+
+        return INSTANCE;
     }
 
     @Override
@@ -22,7 +32,6 @@ public class BlastTemperatureProperty extends RecipeProperty<Integer> {
         minecraft.fontRenderer.drawString(I18n.format("gregtech.recipe.blast_furnace_temperature",
                 value, getMinTierForTemperature(castValue(value))), x, y, color);
     }
-
 
     private String getMinTierForTemperature(Integer value) {
         String name = "";
