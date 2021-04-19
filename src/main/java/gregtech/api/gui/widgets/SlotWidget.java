@@ -1,7 +1,12 @@
 package gregtech.api.gui.widgets;
 
+import java.awt.Rectangle;
+
+import javax.annotation.Nonnull;
+
 import gregtech.api.gui.INativeWidget;
 import gregtech.api.gui.IRenderContext;
+import gregtech.api.gui.IScissored;
 import gregtech.api.gui.Widget;
 import gregtech.api.gui.resources.TextureArea;
 import gregtech.api.util.Position;
@@ -15,8 +20,6 @@ import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.IItemHandlerModifiable;
 import net.minecraftforge.items.SlotItemHandler;
 
-import javax.annotation.Nonnull;
-
 public class SlotWidget extends Widget implements INativeWidget {
 
     protected SlotItemHandler slotReference;
@@ -28,6 +31,8 @@ public class SlotWidget extends Widget implements INativeWidget {
 
     protected TextureArea[] backgroundTexture;
     protected Runnable changeListener;
+
+    protected Rectangle scissor;
 
     public SlotWidget(IItemHandler itemHandler, int slotIndex, int xPosition, int yPosition, boolean canTakeItems, boolean canPutItems) {
         super(new Position(xPosition, yPosition), new Size(18, 18));
@@ -43,7 +48,7 @@ public class SlotWidget extends Widget implements INativeWidget {
     @Override
     @SideOnly(Side.CLIENT)
     public void drawInBackground(int mouseX, int mouseY, IRenderContext context) {
-        if (isEnabled && backgroundTexture != null) {
+        if (isEnabled() && backgroundTexture != null) {
             Position pos = getPosition();
             Size size = getSize();
             for (TextureArea backgroundTexture : this.backgroundTexture) {
@@ -69,6 +74,11 @@ public class SlotWidget extends Widget implements INativeWidget {
     @Override
     public void setEnabled(boolean enabled) {
         isEnabled = enabled;
+    }
+
+    @Override
+    public void applyScissor(final int parentX, final int parentY, final int parentWidth, final int parentHeight) {
+        this.scissor = new Rectangle(parentX, parentY, parentWidth, parentHeight);
     }
 
     @Override
@@ -99,20 +109,26 @@ public class SlotWidget extends Widget implements INativeWidget {
     }
 
     public boolean canPutStack(ItemStack stack) {
-        return isEnabled && canPutItems;
+        return isEnabled() && canPutItems;
     }
 
     public boolean canTakeStack(EntityPlayer player) {
-        return isEnabled && canTakeItems;
+        return isEnabled() && canTakeItems;
     }
 
     public boolean isEnabled() {
-        return isEnabled;
+        if (!this.isEnabled) {
+            return false;
+        }
+        if (this.scissor == null) {
+            return true;
+        }
+        return scissor.intersects(toRectangleBox());
     }
 
     @Override
     public boolean canMergeSlot(ItemStack stack) {
-        return isEnabled;
+        return isEnabled();
     }
 
     public void onSlotChanged() {
@@ -129,7 +145,7 @@ public class SlotWidget extends Widget implements INativeWidget {
         return slotReference;
     }
 
-    protected class WidgetSlotDelegate extends SlotItemHandler {
+    protected class WidgetSlotDelegate extends SlotItemHandler implements IScissored {
 
         public WidgetSlotDelegate(IItemHandler itemHandler, int index, int xPosition, int yPosition) {
             super(itemHandler, index, xPosition, yPosition);
@@ -166,6 +182,11 @@ public class SlotWidget extends Widget implements INativeWidget {
         @Override
         public boolean isEnabled() {
             return SlotWidget.this.isEnabled();
+        }
+
+        @Override
+        public Rectangle getScissor() {
+            return SlotWidget.this.scissor;
         }
     }
 
