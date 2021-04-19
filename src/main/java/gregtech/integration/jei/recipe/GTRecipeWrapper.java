@@ -119,7 +119,7 @@ public class GTRecipeWrapper implements IRecipeWrapper {
             throw new IllegalArgumentException("Unknown ingredient type: " + ingredient.getClass());
         }
 
-        if (entry != null) {
+        if (entry != null && !input) {
             double chance = entry.getChance() / 100.0;
             double boost = entry.getBoostPerTier() / 100.0;
             tooltip.add(I18n.format("gregtech.recipe.chance", chance, boost));
