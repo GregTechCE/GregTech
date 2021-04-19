@@ -49,6 +49,7 @@ public abstract class SolidMaterial extends DustMaterial {
      * Attack damage of tools made from this material
      * Usually equal to material's harvest level
      */
+    @ZenProperty
     public final float toolAttackDamage;
 
     /**
