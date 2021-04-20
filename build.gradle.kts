@@ -28,11 +28,11 @@ buildscript {
         jcenter()
         maven {
             name = "forge"
-            setUrl("http://maven.minecraftforge.net/")
+            setUrl("https://maven.minecraftforge.net/")
         }
         maven {
             name = "MC"
-            setUrl("http://libraries.minecraft.net/")
+            setUrl("https://libraries.minecraft.net/")
         }
     }
     dependencies {
