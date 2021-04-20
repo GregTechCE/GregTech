@@ -124,6 +124,15 @@ repositories {
         name = "CCL Maven New"
         setUrl("https://minecraft.curseforge.com/api/maven")
     }
+    maven {
+        name = "forge"
+        setUrl("https://maven.minecraftforge.net/")
+    }
+    maven {
+        name = "MC"
+        setUrl("https://libraries.minecraft.net/")
+    }
+    mavenCentral()
 }
 
 dependencies {
