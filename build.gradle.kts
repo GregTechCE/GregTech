@@ -1,4 +1,3 @@
-
 import com.google.gson.JsonObject
 import com.jfrog.bintray.gradle.BintrayExtension
 import com.jfrog.bintray.gradle.BintrayExtension.PackageConfig
@@ -29,7 +28,11 @@ buildscript {
         jcenter()
         maven {
             name = "forge"
-            setUrl("http://files.minecraftforge.net/maven")
+            setUrl("http://maven.minecraftforge.net/")
+        }
+        maven {
+            name = "MC"
+            setUrl("http://libraries.minecraft.net/")
         }
     }
     dependencies {
