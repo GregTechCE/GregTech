@@ -682,7 +682,7 @@ public class MetaTileEntityTank extends MetaTileEntity implements IFastRenderMet
             if (fluidStack != null) {
                 tooltip.add(I18n.format("gregtech.machine.fluid_tank.fluid", fluidStack.amount, fluidStack.getLocalizedName()));
             }
-            List<String> tooltips = FluidTooltipUtil.getFluidTooltip(fluidStack);
+            List<String> tooltips = FluidTooltipUtil.getFluidTooltips(fluidStack);
             if (tooltips != null)
                 tooltip.addAll(1, tooltips);
         }

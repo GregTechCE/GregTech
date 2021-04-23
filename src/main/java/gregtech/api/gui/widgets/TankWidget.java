@@ -139,7 +139,7 @@ public class TankWidget extends Widget implements IIngredientSlot {
                 tooltips.add(fluid.getLocalizedName(lastFluidInTank));
 
                 // Add chemical formula tooltip
-                List<String> formula = FluidTooltipUtil.getFluidTooltip(lastFluidInTank);
+                List<String> formula = FluidTooltipUtil.getFluidTooltips(lastFluidInTank);
                 if (formula != null && !formula.isEmpty())
                     tooltips.addAll(1, formula);
 
