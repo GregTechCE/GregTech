@@ -163,13 +163,13 @@ public class ClientProxy extends CommonProxy {
             } else if (ItemNBTUtils.hasTag(itemStack)) {
 
                 // Vanilla bucket
-                chemicalFormula = FluidTooltipUtil.getFluidTooltip(ItemNBTUtils.getString(itemStack, "FluidName"));
+                chemicalFormula = FluidTooltipUtil.getFluidTooltips(ItemNBTUtils.getString(itemStack, "FluidName"));
 
                 // GTCE Cells, Forestry cans, some other containers
                 if (chemicalFormula == null) {
                     NBTTagCompound compound = itemStack.getTagCompound();
                     if (compound != null && compound.hasKey(FluidHandlerItemStack.FLUID_NBT_KEY, Constants.NBT.TAG_COMPOUND)) {
-                        chemicalFormula = FluidTooltipUtil.getFluidTooltip(FluidStack.loadFluidStackFromNBT(compound.getCompoundTag(FluidHandlerItemStack.FLUID_NBT_KEY)));
+                        chemicalFormula = FluidTooltipUtil.getFluidTooltips(FluidStack.loadFluidStackFromNBT(compound.getCompoundTag(FluidHandlerItemStack.FLUID_NBT_KEY)));
                     }
                 }
 
@@ -178,7 +178,7 @@ public class ClientProxy extends CommonProxy {
                 chemicalFormula = Lists.newArrayList(FluidTooltipUtil.getWaterTooltip());
             }
             if (chemicalFormula != null && !chemicalFormula.isEmpty())
-                event.getToolTip().addAll(1, chemicalFormula);
+                event.getToolTip().addAll(0, chemicalFormula);
         }
     }
 
