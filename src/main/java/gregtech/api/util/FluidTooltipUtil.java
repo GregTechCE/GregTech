@@ -30,7 +30,9 @@ public class FluidTooltipUtil {
      */
     public static boolean registerTooltip(Fluid fluid, List<String> tooltips) {
         if (fluid != null && tooltips != null && !tooltips.isEmpty()) {
-            tooltips.forEach(tooltip -> registerTooltip(fluid, tooltip));
+            for (String tooltip : tooltips) {
+                registerTooltip(fluid, tooltip);
+            }
         }
         return false;
     }
