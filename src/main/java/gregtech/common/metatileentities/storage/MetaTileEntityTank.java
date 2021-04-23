@@ -684,7 +684,7 @@ public class MetaTileEntityTank extends MetaTileEntity implements IFastRenderMet
             }
             List<String> tooltips = FluidTooltipUtil.getFluidTooltip(fluidStack);
             if (tooltips != null)
-                tooltip.addAll(tooltips);
+                tooltip.addAll(1, tooltips);
         }
     }
 

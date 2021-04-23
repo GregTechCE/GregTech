@@ -21,7 +21,7 @@ public class JEIHooks {
         if (ingredient instanceof FluidStack) {
             List<String> formula = FluidTooltipUtil.getFluidTooltip(((FluidStack) ingredient).getFluid());
             if (formula != null && !formula.isEmpty()) {
-                tooltip.addAll(formula);
+                tooltip.addAll(1, formula);
             }
         }
     }

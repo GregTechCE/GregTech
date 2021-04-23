@@ -178,7 +178,7 @@ public class ClientProxy extends CommonProxy {
                 chemicalFormula = Lists.newArrayList(FluidTooltipUtil.getWaterTooltip());
             }
             if (chemicalFormula != null && !chemicalFormula.isEmpty())
-                event.getToolTip().addAll(chemicalFormula);
+                event.getToolTip().addAll(1, chemicalFormula);
         }
     }
 
