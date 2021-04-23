@@ -3,6 +3,7 @@ package gregtech.common;
 import codechicken.lib.texture.TextureUtils;
 import codechicken.lib.util.ItemNBTUtils;
 import codechicken.lib.util.ResourceUtils;
+import com.google.common.collect.Lists;
 import com.mojang.authlib.minecraft.MinecraftProfileTexture.Type;
 import com.mojang.realmsclient.gui.ChatFormatting;
 import gregtech.api.GTValues;
@@ -56,10 +57,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.*;
 import java.nio.charset.StandardCharsets;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
 @SideOnly(Side.CLIENT)
 @Mod.EventBusSubscriber(Side.CLIENT)
@@ -154,12 +152,12 @@ public class ClientProxy extends CommonProxy {
 
         // Handles Item tooltips
         if (!(itemStack.getItem() instanceof ItemBlock)) {
-            String chemicalFormula = null;
+            List<String> chemicalFormula = null;
 
             // Test for Items
             UnificationEntry unificationEntry = OreDictUnifier.getUnificationEntry(itemStack);
             if (unificationEntry != null && unificationEntry.material != null) {
-                chemicalFormula = unificationEntry.material.chemicalFormula;
+                chemicalFormula = Lists.newArrayList(ChatFormatting.GRAY + unificationEntry.material.chemicalFormula);
 
             // Test for Fluids
             } else if (ItemNBTUtils.hasTag(itemStack)) {
@@ -177,10 +175,10 @@ public class ClientProxy extends CommonProxy {
 
             // Water buckets have a separate registry name from other buckets
             } else if(itemStack.getItem().equals(Items.WATER_BUCKET)) {
-                chemicalFormula = FluidTooltipUtil.getWaterTooltip();
+                chemicalFormula = Lists.newArrayList(FluidTooltipUtil.getWaterTooltip());
             }
             if (chemicalFormula != null && !chemicalFormula.isEmpty())
-                event.getToolTip().add(1, ChatFormatting.GRAY.toString() + chemicalFormula);
+                event.getToolTip().addAll(chemicalFormula);
         }
     }
 
