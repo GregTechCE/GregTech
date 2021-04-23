@@ -69,7 +69,7 @@ public class FluidTooltipUtil {
         if (fluid == null)
             return null;
 
-        return tooltips.get(fluid).get(0);
+        return tooltips.get(fluid).get(1);
     }
 
     /**
