@@ -25,6 +25,7 @@ import gregtech.common.blocks.MetaBlocks;
 import gregtech.common.items.MetaItems;
 import gregtech.common.metatileentities.MetaTileEntities;
 import gregtech.integration.jei.multiblock.MultiblockInfoCategory;
+import gregtech.integration.jei.multiblock.MultiblockInfoRecipeWrapper;
 import gregtech.integration.jei.recipe.*;
 import gregtech.integration.jei.recipe.fuel.FuelRecipeMapCategory;
 import gregtech.integration.jei.recipe.fuel.GTFuelRecipeWrapper;
@@ -45,6 +46,7 @@ import net.minecraft.util.ResourceLocation;
 
 import javax.annotation.Nonnull;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.stream.Collectors;
@@ -196,6 +198,11 @@ public class GTJeiPlugin implements IModPlugin {
         for (MetaTileEntity machine : MetaTileEntities.FLUID_CANNER) {
             registry.addIngredientInfo(machine.getStackForm(), VanillaTypes.ITEM,
                 "gregtech.machine.fluid_canner.jei_description");
+        }
+
+        for(Map.Entry<String, MultiblockInfoRecipeWrapper> entry: MultiblockInfoCategory.multiblockRecipes.entrySet()) {
+            registry.addIngredientInfo(entry.getValue().getInfoPage().getController().getStackForm(), VanillaTypes.ITEM,
+                    entry.getValue().getInfoPage().getDescription());
         }
     }
 }

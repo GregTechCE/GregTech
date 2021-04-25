@@ -98,6 +98,10 @@ public class MultiblockInfoRecipeWrapper implements IRecipeWrapper, SceneRenderC
         ingredients.setOutput(ItemStack.class, controllerStack);
     }
 
+    public MultiblockInfoPage getInfoPage() {
+        return infoPage;
+    }
+
     public void setRecipeLayout(RecipeLayout layout, IGuiHelper guiHelper) {
         this.recipeLayout = layout;
         IDrawable border = layout.getRecipeCategory().getBackground();
@@ -211,13 +215,9 @@ public class MultiblockInfoRecipeWrapper implements IRecipeWrapper, SceneRenderC
     public void drawInfo(Minecraft minecraft, int recipeWidth, int recipeHeight, int mouseX, int mouseY) {
         WorldSceneRenderer renderer = getCurrentRenderer();
         int scenePosY = 0;
-        //noinspection UnnecessaryLocalVariable,SuspiciousNameCombination
         int sceneHeight = recipeHeight-36;
         renderer.render(recipeLayout.getPosX(), recipeLayout.getPosY() + scenePosY, recipeWidth, sceneHeight, 0xC6C6C6);
         drawText(minecraft, recipeWidth);
-        for (int i = 0; i < MAX_PARTS; ++i) {
-            this.slot.draw(minecraft, 18*i-180*(i/10), recipeHeight-36+18*(i/10));
-        }
         // Hmmm, the buttons need to be last otherwise sometimes highlighting 
         // the button by mousing over it, leaks into other gui elements?
         for (GuiButton button : buttons.keySet()) {
@@ -269,17 +269,6 @@ public class MultiblockInfoRecipeWrapper implements IRecipeWrapper, SceneRenderC
     private void drawText(Minecraft minecraft, int recipeWidth) {
         String localizedName = I18n.format(infoPage.getController().getMetaFullName());
         GTUtility.drawCenteredSizedText(recipeWidth / 2, 0, localizedName, 0x333333, 1.3);
-        FontRenderer fontRenderer = minecraft.fontRenderer;
-        List<String> lines = Arrays.stream(infoPage.getDescription())
-            .flatMap(s -> fontRenderer.listFormattedStringToWidth(s, recipeWidth).stream())
-            .collect(Collectors.toList());
-        for (int i = 0; i < lines.size(); i++) {
-            String lineText = lines.get(i);
-            int x = (recipeWidth - fontRenderer.getStringWidth(lineText)) / 2;
-            int y = 8 + i * fontRenderer.FONT_HEIGHT;
-            fontRenderer.drawString(lineText, x, y, 0x333333);
-        }
-        GlStateManager.color(1.0f, 1.0f, 1.0f);
     }
 
     @Override
