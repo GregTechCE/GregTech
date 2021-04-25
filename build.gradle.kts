@@ -1,4 +1,3 @@
-
 import com.google.gson.JsonObject
 import com.jfrog.bintray.gradle.BintrayExtension
 import com.jfrog.bintray.gradle.BintrayExtension.PackageConfig
@@ -29,7 +28,11 @@ buildscript {
         jcenter()
         maven {
             name = "forge"
-            setUrl("http://files.minecraftforge.net/maven")
+            setUrl("https://maven.minecraftforge.net/")
+        }
+        maven {
+            name = "MC"
+            setUrl("https://libraries.minecraft.net/")
         }
     }
     dependencies {
@@ -121,6 +124,15 @@ repositories {
         name = "CCL Maven New"
         setUrl("https://minecraft.curseforge.com/api/maven")
     }
+    maven {
+        name = "forge"
+        setUrl("https://maven.minecraftforge.net/")
+    }
+    maven {
+        name = "MC"
+        setUrl("https://libraries.minecraft.net/")
+    }
+    mavenCentral()
 }
 
 dependencies {
