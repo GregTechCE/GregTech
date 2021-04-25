@@ -27,16 +27,16 @@ buildscript {
     repositories {
         jcenter()
         maven {
+            name = "jitpack"
+            setUrl("https://jitpack.io")
+        }
+        maven {
             name = "forge"
             setUrl("https://maven.minecraftforge.net/")
         }
-        maven {
-            name = "MC"
-            setUrl("https://libraries.minecraft.net/")
-        }
     }
     dependencies {
-        classpath("net.minecraftforge.gradle:ForgeGradle:2.3-SNAPSHOT")
+        classpath("com.github.GregTechCE:ForgeGradle:FG_2.3-SNAPSHOT")
         classpath("org.eclipse.jgit:org.eclipse.jgit:5.5.0.201909110433-r")
     }
 }
@@ -124,15 +124,6 @@ repositories {
         name = "CCL Maven New"
         setUrl("https://minecraft.curseforge.com/api/maven")
     }
-    maven {
-        name = "forge"
-        setUrl("https://maven.minecraftforge.net/")
-    }
-    maven {
-        name = "MC"
-        setUrl("https://libraries.minecraft.net/")
-    }
-    mavenCentral()
 }
 
 dependencies {
