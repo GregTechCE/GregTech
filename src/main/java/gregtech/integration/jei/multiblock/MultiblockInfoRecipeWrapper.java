@@ -4,6 +4,7 @@ import codechicken.lib.raytracer.CuboidRayTraceResult;
 import codechicken.lib.raytracer.IndexedCuboid6;
 import codechicken.lib.vec.Cuboid6;
 import codechicken.lib.vec.Vector3;
+import gregtech.api.GregTechAPI;
 import gregtech.api.gui.GuiTextures;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.MetaTileEntityHolder;
@@ -13,6 +14,8 @@ import gregtech.api.render.scene.WorldSceneRenderer;
 import gregtech.api.util.BlockInfo;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.ItemStackKey;
+import gregtech.common.metatileentities.electric.multiblockpart.MetaTileEntityFluidHatch;
+import gregtech.common.metatileentities.electric.multiblockpart.MetaTileEntityItemBus;
 import mezz.jei.api.IGuiHelper;
 import mezz.jei.api.gui.IDrawable;
 import mezz.jei.api.gui.IGuiItemStackGroup;
@@ -345,6 +348,11 @@ public class MultiblockInfoRecipeWrapper implements IRecipeWrapper, SceneRenderC
                     tooltip.set(k, TextFormatting.GRAY + tooltip.get(k));
                 }
             }
+            MetaTileEntity mte = GregTechAPI.META_TILE_ENTITY_REGISTRY.getObjectById(tooltipBlockStack.getItemDamage());
+            if(mte instanceof MetaTileEntityItemBus || mte instanceof MetaTileEntityFluidHatch) {
+                tooltip.add(1, TextFormatting.WHITE + I18n.format(infoPage.getBusTooltip()));
+            }
+
             return tooltip;
         }
         return Collections.emptyList();

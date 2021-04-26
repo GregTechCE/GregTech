@@ -26,4 +26,8 @@ public abstract class MultiblockInfoPage {
                 .map(I18n::format)
                 .collect(Collectors.toList());
     }
+
+    public String getBusTooltip() {
+        return "gregtech.multiblock.preview.any_hatch";
+    }
 }
