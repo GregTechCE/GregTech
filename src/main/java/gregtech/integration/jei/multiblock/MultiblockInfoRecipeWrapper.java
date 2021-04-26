@@ -358,6 +358,13 @@ public class MultiblockInfoRecipeWrapper implements IRecipeWrapper, SceneRenderC
         return Collections.emptyList();
     }
 
+    public void addBusAndHatchTooltip(int slotIndex, boolean input, ItemStack itemStack, List<String> tooltip) {
+        MetaTileEntity mte = GregTechAPI.META_TILE_ENTITY_REGISTRY.getObjectById(itemStack.getItemDamage());
+        if(mte instanceof MetaTileEntityItemBus || mte instanceof MetaTileEntityFluidHatch) {
+            tooltip.add(1, TextFormatting.WHITE + I18n.format(infoPage.getBusTooltip()));
+        }
+    }
+
     private static class PartInfo {
         final ItemStackKey itemStackKey;
         boolean isController = false;
