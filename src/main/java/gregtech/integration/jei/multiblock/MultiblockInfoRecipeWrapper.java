@@ -73,6 +73,7 @@ public class MultiblockInfoRecipeWrapper implements IRecipeWrapper, SceneRenderC
     private float rotationYaw;
     private float rotationPitch;
     private float zoom;
+    private final int FONT_HEIGHT = Minecraft.getMinecraft().fontRenderer.FONT_HEIGHT;
 
     private GuiButton buttonPreviousPattern;
     private GuiButton buttonNextPattern;
@@ -268,7 +269,14 @@ public class MultiblockInfoRecipeWrapper implements IRecipeWrapper, SceneRenderC
 
     private void drawText(Minecraft minecraft, int recipeWidth) {
         String localizedName = I18n.format(infoPage.getController().getMetaFullName());
-        GTUtility.drawCenteredSizedText(recipeWidth / 2, 0, localizedName, 0x333333, 1.3);
+        GTUtility.drawCenteredSizedText(recipeWidth / 2, -FONT_HEIGHT, localizedName, 0x333333, 1.3);
+        String tiltText = I18n.format("gregtech.multiblock.preview.tilt");
+        String zoomText = I18n.format("gregtech.multiblock.preview.zoom");
+        String panText = I18n.format("gregtech.multiblock.preview.pan");
+        minecraft.fontRenderer.drawString(tiltText, (recipeWidth - minecraft.fontRenderer.getStringWidth(tiltText))/2, -6 * FONT_HEIGHT, TextFormatting.GRAY.getColorIndex());
+        minecraft.fontRenderer.drawString(zoomText, (recipeWidth - minecraft.fontRenderer.getStringWidth(zoomText))/2, -5 * FONT_HEIGHT, TextFormatting.GRAY.getColorIndex());
+        minecraft.fontRenderer.drawString(panText, (recipeWidth - minecraft.fontRenderer.getStringWidth(panText))/2, -4 * FONT_HEIGHT, TextFormatting.GRAY.getColorIndex());
+
     }
 
     @Override
