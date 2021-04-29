@@ -143,8 +143,8 @@ public class MetaBlockIdRemapCache {
 
     private static class MappingCollection {
 
-        TIntIntMap idToIndex = new TIntIntHashMap(16, 0.8F, -1, -1);
-        TIntIntMap indexToId = new TIntIntHashMap(16, 0.8F, -1, -1);
+        final TIntIntMap idToIndex = new TIntIntHashMap(16, 0.8F, -1, -1);
+        final TIntIntMap indexToId = new TIntIntHashMap(16, 0.8F, -1, -1);
         int maxIndex = -1;
 
         MetaBlockIdRemapCache bake(String newNamePrefix) {
