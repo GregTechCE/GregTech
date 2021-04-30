@@ -8,14 +8,14 @@ import gregtech.api.GregTechAPI;
 import gregtech.api.gui.GuiTextures;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.MetaTileEntityHolder;
+import gregtech.api.metatileentity.multiblock.IMultiblockAbilityPart;
+import gregtech.api.metatileentity.multiblock.MultiblockAbility;
 import gregtech.api.metatileentity.multiblock.MultiblockControllerBase;
 import gregtech.api.render.scene.SceneRenderCallback;
 import gregtech.api.render.scene.WorldSceneRenderer;
 import gregtech.api.util.BlockInfo;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.ItemStackKey;
-import gregtech.common.metatileentities.electric.multiblockpart.MetaTileEntityFluidHatch;
-import gregtech.common.metatileentities.electric.multiblockpart.MetaTileEntityItemBus;
 import mezz.jei.api.IGuiHelper;
 import mezz.jei.api.gui.IDrawable;
 import mezz.jei.api.gui.IGuiItemStackGroup;
@@ -349,19 +349,32 @@ public class MultiblockInfoRecipeWrapper implements IRecipeWrapper, SceneRenderC
                 }
             }
             MetaTileEntity mte = GregTechAPI.META_TILE_ENTITY_REGISTRY.getObjectById(tooltipBlockStack.getItemDamage());
-            if(mte instanceof MetaTileEntityItemBus || mte instanceof MetaTileEntityFluidHatch) {
-                tooltip.add(1, TextFormatting.WHITE + I18n.format(infoPage.getBusTooltip()));
+            if(mte instanceof IMultiblockAbilityPart) {
+                MultiblockAbility ability = ((IMultiblockAbilityPart) mte).getAbility();
+                Map<MultiblockAbility, List<String>> abilityTooltipMap = infoPage.getAbilityTooltipMap();
+                if(abilityTooltipMap.containsKey(ability)) {
+                    List<String> tooltips = abilityTooltipMap.get(ability);
+                    for(int i = 0; i < tooltips.size(); i++) {
+                        tooltip.add(i + 1, TextFormatting.GREEN + I18n.format(tooltips.get(i)));
+                    }
+                }
             }
-
             return tooltip;
         }
         return Collections.emptyList();
     }
 
-    public void addBusAndHatchTooltip(int slotIndex, boolean input, ItemStack itemStack, List<String> tooltip) {
+    public void addAbilityPartTooltip(int slotIndex, boolean input, ItemStack itemStack, List<String> tooltip) {
         MetaTileEntity mte = GregTechAPI.META_TILE_ENTITY_REGISTRY.getObjectById(itemStack.getItemDamage());
-        if(mte instanceof MetaTileEntityItemBus || mte instanceof MetaTileEntityFluidHatch) {
-            tooltip.add(1, TextFormatting.WHITE + I18n.format(infoPage.getBusTooltip()));
+        if(mte instanceof IMultiblockAbilityPart) {
+            MultiblockAbility ability = ((IMultiblockAbilityPart) mte).getAbility();
+            Map<MultiblockAbility, List<String>> abilityTooltipMap = infoPage.getAbilityTooltipMap();
+            if(abilityTooltipMap.containsKey(ability)) {
+                List<String> tooltips = abilityTooltipMap.get(ability);
+                for(int i = 0; i < tooltips.size(); i++) {
+                    tooltip.add(i + 1, TextFormatting.GREEN + I18n.format(tooltips.get(i)));
+                }
+            }
         }
     }
 

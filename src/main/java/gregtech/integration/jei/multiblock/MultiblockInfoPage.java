@@ -1,11 +1,10 @@
 package gregtech.integration.jei.multiblock;
 
+import gregtech.api.metatileentity.multiblock.MultiblockAbility;
 import gregtech.api.metatileentity.multiblock.MultiblockControllerBase;
 import net.minecraft.client.resources.I18n;
 
-import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
+import java.util.*;
 
 public abstract class MultiblockInfoPage {
 
@@ -27,7 +26,13 @@ public abstract class MultiblockInfoPage {
                 .collect(Collectors.toList());
     }
 
-    public String getBusTooltip() {
-        return "gregtech.multiblock.preview.any_hatch";
+    public Map<MultiblockAbility, List<String>> getAbilityTooltipMap() {
+        Map<MultiblockAbility, List<String>> abilityTooltipMap = new HashMap<>();
+        abilityTooltipMap.put(MultiblockAbility.EXPORT_ITEMS, Collections.singletonList("gregtech.multiblock.preview.any_hatch"));
+        abilityTooltipMap.put(MultiblockAbility.IMPORT_ITEMS, Collections.singletonList("gregtech.multiblock.preview.any_hatch"));
+        abilityTooltipMap.put(MultiblockAbility.EXPORT_FLUIDS, Collections.singletonList("gregtech.multiblock.preview.any_hatch"));
+        abilityTooltipMap.put(MultiblockAbility.IMPORT_FLUIDS, Collections.singletonList("gregtech.multiblock.preview.any_hatch"));
+
+        return abilityTooltipMap;
     }
 }
