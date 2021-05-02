@@ -28,10 +28,12 @@ public abstract class MultiblockInfoPage {
 
     public Map<MultiblockAbility, List<String>> getAbilityTooltipMap() {
         Map<MultiblockAbility, List<String>> abilityTooltipMap = new HashMap<>();
-        abilityTooltipMap.put(MultiblockAbility.EXPORT_ITEMS, Collections.singletonList("gregtech.multiblock.preview.any_hatch"));
-        abilityTooltipMap.put(MultiblockAbility.IMPORT_ITEMS, Collections.singletonList("gregtech.multiblock.preview.any_hatch"));
-        abilityTooltipMap.put(MultiblockAbility.EXPORT_FLUIDS, Collections.singletonList("gregtech.multiblock.preview.any_hatch"));
-        abilityTooltipMap.put(MultiblockAbility.IMPORT_FLUIDS, Collections.singletonList("gregtech.multiblock.preview.any_hatch"));
+        List<String> tooltipList = new ArrayList<>();
+        tooltipList.add("gregtech.multiblock.preview.any_hatch");
+        abilityTooltipMap.put(MultiblockAbility.EXPORT_ITEMS, tooltipList);
+        abilityTooltipMap.put(MultiblockAbility.IMPORT_ITEMS, tooltipList);
+        abilityTooltipMap.put(MultiblockAbility.EXPORT_FLUIDS, tooltipList);
+        abilityTooltipMap.put(MultiblockAbility.IMPORT_FLUIDS, tooltipList);
 
         return abilityTooltipMap;
     }
