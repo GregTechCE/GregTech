@@ -50,7 +50,7 @@ public abstract class SteamMetaTileEntity extends MetaTileEntity {
     }
 
     @SideOnly(Side.CLIENT)
-    private SimpleSidedCubeRenderer getBaseRenderer() {
+    protected SimpleSidedCubeRenderer getBaseRenderer() {
         if (isHighPressure) {
             if (isBrickedCasing()) {
                 return Textures.STEAM_BRICKED_CASING_STEEL;

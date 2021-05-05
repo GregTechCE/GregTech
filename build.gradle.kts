@@ -1,4 +1,3 @@
-
 import com.google.gson.JsonObject
 import com.jfrog.bintray.gradle.BintrayExtension
 import com.jfrog.bintray.gradle.BintrayExtension.PackageConfig
@@ -28,13 +27,17 @@ buildscript {
     repositories {
         jcenter()
         maven {
+            name = "jitpack"
+            setUrl("https://jitpack.io")
+        }
+        maven {
             name = "forge"
-            setUrl("http://files.minecraftforge.net/maven")
+            setUrl("https://maven.minecraftforge.net/")
         }
     }
     dependencies {
-        classpath("net.minecraftforge.gradle:ForgeGradle:2.3-SNAPSHOT")
-        classpath("org.eclipse.jgit:org.eclipse.jgit:5.5.0.201909110433-r")
+        classpath("com.github.GregTechCE:ForgeGradle:FG_2.3-SNAPSHOT")
+        classpath("org.eclipse.jgit:org.eclipse.jgit:5.8.0.202006091008-r")
     }
 }
 
@@ -68,7 +71,7 @@ val jeiVersion = config["jei.version"] as String
 val topVersion = config["top.version"] as String
 val ctmVersion = config["ctm.version"] as String
 
-val git: Git = Git.open(File("."))
+val git: Git = Git.open(projectDir)
 
 val modVersion = getVersionFromJava(file("src/main/java/gregtech/GregTechVersion.java"))
 val modVersionNoBuild = modVersion.substring(0, modVersion.lastIndexOf('.'))

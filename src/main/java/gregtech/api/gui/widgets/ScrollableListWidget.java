@@ -62,6 +62,8 @@ public class ScrollableListWidget extends AbstractWidgetGroup {
             widget.setParentPosition(childPosition);
             currentPosY += widget.getSize().getHeight();
             totalListHeight += widget.getSize().getHeight();
+            final Size size = getSize();
+            widget.applyScissor(position.x, position.y, size.width - scrollPaneWidth, size.height);
         }
         this.totalListHeight = totalListHeight;
         this.slotHeight = widgets.isEmpty() ? 0 : totalListHeight / widgets.size();
@@ -103,6 +105,13 @@ public class ScrollableListWidget extends AbstractWidgetGroup {
 
         RenderUtil.useScissor(position.x, position.y, size.width - paneSize, size.height, () ->
             super.drawInBackground(finalMouseX, finalMouseY, context));
+    }
+
+    public boolean isWidgetClickable(final Widget widget) {
+        if (!super.isWidgetClickable(widget)) {
+            return false;
+        }
+        return isBoxInsideScissor(widget.toRectangleBox());
     }
 
     private boolean isPositionInsideScissor(int mouseX, int mouseY) {
