@@ -4,6 +4,7 @@ import codechicken.lib.raytracer.CuboidRayTraceResult;
 import codechicken.lib.raytracer.IndexedCuboid6;
 import codechicken.lib.vec.Cuboid6;
 import codechicken.lib.vec.Vector3;
+import gregtech.api.GTValues;
 import gregtech.api.gui.GuiTextures;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.MetaTileEntityHolder;
@@ -33,10 +34,14 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.NonNullList;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.client.config.GuiUtils;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 
@@ -73,12 +78,12 @@ public class MultiblockInfoRecipeWrapper implements IRecipeWrapper, SceneRenderC
     private float rotationYaw;
     private float rotationPitch;
     private float zoom;
-    private final int FONT_HEIGHT = Minecraft.getMinecraft().fontRenderer.FONT_HEIGHT;
 
     private GuiButton buttonPreviousPattern;
     private GuiButton buttonNextPattern;
     private GuiButton nextLayerButton;
     private IDrawable slot;
+    private IGuiHelper guiHelper;
 
     private ItemStack tooltipBlockStack;
 
@@ -107,6 +112,7 @@ public class MultiblockInfoRecipeWrapper implements IRecipeWrapper, SceneRenderC
         this.recipeLayout = layout;
         IDrawable border = layout.getRecipeCategory().getBackground();
         this.buttons.clear();
+        this.guiHelper = guiHelper;
         this.nextLayerButton = new GuiButton(0, border.getWidth() - 25, 70, 20, 20, "");
         this.buttonPreviousPattern = new GuiButton(0, border.getWidth()-46, 90, 20, 20, "<");
         this.buttonNextPattern = new GuiButton(0, border.getWidth() - 25, 90, 20, 20, ">");
@@ -224,6 +230,12 @@ public class MultiblockInfoRecipeWrapper implements IRecipeWrapper, SceneRenderC
         for (GuiButton button : buttons.keySet()) {
             button.drawButton(minecraft, mouseX, mouseY, 0.0f);
         }
+        guiHelper.drawableBuilder(new ResourceLocation(GTValues.MODID, "textures/gui/widget/information.png"), 0, 0, 20, 20)
+                .setTextureSize(20, 20)
+                .build()
+                .draw(minecraft, recipeWidth - 25, 49);
+
+        drawHoveringInformationText(infoPage.informationText(), mouseX, mouseY);
 
         this.tooltipBlockStack = null;
         BlockPos pos = renderer.getLastHitBlock();
@@ -267,16 +279,23 @@ public class MultiblockInfoRecipeWrapper implements IRecipeWrapper, SceneRenderC
         this.lastMouseY = mouseY;
     }
 
+    @SideOnly(Side.CLIENT)
+    protected void drawHoveringInformationText(List<String> tooltip, int mouseX, int mouseY) {
+        Minecraft mc = Minecraft.getMinecraft();
+        int minX = recipeLayout.getRecipeCategory().getBackground().getWidth();
+        int[] yRange = new int[]{49, 69};
+        int[] xRange = new int[]{minX - 25, minX - 5};
+        //Only draw the hovering information tooltip above the information icon
+        if(yRange[0] < mouseY && mouseY < yRange[1] && xRange[0] < mouseX && mouseX < xRange[1]) {
+            GuiUtils.drawHoveringText(tooltip, mouseX, mouseY,
+                    176,176, -1, mc.fontRenderer);
+        }
+
+    }
+
     private void drawText(Minecraft minecraft, int recipeWidth) {
         String localizedName = I18n.format(infoPage.getController().getMetaFullName());
-        GTUtility.drawCenteredSizedText(recipeWidth / 2, -FONT_HEIGHT, localizedName, 0x333333, 1.3);
-        String tiltText = I18n.format("gregtech.multiblock.preview.tilt");
-        String zoomText = I18n.format("gregtech.multiblock.preview.zoom");
-        String panText = I18n.format("gregtech.multiblock.preview.pan");
-        minecraft.fontRenderer.drawString(tiltText, (recipeWidth - minecraft.fontRenderer.getStringWidth(tiltText))/2, -6 * FONT_HEIGHT, TextFormatting.GRAY.getColorIndex());
-        minecraft.fontRenderer.drawString(zoomText, (recipeWidth - minecraft.fontRenderer.getStringWidth(zoomText))/2, -5 * FONT_HEIGHT, TextFormatting.GRAY.getColorIndex());
-        minecraft.fontRenderer.drawString(panText, (recipeWidth - minecraft.fontRenderer.getStringWidth(panText))/2, -4 * FONT_HEIGHT, TextFormatting.GRAY.getColorIndex());
-
+        GTUtility.drawCenteredSizedText(recipeWidth / 2, 0, localizedName, 0x333333, 1.3);
     }
 
     @Override
