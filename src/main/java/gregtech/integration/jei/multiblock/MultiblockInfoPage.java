@@ -19,15 +19,11 @@ public abstract class MultiblockInfoPage {
     }
 
     public List<String> informationText() {
-        String tiltText = I18n.format("gregtech.multiblock.preview.tilt");
-        String zoomText = I18n.format("gregtech.multiblock.preview.zoom");
-        String panText = I18n.format("gregtech.multiblock.preview.pan");
 
-        List<String> informationText = new ArrayList<>();
-        informationText.add(tiltText);
-        informationText.add(panText);
-        informationText.add(zoomText);
-
-        return informationText;
+        return new ArrayList<String>() {{
+            add(I18n.format("gregtech.multiblock.preview.tilt"));
+            add(I18n.format("gregtech.multiblock.preview.zoom"));
+            add(I18n.format("gregtech.multiblock.preview.pan"));
+        }};
     }
 }
