@@ -31,8 +31,11 @@ public class WorldDataHooks {
     @Nullable
     private static MetaBlockIdFixer metaBlockIdFixer = null;
 
-    public static boolean isFixerAvailable() {
-        return metaBlockIdFixer != null;
+    private WorldDataHooks() {
+    }
+
+    public static boolean isFixerUnavailable() {
+        return metaBlockIdFixer == null;
     }
 
     public static MetaBlockIdFixer getMetaBlockIdFixer() {

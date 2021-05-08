@@ -16,7 +16,7 @@ public class Fix0PostGraniteMetaBlockShiftInWorld implements IFixableData {
 
     @Override
     public NBTTagCompound fixTagCompound(NBTTagCompound compound) {
-        if (!WorldDataHooks.isFixerAvailable()) {
+        if (WorldDataHooks.isFixerUnavailable()) {
             return compound;
         }
 

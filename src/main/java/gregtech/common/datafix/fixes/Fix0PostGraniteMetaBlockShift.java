@@ -1,5 +1,6 @@
 package gregtech.common.datafix.fixes;
 
+import gregtech.common.datafix.GregTechDataFixers;
 import gregtech.common.datafix.fixes.metablockid.MetaBlockIdFixHelper;
 import gregtech.common.datafix.fixes.metablockid.PreGraniteMetaBlockIdFixer;
 import gregtech.common.datafix.fixes.metablockid.WorldDataHooks;
@@ -16,17 +17,17 @@ public class Fix0PostGraniteMetaBlockShift implements IFixableData {
 
     @Override
     public NBTTagCompound fixTagCompound(NBTTagCompound compound) {
-        if (!WorldDataHooks.isFixerAvailable()) {
+        if (WorldDataHooks.isFixerUnavailable()) {
             return compound;
         }
 
-        int index = MetaBlockIdFixHelper.getCompressedIndexFromResLoc(compound.getString("id"));
+        int index = MetaBlockIdFixHelper.getCompressedIndexFromResLoc(compound.getString(GregTechDataFixers.COMPOUND_ID));
         if (index != -1) {
             RemappedBlock remapped = ((PreGraniteMetaBlockIdFixer) WorldDataHooks.getMetaBlockIdFixer())
-                    .remapCompressedPreGraniteToPost(index, compound.getShort("Damage"));
+                    .remapCompressedPreGraniteToPost(index, compound.getShort(GregTechDataFixers.COMPOUND_META));
             if (remapped != null) {
-                compound.setString("id", MetaBlockIdFixHelper.COMP_RESLOC_PREF + remapped.id);
-                compound.setShort("Damage", remapped.data);
+                compound.setString(GregTechDataFixers.COMPOUND_ID, MetaBlockIdFixHelper.COMP_RESLOC_PREF + remapped.id);
+                compound.setShort(GregTechDataFixers.COMPOUND_META, remapped.data);
             }
         }
         return compound;

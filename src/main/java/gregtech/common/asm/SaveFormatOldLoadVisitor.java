@@ -1,4 +1,3 @@
-
 package gregtech.common.asm;
 
 import gregtech.common.asm.util.ObfMapping;

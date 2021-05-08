@@ -17,7 +17,7 @@ public class Fix1MetaBlockIdSystemInWorld implements IFixableData {
 
     @Override
     public NBTTagCompound fixTagCompound(NBTTagCompound compound) {
-        if (!WorldDataHooks.isFixerAvailable()) {
+        if (WorldDataHooks.isFixerUnavailable()) {
             return compound;
         }
 

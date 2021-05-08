@@ -44,8 +44,10 @@ public class MetaBlockIdRemapCache {
         if (id != -1) {
             return id;
         }
-        return newIdCache[index] = Block.getIdFromBlock(Objects.requireNonNull(ForgeRegistries.BLOCKS.getValue(
+        newIdCache[index] = Block.getIdFromBlock(Objects.requireNonNull(ForgeRegistries.BLOCKS.getValue(
                 new ResourceLocation(GTValues.MODID, newNamePrefix + index))));
+
+        return newIdCache[index];
     }
 
     public NBTTagCompound serialize() {

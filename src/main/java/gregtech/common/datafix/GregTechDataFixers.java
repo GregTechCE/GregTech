@@ -36,6 +36,12 @@ public class GregTechDataFixers {
      */
     public static final int DATA_VERSION = V1_META_BLOCK_ID_REWORK;
 
+    /**
+     * Constants used for fixing NBT data.
+     */
+    public static final String COMPOUND_ID = "id";
+    public static final String COMPOUND_META = "Damage";
+
     public static void init() {
         CompoundDataFixer fmlFixer = FMLCommonHandler.instance().getDataFixer();
         IDataWalker walkItemStackLike = new WalkItemStackLike();

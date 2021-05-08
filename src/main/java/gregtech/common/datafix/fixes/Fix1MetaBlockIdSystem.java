@@ -1,5 +1,6 @@
 package gregtech.common.datafix.fixes;
 
+import gregtech.common.datafix.GregTechDataFixers;
 import gregtech.common.datafix.fixes.metablockid.MetaBlockIdFixHelper;
 import gregtech.common.datafix.fixes.metablockid.PostGraniteMetaBlockIdFixer;
 import gregtech.common.datafix.fixes.metablockid.WorldDataHooks;
@@ -25,26 +26,26 @@ public class Fix1MetaBlockIdSystem implements IFixableData {
 
     @Override
     public NBTTagCompound fixTagCompound(NBTTagCompound compound) {
-        if (!WorldDataHooks.isFixerAvailable()) {
+        if (WorldDataHooks.isFixerUnavailable()) {
             return compound;
         }
 
-        String blockResLoc = compound.getString("id");
+        String blockResLoc = compound.getString(GregTechDataFixers.COMPOUND_ID);
         int index = MetaBlockIdFixHelper.getCompressedIndexFromResLoc(blockResLoc);
         if (index != -1) {
             RemappedBlock remapped = ((PostGraniteMetaBlockIdFixer) WorldDataHooks.getMetaBlockIdFixer())
-                    .remapCompressedPostGraniteToNew(index, compound.getShort("Damage"));
-            compound.setString("id", MetaBlockIdFixHelper.COMP_RESLOC_PREF_NEW + remapped.id);
-            compound.setShort("Damage", remapped.data);
+                    .remapCompressedPostGraniteToNew(index, compound.getShort(GregTechDataFixers.COMPOUND_META));
+            compound.setString(GregTechDataFixers.COMPOUND_ID, MetaBlockIdFixHelper.COMP_RESLOC_PREF_NEW + remapped.id);
+            compound.setShort(GregTechDataFixers.COMPOUND_META, remapped.data);
             return compound;
         }
 
         index = MetaBlockIdFixHelper.getSurfRockIndexFromResLoc(blockResLoc);
         if (index != -1) {
             RemappedBlock remapped = ((PostGraniteMetaBlockIdFixer) WorldDataHooks.getMetaBlockIdFixer())
-                    .remapSurfRockToNew(index, compound.getShort("Damage"));
-            compound.setString("id", MetaBlockIdFixHelper.SURF_ROCK_RESLOC_PREF_NEW + remapped.id);
-            compound.setShort("Damage", remapped.data);
+                    .remapSurfRockToNew(index, compound.getShort(GregTechDataFixers.COMPOUND_META));
+            compound.setString(GregTechDataFixers.COMPOUND_ID, MetaBlockIdFixHelper.SURF_ROCK_RESLOC_PREF_NEW + remapped.id);
+            compound.setShort(GregTechDataFixers.COMPOUND_META, remapped.data);
         }
         return compound;
     }
