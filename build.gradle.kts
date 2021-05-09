@@ -3,7 +3,7 @@ import com.matthewprenger.cursegradle.CurseExtension
 import com.matthewprenger.cursegradle.CurseProject
 import com.matthewprenger.cursegradle.CurseRelation
 import net.minecraftforge.gradle.user.UserBaseExtension
-import org.apache.commons.lang.StringUtils
+import org.apache.commons.lang3.StringUtils
 import org.apache.http.client.methods.HttpPost
 import org.apache.http.entity.ContentType
 import org.apache.http.entity.StringEntity
@@ -15,14 +15,11 @@ import org.eclipse.jgit.revwalk.RevCommit
 import org.eclipse.jgit.revwalk.RevObject
 import org.eclipse.jgit.revwalk.RevTag
 import org.eclipse.jgit.revwalk.RevWalk
-import java.time.ZoneOffset
-import java.time.ZonedDateTime
-import java.time.format.DateTimeFormatter
 import java.util.*
 
 buildscript {
     repositories {
-        jcenter()
+        mavenCentral()
         maven {
             name = "jitpack"
             setUrl("https://jitpack.io")
@@ -35,6 +32,7 @@ buildscript {
     dependencies {
         classpath("com.github.GregTechCE:ForgeGradle:FG_2.3-SNAPSHOT")
         classpath("org.eclipse.jgit:org.eclipse.jgit:5.8.0.202006091008-r")
+        classpath("org.apache.commons:commons-lang3:3.12.0")
     }
 }
 
