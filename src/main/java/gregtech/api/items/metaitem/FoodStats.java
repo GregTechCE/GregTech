@@ -74,6 +74,11 @@ public class FoodStats implements IFoodBehavior {
                     player.addPotionEffect(GTUtility.copyPotionEffect(potionEffect.effect));
                 }
             }
+            if (containerItem != null) {
+                if (player.inventory.addItemStackToInventory(containerItem)) {
+                    player.dropItem(containerItem, true, true);
+                }
+            }
         }
     }
 
