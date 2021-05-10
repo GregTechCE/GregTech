@@ -65,7 +65,6 @@ val strippedVersion = shortVersion.replace(".", "") + "0"
 val forestryVersion = config["forestry.version"] as String
 val chickenasmVersion = config["chickenasm.version"] as String
 val cclVersion = config["ccl.version"] as String
-val multipartVersion = config["multipart.version"] as String
 val crafttweakerVersion = config["crafttweaker.version"] as String
 val jeiVersion = config["jei.version"] as String
 val topVersion = config["top.version"] as String
@@ -132,7 +131,6 @@ dependencies {
     }
     "deobfCompile"("codechicken:ChickenASM:$shortVersion-$chickenasmVersion")
     "deobfCompile"("codechicken-lib-1-8:CodeChickenLib-$mcVersion:$cclVersion:universal")
-    "deobfCompile"("forge-multipart-cbe:ForgeMultipart-$mcVersion:$multipartVersion:universal")
     "deobfCompile"("CraftTweaker2:CraftTweaker2-MC$strippedVersion-Main:$crafttweakerVersion")
     "deobfCompile"("mezz.jei:jei_$mcVersion:$jeiVersion")
     "deobfCompile"("mcjty.theoneprobe:TheOneProbe-$shortVersion:$shortVersion-$topVersion")
