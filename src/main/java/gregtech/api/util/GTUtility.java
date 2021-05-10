@@ -243,10 +243,6 @@ public class GTUtility {
         return merged;
     }
 
-    public static ItemStack withEmptyTag(ItemStack stack) {
-        return new ItemStack(stack.getItem(), 1, stack.getItemDamage());
-    }
-
     public static boolean harvestBlock(World world, BlockPos pos, EntityPlayer player) {
         IBlockState blockState = world.getBlockState(pos);
         TileEntity tileEntity = world.getTileEntity(pos);
