@@ -67,22 +67,32 @@ public class FoodStats implements IFoodBehavior {
     }
 
     @Override
-    public void onEaten(ItemStack itemStack, EntityPlayer player) {
+    public ItemStack onEaten(ItemStack itemStack, EntityPlayer player) {
         if (!player.world.isRemote) {
             for (RandomPotionEffect potionEffect : potionEffects) {
                 if (Math.random() * 100 > potionEffect.chance) {
                     player.addPotionEffect(GTUtility.copyPotionEffect(potionEffect.effect));
                 }
             }
-        }
-        else {
+
             if (containerItem != null) {
-                ItemStack containerItemCopy = containerItem.copy();
-                if (!(player.inventory.hasItemStack(containerItemCopy) /* The following function deletes the item if this is false. */ && player.inventory.addItemStackToInventory(GTUtility.withEmptyTag(containerItemCopy)))) {
-                    player.dropItem(containerItemCopy, false, true);
+                ItemStack containerItemCopy = containerItem.copy(); // Get the copy
+                if (player == null || !player.capabilities.isCreativeMode)
+                {
+                    if (itemStack.isEmpty())
+                    {
+                        return containerItemCopy;
+                    }
+
+                    if (player != null)
+                    {
+                        if (!player.inventory.addItemStackToInventory(containerItemCopy))
+                            player.dropItem(containerItemCopy, false, false);
+                    }
                 }
             }
         }
+        return itemStack;
     }
 
     @Override
