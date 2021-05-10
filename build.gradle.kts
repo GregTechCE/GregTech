@@ -452,7 +452,6 @@ fun configureCurseforgeTask(): CurseProject? {
 
             relations {
                 requiredDependency("codechicken-lib-1-8")
-                optionalDependency("forge-multipart-cbe")
                 optionalDependency("crafttweaker")
                 optionalDependency("jei")
                 optionalDependency("the-one-probe")
