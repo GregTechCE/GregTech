@@ -72,7 +72,6 @@ public class GTValues {
      */
     public static final String MODID = "gregtech",
         MODID_FR = "forestry",
-        MODID_FMP = "forgemultipartcbe",
         MODID_CT = "crafttweaker",
         MODID_TOP = "theoneprobe",
         MODID_CTM = "ctm",
