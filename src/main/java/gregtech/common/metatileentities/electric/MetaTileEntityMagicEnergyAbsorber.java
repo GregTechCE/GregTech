@@ -81,10 +81,10 @@ public class MetaTileEntityMagicEnergyAbsorber extends TieredMetaTileEntity {
         if (!(getWorld().provider instanceof WorldProviderEnd)) {
             return; //don't try to do anything outside end dimension
         }
-        if (getTimer() % 20 == 0) {
+        if (getOffsetTimer() % 20 == 0 || getTimer() == 0) {
             updateDragonEggStatus();
         }
-        if (getTimer() % 200 == 0) {
+        if (getOffsetTimer() % 200 == 0 || getTimer() == 0) {
             updateConnectedCrystals();
         }
         int totalEnergyGeneration = 0;

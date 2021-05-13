@@ -17,7 +17,7 @@ public class BlockFireboxCasing extends VariantBlock<FireboxCasingType> {
 
     public BlockFireboxCasing() {
         super(Material.IRON);
-        setUnlocalizedName("boiler_casing");
+        setTranslationKey("boiler_casing");
         setHardness(5.0f);
         setResistance(10.0f);
         setSoundType(SoundType.METAL);

@@ -77,7 +77,7 @@ public abstract class SteamBoiler extends MetaTileEntity {
     }
 
     @SideOnly(Side.CLIENT)
-    private SimpleSidedCubeRenderer getBaseRenderer() {
+    protected SimpleSidedCubeRenderer getBaseRenderer() {
         if (isHighPressure) {
             return Textures.STEAM_BRICKED_CASING_STEEL;
         } else {
@@ -156,7 +156,7 @@ public abstract class SteamBoiler extends MetaTileEntity {
             updateCurrentTemperature();
             generateSteam();
 
-            if (getTimer() % 5 == 0) {
+            if (getOffsetTimer() % 5 == 0) {
                 fillInternalTankFromFluidContainer(containerInventory, containerInventory, 0, 1);
                 pushFluidsIntoNearbyHandlers(STEAM_PUSH_DIRECTIONS);
             }
@@ -179,7 +179,7 @@ public abstract class SteamBoiler extends MetaTileEntity {
 
     private void updateCurrentTemperature() {
         if (fuelMaxBurnTime > 0) {
-            if (getTimer() % 12 == 0) {
+            if (getOffsetTimer() % 12 == 0) {
                 if (fuelBurnTimeLeft % 2 == 0 && currentTemperature < getMaxTemperate())
                     currentTemperature++;
                 fuelBurnTimeLeft -= isHighPressure ? 2 : 1;
@@ -198,7 +198,7 @@ public abstract class SteamBoiler extends MetaTileEntity {
 
     private void generateSteam() {
         if(currentTemperature >= 100) {
-            if (getTimer() % getBoilingCycleLength() == 0) {
+            if (getOffsetTimer() % getBoilingCycleLength() == 0) {
                 int fillAmount = (int) (baseSteamOutput * (currentTemperature / (getMaxTemperate() * 1.0)));
                 boolean hasDrainedWater = waterFluidTank.drain(1, true) != null;
                 int filledSteam = 0;

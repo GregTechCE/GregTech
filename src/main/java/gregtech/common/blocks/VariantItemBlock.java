@@ -26,8 +26,8 @@ public class VariantItemBlock<R extends Enum<R> & IStringSerializable, T extends
     }
 
     @Override
-    public String getUnlocalizedName(ItemStack stack) {
-        return super.getUnlocalizedName(stack) + '.' + genericBlock.getState(getBlockState(stack)).getName();
+    public String getTranslationKey(ItemStack stack) {
+        return super.getTranslationKey(stack) + '.' + genericBlock.getState(getBlockState(stack)).getName();
     }
 
 }

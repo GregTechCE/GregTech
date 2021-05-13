@@ -1,5 +1,39 @@
 ## Changelog
 
+### 1.14.1
+* Added mechanism to distribute expensive ticks more evenly (#1513) - dan
+* Added ore weight tooltips to JEI Ore page (#1562) - ALongStringOfNumbers
+* Added ZenProperty annotation to blastFurnaceTemperature and toolAttackDamage (#1568) - dan
+* Updated MCP Mappings to stable_39 (#1506, #1564) - dan
+* Fixed glitches for SlotWidgets inside ScrollableListWidgets (#1558) - Adrian Brock
+* Fixed Distillation Tower not accepting 12th layer (#1572) - dan
+* Fixed NotConsumed and Output Chance Tooltips in JEI Recipes (#1576) - dan
+* Fixed EV charger not having a recipe (#1586) - ALongStringOfNumbers
+* Fixed Steel Steam furnace not using steel pipes (#1587) - ALongStringOfNumbers
+* Refactored some metaTileEntities to provide getBaseRenderer as protected (#1573) - dan
+* Internal build is running against forked version of ForgeGradle (#1582) - dan
+
+### 1.14.0
+* Added Fluid Tooltips (#1519) - dan
+* Added partial overclocking (#1522) - Adrian Brock
+* Added config option for lossless cables to have lossy wires  (#1537) - dan
+* Added Zoom Functionality to Multiblock Previews (#1550) - dan
+* Fixed chests rendering issues (#1531) - ALongStringOfNumbers
+* Fixed NPE when something proxies fluid pipe capabilities (#1552) - Adrian Brock
+* Fixed TileEntities bottom side texture being rotated (#1556) - detav
+
+### 1.13.0
+* Highlight: Chemistry update, Take Two (#1492) - dan
+  * Full info: https://github.com/GregTechCE/GregTech/pull/1492
+* Added ability to set Allowed Input from output side via the machine grid (#1483) - ALongStringOfNumbers
+* Added notConsumable Fluids as possible recipe input (#1514) - dan
+* Updated Plunger to work as always empty fluid container (#1461) - Adrian Brock
+* Updated CycleButtonWidget to cycle in reverse on right click (#1523) - ALongStringOfNumbers
+* Removed NBT from JEI recipe registration (#1516) - dan
+* Removed some duplicated recipes in Macerator (#1542) - dan
+* Fixed Quantum Tank behavior (#1535) - dan
+* Refactored RotorHolder to not be dependent on MetaTileEntityLargeTurbine (#1527) - galyfray
+
 ### 1.12.1
 * Updated number formatting (#1467) - Adrian Brock
 * Updated progress bars for some machines (#1504) - dan

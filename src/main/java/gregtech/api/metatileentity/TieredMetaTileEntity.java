@@ -52,7 +52,7 @@ public abstract class TieredMetaTileEntity extends MetaTileEntity implements IEn
     }
 
     @SideOnly(Side.CLIENT)
-    private SimpleSidedCubeRenderer getBaseRenderer() {
+    protected SimpleSidedCubeRenderer getBaseRenderer() {
         return Textures.VOLTAGE_CASINGS[tier];
     }
 

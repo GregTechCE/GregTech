@@ -333,6 +333,11 @@ public class PipeCoverableImplementation implements ICoverable {
     }
 
     @Override
+    public long getOffsetTimer() {
+        return getTimer();
+    }
+
+    @Override
     public void markDirty() {
         holder.markAsDirty();
     }

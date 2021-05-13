@@ -47,7 +47,7 @@ public abstract class MultiblockControllerBase extends MetaTileEntity {
     public void update() {
         super.update();
         if (!getWorld().isRemote) {
-            if (getTimer() % 20 == 0) {
+            if (getOffsetTimer() % 20 == 0 || getTimer() == 0) {
                 checkStructurePattern();
             }
             if (isStructureFormed()) {

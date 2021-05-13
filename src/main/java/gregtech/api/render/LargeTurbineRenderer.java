@@ -45,15 +45,15 @@ public class LargeTurbineRenderer implements IIconRegister {
         Matrix4 cornerOffset = null;
         switch (side.getAxis()) {
             case X:
-                cornerOffset = translation.copy().translate(0.01 * side.getFrontOffsetX(), -1.0, -1.0);
+                cornerOffset = translation.copy().translate(0.01 * side.getXOffset(), -1.0, -1.0);
                 cornerOffset.scale(1.0, 3.0, 3.0);
                 break;
             case Z:
-                cornerOffset = translation.copy().translate(-1.0, -1.0, 0.01 * side.getFrontOffsetZ());
+                cornerOffset = translation.copy().translate(-1.0, -1.0, 0.01 * side.getZOffset());
                 cornerOffset.scale(3.0, 3.0, 1.0);
                 break;
             case Y:
-                cornerOffset = translation.copy().translate(-1.0, 0.01 * side.getFrontOffsetY(), -1.0);
+                cornerOffset = translation.copy().translate(-1.0, 0.01 * side.getYOffset(), -1.0);
                 cornerOffset.scale(3.0, 1.0, 3.0);
                 break;
         }

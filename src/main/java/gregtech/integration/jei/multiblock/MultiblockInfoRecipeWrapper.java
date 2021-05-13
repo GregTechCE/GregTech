@@ -119,7 +119,7 @@ public class MultiblockInfoRecipeWrapper implements IRecipeWrapper, SceneRenderC
            itemStackGroup.init(i, true, 18*i-180*(i/10), border.getHeight()-36+18*(i/10));
         this.panX = 0.0f;
         this.panY = 0.0f;
-        this.zoom = 1.0f;
+        this.zoom = infoPage.getDefaultZoom();
         this.rotationYaw = -45.0f;
         this.rotationPitch = 0.0f;
         this.currentRendererPage = 0;
@@ -302,7 +302,7 @@ public class MultiblockInfoRecipeWrapper implements IRecipeWrapper, SceneRenderC
             EnumRarity rarity = tooltipBlockStack.getRarity();
             for (int k = 0; k < tooltip.size(); ++k) {
                 if (k == 0) {
-                    tooltip.set(k, rarity.rarityColor + tooltip.get(k));
+                    tooltip.set(k, rarity.color + tooltip.get(k));
                 } else {
                     tooltip.set(k, TextFormatting.GRAY + tooltip.get(k));
                 }

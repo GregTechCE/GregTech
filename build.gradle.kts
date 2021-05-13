@@ -1,4 +1,3 @@
-
 import com.google.gson.JsonObject
 import com.jfrog.bintray.gradle.BintrayExtension
 import com.jfrog.bintray.gradle.BintrayExtension.PackageConfig
@@ -28,13 +27,17 @@ buildscript {
     repositories {
         jcenter()
         maven {
+            name = "jitpack"
+            setUrl("https://jitpack.io")
+        }
+        maven {
             name = "forge"
-            setUrl("http://files.minecraftforge.net/maven")
+            setUrl("https://maven.minecraftforge.net/")
         }
     }
     dependencies {
-        classpath("net.minecraftforge.gradle:ForgeGradle:2.3-SNAPSHOT")
-        classpath("org.eclipse.jgit:org.eclipse.jgit:5.5.0.201909110433-r")
+        classpath("com.github.GregTechCE:ForgeGradle:FG_2.3-SNAPSHOT")
+        classpath("org.eclipse.jgit:org.eclipse.jgit:5.8.0.202006091008-r")
     }
 }
 
@@ -62,13 +65,12 @@ val strippedVersion = shortVersion.replace(".", "") + "0"
 val forestryVersion = config["forestry.version"] as String
 val chickenasmVersion = config["chickenasm.version"] as String
 val cclVersion = config["ccl.version"] as String
-val multipartVersion = config["multipart.version"] as String
 val crafttweakerVersion = config["crafttweaker.version"] as String
 val jeiVersion = config["jei.version"] as String
 val topVersion = config["top.version"] as String
 val ctmVersion = config["ctm.version"] as String
 
-val git: Git = Git.open(File("."))
+val git: Git = Git.open(projectDir)
 
 val modVersion = getVersionFromJava(file("src/main/java/gregtech/GregTechVersion.java"))
 val modVersionNoBuild = modVersion.substring(0, modVersion.lastIndexOf('.'))
@@ -83,7 +85,7 @@ fun minecraft(configure: UserBaseExtension.() -> Unit) = project.configure(confi
 
 minecraft {
     version = mcFullVersion
-    mappings = "snapshot_20170928"
+    mappings = "stable_39"
     runDir = "run"
     isUseDepAts = true
 }
@@ -117,6 +119,10 @@ repositories {
         name = "CraftTweaker Maven"
         setUrl("https://maven.blamejared.com/")
     }
+    maven {
+        name = "CCL Maven New"
+        setUrl("https://minecraft.curseforge.com/api/maven")
+    }
 }
 
 dependencies {
@@ -124,8 +130,7 @@ dependencies {
         isTransitive = false
     }
     "deobfCompile"("codechicken:ChickenASM:$shortVersion-$chickenasmVersion")
-    "deobfCompile"("codechicken:CodeChickenLib:$mcVersion-$cclVersion:deobf")
-    "deobfCompile"("codechicken:ForgeMultipart:$mcVersion-$multipartVersion:deobf")
+    "deobfCompile"("codechicken-lib-1-8:CodeChickenLib-$mcVersion:$cclVersion:universal")
     "deobfCompile"("CraftTweaker2:CraftTweaker2-MC$strippedVersion-Main:$crafttweakerVersion")
     "deobfCompile"("mezz.jei:jei_$mcVersion:$jeiVersion")
     "deobfCompile"("mcjty.theoneprobe:TheOneProbe-$shortVersion:$shortVersion-$topVersion")
@@ -447,7 +452,6 @@ fun configureCurseforgeTask(): CurseProject? {
 
             relations {
                 requiredDependency("codechicken-lib-1-8")
-                optionalDependency("forge-multipart-cbe")
                 optionalDependency("crafttweaker")
                 optionalDependency("jei")
                 optionalDependency("the-one-probe")

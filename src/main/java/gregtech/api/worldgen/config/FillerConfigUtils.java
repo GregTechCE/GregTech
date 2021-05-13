@@ -221,5 +221,10 @@ public class FillerConfigUtils {
         public Collection<IBlockState> getPossibleResults() {
             return blockStates;
         }
+
+        @Override
+        public List<Pair<Integer, FillerEntry>> getEntries() {
+            return randomList;
+        }
     }
 }

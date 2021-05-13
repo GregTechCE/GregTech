@@ -92,7 +92,7 @@ public class CachedGridEntry implements GridEntryInfo, IBlockGeneratorAccess, IB
         this.worldSeaLevel = world.getSeaLevel();
         this.masterEntry = searchMasterOrNull(world);
         if (masterEntry == null) {
-            Chunk primerChunk = world.getChunkFromChunkCoords(primerChunkX, primerChunkZ);
+            Chunk primerChunk = world.getChunk(primerChunkX, primerChunkZ);
             BlockPos heightSpot = findOptimalSpot(gridX, gridZ, primerChunkX, primerChunkZ);
             heightSpot = heightSpot.add(primerChunkX * 16, 0, primerChunkZ * 16);
             int masterHeight = world.getHeight(heightSpot).getY();
@@ -199,7 +199,7 @@ public class CachedGridEntry implements GridEntryInfo, IBlockGeneratorAccess, IB
     }
 
     private GTWorldGenCapability retrieveCapability(World world, int chunkX, int chunkZ) {
-        return world.getChunkFromChunkCoords(chunkX, chunkZ).getCapability(GTWorldGenCapability.CAPABILITY, null);
+        return world.getChunk(chunkX, chunkZ).getCapability(GTWorldGenCapability.CAPABILITY, null);
     }
 
     public void triggerVeinsGeneration() {

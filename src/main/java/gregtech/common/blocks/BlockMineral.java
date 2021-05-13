@@ -8,7 +8,7 @@ public class BlockMineral extends StoneBlock<BlockMineral.MineralVariant> {
 
     public BlockMineral() {
         super(Material.ROCK);
-        setUnlocalizedName("mineral");
+        setTranslationKey("mineral");
         setHardness(3.0f);
         setResistance(6.0f);
         setSoundType(SoundType.STONE);

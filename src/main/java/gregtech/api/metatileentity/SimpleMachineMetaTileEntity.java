@@ -10,11 +10,13 @@ import gregtech.api.capability.impl.EnergyContainerHandler;
 import gregtech.api.capability.impl.FluidHandlerProxy;
 import gregtech.api.capability.impl.FluidTankList;
 import gregtech.api.capability.impl.ItemHandlerProxy;
+import gregtech.api.capability.impl.RecipeLogicEnergy;
 import gregtech.api.cover.CoverBehavior;
 import gregtech.api.cover.CoverDefinition;
 import gregtech.api.cover.ICoverable;
 import gregtech.api.gui.GuiTextures;
 import gregtech.api.gui.ModularUI;
+import gregtech.api.gui.widgets.CycleButtonWidget;
 import gregtech.api.gui.widgets.DischargerSlotWidget;
 import gregtech.api.gui.widgets.ImageWidget;
 import gregtech.api.gui.widgets.LabelWidget;
@@ -133,7 +135,8 @@ public class SimpleMachineMetaTileEntity extends WorkableTieredMetaTileEntity im
         super.update();
         if (!getWorld().isRemote) {
             ((EnergyContainerHandler) this.energyContainer).dischargeOrRechargeEnergyContainers(chargerInventory, 0);
-            if (getTimer() % 5 == 0) {
+          
+            if (getOffsetTimer() % 5 == 0) {
                 EnumFacing currentOutputFacing = getOutputFacing();
                 if (isAutoOutputFluids()) {
                     pushFluidsIntoNearbyHandlers(currentOutputFacing);
@@ -308,6 +311,13 @@ public class SimpleMachineMetaTileEntity extends WorkableTieredMetaTileEntity im
         clearInventory(itemBuffer, chargerInventory);
     }
 
+    @Override
+    protected RecipeLogicEnergy createWorkable(RecipeMap<?> recipeMap) {
+        final RecipeLogicEnergy result = super.createWorkable(recipeMap);
+        result.enableOverclockVoltage();
+        return result;
+    }
+
     protected ModularUI.Builder createGuiTemplate(EntityPlayer player) {
         ModularUI.Builder builder = workable.recipeMap.createUITemplate(workable::getProgressPercent, importItems, exportItems, importFluids, exportFluids)
             .widget(new LabelWidget(5, 5, getMetaFullName()))
@@ -318,7 +328,7 @@ public class SimpleMachineMetaTileEntity extends WorkableTieredMetaTileEntity im
             .bindPlayerInventory(player.inventory);
 
         int leftButtonStartX = 7;
-        int rightButtonStartX = 176 - 7 - 20;
+        int rightButtonStartX = 176 - 7 - 24;
         if (workable.recipeMap instanceof RecipeMapWithConfigButton) {
             leftButtonStartX += ((RecipeMapWithConfigButton) workable.recipeMap).getLeftButtonOffset();
             rightButtonStartX -= ((RecipeMapWithConfigButton) workable.recipeMap).getRightButtonOffset();
@@ -336,9 +346,9 @@ public class SimpleMachineMetaTileEntity extends WorkableTieredMetaTileEntity im
                 .setTooltipText("gregtech.gui.fluid_auto_output.tooltip"));
         }
 
-        builder.widget(new ToggleButtonWidget(rightButtonStartX, 60, 20, 20,
-            GuiTextures.BUTTON_OVERCLOCK, workable::isAllowOverclocking, workable::setAllowOverclocking)
-            .setTooltipText("gregtech.gui.overclock"));
+        builder.widget(new CycleButtonWidget(rightButtonStartX, 60, 24, 20,
+                workable.getAvailableOverclockingTiers(), workable::getOverclockTier, workable::setOverclockTier)
+                .setTooltipHoverString("gregtech.gui.overclock.description"));
 
         return builder;
     }

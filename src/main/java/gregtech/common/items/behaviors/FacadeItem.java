@@ -46,7 +46,7 @@ public class FacadeItem implements IItemNameProvider, ISubItemHandler {
     public String getItemSubType(ItemStack itemStack) {
         ItemStack facadeStack = getFacadeStack(itemStack);
         ResourceLocation registryName = Objects.requireNonNull(facadeStack.getItem().getRegistryName());
-        return String.format("%s:%s@%d", registryName.getResourceDomain(), registryName.getResourcePath(), Items.FEATHER.getDamage(facadeStack));
+        return String.format("%s:%s@%d", registryName.getNamespace(), registryName.getPath(), Items.FEATHER.getDamage(facadeStack));
     }
 
     public static void setFacadeStack(ItemStack itemStack, ItemStack facadeStack) {

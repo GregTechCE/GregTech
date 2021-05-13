@@ -33,7 +33,7 @@ public class BlockFoam extends BlockColored {
 
     public BlockFoam(boolean isReinforced) {
         super(Material.SAND);
-        setUnlocalizedName(isReinforced ? "gt.reinforced_foam" : "gt.foam");
+        setTranslationKey(isReinforced ? "gt.reinforced_foam" : "gt.foam");
         setSoundType(SoundType.SNOW);
         setResistance(0.3f);
         setHardness(0.5f);
@@ -70,7 +70,7 @@ public class BlockFoam extends BlockColored {
     }
 
     @Override
-    public EnumPushReaction getMobilityFlag(IBlockState state) {
+    public EnumPushReaction getPushReaction(IBlockState state) {
         return EnumPushReaction.DESTROY;
     }
 
@@ -86,7 +86,7 @@ public class BlockFoam extends BlockColored {
     }
 
     @Override
-    public BlockRenderLayer getBlockLayer() {
+    public BlockRenderLayer getRenderLayer() {
         return BlockRenderLayer.CUTOUT_MIPPED;
     }
 

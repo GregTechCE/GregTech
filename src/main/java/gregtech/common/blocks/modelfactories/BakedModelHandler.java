@@ -117,7 +117,7 @@ public class BakedModelHandler {
 
         @Override
         public ItemOverrideList getOverrides() {
-            return new ItemOverrideList();
+            return ItemOverrideList.NONE;
         }
 
         @Override

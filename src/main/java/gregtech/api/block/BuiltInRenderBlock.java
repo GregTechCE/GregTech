@@ -11,7 +11,7 @@ public abstract class BuiltInRenderBlock extends BlockCustomParticle {
     }
 
     @Override
-    public BlockRenderLayer getBlockLayer() {
+    public BlockRenderLayer getRenderLayer() {
         return BlockRenderLayer.CUTOUT_MIPPED;
     }
 
