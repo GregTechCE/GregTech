@@ -1,5 +1,18 @@
 ## Changelog
 
+### 1.14.1
+* Added mechanism to distribute expensive ticks more evenly (#1513) - dan
+* Added ore weight tooltips to JEI Ore page (#1562) - ALongStringOfNumbers
+* Added ZenProperty annotation to blastFurnaceTemperature and toolAttackDamage (#1568) - dan
+* Updated MCP Mappings to stable_39 (#1506, #1564) - dan
+* Fixed glitches for SlotWidgets inside ScrollableListWidgets (#1558) - Adrian Brock
+* Fixed Distillation Tower not accepting 12th layer (#1572) - dan
+* Fixed NotConsumed and Output Chance Tooltips in JEI Recipes (#1576) - dan
+* Fixed EV charger not having a recipe (#1586) - ALongStringOfNumbers
+* Fixed Steel Steam furnace not using steel pipes (#1587) - ALongStringOfNumbers
+* Refactored some metaTileEntities to provide getBaseRenderer as protected (#1573) - dan
+* Internal build is running against forked version of ForgeGradle (#1582) - dan
+
 ### 1.14.0
 * Added Fluid Tooltips (#1519) - dan
 * Added partial overclocking (#1522) - Adrian Brock
