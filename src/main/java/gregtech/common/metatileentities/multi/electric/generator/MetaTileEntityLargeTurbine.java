@@ -12,6 +12,7 @@ import gregtech.api.multiblock.FactoryBlockPattern;
 import gregtech.api.multiblock.PatternMatchContext;
 import gregtech.api.recipes.RecipeMaps;
 import gregtech.api.recipes.machines.FuelRecipeMap;
+import gregtech.api.recipes.recipes.FuelRecipe;
 import gregtech.api.render.ICubeRenderer;
 import gregtech.api.render.Textures;
 import gregtech.common.blocks.BlockTurbineCasing.TurbineCasingType;
@@ -55,7 +56,7 @@ public class MetaTileEntityLargeTurbine extends RotorHolderMultiblockController 
     public IFluidHandler exportFluidHandler;
 
     public MetaTileEntityLargeTurbine(ResourceLocation metaTileEntityId, TurbineType turbineType) {
-        super(metaTileEntityId, turbineType.recipeMap, GTValues.V[4]);
+        super(metaTileEntityId, turbineType.recipeMap, GTValues.V[4], true);
         this.turbineType = turbineType;
         reinitializeStructurePattern();
     }
@@ -101,6 +102,13 @@ public class MetaTileEntityLargeTurbine extends RotorHolderMultiblockController 
 
             ITextComponent fuelName = new TextComponentTranslation(fuelAmount == 0 ? "gregtech.fluid.empty" : fuelStack.getUnlocalizedName());
             textList.add(new TextComponentTranslation("gregtech.multiblock.turbine.fuel_amount", fuelAmount, fuelName));
+            int consumption = 0;
+            if (workableHandler.getPreviousRecipe() != null) {
+                FuelRecipe recipe = this.workableHandler.getPreviousRecipe();
+                consumption = (int) (recipe.getRecipeFluid().amount / recipe.getDuration() * FuelRecipeLogic.getVoltageMultiplier(
+                        this.workableHandler.getMaxVoltage(), recipe.getMinVoltage()) * getThrottleMultiplier());
+            }
+            textList.add(new TextComponentTranslation("gregtech.multiblock.turbine.consumption_rate", consumption));
 
             if (rotorHolder.getRotorEfficiency() > 0.0) {
                 textList.add(new TextComponentTranslation("gregtech.multiblock.turbine.rotor_speed", rotorHolder.getCurrentRotorSpeed(), rotorHolder.getMaxRotorSpeed()));
@@ -148,8 +156,8 @@ public class MetaTileEntityLargeTurbine extends RotorHolderMultiblockController 
         return turbineType.casingRenderer;
     }
 
-    /** Deprecated method please use {@code {@see isRotorFaceFree}} instead
-     *
+    /**
+     * Deprecated method please use {@code {@see isRotorFaceFree}} instead
      */
     @Deprecated
     public boolean isTurbineFaceFree() {
