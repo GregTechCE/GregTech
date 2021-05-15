@@ -29,11 +29,11 @@ public abstract class ThrottleableMultiblockController extends MultiblockWithDis
         this.canThrottle = canThrottle;
     }
 
-    protected double getThrottleMultiplier() {
+    public double getThrottleMultiplier() {
         return throttlePercentage / 100.0;
     }
 
-    protected double getThrottleEfficiency() {
+    public double getThrottleEfficiency() {
         return MathHelper.clamp(1.0 + 0.3 * Math.log(getThrottleMultiplier()), 0.4, 1.0);
     }
 

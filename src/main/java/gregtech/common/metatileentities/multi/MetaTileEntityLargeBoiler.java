@@ -166,7 +166,6 @@ public class MetaTileEntityLargeBoiler extends ThrottleableMultiblockController 
 
     @Override
     protected void addDisplayText(List<ITextComponent> textList) {
-        super.addDisplayText(textList);
         if (isStructureFormed()) {
             textList.add(new TextComponentTranslation("gregtech.multiblock.large_boiler.temperature", currentTemperature, boilerType.maxTemperature));
             textList.add(new TextComponentTranslation("gregtech.multiblock.large_boiler.steam_output", lastTickSteamOutput, boilerType.baseSteamOutput));
@@ -175,6 +174,7 @@ public class MetaTileEntityLargeBoiler extends ThrottleableMultiblockController 
             withHoverTextTranslate(heatEffText, "gregtech.multiblock.large_boiler.heat_efficiency.tooltip");
             textList.add(heatEffText);
         }
+        super.addDisplayText(textList);
     }
 
     private double getHeatEfficiencyMultiplier() {
