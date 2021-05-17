@@ -1,12 +1,9 @@
 import com.google.gson.JsonObject
-import com.jfrog.bintray.gradle.BintrayExtension
-import com.jfrog.bintray.gradle.BintrayExtension.PackageConfig
-import com.jfrog.bintray.gradle.BintrayExtension.VersionConfig
 import com.matthewprenger.cursegradle.CurseExtension
 import com.matthewprenger.cursegradle.CurseProject
 import com.matthewprenger.cursegradle.CurseRelation
 import net.minecraftforge.gradle.user.UserBaseExtension
-import org.apache.commons.lang.StringUtils
+import org.apache.commons.lang3.StringUtils
 import org.apache.http.client.methods.HttpPost
 import org.apache.http.entity.ContentType
 import org.apache.http.entity.StringEntity
@@ -18,14 +15,11 @@ import org.eclipse.jgit.revwalk.RevCommit
 import org.eclipse.jgit.revwalk.RevObject
 import org.eclipse.jgit.revwalk.RevTag
 import org.eclipse.jgit.revwalk.RevWalk
-import java.time.ZoneOffset
-import java.time.ZonedDateTime
-import java.time.format.DateTimeFormatter
 import java.util.*
 
 buildscript {
     repositories {
-        jcenter()
+        mavenCentral()
         maven {
             name = "jitpack"
             setUrl("https://jitpack.io")
@@ -38,13 +32,13 @@ buildscript {
     dependencies {
         classpath("com.github.GregTechCE:ForgeGradle:FG_2.3-SNAPSHOT")
         classpath("org.eclipse.jgit:org.eclipse.jgit:5.8.0.202006091008-r")
+        classpath("org.apache.commons:commons-lang3:3.12.0")
     }
 }
 
 plugins {
     id("com.matthewprenger.cursegradle") version "1.1.0"
     id("maven-publish")
-    id("com.jfrog.bintray") version "1.8.4"
 }
 
 apply {
@@ -474,46 +468,6 @@ publishing {
             artifact(jar)
             artifact(sourceTask)
             artifact(energyApiTask)
-        }
-    }
-}
-
-
-fun BintrayExtension.pkg(config: PackageConfig.() -> Unit) = PackageConfig().also {
-    it.config()
-    this.pkg = it
-}
-
-fun BintrayExtension.version(config: VersionConfig.() -> Unit) {
-    VersionConfig().also {
-        it.config()
-        this.pkg.version = it
-    }
-}
-
-bintray {
-    val bintrayUser = if (project.hasProperty("bintrayUser")) project.property("bintrayUser") as String else System.getenv("BINTRAY_USER")
-    val bintrayApiKey = if (project.hasProperty("bintrayApiKey")) project.property("bintrayApiKey") as String else System.getenv("BINTRAY_API_KEY")
-
-    if (bintrayUser == null || bintrayApiKey == null) {
-        println("Skipping bintrayUpload task as there is no api key or user in the environment")
-        return@bintray
-    }
-
-    user = bintrayUser
-    key = bintrayApiKey
-    setPublications("GTCEPublication")
-    publish = true
-    override = true //not sure why it is needed
-    pkg {
-        repo = "dev"
-        name = "GregTechCE"
-        userOrg = "gregtech"
-        setLicenses("LGPL-3.0")
-        vcsUrl = "https://github.com/GregTechCE/GregTech.git"
-        version {
-            name = project.version as String
-            released = ZonedDateTime.now(ZoneOffset.UTC).format(DateTimeFormatter.ISO_INSTANT)
         }
     }
 }
