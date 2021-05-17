@@ -211,7 +211,7 @@ public class WorldSceneRenderer {
         Minecraft mc = Minecraft.getMinecraft();
         ScaledResolution resolution = new ScaledResolution(mc);
 
-        GlStateManager.pushAttrib();
+        GL11.glPushAttrib(GL11.GL_TRANSFORM_BIT);
         mc.entityRenderer.disableLightmap();
         GlStateManager.disableLighting();
         GlStateManager.enableDepth();
@@ -274,8 +274,13 @@ public class WorldSceneRenderer {
         GlStateManager.matrixMode(GL11.GL_MODELVIEW);
         GlStateManager.popMatrix();
 
-        //reset attributes
-        GlStateManager.popAttrib();
+        //Re-enable disabled states
+        GlStateManager.disableBlend();
+        GlStateManager.disableDepth();
+        minecraft.entityRenderer.enableLightmap();
+
+        //Reset Attributes
+        GL11.glPopAttrib();
     }
 
     public class TrackedDummyWorld extends DummyWorld {
