@@ -57,6 +57,9 @@ import static gregtech.common.items.MetaItems.*;
 
 public class MachineRecipeLoader {
 
+    private MachineRecipeLoader() {
+    }
+
     public static void init() {
         ChemistryRecipes.init();
         FuelRecipes.registerFuels();
@@ -81,7 +84,13 @@ public class MachineRecipeLoader {
     private static void registerBendingCompressingRecipes() {
         RecipeMaps.COMPRESSOR_RECIPES.recipeBuilder().inputs(new ItemStack(Blocks.ICE, 2, OreDictionary.WILDCARD_VALUE)).outputs(new ItemStack(Blocks.PACKED_ICE)).buildAndRegister();
         RecipeMaps.COMPRESSOR_RECIPES.recipeBuilder().input(OrePrefix.dust, Materials.Ice, 1).outputs(new ItemStack(Blocks.ICE)).buildAndRegister();
-        RecipeMaps.COMPRESSOR_RECIPES.recipeBuilder().inputs(new ItemStack(Items.WHEAT, 9)).outputs(new ItemStack(Blocks.HAY_BLOCK)).buildAndRegister();
+
+        RecipeMaps.PACKER_RECIPES.recipeBuilder()
+                .inputs(new ItemStack(Items.WHEAT, 9))
+                .inputs(new CountableIngredient(new IntCircuitIngredient(9), 0))
+                .outputs(new ItemStack(Blocks.HAY_BLOCK))
+                .duration(200).EUt(2)
+                .buildAndRegister();
 
         RecipeMaps.COMPRESSOR_RECIPES.recipeBuilder()
             .input(OrePrefix.dust, Materials.Fireclay)
