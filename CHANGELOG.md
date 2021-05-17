@@ -1,5 +1,22 @@
 ## Changelog
 
+### 1.15.0
+* Highlight: Fixed Granite ID Shift (#1549) - dan
+  * Full info: https://github.com/GregTechCE/GregTech/pull/1549
+  * There may be conversion of old worlds
+* Added minimal Coil tier for Electric Blast furnace recipes to JEI (#1580) - LAGIdiot
+* Added notconsumable for fluids to CT (#1603) - dan
+* Updated GTCE chests to allow covers on bottom side (#1579) - htmlcsjs  
+* Updated Hay Bale recipe to use Packager instead of Compressor (#1592) - LAGIdiot
+* Removed Forge Multipart legacy support (#1594) - LAGIdiot
+* Fixed Global Renderer in MetaTileEntityTESR (#1563) - KilaBash
+* Fixed Rubber trees spawning in water (#1590) - Bohdan Schepansky
+* Fixed eating food not returning container (#1595) - bruberu
+* Fixed Issues with Dust Uncrafting (#1596) - dan
+* Fixed TOP showing wrong burn time for small steam boilers (#1600) - galyfray
+* Internal removed Bintray uploading (#1593) - LAGIdiot
+* Internal fixed git using wrong folder, upgrade git and gradle (#1565) - Adrian Brock
+
 ### 1.14.1
 * Added mechanism to distribute expensive ticks more evenly (#1513) - dan
 * Added ore weight tooltips to JEI Ore page (#1562) - ALongStringOfNumbers
