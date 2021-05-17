@@ -229,6 +229,7 @@ public class MultiblockInfoRecipeWrapper implements IRecipeWrapper, SceneRenderC
         // the button by mousing over it, leaks into other gui elements?
         for (GuiButton button : buttons.keySet()) {
             button.drawButton(minecraft, mouseX, mouseY, 0.0f);
+            minecraft.entityRenderer.enableLightmap();
         }
         guiHelper.drawableBuilder(new ResourceLocation(GTValues.MODID, "textures/gui/widget/information.png"), 0, 0, 20, 20)
                 .setTextureSize(20, 20)
