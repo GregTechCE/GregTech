@@ -5,6 +5,7 @@ import gregtech.api.block.machines.MachineItemBlock;
 import gregtech.api.enchants.EnchantmentEnderDamage;
 import gregtech.api.items.metaitem.MetaItem;
 import gregtech.api.recipes.crafttweaker.MetaItemBracketHandler;
+import gregtech.api.recipes.recipeproperties.BlastTemperatureProperty;
 import gregtech.api.unification.material.type.DustMaterial;
 import gregtech.api.unification.material.type.Material;
 import gregtech.api.unification.ore.OrePrefix;
@@ -140,6 +141,12 @@ public class CommonProxy {
     //ore dictionary and recipes will get recipes accessible in time
     @SubscribeEvent
     public static void registerRecipes(RegistryEvent.Register<IRecipe> event) {
+        // registers coiltypes for the BlastTemperatureProperty used in Blast Furnace Recipes
+        for (BlockWireCoil.CoilType values : BlockWireCoil.CoilType.values()) {
+            BlastTemperatureProperty.registerCoilType(values.getCoilTemperature(), values.getMaterial(),
+                    "tile.wire_coil." + values.getName() + ".name");
+        }
+
         GTLog.logger.info("Registering ore dictionary...");
 
         MetaItems.registerOreDict();
@@ -242,5 +249,5 @@ public class CommonProxy {
     public void onPostLoad() {
         WoodMachineRecipes.postInit();
     }
-
+  
 }
