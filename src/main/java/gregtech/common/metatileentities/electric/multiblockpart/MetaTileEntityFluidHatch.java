@@ -91,6 +91,8 @@ public class MetaTileEntityFluidHatch extends MetaTileEntityMultiblockPart imple
         if (shouldRenderOverlay()) {
             SimpleOverlayRenderer renderer = isExportHatch ? Textures.PIPE_OUT_OVERLAY : Textures.PIPE_IN_OVERLAY;
             renderer.renderSided(getFrontFacing(), renderState, translation, pipeline);
+            SimpleOverlayRenderer overlay = isExportHatch ? Textures.FLUID_OUTPUT_OVERLAY : Textures.FLUID_INPUT_OVERLAY;
+            overlay.renderSided(getFrontFacing(), renderState, translation, pipeline);
         }
     }
 
