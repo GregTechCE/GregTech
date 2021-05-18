@@ -103,8 +103,8 @@ public class MetaTileEntityLargeTurbine extends RotorHolderMultiblockController 
             ITextComponent fuelName = new TextComponentTranslation(fuelAmount == 0 ? "gregtech.fluid.empty" : fuelStack.getUnlocalizedName());
             textList.add(new TextComponentTranslation("gregtech.multiblock.turbine.fuel_amount", fuelAmount, fuelName));
             int consumption = 0;
-            if (workableHandler.getPreviousRecipe() != null) {
-                FuelRecipe recipe = this.workableHandler.getPreviousRecipe();
+            if (workableHandler.getCurrentRecipe() != null) {
+                FuelRecipe recipe = this.workableHandler.getCurrentRecipe();
                 consumption = (int) (recipe.getRecipeFluid().amount / recipe.getDuration() * FuelRecipeLogic.getVoltageMultiplier(
                         this.workableHandler.getMaxVoltage(), recipe.getMinVoltage()) * getThrottleMultiplier());
             }

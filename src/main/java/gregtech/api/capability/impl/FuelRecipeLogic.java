@@ -28,8 +28,8 @@ public class FuelRecipeLogic extends MTETrait implements IControllable, IFuelabl
     protected final Supplier<IMultipleTankHandler> fluidTank;
     public final long maxVoltage;
 
-    protected int recipeDurationLeft;
-    protected long recipeOutputVoltage;
+    private int recipeDurationLeft;
+    private long recipeOutputVoltage;
 
     private boolean isActive;
     private boolean workingEnabled = true;
@@ -114,9 +114,13 @@ public class FuelRecipeLogic extends MTETrait implements IControllable, IFuelabl
             if (recipeDurationLeft > 0) {
                 if (energyContainer.get().getEnergyCanBeInserted() >=
                         recipeOutputVoltage || shouldVoidExcessiveEnergy()) {
-                    energyContainer.get().addEnergy(recipeOutputVoltage);
-                    if (--this.recipeDurationLeft == 0) {
-                        this.wasActiveAndNeedsUpdate = true;
+                    if (canProduceEnergy()) {
+                        energyContainer.get().addEnergy(recipeOutputVoltage);
+                    }
+                    if (canConsumeFuel()) {
+                        if (--this.recipeDurationLeft == 0) {
+                            this.wasActiveAndNeedsUpdate = true;
+                        }
                     }
                 }
             }
@@ -138,7 +142,7 @@ public class FuelRecipeLogic extends MTETrait implements IControllable, IFuelabl
         return false;
     }
 
-    protected void tryAcquireNewRecipe() {
+    private void tryAcquireNewRecipe() {
         IMultipleTankHandler fluidTanks = this.fluidTank.get();
         for (IFluidTank fluidTank : fluidTanks) {
             FluidStack tankContents = fluidTank.getFluid();
@@ -156,7 +160,7 @@ public class FuelRecipeLogic extends MTETrait implements IControllable, IFuelabl
         return isActive;
     }
 
-    protected int tryAcquireNewRecipe(FluidStack fluidStack) {
+    private int tryAcquireNewRecipe(FluidStack fluidStack) {
         FuelRecipe currentRecipe;
         if (previousRecipe != null && previousRecipe.matches(getMaxVoltage(), fluidStack)) {
             //if previous recipe still matches inputs, try to use it
@@ -207,11 +211,53 @@ public class FuelRecipeLogic extends MTETrait implements IControllable, IFuelabl
     }
 
     protected int calculateFuelAmount(FuelRecipe currentRecipe) {
-        return currentRecipe.getRecipeFluid().amount * getVoltageMultiplier(getMaxVoltage(), currentRecipe.getMinVoltage());
+        return (int) (currentRecipe.getRecipeFluid().amount *
+                getVoltageMultiplier(getMaxVoltage(), currentRecipe.getMinVoltage()) *
+                getFuelConsumptionMultiplier());
     }
 
     protected int calculateRecipeDuration(FuelRecipe currentRecipe) {
-        return currentRecipe.getDuration();
+        return (int) (currentRecipe.getDuration() * getRecipeDurationMultiplier());
+    }
+
+    public FuelRecipe getCurrentRecipe() {
+        return this.previousRecipe;
+    }
+
+    /**
+     * @return if the recipe duration should get decreased during the current tick does not effect energy production.
+     */
+
+    protected Boolean canConsumeFuel() {
+        return true;
+    }
+
+    /**
+     * @return if energy should be produced during the current tick does not effect fuel consumption.
+     */
+    protected Boolean canProduceEnergy() {
+        return true;
+    }
+
+    /**
+     * @return the multiplier applied to fuel consumption
+     */
+    protected float getFuelConsumptionMultiplier() {
+        return 1.0f;
+    }
+
+    /**
+     * @return the multiplier applied to recipe duration
+     */
+    protected float getRecipeDurationMultiplier() {
+        return 1.0f;
+    }
+
+    /**
+     * @return the multiplier applied to voltage
+     */
+    protected float getEnergyEfficiency() {
+        return 1.0f;
     }
 
     /**
@@ -220,7 +266,7 @@ public class FuelRecipeLogic extends MTETrait implements IControllable, IFuelabl
      * @return recipe's output voltage
      */
     protected long startRecipe(FuelRecipe currentRecipe, int fuelAmountUsed, int recipeDuration) {
-        return getMaxVoltage();
+        return (long) (getMaxVoltage() * getEnergyEfficiency());
     }
 
     public static int getVoltageMultiplier(long maxVoltage, long minVoltage) {
@@ -241,10 +287,6 @@ public class FuelRecipeLogic extends MTETrait implements IControllable, IFuelabl
             metaTileEntity.markDirty();
             writeCustomData(1, buf -> buf.writeBoolean(active));
         }
-    }
-
-    public FuelRecipe getPreviousRecipe() {
-        return previousRecipe;
     }
 
     @Override
