@@ -12,7 +12,6 @@ import gregtech.api.multiblock.FactoryBlockPattern;
 import gregtech.api.multiblock.PatternMatchContext;
 import gregtech.api.recipes.RecipeMaps;
 import gregtech.api.recipes.machines.FuelRecipeMap;
-import gregtech.api.recipes.recipes.FuelRecipe;
 import gregtech.api.render.ICubeRenderer;
 import gregtech.api.render.Textures;
 import gregtech.common.blocks.BlockTurbineCasing.TurbineCasingType;
@@ -103,10 +102,8 @@ public class MetaTileEntityLargeTurbine extends RotorHolderMultiblockController 
             ITextComponent fuelName = new TextComponentTranslation(fuelAmount == 0 ? "gregtech.fluid.empty" : fuelStack.getUnlocalizedName());
             textList.add(new TextComponentTranslation("gregtech.multiblock.turbine.fuel_amount", fuelAmount, fuelName));
             int consumption = 0;
-            if (workableHandler.getCurrentRecipe() != null) {
-                FuelRecipe recipe = this.workableHandler.getCurrentRecipe();
-                consumption = (int) (recipe.getRecipeFluid().amount / recipe.getDuration() * FuelRecipeLogic.getVoltageMultiplier(
-                        this.workableHandler.getMaxVoltage(), recipe.getMinVoltage()) * getThrottleMultiplier());
+            if (workableHandler.getRecipeDuration() > 0) {
+                consumption = workableHandler.getFuelConsumption() / workableHandler.getRecipeDuration();
             }
             textList.add(new TextComponentTranslation("gregtech.multiblock.turbine.consumption_rate", consumption));
 
