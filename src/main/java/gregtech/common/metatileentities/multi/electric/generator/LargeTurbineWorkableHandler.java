@@ -12,7 +12,6 @@ import gregtech.common.MetaFluids;
 import gregtech.common.metatileentities.electric.multiblockpart.MetaTileEntityRotorHolder;
 import gregtech.common.metatileentities.multi.electric.generator.MetaTileEntityLargeTurbine.TurbineType;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.fluids.FluidStack;
 
 import java.util.function.Supplier;
@@ -38,10 +37,6 @@ public class LargeTurbineWorkableHandler extends FuelRecipeLogic {
         if (!rotorHolder.isHasRotor()) {
             setActive(false);
         }
-        /*long totalEnergyOutput = getRecipeOutputVoltage();
-        if (totalEnergyOutput > 0) {
-            energyContainer.get().addEnergy(totalEnergyOutput);
-        }*/
     }
 
     public FluidStack getFuelStack() {
@@ -120,6 +115,11 @@ public class LargeTurbineWorkableHandler extends FuelRecipeLogic {
 
         }
         return 0f;
+    }
+
+    @Override
+    protected float getFuelConsumptionMultiplier() {
+        return (float) this.largeTurbine.getThrottleMultiplier();
     }
 
     @Override
