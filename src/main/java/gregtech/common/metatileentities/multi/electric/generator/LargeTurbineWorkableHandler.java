@@ -114,7 +114,7 @@ public class LargeTurbineWorkableHandler extends FuelRecipeLogic {
     }
 
     @Override
-    public Boolean canProduceEnergy() {
+    public boolean canProduceEnergy() {
         MetaTileEntityRotorHolder rotorHolder = largeTurbine.getAbilities(MetaTileEntityLargeTurbine.ABILITY_ROTOR_HOLDER).get(0);
         return rotorHolder.getCurrentRotorSpeed() > 0 && rotorHolder.hasRotorInInventory();
     }

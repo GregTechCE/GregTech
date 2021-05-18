@@ -216,26 +216,30 @@ public class FuelRecipeLogic extends MTETrait implements IControllable, IFuelabl
                 getFuelConsumptionMultiplier());
     }
 
+    public int getFuelConsumption() {
+        return this.previousRecipe != null ? calculateFuelAmount(this.previousRecipe) : 0;
+    }
+
     protected int calculateRecipeDuration(FuelRecipe currentRecipe) {
         return (int) (currentRecipe.getDuration() * getRecipeDurationMultiplier());
     }
 
-    public FuelRecipe getCurrentRecipe() {
-        return this.previousRecipe;
+    public int getRecipeDuration() {
+        return this.previousRecipe != null ? calculateRecipeDuration(this.previousRecipe) : 0;
     }
 
     /**
      * @return if the recipe duration should get decreased during the current tick does not effect energy production.
      */
 
-    public Boolean canConsumeFuel() {
+    public boolean canConsumeFuel() {
         return true;
     }
 
     /**
      * @return if energy should be produced during the current tick does not effect fuel consumption.
      */
-    public Boolean canProduceEnergy() {
+    public boolean canProduceEnergy() {
         return true;
     }
 
