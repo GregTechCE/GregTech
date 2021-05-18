@@ -242,21 +242,21 @@ public class FuelRecipeLogic extends MTETrait implements IControllable, IFuelabl
     /**
      * @return the multiplier applied to fuel consumption
      */
-    protected float getFuelConsumptionMultiplier() {
-        return 1.0f;
+    protected double getFuelConsumptionMultiplier() {
+        return 1.0;
     }
 
     /**
      * @return the multiplier applied to recipe duration
      */
-    protected float getRecipeDurationMultiplier() {
+    protected double getRecipeDurationMultiplier() {
         return 1.0f;
     }
 
     /**
      * @return the multiplier applied to voltage
      */
-    protected float getEnergyEfficiency() {
+    protected double getEnergyEfficiency() {
         return 1.0f;
     }
 
