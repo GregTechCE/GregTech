@@ -7,10 +7,10 @@ import gregtech.api.gui.widgets.SlotWidget;
 import gregtech.common.metatileentities.storage.CraftingRecipeResolver;
 import mezz.jei.api.gui.IGuiIngredient;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.IInventory;
+import net.minecraft.inventory.InventoryCraftResult;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketBuffer;
-import net.minecraftforge.items.IItemHandler;
-import net.minecraftforge.items.ItemStackHandler;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -23,13 +23,12 @@ public class CraftingSlotWidget extends SlotWidget implements IRecipeTransferHan
     private boolean canTakeStack = false;
 
     public CraftingSlotWidget(CraftingRecipeResolver recipeResolver, int slotIndex, int xPosition, int yPosition) {
-        //pass delegate here to avoid using IItemHandlerModifiable-related tricks by SlotItemHandler
-        super(createItemHandler(recipeResolver), slotIndex, xPosition, yPosition, true, false);
+        super(createInventory(recipeResolver), slotIndex, xPosition, yPosition, true, false);
         this.recipeResolver = recipeResolver;
     }
 
-    private static IItemHandler createItemHandler(CraftingRecipeResolver resolver) {
-        return resolver == null ? new ItemStackHandler(1) : resolver.getCraftingResultInventory();
+    private static IInventory createInventory(CraftingRecipeResolver resolver) {
+        return resolver == null ? new InventoryCraftResult() : resolver.getCraftingResultInventory();
     }
 
     @Override
