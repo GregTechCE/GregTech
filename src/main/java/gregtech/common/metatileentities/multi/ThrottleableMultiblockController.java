@@ -69,7 +69,6 @@ public abstract class ThrottleableMultiblockController extends MultiblockWithDis
     public NBTTagCompound writeToNBT(NBTTagCompound data) {
         super.writeToNBT(data);
         data.setInteger("ThrottlePercentage", throttlePercentage);
-        data.setBoolean("CanThrottle", canThrottle);
         return data;
     }
 
@@ -78,9 +77,6 @@ public abstract class ThrottleableMultiblockController extends MultiblockWithDis
         super.readFromNBT(data);
         if (data.hasKey("ThrottlePercentage")) {
             this.throttlePercentage = data.getInteger("ThrottlePercentage");
-        }
-        if (data.hasKey("CanThrottle")) {
-            this.canThrottle = data.getBoolean("CanThrottle");
         }
     }
 
