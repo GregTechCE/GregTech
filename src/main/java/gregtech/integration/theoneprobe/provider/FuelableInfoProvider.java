@@ -5,6 +5,7 @@ import java.util.Collection;
 import gregtech.api.capability.GregtechCapabilities;
 import gregtech.api.capability.IFuelInfo;
 import gregtech.api.capability.IFuelable;
+import gregtech.api.capability.impl.ItemFuelInfo;
 import mcjty.theoneprobe.api.ElementAlignment;
 import mcjty.theoneprobe.api.IProbeInfo;
 import mcjty.theoneprobe.api.TextStyleClass;
@@ -44,7 +45,11 @@ public class FuelableInfoProvider extends CapabilityInfoProvider<IFuelable> {
             final int burnTime = fuelInfo.getFuelBurnTime()/20;
 
             IProbeInfo horizontalPane = probeInfo.horizontal(probeInfo.defaultLayoutStyle().alignment(ElementAlignment.ALIGN_CENTER));
-            horizontalPane.text(TextStyleClass.INFO + "{*gregtech.top.fuel_name*} {*" + fuelName + "*}");
+            if (fuelInfo instanceof ItemFuelInfo) {
+                horizontalPane.text(TextStyleClass.INFO + "{*gregtech.top.fuel_name*} ").itemLabel(((ItemFuelInfo) fuelInfo).getItemStack());
+            } else {
+                horizontalPane.text(TextStyleClass.INFO + "{*gregtech.top.fuel_name*} {*" + fuelName + "*}");
+            }
 
             horizontalPane = probeInfo.horizontal(probeInfo.defaultLayoutStyle().alignment(ElementAlignment.ALIGN_CENTER));
             horizontalPane.progress(fuelRemaining, fuelCapacity, probeInfo.defaultProgressStyle()
