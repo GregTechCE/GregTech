@@ -228,35 +228,35 @@ public class FuelRecipeLogic extends MTETrait implements IControllable, IFuelabl
      * @return if the recipe duration should get decreased during the current tick does not effect energy production.
      */
 
-    protected Boolean canConsumeFuel() {
+    public Boolean canConsumeFuel() {
         return true;
     }
 
     /**
      * @return if energy should be produced during the current tick does not effect fuel consumption.
      */
-    protected Boolean canProduceEnergy() {
+    public Boolean canProduceEnergy() {
         return true;
     }
 
     /**
      * @return the multiplier applied to fuel consumption
      */
-    protected double getFuelConsumptionMultiplier() {
+    public double getFuelConsumptionMultiplier() {
         return 1.0;
     }
 
     /**
      * @return the multiplier applied to recipe duration
      */
-    protected double getRecipeDurationMultiplier() {
+    public double getRecipeDurationMultiplier() {
         return 1.0f;
     }
 
     /**
      * @return the multiplier applied to voltage
      */
-    protected double getEnergyEfficiency() {
+    public double getEnergyEfficiency() {
         return 1.0f;
     }
 

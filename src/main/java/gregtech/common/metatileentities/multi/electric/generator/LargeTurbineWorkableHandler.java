@@ -105,20 +105,22 @@ public class LargeTurbineWorkableHandler extends FuelRecipeLogic {
     }
 
     @Override
-    protected double getEnergyEfficiency() { //energy is added each tick while the rotor speed is >0 RPM
+    public double getEnergyEfficiency() { //energy is added each tick while the rotor speed is >0 RPM
         MetaTileEntityRotorHolder rotorHolder = largeTurbine.getAbilities(MetaTileEntityLargeTurbine.ABILITY_ROTOR_HOLDER).get(0);
         double relativeRotorSpeed = rotorHolder.getRelativeRotorSpeed();
-        if (rotorHolder.getCurrentRotorSpeed() > 0 && rotorHolder.hasRotorInInventory()) {
-            return rotorHolder.getRotorEfficiency() *
-                    (relativeRotorSpeed * relativeRotorSpeed) *
-                    this.largeTurbine.getThrottleEfficiency() * this.largeTurbine.getThrottleMultiplier();
-
-        }
-        return 0f;
+        return rotorHolder.getRotorEfficiency() *
+                (relativeRotorSpeed * relativeRotorSpeed) *
+                this.largeTurbine.getThrottleEfficiency() * this.largeTurbine.getThrottleMultiplier();
     }
 
     @Override
-    protected double getFuelConsumptionMultiplier() {
+    public Boolean canProduceEnergy() {
+        MetaTileEntityRotorHolder rotorHolder = largeTurbine.getAbilities(MetaTileEntityLargeTurbine.ABILITY_ROTOR_HOLDER).get(0);
+        return rotorHolder.getCurrentRotorSpeed() > 0 && rotorHolder.hasRotorInInventory();
+    }
+
+    @Override
+    public double getFuelConsumptionMultiplier() {
         return this.largeTurbine.getThrottleMultiplier();
     }
 
