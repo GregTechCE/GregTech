@@ -8,7 +8,10 @@
 * Added notconsumable for fluids to CT (#1603) - dan
 * Updated GTCE chests to allow covers on bottom side (#1579) - htmlcsjs  
 * Updated Hay Bale recipe to use Packager instead of Compressor (#1592) - LAGIdiot
+* Updated Assembler Slot background to be more darker (#1611) - galyfray
 * Removed Forge Multipart legacy support (#1594) - LAGIdiot
+* Fixed MouseTweaks wheel action not working (#1485) - Nikolay Korolev
+* Fixed Crafting Station voiding items on right click (#1485) - Nikolay Korolev
 * Fixed Global Renderer in MetaTileEntityTESR (#1563) - KilaBash
 * Fixed Rubber trees spawning in water (#1590) - Bohdan Schepansky
 * Fixed eating food not returning container (#1595) - bruberu
