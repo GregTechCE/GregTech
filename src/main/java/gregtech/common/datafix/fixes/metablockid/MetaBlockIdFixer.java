@@ -12,7 +12,7 @@ public interface MetaBlockIdFixer {
     static MetaBlockIdFixer create(Version prevSaveVersion, NBTTagCompound fmlTag) {
         if (prevSaveVersion.compareTo(MetaBlockIdFixHelper.V1_10_5) < 0) {
             return PreGraniteMetaBlockIdFixer.generate(fmlTag);
-        } else if (prevSaveVersion.compareTo(MetaBlockIdFixHelper.V1_14_0) < 0) {
+        } else if (prevSaveVersion.compareTo(MetaBlockIdFixHelper.V1_15_0) < 0) {
             return PostGraniteMetaBlockIdFixer.generate(fmlTag);
         } else {
             return NOOP;

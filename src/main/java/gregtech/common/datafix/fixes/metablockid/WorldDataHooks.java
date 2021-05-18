@@ -120,7 +120,7 @@ public class WorldDataHooks {
 
     public static void promptWorldBackup(int prevDataVersion) {
         String text = "GregTech detected a required registry remapping!\n\n"
-                + "Updating from before " + TextFormatting.AQUA + (prevDataVersion == -1 ? MetaBlockIdFixHelper.V1_10_5 : MetaBlockIdFixHelper.V1_14_0) + TextFormatting.RESET
+                + "Updating from before " + TextFormatting.AQUA + (prevDataVersion == -1 ? MetaBlockIdFixHelper.V1_10_5 : MetaBlockIdFixHelper.V1_15_0) + TextFormatting.RESET
                 + " to " + TextFormatting.AQUA + GregTechVersion.VERSION.toString(3) + TextFormatting.RESET + ".\n"
                 + "It is " + TextFormatting.UNDERLINE + "strongly" + TextFormatting.RESET + " recommended that you perform a backup. Create backup?";
 
