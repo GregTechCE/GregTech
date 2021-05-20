@@ -24,6 +24,7 @@ public class LargeTurbineWorkableHandler extends FuelRecipeLogic {
 
     private MetaTileEntityLargeTurbine largeTurbine;
     private int rotorCycleLength = CYCLE_LENGTH;
+    private double cachedThrottle = 0;
 
     public LargeTurbineWorkableHandler(MetaTileEntityLargeTurbine metaTileEntity, FuelRecipeMap recipeMap, Supplier<IEnergyContainer> energyContainer, Supplier<IMultipleTankHandler> fluidTank) {
         super(metaTileEntity, recipeMap, energyContainer, fluidTank, 0L);
@@ -73,6 +74,7 @@ public class LargeTurbineWorkableHandler extends FuelRecipeLogic {
     @Override
     protected long startRecipe(FuelRecipe currentRecipe, int fuelAmountUsed, int recipeDuration) {
         addOutputFluids(currentRecipe, fuelAmountUsed);
+        this.cachedThrottle = this.largeTurbine.getThrottleMultiplier();
         return super.startRecipe(currentRecipe, fuelAmountUsed, recipeDuration);
     }
 
@@ -122,6 +124,11 @@ public class LargeTurbineWorkableHandler extends FuelRecipeLogic {
     @Override
     public double getFuelConsumptionMultiplier() {
         return this.largeTurbine.getThrottleMultiplier();
+    }
+
+    @Override
+    public double getRecipeDurationMultiplier() {
+        return this.largeTurbine.getThrottleMultiplier() / this.cachedThrottle;
     }
 
     @Override
