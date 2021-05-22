@@ -182,7 +182,6 @@ public class WorldSceneRenderer {
         //rewind buffer after read
         OBJECT_POS_BUFFER.rewind();
 
-        //System.out.println(String.format("%f %f %f %f", pixelDepth, posX, posY, posZ));
         //if we didn't hit anything, just return null
         //also return null if hit is too far from us
         if (posY < -100.0f) {
@@ -277,7 +276,6 @@ public class WorldSceneRenderer {
         //Re-enable disabled states
         GlStateManager.disableBlend();
         GlStateManager.disableDepth();
-        minecraft.entityRenderer.enableLightmap();
 
         //Reset Attributes
         GL11.glPopAttrib();
