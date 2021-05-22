@@ -24,6 +24,8 @@ public abstract class MultiblockInfoPage {
             add(I18n.format("gregtech.multiblock.preview.tilt"));
             add(I18n.format("gregtech.multiblock.preview.zoom"));
             add(I18n.format("gregtech.multiblock.preview.pan"));
+            add(I18n.format("gregtech.multiblock.preview.move"));
+            add(I18n.format("gregtech.multiblock.preview.reset"));
         }};
     }
 }

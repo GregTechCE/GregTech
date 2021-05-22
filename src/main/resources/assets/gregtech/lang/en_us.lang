@@ -2949,6 +2949,8 @@ gregtech.multiblock.generation_eu=Outputting: %s EU/t
 gregtech.multiblock.preview.tilt=Shift+LMB to tilt
 gregtech.multiblock.preview.zoom=Shift+RMB to zoom
 gregtech.multiblock.preview.pan=LMB+Drag to pan
+gregtech.multiblock.preview.move=RMB+Drag to move
+gregtech.multiblock.preview.reset=Scroll Mousewheel to reset
 
 gregtech.multiblock.blast_furnace.max_temperature=Max Temperature: %sK
 gregtech.multiblock.multi_furnace.heating_coil_level=Heating Coil Level: %s
