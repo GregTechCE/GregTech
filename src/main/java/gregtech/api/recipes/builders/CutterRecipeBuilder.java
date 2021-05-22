@@ -1,6 +1,5 @@
 package gregtech.api.recipes.builders;
 
-import com.google.common.collect.ImmutableMap;
 import gregtech.api.recipes.ModHandler;
 import gregtech.api.recipes.Recipe;
 import gregtech.api.recipes.RecipeBuilder;
@@ -29,22 +28,21 @@ public class CutterRecipeBuilder extends RecipeBuilder<CutterRecipeBuilder> {
     @Override
     public ValidationResult<Recipe> build() {
         return ValidationResult.newResult(finalizeAndValidate(),
-            new Recipe(inputs, outputs, chancedOutputs, fluidInputs, fluidOutputs,
-                ImmutableMap.of(), duration, EUt, hidden));
+                new Recipe(inputs, outputs, chancedOutputs, fluidInputs, fluidOutputs, duration, EUt, hidden));
     }
 
     @Override
     public void buildAndRegister() {
         if (fluidInputs.isEmpty()) {
             recipeMap.addRecipe(this.copy()
-                .fluidInputs(Materials.Water.getFluid(Math.max(4, Math.min(1000, duration * EUt / 320))))
-                .duration(duration * 2).build());
+                    .fluidInputs(Materials.Water.getFluid(Math.max(4, Math.min(1000, duration * EUt / 320))))
+                    .duration(duration * 2).build());
             recipeMap.addRecipe(this.copy()
-                .fluidInputs(ModHandler.getDistilledWater(Math.max(3, Math.min(750, duration * EUt / 426))))
-                .duration((int) (duration * 1.3)).build());
+                    .fluidInputs(ModHandler.getDistilledWater(Math.max(3, Math.min(750, duration * EUt / 426))))
+                    .duration((int) (duration * 1.3)).build());
             recipeMap.addRecipe(this.copy()
-                .fluidInputs(Materials.Lubricant.getFluid(Math.max(1, Math.min(250, duration * EUt / 1280))))
-                .duration(Math.max(1, duration / 2)).build());
+                    .fluidInputs(Materials.Lubricant.getFluid(Math.max(1, Math.min(250, duration * EUt / 1280))))
+                    .duration(Math.max(1, duration / 2)).build());
         } else {
             recipeMap.addRecipe(build());
         }

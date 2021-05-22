@@ -1,13 +1,9 @@
 package gregtech.common.pipelike.fluidpipe.net;
 
-import codechicken.multipart.TMultiPart;
-import codechicken.multipart.TileMultipart;
-import gregtech.api.GTValues;
 import gregtech.api.pipenet.MonolithicPipeNet;
 import gregtech.api.pipenet.Node;
 import gregtech.api.pipenet.PipeNet;
 import gregtech.api.pipenet.WorldPipeNet;
-import gregtech.api.pipenet.tile.IPipeTile;
 import gregtech.common.pipelike.fluidpipe.FluidPipeProperties;
 import gregtech.common.pipelike.fluidpipe.tile.TileEntityFluidPipe;
 import net.minecraft.init.Blocks;
@@ -19,9 +15,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
-import net.minecraftforge.fml.common.Optional.Method;
 
-import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
@@ -55,36 +49,20 @@ public class FluidPipeNet extends MonolithicPipeNet<FluidPipeProperties> {
                 } else {
                     world.setBlockToAir(nodePos);
                 }
-            } else if (GTValues.isModLoaded(GTValues.MODID_FMP)) {
-                removeMultipartPipePartFromTile(tileEntity);
             }
+
             Random random = world.rand;
             if (isBurning) {
                 TileEntityFluidPipe.spawnParticles(world, nodePos, EnumFacing.UP,
-                    EnumParticleTypes.FLAME, 3 + random.nextInt(2), random);
+                        EnumParticleTypes.FLAME, 3 + random.nextInt(2), random);
                 if (random.nextInt(4) == 0) {
                     TileEntityFluidPipe.setNeighboursToFire(world, nodePos);
                 }
             }
-            if (isLeaking) {
-                if (world.rand.nextInt(isBurning ? 3 : 7) == 0) {
-                    world.createExplosion(null,
+            if (isLeaking && world.rand.nextInt(isBurning ? 3 : 7) == 0) {
+                world.createExplosion(null,
                         nodePos.getX() + 0.5, nodePos.getY() + 0.5, nodePos.getZ() + 0.5,
                         1.0f + world.rand.nextFloat(), false);
-                }
-            }
-        }
-    }
-
-    @Method(modid = GTValues.MODID_FMP)
-    private static void removeMultipartPipePartFromTile(TileEntity tileEntity) {
-        if (tileEntity instanceof TileMultipart) {
-            TileMultipart tileMultipart = (TileMultipart) tileEntity;
-            List<TMultiPart> partList = tileMultipart.jPartList();
-            for (TMultiPart tMultiPart : partList) {
-                if (tMultiPart instanceof IPipeTile) {
-                    tileMultipart.remPart(tMultiPart);
-                }
             }
         }
     }
@@ -109,7 +87,7 @@ public class FluidPipeNet extends MonolithicPipeNet<FluidPipeProperties> {
                 getFluidNetTank().fillInternal(parentFluid, true);
             } else {
                 //otherwise, it is donating of some nodes to our net in result of split
-                //so, we should estabilish equal amount of fluid in networks
+                //so, we should establish equal amount of fluid in networks
                 int firstNetCapacity = getAllNodes().size() * getNodeData().throughput;
                 int secondNetCapacity = parentNet.getAllNodes().size() * parentNet.getNodeData().throughput;
                 int totalFluidAmount = getFluidNetTank().getFluidAmount() + parentFluid.amount;
@@ -135,8 +113,8 @@ public class FluidPipeNet extends MonolithicPipeNet<FluidPipeProperties> {
     protected boolean areNodesCustomContactable(FluidPipeProperties first, FluidPipeProperties second, PipeNet<FluidPipeProperties> secondNodeNet) {
         FluidPipeNet fluidPipeNet = (FluidPipeNet) secondNodeNet;
         return super.areNodesCustomContactable(first, second, secondNodeNet) &&
-            (secondNodeNet == null || getFluidNetTank().getFluid() == null || fluidPipeNet.getFluidNetTank().getFluid() == null ||
-                getFluidNetTank().getFluid().isFluidEqual(fluidPipeNet.getFluidNetTank().getFluid()));
+                (secondNodeNet == null || getFluidNetTank().getFluid() == null || fluidPipeNet.getFluidNetTank().getFluid() == null ||
+                        getFluidNetTank().getFluid().isFluidEqual(fluidPipeNet.getFluidNetTank().getFluid()));
     }
 
     @Override

@@ -41,7 +41,7 @@ Releases are built and deployed on Tuesdays after merging the Changelog PR.
 
 ## Contribution
 ### Current state of project
-Project is currently maintained by its designated maintainer @LAGIdiot. 
+GTCE is under active development with regular updates. It is primarily maintained by a "GTCE Council" of contributors of various talent: developers, designers and modpack authors. This council is coordinated by @LAGIdiot. The GTCE community is very active and regularly contributes code, testing and ideas.
 We are always looking for contributors!
 
 ### How to contribute

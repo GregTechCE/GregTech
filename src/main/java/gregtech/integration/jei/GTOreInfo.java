@@ -2,7 +2,6 @@ package gregtech.integration.jei;
 
 import gregtech.api.unification.OreDictUnifier;
 import gregtech.api.unification.material.type.Material;
-import gregtech.api.worldgen.config.FillerConfigUtils;
 import gregtech.api.worldgen.config.OreDepositDefinition;
 import gregtech.api.worldgen.filler.BlockFiller;
 import gregtech.api.worldgen.filler.FillerEntry;
@@ -22,6 +21,7 @@ import net.minecraft.world.DimensionType;
 import net.minecraft.world.biome.Biome;
 import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.fluids.*;
+import org.apache.commons.lang3.tuple.Pair;
 
 import java.nio.file.FileSystem;
 import java.nio.file.FileSystems;
@@ -256,8 +256,7 @@ public class GTOreInfo implements IRecipeWrapper {
             }
         }
         else {
-            //TODO: Support for an individual ore's weight in the vein
-            //tooltip.addAll(createOreWeightingTooltip());
+            tooltip.addAll(createOreWeightingTooltip(slotIndex));
         }
     }
 
@@ -301,19 +300,28 @@ public class GTOreInfo implements IRecipeWrapper {
     }
 
     //Creates a tooltip show the weighting of the individual ores in the ore vein
-    //TODO: Figure out a way to get the individual ore weightings from the BlockFiller
-    public List<String> createOreWeightingTooltip() {
+    public List<String> createOreWeightingTooltip(int slotIndex) {
 
         List<String> tooltip = new ArrayList<>();
+        int totalWeight = 0;
+        double weight;
 
         List<FillerEntry> fillerEntries = blockFiller.getAllPossibleStates();
-        for(FillerEntry entry : fillerEntries) {
-
-            /*if(entry instanceof FillerConfigUtils.WeightRandomMatcherEntry) {
-                ((FillerConfigUtils.WeightRandomMatcherEntry) entry)
-            }*/
+        for (FillerEntry entries : fillerEntries) {
+            if (entries != null && !entries.getEntries().isEmpty()) {
+                for (Pair<Integer, FillerEntry> entry : entries.getEntries()) {
+                    totalWeight = totalWeight + entry.getKey();
+                }
+            }
         }
 
+        for(FillerEntry entry : fillerEntries) {
+            if(entry.getEntries() != null && !entry.getEntries().isEmpty()) {
+                Pair<Integer, FillerEntry> entryWithWeight = entry.getEntries().get(slotIndex - 2);
+                weight = Math.round((entryWithWeight.getKey() / (double) totalWeight) * 100);
+                tooltip.add("Weight in vein: " + weight + "%");
+            }
+        }
 
         return tooltip;
     }

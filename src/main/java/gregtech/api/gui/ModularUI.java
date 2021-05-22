@@ -10,7 +10,6 @@ import gregtech.api.util.Position;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraftforge.items.IItemHandlerModifiable;
-import net.minecraftforge.items.wrapper.PlayerMainInvWrapper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -192,7 +191,7 @@ public final class ModularUI implements ISizeProvider {
         public Builder bindPlayerInventory(InventoryPlayer inventoryPlayer, TextureArea imageLocation, int x, int y) {
             for (int row = 0; row < 3; row++) {
                 for (int col = 0; col < 9; col++) {
-                    this.widget(new SlotWidget(new PlayerMainInvWrapper(inventoryPlayer), col + (row + 1) * 9, x + col * 18, y + row * 18)
+                    this.widget(new SlotWidget(inventoryPlayer, col + (row + 1) * 9, x + col * 18, y + row * 18)
                         .setBackgroundTexture(imageLocation)
                         .setLocationInfo(true, false));
                 }
@@ -202,7 +201,7 @@ public final class ModularUI implements ISizeProvider {
 
         public Builder bindPlayerHotbar(InventoryPlayer inventoryPlayer, TextureArea imageLocation, int x, int y) {
             for (int slot = 0; slot < 9; slot++) {
-                this.widget(new SlotWidget(new PlayerMainInvWrapper(inventoryPlayer), slot, x + slot * 18, y)
+                this.widget(new SlotWidget(inventoryPlayer, slot, x + slot * 18, y)
                     .setBackgroundTexture(imageLocation)
                     .setLocationInfo(true, true));
             }

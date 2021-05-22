@@ -32,7 +32,7 @@ public class BlockCompressedFactory extends AbstractBlockModelFactory {
     }
 
     private BlockCompressedFactory() {
-        super("compressed_block", "compressed_");
+        super("compressed_block", "meta_block_compressed_");
     }
 
     @Override
