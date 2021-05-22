@@ -128,4 +128,6 @@ public class GuiTextures {
 
     //JEI
     public static final TextureArea MULTIBLOCK_CATEGORY = TextureArea.fullImage("textures/gui/icon/coke_oven.png");
+    public static final TextureArea INFO_ICON = TextureArea.fullImage("textures/gui/widget/information.png");
+
 }

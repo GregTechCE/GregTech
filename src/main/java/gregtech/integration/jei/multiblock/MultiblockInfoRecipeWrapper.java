@@ -4,7 +4,6 @@ import codechicken.lib.raytracer.CuboidRayTraceResult;
 import codechicken.lib.raytracer.IndexedCuboid6;
 import codechicken.lib.vec.Cuboid6;
 import codechicken.lib.vec.Vector3;
-import gregtech.api.GTValues;
 import gregtech.api.gui.GuiTextures;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.MetaTileEntityHolder;
@@ -23,7 +22,6 @@ import mezz.jei.gui.recipes.RecipeLayout;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.resources.I18n;
@@ -34,7 +32,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.NonNullList;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.text.TextFormatting;
@@ -48,14 +45,15 @@ import org.lwjgl.input.Mouse;
 import javax.vecmath.Vector3f;
 import java.util.*;
 import java.util.Map.Entry;
-import java.util.stream.Collectors;
 
 public class MultiblockInfoRecipeWrapper implements IRecipeWrapper, SceneRenderCallback {
     private static final int MAX_PARTS = 20;
+    private static final int PARTS_HEIGHT = 36;
 
     private static class MBPattern {
         final WorldSceneRenderer sceneRenderer;
         final List<ItemStack> parts;
+
         public MBPattern(final WorldSceneRenderer sceneRenderer, final List<ItemStack> parts) {
             this.sceneRenderer = sceneRenderer;
             this.parts = parts;
@@ -82,8 +80,9 @@ public class MultiblockInfoRecipeWrapper implements IRecipeWrapper, SceneRenderC
     private GuiButton buttonPreviousPattern;
     private GuiButton buttonNextPattern;
     private GuiButton nextLayerButton;
+
     private IDrawable slot;
-    private IGuiHelper guiHelper;
+    private IDrawable infoIcon;
 
     private ItemStack tooltipBlockStack;
 
@@ -93,8 +92,8 @@ public class MultiblockInfoRecipeWrapper implements IRecipeWrapper, SceneRenderC
         HashSet<ItemStackKey> drops = new HashSet<>();
         drops.add(new ItemStackKey(controllerStack));
         this.patterns = infoPage.getMatchingShapes().stream()
-            .map(it -> initializePattern(it, drops))
-            .toArray(MBPattern[]::new);
+                .map(it -> initializePattern(it, drops))
+                .toArray(MBPattern[]::new);
         drops.forEach(it -> allItemStackInputs.add(it.getItemStack()));
     }
 
@@ -110,32 +109,35 @@ public class MultiblockInfoRecipeWrapper implements IRecipeWrapper, SceneRenderC
 
     public void setRecipeLayout(RecipeLayout layout, IGuiHelper guiHelper) {
         this.recipeLayout = layout;
+
+        this.slot = guiHelper.drawableBuilder(GuiTextures.SLOT.imageLocation, 0, 0, 18, 18).setTextureSize(18, 18).build();
+        this.infoIcon = guiHelper.drawableBuilder(GuiTextures.INFO_ICON.imageLocation, 0, 0, 20, 20).setTextureSize(20, 20).build();
+
         IDrawable border = layout.getRecipeCategory().getBackground();
+        preparePlaceForParts(border.getHeight());
         this.buttons.clear();
-        this.guiHelper = guiHelper;
         this.nextLayerButton = new GuiButton(0, border.getWidth() - 25, 70, 20, 20, "");
-        this.buttonPreviousPattern = new GuiButton(0, border.getWidth()-46, 90, 20, 20, "<");
+        this.buttonPreviousPattern = new GuiButton(0, border.getWidth() - 46, 90, 20, 20, "<");
         this.buttonNextPattern = new GuiButton(0, border.getWidth() - 25, 90, 20, 20, ">");
         this.buttons.put(nextLayerButton, this::toggleNextLayer);
         this.buttons.put(buttonPreviousPattern, () -> switchRenderPage(-1));
         this.buttons.put(buttonNextPattern, () -> switchRenderPage(1));
+
         boolean isPagesDisabled = patterns.length == 1;
         this.buttonPreviousPattern.visible = !isPagesDisabled;
         this.buttonNextPattern.visible = !isPagesDisabled;
         this.buttonPreviousPattern.enabled = false;
         this.buttonNextPattern.enabled = patterns.length > 1;
-        IGuiItemStackGroup itemStackGroup = recipeLayout.getItemStacks();
-        this.slot = guiHelper.createDrawable(GuiTextures.SLOT.imageLocation, 0, 0, 18, 18, 18, 18);
-        for (int i = 0; i < MAX_PARTS; ++i)
-           itemStackGroup.init(i, true, 18*i-180*(i/10), border.getHeight()-36+18*(i/10));
+
         this.panX = 0.0f;
         this.panY = 0.0f;
         this.zoom = infoPage.getDefaultZoom();
         this.rotationYaw = -45.0f;
         this.rotationPitch = 0.0f;
         this.currentRendererPage = 0;
+
         setNextLayer(-1);
-        updateParts(); 
+        updateParts();
     }
 
     public WorldSceneRenderer getCurrentRenderer() {
@@ -171,6 +173,13 @@ public class MultiblockInfoRecipeWrapper implements IRecipeWrapper, SceneRenderC
             this.buttonPreviousPattern.enabled = newIndex > 0;
             updateParts();
         }
+    }
+
+    private void preparePlaceForParts(int recipeHeight) {
+        IGuiItemStackGroup itemStackGroup = recipeLayout.getItemStacks();
+
+        for (int i = 0; i < MAX_PARTS; ++i)
+            itemStackGroup.init(i, true, 18 * i - 180 * (i / 10), recipeHeight - PARTS_HEIGHT + 18 * (i / 10));
     }
 
     private void updateParts() {
@@ -221,26 +230,32 @@ public class MultiblockInfoRecipeWrapper implements IRecipeWrapper, SceneRenderC
     @Override
     public void drawInfo(Minecraft minecraft, int recipeWidth, int recipeHeight, int mouseX, int mouseY) {
         WorldSceneRenderer renderer = getCurrentRenderer();
-        int scenePosY = 0;
-        int sceneHeight = recipeHeight-36;
-        renderer.render(recipeLayout.getPosX(), recipeLayout.getPosY() + scenePosY, recipeWidth, sceneHeight, 0xC6C6C6);
-        drawText(minecraft, recipeWidth);
+        int sceneHeight = recipeHeight - PARTS_HEIGHT;
+
+        renderer.render(recipeLayout.getPosX(), recipeLayout.getPosY(), recipeWidth, sceneHeight, 0xC6C6C6);
+        drawMultiblockName(recipeWidth);
+
+        //reset colors (so any elements render after this point are not dark)
+        GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
+
+        this.infoIcon.draw(minecraft, recipeWidth - 25, 49);
+
+        for (int i = 0; i < MAX_PARTS; ++i) {
+            this.slot.draw(minecraft, 18 * i - 180 * (i / 10), sceneHeight + 18 * (i / 10));
+        }
+
         // Hmmm, the buttons need to be last otherwise sometimes highlighting 
         // the button by mousing over it, leaks into other gui elements?
         for (GuiButton button : buttons.keySet()) {
             button.drawButton(minecraft, mouseX, mouseY, 0.0f);
         }
-        guiHelper.drawableBuilder(new ResourceLocation(GTValues.MODID, "textures/gui/widget/information.png"), 0, 0, 20, 20)
-                .setTextureSize(20, 20)
-                .build()
-                .draw(minecraft, recipeWidth - 25, 49);
 
-        drawHoveringInformationText(infoPage.informationText(), mouseX, mouseY);
+        drawHoveringInformationText(minecraft, infoPage.informationText(), mouseX, mouseY);
 
         this.tooltipBlockStack = null;
         BlockPos pos = renderer.getLastHitBlock();
-        boolean insideView = mouseX >= 0 && mouseY >= scenePosY &&
-            mouseX < recipeWidth && mouseY < (scenePosY + sceneHeight);
+        boolean insideView = mouseX >= 0 && mouseY >= 0 &&
+                mouseX < recipeWidth && mouseY < sceneHeight;
         boolean leftClickHeld = Mouse.isButtonDown(0);
         boolean rightClickHeld = Mouse.isButtonDown(1);
         boolean isHoldingShift = Keyboard.isKeyDown(Keyboard.KEY_LSHIFT);
@@ -280,20 +295,18 @@ public class MultiblockInfoRecipeWrapper implements IRecipeWrapper, SceneRenderC
     }
 
     @SideOnly(Side.CLIENT)
-    protected void drawHoveringInformationText(List<String> tooltip, int mouseX, int mouseY) {
-        Minecraft mc = Minecraft.getMinecraft();
+    protected void drawHoveringInformationText(Minecraft minecraft, List<String> tooltip, int mouseX, int mouseY) {
         int minX = recipeLayout.getRecipeCategory().getBackground().getWidth();
         int[] yRange = new int[]{49, 69};
         int[] xRange = new int[]{minX - 25, minX - 5};
         //Only draw the hovering information tooltip above the information icon
-        if(yRange[0] < mouseY && mouseY < yRange[1] && xRange[0] < mouseX && mouseX < xRange[1]) {
+        if (yRange[0] < mouseY && mouseY < yRange[1] && xRange[0] < mouseX && mouseX < xRange[1]) {
             GuiUtils.drawHoveringText(tooltip, mouseX, mouseY,
-                    176,176, -1, mc.fontRenderer);
+                    176, 176, -1, minecraft.fontRenderer);
         }
-
     }
 
-    private void drawText(Minecraft minecraft, int recipeWidth) {
+    private void drawMultiblockName(int recipeWidth) {
         String localizedName = I18n.format(infoPage.getController().getMetaFullName());
         GTUtility.drawCenteredSizedText(recipeWidth / 2, 0, localizedName, 0x333333, 1.3);
     }
@@ -408,9 +421,9 @@ public class MultiblockInfoRecipeWrapper implements IRecipeWrapper, SceneRenderC
             if (one.blockId != two.blockId) return two.blockId - one.blockId;
             return two.amount - one.amount;
         });
-        ArrayList<ItemStack> parts = new ArrayList<ItemStack>();
+        ArrayList<ItemStack> parts = new ArrayList<>();
         for (PartInfo partInfo : partInfos) {
-           parts.add(partInfo.getItemStack());
+            parts.add(partInfo.getItemStack());
         }
         return new MBPattern(worldSceneRenderer, parts);
     }
