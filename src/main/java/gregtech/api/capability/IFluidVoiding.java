@@ -6,7 +6,5 @@ import java.util.function.Predicate;
 
 public interface IFluidVoiding {
 
-    int voidingAmount();
-
     Predicate<FluidStack> checkInputFluid();
 }

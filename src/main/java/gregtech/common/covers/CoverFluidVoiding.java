@@ -43,11 +43,6 @@ public class CoverFluidVoiding extends CoverBehavior implements CoverWithUI, IFl
     }
 
     @Override
-    public int voidingAmount() {
-        return voidingAmount;
-    }
-
-    @Override
     public boolean canAttach() {
         return coverHolder.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, attachedSide) != null;
     }
@@ -72,11 +67,6 @@ public class CoverFluidVoiding extends CoverBehavior implements CoverWithUI, IFl
             openUI((EntityPlayerMP) playerIn);
         }
         return EnumActionResult.SUCCESS;
-    }
-
-    @Override
-    public boolean shouldCoverInteractWithOutputside() {
-        return true;
     }
 
     @Override
@@ -121,11 +111,7 @@ public class CoverFluidVoiding extends CoverBehavior implements CoverWithUI, IFl
     @Override
     public void readFromNBT(NBTTagCompound tagCompound) {
         super.readFromNBT(tagCompound);
-        if (tagCompound.hasKey("FluidFilter")) {
-            fluidFilter.deserializeNBT(tagCompound);
-        } else {
-            fluidFilter.deserializeNBT(tagCompound.getCompoundTag("Filter"));
-        }
+        fluidFilter.deserializeNBT(tagCompound.getCompoundTag("Filter"));
 
     }
 
