@@ -26,4 +26,7 @@ public class GregtechCapabilities {
     @CapabilityInject(IFuelable.class)
     public static Capability<IFuelable> CAPABILITY_FUELABLE = null;
 
+    @CapabilityInject(IFluidVoiding.class)
+    public static Capability<IFluidVoiding> CAPABILITY_FLUID_VOIDING = null;
+
 }

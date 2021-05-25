@@ -10,8 +10,10 @@ import codechicken.lib.vec.Cuboid6;
 import codechicken.lib.vec.Matrix4;
 import com.google.common.base.Preconditions;
 import gregtech.api.GregTechAPI;
+import gregtech.api.capability.GregtechCapabilities;
 import gregtech.api.capability.GregtechTileCapabilities;
 import gregtech.api.capability.IEnergyContainer;
+import gregtech.api.capability.IFluidVoiding;
 import gregtech.api.capability.impl.FluidHandlerProxy;
 import gregtech.api.capability.impl.FluidTankList;
 import gregtech.api.capability.impl.ItemHandlerProxy;
@@ -55,6 +57,7 @@ import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
+import java.util.function.Predicate;
 
 import static gregtech.api.util.InventoryUtils.simulateItemStackMerge;
 
@@ -868,16 +871,35 @@ public abstract class MetaTileEntity implements ICoverable {
         for (EnumFacing nearbyFacing : allowedFaces) {
             blockPos.setPos(getPos()).move(nearbyFacing);
             TileEntity tileEntity = getWorld().getTileEntity(blockPos);
-            if (tileEntity == null) {
+            //Get the fluid voiding capability
+            IFluidVoiding fluidVoiding = getCoverCapability(GregtechCapabilities.CAPABILITY_FLUID_VOIDING, nearbyFacing);
+            //Allow the fluid voiding cover to take fluids, but not be a tile entity
+            if (tileEntity == null && fluidVoiding == null) {
                 continue;
             }
-            IFluidHandler fluidHandler = tileEntity.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, nearbyFacing.getOpposite());
+            //Get the capability of the source machine
+            IFluidHandler machineFluidHandler = getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, nearbyFacing);
+
+            //Get the capability of the destination TE
+            IFluidHandler destinationTE = null;
+            if(tileEntity != null) {
+                destinationTE = tileEntity.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, nearbyFacing.getOpposite());
+            }
+
             //use getCoverCapability so fluid tank index filtering and fluid filtering covers will work properly
-            IFluidHandler myFluidHandler = getCoverCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, nearbyFacing);
-            if (fluidHandler == null || myFluidHandler == null) {
+            IFluidHandler coverFluidHandler = getCoverCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, nearbyFacing);
+            if (destinationTE == null && coverFluidHandler == null) {
                 continue;
             }
-            GTFluidUtils.transferFluids(myFluidHandler, fluidHandler, Integer.MAX_VALUE);
+            if(fluidVoiding != null && destinationTE != null) {
+                List<Tuple<IFluidHandler, Predicate<FluidStack>>> transferList = new ArrayList<>();
+                transferList.add(new Tuple<>(coverFluidHandler, fluidVoiding.checkInputFluid()));
+                transferList.add(new Tuple<>(destinationTE, fluidStack -> true));
+                GTFluidUtils.transferFluidsToMultipleHandlers(machineFluidHandler, transferList, Integer.MAX_VALUE);
+            }
+            else if(destinationTE != null){
+                GTFluidUtils.transferFluids(coverFluidHandler, destinationTE, Integer.MAX_VALUE);
+            }
         }
         blockPos.release();
     }
