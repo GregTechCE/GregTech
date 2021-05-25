@@ -2,8 +2,10 @@
   "weight": 40,
   "density": 0.3,
   "max_height": 35,
-  "surface_stone_material": "emerald",
-
+  "vein_populator": {
+    "type": "surface_rock",
+    "material": "emerald"
+  },
   "generator": {
     "type": "ellipsoid",
     "radius": [13, 13]

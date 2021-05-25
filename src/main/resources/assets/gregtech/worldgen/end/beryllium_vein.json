@@ -3,9 +3,11 @@
   "density": 0.3,
   "max_height": 35,
   "min_height": 5,
-  "surface_stone_material": "emerald",
   "dimension_filter": ["name:the_end"],
-
+  "vein_populator": {
+    "type": "surface_rock",
+    "material": "emerald"
+  },
   "generator": {
     "type": "ellipsoid",
     "radius": [9, 9]
