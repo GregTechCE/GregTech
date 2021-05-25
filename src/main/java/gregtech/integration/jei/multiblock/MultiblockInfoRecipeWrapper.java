@@ -304,13 +304,13 @@ public class MultiblockInfoRecipeWrapper implements IRecipeWrapper, SceneRenderC
         int[] yRange = new int[]{49, 69};
         int[] xRange = new int[]{minX - (ICON_SIZE + RIGHT_PADDING), minX - RIGHT_PADDING};
         //Only draw the hovering information tooltip above the information icon
-        if (isMouseWithinRange(yRange, xRange, mouseX, mouseY)) {
+        if (isMouseWithinRange(yRange, xRange, mouseY, mouseX)) {
             GuiUtils.drawHoveringText(tooltip, mouseX, mouseY,
                     176, 176, -1, minecraft.fontRenderer);
         }
     }
 
-    private boolean isMouseWithinRange(int[] yRange, int[] xRange, int mouseX, int mouseY) {
+    private boolean isMouseWithinRange(int[] yRange, int[] xRange, int mouseY, int mouseX) {
 
         return (yRange[0] < mouseY && mouseY < yRange[1] && xRange[0] < mouseX && mouseX < xRange[1]);
     }
