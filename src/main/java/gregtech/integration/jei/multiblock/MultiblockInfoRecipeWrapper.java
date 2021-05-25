@@ -49,6 +49,10 @@ import java.util.Map.Entry;
 public class MultiblockInfoRecipeWrapper implements IRecipeWrapper, SceneRenderCallback {
     private static final int MAX_PARTS = 20;
     private static final int PARTS_HEIGHT = 36;
+    private final int SLOT_SIZE = 18;
+    private final int SLOTS_PER_ROW = 10;
+    private final int ICON_SIZE = 20;
+    private final int RIGHT_PADDING = 5;
 
     private static class MBPattern {
         final WorldSceneRenderer sceneRenderer;
@@ -110,15 +114,15 @@ public class MultiblockInfoRecipeWrapper implements IRecipeWrapper, SceneRenderC
     public void setRecipeLayout(RecipeLayout layout, IGuiHelper guiHelper) {
         this.recipeLayout = layout;
 
-        this.slot = guiHelper.drawableBuilder(GuiTextures.SLOT.imageLocation, 0, 0, 18, 18).setTextureSize(18, 18).build();
-        this.infoIcon = guiHelper.drawableBuilder(GuiTextures.INFO_ICON.imageLocation, 0, 0, 20, 20).setTextureSize(20, 20).build();
+        this.slot = guiHelper.drawableBuilder(GuiTextures.SLOT.imageLocation, 0, 0, SLOT_SIZE, SLOT_SIZE).setTextureSize(SLOT_SIZE, SLOT_SIZE).build();
+        this.infoIcon = guiHelper.drawableBuilder(GuiTextures.INFO_ICON.imageLocation, 0, 0, ICON_SIZE, ICON_SIZE).setTextureSize(ICON_SIZE, ICON_SIZE).build();
 
         IDrawable border = layout.getRecipeCategory().getBackground();
         preparePlaceForParts(border.getHeight());
         this.buttons.clear();
-        this.nextLayerButton = new GuiButton(0, border.getWidth() - 25, 70, 20, 20, "");
-        this.buttonPreviousPattern = new GuiButton(0, border.getWidth() - 46, 90, 20, 20, "<");
-        this.buttonNextPattern = new GuiButton(0, border.getWidth() - 25, 90, 20, 20, ">");
+        this.nextLayerButton = new GuiButton(0, border.getWidth() - (ICON_SIZE + RIGHT_PADDING), 70, ICON_SIZE, ICON_SIZE, "");
+        this.buttonPreviousPattern = new GuiButton(0, border.getWidth() - ((2 * ICON_SIZE) + RIGHT_PADDING + 1), 90, ICON_SIZE, ICON_SIZE, "<");
+        this.buttonNextPattern = new GuiButton(0, border.getWidth() - (ICON_SIZE + RIGHT_PADDING), 90, ICON_SIZE, ICON_SIZE, ">");
         this.buttons.put(nextLayerButton, this::toggleNextLayer);
         this.buttons.put(buttonPreviousPattern, () -> switchRenderPage(-1));
         this.buttons.put(buttonNextPattern, () -> switchRenderPage(1));
@@ -179,7 +183,7 @@ public class MultiblockInfoRecipeWrapper implements IRecipeWrapper, SceneRenderC
         IGuiItemStackGroup itemStackGroup = recipeLayout.getItemStacks();
 
         for (int i = 0; i < MAX_PARTS; ++i)
-            itemStackGroup.init(i, true, 18 * i - 180 * (i / 10), recipeHeight - PARTS_HEIGHT + 18 * (i / 10));
+            itemStackGroup.init(i, true, SLOT_SIZE * i - (SLOT_SIZE * SLOTS_PER_ROW) * (i / SLOTS_PER_ROW), recipeHeight - PARTS_HEIGHT + SLOT_SIZE * (i / SLOTS_PER_ROW));
     }
 
     private void updateParts() {
@@ -238,10 +242,10 @@ public class MultiblockInfoRecipeWrapper implements IRecipeWrapper, SceneRenderC
         //reset colors (so any elements render after this point are not dark)
         GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
 
-        this.infoIcon.draw(minecraft, recipeWidth - 25, 49);
+        this.infoIcon.draw(minecraft, recipeWidth - (ICON_SIZE + RIGHT_PADDING), 49);
 
         for (int i = 0; i < MAX_PARTS; ++i) {
-            this.slot.draw(minecraft, 18 * i - 180 * (i / 10), sceneHeight + 18 * (i / 10));
+            this.slot.draw(minecraft, SLOT_SIZE * i - (SLOTS_PER_ROW * SLOT_SIZE) * (i / SLOTS_PER_ROW), sceneHeight + SLOT_SIZE * (i / SLOTS_PER_ROW));
         }
 
         // Hmmm, the buttons need to be last otherwise sometimes highlighting 
@@ -298,12 +302,17 @@ public class MultiblockInfoRecipeWrapper implements IRecipeWrapper, SceneRenderC
     protected void drawHoveringInformationText(Minecraft minecraft, List<String> tooltip, int mouseX, int mouseY) {
         int minX = recipeLayout.getRecipeCategory().getBackground().getWidth();
         int[] yRange = new int[]{49, 69};
-        int[] xRange = new int[]{minX - 25, minX - 5};
+        int[] xRange = new int[]{minX - (ICON_SIZE + RIGHT_PADDING), minX - RIGHT_PADDING};
         //Only draw the hovering information tooltip above the information icon
-        if (yRange[0] < mouseY && mouseY < yRange[1] && xRange[0] < mouseX && mouseX < xRange[1]) {
+        if (isMouseWithinRange(yRange, xRange, mouseX, mouseY)) {
             GuiUtils.drawHoveringText(tooltip, mouseX, mouseY,
                     176, 176, -1, minecraft.fontRenderer);
         }
+    }
+
+    private boolean isMouseWithinRange(int[] yRange, int[] xRange, int mouseX, int mouseY) {
+
+        return (yRange[0] < mouseY && mouseY < yRange[1] && xRange[0] < mouseX && mouseX < xRange[1]);
     }
 
     private void drawMultiblockName(int recipeWidth) {
