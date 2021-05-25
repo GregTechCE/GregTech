@@ -991,6 +991,11 @@ public class MachineRecipeLoader {
             .inputs(new ItemStack(Items.PUMPKIN_SEEDS, 1, OreDictionary.WILDCARD_VALUE))
             .fluidOutputs(Materials.SeedOil.getFluid(6)).buildAndRegister();
 
+        RecipeMaps.FLUID_HEATER_RECIPES.recipeBuilder().duration(32).EUt(4)
+                .fluidInputs(Materials.Ice.getFluid(144))
+                .circuitMeta(1)
+                .fluidOutputs(Materials.Water.getFluid(144)).buildAndRegister();
+
         List<Tuple<ItemStack, Integer>> seedEntries = GTUtility.getGrassSeedEntries();
         for (Tuple<ItemStack, Integer> seedEntry : seedEntries) {
             RecipeMaps.FLUID_EXTRACTION_RECIPES.recipeBuilder()
