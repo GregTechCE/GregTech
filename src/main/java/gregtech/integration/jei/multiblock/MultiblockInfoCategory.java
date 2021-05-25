@@ -26,7 +26,7 @@ public class MultiblockInfoCategory implements IRecipeCategory<MultiblockInfoRec
     public MultiblockInfoCategory(IJeiHelpers helpers) {
         this.guiHelper = helpers.getGuiHelper();
         this.background = this.guiHelper.createBlankDrawable(176, 166);
-        this.icon = guiHelper.drawableBuilder(GuiTextures.MULTIBLOCK_CATEGORY.imageLocation, 0,0,18,18).setTextureSize(18,18).build();
+        this.icon = guiHelper.drawableBuilder(GuiTextures.MULTIBLOCK_CATEGORY.imageLocation, 0, 0, 18, 18).setTextureSize(18, 18).build();
     }
 
     public static final Map<String, MultiblockInfoRecipeWrapper> multiblockRecipes = new HashMap<String, MultiblockInfoRecipeWrapper>() {{
