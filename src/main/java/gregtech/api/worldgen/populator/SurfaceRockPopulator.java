@@ -84,7 +84,8 @@ public class SurfaceRockPopulator implements VeinChunkPopulator {
                 int randomZ = chunkZ * 16 + 8 + random.nextInt(16);
                 BlockPos topBlockPos = world.getTopSolidOrLiquidBlock(new BlockPos(randomX, 0, randomZ));
                 Block blockAtPos = world.getBlockState(topBlockPos).getBlock();
-                if ((world.isAirBlock(topBlockPos) || blockAtPos.isReplaceable(world, topBlockPos)) && world.isSideSolid(topBlockPos.down(), EnumFacing.UP)) {
+                if ((world.isAirBlock(topBlockPos) || (blockAtPos.isReplaceable(world, topBlockPos) && !world.getBlockState(topBlockPos).getMaterial().isLiquid()))
+                        && world.isSideSolid(topBlockPos.down(), EnumFacing.UP)) {
                     setStoneBlock(world, topBlockPos, undergroundMaterials);
                 }
             }
