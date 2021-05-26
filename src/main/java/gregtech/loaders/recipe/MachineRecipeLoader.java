@@ -20,6 +20,7 @@ import gregtech.api.unification.stack.MaterialStack;
 import gregtech.api.unification.stack.UnificationEntry;
 import gregtech.api.util.GTUtility;
 import gregtech.common.ConfigHolder;
+import gregtech.common.GTValuesCommon;
 import gregtech.common.blocks.BlockConcrete.ConcreteVariant;
 import gregtech.common.blocks.BlockGranite.GraniteVariant;
 import gregtech.common.blocks.BlockMachineCasing.MachineCasingType;
@@ -690,15 +691,13 @@ public class MachineRecipeLoader {
         RecipeMaps.ASSEMBLER_RECIPES.recipeBuilder().EUt(1).input(OrePrefix.stick, Materials.Wood, 1).input(OrePrefix.dust, Materials.Sulfur, 1).outputs(new ItemStack(Blocks.TORCH, 2)).duration(400).buildAndRegister();
         RecipeMaps.ASSEMBLER_RECIPES.recipeBuilder().EUt(1).input(OrePrefix.stick, Materials.Wood, 1).input(OrePrefix.dust, Materials.Phosphorus, 1).outputs(new ItemStack(Blocks.TORCH, 6)).duration(400).buildAndRegister();
 
-        ItemStack[] pumps = new ItemStack[] {ELECTRIC_PUMP_LV.getStackForm(), ELECTRIC_PUMP_MV.getStackForm(), ELECTRIC_PUMP_HV.getStackForm(), ELECTRIC_PUMP_EV.getStackForm()};
-        ItemStack[] fluidRegulators = new ItemStack[] {FLUID_REGULATOR_LV.getStackForm(), FLUID_REGULATOR_MV.getStackForm(), FLUID_REGULATOR_HV.getStackForm(), FLUID_REGULATOR_EV.getStackForm()};
         Material[] circuitTiers = new Material[] {Tier.Basic, Tier.Good, Tier.Advanced, Tier.Extreme};
 
-        for (int i = 0; i < pumps.length; i++) {
+        for (int i = 0; i < circuitTiers.length; i++) {
             RecipeMaps.ASSEMBLER_RECIPES.recipeBuilder()
-                    .inputs(pumps[i])
+                    .inputs(GTValuesCommon.PUMPS[i].getStackForm())
                     .input(OrePrefix.circuit, circuitTiers[i], 2)
-                    .outputs(fluidRegulators[i])
+                    .outputs(GTValuesCommon.FLUID_REGULATORS[i].getStackForm())
                     .EUt((int) (GTValues.V[i] / 2))
                     .duration(400)
                     .buildAndRegister();
