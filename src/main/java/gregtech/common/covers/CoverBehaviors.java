@@ -42,15 +42,6 @@ public class CoverBehaviors {
         registerBehavior(16, new ResourceLocation(GTValues.MODID, "robotic_arm.zpm"), MetaItems.ROBOT_ARM_ZPM, (tile, side) -> new CoverRoboticArm(tile, side, GTValues.ZPM, 16 * 64));
         registerBehavior(17, new ResourceLocation(GTValues.MODID, "robotic_arm.uv"), MetaItems.ROBOT_ARM_UV, (tile, side) -> new CoverRoboticArm(tile, side, GTValues.UV, 16 * 64));
 
-        //registerBehavior(20, new ResourceLocation(GTValues.MODID, "pump.lv"), MetaItems.ELECTRIC_PUMP_LV, (tile, side) -> new CoverPump(tile, side, GTValues.LV, 1280));
-        //registerBehavior(21, new ResourceLocation(GTValues.MODID, "pump.mv"), MetaItems.ELECTRIC_PUMP_MV, (tile, side) -> new CoverPump(tile, side, GTValues.MV, 5120));
-        //registerBehavior(22, new ResourceLocation(GTValues.MODID, "pump.hv"), MetaItems.ELECTRIC_PUMP_HV, (tile, side) -> new CoverPump(tile, side, GTValues.HV, 20480));
-        //registerBehavior(23, new ResourceLocation(GTValues.MODID, "pump.ev"), MetaItems.ELECTRIC_PUMP_EV, (tile, side) -> new CoverPump(tile, side, GTValues.EV, 81920));
-        //registerBehavior(24, new ResourceLocation(GTValues.MODID, "pump.iv"), MetaItems.ELECTRIC_PUMP_IV, (tile, side) -> new CoverPump(tile, side, GTValues.IV, 327680));
-        //registerBehavior(25, new ResourceLocation(GTValues.MODID, "pump.luv"), MetaItems.ELECTRIC_PUMP_LUV, (tile, side) -> new CoverPump(tile, side, GTValues.LuV, 1310720));
-        //registerBehavior(26, new ResourceLocation(GTValues.MODID, "pump.zpm"), MetaItems.ELECTRIC_PUMP_ZPM, (tile, side) -> new CoverPump(tile, side, GTValues.ZPM, 5242880));
-        //registerBehavior(27, new ResourceLocation(GTValues.MODID, "pump.uv"), MetaItems.ELECTRIC_PUMP_UV, (tile, side) -> new CoverPump(tile, side, GTValues.UV, 20971520));
-//
         registerBehavior(30, new ResourceLocation(GTValues.MODID, "ore_dictionary_filter"), MetaItems.ORE_DICTIONARY_FILTER, (tile, side) -> new CoverItemFilter(tile, side, "cover.ore_dictionary_filter.title", Textures.ORE_DICTIONARY_FILTER_OVERLAY, new OreDictionaryItemFilter()));
         registerBehavior(31, new ResourceLocation(GTValues.MODID, "item_filter"), MetaItems.ITEM_FILTER, (tile, side) -> new CoverItemFilter(tile, side, "cover.item_filter.title", Textures.ITEM_FILTER_FILTER_OVERLAY, new SimpleItemFilter()));
         registerBehavior(32, new ResourceLocation(GTValues.MODID, "fluid_filter"), MetaItems.FLUID_FILTER, (tile, side) -> new CoverFluidFilter(tile, side, "cover.fluid_filter.title", Textures.FLUID_FILTER_OVERLAY, new SimpleFluidFilter()));
@@ -63,15 +54,6 @@ public class CoverBehaviors {
         registerBehavior(37, new ResourceLocation(GTValues.MODID, "machine_controller"), MetaItems.COVER_MACHINE_CONTROLLER, CoverMachineController::new);
         registerBehavior(38, new ResourceLocation(GTValues.MODID, "smart_filter"), MetaItems.SMART_FILTER, (tile, side) -> new CoverItemFilter(tile, side, "cover.smart_item_filter.title", Textures.SMART_FILTER_FILTER_OVERLAY, new SmartItemFilter()));
         registerBehavior(39, new ResourceLocation(GTValues.MODID, "facade"), MetaItems.COVER_FACADE, CoverFacade::new);
-
-        //registerBehavior(40, new ResourceLocation(GTValues.MODID, "fluid.regulator.lv"), MetaItems.FLUID_REGULATOR_LV, (tile, side) -> new CoverFluidRegulator(tile, side, GTValues.LV, 1280));
-        //registerBehavior(41, new ResourceLocation(GTValues.MODID, "fluid.regulator.mv"), MetaItems.FLUID_REGULATOR_MV, (tile, side) -> new CoverFluidRegulator(tile, side, GTValues.MV, 5120));
-        //registerBehavior(42, new ResourceLocation(GTValues.MODID, "fluid.regulator.hv"), MetaItems.FLUID_REGULATOR_HV, (tile, side) -> new CoverFluidRegulator(tile, side, GTValues.HV, 20480));
-        //registerBehavior(43, new ResourceLocation(GTValues.MODID, "fluid.regulator.ev"), MetaItems.FLUID_REGULATOR_EV, (tile, side) -> new CoverFluidRegulator(tile, side, GTValues.EV, 81920));
-        //registerBehavior(44, new ResourceLocation(GTValues.MODID, "fluid.regulator.iv"), MetaItems.FLUID_REGULATOR_IV, (tile, side) -> new CoverFluidRegulator(tile, side, GTValues.IV, 327680));
-        //registerBehavior(45, new ResourceLocation(GTValues.MODID, "fluid.regulator.luv"), MetaItems.FLUID_REGULATOR_LUV, (tile, side) -> new CoverFluidRegulator(tile, side, GTValues.LuV, 1310720));
-        //registerBehavior(46, new ResourceLocation(GTValues.MODID, "fluid.regulator.zpm"), MetaItems.FLUID_REGULATOR_ZPM, (tile, side) -> new CoverFluidRegulator(tile, side, GTValues.ZPM, 5242880));
-        //registerBehavior(47, new ResourceLocation(GTValues.MODID, "fluid.regulator.uv"), MetaItems.FLUID_REGULATOR_UV, (tile, side) -> new CoverFluidRegulator(tile, side, GTValues.UV, 20971520));
 
         for (int i = 1; i < GTValues.V.length - 1; i++) {
             int finalI = i;
