@@ -161,8 +161,6 @@ public enum OrePrefix {
     circuit("Circuits", -1, null, null, ENABLE_UNIFICATION | DISALLOW_RECYCLING, null), // Introduced by Calclavia
     chipset("Chipsets", -1, null, null, ENABLE_UNIFICATION | DISALLOW_RECYCLING, null); // Introduced by Buildcraft
 
-    public static final String DUST_REGULAR = "dustRegular";
-
     public static class Flags {
         public static final long ENABLE_UNIFICATION = GTUtility.createFlag(0);
         public static final long SELF_REFERENCING = GTUtility.createFlag(1);
