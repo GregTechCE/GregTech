@@ -76,6 +76,17 @@ public class Textures {
     public static OrientedOverlayRenderer PRIMITIVE_BLAST_FURNACE_OVERLAY = new OrientedOverlayRenderer("machines/primitive_blast_furnace", FRONT);
     public static OrientedOverlayRenderer COKE_OVEN_OVERLAY = new OrientedOverlayRenderer("machines/coke_oven", FRONT);
     public static OrientedOverlayRenderer MULTIBLOCK_WORKABLE_OVERLAY = new OrientedOverlayRenderer("machines/multiblock_workable", FRONT);
+    public static OrientedOverlayRenderer BLAST_FURNACE_OVERLAY = new OrientedOverlayRenderer("machines/multiblock_workable", FRONT);
+    public static OrientedOverlayRenderer IMPLOSION_COMPRESSOR_OVERLAY = new OrientedOverlayRenderer("machines/multiblock_workable", FRONT);
+    public static OrientedOverlayRenderer MULTI_FURNACE_OVERLAY = new OrientedOverlayRenderer("machines/multiblock_workable", FRONT);
+    public static OrientedOverlayRenderer PYROLYSE_OVEN_OVERLAY = new OrientedOverlayRenderer("machines/multiblock_workable", FRONT);
+    public static OrientedOverlayRenderer VACUUM_FREEZER_OVERLAY = new OrientedOverlayRenderer("machines/multiblock_workable", FRONT);
+    public static OrientedOverlayRenderer DISTILLATION_TOWER_OVERLAY = new OrientedOverlayRenderer("machines/multiblock_workable", FRONT);
+    public static OrientedOverlayRenderer CRACKING_UNIT_OVERLAY = new OrientedOverlayRenderer("machines/multiblock_workable", FRONT);
+    public static OrientedOverlayRenderer DIESEL_ENGINE_OVERLAY = new OrientedOverlayRenderer("machines/multiblock_workable", FRONT);
+    public static OrientedOverlayRenderer LARGE_STEAM_TURBINE_OVERLAY = new OrientedOverlayRenderer("machines/multiblock_workable", FRONT);
+    public static OrientedOverlayRenderer LARGE_GAS_TURBINE_OVERLAY = new OrientedOverlayRenderer("machines/multiblock_workable", FRONT);
+    public static OrientedOverlayRenderer LARGE_PLASMA_TURBINE_OVERLAY = new OrientedOverlayRenderer("machines/multiblock_workable", FRONT);
     public static LargeTurbineRenderer LARGE_TURBINE_ROTOR_RENDERER = new LargeTurbineRenderer();
 
     public static OrientedOverlayRenderer ALLOY_SMELTER_OVERLAY = new OrientedOverlayRenderer("machines/alloy_smelter", FRONT);
