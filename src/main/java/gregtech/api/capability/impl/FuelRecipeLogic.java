@@ -286,7 +286,7 @@ public class FuelRecipeLogic extends MTETrait implements IControllable, IFuelabl
      * @return Effective power output of the machine.
      */
     public long calculateRecipeOutputVoltage() {
-        return (long) (getRecipeOutputVoltage() * calculateDynamicEnergyEfficiency());
+        return (long) (this.recipeOutputVoltage * calculateDynamicEnergyEfficiency());
     }
 
     /**
