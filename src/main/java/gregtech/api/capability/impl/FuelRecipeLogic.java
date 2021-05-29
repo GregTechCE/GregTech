@@ -263,9 +263,7 @@ public class FuelRecipeLogic extends MTETrait implements IControllable, IFuelabl
     }
 
     public boolean canConsumeFuel() {
-        return !hasRecipeEnded() &&
-                (energyContainer.get().getEnergyCanBeInserted() >= calculateRecipeOutputVoltage() ||
-                        shouldVoidExcessiveEnergy());
+        return !hasRecipeEnded();
     }
 
     /**
