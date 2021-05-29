@@ -237,6 +237,12 @@ public class FuelRecipeLogic extends MTETrait implements IControllable, IFuelabl
         return calculateRecipeDuration(this.previousRecipe);
     }
 
+    /**
+     * this method aim to tell if the current recipe has ended in order to check for a new recipe see {@link #isActive}
+     * or {@link #isWorkingEnabled} if you want to know if the machine is running.
+     *
+     * @return true if no recipe is running false otherwise
+     */
     public boolean hasRecipeEnded() {
         return this.recipeDurationLeft <= 0;
     }
@@ -251,20 +257,41 @@ public class FuelRecipeLogic extends MTETrait implements IControllable, IFuelabl
         return canProduceEnergy();
     }
 
+    /**
+     * Compute a multiplier used by default in {@link #startRecipe(FuelRecipe, int, int)}  startRecipe} each time the recipe start.
+     * fast changing efficiency could be implemented in {@link #calculateDynamicEnergyEfficiency() calculateDynamicEnergyEfficiency} for better responsiveness of the changes.
+     *
+     * @return power multiplier
+     */
     protected double calculateStaticEnergyEfficiency() {
         return 1.0;
     }
+
+    /**
+     * Compute a multiplier used default in {@link #calculateRecipeOutputVoltage() calculateRecipeOutputVoltage} each tick.
+     * constant/rarely changing efficiency should/could be implemented in {@link #calculateStaticEnergyEfficiency() calculateStaticEnergyEfficiency}
+     *
+     * @return power multiplier
+     */
 
     protected double calculateDynamicEnergyEfficiency() {
         return 1.0;
     }
 
+    /**
+     * Apply {@link #calculateDynamicEnergyEfficiency() calculateDynamicEnergyEfficiency} multiplier
+     * to the outputVoltage returned by {@link #getRecipeOutputVoltage(), getRecipeOutputVoltage}
+     * in order to get the effective power output used in the {@link #update() update} method.
+     *
+     * @return Effective power output of the machine.
+     */
     public long calculateRecipeOutputVoltage() {
         return (long) (getRecipeOutputVoltage() * calculateDynamicEnergyEfficiency());
     }
 
     /**
      * Performs preparations for starting given recipe and determines it's output voltage
+     * the {@link #calculateStaticEnergyEfficiency() calculateStaticEnergyEfficiency} multiplier is by default applied in this method.
      *
      * @return recipe's output voltage
      */
