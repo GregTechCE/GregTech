@@ -110,18 +110,25 @@ public class FuelRecipeLogic extends MTETrait implements IControllable, IFuelabl
     @Override
     public void update() {
         if (getMetaTileEntity().getWorld().isRemote) return;
+
         if (workingEnabled) {
-            if (recipeDurationLeft > 0) {
-                if (energyContainer.get().getEnergyCanBeInserted() >=
-                        recipeOutputVoltage || shouldVoidExcessiveEnergy()) {
-                    energyContainer.get().addEnergy(recipeOutputVoltage);
-                    if (--this.recipeDurationLeft == 0) {
-                        this.wasActiveAndNeedsUpdate = true;
-                    }
-                }
+
+            boolean canConsume = canConsumeFuel();   // we need to compute those two before doing anything
+            boolean canProduce = canProduceEnergy(); // to avoid loosing 1 tick of production
+
+            if (canConsume) {
+                --this.recipeDurationLeft;
             }
-            if (recipeDurationLeft == 0 && isReadyForRecipes()) {
-                tryAcquireNewRecipe();
+
+            if (canProduce) {
+                energyContainer.get().addEnergy(calculateRecipeOutputVoltage());
+            }
+
+            if (hasRecipeEnded()) {
+                this.wasActiveAndNeedsUpdate = true;
+                if (isReadyForRecipes()) {
+                    tryAcquireNewRecipe();
+                }
             }
         }
         if (wasActiveAndNeedsUpdate) {
@@ -206,32 +213,42 @@ public class FuelRecipeLogic extends MTETrait implements IControllable, IFuelabl
         return maxVoltage;
     }
 
+    protected double calculateFuelConsumptionMultiplier() {
+        return 1.0;
+    }
+
     protected int calculateFuelAmount(FuelRecipe currentRecipe) {
-        return currentRecipe.getRecipeFluid().amount * getVoltageMultiplier(getMaxVoltage(), currentRecipe.getMinVoltage());
+        return (int) (currentRecipe.getRecipeFluid().amount * getVoltageMultiplier(getMaxVoltage(), currentRecipe.getMinVoltage()) * calculateFuelConsumptionMultiplier());
+    }
+
+    public int calculateFuelAmount() {
+        return calculateFuelAmount(this.previousRecipe);
+    }
+
+    protected double calculateRecipeDurationMultiplier() {
+        return 1.0;
+    }
+
+    protected int calculateRecipeDuration(FuelRecipe currentRecipe) {
+        return (int) (currentRecipe.getDuration() * calculateRecipeDurationMultiplier());
     }
 
     public int calculateRecipeDuration() {
         return calculateRecipeDuration(this.previousRecipe);
     }
 
-    public int calculateFuelConsumption() {
-        return calculateFuelAmount(this.previousRecipe);
-    }
-
     public boolean hasRecipeEnded() {
-        return !(this.recipeDurationLeft > 0);
+        return this.recipeDurationLeft <= 0;
     }
 
     public boolean canProduceEnergy() {
-        return !hasRecipeEnded();
+        return !hasRecipeEnded() &&
+                (energyContainer.get().getEnergyCanBeInserted() >= calculateRecipeOutputVoltage() ||
+                        shouldVoidExcessiveEnergy());
     }
 
-    public boolean canConsumeFuel(){
-        return !hasRecipeEnded();
-    }
-
-    protected double calculateFuelConsumptionMultiplier() {
-        return 1.0;
+    public boolean canConsumeFuel() {
+        return canProduceEnergy();
     }
 
     protected double calculateStaticEnergyEfficiency() {
@@ -246,21 +263,13 @@ public class FuelRecipeLogic extends MTETrait implements IControllable, IFuelabl
         return (long) (getRecipeOutputVoltage() * calculateDynamicEnergyEfficiency());
     }
 
-    protected double calculateRecipeDurationMultiplier() {
-        return 1.0;
-    }
-
-    protected int calculateRecipeDuration(FuelRecipe currentRecipe) {
-        return currentRecipe.getDuration();
-    }
-
     /**
      * Performs preparations for starting given recipe and determines it's output voltage
      *
      * @return recipe's output voltage
      */
     protected long startRecipe(FuelRecipe currentRecipe, int fuelAmountUsed, int recipeDuration) {
-        return getMaxVoltage();
+        return (long) (getMaxVoltage() * calculateStaticEnergyEfficiency());
     }
 
     public static int getVoltageMultiplier(long maxVoltage, long minVoltage) {
