@@ -113,8 +113,15 @@ public class FuelRecipeLogic extends MTETrait implements IControllable, IFuelabl
 
         if (workingEnabled) {
 
-            boolean canConsume = canConsumeFuel();   // we need to compute those two before doing anything
-            boolean canProduce = canProduceEnergy(); // to avoid loosing 1 tick of production
+            /* we need to compute those two before doing anything
+             * to avoid loosing 1 tick of production
+             */
+
+            boolean canProduce = canProduceEnergy() &&
+                    (energyContainer.get().getEnergyCanBeInserted() >= calculateRecipeOutputVoltage() ||
+                            shouldVoidExcessiveEnergy());
+
+            boolean canConsume = canConsumeFuel() && (shouldConsumeWhenNotProducing() || canProduce);
 
             if (canConsume) {
                 --this.recipeDurationLeft;
@@ -139,6 +146,10 @@ public class FuelRecipeLogic extends MTETrait implements IControllable, IFuelabl
 
     protected boolean isReadyForRecipes() {
         return true;
+    }
+
+    protected boolean shouldConsumeWhenNotProducing() {
+        return false;
     }
 
     protected boolean shouldVoidExcessiveEnergy() {
@@ -248,13 +259,13 @@ public class FuelRecipeLogic extends MTETrait implements IControllable, IFuelabl
     }
 
     public boolean canProduceEnergy() {
-        return !hasRecipeEnded() &&
-                (energyContainer.get().getEnergyCanBeInserted() >= calculateRecipeOutputVoltage() ||
-                        shouldVoidExcessiveEnergy());
+        return !hasRecipeEnded();
     }
 
     public boolean canConsumeFuel() {
-        return canProduceEnergy();
+        return !hasRecipeEnded() &&
+                (energyContainer.get().getEnergyCanBeInserted() >= calculateRecipeOutputVoltage() ||
+                        shouldVoidExcessiveEnergy());
     }
 
     /**
