@@ -44,7 +44,7 @@ public class FuelRecipeLogic extends MTETrait implements IControllable, IFuelabl
     }
 
     public long getRecipeOutputVoltage() {
-        return recipeOutputVoltage;
+        return calculateRecipeOutputVoltage();
     }
 
     @Override
@@ -221,7 +221,7 @@ public class FuelRecipeLogic extends MTETrait implements IControllable, IFuelabl
         return (int) (currentRecipe.getRecipeFluid().amount * getVoltageMultiplier(getMaxVoltage(), currentRecipe.getMinVoltage()) * calculateFuelConsumptionMultiplier());
     }
 
-    public int calculateFuelAmount() {
+    public int getFuelAmount() {
         return calculateFuelAmount(this.previousRecipe);
     }
 
@@ -233,7 +233,7 @@ public class FuelRecipeLogic extends MTETrait implements IControllable, IFuelabl
         return (int) (currentRecipe.getDuration() * calculateRecipeDurationMultiplier());
     }
 
-    public int calculateRecipeDuration() {
+    public int getRecipeDuration() {
         return calculateRecipeDuration(this.previousRecipe);
     }
 
