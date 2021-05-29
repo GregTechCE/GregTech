@@ -27,6 +27,7 @@ import gregtech.api.recipes.ModHandler;
 import gregtech.api.recipes.RecipeMaps;
 import gregtech.api.recipes.recipes.FuelRecipe;
 import gregtech.api.render.ICubeRenderer;
+import gregtech.api.render.OrientedOverlayRenderer;
 import gregtech.api.render.SimpleCubeRenderer;
 import gregtech.api.render.Textures;
 import gregtech.api.util.GTUtility;
@@ -54,6 +55,7 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.IFluidTank;
 
+import javax.annotation.Nonnull;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedHashMap;
@@ -74,28 +76,28 @@ public class MetaTileEntityLargeBoiler extends MultiblockWithDisplayBase impleme
             MetaBlocks.BOILER_FIREBOX_CASING.getState(FireboxCasingType.BRONZE_FIREBOX),
             MetaBlocks.BOILER_CASING.getState(BoilerCasingType.BRONZE_PIPE),
             Textures.BRONZE_PLATED_BRICKS,
-            Textures.BRONZE_FIREBOX, Textures.BRONZE_FIREBOX_ACTIVE),
+            Textures.BRONZE_FIREBOX, Textures.BRONZE_FIREBOX_ACTIVE, Textures.LARGE_BRONZE_BOILER),
 
         STEEL(1600, 1.6f, 30, 800,
             MetaBlocks.METAL_CASING.getState(MetalCasingType.STEEL_SOLID),
             MetaBlocks.BOILER_FIREBOX_CASING.getState(FireboxCasingType.STEEL_FIREBOX),
             MetaBlocks.BOILER_CASING.getState(BoilerCasingType.STEEL_PIPE),
             Textures.SOLID_STEEL_CASING,
-            Textures.STEEL_FIREBOX, Textures.STEEL_FIREBOX_ACTIVE),
+            Textures.STEEL_FIREBOX, Textures.STEEL_FIREBOX_ACTIVE, Textures.LARGE_STEEL_BOILER),
 
         TITANIUM(3700, 3.0f, 31, 2000,
             MetaBlocks.METAL_CASING.getState(MetalCasingType.TITANIUM_STABLE),
             MetaBlocks.BOILER_FIREBOX_CASING.getState(FireboxCasingType.TITANIUM_FIREBOX),
             MetaBlocks.BOILER_CASING.getState(BoilerCasingType.TITANIUM_PIPE),
             Textures.STABLE_TITANIUM_CASING,
-            Textures.TITANIUM_FIREBOX, Textures.TITANIUM_FIREBOX_ACTIVE),
+            Textures.TITANIUM_FIREBOX, Textures.TITANIUM_FIREBOX_ACTIVE, Textures.LARGE_TITANIUM_BOILER),
 
         TUNGSTENSTEEL(7800, 5.4f, 32, 4000,
             MetaBlocks.METAL_CASING.getState(MetalCasingType.TUNGSTENSTEEL_ROBUST),
             MetaBlocks.BOILER_FIREBOX_CASING.getState(FireboxCasingType.TUNGSTENSTEEL_FIREBOX),
             MetaBlocks.BOILER_CASING.getState(BoilerCasingType.TUNGSTENSTEEL_PIPE),
             Textures.ROBUST_TUNGSTENSTEEL_CASING,
-            Textures.TUNGSTENSTEEL_FIREBOX, Textures.TUNGSTENSTEEL_FIREBOX_ACTIVE);
+            Textures.TUNGSTENSTEEL_FIREBOX, Textures.TUNGSTENSTEEL_FIREBOX_ACTIVE, Textures.LARGE_TUNGSTENSTEEL_BOILER);
 
         public final int baseSteamOutput;
         public final float fuelConsumptionMultiplier;
@@ -107,7 +109,14 @@ public class MetaTileEntityLargeBoiler extends MultiblockWithDisplayBase impleme
         public final ICubeRenderer solidCasingRenderer;
         public final SimpleCubeRenderer fireboxIdleRenderer;
         public final SimpleCubeRenderer firefoxActiveRenderer;
+        //Left not private to add default for compatibility with addons
+        public OrientedOverlayRenderer frontOverlay = Textures.MULTIBLOCK_WORKABLE_OVERLAY;
 
+        /**
+         * Deprecated, use {@link BoilerType#BoilerType(int, float, int, int, IBlockState, IBlockState, IBlockState, ICubeRenderer, SimpleCubeRenderer, SimpleCubeRenderer, OrientedOverlayRenderer)}
+         * Left in place for compatibility with addon mods
+         */
+        @Deprecated
         BoilerType(int baseSteamOutput, float fuelConsumptionMultiplier, int temperatureEffBuff, int maxTemperature, IBlockState casingState, IBlockState fireboxState, IBlockState pipeState,
                    ICubeRenderer solidCasingRenderer, SimpleCubeRenderer fireboxIdleRenderer, SimpleCubeRenderer firefoxActiveRenderer) {
             this.baseSteamOutput = baseSteamOutput;
@@ -120,6 +129,21 @@ public class MetaTileEntityLargeBoiler extends MultiblockWithDisplayBase impleme
             this.solidCasingRenderer = solidCasingRenderer;
             this.fireboxIdleRenderer = fireboxIdleRenderer;
             this.firefoxActiveRenderer = firefoxActiveRenderer;
+        }
+
+        BoilerType(int baseSteamOutput, float fuelConsumptionMultiplier, int temperatureEffBuff, int maxTemperature, IBlockState casingState, IBlockState fireboxState, IBlockState pipeState,
+                   ICubeRenderer solidCasingRenderer, SimpleCubeRenderer fireboxIdleRenderer, SimpleCubeRenderer firefoxActiveRenderer, OrientedOverlayRenderer frontOverlay) {
+            this.baseSteamOutput = baseSteamOutput;
+            this.fuelConsumptionMultiplier = fuelConsumptionMultiplier;
+            this.temperatureEffBuff = temperatureEffBuff;
+            this.maxTemperature = maxTemperature;
+            this.casingState = casingState;
+            this.fireboxState = fireboxState;
+            this.pipeState = pipeState;
+            this.solidCasingRenderer = solidCasingRenderer;
+            this.fireboxIdleRenderer = fireboxIdleRenderer;
+            this.firefoxActiveRenderer = firefoxActiveRenderer;
+            this.frontOverlay = frontOverlay;
         }
     }
 
@@ -416,10 +440,10 @@ public class MetaTileEntityLargeBoiler extends MultiblockWithDisplayBase impleme
             .build();
     }
 
+    @Nonnull
     @Override
-    public void renderMetaTileEntity(CCRenderState renderState, Matrix4 translation, IVertexOperation[] pipeline) {
-        super.renderMetaTileEntity(renderState, translation, pipeline);
-        Textures.MULTIBLOCK_WORKABLE_OVERLAY.render(renderState, translation, pipeline, getFrontFacing(), isActive);
+    protected OrientedOverlayRenderer getFrontOverlay() {
+        return boilerType.frontOverlay;
     }
 
     @Override

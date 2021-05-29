@@ -161,13 +161,4 @@ public abstract class RecipeMapMultiblockController extends MultiblockWithDispla
         super.renderMetaTileEntity(renderState, translation, pipeline);
         this.getFrontOverlay().render(renderState, translation, pipeline, getFrontFacing(), recipeMapWorkable.isActive());
     }
-
-    /**
-     * Override this method to change the Controller overlay
-     * @return The overlay to render on the Multiblock Controller
-     */
-    @Nonnull
-    protected OrientedOverlayRenderer getFrontOverlay() {
-        return Textures.MULTIBLOCK_WORKABLE_OVERLAY;
-    }
 }

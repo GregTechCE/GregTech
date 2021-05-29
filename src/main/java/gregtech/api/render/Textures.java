@@ -87,6 +87,10 @@ public class Textures {
     public static OrientedOverlayRenderer LARGE_STEAM_TURBINE_OVERLAY = new OrientedOverlayRenderer("multiblock/generator/large_steam_turbine", FRONT);
     public static OrientedOverlayRenderer LARGE_GAS_TURBINE_OVERLAY = new OrientedOverlayRenderer("multiblock/generator/large_gas_turbine", FRONT);
     public static OrientedOverlayRenderer LARGE_PLASMA_TURBINE_OVERLAY = new OrientedOverlayRenderer("multiblock/generator/large_plasma_turbine", FRONT);
+    public static OrientedOverlayRenderer LARGE_BRONZE_BOILER = new OrientedOverlayRenderer("multiblock/generator/large_bronze_boiler", FRONT);
+    public static OrientedOverlayRenderer LARGE_STEEL_BOILER = new OrientedOverlayRenderer("multiblock/generator/large_steel_boiler", FRONT);
+    public static OrientedOverlayRenderer LARGE_TITANIUM_BOILER = new OrientedOverlayRenderer("multiblock/generator/large_titanium_boiler", FRONT);
+    public static OrientedOverlayRenderer LARGE_TUNGSTENSTEEL_BOILER = new OrientedOverlayRenderer("multiblock/generator/large_tungstensteel_boiler", FRONT);
     public static LargeTurbineRenderer LARGE_TURBINE_ROTOR_RENDERER = new LargeTurbineRenderer();
 
     public static OrientedOverlayRenderer ALLOY_SMELTER_OVERLAY = new OrientedOverlayRenderer("machines/alloy_smelter", FRONT);
