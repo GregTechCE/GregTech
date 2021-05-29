@@ -88,8 +88,7 @@ public class FuelRecipeLogic extends MTETrait implements IControllable, IFuelabl
             if (fuelInfo == null) {
                 fuelInfo = new FluidFuelInfo(tankContents, fuelRemaining, fuelCapacity, amountPerRecipe, fuelBurnTime);
                 fuels.put(tankContents.getUnlocalizedName(), fuelInfo);
-            }
-            else {
+            } else {
                 fuelInfo.addFuelRemaining(fuelRemaining);
                 fuelInfo.addFuelBurnTime(fuelBurnTime);
             }
@@ -99,10 +98,10 @@ public class FuelRecipeLogic extends MTETrait implements IControllable, IFuelabl
 
     @Override
     public <T> T getCapability(Capability<T> capability) {
-        if(capability == GregtechTileCapabilities.CAPABILITY_CONTROLLABLE) {
+        if (capability == GregtechTileCapabilities.CAPABILITY_CONTROLLABLE) {
             return GregtechTileCapabilities.CAPABILITY_CONTROLLABLE.cast(this);
         }
-        if(capability == GregtechCapabilities.CAPABILITY_FUELABLE) {
+        if (capability == GregtechCapabilities.CAPABILITY_FUELABLE) {
             return GregtechCapabilities.CAPABILITY_FUELABLE.cast(this);
         }
         return null;
@@ -114,7 +113,7 @@ public class FuelRecipeLogic extends MTETrait implements IControllable, IFuelabl
         if (workingEnabled) {
             if (recipeDurationLeft > 0) {
                 if (energyContainer.get().getEnergyCanBeInserted() >=
-                    recipeOutputVoltage || shouldVoidExcessiveEnergy()) {
+                        recipeOutputVoltage || shouldVoidExcessiveEnergy()) {
                     energyContainer.get().addEnergy(recipeOutputVoltage);
                     if (--this.recipeDurationLeft == 0) {
                         this.wasActiveAndNeedsUpdate = true;
@@ -132,7 +131,7 @@ public class FuelRecipeLogic extends MTETrait implements IControllable, IFuelabl
     }
 
     protected boolean isReadyForRecipes() {
-       return true;
+        return true;
     }
 
     protected boolean shouldVoidExcessiveEnergy() {
@@ -211,6 +210,46 @@ public class FuelRecipeLogic extends MTETrait implements IControllable, IFuelabl
         return currentRecipe.getRecipeFluid().amount * getVoltageMultiplier(getMaxVoltage(), currentRecipe.getMinVoltage());
     }
 
+    public int calculateRecipeDuration() {
+        return calculateRecipeDuration(this.previousRecipe);
+    }
+
+    public int calculateFuelConsumption() {
+        return calculateFuelAmount(this.previousRecipe);
+    }
+
+    public boolean hasRecipeEnded() {
+        return !(this.recipeDurationLeft > 0);
+    }
+
+    public boolean canProduceEnergy() {
+        return !hasRecipeEnded();
+    }
+
+    public boolean canConsumeFuel(){
+        return !hasRecipeEnded();
+    }
+
+    protected double calculateFuelConsumptionMultiplier() {
+        return 1.0;
+    }
+
+    protected double calculateStaticEnergyEfficiency() {
+        return 1.0;
+    }
+
+    protected double calculateDynamicEnergyEfficiency() {
+        return 1.0;
+    }
+
+    public long calculateRecipeOutputVoltage() {
+        return (long) (getRecipeOutputVoltage() * calculateDynamicEnergyEfficiency());
+    }
+
+    protected double calculateRecipeDurationMultiplier() {
+        return 1.0;
+    }
+
     protected int calculateRecipeDuration(FuelRecipe currentRecipe) {
         return currentRecipe.getDuration();
     }
@@ -243,6 +282,7 @@ public class FuelRecipeLogic extends MTETrait implements IControllable, IFuelabl
             writeCustomData(1, buf -> buf.writeBoolean(active));
         }
     }
+
 
     @Override
     public void setWorkingEnabled(boolean workingEnabled) {
