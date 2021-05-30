@@ -15,7 +15,7 @@ public class ComponentRecipes {
 
     public static void register() {
 
-        //Field Generators start ---------------------------------------------------------------------------------------
+        //Field Generators Start ---------------------------------------------------------------------------------------
         RecipeMaps.ASSEMBLER_RECIPES.recipeBuilder()
                 .input(OrePrefix.dust, Materials.EnderPearl, 1)
                 .input(OrePrefix.circuit, MarkerMaterials.Tier.Basic, 4)
@@ -51,7 +51,6 @@ public class ComponentRecipes {
                 .outputs(MetaItems.FIELD_GENERATOR_IV.getStackForm())
                 .duration(100).EUt(7680).buildAndRegister();
 
-        //Field Generators End -----------------------------------------------------------------------------------------
 
         //Robot Arms Start ---------------------------------------------------------------------------------------------
         RecipeMaps.ASSEMBLER_RECIPES.recipeBuilder()
@@ -99,7 +98,6 @@ public class ComponentRecipes {
                 .outputs(MetaItems.ROBOT_ARM_IV.getStackForm())
                 .duration(100).EUt(7680).buildAndRegister();
 
-        //Robot Arms End------------------------------------------------------------------------------------------------
 
         //Motors Start--------------------------------------------------------------------------------------------------
         RecipeMaps.ASSEMBLER_RECIPES.recipeBuilder()
@@ -150,7 +148,6 @@ public class ComponentRecipes {
                 .outputs(MetaItems.ELECTRIC_MOTOR_IV.getStackForm())
                 .duration(100).EUt(7680).buildAndRegister();
 
-        //Motors End----------------------------------------------------------------------------------------------------
 
         //Sensors Start-------------------------------------------------------------------------------------------------
         RecipeMaps.ASSEMBLER_RECIPES.recipeBuilder()
@@ -193,7 +190,6 @@ public class ComponentRecipes {
                 .outputs(MetaItems.SENSOR_IV.getStackForm())
                 .duration(100).EUt(7680).buildAndRegister();
 
-        //Sensors End---------------------------------------------------------------------------------------------------
 
         //Emitters Start------------------------------------------------------------------------------------------------
         RecipeMaps.ASSEMBLER_RECIPES.recipeBuilder()
@@ -241,7 +237,6 @@ public class ComponentRecipes {
                 .outputs(MetaItems.EMITTER_IV.getStackForm())
                 .duration(100).EUt(7680).buildAndRegister();
 
-        //Emitters End--------------------------------------------------------------------------------------------------
 
         //Pistons Start-------------------------------------------------------------------------------------------------
         RecipeMaps.ASSEMBLER_RECIPES.recipeBuilder()
@@ -289,12 +284,12 @@ public class ComponentRecipes {
                 .outputs(MetaItems.ELECTRIC_PISTON_IV.getStackForm())
                 .duration(100).EUt(7680).buildAndRegister();
 
-        //Pistons End---------------------------------------------------------------------------------------------------
 
         //Conveyors Start-----------------------------------------------------------------------------------------------
         RecipeMaps.ASSEMBLER_RECIPES.recipeBuilder()
                 .input(OrePrefix.cableGtSingle, Materials.Tin)
                 .inputs(MetaItems.ELECTRIC_MOTOR_LV.getStackForm(2))
+                .circuitMeta(1)
                 .fluidInputs(Materials.Rubber.getFluid(L * 6))
                 .outputs(MetaItems.CONVEYOR_MODULE_LV.getStackForm())
                 .duration(100).EUt(30).buildAndRegister();
@@ -302,6 +297,7 @@ public class ComponentRecipes {
         RecipeMaps.ASSEMBLER_RECIPES.recipeBuilder()
                 .input(OrePrefix.cableGtSingle, Materials.Copper)
                 .inputs(MetaItems.ELECTRIC_MOTOR_MV.getStackForm(2))
+                .circuitMeta(1)
                 .fluidInputs(Materials.Rubber.getFluid(L * 6))
                 .outputs(MetaItems.CONVEYOR_MODULE_MV.getStackForm())
                 .duration(100).EUt(120).buildAndRegister();
@@ -309,6 +305,7 @@ public class ComponentRecipes {
         RecipeMaps.ASSEMBLER_RECIPES.recipeBuilder()
                 .input(OrePrefix.cableGtSingle, Materials.Gold)
                 .inputs(MetaItems.ELECTRIC_MOTOR_HV.getStackForm(2))
+                .circuitMeta(1)
                 .fluidInputs(Materials.Rubber.getFluid(L * 6))
                 .outputs(MetaItems.CONVEYOR_MODULE_HV.getStackForm())
                 .duration(100).EUt(480).buildAndRegister();
@@ -316,6 +313,7 @@ public class ComponentRecipes {
         RecipeMaps.ASSEMBLER_RECIPES.recipeBuilder()
                 .input(OrePrefix.cableGtSingle, Materials.Aluminium)
                 .inputs(MetaItems.ELECTRIC_MOTOR_EV.getStackForm(2))
+                .circuitMeta(1)
                 .fluidInputs(Materials.Rubber.getFluid(L * 6))
                 .outputs(MetaItems.CONVEYOR_MODULE_EV.getStackForm())
                 .duration(100).EUt(1920).buildAndRegister();
@@ -323,11 +321,11 @@ public class ComponentRecipes {
         RecipeMaps.ASSEMBLER_RECIPES.recipeBuilder()
                 .input(OrePrefix.cableGtSingle, Materials.Tungsten)
                 .inputs(MetaItems.ELECTRIC_MOTOR_IV.getStackForm(2))
+                .circuitMeta(1)
                 .fluidInputs(Materials.Rubber.getFluid(L * 6))
                 .outputs(MetaItems.CONVEYOR_MODULE_IV.getStackForm())
                 .duration(100).EUt(7680).buildAndRegister();
 
-        //Conveyors End-------------------------------------------------------------------------------------------------
 
         //Pumps Start---------------------------------------------------------------------------------------------------
         for(FluidStack fluid : pumpFluids) {
@@ -381,7 +379,5 @@ public class ComponentRecipes {
                     .outputs(MetaItems.ELECTRIC_PUMP_IV.getStackForm())
                     .duration(100).EUt(7680).buildAndRegister();
         }
-
-        //Pumps End-----------------------------------------------------------------------------------------------------
     }
 }
