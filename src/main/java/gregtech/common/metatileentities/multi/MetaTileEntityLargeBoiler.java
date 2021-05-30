@@ -217,15 +217,17 @@ public class MetaTileEntityLargeBoiler extends MultiblockWithDisplayBase impleme
 
     @Override
     protected void updateFormedValid() {
-        if (fuelBurnTicksLeft > 0 && currentTemperature < boilerType.maxTemperature) {
-            --this.fuelBurnTicksLeft;
-            if (getOffsetTimer() % 20 == 0) {
-                this.currentTemperature++;
+        if (fuelBurnTicksLeft > 0 ){
+            if (getOffsetTimer()%2 == 0 || currentTemperature < boilerType.maxTemperature) {
+                --this.fuelBurnTicksLeft;
+                if (getOffsetTimer() % 20 == 0 && currentTemperature < boilerType.maxTemperature) {
+                    this.currentTemperature++;
+                }
             }
             if (fuelBurnTicksLeft == 0) {
                 this.wasActiveAndNeedsUpdate = true;
             }
-        } else if (currentTemperature > 0 && getOffsetTimer() % 20 == 0) {
+        }else if (currentTemperature > 0 && getOffsetTimer() % 20 == 0) {
             --this.currentTemperature;
         }
 
