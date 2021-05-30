@@ -44,10 +44,12 @@ public class MetaTileEntityLargeTurbine extends RotorHolderMultiblockController 
         public final IBlockState casingState;
         public final ICubeRenderer casingRenderer;
         public final boolean hasOutputHatch;
-        public OrientedOverlayRenderer frontOverlay = Textures.MULTIBLOCK_WORKABLE_OVERLAY;
+        //Not final so that a default can be provided for addon compatibility
+        private OrientedOverlayRenderer frontOverlay = Textures.MULTIBLOCK_WORKABLE_OVERLAY;
 
         /**
-         * Deprecated, use {@link TurbineType#TurbineType(FuelRecipeMap, IBlockState, ICubeRenderer, boolean, OrientedOverlayRenderer)}
+         * @deprecated use {@link TurbineType#TurbineType(FuelRecipeMap, IBlockState, ICubeRenderer, boolean, OrientedOverlayRenderer)}
+         * Deprecated for use due to new constructor accepting a front overlay texture
          * This is left in place to ensure compatibility with addon mods that add Large Turbines
          */
         @Deprecated

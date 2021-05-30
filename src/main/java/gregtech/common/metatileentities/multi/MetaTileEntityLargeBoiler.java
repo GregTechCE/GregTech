@@ -109,11 +109,12 @@ public class MetaTileEntityLargeBoiler extends MultiblockWithDisplayBase impleme
         public final ICubeRenderer solidCasingRenderer;
         public final SimpleCubeRenderer fireboxIdleRenderer;
         public final SimpleCubeRenderer firefoxActiveRenderer;
-        //Left not private to add default for compatibility with addons
-        public OrientedOverlayRenderer frontOverlay = Textures.MULTIBLOCK_WORKABLE_OVERLAY;
+        //Left not final to add default for compatibility with addons
+        private OrientedOverlayRenderer frontOverlay = Textures.MULTIBLOCK_WORKABLE_OVERLAY;
 
         /**
-         * Deprecated, use {@link BoilerType#BoilerType(int, float, int, int, IBlockState, IBlockState, IBlockState, ICubeRenderer, SimpleCubeRenderer, SimpleCubeRenderer, OrientedOverlayRenderer)}
+         * @deprecated use {@link BoilerType#BoilerType(int, float, int, int, IBlockState, IBlockState, IBlockState, ICubeRenderer, SimpleCubeRenderer, SimpleCubeRenderer, OrientedOverlayRenderer)}
+         * Deprecated for use due to new constructor accepting a front overlay texture
          * Left in place for compatibility with addon mods
          */
         @Deprecated
