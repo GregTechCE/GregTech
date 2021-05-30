@@ -440,6 +440,12 @@ public class MetaTileEntityLargeBoiler extends MultiblockWithDisplayBase impleme
             .build();
     }
 
+    @Override
+    public void renderMetaTileEntity(CCRenderState renderState, Matrix4 translation, IVertexOperation[] pipeline) {
+        super.renderMetaTileEntity(renderState, translation, pipeline);
+        this.getFrontOverlay().render(renderState, translation, pipeline, getFrontFacing(), isActive);
+    }
+
     @Nonnull
     @Override
     protected OrientedOverlayRenderer getFrontOverlay() {
