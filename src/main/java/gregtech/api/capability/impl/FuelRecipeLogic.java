@@ -19,7 +19,7 @@ import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.function.Supplier;
 
-public class FuelRecipeLogic extends MTETrait implements IControllable, IFuelable {
+public class FuelRecipeLogic extends MTETrait implements IControllable, IFuelable, IThrottleable {
 
     public final FuelRecipeMap recipeMap;
     protected FuelRecipe previousRecipe;
@@ -35,12 +35,24 @@ public class FuelRecipeLogic extends MTETrait implements IControllable, IFuelabl
     private boolean workingEnabled = true;
     private boolean wasActiveAndNeedsUpdate = false;
 
+    private IThrottle throttle = IThrottle.FULL_THROTTLE;
+
     public FuelRecipeLogic(MetaTileEntity metaTileEntity, FuelRecipeMap recipeMap, Supplier<IEnergyContainer> energyContainer, Supplier<IMultipleTankHandler> fluidTank, long maxVoltage) {
         super(metaTileEntity);
         this.recipeMap = recipeMap;
         this.energyContainer = energyContainer;
         this.fluidTank = fluidTank;
         this.maxVoltage = maxVoltage;
+    }
+
+    @Override
+    public IThrottle getThrottle() {
+        return this.throttle;
+    }
+
+    @Override
+    public void setThrottle(final IThrottle throttle) {
+        this.throttle = throttle;
     }
 
     public long getRecipeOutputVoltage() {
@@ -80,8 +92,8 @@ public class FuelRecipeLogic extends MTETrait implements IControllable, IFuelabl
             FuelRecipe recipe = findRecipe(tankContents);
             if (recipe == null)
                 continue;
-            int amountPerRecipe = calculateFuelAmount(recipe);
-            int duration = calculateRecipeDuration(recipe);
+            int amountPerRecipe = (int) (calculateFuelAmount(recipe) * this.throttle.calculateConsumptionMultiplier());
+            int duration = (int) (calculateRecipeDuration(recipe) * this.throttle.calculateDurationMultiplier());
             int fuelBurnTime = duration * fuelRemaining / amountPerRecipe;
 
             FluidFuelInfo fuelInfo = (FluidFuelInfo) fuels.get(tankContents.getUnlocalizedName());
@@ -104,6 +116,9 @@ public class FuelRecipeLogic extends MTETrait implements IControllable, IFuelabl
         }
         if(capability == GregtechCapabilities.CAPABILITY_FUELABLE) {
             return GregtechCapabilities.CAPABILITY_FUELABLE.cast(this);
+        }
+        if (capability == GregtechCapabilities.CAPABILITY_THROTTLEABLE) {
+            return GregtechCapabilities.CAPABILITY_THROTTLEABLE.cast(this);
         }
         return null;
     }
@@ -171,10 +186,10 @@ public class FuelRecipeLogic extends MTETrait implements IControllable, IFuelabl
             }
         }
         if (currentRecipe != null && checkRecipe(currentRecipe)) {
-            int fuelAmountToUse = calculateFuelAmount(currentRecipe);
+            int fuelAmountToUse = (int) (calculateFuelAmount(currentRecipe) * this.throttle.calculateConsumptionMultiplier());
             if (fluidStack.amount >= fuelAmountToUse) {
-                this.recipeDurationLeft = calculateRecipeDuration(currentRecipe);
-                this.recipeOutputVoltage = startRecipe(currentRecipe, fuelAmountToUse, recipeDurationLeft);
+                this.recipeDurationLeft = (int) (calculateRecipeDuration(currentRecipe) * this.throttle.calculateDurationMultiplier());
+                this.recipeOutputVoltage = (long) (startRecipe(currentRecipe, fuelAmountToUse, this.recipeDurationLeft) * this.throttle.calculateOutputVoltageMultiplier());
                 if (wasActiveAndNeedsUpdate) {
                     this.wasActiveAndNeedsUpdate = false;
                 } else {

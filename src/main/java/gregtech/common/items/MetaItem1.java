@@ -269,6 +269,7 @@ public class MetaItem1 extends MaterialMetaItem {
         SMART_FILTER = addItem(103, "smart_item_filter");
 
         COVER_MACHINE_CONTROLLER = addItem(730, "cover.controller");
+        COVER_THROTTLE = addItem(735, "cover.throttle");
 
         COVER_ACTIVITY_DETECTOR = addItem(731, "cover.activity.detector").setInvisible();
         COVER_FLUID_DETECTOR = addItem(732, "cover.fluid.detector").setInvisible();

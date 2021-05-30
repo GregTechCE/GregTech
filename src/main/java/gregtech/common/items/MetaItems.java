@@ -306,6 +306,7 @@ public final class MetaItems {
     public static MetaItem<?>.MetaValueItem COVER_SHUTTER;
     public static MetaItem<?>.MetaValueItem COVER_MACHINE_CONTROLLER;
     public static MetaItem<?>.MetaValueItem COVER_FACADE;
+    public static MetaItem<?>.MetaValueItem COVER_THROTTLE;
 
     public static MetaItem<?>.MetaValueItem COVER_ACTIVITY_DETECTOR;
     public static MetaItem<?>.MetaValueItem COVER_FLUID_DETECTOR;
