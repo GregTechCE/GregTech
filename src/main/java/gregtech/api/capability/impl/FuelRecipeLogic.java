@@ -250,24 +250,16 @@ public class FuelRecipeLogic extends MTETrait implements IControllable, IFuelabl
         return maxVoltage;
     }
 
-    protected double calculateFuelConsumptionMultiplier() {
-        return 1.0;
-    }
-
     protected int calculateFuelAmount(FuelRecipe currentRecipe) {
-        return (int) (currentRecipe.getRecipeFluid().amount * getVoltageMultiplier(getMaxVoltage(), currentRecipe.getMinVoltage()) * calculateFuelConsumptionMultiplier());
+        return currentRecipe.getRecipeFluid().amount * getVoltageMultiplier(getMaxVoltage(), currentRecipe.getMinVoltage());
     }
 
     public int getFuelAmount() {
         return this.fuelAmount;
     }
 
-    protected double calculateRecipeDurationMultiplier() {
-        return 1.0;
-    }
-
     protected int calculateRecipeDuration(FuelRecipe currentRecipe) {
-        return (int) (currentRecipe.getDuration() * calculateRecipeDurationMultiplier());
+        return currentRecipe.getDuration();
     }
 
     public int getRecipeDuration() {
@@ -292,46 +284,18 @@ public class FuelRecipeLogic extends MTETrait implements IControllable, IFuelabl
         return !hasRecipeEnded();
     }
 
-    /**
-     * Compute a multiplier used by default in {@link #startRecipe(FuelRecipe, int, int)}  startRecipe} each time the recipe start.
-     * fast changing efficiency could be implemented in {@link #calculateDynamicEnergyEfficiency() calculateDynamicEnergyEfficiency} for better responsiveness of the changes.
-     *
-     * @return power multiplier
-     */
-    protected double calculateStaticEnergyEfficiency() {
-        return 1.0;
-    }
-
-    /**
-     * Compute a multiplier used default in {@link #calculateRecipeOutputVoltage() calculateRecipeOutputVoltage} each tick.
-     * constant/rarely changing efficiency should/could be implemented in {@link #calculateStaticEnergyEfficiency() calculateStaticEnergyEfficiency}
-     *
-     * @return power multiplier
-     */
-
-    protected double calculateDynamicEnergyEfficiency() {
-        return 1.0;
-    }
-
-    /**
-     * Apply {@link #calculateDynamicEnergyEfficiency() calculateDynamicEnergyEfficiency} multiplier
-     * to the outputVoltage returned by {@link #getRecipeOutputVoltage(), getRecipeOutputVoltage}
-     * in order to get the effective power output used in the {@link #update() update} method.
-     *
-     * @return Effective power output of the machine.
-     */
     protected long calculateRecipeOutputVoltage() {
-        return (long) (this.recipeOutputVoltage * calculateDynamicEnergyEfficiency());
+        return this.recipeOutputVoltage ;
     }
 
     /**
-     * Performs preparations for starting given recipe and determines it's output voltage
-     * the {@link #calculateStaticEnergyEfficiency() calculateStaticEnergyEfficiency} multiplier is by default applied in this method.
+     * Performs preparations for starting given recipe and determines it's base output voltage
+     * further computation can be done in {@link #calculateRecipeOutputVoltage}
      *
-     * @return recipe's output voltage
+     * @return recipe's base output voltage
      */
     protected long startRecipe(FuelRecipe currentRecipe, int fuelAmountUsed, int recipeDuration) {
-        return (long) (getMaxVoltage() * calculateStaticEnergyEfficiency());
+        return getMaxVoltage();
     }
 
     public static int getVoltageMultiplier(long maxVoltage, long minVoltage) {
