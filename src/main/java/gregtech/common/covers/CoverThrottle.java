@@ -28,7 +28,7 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.math.MathHelper;
 
-public class CoverThrottle extends CoverBehavior implements CoverWithUI, IThrottle {
+public class CoverThrottle extends CoverBehavior implements CoverWithUI, IThrottle, ITickable {
 
     private int throttlePercentage;
 
@@ -83,6 +83,13 @@ public class CoverThrottle extends CoverBehavior implements CoverWithUI, IThrott
         IThrottleable throttleable = getThrottleable();
         if (throttleable != null) {
             throttleable.setThrottle(IThrottle.FULL_THROTTLE);
+        }
+    }
+
+    @Override
+    public void update() {
+        if (this.coverHolder.getTimer() == 0) {
+            addThrottle();
         }
     }
 
