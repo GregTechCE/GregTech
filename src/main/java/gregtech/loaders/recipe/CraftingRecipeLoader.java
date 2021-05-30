@@ -230,6 +230,26 @@ public class CraftingRecipeLoader {
             ModHandler.removeRecipeByName(new ResourceLocation("minecraft:flint_and_steel"));
         }
 
+        ModHandler.addShapedRecipe("battery_hull_lv", MetaItems.BATTERY_HULL_LV.getStackForm(), "C", "P", "P", 'C', new UnificationEntry(OrePrefix.cableGtSingle, Materials.Tin), 'P', new UnificationEntry(OrePrefix.plate, Materials.BatteryAlloy));
+        ModHandler.addShapedRecipe("battery_hull_mv", MetaItems.BATTERY_HULL_MV.getStackForm(), "C C", "PPP", "PPP", 'C', new UnificationEntry(OrePrefix.cableGtSingle, Materials.Copper), 'P', new UnificationEntry(OrePrefix.plate, Materials.BatteryAlloy));
+
+        ModHandler.addShapedRecipe("carbon_mesh", MetaItems.CARBON_MESH.getStackForm(), "XX", "XX", 'X', MetaItems.CARBON_FIBERS.getStackForm());
+
+        ModHandler.addShapedRecipe("component_grinder_diamond", MetaItems.COMPONENT_GRINDER_DIAMOND.getStackForm(), "XSX", "SDS", "XSX", 'X', new UnificationEntry(OrePrefix.dust, Materials.Diamond), 'S', new UnificationEntry(OrePrefix.plate, Materials.Steel), 'D', new UnificationEntry(OrePrefix.gem, Materials.Diamond));
+        ModHandler.addShapedRecipe("component_grinder_tungsten", MetaItems.COMPONENT_GRINDER_TUNGSTEN.getStackForm(), "WSW", "SDS", "WSW", 'W', new UnificationEntry(OrePrefix.plate, Materials.Tungsten), 'S', new UnificationEntry(OrePrefix.plate, Materials.Steel), 'D', new UnificationEntry(OrePrefix.gem, Materials.Diamond));
+        ModHandler.addShapedRecipe("component_sawblade_diamond", MetaItems.COMPONENT_SAW_BLADE_DIAMOND.getStackForm(), " D ", "DGD", " D ", 'D', new UnificationEntry(OrePrefix.dustSmall, Materials.Diamond), 'G', new UnificationEntry(OrePrefix.gear, Materials.CobaltBrass));
+
+        ModHandler.addShapedRecipe("energy_field_projector", MetaItems.ENERGY_FIELD_PROJECTOR.getStackForm(), "PLP", "LFL", "PLP", 'P', MetaItems.PLATE_IRIDIUM_ALLOY.getStackForm(), 'L', MetaItems.LAPOTRON_CRYSTAL.getStackForm(), 'F', MetaItems.FIELD_GENERATOR_EV);
+
+        ModHandler.addShapedRecipe("ingot_iridium_alloy", MetaItems.INGOT_IRIDIUM_ALLOY.getStackForm(), "IWI", "WDW", "IWI", 'I', new UnificationEntry(OrePrefix.plate, Materials.Iridium), 'W', new UnificationEntry(OrePrefix.plate, Materials.Tungsten), 'D', new UnificationEntry(OrePrefix.dust, Materials.Diamond));
+        ModHandler.addShapedRecipe("ingot_mixed_metal", MetaItems.INGOT_MIXED_METAL.getStackForm(2), "TTT", "BBB", "III", 'T', new UnificationEntry(OrePrefix.plate, Materials.Tin), 'B', new UnificationEntry(OrePrefix.plate, Materials.Bronze), 'I', new UnificationEntry(OrePrefix.plate, Materials.Iron));
+
+        ModHandler.addShapedRecipe("nano_saber", MetaItems.NANO_SABER.getStackForm(), "PIC", "PIC", "XEX", 'P', new UnificationEntry(OrePrefix.plate, Materials.Platinum), 'I', MetaItems.PLATE_IRIDIUM_ALLOY.getStackForm(), 'C', MetaItems.CARBON_PLATE.getStackForm(), 'X', new UnificationEntry(OrePrefix.circuit, Tier.Extreme), 'E', MetaItems.ENERGY_CRYSTAL.getStackForm());
+
+        ModHandler.addShapedRecipe("solar_panel/solar_panel_basic", MetaItems.COVER_SOLAR_PANEL.getStackForm(), "SGS", "CXC", "AAA", 'S', new UnificationEntry(OrePrefix.plate, Materials.Silicon), 'G', "paneGlass", 'C', new UnificationEntry(OrePrefix.cableGtSingle, Materials.Copper), 'X', new UnificationEntry(OrePrefix.circuit, Tier.Basic), 'A', new UnificationEntry(OrePrefix.plate, Materials.Aluminium));
+        ModHandler.addShapedRecipe("solar_panel/solar_panel_ulv", MetaItems.COVER_SOLAR_PANEL_ULV.getStackForm(), "SSS", "SXS", "SSS", 'S', MetaItems.COVER_SOLAR_PANEL.getStackForm(), 'X', new UnificationEntry(OrePrefix.circuit, Tier.Basic));
+        ModHandler.addShapedRecipe("solar_panel/solar_panel_lv", MetaItems.COVER_SOLAR_PANEL_LV.getStackForm(), "PSP", "SXS", "PSP", 'P', new UnificationEntry(OrePrefix.plate, Materials.Silicon), 'S', MetaItems.COVER_SOLAR_PANEL_ULV.getStackForm(), 'X', new UnificationEntry(OrePrefix.circuit, Tier.Good));
+
         ///////////////////////////////////////////////////
         //              Component Recipes                //
         ///////////////////////////////////////////////////
