@@ -30,6 +30,11 @@ public class FuelRecipeLogic extends MTETrait implements IControllable, IFuelabl
 
     private int recipeDurationLeft;
     private long recipeOutputVoltage;
+    private long outputVoltage;
+    private boolean canProduceEnergy;
+    private boolean canProgress;
+    private int recipeDuration;
+    private int fuelAmount;
 
     private boolean isActive;
     private boolean workingEnabled = true;
@@ -43,8 +48,25 @@ public class FuelRecipeLogic extends MTETrait implements IControllable, IFuelabl
         this.maxVoltage = maxVoltage;
     }
 
+    /**
+     * Deprecated please use {@link #getOutputVoltage} to get the output voltage.
+     * overrides of this method should get moved to {@link #calculateRecipeOutputVoltage()}
+     */
+    @Deprecated
     public long getRecipeOutputVoltage() {
-        return calculateRecipeOutputVoltage();
+        return this.outputVoltage;
+    }
+
+    public long getOutputVoltage() {
+        return this.outputVoltage;
+    }
+
+    public boolean hasProducedEnergy() {
+        return this.canProduceEnergy;
+    }
+
+    public boolean hasRecipeProgressed() {
+        return this.canProgress;
     }
 
     @Override
@@ -117,18 +139,19 @@ public class FuelRecipeLogic extends MTETrait implements IControllable, IFuelabl
              * to avoid loosing 1 tick of production
              */
 
-            boolean canProduce = canProduceEnergy() &&
+            this.canProduceEnergy = canProduceEnergy() &&
                     (energyContainer.get().getEnergyCanBeInserted() >= calculateRecipeOutputVoltage() ||
                             shouldVoidExcessiveEnergy());
 
-            boolean canProgress = canRecipeProgress() && (shouldRecipeProgressWhenNotProducingEnergy() || canProduce);
+            this.canProgress = canRecipeProgress() && (shouldRecipeProgressWhenNotProducingEnergy() || this.canProduceEnergy);
 
-            if (canProgress) {
+            if (this.canProgress) {
                 --this.recipeDurationLeft;
             }
 
-            if (canProduce) {
-                energyContainer.get().addEnergy(calculateRecipeOutputVoltage());
+            if (this.canProduceEnergy) {
+                this.outputVoltage = calculateRecipeOutputVoltage();
+                energyContainer.get().addEnergy(outputVoltage);
             }
 
             if (hasRecipeEnded()) {
@@ -190,16 +213,17 @@ public class FuelRecipeLogic extends MTETrait implements IControllable, IFuelabl
             }
         }
         if (currentRecipe != null && checkRecipe(currentRecipe)) {
-            int fuelAmountToUse = calculateFuelAmount(currentRecipe);
-            if (fluidStack.amount >= fuelAmountToUse) {
+            this.fuelAmount = calculateFuelAmount(currentRecipe);
+            if (fluidStack.amount >= this.fuelAmount) {
                 this.recipeDurationLeft = calculateRecipeDuration(currentRecipe);
-                this.recipeOutputVoltage = startRecipe(currentRecipe, fuelAmountToUse, recipeDurationLeft);
+                this.recipeDuration = this.recipeDurationLeft;
+                this.recipeOutputVoltage = startRecipe(currentRecipe, fuelAmount, recipeDurationLeft);
                 if (wasActiveAndNeedsUpdate) {
                     this.wasActiveAndNeedsUpdate = false;
                 } else {
                     setActive(true);
                 }
-                return fuelAmountToUse;
+                return this.fuelAmount;
             }
         }
         return 0;
@@ -235,7 +259,7 @@ public class FuelRecipeLogic extends MTETrait implements IControllable, IFuelabl
     }
 
     public int getFuelAmount() {
-        return calculateFuelAmount(this.previousRecipe);
+        return this.fuelAmount;
     }
 
     protected double calculateRecipeDurationMultiplier() {
@@ -247,7 +271,7 @@ public class FuelRecipeLogic extends MTETrait implements IControllable, IFuelabl
     }
 
     public int getRecipeDuration() {
-        return calculateRecipeDuration(this.previousRecipe);
+        return this.recipeDuration;
     }
 
     /**
@@ -296,7 +320,7 @@ public class FuelRecipeLogic extends MTETrait implements IControllable, IFuelabl
      *
      * @return Effective power output of the machine.
      */
-    public long calculateRecipeOutputVoltage() {
+    protected long calculateRecipeOutputVoltage() {
         return (long) (this.recipeOutputVoltage * calculateDynamicEnergyEfficiency());
     }
 
