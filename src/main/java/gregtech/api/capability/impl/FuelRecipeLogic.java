@@ -132,7 +132,9 @@ public class FuelRecipeLogic extends MTETrait implements IControllable, IFuelabl
             }
 
             if (hasRecipeEnded()) {
-                this.wasActiveAndNeedsUpdate = true;
+                if (isActive) {
+                    this.wasActiveAndNeedsUpdate = true;
+                }
                 if (isReadyForRecipes()) {
                     tryAcquireNewRecipe();
                 }
