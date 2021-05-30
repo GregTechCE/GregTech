@@ -208,6 +208,7 @@ public class MetaTileEntityLargeBoiler extends MultiblockWithDisplayBase impleme
         int modifier = componentData.equals("add") ? 1 : -1;
         int result = (clickData.isShiftClick ? 1 : 5) * modifier;
         this.throttlePercentage = MathHelper.clamp(throttlePercentage + result, 20, 100);
+        markDirty();
     }
 
     private double getHeatEfficiencyMultiplier() {
