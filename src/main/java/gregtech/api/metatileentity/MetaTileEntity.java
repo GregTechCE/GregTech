@@ -259,7 +259,7 @@ public abstract class MetaTileEntity implements ICoverable {
         return getMetaName() + ".name";
     }
 
-    public <T> void addNotifiedInput (T input) {
+    public <T> void addNotifiedInput(T input) {
         if (input instanceof IItemHandlerModifiable) {
             if (!notifiedItemInputList.contains(input)) {
                 this.notifiedItemInputList.add((IItemHandlerModifiable) input);
@@ -271,7 +271,7 @@ public abstract class MetaTileEntity implements ICoverable {
         }
     }
 
-    public <T> void addNotifiedOutput (T output) {
+    public <T> void addNotifiedOutput(T output) {
         if (output instanceof IItemHandlerModifiable) {
             if (!notifiedItemOutputList.contains(output)) {
                 this.notifiedItemOutputList.add((IItemHandlerModifiable) output);
@@ -283,14 +283,14 @@ public abstract class MetaTileEntity implements ICoverable {
         }
     }
 
-    public <T> void removeNotifiedInput (T input) {
+    public <T> void removeNotifiedInput(T input) {
         if (input instanceof IItemHandlerModifiable)
             this.notifiedItemInputList.remove(input);
         else if (input instanceof FluidTank)
             this.notifiedFluidInputList.remove(input);
     }
 
-    public <T> void removeNotifiedOutput (T input) {
+    public <T> void removeNotifiedOutput(T input) {
         if (input instanceof IItemHandlerModifiable)
             this.notifiedItemOutputList.remove(input);
         else if (input instanceof FluidTank)
