@@ -129,6 +129,11 @@ public class FuelRecipeLogic extends MTETrait implements IControllable, IFuelabl
         return null;
     }
 
+    protected boolean hasRoomForEnergy() {
+        return (energyContainer.get().getEnergyCanBeInserted() >= calculateRecipeOutputVoltage() ||
+                shouldVoidExcessiveEnergy());
+    }
+
     @Override
     public void update() {
         if (getMetaTileEntity().getWorld().isRemote) return;
@@ -139,9 +144,7 @@ public class FuelRecipeLogic extends MTETrait implements IControllable, IFuelabl
              * to avoid loosing 1 tick of production
              */
 
-            this.canProduceEnergy = canProduceEnergy() &&
-                    (energyContainer.get().getEnergyCanBeInserted() >= calculateRecipeOutputVoltage() ||
-                            shouldVoidExcessiveEnergy());
+            this.canProduceEnergy = canProduceEnergy(hasRoomForEnergy());
 
             this.canProgress = canRecipeProgress() && (shouldRecipeProgressWhenNotProducingEnergy() || this.canProduceEnergy);
 
@@ -276,8 +279,8 @@ public class FuelRecipeLogic extends MTETrait implements IControllable, IFuelabl
         return this.recipeDurationLeft <= 0;
     }
 
-    public boolean canProduceEnergy() {
-        return !hasRecipeEnded();
+    public boolean canProduceEnergy(boolean hasRoomForEnergy) {
+        return !hasRecipeEnded() && hasRoomForEnergy;
     }
 
     public boolean canRecipeProgress() {
@@ -285,7 +288,7 @@ public class FuelRecipeLogic extends MTETrait implements IControllable, IFuelabl
     }
 
     protected long calculateRecipeOutputVoltage() {
-        return this.recipeOutputVoltage ;
+        return this.recipeOutputVoltage;
     }
 
     /**
