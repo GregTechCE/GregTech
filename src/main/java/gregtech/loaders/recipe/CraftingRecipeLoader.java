@@ -351,6 +351,26 @@ public class CraftingRecipeLoader {
         ModHandler.addShapedRecipe("shape/mold/shape_mold_credit", MetaItems.SHAPE_MOLD_CREDIT.getStackForm(),         "h  ", " S ", "   ", 'S', MetaItems.SHAPE_EMPTY.getStackForm());
         ModHandler.addShapedRecipe("shape/mold/shape_mold_gear", MetaItems.SHAPE_MOLD_GEAR.getStackForm(),             "   ", " Sh", "   ", 'S', MetaItems.SHAPE_EMPTY.getStackForm());
         ModHandler.addShapedRecipe("shape/mold/shape_mold_plate", MetaItems.SHAPE_MOLD_PLATE.getStackForm(),           " h ", " S ", "   ", 'S', MetaItems.SHAPE_EMPTY.getStackForm());
+
+        ///////////////////////////////////////////////////
+        //                   Credits                     //
+        ///////////////////////////////////////////////////
+        ModHandler.addShapelessRecipe("coin_chocolate", MetaItems.COIN_CHOCOLATE.getStackForm(), new UnificationEntry(OrePrefix.dust, Materials.Cocoa), new UnificationEntry(OrePrefix.foil, Materials.Gold), new ItemStack(Items.MILK_BUCKET), new UnificationEntry(OrePrefix.dust, Materials.Sugar));
+
+        ModHandler.addShapelessRecipe("credit/credit_copper", MetaItems.CREDIT_COPPER.getStackForm(8), MetaItems.CREDIT_CUPRONICKEL.getStackForm());
+        ModHandler.addShapelessRecipe("credit/credit_cupronickel_alt", MetaItems.CREDIT_CUPRONICKEL.getStackForm(), MetaItems.CREDIT_COPPER.getStackForm(), MetaItems.CREDIT_COPPER.getStackForm(), MetaItems.CREDIT_COPPER.getStackForm(), MetaItems.CREDIT_COPPER.getStackForm(), MetaItems.CREDIT_COPPER.getStackForm(), MetaItems.CREDIT_COPPER.getStackForm(), MetaItems.CREDIT_COPPER.getStackForm(), MetaItems.CREDIT_COPPER.getStackForm());
+        ModHandler.addShapelessRecipe("credit/credit_cupronickel", MetaItems.CREDIT_CUPRONICKEL.getStackForm(8), MetaItems.CREDIT_SILVER.getStackForm());
+        ModHandler.addShapelessRecipe("credit/credit_silver_alt", MetaItems.CREDIT_SILVER.getStackForm(), MetaItems.CREDIT_CUPRONICKEL.getStackForm(),  MetaItems.CREDIT_CUPRONICKEL.getStackForm(), MetaItems.CREDIT_CUPRONICKEL.getStackForm(), MetaItems.CREDIT_CUPRONICKEL.getStackForm(), MetaItems.CREDIT_CUPRONICKEL.getStackForm(), MetaItems.CREDIT_CUPRONICKEL.getStackForm(), MetaItems.CREDIT_CUPRONICKEL.getStackForm(), MetaItems.CREDIT_CUPRONICKEL.getStackForm());
+        ModHandler.addShapelessRecipe("credit/credit_silver", MetaItems.CREDIT_SILVER.getStackForm(8), MetaItems.CREDIT_GOLD.getStackForm());
+        ModHandler.addShapelessRecipe("credit/credit_gold_alt", MetaItems.CREDIT_GOLD.getStackForm(), MetaItems.CREDIT_SILVER.getStackForm(), MetaItems.CREDIT_SILVER.getStackForm(), MetaItems.CREDIT_SILVER.getStackForm(), MetaItems.CREDIT_SILVER.getStackForm(), MetaItems.CREDIT_SILVER.getStackForm(), MetaItems.CREDIT_SILVER.getStackForm(), MetaItems.CREDIT_SILVER.getStackForm(), MetaItems.CREDIT_SILVER.getStackForm());
+        ModHandler.addShapelessRecipe("credit/credit_gold", MetaItems.CREDIT_GOLD.getStackForm(8), MetaItems.CREDIT_PLATINUM.getStackForm());
+        ModHandler.addShapelessRecipe("credit/credit_platinum_alt", MetaItems.CREDIT_PLATINUM.getStackForm(), MetaItems.CREDIT_GOLD.getStackForm(), MetaItems.CREDIT_GOLD.getStackForm(), MetaItems.CREDIT_GOLD.getStackForm(), MetaItems.CREDIT_GOLD.getStackForm(), MetaItems.CREDIT_GOLD.getStackForm(), MetaItems.CREDIT_GOLD.getStackForm(), MetaItems.CREDIT_GOLD.getStackForm(), MetaItems.CREDIT_GOLD.getStackForm());
+        ModHandler.addShapelessRecipe("credit/credit_platinum", MetaItems.CREDIT_PLATINUM.getStackForm(8), MetaItems.CREDIT_OSMIUM.getStackForm());
+        ModHandler.addShapelessRecipe("credit/credit_osmium_alt", MetaItems.CREDIT_OSMIUM.getStackForm(), MetaItems.CREDIT_PLATINUM.getStackForm(), MetaItems.CREDIT_PLATINUM.getStackForm(), MetaItems.CREDIT_PLATINUM.getStackForm(), MetaItems.CREDIT_PLATINUM.getStackForm(), MetaItems.CREDIT_PLATINUM.getStackForm(), MetaItems.CREDIT_PLATINUM.getStackForm(), MetaItems.CREDIT_PLATINUM.getStackForm(), MetaItems.CREDIT_PLATINUM.getStackForm());
+        ModHandler.addShapelessRecipe("credit/credit_osmium", MetaItems.CREDIT_OSMIUM.getStackForm(8), MetaItems.CREDIT_NAQUADAH.getStackForm());
+        ModHandler.addShapelessRecipe("credit/credit_naquadah_alt", MetaItems.CREDIT_NAQUADAH.getStackForm(), MetaItems.CREDIT_OSMIUM.getStackForm(), MetaItems.CREDIT_OSMIUM.getStackForm(), MetaItems.CREDIT_OSMIUM.getStackForm(), MetaItems.CREDIT_OSMIUM.getStackForm(), MetaItems.CREDIT_OSMIUM.getStackForm(), MetaItems.CREDIT_OSMIUM.getStackForm(), MetaItems.CREDIT_OSMIUM.getStackForm(), MetaItems.CREDIT_OSMIUM.getStackForm());
+        ModHandler.addShapelessRecipe("credit/credit_naquadah", MetaItems.CREDIT_NAQUADAH.getStackForm(8), MetaItems.CREDIT_DARMSTADTIUM.getStackForm());
+        ModHandler.addShapelessRecipe("credit/credit_darmstadtium", MetaItems.CREDIT_DARMSTADTIUM.getStackForm(), MetaItems.CREDIT_NAQUADAH.getStackForm(), MetaItems.CREDIT_NAQUADAH.getStackForm(), MetaItems.CREDIT_NAQUADAH.getStackForm(), MetaItems.CREDIT_NAQUADAH.getStackForm(), MetaItems.CREDIT_NAQUADAH.getStackForm(), MetaItems.CREDIT_NAQUADAH.getStackForm(), MetaItems.CREDIT_NAQUADAH.getStackForm(), MetaItems.CREDIT_NAQUADAH.getStackForm());
     }
 
     private static void registerFacadeRecipe(Material material, int facadeAmount) {
