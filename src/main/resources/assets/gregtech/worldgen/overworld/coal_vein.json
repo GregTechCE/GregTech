@@ -2,8 +2,10 @@
   "weight": 70,
   "density": 0.6,
   "min_height": 50,
-  "surface_stone_material": "coal",
-
+  "vein_populator": {
+    "type": "surface_rock",
+    "material": "coal"
+  },
   "generator": {
     "type": "ellipsoid",
     "radius": [16, 16]

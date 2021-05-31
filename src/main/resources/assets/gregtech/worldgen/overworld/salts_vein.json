@@ -2,8 +2,10 @@
   "weight": 60,
   "density": 0.7,
   "min_height": 40,
-  "surface_stone_material": "aluminium",
-
+  "vein_populator": {
+    "type": "surface_rock",
+    "material": "salt"
+  },
   "generator": {
     "type": "ellipsoid",
     "radius": [14, 17]
