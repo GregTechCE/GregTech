@@ -152,7 +152,7 @@ public class FuelRecipeLogic extends MTETrait implements IControllable, IFuelabl
                 energyContainer.get().addEnergy(outputVoltage);
             }
 
-            if (hasRecipeEnded()) {
+            if (this.recipeDurationLeft <= 0) {
                 if (isActive) {
                     this.wasActiveAndNeedsUpdate = true;
                 }
@@ -264,23 +264,13 @@ public class FuelRecipeLogic extends MTETrait implements IControllable, IFuelabl
         return this.recipeDuration;
     }
 
-    /**
-     * this method aim to tell if the current recipe has ended in order to check for a new recipe see {@link #isActive}
-     * or {@link #isWorkingEnabled} if you want to know if the machine is running.
-     *
-     * @return true if no recipe is running false otherwise
-     */
-    public boolean hasRecipeEnded() {
-        return this.recipeDurationLeft <= 0;
-    }
-
     public boolean canProduceEnergy() {
-        return !hasRecipeEnded() && energyContainer.get().getEnergyCanBeInserted() >= calculateRecipeOutputVoltage() ||
+        return this.recipeDurationLeft > 0 && energyContainer.get().getEnergyCanBeInserted() >= calculateRecipeOutputVoltage() ||
                 shouldVoidExcessiveEnergy();
     }
 
     public boolean canRecipeProgress() {
-        return !hasRecipeEnded() && (shouldRecipeProgressWhenNotProducingEnergy() || canProduceEnergy());
+        return this.recipeDurationLeft > 0 && (shouldRecipeProgressWhenNotProducingEnergy() || canProduceEnergy());
     }
 
     protected long calculateRecipeOutputVoltage() {
@@ -352,7 +342,7 @@ public class FuelRecipeLogic extends MTETrait implements IControllable, IFuelabl
         NBTTagCompound compound = new NBTTagCompound();
         compound.setBoolean("WorkEnabled", this.workingEnabled);
         compound.setInteger("RecipeDurationLeft", this.recipeDurationLeft);
-        if (!hasRecipeEnded()) {
+        if (this.recipeDurationLeft > 0) {
             compound.setLong("RecipeOutputVoltage", this.recipeOutputVoltage);
         }
         return compound;
@@ -365,10 +355,10 @@ public class FuelRecipeLogic extends MTETrait implements IControllable, IFuelabl
             this.workingEnabled = compound.getBoolean("WorkEnabled");
         }
         this.recipeDurationLeft = compound.getInteger("RecipeDurationLeft");
-        if (!hasRecipeEnded()) {
+        if (this.recipeDurationLeft > 0) {
             this.recipeOutputVoltage = compound.getLong("RecipeOutputVoltage");
         }
-        this.isActive = !hasRecipeEnded();
+        this.isActive = this.recipeDurationLeft > 0;
     }
 
 }
