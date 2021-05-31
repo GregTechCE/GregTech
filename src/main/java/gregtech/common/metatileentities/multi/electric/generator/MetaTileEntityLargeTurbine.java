@@ -44,8 +44,7 @@ public class MetaTileEntityLargeTurbine extends RotorHolderMultiblockController 
         public final IBlockState casingState;
         public final ICubeRenderer casingRenderer;
         public final boolean hasOutputHatch;
-        //Not final so that a default can be provided for addon compatibility
-        private OrientedOverlayRenderer frontOverlay = Textures.MULTIBLOCK_WORKABLE_OVERLAY;
+        public final OrientedOverlayRenderer frontOverlay;
 
         /**
          * @deprecated use {@link TurbineType#TurbineType(FuelRecipeMap, IBlockState, ICubeRenderer, boolean, OrientedOverlayRenderer)}
@@ -58,6 +57,7 @@ public class MetaTileEntityLargeTurbine extends RotorHolderMultiblockController 
             this.casingState = casingState;
             this.casingRenderer = casingRenderer;
             this.hasOutputHatch = hasOutputHatch;
+            this.frontOverlay = Textures.MULTIBLOCK_WORKABLE_OVERLAY;
         }
 
         TurbineType(FuelRecipeMap recipeMap, IBlockState casingState, ICubeRenderer casingRenderer, boolean hasOutputHatch, OrientedOverlayRenderer frontOverlay) {

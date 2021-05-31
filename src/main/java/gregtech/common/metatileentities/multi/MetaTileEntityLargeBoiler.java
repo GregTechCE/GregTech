@@ -109,8 +109,7 @@ public class MetaTileEntityLargeBoiler extends MultiblockWithDisplayBase impleme
         public final ICubeRenderer solidCasingRenderer;
         public final SimpleCubeRenderer fireboxIdleRenderer;
         public final SimpleCubeRenderer firefoxActiveRenderer;
-        //Left not final to add default for compatibility with addons
-        private OrientedOverlayRenderer frontOverlay = Textures.MULTIBLOCK_WORKABLE_OVERLAY;
+        public final OrientedOverlayRenderer frontOverlay;
 
         /**
          * @deprecated use {@link BoilerType#BoilerType(int, float, int, int, IBlockState, IBlockState, IBlockState, ICubeRenderer, SimpleCubeRenderer, SimpleCubeRenderer, OrientedOverlayRenderer)}
@@ -130,6 +129,7 @@ public class MetaTileEntityLargeBoiler extends MultiblockWithDisplayBase impleme
             this.solidCasingRenderer = solidCasingRenderer;
             this.fireboxIdleRenderer = fireboxIdleRenderer;
             this.firefoxActiveRenderer = firefoxActiveRenderer;
+            this.frontOverlay = Textures.MULTIBLOCK_WORKABLE_OVERLAY;
         }
 
         BoilerType(int baseSteamOutput, float fuelConsumptionMultiplier, int temperatureEffBuff, int maxTemperature, IBlockState casingState, IBlockState fireboxState, IBlockState pipeState,
