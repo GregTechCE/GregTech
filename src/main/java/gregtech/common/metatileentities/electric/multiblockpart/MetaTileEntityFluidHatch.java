@@ -36,14 +36,14 @@ public class MetaTileEntityFluidHatch extends MetaTileEntityMultiblockPart imple
 
     private static final int INITIAL_INVENTORY_SIZE = 8000;
     private ItemStackHandler containerInventory;
-    private FluidTankList fluidTankHandler;
+    private FluidTank fluidTank;
     private boolean isExportHatch;
-
 
     public MetaTileEntityFluidHatch(ResourceLocation metaTileEntityId, int tier, boolean isExportHatch) {
         super(metaTileEntityId, tier);
         this.containerInventory = new ItemStackHandler(2);
         this.isExportHatch = isExportHatch;
+        this.fluidTank = new FluidTank(getInventorySize());
         initializeInventory();
     }
 
@@ -99,13 +99,13 @@ public class MetaTileEntityFluidHatch extends MetaTileEntityMultiblockPart imple
     }
 
     @Override
-    protected void initializeInventory() {
-        super.initializeInventory();
-        FluidTank fluidTank = new FluidTank(getInventorySize());
-        this.fluidTankHandler = new FluidTankList(false, fluidTank);
-        this.exportFluids = fluidTankHandler;
-        this.importFluids = isExportHatch ? new FluidTankList(false) : fluidTankHandler;
-        this.fluidInventory = fluidTankHandler;
+    protected FluidTankList createImportFluidHandler() {
+        return isExportHatch ? new FluidTankList(false) : new FluidTankList(false, fluidTank);
+    }
+
+    @Override
+    protected FluidTankList createExportFluidHandler() {
+        return new FluidTankList(false, fluidTank);
     }
 
     @Override

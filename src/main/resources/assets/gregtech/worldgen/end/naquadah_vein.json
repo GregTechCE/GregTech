@@ -4,8 +4,10 @@
   "max_height": 65,
   "min_height": 30,
   "dimension_filter": ["name:the_end"],
-  "surface_stone_material": "naquadah",
-  
+  "vein_populator": {
+    "type": "surface_rock",
+    "material": "naquadah"
+  },
   "generator": {
     "type": "ellipsoid",
     "radius": [20, 20]
