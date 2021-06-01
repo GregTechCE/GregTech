@@ -1,5 +1,20 @@
 ## Changelog
 
+### 1.15.1
+* Added recipe using liquid ice (#1620) - ALongStringOfNumbers
+* Added Active Overlay to single block Steam and Gas Turbines (#1624) - dan
+* Added dustRegular oredict to vanilla dusts (#1625) - Adrian Brock
+* Added unique OrientedOverlayRenderers for multiblocks (#1630) - ALongStringOfNumbers
+* Added Assembler recipes for components (#1633) - ALongStringOfNumbers
+* Updated Surface Rocks definitions and spawning (#1619) - ALongStringOfNumbers
+* Updated fuel names in TOP to be translated (#1612) - Adrian Brock
+* Fixed Item Collector duplicating items (#1621) - ALongStringOfNumbers
+* Fixed rare bug with output hatches not working (#1626) - Adrian Brock
+* Fixed material type for plain granite ore blocks (#1627) - Adrian Brock
+* Fixed items not clickable in the crafting station (#1629) - Adrian Brock
+* Internal updated project state in README.md (#1609) - pyure
+* Internal made MatFlags require unique IDs (#1622) - dan
+
 ### 1.15.0
 * Highlight: Fixed Granite ID Shift (#1549) - dan
   * Full info: https://github.com/GregTechCE/GregTech/pull/1549
