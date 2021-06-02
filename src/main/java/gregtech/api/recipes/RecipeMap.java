@@ -59,7 +59,7 @@ public class RecipeMap<R extends RecipeBuilder<R>> {
     private final TByteObjectMap<TextureArea> slotOverlays;
     protected TextureArea progressBarTexture;
     protected MoveType moveType;
-    public final boolean isHidden = false;
+    public boolean isHidden = false;
 
     private final Map<FluidKey, Collection<Recipe>> recipeFluidMap = new HashMap<>();
     private final Collection<Recipe> recipeList = new ArrayList<>();
@@ -92,6 +92,7 @@ public class RecipeMap<R extends RecipeBuilder<R>> {
 
         defaultRecipe.setRecipeMap(this);
         this.recipeBuilderSample = defaultRecipe;
+        this.isHidden = isHidden;
         RECIPE_MAPS.add(this);
     }
 
