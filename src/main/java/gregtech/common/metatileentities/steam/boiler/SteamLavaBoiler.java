@@ -1,8 +1,5 @@
 package gregtech.common.metatileentities.steam.boiler;
 
-import java.util.Collection;
-import java.util.Collections;
-
 import gregtech.api.capability.GregtechCapabilities;
 import gregtech.api.capability.IFuelInfo;
 import gregtech.api.capability.IFuelable;
@@ -22,6 +19,9 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
 
+import java.util.Collection;
+import java.util.Collections;
+
 public class SteamLavaBoiler extends SteamBoiler implements IFuelable {
 
     private FluidTank lavaFluidTank;
@@ -39,7 +39,7 @@ public class SteamLavaBoiler extends SteamBoiler implements IFuelable {
     protected FluidTankList createImportFluidHandler() {
         FluidTankList superHandler = super.createImportFluidHandler();
         this.lavaFluidTank = new FilteredFluidHandler(16000)
-            .setFillPredicate(ModHandler::isLava);
+                .setFillPredicate(ModHandler::isLava);
         return new FluidTankList(false, superHandler, lavaFluidTank);
 
     }
@@ -71,15 +71,15 @@ public class SteamLavaBoiler extends SteamBoiler implements IFuelable {
             return Collections.emptySet();
         final int fuelRemaining = lava.amount;
         final int fuelCapacity = lavaFluidTank.getCapacity();
-        final int burnTime = fuelRemaining; // 100 mb lasts 100 ticks
+        final int burnTime = fuelRemaining * (isHighPressure ? 6 : 12); // 100 mb lasts 600 or 1200 ticks
         return Collections.singleton(new FluidFuelInfo(lava, fuelRemaining, fuelCapacity, LAVA_PER_OPERATION, burnTime));
     }
 
     @Override
     protected ModularUI createUI(EntityPlayer entityPlayer) {
         return createUITemplate(entityPlayer)
-            .widget(new TankWidget(lavaFluidTank, 108, 17, 11, 55)
-                .setBackgroundTexture(getGuiTexture("bar_%s_empty")))
-            .build(getHolder(), entityPlayer);
+                .widget(new TankWidget(lavaFluidTank, 108, 17, 11, 55)
+                        .setBackgroundTexture(getGuiTexture("bar_%s_empty")))
+                .build(getHolder(), entityPlayer);
     }
 }

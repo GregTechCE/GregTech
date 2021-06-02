@@ -15,8 +15,11 @@ import java.util.function.Predicate;
 
 public class MetaBlockIdFixHelper {
 
+    private MetaBlockIdFixHelper() {
+    }
+
     public static final Version V1_10_5 = new Version(1, 10, 5); // granite was added in 1.10.5
-    public static final Version V1_14_0 = new Version(1, 14, 0); // meta block id alloc was changed in 1.14.0
+    public static final Version V1_15_0 = new Version(1, 15, 0); // meta block id alloc was changed in 1.15.0
 
     public static final String KEY_FALLBACK_VERSION = "FallbackVersion";
 
@@ -31,6 +34,7 @@ public class MetaBlockIdFixHelper {
             try {
                 return Integer.parseInt(resLoc.substring(COMP_RESLOC_PREF_LEN));
             } catch (NumberFormatException ignored) {
+                //Left empty on purpose
             }
         }
         return -1;
@@ -47,6 +51,7 @@ public class MetaBlockIdFixHelper {
             try {
                 return Integer.parseInt(resLoc.substring(SURF_ROCK_RESLOC_PREF_LEN));
             } catch (NumberFormatException ignored) {
+                //Left empty on purpose
             }
         }
         return -1;

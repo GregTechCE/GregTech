@@ -5,6 +5,8 @@ import gregtech.api.util.DummyContainer;
 import gregtech.common.inventory.itemsource.ItemSourceList;
 import gregtech.common.inventory.itemsource.sources.TileItemSource;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.IInventory;
+import net.minecraft.inventory.InventoryCraftResult;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
@@ -28,7 +30,7 @@ public class CraftingRecipeResolver {
     private final ItemStackHandler craftingGrid;
     private final InventoryCrafting inventoryCrafting = new InventoryCrafting(new DummyContainer(), 3, 3);
     private IRecipe cachedRecipe = null;
-    private final ItemStackHandler craftingResultInventory = new ItemStackHandler(1);
+    private final IInventory craftingResultInventory = new InventoryCraftResult();
     private long timer = 0L;
     private CachedRecipeData cachedRecipeData = null;
     private int itemsCrafted = 0;
@@ -46,7 +48,7 @@ public class CraftingRecipeResolver {
         return itemSourceList;
     }
 
-    public ItemStackHandler getCraftingResultInventory() {
+    public IInventory getCraftingResultInventory() {
         return craftingResultInventory;
     }
 
@@ -117,7 +119,7 @@ public class CraftingRecipeResolver {
         if (cachedRecipe != null) {
             itemStack = cachedRecipe.getCraftingResult(inventoryCrafting).copy();
         }
-        this.craftingResultInventory.setStackInSlot(0, itemStack);
+        this.craftingResultInventory.setInventorySlotContents(0, itemStack);
     }
 
     public boolean checkRecipeValid() {
@@ -137,12 +139,12 @@ public class CraftingRecipeResolver {
             this.cachedRecipe = newRecipe;
             if (newRecipe != null) {
                 ItemStack resultStack = newRecipe.getCraftingResult(inventoryCrafting).copy();
-                this.craftingResultInventory.setStackInSlot(0, resultStack.copy());
+                this.craftingResultInventory.setInventorySlotContents(0, resultStack.copy());
                 this.cachedRecipeData = new CachedRecipeData(itemSourceList, newRecipe, resultStack.copy());
                 copyInventoryItems(craftingGrid, new InvWrapper(this.cachedRecipeData.inventory));
                 this.cachedRecipeData.attemptMatchRecipe();
             } else {
-                this.craftingResultInventory.setStackInSlot(0, ItemStack.EMPTY);
+                this.craftingResultInventory.setInventorySlotContents(0, ItemStack.EMPTY);
                 this.cachedRecipeData = null;
             }
         }

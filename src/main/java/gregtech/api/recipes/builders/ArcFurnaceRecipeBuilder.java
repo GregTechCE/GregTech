@@ -1,6 +1,5 @@
 package gregtech.api.recipes.builders;
 
-import com.google.common.collect.ImmutableMap;
 import gregtech.api.recipes.Recipe;
 import gregtech.api.recipes.RecipeBuilder;
 import gregtech.api.recipes.RecipeMap;
@@ -34,12 +33,12 @@ public class ArcFurnaceRecipeBuilder extends RecipeBuilder<ArcFurnaceRecipeBuild
             for (FluidMaterial material : new FluidMaterial[]{Materials.Argon, Materials.Nitrogen}) {
                 int plasmaAmount = (int) Math.max(1L, this.duration / (material.getAverageMass() * 16L));
                 SimpleRecipeBuilder builder = RecipeMaps.PLASMA_ARC_FURNACE_RECIPES.recipeBuilder()
-                    .inputsIngredients(this.inputs)
-                    .outputs(this.outputs)
-                    .duration(Math.max(1, this.duration / 16))
-                    .EUt(this.EUt / 3)
-                    .fluidInputs(material.getPlasma(plasmaAmount))
-                    .fluidOutputs(material.getFluid(plasmaAmount));
+                        .inputsIngredients(this.inputs)
+                        .outputs(this.outputs)
+                        .duration(Math.max(1, this.duration / 16))
+                        .EUt(this.EUt / 3)
+                        .fluidInputs(material.getPlasma(plasmaAmount))
+                        .fluidOutputs(material.getFluid(plasmaAmount));
                 builder.buildAndRegister();
             }
         }
@@ -48,8 +47,7 @@ public class ArcFurnaceRecipeBuilder extends RecipeBuilder<ArcFurnaceRecipeBuild
 
     public ValidationResult<Recipe> build() {
         return ValidationResult.newResult(finalizeAndValidate(),
-            new Recipe(inputs, outputs, chancedOutputs, fluidInputs, fluidOutputs,
-                ImmutableMap.of(), duration, EUt, hidden));
+                new Recipe(inputs, outputs, chancedOutputs, fluidInputs, fluidOutputs, duration, EUt, hidden));
     }
 
 }

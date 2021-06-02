@@ -1,5 +1,40 @@
 ## Changelog
 
+### 1.15.1
+* Added recipe using liquid ice (#1620) - ALongStringOfNumbers
+* Added Active Overlay to single block Steam and Gas Turbines (#1624) - dan
+* Added dustRegular oredict to vanilla dusts (#1625) - Adrian Brock
+* Added unique OrientedOverlayRenderers for multiblocks (#1630) - ALongStringOfNumbers
+* Added Assembler recipes for components (#1633) - ALongStringOfNumbers
+* Updated Surface Rocks definitions and spawning (#1619) - ALongStringOfNumbers
+* Updated fuel names in TOP to be translated (#1612) - Adrian Brock
+* Fixed Item Collector duplicating items (#1621) - ALongStringOfNumbers
+* Fixed rare bug with output hatches not working (#1626) - Adrian Brock
+* Fixed material type for plain granite ore blocks (#1627) - Adrian Brock
+* Fixed items not clickable in the crafting station (#1629) - Adrian Brock
+* Internal updated project state in README.md (#1609) - pyure
+* Internal made MatFlags require unique IDs (#1622) - dan
+
+### 1.15.0
+* Highlight: Fixed Granite ID Shift (#1549) - dan
+  * Full info: https://github.com/GregTechCE/GregTech/pull/1549
+  * There may be conversion of old worlds
+* Added minimal Coil tier for Electric Blast furnace recipes to JEI (#1580) - LAGIdiot
+* Added notconsumable for fluids to CT (#1603) - dan
+* Updated GTCE chests to allow covers on bottom side (#1579) - htmlcsjs  
+* Updated Hay Bale recipe to use Packager instead of Compressor (#1592) - LAGIdiot
+* Updated Assembler Slot background to be more darker (#1611) - galyfray
+* Removed Forge Multipart legacy support (#1594) - LAGIdiot
+* Fixed MouseTweaks wheel action not working (#1485) - Nikolay Korolev
+* Fixed Crafting Station voiding items on right click (#1485) - Nikolay Korolev
+* Fixed Global Renderer in MetaTileEntityTESR (#1563) - KilaBash
+* Fixed Rubber trees spawning in water (#1590) - Bohdan Schepansky
+* Fixed eating food not returning container (#1595) - bruberu
+* Fixed Issues with Dust Uncrafting (#1596) - dan
+* Fixed TOP showing wrong burn time for small steam boilers (#1600) - galyfray
+* Internal removed Bintray uploading (#1593) - LAGIdiot
+* Internal fixed git using wrong folder, upgrade git and gradle (#1565) - Adrian Brock
+
 ### 1.14.1
 * Added mechanism to distribute expensive ticks more evenly (#1513) - dan
 * Added ore weight tooltips to JEI Ore page (#1562) - ALongStringOfNumbers
