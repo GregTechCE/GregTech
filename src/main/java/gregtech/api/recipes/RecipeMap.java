@@ -45,7 +45,7 @@ import java.util.stream.Collectors;
 @ZenRegister
 public class RecipeMap<R extends RecipeBuilder<R>> {
 
-    private static final List<RecipeMap<?>> RECIPE_MAPS = new ArrayList<>();
+    protected static final List<RecipeMap<?>> RECIPE_MAPS = new ArrayList<>();
     @ZenProperty
     public static IChanceFunction chanceFunction = (chance, boostPerTier, tier) -> chance + (boostPerTier * tier);
 
