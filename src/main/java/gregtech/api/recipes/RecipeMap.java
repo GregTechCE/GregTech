@@ -45,7 +45,7 @@ import java.util.stream.Collectors;
 @ZenRegister
 public class RecipeMap<R extends RecipeBuilder<R>> {
 
-    protected static final List<RecipeMap<?>> RECIPE_MAPS = new ArrayList<>();
+    private static final List<RecipeMap<?>> RECIPE_MAPS = new ArrayList<>();
     @ZenProperty
     public static IChanceFunction chanceFunction = (chance, boostPerTier, tier) -> chance + (boostPerTier * tier);
 
@@ -59,6 +59,7 @@ public class RecipeMap<R extends RecipeBuilder<R>> {
     private final TByteObjectMap<TextureArea> slotOverlays;
     protected TextureArea progressBarTexture;
     protected MoveType moveType;
+    public final boolean isHidden = false;
 
     private final Map<FluidKey, Collection<Recipe>> recipeFluidMap = new HashMap<>();
     private final Collection<Recipe> recipeList = new ArrayList<>();
@@ -67,6 +68,13 @@ public class RecipeMap<R extends RecipeBuilder<R>> {
                      int minInputs, int maxInputs, int minOutputs, int maxOutputs,
                      int minFluidInputs, int maxFluidInputs, int minFluidOutputs, int maxFluidOutputs,
                      R defaultRecipe) {
+        this(unlocalizedName, minInputs, maxInputs, minOutputs, maxOutputs, minFluidInputs, maxFluidInputs, minFluidOutputs, maxFluidOutputs, defaultRecipe, false);
+    }
+
+    public RecipeMap(String unlocalizedName,
+                     int minInputs, int maxInputs, int minOutputs, int maxOutputs,
+                     int minFluidInputs, int maxFluidInputs, int minFluidOutputs, int maxFluidOutputs,
+                     R defaultRecipe, boolean isHidden) {
         this.unlocalizedName = unlocalizedName;
         this.slotOverlays = new TByteObjectHashMap<>();
         this.progressBarTexture = GuiTextures.PROGRESS_BAR_ARROW;
