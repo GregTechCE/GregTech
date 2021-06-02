@@ -145,8 +145,8 @@ public abstract class AbstractRecipeLogic extends MTETrait implements IWorkable 
         if (this.isOutputsFull && !hasNotifiedOutputs()) return false;
         else {
             this.isOutputsFull = false;
-            metaTileEntity.removeNotifiedOutput(getOutputInventory());
-            metaTileEntity.removeNotifiedOutput(getOutputTank());
+            metaTileEntity.getNotifiedItemOutputList().clear();
+            metaTileEntity.getNotifiedFluidOutputList().clear();
         }
         return true;
     }
@@ -209,8 +209,8 @@ public abstract class AbstractRecipeLogic extends MTETrait implements IWorkable 
         if (currentRecipe != null && setupAndConsumeRecipeInputs(currentRecipe))
             setupRecipe(currentRecipe);
         // Inputs have been inspected.
-        metaTileEntity.removeNotifiedInput(importInventory);
-        metaTileEntity.removeNotifiedInput(importFluids);
+        metaTileEntity.getNotifiedItemInputList().clear();
+        metaTileEntity.getNotifiedFluidInputList().clear();
     }
 
     public void forceRecipeRecheck() {
