@@ -59,7 +59,7 @@ public class RecipeMap<R extends RecipeBuilder<R>> {
     private final TByteObjectMap<TextureArea> slotOverlays;
     protected TextureArea progressBarTexture;
     protected MoveType moveType;
-    public boolean isHidden = false;
+    public final boolean isHidden;
 
     private final Map<FluidKey, Collection<Recipe>> recipeFluidMap = new HashMap<>();
     private final Collection<Recipe> recipeList = new ArrayList<>();
