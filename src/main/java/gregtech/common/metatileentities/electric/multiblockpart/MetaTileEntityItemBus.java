@@ -58,7 +58,7 @@ public class MetaTileEntityItemBus extends MetaTileEntityMultiblockPart implemen
         if (shouldRenderOverlay()) {
             SimpleOverlayRenderer renderer = isExportHatch ? Textures.PIPE_OUT_OVERLAY : Textures.PIPE_IN_OVERLAY;
             renderer.renderSided(getFrontFacing(), renderState, translation, pipeline);
-            SimpleOverlayRenderer overlay = isExportHatch ? Textures.ITEM_OUTPUT_OVERLAY : Textures.ITEM_INPUT_OVERLAY;
+            SimpleOverlayRenderer overlay = isExportHatch ? Textures.ITEM_HATCH_OUTPUT_OVERLAY : Textures.ITEM_HATCH_INPUT_OVERLAY;
             overlay.renderSided(getFrontFacing(), renderState, translation, pipeline);
         }
     }
