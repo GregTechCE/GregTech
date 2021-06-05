@@ -4,6 +4,7 @@ import codechicken.lib.render.CCRenderState;
 import codechicken.lib.render.pipeline.IVertexOperation;
 import codechicken.lib.vec.Matrix4;
 import gregtech.api.capability.impl.FluidTankList;
+import gregtech.api.capability.impl.NotifiableItemStackHandler;
 import gregtech.api.gui.GuiTextures;
 import gregtech.api.gui.ModularUI;
 import gregtech.api.gui.ModularUI.Builder;
@@ -36,14 +37,14 @@ public class MetaTileEntityFluidHatch extends MetaTileEntityMultiblockPart imple
 
     private static final int INITIAL_INVENTORY_SIZE = 8000;
     private ItemStackHandler containerInventory;
-    private FluidTank fluidTank;
+    private NotifiableFluidTank fluidTank;
     private boolean isExportHatch;
 
     public MetaTileEntityFluidHatch(ResourceLocation metaTileEntityId, int tier, boolean isExportHatch) {
         super(metaTileEntityId, tier);
         this.containerInventory = new ItemStackHandler(2);
         this.isExportHatch = isExportHatch;
-        this.fluidTank = new FluidTank(getInventorySize());
+        this.fluidTank = new NotifiableFluidTank(getInventorySize(), this, isExportHatch);
         initializeInventory();
     }
 
@@ -118,6 +119,20 @@ public class MetaTileEntityFluidHatch extends MetaTileEntityMultiblockPart imple
     @Override
     public void registerAbilities(List<IFluidTank> abilityList) {
         abilityList.addAll(isExportHatch ? this.exportFluids.getFluidTanks() : this.importFluids.getFluidTanks());
+    }
+
+    @Override
+    public void setupNotifiableMetaTileEntity(MetaTileEntity metaTileEntity) {
+        NotifiableFluidTank handler = null;
+        if (isExportHatch) {
+            handler = (NotifiableFluidTank) getExportFluids().getTankAt(0);
+        } else {
+            handler = (NotifiableFluidTank) getImportFluids().getTankAt(0);
+        }
+        if (handler != null) {
+            handler.setNotifiableMetaTileEntity(metaTileEntity);
+            handler.addToNotifiedList(this, handler, isExportHatch);
+        }
     }
 
     @Override
