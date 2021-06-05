@@ -1,7 +1,6 @@
 package gregtech.common.covers;
 
 import gregtech.api.GTValues;
-import gregtech.common.GTValuesCommon;
 import gregtech.api.cover.CoverBehavior;
 import gregtech.api.cover.CoverDefinition;
 import gregtech.api.cover.ICoverable;
@@ -57,8 +56,8 @@ public class CoverBehaviors {
 
         for (int i = 1; i < GTValues.V.length - 1; i++) {
             int finalI = i;
-            registerBehavior(40 + i - 1, new ResourceLocation(GTValues.MODID, "fluid.regulator" + GTValues.VN[i].toLowerCase(Locale.ROOT)), GTValuesCommon.PUMPS[i - 1], (tile, side) -> new CoverFluidRegulator(tile, side, finalI, (int) (Math.pow(4, finalI - 1) * 1280)));
-            registerBehavior(20 + i - 1, new ResourceLocation(GTValues.MODID, "pump" + GTValues.VN[i].toLowerCase(Locale.ROOT)), GTValuesCommon.FLUID_REGULATORS[i - 1], (tile, side) -> new CoverFluidRegulator(tile, side, finalI, (int) (Math.pow(4, finalI - 1) * 1280)));
+            registerBehavior(40 + i - 1, new ResourceLocation(GTValues.MODID, "fluid.regulator" + GTValues.VN[i].toLowerCase(Locale.ROOT)), MetaItems.PUMPS[i - 1], (tile, side) -> new CoverPump(tile, side, finalI, (int) (Math.pow(4, finalI - 1) * 1280)));
+            registerBehavior(20 + i - 1, new ResourceLocation(GTValues.MODID, "pump" + GTValues.VN[i].toLowerCase(Locale.ROOT)), MetaItems.FLUID_REGULATORS[i - 1], (tile, side) -> new CoverFluidRegulator(tile, side, finalI, (int) (Math.pow(4, finalI - 1) * 1280)));
         }
 
     }

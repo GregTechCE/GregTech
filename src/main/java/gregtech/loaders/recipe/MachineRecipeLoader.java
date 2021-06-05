@@ -20,7 +20,6 @@ import gregtech.api.unification.stack.MaterialStack;
 import gregtech.api.unification.stack.UnificationEntry;
 import gregtech.api.util.GTUtility;
 import gregtech.common.ConfigHolder;
-import gregtech.common.GTValuesCommon;
 import gregtech.common.blocks.BlockConcrete.ConcreteVariant;
 import gregtech.common.blocks.BlockGranite.GraniteVariant;
 import gregtech.common.blocks.BlockMachineCasing.MachineCasingType;
@@ -695,9 +694,9 @@ public class MachineRecipeLoader {
 
         for (int i = 0; i < circuitTiers.length; i++) {
             RecipeMaps.ASSEMBLER_RECIPES.recipeBuilder()
-                    .inputs(GTValuesCommon.PUMPS[i].getStackForm())
+                    .inputs(PUMPS[i].getStackForm())
                     .input(OrePrefix.circuit, circuitTiers[i], 2)
-                    .outputs(GTValuesCommon.FLUID_REGULATORS[i].getStackForm())
+                    .outputs(FLUID_REGULATORS[i].getStackForm())
                     .EUt((int) (GTValues.V[i] / 2))
                     .duration(400)
                     .buildAndRegister();

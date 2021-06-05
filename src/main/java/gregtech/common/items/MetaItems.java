@@ -158,6 +158,8 @@ public final class MetaItems {
     public static MetaItem<?>.MetaValueItem ELECTRIC_PUMP_ZPM;
     public static MetaItem<?>.MetaValueItem ELECTRIC_PUMP_UV;
 
+    public static final MetaItem<?>.MetaValueItem[] PUMPS = new MetaValueItem[8];
+
     public static MetaItem<?>.MetaValueItem FLUID_REGULATOR_LV;
     public static MetaItem<?>.MetaValueItem FLUID_REGULATOR_MV;
     public static MetaItem<?>.MetaValueItem FLUID_REGULATOR_HV;
@@ -166,6 +168,8 @@ public final class MetaItems {
     public static MetaItem<?>.MetaValueItem FLUID_REGULATOR_LUV;
     public static MetaItem<?>.MetaValueItem FLUID_REGULATOR_ZPM;
     public static MetaItem<?>.MetaValueItem FLUID_REGULATOR_UV;
+
+    public static final MetaItem<?>.MetaValueItem[] FLUID_REGULATORS = new MetaValueItem[8];
 
     public static MetaItem<?>.MetaValueItem FLUID_FILTER;
 
