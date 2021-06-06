@@ -716,5 +716,4 @@ public class GTUtility {
     public static int getRandomIntXSTR(int bound) {
         return random.nextInt(bound);
     }
-
 }
