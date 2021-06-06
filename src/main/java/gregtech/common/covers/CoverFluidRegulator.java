@@ -35,37 +35,6 @@ public class CoverFluidRegulator extends CoverPump {
         this.transferMode = TransferMode.TRANSFER_ANY;
     }
 
-/*    @Override
-    protected int doTransferFluids(int transferLimit) {
-        BlockPos.PooledMutableBlockPos blockPos = BlockPos.PooledMutableBlockPos.retain();
-        blockPos.setPos(coverHolder.getPos()).move(attachedSide);
-        TileEntity tileEntity = coverHolder.getWorld().getTileEntity(blockPos);
-        blockPos.release();
-        IFluidHandler fluidHandler = tileEntity == null ? null : tileEntity.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, attachedSide.getOpposite());
-        IFluidHandler myFluidHandler = coverHolder.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, attachedSide);
-        if (fluidHandler == null || myFluidHandler == null) {
-            return 0;
-        }
-        IFluidHandler sourceHandler;
-        IFluidHandler destHandler;
-
-        if (pumpMode == PumpMode.IMPORT) {
-            sourceHandler = fluidHandler;
-            destHandler = myFluidHandler;
-        } else if (pumpMode == PumpMode.EXPORT) {
-            sourceHandler = myFluidHandler;
-            destHandler = fluidHandler;
-        } else {
-            return 0;
-        }
-        switch (transferMode) {
-            case TRANSFER_ANY: return doTransferFluidsInternal(myFluidHandler, fluidHandler, transferLimit);
-            case KEEP_EXACT: return doKeepExact(transferLimit, sourceHandler, destHandler, fluidFilter::testFluidStack, this.keepAmount);
-            case TRANSFER_EXACT: return doTransferExact(transferLimit, sourceHandler, destHandler, fluidFilter::testFluidStack, this.supplyAmount);
-            default: return 0;
-        }
-    }*/
-
     @Override
     protected int doTransferFluidsInternal(IFluidHandler myFluidHandler, IFluidHandler fluidHandler, int transferLimit) {
         IFluidHandler sourceHandler;
