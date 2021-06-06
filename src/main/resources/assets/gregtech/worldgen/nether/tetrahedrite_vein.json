@@ -4,8 +4,10 @@
   "max_height": 120,
   "min_height": 70,
   "dimension_filter": ["is_nether"],
-  "surface_stone_material": "copper",
-
+  "vein_populator": {
+    "type": "surface_rock",
+    "material": "copper"
+  },
   "generator": {
     "type": "ellipsoid",
     "radius": [12, 13]

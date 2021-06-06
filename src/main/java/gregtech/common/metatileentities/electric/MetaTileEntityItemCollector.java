@@ -134,6 +134,7 @@ public class MetaTileEntityItemCollector extends TieredMetaTileEntity {
     protected void moveItemsInEffectRange() {
         List<EntityItem> itemsInRange = getWorld().getEntitiesWithinAABB(EntityItem.class, areaBoundingBox);
         for (EntityItem entityItem : itemsInRange) {
+            if(entityItem.isDead) continue;
             double distanceX = (areaCenterPos.getX() + 0.5) - entityItem.posX;
             double distanceZ = (areaCenterPos.getZ() + 0.5) - entityItem.posZ;
             double distance = MathHelper.sqrt(distanceX * distanceX + distanceZ * distanceZ);

@@ -2,8 +2,10 @@
   "weight": 70,
   "density": 0.4,
   "min_height": 40,
-  "surface_stone_material": "quartzite",
-
+  "vein_populator": {
+    "type": "surface_rock",
+    "material": "quartzite"
+  },
   "generator": {
     "type": "ellipsoid",
     "radius": [13, 17]
