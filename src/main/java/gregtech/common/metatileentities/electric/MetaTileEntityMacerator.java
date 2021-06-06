@@ -41,7 +41,7 @@ public class MetaTileEntityMacerator extends SimpleMachineMetaTileEntity {
 
     @Override
     protected IItemHandlerModifiable createExportItemHandler() {
-        return new NotifiableItemStackHandler(outputAmount,this,true);
+        return new NotifiableItemStackHandler(outputAmount, this, true);
     }
 
     @Override
