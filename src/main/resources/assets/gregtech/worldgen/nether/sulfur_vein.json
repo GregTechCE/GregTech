@@ -4,8 +4,10 @@
   "max_height": 70,
   "min_height": 10,
   "dimension_filter": ["is_nether"],
-  "surface_stone_material": "sulfur",
-
+  "vein_populator": {
+    "type": "surface_rock",
+    "material": "sulfur"
+  },
   "generator": {
     "type": "ellipsoid",
     "radius": [16, 17]

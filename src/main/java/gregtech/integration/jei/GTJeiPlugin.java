@@ -25,6 +25,7 @@ import gregtech.common.blocks.MetaBlocks;
 import gregtech.common.items.MetaItems;
 import gregtech.common.metatileentities.MetaTileEntities;
 import gregtech.integration.jei.multiblock.MultiblockInfoCategory;
+import gregtech.integration.jei.multiblock.MultiblockInfoPage;
 import gregtech.integration.jei.recipe.*;
 import gregtech.integration.jei.recipe.fuel.FuelRecipeMapCategory;
 import gregtech.integration.jei.recipe.fuel.GTFuelRecipeWrapper;
@@ -197,5 +198,13 @@ public class GTJeiPlugin implements IModPlugin {
             registry.addIngredientInfo(machine.getStackForm(), VanillaTypes.ITEM,
                 "gregtech.machine.fluid_canner.jei_description");
         }
+
+        //Multiblock info page registration
+        MultiblockInfoCategory.multiblockRecipes.values().forEach(v -> {
+            MultiblockInfoPage infoPage = v.getInfoPage();
+            registry.addIngredientInfo(infoPage.getController().getStackForm(),
+                    VanillaTypes.ITEM,
+                    infoPage.getDescription());
+        });
     }
 }

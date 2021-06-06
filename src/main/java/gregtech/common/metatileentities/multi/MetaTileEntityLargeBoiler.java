@@ -23,6 +23,7 @@ import gregtech.api.recipes.ModHandler;
 import gregtech.api.recipes.RecipeMaps;
 import gregtech.api.recipes.recipes.FuelRecipe;
 import gregtech.api.render.ICubeRenderer;
+import gregtech.api.render.OrientedOverlayRenderer;
 import gregtech.api.render.SimpleCubeRenderer;
 import gregtech.api.render.Textures;
 import gregtech.api.util.GTUtility;
@@ -50,7 +51,13 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.IFluidTank;
 
-import java.util.*;
+import javax.annotation.Nonnull;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+
 
 import static gregtech.api.gui.widgets.AdvancedTextWidget.withButton;
 import static gregtech.api.gui.widgets.AdvancedTextWidget.withHoverTextTranslate;
@@ -89,6 +96,7 @@ public class MetaTileEntityLargeBoiler extends MultiblockWithDisplayBase impleme
                 Textures.ROBUST_TUNGSTENSTEEL_CASING,
                 Textures.TUNGSTENSTEEL_FIREBOX, Textures.TUNGSTENSTEEL_FIREBOX_ACTIVE);
 
+
         public final int baseSteamOutput;
         public final float fuelConsumptionMultiplier;
         public final int temperatureEffBuff;
@@ -99,7 +107,14 @@ public class MetaTileEntityLargeBoiler extends MultiblockWithDisplayBase impleme
         public final ICubeRenderer solidCasingRenderer;
         public final SimpleCubeRenderer fireboxIdleRenderer;
         public final SimpleCubeRenderer firefoxActiveRenderer;
+        public final OrientedOverlayRenderer frontOverlay;
 
+        /**
+         * @deprecated use {@link BoilerType#BoilerType(int, float, int, int, IBlockState, IBlockState, IBlockState, ICubeRenderer, SimpleCubeRenderer, SimpleCubeRenderer, OrientedOverlayRenderer)}
+         * Deprecated for use due to new constructor accepting a front overlay texture
+         * Left in place for compatibility with addon mods
+         */
+        @Deprecated
         BoilerType(int baseSteamOutput, float fuelConsumptionMultiplier, int temperatureEffBuff, int maxTemperature, IBlockState casingState, IBlockState fireboxState, IBlockState pipeState,
                    ICubeRenderer solidCasingRenderer, SimpleCubeRenderer fireboxIdleRenderer, SimpleCubeRenderer firefoxActiveRenderer) {
             this.baseSteamOutput = baseSteamOutput;
@@ -112,6 +127,22 @@ public class MetaTileEntityLargeBoiler extends MultiblockWithDisplayBase impleme
             this.solidCasingRenderer = solidCasingRenderer;
             this.fireboxIdleRenderer = fireboxIdleRenderer;
             this.firefoxActiveRenderer = firefoxActiveRenderer;
+            this.frontOverlay = Textures.MULTIBLOCK_WORKABLE_OVERLAY;
+        }
+
+        BoilerType(int baseSteamOutput, float fuelConsumptionMultiplier, int temperatureEffBuff, int maxTemperature, IBlockState casingState, IBlockState fireboxState, IBlockState pipeState,
+                   ICubeRenderer solidCasingRenderer, SimpleCubeRenderer fireboxIdleRenderer, SimpleCubeRenderer firefoxActiveRenderer, OrientedOverlayRenderer frontOverlay) {
+            this.baseSteamOutput = baseSteamOutput;
+            this.fuelConsumptionMultiplier = fuelConsumptionMultiplier;
+            this.temperatureEffBuff = temperatureEffBuff;
+            this.maxTemperature = maxTemperature;
+            this.casingState = casingState;
+            this.fireboxState = fireboxState;
+            this.pipeState = pipeState;
+            this.solidCasingRenderer = solidCasingRenderer;
+            this.fireboxIdleRenderer = fireboxIdleRenderer;
+            this.firefoxActiveRenderer = firefoxActiveRenderer;
+            this.frontOverlay = frontOverlay;
         }
     }
 
@@ -414,7 +445,13 @@ public class MetaTileEntityLargeBoiler extends MultiblockWithDisplayBase impleme
     @Override
     public void renderMetaTileEntity(CCRenderState renderState, Matrix4 translation, IVertexOperation[] pipeline) {
         super.renderMetaTileEntity(renderState, translation, pipeline);
-        Textures.MULTIBLOCK_WORKABLE_OVERLAY.render(renderState, translation, pipeline, getFrontFacing(), isActive);
+        this.getFrontOverlay().render(renderState, translation, pipeline, getFrontFacing(), isActive);
+    }
+
+    @Nonnull
+    @Override
+    protected OrientedOverlayRenderer getFrontOverlay() {
+        return boilerType.frontOverlay;
     }
 
     @Override
