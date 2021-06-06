@@ -33,7 +33,7 @@ Of course if we made any decision regarding issues/PRs we will write it on GitHu
 ### Don't know how to code?
 We can still take your help.
 * You can look through open issues with [status: unverified](https://github.com/GregTechCE/GregTech/labels/status%3A%20unverified) and confirm they are present.
-On simplest possible configuration and write down reproduction steps if they are missing. Or provide any other related information.
+Please attempt to confirm issues with the simplest possible configuration, and provide reproduction steps if they are missing from the original issue. You can also provide any other related information you have discovered, to attempt to clarify the issue.
 * Or you can let us know what you think on issues with tag [open for discussion](https://github.com/GregTechCE/GregTech/labels/open%20for%20discussion).
 * Maybe your expertise could help us on issues with [status: help needed](https://github.com/GregTechCE/GregTech/labels/status%3A%20help%20needed)
 
@@ -84,5 +84,4 @@ This issue is question and should be close after answering it.
 There is a known workaround for the given issue.
 #### status: wip
 This issue is getting prepared. For PRs there is draft function.
-
 
