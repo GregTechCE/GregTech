@@ -5,6 +5,8 @@ import gregtech.api.metatileentity.multiblock.MultiblockControllerBase;
 import net.minecraft.client.resources.I18n;
 
 import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public abstract class MultiblockInfoPage {
 
