@@ -39,10 +39,10 @@ public class MultiAssemblerBehaviour implements IItemBehaviour {
         if (pos != null && world.getTileEntity(pos) instanceof MetaTileEntityHolder) {
             MetaTileEntity mte = ((MetaTileEntityHolder) world.getTileEntity(pos)).getMetaTileEntity();
             if (mte instanceof MultiblockControllerBase && !player.isSneaking()) { // preview
-                if (world.isRemote) {
-                    if(!Loader.isModLoaded("jei")) {
+                if (world.isRemote) { // client side only
+                    if(!Loader.isModLoaded("jei")) { // check jei installed
                         player.sendMessage(new TextComponentTranslation("metaitem.multi_assembler.jei_missing"));
-                    } else if (mode == 3) { // building
+                    } else if (mode == 3) { // building mode
                         WorldSceneRenderer worldSceneRenderer = GTJeiOptional.getWorldSceneRenderer((MultiblockControllerBase) mte);
                         if (worldSceneRenderer != null) {
                             List<ItemStack> map = new ArrayList<>();
@@ -60,7 +60,7 @@ public class MultiAssemblerBehaviour implements IItemBehaviour {
                                         break;
                                     }
                                 }
-                                for(BlockPos blockPos : renderedBlocks) {
+                                for(BlockPos blockPos : renderedBlocks) { // check blocks built
                                     if (blockPos.equals(refPos)) continue;
                                     EnumFacing frontFacing = mte.getFrontFacing();
                                     EnumFacing spin = BlockPatternChecker.getSpin((MultiblockControllerBase) mte);
@@ -84,10 +84,11 @@ public class MultiAssemblerBehaviour implements IItemBehaviour {
                                             , map.indexOf(map.stream().filter(stack::isItemEqual).findFirst().orElse(stack))
                                             , metaTileEntity != null ? BlockPatternChecker.getActualFrontFacing(refFacing, frontFacing, spin, metaTileEntity.getFrontFacing()): EnumFacing.SOUTH));
                                 }
+                                // send CPacket to the server to build the structure.
                                 NetworkHandler.channel.sendToServer(new CPacketMultiBlockStructure(map, blockInfos, world.provider.getDimension()).toFMLPacket());
                             }
                         }
-                    } else { // projection, perspective, debug
+                    } else { // projection, perspective, debug mode
                         MultiHelperRenderer.renderMultiBlockPreview((MultiblockControllerBase) mte, 60000, mode);
                     }
                 }
@@ -123,6 +124,5 @@ public class MultiAssemblerBehaviour implements IItemBehaviour {
         lines.add(I18n.format("metaitem.multi_assembler.info.0"));
         lines.add(I18n.format("metaitem.multi_assembler.info.1"));
         lines.add(I18n.format("metaitem.multi_assembler.info.2"));
-        lines.add(I18n.format("metaitem.multi_assembler.info.3"));
     }
 }
