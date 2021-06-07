@@ -5,8 +5,6 @@ import gregtech.api.metatileentity.multiblock.MultiblockControllerBase;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 
-import java.util.Collection;
-
 public class BlockPatternChecker {
     
     public static BlockPos getPatternErrorPos(MultiblockControllerBase controllerBase) {
