@@ -62,6 +62,10 @@ public class WorldSceneRenderer {
         }
     }
 
+    public List<BlockPos> getRenderedBlocks() {
+        return renderedBlocks;
+    }
+
     public void setRenderCallback(SceneRenderCallback callback) {
         this.renderCallback = callback;
     }

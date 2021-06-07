@@ -53,6 +53,7 @@ import java.util.stream.Collectors;
 public class GTJeiPlugin implements IModPlugin {
 
     public static IIngredientRegistry ingredientRegistry;
+    public static IJeiRuntime jeiRuntime;
 
     @Override
     public void registerItemSubtypes(@Nonnull ISubtypeRegistry subtypeRegistry) {
@@ -197,5 +198,10 @@ public class GTJeiPlugin implements IModPlugin {
             registry.addIngredientInfo(machine.getStackForm(), VanillaTypes.ITEM,
                 "gregtech.machine.fluid_canner.jei_description");
         }
+    }
+
+    @Override
+    public void onRuntimeAvailable(IJeiRuntime jeiRuntime) {
+        this.jeiRuntime = jeiRuntime;
     }
 }

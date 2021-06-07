@@ -93,6 +93,15 @@ public class BlockPattern {
         return this.palmLength;
     }
 
+    public MutableBlockPos getBlockPos() {
+        return blockPos;
+    }
+
+    public RelativeDirection[] getStructureDir() {
+        return structureDir;
+    }
+
+
     public PatternMatchContext checkPatternAt(World world, BlockPos centerPos, EnumFacing facing) {
         int[] countMatchesCache = new int[countMatches.length];
         boolean findFirstAisle = false;

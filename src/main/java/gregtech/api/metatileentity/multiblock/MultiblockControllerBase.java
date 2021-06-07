@@ -43,6 +43,10 @@ public abstract class MultiblockControllerBase extends MetaTileEntity {
         this.structurePattern = createStructurePattern();
     }
 
+    public BlockPattern getStructurePattern() {
+        return structurePattern;
+    }
+
     @Override
     public void update() {
         super.update();
