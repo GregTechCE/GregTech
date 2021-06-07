@@ -559,6 +559,17 @@ metaitem.tool.cheat.tooltip=Also an Infinite Energy Source
 metaitem.tool.scanner.name=Portable Scanner
 metaitem.tool.scanner.tooltip=Tricorder
 
+metaitem.multi_assembler.name=Multi Assembler
+metaitem.multi_assembler.mode.0=Mode: Preview
+metaitem.multi_assembler.mode.1=Mode: Perspective
+metaitem.multi_assembler.mode.2=Mode: Debug
+metaitem.multi_assembler.mode.3=Mode: Building
+metaitem.multi_assembler.clear=Remove the projection
+metaitem.multi_assembler.info.0=Right-click the Air Block: Remove the projection
+metaitem.multi_assembler.info.1=Sneaking Right-click the Air Block: Switch mode
+metaitem.multi_assembler.info.2=Right-click the controller Block: Build the projection
+metaitem.multi_assembler.jei_missing=You need to have JEI installed to support the such features.
+
 metaitem.rebreather.name=Rebreather
 metaitem.rebreather.tooltip=Allows breathing underwater at the expense of energy
 

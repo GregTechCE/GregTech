@@ -209,6 +209,8 @@ public class NetworkHandler {
             initClient();
         }
 
+        CPacketMultiBlockStructure.registerExecutor();
+        CPacketMultiBlockStructure.registerPacket(6);
     }
 
     @SideOnly(Side.CLIENT)

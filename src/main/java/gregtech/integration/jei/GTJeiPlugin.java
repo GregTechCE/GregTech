@@ -54,6 +54,7 @@ import java.util.stream.Collectors;
 public class GTJeiPlugin implements IModPlugin {
 
     public static IIngredientRegistry ingredientRegistry;
+    public static IJeiRuntime jeiRuntime;
 
     @Override
     public void registerItemSubtypes(@Nonnull ISubtypeRegistry subtypeRegistry) {
@@ -206,5 +207,10 @@ public class GTJeiPlugin implements IModPlugin {
                     VanillaTypes.ITEM,
                     infoPage.getDescription());
         });
+    }
+
+    @Override
+    public void onRuntimeAvailable(IJeiRuntime jeiRuntime) {
+        this.jeiRuntime = jeiRuntime;
     }
 }

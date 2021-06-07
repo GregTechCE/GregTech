@@ -52,6 +52,11 @@ import java.util.List;
 
 import static gregtech.api.GTValues.L;
 import static gregtech.api.GTValues.M;
+import static gregtech.api.unification.material.MarkerMaterials.Tier.Advanced;
+import static gregtech.api.unification.material.Materials.SolderingAlloy;
+import static gregtech.api.unification.material.Materials.StainlessSteel;
+import static gregtech.api.unification.ore.OrePrefix.circuit;
+import static gregtech.api.unification.ore.OrePrefix.stick;
 import static gregtech.api.util.DyeUtil.getOrdictColorName;
 import static gregtech.common.items.MetaItems.*;
 
@@ -684,6 +689,7 @@ public class MachineRecipeLoader {
         RecipeMaps.ASSEMBLER_RECIPES.recipeBuilder().EUt(1).input(OrePrefix.stick, Materials.Wood, 1).input(OrePrefix.dust, Materials.Sulfur, 1).outputs(new ItemStack(Blocks.TORCH, 2)).duration(400).buildAndRegister();
         RecipeMaps.ASSEMBLER_RECIPES.recipeBuilder().EUt(1).input(OrePrefix.stick, Materials.Wood, 1).input(OrePrefix.dust, Materials.Phosphorus, 1).outputs(new ItemStack(Blocks.TORCH, 6)).duration(400).buildAndRegister();
 
+        RecipeMaps.ASSEMBLER_RECIPES.recipeBuilder().duration(200).EUt(32).inputs(ELECTRIC_MOTOR_LV.getStackForm()).input(OrePrefix.circuit, Tier.Basic, 2).input(stick, Materials.Steel).fluidInputs(Materials.SolderingAlloy.getFluid(L * 10)).outputs(MULTI_ASSEMBLER.getStackForm()).buildAndRegister();
     }
 
     private static void registerBlastFurnaceRecipes() {
