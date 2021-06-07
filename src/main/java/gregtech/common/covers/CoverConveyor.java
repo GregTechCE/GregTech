@@ -401,6 +401,9 @@ public class CoverConveyor extends CoverBehavior implements CoverWithUI, ITickab
         if(capability == GregtechTileCapabilities.CAPABILITY_CONTROLLABLE) {
             return GregtechTileCapabilities.CAPABILITY_CONTROLLABLE.cast(this);
         }
+        if (capability == GregtechTileCapabilities.CAPABILITY_CONFIGURABLE) {
+            return GregtechTileCapabilities.CAPABILITY_CONFIGURABLE.cast(this);
+        }
         return defaultValue;
     }
 
@@ -479,6 +482,38 @@ public class CoverConveyor extends CoverBehavior implements CoverWithUI, ITickab
         }
         if(tagCompound.hasKey("ManualImportExportMode")) {
             this.manualImportExportMode = ManualImportExportMode.values()[tagCompound.getInteger("ManualImportExportMode")];
+        }
+    }
+
+    @Override
+    public NBTTagCompound copyConfiguration(final EntityPlayer player) {
+        final NBTTagCompound tagCompound = super.copyConfiguration(player);
+        tagCompound.setInteger("TransferRate", this.transferRate);
+        tagCompound.setInteger("ConveyorMode", this.conveyorMode.ordinal());
+        tagCompound.setInteger("ManualImportExportMode", this.manualImportExportMode.ordinal());
+        tagCompound.setTag("Filter", this.itemFilterContainer.copyConfiguration(player));
+        return tagCompound;
+    }
+
+    @Override
+    public void pasteConfiguration(final EntityPlayer player, final NBTTagCompound tagCompound) {
+        super.pasteConfiguration(player, tagCompound);
+        setTransferRate(tagCompound.getInteger("TransferRate"));
+        setConveyorMode(ConveyorMode.values()[tagCompound.getInteger("ConveyorMode")]);
+        //LEGACY SAVE FORMAT SUPPORT
+        if (tagCompound.hasKey("AllowManualIO")) {
+            setManualImportExportMode(tagCompound.getBoolean("AllowManualIO")
+            ? ManualImportExportMode.FILTERED
+            : ManualImportExportMode.DISABLED);
+        }
+        if (tagCompound.hasKey("ManualImportExportMode")) {
+            setManualImportExportMode(ManualImportExportMode.values()[tagCompound.getInteger("ManualImportExportMode")]);
+        }
+        if (tagCompound.hasKey("FilterInventory")) {
+            this.itemFilterContainer.pasteConfiguration(player, tagCompound);
+        } else {
+            final NBTTagCompound filterComponent = tagCompound.getCompoundTag("Filter");
+            this.itemFilterContainer.pasteConfiguration(player, filterComponent);
         }
     }
 

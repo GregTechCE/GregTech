@@ -10,6 +10,7 @@ import gregtech.api.recipes.Recipe;
 import gregtech.api.recipes.RecipeMap;
 import gregtech.api.util.GTUtility;
 import gregtech.common.ConfigHolder;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -504,4 +505,30 @@ public abstract class AbstractRecipeLogic extends MTETrait implements IWorkable 
         }
     }
 
+    @Override
+    protected boolean isConfigurable() {
+        return true;
+    }
+
+    @Override
+    public NBTTagCompound copyConfiguration(final EntityPlayer player) {
+        final NBTTagCompound compound = super.copyConfiguration(player);
+        compound.setBoolean(ALLOW_OVERCLOCKING, this.allowOverclocking);
+        compound.setLong(OVERCLOCK_VOLTAGE, this.overclockVoltage);
+        return compound;
+    }
+
+    @Override
+    public void pasteConfiguration(final EntityPlayer player, final NBTTagCompound compound) {
+        super.pasteConfiguration(player, compound);
+        if (compound.hasKey(ALLOW_OVERCLOCKING)) {
+            setAllowOverclocking(compound.getBoolean(ALLOW_OVERCLOCKING));
+        }
+        if (compound.hasKey(OVERCLOCK_VOLTAGE)) {
+            this.overclockVoltage = compound.getLong(OVERCLOCK_VOLTAGE);
+        } else {
+            // Calculate overclock voltage based on old allow flag
+            this.overclockVoltage = this.allowOverclocking ? getMaxVoltage() : 0;
+        }
+    }
 }

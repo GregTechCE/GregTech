@@ -1,21 +1,29 @@
 package gregtech.common.covers.filter;
 
+import gregtech.api.capability.IConfigurable;
 import gregtech.api.gui.GuiTextures;
 import gregtech.api.gui.Widget;
 import gregtech.api.gui.widgets.*;
 import gregtech.api.util.IDirtyNotifiable;
 import gregtech.api.util.ItemStackKey;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraftforge.common.util.INBTSerializable;
 import net.minecraftforge.items.ItemStackHandler;
 
 import javax.annotation.Nonnull;
+
+import java.util.Objects;
 import java.util.Set;
 import java.util.function.Consumer;
 
-public class ItemFilterContainer implements INBTSerializable<NBTTagCompound> {
+public class ItemFilterContainer implements INBTSerializable<NBTTagCompound>, IConfigurable {
+
+    private static final String WRONG_FILTER = "metaitem.configurator.wrong_filter";
 
     private final ItemStackHandler filterInventory;
     private final ItemFilterWrapper filterWrapper;
@@ -162,6 +170,60 @@ public class ItemFilterContainer implements INBTSerializable<NBTTagCompound> {
             } else {
                 NBTTagCompound filterInventory = tagCompound.getCompoundTag("Filter");
                 this.filterWrapper.getItemFilter().readFromNBT(filterInventory);
+            }
+        }
+    }
+
+    @Override
+    public ResourceLocation getConfigurationID() {
+        throw new AssertionError("unused");
+    }
+
+    @Override
+    public NBTTagCompound copyConfiguration(final EntityPlayer player) {
+        NBTTagCompound tagCompound = new NBTTagCompound();
+        tagCompound.setTag("FilterInventory", this.filterInventory.serializeNBT());
+        tagCompound.setBoolean("IsBlacklist", this.filterWrapper.isBlacklistFilter());
+        tagCompound.setInteger("MaxStackSize", this.maxStackSizeLimit);
+        tagCompound.setInteger("TransferStackSize", this.transferStackSize);
+        final ItemFilter filter = this.filterWrapper.getItemFilter();
+        if (filter != null) {
+            final NBTTagCompound filterInventory = new NBTTagCompound();
+            filter.writeToNBT(filterInventory);
+            tagCompound.setTag("Filter", filterInventory);
+            tagCompound.setString("FilterClassName", filter.getClass().getName());
+        }
+        return tagCompound;
+    }
+
+    @Override
+    public void pasteConfiguration(final EntityPlayer player, final NBTTagCompound tagCompound) {
+        // Check filter match
+        final ItemFilter filter = this.filterWrapper.getItemFilter();
+        final String configClassName = tagCompound.getString("FilterClassName");
+        final String filterClassName = filter != null ? filter.getClass().getName() : null;
+        if (!Objects.equals(configClassName, filterClassName)) {
+            // TODO magic stick behaviour
+            player.sendMessage(new TextComponentTranslation(WRONG_FILTER));
+            return;
+        }
+
+        this.filterInventory.deserializeNBT(tagCompound.getCompoundTag("FilterInventory"));
+        this.filterWrapper.setBlacklistFilter(tagCompound.getBoolean("IsBlacklist"));
+        if (tagCompound.hasKey("MaxStackSize")) {
+            setMaxStackSize(tagCompound.getInteger("MaxStackSize"));
+        }
+        if (tagCompound.hasKey("TransferStackSize")) {
+            setTransferStackSize(tagCompound.getInteger("TransferStackSize"));
+        }
+        if (filter != null) {
+            //LEGACY SAVE FORMAT SUPPORT
+            if (tagCompound.hasKey("ItemFilter") ||
+                tagCompound.hasKey("OreDictionaryFilter")) {
+                filter.readFromNBT(tagCompound);
+            } else {
+                final NBTTagCompound filterInventory = tagCompound.getCompoundTag("Filter");
+                filter.readFromNBT(filterInventory);
             }
         }
     }
