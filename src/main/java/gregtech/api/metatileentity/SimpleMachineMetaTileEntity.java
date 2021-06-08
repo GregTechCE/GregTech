@@ -4,6 +4,7 @@ import codechicken.lib.raytracer.CuboidRayTraceResult;
 import codechicken.lib.render.CCRenderState;
 import codechicken.lib.render.pipeline.IVertexOperation;
 import codechicken.lib.vec.Matrix4;
+import gregtech.api.capability.ConfigurationContext;
 import gregtech.api.capability.GregtechTileCapabilities;
 import gregtech.api.capability.IActiveOutputSide;
 import gregtech.api.capability.impl.EnergyContainerHandler;
@@ -214,8 +215,8 @@ public class SimpleMachineMetaTileEntity extends WorkableTieredMetaTileEntity im
     }
 
     @Override
-    public NBTTagCompound copyConfiguration(final EntityPlayer player) {
-        final NBTTagCompound data = super.copyConfiguration(player);
+    public NBTTagCompound copyConfiguration(final ConfigurationContext context) {
+        final NBTTagCompound data = super.copyConfiguration(context);
         data.setInteger("OutputFacing", getOutputFacing().getIndex());
         data.setBoolean("AutoOutputItems", this.autoOutputItems);
         data.setBoolean("AutoOutputFluids", this.autoOutputFluids);
@@ -224,8 +225,8 @@ public class SimpleMachineMetaTileEntity extends WorkableTieredMetaTileEntity im
     }
 
     @Override
-    public void pasteConfiguration(final EntityPlayer player, final NBTTagCompound data) {
-        super.pasteConfiguration(player, data);
+    public void pasteConfiguration(final ConfigurationContext context, final NBTTagCompound data) {
+        super.pasteConfiguration(context, data);
         setOutputFacing(EnumFacing.VALUES[data.getInteger("OutputFacing")]);
         setAutoOutputItems(data.getBoolean("AutoOutputItems"));
         setAutoOutputFluids(data.getBoolean("AutoOutputFluids"));

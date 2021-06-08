@@ -10,6 +10,7 @@ import codechicken.lib.vec.Cuboid6;
 import codechicken.lib.vec.Matrix4;
 import com.google.common.base.Preconditions;
 import gregtech.api.GregTechAPI;
+import gregtech.api.capability.ConfigurationContext;
 import gregtech.api.capability.GregtechTileCapabilities;
 import gregtech.api.capability.IConfigurable;
 import gregtech.api.capability.IEnergyContainer;
@@ -1158,20 +1159,26 @@ public abstract class MetaTileEntity implements ICoverable, IConfigurable {
     }
 
     @Override
-    public NBTTagCompound copyConfiguration(EntityPlayer player) {
+    public String getConfigurationName() {
+        // FIXME: how to do this properly?
+        return String.format("%s.name", getStackForm().getTranslationKey());
+    }
+
+    @Override
+    public NBTTagCompound copyConfiguration(final ConfigurationContext context) {
         final NBTTagCompound data = new NBTTagCompound();
         data.setInteger("FrontFacing", this.frontFacing.getIndex());
 
         for (MTETrait mteTrait : this.mteTraits) {
             if (mteTrait.isConfigurable()) {
-                data.setTag(mteTrait.getName(), mteTrait.copyConfiguration(player));
+                data.setTag(mteTrait.getName(), mteTrait.copyConfiguration(context));
             }
         }
         return data;
     }
 
     @Override
-    public void pasteConfiguration(final EntityPlayer player, final NBTTagCompound data) {
+    public void pasteConfiguration(final ConfigurationContext context, final NBTTagCompound data) {
         setFrontFacing(EnumFacing.VALUES[data.getInteger("FrontFacing")]);
 
         // Review: Is it possible to have mismatched traits?
@@ -1179,7 +1186,7 @@ public abstract class MetaTileEntity implements ICoverable, IConfigurable {
             if (mteTrait.isConfigurable()) {
                 final NBTTagCompound traitCompound = data.getCompoundTag(mteTrait.getName());
                 if (traitCompound != null) {
-                    mteTrait.pasteConfiguration(player, traitCompound);
+                    mteTrait.pasteConfiguration(context, traitCompound);
                 }
             }
         }

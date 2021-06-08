@@ -1,6 +1,7 @@
 package gregtech.api.capability.impl;
 
 import gregtech.api.GTValues;
+import gregtech.api.capability.ConfigurationContext;
 import gregtech.api.capability.GregtechTileCapabilities;
 import gregtech.api.capability.IMultipleTankHandler;
 import gregtech.api.capability.IWorkable;
@@ -10,7 +11,6 @@ import gregtech.api.recipes.Recipe;
 import gregtech.api.recipes.RecipeMap;
 import gregtech.api.util.GTUtility;
 import gregtech.common.ConfigHolder;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -511,16 +511,16 @@ public abstract class AbstractRecipeLogic extends MTETrait implements IWorkable 
     }
 
     @Override
-    public NBTTagCompound copyConfiguration(final EntityPlayer player) {
-        final NBTTagCompound compound = super.copyConfiguration(player);
+    public NBTTagCompound copyConfiguration(final ConfigurationContext context) {
+        final NBTTagCompound compound = super.copyConfiguration(context);
         compound.setBoolean(ALLOW_OVERCLOCKING, this.allowOverclocking);
         compound.setLong(OVERCLOCK_VOLTAGE, this.overclockVoltage);
         return compound;
     }
 
     @Override
-    public void pasteConfiguration(final EntityPlayer player, final NBTTagCompound compound) {
-        super.pasteConfiguration(player, compound);
+    public void pasteConfiguration(final ConfigurationContext context, final NBTTagCompound compound) {
+        super.pasteConfiguration(context, compound);
         if (compound.hasKey(ALLOW_OVERCLOCKING)) {
             setAllowOverclocking(compound.getBoolean(ALLOW_OVERCLOCKING));
         }

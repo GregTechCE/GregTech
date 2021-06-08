@@ -1,12 +1,11 @@
 package gregtech.common.covers.filter;
 
-import gregtech.api.capability.IConfigurable;
+import gregtech.api.capability.ConfigurationContext;
 import gregtech.api.gui.GuiTextures;
 import gregtech.api.gui.Widget;
 import gregtech.api.gui.widgets.*;
 import gregtech.api.util.IDirtyNotifiable;
 import gregtech.api.util.ItemStackKey;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
@@ -21,7 +20,7 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.function.Consumer;
 
-public class ItemFilterContainer implements INBTSerializable<NBTTagCompound>, IConfigurable {
+public class ItemFilterContainer implements INBTSerializable<NBTTagCompound> {
 
     private static final String WRONG_FILTER = "metaitem.configurator.wrong_filter";
 
@@ -174,13 +173,7 @@ public class ItemFilterContainer implements INBTSerializable<NBTTagCompound>, IC
         }
     }
 
-    @Override
-    public ResourceLocation getConfigurationID() {
-        throw new AssertionError("unused");
-    }
-
-    @Override
-    public NBTTagCompound copyConfiguration(final EntityPlayer player) {
+    public NBTTagCompound copyConfiguration(final ConfigurationContext context) {
         NBTTagCompound tagCompound = new NBTTagCompound();
         tagCompound.setTag("FilterInventory", this.filterInventory.serializeNBT());
         tagCompound.setBoolean("IsBlacklist", this.filterWrapper.isBlacklistFilter());
@@ -196,15 +189,14 @@ public class ItemFilterContainer implements INBTSerializable<NBTTagCompound>, IC
         return tagCompound;
     }
 
-    @Override
-    public void pasteConfiguration(final EntityPlayer player, final NBTTagCompound tagCompound) {
+    public void pasteConfiguration(final ConfigurationContext context, final NBTTagCompound tagCompound) {
         // Check filter match
         final ItemFilter filter = this.filterWrapper.getItemFilter();
         final String configClassName = tagCompound.getString("FilterClassName");
         final String filterClassName = filter != null ? filter.getClass().getName() : null;
         if (!Objects.equals(configClassName, filterClassName)) {
             // TODO magic stick behaviour
-            player.sendMessage(new TextComponentTranslation(WRONG_FILTER));
+            context.sendMessage(new TextComponentTranslation(WRONG_FILTER));
             return;
         }
 

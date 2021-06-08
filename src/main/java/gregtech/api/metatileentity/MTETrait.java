@@ -1,6 +1,5 @@
 package gregtech.api.metatileentity;
 
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.EnumFacing;
@@ -9,9 +8,9 @@ import net.minecraftforge.common.capabilities.Capability;
 
 import java.util.function.Consumer;
 
-import gregtech.api.capability.IConfigurable;
+import gregtech.api.capability.ConfigurationContext;
 
-public abstract class MTETrait implements IConfigurable {
+public abstract class MTETrait {
 
     protected MetaTileEntity metaTileEntity;
 
@@ -48,18 +47,12 @@ public abstract class MTETrait implements IConfigurable {
         return false;
     }
 
-    @Override
-    public ResourceLocation getConfigurationID() {
-        throw new AssertionError("unused");
-    }
-
-    @Override
-    public NBTTagCompound copyConfiguration(final EntityPlayer player) {
+    @SuppressWarnings("static-method")
+    public NBTTagCompound copyConfiguration(final ConfigurationContext context) {
         return new NBTTagCompound();
     }
 
-    @Override
-    public void pasteConfiguration(final EntityPlayer player, final NBTTagCompound compound) {
+    public void pasteConfiguration(final ConfigurationContext context, final NBTTagCompound compound) {
         // nothing by default
     }
 

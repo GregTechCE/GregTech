@@ -673,13 +673,15 @@ metaitem.turbine_rotor.name=%s Turbine Rotor
 metaitem.turbine_rotor.tooltip=Turbine Rotors for your power station
 metaitem.tool.magnifying_glass.name=%s Magnifying Glass
 
-metaitem.configurator.mode.cover=Cover - use the grid
-metaitem.configurator.mode.machine=Machine - ignores the grid
-metaitem.configurator.copy=Configuration Copied
+metaitem.configurator.configuration=Configuration: %s
+metaitem.configurator.copy=Configuration Copied: 
 metaitem.configurator.no_configuration=No configuration in item
+metaitem.configurator.mode.cover=Cover - uses the grid
+metaitem.configurator.mode.machine=Machine - ignores the grid
 metaitem.configurator.not_configurable=Not configurable
-metaitem.configurator.paste=Configuration Applied
-metaitem.configurator.wrong_configurable=Configuration in item is for a different machine or cover
+metaitem.configurator.paste=Configuration Applied: 
+metaitem.configurator.wrong_configurable1=Configuration in item 
+metaitem.configurator.wrong_configurable2= does not match 
 metaitem.configurator.wrong_filter=Configuration filter type doesn't match
 
 metaitem.jack_hammer.mode.three_by_three=3x3 Panel

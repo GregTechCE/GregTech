@@ -8,12 +8,16 @@ import codechicken.lib.vec.Cuboid6;
 import codechicken.lib.vec.Matrix4;
 import com.google.common.collect.Lists;
 import gregtech.api.GTValues;
+import gregtech.api.capability.ConfigurationContext;
 import gregtech.api.capability.IConfigurable;
 import gregtech.api.gui.IUIHolder;
+import gregtech.api.items.metaitem.MetaItem;
+import gregtech.api.items.metaitem.MetaItem.MetaValueItem;
 import gregtech.api.render.SimpleSidedCubeRenderer.RenderSide;
 import gregtech.api.render.Textures;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.PacketBuffer;
@@ -92,12 +96,25 @@ public abstract class CoverBehavior implements IUIHolder, IConfigurable {
     }
 
     @Override
-    public NBTTagCompound copyConfiguration(final EntityPlayer player) {
+    public String getConfigurationName() {
+        // FIXME: how to do this properly?
+        final ItemStack coverStack = getCoverDefinition().getDropItemStack();
+        final Item item = coverStack.getItem();
+        if (item instanceof MetaItem) {
+            MetaItem<?> metaItem = (MetaItem<?>) item;
+            MetaItem<?>.MetaValueItem metaValueItem = metaItem.getItem(coverStack);
+            return String.format("metaitem.%s.name", metaValueItem.unlocalizedName);
+        }
+        return String.format("%s.name", coverStack.getTranslationKey());
+    }
+
+    @Override
+    public NBTTagCompound copyConfiguration(final ConfigurationContext context) {
         return new NBTTagCompound();
     }
 
     @Override
-    public void pasteConfiguration(final EntityPlayer player, final NBTTagCompound configuration) {
+    public void pasteConfiguration(final ConfigurationContext context, final NBTTagCompound configuration) {
         // nothing by default
     }
 

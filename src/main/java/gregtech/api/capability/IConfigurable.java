@@ -1,6 +1,5 @@
 package gregtech.api.capability;
 
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
 
@@ -11,7 +10,9 @@ public interface IConfigurable {
 
     ResourceLocation getConfigurationID();
 
-    NBTTagCompound copyConfiguration(EntityPlayer player);
+    String getConfigurationName();
 
-    void pasteConfiguration(EntityPlayer player, NBTTagCompound configuration);
+    NBTTagCompound copyConfiguration(ConfigurationContext context);
+
+    void pasteConfiguration(ConfigurationContext context, NBTTagCompound configuration);
 }
