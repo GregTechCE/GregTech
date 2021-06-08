@@ -8,7 +8,6 @@ import gregtech.api.util.IDirtyNotifiable;
 import gregtech.api.util.ItemStackKey;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraftforge.common.util.INBTSerializable;
