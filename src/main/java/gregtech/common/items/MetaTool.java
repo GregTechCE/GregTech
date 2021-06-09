@@ -73,7 +73,7 @@ public class MetaTool extends ToolMetaItem<ToolMetaItem<?>.MetaToolValueItem> {
             .setFullRepairCost(2)
             .addOreDict(ToolDictNames.craftingToolFile)
             // FIXME file is not the configurator
-            .addComponents(new ConfiguratorItemStat());
+            .addComponents(new ConfiguratorItemStat().advanced());
 
         CROWBAR = addItem(10, "tool.crowbar").setToolStats(new ToolCrowbar())
             .setFullRepairCost(1.5)

@@ -76,9 +76,9 @@ public class ConfiguratorBehavior implements IItemBehaviour {
             return EnumActionResult.PASS;
         }
 
-        final ConfigurationContext context = new PlayerConfigurationContext(player);
+        final ConfigurationContext context = new PlayerConfigurationContext(player, toolStack);
 
-        // Shigt Right Click is save
+        // Shift Right Click is save
         final boolean isShiftClick = player.isSneaking();
         if (isShiftClick) {
             final NBTTagCompound configuration = configurable.copyConfiguration(context);

@@ -9,15 +9,27 @@ import net.minecraftforge.common.capabilities.ICapabilityProvider;
 
 public class ConfiguratorItemStat implements IItemCapabilityProvider {
 
+    private boolean advanced = false;
+
     @Override
-    public ICapabilityProvider createProvider(ItemStack itemStack) {
+    public ICapabilityProvider createProvider(final ItemStack itemStack) {
         return new CapabilityProvider(itemStack);
     }
 
-    private static class CapabilityProvider extends AbstractToolItemCapabilityProvider<IConfiguratorItem> implements IConfiguratorItem {
+    public ConfiguratorItemStat advanced() {
+        this.advanced = true;
+        return this;
+    }
+
+    private class CapabilityProvider extends AbstractToolItemCapabilityProvider<IConfiguratorItem> implements IConfiguratorItem {
 
         public CapabilityProvider(final ItemStack itemStack) {
             super(itemStack);
+        }
+
+        @Override
+        public boolean isAdvanced() {
+            return ConfiguratorItemStat.this.advanced;
         }
 
         @Override

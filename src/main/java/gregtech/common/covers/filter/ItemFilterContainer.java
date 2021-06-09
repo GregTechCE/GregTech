@@ -4,6 +4,7 @@ import gregtech.api.capability.ConfigurationContext;
 import gregtech.api.gui.GuiTextures;
 import gregtech.api.gui.Widget;
 import gregtech.api.gui.widgets.*;
+import gregtech.api.util.GTUtility;
 import gregtech.api.util.IDirtyNotifiable;
 import gregtech.api.util.ItemStackKey;
 import net.minecraft.item.ItemStack;
@@ -11,6 +12,9 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraftforge.common.util.INBTSerializable;
+import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.items.IItemHandler;
+import net.minecraftforge.items.ItemHandlerHelper;
 import net.minecraftforge.items.ItemStackHandler;
 
 import javax.annotation.Nonnull;
@@ -135,6 +139,71 @@ public class ItemFilterContainer implements INBTSerializable<NBTTagCompound> {
         return matchItemStack(itemStack) != null;
     }
 
+    /**
+     * Remove the filter into an external inventory
+     *
+     * @param externalInventory the external inventory
+     * @param simulate true to simulate the clear
+     * @return true when there is no filter or the filter can be placed in the inventory
+     */
+    public boolean clearFilter(final IItemHandler externalInventory, final boolean simulate) {
+        final ItemStack currentFilter = this.filterInventory.getStackInSlot(0);
+        if (currentFilter.isEmpty()) {
+            return true;
+        }
+        if (!ItemHandlerHelper.insertItemStacked(externalInventory, currentFilter, simulate).isEmpty()) {
+            return false;
+        }
+        if (!simulate) {
+            this.filterInventory.extractItem(0, Integer.MAX_VALUE, false);
+        }
+        return true;
+    }
+
+    /**
+     * Swaps the filter with one from an external inventory
+     *
+     * @param requiredFilter the filter to be used
+     * @param externalInventory the external inventory
+     * @return true when the filter can be obtained from the external inventory
+     */
+    public boolean swapFilter(final ItemStack requiredFilter, final IItemHandler externalInventory) {
+        if (!this.filterInventory.isItemValid(0, requiredFilter)) {
+            return false;
+        }
+        if (!extractItem(requiredFilter, externalInventory, true)) {
+            return false;
+        }
+        // Review: This will stop the swap if there is no space, even though there will be space freed when the new filter is removed
+        //         but not doing this check will mean we void items for read only inventories
+        if (!clearFilter(externalInventory, true)) {
+            return false;
+        }
+        extractItem(requiredFilter, externalInventory, false);
+        clearFilter(externalInventory, false);
+        this.filterInventory.insertItem(0, requiredFilter, false);
+        return true;
+    }
+
+    private static boolean extractItem(final ItemStack itemStack, final IItemHandler itemHandler, final boolean simulate) {
+        final int count = itemStack.getCount();
+        for (int i = 0; i < itemHandler.getSlots(); ++i) {
+            final ItemStack stackInSlot = itemHandler.extractItem(i, count, true);
+            if (equalsIgnoreNBT(itemStack, stackInSlot)) {
+                if (!simulate) {
+                    itemHandler.extractItem(i, count, false);
+                }
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private static boolean equalsIgnoreNBT(final ItemStack one, final ItemStack two) {
+        return one.getItem().equals(two.getItem()) && one.getCount() == two.getCount() &&
+                GTUtility.getActualItemDamageFromStack(one) == GTUtility.getActualItemDamageFromStack(two);
+    }
+
     @Override
     public NBTTagCompound serializeNBT() {
         NBTTagCompound tagCompound = new NBTTagCompound();
@@ -189,12 +258,10 @@ public class ItemFilterContainer implements INBTSerializable<NBTTagCompound> {
     }
 
     public void pasteConfiguration(final ConfigurationContext context, final NBTTagCompound tagCompound) {
-        // Check filter match
-        final ItemFilter filter = this.filterWrapper.getItemFilter();
+        ItemFilter filter = this.filterWrapper.getItemFilter();
         final String configClassName = tagCompound.getString("FilterClassName");
         final String filterClassName = filter != null ? filter.getClass().getName() : null;
-        if (!Objects.equals(configClassName, filterClassName)) {
-            // TODO magic stick behaviour
+        if (!Objects.equals(configClassName, filterClassName) && !swapFilter(context, tagCompound)) {
             context.sendMessage(new TextComponentTranslation(WRONG_FILTER));
             return;
         }
@@ -207,6 +274,7 @@ public class ItemFilterContainer implements INBTSerializable<NBTTagCompound> {
         if (tagCompound.hasKey("TransferStackSize")) {
             setTransferStackSize(tagCompound.getInteger("TransferStackSize"));
         }
+        filter = this.filterWrapper.getItemFilter();
         if (filter != null) {
             //LEGACY SAVE FORMAT SUPPORT
             if (tagCompound.hasKey("ItemFilter") ||
@@ -217,5 +285,21 @@ public class ItemFilterContainer implements INBTSerializable<NBTTagCompound> {
                 filter.readFromNBT(filterInventory);
             }
         }
+    }
+
+    private boolean swapFilter(final ConfigurationContext context, final NBTTagCompound tagCompound) {
+        final IItemHandler externalInventory = context.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
+        if (externalInventory == null) {
+            return false;
+        }
+
+        final ItemStackHandler requiredFilters = new ItemStackHandler(1);
+        requiredFilters.deserializeNBT(tagCompound.getCompoundTag("FilterInventory"));
+        final ItemStack requiredFilter = requiredFilters.getStackInSlot(0);
+
+        if (requiredFilter.isEmpty()) {
+            return clearFilter(externalInventory, false);
+        }
+        return swapFilter(requiredFilter, externalInventory);
     }
 }
