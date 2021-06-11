@@ -41,6 +41,11 @@ public class RecipeMapGroupOutput extends RecipeMap<SimpleRecipeBuilder> impleme
     }
 
     @Override
+    public Builder createUITemplate(DoubleSupplier progressSupplier, IItemHandlerModifiable importItems, IItemHandlerModifiable exportItems, FluidTankList importFluids, FluidTankList exportFluids, int yOffset) {
+        return createUITemplate(progressSupplier, importItems, exportItems, importFluids, exportFluids);
+    }
+
+    @Override
     public int getLeftButtonOffset() {
         return 0;
     }
