@@ -24,7 +24,7 @@ public class GTOreCategory extends PrimitiveRecipeCategory<GTOreInfo, GTOreInfo>
     protected int weight;
     protected int[] dimensionIDs;
     protected final int FONT_HEIGHT = Minecraft.getMinecraft().fontRenderer.FONT_HEIGHT;
-    protected final Map<String, Integer> namedDimensions = WorldGenRegistry.getNamedDimensions();
+    protected final Map<Integer, String> namedDimensions = WorldGenRegistry.getNamedDimensions();
     private final int NUM_OF_SLOTS = 5;
     private final int SLOT_WIDTH = 18;
     private final int SLOT_HEIGHT = 18;
@@ -86,7 +86,7 @@ public class GTOreCategory extends PrimitiveRecipeCategory<GTOreInfo, GTOreInfo>
         //Selected Ore
         this.slot.draw(minecraft, 22, baseYPos);
         //Surface Identifier
-        this.slot.draw(minecraft, 22, 73);
+        this.slot.draw(minecraft, 22, SLOT_HEIGHT * (NUM_OF_SLOTS - 1) + 1);
 
         int yPos = 0;
         for(int i = 0; i < outputCount; i++) {
@@ -96,17 +96,20 @@ public class GTOreCategory extends PrimitiveRecipeCategory<GTOreInfo, GTOreInfo>
             this.slot.draw(minecraft, xPos, yPos);
         }
 
-        baseYPos = yPos; //has to be set to position of last rendered slot for later use
+        //base positions set to position of last rendered slot for later use.
+        //Must account for the fact that yPos is the top corner of the slot, so add in another slot height
+        baseYPos = yPos + SLOT_HEIGHT; //has to be set to position of last rendered slot for later use. Accounts
 
         drawVeinName(minecraft.fontRenderer);
 
         //Begin Drawing information, depending on how many rows of ore outputs were created
         //Give room for 5 lines of 5 ores each, so 25 unique ores in the vein
-        if(baseYPos > 73) {
+        //73 is SLOT_HEIGHT * (NUM_OF_SLOTS - 1) + 1
+        if(baseYPos >= SLOT_HEIGHT * NUM_OF_SLOTS) {
             minecraft.fontRenderer.drawString("Spawn Range: " + minHeight + "-" + maxHeight, 70, baseYPos + 1, 0x111111);
         }
         else {
-            minecraft.fontRenderer.drawString("Spawn Range: " + minHeight + "-" + maxHeight, 70, 73, 0x111111);
+            minecraft.fontRenderer.drawString("Spawn Range: " + minHeight + "-" + maxHeight, 70, SLOT_HEIGHT * (NUM_OF_SLOTS - 1) + 1, 0x111111);
             //Update the position at which the spawn information ends
             baseYPos = 73;
         }
@@ -122,22 +125,18 @@ public class GTOreCategory extends PrimitiveRecipeCategory<GTOreInfo, GTOreInfo>
         for(int i = 0; i < dimensionIDs.length; i++) {
 
             //If the dimension name is included, append it to the dimension number
-            if(namedDimensions.containsValue(dimensionIDs[i])) {
-                int finalI = i;
-                dimName = namedDimensions.entrySet().stream()
-                                            .filter(entry -> dimensionIDs[finalI] == entry.getValue())
-                                            .map(Map.Entry::getKey)
-                                            .findFirst().get();
+            if(namedDimensions.containsKey(dimensionIDs[i])) {
+                dimName = namedDimensions.get(dimensionIDs[i]);
                 fullDimName = i == dimensionIDs.length - 1 ?
                     dimensionIDs[i] + " (" + dimName + ")" :
-                    dimensionIDs[i] + " (" + dimName + "),";
+                    dimensionIDs[i] + " (" + dimName + "), ";
             }
             //If the dimension name is not included, just add the dimension number
             else {
 
                 fullDimName = i == dimensionIDs.length - 1 ?
                     Integer.toString(dimensionIDs[i]) :
-                    dimensionIDs[i] + ",";
+                    dimensionIDs[i] + ", ";
             }
 
             //Find the length of the dimension name string
@@ -157,7 +156,7 @@ public class GTOreCategory extends PrimitiveRecipeCategory<GTOreInfo, GTOreInfo>
 
 
         //Label the Surface Identifier
-        minecraft.fontRenderer.drawSplitString("SurfaceMaterial", 15, 92, 42, 0x111111);
+        minecraft.fontRenderer.drawSplitString("SurfaceMaterial", 15, 92, minecraft.fontRenderer.getStringWidth("Surface"), 0x111111);
 
     }
 

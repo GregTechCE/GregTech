@@ -84,6 +84,7 @@ public class GTOreInfo implements IRecipeWrapper {
         this.biomeFunction = definition.getBiomeWeightModifier();
 
         //Gather the dimension IDs that the vein can spawn in
+        //AR Planet dimensions are not registered at this point for some reason, only "Space"
          dimensionIDs = dimMap.values().stream()
             .flatMap(Collection::stream)
             .mapToInt(Integer::intValue)
@@ -211,7 +212,7 @@ public class GTOreInfo implements IRecipeWrapper {
             }
         }
 
-        //Should never reach here?
+        //No defined surface rock
         return stack;
     }
 
