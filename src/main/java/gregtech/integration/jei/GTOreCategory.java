@@ -98,7 +98,7 @@ public class GTOreCategory extends PrimitiveRecipeCategory<GTOreInfo, GTOreInfo>
 
         //base positions set to position of last rendered slot for later use.
         //Must account for the fact that yPos is the top corner of the slot, so add in another slot height
-        baseYPos = yPos + SLOT_HEIGHT; //has to be set to position of last rendered slot for later use. Accounts
+        baseYPos = yPos + SLOT_HEIGHT;
 
         drawVeinName(minecraft.fontRenderer);
 
