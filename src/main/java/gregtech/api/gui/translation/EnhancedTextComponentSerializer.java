@@ -38,6 +38,7 @@ public class EnhancedTextComponentSerializer extends ITextComponent.Serializer {
     private static Object[] fixArgs(Object[] original) {
         final Object[] result = new Object[original.length];
         for (int i = 0; i < original.length; ++i) {
+            result[i] = original[i];
             if (original[i] instanceof String) {
                 try {
                     result[i] = Long.valueOf((String) original[i]);
@@ -51,8 +52,6 @@ public class EnhancedTextComponentSerializer extends ITextComponent.Serializer {
                 } catch (@SuppressWarnings("unused") NumberFormatException ignored) {
                     // Not a double
                 }
-            } else {
-                result[i] = original[i];
             }
         }
         return result;
