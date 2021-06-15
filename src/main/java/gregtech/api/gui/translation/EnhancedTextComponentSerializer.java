@@ -27,32 +27,9 @@ public class EnhancedTextComponentSerializer extends ITextComponent.Serializer {
             return superResult;
         }
         final TextComponentTranslation original = (TextComponentTranslation) superResult;
-        final EnhancedTextComponentTranslation result = new EnhancedTextComponentTranslation(original.getKey(), fixArgs(original.getFormatArgs()));
+        final EnhancedTextComponentTranslation result = new EnhancedTextComponentTranslation(original.getKey(), original.getFormatArgs());
         for (ITextComponent sibling : original.getSiblings()) {
             result.appendSibling(sibling);
-        }
-        return result;
-    }
-
-    // FIXME: This is hacky
-    private static Object[] fixArgs(Object[] original) {
-        final Object[] result = new Object[original.length];
-        for (int i = 0; i < original.length; ++i) {
-            result[i] = original[i];
-            if (original[i] instanceof String) {
-                try {
-                    result[i] = Long.valueOf((String) original[i]);
-                    continue;
-                } catch (@SuppressWarnings("unused") NumberFormatException ignored) {
-                    // Not an integer
-                }
-                try {
-                    result[i] = Double.valueOf((String) original[i]);
-                    continue;
-                } catch (@SuppressWarnings("unused") NumberFormatException ignored) {
-                    // Not a double
-                }
-            }
         }
         return result;
     }

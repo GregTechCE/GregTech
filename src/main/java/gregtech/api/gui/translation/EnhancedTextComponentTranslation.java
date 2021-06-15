@@ -75,7 +75,7 @@ public class EnhancedTextComponentTranslation extends TextComponentTranslation {
                                     builder.append(group);
                                 }
                             }
-                            text = new TextComponentString(String.format(builder.toString(), formatArgs[index]));
+                            text = new TextComponentString(String.format(builder.toString(), fixArg(formatOption, object)));
                         }
                         text.getStyle().setParentStyle(this.getStyle());
                         this.copyChildren.add(text);
@@ -89,9 +89,26 @@ public class EnhancedTextComponentTranslation extends TextComponentTranslation {
                 text.getStyle().setParentStyle(this.getStyle());
                 this.copyChildren.add(text);
             }
-        } catch (IllegalFormatException e) {
+        } catch (IllegalFormatException | NumberFormatException e) {
             throw new TextComponentTranslationFormatException(this, e);
         }
+    }
+
+    private static Object fixArg(final String formatOption, final Object original) {
+        if (original instanceof String) {
+            final String string = (String) original;
+            // Short circuit common case
+            if ("s".equals(formatOption)) {
+                return string;
+            }
+            if ("d".equals(formatOption) || "o".equals(formatOption) || "x".equalsIgnoreCase(formatOption)) {
+                return Long.valueOf(string);
+            }
+            if ("e".equalsIgnoreCase(formatOption) || "f".equals(formatOption) || "g".equalsIgnoreCase(formatOption) || "a".equalsIgnoreCase(formatOption)) {
+                return Double.valueOf(string);
+            }
+        }
+        return original;
     }
 
     @Override
