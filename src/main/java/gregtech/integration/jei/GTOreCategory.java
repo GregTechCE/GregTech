@@ -1,8 +1,11 @@
 package gregtech.integration.jei;
 
 import gregtech.api.gui.GuiTextures;
+import gregtech.api.util.GTLog;
+import gregtech.api.worldgen.config.OreDepositDefinition;
 import gregtech.api.worldgen.config.WorldGenRegistry;
 import gregtech.integration.jei.recipe.primitive.PrimitiveRecipeCategory;
+import it.unimi.dsi.fastutil.ints.IntSortedSet;
 import mezz.jei.api.IGuiHelper;
 import mezz.jei.api.gui.IDrawable;
 import mezz.jei.api.gui.IGuiItemStackGroup;
@@ -11,20 +14,29 @@ import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.recipe.IRecipeWrapper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
+import net.minecraft.world.DimensionType;
+import net.minecraftforge.common.DimensionManager;
 
-import java.util.Map;
+import java.util.*;
+import java.util.function.Supplier;
+
+import static gregtech.api.GTValues.MODID_AR;
+import static gregtech.api.GTValues.isModLoaded;
 
 public class GTOreCategory extends PrimitiveRecipeCategory<GTOreInfo, GTOreInfo> {
 
     protected final IDrawable slot;
+    protected OreDepositDefinition definition;
     protected String veinName;
     protected int minHeight;
     protected int maxHeight;
     protected int outputCount;
     protected int weight;
-    protected int[] dimensionIDs;
+    protected List<Integer> dimensionIDs;
     protected final int FONT_HEIGHT = Minecraft.getMinecraft().fontRenderer.FONT_HEIGHT;
     protected final Map<Integer, String> namedDimensions = WorldGenRegistry.getNamedDimensions();
+    private Map<DimensionType, IntSortedSet> dimMap =  DimensionManager.getRegisteredDimensions();
+    private Supplier<List<Integer>> dimension = this::getAllRegisteredDimensions;
     private final int NUM_OF_SLOTS = 5;
     private final int SLOT_WIDTH = 18;
     private final int SLOT_HEIGHT = 18;
@@ -65,7 +77,7 @@ public class GTOreCategory extends PrimitiveRecipeCategory<GTOreInfo, GTOreInfo>
         maxHeight = recipeWrapper.getMaxHeight();
         outputCount = recipeWrapper.getOutputCount();
         weight = recipeWrapper.getWeight();
-        dimensionIDs = recipeWrapper.getDimensionIDs();
+        definition = recipeWrapper.getDefinition();
     }
 
     @Override
@@ -120,23 +132,25 @@ public class GTOreCategory extends PrimitiveRecipeCategory<GTOreInfo, GTOreInfo>
         //Create the Dimensions
         minecraft.fontRenderer.drawString("Dimensions: ", 70, baseYPos + (2 * FONT_HEIGHT), 0x111111);
 
+        dimensionIDs = dimension.get();
+
         //Will attempt to write dimension IDs in a single line, separated by commas. If the list is so long such that it
         //would run off the end of the page, the list is continued on a new line.
-        for(int i = 0; i < dimensionIDs.length; i++) {
+        for(int i = 0; i < dimensionIDs.size(); i++) {
 
             //If the dimension name is included, append it to the dimension number
-            if(namedDimensions.containsKey(dimensionIDs[i])) {
-                dimName = namedDimensions.get(dimensionIDs[i]);
-                fullDimName = i == dimensionIDs.length - 1 ?
-                    dimensionIDs[i] + " (" + dimName + ")" :
-                    dimensionIDs[i] + " (" + dimName + "), ";
+            if(namedDimensions.containsKey(dimensionIDs.get(i))) {
+                dimName = namedDimensions.get(dimensionIDs.get(i));
+                fullDimName = i == dimensionIDs.size() - 1 ?
+                    dimensionIDs.get(i) + " (" + dimName + ")" :
+                    dimensionIDs.get(i) + " (" + dimName + "), ";
             }
             //If the dimension name is not included, just add the dimension number
             else {
 
-                fullDimName = i == dimensionIDs.length - 1 ?
-                    Integer.toString(dimensionIDs[i]) :
-                    dimensionIDs[i] + ", ";
+                fullDimName = i == dimensionIDs.size() - 1 ?
+                    Integer.toString(dimensionIDs.get(i)) :
+                    dimensionIDs.get(i) + ", ";
             }
 
             //Find the length of the dimension name string
@@ -174,5 +188,47 @@ public class GTOreCategory extends PrimitiveRecipeCategory<GTOreInfo, GTOreInfo>
         int startPosition = (maxVeinNameLength - fontRenderer.getStringWidth(veinNameToDraw)) / 2;
 
         fontRenderer.drawString(veinNameToDraw, startPosition, 1, 0x111111);
+    }
+
+    public List<Integer> getAllRegisteredDimensions() {
+        List<Integer> dims = new ArrayList<>();
+        dimMap.values().stream()
+                .flatMap(Collection::stream)
+                .mapToInt(Integer::intValue)
+                .filter(num -> definition.getDimensionFilter().test(DimensionManager.createProviderFor(num)))
+                .forEach(dims::add);
+
+        if(isModLoaded(MODID_AR)) {
+            try {
+                int[] plantDims = DimensionManager.getDimensions(DimensionType.byName("planet"));
+                int[] asteroidDims = DimensionManager.getDimensions(DimensionType.byName("asteroid"));
+                int[] spaceDims = DimensionManager.getDimensions(DimensionType.byName("space"));
+
+                //Add the Planets to the dimension list
+                Arrays.stream(plantDims)
+                        .filter(num -> !dims.contains(num))
+                        .filter(num -> definition.getDimensionFilter().test(DimensionManager.createProviderFor(num)))
+                        .forEach(dims::add);
+
+                //Add the Asteroids to the dimension list
+                Arrays.stream(asteroidDims)
+                        .filter(num -> !dims.contains(num))
+                        .filter(num -> definition.getDimensionFilter().test(DimensionManager.createProviderFor(num)))
+                        .forEach(dims::add);
+
+                //Remove Space from the dimension list
+                for (int spaceDim : spaceDims) {
+                    if (dims.contains(spaceDim)) {
+                        dims.remove((Integer) spaceDim);
+                    }
+                }
+            }
+            catch (IllegalArgumentException e) {
+                GTLog.logger.error("Something went wrong with AR JEI integration, No DimensionType found");
+                GTLog.logger.error(e);
+            }
+        }
+
+        return dims;
     }
 }

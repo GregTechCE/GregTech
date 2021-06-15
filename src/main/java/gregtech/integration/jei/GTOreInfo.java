@@ -9,7 +9,6 @@ import gregtech.api.worldgen.populator.FluidSpringPopulator;
 import gregtech.api.worldgen.populator.IVeinPopulator;
 import gregtech.api.worldgen.populator.SurfaceBlockPopulator;
 import gregtech.api.worldgen.populator.SurfaceRockPopulator;
-import it.unimi.dsi.fastutil.ints.IntSortedSet;
 import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.recipe.IRecipeWrapper;
 import net.minecraft.block.Block;
@@ -17,9 +16,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
-import net.minecraft.world.DimensionType;
 import net.minecraft.world.biome.Biome;
-import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.fluids.*;
 import org.apache.commons.lang3.tuple.Pair;
 
@@ -39,13 +36,11 @@ public class GTOreInfo implements IRecipeWrapper {
     private final String name;
     private final String description;
     private final int weight;
-    private final int[] dimensionIDs;
     private final IVeinPopulator veinPopulator;
     private final BlockFiller blockFiller;
     private List<List<ItemStack>> groupedInputsAsItemStacks = new ArrayList<>();
     private List<List<ItemStack>> groupedOutputsAsItemStacks = new ArrayList<>();
     private final Function<Biome, Integer> biomeFunction;
-    private Map<DimensionType, IntSortedSet> dimMap =  DimensionManager.getRegisteredDimensions();
 
     public GTOreInfo(OreDepositDefinition definition) {
         this.definition = definition;
@@ -82,14 +77,6 @@ public class GTOreInfo implements IRecipeWrapper {
         this.blockFiller = definition.getBlockFiller();
 
         this.biomeFunction = definition.getBiomeWeightModifier();
-
-        //Gather the dimension IDs that the vein can spawn in
-        //AR Planet dimensions are not registered at this point for some reason, only "Space"
-         dimensionIDs = dimMap.values().stream()
-            .flatMap(Collection::stream)
-            .mapToInt(Integer::intValue)
-            .filter(num -> definition.getDimensionFilter().test(DimensionManager.createProviderFor(num)))
-            .toArray();
 
         //Group the input ores and the Surface Identifier
         List<ItemStack> generatedBlocksAsItemStacks = findComponentBlocksAsItemStacks();
@@ -327,7 +314,6 @@ public class GTOreInfo implements IRecipeWrapper {
         return tooltip;
     }
 
-
     public int getOutputCount() {
         return groupedOutputsAsItemStacks.size();
     }
@@ -344,11 +330,11 @@ public class GTOreInfo implements IRecipeWrapper {
         return minHeight;
     }
 
-    public int[] getDimensionIDs() {
-        return  dimensionIDs;
-    }
-
     public int getWeight() {
         return weight;
+    }
+
+    public OreDepositDefinition getDefinition() {
+        return definition;
     }
 }
