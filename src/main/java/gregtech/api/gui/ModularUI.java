@@ -190,7 +190,7 @@ public final class ModularUI implements ISizeProvider {
         }
 
         public Builder bindPlayerInventory(InventoryPlayer inventoryPlayer, TextureArea imageLocation) {
-            return bindPlayerInventory(inventoryPlayer, imageLocation, 8, 84);
+            return bindPlayerInventory(inventoryPlayer, imageLocation, 0);
         }
 
         //to be called in order to offset the player inventory from the top of the window
