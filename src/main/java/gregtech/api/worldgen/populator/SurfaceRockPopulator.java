@@ -100,12 +100,7 @@ public class SurfaceRockPopulator implements VeinChunkPopulator {
                 BlockPos topBlockPos = world.getTopSolidOrLiquidBlock(new BlockPos(randomX, 0, randomZ));
                 Block blockAtPos = world.getBlockState(topBlockPos).getBlock();
 
-                //Checks if there is an air block for the surface rock indicator to spawn at
-                if(!world.isAirBlock(topBlockPos)) {
-                    continue;
-                }
-
-                //Checks if the block is a replaceable feature like grass or snow layers. Liquids are replaceable, so
+                //Checks if the block is a replaceable feature like grass, snow layers, or Air. Liquids are replaceable, so
                 // exclude one deep liquid blocks, for looks
                 if(!blockAtPos.isReplaceable(world, topBlockPos) || world.getBlockState(topBlockPos).getMaterial().isLiquid()) {
                     continue;
