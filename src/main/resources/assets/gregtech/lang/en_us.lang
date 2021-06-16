@@ -922,7 +922,7 @@ item.material.oreprefix.cableGtQuadruple=4x %s cable
 item.material.oreprefix.cableGtDouble=2x %s cable
 item.material.oreprefix.cableGtSingle=1x %s cable
 
-material.aluminium=Aluminium
+material.aluminium=Aluminum
 material.americium=Americium
 material.antimony=Antimony
 material.argon=Argon
