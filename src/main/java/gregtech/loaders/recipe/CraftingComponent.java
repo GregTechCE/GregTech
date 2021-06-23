@@ -139,7 +139,9 @@ public enum CraftingComponent {
     HULL {
         @Override
         public Object getIngredient(int tier) {
-            return MetaTileEntities.HULL[tier].getStackForm();
+            if (tier < MetaTileEntities.HULL.length)
+                return MetaTileEntities.HULL[tier].getStackForm();
+            else return MetaTileEntities.HULL[1].getStackForm(); // TODO Remove once hulls is done
         }
     },
     WORSE_HULL {
