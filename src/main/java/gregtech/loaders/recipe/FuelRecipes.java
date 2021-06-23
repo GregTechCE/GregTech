@@ -17,8 +17,8 @@ public class FuelRecipes {
         registerDieselGeneratorFuel(Materials.Ethanol.getFluid(1), 6, GTValues.LV);
         registerDieselGeneratorFuel(Materials.BioDiesel.getFluid(1), 8, GTValues.LV);
         registerDieselGeneratorFuel(Materials.LightFuel.getFluid(1), 10, GTValues.LV);
-        registerDieselGeneratorFuel(Materials.Fuel.getFluid(1), 15, GTValues.LV);
-        registerDieselGeneratorFuel(Materials.NitroFuel.getFluid(2), 45, GTValues.LV);
+        registerDieselGeneratorFuel(Materials.Diesel.getFluid(1), 15, GTValues.LV);
+        registerDieselGeneratorFuel(Materials.NitroDiesel.getFluid(2), 45, GTValues.LV);
 
         //steam generator fuels
         registerSteamGeneratorFuel(Materials.Steam.getFluid(60), 1, GTValues.LV);
@@ -26,13 +26,13 @@ public class FuelRecipes {
         //low-tier gas turbine fuels
         registerGasGeneratorFuel(Materials.NaturalGas.getFluid(8), 5, GTValues.LV);
         registerGasGeneratorFuel(Materials.Hydrogen.getFluid(8), 5, GTValues.LV);
-        registerGasGeneratorFuel(Materials.CarbonMonoxde.getFluid(8), 6, GTValues.LV);
+        registerGasGeneratorFuel(Materials.CarbonMonoxide.getFluid(8), 6, GTValues.LV);
         registerGasGeneratorFuel(Materials.WoodGas.getFluid(8), 6, GTValues.LV);
         registerGasGeneratorFuel(Materials.SulfuricGas.getFluid(32), 25, GTValues.LV);
         registerGasGeneratorFuel(Materials.SulfuricNaphtha.getFluid(4), 5, GTValues.LV);
         registerGasGeneratorFuel(Materials.Methane.getFluid(4), 14, GTValues.LV);
         registerGasGeneratorFuel(Materials.Ethylene.getFluid(1), 4, GTValues.LV);
-        registerGasGeneratorFuel(Materials.Gas.getFluid(1), 5, GTValues.LV);
+        registerGasGeneratorFuel(Materials.RefineryGas.getFluid(1), 5, GTValues.LV);
         registerGasGeneratorFuel(Materials.Ethane.getFluid(4), 21, GTValues.LV);
         registerGasGeneratorFuel(Materials.Propene.getFluid(1), 6, GTValues.LV);
         registerGasGeneratorFuel(Materials.Butadiene.getFluid(16), 103, GTValues.LV);

@@ -100,26 +100,6 @@ public abstract class Material implements Comparable<Material> {
         }
 
         /**
-         * Enables electrolyzer decomposition recipe generation
-         */
-        public static final long DECOMPOSITION_BY_ELECTROLYZING = createFlag(40);
-
-        /**
-         * Enables centrifuge decomposition recipe generation
-         */
-        public static final long DECOMPOSITION_BY_CENTRIFUGING = createFlag(41);
-
-        /**
-         * Add to material if it has constantly burning aura
-         */
-        public static final long BURNING = createFlag(7);
-
-        /**
-         * Add to material if it is some kind of flammable
-         */
-        public static final long FLAMMABLE = createFlag(42);
-
-        /**
          * Add to material if it is some kind of explosive
          */
         public static final long EXPLOSIVE = createFlag(4);
@@ -135,14 +115,34 @@ public abstract class Material implements Comparable<Material> {
         public static final long NO_RECYCLING = createFlag(6);
 
         /**
-         * Disables decomposition recipe generation for this material and all materials that has it as component
+         * Add to material if it has constantly burning aura
          */
-        public static final long DISABLE_DECOMPOSITION = createFlag(43);
+        public static final long BURNING = createFlag(7);
 
         /**
          * Decomposition recipe requires hydrogen as additional input. Amount is equal to input amount
          */
         public static final long DECOMPOSITION_REQUIRES_HYDROGEN = createFlag(8);
+
+        /**
+         * Enables electrolyzer decomposition recipe generation
+         */
+        public static final long DECOMPOSITION_BY_ELECTROLYZING = createFlag(40);
+
+        /**
+         * Enables centrifuge decomposition recipe generation
+         */
+        public static final long DECOMPOSITION_BY_CENTRIFUGING = createFlag(41);
+
+        /**
+         * Add to material if it is some kind of flammable
+         */
+        public static final long FLAMMABLE = createFlag(42);
+
+        /**
+         * Disables decomposition recipe generation for this material and all materials that has it as component
+         */
+        public static final long DISABLE_DECOMPOSITION = createFlag(43);
 
         static {
             registerMaterialFlagsHolder(MatFlags.class, Material.class);

@@ -7,7 +7,7 @@ import stanhebben.zenscript.annotations.ZenMethod;
 import stanhebben.zenscript.annotations.ZenProperty;
 
 /**
- * This is some kind of Periodic Table, which I use to determine Properties of the Materials.
+ * This is some kind of Periodic Table, which can be used to determine Properties of the Materials.
  */
 @ZenClass("mods.gregtech.material.Element")
 @ZenRegister
@@ -136,10 +136,15 @@ public enum Element {
     Lv(116, 177, -1, null, "Livermorium", false),
     Ts(117, 177, -1, null, "Tennessine", false),
     Og(118, 176, -1, null, "Oganesson", false),
-    //stargate
+    //fantasy
     Tr(119, 178, -1, null, "Tritanium", false),
     Dr(120, 180, -1, null, "Duranium", false),
-    Nq(121, 172, 140, null, "Naquadah", true);
+    Nq(121, 172, 140, null, "Naquadah", true),
+    Nt(0, 5000, -1, null, "Neutronium", false),
+    Ke(1000, 1000, -1, null, "Trinium", false),
+    Ad(750, 1000, -1, null, "Adamantium", false),
+    Vb(850, 900, -1, null, "Vibranium", false),
+    Tn(550, 670, -1, null, "Taranium", false);
 
     public final String name;
     public final long protons;

@@ -327,7 +327,7 @@ public class MetaItem1 extends MaterialMetaItem {
             .buildAndRegister();
 
         RecipeMaps.ASSEMBLER_RECIPES.recipeBuilder()
-            .input(OrePrefix.stick, Materials.Wood).input(OrePrefix.dustSmall, Materials.Phosphor)
+            .input(OrePrefix.stick, Materials.Wood).input(OrePrefix.dustSmall, Materials.TricalciumPhosphate)
             .outputs(TOOL_MATCHES.getStackForm())
             .duration(16).EUt(16)
             .buildAndRegister();
@@ -339,7 +339,7 @@ public class MetaItem1 extends MaterialMetaItem {
             .buildAndRegister();
 
         RecipeMaps.ASSEMBLER_RECIPES.recipeBuilder()
-            .input(OrePrefix.stick, Materials.Wood, 4).input(OrePrefix.dust, Materials.Phosphor)
+            .input(OrePrefix.stick, Materials.Wood, 4).input(OrePrefix.dust, Materials.TricalciumPhosphate)
             .outputs(TOOL_MATCHES.getStackForm(4))
             .duration(64)
             .EUt(16)

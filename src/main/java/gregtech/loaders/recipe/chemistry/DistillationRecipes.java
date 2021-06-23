@@ -71,7 +71,7 @@ public class DistillationRecipes {
             .duration(120).EUt(120).buildAndRegister();
 
         DISTILLATION_RECIPES.recipeBuilder()
-            .fluidInputs(CrackedLightFuel.getFluid(1000))
+            .fluidInputs(SteamCrackedLightFuel.getFluid(1000))
             .output(dustTiny, Carbon)
             .fluidOutputs(HeavyFuel.getFluid(50))
             .fluidOutputs(Naphtha.getFluid(100))
@@ -137,7 +137,7 @@ public class DistillationRecipes {
             .duration(120).EUt(120).buildAndRegister();
 
         DISTILLATION_RECIPES.recipeBuilder()
-            .fluidInputs(CrackedHeavyFuel.getFluid(1000))
+            .fluidInputs(SteamCrackedHeavyFuel.getFluid(1000))
             .output(dustTiny, Carbon, 3)
             .fluidOutputs(LightFuel.getFluid(100))
             .fluidOutputs(Naphtha.getFluid(125))
@@ -264,7 +264,7 @@ public class DistillationRecipes {
             .fluidOutputs(CarbonDioxide.getFluid(490))
             .fluidOutputs(Ethylene.getFluid(20))
             .fluidOutputs(Methane.getFluid(130))
-            .fluidOutputs(CarbonMonoxde.getFluid(340))
+            .fluidOutputs(CarbonMonoxide.getFluid(340))
             .fluidOutputs(Hydrogen.getFluid(20))
             .duration(40).EUt(256).buildAndRegister();
 
@@ -280,7 +280,7 @@ public class DistillationRecipes {
             .duration(80).EUt(640).buildAndRegister();
 
         DISTILLATION_RECIPES.recipeBuilder()
-            .fluidInputs(CalciumAcetate.getFluid(1000))
+            .fluidInputs(DissolvedCalciumAcetate.getFluid(1000))
             .output(dust, Quicklime, 2)
             .fluidOutputs(Acetone.getFluid(1000))
             .fluidOutputs(CarbonDioxide.getFluid(1000))

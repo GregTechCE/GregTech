@@ -63,13 +63,13 @@ public class MixerRecipes {
         MIXER_RECIPES.recipeBuilder()
             .fluidInputs(BioDiesel.getFluid(1000))
             .fluidInputs(Tetranitromethane.getFluid(40))
-            .fluidOutputs(NitroFuel.getFluid(750))
+            .fluidOutputs(NitroDiesel.getFluid(750))
             .duration(20).EUt(480).buildAndRegister();
 
         MIXER_RECIPES.recipeBuilder()
-            .fluidInputs(Fuel.getFluid(1000))
+            .fluidInputs(Diesel.getFluid(1000))
             .fluidInputs(Tetranitromethane.getFluid(20))
-            .fluidOutputs(NitroFuel.getFluid(1000))
+            .fluidOutputs(NitroDiesel.getFluid(1000))
             .duration(20).EUt(480).buildAndRegister();
 
         MIXER_RECIPES.recipeBuilder()
@@ -87,7 +87,7 @@ public class MixerRecipes {
         MIXER_RECIPES.recipeBuilder()
             .fluidInputs(LightFuel.getFluid(5000))
             .fluidInputs(HeavyFuel.getFluid(1000))
-            .fluidOutputs(Fuel.getFluid(6000))
+            .fluidOutputs(Diesel.getFluid(6000))
             .duration(16).EUt(120).buildAndRegister();
 
         MIXER_RECIPES.recipeBuilder()

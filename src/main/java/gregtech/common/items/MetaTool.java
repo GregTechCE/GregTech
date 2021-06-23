@@ -194,7 +194,7 @@ public class MetaTool extends ToolMetaItem<ToolMetaItem<?>.MetaToolValueItem> {
         }
 
         SolidMaterial[] softHammerMaterials = new SolidMaterial[]{
-            Materials.Wood, Materials.Rubber, Materials.Plastic, Materials.Polytetrafluoroethylene
+            Materials.Wood, Materials.Rubber, Materials.Polyethylene, Materials.Polytetrafluoroethylene
         };
         for (int i = 0; i < softHammerMaterials.length; i++) {
             SolidMaterial solidMaterial = softHammerMaterials[i];
