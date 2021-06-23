@@ -28,7 +28,7 @@ public class ChemistryRecipes {
 
         FLUID_HEATER_RECIPES.recipeBuilder()
             .circuitMeta(1)
-            .fluidInputs(CalciumAcetate.getFluid(200))
+            .fluidInputs(DissolvedCalciumAcetate.getFluid(200))
             .fluidOutputs(Acetone.getFluid(200))
             .duration(16).EUt(30).buildAndRegister();
 

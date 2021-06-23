@@ -60,12 +60,12 @@ public class DustMaterial extends FluidMaterial {
          */
         public static final long EXCLUDE_BLOCK_CRAFTING_RECIPES = createFlag(18);
 
+        public static final long EXCLUDE_PLATE_COMPRESSOR_RECIPE = createFlag(19);
+
         /**
          * This will prevent material from creating Shapeless recipes for dust to block and vice versa
          */
         public static final long EXCLUDE_BLOCK_CRAFTING_BY_HAND_RECIPES = createFlag(46);
-
-        public static final long EXCLUDE_PLATE_COMPRESSOR_RECIPE = createFlag(19);
 
         static {
             Material.MatFlags.registerMaterialFlagsHolder(MatFlags.class, DustMaterial.class);

@@ -40,6 +40,9 @@ public class IngotMaterial extends SolidMaterial {
         public static final long BLAST_FURNACE_CALCITE_DOUBLE = createFlag(35);
         public static final long BLAST_FURNACE_CALCITE_TRIPLE = createFlag(36);
 
+        public static final long GENERATE_ROUND = createFlag(51);
+        public static final long GENERATE_DOUBLE_PLATE = createFlag(52);
+
         static {
             Material.MatFlags.registerMaterialFlagsHolder(MatFlags.class, IngotMaterial.class);
         }
