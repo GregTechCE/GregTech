@@ -10,6 +10,7 @@ import gregtech.api.metatileentity.MetaTileEntityUIFactory;
 import gregtech.api.model.ResourcePackHook;
 import gregtech.api.net.NetworkHandler;
 import gregtech.api.recipes.RecipeMap;
+import gregtech.api.unification.Elements;
 import gregtech.api.unification.OreDictUnifier;
 import gregtech.api.unification.material.Materials;
 import gregtech.api.unification.material.type.Material;
@@ -81,6 +82,7 @@ public class GregTechMod {
     public void onPreInit(FMLPreInitializationEvent event) {
         GTLog.init(event.getModLog());
         NetworkHandler.init();
+        Elements.register();
         MetaTileEntityUIFactory.INSTANCE.init();
         PlayerInventoryUIFactory.INSTANCE.init();
         CoverBehaviorUIFactory.INSTANCE.init();
