@@ -61,7 +61,7 @@ public class Materials {
     public static IngotMaterial Copernicium = new IngotMaterial(24, "copernicium", 0xFFFEFF, DULL, 4, of(), 0, Elements.get("Copernicium"));
     public static IngotMaterial Copper = new IngotMaterial(25, "copper", 0xFF6400, SHINY, 1, of(), EXT2_METAL | GENERATE_ORE | MORTAR_GRINDABLE | GENERATE_DENSE, Elements.get("Copper"));
     public static IngotMaterial Curium = new IngotMaterial(26, "curium", 0x7B544E, METALLIC, 3, of(), EXT2_METAL, Elements.get("Curium"));
-    public static IngotMaterial Darmstadtium = new IngotMaterial(27, "darmstadtium", 0xAAAAAA, METALLIC, 6, of(), EXT2_METAL | GENERATE_RING | GENERATE_ROTOR | GENERATE_SMALL_GEAR | GENERATE_LONG_ROD | GENERATE_FRAME, Elements.get("Dysprosium"), 24.0F, 6.0f, 155360);
+    public static IngotMaterial Darmstadtium = new IngotMaterial(27, "darmstadtium", 0xAAAAAA, METALLIC, 2, of(), 0, Elements.get("Darmstadtium"));
     public static FluidMaterial Deuterium = new FluidMaterial(28, "deuterium", 0xFFFFFF, FLUID, of(), STATE_GAS, Elements.get("Deuterium"));
     public static IngotMaterial Dubnium = new IngotMaterial(29, "dubnium", 0xD3FDFF, SHINY, 7, of(), EXT2_METAL, Elements.get("Dubnium"));
     public static IngotMaterial Dysprosium = new IngotMaterial(30, "dysprosium", 0xFFFFFF, METALLIC, 2, of(), 0, Elements.get("Dysprosium"), 1680);
@@ -415,8 +415,8 @@ public class Materials {
     public static FluidMaterial UUMatter = new FluidMaterial(863, "uumatter", 0x8000C4, FLUID, of(), 0);
     public static FluidMaterial Honey = new FluidMaterial(862, "honey", 0xFFFFFF, FLUID, of(), 0);
     public static FluidMaterial Juice = new FluidMaterial(861, "juice", 0xA8C972, FLUID, of(), 0);
-    public static FluidMaterial RawGrowthMedium = new FluidMaterial(940, "raw_growth_medium", 10777425, FLUID, of(), GENERATE_FLUID_BLOCK | DISABLE_DECOMPOSITION);
-    public static FluidMaterial SterileGrowthMedium = new FluidMaterial(939, "sterilized_growth_medium", 11306862, FLUID, of(), GENERATE_FLUID_BLOCK | DISABLE_DECOMPOSITION);
+    public static FluidMaterial RawGrowthMedium = new FluidMaterial(860, "raw_growth_medium", 10777425, FLUID, of(), GENERATE_FLUID_BLOCK | DISABLE_DECOMPOSITION);
+    public static FluidMaterial SterileGrowthMedium = new FluidMaterial(859, "sterilized_growth_medium", 11306862, FLUID, of(), GENERATE_FLUID_BLOCK | DISABLE_DECOMPOSITION);
 
 
     /**
@@ -551,9 +551,9 @@ public class Materials {
     public static IngotMaterial NaquadahAlloy = new IngotMaterial(335, "naquadah_alloy", 0x282828, METALLIC, 5, of(new MaterialStack(Naquadah, 1), new MaterialStack(Osmiridium, 1)), EXT2_METAL, null, 8.0F, 5.0f, 5120, 7200);
     public static IngotMaterial NaquadahEnriched = new IngotMaterial(336, "naquadah_enriched", 0x323232, METALLIC, 4, of(), EXT_METAL | GENERATE_ORE | GENERATE_FOIL, null, 6.0F, 4.0f, 1280, 4500);
     public static IngotMaterial Naquadria = new IngotMaterial(337, "naquadria", 0x1E1E1E, SHINY, 3, of(), EXT_METAL, Elements.get("Naquadah"), 9000);
-    public static IngotMaterial Neutronium = new IngotMaterial(338, "neutronium", 0xFAFAFA, DULL, 6, of(), EXT_METAL, Elements.get("Neutronium"), 24.0F, 12F, 655360);
-    public static IngotMaterial Tritanium = new IngotMaterial(339, "tritanium", 0x600000, METALLIC, 6, of(), EXT_METAL | GENERATE_FRAME, Elements.get("Tritanium"), 20.0F, 6.0f, 10240);
-    public static IngotMaterial Duranium = new IngotMaterial(340, "duranium", 0xFFFFFF, METALLIC, 5, of(), EXT_METAL | GENERATE_FOIL, Elements.get("Duranium"), 16.0F, 5.0f, 5120);
+    public static IngotMaterial Neutronium = new IngotMaterial(338, "neutronium", 0xFAFAFA, DULL, 6, of(), EXT2_METAL | GENERATE_RING | GENERATE_ROTOR | GENERATE_SMALL_GEAR | GENERATE_LONG_ROD | GENERATE_FRAME, Elements.get("Neutronium"), 24.0F, 12F, 655360);
+    public static IngotMaterial Tritanium = new IngotMaterial(339, "tritanium", 0x600000, METALLIC, 6, of(), EXT_METAL, Elements.get("Tritanium"), 20.0F, 6.0f, 10240);
+    public static IngotMaterial Duranium = new IngotMaterial(340, "duranium", 0xFFFFFF, METALLIC, 5, of(), EXT_METAL, Elements.get("Duranium"), 16.0F, 5.0f, 5120);
     public static IngotMaterial Trinium = new IngotMaterial(341, "trinium", 0xC8C8D2, SHINY, 7, of(), 0, Elements.get("Trinium"), 8600);
     public static IngotMaterial Adamantium = new IngotMaterial(342, "adamantium", 0x2d365c, SHINY, 7, of(), 0, Elements.get("Adamantium"), 10850);
     public static IngotMaterial Vibranium = new IngotMaterial(343, "vibranium", 0x828aad, SHINY, 7, of(), 0, Elements.get("Vibranium"), 11220);
@@ -565,7 +565,7 @@ public class Materials {
     public static FluidMaterial Milk = new FluidMaterial(345, "milk", 0xFEFEFE, FINE, of(), 0);
     public static DustMaterial Cocoa = new DustMaterial(346, "cocoa", 0xBE5F00, FINE, 0, of(), 0);
     public static DustMaterial Wheat = new DustMaterial(347, "wheat", 0xFFFFC4, FINE, 0, of(), 0);
-    public static DustMaterial Meat = new DustMaterial(938, "meat", 12667980, SAND, 1, of(), DISABLE_DECOMPOSITION);
+    public static DustMaterial Meat = new DustMaterial(348, "meat", 12667980, SAND, 1, of(), DISABLE_DECOMPOSITION);
 
 
 

@@ -154,7 +154,7 @@ public abstract class Material implements Comparable<Material> {
      * Color of material in RGB format
      */
     @ZenProperty("color")
-    public final int materialRGB;
+    public int materialRGB;
 
     /**
      * Chemical formula of this material
@@ -166,7 +166,7 @@ public abstract class Material implements Comparable<Material> {
      * Icon set for this material meta-items generation
      */
     @ZenProperty("iconSet")
-    public final MaterialIconSet materialIconSet;
+    public MaterialIconSet materialIconSet;
 
     /**
      * List of this material component
@@ -281,6 +281,16 @@ public abstract class Material implements Comparable<Material> {
         }
     }
 
+    @ZenMethod
+    public void setMaterialRGB(int materialRGB) {
+        this.materialRGB = materialRGB;
+    }
+
+    @ZenMethod
+    public void setMaterialIconSet(MaterialIconSet materialIconSet) {
+        this.materialIconSet = materialIconSet;
+    }
+
     @ZenGetter("radioactive")
     public boolean isRadioactive() {
         if (element != null)
@@ -295,7 +305,7 @@ public abstract class Material implements Comparable<Material> {
         if (element != null)
             return element.getProtons();
         if (materialComponents.isEmpty())
-            return Elements.get("Technetium").getProtons();
+            return Elements.get("Neutronium").getProtons();
         long totalProtons = 0;
         for (MaterialStack material : materialComponents) {
             totalProtons += material.amount * material.material.getProtons();
@@ -308,7 +318,7 @@ public abstract class Material implements Comparable<Material> {
         if (element != null)
             return element.getNeutrons();
         if (materialComponents.isEmpty())
-            return Elements.get("Technetium").getNeutrons();
+            return Elements.get("Neutronium").getNeutrons();
         long totalNeutrons = 0;
         for (MaterialStack material : materialComponents) {
             totalNeutrons += material.amount * material.material.getNeutrons();
@@ -321,7 +331,7 @@ public abstract class Material implements Comparable<Material> {
         if (element != null)
             return element.getMass();
         if (materialComponents.isEmpty())
-            return Elements.get("Technetium").getMass();
+            return Elements.get("Neutronium").getMass();
         long totalMass = 0;
         for (MaterialStack material : materialComponents) {
             totalMass += material.amount * material.material.getMass();
@@ -334,7 +344,7 @@ public abstract class Material implements Comparable<Material> {
         if (element != null)
             return element.getProtons();
         if (materialComponents.isEmpty())
-            return Elements.get("Technetium").getProtons();
+            return Math.max(1, Elements.get("Neutronium").getProtons());
         long totalProtons = 0, totalAmount = 0;
         for (MaterialStack material : materialComponents) {
             totalAmount += material.amount;
@@ -348,7 +358,7 @@ public abstract class Material implements Comparable<Material> {
         if (element != null)
             return element.getNeutrons();
         if (materialComponents.isEmpty())
-            return Elements.get("Technetium").getNeutrons();
+            return Elements.get("Neutronium").getNeutrons();
         long totalNeutrons = 0, totalAmount = 0;
         for (MaterialStack material : materialComponents) {
             totalAmount += material.amount;
@@ -363,7 +373,7 @@ public abstract class Material implements Comparable<Material> {
         if (element != null)
             return element.getMass();
         if (materialComponents.size() <= 0)
-            return Elements.get("Technetium").getMass();
+            return Elements.get("Neutronium").getMass();
         long totalMass = 0, totalAmount = 0;
         for (MaterialStack material : materialComponents) {
             totalAmount += material.amount;

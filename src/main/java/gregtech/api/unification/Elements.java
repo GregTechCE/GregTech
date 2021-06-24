@@ -34,7 +34,7 @@ public class Elements {
         add(12, 12, -1, null, "Magnesium", "Mg", false);
         add(13, 13, -1, null, "Aluminium", "Al", false);
         add(14, 14, -1, null, "Silicon", "Si", false);
-        add(15, 15, -1, null, "Phosphor", "P", false);
+        add(15, 15, -1, null, "Phosphorus", "P", false);
         add(16, 16, -1, null, "Sulfur", "S", false);
         add(17, 18, -1, null, "Chlorine", "Cl", false);
         add(18, 22, -1, null, "Argon", "Ar", false);
