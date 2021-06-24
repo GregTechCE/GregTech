@@ -6,6 +6,7 @@ import gregtech.api.unification.Element;
 import gregtech.api.unification.material.MaterialIconSet;
 import gregtech.api.unification.stack.MaterialStack;
 import stanhebben.zenscript.annotations.ZenClass;
+import stanhebben.zenscript.annotations.ZenMethod;
 import stanhebben.zenscript.annotations.ZenProperty;
 
 import java.util.ArrayList;
@@ -95,7 +96,7 @@ public class DustMaterial extends FluidMaterial {
      * Tool level needed to harvest block of this material
      */
     @ZenProperty
-    public final int harvestLevel;
+    public int harvestLevel;
 
     /**
      * Material to which smelting of this material ore will result
@@ -133,6 +134,11 @@ public class DustMaterial extends FluidMaterial {
      */
     @ZenProperty
     public DustMaterial crushedInto = this;
+
+    @ZenMethod
+    public void setHarvestLevel(int harvestLevel) {
+        this.harvestLevel = harvestLevel;
+    }
 
     public DustMaterial(int metaItemSubId, String name, int materialRGB, MaterialIconSet materialIconSet, int harvestLevel, ImmutableList<MaterialStack> materialComponents, long materialGenerationFlags, Element element) {
         super(metaItemSubId, name, materialRGB, materialIconSet, materialComponents, materialGenerationFlags, element);
