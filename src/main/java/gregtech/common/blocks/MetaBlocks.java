@@ -1,7 +1,6 @@
 package gregtech.common.blocks;
 
 import com.google.common.collect.ImmutableMap;
-import gnu.trove.map.TIntObjectMap;
 import gregtech.api.GTValues;
 import gregtech.api.GregTechAPI;
 import gregtech.api.block.machines.BlockMachine;
@@ -89,7 +88,8 @@ public class MetaBlocks {
     public static BlockTurbineCasing TURBINE_CASING;
     public static BlockMachineCasing MACHINE_CASING;
     public static BlockSteamCasing STEAM_CASING;
-    public static BlockMultiblockCasing MUTLIBLOCK_CASING;
+    public static BlockMultiblockCasing MULTIBLOCK_CASING;
+    public static BlockTransparentCasing TRANSPARENT_CASING;
     public static BlockWireCoil WIRE_COIL;
     public static BlockWarningSign WARNING_SIGN;
 
@@ -134,8 +134,10 @@ public class MetaBlocks {
         MACHINE_CASING.setRegistryName("machine_casing");
         STEAM_CASING = new BlockSteamCasing();
         STEAM_CASING.setRegistryName("steam_casing");
-        MUTLIBLOCK_CASING = new BlockMultiblockCasing();
-        MUTLIBLOCK_CASING.setRegistryName("multiblock_casing");
+        MULTIBLOCK_CASING = new BlockMultiblockCasing();
+        MULTIBLOCK_CASING.setRegistryName("multiblock_casing");
+        TRANSPARENT_CASING = new BlockTransparentCasing();
+        TRANSPARENT_CASING.setRegistryName("transparent_casing");
         WIRE_COIL = new BlockWireCoil();
         WIRE_COIL.setRegistryName("wire_coil");
         WARNING_SIGN = new BlockWarningSign();
@@ -310,7 +312,8 @@ public class MetaBlocks {
         registerItemModel(TURBINE_CASING);
         registerItemModel(MACHINE_CASING);
         registerItemModel(STEAM_CASING);
-        registerItemModel(MUTLIBLOCK_CASING);
+        registerItemModel(MULTIBLOCK_CASING);
+        registerItemModel(TRANSPARENT_CASING);
         registerItemModel(WIRE_COIL);
         registerItemModel(WARNING_SIGN);
         registerItemModel(GRANITE);
