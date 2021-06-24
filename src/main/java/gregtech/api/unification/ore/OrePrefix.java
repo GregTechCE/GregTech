@@ -222,6 +222,7 @@ public enum OrePrefix {
         excludeAllGems(Materials.EnderPearl);
         excludeAllGems(Materials.EnderEye);
         excludeAllGems(Materials.Flint);
+        excludeAllExtraGems(Materials.LigniteCoke);
 
         dust.setIgnored(Materials.Redstone);
         dust.setIgnored(Materials.Glowstone);
@@ -291,6 +292,13 @@ public enum OrePrefix {
 
     private static void excludeAllGems(Material material) {
         gem.setIgnored(material);
+        gemChipped.setIgnored(material);
+        gemFlawed.setIgnored(material);
+        gemFlawless.setIgnored(material);
+        gemExquisite.setIgnored(material);
+    }
+
+    private static void excludeAllExtraGems(Material material) {
         gemChipped.setIgnored(material);
         gemFlawed.setIgnored(material);
         gemFlawless.setIgnored(material);

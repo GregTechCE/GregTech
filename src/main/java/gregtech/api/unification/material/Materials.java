@@ -1,5 +1,6 @@
 package gregtech.api.unification.material;
 
+import com.google.common.collect.ImmutableList;
 import gregtech.api.GTValues;
 import gregtech.api.unification.Elements;
 import gregtech.api.unification.material.type.*;
@@ -192,7 +193,7 @@ public class Materials {
     public static GemMaterial Emerald = new GemMaterial(152, "emerald", 0x50FF50, EMERALD, 2, of(new MaterialStack(Beryllium, 3), new MaterialStack(Aluminium, 2), new MaterialStack(Silicon, 6), new MaterialStack(Oxygen, 18)), STD_GEM | NO_SMASHING | NO_SMELTING | HIGH_SIFTER_OUTPUT | EXCLUDE_BLOCK_CRAFTING_BY_HAND_RECIPES, 10.0F, 2.0f, 368);
     public static DustMaterial Galena = new DustMaterial(153, "galena", 0x643C64, DULL, 3, of(new MaterialStack(Lead, 3), new MaterialStack(Silver, 3), new MaterialStack(Sulfur, 2)), GENERATE_ORE | NO_SMELTING);
     public static DustMaterial Garnierite = new DustMaterial(154, "garnierite", 0x32C846, METALLIC, 3, of(new MaterialStack(Nickel, 1), new MaterialStack(Oxygen, 1)), GENERATE_ORE);
-    public static GemMaterial GreenSapphire = new GemMaterial(155, "green_sapphire", 0x64C882, GEM_HORIZONTAL, 2, of(new MaterialStack(Aluminium, 2), new MaterialStack(Oxygen, 3)), GENERATE_ORE | NO_SMASHING | NO_SMELTING | HIGH_SIFTER_OUTPUT | GENERATE_LENSE, 8.0F, 3.0f, 368);
+    public static GemMaterial GreenSapphire = new GemMaterial(155, "green_sapphire", 0x64C882, GEM_HORIZONTAL, 2, of(new MaterialStack(Aluminium, 2), new MaterialStack(Oxygen, 3)), GENERATE_ORE | NO_SMASHING | NO_SMELTING | HIGH_SIFTER_OUTPUT | GENERATE_LENSE | GENERATE_PLATE, 8.0F, 3.0f, 368);
     public static DustMaterial Grossular = new DustMaterial(156, "grossular", 0xC86400, ROUGH, 1, of(new MaterialStack(Calcium, 3), new MaterialStack(Aluminium, 2), new MaterialStack(Silicon, 3), new MaterialStack(Oxygen, 12)), GENERATE_ORE);
     public static DustMaterial Ice = new DustMaterial(157, "ice", 0xC8C8FF, SHINY, 0, of(new MaterialStack(Hydrogen, 2), new MaterialStack(Oxygen, 1)), NO_SMASHING | NO_RECYCLING | SMELT_INTO_FLUID | EXCLUDE_BLOCK_CRAFTING_RECIPES | DISABLE_DECOMPOSITION);
     public static DustMaterial Ilmenite = new DustMaterial(158, "ilmenite", 0x463732, METALLIC, 3, of(new MaterialStack(Iron, 1), new MaterialStack(Titanium, 1), new MaterialStack(Oxygen, 3)), GENERATE_ORE | DISABLE_DECOMPOSITION);
@@ -256,7 +257,7 @@ public class Materials {
     public static GemMaterial CertusQuartz = new GemMaterial(214, "certus_quartz", 0xD2D2E6, QUARTZ, 1, of(), STD_SOLID | NO_SMELTING | CRYSTALLISABLE | GENERATE_ORE);
     public static GemMaterial Quartzite = new GemMaterial(215, "quartzite", 0xD2E6D2, QUARTZ, 1, of(), NO_SMELTING | CRYSTALLISABLE | GENERATE_ORE);
     public static IngotMaterial Graphite = new IngotMaterial(216, "graphite", 0x808080, DULL, 2, of(), GENERATE_PLATE | GENERATE_ORE | NO_SMELTING | FLAMMABLE);
-    public static IngotMaterial Graphene = new IngotMaterial(217, "graphene", 0x808080, SHINY, 2, of(), GENERATE_PLATE);
+    public static IngotMaterial Graphene = new IngotMaterial(217, "graphene", 0x808080, SHINY, 2, of(), GENERATE_PLATE | GENERATE_FOIL);
     public static GemMaterial Jasper = new GemMaterial(218, "jasper", 0xC85050, EMERALD, 2, of(), STD_GEM | NO_SMELTING | HIGH_SIFTER_OUTPUT);
     public static IngotMaterial Osmiridium = new IngotMaterial(219, "osmiridium", 0x6464FF, METALLIC, 3, of(new MaterialStack(Iridium, 3), new MaterialStack(Osmium, 1)), EXT2_METAL, null, 9.0F, 3.0f, 3152, 2500);
     public static DustMaterial Tenorite = new DustMaterial(220, "tenorite", 0x606060, DULL, 1, of(new MaterialStack(Copper, 1), new MaterialStack(Oxygen, 1)), GENERATE_ORE);
@@ -443,6 +444,9 @@ public class Materials {
     public static GemMaterial NetherStar = new GemMaterial(246, "nether_star", 0xFFFFFF, NETHERSTAR, 4, of(), STD_SOLID | GENERATE_LENSE | NO_SMASHING | NO_SMELTING);
     public static DustMaterial Endstone = new DustMaterial(247, "endstone", 0xFFFFFF, DULL, 1, of(), NO_SMASHING);
     public static DustMaterial Netherrack = new DustMaterial(248, "netherrack", 0xC80000, DULL, 1, of(), NO_SMASHING | FLAMMABLE);
+    // TODO ID?
+    public static GemMaterial LigniteCoke = new GemMaterial(879, "lignite_coke", 0x8b6464, LIGNITE, 1, of(new MaterialStack(Carbon, 1)), DECOMPOSITION_BY_ELECTROLYZING | MORTAR_GRINDABLE | FLAMMABLE | NO_SMELTING | NO_SMASHING);
+
 
     /*
      * Oil refining sources & products
@@ -543,13 +547,13 @@ public class Materials {
     /**
      * Fantasy materials
      */
-    public static IngotMaterial Naquadah = new IngotMaterial(334, "naquadah", 0x323232, METALLIC, 4, of(), EXT_METAL | GENERATE_ORE, Elements.get("Naquadah"), 6.0F, 4.0f, 1280, 5400);
+    public static IngotMaterial Naquadah = new IngotMaterial(334, "naquadah", 0x323232, METALLIC, 4, of(), EXT_METAL | GENERATE_ORE | GENERATE_FOIL, Elements.get("Naquadah"), 6.0F, 4.0f, 1280, 5400);
     public static IngotMaterial NaquadahAlloy = new IngotMaterial(335, "naquadah_alloy", 0x282828, METALLIC, 5, of(new MaterialStack(Naquadah, 1), new MaterialStack(Osmiridium, 1)), EXT2_METAL, null, 8.0F, 5.0f, 5120, 7200);
-    public static IngotMaterial NaquadahEnriched = new IngotMaterial(336, "naquadah_enriched", 0x323232, METALLIC, 4, of(), EXT_METAL | GENERATE_ORE, null, 6.0F, 4.0f, 1280, 4500);
+    public static IngotMaterial NaquadahEnriched = new IngotMaterial(336, "naquadah_enriched", 0x323232, METALLIC, 4, of(), EXT_METAL | GENERATE_ORE | GENERATE_FOIL, null, 6.0F, 4.0f, 1280, 4500);
     public static IngotMaterial Naquadria = new IngotMaterial(337, "naquadria", 0x1E1E1E, SHINY, 3, of(), EXT_METAL, Elements.get("Naquadah"), 9000);
     public static IngotMaterial Neutronium = new IngotMaterial(338, "neutronium", 0xFAFAFA, DULL, 6, of(), EXT_METAL, Elements.get("Neutronium"), 24.0F, 12F, 655360);
-    public static IngotMaterial Tritanium = new IngotMaterial(339, "tritanium", 0x600000, METALLIC, 6, of(), EXT_METAL, Elements.get("Tritanium"), 20.0F, 6.0f, 10240);
-    public static IngotMaterial Duranium = new IngotMaterial(340, "duranium", 0xFFFFFF, METALLIC, 5, of(), EXT_METAL, Elements.get("Duranium"), 16.0F, 5.0f, 5120);
+    public static IngotMaterial Tritanium = new IngotMaterial(339, "tritanium", 0x600000, METALLIC, 6, of(), EXT_METAL | GENERATE_FRAME, Elements.get("Tritanium"), 20.0F, 6.0f, 10240);
+    public static IngotMaterial Duranium = new IngotMaterial(340, "duranium", 0xFFFFFF, METALLIC, 5, of(), EXT_METAL | GENERATE_FOIL, Elements.get("Duranium"), 16.0F, 5.0f, 5120);
     public static IngotMaterial Trinium = new IngotMaterial(341, "trinium", 0xC8C8D2, SHINY, 7, of(), 0, Elements.get("Trinium"), 8600);
     public static IngotMaterial Adamantium = new IngotMaterial(342, "adamantium", 0x2d365c, SHINY, 7, of(), 0, Elements.get("Adamantium"), 10850);
     public static IngotMaterial Vibranium = new IngotMaterial(343, "vibranium", 0x828aad, SHINY, 7, of(), 0, Elements.get("Vibranium"), 11220);
@@ -687,6 +691,7 @@ public class Materials {
         Lignite.setBurnTime(1200); //2/3 of burn time of coal
         Coke.setBurnTime(3200); //2x burn time of coal
         Wood.setBurnTime(300); //default wood burn time in vanilla
+        LigniteCoke.setBurnTime(2400);
 
         Tenorite.addOreByProducts(Iron, Manganese, Malachite);
         Bornite.addOreByProducts(Pyrite, Cobalt, Cadmium, Gold);
