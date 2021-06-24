@@ -41,9 +41,9 @@ public class MetaItem1 extends MaterialMetaItem {
     public MetaItem1() {
         super(OrePrefix.dustTiny, OrePrefix.dustSmall, OrePrefix.dust, OrePrefix.dustImpure, OrePrefix.dustPure,
             OrePrefix.crushed, OrePrefix.crushedPurified, OrePrefix.crushedCentrifuged, OrePrefix.gem, OrePrefix.nugget,
-            OrePrefix.ingot, OrePrefix.ingotHot, OrePrefix.plate, OrePrefix.plateDense, OrePrefix.stick, OrePrefix.lens,
-            OrePrefix.bolt, OrePrefix.screw, OrePrefix.ring, OrePrefix.foil,
-            null, null, null, null, null, null, null, null, null, null, null, null);
+            OrePrefix.ingot, OrePrefix.ingotHot, OrePrefix.plate, OrePrefix.plateDouble, OrePrefix.plateDense, OrePrefix.stick,
+            OrePrefix.lens, OrePrefix.bolt, OrePrefix.screw, OrePrefix.ring, OrePrefix.foil, OrePrefix.round,
+            null, null, null, null, null, null, null, null, null, null);
         registerPurifyRecipes();
     }
 
