@@ -21,7 +21,7 @@ public class BlockTransparentCasing extends VariantBlock<BlockTransparentCasing.
 
     public BlockTransparentCasing() {
         super(Material.IRON);
-        setTranslationKey("ga_transparent_casing");
+        setTranslationKey("transparent_casing");
         setHardness(5.0f);
         setResistance(5000.0f);
         setSoundType(SoundType.GLASS);

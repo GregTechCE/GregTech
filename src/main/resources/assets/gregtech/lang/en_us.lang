@@ -38,6 +38,7 @@ gregtech.multiblock.electric_blast_furnace.description=The Electric Blast Furnac
 gregtech.multiblock.multi_smelter.description=The Multi Smelter is a multiblock structure used for smelting massive amounts of items at once. Different tiers of coils provide a speed boost and energy efficiency gain. 16 is the base value of items smelted per operation, and can be multiplied by using higher level coils.
 gregtech.multiblock.large_boiler.description=Large Boilers are multiblocks that generate steam from an energy source and water. Said energy source is usually a solid fuel or some high-density fluid. Tiers differ only by amount of steam outputted.
 gregtech.multiblock.large_turbine.description=Large Turbines are multiblocks that generate power from steam, gases, and plasma by having them spin the turbine's rotor. Energy output is based on rotor efficiency and current speed of turbine.
+gregtech.multiblock.assembly_line.description=The Assembly Line is a large multiblock structure consisting of 5 to 16 "slices". In theory, it's large Assembling Machine, used for creating advanced crafting components.
 
 item.invalid.name=Invalid item
 fluid.empty=Empty
@@ -288,6 +289,9 @@ metaitem.energy.lapotronicorb2.name=Lapotronic Energy Orb Cluster
 metaitem.zpm.name=Zero Point Module
 metaitem.zpm2.name=Ultimate Battery
 metaitem.zpm2.tooltip=Fill this to win minecraft
+metaitem.energy.module.name=Energy Module
+metaitem.energy.cluster.name=Energy Cluster
+metaitem.max.battery.name=MAX Battery
 
 metaitem.electric.motor.lv.name=Electric Motor (LV)
 metaitem.electric.motor.mv.name=Electric Motor (MV)
@@ -498,6 +502,10 @@ metaitem.circuit.wetware_assembly.name=Wetware Assembly
 metaitem.circuit.wetware_assembly.tooltip=Can run Minecraft
 metaitem.circuit.wetware_super_computer.name=Wetware Supercomputer
 metaitem.circuit.wetware_mainframe.name=Wetware Mainframe
+
+metaitem.stemcells.name=Stemcells
+metaitem.stemcells.tooltip=Raw Intelligence
+metaitem.processor.neuro.name=Neuro Processing Unit
 
 metaitem.carbon.fibers.name=Raw Carbon Fibers
 metaitem.carbon.mesh.name=Carbon Mesh
@@ -1630,7 +1638,7 @@ recipemap.scanner.name=Scanner
 recipemap.rockbreaker.name=Rock Breaker
 recipemap.byproductlist.name=Ore Byproduct List
 recipemap.replicator.name=Replicator
-recipemap.assemblyline.name=Assembly Line
+recipemap.assembly_line.name=Assembly Line
 recipemap.assembler.name=Assembler
 recipemap.press.name=Forming Press
 recipemap.macerator.name=Pulverization
@@ -1807,11 +1815,14 @@ tile.steam_casing.steel_hull.name=Steel Hull
 tile.steam_casing.steel_bricks_hull.name=Bricked Steel Hull
 tile.steam_casing.bronze.tooltip=For your first Steam Machines
 tile.steam_casing.steel.tooltip=For improved Steam Machines
-# Turbine casing blocks
+
+# Gearbox casing blocks
 tile.turbine_casing.bronze_gearbox.name=Bronze Gear Box Casing
 tile.turbine_casing.steel_gearbox.name=Steel Gear Box Casing
 tile.turbine_casing.titanium_gearbox.name=Titanium Gear Box Casing
 tile.turbine_casing.steel_turbine_casing.name=Steel Turbine Casing
+
+# Turbine casing blocks
 tile.turbine_casing.titanium_turbine_casing.name=Titanium Turbine Casing
 tile.turbine_casing.stainless_turbine_casing.name=Stainless Turbine Casing
 tile.turbine_casing.tungstensteel_turbine_casing.name=Tungstensteel Turbine Casing
@@ -1820,8 +1831,12 @@ tile.turbine_casing.tungstensteel_turbine_casing.name=Tungstensteel Turbine Casi
 tile.multiblock_casing.engine_intake.name=Engine Intake Casing
 tile.multiblock_casing.grate.name=Grate Machine Casing
 tile.multiblock_casing.assembler.name=Assembler Machine Casing
+tile.multiblock_casing.assembly_line.name=Assembly Line Casing
 tile.multiblock_casing.fusion.name=Fusion Machine Casing
 tile.multiblock_casing.fusion_mk2.name=Fusion Machine Casing MK II
+
+# Transparent casing blocks
+tile.transparent_casing.reinforced_glass.name=Reinforced Glass
 
 # Creative tabs
 itemGroup.gregtech.main=GregTech CE
@@ -3257,6 +3272,8 @@ gregtech.machine.large_boiler.bronze.name=Large Bronze Boiler
 gregtech.machine.large_boiler.steel.name=Large Steel Boiler
 gregtech.machine.large_boiler.titanium.name=Large Titanium Boiler
 gregtech.machine.large_boiler.tungstensteel.name=Large Tungstensteel Boiler
+
+gregtech.machine.assembly_line.name=Assembly Line
 
 # Multiblock Tooltips
 gregtech.machine.primitive_blast_furnace.bronze.tooltip=Structure: 3x3x4 (WxLxH) The entire structure is made out of Primitive Bricks (32 in total)./nFirst Layer is a 3x3 square./nSecond, third, and fourth layers are hollow, without the middle block./nThis block goes on the middle of any side in the second layer./nThe sides of Blast Furnaces can be shared, if the side does not have a controller./n

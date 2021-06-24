@@ -20,11 +20,6 @@
           "all": "gregtech:blocks/casings/gearbox/machine_casing_gearbox_titanium"
         }
       },
-      "tungstensteel_gearbox": {
-        "textures": {
-          "all": "gregtech:blocks/casings/gearbox/machine_casing_gearbox_tungstensteel"
-        }
-      },
 
       "steel_turbine_casing": {
         "textures": {
