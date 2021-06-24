@@ -183,11 +183,11 @@ public class ConfigHolder {
 
             @Config.Comment("Enable all LuV-UV Machines, overrides individual values if true. Default: false")
             @Config.Name("LuV-UV Machines")
-            public boolean midTierMachines = true;
+            public boolean midTierMachines = false;
 
             @Config.Comment("Enable all UHV-UXV Machines, overrides individual values if true. Default: false")
             @Config.Name("UHV-UXV Machines")
-            public boolean highTierMachines = true;
+            public boolean highTierMachines = false;
 
             @Config.Comment("Set these to true to enable LuV-UV tiers of machines. Default (all): false")
             public boolean midTierAlloySmelter = false;
