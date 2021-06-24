@@ -64,7 +64,7 @@ public class MetaTileEntityDieselEngine extends FueledMultiblockController {
     }
 
     protected Predicate<BlockWorldState> intakeCasingPredicate() {
-        IBlockState blockState = MetaBlocks.MUTLIBLOCK_CASING.getState(MultiblockCasingType.ENGINE_INTAKE_CASING);
+        IBlockState blockState = MetaBlocks.MULTIBLOCK_CASING.getState(MultiblockCasingType.ENGINE_INTAKE_CASING);
         return blockWorldState -> {
             if (blockWorldState.getBlockState() != blockState)
                 return false;

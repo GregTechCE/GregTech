@@ -143,8 +143,8 @@ public class MetaItem1 extends MaterialMetaItem {
             .addComponents(new LighterBehaviour(1000)).setMaxStackSize(1);
 
         BATTERY_HULL_LV = addItem(500, "battery.hull.lv").setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.BatteryAlloy, OrePrefix.plate.materialAmount)));
-        BATTERY_HULL_MV = addItem(501, "battery.hull.hv").setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.BatteryAlloy, OrePrefix.plate.materialAmount * 3L)));
-        BATTERY_HULL_HV = addItem(502, "battery.hull.mv").setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.BatteryAlloy, OrePrefix.plate.materialAmount * 9L)));
+        BATTERY_HULL_MV = addItem(501, "battery.hull.mv").setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.BatteryAlloy, OrePrefix.plate.materialAmount * 3L)));
+        BATTERY_HULL_HV = addItem(502, "battery.hull.hv").setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.BatteryAlloy, OrePrefix.plate.materialAmount * 9L)));
 
         BATTERY_RE_ULV_TANTALUM = addItem(499, "battery.re.ulv.tantalum").addComponents(ElectricStats.createRechargeableBattery(1000, 0));
 

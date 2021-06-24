@@ -31,6 +31,7 @@ import gregtech.common.metatileentities.steam.boiler.SteamLavaBoiler;
 import gregtech.common.metatileentities.steam.boiler.SteamSolarBoiler;
 import gregtech.common.metatileentities.storage.*;
 import net.minecraft.util.ResourceLocation;
+import scala.tools.cmd.Meta;
 
 public class MetaTileEntities {
 
@@ -136,6 +137,8 @@ public class MetaTileEntities {
     public static MetaTileEntityLargeBoiler LARGE_STEEL_BOILER;
     public static MetaTileEntityLargeBoiler LARGE_TITANIUM_BOILER;
     public static MetaTileEntityLargeBoiler LARGE_TUNGSTENSTEEL_BOILER;
+
+    public static MetaTileEntityAssemblyLine ASSEMBLY_LINE;
 
     //STORAGE SECTION
     public static MetaTileEntityChest SMALL_WOODEN_CHEST;
@@ -422,6 +425,8 @@ public class MetaTileEntities {
 
         COKE_OVEN = GregTechAPI.registerMetaTileEntity(1016, new MetaTileEntityCokeOven(gregtechId("coke_oven")));
         COKE_OVEN_HATCH = GregTechAPI.registerMetaTileEntity(1017, new MetaTileEntityCokeOvenHatch(gregtechId("coke_oven_hatch")));
+
+        ASSEMBLY_LINE = GregTechAPI.registerMetaTileEntity(1018, new MetaTileEntityAssemblyLine(gregtechId("assembly_line")));
 
         // MISC MTE's START: IDs 1300-2000
 
