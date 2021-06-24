@@ -4,6 +4,7 @@ import gregtech.api.GTValues;
 import gregtech.api.items.materialitem.MaterialMetaItem;
 import gregtech.api.items.metaitem.ElectricStats;
 import gregtech.api.items.metaitem.FoodStats;
+import gregtech.api.items.metaitem.stats.IItemComponent;
 import gregtech.api.items.metaitem.stats.IItemContainerItemProvider;
 import gregtech.api.recipes.CountableIngredient;
 import gregtech.api.recipes.RecipeMaps;
@@ -165,6 +166,19 @@ public class MetaItem2 extends MaterialMetaItem {
 
         TURBINE_ROTOR = addItem(508, "turbine_rotor").addComponents(new TurbineRotorBehavior());
         COVER_FACADE = addItem(509, "cover.facade").addComponents(new FacadeItem()).disableModelLoading();
+
+        if (ConfigHolder.U.GT5U.enableZPMandUVBats) {
+            ENERGY_MODULE = addItem(520, "energy.module").addComponents(new IItemComponent[] { ElectricStats.createRechargeableBattery(10000000000L, 7) }).setModelAmount(8);
+            ENERGY_CLUSTER = addItem(521, "energy.cluster").addComponents(new IItemComponent[] { ElectricStats.createRechargeableBattery(100000000000L, 8) }).setModelAmount(8);
+        }
+
+        if (ConfigHolder.U.GT5U.replaceUVwithMAXBat) {
+            MAX_BATTERY = addItem(522, "max.battery").addComponents(new IItemComponent[] { ElectricStats.createRechargeableBattery(9223372036854775807L, 9) }).setModelAmount(8);
+            MetaItems.ZPM2.setInvisible();
+        }
+
+        NEURO_PROCESSOR = addItem(523, "processor.neuro");
+        STEM_CELLS = addItem(524, "stemcells");
     }
 
     public void registerRecipes() {
