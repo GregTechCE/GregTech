@@ -552,8 +552,8 @@ public class Materials {
     public static IngotMaterial NaquadahEnriched = new IngotMaterial(336, "naquadah_enriched", 0x323232, METALLIC, 4, of(), EXT_METAL | GENERATE_ORE | GENERATE_FOIL, null, 6.0F, 4.0f, 1280, 4500);
     public static IngotMaterial Naquadria = new IngotMaterial(337, "naquadria", 0x1E1E1E, SHINY, 3, of(), EXT_METAL, Elements.get("Naquadah"), 9000);
     public static IngotMaterial Neutronium = new IngotMaterial(338, "neutronium", 0xFAFAFA, DULL, 6, of(), EXT2_METAL | GENERATE_RING | GENERATE_ROTOR | GENERATE_SMALL_GEAR | GENERATE_LONG_ROD | GENERATE_FRAME, Elements.get("Neutronium"), 24.0F, 12F, 655360);
-    public static IngotMaterial Tritanium = new IngotMaterial(339, "tritanium", 0x600000, METALLIC, 6, of(), EXT_METAL, Elements.get("Tritanium"), 20.0F, 6.0f, 10240);
-    public static IngotMaterial Duranium = new IngotMaterial(340, "duranium", 0xFFFFFF, METALLIC, 5, of(), EXT_METAL, Elements.get("Duranium"), 16.0F, 5.0f, 5120);
+    public static IngotMaterial Tritanium = new IngotMaterial(339, "tritanium", 0x600000, METALLIC, 6, of(), EXT_METAL | GENERATE_FRAME, Elements.get("Tritanium"), 20.0F, 6.0f, 10240);
+    public static IngotMaterial Duranium = new IngotMaterial(340, "duranium", 0xFFFFFF, METALLIC, 5, of(), EXT_METAL | GENERATE_FOIL, Elements.get("Duranium"), 16.0F, 5.0f, 5120);
     public static IngotMaterial Trinium = new IngotMaterial(341, "trinium", 0xC8C8D2, SHINY, 7, of(), 0, Elements.get("Trinium"), 8600);
     public static IngotMaterial Adamantium = new IngotMaterial(342, "adamantium", 0x2d365c, SHINY, 7, of(), 0, Elements.get("Adamantium"), 10850);
     public static IngotMaterial Vibranium = new IngotMaterial(343, "vibranium", 0x828aad, SHINY, 7, of(), 0, Elements.get("Vibranium"), 11220);
