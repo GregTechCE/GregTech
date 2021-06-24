@@ -166,6 +166,19 @@ public class ConfigHolder {
         @Config.Name("Higher Tier Machines")
         public HighTierMachines machines = new HighTierMachines();
 
+        @Config.Comment("Config category for GT5u inspired features.")
+        @Config.Name("GregTech 5 Unofficial Options")
+        public GT5U GT5U = new GT5U();
+
+        public static class GT5U {
+
+            @Config.Comment("Set these to true to enable certain Batteries.")
+            @Config.Name("Batteries - Enable an extra ZPM and UV Battery (this also makes the Ultimate Battery harder to make)")
+            public boolean enableZPMandUVBats = false;
+            @Config.Name("Batteries - Replace the Ultimate Battery with a MAX Battery")
+            public boolean replaceUVwithMAXBat = false;
+        }
+
         public static class HighTierMachines {
 
             @Config.Comment("Enable all LuV-UV Machines, overrides individual values if true. Default: false")

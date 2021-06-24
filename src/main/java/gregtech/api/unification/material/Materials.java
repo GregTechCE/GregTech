@@ -16,7 +16,7 @@ import static gregtech.api.unification.material.type.Material.MatFlags.*;
 import static gregtech.api.unification.material.type.SolidMaterial.MatFlags.*;
 import static gregtech.api.unification.material.MaterialIconSet.*;
 
-@SuppressWarnings("WeakerAccess")
+@SuppressWarnings("unused")
 public class Materials {
 
     public static void register() {
@@ -414,6 +414,9 @@ public class Materials {
     public static FluidMaterial UUMatter = new FluidMaterial(863, "uumatter", 0x8000C4, FLUID, of(), 0);
     public static FluidMaterial Honey = new FluidMaterial(862, "honey", 0xFFFFFF, FLUID, of(), 0);
     public static FluidMaterial Juice = new FluidMaterial(861, "juice", 0xA8C972, FLUID, of(), 0);
+    public static FluidMaterial RawGrowthMedium = new FluidMaterial(940, "raw_growth_medium", 10777425, FLUID, of(), GENERATE_FLUID_BLOCK | DISABLE_DECOMPOSITION);
+    public static FluidMaterial SterileGrowthMedium = new FluidMaterial(939, "sterilized_growth_medium", 11306862, FLUID, of(), GENERATE_FLUID_BLOCK | DISABLE_DECOMPOSITION);
+
 
     /**
      * Organic chemistry
@@ -441,7 +444,7 @@ public class Materials {
     public static DustMaterial Endstone = new DustMaterial(247, "endstone", 0xFFFFFF, DULL, 1, of(), NO_SMASHING);
     public static DustMaterial Netherrack = new DustMaterial(248, "netherrack", 0xC80000, DULL, 1, of(), NO_SMASHING | FLAMMABLE);
 
-    /**
+    /*
      * Oil refining sources & products
      */
 
@@ -533,7 +536,7 @@ public class Materials {
     public static IngotMaterial HSSG = new IngotMaterial(331, "hssg", 0x999900, METALLIC, 3, of(new MaterialStack(TungstenSteel, 5), new MaterialStack(Chrome, 1), new MaterialStack(Molybdenum, 2), new MaterialStack(Vanadium, 1)), EXT2_METAL | GENERATE_RING | GENERATE_ROTOR | GENERATE_SMALL_GEAR | GENERATE_LONG_ROD | GENERATE_FRAME, null, 10.0F, 5.5f, 4000, 4200);
     public static IngotMaterial HSSE = new IngotMaterial(332, "hsse", 0x336600, METALLIC, 4, of(new MaterialStack(HSSG, 6), new MaterialStack(Cobalt, 1), new MaterialStack(Manganese, 1), new MaterialStack(Silicon, 1)), EXT2_METAL | GENERATE_RING | GENERATE_ROTOR | GENERATE_SMALL_GEAR | GENERATE_LONG_ROD | GENERATE_FRAME, null, 10.0F, 8.0f, 5120, 5000);
     public static IngotMaterial HSSS = new IngotMaterial(333, "hsss", 0x660033, METALLIC, 4, of(new MaterialStack(HSSG, 6), new MaterialStack(Iridium, 2), new MaterialStack(Osmium, 1)), EXT2_METAL | GENERATE_GEAR, null, 15.0F, 7.0f, 3000, 5000);
-    /**
+    /*
      * Clear matter materials
      */
 
@@ -558,6 +561,7 @@ public class Materials {
     public static FluidMaterial Milk = new FluidMaterial(345, "milk", 0xFEFEFE, FINE, of(), 0);
     public static DustMaterial Cocoa = new DustMaterial(346, "cocoa", 0xBE5F00, FINE, 0, of(), 0);
     public static DustMaterial Wheat = new DustMaterial(347, "wheat", 0xFFFFC4, FINE, 0, of(), 0);
+    public static DustMaterial Meat = new DustMaterial(938, "meat", 12667980, SAND, 1, of(), DISABLE_DECOMPOSITION);
 
 
 
