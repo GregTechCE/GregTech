@@ -46,6 +46,10 @@ public class VariantBlock<T extends Enum<T> & IStringSerializable> extends Block
         return blockState.getValue(VARIANT);
     }
 
+    public T getState(ItemStack stack) {
+        return getState(getStateFromMeta(stack.getItemDamage()));
+    }
+
     public ItemStack getItemVariant(T variant) {
         return new ItemStack(this, 1, variant.ordinal());
     }
