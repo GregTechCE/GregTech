@@ -1744,6 +1744,10 @@ tile.wire_coil.naquadah_alloy.name=Naquadah Alloy Coil Block
 tile.wire_coil.superconductor.name=Superconducting Coil Block
 tile.wire_coil.fusion_coil.name=Fusion Coil Block
 
+# General casing block tooltip
+tile.machine_casing.tooltip1=Mobs cannot Spawn on this Block
+tile.machine_casing.tooltip2=This is NOT a TileEntity!
+
 # Warning sign blocks
 tile.warning_sign.yellow_stripes.name=Yellow Stripes Block
 tile.warning_sign.small_yellow_stripes.name=Yellow Stripes Block
@@ -1787,22 +1791,22 @@ tile.machine_casing.high_voltage.name=HV Machine Casing
 tile.machine_casing.extreme_voltage.name=EV Machine Casing
 tile.machine_casing.insane_voltage.name=IV Machine Casing
 tile.machine_casing.ludicrous_voltage.name=LuV Machine Casing
-tile.machine_casing.zero_point_module.name=ZPM Machine Casing
-tile.machine_casing.ultra_voltage.name=UV Machine Casing
+tile.machine_casing.zpm_voltage.name=ZPM Machine Casing
+tile.machine_casing.ultimate_voltage.name=UV Machine Casing
 tile.machine_casing.highly_ultimate_voltage.name=UHV Machine Casing
+tile.machine_casing.extremely_ultimate_voltage.name=UEV Machine Casing
+tile.machine_casing.insanely_ultimate_voltage.name=UIV Machine Casing
+tile.machine_casing.mega_ultimate_voltage.name=UMV Machine Casing
+tile.machine_casing.extended_mega_ultimate_voltage.name=UXV Machine Casing
+tile.machine_casing.maximum_voltage.name=MAX Machine Casing
 
-tile.machine_casing.tooltip1=Mobs cannot Spawn on this Block
-tile.machine_casing.tooltip2=This is NOT a TileEntity!
-
-tile.machine_casing.bronze_hull.name=Bronze Hull
-tile.machine_casing.bronze_hull.tooltip=For your first Steam Machines
-tile.machine_casing.bronze_bricks_hull.name=Bricked Bronze Hull
-tile.machine_casing.bronze_bricks_hull.tooltip=For your first Steam Machines
-tile.machine_casing.steel_hull.name=Steel Hull
-tile.machine_casing.steel_hull.tooltip=For improved Steam Machines
-tile.machine_casing.steel_bricks_hull.name=Bricked Steel Hull
-tile.machine_casing.steel_bricks_hull.tooltip=For improved Steam Machines
-
+# Steam casing blocks
+tile.steam_casing.bronze_hull.name=Bronze Hull
+tile.steam_casing.bronze_bricks_hull.name=Bricked Bronze Hull
+tile.steam_casing.steel_hull.name=Steel Hull
+tile.steam_casing.steel_bricks_hull.name=Bricked Steel Hull
+tile.steam_casing.bronze.tooltip=For your first Steam Machines
+tile.steam_casing.steel.tooltip=For improved Steam Machines
 # Turbine casing blocks
 tile.turbine_casing.bronze_gearbox.name=Bronze Gear Box Casing
 tile.turbine_casing.steel_gearbox.name=Steel Gear Box Casing
@@ -2609,6 +2613,11 @@ gregtech.machine.hull.luv.name=LuV Machine Hull
 gregtech.machine.hull.zpm.name=ZPM Machine Hull
 gregtech.machine.hull.uv.name=UV Machine Hull
 gregtech.machine.hull.uhv.name=UHV Machine Hull
+gregtech.machine.hull.uev.name=UEV Machine Hull
+gregtech.machine.hull.uiv.name=UIV Machine Hull
+gregtech.machine.hull.umv.name=UMV Machine Hull
+gregtech.machine.hull.uxv.name=UXV Machine Hull
+gregtech.machine.hull.max.name=MAX Machine Hull
 
 # Battery buffers
 gregtech.machine.battery_buffer.ulv.1.name=Ultra Low Voltage Battery Buffer
@@ -2661,6 +2670,31 @@ gregtech.machine.battery_buffer.uhv.4.name=UHV Voltage Battery Buffer
 gregtech.machine.battery_buffer.uhv.9.name=UHV Voltage Battery Buffer
 gregtech.machine.battery_buffer.uhv.16.name=UHV Voltage Battery Buffer
 
+gregtech.machine.battery_buffer.uev.1.name=UEV Voltage Battery Buffer
+gregtech.machine.battery_buffer.uev.4.name=UEV Voltage Battery Buffer
+gregtech.machine.battery_buffer.uev.9.name=UEV Voltage Battery Buffer
+gregtech.machine.battery_buffer.uev.16.name=UEV Voltage Battery Buffer
+
+gregtech.machine.battery_buffer.uiv.1.name=UIV Voltage Battery Buffer
+gregtech.machine.battery_buffer.uiv.4.name=UIV Voltage Battery Buffer
+gregtech.machine.battery_buffer.uiv.9.name=UIV Voltage Battery Buffer
+gregtech.machine.battery_buffer.uiv.16.name=UIV Voltage Battery Buffer
+
+gregtech.machine.battery_buffer.umv.1.name=UMV Voltage Battery Buffer
+gregtech.machine.battery_buffer.umv.4.name=UMV Voltage Battery Buffer
+gregtech.machine.battery_buffer.umv.9.name=UMV Voltage Battery Buffer
+gregtech.machine.battery_buffer.umv.16.name=UMV Voltage Battery Buffer
+
+gregtech.machine.battery_buffer.uxv.1.name=UXV Voltage Battery Buffer
+gregtech.machine.battery_buffer.uxv.4.name=UXV Voltage Battery Buffer
+gregtech.machine.battery_buffer.uxv.9.name=UXV Voltage Battery Buffer
+gregtech.machine.battery_buffer.uxv.16.name=UXV Voltage Battery Buffer
+
+gregtech.machine.battery_buffer.max.1.name=MAX Voltage Battery Buffer
+gregtech.machine.battery_buffer.max.4.name=MAX Voltage Battery Buffer
+gregtech.machine.battery_buffer.max.9.name=MAX Voltage Battery Buffer
+gregtech.machine.battery_buffer.max.16.name=MAX Voltage Battery Buffer
+
 # Transformers
 gregtech.machine.transformer.tooltip_tool_usage=Use Soft Hammer to invert (Starts as Transform Down)
 gregtech.machine.transformer.tooltip_transform_down=Transform Down:
@@ -2677,6 +2711,10 @@ gregtech.machine.transformer.luv.name=Ludicrous Voltage Transformer
 gregtech.machine.transformer.zpm.name=ZPM Voltage Transformer
 gregtech.machine.transformer.uv.name=Ultimate Voltage Transformer
 gregtech.machine.transformer.uhv.name=UHV Voltage Transformer
+gregtech.machine.transformer.uev.name=UEV Voltage Transformer
+gregtech.machine.transformer.uiv.name=UIV Voltage Transformer
+gregtech.machine.transformer.umv.name=UMV Voltage Transformer
+gregtech.machine.transformer.uxv.name=UXV Voltage Transformer
 
 # Chargers
 gregtech.machine.charger.ulv.name=Ultra Low Voltage Battery Charger
@@ -2689,6 +2727,11 @@ gregtech.machine.charger.luv.name=Ludicrous Voltage Battery Charger
 gregtech.machine.charger.zpm.name=ZPM Voltage Battery Charger
 gregtech.machine.charger.uv.name=Ultimate Voltage Battery Charger
 gregtech.machine.charger.uhv.name=UHV Voltage Battery Charger
+gregtech.machine.charger.uev.name=UEV Voltage Battery Charger
+gregtech.machine.charger.uiv.name=UIV Voltage Battery Charger
+gregtech.machine.charger.umv.name=UMV Voltage Battery Charger
+gregtech.machine.charger.uxv.name=UXV Voltage Battery Charger
+gregtech.machine.charger.max.name=MAX Voltage Battery Charger
 
 # Pumps
 gregtech.machine.pump.tooltip_range=Pumping Area: %,dx%,d

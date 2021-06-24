@@ -35,7 +35,7 @@ import net.minecraft.util.ResourceLocation;
 public class MetaTileEntities {
 
     //HULLS
-    public static MetaTileEntityHull[] HULL = new MetaTileEntityHull[GTValues.V.length - 2]; // no ULV, no MAX
+    public static MetaTileEntityHull[] HULL = new MetaTileEntityHull[GTValues.V.length];
     public static MetaTileEntityTransformer[] TRANSFORMER = new MetaTileEntityTransformer[GTValues.V.length - 2]; // no ULV, no MAX
     public static MetaTileEntityBatteryBuffer[][] BATTERY_BUFFER = new MetaTileEntityBatteryBuffer[GTValues.V.length][];
     public static MetaTileEntityCharger[] CHARGER = new MetaTileEntityCharger[GTValues.V.length];

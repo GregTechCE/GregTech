@@ -131,6 +131,7 @@ public class GTJeiPlugin implements IModPlugin {
         }
 
         for (MetaTileEntity breweryTile : MetaTileEntities.BREWERY) {
+            if (breweryTile == null) continue;
             registry.addRecipeCatalyst(breweryTile.getStackForm(), VanillaRecipeCategoryUid.BREWING);
         }
 
@@ -164,16 +165,26 @@ public class GTJeiPlugin implements IModPlugin {
         }
         String oreByProductId = GTValues.MODID + ":" + "ore_by_product";
         registry.addRecipes(oreByproductList, oreByProductId);
-        for (MetaTileEntity machine : MetaTileEntities.MACERATOR)
+        for (MetaTileEntity machine : MetaTileEntities.MACERATOR) {
+            if (machine == null) continue;
             registry.addRecipeCatalyst(machine.getStackForm(), oreByProductId);
-        for (MetaTileEntity machine : MetaTileEntities.ORE_WASHER)
+        }
+        for (MetaTileEntity machine : MetaTileEntities.ORE_WASHER) {
+            if (machine == null) continue;
             registry.addRecipeCatalyst(machine.getStackForm(), oreByProductId);
-        for (MetaTileEntity machine : MetaTileEntities.CENTRIFUGE)
+        }
+        for (MetaTileEntity machine : MetaTileEntities.CENTRIFUGE) {
+            if (machine == null) continue;
             registry.addRecipeCatalyst(machine.getStackForm(), oreByProductId);
-        for (MetaTileEntity machine : MetaTileEntities.THERMAL_CENTRIFUGE)
+        }
+        for (MetaTileEntity machine : MetaTileEntities.THERMAL_CENTRIFUGE) {
+            if (machine == null) continue;
             registry.addRecipeCatalyst(machine.getStackForm(), oreByProductId);
-        for (MetaTileEntity machine : MetaTileEntities.CHEMICAL_BATH)
+        }
+        for (MetaTileEntity machine : MetaTileEntities.CHEMICAL_BATH) {
+            if (machine == null) continue;
             registry.addRecipeCatalyst(machine.getStackForm(), oreByProductId);
+        }
 
         //Ore Veins
         List<OreDepositDefinition> oreVeins = WorldGenRegistry.getOreDeposits();
@@ -197,6 +208,7 @@ public class GTJeiPlugin implements IModPlugin {
         registry.addRecipeCatalyst(MetaTileEntities.WORKBENCH.getStackForm(), VanillaRecipeCategoryUid.CRAFTING);
 
         for (MetaTileEntity machine : MetaTileEntities.FLUID_CANNER) {
+            if (machine == null) continue;
             registry.addIngredientInfo(machine.getStackForm(), VanillaTypes.ITEM,
                 "gregtech.machine.fluid_canner.jei_description");
         }

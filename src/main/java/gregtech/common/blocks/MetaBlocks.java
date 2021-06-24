@@ -88,6 +88,7 @@ public class MetaBlocks {
     public static BlockMetalCasing METAL_CASING;
     public static BlockTurbineCasing TURBINE_CASING;
     public static BlockMachineCasing MACHINE_CASING;
+    public static BlockSteamCasing STEAM_CASING;
     public static BlockMultiblockCasing MUTLIBLOCK_CASING;
     public static BlockWireCoil WIRE_COIL;
     public static BlockWarningSign WARNING_SIGN;
@@ -131,6 +132,8 @@ public class MetaBlocks {
         TURBINE_CASING.setRegistryName("turbine_casing");
         MACHINE_CASING = new BlockMachineCasing();
         MACHINE_CASING.setRegistryName("machine_casing");
+        STEAM_CASING = new BlockSteamCasing();
+        STEAM_CASING.setRegistryName("steam_casing");
         MUTLIBLOCK_CASING = new BlockMultiblockCasing();
         MUTLIBLOCK_CASING.setRegistryName("multiblock_casing");
         WIRE_COIL = new BlockWireCoil();
@@ -306,6 +309,7 @@ public class MetaBlocks {
         registerItemModel(METAL_CASING);
         registerItemModel(TURBINE_CASING);
         registerItemModel(MACHINE_CASING);
+        registerItemModel(STEAM_CASING);
         registerItemModel(MUTLIBLOCK_CASING);
         registerItemModel(WIRE_COIL);
         registerItemModel(WARNING_SIGN);
