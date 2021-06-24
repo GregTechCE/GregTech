@@ -14,7 +14,6 @@ import gregtech.common.blocks.*;
 import gregtech.common.blocks.wood.BlockGregLeaves;
 import gregtech.common.blocks.wood.BlockGregLog;
 import gregtech.common.blocks.wood.BlockGregSapling;
-import gregtech.common.datafix.GregTechDataFixers;
 import gregtech.common.items.MetaItems;
 import gregtech.common.items.potions.PotionFluids;
 import gregtech.common.pipelike.cable.ItemBlockCable;
@@ -243,15 +242,12 @@ public class CommonProxy {
     }
 
     public void onPreLoad() {
-
     }
 
     public void onLoad() {
-        GregTechDataFixers.init();
     }
 
     public void onPostLoad() {
         WoodMachineRecipes.postInit();
     }
-  
 }
