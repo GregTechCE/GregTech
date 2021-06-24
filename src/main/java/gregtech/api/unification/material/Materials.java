@@ -28,7 +28,7 @@ public class Materials {
     private static final long STD_GEM = GENERATE_ORE | STD_SOLID | GENERATE_LENSE;
     private static final long STD_METAL = GENERATE_PLATE;
     private static final long EXT_METAL = STD_METAL | GENERATE_ROD | GENERATE_BOLT_SCREW | GENERATE_LONG_ROD;
-    private static final long EXT2_METAL = EXT_METAL | GENERATE_GEAR | GENERATE_FOIL | GENERATE_FINE_WIRE;
+    private static final long EXT2_METAL = EXT_METAL | GENERATE_GEAR | GENERATE_FOIL | GENERATE_FINE_WIRE | GENERATE_ROUND;
 
     public static final MarkerMaterial _NULL = new MarkerMaterial("_null");
 
@@ -444,8 +444,6 @@ public class Materials {
     public static GemMaterial NetherStar = new GemMaterial(246, "nether_star", 0xFFFFFF, NETHERSTAR, 4, of(), STD_SOLID | GENERATE_LENSE | NO_SMASHING | NO_SMELTING);
     public static DustMaterial Endstone = new DustMaterial(247, "endstone", 0xFFFFFF, DULL, 1, of(), NO_SMASHING);
     public static DustMaterial Netherrack = new DustMaterial(248, "netherrack", 0xC80000, DULL, 1, of(), NO_SMASHING | FLAMMABLE);
-    // TODO ID?
-    public static GemMaterial LigniteCoke = new GemMaterial(879, "lignite_coke", 0x8b6464, LIGNITE, 1, of(new MaterialStack(Carbon, 1)), DECOMPOSITION_BY_ELECTROLYZING | MORTAR_GRINDABLE | FLAMMABLE | NO_SMELTING | NO_SMASHING);
 
 
     /*
@@ -691,7 +689,6 @@ public class Materials {
         Lignite.setBurnTime(1200); //2/3 of burn time of coal
         Coke.setBurnTime(3200); //2x burn time of coal
         Wood.setBurnTime(300); //default wood burn time in vanilla
-        LigniteCoke.setBurnTime(2400);
 
         Tenorite.addOreByProducts(Iron, Manganese, Malachite);
         Bornite.addOreByProducts(Pyrite, Cobalt, Cadmium, Gold);

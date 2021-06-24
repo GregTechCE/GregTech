@@ -222,7 +222,6 @@ public enum OrePrefix {
         excludeAllGems(Materials.EnderPearl);
         excludeAllGems(Materials.EnderEye);
         excludeAllGems(Materials.Flint);
-        excludeAllExtraGems(Materials.LigniteCoke);
 
         dust.setIgnored(Materials.Redstone);
         dust.setIgnored(Materials.Glowstone);
