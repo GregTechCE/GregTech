@@ -31,7 +31,6 @@ import gregtech.common.covers.CoverBehaviors;
 import gregtech.common.covers.filter.FilterTypeRegistry;
 import gregtech.common.items.MetaItems;
 import gregtech.common.metatileentities.MetaTileEntities;
-import gregtech.common.util.ResourcePackFix;
 import gregtech.common.worldgen.LootTableHelper;
 import gregtech.common.worldgen.WorldGenAbandonedBase;
 import gregtech.common.worldgen.WorldGenRubberTree;
@@ -43,8 +42,6 @@ import net.minecraftforge.fml.common.*;
 import net.minecraftforge.fml.common.Optional.Method;
 import net.minecraftforge.fml.common.event.*;
 import net.minecraftforge.fml.common.registry.GameRegistry;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 @Mod(modid = GTValues.MODID,
         name = "GregTech",
@@ -67,16 +64,6 @@ public class GregTechMod {
 
     @SidedProxy(modId = GTValues.MODID, clientSide = "gregtech.common.ClientProxy", serverSide = "gregtech.common.CommonProxy")
     public static CommonProxy proxy;
-
-    @Mod.EventHandler
-    @SideOnly(Side.CLIENT)
-    public void onConstruction(FMLConstructionEvent event) {
-        ModContainer selfModContainer = Loader.instance().activeModContainer();
-        if (selfModContainer.getSource().isDirectory()) {
-            //check and fix resource pack file path as needed
-            ResourcePackFix.fixResourcePackLocation(selfModContainer);
-        }
-    }
 
     @Mod.EventHandler
     public void onPreInit(FMLPreInitializationEvent event) {
