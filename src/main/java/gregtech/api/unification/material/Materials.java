@@ -414,8 +414,8 @@ public class Materials {
     public static FluidMaterial UUMatter = new FluidMaterial(863, "uumatter", 0x8000C4, FLUID, of(), 0);
     public static FluidMaterial Honey = new FluidMaterial(862, "honey", 0xFFFFFF, FLUID, of(), 0);
     public static FluidMaterial Juice = new FluidMaterial(861, "juice", 0xA8C972, FLUID, of(), 0);
-    public static FluidMaterial RawGrowthMedium = new FluidMaterial(940, "raw_growth_medium", 10777425, FLUID, of(), GENERATE_FLUID_BLOCK | DISABLE_DECOMPOSITION);
-    public static FluidMaterial SterileGrowthMedium = new FluidMaterial(939, "sterilized_growth_medium", 11306862, FLUID, of(), GENERATE_FLUID_BLOCK | DISABLE_DECOMPOSITION);
+    public static FluidMaterial RawGrowthMedium = new FluidMaterial(860, "raw_growth_medium", 10777425, FLUID, of(), GENERATE_FLUID_BLOCK | DISABLE_DECOMPOSITION);
+    public static FluidMaterial SterileGrowthMedium = new FluidMaterial(859, "sterilized_growth_medium", 11306862, FLUID, of(), GENERATE_FLUID_BLOCK | DISABLE_DECOMPOSITION);
 
 
     /**
@@ -561,7 +561,7 @@ public class Materials {
     public static FluidMaterial Milk = new FluidMaterial(345, "milk", 0xFEFEFE, FINE, of(), 0);
     public static DustMaterial Cocoa = new DustMaterial(346, "cocoa", 0xBE5F00, FINE, 0, of(), 0);
     public static DustMaterial Wheat = new DustMaterial(347, "wheat", 0xFFFFC4, FINE, 0, of(), 0);
-    public static DustMaterial Meat = new DustMaterial(938, "meat", 12667980, SAND, 1, of(), DISABLE_DECOMPOSITION);
+    public static DustMaterial Meat = new DustMaterial(348, "meat", 12667980, SAND, 1, of(), DISABLE_DECOMPOSITION);
 
 
 
