@@ -479,15 +479,6 @@ public class RecipeMaps {
      * 	        	.duration(250)
      * 	        	.EUt(480)
      * 	        	.buildAndRegister();
-     *
-     * 		RecipeMap.DISTILLATION_RECIPES.recipeBuilder()
-     * 				.universal()
-     * 				.fluidInputs(Materials.CrackedHeavyFuel.getFluid(100))
-     * 				.fluidOutputs(Materials.Gas.getGas(80), Materials.Naphtha.getFluid(10), Materials.LightFuel.getFluid(40), new FluidStack(ItemList.sToluene,30), Materials.Lubricant.getFluid(5))
-     * 				.outputs(OreDictUnifier.get(OrePrefix.dustTiny, Materials.HydratedCoal, 1))
-     * 				.duration(16)
-     * 				.EUt(64)
-     * 				.buildAndRegister();
      * </pre>
      */
 

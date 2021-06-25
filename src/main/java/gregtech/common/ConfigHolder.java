@@ -244,11 +244,9 @@ public class ConfigHolder {
             public boolean midTierPlasmaArcFurnaces = false;
             public boolean midTierPolarizers = false;
             public boolean midTierLaserEngravers = false;
-            //public boolean midTierReplicators = false;
             public boolean midTierSifters = false;
             public boolean midTierThermalCentrifuges = false;
             public boolean midTierMacerators = false;
-            public boolean midTierMassFabs = false;
             public boolean midTierUnpackers = false;
             public boolean midTierWiremills = false;
 
@@ -287,11 +285,9 @@ public class ConfigHolder {
             public boolean highTierPlasmaArcFurnaces = false;
             public boolean highTierPolarizers = false;
             public boolean highTierLaserEngravers = false;
-            //public boolean highTierReplicators = false;
             public boolean highTierSifters = false;
             public boolean highTierThermalCentrifuges = false;
             public boolean highTierMacerators = false;
-            //public boolean highTierMassFabs = false;
             public boolean highTierUnpackers = false;
             public boolean highTierWiremills = false;
         }

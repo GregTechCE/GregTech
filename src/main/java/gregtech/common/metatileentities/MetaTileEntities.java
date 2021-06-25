@@ -31,7 +31,6 @@ import gregtech.common.metatileentities.steam.boiler.SteamLavaBoiler;
 import gregtech.common.metatileentities.steam.boiler.SteamSolarBoiler;
 import gregtech.common.metatileentities.storage.*;
 import net.minecraft.util.ResourceLocation;
-import scala.tools.cmd.Meta;
 
 public class MetaTileEntities {
 
@@ -576,10 +575,10 @@ public class MetaTileEntities {
         }
 
         // Air Collectors, IDs 1545-1559
-        AIR_COLLECTOR[0] = GregTechAPI.registerMetaTileEntity(1545, new MetaTileEntityAirCollector(gregtechId("air_collector.iv"), 1));
-        AIR_COLLECTOR[1] = GregTechAPI.registerMetaTileEntity(1546, new MetaTileEntityAirCollector(gregtechId("air_collector.luv"), 2));
-        AIR_COLLECTOR[2] = GregTechAPI.registerMetaTileEntity(1547, new MetaTileEntityAirCollector(gregtechId("air_collector.iv"), 3));
-        AIR_COLLECTOR[3] = GregTechAPI.registerMetaTileEntity(1548, new MetaTileEntityAirCollector(gregtechId("air_collector.luv"), 4));
+        AIR_COLLECTOR[0] = GregTechAPI.registerMetaTileEntity(1545, new MetaTileEntityAirCollector(gregtechId("air_collector.lv"), 1));
+        AIR_COLLECTOR[1] = GregTechAPI.registerMetaTileEntity(1546, new MetaTileEntityAirCollector(gregtechId("air_collector.mv"), 2));
+        AIR_COLLECTOR[2] = GregTechAPI.registerMetaTileEntity(1547, new MetaTileEntityAirCollector(gregtechId("air_collector.hv"), 3));
+        AIR_COLLECTOR[3] = GregTechAPI.registerMetaTileEntity(1548, new MetaTileEntityAirCollector(gregtechId("air_collector.ev"), 4));
         if (ConfigHolder.U.machines.highTierAirCollectors) {
             AIR_COLLECTOR[4] = GregTechAPI.registerMetaTileEntity(1549, new MetaTileEntityAirCollector(gregtechId("air_collector.iv"), 5));
             AIR_COLLECTOR[5] = GregTechAPI.registerMetaTileEntity(1550, new MetaTileEntityAirCollector(gregtechId("air_collector.luv"), 6));
@@ -645,7 +644,7 @@ public class MetaTileEntities {
          * development team and claim a range of IDs! We will mark any
          * claimed ranges below this comment. Max value is 32767.
          *
-         * - Gregicality: 2000-3999
+         * - Gregicality / Shadows of Greg: 2000-3999
          * - GregTech Food Option: 8500-8999
          */
     }
