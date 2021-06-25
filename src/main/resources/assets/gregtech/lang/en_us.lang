@@ -1696,6 +1696,7 @@ recipemap.gas_turbine.name=Gas Turbine
 recipemap.steam_turbine.name=Steam Turbine
 recipemap.semi_fluid_generator.name=Semi Fluid Fuels
 recipemap.plasma_generator.name=Plasma Generator
+recipemap.cluster_mill.name=Cluster Mill
 
 behaviour.hoe=Can till dirt
 behaviour.soft_hammer=Use on machine to allow/disallow it to work
@@ -2636,6 +2637,22 @@ gregtech.machine.wiremill.uiv.name=High-Tech Wiremill III
 gregtech.machine.wiremill.umv.name=High-Tech Wiremill IV
 gregtech.machine.wiremill.uxv.name=Ultimate Wiremill
 
+gregtech.machine.cluster_mill.tooltip=Motor Singularity
+
+gregtech.machine.cluster_mill.lv.name=Basic Cluster Mill
+gregtech.machine.cluster_mill.mv.name=Advanced Cluster Mill
+gregtech.machine.cluster_mill.hv.name=Advanced Cluster Mill II
+gregtech.machine.cluster_mill.ev.name=Advanced Cluster Mill III
+gregtech.machine.cluster_mill.iv.name=Elite Cluster Mill
+gregtech.machine.cluster_mill.luv.name=Elite Cluster Mill II
+gregtech.machine.cluster_mill.zpm.name=Elite Cluster Mill III
+gregtech.machine.cluster_mill.uv.name=Elite Cluster Mill IV
+gregtech.machine.cluster_mill.uhv.name=High-Tech Cluster Mill
+gregtech.machine.cluster_mill.uev.name=High-Tech Cluster Mill II
+gregtech.machine.cluster_mill.uiv.name=High-Tech Cluster Mill III
+gregtech.machine.cluster_mill.umv.name=High-Tech Cluster Mill IV
+gregtech.machine.cluster_mill.uxv.name=Ultimate Cluster Mill
+
 # Machine hulls
 gregtech.machine.hull.tooltip=§fYou just need §5I§dm§4a§cg§ei§an§ba§3t§7i§1o§5n§f to use this
 
@@ -2777,6 +2794,10 @@ gregtech.machine.pump.lv.name=Basic Pump
 gregtech.machine.pump.mv.name=Advanced Pump
 gregtech.machine.pump.hv.name=Advanced Pump II
 gregtech.machine.pump.ev.name=Advanced Pump III
+gregtech.machine.pump.iv.name=Elite Pump
+gregtech.machine.pump.luv.name=Elite Pump II
+gregtech.machine.pump.zpm.name=Elite Pump III
+gregtech.machine.pump.uv.name=Elite Pump IV
 
 gregtech.machine.item_collector.lv.name=Basic Item Collector
 gregtech.machine.item_collector.mv.name=Advanced Item Collector
@@ -2809,7 +2830,9 @@ gregtech.machine.quantum_tank.iv.name=Black Hole-Quantum Tank III
 gregtech.machine.air_collector.lv.name=Basic Air Collector
 gregtech.machine.air_collector.mv.name=Advanced Air Collector
 gregtech.machine.air_collector.hv.name=Advanced Air Collector II
-gregtech.machine.air_collector.ev.name=Atmosphere Collector III
+gregtech.machine.air_collector.ev.name=Advanced Air Collector III
+gregtech.machine.air_collector.iv.name=Atmosphere Collector
+gregtech.machine.air_collector.luv.name=Atmosphere Collector II
 gregtech.machine.air_collector.tooltip=Collects air from adjacent blocks at the expense of energy
 gregtech.machine.air_collector.collection_speed=Produces %,d mb of Air every %,d ticks
 gregtech.machine.air_collector.jei_description=The Air Collector collects air from adjacent blocks for a little bit of EU
