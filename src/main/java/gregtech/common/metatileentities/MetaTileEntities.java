@@ -274,7 +274,7 @@ public class MetaTileEntities {
                 ConfigHolder.U.machines.midTierCentrifuges, ConfigHolder.U.machines.highTierCentrifuges, false);
 
         // Chemical Bath, IDs 215-229
-        registerSimpleMetaTileEntity(CHEMICAL_BATH, 215, "chemical_bath", RecipeMaps.CHEMICAL_BATH_RECIPES, Textures.CHEMICAL_REACTOR_OVERLAY,
+        registerSimpleMetaTileEntity(CHEMICAL_BATH, 215, "chemical_bath", RecipeMaps.CHEMICAL_BATH_RECIPES, Textures.CHEMICAL_BATH_OVERLAY,
                 ConfigHolder.U.machines.midTierChemicalBaths, ConfigHolder.U.machines.highTierChemicalBaths);
 
         // Chemical Reactor, IDs 230-244
