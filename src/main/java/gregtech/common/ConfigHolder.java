@@ -200,6 +200,15 @@ public class ConfigHolder {
             @Config.Name("UHV-UXV Machines")
             public boolean highTierMachines = false;
 
+            @Config.Comment("Should higher tier Pumps be registered (IV-UV)? Separate from other configs. Default: false")
+            public boolean highTierPumps = false;
+
+            @Config.Comment("Should higher tier Air Collectors be registered (IV, LuV)? Separate from other configs. Default: false")
+            public boolean highTierAirCollectors = false;
+
+            @Config.Comment("Enable the Cluster Mill for making foils? Will not be overridden by \"higher tier\" settings. Default: false")
+            public boolean enableClusterMill = false;
+
             @Config.Comment("Set these to true to enable LuV-UV tiers of machines. Default (all): false")
             public boolean midTierAlloySmelter = false;
             public boolean midTierArcFurnaces = false;
@@ -213,7 +222,7 @@ public class ConfigHolder {
             public boolean midTierChemicalReactors = false;
             public boolean midTierCompressors = false;
             public boolean midTierCutters = false;
-            //public boolean midTierClusterMills = false;
+            public boolean midTierClusterMills = false;
             public boolean midTierDistilleries = false;
             public boolean midTierElectricFurnace = false;
             public boolean midTierElectrolyzers = false;
@@ -235,7 +244,6 @@ public class ConfigHolder {
             public boolean midTierPlasmaArcFurnaces = false;
             public boolean midTierPolarizers = false;
             public boolean midTierLaserEngravers = false;
-            //public boolean midTierPumps = false;
             //public boolean midTierReplicators = false;
             public boolean midTierSifters = false;
             public boolean midTierThermalCentrifuges = false;
@@ -257,7 +265,7 @@ public class ConfigHolder {
             public boolean highTierChemicalReactors = false;
             public boolean highTierCompressors = false;
             public boolean highTierCutters = false;
-            //public boolean highTierClusterMills = false;
+            public boolean highTierClusterMills = false;
             public boolean highTierDistilleries = false;
             public boolean highTierElectricFurnace = false;
             public boolean highTierElectrolyzers = false;
@@ -279,7 +287,6 @@ public class ConfigHolder {
             public boolean highTierPlasmaArcFurnaces = false;
             public boolean highTierPolarizers = false;
             public boolean highTierLaserEngravers = false;
-            //public boolean highTierPumps = false;
             //public boolean highTierReplicators = false;
             public boolean highTierSifters = false;
             public boolean highTierThermalCentrifuges = false;

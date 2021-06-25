@@ -100,6 +100,7 @@ public class MetaTileEntities {
     public static SimpleMachineMetaTileEntity[] SIFTER = new SimpleMachineMetaTileEntity[GTValues.V.length - 1];
     public static SimpleMachineMetaTileEntity[] THERMAL_CENTRIFUGE = new SimpleMachineMetaTileEntity[GTValues.V.length - 1];
     public static SimpleMachineMetaTileEntity[] WIREMILL = new SimpleMachineMetaTileEntity[GTValues.V.length - 1];
+    public static SimpleMachineMetaTileEntity[] CLUSTER_MILL = new SimpleMachineMetaTileEntity[GTValues.V.length - 1];
 
     //GENERATORS SECTION
     public static SimpleGeneratorMetaTileEntity[] DIESEL_GENERATOR = new SimpleGeneratorMetaTileEntity[4];
@@ -174,11 +175,11 @@ public class MetaTileEntities {
     public static MetaTileEntityCrate TUNGSTENSTEEL_CRATE;
 
 
-    //MISC MACHINES SECTION TODO Do any of these need higher tiers?
+    //MISC MACHINES SECTION
     public static MetaTileEntityWorkbench WORKBENCH;
-    public static MetaTileEntityPump[] PUMP = new MetaTileEntityPump[4];
+    public static MetaTileEntityPump[] PUMP = new MetaTileEntityPump[8];
     public static MetaTileEntityBlockBreaker[] BLOCK_BREAKER = new MetaTileEntityBlockBreaker[4];
-    public static MetaTileEntityAirCollector[] AIR_COLLECTOR = new MetaTileEntityAirCollector[4];
+    public static MetaTileEntityAirCollector[] AIR_COLLECTOR = new MetaTileEntityAirCollector[6];
     public static MetaTileEntityItemCollector[] ITEM_COLLECTOR = new MetaTileEntityItemCollector[4];
     public static MetaTileEntityTeslaCoil TESLA_COIL;
     public static MetaTileEntityQuantumChest[] QUANTUM_CHEST = new MetaTileEntityQuantumChest[4];
@@ -385,6 +386,12 @@ public class MetaTileEntities {
         registerSimpleMetaTileEntity(WIREMILL, 620, "wiremill", RecipeMaps.WIREMILL_RECIPES, Textures.WIREMILL_OVERLAY,
                 ConfigHolder.U.machines.midTierWiremills, ConfigHolder.U.machines.highTierWiremills);
 
+        // Cluster Mill, IDs 635-650
+        if (ConfigHolder.U.machines.enableClusterMill) {
+            registerSimpleMetaTileEntity(CLUSTER_MILL, 635, "cluster_mill", RecipeMaps.CLUSTER_MILL_RECIPES, Textures.WIREMILL_OVERLAY,
+                    ConfigHolder.U.machines.midTierClusterMills, ConfigHolder.U.machines.highTierClusterMills);
+        }
+
         // Some space here for more SimpleMachines
 
         // Space left for these just in case
@@ -557,17 +564,25 @@ public class MetaTileEntities {
         FISHER[3] = GregTechAPI.registerMetaTileEntity(1518, new MetaTileEntityFisher(gregtechId("fisher.ev"), 4));
 
         // Pumps, IDs 1530-1544
-        for (int i = 0; i < PUMP.length; i++) {
-            String voltageName = GTValues.VN[i + 1].toLowerCase();
-            PUMP[i] = new MetaTileEntityPump(gregtechId("pump." + voltageName), i + 1);
-            GregTechAPI.registerMetaTileEntity(1530 + i, PUMP[i]);
+        PUMP[0] = GregTechAPI.registerMetaTileEntity(1530, new MetaTileEntityPump(gregtechId("pump.lv"), 1));
+        PUMP[1] = GregTechAPI.registerMetaTileEntity(1531, new MetaTileEntityPump(gregtechId("pump.mv"), 2));
+        PUMP[2] = GregTechAPI.registerMetaTileEntity(1532, new MetaTileEntityPump(gregtechId("pump.hv"), 3));
+        PUMP[3] = GregTechAPI.registerMetaTileEntity(1533, new MetaTileEntityPump(gregtechId("pump.ev"), 4));
+        if (ConfigHolder.U.machines.highTierPumps) {
+            PUMP[4] = GregTechAPI.registerMetaTileEntity(1534, new MetaTileEntityPump(gregtechId("pump.iv"), 5));
+            PUMP[5] = GregTechAPI.registerMetaTileEntity(1535, new MetaTileEntityPump(gregtechId("pump.luv"), 6));
+            PUMP[6] = GregTechAPI.registerMetaTileEntity(1536, new MetaTileEntityPump(gregtechId("pump.zpm"), 7));
+            PUMP[7] = GregTechAPI.registerMetaTileEntity(1537, new MetaTileEntityPump(gregtechId("pump.uv"), 8));
         }
 
         // Air Collectors, IDs 1545-1559
-        for (int i = 0; i < AIR_COLLECTOR.length; i++) {
-            String voltageName = GTValues.VN[i + 1].toLowerCase();
-            AIR_COLLECTOR[i] = new MetaTileEntityAirCollector(gregtechId("air_collector." + voltageName), i + 1);
-            GregTechAPI.registerMetaTileEntity(1545 + i, AIR_COLLECTOR[i]);
+        AIR_COLLECTOR[0] = GregTechAPI.registerMetaTileEntity(1545, new MetaTileEntityAirCollector(gregtechId("air_collector.iv"), 1));
+        AIR_COLLECTOR[1] = GregTechAPI.registerMetaTileEntity(1546, new MetaTileEntityAirCollector(gregtechId("air_collector.luv"), 2));
+        AIR_COLLECTOR[2] = GregTechAPI.registerMetaTileEntity(1547, new MetaTileEntityAirCollector(gregtechId("air_collector.iv"), 3));
+        AIR_COLLECTOR[3] = GregTechAPI.registerMetaTileEntity(1548, new MetaTileEntityAirCollector(gregtechId("air_collector.luv"), 4));
+        if (ConfigHolder.U.machines.highTierAirCollectors) {
+            AIR_COLLECTOR[4] = GregTechAPI.registerMetaTileEntity(1549, new MetaTileEntityAirCollector(gregtechId("air_collector.iv"), 5));
+            AIR_COLLECTOR[5] = GregTechAPI.registerMetaTileEntity(1550, new MetaTileEntityAirCollector(gregtechId("air_collector.luv"), 6));
         }
 
         // Quantum Chests, IDs 1560-1574
