@@ -159,6 +159,20 @@ public class MetaTileEntities {
     public static MetaTileEntityTank TITANIUM_TANK;
     public static MetaTileEntityTank TUNGSTENSTEEL_TANK;
 
+    public static MetaTileEntityDrum WOODEN_DRUM;
+    public static MetaTileEntityDrum BRONZE_DRUM;
+    public static MetaTileEntityDrum STEEL_DRUM;
+    public static MetaTileEntityDrum STAINLESS_STEEL_DRUM;
+    public static MetaTileEntityDrum TITANIUM_DRUM;
+    public static MetaTileEntityDrum TUNGSTENSTEEL_DRUM;
+
+    public static MetaTileEntityCrate WOODEN_CRATE;
+    public static MetaTileEntityCrate BRONZE_CRATE;
+    public static MetaTileEntityCrate STEEL_CRATE;
+    public static MetaTileEntityCrate STAINLESS_STEEL_CRATE;
+    public static MetaTileEntityCrate TITANIUM_CRATE;
+    public static MetaTileEntityCrate TUNGSTENSTEEL_CRATE;
+
 
     //MISC MACHINES SECTION TODO Do any of these need higher tiers?
     public static MetaTileEntityWorkbench WORKBENCH;
@@ -545,12 +559,34 @@ public class MetaTileEntities {
             GregTechAPI.registerMetaTileEntity(1590 + i, BLOCK_BREAKER[i]);
         }
 
-        // Misc, IDs 1595-1999
+        // Drums, IDs 1595-1609
+        if (ConfigHolder.U.registerDrums) {
+            WOODEN_DRUM = GregTechAPI.registerMetaTileEntity(1595, new MetaTileEntityDrum(gregtechId("drum.wood"), Materials.Wood, 16000));
+            BRONZE_DRUM = GregTechAPI.registerMetaTileEntity(1596, new MetaTileEntityDrum(gregtechId("drum.bronze"), Materials.Bronze, 32000));
+            STEEL_DRUM = GregTechAPI.registerMetaTileEntity(1597, new MetaTileEntityDrum(gregtechId("drum.steel"), Materials.Steel, 64000));
+            STAINLESS_STEEL_DRUM = GregTechAPI.registerMetaTileEntity(1598, new MetaTileEntityDrum(gregtechId("drum.stainless_steel"), Materials.StainlessSteel, 128000));
+            TITANIUM_DRUM = GregTechAPI.registerMetaTileEntity(1599, new MetaTileEntityDrum(gregtechId("drum.titanium"), Materials.Titanium, 192000));
+            TUNGSTENSTEEL_DRUM = GregTechAPI.registerMetaTileEntity(1600, new MetaTileEntityDrum(gregtechId("drum.tungstensteel"), Materials.TungstenSteel, 256000));
+        }
+
+        // Crates, IDs 1610-1624
+        if (ConfigHolder.U.registerCrates) {
+            WOODEN_CRATE = GregTechAPI.registerMetaTileEntity(1610, new MetaTileEntityCrate(gregtechId("crate.wood"), Materials.Wood, 36));
+            BRONZE_CRATE = GregTechAPI.registerMetaTileEntity(1611, new MetaTileEntityCrate(gregtechId("crate.bronze"), Materials.Bronze, 54));
+            STEEL_CRATE = GregTechAPI.registerMetaTileEntity(1612, new MetaTileEntityCrate(gregtechId("crate.steel"), Materials.Steel, 72));
+            STAINLESS_STEEL_CRATE = GregTechAPI.registerMetaTileEntity(1613, new MetaTileEntityCrate(gregtechId("crate.stainless_steel"), Materials.StainlessSteel, 90));
+            TITANIUM_CRATE = GregTechAPI.registerMetaTileEntity(1614, new MetaTileEntityCrate(gregtechId("crate.titanium"), Materials.Titanium, 108));
+            TUNGSTENSTEEL_CRATE = GregTechAPI.registerMetaTileEntity(1615, new MetaTileEntityCrate(gregtechId("crate.tungstensteel"), Materials.TungstenSteel, 126));
+        }
+
+        // Misc, IDs 1625-1999
         TESLA_COIL = new MetaTileEntityTeslaCoil(gregtechId("tesla_coil"));
-        GregTechAPI.registerMetaTileEntity(1595, TESLA_COIL);
-        LOCKED_SAFE = GregTechAPI.registerMetaTileEntity(1596, new MetaTileEntityLockedSafe(gregtechId("locked_safe")));
-        WORKBENCH = GregTechAPI.registerMetaTileEntity(1597, new MetaTileEntityWorkbench(gregtechId("workbench")));
-        ARMOR_TABLE = GregTechAPI.registerMetaTileEntity(1598, new MetaTileEntityArmorTable(gregtechId("armor_table")));
+        GregTechAPI.registerMetaTileEntity(1625, TESLA_COIL);
+        LOCKED_SAFE = GregTechAPI.registerMetaTileEntity(1626, new MetaTileEntityLockedSafe(gregtechId("locked_safe")));
+        WORKBENCH = GregTechAPI.registerMetaTileEntity(1627, new MetaTileEntityWorkbench(gregtechId("workbench")));
+        ARMOR_TABLE = GregTechAPI.registerMetaTileEntity(1628, new MetaTileEntityArmorTable(gregtechId("armor_table")));
+
+
 
         /*
          * FOR ADDON DEVELOPERS:

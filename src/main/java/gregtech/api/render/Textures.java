@@ -11,6 +11,8 @@ import codechicken.lib.vec.uv.IconTransformation;
 import codechicken.lib.vec.uv.UVTransformationList;
 import gregtech.api.GTValues;
 import gregtech.api.util.GTLog;
+import gregtech.common.render.CrateRenderer;
+import gregtech.common.render.DrumRenderer;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.util.EnumFacing;
@@ -31,9 +33,13 @@ public class Textures {
     public static ChestRenderer WOODEN_CHEST = new ChestRenderer("storage/wooden_chest");
     public static ChestRenderer METAL_CHEST = new ChestRenderer("storage/metal_chest");
     public static SafeRenderer SAFE = new SafeRenderer("storage/safe");
+    public static DrumRenderer WOODEN_DRUM = new DrumRenderer("storage/drums/wooden_drum");
+    public static DrumRenderer DRUM = new DrumRenderer("storage/drums/drum");
 
     public static TankRenderer WOODEN_TANK = new TankRenderer("storage/tank/wooden");
     public static TankRenderer METAL_TANK = new TankRenderer("storage/tank/metal");
+    public static CrateRenderer WOODEN_CRATE = new CrateRenderer("storage/crates/wooden_crate");
+    public static CrateRenderer METAL_CRATE = new CrateRenderer("storage/crates/metal_crate");
 
     public static SimpleSidedCubeRenderer STEAM_CASING_BRONZE = new SimpleSidedCubeRenderer("casings/steam/bronze");
     public static SimpleSidedCubeRenderer STEAM_CASING_STEEL = new SimpleSidedCubeRenderer("casings/steam/steel");

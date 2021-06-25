@@ -6,6 +6,8 @@ import gregtech.api.unification.material.MarkerMaterials.Tier;
 import gregtech.api.unification.material.Materials;
 import gregtech.api.unification.ore.OrePrefix;
 import gregtech.api.unification.stack.UnificationEntry;
+import gregtech.common.blocks.BlockTransparentCasing;
+import gregtech.common.blocks.MetaBlocks;
 import gregtech.common.items.MetaItems;
 import gregtech.common.metatileentities.MetaTileEntities;
 import net.minecraft.init.Blocks;
@@ -181,7 +183,14 @@ public enum CraftingComponent {
     GLASS {
         @Override
         public Object getIngredient(int tier) {
-            return new ItemStack(Blocks.GLASS, 1, W); // todo?
+            switch (tier) {
+                case 6:
+                case 7:
+                case 8:
+                    return MetaBlocks.TRANSPARENT_CASING.getItemVariant(BlockTransparentCasing.CasingType.REINFORCED_GLASS);
+                default:
+                    return new ItemStack(Blocks.GLASS, 1, W);
+            }
         }
     },
     PLATE {

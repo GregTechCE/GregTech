@@ -170,6 +170,12 @@ public class ConfigHolder {
         @Config.Name("GregTech 5 Unofficial Options")
         public GT5U GT5U = new GT5U();
 
+        @Config.Comment("Should Drums be enabled? Default: true")
+        public boolean registerDrums = true;
+
+        @Config.Comment("Should Crates be enabled? Default: true")
+        public boolean registerCrates = true;
+
         public static class GT5U {
 
             @Config.Comment("Set these to true to enable certain Batteries.")

@@ -1855,8 +1855,25 @@ gregtech.machine.steel_chest.name=Steel Chest
 gregtech.machine.stainless_steel_chest.name=Stainless Steel Chest
 gregtech.machine.titanium_chest.name=Titanium Chest
 gregtech.machine.tungstensteel_chest.name=Tungstensteel Chest
-gregtech.machine.locked_safe.name=Locked Safe
 
+# Drums
+gregtech.machine.drum.wood.name=Wooden Barrel
+gregtech.machine.drum.bronze.name=Bronze Drum
+gregtech.machine.drum.steel.name=Steel Drum
+gregtech.machine.drum.stainless_steel.name=Stainless Steel Drum
+gregtech.machine.drum.titanium.name=Titanium Drum
+gregtech.machine.drum.tungstensteel.name=Tungstensteel Drum
+
+# Crates
+gregtech.machine.crate.wood.name=Wooden Crate
+gregtech.machine.crate.bronze.name=Bronze Crate
+gregtech.machine.crate.steel.name=Steel Crate
+gregtech.machine.crate.stainless_steel.name=Stainless Steel Crate
+gregtech.machine.crate.titanium.name=Titanium Crate
+gregtech.machine.crate.tungstensteel.name=Tungstensteel Crate
+
+# Safe
+gregtech.machine.locked_safe.name=Locked Safe
 gregtech.machine.locked_safe.malfunctioning=§cMalfunctioning!
 gregtech.machine.locked_safe.requirements=§7Replacements required:
 
