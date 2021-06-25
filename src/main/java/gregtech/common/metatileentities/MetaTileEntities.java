@@ -139,6 +139,7 @@ public class MetaTileEntities {
     public static MetaTileEntityLargeBoiler LARGE_TUNGSTENSTEEL_BOILER;
 
     public static MetaTileEntityAssemblyLine ASSEMBLY_LINE;
+    public static MetaTileEntityFusionReactor[] FUSION_REACTOR = new MetaTileEntityFusionReactor[3];
 
     //STORAGE SECTION
     public static MetaTileEntityChest SMALL_WOODEN_CHEST;
@@ -427,6 +428,9 @@ public class MetaTileEntities {
         COKE_OVEN_HATCH = GregTechAPI.registerMetaTileEntity(1017, new MetaTileEntityCokeOvenHatch(gregtechId("coke_oven_hatch")));
 
         ASSEMBLY_LINE = GregTechAPI.registerMetaTileEntity(1018, new MetaTileEntityAssemblyLine(gregtechId("assembly_line")));
+        FUSION_REACTOR[0] = GregTechAPI.registerMetaTileEntity(1019, new MetaTileEntityFusionReactor(gregtechId("fusion_reactor.luv"), 6));
+        FUSION_REACTOR[1] = GregTechAPI.registerMetaTileEntity(1020, new MetaTileEntityFusionReactor(gregtechId("fusion_reactor.zpm"), 7));
+        FUSION_REACTOR[2] = GregTechAPI.registerMetaTileEntity(1021, new MetaTileEntityFusionReactor(gregtechId("fusion_reactor.uv"), 8));
 
         // MISC MTE's START: IDs 1300-2000
 

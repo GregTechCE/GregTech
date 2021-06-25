@@ -157,7 +157,7 @@ public class Elements {
         elements.put(name, new Element(protons, neutrons, halfLifeSeconds, decayTo, name, symbol, isIsotope));
     }
 
-    @ZenGetter
+    @ZenMethod
     public static Element get(String name) {
         return elements.get(name);
     }
