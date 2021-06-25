@@ -176,12 +176,12 @@ public class MetaItem2 extends MaterialMetaItem {
         FLUID_REGULATORS[6] = FLUID_REGULATOR_ZPM = addItem(706, "fluid.regulator.zpm");
         FLUID_REGULATORS[7] = FLUID_REGULATOR_UV = addItem(707, "fluid.regulator.uv");
 
-        if (ConfigHolder.U.GT5U.enableZPMandUVBats) {
+        if (ConfigHolder.U.GT5u.enableZPMandUVBats) {
             ENERGY_MODULE = addItem(520, "energy.module").addComponents(new IItemComponent[] { ElectricStats.createRechargeableBattery(10000000000L, 7) }).setModelAmount(8);
             ENERGY_CLUSTER = addItem(521, "energy.cluster").addComponents(new IItemComponent[] { ElectricStats.createRechargeableBattery(100000000000L, 8) }).setModelAmount(8);
         }
 
-        if (ConfigHolder.U.GT5U.replaceUVwithMAXBat) {
+        if (ConfigHolder.U.GT5u.replaceUVwithMAXBat) {
             MAX_BATTERY = addItem(522, "max.battery").addComponents(new IItemComponent[] { ElectricStats.createRechargeableBattery(9223372036854775807L, 9) }).setModelAmount(8);
             MetaItems.ZPM2.setInvisible();
         }
