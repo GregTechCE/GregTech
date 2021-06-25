@@ -140,6 +140,11 @@ public class CommonProxy {
             .forEach(registry::register);
     }
 
+    @SubscribeEvent(priority = EventPriority.HIGHEST)
+    public static void initComponents(RegistryEvent.Register<IRecipe> event) {
+        CraftingComponent.initializeComponents();
+    }
+
     //this is called with normal priority, so most mods working with
     //ore dictionary and recipes will get recipes accessible in time
     @SubscribeEvent

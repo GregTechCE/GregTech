@@ -208,7 +208,7 @@ public class ConfigHolder {
             @Config.Name("LuV-UV Machines")
             public boolean midTierMachines = false;
 
-            @Config.Comment("Enable all UHV-UXV Machines, overrides individual values if true. Default: false")
+            @Config.Comment("Enable all UHV-UXV Machines, overrides individual values if true. THESE WILL HAVE NO RECIPES BY DEFAULT WITHOUT GREGICALITY! Default: false")
             @Config.Name("UHV-UXV Machines")
             public boolean highTierMachines = false;
 
@@ -262,7 +262,7 @@ public class ConfigHolder {
             public boolean midTierUnpackers = false;
             public boolean midTierWiremills = false;
 
-            @Config.Comment("Set these to true to enable UHV-UXV tiers of machines. Default (all): false")
+            @Config.Comment("Set these to true to enable UHV-UXV tiers of machines. THESE WILL HAVE NO RECIPES BY DEFAULT WITHOUT GREGICALITY! Default (all): false")
             public boolean highTierAlloySmelter = false;
             public boolean highTierArcFurnaces = false;
             public boolean highTierAssemblers = false;

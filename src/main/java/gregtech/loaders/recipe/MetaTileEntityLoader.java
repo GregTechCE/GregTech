@@ -311,7 +311,7 @@ public class MetaTileEntityLoader {
         ModHandler.addShapedRecipe("steam_alloy_smelter_steel", MetaTileEntities.STEAM_ALLOY_SMELTER_STEEL.getStackForm(), "XXX", "FMF", "XXX", 'M', MetaBlocks.STEAM_CASING.getItemVariant(STEEL_BRICKS_HULL), 'X', new UnificationEntry(OrePrefix.pipeSmall, Materials.Steel), 'F', OreDictNames.craftingFurnace);
 
         // MULTI BLOCK CONTROLLERS
-        ModHandler.addShapedRecipe("bronze_primitive_blast_furnace", MetaTileEntities.PRIMITIVE_BLAST_FURNACE.getStackForm(), "hRS", "PBR", "dRS", 'P', 'R', new UnificationEntry(OrePrefix.stick, Materials.Iron), 'S', new UnificationEntry(OrePrefix.screw, Materials.Iron), 'P', new UnificationEntry(OrePrefix.plate, Materials.Iron), 'B', MetaBlocks.METAL_CASING.getItemVariant(PRIMITIVE_BRICKS));
+        ModHandler.addShapedRecipe("bronze_primitive_blast_furnace", MetaTileEntities.PRIMITIVE_BLAST_FURNACE.getStackForm(), "hRS", "PBR", "dRS", 'R', new UnificationEntry(OrePrefix.stick, Materials.Iron), 'S', new UnificationEntry(OrePrefix.screw, Materials.Iron), 'P', new UnificationEntry(OrePrefix.plate, Materials.Iron), 'B', MetaBlocks.METAL_CASING.getItemVariant(PRIMITIVE_BRICKS));
         ModHandler.addShapedRecipe("coke_oven", MetaTileEntities.COKE_OVEN.getStackForm(), "PIP", "IwI", "PIP", 'P', MetaBlocks.METAL_CASING.getItemVariant(MetalCasingType.COKE_BRICKS), 'I', new UnificationEntry(OrePrefix.plate, Materials.Iron));
         ModHandler.addShapelessRecipe("coke_oven_hatch", MetaTileEntities.COKE_OVEN_HATCH.getStackForm(), MetaBlocks.METAL_CASING.getItemVariant(MetalCasingType.COKE_BRICKS), MetaTileEntities.BRONZE_TANK.getStackForm());
         ModHandler.addShapedRecipe("electric_blast_furnace", MetaTileEntities.ELECTRIC_BLAST_FURNACE.getStackForm(), "FFF", "CMC", "WCW", 'M', MetaBlocks.METAL_CASING.getItemVariant(INVAR_HEATPROOF), 'F', OreDictNames.craftingFurnace, 'C', new UnificationEntry(OrePrefix.circuit, MarkerMaterials.Tier.Basic), 'W', new UnificationEntry(OrePrefix.cableGtSingle, Materials.Tin));
@@ -444,16 +444,24 @@ public class MetaTileEntityLoader {
 
             // Needed to skip certain tiers if not enabled.
             // Leaves UHV+ machine recipes to be implemented by addons.
-            if (metaTileEntity != null && metaTileEntity.getTier() <= GTValues.UV) {
-                ModHandler.addShapedRecipe(metaTileEntity.getMetaName(), metaTileEntity.getStackForm(), prepareRecipe(metaTileEntity.getTier(), Arrays.copyOf(recipe, recipe.length)));
+            if (metaTileEntity != null) {
+                Object[] prepRecipe = prepareRecipe(metaTileEntity.getTier(), Arrays.copyOf(recipe, recipe.length));
+                if (prepRecipe == null) {
+                    return;
+                }
+                ModHandler.addShapedRecipe(metaTileEntity.getMetaName(), metaTileEntity.getStackForm(), prepRecipe);
             }
         }
     }
 
     private static Object[] prepareRecipe(int tier, Object... recipe) {
         for (int i = 3; i < recipe.length; i++) {
-            if (recipe[i] instanceof CraftingComponent) {
-                recipe[i] = ((CraftingComponent) recipe[i]).getIngredient(tier);
+            if (recipe[i] instanceof Component) {
+                Object component = ((Component) recipe[i]).getIngredient(tier);
+                if (component == null) {
+                    return null;
+                }
+                recipe[i] = component;
             }
         }
         return recipe;
