@@ -664,7 +664,7 @@ public class ToolMetaItem<T extends ToolMetaItem<?>.MetaToolValueItem> extends M
         @Override
         public ItemStack getStackForm(int amount) {
             ItemStack rawStack = super.getStackForm(amount);
-            setToolMaterial(rawStack, Materials.Darmstadtium);
+            setToolMaterial(rawStack, Materials.Neutronium);
             return rawStack;
         }
 

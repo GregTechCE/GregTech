@@ -39,6 +39,10 @@ gregtech.multiblock.multi_smelter.description=The Multi Smelter is a multiblock 
 gregtech.multiblock.large_boiler.description=Large Boilers are multiblocks that generate steam from an energy source and water. Said energy source is usually a solid fuel or some high-density fluid. Tiers differ only by amount of steam outputted.
 gregtech.multiblock.large_turbine.description=Large Turbines are multiblocks that generate power from steam, gases, and plasma by having them spin the turbine's rotor. Energy output is based on rotor efficiency and current speed of turbine.
 gregtech.multiblock.assembly_line.description=The Assembly Line is a large multiblock structure consisting of 5 to 16 "slices". In theory, it's large Assembling Machine, used for creating advanced crafting components.
+gregtech.multiblock.fusion_reactor_mk1.description=The Fusion Reactor Mark 1 is a large multiblock structure used for fusing elements into heavier ones. The Mark 1 Fusion Reactor can use LuV, ZPM or UV Energy Hatches. For every Hatch it has its buffer increases by 10M EU.
+gregtech.multiblock.fusion_reactor_mk2.description=The Fusion Reactor Mark 2 is a large multiblock structure used for fusing elements into heavier ones. The Mark 2 Fusion Reactor can use ZPM or UV Energy Hatches. For every Hatch it has its buffer increases by 20M EU.
+gregtech.multiblock.fusion_reactor_mk3.description=The Fusion Reactor Mark 3 is a large multiblock structure used for fusing elements into heavier ones. The Mark 3 Fusion Reactor can only use UV Energy Hatches. For every Hatch it has its buffer increases by 40M EU.
+gregtech.multiblock.fusion_reactor.heat=Heat: %d
 
 item.invalid.name=Invalid item
 fluid.empty=Empty
@@ -3274,6 +3278,9 @@ gregtech.machine.large_boiler.titanium.name=Large Titanium Boiler
 gregtech.machine.large_boiler.tungstensteel.name=Large Tungstensteel Boiler
 
 gregtech.machine.assembly_line.name=Assembly Line
+gregtech.machine.fusion_reactor.luv.name=Fusion Reactor Computer Mark 1
+gregtech.machine.fusion_reactor.zpm.name=Fusion Reactor Computer Mark 2
+gregtech.machine.fusion_reactor.uv.name=Fusion Reactor Computer Mark 3
 
 # Multiblock Tooltips
 gregtech.machine.primitive_blast_furnace.bronze.tooltip=Structure: 3x3x4 (WxLxH) The entire structure is made out of Primitive Bricks (32 in total)./nFirst Layer is a 3x3 square./nSecond, third, and fourth layers are hollow, without the middle block./nThis block goes on the middle of any side in the second layer./nThe sides of Blast Furnaces can be shared, if the side does not have a controller./n
