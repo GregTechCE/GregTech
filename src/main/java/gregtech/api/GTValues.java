@@ -1,5 +1,6 @@
 package gregtech.api;
 
+import gregtech.common.ConfigHolder;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.oredict.OreDictionary;
 
@@ -40,7 +41,6 @@ public class GTValues {
      * The Voltage Tiers. Use this Array instead of the old named Voltage Variables
      */
     public static final long[] V = new long[]{8, 32, 128, 512, 2048, 8192, 32768, 131072, 524288, 2097152, 8388608, 33554432, 134217728, 536870912, Integer.MAX_VALUE};
-    public static final int OldVLength = 10; // TODO Remove all uses of this
 
     public static final int ULV = 0;
     public static final int LV = 1;
@@ -99,4 +99,47 @@ public class GTValues {
         return isLoaded;
     }
 
+    /**
+     * Used to tell if any high-tier machine (UHV+) was registered.
+     */
+    public static final boolean HT =
+            ConfigHolder.U.machines.highTierMachines ||
+            ConfigHolder.U.machines.highTierAlloySmelter ||
+            ConfigHolder.U.machines.highTierArcFurnaces ||
+            ConfigHolder.U.machines.highTierAssemblers ||
+            ConfigHolder.U.machines.highTierAutoclaves ||
+            ConfigHolder.U.machines.highTierBenders ||
+            ConfigHolder.U.machines.highTierBreweries ||
+            ConfigHolder.U.machines.highTierCanners ||
+            ConfigHolder.U.machines.highTierCentrifuges ||
+            ConfigHolder.U.machines.highTierChemicalBaths ||
+            ConfigHolder.U.machines.highTierChemicalReactors ||
+            ConfigHolder.U.machines.highTierCompressors ||
+            ConfigHolder.U.machines.highTierCutters ||
+            ConfigHolder.U.machines.highTierDistilleries ||
+            ConfigHolder.U.machines.highTierElectricFurnace ||
+            ConfigHolder.U.machines.highTierElectrolyzers ||
+            ConfigHolder.U.machines.highTierElectromagneticSeparators ||
+            ConfigHolder.U.machines.highTierExtractors ||
+            ConfigHolder.U.machines.highTierExtruders ||
+            ConfigHolder.U.machines.highTierFermenters ||
+            ConfigHolder.U.machines.highTierFluidCanners ||
+            ConfigHolder.U.machines.highTierFluidExtractors ||
+            ConfigHolder.U.machines.highTierFluidHeaters ||
+            ConfigHolder.U.machines.highTierFluidSolidifiers ||
+            ConfigHolder.U.machines.highTierForgeHammers ||
+            ConfigHolder.U.machines.highTierFormingPresses ||
+            ConfigHolder.U.machines.highTierLathes ||
+            ConfigHolder.U.machines.highTierMicrowaves ||
+            ConfigHolder.U.machines.highTierMixers ||
+            ConfigHolder.U.machines.highTierOreWashers ||
+            ConfigHolder.U.machines.highTierPackers ||
+            ConfigHolder.U.machines.highTierPlasmaArcFurnaces ||
+            ConfigHolder.U.machines.highTierPolarizers ||
+            ConfigHolder.U.machines.highTierLaserEngravers ||
+            ConfigHolder.U.machines.highTierSifters ||
+            ConfigHolder.U.machines.highTierThermalCentrifuges ||
+            ConfigHolder.U.machines.highTierMacerators ||
+            ConfigHolder.U.machines.highTierUnpackers ||
+            ConfigHolder.U.machines.highTierWiremills;
 }

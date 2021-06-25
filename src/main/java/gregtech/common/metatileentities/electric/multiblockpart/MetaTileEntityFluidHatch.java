@@ -97,7 +97,7 @@ public class MetaTileEntityFluidHatch extends MetaTileEntityMultiblockPart imple
     }
 
     private int getInventorySize() {
-        return INITIAL_INVENTORY_SIZE * (1 << getTier());
+        return INITIAL_INVENTORY_SIZE * (1 << Math.min(9, getTier()));
     }
 
     @Override
