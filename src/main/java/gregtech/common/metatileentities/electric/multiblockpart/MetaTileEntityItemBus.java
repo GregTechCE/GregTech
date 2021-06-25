@@ -64,7 +64,7 @@ public class MetaTileEntityItemBus extends MetaTileEntityMultiblockPart implemen
     }
 
     private int getInventorySize() {
-        int sizeRoot = (1 + getTier());
+        int sizeRoot = 1 + Math.min(9, getTier());
         return sizeRoot * sizeRoot;
     }
 

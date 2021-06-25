@@ -3299,7 +3299,7 @@ gregtech.machine.item_bus.import.iv.name=IV Input Bus
 gregtech.machine.item_bus.import.luv.name=LuV Input Bus
 gregtech.machine.item_bus.import.zpm.name=ZPM Input Bus
 gregtech.machine.item_bus.import.uv.name=UV Input Bus
-gregtech.machine.item_bus.import.uhv.name=UHV Input Bus
+gregtech.machine.item_bus.import.max.name=MAX Input Bus
 
 gregtech.machine.item_bus.export.tooltip=Item Output for Multiblocks
 
@@ -3312,7 +3312,7 @@ gregtech.machine.item_bus.export.iv.name=IV Output Bus
 gregtech.machine.item_bus.export.luv.name=LuV Output Bus
 gregtech.machine.item_bus.export.zpm.name=ZPM Output Bus
 gregtech.machine.item_bus.export.uv.name=UV Output Bus
-gregtech.machine.item_bus.export.uhv.name=UHV Output Bus
+gregtech.machine.item_bus.export.max.name=MAX Output Bus
 
 gregtech.machine.fluid_hatch.import.tooltip=Fluid Input for Multiblocks
 
@@ -3325,7 +3325,7 @@ gregtech.machine.fluid_hatch.import.iv.name=IV Input Hatch
 gregtech.machine.fluid_hatch.import.luv.name=LuV Input Hatch
 gregtech.machine.fluid_hatch.import.zpm.name=ZPM Input Hatch
 gregtech.machine.fluid_hatch.import.uv.name=UV Input Hatch
-gregtech.machine.fluid_hatch.import.uhv.name=UHV Input Hatch
+gregtech.machine.fluid_hatch.import.max.name=MAX Input Hatch
 
 gregtech.machine.fluid_hatch.export.tooltip=Fluid Output for Multiblocks
 
@@ -3338,7 +3338,7 @@ gregtech.machine.fluid_hatch.export.iv.name=IV Output Hatch
 gregtech.machine.fluid_hatch.export.luv.name=LuV Output Hatch
 gregtech.machine.fluid_hatch.export.zpm.name=ZPM Output Hatch
 gregtech.machine.fluid_hatch.export.uv.name=UV Output Hatch
-gregtech.machine.fluid_hatch.export.uhv.name=UHV Output Hatch
+gregtech.machine.fluid_hatch.export.max.name=MAX Output Hatch
 
 gregtech.machine.energy_hatch.input.tooltip=Energy Input for Multiblocks
 

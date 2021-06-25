@@ -164,6 +164,7 @@ public class ConfigHolder {
 
         @Config.Comment("Config category for enabling higher-tier machines.")
         @Config.Name("Higher Tier Machines")
+        @Config.RequiresMcRestart
         public HighTierMachines machines = new HighTierMachines();
 
         @Config.Comment("Config category for GT5u inspired features.")
@@ -171,17 +172,21 @@ public class ConfigHolder {
         public GT5U GT5U = new GT5U();
 
         @Config.Comment("Should Drums be enabled? Default: true")
+        @Config.RequiresMcRestart
         public boolean registerDrums = true;
 
         @Config.Comment("Should Crates be enabled? Default: true")
+        @Config.RequiresMcRestart
         public boolean registerCrates = true;
 
         public static class GT5U {
 
             @Config.Comment("Set these to true to enable certain Batteries.")
             @Config.Name("Batteries - Enable an extra ZPM and UV Battery (this also makes the Ultimate Battery harder to make)")
+            @Config.RequiresMcRestart
             public boolean enableZPMandUVBats = false;
             @Config.Name("Batteries - Replace the Ultimate Battery with a MAX Battery")
+            @Config.RequiresMcRestart
             public boolean replaceUVwithMAXBat = false;
         }
 
@@ -230,8 +235,8 @@ public class ConfigHolder {
             public boolean midTierPlasmaArcFurnaces = false;
             public boolean midTierPolarizers = false;
             public boolean midTierLaserEngravers = false;
-            public boolean midTierPumps = false;
-            public boolean midTierReplicators = false;
+            //public boolean midTierPumps = false;
+            //public boolean midTierReplicators = false;
             public boolean midTierSifters = false;
             public boolean midTierThermalCentrifuges = false;
             public boolean midTierMacerators = false;
@@ -274,12 +279,12 @@ public class ConfigHolder {
             public boolean highTierPlasmaArcFurnaces = false;
             public boolean highTierPolarizers = false;
             public boolean highTierLaserEngravers = false;
-            public boolean highTierPumps = false;
-            public boolean highTierReplicators = false;
+            //public boolean highTierPumps = false;
+            //public boolean highTierReplicators = false;
             public boolean highTierSifters = false;
             public boolean highTierThermalCentrifuges = false;
             public boolean highTierMacerators = false;
-            public boolean highTierMassFabs = false;
+            //public boolean highTierMassFabs = false;
             public boolean highTierUnpackers = false;
             public boolean highTierWiremills = false;
         }

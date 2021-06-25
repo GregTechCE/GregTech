@@ -4,8 +4,11 @@ import gregtech.api.GTValues;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLiving.SpawnPlacementType;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.IStringSerializable;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 
@@ -28,6 +31,15 @@ public class BlockMachineCasing extends VariantBlock<BlockMachineCasing.MachineC
     @Override
     public boolean canCreatureSpawn(IBlockState state, IBlockAccess world, BlockPos pos, SpawnPlacementType type) {
         return false;
+    }
+
+    @Override
+    public void getSubBlocks(CreativeTabs tab, NonNullList<ItemStack> list) {
+        for (MachineCasingType variant : VALUES) {
+            if (variant == MachineCasingType.MAX || variant.ordinal() < MachineCasingType.UHV.ordinal() || GTValues.HT) {
+                list.add(getItemVariant(variant));
+            }
+        }
     }
 
     public enum MachineCasingType implements IStringSerializable {
