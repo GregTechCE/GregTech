@@ -164,22 +164,28 @@ public class FluidPipeRenderer implements ICCBlockRenderer, IItemRenderer {
         IVertexOperation[] pipeSide = ArrayUtils.addAll(pipeline, new IconTransformation(textureInfo.sideTexture), multiplier);
 
         Cuboid6 cuboid6 = BlockFluidPipe.getSideBox(null, thickness);
-        for (EnumFacing renderedSide : EnumFacing.VALUES) {
-            if ((connectMask & 1 << renderedSide.getIndex()) == 0) {
-                int oppositeIndex = renderedSide.getOpposite().getIndex();
-                if ((connectMask & 1 << oppositeIndex) > 0 && (connectMask & ~(1 << oppositeIndex)) == 0) {
-                    renderPipeSide(state, pipeConnectSide, renderedSide, cuboid6);
-                } else {
-                    renderPipeSide(state, pipeSide, renderedSide, cuboid6);
+        if (connectMask == 0) {
+            for (EnumFacing renderedSide : EnumFacing.VALUES) {
+                renderPipeSide(state, pipeConnectSide, renderedSide, cuboid6);
+            }
+        } else {
+            for (EnumFacing renderedSide : EnumFacing.VALUES) {
+                if ((connectMask & 1 << renderedSide.getIndex()) == 0) {
+                    int oppositeIndex = renderedSide.getOpposite().getIndex();
+                    if ((connectMask & 1 << oppositeIndex) > 0 && (connectMask & ~(1 << oppositeIndex)) == 0) {
+                        renderPipeSide(state, pipeConnectSide, renderedSide, cuboid6);
+                    } else {
+                        renderPipeSide(state, pipeSide, renderedSide, cuboid6);
+                    }
                 }
             }
+            renderPipeCube(connectMask, state, pipeSide, pipeConnectSide, EnumFacing.DOWN, thickness);
+            renderPipeCube(connectMask, state, pipeSide, pipeConnectSide, EnumFacing.UP, thickness);
+            renderPipeCube(connectMask, state, pipeSide, pipeConnectSide, EnumFacing.WEST, thickness);
+            renderPipeCube(connectMask, state, pipeSide, pipeConnectSide, EnumFacing.EAST, thickness);
+            renderPipeCube(connectMask, state, pipeSide, pipeConnectSide, EnumFacing.NORTH, thickness);
+            renderPipeCube(connectMask, state, pipeSide, pipeConnectSide, EnumFacing.SOUTH, thickness);
         }
-        renderPipeCube(connectMask, state, pipeSide, pipeConnectSide, EnumFacing.DOWN, thickness);
-        renderPipeCube(connectMask, state, pipeSide, pipeConnectSide, EnumFacing.UP, thickness);
-        renderPipeCube(connectMask, state, pipeSide, pipeConnectSide, EnumFacing.WEST, thickness);
-        renderPipeCube(connectMask, state, pipeSide, pipeConnectSide, EnumFacing.EAST, thickness);
-        renderPipeCube(connectMask, state, pipeSide, pipeConnectSide, EnumFacing.NORTH, thickness);
-        renderPipeCube(connectMask, state, pipeSide, pipeConnectSide, EnumFacing.SOUTH, thickness);
     }
 
     private static void renderPipeCube(int connections, CCRenderState renderState, IVertexOperation[] pipeline, IVertexOperation[] pipeConnectSide, EnumFacing side, float thickness) {
