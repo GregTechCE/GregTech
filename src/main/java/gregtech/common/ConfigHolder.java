@@ -200,6 +200,9 @@ public class ConfigHolder {
             @Config.Name("Use custom machine tank sizes")
             @Config.RequiresMcRestart
             public boolean useCustomMachineTankSizes = false;
+
+            @Config.Comment("Require Wrench to break machines? Default: false")
+            public boolean requireWrenchForMachines = false;
         }
 
         public static class HighTierMachines {
