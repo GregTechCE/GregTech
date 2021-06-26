@@ -216,7 +216,7 @@ public abstract class BlockPipe<PipeType extends Enum<PipeType> & IPipeType<Node
                 if (wrenchItem.damageItem(DamageValues.DAMAGE_FOR_WRENCH, true)) {
                     if (!entityPlayer.world.isRemote) {
                         boolean isBlocked = pipeTile.isConnectionBlocked(AttachmentType.PIPE, coverSide);
-                        pipeTile.setConnectionBlocked(AttachmentType.PIPE, coverSide, !isBlocked);
+                        pipeTile.setConnectionBlocked(AttachmentType.PIPE, coverSide, !isBlocked, false);
                         wrenchItem.damageItem(DamageValues.DAMAGE_FOR_WRENCH, false);
                     }
                     return true;
