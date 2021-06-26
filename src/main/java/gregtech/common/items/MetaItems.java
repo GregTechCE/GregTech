@@ -1,6 +1,5 @@
 package gregtech.common.items;
 
-import gregtech.api.items.armor.ArmorMetaItem;
 import gregtech.api.items.materialitem.MaterialMetaItem;
 import gregtech.api.items.metaitem.MetaItem;
 import gregtech.api.items.metaitem.MetaItem.MetaValueItem;
@@ -362,8 +361,6 @@ public final class MetaItems {
 
     public static MetaItem<?>.MetaValueItem TURBINE_ROTOR;
 
-    public static ArmorMetaItem.ArmorMetaValueItem REBREATHER;
-
     public static ToolMetaItem<?>.MetaToolValueItem SWORD;
     public static ToolMetaItem<?>.MetaToolValueItem PICKAXE;
     public static ToolMetaItem<?>.MetaToolValueItem SHOVEL;
@@ -412,8 +409,6 @@ public final class MetaItems {
         second.setRegistryName("meta_item_2");
         MetaTool tool = new MetaTool();
         tool.setRegistryName("meta_tool");
-        MetaArmor armor = new MetaArmor();
-        armor.setRegistryName("meta_armor");
     }
 
     public static void registerOreDict() {
