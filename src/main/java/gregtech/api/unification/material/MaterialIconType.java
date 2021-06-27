@@ -90,7 +90,16 @@ public enum MaterialIconType {
     pipeSmall,
     pipeMedium,
     pipeLarge,
-    pipeHuge;
+    pipeHuge,
+
+    //USED FOR GREGIFICATION ADDON
+    oreChunk,
+    oreEnderChunk,
+    oreNetherChunk,
+    oreSandyChunk,
+    seed,
+    crop,
+    essence;
 
     public static final ImmutableMap<String, MaterialIconType> values;
 
