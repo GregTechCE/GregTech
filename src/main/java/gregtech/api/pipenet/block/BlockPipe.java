@@ -14,11 +14,14 @@ import gregtech.api.cover.ICoverable;
 import gregtech.api.cover.ICoverable.CoverSideData;
 import gregtech.api.cover.ICoverable.PrimaryBoxData;
 import gregtech.api.cover.IFacadeCover;
+import gregtech.api.metatileentity.MetaTileEntityHolder;
 import gregtech.api.pipenet.PipeNet;
 import gregtech.api.pipenet.WorldPipeNet;
 import gregtech.api.pipenet.tile.AttachmentType;
 import gregtech.api.pipenet.tile.IPipeTile;
 import gregtech.api.pipenet.tile.TileEntityPipeBase;
+import gregtech.api.util.GTUtility;
+import gregtech.common.ConfigHolder;
 import gregtech.common.tools.DamageValues;
 import gregtech.api.render.IBlockAppearance;
 import gregtech.integration.ctm.IFacadeWrapper;
@@ -120,6 +123,34 @@ public abstract class BlockPipe<PipeType extends Enum<PipeType> & IPipeType<Node
         IPipeTile<PipeType, NodeDataType> pipeTile = getPipeTileEntity(worldIn, pos);
         if (pipeTile != null) {
             setTileEntityData((TileEntityPipeBase<PipeType, NodeDataType>) pipeTile, stack);
+            if (ConfigHolder.U.GT6.gt6StylePipesCables) {
+                if (placer instanceof EntityPlayer) {
+                    EntityPlayer player = (EntityPlayer) placer;
+                    RayTraceResult rt1 = GTUtility.getBlockLookingAt(player);
+                    RayTraceResult rt2 = GTUtility.getBlockLookingAt(player, pos);
+                    for (EnumFacing facing : EnumFacing.VALUES) {
+                        BlockPos otherPipePos = null;
+
+                        if (rt1 != null)
+                            if (GTUtility.arePosEqual(rt1.getBlockPos(), pos.offset(facing, 1)))
+                                otherPipePos = rt1.getBlockPos();
+                        if (rt2 != null)
+                            if (GTUtility.arePosEqual(rt2.getBlockPos(), pos.offset(facing, 1)))
+                                otherPipePos = rt2.getBlockPos();
+                        if (otherPipePos != null) {
+                            TileEntity tileEntity = placer.world.getTileEntity(otherPipePos);
+                            if (tileEntity instanceof IPipeTile) {
+                                IPipeTile<?, ?> otherPipeTE = (IPipeTile<?, ?>) tileEntity;
+                                if (otherPipeTE.getPipeBlock().getPipeTypeClass() == this.getPipeTypeClass()) {
+                                    pipeTile.setConnectionBlocked(AttachmentType.PIPE, facing, false, false);
+                                }
+                            } else if (tileEntity instanceof MetaTileEntityHolder) {
+                                pipeTile.setConnectionBlocked(AttachmentType.PIPE, facing, false, true);
+                            }
+                        }
+                    }
+                }
+            }
         }
     }
 
