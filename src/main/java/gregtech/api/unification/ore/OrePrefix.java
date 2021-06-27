@@ -165,7 +165,21 @@ public enum OrePrefix {
     batterySingleUse("Single Use Batteries", -1, null, null, DISALLOW_RECYCLING, null),
     battery("Reusable Batteries", -1, null, null, DISALLOW_RECYCLING, null), // Introduced by Calclavia
     circuit("Circuits", -1, null, null, ENABLE_UNIFICATION | DISALLOW_RECYCLING, null), // Introduced by Calclavia
-    chipset("Chipsets", -1, null, null, ENABLE_UNIFICATION | DISALLOW_RECYCLING, null); // Introduced by Buildcraft
+    chipset("Chipsets", -1, null, null, ENABLE_UNIFICATION | DISALLOW_RECYCLING, null), // Introduced by Buildcraft
+
+    // Used for Gregification Addon
+
+    // Ex Nihilo Compat
+    oreChunk("Ore Chunk", -1, null, MaterialIconType.oreChunk, ENABLE_UNIFICATION | DISALLOW_RECYCLING, null),
+    oreEnderChunk("Ore Chunk", -1, null, MaterialIconType.oreEnderChunk, ENABLE_UNIFICATION | DISALLOW_RECYCLING, null),
+    oreNetherChunk("Ore Chunk", -1, null, MaterialIconType.oreNetherChunk, ENABLE_UNIFICATION | DISALLOW_RECYCLING, null),
+    oreSandyChunk("Ore Chunk", -1, null, MaterialIconType.oreSandyChunk, ENABLE_UNIFICATION | DISALLOW_RECYCLING, null),
+
+    // Myst Ag Compat
+    seed("Seed", -1, null, MaterialIconType.seed, ENABLE_UNIFICATION | DISALLOW_RECYCLING, null),
+    crop("Crop", -1, null, MaterialIconType.crop, ENABLE_UNIFICATION | DISALLOW_RECYCLING, null),
+    essence("Essence", -1, null, MaterialIconType.essence, ENABLE_UNIFICATION | DISALLOW_RECYCLING, null),
+    ;
 
     public static final String DUST_REGULAR = "dustRegular";
 
@@ -306,7 +320,7 @@ public enum OrePrefix {
     public final boolean isRecyclingDisallowed;
     public final boolean isFluidContainer;
 
-    public final @Nullable
+    private @Nullable
     Predicate<Material> generationCondition;
     public final @Nullable
     MaterialIconType materialIconType;
@@ -391,6 +405,10 @@ public enum OrePrefix {
 
     public boolean doGenerateItem(Material material) {
         return !isSelfReferencing && generationCondition != null && !isIgnored(material) && generationCondition.test(material);
+    }
+
+    public void setGenerationCondition(Predicate<Material> in) {
+        generationCondition = in;
     }
 
     public boolean addProcessingHandler(IOreRegistrationHandler... processingHandler) {
