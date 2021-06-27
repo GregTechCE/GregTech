@@ -307,7 +307,7 @@ public class MetaBlocks {
         registerItemModel(SAPLING);
 
         COMPRESSED.values().stream().distinct().forEach(MetaBlocks::registerItemModel);
-        FRAMES.values().forEach(it -> registerItemModelWithFilteredProperties(it));
+        FRAMES.values().forEach(MetaBlocks::registerItemModelWithFilteredProperties);
         ORES.stream().distinct().forEach(MetaBlocks::registerItemModel);
     }
 
@@ -432,10 +432,8 @@ public class MetaBlocks {
         for (Entry<SolidMaterial, BlockFrame> entry : FRAMES.entrySet()) {
             SolidMaterial material = entry.getKey();
             BlockFrame block = entry.getValue();
-            for (int i = 0; i < 16; i++) {
-                ItemStack itemStack = new ItemStack(block, 1, i);
-                OreDictUnifier.registerOre(itemStack, OrePrefix.frameGt, material);
-            }
+            ItemStack itemStack = new ItemStack(block, 1);
+            OreDictUnifier.registerOre(itemStack, OrePrefix.frameGt, material);
         }
 
         for (BlockOre blockOre : ORES) {
