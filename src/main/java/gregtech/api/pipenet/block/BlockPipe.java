@@ -58,7 +58,7 @@ import static gregtech.api.metatileentity.MetaTileEntity.FULL_CUBE_COLLISION;
 @SuppressWarnings("deprecation")
 public abstract class BlockPipe<PipeType extends Enum<PipeType> & IPipeType<NodeDataType>, NodeDataType, WorldPipeNetType extends WorldPipeNet<NodeDataType, ? extends PipeNet<NodeDataType>>> extends BuiltInRenderBlock implements ITileEntityProvider, IFacadeWrapper, IBlockAppearance {
 
-    public static AtomicBoolean isToolHeld = new AtomicBoolean(false);
+    private final AtomicBoolean isFullModel = new AtomicBoolean(false);
 
     public BlockPipe() {
         super(net.minecraft.block.material.Material.IRON);
@@ -323,7 +323,7 @@ public abstract class BlockPipe<PipeType extends Enum<PipeType> & IPipeType<Node
 
     @Override
     public void addCollisionBoxToList(IBlockState state, World worldIn, BlockPos pos, AxisAlignedBB entityBox, List<AxisAlignedBB> collidingBoxes, @Nullable Entity entityIn, boolean isActualState) {
-        for (Cuboid6 axisAlignedBB : getCollisionBox(worldIn, pos)) {
+        for (Cuboid6 axisAlignedBB : getCollisionBox(worldIn, pos, entityIn)) {
             AxisAlignedBB offsetBox = axisAlignedBB.aabb().offset(pos);
             if (offsetBox.intersects(entityBox)) collidingBoxes.add(offsetBox);
         }
@@ -332,7 +332,7 @@ public abstract class BlockPipe<PipeType extends Enum<PipeType> & IPipeType<Node
     @Nullable
     @Override
     public RayTraceResult collisionRayTrace(IBlockState blockState, World worldIn, BlockPos pos, Vec3d start, Vec3d end) {
-        return RayTracer.rayTraceCuboidsClosest(start, end, pos, getCollisionBox(worldIn, pos));
+        return RayTracer.rayTraceCuboidsClosest(start, end, pos, FULL_CUBE_COLLISION);
     }
 
     @Override
@@ -446,7 +446,7 @@ public abstract class BlockPipe<PipeType extends Enum<PipeType> & IPipeType<Node
         return getActiveNodeConnections(selfTile.getPipeWorld(), selfTile.getPipePos(), selfTile);
     }
 
-    private List<IndexedCuboid6> getCollisionBox(IBlockAccess world, BlockPos pos) {
+    private List<IndexedCuboid6> getCollisionBox(IBlockAccess world, BlockPos pos, @Nullable Entity entityIn) {
         IPipeTile<PipeType, NodeDataType> pipeTile = getPipeTileEntity(world, pos);
         if (pipeTile == null) {
             return Collections.emptyList();
@@ -461,18 +461,33 @@ public abstract class BlockPipe<PipeType extends Enum<PipeType> & IPipeType<Node
         ICoverable coverable = pipeTile.getCoverableImplementation();
 
         // Check if the machine grid is being rendered
-        if (isToolHeld.get()) {
+        if (hasPipeCollisionChangingItem(entityIn)) {
             result.add(FULL_CUBE_COLLISION);
-        } else {
-            result.add(new IndexedCuboid6(new PrimaryBoxData(true), getSideBox(null, thickness)));
-            for (EnumFacing side : EnumFacing.VALUES) {
-                if ((actualConnections & 1 << side.getIndex()) > 0) {
-                    result.add(new IndexedCuboid6(new PipeConnectionData(side), getSideBox(side, thickness)));
-                }
+            isFullModel.set(true);
+        } else isFullModel.set(false);
+
+        // Always add normal collision so player doesn't "fall through" the cable/pipe when
+        // a tool is put in hand, and will still be standing where they were before.
+        result.add(new IndexedCuboid6(new PrimaryBoxData(true), getSideBox(null, thickness)));
+        for (EnumFacing side : EnumFacing.VALUES) {
+            if ((actualConnections & 1 << side.getIndex()) > 0) {
+                result.add(new IndexedCuboid6(new PipeConnectionData(side), getSideBox(side, thickness)));
             }
         }
         coverable.addCoverCollisionBoundingBox(result);
         return result;
+    }
+
+    private boolean hasPipeCollisionChangingItem(Entity entity) {
+        if (entity instanceof EntityPlayer) {
+            ItemStack itemStack = ((EntityPlayer) entity).getHeldItemMainhand();
+
+            return  itemStack.hasCapability(GregtechCapabilities.CAPABILITY_WRENCH, null) ||
+                    itemStack.hasCapability(GregtechCapabilities.CAPABILITY_CUTTER, null) ||
+                    itemStack.hasCapability(GregtechCapabilities.CAPABILITY_SCREWDRIVER, null) ||
+                    GTUtility.isCoverBehaviorItem(itemStack);
+        }
+        return false;
     }
 
     @Override
