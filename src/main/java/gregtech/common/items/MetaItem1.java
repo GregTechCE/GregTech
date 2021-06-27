@@ -44,7 +44,8 @@ public class MetaItem1 extends MaterialMetaItem {
             OrePrefix.crushed, OrePrefix.crushedPurified, OrePrefix.crushedCentrifuged, OrePrefix.gem, OrePrefix.nugget,
             OrePrefix.ingot, OrePrefix.ingotHot, OrePrefix.plate, OrePrefix.plateDouble, OrePrefix.plateDense, OrePrefix.stick,
             OrePrefix.lens, OrePrefix.bolt, OrePrefix.screw, OrePrefix.ring, OrePrefix.foil, OrePrefix.round,
-            null, null, null, null, null, null, null, null, null, null);
+            OrePrefix.oreChunk, OrePrefix.oreEnderChunk, OrePrefix.oreNetherChunk, OrePrefix.oreSandyChunk,
+            OrePrefix.seed, OrePrefix.crop, OrePrefix.essence, null, null, null);
         registerPurifyRecipes();
     }
 
