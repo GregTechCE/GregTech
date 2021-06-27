@@ -167,7 +167,7 @@ public class IngotMaterial extends SolidMaterial {
     }
 
     @ZenMethod
-    public void setFluidPipeProperties(int throughput, int maxTemperature, boolean gasProof) {
+    public void setFluidPipeProperties(int maxTemperature, int throughput, boolean gasProof) {
         this.fluidPipeProperties = new FluidPipeProperties(maxTemperature, throughput, gasProof);
     }
 
