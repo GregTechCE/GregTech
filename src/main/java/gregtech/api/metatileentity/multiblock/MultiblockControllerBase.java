@@ -4,6 +4,8 @@ import codechicken.lib.render.CCRenderState;
 import codechicken.lib.render.pipeline.ColourMultiplier;
 import codechicken.lib.render.pipeline.IVertexOperation;
 import codechicken.lib.vec.Matrix4;
+import gregtech.api.capability.GregtechCapabilities;
+import gregtech.api.capability.IMultiblockController;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.MetaTileEntityHolder;
 import gregtech.api.multiblock.BlockPattern;
@@ -21,6 +23,7 @@ import net.minecraft.network.PacketBuffer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.common.capabilities.Capability;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.tuple.Pair;
 
@@ -29,7 +32,7 @@ import java.util.*;
 import java.util.function.BiFunction;
 import java.util.function.Predicate;
 
-public abstract class MultiblockControllerBase extends MetaTileEntity {
+public abstract class MultiblockControllerBase extends MetaTileEntity implements IMultiblockController {
 
     protected BlockPattern structurePattern;
 
@@ -216,7 +219,6 @@ public abstract class MultiblockControllerBase extends MetaTileEntity {
 
     @SuppressWarnings("unchecked")
     public <T> List<T> getAbilities(MultiblockAbility<T> ability) {
-        @SuppressWarnings("SuspiciousMethodCalls")
         List<T> rawList = (List<T>) multiblockAbilities.getOrDefault(ability, Collections.emptyList());
         return Collections.unmodifiableList(rawList);
     }
@@ -245,8 +247,15 @@ public abstract class MultiblockControllerBase extends MetaTileEntity {
         }
     }
 
+    @Override
+    public <T> T getCapability(Capability<T> capability, EnumFacing side) {
+        if (capability == GregtechCapabilities.CAPABILITY_MULTIBLOCK_CONTROLLER) {
+            return GregtechCapabilities.CAPABILITY_MULTIBLOCK_CONTROLLER.cast(this);
+        }
+        return null;
+    }
+
     public boolean isStructureFormed() {
         return structureFormed;
     }
-
 }

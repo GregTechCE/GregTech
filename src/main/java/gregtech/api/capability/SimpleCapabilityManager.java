@@ -41,6 +41,7 @@ public class SimpleCapabilityManager {
         registerCapabilityWithNoDefault(IControllable.class);
         registerCapabilityWithNoDefault(IActiveOutputSide.class);
         registerCapabilityWithNoDefault(IFuelable.class);
+        registerCapabilityWithNoDefault(IMultiblockController.class);
 
         registerCapabilityWithNoDefault(IWrenchItem.class);
         registerCapabilityWithNoDefault(ICutterItem.class);
