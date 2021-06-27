@@ -51,9 +51,14 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
+import java.util.concurrent.atomic.AtomicBoolean;
+
+import static gregtech.api.metatileentity.MetaTileEntity.FULL_CUBE_COLLISION;
 
 @SuppressWarnings("deprecation")
 public abstract class BlockPipe<PipeType extends Enum<PipeType> & IPipeType<NodeDataType>, NodeDataType, WorldPipeNetType extends WorldPipeNet<NodeDataType, ? extends PipeNet<NodeDataType>>> extends BuiltInRenderBlock implements ITileEntityProvider, IFacadeWrapper, IBlockAppearance {
+
+    public static AtomicBoolean isToolHeld = new AtomicBoolean(false);
 
     public BlockPipe() {
         super(net.minecraft.block.material.Material.IRON);
@@ -453,11 +458,17 @@ public abstract class BlockPipe<PipeType extends Enum<PipeType> & IPipeType<Node
         int actualConnections = getActualConnections(pipeTile, world);
         float thickness = pipeType.getThickness();
         ArrayList<IndexedCuboid6> result = new ArrayList<>();
-        result.add(new IndexedCuboid6(new PrimaryBoxData(false), getSideBox(null, thickness)));
         ICoverable coverable = pipeTile.getCoverableImplementation();
-        for (EnumFacing side : EnumFacing.VALUES) {
-            if ((actualConnections & 1 << side.getIndex()) > 0) {
-                result.add(new IndexedCuboid6(new PipeConnectionData(side), getSideBox(side, thickness)));
+
+        // Check if the machine grid is being rendered
+        if (isToolHeld.get()) {
+            result.add(FULL_CUBE_COLLISION);
+        } else {
+            result.add(new IndexedCuboid6(new PrimaryBoxData(true), getSideBox(null, thickness)));
+            for (EnumFacing side : EnumFacing.VALUES) {
+                if ((actualConnections & 1 << side.getIndex()) > 0) {
+                    result.add(new IndexedCuboid6(new PipeConnectionData(side), getSideBox(side, thickness)));
+                }
             }
         }
         coverable.addCoverCollisionBoundingBox(result);

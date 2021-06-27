@@ -9,9 +9,13 @@ import gregtech.api.capability.IMultipleTankHandler;
 import gregtech.api.gui.ModularUI;
 import gregtech.api.gui.impl.ModularUIContainer;
 import gregtech.api.items.IToolItem;
+import gregtech.api.items.metaitem.MetaItem;
+import gregtech.api.items.metaitem.stats.IItemBehaviour;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.MetaTileEntityHolder;
 import gregtech.common.ConfigHolder;
+import gregtech.common.items.behaviors.CoverPlaceBehavior;
+import gregtech.common.items.behaviors.CrowbarBehaviour;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockRedstoneWire;
 import net.minecraft.block.material.Material;
@@ -847,5 +851,18 @@ public class GTUtility {
 
     public static boolean arePosEqual(BlockPos pos1, BlockPos pos2) {
         return pos1.getX() == pos2.getX() & pos1.getY() == pos2.getY() & pos1.getZ() == pos2.getZ();
+    }
+
+    public static boolean isCoverBehaviorItem(ItemStack itemStack) {
+        if (itemStack.getItem() instanceof MetaItem) {
+            MetaItem<?> metaItem = (MetaItem<?>) itemStack.getItem();
+            MetaItem<?>.MetaValueItem valueItem = metaItem.getItem(itemStack);
+            if (valueItem != null) {
+                List<IItemBehaviour> behaviourList = valueItem.getBehaviours();
+                return behaviourList.stream().anyMatch(it ->
+                        it instanceof CoverPlaceBehavior || it instanceof CrowbarBehaviour);
+            }
+        }
+        return false;
     }
 }
