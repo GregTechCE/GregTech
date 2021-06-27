@@ -206,8 +206,6 @@ public class CraftingRecipeLoader {
         ModHandler.addShapelessRecipe("powder_charcoal", new ItemStack(Items.GUNPOWDER, 6), new UnificationEntry(OrePrefix.dust, Materials.Charcoal), new UnificationEntry(OrePrefix.dust, Materials.Charcoal), new UnificationEntry(OrePrefix.dust, Materials.Charcoal), new UnificationEntry(OrePrefix.dust, Materials.Sulfur), new UnificationEntry(OrePrefix.dust, Materials.Saltpeter), new UnificationEntry(OrePrefix.dust, Materials.Saltpeter));
         ModHandler.addShapelessRecipe("powder_carbon", new ItemStack(Items.GUNPOWDER, 6), new UnificationEntry(OrePrefix.dust, Materials.Carbon), new UnificationEntry(OrePrefix.dust, Materials.Carbon), new UnificationEntry(OrePrefix.dust, Materials.Carbon), new UnificationEntry(OrePrefix.dust, Materials.Sulfur), new UnificationEntry(OrePrefix.dust, Materials.Saltpeter), new UnificationEntry(OrePrefix.dust, Materials.Saltpeter));
 
-        MetaBlocks.FRAMES.values().forEach(CraftingRecipeLoader::registerColoringRecipes);
-
         if (ConfigHolder.vanillaRecipes.nerfPaperCrafting) {
             ModHandler.removeRecipeByName(new ResourceLocation("minecraft:paper"));
             ModHandler.removeRecipeByName(new ResourceLocation("minecraft:sugar"));
@@ -311,13 +309,5 @@ public class CraftingRecipeLoader {
     private static void registerFacadeRecipe(Material material, int facadeAmount) {
         OreIngredient ingredient = new OreIngredient(new UnificationEntry(OrePrefix.plate, material).toString());
         ForgeRegistries.RECIPES.register(new FacadeRecipe(null, ingredient, facadeAmount).setRegistryName("facade_" + material));
-    }
-
-    private static void registerColoringRecipes(BlockColored block) {
-        for (EnumDyeColor dyeColor : EnumDyeColor.values()) {
-            String recipeName = String.format("%s_color_%s", block.getRegistryName().getPath(), getColorName(dyeColor));
-            ModHandler.addShapedRecipe(recipeName, new ItemStack(block, 8, dyeColor.getMetadata()), "XXX", "XDX", "XXX",
-                'X', new ItemStack(block, 1, GTValues.W), 'D', getOrdictColorName(dyeColor));
-        }
     }
 }
