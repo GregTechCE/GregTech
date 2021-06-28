@@ -16,10 +16,13 @@ import gregtech.common.metatileentities.electric.multiblockpart.MetaTileEntityEn
 import gregtech.common.metatileentities.electric.multiblockpart.MetaTileEntityFluidHatch;
 import gregtech.common.metatileentities.electric.multiblockpart.MetaTileEntityItemBus;
 import gregtech.common.metatileentities.electric.multiblockpart.MetaTileEntityRotorHolder;
-import gregtech.common.metatileentities.multi.*;
+import gregtech.common.metatileentities.multi.MetaTileEntityCokeOven;
+import gregtech.common.metatileentities.multi.MetaTileEntityCokeOvenHatch;
+import gregtech.common.metatileentities.multi.MetaTileEntityLargeBoiler;
 import gregtech.common.metatileentities.multi.MetaTileEntityLargeBoiler.BoilerType;
+import gregtech.common.metatileentities.multi.MetaTileEntityPrimitiveBlastFurnace;
 import gregtech.common.metatileentities.multi.electric.*;
-import gregtech.common.metatileentities.multi.electric.generator.MetaTileEntityDieselEngine;
+import gregtech.common.metatileentities.multi.electric.generator.MetaTileEntityLargeCombustionEngine;
 import gregtech.common.metatileentities.multi.electric.generator.MetaTileEntityLargeTurbine;
 import gregtech.common.metatileentities.multi.electric.generator.MetaTileEntityLargeTurbine.TurbineType;
 import gregtech.common.metatileentities.steam.*;
@@ -102,7 +105,7 @@ public class MetaTileEntities {
     public static SimpleMachineMetaTileEntity[] CLUSTER_MILL = new SimpleMachineMetaTileEntity[GTValues.V.length - 1];
 
     //GENERATORS SECTION
-    public static SimpleGeneratorMetaTileEntity[] DIESEL_GENERATOR = new SimpleGeneratorMetaTileEntity[4];
+    public static SimpleGeneratorMetaTileEntity[] COMBUSTION_GENERATOR = new SimpleGeneratorMetaTileEntity[4];
     public static SimpleGeneratorMetaTileEntity[] STEAM_TURBINE = new SimpleGeneratorMetaTileEntity[4];
     public static SimpleGeneratorMetaTileEntity[] GAS_TURBINE = new SimpleGeneratorMetaTileEntity[4];
     public static MetaTileEntityMagicEnergyAbsorber MAGIC_ENERGY_ABSORBER;
@@ -127,7 +130,7 @@ public class MetaTileEntities {
     public static MetaTileEntityDistillationTower DISTILLATION_TOWER;
     public static MetaTileEntityCrackingUnit CRACKER;
     public static MetaTileEntityMultiFurnace MULTI_FURNACE;
-    public static MetaTileEntityDieselEngine DIESEL_ENGINE;
+    public static MetaTileEntityLargeCombustionEngine LARGE_COMBUSTION_ENGINE;
 
     public static MetaTileEntityLargeTurbine LARGE_STEAM_TURBINE;
     public static MetaTileEntityLargeTurbine LARGE_GAS_TURBINE;
@@ -394,9 +397,9 @@ public class MetaTileEntities {
 
         // Space left for these just in case
         // Diesel Generator, IDs 935-949
-        DIESEL_GENERATOR[0] = GregTechAPI.registerMetaTileEntity(935, new SimpleGeneratorMetaTileEntity(gregtechId("diesel_generator.lv"), RecipeMaps.DIESEL_GENERATOR_FUELS, Textures.DIESEL_GENERATOR_OVERLAY, 1));
-        DIESEL_GENERATOR[1] = GregTechAPI.registerMetaTileEntity(936, new SimpleGeneratorMetaTileEntity(gregtechId("diesel_generator.mv"), RecipeMaps.DIESEL_GENERATOR_FUELS, Textures.DIESEL_GENERATOR_OVERLAY, 2));
-        DIESEL_GENERATOR[2] = GregTechAPI.registerMetaTileEntity(937, new SimpleGeneratorMetaTileEntity(gregtechId("diesel_generator.hv"), RecipeMaps.DIESEL_GENERATOR_FUELS, Textures.DIESEL_GENERATOR_OVERLAY, 3));
+        COMBUSTION_GENERATOR[0] = GregTechAPI.registerMetaTileEntity(935, new SimpleGeneratorMetaTileEntity(gregtechId("combustion_generator.lv"), RecipeMaps.COMBUSTION_GENERATOR_FUELS, Textures.COMBUSTION_GENERATOR_OVERLAY, 1));
+        COMBUSTION_GENERATOR[1] = GregTechAPI.registerMetaTileEntity(936, new SimpleGeneratorMetaTileEntity(gregtechId("combustion_generator.mv"), RecipeMaps.COMBUSTION_GENERATOR_FUELS, Textures.COMBUSTION_GENERATOR_OVERLAY, 2));
+        COMBUSTION_GENERATOR[2] = GregTechAPI.registerMetaTileEntity(937, new SimpleGeneratorMetaTileEntity(gregtechId("combustion_generator.hv"), RecipeMaps.COMBUSTION_GENERATOR_FUELS, Textures.COMBUSTION_GENERATOR_OVERLAY, 3));
 
         // Steam Turbine, IDs 950-964
         STEAM_TURBINE[0] = GregTechAPI.registerMetaTileEntity(950, new SimpleGeneratorMetaTileEntity(gregtechId("steam_turbine.lv"), RecipeMaps.STEAM_TURBINE_FUELS, Textures.STEAM_TURBINE_OVERLAY, 1));
@@ -434,7 +437,7 @@ public class MetaTileEntities {
         PYROLYSE_OVEN = GregTechAPI.registerMetaTileEntity(1004, new MetaTileEntityPyrolyseOven(gregtechId("pyrolyse_oven")));
         DISTILLATION_TOWER = GregTechAPI.registerMetaTileEntity(1005, new MetaTileEntityDistillationTower(gregtechId("distillation_tower")));
         MULTI_FURNACE = GregTechAPI.registerMetaTileEntity(1006, new MetaTileEntityMultiFurnace(gregtechId("multi_furnace")));
-        DIESEL_ENGINE = GregTechAPI.registerMetaTileEntity(1007, new MetaTileEntityDieselEngine(gregtechId("diesel_engine")));
+        LARGE_COMBUSTION_ENGINE = GregTechAPI.registerMetaTileEntity(1007, new MetaTileEntityLargeCombustionEngine(gregtechId("large_combustion_engine")));
         CRACKER = GregTechAPI.registerMetaTileEntity(1008, new MetaTileEntityCrackingUnit(gregtechId("cracker")));
 
         LARGE_STEAM_TURBINE = GregTechAPI.registerMetaTileEntity(1009, new MetaTileEntityLargeTurbine(gregtechId("large_turbine.steam"), TurbineType.STEAM));

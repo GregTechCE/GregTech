@@ -28,20 +28,20 @@ import javax.annotation.Nonnull;
 import java.util.List;
 import java.util.function.Predicate;
 
-public class MetaTileEntityDieselEngine extends FueledMultiblockController {
+public class MetaTileEntityLargeCombustionEngine extends FueledMultiblockController {
 
-    public MetaTileEntityDieselEngine(ResourceLocation metaTileEntityId) {
-        super(metaTileEntityId, RecipeMaps.DIESEL_GENERATOR_FUELS, GTValues.V[GTValues.EV]);
+    public MetaTileEntityLargeCombustionEngine(ResourceLocation metaTileEntityId) {
+        super(metaTileEntityId, RecipeMaps.COMBUSTION_GENERATOR_FUELS, GTValues.V[GTValues.EV]);
     }
 
     @Override
     protected FuelRecipeLogic createWorkable(long maxVoltage) {
-        return new DieselEngineWorkableHandler(this, recipeMap, () -> energyContainer, () -> importFluidHandler, maxVoltage);
+        return new LargeCombustionEngineWorkableHandler(this, recipeMap, () -> energyContainer, () -> importFluidHandler, maxVoltage);
     }
 
     @Override
     public MetaTileEntity createMetaTileEntity(MetaTileEntityHolder holder) {
-        return new MetaTileEntityDieselEngine(metaTileEntityId);
+        return new MetaTileEntityLargeCombustionEngine(metaTileEntityId);
     }
 
     @Override
@@ -49,16 +49,16 @@ public class MetaTileEntityDieselEngine extends FueledMultiblockController {
         if (isStructureFormed()) {
             FluidStack lubricantStack = importFluidHandler.drain(Materials.Lubricant.getFluid(Integer.MAX_VALUE), false);
             FluidStack oxygenStack = importFluidHandler.drain(Materials.Oxygen.getFluid(Integer.MAX_VALUE), false);
-            FluidStack fuelStack = ((DieselEngineWorkableHandler) workableHandler).getFuelStack();
+            FluidStack fuelStack = ((LargeCombustionEngineWorkableHandler) workableHandler).getFuelStack();
             int lubricantAmount = lubricantStack == null ? 0 : lubricantStack.amount;
             int oxygenAmount = oxygenStack == null ? 0 : oxygenStack.amount;
             int fuelAmount = fuelStack == null ? 0 : fuelStack.amount;
 
             ITextComponent fuelName = new TextComponentTranslation(fuelAmount == 0 ? "gregtech.fluid.empty" : fuelStack.getUnlocalizedName());
-            textList.add(new TextComponentTranslation("gregtech.multiblock.diesel_engine.lubricant_amount", lubricantAmount));
-            textList.add(new TextComponentTranslation("gregtech.multiblock.diesel_engine.fuel_amount", fuelAmount, fuelName));
-            textList.add(new TextComponentTranslation("gregtech.multiblock.diesel_engine.oxygen_amount", oxygenAmount));
-            textList.add(new TextComponentTranslation(oxygenAmount >= 2 ? "gregtech.multiblock.diesel_engine.oxygen_boosted" : "gregtech.multiblock.diesel_engine.supply_oxygen_to_boost"));
+            textList.add(new TextComponentTranslation("gregtech.multiblock.large_combustion_engine.lubricant_amount", lubricantAmount));
+            textList.add(new TextComponentTranslation("gregtech.multiblock.large_combustion_engine.fuel_amount", fuelAmount, fuelName));
+            textList.add(new TextComponentTranslation("gregtech.multiblock.large_combustion_engine.oxygen_amount", oxygenAmount));
+            textList.add(new TextComponentTranslation(oxygenAmount >= 2 ? "gregtech.multiblock.large_combustion_engine.oxygen_boosted" : "gregtech.multiblock.large_combustion_engine.supply_oxygen_to_boost"));
         }
         super.addDisplayText(textList);
     }

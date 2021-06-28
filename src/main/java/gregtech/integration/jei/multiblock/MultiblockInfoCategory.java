@@ -4,8 +4,8 @@ import gregtech.api.GTValues;
 import gregtech.api.gui.GuiTextures;
 import gregtech.common.metatileentities.MetaTileEntities;
 import gregtech.integration.jei.multiblock.infos.*;
-import mezz.jei.api.IJeiHelpers;
 import mezz.jei.api.IGuiHelper;
+import mezz.jei.api.IJeiHelpers;
 import mezz.jei.api.IModRegistry;
 import mezz.jei.api.gui.IDrawable;
 import mezz.jei.api.gui.IRecipeLayout;
@@ -36,7 +36,7 @@ public class MultiblockInfoCategory implements IRecipeCategory<MultiblockInfoRec
         put("implosion_compressor", new MultiblockInfoRecipeWrapper(new ImplosionCompressorInfo()));
         put("pyrolyze_oven", new MultiblockInfoRecipeWrapper(new PyrolyzeOvenInfo()));
         put("cracker_unit", new MultiblockInfoRecipeWrapper(new CrackerUnitInfo()));
-        put("diesel_engine", new MultiblockInfoRecipeWrapper(new DieselEngineInfo()));
+        put("diesel_engine", new MultiblockInfoRecipeWrapper(new LargeCombustionEngineInfo()));
         put("distillation_tower", new MultiblockInfoRecipeWrapper(new DistillationTowerInfo()));
         put("electric_blast_furnace", new MultiblockInfoRecipeWrapper(new ElectricBlastFurnaceInfo()));
         put("multi_smelter", new MultiblockInfoRecipeWrapper(new MultiSmelterInfo()));

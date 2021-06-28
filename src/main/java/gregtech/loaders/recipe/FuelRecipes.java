@@ -10,16 +10,16 @@ public class FuelRecipes {
 
     public static void registerFuels() {
         //low-tier diesel generator fuels
-        registerDieselGeneratorFuel(Materials.Naphtha.getFluid(1), 8, GTValues.LV);
-        registerDieselGeneratorFuel(Materials.Oil.getFluid(2), 1, GTValues.LV);
-        registerDieselGeneratorFuel(Materials.SulfuricLightFuel.getFluid(4), 5, GTValues.LV);
-        registerDieselGeneratorFuel(Materials.Methanol.getFluid(8), 21, GTValues.LV);
-        registerDieselGeneratorFuel(Materials.Ethanol.getFluid(1), 6, GTValues.LV);
-        registerDieselGeneratorFuel(Materials.BioDiesel.getFluid(1), 8, GTValues.LV);
-        registerDieselGeneratorFuel(Materials.LightFuel.getFluid(32), 305, GTValues.LV);
-        registerDieselGeneratorFuel(Materials.Diesel.getFluid(1), 15, GTValues.LV);
-        registerDieselGeneratorFuel(Materials.NitroDiesel.getFluid(2), 45, GTValues.LV);
-        registerDieselGeneratorFuel(Materials.RocketFuel.getFluid(2), 7, GTValues.LV);
+        registerCombustionGeneratorFuel(Materials.Naphtha.getFluid(1), 8, GTValues.LV);
+        registerCombustionGeneratorFuel(Materials.Oil.getFluid(2), 1, GTValues.LV);
+        registerCombustionGeneratorFuel(Materials.SulfuricLightFuel.getFluid(4), 5, GTValues.LV);
+        registerCombustionGeneratorFuel(Materials.Methanol.getFluid(8), 21, GTValues.LV);
+        registerCombustionGeneratorFuel(Materials.Ethanol.getFluid(1), 6, GTValues.LV);
+        registerCombustionGeneratorFuel(Materials.BioDiesel.getFluid(1), 8, GTValues.LV);
+        registerCombustionGeneratorFuel(Materials.LightFuel.getFluid(32), 305, GTValues.LV);
+        registerCombustionGeneratorFuel(Materials.Diesel.getFluid(1), 15, GTValues.LV);
+        registerCombustionGeneratorFuel(Materials.NitroDiesel.getFluid(2), 45, GTValues.LV);
+        registerCombustionGeneratorFuel(Materials.RocketFuel.getFluid(2), 7, GTValues.LV);
 
         //steam generator fuels
         registerSteamGeneratorFuel(Materials.Steam.getFluid(640), 10, GTValues.LV);
@@ -69,8 +69,8 @@ public class FuelRecipes {
         RecipeMaps.PLASMA_GENERATOR_FUELS.addRecipe(new FuelRecipe(fuelStack, duration, GTValues.V[tier]));
     }
 
-    public static void registerDieselGeneratorFuel(FluidStack fuelStack, int duration, int tier) {
-        RecipeMaps.DIESEL_GENERATOR_FUELS.addRecipe(new FuelRecipe(fuelStack, duration, GTValues.V[tier]));
+    public static void registerCombustionGeneratorFuel(FluidStack fuelStack, int duration, int tier) {
+        RecipeMaps.COMBUSTION_GENERATOR_FUELS.addRecipe(new FuelRecipe(fuelStack, duration, GTValues.V[tier]));
     }
 
     public static void registerSteamGeneratorFuel(FluidStack fuelStack, int duration, int tier) {
