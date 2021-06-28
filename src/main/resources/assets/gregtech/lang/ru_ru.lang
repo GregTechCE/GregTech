@@ -21,7 +21,7 @@ gregtech.multiblock.vacuum_freezer.description=Вакуумный морозил
 gregtech.multiblock.implosion_compressor.description=Детонационный компрессор - это многоблочная структура, в которой используются взрывчатые вещества для превращения пыли в соответствующие камни.
 gregtech.multiblock.pyrolyze_oven.description=Пиролизная печь - представляет собой многоблочную конструкцию, используемую для превращения бревен в древесный уголь и креозотовое масло или золу и тяжелое масло.
 gregtech.multiblock.cracker.description=Крекинговая установка - это многоблочная структура, используемая для высокотемпературной переработки нефти и её фракций с целью получения продуктов меньшей молекулярной массы.
-gregtech.multiblock.diesel_engine.description=Дизельный двигатель - представляет собой многоблочную конструкцию, которая действует как дизельный генератор для электромобилей.
+gregtech.multiblock.large_combustion_engine.description=Дизельный двигатель - представляет собой многоблочную конструкцию, которая действует как дизельный генератор для электромобилей.
 gregtech.multiblock.distillation_tower.description=Ректификационная колонна - представляет собой многоблочную конструкцию, используемую для перегонки различных типов нефти и некоторых их побочных продуктов.
 gregtech.multiblock.electric_blast_furnace.description=Электрическая доменная печь (ЭДП) - это многоблочная конструкция, используемая для выплавки сплавов, приготовления металлов и переработки руд. Она необходима для получения высокоуровневых сплавов и металлов, таких как алюминий, нержавеющая сталь и титан, сплав наквада.
 gregtech.multiblock.multi_smelter.description=Плавильная печь - это многоблочная структура, используемая для плавки большого количества изделий одновременно. Различные уровни катушек обеспечивают повышение скорости и повышение энергоэффективности. 16 изделий может быть выплавленно за одну операцию, и может быть умножено с использованием катушек более высокого уровня.
@@ -1578,7 +1578,7 @@ recipemap.forge_hammer.name=Кузнечный молот
 recipemap.compressor.name=Компрессор
 recipemap.packer.name=Упаковщик
 recipemap.unpacker.name=Распаковщик
-recipemap.diesel_generator.name=Дизельный генератор
+recipemap.combustion_generator.name=Дизельный генератор
 recipemap.gas_turbine.name=Газовая турбина
 recipemap.steam_turbine.name=Паровая турбина
 recipemap.semi_fluid_generator.name=Полужидкое топливо
@@ -1812,12 +1812,12 @@ gregtech.machine.steam_alloy_smelter_bronze.name=Паровая плавильн
 gregtech.machine.steam_alloy_smelter_steel.name=Паровая плавильня высокого давления
 
 # Генераторы
-gregtech.machine.diesel_generator.tooltip=Требует горючих жидкостей
+gregtech.machine.combustion_generator.tooltip=Требует горючих жидкостей
 
-gregtech.machine.diesel_generator.lv.name=Базовый дизельный генератор
-gregtech.machine.diesel_generator.mv.name=Улучшеный дизельный генератор
-gregtech.machine.diesel_generator.hv.name=Турбодизельный генератор
-gregtech.machine.diesel_generator.ev.name=Турбодизельный генератор II
+gregtech.machine.combustion_generator.lv.name=Базовый дизельный генератор
+gregtech.machine.combustion_generator.mv.name=Улучшеный дизельный генератор
+gregtech.machine.combustion_generator.hv.name=Турбодизельный генератор
+gregtech.machine.combustion_generator.ev.name=Турбодизельный генератор II
 
 gregtech.machine.steam_turbine.lv.name=Базовая паровая турбина
 gregtech.machine.steam_turbine.mv.name=Улучшеная паровая турбина
@@ -2692,7 +2692,7 @@ gregtech.machine.coke_oven.name=Коксовая печь
 gregtech.machine.coke_oven_hatch.name=Люк коксовой печи
 gregtech.machine.coke_oven_hatch.tooltip=Позволяет автоматизировать доступ к коксовой печи
 
-gregtech.machine.diesel_engine.name=Дизельный двигатель
+gregtech.machine.large_combustion_engine.name=Дизельный двигатель
 gregtech.machine.large_turbine.steam.name=Большая паровая турбина
 gregtech.machine.large_turbine.gas.name=Большая газовая турбина
 gregtech.machine.large_turbine.plasma.name=Большая плазменная турбина
@@ -2869,11 +2869,11 @@ gregtech.multiblock.multi_furnace.heating_coil_discount=EU усиление на
 gregtech.multiblock.distillation_tower.distilling_fluid=Дистилляция %s
 gregtech.multiblock.cracker.cracking_fluid=Крекинг %s
 
-gregtech.multiblock.diesel_engine.lubricant_amount=Количество смазки: %sЛ
-gregtech.multiblock.diesel_engine.fuel_amount=Количество топлива: %sЛ (%s)
-gregtech.multiblock.diesel_engine.oxygen_amount=Количество кислорода: %sЛ
-gregtech.multiblock.diesel_engine.oxygen_boosted=Кислород добавлен.
-gregtech.multiblock.diesel_engine.supply_oxygen_to_boost=Принимает кислород для ускорения.
+gregtech.multiblock.large_combustion_engine.lubricant_amount=Количество смазки: %sЛ
+gregtech.multiblock.large_combustion_engine.fuel_amount=Количество топлива: %sЛ (%s)
+gregtech.multiblock.large_combustion_engine.oxygen_amount=Количество кислорода: %sЛ
+gregtech.multiblock.large_combustion_engine.oxygen_boosted=Кислород добавлен.
+gregtech.multiblock.large_combustion_engine.supply_oxygen_to_boost=Принимает кислород для ускорения.
 
 gregtech.multiblock.turbine.fuel_amount=Количество топлива: %sЛ (%s)
 gregtech.multiblock.turbine.rotor_speed=Скорость ротора: %s / %s об/мин

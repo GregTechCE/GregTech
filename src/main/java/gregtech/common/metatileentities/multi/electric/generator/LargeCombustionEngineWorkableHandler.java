@@ -12,14 +12,14 @@ import net.minecraftforge.fluids.FluidStack;
 
 import java.util.function.Supplier;
 
-public class DieselEngineWorkableHandler extends FuelRecipeLogic {
+public class LargeCombustionEngineWorkableHandler extends FuelRecipeLogic {
 
     private final int maxCycleLength = 20;
     private int currentCycle = 0;
     private boolean isUsingOxygen = false;
 
-    public DieselEngineWorkableHandler(MetaTileEntity metaTileEntity, FuelRecipeMap recipeMap,
-                                       Supplier<IEnergyContainer> energyContainer, Supplier<IMultipleTankHandler> fluidTank, long maxVoltage) {
+    public LargeCombustionEngineWorkableHandler(MetaTileEntity metaTileEntity, FuelRecipeMap recipeMap,
+                                                Supplier<IEnergyContainer> energyContainer, Supplier<IMultipleTankHandler> fluidTank, long maxVoltage) {
         super(metaTileEntity, recipeMap, energyContainer, fluidTank, maxVoltage);
     }
 

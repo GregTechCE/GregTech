@@ -16,11 +16,11 @@ import net.minecraft.util.EnumFacing;
 
 import java.util.List;
 
-public class DieselEngineInfo extends MultiblockInfoPage {
+public class LargeCombustionEngineInfo extends MultiblockInfoPage {
 
     @Override
     public MultiblockControllerBase getController() {
-        return MetaTileEntities.DIESEL_ENGINE;
+        return MetaTileEntities.LARGE_COMBUSTION_ENGINE;
     }
 
     @Override
@@ -33,7 +33,7 @@ public class DieselEngineInfo extends MultiblockInfoPage {
             .where('H', MetaBlocks.METAL_CASING.getState(MetalCasingType.TITANIUM_STABLE))
             .where('G', MetaBlocks.TURBINE_CASING.getState(BlockTurbineCasing.TurbineCasingType.TITANIUM_GEARBOX))
             .where('A', MetaBlocks.MULTIBLOCK_CASING.getState(BlockMultiblockCasing.MultiblockCasingType.ENGINE_INTAKE_CASING))
-            .where('C', MetaTileEntities.DIESEL_ENGINE, EnumFacing.NORTH)
+            .where('C', MetaTileEntities.LARGE_COMBUSTION_ENGINE, EnumFacing.NORTH)
             .where('F', MetaTileEntities.FLUID_IMPORT_HATCH[GTValues.EV], EnumFacing.WEST)
             .where('E', MetaTileEntities.ENERGY_OUTPUT_HATCH[GTValues.EV], EnumFacing.SOUTH)
             .where('#', Blocks.AIR.getDefaultState())
@@ -43,7 +43,7 @@ public class DieselEngineInfo extends MultiblockInfoPage {
 
     @Override
     public String[] getDescription() {
-        return new String[]{I18n.format("gregtech.multiblock.diesel_engine.description")};
+        return new String[]{I18n.format("gregtech.multiblock.large_combustion_engine.description")};
     }
 
 }

@@ -35,7 +35,7 @@ gregtech.multiblock.vacuum_freezer.description=The Vacuum Freezer is a multibloc
 gregtech.multiblock.implosion_compressor.description=The Implosion Compressor is a multiblock structure that uses explosives to turn gem dusts into their corresponding gems.
 gregtech.multiblock.pyrolyze_oven.description=The Pyrolyze Oven is a multiblock structure used for turning Logs into Charcoal and Creosote Oil, or Ash and Heavy Oil.
 gregtech.multiblock.cracker.description=The Cracker Unit is a multiblock structure used for turning Light and Heavy Fuel into their Cracked variants.
-gregtech.multiblock.diesel_engine.description=The Diesel Engine is a multiblock structure that acts as a Diesel Generator for EV power.
+gregtech.multiblock.large_combustion_engine.description=The Large Combustion Engine is a multiblock structure that acts as a Combustion Generator for EV power.
 gregtech.multiblock.distillation_tower.description=The Distillation Tower is a multiblock structure used for distilling the various types of Oil and some of their byproducts.
 gregtech.multiblock.electric_blast_furnace.description=The Electric Blast Furnace (EBF) is a multiblock structure used for smelting alloys, cooking metals and refining ores. It is required for obtaining high-tier alloys and metals, such as aluminium, stainless steel, titanium, and naquadah alloy.
 gregtech.multiblock.multi_smelter.description=The Multi Smelter is a multiblock structure used for smelting massive amounts of items at once. Different tiers of coils provide a speed boost and energy efficiency gain. 16 is the base value of items smelted per operation, and can be multiplied by using higher level coils.
@@ -1756,7 +1756,7 @@ recipemap.forge_hammer.name=Forge Hammer
 recipemap.compressor.name=Compressor
 recipemap.packer.name=Packer
 recipemap.unpacker.name=Unpacker
-recipemap.diesel_generator.name=Diesel Generator
+recipemap.combustion_generator.name=Combustion Generator
 recipemap.gas_turbine.name=Gas Turbine
 recipemap.steam_turbine.name=Steam Turbine
 recipemap.semi_fluid_generator.name=Semi Fluid Fuels
@@ -2052,24 +2052,33 @@ gregtech.machine.steam_alloy_smelter_bronze.name=Steam Alloy Smelter
 gregtech.machine.steam_alloy_smelter_steel.name=High Pressure Steam Alloy Smelter
 
 # Generators
-gregtech.machine.diesel_generator.tooltip=Requires flammable Liquids
-
-gregtech.machine.diesel_generator.lv.name=Basic Diesel Generator
-gregtech.machine.diesel_generator.mv.name=Advanced Diesel Generator
-gregtech.machine.diesel_generator.hv.name=Turbo Diesel Generator
-gregtech.machine.diesel_generator.ev.name=Turbo Diesel Generator II
+gregtech.machine.combustion_generator.lv.name=Basic Combustion Generator
+gregtech.machine.combustion_generator.lv.tooltip=Requires flammable Liquids
+gregtech.machine.combustion_generator.mv.name=Advanced Combustion Generator
+gregtech.machine.combustion_generator.mv.tooltip=Requires flammable Liquids
+gregtech.machine.combustion_generator.hv.name=Turbo Combustion Generator
+gregtech.machine.combustion_generator.hv.tooltip=Requires flammable Liquids
+gregtech.machine.combustion_generator.ev.name=Turbo Combustion Generator II
+gregtech.machine.combustion_generator.ev.tooltip=Requires flammable Liquids
 
 gregtech.machine.steam_turbine.lv.name=Basic Steam Turbine
+gregtech.machine.steam_turbine.lv.tooltip=Converts Steam into EU
 gregtech.machine.steam_turbine.mv.name=Advanced Steam Turbine
+gregtech.machine.steam_turbine.mv.tooltip=Converts Steam into EU
 gregtech.machine.steam_turbine.hv.name=Turbo Steam Turbine
+gregtech.machine.steam_turbine.hv.tooltip=Converts Steam into EU
 gregtech.machine.steam_turbine.ev.name=Turbo Steam Turbine II
-
-gregtech.machine.gas_turbine.tooltip=Requires flammable Gasses
+gregtech.machine.steam_turbine.ev.tooltip=Converts Steam into EU
 
 gregtech.machine.gas_turbine.lv.name=Basic Gas Turbine
+gregtech.machine.gas_turbine.lv.tooltip=Requires flammable Gasses
 gregtech.machine.gas_turbine.mv.name=Advanced Gas Turbine
+gregtech.machine.gas_turbine.mv.tooltip=Requires flammable Gasses
 gregtech.machine.gas_turbine.hv.name=Turbo Gas Turbine
+gregtech.machine.gas_turbine.hv.tooltip=Requires flammable Gasses
 gregtech.machine.gas_turbine.ev.name=Turbo Gas Turbine II
+gregtech.machine.gas_turbine.ev.tooltip=Requires flammable Gasses
+
 
 gregtech.machine.magic_energy_absorber.name=Magic Energy Absorber
 gregtech.machine.magic_energy_absorber.tooltip=Max Voltage OUT: §a2048 §7(§aEV§7)/nCollects energy from ender crystals in 64 blocks/nEach ender crystal adds 32 EU/t to output/nPlace Dragon Egg on top to amplify output/n/nWhen amplified:/nEach ender crystal adds 128 EU/t
@@ -3372,7 +3381,7 @@ gregtech.machine.coke_oven.name=Coke Oven
 gregtech.machine.coke_oven_hatch.name=Coke Oven Hatch
 gregtech.machine.coke_oven_hatch.tooltip=Allows automation access to coke oven. Must be centered on coke oven side.
 
-gregtech.machine.diesel_engine.name=Diesel Engine
+gregtech.machine.large_combustion_engine.name=Large Combustion Engine
 gregtech.machine.large_turbine.steam.name=Large Steam Turbine
 gregtech.machine.large_turbine.gas.name=Large Gas Turbine
 gregtech.machine.large_turbine.plasma.name=Large Plasma Turbine
@@ -3583,11 +3592,11 @@ gregtech.multiblock.multi_furnace.heating_coil_discount=Heating Coil EU Boost: %
 gregtech.multiblock.distillation_tower.distilling_fluid=Distilling %s
 gregtech.multiblock.cracker.cracking_fluid=Cracking %s
 
-gregtech.multiblock.diesel_engine.lubricant_amount=Lubricant Amount: %sL
-gregtech.multiblock.diesel_engine.fuel_amount=Fuel Amount: %sL (%s)
-gregtech.multiblock.diesel_engine.oxygen_amount=Oxygen Amount: %sL
-gregtech.multiblock.diesel_engine.oxygen_boosted=Oxygen boosted.
-gregtech.multiblock.diesel_engine.supply_oxygen_to_boost=Supply oxygen to boost.
+gregtech.multiblock.large_combustion_engine.lubricant_amount=Lubricant Amount: %sL
+gregtech.multiblock.large_combustion_engine.fuel_amount=Fuel Amount: %sL (%s)
+gregtech.multiblock.large_combustion_engine.oxygen_amount=Oxygen Amount: %sL
+gregtech.multiblock.large_combustion_engine.oxygen_boosted=Oxygen boosted.
+gregtech.multiblock.large_combustion_engine.supply_oxygen_to_boost=Supply oxygen to boost.
 
 gregtech.multiblock.turbine.fuel_amount=Fuel Amount: %sL (%s)
 gregtech.multiblock.turbine.rotor_speed=Rotor Speed: %s / %s RPM
