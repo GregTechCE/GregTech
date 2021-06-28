@@ -151,6 +151,7 @@ public class MetaFluids {
         setDefaultTexture(Materials.Blaze, FluidType.NORMAL);
         setDefaultTexture(Materials.Glass, FluidType.NORMAL);
         setDefaultTexture(Materials.Toluene, FluidType.NORMAL);
+        setDefaultTexture(Materials.Redstone, FluidType.NORMAL);
 
         for (Material material : Material.MATERIAL_REGISTRY) {
             if (!(material instanceof FluidMaterial)) continue;
