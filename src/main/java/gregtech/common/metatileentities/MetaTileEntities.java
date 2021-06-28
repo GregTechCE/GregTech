@@ -16,11 +16,8 @@ import gregtech.common.metatileentities.electric.multiblockpart.MetaTileEntityEn
 import gregtech.common.metatileentities.electric.multiblockpart.MetaTileEntityFluidHatch;
 import gregtech.common.metatileentities.electric.multiblockpart.MetaTileEntityItemBus;
 import gregtech.common.metatileentities.electric.multiblockpart.MetaTileEntityRotorHolder;
-import gregtech.common.metatileentities.multi.MetaTileEntityCokeOven;
-import gregtech.common.metatileentities.multi.MetaTileEntityCokeOvenHatch;
-import gregtech.common.metatileentities.multi.MetaTileEntityLargeBoiler;
+import gregtech.common.metatileentities.multi.*;
 import gregtech.common.metatileentities.multi.MetaTileEntityLargeBoiler.BoilerType;
-import gregtech.common.metatileentities.multi.MetaTileEntityPrimitiveBlastFurnace;
 import gregtech.common.metatileentities.multi.electric.*;
 import gregtech.common.metatileentities.multi.electric.generator.MetaTileEntityDieselEngine;
 import gregtech.common.metatileentities.multi.electric.generator.MetaTileEntityLargeTurbine;
@@ -40,7 +37,7 @@ public class MetaTileEntities {
     public static MetaTileEntityBatteryBuffer[][] BATTERY_BUFFER = new MetaTileEntityBatteryBuffer[GTValues.V.length][];
     public static MetaTileEntityCharger[] CHARGER = new MetaTileEntityCharger[GTValues.V.length];
 
-    //BRONZE MACHINES SECTION
+    //STEAM AGE SECTION
     public static SteamCoalBoiler STEAM_BOILER_COAL_BRONZE;
     public static SteamCoalBoiler STEAM_BOILER_COAL_STEEL;
     public static SteamSolarBoiler STEAM_BOILER_SOLAR_BRONZE;
@@ -58,6 +55,9 @@ public class MetaTileEntities {
     public static SteamFurnace STEAM_FURNACE_STEEL;
     public static SteamAlloySmelter STEAM_ALLOY_SMELTER_BRONZE;
     public static SteamAlloySmelter STEAM_ALLOY_SMELTER_STEEL;
+
+    //public static MetaTileEntityPumpHatch PUMP_OUTPUT_HATCH;
+    //public static MetaTileEntityWaterPump PRIMITIVE_WATER_PUMP;
 
     //SIMPLE MACHINES SECTION
     public static SimpleMachineMetaTileEntity[] ELECTRIC_FURNACE = new SimpleMachineMetaTileEntity[GTValues.V.length - 1];
@@ -629,6 +629,8 @@ public class MetaTileEntities {
         GregTechAPI.registerMetaTileEntity(1625, TESLA_COIL);
         LOCKED_SAFE = GregTechAPI.registerMetaTileEntity(1626, new MetaTileEntityLockedSafe(gregtechId("locked_safe")));
         WORKBENCH = GregTechAPI.registerMetaTileEntity(1627, new MetaTileEntityWorkbench(gregtechId("workbench")));
+        //PRIMITIVE_WATER_PUMP = GregTechAPI.registerMetaTileEntity(1628, new MetaTileEntityWaterPump(gregtechId("primitive_pump")));
+        //PUMP_OUTPUT_HATCH = GregTechAPI.registerMetaTileEntity(1629, new MetaTileEntityPumpHatch(gregtechId("pump_hatch")));
 
 
 
@@ -643,6 +645,7 @@ public class MetaTileEntities {
          * claimed ranges below this comment. Max value is 32767.
          *
          * - Gregicality / Shadows of Greg: 2000-3999
+         * - Gregification: 4000-4499
          * - GregTech Food Option: 8500-8999
          */
     }
