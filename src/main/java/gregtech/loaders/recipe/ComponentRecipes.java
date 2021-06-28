@@ -416,7 +416,7 @@ public class ComponentRecipes {
                     .duration(100).EUt(120).buildAndRegister();
 
             RecipeMaps.ASSEMBLER_RECIPES.recipeBuilder()
-                    .input(OrePrefix.cableGtSingle, Materials.Copper)
+                    .input(OrePrefix.cableGtSingle, Materials.Gold)
                     .input(OrePrefix.plate, Materials.Steel, 2)
                     .input(OrePrefix.screw, Materials.Steel)
                     .input(OrePrefix.rotor, Materials.Steel)
