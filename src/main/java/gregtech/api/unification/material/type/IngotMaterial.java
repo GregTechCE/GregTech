@@ -156,6 +156,10 @@ public class IngotMaterial extends SolidMaterial {
         if ((generationBits & GENERATE_FRAME) > 0) {
             generationBits |= GENERATE_ROD;
         }
+        if ((generationBits & GENERATE_DOUBLE_PLATE) > 0) {
+            generationBits |= GENERATE_PLATE;
+        }
+
         return super.verifyMaterialBits(generationBits);
     }
 

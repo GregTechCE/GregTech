@@ -2,6 +2,8 @@ package gregtech.loaders.recipe.chemistry;
 
 import gregtech.api.recipes.ingredients.IntCircuitIngredient;
 import gregtech.api.unification.OreDictUnifier;
+import gregtech.api.unification.material.Materials;
+import gregtech.api.unification.ore.OrePrefix;
 import gregtech.common.items.MetaItems;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -30,18 +32,18 @@ public class ReactorRecipes {
             .duration(160).EUt(30).buildAndRegister();
 
         CHEMICAL_RECIPES.recipeBuilder()
-            .fluidInputs(Butadiene.getFluid(108))
-            .fluidInputs(Styrene.getFluid(36))
-            .fluidInputs(Air.getFluid(2000))
-            .output(dust, RawStyreneButadieneRubber)
-            .duration(160).EUt(240).buildAndRegister();
+            .fluidInputs(Butadiene.getFluid(3000))
+            .fluidInputs(Styrene.getFluid(1000))
+            .fluidInputs(Air.getFluid(15000))
+            .output(dust, RawStyreneButadieneRubber, 27)
+            .duration(480).EUt(240).buildAndRegister();
 
         CHEMICAL_RECIPES.recipeBuilder()
-            .fluidInputs(Butadiene.getFluid(108))
-            .fluidInputs(Styrene.getFluid(36))
-            .fluidInputs(Oxygen.getFluid(2000))
-            .output(dust, RawStyreneButadieneRubber, 3)
-            .duration(160).EUt(240).buildAndRegister();
+            .fluidInputs(Butadiene.getFluid(3000))
+            .fluidInputs(Styrene.getFluid(1000))
+            .fluidInputs(Oxygen.getFluid(15000))
+            .output(dust, RawStyreneButadieneRubber, 41)
+            .duration(480).EUt(240).buildAndRegister();
 
         CHEMICAL_RECIPES.recipeBuilder()
             .input(dust, RawStyreneButadieneRubber, 9)
@@ -748,13 +750,6 @@ public class ReactorRecipes {
             .duration(160).EUt(30).buildAndRegister();
 
         CHEMICAL_RECIPES.recipeBuilder()
-            .input(crushedPurified, Sphalerite)
-            .input(crushedPurified, Galena)
-            .fluidInputs(SulfuricAcid.getFluid(4000))
-            .fluidOutputs(IndiumConcentrate.getFluid(1000))
-            .duration(60).EUt(150).buildAndRegister();
-
-        CHEMICAL_RECIPES.recipeBuilder()
             .notConsumable(new IntCircuitIngredient(1))
             .input(dust, Phosphorus, 4)
             .fluidInputs(Oxygen.getFluid(10000))
@@ -925,7 +920,7 @@ public class ReactorRecipes {
         CHEMICAL_RECIPES.recipeBuilder()
             .input(dust, Uraninite, 3)
             .input(dust, Aluminium)
-            .output(dust, Uranium)
+            .output(dust, Uranium238)
             .fluidOutputs(Aluminium.getFluid(144))
             .fluidOutputs(Oxygen.getFluid(2000))
             .duration(360).EUt(120).buildAndRegister();
@@ -933,7 +928,7 @@ public class ReactorRecipes {
         CHEMICAL_RECIPES.recipeBuilder()
             .input(dust, Uraninite, 3)
             .input(dust, Magnesium)
-            .output(dust, Uranium)
+            .output(dust, Uranium238)
             .fluidOutputs(Magnesium.getFluid(144))
             .fluidOutputs(Oxygen.getFluid(2000))
             .duration(360).EUt(120).buildAndRegister();
@@ -1022,6 +1017,18 @@ public class ReactorRecipes {
             .duration(50).EUt(30).buildAndRegister();
 
         CHEMICAL_RECIPES.recipeBuilder()
+            .inputs(new ItemStack(Items.BLAZE_POWDER))
+            .inputs(new ItemStack(Items.SLIME_BALL))
+            .outputs(new ItemStack(Items.MAGMA_CREAM))
+            .duration(50).EUt(30).buildAndRegister();
+
+        CHEMICAL_RECIPES.recipeBuilder()
+            .inputs(new ItemStack(Items.BLAZE_POWDER))
+            .input(OrePrefix.gem, Materials.EnderPearl)
+            .outputs(new ItemStack(Items.ENDER_EYE))
+            .duration(50).EUt(30).buildAndRegister();
+
+        CHEMICAL_RECIPES.recipeBuilder()
             .inputs(MetaItems.GELLED_TOLUENE.getStackForm(4))
             .fluidInputs(SulfuricAcid.getFluid(250))
             .outputs(new ItemStack(Blocks.TNT))
@@ -1062,5 +1069,13 @@ public class ReactorRecipes {
             .fluidOutputs(AceticAcid.getFluid(1000))
             .fluidOutputs(Methanol.getFluid(1000))
             .duration(264).EUt(60).buildAndRegister();
+
+        CHEMICAL_RECIPES.recipeBuilder()
+            .input(ingot, Plutonium239, 8)
+            .input(dustTiny, Uranium238)
+            .fluidInputs(Air.getFluid(1000))
+            .output(dust, Plutonium239, 8)
+            .fluidOutputs(Radon.getFluid(100))
+            .duration(12000).EUt(8).buildAndRegister();
     }
 }

@@ -45,7 +45,7 @@ public class Elements {
         add(24, 28, -1, null, "Chrome", "Cr", false);
         add(25, 30, -1, null, "Manganese", "Mn", false);
         add(26, 30, -1, null, "Iron", "Fe", false);
-        add(27, 32, -1, null, "Cobalt", "Cp", false);
+        add(27, 32, -1, null, "Cobalt", "Co", false);
         add(28, 30, -1, null, "Nickel", "Ni", false);
         add(29, 34, -1, null, "Copper", "Cu", false);
         add(30, 35, -1, null, "Zinc", "Zn", false);
@@ -67,7 +67,7 @@ public class Elements {
         add(46, 60, -1, null, "Palladium", "Pd", false);
         add(47, 60, -1, null, "Silver", "Ag", false);
         add(48, 64, -1, null, "Cadmium", "Cd", false);
-        add(49, 65, -1, null, "Indium", "I", false);
+        add(49, 65, -1, null, "Indium", "In", false);
         add(50, 68, -1, null, "Tin", "Sn", false);
         add(51, 70, -1, null, "Antimony", "Sb", false);
         add(52, 75, -1, null, "Tellurium", "Te", false);
@@ -111,9 +111,11 @@ public class Elements {
         add(90, 140, -1, null, "Thorium", "Th", false);
         add(91, 138, -1, null, "Protactinium", "Pa", false);
         add(92, 146, -1, null, "Uranium", "U", false);
+        add(92, 146, -1, null, "Uranium-238", "U_238", false);
         add(92, 143, -1, null, "Uranium-235", "U_235", true);
         add(93, 144, -1, null, "Neptunium", "Np", false);
         add(94, 152, -1, null, "Plutonium", "Pu", false);
+        add(94, 145, -1, null, "Plutonium-239", "Pu_239", false);
         add(94, 149, -1, null, "Plutonium-241", "Pu_241", true);
         add(95, 150, -1, null, "Americium", "Am", false);
         add(96, 153, -1, null, "Curium", "Cm", false);
