@@ -36,7 +36,7 @@ import java.util.*;
 import java.util.function.BiFunction;
 import java.util.function.Predicate;
 
-public abstract class MultiblockControllerBase extends MetaTileEntity implements IMultiblockController {
+public abstract class MultiblockControllerBase extends MetaTileEntity /*implements IMultiblockController*/ {
 
     protected BlockPattern structurePattern;
 
@@ -250,7 +250,7 @@ public abstract class MultiblockControllerBase extends MetaTileEntity implements
             this.structureFormed = buf.readBoolean();
         }
     }
-
+/*
     @Override
     public <T> T getCapability(Capability<T> capability, EnumFacing side) {
         if (capability == GregtechCapabilities.CAPABILITY_MULTIBLOCK_CONTROLLER) {
@@ -258,7 +258,7 @@ public abstract class MultiblockControllerBase extends MetaTileEntity implements
         }
         return null;
     }
-
+*/
     public boolean isStructureFormed() {
         return structureFormed;
     }
