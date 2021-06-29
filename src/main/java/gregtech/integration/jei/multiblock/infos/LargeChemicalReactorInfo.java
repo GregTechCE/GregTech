@@ -37,35 +37,35 @@ public class LargeChemicalReactorInfo extends MultiblockInfoPage {
                 .where('H', MetaTileEntities.FLUID_EXPORT_HATCH[3], EnumFacing.WEST);
 
         shapeInfo.add(
-            baseBuilder.copy()
+            baseBuilder.shallowCopy()
                 .aisle("IXX", "FXX", "XXX")
                 .aisle("EXX", "SPC", "XXX")
                 .aisle("OXX", "HXX", "XXX")
                 .build()
         );
         shapeInfo.add(
-                baseBuilder.copy()
+                baseBuilder.shallowCopy()
                 .aisle("IXX", "FXX", "XXX")
                 .aisle("EXX", "SPX", "XCX")
                 .aisle("OXX", "HXX", "XXX")
                 .build()
         );
         shapeInfo.add(
-                baseBuilder.copy()
+                baseBuilder.shallowCopy()
                 .aisle("IXX", "FXX", "XXX")
                 .aisle("ECX", "SPX", "XXX")
                 .aisle("OXX", "HXX", "XXX")
                 .build()
         );
         shapeInfo.add(
-                baseBuilder.copy()
+                baseBuilder.shallowCopy()
                 .aisle("IXX", "FCX", "XXX")
                 .aisle("EXX", "SPX", "XXX")
                 .aisle("OXX", "HXX", "XXX")
                 .build()
         );
         shapeInfo.add(
-                baseBuilder
+                baseBuilder.shallowCopy()
                 .aisle("IXX", "FXX", "XXX")
                 .aisle("EXX", "SPX", "XXX")
                 .aisle("OXX", "HCX", "XXX")
