@@ -888,6 +888,7 @@ public class Materials {
         StainlessSteel.setFluidPipeProperties(3000, 60, true);
         Titanium.setFluidPipeProperties(5000, 80, true);
         TungstenSteel.setFluidPipeProperties(7500, 100, true);
+        NiobiumTitanium.setFluidPipeProperties(2900, 150, true);
         Ultimet.setFluidPipeProperties(1500, 12000, true);
 
         Polyethylene.setFluidPipeProperties(350, 60, true);
