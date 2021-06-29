@@ -143,7 +143,7 @@ public class ClientProxy extends CommonProxy {
             // Test for Items
             UnificationEntry unificationEntry = OreDictUnifier.getUnificationEntry(itemStack);
             if (unificationEntry != null && unificationEntry.material != null) {
-                chemicalFormula = unificationEntry.material.chemicalFormula;
+                chemicalFormula = unificationEntry.material.getChemicalFormula();
 
             // Test for Fluids
             } else if (ItemNBTUtils.hasTag(itemStack)) {

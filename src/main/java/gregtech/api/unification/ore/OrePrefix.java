@@ -1,17 +1,19 @@
 package gregtech.api.unification.ore;
 
 import com.google.common.base.Preconditions;
-import gregtech.api.GTValues;
+import gregtech.api.unification.material.IMaterial;
 import gregtech.api.unification.material.MarkerMaterials;
 import gregtech.api.unification.material.MaterialIconType;
 import gregtech.api.unification.material.Materials;
 import gregtech.api.unification.material.type.*;
 import gregtech.api.unification.stack.MaterialStack;
+import gregtech.api.util.GTLog;
 import gregtech.api.util.GTUtility;
 import net.minecraft.client.resources.I18n;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import org.apache.commons.lang3.Validate;
+import scala.collection.GenTraversableLike;
 
 import javax.annotation.Nullable;
 import java.util.*;
@@ -334,18 +336,18 @@ public enum OrePrefix {
      * NOTE: Ore registrations with self-referencing OrePrefix still can occur with other materials
      */
     public @Nullable
-    Material materialType;
+    IMaterial<?> materialType;
 
     private final List<IOreRegistrationHandler> oreProcessingHandlers = new ArrayList<>();
-    private final Set<Material> ignoredMaterials = new HashSet<>();
-    private final Set<Material> generatedMaterials = new HashSet<>();
+    private final Set<IMaterial<?>> ignoredMaterials = new HashSet<>();
+    private final Set<IMaterial<?>> generatedMaterials = new HashSet<>();
     private boolean isMarkerPrefix = false;
 
     public byte maxStackSize = 64;
     public final List<MaterialStack> secondaryMaterials = new ArrayList<>();
     public float heatDamage = 0.0F; // Negative for Frost Damage
 
-    OrePrefix(String categoryName, long materialAmount, Material material, MaterialIconType materialIconType, long flags, Predicate<Material> condition) {
+    OrePrefix(String categoryName, long materialAmount, IMaterial<?> material, MaterialIconType materialIconType, long flags, Predicate<Material> condition) {
         this.categoryName = categoryName;
         this.materialAmount = materialAmount;
         this.isSelfReferencing = (flags & SELF_REFERENCING) != 0;
@@ -417,7 +419,7 @@ public enum OrePrefix {
         return oreProcessingHandlers.addAll(Arrays.asList(processingHandler));
     }
 
-    public <T extends Material> void addProcessingHandler(Class<T> materialFilter, BiConsumer<OrePrefix, T> handler) {
+    public <T extends IMaterial<?>> void addProcessingHandler(Class<T> materialFilter, BiConsumer<OrePrefix, T> handler) {
         addProcessingHandler((orePrefix, material) -> {
             if (materialFilter.isAssignableFrom(material.getClass())) {
                 //noinspection unchecked
@@ -426,11 +428,14 @@ public enum OrePrefix {
         });
     }
 
-    public void processOreRegistration(@Nullable Material material) {
+    public void processOreRegistration(@Nullable IMaterial<?> material) {
         if (this.isSelfReferencing && material == null) {
             material = materialType; //append default material for self-referencing OrePrefix
         }
         if (material != null) {
+            if (material.getMaterialClass() == SimpleDustMaterial.class) {
+                GTLog.logger.info("HERE!!!!!");
+            }
             generatedMaterials.add(material);
         }
     }
@@ -442,19 +447,19 @@ public enum OrePrefix {
     }
 
     private static final ThreadLocal<OrePrefix> currentProcessingPrefix = new ThreadLocal<>();
-    private static final ThreadLocal<Material> currentMaterial = new ThreadLocal<>();
+    private static final ThreadLocal<IMaterial<?>> currentMaterial = new ThreadLocal<>();
 
     public static OrePrefix getCurrentProcessingPrefix() {
         return currentProcessingPrefix.get();
     }
 
-    public static Material getCurrentMaterial() {
+    public static IMaterial<?> getCurrentMaterial() {
         return currentMaterial.get();
     }
 
     private void runGeneratedMaterialHandlers() {
         currentProcessingPrefix.set(this);
-        for (Material registeredMaterial : generatedMaterials) {
+        for (IMaterial<?> registeredMaterial : generatedMaterials) {
             currentMaterial.set(registeredMaterial);
             for (IOreRegistrationHandler registrationHandler : oreProcessingHandlers) {
                 registrationHandler.processMaterial(this, registeredMaterial);
@@ -467,20 +472,20 @@ public enum OrePrefix {
     }
 
     @SideOnly(Side.CLIENT)
-    public String getLocalNameForItem(Material material) {
-        String specfiedUnlocalized = "item." + material.toString() + "." + this.name();
-        if (I18n.hasKey(specfiedUnlocalized)) return I18n.format(specfiedUnlocalized);
+    public String getLocalNameForItem(IMaterial<?> material) {
+        String specifiedUnlocalized = "item." + material.toString() + "." + this.name();
+        if (I18n.hasKey(specifiedUnlocalized)) return I18n.format(specifiedUnlocalized);
         String unlocalized = "item.material.oreprefix." + this.name();
         String matLocalized = material.getLocalizedName();
         String formatted = I18n.format(unlocalized, matLocalized);
         return formatted.equals(unlocalized) ? matLocalized : formatted;
     }
 
-    public boolean isIgnored(Material material) {
+    public boolean isIgnored(IMaterial<?> material) {
         return ignoredMaterials.contains(material);
     }
 
-    public void setIgnored(Material material) {
+    public void setIgnored(IMaterial<?> material) {
         ignoredMaterials.add(material);
     }
 

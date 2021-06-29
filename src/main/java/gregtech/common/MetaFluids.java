@@ -160,12 +160,12 @@ public class MetaFluids {
                 int temperature = fluidMaterial.getFluidTemperature();
                 Fluid fluid = registerFluid(fluidMaterial, FluidType.NORMAL, temperature);
                 fluidMaterial.setMaterialFluid(fluid);
-                FluidTooltipUtil.registerTooltip(fluid, fluidMaterial.chemicalFormula);
+                FluidTooltipUtil.registerTooltip(fluid, fluidMaterial.getChemicalFormula());
             }
             if (fluidMaterial.shouldGeneratePlasma() && fluidMaterial.getMaterialPlasma() == null) {
                 Fluid fluid = registerFluid(fluidMaterial, FluidType.PLASMA, 30000);
                 fluidMaterial.setMaterialPlasma(fluid);
-                FluidTooltipUtil.registerTooltip(fluid, fluidMaterial.chemicalFormula);
+                FluidTooltipUtil.registerTooltip(fluid, fluidMaterial.getChemicalFormula());
             }
         }
     }

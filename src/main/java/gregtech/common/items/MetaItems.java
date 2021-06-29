@@ -1,5 +1,6 @@
 package gregtech.common.items;
 
+import gregtech.api.items.materialitem.DustMetaItem;
 import gregtech.api.items.materialitem.MaterialMetaItem;
 import gregtech.api.items.metaitem.MetaItem;
 import gregtech.api.items.metaitem.MetaItem.MetaValueItem;
@@ -410,6 +411,8 @@ public final class MetaItems {
         first.setRegistryName("meta_item_1");
         MetaItem2 second = new MetaItem2();
         second.setRegistryName("meta_item_2");
+        DustMetaItem dustItem = new DustMetaItem();
+        dustItem.setRegistryName("meta_item_3");
         MetaTool tool = new MetaTool();
         tool.setRegistryName("meta_tool");
     }
@@ -418,6 +421,8 @@ public final class MetaItems {
         for (MetaItem<?> item : ITEMS) {
             if (item instanceof MaterialMetaItem) {
                 ((MaterialMetaItem) item).registerOreDict();
+            } else if (item instanceof DustMetaItem) {
+                ((DustMetaItem) item).registerOreDict();
             }
         }
     }
