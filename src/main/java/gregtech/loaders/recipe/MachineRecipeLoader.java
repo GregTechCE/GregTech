@@ -54,7 +54,8 @@ import java.util.List;
 
 import static gregtech.api.GTValues.L;
 import static gregtech.api.GTValues.M;
-import static gregtech.api.unification.material.Materials.*;
+import static gregtech.api.unification.material.Materials.Diamond;
+import static gregtech.api.unification.material.Materials.Iron;
 import static gregtech.api.unification.ore.OrePrefix.*;
 import static gregtech.api.util.DyeUtil.getOrdictColorName;
 import static gregtech.common.items.MetaItems.*;
@@ -581,6 +582,8 @@ public class MachineRecipeLoader {
             RecipeMaps.MIXER_RECIPES.recipeBuilder().duration((int) (900 * prefix.materialAmount / M)).EUt(8).input(prefix, Materials.Brass, 7).input(prefix, Materials.Aluminium, 1).input(prefix, Materials.Cobalt, 1).outputs(OreDictUnifier.getDust(Materials.CobaltBrass, 9 * prefix.materialAmount)).buildAndRegister();
             RecipeMaps.MIXER_RECIPES.recipeBuilder().duration((int) (400 * prefix.materialAmount / M)).EUt(8).input(prefix, Materials.Saltpeter, 2).input(prefix, Materials.Sulfur, 1).input(prefix, Materials.Coal, 1).outputs(OreDictUnifier.getDust(Materials.Gunpowder, 4 * prefix.materialAmount)).buildAndRegister();
             RecipeMaps.MIXER_RECIPES.recipeBuilder().duration((int) (300 * prefix.materialAmount / M)).EUt(8).input(prefix, Materials.Saltpeter, 2).input(prefix, Materials.Sulfur, 1).input(prefix, Materials.Charcoal, 1).outputs(OreDictUnifier.getDust(Materials.Gunpowder, 3 * prefix.materialAmount)).buildAndRegister();
+            RecipeMaps.MIXER_RECIPES.recipeBuilder().duration((int) (400 * prefix.materialAmount / M)).EUt(8).input(prefix, Materials.Electrum, 1).input(prefix, Materials.NaquadahAlloy, 1).input(prefix, Materials.BlueSteel, 1).input(prefix, Materials.RedSteel, 1).outputs(OreDictUnifier.getDust(Materials.FluxedElectrum, 4 * prefix.materialAmount)).buildAndRegister();
+            RecipeMaps.MIXER_RECIPES.recipeBuilder().duration((int) (300 * prefix.materialAmount / M)).EUt(8).input(prefix, Materials.Americium, 2).input(prefix, Materials.Titanium, 1).outputs(OreDictUnifier.getDust(Materials.DiamericiumTitanium, 3 * prefix.materialAmount)).buildAndRegister();
         }
 
         RecipeMaps.COMPRESSOR_RECIPES.recipeBuilder().inputs(MetaItems.INGOT_MIXED_METAL.getStackForm()).outputs(MetaItems.ADVANCED_ALLOY_PLATE.getStackForm()).duration(300).EUt(2).buildAndRegister();
