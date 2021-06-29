@@ -21,6 +21,8 @@ import java.util.function.BiFunction;
 
 public class CoverBehaviors {
 
+    private static final int COVERS_PER_ITEM = 8;
+
     public static void init() {
         GTLog.logger.info("Registering cover behaviors...");
         registerBehavior(0, new ResourceLocation(GTValues.MODID, "conveyor.lv"), MetaItems.CONVEYOR_MODULE_LV, (tile, side) -> new CoverConveyor(tile, side, GTValues.LV, 8));
@@ -54,12 +56,14 @@ public class CoverBehaviors {
         registerBehavior(38, new ResourceLocation(GTValues.MODID, "smart_filter"), MetaItems.SMART_FILTER, (tile, side) -> new CoverItemFilter(tile, side, "cover.smart_item_filter.title", Textures.SMART_FILTER_FILTER_OVERLAY, new SmartItemFilter()));
         registerBehavior(39, new ResourceLocation(GTValues.MODID, "facade"), MetaItems.COVER_FACADE, CoverFacade::new);
 
-        for (int i = 1; i < GTValues.V.length - 1; i++) {
-            int finalI = i;
-            registerBehavior(40 + i - 1, new ResourceLocation(GTValues.MODID, "fluid.regulator" + GTValues.VN[i].toLowerCase(Locale.ROOT)), MetaItems.PUMPS[i - 1], (tile, side) -> new CoverPump(tile, side, finalI, (int) (Math.pow(4, finalI - 1) * 1280)));
-            registerBehavior(20 + i - 1, new ResourceLocation(GTValues.MODID, "pump" + GTValues.VN[i].toLowerCase(Locale.ROOT)), MetaItems.FLUID_REGULATORS[i - 1], (tile, side) -> new CoverFluidRegulator(tile, side, finalI, (int) (Math.pow(4, finalI - 1) * 1280)));
-        }
+        for (int i = 0; i < COVERS_PER_ITEM; i++) {
+            int throughput = (int) (Math.pow(4, i) * 1280);
+            final int coverTier = i + 1;
+            String tierShortName = GTValues.VN[coverTier].toLowerCase(Locale.ROOT);
 
+            registerBehavior(20 + i, new ResourceLocation(GTValues.MODID, "pump." + tierShortName), MetaItems.PUMPS[i], (tile, side) -> new CoverPump(tile, side, coverTier, throughput));
+            registerBehavior(40 + i, new ResourceLocation(GTValues.MODID, "fluid.regulator." + tierShortName), MetaItems.FLUID_REGULATORS[i], (tile, side) -> new CoverFluidRegulator(tile, side, coverTier, throughput));
+        }
     }
 
     public static void registerBehavior(int coverNetworkId, ResourceLocation coverId, MetaValueItem placerItem, BiFunction<ICoverable, EnumFacing, CoverBehavior> behaviorCreator) {
