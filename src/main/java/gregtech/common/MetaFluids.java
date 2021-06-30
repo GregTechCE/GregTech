@@ -88,6 +88,7 @@ public class MetaFluids {
         setAlternativeFluidName(Materials.Ethanol, FluidType.NORMAL, "bio.ethanol");
         setAlternativeFluidName(Materials.Honey, FluidType.NORMAL, "for.honey");
         setAlternativeFluidName(Materials.SeedOil, FluidType.NORMAL, "seed.oil");
+        setAlternativeFluidName(Materials.Ice, FluidType.NORMAL, "fluid.ice");
 
         setDefaultTexture(Materials.Air, FluidType.NORMAL);
         setDefaultTexture(Materials.Oxygen, FluidType.NORMAL);

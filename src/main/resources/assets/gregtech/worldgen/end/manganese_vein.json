@@ -3,9 +3,11 @@
   "density": 0.3,
   "max_height": 30,
   "min_height": 20,
-  "surface_stone_material": "aluminium",
   "dimension_filter": ["name:the_end"],
-
+  "vein_populator": {
+    "type": "surface_rock",
+    "material": "pyrolusite"
+  },
   "generator": {
     "type": "ellipsoid",
     "radius": [8, 8]

@@ -1,14 +1,14 @@
 package gregtech.api.recipes;
 
 import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableMap;
 import gregtech.api.capability.IMultipleTankHandler;
+import gregtech.api.recipes.recipeproperties.RecipeProperty;
+import gregtech.api.recipes.recipeproperties.RecipePropertyStorage;
 import gregtech.api.util.GTUtility;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.items.IItemHandlerModifiable;
-import org.apache.commons.lang3.Validate;
 import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.*;
@@ -58,12 +58,12 @@ public class Recipe {
      */
     private final boolean hidden;
 
-    private final Map<String, Object> recipeProperties;
+    private final RecipePropertyStorage recipePropertyStorage;
 
     public Recipe(List<CountableIngredient> inputs, List<ItemStack> outputs, List<ChanceEntry> chancedOutputs,
                   List<FluidStack> fluidInputs, List<FluidStack> fluidOutputs,
-                  Map<String, Object> recipeProperties, int duration, int EUt, boolean hidden) {
-        this.recipeProperties = ImmutableMap.copyOf(recipeProperties);
+                  int duration, int EUt, boolean hidden) {
+        this.recipePropertyStorage = new RecipePropertyStorage();
         this.inputs = NonNullList.create();
         this.inputs.addAll(inputs);
         this.outputs = NonNullList.create();
@@ -76,6 +76,20 @@ public class Recipe {
         this.hidden = hidden;
         //sort input elements in descending order (i.e not consumables inputs are last)
         this.inputs.sort(Comparator.comparing(CountableIngredient::getCount).reversed());
+    }
+
+    /**
+     * @deprecated use {@link #Recipe(List inputs, List outputs, List chancedOutputs, List fluidInputs,
+     * List fluidOutputs, int duration, int EUt, boolean hidden)} instead
+     * Recipe properties are added by {@link RecipePropertyStorage#store(Map recipeProperties)}
+     * on {@link #getRecipePropertyStorage()}
+     */
+    @Deprecated
+    public Recipe(List<CountableIngredient> inputs, List<ItemStack> outputs, List<ChanceEntry> chancedOutputs,
+                  List<FluidStack> fluidInputs, List<FluidStack> fluidOutputs,
+                  Map<String, Object> recipeProperties, int duration, int EUt, boolean hidden) {
+        this(inputs, outputs, chancedOutputs, fluidInputs, fluidOutputs, duration, EUt, hidden);
+        recipePropertyStorage.storeOldFormat(recipeProperties);
     }
 
     public final boolean matches(boolean consumeIfSuccessful, IItemHandlerModifiable inputs, IMultipleTankHandler fluidInputs, MatchingMode matchingMode) {
@@ -290,46 +304,60 @@ public class Recipe {
         return hasValidInputs;
     }
 
-    public Set<String> getPropertyKeys() {
-        return recipeProperties.keySet();
+    //region RecipeProperties
+
+    /**
+     * Provides full access to {@link RecipePropertyStorage} for this Recipe
+     * @return RecipePropertyStorage
+     */
+    public RecipePropertyStorage getRecipePropertyStorage(){
+        return recipePropertyStorage;
     }
 
+    /**
+     * @deprecated use {@link RecipePropertyStorage#getRecipePropertyValue(RecipeProperty recipeProperty, Object defaultValue)}
+     * on {@link #getRecipePropertyStorage()}
+     */
+    @Deprecated
     public boolean getBooleanProperty(String key) {
-        Validate.notNull(key);
-        Object o = this.recipeProperties.get(key);
-        if (!(o instanceof Boolean)) {
-            throw new IllegalArgumentException();
-        }
-        return (boolean) o;
+        return getProperty(key);
     }
 
+    /**
+     * @deprecated use {@link RecipePropertyStorage#getRecipePropertyValue(RecipeProperty recipeProperty, Object defaultValue)}
+     * on {@link #getRecipePropertyStorage()}
+     */
+    @Deprecated
     public int getIntegerProperty(String key) {
-        Validate.notNull(key);
-        Object o = this.recipeProperties.get(key);
-        if (!(o instanceof Integer)) {
-            throw new IllegalArgumentException();
-        }
-        return (int) o;
+        return getProperty(key);
     }
 
+    /**
+     * @deprecated use {@link RecipePropertyStorage#getRecipePropertyValue(RecipeProperty recipeProperty, Object defaultValue)}
+     * on {@link #getRecipePropertyStorage()}
+     */
+    @Deprecated
+    public String getStringProperty(String key) {
+        return getProperty(key);
+    }
+
+    /**
+     * @deprecated use {@link RecipePropertyStorage#getRecipePropertyValue(RecipeProperty recipeProperty, Object defaultValue)}
+     * on {@link #getRecipePropertyStorage()}
+     */
+    @Deprecated
     @SuppressWarnings("unchecked")
     public <T> T getProperty(String key) {
-        Validate.notNull(key);
-        Object o = this.recipeProperties.get(key);
-        if (o == null) {
+        AbstractMap.SimpleEntry<RecipeProperty<?>, Object> recipePropertySet = getRecipePropertyStorage().getRecipeProperty(key);
+
+        if (recipePropertySet == null) {
             throw new IllegalArgumentException();
         }
-        return (T) o;
+
+        return (T) recipePropertySet.getKey().castValue(recipePropertySet.getValue());
     }
 
-    public String getStringProperty(String key) {
-        Validate.notNull(key);
-        Object o = this.recipeProperties.get(key);
-        if (!(o instanceof String)) {
-            throw new IllegalArgumentException();
-        }
-        return (String) o;
-    }
+    //endregion RecipeProperties
 
     public static class ChanceEntry {
         private final ItemStack itemStack;

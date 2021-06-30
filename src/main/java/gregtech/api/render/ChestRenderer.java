@@ -20,7 +20,7 @@ import java.util.List;
 
 public class ChestRenderer implements IIconRegister {
 
-    private static final Cuboid6 mainBox = new Cuboid6(1 / 16.0, 0 / 16.0, 1 / 16.0, 15 / 16.0, 10 / 16.0, 15 / 16.0);
+    private static final Cuboid6 mainBox = new Cuboid6(1 / 16.0, 1 / 16.0, 1 / 16.0, 15 / 16.0, 10 / 16.0, 15 / 16.0);
     private static final Cuboid6 capBox = new Cuboid6(1 / 16.0, 9 / 16.0, 1 / 16.0, 15 / 16.0, 14 / 16.0, 15 / 16.0);
     private static final Cuboid6 lockBox = new Cuboid6(7 / 16.0, 8 / 16.0, 0 / 16.0, 9 / 16.0, 12 / 16.0, 1 / 16.0);
     private static final List<EnumFacing> rotations = Arrays.asList(EnumFacing.NORTH, EnumFacing.WEST, EnumFacing.SOUTH, EnumFacing.EAST);

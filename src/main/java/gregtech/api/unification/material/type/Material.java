@@ -48,12 +48,26 @@ public abstract class Material implements Comparable<Material> {
 
     public static final class MatFlags {
 
-        private static Map<String, Entry<Long, Class<? extends Material>>> materialFlagRegistry = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
+        private static final Map<String, Entry<Long, Class<? extends Material>>> materialFlagRegistry = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
 
         public static void registerMaterialFlag(String name, long value, Class<? extends Material> classFilter) {
             if (materialFlagRegistry.containsKey(name))
                 throw new IllegalArgumentException("Flag with name " + name + " already registered!");
+
+            for (Map.Entry<Long, Class<? extends Material>> entry : materialFlagRegistry.values()) {
+                if (entry.getKey() == value)
+                    throw new IllegalArgumentException("Flag with ID " + getIntValueOfFlag(value) + " already registered!");
+            }
             materialFlagRegistry.put(name, new SimpleEntry<>(value, classFilter));
+        }
+
+        private static int getIntValueOfFlag(long value) {
+            int index = 0;
+            while (value != 1) {
+                value >>= 1;
+                index++;
+            }
+            return index;
         }
 
         public static void registerMaterialFlagsHolder(Class<?> holder, Class<? extends Material> lowerBounds) {

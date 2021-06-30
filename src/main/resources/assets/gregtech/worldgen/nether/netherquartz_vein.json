@@ -4,7 +4,10 @@
   "max_height": 110,
   "min_height": 40,
   "dimension_filter": ["is_nether"],
-
+  "vein_populator": {
+    "type": "surface_rock",
+    "material": "nether_quartz"
+  },
   "generator": {
     "type": "ellipsoid",
     "radius": [18, 18]

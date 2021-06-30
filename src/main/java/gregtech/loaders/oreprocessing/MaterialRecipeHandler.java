@@ -145,7 +145,7 @@ public class MaterialRecipeHandler {
         ItemStack dustStack = OreDictUnifier.get(OrePrefix.dust, material);
 
         ModHandler.addShapedRecipe(String.format("small_dust_disassembling_%s", material.toString()),
-            GTUtility.copyAmount(4, smallDustStack), "  ", " X", 'X', new UnificationEntry(OrePrefix.dust, material));
+            GTUtility.copyAmount(4, smallDustStack), " X", "  ", 'X', new UnificationEntry(OrePrefix.dust, material));
         ModHandler.addShapedRecipe(String.format("small_dust_assembling_%s", material.toString()),
             dustStack, "XX", "XX", 'X', new UnificationEntry(orePrefix, material));
 

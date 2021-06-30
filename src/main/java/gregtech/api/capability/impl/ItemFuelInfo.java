@@ -17,4 +17,8 @@ public class ItemFuelInfo extends AbstractFuelInfo {
     public String getFuelName() {
         return itemStack.getTranslationKey();
     }
+
+    public ItemStack getItemStack() {
+        return this.itemStack;
+    }
 }

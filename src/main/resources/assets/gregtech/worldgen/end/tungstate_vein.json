@@ -3,9 +3,11 @@
   "density": 0.4,
   "max_height": 50,
   "min_height": 20,
-  "surface_stone_material": "tungstate",
   "dimension_filter": ["name:the_end"],
-
+  "vein_populator": {
+    "type": "surface_rock",
+    "material": "tungstate"
+  },
   "generator": {
     "type": "ellipsoid",
     "radius": [8, 8]

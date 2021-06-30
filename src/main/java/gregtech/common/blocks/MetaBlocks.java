@@ -1,6 +1,7 @@
 package gregtech.common.blocks;
 
 import com.google.common.collect.ImmutableMap;
+import gnu.trove.map.TIntObjectMap;
 import gregtech.api.GTValues;
 import gregtech.api.GregTechAPI;
 import gregtech.api.block.machines.BlockMachine;
@@ -168,10 +169,13 @@ public class MetaBlocks {
 
         StoneType.init();
 
-        createGeneratedBlock(material -> material instanceof DustMaterial &&
-            !OrePrefix.block.isIgnored(material), MetaBlocks::createCompressedBlock);
-        createGeneratedBlock(material -> material instanceof IngotMaterial &&
-            material.hasFlag(MatFlags.GENERATE_ORE), MetaBlocks::createSurfaceRockBlock);
+        createGeneratedBlock(
+            material -> material instanceof DustMaterial && !OrePrefix.block.isIgnored(material),
+            MetaBlocks::createCompressedBlock);
+
+        createGeneratedBlock(
+            material -> material instanceof IngotMaterial && material.hasFlag(MatFlags.GENERATE_ORE),
+            MetaBlocks::createSurfaceRockBlock);
 
         for (Material material : Material.MATERIAL_REGISTRY) {
             if (material instanceof DustMaterial &&
@@ -203,29 +207,39 @@ public class MetaBlocks {
         Blocks.FIRE.setFireInfo(LEAVES, 30, 60);
     }
 
-    private static int createGeneratedBlock(Predicate<Material> materialPredicate, BiConsumer<Material[], Integer> blockGenerator) {
-        Material[] materialBuffer = new Material[16];
-        Arrays.fill(materialBuffer, Materials._NULL);
-        int currentGenerationIndex = 0;
-        for (Material material : Material.MATERIAL_REGISTRY) {
-            if (materialPredicate.test(material)) {
-                if (currentGenerationIndex > 0 && currentGenerationIndex % 16 == 0) {
-                    blockGenerator.accept(materialBuffer, currentGenerationIndex / 16 - 1);
-                    Arrays.fill(materialBuffer, Materials._NULL);
+    /**
+     * Deterministically populates a category of MetaBlocks based on the unique registry ID of each qualifying Material.
+     *
+     * @param materialPredicate a filter for determining if a Material qualifies for generation in the category.
+     * @param blockGenerator    a function which accepts a Materials set to pack into a MetaBlock, and the ordinal this
+     *                          MetaBlock should have within its category.
+     */
+    protected static void createGeneratedBlock(Predicate<Material> materialPredicate,
+                                               BiConsumer<Material[], Integer> blockGenerator) {
+
+        Map<Integer, Material[]> blocksToGenerate = new TreeMap<>();
+
+        for(Material material : Material.MATERIAL_REGISTRY)
+            if(materialPredicate.test(material)) {
+                int id = Material.MATERIAL_REGISTRY.getIDForObject(material);
+                int metaBlockID = id / 16;
+                int subBlockID = id % 16;
+
+                if (!blocksToGenerate.containsKey(metaBlockID)) {
+                    Material[] materials = new Material[16];
+                    Arrays.fill(materials, Materials._NULL);
+                    blocksToGenerate.put(metaBlockID, materials);
                 }
-                materialBuffer[currentGenerationIndex % 16] = material;
-                currentGenerationIndex++;
+
+                blocksToGenerate.get(metaBlockID)[subBlockID] = material;
             }
-        }
-        if (materialBuffer[0] != Materials._NULL) {
-            blockGenerator.accept(materialBuffer, currentGenerationIndex / 16);
-        }
-        return (currentGenerationIndex / 16) + 1;
+
+        blocksToGenerate.forEach((key, value) -> blockGenerator.accept(value, key));
     }
 
     private static void createSurfaceRockBlock(Material[] materials, int index) {
         BlockSurfaceRockDeprecated block = new BlockSurfaceRockDeprecated(materials);
-        block.setRegistryName("surface_rock_" + index);
+        block.setRegistryName("meta_block_surface_rock_" + index);
         for (Material material : materials) {
             if (material instanceof IngotMaterial) {
                 SURFACE_ROCKS.put((IngotMaterial) material, block);
@@ -235,7 +249,7 @@ public class MetaBlocks {
 
     private static void createCompressedBlock(Material[] materials, int index) {
         BlockCompressed block = new BlockCompressed(materials);
-        block.setRegistryName("compressed_" + index);
+        block.setRegistryName("meta_block_compressed_" + index);
         for (Material material : materials) {
             if (material instanceof DustMaterial) {
                 COMPRESSED.put((DustMaterial) material, block);
