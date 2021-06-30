@@ -42,7 +42,7 @@ public class FuelableInfoProvider extends CapabilityInfoProvider<IFuelable> {
             final int fuelRemaining = fuelInfo.getFuelRemaining();
             final int fuelCapacity = fuelInfo.getFuelCapacity();
             final int fuelMinConsumed = fuelInfo.getFuelMinConsumed();
-            final int burnTime = fuelInfo.getFuelBurnTime()/20;
+            final long burnTime = fuelInfo.getFuelBurnTimeLong() / 20;
 
             IProbeInfo horizontalPane = probeInfo.horizontal(probeInfo.defaultLayoutStyle().alignment(ElementAlignment.ALIGN_CENTER));
             if (fuelInfo instanceof ItemFuelInfo) {
