@@ -76,7 +76,7 @@ public class SurfaceBlockPopulator implements VeinChunkPopulator {
 
                 //Checks if the block is a replaceable feature like grass or snow layers. Liquids are replaceable, so
                 // exclude one deep liquid blocks, for looks
-                if(!blockAtPos.isReplaceable(world, topBlockPos) || blockState.getMaterial().isLiquid()) {
+                if(!blockAtPos.isReplaceable(world, topBlockPos.up()) || blockState.getMaterial().isLiquid()) {
                     continue;
                 }
 
