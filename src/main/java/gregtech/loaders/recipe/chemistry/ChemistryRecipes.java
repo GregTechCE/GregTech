@@ -80,10 +80,5 @@ public class ChemistryRecipes {
             .circuitMeta(1)
             .fluidOutputs(SterileGrowthMedium.getFluid(500))
             .duration(30).EUt(24).buildAndRegister();
-
-        EXTRACTOR_RECIPES.recipeBuilder()
-            .inputs(new ItemStack(Items.EGG))
-            .chancedOutput(MetaItems.STEM_CELLS.getStackForm(), 1500, 500)
-            .duration(600).EUt(480).buildAndRegister();
     }
 }

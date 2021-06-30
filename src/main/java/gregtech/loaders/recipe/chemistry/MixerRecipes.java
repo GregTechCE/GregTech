@@ -1,9 +1,7 @@
 package gregtech.loaders.recipe.chemistry;
 
-import gregtech.api.unification.material.type.DustMaterial;
 import net.minecraft.init.Items;
 
-import static gregtech.api.recipes.RecipeMaps.BREWING_RECIPES;
 import static gregtech.api.recipes.RecipeMaps.MIXER_RECIPES;
 import static gregtech.api.unification.material.Materials.*;
 import static gregtech.api.unification.ore.OrePrefix.dust;
