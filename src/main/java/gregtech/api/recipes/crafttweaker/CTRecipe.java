@@ -101,12 +101,12 @@ public class CTRecipe {
 
     @ZenGetter("propertyKeys")
     public List<String> getPropertyKeys() {
-        return new ArrayList<>(this.backingRecipe.getPropertyKeys());
+        return new ArrayList<>(this.backingRecipe.getRecipePropertyStorage().getRecipePropertyKeys());
     }
 
     @ZenMethod
     public Object getProperty(String key) {
-        return this.backingRecipe.getProperty(key);
+        return this.backingRecipe.getRecipePropertyStorage().getRawRecipePropertyValue(key);
     }
 
     @ZenMethod

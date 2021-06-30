@@ -1,6 +1,5 @@
 package gregtech.api.recipes.builders;
 
-import com.google.common.collect.ImmutableMap;
 import gregtech.api.recipes.Recipe;
 import gregtech.api.recipes.RecipeBuilder;
 import gregtech.api.recipes.RecipeMap;
@@ -26,7 +25,6 @@ public class SimpleRecipeBuilder extends RecipeBuilder<SimpleRecipeBuilder> {
 
     public ValidationResult<Recipe> build() {
         return ValidationResult.newResult(finalizeAndValidate(),
-            new Recipe(inputs, outputs, chancedOutputs, fluidInputs, fluidOutputs,
-                ImmutableMap.of(), duration, EUt, hidden));
+                new Recipe(inputs, outputs, chancedOutputs, fluidInputs, fluidOutputs, duration, EUt, hidden));
     }
 }

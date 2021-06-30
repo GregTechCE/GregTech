@@ -2,8 +2,10 @@
   "weight": 95,
   "density": 0.5,
   "min_height": 40,
-  "surface_stone_material": "tin",
-
+  "vein_populator": {
+    "type": "surface_rock",
+    "material": "tin"
+  },
   "generator": {
     "type": "ellipsoid",
     "radius": [17, 19]

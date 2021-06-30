@@ -29,7 +29,7 @@ public class Materials {
     private static final long EXT_METAL = STD_METAL | GENERATE_ROD | GENERATE_BOLT_SCREW | GENERATE_LONG_ROD;
     private static final long EXT2_METAL = EXT_METAL | GENERATE_GEAR | GENERATE_FOIL | GENERATE_FINE_WIRE;
 
-    public static MarkerMaterial _NULL = new MarkerMaterial("_null");
+    public static final MarkerMaterial _NULL = new MarkerMaterial("_null");
 
     /**
      * Direct Elements

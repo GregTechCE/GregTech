@@ -2,9 +2,9 @@
   "weight": 70,
   "density": 0.3,
   "min_height": 50,
-  "surface_stone": {
-    "material": "copper",
-    "hidden": false
+  "vein_populator": {
+    "type": "surface_rock",
+    "material": "copper"
   },
   "biome_modifier": {
     "type": "biome_dictionary",

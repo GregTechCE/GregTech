@@ -30,6 +30,9 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.oredict.OreIngredient;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import static gregtech.api.util.DyeUtil.*;
 
 public class CraftingRecipeLoader {
@@ -227,6 +230,87 @@ public class CraftingRecipeLoader {
             ModHandler.removeRecipeByName(new ResourceLocation("minecraft:flint_and_steel"));
         }
 
+        ModHandler.addShapedRecipe("battery_hull_lv", MetaItems.BATTERY_HULL_LV.getStackForm(), "C", "P", "P", 'C', new UnificationEntry(OrePrefix.cableGtSingle, Materials.Tin), 'P', new UnificationEntry(OrePrefix.plate, Materials.BatteryAlloy));
+        ModHandler.addShapedRecipe("battery_hull_mv", MetaItems.BATTERY_HULL_MV.getStackForm(), "C C", "PPP", "PPP", 'C', new UnificationEntry(OrePrefix.cableGtSingle, Materials.Copper), 'P', new UnificationEntry(OrePrefix.plate, Materials.BatteryAlloy));
+
+        ModHandler.addShapedRecipe("carbon_mesh", MetaItems.CARBON_MESH.getStackForm(), "XX", "XX", 'X', MetaItems.CARBON_FIBERS.getStackForm());
+
+        ModHandler.addShapedRecipe("component_grinder_diamond", MetaItems.COMPONENT_GRINDER_DIAMOND.getStackForm(), "XSX", "SDS", "XSX", 'X', new UnificationEntry(OrePrefix.dust, Materials.Diamond), 'S', new UnificationEntry(OrePrefix.plate, Materials.Steel), 'D', new UnificationEntry(OrePrefix.gem, Materials.Diamond));
+        ModHandler.addShapedRecipe("component_grinder_tungsten", MetaItems.COMPONENT_GRINDER_TUNGSTEN.getStackForm(), "WSW", "SDS", "WSW", 'W', new UnificationEntry(OrePrefix.plate, Materials.Tungsten), 'S', new UnificationEntry(OrePrefix.plate, Materials.Steel), 'D', new UnificationEntry(OrePrefix.gem, Materials.Diamond));
+        ModHandler.addShapedRecipe("component_sawblade_diamond", MetaItems.COMPONENT_SAW_BLADE_DIAMOND.getStackForm(), " D ", "DGD", " D ", 'D', new UnificationEntry(OrePrefix.dustSmall, Materials.Diamond), 'G', new UnificationEntry(OrePrefix.gear, Materials.CobaltBrass));
+
+        ModHandler.addShapedRecipe("energy_field_projector", MetaItems.ENERGY_FIELD_PROJECTOR.getStackForm(), "PLP", "LFL", "PLP", 'P', MetaItems.PLATE_IRIDIUM_ALLOY.getStackForm(), 'L', MetaItems.LAPOTRON_CRYSTAL.getStackForm(), 'F', MetaItems.FIELD_GENERATOR_EV);
+
+        ModHandler.addShapedRecipe("ingot_iridium_alloy", MetaItems.INGOT_IRIDIUM_ALLOY.getStackForm(), "IWI", "WDW", "IWI", 'I', new UnificationEntry(OrePrefix.plate, Materials.Iridium), 'W', new UnificationEntry(OrePrefix.plate, Materials.Tungsten), 'D', new UnificationEntry(OrePrefix.dust, Materials.Diamond));
+        ModHandler.addShapedRecipe("ingot_mixed_metal", MetaItems.INGOT_MIXED_METAL.getStackForm(2), "TTT", "BBB", "III", 'T', new UnificationEntry(OrePrefix.plate, Materials.Tin), 'B', new UnificationEntry(OrePrefix.plate, Materials.Bronze), 'I', new UnificationEntry(OrePrefix.plate, Materials.Iron));
+
+        ModHandler.addShapedRecipe("nano_saber", MetaItems.NANO_SABER.getStackForm(), "PIC", "PIC", "XEX", 'P', new UnificationEntry(OrePrefix.plate, Materials.Platinum), 'I', MetaItems.PLATE_IRIDIUM_ALLOY.getStackForm(), 'C', MetaItems.CARBON_PLATE.getStackForm(), 'X', new UnificationEntry(OrePrefix.circuit, Tier.Extreme), 'E', MetaItems.ENERGY_CRYSTAL.getStackForm());
+
+        ModHandler.addShapedRecipe("solar_panel/solar_panel_basic", MetaItems.COVER_SOLAR_PANEL.getStackForm(), "SGS", "CXC", "AAA", 'S', new UnificationEntry(OrePrefix.plate, Materials.Silicon), 'G', "paneGlass", 'C', new UnificationEntry(OrePrefix.cableGtSingle, Materials.Copper), 'X', new UnificationEntry(OrePrefix.circuit, Tier.Basic), 'A', new UnificationEntry(OrePrefix.plate, Materials.Aluminium));
+        ModHandler.addShapedRecipe("solar_panel/solar_panel_ulv", MetaItems.COVER_SOLAR_PANEL_ULV.getStackForm(), "SSS", "SXS", "SSS", 'S', MetaItems.COVER_SOLAR_PANEL.getStackForm(), 'X', new UnificationEntry(OrePrefix.circuit, Tier.Basic));
+        ModHandler.addShapedRecipe("solar_panel/solar_panel_lv", MetaItems.COVER_SOLAR_PANEL_LV.getStackForm(), "PSP", "SXS", "PSP", 'P', new UnificationEntry(OrePrefix.plate, Materials.Silicon), 'S', MetaItems.COVER_SOLAR_PANEL_ULV.getStackForm(), 'X', new UnificationEntry(OrePrefix.circuit, Tier.Good));
+
+        ///////////////////////////////////////////////////
+        //               Shapes and Molds                //
+        ///////////////////////////////////////////////////
+        ModHandler.addShapedRecipe("shape/shape_empty", MetaItems.SHAPE_EMPTY.getStackForm(), "hf", "PP", "PP", 'P', new UnificationEntry(OrePrefix.plate, Materials.Steel));
+
+        ModHandler.addShapedRecipe("shape/extruder/shape_extruder_bottle", MetaItems.SHAPE_EXTRUDER_BOTTLE.getStackForm(),           "   ", "  x", "S  ", 'S', MetaItems.SHAPE_EMPTY.getStackForm());
+        ModHandler.addShapedRecipe("shape/extruder/shape_extruder_gear", MetaItems.SHAPE_EXTRUDER_GEAR.getStackForm(),               "x  ", "   ", "S  ", 'S', MetaItems.SHAPE_EMPTY.getStackForm());
+        ModHandler.addShapedRecipe("shape/extruder/shape_extruder_saw", MetaItems.SHAPE_EXTRUDER_SAW.getStackForm(),                 " x ", "   ", "  S", 'S', MetaItems.SHAPE_EMPTY.getStackForm());
+        ModHandler.addShapedRecipe("shape/extruder/shape_extruder_file", MetaItems.SHAPE_EXTRUDER_FILE.getStackForm(),               "x  ", "   ", "  S", 'S', MetaItems.SHAPE_EMPTY.getStackForm());
+        ModHandler.addShapedRecipe("shape/extruder/shape_extruder_hammer", MetaItems.SHAPE_EXTRUDER_HAMMER.getStackForm(),           "   ", "x  ", "  S", 'S', MetaItems.SHAPE_EMPTY.getStackForm());
+        ModHandler.addShapedRecipe("shape/extruder/shape_extruder_hoe", MetaItems.SHAPE_EXTRUDER_HOE.getStackForm(),                 "   ", "   ", "x S", 'S', MetaItems.SHAPE_EMPTY.getStackForm());
+        ModHandler.addShapedRecipe("shape/extruder/shape_extruder_axe", MetaItems.SHAPE_EXTRUDER_AXE.getStackForm(),                 "  S", "x  ", "   ", 'S', MetaItems.SHAPE_EMPTY.getStackForm());
+        ModHandler.addShapedRecipe("shape/extruder/shape_extruder_shovel", MetaItems.SHAPE_EXTRUDER_SHOVEL.getStackForm(),           "  S", "   ", "x  ", 'S', MetaItems.SHAPE_EMPTY.getStackForm());
+        ModHandler.addShapedRecipe("shape/extruder/shape_extruder_pickaxe", MetaItems.SHAPE_EXTRUDER_PICKAXE.getStackForm(),         "  S", "   ", " x ", 'S', MetaItems.SHAPE_EMPTY.getStackForm());
+        ModHandler.addShapedRecipe("shape/extruder/shape_extruder_sword", MetaItems.SHAPE_EXTRUDER_SWORD.getStackForm(),             "  S", "   ", "  x", 'S', MetaItems.SHAPE_EMPTY.getStackForm());
+        ModHandler.addShapedRecipe("shape/extruder/shape_extruder_block", MetaItems.SHAPE_EXTRUDER_BLOCK.getStackForm(),             "S x", "   ", "   ", 'S', MetaItems.SHAPE_EMPTY.getStackForm());
+        ModHandler.addShapedRecipe("shape/extruder/shape_extruder_pipe_large", MetaItems.SHAPE_EXTRUDER_PIPE_LARGE.getStackForm(),   "S  ", "   ", "  x", 'S', MetaItems.SHAPE_EMPTY.getStackForm());
+        ModHandler.addShapedRecipe("shape/extruder/shape_extruder_pipe_medium", MetaItems.SHAPE_EXTRUDER_PIPE_MEDIUM.getStackForm(), "S  ", "   ", " x ", 'S', MetaItems.SHAPE_EMPTY.getStackForm());
+        ModHandler.addShapedRecipe("shape/extruder/shape_extruder_pipe_small", MetaItems.SHAPE_EXTRUDER_PIPE_SMALL.getStackForm(),   "S  ", "  x", "   ", 'S', MetaItems.SHAPE_EMPTY.getStackForm());
+        ModHandler.addShapedRecipe("shape/extruder/shape_extruder_pipe_tiny", MetaItems.SHAPE_EXTRUDER_PIPE_TINY.getStackForm(),     " x ", "   ", "S  ", 'S', MetaItems.SHAPE_EMPTY.getStackForm());
+        ModHandler.addShapedRecipe("shape/extruder/shape_extruder_wire", MetaItems.SHAPE_EXTRUDER_WIRE.getStackForm(),               "   ", " S ", " x ", 'S', MetaItems.SHAPE_EMPTY.getStackForm());
+        ModHandler.addShapedRecipe("shape/extruder/shape_extruder_ingot", MetaItems.SHAPE_EXTRUDER_INGOT.getStackForm(),             "  x", " S ", "   ", 'S', MetaItems.SHAPE_EMPTY.getStackForm());
+        ModHandler.addShapedRecipe("shape/extruder/shape_extruder_cell", MetaItems.SHAPE_EXTRUDER_CELL.getStackForm(),               " x ", " S ", "   ", 'S', MetaItems.SHAPE_EMPTY.getStackForm());
+        ModHandler.addShapedRecipe("shape/extruder/shape_extruder_ring", MetaItems.SHAPE_EXTRUDER_RING.getStackForm(),               "   ", " Sx", "   ", 'S', MetaItems.SHAPE_EMPTY.getStackForm());
+        ModHandler.addShapedRecipe("shape/extruder/shape_extruder_bolt", MetaItems.SHAPE_EXTRUDER_BOLT.getStackForm(),               "x  ", " S ", "   ", 'S', MetaItems.SHAPE_EMPTY.getStackForm());
+        ModHandler.addShapedRecipe("shape/extruder/shape_extruder_rod", MetaItems.SHAPE_EXTRUDER_ROD.getStackForm(),                 "   ", " S ", "  x", 'S', MetaItems.SHAPE_EMPTY.getStackForm());
+        ModHandler.addShapedRecipe("shape/extruder/shape_extruder_plate", MetaItems.SHAPE_EXTRUDER_PLATE.getStackForm(),             "   ", "xS ", "   ", 'S', MetaItems.SHAPE_EMPTY.getStackForm());
+
+        ModHandler.addShapedRecipe("shape/mold/shape_mold_rotor", MetaItems.SHAPE_MOLD_ROTOR.getStackForm(),           "  h", " S ", "   ", 'S', MetaItems.SHAPE_EMPTY.getStackForm());
+        ModHandler.addShapedRecipe("shape/mold/shape_mold_gear_small", MetaItems.SHAPE_MOLD_GEAR_SMALL.getStackForm(), "   ", "   ", "h S", 'S', MetaItems.SHAPE_EMPTY.getStackForm());
+        ModHandler.addShapedRecipe("shape/mold/shape_mold_name", MetaItems.SHAPE_MOLD_NAME.getStackForm(),             "  S", "   ", "h  ", 'S', MetaItems.SHAPE_EMPTY.getStackForm());
+        ModHandler.addShapedRecipe("shape/mold/shape_mold_anvil", MetaItems.SHAPE_MOLD_ANVIL.getStackForm(),           "  S", "   ", " h ", 'S', MetaItems.SHAPE_EMPTY.getStackForm());
+        ModHandler.addShapedRecipe("shape/mold/shape_mold_cylinder", MetaItems.SHAPE_MOLD_CYLINDER.getStackForm(),     "  S", "   ", "  h", 'S', MetaItems.SHAPE_EMPTY.getStackForm());
+        ModHandler.addShapedRecipe("shape/mold/shape_mold_nugget", MetaItems.SHAPE_MOLD_NUGGET.getStackForm(),         "S h", "   ", "   ", 'S', MetaItems.SHAPE_EMPTY.getStackForm());
+        ModHandler.addShapedRecipe("shape/mold/shape_mold_block", MetaItems.SHAPE_MOLD_BLOCK.getStackForm(),           "   ", "hS ", "   ", 'S', MetaItems.SHAPE_EMPTY.getStackForm());
+        ModHandler.addShapedRecipe("shape/mold/shape_mold_ball", MetaItems.SHAPE_MOLD_BALL.getStackForm(),             "   ", " S ", "h  ", 'S', MetaItems.SHAPE_EMPTY.getStackForm());
+        ModHandler.addShapedRecipe("shape/mold/shape_mold_ingot", MetaItems.SHAPE_MOLD_INGOT.getStackForm(),           "   ", " S ", " h ", 'S', MetaItems.SHAPE_EMPTY.getStackForm());
+        ModHandler.addShapedRecipe("shape/mold/shape_mold_bottle", MetaItems.SHAPE_MOLD_BOTTLE.getStackForm(),         "   ", " S ", "  h", 'S', MetaItems.SHAPE_EMPTY.getStackForm());
+        ModHandler.addShapedRecipe("shape/mold/shape_mold_credit", MetaItems.SHAPE_MOLD_CREDIT.getStackForm(),         "h  ", " S ", "   ", 'S', MetaItems.SHAPE_EMPTY.getStackForm());
+        ModHandler.addShapedRecipe("shape/mold/shape_mold_gear", MetaItems.SHAPE_MOLD_GEAR.getStackForm(),             "   ", " Sh", "   ", 'S', MetaItems.SHAPE_EMPTY.getStackForm());
+        ModHandler.addShapedRecipe("shape/mold/shape_mold_plate", MetaItems.SHAPE_MOLD_PLATE.getStackForm(),           " h ", " S ", "   ", 'S', MetaItems.SHAPE_EMPTY.getStackForm());
+
+        ///////////////////////////////////////////////////
+        //                   Credits                     //
+        ///////////////////////////////////////////////////
+        ModHandler.addShapelessRecipe("coin_chocolate", MetaItems.COIN_CHOCOLATE.getStackForm(), new UnificationEntry(OrePrefix.dust, Materials.Cocoa), new UnificationEntry(OrePrefix.foil, Materials.Gold), new ItemStack(Items.MILK_BUCKET), new UnificationEntry(OrePrefix.dust, Materials.Sugar));
+
+        ModHandler.addShapelessRecipe("credit/credit_copper", MetaItems.CREDIT_COPPER.getStackForm(8), MetaItems.CREDIT_CUPRONICKEL.getStackForm());
+        ModHandler.addShapelessRecipe("credit/credit_cupronickel_alt", MetaItems.CREDIT_CUPRONICKEL.getStackForm(), MetaItems.CREDIT_COPPER.getStackForm(), MetaItems.CREDIT_COPPER.getStackForm(), MetaItems.CREDIT_COPPER.getStackForm(), MetaItems.CREDIT_COPPER.getStackForm(), MetaItems.CREDIT_COPPER.getStackForm(), MetaItems.CREDIT_COPPER.getStackForm(), MetaItems.CREDIT_COPPER.getStackForm(), MetaItems.CREDIT_COPPER.getStackForm());
+        ModHandler.addShapelessRecipe("credit/credit_cupronickel", MetaItems.CREDIT_CUPRONICKEL.getStackForm(8), MetaItems.CREDIT_SILVER.getStackForm());
+        ModHandler.addShapelessRecipe("credit/credit_silver_alt", MetaItems.CREDIT_SILVER.getStackForm(), MetaItems.CREDIT_CUPRONICKEL.getStackForm(),  MetaItems.CREDIT_CUPRONICKEL.getStackForm(), MetaItems.CREDIT_CUPRONICKEL.getStackForm(), MetaItems.CREDIT_CUPRONICKEL.getStackForm(), MetaItems.CREDIT_CUPRONICKEL.getStackForm(), MetaItems.CREDIT_CUPRONICKEL.getStackForm(), MetaItems.CREDIT_CUPRONICKEL.getStackForm(), MetaItems.CREDIT_CUPRONICKEL.getStackForm());
+        ModHandler.addShapelessRecipe("credit/credit_silver", MetaItems.CREDIT_SILVER.getStackForm(8), MetaItems.CREDIT_GOLD.getStackForm());
+        ModHandler.addShapelessRecipe("credit/credit_gold_alt", MetaItems.CREDIT_GOLD.getStackForm(), MetaItems.CREDIT_SILVER.getStackForm(), MetaItems.CREDIT_SILVER.getStackForm(), MetaItems.CREDIT_SILVER.getStackForm(), MetaItems.CREDIT_SILVER.getStackForm(), MetaItems.CREDIT_SILVER.getStackForm(), MetaItems.CREDIT_SILVER.getStackForm(), MetaItems.CREDIT_SILVER.getStackForm(), MetaItems.CREDIT_SILVER.getStackForm());
+        ModHandler.addShapelessRecipe("credit/credit_gold", MetaItems.CREDIT_GOLD.getStackForm(8), MetaItems.CREDIT_PLATINUM.getStackForm());
+        ModHandler.addShapelessRecipe("credit/credit_platinum_alt", MetaItems.CREDIT_PLATINUM.getStackForm(), MetaItems.CREDIT_GOLD.getStackForm(), MetaItems.CREDIT_GOLD.getStackForm(), MetaItems.CREDIT_GOLD.getStackForm(), MetaItems.CREDIT_GOLD.getStackForm(), MetaItems.CREDIT_GOLD.getStackForm(), MetaItems.CREDIT_GOLD.getStackForm(), MetaItems.CREDIT_GOLD.getStackForm(), MetaItems.CREDIT_GOLD.getStackForm());
+        ModHandler.addShapelessRecipe("credit/credit_platinum", MetaItems.CREDIT_PLATINUM.getStackForm(8), MetaItems.CREDIT_OSMIUM.getStackForm());
+        ModHandler.addShapelessRecipe("credit/credit_osmium_alt", MetaItems.CREDIT_OSMIUM.getStackForm(), MetaItems.CREDIT_PLATINUM.getStackForm(), MetaItems.CREDIT_PLATINUM.getStackForm(), MetaItems.CREDIT_PLATINUM.getStackForm(), MetaItems.CREDIT_PLATINUM.getStackForm(), MetaItems.CREDIT_PLATINUM.getStackForm(), MetaItems.CREDIT_PLATINUM.getStackForm(), MetaItems.CREDIT_PLATINUM.getStackForm(), MetaItems.CREDIT_PLATINUM.getStackForm());
+        ModHandler.addShapelessRecipe("credit/credit_osmium", MetaItems.CREDIT_OSMIUM.getStackForm(8), MetaItems.CREDIT_NAQUADAH.getStackForm());
+        ModHandler.addShapelessRecipe("credit/credit_naquadah_alt", MetaItems.CREDIT_NAQUADAH.getStackForm(), MetaItems.CREDIT_OSMIUM.getStackForm(), MetaItems.CREDIT_OSMIUM.getStackForm(), MetaItems.CREDIT_OSMIUM.getStackForm(), MetaItems.CREDIT_OSMIUM.getStackForm(), MetaItems.CREDIT_OSMIUM.getStackForm(), MetaItems.CREDIT_OSMIUM.getStackForm(), MetaItems.CREDIT_OSMIUM.getStackForm(), MetaItems.CREDIT_OSMIUM.getStackForm());
+        ModHandler.addShapelessRecipe("credit/credit_naquadah", MetaItems.CREDIT_NAQUADAH.getStackForm(8), MetaItems.CREDIT_DARMSTADTIUM.getStackForm());
+        ModHandler.addShapelessRecipe("credit/credit_darmstadtium", MetaItems.CREDIT_DARMSTADTIUM.getStackForm(), MetaItems.CREDIT_NAQUADAH.getStackForm(), MetaItems.CREDIT_NAQUADAH.getStackForm(), MetaItems.CREDIT_NAQUADAH.getStackForm(), MetaItems.CREDIT_NAQUADAH.getStackForm(), MetaItems.CREDIT_NAQUADAH.getStackForm(), MetaItems.CREDIT_NAQUADAH.getStackForm(), MetaItems.CREDIT_NAQUADAH.getStackForm(), MetaItems.CREDIT_NAQUADAH.getStackForm());
     }
 
     private static void registerFacadeRecipe(Material material, int facadeAmount) {
