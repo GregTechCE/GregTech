@@ -12,6 +12,7 @@ import gregtech.api.unification.stack.MaterialStack;
 import gregtech.api.util.GTControlledRegistry;
 import gregtech.api.util.GTLog;
 import net.minecraft.client.resources.I18n;
+import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import stanhebben.zenscript.annotations.*;
@@ -65,18 +66,9 @@ public abstract class Material implements Comparable<Material>, IMaterial<Materi
 
             for (Map.Entry<Long, Class<? extends IMaterial<?>>> entry : materialFlagRegistry.values()) {
                 if (entry.getKey() == value)
-                    throw new IllegalArgumentException("Flag with ID " + getIntValueOfFlag(value) + " already registered!");
+                    throw new IllegalArgumentException("Flag with ID " + IMaterial.getIntValueOfFlag(value) + " already registered!");
             }
             materialFlagRegistry.put(name, new SimpleEntry<>(value, classFilter));
-        }
-
-        private static int getIntValueOfFlag(long value) {
-            int index = 0;
-            while (value != 1) {
-                value >>= 1;
-                index++;
-            }
-            return index;
         }
 
         public static void registerMaterialFlagsHolder(Class<?> holder, Class<? extends Material> lowerBounds) {
@@ -98,7 +90,7 @@ public abstract class Material implements Comparable<Material>, IMaterial<Materi
             }
         }
 
-        public static long resolveFlag(String name, Class<? extends Material> selfClass) {
+        public static long resolveFlag(String name, Class<? extends IMaterial<?>> selfClass) {
             Entry<Long, Class<? extends IMaterial<?>>> flagEntry = materialFlagRegistry.get(name);
             if (flagEntry == null)
                 throw new IllegalArgumentException("Flag with name " + name + " not registered");
@@ -243,7 +235,7 @@ public abstract class Material implements Comparable<Material>, IMaterial<Materi
     protected void initializeMaterial() {
     }
 
-    protected long verifyMaterialBits(long materialBits) {
+    public long verifyMaterialBits(long materialBits) {
         return materialBits;
     }
 
@@ -306,6 +298,11 @@ public abstract class Material implements Comparable<Material>, IMaterial<Materi
     @ZenMethod
     public void setMaterialRGB(int materialRGB) {
         this.materialRGB = materialRGB;
+    }
+
+    @Override
+    public int getMaterialRGB() {
+        return materialRGB;
     }
 
     @ZenMethod
@@ -402,6 +399,11 @@ public abstract class Material implements Comparable<Material>, IMaterial<Materi
             totalMass += material.amount * material.material.getAverageMass();
         }
         return totalMass / totalAmount;
+    }
+
+    @Override
+    public FluidStack getFluid(int amount) {
+        return null;
     }
 
     @ZenGetter("camelCaseName")

@@ -5,8 +5,11 @@ import com.google.common.collect.ImmutableList;
 import gregtech.api.unification.stack.MaterialStack;
 import gregtech.api.util.GTControlledRegistry;
 import net.minecraft.client.resources.I18n;
+import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+
+import javax.annotation.Nullable;
 
 public interface IMaterial <T> {
 
@@ -31,6 +34,8 @@ public interface IMaterial <T> {
 
     ImmutableList<MaterialStack> getMaterialComponents();
 
+    int getMaterialRGB();
+
     long getAverageMass();
 
     long getAverageNeutrons();
@@ -46,4 +51,18 @@ public interface IMaterial <T> {
     boolean isRadioactive();
 
     boolean hasFlag(long flag);
+
+    long verifyMaterialBits(long materialBits);
+
+    static int getIntValueOfFlag(long value) {
+        int index = 0;
+        while (value != 1) {
+            value >>= 1;
+            index++;
+        }
+        return index;
+    }
+
+    @Nullable
+    FluidStack getFluid(int amount);
 }

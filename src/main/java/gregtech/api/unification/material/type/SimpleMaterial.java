@@ -3,7 +3,11 @@ package gregtech.api.unification.material.type;
 import com.google.common.collect.ImmutableList;
 import gregtech.api.unification.Elements;
 import gregtech.api.unification.material.IMaterial;
+import gregtech.api.unification.material.MaterialIconSet;
 import gregtech.api.unification.stack.MaterialStack;
+import net.minecraftforge.fluids.FluidStack;
+
+import static gregtech.api.unification.material.type.Material.MatFlags.*;
 
 public abstract class SimpleMaterial <T extends SimpleMaterial<T>> implements IMaterial<T> {
 
@@ -11,12 +15,15 @@ public abstract class SimpleMaterial <T extends SimpleMaterial<T>> implements IM
     private String chemicalFormula;
     public final ImmutableList<MaterialStack> materialComponents;
     private long materialGenerationFlags;
+    public final MaterialIconSet iconSet;
 
-    public SimpleMaterial(int materialRGB, ImmutableList<MaterialStack> materialComponents, long flags) {
+    public SimpleMaterial(int materialRGB, MaterialIconSet iconSet, ImmutableList<MaterialStack> materialComponents, long flags) {
         this.materialRGB = materialRGB;
+        this.iconSet = iconSet;
         this.materialComponents = materialComponents;
         this.chemicalFormula = calculateChemicalFormula();
         this.materialGenerationFlags = flags;
+        calculateDecompositionType();
     }
 
     private String calculateChemicalFormula() {
@@ -35,6 +42,15 @@ public abstract class SimpleMaterial <T extends SimpleMaterial<T>> implements IM
     }
 
     @Override
+    public long verifyMaterialBits(long materialBits) {
+        materialBits &= ~DISABLE_DECOMPOSITION;
+        materialBits &= ~DECOMPOSITION_BY_CENTRIFUGING;
+        materialBits &= ~DECOMPOSITION_BY_ELECTROLYZING;
+        materialBits &= ~DECOMPOSITION_REQUIRES_HYDROGEN;
+        return materialBits;
+    }
+
+    @Override
     public String getChemicalFormula() {
         return chemicalFormula;
     }
@@ -42,6 +58,31 @@ public abstract class SimpleMaterial <T extends SimpleMaterial<T>> implements IM
     @Override
     public ImmutableList<MaterialStack> getMaterialComponents() {
         return materialComponents;
+    }
+
+    protected void calculateDecompositionType() {
+        if (!materialComponents.isEmpty() &&
+                !hasFlag(Material.MatFlags.DECOMPOSITION_BY_CENTRIFUGING) &&
+                !hasFlag(Material.MatFlags.DECOMPOSITION_BY_ELECTROLYZING) &&
+                !hasFlag(Material.MatFlags.DISABLE_DECOMPOSITION)) {
+            boolean onlyMetalMaterials = true;
+            for (MaterialStack materialStack : materialComponents) {
+                IMaterial<?> material = materialStack.material;
+                onlyMetalMaterials &= material instanceof IngotMaterial;
+            }
+            //allow centrifuging of alloy materials only
+            if (onlyMetalMaterials) {
+                materialGenerationFlags |= Material.MatFlags.DECOMPOSITION_BY_CENTRIFUGING;
+            } else {
+                //otherwise, we use electrolyzing to break material into components
+                materialGenerationFlags |= Material.MatFlags.DECOMPOSITION_BY_ELECTROLYZING;
+            }
+        }
+    }
+
+    @Override
+    public int getMaterialRGB() {
+        return materialRGB;
     }
 
     @Override
@@ -123,5 +164,10 @@ public abstract class SimpleMaterial <T extends SimpleMaterial<T>> implements IM
         for (MaterialStack material : materialComponents)
             if (material.material.isRadioactive()) return true;
         return false;
+    }
+
+    @Override
+    public FluidStack getFluid(int amount) {
+        return null;
     }
 }

@@ -129,7 +129,7 @@ public class IngotMaterial extends SolidMaterial {
     }
 
     @Override
-    protected long verifyMaterialBits(long generationBits) {
+    public long verifyMaterialBits(long generationBits) {
         if ((generationBits & GENERATE_DENSE) > 0) {
             generationBits |= GENERATE_PLATE;
         }
