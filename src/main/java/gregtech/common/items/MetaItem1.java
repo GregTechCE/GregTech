@@ -175,8 +175,8 @@ public class MetaItem1 extends MaterialMetaItem {
         ENERGY_LAPOTRONIC_ORB = addItem(597, "energy.lapotronicorb").addComponents(ElectricStats.createRechargeableBattery(100000000, 5)).setUnificationData(OrePrefix.battery, MarkerMaterials.Tier.Ultimate).setModelAmount(8);
         ENERGY_LAPOTRONIC_ORB2 = addItem(598, "energy.lapotronicorb2").addComponents(ElectricStats.createRechargeableBattery(1000000000, 6)).setUnificationData(OrePrefix.battery, MarkerMaterials.Tier.Ultimate).setModelAmount(8);
 
-        ZPM = addItem(599, "zpm").addComponents(ElectricStats.createBattery(2000000000000L, 7, false)).setModelAmount(8);
-        ZPM2 = addItem(605, "zpm2").addComponents(ElectricStats.createRechargeableBattery(Long.MAX_VALUE, 8)).setModelAmount(8);
+        ZPM = addItem(599, "zpm").addComponents(ElectricStats.createBattery(2000000000000L, GTValues.ZPM, false)).setModelAmount(8);
+        ZPM2 = addItem(605, "zpm2").addComponents(ElectricStats.createRechargeableBattery(Long.MAX_VALUE, GTValues.UV)).setModelAmount(8);
 
         ELECTRIC_MOTOR_LV = addItem(600, "electric.motor.lv");
         ELECTRIC_MOTOR_MV = addItem(601, "electric.motor.mv");
@@ -294,84 +294,11 @@ public class MetaItem1 extends MaterialMetaItem {
     }
 
     public void registerRecipes() {
-        RecipeMaps.ASSEMBLER_RECIPES.recipeBuilder()
-            .input(OrePrefix.dust, Materials.Redstone)
-            .inputs(MetaItems.FLUID_CELL.getStackForm())
-            .outputs(SPRAY_EMPTY.getStackForm())
-            .duration(200).EUt(8)
-            .buildAndRegister();
-
-        RecipeMaps.ASSEMBLER_RECIPES.recipeBuilder()
-            .input(OrePrefix.plateDense, Materials.Steel, 2)
-            .input(OrePrefix.ring, Materials.Steel, 8)
-            .outputs(LARGE_FLUID_CELL_STEEL.getStackForm())
-            .circuitMeta(1).duration(100).EUt(64)
-            .buildAndRegister();
-
-        RecipeMaps.ASSEMBLER_RECIPES.recipeBuilder()
-            .input(OrePrefix.plateDense, Materials.TungstenSteel, 2)
-            .input(OrePrefix.ring, Materials.TungstenSteel, 8)
-            .outputs(LARGE_FLUID_CELL_TUNGSTEN_STEEL.getStackForm())
-            .circuitMeta(1).duration(200).EUt(256)
-            .buildAndRegister();
-
-        RecipeMaps.ASSEMBLER_RECIPES.recipeBuilder()
-            .input(OrePrefix.plate, Materials.Tin, 6)
-            .inputs(SPRAY_EMPTY.getStackForm())
-            .input(OrePrefix.paneGlass.name(), 1)
-            .outputs(FOAM_SPRAYER.getStackForm())
-            .duration(200).EUt(8)
-            .buildAndRegister();
-
-        // Matches/lighters recipes
-        RecipeMaps.ASSEMBLER_RECIPES.recipeBuilder()
-            .input(OrePrefix.bolt, Materials.Wood)
-            .input(OrePrefix.dustSmall, Materials.Phosphorus)
-            .outputs(TOOL_MATCHES.getStackForm())
-            .duration(16).EUt(16)
-            .buildAndRegister();
-
-        RecipeMaps.ASSEMBLER_RECIPES.recipeBuilder()
-            .input(OrePrefix.bolt, Materials.Wood)
-            .input(OrePrefix.dustSmall, Materials.TricalciumPhosphate)
-            .outputs(TOOL_MATCHES.getStackForm())
-            .duration(16).EUt(16)
-            .buildAndRegister();
-
-        RecipeMaps.ASSEMBLER_RECIPES.recipeBuilder()
-            .input(OrePrefix.bolt, Materials.Wood, 4)
-            .input(OrePrefix.dust, Materials.Phosphorus)
-            .outputs(TOOL_MATCHES.getStackForm(4))
-            .duration(64).EUt(16)
-            .buildAndRegister();
-
-        RecipeMaps.ASSEMBLER_RECIPES.recipeBuilder()
-            .input(OrePrefix.bolt, Materials.Wood, 4)
-            .input(OrePrefix.dust, Materials.TricalciumPhosphate)
-            .outputs(TOOL_MATCHES.getStackForm(4))
-            .duration(64)
-            .EUt(16)
-            .buildAndRegister();
-
         RecipeMaps.PACKER_RECIPES.recipeBuilder()
             .inputs(TOOL_MATCHES.getStackForm(16)).input(OrePrefix.plate, Materials.Paper)
             .outputs(TOOL_MATCHBOX.getStackForm())
             .duration(64)
             .EUt(16)
-            .buildAndRegister();
-
-        RecipeMaps.ASSEMBLER_RECIPES.recipeBuilder()
-            .input(OrePrefix.plate, Materials.Invar, 2).inputs(new ItemStack(Items.FLINT, 1))
-            .outputs(TOOL_LIGHTER_INVAR.getStackForm())
-            .duration(256)
-            .EUt(16)
-            .buildAndRegister();
-
-        RecipeMaps.ASSEMBLER_RECIPES.recipeBuilder()
-            .input(OrePrefix.plate, Materials.Platinum, 2).inputs(new ItemStack(Items.FLINT, 1))
-            .outputs(TOOL_LIGHTER_PLATINUM.getStackForm())
-            .duration(256)
-            .EUt(256)
             .buildAndRegister();
 
         RecipeMaps.EXTRACTOR_RECIPES.recipeBuilder()
@@ -511,7 +438,6 @@ public class MetaItem1 extends MaterialMetaItem {
             .outputs(BATTERY_RE_HV_SODIUM.getStackForm())
             .duration(1600).EUt(2)
             .buildAndRegister();
-
     }
 
     @Override

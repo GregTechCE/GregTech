@@ -149,6 +149,14 @@ public abstract class RecipeBuilder<R extends RecipeBuilder<R>> {
         return inputs(new ItemStack(item, count, OreDictionary.WILDCARD_VALUE));
     }
 
+    public R input(MetaItem<?>.MetaValueItem item, int count) {
+        return inputs(item.getStackForm(count));
+    }
+
+    public R input(MetaItem<?>.MetaValueItem item) {
+        return input(item, 1);
+    }
+
     public R inputs(CountableIngredient... inputs) {
         List<CountableIngredient> ingredients = new ArrayList<>();
         for (CountableIngredient input : inputs) {
@@ -220,6 +228,14 @@ public abstract class RecipeBuilder<R extends RecipeBuilder<R>> {
         return outputs(new ItemStack(item, count));
     }
 
+    public R output(MetaItem<?>.MetaValueItem item, int count) {
+        return outputs(item.getStackForm(count));
+    }
+
+    public R output(MetaItem<?>.MetaValueItem item) {
+        return output(item, 1);
+    }
+
     public R outputs(ItemStack... outputs) {
         return outputs(Arrays.asList(outputs));
     }
@@ -269,6 +285,22 @@ public abstract class RecipeBuilder<R extends RecipeBuilder<R>> {
         }
         this.chancedOutputs.add(new ChanceEntry(stack.copy(), chance, tierChanceBoost));
         return (R) this;
+    }
+
+    public R chancedOutput(OrePrefix prefix, IMaterial<?> material, int count, int chance, int tierChanceBoost) {
+        return chancedOutput(OreDictUnifier.get(prefix, material, count), chance, tierChanceBoost);
+    }
+
+    public R chancedOutput(OrePrefix prefix, IMaterial<?> material, int chance, int tierChanceBoost) {
+        return chancedOutput(prefix, material, 1, chance, tierChanceBoost);
+    }
+
+    public R chancedOutput(MetaItem<?>.MetaValueItem item, int count, int chance, int tierChanceBoost) {
+        return chancedOutput(item.getStackForm(count), chance, tierChanceBoost);
+    }
+
+    public R chancedOutput(MetaItem<?>.MetaValueItem item, int chance, int tierChanceBoost) {
+        return chancedOutput(item, 1, chance, tierChanceBoost);
     }
 
     public R duration(int duration) {

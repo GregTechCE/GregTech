@@ -207,6 +207,9 @@ public class ConfigHolder {
 
             @Config.Comment("Require Wrench to break machines? Default: false")
             public boolean requireWrenchForMachines = false;
+
+            @Config.Comment("Change the recipe of rods to result in 1 stick and 2 small piles of dusts. Default: false")
+            public boolean harderRods = false;
         }
 
         public static class GT6 {
@@ -214,6 +217,10 @@ public class ConfigHolder {
             @Config.Comment("Whether or not to use GT6-style pipe and cable connections, meaning they will not auto-connect " +
                     "unless placed directly onto another pipe or cable. Default: false")
             public boolean gt6StylePipesCables = false;
+
+            @Config.Comment("Whether or not to use Plates instead of Ingots for Wrench Recipes. Default: false")
+            @Config.RequiresMcRestart
+            public boolean plateWrenches = false;
         }
 
         public static class HighTierMachines {
