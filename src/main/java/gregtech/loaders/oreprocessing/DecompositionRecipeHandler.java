@@ -5,10 +5,7 @@ import gregtech.api.recipes.RecipeMaps;
 import gregtech.api.unification.OreDictUnifier;
 import gregtech.api.unification.material.IMaterial;
 import gregtech.api.unification.material.Materials;
-import gregtech.api.unification.material.type.DustMaterial;
-import gregtech.api.unification.material.type.FluidMaterial;
-import gregtech.api.unification.material.type.Material;
-import gregtech.api.unification.material.type.SimpleDustMaterial;
+import gregtech.api.unification.material.type.*;
 import gregtech.api.unification.ore.OrePrefix;
 import gregtech.api.unification.stack.MaterialStack;
 import net.minecraft.item.ItemStack;
@@ -32,6 +29,9 @@ public class DecompositionRecipeHandler {
         }
         for (SimpleDustMaterial material : SimpleDustMaterial.MATERIAL_REGISTRY) {
             processDecomposition(OrePrefix.dust, material);
+        }
+        for (SimpleFluidMaterial material : SimpleFluidMaterial.MATERIAL_REGISTRY) {
+            processDecomposition(null, material);
         }
     }
 
@@ -76,8 +76,7 @@ public class DecompositionRecipeHandler {
         if (decomposePrefix != null) {
             builder.input(decomposePrefix, material, totalInputAmount);
         } else {
-            FluidMaterial mat = (FluidMaterial) material;
-            builder.fluidInputs(mat.getFluid(1000));
+            builder.fluidInputs(material.getFluid(1000));
         }
         if (material.hasFlag(DECOMPOSITION_REQUIRES_HYDROGEN)) {
             builder.fluidInputs(Materials.Hydrogen.getFluid(1000 * totalInputAmount));

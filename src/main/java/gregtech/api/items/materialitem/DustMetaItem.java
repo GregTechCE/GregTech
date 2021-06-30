@@ -5,30 +5,26 @@ import gregtech.api.GregTechAPI;
 import gregtech.api.items.metaitem.StandardMetaItem;
 import gregtech.api.unification.OreDictUnifier;
 import gregtech.api.unification.material.MaterialIconSet;
-import gregtech.api.unification.material.type.Material;
 import gregtech.api.unification.material.type.SimpleDustMaterial;
 import gregtech.api.unification.ore.OrePrefix;
-import gregtech.api.util.GTLog;
 import net.minecraft.client.renderer.block.model.ModelBakery;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
-import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import javax.annotation.Nullable;
 import java.util.ArrayList;
-import java.util.List;
+
+import static gregtech.api.unification.material.type.SimpleDustMaterial.GENERATE_SMALL_TINY;
 
 public class DustMetaItem extends StandardMetaItem {
 
     private final OrePrefix[] orePrefixes = {OrePrefix.dustTiny, OrePrefix.dustSmall, OrePrefix.dust};
     private final ArrayList<Short> generatedItems = new ArrayList<>();
-    //private final ArrayList<ItemStack> items = new ArrayList<>(); TODO For MetaBracketHandler
+    //private final ArrayList<ItemStack> items = new ArrayList<>(); TODO For MetaBracketHandler?
 
     public DustMetaItem() {
         super((short) 0);
@@ -36,9 +32,7 @@ public class DustMetaItem extends StandardMetaItem {
             int i = SimpleDustMaterial.MATERIAL_REGISTRY.getIDForObject(material);
             for (int j = 0; j < orePrefixes.length; j++) {
                 OrePrefix orePrefix = orePrefixes[j];
-                GTLog.logger.info("prefix: " + orePrefix.name());
-                if (material.hasPrefix(orePrefix)) {
-                    GTLog.logger.info("has it!");
+                if (material.hasFlag(GENERATE_SMALL_TINY)) {
                     generatedItems.add((short) (i * 3 + j));
                 }
             }
@@ -64,7 +58,7 @@ public class DustMetaItem extends StandardMetaItem {
         TShortObjectHashMap<ModelResourceLocation> alreadyRegistered = new TShortObjectHashMap<>();
         for (short metaItem : generatedItems) {
             OrePrefix prefix = orePrefixes[metaItem % 3];
-            MaterialIconSet materialIconSet = SimpleDustMaterial.MATERIAL_REGISTRY.getObjectById(metaItem / 3).materialIconSet;
+            MaterialIconSet materialIconSet = SimpleDustMaterial.MATERIAL_REGISTRY.getObjectById(metaItem / 3).iconSet;
             short registrationKey = (short) (metaItem + materialIconSet.ordinal());
             if (!alreadyRegistered.containsKey(registrationKey)) {
                 ResourceLocation resourceLocation = prefix.materialIconType.getItemModelPath(materialIconSet);

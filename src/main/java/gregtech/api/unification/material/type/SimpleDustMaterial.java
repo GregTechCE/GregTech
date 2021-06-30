@@ -1,8 +1,8 @@
 package gregtech.api.unification.material.type;
 
 import com.google.common.collect.ImmutableList;
+import gregtech.api.unification.material.IMaterial;
 import gregtech.api.unification.material.MaterialIconSet;
-import gregtech.api.unification.ore.OrePrefix;
 import gregtech.api.unification.stack.MaterialStack;
 import gregtech.api.util.GTControlledRegistry;
 
@@ -20,23 +20,20 @@ public class SimpleDustMaterial extends SimpleMaterial<SimpleDustMaterial> imple
 
     public static final GTControlledRegistry<String, SimpleDustMaterial> MATERIAL_REGISTRY = new GTControlledRegistry<>(10000);
 
-    public final MaterialIconSet materialIconSet;
-    private final boolean hasSmallTiny;
-
-    // new DustMaterial(
-    // 977,
-    // "sodium_hydroxide",
-    // 0x003380,
-    // DULL,
-    // 1,
-    // of(new MaterialStack(Sodium, 1), new MaterialStack(Oxygen, 1), new MaterialStack(Hydrogen, 1)),
-    // 0);
-
     public SimpleDustMaterial(int metaItemSubId, String name, int materialRGB, MaterialIconSet iconSet, ImmutableList<MaterialStack> components, long flags) {
-        super(materialRGB, components, flags);
-        this.materialIconSet = iconSet;
+        super(materialRGB, iconSet, components, flags);
+        long materialBits = verifyMaterialBits(flags);
+        if (materialBits != 0) {
+            throw new IllegalArgumentException("Invalid flags on SimpleDustMaterial: "
+                    + IMaterial.getIntValueOfFlag(materialBits));
+        }
         MATERIAL_REGISTRY.register(metaItemSubId, name, this);
-        hasSmallTiny = true;//(flags | GENERATE_SMALL_TINY) == 1;
+    }
+
+    public long verifyMaterialBits(long materialBits) {
+        materialBits = super.verifyMaterialBits(materialBits);
+        materialBits &= ~GENERATE_SMALL_TINY;
+        return materialBits;
     }
 
     @Override
@@ -52,15 +49,6 @@ public class SimpleDustMaterial extends SimpleMaterial<SimpleDustMaterial> imple
     @Override
     public int compareTo(@Nonnull SimpleDustMaterial o) {
         return toString().compareTo(toString());
-    }
-
-    public boolean hasPrefix(OrePrefix prefix) {
-        switch (prefix) {
-            case dust: return true;
-            case dustSmall:
-            case dustTiny: return hasSmallTiny;
-        }
-        return false;
     }
 
     @Override
